@@ -12,8 +12,10 @@ Bazooka:
 		Image: DRAGON
 		TrailImage: small_smoke_trail
 		HorizontalRateOfTurn: 8
-		RangeLimit: 50
+		RangeLimit: 7c204
 		Palette: ra
+		MinimumLaunchSpeed: 75
+		Speed: 384
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 25
@@ -26,18 +28,18 @@ Bazooka:
 			Concrete: 60
 		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
 	Warhead@2Eff: CreateEffect
-		Explosion: small_clsn
-		ImpactSound: expnew12.aud
+		Explosions: small_clsn
+		ImpactSounds: expnew12.aud
 		InvalidImpactTypes: Water, Air, AirHit
 	Warhead@3EffWater: CreateEffect
-		Explosion: small_watersplash
+		Explosions: small_watersplash
 		ExplosionPalette: player
-		ImpactSound: ssplash3.aud
+		ImpactSounds: ssplash3.aud
 		ValidImpactTypes: Water
 	Warhead@4EffAir: CreateEffect
 		ValidImpactTypes: Air, AirHit
-		Explosion: tiny_twlt
-		ImpactSound: expnew05.aud
+		Explosions: tiny_twlt
+		ImpactSounds: expnew05.aud
 	Warhead@5Smu: LeaveSmudge
 		SmudgeType: SmallCrater
 
@@ -56,8 +58,10 @@ HoverMissile:
 		Image: DRAGON
 		TrailImage: small_smoke_trail
 		HorizontalRateOfTurn: 8
-		RangeLimit: 35
+		RangeLimit: 9c614
 		Palette: ra
+		MinimumLaunchSpeed: 75
+		Speed: 384
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 30
@@ -70,18 +74,18 @@ HoverMissile:
 			Concrete: 60
 		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
 	Warhead@2Eff: CreateEffect
-		Explosion: small_clsn
-		ImpactSound: expnew12.aud
+		Explosions: small_clsn
+		ImpactSounds: expnew12.aud
 		InvalidImpactTypes: Water, Air, AirHit
 	Warhead@3EffWater: CreateEffect
-		Explosion: small_watersplash
+		Explosions: small_watersplash
 		ExplosionPalette: player
-		ImpactSound: ssplash3.aud
+		ImpactSounds: ssplash3.aud
 		ValidImpactTypes: Water
 	Warhead@4EffAir: CreateEffect
-		Explosion: small_twlt
+		Explosions: small_twlt
 		ValidImpactTypes: Air, AirHit
-		ImpactSound: expnew06.aud
+		ImpactSounds: expnew06.aud
 	Warhead@5: LeaveSmudge
 		SmudgeType: SmallCrater
 
@@ -99,8 +103,10 @@ MammothTusk:
 		TrailImage: small_smoke_trail
 		HorizontalRateOfTurn: 10
 		MaximumLaunchSpeed: 213
-		RangeLimit: 50
+		RangeLimit: 7c204
 		Palette: ra
+		MinimumLaunchSpeed: 75
+		Speed: 384
 	Warhead@1Dam: SpreadDamage
 		Spread: 171
 		Damage: 40
@@ -113,13 +119,13 @@ MammothTusk:
 			Concrete: 28
 		DamageTypes: Explosion
 	Warhead@2Eff: CreateEffect
-		Explosion: medium_twlt
-		ImpactSound: expnew07.aud
+		Explosions: medium_twlt
+		ImpactSounds: expnew07.aud
 		InvalidImpactTypes: Water
 	Warhead@3EffWater: CreateEffect
-		Explosion: small_watersplash
+		Explosions: small_watersplash
 		ExplosionPalette: player
-		ImpactSound: ssplash3.aud
+		ImpactSounds: ssplash3.aud
 		ValidImpactTypes: Water
 
 BikeMissile:
@@ -138,8 +144,10 @@ BikeMissile:
 		TrailImage: small_smoke_trail
 		HorizontalRateOfTurn: 8
 		MaximumLaunchSpeed: 213
-		RangeLimit: 50
+		RangeLimit: 6c0
 		Palette: ra
+		MinimumLaunchSpeed: 75
+		Speed: 384
 	Warhead@1Dam: SpreadDamage
 		Spread: 256
 		Damage: 40
@@ -152,13 +160,13 @@ BikeMissile:
 			Concrete: 60
 		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
 	Warhead@2Eff: CreateEffect
-		Explosion: small_clsn
-		ImpactSound: expnew12.aud
+		Explosions: small_clsn
+		ImpactSounds: expnew12.aud
 		InvalidImpactTypes: Water
 	Warhead@3EffWater: CreateEffect
-		Explosion: small_watersplash
+		Explosions: small_watersplash
 		ExplosionPalette: player
-		ImpactSound: ssplash3.aud
+		ImpactSounds: ssplash3.aud
 		ValidImpactTypes: Water
 	Warhead@4Smu: LeaveSmudge
 		SmudgeType: SmallCrater
@@ -178,8 +186,10 @@ Dragon:
 		Image: DRAGON
 		TrailImage: small_smoke_trail
 		HorizontalRateOfTurn: 8
-		RangeLimit: 50
+		RangeLimit: 7c204
 		Palette: ra
+		MinimumLaunchSpeed: 75
+		Speed: 384
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 30
@@ -192,18 +202,18 @@ Dragon:
 			Concrete: 60
 		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
 	Warhead@2Eff: CreateEffect
-		Explosion: small_clsn
-		ImpactSound: expnew12.aud
+		Explosions: small_clsn
+		ImpactSounds: expnew12.aud
 		InvalidImpactTypes: Water, Air, AirHit
 	Warhead@3EffWater: CreateEffect
-		Explosion: small_watersplash
+		Explosions: small_watersplash
 		ExplosionPalette: player
-		ImpactSound: ssplash3.aud
+		ImpactSounds: ssplash3.aud
 		ValidImpactTypes: Water
 	Warhead@4EffAir: CreateEffect
-		Explosion: small_twlt
+		Explosions: small_twlt
 		ValidImpactTypes: Air, AirHit
-		ImpactSound: expnew06.aud
+		ImpactSounds: expnew06.aud
 	Warhead@5Smu: LeaveSmudge
 		SmudgeType: SmallCrater
 
@@ -222,8 +232,10 @@ Hellfire:
 		Image: DRAGON
 		TrailImage: small_smoke_trail
 		HorizontalRateOfTurn: 8
-		RangeLimit: 35
+		RangeLimit: 7c204
 		Palette: ra
+		MinimumLaunchSpeed: 75
+		Speed: 384
 	Warhead@1Dam: SpreadDamage
 		Spread: 85
 		Damage: 30
@@ -236,18 +248,18 @@ Hellfire:
 			Concrete: 30
 		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
 	Warhead@2Eff: CreateEffect
-		Explosion: small_clsn
-		ImpactSound: expnew12.aud
+		Explosions: small_clsn
+		ImpactSounds: expnew12.aud
 		InvalidImpactTypes: Water, Air, AirHit
 	Warhead@3EffWater: CreateEffect
-		Explosion: small_watersplash
+		Explosions: small_watersplash
 		ExplosionPalette: player
-		ImpactSound: ssplash3.aud
+		ImpactSounds: ssplash3.aud
 		ValidImpactTypes: Water
 	Warhead@4EffAir: CreateEffect
-		Explosion: small_twlt
+		Explosions: small_twlt
 		ValidImpactTypes: Air, AirHit
-		ImpactSound: expnew06.aud
+		ImpactSounds: expnew06.aud
 	Warhead@5Smu: LeaveSmudge
 		SmudgeType: SmallCrater
 
@@ -265,13 +277,15 @@ RedEye2:
 		Image: DRAGON
 		TrailImage: small_smoke_trail
 		HorizontalRateOfTurn: 5
-		RangeLimit: 100
+		RangeLimit: 18c0
 		Palette: ra
+		MinimumLaunchSpeed: 75
+		Speed: 384
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 33
 		ValidTargets: Air
 		DamageTypes: SmallExplosionDeath
 	Warhead@2Eff: CreateEffect
-		Explosion: tiny_twlt
-		ImpactSound: expnew05.aud
+		Explosions: tiny_twlt
+		ImpactSounds: expnew05.aud

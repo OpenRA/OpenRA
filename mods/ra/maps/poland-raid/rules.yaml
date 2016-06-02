@@ -1,0 +1,8 @@
+OILB:
+	CashTrickler:
+		Period: 250
+		Amount: 100
+
+FACT:
+	RevealsShroud:
+		Range: 8c0

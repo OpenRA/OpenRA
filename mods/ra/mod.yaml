@@ -7,143 +7,142 @@ Metadata:
 RequiresMods:
 	modchooser: {DEV_VERSION}
 
-Folders:
-	.
-	./mods/ra
-	./mods/ra/bits
-	./mods/ra/bits/desert
-	./mods/ra/uibits
-	~^Content/ra
-
-MapFolders:
-	./mods/ra/maps@System
-	~^maps/ra@User
-
 Packages:
+	~^Content/ra
+	.
+	$ra: ra
+	$cnc: cnc
+	./mods/common: common
 	~main.mix
-	redalert.mix
-	conquer.mix
-	hires.mix
-	local.mix
-	sounds.mix
-	speech.mix
-	allies.mix
-	russian.mix
-	temperat.mix
-	snow.mix
-	interior.mix
+	~redalert.mix
+	~conquer.mix
+	~hires.mix
+	~local.mix
+	~sounds.mix
+	~speech.mix
+	~allies.mix
+	~russian.mix
+	~temperat.mix
+	~snow.mix
+	~interior.mix
 	~scores.mix
 	~movies1.mix
 	~movies2.mix
+	ra|bits
+	ra|bits/desert
+	ra|uibits
+
+MapFolders:
+	ra|maps: System
+	~^maps/ra/{DEV_VERSION}: User
 
 Rules:
-	./mods/ra/rules/misc.yaml
-	./mods/ra/rules/ai.yaml
-	./mods/ra/rules/player.yaml
-	./mods/ra/rules/palettes.yaml
-	./mods/ra/rules/world.yaml
-	./mods/ra/rules/defaults.yaml
-	./mods/ra/rules/vehicles.yaml
-	./mods/ra/rules/husks.yaml
-	./mods/ra/rules/structures.yaml
-	./mods/ra/rules/infantry.yaml
-	./mods/ra/rules/civilian.yaml
-	./mods/ra/rules/decoration.yaml
-	./mods/ra/rules/aircraft.yaml
-	./mods/ra/rules/ships.yaml
-	./mods/ra/rules/fakes.yaml
+	ra|rules/misc.yaml
+	ra|rules/ai.yaml
+	ra|rules/player.yaml
+	ra|rules/palettes.yaml
+	ra|rules/world.yaml
+	ra|rules/defaults.yaml
+	ra|rules/vehicles.yaml
+	ra|rules/husks.yaml
+	ra|rules/structures.yaml
+	ra|rules/infantry.yaml
+	ra|rules/civilian.yaml
+	ra|rules/decoration.yaml
+	ra|rules/aircraft.yaml
+	ra|rules/ships.yaml
+	ra|rules/fakes.yaml
 
 Sequences:
-	./mods/ra/sequences/ships.yaml
-	./mods/ra/sequences/vehicles.yaml
-	./mods/ra/sequences/structures.yaml
-	./mods/ra/sequences/infantry.yaml
-	./mods/ra/sequences/aircraft.yaml
-	./mods/ra/sequences/misc.yaml
-	./mods/ra/sequences/decorations.yaml
+	ra|sequences/ships.yaml
+	ra|sequences/vehicles.yaml
+	ra|sequences/structures.yaml
+	ra|sequences/infantry.yaml
+	ra|sequences/aircraft.yaml
+	ra|sequences/misc.yaml
+	ra|sequences/decorations.yaml
 
 TileSets:
-	./mods/ra/tilesets/snow.yaml
-	./mods/ra/tilesets/interior.yaml
-	./mods/ra/tilesets/temperat.yaml
-	./mods/ra/tilesets/desert.yaml
+	ra|tilesets/snow.yaml
+	ra|tilesets/interior.yaml
+	ra|tilesets/temperat.yaml
+	ra|tilesets/desert.yaml
 
 Cursors:
-	./mods/ra/cursors.yaml
+	ra|cursors.yaml
 
 Chrome:
-	./mods/ra/chrome.yaml
+	ra|chrome.yaml
 
 Assemblies:
-	./mods/common/OpenRA.Mods.Common.dll
-	./mods/ra/OpenRA.Mods.RA.dll
-	./mods/cnc/OpenRA.Mods.Cnc.dll
+	common|OpenRA.Mods.Common.dll
+	ra|OpenRA.Mods.RA.dll
+	cnc|OpenRA.Mods.Cnc.dll
 
 ChromeLayout:
-	./mods/ra/chrome/ingame.yaml
-	./mods/ra/chrome/ingame-chat.yaml
-	./mods/ra/chrome/ingame-diplomacy.yaml
-	./mods/ra/chrome/ingame-fmvplayer.yaml
-	./mods/ra/chrome/ingame-info.yaml
-	./mods/ra/chrome/ingame-infoscripterror.yaml
-	./mods/ra/chrome/ingame-infobriefing.yaml
-	./mods/ra/chrome/ingame-infoobjectives.yaml
-	./mods/ra/chrome/ingame-infostats.yaml
-	./mods/ra/chrome/ingame-menu.yaml
-	./mods/ra/chrome/ingame-observer.yaml
-	./mods/ra/chrome/ingame-observerstats.yaml
-	./mods/ra/chrome/ingame-player.yaml
-	./mods/ra/chrome/ingame-perf.yaml
-	./mods/ra/chrome/ingame-debug.yaml
-	./mods/ra/chrome/mainmenu.yaml
-	./mods/ra/chrome/settings.yaml
-	./mods/ra/chrome/credits.yaml
-	./mods/ra/chrome/lobby.yaml
-	./mods/ra/chrome/lobby-mappreview.yaml
-	./mods/ra/chrome/lobby-players.yaml
-	./mods/ra/chrome/lobby-options.yaml
-	./mods/ra/chrome/lobby-music.yaml
-	./mods/ra/chrome/lobby-kickdialogs.yaml
-	./mods/ra/chrome/lobby-globalchat.yaml
-	./mods/ra/chrome/color-picker.yaml
-	./mods/ra/chrome/map-chooser.yaml
-	./mods/ra/chrome/multiplayer.yaml
-	./mods/ra/chrome/multiplayer-browser.yaml
-	./mods/ra/chrome/multiplayer-createserver.yaml
-	./mods/ra/chrome/multiplayer-directconnect.yaml
-	./mods/ra/chrome/multiplayer-globalchat.yaml
-	./mods/ra/chrome/connection.yaml
-	./mods/ra/chrome/replaybrowser.yaml
-	./mods/ra/chrome/dropdowns.yaml
-	./mods/ra/chrome/musicplayer.yaml
-	./mods/ra/chrome/tooltips.yaml
-	./mods/ra/chrome/assetbrowser.yaml
-	./mods/ra/chrome/missionbrowser.yaml
-	./mods/ra/chrome/confirmation-dialogs.yaml
-	./mods/ra/chrome/editor.yaml
+	ra|chrome/ingame.yaml
+	ra|chrome/ingame-chat.yaml
+	ra|chrome/ingame-fmvplayer.yaml
+	ra|chrome/ingame-info.yaml
+	ra|chrome/ingame-infoscripterror.yaml
+	ra|chrome/ingame-infobriefing.yaml
+	ra|chrome/ingame-infoobjectives.yaml
+	ra|chrome/ingame-infostats.yaml
+	ra|chrome/ingame-menu.yaml
+	ra|chrome/ingame-observer.yaml
+	ra|chrome/ingame-observerstats.yaml
+	ra|chrome/ingame-player.yaml
+	ra|chrome/ingame-perf.yaml
+	ra|chrome/ingame-debug.yaml
+	ra|chrome/mainmenu.yaml
+	ra|chrome/settings.yaml
+	ra|chrome/credits.yaml
+	ra|chrome/lobby.yaml
+	ra|chrome/lobby-mappreview.yaml
+	ra|chrome/lobby-players.yaml
+	ra|chrome/lobby-options.yaml
+	ra|chrome/lobby-music.yaml
+	ra|chrome/lobby-kickdialogs.yaml
+	ra|chrome/lobby-globalchat.yaml
+	ra|chrome/color-picker.yaml
+	ra|chrome/map-chooser.yaml
+	ra|chrome/multiplayer.yaml
+	ra|chrome/multiplayer-browser.yaml
+	ra|chrome/multiplayer-createserver.yaml
+	ra|chrome/multiplayer-directconnect.yaml
+	ra|chrome/multiplayer-globalchat.yaml
+	ra|chrome/connection.yaml
+	ra|chrome/replaybrowser.yaml
+	ra|chrome/dropdowns.yaml
+	ra|chrome/musicplayer.yaml
+	ra|chrome/tooltips.yaml
+	ra|chrome/assetbrowser.yaml
+	ra|chrome/missionbrowser.yaml
+	ra|chrome/confirmation-dialogs.yaml
+	ra|chrome/editor.yaml
 
 Weapons:
-	./mods/ra/weapons/explosions.yaml
-	./mods/ra/weapons/largecaliber.yaml
-	./mods/ra/weapons/missiles.yaml
-	./mods/ra/weapons/other.yaml
-	./mods/ra/weapons/smallcaliber.yaml
-	./mods/ra/weapons/superweapons.yaml
+	ra|weapons/explosions.yaml
+	ra|weapons/largecaliber.yaml
+	ra|weapons/missiles.yaml
+	ra|weapons/other.yaml
+	ra|weapons/smallcaliber.yaml
+	ra|weapons/superweapons.yaml
 	
 Voices:
-	./mods/ra/audio/voices.yaml
+	ra|audio/voices.yaml
 
 Notifications:
-	./mods/ra/audio/notifications.yaml
+	ra|audio/notifications.yaml
 
 Music:
-	./mods/ra/audio/music.yaml
+	ra|audio/music.yaml
 
 Translations:
-	./mods/ra/languages/english.yaml
+	ra|languages/english.yaml
 
 LoadScreen: LogoStripeLoadScreen
-	Image: ./mods/ra/uibits/loadscreen.png
+	Image: ra|uibits/loadscreen.png
 	Text: Filling Crates..., Charging Capacitors..., Reticulating Splines..., Planting Trees..., Building Bridges..., Aging Empires..., Compiling EVA..., Constructing Pylons..., Activating Skynet..., Splitting Atoms...
 
 ContentInstaller:
@@ -166,47 +165,38 @@ ServerTraits:
 	MasterServerPinger
 	LobbySettingsNotification
 
-LobbyDefaults:
-	AllowCheats: false
-	Crates: true
-	StartingUnitsClass: none
-	FragileAlliances: false
-	Shroud: true
-	Fog: true
-	TechLevel: Unrestricted
-
 ChromeMetrics:
-	./mods/common/metrics.yaml
-	./mods/ra/metrics.yaml
+	common|metrics.yaml
+	ra|metrics.yaml
 
 Fonts:
 	Regular:
-		Font:./mods/common/FreeSans.ttf
+		Font: common|FreeSans.ttf
 		Size:14
 	Bold:
-		Font:./mods/common/FreeSansBold.ttf
+		Font: common|FreeSansBold.ttf
 		Size:14
 	Title:
-		Font:./mods/ra/ZoodRangmah.ttf
+		Font: ra|ZoodRangmah.ttf
 		Size:48
 	MediumBold:
-		Font:./mods/common/FreeSansBold.ttf
+		Font: common|FreeSansBold.ttf
 		Size:18
 	BigBold:
-		Font:./mods/common/FreeSansBold.ttf
+		Font: common|FreeSansBold.ttf
 		Size:24
 	Small:
-		Font:./mods/common/FreeSans.ttf
+		Font: common|FreeSans.ttf
 		Size:12
 	Tiny:
-		Font:./mods/common/FreeSans.ttf
+		Font: common|FreeSans.ttf
 		Size:10
 	TinyBold:
-		Font:./mods/common/FreeSansBold.ttf
+		Font: common|FreeSansBold.ttf
 		Size:10
 
 Missions:
-	./mods/ra/missions.yaml
+	ra|missions.yaml
 
 MapGrid:
 	TileSize: 24,24

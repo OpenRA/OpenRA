@@ -1,10 +1,11 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2016 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
- * as published by the Free Software Foundation. For more information,
- * see COPYING.
+ * as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version. For more
+ * information, see COPYING.
  */
 #endregion
 
@@ -42,11 +43,19 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Palette used for the icon.")]
 		[PaletteReference] public readonly string IconPalette = "chrome";
 
-		[Desc("Beacons are only supported on the Airstrike and Nuke powers")]
+		[Desc("Beacons are only supported on the Airstrike, Paratroopers, and Nuke powers")]
 		public readonly bool DisplayBeacon = false;
-		public readonly string BeaconPalettePrefix = "player";
-		public readonly string BeaconPoster = null;
+
+		public readonly bool BeaconPaletteIsPlayerPalette = true;
+		[PaletteReference("BeaconPaletteIsPlayerPalette")] public readonly string BeaconPalette = "player";
+
+		public readonly string BeaconImage = "beacon";
+		[SequenceReference("BeaconImage")] public readonly string BeaconPoster = null;
 		[PaletteReference] public readonly string BeaconPosterPalette = "chrome";
+		[SequenceReference("BeaconImage")] public readonly string ClockSequence = "clock";
+
+		[SequenceReference("BeaconImage")] public readonly string ArrowSequence = "arrow";
+		[SequenceReference("BeaconImage")] public readonly string CircleSequence = "circles";
 
 		public readonly bool DisplayRadarPing = false;
 

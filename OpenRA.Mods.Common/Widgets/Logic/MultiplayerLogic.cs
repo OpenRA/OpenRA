@@ -1,10 +1,11 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2016 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
- * as published by the Free Software Foundation. For more information,
- * see COPYING.
+ * as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version. For more
+ * information, see COPYING.
  */
 #endregion
 
@@ -35,6 +36,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly Color incompatibleGameStartedColor;
 		readonly Color gameStartedColor;
 		readonly Color incompatibleGameColor;
+		readonly ModData modData;
 
 		GameServer currentServer;
 		MapPreview currentMap;
@@ -50,12 +52,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		Download currentQuery;
 		Widget serverList;
 
-		bool showWaiting = true;
-		bool showEmpty = true;
-		bool showStarted = false;
-		bool showProtected = true;
-		bool showIncompatible = false;
-
 		public string ProgressLabelText()
 		{
 			switch (searchStatus)
@@ -67,8 +63,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		}
 
 		[ObjectCreator.UseCtor]
-		public MultiplayerLogic(Widget widget, Action onStart, Action onExit, string directConnectHost, int directConnectPort)
+		public MultiplayerLogic(Widget widget, ModData modData, Action onStart, Action onExit, string directConnectHost, int directConnectPort)
 		{
+			this.modData = modData;
 			this.onStart = onStart;
 			this.onExit = onExit;
 
@@ -142,40 +139,48 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			progressText.IsVisible = () => searchStatus != SearchStatus.Hidden;
 			progressText.GetText = ProgressLabelText;
 
+			var gs = Game.Settings.Game;
+			Action<MPGameFilters> toggleFilterFlag = f =>
+			{
+				gs.MPGameFilters ^= f;
+				Game.Settings.Save();
+				RefreshServerList();
+			};
+
 			var filtersPanel = Ui.LoadWidget("MULTIPLAYER_FILTER_PANEL", null, new WidgetArgs());
 			var showWaitingCheckbox = filtersPanel.GetOrNull<CheckboxWidget>("WAITING_FOR_PLAYERS");
 			if (showWaitingCheckbox != null)
 			{
-				showWaitingCheckbox.IsChecked = () => showWaiting;
-				showWaitingCheckbox.OnClick = () => { showWaiting ^= true; RefreshServerList(); };
+				showWaitingCheckbox.IsChecked = () => gs.MPGameFilters.HasFlag(MPGameFilters.Waiting);
+				showWaitingCheckbox.OnClick = () => toggleFilterFlag(MPGameFilters.Waiting);
 			}
 
 			var showEmptyCheckbox = filtersPanel.GetOrNull<CheckboxWidget>("EMPTY");
 			if (showEmptyCheckbox != null)
 			{
-				showEmptyCheckbox.IsChecked = () => showEmpty;
-				showEmptyCheckbox.OnClick = () => { showEmpty ^= true; RefreshServerList(); };
+				showEmptyCheckbox.IsChecked = () => gs.MPGameFilters.HasFlag(MPGameFilters.Empty);
+				showEmptyCheckbox.OnClick = () => toggleFilterFlag(MPGameFilters.Empty);
 			}
 
 			var showAlreadyStartedCheckbox = filtersPanel.GetOrNull<CheckboxWidget>("ALREADY_STARTED");
 			if (showAlreadyStartedCheckbox != null)
 			{
-				showAlreadyStartedCheckbox.IsChecked = () => showStarted;
-				showAlreadyStartedCheckbox.OnClick = () => { showStarted ^= true; RefreshServerList(); };
+				showAlreadyStartedCheckbox.IsChecked = () => gs.MPGameFilters.HasFlag(MPGameFilters.Started);
+				showAlreadyStartedCheckbox.OnClick = () => toggleFilterFlag(MPGameFilters.Started);
 			}
 
 			var showProtectedCheckbox = filtersPanel.GetOrNull<CheckboxWidget>("PASSWORD_PROTECTED");
 			if (showProtectedCheckbox != null)
 			{
-				showProtectedCheckbox.IsChecked = () => showProtected;
-				showProtectedCheckbox.OnClick = () => { showProtected ^= true; RefreshServerList(); };
+				showProtectedCheckbox.IsChecked = () => gs.MPGameFilters.HasFlag(MPGameFilters.Protected);
+				showProtectedCheckbox.OnClick = () => toggleFilterFlag(MPGameFilters.Protected);
 			}
 
 			var showIncompatibleCheckbox = filtersPanel.GetOrNull<CheckboxWidget>("INCOMPATIBLE_VERSION");
 			if (showIncompatibleCheckbox != null)
 			{
-				showIncompatibleCheckbox.IsChecked = () => showIncompatible;
-				showIncompatibleCheckbox.OnClick = () => { showIncompatible ^= true; RefreshServerList(); };
+				showIncompatibleCheckbox.IsChecked = () => gs.MPGameFilters.HasFlag(MPGameFilters.Incompatible);
+				showIncompatibleCheckbox.OnClick = () => toggleFilterFlag(MPGameFilters.Incompatible);
 			}
 
 			var filtersButton = widget.GetOrNull<DropDownButtonWidget>("FILTERS_DROPDOWNBUTTON");
@@ -310,7 +315,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				Game.RunAfterTick(() => RefreshServerListInner(games));
 			};
 
-			currentQuery = new Download(Game.Settings.Server.MasterServer + "games", _ => { }, onComplete);
+			var queryURL = Game.Settings.Server.MasterServer + "games?version={0}&mod={1}&modversion={2}".F(
+				Uri.EscapeUriString(ModMetadata.AllMods["modchooser"].Version),
+				Uri.EscapeUriString(Game.ModData.Manifest.Mod.Id),
+				Uri.EscapeUriString(Game.ModData.Manifest.Mod.Version));
+
+			currentQuery = new Download(queryURL, _ => { }, onComplete);
 		}
 
 		int GroupSortOrder(GameServer testEntry)
@@ -320,7 +330,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				return 0;
 
 			// Games for the current mod+version are sorted first
-			if (testEntry.ModId == Game.ModData.Manifest.Mod.Id)
+			if (testEntry.ModId == modData.Manifest.Mod.Id)
 				return 2;
 
 			// Followed by games for different mods that are joinable
@@ -330,7 +340,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		void SelectServer(GameServer server)
 		{
 			currentServer = server;
-			currentMap = server != null ? Game.ModData.MapCache[server.Map] : null;
+			currentMap = server != null ? modData.MapCache[server.Map] : null;
 		}
 
 		void RefreshServerListInner(IEnumerable<GameServer> games)
@@ -355,7 +365,22 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				header.Get<LabelWidget>("LABEL").GetText = () => headerTitle;
 				rows.Add(header);
 
-				foreach (var loop in modGames.OrderByDescending(g => g.IsJoinable).ThenByDescending(g => g.Players))
+				Func<GameServer, int> listOrder = g =>
+				{
+					// Servers waiting for players are always first
+					if (g.State == (int)ServerState.WaitingPlayers && g.Players > 0)
+						return 0;
+
+					// Then active games
+					if (g.State >= (int)ServerState.GameStarted)
+						return 1;
+
+					// Empty servers are shown at the end because a flood of empty servers
+					// at the top of the game list make the community look dead
+					return 2;
+				};
+
+				foreach (var loop in modGames.OrderBy(listOrder).ThenByDescending(g => g.Players))
 				{
 					var game = loop;
 					if (game == null || Filtered(game))
@@ -437,7 +462,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				// Search for any unknown maps
 				if (Game.Settings.Game.AllowDownloading)
-					Game.ModData.MapCache.QueryRemoteMapDetails(games.Where(g => !Filtered(g)).Select(g => g.Map));
+					modData.MapCache.QueryRemoteMapDetails(games.Where(g => !Filtered(g)).Select(g => g.Map));
 
 				foreach (var row in rows)
 					serverList.AddChild(row);
@@ -538,19 +563,20 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		bool Filtered(GameServer game)
 		{
-			if (game.State == (int)ServerState.GameStarted && !showStarted)
+			var filters = Game.Settings.Game.MPGameFilters;
+			if (game.State == (int)ServerState.GameStarted && !filters.HasFlag(MPGameFilters.Started))
 				return true;
 
-			if (game.State == (int)ServerState.WaitingPlayers && !showWaiting && game.Players != 0)
+			if (game.State == (int)ServerState.WaitingPlayers && !filters.HasFlag(MPGameFilters.Waiting) && game.Players != 0)
 				return true;
 
-			if (game.Players == 0 && !showEmpty)
+			if (game.Players == 0 && !filters.HasFlag(MPGameFilters.Empty))
 				return true;
 
-			if (!game.IsCompatible && !showIncompatible)
+			if (!game.IsCompatible && !filters.HasFlag(MPGameFilters.Incompatible))
 				return true;
 
-			if (game.Protected && !showProtected)
+			if (game.Protected && !filters.HasFlag(MPGameFilters.Protected))
 				return true;
 
 			return false;

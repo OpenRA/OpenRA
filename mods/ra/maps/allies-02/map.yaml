@@ -1,10 +1,8 @@
-MapFormat: 8
+MapFormat: 11
 
 RequiresMod: ra
 
 Title: 02:   Five to one
-
-Description: A critical supply convoy is due through this area in 10 minutes, but Soviet forces have blocked the road in several places.\n\nUnless you can clear them out, those supplies will never make it to the front.\n\nThe convoy will come from the northwest, and time is short so work quickly.
 
 Author: Westwood Studios
 
@@ -16,24 +14,9 @@ Bounds: 43,44,50,42
 
 Visibility: MissionSelector
 
-Type: Campaign
+Categories: Campaign
 
-Videos:
-	Briefing: ally2.vqa
-	GameStart: mcv.vqa
-	GameWon: montpass.vqa
-	GameLost: frozen.vqa
-
-Options:
-	Crates: False
-	Fog: True
-	Shroud: True
-	AllyBuildRadius: False
-	FragileAlliances: False
-	StartingCash: 5700
-	ConfigurableStartingUnits: False
-	Difficulties: Easy, Normal, Hard, Real tough guy
-	ShortGame: False
+LockPreview: True
 
 Players:
 	PlayerReference@USSR:
@@ -689,161 +672,6 @@ Actors:
 		Location: 89,51
 		Owner: Neutral
 
-Smudges:
-	cr1 60,79 0:
+Rules: ra|rules/campaign-rules.yaml, ra|rules/campaign-tooltips.yaml, rules.yaml
 
-Rules:
-	Player:
-		-ConquestVictoryConditions:
-		MissionObjectives:
-			EarlyGameOver: true
-		-EnemyWatcher:
-	World:
-		-CrateSpawner:
-		-SpawnMPUnits:
-		-MPStartLocations:
-		LuaScript:
-			Scripts: allies02.lua
-		ObjectivesPanel:
-			PanelName: MISSION_OBJECTIVES
-	^Vehicle:
-		Tooltip:
-			GenericVisibility: Enemy
-			ShowOwnerRow: false
-	^Tank:
-		Tooltip:
-			GenericVisibility: Enemy
-			ShowOwnerRow: false
-	^Infantry:
-		Tooltip:
-			GenericVisibility: Enemy
-			ShowOwnerRow: false
-	^Ship:
-		Tooltip:
-			GenericVisibility: Enemy
-			ShowOwnerRow: false
-	^Plane:
-		Tooltip:
-			GenericVisibility: Enemy
-			ShowOwnerRow: false
-	^Helicopter:
-		Tooltip:
-			GenericVisibility: Enemy
-			ShowOwnerRow: false
-	^Building:
-		Tooltip:
-			GenericVisibility: Enemy
-			ShowOwnerRow: false
-	^CivBuilding:
-		Tooltip:
-			ShowOwnerRow: false
-	^Wall:
-		Tooltip:
-			ShowOwnerRow: false
-	^Husk:
-		Tooltip:
-			GenericVisibility: Enemy, Ally, Neutral
-			GenericStancePrefix: false
-			ShowOwnerRow: false
-	HARV:
-		Buildable:
-			Prerequisites: weap
-	APWR:
-		Buildable:
-			Prerequisites: ~disabled
-	FIX:
-		Buildable:
-			Prerequisites: ~disabled
-	SYRD:
-		Buildable:
-			Prerequisites: ~disabled
-	WEAP:
-		Buildable:
-			Prerequisites: ~disabled
-	DOME:
-		Buildable:
-			Prerequisites: ~disabled
-	HPAD:
-		Buildable:
-			Prerequisites: ~disabled
-	ATEK:
-		Buildable:
-			Prerequisites: ~disabled
-	BRIK:
-		Buildable:
-			Prerequisites: ~disabled
-	HBOX:
-		Buildable:
-			Prerequisites: ~disabled
-	PBOX:
-		Buildable:
-			Prerequisites: ~disabled
-	GUN:
-		Buildable:
-			Prerequisites: ~disabled
-	AGUN:
-		Buildable:
-			Prerequisites: ~disabled
-	GAP:
-		Buildable:
-			Prerequisites: ~disabled
-	PDOX:
-		Buildable:
-			Prerequisites: ~disabled
-	MSLO:
-		Buildable:
-			Prerequisites: ~disabled
-	E6:
-		Buildable:
-			Prerequisites: ~disabled
-	SPY:
-		Buildable:
-			Prerequisites: ~disabled
-	MECH:
-		Buildable:
-			Prerequisites: ~disabled
-	E7:
-		Buildable:
-			Prerequisites: ~disabled
-	FACF:
-		Buildable:
-			Prerequisites: ~disabled
-	WEAF:
-		Buildable:
-			Prerequisites: ~disabled
-	SYRF:
-		Buildable:
-			Prerequisites: ~disabled
-	DOMF:
-		Buildable:
-			Prerequisites: ~disabled
-	ATEF:
-		Buildable:
-			Prerequisites: ~disabled
-	MSLF:
-		Buildable:
-			Prerequisites: ~disabled
-	PDOF:
-		Buildable:
-			Prerequisites: ~disabled
-
-Sequences:
-
-VoxelSequences:
-
-Weapons:
-	M60mg:
-		Range: 5c0
-		ReloadDelay: 20
-		Burst: 1
-		Warhead: SpreadDamage
-			Damage: 20
-			DamageTypes: Prone50Percent, TriggerProne, BulletDeath
-
-Voices:
-
-Music:
-
-Notifications:
-
-Translations:
+Weapons: weapons.yaml

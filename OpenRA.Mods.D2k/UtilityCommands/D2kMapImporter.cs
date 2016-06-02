@@ -1,10 +1,11 @@
 ﻿#region Copyright & License Information
 /*
- * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2016 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
- * as published by the Free Software Foundation. For more information,
- * see COPYING.
+ * as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version. For more
+ * information, see COPYING.
  */
 #endregion
 
@@ -262,6 +263,7 @@ namespace OpenRA.Mods.D2k.UtilityCommands
 		Size mapSize;
 		TileSet tileSet;
 		List<TerrainTemplateInfo> tileSetsFromYaml;
+		int playerCount;
 
 		D2kMapImporter(string filename, string tileset, Ruleset rules)
 		{
@@ -292,13 +294,12 @@ namespace OpenRA.Mods.D2k.UtilityCommands
 
 		public static Map Import(string filename, string mod, string tileset, Ruleset rules)
 		{
-			var map = new D2kMapImporter(filename, tileset, rules).map;
+			var importer = new D2kMapImporter(filename, tileset, rules);
+			var map = importer.map;
 			if (map == null)
 				return null;
 
 			map.RequiresMod = mod;
-			var players = new MapPlayers(map.Rules, map.SpawnPoints.Value.Length);
-			map.PlayerDefinitions = players.ToMiniYaml();
 
 			return map;
 		}
@@ -307,9 +308,9 @@ namespace OpenRA.Mods.D2k.UtilityCommands
 		{
 			mapSize = new Size(stream.ReadUInt16(), stream.ReadUInt16());
 
-			tileSet = rules.TileSets["ARRAKIS"];
+			tileSet = Game.ModData.DefaultTileSets["ARRAKIS"];
 
-			map = new Map(tileSet, mapSize.Width + 2 * MapCordonWidth, mapSize.Height + 2 * MapCordonWidth)
+			map = new Map(Game.ModData, tileSet, mapSize.Width + 2 * MapCordonWidth, mapSize.Height + 2 * MapCordonWidth)
 			{
 				Title = Path.GetFileNameWithoutExtension(mapFile),
 				Author = "Westwood Studios"
@@ -323,6 +324,9 @@ namespace OpenRA.Mods.D2k.UtilityCommands
 			// Each frame is a tile from the Dune 2000 tileset files, with the Frame ID being the index of the tile in the original file
 			tileSetsFromYaml = tileSet.Templates.Where(t => t.Value.Frames != null
 				&& t.Value.Images[0].ToLower() == tilesetName.ToLower()).Select(ts => ts.Value).ToList();
+
+			var players = new MapPlayers(map.Rules, playerCount);
+			map.PlayerDefinitions = players.ToMiniYaml();
 		}
 
 		void FillMap()
@@ -335,13 +339,13 @@ namespace OpenRA.Mods.D2k.UtilityCommands
 
 				var locationOnMap = GetCurrentTilePositionOnMap();
 
-				map.MapTiles.Value[locationOnMap] = tile;
+				map.Tiles[locationOnMap] = tile;
 
 				// Spice
 				if (tileSpecialInfo == 1)
-					map.MapResources.Value[locationOnMap] = new ResourceTile(1, 1);
+					map.Resources[locationOnMap] = new ResourceTile(1, 1);
 				if (tileSpecialInfo == 2)
-					map.MapResources.Value[locationOnMap] = new ResourceTile(1, 2);
+					map.Resources[locationOnMap] = new ResourceTile(1, 2);
 
 				// Actors
 				if (ActorDataByActorCode.ContainsKey(tileSpecialInfo))
@@ -355,7 +359,11 @@ namespace OpenRA.Mods.D2k.UtilityCommands
 						new LocationInit(locationOnMap),
 						new OwnerInit(kvp.Second)
 					};
+
 					map.ActorDefinitions.Add(new MiniYamlNode("Actor" + map.ActorDefinitions.Count, a.Save()));
+
+					if (kvp.First == "mpspawn")
+						playerCount++;
 				}
 			}
 		}

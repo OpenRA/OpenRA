@@ -348,7 +348,7 @@ InitTriggers = function()
 	end)
 
 	Trigger.AfterDelay(0, function()
-		local bridges = Map.ActorsInBox(Map.TopLeft, Map.BottomRight, function(self) return self.Type == "bridge1" or self.Type == "bridge2" end)
+		local bridges = Utils.Where(Map.ActorsInWorld, function(actor) return actor.Type == "bridge1" or actor.Type == "bridge2" end)
 		ExplodingBridge = bridges[1]
 
 		Trigger.OnAllKilled(bridges, function()

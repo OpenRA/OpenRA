@@ -1,0 +1,110 @@
+Player:
+	-ConquestVictoryConditions:
+
+World:
+	-CrateSpawner:
+	-SpawnMPUnits:
+	-MPStartLocations:
+	MusicPlaylist:
+		BackgroundMusic: intro
+	ResourceType@ore:
+		ValuePerUnit: 0
+	LuaScript:
+		Scripts: desert-shellmap.lua
+	ScriptUpgradesCache:
+		Upgrades: unkillable
+	-StartGameNotification:
+
+^Vehicle:
+	GivesBounty:
+		Percentage: 0
+	GainsExperience:
+		Upgrades:
+	DamageMultiplier@UNKILLABLE:
+		UpgradeTypes: unkillable
+		Modifier: 0, 0
+
+^Tank:
+	GivesBounty:
+		Percentage: 0
+	GainsExperience:
+		Upgrades:
+	DamageMultiplier@UNKILLABLE:
+		UpgradeTypes: unkillable
+		Modifier: 0, 0
+
+^Infantry:
+	GivesBounty:
+		Percentage: 0
+	GainsExperience:
+		Upgrades:
+	DeathSounds@NORMAL:
+		VolumeMultiplier: 0.1
+	DeathSounds@BURNED:
+		VolumeMultiplier: 0.1
+	DeathSounds@ZAPPED:
+		VolumeMultiplier: 0.1
+	DamageMultiplier@UNKILLABLE:
+		UpgradeTypes: unkillable
+		Modifier: 0, 0
+
+^Ship:
+	GivesBounty:
+		Percentage: 0
+	GainsExperience:
+		Upgrades:
+	DamageMultiplier@UNKILLABLE:
+		UpgradeTypes: unkillable
+		Modifier: 0, 0
+
+^Plane:
+	GivesBounty:
+		Percentage: 0
+	DamageMultiplier@UNKILLABLE:
+		UpgradeTypes: unkillable
+		Modifier: 0, 0
+
+^Building:
+	GivesBounty:
+		Percentage: 0
+	DamageMultiplier@UNKILLABLE:
+		UpgradeTypes: unkillable
+		Modifier: 0, 0
+
+OILB:
+	CashTrickler:
+		ShowTicks: false
+
+TRAN.Husk2:
+	Burns:
+		Damage: 0
+
+MISS:
+	DamageMultiplier@INVULNERABLE:
+		Modifier: 0
+
+APC:
+	Cargo:
+		InitialUnits: e1, e1, e2, e3, e4
+
+Ant:
+	Buildable:
+		Prerequisites: barr
+	Health:
+		HP: 200
+
+E7:
+	-AnnounceOnKill:
+
+powerproxy.paratroopers:
+	AlwaysVisible:
+	ParatroopersPower:
+		DisplayBeacon: false
+		DropItems: E1,E1,E2,E3,E4
+
+powerproxy.parazombies:
+	AlwaysVisible:
+	ParatroopersPower:
+		DropItems: ZOMBIE,ZOMBIE,ZOMBIE,ZOMBIE,ZOMBIE
+		QuantizedFacings: 8
+		DisplayBeacon: false

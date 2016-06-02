@@ -1,10 +1,11 @@
 ﻿#region Copyright & License Information
 /*
- * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2016 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
- * as published by the Free Software Foundation. For more information,
- * see COPYING.
+ * as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version. For more
+ * information, see COPYING.
  */
 #endregion
 
@@ -30,22 +31,22 @@ namespace OpenRA.Primitives
 			itemBoundsBins = Exts.MakeArray(rows * cols, _ => new Dictionary<T, Rectangle>());
 		}
 
-		void ValidateBounds(Rectangle bounds)
+		void ValidateBounds(T actor, Rectangle bounds)
 		{
-			if (bounds.Width <= 0 || bounds.Height <= 0)
-				throw new ArgumentException("bounds must be non-empty.", "bounds");
+			if (bounds.Width == 0 || bounds.Height == 0)
+				throw new ArgumentException("Bounds of actor {0} are empty.".F(actor), "bounds");
 		}
 
 		public void Add(T item, Rectangle bounds)
 		{
-			ValidateBounds(bounds);
+			ValidateBounds(item, bounds);
 			itemBounds.Add(item, bounds);
 			MutateBins(item, bounds, addItem);
 		}
 
 		public void Update(T item, Rectangle bounds)
 		{
-			ValidateBounds(bounds);
+			ValidateBounds(item, bounds);
 			MutateBins(item, itemBounds[item], removeItem);
 			MutateBins(item, itemBounds[item] = bounds, addItem);
 		}
@@ -68,10 +69,15 @@ namespace OpenRA.Primitives
 
 		void BoundsToBinRowsAndCols(Rectangle bounds, out int minRow, out int maxRow, out int minCol, out int maxCol)
 		{
-			minRow = Math.Max(0, bounds.Top / binSize);
-			minCol = Math.Max(0, bounds.Left / binSize);
-			maxRow = Math.Min(rows, Exts.IntegerDivisionRoundingAwayFromZero(bounds.Bottom, binSize));
-			maxCol = Math.Min(cols, Exts.IntegerDivisionRoundingAwayFromZero(bounds.Right, binSize));
+			var top = Math.Min(bounds.Top, bounds.Bottom);
+			var bottom = Math.Max(bounds.Top, bounds.Bottom);
+			var left = Math.Min(bounds.Left, bounds.Right);
+			var right = Math.Max(bounds.Left, bounds.Right);
+
+			minRow = Math.Max(0, top / binSize);
+			minCol = Math.Max(0, left / binSize);
+			maxRow = Math.Min(rows, Exts.IntegerDivisionRoundingAwayFromZero(bottom, binSize));
+			maxCol = Math.Min(cols, Exts.IntegerDivisionRoundingAwayFromZero(right, binSize));
 		}
 
 		void MutateBins(T actor, Rectangle bounds, Action<Dictionary<T, Rectangle>, T, Rectangle> action)

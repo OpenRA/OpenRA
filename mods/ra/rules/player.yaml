@@ -3,36 +3,36 @@ Player:
 	TechTree:
 	ClassicProductionQueue@Building:
 		Type: Building
-		BuildSpeed: .4
+		BuildSpeed: 40
 		LowPowerSlowdown: 3
 		QueuedAudio: Building
 		ReadyAudio: ConstructionComplete
 		SpeedUp: True
 	ClassicProductionQueue@Defense:
 		Type: Defense
-		BuildSpeed: .4
+		BuildSpeed: 40
 		LowPowerSlowdown: 3
 		QueuedAudio: Building
 		ReadyAudio: ConstructionComplete
 		SpeedUp: True
 	ClassicProductionQueue@Vehicle:
 		Type: Vehicle
-		BuildSpeed: .4
+		BuildSpeed: 40
 		LowPowerSlowdown: 3
 		SpeedUp: True
 	ClassicProductionQueue@Infantry:
 		Type: Infantry
-		BuildSpeed: .4
+		BuildSpeed: 40
 		LowPowerSlowdown: 3
 		SpeedUp: True
 	ClassicProductionQueue@Ship:
 		Type: Ship
-		BuildSpeed: .4
+		BuildSpeed: 40
 		LowPowerSlowdown: 3
 		SpeedUp: True
 	ClassicProductionQueue@Aircraft:
 		Type: Aircraft
-		BuildSpeed: .4
+		BuildSpeed: 40
 		LowPowerSlowdown: 3
 		SpeedUp: True
 	PlaceBuilding:
@@ -43,6 +43,7 @@ Player:
 	PowerManager:
 	AllyRepair:
 	PlayerResources:
+		InsufficientFundsNotification: InsufficientFunds
 	ActorGroupProxy:
 	DeveloperMode:
 	GpsWatcher:

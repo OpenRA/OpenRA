@@ -113,7 +113,17 @@ elseif ($command -eq "version")
 		{
 			$replacement = (gc $mod) -Replace "Version:.*", ("Version: {0}" -f $version)
 			sc $mod $replacement
-			$replacement = (gc $mod) -Replace "modchooser:.*", ("modchooser: {0}" -f $version)
+
+			# The tab is a workaround for not replacing inside of "Packages:"
+			$replacement = (gc $mod) -Replace "	modchooser:.*", ("	modchooser: {0}" -f $version)
+			sc $mod $replacement
+
+			$prefix = $(gc $mod) | Where { $_.ToString().EndsWith(": User") }
+			if ($prefix -and $prefix.LastIndexOf("/") -ne -1)
+			{
+				$prefix = $prefix.Substring(0, $prefix.LastIndexOf("/"))
+			}
+			$replacement = (gc $mod) -Replace ".*: User", ("{0}/{1}: User" -f $prefix, $version)
 			sc $mod $replacement
 		}
 		echo ("Version strings set to '{0}'." -f $version)
@@ -154,8 +164,6 @@ elseif ($command -eq "check")
 	{
 		echo "Checking for code style violations in OpenRA.Platforms.Default..."
 		./OpenRA.Utility.exe cnc --check-code-style OpenRA.Platforms.Default
-		echo "Checking for code style violations in OpenRA.Platforms.Null..."
-		./OpenRA.Utility.exe ra --check-code-style OpenRA.Platforms.Null
 		echo "Checking for code style violations in OpenRA.GameMonitor..."
 		./OpenRA.Utility.exe ra --check-code-style OpenRA.GameMonitor
 		echo "Checking for code style violations in OpenRA.Game..."

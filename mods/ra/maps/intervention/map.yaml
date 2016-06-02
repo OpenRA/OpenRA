@@ -1,10 +1,8 @@
-MapFormat: 8
+MapFormat: 11
 
 RequiresMod: ra
 
 Title: Intervention!
-
-Description: The Soviet Air Force is flying air raids against a civilian village.\n\nWe have to do everything in our power to stop them!\n\nYour job is to establish a base on the mainland ASAP. We can prevent the village's destruction by capturing the enemy's Air Force Headquarters building. The enemy base is heavily guarded, though.  You will not have enough time to build a force big enough to overpower the Soviet defences. You will have to find a way to sneak in!\n\nGood luck, Commander!\n
 
 Author: Antares79
 
@@ -16,20 +14,9 @@ Bounds: 16,16,128,128
 
 Visibility: MissionSelector
 
-Type: Mission
+Categories: Mission
 
-Videos:
-
-Options:
-	Crates: False
-	Fog: True
-	Shroud: True
-	AllyBuildRadius: False
-	FragileAlliances: False
-	StartingCash: 2000
-	ConfigurableStartingUnits: False
-	Difficulties: Medium, Hard
-	ShortGame: False
+LockPreview: True
 
 Players:
 	PlayerReference@Neutral:
@@ -2212,212 +2199,6 @@ Actors:
 		Location: 129,57
 		Owner: Soviets
 
-Smudges:
+Rules: ra|rules/campaign-rules.yaml, ra|rules/campaign-tooltips.yaml, rules.yaml
 
-Rules:
-	Player:
-		-ConquestVictoryConditions:
-		MissionObjectives:
-			EarlyGameOver: true
-		-EnemyWatcher:
-	World:
-		-CrateSpawner:
-		-SpawnMPUnits:
-		-MPStartLocations:
-		LuaScript:
-			Scripts: intervention.lua
-		ObjectivesPanel:
-			PanelName: MISSION_OBJECTIVES
-	CAMERA:
-		RevealsShroud:
-			Range: 18c0
-	MISS:
-		Tooltip:
-			Name: Soviet Air Force HQ
-		Capturable:
-			Type: building
-			AllowAllies: False
-			AllowNeutral: False
-			AllowEnemies: True
-			CaptureThreshold: 1.0
-	E6.MOD:
-		Inherits: E6
-		Buildable:
-			Prerequisites: ~barracks
-		Captures:
-			CaptureTypes: building
-			Sabotage: False
-		RenderSprites:
-			Image: e6
-	E6:
-		Buildable:
-			Prerequisites: ~disabled
-	TENT:
-		Buildable:
-			Prerequisites: anypower, ~structures.allies, ~techlevel.infonly, mainland
-	DOME:
-		Buildable:
-			Prerequisites: proc, ~techlevel.medium, mainland
-	WEAP:
-		Buildable:
-			Prerequisites: proc, ~techlevel.low, mainland
-		ProvidesPrerequisite:
-			Prerequisite: givefix
-	MAINLAND:
-		AlwaysVisible:
-		Tooltip:
-			Name: Reach the mainland
-		ProvidesPrerequisite:
-			Prerequisite: mainland
-	HPAD:
-		ProvidesPrerequisite:
-			Prerequisite: givefix
-	FIX:
-		Buildable:
-			Prerequisites: givefix
-	GIVEFIX:
-		AlwaysVisible:
-		Tooltip:
-			Name: Weapons Factory or Helipad
-	MIG:
-		Buildable:
-			Prerequisites: ~afld
-		AmmoPool:
-			Ammo: 2
-	HELI:
-		Buildable:
-			Prerequisites: ~hpad
-		Valued:
-			Cost: 1500
-	SAM:
-		RevealsShroud:
-			Range: 7c0
-		Power:
-			Amount: -5
-	TSLA:
-		Power:
-			Amount: -50
-	^Building:
-		Tooltip:
-			GenericVisibility: Enemy
-			ShowOwnerRow: false
-	^Vehicle:
-		Tooltip:
-			GenericVisibility: Enemy
-			ShowOwnerRow: false
-	^Tank:
-		Tooltip:
-			GenericVisibility: Enemy
-			ShowOwnerRow: false
-	^Infantry:
-		Tooltip:
-			GenericVisibility: Enemy
-			ShowOwnerRow: false
-	^Plane:
-		Tooltip:
-			GenericVisibility: Enemy
-			ShowOwnerRow: false
-	^Ship:
-		Tooltip:
-			GenericVisibility: Enemy
-			ShowOwnerRow: false
-	^Wall:
-		Tooltip:
-			ShowOwnerRow: false
-	^Husk:
-		Tooltip:
-			GenericVisibility: Enemy, Ally, Neutral
-			GenericStancePrefix: false
-			ShowOwnerRow: false
-	ATEK:
-		Buildable:
-			Prerequisites: ~disabled
-	STEK:
-		Buildable:
-			Prerequisites: ~disabled
-	GAP:
-		Buildable:
-			Prerequisites: ~disabled
-	MSLO:
-		Buildable:
-			Prerequisites: ~disabled
-	PDOX:
-		Buildable:
-			Prerequisites: ~disabled
-	E4:
-		Buildable:
-			Prerequisites: ~disabled
-	E7:
-		Buildable:
-			Prerequisites: ~disabled
-	THF:
-		Buildable:
-			Prerequisites: ~disabled
-	HIJACKER:
-		Buildable:
-			Prerequisites: ~disabled
-	SHOK:
-		Buildable:
-			Prerequisites: ~disabled
-	SNIPER:
-		Buildable:
-			Prerequisites: ~disabled
-	2TNK:
-		Buildable:
-			Prerequisites: ~disabled
-	ARTY:
-		Buildable:
-			Prerequisites: ~disabled
-	CTNK:
-		Buildable:
-			Prerequisites: ~disabled
-	MGG:
-		Buildable:
-			Prerequisites: ~disabled
-	MNLY.AT:
-		Buildable:
-			Prerequisites: ~disabled
-	MNLY.AP:
-		Buildable:
-			Prerequisites: ~disabled
-	MRJ:
-		Buildable:
-			Prerequisites: ~disabled
-	TRUK:
-		Buildable:
-			Prerequisites: ~disabled
-	HIND:
-		Buildable:
-			Prerequisites: ~disabled
-	YAK:
-		Buildable:
-			Prerequisites: ~disabled
-	CA:
-		Buildable:
-			Prerequisites: ~disabled
-	DD:
-		Buildable:
-			Prerequisites: ~disabled
-	STNK:
-		Buildable:
-			Prerequisites: ~disabled
-
-Sequences:
-
-VoxelSequences:
-
-Weapons:
-	Nike:
-		Range: 9c0
-	Maverick:
-		Warhead@1Dam: SpreadDamage
-			Damage: 175
-			DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
-
-Voices:
-
-Music:
-
-Notifications:
-
-Translations:
+Weapons: weapons.yaml

@@ -1,10 +1,11 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2016 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
- * as published by the Free Software Foundation. For more information,
- * see COPYING.
+ * as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version. For more
+ * information, see COPYING.
  */
 #endregion
 
@@ -12,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Text;
 using OpenAL;
 
 namespace OpenRA.Platforms.Default
@@ -55,18 +57,18 @@ namespace OpenRA.Platforms.Default
 
 			var devices = new List<string>();
 			var next = ALC10.alcGetString(IntPtr.Zero, type);
-			do
-			{
-				var str = Marshal.PtrToStringAnsi(next);
-				next += str.Length + 1;
-				devices.Add(str);
-			} while (Marshal.ReadByte(next) != 0);
-
-			if (AL10.alGetError() != AL10.AL_NO_ERROR)
+			if (next == IntPtr.Zero || AL10.alGetError() != AL10.AL_NO_ERROR)
 			{
 				Log.Write("sound", "Failed to query OpenAL device list using {0}", label);
 				return new string[] { };
 			}
+
+			do
+			{
+				var str = Marshal.PtrToStringAuto(next);
+				next += UnicodeEncoding.Default.GetByteCount(str) + 1;
+				devices.Add(str);
+			} while (Marshal.ReadByte(next) != 0);
 
 			return devices.ToArray();
 		}

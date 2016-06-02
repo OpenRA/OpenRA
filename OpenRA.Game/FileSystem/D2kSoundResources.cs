@@ -1,10 +1,11 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2016 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
- * as published by the Free Software Foundation. For more information,
- * see COPYING.
+ * as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version. For more
+ * information, see COPYING.
  */
 #endregion
 
@@ -28,16 +29,15 @@ namespace OpenRA.FileSystem
 			}
 		}
 
-		readonly Stream s;
+		public string Name { get; private set; }
+		public IEnumerable<string> Contents { get { return index.Keys; } }
 
-		readonly string filename;
-		readonly int priority;
+		readonly Stream s;
 		readonly Dictionary<string, Entry> index = new Dictionary<string, Entry>();
 
-		public D2kSoundResources(FileSystem context, string filename, int priority)
+		public D2kSoundResources(FileSystem context, string filename)
 		{
-			this.filename = filename;
-			this.priority = priority;
+			Name = filename;
 
 			s = context.Open(filename);
 			try
@@ -58,7 +58,7 @@ namespace OpenRA.FileSystem
 			}
 		}
 
-		public Stream GetContent(string filename)
+		public Stream GetStream(string filename)
 		{
 			Entry e;
 			if (!index.TryGetValue(filename, out e))
@@ -68,19 +68,10 @@ namespace OpenRA.FileSystem
 			return new MemoryStream(s.ReadBytes((int)e.Length));
 		}
 
-		public bool Exists(string filename)
+		public bool Contains(string filename)
 		{
 			return index.ContainsKey(filename);
 		}
-
-		public IEnumerable<string> AllFileNames()
-		{
-			return index.Keys;
-		}
-
-		public string Name { get { return filename; } }
-
-		public int Priority { get { return 1000 + priority; } }
 
 		public void Dispose()
 		{

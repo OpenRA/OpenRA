@@ -1,10 +1,11 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2016 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
- * as published by the Free Software Foundation. For more information,
- * see COPYING.
+ * as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version. For more
+ * information, see COPYING.
  */
 #endregion
 
@@ -19,6 +20,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public class InstallFromCDLogic : ChromeLogic
 	{
+		readonly ModData modData;
 		readonly string modId;
 		readonly Widget panel;
 		readonly ProgressBarWidget progressBar;
@@ -29,8 +31,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly ContentInstaller installData;
 
 		[ObjectCreator.UseCtor]
-		public InstallFromCDLogic(Widget widget, Action afterInstall, string modId)
+		public InstallFromCDLogic(Widget widget, ModData modData, Action afterInstall, string modId)
 		{
+			this.modData = modData;
 			this.modId = modId;
 			installData = ModMetadata.AllMods[modId].Content;
 			this.afterInstall = afterInstall;
@@ -94,7 +97,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			new Thread(() =>
 			{
-				using (var cabExtractor = new InstallShieldCABExtractor(Game.ModData.ModFiles, source))
+				using (var cabExtractor = new InstallShieldCABExtractor(modData.ModFiles, source))
 				{
 					var denom = installData.InstallShieldCABFileIds.Count;
 					var extractFiles = installData.ExtractFilesFromCD;
@@ -131,7 +134,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						statusLabel.GetText = () => "Extracting {0}".F(filename);
 						var destFile = Platform.ResolvePath("^", "Content", modId, filename.ToLowerInvariant());
 						cabExtractor.ExtractFile(uint.Parse(archive[0]), destFile);
-						InstallUtils.ExtractFromPackage(source, destFile, extractFiles, destDir, overwrite, installData.OutputFilenameCase, onProgress, onError);
+						InstallUtils.ExtractFromPackage(modData.ModFiles, source, destFile, extractFiles, destDir, overwrite, installData.OutputFilenameCase, onProgress, onError);
 						progressBar.Percentage += installPercent;
 					}
 				}
@@ -150,7 +153,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			retryButton.IsDisabled = () => true;
 			insertDiskContainer.IsVisible = () => false;
 			installingContainer.IsVisible = () => true;
-
 			var dest = Platform.ResolvePath("^", "Content", modId);
 			var copyFiles = installData.CopyFilesFromCD;
 
@@ -189,7 +191,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 					if (!string.IsNullOrEmpty(extractPackage))
 					{
-						if (!InstallUtils.ExtractFromPackage(source, extractPackage, extractFiles, dest,
+						if (!InstallUtils.ExtractFromPackage(modData.ModFiles, source, extractPackage, extractFiles, dest,
 							overwrite, installData.OutputFilenameCase, onProgress, onError))
 						{
 							onError("Extracting files from CD failed.");

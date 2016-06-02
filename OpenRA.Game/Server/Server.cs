@@ -1,10 +1,11 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2016 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
- * as published by the Free Software Foundation. For more information,
- * see COPYING.
+ * as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version. For more
+ * information, see COPYING.
  */
 #endregion
 
@@ -37,6 +38,7 @@ namespace OpenRA.Server
 		public readonly IPAddress Ip;
 		public readonly int Port;
 		public readonly MersenneTwister Random = new MersenneTwister();
+		public readonly bool Dedicated;
 
 		// Valid player connections
 		public List<Connection> Conns = new List<Connection>();
@@ -50,8 +52,7 @@ namespace OpenRA.Server
 		public List<string> TempBans = new List<string>();
 
 		// Managed by LobbyCommands
-		public Map Map;
-		public MapPlayers MapPlayers;
+		public MapPreview Map;
 
 		readonly int randomSeed;
 		readonly TcpListener listener;
@@ -117,7 +118,7 @@ namespace OpenRA.Server
 				t.GameEnded(this);
 		}
 
-		public Server(IPEndPoint endpoint, ServerSettings settings, ModData modData)
+		public Server(IPEndPoint endpoint, ServerSettings settings, ModData modData, bool dedicated)
 		{
 			Log.AddChannel("server", "server.log");
 
@@ -126,7 +127,7 @@ namespace OpenRA.Server
 			var localEndpoint = (IPEndPoint)listener.LocalEndpoint;
 			Ip = localEndpoint.Address;
 			Port = localEndpoint.Port;
-
+			Dedicated = dedicated;
 			Settings = settings;
 
 			Settings.Name = OpenRA.Settings.SanitizedServerName(Settings.Name);
@@ -148,20 +149,19 @@ namespace OpenRA.Server
 					RandomSeed = randomSeed,
 					Map = settings.Map,
 					ServerName = settings.Name,
-					Dedicated = settings.Dedicated
+					Dedicated = dedicated,
+					DisableSingleplayer = settings.DisableSinglePlayer,
 				}
 			};
 
-			FieldLoader.Load(LobbyInfo.GlobalSettings, modData.Manifest.LobbyDefaults);
-
-			foreach (var t in serverTraits.WithInterface<INotifyServerStart>())
-				t.ServerStarted(this);
-
-			Log.Write("server", "Initial mod: {0}", ModData.Manifest.Mod.Id);
-			Log.Write("server", "Initial map: {0}", LobbyInfo.GlobalSettings.Map);
-
 			new Thread(_ =>
 			{
+				foreach (var t in serverTraits.WithInterface<INotifyServerStart>())
+					t.ServerStarted(this);
+
+				Log.Write("server", "Initial mod: {0}", ModData.Manifest.Mod.Id);
+				Log.Write("server", "Initial map: {0}", LobbyInfo.GlobalSettings.Map);
+
 				var timeout = serverTraits.WithInterface<ITick>().Min(t => t.TickTimeout);
 				for (;;)
 				{
@@ -323,7 +323,7 @@ namespace OpenRA.Server
 				}
 
 				if (client.Slot != null)
-					SyncClientToPlayerReference(client, MapPlayers.Players[client.Slot]);
+					SyncClientToPlayerReference(client, Map.Players.Players[client.Slot]);
 				else
 					client.Color = HSLColor.FromRGB(255, 255, 255);
 
@@ -375,13 +375,13 @@ namespace OpenRA.Server
 				Log.Write("server", "{0} ({1}) has joined the game.",
 					client.Name, newConn.Socket.RemoteEndPoint);
 
-				if (!LobbyInfo.IsSinglePlayer)
+				if (Dedicated || !LobbyInfo.IsSinglePlayer)
 					SendMessage("{0} has joined the game.".F(client.Name));
 
 				// Send initial ping
 				SendOrderTo(newConn, "Ping", Game.RunTime.ToString(CultureInfo.InvariantCulture));
 
-				if (Settings.Dedicated)
+				if (Dedicated)
 				{
 					var motdFile = Platform.ResolvePath("^", "motd.txt");
 					if (!File.Exists(motdFile))
@@ -392,12 +392,12 @@ namespace OpenRA.Server
 						SendOrderTo(newConn, "Message", motd);
 				}
 
-				if (Map.RuleDefinitions.Any() && !LobbyInfo.IsSinglePlayer)
+				if (!LobbyInfo.IsSinglePlayer && Map.DefinesUnsafeCustomRules)
 					SendOrderTo(newConn, "Message", "This map contains custom rules. Game experience may change.");
 
-				if (Settings.LockBots)
-					SendOrderTo(newConn, "Message", "Bots have been disabled on this server.");
-				else if (MapPlayers.Players.Where(p => p.Value.Playable).All(p => !p.Value.AllowBots))
+				if (Settings.DisableSinglePlayer)
+					SendOrderTo(newConn, "Message", "Singleplayer games have been disabled on this server.");
+				else if (Map.Players.Players.Where(p => p.Value.Playable).All(p => !p.Value.AllowBots))
 					SendOrderTo(newConn, "Message", "Bots have been disabled on this map.");
 
 				if (handshake.Mod == "{DEV_VERSION}")
@@ -419,7 +419,7 @@ namespace OpenRA.Server
 			int latency = 1;
 			if (!LobbyInfo.IsSinglePlayer)
 			{
-				var gameSpeeds = Game.ModData.Manifest.Get<GameSpeeds>();
+				var gameSpeeds = ModData.Manifest.Get<GameSpeeds>();
 				GameSpeed speed;
 				if (gameSpeeds.Speeds.TryGetValue(LobbyInfo.GlobalSettings.GameSpeedType, out speed))
 					latency = speed.OrderLatency;
@@ -491,7 +491,7 @@ namespace OpenRA.Server
 		{
 			DispatchOrdersToClients(null, 0, new ServerOrder("Message", text).Serialize());
 
-			if (Settings.Dedicated)
+			if (Dedicated)
 				Console.WriteLine("[{0}] {1}".F(DateTime.Now.ToString(Settings.TimestampFormat), text));
 		}
 
@@ -588,7 +588,7 @@ namespace OpenRA.Server
 
 				// Client was the server admin
 				// TODO: Reassign admin for game in progress via an order
-				if (LobbyInfo.GlobalSettings.Dedicated && dropClient.IsAdmin && State == ServerState.WaitingPlayers)
+				if (Dedicated && dropClient.IsAdmin && State == ServerState.WaitingPlayers)
 				{
 					// Remove any bots controlled by the admin
 					LobbyInfo.Clients.RemoveAll(c => c.Bot != null && c.BotControllerClientIndex == toDrop.PlayerIndex);
@@ -606,15 +606,12 @@ namespace OpenRA.Server
 				DispatchOrders(toDrop, frame, new byte[] { 0xbf });
 
 				if (!Conns.Any())
-				{
-					FieldLoader.Load(LobbyInfo.GlobalSettings, ModData.Manifest.LobbyDefaults);
 					TempBans.Clear();
-				}
 
-				if (Conns.Any() || LobbyInfo.GlobalSettings.Dedicated)
+				if (Conns.Any() || Dedicated)
 					SyncLobbyClients();
 
-				if (!LobbyInfo.GlobalSettings.Dedicated && dropClient.IsAdmin)
+				if (!Dedicated && dropClient.IsAdmin)
 					Shutdown();
 			}
 
@@ -692,7 +689,7 @@ namespace OpenRA.Server
 		{
 			listener.Stop();
 
-			Console.WriteLine("Game started");
+			Console.WriteLine("[{0}] Game started", DateTime.Now.ToString(Settings.TimestampFormat));
 
 			// Drop any unvalidated clients
 			foreach (var c in PreConns.ToArray())

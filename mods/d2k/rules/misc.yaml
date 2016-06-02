@@ -8,15 +8,15 @@ crate:
 	GiveCashCrateAction@1:
 		Amount: 750
 		SelectionShares: 25
-		UseCashTick: yes
+		UseCashTick: true
 	GiveCashCrateAction@2:
 		Amount: 1000
 		SelectionShares: 50
-		UseCashTick: yes
+		UseCashTick: true
 	GiveCashCrateAction@3:
 		Amount: 1500
 		SelectionShares: 25
-		UseCashTick: yes
+		UseCashTick: true
 	ExplodeCrateAction@1:
 		Weapon: CrateExplosion
 		SelectionShares: 5

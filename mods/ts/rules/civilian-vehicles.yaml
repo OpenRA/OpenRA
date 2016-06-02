@@ -6,7 +6,7 @@
 		Name: Mammoth Tank
 	Mobile:
 		Speed: 56
-		ROT: 5
+		TurnSpeed: 5
 		Crushes: wall, crate, infantry
 	Health:
 		HP: 600
@@ -15,7 +15,7 @@
 	RevealsShroud:
 		Range: 6c0
 	Turreted:
-		ROT: 3
+		TurnSpeed: 3
 	Armament@PRIMARY:
 		Weapon: 120mmx
 		LocalOffset: 500,60,360, 500,-85,360
@@ -27,8 +27,8 @@
 		Voice: Attack
 	AutoTarget:
 	SelfHealing:
-		Ticks: 10
-		HealIfBelow: 50%
+		Delay: 10
+		HealIfBelow: 50
 		DamageCooldown: 200
 	WithVoxelTurret:
 	WithVoxelBarrel:
@@ -67,7 +67,7 @@ ICBM:
 		Type: Light
 	Mobile:
 		Speed: 85
-		ROT: 5
+		TurnSpeed: 5
 	RevealsShroud:
 		Range: 7c0
 	Transforms:
@@ -85,7 +85,7 @@ BUS:
 	Tooltip:
 		Name: School Bus
 	Mobile:
-		ROT: 5
+		TurnSpeed: 5
 		Speed: 113
 	Health:
 		HP: 100
@@ -108,7 +108,7 @@ PICK:
 	Tooltip:
 		Name: Pickup
 	Mobile:
-		ROT: 5
+		TurnSpeed: 5
 		Speed: 113
 	Health:
 		HP: 100
@@ -131,7 +131,7 @@ CAR:
 	Tooltip:
 		Name: Automobile
 	Mobile:
-		ROT: 5
+		TurnSpeed: 5
 		Speed: 113
 	Health:
 		HP: 100
@@ -154,7 +154,7 @@ WINI:
 	Tooltip:
 		Name: Recreational Vehicle
 	Mobile:
-		ROT: 5
+		TurnSpeed: 5
 		Speed: 113
 	Health:
 		HP: 200

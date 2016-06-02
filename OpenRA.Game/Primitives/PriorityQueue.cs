@@ -1,10 +1,11 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2016 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
- * as published by the Free Software Foundation. For more information,
- * see COPYING.
+ * as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version. For more
+ * information, see COPYING.
  */
 #endregion
 
@@ -75,17 +76,19 @@ namespace OpenRA.Primitives
 			return At(lastLevel, lastIndex);
 		}
 
-		public T Peek() { return At(0, 0); }
+		public T Peek()
+		{
+			if (level <= 0 && index <= 0)
+				throw new InvalidOperationException("PriorityQueue empty.");
+			return At(0, 0);
+		}
+
 		public T Pop()
 		{
-			if (level == 0 && index == 0)
-				throw new InvalidOperationException("Attempting to pop empty PriorityQueue");
-
-			var ret = At(0, 0);
+			var ret = Peek();
 			BubbleInto(0, 0, Last());
 			if (--index < 0)
 				index = (1 << --level) - 1;
-
 			return ret;
 		}
 

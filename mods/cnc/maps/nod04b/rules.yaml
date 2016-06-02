@@ -1,0 +1,27 @@
+World:
+	LuaScript:
+		Scripts: nod04b.lua
+	MusicPlaylist:
+		StartingMusic: warfare
+		VictoryMusic: nod_win1
+	MissionData:
+		Briefing: A small village friendly to our cause has been increasingly harassed by GDI, and the Brotherhood wishes you to assist them in their efforts.\n\nSeek out the enemy village and destroy it. The event will be disguised as a GDI attack.
+		BriefingVideo: nod4b.vqa
+		LossVideo: nodlose.vqa
+
+Player:
+	EnemyWatcher:
+	PlayerResources:
+		DefaultCash: 0
+
+^Vehicle:
+	AnnounceOnSeen:
+
+^Tank:
+	AnnounceOnSeen:
+
+TRAN:
+	RejectsOrders:
+	-Selectable:
+	RevealsShroud:
+		Range: 5c0

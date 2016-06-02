@@ -1,10 +1,11 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2016 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
- * as published by the Free Software Foundation. For more information,
- * see COPYING.
+ * as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version. For more
+ * information, see COPYING.
  */
 #endregion
 
@@ -87,7 +88,7 @@ namespace OpenRA.Mods.Common.Widgets
 			foreach (var cell in world.Map.AllCells)
 				UpdateTerrainCell(cell);
 
-			world.Map.MapTiles.Value.CellEntryChanged += UpdateTerrainCell;
+			world.Map.Tiles.CellEntryChanged += UpdateTerrainCell;
 			world.Map.CustomTerrain.CellEntryChanged += UpdateTerrainCell;
 		}
 
@@ -139,12 +140,12 @@ namespace OpenRA.Mods.Common.Widgets
 			int leftColor, rightColor;
 			if (custom == byte.MaxValue)
 			{
-				var type = world.TileSet.GetTileInfo(world.Map.MapTiles.Value[uv]);
+				var type = world.Map.Rules.TileSet.GetTileInfo(world.Map.Tiles[uv]);
 				leftColor = type != null ? type.LeftColor.ToArgb() : Color.Black.ToArgb();
 				rightColor = type != null ? type.RightColor.ToArgb() : Color.Black.ToArgb();
 			}
 			else
-				leftColor = rightColor = world.TileSet[custom].Color.ToArgb();
+				leftColor = rightColor = world.Map.Rules.TileSet[custom].Color.ToArgb();
 
 			var stride = radarSheet.Size.Width;
 
@@ -443,7 +444,7 @@ namespace OpenRA.Mods.Common.Widgets
 		public override void Removed()
 		{
 			base.Removed();
-			world.Map.MapTiles.Value.CellEntryChanged -= UpdateTerrainCell;
+			world.Map.Tiles.CellEntryChanged -= UpdateTerrainCell;
 			world.Map.CustomTerrain.CellEntryChanged -= UpdateTerrainCell;
 			Dispose();
 		}

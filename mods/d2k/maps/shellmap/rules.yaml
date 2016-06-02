@@ -1,0 +1,15 @@
+World:
+	-CrateSpawner:
+	-SpawnMPUnits:
+	-MPStartLocations:
+	ResourceType@Spice:
+		ValuePerUnit: 0
+	WormManager:
+		Minimum: 1
+		Maximum: 1
+	MusicPlaylist:
+		BackgroundMusic: options
+
+large_gun_turret:
+	Power:
+		Amount: 300

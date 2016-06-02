@@ -1,10 +1,11 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2016 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
- * as published by the Free Software Foundation. For more information,
- * see COPYING.
+ * as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version. For more
+ * information, see COPYING.
  */
 #endregion
 
@@ -13,6 +14,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Mods.Common.Traits.Render;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Lint
@@ -25,17 +27,17 @@ namespace OpenRA.Mods.Common.Lint
 
 		public void Run(Action<string> emitError, Action<string> emitWarning, Map map)
 		{
-			if (map != null && !map.SequenceDefinitions.Any())
+			if (map.SequenceDefinitions == null)
 				return;
 
+			var modData = Game.ModData;
 			this.emitError = emitError;
 
-			var sequenceSource = map != null ? map.SequenceDefinitions : new List<MiniYamlNode>();
-			sequenceDefinitions = MiniYaml.Merge(Game.ModData.Manifest.Sequences.Select(MiniYaml.FromFile).Append(sequenceSource));
+			sequenceDefinitions = MiniYaml.Load(map, modData.Manifest.Sequences, map.SequenceDefinitions);
 
-			var rules = map == null ? Game.ModData.DefaultRules : map.Rules;
+			var rules = map.Rules;
 			var factions = rules.Actors["world"].TraitInfos<FactionInfo>().Select(f => f.InternalName).ToArray();
-			var sequenceProviders = map == null ? rules.Sequences.Values : new[] { rules.Sequences[map.Tileset] };
+			var sequenceProviders = new[] { rules.Sequences };
 
 			foreach (var actorInfo in rules.Actors)
 			{

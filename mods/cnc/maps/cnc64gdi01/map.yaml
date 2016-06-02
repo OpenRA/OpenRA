@@ -1,10 +1,8 @@
-MapFormat: 8
+MapFormat: 11
 
 RequiresMod: cnc
 
 Title: C&C64 Special Ops - GDI 1
-
-Description: Nod is experimenting on civilians with Tiberium. Use the commando to take out the SAM sites surrounding the dropoff area. With the SAMs gone you will then get an airstrike.  Take out the Obelisk and an MCV will be delivered to help you to locate and destroy the biochem facility.
 
 Author: Westwood Studios
 
@@ -16,23 +14,9 @@ Bounds: 2,9,48,53
 
 Visibility: MissionSelector
 
-Type: Campaign
+Categories: Campaign
 
-Videos:
-	GameStart: obel.vqa
-	GameWon: orcabomb.vqa
-	GameLost: cutout.vqa
-
-Options:
-	Crates: False
-	Creeps: False
-	Fog: True
-	Shroud: True
-	AllyBuildRadius: False
-	FragileAlliances: False
-	StartingCash: 10000
-	ConfigurableStartingUnits: False
-	ShortGame: False
+LockPreview: True
 
 Players:
 	PlayerReference@Nod:
@@ -728,160 +712,6 @@ Actors:
 		Owner: Nod
 		Location: 26,14
 
-Smudges:
+Rules: cnc|rules/campaign-maprules.yaml, cnc|rules/campaign-tooltips.yaml, cnc|rules/campaign-palettes.yaml, rules.yaml
 
-Rules:
-	^Palettes:
-		-PlayerColorPalette:
-		IndexedPlayerPalette:
-			BasePalette: terrain
-			RemapIndex: 176, 177, 178, 179, 180, 181, 182, 183, 184, 185, 186, 187, 188, 189, 190, 191
-			PlayerIndex:
-				GDI: 176, 177, 178, 179, 180, 181, 182, 183, 184, 185, 186, 187, 188, 189, 190, 191
-				Nod: 127, 126, 125, 124, 122, 46, 120, 47, 125, 124, 123, 122, 42, 121, 120, 120
-				Neutral: 192, 164, 132, 155, 133, 197, 112, 12, 163, 132, 155, 133, 134, 197, 154, 198
-		IndexedPlayerPalette@units:
-			BasePalette: terrain
-			BaseName: player-units
-			RemapIndex: 176, 177, 178, 179, 180, 181, 182, 183, 184, 185, 186, 187, 188, 189, 190, 191
-			PlayerIndex:
-				GDI: 176, 177, 178, 179, 180, 181, 182, 183, 184, 185, 186, 187, 188, 189, 190, 191
-				Nod: 161, 200, 201, 202, 204, 205, 206, 12, 201, 202, 203, 204, 205, 115, 198, 114
-				Neutral: 192, 164, 132, 155, 133, 197, 112, 12, 163, 132, 155, 133, 134, 197, 154, 198
-	World:
-		-SpawnMPUnits:
-		-MPStartLocations:
-		-CrateSpawner:
-		LuaScript:
-			Scripts: cnc64gdi01.lua
-		ObjectivesPanel:
-			PanelName: MISSION_OBJECTIVES
-		MusicPlaylist:
-			StartingMusic: aoi
-	Player:
-		-ConquestVictoryConditions:
-		MissionObjectives:
-			EarlyGameOver: true
-	^Vehicle:
-		Tooltip:
-			GenericVisibility: Enemy
-			ShowOwnerRow: false
-		RenderSprites:
-			PlayerPalette: player-units
-	^Tank:
-		Tooltip:
-			GenericVisibility: Enemy
-			ShowOwnerRow: false
-		RenderSprites:
-			PlayerPalette: player-units
-	^Helicopter:
-		Tooltip:
-			GenericVisibility: Enemy
-			ShowOwnerRow: false
-		RenderSprites:
-			PlayerPalette: player-units
-	^Infantry:
-		Tooltip:
-			GenericVisibility: Enemy
-			ShowOwnerRow: false
-		RenderSprites:
-			PlayerPalette: player-units
-	^Plane:
-		Tooltip:
-			GenericVisibility: Enemy
-			ShowOwnerRow: false
-	^Ship:
-		Tooltip:
-			GenericVisibility: Enemy
-			ShowOwnerRow: false
-	^Building:
-		Tooltip:
-			GenericVisibility: Enemy
-			ShowOwnerRow: false
-	^Wall:
-		Tooltip:
-			ShowOwnerRow: false
-	^CommonHuskDefaults:
-		Tooltip:
-			GenericVisibility: Enemy, Ally, Neutral
-			GenericStancePrefix: false
-			ShowOwnerRow: false
-		RenderSprites:
-			PlayerPalette: player-units
-	BIO.Husk:
-		Tooltip:
-			ShowOwnerRow: false
-	EYE:
-		IonCannonPower:
-			Prerequisites: ~disabled
-	FLARE:
-		RevealsShroud:
-			Range: 5c0
-	STNK:
-		Buildable:
-			Prerequisites: ~techlevel.high
-	TRAN:
-		Buildable:
-			Prerequisites: ~disabled
-	RMBO:
-		Buildable:
-			Prerequisites: ~disabled
-	OLDLST:
-		Inherits: LST
-		-WithRoof:
-		-Selectable:
-		RejectsOrders:
-		Cargo:
-			Types: disabled
-	HARV:
-		RenderSprites:
-			PlayerPalette: player
-	MCV:
-		RenderSprites:
-			PlayerPalette: player
-	HARV.Husk:
-		RenderSprites:
-			PlayerPalette: player
-	MCV.Husk:
-		RenderSprites:
-			PlayerPalette: player
-	airstrike.proxy:
-		AlwaysVisible:
-		AirstrikePower:
-			Icon: airstrike
-			StartFullyCharged: True
-			ChargeTime: 120
-			SquadSize: 3
-			QuantizedFacings: 8
-			Description: Air Strike
-			LongDesc: Deploy an aerial napalm strike.\nBurns buildings and infantry along a line.
-			EndChargeSound: airredy1.aud
-			SelectTargetSound: select1.aud
-			InsufficientPowerSound: nopower1.aud
-			IncomingSound: enemya.aud
-			UnitType: a10
-			DisplayBeacon: True
-			BeaconPoster: airstrike
-			DisplayRadarPing: True
-			CameraActor: camera
-
-Sequences:
-	oldlst:
-		idle: lst
-			Start: 0
-			Facings: 1
-			ZOffset: -1024
-		icon: lsticnh.tem
-			AddExtension: False
-
-VoxelSequences:
-
-Weapons:
-
-Voices:
-
-Music:
-
-Notifications:
-
-Translations:
+Sequences: sequences.yaml

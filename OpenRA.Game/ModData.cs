@@ -1,10 +1,11 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2016 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
- * as published by the Free Software Foundation. For more information,
- * see COPYING.
+ * as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version. For more
+ * information, see COPYING.
  */
 #endregion
 
@@ -13,6 +14,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using OpenRA.FileSystem;
 using OpenRA.Graphics;
 using OpenRA.Widgets;
 using FS = OpenRA.FileSystem.FileSystem;
@@ -28,37 +30,38 @@ namespace OpenRA
 		public readonly ISoundLoader[] SoundLoaders;
 		public readonly ISpriteLoader[] SpriteLoaders;
 		public readonly ISpriteSequenceLoader SpriteSequenceLoader;
-		public readonly RulesetCache RulesetCache;
 		public ILoadScreen LoadScreen { get; private set; }
 		public VoxelLoader VoxelLoader { get; private set; }
 		public CursorProvider CursorProvider { get; private set; }
 		public FS ModFiles = new FS();
+		public IReadOnlyFileSystem DefaultFileSystem { get { return ModFiles; } }
 
 		readonly Lazy<Ruleset> defaultRules;
 		public Ruleset DefaultRules { get { return defaultRules.Value; } }
+
+		readonly Lazy<IReadOnlyDictionary<string, TileSet>> defaultTileSets;
+		public IReadOnlyDictionary<string, TileSet> DefaultTileSets { get { return defaultTileSets.Value; } }
+
+		readonly Lazy<IReadOnlyDictionary<string, SequenceProvider>> defaultSequences;
+		public IReadOnlyDictionary<string, SequenceProvider> DefaultSequences { get { return defaultSequences.Value; } }
 
 		public ModData(string mod, bool useLoadScreen = false)
 		{
 			Languages = new string[0];
 			Manifest = new Manifest(mod);
+			ModFiles.LoadFromManifest(Manifest);
 
-			// Allow mods to load types from the core Game assembly, and any additional assemblies they specify.
-			var assemblies =
-				new[] { typeof(Game).Assembly }.Concat(
-					Manifest.Assemblies.Select(path => Assembly.LoadFrom(Platform.ResolvePath(path))));
-			ObjectCreator = new ObjectCreator(assemblies);
+			ObjectCreator = new ObjectCreator(Manifest, ModFiles);
 			Manifest.LoadCustomData(ObjectCreator);
 
 			if (useLoadScreen)
 			{
 				LoadScreen = ObjectCreator.CreateObject<ILoadScreen>(Manifest.LoadScreen.Value);
-				LoadScreen.Init(Manifest, Manifest.LoadScreen.ToDictionary(my => my.Value));
+				LoadScreen.Init(this, Manifest.LoadScreen.ToDictionary(my => my.Value));
 				LoadScreen.Display();
 			}
 
 			WidgetLoader = new WidgetLoader(this);
-			RulesetCache = new RulesetCache(this);
-			RulesetCache.LoadingProgress += HandleLoadingProgress;
 			MapCache = new MapCache(this);
 
 			SoundLoaders = GetLoaders<ISoundLoader>(Manifest.SoundFormats, "sound");
@@ -73,34 +76,51 @@ namespace OpenRA
 			SpriteSequenceLoader = (ISpriteSequenceLoader)ctor.Invoke(new[] { this });
 			SpriteSequenceLoader.OnMissingSpriteError = s => Log.Write("debug", s);
 
-			defaultRules = Exts.Lazy(() => RulesetCache.Load());
+			defaultRules = Exts.Lazy(() => Ruleset.LoadDefaults(this));
+			defaultTileSets = Exts.Lazy(() =>
+			{
+				var items = new Dictionary<string, TileSet>();
+
+				foreach (var file in Manifest.TileSets)
+				{
+					var t = new TileSet(DefaultFileSystem, file);
+					items.Add(t.Id, t);
+				}
+
+				return (IReadOnlyDictionary<string, TileSet>)(new ReadOnlyDictionary<string, TileSet>(items));
+			});
+
+			defaultSequences = Exts.Lazy(() =>
+			{
+				var items = DefaultTileSets.ToDictionary(t => t.Key, t => new SequenceProvider(DefaultFileSystem, this, t.Value, null));
+				return (IReadOnlyDictionary<string, SequenceProvider>)(new ReadOnlyDictionary<string, SequenceProvider>(items));
+			});
 
 			initialThreadId = System.Threading.Thread.CurrentThread.ManagedThreadId;
 		}
 
 		// HACK: Only update the loading screen if we're in the main thread.
 		int initialThreadId;
-		void HandleLoadingProgress(object sender, EventArgs e)
+		internal void HandleLoadingProgress()
 		{
-			if (LoadScreen != null && System.Threading.Thread.CurrentThread.ManagedThreadId == initialThreadId)
+			if (LoadScreen != null && IsOnMainThread)
 				LoadScreen.Display();
 		}
 
-		public void MountFiles()
-		{
-			ModFiles.LoadFromManifest(Manifest);
-		}
+		internal bool IsOnMainThread { get { return System.Threading.Thread.CurrentThread.ManagedThreadId == initialThreadId; } }
 
-		public void InitializeLoaders()
+		public void InitializeLoaders(IReadOnlyFileSystem fileSystem)
 		{
 			// all this manipulation of static crap here is nasty and breaks
 			// horribly when you use ModData in unexpected ways.
-			ChromeMetrics.Initialize(Manifest.ChromeMetrics);
-			ChromeProvider.Initialize(Manifest.Chrome);
+			ChromeMetrics.Initialize(this);
+			ChromeProvider.Initialize(this);
+
+			Game.Sound.Initialize(SoundLoaders, fileSystem);
 
 			if (VoxelLoader != null)
 				VoxelLoader.Dispose();
-			VoxelLoader = new VoxelLoader();
+			VoxelLoader = new VoxelLoader(fileSystem);
 
 			CursorProvider = new CursorProvider(this);
 		}
@@ -133,7 +153,7 @@ namespace OpenRA
 				return;
 			}
 
-			var yaml = MiniYaml.Merge(Manifest.Translations.Select(MiniYaml.FromFile).Append(map.TranslationDefinitions));
+			var yaml = MiniYaml.Load(map, Manifest.Translations, map.TranslationDefinitions);
 			Languages = yaml.Select(t => t.Key).ToArray();
 
 			foreach (var y in yaml)
@@ -166,29 +186,21 @@ namespace OpenRA
 			if (MapCache[uid].Status != MapStatus.Available)
 				throw new InvalidDataException("Invalid map uid: {0}".F(uid));
 
-			// Operate on a copy of the map to avoid gameplay state leaking into the cache
-			var map = new Map(MapCache[uid].Map.Path);
+			Map map;
+			using (new Support.PerfTimer("Map"))
+				map = new Map(this, MapCache[uid].Package);
 
 			LoadTranslations(map);
 
 			// Reinitialize all our assets
-			InitializeLoaders();
-			ModFiles.LoadFromManifest(Manifest);
-
-			// Mount map package so custom assets can be used. TODO: check priority.
-			ModFiles.Mount(ModFiles.OpenPackage(map.Path, int.MaxValue));
-
-			using (new Support.PerfTimer("Map.PreloadRules"))
-				map.PreloadRules();
-			using (new Support.PerfTimer("Map.SequenceProvider.Preload"))
-				map.SequenceProvider.Preload();
+			InitializeLoaders(map);
 
 			// Load music with map assets mounted
 			using (new Support.PerfTimer("Map.Music"))
 				foreach (var entry in map.Rules.Music)
-					entry.Value.Load();
+					entry.Value.Load(map);
 
-			VoxelProvider.Initialize(Manifest.VoxelSequences, map.VoxelSequenceDefinitions);
+			VoxelProvider.Initialize(VoxelLoader, map, MiniYaml.Load(map, Manifest.VoxelSequences, map.VoxelSequenceDefinitions));
 			VoxelLoader.Finish();
 
 			return map;
@@ -198,7 +210,6 @@ namespace OpenRA
 		{
 			if (LoadScreen != null)
 				LoadScreen.Dispose();
-			RulesetCache.Dispose();
 			MapCache.Dispose();
 			if (VoxelLoader != null)
 				VoxelLoader.Dispose();
@@ -207,7 +218,7 @@ namespace OpenRA
 
 	public interface ILoadScreen : IDisposable
 	{
-		void Init(Manifest m, Dictionary<string, string> info);
+		void Init(ModData m, Dictionary<string, string> info);
 		void Display();
 		void StartGame(Arguments args);
 	}

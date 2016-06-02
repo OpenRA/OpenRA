@@ -1,9 +1,9 @@
 Package: openra
 Version: {VERSION}
 Architecture: all
-Maintainer: Chris Forbes <chrisf@ijw.co.nz>
+Maintainer: Paul Chote <paul@chote.net>
 Installed-Size: {SIZE}
-Depends: libopenal1, mono-runtime (>= 2.10), libmono-system-core4.0-cil, libmono-system-drawing4.0-cil, libmono-system-data4.0-cil, libmono-system-numerics4.0-cil, libmono-system-runtime-serialization4.0-cil, libmono-system-xml-linq4.0-cil, libfreetype6, libc6, libasound2, libgl1-mesa-glx, libgl1-mesa-dri, xdg-utils, zenity, libsdl2 | libsdl2-2.0-0, liblua5.1-0
+Depends: libopenal1, mono-runtime (>= 3.2), libmono-system-core4.0-cil, libmono-system-drawing4.0-cil, libmono-system-data4.0-cil, libmono-system-numerics4.0-cil, libmono-system-runtime-serialization4.0-cil, libmono-system-xml-linq4.0-cil, libmono-i18n4.0-all, libfreetype6, libc6, libasound2, libgl1-mesa-glx, libgl1-mesa-dri, xdg-utils, zenity, libsdl2 | libsdl2-2.0-0, liblua5.1-0
 Section: games
 Priority: extra
 Homepage: http://www.openra.net/

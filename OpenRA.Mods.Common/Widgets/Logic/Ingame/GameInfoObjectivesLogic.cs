@@ -1,10 +1,11 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2016 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
- * as published by the Free Software Foundation. For more information,
- * see COPYING.
+ * as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version. For more
+ * information, see COPYING.
  */
 #endregion
 
@@ -23,26 +24,35 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		[ObjectCreator.UseCtor]
 		public GameInfoObjectivesLogic(Widget widget, World world)
 		{
-			var lp = world.LocalPlayer;
-
-			var missionStatus = widget.Get<LabelWidget>("MISSION_STATUS");
-			missionStatus.GetText = () => lp.WinState == WinState.Undefined ? "In progress" :
-				lp.WinState == WinState.Won ? "Accomplished" : "Failed";
-			missionStatus.GetColor = () => lp.WinState == WinState.Undefined ? Color.White :
-				lp.WinState == WinState.Won ? Color.LimeGreen : Color.Red;
-
-			var mo = lp.PlayerActor.TraitOrDefault<MissionObjectives>();
-			if (mo == null)
-				return;
+			var player = world.RenderPlayer ?? world.LocalPlayer;
 
 			var objectivesPanel = widget.Get<ScrollPanelWidget>("OBJECTIVES_PANEL");
 			template = objectivesPanel.Get<ContainerWidget>("OBJECTIVE_TEMPLATE");
 
+			if (player == null)
+			{
+				objectivesPanel.RemoveChildren();
+				return;
+			}
+
+			var mo = player.PlayerActor.TraitOrDefault<MissionObjectives>();
+			if (mo == null)
+			{
+				objectivesPanel.RemoveChildren();
+				return;
+			}
+
+			var missionStatus = widget.Get<LabelWidget>("MISSION_STATUS");
+			missionStatus.GetText = () => player.WinState == WinState.Undefined ? "In progress" :
+				player.WinState == WinState.Won ? "Accomplished" : "Failed";
+			missionStatus.GetColor = () => player.WinState == WinState.Undefined ? Color.White :
+				player.WinState == WinState.Won ? Color.LimeGreen : Color.Red;
+
 			PopulateObjectivesList(mo, objectivesPanel, template);
 
-			Action<Player, bool> redrawObjectives = (player, _) =>
+			Action<Player, bool> redrawObjectives = (p, _) =>
 			{
-				if (player == lp)
+				if (p == player)
 					PopulateObjectivesList(mo, objectivesPanel, template);
 			};
 			mo.ObjectiveAdded += redrawObjectives;

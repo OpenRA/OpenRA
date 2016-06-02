@@ -1,0 +1,92 @@
+World:
+	LuaScript:
+		Scripts: nod03a.lua
+	MusicPlaylist:
+		StartingMusic: chrg226m
+		VictoryMusic: nod_win1
+	MissionData:
+		Briefing: GDI has established a prison camp, where they are detaining some of the local political leaders.\n\nKane wishes to liberate these victims.\n\nDestroy the GDI forces and capture the prison, do not destroy it.
+		BriefingVideo: nod3.vqa
+		StartVideo: dessweep.vqa
+		WinVideo: desflees.vqa
+		LossVideo: flag.vqa
+
+Player:
+	PlayerResources:
+		DefaultCash: 4000
+
+HQ:
+	AirstrikePower:
+		Prerequisites: ~disabled
+	Tooltip:
+		Description: Provides an overview of the battlefield.\nRequires power to operate.
+
+NUK2:
+	Buildable:
+		Prerequisites: ~disabled
+
+AFLD:
+	Buildable:
+		Prerequisites: ~disabled
+
+HPAD:
+	Buildable:
+		Prerequisites: ~disabled
+
+FIX:
+	Buildable:
+		Prerequisites: ~disabled
+
+TMPL:
+	Buildable:
+		Prerequisites: ~disabled
+
+GUN:
+	Buildable:
+		Prerequisites: ~disabled
+
+SAM:
+	Buildable:
+		Prerequisites: ~disabled
+
+OBLI:
+	Buildable:
+		Prerequisites: ~disabled
+
+GTWR:
+	Buildable:
+		Prerequisites: ~disabled
+
+BRIK:
+	Buildable:
+		Prerequisites: ~disabled
+
+WEAP:
+	Buildable:
+		Prerequisites: ~disabled
+
+EYE:
+	Buildable:
+		Prerequisites: ~disabled
+
+ATWR:
+	Buildable:
+		Prerequisites: ~disabled
+
+E4:
+	Buildable:
+		Prerequisites: ~disabled
+
+E5:
+	Buildable:
+		Prerequisites: ~disabled
+
+RMBO:
+	Buildable:
+		Prerequisites: ~disabled
+
+MISS:
+	Tooltip:
+		Name: Prison
+	Capturable:
+		CaptureThreshold: 100

@@ -1,10 +1,11 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2016 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
- * as published by the Free Software Foundation. For more information,
- * see COPYING.
+ * as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version. For more
+ * information, see COPYING.
  */
 #endregion
 
@@ -68,12 +69,12 @@ namespace OpenRA.Graphics
 			var eb = endColor.B / 255.0f;
 			var ea = endColor.A / 255.0f;
 
-			vertices[nv++] = new Vertex(start - corner + Offset, sr, sg, sb, sa);
-			vertices[nv++] = new Vertex(start + corner + Offset, sr, sg, sb, sa);
-			vertices[nv++] = new Vertex(end + corner + Offset, er, eg, eb, ea);
-			vertices[nv++] = new Vertex(end + corner + Offset, er, eg, eb, ea);
-			vertices[nv++] = new Vertex(end - corner + Offset, er, eg, eb, ea);
-			vertices[nv++] = new Vertex(start - corner + Offset, sr, sg, sb, sa);
+			vertices[nv++] = new Vertex(start - corner + Offset, sr, sg, sb, sa, 0, 0);
+			vertices[nv++] = new Vertex(start + corner + Offset, sr, sg, sb, sa, 0, 0);
+			vertices[nv++] = new Vertex(end + corner + Offset, er, eg, eb, ea, 0, 0);
+			vertices[nv++] = new Vertex(end + corner + Offset, er, eg, eb, ea, 0, 0);
+			vertices[nv++] = new Vertex(end - corner + Offset, er, eg, eb, ea, 0, 0);
+			vertices[nv++] = new Vertex(start - corner + Offset, sr, sg, sb, sa, 0, 0);
 		}
 
 		public void DrawLine(float2 start, float2 end, float width, Color color)
@@ -92,12 +93,12 @@ namespace OpenRA.Graphics
 			var b = color.B / 255.0f;
 			var a = color.A / 255.0f;
 
-			vertices[nv++] = new Vertex(start - corner + Offset, r, g, b, a);
-			vertices[nv++] = new Vertex(start + corner + Offset, r, g, b, a);
-			vertices[nv++] = new Vertex(end + corner + Offset, r, g, b, a);
-			vertices[nv++] = new Vertex(end + corner + Offset, r, g, b, a);
-			vertices[nv++] = new Vertex(end - corner + Offset, r, g, b, a);
-			vertices[nv++] = new Vertex(start - corner + Offset, r, g, b, a);
+			vertices[nv++] = new Vertex(start - corner + Offset, r, g, b, a, 0, 0);
+			vertices[nv++] = new Vertex(start + corner + Offset, r, g, b, a, 0, 0);
+			vertices[nv++] = new Vertex(end + corner + Offset, r, g, b, a, 0, 0);
+			vertices[nv++] = new Vertex(end + corner + Offset, r, g, b, a, 0, 0);
+			vertices[nv++] = new Vertex(end - corner + Offset, r, g, b, a, 0, 0);
+			vertices[nv++] = new Vertex(start - corner + Offset, r, g, b, a, 0, 0);
 		}
 
 		/// <summary>
@@ -185,12 +186,12 @@ namespace OpenRA.Graphics
 				if (nv + 6 > renderer.TempBufferSize)
 					Flush();
 
-				vertices[nv++] = new Vertex(ca + Offset, r, g, b, a);
-				vertices[nv++] = new Vertex(cb + Offset, r, g, b, a);
-				vertices[nv++] = new Vertex(cc + Offset, r, g, b, a);
-				vertices[nv++] = new Vertex(cc + Offset, r, g, b, a);
-				vertices[nv++] = new Vertex(cd + Offset, r, g, b, a);
-				vertices[nv++] = new Vertex(ca + Offset, r, g, b, a);
+				vertices[nv++] = new Vertex(ca + Offset, r, g, b, a, 0, 0);
+				vertices[nv++] = new Vertex(cb + Offset, r, g, b, a, 0, 0);
+				vertices[nv++] = new Vertex(cc + Offset, r, g, b, a, 0, 0);
+				vertices[nv++] = new Vertex(cc + Offset, r, g, b, a, 0, 0);
+				vertices[nv++] = new Vertex(cd + Offset, r, g, b, a, 0, 0);
+				vertices[nv++] = new Vertex(ca + Offset, r, g, b, a, 0, 0);
 
 				// Advance line segment
 				end = next;
@@ -242,12 +243,12 @@ namespace OpenRA.Graphics
 			var cb = color.B / 255.0f;
 			var ca = color.A / 255.0f;
 
-			vertices[nv++] = new Vertex(a + Offset, cr, cg, cb, ca);
-			vertices[nv++] = new Vertex(b + Offset, cr, cg, cb, ca);
-			vertices[nv++] = new Vertex(c + Offset, cr, cg, cb, ca);
-			vertices[nv++] = new Vertex(c + Offset, cr, cg, cb, ca);
-			vertices[nv++] = new Vertex(d + Offset, cr, cg, cb, ca);
-			vertices[nv++] = new Vertex(a + Offset, cr, cg, cb, ca);
+			vertices[nv++] = new Vertex(a + Offset, cr, cg, cb, ca, 0, 0);
+			vertices[nv++] = new Vertex(b + Offset, cr, cg, cb, ca, 0, 0);
+			vertices[nv++] = new Vertex(c + Offset, cr, cg, cb, ca, 0, 0);
+			vertices[nv++] = new Vertex(c + Offset, cr, cg, cb, ca, 0, 0);
+			vertices[nv++] = new Vertex(d + Offset, cr, cg, cb, ca, 0, 0);
+			vertices[nv++] = new Vertex(a + Offset, cr, cg, cb, ca, 0, 0);
 		}
 
 		public void FillEllipse(RectangleF r, Color color, int vertices = 32)

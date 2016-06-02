@@ -29,6 +29,8 @@ V02:
 		Actor: V02.Husk
 	EditorTilesetFilter:
 		ExcludeTilesets: DESERT
+	Tooltip:
+		Name: Han's and Gretel's
 
 V02.Husk:
 	Inherits: ^CivBuildingHusk
@@ -37,6 +39,8 @@ V02.Husk:
 		Dimensions: 2,2
 	EditorTilesetFilter:
 		ExcludeTilesets: DESERT
+	Tooltip:
+		Name: Han's and Gretel's (Destroyed)
 
 V03:
 	Inherits: ^CivBuilding
@@ -47,6 +51,8 @@ V03:
 		Actor: V03.Husk
 	EditorTilesetFilter:
 		ExcludeTilesets: DESERT
+	Tooltip:
+		Name: Hewitt's House
 
 V03.Husk:
 	Inherits: ^CivBuildingHusk
@@ -55,6 +61,8 @@ V03.Husk:
 		Dimensions: 2,2
 	EditorTilesetFilter:
 		ExcludeTilesets: DESERT
+	Tooltip:
+		Name: Hewitt's House (Destroyed)
 
 V04:
 	Inherits: ^CivBuilding
@@ -65,6 +73,8 @@ V04:
 		Actor: V04.Husk
 	EditorTilesetFilter:
 		ExcludeTilesets: DESERT
+	Tooltip:
+		Name: Ricktor's House
 
 V04.Husk:
 	Inherits: ^CivBuildingHusk
@@ -73,6 +83,8 @@ V04.Husk:
 		Dimensions: 2,2
 	EditorTilesetFilter:
 		ExcludeTilesets: DESERT
+	Tooltip:
+		Name: Ricktor's House (Destroyed)
 
 V05:
 	Inherits: ^CivBuilding
@@ -83,6 +95,8 @@ V05:
 		Actor: V05.Husk
 	EditorTilesetFilter:
 		ExcludeTilesets: DESERT
+	Tooltip:
+		Name: Gretchkin's house
 
 V05.Husk:
 	Inherits: ^CivBuildingHusk
@@ -91,6 +105,8 @@ V05.Husk:
 		Dimensions: 2,1
 	EditorTilesetFilter:
 		ExcludeTilesets: DESERT
+	Tooltip:
+		Name: Gretchkin's house (Destroyed)
 
 V06:
 	Inherits: ^CivBuilding
@@ -101,6 +117,8 @@ V06:
 		Actor: V06.Husk
 	EditorTilesetFilter:
 		ExcludeTilesets: DESERT
+	Tooltip:
+		Name: The Barn
 
 V06.Husk:
 	Inherits: ^CivBuildingHusk
@@ -109,6 +127,8 @@ V06.Husk:
 		Dimensions: 2,1
 	EditorTilesetFilter:
 		ExcludeTilesets: DESERT
+	Tooltip:
+		Name: The Barn (Destroyed)
 
 V07:
 	Inherits: ^CivBuilding
@@ -119,6 +139,8 @@ V07:
 		Actor: V07.Husk
 	EditorTilesetFilter:
 		ExcludeTilesets: DESERT
+	Tooltip:
+		Name: Damon's Pub
 
 V07.Husk:
 	Inherits: ^CivBuildingHusk
@@ -127,6 +149,8 @@ V07.Husk:
 		Dimensions: 2,1
 	EditorTilesetFilter:
 		ExcludeTilesets: DESERT
+	Tooltip:
+		Name: Damon's Pub (Destroyed)
 
 V08:
 	Inherits: ^CivBuilding
@@ -134,11 +158,15 @@ V08:
 		Actor: V08.Husk
 	EditorTilesetFilter:
 		ExcludeTilesets: DESERT
+	Tooltip:
+		Name: Fran's House
 
 V08.Husk:
 	Inherits: ^CivBuildingHusk
 	EditorTilesetFilter:
 		ExcludeTilesets: DESERT
+	Tooltip:
+		Name: Fran's House (Destroyed)
 
 V09:
 	Inherits: ^CivBuilding
@@ -146,11 +174,15 @@ V09:
 		Actor: V09.Husk
 	EditorTilesetFilter:
 		ExcludeTilesets: DESERT
+	Tooltip:
+		Name: Music Factory
 
 V09.Husk:
 	Inherits: ^CivBuildingHusk
 	EditorTilesetFilter:
 		ExcludeTilesets: DESERT
+	Tooltip:
+		Name: Music Factory (Destroyed)
 
 V10:
 	Inherits: ^CivBuilding
@@ -158,11 +190,15 @@ V10:
 		Actor: V10.Husk
 	EditorTilesetFilter:
 		ExcludeTilesets: DESERT
+	Tooltip:
+		Name: Toymaker's
 
 V10.Husk:
 	Inherits: ^CivBuildingHusk
 	EditorTilesetFilter:
 		ExcludeTilesets: DESERT
+	Tooltip:
+		Name: Toymaker's (Destroyed)
 
 V11:
 	Inherits: ^CivBuilding
@@ -170,11 +206,15 @@ V11:
 		Actor: V11.Husk
 	EditorTilesetFilter:
 		ExcludeTilesets: DESERT
+	Tooltip:
+		Name: Ludwig's House
 
 V11.Husk:
 	Inherits: ^CivBuildingHusk
 	EditorTilesetFilter:
 		ExcludeTilesets: DESERT
+	Tooltip:
+		Name: Ludwig's House (Destroyed)
 
 V12:
 	Inherits: ^CivField
@@ -182,11 +222,15 @@ V12:
 		Actor: V12.Husk
 	EditorTilesetFilter:
 		ExcludeTilesets: DESERT
+	Tooltip:
+		Name: Haystacks
 
 V12.Husk:
 	Inherits: ^CivBuildingHusk
 	EditorTilesetFilter:
 		ExcludeTilesets: DESERT
+	Tooltip:
+		Name: Haystacks (Destroyed)
 
 V13:
 	Inherits: ^CivField
@@ -194,11 +238,15 @@ V13:
 		Actor: V13.Husk
 	EditorTilesetFilter:
 		ExcludeTilesets: DESERT
+	Tooltip:
+		Name: Haystacks
 
 V13.Husk:
 	Inherits: ^CivBuildingHusk
 	EditorTilesetFilter:
 		ExcludeTilesets: DESERT
+	Tooltip:
+		Name: Haystacks (Destroyed)
 
 V14:
 	Inherits: ^CivField
@@ -206,11 +254,15 @@ V14:
 		Actor: V14.Husk
 	EditorTilesetFilter:
 		ExcludeTilesets: DESERT
+	Tooltip:
+		Name: Wheat Field
 
 V14.Husk:
 	Inherits: ^CivFieldHusk
 	EditorTilesetFilter:
 		ExcludeTilesets: DESERT
+	Tooltip:
+		Name: Wheat Field (Destroyed)
 
 V15:
 	Inherits: ^CivField
@@ -218,11 +270,15 @@ V15:
 		Actor: V15.Husk
 	EditorTilesetFilter:
 		ExcludeTilesets: DESERT
+	Tooltip:
+		Name: Fallow Field
 
 V15.Husk:
 	Inherits: ^CivFieldHusk
 	EditorTilesetFilter:
 		ExcludeTilesets: DESERT
+	Tooltip:
+		Name: Fallow Field (Destroyed)
 
 V16:
 	Inherits: ^CivField
@@ -230,11 +286,15 @@ V16:
 		Actor: V16.Husk
 	EditorTilesetFilter:
 		ExcludeTilesets: DESERT
+	Tooltip:
+		Name: Corn Field
 
 V16.Husk:
 	Inherits: ^CivFieldHusk
 	EditorTilesetFilter:
 		ExcludeTilesets: DESERT
+	Tooltip:
+		Name: Corn Field (Destroyed)
 
 V17:
 	Inherits: ^CivField
@@ -242,11 +302,15 @@ V17:
 		Actor: V17.Husk
 	EditorTilesetFilter:
 		ExcludeTilesets: DESERT
+	Tooltip:
+		Name: Celery Field
 
 V17.Husk:
 	Inherits: ^CivFieldHusk
 	EditorTilesetFilter:
 		ExcludeTilesets: DESERT
+	Tooltip:
+		Name: Celery Field (Destroyed)
 
 V18:
 	Inherits: ^CivField
@@ -254,11 +318,15 @@ V18:
 		Actor: V18.Husk
 	EditorTilesetFilter:
 		ExcludeTilesets: DESERT
+	Tooltip:
+		Name: Potato Field
 
 V18.Husk:
 	Inherits: ^CivFieldHusk
 	EditorTilesetFilter:
 		ExcludeTilesets: DESERT
+	Tooltip:
+		Name: Potato Field (Destroyed)
 
 ARCO:
 	Inherits: ^CivBuilding
@@ -267,19 +335,24 @@ ARCO:
 		Dimensions: 2,1
 	SpawnActorOnDeath:
 		Actor: ARCO.Husk
+	Tooltip:
+		Name: Oil Pump
+		ShowOwnerRow: True
 
 ARCO.Husk:
 	Inherits: ^CivBuildingHusk
 	Building:
 		Footprint: xx
 		Dimensions: 2,1
+	Tooltip:
+		Name: Oil Pump (Destroyed)
 
 BARB:
 	Inherits: ^Wall
 	Armor:
 		Type: Light
 	Tooltip:
-		Name: Wire Fence
+		Name: Barbwire Fence
 		Icon: barbicnh
 	LineBuild:
 		NodeTypes: barbwire

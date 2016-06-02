@@ -25,8 +25,8 @@
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: SandCrater, RockCrater
 	Warhead@3Eff: CreateEffect
-		Explosion: small_napalm
-		ImpactSound: EXPLSML4.WAV
+		Explosions: small_napalm
+		ImpactSounds: EXPLSML4.WAV
 
 80mm_A:
 	ReloadDelay: 50
@@ -53,7 +53,7 @@
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: SandCrater, RockCrater
 	Warhead@3Eff: CreateEffect
-		Explosion: small_napalm
+		Explosions: small_napalm
 
 80mm_H:
 	ReloadDelay: 55
@@ -80,7 +80,7 @@
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: SandCrater, RockCrater
 	Warhead@3Eff: CreateEffect
-		Explosion: small_napalm
+		Explosions: small_napalm
 
 80mm_O:
 	ReloadDelay: 45
@@ -107,7 +107,7 @@
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: SandCrater, RockCrater
 	Warhead@3Eff: CreateEffect
-		Explosion: small_napalm
+		Explosions: small_napalm
 
 DevBullet:
 	ReloadDelay: 75
@@ -131,8 +131,8 @@ DevBullet:
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: SandCrater, RockCrater
 	Warhead@3Eff: CreateEffect
-		Explosion: shockwave
-		ImpactSound: EXPLMD1.WAV
+		Explosions: shockwave
+		ImpactSounds: EXPLMD1.WAV
 
 155mm:
 	ReloadDelay: 80
@@ -162,5 +162,5 @@ DevBullet:
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: SandCrater, RockCrater
 	Warhead@3Eff: CreateEffect
-		Explosion: med_explosion
-		ImpactSound: EXPLMD2.WAV
+		Explosions: med_explosion
+		ImpactSounds: EXPLMD2.WAV

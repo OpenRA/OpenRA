@@ -25,10 +25,10 @@ HighV:
 			None: 100
 			Wood: 50
 			Light: 70
-			Heavy: 35
+			Heavy: 30
 		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
 	Warhead@2Eff: CreateEffect
-		Explosion: piffs
+		Explosions: piffs
 
 HeliAGGun:
 	ReloadDelay: 20
@@ -52,7 +52,7 @@ HeliAGGun:
 			Heavy: 25
 		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
 	Warhead@2Eff: CreateEffect
-		Explosion: piffs
+		Explosions: piffs
 
 HeliAAGun:
 	ReloadDelay: 20
@@ -76,7 +76,7 @@ HeliAAGun:
 			Heavy: 25
 		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
 	Warhead@2Eff: CreateEffect
-		Explosion: piffs
+		Explosions: piffs
 
 Pistol:
 	ReloadDelay: 7
@@ -96,7 +96,7 @@ Pistol:
 			Heavy: 25
 		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
 	Warhead@2Eff: CreateEffect
-		Explosion: piff
+		Explosions: piff
 
 M16:
 	ReloadDelay: 20
@@ -116,7 +116,7 @@ M16:
 			Heavy: 10
 		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
 	Warhead@2Eff: CreateEffect
-		Explosion: piff
+		Explosions: piff
 
 MachineGun:
 	ReloadDelay: 20
@@ -135,10 +135,9 @@ MachineGun:
 			Wood: 20
 			Light: 50
 			Heavy: 15
-			Concrete: 10
 		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
 	Warhead@2Eff: CreateEffect
-		Explosion: piffs
+		Explosions: piffs
 
 Vulcan:
 	ValidTargets: Ground, Water
@@ -158,7 +157,7 @@ Vulcan:
 			Heavy: 35
 		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
 	Warhead@2Eff: CreateEffect
-		Explosion: piffs
+		Explosions: piffs
 
 APCGun:
 	ReloadDelay: 18
@@ -178,7 +177,7 @@ APCGun:
 			Heavy: 50
 		DamageTypes: Prone50Percent, TriggerProne, DefaultDeath
 	Warhead@2Eff: CreateEffect
-		Explosion: small_poof
+		Explosions: small_poof
 
 APCGun.AA:
 	ReloadDelay: 18
@@ -196,4 +195,4 @@ APCGun.AA:
 			Heavy: 50
 		DamageTypes: Prone50Percent, TriggerProne, DefaultDeath
 	Warhead@2Eff: CreateEffect
-		Explosion: small_frag
+		Explosions: small_frag

@@ -1,0 +1,14 @@
+Colt45:
+	ValidTargets: Ground, Infantry, Truk
+	Warhead@1Dam: SpreadDamage
+		ValidTargets: Barrel, Infantry, Truk
+		Versus:
+			Truk: 50
+
+FireballLauncher:
+	Projectile:
+		High: True
+
+BarrelExplode:
+	Warhead@1Dam:
+		ValidTargets: Ground, Prisoner

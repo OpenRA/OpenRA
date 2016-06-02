@@ -1,10 +1,11 @@
 ﻿#region Copyright & License Information
 /*
- * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2016 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
- * as published by the Free Software Foundation. For more information,
- * see COPYING.
+ * as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version. For more
+ * information, see COPYING.
  */
 #endregion
 
@@ -39,7 +40,7 @@ namespace OpenRA.Mods.Common.Widgets
 			preview.GetScale = () => worldRenderer.Viewport.Zoom;
 			preview.IsVisible = () => editorWidget.CurrentBrush == this;
 
-			preview.Template = world.TileSet.Templates.First(t => t.Value.Id == template).Value;
+			preview.Template = world.Map.Rules.TileSet.Templates.First(t => t.Value.Id == template).Value;
 			var grid = world.Map.Grid;
 			bounds = worldRenderer.Theater.TemplateBounds(preview.Template, grid.TileSize, grid.Type);
 
@@ -96,11 +97,10 @@ namespace OpenRA.Mods.Common.Widgets
 		void PaintCell(CPos cell, bool isMoving)
 		{
 			var map = world.Map;
-			var mapTiles = map.MapTiles.Value;
-			var mapHeight = map.MapHeight.Value;
+			var mapTiles = map.Tiles;
+			var mapHeight = map.Height;
 
-			var rules = map.Rules;
-			var tileset = rules.TileSets[map.Tileset];
+			var tileset = map.Rules.TileSet;
 			var template = tileset.Templates[Template];
 			var baseHeight = mapHeight.Contains(cell) ? mapHeight[cell] : (byte)0;
 
@@ -129,7 +129,7 @@ namespace OpenRA.Mods.Common.Widgets
 		void FloodFillWithBrush(CPos cell, bool isMoving)
 		{
 			var map = world.Map;
-			var mapTiles = map.MapTiles.Value;
+			var mapTiles = map.Tiles;
 			var replace = mapTiles[cell];
 
 			if (replace.Type == Template)
@@ -138,8 +138,7 @@ namespace OpenRA.Mods.Common.Widgets
 			var queue = new Queue<CPos>();
 			var touched = new CellLayer<bool>(map);
 
-			var rules = map.Rules;
-			var tileset = rules.TileSets[map.Tileset];
+			var tileset = map.Rules.TileSet;
 			var template = tileset.Templates[Template];
 
 			Action<CPos> maybeEnqueue = newCell =>
@@ -204,7 +203,7 @@ namespace OpenRA.Mods.Common.Widgets
 		bool PlacementOverlapsSameTemplate(TerrainTemplateInfo template, CPos cell)
 		{
 			var map = world.Map;
-			var mapTiles = map.MapTiles.Value;
+			var mapTiles = map.Tiles;
 			var i = 0;
 			for (var y = 0; y < template.Size.Y; y++)
 			{

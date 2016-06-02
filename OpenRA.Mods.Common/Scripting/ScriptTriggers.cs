@@ -1,16 +1,18 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2016 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
- * as published by the Free Software Foundation. For more information,
- * see COPYING.
+ * as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version. For more
+ * information, see COPYING.
  */
 #endregion
 
 using System;
 using System.Collections.Generic;
 using Eluant;
+using OpenRA.Mods.Common.Traits;
 using OpenRA.Scripting;
 using OpenRA.Traits;
 
@@ -20,7 +22,8 @@ namespace OpenRA.Mods.Common.Scripting
 	{
 		OnIdle, OnDamaged, OnKilled, OnProduction, OnOtherProduction, OnPlayerWon, OnPlayerLost,
 		OnObjectiveAdded, OnObjectiveCompleted, OnObjectiveFailed, OnCapture, OnInfiltrated,
-		OnAddedToWorld, OnRemovedFromWorld, OnDiscovered, OnPlayerDiscovered
+		OnAddedToWorld, OnRemovedFromWorld, OnDiscovered, OnPlayerDiscovered,
+		OnPassengerEntered, OnPassengerExited
 	}
 
 	[Desc("Allows map scripts to attach triggers to this actor via the Triggers global.")]
@@ -30,7 +33,8 @@ namespace OpenRA.Mods.Common.Scripting
 	}
 
 	public sealed class ScriptTriggers : INotifyIdle, INotifyDamage, INotifyKilled, INotifyProduction, INotifyOtherProduction,
-		INotifyObjectivesUpdated, INotifyCapture, INotifyInfiltrated, INotifyAddedToWorld, INotifyRemovedFromWorld, INotifyDiscovered, INotifyActorDisposing
+		INotifyObjectivesUpdated, INotifyCapture, INotifyInfiltrated, INotifyAddedToWorld, INotifyRemovedFromWorld, INotifyDiscovered, INotifyActorDisposing,
+		INotifyPassengerEntered, INotifyPassengerExited
 	{
 		readonly World world;
 		readonly Actor self;
@@ -411,6 +415,48 @@ namespace OpenRA.Mods.Common.Scripting
 					using (var a = self.Owner.ToLuaValue(f.Context))
 					using (var b = discoverer.ToLuaValue(f.Context))
 						f.Function.Call(a, b, f.Self).Dispose();
+				}
+				catch (Exception ex)
+				{
+					f.Context.FatalError(ex.Message);
+					return;
+				}
+			}
+		}
+
+		void INotifyPassengerEntered.OnPassengerEntered(Actor self, Actor passenger)
+		{
+			if (world.Disposing)
+				return;
+
+			foreach (var f in Triggerables(Trigger.OnPassengerEntered))
+			{
+				try
+				{
+					using (var trans = self.ToLuaValue(f.Context))
+					using (var pass = passenger.ToLuaValue(f.Context))
+						f.Function.Call(trans, pass).Dispose();
+				}
+				catch (Exception ex)
+				{
+					f.Context.FatalError(ex.Message);
+					return;
+				}
+			}
+		}
+
+		void INotifyPassengerExited.OnPassengerExited(Actor self, Actor passenger)
+		{
+			if (world.Disposing)
+				return;
+
+			foreach (var f in Triggerables(Trigger.OnPassengerExited))
+			{
+				try
+				{
+					using (var trans = self.ToLuaValue(f.Context))
+					using (var pass = passenger.ToLuaValue(f.Context))
+						f.Function.Call(trans, pass).Dispose();
 				}
 				catch (Exception ex)
 				{

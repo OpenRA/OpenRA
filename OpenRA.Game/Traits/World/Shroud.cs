@@ -1,10 +1,11 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2016 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
- * as published by the Free Software Foundation. For more information,
- * see COPYING.
+ * as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version. For more
+ * information, see COPYING.
  */
 #endregion
 
@@ -17,10 +18,22 @@ namespace OpenRA.Traits
 	[Desc("Required for shroud and fog visibility checks. Add this to the player actor.")]
 	public class ShroudInfo : ITraitInfo
 	{
+		[Desc("Default value of the fog checkbox in the lobby.")]
+		public bool FogEnabled = true;
+
+		[Desc("Prevent the fog enabled state from being changed in the lobby.")]
+		public bool FogLocked = false;
+
+		[Desc("Default value of the explore map checkbox in the lobby.")]
+		public bool ExploredMapEnabled = false;
+
+		[Desc("Prevent the explore map enabled state from being changed in the lobby.")]
+		public bool ExploredMapLocked = false;
+
 		public object Create(ActorInitializer init) { return new Shroud(init.Self); }
 	}
 
-	public class Shroud : ISync
+	public class Shroud : ISync, INotifyCreated
 	{
 		public event Action<IEnumerable<PPos>> CellsChanged;
 
@@ -54,6 +67,9 @@ namespace OpenRA.Traits
 			}
 		}
 
+		bool fogEnabled;
+		public bool FogEnabled { get { return !Disabled && fogEnabled; } }
+
 		public int Hash { get; private set; }
 
 		public Shroud(Actor self)
@@ -64,6 +80,14 @@ namespace OpenRA.Traits
 			visibleCount = new CellLayer<short>(map);
 			generatedShroudCount = new CellLayer<short>(map);
 			explored = new CellLayer<bool>(map);
+		}
+
+		void INotifyCreated.Created(Actor self)
+		{
+			fogEnabled = self.World.LobbyInfo.GlobalSettings.Fog;
+			var shroudEnabled = self.World.LobbyInfo.GlobalSettings.Shroud;
+			if (!shroudEnabled)
+				self.World.AddFrameEndTask(w => ExploreAll());
 		}
 
 		void Invalidate(IEnumerable<PPos> changed)
@@ -228,7 +252,7 @@ namespace OpenRA.Traits
 			Invalidate(changed);
 		}
 
-		public void ExploreAll(World world)
+		public void ExploreAll()
 		{
 			var changed = new List<PPos>();
 			foreach (var puv in map.ProjectedCellBounds)
@@ -285,14 +309,12 @@ namespace OpenRA.Traits
 
 		public bool IsExplored(PPos puv)
 		{
-			if (!ShroudEnabled)
+			if (Disabled)
 				return map.Contains(puv);
 
 			var uv = (MPos)puv;
 			return explored.Contains(uv) && explored[uv] && (generatedShroudCount[uv] == 0 || visibleCount[uv] > 0);
 		}
-
-		public bool ShroudEnabled { get { return !Disabled; } }
 
 		public bool IsVisible(WPos pos)
 		{
@@ -325,8 +347,6 @@ namespace OpenRA.Traits
 			var uv = (MPos)puv;
 			return visibleCount.Contains(uv) && visibleCount[uv] > 0;
 		}
-
-		public bool FogEnabled { get { return !Disabled && self.World.LobbyInfo.GlobalSettings.Fog; } }
 
 		public bool Contains(PPos uv)
 		{

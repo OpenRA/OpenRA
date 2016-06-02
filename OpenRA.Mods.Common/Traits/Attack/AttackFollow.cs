@@ -1,10 +1,11 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2016 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
- * as published by the Free Software Foundation. For more information,
- * see COPYING.
+ * as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version. For more
+ * information, see COPYING.
  */
 #endregion
 
@@ -30,6 +31,12 @@ namespace OpenRA.Mods.Common.Traits
 
 		public virtual void Tick(Actor self)
 		{
+			if (IsTraitDisabled)
+			{
+				Target = Target.Invalid;
+				return;
+			}
+
 			DoAttack(self, Target);
 			IsAttacking = Target.IsValidFor(self);
 		}
@@ -58,16 +65,21 @@ namespace OpenRA.Mods.Common.Traits
 			readonly IMove move;
 			readonly Target target;
 			readonly bool forceAttack;
+			readonly bool onRailsHack;
+			bool hasTicked;
 
 			public AttackActivity(Actor self, Target target, bool allowMove, bool forceAttack)
 			{
 				attack = self.Trait<AttackFollow>();
 				move = allowMove ? self.TraitOrDefault<IMove>() : null;
 
-				// HACK: Mobile.OnRails is horrible
+				// HACK: Mobile.OnRails is horrible. Blergh.
 				var mobile = move as Mobile;
 				if (mobile != null && mobile.Info.OnRails)
+				{
 					move = null;
+					onRailsHack = true;
+				}
 
 				this.target = target;
 				this.forceAttack = forceAttack;
@@ -92,11 +104,24 @@ namespace OpenRA.Mods.Common.Traits
 					var maxRange = targetIsMobile ? new WDist(Math.Max(weapon.Weapon.MinRange.Length, modifiedRange.Length - 1024))
 						: modifiedRange;
 
+					// Check that AttackFollow hasn't cancelled the target by modifying attack.Target
+					// Having both this and AttackFollow modify that field is a horrible hack.
+					if (hasTicked && attack.Target.Type == TargetType.Invalid)
+						return NextActivity;
+
 					attack.Target = target;
+					hasTicked = true;
 
 					if (move != null)
 						return ActivityUtils.SequenceActivities(move.MoveFollow(self, target, weapon.Weapon.MinRange, maxRange), this);
+					if (!onRailsHack &&
+						target.IsInRange(self.CenterPosition, weapon.MaxRange()) &&
+						!target.IsInRange(self.CenterPosition, weapon.Weapon.MinRange))
+						return this;
 				}
+
+				if (!onRailsHack)
+					attack.Target = Target.Invalid;
 
 				return NextActivity;
 			}

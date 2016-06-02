@@ -1,10 +1,8 @@
-MapFormat: 8
+MapFormat: 11
 
 RequiresMod: ts
 
 Title: Tread Lightly
-
-Description: Describe your map here
 
 Author: Westwood Studios
 
@@ -16,11 +14,7 @@ Bounds: 2,4,161,224
 
 Visibility: Lobby
 
-Type: Conquest
-
-Videos:
-
-Options:
+Categories: Conquest, Original TS Map
 
 Players:
 	PlayerReference@Neutral:
@@ -1219,23 +1213,7 @@ Actors:
 		Location: 123,20
 		Owner: Neutral
 
-Smudges:
-
 Rules:
 	World:
 		GlobalLightingPaletteEffect:
 			Ambient: 0.75
-
-Sequences:
-
-VoxelSequences:
-
-Weapons:
-
-Voices:
-
-Music:
-
-Notifications:
-
-Translations:

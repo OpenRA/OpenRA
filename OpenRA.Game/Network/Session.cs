@@ -1,10 +1,11 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2016 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
- * as published by the Free Software Foundation. For more information,
- * see COPYING.
+ * as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version. For more
+ * information, see COPYING.
  */
 #endregion
 
@@ -179,7 +180,6 @@ namespace OpenRA.Network
 			public int Timestep = 40;
 			public int OrderLatency = 3; // net tick frames (x 120 = ms)
 			public int RandomSeed = 0;
-			public bool FragileAlliances = false; // Allow diplomatic stance changes after game start.
 			public bool AllowCheats = false;
 			public bool AllowSpectators = true;
 			public bool Dedicated;
@@ -190,12 +190,13 @@ namespace OpenRA.Network
 			public bool Fog = true;
 			public bool AllyBuildRadius = true;
 			public int StartingCash = 5000;
-			public string TechLevel = "none";
-			public string StartingUnitsClass = "none";
+			public string TechLevel;
+			public string StartingUnitsClass;
 			public string GameSpeedType = "default";
 			public bool ShortGame = true;
 			public bool AllowVersionMismatch;
 			public string GameUid;
+			public bool DisableSingleplayer;
 
 			public static Global Deserialize(MiniYaml data)
 			{

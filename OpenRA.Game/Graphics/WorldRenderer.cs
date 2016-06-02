@@ -1,10 +1,11 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2016 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
- * as published by the Free Software Foundation. For more information,
- * see COPYING.
+ * as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version. For more
+ * information, see COPYING.
  */
 #endregion
 
@@ -33,14 +34,18 @@ namespace OpenRA.Graphics
 		readonly TerrainRenderer terrainRenderer;
 		readonly Lazy<DeveloperMode> devTrait;
 		readonly Func<string, PaletteReference> createPaletteReference;
+		readonly bool enableDepthBuffer;
 
-		internal WorldRenderer(World world)
+		internal WorldRenderer(ModData modData, World world)
 		{
 			World = world;
 			TileSize = World.Map.Grid.TileSize;
 			Viewport = new Viewport(this, world.Map);
 
 			createPaletteReference = CreatePaletteReference;
+
+			var mapGrid = modData.Manifest.Get<MapGrid>();
+			enableDepthBuffer = mapGrid.EnableDepthBuffer;
 
 			foreach (var pal in world.TraitDict.ActorsWithTrait<ILoadsPalettes>())
 				pal.Trait.LoadPalettes(this);
@@ -50,7 +55,7 @@ namespace OpenRA.Graphics
 
 			palette.Initialize();
 
-			Theater = new Theater(world.TileSet);
+			Theater = new Theater(world.Map.Rules.TileSet);
 			terrainRenderer = new TerrainRenderer(world, this);
 
 			devTrait = Exts.Lazy(() => world.LocalPlayer != null ? world.LocalPlayer.PlayerActor.Trait<DeveloperMode>() : null);
@@ -132,11 +137,17 @@ namespace OpenRA.Graphics
 			var bounds = Viewport.GetScissorBounds(World.Type != WorldType.Editor);
 			Game.Renderer.EnableScissor(bounds);
 
+			if (enableDepthBuffer)
+				Game.Renderer.Device.EnableDepthBuffer();
+
 			terrainRenderer.Draw(this, Viewport);
 			Game.Renderer.Flush();
 
 			for (var i = 0; i < renderables.Count; i++)
 				renderables[i].Render(this);
+
+			if (enableDepthBuffer)
+				Game.Renderer.ClearDepthBuffer();
 
 			foreach (var a in World.ActorsWithTrait<IPostRender>())
 				if (a.Actor.IsInWorld && !a.Actor.Disposed)
@@ -144,12 +155,18 @@ namespace OpenRA.Graphics
 
 			var renderShroud = World.RenderPlayer != null ? World.RenderPlayer.Shroud : null;
 
+			if (enableDepthBuffer)
+				Game.Renderer.ClearDepthBuffer();
+
 			foreach (var a in World.ActorsWithTrait<IRenderShroud>())
 				a.Trait.RenderShroud(this, renderShroud);
 
 			if (devTrait.Value != null && devTrait.Value.ShowDebugGeometry)
 				for (var i = 0; i < renderables.Count; i++)
 					renderables[i].RenderDebugGeometry(this);
+
+			if (enableDepthBuffer)
+				Game.Renderer.Device.DisableDepthBuffer();
 
 			Game.Renderer.DisableScissor();
 
@@ -173,9 +190,12 @@ namespace OpenRA.Graphics
 
 			if (World.Type == WorldType.Regular)
 			{
-				foreach (var g in World.ActorsHavingTrait<Selectable>().Where(a => !a.Disposed
-					&& !World.FogObscures(a)
-					&& !World.Selection.Actors.Contains(a)))
+				foreach (var g in World.ScreenMap.ActorsInBox(Viewport.TopLeft, Viewport.BottomRight)
+					.Where(a =>
+						!a.Disposed &&
+						!World.Selection.Contains(a) &&
+						a.Info.HasTraitInfo<SelectableInfo>() &&
+						!World.FogObscures(a)))
 				{
 					if (Game.Settings.Game.StatusBars == StatusBarsType.Standard)
 						new SelectionBarsRenderable(g, false, false).Render(this);
@@ -206,6 +226,12 @@ namespace OpenRA.Graphics
 		public float2 ScreenPosition(WPos pos)
 		{
 			return new float2(TileSize.Width * pos.X / 1024f, TileSize.Height * (pos.Y - pos.Z) / 1024f);
+		}
+
+		public float3 Screen3DPosition(WPos pos)
+		{
+			var z = ZPosition(pos, 0) * TileSize.Height / 1024f;
+			return new float3(TileSize.Width * pos.X / 1024f, TileSize.Height * (pos.Y - pos.Z) / 1024f, z);
 		}
 
 		public int2 ScreenPxPosition(WPos pos)

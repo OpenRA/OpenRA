@@ -1,10 +1,11 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2016 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
- * as published by the Free Software Foundation. For more information,
- * see COPYING.
+ * as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version. For more
+ * information, see COPYING.
  */
 #endregion
 
@@ -62,10 +63,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				if (world.LocalPlayer != null)
 				{
 					var scriptContext = world.WorldActor.TraitOrDefault<LuaScript>();
-					var video = world.LocalPlayer.WinState == WinState.Won ? world.Map.Videos.GameWon : world.Map.Videos.GameLost;
-
-					if (!string.IsNullOrEmpty(video) && !(scriptContext != null && scriptContext.FatalErrorOccurred))
-						Media.PlayFMVFullscreen(world, video, () => { });
+					var missionData = world.WorldActor.Info.TraitInfoOrDefault<MissionDataInfo>();
+					if (missionData != null && !(scriptContext != null && scriptContext.FatalErrorOccurred))
+					{
+						var video = world.LocalPlayer.WinState == WinState.Won ? missionData.WinVideo : missionData.LossVideo;
+						if (!string.IsNullOrEmpty(video))
+							Media.PlayFMVFullscreen(world, video, () => { });
+					}
 				}
 
 				var optionsButton = playerRoot.GetOrNull<MenuButtonWidget>("OPTIONS_BUTTON");

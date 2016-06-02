@@ -1,10 +1,11 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2016 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
- * as published by the Free Software Foundation. For more information,
- * see COPYING.
+ * as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version. For more
+ * information, see COPYING.
  */
 #endregion
 
@@ -31,6 +32,8 @@ namespace OpenRA.Platforms.Default
 		}
 
 		public static GLFeatures Features { get; private set; }
+
+		public static string Version { get; private set; }
 
 		public const int GL_FALSE = 0;
 
@@ -69,6 +72,7 @@ namespace OpenRA.Platforms.Default
 
 		// Depth buffer
 		public const int GL_DEPTH_COMPONENT = 0x1902;
+		public const int GL_LEQUAL = 0x0203;
 
 		// BlendingFactorDest
 		public const int GL_ZERO = 0;
@@ -212,6 +216,9 @@ namespace OpenRA.Platforms.Default
 		public delegate void Uniform2f(int location, float v0, float v1);
 		public static Uniform2f glUniform2f { get; private set; }
 
+		public delegate void Uniform3f(int location, float v0, float v1, float v2);
+		public static Uniform3f glUniform3f { get; private set; }
+
 		public delegate void Uniform1fv(int location, int count, IntPtr value);
 		public static Uniform1fv glUniform1fv { get; private set; }
 
@@ -269,6 +276,9 @@ namespace OpenRA.Platforms.Default
 
 		public delegate void BlendFunc(int sfactor, int dfactor);
 		public static BlendFunc glBlendFunc { get; private set; }
+
+		public delegate void DepthFunc(int func);
+		public static DepthFunc glDepthFunc { get; private set; }
 
 		public delegate void Scissor(int x, int y, int width, int height);
 		public static Scissor glScissor { get; private set; }
@@ -392,6 +402,7 @@ namespace OpenRA.Platforms.Default
 				glUniform1i = Bind<Uniform1i>("glUniform1i");
 				glUniform1f = Bind<Uniform1f>("glUniform1f");
 				glUniform2f = Bind<Uniform2f>("glUniform2f");
+				glUniform3f = Bind<Uniform3f>("glUniform3f");
 				glUniform1fv = Bind<Uniform1fv>("glUniform1fv");
 				glUniform2fv = Bind<Uniform2fv>("glUniform2fv");
 				glUniform3fv = Bind<Uniform3fv>("glUniform3fv");
@@ -411,6 +422,7 @@ namespace OpenRA.Platforms.Default
 				glDisable = Bind<Disable>("glDisable");
 				glBlendEquation = Bind<BlendEquation>("glBlendEquation");
 				glBlendFunc = Bind<BlendFunc>("glBlendFunc");
+				glDepthFunc = Bind<DepthFunc>("glDepthFunc");
 				glScissor = Bind<Scissor>("glScissor");
 				glPushClientAttrib = Bind<PushClientAttrib>("glPushClientAttrib");
 				glPopClientAttrib = Bind<PopClientAttrib>("glPopClientAttrib");
@@ -451,8 +463,8 @@ namespace OpenRA.Platforms.Default
 		{
 			try
 			{
-				var versionString = glGetString(GL_VERSION);
-				var version = versionString.Contains(" ") ? versionString.Split(' ')[0].Split('.') : versionString.Split('.');
+				Version = glGetString(GL_VERSION);
+				var version = Version.Contains(" ") ? Version.Split(' ')[0].Split('.') : Version.Split('.');
 
 				var major = 0;
 				if (version.Length > 0)

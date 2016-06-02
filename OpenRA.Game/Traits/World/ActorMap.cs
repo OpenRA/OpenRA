@@ -1,10 +1,11 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2016 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
- * as published by the Free Software Foundation. For more information,
- * see COPYING.
+ * as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version. For more
+ * information, see COPYING.
  */
 #endregion
 
@@ -97,22 +98,26 @@ namespace OpenRA.Traits
 
 			WPos position;
 			WDist range;
+			WDist vRange;
+
 			IEnumerable<Actor> currentActors = Enumerable.Empty<Actor>();
 
-			public ProximityTrigger(WPos pos, WDist range, Action<Actor> onActorEntered, Action<Actor> onActorExited)
+			public ProximityTrigger(WPos pos, WDist range, WDist vRange, Action<Actor> onActorEntered, Action<Actor> onActorExited)
 			{
 				this.onActorEntered = onActorEntered;
 				this.onActorExited = onActorExited;
 
-				Update(pos, range);
+				Update(pos, range, vRange);
 			}
 
-			public void Update(WPos newPos, WDist newRange)
+			public void Update(WPos newPos, WDist newRange, WDist newVRange)
 			{
 				position = newPos;
 				range = newRange;
+				vRange = newVRange;
 
-				var offset = new WVec(newRange, newRange, WDist.Zero);
+				var offset = new WVec(newRange, newRange, newVRange);
+
 				TopLeft = newPos - offset;
 				BottomRight = newPos + offset;
 
@@ -127,7 +132,8 @@ namespace OpenRA.Traits
 				var oldActors = currentActors;
 				var delta = new WVec(range, range, WDist.Zero);
 				currentActors = am.ActorsInBox(position - delta, position + delta)
-					.Where(a => (a.CenterPosition - position).HorizontalLengthSquared < range.LengthSquared)
+					.Where(a => (a.CenterPosition - position).HorizontalLengthSquared < range.LengthSquared
+						&& (vRange.Length == 0 || (a.World.Map.DistanceAboveTerrain(a.CenterPosition).LengthSquared <= vRange.LengthSquared)))
 					.ToList();
 
 				var entered = currentActors.Except(oldActors);
@@ -248,9 +254,9 @@ namespace OpenRA.Traits
 				return preferredSubCell;
 
 			if (!AnyActorsAt(cell))
-				return map.DefaultSubCell;
+				return map.Grid.DefaultSubCell;
 
-			for (var i = (int)SubCell.First; i < map.SubCellOffsets.Length; i++)
+			for (var i = (int)SubCell.First; i < map.Grid.SubCellOffsets.Length; i++)
 				if (i != (int)preferredSubCell && !AnyActorsAt(cell, (SubCell)i, checkTransient))
 					return (SubCell)i;
 
@@ -263,9 +269,9 @@ namespace OpenRA.Traits
 				return preferredSubCell;
 
 			if (!AnyActorsAt(cell))
-				return map.DefaultSubCell;
+				return map.Grid.DefaultSubCell;
 
-			for (var i = (int)SubCell.First; i < map.SubCellOffsets.Length; i++)
+			for (var i = (int)SubCell.First; i < map.Grid.SubCellOffsets.Length; i++)
 				if (i != (int)preferredSubCell && !AnyActorsAt(cell, (SubCell)i, checkIfBlocker))
 					return (SubCell)i;
 			return SubCell.Invalid;
@@ -438,10 +444,10 @@ namespace OpenRA.Traits
 			}
 		}
 
-		public int AddProximityTrigger(WPos pos, WDist range, Action<Actor> onEntry, Action<Actor> onExit)
+		public int AddProximityTrigger(WPos pos, WDist range, WDist vRange, Action<Actor> onEntry, Action<Actor> onExit)
 		{
 			var id = nextTriggerId++;
-			var t = new ProximityTrigger(pos, range, onEntry, onExit);
+			var t = new ProximityTrigger(pos, range, vRange, onEntry, onExit);
 			proximityTriggers.Add(id, t);
 
 			foreach (var bin in BinsInBox(t.TopLeft, t.BottomRight))
@@ -462,7 +468,7 @@ namespace OpenRA.Traits
 			t.Dispose();
 		}
 
-		public void UpdateProximityTrigger(int id, WPos newPos, WDist newRange)
+		public void UpdateProximityTrigger(int id, WPos newPos, WDist newRange, WDist newVRange)
 		{
 			ProximityTrigger t;
 			if (!proximityTriggers.TryGetValue(id, out t))
@@ -471,7 +477,7 @@ namespace OpenRA.Traits
 			foreach (var bin in BinsInBox(t.TopLeft, t.BottomRight))
 				bin.ProximityTriggers.Remove(t);
 
-			t.Update(newPos, newRange);
+			t.Update(newPos, newRange, newVRange);
 
 			foreach (var bin in BinsInBox(t.TopLeft, t.BottomRight))
 				bin.ProximityTriggers.Add(t);

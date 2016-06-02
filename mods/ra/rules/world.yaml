@@ -7,7 +7,6 @@
 		VictoryMusic: score
 		DefeatMusic: map
 	TerrainGeometryOverlay:
-	LoadWidgetAtGameStart:
 	ShroudRenderer:
 		FogVariants: shroud
 		Index: 255, 16, 32, 48, 64, 80, 96, 112, 128, 144, 160, 176, 192, 208, 224, 240, 20, 40, 56, 65, 97, 130, 148, 194, 24, 33, 66, 132, 28, 41, 67, 134, 1, 2, 4, 8, 3, 6, 12, 9, 7, 14, 13, 11, 5, 10, 15, 255
@@ -121,6 +120,8 @@ World:
 	PathfinderDebugOverlay:
 	WarheadDebugOverlay:
 	SpawnMapActors:
+	MapBuildRadius:
+	MapOptions:
 	CreateMPPlayers:
 	MPStartUnits@mcvonly:
 		Class: none
@@ -168,9 +169,11 @@ World:
 	StartGameNotification:
 	ObjectivesPanel:
 		PanelName: SKIRMISH_STATS
+	LoadWidgetAtGameStart:
 
 EditorWorld:
 	Inherits: ^BaseWorld
 	EditorActorLayer:
 	EditorResourceLayer:
 	EditorSelectionLayer:
+	LoadWidgetAtGameStart:

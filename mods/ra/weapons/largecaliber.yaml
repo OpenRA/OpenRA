@@ -17,10 +17,10 @@
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
 	Warhead@3EffGround: CreateEffect
-		Explosion: small_explosion
+		Explosions: small_explosion
 		InvalidImpactTypes: Water
 	Warhead@4EffWater: CreateEffect
-		Explosion: small_splash
+		Explosions: small_splash
 		ValidImpactTypes: Water
 
 90mm:
@@ -42,12 +42,12 @@
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
 	Warhead@3EffGround: CreateEffect
-		Explosion: small_explosion
-		ImpactSound: kaboom12.aud
+		Explosions: small_explosion
+		ImpactSounds: kaboom12.aud
 		InvalidImpactTypes: Water
 	Warhead@4EffWater: CreateEffect
-		Explosion: small_splash
-		ImpactSound: splash9.aud
+		Explosions: small_splash
+		ImpactSounds: splash9.aud
 		ValidImpactTypes: Water
 
 105mm:
@@ -71,12 +71,12 @@
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
 	Warhead@3EffGround: CreateEffect
-		Explosion: small_explosion
-		ImpactSound: kaboom12.aud
+		Explosions: small_explosion
+		ImpactSounds: kaboom12.aud
 		InvalidImpactTypes: Water
 	Warhead@4EffWater: CreateEffect
-		Explosion: small_splash
-		ImpactSound: splash9.aud
+		Explosions: small_splash
+		ImpactSounds: splash9.aud
 		ValidImpactTypes: Water
 
 120mm:
@@ -101,12 +101,12 @@
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
 	Warhead@3EffGround: CreateEffect
-		Explosion: small_explosion
-		ImpactSound: kaboom12.aud
+		Explosions: small_explosion
+		ImpactSounds: kaboom12.aud
 		InvalidImpactTypes: Water
 	Warhead@4EffWater: CreateEffect
-		Explosion: small_splash
-		ImpactSound: splash9.aud
+		Explosions: small_splash
+		ImpactSounds: splash9.aud
 		ValidImpactTypes: Water
 
 TurretGun:
@@ -128,17 +128,17 @@ TurretGun:
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
 	Warhead@3EffGround: CreateEffect
-		Explosion: small_explosion
-		ImpactSound: kaboom12.aud
+		Explosions: small_explosion
+		ImpactSounds: kaboom12.aud
 		InvalidImpactTypes: Water
 	Warhead@4EffWater: CreateEffect
-		Explosion: small_splash
-		ImpactSound: splash9.aud
+		Explosions: small_splash
+		ImpactSounds: splash9.aud
 		ValidImpactTypes: Water
 
 155mm:
 	ReloadDelay: 85
-	Range: 14c0
+	Range: 12c0
 	MinRange: 3c0
 	Report: tank5.aud
 	Projectile: Bullet
@@ -161,12 +161,12 @@ TurretGun:
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
-		Explosion: artillery_explosion
-		ImpactSound: kaboom15.aud
+		Explosions: artillery_explosion
+		ImpactSounds: kaboom15.aud
 		InvalidImpactTypes: Water
 	Warhead@4EffWater: CreateEffect
-		Explosion: med_splash
-		ImpactSound: splash9.aud
+		Explosions: med_splash
+		ImpactSounds: splash9.aud
 		ValidImpactTypes: Water
 
 8Inch:
@@ -194,12 +194,12 @@ TurretGun:
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
-		Explosion: artillery_explosion
-		ImpactSound: kaboom15.aud
+		Explosions: artillery_explosion
+		ImpactSounds: kaboom15.aud
 		InvalidImpactTypes: Water
 	Warhead@4EffWater: CreateEffect
-		Explosion: large_splash
-		ImpactSound: splash9.aud
+		Explosions: large_splash
+		ImpactSounds: splash9.aud
 		ValidImpactTypes: Water
 
 2Inch:
@@ -221,10 +221,10 @@ TurretGun:
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
-		Explosion: small_explosion
-		ImpactSound: kaboom12.aud
+		Explosions: small_explosion
+		ImpactSounds: kaboom12.aud
 		InvalidImpactTypes: Water
 	Warhead@4EffWater: CreateEffect
-		Explosion: small_splash
-		ImpactSound: splash9.aud
+		Explosions: small_splash
+		ImpactSounds: splash9.aud
 		ValidImpactTypes: Water

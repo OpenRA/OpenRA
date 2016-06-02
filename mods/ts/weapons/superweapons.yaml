@@ -11,8 +11,10 @@ MultiCluster:
 		Inaccuracy: 128
 		Image: DRAGON
 		HorizontalRateOfTurn: 8
-		RangeLimit: 35
+		RangeLimit: 7c204
 		Palette: ra
+		MinimumLaunchSpeed: 75
+		Speed: 384
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 65
@@ -25,13 +27,13 @@ MultiCluster:
 			Concrete: 60
 		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
 	Warhead@2Eff: CreateEffect
-		Explosion: large_explosion
-		ImpactSound: expnew09.aud
+		Explosions: large_explosion
+		ImpactSounds: expnew09.aud
 		InvalidImpactTypes: Water
 	Warhead@3EffWater: CreateEffect
-		Explosion: small_watersplash
+		Explosions: small_watersplash
 		ExplosionPalette: player
-		ImpactSound: ssplash2.aud
+		ImpactSounds: ssplash2.aud
 		ValidImpactTypes: Water
 	Warhead@4Smu: LeaveSmudge
 		SmudgeType: MediumCrater
@@ -61,8 +63,8 @@ IonCannon:
 		ValidTargets: Ground, Air
 		DamageTypes: Prone100Percent, TriggerProne, EnergyDeath
 	Warhead@2Eff_impact: CreateEffect
-		Explosion: ionring
-		ImpactSound: ion1.aud
+		Explosions: ionring
+		ImpactSounds: ion1.aud
 	Warhead@3Dam_area: SpreadDamage
 		Spread: 1c0
 		Damage: 250
@@ -86,7 +88,7 @@ EMPulseCannon:
 		Angle: 62
 		Image: pulsball
 	Warhead@1Eff: CreateEffect
-		Explosion: pulse_explosion
+		Explosions: pulse_explosion
 	Warhead@emp: GrantUpgrade
 		Range: 3c0
 		Duration: 250
@@ -103,8 +105,8 @@ ClusterMissile:
 			Concrete: 25
 		DamageTypes: Prone50Percent, TriggerProne, FireDeath
 	Warhead@SoundEffect0: CreateEffect
-		Explosion: large_explosion
-		ImpactSound: expnew19.aud
+		Explosions: large_explosion
+		ImpactSounds: expnew19.aud
 	Warhead@ResourceDestruction0: DestroyResource
 		Size: 1
 	Warhead@ClusterSmudges0: LeaveSmudge

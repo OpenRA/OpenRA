@@ -141,6 +141,8 @@ GAWEAP:
 		HP: 1000
 	RevealsShroud:
 		Range: 4c0
+	Armor:
+		Type: Heavy
 	RallyPoint:
 		Offset: 4,1
 		Palette: mouse
@@ -300,7 +302,7 @@ GARADR:
 	Selectable:
 		Bounds: 96, 48, 0, -6
 	Health:
-		HP: 800
+		HP: 1000
 	Armor:
 		Type: Wood
 	RequiresPower:
@@ -333,7 +335,7 @@ GATECH:
 		BuildPaletteOrder: 100
 		Prerequisites: gaweap, garadr, ~structures.gdi
 	Valued:
-		Cost: 2000
+		Cost: 1500
 	Tooltip:
 		Name: GDI Tech Center
 		Description: Provides access to advanced GDI technologies.

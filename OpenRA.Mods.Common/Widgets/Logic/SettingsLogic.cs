@@ -1,10 +1,11 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2016 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
- * as published by the Free Software Foundation. For more information,
- * see COPYING.
+ * as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version. For more
+ * information, see COPYING.
  */
 
 #endregion
@@ -20,13 +21,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	public class SettingsLogic : ChromeLogic
 	{
 		enum PanelType { Display, Audio, Input, Advanced }
-		Dictionary<PanelType, Action> leavePanelActions = new Dictionary<PanelType, Action>();
-		Dictionary<PanelType, Action> resetPanelActions = new Dictionary<PanelType, Action>();
-		PanelType settingsPanel = PanelType.Display;
-		Widget panelContainer, tabContainer;
-
-		WorldRenderer worldRenderer;
-		SoundDevice soundDevice;
 
 		static readonly string OriginalSoundDevice;
 		static readonly string OriginalSoundEngine;
@@ -34,6 +28,16 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		static readonly string OriginalGraphicsRenderer;
 		static readonly int2 OriginalGraphicsWindowedSize;
 		static readonly int2 OriginalGraphicsFullscreenSize;
+
+		readonly Dictionary<PanelType, Action> leavePanelActions = new Dictionary<PanelType, Action>();
+		readonly Dictionary<PanelType, Action> resetPanelActions = new Dictionary<PanelType, Action>();
+		readonly Widget panelContainer, tabContainer;
+
+		readonly ModData modData;
+		readonly WorldRenderer worldRenderer;
+
+		SoundDevice soundDevice;
+		PanelType settingsPanel = PanelType.Display;
 
 		static SettingsLogic()
 		{
@@ -47,9 +51,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		}
 
 		[ObjectCreator.UseCtor]
-		public SettingsLogic(Widget widget, Action onExit, WorldRenderer worldRenderer)
+		public SettingsLogic(Widget widget, Action onExit, ModData modData, WorldRenderer worldRenderer)
 		{
 			this.worldRenderer = worldRenderer;
+			this.modData = modData;
 
 			panelContainer = widget.Get("SETTINGS_PANEL");
 			tabContainer = widget.Get("TAB_CONTAINER");
@@ -157,7 +162,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			BindCheckboxPref(panel, "PLAYER_STANCE_COLORS_CHECKBOX", gs, "UsePlayerStanceColors");
 
 			var languageDropDownButton = panel.Get<DropDownButtonWidget>("LANGUAGE_DROPDOWNBUTTON");
-			languageDropDownButton.OnMouseDown = _ => ShowLanguageDropdown(languageDropDownButton);
+			languageDropDownButton.OnMouseDown = _ => ShowLanguageDropdown(languageDropDownButton, modData.Languages);
 			languageDropDownButton.GetText = () => FieldLoader.Translate(ds.Language);
 
 			var windowModeDropdown = panel.Get<DropDownButtonWidget>("MODE_DROPDOWN");
@@ -381,6 +386,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			BindCheckboxPref(panel, "CLASSICORDERS_CHECKBOX", gs, "UseClassicMouseStyle");
 			BindCheckboxPref(panel, "EDGESCROLL_CHECKBOX", gs, "ViewportEdgeScroll");
 			BindCheckboxPref(panel, "LOCKMOUSE_CHECKBOX", gs, "LockMouseWindow");
+			BindCheckboxPref(panel, "ALLOW_ZOOM_CHECKBOX", gs, "AllowZoom");
 			BindSliderPref(panel, "SCROLLSPEED_SLIDER", gs, "ViewportEdgeScrollStep");
 			BindSliderPref(panel, "UI_SCROLLSPEED_SLIDER", gs, "UIScrollSpeed");
 
@@ -396,9 +402,17 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				MakeMouseFocusSettingsLive();
 			};
 
-			var mouseScrollDropdown = panel.Get<DropDownButtonWidget>("MOUSE_SCROLL");
-			mouseScrollDropdown.OnMouseDown = _ => ShowMouseScrollDropdown(mouseScrollDropdown, gs);
-			mouseScrollDropdown.GetText = () => gs.MouseScroll.ToString();
+			var middleMouseScrollDropdown = panel.Get<DropDownButtonWidget>("MIDDLE_MOUSE_SCROLL");
+			middleMouseScrollDropdown.OnMouseDown = _ => ShowMouseScrollDropdown(middleMouseScrollDropdown, gs, false);
+			middleMouseScrollDropdown.GetText = () => gs.MiddleMouseScroll.ToString();
+
+			var rightMouseScrollDropdown = panel.Get<DropDownButtonWidget>("RIGHT_MOUSE_SCROLL");
+			rightMouseScrollDropdown.OnMouseDown = _ => ShowMouseScrollDropdown(rightMouseScrollDropdown, gs, true);
+			rightMouseScrollDropdown.GetText = () => gs.RightMouseScroll.ToString();
+
+			var zoomModifierDropdown = panel.Get<DropDownButtonWidget>("ZOOM_MODIFIER");
+			zoomModifierDropdown.OnMouseDown = _ => ShowZoomModifierDropdown(zoomModifierDropdown, gs);
+			zoomModifierDropdown.GetText = () => gs.ZoomModifier.ToString();
 
 			var hotkeyList = panel.Get<ScrollPanelWidget>("HOTKEY_LIST");
 			hotkeyList.Layout = new GridLayout(hotkeyList);
@@ -441,7 +455,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					{ "MapScrollUp", "Map scroll up" },
 					{ "MapScrollDown", "Map scroll down" },
 					{ "MapScrollLeft", "Map scroll left" },
-					{ "MapScrollRight", "Map scroll right" }
+					{ "MapScrollRight", "Map scroll right" },
+
+					{ "MapPushTop", "Map push to top" },
+					{ "MapPushBottom", "Map push to bottom" },
+					{ "MapPushLeftEdge", "Map push to left edge" },
+					{ "MapPushRightEdge", "Map push to right edge" }
 				};
 
 				var header = ScrollItemWidget.Setup(hotkeyHeader, returnTrue, doNothing);
@@ -457,7 +476,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var hotkeys = new Dictionary<string, string>()
 				{
 					{ "ObserverCombinedView", "All Players" },
-					{ "ObserverWorldView", "Disable Shroud" }
+					{ "ObserverWorldView", "Disable Shroud" },
+					{ "PauseKey", "Pause/Play" },
+					{ "ReplaySpeedSlowKey", "Slow speed" },
+					{ "ReplaySpeedRegularKey", "Regular speed" },
+					{ "ReplaySpeedFastKey", "Fast speed" },
+					{ "ReplaySpeedMaxKey", "Maximum speed" }
 				};
 
 				var header = ScrollItemWidget.Setup(hotkeyHeader, returnTrue, doNothing);
@@ -545,6 +569,24 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					BindHotkeyPref(kv, ks, developerTemplate, hotkeyList);
 			}
 
+			// Music
+			{
+				var hotkeys = new Dictionary<string, string>()
+				{
+					{ "NextTrack", "Next" },
+					{ "PreviousTrack", "Previous" },
+					{ "StopMusic", "Stop" },
+					{ "PauseMusic", "Pause or Resume" }
+				};
+
+				var header = ScrollItemWidget.Setup(hotkeyHeader, returnTrue, doNothing);
+				header.Get<LabelWidget>("LABEL").GetText = () => "Music commands";
+				hotkeyList.AddChild(header);
+
+				foreach (var kv in hotkeys)
+					BindHotkeyPref(kv, ks, developerTemplate, hotkeyList);
+			}
+
 			return () => { };
 		}
 
@@ -558,11 +600,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			return () =>
 			{
 				gs.UseClassicMouseStyle = dgs.UseClassicMouseStyle;
-				gs.MouseScroll = dgs.MouseScroll;
+				gs.MiddleMouseScroll = dgs.MiddleMouseScroll;
+				gs.RightMouseScroll = dgs.RightMouseScroll;
 				gs.LockMouseWindow = dgs.LockMouseWindow;
 				gs.ViewportEdgeScroll = dgs.ViewportEdgeScroll;
 				gs.ViewportEdgeScrollStep = dgs.ViewportEdgeScrollStep;
 				gs.UIScrollSpeed = dgs.UIScrollSpeed;
+				gs.AllowZoom = dgs.AllowZoom;
+				gs.ZoomModifier = dgs.ZoomModifier;
 
 				foreach (var f in ks.GetType().GetFields())
 				{
@@ -592,6 +637,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			BindCheckboxPref(panel, "BOTDEBUG_CHECKBOX", ds, "BotDebug");
 			BindCheckboxPref(panel, "FETCH_NEWS_CHECKBOX", gs, "FetchNews");
 			BindCheckboxPref(panel, "LUADEBUG_CHECKBOX", ds, "LuaDebug");
+			BindCheckboxPref(panel, "SENDSYSINFO_CHECKBOX", ds, "SendSystemInformation");
 
 			return () => { };
 		}
@@ -615,7 +661,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			};
 		}
 
-		static bool ShowMouseScrollDropdown(DropDownButtonWidget dropdown, GameSettings s)
+		static bool ShowMouseScrollDropdown(DropDownButtonWidget dropdown, GameSettings s, bool rightMouse)
 		{
 			var options = new Dictionary<string, MouseScrollType>()
 			{
@@ -628,8 +674,31 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			Func<string, ScrollItemWidget, ScrollItemWidget> setupItem = (o, itemTemplate) =>
 			{
 				var item = ScrollItemWidget.Setup(itemTemplate,
-					() => s.MouseScroll == options[o],
-					() => s.MouseScroll = options[o]);
+					() => (rightMouse ? s.RightMouseScroll : s.MiddleMouseScroll) == options[o],
+					() => { if (rightMouse) s.RightMouseScroll = options[o]; else s.MiddleMouseScroll = options[o]; });
+				item.Get<LabelWidget>("LABEL").GetText = () => o;
+				return item;
+			};
+
+			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 500, options.Keys, setupItem);
+			return true;
+		}
+
+		static bool ShowZoomModifierDropdown(DropDownButtonWidget dropdown, GameSettings s)
+		{
+			var options = new Dictionary<string, Modifiers>()
+			{
+				{ "Alt", Modifiers.Alt },
+				{ "Ctrl", Modifiers.Ctrl },
+				{ "Meta", Modifiers.Meta },
+				{ "Shift", Modifiers.Shift },
+			};
+
+			Func<string, ScrollItemWidget, ScrollItemWidget> setupItem = (o, itemTemplate) =>
+			{
+				var item = ScrollItemWidget.Setup(itemTemplate,
+					() => s.ZoomModifier == options[o],
+					() => s.ZoomModifier = options[o]);
 				item.Get<LabelWidget>("LABEL").GetText = () => o;
 				return item;
 			};
@@ -683,7 +752,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			return true;
 		}
 
-		static bool ShowLanguageDropdown(DropDownButtonWidget dropdown)
+		static bool ShowLanguageDropdown(DropDownButtonWidget dropdown, IEnumerable<string> languages)
 		{
 			Func<string, ScrollItemWidget, ScrollItemWidget> setupItem = (o, itemTemplate) =>
 			{
@@ -695,7 +764,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				return item;
 			};
 
-			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 500, Game.ModData.Languages, setupItem);
+			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 500, languages, setupItem);
 			return true;
 		}
 

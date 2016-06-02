@@ -1,10 +1,11 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2016 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
- * as published by the Free Software Foundation. For more information,
- * see COPYING.
+ * as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version. For more
+ * information, see COPYING.
  */
 #endregion
 
@@ -48,7 +49,7 @@ namespace OpenRA.Mods.Common.Traits
 		public void LoadPalettes(WorldRenderer wr)
 		{
 			if (info.Tileset == null || info.Tileset.ToLowerInvariant() == world.Map.Tileset.ToLowerInvariant())
-				wr.AddPalette(info.Name, new ImmutablePalette(Game.ModData.ModFiles.Open(info.Filename), info.ShadowIndex), info.AllowModifiers);
+				wr.AddPalette(info.Name, new ImmutablePalette(world.Map.Open(info.Filename), info.ShadowIndex), info.AllowModifiers);
 		}
 
 		public IEnumerable<string> PaletteNames
@@ -56,7 +57,7 @@ namespace OpenRA.Mods.Common.Traits
 			get
 			{
 				// Only expose the palette if it is available for the shellmap's tileset (which is a requirement for its use).
-				if (info.Tileset == null || info.Tileset == world.TileSet.Id)
+				if (info.Tileset == null || info.Tileset == world.Map.Rules.TileSet.Id)
 					yield return info.Name;
 			}
 		}

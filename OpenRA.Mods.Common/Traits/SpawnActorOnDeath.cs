@@ -1,10 +1,11 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2016 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
- * as published by the Free Software Foundation. For more information,
- * see COPYING.
+ * as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version. For more
+ * information, see COPYING.
  */
 #endregion
 
@@ -51,17 +52,18 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		readonly SpawnActorOnDeathInfo info;
 		readonly string faction;
+		readonly bool enabled;
 
 		public SpawnActorOnDeath(ActorInitializer init, SpawnActorOnDeathInfo info)
 		{
 			this.info = info;
-
+			enabled = !info.RequiresLobbyCreeps || init.Self.World.WorldActor.Trait<MapCreeps>().Enabled;
 			faction = init.Contains<FactionInit>() ? init.Get<FactionInit, string>() : init.Self.Owner.Faction.InternalName;
 		}
 
 		public void Killed(Actor self, AttackInfo e)
 		{
-			if (info.RequiresLobbyCreeps && !self.World.LobbyInfo.GlobalSettings.Creeps)
+			if (!enabled)
 				return;
 
 			if (!self.IsInWorld)
@@ -76,6 +78,10 @@ namespace OpenRA.Mods.Common.Traits
 
 			self.World.AddFrameEndTask(w =>
 			{
+				// Actor has been disposed by something else before its death (for example `Enter`).
+				if (self.Disposed)
+					return;
+
 				var td = new TypeDictionary
 				{
 					new ParentActorInit(self),

@@ -1,10 +1,11 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2016 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
- * as published by the Free Software Foundation. For more information,
- * see COPYING.
+ * as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version. For more
+ * information, see COPYING.
  */
 #endregion
 
@@ -20,35 +21,46 @@ namespace OpenRA.Graphics
 		static readonly int[] ChannelMasks = { 2, 1, 0, 3 };
 		static readonly float[] ChannelSelect = { 0.2f, 0.4f, 0.6f, 0.8f };
 
-		public static void FastCreateQuad(Vertex[] vertices, float2 o, Sprite r, float paletteTextureIndex, int nv, float2 size)
+		public static void FastCreateQuad(Vertex[] vertices, float3 o, Sprite r, float paletteTextureIndex, int nv, float3 size)
 		{
-			var b = new float2(o.X + size.X, o.Y);
-			var c = new float2(o.X + size.X, o.Y + size.Y);
-			var d = new float2(o.X, o.Y + size.Y);
+			var b = new float3(o.X + size.X, o.Y, o.Z);
+			var c = new float3(o.X + size.X, o.Y + size.Y, o.Z + size.Z);
+			var d = new float3(o.X, o.Y + size.Y, o.Z + size.Z);
 			FastCreateQuad(vertices, o, b, c, d, r, paletteTextureIndex, nv);
 		}
 
-		public static void FastCreateQuad(Vertex[] vertices, float2 a, float2 b, float2 c, float2 d, Sprite r, float paletteTextureIndex, int nv)
+		public static void FastCreateQuad(Vertex[] vertices, float3 a, float3 b, float3 c, float3 d, Sprite r, float paletteTextureIndex, int nv)
 		{
+			float sl = 0;
+			float st = 0;
+			float sr = 0;
+			float sb = 0;
 			var attribC = ChannelSelect[(int)r.Channel];
-			if (r.Sheet.Type == SheetType.DualIndexed)
-				attribC *= -1;
 
-			vertices[nv] = new Vertex(a, r.Left, r.Top, paletteTextureIndex, attribC);
-			vertices[nv + 1] = new Vertex(b, r.Right, r.Top, paletteTextureIndex, attribC);
-			vertices[nv + 2] = new Vertex(c, r.Right, r.Bottom, paletteTextureIndex, attribC);
-			vertices[nv + 3] = new Vertex(c, r.Right, r.Bottom, paletteTextureIndex, attribC);
-			vertices[nv + 4] = new Vertex(d, r.Left, r.Bottom, paletteTextureIndex, attribC);
-			vertices[nv + 5] = new Vertex(a, r.Left, r.Top, paletteTextureIndex, attribC);
+			var ss = r as SpriteWithSecondaryData;
+			if (ss != null)
+			{
+				sl = ss.SecondaryLeft;
+				st = ss.SecondaryTop;
+				sr = ss.SecondaryRight;
+				sb = ss.SecondaryBottom;
+				attribC = -(attribC + ChannelSelect[(int)ss.Channel] / 10);
+			}
+
+			vertices[nv] = new Vertex(a, r.Left, r.Top, sl, st, paletteTextureIndex, attribC);
+			vertices[nv + 1] = new Vertex(b, r.Right, r.Top, sr, st, paletteTextureIndex, attribC);
+			vertices[nv + 2] = new Vertex(c, r.Right, r.Bottom, sr, sb, paletteTextureIndex, attribC);
+			vertices[nv + 3] = new Vertex(c, r.Right, r.Bottom, sr, sb, paletteTextureIndex, attribC);
+			vertices[nv + 4] = new Vertex(d, r.Left, r.Bottom, sl, sb, paletteTextureIndex, attribC);
+			vertices[nv + 5] = new Vertex(a, r.Left, r.Top, sl, st, paletteTextureIndex, attribC);
 		}
 
-		public static void FastCopyIntoChannel(Sprite dest, byte[] src) { FastCopyIntoChannel(dest, 0, src); }
-		public static void FastCopyIntoChannel(Sprite dest, int channelOffset, byte[] src)
+		public static void FastCopyIntoChannel(Sprite dest, byte[] src)
 		{
 			var data = dest.Sheet.GetData();
 			var srcStride = dest.Bounds.Width;
 			var destStride = dest.Sheet.Size.Width * 4;
-			var destOffset = destStride * dest.Bounds.Top + dest.Bounds.Left * 4 + ChannelMasks[(int)dest.Channel + channelOffset];
+			var destOffset = destStride * dest.Bounds.Top + dest.Bounds.Left * 4 + ChannelMasks[(int)dest.Channel];
 			var destSkip = destStride - 4 * srcStride;
 			var height = dest.Bounds.Height;
 

@@ -1,10 +1,11 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2016 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
- * as published by the Free Software Foundation. For more information,
- * see COPYING.
+ * as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version. For more
+ * information, see COPYING.
  */
 #endregion
 
@@ -91,8 +92,8 @@ namespace OpenRA.Mods.RA.Graphics
 
 		public IEnumerable<IFinalizedRenderable> GenerateRenderables(WorldRenderer wr)
 		{
-			var bright = wr.World.Map.SequenceProvider.GetSequence(image, brightSequence);
-			var dim = wr.World.Map.SequenceProvider.GetSequence(image, dimSequence);
+			var bright = wr.World.Map.Rules.Sequences.GetSequence(image, brightSequence);
+			var dim = wr.World.Map.Rules.Sequences.GetSequence(image, dimSequence);
 
 			var source = wr.ScreenPosition(pos);
 			var target = wr.ScreenPosition(pos + length);

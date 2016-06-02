@@ -1,10 +1,11 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2016 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
- * as published by the Free Software Foundation. For more information,
- * see COPYING.
+ * as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version. For more
+ * information, see COPYING.
  */
 #endregion
 
@@ -67,7 +68,7 @@ namespace OpenRA.Mods.Common.Traits
 			var domainIndex = world.WorldActor.TraitOrDefault<DomainIndex>();
 			if (domainIndex != null)
 			{
-				var passable = mi.GetMovementClass(world.TileSet);
+				var passable = mi.GetMovementClass(world.Map.Rules.TileSet);
 				if (!domainIndex.IsPassable(source, target, (uint)passable))
 					return EmptyPath;
 			}
@@ -88,7 +89,7 @@ namespace OpenRA.Mods.Common.Traits
 			var targetCell = world.Map.CellContaining(target);
 
 			// Correct for SubCell offset
-			target -= world.Map.OffsetOfSubCell(srcSub);
+			target -= world.Map.Grid.OffsetOfSubCell(srcSub);
 
 			// Select only the tiles that are within range from the requested SubCell
 			// This assumes that the SubCell does not change during the path traversal
@@ -101,7 +102,7 @@ namespace OpenRA.Mods.Common.Traits
 			var domainIndex = world.WorldActor.TraitOrDefault<DomainIndex>();
 			if (domainIndex != null)
 			{
-				var passable = mi.GetMovementClass(world.TileSet);
+				var passable = mi.GetMovementClass(world.Map.Rules.TileSet);
 				tilesInRange = new List<CPos>(tilesInRange.Where(t => domainIndex.IsPassable(source, t, (uint)passable)));
 				if (!tilesInRange.Any())
 					return EmptyPath;

@@ -1,10 +1,11 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2016 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
- * as published by the Free Software Foundation. For more information,
- * see COPYING.
+ * as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version. For more
+ * information, see COPYING.
  */
 #endregion
 
@@ -13,21 +14,21 @@ using OpenRA.Effects;
 using OpenRA.Mods.Common.Effects;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.Common.Traits
+namespace OpenRA.Mods.Common.Traits.Render
 {
 	[Desc("Display explosions over the building footprint when it is destroyed.")]
 	class WithBuildingExplosionInfo : ITraitInfo, Requires<BuildingInfo>
 	{
-		[Desc("Group where Sequences are looked up.")]
-		public readonly string SequenceCollection = "explosion";
+		[Desc("'Image' where Sequences are looked up.")]
+		public readonly string Image = "explosion";
 
-		[Desc("Explosion sequence names to use")]
-		[SequenceReference("SequenceCollection")] public readonly string[] Sequences = { "building" };
+		[Desc("Explosion sequence names to use.")]
+		[SequenceReference("Image")] public readonly string[] Sequences = { "building" };
 
 		[Desc("Delay the explosions by this many ticks.")]
 		public readonly int Delay = 0;
 
-		[Desc("Custom palette name")]
+		[Desc("Custom palette name.")]
 		[PaletteReference] public readonly string Palette = "effect";
 
 		public object Create(ActorInitializer init) { return new WithBuildingExplosion(init.Self, this); }
@@ -57,7 +58,7 @@ namespace OpenRA.Mods.Common.Traits
 		void SpawnExplosions(World world, IEnumerable<CPos> cells)
 		{
 			foreach (var c in cells)
-				world.AddFrameEndTask(w => w.Add(new Explosion(w, w.Map.CenterOfCell(c), info.Sequences.Random(w.SharedRandom), info.Palette)));
+				world.AddFrameEndTask(w => w.Add(new SpriteEffect(w.Map.CenterOfCell(c), w, info.Image, info.Sequences.Random(w.SharedRandom), info.Palette)));
 		}
 	}
 }

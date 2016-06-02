@@ -1,0 +1,81 @@
+^Vehicle:
+	Tooltip:
+		GenericVisibility: Enemy
+		ShowOwnerRow: false
+
+^Tank:
+	Tooltip:
+		GenericVisibility: Enemy
+		ShowOwnerRow: false
+
+^Infantry:
+	Tooltip:
+		GenericVisibility: Enemy
+		ShowOwnerRow: false
+
+^Ship:
+	Tooltip:
+		GenericVisibility: Enemy
+		ShowOwnerRow: false
+
+^Plane:
+	Tooltip:
+		GenericVisibility: Enemy
+		ShowOwnerRow: false
+
+^Helicopter:
+	Tooltip:
+		GenericVisibility: Enemy
+		ShowOwnerRow: false
+
+^Building:
+	Tooltip:
+		GenericVisibility: Enemy
+		ShowOwnerRow: false
+
+^CivBuilding:
+	Tooltip:
+		ShowOwnerRow: false
+
+^CivField:
+	Tooltip:
+		ShowOwnerRow: false
+
+^TechBuilding:
+	Tooltip:
+		ShowOwnerRow: false
+
+^Wall:
+	Tooltip:
+		ShowOwnerRow: false
+
+^Husk:
+	Tooltip:
+		GenericVisibility: Enemy, Ally, Neutral
+		GenericStancePrefix: false
+		ShowOwnerRow: false
+
+^PlaneHusk:
+	Tooltip:
+		GenericVisibility: Enemy, Ally, Neutral
+		GenericStancePrefix: false
+		ShowOwnerRow: false
+
+^HelicopterHusk:
+	Tooltip:
+		GenericVisibility: Enemy, Ally, Neutral
+		GenericStancePrefix: false
+		ShowOwnerRow: false
+
+^Crate:
+	Tooltip:
+		ShowOwnerRow: false
+
+FLARE:
+	Tooltip:
+		ShowOwnerRow: false
+
+SPY:
+	DisguiseToolTip:
+		ShowOwnerRow: false
+

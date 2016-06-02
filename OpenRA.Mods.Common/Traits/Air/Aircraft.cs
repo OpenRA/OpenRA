@@ -1,10 +1,11 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2016 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
- * as published by the Free Software Foundation. For more information,
- * see COPYING.
+ * as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version. For more
+ * information, see COPYING.
  */
 #endregion
 
@@ -35,7 +36,7 @@ namespace OpenRA.Mods.Common.Traits
 		[ActorReference]
 		public readonly HashSet<string> RearmBuildings = new HashSet<string> { };
 		public readonly int InitialFacing = 0;
-		public readonly int ROT = 255;
+		public readonly int TurnSpeed = 255;
 		public readonly int Speed = 1;
 
 		[Desc("Minimum altitude where this aircraft is considered airborne")]
@@ -82,6 +83,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Sound to play when the actor is landing.")]
 		public readonly string LandingSound = null;
 
+		[Desc("The distance of the resupply base that the airplane will wait for its turn.")]
+		public readonly WDist WaitDistanceFromResupplyBase = new WDist(3072);
+
 		public IReadOnlyDictionary<CPos, SubCell> OccupiedCells(ActorInfo info, CPos location, SubCell subCell = SubCell.Any) { return new ReadOnlyDictionary<CPos, SubCell>(); }
 		bool IOccupySpaceInfo.SharesCell { get { return false; } }
 	}
@@ -102,10 +106,16 @@ namespace OpenRA.Mods.Common.Traits
 		[Sync] public int Facing { get; set; }
 		[Sync] public WPos CenterPosition { get; private set; }
 		public CPos TopLeft { get { return self.World.Map.CellContaining(CenterPosition); } }
-		public int ROT { get { return Info.ROT; } }
+		public int TurnSpeed { get { return Info.TurnSpeed; } }
 
 		bool airborne;
 		bool cruising;
+
+		/// <summary>
+		/// The repulsion active.
+		/// This is used in case the Actor is a helicopter, to soft resupply procedures and don't make other helicopters repulse it from the supply landing zone
+		/// </summary>
+		bool repulsionActive;
 
 		public Aircraft(ActorInitializer init, AircraftInfo info)
 		{
@@ -123,6 +133,8 @@ namespace OpenRA.Mods.Common.Traits
 			// TODO: HACK: This is a hack until we can properly distinguish between airplane and helicopter!
 			// Or until the activities get unified enough so that it doesn't matter.
 			IsPlane = !info.CanHover;
+
+			repulsionActive = info.Repulsable;
 		}
 
 		public void Created(Actor self)
@@ -133,9 +145,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void AddedToWorld(Actor self)
 		{
-			self.World.ActorMap.AddInfluence(self, this);
-			self.World.ActorMap.AddPosition(self, this);
-			self.World.ScreenMap.Add(self);
+			self.World.AddToMaps(self, this);
+
 			var altitude = self.World.Map.DistanceAboveTerrain(CenterPosition);
 			if (altitude.Length >= Info.MinAirborneAltitude)
 				OnAirborneAltitudeReached();
@@ -168,12 +179,27 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void Repulse()
 		{
+			if (!repulsionActive)
+				return;
+
 			var repulsionForce = GetRepulsionForce();
 			if (repulsionForce.HorizontalLengthSquared == 0)
 				return;
 
 			var speed = Info.RepulsionSpeed != -1 ? Info.RepulsionSpeed : MovementSpeed;
 			SetPosition(self, CenterPosition + FlyStep(speed, repulsionForce.Yaw.Facing));
+		}
+
+		public void DisableRepulsing()
+		{
+			if (Info.Repulsable)
+				repulsionActive = false;
+		}
+
+		public void EnableRepulsing()
+		{
+			if (Info.Repulsable)
+				repulsionActive = true;
 		}
 
 		public virtual WVec GetRepulsionForce()
@@ -352,8 +378,8 @@ namespace OpenRA.Mods.Common.Traits
 			if (!self.IsInWorld)
 				return;
 
-			self.World.ScreenMap.Update(self);
-			self.World.ActorMap.UpdatePosition(self, this);
+			self.World.UpdateMaps(self, this);
+
 			var altitude = self.World.Map.DistanceAboveTerrain(CenterPosition);
 			var isAirborne = altitude.Length >= Info.MinAirborneAltitude;
 			if (isAirborne && !airborne)
@@ -602,9 +628,8 @@ namespace OpenRA.Mods.Common.Traits
 		public void RemovedFromWorld(Actor self)
 		{
 			UnReserve();
-			self.World.ActorMap.RemoveInfluence(self, this);
-			self.World.ActorMap.RemovePosition(self, this);
-			self.World.ScreenMap.Remove(self);
+			self.World.RemoveFromMaps(self, this);
+
 			OnCruisingAltitudeLeft();
 			OnAirborneAltitudeLeft();
 		}

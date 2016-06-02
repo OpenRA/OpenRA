@@ -1,10 +1,11 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2016 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
- * as published by the Free Software Foundation. For more information,
- * see COPYING.
+ * as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version. For more
+ * information, see COPYING.
  */
 #endregion
 
@@ -46,7 +47,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Sync] public WPos CenterPosition { get; private set; }
 		[Sync] public int Facing { get; set; }
 
-		public int ROT { get { return 0; } }
+		public int TurnSpeed { get { return 0; } }
 
 		public Husk(ActorInitializer init, HuskInfo info)
 		{
@@ -105,22 +106,18 @@ namespace OpenRA.Mods.Common.Traits
 			CenterPosition = pos;
 			TopLeft = self.World.Map.CellContaining(pos);
 			self.World.ActorMap.AddInfluence(self, this);
-			self.World.ActorMap.UpdatePosition(self, this);
-			self.World.ScreenMap.Update(self);
+
+			self.World.UpdateMaps(self, this);
 		}
 
 		public void AddedToWorld(Actor self)
 		{
-			self.World.ActorMap.AddInfluence(self, this);
-			self.World.ActorMap.AddPosition(self, this);
-			self.World.ScreenMap.Add(self);
+			self.World.AddToMaps(self, this);
 		}
 
 		public void RemovedFromWorld(Actor self)
 		{
-			self.World.ActorMap.RemoveInfluence(self, this);
-			self.World.ActorMap.RemovePosition(self, this);
-			self.World.ScreenMap.Remove(self);
+			self.World.RemoveFromMaps(self, this);
 		}
 
 		public bool Disabled

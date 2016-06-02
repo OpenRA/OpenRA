@@ -1,10 +1,11 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2016 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
- * as published by the Free Software Foundation. For more information,
- * see COPYING.
+ * as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version. For more
+ * information, see COPYING.
  */
 #endregion
 
@@ -21,11 +22,13 @@ namespace OpenRA.Graphics
 
 		public CursorProvider(ModData modData)
 		{
-			var sequences = new MiniYaml(null, MiniYaml.Merge(modData.Manifest.Cursors.Select(MiniYaml.FromFile)));
+			var fileSystem = modData.DefaultFileSystem;
+			var sequenceYaml = MiniYaml.Merge(modData.Manifest.Cursors.Select(
+				s => MiniYaml.FromStream(fileSystem.Open(s))));
 
 			var shadowIndex = new int[] { };
 
-			var nodesDict = sequences.ToDictionary();
+			var nodesDict = new MiniYaml(null, sequenceYaml).ToDictionary();
 			if (nodesDict.ContainsKey("ShadowIndex"))
 			{
 				Array.Resize(ref shadowIndex, shadowIndex.Length + 1);
@@ -35,11 +38,11 @@ namespace OpenRA.Graphics
 
 			var palettes = new Dictionary<string, ImmutablePalette>();
 			foreach (var p in nodesDict["Palettes"].Nodes)
-				palettes.Add(p.Key, new ImmutablePalette(modData.ModFiles.Open(p.Value.Value), shadowIndex));
+				palettes.Add(p.Key, new ImmutablePalette(fileSystem.Open(p.Value.Value), shadowIndex));
 
 			Palettes = palettes.AsReadOnly();
 
-			var frameCache = new FrameCache(modData.SpriteLoaders);
+			var frameCache = new FrameCache(fileSystem, modData.SpriteLoaders);
 			var cursors = new Dictionary<string, CursorSequence>();
 			foreach (var s in nodesDict["Cursors"].Nodes)
 				foreach (var sequence in s.Value.Nodes)

@@ -1,10 +1,8 @@
-MapFormat: 8
+MapFormat: 11
 
 RequiresMod: ts
 
 Title: Tactical
-
-Description: Describe your map here
 
 Author: Westwood Studios
 
@@ -16,11 +14,7 @@ Bounds: 2,4,146,288
 
 Visibility: Lobby
 
-Type: Conquest
-
-Videos:
-
-Options:
+Categories: Conquest, Playable, Original TS Map
 
 Players:
 	PlayerReference@Neutral:
@@ -806,23 +800,7 @@ Actors:
 		Location: 167,83
 		Owner: Neutral
 
-Smudges:
-
 Rules:
 	World:
 		GlobalLightingPaletteEffect:
 			Ambient: 0.85
-
-Sequences:
-
-VoxelSequences:
-
-Weapons:
-
-Voices:
-
-Music:
-
-Notifications:
-
-Translations:

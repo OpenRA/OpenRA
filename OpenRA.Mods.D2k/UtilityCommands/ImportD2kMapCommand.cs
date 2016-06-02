@@ -1,15 +1,17 @@
 ﻿#region Copyright & License Information
 /*
- * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2016 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
- * as published by the Free Software Foundation. For more information,
- * see COPYING.
+ * as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version. For more
+ * information, see COPYING.
  */
 #endregion
 
 using System;
 using System.IO;
+using OpenRA.FileSystem;
 
 namespace OpenRA.Mods.D2k.UtilityCommands
 {
@@ -28,16 +30,15 @@ namespace OpenRA.Mods.D2k.UtilityCommands
 			// HACK: The engine code assumes that Game.modData is set.
 			Game.ModData = modData;
 
-			var rules = Game.ModData.RulesetCache.Load();
-
+			var rules = Ruleset.LoadDefaultsForTileSet(modData, "ARRAKIS");
 			var map = D2kMapImporter.Import(args[1], modData.Manifest.Mod.Id, args[2], rules);
 
 			if (map == null)
 				return;
 
-			var fileName = Path.GetFileNameWithoutExtension(args[1]);
-			var dest = fileName + ".oramap";
-			map.Save(dest);
+			var dest = Path.GetFileNameWithoutExtension(args[1]) + ".oramap";
+			var package = new ZipFile(modData.DefaultFileSystem, dest, true);
+			map.Save(package);
 			Console.WriteLine(dest + " saved.");
 		}
 	}

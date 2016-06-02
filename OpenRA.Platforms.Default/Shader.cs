@@ -1,10 +1,11 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2016 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
- * as published by the Free Software Foundation. For more information,
- * see COPYING.
+ * as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version. For more
+ * information, see COPYING.
  */
 #endregion
 
@@ -19,6 +20,7 @@ namespace OpenRA.Platforms.Default
 	{
 		public const int VertexPosAttributeIndex = 0;
 		public const int TexCoordAttributeIndex = 1;
+		public const int TexMetadataAttributeIndex = 2;
 
 		readonly Dictionary<string, int> samplers = new Dictionary<string, int>();
 		readonly Dictionary<int, ITexture> textures = new Dictionary<int, ITexture>();
@@ -72,7 +74,8 @@ namespace OpenRA.Platforms.Default
 			OpenGL.CheckGLError();
 			OpenGL.glBindAttribLocation(program, TexCoordAttributeIndex, "aVertexTexCoord");
 			OpenGL.CheckGLError();
-
+			OpenGL.glBindAttribLocation(program, TexMetadataAttributeIndex, "aVertexTexMetadata");
+			OpenGL.CheckGLError();
 			OpenGL.glAttachShader(program, vertexShader);
 			OpenGL.CheckGLError();
 			OpenGL.glAttachShader(program, fragmentShader);
@@ -185,6 +188,17 @@ namespace OpenRA.Platforms.Default
 			var param = OpenGL.glGetUniformLocation(program, name);
 			OpenGL.CheckGLError();
 			OpenGL.glUniform2f(param, x, y);
+			OpenGL.CheckGLError();
+		}
+
+		public void SetVec(string name, float x, float y, float z)
+		{
+			VerifyThreadAffinity();
+			OpenGL.glUseProgram(program);
+			OpenGL.CheckGLError();
+			var param = OpenGL.glGetUniformLocation(program, name);
+			OpenGL.CheckGLError();
+			OpenGL.glUniform3f(param, x, y, z);
 			OpenGL.CheckGLError();
 		}
 

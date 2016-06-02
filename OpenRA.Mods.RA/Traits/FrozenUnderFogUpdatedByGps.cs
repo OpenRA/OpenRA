@@ -1,10 +1,11 @@
 ﻿#region Copyright & License Information
 /*
- * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2016 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
- * as published by the Free Software Foundation. For more information,
- * see COPYING.
+ * as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version. For more
+ * information, see COPYING.
  */
 #endregion
 
@@ -28,9 +29,12 @@ namespace OpenRA.Mods.RA.Traits
 		static readonly FrozenActorAction Refresh = (fufubg, fal, gps, fa) =>
 		{
 			// Refreshes the visual state of the frozen actor, so ownership changes can be seen.
-			fa.RefreshState();
+			// This only makes sense if the frozen actor has already been revealed (i.e. has renderables)
 			if (fa.HasRenderables)
+			{
+				fa.RefreshState();
 				fa.NeedRenderables = true;
+			}
 		};
 		static readonly FrozenActorAction Remove = (fufubg, fal, gps, fa) =>
 		{

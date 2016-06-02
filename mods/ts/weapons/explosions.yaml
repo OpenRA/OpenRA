@@ -10,8 +10,8 @@ UnitExplode:
 			Heavy: 25
 		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
 	Warhead@2Eff: CreateEffect
-		Explosion: large_twlt
-		ImpactSound: expnew09.aud
+		Explosions: large_twlt
+		ImpactSounds: expnew09.aud
 
 UnitExplodeSmall:
 	Warhead@1Dam: SpreadDamage
@@ -24,8 +24,8 @@ UnitExplodeSmall:
 			Heavy: 25
 		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
 	Warhead@2Eff: CreateEffect
-		Explosion: medium_brnl
-		ImpactSound: expnew13.aud
+		Explosions: medium_brnl
+		ImpactSounds: expnew13.aud
 
 TiberiumExplosion:
 	Warhead@1Dam: SpreadDamage
@@ -41,8 +41,8 @@ TiberiumExplosion:
 		AddsResourceType: Tiberium
 		Size: 1,1
 	Warhead@3Eff: CreateEffect
-		Explosion: large_explosion
-		ImpactSound: expnew09.aud
+		Explosions: large_explosion
+		ImpactSounds: expnew09.aud
 
 SmallDebris:
 	ReloadDelay: 60
@@ -50,7 +50,7 @@ SmallDebris:
 	Report:
 	Projectile: Bullet
 		Speed: 50, 125
-		Angle: 91, 264
+		Angle: 45, 135
 		Image: dbrissm
 		Sequences: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
 		Shadow: true
@@ -61,7 +61,7 @@ LargeDebris:
 	Report:
 	Projectile: Bullet
 		Speed: 50, 125
-		Angle: 91, 264
+		Angle: 45, 135
 		Image: dbrislg
 		Sequences: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
 		Shadow: true

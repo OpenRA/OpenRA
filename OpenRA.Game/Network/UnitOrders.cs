@@ -1,10 +1,11 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2016 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
- * as published by the Free Software Foundation. For more information,
- * see COPYING.
+ * as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version. For more
+ * information, see COPYING.
  */
 #endregion
 
@@ -76,18 +77,17 @@ namespace OpenRA.Network
 							if (world == null)
 							{
 								if (orderManager.LocalClient != null && client.Team == orderManager.LocalClient.Team)
-									Game.AddChatLine(client.Color.RGB, client.Name + " (Team)", order.TargetString);
+									Game.AddChatLine(client.Color.RGB, "[Team] " + client.Name, order.TargetString);
 							}
 							else
 							{
 								var player = world.FindPlayerByClient(client);
-								if (player != null && ((world.LocalPlayer != null && player.Stances[world.LocalPlayer] == Stance.Ally) || player.WinState == WinState.Lost))
-								{
-									var suffix = player.WinState == WinState.Lost ? " (Dead)" : " (Team)";
-									Game.AddChatLine(client.Color.RGB, client.Name + suffix, order.TargetString);
-								}
+								if (player != null && player.WinState == WinState.Lost)
+									Game.AddChatLine(client.Color.RGB, client.Name + " (Dead)", order.TargetString);
+								else if (player != null && world.LocalPlayer != null && player.Stances[world.LocalPlayer] == Stance.Ally)
+									Game.AddChatLine(client.Color.RGB, "[Team] " + client.Name, order.TargetString);
 								else if (orderManager.LocalClient != null && orderManager.LocalClient.IsObserver && client.IsObserver)
-									Game.AddChatLine(client.Color.RGB, client.Name + " (Spectators)", order.TargetString);
+									Game.AddChatLine(client.Color.RGB, "[Spectators] " + client.Name, order.TargetString);
 							}
 						}
 
@@ -262,29 +262,6 @@ namespace OpenRA.Network
 						}
 
 						orderManager.LobbyInfo.ClientPings = pings;
-						break;
-					}
-
-				case "SetStance":
-					{
-						if (!Game.OrderManager.LobbyInfo.GlobalSettings.FragileAlliances)
-							return;
-
-						var targetPlayer = order.Player.World.Players.FirstOrDefault(p => p.InternalName == order.TargetString);
-						var newStance = (Stance)order.ExtraData;
-
-						order.Player.SetStance(targetPlayer, newStance);
-
-						Game.Debug("{0} has set diplomatic stance vs {1} to {2}",
-							order.Player.PlayerName, targetPlayer.PlayerName, newStance);
-
-						// automatically declare war reciprocally
-						if (newStance == Stance.Enemy && targetPlayer.Stances[order.Player] == Stance.Ally)
-						{
-							targetPlayer.SetStance(order.Player, newStance);
-							Game.Debug("{0} has reciprocated", targetPlayer.PlayerName);
-						}
-
 						break;
 					}
 

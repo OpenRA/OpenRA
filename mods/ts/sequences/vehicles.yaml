@@ -2,13 +2,13 @@ mcv.gdi:
 	emp-overlay: emp_fx01
 		Length: *
 		BlendMode: Additive
-	icon: sidec01.mix:mcvicon
+	icon: sidebar-gdi|mcvicon
 
 mcv.nod:
 	emp-overlay: emp_fx01
 		Length: *
 		BlendMode: Additive
-	icon: sidec02.mix:mcvicon
+	icon: sidebar-nod|mcvicon
 
 apc:
 	emp-overlay: emp_fx01
@@ -22,7 +22,7 @@ harv.gdi:
 		BlendMode: Additive
 	harvest: harvestr
 		Length: *
-	icon: sidec01.mix:harvicon
+	icon: sidebar-gdi|harvicon
 
 harv.nod:
 	emp-overlay: emp_fx01
@@ -30,7 +30,7 @@ harv.nod:
 		BlendMode: Additive
 	harvest: harvestr
 		Length: *
-	icon: sidec02.mix:harvicon
+	icon: sidebar-nod|harvicon
 
 hvr:
 	emp-overlay: emp_fx01
@@ -56,7 +56,7 @@ lpst.gdi:
 	emp-overlay: emp_fx01
 		Length: *
 		BlendMode: Additive
-	icon: sidec01.mix:lpsticon
+	icon: sidebar-gdi|lpsticon
 
 lpst.nod:
 	idle: gadpsa
@@ -69,7 +69,7 @@ lpst.nod:
 	emp-overlay: emp_fx01
 		Length: *
 		BlendMode: Additive
-	icon: sidec02.mix:lpsticon
+	icon: sidebar-nod|lpsticon
 
 repair:
 	emp-overlay: emp_fx01
@@ -135,6 +135,17 @@ sonic:
 	icon: soniicon
 
 ttnk:
+	idle: gatick
+		ShadowStart: 3
+		Offset: 0, -12
+	damaged-idle: gatick
+		Start: 1
+		ShadowStart: 4
+		Offset: 0, -12
+	make: gatickmk
+		Length: 24
+		ShadowStart: 24
+		Offset: 0, -12
 	muzzle: gunfire
 		Length: *
 	emp-overlay: emp_fx01

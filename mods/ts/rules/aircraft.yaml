@@ -6,7 +6,7 @@ DPOD:
 		Name: Drop Pod
 	Aircraft:
 		LandWhenIdle: yes
-		ROT: 5
+		TurnSpeed: 5
 		Speed: 149
 		InitialFacing: 0
 		LandableTerrainTypes: Clear
@@ -42,7 +42,7 @@ DSHP:
 		Name: Dropship
 	Aircraft:
 		LandWhenIdle: yes
-		ROT: 5
+		TurnSpeed: 5
 		Speed: 168
 		InitialFacing: 0
 		LandableTerrainTypes: Clear
@@ -79,7 +79,7 @@ ORCA:
 	Selectable:
 		Bounds: 30,24
 	Aircraft:
-		ROT: 5
+		TurnSpeed: 5
 		Speed: 186
 		MoveIntoShroud: false
 		TakeoffSound: orcaup1.aud
@@ -122,7 +122,7 @@ ORCAB:
 	Aircraft:
 		CruiseAltitude: 3072
 		MaximumPitch: 120
-		ROT: 3
+		TurnSpeed: 3
 		Speed: 96
 		AirborneUpgrades: airborne
 		MoveIntoShroud: false
@@ -144,7 +144,7 @@ ORCAB:
 		Ammo: 10
 		PipCount: 2
 		ReloadCount: 5
-		ReloadTicks: 200
+		ReloadDelay: 200
 		PipType: Ammo
 		PipTypeEmpty: AmmoEmpty
 	AutoTarget:
@@ -168,7 +168,7 @@ ORCATRAN:
 	RenderSprites:
 	Aircraft:
 		LandWhenIdle: yes
-		ROT: 5
+		TurnSpeed: 5
 		Speed: 84
 		InitialFacing: 0
 		LandableTerrainTypes: Clear
@@ -204,7 +204,7 @@ TRNSPORT:
 		Prerequisites: ~gahpad, gadept
 	Aircraft:
 		LandWhenIdle: yes
-		ROT: 5
+		TurnSpeed: 5
 		Speed: 149
 		InitialFacing: 0
 		LandableTerrainTypes: Clear
@@ -242,7 +242,7 @@ SCRIN:
 		VoiceSet: Scrin
 	Aircraft:
 		MaximumPitch: 90
-		ROT: 3
+		TurnSpeed: 3
 		Speed: 168
 		AirborneUpgrades: airborne
 		MoveIntoShroud: false
@@ -286,7 +286,7 @@ APACHE:
 	Selectable:
 		Bounds: 30,24
 	Aircraft:
-		ROT: 5
+		TurnSpeed: 5
 		Speed: 130
 		MoveIntoShroud: false
 	Health:
@@ -329,7 +329,7 @@ HUNTER:
 		Weapon: SuicideBomb
 		EmptyWeapon: SuicideBomb
 	Aircraft:
-		ROT: 16
+		TurnSpeed: 16
 		Speed: 355
 		CruiseAltitude: 256
 		CanHover: True

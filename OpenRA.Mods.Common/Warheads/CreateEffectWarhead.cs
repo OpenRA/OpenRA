@@ -1,10 +1,11 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2016 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
- * as published by the Free Software Foundation. For more information,
- * see COPYING.
+ * as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version. For more
+ * information, see COPYING.
  */
 #endregion
 
@@ -17,17 +18,23 @@ namespace OpenRA.Mods.Common.Warheads
 {
 	public class CreateEffectWarhead : Warhead
 	{
-		[Desc("Explosion effect to use.")]
-		public readonly string Explosion = null;
+		[Desc("List of explosion sequences that can be used.")]
+		[SequenceReference("Image")] public readonly string[] Explosions = new string[0];
 
-		[Desc("Palette to use for explosion effect.")]
-		[PaletteReference("UsePlayerPalette")] public readonly string ExplosionPalette = "effect";
+		[Desc("Image containing explosion effect sequence.")]
+		public readonly string Image = "explosion";
+
+		[Desc("Palette to use for explosion effect."), PaletteReference("UsePlayerPalette")]
+		public readonly string ExplosionPalette = "effect";
 
 		[Desc("Remap explosion effect to player color, if art supports it.")]
 		public readonly bool UsePlayerPalette = false;
 
-		[Desc("Sound to play on impact.")]
-		public readonly string ImpactSound = null;
+		[Desc("Search radius around impact for 'direct hit' check.")]
+		public readonly WDist TargetSearchRadius = new WDist(2048);
+
+		[Desc("List of sounds that can be played on impact.")]
+		public readonly string[] ImpactSounds = new string[0];
 
 		[Desc("What impact types should this effect apply to.")]
 		public readonly ImpactType ValidImpactTypes = ImpactType.Ground | ImpactType.Water | ImpactType.Air | ImpactType.GroundHit | ImpactType.WaterHit | ImpactType.AirHit;
@@ -68,17 +75,17 @@ namespace OpenRA.Mods.Common.Warheads
 
 		public bool GetDirectHit(World world, CPos cell, WPos pos, Actor firedBy, bool checkTargetType = false)
 		{
-			foreach (var unit in world.ActorMap.GetActorsAt(cell))
+			foreach (var victim in world.FindActorsInCircle(pos, TargetSearchRadius))
 			{
-				if (checkTargetType && !IsValidAgainst(unit, firedBy))
+				if (checkTargetType && !IsValidAgainst(victim, firedBy))
 					continue;
 
-				var healthInfo = unit.Info.TraitInfoOrDefault<HealthInfo>();
+				var healthInfo = victim.Info.TraitInfoOrDefault<HealthInfo>();
 				if (healthInfo == null)
 					continue;
 
 				// If the impact position is within any actor's HitShape, we have a direct hit
-				if ((unit.CenterPosition - pos).LengthSquared <= healthInfo.Shape.DistanceFromEdge(pos, unit).LengthSquared)
+				if (healthInfo.Shape.DistanceFromEdge(pos, victim).Length <= 0)
 					return true;
 			}
 
@@ -87,6 +94,9 @@ namespace OpenRA.Mods.Common.Warheads
 
 		public override void DoImpact(Target target, Actor firedBy, IEnumerable<int> damageModifiers)
 		{
+			if (!target.IsValidFor(firedBy))
+				return;
+
 			var pos = target.CenterPosition;
 			var world = firedBy.World;
 			var targetTile = world.Map.CellContaining(pos);
@@ -99,11 +109,13 @@ namespace OpenRA.Mods.Common.Warheads
 			if (UsePlayerPalette)
 				palette += firedBy.Owner.InternalName;
 
-			if (Explosion != null)
-				world.AddFrameEndTask(w => w.Add(new Explosion(w, pos, Explosion, palette)));
+			var explosion = Explosions.RandomOrDefault(Game.CosmeticRandom);
+			if (Image != null && explosion != null)
+				world.AddFrameEndTask(w => w.Add(new SpriteEffect(pos, w, Image, explosion, palette)));
 
-			if (ImpactSound != null)
-				Game.Sound.Play(ImpactSound, pos);
+			var impactSound = ImpactSounds.RandomOrDefault(Game.CosmeticRandom);
+			if (impactSound != null)
+				Game.Sound.Play(impactSound, pos);
 		}
 
 		public bool IsValidImpact(WPos pos, Actor firedBy)

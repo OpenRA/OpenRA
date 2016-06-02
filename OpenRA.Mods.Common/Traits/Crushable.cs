@@ -1,10 +1,11 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2016 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
- * as published by the Free Software Foundation. For more information,
- * see COPYING.
+ * as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version. For more
+ * information, see COPYING.
  */
 #endregion
 
@@ -29,7 +30,7 @@ namespace OpenRA.Mods.Common.Traits
 		public object Create(ActorInitializer init) { return new Crushable(init.Self, this); }
 	}
 
-	class Crushable : ICrushable
+	class Crushable : ICrushable, INotifyCrushed
 	{
 		readonly Actor self;
 		readonly CrushableInfo info;
@@ -40,31 +41,32 @@ namespace OpenRA.Mods.Common.Traits
 			this.info = info;
 		}
 
-		public void WarnCrush(Actor crusher)
+		void INotifyCrushed.WarnCrush(Actor self, Actor crusher, HashSet<string> crushClasses)
 		{
+			if (!CrushableInner(crushClasses, crusher.Owner))
+				return;
+
 			var mobile = self.TraitOrDefault<Mobile>();
 			if (mobile != null && self.World.SharedRandom.Next(100) <= info.WarnProbability)
 				mobile.Nudge(self, crusher, true);
 		}
 
-		public void OnCrush(Actor crusher)
+		void INotifyCrushed.OnCrush(Actor self, Actor crusher, HashSet<string> crushClasses)
 		{
-			Game.Sound.Play(info.CrushSound, crusher.CenterPosition);
-			var wda = self.TraitsImplementing<WithDeathAnimation>()
-				.FirstOrDefault(s => s.Info.CrushedSequence != null);
-			if (wda != null)
-			{
-				var palette = wda.Info.CrushedSequencePalette;
-				if (wda.Info.CrushedPaletteIsPlayerPalette)
-					palette += self.Owner.InternalName;
+			if (!CrushableInner(crushClasses, crusher.Owner))
+				return;
 
-				wda.SpawnDeathAnimation(self, wda.Info.CrushedSequence, palette);
-			}
+			Game.Sound.Play(info.CrushSound, crusher.CenterPosition);
 
 			self.Kill(crusher);
 		}
 
-		public bool CrushableBy(HashSet<string> crushClasses, Player crushOwner)
+		bool ICrushable.CrushableBy(Actor self, Actor crusher, HashSet<string> crushClasses)
+		{
+			return CrushableInner(crushClasses, crusher.Owner);
+		}
+
+		bool CrushableInner(HashSet<string> crushClasses, Player crushOwner)
 		{
 			// Only make actor crushable if it is on the ground.
 			if (!self.IsAtGroundLevel())

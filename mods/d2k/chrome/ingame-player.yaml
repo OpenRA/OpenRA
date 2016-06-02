@@ -109,24 +109,6 @@ Container@PLAYER_WIDGETS:
 									X: 0
 									Y: 0
 									ImageCollection: order-icons
-						MenuButton@DIPLOMACY_BUTTON:
-							MenuContainer: INGAME_DIPLOMACY_BG
-							HideIngameUI: false
-							Pause: false
-							Key: P
-							X: 159
-							Width: 25
-							Height: 25
-							Background:
-							TooltipText: Diplomacy
-							TooltipContainer: TOOLTIP_CONTAINER
-							VisualHeight: 0
-							Children:
-								Image@ICON:
-									X: 0
-									Y: 0
-									ImageCollection: order-icons
-									ImageName: diplomacy
 						MenuButton@OPTIONS_BUTTON:
 							Key: escape
 							X: 78

@@ -1,10 +1,11 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2016 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
- * as published by the Free Software Foundation. For more information,
- * see COPYING.
+ * as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version. For more
+ * information, see COPYING.
  */
 #endregion
 
@@ -35,12 +36,12 @@ namespace OpenRA.Mods.Common.Activities
 		public override Activity Tick(Actor self)
 		{
 			if (!target.IsValidFor(self))
-				return NextActivity;
+				return new ReturnToBase(self);
 
 			// Move to the next activity only if all ammo pools are depleted and none reload automatically
 			// TODO: This should check whether there is ammo left that is actually suitable for the target
 			if (ammoPools.All(x => !x.Info.SelfReloads && !x.HasAmmo()))
-				return NextActivity;
+				return new ReturnToBase(self);
 
 			if (attackPlane != null)
 				attackPlane.DoAttack(self, target);
