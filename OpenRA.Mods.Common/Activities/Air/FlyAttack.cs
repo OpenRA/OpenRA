@@ -35,12 +35,12 @@ namespace OpenRA.Mods.Common.Activities
 		public override Activity Tick(Actor self)
 		{
 			if (!target.IsValidFor(self))
-				return NextActivity;
+				return new ReturnToBase(self);
 
 			// Move to the next activity only if all ammo pools are depleted and none reload automatically
 			// TODO: This should check whether there is ammo left that is actually suitable for the target
 			if (ammoPools.All(x => !x.Info.SelfReloads && !x.HasAmmo()))
-				return NextActivity;
+				return new ReturnToBase(self);
 
 			if (attackPlane != null)
 				attackPlane.DoAttack(self, target);

@@ -82,6 +82,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Sound to play when the actor is landing.")]
 		public readonly string LandingSound = null;
 
+		[Desc("The distance of the resupply base that the airplane will wait for its turn.")]
+		public readonly WDist WaitDistanceFromResupplyBase = new WDist(3072);
+
 		public IReadOnlyDictionary<CPos, SubCell> OccupiedCells(ActorInfo info, CPos location, SubCell subCell = SubCell.Any) { return new ReadOnlyDictionary<CPos, SubCell>(); }
 		bool IOccupySpaceInfo.SharesCell { get { return false; } }
 	}
@@ -107,6 +110,12 @@ namespace OpenRA.Mods.Common.Traits
 		bool airborne;
 		bool cruising;
 
+		/// <summary>
+		/// The repulsion active.
+		/// This is used in case the Actor is a helicopter, to soft resupply procedures and don't make other helicopters repulse it from the supply landing zone
+		/// </summary>
+		bool repulsionActive;
+
 		public Aircraft(ActorInitializer init, AircraftInfo info)
 		{
 			Info = info;
@@ -123,6 +132,8 @@ namespace OpenRA.Mods.Common.Traits
 			// TODO: HACK: This is a hack until we can properly distinguish between airplane and helicopter!
 			// Or until the activities get unified enough so that it doesn't matter.
 			IsPlane = !info.CanHover;
+
+			repulsionActive = info.Repulsable;
 		}
 
 		public void Created(Actor self)
@@ -168,12 +179,27 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void Repulse()
 		{
+			if (!repulsionActive)
+				return;
+			
 			var repulsionForce = GetRepulsionForce();
 			if (repulsionForce.HorizontalLengthSquared == 0)
 				return;
 
 			var speed = Info.RepulsionSpeed != -1 ? Info.RepulsionSpeed : MovementSpeed;
 			SetPosition(self, CenterPosition + FlyStep(speed, repulsionForce.Yaw.Facing));
+		}
+
+		public void DisableRepulsing()
+		{
+			if (Info.Repulsable)
+				repulsionActive = false;
+		}
+
+		public void EnableRepulsing()
+		{
+			if (Info.Repulsable)
+				repulsionActive = true;
 		}
 
 		public virtual WVec GetRepulsionForce()

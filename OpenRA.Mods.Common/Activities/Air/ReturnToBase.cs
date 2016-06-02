@@ -19,6 +19,8 @@ namespace OpenRA.Mods.Common.Activities
 {
 	public class ReturnToBase : Activity
 	{
+		static int TicksForNextValidation = 50;
+
 		readonly Aircraft plane;
 		readonly AircraftInfo planeInfo;
 		bool isCalculated;
@@ -107,7 +109,10 @@ namespace OpenRA.Mods.Common.Activities
 
 				self.CancelActivity();
 				if (nearestAfld != null)
-					return ActivityUtils.SequenceActivities(new Fly(self, Target.FromActor(nearestAfld)), new FlyCircle(self));
+					return ActivityUtils.SequenceActivities(
+						new Fly(self, Target.FromActor(nearestAfld), WDist.Zero, plane.Info.WaitDistanceFromResupplyBase), 
+						new FlyCircleTimed(TicksForNextValidation, self),
+						new ReturnToBase(self));
 				else
 					return new FlyCircle(self);
 			}
@@ -122,6 +127,7 @@ namespace OpenRA.Mods.Common.Activities
 			// Fix a problem when the airplane is send to resupply near the airport
 			landingProcedures.Add(new Fly(self, Target.FromPos(w3), WDist.Zero, new WDist(turnRadius / 2)));
 			landingProcedures.Add(new Land(self, Target.FromActor(dest)));
+			landingProcedures.Add(new ResupplyAircraft(self));
 			landingProcedures.Add(NextActivity);
 
 			return ActivityUtils.SequenceActivities(landingProcedures.ToArray());
