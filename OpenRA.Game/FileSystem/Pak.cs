@@ -1,10 +1,11 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2016 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
- * as published by the Free Software Foundation. For more information,
- * see COPYING.
+ * as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version. For more
+ * information, see COPYING.
  */
 #endregion
 
@@ -22,15 +23,15 @@ namespace OpenRA.FileSystem
 
 	public sealed class PakFile : IReadOnlyPackage
 	{
-		readonly string filename;
-		readonly int priority;
+		public string Name { get; private set; }
+		public IEnumerable<string> Contents { get { return index.Keys; } }
+
 		readonly Dictionary<string, Entry> index;
 		readonly Stream stream;
 
-		public PakFile(FileSystem context, string filename, int priority)
+		public PakFile(FileSystem context, string filename)
 		{
-			this.filename = filename;
-			this.priority = priority;
+			Name = filename;
 			index = new Dictionary<string, Entry>();
 
 			stream = context.Open(filename);
@@ -59,7 +60,7 @@ namespace OpenRA.FileSystem
 			}
 		}
 
-		public Stream GetContent(string filename)
+		public Stream GetStream(string filename)
 		{
 			Entry entry;
 			if (!index.TryGetValue(filename, out entry))
@@ -70,19 +71,10 @@ namespace OpenRA.FileSystem
 			return new MemoryStream(data);
 		}
 
-		public IEnumerable<string> AllFileNames()
-		{
-			foreach (var filename in index.Keys)
-				yield return filename;
-		}
-
-		public bool Exists(string filename)
+		public bool Contains(string filename)
 		{
 			return index.ContainsKey(filename);
 		}
-
-		public int Priority { get { return 1000 + priority; } }
-		public string Name { get { return filename; } }
 
 		public void Dispose()
 		{

@@ -7,7 +7,7 @@ Metadata:
 
 RequiresMods:
 
-Folders:
+Packages:
 	.
 
 Cursors:
@@ -17,7 +17,7 @@ Chrome:
 Assemblies:
 	./mods/common/OpenRA.Mods.Common.dll
 	./mods/ra/OpenRA.Mods.RA.dll
-	d2k:OpenRA.Mods.D2k.dll
+	./mods/d2k/OpenRA.Mods.D2k.dll
 	./mods/cnc/OpenRA.Mods.Cnc.dll
 	./mods/ts/OpenRA.Mods.TS.dll
 
@@ -30,8 +30,6 @@ LoadScreen: BlankLoadScreen
 ChromeMetrics:
 
 Fonts:
-
-LobbyDefaults:
 
 SoundFormats:
 

@@ -47,8 +47,6 @@
 		PipColor: Blue
 		AllowedTerrainTypes: Clear,Road
 		AllowUnderActors: true
-	LoadWidgetAtGameStart:
-		ShellmapRoot: MENU_BACKGROUND
 
 World:
 	Inherits: ^BaseWorld
@@ -74,7 +72,10 @@ World:
 	ResourceClaimLayer:
 	PathfinderDebugOverlay:
 	WarheadDebugOverlay:
+	MapCreeps:
 	SpawnMapActors:
+	MapBuildRadius:
+	MapOptions:
 	MPStartLocations:
 	CreateMPPlayers:
 	MPStartUnits@mcvonly:
@@ -137,6 +138,7 @@ World:
 		BaseActor: mcv
 		SupportActors: e1,e1,e1,e1,e1,e2,e2,e2,e3,e3,apc,mtnk
 	SpawnMPUnits:
+		StartingUnitsClass: light
 	CrateSpawner:
 		Minimum: 1
 		Maximum: 6
@@ -149,9 +151,12 @@ World:
 	ObjectivesPanel:
 		PanelName: SKIRMISH_STATS
 	RadarPings:
+	LoadWidgetAtGameStart:
+		ShellmapRoot: MENU_BACKGROUND
 
 EditorWorld:
 	Inherits: ^BaseWorld
 	EditorActorLayer:
 	EditorResourceLayer:
 	EditorSelectionLayer:
+	LoadWidgetAtGameStart:

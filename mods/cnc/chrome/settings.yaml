@@ -337,22 +337,50 @@ Container@SETTINGS_PANEL:
 							Width: 250
 							Height: 20
 							Font: Regular
-							Text: Left-Click Orders
-						Label@MOUSE_SCROLL_LABEL:
+							Text: Left-click Orders
+						Label@MIDDLE_MOUSE_SCROLL_LABEL:
 							X: PARENT_RIGHT - WIDTH - 120
 							Y: 39
 							Width: 160
 							Height: 20
 							Font: Regular
-							Text: Mouse Scrolling Method:
+							Text: Middle-mouse Scrolling:
 							Align: Right
-						DropDownButton@MOUSE_SCROLL:
+						DropDownButton@MIDDLE_MOUSE_SCROLL:
 							X: PARENT_RIGHT - WIDTH - 15
 							Y: 38
 							Width: 100
 							Height: 25
 							Font: Regular
-							Text: Enabled
+						Label@MIDDLE_MOUSE_SCROLL_LABEL:
+							X: PARENT_RIGHT - WIDTH - 120
+							Y: 69
+							Width: 160
+							Height: 20
+							Font: Regular
+							Text: Right-mouse Scrolling:
+							Align: Right
+						DropDownButton@RIGHT_MOUSE_SCROLL:
+							X: PARENT_RIGHT - WIDTH - 15
+							Y: 68
+							Width: 100
+							Height: 25
+							Font: Regular
+						Label@ZOOM_MODIFIER_LABEL:
+							X: PARENT_RIGHT - WIDTH - 120
+							Y: 98
+							Width: 160
+							Height: 20
+							Font: Regular
+							Text: Scroll-zoom Modifier:
+							Align: Right
+						DropDownButton@ZOOM_MODIFIER:
+							X: PARENT_RIGHT - WIDTH - 15
+							Y: 98
+							Width: 100
+							Height: 25
+							Font: Regular
+							Text: Alt
 						Checkbox@EDGESCROLL_CHECKBOX:
 							X: 15
 							Y: 70
@@ -360,56 +388,63 @@ Container@SETTINGS_PANEL:
 							Height: 20
 							Font: Regular
 							Text: Edge Scrolling
-						Checkbox@LOCKMOUSE_CHECKBOX:
+						Checkbox@ALLOW_ZOOM_CHECKBOX:
 							X: 15
 							Y: 100
 							Width: 130
 							Height: 20
 							Font: Regular
-							Text: Lock mouse to window
+							Text: Scroll Zooming
+						Checkbox@LOCKMOUSE_CHECKBOX:
+							X: 15
+							Y: 130
+							Width: 130
+							Height: 20
+							Font: Regular
+							Text: Lock Mouse to Window
 						Label@SCROLL_SPEED_LABEL:
 							X: PARENT_RIGHT - WIDTH - 270
-							Y: 67
+							Y: 127
 							Width: 95
 							Height: 25
 							Text: Scroll Speed:
 							Align: Right
 						Slider@SCROLLSPEED_SLIDER:
-							X: PARENT_RIGHT - WIDTH - 15
-							Y: 73
-							Width: 250
+							X: PARENT_RIGHT - WIDTH - 170
+							Y: 133
+							Width: 100
 							Height: 20
 							Ticks: 5
 							MinimumValue: 10
 							MaximumValue: 50
 						Label@UI_SCROLL_SPEED_LABEL:
-							X: PARENT_RIGHT - WIDTH - 270
-							Y: 97
+							X: PARENT_RIGHT - WIDTH - 106
+							Y: 127
 							Width: 95
 							Height: 25
-							Text: UI Scroll Speed:
+							Text: UI Scroll:
 							Align: Right
 						Slider@UI_SCROLLSPEED_SLIDER:
-							X: PARENT_RIGHT - WIDTH - 15
-							Y: 103
-							Width: 250
+							X: PARENT_RIGHT - WIDTH - 6
+							Y: 133
+							Width: 100
 							Height: 20
 							Ticks: 5
 							MinimumValue: 1
 							MaximumValue: 100
 						Label@HOTKEYS_TITLE:
-							Y: 135
+							Y: 165
 							Width: PARENT_RIGHT
 							Font: Bold
 							Text: Hotkeys
 							Align: Center
 						ScrollPanel@HOTKEY_LIST:
 							X: 15
-							Y: 155
+							Y: 185
 							Width: 560
 							TopBottomSpacing: 4
 							ItemSpacing: 4
-							Height: 190
+							Height: 160
 							Children:
 								ScrollItem@HEADER:
 									Width: 528
@@ -501,6 +536,13 @@ Container@SETTINGS_PANEL:
 							Height: 20
 							Font: Regular
 							Text: Show Performance Text
+						Checkbox@PERFGRAPH_CHECKBOX:
+							X: 15
+							Y: 100
+							Width: 300
+							Height: 20
+							Font: Regular
+							Text: Show Performance Graph
 						Checkbox@FETCH_NEWS_CHECKBOX:
 							X: 310
 							Y: 40
@@ -508,43 +550,51 @@ Container@SETTINGS_PANEL:
 							Height: 20
 							Font: Regular
 							Text: Fetch Community News
-						Checkbox@PERFGRAPH_CHECKBOX:
+						Checkbox@SENDSYSINFO_CHECKBOX:
 							X: 310
 							Y: 70
 							Width: 300
 							Height: 20
 							Font: Regular
-							Text: Show Performance Graph
+							Text: Send System Information
+						Label@SENDSYSINFO_DESC:
+							X: 310
+							Y: 85
+							Width: 250
+							Height: 30
+							Font: Tiny
+							WordWrap: True
+							Text: Your Operating System, OpenGL and .NET runtime versions, and language settings will be sent along with an anonymous ID to help prioritize future development.
 						Label@DEBUG_TITLE:
-							Y: 140
+							Y: 170
 							Width: PARENT_RIGHT
 							Font: Bold
 							Text: Debug
 							Align: Center
 						Checkbox@BOTDEBUG_CHECKBOX:
 							X: 15
-							Y: 160
+							Y: 190
 							Width: 300
 							Height: 20
 							Font: Regular
 							Text: Show Bot Debug Messages
 						Checkbox@VERBOSE_NAT_CHECKBOX:
 							X: 310
-							Y: 160
+							Y: 190
 							Width: 300
 							Height: 20
 							Font: Regular
 							Text: Detailed NAT logging
 						Checkbox@CHECKUNSYNCED_CHECKBOX:
 							X: 15
-							Y: 190
+							Y: 220
 							Width: 300
 							Height: 20
 							Font: Regular
 							Text: Check Sync around Unsynced Code
 						Checkbox@LUADEBUG_CHECKBOX:
 							X: 310
-							Y: 190
+							Y: 220
 							Width: 300
 							Height: 20
 							Font: Regular

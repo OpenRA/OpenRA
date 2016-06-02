@@ -48,15 +48,14 @@ HARV:
 		BuildPaletteOrder: 10
 		Prerequisites: proc
 		Queue: Vehicle.GDI, Vehicle.Nod
-		InitialActivity: FindResources
 	Selectable:
 		Priority: 7
 	Harvester:
 		Resources: Tiberium, BlueTiberium
 		PipCount: 7
 		Capacity: 20
-		LoadTicksPerBale: 12
-		UnloadTicksPerBale: 6
+		BaleLoadDelay: 12
+		BaleUnloadDelay: 6
 		SearchFromProcRadius: 25
 		SearchFromOrderRadius: 15
 	Mobile:
@@ -91,16 +90,16 @@ APC:
 	Mobile:
 		UpgradeTypes: notmobile
 		UpgradeMaxEnabledLevel: 0
-		ROT: 8
+		TurnSpeed: 8
 		Speed: 128
 	Health:
-		HP: 200
+		HP: 210
 	Armor:
 		Type: Heavy
 	RevealsShroud:
 		Range: 7c0
 	Turreted:
-		ROT: 10
+		TurnSpeed: 10
 	Armament@PRIMARY:
 		Weapon: APCGun
 		Recoil: 96
@@ -138,7 +137,7 @@ ARTY:
 		Prerequisites: anyhq, ~techlevel.medium
 		Queue: Vehicle.Nod
 	Mobile:
-		ROT: 2
+		TurnSpeed: 2
 		Speed: 85
 	Health:
 		HP: 75
@@ -173,7 +172,7 @@ FTNK:
 		Prerequisites: anyhq, ~techlevel.medium
 		Queue: Vehicle.Nod
 	Mobile:
-		ROT: 7
+		TurnSpeed: 7
 		Speed: 99
 	Health:
 		HP: 270
@@ -206,7 +205,7 @@ BGGY:
 		Prerequisites: afld
 		Queue: Vehicle.Nod
 	Mobile:
-		ROT: 10
+		TurnSpeed: 10
 		Speed: 170
 	Health:
 		HP: 120
@@ -215,7 +214,7 @@ BGGY:
 	RevealsShroud:
 		Range: 8c0
 	Turreted:
-		ROT: 10
+		TurnSpeed: 10
 		Offset: -43,0,128
 	Armament:
 		Weapon: MachineGun
@@ -240,7 +239,7 @@ BIKE:
 		Prerequisites: afld
 		Queue: Vehicle.Nod
 	Mobile:
-		ROT: 10
+		TurnSpeed: 10
 		Speed: 213
 		TerrainSpeeds:
 			Clear: 70
@@ -276,7 +275,7 @@ JEEP:
 		Prerequisites: weap
 		Queue: Vehicle.GDI
 	Mobile:
-		ROT: 10
+		TurnSpeed: 10
 		Speed: 156
 	Health:
 		HP: 160
@@ -285,7 +284,7 @@ JEEP:
 	RevealsShroud:
 		Range: 8c0
 	Turreted:
-		ROT: 10
+		TurnSpeed: 10
 		Offset: -85,0,128
 	Armament:
 		Weapon: MachineGun
@@ -301,7 +300,7 @@ JEEP:
 LTNK:
 	Inherits: ^Tank
 	Valued:
-		Cost: 600
+		Cost: 700
 	Tooltip:
 		Name: Light Tank
 		Description: Fast, light tank.\n  Strong vs Vehicles, Tanks\n  Weak vs Infantry
@@ -310,16 +309,16 @@ LTNK:
 		Prerequisites: anyhq, ~techlevel.medium
 		Queue: Vehicle.Nod
 	Mobile:
-		ROT: 7
-		Speed: 113
+		TurnSpeed: 7
+		Speed: 110
 	Health:
-		HP: 350
+		HP: 340
 	Armor:
 		Type: Heavy
 	RevealsShroud:
 		Range: 6c0
 	Turreted:
-		ROT: 7
+		TurnSpeed: 7
 	Armament:
 		Weapon: 70mm
 		Recoil: 85
@@ -353,7 +352,7 @@ MTNK:
 	RevealsShroud:
 		Range: 6c0
 	Turreted:
-		ROT: 5
+		TurnSpeed: 5
 	Armament:
 		Weapon: 120mm
 		Recoil: 128
@@ -383,7 +382,7 @@ HTNK:
 	Mobile:
 		Crushes: wall, heavywall, crate, infantry
 		Speed: 56
-		ROT: 3
+		TurnSpeed: 3
 	Health:
 		HP: 800
 	Armor:
@@ -392,7 +391,7 @@ HTNK:
 		Range: 6c0
 	WithSpriteTurret:
 	Turreted:
-		ROT: 3
+		TurnSpeed: 3
 	Armament@PRIMARY:
 		Weapon: 120mmDual
 		LocalOffset: 900,180,340, 900,-180,340
@@ -410,8 +409,8 @@ HTNK:
 	WithMuzzleOverlay:
 	AutoTarget:
 	SelfHealing:
-		Ticks: 10
-		HealIfBelow: 50%
+		Delay: 10
+		HealIfBelow: 50
 		DamageCooldown: 200
 	SpawnActorOnDeath:
 		Actor: HTNK.Husk
@@ -431,7 +430,7 @@ MSAM:
 		Queue: Vehicle.GDI
 	Mobile:
 		Speed: 85
-		ROT: 4
+		TurnSpeed: 4
 	Health:
 		HP: 120
 	Armor:
@@ -439,7 +438,7 @@ MSAM:
 	RevealsShroud:
 		Range: 8c0
 	Turreted:
-		ROT: 255
+		TurnSpeed: 255
 		Offset: -256,0,128
 	Armament@PRIMARY:
 		Weapon: 227mm
@@ -467,7 +466,7 @@ MLRS:
 		Queue: Vehicle.Nod
 	Mobile:
 		Speed: 99
-		ROT: 7
+		TurnSpeed: 7
 	Health:
 		HP: 120
 	Armor:
@@ -475,7 +474,7 @@ MLRS:
 	RevealsShroud:
 		Range: 8c0
 	Turreted:
-		ROT: 8
+		TurnSpeed: 8
 		Offset: -128,0,128
 		RealignDelay: 0
 	Armament:
@@ -486,7 +485,7 @@ MLRS:
 		PipCount: 0
 		SelfReloads: true
 		ReloadCount: 1
-		SelfReloadTicks: 45
+		SelfReloadDelay: 45
 	AttackTurreted:
 	WithReloadingSpriteTurret:
 		AmmoPoolName: primary
@@ -508,7 +507,7 @@ STNK:
 		Prerequisites: tmpl, ~techlevel.high
 		Queue: Vehicle.Nod
 	Mobile:
-		ROT: 10
+		TurnSpeed: 10
 		Speed: 142
 		Crushes: crate, infantry
 	Health:

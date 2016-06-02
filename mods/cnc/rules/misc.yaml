@@ -104,11 +104,14 @@ FLARE:
 		Type: CenterPosition
 	RenderSprites:
 		Image: smokland
+		Palette: terrain
 	WithSpriteBody:
 		StartSequence: open
 	HiddenUnderFog:
 		Type: CenterPosition
 	Tooltip:
 		Name: Flare
+		ShowOwnerRow: false
 	BodyOrientation:
 		QuantizedFacings: 1
+	AutoSelectionSize:

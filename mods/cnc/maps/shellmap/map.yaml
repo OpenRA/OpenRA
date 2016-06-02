@@ -1,10 +1,8 @@
-MapFormat: 8
+MapFormat: 11
 
 RequiresMod: cnc
 
 Title: shellmap
-
-Description: CNC Shellmap
 
 Author: Chris Forbes
 
@@ -16,11 +14,7 @@ Bounds: 8,1,80,45
 
 Visibility: Shellmap
 
-Type: Shellmap
-
-Videos:
-
-Options:
+Categories: Shellmap
 
 Players:
 	PlayerReference@Nod:
@@ -40,41 +34,11 @@ Players:
 		OwnsWorld: True
 		NonCombatant: True
 		Faction: gdi
-	PlayerReference@Multi0:
-		Name: Multi0
-		Playable: True
-		Faction: Random
-		Enemies: Creeps
-	PlayerReference@Multi1:
-		Name: Multi1
-		Playable: True
-		Faction: Random
-		Enemies: Creeps
-	PlayerReference@Multi2:
-		Name: Multi2
-		Playable: True
-		Faction: Random
-		Enemies: Creeps
-	PlayerReference@Multi3:
-		Name: Multi3
-		Playable: True
-		Faction: Random
-		Enemies: Creeps
-	PlayerReference@Multi4:
-		Name: Multi4
-		Playable: True
-		Faction: Random
-		Enemies: Creeps
-	PlayerReference@Multi5:
-		Name: Multi5
-		Playable: True
-		Faction: Random
-		Enemies: Creeps
 	PlayerReference@Creeps:
 		Name: Creeps
 		NonCombatant: True
 		Faction: Random
-		Enemies: Nod, GDI, Multi0, Multi1, Multi2, Multi3, Multi4, Multi5
+		Enemies: Nod, GDI
 
 Actors:
 	Actor4: fix
@@ -258,7 +222,7 @@ Actors:
 		Location: 12,14
 		Owner: Nod
 	Actor68: brik
-		Location: 11,14
+		Location: 12,15
 		Owner: Nod
 	Actor69: brik
 		Location: 11,15
@@ -329,9 +293,11 @@ Actors:
 	Actor35: gun
 		Location: 20,11
 		Owner: Nod
+		TurretFacing: 160
 	Actor36: gun
 		Location: 16,14
 		Owner: Nod
+		TurretFacing: 184
 	Actor41: brik
 		Location: 32,5
 		Owner: Nod
@@ -344,9 +310,11 @@ Actors:
 	Actor96: gun
 		Location: 33,5
 		Owner: Nod
+		TurretFacing: 144
 	Actor97: gun
 		Location: 39,3
 		Owner: Nod
+		TurretFacing: 128
 	Actor98: nuke
 		Location: 22,1
 		Owner: Nod
@@ -376,9 +344,6 @@ Actors:
 		Owner: Neutral
 	Actor107: tc05
 		Location: 67,3
-		Owner: Neutral
-	Actor108: split2
-		Location: 73,5
 		Owner: Neutral
 	Actor109: tc04
 		Location: 80,0
@@ -461,9 +426,11 @@ Actors:
 	Actor131: gun
 		Location: 13,16
 		Owner: Nod
+		TurretFacing: 160
 	Actor132: gun
 		Location: 12,16
 		Owner: Nod
+		TurretFacing: 160
 	Actor133: brik
 		Location: 9,16
 		Owner: Nod
@@ -475,9 +442,6 @@ Actors:
 		Owner: Neutral
 	Actor136: v07
 		Location: 8,17
-		Owner: Neutral
-	Actor137: split3
-		Location: 13,20
 		Owner: Neutral
 	Actor138: v01
 		Location: 36,16
@@ -536,6 +500,7 @@ Actors:
 	Actor156: gun
 		Location: 34,23
 		Owner: Nod
+		TurretFacing: 96
 	Actor157: sam
 		Location: 32,22
 		Owner: Nod
@@ -809,15 +774,19 @@ Actors:
 	Actor252: gun
 		Location: 53,27
 		Owner: Nod
+		TurretFacing: 128
 	Actor253: gun
 		Location: 50,27
 		Owner: Nod
+		TurretFacing: 128
 	Actor254: gun
 		Location: 61,27
 		Owner: Nod
+		TurretFacing: 128
 	Actor255: gun
 		Location: 64,27
 		Owner: Nod
+		TurretFacing: 128
 	Actor256: v03
 		Location: 68,21
 		Owner: Neutral
@@ -982,37 +951,11 @@ Actors:
 		Location: 65,20
 		Owner: Nod
 		Facing: 192
+	Actor300: split3
+		Owner: Neutral
+		Location: 13,21
+	Actor299: split3
+		Owner: Neutral
+		Location: 73,6
 
-Smudges:
-
-Rules:
-	World:
-		-SpawnMPUnits:
-		-MPStartLocations:
-		-CrateSpawner:
-		MenuPaletteEffect:
-			Effect: Desaturated
-		LuaScript:
-			Scripts: shellmap.lua
-		MusicPlaylist:
-			BackgroundMusic: map1
-	LST:
-		Mobile:
-			Speed: 42
-	BOAT:
-		Mobile:
-			Speed: 42
-
-Sequences:
-
-VoxelSequences:
-
-Weapons:
-
-Voices:
-
-Music:
-
-Notifications:
-
-Translations:
+Rules: cnc|rules/campaign-palettes.yaml, rules.yaml

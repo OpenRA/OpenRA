@@ -5,6 +5,10 @@ Container@NEW_MAP_BG:
 	Width: 300
 	Height: 125
 	Children:
+		Container@MUSICBUTTONS:
+			Logic: MusicControllerLogic
+			Children:
+				LogicKeyListener@MUSICCONTROLLER_KEYHANDLER:
 		Label@TITLE:
 			Text: New Map
 			Width: PARENT_RIGHT
@@ -78,7 +82,7 @@ Background@SAVE_MAP_PANEL:
 	X: (WINDOW_RIGHT - WIDTH)/2
 	Y: (WINDOW_BOTTOM - HEIGHT)/2
 	Width: 345
-	Height: 264
+	Height: 229
 	Children:
 		Label@LABEL_TITLE:
 			Text: Save Map
@@ -89,7 +93,7 @@ Background@SAVE_MAP_PANEL:
 			Align: Center
 		Background@SAVE_MAP_BACKGROUND:
 			Width: PARENT_RIGHT
-			Height: 230
+			Height: 195
 			Background: panel-black
 			Children:
 				Label@TITLE_LABEL:
@@ -118,60 +122,47 @@ Background@SAVE_MAP_PANEL:
 					Width: 220
 					MaxLength: 50
 					Height: 25
-				Label@DESCRIPTION_LABEL:
-					X: 10
-					Y: 84
-					Width: 95
-					Height: 25
-					Align: Right
-					Text: Description:
-				TextField@DESCRIPTION:
-					X: 110
-					Y: 85
-					Width: 220
-					MaxLength: 50
-					Height: 25
 				Label@VISIBILITY_LABEL:
 					X: 10
-					Y: 119
+					Y: 84
 					Width: 95
 					Height: 25
 					Align: Right
 					Text: Visibility:
 				DropDownButton@VISIBILITY_DROPDOWN:
 					X: 110
-					Y: 120
+					Y: 85
 					Width: 220
 					Height: 25
 					Font: Regular
 				Label@DIRECTORY_LABEL:
 					X: 10
-					Y: 154
+					Y: 119
 					Width: 95
 					Height: 25
 					Align: Right
 					Text: Directory:
 				DropDownButton@DIRECTORY_DROPDOWN:
 					X: 110
-					Y: 155
+					Y: 120
 					Width: 220
 					Height: 25
 					Font: Regular
 				Label@FILENAME_LABEL:
 					X: 10
-					Y: 189
+					Y: 154
 					Width: 95
 					Height: 25
 					Align: Right
 					Text: Filename:
 				TextField@FILENAME:
 					X: 110
-					Y: 190
+					Y: 155
 					Width: 105
 					Height: 25
 				DropDownButton@TYPE_DROPDOWN:
 					X: 220
-					Y: 190
+					Y: 155
 					Width: 110
 					Height: 25
 					Font: Regular
@@ -328,7 +319,7 @@ Container@EDITOR_WORLD_ROOT:
 									Visible: false
 									Width: PARENT_RIGHT - 35
 									TooltipContainer: TOOLTIP_CONTAINER
-									TooltipTemplate: TWO_LINE_TOOLTIP
+									TooltipTemplate: SIMPLE_TOOLTIP
 									IgnoreChildMouseOver: true
 									Children:
 										ActorPreview@ACTOR_PREVIEW:

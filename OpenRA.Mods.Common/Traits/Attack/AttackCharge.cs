@@ -1,10 +1,11 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2016 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
- * as published by the Free Software Foundation. For more information,
- * see COPYING.
+ * as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version. For more
+ * information, see COPYING.
  */
 #endregion
 
@@ -21,7 +22,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int MaxCharges = 1;
 
 		[Desc("Reload time for all charges (in ticks).")]
-		public readonly int ReloadTime = 120;
+		public readonly int ReloadDelay = 120;
 
 		[Desc("Delay for initial charge attack (in ticks).")]
 		public readonly int InitialChargeDelay = 22;
@@ -66,7 +67,7 @@ namespace OpenRA.Mods.Common.Traits
 		public void Attacking(Actor self, Target target, Armament a, Barrel barrel)
 		{
 			--charges;
-			timeToRecharge = info.ReloadTime;
+			timeToRecharge = info.ReloadDelay;
 		}
 
 		public override Activity GetAttackActivity(Actor self, Target newTarget, bool allowMove, bool forceAttack)

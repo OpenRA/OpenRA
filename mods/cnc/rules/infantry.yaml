@@ -148,8 +148,6 @@ E6:
 		CaptureTypes: building, husk
 	-AutoTarget:
 	-GainsExperience:
-	Selectable:
-		Priority: 5
 
 RMBO:
 	Inherits: ^Soldier
@@ -176,8 +174,8 @@ RMBO:
 		Range: 6c0
 	AutoTarget:
 		ScanRadius: 6
-	C4Demolition:
-		C4Delay: 45
+	Demolition:
+		DetonationDelay: 45
 		Voice: Demolish
 	Armament:
 		Weapon: Sniper

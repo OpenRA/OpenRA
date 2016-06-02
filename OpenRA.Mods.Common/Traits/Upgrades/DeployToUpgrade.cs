@@ -1,10 +1,11 @@
 ﻿#region Copyright & License Information
 /*
- * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2016 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
- * as published by the Free Software Foundation. For more information,
- * see COPYING.
+ * as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version. For more
+ * information, see COPYING.
  */
 #endregion
 
@@ -13,6 +14,7 @@ using System.Collections.Generic;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Orders;
+using OpenRA.Mods.Common.Traits.Render;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -51,6 +53,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		[Desc("Sound to play when undeploying.")]
 		public readonly string UndeploySound = null;
+
+		[Desc("Can this actor undeploy?")]
+		public readonly bool CanUndeploy = true;
 
 		public object Create(ActorInitializer init) { return new DeployToUpgrade(init, this); }
 	}
@@ -111,7 +116,7 @@ namespace OpenRA.Mods.Common.Traits
 		public IEnumerable<IOrderTargeter> Orders
 		{
 			get { yield return new DeployOrderTargeter("DeployToUpgrade", 5,
-				() => IsOnValidTerrain() ? info.DeployCursor : info.DeployBlockedCursor); }
+				() => IsCursorBlocked() ? info.DeployBlockedCursor : info.DeployCursor); }
 		}
 
 		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
@@ -130,7 +135,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!order.Queued)
 				self.CancelActivity();
 
-			if (deployState == DeployState.Deployed)
+			if (deployState == DeployState.Deployed && info.CanUndeploy)
 			{
 				self.QueueActivity(new CallFunc(Undeploy));
 			}
@@ -142,6 +147,11 @@ namespace OpenRA.Mods.Common.Traits
 
 				self.QueueActivity(new CallFunc(Deploy));
 			}
+		}
+
+		bool IsCursorBlocked()
+		{
+			return ((deployState == DeployState.Deployed) && !info.CanUndeploy) || (!IsOnValidTerrain() && (deployState != DeployState.Deployed));
 		}
 
 		bool IsOnValidTerrain()
@@ -157,9 +167,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!checkTerrainType)
 				return true;
 
-			var tileSet = self.World.TileSet;
-			var tiles = self.World.Map.MapTiles.Value;
-			var terrainType = tileSet[tileSet.GetTerrainIndex(tiles[self.Location])].Type;
+			var terrainType = self.World.Map.GetTerrainInfo(self.Location).Type;
 
 			return info.AllowedTerrainTypes.Contains(terrainType);
 		}
@@ -172,8 +180,8 @@ namespace OpenRA.Mods.Common.Traits
 			var ramp = 0;
 			if (self.World.Map.Contains(self.Location))
 			{
-				var tile = self.World.Map.MapTiles.Value[self.Location];
-				var ti = self.World.TileSet.GetTileInfo(tile);
+				var tile = self.World.Map.Tiles[self.Location];
+				var ti = self.World.Map.Rules.TileSet.GetTileInfo(tile);
 				if (ti != null)
 					ramp = ti.RampType;
 			}

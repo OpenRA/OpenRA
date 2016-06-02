@@ -1,7 +1,7 @@
 APC:
 	Inherits: ^VoxelTank
 	Valued:
-		Cost: 600
+		Cost: 800
 	Tooltip:
 		Name: Amphibious APC
 		Description: Armored infantry transport.\nCan move on water.\n  Unarmed
@@ -10,7 +10,7 @@ APC:
 		BuildPaletteOrder: 30
 		Prerequisites: ~gaweap, gapile
 	Mobile:
-		ROT: 5
+		TurnSpeed: 5
 		Speed: 113
 		TerrainSpeeds:
 			Water: 80
@@ -21,7 +21,7 @@ APC:
 	RevealsShroud:
 		Range: 5c0
 	Turreted:
-		ROT: 10
+		TurnSpeed: 10
 	Cargo:
 		Types: Infantry
 		MaxWeight: 5
@@ -71,7 +71,7 @@ HVR:
 		Weapon: HoverMissile
 		LocalOffset: 0,171,384, 0,-171,384
 	Turreted:
-		ROT: 7
+		TurnSpeed: 7
 		Offset: -128,0,85
 	AttackTurreted:
 		Voice: Attack
@@ -85,6 +85,7 @@ HVR:
 		TrailWhileStationary: True
 		StationaryInterval: 18
 		MovingInterval: 6
+	-PoisonedByTiberium:
 
 SMECH:
 	Inherits: ^Vehicle
@@ -98,7 +99,7 @@ SMECH:
 		BuildPaletteOrder: 10
 		Prerequisites: ~gaweap
 	Mobile:
-		ROT: 5
+		TurnSpeed: 5
 		Speed: 99
 	Health:
 		HP: 175
@@ -123,6 +124,7 @@ SMECH:
 		MoveSequence: run
 	Selectable:
 		Bounds: 20, 32, 0, -8
+	-PoisonedByTiberium:
 
 MMCH:
 	Inherits: ^Tank
@@ -136,7 +138,7 @@ MMCH:
 		BuildPaletteOrder: 30
 		Prerequisites: ~gaweap
 	Mobile:
-		ROT: 5
+		TurnSpeed: 5
 		Speed: 56
 		Crushes: wall, crate, infantry
 	Health:
@@ -149,7 +151,7 @@ MMCH:
 		QuantizedFacings: 32
 	WithInfantryBody:
 	Turreted:
-		ROT: 5
+		TurnSpeed: 5
 	AttackTurreted:
 		Voice: Attack
 	WithSpriteTurret:
@@ -178,7 +180,7 @@ HMEC:
 		Prerequisites: ~gaweap, gatech
 		BuildLimit: 1
 	Mobile:
-		ROT: 3
+		TurnSpeed: 3
 		Speed: 42
 		Crushes: wall, crate, infantry
 	Health:
@@ -217,7 +219,7 @@ SONIC:
 	Targetable:
 		TargetTypes: Ground, Vehicle, Repair, Disruptor
 	Mobile:
-		ROT: 4
+		TurnSpeed: 4
 		Speed: 56
 		Crushes: wall, crate, infantry
 	Health:
@@ -232,7 +234,7 @@ SONIC:
 	AttackTurreted:
 		Voice: Attack
 	Turreted:
-		ROT: 5
+		TurnSpeed: 5
 		Offset: -170,0,0
 	AutoTarget:
 	WithVoxelTurret:

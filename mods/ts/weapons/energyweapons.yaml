@@ -6,7 +6,7 @@ LtRail:
 		Speed: 20c0
 		Duration: 3
 		DamageInterval: 2
-		Width: 0c128
+		Width: 80
 		BeyondTargetRange: 0c64
 		Blockable: true
 		Color: 0080FFC8
@@ -49,7 +49,7 @@ MechRailgun:
 		Speed: 20c0
 		Duration: 3
 		DamageInterval: 2
-		Width: 0c128
+		Width: 80
 		BeyondTargetRange: 0c64
 		Blockable: true
 		Color: 00FFFFC8
@@ -72,12 +72,12 @@ SonicZap:
 		Speed: 0c128
 		Duration: 90
 		DamageInterval: 5 # Roughly 18 impacts.
-		Width: 0c384
+		Width: 384
 		Shape: Flat
 		ZOffset: 2047
 		BeyondTargetRange: 0c256
 		Blockable: true
-		Color: 00FFFFC8
+		Color: 50F5FF45
 	Warhead@1Dam: SpreadDamage
 		Range: 0, 32
 		Falloff: 100, 100
@@ -111,6 +111,8 @@ CyCannon:
 		HorizontalRateOfTurn: 2
 		Shadow: true
 		Image: TORPEDO
+		MinimumLaunchSpeed: 75
+		Speed: 384
 	Warhead@1Dam: SpreadDamage
 		Spread: 43
 		Damage: 120
@@ -123,13 +125,13 @@ CyCannon:
 			Concrete: 80
 		DamageTypes: Prone350Percent, TriggerProne, EnergyDeath
 	Warhead@2Eff: CreateEffect
-		Explosion: large_bang
-		ImpactSound: expnew12.aud
+		Explosions: large_bang
+		ImpactSounds: expnew12.aud
 		InvalidImpactTypes: Water
 	Warhead@3EffWater: CreateEffect
-		Explosion: small_watersplash
+		Explosions: small_watersplash
 		ExplosionPalette: player
-		ImpactSound: ssplash3.aud
+		ImpactSounds: ssplash3.aud
 		ValidImpactTypes: Water
 	Warhead@4Smu: LeaveSmudge
 		SmudgeType: SmallScorch
@@ -160,13 +162,13 @@ Proton:
 			Concrete: 60
 		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
 	Warhead@2Eff: CreateEffect
-		Explosion: small_bang
-		ImpactSound: expnew12.aud
+		Explosions: small_bang
+		ImpactSounds: expnew12.aud
 		InvalidImpactTypes: Water
 	Warhead@3EffWater: CreateEffect
-		Explosion: small_watersplash
+		Explosions: small_watersplash
 		ExplosionPalette: player
-		ImpactSound: ssplash3.aud
+		ImpactSounds: ssplash3.aud
 		ValidImpactTypes: Water
 
 ObeliskLaserFire:
@@ -174,7 +176,7 @@ ObeliskLaserFire:
 	Range: 10c512
 	Report: obelray1.aud
 	Projectile: LaserZap
-		Width: 170
+		Width: 85
 		ZOffset: 2047
 	Warhead@1Dam: SpreadDamage
 		Spread: 42
@@ -186,7 +188,7 @@ TurretLaserFire:
 	Range: 5c512
 	Report: lastur1.aud
 	Projectile: LaserZap
-		Width: 85
+		Width: 50
 		BeamDuration: 5
 		ZOffset: 2047
 	Warhead@1Dam: SpreadDamage

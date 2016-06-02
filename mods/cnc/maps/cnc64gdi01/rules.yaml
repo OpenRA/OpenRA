@@ -1,0 +1,66 @@
+World:
+	LuaScript:
+		Scripts: cnc64gdi01.lua
+	MusicPlaylist:
+		StartingMusic: aoi
+	MissionData:
+		Briefing: Nod is experimenting on civilians with Tiberium. Use the commando to take out the SAM sites surrounding the dropoff area. With the SAMs gone you will then get an airstrike.  Take out the Obelisk and an MCV will be delivered to help you to locate and destroy the biochem facility.
+		StartVideo: obel.vqa
+		WinVideo: orcabomb.vqa
+		LossVideo: cutout.vqa
+
+Player:
+	PlayerResources:
+		DefaultCash: 10000
+
+BIO.Husk:
+	Tooltip:
+		ShowOwnerRow: false
+
+EYE:
+	IonCannonPower:
+		Prerequisites: ~disabled
+
+FLARE:
+	RevealsShroud:
+		Range: 5c0
+
+STNK:
+	Buildable:
+		Prerequisites: ~techlevel.high
+
+TRAN:
+	Buildable:
+		Prerequisites: ~disabled
+
+RMBO:
+	Buildable:
+		Prerequisites: ~disabled
+
+OLDLST:
+	Inherits: LST
+	-WithRoof:
+	-Selectable:
+	RejectsOrders:
+	Cargo:
+		Types: disabled
+
+airstrike.proxy:
+	AlwaysVisible:
+	AirstrikePower:
+		Icon: airstrike
+		StartFullyCharged: True
+		ChargeTime: 120
+		SquadSize: 3
+		QuantizedFacings: 8
+		Description: Air Strike
+		LongDesc: Deploy an aerial napalm strike.\nBurns buildings and infantry along a line.
+		EndChargeSound: airredy1.aud
+		SelectTargetSound: select1.aud
+		InsufficientPowerSound: nopower1.aud
+		IncomingSound: enemya.aud
+		UnitType: a10
+		DisplayBeacon: True
+		BeaconPoster: airstrike
+		DisplayRadarPing: True
+		CameraActor: camera

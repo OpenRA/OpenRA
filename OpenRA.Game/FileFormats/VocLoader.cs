@@ -1,10 +1,11 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2016 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
- * as published by the Free Software Foundation. For more information,
- * see COPYING.
+ * as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version. For more
+ * information, see COPYING.
  */
 #endregion
 
@@ -17,38 +18,30 @@ namespace OpenRA.FileFormats
 {
 	public class VocLoader : ISoundLoader
 	{
-		bool ISoundLoader.TryParseSound(Stream stream, string fileName, out byte[] rawData, out int channels, out int sampleBits, out int sampleRate)
+		bool ISoundLoader.TryParseSound(Stream stream, out ISoundFormat sound)
 		{
-			var position = stream.Position;
-
 			try
 			{
-				var vocStream = new VocStream(stream);
-				channels = vocStream.Channels;
-				sampleBits = vocStream.BitsPerSample;
-				sampleRate = vocStream.SampleRate;
-				rawData = vocStream.ReadAllBytes();
+				sound = new VocFormat(stream);
+				return true;
 			}
 			catch
 			{
-				rawData = null;
-				channels = sampleBits = sampleRate = 0;
-				return false;
-			}
-			finally
-			{
-				stream.Position = position;
+				// Not a (supported) WAV
 			}
 
-			return true;
+			sound = null;
+			return false;
 		}
 	}
 
-	public class VocStream : Stream
+	public class VocFormat : ISoundFormat
 	{
-		public int BitsPerSample { get { return 8; } }
+		public int SampleBits { get { return 8; } }
 		public int Channels { get { return 1; } }
 		public int SampleRate { get; private set; }
+		public float LengthInSeconds { get { return (float)totalSamples / SampleRate; } }
+		public Stream GetPCMInputStream() { return new VocStream(this); }
 
 		int totalSamples = 0;
 		int samplePosition = 0;
@@ -97,9 +90,10 @@ namespace OpenRA.FileFormats
 			public int Count;
 		}
 
-		public VocStream(Stream stream)
+		public VocFormat(Stream stream)
 		{
 			this.stream = stream;
+
 			CheckVocHeader();
 			Preload();
 		}
@@ -186,7 +180,7 @@ namespace OpenRA.FileFormats
 							break;
 						}
 
-						// Silence
+					// Silence
 					case 3:
 						{
 							if (block.Length != 3)
@@ -198,7 +192,7 @@ namespace OpenRA.FileFormats
 							break;
 						}
 
-						// Repeat start
+					// Repeat start
 					case 6:
 						{
 							if (block.Length != 2)
@@ -207,11 +201,11 @@ namespace OpenRA.FileFormats
 							break;
 						}
 
-						// Repeat end
+					// Repeat end
 					case 7:
 						break;
 
-						// Extra info
+					// Extra info
 					case 8:
 						{
 							if (block.Length != 4)
@@ -315,44 +309,7 @@ namespace OpenRA.FileFormats
 			}
 		}
 
-		public byte[] ReadAllBytes()
-		{
-			Rewind();
-			var buffer = new byte[totalSamples];
-			Read(buffer, 0, totalSamples);
-			return buffer;
-		}
-
-		public override bool CanRead { get { return true; } }
-
-		public override bool CanSeek { get { return false; } }
-
-		public override bool CanWrite { get { return false; } }
-
-		public override long Length { get { return totalSamples; } }
-
-		public override long Position
-		{
-			get { return samplePosition; }
-			set { throw new NotImplementedException(); }
-		}
-
-		public override void Flush()
-		{
-			throw new NotImplementedException();
-		}
-
-		public override long Seek(long offset, SeekOrigin origin)
-		{
-			throw new NotImplementedException();
-		}
-
-		public override void SetLength(long value)
-		{
-			throw new NotImplementedException();
-		}
-
-		public override int Read(byte[] buffer, int offset, int count)
+		int Read(byte[] buffer, int offset, int count)
 		{
 			var bytesWritten = 0;
 			var samplesLeft = Math.Min(count, buffer.Length - offset);
@@ -361,7 +318,7 @@ namespace OpenRA.FileFormats
 				var len = FillBuffer(samplesLeft);
 				if (len == 0)
 					break;
-				Array.Copy(this.buffer, 0, buffer, offset, len);
+				Buffer.BlockCopy(this.buffer, 0, buffer, offset, len);
 				samplesLeft -= len;
 				offset += len;
 				bytesWritten += len;
@@ -370,9 +327,34 @@ namespace OpenRA.FileFormats
 			return bytesWritten;
 		}
 
-		public override void Write(byte[] buffer, int offset, int count)
+		public class VocStream : Stream
 		{
-			throw new NotImplementedException();
+			VocFormat format;
+			public VocStream(VocFormat format)
+			{
+				this.format = format;
+			}
+
+			public override bool CanRead { get { return format.samplePosition < format.totalSamples; } }
+			public override bool CanSeek { get { return false; } }
+			public override bool CanWrite { get { return false; } }
+
+			public override long Length { get { return format.totalSamples; } }
+			public override long Position
+			{
+				get { return format.samplePosition; }
+				set { throw new NotImplementedException(); }
+			}
+
+			public override int Read(byte[] buffer, int offset, int count)
+			{
+				return format.Read(buffer, offset, count);
+			}
+
+			public override void Flush() { throw new NotImplementedException(); }
+			public override long Seek(long offset, SeekOrigin origin) { throw new NotImplementedException(); }
+			public override void SetLength(long value) { throw new NotImplementedException(); }
+			public override void Write(byte[] buffer, int offset, int count) { throw new NotImplementedException(); }
 		}
 	}
 }

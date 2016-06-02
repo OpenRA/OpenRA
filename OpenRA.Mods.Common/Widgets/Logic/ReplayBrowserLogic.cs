@@ -1,10 +1,11 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2016 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
- * as published by the Free Software Foundation. For more information,
- * see COPYING.
+ * as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version. For more
+ * information, see COPYING.
  */
 #endregion
 
@@ -17,6 +18,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using OpenRA.FileFormats;
 using OpenRA.Primitives;
+using OpenRA.Traits;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
@@ -31,6 +33,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly List<ReplayMetadata> replays = new List<ReplayMetadata>();
 		readonly Dictionary<ReplayMetadata, ReplayState> replayState = new Dictionary<ReplayMetadata, ReplayState>();
 		readonly Action onStart;
+		readonly ModData modData;
 
 		Dictionary<CPos, SpawnOccupant> selectedSpawns;
 		ReplayMetadata selectedReplay;
@@ -38,10 +41,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		volatile bool cancelLoadingReplays;
 
 		[ObjectCreator.UseCtor]
-		public ReplayBrowserLogic(Widget widget, Action onExit, Action onStart)
+		public ReplayBrowserLogic(Widget widget, ModData modData, Action onExit, Action onStart)
 		{
 			panel = widget;
 
+			this.modData = modData;
 			this.onStart = onStart;
 
 			playerList = panel.Get<ScrollPanelWidget>("PLAYER_LIST");
@@ -54,7 +58,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			replayList = panel.Get<ScrollPanelWidget>("REPLAY_LIST");
 			var template = panel.Get<ScrollItemWidget>("REPLAY_TEMPLATE");
 
-			var mod = Game.ModData.Manifest.Mod;
+			var mod = modData.Manifest.Mod;
 			var dir = Platform.ResolvePath("^", "Replays", mod.Id, mod.Version);
 
 			if (Directory.Exists(dir))
@@ -82,7 +86,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var type = panel.GetOrNull<LabelWidget>("MAP_TYPE");
 			if (type != null)
-				type.GetText = () => selectedReplay.GameInfo.MapPreview.Type;
+			{
+				var mapType = new CachedTransform<MapPreview, string>(m => m.Categories.FirstOrDefault() ?? "");
+				type.GetText = () => mapType.Update(selectedReplay.GameInfo.MapPreview);
+			}
 
 			panel.Get<LabelWidget>("DURATION").GetText = () => WidgetUtils.FormatTimeSeconds((int)selectedReplay.GameInfo.Duration.TotalSeconds);
 
@@ -410,7 +417,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						if (after != null)
 							after.Invoke();
 					},
-					confirmText: "Delete");
+					confirmText: "Delete",
+					onCancel: () => { });
 			};
 
 			{
@@ -450,7 +458,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 							if (selectedReplay == null)
 								SelectFirstVisibleReplay();
 						},
-						confirmText: "Delete All");
+						confirmText: "Delete All",
+						onCancel: () => { });
 				};
 			}
 		}
@@ -643,7 +652,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 						var flag = item.Get<ImageWidget>("FLAG");
 						flag.GetImageCollection = () => "flags";
-						flag.GetImageName = () => o.FactionId;
+						var factionInfo = modData.DefaultRules.Actors["world"].TraitInfos<FactionInfo>();
+						flag.GetImageName = () => (factionInfo != null && factionInfo.Any(f => f.InternalName == o.FactionId)) ? o.FactionId : "Random";
 
 						playerList.AddChild(item);
 					}

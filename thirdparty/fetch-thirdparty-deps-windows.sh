@@ -18,10 +18,10 @@ function get()
 }
 
 if [ ! -f SDL2.dll ]; then
-	echo "Fetching SDL2 from NuGet"
-	get sdl2.redist 2.0.3
-	cp ./sdl2.redist/build/native/bin/Win32/dynamic/SDL2.dll .
-	rm -rf sdl2.redist
+	echo "Fetching SDL2 from libsdl.org"
+	wget https://www.libsdl.org/release/SDL2-2.0.4-win32-x86.zip
+	unzip SDL2-2.0.4-win32-x86.zip SDL2.dll
+	rm SDL2-2.0.4-win32-x86.zip
 fi
 
 if [ ! -f freetype6.dll ]; then

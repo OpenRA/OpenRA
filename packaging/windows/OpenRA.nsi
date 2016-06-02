@@ -59,7 +59,7 @@ Section "-Reg" Reg
 	; Replay file association
 	WriteRegStr HKLM "Software\Classes\.orarep" "" "OpenRA_replay"
 	WriteRegStr HKLM "Software\Classes\OpenRA_replay\DefaultIcon" "" "$INSTDIR\OpenRA.ico,0"
-	WriteRegStr HKLM "Software\Classes\OpenRA_replay\Shell\Open\Command" "" "$INSTDIR\OpenRA.exe Launch.Replay=%1"
+	WriteRegStr HKLM "Software\Classes\OpenRA_replay\Shell\Open\Command" "" "$INSTDIR\OpenRA.exe Launch.Replay=$\"%1$\""
 	
 	; OpenRA URL Scheme
 	WriteRegStr HKLM "Software\Classes\openra" "" "URL:OpenRA scheme"
@@ -85,7 +85,7 @@ Section "Game" GAME
 	File "${SRCDIR}\OpenRA.Game.exe"
 	File "${SRCDIR}\OpenRA.Game.exe.config"
 	File "${SRCDIR}\OpenRA.Utility.exe"
-	File "${SRCDIR}\OpenRA.Platforms.Null.dll"
+	File "${SRCDIR}\OpenRA.Server.exe"
 	File "${SRCDIR}\OpenRA.Platforms.Default.dll"
 	File "${SRCDIR}\ICSharpCode.SharpZipLib.dll"
 	File "${SRCDIR}\FuzzyLogicLibrary.dll"
@@ -104,7 +104,6 @@ Section "Game" GAME
 	File "${SRCDIR}\MaxMind.Db.dll"
 	File "${SRCDIR}\MaxMind.GeoIP2.dll"
 	File "${SRCDIR}\Newtonsoft.Json.dll"
-	File "${SRCDIR}\RestSharp.dll"
 	File "${SRCDIR}\GeoLite2-Country.mmdb.gz"
 	File "${SRCDIR}\eluant.dll"
 	File "${SRCDIR}\SmarIrc4net.dll"
@@ -148,14 +147,14 @@ Section "-DotNet" DotNet
 	IfErrors error 0
 	IntCmp $0 1 done error done
 	error:
-		MessageBox MB_YESNO ".NET Framework v4.0 or later is required to run OpenRA. $\n \
+		MessageBox MB_YESNO ".NET Framework v4.5 or later is required to run OpenRA. $\n \
 		Do you wish for the installer to launch your web browser in order to download and install it?" \
 		IDYES download IDNO error2
 	download:
-		ExecShell "open" "http://www.microsoft.com/en-us/download/details.aspx?id=17113"
+		ExecShell "open" "http://www.microsoft.com/en-us/download/details.aspx?id=30653"
 		Goto done
 	error2:
-		MessageBox MB_OK "Installation will continue, but be aware that OpenRA will not run unless .NET v4.0 \
+		MessageBox MB_OK "Installation will continue, but be aware that OpenRA will not run unless .NET v4.5 \
 		or later is installed."
 	done:
 SectionEnd
@@ -190,7 +189,7 @@ Function ${UN}Clean
 	Delete $INSTDIR\OpenRA.Game.exe
 	Delete $INSTDIR\OpenRA.Game.exe.config
 	Delete $INSTDIR\OpenRA.Utility.exe
-	Delete $INSTDIR\OpenRA.Platforms.Null.dll
+	Delete $INSTDIR\OpenRA.Server.exe
 	Delete $INSTDIR\OpenRA.Platforms.Default.dll
 	Delete $INSTDIR\ICSharpCode.SharpZipLib.dll
 	Delete $INSTDIR\FuzzyLogicLibrary.dll
@@ -207,7 +206,6 @@ Function ${UN}Clean
 	Delete $INSTDIR\MaxMind.Db.dll
 	Delete $INSTDIR\MaxMind.GeoIP2.dll
 	Delete $INSTDIR\Newtonsoft.Json.dll
-	Delete $INSTDIR\RestSharp.dll
 	Delete $INSTDIR\GeoLite2-Country.mmdb.gz
 	Delete $INSTDIR\KopiLua.dll
 	Delete $INSTDIR\soft_oal.dll

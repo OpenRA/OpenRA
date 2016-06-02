@@ -124,11 +124,9 @@ LandingPossible = function()
 end
 
 SuperTankDomeInfiltrated = function()
-	turkey.SetStance(player, "Ally")
-	turkey.SetStance(neutral, "Ally")
-
 	SuperTankAttack = true
 	Utils.Do(SuperTanks, function(tnk)
+		tnk.Owner = friendlyMadTanks
 		if not tnk.IsDead then
 			Trigger.ClearAll(tnk)
 			tnk.Stop()
@@ -170,9 +168,7 @@ SuperTankDomeInfiltrated = function()
 end
 
 SuperTanksDestruction = function()
-	local badGuys = Map.ActorsInBox(Map.TopLeft, Map.BottomRight,
-		function(self) return self.Owner == badguy and self.HasProperty("Health") end)
-
+	local badGuys = Utils.Where(Map.ActorsInWorld, function(self) return self.Owner == badguy and self.HasProperty("Health") end)
 	Utils.Do(badGuys, function(unit)
 		unit.Kill()
 	end)
@@ -276,6 +272,7 @@ InitPlayers = function()
 	ussr = Player.GetPlayer("USSR")
 	ukraine = Player.GetPlayer("Ukraine")
 	turkey = Player.GetPlayer("Turkey")
+	friendlyMadTanks = Player.GetPlayer("FriendlyMadTanks")
 
 	player.Cash = 0
 	ussr.Cash = 2000

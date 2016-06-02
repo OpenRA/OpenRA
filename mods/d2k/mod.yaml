@@ -7,129 +7,130 @@ Metadata:
 RequiresMods:
 	modchooser: {DEV_VERSION}
 
-Folders:
-	.
-	d2k:
-	d2k:bits
-	d2k:bits/tex
-	d2k:bits/xmas
-	d2k:uibits
+Packages:
 	~^Content/d2k
 	~^Content/d2k/GAMESFX
 	~^Content/d2k/Movies
 	~^Content/d2k/Music
+	.
+	$d2k: d2k
+	$ra: ra
+	$cnc: cnc
+	./mods/common: common
+
+	~SOUND.RS
+	d2k|bits
+	d2k|bits/tex
+	d2k|bits/xmas
+	d2k|uibits
 
 MapFolders:
-	d2k:maps@System
-	~^maps/d2k@User
-
-Packages:
-	SOUND.RS
+	d2k|maps: System
+	~^maps/d2k/{DEV_VERSION}: User
 
 Rules:
-	d2k:rules/misc.yaml
-	d2k:rules/ai.yaml
-	d2k:rules/player.yaml
-	d2k:rules/world.yaml
-	d2k:rules/palettes.yaml
-	d2k:rules/defaults.yaml
-	d2k:rules/vehicles.yaml
-	d2k:rules/starport.yaml
-	d2k:rules/husks.yaml
-	d2k:rules/structures.yaml
-	d2k:rules/aircraft.yaml
-	d2k:rules/infantry.yaml
-	d2k:rules/arrakis.yaml
+	d2k|rules/misc.yaml
+	d2k|rules/ai.yaml
+	d2k|rules/player.yaml
+	d2k|rules/world.yaml
+	d2k|rules/palettes.yaml
+	d2k|rules/defaults.yaml
+	d2k|rules/vehicles.yaml
+	d2k|rules/starport.yaml
+	d2k|rules/husks.yaml
+	d2k|rules/structures.yaml
+	d2k|rules/aircraft.yaml
+	d2k|rules/infantry.yaml
+	d2k|rules/arrakis.yaml
 
 Sequences:
-	d2k:sequences/aircraft.yaml
-	d2k:sequences/vehicles.yaml
-	d2k:sequences/infantry.yaml
-	d2k:sequences/structures.yaml
-	d2k:sequences/misc.yaml
+	d2k|sequences/aircraft.yaml
+	d2k|sequences/vehicles.yaml
+	d2k|sequences/infantry.yaml
+	d2k|sequences/structures.yaml
+	d2k|sequences/misc.yaml
 
 TileSets:
-	d2k:tilesets/arrakis.yaml
+	d2k|tilesets/arrakis.yaml
 
 MapGrid:
 	TileSize: 32,32
 	Type: Rectangular
 
 Cursors:
-	d2k:cursors.yaml
+	d2k|cursors.yaml
 
 Chrome:
-	d2k:chrome.yaml
+	d2k|chrome.yaml
 
 Assemblies:
-	./mods/common/OpenRA.Mods.Common.dll
-	./mods/cnc/OpenRA.Mods.Cnc.dll
-	d2k:OpenRA.Mods.D2k.dll
+	common|OpenRA.Mods.Common.dll
+	cnc|OpenRA.Mods.Cnc.dll
+	d2k|OpenRA.Mods.D2k.dll
 
 ChromeLayout:
-	d2k:chrome/ingame.yaml
-	./mods/ra/chrome/ingame-chat.yaml
-	./mods/ra/chrome/ingame-diplomacy.yaml
-	./mods/ra/chrome/ingame-fmvplayer.yaml
-	d2k:chrome/ingame-menu.yaml
-	./mods/ra/chrome/ingame-info.yaml
-	./mods/ra/chrome/ingame-infoscripterror.yaml
-	./mods/ra/chrome/ingame-infobriefing.yaml
-	./mods/ra/chrome/ingame-infoobjectives.yaml
-	d2k:chrome/ingame-infostats.yaml
-	d2k:chrome/ingame-observer.yaml
-	./mods/ra/chrome/ingame-observerstats.yaml
-	d2k:chrome/ingame-player.yaml
-	./mods/ra/chrome/ingame-perf.yaml
-	./mods/ra/chrome/ingame-debug.yaml
-	d2k:chrome/mainmenu.yaml
-	./mods/ra/chrome/settings.yaml
-	./mods/ra/chrome/credits.yaml
-	./mods/ra/chrome/lobby.yaml
-	./mods/ra/chrome/lobby-mappreview.yaml
-	d2k:chrome/lobby-players.yaml
-	d2k:chrome/lobby-options.yaml
-	./mods/ra/chrome/lobby-music.yaml
-	./mods/ra/chrome/lobby-kickdialogs.yaml
-	./mods/ra/chrome/lobby-globalchat.yaml
-	d2k:chrome/color-picker.yaml
-	./mods/ra/chrome/map-chooser.yaml
-	./mods/ra/chrome/multiplayer.yaml
-	./mods/ra/chrome/multiplayer-browser.yaml
-	./mods/ra/chrome/multiplayer-createserver.yaml
-	./mods/ra/chrome/multiplayer-directconnect.yaml
-	./mods/ra/chrome/multiplayer-globalchat.yaml
-	./mods/ra/chrome/connection.yaml
-	d2k:chrome/dropdowns.yaml
-	./mods/ra/chrome/musicplayer.yaml
-	d2k:chrome/tooltips.yaml
-	./mods/ra/chrome/assetbrowser.yaml
-	d2k:chrome/missionbrowser.yaml
-	./mods/ra/chrome/confirmation-dialogs.yaml
-	./mods/ra/chrome/editor.yaml
-	./mods/ra/chrome/replaybrowser.yaml
+	d2k|chrome/ingame.yaml
+	ra|chrome/ingame-chat.yaml
+	ra|chrome/ingame-fmvplayer.yaml
+	d2k|chrome/ingame-menu.yaml
+	ra|chrome/ingame-info.yaml
+	ra|chrome/ingame-infoscripterror.yaml
+	ra|chrome/ingame-infobriefing.yaml
+	ra|chrome/ingame-infoobjectives.yaml
+	d2k|chrome/ingame-infostats.yaml
+	d2k|chrome/ingame-observer.yaml
+	ra|chrome/ingame-observerstats.yaml
+	d2k|chrome/ingame-player.yaml
+	ra|chrome/ingame-perf.yaml
+	ra|chrome/ingame-debug.yaml
+	d2k|chrome/mainmenu.yaml
+	ra|chrome/settings.yaml
+	ra|chrome/credits.yaml
+	ra|chrome/lobby.yaml
+	ra|chrome/lobby-mappreview.yaml
+	d2k|chrome/lobby-players.yaml
+	d2k|chrome/lobby-options.yaml
+	ra|chrome/lobby-music.yaml
+	ra|chrome/lobby-kickdialogs.yaml
+	ra|chrome/lobby-globalchat.yaml
+	d2k|chrome/color-picker.yaml
+	ra|chrome/map-chooser.yaml
+	ra|chrome/multiplayer.yaml
+	ra|chrome/multiplayer-browser.yaml
+	ra|chrome/multiplayer-createserver.yaml
+	ra|chrome/multiplayer-directconnect.yaml
+	ra|chrome/multiplayer-globalchat.yaml
+	ra|chrome/connection.yaml
+	d2k|chrome/dropdowns.yaml
+	ra|chrome/musicplayer.yaml
+	d2k|chrome/tooltips.yaml
+	ra|chrome/assetbrowser.yaml
+	d2k|chrome/missionbrowser.yaml
+	ra|chrome/confirmation-dialogs.yaml
+	ra|chrome/editor.yaml
+	ra|chrome/replaybrowser.yaml
 
 Weapons:
-	d2k:weapons/debris.yaml
-	d2k:weapons/smallguns.yaml
-	d2k:weapons/largeguns.yaml
-	d2k:weapons/missiles.yaml
-	d2k:weapons/other.yaml
+	d2k|weapons/debris.yaml
+	d2k|weapons/smallguns.yaml
+	d2k|weapons/largeguns.yaml
+	d2k|weapons/missiles.yaml
+	d2k|weapons/other.yaml
 
 Voices:
-	d2k:audio/voices.yaml
+	d2k|audio/voices.yaml
 
 Notifications:
-	d2k:audio/notifications.yaml
+	d2k|audio/notifications.yaml
 
 Music:
-	d2k:audio/music.yaml
+	d2k|audio/music.yaml
 
 Translations:
-	d2k:languages/english.yaml
+	d2k|languages/english.yaml
 
 LoadScreen: LogoStripeLoadScreen
-	Image: d2k:uibits/loadscreen.png
+	Image: d2k|uibits/loadscreen.png
 	Text: Filling Crates..., Breeding Sandworms..., Fuelling carryalls..., Deploying harvesters..., Preparing 'thopters..., Summoning mentats...
 
 ContentInstaller:
@@ -154,47 +155,38 @@ ServerTraits:
 	MasterServerPinger
 	LobbySettingsNotification
 
-LobbyDefaults:
-	AllowCheats: false
-	Crates: true
-	StartingUnitsClass: none
-	FragileAlliances: false
-	Shroud: true
-	Fog: true
-	TechLevel: Unrestricted
-
 ChromeMetrics:
-	./mods/common/metrics.yaml
-	d2k:metrics.yaml
+	common|metrics.yaml
+	d2k|metrics.yaml
 
 Fonts:
 	Regular:
-		Font:./mods/common/FreeSans.ttf
+		Font: common|FreeSans.ttf
 		Size:14
 	Bold:
-		Font:./mods/common/FreeSansBold.ttf
+		Font: common|FreeSansBold.ttf
 		Size:14
 	Title:
-		Font:d2k:Dune2k.ttf
+		Font: d2k|Dune2k.ttf
 		Size:32
 	MediumBold:
-		Font:./mods/common/FreeSansBold.ttf
+		Font: common|FreeSansBold.ttf
 		Size:18
 	BigBold:
-		Font:./mods/common/FreeSansBold.ttf
+		Font: common|FreeSansBold.ttf
 		Size:24
 	Small:
-		Font:./mods/common/FreeSans.ttf
+		Font: common|FreeSans.ttf
 		Size:12
 	Tiny:
-		Font:./mods/common/FreeSans.ttf
+		Font: common|FreeSans.ttf
 		Size:10
 	TinyBold:
-		Font:./mods/common/FreeSansBold.ttf
+		Font: common|FreeSansBold.ttf
 		Size:10
 
 Missions:
-	d2k:missions.yaml
+	d2k|missions.yaml
 
 SupportsMapsFrom: d2k
 

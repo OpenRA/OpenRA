@@ -13,8 +13,8 @@ CrateNapalm:
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Scorch
 	Warhead@3Eff: CreateEffect
-		Explosion: napalm
-		ImpactSound: firebl3.aud
+		Explosions: napalm
+		ImpactSounds: firebl3.aud
 
 CrateExplosion:
 	Warhead@1Dam: SpreadDamage
@@ -29,8 +29,8 @@ CrateExplosion:
 		AffectsParent: true
 		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
 	Warhead@2Eff: CreateEffect
-		Explosion: self_destruct
-		ImpactSound: kaboom15.aud
+		Explosions: self_destruct
+		ImpactSounds: kaboom15.aud
 
 CrateNuke:
 	Warhead@1Dam_impact: SpreadDamage
@@ -44,8 +44,8 @@ CrateNuke:
 		DamageTypes: Prone50Percent, TriggerProne, FireDeath
 	Warhead@2Res_impact: DestroyResource
 	Warhead@3Eff_impact: CreateEffect
-		Explosion: nuke
-		ImpactSound: kaboom1.aud
+		Explosions: nuke
+		ImpactSounds: kaboom1.aud
 	Warhead@4Dam_areanuke: SpreadDamage
 		Spread: 1c0
 		Damage: 60
@@ -64,11 +64,11 @@ CrateNuke:
 		Size: 5,4
 		Delay: 4
 	Warhead@7Eff_areanuke: CreateEffect
-		ImpactSound: kaboom22.aud
+		ImpactSounds: kaboom22.aud
 		Delay: 4
 
 MiniNuke:
-	ValidTargets: Ground, Water, Air
+	ValidTargets: Ground, Water, Underwater, Air
 	Warhead@1Dam_impact: SpreadDamage
 		Spread: 1c0
 		Damage: 150
@@ -81,14 +81,14 @@ MiniNuke:
 	Warhead@2Res_impact: DestroyResource
 		Size: 1
 	Warhead@3Eff_impact: CreateEffect
-		Explosion: nuke
-		ImpactSound: kaboom1.aud
+		Explosions: nuke
+		ImpactSounds: kaboom1.aud
 	Warhead@4Dam_areanuke1: SpreadDamage
 		Spread: 2c0
 		Damage: 60
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		Delay: 5
-		ValidTargets: Ground, Water, Air
+		ValidTargets: Ground, Water, Underwater, Air
 		Versus:
 			Concrete: 25
 		AffectsParent: true
@@ -97,14 +97,14 @@ MiniNuke:
 		Size: 2
 		Delay: 5
 	Warhead@6Eff_areanuke1: CreateEffect
-		ImpactSound: kaboom22.aud
+		ImpactSounds: kaboom22.aud
 		Delay: 5
 	Warhead@7Dam_areanuke2: SpreadDamage
 		Spread: 3c0
 		Damage: 60
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		Delay: 10
-		ValidTargets: Ground, Water, Air
+		ValidTargets: Ground, Water, Underwater
 		Versus:
 			Concrete: 25
 		AffectsParent: true
@@ -117,7 +117,7 @@ MiniNuke:
 		Damage: 60
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		Delay: 15
-		ValidTargets: Ground, Water, Air
+		ValidTargets: Ground, Water, Underwater
 		Versus:
 			Concrete: 25
 		AffectsParent: true
@@ -142,12 +142,12 @@ UnitExplode:
 			Heavy: 25
 		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
 	Warhead@2Eff: CreateEffect
-		Explosion: self_destruct
-		ImpactSound: kaboom22.aud
+		Explosions: self_destruct
+		ImpactSounds: kaboom22.aud
 		InvalidImpactTypes: Water
 	Warhead@3EffWater: CreateEffect
-		Explosion: large_splash
-		ImpactSound: splash9.aud
+		Explosions: large_splash
+		ImpactSounds: splash9.aud
 		ValidImpactTypes: Water
 
 UnitExplodeShip:
@@ -161,8 +161,8 @@ UnitExplodeShip:
 			Heavy: 25
 		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
 	Warhead@2Eff: CreateEffect
-		Explosion: building
-		ImpactSound: kaboom25.aud
+		Explosions: building
+		ImpactSounds: kaboom25.aud
 
 UnitExplodeSubmarine:
 	Warhead@1Dam: SpreadDamage
@@ -175,8 +175,8 @@ UnitExplodeSubmarine:
 			Heavy: 25
 		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
 	Warhead@2Eff: CreateEffect
-		Explosion: large_splash
-		ImpactSound: splash9.aud
+		Explosions: large_splash
+		ImpactSounds: splash9.aud
 
 UnitExplodeSmall:
 	Warhead@1Dam: SpreadDamage
@@ -189,12 +189,12 @@ UnitExplodeSmall:
 			Heavy: 25
 		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
 	Warhead@2Eff: CreateEffect
-		Explosion: large_explosion
-		ImpactSound: kaboom15.aud
+		Explosions: large_explosion
+		ImpactSounds: kaboom15.aud
 		InvalidImpactTypes: Water
 	Warhead@3EffWater: CreateEffect
-		Explosion: large_splash
-		ImpactSound: splash9.aud
+		Explosions: large_splash
+		ImpactSounds: splash9.aud
 		ValidImpactTypes: Water
 
 ArtilleryExplode:
@@ -208,13 +208,17 @@ ArtilleryExplode:
 			Heavy: 25
 		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
 	Warhead@2Eff: CreateEffect
-		Explosion: self_destruct
-		ImpactSound: kaboom22.aud
+		Explosions: self_destruct
+		ImpactSounds: kaboom22.aud
 		InvalidImpactTypes: Water
 	Warhead@3EffWater: CreateEffect
-		Explosion: large_splash
-		ImpactSound: splash9.aud
+		Explosions: large_splash
+		ImpactSounds: splash9.aud
 		ValidImpactTypes: Water
+
+V2Explode:
+	Inherits: SCUD
+	-Report:
 
 BarrelExplode:
 	Warhead@1Dam: SpreadDamage
@@ -234,8 +238,8 @@ BarrelExplode:
 		Size: 2,1
 		Delay: 5
 	Warhead@3Eff: CreateEffect
-		Explosion: napalm
-		ImpactSound: firebl3.aud
+		Explosions: napalm
+		ImpactSounds: firebl3.aud
 		Delay: 5
 
 ATMine:
@@ -245,8 +249,8 @@ ATMine:
 		AffectsParent: true
 		DamageTypes: Prone50Percent, TriggerProne, DefaultDeath
 	Warhead@2Eff: CreateEffect
-		Explosion: large_explosion
-		ImpactSound: mineblo1.aud
+		Explosions: large_explosion
+		ImpactSounds: mineblo1.aud
 
 APMine:
 	Warhead@1Dam: SpreadDamage
@@ -255,8 +259,8 @@ APMine:
 		AffectsParent: true
 		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
 	Warhead@2Eff: CreateEffect
-		Explosion: napalm
-		ImpactSound: mine1.aud
+		Explosions: napalm
+		ImpactSounds: mine1.aud
 
 OreExplosion:
 	Warhead@1Dam: SpreadDamage
@@ -272,5 +276,5 @@ OreExplosion:
 		AddsResourceType: Ore
 		Size: 1,1
 	Warhead@3Eff: CreateEffect
-		Explosion: med_explosion
-		ImpactSound: kaboom25.aud
+		Explosions: med_explosion
+		ImpactSounds: kaboom25.aud

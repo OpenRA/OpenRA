@@ -25,8 +25,8 @@ Player:
 			gatech: 1
 			natech: 1
 			nastlh: 1
-			gavulc: 4
-			garock: 4
+			gavulc: 8
+			garock: 2
 			gacsam: 4
 			naobel: 2
 			nalasr: 8
@@ -46,23 +46,28 @@ Player:
 			nastlh: 1%
 			nalasr: 10%
 			gavulc: 10%
-			garock: 10%
+			garock: 3%
 			gacsam: 6%
 			nasam: 6%
 			naobel: 3%
 		UnitsToBuild:
 			e1: 80%
 			e2: 8%
-			e3: 30%
-			medic: 2%
+			e3: 8%
+			cyborg: 15%
 			jumpjet: 15%
+			repair: 2%
+			medic: 2%
 			harv: 10%
 			mmch: 15%
+			ttnk: 15%
 			smech: 25%
-			bike: 60%
-			bggy: 75%
-			ttnk: 45%
+			bggy: 25%
+			hvr: 20%
+			bike: 20%
+			subtank: 10%
+			sonic: 10%
 			stnk: 8%
 		UnitLimits:
-			harv: 8
+			harv: 12
 		SquadSize: 20

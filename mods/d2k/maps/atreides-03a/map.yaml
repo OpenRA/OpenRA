@@ -1,10 +1,8 @@
-MapFormat: 8
+MapFormat: 11
 
 RequiresMod: d2k
 
 Title: Atreides 03a
-
-Description: Bring the Atreides forces up to combat strength - quickly. Guard against surprise attacks and ensure Spice production.\n\nThe Ordos forces are light but numerous. To combat the Ordos, you have been granted license to produce Quads, which have a greater anti-vehicle capability than Trikes. Upgrade your Light Factories to allow production of these units.\n\nMeet any agression with overwhelming force.\n\nGood luck.\n
 
 Author: Westwood Studios
 
@@ -16,23 +14,9 @@ Bounds: 2,2,64,64
 
 Visibility: MissionSelector
 
-Type: Campaign
+Categories: Campaign
 
-Videos:
-	Briefing: A_BR03_E.VQA
-
-Options:
-	Crates: False
-	Creeps: True
-	Fog: True
-	Shroud: True
-	AllyBuildRadius: False
-	FragileAlliances: False
-	StartingCash: 3000
-	TechLevel: Low
-	ConfigurableStartingUnits: False
-	Difficulties: Easy, Normal, Hard
-	ShortGame: False
+LockPreview: True
 
 Players:
 	PlayerReference@Neutral:
@@ -151,62 +135,4 @@ Actors:
 		Owner: Neutral
 		Location: 39,30
 
-Smudges:
-
-Rules:
-	Player:
-		-ConquestVictoryConditions:
-		MissionObjectives:
-			EarlyGameOver: true
-	World:
-		-CrateSpawner:
-		-SpawnMPUnits:
-		-MPStartLocations:
-		LuaScript:
-			Scripts: atreides03a.lua, atreides03a-AI.lua
-		ObjectivesPanel:
-			PanelName: MISSION_OBJECTIVES
-		WormManager:
-			Minimum: 1
-			Maximum: 1
-	carryall.reinforce:
-		Cargo:
-			MaxWeight: 10
-	concreteb:
-		Buildable:
-			Prerequisites: ~disabled
-	heavy_factory:
-		Buildable:
-			Prerequisites: ~disabled
-	medium_gun_turret:
-		Buildable:
-			Prerequisites: ~disabled
-	outpost:
-		Buildable:
-			Prerequisites: barracks
-	quad:
-		Buildable:
-			Prerequisites: upgrade.light
-	trooper:
-		Buildable:
-			Prerequisites: upgrade.barracks
-	upgrade.conyard:
-		Buildable:
-			Prerequisites: ~disabled
-	upgrade.heavy:
-		Buildable:
-			Prerequisites: ~disabled
-
-Sequences:
-
-VoxelSequences:
-
-Weapons:
-
-Voices:
-
-Music:
-
-Notifications:
-
-Translations:
+Rules: d2k|rules/campaign-rules.yaml, rules.yaml

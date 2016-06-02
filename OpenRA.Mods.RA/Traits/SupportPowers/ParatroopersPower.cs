@@ -1,10 +1,11 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2016 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
- * as published by the Free Software Foundation. For more information,
- * see COPYING.
+ * as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version. For more
+ * information, see COPYING.
  */
 #endregion
 
@@ -72,7 +73,12 @@ namespace OpenRA.Mods.RA.Traits
 			if (randomize)
 				dropFacing = 256 * self.World.SharedRandom.Next(info.QuantizedFacings) / info.QuantizedFacings;
 
-			var altitude = self.World.Map.Rules.Actors[info.UnitType].TraitInfo<AircraftInfo>().CruiseAltitude.Length;
+			var utLower = info.UnitType.ToLowerInvariant();
+			ActorInfo unitType;
+			if (!self.World.Map.Rules.Actors.TryGetValue(utLower, out unitType))
+				throw new YamlException("Actors ruleset does not include the entry '{0}'".F(utLower));
+
+			var altitude = unitType.TraitInfo<AircraftInfo>().CruiseAltitude.Length;
 			var dropRotation = WRot.FromFacing(dropFacing);
 			var delta = new WVec(0, -1024, 0).Rotate(dropRotation);
 			target = target + new WVec(0, 0, altitude);
@@ -198,9 +204,14 @@ namespace OpenRA.Mods.RA.Traits
 					beacon = new Beacon(
 						self.Owner,
 						target - new WVec(0, 0, altitude),
-						Info.BeaconPalettePrefix,
+						Info.BeaconPaletteIsPlayerPalette,
+						Info.BeaconPalette,
+						Info.BeaconImage,
 						Info.BeaconPoster,
 						Info.BeaconPosterPalette,
+						Info.ArrowSequence,
+						Info.CircleSequence,
+						Info.ClockSequence,
 						() => 1 - ((distanceTestActor.CenterPosition - target).HorizontalLength - info.BeaconDistanceOffset.Length) * 1f / distance);
 
 					w.Add(beacon);

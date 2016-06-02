@@ -1,10 +1,11 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2016 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
- * as published by the Free Software Foundation. For more information,
- * see COPYING.
+ * as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version. For more
+ * information, see COPYING.
  */
 #endregion
 
@@ -16,7 +17,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("The actor will automatically engage the enemy when it is in range.")]
-	public class AutoTargetInfo : ITraitInfo, Requires<AttackBaseInfo>, UsesInit<StanceInit>
+	public class AutoTargetInfo : UpgradableTraitInfo, Requires<AttackBaseInfo>, UsesInit<StanceInit>
 	{
 		[Desc("It will try to hunt down the enemy if it is not set to defend.")]
 		public readonly bool AllowMovement = true;
@@ -44,16 +45,15 @@ namespace OpenRA.Mods.Common.Traits
 
 		public readonly bool TargetWhenDamaged = true;
 
-		public object Create(ActorInitializer init) { return new AutoTarget(init, this); }
+		public override object Create(ActorInitializer init) { return new AutoTarget(init, this); }
 	}
 
 	public enum UnitStance { HoldFire, ReturnFire, Defend, AttackAnything }
 
-	public class AutoTarget : INotifyIdle, INotifyDamage, ITick, IResolveOrder, ISync
+	public class AutoTarget : UpgradableTrait<AutoTargetInfo>, INotifyIdle, INotifyDamage, ITick, IResolveOrder, ISync
 	{
-		readonly AutoTargetInfo info;
-		readonly AttackBase attack;
-		readonly AttackFollow at;
+		readonly AttackBase[] attackBases;
+		readonly AttackFollow[] attackFollows;
 		[Sync] int nextScanTime = 0;
 
 		public UnitStance Stance;
@@ -64,10 +64,10 @@ namespace OpenRA.Mods.Common.Traits
 		public UnitStance PredictedStance;
 
 		public AutoTarget(ActorInitializer init, AutoTargetInfo info)
+			: base(info)
 		{
 			var self = init.Self;
-			this.info = info;
-			attack = self.Trait<AttackBase>();
+			attackBases = self.TraitsImplementing<AttackBase>().ToArray();
 
 			if (init.Contains<StanceInit>())
 				Stance = init.Get<StanceInit, UnitStance>();
@@ -75,18 +75,21 @@ namespace OpenRA.Mods.Common.Traits
 				Stance = self.Owner.IsBot || !self.Owner.Playable ? info.InitialStanceAI : info.InitialStance;
 
 			PredictedStance = Stance;
-			at = self.TraitOrDefault<AttackFollow>();
+			attackFollows = self.TraitsImplementing<AttackFollow>().ToArray();
 		}
 
 		public void ResolveOrder(Actor self, Order order)
 		{
-			if (order.OrderString == "SetUnitStance" && info.EnableStances)
+			if (order.OrderString == "SetUnitStance" && Info.EnableStances)
 				Stance = (UnitStance)order.ExtraData;
 		}
 
 		public void Damaged(Actor self, AttackInfo e)
 		{
-			if (!self.IsIdle || !info.TargetWhenDamaged)
+			if (IsTraitDisabled)
+				return;
+
+			if (!self.IsIdle || !Info.TargetWhenDamaged)
 				return;
 
 			var attacker = e.Attacker;
@@ -102,7 +105,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 
 			// not a lot we can do about things we can't hurt... although maybe we should automatically run away?
-			if (!attack.HasAnyValidWeapons(Target.FromActor(attacker)))
+			if (attackBases.All(a => a.IsTraitDisabled || !a.HasAnyValidWeapons(Target.FromActor(attacker))))
 				return;
 
 			// don't retaliate against own units force-firing on us. It's usually not what the player wanted.
@@ -114,39 +117,51 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			Aggressor = attacker;
-			var allowMove = info.AllowMovement && Stance != UnitStance.Defend;
-			if (at == null || !at.IsReachableTarget(at.Target, allowMove))
+			var allowMove = Info.AllowMovement && Stance != UnitStance.Defend;
+			if (attackFollows.All(a => a.IsTraitDisabled || !a.IsReachableTarget(a.Target, allowMove)))
 				Attack(self, Aggressor, allowMove);
 		}
 
 		public void TickIdle(Actor self)
 		{
-			if (Stance < UnitStance.Defend || !info.TargetWhenIdle)
+			if (IsTraitDisabled)
 				return;
 
-			var allowMove = info.AllowMovement && Stance != UnitStance.Defend;
-			if (at == null || !at.IsReachableTarget(at.Target, allowMove))
+			if (Stance < UnitStance.Defend || !Info.TargetWhenIdle)
+				return;
+
+			var allowMove = Info.AllowMovement && Stance != UnitStance.Defend;
+			if (attackFollows.All(a => a.IsTraitDisabled || !a.IsReachableTarget(a.Target, allowMove)))
 				ScanAndAttack(self, allowMove);
 		}
 
 		public void Tick(Actor self)
 		{
+			if (IsTraitDisabled)
+				return;
+
 			if (nextScanTime > 0)
 				--nextScanTime;
 		}
 
 		public Actor ScanForTarget(Actor self, bool allowMove)
 		{
-			if (nextScanTime <= 0)
+			var activeAttackBases = attackBases.Where(Exts.IsTraitEnabled);
+			if (activeAttackBases.Any() && nextScanTime <= 0)
 			{
-				nextScanTime = self.World.SharedRandom.Next(info.MinimumScanTimeInterval, info.MaximumScanTimeInterval);
+				nextScanTime = self.World.SharedRandom.Next(Info.MinimumScanTimeInterval, Info.MaximumScanTimeInterval);
 
-				// If we can't attack right now, there's no need to try and find a target.
-				var attackStances = attack.UnforcedAttackTargetStances();
-				if (attackStances != OpenRA.Traits.Stance.None)
+				foreach (var ab in activeAttackBases)
 				{
-					var range = info.ScanRadius > 0 ? WDist.FromCells(info.ScanRadius) : attack.GetMaximumRange();
-					return ChooseTarget(self, attackStances, range, allowMove);
+					// If we can't attack right now, there's no need to try and find a target.
+					var attackStances = ab.UnforcedAttackTargetStances();
+					if (attackStances != OpenRA.Traits.Stance.None)
+					{
+						var range = Info.ScanRadius > 0 ? WDist.FromCells(Info.ScanRadius) : ab.GetMaximumRange();
+						return ChooseTarget(self, ab, attackStances, range, allowMove);
+					}
+
+					continue;
 				}
 			}
 
@@ -165,10 +180,13 @@ namespace OpenRA.Mods.Common.Traits
 			TargetedActor = targetActor;
 			var target = Target.FromActor(targetActor);
 			self.SetTargetLine(target, Color.Red, false);
-			attack.AttackTarget(target, false, allowMove);
+
+			var activeAttackBases = attackBases.Where(Exts.IsTraitEnabled);
+			foreach (var ab in activeAttackBases)
+				ab.AttackTarget(target, false, allowMove);
 		}
 
-		Actor ChooseTarget(Actor self, Stance attackStances, WDist range, bool allowMove)
+		Actor ChooseTarget(Actor self, AttackBase ab, Stance attackStances, WDist range, bool allowMove)
 		{
 			var actorsByArmament = new Dictionary<Armament, List<Actor>>();
 			var actorsInRange = self.World.FindActorsInCircle(self.CenterPosition, range);
@@ -188,7 +206,7 @@ namespace OpenRA.Mods.Common.Traits
 				// it will be thanks to the first armament anyways, since that is the first selection
 				// criterion
 				var target = Target.FromActor(actor);
-				var armaments = attack.ChooseArmamentsForTarget(target, false);
+				var armaments = ab.ChooseArmamentsForTarget(target, false);
 				if (!allowMove)
 					armaments = armaments.Where(arm =>
 						target.IsInRange(self.CenterPosition, arm.MaxRange()) &&
@@ -210,7 +228,7 @@ namespace OpenRA.Mods.Common.Traits
 			// And then according to distance from actor
 			// This enables preferential treatment of certain armaments
 			// (e.g. tesla trooper's tesla zap should have precedence over tesla charge)
-			foreach (var arm in attack.Armaments)
+			foreach (var arm in ab.Armaments)
 			{
 				List<Actor> actors;
 				if (actorsByArmament.TryGetValue(arm, out actors))

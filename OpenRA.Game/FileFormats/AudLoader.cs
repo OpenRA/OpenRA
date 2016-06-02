@@ -1,10 +1,11 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2016 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
- * as published by the Free Software Foundation. For more information,
- * see COPYING.
+ * as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version. For more
+ * information, see COPYING.
  */
 #endregion
 
@@ -44,6 +45,77 @@ namespace OpenRA.FileFormats
 	}
 
 	public class AudLoader : ISoundLoader
+	{
+		bool IsAud(Stream s)
+		{
+			var start = s.Position;
+			s.Position += 10;
+			var readFlag = s.ReadByte();
+			var readFormat = s.ReadByte();
+			s.Position = start;
+
+			if (!Enum.IsDefined(typeof(SoundFlags), readFlag))
+				return false;
+
+			return Enum.IsDefined(typeof(SoundFormat), readFormat);
+		}
+
+		bool ISoundLoader.TryParseSound(Stream stream, out ISoundFormat sound)
+		{
+			try
+			{
+				if (IsAud(stream))
+				{
+					sound = new AudFormat(stream);
+					return true;
+				}
+			}
+			catch
+			{
+				// Not a supported AUD
+			}
+
+			sound = null;
+			return false;
+		}
+	}
+
+	public class AudFormat : ISoundFormat
+	{
+		public int Channels { get { return 1; } }
+		public int SampleBits { get { return 16; } }
+		public int SampleRate { get { return sampleRate; } }
+		public float LengthInSeconds { get { return AudReader.SoundLength(stream); } }
+		public Stream GetPCMInputStream() { return new MemoryStream(rawData.Value); }
+
+		int sampleRate;
+		Lazy<byte[]> rawData;
+
+		Stream stream;
+
+		public AudFormat(Stream stream)
+		{
+			this.stream = stream;
+
+			var position = stream.Position;
+			rawData = Exts.Lazy(() =>
+			{
+				try
+				{
+					byte[] data;
+					if (!AudReader.LoadSound(stream, out data, out sampleRate))
+						throw new InvalidDataException();
+					return data;
+				}
+				finally
+				{
+					stream.Position = position;
+				}
+			});
+		}
+	}
+
+	public class AudReader
 	{
 		static readonly int[] IndexAdjust = { -1, -1, -1, -1, 2, 4, 6, 8 };
 		static readonly int[] StepTable =
@@ -163,39 +235,6 @@ namespace OpenRA.FileFormats
 			}
 
 			rawData = output;
-			return true;
-		}
-
-		public bool TryParseSound(Stream stream, string fileName, out byte[] rawData, out int channels, out int sampleBits,
-			out int sampleRate)
-		{
-			channels = sampleBits = sampleRate = 0;
-			var position = stream.Position;
-
-			try
-			{
-				if (!LoadSound(stream, out rawData, out sampleRate))
-					return false;
-			}
-			catch (Exception e)
-			{
-				// LoadSound() will check if the stream is in a format that this parser supports.
-				// If not, it will simply return false so we know we can't use it. If it is, it will start
-				// parsing the data without any further failsafes, which means that it will crash on corrupted files
-				// (that end prematurely or otherwise don't conform to the specifications despite the headers being OK).
-				Log.Write("sound", "Failed to parse AUD file {0}. Error message:".F(fileName));
-				Log.Write("sound", e.ToString());
-				rawData = null;
-				return false;
-			}
-			finally
-			{
-				stream.Position = position;
-			}
-
-			channels = 1;
-			sampleBits = 16;
-
 			return true;
 		}
 	}

@@ -1,10 +1,8 @@
-MapFormat: 8
+MapFormat: 11
 
 RequiresMod: ts
 
 Title: Terraces
-
-Description: Describe your map here
 
 Author: Westwood Studios
 
@@ -16,11 +14,7 @@ Bounds: 2,4,116,226
 
 Visibility: Lobby
 
-Type: Conquest
-
-Videos:
-
-Options:
+Categories: Conquest, Playable, Original TS Map
 
 Players:
 	PlayerReference@Neutral:
@@ -515,23 +509,7 @@ Actors:
 		Location: 84,60
 		Owner: Neutral
 
-Smudges:
-
 Rules:
 	World:
 		GlobalLightingPaletteEffect:
 			Ambient: 0.63
-
-Sequences:
-
-VoxelSequences:
-
-Weapons:
-
-Voices:
-
-Music:
-
-Notifications:
-
-Translations:

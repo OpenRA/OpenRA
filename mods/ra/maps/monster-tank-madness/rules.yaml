@@ -1,0 +1,280 @@
+Player:
+	PlayerResources:
+		DefaultCash: 5000
+
+World:
+	LuaScript:
+		Scripts: monster-tank-madness.lua
+	-StartGameNotification:
+	MissionData:
+		Briefing: Dr. Demitri, creator of a Soviet Super Tank, wants to defect.\n\nWe planned to extract him while the Soviets were testing their new weapon, but something has gone wrong.\n\nThe Super Tanks are out of control, and Demitri is missing -- likely hiding in the village to the far south.\n\nFind our outpost and start repairs on it, then find and evacuate Demitri.\n\nAs for the tanks, we can reprogram them. Send a spy into the Soviet radar dome in the NE, turning the tanks on their creators.\n
+
+^Building:
+	AnnounceOnSeen:
+
+^CivBuilding:
+	Explodes:
+		Weapon: BarrelExplode
+		EmptyWeapon: BarrelExplode
+
+DEMITRI:
+	Inherits: DELPHI
+	Tooltip:
+		Name: Dr. Demitri
+	Passenger:
+		CargoType: Demitri
+	RenderSprites:
+		Image: DELPHI
+	Voiced:
+		VoiceSet: DemitriVoice
+
+TRAN:
+	RevealsShroud:
+		Range: 0c0
+	Cargo:
+		Types: Demitri
+		MaxWeight: 1
+	-Selectable:
+
+LST:
+	Cargo:
+		Types: Infantry, Vehicle, Demitri
+
+JEEP:
+	Cargo:
+		Types: Infantry, Demitri
+
+PBOX:
+	Cargo:
+		Types: Infantry, Demitri
+
+5TNK:
+	Inherits: ^Tank
+	Valued:
+		Cost: 10000
+	Tooltip:
+		Name: Super Tank
+		GenericName: Super Tank
+	Health:
+		HP: 20000
+	Armor:
+		Type: Concrete
+	Mobile:
+		Speed: 42
+		Crushes: wall, mine, crate, infantry
+	RevealsShroud:
+		Range: 6c0
+	Turreted:
+		TurnSpeed: 1
+	Armament@PRIMARY:
+		Weapon: SuperTankPrimary
+		LocalOffset: 900,180,340, 900,-180,340
+		Recoil: 171
+		RecoilRecovery: 30
+		MuzzleSequence: muzzle
+	Armament@SECONDARY:
+		Name: secondary
+		Weapon: MammothTusk
+		LocalOffset: -85,384,340, -85,-384,340
+		LocalYaw: -100,100
+		Recoil: 43
+		MuzzleSequence: muzzle
+	AttackTurreted:
+	WithMuzzleOverlay:
+	WithSpriteTurret:
+	AutoTarget:
+	Explodes:
+		Weapon: MiniNuke
+		EmptyWeapon: MiniNuke
+	SpawnActorOnDeath:
+		Actor: 5TNK.Husk
+	SelfHealing:
+		Step: 1
+		Delay: 1
+		HealIfBelow: 100
+		DamageCooldown: 150
+	Selectable:
+		Bounds: 44,38,0,-4
+	-EjectOnDeath:
+	RenderSprites:
+		Image: 4TNK
+
+5TNK.Husk:
+	Inherits: ^Husk
+	Tooltip:
+		Name: Husk (Super Tank)
+	ThrowsParticle@turret:
+		Anim: turret
+	Health:
+		HP: 2000
+	RenderSprites:
+		Image: 4TNK
+
+DOME.NoInfiltrate:
+	Inherits: DOME
+	Buildable:
+		Prerequisites: ~disabled
+	RenderSprites:
+		Image: DOME
+	-InfiltrateForExploration:
+	Targetable:
+		TargetTypes: Ground, C4, DetonateAttack, MissionObjective
+
+SPY:
+	Infiltrates:
+		Types: SpyInfiltrate, MissionObjective
+
+BAD3TNK:
+	Inherits: 3TNK
+	Buildable:
+		Prerequisites: ~disabled
+	-EjectOnDeath:
+	RenderSprites:
+		Image: 3TNK
+
+BADTRUK:
+	Inherits: TRUK
+	Buildable:
+		Prerequisites: ~disabled
+	-EjectOnDeath:
+	RenderSprites:
+		Image: TRUK
+
+SS:
+	Buildable:
+		Prerequisites: ~disabled
+
+AGUN:
+	Buildable:
+		Prerequisites: ~disabled
+
+MSUB:
+	Buildable:
+		Prerequisites: ~disabled
+
+DD:
+	Buildable:
+		Prerequisites: ~disabled
+
+CA:
+	Buildable:
+		Prerequisites: ~disabled
+
+PT:
+	Buildable:
+		Prerequisites: ~disabled
+
+MSLO:
+	Buildable:
+		Prerequisites: ~disabled
+
+SYRD:
+	Buildable:
+		Prerequisites: ~disabled
+
+SPEN:
+	Buildable:
+		Prerequisites: ~disabled
+
+IRON:
+	Buildable:
+		Prerequisites: ~disabled
+
+PDOX:
+	Buildable:
+		Prerequisites: ~disabled
+
+SAM:
+	Buildable:
+		Prerequisites: ~disabled
+
+HPAD:
+	Buildable:
+		Prerequisites: ~disabled
+
+AFLD:
+	Buildable:
+		Prerequisites: ~disabled
+
+ATEK:
+	Buildable:
+		Prerequisites: ~disabled
+
+STEK:
+	Buildable:
+		Prerequisites: ~disabled
+
+4TNK:
+	Buildable:
+		Prerequisites: ~disabled
+
+MCV:
+	Buildable:
+		Prerequisites: ~disabled
+
+MNLY.AP:
+	Buildable:
+		Prerequisites: ~disabled
+
+MNLY.AT:
+	Buildable:
+		Prerequisites: ~disabled
+
+TTNK:
+	Buildable:
+		Prerequisites: ~disabled
+
+CTNK:
+	Buildable:
+		Prerequisites: ~disabled
+
+MGG:
+	Buildable:
+		Prerequisites: ~disabled
+
+GAP:
+	Buildable:
+		Prerequisites: ~disabled
+
+MRJ:
+	Buildable:
+		Prerequisites: ~disabled
+
+E7:
+	Buildable:
+		Prerequisites: ~disabled
+
+C1:
+	-Crushable:
+
+C2:
+	-Crushable:
+
+C5:
+	-Crushable:
+
+C7:
+	-Crushable:
+
+C8:
+	-Crushable:
+
+SHOK:
+	Buildable:
+		Prerequisites: ~disabled
+
+HIJACKER:
+	Buildable:
+		Prerequisites: ~disabled
+
+STNK:
+	Buildable:
+		Prerequisites: ~disabled
+
+DTRK:
+	Buildable:
+		Prerequisites: ~disabled
+
+QTNK:
+	Buildable:
+		Prerequisites: ~disabled

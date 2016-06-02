@@ -43,8 +43,8 @@ mcv:
 		VisualBounds: 42,42
 	SelfHealing:
 		Step: 5
-		Ticks: 3
-		HealIfBelow: 50%
+		Delay: 3
+		HealIfBelow: 50
 
 harvester:
 	Inherits: ^Vehicle
@@ -52,7 +52,6 @@ harvester:
 		Queue: Armor
 		Prerequisites: refinery
 		BuildPaletteOrder: 10
-		InitialActivity: FindResources
 	Valued:
 		Cost: 1200
 	CustomBuildTimeValue:
@@ -68,7 +67,7 @@ harvester:
 		Capacity: 28
 		HarvestFacings: 8
 		Resources: Spice
-		UnloadTicksPerBale: 5
+		BaleUnloadDelay: 5
 		SearchFromProcRadius: 30
 		SearchFromOrderRadius: 15
 	Health:
@@ -94,8 +93,8 @@ harvester:
 		VisualBounds: 42,42
 	SelfHealing:
 		Step: 5
-		Ticks: 3
-		HealIfBelow: 50%
+		Delay: 3
+		HealIfBelow: 50
 
 trike:
 	Inherits: ^Vehicle
@@ -117,7 +116,7 @@ trike:
 	Armor:
 		Type: wood
 	Mobile:
-		ROT: 10
+		TurnSpeed: 10
 		Speed: 128
 	RevealsShroud:
 		Range: 4c768
@@ -155,7 +154,7 @@ quad:
 	Armor:
 		Type: light
 	Mobile:
-		ROT: 8
+		TurnSpeed: 8
 		Speed: 96
 	RevealsShroud:
 		Range: 4c768
@@ -191,11 +190,11 @@ siege_tank:
 		Type: light
 	Mobile:
 		Speed: 43
-		ROT: 3
+		TurnSpeed: 3
 	RevealsShroud:
 		Range: 6c768
 	Turreted:
-		ROT: 3
+		TurnSpeed: 3
 		Offset: 0,0,-32
 	Armament:
 		Weapon: 155mm
@@ -233,7 +232,7 @@ missile_tank:
 		Value: 441
 	Mobile:
 		Speed: 64
-		ROT: 5
+		TurnSpeed: 5
 	Health:
 		HP: 1300
 	Armor:
@@ -274,7 +273,7 @@ sonic_tank:
 	Armor:
 		Type: light
 	Mobile:
-		ROT: 3
+		TurnSpeed: 3
 		Speed: 31
 	RevealsShroud:
 		Range: 5c768
@@ -311,7 +310,7 @@ devastator:
 	Armor:
 		Type: heavy
 	Mobile:
-		ROT: 3
+		TurnSpeed: 3
 		Speed: 31
 		Crushes: crate, infantry, spicebloom, wall
 	RevealsShroud:
@@ -335,8 +334,8 @@ devastator:
 		VisualBounds: 44,38,0,0
 	SelfHealing:
 		Step: 5
-		Ticks: 3
-		HealIfBelow: 50%
+		Delay: 3
+		HealIfBelow: 50
 
 raider:
 	Inherits: ^Vehicle
@@ -356,7 +355,7 @@ raider:
 	Armor:
 		Type: wood
 	Mobile:
-		ROT: 10
+		TurnSpeed: 10
 		Speed: 149
 	RevealsShroud:
 		Range: 4c768
@@ -413,7 +412,7 @@ deviator:
 		BuildPaletteOrder: 50
 		Prerequisites: ~heavy.ordos, research_centre, ~techlevel.high
 	Mobile:
-		ROT: 3
+		TurnSpeed: 3
 		Speed: 53
 	Health:
 		HP: 1100
@@ -453,11 +452,11 @@ deviator:
 		Type: heavy
 	Mobile:
 		Speed: 75
-		ROT: 5
+		TurnSpeed: 5
 	RevealsShroud:
 		Range: 5c768
 	Turreted:
-		ROT: 5
+		TurnSpeed: 5
 		RealignDelay: 0
 	Armament:
 		Weapon: 80mm_A
@@ -504,7 +503,7 @@ combat_tank_o:
 	Buildable:
 		Prerequisites: ~heavy.ordos
 	Turreted:
-		ROT: 5
+		TurnSpeed: 5
 	Armament:
 		Weapon: 80mm_O
 	Mobile:

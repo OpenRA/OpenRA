@@ -1,6 +1,10 @@
 Container@MAINMENU:
 	Logic: MainMenuLogic
 	Children:
+		Container@MUSICBUTTONS:
+			Logic: MusicControllerLogic
+			Children:
+				LogicKeyListener@MUSICCONTROLLER_KEYHANDLER:
 		Background@BORDER:
 			Background: mainmenu-border
 			X: 0 - 15
@@ -203,6 +207,61 @@ Container@MAINMENU:
 							Height: 30
 							Text: Back
 							Font: Bold
+		Background@SYSTEM_INFO_PROMPT:
+			X: (WINDOW_RIGHT - WIDTH)/2
+			Y: (WINDOW_BOTTOM - HEIGHT)/2
+			Width: 520
+			Height: 260
+			Children:
+				Label@PROMPT_TITLE:
+					Width: PARENT_RIGHT
+					Y: 20
+					Height: 25
+					Font: Bold
+					Align: Center
+					Text: System Information
+				Label@PROMPT_TEXT_A:
+					X: 15
+					Y: 50
+					Width: PARENT_RIGHT - 30
+					Height: 16
+					Align: Center
+					Text: We would like to collect some details that will help us optimize OpenRA.
+				Label@PROMPT_TEXT_B:
+					X: 15
+					Y: 68
+					Width: PARENT_RIGHT - 30
+					Height: 16
+					Align: Center
+					Text: With your permission, the following anonymous system data will be sent:
+				ScrollPanel@SYSINFO_DATA:
+					X: 20
+					Y: 98
+					Width: PARENT_RIGHT - 40
+					TopBottomSpacing: 4
+					ItemSpacing: 4
+					Height: 110
+					Children:
+						Label@DATA_TEMPLATE:
+							X: 8
+							Height: 13
+							VAlign: Top
+							Font: Small
+				Checkbox@SYSINFO_CHECKBOX:
+					X: 40
+					Y: PARENT_BOTTOM - 42
+					Width: 200
+					Height: 20
+					Font: Regular
+					Text: Send System Information
+				Button@BACK_BUTTON:
+					X: PARENT_RIGHT - WIDTH - 20
+					Y: PARENT_BOTTOM - 45
+					Width: 120
+					Height: 25
+					Text: Continue
+					Font: Bold
+					Key: return
 		Container@PERFORMANCE_INFO:
 			Logic: PerfDebugLogic
 			Children:

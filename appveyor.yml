@@ -61,14 +61,16 @@ after_test:
   - make docs
   - '%LOCALAPPDATA%\Pandoc\pandoc.exe -o DOCUMENTATION.html DOCUMENTATION.md'
   - '%LOCALAPPDATA%\Pandoc\pandoc.exe -o Lua-API.html Lua-API.md'
-  - cp OpenRA.Game/OpenRA.ico .
+  - ps: cp OpenRA.Game/OpenRA.ico .
   - if not exist nsissetup.exe appveyor DownloadFile "http://downloads.sourceforge.net/project/nsis/NSIS 2/2.46/nsis-2.46-setup.exe" -FileName nsissetup.exe
   - nsissetup /S /D=%NSIS_ROOT%
   - '%NSIS_ROOT%\makensis /DSRCDIR="%APPVEYOR_BUILD_FOLDER%" /DDEPSDIR="%APPVEYOR_BUILD_FOLDER%\thirdparty\download\windows" /V3 packaging/windows/OpenRA.nsi'
-  - move /Y %APPVEYOR_BUILD_FOLDER%\packaging\windows\OpenRA.Setup.exe %APPVEYOR_BUILD_FOLDER%\OpenRA-%APPVEYOR_REPO_TAG_NAME%.exe
+  - if defined APPVEYOR_REPO_TAG_NAME set VERSION=%APPVEYOR_REPO_TAG_NAME%
+  - if not defined APPVEYOR_REPO_TAG_NAME set VERSION=%APPVEYOR_REPO_COMMIT:~0,7%
+  - move /Y %APPVEYOR_BUILD_FOLDER%\packaging\windows\OpenRA.Setup.exe %APPVEYOR_BUILD_FOLDER%\OpenRA-%VERSION%.exe
 
 artifacts:
-  - path: OpenRA-$(APPVEYOR_REPO_TAG_NAME).exe
+  - path: OpenRA-$(VERSION).exe
     name: Installer
   - path: coverity.zip
     name: Coverity Build

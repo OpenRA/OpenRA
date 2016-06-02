@@ -1,10 +1,8 @@
-MapFormat: 8
+MapFormat: 11
 
 RequiresMod: d2k
 
 Title: Oasis Conquest
-
-Description: 2v2v2 or FFA
 
 Author: Janitor
 
@@ -16,11 +14,7 @@ Bounds: 16,16,96,96
 
 Visibility: Lobby
 
-Type: Conquest
-
-Videos:
-
-Options:
+Categories: Conquest
 
 Players:
 	PlayerReference@Neutral:
@@ -153,24 +147,4 @@ Actors:
 		Location: 16,81
 		Owner: Creeps
 
-Smudges:
-
-Rules:
-	World:
-		WormManager:
-			Minimum: 3
-			Maximum: 6
-
-Sequences:
-
-VoxelSequences:
-
-Weapons:
-
-Voices:
-
-Music:
-
-Notifications:
-
-Translations:
+Rules: rules.yaml

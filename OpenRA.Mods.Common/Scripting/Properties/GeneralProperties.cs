@@ -1,10 +1,11 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2016 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
- * as published by the Free Software Foundation. For more information,
- * see COPYING.
+ * as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version. For more
+ * information, see COPYING.
  */
 #endregion
 
@@ -78,12 +79,14 @@ namespace OpenRA.Mods.Common.Scripting
 	{
 		readonly IFacing facing;
 		readonly AutoTarget autotarget;
+		readonly ScriptTags scriptTags;
 
 		public GeneralProperties(ScriptContext context, Actor self)
 			: base(context, self)
 		{
 			facing = self.TraitOrDefault<IFacing>();
 			autotarget = self.TraitOrDefault<AutoTarget>();
+			scriptTags = self.TraitOrDefault<ScriptTags>();
 		}
 
 		[Desc("The actor position in cell coordinates.")]
@@ -160,6 +163,27 @@ namespace OpenRA.Mods.Common.Scripting
 
 				autotarget.Stance = stance;
 			}
+		}
+
+		[Desc("Specifies whether or not the actor supports 'tags'.")]
+		public bool IsTaggable { get { return scriptTags != null; } }
+
+		[Desc("Add a tag to the actor. Returns true on success, false otherwise (for example the actor may already have the given tag).")]
+		public bool AddTag(string tag)
+		{
+			return IsTaggable && scriptTags.AddTag(tag);
+		}
+
+		[Desc("Remove a tag from the actor. Returns true on success, false otherwise (tag was not present).")]
+		public bool RemoveTag(string tag)
+		{
+			return IsTaggable && scriptTags.RemoveTag(tag);
+		}
+
+		[Desc("Specifies whether or not the actor has a particular tag.")]
+		public bool HasTag(string tag)
+		{
+			return IsTaggable && scriptTags.HasTag(tag);
 		}
 	}
 }

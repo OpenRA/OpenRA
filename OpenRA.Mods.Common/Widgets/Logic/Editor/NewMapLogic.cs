@@ -1,10 +1,11 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2016 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
- * as published by the Free Software Foundation. For more information,
- * see COPYING.
+ * as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version. For more
+ * information, see COPYING.
  */
 #endregion
 
@@ -19,14 +20,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		Widget panel;
 
 		[ObjectCreator.UseCtor]
-		public NewMapLogic(Action onExit, Action<string> onSelect, Ruleset modRules, Widget widget, World world)
+		public NewMapLogic(Action onExit, Action<string> onSelect, Widget widget, World world, ModData modData)
 		{
 			panel = widget;
 
 			panel.Get<ButtonWidget>("CANCEL_BUTTON").OnClick = () => { Ui.CloseWindow(); onExit(); };
 
 			var tilesetDropDown = panel.Get<DropDownButtonWidget>("TILESET");
-			var tilesets = modRules.TileSets.Select(t => t.Key).ToList();
+			var tilesets = modData.DefaultTileSets.Select(t => t.Key).ToList();
 			Func<string, ScrollItemWidget, ScrollItemWidget> setupItem = (option, template) =>
 			{
 				var item = ScrollItemWidget.Setup(template,
@@ -54,15 +55,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				height = Math.Max(2, height);
 
 				var maxTerrainHeight = world.Map.Grid.MaximumTerrainHeight;
-				var tileset = modRules.TileSets[tilesetDropDown.Text];
-				var map = new Map(tileset, width + 2, height + maxTerrainHeight + 2);
+				var tileset = modData.DefaultTileSets[tilesetDropDown.Text];
+				var map = new Map(Game.ModData, tileset, width + 2, height + maxTerrainHeight + 2);
 
-				var tl = new PPos(1, 1);
+				var tl = new PPos(1, 1 + maxTerrainHeight);
 				var br = new PPos(width, height + maxTerrainHeight);
 				map.SetBounds(tl, br);
 
-				map.PlayerDefinitions = new MapPlayers(map.Rules, map.SpawnPoints.Value.Length).ToMiniYaml();
-				map.FixOpenAreas(modRules);
+				map.PlayerDefinitions = new MapPlayers(map.Rules, 0).ToMiniYaml();
+				map.FixOpenAreas();
 
 				Action<string> afterSave = uid =>
 				{

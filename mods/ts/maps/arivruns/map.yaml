@@ -1,10 +1,8 @@
-MapFormat: 8
+MapFormat: 11
 
 RequiresMod: ts
 
 Title: A River Runs Near It
-
-Description: Describe your map here
 
 Author: Westwood Studios
 
@@ -16,11 +14,7 @@ Bounds: 2,4,130,242
 
 Visibility: Lobby
 
-Type: Conquest
-
-Videos:
-
-Options:
+Categories: Conquest, Playable, Original TS Map
 
 Players:
 	PlayerReference@Neutral:
@@ -1299,23 +1293,7 @@ Actors:
 		Owner: Neutral
 		Location: 115,-15
 
-Smudges:
-
 Rules:
 	World:
 		GlobalLightingPaletteEffect:
 			Ambient: 0.72
-
-Sequences:
-
-VoxelSequences:
-
-Weapons:
-
-Voices:
-
-Music:
-
-Notifications:
-
-Translations:

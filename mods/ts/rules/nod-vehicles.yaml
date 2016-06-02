@@ -10,7 +10,7 @@ BGGY:
 		BuildPaletteOrder: 40
 		Prerequisites: ~naweap
 	Mobile:
-		ROT: 8
+		TurnSpeed: 8
 		Speed: 142
 	Health:
 		HP: 220
@@ -27,6 +27,7 @@ BGGY:
 		Voice: Attack
 	AutoTarget:
 	WithMuzzleOverlay:
+	-PoisonedByTiberium:
 
 BIKE:
 	Inherits: ^VoxelVehicle
@@ -40,7 +41,7 @@ BIKE:
 		BuildPaletteOrder: 30
 		Prerequisites: ~naweap
 	Mobile:
-		ROT: 8
+		TurnSpeed: 8
 		Speed: 170
 	Health:
 		HP: 150
@@ -75,15 +76,15 @@ TTNK:
 		BuildPaletteOrder: 60
 		Prerequisites: ~naweap
 	Mobile:
-		ROT: 5
+		TurnSpeed: 5
 		Speed: 85
 		Crushes: wall, crate, infantry
 	Health:
 		HP: 350
 	Armor:
 		Type: Light
-	AttackFrontal:
-		Voice: Attack
+		UpgradeTypes: undeployed
+		UpgradeMinEnabledLevel: 1
 	Armament@PRIMARY:
 		Weapon: 90mm
 		LocalOffset: 256,0,256
@@ -100,12 +101,68 @@ TTNK:
 	WithMuzzleOverlay:
 	RevealsShroud:
 		Range: 5c0
-	Transforms:
-		IntoActor: gatick
-		Facing: 159
-		TransformSounds: place2.aud
-		NoTransformSounds:
-		Voice: Move
+	RenderSprites:
+		Image: ttnk
+	DeployToUpgrade:
+		DeployedUpgrades: deployed, notmobile
+		UndeployedUpgrades: undeployed
+		DeployAnimation: make
+		Facing: 160
+		AllowedTerrainTypes: Clear, Road, DirtRoad, Rough
+		DeploySound: place2.aud
+		UndeploySound: clicky1.aud
+	WithVoxelBody:
+		UpgradeTypes: undeployed
+		UpgradeMinEnabledLevel: 1
+	WithSpriteBody@deployed:
+		UpgradeTypes: undeployed
+		UpgradeMaxEnabledLevel: 0
+	AttackFrontal:
+		Voice: Attack
+		UpgradeTypes: undeployed
+		UpgradeMinEnabledLevel: 1
+		UpgradeMaxAcceptedLevel: 1
+	Turreted:
+		TurnSpeed: 6
+		Turret: deployed
+		InitialFacing: 128
+		Offset: -20, -130, 180
+	WithVoxelBarrel:
+		Armament: deployed
+		LocalOffset: 128, 0, 256
+		UpgradeTypes: deployed
+		UpgradeMinEnabledLevel: 1
+	WithVoxelTurret@deployed:
+		Turret: deployed
+		UpgradeTypes: deployed
+		UpgradeMinEnabledLevel: 1
+	AttackTurreted@deployed:
+		Voice: Attack
+		Armaments: deployed
+		UpgradeTypes: deployed
+		UpgradeMinEnabledLevel: 1
+	Armament@deployed:
+		Name: deployed
+		Turret: deployed
+		Weapon: 90mm
+		LocalOffset: 384,0,256
+		UpgradeTypes: eliteweapon
+		UpgradeMaxEnabledLevel: 0
+		UpgradeMaxAcceptedLevel: 1
+		MuzzleSequence: muzzle
+	Armament@deployedElite:
+		Name: deployed
+		Turret: deployed
+		Weapon: 120mmx
+		LocalOffset: 384,0,256
+		UpgradeTypes: eliteweapon
+		UpgradeMinEnabledLevel: 1
+		MuzzleSequence: muzzle
+	Armor@deployed:
+		Type: Concrete
+		UpgradeTypes: deployed
+		UpgradeMinEnabledLevel: 1
+	AutoTarget:
 
 ART2:
 	Inherits: ^VoxelTank
@@ -124,7 +181,7 @@ ART2:
 		Type: Light
 	Mobile:
 		Speed: 71
-		ROT: 2
+		TurnSpeed: 2
 	RevealsShroud:
 		Range: 9c0
 	RenderVoxels:
@@ -151,7 +208,7 @@ REPAIR:
 		HP: 200
 	Mobile:
 		Speed: 85
-		ROT: 5
+		TurnSpeed: 5
 	RevealsShroud:
 		Range: 5c0
 	Armament:
@@ -162,8 +219,6 @@ REPAIR:
 		ForceTargetStances: None
 	AttackFrontal:
 		Voice: Attack
-	Selectable:
-		Priority: 5	
 
 WEED:
 	Inherits: ^VoxelTank
@@ -180,20 +235,20 @@ WEED:
 		DeliveryBuildings: nawast
 		Capacity: 7
 		Resources: Veins
-		UnloadTicksPerBale: 20
-		LoadTicksPerBale: 40
+		BaleUnloadDelay: 20
+		BaleLoadDelay: 40
 		SearchFromProcRadius: 72
 		SearchFromOrderRadius: 36
 		HarvestVoice: Attack
 		DeliverVoice: Move
 	Mobile:
 		Speed: 71
-		ROT: 5
+		TurnSpeed: 5
 	Health:
 		HP: 600
 	SelfHealing:
-		Ticks: 10
-		HealIfBelow: 50%
+		Delay: 10
+		HealIfBelow: 50
 		DamageCooldown: 200
 	Armor:
 		Type: Heavy
@@ -202,6 +257,7 @@ WEED:
 	-WithVoxelBody:
 	WithVoxelUnloadBody:
 	-GainsExperience:
+	-PoisonedByTiberium:
 
 SAPC:
 	Inherits: ^VoxelTank
@@ -215,7 +271,7 @@ SAPC:
 		BuildPaletteOrder: 30
 		Prerequisites: ~naweap, natech
 	Mobile:
-		ROT: 5
+		TurnSpeed: 5
 		Speed: 71
 	Health:
 		HP: 175
@@ -243,7 +299,7 @@ SUBTANK:
 		BuildPaletteOrder: 40
 		Prerequisites: ~naweap, natech
 	Mobile:
-		ROT: 6
+		TurnSpeed: 6
 		Speed: 71
 		Crushes: wall, crate, infantry
 	Health:
@@ -270,7 +326,7 @@ STNK:
 		Prerequisites: ~naweap, natech
 		Queue: Vehicle
 	Mobile:
-		ROT: 5
+		TurnSpeed: 5
 		Speed: 85
 		Crushes: wall, crate, infantry
 	Health:

@@ -1,10 +1,8 @@
-MapFormat: 8
+MapFormat: 11
 
 RequiresMod: ra
 
 Title: Drop Zone
-
-Description: Pick up the crates with the APC to get units to kill the other players.
 
 Author: Holloweye
 
@@ -16,28 +14,12 @@ Bounds: 16,16,32,32
 
 Visibility: Lobby
 
-Type: Drop Zone
-
-Videos:
-
-Options:
-	Crates: True
-	Fog: False
-	Shroud: False
-	AllyBuildRadius: False
-	FragileAlliances: False
-	StartingCash: 5000
-	TechLevel: Unrestricted
-	ConfigurableStartingUnits: False
+Categories: Drop Zone
 
 Players:
 	PlayerReference@Neutral:
 		Name: Neutral
 		OwnsWorld: True
-		NonCombatant: True
-		Faction: allies
-	PlayerReference@Creeps:
-		Name: Creeps
 		NonCombatant: True
 		Faction: allies
 	PlayerReference@Multi0:
@@ -46,56 +28,48 @@ Players:
 		AllowBots: False
 		LockFaction: True
 		Faction: soviet
-		Enemies: Creeps
 	PlayerReference@Multi1:
 		Name: Multi1
 		Playable: True
 		AllowBots: False
 		LockFaction: True
 		Faction: soviet
-		Enemies: Creeps
 	PlayerReference@Multi2:
 		Name: Multi2
 		Playable: True
 		AllowBots: False
 		LockFaction: True
 		Faction: soviet
-		Enemies: Creeps
 	PlayerReference@Multi3:
 		Name: Multi3
 		Playable: True
 		AllowBots: False
 		LockFaction: True
 		Faction: soviet
-		Enemies: Creeps
 	PlayerReference@Multi4:
 		Name: Multi4
 		Playable: True
 		AllowBots: False
 		LockFaction: True
 		Faction: soviet
-		Enemies: Creeps
 	PlayerReference@Multi5:
 		Name: Multi5
 		Playable: True
 		AllowBots: False
 		LockFaction: True
 		Faction: soviet
-		Enemies: Creeps
 	PlayerReference@Multi6:
 		Name: Multi6
 		Playable: True
 		AllowBots: False
 		LockFaction: True
 		Faction: soviet
-		Enemies: Creeps
 	PlayerReference@Multi7:
 		Name: Multi7
 		Playable: True
 		AllowBots: False
 		LockFaction: True
 		Faction: soviet
-		Enemies: Creeps
 
 Actors:
 	Actor0: apc
@@ -183,87 +157,6 @@ Actors:
 		Location: 30,29
 		Owner: Neutral
 
-Smudges:
+Rules: rules.yaml
 
-Rules:
-	World:
-		CrateSpawner:
-			Maximum: 3
-			SpawnInterval: 125
-			CrateActors: unitcrate
-			InitialSpawnDelay: 0
-		-SpawnMPUnits:
-		-MPStartLocations:
-	UNITCRATE:
-		Inherits: ^Crate
-		GiveUnitCrateAction@ttnk:
-			SelectionShares: 4
-			Units: ttnk
-		GiveUnitCrateAction@ftrk:
-			SelectionShares: 6
-			Units: ftrk
-		GiveUnitCrateAction@harv:
-			SelectionShares: 1
-			Units: harv
-		GiveUnitCrateAction@shok:
-			SelectionShares: 1
-			Units: shok
-		GiveUnitCrateAction@dog:
-			SelectionShares: 1
-			Units: dog
-		Crate:
-			TerrainTypes: Clear, Road, Ore, Beach
-	^Infantry:
-		GivesBounty:
-			Percentage: 0
-	^Tank:
-		GivesBounty:
-			Percentage: 0
-	^Vehicle:
-		GivesBounty:
-			Percentage: 0
-	APC:
-		Health:
-			HP: 1000
-		MustBeDestroyed:
-			RequiredForShortGame: true
-		-AttackMove:
-	HARV:
-		Tooltip:
-			Name: Bomb Truck
-			Description: Explodes like a damn nuke!
-		Health:
-			HP: 100
-		Explodes:
-			Weapon: CrateNuke
-			EmptyWeapon: CrateNuke
-		AttackSuicides:
-	SHOK:
-		Health:
-			HP: 800
-	DOG:
-		Health:
-			HP: 120
-		Mobile:
-			Speed: 99
-
-Sequences:
-
-VoxelSequences:
-
-Weapons:
-	PortaTesla:
-		ReloadDelay: 20
-		Range: 10c0
-		Warhead: SpreadDamage
-			Spread: 42
-			Damage: 80
-			DamageTypes: Prone50Percent, TriggerProne, FireDeath
-
-Voices:
-
-Music:
-
-Notifications:
-
-Translations:
+Weapons: weapons.yaml

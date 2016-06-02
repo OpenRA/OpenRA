@@ -186,6 +186,7 @@ FLARE:
 	Tooltip:
 		Name: Flare
 		ShowOwnerRow: false
+	AutoSelectionSize:
 
 MINE:
 	Inherits@1: ^SpriteActor
@@ -297,7 +298,7 @@ powerproxy.sonarpulse:
 		Actor: sonar
 		LifeTime: 250
 		DeploySound: sonpulse.aud
-		EffectSequence: moveflsh
+		EffectImage: moveflsh
 		EffectPalette: moveflash
 
 powerproxy.paratroopers:

@@ -105,9 +105,9 @@ ProtectHarvester = function(unit)
 end
 
 InitAIUnits = function()
-	IdlingUnits = Map.ActorsInBox(MainBaseTopLeft.CenterPosition, Map.BottomRight, function(self) return self.Owner == ussr and self.HasProperty("Hunt") end)
+	IdlingUnits = Utils.Where(Map.ActorsInWorld, function(self) return self.Owner == ussr and self.HasProperty("Hunt") and self.Location.Y > MainBaseTopLeft.Location.Y end)
 
-	local buildings = Map.ActorsInBox(MainBaseTopLeft.CenterPosition, Map.BottomRight, function(self) return self.Owner == ussr and self.HasProperty("StartBuildingRepairs") end)
+	local buildings = Utils.Where(Map.ActorsInWorld, function(self) return self.Owner == ussr and self.HasProperty("StartBuildingRepairs") end)
 	Utils.Do(buildings, function(actor)
 		Trigger.OnDamaged(actor, function(building)
 			if building.Owner == ussr and building.Health < building.MaxHealth * 3/4 then
@@ -255,7 +255,7 @@ ProduceAircraft = function()
 		Trigger.OnIdle(units[1], function()
 			if not target or target.IsDead or (not target.IsInWorld) then
 
-				local enemies = Map.ActorsInBox(Map.TopLeft, Map.BottomRight, function(self) return self.Owner == greece and self.HasProperty("Health") end)
+				local enemies = Utils.Where(Map.ActorsInWorld, function(self) return self.Owner == greece and self.HasProperty("Health") end)
 				if #enemies > 0 then
 					target = Utils.Random(enemies)
 					units[1].Attack(target)
@@ -276,7 +276,7 @@ ActivateAI = function()
 	Trigger.AfterDelay(DateTime.Minutes(5), function()
 		ProduceInfantry()
 		ProduceVehicles()
-		if AirAttacks then
+		if false and AirAttacks then -- disable air strikes for now since they are broken
 			Trigger.AfterDelay(DateTime.Minutes(3), ProduceAircraft)
 		end
 	end)

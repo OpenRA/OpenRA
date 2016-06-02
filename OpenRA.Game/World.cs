@@ -1,10 +1,11 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2016 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
- * as published by the Free Software Foundation. For more information,
- * see COPYING.
+ * as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version. For more
+ * information, see COPYING.
  */
 #endregion
 
@@ -84,11 +85,6 @@ namespace OpenRA
 			get { return OrderManager.Connection is ReplayConnection; }
 		}
 
-		public bool AllowDevCommands
-		{
-			get { return LobbyInfo.GlobalSettings.AllowCheats || LobbyInfo.IsSinglePlayer; }
-		}
-
 		void SetLocalPlayer(Player localPlayer)
 		{
 			if (localPlayer == null)
@@ -107,8 +103,6 @@ namespace OpenRA
 		public readonly Actor WorldActor;
 
 		public readonly Map Map;
-
-		public readonly TileSet TileSet;
 
 		public readonly ActorMap ActorMap;
 		public readonly ScreenMap ScreenMap;
@@ -158,8 +152,6 @@ namespace OpenRA
 			orderGenerator = new UnitOrderGenerator();
 			Map = map;
 			Timestep = orderManager.LobbyInfo.GlobalSettings.Timestep;
-
-			TileSet = map.Rules.TileSets[Map.Tileset];
 			SharedRandom = new MersenneTwister(orderManager.LobbyInfo.GlobalSettings.RandomSeed);
 
 			var worldActorType = type == WorldType.Editor ? "EditorWorld" : "World";
@@ -187,10 +179,35 @@ namespace OpenRA
 				MapUid = Map.Uid,
 				MapTitle = Map.Title
 			};
+		}
 
-			if (!LobbyInfo.GlobalSettings.Shroud)
-				foreach (var player in Players)
-					player.Shroud.ExploreAll(this);
+		public void AddToMaps(Actor self, IOccupySpace ios)
+		{
+			ActorMap.AddInfluence(self, ios);
+			ActorMap.AddPosition(self, ios);
+
+			if (!self.Bounds.Size.IsEmpty)
+				ScreenMap.Add(self);
+		}
+
+		public void UpdateMaps(Actor self, IOccupySpace ios)
+		{
+			if (!self.IsInWorld)
+				return;
+
+			if (!self.Bounds.Size.IsEmpty)
+				ScreenMap.Update(self);
+
+			ActorMap.UpdatePosition(self, ios);
+		}
+
+		public void RemoveFromMaps(Actor self, IOccupySpace ios)
+		{
+			ActorMap.RemoveInfluence(self, ios);
+			ActorMap.RemovePosition(self, ios);
+
+			if (!self.Bounds.Size.IsEmpty)
+				ScreenMap.Remove(self);
 		}
 
 		public void LoadComplete(WorldRenderer wr)

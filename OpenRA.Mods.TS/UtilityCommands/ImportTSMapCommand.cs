@@ -1,10 +1,11 @@
 ﻿#region Copyright & License Information
 /*
- * Copyright 2007-2014 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2016 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
- * as published by the Free Software Foundation. For more information,
- * see COPYING.
+ * as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version. For more
+ * information, see COPYING.
  */
 #endregion
 
@@ -22,16 +23,8 @@ namespace OpenRA.Mods.TS.UtilityCommands
 {
 	class ImportTSMapCommand : IUtilityCommand
 	{
-		public string Name { get { return "--import-ts-map"; } }
-
-		public bool ValidateArguments(string[] args)
-		{
-			return args.Length >= 2;
-		}
-
-		int2 fullSize;
-		int actorCount = 0;
-		int spawnCount = 0;
+		string IUtilityCommand.Name { get { return "--import-ts-map"; } }
+		bool IUtilityCommand.ValidateArguments(string[] args) { return args.Length >= 2; }
 
 		static readonly Dictionary<byte, string> OverlayToActor = new Dictionary<byte, string>()
 		{
@@ -149,36 +142,56 @@ namespace OpenRA.Mods.TS.UtilityCommands
 			{ 0x03, new byte[] { 0x7E } }
 		};
 
+		static readonly Dictionary<string, string> DeployableActors = new Dictionary<string, string>()
+		{
+			{ "gadpsa", "lpst" },
+			{ "gatick", "ttnk" }
+		};
+
 		[Desc("FILENAME", "Convert a Tiberian Sun map to the OpenRA format.")]
-		public void Run(ModData modData, string[] args)
+		void IUtilityCommand.Run(ModData modData, string[] args)
 		{
 			// HACK: The engine code assumes that Game.modData is set.
 			Game.ModData = modData;
-			Game.ModData.MountFiles();
 
 			var filename = args[1];
 			var file = new IniFile(File.Open(args[1], FileMode.Open));
-			var map = GenerateMapHeader(filename, file, modData);
+			var basic = file.GetSection("Basic");
+			var mapSection = file.GetSection("Map");
+			var tileset = mapSection.GetValue("Theater", "");
+			var iniSize = mapSection.GetValue("Size", "0, 0, 0, 0").Split(',').Select(int.Parse).ToArray();
+			var iniBounds = mapSection.GetValue("LocalSize", "0, 0, 0, 0").Split(',').Select(int.Parse).ToArray();
+			var size = new Size(iniSize[2], 2 * iniSize[3]);
 
-			ReadTiles(map, file);
-			ReadActors(map, file, "Structures");
-			ReadActors(map, file, "Units");
-			ReadActors(map, file, "Infantry");
-			ReadTerrainActors(map, file);
-			ReadWaypoints(map, file);
-			ReadOverlay(map, file);
+			var map = new Map(Game.ModData, modData.DefaultTileSets[tileset], size.Width, size.Height)
+			{
+				Title = basic.GetValue("Name", Path.GetFileNameWithoutExtension(filename)),
+				Author = "Westwood Studios",
+				Bounds = new Rectangle(iniBounds[0], iniBounds[1], iniBounds[2], 2 * iniBounds[3] + 2 * iniBounds[1]),
+				RequiresMod = modData.Manifest.Mod.Id
+			};
+
+			var fullSize = new int2(iniSize[2], iniSize[3]);
+			ReadTiles(map, file, fullSize);
+			ReadActors(map, file, "Structures", fullSize);
+			ReadActors(map, file, "Units", fullSize);
+			ReadActors(map, file, "Infantry", fullSize);
+			ReadTerrainActors(map, file, fullSize);
+			ReadWaypoints(map, file, fullSize);
+			ReadOverlay(map, file, fullSize);
 			ReadLighting(map, file);
 
+			var spawnCount = map.ActorDefinitions.Count(n => n.Value.Value == "mpspawn");
 			var mapPlayers = new MapPlayers(map.Rules, spawnCount);
 			map.PlayerDefinitions = mapPlayers.ToMiniYaml();
 
-			var fileName = Path.GetFileNameWithoutExtension(filename);
-			var dest = fileName + ".oramap";
-			map.Save(dest);
+			var dest = Path.GetFileNameWithoutExtension(args[1]) + ".oramap";
+			var package = new ZipFile(modData.DefaultFileSystem, dest, true);
+			map.Save(package);
 			Console.WriteLine(dest + " saved.");
 		}
 
-		void UnpackLZO(byte[] src, byte[] dest)
+		static void UnpackLZO(byte[] src, byte[] dest)
 		{
 			var srcOffset = 0U;
 			var destOffset = 0U;
@@ -194,7 +207,7 @@ namespace OpenRA.Mods.TS.UtilityCommands
 			}
 		}
 
-		void UnpackLCW(byte[] src, byte[] dest, byte[] temp)
+		static void UnpackLCW(byte[] src, byte[] dest, byte[] temp)
 		{
 			var srcOffset = 0;
 			var destOffset = 0;
@@ -211,34 +224,9 @@ namespace OpenRA.Mods.TS.UtilityCommands
 			}
 		}
 
-		Map GenerateMapHeader(string filename, IniFile file, ModData modData)
+		static void ReadTiles(Map map, IniFile file, int2 fullSize)
 		{
-			var basic = file.GetSection("Basic");
-			var mapSection = file.GetSection("Map");
-			var tileset = mapSection.GetValue("Theater", "");
-			var iniSize = mapSection.GetValue("Size", "0, 0, 0, 0").Split(',').Select(int.Parse).ToArray();
-			var iniBounds = mapSection.GetValue("LocalSize", "0, 0, 0, 0").Split(',').Select(int.Parse).ToArray();
-			var size = new Size(iniSize[2], 2 * iniSize[3]);
-
-			fullSize = new int2(iniSize[2], iniSize[3]);
-
-			var map = new Map(modData.DefaultRules.TileSets[tileset], size.Width, size.Height);
-			map.Title = basic.GetValue("Name", Path.GetFileNameWithoutExtension(filename));
-			map.Author = "Westwood Studios";
-			map.Bounds = new Rectangle(iniBounds[0], iniBounds[1], iniBounds[2], 2 * iniBounds[3] + 2 * iniBounds[1]);
-			map.MapResources = Exts.Lazy(() => new CellLayer<ResourceTile>(map.Grid.Type, size));
-			map.MapTiles = Exts.Lazy(() => new CellLayer<TerrainTile>(map.Grid.Type, size));
-			map.MapHeight = Exts.Lazy(() => new CellLayer<byte>(map.Grid.Type, size));
-
-			map.Options = new MapOptions();
-			map.RequiresMod = modData.Manifest.Mod.Id;
-
-			return map;
-		}
-
-		void ReadTiles(Map map, IniFile file)
-		{
-			var tileset = Game.ModData.DefaultRules.TileSets[map.Tileset];
+			var tileset = Game.ModData.DefaultTileSets[map.Tileset];
 			var mapSection = file.GetSection("IsoMapPack5");
 
 			var data = Convert.FromBase64String(mapSection.Aggregate(string.Empty, (a, b) => a + b.Value));
@@ -263,18 +251,18 @@ namespace OpenRA.Mods.TS.UtilityCommands
 				var mapCell = new MPos(dx / 2, dy);
 				var cell = mapCell.ToCPos(map);
 
-				if (map.MapTiles.Value.Contains(cell))
+				if (map.Tiles.Contains(cell))
 				{
 					if (!tileset.Templates.ContainsKey(tilenum))
 						tilenum = subtile = 0;
 
-					map.MapTiles.Value[cell] = new TerrainTile(tilenum, subtile);
-					map.MapHeight.Value[cell] = z;
+					map.Tiles[cell] = new TerrainTile(tilenum, subtile);
+					map.Height[cell] = z;
 				}
 			}
 		}
 
-		void ReadOverlay(Map map, IniFile file)
+		static void ReadOverlay(Map map, IniFile file, int2 fullSize)
 		{
 			var overlaySection = file.GetSection("OverlayPack");
 			var overlayCompressed = Convert.FromBase64String(overlaySection.Aggregate(string.Empty, (a, b) => a + b.Value));
@@ -298,7 +286,7 @@ namespace OpenRA.Mods.TS.UtilityCommands
 					var rx = (ushort)((dx + dy) / 2 + 1);
 					var ry = (ushort)(dy - rx + fullSize.X + 1);
 
-					if (!map.MapResources.Value.Contains(uv))
+					if (!map.Resources.Contains(uv))
 						continue;
 
 					var idx = rx + 512 * ry;
@@ -315,7 +303,7 @@ namespace OpenRA.Mods.TS.UtilityCommands
 							new OwnerInit("Neutral")
 						};
 
-						map.ActorDefinitions.Add(new MiniYamlNode("Actor" + actorCount++, ar.Save()));
+						map.ActorDefinitions.Add(new MiniYamlNode("Actor" + map.ActorDefinitions.Count, ar.Save()));
 						continue;
 					}
 
@@ -326,7 +314,7 @@ namespace OpenRA.Mods.TS.UtilityCommands
 
 					if (resourceType != 0)
 					{
-						map.MapResources.Value[uv] = new ResourceTile(resourceType, overlayDataPack[idx]);
+						map.Resources[uv] = new ResourceTile(resourceType, overlayDataPack[idx]);
 						continue;
 					}
 
@@ -335,7 +323,7 @@ namespace OpenRA.Mods.TS.UtilityCommands
 			}
 		}
 
-		void ReadWaypoints(Map map, IniFile file)
+		static void ReadWaypoints(Map map, IniFile file, int2 fullSize)
 		{
 			var waypointsSection = file.GetSection("Waypoints", true);
 			foreach (var kv in waypointsSection)
@@ -347,18 +335,16 @@ namespace OpenRA.Mods.TS.UtilityCommands
 				var dy = rx + ry - fullSize.X - 1;
 				var cell = new MPos(dx / 2, dy).ToCPos(map);
 
-				var ar = new ActorReference(int.Parse(kv.Key) <= 7 ? "mpspawn" : "waypoint");
+				int wpindex;
+				var ar = new ActorReference((!int.TryParse(kv.Key, out wpindex) || wpindex > 7) ? "waypoint" : "mpspawn");
 				ar.Add(new LocationInit(cell));
 				ar.Add(new OwnerInit("Neutral"));
 
-				map.ActorDefinitions.Add(new MiniYamlNode("Actor" + actorCount++, ar.Save()));
-
-				if (ar.Type == "mpspawn")
-					spawnCount++;
+				map.ActorDefinitions.Add(new MiniYamlNode("Actor" + map.ActorDefinitions.Count, ar.Save()));
 			}
 		}
 
-		void ReadTerrainActors(Map map, IniFile file)
+		static void ReadTerrainActors(Map map, IniFile file, int2 fullSize)
 		{
 			var terrainSection = file.GetSection("Terrain", true);
 			foreach (var kv in terrainSection)
@@ -378,18 +364,26 @@ namespace OpenRA.Mods.TS.UtilityCommands
 				if (!map.Rules.Actors.ContainsKey(name))
 					Console.WriteLine("Ignoring unknown actor type: `{0}`".F(name));
 				else
-					map.ActorDefinitions.Add(new MiniYamlNode("Actor" + actorCount++, ar.Save()));
+					map.ActorDefinitions.Add(new MiniYamlNode("Actor" + map.ActorDefinitions.Count, ar.Save()));
 			}
 		}
 
-		void ReadActors(Map map, IniFile file, string type)
+		static void ReadActors(Map map, IniFile file, string type, int2 fullSize)
 		{
 			var structuresSection = file.GetSection(type, true);
 			foreach (var kv in structuresSection)
 			{
+				var isDeployed = false;
 				var entries = kv.Value.Split(',');
 
 				var name = entries[1].ToLowerInvariant();
+
+				if (DeployableActors.ContainsKey(name))
+				{
+					name = DeployableActors[name];
+					isDeployed = true;
+				}
+
 				var health = short.Parse(entries[2]);
 				var rx = int.Parse(entries[3]);
 				var ry = int.Parse(entries[4]);
@@ -407,18 +401,22 @@ namespace OpenRA.Mods.TS.UtilityCommands
 					new FacingInit(facing),
 				};
 
+				if (isDeployed)
+					ar.Add(new DeployStateInit(DeployState.Deployed));
+
 				if (!map.Rules.Actors.ContainsKey(name))
 					Console.WriteLine("Ignoring unknown actor type: `{0}`".F(name));
 				else
-					map.ActorDefinitions.Add(new MiniYamlNode("Actor" + actorCount++, ar.Save()));
+					map.ActorDefinitions.Add(new MiniYamlNode("Actor" + map.ActorDefinitions.Count, ar.Save()));
 			}
 		}
 
-		void ReadLighting(Map map, IniFile file)
+		static void ReadLighting(Map map, IniFile file)
 		{
 			var lightingTypes = new[] { "Red", "Green", "Blue", "Ambient" };
 			var lightingSection = file.GetSection("Lighting");
 			var lightingNodes = new List<MiniYamlNode>();
+
 			foreach (var kv in lightingSection)
 			{
 				if (lightingTypes.Contains(kv.Key))
@@ -433,7 +431,7 @@ namespace OpenRA.Mods.TS.UtilityCommands
 
 			if (lightingNodes.Any())
 			{
-				map.RuleDefinitions.Add(new MiniYamlNode("World", new MiniYaml("", new List<MiniYamlNode>()
+				map.RuleDefinitions.Nodes.Add(new MiniYamlNode("World", new MiniYaml("", new List<MiniYamlNode>()
 				{
 					new MiniYamlNode("GlobalLightingPaletteEffect", new MiniYaml("", lightingNodes))
 				})));

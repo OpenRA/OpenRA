@@ -15,7 +15,7 @@ NAWALL:
 		Name: Concrete Wall
 		Description: Stops infantry and blocks enemy fire.\nCan NOT be crushed by tanks.
 	Health:
-		HP: 300
+		HP: 225
 	Armor:
 		Type: Concrete
 	BlocksProjectiles:
@@ -46,7 +46,7 @@ NAGATE_B:
 NALASR:
 	Inherits: ^Defense
 	Valued:
-		Cost: 500
+		Cost: 300
 	Tooltip:
 		Name: Laser Turret
 		Description: Basic base defense.\nRequires power to operate.\n  Strong vs Ground units\n  Weak vs Aircraft
@@ -57,18 +57,17 @@ NALASR:
 	Building:
 	Selectable:
 		Bounds: 40, 30, -8, -6
-	RequiresPower:
 	DisabledOverlay:
 	Health:
-		HP: 400
+		HP: 500
 	Armor:
-		Type: Light
+		Type: Wood
 	RevealsShroud:
-		Range: 5c0
+		Range: 7c0
 	DetectCloaked:
 		Range: 3c0
 	Turreted:
-		ROT: 10
+		TurnSpeed: 10
 		InitialFacing: 300
 		Offset: 298,-171,288
 	AttackTurreted:
@@ -103,9 +102,9 @@ NAOBEL:
 	RequiresPower:
 	DisabledOverlay:
 	Health:
-		HP: 600
+		HP: 725
 	Armor:
-		Type: Heavy
+		Type: Wood
 	RevealsShroud:
 		Range: 8c0
 	Armament:
@@ -128,7 +127,7 @@ NAOBEL:
 NASAM:
 	Inherits: ^Defense
 	Valued:
-		Cost: 600
+		Cost: 500
 	Tooltip:
 		Name: S.A.M. Site
 		Description: Nod Anti-Air base defense.\nRequires power to operate.\n  Strong vs Aircraft\n  Weak vs Ground units
@@ -142,15 +141,15 @@ NASAM:
 	RequiresPower:
 	DisabledOverlay:
 	Health:
-		HP: 500
+		HP: 600
 	Armor:
-		Type: Light
+		Type: Wood
 	BodyOrientation:
 		QuantizedFacings: 32
 	RenderRangeCircle:
 		RangeCircleType: aa
 	Turreted:
-		ROT: 10
+		TurnSpeed: 10
 		InitialFacing: 50
 	AttackTurreted:
 	WithSpriteTurret:
@@ -162,49 +161,6 @@ NASAM:
 		Amount: -30
 	SelectionDecorations:
 		VisualBounds: 40, 36, -3, -8
-
-GATICK:
-	Inherits: ^DeployedVehicle
-	Valued:
-		Cost: 800
-	Tooltip:
-		Name: Tick Tank
-	Health:
-		HP: 350
-	Armor:
-		Type: Concrete
-	RevealsShroud:
-		Range: 5c0
-	Turreted:
-		ROT: 6
-		InitialFacing: 224
-		Offset: 0,96,224
-	Armament@PRIMARY:
-		Weapon: 90mm
-		LocalOffset: 448,0,348
-		UpgradeTypes: eliteweapon
-		UpgradeMaxEnabledLevel: 0
-		UpgradeMaxAcceptedLevel: 1
-		MuzzleSequence: muzzle
-	Armament@ELITE:
-		Weapon: 120mmx
-		LocalOffset: 448,0,348
-		UpgradeTypes: eliteweapon
-		UpgradeMinEnabledLevel: 1
-		MuzzleSequence: muzzle
-	BodyOrientation:
-		QuantizedFacings: 32
-	RenderVoxels:
-	WithVoxelBarrel:
-		LocalOffset: 128,0,348
-	WithVoxelTurret:
-	Transforms:
-		IntoActor: ttnk
-		Facing: 159
-		TransformSounds: place2.aud
-		NoTransformSounds:
-		Voice: Move
-	WithMuzzleOverlay:
 
 GAARTY:
 	Inherits@1: ^DeployedVehicle
@@ -219,7 +175,7 @@ GAARTY:
 	RevealsShroud:
 		Range: 9c0
 	Turreted:
-		ROT: 5
+		TurnSpeed: 5
 		InitialFacing: 128
 		Offset: 0,0,171
 	Armament:

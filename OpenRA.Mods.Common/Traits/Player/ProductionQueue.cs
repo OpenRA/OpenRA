@@ -1,10 +1,11 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2016 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
- * as published by the Free Software Foundation. For more information,
- * see COPYING.
+ * as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version. For more
+ * information, see COPYING.
  */
 #endregion
 
@@ -33,8 +34,8 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Should the prerequisite remain enabled if the owner changes?")]
 		public readonly bool Sticky = true;
 
-		[Desc("This value is used to translate the unit cost into build time.")]
-		public readonly float BuildSpeed = 0.4f;
+		[Desc("This percentage value is multiplied with actor cost to translate into build time (lower means faster).")]
+		public readonly int BuildSpeed = 40;
 
 		[Desc("The build time is multiplied with this value on low power.")]
 		public readonly int LowPowerSlowdown = 3;
@@ -203,7 +204,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public virtual IEnumerable<ActorInfo> AllItems()
 		{
-			if (self.World.AllowDevCommands && developerMode.AllTech)
+			if (developerMode.AllTech)
 				return producible.Keys;
 
 			return allProducibles;
@@ -213,7 +214,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			if (!Enabled)
 				return Enumerable.Empty<ActorInfo>();
-			if (self.World.AllowDevCommands && developerMode.AllTech)
+			if (developerMode.AllTech)
 				return producible.Keys;
 
 			return buildableProducibles;
@@ -225,7 +226,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!producible.TryGetValue(actor, out ps))
 				return false;
 
-			return ps.Buildable || (self.World.AllowDevCommands && developerMode.AllTech);
+			return ps.Buildable || developerMode.AllTech;
 		}
 
 		public virtual void Tick(Actor self)
@@ -315,11 +316,11 @@ namespace OpenRA.Mods.Common.Traits
 
 		public virtual int GetBuildTime(ActorInfo unit, BuildableInfo bi = null)
 		{
-			if (self.World.AllowDevCommands && self.Owner.PlayerActor.Trait<DeveloperMode>().FastBuild)
+			if (developerMode.FastBuild)
 				return 0;
 
-			var time = unit.GetBuildTime() * Info.BuildSpeed;
-			return (int)time;
+			var time = unit.GetBuildTime() * Info.BuildSpeed / 100;
+			return time;
 		}
 
 		protected void CancelProduction(string itemName, uint numberToCancel)
@@ -457,7 +458,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 
 			var costThisFrame = RemainingCost / RemainingTime;
-			if (costThisFrame != 0 && !pr.TakeCash(costThisFrame))
+			if (costThisFrame != 0 && !pr.TakeCash(costThisFrame, true))
 				return;
 
 			RemainingCost -= costThisFrame;

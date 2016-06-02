@@ -1,10 +1,8 @@
-MapFormat: 8
+MapFormat: 11
 
 RequiresMod: ra
 
 Title: Monster Tank Madness
-
-Description: Dr. Demitri, creator of a Soviet Super Tank, wants to defect.\n\nWe planned to extract him while the Soviets were testing their new weapon, but something has gone wrong.\n\nThe Super Tanks are out of control, and Demitri is missing -- likely hiding in the village to the far south.\n\nFind our outpost and start repairs on it, then find and evacuate Demitri.\n\nAs for the tanks, we can reprogram them. Send a spy into the Soviet radar dome in the NE, turning the tanks on their creators.\n
 
 Author: Westwood Studios
 
@@ -16,19 +14,9 @@ Bounds: 19,16,87,88
 
 Visibility: MissionSelector
 
-Type: Mission
+Categories: Mission
 
-Videos:
-
-Options:
-	Crates: False
-	Fog: True
-	Shroud: True
-	AllyBuildRadius: False
-	FragileAlliances: False
-	StartingCash: 5000
-	ConfigurableStartingUnits: False
-	ShortGame: False
+LockPreview: True
 
 Players:
 	PlayerReference@Greece:
@@ -42,7 +30,7 @@ Players:
 		Color: ABB7E4
 		LockSpawn: True
 		LockTeam: True
-		Enemies: BadGuy, USSR, Ukraine, Turkey
+		Enemies: BadGuy, USSR, Ukraine, Turkey, FriendlyMadTanks
 	PlayerReference@BadGuy:
 		Name: BadGuy
 		Faction: soviet
@@ -71,6 +59,12 @@ Players:
 		Faction: soviet
 		Color: D1987C
 		Enemies: Greece, BadGuy, USSR, Ukraine, Outpost
+	PlayerReference@FriendlyMadTanks:
+		Name: FriendlyMadTanks
+		Faction: soviet
+		Color: D1987C
+		Allies: Greece
+		Enemies: BadGuy, USSR, Ukraine
 	PlayerReference@Outpost:
 		Name: Outpost
 		NonCombatant: True
@@ -2093,343 +2087,8 @@ Actors:
 		Location: 65,78
 		Owner: Neutral
 
-Smudges:
+Rules: ra|rules/campaign-rules.yaml, ra|rules/campaign-tooltips.yaml, rules.yaml
 
-Rules:
-	Player:
-		-ConquestVictoryConditions:
-		MissionObjectives:
-			EarlyGameOver: true
-		EnemyWatcher:
-	World:
-		-CrateSpawner:
-		-SpawnMPUnits:
-		-MPStartLocations:
-		LuaScript:
-			Scripts: monster-tank-madness.lua
-		ObjectivesPanel:
-			PanelName: MISSION_OBJECTIVES
-		-StartGameNotification:
-	^Building:
-		Tooltip:
-			GenericVisibility: Enemy
-			ShowOwnerRow: false
-		AnnounceOnSeen:
-	^TechBuilding:
-		Tooltip:
-			ShowOwnerRow: false
-	^Infantry:
-		Tooltip:
-			GenericVisibility: Enemy
-			ShowOwnerRow: false
-	^Vehicle:
-		Tooltip:
-			GenericVisibility: Enemy
-			ShowOwnerRow: false
-	^Tank:
-		Tooltip:
-			GenericVisibility: Enemy
-			ShowOwnerRow: false
-	^Ship:
-		Tooltip:
-			GenericVisibility: Enemy
-			ShowOwnerRow: false
-	^Helicopter:
-		Tooltip:
-			GenericVisibility: Enemy
-			ShowOwnerRow: false
-	^Wall:
-		Tooltip:
-			ShowOwnerRow: false
-	^Husk:
-		Tooltip:
-			GenericVisibility: Enemy, Ally, Neutral
-			GenericStancePrefix: false
-			ShowOwnerRow: false
-	^Crate:
-		Tooltip:
-			ShowOwnerRow: false
-	^CivBuilding:
-		Explodes:
-			Weapon: BarrelExplode
-			EmptyWeapon: BarrelExplode
-		Tooltip:
-			ShowOwnerRow: false
-	DEMITRI:
-		Inherits: DELPHI
-		Tooltip:
-			Name: Dr. Demitri
-		Passenger:
-			CargoType: Demitri
-		RenderSprites:
-			Image: DELPHI
-		Voiced:
-			VoiceSet: DemitriVoice
-	TRAN:
-		RevealsShroud:
-			Range: 0c0
-		Cargo:
-			Types: Demitri
-			MaxWeight: 1
-		-Selectable:
-	LST:
-		Cargo:
-			Types: Infantry, Vehicle, Demitri
-	JEEP:
-		Cargo:
-			Types: Infantry, Demitri
-	PBOX:
-		Cargo:
-			Types: Infantry, Demitri
-	5TNK:
-		Inherits: ^Tank
-		Valued:
-			Cost: 10000
-		Tooltip:
-			Name: Super Tank
-			GenericName: Super Tank
-		Health:
-			HP: 20000
-		Armor:
-			Type: Concrete
-		Mobile:
-			Speed: 42
-			Crushes: wall, mine, crate, infantry
-		RevealsShroud:
-			Range: 6c0
-		Turreted:
-			ROT: 1
-		Armament@PRIMARY:
-			Weapon: SuperTankPrimary
-			LocalOffset: 900,180,340, 900,-180,340
-			Recoil: 171
-			RecoilRecovery: 30
-			MuzzleSequence: muzzle
-		Armament@SECONDARY:
-			Name: secondary
-			Weapon: MammothTusk
-			LocalOffset: -85,384,340, -85,-384,340
-			LocalYaw: -100,100
-			Recoil: 43
-			MuzzleSequence: muzzle
-		AttackTurreted:
-		WithMuzzleOverlay:
-		WithSpriteTurret:
-		AutoTarget:
-		Explodes:
-			Weapon: MiniNuke
-			EmptyWeapon: MiniNuke
-		SpawnActorOnDeath:
-			Actor: 5TNK.Husk
-		SelfHealing:
-			Step: 1
-			Ticks: 1
-			HealIfBelow: 100%
-			DamageCooldown: 150
-		Selectable:
-			Bounds: 44,38,0,-4
-		-EjectOnDeath:
-		RenderSprites:
-			Image: 4TNK
-	5TNK.Husk:
-		Inherits: ^Husk
-		Tooltip:
-			Name: Husk (Super Tank)
-		ThrowsParticle@turret:
-			Anim: turret
-		Health:
-			HP: 2000
-		RenderSprites:
-			Image: 4TNK
-	DOME.NoInfiltrate:
-		Inherits: DOME
-		Buildable:
-			Prerequisites: ~disabled
-		RenderSprites:
-			Image: DOME
-		-InfiltrateForExploration:
-		Targetable:
-			TargetTypes: Ground, C4, DetonateAttack, MissionObjective
-	SPY:
-		Infiltrates:
-			Types: SpyInfiltrate, MissionObjective
-	BAD3TNK:
-		Inherits: 3TNK
-		Buildable:
-			Prerequisites: ~disabled
-		-EjectOnDeath:
-		RenderSprites:
-			Image: 3TNK
-	BADTRUK:
-		Inherits: TRUK
-		Buildable:
-			Prerequisites: ~disabled
-		-EjectOnDeath:
-		RenderSprites:
-			Image: TRUK
-	SS:
-		Buildable:
-			Prerequisites: ~disabled
-	AGUN:
-		Buildable:
-			Prerequisites: ~disabled
-	MSUB:
-		Buildable:
-			Prerequisites: ~disabled
-	DD:
-		Buildable:
-			Prerequisites: ~disabled
-	CA:
-		Buildable:
-			Prerequisites: ~disabled
-	PT:
-		Buildable:
-			Prerequisites: ~disabled
-	MSLO:
-		Buildable:
-			Prerequisites: ~disabled
-	SYRD:
-		Buildable:
-			Prerequisites: ~disabled
-	SPEN:
-		Buildable:
-			Prerequisites: ~disabled
-	IRON:
-		Buildable:
-			Prerequisites: ~disabled
-	PDOX:
-		Buildable:
-			Prerequisites: ~disabled
-	SAM:
-		Buildable:
-			Prerequisites: ~disabled
-	HPAD:
-		Buildable:
-			Prerequisites: ~disabled
-	AFLD:
-		Buildable:
-			Prerequisites: ~disabled
-	ATEK:
-		Buildable:
-			Prerequisites: ~disabled
-	STEK:
-		Buildable:
-			Prerequisites: ~disabled
-	4TNK:
-		Buildable:
-			Prerequisites: ~disabled
-	MCV:
-		Buildable:
-			Prerequisites: ~disabled
-	MNLY.AP:
-		Buildable:
-			Prerequisites: ~disabled
-	MNLY.AT:
-		Buildable:
-			Prerequisites: ~disabled
-	TTNK:
-		Buildable:
-			Prerequisites: ~disabled
-	CTNK:
-		Buildable:
-			Prerequisites: ~disabled
-	MGG:
-		Buildable:
-			Prerequisites: ~disabled
-	GAP:
-		Buildable:
-			Prerequisites: ~disabled
-	MRJ:
-		Buildable:
-			Prerequisites: ~disabled
-	E7:
-		Buildable:
-			Prerequisites: ~disabled
-	C1:
-		-Crushable:
-	C2:
-		-Crushable:
-	C5:
-		-Crushable:
-	C7:
-		-Crushable:
-	C8:
-		-Crushable:
-	SHOK:
-		Buildable:
-			Prerequisites: ~disabled
-	HIJACKER:
-		Buildable:
-			Prerequisites: ~disabled
-	STNK:
-		Buildable:
-			Prerequisites: ~disabled
-	DTRK:
-		Buildable:
-			Prerequisites: ~disabled
-	QTNK:
-		Buildable:
-			Prerequisites: ~disabled
+Weapons: weapons.yaml
 
-Sequences:
-
-VoxelSequences:
-
-Weapons:
-	FireballLauncher:
-		Projectile:
-			Blockable: false
-	TurretGun:
-		Projectile:
-			Blockable: false
-	SuperTankPrimary:
-		ROF: 70
-		Range: 4c768
-		Report: turret1.aud
-		Burst: 2
-		InvalidTargets: Air, Infantry
-		Projectile: Bullet
-			Speed: 682
-			Image: 120MM
-		Warhead@1Dam: SpreadDamage
-			Spread: 128
-			Damage: 50
-			InvalidTargets: Air, Infantry
-			Versus:
-				None: 20
-				Wood: 75
-				Light: 75
-				Concrete: 50
-			DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
-		Warhead@2Smu: LeaveSmudge
-			SmudgeType: Crater
-		Warhead@3EffGround: CreateEffect
-			Explosion: small_explosion
-			InvalidImpactTypes: Water
-		Warhead@4EffWater: CreateEffect
-			Explosion: small_splash
-			ValidImpactTypes: Water
-
-Voices:
-	DemitriVoice:
-		Variants:
-			allies: .r01,.r03
-			england: .r01,.r03
-			france: .r01,.r03
-			germany: .r01,.r03
-			soviet: .r01,.r03
-			russia: .r01,.r03
-			ukraine: .r01,.r03
-		Voices:
-			Select: await1,ready,report1,yessir1
-			Action: ackno,affirm1,noprob,overout,ritaway,roger,ugotit
-			Die: dedman1,dedman2,dedman3,dedman4,dedman5,dedman7,dedman8
-			Burned: dedman10
-			Zapped: dedman6
-		DisableVariants: Die, Burned, Zapped
-
-Music:
-
-Notifications:
-
-Translations:
+Voices: voices.yaml

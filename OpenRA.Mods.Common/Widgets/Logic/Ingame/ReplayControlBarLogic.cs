@@ -1,10 +1,11 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2016 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
- * as published by the Free Software Foundation. For more information,
- * see COPYING.
+ * as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version. For more
+ * information, see COPYING.
  */
 #endregion
 
@@ -45,15 +46,18 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var originalTimestep = world.Timestep;
 
 				var pauseButton = widget.Get<ButtonWidget>("BUTTON_PAUSE");
+				pauseButton.GetKey = _ => Game.Settings.Keys.PauseKey;
 				pauseButton.IsVisible = () => world.Timestep != 0 && orderManager.NetFrameNumber < replayNetTicks;
 				pauseButton.OnClick = () => world.Timestep = 0;
 
 				var playButton = widget.Get<ButtonWidget>("BUTTON_PLAY");
+				playButton.GetKey = _ => Game.Settings.Keys.PauseKey;
 				playButton.IsVisible = () => world.Timestep == 0 || orderManager.NetFrameNumber >= replayNetTicks;
 				playButton.OnClick = () => world.Timestep = (int)Math.Ceiling(originalTimestep * multipliers[speed]);
 				playButton.IsDisabled = () => orderManager.NetFrameNumber >= replayNetTicks;
 
 				var slowButton = widget.Get<ButtonWidget>("BUTTON_SLOW");
+				slowButton.GetKey = _ => Game.Settings.Keys.ReplaySpeedSlowKey;
 				slowButton.IsHighlighted = () => speed == PlaybackSpeed.Slow;
 				slowButton.IsDisabled = () => orderManager.NetFrameNumber >= replayNetTicks;
 				slowButton.OnClick = () =>
@@ -64,6 +68,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				};
 
 				var normalSpeedButton = widget.Get<ButtonWidget>("BUTTON_REGULAR");
+				normalSpeedButton.GetKey = _ => Game.Settings.Keys.ReplaySpeedRegularKey;
 				normalSpeedButton.IsHighlighted = () => speed == PlaybackSpeed.Regular;
 				normalSpeedButton.IsDisabled = () => orderManager.NetFrameNumber >= replayNetTicks;
 				normalSpeedButton.OnClick = () =>
@@ -74,6 +79,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				};
 
 				var fastButton = widget.Get<ButtonWidget>("BUTTON_FAST");
+				fastButton.GetKey = _ => Game.Settings.Keys.ReplaySpeedFastKey;
 				fastButton.IsHighlighted = () => speed == PlaybackSpeed.Fast;
 				fastButton.IsDisabled = () => orderManager.NetFrameNumber >= replayNetTicks;
 				fastButton.OnClick = () =>
@@ -84,6 +90,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				};
 
 				var maximumButton = widget.Get<ButtonWidget>("BUTTON_MAXIMUM");
+				maximumButton.GetKey = _ => Game.Settings.Keys.ReplaySpeedMaxKey;
 				maximumButton.IsHighlighted = () => speed == PlaybackSpeed.Maximum;
 				maximumButton.IsDisabled = () => orderManager.NetFrameNumber >= replayNetTicks;
 				maximumButton.OnClick = () =>

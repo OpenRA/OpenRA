@@ -1,0 +1,114 @@
+World:
+	LuaScript:
+		Scripts: gdi02.lua
+	MusicPlaylist:
+		StartingMusic: befeared
+	MissionData:
+		Briefing: Defend your position, deploy the MCV, then build a sizable force to search out and destroy the Nod base in the area.\n\nAll Nod units and structures must be either destroyed or captured to complete objective.
+		BriefingVideo: gdi2.vqa
+		WinVideo: flag.vqa
+		LossVideo: gameover.vqa
+
+SBAG:
+	-Crushable:
+
+HARV:
+	Harvester:
+		SearchFromProcRadius: 32
+		SearchFromOrderRadius: 20
+
+PROC:
+	Buildable:
+		Prerequisites: ~disabled
+
+SILO:
+	Buildable:
+		Prerequisites: ~disabled
+
+WEAP:
+	Buildable:
+		Prerequisites: ~disabled
+
+HQ:
+	Buildable:
+		Prerequisites: ~disabled
+
+NUK2:
+	Buildable:
+		Prerequisites: ~disabled
+
+FIX:
+	Buildable:
+		Prerequisites: ~disabled
+
+HPAD:
+	Buildable:
+		Prerequisites: ~disabled
+
+EYE:
+	Buildable:
+		Prerequisites: ~disabled
+
+GUN:
+	Buildable:
+		Prerequisites: ~disabled
+
+GTWR:
+	Buildable:
+		Prerequisites: ~disabled
+
+ATWR:
+	Buildable:
+		Prerequisites: ~disabled
+
+BRIK:
+	Buildable:
+		Prerequisites: ~disabled
+
+E2:
+	Buildable:
+		Prerequisites: ~disabled
+
+E3:
+	Buildable:
+		Prerequisites: ~disabled
+
+E4:
+	Buildable:
+		Prerequisites: ~disabled
+
+E5:
+	Buildable:
+		Prerequisites: ~disabled
+
+E6:
+	Buildable:
+		Prerequisites: ~disabled
+
+RMBO:
+	Buildable:
+		Prerequisites: ~disabled
+
+AFLD:
+	Buildable:
+		Prerequisites: ~disabled
+
+TMPL:
+	Buildable:
+		Prerequisites: ~disabled
+
+OBLI:
+	Buildable:
+		Prerequisites: ~disabled
+
+SAM:
+	Buildable:
+		Prerequisites: ~disabled
+
+OLDLST:
+	Inherits: LST
+	-WithRoof:
+	-Selectable:
+	RejectsOrders:
+	Cargo:
+		Types: disabled

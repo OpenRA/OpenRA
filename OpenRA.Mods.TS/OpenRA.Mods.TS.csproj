@@ -9,6 +9,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>OpenRA.Mods.TS</RootNamespace>
     <AssemblyName>OpenRA.Mods.TS</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
@@ -77,6 +78,9 @@
     <Compile Include="UtilityCommands\LegacyTilesetImporter.cs" />
     <Compile Include="Traits\World\TSShroudPalette.cs" />
     <Compile Include="UtilityCommands\ImportTSMapCommand.cs" />
+    <Compile Include="Player\PlaceSimpleBeacon.cs" />
+    <Compile Include="Effects\AnimatedBeacon.cs" />
+    <Compile Include="UtilityCommands\LegacyRulesImporter.cs" />
   </ItemGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

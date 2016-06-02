@@ -23,7 +23,7 @@ NAPULS:
 	RevealsShroud:
 		Range: 8c0
 	Turreted:
-		ROT: 10
+		TurnSpeed: 10
 		InitialFacing: 300
 	AttackTurreted:
 	Armament:

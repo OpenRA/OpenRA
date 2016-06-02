@@ -1,10 +1,11 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2016 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
- * as published by the Free Software Foundation. For more information,
- * see COPYING.
+ * as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version. For more
+ * information, see COPYING.
  */
 #endregion
 
@@ -20,24 +21,25 @@ namespace OpenRA.Mods.RA.Traits
 		public readonly bool AvoidFriendly = true;
 		public readonly HashSet<string> DetonateClasses = new HashSet<string>();
 
-		public object Create(ActorInitializer init) { return new Mine(init, this); }
+		public object Create(ActorInitializer init) { return new Mine(this); }
 	}
 
-	class Mine : ICrushable
+	class Mine : ICrushable, INotifyCrushed
 	{
-		readonly Actor self;
 		readonly MineInfo info;
 
-		public Mine(ActorInitializer init, MineInfo info)
+		public Mine(MineInfo info)
 		{
-			self = init.Self;
 			this.info = info;
 		}
 
-		public void WarnCrush(Actor crusher) { }
+		void INotifyCrushed.WarnCrush(Actor self, Actor crusher, HashSet<string> crushClasses) { }
 
-		public void OnCrush(Actor crusher)
+		void INotifyCrushed.OnCrush(Actor self, Actor crusher, HashSet<string> crushClasses)
 		{
+			if (!info.CrushClasses.Overlaps(crushClasses))
+				return;
+
 			if (crusher.Info.HasTraitInfo<MineImmuneInfo>() || (self.Owner.Stances[crusher.Owner] == Stance.Ally && info.AvoidFriendly))
 				return;
 
@@ -48,7 +50,7 @@ namespace OpenRA.Mods.RA.Traits
 			self.Kill(crusher);
 		}
 
-		public bool CrushableBy(HashSet<string> crushClasses, Player owner)
+		bool ICrushable.CrushableBy(Actor self, Actor crusher, HashSet<string> crushClasses)
 		{
 			return info.CrushClasses.Overlaps(crushClasses);
 		}

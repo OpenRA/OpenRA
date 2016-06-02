@@ -1,4 +1,4 @@
-MapFormat: 8
+MapFormat: 11
 
 RequiresMod: d2k
 
@@ -14,11 +14,7 @@ Bounds: 4,4,48,48
 
 Visibility: Lobby
 
-Type: Conquest
-
-Videos:
-
-Options:
+Categories: Conquest
 
 Players:
 	PlayerReference@Neutral:
@@ -83,24 +79,4 @@ Actors:
 		Location: 4,4
 		Owner: Creeps
 
-Smudges:
-
-Rules:
-	World:
-		WormManager:
-			Minimum: 1
-			Maximum: 2
-
-Sequences:
-
-VoxelSequences:
-
-Weapons:
-
-Voices:
-
-Music:
-
-Notifications:
-
-Translations:
+Rules: rules.yaml

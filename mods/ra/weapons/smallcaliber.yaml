@@ -12,10 +12,10 @@ Colt45:
 		ValidTargets: Barrel, Infantry
 		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
 	Warhead@2Eff: CreateEffect
-		Explosion: piff
+		Explosions: piff
 		InvalidImpactTypes: Water
 	Warhead@3EffWater: CreateEffect
-		Explosion: water_piff
+		Explosions: water_piff
 		ValidImpactTypes: Water
 
 ZSU-23:
@@ -39,7 +39,7 @@ ZSU-23:
 			Concrete: 50
 		DamageTypes: Prone50Percent, TriggerProne, DefaultDeath
 	Warhead@2Eff: CreateEffect
-		Explosion: small_explosion_air
+		Explosions: small_explosion_air
 
 Vulcan:
 	ReloadDelay: 30
@@ -58,10 +58,10 @@ Vulcan:
 			Concrete: 25
 		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
 	Warhead@2Eff_1: CreateEffect
-		Explosion: piffs
+		Explosions: piffs
 		InvalidImpactTypes: Water
 	Warhead@2Eff_1Water: CreateEffect
-		Explosion: water_piffs
+		Explosions: water_piffs
 		ValidImpactTypes: Water
 	Warhead@3Dam_2: SpreadDamage
 		Spread: 128
@@ -75,11 +75,11 @@ Vulcan:
 			Concrete: 25
 		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
 	Warhead@4Eff_2: CreateEffect
-		Explosion: piffs
+		Explosions: piffs
 		InvalidImpactTypes: Water
 		Delay: 2
 	Warhead@4Eff_2Water: CreateEffect
-		Explosion: water_piffs
+		Explosions: water_piffs
 		ValidImpactTypes: Water
 		Delay: 2
 	Warhead@5Dam_3: SpreadDamage
@@ -94,11 +94,11 @@ Vulcan:
 			Concrete: 25
 		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
 	Warhead@6Eff_3: CreateEffect
-		Explosion: piffs
+		Explosions: piffs
 		InvalidImpactTypes: Water
 		Delay: 4
 	Warhead@6Eff_3Water: CreateEffect
-		Explosion: water_piffs
+		Explosions: water_piffs
 		ValidImpactTypes: Water
 		Delay: 4
 	Warhead@7Dam_4: SpreadDamage
@@ -113,11 +113,11 @@ Vulcan:
 			Concrete: 25
 		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
 	Warhead@8Eff_4: CreateEffect
-		Explosion: piffs
+		Explosions: piffs
 		InvalidImpactTypes: Water
 		Delay: 6
 	Warhead@8Eff_4Water: CreateEffect
-		Explosion: water_piffs
+		Explosions: water_piffs
 		ValidImpactTypes: Water
 		Delay: 6
 	Warhead@9Dam_5: SpreadDamage
@@ -132,11 +132,11 @@ Vulcan:
 			Concrete: 25
 		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
 	Warhead@10Eff_5: CreateEffect
-		Explosion: piffs
+		Explosions: piffs
 		InvalidImpactTypes: Water
 		Delay: 8
 	Warhead@10Eff_5Water: CreateEffect
-		Explosion: water_piffs
+		Explosions: water_piffs
 		ValidImpactTypes: Water
 		Delay: 8
 	Warhead@11Dam_6: SpreadDamage
@@ -151,11 +151,11 @@ Vulcan:
 			Concrete: 25
 		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
 	Warhead@12Eff_6: CreateEffect
-		Explosion: piffs
+		Explosions: piffs
 		InvalidImpactTypes: Water
 		Delay: 10
 	Warhead@12Eff_6Water: CreateEffect
-		Explosion: water_piffs
+		Explosions: water_piffs
 		ValidImpactTypes: Water
 		Delay: 10
 
@@ -178,10 +178,10 @@ ChainGun:
 			Concrete: 25
 		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
 	Warhead@2Eff: CreateEffect
-		Explosion: piffs
+		Explosions: piffs
 		InvalidImpactTypes: Water
 	Warhead@3EffWater: CreateEffect
-		Explosion: water_piffs
+		Explosions: water_piffs
 		ValidImpactTypes: Water
 
 ChainGun.Yak:
@@ -202,10 +202,10 @@ ChainGun.Yak:
 			Concrete: 25
 		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
 	Warhead@2Eff: CreateEffect
-		Explosion: piffs
+		Explosions: piffs
 		InvalidImpactTypes: Water
 	Warhead@3EffWater: CreateEffect
-		Explosion: water_piffs
+		Explosions: water_piffs
 		ValidImpactTypes: Water
 
 Pistol:
@@ -224,10 +224,10 @@ Pistol:
 			Concrete: 25
 		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
 	Warhead@2Eff: CreateEffect
-		Explosion: piff
+		Explosions: piff
 		InvalidImpactTypes: Water
 	Warhead@3EffWater: CreateEffect
-		Explosion: water_piff
+		Explosions: water_piff
 		ValidImpactTypes: Water
 
 M1Carbine:
@@ -246,10 +246,10 @@ M1Carbine:
 			Concrete: 10
 		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
 	Warhead@2Eff: CreateEffect
-		Explosion: piffs
+		Explosions: piffs
 		InvalidImpactTypes: Water
 	Warhead@3EffWater: CreateEffect
-		Explosion: water_piffs
+		Explosions: water_piffs
 		ValidImpactTypes: Water
 
 M60mg:
@@ -269,10 +269,10 @@ M60mg:
 			Concrete: 10
 		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
 	Warhead@2Eff: CreateEffect
-		Explosion: piffs
+		Explosions: piffs
 		InvalidImpactTypes: Water
 	Warhead@3EffWater: CreateEffect
-		Explosion: water_piffs
+		Explosions: water_piffs
 		ValidImpactTypes: Water
 
 SilencedPPK:
@@ -289,10 +289,10 @@ SilencedPPK:
 		ValidTargets: Infantry
 		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
 	Warhead@2Eff: CreateEffect
-		Explosion: piffs
+		Explosions: piffs
 		InvalidImpactTypes: Water
 	Warhead@3EffWater: CreateEffect
-		Explosion: water_piffs
+		Explosions: water_piffs
 		ValidImpactTypes: Water
 
 FLAK-23-AA:
@@ -315,7 +315,7 @@ FLAK-23-AA:
 			Concrete: 20
 		DamageTypes: Prone50Percent, TriggerProne, DefaultDeath
 	Warhead@2EffAir: CreateEffect
-		Explosion: small_explosion_air
+		Explosions: small_explosion_air
 		ValidImpactTypes: Air, AirHit
 
 FLAK-23-AG:
@@ -338,10 +338,10 @@ FLAK-23-AG:
 			Concrete: 20
 		DamageTypes: Prone50Percent, TriggerProne, DefaultDeath
 	Warhead@2Eff: CreateEffect
-		Explosion: small_explosion
+		Explosions: small_explosion
 		InvalidImpactTypes: Air, AirHit
 	Warhead@3EffWater: CreateEffect
-		Explosion: small_splash
+		Explosions: small_splash
 		ValidImpactTypes: Water
 
 Sniper:

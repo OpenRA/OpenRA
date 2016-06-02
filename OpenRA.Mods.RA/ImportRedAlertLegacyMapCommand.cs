@@ -3,8 +3,9 @@
  * Copyright 2007-2016 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
- * as published by the Free Software Foundation. For more information,
- * see COPYING.
+ * as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version. For more
+ * information, see COPYING.
  */
 #endregion
 
@@ -78,7 +79,7 @@ namespace OpenRA.Mods.RA.UtilityCommands
 
 			for (var j = 0; j < MapSize; j++)
 				for (var i = 0; i < MapSize; i++)
-					Map.MapTiles.Value[new CPos(i, j)] = new TerrainTile(types[i, j], ms.ReadUInt8());
+					Map.Tiles[new CPos(i, j)] = new TerrainTile(types[i, j], ms.ReadUInt8());
 		}
 
 		static string[] overlayActors = new string[]
@@ -103,7 +104,7 @@ namespace OpenRA.Mods.RA.UtilityCommands
 						res = overlayResourceMapping[redAlertOverlayNames[o]];
 
 					var cell = new CPos(i, j);
-					Map.MapResources.Value[cell] = new ResourceTile(res.First, res.Second);
+					Map.Resources[cell] = new ResourceTile(res.First, res.Second);
 
 					if (o != 255 && overlayActors.Contains(redAlertOverlayNames[o]))
 					{
@@ -225,7 +226,7 @@ namespace OpenRA.Mods.RA.UtilityCommands
 		public override void ReadActors(IniFile file)
 		{
 			base.ReadActors(file);
-			LoadActors(file, "SHIPS", Players, MapSize, Rules, Map);
+			LoadActors(file, "SHIPS", Players, MapSize, Map);
 		}
 	}
 }

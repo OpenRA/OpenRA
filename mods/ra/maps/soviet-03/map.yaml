@@ -1,10 +1,8 @@
-MapFormat: 8
+MapFormat: 11
 
 RequiresMod: ra
 
 Title: 03:   Covert cleanup
-
-Description: A spy who has compromised the security of one of the northern sarin gas sites has been traced back to Lund, Sweden, by Nadia's intelligence groups.\n\nHe has been marked for death and a squad of Soviet troops was dispatched to the location to hunt him down.
 
 Author: Westwood Studios
 
@@ -16,24 +14,9 @@ Bounds: 24,22,70,49
 
 Visibility: MissionSelector
 
-Type: Campaign
+Categories: Campaign
 
-Videos:
-	Briefing: soviet3.vqa
-	GameStart: search.vqa
-	GameWon: execute.vqa
-	GameLost: take_off.vqa
-
-Options:
-	Crates: False
-	Fog: True
-	Shroud: True
-	AllyBuildRadius: False
-	FragileAlliances: False
-	StartingCash: 0
-	ConfigurableStartingUnits: False
-	Difficulties: Easy, Normal, Hard
-	ShortGame: False
+LockPreview: True
 
 Players:
 	PlayerReference@Neutral:
@@ -44,6 +27,7 @@ Players:
 	PlayerReference@Creeps:
 		Name: Creeps
 		NonCombatant: True
+		Enemies: Germany, USSR
 	PlayerReference@England:
 		Name: England
 		Faction: allies
@@ -1184,123 +1168,8 @@ Actors:
 		Location: 47,50
 		Owner: Neutral
 
-Smudges:
+Rules: ra|rules/campaign-rules.yaml, ra|rules/campaign-tooltips.yaml, rules.yaml
 
-Rules:
-	Player:
-		-ConquestVictoryConditions:
-		MissionObjectives:
-			EarlyGameOver: true
-		-EnemyWatcher:
-	World:
-		-CrateSpawner:
-		-SpawnMPUnits:
-		-MPStartLocations:
-		LuaScript:
-			Scripts: soviet03.lua
-		ObjectivesPanel:
-			PanelName: MISSION_OBJECTIVES
-	^Building:
-		Tooltip:
-			GenericVisibility: Enemy
-			ShowOwnerRow: false
-	^TechBuilding:
-		AutoTargetIgnore:
-		Tooltip:
-			ShowOwnerRow: false
-	^Infantry:
-		-GivesBounty:
-		Tooltip:
-			GenericVisibility: Enemy
-			ShowOwnerRow: false
-	^Ship:
-		-GivesBounty:
-		Tooltip:
-			GenericVisibility: Enemy
-			ShowOwnerRow: false
-	^Helicopter:
-		-GivesBounty:
-		Health:
-			HP: 9000
-		Tooltip:
-			GenericVisibility: Enemy
-			ShowOwnerRow: false
-	^Plane:
-		Tooltip:
-			GenericVisibility: Enemy
-			ShowOwnerRow: false
-	^Wall:
-		Tooltip:
-			ShowOwnerRow: false
-	BARL:
-		Health:
-			HP: 1
-		Explodes:
-			Weapon: MissionBarrelExplode
-	BRL3:
-		Health:
-			HP: 1
-		Explodes:
-			Weapon: MissionBarrelExplode
-	FENC:
-		Health:
-			HP: 9000
-	HEALCRATE:
-		Tooltip:
-			GenericStancePrefix: false
-			GenericVisibility: Enemy
-			ShowOwnerRow: false
-	V01:
-		Cargo:
-			Types: Infantry
-			MaxWeight: 1
-			PipCount: 1
-	V05:
-		SpawnActorOnDeath:
-			Actor: healcrate
-	DOG:
-		-GainsExperience:
-	SPY:
-		Mobile:
-			Speed: 80
-	powerproxy.paratroopers:
-		ParatroopersPower:
-			DropItems: E1,E1,E1,E2,E2
+Weapons: weapons.yaml
 
-Sequences:
-
-VoxelSequences:
-
-Weapons:
-	MissionBarrelExplode:
-		Warhead@1Dam: SpreadDamage
-			Spread: 600
-			Damage: 200
-			Falloff: 1000, 368, 135, 50, 18, 7, 0
-			Delay: 5
-			Versus:
-				None: 120
-				Wood: 200
-				Light: 50
-				Heavy: 25
-				Concrete: 10
-			DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
-		Warhead@2Smu: LeaveSmudge
-			SmudgeType: Scorch
-			Size: 2,1
-			Delay: 5
-		Warhead@3Eff: CreateEffect
-			Explosion: napalm
-			ImpactSound: firebl3.aud
-			Delay: 5
-
-Voices:
-
-Music:
-
-Notifications:
-	Sounds:
-		Notifications:
-			sking: sking1
-
-Translations:
+Notifications: notifications.yaml

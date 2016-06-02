@@ -1,10 +1,11 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2016 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
- * as published by the Free Software Foundation. For more information,
- * see COPYING.
+ * as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version. For more
+ * information, see COPYING.
  */
 #endregion
 
@@ -43,8 +44,8 @@ namespace OpenRA
 			var maxHeight = map.Grid.MaximumTerrainHeight;
 			var heightOffset = map.Grid.Type == MapGridType.RectangularIsometric ? maxHeight : maxHeight / 2;
 
-			// Use the MapHeight data array to clamp the bottom coordinate so it doesn't overflow the map
-			mapBottomRight = map.MapHeight.Value.Clamp(new MPos(bottomRight.U, bottomRight.V + heightOffset));
+			// Use the map Height data array to clamp the bottom coordinate so it doesn't overflow the map
+			mapBottomRight = map.Height.Clamp(new MPos(bottomRight.U, bottomRight.V + heightOffset));
 		}
 
 		public bool Contains(PPos puv)

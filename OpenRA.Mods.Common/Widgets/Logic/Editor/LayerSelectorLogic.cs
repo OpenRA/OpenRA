@@ -1,10 +1,11 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2016 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
- * as published by the Free Software Foundation. For more information,
- * see COPYING.
+ * as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version. For more
+ * information, see COPYING.
  */
 #endregion
 
@@ -18,20 +19,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	public class LayerSelectorLogic : ChromeLogic
 	{
 		readonly EditorViewportControllerWidget editor;
-		readonly Ruleset modRules;
-		readonly World world;
 		readonly WorldRenderer worldRenderer;
 
 		readonly ScrollPanelWidget layerTemplateList;
 		readonly ScrollItemWidget layerPreviewTemplate;
 
 		[ObjectCreator.UseCtor]
-		public LayerSelectorLogic(Widget widget, WorldRenderer worldRenderer, Ruleset modRules)
+		public LayerSelectorLogic(Widget widget, WorldRenderer worldRenderer)
 		{
-			this.modRules = modRules;
 			this.worldRenderer = worldRenderer;
-			world = worldRenderer.World;
-
 			editor = widget.Parent.Get<EditorViewportControllerWidget>("MAP_EDITOR");
 
 			layerTemplateList = widget.Get<ScrollPanelWidget>("LAYERTEMPLATE_LIST");
@@ -44,8 +40,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		void IntializeLayerPreview(Widget widget)
 		{
 			layerTemplateList.RemoveChildren();
-
-			var resources = modRules.Actors["world"].TraitInfos<ResourceTypeInfo>();
+			var rules = worldRenderer.World.Map.Rules;
+			var resources = rules.Actors["world"].TraitInfos<ResourceTypeInfo>();
+			var tileSize = worldRenderer.World.Map.Grid.TileSize;
 			foreach (var resource in resources)
 			{
 				var newResourcePreviewTemplate = ScrollItemWidget.Setup(layerPreviewTemplate,
@@ -60,12 +57,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				layerPreview.GetPalette = () => resource.Palette;
 
 				var variant = resource.Variants.FirstOrDefault();
-				var sequenceProvider = modRules.Sequences[world.TileSet.Id];
-				var sequence = sequenceProvider.GetSequence("resources", variant);
+				var sequence = rules.Sequences.GetSequence("resources", variant);
 				var frame = sequence.Frames != null ? sequence.Frames.Last() : resource.MaxDensity - 1;
 				layerPreview.GetSprite = () => sequence.GetSprite(frame);
 
-				var tileSize = Game.ModData.Manifest.Get<MapGrid>().TileSize;
 				layerPreview.Bounds.Width = tileSize.Width;
 				layerPreview.Bounds.Height = tileSize.Height;
 				newResourcePreviewTemplate.Bounds.Width = tileSize.Width + (layerPreview.Bounds.X * 2);

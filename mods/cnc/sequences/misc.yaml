@@ -13,6 +13,45 @@ fire:
 		Offset: 0,-3
 		ZOffset: 1023
 
+burn-l:
+	idle:
+		Length: *
+		ZOffset: 512
+	loop:
+		Start: 16
+		Length: 44
+		ZOffset: 512
+	end:
+		Start: 60
+		Length: 6
+		ZOffset: 512
+
+burn-m:
+	idle:
+		Length: *
+		ZOffset: 512
+	loop:
+		Start: 16
+		Length: 44
+		ZOffset: 512
+	end:
+		Start: 60
+		Length: 6
+		ZOffset: 512
+
+burn-s:
+	idle:
+		Length: *
+		ZOffset: 512
+	loop:
+		Start: 12
+		Length: 46
+		ZOffset: 512
+	end:
+		Start: 59
+		Length: 5
+		ZOffset: 512
+
 120mm:
 	idle:
 		ZOffset: 1023
@@ -28,7 +67,8 @@ smoke_m:
 		Offset: 2, -5
 		ZOffset: 512
 	end:
-		Length: 26
+		Start: 26
+		Length: -26
 		Offset: 2, -5
 		ZOffset: 512
 
@@ -210,7 +250,11 @@ pips:
 		Start: 4
 	pip-blue:
 		Start: 5
+	pip-heal: pip-heal
+		Length: *
 	groups: pdigits
+		Length: *
+	pip-hazmat: pip-hazmat
 		Length: *
 
 overlay:

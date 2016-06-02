@@ -641,9 +641,7 @@ LHUS:
 	EditorTilesetFilter:
 		RequireTilesets: TEMPERAT
 	Selectable:
-		Bounds: 24,24,0,16
-	SelectionDecorations:
-		VisualBounds: 24,48
+		Bounds: 24,48,0,-16
 	Tooltip:
 		Name: Lighthouse
 	Building:
@@ -655,9 +653,9 @@ WINDMILL:
 	EditorTilesetFilter:
 		RequireTilesets: TEMPERAT
 	Selectable:
-		Bounds: 24,24,0,8
+		Bounds: 24,24,0,-14
 	SelectionDecorations:
-		VisualBounds: 36,36
+		VisualBounds: 36,36,0,-14
 	Tooltip:
 		Name: Windmill
 	Building:

@@ -1,10 +1,11 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2016 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
- * as published by the Free Software Foundation. For more information,
- * see COPYING.
+ * as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version. For more
+ * information, see COPYING.
  */
 #endregion
 
@@ -25,7 +26,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		MusicInfo currentSong = null;
 
 		[ObjectCreator.UseCtor]
-		public MusicPlayerLogic(Widget widget, Ruleset modRules, World world, Action onExit)
+		public MusicPlayerLogic(Widget widget, ModData modData, World world, Action onExit)
 		{
 			var panel = widget;
 
@@ -106,12 +107,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (installButton != null)
 			{
 				installButton.IsDisabled = () => world.Type != WorldType.Shellmap;
-				var args = new[] { "installMusic={0}".F(Game.ModData.Manifest.Mod.Id) };
+				var args = new[] { "installMusic={0}".F(modData.Manifest.Mod.Id) };
 				installButton.OnClick = () =>
 					Game.RunAfterTick(() => Game.InitializeMod("modchooser", new Arguments(args)));
 
-				var installData = Game.ModData.Manifest.Get<ContentInstaller>();
-				installButton.IsVisible = () => modRules.InstalledMusic.ToArray().Length <= installData.ShippedSoundtracks;
+				var installData = modData.Manifest.Get<ContentInstaller>();
+				installButton.IsVisible = () => modData.DefaultRules.InstalledMusic.ToArray().Length <= installData.ShippedSoundtracks;
 			}
 
 			var songWatcher = widget.GetOrNull<LogicTickerWidget>("SONG_WATCHER");

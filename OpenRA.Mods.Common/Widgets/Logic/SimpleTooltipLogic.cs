@@ -1,10 +1,11 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2016 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
- * as published by the Free Software Foundation. For more information,
- * see COPYING.
+ * as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version. For more
+ * information, see COPYING.
  */
 #endregion
 
@@ -19,33 +20,42 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		public SimpleTooltipLogic(Widget widget, TooltipContainerWidget tooltipContainer, Func<string> getText)
 		{
 			var label = widget.Get<LabelWidget>("LABEL");
+			var spacing = widget.Get("LINE_HEIGHT");
+			widget.RemoveChildren();
 
 			var font = Game.Renderer.Fonts[label.Font];
-			var cachedWidth = 0;
-			var cachedHeight = 0;
 			var horizontalPadding = label.Bounds.Width - widget.Bounds.Width;
 			if (horizontalPadding <= 0)
 				horizontalPadding = 2 * label.Bounds.X;
-			var vertcalPadding = widget.Bounds.Height - label.Bounds.Height;
-			if (vertcalPadding <= 0)
-				vertcalPadding = 2 * label.Bounds.Y;
-			var labelText = "";
+
+			var cachedText = "";
 			tooltipContainer.BeforeRender = () =>
 			{
-				labelText = getText();
-				var textDim = font.Measure(labelText);
-				if (textDim.X != cachedWidth || textDim.Y != cachedHeight)
-				{
-					label.Bounds.Width = textDim.X;
-					widget.Bounds.Width = horizontalPadding + textDim.X;
-					label.Bounds.Height = textDim.Y;
-					widget.Bounds.Height = vertcalPadding + textDim.Y;
-					cachedWidth = textDim.X;
-					cachedHeight = textDim.Y;
-				}
-			};
+				var text = getText();
+				if (text == cachedText)
+					return;
 
-			label.GetText = () => labelText;
+				var lines = text.Split('\n');
+				var textWidth = font.Measure(text).X;
+
+				// Set up label widgets
+				widget.RemoveChildren();
+				var bottom = 0;
+				for (var i = 0; i < lines.Length; i++)
+				{
+					var line = (LabelWidget)label.Clone();
+					var lineText = lines[i];
+					line.Bounds.Y += spacing.Bounds.Y + i * spacing.Bounds.Height;
+					line.Bounds.Width = textWidth;
+					line.GetText = () => lineText;
+					widget.AddChild(line);
+					bottom = line.Bounds.Y + line.Bounds.Height;
+				}
+
+				widget.Bounds.Width = horizontalPadding + textWidth;
+				widget.Bounds.Height = bottom + spacing.Bounds.Y;
+				cachedText = text;
+			};
 		}
 	}
 }

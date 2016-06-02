@@ -1,10 +1,11 @@
 ﻿#region Copyright & License Information
 /*
- * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2016 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
- * as published by the Free Software Foundation. For more information,
- * see COPYING.
+ * as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version. For more
+ * information, see COPYING.
  */
 #endregion
 
@@ -93,9 +94,9 @@ namespace OpenRA.Mods.Common.Widgets
 		void Copy(CellRegion source, CVec offset)
 		{
 			var gridType = worldRenderer.World.Map.Grid.Type;
-			var mapTiles = worldRenderer.World.Map.MapTiles.Value;
-			var mapHeight = worldRenderer.World.Map.MapHeight.Value;
-			var mapResources = worldRenderer.World.Map.MapResources.Value;
+			var mapTiles = worldRenderer.World.Map.Tiles;
+			var mapHeight = worldRenderer.World.Map.Height;
+			var mapResources = worldRenderer.World.Map.Resources;
 
 			var dest = new CellRegion(gridType, source.TopLeft + offset, source.BottomRight + offset);
 

@@ -1,10 +1,11 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2016 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
- * as published by the Free Software Foundation. For more information,
- * see COPYING.
+ * as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version. For more
+ * information, see COPYING.
  */
 #endregion
 
@@ -19,7 +20,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("This actor can be sent to a structure for repairs.")]
-	class RepairableInfo : ITraitInfo, Requires<HealthInfo>
+	class RepairableInfo : ITraitInfo, Requires<HealthInfo>, Requires<IMoveInfo>
 	{
 		public readonly HashSet<string> RepairBuildings = new HashSet<string> { "fix" };
 
@@ -32,12 +33,14 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		readonly RepairableInfo info;
 		readonly Health health;
+		readonly IMove movement;
 		readonly AmmoPool[] ammoPools;
 
 		public Repairable(Actor self, RepairableInfo info)
 		{
 			this.info = info;
 			health = self.Trait<Health>();
+			movement = self.Trait<IMove>();
 			ammoPools = self.TraitsImplementing<AmmoPool>().ToArray();
 		}
 
@@ -89,7 +92,6 @@ namespace OpenRA.Mods.Common.Traits
 				if (!CanRepairAt(order.TargetActor) || (!CanRepair() && !CanRearm()))
 					return;
 
-				var movement = self.Trait<IMove>();
 				var target = Target.FromOrder(self.World, order);
 				self.SetTargetLine(target, Color.Green);
 
@@ -129,7 +131,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			var repairBuilding = self.World.ActorsWithTrait<RepairsUnits>()
 				.Where(a => !a.Actor.IsDead && a.Actor.IsInWorld
-					&& a.Actor.Owner == self.Owner &&
+					&& a.Actor.Owner.IsAlliedWith(self.Owner) &&
 					info.RepairBuildings.Contains(a.Actor.Info.Name))
 				.OrderBy(p => (self.Location - p.Actor.Location).LengthSquared);
 

@@ -19,21 +19,21 @@ ParaBomb:
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
-		Explosion: artillery_explosion
-		ImpactSound: kaboom15.aud
+		Explosions: artillery_explosion
+		ImpactSounds: kaboom15.aud
 		InvalidImpactTypes: Water
 	Warhead@4EffWater: CreateEffect
-		Explosion: small_splash
-		ImpactSound: splash9.aud
+		Explosions: small_splash
+		ImpactSounds: splash9.aud
 		ValidImpactTypes: Water
 
 Atomic:
-	ValidTargets: Ground, Water, Air
+	ValidTargets: Ground, Water, Underwater, Air
 	Warhead@1Dam_impact: SpreadDamage
 		Spread: 1c0
 		Damage: 150
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
-		ValidTargets: Ground, Water, Air
+		ValidTargets: Ground, Water, Underwater, Air
 		Versus:
 			Concrete: 25
 		DamageTypes: Prone50Percent, TriggerProne, FireDeath
@@ -43,14 +43,14 @@ Atomic:
 		SmudgeType: Scorch
 		Size: 1
 	Warhead@4Eff_impact: CreateEffect
-		Explosion: nuke
-		ImpactSound: kaboom1.aud
+		Explosions: nuke
+		ImpactSounds: kaboom1.aud
 	Warhead@5Dam_areanuke1: SpreadDamage
 		Spread: 2c0
 		Damage: 60
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		Delay: 5
-		ValidTargets: Ground, Water, Air
+		ValidTargets: Ground, Water, Underwater, Air
 		Versus:
 			Concrete: 25
 		DamageTypes: Prone50Percent, TriggerProne, FireDeath
@@ -62,14 +62,14 @@ Atomic:
 		Size: 2
 		Delay: 5
 	Warhead@8Eff_areanuke1: CreateEffect
-		ImpactSound: kaboom22.aud
+		ImpactSounds: kaboom22.aud
 		Delay: 5
 	Warhead@9Dam_areanuke2: SpreadDamage
 		Spread: 3c0
 		Damage: 60
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		Delay: 10
-		ValidTargets: Ground, Water, Air
+		ValidTargets: Ground, Water, Underwater, Air
 		Versus:
 			Concrete: 25
 		DamageTypes: Prone50Percent, TriggerProne, FireDeath
@@ -85,7 +85,7 @@ Atomic:
 		Damage: 60
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		Delay: 15
-		ValidTargets: Ground, Water, Air
+		ValidTargets: Ground, Water, Underwater, Air
 		Versus:
 			Concrete: 25
 		DamageTypes: Prone50Percent, TriggerProne, FireDeath
@@ -101,7 +101,7 @@ Atomic:
 		Damage: 60
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		Delay: 20
-		ValidTargets: Ground, Water, Air
+		ValidTargets: Ground, Water, Underwater, Air
 		Versus:
 			Concrete: 25
 		DamageTypes: Prone50Percent, TriggerProne, FireDeath

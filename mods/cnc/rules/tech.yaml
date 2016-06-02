@@ -55,6 +55,7 @@ BIO:
 		Dimensions: 2,2
 	Tooltip:
 		Name: Biological Lab
+		Description: Grants Tiberium immunity to infantry.
 	Exit@1:
 		SpawnOffset: 0,-426,0
 		ExitCell: 0,-1
@@ -64,7 +65,7 @@ BIO:
 		Type: Biolab
 		Group: Infantry
 		RequireOwner: false
-		BuildSpeed: .4
+		BuildSpeed: 40
 		LowPowerSlowdown: 3
 	ProductionBar:
 	RallyPoint:

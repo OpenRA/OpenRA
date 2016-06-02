@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>OpenRA.Mods.Common</RootNamespace>
     <AssemblyName>OpenRA.Mods.Common</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -139,7 +139,6 @@
     <Compile Include="AI\AttackOrFleeFuzzy.cs" />
     <Compile Include="AI\BaseBuilder.cs" />
     <Compile Include="AI\HackyAI.cs" />
-    <Compile Include="AI\RushFuzzy.cs" />
     <Compile Include="AI\Squad.cs" />
     <Compile Include="AI\StateMachine.cs" />
     <Compile Include="AI\States\AirStates.cs" />
@@ -151,9 +150,8 @@
     <Compile Include="Effects\Bullet.cs" />
     <Compile Include="Effects\Contrail.cs" />
     <Compile Include="Effects\ContrailFader.cs" />
-    <Compile Include="Effects\Corpse.cs" />
     <Compile Include="Effects\CrateEffect.cs" />
-    <Compile Include="Effects\Explosion.cs" />
+    <Compile Include="Effects\FlashTarget.cs" />
     <Compile Include="Effects\FloatingText.cs" />
     <Compile Include="Effects\GravityBomb.cs" />
     <Compile Include="Effects\LaserZap.cs" />
@@ -163,7 +161,7 @@
     <Compile Include="Effects\PowerdownIndicator.cs" />
     <Compile Include="Effects\RallyPointIndicator.cs" />
     <Compile Include="Effects\RepairIndicator.cs" />
-    <Compile Include="Effects\Smoke.cs" />
+    <Compile Include="Effects\SpriteEffect.cs" />
     <Compile Include="Commands\ChatCommands.cs" />
     <Compile Include="Commands\DevCommands.cs" />
     <Compile Include="Commands\HelpCommand.cs" />
@@ -181,6 +179,7 @@
     <Compile Include="HitShapes\Rectangle.cs" />
     <Compile Include="HitShapes\Capsule.cs" />
     <Compile Include="HitShapes\Circle.cs" />
+    <Compile Include="Lint\CheckBuildingFootprint.cs" />
     <Compile Include="Lint\CheckSequences.cs" />
     <Compile Include="Lint\CheckPalettes.cs" />
     <Compile Include="Lint\CheckPlayers.cs" />
@@ -190,6 +189,7 @@
     <Compile Include="Lint\CheckSyncAnnotations.cs" />
     <Compile Include="Lint\CheckTraitPrerequisites.cs" />
     <Compile Include="Lint\CheckDeathTypes.cs" />
+    <Compile Include="Lint\CheckRangeLimit.cs" />
     <Compile Include="Lint\CheckVoiceReferences.cs" />
     <Compile Include="Lint\CheckUpgrades.cs" />
     <Compile Include="Lint\CheckTargetHealthRadius.cs" />
@@ -245,6 +245,7 @@
     <Compile Include="Scripting\Properties\MobileProperties.cs" />
     <Compile Include="Scripting\Properties\DemolitionProperties.cs" />
     <Compile Include="Scripting\Properties\PlayerProperties.cs" />
+    <Compile Include="Scripting\Properties\PlayerStatsProperties.cs" />
     <Compile Include="Scripting\Properties\PowerProperties.cs" />
     <Compile Include="Scripting\Properties\ProductionProperties.cs" />
     <Compile Include="Scripting\Properties\RepairableBuildingProperties.cs" />
@@ -261,7 +262,6 @@
     <Compile Include="Traits\Air\FlyAwayOnIdle.cs" />
     <Compile Include="Traits\Air\FallsToEarth.cs" />
     <Compile Include="Traits\Air\ReturnOnIdle.cs" />
-    <Compile Include="Traits\AppearsOnRadar.cs" />
     <Compile Include="Traits\Armament.cs" />
     <Compile Include="Traits\Armor.cs" />
     <Compile Include="Traits\AttackMove.cs" />
@@ -298,12 +298,10 @@
     <Compile Include="Traits\Buildings\RepairsUnits.cs" />
     <Compile Include="Traits\Buildings\Reservable.cs" />
     <Compile Include="Traits\Burns.cs" />
-    <Compile Include="Traits\C4Demolition.cs" />
     <Compile Include="Traits\Health.cs" />
     <Compile Include="Traits\PowerTooltip.cs" />
-    <Compile Include="Traits\VeteranProductionIconOverlay.cs" />
+    <Compile Include="Traits\Render\VeteranProductionIconOverlay.cs" />
     <Compile Include="Traits\Capturable.cs" />
-    <Compile Include="Traits\CaptureNotification.cs" />
     <Compile Include="Traits\Captures.cs" />
     <Compile Include="Traits\Cargo.cs" />
     <Compile Include="Traits\CashTrickler.cs" />
@@ -327,7 +325,9 @@
     <Compile Include="Traits\CustomSellValue.cs" />
     <Compile Include="Traits\CustomSelectionSize.cs" />
     <Compile Include="Traits\Demolishable.cs" />
+    <Compile Include="Traits\Demolition.cs" />
     <Compile Include="Traits\DetectCloaked.cs" />
+    <Compile Include="Traits\EditorTilesetFilter.cs" />
     <Compile Include="Traits\EjectOnDeath.cs" />
     <Compile Include="Traits\EmitInfantryOnSell.cs" />
     <Compile Include="Traits\EngineerRepair.cs" />
@@ -400,13 +400,13 @@
     <Compile Include="Traits\Power\RequiresPower.cs" />
     <Compile Include="Traits\Power\ScalePowerWithHealth.cs" />
     <Compile Include="Traits\Production.cs" />
+    <Compile Include="Traits\ProductionFromMapEdge.cs" />
+    <Compile Include="Traits\ProductionParadrop.cs" />
     <Compile Include="Traits\ProductionQueueFromSelection.cs" />
-    <Compile Include="Traits\ProvidesRadar.cs" />
     <Compile Include="Traits\ProximityCaptor.cs" />
     <Compile Include="Traits\ProximityCapturable.cs" />
     <Compile Include="Traits\BodyOrientation.cs" />
     <Compile Include="Traits\QuantizeFacingsFromSequence.cs" />
-    <Compile Include="Traits\RadarColorFromTerrain.cs" />
     <Compile Include="Traits\Render\AutoSelectionSize.cs" />
     <Compile Include="Traits\Render\Hovers.cs" />
     <Compile Include="Traits\Render\LeavesTrails.cs" />
@@ -433,6 +433,7 @@
     <Compile Include="Traits\Render\WithChargeAnimation.cs" />
     <Compile Include="Traits\Render\WithChargeOverlay.cs" />
     <Compile Include="Traits\Render\WithCrateBody.cs" />
+    <Compile Include="Traits\Render\WithDamageOverlay.cs" />
     <Compile Include="Traits\Render\WithDeathAnimation.cs" />
     <Compile Include="Traits\Render\WithDecoration.cs" />
     <Compile Include="Traits\Render\WithDockingAnimation.cs" />
@@ -449,7 +450,6 @@
     <Compile Include="Traits\Render\WithResources.cs" />
     <Compile Include="Traits\Render\WithSpriteRotorOverlay.cs" />
     <Compile Include="Traits\Render\WithShadow.cs" />
-    <Compile Include="Traits\Render\WithSmoke.cs" />
     <Compile Include="Traits\Render\WithSpriteBody.cs" />
     <Compile Include="Traits\Render\WithSpriteTurret.cs" />
     <Compile Include="Traits\Render\WithFacingSpriteBody.cs" />
@@ -459,6 +459,8 @@
     <Compile Include="Traits\Render\WithVoxelBarrel.cs" />
     <Compile Include="Traits\Render\WithVoxelBody.cs" />
     <Compile Include="Traits\Render\WithVoxelTurret.cs" />
+    <Compile Include="Traits\Render\DrawLineToTarget.cs" />
+    <Compile Include="Traits\RejectsOrders.cs" />
     <Compile Include="Traits\Repairable.cs" />
     <Compile Include="Traits\RepairableNear.cs" />
     <Compile Include="Traits\RepairsBridges.cs" />
@@ -474,6 +476,7 @@
     <Compile Include="Traits\Sound\AnnounceOnBuild.cs" />
     <Compile Include="Traits\Sound\AnnounceOnKill.cs" />
     <Compile Include="Traits\Sound\AnnounceOnSeen.cs" />
+    <Compile Include="Traits\Sound\CaptureNotification.cs" />
     <Compile Include="Traits\Sound\DeathSounds.cs" />
     <Compile Include="Traits\Sound\SoundOnDamageTransition.cs" />
     <Compile Include="Traits\SupplyTruck.cs" />
@@ -494,6 +497,7 @@
     <Compile Include="Traits\Upgrades\DisableOnUpgrade.cs" />
     <Compile Include="Traits\Upgrades\UpgradableTrait.cs" />
     <Compile Include="Traits\Upgrades\UpgradeActorsNear.cs" />
+    <Compile Include="Traits\Upgrades\UpgradeOnDamage.cs" />
     <Compile Include="Traits\Upgrades\UpgradeManager.cs" />
     <Compile Include="Traits\Valued.cs" />
     <Compile Include="Traits\Voiced.cs" />
@@ -508,6 +512,7 @@
     <Compile Include="Traits\World\PaletteFromCurrentTileset.cs" />
     <Compile Include="Traits\World\PaletteFromFile.cs" />
     <Compile Include="Traits\World\PaletteFromRGBA.cs" />
+    <Compile Include="Traits\World\ValidateOrder.cs" />
     <Compile Include="Traits\World\VoxelNormalsPalette.cs" />
     <Compile Include="Pathfinder\CellInfoLayerPool.cs" />
     <Compile Include="Pathfinder\Constants.cs" />
@@ -542,8 +547,8 @@
     <Compile Include="UtilityCommands\ExtractLanguageStringsCommand.cs" />
     <Compile Include="UtilityCommands\ExtractLuaDocsCommand.cs" />
     <Compile Include="UtilityCommands\ExtractTraitDocsCommand.cs" />
+    <Compile Include="Widgets\Logic\Ingame\MusicControllerLogic.cs" />
     <Compile Include="WorldExtensions.cs" />
-    <Compile Include="UtilityCommands\GenerateMinimapCommand.cs" />
     <Compile Include="UtilityCommands\GetMapHashCommand.cs" />
     <Compile Include="UtilityCommands\Glob.cs" />
     <Compile Include="UtilityCommands\ImportLegacyMapCommand.cs" />
@@ -581,7 +586,6 @@
     <Compile Include="Widgets\Logic\Ingame\ClassicProductionLogic.cs" />
     <Compile Include="Widgets\Logic\Ingame\ControlGroupLogic.cs" />
     <Compile Include="Widgets\Logic\Ingame\DebugMenuLogic.cs" />
-    <Compile Include="Widgets\Logic\Ingame\DiplomacyLogic.cs" />
     <Compile Include="Widgets\Logic\Ingame\GameInfoBriefingLogic.cs" />
     <Compile Include="Widgets\Logic\Ingame\GameInfoLogic.cs" />
     <Compile Include="Widgets\Logic\Ingame\GameInfoObjectivesLogic.cs" />
@@ -647,6 +651,7 @@
     <Compile Include="Widgets\SupportPowerTimerWidget.cs" />
     <Compile Include="Widgets\TerrainTemplatePreviewWidget.cs" />
     <Compile Include="Widgets\WorldCommandWidget.cs" />
+    <Compile Include="Widgets\WorldInteractionControllerWidget.cs" />
     <Compile Include="SpriteLoaders\ShpTDLoader.cs" />
     <Compile Include="SpriteLoaders\ShpTSLoader.cs" />
     <Compile Include="SpriteLoaders\TmpRALoader.cs" />
@@ -732,6 +737,18 @@
     <Compile Include="Util.cs" />
     <Compile Include="Traits\Render\WithGateSpriteBody.cs" />
     <Compile Include="ColorValidator.cs" />
+    <Compile Include="UtilityCommands\ResizeMapCommand.cs" />
+    <Compile Include="Traits\World\MapCreeps.cs" />
+    <Compile Include="Traits\World\MapBuildRadius.cs" />
+    <Compile Include="Traits\World\MapOptions.cs" />
+    <Compile Include="Traits\World\MissionData.cs" />
+    <Compile Include="UtilityCommands\ExtractMapRules.cs" />
+    <Compile Include="Traits\ScriptTags.cs" />
+    <Compile Include="Traits\Radar\AppearsOnRadar.cs" />
+    <Compile Include="Traits\Radar\ProvidesRadar.cs" />
+    <Compile Include="Traits\Radar\RadarColorFromTerrain.cs" />
+    <Compile Include="Traits\Radar\JamsRadar.cs" />
+    <Compile Include="AI\DummyAI.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

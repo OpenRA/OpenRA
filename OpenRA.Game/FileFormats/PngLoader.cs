@@ -1,10 +1,11 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2016 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
- * as published by the Free Software Foundation. For more information,
- * see COPYING.
+ * as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version. For more
+ * information, see COPYING.
  */
 #endregion
 
@@ -41,114 +42,126 @@ namespace OpenRA.FileFormats
 				Color[] palette = null;
 				var data = new List<byte>();
 
-				for (;;)
+				try
 				{
-					var length = IPAddress.NetworkToHostOrder(br.ReadInt32());
-					var type = Encoding.UTF8.GetString(br.ReadBytes(4));
-					var content = br.ReadBytes(length);
-					/*var crc = */br.ReadInt32();
+					for (;;)
+					{
+						var length = IPAddress.NetworkToHostOrder(br.ReadInt32());
+						var type = Encoding.UTF8.GetString(br.ReadBytes(4));
+						var content = br.ReadBytes(length);
+						/*var crc = */br.ReadInt32();
 
-					using (var ms = new MemoryStream(content))
-					using (var cr = new BinaryReader(ms))
-						switch (type)
-						{
-							case "IHDR":
-								{
-									var width = IPAddress.NetworkToHostOrder(cr.ReadInt32());
-									var height = IPAddress.NetworkToHostOrder(cr.ReadInt32());
-									var bitDepth = cr.ReadByte();
-									var colorType = (PngColorType)cr.ReadByte();
-									var compression = cr.ReadByte();
-									/*var filter = */cr.ReadByte();
-									var interlace = cr.ReadByte();
+						if (bitmap == null && type != "IHDR")
+							throw new InvalidDataException("Invalid PNG file - header does not appear first.");
 
-									if (compression != 0) throw new InvalidDataException("Compression method not supported");
-									if (interlace != 0) throw new InvalidDataException("Interlacing not supported");
-
-									bitmap = new Bitmap(width, height, MakePixelFormat(bitDepth, colorType));
-								}
-
-								break;
-
-							case "PLTE":
-								{
-									palette = new Color[256];
-									for (var i = 0; i < 256; i++)
+						using (var ms = new MemoryStream(content))
+						using (var cr = new BinaryReader(ms))
+							switch (type)
+							{
+								case "IHDR":
 									{
-										var r = cr.ReadByte(); var g = cr.ReadByte(); var b = cr.ReadByte();
-										palette[i] = Color.FromArgb(r, g, b);
+										if (bitmap != null)
+											throw new InvalidDataException("Invalid PNG file - duplicate header.");
+
+										var width = IPAddress.NetworkToHostOrder(cr.ReadInt32());
+										var height = IPAddress.NetworkToHostOrder(cr.ReadInt32());
+										var bitDepth = cr.ReadByte();
+										var colorType = (PngColorType)cr.ReadByte();
+										var compression = cr.ReadByte();
+										/*var filter = */cr.ReadByte();
+										var interlace = cr.ReadByte();
+
+										if (compression != 0) throw new InvalidDataException("Compression method not supported");
+										if (interlace != 0) throw new InvalidDataException("Interlacing not supported");
+
+										bitmap = new Bitmap(width, height, MakePixelFormat(bitDepth, colorType));
 									}
-								}
 
-								break;
+									break;
 
-							case "tRNS":
-								{
-									if (palette == null)
-										throw new InvalidDataException("Non-Palette indexed PNG are not supported.");
-
-									for (var i = 0; i < length; i++)
-										palette[i] = Color.FromArgb(cr.ReadByte(), palette[i]);
-								}
-
-								break;
-
-							case "IDAT":
-								{
-									data.AddRange(content);
-								}
-
-								break;
-
-							case "IEND":
-								{
-									if (bitmap == null)
-										throw new InvalidDataException("Image header not found.");
-
-									var bits = bitmap.LockBits(bitmap.Bounds(),
-										ImageLockMode.WriteOnly, PixelFormat.Format8bppIndexed);
-
-									using (var ns = new MemoryStream(data.ToArray()))
+								case "PLTE":
 									{
-										// 'zlib' flags bytes; confuses the DeflateStream.
-										/*var flags = (byte)*/ns.ReadByte();
-										/*var moreFlags = (byte)*/ns.ReadByte();
-
-										using (var ds = new DeflateStream(ns, CompressionMode.Decompress))
-										using (var dr = new BinaryReader(ds))
+										palette = new Color[256];
+										for (var i = 0; i < 256; i++)
 										{
-											var prevLine = new byte[bitmap.Width];	// all zero
-											for (var y = 0; y < bitmap.Height; y++)
-											{
-												var filter = (PngFilter)dr.ReadByte();
-												var line = dr.ReadBytes(bitmap.Width);
-
-												for (var i = 0; i < bitmap.Width; i++)
-													line[i] = i > 0
-														? UnapplyFilter(filter, line[i], line[i - 1], prevLine[i], prevLine[i - 1])
-														: UnapplyFilter(filter, line[i], 0, prevLine[i], 0);
-
-												Marshal.Copy(line, 0, new IntPtr(bits.Scan0.ToInt64() + y * bits.Stride), line.Length);
-												prevLine = line;
-											}
+											var r = cr.ReadByte(); var g = cr.ReadByte(); var b = cr.ReadByte();
+											palette[i] = Color.FromArgb(r, g, b);
 										}
 									}
 
-									bitmap.UnlockBits(bits);
+									break;
 
-									if (palette == null)
-										throw new InvalidDataException("Non-Palette indexed PNG are not supported.");
-
-									using (var temp = new Bitmap(1, 1, PixelFormat.Format8bppIndexed))
+								case "tRNS":
 									{
-										var cp = temp.Palette;
-										for (var i = 0; i < 256; i++)
-											cp.Entries[i] = palette[i];		// finalize the palette.
-										bitmap.Palette = cp;
-										return bitmap;
+										if (palette == null)
+											throw new InvalidDataException("Non-Palette indexed PNG are not supported.");
+
+										for (var i = 0; i < length; i++)
+											palette[i] = Color.FromArgb(cr.ReadByte(), palette[i]);
 									}
-								}
-						}
+
+									break;
+
+								case "IDAT":
+									{
+										data.AddRange(content);
+									}
+
+									break;
+
+								case "IEND":
+									{
+										var bits = bitmap.LockBits(bitmap.Bounds(),
+											ImageLockMode.WriteOnly, PixelFormat.Format8bppIndexed);
+
+										using (var ns = new MemoryStream(data.ToArray()))
+										{
+											// 'zlib' flags bytes; confuses the DeflateStream.
+											/*var flags = (byte)*/ns.ReadByte();
+											/*var moreFlags = (byte)*/ns.ReadByte();
+
+											using (var ds = new DeflateStream(ns, CompressionMode.Decompress))
+											using (var dr = new BinaryReader(ds))
+											{
+												var prevLine = new byte[bitmap.Width];  // all zero
+												for (var y = 0; y < bitmap.Height; y++)
+												{
+													var filter = (PngFilter)dr.ReadByte();
+													var line = dr.ReadBytes(bitmap.Width);
+
+													for (var i = 0; i < bitmap.Width; i++)
+														line[i] = i > 0
+															? UnapplyFilter(filter, line[i], line[i - 1], prevLine[i], prevLine[i - 1])
+															: UnapplyFilter(filter, line[i], 0, prevLine[i], 0);
+
+													Marshal.Copy(line, 0, new IntPtr(bits.Scan0.ToInt64() + y * bits.Stride), line.Length);
+													prevLine = line;
+												}
+											}
+										}
+
+										bitmap.UnlockBits(bits);
+
+										if (palette == null)
+											throw new InvalidDataException("Non-Palette indexed PNG are not supported.");
+
+										using (var temp = new Bitmap(1, 1, PixelFormat.Format8bppIndexed))
+										{
+											var cp = temp.Palette;
+											for (var i = 0; i < 256; i++)
+												cp.Entries[i] = palette[i];     // finalize the palette.
+											bitmap.Palette = cp;
+											return bitmap;
+										}
+									}
+							}
+					}
+				}
+				catch
+				{
+					if (bitmap != null)
+						bitmap.Dispose();
+					throw;
 				}
 			}
 		}

@@ -1,10 +1,11 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2016 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
- * as published by the Free Software Foundation. For more information,
- * see COPYING.
+ * as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version. For more
+ * information, see COPYING.
  */
 #endregion
 
@@ -155,7 +156,7 @@ namespace OpenRA
 			using (new PerfTimer("NewWorld"))
 				OrderManager.World = new World(map, OrderManager, type);
 
-			worldRenderer = new WorldRenderer(OrderManager.World);
+			worldRenderer = new WorldRenderer(ModData, OrderManager.World);
 
 			using (new PerfTimer("LoadComplete"))
 				OrderManager.World.LoadComplete(worldRenderer);
@@ -179,8 +180,11 @@ namespace OpenRA
 		{
 			var replay = OrderManager.Connection as ReplayConnection;
 			var replayName = replay != null ? replay.Filename : null;
-			var uid = OrderManager.World.Map.Uid;
-			var globalSettings = OrderManager.LobbyInfo.GlobalSettings;
+			var lobbyInfo = OrderManager.LobbyInfo;
+			var orders = new[] {
+					Order.Command("sync_lobby {0}".F(lobbyInfo.Serialize())),
+					Order.Command("startgame")
+			};
 
 			// Disconnect from the current game
 			Disconnect();
@@ -190,10 +194,10 @@ namespace OpenRA
 			if (replay != null)
 				JoinReplay(replayName);
 			else
-				StartMission(uid, globalSettings.GameSpeedType, globalSettings.Difficulty);
+				CreateAndStartLocalServer(lobbyInfo.GlobalSettings.Map, orders);
 		}
 
-		public static void StartMission(string mapUID, string gameSpeed, string difficulty, Action onStart = null)
+		public static void CreateAndStartLocalServer(string mapUID, IEnumerable<Order> setupOrders, Action onStart = null)
 		{
 			OrderManager om = null;
 
@@ -201,9 +205,9 @@ namespace OpenRA
 			lobbyReady = () =>
 			{
 				LobbyInfoChanged -= lobbyReady;
-				om.IssueOrder(Order.Command("gamespeed {0}".F(gameSpeed)));
-				om.IssueOrder(Order.Command("difficulty {0}".F(difficulty)));
-				om.IssueOrder(Order.Command("state {0}".F(Session.ClientState.Ready)));
+				foreach (var o in setupOrders)
+					om.IssueOrder(o);
+
 				if (onStart != null)
 					onStart();
 			};
@@ -234,8 +238,6 @@ namespace OpenRA
 		internal static void Initialize(Arguments args)
 		{
 			Console.WriteLine("Platform is {0}", Platform.CurrentPlatform);
-
-			AppDomain.CurrentDomain.AssemblyResolve += FileSystem.FileSystem.ResolveAssembly;
 
 			InitializeSettings(args);
 
@@ -277,7 +279,7 @@ namespace OpenRA
 				}
 			}
 
-			Sound = new Sound(Settings.Server.Dedicated ? "Null" : Settings.Sound.Engine);
+			Sound = new Sound(Settings.Sound.Engine);
 
 			GlobalChat = new GlobalChat();
 
@@ -293,7 +295,7 @@ namespace OpenRA
 
 		public static bool IsModInstalled(string modId)
 		{
-			return Manifest.AllMods[modId].RequiresMods.All(IsModInstalled);
+			return ModMetadata.AllMods[modId].RequiresMods.All(IsModInstalled);
 		}
 
 		public static bool IsModInstalled(KeyValuePair<string, string> mod)
@@ -339,18 +341,10 @@ namespace OpenRA
 
 			Sound.StopVideo();
 
-			ModData = new ModData(mod, !Settings.Server.Dedicated);
-
-			Sound.Initialize();
+			ModData = new ModData(mod, true);
 
 			using (new PerfTimer("LoadMaps"))
 				ModData.MapCache.LoadMaps();
-
-			if (Settings.Server.Dedicated)
-			{
-				RunDedicatedServer();
-				Environment.Exit(0);
-			}
 
 			var installData = ModData.Manifest.Get<ContentInstaller>();
 			var isModContentInstalled = installData.TestFiles.All(f => File.Exists(Platform.ResolvePath(f)));
@@ -362,9 +356,11 @@ namespace OpenRA
 				return;
 			}
 
-			ModData.MountFiles();
-			ModData.InitializeLoaders();
-			Renderer.InitializeFonts(ModData.Manifest);
+			ModData.InitializeLoaders(ModData.DefaultFileSystem);
+			Renderer.InitializeFonts(ModData);
+
+			var grid = ModData.Manifest.Contains<MapGrid>() ? ModData.Manifest.Get<MapGrid>() : null;
+			Renderer.InitializeDepthBuffer(grid);
 
 			if (Cursor != null)
 				Cursor.Dispose();
@@ -399,37 +395,6 @@ namespace OpenRA
 			ModData.LoadScreen.StartGame(args);
 		}
 
-		public static void RunDedicatedServer()
-		{
-			while (true)
-			{
-				Settings.Server.Map = WidgetUtils.ChooseInitialMap(Settings.Server.Map);
-				Settings.Save();
-				CreateServer(Settings.Server.Clone());
-
-				while (true)
-				{
-					Thread.Sleep(100);
-
-					if (server.State == Server.ServerState.GameStarted && server.Conns.Count < 1)
-					{
-						Console.WriteLine("No one is playing, shutting down...");
-						server.Shutdown();
-						break;
-					}
-				}
-
-				if (Settings.Server.DedicatedLoop)
-				{
-					Console.WriteLine("Starting a new server instance...");
-					ModData.MapCache.LoadMaps();
-					continue;
-				}
-
-				break;
-			}
-		}
-
 		public static void LoadEditor(string mapUid)
 		{
 			StartGame(mapUid, WorldType.Editor);
@@ -446,7 +411,7 @@ namespace OpenRA
 		static string ChooseShellmap()
 		{
 			var shellmaps = ModData.MapCache
-				.Where(m => m.Status == MapStatus.Available && m.Map.Visibility.HasFlag(MapVisibility.Shellmap))
+				.Where(m => m.Status == MapStatus.Available && m.Visibility.HasFlag(MapVisibility.Shellmap))
 				.Select(m => m.Uid);
 
 			if (!shellmaps.Any())
@@ -812,7 +777,7 @@ namespace OpenRA
 
 		public static void CreateServer(ServerSettings settings)
 		{
-			server = new Server.Server(new IPEndPoint(IPAddress.Any, settings.ListenPort), settings, ModData);
+			server = new Server.Server(new IPEndPoint(IPAddress.Any, settings.ListenPort), settings, ModData, false);
 		}
 
 		public static int CreateLocalServer(string map)
@@ -825,7 +790,7 @@ namespace OpenRA
 				AllowPortForward = false
 			};
 
-			server = new Server.Server(new IPEndPoint(IPAddress.Loopback, 0), settings, ModData);
+			server = new Server.Server(new IPEndPoint(IPAddress.Loopback, 0), settings, ModData, false);
 
 			return server.Port;
 		}

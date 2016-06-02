@@ -133,7 +133,7 @@ ScrollPanel@SPECTATOR_DROPDOWN_TEMPLATE:
 					Width: PARENT_RIGHT
 					Height: 25
 
-Container@CONFIRM_PROMPT:
+Container@CONFIRM_PROMPT_THREEBUTTON:
 	X: (WINDOW_RIGHT - WIDTH)/2
 	Y: (WINDOW_BOTTOM - 90)/2
 	Width: 500
@@ -162,7 +162,7 @@ Container@CONFIRM_PROMPT:
 			Y: 89
 			Width: 140
 			Height: 35
-			Text: Abort
+			Text: Confirm
 		Button@OTHER_BUTTON:
 			Key: r
 			X: 210
@@ -176,6 +176,44 @@ Container@CONFIRM_PROMPT:
 			Width: 140
 			Height: 35
 			Text: Cancel
+
+
+Container@CONFIRM_PROMPT_TWOBUTTON:
+	X: (WINDOW_RIGHT - WIDTH)/2
+	Y: (WINDOW_BOTTOM - 90)/2
+	Width: 370
+	Height: 125
+	Children:
+		Label@PROMPT_TITLE:
+			Width: PARENT_RIGHT
+			Y: 0-25
+			Font: BigBold
+			Contrast: true
+			Align: Center
+		Background@bg:
+			Width: 370
+			Height: 90
+			Background: panel-black
+			Children:
+				Label@PROMPT_TEXT:
+					Y: (PARENT_BOTTOM-HEIGHT)/2
+					Width: PARENT_RIGHT
+					Height: 25
+					Font: Bold
+					Align: Center
+		Button@CANCEL_BUTTON:
+			Key: escape
+			Y: 89
+			Width: 140
+			Height: 35
+			Text: Cancel
+		Button@CONFIRM_BUTTON:
+			Key: return
+			X: 230
+			Y: 89
+			Width: 140
+			Height: 35
+			Text: Confirm
 
 Container@CANCEL_PROMPT:
 	X: (WINDOW_RIGHT - WIDTH)/2

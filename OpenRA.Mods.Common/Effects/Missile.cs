@@ -1,13 +1,15 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2015 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2016 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
- * as published by the Free Software Foundation. For more information,
- * see COPYING.
+ * as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version. For more
+ * information, see COPYING.
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -41,14 +43,14 @@ namespace OpenRA.Mods.Common.Effects
 		[Desc("Maximum vertical launch angle (pitch).")]
 		public readonly WAngle MaximumLaunchAngle = new WAngle(128);
 
-		[Desc("Minimum launch speed in WDist / tick")]
-		public readonly WDist MinimumLaunchSpeed = new WDist(75);
+		[Desc("Minimum launch speed in WDist / tick. Defaults to Speed if -1.")]
+		public readonly WDist MinimumLaunchSpeed = new WDist(-1);
 
-		[Desc("Maximum launch speed in WDist / tick")]
-		public readonly WDist MaximumLaunchSpeed = new WDist(200);
+		[Desc("Maximum launch speed in WDist / tick. Defaults to Speed if -1.")]
+		public readonly WDist MaximumLaunchSpeed = new WDist(-1);
 
 		[Desc("Maximum projectile speed in WDist / tick")]
-		public readonly WDist MaximumSpeed = new WDist(384);
+		public readonly WDist Speed = new WDist(384);
 
 		[Desc("Projectile acceleration when propulsion activated.")]
 		public readonly WDist Acceleration = new WDist(5);
@@ -80,8 +82,8 @@ namespace OpenRA.Mods.Common.Effects
 		[Desc("Gravity applied while in free fall.")]
 		public readonly int Gravity = 10;
 
-		[Desc("Run out of fuel after being activated this many ticks. Zero for unlimited fuel.")]
-		public readonly int RangeLimit = 0;
+		[Desc("Run out of fuel after covering this distance. Zero for defaulting to weapon range. Negative for unlimited fuel.")]
+		public readonly WDist RangeLimit = WDist.Zero;
 
 		[Desc("Explode when running out of fuel.")]
 		public readonly bool ExplodeWhenEmpty = true;
@@ -179,6 +181,8 @@ namespace OpenRA.Mods.Common.Effects
 		WVec velocity;
 		int speed;
 		int loopRadius;
+		WDist distanceCovered;
+		WDist rangeLimit;
 
 		int renderFacing;
 		[Sync] int hFacing;
@@ -196,6 +200,7 @@ namespace OpenRA.Mods.Common.Effects
 			hFacing = args.Facing;
 			gravity = new WVec(0, 0, -info.Gravity);
 			targetPosition = args.PassiveTarget;
+			rangeLimit = info.RangeLimit != WDist.Zero ? info.RangeLimit : args.Weapon.Range;
 
 			var world = args.SourceActor.World;
 
@@ -243,7 +248,9 @@ namespace OpenRA.Mods.Common.Effects
 		void DetermineLaunchSpeedAndAngleForIncline(int predClfDist, int diffClfMslHgt, int relTarHorDist,
 			out int speed, out int vFacing)
 		{
-			speed = info.MaximumLaunchSpeed.Length;
+			var minLaunchSpeed = info.MinimumLaunchSpeed.Length > -1 ? info.MinimumLaunchSpeed.Length : info.Speed.Length;
+			var maxLaunchSpeed = info.MaximumLaunchSpeed.Length > -1 ? info.MaximumLaunchSpeed.Length : info.Speed.Length;
+			speed = info.MaximumLaunchSpeed.Length > -1 ? info.MaximumLaunchSpeed.Length : info.Speed.Length;
 
 			// Find smallest vertical facing, for which the missile will be able to climb terrAltDiff w-units
 			// within hHeightChange w-units all the while ending the ascent with vertical facing 0
@@ -253,7 +260,7 @@ namespace OpenRA.Mods.Common.Effects
 			// to hit the target without passing it by (and thus having to do horizontal loops)
 			var minSpeed = ((System.Math.Min(predClfDist * 1024 / (1024 - WAngle.FromFacing(vFacing).Sin()),
 					(relTarHorDist + predClfDist) * 1024 / (2 * (2048 - WAngle.FromFacing(vFacing).Sin())))
-				* info.VerticalRateOfTurn * 157) / 6400).Clamp(info.MinimumLaunchSpeed.Length, info.MaximumLaunchSpeed.Length);
+				* info.VerticalRateOfTurn * 157) / 6400).Clamp(minLaunchSpeed, maxLaunchSpeed);
 
 			if ((sbyte)vFacing < 0)
 				speed = minSpeed;
@@ -263,7 +270,7 @@ namespace OpenRA.Mods.Common.Effects
 				// Find highest speed greater than the above minimum that allows the missile
 				// to surmount the incline
 				var vFac = vFacing;
-				speed = BisectionSearch(minSpeed, info.MaximumLaunchSpeed.Length, spd =>
+				speed = BisectionSearch(minSpeed, maxLaunchSpeed, spd =>
 				{
 					var lpRds = LoopRadius(spd, info.VerticalRateOfTurn);
 					return WillClimbWithinDistance(vFac, lpRds, predClfDist, diffClfMslHgt)
@@ -284,7 +291,7 @@ namespace OpenRA.Mods.Common.Effects
 		// TODO: Double check Launch parameter determination
 		void DetermineLaunchSpeedAndAngle(World world, out int speed, out int vFacing)
 		{
-			speed = info.MaximumLaunchSpeed.Length;
+			speed = info.MaximumLaunchSpeed.Length > -1 ? info.MaximumLaunchSpeed.Length : info.Speed.Length;
 			loopRadius = LoopRadius(speed, info.VerticalRateOfTurn);
 
 			// Compute current distance from target position
@@ -303,7 +310,7 @@ namespace OpenRA.Mods.Common.Effects
 			else if (lastHt != 0)
 			{
 				vFacing = System.Math.Max((sbyte)(info.MinimumLaunchAngle.Angle >> 2), (sbyte)0);
-				speed = info.MaximumLaunchSpeed.Length;
+				speed = info.MaximumLaunchSpeed.Length > -1 ? info.MaximumLaunchSpeed.Length : info.Speed.Length;
 			}
 			else
 			{
@@ -397,7 +404,7 @@ namespace OpenRA.Mods.Common.Effects
 
 		void ChangeSpeed(int sign = 1)
 		{
-			speed = (speed + sign * info.Acceleration.Length).Clamp(0, info.MaximumSpeed.Length);
+			speed = (speed + sign * info.Acceleration.Length).Clamp(0, info.Speed.Length);
 
 			// Compute the vertical loop radius
 			loopRadius = LoopRadius(speed, info.VerticalRateOfTurn);
@@ -408,7 +415,7 @@ namespace OpenRA.Mods.Common.Effects
 			// Compute the projectile's freefall displacement
 			var move = velocity + gravity / 2;
 			velocity += gravity;
-			var velRatio = info.MaximumSpeed.Length * 1024 / velocity.Length;
+			var velRatio = info.Speed.Length * 1024 / velocity.Length;
 			if (velRatio < 1024)
 				velocity = velocity * velRatio / 1024;
 
@@ -444,7 +451,7 @@ namespace OpenRA.Mods.Common.Effects
 				if (!world.Map.Contains(world.Map.CellContaining(posProbe)))
 					break;
 
-				var ht = world.Map.MapHeight.Value[world.Map.CellContaining(posProbe)] * 512;
+				var ht = world.Map.Height[world.Map.CellContaining(posProbe)] * 512;
 
 				curDist += stepSize;
 				if (ht > predClfHgt)
@@ -639,7 +646,7 @@ namespace OpenRA.Mods.Common.Effects
 							else
 							{
 								// Aim for the target
-								var vDist = new WVec(-relTarHgt, -relTarHorDist * (targetPassedBy ? -1 : 1), 0);
+								var vDist = new WVec(-relTarHgt, -relTarHorDist, 0);
 								desiredVFacing = (sbyte)vDist.HorizontalLengthSquared != 0 ? vDist.Yaw.Facing : vFacing;
 								if (desiredVFacing < 0 && info.VerticalRateOfTurn < (sbyte)vFacing)
 									desiredVFacing = 0;
@@ -649,7 +656,7 @@ namespace OpenRA.Mods.Common.Effects
 					else
 					{
 						// Aim for the target
-						var vDist = new WVec(-relTarHgt, -relTarHorDist * (targetPassedBy ? -1 : 1), 0);
+						var vDist = new WVec(-relTarHgt, relTarHorDist, 0);
 						desiredVFacing = (sbyte)vDist.HorizontalLengthSquared != 0 ? vDist.Yaw.Facing : vFacing;
 						if (desiredVFacing < 0 && info.VerticalRateOfTurn < (sbyte)vFacing)
 							desiredVFacing = 0;
@@ -661,6 +668,11 @@ namespace OpenRA.Mods.Common.Effects
 					// of vertical facing bound by the maximum vertical rate of turn
 					var vDist = new WVec(-diffClfMslHgt - info.CruiseAltitude.Length, -speed, 0);
 					desiredVFacing = (sbyte)vDist.HorizontalLengthSquared != 0 ? vDist.Yaw.Facing : vFacing;
+
+					// If the missile is launched above CruiseAltitude, it has to descend instead of climbing
+					if (-diffClfMslHgt > info.CruiseAltitude.Length)
+						desiredVFacing = -desiredVFacing;
+
 					desiredVFacing = desiredVFacing.Clamp(-info.VerticalRateOfTurn, info.VerticalRateOfTurn);
 
 					ChangeSpeed();
@@ -672,6 +684,11 @@ namespace OpenRA.Mods.Common.Effects
 				// of vertical facing bound by the maximum vertical rate of turn
 				var vDist = new WVec(-diffClfMslHgt - info.CruiseAltitude.Length, -speed, 0);
 				desiredVFacing = (sbyte)vDist.HorizontalLengthSquared != 0 ? vDist.Yaw.Facing : vFacing;
+
+				// If the missile is launched above CruiseAltitude, it has to descend instead of climbing
+				if (-diffClfMslHgt > info.CruiseAltitude.Length)
+					desiredVFacing = -desiredVFacing;
+
 				desiredVFacing = desiredVFacing.Clamp(-info.VerticalRateOfTurn, info.VerticalRateOfTurn);
 
 				ChangeSpeed();
@@ -698,9 +715,10 @@ namespace OpenRA.Mods.Common.Effects
 			var velVec = tarDistVec + predVel;
 			var desiredHFacing = velVec.HorizontalLengthSquared != 0 ? velVec.Yaw.Facing : hFacing;
 
-			if (allowPassBy && System.Math.Abs(desiredHFacing - hFacing) >= System.Math.Abs(desiredHFacing + 128 - hFacing))
+			var delta = Util.NormalizeFacing(hFacing - desiredHFacing);
+			if (allowPassBy && delta > 64 && delta < 192)
 			{
-				desiredHFacing += 128;
+				desiredHFacing = (desiredHFacing + 128) & 0xFF;
 				targetPassedBy = true;
 			}
 			else
@@ -751,7 +769,7 @@ namespace OpenRA.Mods.Common.Effects
 			}
 
 			// Switch from homing mode to freefall mode
-			if (info.RangeLimit != 0 && ticks == info.RangeLimit + 1)
+			if (rangeLimit >= WDist.Zero && distanceCovered > rangeLimit)
 			{
 				state = States.Freefall;
 				velocity = new WVec(0, -speed, 0)
@@ -802,18 +820,19 @@ namespace OpenRA.Mods.Common.Effects
 			// Create the smoke trail effect
 			if (!string.IsNullOrEmpty(info.TrailImage) && --ticksToNextSmoke < 0 && (state != States.Freefall || info.TrailWhenDeactivated))
 			{
-				world.AddFrameEndTask(w => w.Add(new Smoke(w, pos - 3 * move / 2, info.TrailImage, trailPalette, info.TrailSequence)));
+				world.AddFrameEndTask(w => w.Add(new SpriteEffect(pos - 3 * move / 2, w, info.TrailImage, info.TrailSequence, trailPalette, false, false, renderFacing)));
 				ticksToNextSmoke = info.TrailInterval;
 			}
 
 			if (info.ContrailLength > 0)
 				contrail.Update(pos);
 
+			distanceCovered += new WDist(speed);
 			var cell = world.Map.CellContaining(pos);
 			var height = world.Map.DistanceAboveTerrain(pos);
 			shouldExplode |= height.Length < 0 // Hit the ground
 				|| relTarDist < info.CloseEnough.Length // Within range
-				|| (info.ExplodeWhenEmpty && info.RangeLimit != 0 && ticks > info.RangeLimit) // Ran out of fuel
+				|| (info.ExplodeWhenEmpty && rangeLimit >= WDist.Zero && distanceCovered > rangeLimit) // Ran out of fuel
 				|| !world.Map.Contains(cell) // This also avoids an IndexOutOfRangeException in GetTerrainInfo below.
 				|| (!string.IsNullOrEmpty(info.BoundToTerrainType) && world.Map.GetTerrainInfo(cell).Type != info.BoundToTerrainType) // Hit incompatible terrain
 				|| (height.Length < info.AirburstAltitude.Length && relTarHorDist < info.CloseEnough.Length); // Airburst
@@ -840,6 +859,9 @@ namespace OpenRA.Mods.Common.Effects
 		{
 			if (info.ContrailLength > 0)
 				yield return contrail;
+
+			if (anim == null)
+				yield break;
 
 			var world = args.SourceActor.World;
 			if (!world.FogObscures(pos))

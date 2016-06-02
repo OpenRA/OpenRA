@@ -25,7 +25,7 @@ FACT:
 		Type: Building.GDI
 		Factions: gdi
 		Group: Building
-		BuildSpeed: .4
+		BuildSpeed: 40
 		LowPowerSlowdown: 2
 		QueuedAudio: Building
 		ReadyAudio: ConstructionComplete
@@ -33,7 +33,7 @@ FACT:
 		Type: Building.Nod
 		Factions: nod
 		Group: Building
-		BuildSpeed: .4
+		BuildSpeed: 40
 		LowPowerSlowdown: 2
 		QueuedAudio: Building
 		ReadyAudio: ConstructionComplete
@@ -41,7 +41,7 @@ FACT:
 		Type: Defence.GDI
 		Factions: gdi
 		Group: Defence
-		BuildSpeed: .4
+		BuildSpeed: 40
 		LowPowerSlowdown: 3
 		QueuedAudio: Building
 		ReadyAudio: ConstructionComplete
@@ -49,7 +49,7 @@ FACT:
 		Type: Defence.Nod
 		Factions: nod
 		Group: Defence
-		BuildSpeed: .4
+		BuildSpeed: 40
 		LowPowerSlowdown: 3
 		QueuedAudio: Building
 		ReadyAudio: ConstructionComplete
@@ -260,12 +260,14 @@ PYLE:
 		Type: Infantry.GDI
 		Group: Infantry
 		RequireOwner: false
-		BuildSpeed: .4
+		BuildSpeed: 40
 		LowPowerSlowdown: 3
 	ProductionBar:
 	Power:
 		Amount: -20
 	ProvidesPrerequisite@buildingname:
+	Selectable:
+		Bounds: 48,42,0,-5
 
 HAND:
 	Inherits: ^BaseBuilding
@@ -298,14 +300,14 @@ HAND:
 		Type: Infantry.Nod
 		Group: Infantry
 		RequireOwner: false
-		BuildSpeed: .4
+		BuildSpeed: 40
 		LowPowerSlowdown: 3
 	ProductionBar:
 	Power:
 		Amount: -20
 	ProvidesPrerequisite@buildingname:
 	Selectable:
-		Bounds: 48,48,0,10
+		Bounds: 48,60,0,-3
 
 AFLD:
 	Inherits: ^BaseBuilding
@@ -342,7 +344,7 @@ AFLD:
 		Type: Vehicle.Nod
 		Group: Vehicle
 		RequireOwner: false
-		BuildSpeed: .4
+		BuildSpeed: 40
 		LowPowerSlowdown: 3
 		ReadyAudio:
 	ProductionBar:
@@ -367,7 +369,9 @@ WEAP:
 		Footprint: ___ xxx ===
 		Dimensions: 3,3
 	Selectable:
-		Bounds: 72,48,0,12
+		Bounds: 72,54,0,5
+	SelectionDecorations:
+		VisualBounds: 72,64,0,-5
 	Health:
 		HP: 1000
 	RevealsShroud:
@@ -387,7 +391,7 @@ WEAP:
 		Type: Vehicle.GDI
 		RequireOwner: false
 		Group: Vehicle
-		BuildSpeed: .4
+		BuildSpeed: 40
 		LowPowerSlowdown: 3
 	ProductionBar:
 	Power:
@@ -424,13 +428,13 @@ HPAD:
 		Type: Aircraft.GDI
 		Factions: gdi
 		Group: Aircraft
-		BuildSpeed: .4
+		BuildSpeed: 40
 		LowPowerSlowdown: 3
 	ProductionQueue@Nod:
 		Type: Aircraft.Nod
 		Factions: nod
 		Group: Aircraft
-		BuildSpeed: .4
+		BuildSpeed: 40
 		LowPowerSlowdown: 3
 	ProductionBar@GDI:
 		ProductionType: Aircraft.GDI
@@ -457,7 +461,9 @@ HQ:
 		Footprint: x_ xx
 		Dimensions: 2,2
 	Selectable:
-		Bounds: 48,36,0,12
+		Bounds: 48,40,0,9
+	SelectionDecorations:
+		VisualBounds: 48,53,0,-4
 	RequiresPower:
 	CanPowerDown:
 		PowerupSound: EnablePower
@@ -546,7 +552,9 @@ EYE:
 		Footprint: x_ xx
 		Dimensions: 2,2
 	Selectable:
-		Bounds: 48,36,0,12
+		Bounds: 48,40,0,9
+	SelectionDecorations:
+		VisualBounds: 48,53,0,-4
 	RequiresPower:
 	CanPowerDown:
 		PowerupSound: EnablePower
@@ -599,7 +607,9 @@ TMPL:
 		Footprint: ___ xxx xxx
 		Dimensions: 3,3
 	Selectable:
-		Bounds: 72,48,0,16
+		Bounds: 72,60,0,9
+	SelectionDecorations:
+		VisualBounds: 72,72,0,-3
 	RequiresPower:
 	CanPowerDown:
 		PowerupSound: EnablePower
@@ -657,7 +667,7 @@ GUN:
 	Bib:
 		HasMinibib: Yes
 	Turreted:
-		ROT: 12
+		TurnSpeed: 12
 		InitialFacing: 56
 	-WithSpriteBody:
 	WithTurretedSpriteBody:
@@ -700,7 +710,7 @@ SAM:
 	RevealsShroud:
 		Range: 8c0
 	Turreted:
-		ROT: 10
+		TurnSpeed: 10
 		InitialFacing: 0
 		RealignDelay: -1
 	-WithSpriteBody:
@@ -754,7 +764,7 @@ OBLI:
 		FireDelay: 0
 	AttackCharge:
 		ChargeAudio: obelpowr.aud
-		ReloadTime: 40
+		ReloadDelay: 40
 		InitialChargeDelay: 50
 	-EmitInfantryOnSell:
 	DetectCloaked:
@@ -793,7 +803,7 @@ GTWR:
 		Range: 3c0
 	WithMuzzleOverlay:
 	Turreted:
-		ROT: 255
+		TurnSpeed: 255
 	Power:
 		Amount: -10
 
@@ -816,7 +826,7 @@ ATWR:
 	Selectable:
 		Bounds: 24,24,0,12
 	SelectionDecorations:
-		VisualBounds: 22,40,0,4
+		VisualBounds: 24,48,0,-3
 	RequiresPower:
 	DisabledOverlay:
 	Health:
@@ -828,7 +838,7 @@ ATWR:
 	Bib:
 		HasMinibib: Yes
 	Turreted:
-		ROT: 255
+		TurnSpeed: 255
 		Offset: 128,128,0
 	Armament@PRIMARY:
 		Weapon: TowerMissle

@@ -1,0 +1,144 @@
+World:
+	LuaScript:
+		Scripts: gdi05b.lua
+	MusicPlaylist:
+		StartingMusic: rain
+	MissionData:
+		Briefing: A GDI field base is under attack. They have fended off one attack but will not survive another.\n\nMove to the base, repair the structures and then launch a strike force to destroy the Nod base in the area.\n\nDestroy all Nod units and structures.
+		BackgroundVideo: podium.vqa
+		BriefingVideo: gdi5.vqa
+		StartVideo: seige.vqa
+		WinVideo: nodlose.vqa
+		LossVideo: gdilose.vqa
+	SmudgeLayer@SCORCH:
+		InitialSmudges:
+			15,56: sc3,0
+			40,53: sc2,0
+			24,53: sc2,0
+			39,52: sc5,0
+			24,52: sc1,0
+			39,51: sc4,0
+
+Player:
+	EnemyWatcher:
+	PlayerResources:
+		DefaultCash: 4000
+
+^Palettes:
+	IndexedPlayerPalette:
+		PlayerIndex:
+			AbandonedBase: 176, 177, 178, 179, 180, 181, 182, 183, 184, 185, 186, 187, 188, 189, 190, 191
+	IndexedPlayerPalette@units:
+		PlayerIndex:
+			AbandonedBase: 176, 177, 178, 179, 180, 181, 182, 183, 184, 185, 186, 187, 188, 189, 190, 191
+
+^Building:
+	AnnounceOnSeen:
+
+SBAG:
+	Buildable:
+		Prerequisites: ~disabled
+
+GTWR:
+	Buildable:
+		Prerequisites: ~disabled
+
+ATWR:
+	Buildable:
+		Prerequisites: ~disabled
+
+WEAP:
+	Buildable:
+		Prerequisites: ~disabled
+
+CYCL:
+	Buildable:
+		Prerequisites: ~disabled
+
+NUK2:
+	Buildable:
+		Prerequisites: ~disabled
+
+FIX:
+	Buildable:
+		Prerequisites: ~disabled
+
+HPAD:
+	Buildable:
+		Prerequisites: ~disabled
+
+BRIK:
+	Buildable:
+		Prerequisites: ~disabled
+
+EYE:
+	Buildable:
+		Prerequisites: ~disabled
+
+GUN:
+	Buildable:
+		Prerequisites: ~disabled
+
+OBLI:
+	Buildable:
+		Prerequisites: ~disabled
+
+TMPL:
+	Buildable:
+		Prerequisites: ~disabled
+
+E2:
+	Buildable:
+		Prerequisites: ~pyle
+
+E3:
+	Buildable:
+		Prerequisites: ~disabled
+
+HARV:
+	Buildable:
+		Prerequisites: ~disabled
+
+MTNK:
+	Buildable:
+		Prerequisites: ~disabled
+
+HTNK:
+	Buildable:
+		Prerequisites: ~disabled
+
+RMBO:
+	Buildable:
+		Prerequisites: ~disabled
+
+MSAM:
+	Buildable:
+		Prerequisites: ~disabled
+
+MCV:
+	Buildable:
+		Prerequisites: ~disabled
+
+FTNK:
+	Buildable:
+		Prerequisites: ~disabled
+
+airstrike.proxy:
+	AlwaysVisible:
+	AirstrikePower:
+		Icon: airstrike
+		StartFullyCharged: True
+		ChargeTime: 120
+		SquadSize: 1
+		QuantizedFacings: 8
+		Description: Air Strike
+		LongDesc: Deploy an aerial napalm strike.\nBurns buildings and infantry along a line.
+		EndChargeSound: airredy1.aud
+		SelectTargetSound: select1.aud
+		InsufficientPowerSound: nopower1.aud
+		IncomingSound: enemya.aud
+		UnitType: a10
+		DisplayBeacon: True
+		BeaconPoster: airstrike
+		DisplayRadarPing: True
+		CameraActor: camera
