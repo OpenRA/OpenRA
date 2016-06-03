@@ -45,7 +45,7 @@ return {
         filepath = winapi.short_path(filepath)
       end
     end
-    local params = ide.config.arg.any or ide.config.arg.lua
+    local params = self:GetCommandLineArg("lua")
     local code = ([[-e "io.stdout:setvbuf('no')" "%s"]]):format(filepath)
     local cmd = '"'..exe..'" '..code..(params and " "..params or "")
 

@@ -73,7 +73,7 @@ return {
         filepath = winapi.short_path(filepath)
       end
     end
-    local params = ide.config.arg.any or ide.config.arg.gslshell
+    local params = self:GetCommandLineArg()
     local code = ([[-e "io.stdout:setvbuf('no')" "%s"]]):format(filepath)
     local cmd = '"'..gslshell..'" '..code..(params and " "..params or "")
 

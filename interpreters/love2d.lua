@@ -47,7 +47,7 @@ return {
     local cwc = uhw and uhw.ConsoleWindowClass
     if uhw then uhw.ConsoleWindowClass = 0 end
 
-    local params = ide.config.arg.any or ide.config.arg.love2d
+    local params = self:GetCommandLineArg()
     local cmd = ('"%s" "%s"%s%s'):format(love2d, self:fworkdir(wfilename),
       params and " "..params or "", rundebug and ' -debug' or '')
     -- CommandLineRun(cmd,wdir,tooutput,nohide,stringcallback,uid,endcallback)
