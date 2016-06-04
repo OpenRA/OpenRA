@@ -212,7 +212,7 @@ function findReplace:Find(reverse)
       local start = editor:GetTargetStart()
       local finish = editor:GetTargetEnd()
       editor:SetSelection(start, finish)
-      editor:ScrollRange(finish, start)
+      editor:ShowRange(finish, start)
     end
   end
   self:SetStatus(msg)
