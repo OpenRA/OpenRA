@@ -21,6 +21,7 @@ ID_OPEN             = linux and NewID() or wx.wxID_OPEN
 ID_CLOSE            = NewID()
 ID_CLOSEALL         = NewID()
 ID_CLOSEOTHER       = NewID()
+ID_CLOSESEARCHRESULTS = NewID()
 ID_NEWFILE          = NewID()
 ID_NEWDIRECTORY     = NewID()
 ID_RENAMEFILE       = NewID()

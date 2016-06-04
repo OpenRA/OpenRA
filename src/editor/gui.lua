@@ -165,6 +165,10 @@ local function getTabWindow(event, nb)
   return idx ~= wx.wxNOT_FOUND and nb:GetPageIndex(tabctrl:GetPage(idx).window) or wx.wxNOT_FOUND, tabctrl
 end
 
+local function isPreview(win)
+  return ide.findReplace ~= nil and ide.findReplace:IsPreview(win)
+end
+
 local function createNotebook(frame)
   -- notebook for editors
   local notebook = wxaui.wxAuiNotebook(frame, wx.wxID_ANY,
@@ -260,6 +264,7 @@ local function createNotebook(frame)
         { ID_CLOSE, TR("&Close Page") },
         { ID_CLOSEALL, TR("Close A&ll Pages") },
         { ID_CLOSEOTHER, TR("Close &Other Pages") },
+        { ID_CLOSESEARCHRESULTS, TR("Close Search Results Pages") },
         { },
         { ID_SAVE, TR("&Save") },
         { ID_SAVEAS, TR("Save &As...") },
@@ -275,7 +280,7 @@ local function createNotebook(frame)
 
   local function IfAtLeastOneTab(event) event:Enable(notebook:GetPageCount() > 0) end
 
-  notebook:Connect(ID_SAVE, wx.wxEVT_COMMAND_MENU_SELECTED, function ()
+  notebook:Connect(ID_SAVE, wx.wxEVT_COMMAND_MENU_SELECTED, function()
       ide:GetDocument(GetEditor(selection)):Save()
     end)
   notebook:Connect(ID_SAVE, wx.wxEVT_UPDATE_UI, function(event)
@@ -296,13 +301,27 @@ local function createNotebook(frame)
   notebook:Connect(ID_CLOSEALL, wx.wxEVT_COMMAND_MENU_SELECTED, function()
       ide:DoWhenIdle(function() CloseAllPagesExcept(nil) end)
     end)
-  notebook:Connect(ID_CLOSEOTHER, wx.wxEVT_COMMAND_MENU_SELECTED, function ()
+  notebook:Connect(ID_CLOSEOTHER, wx.wxEVT_COMMAND_MENU_SELECTED, function()
       ide:DoWhenIdle(function() CloseAllPagesExcept(selection) end)
+    end)
+  notebook:Connect(ID_CLOSESEARCHRESULTS, wx.wxEVT_COMMAND_MENU_SELECTED, function()
+      ide:DoWhenIdle(function()
+          for p = notebook:GetPageCount()-1, 0, -1 do
+            if isPreview(notebook:GetPage(p)) then ClosePage(p) end
+          end
+        end)
     end)
   notebook:Connect(ID_CLOSE, wx.wxEVT_UPDATE_UI, IfAtLeastOneTab)
   notebook:Connect(ID_CLOSEALL, wx.wxEVT_UPDATE_UI, IfAtLeastOneTab)
-  notebook:Connect(ID_CLOSEOTHER, wx.wxEVT_UPDATE_UI, function (event)
+  notebook:Connect(ID_CLOSEOTHER, wx.wxEVT_UPDATE_UI, function(event)
       event:Enable(notebook:GetPageCount() > 1)
+    end)
+  notebook:Connect(ID_CLOSESEARCHRESULTS, wx.wxEVT_UPDATE_UI, function(event)
+      local ispreview = false
+      for p = 0, notebook:GetPageCount()-1 do
+        ispreview = ispreview or isPreview(notebook:GetPage(p))
+      end
+      event:Enable(ispreview)
     end)
 
   notebook:Connect(ID_SHOWLOCATION, wx.wxEVT_COMMAND_MENU_SELECTED, function()
@@ -316,10 +335,6 @@ local function createNotebook(frame)
 
   frame.notebook = notebook
   return notebook
-end
-
-local function isPreview(win)
-  return ide.findReplace ~= nil and ide.findReplace:IsPreview(win)
 end
 
 local function addDND(notebook)
