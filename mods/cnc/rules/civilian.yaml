@@ -500,6 +500,24 @@ C10:
 	Inherits: ^CivInfantry
 	Inherits@armed: ^ArmedCivilian
 
+DELPHI:
+	Inherits: ^CivInfantry
+	Inherits@armed: ^ArmedCivilian
+	Tooltip:
+		Name: Agent Delphi
+
+CHAN:
+	Inherits: ^CivInfantry
+	Tooltip:
+		Name: Dr. Chan
+
+MOEBIUS:
+	Inherits: ^CivInfantry
+	Voiced:
+		VoiceSet: MoebiusVoice
+	Tooltip:
+		Name: Dr. Moebius
+
 VICE:
 	Inherits: ^Viceroid
 	AttackWander:
