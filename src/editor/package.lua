@@ -410,7 +410,13 @@ function ide:CreateStyledTextCtrl(...)
 
   -- wxSTC included with wxlua didn't have ScrollRange defined, so substitute if not present
   if not ide:IsValidProperty(editor, "ScrollRange") then
-    function editor:ScrollRange(secondary, primary) self:ShowPosEnforcePolicy(primary) end
+    function editor:ScrollRange(secondary, primary) end
+  end
+
+  -- ScrollRange moves to the correct position, but doesn't unfold folded region
+  function editor:ShowRange(secondary, primary)
+    self:ShowPosEnforcePolicy(primary)
+    self:ScrollRange(secondary, primary)
   end
 
   function editor:ClearAny()
