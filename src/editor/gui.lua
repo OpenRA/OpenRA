@@ -318,6 +318,10 @@ local function createNotebook(frame)
   return notebook
 end
 
+local function isPreview(win)
+  return ide.findReplace ~= nil and ide.findReplace:IsPreview(win)
+end
+
 local function addDND(notebook)
   -- this handler allows dragging tabs into this notebook
   notebook:Connect(wxaui.wxEVT_COMMAND_AUINOTEBOOK_ALLOW_DND,
@@ -333,7 +337,7 @@ local function addDND(notebook)
         if winid == ide:GetOutput():GetId()
         or winid == ide:GetConsole():GetId()
         or winid == ide:GetProjectTree():GetId()
-        or ide.findReplace:IsPreview(win) -- search results preview
+        or isPreview(win) -- search results preview
         then return end
 
         local mgr = ide.frame.uimgr
@@ -441,8 +445,7 @@ local function createBottomNotebook(frame)
       if idx == wx.wxNOT_FOUND then return end
       nb:GetPage(idx):SetFocus()
 
-      if not ide.findReplace then return end
-      local preview = ide.findReplace:IsPreview(nb:GetPage(nb:GetSelection()))
+      local preview = isPreview(nb:GetPage(nb:GetSelection()))
       local flags = nb:GetWindowStyleFlag()
       if preview and bit.band(flags, wxaui.wxAUI_NB_CLOSE_ON_ACTIVE_TAB) == 0 then
         nb:SetWindowStyleFlag(flags + wxaui.wxAUI_NB_CLOSE_ON_ACTIVE_TAB)
@@ -455,8 +458,7 @@ local function createBottomNotebook(frame)
   bottomnotebook:Connect(wxaui.wxEVT_COMMAND_AUINOTEBOOK_PAGE_CLOSE,
     function (event)
       local nb = event:GetEventObject():DynamicCast("wxAuiNotebook")
-      if ide.findReplace
-      and ide.findReplace:IsPreview(nb:GetPage(nb:GetSelection())) then
+      if isPreview(nb:GetPage(nb:GetSelection())) then
         event:Skip()
       else
         event:Veto()
