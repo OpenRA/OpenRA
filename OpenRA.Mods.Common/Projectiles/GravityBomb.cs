@@ -13,16 +13,17 @@ using System.Collections.Generic;
 using OpenRA.Effects;
 using OpenRA.GameRules;
 using OpenRA.Graphics;
+using OpenRA.Mods.Common.Effects;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.Common.Effects
+namespace OpenRA.Mods.Common.Projectiles
 {
 	public class GravityBombInfo : IProjectileInfo
 	{
 		public readonly string Image = null;
 
-		[Desc("Sequence to loop while falling.")]
-		[SequenceReference("Image")] public readonly string Sequence = "idle";
+		[Desc("Loop a randomly chosen sequence of Image from this list while falling.")]
+		[SequenceReference("Image")] public readonly string[] Sequences = { "idle" };
 
 		[Desc("Sequence to play when launched. Skipped if null or empty.")]
 		[SequenceReference("Image")] public readonly string OpenSequence = null;
@@ -33,9 +34,9 @@ namespace OpenRA.Mods.Common.Effects
 
 		[PaletteReference] public readonly string ShadowPalette = "shadow";
 
-		public readonly WDist Velocity = WDist.Zero;
+		public readonly WDist Speed = WDist.Zero;
 
-		[Desc("Value added to velocity every tick.")]
+		[Desc("Value added to speed every tick.")]
 		public readonly WDist Acceleration = new WDist(15);
 
 		public IEffect Create(ProjectileArgs args) { return new GravityBomb(this, args); }
@@ -55,7 +56,7 @@ namespace OpenRA.Mods.Common.Effects
 			this.info = info;
 			this.args = args;
 			pos = args.Source;
-			velocity = new WVec(WDist.Zero, WDist.Zero, -info.Velocity);
+			velocity = new WVec(WDist.Zero, WDist.Zero, -info.Speed);
 			acceleration = new WVec(WDist.Zero, WDist.Zero, info.Acceleration);
 
 			if (!string.IsNullOrEmpty(info.Image))
@@ -63,9 +64,9 @@ namespace OpenRA.Mods.Common.Effects
 				anim = new Animation(args.SourceActor.World, info.Image);
 
 				if (!string.IsNullOrEmpty(info.OpenSequence))
-					anim.PlayThen(info.OpenSequence, () => anim.PlayRepeating(info.Sequence));
+					anim.PlayThen(info.OpenSequence, () => anim.PlayRepeating(info.Sequences.Random(args.SourceActor.World.SharedRandom)));
 				else
-					anim.PlayRepeating(info.Sequence);
+					anim.PlayRepeating(info.Sequences.Random(args.SourceActor.World.SharedRandom));
 			}
 		}
 

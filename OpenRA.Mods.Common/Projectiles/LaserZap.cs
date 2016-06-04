@@ -14,13 +14,14 @@ using System.Drawing;
 using OpenRA.Effects;
 using OpenRA.GameRules;
 using OpenRA.Graphics;
+using OpenRA.Mods.Common.Effects;
 using OpenRA.Mods.Common.Graphics;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.Common.Effects
+namespace OpenRA.Mods.Common.Projectiles
 {
 	[Desc("Not a sprite, but an engine effect.")]
-	class LaserZapInfo : IProjectileInfo
+	public class LaserZapInfo : IProjectileInfo
 	{
 		[Desc("The width of the zap.")]
 		public readonly WDist Width = new WDist(86);
@@ -53,7 +54,7 @@ namespace OpenRA.Mods.Common.Effects
 		}
 	}
 
-	class LaserZap : IEffect
+	public class LaserZap : IEffect
 	{
 		readonly ProjectileArgs args;
 		readonly LaserZapInfo info;

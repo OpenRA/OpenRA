@@ -159,6 +159,22 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				// Streamline some projectile property names and functionality
+				if (engineVersion < 20160601)
+				{
+					if (node.Key == "Sequence")
+						node.Key = "Sequences";
+
+					if (node.Key == "TrailSequence")
+						node.Key = "TrailSequences";
+
+					if (node.Key == "Trail")
+						node.Key = "TrailImage";
+
+					if (node.Key == "Velocity")
+						node.Key = "Speed";
+				}
+
 				UpgradeWeaponRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}

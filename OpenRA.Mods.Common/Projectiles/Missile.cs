@@ -16,20 +16,20 @@ using System.Linq;
 using OpenRA.Effects;
 using OpenRA.GameRules;
 using OpenRA.Graphics;
-using OpenRA.Mods.Common;
+using OpenRA.Mods.Common.Effects;
 using OpenRA.Mods.Common.Graphics;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.Common.Effects
+namespace OpenRA.Mods.Common.Projectiles
 {
 	public class MissileInfo : IProjectileInfo
 	{
 		[Desc("Name of the image containing the projectile sequence.")]
 		public readonly string Image = null;
 
-		[Desc("Projectile sequence name.")]
-		[SequenceReference("Image")] public readonly string Sequence = "idle";
+		[Desc("Loop a randomly chosen sequence of Image from this list while this projectile is moving.")]
+		[SequenceReference("Image")] public readonly string[] Sequences = { "idle" };
 
 		[Desc("Palette used to render the projectile sequence.")]
 		[PaletteReference] public readonly string Palette = "effect";
@@ -100,19 +100,19 @@ namespace OpenRA.Mods.Common.Effects
 		[Desc("Image that contains the trail animation.")]
 		public readonly string TrailImage = null;
 
-		[Desc("Smoke sequence name.")]
-		[SequenceReference("TrailImage")] public readonly string TrailSequence = "idle";
+		[Desc("Loop a randomly chosen sequence of TrailImage from this list while this projectile is moving.")]
+		[SequenceReference("TrailImage")] public readonly string[] TrailSequences = { "idle" };
 
-		[Desc("Palette used to render the smoke sequence.")]
+		[Desc("Palette used to render the trail sequence.")]
 		[PaletteReference("TrailUsePlayerPalette")] public readonly string TrailPalette = "effect";
 
-		[Desc("Use the Player Palette to render the smoke sequence.")]
+		[Desc("Use the Player Palette to render the trail sequence.")]
 		public readonly bool TrailUsePlayerPalette = false;
 
-		[Desc("Interval in ticks between spawning smoke animation.")]
+		[Desc("Interval in ticks between spawning trail animation.")]
 		public readonly int TrailInterval = 2;
 
-		[Desc("Should smoke animation be spawned when the propulsion is not activated.")]
+		[Desc("Should trail animation be spawned when the propulsion is not activated.")]
 		public readonly bool TrailWhenDeactivated = false;
 
 		public readonly int ContrailLength = 0;
@@ -222,7 +222,7 @@ namespace OpenRA.Mods.Common.Effects
 			if (!string.IsNullOrEmpty(info.Image))
 			{
 				anim = new Animation(world, info.Image, () => renderFacing);
-				anim.PlayRepeating(info.Sequence);
+				anim.PlayRepeating(info.Sequences.Random(world.SharedRandom));
 			}
 
 			if (info.ContrailLength > 0)
@@ -817,10 +817,12 @@ namespace OpenRA.Mods.Common.Effects
 				shouldExplode = true;
 			}
 
-			// Create the smoke trail effect
+			// Create the sprite trail effect
 			if (!string.IsNullOrEmpty(info.TrailImage) && --ticksToNextSmoke < 0 && (state != States.Freefall || info.TrailWhenDeactivated))
 			{
-				world.AddFrameEndTask(w => w.Add(new SpriteEffect(pos - 3 * move / 2, w, info.TrailImage, info.TrailSequence, trailPalette, false, false, renderFacing)));
+				world.AddFrameEndTask(w => w.Add(new SpriteEffect(pos - 3 * move / 2, w, info.TrailImage, info.TrailSequences.Random(world.SharedRandom),
+					trailPalette, false, false, renderFacing)));
+
 				ticksToNextSmoke = info.TrailInterval;
 			}
 

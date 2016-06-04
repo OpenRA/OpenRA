@@ -82,7 +82,7 @@
     <Compile Include="Effects\GpsDot.cs" />
     <Compile Include="Effects\GpsSatellite.cs" />
     <Compile Include="Effects\SatelliteLaunch.cs" />
-    <Compile Include="Effects\TeslaZap.cs" />
+    <Compile Include="Projectiles\TeslaZap.cs" />
     <Compile Include="Graphics\TeslaZapRenderable.cs" />
     <Compile Include="Scripting\Properties\InfiltrateProperties.cs" />
     <Compile Include="Scripting\Properties\DisguiseProperties.cs" />

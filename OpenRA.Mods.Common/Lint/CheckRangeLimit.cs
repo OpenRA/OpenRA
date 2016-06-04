@@ -11,7 +11,7 @@
 
 using System;
 using System.Linq;
-using OpenRA.Mods.Common.Effects;
+using OpenRA.Mods.Common.Projectiles;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 

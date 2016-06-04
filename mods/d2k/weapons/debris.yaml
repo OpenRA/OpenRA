@@ -38,7 +38,7 @@ Debris2:
 		Angle: 30, 90
 		Inaccuracy: 1c256
 		Image: shrapnel2
-		Trail: bazooka_trail
+		TrailImage: bazooka_trail
 		TrailPalette: effect75alpha
 		TrailInterval: 2
 	Warhead@1Dam: SpreadDamage
@@ -72,7 +72,7 @@ Debris3:
 		Angle: 30, 90
 		Inaccuracy: 1c256
 		Image: shrapnel3
-		Trail: large_trail
+		TrailImage: large_trail
 		TrailPalette: effect75alpha
 		TrailInterval: 1
 	Warhead@1Dam: SpreadDamage
@@ -106,7 +106,7 @@ Debris4:
 		Angle: 30, 90
 		Inaccuracy: 1c256
 		Image: shrapnel4
-		Trail: large_trail
+		TrailImage: large_trail
 		TrailPalette: effect75alpha
 		TrailInterval: 1
 	Warhead@1Dam: SpreadDamage

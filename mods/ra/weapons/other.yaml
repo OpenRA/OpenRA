@@ -6,7 +6,7 @@ FireballLauncher:
 	BurstDelay: 20
 	Projectile: Bullet
 		Speed: 204
-		Trail: fb2
+		TrailImage: fb2
 		Image: FB1
 	Warhead@1Dam: SpreadDamage
 		Spread: 213
@@ -33,7 +33,7 @@ Flamer:
 	BurstDelay: 1
 	Projectile: Bullet
 		Speed: 170
-		Trail: fb4
+		TrailImage: fb4
 		Image: fb3
 		Angle: 62
 		Inaccuracy: 853

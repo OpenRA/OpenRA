@@ -27,7 +27,7 @@ FireballLauncherInterior:
 	BurstDelay: 20
 	Projectile: Bullet
 		Speed: 204
-		Trail: fb2
+		TrailImage: fb2
 		Image: FB1
 	Warhead@1Dam: SpreadDamage
 		Spread: 213
