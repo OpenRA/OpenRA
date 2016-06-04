@@ -236,9 +236,9 @@ namespace OpenRA
 			return FromFile(path).ToDictionary(x => x.Key, x => x.Value);
 		}
 
-		public static Dictionary<string, MiniYaml> DictFromStream(Stream stream)
+		public static Dictionary<string, MiniYaml> DictFromStream(Stream stream, string fileName = "<no filename available>")
 		{
-			return FromStream(stream).ToDictionary(x => x.Key, x => x.Value);
+			return FromStream(stream, fileName).ToDictionary(x => x.Key, x => x.Value);
 		}
 
 		public static List<MiniYamlNode> FromFile(string path)
@@ -385,7 +385,7 @@ namespace OpenRA
 				files = files.Append(mapFiles);
 			}
 
-			var yaml = files.Select(s => MiniYaml.FromStream(fileSystem.Open(s)));
+			var yaml = files.Select(s => MiniYaml.FromStream(fileSystem.Open(s), s));
 			if (mapRules != null && mapRules.Nodes.Any())
 				yaml = yaml.Append(mapRules.Nodes);
 

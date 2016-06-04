@@ -36,7 +36,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				{
 					include |= map.Package.Contains(f);
 					if (include)
-						nodes.AddRange(MiniYaml.FromStream(map.Open(f)));
+						nodes.AddRange(MiniYaml.FromStream(map.Open(f), f));
 					else
 						includes.Add(f);
 				}

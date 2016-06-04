@@ -24,7 +24,7 @@ namespace OpenRA.Graphics
 		{
 			var fileSystem = modData.DefaultFileSystem;
 			var sequenceYaml = MiniYaml.Merge(modData.Manifest.Cursors.Select(
-				s => MiniYaml.FromStream(fileSystem.Open(s))));
+				s => MiniYaml.FromStream(fileSystem.Open(s), s)));
 
 			var shadowIndex = new int[] { };
 

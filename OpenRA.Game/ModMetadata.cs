@@ -61,7 +61,7 @@ namespace OpenRA
 						continue;
 					}
 
-					var yaml = new MiniYaml(null, MiniYaml.FromStream(package.GetStream("mod.yaml")));
+					var yaml = new MiniYaml(null, MiniYaml.FromStream(package.GetStream("mod.yaml"), "mod.yaml"));
 					var nd = yaml.ToDictionary();
 					if (!nd.ContainsKey("Metadata"))
 					{
