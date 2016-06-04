@@ -960,10 +960,6 @@ cyborg:
 		Length: 6
 		Facings: 8
 		ShadowStart: 582
-	die5: # TODO: unused running frame 322 and following
-		Start: 292
-		Length: 14
-		ShadowStart: 662
 	die6: electro
 		Length: *
 	emp-overlay: emp_fx01
