@@ -456,39 +456,49 @@ BRIDGEHUT:
 
 C1:
 	Inherits: ^CivInfantry
+	Inherits@armed: ^ArmedCivilian
 
 C2:
 	Inherits: ^CivInfantry
+	Inherits@armed: ^ArmedCivilian
 
 C3:
 	Inherits: ^CivInfantry
+	Inherits@armed: ^ArmedCivilian
 	Voiced:
 		VoiceSet: CivilianFemaleVoice
 
 C4:
 	Inherits: ^CivInfantry
+	Inherits@armed: ^ArmedCivilian
 	Voiced:
 		VoiceSet: CivilianFemaleVoice
 
 C5:
 	Inherits: ^CivInfantry
+	Inherits@armed: ^ArmedCivilian
 	Voiced:
 		VoiceSet: CivilianFemaleVoice
 
 C6:
 	Inherits: ^CivInfantry
+	Inherits@armed: ^ArmedCivilian
 
 C7:
 	Inherits: ^CivInfantry
+	Inherits@armed: ^ArmedCivilian
 
 C8:
 	Inherits: ^CivInfantry
+	Inherits@armed: ^ArmedCivilian
 
 C9:
 	Inherits: ^CivInfantry
+	Inherits@armed: ^ArmedCivilian
 
 C10:
 	Inherits: ^CivInfantry
+	Inherits@armed: ^ArmedCivilian
 
 VICE:
 	Inherits: ^Viceroid
