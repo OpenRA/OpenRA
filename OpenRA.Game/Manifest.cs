@@ -64,7 +64,7 @@ namespace OpenRA
 		{
 			var package = ModMetadata.AllMods[modId].Package;
 
-			yaml = new MiniYaml(null, MiniYaml.FromStream(package.GetStream("mod.yaml"))).ToDictionary();
+			yaml = new MiniYaml(null, MiniYaml.FromStream(package.GetStream("mod.yaml"), "mod.yaml")).ToDictionary();
 
 			Mod = FieldLoader.Load<ModMetadata>(yaml["Metadata"]);
 			Mod.Id = modId;

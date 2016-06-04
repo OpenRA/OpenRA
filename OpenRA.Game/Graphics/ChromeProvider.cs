@@ -38,7 +38,7 @@ namespace OpenRA.Graphics
 			cachedSprites = new Dictionary<string, Dictionary<string, Sprite>>();
 
 			var chrome = MiniYaml.Merge(modData.Manifest.Chrome
-				.Select(s => MiniYaml.FromStream(fileSystem.Open(s))));
+				.Select(s => MiniYaml.FromStream(fileSystem.Open(s), s)));
 
 			foreach (var c in chrome)
 				LoadCollection(c.Key, c.Value);

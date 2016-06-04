@@ -101,7 +101,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (modData.Manifest.Missions.Any())
 			{
 				var yaml = MiniYaml.Merge(modData.Manifest.Missions.Select(
-					m => MiniYaml.FromStream(modData.DefaultFileSystem.Open(m))));
+					m => MiniYaml.FromStream(modData.DefaultFileSystem.Open(m), m)));
 
 				foreach (var kv in yaml)
 				{

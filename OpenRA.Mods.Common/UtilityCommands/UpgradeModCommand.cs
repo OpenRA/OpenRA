@@ -42,7 +42,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					continue;
 				}
 
-				var yaml = MiniYaml.FromStream(package.GetStream(name));
+				var yaml = MiniYaml.FromStream(package.GetStream(name), name);
 				processFile(engineDate, ref yaml, null, 0);
 
 				// Generate the on-disk path

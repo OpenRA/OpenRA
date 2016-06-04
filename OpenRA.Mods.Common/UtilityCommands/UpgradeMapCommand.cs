@@ -37,7 +37,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				var files = FieldLoader.GetValue<string[]>("value", yaml.Value);
 			    foreach (var filename in files)
 			    {
-			        var fileNodes = MiniYaml.FromStream(map.Package.GetStream(filename));
+			        var fileNodes = MiniYaml.FromStream(map.Package.GetStream(filename), filename);
 					processYaml(engineDate, ref fileNodes, null, 0);
 			        ((IReadWritePackage)map.Package).Update(filename, Encoding.ASCII.GetBytes(fileNodes.WriteToString()));
 			    }

@@ -243,7 +243,7 @@ namespace OpenRA
 				{
 					var mapFiles = FieldLoader.GetValue<string[]>("value", mapRules.Value);
 					foreach (var f in mapFiles)
-						if (AnyFlaggedTraits(modData, MiniYaml.FromStream(fileSystem.Open(f))))
+						if (AnyFlaggedTraits(modData, MiniYaml.FromStream(fileSystem.Open(f), f)))
 							return true;
 				}
 			}
