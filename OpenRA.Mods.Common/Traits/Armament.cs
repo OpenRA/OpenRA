@@ -249,6 +249,9 @@ namespace OpenRA.Mods.Common.Traits
 					.Select(m => m.GetReloadModifier());
 				FireDelay = Util.ApplyPercentageModifiers(Weapon.ReloadDelay, modifiers);
 				Burst = Weapon.Burst;
+
+				foreach (var nbc in self.TraitsImplementing<INotifyBurstComplete>())
+					nbc.FiredBurst(self, target, this);
 			}
 
 			return barrel;
