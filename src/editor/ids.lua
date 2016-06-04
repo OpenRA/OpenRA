@@ -11,7 +11,7 @@ function NewID()
 end
 
 -- some Ubuntu versions (Ubuntu 13.10) ignore labels on stock menu IDs,
--- so don't use stock IDs on Linux
+-- so don't use stock IDs on Linux (http://trac.wxwidgets.org/ticket/15958)
 local linux = ide.osname == 'Unix'
 
 ID_SEPARATOR        = NewID()
