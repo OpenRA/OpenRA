@@ -15,16 +15,15 @@ Maverick:
 		Image: DRAGON
 		HorizontalRateOfTurn: 5
 		CruiseAltitude: 2c0
-		RangeLimit: 10c819
+		RangeLimit: 14c410
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 70
 		ValidTargets: Ground, Water
 		Versus:
 			None: 30
-			Wood: 75
-			Light: 75
-			Concrete: 50
+			Wood: 90
+			Light: 90
 		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
@@ -76,11 +75,11 @@ Dragon:
 
 HellfireAG:
 	ReloadDelay: 60
-	Range: 4c0
+	Range: 5c0
 	MinRange: 1c256
 	Report: missile6.aud
-	Burst: 2
-	BurstDelay: 10
+	Burst: 4
+	BurstDelay: 14
 	ValidTargets: Ground, Water
 	Projectile: Missile
 		Speed: 256
@@ -90,16 +89,15 @@ HellfireAG:
 		Inaccuracy: 128
 		Image: DRAGON
 		HorizontalRateOfTurn: 10
-		RangeLimit: 4c819
+		RangeLimit: 8c512
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 60
 		ValidTargets: Ground, Water
 		Versus:
 			None: 30
-			Wood: 75
-			Light: 75
-			Concrete: 50
+			Wood: 90
+			Light: 90
 		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
@@ -114,7 +112,7 @@ HellfireAG:
 
 HellfireAA:
 	ReloadDelay: 60
-	Range: 4c0
+	Range: 5c0
 	MinRange: 1c256
 	Report: missile6.aud
 	Burst: 2
@@ -128,7 +126,7 @@ HellfireAA:
 		Inaccuracy: 128
 		Image: DRAGON
 		HorizontalRateOfTurn: 10
-		RangeLimit: 4c819
+		RangeLimit: 7c0
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 40
