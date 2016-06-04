@@ -77,20 +77,16 @@ namespace OpenRA.Network
 							NamesValues = DumpSyncTrait(syncHash.Trait)
 						});
 
-			foreach (var e in orderManager.World.Effects)
+			foreach (var sync in orderManager.World.SyncedEffects)
 			{
-				var sync = e as ISync;
-				if (sync != null)
-				{
-					var hash = Sync.Hash(sync);
-					if (hash != 0)
-						report.Effects.Add(new EffectReport()
-						{
-							Name = sync.GetType().Name,
-							Hash = hash,
-							NamesValues = DumpSyncTrait(sync)
-						});
-				}
+				var hash = Sync.Hash(sync);
+				if (hash != 0)
+					report.Effects.Add(new EffectReport()
+					{
+						Name = sync.GetType().Name,
+						Hash = hash,
+						NamesValues = DumpSyncTrait(sync)
+					});
 			}
 		}
 

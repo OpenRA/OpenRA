@@ -32,10 +32,10 @@ namespace OpenRA.Mods.RA.Projectiles
 
 		public readonly int Duration = 2;
 
-		public IEffect Create(ProjectileArgs args) { return new TeslaZap(this, args); }
+		public IProjectile Create(ProjectileArgs args) { return new TeslaZap(this, args); }
 	}
 
-	public class TeslaZap : IEffect
+	public class TeslaZap : IProjectile
 	{
 		readonly ProjectileArgs args;
 		readonly TeslaZapInfo info;

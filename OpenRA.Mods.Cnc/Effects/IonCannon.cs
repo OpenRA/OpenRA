@@ -18,7 +18,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Cnc.Effects
 {
-	public class IonCannon : IEffect
+	public class IonCannon : IProjectile
 	{
 		readonly Target target;
 		readonly Animation anim;

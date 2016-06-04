@@ -69,14 +69,14 @@ namespace OpenRA.Mods.Common.Projectiles
 		[Desc("Beam color is the player's color.")]
 		public readonly bool UsePlayerColor = false;
 
-		public IEffect Create(ProjectileArgs args)
+		public IProjectile Create(ProjectileArgs args)
 		{
 			var c = UsePlayerColor ? args.SourceActor.Owner.Color.RGB : Color;
 			return new AreaBeam(this, args, c);
 		}
 	}
 
-	public class AreaBeam : IEffect, ISync
+	public class AreaBeam : IProjectile, ISync
 	{
 		readonly AreaBeamInfo info;
 		readonly ProjectileArgs args;

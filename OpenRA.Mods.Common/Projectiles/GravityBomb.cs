@@ -39,10 +39,10 @@ namespace OpenRA.Mods.Common.Projectiles
 		[Desc("Value added to speed every tick.")]
 		public readonly WDist Acceleration = new WDist(15);
 
-		public IEffect Create(ProjectileArgs args) { return new GravityBomb(this, args); }
+		public IProjectile Create(ProjectileArgs args) { return new GravityBomb(this, args); }
 	}
 
-	public class GravityBomb : IEffect, ISync
+	public class GravityBomb : IProjectile, ISync
 	{
 		readonly GravityBombInfo info;
 		readonly Animation anim;

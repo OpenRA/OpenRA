@@ -19,7 +19,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Effects
 {
-	public class NukeLaunch : IEffect
+	public class NukeLaunch : IProjectile
 	{
 		readonly Player firedBy;
 		readonly Animation anim;
