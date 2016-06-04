@@ -183,7 +183,7 @@ namespace OpenRA.Mods.Common.Traits
 					w.Add(new FlashTarget(self));
 
 				foreach (var t in self.TraitsImplementing<INotifyCapture>())
-					t.OnCapture(self, captor, previousOwner, self.Owner);
+					t.OnCapture(self, captor, previousOwner, captor.Owner);
 			});
 		}
 
