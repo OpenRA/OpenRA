@@ -55,6 +55,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			this.modData = modData;
 			this.onStart = onStart;
+			Game.BeforeGameStart += OnGameStart;
 
 			missionList = widget.Get<ScrollPanelWidget>("MISSION_LIST");
 
@@ -149,6 +150,24 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				Ui.CloseWindow();
 				onExit();
 			};
+		}
+
+		void OnGameStart()
+		{
+			Ui.CloseWindow();
+			onStart();
+		}
+
+		bool disposed;
+		protected override void Dispose(bool disposing)
+		{
+			if (disposing && !disposed)
+			{
+				disposed = true;
+				Game.BeforeGameStart -= OnGameStart;
+			}
+
+			base.Dispose(disposing);
 		}
 
 		void CreateMissionGroup(string title, IEnumerable<MapPreview> previews)
@@ -344,11 +363,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				PlayVideo(fsPlayer, missionData.StartVideo, PlayingVideo.GameStart, () =>
 				{
 					StopVideo(fsPlayer);
-					Game.CreateAndStartLocalServer(selectedMap.Uid, orders, onStart);
+					Game.CreateAndStartLocalServer(selectedMap.Uid, orders);
 				});
 			}
 			else
-				Game.CreateAndStartLocalServer(selectedMap.Uid, orders, onStart);
+				Game.CreateAndStartLocalServer(selectedMap.Uid, orders);
 		}
 
 		class DropDownOption

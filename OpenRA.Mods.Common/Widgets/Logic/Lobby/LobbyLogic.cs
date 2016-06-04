@@ -77,7 +77,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (om.Connection.ConnectionState == ConnectionState.NotConnected)
 			{
 				// Show connection failed dialog
-				CloseWindow();
+				Ui.CloseWindow();
 
 				Action onConnect = () =>
 				{
@@ -98,17 +98,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					{ "onRetry", onRetry }
 				});
 			}
-		}
-
-		void CloseWindow()
-		{
-			orderManager.AddChatLine -= AddChatLine;
-			Game.LobbyInfoChanged -= UpdateCurrentMap;
-			Game.LobbyInfoChanged -= UpdatePlayerList;
-			Game.BeforeGameStart -= OnGameStart;
-			Game.ConnectionStateChanged -= ConnectionStateChanged;
-
-			Ui.CloseWindow();
 		}
 
 		[ObjectCreator.UseCtor]
@@ -618,7 +607,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 
 			var disconnectButton = lobby.Get<ButtonWidget>("DISCONNECT_BUTTON");
-			disconnectButton.OnClick = () => { CloseWindow(); onExit(); };
+			disconnectButton.OnClick = () => { Ui.CloseWindow(); onExit(); };
 
 			if (skirmishMode)
 				disconnectButton.Text = "Back";
@@ -714,6 +703,22 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			// Add a bot on the first lobbyinfo update
 			if (skirmishMode)
 				addBotOnMapLoad = true;
+		}
+
+		bool disposed;
+		protected override void Dispose(bool disposing)
+		{
+			if (disposing && !disposed)
+			{
+				disposed = true;
+				orderManager.AddChatLine -= AddChatLine;
+				Game.LobbyInfoChanged -= UpdateCurrentMap;
+				Game.LobbyInfoChanged -= UpdatePlayerList;
+				Game.BeforeGameStart -= OnGameStart;
+				Game.ConnectionStateChanged -= ConnectionStateChanged;
+			}
+
+			base.Dispose(disposing);
 		}
 
 		public override void Tick()
@@ -985,7 +990,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		void OnGameStart()
 		{
-			CloseWindow();
+			Ui.CloseWindow();
 			onStart();
 		}
 
