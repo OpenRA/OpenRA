@@ -5,7 +5,14 @@ tc04:
 			DESERT: TEMPERAT
 			INTERIOR: TEMPERAT
 	idle:
-	damaged-idle:
+
+tc04.husk:
+	Defaults: tc04
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+			INTERIOR: TEMPERAT
+	idle:
 		Start: 1
 	dead:
 		Start: 2
@@ -19,7 +26,14 @@ tc05:
 			DESERT: TEMPERAT
 			INTERIOR: TEMPERAT
 	idle:
-	damaged-idle:
+
+tc05.husk:
+	Defaults: tc05
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+			INTERIOR: TEMPERAT
+	idle:
 		Start: 1
 	dead:
 		Start: 2
@@ -33,7 +47,14 @@ tc03:
 			DESERT: TEMPERAT
 			INTERIOR: TEMPERAT
 	idle:
-	damaged-idle:
+
+tc03.husk:
+	Defaults: tc03
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+			INTERIOR: TEMPERAT
+	idle:
 		Start: 1
 	dead:
 		Start: 2
@@ -47,7 +68,14 @@ tc02:
 			DESERT: TEMPERAT
 			INTERIOR: TEMPERAT
 	idle:
-	damaged-idle:
+
+tc02.husk:
+	Defaults: tc02
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+			INTERIOR: TEMPERAT
+	idle:
 		Start: 1
 	dead:
 		Start: 2
@@ -60,7 +88,13 @@ tc01:
 		TilesetOverrides:
 			INTERIOR: TEMPERAT
 	idle:
-	damaged-idle:
+
+tc01.husk:
+	Defaults: tc01
+		UseTilesetExtension: true
+		TilesetOverrides:
+			INTERIOR: TEMPERAT
+	idle:
 		Start: 1
 	dead:
 		Start: 2
@@ -74,7 +108,14 @@ t17:
 			DESERT: TEMPERAT
 			INTERIOR: TEMPERAT
 	idle:
-	damaged-idle:
+
+t17.husk:
+	Defaults: t17
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+			INTERIOR: TEMPERAT
+	idle:
 		Start: 1
 	dead:
 		Start: 2
@@ -88,7 +129,14 @@ t16:
 			DESERT: TEMPERAT
 			INTERIOR: TEMPERAT
 	idle:
-	damaged-idle:
+
+t16.husk:
+	Defaults: t16
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+			INTERIOR: TEMPERAT
+	idle:
 		Start: 1
 	dead:
 		Start: 2
@@ -96,13 +144,20 @@ t16:
 		Tick: 80
 
 t15:
-	Defaults:
+	Defaults: t15
 		UseTilesetExtension: true
 		TilesetOverrides:
 			DESERT: TEMPERAT
 			INTERIOR: TEMPERAT
 	idle:
-	damaged-idle:
+
+t15.husk:
+	Defaults: t15
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+			INTERIOR: TEMPERAT
+	idle:
 		Start: 1
 	dead:
 		Start: 2
@@ -116,7 +171,14 @@ t14:
 			DESERT: TEMPERAT
 			INTERIOR: TEMPERAT
 	idle:
-	damaged-idle:
+
+t14.husk:
+	Defaults: t14
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+			INTERIOR: TEMPERAT
+	idle:
 		Start: 1
 	dead:
 		Start: 2
@@ -130,7 +192,14 @@ t13:
 			DESERT: TEMPERAT
 			INTERIOR: TEMPERAT
 	idle:
-	damaged-idle:
+
+t13.husk:
+	Defaults: t13
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+			INTERIOR: TEMPERAT
+	idle:
 		Start: 1
 	dead:
 		Start: 2
@@ -144,7 +213,14 @@ t12:
 			DESERT: TEMPERAT
 			INTERIOR: TEMPERAT
 	idle:
-	damaged-idle:
+
+t12.husk:
+	Defaults: t12
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+			INTERIOR: TEMPERAT
+	idle:
 		Start: 1
 	dead:
 		Start: 2
@@ -158,7 +234,14 @@ t11:
 			DESERT: TEMPERAT
 			INTERIOR: TEMPERAT
 	idle:
-	damaged-idle:
+
+t11.husk:
+	Defaults: t11
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+			INTERIOR: TEMPERAT
+	idle:
 		Start: 1
 	dead:
 		Start: 2
@@ -172,7 +255,14 @@ t10:
 			DESERT: TEMPERAT
 			INTERIOR: TEMPERAT
 	idle:
-	damaged-idle:
+
+t10.husk:
+	Defaults: t10
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+			INTERIOR: TEMPERAT
+	idle:
 		Start: 1
 	dead:
 		Start: 2
@@ -185,7 +275,13 @@ t08:
 		TilesetOverrides:
 			INTERIOR: TEMPERAT
 	idle:
-	damaged-idle:
+
+t08.husk:
+	Defaults: t08
+		UseTilesetExtension: true
+		TilesetOverrides:
+			INTERIOR: TEMPERAT
+	idle:
 		Start: 1
 	dead:
 		Start: 2
@@ -199,7 +295,14 @@ t07:
 			DESERT: TEMPERAT
 			INTERIOR: TEMPERAT
 	idle:
-	damaged-idle:
+
+t07.husk:
+	Defaults: t07
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+			INTERIOR: TEMPERAT
+	idle:
 		Start: 1
 	dead:
 		Start: 2
@@ -213,7 +316,14 @@ t06:
 			DESERT: TEMPERAT
 			INTERIOR: TEMPERAT
 	idle:
-	damaged-idle:
+
+t06.husk:
+	Defaults: t06
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+			INTERIOR: TEMPERAT
+	idle:
 		Start: 1
 	dead:
 		Start: 2
@@ -227,7 +337,14 @@ t05:
 			DESERT: TEMPERAT
 			INTERIOR: TEMPERAT
 	idle:
-	damaged-idle:
+
+t05.husk:
+	Defaults: t05
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+			INTERIOR: TEMPERAT
+	idle:
 		Start: 1
 	dead:
 		Start: 2
@@ -241,7 +358,56 @@ t03:
 			DESERT: TEMPERAT
 			INTERIOR: TEMPERAT
 	idle:
-	damaged-idle:
+
+t03.husk:
+	Defaults: t03
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+			INTERIOR: TEMPERAT
+	idle:
+		Start: 1
+	dead:
+		Start: 2
+		Length: 8
+		Tick: 80
+
+t02:
+	Defaults:
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+			INTERIOR: TEMPERAT
+	idle:
+
+t02.husk:
+	Defaults: t02
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+			INTERIOR: TEMPERAT
+	idle:
+		Start: 1
+	dead:
+		Start: 2
+		Length: 8
+		Tick: 80
+
+t01:
+	Defaults:
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+			INTERIOR: TEMPERAT
+	idle:
+
+t01.husk:
+	Defaults: t01
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+			INTERIOR: TEMPERAT
+	idle:
 		Start: 1
 	dead:
 		Start: 2
@@ -272,34 +438,6 @@ ice05:
 	idle: ice05.sno
 		Length: *
 		AddExtension: false
-
-t02:
-	Defaults:
-		UseTilesetExtension: true
-		TilesetOverrides:
-			DESERT: TEMPERAT
-			INTERIOR: TEMPERAT
-	idle:
-	damaged-idle:
-		Start: 1
-	dead:
-		Start: 2
-		Length: 8
-		Tick: 80
-
-t01:
-	Defaults:
-		UseTilesetExtension: true
-		TilesetOverrides:
-			DESERT: TEMPERAT
-			INTERIOR: TEMPERAT
-	idle:
-	damaged-idle:
-		Start: 1
-	dead:
-		Start: 2
-		Length: 8
-		Tick: 80
 
 v01:
 	Defaults:
@@ -650,9 +788,28 @@ t04:
 	Defaults:
 		AddExtension: false
 	idle: t04.des
-	damaged-idle: t04.des
+
+t04.husk:
+	Defaults: t04.des
+		AddExtension: false
+	idle:
 		Start: 1
 	dead: t04.des
+		Start: 2
+		Length: 8
+		Tick: 80
+
+t09:
+	Defaults:
+		AddExtension: false
+	idle: t09.des
+
+t09.husk:
+	Defaults: t09
+		AddExtension: false
+	idle: t09.des
+		Start: 1
+	dead: t09.des
 		Start: 2
 		Length: 8
 		Tick: 80

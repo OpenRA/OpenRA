@@ -1,4 +1,5 @@
 FireballLauncher:
+	ValidTargets: Ground, Water, Trees
 	ReloadDelay: 65
 	Range: 5c0
 	Burst: 2
@@ -10,13 +11,14 @@ FireballLauncher:
 	Warhead@1Dam: SpreadDamage
 		Spread: 213
 		Damage: 150
+		ValidTargets: Ground, Water, Trees
 		Versus:
 			None: 90
 			Wood: 50
 			Light: 60
 			Heavy: 25
 			Concrete: 50
-		DamageTypes: Prone50Percent, TriggerProne, FireDeath
+		DamageTypes: Prone50Percent, TriggerProne, FireDeath, Incendiary
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Scorch
 	Warhead@3Eff: CreateEffect
@@ -24,6 +26,7 @@ FireballLauncher:
 		ImpactSounds: firebl3.aud
 
 Flamer:
+	ValidTargets: Ground, Water, Trees
 	ReloadDelay: 50
 	Range: 5c0
 	Burst: 15
@@ -37,13 +40,14 @@ Flamer:
 	Warhead@1Dam: SpreadDamage
 		Spread: 341
 		Damage: 8
+		ValidTargets: Ground, Water, Trees
 		Versus:
 			None: 90
 			Wood: 100
 			Light: 60
 			Heavy: 25
 			Concrete: 50
-		DamageTypes: Prone50Percent, TriggerProne, FireDeath
+		DamageTypes: Prone50Percent, TriggerProne, FireDeath, Incendiary
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Scorch
 	Warhead@3Eff: CreateEffect
@@ -51,6 +55,7 @@ Flamer:
 		ImpactSounds: firebl3.aud
 
 Napalm:
+	ValidTargets: Ground, Water, Trees
 	ReloadDelay: 20
 	Range: 4c512
 	Projectile: Bullet
@@ -60,12 +65,13 @@ Napalm:
 	Warhead@1Dam: SpreadDamage
 		Spread: 170
 		Damage: 100
+		ValidTargets: Ground, Water, Trees
 		Versus:
 			None: 90
 			Light: 60
 			Heavy: 25
 			Concrete: 50
-		DamageTypes: Prone50Percent, TriggerProne, FireDeath
+		DamageTypes: Prone50Percent, TriggerProne, FireDeath, Incendiary
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Scorch
 	Warhead@3Eff: CreateEffect
