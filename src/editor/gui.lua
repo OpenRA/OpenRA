@@ -480,6 +480,50 @@ local function createBottomNotebook(frame)
       end
     end)
 
+  local selection
+  bottomnotebook:Connect(wxaui.wxEVT_COMMAND_AUINOTEBOOK_TAB_RIGHT_UP,
+    function (event)
+      -- event:GetSelection() returns the index *inside the current tab*;
+      -- for split notebooks, this may not be the same as the index
+      -- in the notebook we are interested in here
+      local idx = event:GetSelection()
+      if idx == wx.wxNOT_FOUND then return end
+      local tabctrl = event:GetEventObject():DynamicCast("wxAuiTabCtrl")
+
+      -- save tab index the event is for
+      selection = bottomnotebook:GetPageIndex(tabctrl:GetPage(idx).window)
+
+      local menu = ide:MakeMenu {
+        { ID_CLOSE, TR("&Close Page") },
+        { ID_CLOSESEARCHRESULTS, TR("Close Search Results Pages") },
+      }
+
+      PackageEventHandle("onMenuOutputTab", menu, bottomnotebook, event, selection)
+
+      bottomnotebook:PopupMenu(menu)
+    end)
+
+  bottomnotebook:Connect(ID_CLOSE, wx.wxEVT_COMMAND_MENU_SELECTED, function()
+      ide:DoWhenIdle(function() bottomnotebook:DeletePage(selection) end)
+    end)
+  bottomnotebook:Connect(ID_CLOSE, wx.wxEVT_UPDATE_UI, function(event)
+      event:Enable(isPreview(bottomnotebook:GetPage(selection)))
+    end)
+  bottomnotebook:Connect(ID_CLOSESEARCHRESULTS, wx.wxEVT_COMMAND_MENU_SELECTED, function()
+      ide:DoWhenIdle(function()
+          for p = bottomnotebook:GetPageCount()-1, 0, -1 do
+            if isPreview(bottomnotebook:GetPage(p)) then bottomnotebook:DeletePage(p) end
+          end
+        end)
+    end)
+  bottomnotebook:Connect(ID_CLOSESEARCHRESULTS, wx.wxEVT_UPDATE_UI, function(event)
+      local ispreview = false
+      for p = 0, bottomnotebook:GetPageCount()-1 do
+        ispreview = ispreview or isPreview(bottomnotebook:GetPage(p))
+      end
+      event:Enable(ispreview)
+    end)
+
   local errorlog = ide:CreateStyledTextCtrl(bottomnotebook, wx.wxID_ANY,
     wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxBORDER_NONE)
 

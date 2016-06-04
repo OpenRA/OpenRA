@@ -42,6 +42,7 @@ local events = {
   onMenuEditor =       function(self, menu, editor, event) end,
   onMenuEditorTab =    function(self, menu, notebook, event, index) end,
   onMenuOutput =       function(self, menu, editor, event) end,
+  onMenuOutputTab =    function(self, menu, notebook, event, index) end,
   onMenuConsole =      function(self, menu, editor, event) end,
   onMenuFiletree =     function(self, menu, tree, event) end,
   onMenuOutline =      function(self, menu, tree, event) end,
