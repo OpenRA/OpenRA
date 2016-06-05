@@ -381,6 +381,7 @@
 	UpgradeOnDamage@CRITICAL:
 		Upgrades: criticalspeed
 		ValidDamageStates: Critical
+		GrantPermanently: true
 	SpeedMultiplier@CRITICAL:
 		UpgradeTypes: criticalspeed
 		Modifier: 50
