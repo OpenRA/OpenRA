@@ -418,12 +418,13 @@ SCUD:
 		Spread: 341
 		Damage: 45
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
+		ValidTargets: Ground, Trees
 		Versus:
 			None: 90
 			Wood: 75
 			Light: 70
 			Heavy: 40
-		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
+		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath, Incendiary
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
