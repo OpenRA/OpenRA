@@ -338,7 +338,7 @@
 		Probability: 10
 		OwnerType: InternalName
 		InternalOwner: Creeps
-		DeathType: EnergyDeath # TODO: FIX ME! (Tiberium currently uses the wrong damage type!)
+		DeathType: TriggerVisceroid
 		RequiresLobbyCreeps: true
 	SpawnActorOnDeath@FLAMEGUY:
 		Actor: FLAMEGUY
