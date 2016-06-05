@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
@@ -46,10 +47,15 @@ namespace OpenRA.Mods.Common.Traits.Render
 			var anim = new Animation(init.World, image, () => t.InitialFacing);
 			anim.Play(RenderSprites.NormalizeSequence(anim, init.GetDamageState(), Sequence));
 
-			var turretOrientation = body.QuantizeOrientation(new WRot(WAngle.Zero, WAngle.Zero, WAngle.FromFacing(t.InitialFacing)), facings);
-			var turretOffset = body.LocalToWorld(t.Offset.Rotate(turretOrientation));
+			var turretOrientation = body.QuantizeOrientation(WRot.FromFacing(t.InitialFacing), facings);
+			Func<WVec> turretOffset = () => body.LocalToWorld(t.Offset.Rotate(turretOrientation));
+			Func<int> zOffset = () =>
+			{
+				var tmpOffset = turretOffset();
+				return tmpOffset.Y + tmpOffset.Z;
+			};
 
-			yield return new SpriteActorPreview(anim, turretOffset, turretOffset.Y + turretOffset.Z, p, rs.Scale);
+			yield return new SpriteActorPreview(anim, turretOffset, zOffset, p, rs.Scale);
 		}
 	}
 

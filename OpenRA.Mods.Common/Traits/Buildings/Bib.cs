@@ -61,7 +61,7 @@ namespace OpenRA.Mods.Common.Traits
 
 				// Z-order is one set to the top of the footprint
 				var offset = map.CenterOfCell(cell) - map.CenterOfCell(location) - centerOffset;
-				yield return new SpriteActorPreview(anim, offset, -(offset.Y + centerOffset.Y + 512), p, rs.Scale);
+				yield return new SpriteActorPreview(anim, () => offset, () => -(offset.Y + centerOffset.Y + 512), p, rs.Scale);
 			}
 		}
 	}

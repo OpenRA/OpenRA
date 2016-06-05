@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits.Render;
 using OpenRA.Traits;
@@ -64,7 +65,8 @@ namespace OpenRA.Mods.Common.Traits
 			var body = self.Trait<BodyOrientation>();
 
 			// TODO: Carry orientation over from the parent instead of just facing
-			var bodyFacing = init.Contains<FacingInit>() ? init.Get<FacingInit, int>() : 0;
+			var bodyFacing = init.Contains<DynamicFacingInit>() ? init.Get<DynamicFacingInit, Func<int>>()()
+				: init.Contains<FacingInit>() ? init.Get<FacingInit, int>() : 0;
 			facing = WAngle.FromFacing(Turreted.GetInitialTurretFacing(init, 0));
 
 			// Calculate final position

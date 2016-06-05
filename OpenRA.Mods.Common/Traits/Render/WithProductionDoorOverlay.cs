@@ -31,7 +31,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 			var bi = init.Actor.TraitInfo<BuildingInfo>();
 			var offset = FootprintUtils.CenterOffset(init.World, bi).Y + 512; // Additional 512 units move from center -> top of cell
-			yield return new SpriteActorPreview(anim, WVec.Zero, offset, p, rs.Scale);
+			yield return new SpriteActorPreview(anim, () => WVec.Zero, () => offset, p, rs.Scale);
 		}
 	}
 

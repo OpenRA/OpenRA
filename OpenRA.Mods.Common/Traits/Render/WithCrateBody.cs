@@ -34,7 +34,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		{
 			var anim = new Animation(init.World, rs.Image, () => 0);
 			anim.PlayRepeating(RenderSprites.NormalizeSequence(anim, init.GetDamageState(), IdleSequence));
-			yield return new SpriteActorPreview(anim, WVec.Zero, 0, p, rs.Scale);
+			yield return new SpriteActorPreview(anim, () => WVec.Zero, () => 0, p, rs.Scale);
 		}
 	}
 
