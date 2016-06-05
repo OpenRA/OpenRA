@@ -23,7 +23,7 @@ LtRail:
 			Light: 150
 			Heavy: 110
 			Concrete: 5
-		DamageTypes: Prone100Percent, TriggerProne, SmallExplosionDeath
+		DamageTypes: Prone100Percent, TriggerProne, ExplosionDeath
 	Warhead@2Dam: SpreadDamage
 		Range: 0, 32
 		Falloff: 50, 50 # Only does half damage to friendly units
@@ -37,7 +37,7 @@ LtRail:
 			Light: 150
 			Heavy: 110
 			Concrete: 5
-		DamageTypes: Prone100Percent, TriggerProne, SmallExplosionDeath
+		DamageTypes: Prone100Percent, TriggerProne, ExplosionDeath
 
 MechRailgun:
 	ReloadDelay: 60
@@ -62,7 +62,7 @@ MechRailgun:
 			Light: 160
 			Heavy: 100
 			Concrete: 25
-		DamageTypes: Prone100Percent, TriggerProne, FireDeath
+		DamageTypes: Prone100Percent, TriggerProne, ExplosionDeath
 
 SonicZap:
 	ReloadDelay: 180
@@ -87,7 +87,7 @@ SonicZap:
 		Versus:
 			Heavy: 80
 			Concrete: 60
-		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
+		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
 	Warhead@2Dam: SpreadDamage
 		Range: 0, 32
 		Falloff: 50, 50
@@ -98,7 +98,7 @@ SonicZap:
 		Versus:
 			Heavy: 80
 			Concrete: 60
-		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
+		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
 
 CyCannon:
 	ReloadDelay: 50

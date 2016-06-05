@@ -35,11 +35,7 @@
 		Start: 149
 		Length: 15
 		ShadowStart: 441
-	die3:
-		Start: 149
-		Length: 15
-		ShadowStart: 441
-	die4: s_bang34
+	die3: s_bang34
 		Length: *
 	die-crushed:
 		Start: 159
@@ -52,7 +48,7 @@
 		Length: 2
 		Facings: 8
 		ShadowStart: 552
-	die6: electro
+	die5: electro
 		Length: *
 
 ^BasicInfantryAttack:
@@ -308,11 +304,7 @@ medic:
 		Start: 149
 		Length: 15
 		ShadowStart: 455
-	die3:
-		Start: 149
-		Length: 15
-		ShadowStart: 455
-	die4: s_bang34
+	die3: s_bang34
 		Length: *
 	die-crushed:
 		Start: 159
@@ -329,7 +321,7 @@ medic:
 		Start: 292
 		Length: 14
 		ShadowStart: 599
-	die6: electro
+	die5: electro
 		Length: *
 	icon: mediicon
 
@@ -368,11 +360,7 @@ jumpjet:
 		Start: 445
 		Length: 6
 		ShadowStart: 896
-	die3: # TODO: animation for falling from sky starts at 436
-		Start: 445
-		Length: 6
-		ShadowStart: 896
-	die4: s_bang34
+	die3: s_bang34
 		Length: *
 	die-crushed:
 		Start: 450
@@ -394,7 +382,7 @@ jumpjet:
 		Length: 2
 		Facings: 8
 		ShadowStart: 711
-	die6: electro
+	die5: electro
 		Length: *
 	icon: jjeticon
 
@@ -453,14 +441,10 @@ weedguy:
 		Length: 11
 		ShadowStart: 368
 	die4:
-		Start: 197
-		Length: 5
-		ShadowStart: 399
-	die5:
 		Start: 177
 		Length: 20
 		ShadowStart: 379
-	die6: electro
+	die5: electro
 		Length: *
 	die-crushed:
 		Start: 174
@@ -503,11 +487,7 @@ doggie:
 		Start: 99
 		Length: 10
 		ShadowStart: 218
-	die3:
-		Start: 99
-		Length: 10
-		ShadowStart: 218
-	die4: s_bang34
+	die3: s_bang34
 		Length: *
 	die-crushed:
 		Start: 105
@@ -515,11 +495,11 @@ doggie:
 		ShadowStart: 224
 		Tick: 800
 		ZOffset: -511
-	die5:
+	die4:
 		Start: 109
 		Length: 10
 		ShadowStart: 228
-	die6:
+	die5:
 		Start: 109
 		Length: 10
 		ShadowStart: 228

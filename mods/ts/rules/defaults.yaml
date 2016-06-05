@@ -309,23 +309,22 @@
 		DeathTypes:
 			BulletDeath: 1
 			SmallExplosionDeath: 2
-			HeadshotDeath: 3
 	WithDeathAnimation@explosion:
 		DeathSequencePalette: effect
 		DeathPaletteIsPlayerPalette: False
 		DeathTypes:
-			ExplosionDeath: 4
+			ExplosionDeath: 3
 	WithDeathAnimation@energy:
 		DeathSequencePalette: ra
 		DeathPaletteIsPlayerPalette: False
 		DeathTypes:
-			EnergyDeath: 6
+			EnergyDeath: 5
 	WithDeathAnimation:
 		CrushedSequence: die-crushed
 		CrushedSequencePalette: player
 		CrushedPaletteIsPlayerPalette: true
 	DeathSounds@NORMAL:
-		DeathTypes: BulletDeath, SmallExplosionDeath, ExplosionDeath, HeadshotDeath
+		DeathTypes: BulletDeath, SmallExplosionDeath, ExplosionDeath
 	DeathSounds@BURNED:
 		Voice: Burned
 		DeathTypes: FireDeath
