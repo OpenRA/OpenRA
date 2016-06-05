@@ -653,6 +653,16 @@
 		Terrain: Tree
 	Tooltip:
 		Name: Tree
+	Targetable:
+		TargetTypes: flammable
+	UpgradeManager:
+	WithIdleOverlay@FORESTFIRE:
+		Sequence: burn
+		Palette: effect
+		UpgradeTypes: incendiary
+		ShowToEnemies: true
+		ZOffset: 1024
+		UpgradeMinEnabledLevel: 1
 
 ^Rock:
 	Inherits@1: ^SpriteActor

@@ -20,6 +20,11 @@ FireballLauncher:
 		DamageTypes: Prone100Percent, TriggerProne, FireDeath
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: SmallScorch
+	Warhead@INCENDIARY: GrantUpgrade
+		Range: 3c0
+		Duration: 600
+		Upgrades: incendiary
+		ValidTargets: flammable
 
 FiendShard:
 	ReloadDelay: 30

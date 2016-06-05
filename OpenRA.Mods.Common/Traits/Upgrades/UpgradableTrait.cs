@@ -41,7 +41,7 @@ namespace OpenRA.Mods.Common.Traits
 	/// Requires basing *Info on UpgradableTraitInfo and using base(info) constructor.
 	/// Note that EnabledByUpgrade is not called at creation even if this starts as enabled.
 	/// </summary>
-	public abstract class UpgradableTrait<InfoType> : IUpgradable, IDisabledTrait, ISync where InfoType : UpgradableTraitInfo
+	public abstract class UpgradableTrait<InfoType> : IUpgradable, INotifyCreated, IDisabledTrait, ISync where InfoType : UpgradableTraitInfo
 	{
 		public readonly InfoType Info;
 		public IEnumerable<string> UpgradeTypes { get { return Info.UpgradeTypes; } }
@@ -51,6 +51,12 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			Info = info;
 			IsTraitDisabled = info.UpgradeTypes != null && info.UpgradeTypes.Count > 0 && info.UpgradeMinEnabledLevel > 0;
+		}
+
+		void INotifyCreated.Created(Actor self)
+		{
+			if (Info.UpgradeTypes.Count > 0 && self.TraitOrDefault<UpgradeManager>() == null)
+				throw new YamlException("Actor {0} references UpgradeTypes, but doesn't have the UpgradeManager trait.".F(self));
 		}
 
 		public bool AcceptsUpgradeLevel(Actor self, string type, int level)
