@@ -306,19 +306,22 @@
 
 ^RegularInfantryDeath:
 	WithDeathAnimation@normal:
+		DeathSequence: die-
 		DeathTypes:
-			BulletDeath: 1
-			SmallExplosionDeath: 2
+			BulletDeath: twirling
+			SmallExplosionDeath: flying
 	WithDeathAnimation@explosion:
+		DeathSequence: die-
 		DeathSequencePalette: effect
 		DeathPaletteIsPlayerPalette: False
 		DeathTypes:
-			ExplosionDeath: 3
+			ExplosionDeath: exploding
 	WithDeathAnimation@energy:
+		DeathSequence: die-
 		DeathSequencePalette: ra
 		DeathPaletteIsPlayerPalette: False
 		DeathTypes:
-			EnergyDeath: 5
+			EnergyDeath: melting
 	WithDeathAnimation:
 		CrushedSequence: die-crushed
 		CrushedSequencePalette: player

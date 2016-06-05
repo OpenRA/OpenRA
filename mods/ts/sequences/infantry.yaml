@@ -27,15 +27,15 @@
 		Facings: 8
 		Stride: 6
 		ShadowStart: 378
-	die1:
+	die-twirling:
 		Start: 134
 		Length: 15
 		ShadowStart: 426
-	die2:
+	die-flying:
 		Start: 149
 		Length: 15
 		ShadowStart: 441
-	die3: s_bang34
+	die-exploding: s_bang34
 		Length: *
 	die-crushed:
 		Start: 159
@@ -48,7 +48,7 @@
 		Length: 2
 		Facings: 8
 		ShadowStart: 552
-	die5: electro
+	die-melting: electro
 		Length: *
 
 ^BasicInfantryAttack:
@@ -296,15 +296,15 @@ medic:
 		Facings: 8
 		Stride: 6
 		ShadowStart: 378
-	die1:
+	die-twirling:
 		Start: 134
 		Length: 15
 		ShadowStart: 441
-	die2:
+	die-flying:
 		Start: 149
 		Length: 15
 		ShadowStart: 455
-	die3: s_bang34
+	die-exploding: s_bang34
 		Length: *
 	die-crushed:
 		Start: 159
@@ -321,7 +321,7 @@ medic:
 		Start: 292
 		Length: 14
 		ShadowStart: 599
-	die5: electro
+	die-melting: electro
 		Length: *
 	icon: mediicon
 
@@ -352,15 +352,15 @@ jumpjet:
 	prone-stand:
 		Facings: 8
 		ShadowStart: 451
-	die1: # TODO: animation for falling from sky starts at 436
+	die-twirling: # TODO: animation for falling from sky starts at 436
 		Start: 445
 		Length: 6
 		ShadowStart: 896
-	die2: # TODO: animation for falling from sky starts at 436
+	die-flying: # TODO: animation for falling from sky starts at 436
 		Start: 445
 		Length: 6
 		ShadowStart: 896
-	die3: s_bang34
+	die-exploding: s_bang34
 		Length: *
 	die-crushed:
 		Start: 450
@@ -382,7 +382,7 @@ jumpjet:
 		Length: 2
 		Facings: 8
 		ShadowStart: 711
-	die5: electro
+	die-melting: electro
 		Length: *
 	icon: jjeticon
 
@@ -428,23 +428,23 @@ weedguy:
 		Start: 136
 		Length: 16
 		ShadowStart: 338
-	die1:
+	die-twirling:
 		Start: 152
 		Length: 8
 		ShadowStart: 354
-	die2:
+	die-flying:
 		Start: 160
 		Length: 6
 		ShadowStart: 362
-	die3:
+	die-exploding:
 		Start: 166
 		Length: 11
 		ShadowStart: 368
-	die4:
+	die-burning:
 		Start: 177
 		Length: 20
 		ShadowStart: 379
-	die5: electro
+	die-melting: electro
 		Length: *
 	die-crushed:
 		Start: 174
@@ -479,15 +479,15 @@ doggie:
 		Start: 91
 		Length: 8
 		ShadowStart: 210
-	die1:
+	die-twirling:
 		Start: 99
 		Length: 10
 		ShadowStart: 218
-	die2:
+	die-flying:
 		Start: 99
 		Length: 10
 		ShadowStart: 218
-	die3: s_bang34
+	die-exploding: s_bang34
 		Length: *
 	die-crushed:
 		Start: 105
@@ -495,11 +495,11 @@ doggie:
 		ShadowStart: 224
 		Tick: 800
 		ZOffset: -511
-	die4:
+	die-burning:
 		Start: 109
 		Length: 10
 		ShadowStart: 228
-	die5:
+	die-melting:
 		Start: 109
 		Length: 10
 		ShadowStart: 228

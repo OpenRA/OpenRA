@@ -19,8 +19,9 @@ WEEDGUY:
 		Voice: Attack
 	-SpawnActorOnDeath@FLAMEGUY:
 	WithDeathAnimation@fire:
+		DeathSequence: die-
 		DeathTypes:
-			FireDeath: 5
+			FireDeath: burning
 
 UMAGON:
 	Inherits: ^Soldier
@@ -242,8 +243,9 @@ DOGGIE:
 		MaxMoveDelayInTicks: 45
 	-SpawnActorOnDeath@FLAMEGUY:
 	WithDeathAnimation@fire:
+		DeathSequence: die-
 		DeathTypes:
-			FireDeath: 5
+			FireDeath: burning
 
 VISC_SML:
 	Inherits: ^Visceroid
