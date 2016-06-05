@@ -50,150 +50,250 @@ tree01:
 		ShadowStart: 1
 		UseTilesetExtension: true
 		Offset: 0, -12
+	burn: burn-l
+		Start: 16
+		Length: 44
+		ZOffset: 512
 
 tree02:
 	idle:
 		ShadowStart: 1
 		UseTilesetExtension: true
 		Offset: 0, -12
+	burn: burn-l
+		Start: 16
+		Length: 44
+		ZOffset: 512
 
 tree03:
 	idle:
 		ShadowStart: 1
 		UseTilesetExtension: true
 		Offset: 0, -12
+	burn: burn-l
+		Start: 16
+		Length: 44
+		ZOffset: 512
 
 tree04:
 	idle:
 		ShadowStart: 1
 		UseTilesetExtension: true
 		Offset: 0, -12
+	burn: burn-l
+		Start: 16
+		Length: 44
+		ZOffset: 512
 
 tree05:
 	idle:
 		ShadowStart: 1
 		UseTilesetExtension: true
 		Offset: 0, -12
+	burn: burn-l
+		Start: 16
+		Length: 44
+		ZOffset: 512
 
 tree06:
 	idle:
 		ShadowStart: 1
 		UseTilesetExtension: true
 		Offset: 0, -12
+	burn: burn-l
+		Start: 16
+		Length: 44
+		ZOffset: 512
 
 tree07:
 	idle:
 		ShadowStart: 1
 		UseTilesetExtension: true
 		Offset: 0, -12
+	burn: burn-l
+		Start: 16
+		Length: 44
+		ZOffset: 512
 
 tree08:
 	idle:
 		ShadowStart: 1
 		UseTilesetExtension: true
 		Offset: 0, -12
+	burn: burn-l
+		Start: 16
+		Length: 44
+		ZOffset: 512
 
 tree09:
 	idle:
 		ShadowStart: 1
 		UseTilesetExtension: true
 		Offset: 0, -12
+	burn: burn-l
+		Start: 16
+		Length: 44
+		ZOffset: 512
 
 tree10:
 	idle:
 		ShadowStart: 1
 		UseTilesetExtension: true
 		Offset: 0, -12
+	burn: burn-l
+		Start: 16
+		Length: 44
+		ZOffset: 512
 
 tree11:
 	idle:
 		ShadowStart: 1
 		UseTilesetExtension: true
 		Offset: 0, -12
+	burn: burn-l
+		Start: 16
+		Length: 44
+		ZOffset: 512
 
 tree12:
 	idle:
 		ShadowStart: 1
 		UseTilesetExtension: true
 		Offset: 0, -12
+	burn: burn-l
+		Start: 16
+		Length: 44
+		ZOffset: 512
 
 tree13:
 	idle:
 		ShadowStart: 1
 		UseTilesetExtension: true
 		Offset: 0, -12
+	burn: burn-l
+		Start: 16
+		Length: 44
+		ZOffset: 512
 
 tree14:
 	idle:
 		ShadowStart: 1
 		UseTilesetExtension: true
 		Offset: 0, -12
+	burn: burn-l
+		Start: 16
+		Length: 44
+		ZOffset: 512
 
 tree15:
 	idle:
 		ShadowStart: 1
 		UseTilesetExtension: true
 		Offset: 0, -12
+	burn: burn-l
+		Start: 16
+		Length: 44
+		ZOffset: 512
 
 tree16:
 	idle:
 		ShadowStart: 1
 		UseTilesetExtension: true
 		Offset: 0, -12
+	burn: burn-l
+		Start: 16
+		Length: 44
+		ZOffset: 512
 
 tree17:
 	idle:
 		ShadowStart: 1
 		UseTilesetExtension: true
 		Offset: 0, -12
+	burn: burn-l
+		Start: 16
+		Length: 44
+		ZOffset: 512
 
 tree18:
 	idle:
 		ShadowStart: 1
 		UseTilesetExtension: true
 		Offset: 0, -12
+	burn: burn-l
+		Start: 16
+		Length: 44
+		ZOffset: 512
 
 tree19:
 	idle:
 		ShadowStart: 1
 		UseTilesetExtension: true
 		Offset: 0, -12
+	burn: burn-l
+		Start: 16
+		Length: 44
+		ZOffset: 512
 
 tree20:
 	idle:
 		ShadowStart: 1
 		UseTilesetExtension: true
 		Offset: 0, -12
+	burn: burn-l
+		Start: 16
+		Length: 44
+		ZOffset: 512
 
 tree21:
 	idle:
 		ShadowStart: 1
 		UseTilesetExtension: true
 		Offset: 0, -12
+	burn: burn-l
+		Start: 16
+		Length: 44
+		ZOffset: 512
 
 tree22:
 	idle:
 		ShadowStart: 1
 		UseTilesetExtension: true
 		Offset: 0, -12
+	burn: burn-l
+		Start: 16
+		Length: 44
+		ZOffset: 512
 
 tree23:
 	idle:
 		ShadowStart: 1
 		UseTilesetExtension: true
 		Offset: 0, -12
+	burn: burn-l
+		Start: 16
+		Length: 44
+		ZOffset: 512
 
 tree24:
 	idle:
 		ShadowStart: 1
 		UseTilesetExtension: true
 		Offset: 0, -12
+	burn: burn-l
+		Start: 16
+		Length: 44
+		ZOffset: 512
 
 tree25:
 	idle:
 		ShadowStart: 1
 		UseTilesetExtension: true
 		Offset: 0, -12
+	burn: burn-l
+		Start: 16
+		Length: 44
+		ZOffset: 512
 
 veinhole:
 	idle:
