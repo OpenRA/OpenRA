@@ -365,6 +365,10 @@
 ^Cyborg:
 	Inherits@1: ^Infantry
 	Inherits@2: ^EmpDisableMobile
+	ExplosionOnDamageTransition:
+		Weapon: CyborgExplode
+		DamageState: Critical
+		TriggerOnlyOnce: true
 	Explodes:
 		Weapon: CyborgExplode
 		EmptyWeapon: CyborgExplode
