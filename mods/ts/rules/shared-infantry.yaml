@@ -67,3 +67,31 @@ ENGINEER:
 			nod: engineer.nod
 	Selectable:
 		Priority: 5
+
+FLAMEGUY:
+	Inherits@1: ^ExistsInWorld
+	Inherits@2: ^SpriteActor
+	Mobile:
+		Speed: 71
+		SharesCell: true
+		TerrainSpeeds:
+			Clear: 45
+			Road: 50
+			Rail: 45
+			DirtRoad: 50
+			Rough: 40
+			Tiberium: 45
+			BlueTiberium: 45
+			Veins: 25
+	HiddenUnderFog:
+	WithInfantryBody:
+		IdleSequences: run
+	Health:
+		HP: 160
+	SelfHealing:
+		Step: -10
+		HealIfBelow: 101
+	ScaredyCat:
+	WithDeathAnimation:
+		FallbackSequence: die
+		UseDeathTypeSuffix: false

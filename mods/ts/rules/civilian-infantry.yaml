@@ -17,6 +17,10 @@ WEEDGUY:
 		LocalOffset: 85,0,384
 	AttackFrontal:
 		Voice: Attack
+	-SpawnActorOnDeath@FLAMEGUY:
+	WithDeathAnimation@fire:
+		DeathTypes:
+			FireDeath: 5
 
 UMAGON:
 	Inherits: ^Soldier
@@ -235,6 +239,10 @@ DOGGIE:
 		WanderMoveRadius: 2
 		MinMoveDelayInTicks: 25
 		MaxMoveDelayInTicks: 45
+	-SpawnActorOnDeath@FLAMEGUY:
+	WithDeathAnimation@fire:
+		DeathTypes:
+			FireDeath: 5
 
 VISC_SML:
 	Inherits: ^Visceroid
