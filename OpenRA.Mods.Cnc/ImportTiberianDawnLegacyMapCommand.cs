@@ -148,5 +148,17 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 
 			ReadOverlay(file);
 		}
+
+		public override void SaveWaypoint(int waypointNumber, ActorReference waypointReference)
+		{
+			var waypointName = "waypoint" + waypointNumber;
+			if (waypointNumber == 25)
+				waypointName = "DefaultFlareLocation";
+			else if (waypointNumber == 26)
+				waypointName = "DefaultCameraPosition";
+			else if (waypointNumber == 27)
+				waypointName = "DefaultChinookTarget";
+			Map.ActorDefinitions.Add(new MiniYamlNode(waypointName, waypointReference.Save()));
+		}
 	}
 }

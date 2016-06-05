@@ -228,5 +228,13 @@ namespace OpenRA.Mods.RA.UtilityCommands
 			base.ReadActors(file);
 			LoadActors(file, "SHIPS", Players, MapSize, Map);
 		}
+
+		public override void SaveWaypoint(int waypointNumber, ActorReference waypointReference)
+		{
+			var waypointName = "waypoint" + waypointNumber;
+			if (waypointNumber == 98)
+				waypointName = "DefaultCameraPosition";
+			Map.ActorDefinitions.Add(new MiniYamlNode(waypointName, waypointReference.Save()));
+		}
 	}
 }

@@ -277,9 +277,15 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						new OwnerInit("Neutral")
 					};
 
-					Map.ActorDefinitions.Add(new MiniYamlNode("waypoint" + kv.First, ar.Save()));
+					SaveWaypoint(kv.First, ar);
 				}
 			}
+		}
+
+		public virtual void SaveWaypoint(int waypointNumber, ActorReference waypointReference)
+		{
+			var waypointName = "waypoint" + waypointNumber;
+			Map.ActorDefinitions.Add(new MiniYamlNode(waypointName, waypointReference.Save()));
 		}
 
 		void LoadSmudges(IniFile file, string section)
