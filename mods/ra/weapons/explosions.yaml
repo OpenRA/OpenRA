@@ -229,13 +229,14 @@ BarrelExplode:
 		Damage: 50
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		Delay: 5
+		ValidTargets: Ground, Trees
 		Versus:
 			None: 120
 			Wood: 200
 			Light: 50
 			Heavy: 25
 			Concrete: 10
-		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
+		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath, Incendiary
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Scorch
 		Size: 2,1
