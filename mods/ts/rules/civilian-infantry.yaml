@@ -211,7 +211,8 @@ SLAV:
 		AttackSequence: attack
 
 DOGGIE:
-	Inherits: ^Infantry
+	Inherits@1: ^Infantry
+	Inherits@2: ^RegularInfantryDeath
 	Tooltip:
 		Name: Tiberian Fiend
 	Health:

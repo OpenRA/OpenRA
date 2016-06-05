@@ -57,10 +57,6 @@ CYBORG:
 		VisualBounds: 16,31,0,-10
 	ProducibleWithLevel:
 		Prerequisites: barracks.upgraded
-	-SpawnActorOnDeath@FLAMEGUY:
-	WithDeathAnimation@explosion:
-		DeathTypes:
-			FireDeath: 4
 
 CYC2:
 	Inherits: ^Cyborg
@@ -96,10 +92,6 @@ CYC2:
 		VisualBounds: 16,32,-1,-12
 	ProducibleWithLevel:
 		Prerequisites: barracks.upgraded
-	-SpawnActorOnDeath@FLAMEGUY:
-	WithDeathAnimation@explosion:
-		DeathTypes:
-			FireDeath: 4
 
 MHIJACK:
 	Inherits: ^Soldier

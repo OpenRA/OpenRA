@@ -255,18 +255,6 @@ cyc2:
 		Facings: 8
 		Stride: 9
 		ShadowStart: 418
-	die1:
-		Start: 182
-		Length: 15
-		ShadowStart: 490
-	die2:
-		Start: 197
-		Length: 15
-		ShadowStart: 505
-	die3: infexpl
-		Length: *
-	die4: s_bang34
-		Length: *
 	attack:
 		Start: 212
 		Length: 6
@@ -277,8 +265,6 @@ cyc2:
 		Length: 6
 		Facings: 8
 		ShadowStart: 568
-	die6: electro
-		Length: *
 	emp-overlay: emp_fx01
 		Length: *
 		ZOffset: 512
