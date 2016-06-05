@@ -52,7 +52,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			Game.ModData = modData;
 
 			var filename = args[1];
-			using (var stream = modData.DefaultFileSystem.Open(filename))
+			using (var stream = File.OpenRead(filename))
 			{
 				var file = new IniFile(stream);
 				var basic = file.GetSection("Basic");

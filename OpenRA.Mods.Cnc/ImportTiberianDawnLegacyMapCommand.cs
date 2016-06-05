@@ -143,7 +143,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 
 		public override void ReadPacks(IniFile file, string filename)
 		{
-			using (var s = ModData.DefaultFileSystem.Open(filename.Substring(0, filename.Length - 4) + ".bin"))
+			using (var s = File.OpenRead(filename.Substring(0, filename.Length - 4) + ".bin"))
 				UnpackTileData(s);
 
 			ReadOverlay(file);
