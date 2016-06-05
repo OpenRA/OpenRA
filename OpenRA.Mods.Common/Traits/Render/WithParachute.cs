@@ -73,9 +73,10 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 			var body = init.Actor.TraitInfo<BodyOrientationInfo>();
 			var facing = init.Contains<FacingInit>() ? init.Get<FacingInit, int>() : 0;
-			var orientation = body.QuantizeOrientation(new WRot(WAngle.Zero, WAngle.Zero, WAngle.FromFacing(facing)), facings);
+			var orientation = body.QuantizeOrientation(WRot.FromFacing(facing), facings);
 			var offset = body.LocalToWorld(Offset.Rotate(orientation));
-			yield return new SpriteActorPreview(anim, offset, offset.Y + offset.Z + 1, p, rs.Scale);
+			var zOffset = offset.Y + offset.Z + 1;
+			yield return new SpriteActorPreview(anim, () => offset, () => zOffset, p, rs.Scale);
 		}
 	}
 

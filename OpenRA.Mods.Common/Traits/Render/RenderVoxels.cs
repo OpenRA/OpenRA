@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
@@ -20,7 +21,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 	public interface IRenderActorPreviewVoxelsInfo : ITraitInfo
 	{
 		IEnumerable<VoxelAnimation> RenderPreviewVoxels(
-			ActorPreviewInitializer init, RenderVoxelsInfo rv, string image, WRot orientation, int facings, PaletteReference p);
+			ActorPreviewInitializer init, RenderVoxelsInfo rv, string image, Func<WRot> orientation, int facings, PaletteReference p);
 	}
 
 	public class RenderVoxelsInfo : ITraitInfo, IRenderActorPreviewInfo, Requires<BodyOrientationInfo>
@@ -62,7 +63,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			var facing = ifacing != null ? init.Contains<FacingInit>() ? init.Get<FacingInit, int>() : ifacing.GetInitialFacing() : 0;
 			var orientation = WRot.FromFacing(facing);
 			var components = init.Actor.TraitInfos<IRenderActorPreviewVoxelsInfo>()
-				.SelectMany(rvpi => rvpi.RenderPreviewVoxels(init, this, image, orientation, facings, palette))
+				.SelectMany(rvpi => rvpi.RenderPreviewVoxels(init, this, image, () => orientation, facings, palette))
 				.ToArray();
 
 			yield return new VoxelPreview(components, WVec.Zero, 0, Scale, LightPitch,

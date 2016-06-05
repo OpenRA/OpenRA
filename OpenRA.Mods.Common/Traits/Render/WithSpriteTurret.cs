@@ -51,9 +51,10 @@ namespace OpenRA.Mods.Common.Traits.Render
 			var anim = new Animation(init.World, image, () => turretFacing);
 			anim.Play(RenderSprites.NormalizeSequence(anim, init.GetDamageState(), Sequence));
 
-			var orientation = body.QuantizeOrientation(new WRot(WAngle.Zero, WAngle.Zero, WAngle.FromFacing(bodyFacing)), facings);
+			var orientation = body.QuantizeOrientation(WRot.FromFacing(bodyFacing), facings);
 			var offset = body.LocalToWorld(t.Offset.Rotate(orientation));
-			yield return new SpriteActorPreview(anim, offset, -(offset.Y + offset.Z) + 1, p, rs.Scale);
+			var zOffset = -(offset.Y + offset.Z) + 1;
+			yield return new SpriteActorPreview(anim, () => offset, () => zOffset, p, rs.Scale);
 		}
 	}
 

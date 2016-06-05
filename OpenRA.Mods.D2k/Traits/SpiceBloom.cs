@@ -60,7 +60,7 @@ namespace OpenRA.Mods.D2k.Traits
 			var anim = new Animation(init.World, image);
 			anim.PlayRepeating(RenderSprites.NormalizeSequence(anim, init.GetDamageState(), GrowthSequences[0]));
 
-			yield return new SpriteActorPreview(anim, WVec.Zero, 0, p, rs.Scale);
+			yield return new SpriteActorPreview(anim, () => WVec.Zero, () => 0, p, rs.Scale);
 		}
 	}
 
