@@ -504,8 +504,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		public static string GetExternalIP(int clientIndex, OrderManager orderManager)
 		{
-			var address = orderManager.LobbyInfo.ClientWithIndex(clientIndex).IpAddress;
-			if (clientIndex == orderManager.LocalClient.Index && address == IPAddress.Loopback.ToString())
+			var client = orderManager.LobbyInfo.ClientWithIndex(clientIndex);
+			var address = client != null ? client.IpAddress : "";
+			var lc = orderManager.LocalClient;
+			if (lc != null && lc.Index == clientIndex && address == IPAddress.Loopback.ToString())
 			{
 				var externalIP = UPnP.GetExternalIP();
 				if (externalIP != null)
