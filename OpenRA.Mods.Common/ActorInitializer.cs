@@ -11,6 +11,13 @@ namespace OpenRA.Mods.Common
 		public int Value(World world) { return value; }
 	}
 
+	public class DynamicFacingInit : IActorInit<Func<int>>
+	{
+		readonly Func<int> func;
+		public DynamicFacingInit(Func<int> func) { this.func = func; }
+		public Func<int> Value(World world) { return func; }
+	}
+
 	public class SubCellInit : IActorInit<SubCell>
 	{
 		[FieldFromYamlKey] readonly int value = (int)SubCell.FullCell;

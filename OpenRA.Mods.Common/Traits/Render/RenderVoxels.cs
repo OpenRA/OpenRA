@@ -59,11 +59,8 @@ namespace OpenRA.Mods.Common.Traits.Render
 				body.QuantizedFacings;
 			var palette = init.WorldRenderer.Palette(Palette ?? PlayerPalette + ownerName);
 
-			var ifacing = init.Actor.TraitInfoOrDefault<IFacingInfo>();
-			var facing = ifacing != null ? init.Contains<FacingInit>() ? init.Get<FacingInit, int>() : ifacing.GetInitialFacing() : 0;
-			var orientation = WRot.FromFacing(facing);
 			var components = init.Actor.TraitInfos<IRenderActorPreviewVoxelsInfo>()
-				.SelectMany(rvpi => rvpi.RenderPreviewVoxels(init, this, image, () => orientation, facings, palette))
+				.SelectMany(rvpi => rvpi.RenderPreviewVoxels(init, this, image, init.GetOrientation(), facings, palette))
 				.ToArray();
 
 			yield return new VoxelPreview(components, WVec.Zero, 0, Scale, LightPitch,

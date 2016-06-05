@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using OpenRA.Primitives;
 using OpenRA.Traits;
@@ -60,6 +61,9 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (init.Contains<TurretFacingInit>())
 				return init.Get<TurretFacingInit, int>();
+
+			if (init.Contains<DynamicFacingInit>())
+				return init.Get<DynamicFacingInit, Func<int>>()();
 
 			if (init.Contains<FacingInit>())
 				return init.Get<FacingInit, int>();
