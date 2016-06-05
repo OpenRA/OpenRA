@@ -21,7 +21,7 @@ E3:
 	AttackFrontal:
 		Voice: Attack
 	WithInfantryBody:
-		AttackSequence: shoot
+		AttackSequence: attack
 	ProducibleWithLevel:
 		Prerequisites: barracks.upgraded
 
@@ -127,5 +127,3 @@ MHIJACK:
 	RevealsShroud:
 		Range: 6c0
 	-AutoTarget:
-	WithInfantryBody:
-		AttackSequence: shoot

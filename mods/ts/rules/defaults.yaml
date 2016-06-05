@@ -370,7 +370,7 @@
 		Weapon: TiberiumHeal
 	WithPermanentInjury:
 	WithInfantryBody:
-		AttackSequence: shoot
+		AttackSequence: attack
 		IdleSequences: idle1,idle2
 	UpgradeOnDamage@CRITICAL:
 		Upgrades: criticalspeed
