@@ -245,6 +245,7 @@ ide = {
     and (os.getenv('HOMEDRIVE')..os.getenv('HOMEPATH'))),
   wxver = string.match(wx.wxVERSION_STRING, "[%d%.]+"),
 
+  startedat = TimeGet(),
   test = {}, -- local functions used for testing
 
   Print = function(self, ...)
