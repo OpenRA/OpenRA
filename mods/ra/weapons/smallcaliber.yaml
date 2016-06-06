@@ -338,7 +338,7 @@ FLAK-23-AG:
 			Concrete: 20
 		DamageTypes: Prone50Percent, TriggerProne, DefaultDeath
 	Warhead@2Eff: CreateEffect
-		Explosions: small_explosion
+		Explosions: small_explosion_air
 		InvalidImpactTypes: Air, AirHit
 	Warhead@3EffWater: CreateEffect
 		Explosions: small_splash
