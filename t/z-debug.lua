@@ -15,7 +15,7 @@ ProjectDebug()
 
 local commands = {
   {debugfile, 1, "Step"},
-  {debugfile, 2, "RunTo", {editor, 4-1}},
+  {debugfile, 2, "RunTo", {editor, 4}},
   {debugfile, 4, "Run"},
   {debugfile, 5, "Stop"},
 }

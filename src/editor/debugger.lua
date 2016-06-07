@@ -357,7 +357,6 @@ function debugger:ActivateDocument(file, line, activatehow)
           end
           if line == math.huge then line = 1 end
         end
-        local line = line - 1 -- editor line operations are zero-based
         if debugger.runtocursor then
           local ed, ln = unpack(debugger.runtocursor)
           if ed:GetId() == editor:GetId() and ln == line then
@@ -365,6 +364,7 @@ function debugger:ActivateDocument(file, line, activatehow)
             debugger.runtocursor = nil
           end
         end
+        local line = line - 1 -- editor line operations are zero-based
         editor:MarkerAdd(line, CURRENT_LINE_MARKER)
         editor:Refresh() -- needed for background markers that don't get refreshed (wx2.9.5)
 
@@ -1012,14 +1012,14 @@ function debugger:RunTo(editor, line)
   local debugger = self
 
   -- check if the location is valid for a breakpoint
-  if editor:IsLineEmpty(line) then return end
+  if editor:IsLineEmpty(line-1) then return end
 
   local ed, ln = unpack(debugger.runtocursor or {})
   local same = ed and ln and ed:GetId() == editor:GetId() and ln == line
 
   -- check if there is already a breakpoint in the "run to" location;
   -- if so, don't mark the location as "run to" as it will stop there anyway
-  if bit.band(editor:MarkerGet(line), BREAKPOINT_MARKER_VALUE) > 0
+  if bit.band(editor:MarkerGet(line-1), BREAKPOINT_MARKER_VALUE) > 0
   and not same then
     debugger.runtocursor = nil
     debugger:Run()
@@ -1533,7 +1533,7 @@ end
 
 function debugger:BreakpointToggle(editor, line, value)
   local debugger = self
-  local isset = bit.band(editor:MarkerGet(line), BREAKPOINT_MARKER_VALUE) > 0
+  local isset = bit.band(editor:MarkerGet(line-1), BREAKPOINT_MARKER_VALUE) > 0
   if value ~= nil and isset == value then return end
   local filePath = debugger.editormap and debugger.editormap[editor]
     or debuggerMakeFileName(editor)
@@ -1543,15 +1543,15 @@ function debugger:BreakpointToggle(editor, line, value)
     local same = ed and ln and ed:GetId() == editor:GetId() and ln == line
     if same then debugger.runtocursor = nil end
 
-    editor:MarkerDelete(line, BREAKPOINT_MARKER)
-    if debugger.server then debugger:breakpoint(filePath, line+1, false) end
+    editor:MarkerDelete(line-1, BREAKPOINT_MARKER)
+    if debugger.server then debugger:breakpoint(filePath, line, false) end
   else
-    if editor:IsLineEmpty(line) then return end
+    if editor:IsLineEmpty(line-1) then return end
 
-    editor:MarkerAdd(line, BREAKPOINT_MARKER)
-    if debugger.server then debugger:breakpoint(filePath, line+1, true) end
+    editor:MarkerAdd(line-1, BREAKPOINT_MARKER)
+    if debugger.server then debugger:breakpoint(filePath, line, true) end
   end
-  PackageEventHandle("onEditorMarkerUpdate", editor, BREAKPOINT_MARKER, line+1, not isset)
+  PackageEventHandle("onEditorMarkerUpdate", editor, BREAKPOINT_MARKER, line, not isset)
 end
 
 -- scratchpad functions

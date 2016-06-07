@@ -399,7 +399,7 @@ frame:Connect(ID_DETACHDEBUG, wx.wxEVT_UPDATE_UI,
 frame:Connect(ID_RUNTO, wx.wxEVT_COMMAND_MENU_SELECTED,
   function ()
     local editor = GetEditor()
-    ide:GetDebugger():RunTo(editor, editor:GetCurrentLine())
+    ide:GetDebugger():RunTo(editor, editor:GetCurrentLine()+1)
   end)
 frame:Connect(ID_RUNTO, wx.wxEVT_UPDATE_UI,
   function (event)

@@ -816,7 +816,7 @@ function CreateEditor(bare)
 
   function editor:BookmarkToggle(...) return self:MarkerToggle((StylesGetMarker("bookmark")), ...) end
   function editor:BreakpointToggle(line, ...)
-    line = line or self:GetCurrentLine()
+    line = (line or self:GetCurrentLine()) + 1
     return ide:GetDebugger():BreakpointToggle(self, line, ...)
   end
 
@@ -1446,7 +1446,7 @@ function CreateEditor(bare)
     function()
       local pos = getPositionValues()
       if pos and pos ~= wxstc.wxSTC_INVALID_POSITION then
-        ide:GetDebugger():RunTo(editor, editor:LineFromPosition(pos))
+        ide:GetDebugger():RunTo(editor, editor:LineFromPosition(pos)+1)
       end
     end)
 
