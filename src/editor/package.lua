@@ -851,3 +851,13 @@ local at = {}
 function ide:SetAccelerator(id, ksc) at[id] = ksc; setAcceleratorTable(at) end
 function ide:GetAccelerator(id) return at[id] end
 function ide:GetAccelerators() return at end
+
+function ide:IsProjectSubDirectory(dir)
+  local projdir = self:GetProject()
+  if not projdir then return end
+  -- normalize and check if directory when cut is the same as the project directory;
+  -- this relies on the project directory ending in a path separator.
+  local path = wx.wxFileName(dir:sub(1, #projdir))
+  path:Normalize()
+  return path:SameAs(wx.wxFileName(projdir))
+end
