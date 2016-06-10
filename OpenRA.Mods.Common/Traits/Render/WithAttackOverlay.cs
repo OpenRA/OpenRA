@@ -10,11 +10,9 @@
 #endregion
 
 using OpenRA.Graphics;
-using OpenRA.Mods.Common.Traits;
-using OpenRA.Mods.Common.Traits.Render;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.D2k.Traits.Render
+namespace OpenRA.Mods.Common.Traits.Render
 {
 	[Desc("Rendered together with an attack.")]
 	public class WithAttackOverlayInfo : ITraitInfo, Requires<RenderSpritesInfo>
@@ -52,7 +50,7 @@ namespace OpenRA.Mods.D2k.Traits.Render
 				info.Palette, info.IsPlayerPalette);
 		}
 
-		public void Attacking(Actor self, Target target, Armament a, Barrel barrel)
+		void INotifyAttack.Attacking(Actor self, Target target, Armament a, Barrel barrel)
 		{
 			attacking = true;
 			overlay.PlayThen(info.Sequence, () => attacking = false);

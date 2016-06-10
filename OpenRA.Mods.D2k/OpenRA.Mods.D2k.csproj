@@ -98,7 +98,6 @@
     <Compile Include="Warheads\ChangeOwnerWarhead.cs" />
     <Compile Include="UtilityCommands\D2kMapImporter.cs" />
     <Compile Include="UtilityCommands\ImportD2kMapCommand.cs" />
-    <Compile Include="Traits\Render\WithAttackOverlay.cs" />
     <Compile Include="Traits\Render\WithDecorationCarryable.cs" />
     <Compile Include="Traits\World\D2kEditorResourceLayer.cs" />
     <Compile Include="Lint\CheckImportActors.cs" />
