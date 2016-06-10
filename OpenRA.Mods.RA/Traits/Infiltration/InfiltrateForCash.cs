@@ -26,6 +26,9 @@ namespace OpenRA.Mods.RA.Traits
 			"When negative, the production price of the infiltrating actor will be used instead.")]
 		public readonly int Minimum = -1;
 
+		[Desc("Maximum amount of funds which will be stolen.")]
+		public readonly int Maximum = int.MaxValue;
+
 		[Desc("Sound the victim will hear when they get robbed.")]
 		public readonly string Notification = null;
 
@@ -44,7 +47,7 @@ namespace OpenRA.Mods.RA.Traits
 			var spyResources = infiltrator.Owner.PlayerActor.Trait<PlayerResources>();
 			var spyValue = infiltrator.Info.TraitInfoOrDefault<ValuedInfo>();
 
-			var toTake = (targetResources.Cash + targetResources.Resources) * info.Percentage / 100;
+			var toTake = Math.Min(info.Maximum, (targetResources.Cash + targetResources.Resources) * info.Percentage / 100);
 			var toGive = Math.Max(toTake, info.Minimum >= 0 ? info.Minimum : spyValue != null ? spyValue.Cost : 0);
 
 			targetResources.TakeCash(toTake);
