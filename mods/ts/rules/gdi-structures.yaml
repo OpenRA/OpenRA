@@ -113,7 +113,7 @@ GAPILE:
 		RequiresSelection: true
 		Image: pips
 		Sequence: tag-primary
-		Palette: ra
+		Palette: pips
 		ReferencePoint: Center
 		ZOffset: 256
 		UpgradeTypes: primary
@@ -175,7 +175,7 @@ GAWEAP:
 		RequiresSelection: true
 		Image: pips
 		Sequence: tag-primary
-		Palette: ra
+		Palette: pips
 		ReferencePoint: Center
 		ZOffset: 256
 		UpgradeTypes: primary
@@ -228,7 +228,7 @@ GAHPAD:
 		RequiresSelection: true
 		Image: pips
 		Sequence: tag-primary
-		Palette: ra
+		Palette: pips
 		ReferencePoint: Center
 		ZOffset: 256
 		UpgradeTypes: primary

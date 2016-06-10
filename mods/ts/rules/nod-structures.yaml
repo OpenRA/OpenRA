@@ -122,7 +122,7 @@ NAHAND:
 		RequiresSelection: true
 		Image: pips
 		Sequence: tag-primary
-		Palette: ra
+		Palette: pips
 		ReferencePoint: Center
 		ZOffset: 256
 		UpgradeTypes: primary
@@ -180,7 +180,7 @@ NAWEAP:
 		RequiresSelection: true
 		Image: pips
 		Sequence: tag-primary
-		Palette: ra
+		Palette: pips
 		ReferencePoint: Center
 		ZOffset: 256
 		UpgradeTypes: primary
@@ -233,7 +233,7 @@ NAHPAD:
 		RequiresSelection: true
 		Image: pips
 		Sequence: tag-primary
-		Palette: ra
+		Palette: pips
 		ReferencePoint: Center
 		ZOffset: 256
 		UpgradeTypes: primary
