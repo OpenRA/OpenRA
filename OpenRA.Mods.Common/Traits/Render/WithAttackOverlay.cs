@@ -50,7 +50,9 @@ namespace OpenRA.Mods.Common.Traits.Render
 				info.Palette, info.IsPlayerPalette);
 		}
 
-		void INotifyAttack.Attacking(Actor self, Target target, Armament a, Barrel barrel)
+		void INotifyAttack.Attacking(Actor self, Target target, Armament a, Barrel barrel) { }
+
+		void INotifyAttack.PreparingAttack(Actor self, Target target, Armament a, Barrel barrel)
 		{
 			attacking = true;
 			overlay.PlayThen(info.Sequence, () => attacking = false);

@@ -92,7 +92,10 @@ namespace OpenRA.Mods.D2k.Activities
 			});
 
 			foreach (var notify in self.TraitsImplementing<INotifyAttack>())
+			{
+				notify.PreparingAttack(self, target, null, null);
 				notify.Attacking(self, target, null, null);
+			}
 
 			return true;
 		}

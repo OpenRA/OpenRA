@@ -197,6 +197,8 @@ namespace OpenRA.Mods.RA.Traits
 			}
 		}
 
-		public void Attacking(Actor self, Target target, Armament a, Barrel barrel) { DisguiseAs(null); }
+		void INotifyAttack.PreparingAttack(Actor self, Target target, Armament a, Barrel barrel) { }
+
+		void INotifyAttack.Attacking(Actor self, Target target, Armament a, Barrel barrel) { DisguiseAs(null); }
 	}
 }
