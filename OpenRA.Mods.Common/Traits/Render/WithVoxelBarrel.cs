@@ -45,8 +45,8 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 			var voxel = VoxelProvider.GetVoxel(image, Sequence);
 
-			var turretFacing = Turreted.GetInitialTurretFacing(init, t.InitialFacing, t.Turret);
-			Func<WRot> turretOrientation = () => body.QuantizeOrientation(WRot.FromYaw(WAngle.FromFacing(turretFacing) - orientation().Yaw), facings);
+			var turretFacing = Turreted.TurretFacingFromInit(init, t.InitialFacing, t.Turret);
+			Func<WRot> turretOrientation = () => body.QuantizeOrientation(WRot.FromYaw(WAngle.FromFacing(turretFacing()) - orientation().Yaw), facings);
 
 			Func<WRot> quantizedTurret = () => body.QuantizeOrientation(turretOrientation(), facings);
 			Func<WRot> quantizedBody = () => body.QuantizeOrientation(orientation(), facings);
