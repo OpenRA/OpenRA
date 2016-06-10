@@ -77,14 +77,6 @@ namespace OpenRA.Mods.Common.Traits
 			return new ChargeAttack(this, newTarget);
 		}
 
-		public override void ResolveOrder(Actor self, Order order)
-		{
-			base.ResolveOrder(self, order);
-
-			if (order.OrderString == "Stop")
-				self.CancelActivity();
-		}
-
 		class ChargeAttack : Activity
 		{
 			readonly AttackCharge attack;
