@@ -481,6 +481,7 @@
     <Compile Include="Traits\Sound\CaptureNotification.cs" />
     <Compile Include="Traits\Sound\DeathSounds.cs" />
     <Compile Include="Traits\Sound\SoundOnDamageTransition.cs" />
+    <Compile Include="Traits\Sound\AttackSounds.cs" />
     <Compile Include="Traits\SupplyTruck.cs" />
     <Compile Include="Traits\SupportPowers\AirstrikePower.cs" />
     <Compile Include="Traits\SupportPowers\GrantUpgradePower.cs" />
