@@ -114,7 +114,7 @@ GAPILE:
 		Image: pips
 		Sequence: tag-primary
 		Palette: ra
-		ReferencePoint: Top
+		ReferencePoint: Center
 		ZOffset: 256
 		UpgradeTypes: primary
 		UpgradeMinEnabledLevel: 1
@@ -176,7 +176,7 @@ GAWEAP:
 		Image: pips
 		Sequence: tag-primary
 		Palette: ra
-		ReferencePoint: Top
+		ReferencePoint: Center
 		ZOffset: 256
 		UpgradeTypes: primary
 		UpgradeMinEnabledLevel: 1
@@ -229,7 +229,7 @@ GAHPAD:
 		Image: pips
 		Sequence: tag-primary
 		Palette: ra
-		ReferencePoint: Top
+		ReferencePoint: Center
 		ZOffset: 256
 		UpgradeTypes: primary
 		UpgradeMinEnabledLevel: 1

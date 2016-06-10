@@ -123,7 +123,7 @@ NAHAND:
 		Image: pips
 		Sequence: tag-primary
 		Palette: ra
-		ReferencePoint: Top
+		ReferencePoint: Center
 		ZOffset: 256
 		UpgradeTypes: primary
 		UpgradeMinEnabledLevel: 1
@@ -181,7 +181,7 @@ NAWEAP:
 		Image: pips
 		Sequence: tag-primary
 		Palette: ra
-		ReferencePoint: Top
+		ReferencePoint: Center
 		ZOffset: 256
 		UpgradeTypes: primary
 		UpgradeMinEnabledLevel: 1
@@ -234,7 +234,7 @@ NAHPAD:
 		Image: pips
 		Sequence: tag-primary
 		Palette: ra
-		ReferencePoint: Top
+		ReferencePoint: Center
 		ZOffset: 256
 		UpgradeTypes: primary
 		UpgradeMinEnabledLevel: 1
