@@ -83,7 +83,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		}
 	}
 
-	public class RenderSprites : IRender, ITick, INotifyOwnerChanged, INotifyEffectiveOwnerChanged
+	public class RenderSprites : IRender, ITick, INotifyOwnerChanged, INotifyEffectiveOwnerChanged, IActorPreviewInitModifier
 	{
 		class AnimationWrapper
 		{
@@ -230,6 +230,12 @@ namespace OpenRA.Mods.Common.Traits.Render
 				&& b.Animation.Animation.CurrentSequence != null)
 					.Select(a => (a.Animation.Animation.Image.Size.XY * info.Scale).ToInt2())
 					.FirstOrDefault();
+		}
+
+		void IActorPreviewInitModifier.ModifyActorPreviewInit(Actor self, TypeDictionary inits)
+		{
+			if (!inits.Contains<FactionInit>())
+				inits.Add(new FactionInit(faction));
 		}
 	}
 }

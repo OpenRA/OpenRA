@@ -125,4 +125,10 @@ namespace OpenRA.Mods.Common.Traits
 		bool AdjacentWallCanConnect(Actor self, CPos wallLocation, string wallType, out CVec facing);
 		void SetDirty();
 	}
+
+	[RequireExplicitImplementation]
+	public interface IActorPreviewInitModifier
+	{
+		void ModifyActorPreviewInit(Actor self, TypeDictionary inits);
+	}
 }

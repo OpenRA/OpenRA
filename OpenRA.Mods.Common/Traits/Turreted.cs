@@ -174,6 +174,28 @@ namespace OpenRA.Mods.Common.Traits
 
 			facings.Value(self.World).Add(Name, TurretFacing);
 		}
+
+		void IActorPreviewInitModifier.ModifyActorPreviewInit(Actor self, TypeDictionary inits)
+		{
+			var facings = inits.GetOrDefault<DynamicTurretFacingsInit>();
+			if (facings == null)
+			{
+				facings = new DynamicTurretFacingsInit();
+				inits.Add(facings);
+			}
+
+			Func<int> bodyFacing = () => facing.Facing;
+			var dynamicFacing = inits.GetOrDefault<DynamicFacingInit>();
+			var staticFacing = inits.GetOrDefault<FacingInit>();
+			if (dynamicFacing != null)
+				bodyFacing = dynamicFacing.Value(self.World);
+			else if (staticFacing != null)
+				bodyFacing = () => staticFacing.Value(self.World);
+
+			// Freeze the relative turret facing to its current value
+			var facingOffset = TurretFacing - bodyFacing();
+			facings.Value(self.World).Add(Name, () => bodyFacing() + facingOffset);
+		}
 	}
 
 	public class TurretFacingInit : IActorInit<int>
