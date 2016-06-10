@@ -72,6 +72,7 @@ function DisplayOutputNoMarker(...)
   out:EmptyUndoBuffer()
   out:SetReadOnly(current)
   out:GotoPos(out:GetLength())
+  out:EnsureVisibleEnforcePolicy(out:GetLineCount()-1)
   if promptLine ~= wx.wxNOT_FOUND then updateInputMarker() end
 end
 function DisplayOutput(...)
