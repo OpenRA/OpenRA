@@ -149,6 +149,7 @@ MMCH:
 		Range: 8c0
 	BodyOrientation:
 		QuantizedFacings: 32
+		UseClassicPerspectiveFudge: False
 	WithInfantryBody:
 	Turreted:
 		TurnSpeed: 5
@@ -158,11 +159,14 @@ MMCH:
 		Recoils: no
 	Armament:
 		Weapon: 120mm
-		Recoil: 127
-		RecoilRecovery: 26
+		MuzzleSequence: muzzle
+		Recoil: 128
+		RecoilRecovery: 32
+		LocalOffset: 640, 192, 832
+	WithMuzzleOverlay:
 	RenderVoxels:
 	WithVoxelBarrel:
-		LocalOffset: -128, 85, 256
+		LocalOffset: -64, 64, 256
 	AutoTarget:
 	Selectable:
 		Bounds: 30, 42, 0, -8

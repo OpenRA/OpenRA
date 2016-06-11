@@ -469,7 +469,7 @@ natech:
 
 natmpl:
 	Defaults:
-		Offset: 0, -24
+		Offset: -15, -39
 		UseTilesetCode: true
 	idle:
 		ShadowStart: 3
@@ -838,7 +838,7 @@ nalasr:
 
 nasam:
 	Defaults:
-		Offset: 0, -12
+		Offset: 2, -12
 		UseTilesetCode: true
 	idle:
 		ShadowStart: 3
@@ -851,7 +851,7 @@ nasam:
 		Tick: 400
 	turret: gtctwr_d
 		Facings: 32
-		Offset: -4, 0
+		Offset: 0, 0
 	make: ntsammk
 		Length: 8
 		ShadowStart: 8
@@ -985,27 +985,35 @@ gactwr:
 		Facings: 32
 	muzzle0: mgun-n
 		Length: *
+		Offset: 0, 0
 		UseTilesetCode: false
 	muzzle1: mgun-nw
 		Length: *
+		Offset: 0, 0
 		UseTilesetCode: false
 	muzzle2: mgun-w
 		Length: *
+		Offset: 0, 0
 		UseTilesetCode: false
 	muzzle3: mgun-sw
 		Length: *
+		Offset: 0, 0
 		UseTilesetCode: false
 	muzzle4: mgun-s
 		Length: *
+		Offset: 0, 0
 		UseTilesetCode: false
 	muzzle5: mgun-se
 		Length: *
+		Offset: 0, 0
 		UseTilesetCode: false
 	muzzle6: mgun-e
 		Length: *
+		Offset: 0, 0
 		UseTilesetCode: false
 	muzzle7: mgun-ne
 		Length: *
+		Offset: 0, 0
 		UseTilesetCode: false
 	emp-overlay: emp_fx01
 		Length: *
