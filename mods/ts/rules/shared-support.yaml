@@ -3,8 +3,8 @@ NAPULS:
 	Valued:
 		Cost: 1000
 	Tooltip:
-		Name: EMP Cannon
-		Description: Disables vehicles.\nRequires power to operate.\n  Strong vs Vehicles\n  Weak vs Infantry, Aircraft
+		Name: E.M. Pulse Cannon
+		Description: Disables vehicles in an area.\nRequires power to operate.
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 90
@@ -22,12 +22,15 @@ NAPULS:
 		Type: Heavy
 	RevealsShroud:
 		Range: 8c0
+	-AutoTarget:
 	Turreted:
 		TurnSpeed: 10
 		InitialFacing: 224
 	AttackTurreted:
 	Armament:
 		Weapon: EMPulseCannon
+		LocalOffset: 150,0,1250
+		LocalYaw: 0,100
 	WithSpriteTurret:
 		Sequence: turret
 	Power:
@@ -39,3 +42,11 @@ NAPULS:
 		FactionImages:
 			gdi: napuls.gdi
 			nod: napuls.nod
+	AttackOrderPower:
+		Cursor: emp
+		Icon: emp
+		ChargeTime: 135
+		Description: E.M. Pulse
+		LongDesc: Fires a pulse blast which disables\nall mechanical units in the area.
+		EndChargeSound: 00-i158.aud
+		SelectTargetSound: 00-i042.aud

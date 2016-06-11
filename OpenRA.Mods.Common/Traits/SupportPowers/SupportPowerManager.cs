@@ -239,6 +239,9 @@ namespace OpenRA.Mods.Common.Traits
 			if (power == null)
 				return;
 
+			var pos = power.Self.World.Map.CenterOfCell(order.TargetLocation);
+			power = Instances.Where(i => !InstanceDisabled(i)).MinByOrDefault(a => (a.Self.CenterPosition - pos).HorizontalLengthSquared);
+
 			// Note: order.Subject is the *player* actor
 			power.Activate(power.Self, order, manager);
 			RemainingTime = TotalTime;
