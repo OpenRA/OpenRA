@@ -130,6 +130,22 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					node.Value.Nodes.Add(new MiniYamlNode("Id", id));
 				}
 
+				if (engineVersion < 20160611)
+				{
+					// Deprecated WithSpriteRotorOverlay
+					if (depth == 1 && node.Key.StartsWith("WithSpriteRotorOverlay"))
+					{
+						var parts = node.Key.Split('@');
+						node.Key = "WithIdleOverlay";
+						if (parts.Length > 1)
+							node.Key += "@" + parts[1];
+
+						Console.WriteLine("The 'WithSpriteRotorOverlay' trait has been removed.");
+						Console.WriteLine("Its functionality can be fully replicated with 'WithIdleOverlay' + upgrades.");
+						Console.WriteLine("Look at the helicopters in our RA / C&C1  mods for implementation details.");
+					}
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}
