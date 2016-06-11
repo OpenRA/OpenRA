@@ -852,6 +852,23 @@ if ide.osname == 'Macintosh' then
     end)
 end
 
+-- add Ctrl-Tab and Ctrl-Shift-Tab processing on Linux as there is a similar issue
+-- to the one on OSX: http://trac.wxwidgets.org/ticket/17064,
+-- but at least on Linux the handling of Tab from CHAR_HOOK works.
+if ide.osname == 'Unix' then
+  ide.frame:Connect(wx.wxEVT_CHAR_HOOK, function(event)
+      local key = event:GetKeyCode()
+      if key == wx.WXK_TAB and wx.wxGetKeyState(wx.WXK_CONTROL)
+      and not wx.wxGetKeyState(wx.WXK_ALT) then
+        ide.frame:AddPendingEvent(wx.wxCommandEvent(wx.wxEVT_COMMAND_MENU_SELECTED,
+            wx.wxGetKeyState(wx.WXK_SHIFT) and ID.NOTEBOOKTABPREV or ID.NOTEBOOKTABNEXT
+        ))
+      else
+        event:Skip()
+      end
+    end)
+end
+
 -- The status bar content is drawn incorrectly if it is shown
 -- after being initially hidden.
 -- Show the statusbar and hide it after showing the frame, which fixes the issue.
