@@ -76,7 +76,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CncLoadScreen.cs" />
-    <Compile Include="Effects\IonCannon.cs" />
     <Compile Include="Traits\AttackPopupTurreted.cs" />
     <Compile Include="Traits\Buildings\ProductionAirdrop.cs" />
     <Compile Include="Traits\PoisonedByTiberium.cs" />
@@ -89,6 +88,7 @@
     <Compile Include="Widgets\Logic\CncMainMenuLogic.cs" />
     <Compile Include="Widgets\Logic\ProductionTabsLogic.cs" />
     <Compile Include="ImportTiberianDawnLegacyMapCommand.cs" />
+    <Compile Include="Projectiles\IonCannon.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.Game\OpenRA.Game.csproj">
