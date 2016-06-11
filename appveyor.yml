@@ -11,7 +11,6 @@ install:
 
 cache:
   - nsissetup.exe -> appveyor.yaml
-  - NsProcess.zip -> appveyor.yaml
   - thirdparty\download -> thirdparty\fetch-thirdparty-deps.ps1
 
 before_build:

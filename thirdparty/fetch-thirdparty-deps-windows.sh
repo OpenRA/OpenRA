@@ -44,7 +44,3 @@ if [ ! -f soft_oal.dll ]; then
 	cp ./OpenAL-Soft/bin/Win32/soft_oal.dll ./soft_oal.dll
 	rm -rf OpenAL-Soft
 fi
-
-if [ ! -f ../NsProcess.zip ]; then
-	curl -s -L -o ../NsProcess.zip http://nsis.sourceforge.net/mediawiki/images/archive/1/18/20140806212030!NsProcess.zip
-fi
