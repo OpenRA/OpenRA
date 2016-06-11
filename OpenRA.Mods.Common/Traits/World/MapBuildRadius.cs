@@ -15,22 +15,36 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Controls the build radius checkboxes in the lobby options.")]
-	public class MapBuildRadiusInfo : TraitInfo<MapBuildRadius>
+	public class MapBuildRadiusInfo : ITraitInfo, ILobbyOptions
 	{
 		[Desc("Default value of the ally build radius checkbox in the lobby.")]
 		public readonly bool AllyBuildRadiusEnabled = true;
 
 		[Desc("Prevent the ally build radius state from being changed in the lobby.")]
 		public readonly bool AllyBuildRadiusLocked = false;
+
+		IEnumerable<LobbyOption> ILobbyOptions.LobbyOptions(Ruleset rules)
+		{
+			yield return new LobbyBooleanOption("allybuild", "Build off Allies' ConYards", AllyBuildRadiusEnabled, AllyBuildRadiusLocked);
+		}
+
+		public object Create(ActorInitializer init) { return new MapBuildRadius(this); }
 	}
 
 	public class MapBuildRadius : INotifyCreated
 	{
+		readonly MapBuildRadiusInfo info;
 		public bool AllyBuildRadiusEnabled { get; private set; }
+
+		public MapBuildRadius(MapBuildRadiusInfo info)
+		{
+			this.info = info;
+		}
 
 		void INotifyCreated.Created(Actor self)
 		{
-			AllyBuildRadiusEnabled = self.World.LobbyInfo.GlobalSettings.AllyBuildRadius;
+			AllyBuildRadiusEnabled = self.World.LobbyInfo.GlobalSettings
+				.OptionOrDefault("allybuild", info.AllyBuildRadiusEnabled);
 		}
 	}
 }

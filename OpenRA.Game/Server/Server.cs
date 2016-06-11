@@ -149,7 +149,6 @@ namespace OpenRA.Server
 					RandomSeed = randomSeed,
 					Map = settings.Map,
 					ServerName = settings.Name,
-					Dedicated = dedicated,
 					DisableSingleplayer = settings.DisableSinglePlayer,
 				}
 			};

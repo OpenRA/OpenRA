@@ -75,12 +75,17 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 
 			// Debug/Cheats tab
-			if (lp != null && world.LobbyInfo.GlobalSettings.AllowCheats)
+			// Can't use DeveloperMode.Enabled because there is a hardcoded hack to *always*
+			// enable developer mode for singleplayer games, but we only want to show the button
+			// if it has been explicitly enabled
+			var def = world.Map.Rules.Actors["player"].TraitInfo<DeveloperModeInfo>().Enabled;
+			var developerEnabled = world.LobbyInfo.GlobalSettings.OptionOrDefault("cheats", def);
+			if (lp != null && developerEnabled)
 			{
 				numTabs++;
 				var debugTabButton = widget.Get<ButtonWidget>(string.Concat("BUTTON", numTabs.ToString()));
 				debugTabButton.Text = "Debug";
-				debugTabButton.IsVisible = () => lp != null && world.LobbyInfo.GlobalSettings.AllowCheats && numTabs > 1 && !hasError;
+				debugTabButton.IsVisible = () => lp != null && numTabs > 1 && !hasError;
 				debugTabButton.IsDisabled = () => world.IsGameOver;
 				debugTabButton.OnClick = () => activePanel = IngameInfoPanel.Debug;
 				debugTabButton.IsHighlighted = () => activePanel == IngameInfoPanel.Debug;

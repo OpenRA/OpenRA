@@ -123,6 +123,13 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				if (engineVersion < 20160604 && node.Key.StartsWith("ProvidesTechPrerequisite"))
+				{
+					var name = node.Value.Nodes.First(n => n.Key == "Name");
+					var id = name.Value.Value.ToLowerInvariant().Replace(" ", "");
+					node.Value.Nodes.Add(new MiniYamlNode("Id", id));
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}

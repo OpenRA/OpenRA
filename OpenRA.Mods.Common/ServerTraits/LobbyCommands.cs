@@ -424,74 +424,43 @@ namespace OpenRA.Mods.Common.Server
 						return true;
 					}
 				},
-				{ "allowcheats",
+				{ "option",
 					s =>
 					{
 						if (!client.IsAdmin)
 						{
-							server.SendOrderTo(conn, "Message", "Only the host can set that option.");
+							server.SendOrderTo(conn, "Message", "Only the host can change the configuration.");
 							return true;
 						}
 
-						var devMode = server.Map.Rules.Actors["player"].TraitInfo<DeveloperModeInfo>();
-						if (devMode.Locked)
+						var options = server.Map.Rules.Actors["player"].TraitInfos<ILobbyOptions>()
+							.Concat(server.Map.Rules.Actors["world"].TraitInfos<ILobbyOptions>())
+							.SelectMany(t => t.LobbyOptions(server.Map.Rules))
+							.ToDictionary(o => o.Id, o => o);
+
+						var split = s.Split(' ');
+						LobbyOption option;
+						if (split.Length < 2 || !options.TryGetValue(split[0], out option) ||
+							!option.Values.ContainsKey(split[1]))
 						{
-							server.SendOrderTo(conn, "Message", "Map has disabled cheat configuration.");
+							server.SendOrderTo(conn, "Message", "Invalid configuration command.");
 							return true;
 						}
 
-						bool.TryParse(s, out server.LobbyInfo.GlobalSettings.AllowCheats);
+						if (option.Locked)
+						{
+							server.SendOrderTo(conn, "Message", "{0} cannot be changed.".F(option.Name));
+							return true;
+						}
+
+						var oo = server.LobbyInfo.GlobalSettings.LobbyOptions[option.Id];
+						if (oo.Value == split[1])
+							return true;
+
+						oo.Value = oo.PreferredValue = split[1];
+
 						server.SyncLobbyGlobalSettings();
-						server.SendMessage("{0} {1} the Debug Menu."
-							.F(client.Name, server.LobbyInfo.GlobalSettings.AllowCheats ? "enabled" : "disabled"));
-
-						return true;
-					}
-				},
-				{ "shroud",
-					s =>
-					{
-						if (!client.IsAdmin)
-						{
-							server.SendOrderTo(conn, "Message", "Only the host can set that option.");
-							return true;
-						}
-
-						var shroud = server.Map.Rules.Actors["player"].TraitInfo<ShroudInfo>();
-						if (shroud.ExploredMapLocked)
-						{
-							server.SendOrderTo(conn, "Message", "Map has disabled shroud configuration.");
-							return true;
-						}
-
-						bool.TryParse(s, out server.LobbyInfo.GlobalSettings.Shroud);
-						server.SyncLobbyGlobalSettings();
-						server.SendMessage("{0} {1} Explored map."
-							.F(client.Name, server.LobbyInfo.GlobalSettings.Shroud ? "disabled" : "enabled"));
-
-						return true;
-					}
-				},
-				{ "fog",
-					s =>
-					{
-						if (!client.IsAdmin)
-						{
-							server.SendOrderTo(conn, "Message", "Only the host can set that option.");
-							return true;
-						}
-
-						var shroud = server.Map.Rules.Actors["player"].TraitInfo<ShroudInfo>();
-						if (shroud.FogLocked)
-						{
-							server.SendOrderTo(conn, "Message", "Map has disabled fog configuration.");
-							return true;
-						}
-
-						bool.TryParse(s, out server.LobbyInfo.GlobalSettings.Fog);
-						server.SyncLobbyGlobalSettings();
-						server.SendMessage("{0} {1} Fog of War."
-							.F(client.Name, server.LobbyInfo.GlobalSettings.Fog ? "enabled" : "disabled"));
+						server.SendMessage(option.ValueChangedMessage(client.Name, split[1]));
 
 						return true;
 					}
@@ -537,78 +506,6 @@ namespace OpenRA.Mods.Common.Server
 						return true;
 					}
 				},
-				{ "crates",
-					s =>
-					{
-						if (!client.IsAdmin)
-						{
-							server.SendOrderTo(conn, "Message", "Only the host can set that option.");
-							return true;
-						}
-
-						var crateSpawner = server.Map.Rules.Actors["world"].TraitInfoOrDefault<CrateSpawnerInfo>();
-						if (crateSpawner == null || crateSpawner.Locked)
-						{
-							server.SendOrderTo(conn, "Message", "Map has disabled crate configuration.");
-							return true;
-						}
-
-						bool.TryParse(s, out server.LobbyInfo.GlobalSettings.Crates);
-						server.SyncLobbyGlobalSettings();
-						server.SendMessage("{0} {1} Crates."
-							.F(client.Name, server.LobbyInfo.GlobalSettings.Crates ? "enabled" : "disabled"));
-
-						return true;
-					}
-				},
-				{ "creeps",
-					s =>
-					{
-						if (!client.IsAdmin)
-						{
-							server.SendOrderTo(conn, "Message", "Only the host can set that option.");
-							return true;
-						}
-
-						var mapCreeps = server.Map.Rules.Actors["world"].TraitInfoOrDefault<MapCreepsInfo>();
-						if (mapCreeps == null || mapCreeps.Locked)
-						{
-							server.SendOrderTo(conn, "Message", "Map has disabled Creeps spawning configuration.");
-							return true;
-						}
-
-						bool.TryParse(s, out server.LobbyInfo.GlobalSettings.Creeps);
-						server.SyncLobbyGlobalSettings();
-						server.SendMessage("{0} {1} Creeps spawning."
-							.F(client.Name, server.LobbyInfo.GlobalSettings.Creeps ? "enabled" : "disabled"));
-
-						return true;
-					}
-				},
-				{ "allybuildradius",
-					s =>
-					{
-						if (!client.IsAdmin)
-						{
-							server.SendOrderTo(conn, "Message", "Only the host can set that option.");
-							return true;
-						}
-
-						var mapBuildRadius = server.Map.Rules.Actors["world"].TraitInfoOrDefault<MapBuildRadiusInfo>();
-						if (mapBuildRadius == null || mapBuildRadius.AllyBuildRadiusLocked)
-						{
-							server.SendOrderTo(conn, "Message", "Map has disabled ally build radius configuration.");
-							return true;
-						}
-
-						bool.TryParse(s, out server.LobbyInfo.GlobalSettings.AllyBuildRadius);
-						server.SyncLobbyGlobalSettings();
-						server.SendMessage("{0} {1} Build off Allies' ConYards."
-							.F(client.Name, server.LobbyInfo.GlobalSettings.AllyBuildRadius ? "enabled" : "disabled"));
-
-						return true;
-					}
-				},
 				{ "difficulty",
 					s =>
 					{
@@ -638,110 +535,6 @@ namespace OpenRA.Mods.Common.Server
 						server.LobbyInfo.GlobalSettings.Difficulty = s;
 						server.SyncLobbyGlobalSettings();
 						server.SendMessage("{0} changed difficulty to {1}.".F(client.Name, s));
-
-						return true;
-					}
-				},
-				{ "startingunits",
-					s =>
-					{
-						if (!client.IsAdmin)
-						{
-							server.SendOrderTo(conn, "Message", "Only the host can set that option.");
-							return true;
-						}
-
-						var startingUnits = server.Map.Rules.Actors["world"].TraitInfoOrDefault<SpawnMPUnitsInfo>();
-						if (startingUnits == null || startingUnits.Locked)
-						{
-							server.SendOrderTo(conn, "Message", "Map has disabled start unit configuration.");
-							return true;
-						}
-
-						var startUnitsInfo = server.Map.Rules.Actors["world"].TraitInfos<MPStartUnitsInfo>();
-						var selectedClass = startUnitsInfo.Where(u => u.Class == s).FirstOrDefault();
-						if (selectedClass == null)
-						{
-							server.SendOrderTo(conn, "Message", "Invalid starting units option selected: {0}".F(s));
-							server.SendOrderTo(conn, "Message", "Supported values: {0}".F(startUnitsInfo.Select(su => su.ClassName).JoinWith(", ")));
-							return true;
-						}
-
-						if (server.LobbyInfo.GlobalSettings.StartingUnitsClass == selectedClass.Class)
-							return true;
-
-						server.LobbyInfo.GlobalSettings.StartingUnitsClass = selectedClass.Class;
-						server.SyncLobbyGlobalSettings();
-						server.SendMessage("{0} changed Starting Units to {1}.".F(client.Name, selectedClass.ClassName));
-
-						return true;
-					}
-				},
-				{ "startingcash",
-					s =>
-					{
-						if (!client.IsAdmin)
-						{
-							server.SendOrderTo(conn, "Message", "Only the host can set that option.");
-							return true;
-						}
-
-						var playerResources = server.Map.Rules.Actors["player"].TraitInfo<PlayerResourcesInfo>();
-						if (playerResources.DefaultCashLocked)
-						{
-							server.SendOrderTo(conn, "Message", "Map has disabled cash configuration.");
-							return true;
-						}
-
-						var startingCashOptions = playerResources.SelectableCash;
-						var requestedCash = Exts.ParseIntegerInvariant(s);
-						if (!startingCashOptions.Contains(requestedCash))
-						{
-							server.SendOrderTo(conn, "Message", "Invalid starting cash value selected: {0}".F(s));
-							server.SendOrderTo(conn, "Message", "Supported values: {0}".F(startingCashOptions.JoinWith(", ")));
-							return true;
-						}
-
-						if (server.LobbyInfo.GlobalSettings.StartingCash == requestedCash)
-							return true;
-
-						server.LobbyInfo.GlobalSettings.StartingCash = requestedCash;
-						server.SyncLobbyGlobalSettings();
-						server.SendMessage("{0} changed Starting Cash to ${1}.".F(client.Name, requestedCash));
-
-						return true;
-					}
-				},
-				{ "techlevel",
-					s =>
-					{
-						if (server.LobbyInfo.GlobalSettings.TechLevel == s)
-							return true;
-
-						if (!client.IsAdmin)
-						{
-							server.SendOrderTo(conn, "Message", "Only the host can set that option.");
-							return true;
-						}
-
-						var mapOptions = server.Map.Rules.Actors["world"].TraitInfo<MapOptionsInfo>();
-						if (mapOptions.TechLevelLocked)
-						{
-							server.SendOrderTo(conn, "Message", "Map has disabled Tech configuration.");
-							return true;
-						}
-
-						var techlevels = server.Map.Rules.Actors["player"].TraitInfos<ProvidesTechPrerequisiteInfo>().Select(t => t.Name);
-						if (!techlevels.Contains(s))
-						{
-							server.SendOrderTo(conn, "Message", "Invalid tech level selected: {0}".F(s));
-							server.SendOrderTo(conn, "Message", "Supported values: {0}".F(techlevels.JoinWith(", ")));
-							return true;
-						}
-
-						server.LobbyInfo.GlobalSettings.TechLevel = s;
-						server.SyncLobbyInfo();
-						server.SendMessage("{0} changed Tech Level to {1}.".F(client.Name, s));
 
 						return true;
 					}
@@ -975,30 +768,6 @@ namespace OpenRA.Mods.Common.Server
 						return true;
 					}
 				},
-				{ "shortgame",
-					s =>
-					{
-						if (!client.IsAdmin)
-						{
-							server.SendOrderTo(conn, "Message", "Only the host can set that option.");
-							return true;
-						}
-
-						var mapOptions = server.Map.Rules.Actors["world"].TraitInfo<MapOptionsInfo>();
-						if (mapOptions.ShortGameLocked)
-						{
-							server.SendOrderTo(conn, "Message", "Map has disabled short game configuration.");
-							return true;
-						}
-
-						bool.TryParse(s, out server.LobbyInfo.GlobalSettings.ShortGame);
-						server.SyncLobbyGlobalSettings();
-						server.SendMessage("{0} {1} Short Game."
-							.F(client.Name, server.LobbyInfo.GlobalSettings.ShortGame ? "enabled" : "disabled"));
-
-						return true;
-					}
-				},
 				{ "sync_lobby",
 					s =>
 					{
@@ -1067,32 +836,36 @@ namespace OpenRA.Mods.Common.Server
 
 		public static void LoadMapSettings(Session.Global gs, Ruleset rules)
 		{
-			var devMode = rules.Actors["player"].TraitInfo<DeveloperModeInfo>();
-			gs.AllowCheats = devMode.Enabled;
+			var options = rules.Actors["player"].TraitInfos<ILobbyOptions>()
+				.Concat(rules.Actors["world"].TraitInfos<ILobbyOptions>())
+				.SelectMany(t => t.LobbyOptions(rules));
 
-			var crateSpawner = rules.Actors["world"].TraitInfoOrDefault<CrateSpawnerInfo>();
-			gs.Crates = crateSpawner != null && crateSpawner.Enabled;
+			foreach (var o in options)
+			{
+				var value = o.DefaultValue;
+				var preferredValue = o.DefaultValue;
+				Session.LobbyOptionState state;
+				if (gs.LobbyOptions.TryGetValue(o.Id, out state))
+				{
+					// Propagate old state on map change
+					if (!o.Locked)
+					{
+						if (o.Values.Keys.Contains(state.PreferredValue))
+							value = state.PreferredValue;
+						else if (o.Values.Keys.Contains(state.Value))
+							value = state.Value;
+					}
 
-			var shroud = rules.Actors["player"].TraitInfo<ShroudInfo>();
-			gs.Fog = shroud.FogEnabled;
-			gs.Shroud = !shroud.ExploredMapEnabled;
+					preferredValue = state.PreferredValue;
+				}
+				else
+					state = new Session.LobbyOptionState();
 
-			var resources = rules.Actors["player"].TraitInfo<PlayerResourcesInfo>();
-			gs.StartingCash = resources.DefaultCash;
-
-			var startingUnits = rules.Actors["world"].TraitInfoOrDefault<SpawnMPUnitsInfo>();
-			gs.StartingUnitsClass = startingUnits == null ? "none" : startingUnits.StartingUnitsClass;
-
-			var mapBuildRadius = rules.Actors["world"].TraitInfoOrDefault<MapBuildRadiusInfo>();
-			gs.AllyBuildRadius = mapBuildRadius != null && mapBuildRadius.AllyBuildRadiusEnabled;
-
-			var mapCreeps = rules.Actors["world"].TraitInfoOrDefault<MapCreepsInfo>();
-			gs.Creeps = mapCreeps != null && mapCreeps.Enabled;
-
-			var mapOptions = rules.Actors["world"].TraitInfo<MapOptionsInfo>();
-			gs.ShortGame = mapOptions.ShortGameEnabled;
-			gs.TechLevel = mapOptions.TechLevel;
-			gs.Difficulty = mapOptions.Difficulty ?? mapOptions.Difficulties.FirstOrDefault();
+				state.Locked = o.Locked;
+				state.Value = value;
+				state.PreferredValue = preferredValue;
+				gs.LobbyOptions[o.Id] = state;
+			}
 		}
 
 		static HSLColor SanitizePlayerColor(S server, HSLColor askedColor, int playerIndex, Connection connectionToEcho = null)

@@ -55,18 +55,23 @@ Player:
 	ProvidesTechPrerequisite@infonly:
 		Name: Infantry Only
 		Prerequisites: techlevel.infonly
+		Id: infantryonly
 	ProvidesTechPrerequisite@low:
 		Name: Low
 		Prerequisites: techlevel.infonly, techlevel.low
+		Id: low
 	ProvidesTechPrerequisite@medium:
 		Name: Medium
 		Prerequisites: techlevel.infonly, techlevel.low, techlevel.medium
+		Id: medium
 	ProvidesTechPrerequisite@high:
 		Name: No Superweapons
 		Prerequisites: techlevel.infonly, techlevel.low, techlevel.medium, techlevel.high
+		Id: nosuperweapons
 	ProvidesTechPrerequisite@unrestricted:
 		Name: Unrestricted
 		Prerequisites: techlevel.infonly, techlevel.low, techlevel.medium, techlevel.high, techlevel.unrestricted
+		Id: unrestricted
 	GlobalUpgradeManager:
 	EnemyWatcher:
 	VeteranProductionIconOverlay:
