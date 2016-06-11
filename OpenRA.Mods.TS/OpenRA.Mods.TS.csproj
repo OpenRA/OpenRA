@@ -74,7 +74,6 @@
     <Compile Include="Traits\Render\WithPermanentInjury.cs" />
     <Compile Include="Traits\Render\WithVoxelWalkerBody.cs" />
     <Compile Include="Traits\Render\WithVoxelUnloadBody.cs" />
-    <Compile Include="Traits\Render\WithVoxelWaterBody.cs" />
     <Compile Include="UtilityCommands\LegacyTilesetImporter.cs" />
     <Compile Include="Traits\World\TSShroudPalette.cs" />
     <Compile Include="UtilityCommands\ImportTSMapCommand.cs" />
