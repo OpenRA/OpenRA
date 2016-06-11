@@ -94,6 +94,8 @@ namespace OpenRA.Graphics
 			var invShadowTransform = Util.MatrixInverse(shadowTransform);
 			var cameraTransform = Util.MakeFloatMatrix(camera.AsMatrix());
 			var invCameraTransform = Util.MatrixInverse(cameraTransform);
+			if (invCameraTransform == null)
+				throw new InvalidOperationException("Failed to invert the cameraTransform matrix during RenderAsync.");
 
 			// Sprite rectangle
 			var tl = new float2(float.MaxValue, float.MaxValue);
@@ -199,9 +201,12 @@ namespace OpenRA.Graphics
 					{
 						var rd = v.Voxel.RenderData(i);
 						var t = v.Voxel.TransformationMatrix(i, frame);
+						var it = Util.MatrixInverse(t);
+						if (it == null)
+							throw new InvalidOperationException("Failed to invert the transformed matrix of frame {0} during RenderAsync.".F(i));
 
 						// Transform light vector from shadow -> world -> limb coords
-						var lightDirection = ExtractRotationVector(Util.MatrixMultiply(Util.MatrixInverse(t), lightTransform));
+						var lightDirection = ExtractRotationVector(Util.MatrixMultiply(it, lightTransform));
 
 						Render(rd, Util.MatrixMultiply(transform, t), lightDirection,
 							lightAmbientColor, lightDiffuseColor, color.TextureMidIndex, normals.TextureMidIndex);
