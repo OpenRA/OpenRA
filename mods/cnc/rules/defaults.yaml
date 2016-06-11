@@ -291,9 +291,6 @@
 		HP: 25
 	RevealsShroud:
 		Range: 2c0
-	Armament:
-		Weapon: Pistol
-	AttackFrontal:
 	ActorLostNotification:
 		Notification: CivilianKilled
 		NotifyAll: true
@@ -302,6 +299,11 @@
 		CrushSound: squish2.aud
 	Voiced:
 		VoiceSet: CivilianMaleVoice
+
+^ArmedCivilian:
+	Armament:
+		Weapon: Pistol
+	AttackFrontal:
 	WithInfantryBody:
 		AttackSequence: shoot
 
