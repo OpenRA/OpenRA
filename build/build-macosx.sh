@@ -140,9 +140,8 @@ if [ $BUILD_53 ]; then
 fi
 
 if [ $BUILD_JIT ]; then
-  LUA_BASENAME="LuaJIT-2.0.4"
-  LUA_FILENAME="$LUA_BASENAME.tar.gz"
-  LUA_URL="http://luajit.org/download/$LUA_FILENAME"
+  LUA_BASENAME="luajit"
+  LUA_URL="https://github.com/pkulchenko/luajit.git"
 fi
 
 # build wxWidgets
@@ -175,8 +174,13 @@ fi
 
 # build Lua
 if [ $BUILD_LUA ]; then
-  wget -c "$LUA_URL" -O "$LUA_FILENAME" || { echo "Error: failed to download Lua"; exit 1; }
-  tar -xzf "$LUA_FILENAME"
+  if [ $BUILD_JIT ]; then
+    git clone "$LUA_URL" "$LUA_BASENAME"
+    (cd "$LUA_BASENAME"; git checkout v2.0.4)
+  else
+    wget -c "$LUA_URL" -O "$LUA_FILENAME" || { echo "Error: failed to download Lua"; exit 1; }
+    tar -xzf "$LUA_FILENAME"
+  fi
   cd "$LUA_BASENAME"
 
   if [ $BUILD_JIT ]; then
@@ -184,8 +188,6 @@ if [ $BUILD_LUA ]; then
     make install PREFIX="$INSTALL_DIR"
     cp "src/luajit" "$INSTALL_DIR/bin/lua"
     cp "src/liblua.dylib" "$INSTALL_DIR/lib"
-    # move luajit to lua as it's expected by luasocket and other components
-    cp "$INSTALL_DIR"/include/luajit*/* "$INSTALL_DIR/include/"
   else
     sed -i "" 's/PLATS=/& macosx_dylib/' Makefile
 

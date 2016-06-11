@@ -157,9 +157,8 @@ if [ $BUILD_53 ]; then
 fi
 
 if [ $BUILD_JIT ]; then
-  LUA_BASENAME="LuaJIT-2.0.4"
-  LUA_FILENAME="$LUA_BASENAME.tar.gz"
-  LUA_URL="http://luajit.org/download/$LUA_FILENAME"
+  LUA_BASENAME="luajit"
+  LUA_URL="https://github.com/pkulchenko/luajit.git"
 fi
 
 # build wxWidgets
@@ -179,15 +178,18 @@ fi
 
 # build Lua
 if [ $BUILD_LUA ]; then
-  wget -c "$LUA_URL" -O "$LUA_FILENAME" || { echo "Error: failed to download Lua"; exit 1; }
-  tar -xzf "$LUA_FILENAME"
+  if [ $BUILD_JIT ]; then
+    git clone "$LUA_URL" "$LUA_BASENAME"
+    (cd "$LUA_BASENAME"; git checkout v2.0.4)
+  else
+    wget -c "$LUA_URL" -O "$LUA_FILENAME" || { echo "Error: failed to download Lua"; exit 1; }
+    tar -xzf "$LUA_FILENAME"
+  fi
   cd "$LUA_BASENAME"
   if [ $BUILD_JIT ]; then
     make CCOPT="-DLUAJIT_ENABLE_LUA52COMPAT" || { echo "Error: failed to build Lua"; exit 1; }
     make install PREFIX="$INSTALL_DIR"
-    cp "$INSTALL_DIR/bin/luajit.exe" "$INSTALL_DIR/bin/lua.exe"
-    # move luajit to lua as it's expected by luasocket and other components
-    cp "$INSTALL_DIR"/include/luajit*/* "$INSTALL_DIR/include/"
+    cp "$INSTALL_DIR/bin/luajit" "$INSTALL_DIR/bin/lua.exe"
   else
     # need to patch Lua io to support large (>2GB) files on Windows:
     # http://lua-users.org/lists/lua-l/2015-05/msg00370.html
