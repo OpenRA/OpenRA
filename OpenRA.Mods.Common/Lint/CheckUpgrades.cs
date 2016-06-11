@@ -31,14 +31,23 @@ namespace OpenRA.Mods.Common.Lint
 
 			foreach (var actorInfo in rules.Actors)
 			{
+				if (actorInfo.Key.StartsWith("^"))
+					continue;
+
 				foreach (var trait in actorInfo.Value.TraitInfos<ITraitInfo>())
 				{
 					var fields = trait.GetType().GetFields();
 					foreach (var field in fields.Where(x => x.HasAttribute<UpgradeUsedReferenceAttribute>()))
 					{
 						var values = LintExts.GetFieldValues(trait, field, emitError);
-						foreach (var value in values.Where(x => !upgradesGranted.Contains(x)))
-							emitError("Actor type `{0}` uses upgrade `{1}` that is not granted by anything!".F(actorInfo.Key, value));
+						foreach (var value in values)
+						{
+							if (!upgradesGranted.Contains(value))
+								emitError("Actor type `{0}` uses upgrade `{1}` that is not granted by anything!".F(actorInfo.Key, value));
+
+							if (actorInfo.Value.TraitInfoOrDefault<UpgradeManagerInfo>() == null)
+								emitError("Actor type `{0}` uses upgrade `{1}`, but doesn't have the UpgradeManager trait.".F(actorInfo.Key, value));
+						}
 					}
 				}
 			}
@@ -51,6 +60,9 @@ namespace OpenRA.Mods.Common.Lint
 			// Check all upgrades granted by traits.
 			foreach (var actorInfo in rules.Actors)
 			{
+				if (actorInfo.Key.StartsWith("^"))
+					continue;
+
 				foreach (var trait in actorInfo.Value.TraitInfos<ITraitInfo>())
 				{
 					var fields = trait.GetType().GetFields();
