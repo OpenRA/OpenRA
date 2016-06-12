@@ -24,7 +24,7 @@ namespace OpenRA.Mods.TS.Traits
 		public override object Create(ActorInitializer init) { return new AttackOrderPower(init.Self, this); }
 	}
 
-	class AttackOrderPower : SupportPower, INotifyAddedToWorld, INotifyAttack
+	class AttackOrderPower : SupportPower, INotifyAddedToWorld, INotifyBurstComplete
 	{
 		readonly AttackOrderPowerInfo info;
 		AttackBase attack;
@@ -52,7 +52,7 @@ namespace OpenRA.Mods.TS.Traits
 			attack = self.Trait<AttackBase>();
 		}
 
-		void INotifyAttack.Attacking(Actor self, Target target, Armament a, Barrel barrel)
+		void INotifyBurstComplete.FiredBurst(Actor self, Target target, Armament a)
 		{
 			self.World.IssueOrder(new Order("Stop", self, false));
 		}
