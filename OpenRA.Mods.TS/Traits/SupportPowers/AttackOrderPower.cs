@@ -24,7 +24,7 @@ namespace OpenRA.Mods.TS.Traits
 		public override object Create(ActorInitializer init) { return new AttackOrderPower(init.Self, this); }
 	}
 
-	class AttackOrderPower : SupportPower, INotifyAddedToWorld, INotifyBurstComplete
+	class AttackOrderPower : SupportPower, INotifyCreated, INotifyBurstComplete
 	{
 		readonly AttackOrderPowerInfo info;
 		AttackBase attack;
@@ -47,7 +47,7 @@ namespace OpenRA.Mods.TS.Traits
 			attack.AttackTarget(Target.FromCell(self.World, order.TargetLocation), false, false, true);
 		}
 
-		void INotifyAddedToWorld.AddedToWorld(Actor self)
+		void INotifyCreated.Created(Actor self)
 		{
 			attack = self.Trait<AttackBase>();
 		}
