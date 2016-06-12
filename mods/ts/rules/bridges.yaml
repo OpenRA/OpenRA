@@ -1,0 +1,47 @@
+LOBRDG_A:
+	Inherits: ^LowBridge_A
+
+LOBRDG_A_D:
+	Inherits: ^LowBridge_A
+	-RenderSprites:
+	RenderSpritesEditorOnly:
+		Palette: terrainalpha
+	EditorOnlyTooltip:
+		Name: Dead Bridge
+	-LowBridge:
+
+LOBRDG_B:
+	Inherits: ^LowBridge_B
+
+LOBRDG_B_D:
+	Inherits: ^LowBridge_B
+	-RenderSprites:
+	RenderSpritesEditorOnly:
+		Palette: terrainalpha
+	EditorOnlyTooltip:
+		Name: Dead Bridge
+	-LowBridge:
+
+LOBRDG_R_SE:
+	Inherits: ^LowBridge_B
+	EditorOnlyTooltip:
+		Name: Bridge Ramp
+		Description: South East
+
+LOBRDG_R_NW:
+	Inherits: ^LowBridge_B
+	EditorOnlyTooltip:
+		Name: Bridge Ramp
+		Description: North West
+
+LOBRDG_R_NE:
+	Inherits: ^LowBridge_A
+	EditorOnlyTooltip:
+		Name: Bridge Ramp
+		Description: North East
+
+LOBRDG_R_SW:
+	Inherits: ^LowBridge_A
+	EditorOnlyTooltip:
+		Name: Bridge Ramp
+		Description: South West

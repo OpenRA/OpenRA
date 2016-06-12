@@ -69,6 +69,7 @@
   <ItemGroup>
     <Compile Include="Activities\VoxelHarvesterDockSequence.cs" />
     <Compile Include="SpriteLoaders\TmpTSLoader.cs" />
+    <Compile Include="Traits\Buildings\LowBridge.cs" />
     <Compile Include="Traits\Buildings\TiberianSunRefinery.cs" />
     <Compile Include="Traits\Render\WithDockingOverlay.cs" />
     <Compile Include="Traits\Render\WithPermanentInjury.cs" />

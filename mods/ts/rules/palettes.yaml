@@ -109,5 +109,9 @@
 		BaseName: cloak
 		BasePalette: player
 		Alpha: 0.55
+	PaletteFromPaletteWithAlpha@terrainalpha:
+		BasePalette: terraindecoration
+		Name: terrainalpha
+		Alpha: 0.55
 	PlayerHighlightPalette:
 	MenuPaletteEffect:

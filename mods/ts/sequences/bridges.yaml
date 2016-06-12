@@ -1,0 +1,70 @@
+lobrdg_a:
+	Defaults:
+		ZOffset: -1c511
+		UseTilesetExtension: true
+		Start: 1
+	idle: lobrdg10 # lobrdg11, 12, 13
+	damaged-idle: lobrdg16
+	sw: lobrdg14
+	damaged-sw: lobrdg17
+	ne: lobrdg15
+	damaged-ne: lobrdg18
+
+lobrdg_a_d:
+	Defaults:
+		ZOffset: -1c511
+		UseTilesetExtension: true
+		Start: 1
+	idle: lobrdg10 # actually lobrdg28
+
+lobrdg_b:
+	Defaults:
+		ZOffset: -1c511
+		UseTilesetExtension: true
+		Start: 1
+	idle: lobrdg01 # lobrdg02, 03, 04
+	damaged-idle: lobrdg07
+	se: lobrdg06
+	damaged-se: lobrdg09
+	nw: lobrdg05
+	damaged-nw: lobrdg08
+
+lobrdg_b_d:
+	Defaults:
+		ZOffset: -1c511
+		UseTilesetExtension: true
+		Start: 1
+	idle: lobrdg01 # actually lobrdg27
+
+lobrdg_r_se:
+	Defaults:
+		ZOffset: -1c511
+		UseTilesetExtension: true
+		Start: 1
+	idle: lobrdg19
+	damaged-idle: lobrdg20
+
+lobrdg_r_nw:
+	Defaults:
+		ZOffset: -1c511
+		UseTilesetExtension: true
+		Start: 1
+	idle: lobrdg21
+	damaged-idle: lobrdg22
+
+lobrdg_r_ne:
+	Defaults:
+		ZOffset: -1c511
+		UseTilesetExtension: true
+		Start: 1
+	idle: lobrdg23
+	damaged-idle: lobrdg24
+
+lobrdg_r_sw:
+	Defaults:
+		ZOffset: -1c511
+		UseTilesetExtension: true
+		Start: 1
+	idle: lobrdg25
+	damaged-idle: lobrdg26
+

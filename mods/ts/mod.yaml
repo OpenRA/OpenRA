@@ -81,6 +81,7 @@ Rules:
 	ts|rules/shared-support.yaml
 	ts|rules/shared-vehicles.yaml
 	ts|rules/trees.yaml
+	ts|rules/bridges.yaml
 
 Weapons:
 	ts|weapons/bombsandgrenades.yaml
@@ -101,6 +102,7 @@ Sequences:
 	ts|sequences/structures.yaml
 	ts|sequences/vehicles.yaml
 	ts|sequences/trees.yaml
+	ts|sequences/bridges.yaml
 
 VoxelSequences:
 	ts|sequences/voxels.yaml
