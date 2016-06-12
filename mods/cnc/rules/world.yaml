@@ -72,6 +72,7 @@ World:
 	ResourceClaimLayer:
 	PathfinderDebugOverlay:
 	WarheadDebugOverlay:
+	CustomTerrainDebugOverlay:
 	MapCreeps:
 	SpawnMapActors:
 	MapBuildRadius:

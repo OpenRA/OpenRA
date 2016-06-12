@@ -128,3 +128,10 @@ Container@DEBUG_PANEL:
 			Width: 200
 			Font: Regular
 			Text: Show Actor Tags
+		Checkbox@SHOW_CUSTOMTERRAIN_OVERLAY:
+			X: 290
+			Y: 365
+			Height: 20
+			Width: 200
+			Font: Regular
+			Text: Show Custom Terrain

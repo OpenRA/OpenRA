@@ -596,19 +596,10 @@ tuntop01:
 		ShadowStart: 1
 
 tuntop02:
-	idle:
-		Offset: 0, -13
-		UseTilesetExtension: true
-		ShadowStart: 1
+	Inherits: tuntop01
 
 tuntop03:
-	idle:
-		Offset: 0, -13
-		UseTilesetExtension: true
-		ShadowStart: 1
+	Inherits: tuntop01
 
 tuntop04:
-	idle:
-		Offset: 0, -13
-		UseTilesetExtension: true
-		ShadowStart: 1
+	Inherits: tuntop01
