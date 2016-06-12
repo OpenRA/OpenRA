@@ -328,6 +328,9 @@
 		CrushedPaletteIsPlayerPalette: true
 	DeathSounds@NORMAL:
 		DeathTypes: BulletDeath, SmallExplosionDeath, ExplosionDeath
+	DeathSounds@EXPLOSION:
+		Voice: Explode
+		DeathTypes: ExplosionDeath
 	DeathSounds@BURNED:
 		Voice: Burned
 		DeathTypes: FireDeath
