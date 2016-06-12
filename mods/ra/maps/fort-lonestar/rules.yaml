@@ -44,13 +44,13 @@ World:
 		ID: difficulty
 		Label: Difficulty
 		Values:
-			hard(4p): Hard (4P)
-			normal(3p): Normal (3P)
-			easy(2p): Easy (2P)
-			veryeasy(1p): Very Easy (1P)
-			realtoughguy: Real tough guy
-			endlessmode: Endless mode
-		Default: hard(4p)
+			hard: Hard (4P)
+			normal: Normal (3P)
+			easy: Easy (2P)
+			veryeasy: Very Easy (1P)
+			tough: Real tough guy
+			endless: Endless mode
+		Default: hard
 
 FORTCRATE:
 	Inherits: ^Crate

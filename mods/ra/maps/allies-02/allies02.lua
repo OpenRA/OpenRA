@@ -11,7 +11,7 @@ PathGuards = { PathGuard1, PathGuard2, PathGuard3, PathGuard4, PathGuard5, PathG
 
 IdlingUnits = { }
 
-if Map.Difficulty == "Easy" then
+if Map.LobbyOption("difficulty") == "easy" then
 	TimerTicks = DateTime.Minutes(10)
 	Announcements =
 	{
@@ -23,7 +23,7 @@ if Map.Difficulty == "Easy" then
 		{ speech = "WarningOneMinuteRemaining", delay = DateTime.Minutes(9) }
 	}
 
-elseif Map.Difficulty == "Normal" then
+elseif Map.LobbyOption("difficulty") == "normal" then
 	TimerTicks = DateTime.Minutes(5)
 	Announcements =
 	{
@@ -38,7 +38,7 @@ elseif Map.Difficulty == "Normal" then
 	InfantryDelay = DateTime.Seconds(18)
 	AttackGroupSize = 5
 
-elseif Map.Difficulty == "Hard" then
+elseif Map.LobbyOption("difficulty") == "hard" then
 	TimerTicks = DateTime.Minutes(3)
 	Announcements =
 	{
@@ -146,7 +146,7 @@ SendAttack = function()
 	end
 
 	Utils.Do(units, function(unit)
-		if Map.Difficulty ~= "Real tough guy" then
+		if Map.LobbyOption("difficulty") ~= "tough" then
 			unit.AttackMove(DeployPoint.Location)
 		end
 		Trigger.OnIdle(unit, unit.Hunt)

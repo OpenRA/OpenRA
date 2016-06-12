@@ -2,15 +2,15 @@ IdlingUnits = { }
 
 AttackGroupSize =
 {
-	Easy = 6,
-	Normal = 8,
-	Hard = 10
+	easy = 6,
+	normal = 8,
+	hard = 10
 }
 AttackDelays =
 {
-	Easy = { DateTime.Seconds(4), DateTime.Seconds(9) },
-	Normal = { DateTime.Seconds(2), DateTime.Seconds(7) },
-	Hard = { DateTime.Seconds(1), DateTime.Seconds(5) }
+	easy = { DateTime.Seconds(4), DateTime.Seconds(9) },
+	normal = { DateTime.Seconds(2), DateTime.Seconds(7) },
+	hard = { DateTime.Seconds(1), DateTime.Seconds(5) }
 }
 
 OrdosInfantryTypes = { "light_inf", "light_inf", "light_inf", "trooper", "trooper" }
@@ -25,7 +25,7 @@ IdleHunt = function(unit) if not unit.IsDead then Trigger.OnIdle(unit, unit.Hunt
 SetupAttackGroup = function()
 	local units = { }
 
-	for i = 0, AttackGroupSize[Map.Difficulty], 1 do
+	for i = 0, AttackGroupSize[Map.LobbyOption("difficulty")], 1 do
 		if #IdlingUnits == 0 then
 			return units
 		end
@@ -115,13 +115,13 @@ ProduceInfantry = function()
 		return
 	end
 
-	local delay = Utils.RandomInteger(AttackDelays[Map.Difficulty][1], AttackDelays[Map.Difficulty][2] + 1)
+	local delay = Utils.RandomInteger(AttackDelays[Map.LobbyOption("difficulty")][1], AttackDelays[Map.LobbyOption("difficulty")][2] + 1)
 	local toBuild = { Utils.Random(OrdosInfantryTypes) }
 	ordos.Build(toBuild, function(unit)
 		IdlingUnits[#IdlingUnits + 1] = unit[1]
 		Trigger.AfterDelay(delay, ProduceInfantry)
 
-		if #IdlingUnits >= (AttackGroupSize[Map.Difficulty] * 2.5) then
+		if #IdlingUnits >= (AttackGroupSize[Map.LobbyOption("difficulty")] * 2.5) then
 			SendAttack()
 		end
 	end)
@@ -137,13 +137,13 @@ ProduceVehicles = function()
 		return
 	end
 
-	local delay = Utils.RandomInteger(AttackDelays[Map.Difficulty][1], AttackDelays[Map.Difficulty][2] + 1)
+	local delay = Utils.RandomInteger(AttackDelays[Map.LobbyOption("difficulty")][1], AttackDelays[Map.LobbyOption("difficulty")][2] + 1)
 	local toBuild = { Utils.Random(OrdosVehicleTypes) }
 	ordos.Build(toBuild, function(unit)
 		IdlingUnits[#IdlingUnits + 1] = unit[1]
 		Trigger.AfterDelay(delay, ProduceVehicles)
 
-		if #IdlingUnits >= (AttackGroupSize[Map.Difficulty] * 2.5) then
+		if #IdlingUnits >= (AttackGroupSize[Map.LobbyOption("difficulty")] * 2.5) then
 			SendAttack()
 		end
 	end)

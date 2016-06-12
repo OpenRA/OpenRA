@@ -9,9 +9,9 @@ BeachheadTrigger =
 	CPos.New(137, 104), CPos.New(137, 105), CPos.New(137, 106), CPos.New(136, 106), CPos.New(136, 107)
 }
 
-Difficulty = Map.Difficulty
+Difficulty = Map.LobbyOption("difficulty")
 
-if Difficulty == "Medium" then
+if Difficulty == "medium" then
 	BaseRaidInterval = DateTime.Minutes(3)
 	BaseFrontAttackInterval = DateTime.Minutes(3) + DateTime.Seconds(30)
 	BaseRearAttackInterval = DateTime.Minutes(8)

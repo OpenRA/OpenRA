@@ -1,20 +1,20 @@
 EnemyReinforcements =
 {
-	Easy =
+	easy =
 	{
 		{ "e1", "e1", "e3" },
 		{ "e1", "e3", "jeep" },
 		{ "e1", "jeep", "1tnk" }
 	},
 
-	Normal =
+	normal =
 	{
 		{ "e1", "e1", "e3", "e3" },
 		{ "e1", "e3", "jeep", "jeep" },
 		{ "e1", "jeep", "1tnk", "2tnk" }
 	},
 
-	Hard =
+	hard =
 	{
 		{ "e1", "e1", "e3", "e3", "e1" },
 		{ "e1", "e3", "jeep", "jeep", "1tnk" },
@@ -24,9 +24,9 @@ EnemyReinforcements =
 
 EnemyAttackDelay =
 {
-	Easy = DateTime.Minutes(5),
-	Normal = DateTime.Minutes(2) + DateTime.Seconds(40),
-	Hard = DateTime.Minutes(1) + DateTime.Seconds(30)
+	easy = DateTime.Minutes(5),
+	normal = DateTime.Minutes(2) + DateTime.Seconds(40),
+	hard = DateTime.Minutes(1) + DateTime.Seconds(30)
 }
 
 EnemyPaths =
@@ -37,7 +37,7 @@ EnemyPaths =
 
 wave = 0
 SendEnemies = function()
-	Trigger.AfterDelay(EnemyAttackDelay[Map.Difficulty], function()
+	Trigger.AfterDelay(EnemyAttackDelay[Map.LobbyOption("difficulty")], function()
 
 		wave = wave + 1
 		if wave > 3 then
@@ -45,10 +45,10 @@ SendEnemies = function()
 		end
 
 		if wave == 1 then
-			local units = Reinforcements.ReinforceWithTransport(enemy, "tran", EnemyReinforcements[Map.Difficulty][wave], EnemyPaths[1], { EnemyPaths[1][1] })[2]
+			local units = Reinforcements.ReinforceWithTransport(enemy, "tran", EnemyReinforcements[Map.LobbyOption("difficulty")][wave], EnemyPaths[1], { EnemyPaths[1][1] })[2]
 			Utils.Do(units, IdleHunt)
 		else
-			local units = Reinforcements.ReinforceWithTransport(enemy, "lst", EnemyReinforcements[Map.Difficulty][wave], EnemyPaths[2], { EnemyPaths[2][1] })[2]
+			local units = Reinforcements.ReinforceWithTransport(enemy, "lst", EnemyReinforcements[Map.LobbyOption("difficulty")][wave], EnemyPaths[2], { EnemyPaths[2][1] })[2]
 			Utils.Do(units, IdleHunt)
 		end
 

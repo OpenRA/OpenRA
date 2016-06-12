@@ -22,7 +22,7 @@ World:
 			easy: Easy
 			normal: Normal
 			hard: Hard
-			realtoughguy: Real tough guy
+			tough: Real tough guy
 		Default: easy
 
 HARV:

@@ -158,7 +158,7 @@ InitProductionBuildings = function()
 		end)
 	end
 
-	if Map.Difficulty ~= "Easy" then
+	if Map.LobbyOption("difficulty") ~= "easy" then
 
 		if not Airfield1.IsDead then
 			Trigger.OnKilled(Airfield1, function()

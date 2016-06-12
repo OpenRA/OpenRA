@@ -1,20 +1,20 @@
 DeathThreshold =
 {
-	Easy = 200,
-	Normal = 100,
+	easy = 200,
+	normal = 100,
 }
 
 TanyaType = "e7"
 TanyaStance = "AttackAnything"
-if Map.Difficulty ~= "Easy" then
+if Map.LobbyOption("difficulty") ~= "easy" then
 	TanyaType = "e7.noautotarget"
 	TanyaStance = "HoldFire"
 end
 
 RepairTriggerThreshold =
 {
-	Easy = 50,
-	Normal = 75,
+	easy = 50,
+	normal = 75,
 }
 
 Sams = { Sam1, Sam2, Sam3, Sam4 }
@@ -58,8 +58,8 @@ SovietVehicles =
 }
 ProductionInterval =
 {
-	Easy = DateTime.Seconds(10),
-	Normal = DateTime.Seconds(2),
+	easy = DateTime.Seconds(10),
+	normal = DateTime.Seconds(2),
 }
 
 ReinforcementsDelay = DateTime.Minutes(16)
@@ -144,7 +144,7 @@ ProduceInfantry = function()
 	soviets.Build({ Utils.Random(SovietInfantry) }, function(units)
 		table.insert(AttackGroup, units[1])
 		SendAttackGroup()
-		Trigger.AfterDelay(ProductionInterval[Map.Difficulty], ProduceInfantry)
+		Trigger.AfterDelay(ProductionInterval[Map.LobbyOption("difficulty")], ProduceInfantry)
 	end)
 end
 
@@ -156,7 +156,7 @@ ProduceVehicles = function()
 	soviets.Build({ Utils.Random(SovietVehicles[SovietVehicleType]) }, function(units)
 		table.insert(AttackGroup, units[1])
 		SendAttackGroup()
-		Trigger.AfterDelay(ProductionInterval[Map.Difficulty], ProduceVehicles)
+		Trigger.AfterDelay(ProductionInterval[Map.LobbyOption("difficulty")], ProduceVehicles)
 	end)
 end
 
@@ -177,7 +177,7 @@ Tick = function()
 		allies2.MarkCompletedObjective(objCutSovietPower)
 	end
 
-	if not allies2.IsObjectiveCompleted(objLimitLosses) and allies2.UnitsLost > DeathThreshold[Map.Difficulty] then
+	if not allies2.IsObjectiveCompleted(objLimitLosses) and allies2.UnitsLost > DeathThreshold[Map.LobbyOption("difficulty")] then
 		allies2.MarkFailedObjective(objLimitLosses)
 	end
 
@@ -191,7 +191,7 @@ end
 SetupSoviets = function()
 	soviets.Cash = 1000
 
-	if Map.Difficulty == "Easy" then
+	if Map.LobbyOption("difficulty") == "easy" then
 		Utils.Do(Sams, function(sam)
 			local camera = Actor.Create("Camera.SAM", true, { Owner = allies1, Location = sam.Location })
 			Trigger.OnKilledOrCaptured(sam, function()
@@ -203,7 +203,7 @@ SetupSoviets = function()
 	local buildings = Utils.Where(Map.ActorsInWorld, function(self) return self.Owner == soviets and self.HasProperty("StartBuildingRepairs") end)
 	Utils.Do(buildings, function(actor)
 		Trigger.OnDamaged(actor, function(building)
-			if building.Owner == soviets and building.Health < (building.MaxHealth * RepairTriggerThreshold[Map.Difficulty] / 100) then
+			if building.Owner == soviets and building.Health < (building.MaxHealth * RepairTriggerThreshold[Map.LobbyOption("difficulty")] / 100) then
 				building.StartBuildingRepairs()
 			end
 		end)
@@ -283,7 +283,7 @@ SpawnTanya = function()
 	Tanya = Actor.Create(TanyaType, true, { Owner = allies1, Location = TanyaLocation.Location })
 	Tanya.Stance = TanyaStance
 
-	if Map.Difficulty ~= "Easy" and allies1.IsLocalPlayer then
+	if Map.LobbyOption("difficulty") ~= "easy" and allies1.IsLocalPlayer then
 		Trigger.AfterDelay(DateTime.Seconds(2), function()
 			Media.DisplayMessage("According to the rules of engagement I need your explicit orders to fire, Commander!", "Tanya")
 		end)
@@ -355,7 +355,7 @@ WorldLoaded = function()
 	objDestroySamSites = allies1.AddPrimaryObjective("Destroy the SAM sites.")
 
 	objHoldPosition = allies2.AddPrimaryObjective("Hold your position and protect the base.")
-	objLimitLosses = allies2.AddSecondaryObjective("Do not lose more than " .. DeathThreshold[Map.Difficulty] .. " units.")
+	objLimitLosses = allies2.AddSecondaryObjective("Do not lose more than " .. DeathThreshold[Map.LobbyOption("difficulty")] .. " units.")
 	objCutSovietPower = allies2.AddSecondaryObjective("Take out the Soviet power grid.")
 
 	SetupTriggers()

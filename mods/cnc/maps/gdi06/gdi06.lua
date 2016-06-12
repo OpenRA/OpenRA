@@ -89,10 +89,10 @@ WorldLoaded = function()
 		Media.PlaySpeechNotification(player, "Lose")
 	end)
 
-	if Map.Difficulty == "Easy" then
+	if Map.LobbyOption("difficulty") == "easy" then
 		CommandoType = "rmbo.easy"
 		KillCounterHuntThreshold = 30
-	elseif Map.Difficulty == "Hard" then
+	elseif Map.LobbyOption("difficulty") == "hard" then
 		CommandoType = "rmbo.hard"
 		KillCounterHuntThreshold = 15
 	else

@@ -2,14 +2,14 @@ OrdosBase = { OBarracks, OWindTrap1, OWindTrap2, OWindTrap3, OWindTrap4, OLightF
 
 OrdosReinforcements =
 {
-	Easy =
+	easy =
 	{
 		{ "light_inf", "raider", "trooper" },
 		{ "light_inf", "raider", "quad" },
 		{ "light_inf", "light_inf", "trooper", "raider", "raider", "quad" }
 	},
 
-	Normal =
+	normal =
 	{
 		{ "light_inf", "raider", "trooper" },
 		{ "light_inf", "raider", "raider" },
@@ -19,7 +19,7 @@ OrdosReinforcements =
 		{ "light_inf", "raider", "quad", "quad" }
 	},
 
-	Hard =
+	hard =
 	{
 		{ "raider", "raider", "quad" },
 		{ "light_inf", "raider", "raider" },
@@ -35,23 +35,23 @@ OrdosReinforcements =
 
 OrdosAttackDelay =
 {
-	Easy = DateTime.Minutes(5),
-	Normal = DateTime.Minutes(2) + DateTime.Seconds(40),
-	Hard = DateTime.Minutes(1) + DateTime.Seconds(20)
+	easy = DateTime.Minutes(5),
+	normal = DateTime.Minutes(2) + DateTime.Seconds(40),
+	hard = DateTime.Minutes(1) + DateTime.Seconds(20)
 }
 
 OrdosAttackWaves =
 {
-	Easy = 3,
-	Normal = 6,
-	Hard = 9
+	easy = 3,
+	normal = 6,
+	hard = 9
 }
 
 ToHarvest =
 {
-	Easy = 5000,
-	Normal = 6000,
-	Hard = 7000
+	easy = 5000,
+	normal = 6000,
+	hard = 7000
 }
 
 InitialOrdosReinforcements = { "light_inf", "light_inf", "quad", "quad", "raider", "raider", "trooper", "trooper" }
@@ -70,17 +70,17 @@ AtreidesUpgrades = { "upgrade.barracks", "upgrade.light" }
 
 wave = 0
 SendOrdos = function()
-	Trigger.AfterDelay(OrdosAttackDelay[Map.Difficulty], function()
+	Trigger.AfterDelay(OrdosAttackDelay[Map.LobbyOption("difficulty")], function()
 		if player.IsObjectiveCompleted(KillOrdos) then
 			return
 		end
 
 		wave = wave + 1
-		if wave > OrdosAttackWaves[Map.Difficulty] then
+		if wave > OrdosAttackWaves[Map.LobbyOption("difficulty")] then
 			return
 		end
 
-		local units = Reinforcements.ReinforceWithTransport(ordos, "carryall.reinforce", OrdosReinforcements[Map.Difficulty][wave], OrdosPaths[1], { OrdosPaths[1][1] })[2]
+		local units = Reinforcements.ReinforceWithTransport(ordos, "carryall.reinforce", OrdosReinforcements[Map.LobbyOption("difficulty")][wave], OrdosPaths[1], { OrdosPaths[1][1] })[2]
 		Utils.Do(units, IdleHunt)
 
 		SendOrdos()
@@ -110,7 +110,7 @@ Tick = function()
 		end
 	end
 
-	if player.Resources > ToHarvest[Map.Difficulty] - 1 then
+	if player.Resources > ToHarvest[Map.LobbyOption("difficulty")] - 1 then
 		player.MarkCompletedObjective(GatherSpice)
 	end
 
@@ -118,7 +118,7 @@ Tick = function()
 		Media.DisplayMessage("Upgrade barracks and light factory to produce more advanced units.", "Mentat")
 	end
 
-	UserInterface.SetMissionText("Harvested resources: " .. player.Resources .. "/" .. ToHarvest[Map.Difficulty], player.Color)
+	UserInterface.SetMissionText("Harvested resources: " .. player.Resources .. "/" .. ToHarvest[Map.LobbyOption("difficulty")], player.Color)
 end
 
 WorldLoaded = function()
@@ -147,7 +147,7 @@ InitObjectives = function()
 	end)
 
 	KillAtreides = ordos.AddPrimaryObjective("Kill all Atreides units.")
-	GatherSpice = player.AddPrimaryObjective("Harvest " .. tostring(ToHarvest[Map.Difficulty]) .. " Solaris worth of Spice.")
+	GatherSpice = player.AddPrimaryObjective("Harvest " .. tostring(ToHarvest[Map.LobbyOption("difficulty")]) .. " Solaris worth of Spice.")
 	KillOrdos = player.AddSecondaryObjective("Eliminate all Ordos units and reinforcements\nin the area.")
 
 	Trigger.OnObjectiveCompleted(player, function(p, id)

@@ -1,6 +1,6 @@
-if Map.Difficulty == "Easy" then
+if Map.LobbyOption("difficulty") == "easy" then
 	Rambo = "rmbo.easy"
-elseif Map.Difficulty == "Hard" then
+elseif Map.LobbyOption("difficulty") == "hard" then
 	Rambo = "rmbo.hard"
 else
 	Rambo = "rmbo"
