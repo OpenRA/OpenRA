@@ -12,7 +12,14 @@ World:
 		WinVideo: sitduck.vqa
 		LossVideo: dpthchrg.vqa
 	MapOptions:
-		Difficulties: Easy, Normal, Hard
+	ScriptLobbyDropdown@difficulty:
+		ID: difficulty
+		Label: Difficulty
+		Values:
+			easy: Easy
+			normal: Normal
+			hard: Hard
+		Default: easy
 
 APWR:
 	Buildable:

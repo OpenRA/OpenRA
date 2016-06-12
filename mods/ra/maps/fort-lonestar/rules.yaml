@@ -38,9 +38,19 @@ World:
 	MapOptions:
 		TechLevelLocked: True
 		TechLevel: Unrestricted
-		Difficulties: Hard (4P), Normal (3P), Easy (2P), Very Easy (1P), Real tough guy, Endless mode
 		ShortGameLocked: True
 		ShortGameEnabled: False
+	ScriptLobbyDropdown@difficulty:
+		ID: difficulty
+		Label: Difficulty
+		Values:
+			hard(4p): Hard (4P)
+			normal(3p): Normal (3P)
+			easy(2p): Easy (2P)
+			veryeasy(1p): Very Easy (1P)
+			realtoughguy: Real tough guy
+			endlessmode: Endless mode
+		Default: hard(4p)
 
 FORTCRATE:
 	Inherits: ^Crate

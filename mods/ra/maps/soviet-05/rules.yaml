@@ -13,7 +13,14 @@ World:
 		LossVideo: sovbatl.vqa
 	MapOptions:
 		TechLevel: Medium
-		Difficulties: Easy, Normal, Hard
+	ScriptLobbyDropdown@difficulty:
+		ID: difficulty
+		Label: Difficulty
+		Values:
+			easy: Easy
+			normal: Normal
+			hard: Hard
+		Default: easy
 
 AFLD:
 	ParatroopersPower@paratroopers:

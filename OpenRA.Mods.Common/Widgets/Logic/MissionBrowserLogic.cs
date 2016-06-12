@@ -196,7 +196,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			// Cache the rules on a background thread to avoid jank
 			var difficultyDisabled = true;
-			var difficulties = new string[0];
+			var difficulties = new Dictionary<string, string>();
 
 			var briefingVideo = "";
 			var briefingVideoVisible = false;
@@ -206,11 +206,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			new Thread(() =>
 			{
-				var mapOptions = preview.Rules.Actors["world"].TraitInfo<MapOptionsInfo>();
+				var mapDifficulty = preview.Rules.Actors["world"].TraitInfos<ScriptLobbyDropdownInfo>()
+					.FirstOrDefault(sld => sld.ID == "difficulty");
 
-				difficulty = mapOptions.Difficulty ?? mapOptions.Difficulties.FirstOrDefault();
-				difficulties = mapOptions.Difficulties;
-				difficultyDisabled = mapOptions.DifficultyLocked || mapOptions.Difficulties.Length <= 1;
+				if (mapDifficulty != null)
+				{
+					difficulty = mapDifficulty.Default;
+					difficulties = mapDifficulty.Values;
+					difficultyDisabled = mapDifficulty.Locked;
+				}
 
 				var missionData = preview.Rules.Actors["world"].TraitInfoOrDefault<MissionDataInfo>();
 				if (missionData != null)
@@ -245,15 +249,16 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			if (difficultyButton != null)
 			{
+				var difficultyName = new CachedTransform<string, string>(id => id == null || !difficulties.ContainsKey(id) ? "Normal" : difficulties[id]);
 				difficultyButton.IsDisabled = () => difficultyDisabled;
-				difficultyButton.GetText = () => difficulty ?? "Normal";
+				difficultyButton.GetText = () => difficultyName.Update(difficulty);
 				difficultyButton.OnMouseDown = _ =>
 				{
-					var options = difficulties.Select(d => new DropDownOption
+					var options = difficulties.Select(kv => new DropDownOption
 					{
-						Title = d,
-						IsSelected = () => difficulty == d,
-						OnClick = () => difficulty = d
+						Title = kv.Value,
+						IsSelected = () => difficulty == kv.Key,
+						OnClick = () => difficulty = kv.Key
 					});
 
 					Func<DropDownOption, ScrollItemWidget, ScrollItemWidget> setupItem = (option, template) =>
@@ -361,7 +366,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var orders = new[] {
 				Order.Command("gamespeed {0}".F(gameSpeed)),
-				Order.Command("difficulty {0}".F(difficulty)),
+				Order.Command("option difficulty {0}".F(difficulty)),
 				Order.Command("state {0}".F(Session.ClientState.Ready))
 			};
 

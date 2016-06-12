@@ -13,8 +13,13 @@ World:
 		Scripts: evacuation.lua
 	MapOptions:
 		TechLevelLocked: True
-		Difficulties: Easy, Normal
-		Difficulty: Normal
+	ScriptLobbyDropdown@difficulty:
+		ID: difficulty
+		Label: Difficulty
+		Values:
+			easy: Easy
+			normal: Normal
+		Default: normal
 
 ^Tanks:
 	Demolishable:
@@ -214,4 +219,3 @@ powerproxy.paras2:
 	AlwaysVisible:
 	ParatroopersPower:
 		DropItems: E1,E1,E1,E2,E2
-

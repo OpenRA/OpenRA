@@ -8,7 +8,14 @@ World:
 		WinVideo: execute.vqa
 		LossVideo: take_off.vqa
 	MapOptions:
-		Difficulties: Easy, Normal, Hard
+	ScriptLobbyDropdown@difficulty:
+		ID: difficulty
+		Label: Difficulty
+		Values:
+			easy: Easy
+			normal: Normal
+			hard: Hard
+		Default: easy
 
 ^TechBuilding:
 	AutoTargetIgnore:

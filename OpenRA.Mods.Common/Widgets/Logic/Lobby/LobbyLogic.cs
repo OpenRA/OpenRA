@@ -368,6 +368,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{ "TECHLEVEL", "techlevel" },
 				{ "STARTINGUNITS", "startingunits" },
 				{ "STARTINGCASH", "startingcash" },
+				{ "DIFFICULTY", "difficulty" }
 			};
 
 			var allOptions = new CachedTransform<MapPreview, LobbyOption[]>(
@@ -421,35 +422,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					if (label != null)
 						label.IsVisible = () => option.Update(Map) != null;
 				}
-			}
-
-			var difficulty = optionsBin.GetOrNull<DropDownButtonWidget>("DIFFICULTY_DROPDOWNBUTTON");
-			if (difficulty != null)
-			{
-				var mapOptions = new CachedTransform<MapPreview, MapOptionsInfo>(
-					map => map.Rules.Actors["world"].TraitInfo<MapOptionsInfo>());
-
-				difficulty.IsVisible = () => Map.RulesLoaded && mapOptions.Update(Map).Difficulties.Any();
-				difficulty.IsDisabled = () => configurationDisabled() || mapOptions.Update(Map).DifficultyLocked;
-				difficulty.GetText = () => orderManager.LobbyInfo.GlobalSettings.Difficulty;
-				difficulty.OnMouseDown = _ =>
-				{
-					var options = mapOptions.Update(Map).Difficulties.Select(d => new DropDownOption
-					{
-						Title = d,
-						IsSelected = () => orderManager.LobbyInfo.GlobalSettings.Difficulty == d,
-						OnClick = () => orderManager.IssueOrder(Order.Command("difficulty {0}".F(d)))
-					});
-					Func<DropDownOption, ScrollItemWidget, ScrollItemWidget> setupItem = (option, template) =>
-					{
-						var item = ScrollItemWidget.Setup(template, option.IsSelected, option.OnClick);
-						item.Get<LabelWidget>("LABEL").GetText = () => option.Title;
-						return item;
-					};
-					difficulty.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", options.Count() * 30, options, setupItem);
-				};
-
-				optionsBin.Get<LabelWidget>("DIFFICULTY_DESC").IsVisible = difficulty.IsVisible;
 			}
 
 			var gameSpeed = optionsBin.GetOrNull<DropDownButtonWidget>("GAMESPEED_DROPDOWNBUTTON");

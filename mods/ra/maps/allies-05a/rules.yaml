@@ -9,7 +9,15 @@ World:
 		LossVideo: grvestne.vqa
 	MapOptions:
 		TechLevel: Medium
-		Difficulties: Easy, Normal, Hard, Real tough guy
+	ScriptLobbyDropdown@difficulty:
+		ID: difficulty
+		Label: Difficulty
+		Values:
+			easy: Easy
+			normal: Normal
+			hard: Hard
+			realtoughguy: Real tough guy
+		Default: easy
 
 Camera.Truk:
 	AlwaysVisible:

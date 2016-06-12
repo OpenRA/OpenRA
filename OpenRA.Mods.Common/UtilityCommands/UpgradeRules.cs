@@ -94,6 +94,8 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 		internal static void UpgradeActorRules(int engineVersion, ref List<MiniYamlNode> nodes, MiniYamlNode parent, int depth)
 		{
+			var addNodes = new List<MiniYamlNode>();
+
 			foreach (var node in nodes)
 			{
 				if (engineVersion < 20160515)
@@ -146,8 +148,48 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				// Map difficulty configuration was split to a generic trait
+				if (engineVersion < 20160614 && node.Key.StartsWith("MapOptions"))
+				{
+					var difficultiesNode = node.Value.Nodes.FirstOrDefault(n => n.Key == "Difficulties");
+					if (difficultiesNode != null)
+					{
+						var difficulties = FieldLoader.GetValue<string[]>("Difficulties", difficultiesNode.Value.Value)
+							.ToDictionary(d => d.Replace(" ", "").ToLowerInvariant(), d => d);
+						node.Value.Nodes.Remove(difficultiesNode);
+
+						var childNodes = new List<MiniYamlNode>()
+						{
+							new MiniYamlNode("ID", "difficulty"),
+							new MiniYamlNode("Label", "Difficulty"),
+							new MiniYamlNode("Values", new MiniYaml("", difficulties.Select(kv => new MiniYamlNode(kv.Key, kv.Value)).ToList()))
+						};
+
+						var difficultyNode = node.Value.Nodes.FirstOrDefault(n => n.Key == "Difficulty");
+						if (difficultyNode != null)
+						{
+							childNodes.Add(new MiniYamlNode("Default", difficultyNode.Value.Value.Replace(" ", "").ToLowerInvariant()));
+							node.Value.Nodes.Remove(difficultyNode);
+						}
+						else
+							childNodes.Add(new MiniYamlNode("Default", difficulties.Keys.First()));
+
+						var lockedNode = node.Value.Nodes.FirstOrDefault(n => n.Key == "DifficultyLocked");
+						if (lockedNode != null)
+						{
+							childNodes.Add(new MiniYamlNode("Locked", lockedNode.Value.Value));
+							node.Value.Nodes.Remove(lockedNode);
+						}
+
+						addNodes.Add(new MiniYamlNode("ScriptLobbyDropdown@difficulty", new MiniYaml("", childNodes)));
+					}
+				}
+
 				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
+
+			foreach (var a in addNodes)
+				nodes.Add(a);
 		}
 
 		internal static void UpgradeWeaponRules(int engineVersion, ref List<MiniYamlNode> nodes, MiniYamlNode parent, int depth)
