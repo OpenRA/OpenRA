@@ -19,7 +19,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.TS.Traits
 {
-	class AttackOrderPowerInfo : SupportPowerInfo
+	class AttackOrderPowerInfo : SupportPowerInfo, Requires<AttackBaseInfo>
 	{
 		public override object Create(ActorInitializer init) { return new AttackOrderPower(init.Self, this); }
 	}
