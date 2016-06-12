@@ -65,14 +65,14 @@ Tiberium:
 	Warhead@1Dam: SpreadDamage
 		Spread: 42
 		Damage: 2
-		DamageTypes: EnergyDeath # TODO: FIX ME!
+		DamageTypes: ExplosionDeath, TriggerVisceroid
 
 Veins:
 	ReloadDelay: 16
 	Warhead@Damage: SpreadDamage
 		Spread: 42
 		Damage: 5
-		DamageTypes: EnergyDeath # TODO: FIX ME!
+		DamageTypes: BulletDeath
 	Warhead@Effect: CreateEffect
 		Explosions: veins
 		ExplosionPalette: player

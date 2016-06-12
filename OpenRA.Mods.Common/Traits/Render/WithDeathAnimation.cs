@@ -44,7 +44,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		[FieldLoader.LoadUsing("LoadDeathTypes")]
 		[Desc("Death animation to use for each damage type (defined on the warheads).",
 			"Is only used if UseDeathTypeSuffix is `True`.")]
-		public readonly Dictionary<string, int> DeathTypes = new Dictionary<string, int>();
+		public readonly Dictionary<string, string> DeathTypes = new Dictionary<string, string>();
 
 		[Desc("Sequence to use when the actor is killed by some non-standard means (e.g. suicide).")]
 		[SequenceReference] public readonly string FallbackSequence = null;
@@ -54,8 +54,8 @@ namespace OpenRA.Mods.Common.Traits.Render
 			var md = yaml.ToDictionary();
 
 			return md.ContainsKey("DeathTypes")
-				? md["DeathTypes"].ToDictionary(my => FieldLoader.GetValue<int>("(value)", my.Value))
-				: new Dictionary<string, int>();
+				? md["DeathTypes"].ToDictionary(my => FieldLoader.GetValue<string>("(value)", my.Value))
+				: new Dictionary<string, string>();
 		}
 
 		public object Create(ActorInitializer init) { return new WithDeathAnimation(init.Self, this); }

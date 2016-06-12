@@ -19,8 +19,9 @@ WEEDGUY:
 		Voice: Attack
 	-SpawnActorOnDeath@FLAMEGUY:
 	WithDeathAnimation@fire:
+		DeathSequence: die-
 		DeathTypes:
-			FireDeath: 5
+			FireDeath: burning
 
 UMAGON:
 	Inherits: ^Soldier
@@ -44,7 +45,7 @@ UMAGON:
 	AttackFrontal:
 		Voice: Attack
 	WithInfantryBody:
-		AttackSequence: shoot
+		AttackSequence: attack
 	ProducibleWithLevel:
 		Prerequisites: barracks.upgraded
 
@@ -100,7 +101,7 @@ MUTANT:
 	AttackFrontal:
 		Voice: Attack
 	WithInfantryBody:
-		AttackSequence: shoot
+		AttackSequence: attack
 	ProducibleWithLevel:
 		Prerequisites: barracks.upgraded
 
@@ -125,7 +126,7 @@ MWMN:
 	AttackFrontal:
 		Voice: Attack
 	WithInfantryBody:
-		AttackSequence: shoot
+		AttackSequence: attack
 	ProducibleWithLevel:
 		Prerequisites: barracks.upgraded
 
@@ -150,7 +151,7 @@ MUTANT3:
 	AttackFrontal:
 		Voice: Attack
 	WithInfantryBody:
-		AttackSequence: shoot
+		AttackSequence: attack
 	ProducibleWithLevel:
 		Prerequisites: barracks.upgraded
 
@@ -172,7 +173,7 @@ TRATOS:
 		Range: 4c0
 	-AutoTarget:
 	WithInfantryBody:
-		AttackSequence: shoot
+		AttackSequence: attack
 
 OXANNA:
 	Inherits: ^Soldier
@@ -190,7 +191,7 @@ OXANNA:
 		Range: 4c0
 	-AutoTarget:
 	WithInfantryBody:
-		AttackSequence: shoot
+		AttackSequence: attack
 
 SLAV:
 	Inherits: ^Soldier
@@ -208,10 +209,11 @@ SLAV:
 		Range: 4c0
 	-AutoTarget:
 	WithInfantryBody:
-		AttackSequence: shoot
+		AttackSequence: attack
 
 DOGGIE:
-	Inherits: ^Infantry
+	Inherits@1: ^Infantry
+	Inherits@2: ^RegularInfantryDeath
 	Tooltip:
 		Name: Tiberian Fiend
 	Health:
@@ -241,8 +243,9 @@ DOGGIE:
 		MaxMoveDelayInTicks: 45
 	-SpawnActorOnDeath@FLAMEGUY:
 	WithDeathAnimation@fire:
+		DeathSequence: die-
 		DeathTypes:
-			FireDeath: 5
+			FireDeath: burning
 
 VISC_SML:
 	Inherits: ^Visceroid
@@ -282,7 +285,7 @@ VISC_LRG:
 CIV1:
 	Inherits: ^CivilianInfantry
 	WithInfantryBody:
-		AttackSequence: shoot
+		AttackSequence: attack
 	Armament:
 		Weapon: Pistola
 	AttackFrontal:
@@ -295,7 +298,7 @@ CIV2:
 CIV3:
 	Inherits: ^CivilianInfantry
 	WithInfantryBody:
-		AttackSequence: shoot
+		AttackSequence: attack
 	Armament:
 		Weapon: Pistola
 	AttackFrontal:

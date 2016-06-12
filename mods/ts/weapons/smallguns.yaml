@@ -274,4 +274,4 @@ Sniper:
 			Light: 5
 			Heavy: 5
 			Concrete: 5
-		DamageTypes: Prone100Percent, TriggerProne, HeadshotDeath
+		DamageTypes: Prone100Percent, TriggerProne, BulletDeath

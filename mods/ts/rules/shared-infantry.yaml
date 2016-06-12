@@ -25,7 +25,7 @@ E1:
 	AttackFrontal:
 		Voice: Attack
 	WithInfantryBody:
-		AttackSequence: shoot
+		AttackSequence: attack
 	ProducibleWithLevel:
 		Prerequisites: barracks.upgraded
 	RenderSprites:

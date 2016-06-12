@@ -274,24 +274,6 @@
 	QuantizeFacingsFromSequence:
 		Sequence: stand
 	WithInfantryBody:
-	WithDeathAnimation@normal:
-		DeathTypes:
-			BulletDeath: 1
-			SmallExplosionDeath: 2
-			HeadshotDeath: 3
-	SpawnActorOnDeath@FLAMEGUY:
-		Actor: FLAMEGUY
-		DeathType: FireDeath
-	WithDeathAnimation@explosion:
-		DeathSequencePalette: effect
-		DeathPaletteIsPlayerPalette: False
-		DeathTypes:
-			ExplosionDeath: 4
-	WithDeathAnimation@energy:
-		DeathSequencePalette: ra
-		DeathPaletteIsPlayerPalette: False
-		DeathTypes:
-			EnergyDeath: 6
 	AutoTarget:
 	AttackMove:
 		Voice: Move
@@ -300,27 +282,10 @@
 		Voice: Move
 	HiddenUnderFog:
 	ActorLostNotification:
-	Crushable:
-		CrushSound: squish6.aud
 	PoisonedByTiberium:
-	SpawnActorOnDeath:
-		Actor: visc_sml
-		Probability: 10
-		OwnerType: InternalName
-		InternalOwner: Creeps
-		DeathType: EnergyDeath # TODO: FIX ME! (Tiberium currently uses the wrong damage type!)
-		RequiresLobbyCreeps: true
 	Guard:
 		Voice: Move
 	Guardable:
-	DeathSounds@NORMAL:
-		DeathTypes: BulletDeath, SmallExplosionDeath, ExplosionDeath
-	DeathSounds@BURNED:
-		Voice: Burned
-		DeathTypes: FireDeath
-	DeathSounds@ZAPPED:
-		Voice: Zapped
-		DeathTypes: EnergyDeath
 	SelfHealing@HOSPITAL:
 		Step: 5
 		Delay: 100
@@ -339,8 +304,55 @@
 		UpgradeTypes: hospitalheal
 		UpgradeMinEnabledLevel: 1
 
+^RegularInfantryDeath:
+	WithDeathAnimation@normal:
+		DeathSequence: die-
+		DeathTypes:
+			BulletDeath: twirling
+			SmallExplosionDeath: flying
+	WithDeathAnimation@explosion:
+		DeathSequence: die-
+		DeathSequencePalette: effect
+		DeathPaletteIsPlayerPalette: False
+		DeathTypes:
+			ExplosionDeath: exploding
+	WithDeathAnimation@energy:
+		DeathSequence: die-
+		DeathSequencePalette: ra
+		DeathPaletteIsPlayerPalette: False
+		DeathTypes:
+			EnergyDeath: melting
+	WithDeathAnimation:
+		CrushedSequence: die-crushed
+		CrushedSequencePalette: player
+		CrushedPaletteIsPlayerPalette: true
+	DeathSounds@NORMAL:
+		DeathTypes: BulletDeath, SmallExplosionDeath, ExplosionDeath
+	DeathSounds@EXPLOSION:
+		Voice: Explode
+		DeathTypes: ExplosionDeath
+	DeathSounds@BURNED:
+		Voice: Burned
+		DeathTypes: FireDeath
+	DeathSounds@ZAPPED:
+		Voice: Zapped
+		DeathTypes: EnergyDeath
+	Crushable:
+		CrushSound: squish6.aud
+	SpawnActorOnDeath:
+		Actor: visc_sml
+		Probability: 10
+		OwnerType: InternalName
+		InternalOwner: Creeps
+		DeathType: TriggerVisceroid
+		RequiresLobbyCreeps: true
+	SpawnActorOnDeath@FLAMEGUY:
+		Actor: FLAMEGUY
+		DeathType: FireDeath
+
 ^Soldier:
-	Inherits: ^Infantry
+	Inherits@1: ^Infantry
+	Inherits@2: ^RegularInfantryDeath
 	RevealsShroud:
 		Range: 4c0
 	MustBeDestroyed:
@@ -354,42 +366,43 @@
 		DamageTriggers: TriggerProne
 	WithInfantryBody:
 		IdleSequences: idle1,idle2
-	WithDeathAnimation:
-		CrushedSequence: die-crushed
-		CrushedSequencePalette: player
-		CrushedPaletteIsPlayerPalette: true
 
 ^Cyborg:
 	Inherits@1: ^Infantry
 	Inherits@2: ^EmpDisableMobile
+	ExplosionOnDamageTransition:
+		Weapon: CyborgExplode
+		DamageState: Critical
+		TriggerOnlyOnce: true
+	Explodes:
+		Weapon: CyborgExplode
+		EmptyWeapon: CyborgExplode
+	DeathSounds:
 	RevealsShroud:
 		Range: 4c0
 	MustBeDestroyed:
-	-Crushable:
 	PoisonedByTiberium:
 		Weapon: TiberiumHeal
 	WithPermanentInjury:
 	WithInfantryBody:
-		AttackSequence: shoot
+		AttackSequence: attack
 		IdleSequences: idle1,idle2
 	UpgradeOnDamage@CRITICAL:
 		Upgrades: criticalspeed
 		ValidDamageStates: Critical
+		GrantPermanently: true
 	SpeedMultiplier@CRITICAL:
 		UpgradeTypes: criticalspeed
 		Modifier: 50
 
 ^CivilianInfantry:
-	Inherits: ^Infantry
+	Inherits@1: ^Infantry
+	Inherits@2: ^RegularInfantryDeath
 	Voiced:
 		VoiceSet: Civilian
 	Tooltip:
 		Name: Civilian
 	ScaredyCat:
-	WithDeathAnimation:
-		CrushedSequence: die-crushed
-		CrushedSequencePalette: player
-		CrushedPaletteIsPlayerPalette: true
 
 ^Vehicle:
 	Inherits@1: ^GainsExperience

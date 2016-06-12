@@ -27,6 +27,11 @@ UnitExplodeSmall:
 		Explosions: medium_brnl
 		ImpactSounds: expnew13.aud
 
+CyborgExplode:
+	Warhead@1Eff: CreateEffect
+		Explosions: medium_bang
+		ImpactSounds: expnew10.aud
+
 TiberiumExplosion:
 	Warhead@1Dam: SpreadDamage
 		Spread: 9

@@ -332,6 +332,7 @@
     <Compile Include="Traits\EmitInfantryOnSell.cs" />
     <Compile Include="Traits\EngineerRepair.cs" />
     <Compile Include="Traits\Explodes.cs" />
+    <Compile Include="Traits\ExplosionOnDamageTransition.cs" />
     <Compile Include="Traits\ExternalCapturable.cs" />
     <Compile Include="Traits\ExternalCapturableBar.cs" />
     <Compile Include="Traits\ExternalCaptures.cs" />

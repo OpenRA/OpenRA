@@ -29,6 +29,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Levels of damage at which to grant upgrades.")]
 		public readonly DamageState ValidDamageStates = DamageState.Heavy | DamageState.Critical;
 
+		[Desc("Are upgrades irrevocable once the conditions have been met?")]
+		public readonly bool GrantPermanently = false;
+
 		public object Create(ActorInitializer init) { return new UpgradeOnDamage(init.Self, this); }
 	}
 
@@ -36,6 +39,7 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		readonly UpgradeOnDamageInfo info;
 		readonly UpgradeManager um;
+		bool granted;
 
 		public UpgradeOnDamage(Actor self, UpgradeOnDamageInfo info)
 		{
@@ -43,10 +47,12 @@ namespace OpenRA.Mods.Common.Traits
 			um = self.TraitOrDefault<UpgradeManager>();
 		}
 
-		bool granted;
 		void INotifyDamageStateChanged.DamageStateChanged(Actor self, AttackInfo e)
 		{
 			if (um == null)
+				return;
+
+			if (granted && info.GrantPermanently)
 				return;
 
 			var rand = Game.CosmeticRandom;

@@ -7,6 +7,7 @@ Infantry:
 		Die: dedman1, dedman3, dedman4, dedman5, dedman6
 		Burned: dedman2
 		Zapped: electro1
+		Explode: expnew10
 
 Rocket:
 	Voices:
@@ -17,6 +18,7 @@ Rocket:
 		Die: dedman1, dedman3, dedman4, dedman5, dedman6
 		Burned: dedman2
 		Zapped: electro1
+		Explode: expnew10
 
 Umagon:
 	Voices:
@@ -26,6 +28,7 @@ Umagon:
 		Die: dedgirl1, dedgirl2, dedgirl4
 		Burned: dedgirl3
 		Zapped: electro1
+		Explode: expnew10
 
 Ghost:
 	Voices:
@@ -35,6 +38,7 @@ Ghost:
 		Die: dedman1, dedman3, dedman4, dedman5, dedman6
 		Burned: dedman2
 		Zapped: electro1
+		Explode: expnew10
 
 Medic:
 	Voices:
@@ -44,6 +48,7 @@ Medic:
 		Die: dedman1, dedman3, dedman4, dedman5, dedman6
 		Burned: dedman2
 		Zapped: electro1
+		Explode: expnew10
 
 Engineer:
 	Voices:
@@ -53,6 +58,7 @@ Engineer:
 		Die: dedman1, dedman3, dedman4, dedman5, dedman6
 		Burned: dedman2
 		Zapped: electro1
+		Explode: expnew10
 
 JumpJet:
 	Voices:
@@ -63,6 +69,7 @@ JumpJet:
 		Die: dedman1, dedman3, dedman4, dedman5, dedman6
 		Burned: dedman2
 		Zapped: electro1
+		Explode: expnew10
 
 Weed:
 	Voices:
@@ -73,6 +80,7 @@ Weed:
 		Die: dedman1, dedman3, dedman4, dedman5, dedman6
 		Burned: dedman2
 		Zapped: electro1
+		Explode: expnew10
 
 Spy:
 	Voices:
@@ -83,6 +91,7 @@ Spy:
 		Die: dedman1, dedman3, dedman4, dedman5, dedman6
 		Burned: dedman2
 		Zapped: electro1
+		Explode: expnew10
 
 Hijacker:
 	Voices:
@@ -92,24 +101,21 @@ Hijacker:
 		Die: dedman1, dedman3, dedman4, dedman5, dedman6
 		Burned: dedman2
 		Zapped: electro1
+		Explode: expnew10
 
 Cyborg:
 	Voices:
 		Select: 22-i000, 22-i002, 22-i006
 		Move: 22-i008, 22-i010, 22-i014, 22-i016, 22-i020
 		Attack: 22-i008, 22-i010, 22-i012, 22-i018
-		Die: 22-n104, 22-n108
-		Burned: 22-n106
-		Zapped: electro1
+		Die: 22-n104, 22-n106, 22-n108
 
 CyborgCommando:
 	Voices:
 		Select: 23-i000, 23-i002, 23-i004, 23-i006
 		Move: 23-i008, 23-i010, 23-i012, 23-i016
 		Attack: 23-i014, 23-i018, 23-i020, 23-i022
-		Die: 22-n104, 22-n108
-		Burned: 22-n106
-		Zapped: electro1
+		Die: 22-n104, 22-n106, 22-n108
 
 Mutant:
 	Voices:
@@ -119,6 +125,7 @@ Mutant:
 		Die: dedman1, dedman3, dedman4, dedman5, dedman6
 		Burned: dedman2
 		Zapped: electro1
+		Explode: expnew10
 
 Tratos:
 	Voices:
@@ -128,6 +135,7 @@ Tratos:
 		Die: dedman1, dedman3, dedman4, dedman5, dedman6
 		Burned: dedman2
 		Zapped: electro1
+		Explode: expnew10
 
 Oxanna:
 	Voices:
@@ -137,6 +145,7 @@ Oxanna:
 		Die: dedgirl1, dedgirl2, dedgirl4
 		Burned: dedgirl3
 		Zapped: electro1
+		Explode: expnew10
 
 Slavick:
 	Voices:
@@ -146,6 +155,7 @@ Slavick:
 		Die: dedman1, dedman3, dedman4, dedman5, dedman6
 		Burned: dedman2
 		Zapped: electro1
+		Explode: expnew10
 
 Fiend:
 	Voices:
@@ -155,6 +165,7 @@ Fiend:
 		Die: fiend1
 		Burned: fiend1
 		Zapped: fiend1
+		Explode: expnew10
 
 Vehicle:
 	Voices:
@@ -183,6 +194,7 @@ Civilian:
 		Die: dedman1, dedman3, dedman4, dedman5, dedman6
 		Burned: dedman2
 		Zapped: electro1
+		Explode: expnew10
 
 CivilianFemale: #can be used for female mutant as well
 	Voices:
@@ -192,6 +204,7 @@ CivilianFemale: #can be used for female mutant as well
 		Die: dedgirl1, dedgirl2, dedgirl4
 		Burned: dedgirl3
 		Zapped: electro1
+		Explode: expnew10
 
 Scrin:
 	Voices:

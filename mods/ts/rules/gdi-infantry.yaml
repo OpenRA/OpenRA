@@ -20,7 +20,7 @@ E2:
 	AttackFrontal:
 		Voice: Attack
 	WithInfantryBody:
-		AttackSequence: throw
+		AttackSequence: attack
 	ProducibleWithLevel:
 		Prerequisites: barracks.upgraded
 
@@ -88,7 +88,7 @@ JUMPJET:
 	AttackFrontal:
 		Voice: Attack
 	WithInfantryBody:
-		AttackSequence: shoot
+		AttackSequence: attack
 	-TakeCover:
 	ProducibleWithLevel:
 		Prerequisites: barracks.upgraded
@@ -129,6 +129,6 @@ GHOST:
 		DetonationDelay: 45
 		Voice: Attack
 	WithInfantryBody:
-		AttackSequence: shoot
+		AttackSequence: attack
 	ProducibleWithLevel:
 		Prerequisites: barracks.upgraded
