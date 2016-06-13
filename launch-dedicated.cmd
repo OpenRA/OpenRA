@@ -1,17 +1,18 @@
+:: example launch script, see https://github.com/OpenRA/OpenRA/wiki/Dedicated for details
+
 @echo on
 
 set Name="Dedicated Server"
 set Mod=ra
-set Dedicated=True
-set DedicatedLoop=True
 set ListenPort=1234
 set ExternalPort=1234
 set AdvertiseOnline=True
-set Map=
-set Password=
+set AllowPortForward=False
+set DisableSinglePlayer=True
+set Password=""
 
 :loop
 
-OpenRA.Game.exe Game.Mod=%Mod% Server.Dedicated=%Dedicated% Server.DedicatedLoop=%DedicatedLoop% Server.Name=%Name% Server.ListenPort=%ListenPort% Server.ExternalPort=%ExternalPort% Server.AdvertiseOnline=%AdvertiseOnline% Server.Map=%Map% Server.Password=%Password% 
+OpenRA.Server.exe Game.Mod=%Mod% Server.Name=%Name% Server.ListenPort=%ListenPort% Server.ExternalPort=%ExternalPort% Server.AdvertiseOnline=%AdvertiseOnline% Server.AllowPortForward=%AllowPortForward% Server.DisableSinglePlayer=%DisableSinglePlayer% Server.Password=%Password%
 
 goto loop
