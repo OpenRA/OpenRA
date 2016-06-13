@@ -88,10 +88,12 @@ TRAN.Husk:
 	Aircraft:
 		TurnSpeed: 4
 		Speed: 149
-	WithSpriteRotorOverlay@PRIMARY:
+	WithIdleOverlay@PRIMARY:
 		Offset: -597,0,341
-	WithSpriteRotorOverlay@SECONDARY:
+		Sequence: rotor
+	WithIdleOverlay@SECONDARY:
 		Offset: 597,0,213
+		Sequence: rotor2
 	RevealsShroud:
 		Range: 12c0
 		Type: CenterPosition
@@ -177,8 +179,9 @@ HELI.Husk:
 	Aircraft:
 		TurnSpeed: 4
 		Speed: 149
-	WithSpriteRotorOverlay:
+	WithIdleOverlay:
 		Offset: 0,0,85
+		Sequence: rotor
 	SmokeTrailWhenDamaged:
 		Offset: -427,0,0
 		MinDamage: Undamaged
@@ -195,7 +198,8 @@ HIND.Husk:
 	Aircraft:
 		TurnSpeed: 4
 		Speed: 112
-	WithSpriteRotorOverlay:
+	WithIdleOverlay:
+		Sequence: rotor
 	SmokeTrailWhenDamaged:
 		Offset: -427,0,0
 		MinDamage: Undamaged

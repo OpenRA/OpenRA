@@ -23,12 +23,26 @@ TRAN:
 	RevealsShroud:
 		Range: 10c0
 		Type: CenterPosition
-	WithSpriteRotorOverlay@PRIMARY:
+	WithIdleOverlay@ROTOR1AIR:
+		Offset: 597,0,85
+		Sequence: rotor
+		UpgradeTypes: airborne
+		UpgradeMinEnabledLevel: 1
+	WithIdleOverlay@ROTOR1GROUND:
+		Offset: 597,0,85
+		Sequence: slow-rotor
+		UpgradeTypes: airborne
+		UpgradeMaxEnabledLevel: 0
+	WithIdleOverlay@ROTOR2AIR:
 		Offset: -597,0,171
 		Sequence: rotor2
-		GroundSequence: slow-rotor2
-	WithSpriteRotorOverlay@SECONDARY:
-		Offset: 597,0,85
+		UpgradeTypes: airborne
+		UpgradeMinEnabledLevel: 1
+	WithIdleOverlay@ROTOR2GROUND:
+		Offset: -597,0,171
+		Sequence: slow-rotor2
+		UpgradeTypes: airborne
+		UpgradeMaxEnabledLevel: 0
 	Cargo:
 		Types: Infantry
 		MaxWeight: 10
@@ -81,8 +95,16 @@ HELI:
 		SelfReloads: true
 		ReloadCount: 10
 		SelfReloadDelay: 200
-	WithSpriteRotorOverlay:
+	WithIdleOverlay@ROTORAIR:
 		Offset: 0,0,85
+		Sequence: rotor
+		UpgradeTypes: airborne
+		UpgradeMinEnabledLevel: 1
+	WithIdleOverlay@ROTORGROUND:
+		Offset: 0,0,85
+		Sequence: slow-rotor
+		UpgradeTypes: airborne
+		UpgradeMaxEnabledLevel: 0
 	WithMuzzleOverlay:
 	SpawnActorOnDeath:
 		Actor: HELI.Husk
@@ -227,10 +249,12 @@ TRAN.Husk:
 	RevealsShroud:
 		Range: 8c0
 		Type: CenterPosition
-	WithSpriteRotorOverlay@PRIMARY:
-		Offset: -597,0,171
-	WithSpriteRotorOverlay@SECONDARY:
+	WithIdleOverlay@ROTOR1:
 		Offset: 597,0,85
+		Sequence: rotor
+	WithIdleOverlay@ROTOR2:
+		Offset: -597,0,171
+		Sequence: rotor2
 	RenderSprites:
 		Image: tran
 
@@ -244,8 +268,9 @@ HELI.Husk:
 	RevealsShroud:
 		Range: 10c0
 		Type: CenterPosition
-	WithSpriteRotorOverlay:
+	WithIdleOverlay:
 		Offset: 0,0,85
+		Sequence: rotor
 	RenderSprites:
 		Image: heli
 
