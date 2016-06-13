@@ -162,6 +162,8 @@ local function createMarkersWindow()
       local menu = ide:MakeMenu {
         { ID_BOOKMARKTOGGLE, TR("Toggle Bookmark"), TR("Toggle bookmark") },
         { ID_BREAKPOINTTOGGLE, TR("Toggle Breakpoint"), TR("Toggle breakpoint") },
+        { },
+        { ID_BREAKPOINTCLEAR, TR("Clear Breakpoints In Project")..KSC(ID_BREAKPOINTCLEAR) },
       }
       local activate = function() ctrl:ActivateItem(item_id, true) end
       menu:Enable(ID_BOOKMARKTOGGLE, ctrl:GetItemImage(item_id) == image.BOOKMARK)
@@ -169,6 +171,26 @@ local function createMarkersWindow()
 
       menu:Enable(ID_BREAKPOINTTOGGLE, ctrl:GetItemImage(item_id) == image.BREAKPOINT)
       menu:Connect(ID_BREAKPOINTTOGGLE, wx.wxEVT_COMMAND_MENU_SELECTED, activate)
+
+      menu:Connect(ID_BREAKPOINTCLEAR, wx.wxEVT_COMMAND_MENU_SELECTED, function()
+          local allmarkers = markers.settings.markers
+          for filepath, markers in pairs(allmarkers) do
+            if ide:IsProjectSubDirectory(filepath) then
+              local doc = ide:FindDocument(filepath)
+              local editor = doc and doc:GetEditor()
+              for m = #markers, 1, -1 do
+                local line, markertype = unpack(markers[m])
+                if markertype == "breakpoint" then
+                  if editor then
+                    editor:BreakpointToggle(line, false)
+                  else
+                    table.remove(markers, m)
+                  end
+                end
+              end
+            end
+          end
+        end)
 
       PackageEventHandle("onMenuMarkers", menu, ctrl, event)
 
