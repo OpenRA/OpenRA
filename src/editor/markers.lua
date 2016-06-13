@@ -94,6 +94,27 @@ local function item2editor(item_id)
   end
 end
 
+local function clearAllMarkers(mtype)
+  local allmarkers = markers.settings.markers
+  for filepath, markers in pairs(allmarkers) do
+    if ide:IsProjectSubDirectory(filepath) then
+      local doc = ide:FindDocument(filepath)
+      local editor = doc and doc:GetEditor()
+      for m = #markers, 1, -1 do
+        local line, markertype = unpack(markers[m])
+        if markertype == mtype then
+          if editor then
+            local _ = (mtype == "bookmark" and editor:BookmarkToggle(line, false)
+              or mtype == "breakpoint" and editor:BreakpointToggle(line, false))
+          else
+            table.remove(markers, m)
+          end
+        end
+      end
+    end
+  end
+end
+
 local function createMarkersWindow()
   local width, height = 360, 200
   local ctrl = wx.wxTreeCtrl(ide.frame, wx.wxID_ANY,
@@ -163,6 +184,7 @@ local function createMarkersWindow()
         { ID_BOOKMARKTOGGLE, TR("Toggle Bookmark"), TR("Toggle bookmark") },
         { ID_BREAKPOINTTOGGLE, TR("Toggle Breakpoint"), TR("Toggle breakpoint") },
         { },
+        { ID_BOOKMARKCLEAR, TR("Clear Bookmarks In Project")..KSC(ID_BOOKMARKCLEAR) },
         { ID_BREAKPOINTCLEAR, TR("Clear Breakpoints In Project")..KSC(ID_BREAKPOINTCLEAR) },
       }
       local activate = function() ctrl:ActivateItem(item_id, true) end
@@ -172,24 +194,11 @@ local function createMarkersWindow()
       menu:Enable(ID_BREAKPOINTTOGGLE, ctrl:GetItemImage(item_id) == image.BREAKPOINT)
       menu:Connect(ID_BREAKPOINTTOGGLE, wx.wxEVT_COMMAND_MENU_SELECTED, activate)
 
+      menu:Connect(ID_BOOKMARKCLEAR, wx.wxEVT_COMMAND_MENU_SELECTED, function()
+          clearAllMarkers("bookmark")
+        end)
       menu:Connect(ID_BREAKPOINTCLEAR, wx.wxEVT_COMMAND_MENU_SELECTED, function()
-          local allmarkers = markers.settings.markers
-          for filepath, markers in pairs(allmarkers) do
-            if ide:IsProjectSubDirectory(filepath) then
-              local doc = ide:FindDocument(filepath)
-              local editor = doc and doc:GetEditor()
-              for m = #markers, 1, -1 do
-                local line, markertype = unpack(markers[m])
-                if markertype == "breakpoint" then
-                  if editor then
-                    editor:BreakpointToggle(line, false)
-                  else
-                    table.remove(markers, m)
-                  end
-                end
-              end
-            end
-          end
+          clearAllMarkers("breakpoint")
         end)
 
       PackageEventHandle("onMenuMarkers", menu, ctrl, event)
