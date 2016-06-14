@@ -753,6 +753,8 @@
     <Compile Include="AI\DummyAI.cs" />
     <Compile Include="UtilityCommands\ListInstallShieldContentsCommand.cs" />
     <Compile Include="UtilityCommands\ListMixContentsCommand.cs" />
+    <Compile Include="UtilityCommands\ListMSCabContentsCommand.cs" />
+    <Compile Include="FileFormats\MSCabCompression.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
