@@ -194,13 +194,6 @@ local function createMarkersWindow()
       menu:Enable(ID_BREAKPOINTTOGGLE, ctrl:GetItemImage(item_id) == image.BREAKPOINT)
       menu:Connect(ID_BREAKPOINTTOGGLE, wx.wxEVT_COMMAND_MENU_SELECTED, activate)
 
-      menu:Connect(ID_BOOKMARKCLEAR, wx.wxEVT_COMMAND_MENU_SELECTED, function()
-          clearAllMarkers("bookmark")
-        end)
-      menu:Connect(ID_BREAKPOINTCLEAR, wx.wxEVT_COMMAND_MENU_SELECTED, function()
-          clearAllMarkers("breakpoint")
-        end)
-
       PackageEventHandle("onMenuMarkers", menu, ctrl, event)
 
       ctrl:PopupMenu(menu)
@@ -222,6 +215,23 @@ end
 createMarkersWindow()
 
 local package = ide:AddPackage('core.markers', {
+    onRegister = function(self)
+      local bmmenu = ide:FindMenuItem(ID_BOOKMARK):GetSubMenu()
+      bmmenu:AppendSeparator()
+      bmmenu:Append(ID_BOOKMARKCLEAR, TR("Clear Bookmarks In Project")..KSC(ID_BOOKMARKCLEAR))
+
+      local bpmenu = ide:FindMenuItem(ID_BREAKPOINT):GetSubMenu()
+      bpmenu:AppendSeparator()
+      bpmenu:Append(ID_BREAKPOINTCLEAR, TR("Clear Breakpoints In Project")..KSC(ID_BREAKPOINTCLEAR))
+
+      ide:GetMainFrame():Connect(ID_BOOKMARKCLEAR, wx.wxEVT_COMMAND_MENU_SELECTED, function()
+          clearAllMarkers("bookmark")
+        end)
+      ide:GetMainFrame():Connect(ID_BREAKPOINTCLEAR, wx.wxEVT_COMMAND_MENU_SELECTED, function()
+          clearAllMarkers("breakpoint")
+        end)
+    end,
+
     -- save markers; remove tab from the list
     onEditorClose = function(self, editor)
       local cache = caches[editor]
