@@ -110,6 +110,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		public bool FaceTarget(Actor self, Target target)
 		{
+			if (self.IsDisabled())
+				return false;
+
 			var delta = target.CenterPosition - self.CenterPosition;
 			DesiredFacing = delta.HorizontalLengthSquared != 0 ? delta.Yaw.Facing : TurretFacing;
 			MoveTurret();
