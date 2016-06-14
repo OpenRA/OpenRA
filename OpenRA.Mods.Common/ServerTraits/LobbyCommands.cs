@@ -433,10 +433,14 @@ namespace OpenRA.Mods.Common.Server
 							return true;
 						}
 
-						var options = server.Map.Rules.Actors["player"].TraitInfos<ILobbyOptions>()
+						var allOptions = server.Map.Rules.Actors["player"].TraitInfos<ILobbyOptions>()
 							.Concat(server.Map.Rules.Actors["world"].TraitInfos<ILobbyOptions>())
-							.SelectMany(t => t.LobbyOptions(server.Map.Rules))
-							.ToDictionary(o => o.Id, o => o);
+							.SelectMany(t => t.LobbyOptions(server.Map.Rules));
+
+						// Overwrite keys with duplicate ids
+						var options = new Dictionary<string, LobbyOption>();
+						foreach (var o in allOptions)
+							options[o.Id] = o;
 
 						var split = s.Split(' ');
 						LobbyOption option;
