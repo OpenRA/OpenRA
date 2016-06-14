@@ -355,6 +355,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					var option = new CachedTransform<Session.Global, Session.LobbyOptionState>(
 						gs => gs.LobbyOptions[kv.Value]);
 
+					var visible = new CachedTransform<Session.Global, bool>(
+						gs => gs.LobbyOptions.ContainsKey(kv.Value));
+
+					checkbox.IsVisible = () => visible.Update(orderManager.LobbyInfo.GlobalSettings);
 					checkbox.IsChecked = () => option.Update(orderManager.LobbyInfo.GlobalSettings).Enabled;
 					checkbox.IsDisabled = () => configurationDisabled() ||
 						option.Update(orderManager.LobbyInfo.GlobalSettings).Locked;
