@@ -1,7 +1,6 @@
 version: 1.0.{build}
 
 environment:
-  NSIS_ROOT: C:\nsis
   CoverityProjectToken:
     secure: BYP5qnptMazSCwTwgiFHlfqZd7BM3bwTRq2Cbs++ofg=
   CoverityNotificationEmail:
@@ -10,8 +9,6 @@ environment:
 install:
 
 cache:
-  - nsissetup.exe -> appveyor.yaml
-  - NsProcess.zip -> appveyor.yaml
   - thirdparty\download -> thirdparty\fetch-thirdparty-deps.ps1
 
 before_build:
@@ -62,9 +59,8 @@ after_test:
   - '"%ProgramFiles(x86)%\Pandoc\pandoc.exe" -o DOCUMENTATION.html DOCUMENTATION.md'
   - '"%ProgramFiles(x86)%\Pandoc\pandoc.exe" -o Lua-API.html Lua-API.md'
   - ps: cp OpenRA.Game/OpenRA.ico .
-  - if not exist nsissetup.exe appveyor DownloadFile "http://downloads.sourceforge.net/project/nsis/NSIS 2/2.46/nsis-2.46-setup.exe" -FileName nsissetup.exe
-  - nsissetup /S /D=%NSIS_ROOT%
-  - '%NSIS_ROOT%\makensis /DSRCDIR="%APPVEYOR_BUILD_FOLDER%" /DDEPSDIR="%APPVEYOR_BUILD_FOLDER%\thirdparty\download\windows" /V3 packaging/windows/OpenRA.nsi'
+  - choco install nsis.install -version 2.51 -y
+  - '"%ProgramFiles(x86)%\NSIS\makensis.exe" /DSRCDIR="%APPVEYOR_BUILD_FOLDER%" /DDEPSDIR="%APPVEYOR_BUILD_FOLDER%\thirdparty\download\windows" /V3 packaging/windows/OpenRA.nsi'
   - if defined APPVEYOR_REPO_TAG_NAME set VERSION=%APPVEYOR_REPO_TAG_NAME%
   - if not defined APPVEYOR_REPO_TAG_NAME set VERSION=%APPVEYOR_REPO_COMMIT:~0,7%
   - move /Y %APPVEYOR_BUILD_FOLDER%\packaging\windows\OpenRA.Setup.exe %APPVEYOR_BUILD_FOLDER%\OpenRA-%VERSION%.exe
