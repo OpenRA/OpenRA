@@ -317,7 +317,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				startGameButton.IsDisabled = () => configurationDisabled() || Map.Status != MapStatus.Available ||
 					orderManager.LobbyInfo.Slots.Any(sl => sl.Value.Required && orderManager.LobbyInfo.ClientInSlot(sl.Key) == null) ||
-					(orderManager.LobbyInfo.GlobalSettings.DisableSingleplayer && orderManager.LobbyInfo.IsSinglePlayer);
+					(!orderManager.LobbyInfo.GlobalSettings.EnableSingleplayer && orderManager.LobbyInfo.IsSinglePlayer);
 
 				startGameButton.OnClick = () =>
 				{

@@ -196,7 +196,7 @@ namespace OpenRA.Network
 			public string GameSpeedType = "default";
 			public bool AllowVersionMismatch;
 			public string GameUid;
-			public bool DisableSingleplayer;
+			public bool EnableSingleplayer;
 
 			[FieldLoader.Ignore]
 			public Dictionary<string, LobbyOptionState> LobbyOptions = new Dictionary<string, LobbyOptionState>();

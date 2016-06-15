@@ -71,7 +71,7 @@ namespace OpenRA.Mods.Common.Server
 				return;
 
 			// Does server have only one player?
-			if (server.Settings.DisableSinglePlayer && playerClients.Count() == 1)
+			if (!server.LobbyInfo.GlobalSettings.EnableSingleplayer && playerClients.Count() == 1)
 				return;
 
 			server.StartGame();
@@ -122,10 +122,10 @@ namespace OpenRA.Mods.Common.Server
 							return true;
 						}
 
-						if (server.Settings.DisableSinglePlayer &&
+						if (!server.LobbyInfo.GlobalSettings.EnableSingleplayer &&
 							server.LobbyInfo.Clients.Where(c => c.Bot == null && c.Slot != null).Count() == 1)
 						{
-							server.SendOrderTo(conn, "Message", "Unable to start the game until another player joins.");
+							server.SendOrderTo(conn, "Message", "This server requires at least two human players to start match.");
 							return true;
 						}
 
@@ -401,8 +401,8 @@ namespace OpenRA.Mods.Common.Server
 							if (server.Map.DefinesUnsafeCustomRules)
 								server.SendMessage("This map contains custom rules. Game experience may change.");
 
-							if (server.Settings.DisableSinglePlayer)
-								server.SendMessage("Singleplayer games have been disabled on this server.");
+							if (!server.LobbyInfo.GlobalSettings.EnableSingleplayer)
+								server.SendMessage("This server requires at least two human players to start match.");
 							else if (server.Map.Players.Players.Where(p => p.Value.Playable).All(p => !p.Value.AllowBots))
 								server.SendMessage("Bots have been disabled on this map.");
 						};
