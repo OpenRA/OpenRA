@@ -264,7 +264,7 @@ return {
   caret = {fg = C.Foreground},
   caretlinebg = {bg = C.CurrentLine},
   fold = {fg = C.Comment, bg = C.Background, sel = mixer(C.Comment, 1, 96)},
-  whitespace = {fg = C.Comment, bg = C.Background},
+  whitespace = {fg = C.Comment},
   edge = {},
 
   indicator = {
