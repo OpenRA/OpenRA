@@ -17,16 +17,27 @@ namespace OpenRA.Mods.Common.Widgets
 {
 	public class ImageWidget : Widget
 	{
+		public readonly string TooltipTemplate;
+		public readonly string TooltipContainer;
+
 		public string ImageCollection = "";
 		public string ImageName = "";
 		public bool ClickThrough = true;
 		public Func<string> GetImageName;
 		public Func<string> GetImageCollection;
 
+		[Translate] public string TooltipText;
+
+		Lazy<TooltipContainerWidget> tooltipContainer;
+		public Func<string> GetTooltipText;
+
 		public ImageWidget()
 		{
 			GetImageName = () => ImageName;
 			GetImageCollection = () => ImageCollection;
+			GetTooltipText = () => TooltipText;
+			tooltipContainer = Exts.Lazy(() =>
+				Ui.Root.Get<TooltipContainerWidget>(TooltipContainer));
 		}
 
 		protected ImageWidget(ImageWidget other)
@@ -37,6 +48,12 @@ namespace OpenRA.Mods.Common.Widgets
 			GetImageName = other.GetImageName;
 			ImageCollection = other.ImageCollection;
 			GetImageCollection = other.GetImageCollection;
+
+			TooltipTemplate = other.TooltipTemplate;
+			TooltipContainer = other.TooltipContainer;
+			GetTooltipText = other.GetTooltipText;
+			tooltipContainer = Exts.Lazy(() =>
+				Ui.Root.Get<TooltipContainerWidget>(TooltipContainer));
 		}
 
 		public override Widget Clone() { return new ImageWidget(this); }
@@ -56,6 +73,22 @@ namespace OpenRA.Mods.Common.Widgets
 		public override bool HandleMouseInput(MouseInput mi)
 		{
 			return !ClickThrough && RenderBounds.Contains(mi.Location);
+		}
+
+		public override void MouseEntered()
+		{
+			if (TooltipContainer == null || GetTooltipText == null)
+				return;
+
+			tooltipContainer.Value.SetTooltip(TooltipTemplate, new WidgetArgs() { { "getText", GetTooltipText } });
+		}
+
+		public override void MouseExited()
+		{
+			if (TooltipContainer == null)
+				return;
+
+			tooltipContainer.Value.RemoveTooltip();
 		}
 	}
 }

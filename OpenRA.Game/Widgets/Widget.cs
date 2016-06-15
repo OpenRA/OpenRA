@@ -33,9 +33,23 @@ namespace OpenRA.Widgets
 		public static void CloseWindow()
 		{
 			if (WindowList.Count > 0)
-				Root.RemoveChild(WindowList.Pop());
+			{
+				var hidden = WindowList.Pop();
+				Root.RemoveChild(hidden);
+				if (hidden.LogicObjects != null)
+					foreach (var l in hidden.LogicObjects)
+						l.BecameHidden();
+			}
+
 			if (WindowList.Count > 0)
-				Root.AddChild(WindowList.Peek());
+			{
+				var restore = WindowList.Peek();
+				Root.AddChild(restore);
+
+				if (restore.LogicObjects != null)
+					foreach (var l in restore.LogicObjects)
+						l.BecameVisible();
+			}
 		}
 
 		public static Widget OpenWindow(string id)
@@ -148,6 +162,8 @@ namespace OpenRA.Widgets
 	{
 		public void Dispose() { Dispose(true); GC.SuppressFinalize(this); }
 		public virtual void Tick() { }
+		public virtual void BecameHidden() { }
+		public virtual void BecameVisible() { }
 		protected virtual void Dispose(bool disposing) { }
 	}
 

@@ -1,162 +1,169 @@
 Background@MODCHOOSER_BACKGROUND:
 	Background: background
-	Width:WINDOW_RIGHT
-	Height:WINDOW_BOTTOM
+	Width: WINDOW_RIGHT
+	Height: WINDOW_BOTTOM
 	
 Background@MODCHOOSER_DIALOG:
-	Logic:ModBrowserLogic
+	Logic: ModBrowserLogic
 	Children:
 		Container:
-			X:(WINDOW_RIGHT - WIDTH)/2
-			Y:(WINDOW_BOTTOM - 500)/2
-			Width:750
-			Height:550-4-32
+			X: (WINDOW_RIGHT - WIDTH) / 2
+			Y: (WINDOW_BOTTOM - 500) / 2
+			Width: 750
+			Height: 514
 			Children:
 				Background@DIALOG_BACKGROUND:
-					Y:69
-					Width:PARENT_RIGHT
-					Height:PARENT_BOTTOM - 69
-					Background:panel-bg
+					Y: 69
+					Width: PARENT_RIGHT
+					Height: PARENT_BOTTOM - 69
+					Background: panel-bg
 					Children:
 						Label:
-							X:53
-							Y:30
-							Align:Left
-							Font:MediumBold
-							Text:Choose your Battlefield:
+							X: 53
+							Y: 30
+							Align: Left
+							Font: MediumBold
+							Text: Choose your Battlefield:
 						Container@MOD_LIST:
-							X:53
-							Y:60
-							Width:PARENT_RIGHT-106
-							Height:150
+							X: 53
+							Y: 60
+							Width: PARENT_RIGHT-106
+							Height: 150
 							Children:
 								Button@MOD_TEMPLATE:
-									X:16
-									Width:114
-									Height:114
-									TooltipContainer:TOOLTIP_CONTAINER
-									IgnoreChildMouseOver:true
+									X: 16
+									Width: 114
+									Height: 114
+									TooltipContainer: TOOLTIP_CONTAINER
+									IgnoreChildMouseOver: true
 									Children:
 										Container@MOD_NO_LOGO:
-											Width:PARENT_RIGHT
-											Height:PARENT_BOTTOM
+											Width: PARENT_RIGHT
+											Height: PARENT_BOTTOM
 											Children:
 												Label@A:
-													Width:PARENT_RIGHT
-													Height:PARENT_BOTTOM-20
-													Text:Missing or
-													Align:center
+													Width: PARENT_RIGHT
+													Height: PARENT_BOTTOM-20
+													Text: Missing or
+													Align: Center
 												Label@B:
-													Y:20
-													Width:PARENT_RIGHT
-													Height:PARENT_BOTTOM-20
-													Text:invalid logo
-													Align:center
+													Y: 20
+													Width: PARENT_RIGHT
+													Height: PARENT_BOTTOM-20
+													Text: invalid logo
+													Align: Center
 										RGBASprite@MOD_LOGO:
-											X:9
-											Y:9
+											X: 9
+											Y: 9
 						Button@PREV_MOD:
-							X:15
-							Y:60+41-16
-							Width:25
-							Height:64
-							IgnoreChildMouseOver:true
+							X: 15
+							Y: 85
+							Width: 25
+							Height: 64
+							IgnoreChildMouseOver: true
 							Children:
 								Image:
-									X:2
-									ImageCollection:modchooser
-									ImageName:leftarrow
+									X: 2
+									ImageCollection: modchooser
+									ImageName: leftarrow
 						Button@NEXT_MOD:
-							X:PARENT_RIGHT - WIDTH - 20
-							Y:60+41-16
-							Width:25
-							Height:64
-							IgnoreChildMouseOver:true
+							X: PARENT_RIGHT - WIDTH - 20
+							Y: 85
+							Width: 25
+							Height: 64
+							IgnoreChildMouseOver: true
 							Children:
 								Image:
-									X:3
-									ImageCollection:modchooser
-									ImageName:rightarrow
+									X: 3
+									ImageCollection: modchooser
+									ImageName: rightarrow
 						Background@RULE:
-							X:53
-							Y:PARENT_BOTTOM - 249
-							Width:PARENT_RIGHT-106
-							Height:150
-							Background:panel-rule
+							X: 30
+							Y: PARENT_BOTTOM - 249
+							Width: PARENT_RIGHT - 60
+							Height: 150
+							Background: panel-rule
 						Label@MOD_TITLE:
-							X:PARENT_RIGHT - 53 - 140 - 170
-							Y:PARENT_BOTTOM-220
-							Align:Left
-							Font:Bold
+							X: PARENT_RIGHT - 400
+							Y: PARENT_BOTTOM-220
+							Align: Left
+							Font: Bold
 						Label@MOD_AUTHOR:
-							X:PARENT_RIGHT - 53 - 140 - 170
-							Y:PARENT_BOTTOM-205
-							Align:Left
-							Font:TinyBold
+							X: PARENT_RIGHT - 400
+							Y: PARENT_BOTTOM-205
+							Align: Left
+							Font: TinyBold
 						Label@MOD_VERSION:
-							X:PARENT_RIGHT - 53 - 140 - 170
-							Y:PARENT_BOTTOM-192
-							Align:Left
-							Font:Tiny
+							X: PARENT_RIGHT - 400
+							Y: PARENT_BOTTOM-192
+							Align: Left
+							Font: Tiny
 						Label@MOD_DESC:
-							X:PARENT_RIGHT - 53 - 140 - 170
-							Y:PARENT_BOTTOM-175
-							Align:Left
-							VAlign:Top
-							Font:Tiny
+							X: PARENT_RIGHT - 400
+							Y: PARENT_BOTTOM-175
+							Align: Left
+							VAlign: Top
+							Font: Tiny
 						Background@PREVIEW:
-							X:53
-							Y:PARENT_BOTTOM - 25 - HEIGHT
-							Width:300
-							Height:200
-							Background:panel-thinborder
+							X: 30
+							Y: PARENT_BOTTOM - 25 - HEIGHT
+							Width: 300
+							Height: 200
+							Background: panel-thinborder
 							Children:
 								Label:
-									Width:PARENT_RIGHT
-									Height:PARENT_BOTTOM
-									Text:Missing or invalid preview
-									Align:Center
+									Width: PARENT_RIGHT
+									Height: PARENT_BOTTOM
+									Text: Missing or invalid preview
+									Align: Center
 								RGBASprite@MOD_PREVIEW:
-									X:2
-									Y:2
+									X: 2
+									Y: 2
 						Button@LOAD_BUTTON:
-							Background:button-highlighted
-							Key:return
-							X:PARENT_RIGHT - 53 - WIDTH - 170
-							Y:PARENT_BOTTOM - 25 - HEIGHT
-							Width:140
-							Height:32
-							Text:Load Mod
+							X: PARENT_RIGHT - 300 - WIDTH
+							Y: PARENT_BOTTOM - 25 - HEIGHT
+							Width: 100
+							Height: 32
+							Text: Play
+							Background: button-highlighted
+							Key: return
+						Button@CONFIGURE_BUTTON:
+							X: PARENT_RIGHT - 145 - WIDTH
+							Y: PARENT_BOTTOM - 25 - HEIGHT
+							Width: 140
+							Height: 32
+							Text: Manage Content
+							Background: button-highlighted
 						Button@QUIT_BUTTON:
-							Background:button-highlighted
-							X:PARENT_RIGHT - 53 - WIDTH
-							Y:PARENT_BOTTOM - 25 - HEIGHT
-							Width:140
-							Height:32
-							Text:Quit
+							X: PARENT_RIGHT - 30 - WIDTH
+							Y: PARENT_BOTTOM - 25 - HEIGHT
+							Width: 100
+							Height: 32
+							Text: Quit
+							Background: button-highlighted
 				Background@DIALOG_HEADER:
-					Width:PARENT_RIGHT
-					Height:72
-					Background:panel-header
+					Width: PARENT_RIGHT
+					Height: 72
+					Background: panel-header
 					Children:
 						Image:
-							X:(PARENT_RIGHT - WIDTH)/2
-							Y:0-28
-							Width:280
-							ImageCollection:modchooser
-							ImageName:logo
+							X: (PARENT_RIGHT - WIDTH) / 2
+							Y: 0-28
+							Width: 280
+							ImageCollection: modchooser
+							ImageName: logo
 				TooltipContainer@TOOLTIP_CONTAINER:
 
 Background@BUTTON_TOOLTIP:
-	Logic:ButtonTooltipLogic
-	Background:panel-thinborder
-	Height:25
+	Logic: ButtonTooltipLogic
+	Background: panel-thinborder
+	Height: 25
 	Children:
 		Label@LABEL:
-			X:5
-			Height:23
-			Font:Bold
+			X: 5
+			Height: 23
+			Font: Bold
 		Label@HOTKEY:
-			TextColor:255,255,0
-			Height:23
-			Font:Bold
+			TextColor: FFFF00
+			Height: 23
+			Font: Bold

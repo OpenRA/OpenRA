@@ -103,7 +103,6 @@
     <Compile Include="FileSystem\BagFile.cs" />
     <Compile Include="Map\MapGrid.cs" />
     <Compile Include="Map\MapPlayers.cs" />
-    <Compile Include="ContentInstaller.cs" />
     <Compile Include="MPos.cs" />
     <Compile Include="Download.cs" />
     <Compile Include="Effects\AsyncAction.cs" />
@@ -249,6 +248,7 @@
     <Compile Include="Traits\ActivityUtils.cs" />
     <Compile Include="FileSystem\ZipFolder.cs" />
     <Compile Include="Primitives\float3.cs" />
+    <Compile Include="ModContent.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FileSystem\D2kSoundResources.cs" />

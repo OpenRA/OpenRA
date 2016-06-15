@@ -610,11 +610,7 @@
     <Compile Include="Widgets\Logic\Ingame\SupportPowerBinLogic.cs" />
     <Compile Include="Widgets\Logic\Ingame\SupportPowerTooltipLogic.cs" />
     <Compile Include="Widgets\Logic\Ingame\WorldTooltipLogic.cs" />
-    <Compile Include="Widgets\Logic\Installation\InstallFromCDLogic.cs" />
-    <Compile Include="Widgets\Logic\Installation\DownloadPackagesLogic.cs" />
     <Compile Include="Widgets\Logic\Installation\InstallModLogic.cs" />
-    <Compile Include="Widgets\Logic\Installation\InstallLogic.cs" />
-    <Compile Include="Widgets\Logic\Installation\InstallMusicLogic.cs" />
     <Compile Include="Widgets\Logic\Lobby\ClientTooltipLogic.cs" />
     <Compile Include="Widgets\Logic\Lobby\KickClientLogic.cs" />
     <Compile Include="Widgets\Logic\Lobby\KickSpectatorsLogic.cs" />
@@ -662,7 +658,6 @@
     <Compile Include="LoadScreens\LogoStripeLoadScreen.cs" />
     <Compile Include="LoadScreens\BlankLoadScreen.cs" />
     <Compile Include="Widgets\Logic\ReplayUtils.cs" />
-    <Compile Include="InstallUtils.cs" />
     <Compile Include="Graphics\DefaultSpriteSequence.cs" />
     <Compile Include="Widgets\BackgroundWidget.cs" />
     <Compile Include="Widgets\ButtonWidget.cs" />
@@ -751,6 +746,15 @@
     <Compile Include="Traits\Radar\RadarColorFromTerrain.cs" />
     <Compile Include="Traits\Radar\JamsRadar.cs" />
     <Compile Include="AI\DummyAI.cs" />
+    <Compile Include="UtilityCommands\ListInstallShieldContentsCommand.cs" />
+    <Compile Include="Widgets\Logic\Installation\ModContentLogic.cs" />
+    <Compile Include="Widgets\Logic\Installation\DownloadPackageLogic.cs" />
+    <Compile Include="Widgets\Logic\Installation\ModContentDiscTooltipLogic.cs" />
+    <Compile Include="Widgets\Logic\Installation\InstallFromDiscLogic.cs" />
+    <Compile Include="Widgets\Logic\Installation\ModContentPromptLogic.cs" />
+    <Compile Include="UtilityCommands\ListMixContentsCommand.cs" />
+    <Compile Include="UtilityCommands\ListMSCabContentsCommand.cs" />
+    <Compile Include="FileFormats\MSCabCompression.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

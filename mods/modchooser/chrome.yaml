@@ -31,6 +31,17 @@ panel-thinborder: chrome.png
 	corner-bl: 1,573,2,2
 	corner-br: 61,573,2,2
 
+panel-thinborder-light: chrome.png
+	background: 643,515,58,58
+	border-r: 701,515,2,58
+	border-l: 641,515,2,58
+	border-b: 643,573,58,2
+	border-t: 643,513,58,2
+	corner-tl: 641,513,2,2
+	corner-tr: 701,513,2,2
+	corner-bl: 641,573,2,2
+	corner-br: 701,573,2,2
+
 button: chrome.png
 	background: 138,522,44,44
 	border-r: 182,522,10,44
@@ -53,19 +64,9 @@ button-hover: chrome.png
 	corner-bl: 192,566,10,10
 	corner-br: 246,566,10,10
 
-# Copy of button
 button-disabled: chrome.png
-	background: 138,522,44,44
-	border-r: 182,522,10,44
-	border-l: 128,522,10,44
-	border-b: 138,566,44,10
-	border-t: 138,512,44,10
-	corner-tl: 128,512,10,10
-	corner-tr: 182,512,10,10
-	corner-bl: 128,566,10,10
-	corner-br: 182,566,10,10
+	Inherits: button
 
-# Copy of button-highlighted-hover
 button-pressed: chrome.png
 	background: 330,522,44,44
 	border-r: 374,522,10,44
@@ -89,40 +90,42 @@ button-highlighted: chrome.png
 	corner-br: 310,566,10,10
 
 button-highlighted-hover: chrome.png
-	background: 330,522,44,44
-	border-r: 374,522,10,44
-	border-l: 320,522,10,44
-	border-b: 330,566,44,10
-	border-t: 330,512,44,10
-	corner-tl: 320,512,10,10
-	corner-tr: 374,512,10,10
-	corner-bl: 320,566,10,10
-	corner-br: 374,566,10,10
+	Inherits: button-pressed
 
-# Copy of button-mod-highlighted-hover
 button-highlighted-pressed: chrome.png
-	background: 330,522,44,44
-	border-r: 374,522,10,44
-	border-l: 320,522,10,44
-	border-b: 330,566,44,10
-	border-t: 330,512,44,10
-	corner-tl: 320,512,10,10
-	corner-tr: 374,512,10,10
-	corner-bl: 320,566,10,10
-	corner-br: 374,566,10,10
+	Inherits: button-pressed
 
-
-# Copy of button-mod-highlighted
 button-highlighted-disabled: chrome.png
-	background: 266,522,44,44
-	border-r: 310,522,10,44
-	border-l: 256,522,10,44
-	border-b: 266,566,44,10
-	border-t: 266,512,44,10
-	corner-tl: 256,512,10,10
-	corner-tr: 310,512,10,10
-	corner-bl: 256,566,10,10
-	corner-br: 310,566,10,10
+	Inherits: button-highlighted
+
+button-highlighted-thin: chrome.png
+	background: 522,522,44,44
+	border-r: 566,522,10,44
+	border-l: 512,522,10,44
+	border-b: 522,566,44,10
+	border-t: 522,512,44,10
+	corner-tl: 512,512,10,10
+	corner-tr: 566,512,10,10
+	corner-bl: 512,566,10,10
+	corner-br: 566,566,10,10
+
+button-highlighted-thin-hover: chrome.png
+	Inherits: button-highlighted-thin-pressed
+
+button-highlighted-thin-pressed: chrome.png
+	background: 586,522,44,44
+	border-r: 630,522,10,44
+	border-l: 576,522,10,44
+	border-b: 586,566,44,10
+	border-t: 586,512,44,10
+	corner-tl: 576,512,10,10
+	corner-tr: 630,512,10,10
+	corner-bl: 576,566,10,10
+	corner-br: 630,566,10,10
+
+button-highlighted-thin-disabled: chrome.png
+	Inherits: button-highlighted-thin
+
 
 progressbar-bg: chrome.png
 	background: 453,565,56,6
@@ -156,3 +159,25 @@ modchooser: chrome.png
 	logo: 0,576,280,128
 	leftarrow:384,512,20,64
 	rightarrow:404,512,20,64
+	cdicon: 448,512,20,20
+
+scrollpanel-bg: chrome.png
+	Inherits: panel-thinborder
+
+scrollpanel-button: chrome.png
+	Inherits: panel-thinborder
+
+scrollpanel-button-hover: chrome.png
+	Inherits: panel-thinborder-light
+
+scrollpanel-button-disabled: chrome.png
+	Inherits: panel-thinborder
+
+scrollpanel-button-pressed: chrome.png
+	Inherits: panel-thinborder-light
+
+scrollbar: chrome.png
+	down_arrow: 480,512,16,16
+	down_pressed: 480,512,16,16
+	up_arrow: 480,528,16,16
+	up_pressed: 480,528,16,16

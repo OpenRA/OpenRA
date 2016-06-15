@@ -344,8 +344,10 @@ namespace OpenRA
 			using (new PerfTimer("LoadMaps"))
 				ModData.MapCache.LoadMaps();
 
-			var installData = ModData.Manifest.Get<ContentInstaller>();
-			var isModContentInstalled = installData.TestFiles.All(f => File.Exists(Platform.ResolvePath(f)));
+			var content = ModData.Manifest.Get<ModContent>();
+			var isModContentInstalled = content.Packages
+				.Where(p => p.Value.Required)
+				.All(p => p.Value.TestFiles.All(f => File.Exists(Platform.ResolvePath(f))));
 
 			// Mod assets are missing!
 			if (!isModContentInstalled)
