@@ -304,12 +304,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					Directory.CreateDirectory(Path.GetDirectoryName(targetPath));
 					using (var target = File.OpenWrite(targetPath))
 					{
-						// This is a bit dumb memory-wise, but we load the whole thing when running the game anyway
 						Log.Write("install", "Extracting {0} -> {1}".F(sourcePath, targetPath));
-
 						var displayFilename = Path.GetFileName(Path.GetFileName(targetPath));
 						Action<int> onProgress = percent => updateMessage("Extracting {0} ({1}%)".F(displayFilename, percent));
-						target.Write(reader.ExtractFile(node.Value.Value, onProgress));
+						reader.ExtractFile(node.Value.Value, target, onProgress);
 					}
 				}
 			}
