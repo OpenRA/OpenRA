@@ -51,7 +51,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var error = "It was recorded with an " + type;
 			error += string.IsNullOrEmpty(name) ? "." : ":\n{0}".F(name);
 
-			ConfirmationDialogs.CancelPrompt("Incompatible Replay", error, onCancel);
+			ConfirmationDialogs.ButtonPrompt("Incompatible Replay", error, onCancel: onCancel);
 
 			return false;
 		}

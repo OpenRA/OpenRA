@@ -133,11 +133,12 @@ ScrollPanel@SPECTATOR_DROPDOWN_TEMPLATE:
 					Width: PARENT_RIGHT
 					Height: 25
 
-Container@CONFIRM_PROMPT_THREEBUTTON:
+Background@THREEBUTTON_PROMPT:
 	X: (WINDOW_RIGHT - WIDTH)/2
 	Y: (WINDOW_BOTTOM - 90)/2
 	Width: 500
-	Height: 125
+	Height: 41
+	Background: panel-black
 	Children:
 		Label@PROMPT_TITLE:
 			Width: PARENT_RIGHT
@@ -145,44 +146,42 @@ Container@CONFIRM_PROMPT_THREEBUTTON:
 			Font: BigBold
 			Contrast: true
 			Align: Center
-		Background@bg:
-			Width: 500
-			Height: 90
-			Background: panel-black
-			Children:
-				Label@PROMPT_TEXT:
-					Y: (PARENT_BOTTOM-HEIGHT)/2
-					Width: PARENT_RIGHT
-					Height: 25
-					Font: Bold
-					Align: Center
+		Label@PROMPT_TEXT:
+			Y: 20
+			Width: PARENT_RIGHT
+			Height: 20
+			Font: Bold
+			Align: Center
 		Button@CONFIRM_BUTTON:
 			Key: return
 			X: 360
-			Y: 89
+			Y: 40
 			Width: 140
 			Height: 35
 			Text: Confirm
+			Visible: false
 		Button@OTHER_BUTTON:
 			Key: r
 			X: 210
-			Y: 89
+			Y: 40
 			Width: 140
 			Height: 35
 			Text: Restart
+			Visible: false
 		Button@CANCEL_BUTTON:
 			Key: escape
-			Y: 89
+			Y: 40
 			Width: 140
 			Height: 35
 			Text: Cancel
+			Visible: false
 
-
-Container@CONFIRM_PROMPT_TWOBUTTON:
+Background@TWOBUTTON_PROMPT:
 	X: (WINDOW_RIGHT - WIDTH)/2
 	Y: (WINDOW_BOTTOM - 90)/2
 	Width: 370
-	Height: 125
+	Height: 31
+	Background: panel-black
 	Children:
 		Label@PROMPT_TITLE:
 			Width: PARENT_RIGHT
@@ -190,60 +189,27 @@ Container@CONFIRM_PROMPT_TWOBUTTON:
 			Font: BigBold
 			Contrast: true
 			Align: Center
-		Background@bg:
-			Width: 370
-			Height: 90
-			Background: panel-black
-			Children:
-				Label@PROMPT_TEXT:
-					Y: (PARENT_BOTTOM-HEIGHT)/2
-					Width: PARENT_RIGHT
-					Height: 25
-					Font: Bold
-					Align: Center
+		Label@PROMPT_TEXT:
+			Y: 15
+			Width: PARENT_RIGHT
+			Height: 20
+			Font: Bold
+			Align: Center
 		Button@CANCEL_BUTTON:
 			Key: escape
-			Y: 89
+			Y: 30
 			Width: 140
 			Height: 35
 			Text: Cancel
+			Visible: false
 		Button@CONFIRM_BUTTON:
 			Key: return
 			X: 230
-			Y: 89
+			Y: 30
 			Width: 140
 			Height: 35
 			Text: Confirm
-
-Container@CANCEL_PROMPT:
-	X: (WINDOW_RIGHT - WIDTH)/2
-	Y: (WINDOW_BOTTOM - 90)/2
-	Width: 370
-	Height: 125
-	Children:
-		Label@PROMPT_TITLE:
-			Width: PARENT_RIGHT
-			Y: 0-25
-			Font: BigBold
-			Contrast: true
-			Align: Center
-		Background@bg:
-			Width: 370
-			Height: 90
-			Background: panel-black
-			Children:
-				Label@PROMPT_TEXT:
-					Y: (PARENT_BOTTOM-HEIGHT)/2
-					Width: PARENT_RIGHT
-					Height: 25
-					Font: Bold
-					Align: Center
-		Button@CANCEL_BUTTON:
-			Key: escape
-			Y: 89
-			Width: 140
-			Height: 35
-			Text: Cancel
+			Visible: false
 
 Container@TEXT_INPUT_PROMPT:
 	X: (WINDOW_RIGHT - WIDTH)/2
