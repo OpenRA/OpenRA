@@ -89,9 +89,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var discWidget = container.Get<ImageWidget>("DISC");
 				var discs = p.Value.Discs.Select(s => content.Discs[s].Title).Distinct();
 				var discList = discs.JoinWith("\n");
-				var discAvailable = discs.Any();
+				var isDiscAvailable = discs.Any();
 				discWidget.GetTooltipText = () => discList;
-				discWidget.IsVisible = () => discAvailable;
+				discWidget.IsVisible = () => isDiscAvailable;
 
 				var installed = p.Value.IsInstalled();
 				var downloadButton = container.Get<ButtonWidget>("DOWNLOAD");
@@ -115,7 +115,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				var requiresDiscWidget = container.Get<LabelWidget>("REQUIRES_DISC");
 				requiresDiscWidget.IsVisible = () => !installed && !downloadEnabled;
-				if (!discAvailable)
+				if (!isDiscAvailable)
 					requiresDiscWidget.GetText = () => "Manual Install";
 
 				scrollPanel.AddChild(container);
