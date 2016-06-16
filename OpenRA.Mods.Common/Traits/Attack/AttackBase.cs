@@ -230,6 +230,52 @@ namespace OpenRA.Mods.Common.Traits
 			return max;
 		}
 
+		public WDist GetMinimumRangeVersusTarget(Target target)
+		{
+			if (IsTraitDisabled)
+				return WDist.Zero;
+
+			// PERF: Avoid LINQ.
+			var min = WDist.MaxValue;
+			foreach (var armament in Armaments)
+			{
+				if (armament.IsTraitDisabled)
+					continue;
+
+				if (!armament.Weapon.IsValidAgainst(target, self.World, self))
+					continue;
+
+				var range = armament.Weapon.MinRange;
+				if (min > range)
+					min = range;
+			}
+
+			return min != WDist.MaxValue ? min : WDist.Zero;
+		}
+
+		public WDist GetMaximumRangeVersusTarget(Target target)
+		{
+			if (IsTraitDisabled)
+				return WDist.Zero;
+
+			// PERF: Avoid LINQ.
+			var max = WDist.Zero;
+			foreach (var armament in Armaments)
+			{
+				if (armament.IsTraitDisabled)
+					continue;
+
+				if (!armament.Weapon.IsValidAgainst(target, self.World, self))
+					continue;
+
+				var range = armament.MaxRange();
+				if (max < range)
+					max = range;
+			}
+
+			return max;
+		}
+
 		// Enumerates all armaments, that this actor possesses, that can be used against Target t
 		public IEnumerable<Armament> ChooseArmamentsForTarget(Target t, bool forceAttack)
 		{
@@ -282,7 +328,7 @@ namespace OpenRA.Mods.Common.Traits
 		public bool IsReachableTarget(Target target, bool allowMove)
 		{
 			return HasAnyValidWeapons(target)
-				&& (target.IsInRange(self.CenterPosition, GetMaximumRange()) || (allowMove && self.Info.HasTraitInfo<IMoveInfo>()));
+				&& (target.IsInRange(self.CenterPosition, GetMaximumRangeVersusTarget(target)) || (allowMove && self.Info.HasTraitInfo<IMoveInfo>()));
 		}
 
 		public Stance UnforcedAttackTargetStances()
