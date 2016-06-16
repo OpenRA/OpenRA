@@ -183,13 +183,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 							case "extract-raw":
 							{
-								ExtractFromPackage(ExtractionType.Raw, path, i.Value, extracted, ref message);
+								ExtractFromPackage(ExtractionType.Raw, path, i.Value, extracted, m => message = m);
 								break;
 							}
 
 							case "extract-blast":
 							{
-								ExtractFromPackage(ExtractionType.Blast, path, i.Value, extracted, ref message);
+								ExtractFromPackage(ExtractionType.Blast, path, i.Value, extracted, m => message = m);
 								break;
 							}
 
@@ -228,7 +228,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		enum ExtractionType { Raw, Blast }
 
-		static void ExtractFromPackage(ExtractionType type, string path, MiniYaml actionYaml, List<string> extractedFiles, ref string progressMessage)
+		static void ExtractFromPackage(ExtractionType type, string path, MiniYaml actionYaml, List<string> extractedFiles, Action<string> updateMessage)
 		{
 			var sourcePath = Path.Combine(path, actionYaml.Value);
 			using (var source = File.OpenRead(sourcePath))
@@ -265,15 +265,20 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					Directory.CreateDirectory(Path.GetDirectoryName(targetPath));
 					using (var target = File.OpenWrite(targetPath))
 					{
-						// This is a bit dumb memory-wise, but we load the whole thing when running the game anyway
 						Log.Write("install", "Extracting {0} -> {1}".F(sourcePath, targetPath));
-						progressMessage = "Extracting " + Path.GetFileName(Path.GetFileName(targetPath));
-
-						var data = source.ReadBytes(length);
+						var displayFilename = Path.GetFileName(Path.GetFileName(targetPath));
 						if (type == ExtractionType.Blast)
-							data = Blast.Decompress(data);
-
-						target.Write(data);
+						{
+							Action<long, long> onProgress = (read, _) =>
+								updateMessage("Extracting " + displayFilename + " ({0}%)".F(100 * read / length));
+							Blast.Decompress(source, target, onProgress);
+						}
+						else
+						{
+							updateMessage("Extracting " + displayFilename);
+							// This is a bit dumb memory-wise, but we load the whole thing when running the game anyway
+							target.Write(source.ReadBytes(length));
+						}
 					}
 				}
 			}
