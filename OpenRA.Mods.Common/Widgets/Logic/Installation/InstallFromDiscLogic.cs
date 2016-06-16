@@ -172,10 +172,18 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 									}
 
 									Log.Write("install", "Copying {0} -> {1}".F(sourcePath, targetPath));
-									message = "Copying " + Path.GetFileName(sourcePath);
 									extracted.Add(targetPath);
 									Directory.CreateDirectory(Path.GetDirectoryName(targetPath));
-									File.Copy(sourcePath, targetPath);
+
+									using (var source = File.OpenRead(sourcePath))
+									using (var target = File.OpenWrite(targetPath))
+									{
+										var displayFilename = Path.GetFileName(targetPath);
+										var length = source.Length;
+
+										Action<long> onProgress = b => message = "Copying " + displayFilename + " ({0}%)".F(100 * b / length);
+										CopyStream(source, target, length, onProgress);
+									}
 								}
 
 								break;
@@ -226,6 +234,22 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}).Start();
 		}
 
+		static void CopyStream(Stream input, Stream output, long length, Action<long> onProgress = null)
+		{
+			var buffer = new byte[4096];
+			var copied = 0L;
+			while (copied < length)
+			{
+				var read = (int)Math.Min(buffer.Length, length - copied);
+				var write = input.Read(buffer, 0, read);
+				output.Write(buffer, 0, write);
+				copied += write;
+
+				if (onProgress != null)
+					onProgress(copied);
+			}
+		}
+
 		enum ExtractionType { Raw, Blast }
 
 		static void ExtractFromPackage(ExtractionType type, string path, MiniYaml actionYaml, List<string> extractedFiles, Action<string> updateMessage)
@@ -258,27 +282,20 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					}
 
 					var length = FieldLoader.GetValue<int>("Length", lengthNode.Value.Value);
-
 					source.Position = FieldLoader.GetValue<int>("Offset", offsetNode.Value.Value);
 
 					extractedFiles.Add(targetPath);
 					Directory.CreateDirectory(Path.GetDirectoryName(targetPath));
+					var displayFilename = Path.GetFileName(Path.GetFileName(targetPath));
+					Action<long> onProgress = b => updateMessage("Extracting " + displayFilename + " ({0}%)".F(100 * b / length));
+
 					using (var target = File.OpenWrite(targetPath))
 					{
 						Log.Write("install", "Extracting {0} -> {1}".F(sourcePath, targetPath));
-						var displayFilename = Path.GetFileName(Path.GetFileName(targetPath));
 						if (type == ExtractionType.Blast)
-						{
-							Action<long, long> onProgress = (read, _) =>
-								updateMessage("Extracting " + displayFilename + " ({0}%)".F(100 * read / length));
-							Blast.Decompress(source, target, onProgress);
-						}
+							Blast.Decompress(source, target, (read, _) => onProgress(read));
 						else
-						{
-							updateMessage("Extracting " + displayFilename);
-							// This is a bit dumb memory-wise, but we load the whole thing when running the game anyway
-							target.Write(source.ReadBytes(length));
-						}
+							CopyStream(source, target, length, onProgress);
 					}
 				}
 			}
