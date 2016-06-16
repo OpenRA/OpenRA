@@ -829,7 +829,7 @@ namespace OpenRA.Mods.Common.AI
 					continue;
 
 				var factType = mcv.Info.TraitInfo<TransformsInfo>().IntoActor;
-				var desiredLocation = ChooseBuildLocation(factType, false, BuildingType.Building);
+				var desiredLocation = ChooseBuildLocation(factType, true, BuildingType.Building);
 				if (desiredLocation == null)
 					continue;
 
