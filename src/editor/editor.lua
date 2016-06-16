@@ -1392,6 +1392,17 @@ function CreateEditor(bare)
       event:Skip()
     end)
 
+  if ide.osname == "Windows" then
+    editor:DragAcceptFiles(true)
+    editor:Connect(wx.wxEVT_DROP_FILES,function(evt)
+        local files = evt:GetFiles()
+        if not files or #files == 0 then return end
+        for _, f in ipairs(files) do
+          LoadFile(f,nil,true)
+        end
+      end)
+  end
+
   local pos
   local function getPositionValues()
     local p = pos or editor:GetCurrentPos()

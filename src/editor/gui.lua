@@ -32,17 +32,6 @@ local function createFrame()
   local frame = wx.wxFrame(wx.NULL, wx.wxID_ANY, GetIDEString("editor"),
     wx.wxDefaultPosition, wx.wxSize(1100, 700))
   frame:Center()
-  -- wrap into protected call as DragAcceptFiles fails on MacOS with
-  -- wxwidgets 2.8.12 even though it should work according to change notes
-  -- for 2.8.10: "Implemented wxWindow::DragAcceptFiles() on all platforms."
-  pcall(function() frame:DragAcceptFiles(true) end)
-  frame:Connect(wx.wxEVT_DROP_FILES,function(evt)
-      local files = evt:GetFiles()
-      if not files or #files == 0 then return end
-      for _, f in ipairs(files) do
-        LoadFile(f,nil,true)
-      end
-    end)
 
   -- update best size of the toolbar after resizing
   frame:Connect(wx.wxEVT_SIZE, function(event)
