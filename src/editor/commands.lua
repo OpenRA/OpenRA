@@ -1042,8 +1042,11 @@ end
 local cma, cman = 0, 1
 frame:Connect(wx.wxEVT_IDLE,
   function(event)
+    ide:GetDebugger():Update()
+    -- there is a chance that the current debugger can change after `Update` call
+    -- (as the debugger may be suspended during initial socket connection),
+    -- so retrieve the current debugger again to make sure it's properly set up.
     local debugger = ide:GetDebugger()
-    debugger:Update()
     if (debugger.scratchpad) then debugger:ScratchpadRefresh() end
     if IndicateIfNeeded() then event:RequestMore(true) end
     PackageEventHandleOnce("onIdleOnce", event)
