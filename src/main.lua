@@ -659,7 +659,7 @@ do
     if filename ~= "--" then
       if wx.wxDirExists(filename) then
         ProjectUpdateProjectDir(filename)
-      elseif not ActivateFile(filename) then
+      elseif not ide:ActivateFile(filename) then
         DisplayOutputLn(("Can't open file '%s': %s"):format(filename, wx.wxSysErrorMsg()))
       end
     end

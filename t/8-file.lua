@@ -6,10 +6,10 @@ ok(pcall(function() LoadFile('some-nonexisting-name') end), "Load non-existing f
 ClosePage()
 
 local fullpath = MergeFullPath(wx.wxFileName.GetCwd(), 't/test.lua')
-ok(ActivateFile('t/test.lua:10'), "Load file:line.")
-ok(not ActivateFile('t/foo.bar:10'), "Doesn't load non-existent file:line.")
-ok(ActivateFile(fullpath..':10'), "Load fullpath/file:line.")
-ok(not ActivateFile(fullpath..'/foo.bar:10'), "Doesn't load non-existent fullpath/file:line.")
+ok(ide:ActivateFile('t/test.lua:10'), "Load file:line.")
+ok(not ide:ActivateFile('t/foo.bar:10'), "Doesn't load non-existent file:line.")
+ok(ide:ActivateFile(fullpath..':10'), "Load fullpath/file:line.")
+ok(not ide:ActivateFile(fullpath..'/foo.bar:10'), "Doesn't load non-existent fullpath/file:line.")
 ClosePage() -- close activated file
 
 local sep = GetPathSeparator()

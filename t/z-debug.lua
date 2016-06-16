@@ -7,7 +7,7 @@ debugger:Listen()
 local debugfile = MergeFullPath(wx.wxStandardPaths.Get():GetTempDir(), "debug.lua")
 FileWrite(debugfile, "local a = 1+2\na = 2+3\na = 3+4\na = 4+5\na = 5+6")
 ok(wx.wxFileExists(debugfile), "File created before starting debugging.")
-local editor = ActivateFile(debugfile)
+local editor = ide:ActivateFile(debugfile)
 editor:BreakpointToggle(4)
 
 ide:GetMenuBar():Check(ID_CLEAROUTPUT, false)

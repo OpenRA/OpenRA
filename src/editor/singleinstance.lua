@@ -48,7 +48,7 @@ if success then -- ok, server was started, we are solo
             RequestAttention()
             if wx.wxDirExists(filename) then
               ProjectUpdateProjectDir(filename)
-            elseif not ActivateFile(filename) then
+            elseif not ide:ActivateFile(filename) then
               DisplayOutputLn(TR("Can't open file '%s': %s"):format(filename, wx.wxSysErrorMsg()))
             end
           end
