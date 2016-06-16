@@ -1392,11 +1392,11 @@ local function debuggerCreateWatchWindow()
   watchCtrl:Connect(ID_COPYWATCHVALUE, wx.wxEVT_COMMAND_MENU_SELECTED,
     function (event) watchCtrl:CopyItemValue(item or watchCtrl:GetSelection()) end)
   watchCtrl:Connect(ID_COPYWATCHVALUE, wx.wxEVT_UPDATE_UI, function (event)
-    -- allow copying only when the debugger is available
-    local debugger = ide:GetDebugger()
-    event:Enable(item:IsOk() and debugger.server and not debugger.running
-     and (not debugger.scratchpad or debugger.scratchpad.paused))
-  end)
+      -- allow copying only when the debugger is available
+      local debugger = ide:GetDebugger()
+      event:Enable(item:IsOk() and debugger.server and not debugger.running
+        and (not debugger.scratchpad or debugger.scratchpad.paused))
+    end)
 
   local label
   watchCtrl:Connect(wx.wxEVT_COMMAND_TREE_BEGIN_LABEL_EDIT,
@@ -1559,7 +1559,6 @@ end
 function debugger:ScratchpadRefresh()
   local debugger = self
   if debugger.scratchpad and debugger.scratchpad.updated and not debugger.scratchpad.paused then
-
     local scratchpadEditor = debugger.scratchpad.editor
     if scratchpadEditor.spec.apitype
     and scratchpadEditor.spec.apitype == "lua"
