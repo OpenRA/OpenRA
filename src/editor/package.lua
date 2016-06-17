@@ -863,6 +863,11 @@ function ide:IsProjectSubDirectory(dir)
 end
 
 function ide:ActivateFile(filename)
+  if wx.wxDirExists(filename) then
+    ProjectUpdateProjectDir(filename)
+    return true
+  end
+
   local name, suffix, value = filename:match('(.+):([lLpP]?)(%d+)$')
   if name and not wx.wxFileExists(filename) then filename = name end
 
@@ -877,6 +882,10 @@ function ide:ActivateFile(filename)
     if suffix:upper() == 'P' then opened:GotoPosDelayed(tonumber(value))
     else opened:GotoPosDelayed(opened:PositionFromLine(value-1))
     end
+  end
+
+  if not opened then
+    ide:Print(TR("Can't open file '%s': %s"):format(filename, wx.wxSysErrorMsg()))
   end
   return opened
 end

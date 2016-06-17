@@ -656,13 +656,7 @@ SettingsRestoreView()
 
 do
   for _, filename in ipairs(filenames) do
-    if filename ~= "--" then
-      if wx.wxDirExists(filename) then
-        ProjectUpdateProjectDir(filename)
-      elseif not ide:ActivateFile(filename) then
-        DisplayOutputLn(("Can't open file '%s': %s"):format(filename, wx.wxSysErrorMsg()))
-      end
-    end
+    if filename ~= "--" then ide:ActivateFile(filename) end
   end
   if ide:GetEditorNotebook():GetPageCount() == 0 then NewFile() end
 end

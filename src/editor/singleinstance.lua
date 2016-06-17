@@ -46,11 +46,7 @@ if success then -- ok, server was started, we are solo
           local filename = msg:match(protocol.client.requestloading:gsub("%%s","(.+)$"))
           if filename then
             RequestAttention()
-            if wx.wxDirExists(filename) then
-              ProjectUpdateProjectDir(filename)
-            elseif not ide:ActivateFile(filename) then
-              DisplayOutputLn(TR("Can't open file '%s': %s"):format(filename, wx.wxSysErrorMsg()))
-            end
+            ide:ActivateFile(filename)
           end
         end
       end
