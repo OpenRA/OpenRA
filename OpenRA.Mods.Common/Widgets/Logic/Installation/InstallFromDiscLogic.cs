@@ -23,6 +23,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public class InstallFromDiscLogic : ChromeLogic
 	{
+		// Hide percentage indicators for files smaller than 25 MB
+		const int ShowPercentageThreshold = 26214400;
+
 		enum Mode { Progress, Message, List }
 
 		readonly ModContent content;
@@ -181,7 +184,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 										var displayFilename = Path.GetFileName(targetPath);
 										var length = source.Length;
 
-										Action<long> onProgress = b => message = "Copying " + displayFilename + " ({0}%)".F(100 * b / length);
+										Action<long> onProgress = null;
+										if (length < ShowPercentageThreshold)
+											message = "Copying " + displayFilename;
+										else
+											onProgress = b => message = "Copying " + displayFilename + " ({0}%)".F(100 * b / length);
+
 										CopyStream(source, target, length, onProgress);
 									}
 								}
@@ -287,13 +295,26 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					extractedFiles.Add(targetPath);
 					Directory.CreateDirectory(Path.GetDirectoryName(targetPath));
 					var displayFilename = Path.GetFileName(Path.GetFileName(targetPath));
-					Action<long> onProgress = b => updateMessage("Extracting " + displayFilename + " ({0}%)".F(100 * b / length));
+
+					Action<long> onProgress = null;
+					if (length < ShowPercentageThreshold)
+						updateMessage("Extracting " + displayFilename);
+					else
+						onProgress = b => updateMessage("Extracting " + displayFilename + " ({0}%)".F(100 * b / length));
 
 					using (var target = File.OpenWrite(targetPath))
 					{
 						Log.Write("install", "Extracting {0} -> {1}".F(sourcePath, targetPath));
 						if (type == ExtractionType.Blast)
-							Blast.Decompress(source, target, (read, _) => onProgress(read));
+						{
+							Action<long, long> onBlastProgress = (read, _) =>
+							{
+								if (onProgress != null)
+									onProgress(read);
+							};
+
+							Blast.Decompress(source, target, onBlastProgress);
+						}
 						else
 							CopyStream(source, target, length, onProgress);
 					}
