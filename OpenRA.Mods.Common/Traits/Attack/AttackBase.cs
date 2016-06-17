@@ -186,7 +186,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			// PERF: Avoid LINQ.
 			foreach (var armament in Armaments)
-				if (armament.Weapon.IsValidAgainst(t, self.World, self))
+				if (!armament.OutOfAmmo && armament.Weapon.IsValidAgainst(t, self.World, self))
 					return true;
 
 			return false;
@@ -203,6 +203,10 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				if (armament.IsTraitDisabled)
 					continue;
+
+				if (armament.OutOfAmmo)
+					continue;
+
 				var range = armament.Weapon.MinRange;
 				if (min > range)
 					min = range;
@@ -222,6 +226,10 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				if (armament.IsTraitDisabled)
 					continue;
+
+				if (armament.OutOfAmmo)
+					continue;
+
 				var range = armament.MaxRange();
 				if (max < range)
 					max = range;
@@ -240,6 +248,9 @@ namespace OpenRA.Mods.Common.Traits
 			foreach (var armament in Armaments)
 			{
 				if (armament.IsTraitDisabled)
+					continue;
+
+				if (armament.OutOfAmmo)
 					continue;
 
 				if (!armament.Weapon.IsValidAgainst(target, self.World, self))
@@ -263,6 +274,9 @@ namespace OpenRA.Mods.Common.Traits
 			foreach (var armament in Armaments)
 			{
 				if (armament.IsTraitDisabled)
+					continue;
+
+				if (armament.OutOfAmmo)
 					continue;
 
 				if (!armament.Weapon.IsValidAgainst(target, self.World, self))

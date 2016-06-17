@@ -80,13 +80,10 @@ namespace OpenRA.Mods.Common.Activities
 				return this;
 
 			// Fly towards the target
-			// TODO: Fix that the helicopter won't do anything if it has multiple weapons with different ranges
-			// and the weapon with the longest range is out of ammo
 			if (!target.IsInRange(self.CenterPosition, attackHeli.GetMaximumRangeVersusTarget(target)))
 				helicopter.SetPosition(self, helicopter.CenterPosition + helicopter.FlyStep(desiredFacing));
 
 			// Fly backwards from the target
-			// TODO: Same problem as with MaximumRange
 			if (target.IsInRange(self.CenterPosition, attackHeli.GetMinimumRangeVersusTarget(target)))
 			{
 				// Facing 0 doesn't work with the following position change
