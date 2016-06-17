@@ -1392,11 +1392,20 @@ function CreateEditor(bare)
 
   if ide.osname == "Windows" then
     editor:DragAcceptFiles(true)
-    editor:Connect(wx.wxEVT_DROP_FILES,function(evt)
-        local files = evt:GetFiles()
+    editor:Connect(wx.wxEVT_DROP_FILES, function(event)
+        local files = event:GetFiles()
         if not files or #files == 0 then return end
-        for _, f in ipairs(files) do
-          LoadFile(f,nil,true)
+        -- activate all files/directories one by one
+        for _, filename in ipairs(files) do ide:ActivateFile(filename) end
+      end)
+  elseif ide.osname == "Unix" then
+    editor:Connect(wxstc.wxEVT_STC_DO_DROP, function(event)
+        local dropped = event:GetText()
+        -- this event may get a list of files separated by \n (and the list ends in \n as well),
+        -- so check if what's dropped looks like this list
+        if dropped:find("^file://.+\n$") then
+          for filename in dropped:gmatch("file://(.-)\n") do ide:ActivateFile(filename) end
+          event:SetDragResult(wx.wxDragCancel) -- cancel the drag to not paste the text
         end
       end)
   end
