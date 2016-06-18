@@ -11,21 +11,21 @@ World:
 		LossVideo: nodlose.vqa
 	SmudgeLayer@SCORCH:
 		InitialSmudges:
-			sc1 40,59 0
-			sc3 39,59 0
-			sc5 55,53 0
-			sc2 23,53 0
-			sc2 23,52 0
-			sc3 59,51 0
-			sc5 58,51 0
-			sc2 23,51 0
-			sc5 23,50 0
-			sc3 23,49 0
+			40,59: sc1,0
+			39,59: sc3,0
+			55,53: sc5,0
+			23,53: sc2,0
+			23,52: sc2,0
+			59,51: sc3,0
+			58,51: sc5,0
+			23,51: sc2,0
+			23,50: sc5,0
+			23,49: sc3,0
 	SmudgeLayer@CRATER:
 		InitialSmudges:
-			cr1 47,58 0
-			cr1 56,54 0
-			cr1 55,54 0
+			47,58: cr1,0
+			56,54: cr1,0
+			55,54: cr1,0
 
 Player:
 	PlayerResources:

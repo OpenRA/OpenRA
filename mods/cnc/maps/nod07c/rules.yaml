@@ -11,7 +11,7 @@ World:
 		LossVideo: flag.vqa
 	SmudgeLayer@CRATER:
 		InitialSmudges:
-			cr1 40,22 2
+			40,22: cr1,2
 
 Player:
 	EnemyWatcher:
