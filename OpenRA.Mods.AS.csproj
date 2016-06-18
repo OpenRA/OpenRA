@@ -85,19 +85,20 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Activities\ChronoResourceTeleport.cs" />
     <Compile Include="Duplicates\Traits\EjectOnDeathAS.cs" />
     <Compile Include="Duplicates\Traits\Render\WithIdleOverlayAS.cs" />
     <Compile Include="Duplicates\Traits\Sound\AnnounceOnBuildAS.cs" />
     <Compile Include="Duplicates\Traits\Sound\AnnounceOnKillAS.cs" />
     <Compile Include="Projectiles\InstantExplode.cs" />
-    <Compile Include="Traits\ChronoResourceDelivery.cs" />
     <Compile Include="Traits\UpgradeCrusher.cs" />
     <Compile Include="Traits\Multipliers\HealthPercentageFirepowerMultiplier.cs" />
-    <Compile Include="Traits\Render\WithExitOverlay.cs" />
     <Compile Include="Traits\SupportPowers\DetonateWeaponPower.cs" />
     <Compile Include="Traits\Warheads\FireClusterWarhead.cs" />
     <Compile Include="Traits\World\PaletteFromJasc32File.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Activities\" />
+    <Folder Include="Traits\Render\" />
   </ItemGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
