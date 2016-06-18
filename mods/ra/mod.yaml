@@ -339,7 +339,7 @@ ModContent:
 				INSTALL/REDALERT.MIX: 0e58f4b54f44f6cd29fecf8cf379d33cf2d4caef
 			Install:
 				copy: INSTALL
-					^Content/cnc/redalert.mix: REDALERT.MIX
+					^Content/ra/redalert.mix: REDALERT.MIX
 				extract-raw: MAIN.MIX
 					^Content/ra/conquer.mix:
 						Offset: 236
@@ -374,7 +374,7 @@ ModContent:
 				install/redalert.mix: 0e58f4b54f44f6cd29fecf8cf379d33cf2d4caef
 			Install:
 				copy: install
-					^Content/cnc/redalert.mix: redalert.mix
+					^Content/ra/redalert.mix: redalert.mix
 				extract-raw: main.mix
 					^Content/ra/conquer.mix:
 						Offset: 236
