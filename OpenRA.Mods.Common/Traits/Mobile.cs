@@ -504,7 +504,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			TicksBeforePathing = AverageTicksBeforePathing + self.World.SharedRandom.Next(-SpreadTicksBeforePathing, SpreadTicksBeforePathing);
 
-			self.QueueActivity(new Move(self, currentLocation, 8));
+			self.QueueActivity(new Move(self, currentLocation, WDist.FromCells(8)));
 
 			self.SetTargetLine(Target.FromCell(self.World, currentLocation), Color.Green);
 		}
@@ -683,7 +683,7 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				self.CancelActivity();
 				self.SetTargetLine(Target.FromCell(self.World, moveTo.Value), Color.Green, false);
-				self.QueueActivity(new Move(self, moveTo.Value, 0));
+				self.QueueActivity(new Move(self, moveTo.Value, WDist.Zero));
 
 				Log.Write("debug", "OnNudge #{0} from {1} to {2}",
 					self.ActorID, self.Location, moveTo.Value);
@@ -762,7 +762,7 @@ namespace OpenRA.Mods.Common.Traits
 		}
 
 		public Activity ScriptedMove(CPos cell) { return new Move(self, cell); }
-		public Activity MoveTo(CPos cell, int nearEnough) { return new Move(self, cell, nearEnough); }
+		public Activity MoveTo(CPos cell, int nearEnough) { return new Move(self, cell, WDist.FromCells(nearEnough)); }
 		public Activity MoveTo(CPos cell, Actor ignoredActor) { return new Move(self, cell, ignoredActor); }
 		public Activity MoveWithinRange(Target target, WDist range) { return new MoveWithinRange(self, target, WDist.Zero, range); }
 		public Activity MoveWithinRange(Target target, WDist minRange, WDist maxRange) { return new MoveWithinRange(self, target, minRange, maxRange); }
