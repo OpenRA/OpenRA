@@ -388,6 +388,7 @@
     <Compile Include="Traits\Player\MissionObjectives.cs" />
     <Compile Include="Traits\Player\PlaceBeacon.cs" />
     <Compile Include="Traits\Player\PlaceBuilding.cs" />
+    <Compile Include="Traits\Player\PlayerExperience.cs" />
     <Compile Include="Traits\Player\PlayerStatistics.cs" />
     <Compile Include="Traits\Player\ProductionQueue.cs" />
     <Compile Include="Traits\Player\ProvidesPrerequisite.cs" />

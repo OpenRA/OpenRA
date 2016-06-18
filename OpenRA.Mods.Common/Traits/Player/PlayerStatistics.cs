@@ -23,6 +23,7 @@ namespace OpenRA.Mods.Common.Traits
 	public class PlayerStatistics : ITick, IResolveOrder, INotifyCreated
 	{
 		PlayerResources resources;
+		PlayerExperience experience;
 
 		public int OrderCount;
 
@@ -31,6 +32,14 @@ namespace OpenRA.Mods.Common.Traits
 			get
 			{
 				return resources != null ? resources.Earned - earnedAtBeginningOfMinute : 0;
+			}
+		}
+
+		public int Experience
+		{
+			get
+			{
+				return experience != null ? experience.Experience : 0;
 			}
 		}
 
@@ -51,6 +60,7 @@ namespace OpenRA.Mods.Common.Traits
 		void INotifyCreated.Created(Actor self)
 		{
 			resources = self.TraitOrDefault<PlayerResources>();
+			experience = self.TraitOrDefault<PlayerExperience>();
 		}
 
 		void UpdateEarnedThisMinute()
