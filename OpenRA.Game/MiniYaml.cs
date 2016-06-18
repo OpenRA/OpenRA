@@ -254,7 +254,7 @@ namespace OpenRA
 
 		public static List<MiniYamlNode> FromString(string text, string fileName = "<no filename available>")
 		{
-			return FromLines(text.Split(new[] { "\r\n", "\n" }, StringSplitOptions.RemoveEmptyEntries), fileName);
+			return FromLines(text.Split(new[] { "\r\n", "\n" }, StringSplitOptions.None), fileName);
 		}
 
 		public static List<MiniYamlNode> Merge(IEnumerable<List<MiniYamlNode>> sources)

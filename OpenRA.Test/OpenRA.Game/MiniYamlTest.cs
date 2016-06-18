@@ -154,5 +154,20 @@ Test:
 			Assert.IsFalse(result.First(n => n.Key == "MockString").Value.Nodes.Any(n => n.Key == "AString"),
 				"MockString value should have been removed, but was not.");
 		}
+
+		[TestCase(TestName = "Empty lines should count toward line numbers")]
+		public void EmptyLinesShouldCountTowardLineNumbers()
+		{
+			var yaml = @"
+TestA:
+	Nothing:
+
+TestB:
+	Nothing:
+";
+
+			var result = MiniYaml.FromString(yaml).First(n => n.Key == "TestB");
+			Assert.AreEqual(5, result.Location.Line);
+		}
 	}
 }
