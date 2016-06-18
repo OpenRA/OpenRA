@@ -3,6 +3,7 @@
 	UpdatesPlayerStatistics:
 	CombatDebugOverlay:
 	GivesExperience:
+		PlayerExperienceModifier: 1
 	ScriptTriggers:
 	UpgradeManager:
 	Huntable:
@@ -262,6 +263,7 @@
 	WithBuildingExplosion:
 		Sequences: building, self_destruct, large_explosion
 	RepairableBuilding:
+		PlayerExperience: 25
 	EmitInfantryOnSell:
 		ActorTypes: light_inf
 	MustBeDestroyed:

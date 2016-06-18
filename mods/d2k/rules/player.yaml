@@ -91,3 +91,4 @@ Player:
 	GlobalUpgradeManager:
 	ResourceStorageWarning:
 		AdviceInterval: 26
+	PlayerExperience:

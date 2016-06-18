@@ -2,6 +2,7 @@
 	AppearsOnRadar:
 	CombatDebugOverlay:
 	GivesExperience:
+		PlayerExperienceModifier: 1
 	ScriptTriggers:
 	UpgradeManager:
 	Huntable:
@@ -449,6 +450,7 @@
 	UpdatesPlayerStatistics:
 	GivesBuildableArea:
 	RepairableBuilding:
+		PlayerExperience: 25
 	EngineerRepairable:
 	AcceptsSupplies:
 	WithMakeAnimation:

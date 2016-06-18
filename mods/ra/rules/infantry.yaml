@@ -179,6 +179,7 @@ E6:
 	RepairsBridges:
 	ExternalCaptures:
 		Type: building
+		PlayerExperience: 25
 	-AutoTarget:
 	Voiced:
 		VoiceSet: EngineerVoice
@@ -209,6 +210,7 @@ SPY:
 		Voice: Move
 	Infiltrates:
 		Types: SpyInfiltrate
+		PlayerExperience: 50
 	-AutoTarget:
 	-WithInfantryBody:
 	WithDisguisingInfantryBody:
@@ -240,6 +242,8 @@ SPY.England:
 		Prerequisites: ~infantry.england, dome, ~tent, ~techlevel.medium
 	Valued:
 		Cost: 250
+	GivesExperience:
+		Experience: 500
 	DisguiseToolTip:
 		Name: British Spy
 	RenderSprites:
@@ -354,6 +358,7 @@ MECH:
 		Voice: Move
 	Captures:
 		CaptureTypes: husk
+		PlayerExperience: 25
 	WithInfantryBody:
 		AttackSequence: repair
 		StandSequences: stand
@@ -424,6 +429,7 @@ THF:
 		PipType: Yellow
 	Infiltrates:
 		InfiltrateTypes: Cash
+		PlayerExperience: 50
 	-AutoTarget:
 	Voiced:
 		VoiceSet: ThiefVoice
@@ -451,6 +457,7 @@ HIJACKER:
 		PipType: Yellow
 	Captures:
 		CaptureTypes: vehicle
+		PlayerExperience: 50
 	-AutoTarget:
 	Voiced:
 		VoiceSet: ThiefVoice

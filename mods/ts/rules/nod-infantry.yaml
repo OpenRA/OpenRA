@@ -117,6 +117,7 @@ MHIJACK:
 	-Crushable:
 	Captures:
 		CaptureTypes: Vehicle
+		PlayerExperience: 50
 	RevealsShroud:
 		Range: 6c0
 	-AutoTarget:

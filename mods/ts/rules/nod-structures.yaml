@@ -215,6 +215,7 @@ NAHPAD:
 	PrimaryBuilding:
 	Reservable:
 	RepairsUnits:
+		PlayerExperience: 15
 	ProductionBar:
 	WithIdleOverlay@PLATFORM:
 		Sequence: idle-platform

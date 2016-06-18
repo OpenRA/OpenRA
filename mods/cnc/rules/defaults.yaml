@@ -3,6 +3,7 @@
 	UpdatesPlayerStatistics:
 	CombatDebugOverlay:
 	GivesExperience:
+		PlayerExperienceModifier: 1
 	ScriptTriggers:
 	UpgradeManager:
 	Huntable:
@@ -515,6 +516,7 @@
 	RepairableBuilding:
 		RepairPercent: 40
 		RepairStep: 14
+		PlayerExperience: 15
 	WithDeathAnimation:
 		DeathSequence: dead
 		UseDeathTypeSuffix: false
@@ -560,6 +562,7 @@
 	RepairableBuilding:
 		RepairPercent: 40
 		RepairStep: 14
+		PlayerExperience: 15
 	EngineerRepairable:
 	RevealsShroud:
 		Range: 3c0
