@@ -200,11 +200,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var briefingVideo = "";
 			var briefingVideoVisible = false;
-			var briefingVideoDisabled = true;
 
 			var infoVideo = "";
 			var infoVideoVisible = false;
-			var infoVideoDisabled = true;
 
 			new Thread(() =>
 			{
@@ -219,11 +217,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{
 					briefingVideo = missionData.BriefingVideo;
 					briefingVideoVisible = briefingVideo != null;
-					briefingVideoDisabled = !(briefingVideoVisible && modData.DefaultFileSystem.Exists(briefingVideo));
 
 					infoVideo = missionData.BackgroundVideo;
 					infoVideoVisible = infoVideo != null;
-					infoVideoDisabled = !(infoVideoVisible && modData.DefaultFileSystem.Exists(infoVideo));
 
 					var briefing = WidgetUtils.WrapText(missionData.Briefing.Replace("\\n", "\n"), description.Bounds.Width, descriptionFont);
 					var height = descriptionFont.Measure(briefing).Y;
@@ -240,12 +236,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}).Start();
 
 			startBriefingVideoButton.IsVisible = () => briefingVideoVisible && playingVideo != PlayingVideo.Briefing;
-			startBriefingVideoButton.IsDisabled = () => briefingVideoDisabled || playingVideo != PlayingVideo.None;
-			startBriefingVideoButton.OnClick = () => PlayVideo(videoPlayer, briefingVideo, PlayingVideo.Briefing, () => StopVideo(videoPlayer));
+			startBriefingVideoButton.OnClick = () => PlayVideo(videoPlayer, briefingVideo, PlayingVideo.Briefing);
 
 			startInfoVideoButton.IsVisible = () => infoVideoVisible && playingVideo != PlayingVideo.Info;
-			startInfoVideoButton.IsDisabled = () => infoVideoDisabled || playingVideo != PlayingVideo.None;
-			startInfoVideoButton.OnClick = () => PlayVideo(videoPlayer, infoVideo, PlayingVideo.Info, () => StopVideo(videoPlayer));
+			startInfoVideoButton.OnClick = () => PlayVideo(videoPlayer, infoVideo, PlayingVideo.Info);
 
 			descriptionPanel.ScrollToTop();
 
@@ -318,18 +312,34 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				Game.Sound.MusicVolume = cachedMusicVolume;
 		}
 
-		void PlayVideo(VqaPlayerWidget player, string video, PlayingVideo pv, Action onComplete)
+		void PlayVideo(VqaPlayerWidget player, string video, PlayingVideo pv, Action onComplete = null)
 		{
-			StopVideo(player);
+			if (!modData.DefaultFileSystem.Exists(video))
+			{
+				ConfirmationDialogs.ButtonPrompt(
+					title: "Video not installed",
+					text: "The game videos can be installed from the\n\"Manage Content\" menu in the mod chooser.",
+					cancelText: "Back",
+					onCancel: () => { });
+			}
+			else
+			{
+				StopVideo(player);
 
-			playingVideo = pv;
-			player.Load(video);
+				playingVideo = pv;
+				player.Load(video);
 
-			// video playback runs asynchronously
-			player.PlayThen(onComplete);
+				// video playback runs asynchronously
+				player.PlayThen(() =>
+				{
+					StopVideo(player);
+					if (onComplete != null)
+						onComplete();
+				});
 
-			// Mute other distracting sounds
-			MuteSounds();
+				// Mute other distracting sounds
+				MuteSounds();
+			}
 		}
 
 		void StopVideo(VqaPlayerWidget player)
@@ -362,7 +372,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				fullscreenVideoPlayer.Visible = true;
 				PlayVideo(fsPlayer, missionData.StartVideo, PlayingVideo.GameStart, () =>
 				{
-					StopVideo(fsPlayer);
 					Game.CreateAndStartLocalServer(selectedMap.Uid, orders);
 				});
 			}

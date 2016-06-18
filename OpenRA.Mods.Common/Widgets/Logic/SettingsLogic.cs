@@ -77,7 +77,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					OriginalGraphicsRenderer != current.Graphics.Renderer ||
 					OriginalGraphicsWindowedSize != current.Graphics.WindowedSize ||
 					OriginalGraphicsFullscreenSize != current.Graphics.FullscreenSize)
-					ConfirmationDialogs.PromptConfirmAction(
+					ConfirmationDialogs.ButtonPrompt(
 						title: "Restart Now?",
 						text: "Some changes will not be applied until\nthe game is restarted. Restart now?",
 						onConfirm: Game.Restart,

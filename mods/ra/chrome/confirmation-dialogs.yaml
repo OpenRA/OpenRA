@@ -1,8 +1,8 @@
-Background@CONFIRM_PROMPT_THREEBUTTON:
+Background@THREEBUTTON_PROMPT:
 	X: (WINDOW_RIGHT - WIDTH)/2
 	Y: (WINDOW_BOTTOM - 90)/2
 	Width: 600
-	Height: 175
+	Height: 110
 	Children:
 		Label@PROMPT_TITLE:
 			Width: PARENT_RIGHT
@@ -14,7 +14,7 @@ Background@CONFIRM_PROMPT_THREEBUTTON:
 			X: 15
 			Y: 50
 			Width: PARENT_RIGHT - 30
-			Height: 65
+			Height: 20
 			Align: Center
 		Button@CONFIRM_BUTTON:
 			X: 20
@@ -24,6 +24,7 @@ Background@CONFIRM_PROMPT_THREEBUTTON:
 			Text: Confirm
 			Font: Bold
 			Key: return
+			Visible: false
 		Button@OTHER_BUTTON:
 			X: PARENT_RIGHT - 380
 			Y: PARENT_BOTTOM - 45
@@ -31,6 +32,7 @@ Background@CONFIRM_PROMPT_THREEBUTTON:
 			Height: 25
 			Text: Restart
 			Font: Bold
+			Visible: false
 		Button@CANCEL_BUTTON:
 			X: PARENT_RIGHT - 180
 			Y: PARENT_BOTTOM - 45
@@ -39,12 +41,13 @@ Background@CONFIRM_PROMPT_THREEBUTTON:
 			Text: Cancel
 			Font: Bold
 			Key: escape
+			Visible: false
 
-Background@CONFIRM_PROMPT_TWOBUTTON:
+Background@TWOBUTTON_PROMPT:
 	X: (WINDOW_RIGHT - WIDTH)/2
 	Y: (WINDOW_BOTTOM - 90)/2
 	Width: 370
-	Height: 175
+	Height: 110
 	Children:
 		Label@PROMPT_TITLE:
 			Width: PARENT_RIGHT
@@ -56,7 +59,7 @@ Background@CONFIRM_PROMPT_TWOBUTTON:
 			X: 15
 			Y: 50
 			Width: PARENT_RIGHT - 30
-			Height: 65
+			Height: 20
 			Align: Center
 		Button@CONFIRM_BUTTON:
 			X: 20
@@ -66,6 +69,7 @@ Background@CONFIRM_PROMPT_TWOBUTTON:
 			Text: Confirm
 			Font: Bold
 			Key: return
+			Visible: false
 		Button@CANCEL_BUTTON:
 			X: PARENT_RIGHT - 180
 			Y: PARENT_BOTTOM - 45
@@ -74,33 +78,7 @@ Background@CONFIRM_PROMPT_TWOBUTTON:
 			Text: Cancel
 			Font: Bold
 			Key: escape
-
-Background@CANCEL_PROMPT:
-	X: (WINDOW_RIGHT - WIDTH)/2
-	Y: (WINDOW_BOTTOM - 90)/2
-	Width: 370
-	Height: 175
-	Children:
-		Label@PROMPT_TITLE:
-			Width: PARENT_RIGHT
-			Y: 20
-			Height: 25
-			Font: Bold
-			Align: Center
-		Label@PROMPT_TEXT:
-			X: 15
-			Y: 50
-			Width: PARENT_RIGHT - 30
-			Height: 65
-			Align: Center
-		Button@CANCEL_BUTTON:
-			X: PARENT_RIGHT/2 - WIDTH/2
-			Y: PARENT_BOTTOM - 45
-			Width: 160
-			Height: 25
-			Text: Cancel
-			Font: Bold
-			Key: escape
+			Visible: false
 
 Background@TEXT_INPUT_PROMPT:
 	X: (WINDOW_RIGHT - WIDTH)/2

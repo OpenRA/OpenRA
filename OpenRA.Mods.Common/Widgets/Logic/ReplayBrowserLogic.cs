@@ -409,7 +409,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			Action<ReplayMetadata, Action> onDeleteReplay = (r, after) =>
 			{
-				ConfirmationDialogs.PromptConfirmAction(
+				ConfirmationDialogs.ButtonPrompt(
 					title: "Delete selected replay?",
 					text: "Delete replay '{0}'?".F(Path.GetFileNameWithoutExtension(r.FilePath)),
 					onConfirm: () =>
@@ -450,7 +450,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						return;
 					}
 
-					ConfirmationDialogs.PromptConfirmAction(
+					ConfirmationDialogs.ButtonPrompt(
 						title: "Delete all selected replays?",
 						text: "Delete {0} replays?".F(list.Count),
 						onConfirm: () =>

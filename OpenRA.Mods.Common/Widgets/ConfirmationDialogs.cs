@@ -16,78 +16,82 @@ namespace OpenRA.Mods.Common.Widgets
 {
 	public static class ConfirmationDialogs
 	{
-		public static void PromptConfirmAction(
+		public static void ButtonPrompt(
 			string title,
 			string text,
-			Action onConfirm,
+			Action onConfirm = null,
 			Action onCancel = null,
 			Action onOther = null,
 			string confirmText = null,
 			string cancelText = null,
 			string otherText = null)
 		{
-			var promptName = onOther != null ? "CONFIRM_PROMPT_THREEBUTTON" : "CONFIRM_PROMPT_TWOBUTTON";
+			var promptName = onOther != null ? "THREEBUTTON_PROMPT" : "TWOBUTTON_PROMPT";
 			var prompt = Ui.OpenWindow(promptName);
-			var confirmButton = prompt.Get<ButtonWidget>("CONFIRM_BUTTON");
+			var confirmButton = prompt.GetOrNull<ButtonWidget>("CONFIRM_BUTTON");
 			var cancelButton = prompt.GetOrNull<ButtonWidget>("CANCEL_BUTTON");
 			var otherButton = prompt.GetOrNull<ButtonWidget>("OTHER_BUTTON");
 
 			prompt.Get<LabelWidget>("PROMPT_TITLE").GetText = () => title;
-			prompt.Get<LabelWidget>("PROMPT_TEXT").GetText = () => text;
-			if (!string.IsNullOrEmpty(confirmText))
-				confirmButton.GetText = () => confirmText;
-			if (!string.IsNullOrEmpty(otherText) && otherButton != null)
-				otherButton.GetText = () => otherText;
-			if (!string.IsNullOrEmpty(cancelText) && cancelButton != null)
-				cancelButton.GetText = () => cancelText;
 
-			confirmButton.OnClick = () =>
+			var headerTemplate = prompt.Get<LabelWidget>("PROMPT_TEXT");
+			var headerLines = text.Replace("\\n", "\n").Split('\n');
+			var headerHeight = 0;
+			foreach (var l in headerLines)
 			{
-				Ui.CloseWindow();
-				onConfirm();
-			};
+				var line = (LabelWidget)headerTemplate.Clone();
+				line.GetText = () => l;
+				line.Bounds.Y += headerHeight;
+				prompt.AddChild(line);
+
+				headerHeight += headerTemplate.Bounds.Height;
+			}
+
+			prompt.Bounds.Height += headerHeight;
+			prompt.Bounds.Y -= headerHeight / 2;
+
+			if (onConfirm != null && confirmButton != null)
+			{
+				confirmButton.Visible = true;
+				confirmButton.Bounds.Y += headerHeight;
+				confirmButton.OnClick = () =>
+				{
+					Ui.CloseWindow();
+					onConfirm();
+				};
+
+				if (!string.IsNullOrEmpty(confirmText))
+					confirmButton.GetText = () => confirmText;
+			}
 
 			if (onCancel != null && cancelButton != null)
 			{
-				cancelButton.IsVisible = () => true;
+				cancelButton.Visible = true;
+				cancelButton.Bounds.Y += headerHeight;
 				cancelButton.OnClick = () =>
 				{
 					Ui.CloseWindow();
 					if (onCancel != null)
 						onCancel();
 				};
+
+				if (!string.IsNullOrEmpty(cancelText) && cancelButton != null)
+					cancelButton.GetText = () => cancelText;
 			}
-			else if (cancelButton != null)
-				cancelButton.IsVisible = () => false;
 
 			if (onOther != null && otherButton != null)
 			{
-				otherButton.IsVisible = () => true;
+				otherButton.Visible = true;
+				otherButton.Bounds.Y += headerHeight;
 				otherButton.OnClick = () =>
 				{
 					if (onOther != null)
 						onOther();
                 };
+
+				if (!string.IsNullOrEmpty(otherText) && otherButton != null)
+					otherButton.GetText = () => otherText;
 			}
-			else if (otherButton != null)
-				otherButton.IsVisible = () => false;
-		}
-
-		public static void CancelPrompt(string title, string text, Action onCancel = null, string cancelText = null)
-		{
-			var prompt = Ui.OpenWindow("CANCEL_PROMPT");
-			prompt.Get<LabelWidget>("PROMPT_TITLE").GetText = () => title;
-			prompt.Get<LabelWidget>("PROMPT_TEXT").GetText = () => text;
-
-			if (!string.IsNullOrEmpty(cancelText))
-				prompt.Get<ButtonWidget>("CANCEL_BUTTON").GetText = () => cancelText;
-
-			prompt.Get<ButtonWidget>("CANCEL_BUTTON").OnClick = () =>
-			{
-				Ui.CloseWindow();
-				if (onCancel != null)
-					onCancel();
-			};
 		}
 
 		public static void TextInputPrompt(

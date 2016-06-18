@@ -328,7 +328,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		void DeleteOneMap(string map, Action<string> after)
 		{
-			ConfirmationDialogs.PromptConfirmAction(
+			ConfirmationDialogs.ButtonPrompt(
 				title: "Delete map",
 				text: "Delete the map '{0}'?".F(modData.MapCache[map].Title),
 				onConfirm: () =>
@@ -343,7 +343,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		void DeleteAllMaps(string[] maps, Action<string> after)
 		{
-			ConfirmationDialogs.PromptConfirmAction(
+			ConfirmationDialogs.ButtonPrompt(
 				title: "Delete maps",
 				text: "Delete all maps on this page?",
 				onConfirm: () =>

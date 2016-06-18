@@ -128,14 +128,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 			catch (System.Net.Sockets.SocketException e)
 			{
-				var err_msg = "Could not listen on port {0}.".F(Game.Settings.Server.ListenPort);
+				var message = "Could not listen on port {0}.".F(Game.Settings.Server.ListenPort);
 				if (e.ErrorCode == 10048) { // AddressAlreadyInUse (WSAEADDRINUSE)
-					err_msg += "\n\nCheck if the port is already being used.";
+					message += "\nCheck if the port is already being used.";
 				} else {
-					err_msg += "\n\nError is: \"{0}\" ({1})".F(e.Message, e.ErrorCode);
+					message += "\nError is: \"{0}\" ({1})".F(e.Message, e.ErrorCode);
 				}
 
-				ConfirmationDialogs.CancelPrompt("Server Creation Failed", err_msg, cancelText: "OK");
+				ConfirmationDialogs.ButtonPrompt("Server Creation Failed", message, onCancel: () => { }, cancelText: "Back");
 				return;
 			}
 
