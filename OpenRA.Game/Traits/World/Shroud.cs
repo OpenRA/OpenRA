@@ -77,6 +77,7 @@ namespace OpenRA.Traits
 
 		bool fogEnabled;
 		public bool FogEnabled { get { return !Disabled && fogEnabled; } }
+		public bool ExploreMapEnabled { get; private set; }
 
 		public int Hash { get; private set; }
 
@@ -96,8 +97,8 @@ namespace OpenRA.Traits
 			var gs = self.World.LobbyInfo.GlobalSettings;
 			fogEnabled = gs.OptionOrDefault("fog", info.FogEnabled);
 
-			var exploreMap = gs.OptionOrDefault("explored", info.ExploredMapEnabled);
-			if (exploreMap)
+			ExploreMapEnabled = gs.OptionOrDefault("explored", info.ExploredMapEnabled);
+			if (ExploreMapEnabled)
 				self.World.AddFrameEndTask(w => ExploreAll());
 		}
 
