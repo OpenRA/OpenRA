@@ -5,17 +5,10 @@ The plugin is maintained by
 
  Authors of logics:
  * Gyula Zimmermann (Graion Dilach)
-   > DetonateWeaponPower
-   > FireClusterWarhead
-   > HealthPercentageFirepowerMultiplier
-   > ChronoResourceTeleport
-   > PaletteFromJasc32File - 32bit format extension implementation
+   > everything unless listed
 
  * Pavel Penev
    > PaletteFromJasc32File - base JASC palette parser
-
- * scshunt (coppro)
-   > ChronoResourceDelivery
 
  Authors of documents used in this plugin:
   * Apollo
