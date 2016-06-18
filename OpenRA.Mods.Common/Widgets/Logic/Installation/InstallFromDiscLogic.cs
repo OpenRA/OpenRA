@@ -23,6 +23,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public class InstallFromDiscLogic : ChromeLogic
 	{
+		// Hide percentage indicators for files smaller than 25 MB
+		const int ShowPercentageThreshold = 26214400;
+
 		enum Mode { Progress, Message, List }
 
 		readonly ModContent content;
@@ -172,10 +175,23 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 									}
 
 									Log.Write("install", "Copying {0} -> {1}".F(sourcePath, targetPath));
-									message = "Copying " + Path.GetFileName(sourcePath);
 									extracted.Add(targetPath);
 									Directory.CreateDirectory(Path.GetDirectoryName(targetPath));
-									File.Copy(sourcePath, targetPath);
+
+									using (var source = File.OpenRead(sourcePath))
+									using (var target = File.OpenWrite(targetPath))
+									{
+										var displayFilename = Path.GetFileName(targetPath);
+										var length = source.Length;
+
+										Action<long> onProgress = null;
+										if (length < ShowPercentageThreshold)
+											message = "Copying " + displayFilename;
+										else
+											onProgress = b => message = "Copying " + displayFilename + " ({0}%)".F(100 * b / length);
+
+										CopyStream(source, target, length, onProgress);
+									}
 								}
 
 								break;
@@ -183,13 +199,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 							case "extract-raw":
 							{
-								ExtractFromPackage(ExtractionType.Raw, path, i.Value, extracted, ref message);
+								ExtractFromPackage(ExtractionType.Raw, path, i.Value, extracted, m => message = m);
 								break;
 							}
 
 							case "extract-blast":
 							{
-								ExtractFromPackage(ExtractionType.Blast, path, i.Value, extracted, ref message);
+								ExtractFromPackage(ExtractionType.Blast, path, i.Value, extracted, m => message = m);
 								break;
 							}
 
@@ -226,9 +242,25 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}).Start();
 		}
 
+		static void CopyStream(Stream input, Stream output, long length, Action<long> onProgress = null)
+		{
+			var buffer = new byte[4096];
+			var copied = 0L;
+			while (copied < length)
+			{
+				var read = (int)Math.Min(buffer.Length, length - copied);
+				var write = input.Read(buffer, 0, read);
+				output.Write(buffer, 0, write);
+				copied += write;
+
+				if (onProgress != null)
+					onProgress(copied);
+			}
+		}
+
 		enum ExtractionType { Raw, Blast }
 
-		static void ExtractFromPackage(ExtractionType type, string path, MiniYaml actionYaml, List<string> extractedFiles, ref string progressMessage)
+		static void ExtractFromPackage(ExtractionType type, string path, MiniYaml actionYaml, List<string> extractedFiles, Action<string> updateMessage)
 		{
 			var sourcePath = Path.Combine(path, actionYaml.Value);
 			using (var source = File.OpenRead(sourcePath))
@@ -258,22 +290,33 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					}
 
 					var length = FieldLoader.GetValue<int>("Length", lengthNode.Value.Value);
-
 					source.Position = FieldLoader.GetValue<int>("Offset", offsetNode.Value.Value);
 
 					extractedFiles.Add(targetPath);
 					Directory.CreateDirectory(Path.GetDirectoryName(targetPath));
+					var displayFilename = Path.GetFileName(Path.GetFileName(targetPath));
+
+					Action<long> onProgress = null;
+					if (length < ShowPercentageThreshold)
+						updateMessage("Extracting " + displayFilename);
+					else
+						onProgress = b => updateMessage("Extracting " + displayFilename + " ({0}%)".F(100 * b / length));
+
 					using (var target = File.OpenWrite(targetPath))
 					{
-						// This is a bit dumb memory-wise, but we load the whole thing when running the game anyway
 						Log.Write("install", "Extracting {0} -> {1}".F(sourcePath, targetPath));
-						progressMessage = "Extracting " + Path.GetFileName(Path.GetFileName(targetPath));
-
-						var data = source.ReadBytes(length);
 						if (type == ExtractionType.Blast)
-							data = Blast.Decompress(data);
+						{
+							Action<long, long> onBlastProgress = (read, _) =>
+							{
+								if (onProgress != null)
+									onProgress(read);
+							};
 
-						target.Write(data);
+							Blast.Decompress(source, target, onBlastProgress);
+						}
+						else
+							CopyStream(source, target, length, onProgress);
 					}
 				}
 			}
@@ -299,12 +342,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					Directory.CreateDirectory(Path.GetDirectoryName(targetPath));
 					using (var target = File.OpenWrite(targetPath))
 					{
-						// This is a bit dumb memory-wise, but we load the whole thing when running the game anyway
 						Log.Write("install", "Extracting {0} -> {1}".F(sourcePath, targetPath));
-
 						var displayFilename = Path.GetFileName(Path.GetFileName(targetPath));
 						Action<int> onProgress = percent => updateMessage("Extracting {0} ({1}%)".F(displayFilename, percent));
-						target.Write(reader.ExtractFile(node.Value.Value, onProgress));
+						reader.ExtractFile(node.Value.Value, target, onProgress);
 					}
 				}
 			}

@@ -87,42 +87,44 @@ namespace OpenRA.Mods.Common.FileFormats
 				files[i] = new CabFile(stream);
 		}
 
-		public byte[] ExtractFile(string filename, Action<int> onProgress = null)
+		public void ExtractFile(string filename, Stream output, Action<int> onProgress = null)
 		{
 			var file = files.FirstOrDefault(f => f.FileName == filename);
 			if (file == null)
-				return null;
+				throw new FileNotFoundException(filename);
 
 			var folder = folders[file.FolderIndex];
 			stream.Seek(folder.BlockOffset, SeekOrigin.Begin);
 
-			using (var outputStream = new MemoryStream())
+			var inflater = new Inflater(true);
+			var buffer = new byte[4096];
+			var decompressedBytes = 0;
+			for (var i = 0; i < folder.BlockCount; i++)
 			{
-				var inflater = new Inflater(true);
-				var buffer = new byte[4096];
-				for (var i = 0; i < folder.BlockCount; i++)
+				if (onProgress != null)
+					onProgress((int)(100 * output.Position / file.DecompressedLength));
+
+				// Ignore checksums
+				stream.Position += 4;
+				var blockLength = stream.ReadUInt16();
+				stream.Position += 4;
+
+				using (var batch = new MemoryStream(stream.ReadBytes(blockLength - 2)))
+				using (var inflaterStream = new InflaterInputStream(batch, inflater))
 				{
-					if (onProgress != null)
-						onProgress((int)(100 * outputStream.Position / file.DecompressedLength));
-
-					// Ignore checksums
-					stream.Position += 4;
-					var blockLength = stream.ReadUInt16();
-					stream.Position += 4;
-
-					using (var batch = new MemoryStream(stream.ReadBytes(blockLength - 2)))
-					using (var inflaterStream = new InflaterInputStream(batch, inflater))
+					int n;
+					while ((n = inflaterStream.Read(buffer, 0, buffer.Length)) > 0)
 					{
-						int n;
-						while ((n = inflaterStream.Read(buffer, 0, buffer.Length)) > 0)
-							outputStream.Write(buffer, 0, n);
-					}
+						var offset = Math.Max(0, file.DecompressedOffset - decompressedBytes);
+						var count = Math.Min(n - offset, file.DecompressedLength - decompressedBytes);
+						if (offset < n)
+							output.Write(buffer, (int)offset, (int)count);
 
-					inflater.Reset();
+						decompressedBytes += n;
+					}
 				}
 
-				outputStream.Seek(file.DecompressedOffset, SeekOrigin.Begin);
-				return outputStream.ReadBytes((int)file.DecompressedLength);
+				inflater.Reset();
 			}
 		}
 

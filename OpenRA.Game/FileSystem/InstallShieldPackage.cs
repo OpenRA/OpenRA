@@ -114,9 +114,12 @@ namespace OpenRA.FileSystem
 				return null;
 
 			s.Seek(dataStart + e.Offset, SeekOrigin.Begin);
-			var data = s.ReadBytes((int)e.Length);
 
-			return new MemoryStream(Blast.Decompress(data));
+			var ret = new MemoryStream();
+			Blast.Decompress(s, ret);
+			ret.Seek(0, SeekOrigin.Begin);
+
+			return ret;
 		}
 
 		public bool Contains(string filename)
