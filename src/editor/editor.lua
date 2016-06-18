@@ -803,6 +803,8 @@ function CreateEditor(bare)
     return line
   end
   function editor:MarkerToggle(marker, line, value)
+    if type(marker) == "string" then marker = StylesGetMarker(marker) end
+    assert(marker ~= nil, "Marker update requires known marker type")
     line = line or editor:GetCurrentLine()
     local isset = bit.band(editor:MarkerGet(line), 2^marker) > 0
     if value ~= nil and isset == value then return end
