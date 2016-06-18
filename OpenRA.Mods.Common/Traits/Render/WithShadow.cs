@@ -21,6 +21,12 @@ namespace OpenRA.Mods.Common.Traits.Render
 	{
 		[PaletteReference] public readonly string Palette = "shadow";
 
+		[Desc("Shadow position offset relative to actor position (ground level).")]
+		public readonly WVec Offset = WVec.Zero;
+
+		[Desc("Shadow Z offset relative to actor sprite.")]
+		public readonly int ZOffset = -5;
+
 		public override object Create(ActorInitializer init) { return new WithShadow(this); }
 	}
 
@@ -46,8 +52,8 @@ namespace OpenRA.Mods.Common.Traits.Render
 			var height = self.World.Map.DistanceAboveTerrain(self.CenterPosition).Length;
 			var shadowSprites = r.Where(s => !s.IsDecoration)
 				.Select(a => a.WithPalette(wr.Palette(info.Palette))
-					.OffsetBy(new WVec(0, 0, -height))
-					.WithZOffset(a.ZOffset + height)
+					.OffsetBy(info.Offset - new WVec(0, 0, height))
+					.WithZOffset(a.ZOffset + (height + info.ZOffset))
 					.AsDecoration());
 
 			return shadowSprites.Concat(r);
