@@ -35,38 +35,23 @@ Container@SKIRMISH_STATS:
 			Children:
 				Label@NAME:
 					X: 10
-					Width: 150
+					Width: 210
 					Height: 25
 					Text: Player
 					Font: Bold
 				Label@FACTION:
-					X: 150
-					Width: 80
+					X: 230
+					Width: 120
 					Height: 25
 					Text: Faction
 					Font: Bold
-					Align: Center
-				Label@STANCE:
-					X: 260
-					Width: 50
+				Label@SCORE:
+					X: 360
+					Width: 75
 					Height: 25
-					Text: Team
+					Text: Score
 					Font: Bold
-					Align: Center
-				Label@KILLS:
-					X: 310
-					Width: 70
-					Height: 25
-					Text: Kills
-					Font: Bold
-					Align: Center
-				Label@DEATHS:
-					X: 380
-					Width: 70
-					Height: 25
-					Text: Deaths
-					Font: Bold
-					Align: Center
+					Align: Right
 		ScrollPanel@PLAYER_LIST:
 			X: 20
 			Y: 105
@@ -75,43 +60,52 @@ Container@SKIRMISH_STATS:
 			TopBottomSpacing: 5
 			ItemSpacing: 5
 			Children:
+				ScrollItem@TEAM_TEMPLATE:
+					BaseName: scrollheader
+					Width: PARENT_RIGHT - 27
+					Height: 20
+					X: 2
+					Visible: false
+					Children:
+						Label@TEAM:
+							X: 2
+							Y: 0-2
+							Width: 160
+							Height: 20
+							Font: Bold
+						Label@TEAM_SCORE:
+							X: 360
+							Y: 0-2
+							Width: 75
+							Height: 20
+							Font: Bold
+							Align: Right
 				Container@PLAYER_TEMPLATE:
 					Width: PARENT_RIGHT-27
 					Height: 25
 					X: 2
-					Y: 0
 					Children:
 						Label@NAME:
 							X: 10
-							Width: 150
+							Width: 210
 							Height: 25
 						ClientTooltipRegion@CLIENT_REGION:
 							TooltipContainer: TOOLTIP_CONTAINER
 							Template: INGAME_CLIENT_TOOLTIP
 							X: 10
-							Width: 150
+							Width: 210
 							Height: 25
 						Image@FACTIONFLAG:
-							X: 159
+							X: 230
 							Y: 6
 							Width: 32
 							Height: 16
 						Label@FACTION:
-							X: 195
-							Width: 65
+							X: 264
+							Width: 86
 							Height: 25
-						Label@TEAM:
-							X: 260
-							Width: 50
+						Label@SCORE:
+							X: 360
+							Width: 75
 							Height: 25
-							Align: Center
-						Label@KILLS:
-							X: 310
-							Width: 70
-							Height: 25
-							Align: Center
-						Label@DEATHS:
-							X: 380
-							Width: 70
-							Height: 25
-							Align: Center
+							Align: Right

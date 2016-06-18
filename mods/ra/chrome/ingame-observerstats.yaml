@@ -2,7 +2,7 @@ Background@INGAME_OBSERVERSTATS_BG:
 	Logic: ObserverStatsLogic
 	X: 25
 	Y: 50
-	Width: 950
+	Width: 1025
 	Height: 500
 	Background: dialog
 	Children:
@@ -54,30 +54,30 @@ Background@INGAME_OBSERVERSTATS_BG:
 						Label@POWER_HEADER:
 							X: 425
 							Y: 40
-							Width: 80
+							Width: 60
 							Height: 25
 							Font: Bold
 							Text: Power
 						Label@KILLS_HEADER:
-							X: 505
+							X: 485
 							Y: 40
-							Width: 40
+							Width: 60
 							Height: 25
 							Font: Bold
 							Text: Kills
 							Align: Right
 						Label@DEATHS_HEADER:
-							X: 565
+							X: 545
 							Y: 40
-							Width: 40
+							Width: 60
 							Height: 25
 							Font: Bold
 							Text: Deaths
 							Align: Right
 						Label@ASSETS_DESTROYED_HEADER:
-							X: 625
+							X: 605
 							Y: 40
-							Width: 60
+							Width: 80
 							Height: 25
 							Font: Bold
 							Text: Destroyed
@@ -85,15 +85,23 @@ Background@INGAME_OBSERVERSTATS_BG:
 						Label@ASSETS_LOST_HEADER:
 							X: 685
 							Y: 40
-							Width: 60
+							Width: 80
 							Height: 25
 							Font: Bold
 							Text: Lost
 							Align: Right
-						Label@ACTIONS_MIN_HEADER:
-							X: 805
+						Label@EXPERIENCE_HEADER:
+							X: 765
 							Y: 40
-							Width: 40
+							Width: 95
+							Height: 25
+							Font: Bold
+							Text: Experience
+							Align: Right
+						Label@ACTIONS_MIN_HEADER:
+							X: 860
+							Y: 40
+							Width: 90
 							Height: 25
 							Font: Bold
 							Text: Actions/min
@@ -316,33 +324,39 @@ Background@INGAME_OBSERVERSTATS_BG:
 									Width: 80
 									Height: PARENT_BOTTOM
 								Label@KILLS:
-									X: 475
+									X: 455
 									Y: 0
-									Width: 40
+									Width: 60
 									Height: PARENT_BOTTOM
 									Align: Right
 								Label@DEATHS:
-									X: 535
+									X: 515
 									Y: 0
-									Width: 40
+									Width: 60
 									Height: PARENT_BOTTOM
 									Align: Right
 								Label@ASSETS_DESTROYED:
-									X: 595
+									X: 575
 									Y: 0
-									Width: 60
+									Width: 80
 									Height: PARENT_BOTTOM
 									Align: Right
 								Label@ASSETS_LOST:
-									X: 660
+									X: 655
 									Y: 0
-									Width: 60
+									Width: 80
+									Height: PARENT_BOTTOM
+									Align: Right
+								Label@EXPERIENCE:
+									X: 735
+									Y: 0
+									Width: 95
 									Height: PARENT_BOTTOM
 									Align: Right
 								Label@ACTIONS_MIN:
-									X: 775
+									X: 830
 									Y: 0
-									Width: 40
+									Width: 90
 									Height: PARENT_BOTTOM
 									Align: Right
 						ScrollItem@ECONOMY_PLAYER_TEMPLATE:
