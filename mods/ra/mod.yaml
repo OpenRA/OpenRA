@@ -26,6 +26,7 @@ Packages:
 	~snow.mix
 	~interior.mix
 	~scores.mix
+	~scores-counterstrike.mix
 	~movies1.mix
 	~movies2.mix
 	ra|bits
