@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			return args.Length == 2;
 		}
 
-		[Desc("ARCHIVE.Z", "Lists the content ranges for a mix file")]
+		[Desc("ARCHIVE.MIX", "Lists the content ranges for a mix file")]
 		public void Run(ModData modData, string[] args)
 		{
 			var filename = Path.GetFileName(args[1]);
