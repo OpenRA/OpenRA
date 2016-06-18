@@ -432,22 +432,4 @@ namespace OpenRA.Mods.Common.Activities
 			}
 		}
 	}
-
-	public static class ActorExtensionsForMove
-	{
-		public static bool IsMoving(this Actor self)
-		{
-			var a = self.GetCurrentActivity();
-			if (a == null)
-				return false;
-
-			// HACK: Dirty, but it suffices until we do something better:
-			if (a.GetType() == typeof(Move)) return true;
-			if (a.GetType() == typeof(MoveAdjacentTo)) return true;
-			if (a.GetType() == typeof(AttackMoveActivity)) return true;
-
-			// Not a move:
-			return false;
-		}
-	}
 }
