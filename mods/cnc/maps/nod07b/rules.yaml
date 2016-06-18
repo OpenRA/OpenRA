@@ -11,7 +11,7 @@ World:
 		LossVideo: visor.vqa
 	SmudgeLayer@CRATER:
 		InitialSmudges:
-			cr1 9,12 0
+			9,12: cr1,0
 
 Player:
 	PlayerResources:
