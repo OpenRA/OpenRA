@@ -39,11 +39,9 @@ namespace OpenRA.Mods.AS.Lint
 							emitError("Warhead type {0} tries to spawn unpositionable actor {1}!"
 							.F(weaponInfo.Key, a));
 
-						/*
 						if (!rules.Actors[a.ToLowerInvariant()].HasTraitInfo<ParachutableInfo>() && warhead.Paradrop == true)
 							emitError("Warhead type {0} tries to paradrop actor {1} which doesn't have the Parachutable trait!"
 							.F(weaponInfo.Key, a));
-						 * */
 					}
 				}
 			}
