@@ -172,7 +172,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			var videos = new List<MiniYamlNode>();
 			foreach (var s in file.GetSection(section))
 			{
-				if (s.Value != "x" && s.Value != "<none>")
+				if (s.Value != "x" && s.Value != "X" && s.Value != "<none>")
 				{
 					switch (s.Key)
 					{
