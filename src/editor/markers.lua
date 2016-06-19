@@ -104,8 +104,7 @@ local function clearAllMarkers(mtype)
         local line, markertype = unpack(markers[m])
         if markertype == mtype then
           if editor then
-            local _ = (mtype == "bookmark" and editor:BookmarkToggle(line, false)
-              or mtype == "breakpoint" and editor:BreakpointToggle(line, false))
+            editor:MarkerToggle(markertype, line, false)
           else
             table.remove(markers, m)
           end
@@ -283,8 +282,7 @@ function markers:LoadMarkers(editor)
   if filepath then
     for _, edmarker in ipairs(self.settings.markers[filepath] or {}) do
       local line, markertype = unpack(edmarker)
-      local _ = (markertype == "bookmark" and editor:BookmarkToggle(line, true)
-        or markertype == "breakpoint" and editor:BreakpointToggle(line, true))
+      editor:MarkerToggle(markertype, line, true)
     end
   end
 end
