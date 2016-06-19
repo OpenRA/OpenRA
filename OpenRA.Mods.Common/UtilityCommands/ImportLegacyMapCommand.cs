@@ -105,9 +105,8 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			Map.FixOpenAreas();
 
 			var dest = Path.GetFileNameWithoutExtension(args[1]) + ".oramap";
-			var package = new ZipFile(modData.ModFiles, dest, true);
 
-			Map.Save(package);
+			Map.Save(ZipFile.Create(dest, new Folder(".")));
 			Console.WriteLine(dest + " saved.");
 		}
 

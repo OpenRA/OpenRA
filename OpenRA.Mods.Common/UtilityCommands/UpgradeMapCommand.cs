@@ -78,7 +78,8 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			// HACK: The engine code assumes that Game.modData is set.
 			Game.ModData = modData;
 
-			var package = modData.ModFiles.OpenWritablePackage(args[1]);
+			// HACK: We know that maps can only be oramap or folders, which are ReadWrite
+			var package = modData.ModFiles.OpenPackage(args[1], new Folder(".")) as IReadWritePackage;
 			var engineDate = Exts.ParseIntegerInvariant(args[2]);
 			UpgradeMap(modData, package, engineDate);
 		}
