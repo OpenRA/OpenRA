@@ -16,31 +16,44 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits.Render
 {
-	[Desc("Clones the aircraft sprite with another palette below it.")]
-	class WithShadowInfo : ITraitInfo
+	[Desc("Clones the actor sprite with another palette below it.")]
+	public class WithShadowInfo : UpgradableTraitInfo
 	{
 		[PaletteReference] public readonly string Palette = "shadow";
 
-		public object Create(ActorInitializer init) { return new WithShadow(this); }
+		[Desc("Shadow position offset relative to actor position (ground level).")]
+		public readonly WVec Offset = WVec.Zero;
+
+		[Desc("Shadow Z offset relative to actor sprite.")]
+		public readonly int ZOffset = -5;
+
+		public override object Create(ActorInitializer init) { return new WithShadow(this); }
 	}
 
-	class WithShadow : IRenderModifier
+	public class WithShadow : UpgradableTrait<WithShadowInfo>, IRenderModifier
 	{
-		WithShadowInfo info;
+		readonly WithShadowInfo info;
 
 		public WithShadow(WithShadowInfo info)
+			: base(info)
 		{
 			this.info = info;
 		}
 
 		public IEnumerable<IRenderable> ModifyRender(Actor self, WorldRenderer wr, IEnumerable<IRenderable> r)
 		{
+			if (IsTraitDisabled)
+				return Enumerable.Empty<IRenderable>();
+
+			if (self.IsDead || !self.IsInWorld)
+				return Enumerable.Empty<IRenderable>();
+
 			// Contrails shouldn't cast shadows
 			var height = self.World.Map.DistanceAboveTerrain(self.CenterPosition).Length;
 			var shadowSprites = r.Where(s => !s.IsDecoration)
 				.Select(a => a.WithPalette(wr.Palette(info.Palette))
-					.OffsetBy(new WVec(0, 0, -height))
-					.WithZOffset(a.ZOffset + height)
+					.OffsetBy(info.Offset - new WVec(0, 0, height))
+					.WithZOffset(a.ZOffset + (height + info.ZOffset))
 					.AsDecoration());
 
 			return shadowSprites.Concat(r);

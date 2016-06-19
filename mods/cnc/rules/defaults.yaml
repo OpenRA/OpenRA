@@ -153,6 +153,8 @@
 		GenericName: Helicopter
 	WithFacingSpriteBody:
 	WithShadow:
+		Offset: 43, 128, 0
+		ZOffset: -129
 	Hovers@CRUISING:
 		UpgradeTypes: cruising
 		UpgradeMinEnabledLevel: 1
@@ -427,6 +429,8 @@
 	ActorLostNotification:
 	AttackMove:
 	WithShadow:
+		Offset: 43, 128, 0
+		ZOffset: -129
 	WithFacingSpriteBody:
 	FlyAwayOnIdle:
 	RejectsOrders:
@@ -746,6 +750,8 @@
 ^HelicopterHusk:
 	Inherits: ^CommonHuskDefaults
 	WithShadow:
+		Offset: 43, 128, 0
+		ZOffset: -129
 	Aircraft:
 		AirborneUpgrades: airborne
 		CanHover: True

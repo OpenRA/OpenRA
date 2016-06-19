@@ -386,6 +386,8 @@
 	Tooltip:
 		GenericName: Plane
 	WithShadow:
+		Offset: 43, 128, 0
+		ZOffset: -129
 	WithFacingSpriteBody:
 	MustBeDestroyed:
 	Voiced:
@@ -690,6 +692,8 @@
 ^PlaneHusk:
 	Inherits: ^BasicHusk
 	WithShadow:
+		Offset: 43, 128, 0
+		ZOffset: -129
 	Tooltip:
 		GenericName: Destroyed Plane
 	Aircraft:
@@ -703,6 +707,8 @@
 ^HelicopterHusk:
 	Inherits: ^BasicHusk
 	WithShadow:
+		Offset: 43, 128, 0
+		ZOffset: -129
 	Tooltip:
 		GenericName: Destroyed Helicopter
 	Aircraft:
