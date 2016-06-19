@@ -382,7 +382,7 @@ namespace OpenRA
 				foreach (var a in Actors)
 					ret += n++ * (int)(1 + a.ActorID) * Sync.HashActor(a);
 
-				// Hash all the traits that tick.
+				// Hash fields marked with the ISync interface.
 				foreach (var actor in ActorsHavingTrait<ISync>())
 					foreach (var syncHash in actor.SyncHashes)
 						ret += n++ * (int)(1 + actor.ActorID) * syncHash.Hash;
