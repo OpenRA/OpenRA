@@ -4,9 +4,7 @@ NAWALL:
 		Queue: Defense
 		BuildPaletteOrder: 1001
 		Prerequisites: ~structures.nod
-	SoundOnDamageTransition:
-		DamagedSounds:
-		DestroyedSounds:
+	-SoundOnDamageTransition:
 	Valued:
 		Cost: 50
 	CustomSellValue:
