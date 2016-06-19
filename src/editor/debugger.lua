@@ -360,7 +360,8 @@ function debugger:ActivateDocument(file, line, activatehow)
         if debugger.runtocursor then
           local ed, ln = unpack(debugger.runtocursor)
           if ed:GetId() == editor:GetId() and ln == line then
-            debugger:BreakpointToggle(ed, ln)
+            -- remove run-to breakpoint at this location
+            debugger:breakpointToggle(ed, ln, false)
             debugger.runtocursor = nil
           end
         end
@@ -1033,11 +1034,11 @@ function debugger:RunTo(editor, line)
       -- if run-to-cursor location is already set, then remove the breakpoint,
       -- but only if this location is different
       if ed and ln and not same then
-        debugger:BreakpointToggle(ed, ln)
+        debugger:breakpointToggle(ed, ln, false) -- remove earlier run-to breakpoint
         debugger:Wait()
       end
       if not same then
-        debugger:BreakpointToggle(editor, line)
+        debugger:breakpointToggle(editor, line, true) -- set new run-to breakpoint
         debugger:Wait()
       end
     end)
@@ -1506,7 +1507,7 @@ function debugger:teardown()
     debugger:UpdateStatus(ide:GetLaunchedProcess() and "running" or "stopped")
     if debugger.runtocursor then
       local ed, ln = unpack(debugger.runtocursor)
-      debugger:BreakpointToggle(ed, ln)
+      debugger:breakpointToggle(ed, ln, false) -- remove current run-to breakpoint
     end
     if PackageEventHandle("onDebuggerPreClose", debugger) ~= false then
       SetAllEditorsReadOnly(false)
@@ -1531,27 +1532,16 @@ local function debuggerMakeFileName(editor)
   or ide.config.default.fullname
 end
 
-function debugger:BreakpointToggle(editor, line, value)
+function debugger:breakpointToggle(editor, line, value)
   local debugger = self
   local isset = bit.band(editor:MarkerGet(line-1), BREAKPOINT_MARKER_VALUE) > 0
-  if value ~= nil and isset == value then return end
-  local filePath = debugger.editormap and debugger.editormap[editor]
-    or debuggerMakeFileName(editor)
-  if isset then
-    -- if there is pending "run-to-cursor" call at this location, remove it
-    local ed, ln = unpack(debugger.runtocursor or {})
-    local same = ed and ln and ed:GetId() == editor:GetId() and ln == line
-    if same then debugger.runtocursor = nil end
-
-    editor:MarkerDelete(line-1, BREAKPOINT_MARKER)
-    if debugger.server then debugger:breakpoint(filePath, line, false) end
+  if value then
+    if not isset then editor:MarkerAdd(line-1, BREAKPOINT_MARKER) end
   else
-    if editor:IsLineEmpty(line-1) then return end
-
-    editor:MarkerAdd(line-1, BREAKPOINT_MARKER)
-    if debugger.server then debugger:breakpoint(filePath, line, true) end
+    if isset then editor:MarkerDelete(line-1, BREAKPOINT_MARKER) end
   end
-  PackageEventHandle("onEditorMarkerUpdate", editor, BREAKPOINT_MARKER, line, not isset)
+  local file = debugger.editormap and debugger.editormap[editor] or debuggerMakeFileName(editor)
+  debugger:BreakpointSet(file, line, value)
 end
 
 -- scratchpad functions
@@ -1816,3 +1806,21 @@ function debugger:ScratchpadOff()
 end
 
 debugger = ide:SetDebugger(setmetatable({}, {__index = protodeb}))
+
+local package = ide:AddPackage('core.debugger', {
+    onEditorMarkerUpdate = function(self, editor, marker, line, value)
+      if marker ~= BREAKPOINT_MARKER then return end
+
+      local debugger = ide:GetDebugger()
+      if value == false then
+        -- if there is pending "run-to-cursor" call at this location, remove it
+        local ed, ln = unpack(debugger.runtocursor or {})
+        local same = ed and ln and ed:GetId() == editor:GetId() and ln == line
+        if same then debugger.runtocursor = nil end
+      elseif editor:IsLineEmpty(line-1) then
+        return false -- don't set marker here
+      end
+
+      return debugger:breakpointToggle(editor, line, value)
+    end,
+  })

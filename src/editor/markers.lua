@@ -251,7 +251,11 @@ local package = ide:AddPackage('core.markers', {
       -- if no marker, then all markers in a file need to be refreshed
       if not caches[editor] then caches[editor] = {} end
       needRefresh(editor)
-      markers:SaveMarkers(editor)
+      -- delay saving markers as other EditorMarkerUpdate handlers may still modify them,
+      -- but check to make sure that the editor is still valid
+      ide:DoWhenIdle(function()
+          if ide:IsValidCtrl(editor) then markers:SaveMarkers(editor) end
+        end)
     end,
 
     onEditorSave = function(self, editor) markers:SaveMarkers(editor) end,

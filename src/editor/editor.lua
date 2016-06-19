@@ -808,19 +808,16 @@ function CreateEditor(bare)
     line = line or editor:GetCurrentLine()
     local isset = bit.band(editor:MarkerGet(line), 2^marker) > 0
     if value ~= nil and isset == value then return end
+    if PackageEventHandle("onEditorMarkerUpdate", editor, marker, line+1, not isset) == false then return end
     if isset then
       editor:MarkerDelete(line, marker)
     else
       editor:MarkerAdd(line, marker)
     end
-    PackageEventHandle("onEditorMarkerUpdate", editor, marker, line+1, not isset)
   end
 
-  function editor:BookmarkToggle(...) return self:MarkerToggle((StylesGetMarker("bookmark")), ...) end
-  function editor:BreakpointToggle(line, ...)
-    line = (line or self:GetCurrentLine()) + 1
-    return ide:GetDebugger():BreakpointToggle(self, line, ...)
-  end
+  function editor:BookmarkToggle(...) return self:MarkerToggle("bookmark", ...) end
+  function editor:BreakpointToggle(...) return self:MarkerToggle("breakpoint", ...) end
 
   function editor:DoWhenIdle(func) table.insert(self.onidle, func) end
 
