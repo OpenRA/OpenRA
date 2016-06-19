@@ -96,7 +96,11 @@ namespace OpenRA.Mods.Common.Traits
 			if (self.Owner.IsAlliedWith(self.World.RenderPlayer))
 				Game.Sound.Play(Info.LaunchSound);
 			else
+			{
 				Game.Sound.Play(Info.IncomingSound);
+				Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech",
+					Info.IncomingSpeechNotification, self.Owner.Faction.InternalName);
+			}
 
 			if (!string.IsNullOrEmpty(info.ActivationSequence))
 			{
