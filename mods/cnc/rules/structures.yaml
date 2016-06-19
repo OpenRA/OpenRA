@@ -308,7 +308,9 @@ HAND:
 		Amount: -20
 	ProvidesPrerequisite@buildingname:
 	Selectable:
-		Bounds: 48,60,0,-3
+		Bounds: 48,48
+	SelectionDecorations:
+		VisualBounds: 48,68,0,-10
 
 AFLD:
 	Inherits: ^BaseBuilding
@@ -370,9 +372,9 @@ WEAP:
 		Footprint: xxx ===
 		Dimensions: 3,2
 	Selectable:
-		Bounds: 72,54,0,5
+		Bounds: 72,48
 	SelectionDecorations:
-		VisualBounds: 72,64,0,-5
+		VisualBounds: 72,64,0,-16
 	Health:
 		HP: 1000
 	RevealsShroud:
@@ -608,9 +610,9 @@ TMPL:
 		Footprint: xxx xxx
 		Dimensions: 3,2
 	Selectable:
-		Bounds: 72,60,0,9
+		Bounds: 72,48
 	SelectionDecorations:
-		VisualBounds: 72,72,0,-3
+		VisualBounds: 72,68,0,-12
 	RequiresPower:
 	CanPowerDown:
 		PowerupSound: EnablePower
@@ -744,7 +746,7 @@ OBLI:
 	Selectable:
 		Bounds: 24,24
 	SelectionDecorations:
-		VisualBounds: 22,42,0,-9
+		VisualBounds: 22,44,0,-10
 	RequiresPower:
 	DisabledOverlay:
 	Health:
@@ -821,7 +823,7 @@ ATWR:
 	Selectable:
 		Bounds: 24,24
 	SelectionDecorations:
-		VisualBounds: 22,42,0,-9
+		VisualBounds: 22,48,0,-12
 	RequiresPower:
 	DisabledOverlay:
 	Health:
