@@ -31,7 +31,8 @@ namespace OpenRA.GameRules
 		public Target GuidedTarget;
 	}
 
-	public interface IProjectileInfo { IEffect Create(ProjectileArgs args); }
+	public interface IProjectile : IEffect { }
+	public interface IProjectileInfo { IProjectile Create(ProjectileArgs args); }
 
 	public sealed class WeaponInfo
 	{

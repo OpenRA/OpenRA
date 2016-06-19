@@ -47,14 +47,14 @@ namespace OpenRA.Mods.Common.Projectiles
 
 		[PaletteReference] public readonly string HitAnimPalette = "effect";
 
-		public IEffect Create(ProjectileArgs args)
+		public IProjectile Create(ProjectileArgs args)
 		{
 			var c = UsePlayerColor ? args.SourceActor.Owner.Color.RGB : Color;
 			return new LaserZap(args, this, c);
 		}
 	}
 
-	public class LaserZap : IEffect
+	public class LaserZap : IProjectile
 	{
 		readonly ProjectileArgs args;
 		readonly LaserZapInfo info;

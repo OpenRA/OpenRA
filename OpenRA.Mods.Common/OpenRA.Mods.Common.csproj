@@ -152,7 +152,6 @@
     <Compile Include="Effects\CrateEffect.cs" />
     <Compile Include="Effects\FlashTarget.cs" />
     <Compile Include="Effects\FloatingText.cs" />
-    <Compile Include="Effects\NukeLaunch.cs" />
     <Compile Include="Effects\PowerdownIndicator.cs" />
     <Compile Include="Effects\RallyPointIndicator.cs" />
     <Compile Include="Effects\RepairIndicator.cs" />
@@ -162,6 +161,7 @@
     <Compile Include="Projectiles\GravityBomb.cs" />
     <Compile Include="Projectiles\LaserZap.cs" />
     <Compile Include="Projectiles\Missile.cs" />
+    <Compile Include="Projectiles\NukeLaunch.cs" />
     <Compile Include="Commands\ChatCommands.cs" />
     <Compile Include="Commands\DevCommands.cs" />
     <Compile Include="Commands\HelpCommand.cs" />
