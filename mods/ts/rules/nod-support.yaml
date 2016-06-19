@@ -238,8 +238,8 @@ NAMISL:
 		ChargeTime: 540
 		Description: Cluster Missile
 		LongDesc: Launches a conventional warhead\nat a target location.
-		SelectTargetSound:
 		EndChargeSpeechNotification: ClusterMissileReady
+		SelectTargetSpeechNotification: SelectTarget
 		IncomingSpeechNotification: MissileLaunchDetected
 		LaunchSound: icbm1.aud
 		MissileWeapon: ClusterMissile
