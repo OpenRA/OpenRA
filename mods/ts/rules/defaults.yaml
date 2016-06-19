@@ -923,6 +923,12 @@
 	Building:
 		Footprint: x
 		Dimensions: 1, 1
+	HitShape:
+		UseTargetableCellsOffsets: true
+		Type: Rectangle
+			LocalYaw: -128
+			TopLeft: -512, -512
+			BottomRight: 512, 512
 	AppearsOnRadar:
 	RadarColorFromTerrain:
 		Terrain: Tree
@@ -930,6 +936,28 @@
 		Name: Tree
 	EditorTilesetFilter:
 		Categories: Tree
+	Health:
+		HP: 500
+	Armor:
+		Type: Wood
+	Targetable:
+		TargetTypes: Trees, NoAutoTarget
+	WithDamageOverlay@SmallBurn:
+		DamageType: Incendiary
+		Image: burn-s
+		MinimumDamageState: Light
+		MaximumDamageState: Dead
+		Palette: effect
+	WithDamageOverlay@MediumBurn:
+		DamageType: Incendiary
+		Image: burn-m
+		MinimumDamageState: Medium
+		MaximumDamageState: Dead
+		Palette: effect
+	WithDamageOverlay@LargeBurn:
+		DamageType: Incendiary
+		Image: burn-l
+		Palette: effect
 
 ^Rock:
 	Inherits@1: ^SpriteActor

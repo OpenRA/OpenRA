@@ -1,4 +1,5 @@
 FireballLauncher:
+	ValidTargets: Ground, Trees
 	ReloadDelay: 50
 	Range: 4c256
 	Report: flamtnk1.aud
@@ -11,6 +12,7 @@ FireballLauncher:
 	Warhead@1Dam: SpreadDamage
 		Spread: 288
 		Falloff: 100, 50, 25, 12, 6, 3, 0
+		ValidTargets: Ground, Trees
 		Damage: 25
 		Versus:
 			None: 600
@@ -18,7 +20,7 @@ FireballLauncher:
 			Light: 59
 			Heavy: 6
 			Concrete: 2
-		DamageTypes: Prone100Percent, TriggerProne, FireDeath
+		DamageTypes: Prone100Percent, TriggerProne, FireDeath, Incendiary
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: SmallScorch
 		InvalidTargets: Vehicle, Building, Wall
