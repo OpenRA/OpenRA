@@ -950,8 +950,8 @@ palace:
 		ChargeTime: 300
 		Description: Death Hand
 		LongDesc: Launches an atomic missile at a target location
-		BeginChargeSound: HI_PREP.AUD
-		EndChargeSound: HI_DHRDY.AUD
+		BeginChargeSpeechNotification: DeathHandMissilePrepping
+		EndChargeSpeechNotification: DeathHandMissileReady
 		MissileWeapon: atomic
 		SpawnOffset: -512,1c171,0
 		DisplayBeacon: True
