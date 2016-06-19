@@ -1,9 +1,15 @@
 -- Copyright 2011-15 Paul Kulchenko, ZeroBrane LLC
 
--- converted from love_api.lua in https://github.com/rm-code/love-api
--- (API for LÖVE 0.10.0 as of Dec 23, 2015)
+-- converted from love_api.lua in https://github.com/love2d-community/love-api
+-- (API for LÖVE 0.10.1 as of June 19, 2016)
 -- Earlier versins used love_api.lua from http://love2d.org/forums/viewtopic.php?f=3&t=1796&start=50#p166908
 -- the conversion script is at the bottom of this file
+
+-- To process:
+-- 1. clone love-api and copy love_api.lua and modules/ folder to ZBS/api/lua folder
+-- 2. run "../../bin/lua love2d.lua >newapi" from ZBS/api/lua folder
+-- 3. copy the content of "newapi" file to replace "love" table in love2d.lua
+-- 4. launch the IDE and switch to love2d to confirm that it's loading without issues
 
 local love = {
  childs = {
@@ -209,7 +215,7 @@ local love = {
       },
       setRolloff = {
        args = "(rolloff: number)",
-       description = "Sets the rolloff factor.",
+       description = "Sets the rolloff factor which affects the strength of the used distance attenuation.\n\nExtended information and detailed formulas can be found in the chapter \"3.4. Attenuation By Distance\" of OpenAL 1.1 specification.",
        returns = "()",
        type = "function"
       },
@@ -319,7 +325,7 @@ local love = {
     },
     pause = {
      args = "(source: Source)",
-     description = "Pauses all audio",
+     description = "Pauses currently played Sources.",
      returns = "()",
      type = "function"
     },
@@ -379,13 +385,19 @@ local love = {
     },
     stop = {
      args = "(source: Source)",
-     description = "Stops all playing audio.",
+     description = "Stops currently played sources.",
      returns = "()",
      type = "function"
     }
    },
    description = "Provides an interface to create noise with the user's speakers.",
    type = "class"
+  },
+  conf = {
+   args = "(t: table)",
+   description = "If a file called conf.lua is present in your game folder (or .love file), it is run before the LÖVE modules are loaded. You can use this file to overwrite the love.conf function, which is later called by the LÖVE 'boot' script. Using the love.conf function, you can set some configuration options, and change things like the default size of the window, which modules are loaded, and other stuff.",
+   returns = "()",
+   type = "function"
   },
   directorydropped = {
    args = "(path: string)",
@@ -488,7 +500,7 @@ local love = {
      type = "function"
     },
     quit = {
-     args = "()",
+     args = "(exitstatus: number)",
      description = "Adds the quit event to the queue.\n\nThe quit event is a signal for the event handler to close LÖVE. It's possible to abort the exit process with the love.quit callback.",
      returns = "()",
      type = "function"
@@ -543,6 +555,12 @@ local love = {
        returns = "(mode: BufferMode, size: number)",
        type = "function"
       },
+      getFilename = {
+       args = "()",
+       description = "Gets the filename that the File object was created with. If the file object originated from the love.filedropped callback, the filename will be the full platform-dependent file path.",
+       returns = "(filename: string)",
+       type = "function"
+      },
       getMode = {
        args = "()",
        description = "Gets the FileMode the file has been opened with.",
@@ -576,7 +594,7 @@ local love = {
       open = {
        args = "(mode: FileMode)",
        description = "Open the file for write, read or append.\n\nIf you are getting the error message \"Could not set write directory\", try setting the save directory. This is done either with love.filesystem.setIdentity or by setting the identity field in love.conf.",
-       returns = "(ok: boolean)",
+       returns = "(success: boolean)",
        type = "function"
       },
       read = {
@@ -664,13 +682,13 @@ local love = {
     createDirectory = {
      args = "(name: string)",
      description = "Creates a directory.",
-     returns = "(ok: boolean)",
+     returns = "(success: boolean)",
      type = "function"
     },
     exists = {
      args = "(filename: string)",
      description = "Check whether a file or directory exists.",
-     returns = "(e: boolean)",
+     returns = "(exists: boolean)",
      type = "function"
     },
     getAppdataDirectory = {
@@ -742,13 +760,13 @@ local love = {
     isDirectory = {
      args = "(path: string)",
      description = "Check whether something is a directory.",
-     returns = "(is_dir: boolean)",
+     returns = "(isDir: boolean)",
      type = "function"
     },
     isFile = {
      args = "(path: string)",
      description = "Check whether something is a file.",
-     returns = "(is_file: boolean)",
+     returns = "(isFile: boolean)",
      type = "function"
     },
     isFused = {
@@ -802,11 +820,11 @@ local love = {
     remove = {
      args = "(name: string)",
      description = "Removes a file or directory.",
-     returns = "(ok: boolean)",
+     returns = "(success: boolean)",
      type = "function"
     },
     setIdentity = {
-     args = "(name: string, searchorder: SearchOrder)",
+     args = "(name: string, appendToPath: boolean)",
      description = "Sets the write directory for your game. Note that you can only set the name of the folder to store your files in, not the location.",
      returns = "()",
      type = "function"
@@ -825,7 +843,7 @@ local love = {
     },
     setSymlinksEnabled = {
      args = "(enable: boolean)",
-     description = "Sets whether love.filesystem follows symbolic links. Sets whether love.filesystem follows symbolic links. It is enabled by default in version 0.10.0 and newer, and disabled by default in 0.9.2.",
+     description = "Sets whether love.filesystem follows symbolic links. It is enabled by default in version 0.10.0 and newer, and disabled by default in 0.9.2.",
      returns = "()",
      type = "function"
     },
@@ -846,7 +864,7 @@ local love = {
    type = "class"
   },
   focus = {
-   args = "(f: boolean)",
+   args = "(focus: boolean)",
    description = "Callback function triggered when window receives or loses focus.",
    returns = "()",
    type = "function"
@@ -895,6 +913,24 @@ local love = {
      description = "class constants",
      type = "class"
     },
+    ArcType = {
+     childs = {
+      closed = {
+       description = "The arc circle's two end-points are connected to each other.",
+       type = "value"
+      },
+      open = {
+       description = "The arc circle's two end-points are unconnected when the arc is drawn as a line. Behaves like the \"closed\" arc type when the arc is drawn in filled mode.",
+       type = "value"
+      },
+      pie = {
+       description = "The arc is drawn like a slice of pie, with the arc circle connected to the center at its end-points.",
+       type = "value"
+      }
+     },
+     description = "class constants",
+     type = "class"
+    },
     AreaSpreadDistribution = {
      childs = {
       none = {
@@ -913,6 +949,20 @@ local love = {
      description = "class constants",
      type = "class"
     },
+    BlendAlphaMode = {
+     childs = {
+      alphamultiply = {
+       description = "The RGB values of what's drawn are multiplied by the alpha values of those colors during blending. This is the default alpha mode.",
+       type = "value"
+      },
+      premultiplied = {
+       description = "The RGB values of what's drawn are not multiplied by the alpha values of those colors during blending. For most blend modes to work correctly with this alpha mode, the colors of a drawn object need to have had their RGB values multiplied by their alpha values at some point previously (\"premultiplied alpha\").",
+       type = "value"
+      }
+     },
+     description = "class constants",
+     type = "class"
+    },
     BlendMode = {
      childs = {
       add = {
@@ -923,12 +973,20 @@ local love = {
        description = "Alpha blending (normal). The alpha of what's drawn determines its opacity.",
        type = "value"
       },
+      darken = {
+       description = "The pixel colors of what's drawn are compared to the existing pixel colors, and the smaller of the two values for each color component is used. Only works when the \"premultiplied\" BlendAlphaMode is used in love.graphics.setBlendMode.",
+       type = "value"
+      },
+      lighten = {
+       description = "The pixel colors of what's drawn are compared to the existing pixel colors, and the larger of the two values for each color component is used. Only works when the \"premultiplied\" BlendAlphaMode is used in love.graphics.setBlendMode.",
+       type = "value"
+      },
       multiply = {
        description = "The pixel colors of what's drawn are multiplied with the pixel colors already on the screen (darkening them). The alpha of drawn objects is multiplied with the alpha of the screen rather than determining how much the colors on the screen are affected, even when the \"alphamultiply\" BlendAlphaMode is used.",
        type = "value"
       },
       replace = {
-       description = "The colors of what's drawn completely replace what was on the screen, with no additional blending.",
+       description = "The colors of what's drawn completely replace what was on the screen, with no additional blending. The BlendAlphaMode specified in love.graphics.setBlendMode still affects what happens.",
        type = "value"
       },
       screen = {
@@ -981,12 +1039,6 @@ local love = {
        returns = "(horizontal: WrapMode, vertical: WrapMode)",
        type = "function"
       },
-      isActive = {
-       args = "()",
-       description = "Gets whether the graphics module is able to be used. If it is not active, love.graphics function and method calls will not work correctly and may cause the program to crash. The graphics module is inactive if a window is not open, or if the app is in the background on iOS. Typically the app's execution will be automatically paused by the system, in the latter case.",
-       returns = "()",
-       type = "function"
-      },
       newImageData = {
        args = "(x: number, y: number, width: number, height: number)",
        description = "Generates ImageData from the contents of the Canvas.",
@@ -1012,7 +1064,7 @@ local love = {
        type = "function"
       }
      },
-     description = "A Canvas is used for off-screen rendering. Think of it as an invisible screen that you can draw to, but that will not be visible until you draw it to the actual visible screen. It is also known as \"render to texture\".\n\nBy drawing things that do not change position often (such as background items) to the Canvas, and then drawing the entire Canvas instead of each item, you can reduce the number of draw operations performed each frame.",
+     description = "A Canvas is used for off-screen rendering. Think of it as an invisible screen that you can draw to, but that will not be visible until you draw it to the actual visible screen. It is also known as \"render to texture\".\n\nBy drawing things that do not change position often (such as background items) to the Canvas, and then drawing the entire Canvas instead of each item, you can reduce the number of draw operations performed each frame.\n\nIn versions prior to 0.10.0, not all graphics cards that LÖVE supported could use Canvases. love.graphics.isSupported(\"canvas\") could be used to check for support at runtime.",
      type = "lib"
     },
     CanvasFormat = {
@@ -1026,39 +1078,39 @@ local love = {
        type = "value"
       },
       r8 = {
-       description = "Single-channel (red component) format (8 bpp.)",
+       description = "Single-channel (red component) format (8 bpp).",
        type = "value"
       },
       r16f = {
-       description = "Floating point single-channel format (16 bpp.) Color values can range from [-65504, +65504].",
+       description = "Floating point single-channel format (16 bpp). Color values can range from [-65504, +65504].",
        type = "value"
       },
       r32f = {
-       description = "Floating point single-channel format (32 bpp.) Color values can range from [-65504, +65504].",
+       description = "Floating point single-channel format (32 bpp).",
        type = "value"
       },
       rg8 = {
-       description = "Two channels (red and green components) with 8 bits per channel (16 bpp.)",
+       description = "Two channels (red and green components) with 8 bits per channel (16 bpp).",
        type = "value"
       },
       rg11b10f = {
-       description = "Floating point RGB with 11 bits in the red and green channels, and 10 bits in the blue channel (32 bpp.) There is no alpha channel. Color values can range from [0, +65024].",
+       description = "Floating point RGB with 11 bits in the red and green channels, and 10 bits in the blue channel (32 bpp). There is no alpha channel. Color values can range from [0, +65024].",
        type = "value"
       },
       rg16f = {
-       description = "Floating point two-channel format with 16 bits per channel (32 bpp.) Color values can range from [-65504, +65504].",
+       description = "Floating point two-channel format with 16 bits per channel (32 bpp). Color values can range from [-65504, +65504].",
        type = "value"
       },
       rg32f = {
-       description = "Floating point two-channel format with 32 bits per channel (64 bpp.) Color values can range from [-65504, +65504].",
+       description = "Floating point two-channel format with 32 bits per channel (64 bpp).",
        type = "value"
       },
       rgb5a1 = {
-       description = "RGB with 5 bits each, and a 1-bit alpha channel (16 bpp.)",
+       description = "RGB with 5 bits each, and a 1-bit alpha channel (16 bpp).",
        type = "value"
       },
       rgb10a2 = {
-       description = "RGB with 10 bits per channel, and a 2-bit alpha channel (32 bpp.)",
+       description = "RGB with 10 bits per channel, and a 2-bit alpha channel (32 bpp).",
        type = "value"
       },
       rgb565 = {
@@ -1070,19 +1122,49 @@ local love = {
        type = "value"
       },
       rgba8 = {
-       description = "8 bits per channel (32 bpp) RGBA. Color channel values range from 0-255 (0-1 in shaders.)",
+       description = "8 bits per channel (32 bpp) RGBA. Color channel values range from 0-255 (0-1 in shaders).",
        type = "value"
       },
       rgba16f = {
-       description = "Floating point RGBA with 16 bits per channel (64 bpp.) Color values can range from [-65504, +65504].",
+       description = "Floating point RGBA with 16 bits per channel (64 bpp). Color values can range from [-65504, +65504].",
        type = "value"
       },
       rgba32f = {
-       description = "Floating point RGBA with 32 bits per channel (128 bpp.) Color values can range from [-65504, +65504].",
+       description = "Floating point RGBA with 32 bits per channel (128 bpp).",
        type = "value"
       },
       srgb = {
        description = "The same as rgba8, but the Canvas is interpreted as being in the sRGB color space. Everything drawn to the Canvas will be converted from linear RGB to sRGB. When the Canvas is drawn (or used in a shader), it will be decoded from sRGB to linear RGB. This reduces color banding when doing gamma-correct rendering, since sRGB encoding has more precision than linear RGB for darker colors.",
+       type = "value"
+      }
+     },
+     description = "class constants",
+     type = "class"
+    },
+    CompareMode = {
+     childs = {
+      equal = {
+       description = "The stencil value of the pixel must be equal to the supplied value.",
+       type = "value"
+      },
+      gequal = {
+       description = "The stencil value of the pixel must be greater than or equal to the supplied value.",
+       type = "value"
+      },
+      greater = {
+       description = "The stencil value of the pixel must be greater than the supplied value.",
+       type = "value"
+      },
+      lequal = {
+       description = "The stencil value of the pixel must be less than or equal to the supplied value.",
+       type = "value"
+      },
+      less = {
+       description = "The stencil value of the pixel must be less than the supplied value.",
+       type = "value"
+      },
+      notequal = {
+       description = "The stencil value of the pixel must not be equal to the supplied value.",
        type = "value"
       }
      },
@@ -1161,7 +1243,7 @@ local love = {
        returns = "(width: number, wrappedtext: table)",
        type = "function"
       },
-      hasGlyph = {
+      hasGlyphs = {
        args = "(character: string)",
        description = "Gets whether the font can render a particular character.",
        returns = "(hasglyph: boolean)",
@@ -1169,7 +1251,7 @@ local love = {
       },
       setFallbacks = {
        args = "(fallbackfont1: Font, ...: Font)",
-       description = "Sets other Fonts to use if this Font doesn't have a specific character. When that happens, the glyph from the first fallback Font to have the character will be used, instead of a blank box or other 'no character' symbol being used.",
+       description = "Sets the fallback fonts. When the Font doesn't contain a glyph, it will substitute the glyph from the next subsequent fallback Fonts. This is akin to setting a \"font stack\" in Cascading Style Sheets (CSS).",
        returns = "()",
        type = "function"
       },
@@ -1193,6 +1275,10 @@ local love = {
      childs = {
       clampzero = {
        description = "Whether the \"clampzero\" WrapMode is supported.",
+       type = "value"
+      },
+      lighten = {
+       description = "Whether the \"lighten\" and \"darken\" BlendModes are supported.",
        type = "value"
       },
       multicanvasformats = {
@@ -1242,7 +1328,7 @@ local love = {
       getFlags = {
        args = "()",
        description = "Gets the flags used when the image was created.",
-       returns = "()",
+       returns = "(flags: table)",
        type = "function"
       },
       getHeight = {
@@ -1271,7 +1357,7 @@ local love = {
       },
       refresh = {
        args = "(x: number, y: number, width: number, height: number)",
-       description = "Reloads the Image's contents from the ImageData or CompressedData used to create the image.",
+       description = "Reloads the Image's contents from the ImageData or CompressedImageData used to create the image.",
        returns = "()",
        type = "function"
       },
@@ -1376,7 +1462,7 @@ local love = {
       getVertexMap = {
        args = "()",
        description = "Gets the vertex map for the Mesh. The vertex map describes the order in which the vertices are used when the Mesh is drawn. The vertices, vertex map, and mesh draw mode work together to determine what exactly is displayed on the screen.\n\nIf no vertex map has been set previously via Mesh:setVertexMap, then this function will return nil in LÖVE 0.10.0+, or an empty table in 0.9.2 and older.",
-       returns = "(vertex_map: table)",
+       returns = "(map: table)",
        type = "function"
       },
       isAttributeEnabled = {
@@ -1428,14 +1514,14 @@ local love = {
        type = "function"
       },
       setVertexMap = {
-       args = "(vertex_map: table)",
-       description = "Sets the vertex map for a Mesh. The vertex map describes the order in which the vertices are used when the Mesh is drawn.\n\nThe vertex map allows you to re-order or reuse vertices when drawing without changing the actual vertex parameters or duplicating vertices. It is especially useful when combined with different Mesh draw modes.",
+       args = "(map: table)",
+       description = "Sets the vertex map for the Mesh. The vertex map describes the order in which the vertices are used when the Mesh is drawn. The vertices, vertex map, and mesh draw mode work together to determine what exactly is displayed on the screen.\n\nThe vertex map allows you to re-order or reuse vertices when drawing without changing the actual vertex parameters or duplicating vertices. It is especially useful when combined with different Mesh Draw Modes.",
        returns = "()",
        type = "function"
       },
       setVertices = {
-       args = "(vertices: table, startvertex: number)",
-       description = "Replaces all vertices in the Mesh with new ones.",
+       args = "(vertices: table)",
+       description = "Replaces a range of vertices in the Mesh with new ones. The total number of vertices in a Mesh cannot be changed after it has been created.",
        returns = "()",
        type = "function"
       }
@@ -1884,7 +1970,7 @@ local love = {
        type = "function"
       }
      },
-     description = "A Shader is used for advanced hardware-accelerated pixel or vertex manipulation. These effects are written in a language based on GLSL (OpenGL Shading Language) with a few things simplified for easier coding.\n\nPotential uses for pixel effects include HDR/bloom, motion blur, grayscale/invert/sepia/any kind of color effect, reflection/refraction, distortions, and much more!",
+     description = "A Shader is used for advanced hardware-accelerated pixel or vertex manipulation. These effects are written in a language based on GLSL (OpenGL Shading Language) with a few things simplified for easier coding.\n\nPotential uses for shaders include HDR/bloom, motion blur, grayscale/invert/sepia/any kind of color effect, reflection/refraction, distortions, bump mapping, and much more! Here is a collection of basic shaders and good starting point to learn: https://github.com/vrld/shine",
      type = "lib"
     },
     SpriteBatch = {
@@ -1914,9 +2000,9 @@ local love = {
        type = "function"
       },
       getColor = {
-       args = "(r: number, g: number, b: number, a: number)",
+       args = "()",
        description = "Gets the color that will be used for the next add and set operations.\n\nIf no color has been set with SpriteBatch:setColor or the current SpriteBatch color has been cleared, this method will return nil.",
-       returns = "()",
+       returns = "(r: number, g: number, b: number, a: number)",
        type = "function"
       },
       getCount = {
@@ -1991,6 +2077,36 @@ local love = {
      description = "class constants",
      type = "class"
     },
+    StencilAction = {
+     childs = {
+      decrement = {
+       description = "The stencil value of a pixel will be decremented by 1 for each object that touches the pixel. If the stencil value reaches 0 it will stay at 0.",
+       type = "value"
+      },
+      decrementwrap = {
+       description = "The stencil value of a pixel will be decremented by 1 for each object that touches the pixel. If the stencil value of 0 is decremented it will be set to 255.",
+       type = "value"
+      },
+      increment = {
+       description = "The stencil value of a pixel will be incremented by 1 for each object that touches the pixel. If the stencil value reaches 255 it will stay at 255.",
+       type = "value"
+      },
+      incrementwrap = {
+       description = "The stencil value of a pixel will be incremented by 1 for each object that touches the pixel. If a stencil value of 255 is incremented it will be set to 0.",
+       type = "value"
+      },
+      invert = {
+       description = "The stencil value of a pixel will be bitwise-inverted for each object that touches the pixel. If a stencil value of 0 is inverted it will become 255.",
+       type = "value"
+      },
+      replace = {
+       description = "The stencil value of a pixel will be replaced by the value specified in love.graphics.stencil, if any object touches the pixel.",
+       type = "value"
+      }
+     },
+     description = "class constants",
+     type = "class"
+    },
     Text = {
      childs = {
       addf = {
@@ -2003,6 +2119,12 @@ local love = {
        args = "()",
        description = "Clears the contents of the Text object.",
        returns = "()",
+       type = "function"
+      },
+      getDimensions = {
+       args = "(index: number)",
+       description = "Gets the width and height of the text in pixels.",
+       returns = "(width: number, height: number)",
        type = "function"
       },
       getFont = {
@@ -2045,23 +2167,97 @@ local love = {
      description = "Drawable text.",
      type = "lib"
     },
-    TextureFormat = {
+    Texture = {
+     description = "Superclass for drawable objects which represent a texture. All Textures can be drawn with Quads. This is an abstract type that can't be created directly.",
+     subtypes = {
+      "Canvas",
+      "Image"
+     },
+     type = "value"
+    },
+    Video = {
      childs = {
-      hdr = {
-       description = "Only usable in Canvases. The HDR texture format: floating point 16 bits per channel (64 bpp) RGBA.",
-       type = "value"
+      getFilter = {
+       args = "()",
+       description = "Gets the scaling filters used when drawing the Video.",
+       returns = "(min: FilterMode, mag: FilterMode, anisotropy: number)",
+       type = "function"
       },
-      normal = {
-       description = "The default texture format: 8 bits per channel (32 bpp) RGBA.",
-       type = "value"
+      getHeight = {
+       args = "()",
+       description = "Gets the height of the Video in pixels.",
+       returns = "(height: number)",
+       type = "function"
       },
-      srgb = {
-       description = "The same as normal, but the texture is interpreted as being in the sRGB color space. It will be decoded from sRGB to linear RGB when drawn or sampled from in a shader. For Canvases, this will also convert everything drawn to the Canvas from linear RGB to sRGB.",
-       type = "value"
+      getSource = {
+       args = "()",
+       description = "Gets the audio Source used for playing back the video's audio. May return nil if the video has no audio, or if Video:setSource is called with a nil argument.",
+       returns = "(source: Source)",
+       type = "function"
+      },
+      getStream = {
+       args = "()",
+       description = "Gets the VideoStream object used for decoding and controlling the video.",
+       returns = "(stream: VideoStream)",
+       type = "function"
+      },
+      getWidth = {
+       args = "()",
+       description = "Gets the width of the Video in pixels.",
+       returns = "(width: number)",
+       type = "function"
+      },
+      isPlaying = {
+       args = "()",
+       description = "Gets whether the Video is currently playing.",
+       returns = "(playing: boolean)",
+       type = "function"
+      },
+      pause = {
+       args = "()",
+       description = "Pauses the Video.",
+       returns = "()",
+       type = "function"
+      },
+      play = {
+       args = "()",
+       description = "Starts playing the Video. In order for the video to appear onscreen it must be drawn with love.graphics.draw.",
+       returns = "()",
+       type = "function"
+      },
+      rewind = {
+       args = "()",
+       description = "Rewinds the Video to the beginning.",
+       returns = "()",
+       type = "function"
+      },
+      seek = {
+       args = "(offset: number)",
+       description = "Sets the current playback position of the Video.",
+       returns = "()",
+       type = "function"
+      },
+      setFilter = {
+       args = "(min: FilterMode, mag: FilterMode, anisotropy: number)",
+       description = "Sets the scaling filters used when drawing the Video.",
+       returns = "()",
+       type = "function"
+      },
+      setSource = {
+       args = "(source: Source)",
+       description = "Sets the audio Source used for playing back the video's audio. The audio Source also controls playback speed and synchronization.",
+       returns = "()",
+       type = "function"
+      },
+      tell = {
+       args = "(seconds: number)",
+       description = "Gets the current playback position of the Video.",
+       returns = "()",
+       type = "function"
       }
      },
-     description = "class constants",
-     type = "class"
+     description = "A drawable video.",
+     type = "lib"
     },
     WrapMode = {
      childs = {
@@ -2105,7 +2301,7 @@ local love = {
     },
     draw = {
      args = "(drawable: Drawable, x: number, y: number, r: number, sx: number, sy: number, ox: number, oy: number, kx: number, ky: number)",
-     description = "Draws objects on screen. Drawable objects are loaded images, but may be other kinds of Drawable objects, such as a ParticleSystem.\n\nIn addition to simple drawing, this function can rotate and scale the object at the same time, as well as offset the image (for example, to center the image at the chosen coordinates).\n\nlove.graphics.draw anchors from the top left corner by default.\n\nYou can specify a negative value for sx or sy to flip the drawable horizontally or vertically.\n\nThe pivotal point is (x, y) on the screen and (ox, oy) in the internal coordinate system of the drawable object, before rotation and scaling. The object is scaled by (sx, sy), then rotated by r around the pivotal point.\n\nThe origin offset values are most often used to shift the images up and left by half of its height and width, so that (effectively) the specified x and y coordinates are where the center of the image will end up.",
+     description = "Draws a Drawable object (an Image, Canvas, SpriteBatch, ParticleSystem, Mesh, or Video) on the screen with optional rotation, scaling and shearing.\n\nObjects are drawn relative to their local coordinate system. The origin is by default located at the top left corner of Image and Canvas. All scaling, shearing, and rotation arguments transform the object relative to that point. Also, the position of the origin can be specified on the screen coordinate system.\n\nIt's possible to rotate an object about its center by offsetting the origin to the center. Angles must be given in radians for rotation. One can also use a negative scaling factor to flip about its centerline.\n\nNote that the offsets are applied before rotation, scaling, or shearing; scaling and shearing are applied before rotation.\n\nThe right and bottom edges of the object are shifted at an angle defined by the shearing factors.",
      returns = "()",
      type = "function"
     },
@@ -2124,7 +2320,7 @@ local love = {
     getBlendMode = {
      args = "()",
      description = "Gets the blending mode.",
-     returns = "(mode: BlendMode)",
+     returns = "(mode: BlendMode, alphamode: BlendAlphaMode)",
      type = "function"
     },
     getCanvas = {
@@ -2169,22 +2365,10 @@ local love = {
      returns = "(width: number, height: number)",
      type = "function"
     },
-    getFSAA = {
-     args = "()",
-     description = "Gets the number of antialiasing samples used when drawing to the Canvas.\n\nThis may be different than the number used as an argument to love.graphics.newCanvas if the system running LÖVE doesn't support that number.",
-     returns = "(samples: number)",
-     type = "function"
-    },
     getFont = {
      args = "()",
      description = "Gets the current Font object.",
      returns = "(font: Font)",
-     type = "function"
-    },
-    getFullscreenModes = {
-     args = "()",
-     description = "Gets a list of supported fullscreen modes.",
-     returns = "(modes: table)",
      type = "function"
     },
     getHeight = {
@@ -2290,8 +2474,8 @@ local love = {
      type = "function"
     },
     newCanvas = {
-     args = "(width: number, height: number, texture_type: TextureFormat, fsaa: number)",
-     description = "Creates a new Canvas object for offscreen rendering.\n\nAntialiased Canvases have slightly higher system requirements than normal Canvases. Additionally, the supported maximum number of FSAA samples varies depending on the system. Use love.graphics.getSystemLimit to check.\n\nIf the number of FSAA samples specified is greater than the maximum supported by the system, the Canvas will still be created but only using the maximum supported amount (this includes 0.)",
+     args = "(width: number, height: number, format: CanvasFormat, msaa: number)",
+     description = "Creates a new Canvas object for offscreen rendering.\n\nAntialiased Canvases have slightly higher system requirements than normal Canvases. Additionally, the supported maximum number of MSAA samples varies depending on the system. Use love.graphics.getSystemLimit to check.\n\nIf the number of MSAA samples specified is greater than the maximum supported by the system, the Canvas will still be created but only using the maximum supported amount (this includes 0.)",
      returns = "(canvas: Canvas)",
      type = "function"
     },
@@ -2308,8 +2492,8 @@ local love = {
      type = "function"
     },
     newImageFont = {
-     args = "(filename: string, glyphs: string)",
-     description = "Creates a new Font by loading a specifically formatted image. There can be up to 256 glyphs.\n\nIn versions prior to 0.9.0, LÖVE expects ISO 8859-1 encoding for the glyphs string.",
+     args = "(filename: string, glyphs: string, extraspacing: number)",
+     description = "Creates a new Font by loading a specifically formatted image.\n\nIn versions prior to 0.9.0, LÖVE expects ISO 8859-1 encoding for the glyphs string.",
      returns = "(font: Font)",
      type = "function"
     },
@@ -2332,7 +2516,7 @@ local love = {
      type = "function"
     },
     newScreenshot = {
-     args = "()",
+     args = "(copyAlpha: boolean)",
      description = "Creates a screenshot and returns the image data.",
      returns = "(screenshot: ImageData)",
      type = "function"
@@ -2344,7 +2528,7 @@ local love = {
      type = "function"
     },
     newSpriteBatch = {
-     args = "(texture: Texture, size: number, usage: SpriteBatchUsage)",
+     args = "(texture: Texture, maxsprites: number, usage: SpriteBatchUsage)",
      description = "Creates a new SpriteBatch object.",
      returns = "(spriteBatch: SpriteBatch)",
      type = "function"
@@ -2393,13 +2577,13 @@ local love = {
     },
     print = {
      args = "(text: string, x: number, y: number, r: number, sx: number, sy: number, ox: number, oy: number, kx: number, ky: number)",
-     description = "Draws text on screen. If no Font is set, one will be created and set (once) if needed.\n\nWhen using translation and scaling functions while drawing text, this function assumes the scale occurs first. If you don't script with this in mind, the text won't be in the right position, or possibly even on screen.\n\nlove.graphics.print stops at the first '\0' (null) character. This can bite you if you are appending keystrokes to form your string, as some of those are multi-byte unicode characters which will likely contain null bytes.",
+     description = "Draws text on screen. If no Font is set, one will be created and set (once) if needed.\n\nAs of LOVE 0.7.1, when using translation and scaling functions while drawing text, this function assumes the scale occurs first. If you don't script with this in mind, the text won't be in the right position, or possibly even on screen.\n\nlove.graphics.print and love.graphics.printf both suppport UTF-8 encoding. You'll also need a proper Font for special characters.",
      returns = "()",
      type = "function"
     },
     printf = {
      args = "(text: string, x: number, y: number, limit: number, align: AlignMode, r: number, sx: number, sy: number, ox: number, oy: number, kx: number, ky: number)",
-     description = "Draws formatted text, with word wrap and alignment.\n\nSee additional notes in love.graphics.print.",
+     description = "Draws formatted text, with word wrap and alignment.\n\nSee additional notes in love.graphics.print.\n\nIn version 0.9.2 and earlier, wrapping was implemented by breaking up words by spaces and putting them back together to make sure things fit nicely within the limit provided. However, due to the way this is done, extra spaces between words would end up missing when printed on the screen, and some lines could overflow past the provided wrap limit. In version 0.10.0 and newer this is no longer the case.",
      returns = "()",
      type = "function"
     },
@@ -2475,12 +2659,6 @@ local love = {
      returns = "()",
      type = "function"
     },
-    setInvertedStencil = {
-     args = "(stencilFunction: function)",
-     description = "Defines an inverted stencil for the drawing operations or releases the active one.\n\nIt's the same as love.graphics.setStencil with the mask inverted.\n\nCalling the function without arguments releases the active stencil.",
-     returns = "()",
-     type = "function"
-    },
     setLineJoin = {
      args = "(join: LineJoin)",
      description = "Sets the line join style.",
@@ -2500,7 +2678,7 @@ local love = {
      type = "function"
     },
     setNewFont = {
-     args = "(size: number)",
+     args = "(filename: string, size: number)",
      description = "Creates and sets a new font.",
      returns = "(font: Font)",
      type = "function"
@@ -2743,25 +2921,25 @@ local love = {
      childs = {
       getDimensions = {
        args = "()",
-       description = "Gets the width and height of the ImageData.",
+       description = "Gets the width and height of the ImageData in pixels.",
        returns = "(width: number, height: number)",
        type = "function"
       },
       getHeight = {
        args = "()",
-       description = "Gets the height of the ImageData.",
+       description = "Gets the height of the ImageData in pixels.",
        returns = "(height: number)",
        type = "function"
       },
       getPixel = {
        args = "(x: number, y: number)",
-       description = "Gets the pixel at the specified position.\n\nValid x and y values start at 0 and go up to image width and height minus 1.",
+       description = "Gets the color of a pixel at a specific position in the image.\n\nValid x and y values start at 0 and go up to image width and height minus 1.",
        returns = "(r: number, g: number, b: number, a: number)",
        type = "function"
       },
       getWidth = {
        args = "()",
-       description = "Gets the width of the ImageData.",
+       description = "Gets the width of the ImageData in pixels.",
        returns = "(width: number)",
        type = "function"
       },
@@ -2991,7 +3169,7 @@ local love = {
       },
       isDown = {
        args = "(...: number)",
-       description = "Checks if a button on the Joystick is pressed.",
+       description = "Checks if a button on the Joystick is pressed.\n\nLÖVE 0.9.0 had a bug which required the button indices passed to Joystick:isDown to be 0-based instead of 1-based, for example button 1 would be 0 for this function. It was fixed in 0.9.1.",
        returns = "(anyDown: boolean)",
        type = "function"
       },
@@ -3735,6 +3913,788 @@ local love = {
      description = "class constants",
      type = "class"
     },
+    Scancode = {
+     childs = {
+      ["'"] = {
+       description = "The apostrophe key on an American layout.",
+       type = "value"
+      },
+      [","] = {
+       description = "The comma key on an American layout.",
+       type = "value"
+      },
+      ["-"] = {
+       description = "The minus key on an American layout.",
+       type = "value"
+      },
+      ["."] = {
+       description = "The period key on an American layout.",
+       type = "value"
+      },
+      ["/"] = {
+       description = "The forward-slash key on an American layout.",
+       type = "value"
+      },
+      ["0"] = {
+       description = "The '0' key on an American layout.",
+       type = "value"
+      },
+      ["1"] = {
+       description = "The '1' key on an American layout.",
+       type = "value"
+      },
+      ["2"] = {
+       description = "The '2' key on an American layout.",
+       type = "value"
+      },
+      ["3"] = {
+       description = "The '3' key on an American layout.",
+       type = "value"
+      },
+      ["4"] = {
+       description = "The '4' key on an American layout.",
+       type = "value"
+      },
+      ["5"] = {
+       description = "The '5' key on an American layout.",
+       type = "value"
+      },
+      ["6"] = {
+       description = "The '6' key on an American layout.",
+       type = "value"
+      },
+      ["7"] = {
+       description = "The '7' key on an American layout.",
+       type = "value"
+      },
+      ["8"] = {
+       description = "The '8' key on an American layout.",
+       type = "value"
+      },
+      ["9"] = {
+       description = "The '9' key on an American layout.",
+       type = "value"
+      },
+      [";"] = {
+       description = "The semicolon key on an American layout.",
+       type = "value"
+      },
+      ["="] = {
+       description = "The equals key on an American layout.",
+       type = "value"
+      },
+      ["["] = {
+       description = "The left-bracket key on an American layout.",
+       type = "value"
+      },
+      ["\\"] = {
+       description = "The backslash key on an American layout.",
+       type = "value"
+      },
+      ["]"] = {
+       description = "The right-bracket key on an American layout.",
+       type = "value"
+      },
+      ["`"] = {
+       description = "The back-tick / grave key on an American layout.",
+       type = "value"
+      },
+      a = {
+       description = "The 'A' key on an American layout.",
+       type = "value"
+      },
+      acback = {
+       description = "The AC Back key on an American layout.",
+       type = "value"
+      },
+      acbookmarks = {
+       description = "The AC Bookmarks key on an American layout.",
+       type = "value"
+      },
+      acforward = {
+       description = "The AC Forward key on an American layout.",
+       type = "value"
+      },
+      achome = {
+       description = "The AC Home key on an American layout.",
+       type = "value"
+      },
+      acrefresh = {
+       description = "The AC Refresh key on an American layout.",
+       type = "value"
+      },
+      acsearch = {
+       description = "The AC Search key on an American layout.",
+       type = "value"
+      },
+      acstop = {
+       description = "Th AC Stop key on an American layout.",
+       type = "value"
+      },
+      again = {
+       description = "The 'again' key on an American layout.",
+       type = "value"
+      },
+      alterase = {
+       description = "The alt-erase key on an American layout.",
+       type = "value"
+      },
+      app1 = {
+       description = "The 'app1' scancode.",
+       type = "value"
+      },
+      app2 = {
+       description = "The 'app2' scancode.",
+       type = "value"
+      },
+      application = {
+       description = "The application key on an American layout. Windows contextual menu, compose key.",
+       type = "value"
+      },
+      audiomute = {
+       description = "The audio mute key on an American layout.",
+       type = "value"
+      },
+      audionext = {
+       description = "The audio next track key on an American layout.",
+       type = "value"
+      },
+      audioplay = {
+       description = "The audio play key on an American layout.",
+       type = "value"
+      },
+      audioprev = {
+       description = "The audio previous track key on an American layout.",
+       type = "value"
+      },
+      audiostop = {
+       description = "The audio stop key on an American layout.",
+       type = "value"
+      },
+      b = {
+       description = "The 'B' key on an American layout.",
+       type = "value"
+      },
+      backspace = {
+       description = "The 'backspace' key on an American layout.",
+       type = "value"
+      },
+      brightnessdown = {
+       description = "The brightness-down scancode.",
+       type = "value"
+      },
+      brightnessup = {
+       description = "The brightness-up scancode.",
+       type = "value"
+      },
+      c = {
+       description = "The 'C' key on an American layout.",
+       type = "value"
+      },
+      calculator = {
+       description = "The calculator key on an American layout.",
+       type = "value"
+      },
+      cancel = {
+       description = "The 'cancel' key on an American layout.",
+       type = "value"
+      },
+      capslock = {
+       description = "The capslock key on an American layout.",
+       type = "value"
+      },
+      clear = {
+       description = "The 'clear' key on an American layout.",
+       type = "value"
+      },
+      clearagain = {
+       description = "The 'clearagain' key on an American layout.",
+       type = "value"
+      },
+      computer = {
+       description = "The 'computer' key on an American layout.",
+       type = "value"
+      },
+      copy = {
+       description = "The 'copy' key on an American layout.",
+       type = "value"
+      },
+      crsel = {
+       description = "The 'crsel' key on an American layout.",
+       type = "value"
+      },
+      currencysubunit = {
+       description = "The currency sub-unit key on an American layout.",
+       type = "value"
+      },
+      currencyunit = {
+       description = "The currency unit key on an American layout.",
+       type = "value"
+      },
+      cut = {
+       description = "The 'cut' key on an American layout.",
+       type = "value"
+      },
+      d = {
+       description = "The 'D' key on an American layout.",
+       type = "value"
+      },
+      decimalseparator = {
+       description = "The decimal separator key on an American layout.",
+       type = "value"
+      },
+      delete = {
+       description = "The forward-delete key on an American layout.",
+       type = "value"
+      },
+      displayswitch = {
+       description = "The display switch scancode.",
+       type = "value"
+      },
+      down = {
+       description = "The down-arrow key on an American layout.",
+       type = "value"
+      },
+      e = {
+       description = "The 'E' key on an American layout.",
+       type = "value"
+      },
+      eject = {
+       description = "The eject scancode.",
+       type = "value"
+      },
+      ["end"] = {
+       description = "The end key on an American layout.",
+       type = "value"
+      },
+      escape = {
+       description = "The 'escape' key on an American layout.",
+       type = "value"
+      },
+      execute = {
+       description = "The 'execute' key on an American layout.",
+       type = "value"
+      },
+      exsel = {
+       description = "The 'exsel' key on an American layout.",
+       type = "value"
+      },
+      f = {
+       description = "The 'F' key on an American layout.",
+       type = "value"
+      },
+      f1 = {
+       description = "The F1 key on an American layout.",
+       type = "value"
+      },
+      f2 = {
+       description = "The F2 key on an American layout.",
+       type = "value"
+      },
+      f3 = {
+       description = "The F3 key on an American layout.",
+       type = "value"
+      },
+      f4 = {
+       description = "The F4 key on an American layout.",
+       type = "value"
+      },
+      f5 = {
+       description = "The F5 key on an American layout.",
+       type = "value"
+      },
+      f6 = {
+       description = "The F6 key on an American layout.",
+       type = "value"
+      },
+      f7 = {
+       description = "The F7 key on an American layout.",
+       type = "value"
+      },
+      f8 = {
+       description = "The F8 key on an American layout.",
+       type = "value"
+      },
+      f9 = {
+       description = "The F9 key on an American layout.",
+       type = "value"
+      },
+      f10 = {
+       description = "The F10 key on an American layout.",
+       type = "value"
+      },
+      f11 = {
+       description = "The F11 key on an American layout.",
+       type = "value"
+      },
+      f12 = {
+       description = "The F12 key on an American layout.",
+       type = "value"
+      },
+      f13 = {
+       description = "The F13 key on an American layout.",
+       type = "value"
+      },
+      f14 = {
+       description = "The F14 key on an American layout.",
+       type = "value"
+      },
+      f15 = {
+       description = "The F15 key on an American layout.",
+       type = "value"
+      },
+      f16 = {
+       description = "The F16 key on an American layout.",
+       type = "value"
+      },
+      f17 = {
+       description = "The F17 key on an American layout.",
+       type = "value"
+      },
+      f18 = {
+       description = "The F18 key on an American layout.",
+       type = "value"
+      },
+      f19 = {
+       description = "The F19 key on an American layout.",
+       type = "value"
+      },
+      f20 = {
+       description = "The F20 key on an American layout.",
+       type = "value"
+      },
+      f21 = {
+       description = "The F21 key on an American layout.",
+       type = "value"
+      },
+      f22 = {
+       description = "The F22 key on an American layout.",
+       type = "value"
+      },
+      f23 = {
+       description = "The F23 key on an American layout.",
+       type = "value"
+      },
+      f24 = {
+       description = "The F24 key on an American layout.",
+       type = "value"
+      },
+      find = {
+       description = "The 'find' key on an American layout.",
+       type = "value"
+      },
+      g = {
+       description = "The 'G' key on an American layout.",
+       type = "value"
+      },
+      h = {
+       description = "The 'H' key on an American layout.",
+       type = "value"
+      },
+      help = {
+       description = "The 'help' key on an American layout.",
+       type = "value"
+      },
+      home = {
+       description = "The home key on an American layout.",
+       type = "value"
+      },
+      i = {
+       description = "The 'I' key on an American layout.",
+       type = "value"
+      },
+      insert = {
+       description = "The insert key on an American layout.",
+       type = "value"
+      },
+      international1 = {
+       description = "The 1st international key on an American layout. Used on Asian keyboards.",
+       type = "value"
+      },
+      international2 = {
+       description = "The 2nd international key on an American layout.",
+       type = "value"
+      },
+      international3 = {
+       description = "The 3rd international key on an American layout. Yen.",
+       type = "value"
+      },
+      international4 = {
+       description = "The 4th international key on an American layout.",
+       type = "value"
+      },
+      international5 = {
+       description = "The 5th international key on an American layout.",
+       type = "value"
+      },
+      international6 = {
+       description = "The 6th international key on an American layout.",
+       type = "value"
+      },
+      international7 = {
+       description = "The 7th international key on an American layout.",
+       type = "value"
+      },
+      international8 = {
+       description = "The 8th international key on an American layout.",
+       type = "value"
+      },
+      international9 = {
+       description = "The 9th international key on an American layout.",
+       type = "value"
+      },
+      j = {
+       description = "The 'J' key on an American layout.",
+       type = "value"
+      },
+      k = {
+       description = "The 'K' key on an American layout.",
+       type = "value"
+      },
+      kbdillumdown = {
+       description = "The keyboard illumination down scancode.",
+       type = "value"
+      },
+      kbdillumtoggle = {
+       description = "The keyboard illumination toggle scancode.",
+       type = "value"
+      },
+      kbdillumup = {
+       description = "The keyboard illumination up scancode.",
+       type = "value"
+      },
+      ["kp*"] = {
+       description = "The keypad '*' key on an American layout.",
+       type = "value"
+      },
+      ["kp+"] = {
+       description = "The keypad plus key on an American layout.",
+       type = "value"
+      },
+      ["kp-"] = {
+       description = "The keypad minus key on an American layout.",
+       type = "value"
+      },
+      ["kp."] = {
+       description = "The keypad period key on an American layout.",
+       type = "value"
+      },
+      ["kp/"] = {
+       description = "The keypad forward-slash key on an American layout.",
+       type = "value"
+      },
+      kp00 = {
+       description = "The keypad 00 key on an American layout.",
+       type = "value"
+      },
+      kp000 = {
+       description = "The keypad 000 key on an American layout.",
+       type = "value"
+      },
+      kp0 = {
+       description = "The keypad '0' key on an American layout.",
+       type = "value"
+      },
+      kp1 = {
+       description = "The keypad '1' key on an American layout.",
+       type = "value"
+      },
+      kp2 = {
+       description = "The keypad '2' key on an American layout.",
+       type = "value"
+      },
+      kp3 = {
+       description = "The keypad '3' key on an American layout.",
+       type = "value"
+      },
+      kp4 = {
+       description = "The keypad '4' key on an American layout.",
+       type = "value"
+      },
+      kp5 = {
+       description = "The keypad '5' key on an American layout.",
+       type = "value"
+      },
+      kp6 = {
+       description = "The keypad '6' key on an American layout.",
+       type = "value"
+      },
+      kp7 = {
+       description = "The keypad '7' key on an American layout.",
+       type = "value"
+      },
+      kp8 = {
+       description = "The keypad '8' key on an American layout.",
+       type = "value"
+      },
+      kp9 = {
+       description = "The keypad '9' key on an American layout.",
+       type = "value"
+      },
+      ["kp="] = {
+       description = "The keypad equals key on an American layout.",
+       type = "value"
+      },
+      kpenter = {
+       description = "The keypad enter key on an American layout.",
+       type = "value"
+      },
+      l = {
+       description = "The 'L' key on an American layout.",
+       type = "value"
+      },
+      lalt = {
+       description = "The left alt / option key on an American layout.",
+       type = "value"
+      },
+      lang1 = {
+       description = "Hangul/English toggle scancode.",
+       type = "value"
+      },
+      lang2 = {
+       description = "Hanja conversion scancode.",
+       type = "value"
+      },
+      lang3 = {
+       description = "Katakana scancode.",
+       type = "value"
+      },
+      lang4 = {
+       description = "Hiragana scancode.",
+       type = "value"
+      },
+      lang5 = {
+       description = "Zenkaku/Hankaku scancode.",
+       type = "value"
+      },
+      lctrl = {
+       description = "The left control key on an American layout.",
+       type = "value"
+      },
+      left = {
+       description = "The left-arrow key on an American layout.",
+       type = "value"
+      },
+      lgui = {
+       description = "The left GUI (command / windows / super) key on an American layout.",
+       type = "value"
+      },
+      lshift = {
+       description = "The left shift key on an American layout.",
+       type = "value"
+      },
+      m = {
+       description = "The 'M' key on an American layout.",
+       type = "value"
+      },
+      mail = {
+       description = "The Mail key on an American layout.",
+       type = "value"
+      },
+      mediaselect = {
+       description = "The media select key on an American layout.",
+       type = "value"
+      },
+      menu = {
+       description = "The 'menu' key on an American layout.",
+       type = "value"
+      },
+      mute = {
+       description = "The mute key on an American layout.",
+       type = "value"
+      },
+      n = {
+       description = "The 'N' key on an American layout.",
+       type = "value"
+      },
+      ["nonus#"] = {
+       description = "The non-U.S. hash scancode.",
+       type = "value"
+      },
+      nonusbackslash = {
+       description = "The non-U.S. backslash scancode.",
+       type = "value"
+      },
+      numlock = {
+       description = "The numlock / clear key on an American layout.",
+       type = "value"
+      },
+      o = {
+       description = "The 'O' key on an American layout.",
+       type = "value"
+      },
+      oper = {
+       description = "The 'oper' key on an American layout.",
+       type = "value"
+      },
+      out = {
+       description = "The 'out' key on an American layout.",
+       type = "value"
+      },
+      p = {
+       description = "The 'P' key on an American layout.",
+       type = "value"
+      },
+      pagedown = {
+       description = "The page-down key on an American layout.",
+       type = "value"
+      },
+      pageup = {
+       description = "The page-up key on an American layout.",
+       type = "value"
+      },
+      paste = {
+       description = "The 'paste' key on an American layout.",
+       type = "value"
+      },
+      pause = {
+       description = "The pause key on an American layout.",
+       type = "value"
+      },
+      power = {
+       description = "The system power scancode.",
+       type = "value"
+      },
+      printscreen = {
+       description = "The printscreen key on an American layout.",
+       type = "value"
+      },
+      prior = {
+       description = "The 'prior' key on an American layout.",
+       type = "value"
+      },
+      q = {
+       description = "The 'Q' key on an American layout.",
+       type = "value"
+      },
+      r = {
+       description = "The 'R' key on an American layout.",
+       type = "value"
+      },
+      ralt = {
+       description = "The right alt / option key on an American layout.",
+       type = "value"
+      },
+      rctrl = {
+       description = "The right control key on an American layout.",
+       type = "value"
+      },
+      ["return"] = {
+       description = "The 'return' / 'enter' key on an American layout.",
+       type = "value"
+      },
+      return2 = {
+       description = "The 'return2' key on an American layout.",
+       type = "value"
+      },
+      rgui = {
+       description = "The right GUI (command / windows / super) key on an American layout.",
+       type = "value"
+      },
+      right = {
+       description = "The right-arrow key on an American layout.",
+       type = "value"
+      },
+      rshift = {
+       description = "The right shift key on an American layout.",
+       type = "value"
+      },
+      s = {
+       description = "The 'S' key on an American layout.",
+       type = "value"
+      },
+      scrolllock = {
+       description = "The scroll-lock key on an American layout.",
+       type = "value"
+      },
+      select = {
+       description = "The 'select' key on an American layout.",
+       type = "value"
+      },
+      separator = {
+       description = "The 'separator' key on an American layout.",
+       type = "value"
+      },
+      sleep = {
+       description = "The system sleep scancode.",
+       type = "value"
+      },
+      space = {
+       description = "The spacebar on an American layout.",
+       type = "value"
+      },
+      stop = {
+       description = "The 'stop' key on an American layout.",
+       type = "value"
+      },
+      sysreq = {
+       description = "The sysreq key on an American layout.",
+       type = "value"
+      },
+      t = {
+       description = "The 'T' key on an American layout.",
+       type = "value"
+      },
+      tab = {
+       description = "The 'tab' key on an American layout.",
+       type = "value"
+      },
+      thsousandsseparator = {
+       description = "The thousands-separator key on an American layout.",
+       type = "value"
+      },
+      u = {
+       description = "The 'U' key on an American layout.",
+       type = "value"
+      },
+      undo = {
+       description = "The 'undo' key on an American layout.",
+       type = "value"
+      },
+      unknown = {
+       description = "An unknown key.",
+       type = "value"
+      },
+      up = {
+       description = "The up-arrow key on an American layout.",
+       type = "value"
+      },
+      v = {
+       description = "The 'V' key on an American layout.",
+       type = "value"
+      },
+      volumedown = {
+       description = "The volume down key on an American layout.",
+       type = "value"
+      },
+      volumeup = {
+       description = "The volume up key on an American layout.",
+       type = "value"
+      },
+      w = {
+       description = "The 'W' key on an American layout.",
+       type = "value"
+      },
+      www = {
+       description = "The 'WWW' key on an American layout.",
+       type = "value"
+      },
+      x = {
+       description = "The 'X' key on an American layout.",
+       type = "value"
+      },
+      y = {
+       description = "The 'Y' key on an American layout.",
+       type = "value"
+      },
+      z = {
+       description = "The 'Z' key on an American layout.",
+       type = "value"
+      }
+     },
+     description = "class constants",
+     type = "class"
+    },
     getScancodeFromKey = {
      args = "(key: KeyConstant)",
      description = "Gets the hardware scancode corresponding to the given key.\n\nUnlike key constants, Scancodes are keyboard layout-independent. For example the scancode \"w\" will be generated if the key in the same place as the \"w\" key on an American keyboard is pressed, no matter what the key is labelled or what the user's operating system settings are.\n\nScancodes are useful for creating default controls that have the same physical locations on on all systems.",
@@ -3965,7 +4925,7 @@ local love = {
     },
     gammaToLinear = {
      args = "(r: number, g: number, b: number)",
-     description = "Converts a color from gamma-space (sRGB) to linear-space (RGB). This is useful when doing gamma-correct rendering using colors created based on what they look like on-screen.\n\nGamma-space sRGB has more precision in the lower end than linear RGB. Using this function to convert from sRGB to RGB can result in non-integer color values, which get truncated to integers and lose precision when used with other functions such as love.graphics.setColor.",
+     description = "Converts a color from gamma-space (sRGB) to linear-space (RGB). This is useful when doing gamma-correct rendering and you need to do math in linear RGB in the few cases where LÖVE doesn't handle conversions automatically.",
      returns = "(lr: number, lg: number, lb: number)",
      type = "function"
     },
@@ -4007,7 +4967,7 @@ local love = {
     },
     noise = {
      args = "(x: number)",
-     description = "Generates a Simplex or Perlin noise value in 1-4 dimensions.\n\nSimplex noise is closely related to Perlin noise. It is widely used for procedural content generation.\n\nThere are many webpages which discuss Perlin and Simplex noise in detail.",
+     description = "Generates a Simplex or Perlin noise value in 1-4 dimensions. The return value will always be the same, given the same arguments.\n\nSimplex noise is closely related to Perlin noise. It is widely used for procedural content generation.\n\nThere are many webpages which discuss Perlin and Simplex noise in detail.",
      returns = "(value: number)",
      type = "function"
     },
@@ -4224,13 +5184,13 @@ local love = {
    type = "class"
   },
   mousefocus = {
-   args = "(f: boolean)",
+   args = "(focus: boolean)",
    description = "Callback function triggered when window receives or loses mouse focus.",
    returns = "()",
    type = "function"
   },
   mousemoved = {
-   args = "(x: number, y: number, dx: number, dy: number)",
+   args = "(x: number, y: number, dx: number, dy: number, istouch: boolean)",
    description = "Callback function triggered when the mouse is moved.",
    returns = "()",
    type = "function"
@@ -4354,15 +5314,15 @@ local love = {
        type = "function"
       },
       getLocalPoint = {
-       args = "(world_x: number, world_y: number)",
+       args = "(worldX: number, worldY: number)",
        description = "Transform a point from world coordinates to local coordinates.",
-       returns = "(local_x: number, local_y: number)",
+       returns = "(localX: number, localY: number)",
        type = "function"
       },
       getLocalVector = {
-       args = "(world_x: number, world_y: number)",
+       args = "(worldX: number, worldY: number)",
        description = "Transform a vector from world coordinates to local coordinates.",
-       returns = "(local_x: number, local_y: number)",
+       returns = "(localX: number, localY: number)",
        type = "function"
       },
       getMass = {
@@ -4408,9 +5368,9 @@ local love = {
        type = "function"
       },
       getWorldPoint = {
-       args = "(local_x: number, local_y: number)",
+       args = "(localX: number, localY: number)",
        description = "Transform a point from local coordinates to world coordinates.",
-       returns = "(world_x: number, world_y: number)",
+       returns = "(worldX: number, worldY: number)",
        type = "function"
       },
       getWorldPoints = {
@@ -4420,9 +5380,9 @@ local love = {
        type = "function"
       },
       getWorldVector = {
-       args = "(local_x: number, local_y: number)",
+       args = "(localX: number, localY: number)",
        description = "Transform a vector from local coordinates to world coordinates.",
-       returns = "(world_x: number, world_y: number)",
+       returns = "(worldX: number, worldY: number)",
        type = "function"
       },
       getX = {
@@ -4901,7 +5861,7 @@ local love = {
       },
       setFilterData = {
        args = "(categories: number, mask: number, group: number)",
-       description = "Sets the filter data of the fixture.\n\nGroups, categories, and mask can be used to define the collision behaviour of the fixture.\n\nIf two fixtures are in the same group they either always collide if the group is positive, or never collide if it's negative. Is the group zero or they do not match, then the contact filter checks if the fixtures select a category of the other fixture with their masks. The fixtures do not collide if that's not the case. If they do have each others categories selected, the return value of the custom contact filter will be used. They always collide if none was set.\n\nThere can be up to 16 categories. Categories and masks are encoded as the bits of a 16-bit integer.",
+       description = "Sets the filter data of the fixture.\n\nGroups, categories, and mask can be used to define the collision behaviour of the fixture.\n\nIf two fixtures are in the same group they either always collide if the group is positive, or never collide if it's negative. If the group is zero or they do not match, then the contact filter checks if the fixtures select a category of the other fixture with their masks. The fixtures do not collide if that's not the case. If they do have each other's categories selected, the return value of the custom contact filter will be used. They always collide if none was set.\n\nThere can be up to 16 categories. Categories and masks are encoded as the bits of a 16-bit integer.",
        returns = "()",
        type = "function"
       },
@@ -5027,7 +5987,7 @@ local love = {
       },
       getType = {
        args = "()",
-       description = "Gets an string representing the type.",
+       description = "Gets a string representing the type.",
        returns = "(type: JointType)",
        type = "function"
       },
@@ -5043,12 +6003,6 @@ local love = {
        returns = "(destroyed: boolean)",
        type = "function"
       },
-      setCollideConnected = {
-       args = "(collide: boolean)",
-       description = "Sets whether the connected Bodies should collide with eachother.",
-       returns = "()",
-       type = "function"
-      },
       setUserData = {
        args = "(value: mixed)",
        description = "Associates a Lua value with the Joint.\n\nTo delete the reference, explicitly pass nil.",
@@ -5057,6 +6011,19 @@ local love = {
       }
      },
      description = "Attach multiple bodies together to interact in unique ways.",
+     subtypes = {
+      "DistanceJoint",
+      "FrictionJoint",
+      "GearJoint",
+      "MotorJoint",
+      "MouseJoint",
+      "PrismaticJoint",
+      "PulleyJoint",
+      "RevoluteJoint",
+      "RopeJoint",
+      "WeldJoint",
+      "WheelJoint"
+     },
      type = "lib"
     },
     JointType = {
@@ -5100,6 +6067,30 @@ local love = {
      },
      description = "class constants",
      type = "class"
+    },
+    MotorJoint = {
+     childs = {
+      getLinearOffset = {
+       args = "()",
+       description = "Gets the target linear offset between the two Bodies the Joint is attached to.",
+       returns = "(x: number, y: number)",
+       type = "function"
+      },
+      setAngularOffset = {
+       args = "(angularoffset: number)",
+       description = "Sets the target angluar offset between the two Bodies the Joint is attached to.",
+       returns = "()",
+       type = "function"
+      },
+      setLinearOffset = {
+       args = "(x: number, y: number)",
+       description = "Sets the target linear offset between the two Bodies the Joint is attached to.",
+       returns = "()",
+       type = "function"
+      }
+     },
+     description = "Controls the relative motion between two Bodies. Position and rotation offsets can be specified, as well as the maximum motor force and torque that will be applied to reach the target offsets.",
+     type = "lib"
     },
     MouseJoint = {
      childs = {
@@ -5471,6 +6462,12 @@ local love = {
       }
      },
      description = "Shapes are solid 2d geometrical objects used in love.physics.\n\nShapes are attached to a Body via a Fixture. The Shape object is copied when this happens. Shape position is relative to Body position.",
+     subtypes = {
+      "ChainShape",
+      "CircleShape",
+      "EdgeShape",
+      "PolygonShape"
+     },
      type = "lib"
     },
     ShapeType = {
@@ -5777,6 +6774,12 @@ local love = {
      returns = "(joint: Joint)",
      type = "function"
     },
+    newMotorJoint = {
+     args = "(body1: Body, body2: Body, correctionFactor: number)",
+     description = "Creates a joint between two bodies which controls the relative motion between them.\n\nPosition and rotation offsets can be specified once the MotorJoint has been created, as well as the maximum motor force and torque that will be be applied to reach the target offsets.",
+     returns = "(joint: MotorJoint)",
+     type = "function"
+    },
     newMouseJoint = {
      args = "(body: Body, x: number, y: number)",
      description = "Create a joint between a body and the mouse.\n\nThis joint actually connects the body to a fixed point in the world. To make it follow the mouse, the fixed point must be updated every timestep (example below).\n\nThe advantage of using a MouseJoint instead of just changing a body position directly is that collisions and reactions to other joints are handled by the physics engine.",
@@ -5974,7 +6977,7 @@ local love = {
     getOS = {
      args = "()",
      description = "Gets the current operating system. In general, LÖVE abstracts away the need to know the current operating system, but there are a few cases where it can be useful (especially in combination with os.execute.)",
-     returns = "(os_string: string)",
+     returns = "(osString: string)",
      type = "function"
     },
     getPowerInfo = {
@@ -6078,7 +7081,7 @@ local love = {
       isRunning = {
        args = "()",
        description = "Returns whether the thread is currently running.\n\nThreads which are not running can be (re)started with Thread:start.",
-       returns = "()",
+       returns = "(running: boolean)",
        type = "function"
       },
       start = {
@@ -6094,7 +7097,7 @@ local love = {
        type = "function"
       }
      },
-     description = "A Thread is a chunk of code that can run in parallel with other threads.\n\nThreads will place all Lua errors in \"error\". To retrieve the error, call Thread:get('error') in the main thread.",
+     description = "A Thread is a chunk of code that can run in parallel with other threads. Data can be sent between different threads with Channel objects.",
      type = "lib"
     },
     newChannel = {
@@ -6174,19 +7177,19 @@ local love = {
    type = "lib"
   },
   touchmoved = {
-   args = "(id: light userdata, x: number, y: number, pressure: number)",
+   args = "(id: light userdata, x: number, y: number, dx: number, dy: number, pressure: number)",
    description = "Callback function triggered when a touch press moves inside the touch screen.",
    returns = "()",
    type = "function"
   },
   touchpressed = {
-   args = "(id: light userdata, x: number, y: number, pressure: number)",
+   args = "(id: light userdata, x: number, y: number, dx: number, dy: number, pressure: number)",
    description = "Callback function triggered when the touch screen is touched.",
    returns = "()",
    type = "function"
   },
   touchreleased = {
-   args = "(id: light userdata, x: number, y: number, pressure: number)",
+   args = "(id: light userdata, x: number, y: number, dx: number, dy: number, pressure: number)",
    description = "Callback function triggered when the touch screen stops being touched.",
    returns = "()",
    type = "function"
@@ -6199,89 +7202,9 @@ local love = {
   },
   video = {
    childs = {
-    Video = {
-     childs = {
-      getFilter = {
-       args = "()",
-       description = "Gets the scaling filters used when drawing the Video.",
-       returns = "(min: FilterMode, mag: FilterMode, anisotropy: number)",
-       type = "function"
-      },
-      getHeight = {
-       args = "()",
-       description = "Gets the height of the Video in pixels.",
-       returns = "(height: number)",
-       type = "function"
-      },
-      getSource = {
-       args = "()",
-       description = "Gets the audio Source used for playing back the video's audio. May return nil if the video has no audio, or if Video:setSource is called with a nil argument.",
-       returns = "(source: Source)",
-       type = "function"
-      },
-      getStream = {
-       args = "()",
-       description = "Gets the VideoStream object used for decoding and controlling the video.",
-       returns = "(stream: VideoStream)",
-       type = "function"
-      },
-      getWidth = {
-       args = "()",
-       description = "Gets the width of the Video in pixels.",
-       returns = "(width: number)",
-       type = "function"
-      },
-      isPlaying = {
-       args = "()",
-       description = "Gets whether the Video is currently playing.",
-       returns = "(playing: boolean)",
-       type = "function"
-      },
-      pause = {
-       args = "()",
-       description = "Pauses the Video.",
-       returns = "()",
-       type = "function"
-      },
-      play = {
-       args = "()",
-       description = "Starts playing the Video. In order for the video to appear onscreen it must be drawn with love.graphics.draw.",
-       returns = "()",
-       type = "function"
-      },
-      rewind = {
-       args = "()",
-       description = "Rewinds the Video to the beginning.",
-       returns = "()",
-       type = "function"
-      },
-      seek = {
-       args = "(offset: number)",
-       description = "Sets the current playback position of the Video.",
-       returns = "()",
-       type = "function"
-      },
-      setFilter = {
-       args = "(min: FilterMode, mag: FilterMode, anisotropy: number)",
-       description = "Sets the scaling filters used when drawing the Video.",
-       returns = "()",
-       type = "function"
-      },
-      setSource = {
-       args = "(source: Source)",
-       description = "Sets the audio Source used for playing back the video's audio. The audio Source also controls playback speed and synchronization.",
-       returns = "()",
-       type = "function"
-      },
-      tell = {
-       args = "(seconds: number)",
-       description = "Gets the current playback position of the Video.",
-       returns = "()",
-       type = "function"
-      }
-     },
-     description = "A drawable video.",
-     type = "lib"
+    VideoStream = {
+     description = "An object which decodes, streams, and controls Videos.",
+     type = "value"
     },
     newVideoStream = {
      args = "(filename: string)",
@@ -6294,7 +7217,7 @@ local love = {
    type = "class"
   },
   visible = {
-   args = "(v: boolean)",
+   args = "(visible: boolean)",
    description = "Callback function triggered when window is minimized/hidden or unminimized by the user.",
    returns = "()",
    type = "function"
@@ -6315,6 +7238,24 @@ local love = {
       },
       exclusive = {
        description = "Standard exclusive-fullscreen mode. Changes the display mode (actual resolution) of the monitor.",
+       type = "value"
+      }
+     },
+     description = "class constants",
+     type = "class"
+    },
+    MessageBoxType = {
+     childs = {
+      error = {
+       description = "Error dialog.",
+       type = "value"
+      },
+      info = {
+       description = "Informational dialog.",
+       type = "value"
+      },
+      warning = {
+       description = "Warning dialog.",
        type = "value"
       }
      },
@@ -6477,13 +7418,15 @@ local love = {
   }
  },
  description = "Love2d modules, functions, and callbacks.",
- type = "lib"
+ type = "lib",
+ version = "0.10.1"
 }
 
-do return {love = love} end
+-- when loaded as a package, return the package; otherwise continue with the script
+if pcall(debug.getlocal, 4, 1) then return {love = love} end
 
 -- the following code is used to convert love_api.lua to a proper format
-love = dofile('love_api.lua')
+love = require('love_api')
 
 -- conversion script
 local function convert(l)
