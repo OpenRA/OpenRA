@@ -43,30 +43,12 @@ NAPULS:
 			gdi: napuls.gdi
 			nod: napuls.nod
 	ProvidesPrerequisite@gdi:
-		Prerequisite: emp.gdi
-		Factions: gdi
 		ResetOnOwnerChange: true
-	ProvidesPrerequisite@nod:
-		Prerequisite: emp.nod
-		Factions: nod
-		ResetOnOwnerChange: true
-	AttackOrderPower@nod:
+	AttackOrderPower:
 		Cursor: emp
 		Icon: emp
 		ChargeTime: 135
 		Description: E.M. Pulse
 		LongDesc: Fires a pulse blast which disables\nall mechanical units in the area.
-		EndChargeSound: speech-nod|00-i158.aud
-		SelectTargetSound: speech-nod|00-i042.aud
-		Prerequisites: emp.nod
-		OrderName: Nodemp
-	AttackOrderPower@gdi:
-		Cursor: emp
-		Icon: emp
-		ChargeTime: 135
-		Description: E.M. Pulse
-		LongDesc: Fires a pulse blast which disables\nall mechanical units in the area.
-		EndChargeSound: speech-gdi|00-i158.aud
-		SelectTargetSound: speech-gdi|00-i042.aud
-		Prerequisites: emp.gdi
-		OrderName: GDIemp
+		EndChargeSpeechNotification: EmPulseCannonReady
+		SelectTargetSpeechNotification: SelectTarget
