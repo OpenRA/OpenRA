@@ -218,8 +218,10 @@
 	ScriptTriggers:
 	UpgradeManager:
 	Health:
-		Shape: Circle
-			Radius: 363
+		Shape: Rectangle
+			RotateToIsometry: true
+			TopLeft: -384, -384
+			BottomRight: 384, 384
 			VerticalTopOffset: 512
 
 ^BuildingPlug:
