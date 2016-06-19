@@ -9,29 +9,48 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Mods.Common.Effects;
+using OpenRA.Mods.Common.Warheads;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	[Desc("You get money for playing this actor.")]
-	class GivesBountyInfo : TraitInfo<GivesBounty>
+	[Desc("When killed, this actor causes the attacking player to receive money.")]
+	class GivesBountyInfo : ITraitInfo
 	{
-		[Desc("Calculated by Cost or CustomSellValue so they have to be set to avoid crashes.")]
+		[Desc("Percentage of the killed actor's Cost or CustomSellValue to be given.")]
 		public readonly int Percentage = 10;
-		[Desc("Higher ranked units give higher bounties.")]
+
+		[Desc("Scale bounty based on the veterancy of the killed unit. The value is given in percent.")]
 		public readonly int LevelMod = 125;
-		[Desc("Destroying creeps and enemies is rewarded.")]
+
+		[Desc("Stance the attacking player needs to receive the bounty.")]
 		public readonly Stance[] Stances = { Stance.Neutral, Stance.Enemy };
+
+		[Desc("Whether to show a floating text announcing the won bounty.")]
+		public readonly bool ShowBounty = true;
+
+		[Desc("DeathTypes for which a bounty should be granted.",
+			"Use an empty list (the default) to allow all DeathTypes.")]
+		public readonly HashSet<string> DeathTypes = new HashSet<string>();
+
+		public object Create(ActorInitializer init) { return new GivesBounty(init.Self, this); }
 	}
 
 	class GivesBounty : INotifyKilled
 	{
-		static int GetMultiplier(Actor self)
+		readonly GivesBountyInfo info;
+
+		public GivesBounty(Actor self, GivesBountyInfo info)
+		{
+			this.info = info;
+		}
+
+		int GetMultiplier(Actor self)
 		{
 			// returns 100's as 1, so as to keep accuracy for longer.
-			var info = self.Info.TraitInfo<GivesBountyInfo>();
 			var gainsExp = self.TraitOrDefault<GainsExperience>();
 			if (gainsExp == null)
 				return 100;
@@ -40,20 +59,24 @@ namespace OpenRA.Mods.Common.Traits
 			return (slevel > 0) ? slevel * info.LevelMod : 100;
 		}
 
-		public void Killed(Actor self, AttackInfo e)
+		void INotifyKilled.Killed(Actor self, AttackInfo e)
 		{
-			var info = self.Info.TraitInfo<GivesBountyInfo>();
+			if (e.Attacker == null || e.Attacker.Disposed)
+				return;
 
-			if (e.Attacker == null || e.Attacker.Disposed) return;
+			if (!info.Stances.Contains(e.Attacker.Owner.Stances[self.Owner]))
+				return;
 
-			if (!info.Stances.Contains(e.Attacker.Owner.Stances[self.Owner])) return;
+			var warhead = e.Warhead as DamageWarhead;
+			if (info.DeathTypes.Count > 0 && warhead != null && !warhead.DamageTypes.Overlaps(info.DeathTypes))
+				return;
 
 			var cost = self.GetSellValue();
 
 			// 2 hundreds because of GetMultiplier and info.Percentage.
 			var bounty = cost * GetMultiplier(self) * info.Percentage / 10000;
 
-			if (bounty > 0 && e.Attacker.Owner.IsAlliedWith(self.World.RenderPlayer))
+			if (info.ShowBounty && bounty > 0 && e.Attacker.Owner.IsAlliedWith(self.World.RenderPlayer))
 				e.Attacker.World.AddFrameEndTask(w => w.Add(new FloatingText(self.CenterPosition, e.Attacker.Owner.Color.RGB, FloatingText.FormatCashTick(bounty), 30)));
 
 			e.Attacker.Owner.PlayerActor.Trait<PlayerResources>().GiveCash(bounty);
