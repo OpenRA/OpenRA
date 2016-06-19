@@ -28,7 +28,7 @@ pkg.onDebuggerActivate = function(self, debugger, file, line)
     return
   end
   local afile, aline, cmd, args = unpack(commands[command])
-  is(file, afile, "Filename is reported as expected after debugger activation ("..command.."/"..#commands..").")
+  ok(wx.wxFileName(file):SameAs(wx.wxFileName(afile)), "Filename is reported as expected after debugger activation ("..command.."/"..#commands..").")
   is(line, aline, "Line number is reported as expected after debugger activation ("..command.."/"..#commands..").")
   if debugger:IsRunning() then debugger:Wait() end
   if command == 1 then
