@@ -64,7 +64,7 @@ GAP:
 	Selectable:
 		Bounds: 24,24
 	SelectionDecorations:
-		VisualBounds: 24,40,0,-8
+		VisualBounds: 24,48,0,-12
 	RequiresPower:
 	CanPowerDown:
 	DisabledOverlay:
@@ -408,7 +408,7 @@ TSLA:
 	Selectable:
 		Bounds: 24,24
 	SelectionDecorations:
-		VisualBounds: 24,36,0,-6
+		VisualBounds: 24,40,0,-8
 	CanPowerDown:
 		PowerupSound: EnablePower
 		PowerdownSound: DisablePower
@@ -1288,7 +1288,7 @@ APWR:
 	Selectable:
 		Bounds: 72,48
 	SelectionDecorations:
-		VisualBounds: 72,60,0,-6
+		VisualBounds: 72,68,0,-10
 	Health:
 		HP: 700
 	Armor:
