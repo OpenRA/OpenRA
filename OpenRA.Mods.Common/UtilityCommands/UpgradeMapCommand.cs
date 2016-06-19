@@ -35,12 +35,19 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			if (yaml.Value != null)
 			{
 				var files = FieldLoader.GetValue<string[]>("value", yaml.Value);
-			    foreach (var filename in files)
-			    {
-			        var fileNodes = MiniYaml.FromStream(map.Package.GetStream(filename), filename);
+				foreach (var filename in files)
+				{
+					var fileNodes = MiniYaml.FromStream(map.Open(filename), filename);
 					processYaml(modData, engineDate, ref fileNodes, null, 0);
-			        ((IReadWritePackage)map.Package).Update(filename, Encoding.ASCII.GetBytes(fileNodes.WriteToString()));
-			    }
+
+					// HACK: Obtain the writable save path using knowledge of the underlying filesystem workings
+					var packagePath = filename;
+					var package = map.Package;
+					if (filename.Contains("|"))
+						modData.DefaultFileSystem.TryGetPackageContaining(filename, out package, out packagePath);
+
+					((IReadWritePackage)package).Update(packagePath, Encoding.ASCII.GetBytes(fileNodes.WriteToString()));
+				}
 			}
 
 			processYaml(modData, engineDate, ref yaml.Nodes, null, 1);
