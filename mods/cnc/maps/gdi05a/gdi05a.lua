@@ -1,10 +1,10 @@
-RepairThreshold = { Easy = 0.3, Normal = 0.6, Hard = 0.9 }
+RepairThreshold = { easy = 0.3, normal = 0.6, hard = 0.9 }
 
 ActorRemovals =
 {
-	Easy = { Actor167, Actor168, Actor190, Actor191, Actor193, Actor194, Actor196, Actor198, Actor200 },
-	Normal = { Actor167, Actor194, Actor196, Actor197 },
-	Hard = { },
+	easy = { Actor167, Actor168, Actor190, Actor191, Actor193, Actor194, Actor196, Actor198, Actor200 },
+	normal = { Actor167, Actor194, Actor196, Actor197 },
+	hard = { },
 }
 
 GdiTanks = { "mtnk", "mtnk" }
@@ -16,31 +16,31 @@ CoreNodBase = { NodConYard, NodRefinery, HandOfNod, Airfield }
 
 Grd1UnitTypes = { "bggy" }
 Grd1Path = { waypoint4.Location, waypoint5.Location, waypoint10.Location }
-Grd1Delay = { Easy = DateTime.Minutes(2), Normal = DateTime.Minutes(1), Hard = DateTime.Seconds(30) }
+Grd1Delay = { easy = DateTime.Minutes(2), normal = DateTime.Minutes(1), hard = DateTime.Seconds(30) }
 Grd2UnitTypes = { "bggy" }
 Grd2Path = { waypoint0.Location, waypoint1.Location, waypoint2.Location }
 Grd3Units = { GuardTank1, GuardTank2 }
 Grd3Path = { waypoint4.Location, waypoint5.Location, waypoint9.Location }
 
-AttackDelayMin = { Easy = DateTime.Minutes(1), Normal = DateTime.Seconds(45), Hard = DateTime.Seconds(30) }
-AttackDelayMax = { Easy = DateTime.Minutes(2), Normal = DateTime.Seconds(90), Hard = DateTime.Minutes(1) }
+AttackDelayMin = { easy = DateTime.Minutes(1), normal = DateTime.Seconds(45), hard = DateTime.Seconds(30) }
+AttackDelayMax = { easy = DateTime.Minutes(2), normal = DateTime.Seconds(90), hard = DateTime.Minutes(1) }
 AttackUnitTypes =
 {
-	Easy =
+	easy =
 	{
 		{ factory = HandOfNod, types = { "e1", "e1" } },
 		{ factory = HandOfNod, types = { "e1", "e3" } },
 		{ factory = HandOfNod, types = { "e1", "e1", "e3" } },
 		{ factory = HandOfNod, types = { "e1", "e3", "e3" } },
 	},
-	Normal =
+	normal =
 	{
 		{ factory = HandOfNod, types = { "e1", "e1", "e3" } },
 		{ factory = HandOfNod, types = { "e1", "e3", "e3" } },
 		{ factory = HandOfNod, types = { "e1", "e1", "e3", "e3" } },
 		{ factory = Airfield, types = { "bggy" } },
 	},
-	Hard =
+	hard =
 	{
 		{ factory = HandOfNod, types = { "e1", "e1", "e3", "e3" } },
 		{ factory = HandOfNod, types = { "e1", "e1", "e1", "e3", "e3" } },
@@ -68,7 +68,7 @@ Build = function(factory, units, action)
 end
 
 Attack = function()
-	local production = Utils.Random(AttackUnitTypes[Map.Difficulty])
+	local production = Utils.Random(AttackUnitTypes[Map.LobbyOption("difficulty")])
 	local path = Utils.Random(AttackPaths)
 	Build(production.factory, production.types, function(units)
 		Utils.Do(units, function(unit)
@@ -78,7 +78,7 @@ Attack = function()
 		end)
 	end)
 
-	Trigger.AfterDelay(Utils.RandomInteger(AttackDelayMin[Map.Difficulty], AttackDelayMax[Map.Difficulty]), Attack)
+	Trigger.AfterDelay(Utils.RandomInteger(AttackDelayMin[Map.LobbyOption("difficulty")], AttackDelayMax[Map.LobbyOption("difficulty")]), Attack)
 end
 
 Grd1Action = function()
@@ -86,7 +86,7 @@ Grd1Action = function()
 		Utils.Do(units, function(unit)
 			if unit.Owner ~= enemy then return end
 			Trigger.OnKilled(unit, function()
-				Trigger.AfterDelay(Grd1Delay[Map.Difficulty], Grd1Action)
+				Trigger.AfterDelay(Grd1Delay[Map.LobbyOption("difficulty")], Grd1Action)
 			end)
 			unit.Patrol(Grd1Path, true, DateTime.Seconds(7))
 		end)
@@ -138,7 +138,7 @@ DiscoverGdiBase = function(actor, discoverer)
 end
 
 SetupWorld = function()
-	Utils.Do(ActorRemovals[Map.Difficulty], function(unit)
+	Utils.Do(ActorRemovals[Map.LobbyOption("difficulty")], function(unit)
 		unit.Destroy()
 	end)
 
@@ -152,7 +152,7 @@ SetupWorld = function()
 	Utils.Do(Map.NamedActors, function(actor)
 		if actor.Owner == enemy and actor.HasProperty("StartBuildingRepairs") then
 			Trigger.OnDamaged(actor, function(building)
-				if building.Owner == enemy and building.Health < RepairThreshold[Map.Difficulty] * building.MaxHealth then
+				if building.Owner == enemy and building.Health < RepairThreshold[Map.LobbyOption("difficulty")] * building.MaxHealth then
 					building.StartBuildingRepairs()
 				end
 			end)
@@ -166,11 +166,11 @@ SetupWorld = function()
 
 	GdiHarv.Stop()
 	NodHarv.FindResources()
-	if Map.Difficulty ~= "Easy" then
+	if Map.LobbyOption("difficulty") ~= "easy" then
 		Trigger.OnDamaged(NodHarv, function()
 			Utils.Do(enemy.GetGroundAttackers(), function(unit)
 				unit.AttackMove(NodHarv.Location)
-				if Map.Difficulty == "Hard" then
+				if Map.LobbyOption("difficulty") == "hard" then
 					unit.Hunt()
 				end
 			end)

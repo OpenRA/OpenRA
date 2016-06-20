@@ -10,7 +10,14 @@ World:
 		BriefingVideo: A_BR03_E.VQA
 	MapOptions:
 		TechLevel: Low
-		Difficulties: Easy, Normal, Hard
+	ScriptLobbyDropdown@difficulty:
+		ID: difficulty
+		Label: Difficulty
+		Values:
+			easy: Easy
+			normal: Normal
+			hard: Hard
+		Default: easy
 
 carryall.reinforce:
 	Cargo:

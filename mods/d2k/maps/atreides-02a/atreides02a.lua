@@ -2,14 +2,14 @@
 HarkonnenBase = { HConyard, HPower1, HPower2, HBarracks }
 
 HarkonnenReinforcements = { }
-HarkonnenReinforcements["Easy"] =
+HarkonnenReinforcements["easy"] =
 {
 	{ "light_inf", "trike" },
 	{ "light_inf", "trike" },
 	{ "light_inf", "light_inf", "light_inf", "trike", "trike" }
 }
 
-HarkonnenReinforcements["Normal"] =
+HarkonnenReinforcements["normal"] =
 {
 	{ "light_inf", "trike" },
 	{ "light_inf", "trike" },
@@ -19,7 +19,7 @@ HarkonnenReinforcements["Normal"] =
 	{ "light_inf", "trike" },
 }
 
-HarkonnenReinforcements["Hard"] =
+HarkonnenReinforcements["hard"] =
 {
 	{ "trike", "trike" },
 	{ "light_inf", "trike" },
@@ -41,25 +41,25 @@ HarkonnenAttackPaths =
 }
 
 HarkonnenAttackDelay = { }
-HarkonnenAttackDelay["Easy"] = DateTime.Minutes(5)
-HarkonnenAttackDelay["Normal"] = DateTime.Minutes(2) + DateTime.Seconds(40)
-HarkonnenAttackDelay["Hard"] = DateTime.Minutes(1) + DateTime.Seconds(20)
+HarkonnenAttackDelay["easy"] = DateTime.Minutes(5)
+HarkonnenAttackDelay["normal"] = DateTime.Minutes(2) + DateTime.Seconds(40)
+HarkonnenAttackDelay["hard"] = DateTime.Minutes(1) + DateTime.Seconds(20)
 
 HarkonnenAttackWaves = { }
-HarkonnenAttackWaves["Easy"] = 3
-HarkonnenAttackWaves["Normal"] = 6
-HarkonnenAttackWaves["Hard"] = 9
+HarkonnenAttackWaves["easy"] = 3
+HarkonnenAttackWaves["normal"] = 6
+HarkonnenAttackWaves["hard"] = 9
 
 wave = 0
 SendHarkonnen = function()
-	Trigger.AfterDelay(HarkonnenAttackDelay[Map.Difficulty], function()
+	Trigger.AfterDelay(HarkonnenAttackDelay[Map.LobbyOption("difficulty")], function()
 		wave = wave + 1
-		if wave > HarkonnenAttackWaves[Map.Difficulty] then
+		if wave > HarkonnenAttackWaves[Map.LobbyOption("difficulty")] then
 			return
 		end
 
 		local path = Utils.Random(HarkonnenAttackPaths)
-		local units = Reinforcements.ReinforceWithTransport(harkonnen, "carryall.reinforce", HarkonnenReinforcements[Map.Difficulty][wave], path, { path[1] })[2]
+		local units = Reinforcements.ReinforceWithTransport(harkonnen, "carryall.reinforce", HarkonnenReinforcements[Map.LobbyOption("difficulty")][wave], path, { path[1] })[2]
 		Utils.Do(units, IdleHunt)
 
 		SendHarkonnen()

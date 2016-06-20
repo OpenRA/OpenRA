@@ -1,6 +1,6 @@
-Difficulty = Map.Difficulty
+Difficulty = Map.LobbyOption("difficulty")
 
-if Difficulty == "Easy" then
+if Difficulty == "easy" then
 	AttackAtFrameIncrement = DateTime.Seconds(22)
 	AttackAtFrameIncrementInf = DateTime.Seconds(16)
 	TimerTicks = DateTime.Minutes(15)
@@ -8,7 +8,7 @@ if Difficulty == "Easy" then
 	DamageModifier = 0.5
 	LongBowReinforcements = { "heli", "heli" }
 	ParadropArtillery = true
-elseif Difficulty == "Medium" then
+elseif Difficulty == "medium" then
 	AttackAtFrameIncrement = DateTime.Seconds(18)
 	AttackAtFrameIncrementInf = DateTime.Seconds(12)
 	TimerTicks = DateTime.Minutes(20)
@@ -16,7 +16,7 @@ elseif Difficulty == "Medium" then
 	MoreParas = true
 	DamageModifier = 0.75
 	LongBowReinforcements = { "heli", "heli" }
-else --Difficulty == "Hard"
+else --Difficulty == "hard"
 	AttackAtFrameIncrement = DateTime.Seconds(14)
 	AttackAtFrameIncrementInf = DateTime.Seconds(8)
 	TimerTicks = DateTime.Minutes(25)

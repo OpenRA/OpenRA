@@ -756,6 +756,7 @@
     <Compile Include="UtilityCommands\ListMSCabContentsCommand.cs" />
     <Compile Include="FileFormats\MSCabCompression.cs" />
     <Compile Include="UtilityCommands\OutputActorMiniYamlCommand.cs" />
+    <Compile Include="Traits\World\ScriptLobbyDropdown.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

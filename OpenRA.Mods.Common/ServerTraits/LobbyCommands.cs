@@ -433,10 +433,14 @@ namespace OpenRA.Mods.Common.Server
 							return true;
 						}
 
-						var options = server.Map.Rules.Actors["player"].TraitInfos<ILobbyOptions>()
+						var allOptions = server.Map.Rules.Actors["player"].TraitInfos<ILobbyOptions>()
 							.Concat(server.Map.Rules.Actors["world"].TraitInfos<ILobbyOptions>())
-							.SelectMany(t => t.LobbyOptions(server.Map.Rules))
-							.ToDictionary(o => o.Id, o => o);
+							.SelectMany(t => t.LobbyOptions(server.Map.Rules));
+
+						// Overwrite keys with duplicate ids
+						var options = new Dictionary<string, LobbyOption>();
+						foreach (var o in allOptions)
+							options[o.Id] = o;
 
 						var split = s.Split(' ');
 						LobbyOption option;
@@ -503,39 +507,6 @@ namespace OpenRA.Mods.Common.Server
 						}
 
 						server.SyncLobbyClients();
-						return true;
-					}
-				},
-				{ "difficulty",
-					s =>
-					{
-						if (server.LobbyInfo.GlobalSettings.Difficulty == s)
-							return true;
-
-						if (!client.IsAdmin)
-						{
-							server.SendOrderTo(conn, "Message", "Only the host can set that option.");
-							return true;
-						}
-
-						var mapOptions = server.Map.Rules.Actors["world"].TraitInfo<MapOptionsInfo>();
-						if (mapOptions.DifficultyLocked || !mapOptions.Difficulties.Any())
-						{
-							server.SendOrderTo(conn, "Message", "Map has disabled difficulty configuration.");
-							return true;
-						}
-
-						if (s != null && !mapOptions.Difficulties.Contains(s))
-						{
-							server.SendOrderTo(conn, "Message", "Invalid difficulty selected: {0}".F(s));
-							server.SendOrderTo(conn, "Message", "Supported values: {0}".F(mapOptions.Difficulties.JoinWith(", ")));
-							return true;
-						}
-
-						server.LobbyInfo.GlobalSettings.Difficulty = s;
-						server.SyncLobbyGlobalSettings();
-						server.SendMessage("{0} changed difficulty to {1}.".F(client.Name, s));
-
 						return true;
 					}
 				},

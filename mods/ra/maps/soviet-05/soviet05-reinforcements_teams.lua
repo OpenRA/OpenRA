@@ -3,7 +3,7 @@ SovietStartToBasePath = { StartPoint.Location, SovietBasePoint.Location }
 SovietMCVReinf = { "mcv", "3tnk", "3tnk", "e1", "e1" }
 SovExpansionPointGuard = { "2tnk", "2tnk", "e3", "e3", "e3" }
 
-if Map.Difficulty == "Easy" then
+if Map.LobbyOption("difficulty") == "easy" then
 	ArmorReinfGreece = { "jeep", "1tnk", "1tnk" }
 else
 	ArmorReinfGreece = { "jeep", "jeep", "1tnk", "1tnk", "1tnk" }
@@ -70,11 +70,11 @@ IslandTroops1 = function()
 	end)
 	if not CheckForCYard() then
 		return
-	elseif Map.Difficulty == "Easy" then
+	elseif Map.LobbyOption("difficulty") == "easy" then
 		return
 	else
 		Trigger.OnAllKilled(units, function()
-			if Map.Difficulty == "Hard" then
+			if Map.LobbyOption("difficulty") == "hard" then
 				Trigger.AfterDelay(DateTime.Minutes(3), IslandTroops1)
 			else
 				Trigger.AfterDelay(DateTime.Minutes(5), IslandTroops1)
@@ -92,11 +92,11 @@ IslandTroops2 = function()
 	end)
 	if not CheckForCYard() then
 		return
-	elseif Map.Difficulty == "Easy" then
+	elseif Map.LobbyOption("difficulty") == "easy" then
 		return
 	else
 		Trigger.OnAllKilled(units, function()
-			if Map.Difficulty == "Hard" then
+			if Map.LobbyOption("difficulty") == "hard" then
 				Trigger.AfterDelay(DateTime.Minutes(3), IslandTroops2)
 			else
 				Trigger.AfterDelay(DateTime.Minutes(5), IslandTroops2)
@@ -114,11 +114,11 @@ IslandTroops3 = function()
 	end)
 	if not CheckForCYard() then
 		return
-	elseif Map.Difficulty == "Easy" then
+	elseif Map.LobbyOption("difficulty") == "easy" then
 		return
 	else
 		Trigger.OnAllKilled(units, function()
-			if Map.Difficulty == "Hard" then
+			if Map.LobbyOption("difficulty") == "hard" then
 				Trigger.AfterDelay(DateTime.Minutes(3), IslandTroops3)
 			else
 				Trigger.AfterDelay(DateTime.Minutes(5), IslandTroops3)
@@ -138,7 +138,7 @@ BringDDPatrol1 = function()
 		return
 	else
 		Trigger.OnAllKilled(units, function()
-			if Map.Difficulty == "Hard" then
+			if Map.LobbyOption("difficulty") == "hard" then
 				Trigger.AfterDelay(DateTime.Minutes(4), BringDDPatrol1)
 			else
 				Trigger.AfterDelay(DateTime.Minutes(7), BringDDPatrol1)
@@ -158,7 +158,7 @@ BringDDPatrol2 = function()
 		return
 	else
 		Trigger.OnAllKilled(units, function()
-			if Map.Difficulty == "Hard" then
+			if Map.LobbyOption("difficulty") == "hard" then
 				Trigger.AfterDelay(DateTime.Minutes(4), BringDDPatrol2)
 			else
 				Trigger.AfterDelay(DateTime.Minutes(7), BringDDPatrol2)

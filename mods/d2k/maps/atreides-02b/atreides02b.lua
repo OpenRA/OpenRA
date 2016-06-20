@@ -2,14 +2,14 @@
 HarkonnenBase = { HConyard, HOutpost, HBarracks }
 
 HarkonnenReinforcements = { }
-HarkonnenReinforcements["Easy"] =
+HarkonnenReinforcements["easy"] =
 {
 	{ "light_inf", "trike" },
 	{ "light_inf", "trike" },
 	{ "light_inf", "light_inf", "light_inf", "trike", "trike" }
 }
 
-HarkonnenReinforcements["Normal"] =
+HarkonnenReinforcements["normal"] =
 {
 	{ "light_inf", "trike" },
 	{ "light_inf", "trike" },
@@ -19,7 +19,7 @@ HarkonnenReinforcements["Normal"] =
 	{ "light_inf", "trike" },
 }
 
-HarkonnenReinforcements["Hard"] =
+HarkonnenReinforcements["hard"] =
 {
 	{ "trike", "trike" },
 	{ "light_inf", "trike" },
@@ -42,28 +42,28 @@ HarkonnenAttackPaths =
 
 HarkonnenAttackDelay =
 {
-	Easy = DateTime.Minutes(5),
-	Normal = DateTime.Minutes(2) + DateTime.Seconds(40),
-	Hard = DateTime.Minutes(1) + DateTime.Seconds(20)
+	easy = DateTime.Minutes(5),
+	normal = DateTime.Minutes(2) + DateTime.Seconds(40),
+	hard = DateTime.Minutes(1) + DateTime.Seconds(20)
 }
 
 HarkonnenAttackWaves =
 {
-	Easy = 3,
-	Normal = 6,
-	Hard = 9
+	easy = 3,
+	normal = 6,
+	hard = 9
 }
 
 wave = 0
 SendHarkonnen = function()
-	Trigger.AfterDelay(HarkonnenAttackDelay[Map.Difficulty], function()
+	Trigger.AfterDelay(HarkonnenAttackDelay[Map.LobbyOption("difficulty")], function()
 		wave = wave + 1
-		if wave > HarkonnenAttackWaves[Map.Difficulty] then
+		if wave > HarkonnenAttackWaves[Map.LobbyOption("difficulty")] then
 			return
 		end
 
 		local path = Utils.Random(HarkonnenAttackPaths)
-		local units = Reinforcements.ReinforceWithTransport(harkonnen, "carryall.reinforce", HarkonnenReinforcements[Map.Difficulty][wave], path, { path[1] })[2]
+		local units = Reinforcements.ReinforceWithTransport(harkonnen, "carryall.reinforce", HarkonnenReinforcements[Map.LobbyOption("difficulty")][wave], path, { path[1] })[2]
 		Utils.Do(units, IdleHunt)
 
 		SendHarkonnen()

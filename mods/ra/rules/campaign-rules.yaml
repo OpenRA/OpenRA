@@ -10,10 +10,6 @@ Player:
 	PlayerResources:
 		DefaultCashLocked: True
 		DefaultCash: 0
-	MapOptions:
-		TechLevelLocked: True
-		ShortGameLocked: True
-		ShortGameEnabled: False
 
 World:
 	-CrateSpawner:
@@ -25,6 +21,7 @@ World:
 		AllyBuildRadiusLocked: True
 		AllyBuildRadiusEnabled: False
 	MapOptions:
+		TechLevelLocked: True
 		ShortGameLocked: True
 		ShortGameEnabled: False
 

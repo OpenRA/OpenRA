@@ -12,11 +12,18 @@ World:
 		WinVideo: montpass.vqa
 		LossVideo: frozen.vqa
 	MapOptions:
-		Difficulties: Easy, Normal, Hard, Real tough guy
 	SmudgeLayer@CRATER:
 		InitialSmudges:
 			60,79: cr1,0
-
+	ScriptLobbyDropdown@difficulty:
+		ID: difficulty
+		Label: Difficulty
+		Values:
+			easy: Easy
+			normal: Normal
+			hard: Hard
+			tough: Real tough guy
+		Default: easy
 
 HARV:
 	Buildable:

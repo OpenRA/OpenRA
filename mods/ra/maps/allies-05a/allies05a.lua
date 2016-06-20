@@ -1,9 +1,9 @@
-if Map.Difficulty == "Easy" then
+if Map.LobbyOption("difficulty") == "easy" then
 	TanyaType = "e7"
 	ReinforceCash = 5000
 	HoldAITime = DateTime.Minutes(3)
 	SpecialCameras = true
-elseif Map.Difficulty == "Normal" then
+elseif Map.LobbyOption("difficulty") == "normal" then
 	TanyaType = "e7.noautotarget"
 	ChangeStance = true
 	ReinforceCash = 2250
@@ -83,7 +83,7 @@ Tick = function()
 	end
 
 	if ussr.HasNoRequiredUnits() then
-		if not greece.IsObjectiveCompleted(KillAll) and Map.Difficulty == "Real tough guy" then
+		if not greece.IsObjectiveCompleted(KillAll) and Map.LobbyOption("difficulty") == "tough" then
 			SendWaterExtraction()
 		end
 		greece.MarkCompletedObjective(KillAll)
@@ -186,7 +186,7 @@ FreeTanya = function()
 
 	Trigger.OnKilled(Tanya, function() ussr.MarkCompletedObjective(ussrObj) end)
 
-	if Map.Difficulty == "Real tough guy" then
+	if Map.LobbyOption("difficulty") == "tough" then
 		KillSams = greece.AddPrimaryObjective("Destroy all four SAM Sites that block\nour reinforcements' helicopter.")
 
 		greece.MarkCompletedObjective(mainObj)
@@ -272,7 +272,7 @@ InitTriggers = function()
 		end
 	end)
 
-	if Map.Difficulty ~= "Real tough guy" then
+	if Map.LobbyOption("difficulty") ~= "tough" then
 		Trigger.OnKilled(Mammoth, function()
 			Trigger.AfterDelay(HoldAITime - DateTime.Seconds(45), function() HoldProduction = false end)
 			Trigger.AfterDelay(HoldAITime, function() Attacking = true end)
@@ -294,7 +294,7 @@ InitTriggers = function()
 		Trigger.AfterDelay(DateTime.Seconds(7), flare.Destroy)
 		Media.PlaySpeechNotification(greece, "SignalFlare")
 
-		if Map.Difficulty == "Real tough guy" then
+		if Map.LobbyOption("difficulty") == "tough" then
 			Reinforcements.ReinforceWithTransport(greece, InsertionHeliType, HeliReinforcements, ExtractionPath, { ExtractionPath[1] })
 			if not Harvester.IsDead then
 				Harvester.FindResources()

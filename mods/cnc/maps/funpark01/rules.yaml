@@ -8,9 +8,15 @@ World:
 		BriefingVideo: generic.vqa
 		StartVideo: dino.vqa
 	MapOptions:
-		Difficulties: Easy, Normal
 		ShortGameLocked: True
 		ShortGameEnabled: False
+	ScriptLobbyDropdown@difficulty:
+		ID: difficulty
+		Label: Difficulty
+		Values:
+			easy: Easy
+			normal: Normal
+		Default: easy
 
 Player:
 	EnemyWatcher:

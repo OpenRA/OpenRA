@@ -31,9 +31,16 @@ World:
 		WinVideo: sabotage.vqa
 		LossVideo: gdilose.vqa
 	MapOptions:
-		Difficulties: Easy, Normal, Hard
 		ShortGameLocked: True
 		ShortGameEnabled: True
+	ScriptLobbyDropdown@difficulty:
+		ID: difficulty
+		Label: Difficulty
+		Values:
+			easy: Easy
+			normal: Normal
+			hard: Hard
+		Default: easy
 
 Player:
 	PlayerResources:

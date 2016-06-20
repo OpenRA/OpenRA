@@ -11,7 +11,6 @@ World:
 		WinVideo: nodlose.vqa
 		LossVideo: gdilose.vqa
 	MapOptions:
-		Difficulties: Easy, Normal, Hard
 		ShortGameLocked: True
 		ShortGameEnabled: False
 	SmudgeLayer@SCORCH:
@@ -27,6 +26,14 @@ World:
 			41,54: cr1,0
 			13,52: cr1,0
 			11,51: cr1,0
+	ScriptLobbyDropdown@difficulty:
+		ID: difficulty
+		Label: Difficulty
+		Values:
+			easy: Easy
+			normal: Normal
+			hard: Hard
+		Default: easy
 
 Player:
 	EnemyWatcher:

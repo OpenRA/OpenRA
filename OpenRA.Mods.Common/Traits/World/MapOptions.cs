@@ -30,15 +30,6 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Prevent the tech level from being changed in the lobby.")]
 		public readonly bool TechLevelLocked = false;
 
-		[Desc("Difficulty levels supported by the map.")]
-		public readonly string[] Difficulties = { };
-
-		[Desc("Default difficulty level.")]
-		public readonly string Difficulty = null;
-
-		[Desc("Prevent the difficulty from being changed in the lobby.")]
-		public readonly bool DifficultyLocked = false;
-
 		IEnumerable<LobbyOption> ILobbyOptions.LobbyOptions(Ruleset rules)
 		{
 			yield return new LobbyBooleanOption("shortgame", "Short Game", ShortGameEnabled, ShortGameLocked);

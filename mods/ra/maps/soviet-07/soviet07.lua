@@ -1,8 +1,8 @@
-if Map.Difficulty == "Easy" then
+if Map.LobbyOption("difficulty") == "easy" then
 	remainingTime = DateTime.Minutes(7)
-elseif Map.Difficulty == "Normal" then
+elseif Map.LobbyOption("difficulty") == "normal" then
 	remainingTime = DateTime.Minutes(6)
-elseif Map.Difficulty == "Hard" then
+elseif Map.LobbyOption("difficulty") == "hard" then
 	remainingTime = DateTime.Minutes(5)
 end
 
@@ -299,7 +299,7 @@ Tick = function()
 		enemy.MarkCompletedObjective(alliedObjective)
 	end
 
-	if remainingTime == DateTime.Minutes(5) and Map.Difficulty ~= "Hard" then
+	if remainingTime == DateTime.Minutes(5) and Map.LobbyOption("difficulty") ~= "hard" then
 		Media.PlaySpeechNotification(player, "WarningFiveMinutesRemaining")
 	elseif remainingTime == DateTime.Minutes(4) then
 		Media.PlaySpeechNotification(player, "WarningFourMinutesRemaining")

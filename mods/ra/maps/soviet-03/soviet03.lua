@@ -1,8 +1,8 @@
-if Map.Difficulty == "Easy" then
+if Map.LobbyOption("difficulty") == "easy" then
 	remainingTime = DateTime.Minutes(7)
-elseif Map.Difficulty == "Normal" then
+elseif Map.LobbyOption("difficulty") == "normal" then
 	remainingTime = DateTime.Minutes(6)
-elseif Map.Difficulty == "Hard" then
+elseif Map.LobbyOption("difficulty") == "hard" then
 	remainingTime = DateTime.Minutes(5)
 end
 
@@ -256,7 +256,7 @@ end)
 Trigger.OnEnteredFootprint(SpyHideout3Trigger, function(a, id)
 	if not spyHideout3Trigger and a.Owner == player then
 		spyHideout3Trigger = true
-		if Map.Difficulty ~= "Hard" then
+		if Map.LobbyOption("difficulty") ~= "hard" then
 			Reinforcements.Reinforce(player, USSRReinforcements2, { ReinforcementSpawn.Location, CameraSpyHideout33.Location }, 0)
 			Media.PlaySpeechNotification(player, "ReinforcementsArrived")
 		end
@@ -363,7 +363,7 @@ Tick = function()
 	if not SpyHideout4.IsDead and SpyHideout4.HasPassengers then
 		spyReachedHideout4 = true
 	end
-	if remainingTime == DateTime.Minutes(5) and Map.Difficulty ~= "Hard" then
+	if remainingTime == DateTime.Minutes(5) and Map.LobbyOption("difficulty") ~= "hard" then
 		Media.PlaySpeechNotification(player, "WarningFiveMinutesRemaining")
 	elseif remainingTime == DateTime.Minutes(4) then
 		Media.PlaySpeechNotification(player, "WarningFourMinutesRemaining")
