@@ -769,6 +769,7 @@
     <Compile Include="Traits\Carryable.cs" />
     <Compile Include="Traits\Carryall.cs" />
     <Compile Include="Traits\Buildings\FreeActorWithDelivery.cs" />
+    <Compile Include="Traits\Player\ProvidesPrerequisiteFromAllies.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
