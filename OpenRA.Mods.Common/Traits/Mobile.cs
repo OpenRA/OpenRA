@@ -319,7 +319,7 @@ namespace OpenRA.Mods.Common.Traits
 	}
 
 	public class Mobile : UpgradableTrait<MobileInfo>, IIssueOrder, IResolveOrder, IOrderVoice, IPositionable, IMove, IFacing, ISync,
-		IDeathActorInitModifier, INotifyAddedToWorld, INotifyRemovedFromWorld, INotifyBlockingMove
+		IDeathActorInitModifier, INotifyAddedToWorld, INotifyRemovedFromWorld, INotifyBlockingMove, IActorPreviewInitModifier
 	{
 		const int AverageTicksBeforePathing = 5;
 		const int SpreadTicksBeforePathing = 5;
@@ -714,6 +714,12 @@ namespace OpenRA.Mods.Common.Traits
 						self.ActorID, self.Location);
 				}
 			}
+		}
+
+		void IActorPreviewInitModifier.ModifyActorPreviewInit(Actor self, TypeDictionary inits)
+		{
+			if (!inits.Contains<DynamicFacingInit>() && !inits.Contains<FacingInit>())
+				inits.Add(new DynamicFacingInit(() => facing));
 		}
 
 		class MoveOrderTargeter : IOrderTargeter

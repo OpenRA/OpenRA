@@ -10,9 +10,13 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Linq;
 using OpenRA.Graphics;
+using OpenRA.Mods.Common;
+using OpenRA.Mods.Common.Graphics;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Mods.Common.Traits.Render;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Cnc.Traits.Render
@@ -29,55 +33,80 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 		public object Create(ActorInitializer init) { return new WithCargo(init.Self, this); }
 	}
 
-	public class WithCargo : IRenderModifier, ITick
+	public class WithCargo : ITick, IRender, INotifyPassengerEntered, INotifyPassengerExited
 	{
+		readonly WithCargoInfo info;
 		readonly Cargo cargo;
-		readonly IFacing facing;
-		readonly WithCargoInfo cargoInfo;
 		readonly BodyOrientation body;
+		readonly IFacing facing;
+
+		Dictionary<Actor, IActorPreview[]> previews = new Dictionary<Actor, IActorPreview[]>();
 
 		public WithCargo(Actor self, WithCargoInfo info)
 		{
+			this.info = info;
+
 			cargo = self.Trait<Cargo>();
-			facing = self.TraitOrDefault<IFacing>();
-			cargoInfo = info;
-
 			body = self.Trait<BodyOrientation>();
+			facing = self.TraitOrDefault<IFacing>();
 		}
 
-		public void Tick(Actor self)
+		void ITick.Tick(Actor self)
 		{
-			if (facing == null)
-				return;
-
-			foreach (var c in cargo.Passengers)
-			{
-				var cargoFacing = c.TraitOrDefault<IFacing>();
-				if (cargoFacing != null)
-					cargoFacing.Facing = facing.Facing;
-			}
+			foreach (var actorPreviews in previews.Values)
+				if (actorPreviews != null)
+					foreach (var preview in actorPreviews)
+						preview.Tick();
 		}
 
-		public IEnumerable<IRenderable> ModifyRender(Actor self, WorldRenderer wr, IEnumerable<IRenderable> r)
+		IEnumerable<IRenderable> IRender.Render(Actor self, WorldRenderer wr)
 		{
-			foreach (var rr in r)
-				yield return rr;
-
 			var bodyOrientation = body.QuantizeOrientation(self, self.Orientation);
 			var pos = self.CenterPosition;
 			var i = 0;
-			foreach (var c in cargo.Passengers)
+
+			// Generate missing previews
+			var missing = previews
+				.Where(kv => kv.Value == null)
+				.Select(kv => kv.Key)
+				.ToList();
+
+			foreach (var p in missing)
 			{
-				var cargoPassenger = c.Trait<Passenger>();
-				if (cargoInfo.DisplayTypes.Contains(cargoPassenger.Info.CargoType))
+				var passengerInits = new TypeDictionary()
 				{
-					var index = cargo.PassengerCount > 1 ? i++ % cargoInfo.LocalOffset.Length : cargoInfo.LocalOffset.Length / 2;
-					var localOffset = cargoInfo.LocalOffset[index];
-					var offset = pos - c.CenterPosition + body.LocalToWorld(localOffset.Rotate(bodyOrientation));
-					foreach (var cr in c.Render(wr))
-						yield return cr.OffsetBy(offset).WithZOffset(1);
-				}
+					new OwnerInit(p.Owner),
+					new DynamicFacingInit(() => body.QuantizeFacing(facing.Facing)),
+				};
+
+				foreach (var api in p.TraitsImplementing<IActorPreviewInitModifier>())
+					api.ModifyActorPreviewInit(p, passengerInits);
+
+				var init = new ActorPreviewInitializer(p.Info, wr, passengerInits);
+				previews[p] = p.Info.TraitInfos<IRenderActorPreviewInfo>()
+					.SelectMany(rpi => rpi.RenderPreview(init))
+					.ToArray();
 			}
+
+			foreach (var p in previews.Values.SelectMany(p => p))
+			{
+				var index = cargo.PassengerCount > 1 ? i++ % info.LocalOffset.Length : info.LocalOffset.Length / 2;
+				var localOffset = info.LocalOffset[index];
+
+				foreach (var pp in p.Render(wr, pos + body.LocalToWorld(localOffset.Rotate(bodyOrientation))))
+					yield return pp.WithZOffset(1);
+			}
+		}
+
+		void INotifyPassengerEntered.OnPassengerEntered(Actor self, Actor passenger)
+		{
+			if (info.DisplayTypes.Contains(passenger.Trait<Passenger>().Info.CargoType))
+				previews.Add(passenger, null);
+		}
+
+		void INotifyPassengerExited.OnPassengerExited(Actor self, Actor passenger)
+		{
+			previews.Remove(passenger);
 		}
 	}
 }

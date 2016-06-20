@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
@@ -27,7 +28,8 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		public override object Create(ActorInitializer init) { return new WithVoxelTurret(init.Self, this); }
 
-		public IEnumerable<VoxelAnimation> RenderPreviewVoxels(ActorPreviewInitializer init, RenderVoxelsInfo rv, string image, WRot orientation, int facings, PaletteReference p)
+		public IEnumerable<VoxelAnimation> RenderPreviewVoxels(
+			ActorPreviewInitializer init, RenderVoxelsInfo rv, string image, Func<WRot> orientation, int facings, PaletteReference p)
 		{
 			if (UpgradeMinEnabledLevel > 0)
 				yield break;
@@ -37,12 +39,12 @@ namespace OpenRA.Mods.Common.Traits.Render
 				.First(tt => tt.Turret == Turret);
 
 			var voxel = VoxelProvider.GetVoxel(image, Sequence);
-			var turretOffset = body.LocalToWorld(t.Offset.Rotate(orientation));
+			Func<WVec> turretOffset = () => body.LocalToWorld(t.Offset.Rotate(orientation()));
 
-			var turretFacing = Turreted.GetInitialTurretFacing(init, t.InitialFacing, Turret);
-			var turretBodyOrientation = new WRot(WAngle.Zero, WAngle.Zero, WAngle.FromFacing(turretFacing) - orientation.Yaw);
-			var turretOrientation = new[] { turretBodyOrientation, body.QuantizeOrientation(orientation, facings) };
-			yield return new VoxelAnimation(voxel, () => turretOffset, () => turretOrientation, () => false, () => 0);
+			var turretFacing = Turreted.TurretFacingFromInit(init, t.InitialFacing, Turret);
+			Func<WRot> turretBodyOrientation = () => WRot.FromYaw(WAngle.FromFacing(turretFacing()) - orientation().Yaw);
+			yield return new VoxelAnimation(voxel, turretOffset,
+				() => new[] { turretBodyOrientation(), body.QuantizeOrientation(orientation(), facings) }, () => false, () => 0);
 		}
 	}
 

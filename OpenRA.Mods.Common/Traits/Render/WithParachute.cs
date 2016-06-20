@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
@@ -68,14 +69,28 @@ namespace OpenRA.Mods.Common.Traits.Render
 			if (Palette != null)
 				p = init.WorldRenderer.Palette(Palette);
 
+			Func<int> facing;
+			if (init.Contains<DynamicFacingInit>())
+				facing = init.Get<DynamicFacingInit, Func<int>>();
+			else
+			{
+				var f = init.Contains<FacingInit>() ? init.Get<FacingInit, int>() : 0;
+				facing = () => f;
+			}
+
 			var anim = new Animation(init.World, image);
 			anim.PlayThen(OpeningSequence, () => anim.PlayRepeating(Sequence));
 
 			var body = init.Actor.TraitInfo<BodyOrientationInfo>();
-			var facing = init.Contains<FacingInit>() ? init.Get<FacingInit, int>() : 0;
-			var orientation = body.QuantizeOrientation(new WRot(WAngle.Zero, WAngle.Zero, WAngle.FromFacing(facing)), facings);
-			var offset = body.LocalToWorld(Offset.Rotate(orientation));
-			yield return new SpriteActorPreview(anim, offset, offset.Y + offset.Z + 1, p, rs.Scale);
+			Func<WRot> orientation = () => body.QuantizeOrientation(WRot.FromFacing(facing()), facings);
+			Func<WVec> offset = () => body.LocalToWorld(Offset.Rotate(orientation()));
+			Func<int> zOffset = () =>
+			{
+				var tmpOffset = offset();
+				return tmpOffset.Y + tmpOffset.Z + 1;
+			};
+
+			yield return new SpriteActorPreview(anim, offset, zOffset, p, rs.Scale);
 		}
 	}
 

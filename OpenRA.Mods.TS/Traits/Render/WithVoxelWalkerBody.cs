@@ -10,21 +10,37 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
+using OpenRA.Mods.Common;
+using OpenRA.Mods.Common.Graphics;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Mods.Common.Traits.Render;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.TS.Traits.Render
 {
-	public class WithVoxelWalkerBodyInfo : ITraitInfo, Requires<RenderVoxelsInfo>, Requires<IMoveInfo>, Requires<IFacingInfo>
+	public class WithVoxelWalkerBodyInfo : ITraitInfo, IRenderActorPreviewVoxelsInfo,  Requires<RenderVoxelsInfo>, Requires<IMoveInfo>, Requires<IFacingInfo>
 	{
 		public readonly int TickRate = 5;
 		public object Create(ActorInitializer init) { return new WithVoxelWalkerBody(init.Self, this); }
+
+		public IEnumerable<VoxelAnimation> RenderPreviewVoxels(
+			ActorPreviewInitializer init, RenderVoxelsInfo rv, string image, Func<WRot> orientation, int facings, PaletteReference p)
+		{
+			var voxel = VoxelProvider.GetVoxel(image, "idle");
+			var body = init.Actor.TraitInfo<BodyOrientationInfo>();
+			var frame = init.Contains<BodyAnimationFrameInit>() ? init.Get<BodyAnimationFrameInit, uint>() : 0;
+
+			yield return new VoxelAnimation(voxel, () => WVec.Zero,
+				() => new[] { body.QuantizeOrientation(orientation(), facings) },
+				() => false, () => frame);
+		}
 	}
 
-	public class WithVoxelWalkerBody : IAutoSelectionSize, ITick
+	public class WithVoxelWalkerBody : IAutoSelectionSize, ITick, IActorPreviewInitModifier
 	{
 		WithVoxelWalkerBodyInfo info;
 		IMove movement;
@@ -69,5 +85,18 @@ namespace OpenRA.Mods.TS.Traits.Render
 			if (++frame == frames)
 				frame = 0;
 		}
+
+		void IActorPreviewInitModifier.ModifyActorPreviewInit(Actor self, TypeDictionary inits)
+		{
+			inits.Add(new BodyAnimationFrameInit(frame));
+		}
+	}
+
+	public class BodyAnimationFrameInit : IActorInit<uint>
+	{
+		[FieldFromYamlKey] readonly uint value = 0;
+		public BodyAnimationFrameInit() { }
+		public BodyAnimationFrameInit(uint init) { value = init; }
+		public uint Value(World world) { return value; }
 	}
 }
