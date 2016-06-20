@@ -4,9 +4,7 @@ GAWALL:
 		Queue: Defense
 		BuildPaletteOrder: 20
 		Prerequisites: ~structures.gdi
-	SoundOnDamageTransition:
-		DamagedSounds:
-		DestroyedSounds:
+	-SoundOnDamageTransition:
 	Valued:
 		Cost: 50
 	CustomSellValue:

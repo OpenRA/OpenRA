@@ -129,6 +129,8 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				var notification = self.Owner.IsAlliedWith(self.World.RenderPlayer) ? Info.LaunchSound : Info.IncomingSound;
 				Game.Sound.Play(notification);
+				Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech",
+					Info.IncomingSpeechNotification, self.Owner.Faction.InternalName);
 
 				Actor distanceTestActor = null;
 				for (var i = -info.SquadSize / 2; i <= info.SquadSize / 2; i++)

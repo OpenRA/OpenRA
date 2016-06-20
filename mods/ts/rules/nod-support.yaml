@@ -4,9 +4,7 @@ NAWALL:
 		Queue: Defense
 		BuildPaletteOrder: 1001
 		Prerequisites: ~structures.nod
-	SoundOnDamageTransition:
-		DamagedSounds:
-		DestroyedSounds:
+	-SoundOnDamageTransition:
 	Valued:
 		Cost: 50
 	CustomSellValue:
@@ -240,11 +238,9 @@ NAMISL:
 		ChargeTime: 540
 		Description: Cluster Missile
 		LongDesc: Launches a conventional warhead\nat a target location.
-		BeginChargeSound:
-		EndChargeSound: 00-i154.aud
-		SelectTargetSound:
-		InsufficientPowerSound:
-		IncomingSound: 00-i150.aud
+		EndChargeSpeechNotification: ClusterMissileReady
+		SelectTargetSpeechNotification: SelectTarget
+		IncomingSpeechNotification: MissileLaunchDetected
 		LaunchSound: icbm1.aud
 		MissileWeapon: ClusterMissile
 		SpawnOffset: 0,427,0

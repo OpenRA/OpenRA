@@ -403,11 +403,8 @@ GAPLUG:
 		ChargeTime: 180
 		Description: Ion Cannon
 		LongDesc: Initiate an Ion Cannon strike.\nApplies instant damage to a small area.
-		BeginChargeSound:
-		EndChargeSound: 00-i156.aud
-		LaunchSound:
-		SelectTargetSound:
-		InsufficientPowerSound:
+		EndChargeSpeechNotification: IonCannonReady
+		SelectTargetSpeechNotification: SelectTarget
 		DisplayRadarPing: True
 		CameraActor: camera
 	ProduceActorPower:

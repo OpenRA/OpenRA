@@ -838,7 +838,6 @@ high_tech_factory:
 		SquadSize: 3
 		LongDesc: Ornithopters hit the target with bombs
 		UnitType: ornithopter
-		SelectTargetSound:
 		DisplayBeacon: True
 		CameraActor: camera
 	WithProductionOverlay@WELDING:
@@ -951,11 +950,9 @@ palace:
 		ChargeTime: 300
 		Description: Death Hand
 		LongDesc: Launches an atomic missile at a target location
-		BeginChargeSound: HI_PREP.AUD
-		EndChargeSound: HI_DHRDY.AUD
-		SelectTargetSound:
-		LaunchSound:
-		IncomingSound:
+		BeginChargeSpeechNotification: DeathHandMissilePrepping
+		EndChargeSpeechNotification: DeathHandMissileReady
+		MissileLaunchDetected: MissileLaunchDetected
 		MissileWeapon: atomic
 		SpawnOffset: -512,1c171,0
 		DisplayBeacon: True

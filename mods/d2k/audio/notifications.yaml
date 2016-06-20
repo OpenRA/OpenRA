@@ -63,7 +63,7 @@ Sounds:
 		DisablePower: POWRUP1
 		EnablePower: POWRDN1
 		CashTickUp: CASHTIK1
-		CashTickDown:CASHTIK1
+		CashTickDown: CASHTIK1
 		LevelUp: SCORTIK1
 		ChatLine: CHAT1
 		BuildPaletteOpen: BUTTON1
