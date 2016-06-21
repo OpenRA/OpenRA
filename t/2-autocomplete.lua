@@ -2,28 +2,34 @@ local editor = NewFile()
 ok(editor, "Open New file.")
 ok(editor.assignscache ~= nil, "Auto-complete cache is assigned.")
 
+local maxstat = 20000 -- maximum number of statements to detect looping
+local strategy = ide.config.acandtip.strategy
+
+for s = 2, 0, -1 do -- execute all tests for different `strategy` values
+ide.config.acandtip.strategy = s
+
 editor:SetText('') -- use Set/Add to position cursor after added text
 editor:AddText([[
   local line = '123'
   line = line:gsub('1','4')
   line:]])
 
-ok(limit(10000, function() CreateAutoCompList(editor, "line:") end),
-  "Auto-complete doesn't loop for 'line:' after 'line:gsub'.")
+ok(limit(maxstat, function() CreateAutoCompList(editor, "line:") end),
+  ("Auto-complete (strategy=%s) doesn't loop for 'line:' after 'line:gsub'."):format(s))
 
-ok(limit(10000, function() CreateAutoCompList(editor, "line.") end),
-  "Auto-complete doesn't loop for 'line.' after 'line:gsub'.")
+ok(limit(maxstat, function() CreateAutoCompList(editor, "line.") end),
+  ("Auto-complete (strategy=%s) doesn't loop for 'line.' after 'line:gsub'."):format(s))
 
 editor:SetText('') -- use Set/Add to position cursor after added text
 editor:AddText([[
   smth = smth:new()
   smth:]])
 
-ok(limit(10000, function() CreateAutoCompList(editor, "smth:") end),
-  "Auto-complete doesn't loop for 'smth:'.")
+ok(limit(maxstat, function() CreateAutoCompList(editor, "smth:") end),
+  ("Auto-complete (strategy=%s) doesn't loop for 'smth:'."):format(s))
 
 ok(pcall(CreateAutoCompList, editor, "%1000"),
-  "Auto-complete doesn't trigger 'invalid capture index' on '%...'.")
+  ("Auto-complete (strategy=%s) doesn't trigger 'invalid capture index' on '%%...'."):format(s))
 
 editor:SetText('')
 editor:AddText([[
@@ -31,8 +37,8 @@ editor:AddText([[
   local require = tweaks.require
   local modules = tweaks.modules]])
 
-ok(limit(10000, function() CreateAutoCompList(editor, "tweaks.modules") end),
-  "Auto-complete doesn't loop for recursive 'modules'.")
+ok(limit(maxstat, function() CreateAutoCompList(editor, "tweaks.modules") end),
+  ("Auto-complete (strategy=%s) doesn't loop for recursive 'modules'."):format(s))
 
 editor:SetText('')
 editor:AddText([[
@@ -40,8 +46,8 @@ editor:AddText([[
   result.1
 ]])
 
-ok(limit(10000, function() CreateAutoCompList(editor, "result.1") end),
-  "Auto-complete doesn't loop for table index reference 1/2.")
+ok(limit(maxstat, function() CreateAutoCompList(editor, "result.1") end),
+  ("Auto-complete (strategy=%s) doesn't loop for table index reference 1/2."):format(s))
 
 editor:SetText('')
 editor:AddText([[
@@ -49,8 +55,8 @@ editor:AddText([[
   self.undoBuffer = self.undoBuffer[0]
   self.popUpObjs[popUpNo].]])
 
-ok(limit(10000, function() EditorAutoComplete(editor) end),
-  "Auto-complete doesn't loop for table index reference 2/2.")
+ok(limit(maxstat, function() EditorAutoComplete(editor) end),
+  ("Auto-complete (strategy=%s) doesn't loop for table index reference 2/2."):format(s))
 
 editor:SetText('')
 editor:AddText([[
@@ -58,8 +64,8 @@ editor:AddText([[
   local b = a.b
   local c = b.]])
 
-ok(limit(10000, function() EditorAutoComplete(editor) end),
-  "Auto-complete doesn't loop for classes that reference '...'.")
+ok(limit(maxstat, function() EditorAutoComplete(editor) end),
+  ("Auto-complete (strategy=%s) doesn't loop for classes that reference '...'."):format(s))
 
 editor:SetText('')
 editor:AddText([[
@@ -67,8 +73,8 @@ editor:AddText([[
   str = buf..str
   buf = buf..]])
 
-ok(limit(10000, function() EditorAutoComplete(editor) end),
-  "Auto-complete doesn't loop for string concatenations with self-reference.")
+ok(limit(maxstat, function() EditorAutoComplete(editor) end),
+  ("Auto-complete (strategy=%s) doesn't loop for string concatenations with self-reference."):format(s))
 
 -- create a valuetype self-reference
 -- this is to test "s = Scan(); s:" fragment
@@ -81,7 +87,7 @@ editor:AddText([[
   s:]])
 
 ok(limitdepth(1000, function() EditorAutoComplete(editor) end),
-  "Auto-complete doesn't loop for classes that self-reference with 'valuetype'.")
+  ("Auto-complete (strategy=%s) doesn't loop for classes that self-reference with 'valuetype'."):format(s))
 
 -- restore valuetype
 ide.apis.lua.baselib.io.valuetype = nil
@@ -93,16 +99,16 @@ ProjectSetInterpreter("gideros")
 local ac = CreateAutoCompList(editor, "Bitmap.n")
 local _, c = ac:gsub("new", "new")
 ok(c == 1,
-  ("Auto-complete doesn't offer duplicates with the same name ('%s').")
-    :format(ac))
+  ("Auto-complete (strategy=%s) doesn't offer duplicates with the same name ('%s')."):format(s, ac))
 
 for k, v in pairs({
-    ree = "repeat require",
-    ret = "return repeat rawget rawset",
+    -- the following results differ depending on `strategy` settings
+    ree = s == 2 and "repeat require" or "",
+    ret = s == 2 and "return repeat rawget rawset" or "return",
 }) do
   local ac = CreateAutoCompList(editor, k)
   is(ac, v,
-    ("Auto-complete for '%s' offers results in the expected order."):format(k))
+    ("Auto-complete (strategy=%s) for '%s' offers results in the expected order."):format(s, k))
 end
 
 ProjectSetInterpreter(interpreter)
@@ -111,13 +117,13 @@ editor:SetText('')
 editor:AddText('local t = require("table")\nt.')
 local ac = CreateAutoCompList(editor, "t.")
 ok(ac ~= nil and ac:find("concat") ~= nil,
-  "Auto-complete recognizes variables set based on `require`.")
+  ("Auto-complete (strategy=%s) recognizes variables set based on `require`."):format(s))
 
 editor:SetText('')
 editor:AddText('local table = require("io")\nt = require("table")\nt.')
 local ac = CreateAutoCompList(editor, "t.")
 ok(ac ~= nil and ac:find("concat") ~= nil,
-  "Auto-complete recognizes variables set based on `require` even when it's re-assigned.")
+  ("Auto-complete (strategy=%s) recognizes variables set based on `require` even when it's re-assigned."):format(s))
 
 editor:SetText('')
 editor:AddText('print(1,io.')
@@ -131,7 +137,7 @@ editor.UserListShow = ULS
 ok(value and value:find("close"), "Auto-complete is shown after comma.")
 
 ok(not (CreateAutoCompList(editor, "pri.") or ""):match('print'),
-  "Auto-complete doesn't offer 'print' after 'pri.'.")
+  ("Auto-complete (strategy=%s) doesn't offer 'print' after 'pri.'."):format(s))
 
 editor:SetText('')
 editor:AddText('local name = "abc"; local namelen = #name')
@@ -140,7 +146,8 @@ EditorAutoComplete(editor)
 local isactive = editor:AutoCompActive()
 editor:AutoCompCancel() -- cleanup
 
-ok(not isactive, "Auto-complete is not shown if typed sequence matches one of the options.")
+ok(not isactive,
+  ("Auto-complete (strategy=%s) is not shown if typed sequence matches one of the options."):format(s))
 
 editor:SetText('')
 editor:AddText(' -- a = io\na:')
@@ -148,24 +155,21 @@ editor:Colourise(0, -1) -- set proper styles
 editor.assignscache = false
 
 ok((CreateAutoCompList(editor, "a:") or "") == "",
-  "Auto-complete doesn't process assignments in comments.")
+  ("Auto-complete (strategy=%s) doesn't process assignments in comments."):format(s))
 
 editor:SetText('')
 editor:AddText('-- @tparam string foo\n')
 editor.assignscache = false
 
 ok((CreateAutoCompList(editor, "foo.") or ""):match('byte'),
-  "Auto-complete offers methods for variable defined as '@tparam string'.")
+  ("Auto-complete (strategy=%s) offers methods for variable defined as '@tparam string'."):format(s))
 
 editor:SetText('')
 editor:AddText('-- @param[type=string] foo\n')
 editor.assignscache = false
 
 ok((CreateAutoCompList(editor, "foo:") or ""):match('byte'),
-  "Auto-complete offers methods for variable defined as '@param[type=string]'.")
-
-local strategy = ide.config.acandtip.strategy
-ide.config.acandtip.strategy = 1
+  ("Auto-complete (strategy=%s) offers methods for variable defined as '@param[type=string]'."):format(s))
 
 editor:SetText('')
 editor:AddText('local value\nprint(va')
@@ -173,14 +177,16 @@ IndicateAll(editor)
 
 local status, res = pcall(CreateAutoCompList, editor, "va")
 ok(status and (res or ""):match('value'),
-  "Auto-complete offers methods for strategy=1' (1/2).")
+  ("Auto-complete (strategy=%s) offers completions for variables' (1/2)."):format(s))
 
 editor:SetText('')
 editor:AddText('local value\nprint(va')
 
 local status, res = pcall(CreateAutoCompList, editor, "va")
 ok(status and (res or ""):match('value'),
-  "Auto-complete offers methods for strategy=1' (2/2).")
+  ("Auto-complete (strategy=%s) offers completions for variables' (2/2)."):format(s))
+
+end
 
 -- cleanup
 ide.config.acandtip.strategy = strategy

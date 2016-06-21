@@ -510,7 +510,7 @@ local function getAutoCompApiList(childs,fragment,method)
     end
   end
 
-  return t
+  return t[fragment] or {}
 end
 
 function CreateAutoCompList(editor,key,pos)
