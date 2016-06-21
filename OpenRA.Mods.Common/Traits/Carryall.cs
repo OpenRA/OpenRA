@@ -13,12 +13,10 @@ using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Activities;
-using OpenRA.Mods.Common.Traits;
 using OpenRA.Mods.Common.Traits.Render;
-using OpenRA.Mods.D2k.Activities;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.D2k.Traits
+namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Automatically transports harvesters with the Carryable trait between resource fields and refineries.")]
 	public class CarryallInfo : ITraitInfo, Requires<BodyOrientationInfo>

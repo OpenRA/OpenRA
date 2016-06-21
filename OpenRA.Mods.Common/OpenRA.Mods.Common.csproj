@@ -758,6 +758,11 @@
     <Compile Include="FileFormats\MSCabCompression.cs" />
     <Compile Include="UtilityCommands\OutputActorMiniYamlCommand.cs" />
     <Compile Include="Traits\World\ScriptLobbyDropdown.cs" />
+    <Compile Include="Activities\DeliverUnit.cs" />
+    <Compile Include="Activities\PickupUnit.cs" />
+    <Compile Include="Traits\Carryable.cs" />
+    <Compile Include="Traits\Carryall.cs" />
+    <Compile Include="Traits\Buildings\FreeActorWithDelivery.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
