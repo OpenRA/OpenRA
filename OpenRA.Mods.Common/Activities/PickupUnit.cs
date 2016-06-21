@@ -10,13 +10,10 @@
 #endregion
 
 using OpenRA.Activities;
-using OpenRA.Mods.Common;
-using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Traits;
-using OpenRA.Mods.D2k.Traits;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.D2k.Activities
+namespace OpenRA.Mods.Common.Activities
 {
 	public class PickupUnit : Activity
 	{
