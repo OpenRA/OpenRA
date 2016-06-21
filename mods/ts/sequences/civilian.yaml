@@ -5,7 +5,7 @@ ammocrat:
 
 aban01:
 	Defaults:
-		Offset: 42, -42
+		Offset: 48,-48
 	idle:
 		ShadowStart: 2
 	critical-idle:
@@ -14,7 +14,7 @@ aban01:
 
 aban02:
 	Defaults:
-		Offset: -30, -48
+		Offset: -24,-48
 	idle:
 		ShadowStart: 2
 	critical-idle:
@@ -23,7 +23,7 @@ aban02:
 
 aban03:
 	Defaults:
-		Offset: 48, -42
+		Offset: 36,-42
 	idle:
 		ShadowStart: 2
 	critical-idle:
@@ -32,7 +32,7 @@ aban03:
 
 aban04:
 	Defaults:
-		Offset: -24, -30
+		Offset: -24,-36
 	idle:
 		ShadowStart: 2
 	critical-idle:
@@ -41,7 +41,7 @@ aban04:
 
 aban05:
 	Defaults:
-		Offset: -24, -33
+		Offset: -12,-30
 	idle:
 		ShadowStart: 2
 	critical-idle:
@@ -50,7 +50,7 @@ aban05:
 
 aban06:
 	Defaults:
-		Offset: 0, -21
+		Offset: 0,-24
 	idle:
 		ShadowStart: 2
 	critical-idle:
@@ -59,7 +59,7 @@ aban06:
 
 aban07:
 	Defaults:
-		Offset: 0, -21
+		Offset: 0,-24
 	idle:
 		ShadowStart: 2
 	critical-idle:
@@ -68,7 +68,7 @@ aban07:
 
 aban08:
 	Defaults:
-		Offset: 0, -21
+		Offset: 0,-24
 	idle:
 		ShadowStart: 2
 	critical-idle:
@@ -77,7 +77,7 @@ aban08:
 
 aban09:
 	Defaults:
-		Offset: 0, -18
+		Offset: 0,-24
 	idle:
 		ShadowStart: 2
 	critical-idle:
@@ -86,7 +86,7 @@ aban09:
 
 aban10:
 	Defaults:
-		Offset: 0, -21
+		Offset: 0,-24
 	idle:
 		ShadowStart: 2
 	critical-idle:
@@ -95,7 +95,7 @@ aban10:
 
 aban11:
 	Defaults:
-		Offset: 0, -21
+		Offset: 0,-24
 	idle:
 		ShadowStart: 2
 	critical-idle:
@@ -104,7 +104,7 @@ aban11:
 
 aban12:
 	Defaults:
-		Offset: 0, -21
+		Offset: 0,-24
 	idle:
 		ShadowStart: 2
 	critical-idle:
@@ -113,7 +113,7 @@ aban12:
 
 aban13:
 	Defaults:
-		Offset: 0, -6
+		Offset: 0,-12
 	idle:
 		ShadowStart: 2
 	critical-idle:
@@ -122,7 +122,7 @@ aban13:
 
 aban14:
 	Defaults:
-		Offset: 0, -9
+		Offset: 0,-12
 	idle:
 		ShadowStart: 2
 	critical-idle:
@@ -131,7 +131,7 @@ aban14:
 
 aban15:
 	Defaults:
-		Offset: 0, -6
+		Offset: 0,-12
 	idle:
 		ShadowStart: 2
 	critical-idle:
@@ -140,7 +140,7 @@ aban15:
 
 aban16:
 	Defaults:
-		Offset: 0, -21
+		Offset: 0,-24
 	idle:
 		ShadowStart: 2
 	critical-idle:
@@ -149,7 +149,7 @@ aban16:
 
 aban17:
 	Defaults:
-		Offset: 0, -9
+		Offset: 0,-12
 	idle:
 		ShadowStart: 2
 	critical-idle:
@@ -158,7 +158,7 @@ aban17:
 
 aban18:
 	Defaults:
-		Offset: 0, -9
+		Offset: 0,-12
 	idle:
 		ShadowStart: 2
 	critical-idle:
@@ -212,7 +212,7 @@ bboard05:
 
 bboard06:
 	Defaults:
-		Offset: -12, -12
+		Offset: 12,-18
 	idle:
 		ShadowStart: 2
 	damaged-idle:
@@ -221,7 +221,7 @@ bboard06:
 
 bboard07:
 	Defaults:
-		Offset: -12, -12
+		Offset: 12,-18
 	idle:
 		ShadowStart: 2
 	damaged-idle:
@@ -230,7 +230,7 @@ bboard07:
 
 bboard08:
 	Defaults:
-		Offset: -12, -12
+		Offset: 12,-18
 	idle:
 		ShadowStart: 2
 	damaged-idle:
@@ -284,7 +284,7 @@ bboard13:
 
 bboard14:
 	Defaults:
-		Offset: 12, -12
+		Offset: -12,-18
 	idle:
 		ShadowStart: 2
 	damaged-idle:
@@ -293,7 +293,7 @@ bboard14:
 
 bboard15:
 	Defaults:
-		Offset: 12, -12
+		Offset: -12,-18
 	idle:
 		ShadowStart: 2
 	damaged-idle:
@@ -302,7 +302,7 @@ bboard15:
 
 bboard16:
 	Defaults:
-		Offset: 12, -12
+		Offset: -12,-18
 	idle:
 		ShadowStart: 2
 	damaged-idle:
@@ -382,7 +382,7 @@ ca0007:
 ca0008:
 	Defaults:
 		UseTilesetCode: true
-		Offset: 6, -24
+		Offset: 12,-30
 	idle:
 		ShadowStart: 2
 	damaged-idle:
@@ -392,7 +392,7 @@ ca0008:
 ca0009:
 	Defaults:
 		UseTilesetCode: true
-		Offset: 6, -24
+		Offset: 12,-30
 	idle:
 		ShadowStart: 2
 	damaged-idle:
@@ -576,7 +576,7 @@ cacrsh05:
 cahosp:
 	Defaults:
 		UseTilesetCode: true
-		Offset: 12, -36
+		Offset: 12,-42
 	idle:
 		ShadowStart: 3
 	damaged-idle:
@@ -603,7 +603,7 @@ capyr03:
 
 city01:
 	Defaults:
-		Offset: -12, -30
+		Offset: -24,-36
 	idle:
 		ShadowStart: 2
 	damaged-idle:
@@ -612,7 +612,7 @@ city01:
 
 city02:
 	Defaults:
-		Offset: 6, -30
+		Offset: 12,-30
 	idle:
 		ShadowStart: 2
 	damaged-idle:
@@ -648,7 +648,7 @@ city05:
 
 city06:
 	Defaults:
-		Offset: -18, -36
+		Offset: -24,-36
 	idle:
 		ShadowStart: 2
 	damaged-idle:
@@ -657,7 +657,7 @@ city06:
 
 city07:
 	Defaults:
-		Offset: -12, -30
+		Offset: -24,-36
 	idle:
 		ShadowStart: 2
 	damaged-idle:
@@ -729,7 +729,7 @@ city14:
 
 city15:
 	Defaults:
-		Offset: -18, -36
+		Offset: -24,-36
 	idle:
 		ShadowStart: 2
 	damaged-idle:
@@ -738,7 +738,7 @@ city15:
 
 city16:
 	Defaults:
-		Offset: -18, -36
+		Offset: -24,-36
 	idle:
 		ShadowStart: 2
 	damaged-idle:
@@ -800,6 +800,8 @@ city22:
 		ShadowStart: 3
 
 ctdam:
+	Defaults:
+		Offset: 36,-42
 	idle:
 	damaged-idle:
 		Start: 1
@@ -969,7 +971,7 @@ namntk:
 
 ntpyra:
 	Defaults:
-		Offset: 0,-42
+		Offset: 0,-48
 	idle:
 		ShadowStart: 3
 	damaged-idle:
