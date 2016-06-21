@@ -37,8 +37,8 @@ pkg.onDebuggerActivate = function(self, debugger, file, line)
       end)
     debugger:Wait()
   end
-  debugger[cmd](debugger, unpack(args or {}))
   command = command + 1
+  debugger[cmd](debugger, unpack(args or {}))
 end
 pkg.onDebuggerClose = function()
   local doc = ide:IsValidCtrl(editor) and ide:GetDocument(editor)
