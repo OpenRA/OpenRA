@@ -17,6 +17,7 @@ namespace OpenRA
 {
 	public class ModContent : IGlobalModData
 	{
+		public enum SourceType { Disc, Install }
 		public class ModPackage
 		{
 			public readonly string Title;
@@ -39,6 +40,12 @@ namespace OpenRA
 
 		public class ModSource
 		{
+			public readonly SourceType Type = SourceType.Disc;
+
+			// Used to find installation locations for SourceType.Install
+			public readonly string RegistryKey;
+			public readonly string RegistryValue;
+
 			public readonly string Title;
 			public readonly Dictionary<string, string> IDFiles;
 

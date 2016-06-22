@@ -47,6 +47,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		// List Panel
 		readonly Widget listContainer;
 		readonly ScrollPanelWidget listPanel;
+		readonly Widget listHeaderTemplate;
 		readonly LabelWidget listTemplate;
 		readonly LabelWidget listLabel;
 
@@ -84,6 +85,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			listContainer.IsVisible = () => visible == Mode.List;
 
 			listPanel = listContainer.Get<ScrollPanelWidget>("LIST_PANEL");
+			listHeaderTemplate = listPanel.Get("LIST_HEADER_TEMPLATE");
 			listTemplate = listPanel.Get<LabelWidget>("LIST_TEMPLATE");
 			listPanel.RemoveChildren();
 
@@ -108,38 +110,55 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{
 					message = "Searching for " + kv.Value.Title;
 
-					foreach (var volume in volumes)
+					var path = FindSourcePath(kv.Value, volumes);
+					if (path != null)
 					{
-						if (PathIsDiscMount(volume, kv.Value))
+						var packages = content.Packages.Values
+							.Where(p => p.Sources.Contains(kv.Key) && !p.IsInstalled())
+							.Select(p => p.Title);
+
+						// Ignore disc if content is already installed
+						if (packages.Any())
 						{
-							var packages = content.Packages.Values
-								.Where(p => p.Sources.Contains(kv.Key) && !p.IsInstalled())
-								.Select(p => p.Title);
-
-							// Ignore disc if content is already installed
-							if (packages.Any())
+							Game.RunAfterTick(() =>
 							{
-								Game.RunAfterTick(() =>
-								{
-									ShowList(kv.Value.Title, "The following content packages will be installed:", packages);
-									ShowContinueCancel(() => InstallFromDisc(volume, kv.Value));
-								});
+								ShowList(kv.Value.Title, "The following content packages will be installed:", packages);
+								ShowContinueCancel(() => InstallFromDisc(path, kv.Value));
+							});
 
-								return;
-							}
+							return;
 						}
 					}
 				}
 
-				var discTitles = content.Packages.Values
+				var sources = content.Packages.Values
 					.Where(p => !p.IsInstalled())
 					.SelectMany(p => p.Sources)
-					.Select(d => content.Sources[d].Title)
+					.Select(d => content.Sources[d]);
+
+				var discs = sources
+					.Where(s => s.Type == ModContent.SourceType.Disc)
+					.Select(s => s.Title)
 					.Distinct();
+
+				var options = new Dictionary<string, IEnumerable<string>>()
+				{
+					{ "Game Discs", discs },
+				};
+
+				if (Platform.CurrentPlatform == PlatformType.Windows)
+				{
+					var installations = sources
+						.Where(s => s.Type == ModContent.SourceType.Install)
+						.Select(s => s.Title)
+						.Distinct();
+
+					options.Add("Digital Installs", installations);
+				}
 
 				Game.RunAfterTick(() =>
 				{
-					ShowList("Disc Content Not Found", "Please insert or mount one of the following discs and try again", discTitles);
+					ShowList("Game Content Not Found", "Please insert or install one of the following content sources:", options);
 					ShowBackRetry(DetectContentDisks);
 				});
 			}).Start();
@@ -351,7 +370,32 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 		}
 
-		bool PathIsDiscMount(string path, ModContent.ModSource source)
+		string FindSourcePath(ModContent.ModSource source, IEnumerable<string> volumes)
+		{
+			if (source.Type == ModContent.SourceType.Install)
+			{
+				if (source.RegistryKey == null)
+					return null;
+
+				if (Platform.CurrentPlatform != PlatformType.Windows)
+					return null;
+
+				var path = Microsoft.Win32.Registry.GetValue(source.RegistryKey, source.RegistryValue, null) as string;
+				if (path == null)
+					return null;
+
+				return IsValidSourcePath(path, source) ? path : null;
+			}
+
+			if (source.Type == ModContent.SourceType.Disc)
+				foreach (var volume in volumes)
+					if (IsValidSourcePath(volume, source))
+						return volume;
+
+			return null;
+		}
+
+		bool IsValidSourcePath(string path, ModContent.ModSource source)
 		{
 			try
 			{
@@ -419,6 +463,40 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var labelWidget = (LabelWidget)listTemplate.Clone();
 				labelWidget.GetText = () => item;
 				listPanel.AddChild(labelWidget);
+			}
+
+			primaryButton.Bounds.Y += listContainer.Bounds.Height - panel.Bounds.Height;
+			secondaryButton.Bounds.Y += listContainer.Bounds.Height - panel.Bounds.Height;
+			panel.Bounds.Y -= (listContainer.Bounds.Height - panel.Bounds.Height) / 2;
+			panel.Bounds.Height = listContainer.Bounds.Height;
+		}
+
+		void ShowList(string title, string message, Dictionary<string, IEnumerable<string>> groups)
+		{
+			visible = Mode.List;
+			titleLabel.Text = title;
+			listLabel.Text = message;
+
+			listPanel.RemoveChildren();
+
+			foreach (var kv in groups)
+			{
+				if (kv.Value.Any())
+				{
+					var groupTitle = kv.Key;
+					var headerWidget = listHeaderTemplate.Clone();
+					var headerTitleWidget = headerWidget.Get<LabelWidget>("LABEL");
+					headerTitleWidget.GetText = () => groupTitle;
+					listPanel.AddChild(headerWidget);
+				}
+
+				foreach (var i in kv.Value)
+				{
+					var item = i;
+					var labelWidget = (LabelWidget)listTemplate.Clone();
+					labelWidget.GetText = () => item;
+					listPanel.AddChild(labelWidget);
+				}
 			}
 
 			primaryButton.Bounds.Y += listContainer.Bounds.Height - panel.Bounds.Height;
