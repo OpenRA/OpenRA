@@ -300,7 +300,7 @@ naapwr:
 
 nahand:
 	Defaults:
-		Offset: -6, -30
+		Offset: -12,-30
 		UseTilesetCode: true
 	idle:
 		ShadowStart: 3
@@ -469,7 +469,7 @@ natech:
 
 natmpl:
 	Defaults:
-		Offset: -15, -39
+		Offset: -12,-42
 		UseTilesetCode: true
 	idle:
 		ShadowStart: 3
@@ -838,7 +838,7 @@ nalasr:
 
 nasam:
 	Defaults:
-		Offset: 2, -12
+		Offset: 0, -12
 		UseTilesetCode: true
 	idle:
 		ShadowStart: 3
@@ -923,7 +923,7 @@ napuls.nod:
 
 nastlh:
 	Defaults:
-		Offset: -16, -28
+		Offset: -12,-30
 		UseTilesetCode: true
 	idle:
 		ShadowStart: 3
@@ -1523,7 +1523,7 @@ namisl:
 
 gaplug:
 	Defaults:
-		Offset: 12, -28
+		Offset: 12,-30
 		UseTilesetCode: true
 	idle:
 		ShadowStart: 3
