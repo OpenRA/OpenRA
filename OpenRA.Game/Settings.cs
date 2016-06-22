@@ -76,8 +76,8 @@ namespace OpenRA
 		[Desc("Value in milliseconds when to terminate the game. Needs to be at least 10000 (10 s) to enable the timer.")]
 		public int TimeOut = 0;
 
-		[Desc("Disallow games where only one player plays with bots.")]
-		public bool DisableSinglePlayer = false;
+		[Desc("For dedicated servers only, controls whether a game can be started with just one human player in the lobby.")]
+		public bool EnableSingleplayer = false;
 
 		[Desc("Query map information from the Resource Center if they are not available locally.")]
 		public bool QueryMapRepository = true;
