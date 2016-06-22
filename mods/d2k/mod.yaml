@@ -207,15 +207,15 @@ ModContent:
 	Packages:
 		base: Base Game Files
 			TestFiles: ^Content/d2k/BLOXBASE.R8, ^Content/d2k/BLOXBAT.R8, ^Content/d2k/BLOXBGBS.R8, ^Content/d2k/BLOXICE.R8, ^Content/d2k/BLOXTREE.R8, ^Content/d2k/BLOXWAST.R8, ^Content/d2k/DATA.R8, ^Content/d2k/SOUND.RS, ^Content/d2k/PALETTE.BIN
-			Discs: d2k, d2k-linux
+			Sources: d2k, d2k-linux
 			Required: true
 			Download: basefiles
 		music: Game Music
 			TestFiles: ^Content/d2k/Music/AMBUSH.AUD
-			Discs: d2k, d2k-linux
+			Sources: d2k, d2k-linux
 		movies: Campaign Briefings
 			TestFiles: ^Content/d2k/Movies/A_BR01_E.VQA
-			Discs: d2k, d2k-linux
+			Sources: d2k, d2k-linux
 	Downloads:
 		basefiles: Base Content
 			MirrorList: http://www.openra.net/packages/d2k-103-mirrors.txt
@@ -481,7 +481,7 @@ ModContent:
 				^Content/d2k/GAMESFX/O_VSEL1.AUD: GAMESFX/O_VSEL1.AUD
 				^Content/d2k/GAMESFX/O_VSEL2.AUD: GAMESFX/O_VSEL2.AUD
 				^Content/d2k/GAMESFX/O_VSEL3.AUD: GAMESFX/O_VSEL3.AUD
-	Discs:
+	Sources:
 		d2k: Dune 2000 (English)
 			IDFiles:
 				MUSIC/AMBUSH.AUD: bd5926a56a83bc0e49f96037e1f909014ac0772a

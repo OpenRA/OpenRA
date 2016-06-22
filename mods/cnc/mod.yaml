@@ -228,22 +228,22 @@ ModContent:
 	Packages:
 		base: Base Game Files
 			TestFiles: ^Content/cnc/conquer.mix, ^Content/cnc/desert.mix, ^Content/cnc/sounds.mix, ^Content/cnc/speech.mix, ^Content/cnc/temperat.mix, ^Content/cnc/tempicnh.mix, ^Content/cnc/winter.mix
-			Discs: gdi95, gdi95-linux, nod95, nod95-linux
+			Sources: gdi95, gdi95-linux, nod95, nod95-linux
 			Required: true
 			Download: basefiles
 		music: Base Game Music
 			TestFiles: ^Content/cnc/scores.mix
-			Discs: gdi95, gdi95-linux, nod95, nod95-linux
+			Sources: gdi95, gdi95-linux, nod95, nod95-linux
 			Download: music
 		movies-gdi: GDI Campaign Briefings
 			TestFiles: ^Content/cnc/movies-gdi.mix
-			Discs: gdi95, gdi95-linux
+			Sources: gdi95, gdi95-linux
 		movies-nod: Nod Campaign Briefings
 			TestFiles: ^Content/cnc/movies-nod.mix
-			Discs: nod95, nod95-linux
+			Sources: nod95, nod95-linux
 		music-covertops: Covert Operations Music
 			TestFiles: ^Content/cnc/scores-covertops.mix
-			Discs: covertops, covertops-linux
+			Sources: covertops, covertops-linux
 	Downloads:
 		basefiles: Base Freeware Content
 			MirrorList: http://www.openra.net/packages/cnc-mirrors.txt
@@ -261,7 +261,7 @@ ModContent:
 			MirrorList: http://www.openra.net/packages/cnc-music-mirrors.txt
 			Extract:
 				^Content/cnc/scores.mix: scores.mix
-	Discs:
+	Sources:
 		gdi95: C&C Gold (GDI Disc, English)
 			IDFiles:
 				DISK.WAV: 8bef9a6687c0fe0afd57c6561df58fa6e64f145d

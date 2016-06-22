@@ -104,7 +104,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					.Where(v => v.DriveType == DriveType.CDRom && v.IsReady)
 					.Select(v => v.RootDirectory.FullName);
 
-				foreach (var kv in content.Discs)
+				foreach (var kv in content.Sources)
 				{
 					message = "Searching for " + kv.Value.Title;
 
@@ -113,7 +113,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						if (PathIsDiscMount(volume, kv.Value))
 						{
 							var packages = content.Packages.Values
-								.Where(p => p.Discs.Contains(kv.Key) && !p.IsInstalled())
+								.Where(p => p.Sources.Contains(kv.Key) && !p.IsInstalled())
 								.Select(p => p.Title);
 
 							// Ignore disc if content is already installed
@@ -133,8 +133,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				var discTitles = content.Packages.Values
 					.Where(p => !p.IsInstalled())
-					.SelectMany(p => p.Discs)
-					.Select(d => content.Discs[d].Title)
+					.SelectMany(p => p.Sources)
+					.Select(d => content.Sources[d].Title)
 					.Distinct();
 
 				Game.RunAfterTick(() =>
@@ -145,7 +145,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}).Start();
 		}
 
-		void InstallFromDisc(string path, ModContent.ModDisc disc)
+		void InstallFromDisc(string path, ModContent.ModSource modSource)
 		{
 			var message = "";
 			ShowProgressbar("Installing Content", () => message);
@@ -157,7 +157,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				try
 				{
-					foreach (var i in disc.Install)
+					foreach (var i in modSource.Install)
 					{
 						switch (i.Key)
 						{
@@ -236,7 +236,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					Game.RunAfterTick(() =>
 					{
 						ShowMessage("Installation Failed", "Refer to install.log in the logs directory for details.");
-						ShowBackRetry(() => InstallFromDisc(path, disc));
+						ShowBackRetry(() => InstallFromDisc(path, modSource));
 					});
 				}
 			}).Start();
@@ -351,11 +351,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 		}
 
-		bool PathIsDiscMount(string path, ModContent.ModDisc disc)
+		bool PathIsDiscMount(string path, ModContent.ModSource source)
 		{
 			try
 			{
-				foreach (var kv in disc.IDFiles)
+				foreach (var kv in source.IDFiles)
 				{
 					var filePath = Path.Combine(path, kv.Key);
 					if (!File.Exists(filePath))

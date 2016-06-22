@@ -233,22 +233,22 @@ ModContent:
 	Packages:
 		base: Base Game Files
 			TestFiles: ^Content/ra/allies.mix, ^Content/ra/conquer.mix, ^Content/ra/interior.mix, ^Content/ra/redalert.mix, ^Content/ra/russian.mix, ^Content/ra/snow.mix, ^Content/ra/sounds.mix, ^Content/ra/temperat.mix
-			Discs: allied, allied-linux, soviet, soviet-linux
+			Sources: allied, allied-linux, soviet, soviet-linux
 			Required: true
 			Download: basefiles
 		music: Base Game Music
 			TestFiles: ^Content/ra/scores.mix
-			Discs: allied, allied-linux, soviet, soviet-linux
+			Sources: allied, allied-linux, soviet, soviet-linux
 			Download: music
 		movies-allied: Allied Campaign Briefings
 			TestFiles: ^Content/ra/movies1.mix
-			Discs: allied, allied-linux
+			Sources: allied, allied-linux
 		movies-soviet: Soviet Campaign Briefings
 			TestFiles: ^Content/ra/movies2.mix
-			Discs: soviet, soviet-linux
+			Sources: soviet, soviet-linux
 		music-covertops: Counterstrike Music
 			TestFiles: ^Content/ra/scores-counterstrike.mix
-			Discs: counterstrike, counterstrike-linux
+			Sources: counterstrike, counterstrike-linux
 	Downloads:
 		basefiles: Base Freeware Content
 			MirrorList: http://www.openra.net/packages/ra-mirrors.txt
@@ -266,7 +266,7 @@ ModContent:
 			MirrorList: http://www.openra.net/packages/ra-music-mirrors.txt
 			Extract:
 				^Content/ra/scores.mix: scores.mix
-	Discs:
+	Sources:
 		allied: Red Alert 95 (Allied Disc, English)
 			IDFiles:
 				eahelp.GID: 13a8a4a1e7d9d6d893c38df5a39262c4689aeba5
