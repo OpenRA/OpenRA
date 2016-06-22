@@ -224,16 +224,16 @@ ColorValidator:
 ModContent:
 	InstallPromptMessage: Tiberian Dawn requires artwork and audio from the original game.\n\nQuick Install will automatically download this content (without music\nor videos) from a mirror of the 2007 C&C Gold freeware release.\n\nAdvanced Install includes options for downloading the music and for\ncopying the videos and other content from an original game disc.
 	QuickDownload: basefiles
-	HeaderMessage: The original game content may be copied from an original game disc,\nor downloaded from an online mirror of the 2007 freeware release.
+	HeaderMessage: Game content may be extracted from the original game discs or an\nexisting digital install. OpenRA can also download the base game\nfiles from an online mirror of the 2007 freeware release of C&C.
 	Packages:
 		base: Base Game Files
 			TestFiles: ^Content/cnc/conquer.mix, ^Content/cnc/desert.mix, ^Content/cnc/sounds.mix, ^Content/cnc/speech.mix, ^Content/cnc/temperat.mix, ^Content/cnc/tempicnh.mix, ^Content/cnc/winter.mix
-			Sources: gdi95, gdi95-linux, nod95, nod95-linux
+			Sources: gdi95, gdi95-linux, nod95, nod95-linux, origin
 			Required: true
 			Download: basefiles
 		music: Base Game Music
 			TestFiles: ^Content/cnc/scores.mix
-			Sources: gdi95, gdi95-linux, nod95, nod95-linux
+			Sources: gdi95, gdi95-linux, nod95, nod95-linux, origin
 			Download: music
 		movies-gdi: GDI Campaign Briefings
 			TestFiles: ^Content/cnc/movies-gdi.mix
@@ -243,7 +243,7 @@ ModContent:
 			Sources: nod95, nod95-linux
 		music-covertops: Covert Operations Music
 			TestFiles: ^Content/cnc/scores-covertops.mix
-			Sources: covertops, covertops-linux
+			Sources: covertops, covertops-linux, origin
 	Downloads:
 		basefiles: Base Freeware Content
 			MirrorList: http://www.openra.net/packages/cnc-mirrors.txt
@@ -372,3 +372,23 @@ ModContent:
 			Install:
 				copy: .
 					^Content/cnc/scores-covertops.mix: scores.mix
+		origin: C&C The Ultimate Collection (Origin version, English)
+			Type: Install
+			RegistryKey: HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\EA Games\CNC and The Covert Operations
+			RegistryValue: Install Dir
+			IDFiles:
+				CNC95Launcher.exe: 1d711adf09ac08738b2599b3092a1b448169b32a
+				CONQUER.MIX: 833e02a09aae694659eb312d3838367f681d1b30
+			Install:
+				copy: .
+					^Content/cnc/conquer.mix: CONQUER.MIX
+					^Content/cnc/desert.mix: DESERT.MIX
+					^Content/cnc/general.mix: GENERAL.MIX
+					^Content/cnc/scores.mix: SCORES.MIX
+					^Content/cnc/sounds.mix: SOUNDS.MIX
+					^Content/cnc/temperat.mix: TEMPERAT.MIX
+					^Content/cnc/winter.mix: WINTER.MIX
+					^Content/cnc/speech.mix: SPEECH.MIX
+					^Content/cnc/tempicnh.mix: TEMPICNH.MIX
+					^Content/cnc/transit.mix: TRANSIT.MIX
+					^Content/cnc/scores-covertops.mix: covert/SCORES.MIX
