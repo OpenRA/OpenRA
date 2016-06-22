@@ -11,7 +11,7 @@
 
 using System.IO;
 
-namespace OpenRA.FileFormats
+namespace OpenRA.Mods.Common.AudioLoaders
 {
 	struct ImaAdpcmChunk
 	{

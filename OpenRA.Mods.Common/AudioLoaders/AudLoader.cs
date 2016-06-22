@@ -12,7 +12,7 @@
 using System;
 using System.IO;
 
-namespace OpenRA.FileFormats
+namespace OpenRA.Mods.Common.AudioLoaders
 {
 	[Flags]
 	enum SoundFlags

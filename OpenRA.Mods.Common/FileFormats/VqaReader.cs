@@ -12,6 +12,7 @@
 using System;
 using System.IO;
 using OpenRA.FileFormats;
+using OpenRA.Mods.Common.AudioLoaders;
 
 namespace OpenRA.Mods.Common.FileFormats
 {

@@ -146,6 +146,10 @@
     <Compile Include="AI\States\ProtectionStates.cs" />
     <Compile Include="AI\States\StateBase.cs" />
     <Compile Include="AI\SupportPowerDecision.cs" />
+    <Compile Include="AudioLoaders\AudLoader.cs" />
+    <Compile Include="AudioLoaders\ImaAdpcmLoader.cs" />
+    <Compile Include="AudioLoaders\VocLoader.cs" />
+    <Compile Include="AudioLoaders\WavLoader.cs" />
     <Compile Include="Effects\Beacon.cs" />
     <Compile Include="Effects\Contrail.cs" />
     <Compile Include="Effects\ContrailFader.cs" />
