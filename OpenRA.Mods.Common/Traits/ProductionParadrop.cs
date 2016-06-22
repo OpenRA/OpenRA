@@ -53,9 +53,8 @@ namespace OpenRA.Mods.Common.Traits
 
 			// Start a fixed distance away: the width of the map.
 			// This makes the production timing independent of spawnpoint
-			var dropPos = self.Location + exit.ExitCell;
-			var startPos = dropPos + new CVec(owner.World.Map.Bounds.Width, 0);
-			var endPos = new CPos(owner.World.Map.Bounds.Left - 5, dropPos.Y);
+			var startPos = self.Location + new CVec(owner.World.Map.Bounds.Width, 0);
+			var endPos = new CPos(owner.World.Map.Bounds.Left - 5, self.Location.Y);
 
 			foreach (var notify in self.TraitsImplementing<INotifyDelivery>())
 				notify.IncomingDelivery(self);
@@ -76,7 +75,7 @@ namespace OpenRA.Mods.Common.Traits
 					new FacingInit(64)
 				});
 
-				actor.QueueActivity(new Fly(actor, Target.FromCell(w, dropPos)));
+				actor.QueueActivity(new Fly(actor, Target.FromActor(self)));
 				actor.QueueActivity(new CallFunc(() =>
 				{
 					if (!self.IsInWorld || self.IsDead)
