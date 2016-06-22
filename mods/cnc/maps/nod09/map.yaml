@@ -771,11 +771,11 @@ Actors:
 		Owner: GDI
 	GDIBuilding4: atwr
 		Owner: GDI
-		Location: 45,6
+		Location: 45,7
 		TurretFacing: 92
 	GDIBuilding5: atwr
 		Owner: GDI
-		Location: 45,10
+		Location: 45,11
 		TurretFacing: 92
 	GDIBuilding6: silo
 		Location: 59,13
@@ -836,7 +836,7 @@ Actors:
 		Location: 49,4
 		Owner: GDI
 	GDIWeap: weap
-		Location: 51,6
+		Location: 51,7
 		Owner: GDI
 	Gunboat: boat
 		Location: 60,58

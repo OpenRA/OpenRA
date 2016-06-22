@@ -213,7 +213,7 @@ Actors:
 		Location: 78,61
 		Owner: Neutral
 	Actor54: agun
-		Location: 73,45
+		Location: 73,46
 		Owner: Greece
 	Actor55: gun
 		Location: 69,49
@@ -261,7 +261,7 @@ Actors:
 		Owner: Greece
 		Facing: 160
 	Actor69: agun
-		Location: 68,46
+		Location: 68,47
 		Owner: Greece
 	Actor70: proc
 		Location: 63,42

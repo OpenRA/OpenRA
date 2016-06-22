@@ -370,7 +370,7 @@ Actors:
 		Location: 18,14
 		Owner: GDI
 	Factory: weap
-		Location: 26,13
+		Location: 26,14
 		Owner: GDI
 
 Rules: cnc|rules/campaign-maprules.yaml, cnc|rules/campaign-tooltips.yaml, cnc|rules/campaign-palettes.yaml, rules.yaml

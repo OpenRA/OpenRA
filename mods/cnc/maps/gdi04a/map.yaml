@@ -414,7 +414,7 @@ Actors:
 		Facing: 192
 		SubCell: 3
 	HandOfNod: hand
-		Location: 30,52
+		Location: 30,53
 		Owner: Nod
 	Hunter1: bggy
 		Location: 35,43

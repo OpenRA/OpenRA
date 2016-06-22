@@ -1133,7 +1133,7 @@ Actors:
 		Location: 81,77
 		Owner: USSR
 	USSRAdvancedPowerPlant: apwr
-		Location: 81,80
+		Location: 81,81
 		Owner: USSR
 	USSRRadarDome: dome
 		Location: 78,80

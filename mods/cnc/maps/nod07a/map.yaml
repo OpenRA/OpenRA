@@ -542,7 +542,7 @@ Actors:
 		Owner: Neutral
 		Location: 30,60
 	GDIWeap: weap
-		Location: 27,54
+		Location: 27,55
 		Owner: GDI
 	NodBuilding1: fact
 		Location: 54,11

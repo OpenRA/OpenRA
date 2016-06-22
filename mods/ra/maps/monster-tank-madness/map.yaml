@@ -1403,10 +1403,10 @@ Actors:
 		Location: 76,37
 		Owner: BadGuy
 	Actor439: apwr
-		Location: 98,32
+		Location: 98,33
 		Owner: BadGuy
 	Actor440: apwr
-		Location: 94,34
+		Location: 94,35
 		Owner: BadGuy
 	Actor441: barr
 		Location: 97,40
@@ -1424,13 +1424,13 @@ Actors:
 		Location: 86,31
 		Owner: BadGuy
 	Actor447: tsla
-		Location: 93,44
+		Location: 93,45
 		Owner: BadGuy
 	Actor448: tsla
-		Location: 80,44
+		Location: 80,45
 		Owner: BadGuy
 	Actor449: apwr
-		Location: 95,31
+		Location: 95,32
 		Owner: BadGuy
 	Actor450: spen
 		Location: 102,47
@@ -1461,16 +1461,16 @@ Actors:
 		Location: 80,74
 		Owner: USSR
 	Actor459: apwr
-		Location: 73,84
+		Location: 73,85
 		Owner: USSR
 	Actor460: apwr
-		Location: 89,75
+		Location: 89,76
 		Owner: USSR
 	Actor461: apwr
-		Location: 69,86
+		Location: 69,87
 		Owner: USSR
 	Actor462: apwr
-		Location: 86,76
+		Location: 86,77
 		Owner: USSR
 	Actor463: barr
 		Location: 66,76
@@ -1479,16 +1479,16 @@ Actors:
 		Location: 91,86
 		Owner: USSR
 	Actor465: tsla
-		Location: 78,73
+		Location: 78,74
 		Owner: USSR
 	Actor466: tsla
-		Location: 83,73
+		Location: 83,74
 		Owner: USSR
 	Actor467: tsla
-		Location: 62,75
+		Location: 62,76
 		Owner: USSR
 	Actor468: tsla
-		Location: 62,86
+		Location: 62,87
 		Owner: USSR
 	Actor469: weap
 		Location: 81,82
@@ -1515,7 +1515,7 @@ Actors:
 		Location: 78,87
 		Owner: USSR
 	Actor477: apwr
-		Location: 89,78
+		Location: 89,79
 		Owner: USSR
 	Actor480: powr
 		Location: 34,61
@@ -1599,11 +1599,11 @@ Actors:
 		Owner: Outpost
 		Health: 33
 	Actor511: apwr
-		Location: 26,20
+		Location: 26,21
 		Owner: Outpost
 		Health: 25
 	Actor512: apwr
-		Location: 23,23
+		Location: 23,24
 		Owner: Outpost
 		Health: 14
 	Actor515: v02
@@ -1628,7 +1628,7 @@ Actors:
 		Location: 21,99
 		Owner: Neutral
 	Actor522: apwr
-		Location: 72,87
+		Location: 72,88
 		Owner: USSR
 	Actor523: v02
 		Location: 42,47

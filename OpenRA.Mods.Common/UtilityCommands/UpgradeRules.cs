@@ -92,7 +92,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			catch { }
 		}
 
-		internal static void UpgradeActorRules(int engineVersion, ref List<MiniYamlNode> nodes, MiniYamlNode parent, int depth)
+		internal static void UpgradeActorRules(ModData modData, int engineVersion, ref List<MiniYamlNode> nodes, MiniYamlNode parent, int depth)
 		{
 			var addNodes = new List<MiniYamlNode>();
 
@@ -185,14 +185,14 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
-				UpgradeActorRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
+				UpgradeActorRules(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 
 			foreach (var a in addNodes)
 				nodes.Add(a);
 		}
 
-		internal static void UpgradeWeaponRules(int engineVersion, ref List<MiniYamlNode> nodes, MiniYamlNode parent, int depth)
+		internal static void UpgradeWeaponRules(ModData modData, int engineVersion, ref List<MiniYamlNode> nodes, MiniYamlNode parent, int depth)
 		{
 			foreach (var node in nodes)
 			{
@@ -240,61 +240,83 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						node.Key = "Speed";
 				}
 
-				UpgradeWeaponRules(engineVersion, ref node.Value.Nodes, node, depth + 1);
+				UpgradeWeaponRules(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}
 
-		internal static void UpgradeTileset(int engineVersion, ref List<MiniYamlNode> nodes, MiniYamlNode parent, int depth)
+		internal static void UpgradeTileset(ModData modData, int engineVersion, ref List<MiniYamlNode> nodes, MiniYamlNode parent, int depth)
 		{
 			foreach (var node in nodes)
 			{
 				// Add rules here
-				UpgradeTileset(engineVersion, ref node.Value.Nodes, node, depth + 1);
+				UpgradeTileset(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}
 
-		internal static void UpgradeCursors(int engineVersion, ref List<MiniYamlNode> nodes, MiniYamlNode parent, int depth)
+		internal static void UpgradeCursors(ModData modData, int engineVersion, ref List<MiniYamlNode> nodes, MiniYamlNode parent, int depth)
 		{
 			foreach (var node in nodes)
 			{
 				// Add rules here
-				UpgradeCursors(engineVersion, ref node.Value.Nodes, node, depth + 1);
+				UpgradeCursors(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}
 
-		internal static void UpgradePlayers(int engineVersion, ref List<MiniYamlNode> nodes, MiniYamlNode parent, int depth)
+		internal static void UpgradePlayers(ModData modData, int engineVersion, ref List<MiniYamlNode> nodes, MiniYamlNode parent, int depth)
 		{
 			foreach (var node in nodes)
 			{
 				// Add rules here
-				UpgradePlayers(engineVersion, ref node.Value.Nodes, node, depth + 1);
+				UpgradePlayers(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}
 
-		internal static void UpgradeChromeMetrics(int engineVersion, ref List<MiniYamlNode> nodes, MiniYamlNode parent, int depth)
+		internal static void UpgradeChromeMetrics(ModData modData, int engineVersion, ref List<MiniYamlNode> nodes, MiniYamlNode parent, int depth)
 		{
 			foreach (var node in nodes)
 			{
 				// Add rules here
-				UpgradeChromeMetrics(engineVersion, ref node.Value.Nodes, node, depth + 1);
+				UpgradeChromeMetrics(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}
 
-		internal static void UpgradeChromeLayout(int engineVersion, ref List<MiniYamlNode> nodes, MiniYamlNode parent, int depth)
+		internal static void UpgradeChromeLayout(ModData modData, int engineVersion, ref List<MiniYamlNode> nodes, MiniYamlNode parent, int depth)
 		{
 			foreach (var node in nodes)
 			{
 				// Add rules here
-				UpgradeChromeLayout(engineVersion, ref node.Value.Nodes, node, depth + 1);
+				UpgradeChromeLayout(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}
 
-		internal static void UpgradeActors(int engineVersion, ref List<MiniYamlNode> nodes, MiniYamlNode parent, int depth)
+		internal static void ModifyCPos(ref string input, CVec vector)
+		{
+			var oldCPos = FieldLoader.GetValue<CPos>("(value)", input);
+			var newCPos = oldCPos + vector;
+			input = newCPos.ToString();
+		}
+
+		internal static void UpgradeActors(ModData modData, int engineVersion, ref List<MiniYamlNode> nodes, MiniYamlNode parent, int depth)
 		{
 			foreach (var node in nodes)
 			{
-				// Add rules here
-				UpgradeActors(engineVersion, ref node.Value.Nodes, node, depth + 1);
+				// Fix RA building footprints to not use _ when it's not necessary
+				if (engineVersion < 20160619 && modData.Manifest.Mod.Id == "ra" && depth == 1)
+				{
+					var buildings = new List<string>() { "tsla", "gap", "agun", "apwr", "fapw" };
+					if (buildings.Contains(parent.Value.Value) && node.Key == "Location")
+						ModifyCPos(ref node.Value.Value, new CVec(0, 1));
+				}
+
+				// Fix TD building footprints to not use _ when it's not necessary
+				if (engineVersion < 20160619 && modData.Manifest.Mod.Id == "cnc" && depth == 1)
+				{
+					var buildings = new List<string>() { "atwr", "obli", "tmpl", "weap", "hand" };
+					if (buildings.Contains(parent.Value.Value) && node.Key == "Location")
+						ModifyCPos(ref node.Value.Value, new CVec(0, 1));
+				}
+
+				UpgradeActors(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}
 

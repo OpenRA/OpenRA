@@ -551,7 +551,7 @@ Actors:
 		Location: 40,18
 		Owner: Nod
 	Hand1: hand
-		Location: 41,21
+		Location: 41,22
 		Owner: Nod
 	Nuke2: nuke
 		Location: 47,18
@@ -576,7 +576,7 @@ Actors:
 		Owner: AbandonedBase
 		Facing: 64
 	GdiWeap1: weap
-		Location: 35,51
+		Location: 35,52
 		Owner: AbandonedBase
 		Health: 41
 	GdiNuke2: nuke

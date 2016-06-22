@@ -81,7 +81,7 @@ Actors:
 		Location: 56,44
 		Owner: GDI
 	Actor17: atwr
-		Location: 55,41
+		Location: 55,42
 		Owner: GDI
 	Actor18: nuke
 		Location: 70,45
@@ -108,7 +108,7 @@ Actors:
 		Location: 64,45
 		Owner: GDI
 	Actor26: atwr
-		Location: 66,41
+		Location: 66,42
 		Owner: GDI
 	Actor27: tc02
 		Location: 65,42
@@ -165,7 +165,7 @@ Actors:
 		Location: 79,5
 		Owner: Nod
 	Actor49: hand
-		Location: 15,7
+		Location: 15,8
 		Owner: Nod
 	Actor50: cycl
 		Location: 13,11

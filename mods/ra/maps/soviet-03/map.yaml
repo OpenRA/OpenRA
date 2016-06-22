@@ -967,10 +967,10 @@ Actors:
 		Location: 79,32
 		Owner: Soviet
 	BaseBuilding3: apwr
-		Location: 71,22
+		Location: 71,23
 		Owner: Soviet
 	BaseBuilding4: apwr
-		Location: 86,26
+		Location: 86,27
 		Owner: Soviet
 	BaseBuilding5: barl
 		Location: 74,24

@@ -920,7 +920,7 @@ Actors:
 		Location: 52,39
 		Owner: GDI
 	GDIWeap: weap
-		Location: 55,38
+		Location: 55,39
 		Owner: GDI
 	ReinforcementsBikesRally: waypoint
 		Owner: Neutral

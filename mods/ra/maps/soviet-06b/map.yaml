@@ -433,7 +433,7 @@ Actors:
 		Owner: Neutral
 	AGun: agun
 		Owner: Greece
-		Location: 69,48
+		Location: 69,49
 		TurretFacing: 92
 	APCWaypoint1: waypoint
 		Location: 39,62
@@ -442,10 +442,10 @@ Actors:
 		Location: 46,66
 		Owner: Neutral
 	Apwr: apwr
-		Location: 76,40
+		Location: 76,41
 		Owner: Greece
 	Apwr2: apwr
-		Location: 77,44
+		Location: 77,45
 		Owner: Greece
 	AttackWaypoint1: waypoint
 		Owner: Neutral

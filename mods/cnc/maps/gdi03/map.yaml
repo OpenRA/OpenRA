@@ -379,7 +379,7 @@ Actors:
 		Location: 29,26
 		Owner: Nod
 	NodBarracks: hand
-		Location: 24,26
+		Location: 24,27
 		Owner: Nod
 	Actor112: silo
 		Location: 33,26

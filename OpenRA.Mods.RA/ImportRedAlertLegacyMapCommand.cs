@@ -126,6 +126,17 @@ namespace OpenRA.Mods.RA.UtilityCommands
 			return input.ToLowerInvariant();
 		}
 
+		public override CPos ParseActorLocation(string input, int loc)
+		{
+			var newLoc = new CPos(loc % MapSize, loc / MapSize);
+			var vectorDown = new CVec(0, 1);
+
+			if (input == "tsla" || input == "agun" || input == "gap" || input == "apwr" || input == "iron")
+				newLoc += vectorDown;
+
+			return newLoc;
+		}
+
 		public override void LoadPlayer(IniFile file, string section)
 		{
 			string color;

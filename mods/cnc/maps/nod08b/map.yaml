@@ -644,7 +644,7 @@ Actors:
 		Owner: Neutral
 		Location: 48,27
 	GDIBuilding1: atwr
-		Location: 11,47
+		Location: 11,48
 		Owner: GDI
 	GDIBuilding2: gtwr
 		Location: 31,49
@@ -719,7 +719,7 @@ Actors:
 		Location: 12,52
 		Facing: 92
 	GDIWeap: weap
-		Location: 8,47
+		Location: 8,48
 		Owner: GDI
 	Gunboat1: boat
 		Location: 31,59
@@ -749,7 +749,7 @@ Actors:
 		Owner: NodBase
 		Health: 39
 	NodHand: hand
-		Location: 58,2
+		Location: 58,3
 		Owner: NodBase
 		Health: 31
 	NodNuke: nuke

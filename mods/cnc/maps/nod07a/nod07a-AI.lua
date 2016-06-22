@@ -16,7 +16,7 @@ BaseNuke1 = { type = "nuke", pos = CPos.New(16, 56), cost = 500, exists = true }
 BaseNuke2 = { type = "nuke", pos = CPos.New(18, 57), cost = 500, exists = true }
 BaseNuke3 = { type = "nuke", pos = CPos.New(27, 51), cost = 500, exists = true }
 InfantryProduction = { type = "pyle", pos = CPos.New(18, 54), cost = 500, exists = true }
-VehicleProduction = { type = "weap", pos = CPos.New(27, 54), cost = 2000, exists = true }
+VehicleProduction = { type = "weap", pos = CPos.New(27, 55), cost = 2000, exists = true }
 
 BaseBuildings = { BaseProc, BaseNuke1, BaseNuke2, BaseNuke3, InfantryProduction, VehicleProduction }
 

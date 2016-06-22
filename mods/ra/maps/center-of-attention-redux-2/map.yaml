@@ -571,7 +571,7 @@ Actors:
 		Location: 65,66
 		Owner: Creeps
 	Actor178: agun
-		Location: 67,69
+		Location: 67,70
 		Owner: Creeps
 	Actor180: v2rl
 		Location: 73,65
@@ -778,7 +778,7 @@ Actors:
 		Location: 64,62
 		Owner: Neutral
 	Actor174: agun
-		Location: 67,61
+		Location: 67,62
 		Owner: Creeps
 	Actor248: brl3
 		Location: 71,63
@@ -874,10 +874,10 @@ Actors:
 		Location: 67,60
 		Owner: Creeps
 	Actor233: apwr
-		Location: 121,91
+		Location: 121,92
 		Owner: Creeps
 	Actor232: apwr
-		Location: 121,96
+		Location: 121,97
 		Owner: Creeps
 
 Rules: rules.yaml

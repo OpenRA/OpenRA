@@ -25,9 +25,9 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			return args.Length >= 3;
 		}
 
-		delegate void UpgradeAction(int engineVersion, ref List<MiniYamlNode> nodes, MiniYamlNode parent, int depth);
+		delegate void UpgradeAction(ModData modData, int engineVersion, ref List<MiniYamlNode> nodes, MiniYamlNode parent, int depth);
 
-		static void ProcessYaml(Map map, MiniYaml yaml, int engineDate, UpgradeAction processYaml)
+		static void ProcessYaml(ModData modData, Map map, MiniYaml yaml, int engineDate, UpgradeAction processYaml)
 		{
 			if (yaml == null)
 				return;
@@ -38,12 +38,12 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			    foreach (var filename in files)
 			    {
 			        var fileNodes = MiniYaml.FromStream(map.Package.GetStream(filename), filename);
-					processYaml(engineDate, ref fileNodes, null, 0);
+					processYaml(modData, engineDate, ref fileNodes, null, 0);
 			        ((IReadWritePackage)map.Package).Update(filename, Encoding.ASCII.GetBytes(fileNodes.WriteToString()));
 			    }
 			}
 
-			processYaml(engineDate, ref yaml.Nodes, null, 1);
+			processYaml(modData, engineDate, ref yaml.Nodes, null, 1);
 		}
 
 		public static void UpgradeMap(ModData modData, IReadWritePackage package, int engineDate)
@@ -58,10 +58,10 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			}
 
 			var map = new Map(modData, package);
-			ProcessYaml(map, map.WeaponDefinitions, engineDate, UpgradeRules.UpgradeWeaponRules);
-			ProcessYaml(map, map.RuleDefinitions, engineDate, UpgradeRules.UpgradeActorRules);
-			UpgradeRules.UpgradePlayers(engineDate, ref map.PlayerDefinitions, null, 0);
-			UpgradeRules.UpgradeActors(engineDate, ref map.ActorDefinitions, null, 0);
+			ProcessYaml(modData, map, map.WeaponDefinitions, engineDate, UpgradeRules.UpgradeWeaponRules);
+			ProcessYaml(modData, map, map.RuleDefinitions, engineDate, UpgradeRules.UpgradeActorRules);
+			UpgradeRules.UpgradePlayers(modData, engineDate, ref map.PlayerDefinitions, null, 0);
+			UpgradeRules.UpgradeActors(modData, engineDate, ref map.ActorDefinitions, null, 0);
 			map.Save(package);
 		}
 

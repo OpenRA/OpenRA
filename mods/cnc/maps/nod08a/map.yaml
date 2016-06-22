@@ -529,7 +529,7 @@ Actors:
 		Owner: GDI
 	GDIBuilding9: atwr
 		Owner: GDI
-		Location: 47,19
+		Location: 47,20
 		TurretFacing: 92
 	GDICYard: fact
 		Location: 59,13
@@ -569,7 +569,7 @@ Actors:
 		Location: 53,14
 		Owner: GDI
 	GDIWeap: weap
-		Location: 48,12
+		Location: 48,13
 		Owner: GDI
 	MoneyCrate: MoneyCrate
 		Owner: Neutral
@@ -579,7 +579,7 @@ Actors:
 		Owner: NodBase
 		Health: 37
 	NodHand: hand
-		Location: 59,55
+		Location: 59,56
 		Owner: NodBase
 		Health: 45
 	NodNuke: nuke

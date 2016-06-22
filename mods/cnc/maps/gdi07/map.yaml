@@ -701,7 +701,7 @@ Actors:
 		Location: 46,20
 		Owner: Nod
 	handofnod: hand
-		Location: 44,12
+		Location: 44,13
 		Owner: Nod
 	Actor219: silo
 		Location: 44,16
