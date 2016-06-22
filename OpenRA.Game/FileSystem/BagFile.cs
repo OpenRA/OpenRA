@@ -68,7 +68,7 @@ namespace OpenRA.FileSystem
 				waveHeaderMemoryStream.Write(Encoding.ASCII.GetBytes("WAVE"));
 				waveHeaderMemoryStream.Write(Encoding.ASCII.GetBytes("fmt "));
 				waveHeaderMemoryStream.Write(BitConverter.GetBytes(16));
-				waveHeaderMemoryStream.Write(BitConverter.GetBytes((short)WavReader.WaveType.Pcm));
+				waveHeaderMemoryStream.Write(BitConverter.GetBytes((short)1));
 				waveHeaderMemoryStream.Write(BitConverter.GetBytes((short)channels));
 				waveHeaderMemoryStream.Write(BitConverter.GetBytes(entry.SampleRate));
 				waveHeaderMemoryStream.Write(BitConverter.GetBytes(2 * channels * entry.SampleRate));
@@ -90,7 +90,7 @@ namespace OpenRA.FileSystem
 				waveHeaderMemoryStream.Write(Encoding.ASCII.GetBytes("WAVE"));
 				waveHeaderMemoryStream.Write(Encoding.ASCII.GetBytes("fmt "));
 				waveHeaderMemoryStream.Write(BitConverter.GetBytes(20));
-				waveHeaderMemoryStream.Write(BitConverter.GetBytes((short)WavReader.WaveType.ImaAdpcm));
+				waveHeaderMemoryStream.Write(BitConverter.GetBytes((short)17));
 				waveHeaderMemoryStream.Write(BitConverter.GetBytes((short)channels));
 				waveHeaderMemoryStream.Write(BitConverter.GetBytes(entry.SampleRate));
 				waveHeaderMemoryStream.Write(BitConverter.GetBytes(bytesPerSec));
