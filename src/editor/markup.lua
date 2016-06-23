@@ -108,7 +108,7 @@ local function ismarkup (tx)
     local s,e,cap
     local qsep = q(sep)
     local nonsep = ("[^%s]"):format(qsep)
-    local nonspace = ("[^%s]"):format(qsep.."%s")
+    local nonspace = "[^%s]"
     if sep == MD_MARK_HEAD then
       -- always search from the start of the line
       -- [%w%p] set is needed to avoid continuing this markup to the next line
@@ -119,10 +119,10 @@ local function ismarkup (tx)
         "^(%b"..MD_MARK_LINK..MD_MARK_LINZ
         .."%b"..MD_MARK_LINA..MD_MARK_LINT..")", st)
     elseif markup[sep] then
-      -- try 2+ characters between separators first
-      -- if not found, try a single character
-      s,e,cap = string.find(tx,"^("..qsep..nonspace..nonsep.."-"..nonspace..qsep..")", st)
-      if not s then s,e,cap = string.find(tx,"^("..qsep..nonspace..qsep..")", st) end
+      -- try a single character first, then 2+ characters between separators;
+      -- this is to handle "`5` `6`" as two sequences, not one.
+      s,e,cap = string.find(tx,"^("..qsep..nonspace..qsep..")".."%f"..marksep, st)
+      if not s then s,e,cap = string.find(tx,"^("..qsep..nonspace..".-"..nonspace..qsep..")".."%f"..marksep, st) end
     end
     if s and -- selected markup is surrounded by spaces or punctuation marks
       (s == 1   or tx:sub(s-1, s-1):match(marksep)) and
