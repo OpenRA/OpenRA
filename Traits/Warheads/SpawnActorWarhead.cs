@@ -57,7 +57,8 @@ namespace OpenRA.Mods.AS.Warheads
 				{
 					if (unit.Trait<IPositionable>().CanEnterCell(cell.Current))
 					{
-						var pos = firedBy.World.Map.CenterOfCell(cell.Current) + new WVec(0, 0, target.CenterPosition.Z);
+						var cellpos = firedBy.World.Map.CenterOfCell(cell.Current);
+						var pos = new WPos(cellpos.X, cellpos.Y, target.CenterPosition.Z);
 						firedBy.World.AddFrameEndTask(w =>
 						{
 							w.Add(unit);
