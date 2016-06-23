@@ -11,6 +11,7 @@
 
 using System;
 using System.IO;
+using OpenRA.Mods.Common.FileFormats;
 
 namespace OpenRA.Mods.Common.AudioLoaders
 {
@@ -220,7 +221,7 @@ namespace OpenRA.Mods.Common.AudioLoaders
 					{
 						// Decode 4 bytes (to 16 bytes of output) per channel
 						var chunk = s.ReadBytes(4);
-						var decoded = ImaAdpcmLoader.LoadImaAdpcmSound(chunk, ref index[c], ref predictor[c]);
+						var decoded = ImaAdpcmReader.LoadImaAdpcmSound(chunk, ref index[c], ref predictor[c]);
 
 						// Interleave output, one sample per channel
 						var outOffsetChannel = outOffset + (2 * c);
