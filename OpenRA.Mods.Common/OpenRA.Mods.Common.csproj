@@ -729,6 +729,7 @@
     <Compile Include="Traits\Render\WithIdleAnimation.cs" />
     <Compile Include="FileFormats\AudReader.cs" />
     <Compile Include="FileFormats\ImaAdpcmReader.cs" />
+    <Compile Include="FileFormats\WavReader.cs" />
     <Compile Include="FileFormats\VqaReader.cs" />
     <Compile Include="FileFormats\LCWCompression.cs" />
     <Compile Include="FileFormats\XORDeltaCompression.cs" />
