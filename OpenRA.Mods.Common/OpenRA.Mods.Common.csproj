@@ -728,6 +728,7 @@
     <Compile Include="Traits\World\EditorSelectionLayer.cs" />
     <Compile Include="Graphics\DetectionCircleRenderable.cs" />
     <Compile Include="Traits\Render\WithIdleAnimation.cs" />
+    <Compile Include="FileFormats\AudReader.cs" />
     <Compile Include="FileFormats\VqaReader.cs" />
     <Compile Include="FileFormats\LCWCompression.cs" />
     <Compile Include="FileFormats\XORDeltaCompression.cs" />
