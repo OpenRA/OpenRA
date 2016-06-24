@@ -185,6 +185,20 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				if (engineVersion < 20160624 && depth == 3 && (parent.Key.StartsWith("BuildingFractions") || parent.Key.StartsWith("UnitsToBuild")))
+				{
+					var percentage = FieldLoader.GetValue<float>(node.Key, node.Value.Value);
+
+					// Convert to int percentage and ensure it doesn't round 15% down to 14 etc. due to float precision inaccuracies
+					var newValue = (int)(percentage * (100f + 0.002f));
+
+					// If the actor is listed, we assume that a 0 is not intentional but caused by a very low original value or rounding error
+					if (newValue == 0)
+						newValue = 1;
+
+					node.Value.Value = newValue.ToString();
+				}
+
 				UpgradeActorRules(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 

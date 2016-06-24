@@ -142,13 +142,13 @@ namespace OpenRA.Mods.Common.AI
 		string IBotInfo.Name { get { return Name; } }
 
 		[Desc("What units to the AI should build.", "What % of the total army must be this type of unit.")]
-		public readonly Dictionary<string, float> UnitsToBuild = null;
+		public readonly Dictionary<string, int> UnitsToBuild = null;
 
 		[Desc("What units should the AI have a maximum limit to train.")]
 		public readonly Dictionary<string, int> UnitLimits = null;
 
 		[Desc("What buildings to the AI should build.", "What % of the total base must be this type of building.")]
-		public readonly Dictionary<string, float> BuildingFractions = null;
+		public readonly Dictionary<string, int> BuildingFractions = null;
 
 		[Desc("Tells the AI what unit types fall under the same common name. Only supported entry is Mcv.")]
 		[FieldLoader.LoadUsing("LoadUnitCategories", true)]
