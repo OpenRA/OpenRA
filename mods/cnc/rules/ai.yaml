@@ -43,7 +43,6 @@ Player:
 			sam: 7
 			eye: 1
 			tmpl: 1
-			silo: 1
 			fix: 1
 			hpad: 2
 		UnitsToBuild:
@@ -165,7 +164,6 @@ Player:
 			eye: 1
 			tmpl: 1
 			sam: 7
-			silo: 1
 			fix: 1
 		UnitsToBuild:
 			e1: 30
@@ -286,7 +284,6 @@ Player:
 			eye: 1
 			tmpl: 1
 			sam: 7
-			silo: 1
 			fix: 1
 		UnitsToBuild:
 			e1: 30
