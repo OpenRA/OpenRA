@@ -281,41 +281,13 @@ function SettingsRestorePackage(package)
   return outtab
 end
 
-local function plaindump(val, opts, done)
-  local keyignore = opts and opts.keyignore or {}
-  local final = done == nil
-  opts, done = opts or {}, done or {}
-  local t = type(val)
-  if t == "table" then
-    done[#done+1] = '{'
-    done[#done+1] = ''
-    for key, value in pairs (val) do
-      if not keyignore[key] then
-        done[#done+1] = '['
-        plaindump(key, opts, done)
-        done[#done+1] = ']='
-        plaindump(value, opts, done)
-        done[#done+1] = ","
-      end
-    end
-    done[#done] = '}'
-  elseif t == "string" then
-    done[#done+1] = ("%q"):format(val):gsub("\010","n"):gsub("\026","\\026")
-  elseif t == "number" then
-    done[#done+1] = ("%.17g"):format(val)
-  else
-    done[#done+1] = tostring(val)
-  end
-  return final and table.concat(done, '')
-end
-
 function SettingsSavePackage(package, values, opts)
   local packagename = "/package/"..package
   local path = settings:GetPath()
 
   settings:DeleteGroup(packagename)
   settings:SetPath(packagename)
-  for k,v in pairs(values or {}) do settings:Write(k, plaindump(v, opts)) end
+  for k,v in pairs(values or {}) do settings:Write(k, DumpPlain(v, opts)) end
   settings:SetPath(path)
 end
 

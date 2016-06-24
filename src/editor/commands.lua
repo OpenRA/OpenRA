@@ -750,14 +750,10 @@ function SetAutoRecoveryMark()
   ide.session.lastupdated = os.time()
 end
 
-local function generateRecoveryRecord(opentabs)
-  return require('mobdebug').line(opentabs, {comment = false})
-end
-
 local function saveHotExit()
   local opentabs, params = getOpenTabs()
   if #opentabs > 0 then
-    params.recovery = generateRecoveryRecord(opentabs)
+    params.recovery = DumpPlain(opentabs)
     params.quiet = true
     SettingsSaveFileSession({}, params)
   end
@@ -777,7 +773,7 @@ local function saveAutoRecovery(force)
   -- find all open modified files and save them
   local opentabs, params = getOpenTabs()
   if #opentabs > 0 then
-    params.recovery = generateRecoveryRecord(opentabs)
+    params.recovery = DumpPlain(opentabs)
     SettingsSaveAll()
     SettingsSaveFileSession({}, params)
     ide.settings:Flush()
