@@ -95,7 +95,6 @@
     <Compile Include="Activities\CallFunc.cs" />
     <Compile Include="Actor.cs" />
     <Compile Include="CacheStorage.cs" />
-    <Compile Include="FileFormats\VocLoader.cs" />
     <Compile Include="FileSystem\IdxEntry.cs" />
     <Compile Include="FileSystem\IPackage.cs" />
     <Compile Include="LogProxy.cs" />
@@ -266,13 +265,10 @@
     <Compile Include="FieldSaver.cs" />
     <Compile Include="Manifest.cs" />
     <Compile Include="Graphics\Vertex.cs" />
-    <Compile Include="FileFormats\ImaAdpcmLoader.cs" />
-    <Compile Include="FileFormats\AudLoader.cs" />
     <Compile Include="FileFormats\Blast.cs" />
     <Compile Include="FileFormats\Blowfish.cs" />
     <Compile Include="FileFormats\BlowfishKeyProvider.cs" />
     <Compile Include="FileFormats\CRC32.cs" />
-    <Compile Include="FileFormats\WavLoader.cs" />
     <Compile Include="FileFormats\XccGlobalDatabase.cs" />
     <Compile Include="FileFormats\XccLocalDatabase.cs" />
     <Compile Include="FileFormats\HvaReader.cs" />

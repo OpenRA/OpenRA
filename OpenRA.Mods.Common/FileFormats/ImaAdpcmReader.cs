@@ -11,7 +11,7 @@
 
 using System.IO;
 
-namespace OpenRA.FileFormats
+namespace OpenRA.Mods.Common.FileFormats
 {
 	struct ImaAdpcmChunk
 	{
@@ -29,7 +29,9 @@ namespace OpenRA.FileFormats
 		}
 	}
 
-	public static class ImaAdpcmLoader
+	// Mostly a duplicate of AudReader, with some difference when loading
+	// TODO: Investigate whether they can be fused to get rid of some duplication
+	public class ImaAdpcmReader
 	{
 		static readonly int[] IndexAdjust = { -1, -1, -1, -1, 2, 4, 6, 8 };
 		static readonly int[] StepTable =

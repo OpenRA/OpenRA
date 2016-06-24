@@ -12,76 +12,8 @@
 using System;
 using System.IO;
 
-namespace OpenRA.FileFormats
+namespace OpenRA.Mods.Common.FileFormats
 {
-	public class WavLoader : ISoundLoader
-	{
-		bool IsWave(Stream s)
-		{
-			var start = s.Position;
-			var type = s.ReadASCII(4);
-			s.Position += 4;
-			var format = s.ReadASCII(4);
-			s.Position = start;
-
-			return type == "RIFF" && format == "WAVE";
-		}
-
-		bool ISoundLoader.TryParseSound(Stream stream, out ISoundFormat sound)
-		{
-			try
-			{
-				if (IsWave(stream))
-				{
-					sound = new WavFormat(stream);
-					return true;
-				}
-			}
-			catch
-			{
-				// Not a (supported) WAV
-			}
-
-			sound = null;
-			return false;
-		}
-	}
-
-	public class WavFormat : ISoundFormat
-	{
-		public int Channels { get { return reader.Value.Channels; } }
-		public int SampleBits { get { return reader.Value.BitsPerSample; } }
-		public int SampleRate { get { return reader.Value.SampleRate; } }
-		public float LengthInSeconds { get { return WavReader.WaveLength(stream); } }
-		public Stream GetPCMInputStream() { return new MemoryStream(reader.Value.RawOutput); }
-
-		Lazy<WavReader> reader;
-
-		readonly Stream stream;
-
-		public WavFormat(Stream stream)
-		{
-			this.stream = stream;
-
-			var position = stream.Position;
-			reader = Exts.Lazy(() =>
-			{
-				var wavReader = new WavReader();
-				try
-				{
-					if (!wavReader.LoadSound(stream))
-						throw new InvalidDataException();
-				}
-				finally
-				{
-					stream.Position = position;
-				}
-
-				return wavReader;
-			});
-		}
-	}
-
 	public class WavReader
 	{
 		public int FileSize;
@@ -220,7 +152,7 @@ namespace OpenRA.FileFormats
 					{
 						// Decode 4 bytes (to 16 bytes of output) per channel
 						var chunk = s.ReadBytes(4);
-						var decoded = ImaAdpcmLoader.LoadImaAdpcmSound(chunk, ref index[c], ref predictor[c]);
+						var decoded = ImaAdpcmReader.LoadImaAdpcmSound(chunk, ref index[c], ref predictor[c]);
 
 						// Interleave output, one sample per channel
 						var outOffsetChannel = outOffset + (2 * c);
