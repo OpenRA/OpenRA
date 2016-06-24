@@ -53,7 +53,7 @@ namespace OpenRA.Mods.Common.Traits
 			countdown = self.World.SharedRandom.Next(info.MinMoveDelay, info.MaxMoveDelay);
 		}
 
-		public void TickIdle(Actor self)
+		public virtual void TickIdle(Actor self)
 		{
 			// The countdown has not have been set at this point, so don't check yet
 			if (firstTick)
