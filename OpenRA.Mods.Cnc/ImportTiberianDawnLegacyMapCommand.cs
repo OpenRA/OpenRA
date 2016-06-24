@@ -154,10 +154,22 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 
 		public override void ReadPacks(IniFile file, string filename)
 		{
-			using (var s = ModData.DefaultFileSystem.Open(filename.Substring(0, filename.Length - 4) + ".bin"))
+			using (var s = File.OpenRead(filename.Substring(0, filename.Length - 4) + ".bin"))
 				UnpackTileData(s);
 
 			ReadOverlay(file);
+		}
+
+		public override void SaveWaypoint(int waypointNumber, ActorReference waypointReference)
+		{
+			var waypointName = "waypoint" + waypointNumber;
+			if (waypointNumber == 25)
+				waypointName = "DefaultFlareLocation";
+			else if (waypointNumber == 26)
+				waypointName = "DefaultCameraPosition";
+			else if (waypointNumber == 27)
+				waypointName = "DefaultChinookTarget";
+			Map.ActorDefinitions.Add(new MiniYamlNode(waypointName, waypointReference.Save()));
 		}
 	}
 }

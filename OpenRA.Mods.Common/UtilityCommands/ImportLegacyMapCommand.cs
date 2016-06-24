@@ -35,6 +35,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 		public Map Map;
 		public List<string> Players = new List<string>();
 		public MapPlayers MapPlayers;
+		bool singlePlayer;
 		int spawnCount;
 
 		public bool ValidateArguments(string[] args)
@@ -51,10 +52,15 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			Game.ModData = modData;
 
 			var filename = args[1];
-			using (var stream = modData.DefaultFileSystem.Open(filename))
+			using (var stream = File.OpenRead(filename))
 			{
 				var file = new IniFile(stream);
 				var basic = file.GetSection("Basic");
+
+				var player = basic.GetValue("Player", string.Empty);
+				if (!string.IsNullOrEmpty(player))
+					singlePlayer = !player.StartsWith("Multi");
+
 				var mapSection = file.GetSection("Map");
 
 				var format = GetMapFormatVersion(basic);
@@ -252,7 +258,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			// Add waypoint actors
 			foreach (var kv in wps)
 			{
-				if (kv.First <= 7)
+				if (!singlePlayer && kv.First <= 7)
 				{
 					var ar = new ActorReference("mpspawn")
 					{
@@ -271,9 +277,15 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						new OwnerInit("Neutral")
 					};
 
-					Map.ActorDefinitions.Add(new MiniYamlNode("waypoint" + kv.First, ar.Save()));
+					SaveWaypoint(kv.First, ar);
 				}
 			}
+		}
+
+		public virtual void SaveWaypoint(int waypointNumber, ActorReference waypointReference)
+		{
+			var waypointName = "waypoint" + waypointNumber;
+			Map.ActorDefinitions.Add(new MiniYamlNode(waypointName, waypointReference.Save()));
 		}
 
 		void LoadSmudges(IniFile file, string section)
