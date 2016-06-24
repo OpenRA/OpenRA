@@ -66,8 +66,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!info.ValidStances.HasStance(e.Attacker.Owner.Stances[self.Owner]))
 				return;
 
-			var warhead = e.Warhead as DamageWarhead;
-			if (info.DeathTypes.Count > 0 && warhead != null && !warhead.DamageTypes.Overlaps(info.DeathTypes))
+			if (info.DeathTypes.Count > 0 && !e.Damage.DamageTypes.Overlaps(info.DeathTypes))
 				return;
 
 			var cost = self.GetSellValue();

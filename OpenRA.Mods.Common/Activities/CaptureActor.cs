@@ -69,7 +69,7 @@ namespace OpenRA.Mods.Common.Activities
 				else
 				{
 					var damage = health.MaxHP * capturesInfo.SabotageHPRemoval / 100;
-					actor.InflictDamage(self, damage, null);
+					actor.InflictDamage(self, new Damage(damage));
 				}
 
 				self.Dispose();

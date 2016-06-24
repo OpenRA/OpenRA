@@ -52,7 +52,7 @@ namespace OpenRA.Mods.Common.Warheads
 
 			// Damage is measured as a percentage of the target health
 			var damage = Util.ApplyPercentageModifiers(healthInfo.HP, damageModifiers.Append(Damage, DamageVersus(victim)));
-			victim.InflictDamage(firedBy, damage, this);
+			victim.InflictDamage(firedBy, new Damage(damage, DamageTypes));
 		}
 	}
 }

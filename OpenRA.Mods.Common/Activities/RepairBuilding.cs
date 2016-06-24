@@ -36,7 +36,7 @@ namespace OpenRA.Mods.Common.Activities
 			if (health.DamageState == DamageState.Undamaged)
 				return;
 
-			target.InflictDamage(self, -health.MaxHP, null);
+			target.InflictDamage(self, new Damage(-health.MaxHP));
 		}
 	}
 }

@@ -26,6 +26,6 @@ namespace OpenRA.Mods.Common.Traits
 		public DamageMultiplier(DamageMultiplierInfo info, string actorType)
 			: base(info, "DamageMultiplier", actorType) { }
 
-		public int GetDamageModifier(Actor attacker, IWarhead warhead) { return GetModifier(); }
+		public int GetDamageModifier(Actor attacker, Damage damage) { return GetModifier(); }
 	}
 }

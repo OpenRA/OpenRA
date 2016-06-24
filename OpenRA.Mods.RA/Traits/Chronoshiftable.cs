@@ -95,7 +95,7 @@ namespace OpenRA.Mods.RA.Traits
 				{
 					// Damage is inflicted by the chronosphere
 					if (!self.Disposed)
-						self.InflictDamage(chronosphere, int.MaxValue, null);
+						self.InflictDamage(chronosphere, new Damage(int.MaxValue));
 				});
 				return true;
 			}

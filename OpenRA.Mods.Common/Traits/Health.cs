@@ -112,10 +112,9 @@ namespace OpenRA.Mods.Common.Traits
 			var ai = new AttackInfo
 			{
 				Attacker = repairer,
-				Damage = -MaxHP,
+				Damage = new Damage(-MaxHP),
 				DamageState = DamageState,
 				PreviousDamageState = DamageState.Dead,
-				Warhead = null,
 			};
 
 			foreach (var nd in self.TraitsImplementing<INotifyDamage>()
@@ -131,7 +130,7 @@ namespace OpenRA.Mods.Common.Traits
 					nd.AppliedDamage(repairer, self, ai);
 		}
 
-		public void InflictDamage(Actor self, Actor attacker, int damage, IWarhead warhead, bool ignoreModifiers)
+		public void InflictDamage(Actor self, Actor attacker, Damage damage, bool ignoreModifiers)
 		{
 			// Overkill! Don't count extra hits as more kills!
 			if (IsDead)
@@ -140,16 +139,16 @@ namespace OpenRA.Mods.Common.Traits
 			var oldState = DamageState;
 
 			// Apply any damage modifiers
-			if (!ignoreModifiers && damage > 0)
+			if (!ignoreModifiers && damage.Value > 0)
 			{
 				var modifiers = self.TraitsImplementing<IDamageModifier>()
 					.Concat(self.Owner.PlayerActor.TraitsImplementing<IDamageModifier>())
-					.Select(t => t.GetDamageModifier(attacker, warhead));
+					.Select(t => t.GetDamageModifier(attacker, damage));
 
-				damage = Util.ApplyPercentageModifiers(damage, modifiers);
+				damage = new Damage(Util.ApplyPercentageModifiers(damage.Value, modifiers), damage.DamageTypes);
 			}
 
-			hp = (hp - damage).Clamp(0, MaxHP);
+			hp = (hp - damage.Value).Clamp(0, MaxHP);
 
 			var ai = new AttackInfo
 			{
@@ -157,7 +156,6 @@ namespace OpenRA.Mods.Common.Traits
 				Damage = damage,
 				DamageState = DamageState,
 				PreviousDamageState = oldState,
-				Warhead = warhead,
 			};
 
 			foreach (var nd in self.TraitsImplementing<INotifyDamage>()
@@ -191,7 +189,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void Kill(Actor self, Actor attacker)
 		{
-			InflictDamage(self, attacker, MaxHP, null, true);
+			InflictDamage(self, attacker, new Damage(MaxHP), true);
 		}
 
 		public void Tick(Actor self)

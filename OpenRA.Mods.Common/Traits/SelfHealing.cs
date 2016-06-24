@@ -55,13 +55,13 @@ namespace OpenRA.Mods.Common.Traits
 			if (--ticks <= 0)
 			{
 				ticks = Info.Delay;
-				self.InflictDamage(self, -Info.Step, null);
+				self.InflictDamage(self, new Damage(-Info.Step));
 			}
 		}
 
 		public void Damaged(Actor self, AttackInfo e)
 		{
-			if (e.Damage > 0)
+			if (e.Damage.Value > 0)
 				damageTicks = Info.DamageCooldown;
 		}
 	}

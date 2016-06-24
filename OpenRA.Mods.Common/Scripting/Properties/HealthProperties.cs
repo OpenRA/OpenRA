@@ -29,7 +29,7 @@ namespace OpenRA.Mods.Common.Scripting
 		public int Health
 		{
 			get { return health.HP; }
-			set { health.InflictDamage(Self, Self, health.HP - value, null, true); }
+			set { health.InflictDamage(Self, Self, new Damage(health.HP - value), true); }
 		}
 
 		[Desc("Maximum health of the actor.")]
@@ -38,7 +38,7 @@ namespace OpenRA.Mods.Common.Scripting
 		[Desc("Kill the actor.")]
 		public void Kill()
 		{
-			health.InflictDamage(Self, Self, health.MaxHP, null, true);
+			health.InflictDamage(Self, Self, new Damage(health.MaxHP), true);
 		}
 	}
 }

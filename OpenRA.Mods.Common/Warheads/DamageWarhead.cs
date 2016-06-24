@@ -70,7 +70,7 @@ namespace OpenRA.Mods.Common.Warheads
 				return;
 
 			var damage = Util.ApplyPercentageModifiers(Damage, damageModifiers.Append(DamageVersus(victim)));
-			victim.InflictDamage(firedBy, damage, this);
+			victim.InflictDamage(firedBy, new Damage(damage, DamageTypes));
 		}
 	}
 }

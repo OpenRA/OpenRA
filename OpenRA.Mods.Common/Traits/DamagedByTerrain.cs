@@ -67,7 +67,7 @@ namespace OpenRA.Mods.Common.Traits
 			// Actors start with maximum damage applied
 			var delta = health.HP - damageThreshold;
 			if (delta > 0)
-				health.InflictDamage(self, self.World.WorldActor, delta, null, false);
+				health.InflictDamage(self, self.World.WorldActor, new Damage(delta), false);
 		}
 
 		public void Tick(Actor self)

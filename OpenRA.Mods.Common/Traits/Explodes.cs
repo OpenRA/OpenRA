@@ -69,8 +69,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (self.World.SharedRandom.Next(100) > info.Chance)
 				return;
 
-			var warhead = e.Warhead as DamageWarhead;
-			if (info.DeathTypes.Count > 0 && warhead != null && !warhead.DamageTypes.Overlaps(info.DeathTypes))
+			if (info.DeathTypes.Count > 0 && !e.Damage.DamageTypes.Overlaps(info.DeathTypes))
 				return;
 
 			var weapon = ChooseWeaponForExplosion(self);

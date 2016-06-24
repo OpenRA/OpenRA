@@ -113,7 +113,7 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			// don't retaliate against healers
-			if (e.Damage < 0)
+			if (e.Damage.Value < 0)
 				return;
 
 			Aggressor = attacker;

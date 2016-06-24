@@ -78,7 +78,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void Damaged(Actor self, AttackInfo e)
 		{
-			if (e.Damage > 0)
+			if (e.Damage.Value > 0)
 				Panic();
 		}
 

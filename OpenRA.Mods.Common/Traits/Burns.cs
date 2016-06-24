@@ -44,7 +44,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			if (--ticks <= 0)
 			{
-				self.InflictDamage(self, info.Damage, null);
+				self.InflictDamage(self, new Damage(info.Damage));
 				ticks = info.Interval;
 			}
 		}
