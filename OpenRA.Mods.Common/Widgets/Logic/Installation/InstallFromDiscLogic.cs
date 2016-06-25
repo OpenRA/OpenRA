@@ -235,7 +235,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 							}
 
 							default:
-								Game.Debug("debug", "Unknown installation command {0} - ignoring", i.Key);
+								Log.Write("debug", "Unknown installation command {0} - ignoring", i.Key);
 								break;
 						}
 					}
