@@ -57,10 +57,6 @@ namespace OpenRA.Mods.Common.Activities
 			nearEnough = WDist.Zero;
 		}
 
-		// HACK: for legacy code
-		public Move(Actor self, CPos destination, int nearEnough)
-			: this(self, destination, WDist.FromCells(nearEnough)) { }
-
 		public Move(Actor self, CPos destination, WDist nearEnough)
 		{
 			mobile = self.Trait<Mobile>();
