@@ -5,7 +5,6 @@ World:
 		BackgroundMusic: rain-ambient
 		StartingMusic: rain
 	WeatherOverlay:
-		ParticleDensityFactor: 0.0007625
 		ChangingWindLevel: true
 		WindLevels: -5, -3, -2, 0, 2, 3, 5
 		WindTick: 150, 550
