@@ -229,24 +229,24 @@ Migrations:
 ModContent:
 	InstallPromptMessage: Red Alert requires artwork and audio from the original game.\n\nQuick Install will automatically download this content (without music\nor videos) from a mirror of the 2008 Red Alert freeware release.\n\nAdvanced Install includes options for downloading the music and for\ncopying the videos and other content from an original game disc.
 	QuickDownload: basefiles
-	HeaderMessage: The original game content may be copied from an original game disc,\nor downloaded from an online mirror of the 2008 freeware release.
+	HeaderMessage: Game content may be extracted from the original game discs or an\nexisting digital install. OpenRA can also download the base game\nfiles from an online mirror of the 2008 freeware release of RA.
 	Packages:
 		base: Base Game Files
 			TestFiles: ^Content/ra/allies.mix, ^Content/ra/conquer.mix, ^Content/ra/interior.mix, ^Content/ra/redalert.mix, ^Content/ra/russian.mix, ^Content/ra/snow.mix, ^Content/ra/sounds.mix, ^Content/ra/temperat.mix
-			Sources: allied, allied-linux, soviet, soviet-linux
+			Sources: allied, allied-linux, soviet, soviet-linux, origin
 			Required: true
 			Download: basefiles
 		music: Base Game Music
 			TestFiles: ^Content/ra/scores.mix
-			Sources: allied, allied-linux, soviet, soviet-linux
+			Sources: allied, allied-linux, soviet, soviet-linux, origin
 			Download: music
 		movies-allied: Allied Campaign Briefings
 			TestFiles: ^Content/ra/movies1.mix
-			Sources: allied, allied-linux
+			Sources: allied, allied-linux, origin
 		movies-soviet: Soviet Campaign Briefings
 			TestFiles: ^Content/ra/movies2.mix
-			Sources: soviet, soviet-linux
-		music-covertops: Counterstrike Music
+			Sources: soviet, soviet-linux, origin
+		music-counterstrike: Counterstrike Music
 			TestFiles: ^Content/ra/scores-counterstrike.mix
 			Sources: counterstrike, counterstrike-linux
 	Downloads:
@@ -425,3 +425,44 @@ ModContent:
 					^Content/ra/scores-counterstrike.mix:
 						Offset: 144899491
 						Length: 87483135
+		origin: C&C The Ultimate Collection (Origin version, English)
+			Type: Install
+			RegistryKey: HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\EA Games\Command and Conquer Red Alert
+			RegistryValue: Install Dir
+			IDFiles:
+				RA95Launcher.exe: 22bf7a1f9f1c2498823e3216541e6012f291c2c0
+				REDALERT.MIX: 0e58f4b54f44f6cd29fecf8cf379d33cf2d4caef
+			Install:
+				copy: .
+					^Content/ra/redalert.mix: REDALERT.MIX
+				extract-raw: MAIN.MIX
+					^Content/ra/movies1.mix:
+						Offset: 417051805
+						Length: 404691306
+					^Content/ra/interior.mix:
+						Offset: 821743111
+						Length: 249490
+					^Content/ra/conquer.mix:
+						Offset: 840028549
+						Length: 2192279
+					^Content/ra/allies.mix:
+						Offset: 842220828
+						Length: 319181
+					^Content/ra/temperat.mix:
+						Offset: 842540009
+						Length: 1043672
+					^Content/ra/sounds.mix:
+						Offset: 843583681
+						Length: 1385637
+					^Content/ra/snow.mix:
+						Offset: 844969318
+						Length: 1035716
+					^Content/ra/scores.mix:
+						Offset: 846005034
+						Length: 67742203
+					^Content/ra/russian.mix:
+						Offset: 913747237
+						Length: 274732
+					^Content/ra/movies2.mix:
+						Offset: 914022190
+						Length: 417051731
