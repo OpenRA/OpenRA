@@ -27,7 +27,7 @@ namespace OpenRA.Mods.Common.Traits
 		public AttackWander(Actor self, AttackWanderInfo info)
 			: base(self, info)
 		{
-			attackMove = self.TraitOrDefault<AttackMove>();
+			attackMove = self.Trait<AttackMove>();
 		}
 
 		public override void DoAction(Actor self, CPos targetCell)
