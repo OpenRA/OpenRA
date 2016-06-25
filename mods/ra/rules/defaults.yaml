@@ -290,6 +290,9 @@
 	ScaredyCat:
 	Voiced:
 		VoiceSet: CivilianMaleVoice
+	Wanders:
+		MinMoveDelay: 150
+		MaxMoveDelay: 750
 
 ^ArmedCivilian:
 	Armament:

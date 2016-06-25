@@ -362,6 +362,7 @@ MECH:
 
 EINSTEIN:
 	Inherits: ^CivInfantry
+	-Wanders:
 	Tooltip:
 		Name: Prof. Einstein
 	Mobile:
@@ -371,6 +372,7 @@ EINSTEIN:
 
 DELPHI:
 	Inherits: ^CivInfantry
+	-Wanders:
 	Tooltip:
 		Name: Agent Delphi
 	Mobile:
@@ -388,6 +390,7 @@ CHAN:
 GNRL:
 	Inherits@1: ^CivInfantry
 	Inherits@2: ^ArmedCivilian
+	-Wanders:
 	Tooltip:
 		Name: General
 	Selectable:

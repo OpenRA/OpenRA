@@ -403,6 +403,9 @@
 	Tooltip:
 		Name: Civilian
 	ScaredyCat:
+	Wanders:
+		MinMoveDelay: 150
+		MaxMoveDelay: 750
 
 ^Vehicle:
 	Inherits@1: ^GainsExperience

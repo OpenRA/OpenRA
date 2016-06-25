@@ -503,6 +503,7 @@ C10:
 DELPHI:
 	Inherits: ^CivInfantry
 	Inherits@armed: ^ArmedCivilian
+	-Wanders:
 	Tooltip:
 		Name: Agent Delphi
 
@@ -513,6 +514,7 @@ CHAN:
 
 MOEBIUS:
 	Inherits: ^CivInfantry
+	-Wanders:
 	Voiced:
 		VoiceSet: MoebiusVoice
 	Tooltip:
