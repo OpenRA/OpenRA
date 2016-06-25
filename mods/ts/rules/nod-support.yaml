@@ -206,7 +206,7 @@ NAMISL:
 		Cost: 1300
 	Tooltip:
 		Name: Nod Missile Silo
-		Description: Launches a devastating missile\nat a target location.\nRequires power to operate.
+		Description: Launches a devastating missile\nat a target location.\nRequires power to operate.\nMaximum 1 can be built.
 	ProvidesPrerequisite:
 		Prerequisite: tech
 	Building:

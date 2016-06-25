@@ -405,7 +405,7 @@ NAWAST:
 		Cost: 1600
 	Tooltip:
 		Name: Waste Refinery
-		Description: Processes Veins\ninto useable resources.
+		Description: Processes Veins\ninto useable resources.\nMaximum 1 can be built.
 	Buildable:
 		BuildPaletteOrder: 110
 		Prerequisites: namisl, ~structures.nod
