@@ -35,7 +35,7 @@ namespace OpenRA.Mods.D2k.Traits
 
 	class Sandworm : Wanders, ITick, INotifyActorDisposing
 	{
-		public readonly SandwormInfo Info;
+		public readonly SandwormInfo WormInfo;
 
 		readonly WormManager manager;
 		readonly Mobile mobile;
@@ -50,7 +50,7 @@ namespace OpenRA.Mods.D2k.Traits
 		public Sandworm(Actor self, SandwormInfo info)
 			: base(self, info)
 		{
-			Info = info;
+			WormInfo = info;
 			mobile = self.Trait<Mobile>();
 			attackTrait = self.Trait<AttackBase>();
 			manager = self.World.WorldActor.Trait<WormManager>();
@@ -78,10 +78,10 @@ namespace OpenRA.Mods.D2k.Traits
 
 		void RescanForTargets(Actor self)
 		{
-			targetCountdown = Info.TargetRescanInterval;
+			targetCountdown = WormInfo.TargetRescanInterval;
 
 			// If close enough, we don't care about other actors.
-			var target = self.World.FindActorsInCircle(self.CenterPosition, Info.IgnoreNoiseAttackRange)
+			var target = self.World.FindActorsInCircle(self.CenterPosition, WormInfo.IgnoreNoiseAttackRange)
 				.FirstOrDefault(x => attackTrait.HasAnyValidWeapons(Target.FromActor(x)));
 			if (target != null)
 			{
@@ -98,7 +98,7 @@ namespace OpenRA.Mods.D2k.Traits
 				return mobile.CanEnterCell(a.Location, null, false);
 			};
 
-			var actorsInRange = self.World.FindActorsInCircle(self.CenterPosition, Info.MaxSearchRadius)
+			var actorsInRange = self.World.FindActorsInCircle(self.CenterPosition, WormInfo.MaxSearchRadius)
 				.Where(isValidTarget).SelectMany(a => a.TraitsImplementing<AttractsWorms>());
 
 			var noiseDirection = actorsInRange.Aggregate(WVec.Zero, (a, b) => a + b.AttractionAtPosition(self.CenterPosition));
