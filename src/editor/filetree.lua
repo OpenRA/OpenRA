@@ -459,18 +459,12 @@ local function treeSetConnectorsAndIcons(tree)
       local ft = wx.wxTheMimeTypesManager:GetFileTypeFromExtension(ext)
       if ft then
         local cmd = ft:GetOpenCommand(fname:gsub('"','\\"'))
-        local pid = wx.wxExecute(cmd, wx.wxEXEC_ASYNC)
-        if ide.osname == 'Windows' and pid and pid > 0 then
-          -- some programs on Windows (for example, PhotoViewer) accept
-          -- files with spaces in names ONLY if they are not in quotes.
-          -- wait for the process that failed to open file to finish
-          -- and retry without quotes.
-          wx.wxMilliSleep(250) -- 250ms seems enough; picked empirically.
-          if not wx.wxProcess.Exists(pid) then
-            local cmd = ft:GetOpenCommand(""):gsub('""%s*$', '')..fname
-            wx.wxExecute(cmd, wx.wxEXEC_ASYNC)
-          end
+        -- some programs on Windows, when started by rundll32.exe (for example, PhotoViewer)
+        -- accept files with spaces in names ONLY if they are not in quotes.
+        if ide.osname == "Windows" and cmd:find("rundll32%.exe") then
+          cmd = ft:GetOpenCommand(""):gsub('""%s*$', '')..fname
         end
+        wx.wxExecute(cmd, wx.wxEXEC_ASYNC)
       end
     end)
   tree:Connect(ID_REFRESH, wx.wxEVT_COMMAND_MENU_SELECTED,
