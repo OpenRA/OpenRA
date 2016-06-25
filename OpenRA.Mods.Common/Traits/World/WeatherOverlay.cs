@@ -71,7 +71,22 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class WeatherOverlay : ITick, IPostRender
 	{
-		readonly WeatherOverlayInfo info;
+		public bool Active = true;
+		public int ParticleDensityFactor;
+		public bool ChangingWindLevel;
+		public int[] WindLevels;
+		public int[] WindTick;
+		public bool InstantWindChanges;
+		public bool UseSquares;
+		public int[] ParticleSize;
+		public int[] ScatterDirection;
+		public float[] GravityAmplitude;
+		public float[] SwingOffset;
+		public float[] SwingSpeed;
+		public float[] SwingAmplitude;
+		public Color[] ParticleColors;
+		public byte LineTailAlphaValue;
+
 		readonly World world;
 		struct Particle
 		{
@@ -89,7 +104,6 @@ namespace OpenRA.Mods.Common.Traits
 		}
 
 		readonly List<Particle> particleList = new List<Particle>();
-		readonly int maxParticleCount;
 
 		enum ParticleCountFaderType { Hold, FadeIn, FadeOut }
 		ParticleCountFaderType particleCountFader = ParticleCountFaderType.FadeIn;
@@ -97,21 +111,40 @@ namespace OpenRA.Mods.Common.Traits
 		float targetWindXOffset = 0f;
 		float currentWindXOffset = 0f;
 		int currentWindIndex = 0;
+		int maxParticleCount;
 		long windTickCountdown = 1500;
 		float2 antiScrollPrevTopLeft;
 
 		public WeatherOverlay(World world, WeatherOverlayInfo info)
 		{
-			this.info = info;
 			this.world = world;
 			currentWindIndex = info.WindLevels.Length / 2;
 			targetWindXOffset = info.WindLevels[0];
+			ParticleDensityFactor = info.ParticleDensityFactor;
+			ChangingWindLevel = info.ChangingWindLevel;
+			WindLevels = info.WindLevels;
+			WindTick = info.WindTick;
+			InstantWindChanges = info.InstantWindChanges;
+			UseSquares = info.UseSquares;
+			ParticleSize = info.ParticleSize;
+			ScatterDirection = info.ScatterDirection;
+			GravityAmplitude = info.Gravity;
+			SwingOffset = info.SwingOffset;
+			SwingSpeed = info.SwingSpeed;
+			SwingAmplitude = info.SwingAmplitude;
+			ParticleColors = info.ParticleColors;
+			LineTailAlphaValue = info.LineTailAlphaValue;
+			CalculateMaxParticleCount();
+		}
+
+		public void CalculateMaxParticleCount()
+		{
 			maxParticleCount = CalculateParticleCount(Game.Renderer.Resolution.Width, Game.Renderer.Resolution.Height);
 		}
 
 		int CalculateParticleCount(int x, int y)
 		{
-			return (int)(x * y * info.ParticleDensityFactor / 1000000);
+			return (int)(x * y * ParticleDensityFactor / 1000000);
 		}
 
 		void SpawnParticles(int count, int rangeY, int spawnChancePercent)
@@ -120,8 +153,8 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				if (Game.CosmeticRandom.Next(100) < spawnChancePercent)
 				{
-					var tempColor = info.ParticleColors.Random(Game.CosmeticRandom);
-					var tempColorTail = Color.FromArgb(info.LineTailAlphaValue, tempColor.R, tempColor.G, tempColor.B);
+					var tempColor = ParticleColors.Random(Game.CosmeticRandom);
+					var tempColorTail = Color.FromArgb(LineTailAlphaValue, tempColor.R, tempColor.G, tempColor.B);
 					var tempSwingDirection = Game.CosmeticRandom.Next(2) == 0 ? 1 : -1;
 
 					particleList.Add(
@@ -129,13 +162,13 @@ namespace OpenRA.Mods.Common.Traits
 						{
 							PosX = Game.CosmeticRandom.Next(Game.Renderer.Resolution.Width),
 							PosY = Game.CosmeticRandom.Next(rangeY),
-							Size = Game.CosmeticRandom.Next(info.ParticleSize[0], info.ParticleSize[1] + 1),
-							DirectionScatterX = info.ScatterDirection[0] + Game.CosmeticRandom.Next(info.ScatterDirection[1] - info.ScatterDirection[0]),
-							Gravity = float2.Lerp(info.Gravity[0], info.Gravity[1], Game.CosmeticRandom.NextFloat()),
-							SwingOffset = float2.Lerp(info.SwingOffset[0], info.SwingOffset[1], Game.CosmeticRandom.NextFloat()),
-							SwingSpeed = float2.Lerp(info.SwingSpeed[0], info.SwingSpeed[1], Game.CosmeticRandom.NextFloat()),
+							Size = Game.CosmeticRandom.Next(ParticleSize[0], ParticleSize[1] + 1),
+							DirectionScatterX = ScatterDirection[0] + Game.CosmeticRandom.Next(ScatterDirection[1] - ScatterDirection[0]),
+							Gravity = float2.Lerp(GravityAmplitude[0], GravityAmplitude[1], Game.CosmeticRandom.NextFloat()),
+							SwingOffset = float2.Lerp(SwingOffset[0], SwingOffset[1], Game.CosmeticRandom.NextFloat()),
+							SwingSpeed = float2.Lerp(SwingSpeed[0], SwingSpeed[1], Game.CosmeticRandom.NextFloat()),
 							SwingDirection = tempSwingDirection,
-							SwingAmplitude = float2.Lerp(info.SwingAmplitude[0], info.SwingAmplitude[1], Game.CosmeticRandom.NextFloat()),
+							SwingAmplitude = float2.Lerp(SwingAmplitude[0], SwingAmplitude[1], Game.CosmeticRandom.NextFloat()),
 							Color = tempColor,
 							TailColor = tempColorTail
 						});
@@ -203,30 +236,31 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void Tick(Actor self)
 		{
-			windTickCountdown--;
+			if (Active)
+				windTickCountdown--;
 		}
 
 		void WindLogic(ref Particle tempParticle)
 		{
-			if (!info.ChangingWindLevel)
-				targetWindXOffset = info.WindLevels[0];
+			if (!ChangingWindLevel)
+				targetWindXOffset = WindLevels[0];
 			else if (windTickCountdown <= 0)
 			{
-				windTickCountdown = Game.CosmeticRandom.Next(info.WindTick[0], info.WindTick[1]);
+				windTickCountdown = Game.CosmeticRandom.Next(WindTick[0], WindTick[1]);
 				if (Game.CosmeticRandom.Next(2) == 1 && currentWindIndex > 0)
 				{
 					currentWindIndex--;
-					targetWindXOffset = info.WindLevels[currentWindIndex];
+					targetWindXOffset = WindLevels[currentWindIndex];
 				}
-				else if (currentWindIndex < info.WindLevels.Length - 1)
+				else if (currentWindIndex < WindLevels.Length - 1)
 				{
 					currentWindIndex++;
-					targetWindXOffset = info.WindLevels[currentWindIndex];
+					targetWindXOffset = WindLevels[currentWindIndex];
 				}
 			}
 
 			// Fading the wind in little steps towards the TargetWindOffset
-			if (info.InstantWindChanges)
+			if (InstantWindChanges)
 				currentWindXOffset = targetWindXOffset;
 			else if (currentWindXOffset != targetWindXOffset)
 			{
@@ -288,7 +322,7 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				var tempPos = new float2(item.PosX + topLeft.X, item.PosY + topLeft.Y);
 
-				if (info.UseSquares)
+				if (UseSquares)
 					Game.Renderer.WorldRgbaColorRenderer.FillRect(tempPos, tempPos + new float2(item.Size, item.Size), item.Color);
 				else
 				{
@@ -300,6 +334,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void RenderAfterWorld(WorldRenderer wr, Actor self)
 		{
+			if (!Active)
+				return;
+
 			if (!world.Paused)
 				UpdateWeatherOverlay(wr);
 
