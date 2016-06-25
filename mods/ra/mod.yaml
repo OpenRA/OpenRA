@@ -9,6 +9,7 @@ RequiresMods:
 
 Packages:
 	~^Content/ra
+	~^Content/ra/music
 	.
 	$ra: ra
 	$cnc: cnc
@@ -26,7 +27,6 @@ Packages:
 	~snow.mix
 	~interior.mix
 	~scores.mix
-	~scores-counterstrike.mix
 	~movies1.mix
 	~movies2.mix
 	ra|bits
@@ -247,8 +247,11 @@ ModContent:
 			TestFiles: ^Content/ra/movies2.mix
 			Sources: soviet, soviet-linux, origin
 		music-counterstrike: Counterstrike Music
-			TestFiles: ^Content/ra/scores-counterstrike.mix
-			Sources: counterstrike, counterstrike-linux
+			TestFiles: ^Content/ra/music/araziod.aud, ^Content/ra/music/backstab.aud, ^Content/ra/music/chaos2.aud, ^Content/ra/music/shut_it.aud, ^Content/ra/music/2nd_hand.aud, ^Content/ra/music/twinmix1.aud, ^Content/ra/music/under3.aud, ^Content/ra/music/vr2.aud, 
+			Sources: counterstrike, counterstrike-linux, origin
+		music-aftermath: Aftermath Music
+			TestFiles: ^Content/ra/music/await.aud, ^Content/ra/music/bog.aud, ^Content/ra/music/float_v2.aud, ^Content/ra/music/gloom.aud, ^Content/ra/music/grndwire.aud, ^Content/ra/music/rpt.aud, ^Content/ra/music/search.aud, ^Content/ra/music/traction.aud, ^Content/ra/music/wastelnd.aud
+			Sources: origin
 	Downloads:
 		basefiles: Base Freeware Content
 			MirrorList: http://www.openra.net/packages/ra-mirrors.txt
@@ -407,24 +410,66 @@ ModContent:
 					^Content/ra/temperat.mix:
 						Offset: 499538555
 						Length: 1038859
-		counterstrike: Counterstrike Expansion (English)
+		counterstrike: Counterstrike Expansion Disc (English)
 			IDFiles:
 				README.TXT: 0efe8087383f0b159a9633f891fb5f53c6097cd4
 				SETUP/INSTALL/CSTRIKE.RTP: fae8ba82db71574f6ecd8fb4ff4026fcb65d2adc
 			Install:
 				extract-raw: MAIN.MIX
-					^Content/ra/scores-counterstrike.mix:
-						Offset: 144899491
-						Length: 87483135
-		counterstrike-linux: Counterstrike Expansion (English)
+					^Content/ra/music/2nd_hand.aud:
+						Offset: 209070947
+						Length: 3070092
+					^Content/ra/music/araziod.aud:
+						Offset: 212141039
+						Length: 2941132
+					^Content/ra/music/backstab.aud:
+						Offset: 215082171
+						Length: 3178252
+					^Content/ra/music/chaos2.aud:
+						Offset: 218260423
+						Length: 2860068
+					^Content/ra/music/shut_it.aud:
+						Offset: 221120491
+						Length: 2991979
+					^Content/ra/music/twinmix1.aud:
+						Offset: 224112470
+						Length: 2536972
+					^Content/ra/music/under3.aud:
+						Offset: 226649442
+						Length: 2812788
+					^Content/ra/music/vr2.aud:
+						Offset: 229462230
+						Length: 2920396
+		counterstrike-linux: Counterstrike Expansion Disc (English)
 			IDFiles:
 				readme.txt: 0efe8087383f0b159a9633f891fb5f53c6097cd4
 				setup/install/cstrike.rtp: fae8ba82db71574f6ecd8fb4ff4026fcb65d2adc
 			Install:
 				extract-raw: main.mix
-					^Content/ra/scores-counterstrike.mix:
-						Offset: 144899491
-						Length: 87483135
+					^Content/ra/music/2nd_hand.aud:
+						Offset: 209070947
+						Length: 3070092
+					^Content/ra/music/araziod.aud:
+						Offset: 212141039
+						Length: 2941132
+					^Content/ra/music/backstab.aud:
+						Offset: 215082171
+						Length: 3178252
+					^Content/ra/music/chaos2.aud:
+						Offset: 218260423
+						Length: 2860068
+					^Content/ra/music/shut_it.aud:
+						Offset: 221120491
+						Length: 2991979
+					^Content/ra/music/twinmix1.aud:
+						Offset: 224112470
+						Length: 2536972
+					^Content/ra/music/under3.aud:
+						Offset: 226649442
+						Length: 2812788
+					^Content/ra/music/vr2.aud:
+						Offset: 229462230
+						Length: 2920396
 		origin: C&C The Ultimate Collection (Origin version, English)
 			Type: Install
 			RegistryKey: HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\EA Games\Command and Conquer Red Alert
@@ -435,6 +480,23 @@ ModContent:
 			Install:
 				copy: .
 					^Content/ra/redalert.mix: REDALERT.MIX
+					^Content/ra/music/2nd_hand.aud: 2nd_hand.aud
+					^Content/ra/music/araziod.aud: araziod.aud
+					^Content/ra/music/await.aud: await.aud
+					^Content/ra/music/backstab.aud: backstab.aud
+					^Content/ra/music/bog.aud: bog.aud
+					^Content/ra/music/chaos2.aud: chaos2.aud
+					^Content/ra/music/float_v2.aud: float_v2.aud
+					^Content/ra/music/gloom.aud: gloom.aud
+					^Content/ra/music/grndwire.aud: grndwire.aud
+					^Content/ra/music/rpt.aud: rpt.aud
+					^Content/ra/music/search.aud: search.aud
+					^Content/ra/music/shut_it.aud: shut_it.aud
+					^Content/ra/music/traction.aud: traction.aud
+					^Content/ra/music/twinmix1.aud: twinmix1.aud
+					^Content/ra/music/under3.aud: under3.aud
+					^Content/ra/music/vr2.aud: vr2.aud
+					^Content/ra/music/wastelnd.aud: wastelnd.aud
 				extract-raw: MAIN.MIX
 					^Content/ra/movies1.mix:
 						Offset: 417051805
