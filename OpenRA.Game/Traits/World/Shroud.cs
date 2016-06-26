@@ -26,7 +26,7 @@ namespace OpenRA.Traits
 		public bool FogLocked = false;
 
 		[Desc("Default value of the explore map checkbox in the lobby.")]
-		public bool ExploredMapEnabled = false;
+		public bool ExploredMapEnabled = true;
 
 		[Desc("Prevent the explore map enabled state from being changed in the lobby.")]
 		public bool ExploredMapLocked = false;
