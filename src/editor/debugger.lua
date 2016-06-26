@@ -154,6 +154,9 @@ function debugger:updateStackSync()
     local root = stackCtrl:AddRoot("Stack")
     callData = {} -- reset call cache
     for _,frame in ipairs(stack) do
+      -- check if the stack includes expected structures
+      if type(frame) ~= "table" or type(frame[1]) ~= "table" or #frame[1] < 7 then break end
+
       -- "main chunk at line 24"
       -- "foo() at line 13 (defined at foobar.lua:11)"
       -- call = { source.name, source.source, source.linedefined,
@@ -180,7 +183,7 @@ function debugger:updateStackSync()
       callData[callitem:GetValue()] = { call[2], call[4] }
 
       -- add the local variables to the call stack item
-      for name,val in pairs(frame[2]) do
+      for name,val in pairs(type(frame[2]) == "table" and frame[2] or {}) do
         -- format the variable name, value as a single line and,
         -- if not a simple type, the string value.
 
@@ -195,7 +198,7 @@ function debugger:updateStackSync()
       end
 
       -- add the upvalues for this call stack level to the tree item
-      for name,val in pairs(frame[3]) do
+      for name,val in pairs(type(frame[3]) == "table" and frame[3] or {}) do
         local value, comment = val[1], fixUTF8(trimToMaxLength(tostring(val[2])))
         local text = ("%s = %s%s"):
           format(name, fixUTF8(trimToMaxLength(serialize(value, params))),
