@@ -240,6 +240,19 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 								break;
 							}
 
+							case "delete":
+							{
+								var sourcePath = Path.Combine(path, i.Value.Value);
+
+								// Try as an absolute path
+								if (!File.Exists(sourcePath))
+									sourcePath = Platform.ResolvePath(i.Value.Value);
+
+								Log.Write("debug", "Deleting {0}", sourcePath);
+								File.Delete(sourcePath);
+								break;
+							}
+
 							default:
 								Log.Write("debug", "Unknown installation command {0} - ignoring", i.Key);
 								break;
@@ -288,6 +301,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		static void ExtractFromPackage(ExtractionType type, string path, MiniYaml actionYaml, List<string> extractedFiles, Action<string> updateMessage)
 		{
 			var sourcePath = Path.Combine(path, actionYaml.Value);
+
+			// Try as an absolute path
+			if (!File.Exists(sourcePath))
+				sourcePath = Platform.ResolvePath(actionYaml.Value);
+
 			using (var source = File.OpenRead(sourcePath))
 			{
 				foreach (var node in actionYaml.Nodes)
@@ -350,6 +368,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		static void ExtractFromMSCab(string path, MiniYaml actionYaml, List<string> extractedFiles, Action<string> updateMessage)
 		{
 			var sourcePath = Path.Combine(path, actionYaml.Value);
+
+			// Try as an absolute path
+			if (!File.Exists(sourcePath))
+				sourcePath = Platform.ResolvePath(actionYaml.Value);
+
 			using (var source = File.OpenRead(sourcePath))
 			{
 				var reader = new MSCabCompression(source);
@@ -379,6 +402,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		static void ExtractFromISCab(string path, MiniYaml actionYaml, List<string> extractedFiles, Action<string> updateMessage)
 		{
 			var sourcePath = Path.Combine(path, actionYaml.Value);
+
+			// Try as an absolute path
+			if (!File.Exists(sourcePath))
+				sourcePath = Platform.ResolvePath(actionYaml.Value);
+
 			var volumeNode = actionYaml.Nodes.FirstOrDefault(n => n.Key == "Volumes");
 			if (volumeNode == null)
 				throw new InvalidDataException("extract-iscab entry doesn't define a Volumes node");
