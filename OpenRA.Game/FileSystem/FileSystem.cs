@@ -57,8 +57,6 @@ namespace OpenRA.FileSystem
 				return new BigFile(this, filename);
 			if (filename.EndsWith(".bag", StringComparison.InvariantCultureIgnoreCase))
 				return new BagFile(this, filename);
-			if (filename.EndsWith(".hdr", StringComparison.InvariantCultureIgnoreCase))
-				return new InstallShieldCABExtractor(this, filename);
 
 			IReadOnlyPackage parent;
 			string subPath = null;
