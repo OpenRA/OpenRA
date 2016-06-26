@@ -242,7 +242,7 @@ ModContent:
 		movies-soviet: Soviet Campaign Briefings
 			TestFiles: ^Content/ra/movies2.mix
 			Discs: soviet, soviet-linux
-		music-covertops: Counterstrike Music
+		music-counterstrike: Counterstrike Music
 			TestFiles: ^Content/ra/scores-counterstrike.mix
 			Discs: counterstrike, counterstrike-linux
 	Downloads:
