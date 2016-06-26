@@ -3,7 +3,7 @@ Background@CONTENT_PANEL:
 	X: (WINDOW_RIGHT - WIDTH) / 2
 	Y: (WINDOW_BOTTOM - HEIGHT) / 2
 	Width: 500
-	Height: 268
+	Height: 290
 	Background: panel-bg
 	Children:
 		Background@RULE:
@@ -29,7 +29,7 @@ Background@CONTENT_PANEL:
 			X: 30
 			Y: 84
 			Width: PARENT_RIGHT - 60
-			Height: 115
+			Height: 137
 			TopBottomSpacing: 4
 			ItemSpacing: 2
 			BorderWidth: 2
@@ -89,9 +89,9 @@ Background@CONTENT_PANEL:
 			X: 30
 			Y: PARENT_BOTTOM - 52
 			Background: button-highlighted
-			Width: 110
+			Width: 200
 			Height: 32
-			Text: Detect Disc
+			Text: Detect Disc or Installation
 			Font: Bold
 		Button@BACK_BUTTON:
 			X: PARENT_RIGHT - 140
@@ -230,7 +230,7 @@ Background@DISC_INSTALL_PANEL:
 					Align: Center
 		Container@LIST:
 			Width: PARENT_RIGHT
-			Height: 268
+			Height: 338
 			Visible: false
 			Children:
 				Label@LIST_MESSAGE:
@@ -242,11 +242,31 @@ Background@DISC_INSTALL_PANEL:
 					X: 30
 					Y: 99
 					Width: PARENT_RIGHT - 60
-					Height: 100
+					Height: 170
 					TopBottomSpacing: 4
 					ItemSpacing: 2
 					BorderWidth: 2
 					Children:
+						Container@LIST_HEADER_TEMPLATE:
+							X: 6
+							Width: PARENT_RIGHT - 12 - 24
+							Height: 14
+							Children:
+								Background@TOP_RULE:
+									Width: PARENT_RIGHT
+									Height: 1
+									Background: panel-rule
+								Label@LABEL:
+									Y: 3
+									Width: PARENT_RIGHT
+									Height: 10
+									Font: TinyBold
+									Align: Center
+								Background@BOTTOM_RULE:
+									Y: 16
+									Width: PARENT_RIGHT
+									Height: 1
+									Background: panel-rule
 						Label@LIST_TEMPLATE:
 							X: 6
 							Width: PARENT_RIGHT - 16

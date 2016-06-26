@@ -17,11 +17,12 @@ namespace OpenRA
 {
 	public class ModContent : IGlobalModData
 	{
+		public enum SourceType { Disc, Install }
 		public class ModPackage
 		{
 			public readonly string Title;
 			public readonly string[] TestFiles = { };
-			public readonly string[] Discs = { };
+			public readonly string[] Sources = { };
 			public readonly bool Required;
 			public readonly string Download;
 
@@ -37,14 +38,20 @@ namespace OpenRA
 			}
 		}
 
-		public class ModDisc
+		public class ModSource
 		{
+			public readonly SourceType Type = SourceType.Disc;
+
+			// Used to find installation locations for SourceType.Install
+			public readonly string RegistryKey;
+			public readonly string RegistryValue;
+
 			public readonly string Title;
 			public readonly Dictionary<string, string> IDFiles;
 
 			[FieldLoader.Ignore] public readonly List<MiniYamlNode> Install;
 
-			public ModDisc(MiniYaml yaml)
+			public ModSource(MiniYaml yaml)
 			{
 				Title = yaml.Value;
 				var installNode = yaml.Nodes.FirstOrDefault(n => n.Key == "Install");
@@ -101,18 +108,18 @@ namespace OpenRA
 			return downloads;
 		}
 
-		[FieldLoader.LoadUsing("LoadDiscs")]
-		public readonly Dictionary<string, ModDisc> Discs;
+		[FieldLoader.LoadUsing("LoadSources")]
+		public readonly Dictionary<string, ModSource> Sources;
 
-		static object LoadDiscs(MiniYaml yaml)
+		static object LoadSources(MiniYaml yaml)
 		{
-			var discs = new Dictionary<string, ModDisc>();
-			var discNode = yaml.Nodes.FirstOrDefault(n => n.Key == "Discs");
-			if (discNode != null)
-				foreach (var node in discNode.Value.Nodes)
-					discs.Add(node.Key, new ModDisc(node.Value));
+			var sources = new Dictionary<string, ModSource>();
+			var sourceNode = yaml.Nodes.FirstOrDefault(n => n.Key == "Sources");
+			if (sourceNode != null)
+				foreach (var node in sourceNode.Value.Nodes)
+					sources.Add(node.Key, new ModSource(node.Value));
 
-			return discs;
+			return sources;
 		}
 	}
 }

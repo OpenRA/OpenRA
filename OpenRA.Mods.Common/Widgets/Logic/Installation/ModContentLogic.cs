@@ -86,12 +86,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var requiredWidget = container.Get<LabelWidget>("REQUIRED");
 				requiredWidget.IsVisible = () => p.Value.Required;
 
-				var discWidget = container.Get<ImageWidget>("DISC");
-				var discs = p.Value.Discs.Select(s => content.Discs[s].Title).Distinct();
-				var discList = discs.JoinWith("\n");
-				var isDiscAvailable = discs.Any();
-				discWidget.GetTooltipText = () => discList;
-				discWidget.IsVisible = () => isDiscAvailable;
+				var sourceWidget = container.Get<ImageWidget>("DISC");
+				var sources = p.Value.Sources.Select(s => content.Sources[s].Title).Distinct();
+				var sourceList = sources.JoinWith("\n");
+				var isSourceAvailable = sources.Any();
+				sourceWidget.GetTooltipText = () => sourceList;
+				sourceWidget.IsVisible = () => isSourceAvailable;
 
 				var installed = p.Value.IsInstalled();
 				var downloadButton = container.Get<ButtonWidget>("DOWNLOAD");
@@ -115,13 +115,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				var requiresDiscWidget = container.Get<LabelWidget>("REQUIRES_DISC");
 				requiresDiscWidget.IsVisible = () => !installed && !downloadEnabled;
-				if (!isDiscAvailable)
+				if (!isSourceAvailable)
 					requiresDiscWidget.GetText = () => "Manual Install";
 
 				scrollPanel.AddChild(container);
 			}
 
-			discAvailable = content.Packages.Values.Any(p => p.Discs.Any() && !p.IsInstalled());
+			discAvailable = content.Packages.Values.Any(p => p.Sources.Any() && !p.IsInstalled());
 		}
 	}
 }
