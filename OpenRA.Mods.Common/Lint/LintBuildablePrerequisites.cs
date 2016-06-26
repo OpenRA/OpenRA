@@ -29,7 +29,11 @@ namespace OpenRA.Mods.Common.Lint
 			var techPrereqs = rules.Actors.SelectMany(a => a.Value.TraitInfos<ProvidesTechPrerequisiteInfo>())
 				.SelectMany(p => p.Prerequisites);
 
-			var providedPrereqs = customPrereqs.Concat(techPrereqs);
+			// ProvidesPrerequisiteFromAllies allows arbitrary prereq definitions
+			var prereqsFromAllies = rules.Actors.SelectMany(a => a.Value.TraitInfos<ProvidesPrerequisiteFromAlliesInfo>())
+				.Select(p => p.Prerequisite);
+
+			var providedPrereqs = customPrereqs.Concat(techPrereqs).Concat(prereqsFromAllies);
 
 			// TODO: this check is case insensitive while the real check in-game is not
 			foreach (var i in rules.Actors)
