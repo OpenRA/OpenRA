@@ -573,8 +573,10 @@ TTNK:
 	Armament:
 		Weapon: TTankZap
 		LocalOffset: 0,0,213
-	AttackTurreted:
-	Turreted:
+	AttackCharge:
+		InitialChargeDelay: 16
+		MaxCharges: 2
+		ReloadDelay: 120
 	WithIdleOverlay@SPINNER:
 		Sequence: spinner
 	SelectionDecorations:

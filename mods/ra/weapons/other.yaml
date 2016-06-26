@@ -152,8 +152,9 @@ TeslaZap:
 		Spread: 42
 		Damage: 100
 		Versus:
-			None: 1000
+			None: 200
 			Wood: 60
+			Concrete: 50
 		DamageTypes: Prone50Percent, TriggerProne, ElectricityDeath
 
 PortaTesla:
@@ -163,21 +164,23 @@ PortaTesla:
 	Projectile: TeslaZap
 	Warhead@1Dam: SpreadDamage
 		Spread: 42
-		Damage: 45
+		Damage: 35
 		Versus:
-			None: 1000
+			None: 200
+			Concrete: 50
 		DamageTypes: Prone50Percent, TriggerProne, ElectricityDeath
 
 TTankZap:
-	ReloadDelay: 120
+	ReloadDelay: 2
 	Range: 7c0
 	Report: tesla1.aud
 	Projectile: TeslaZap
 	Warhead@1Dam: SpreadDamage
 		Spread: 42
-		Damage: 100
+		Damage: 50
 		Versus:
-			None: 1000
+			None: 200
+			Concrete: 50
 		DamageTypes: Prone50Percent, TriggerProne, ElectricityDeath
 
 DogJaw:
