@@ -114,7 +114,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (passwordField != null)
 			{
 				passwordField.TakeKeyboardFocus();
-				passwordField.Text = orderManager.Password;
 				passwordField.IsVisible = () => orderManager.AuthenticationFailed;
 				var passwordLabel = widget.Get<LabelWidget>("PASSWORD_LABEL");
 				passwordLabel.IsVisible = passwordField.IsVisible;
