@@ -86,12 +86,12 @@ if (!(Test-Path "windows/SDL2.dll"))
 	rm -path "$currentPath\windows\README-SDL.txt"
 }
 
-if (!(Test-Path "Mono.Nat.dll"))
+if (!(Test-Path "Open.Nat.dll"))
 {
-	echo "Fetching Mono.Nat from NuGet."
-	./nuget.exe install Mono.Nat -Version 1.2.24 -ExcludeVersion
-	cp Mono.Nat/lib/net40/Mono.Nat.dll .
-	rmdir Mono.Nat -Recurse
+	echo "Fetching Open.Nat from NuGet."
+	./nuget.exe install Open.Nat -Version 2.0.16 -ExcludeVersion
+	cp Open.Nat/lib/net45/Open.Nat.dll .
+	rmdir Open.Nat -Recurse
 }
 
 if (!(Test-Path "windows/lua51.dll"))

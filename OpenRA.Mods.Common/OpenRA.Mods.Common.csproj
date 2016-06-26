@@ -70,10 +70,6 @@
       <HintPath>..\thirdparty\download\MaxMind.GeoIP2.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="Mono.Nat">
-      <HintPath>..\thirdparty\download\Mono.Nat.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="ICSharpCode.SharpZipLib">
       <HintPath>..\thirdparty\download\ICSharpCode.SharpZipLib.dll</HintPath>
       <Private>False</Private>

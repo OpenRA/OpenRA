@@ -578,13 +578,6 @@ Container@SETTINGS_PANEL:
 							Height: 20
 							Font: Regular
 							Text: Show Bot Debug Messages
-						Checkbox@VERBOSE_NAT_CHECKBOX:
-							X: 310
-							Y: 190
-							Width: 300
-							Height: 20
-							Font: Regular
-							Text: Detailed NAT logging
 						Checkbox@CHECKUNSYNCED_CHECKBOX:
 							X: 15
 							Y: 220
@@ -594,7 +587,7 @@ Container@SETTINGS_PANEL:
 							Text: Check Sync around Unsynced Code
 						Checkbox@LUADEBUG_CHECKBOX:
 							X: 310
-							Y: 220
+							Y: 190
 							Width: 300
 							Height: 20
 							Font: Regular

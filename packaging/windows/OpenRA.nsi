@@ -89,7 +89,7 @@ Section "Game" GAME
 	File "${SRCDIR}\OpenRA.Platforms.Default.dll"
 	File "${SRCDIR}\ICSharpCode.SharpZipLib.dll"
 	File "${SRCDIR}\FuzzyLogicLibrary.dll"
-	File "${SRCDIR}\Mono.Nat.dll"
+	File "${SRCDIR}\Open.Nat.dll"
 	File "${SRCDIR}\AUTHORS"
 	File "${SRCDIR}\COPYING"
 	File "${SRCDIR}\README.html"
@@ -193,7 +193,7 @@ Function ${UN}Clean
 	Delete $INSTDIR\OpenRA.Platforms.Default.dll
 	Delete $INSTDIR\ICSharpCode.SharpZipLib.dll
 	Delete $INSTDIR\FuzzyLogicLibrary.dll
-	Delete $INSTDIR\Mono.Nat.dll
+	Delete $INSTDIR\Open.Nat.dll
 	Delete $INSTDIR\SharpFont.dll
 	Delete $INSTDIR\AUTHORS
 	Delete $INSTDIR\COPYING

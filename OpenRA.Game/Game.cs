@@ -18,6 +18,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading;
+using System.Threading.Tasks;
 using OpenRA.Chat;
 using OpenRA.Graphics;
 using OpenRA.Network;
@@ -50,6 +51,8 @@ namespace OpenRA
 		public static bool BenchmarkMode = false;
 
 		public static GlobalChat GlobalChat;
+
+		static Task discoverNat;
 
 		public static OrderManager JoinServer(string host, int port, string password, bool recordReplay = true)
 		{
@@ -247,16 +250,7 @@ namespace OpenRA
 			Log.AddChannel("graphics", "graphics.log");
 			Log.AddChannel("geoip", "geoip.log");
 			Log.AddChannel("irc", "irc.log");
-
-			if (Settings.Server.DiscoverNatDevices)
-				UPnP.TryNatDiscovery();
-			else
-			{
-				Settings.Server.NatDeviceAvailable = false;
-				Settings.Server.AllowPortForward = false;
-			}
-
-			GeoIP.Initialize();
+			Log.AddChannel("nat", "nat.log");
 
 			var renderers = new[] { Settings.Graphics.Renderer, "Default", null };
 			foreach (var r in renderers)
@@ -277,6 +271,16 @@ namespace OpenRA
 				}
 			}
 
+			GeoIP.Initialize();
+
+			if (!Game.Settings.Server.DiscoverNatDevices)
+				Game.Settings.Server.AllowPortForward = false;
+			else
+			{
+				discoverNat = UPnP.DiscoverNatDevices(Settings.Server.NatDiscoveryTimeout);
+				Game.Settings.Server.AllowPortForward = true;
+			}
+
 			Sound = new Sound(Settings.Sound.Engine);
 
 			GlobalChat = new GlobalChat();
@@ -286,9 +290,6 @@ namespace OpenRA
 				Console.WriteLine("\t{0}: {1} ({2})", mod.Key, mod.Value.Title, mod.Value.Version);
 
 			InitializeMod(Settings.Game.Mod, args);
-
-			if (Settings.Server.DiscoverNatDevices)
-				RunAfterDelay(Settings.Server.NatDiscoveryTimeout, UPnP.StoppingNatDiscovery);
 		}
 
 		public static bool IsModInstalled(string modId)
@@ -391,6 +392,18 @@ namespace OpenRA
 			PerfHistory.Items["render_flip"].HasNormalTick = false;
 
 			JoinLocal();
+
+			try
+			{
+				if (discoverNat != null)
+					discoverNat.Wait();
+			}
+			catch (Exception e)
+			{
+				Console.WriteLine("NAT discovery failed: {0}", e.Message);
+				Log.Write("nat", e.ToString());
+				Game.Settings.Server.AllowPortForward = false;
+			}
 
 			ModData.LoadScreen.StartGame(args);
 		}
