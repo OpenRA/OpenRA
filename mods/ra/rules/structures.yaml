@@ -577,8 +577,8 @@ HBOX:
 	Building:
 	Buildable:
 		Queue: Defense
-		BuildPaletteOrder: 50
-		Prerequisites: tent, ~structures.allies, ~techlevel.medium
+		BuildPaletteOrder: 150
+		Prerequisites: tent, ~structures.france, ~techlevel.low
 	Valued:
 		Cost: 600
 	Health:
