@@ -125,6 +125,9 @@ namespace OpenRA.Mods.Common.AI
 		[Desc("Radius in cells around the center of the base to expand.")]
 		public readonly int MaxBaseRadius = 20;
 
+		[Desc("Should deployment of additional MCVs be restricted to MaxBaseRadius if explicit deploy locations are missing or occupied?")]
+		public readonly bool RestrictMCVDeploymentFallbackToBase = true;
+
 		[Desc("Radius in cells around each building with ProvideBuildableArea",
 			"to check for a 3x3 area of water where naval structures can be built.",
 			"Should match maximum adjacency of naval structures.")]
@@ -817,7 +820,7 @@ namespace OpenRA.Mods.Common.AI
 		}
 
 		// Find any newly constructed MCVs and deploy them at a sensible
-		// backup location within the main base.
+		// backup location.
 		void FindAndDeployBackupMcv(Actor self)
 		{
 			var mcvs = self.World.Actors.Where(a => a.Owner == Player &&
@@ -829,7 +832,7 @@ namespace OpenRA.Mods.Common.AI
 					continue;
 
 				var factType = mcv.Info.TraitInfo<TransformsInfo>().IntoActor;
-				var desiredLocation = ChooseBuildLocation(factType, true, BuildingType.Building);
+				var desiredLocation = ChooseBuildLocation(factType, Info.RestrictMCVDeploymentFallbackToBase, BuildingType.Building);
 				if (desiredLocation == null)
 					continue;
 
