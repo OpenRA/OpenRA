@@ -271,7 +271,7 @@ local function getStreams()
         if not str then
           -- skip if nothing to display
         elseif (v.toshell) then
-          DisplayShell(str)
+          ide:GetConsole():Print(str)
         else
           DisplayOutputNoMarker(str)
           if str and (getInputLine() ~= wx.wxNOT_FOUND or out:GetReadOnly()) then

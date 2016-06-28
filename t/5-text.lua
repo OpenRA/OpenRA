@@ -15,7 +15,7 @@ is(text:sub(-#cmptext), output.useraw and invalid.."\n" or cmptext,
   "Output with invalid UTF-8 characters is displayed.")
 
 local shell = ide:GetConsole()
-DisplayShell(invalid)
+shell:Print(invalid)
 local cmptext = [[\128\129\130]].."\n"
 local outlength = shell.useraw and #invalid+1 or #cmptext
 -- when Raw is used, the output is as-is, otherwise invalid chars are shown as \code

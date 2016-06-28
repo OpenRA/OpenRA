@@ -497,7 +497,7 @@ function debugger:shell(expression, isstatement)
 
         if err then
           if addedret then err = err:gsub('^%[string "return ', '[string "') end
-          DisplayShellErr(err)
+          ide:GetConsole():Error(err)
         elseif addedret or #values > 0 then
           if forceexpression then -- display elements as multi-line
             for i,v in pairs(values) do -- stringify each of the returned values
@@ -515,7 +515,7 @@ function debugger:shell(expression, isstatement)
           if #values == 0 and (forceexpression or not isstatement) then
             values = {'nil'}
           end
-          DisplayShell(unpack(values))
+          ide:GetConsole():Print(unpack(values))
         end
 
         -- refresh Stack and Watch windows if executed a statement (and no err)
@@ -524,7 +524,7 @@ function debugger:shell(expression, isstatement)
         end
       end)
   elseif debugger.server then
-    DisplayShellErr(TR("Can't evaluate the expression while the application is running."))
+    ide:GetConsole():Error(TR("Can't evaluate the expression while the application is running."))
   end
 end
 
