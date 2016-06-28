@@ -39,7 +39,7 @@ return {
     end
 
     if rundebug then
-      DebuggerAttachDefault({runstart = ide.config.debugger.runonstart == true})
+      DebuggerAttachDefault({runstart = ide.config.debugger.runonstart ~= false})
     end
 
     -- suppress hiding ConsoleWindowClass as this is used by Love console
