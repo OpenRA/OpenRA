@@ -8,8 +8,8 @@ RequiresMods:
 	modchooser: {DEV_VERSION}
 
 Packages:
-	~^Content/ra
-	~^Content/ra/music
+	~^Content/ra/v2/
+	~^Content/ra/v2/expand
 	.
 	$ra: ra
 	$cnc: cnc
@@ -222,53 +222,49 @@ GameSpeeds:
 
 ColorValidator:
 
-Migrations:
-	delete: ^Content/ra/scores.mix
-		Length: 4271443
-
 ModContent:
 	InstallPromptMessage: Red Alert requires artwork and audio from the original game.\n\nQuick Install will automatically download this content (without music\nor videos) from a mirror of the 2008 Red Alert freeware release.\n\nAdvanced Install includes options for downloading the music and for\ncopying the videos and other content from an original game disc.
 	QuickDownload: basefiles
 	HeaderMessage: Game content may be extracted from the original game discs or an\nexisting digital install. OpenRA can also download the base game\nfiles from an online mirror of the 2008 freeware release of RA.
 	Packages:
 		base: Base Game Files
-			TestFiles: ^Content/ra/allies.mix, ^Content/ra/conquer.mix, ^Content/ra/interior.mix, ^Content/ra/redalert.mix, ^Content/ra/russian.mix, ^Content/ra/snow.mix, ^Content/ra/sounds.mix, ^Content/ra/temperat.mix
+			TestFiles: ^Content/ra/v2/allies.mix, ^Content/ra/v2/conquer.mix, ^Content/ra/v2/interior.mix, ^Content/ra/v2/redalert.mix, ^Content/ra/v2/russian.mix, ^Content/ra/v2/snow.mix, ^Content/ra/v2/sounds.mix, ^Content/ra/v2/temperat.mix
 			Sources: allied, allied-linux, soviet, soviet-linux, tfd, origin
 			Required: true
 			Download: basefiles
 		music: Base Game Music
-			TestFiles: ^Content/ra/scores.mix
+			TestFiles: ^Content/ra/v2/scores.mix
 			Sources: allied, allied-linux, soviet, soviet-linux, tfd, origin
 			Download: music
 		movies-allied: Allied Campaign Briefings
-			TestFiles: ^Content/ra/movies1.mix
+			TestFiles: ^Content/ra/v2/movies1.mix
 			Sources: allied, allied-linux, tfd, origin
 		movies-soviet: Soviet Campaign Briefings
-			TestFiles: ^Content/ra/movies2.mix
+			TestFiles: ^Content/ra/v2/movies2.mix
 			Sources: soviet, soviet-linux, tfd, origin
 		music-counterstrike: Counterstrike Music
-			TestFiles: ^Content/ra/music/araziod.aud, ^Content/ra/music/backstab.aud, ^Content/ra/music/chaos2.aud, ^Content/ra/music/shut_it.aud, ^Content/ra/music/2nd_hand.aud, ^Content/ra/music/twinmix1.aud, ^Content/ra/music/under3.aud, ^Content/ra/music/vr2.aud, 
+			TestFiles: ^Content/ra/v2/expand/araziod.aud, ^Content/ra/v2/expand/backstab.aud, ^Content/ra/v2/expand/chaos2.aud, ^Content/ra/v2/expand/shut_it.aud, ^Content/ra/v2/expand/2nd_hand.aud, ^Content/ra/v2/expand/twinmix1.aud, ^Content/ra/v2/expand/under3.aud, ^Content/ra/v2/expand/vr2.aud, 
 			Sources: counterstrike, counterstrike-linux, origin
 		music-aftermath: Aftermath Music
-			TestFiles: ^Content/ra/music/await.aud, ^Content/ra/music/bog.aud, ^Content/ra/music/float_v2.aud, ^Content/ra/music/gloom.aud, ^Content/ra/music/grndwire.aud, ^Content/ra/music/rpt.aud, ^Content/ra/music/search.aud, ^Content/ra/music/traction.aud, ^Content/ra/music/wastelnd.aud
+			TestFiles: ^Content/ra/v2/expand/await.aud, ^Content/ra/v2/expand/bog.aud, ^Content/ra/v2/expand/float_v2.aud, ^Content/ra/v2/expand/gloom.aud, ^Content/ra/v2/expand/grndwire.aud, ^Content/ra/v2/expand/rpt.aud, ^Content/ra/v2/expand/search.aud, ^Content/ra/v2/expand/traction.aud, ^Content/ra/v2/expand/wastelnd.aud
 			Sources: aftermath, aftermath-linux, origin
 	Downloads:
 		basefiles: Base Freeware Content
 			MirrorList: http://www.openra.net/packages/ra-mirrors.txt
 			Extract:
-				^Content/ra/allies.mix: allies.mix
-				^Content/ra/conquer.mix: conquer.mix
-				^Content/ra/general.mix: general.mix
-				^Content/ra/interior.mix: interior.mix
-				^Content/ra/redalert.mix: redalert.mix
-				^Content/ra/russian.mix: russian.mix
-				^Content/ra/snow.mix: snow.mix
-				^Content/ra/sounds.mix: sounds.mix
-				^Content/ra/temperat.mix: temperat.mix
+				^Content/ra/v2/allies.mix: allies.mix
+				^Content/ra/v2/conquer.mix: conquer.mix
+				^Content/ra/v2/general.mix: general.mix
+				^Content/ra/v2/interior.mix: interior.mix
+				^Content/ra/v2/redalert.mix: redalert.mix
+				^Content/ra/v2/russian.mix: russian.mix
+				^Content/ra/v2/snow.mix: snow.mix
+				^Content/ra/v2/sounds.mix: sounds.mix
+				^Content/ra/v2/temperat.mix: temperat.mix
 		music: Freeware Music
 			MirrorList: http://www.openra.net/packages/ra-music-mirrors.txt
 			Extract:
-				^Content/ra/scores.mix: scores.mix
+				^Content/ra/v2/scores.mix: scores.mix
 	Sources:
 		allied: Red Alert 95 (Allied Disc, English)
 			IDFiles:
@@ -276,33 +272,33 @@ ModContent:
 				INSTALL/REDALERT.MIX: 0e58f4b54f44f6cd29fecf8cf379d33cf2d4caef
 			Install:
 				copy: INSTALL
-					^Content/ra/redalert.mix: REDALERT.MIX
+					^Content/ra/v2/redalert.mix: REDALERT.MIX
 				extract-raw: MAIN.MIX
-					^Content/ra/conquer.mix:
+					^Content/ra/v2/conquer.mix:
 						Offset: 236
 						Length: 2177047
-					^Content/ra/interior.mix:
+					^Content/ra/v2/interior.mix:
 						Offset: 17172192
 						Length: 247425
-					^Content/ra/movies1.mix:
+					^Content/ra/v2/movies1.mix:
 						Offset: 17419617
 						Length: 369362336
-					^Content/ra/scores.mix:
+					^Content/ra/v2/scores.mix:
 						Offset: 386781953
 						Length: 64171360
-					^Content/ra/snow.mix:
+					^Content/ra/v2/snow.mix:
 						Offset: 450953313
 						Length: 1030861
-					^Content/ra/sounds.mix:
+					^Content/ra/v2/sounds.mix:
 						Offset: 451984174
 						Length: 1006778
-					^Content/ra/russian.mix:
+					^Content/ra/v2/russian.mix:
 						Offset: 452990952
 						Length: 266077
-					^Content/ra/allies.mix:
+					^Content/ra/v2/allies.mix:
 						Offset: 453257029
 						Length: 309406
-					^Content/ra/temperat.mix:
+					^Content/ra/v2/temperat.mix:
 						Offset: 453566435
 						Length: 1038859
 		allied-linux: Red Alert 95 (Allied Disc, English)
@@ -311,33 +307,33 @@ ModContent:
 				install/redalert.mix: 0e58f4b54f44f6cd29fecf8cf379d33cf2d4caef
 			Install:
 				copy: install
-					^Content/ra/redalert.mix: redalert.mix
+					^Content/ra/v2/redalert.mix: redalert.mix
 				extract-raw: main.mix
-					^Content/ra/conquer.mix:
+					^Content/ra/v2/conquer.mix:
 						Offset: 236
 						Length: 2177047
-					^Content/ra/interior.mix:
+					^Content/ra/v2/interior.mix:
 						Offset: 17172192
 						Length: 247425
-					^Content/ra/movies1.mix:
+					^Content/ra/v2/movies1.mix:
 						Offset: 17419617
 						Length: 369362336
-					^Content/ra/scores.mix:
+					^Content/ra/v2/scores.mix:
 						Offset: 386781953
 						Length: 64171360
-					^Content/ra/snow.mix:
+					^Content/ra/v2/snow.mix:
 						Offset: 450953313
 						Length: 1030861
-					^Content/ra/sounds.mix:
+					^Content/ra/v2/sounds.mix:
 						Offset: 451984174
 						Length: 1006778
-					^Content/ra/russian.mix:
+					^Content/ra/v2/russian.mix:
 						Offset: 452990952
 						Length: 266077
-					^Content/ra/allies.mix:
+					^Content/ra/v2/allies.mix:
 						Offset: 453257029
 						Length: 309406
-					^Content/ra/temperat.mix:
+					^Content/ra/v2/temperat.mix:
 						Offset: 453566435
 						Length: 1038859
 		soviet: Red Alert 95 (Soviet Disc, English)
@@ -346,33 +342,33 @@ ModContent:
 				INSTALL/REDALERT.MIX: 0e58f4b54f44f6cd29fecf8cf379d33cf2d4caef
 			Install:
 				copy: INSTALL
-					^Content/ra/redalert.mix: REDALERT.MIX
+					^Content/ra/v2/redalert.mix: REDALERT.MIX
 				extract-raw: MAIN.MIX
-					^Content/ra/conquer.mix:
+					^Content/ra/v2/conquer.mix:
 						Offset: 236
 						Length: 2177047
-					^Content/ra/interior.mix:
+					^Content/ra/v2/interior.mix:
 						Offset: 17172192
 						Length: 247425
-					^Content/ra/movies2.mix:
+					^Content/ra/v2/movies2.mix:
 						Offset: 17419617
 						Length: 415334456
-					^Content/ra/scores.mix:
+					^Content/ra/v2/scores.mix:
 						Offset: 432754073
 						Length: 64171360
-					^Content/ra/snow.mix:
+					^Content/ra/v2/snow.mix:
 						Offset: 496925433
 						Length: 1030861
-					^Content/ra/russian.mix:
+					^Content/ra/v2/russian.mix:
 						Offset: 497956294
 						Length: 266077
-					^Content/ra/allies.mix:
+					^Content/ra/v2/allies.mix:
 						Offset: 498222371
 						Length: 309406
-					^Content/ra/sounds.mix:
+					^Content/ra/v2/sounds.mix:
 						Offset: 498531777
 						Length: 1006778
-					^Content/ra/temperat.mix:
+					^Content/ra/v2/temperat.mix:
 						Offset: 499538555
 						Length: 1038859
 		soviet-linux: Red Alert 95 (Soviet Disc, English)
@@ -381,33 +377,33 @@ ModContent:
 				install/redalert.mix: 0e58f4b54f44f6cd29fecf8cf379d33cf2d4caef
 			Install:
 				copy: install
-					^Content/ra/redalert.mix: redalert.mix
+					^Content/ra/v2/redalert.mix: redalert.mix
 				extract-raw: main.mix
-					^Content/ra/conquer.mix:
+					^Content/ra/v2/conquer.mix:
 						Offset: 236
 						Length: 2177047
-					^Content/ra/interior.mix:
+					^Content/ra/v2/interior.mix:
 						Offset: 17172192
 						Length: 247425
-					^Content/ra/movies2.mix:
+					^Content/ra/v2/movies2.mix:
 						Offset: 17419617
 						Length: 415334456
-					^Content/ra/scores.mix:
+					^Content/ra/v2/scores.mix:
 						Offset: 432754073
 						Length: 64171360
-					^Content/ra/snow.mix:
+					^Content/ra/v2/snow.mix:
 						Offset: 496925433
 						Length: 1030861
-					^Content/ra/russian.mix:
+					^Content/ra/v2/russian.mix:
 						Offset: 497956294
 						Length: 266077
-					^Content/ra/allies.mix:
+					^Content/ra/v2/allies.mix:
 						Offset: 498222371
 						Length: 309406
-					^Content/ra/sounds.mix:
+					^Content/ra/v2/sounds.mix:
 						Offset: 498531777
 						Length: 1006778
-					^Content/ra/temperat.mix:
+					^Content/ra/v2/temperat.mix:
 						Offset: 499538555
 						Length: 1038859
 		counterstrike: Counterstrike Expansion Disc (English)
@@ -416,28 +412,28 @@ ModContent:
 				SETUP/INSTALL/CSTRIKE.RTP: fae8ba82db71574f6ecd8fb4ff4026fcb65d2adc
 			Install:
 				extract-raw: MAIN.MIX
-					^Content/ra/music/2nd_hand.aud:
+					^Content/ra/v2/expand/2nd_hand.aud:
 						Offset: 209070947
 						Length: 3070092
-					^Content/ra/music/araziod.aud:
+					^Content/ra/v2/expand/araziod.aud:
 						Offset: 212141039
 						Length: 2941132
-					^Content/ra/music/backstab.aud:
+					^Content/ra/v2/expand/backstab.aud:
 						Offset: 215082171
 						Length: 3178252
-					^Content/ra/music/chaos2.aud:
+					^Content/ra/v2/expand/chaos2.aud:
 						Offset: 218260423
 						Length: 2860068
-					^Content/ra/music/shut_it.aud:
+					^Content/ra/v2/expand/shut_it.aud:
 						Offset: 221120491
 						Length: 2991979
-					^Content/ra/music/twinmix1.aud:
+					^Content/ra/v2/expand/twinmix1.aud:
 						Offset: 224112470
 						Length: 2536972
-					^Content/ra/music/under3.aud:
+					^Content/ra/v2/expand/under3.aud:
 						Offset: 226649442
 						Length: 2812788
-					^Content/ra/music/vr2.aud:
+					^Content/ra/v2/expand/vr2.aud:
 						Offset: 229462230
 						Length: 2920396
 		counterstrike-linux: Counterstrike Expansion Disc (English)
@@ -446,28 +442,28 @@ ModContent:
 				setup/install/cstrike.rtp: fae8ba82db71574f6ecd8fb4ff4026fcb65d2adc
 			Install:
 				extract-raw: main.mix
-					^Content/ra/music/2nd_hand.aud:
+					^Content/ra/v2/expand/2nd_hand.aud:
 						Offset: 209070947
 						Length: 3070092
-					^Content/ra/music/araziod.aud:
+					^Content/ra/v2/expand/araziod.aud:
 						Offset: 212141039
 						Length: 2941132
-					^Content/ra/music/backstab.aud:
+					^Content/ra/v2/expand/backstab.aud:
 						Offset: 215082171
 						Length: 3178252
-					^Content/ra/music/chaos2.aud:
+					^Content/ra/v2/expand/chaos2.aud:
 						Offset: 218260423
 						Length: 2860068
-					^Content/ra/music/shut_it.aud:
+					^Content/ra/v2/expand/shut_it.aud:
 						Offset: 221120491
 						Length: 2991979
-					^Content/ra/music/twinmix1.aud:
+					^Content/ra/v2/expand/twinmix1.aud:
 						Offset: 224112470
 						Length: 2536972
-					^Content/ra/music/under3.aud:
+					^Content/ra/v2/expand/under3.aud:
 						Offset: 226649442
 						Length: 2812788
-					^Content/ra/music/vr2.aud:
+					^Content/ra/v2/expand/vr2.aud:
 						Offset: 229462230
 						Length: 2920396
 		aftermath: Aftermath Expansion Disc (English)
@@ -476,31 +472,31 @@ ModContent:
 				SETUP/INSTALL/PATCH.RTP: 5bce93f834f9322ddaa7233242e5b6c7fea0bf17
 			Install:
 				extract-raw: MAIN.MIX
-					^Content/ra/music/await.aud:
+					^Content/ra/v2/expand/await.aud:
 						Offset: 158698809
 						Length: 2972788
-					^Content/ra/music/bog.aud:
+					^Content/ra/v2/expand/bog.aud:
 						Offset: 244351833
 						Length: 2386955
-					^Content/ra/music/float_v2.aud:
+					^Content/ra/v2/expand/float_v2.aud:
 						Offset: 246738788
 						Length: 3090115
-					^Content/ra/music/gloom.aud:
+					^Content/ra/v2/expand/gloom.aud:
 						Offset: 249828903
 						Length: 2662851
-					^Content/ra/music/grndwire.aud:
+					^Content/ra/v2/expand/grndwire.aud:
 						Offset: 252491754
 						Length: 2573611
-					^Content/ra/music/rpt.aud:
+					^Content/ra/v2/expand/rpt.aud:
 						Offset: 255065365
 						Length: 3092259
-					^Content/ra/music/search.aud:
+					^Content/ra/v2/expand/search.aud:
 						Offset: 258157624
 						Length: 3104091
-					^Content/ra/music/traction.aud:
+					^Content/ra/v2/expand/traction.aud:
 						Offset: 261261715
 						Length: 2668003
-					^Content/ra/music/wastelnd.aud:
+					^Content/ra/v2/expand/wastelnd.aud:
 						Offset: 263929718
 						Length: 2721563
 		aftermath-linux: Aftermath Expansion Disc (English)
@@ -509,31 +505,31 @@ ModContent:
 				setup/install/patch.rtp: 5bce93f834f9322ddaa7233242e5b6c7fea0bf17
 			Install:
 				extract-raw: main.mix
-					^Content/ra/music/await.aud:
+					^Content/ra/v2/expand/await.aud:
 						Offset: 158698809
 						Length: 2972788
-					^Content/ra/music/bog.aud:
+					^Content/ra/v2/expand/bog.aud:
 						Offset: 244351833
 						Length: 2386955
-					^Content/ra/music/float_v2.aud:
+					^Content/ra/v2/expand/float_v2.aud:
 						Offset: 246738788
 						Length: 3090115
-					^Content/ra/music/gloom.aud:
+					^Content/ra/v2/expand/gloom.aud:
 						Offset: 249828903
 						Length: 2662851
-					^Content/ra/music/grndwire.aud:
+					^Content/ra/v2/expand/grndwire.aud:
 						Offset: 252491754
 						Length: 2573611
-					^Content/ra/music/rpt.aud:
+					^Content/ra/v2/expand/rpt.aud:
 						Offset: 255065365
 						Length: 3092259
-					^Content/ra/music/search.aud:
+					^Content/ra/v2/expand/search.aud:
 						Offset: 258157624
 						Length: 3104091
-					^Content/ra/music/traction.aud:
+					^Content/ra/v2/expand/traction.aud:
 						Offset: 261261715
 						Length: 2668003
-					^Content/ra/music/wastelnd.aud:
+					^Content/ra/v2/expand/wastelnd.aud:
 						Offset: 263929718
 						Length: 2721563
 		tfd: C&C The First Decade (English)
@@ -547,40 +543,40 @@ ModContent:
 						4: data4.cab
 						5: data5.cab
 					Extract:
-						^Content/ra/main.mix: Red Alert\\MAIN.MIX
-						^Content/ra/redalert.mix: Red Alert\\REDALERT.MIX
-				extract-raw: ^Content/ra/main.mix
-					^Content/ra/movies1.mix:
+						^Content/ra/v2/main.mix: Red Alert\\MAIN.MIX
+						^Content/ra/v2/redalert.mix: Red Alert\\REDALERT.MIX
+				extract-raw: ^Content/ra/v2/main.mix
+					^Content/ra/v2/movies1.mix:
 						Offset: 417051805
 						Length: 404691306
-					^Content/ra/interior.mix:
+					^Content/ra/v2/interior.mix:
 						Offset: 821743111
 						Length: 249490
-					^Content/ra/conquer.mix:
+					^Content/ra/v2/conquer.mix:
 						Offset: 840028549
 						Length: 2192279
-					^Content/ra/allies.mix:
+					^Content/ra/v2/allies.mix:
 						Offset: 842220828
 						Length: 319181
-					^Content/ra/temperat.mix:
+					^Content/ra/v2/temperat.mix:
 						Offset: 842540009
 						Length: 1043672
-					^Content/ra/sounds.mix:
+					^Content/ra/v2/sounds.mix:
 						Offset: 843583681
 						Length: 1385637
-					^Content/ra/snow.mix:
+					^Content/ra/v2/snow.mix:
 						Offset: 844969318
 						Length: 1035716
-					^Content/ra/scores.mix:
+					^Content/ra/v2/scores.mix:
 						Offset: 846005034
 						Length: 67742203
-					^Content/ra/russian.mix:
+					^Content/ra/v2/russian.mix:
 						Offset: 913747237
 						Length: 274732
-					^Content/ra/movies2.mix:
+					^Content/ra/v2/movies2.mix:
 						Offset: 914022190
 						Length: 417051731
-				delete: ^Content/ra/main.mix
+				delete: ^Content/ra/v2/main.mix
 		origin: C&C The Ultimate Collection (Origin version, English)
 			Type: Install
 			RegistryKey: HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\EA Games\Command and Conquer Red Alert
@@ -590,52 +586,52 @@ ModContent:
 				REDALERT.MIX: 0e58f4b54f44f6cd29fecf8cf379d33cf2d4caef
 			Install:
 				copy: .
-					^Content/ra/redalert.mix: REDALERT.MIX
-					^Content/ra/music/2nd_hand.aud: 2nd_hand.aud
-					^Content/ra/music/araziod.aud: araziod.aud
-					^Content/ra/music/await.aud: await.aud
-					^Content/ra/music/backstab.aud: backstab.aud
-					^Content/ra/music/bog.aud: bog.aud
-					^Content/ra/music/chaos2.aud: chaos2.aud
-					^Content/ra/music/float_v2.aud: float_v2.aud
-					^Content/ra/music/gloom.aud: gloom.aud
-					^Content/ra/music/grndwire.aud: grndwire.aud
-					^Content/ra/music/rpt.aud: rpt.aud
-					^Content/ra/music/search.aud: search.aud
-					^Content/ra/music/shut_it.aud: shut_it.aud
-					^Content/ra/music/traction.aud: traction.aud
-					^Content/ra/music/twinmix1.aud: twinmix1.aud
-					^Content/ra/music/under3.aud: under3.aud
-					^Content/ra/music/vr2.aud: vr2.aud
-					^Content/ra/music/wastelnd.aud: wastelnd.aud
+					^Content/ra/v2/redalert.mix: REDALERT.MIX
+					^Content/ra/v2/expand/2nd_hand.aud: 2nd_hand.aud
+					^Content/ra/v2/expand/araziod.aud: araziod.aud
+					^Content/ra/v2/expand/await.aud: await.aud
+					^Content/ra/v2/expand/backstab.aud: backstab.aud
+					^Content/ra/v2/expand/bog.aud: bog.aud
+					^Content/ra/v2/expand/chaos2.aud: chaos2.aud
+					^Content/ra/v2/expand/float_v2.aud: float_v2.aud
+					^Content/ra/v2/expand/gloom.aud: gloom.aud
+					^Content/ra/v2/expand/grndwire.aud: grndwire.aud
+					^Content/ra/v2/expand/rpt.aud: rpt.aud
+					^Content/ra/v2/expand/search.aud: search.aud
+					^Content/ra/v2/expand/shut_it.aud: shut_it.aud
+					^Content/ra/v2/expand/traction.aud: traction.aud
+					^Content/ra/v2/expand/twinmix1.aud: twinmix1.aud
+					^Content/ra/v2/expand/under3.aud: under3.aud
+					^Content/ra/v2/expand/vr2.aud: vr2.aud
+					^Content/ra/v2/expand/wastelnd.aud: wastelnd.aud
 				extract-raw: MAIN.MIX
-					^Content/ra/movies1.mix:
+					^Content/ra/v2/movies1.mix:
 						Offset: 417051805
 						Length: 404691306
-					^Content/ra/interior.mix:
+					^Content/ra/v2/interior.mix:
 						Offset: 821743111
 						Length: 249490
-					^Content/ra/conquer.mix:
+					^Content/ra/v2/conquer.mix:
 						Offset: 840028549
 						Length: 2192279
-					^Content/ra/allies.mix:
+					^Content/ra/v2/allies.mix:
 						Offset: 842220828
 						Length: 319181
-					^Content/ra/temperat.mix:
+					^Content/ra/v2/temperat.mix:
 						Offset: 842540009
 						Length: 1043672
-					^Content/ra/sounds.mix:
+					^Content/ra/v2/sounds.mix:
 						Offset: 843583681
 						Length: 1385637
-					^Content/ra/snow.mix:
+					^Content/ra/v2/snow.mix:
 						Offset: 844969318
 						Length: 1035716
-					^Content/ra/scores.mix:
+					^Content/ra/v2/scores.mix:
 						Offset: 846005034
 						Length: 67742203
-					^Content/ra/russian.mix:
+					^Content/ra/v2/russian.mix:
 						Offset: 913747237
 						Length: 274732
-					^Content/ra/movies2.mix:
+					^Content/ra/v2/movies2.mix:
 						Offset: 914022190
 						Length: 417051731
