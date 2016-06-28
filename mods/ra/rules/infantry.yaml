@@ -583,6 +583,7 @@ Ant:
 	Tooltip:
 		Name: Giant Ant
 		Description: Irradiated insect that grew oversize.
+		GenericName: Ant
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 1954
@@ -599,6 +600,7 @@ Ant:
 		Speed: 99
 		TurnSpeed: 12
 		SharesCell: no
+	-Crushable:
 	AutoTarget:
 		ScanRadius: 5
 	AttackFrontal:
