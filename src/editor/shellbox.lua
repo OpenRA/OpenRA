@@ -203,6 +203,7 @@ DisplayShellPrompt = function (...) console:MarkerAdd(console:GetLineCount()-1, 
 
 function console:Print(...) return DisplayShell(...) end
 function console:Write(...) return shellPrint(OUTPUT_MARKER, concat("", ...), false) end
+function console:Error(...) return DisplayShellErr(...) end
 
 local function filterTraceError(err, addedret)
   local err = err:match("(.-:%d+:.-)\n[^\n]*\n[^\n]*\n[^\n]*src/editor/shellbox.lua:.*in function 'executeShellCode'")
