@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using OpenRA.FileSystem;
 
@@ -80,6 +81,9 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 			// HACK: We know that maps can only be oramap or folders, which are ReadWrite
 			var package = modData.ModFiles.OpenPackage(args[1], new Folder(".")) as IReadWritePackage;
+			if (package == null)
+				throw new FileNotFoundException(args[1]);
+
 			var engineDate = Exts.ParseIntegerInvariant(args[2]);
 			UpgradeMap(modData, package, engineDate);
 		}
