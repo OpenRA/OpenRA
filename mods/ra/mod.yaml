@@ -228,7 +228,7 @@ ColorValidator:
 
 ModContent:
 	InstallPromptMessage: Red Alert requires artwork and audio from the original game.\n\nQuick Install will automatically download this content (without music\nor videos) from a mirror of the 2008 Red Alert freeware release.\n\nAdvanced Install includes options for downloading the music and for\ncopying the videos and other content from an original game disc.
-	QuickDownload: basefiles
+	QuickDownload: quickinstall
 	HeaderMessage: Game content may be extracted from the original game discs or an\nexisting digital install. OpenRA can also download the base game\nfiles from an online mirror of the 2008 freeware release of RA.
 	Packages:
 		base: Base Game Files
@@ -240,10 +240,12 @@ ModContent:
 			TestFiles: ^Content/ra/v2/expand/expand2.mix, ^Content/ra/v2/expand/hires1.mix, ^Content/ra/v2/expand/lores1.mix, ^Content/ra/v2/expand/chrotnk1.aud, ^Content/ra/v2/expand/fixit1.aud, ^Content/ra/v2/expand/jburn1.aud, ^Content/ra/v2/expand/jchrge1.aud, ^Content/ra/v2/expand/jcrisp1.aud, ^Content/ra/v2/expand/jdance1.aud, ^Content/ra/v2/expand/jjuice1.aud, ^Content/ra/v2/expand/jjump1.aud, ^Content/ra/v2/expand/jlight1.aud, ^Content/ra/v2/expand/jpower1.aud, ^Content/ra/v2/expand/jshock1.aud, ^Content/ra/v2/expand/jyes1.aud, ^Content/ra/v2/expand/madchrg2.aud, ^Content/ra/v2/expand/madexplo.aud, ^Content/ra/v2/expand/mboss1.aud, ^Content/ra/v2/expand/mhear1.aud, ^Content/ra/v2/expand/mhotdig1.aud, ^Content/ra/v2/expand/mhowdy1.aud, ^Content/ra/v2/expand/mhuh1.aud, ^Content/ra/v2/expand/mlaff1.aud, ^Content/ra/v2/expand/mrise1.aud, ^Content/ra/v2/expand/mwrench1.aud, ^Content/ra/v2/expand/myeehaw1.aud, ^Content/ra/v2/expand/myes1.aud
 			Sources: aftermath, aftermath-linux, tfd, ra-origin
 			Required: true
+			Download: aftermath
 		cncdesert: C&C Desert Tileset
 			TestFiles: ^Content/ra/v2/cnc/desert.mix
 			Sources: tfd, cnc-origin, cnc95, cnc95-linux
 			Required: true
+			Download: cncdesert
 		music: Base Game Music
 			TestFiles: ^Content/ra/v2/scores.mix
 			Sources: allied, allied-linux, soviet, soviet-linux, tfd, ra-origin
@@ -261,20 +263,98 @@ ModContent:
 			TestFiles: ^Content/ra/v2/expand/await.aud, ^Content/ra/v2/expand/bog.aud, ^Content/ra/v2/expand/float_v2.aud, ^Content/ra/v2/expand/gloom.aud, ^Content/ra/v2/expand/grndwire.aud, ^Content/ra/v2/expand/rpt.aud, ^Content/ra/v2/expand/search.aud, ^Content/ra/v2/expand/traction.aud, ^Content/ra/v2/expand/wastelnd.aud
 			Sources: aftermath, aftermath-linux, ra-origin
 	Downloads:
-		basefiles: Base Freeware Content
-			MirrorList: http://www.openra.net/packages/ra-mirrors.txt
+		quickinstall: Quick Install Package
+			MirrorList: http://www.openra.net/packages/ra-quickinstall-mirrors.txt
 			Extract:
 				^Content/ra/v2/allies.mix: allies.mix
 				^Content/ra/v2/conquer.mix: conquer.mix
-				^Content/ra/v2/general.mix: general.mix
+				^Content/ra/v2/hires.mix: hires.mix
 				^Content/ra/v2/interior.mix: interior.mix
-				^Content/ra/v2/redalert.mix: redalert.mix
+				^Content/ra/v2/local.mix: local.mix
+				^Content/ra/v2/lores.mix: lores.mix
 				^Content/ra/v2/russian.mix: russian.mix
 				^Content/ra/v2/snow.mix: snow.mix
 				^Content/ra/v2/sounds.mix: sounds.mix
+				^Content/ra/v2/speech.mix: speech.mix
 				^Content/ra/v2/temperat.mix: temperat.mix
+				^Content/ra/v2/expand/chrotnk1.aud: expand/chrotnk1.aud
+				^Content/ra/v2/expand/expand2.mix: expand/expand2.mix
+				^Content/ra/v2/expand/fixit1.aud: expand/fixit1.aud
+				^Content/ra/v2/expand/hires1.mix: expand/hires1.mix
+				^Content/ra/v2/expand/jburn1.aud: expand/jburn1.aud
+				^Content/ra/v2/expand/jchrge1.aud: expand/jchrge1.aud
+				^Content/ra/v2/expand/jcrisp1.aud: expand/jcrisp1.aud
+				^Content/ra/v2/expand/jdance1.aud: expand/jdance1.aud
+				^Content/ra/v2/expand/jjuice1.aud: expand/jjuice1.aud
+				^Content/ra/v2/expand/jjump1.aud: expand/jjump1.aud
+				^Content/ra/v2/expand/jlight1.aud: expand/jlight1.aud
+				^Content/ra/v2/expand/jpower1.aud: expand/jpower1.aud
+				^Content/ra/v2/expand/jshock1.aud: expand/jshock1.aud
+				^Content/ra/v2/expand/jyes1.aud: expand/jyes1.aud
+				^Content/ra/v2/expand/lores1.mix: expand/lores1.mix
+				^Content/ra/v2/expand/madchrg2.aud: expand/madchrg2.aud
+				^Content/ra/v2/expand/madexplo.aud: expand/madexplo.aud
+				^Content/ra/v2/expand/mboss1.aud: expand/mboss1.aud
+				^Content/ra/v2/expand/mhear1.aud: expand/mhear1.aud
+				^Content/ra/v2/expand/mhotdig1.aud: expand/mhotdig1.aud
+				^Content/ra/v2/expand/mhowdy1.aud: expand/mhowdy1.aud
+				^Content/ra/v2/expand/mhuh1.aud: expand/mhuh1.aud
+				^Content/ra/v2/expand/mlaff1.aud: expand/mlaff1.aud
+				^Content/ra/v2/expand/mrise1.aud: expand/mrise1.aud
+				^Content/ra/v2/expand/mwrench1.aud: expand/mwrench1.aud
+				^Content/ra/v2/expand/myeehaw1.aud: expand/myeehaw1.aud
+				^Content/ra/v2/expand/myes1.aud: expand/myes1.aud
+				^Content/ra/v2/cnc/desert.mix: cnc/desert.mix
+		basefiles: Base Freeware Content
+			MirrorList: http://www.openra.net/packages/ra-base-mirrors.txt
+			Extract:
+				^Content/ra/v2/allies.mix: allies.mix
+				^Content/ra/v2/conquer.mix: conquer.mix
+				^Content/ra/v2/hires.mix: hires.mix
+				^Content/ra/v2/interior.mix: interior.mix
+				^Content/ra/v2/local.mix: local.mix
+				^Content/ra/v2/lores.mix: lores.mix
+				^Content/ra/v2/russian.mix: russian.mix
+				^Content/ra/v2/snow.mix: snow.mix
+				^Content/ra/v2/sounds.mix: sounds.mix
+				^Content/ra/v2/speech.mix: speech.mix
+				^Content/ra/v2/temperat.mix: temperat.mix
+		aftermath: Aftermath Expansion Files
+			MirrorList: http://www.openra.net/packages/ra-aftermath-mirrors.txt
+			Extract:
+				^Content/ra/v2/expand/chrotnk1.aud: expand/chrotnk1.aud
+				^Content/ra/v2/expand/expand2.mix: expand/expand2.mix
+				^Content/ra/v2/expand/fixit1.aud: expand/fixit1.aud
+				^Content/ra/v2/expand/hires1.mix: expand/hires1.mix
+				^Content/ra/v2/expand/jburn1.aud: expand/jburn1.aud
+				^Content/ra/v2/expand/jchrge1.aud: expand/jchrge1.aud
+				^Content/ra/v2/expand/jcrisp1.aud: expand/jcrisp1.aud
+				^Content/ra/v2/expand/jdance1.aud: expand/jdance1.aud
+				^Content/ra/v2/expand/jjuice1.aud: expand/jjuice1.aud
+				^Content/ra/v2/expand/jjump1.aud: expand/jjump1.aud
+				^Content/ra/v2/expand/jlight1.aud: expand/jlight1.aud
+				^Content/ra/v2/expand/jpower1.aud: expand/jpower1.aud
+				^Content/ra/v2/expand/jshock1.aud: expand/jshock1.aud
+				^Content/ra/v2/expand/jyes1.aud: expand/jyes1.aud
+				^Content/ra/v2/expand/lores1.mix: expand/lores1.mix
+				^Content/ra/v2/expand/madchrg2.aud: expand/madchrg2.aud
+				^Content/ra/v2/expand/madexplo.aud: expand/madexplo.aud
+				^Content/ra/v2/expand/mboss1.aud: expand/mboss1.aud
+				^Content/ra/v2/expand/mhear1.aud: expand/mhear1.aud
+				^Content/ra/v2/expand/mhotdig1.aud: expand/mhotdig1.aud
+				^Content/ra/v2/expand/mhowdy1.aud: expand/mhowdy1.aud
+				^Content/ra/v2/expand/mhuh1.aud: expand/mhuh1.aud
+				^Content/ra/v2/expand/mlaff1.aud: expand/mlaff1.aud
+				^Content/ra/v2/expand/mrise1.aud: expand/mrise1.aud
+				^Content/ra/v2/expand/mwrench1.aud: expand/mwrench1.aud
+				^Content/ra/v2/expand/myeehaw1.aud: expand/myeehaw1.aud
+				^Content/ra/v2/expand/myes1.aud: expand/myes1.aud
+		cncdesert: C&C Desert Tileset
+			MirrorList: http://www.openra.net/packages/ra-cncdesert-mirrors.txt
+			Extract:
+				^Content/ra/v2/cnc/desert.mix: cnc/desert.mix
 		music: Freeware Music
-			MirrorList: http://www.openra.net/packages/ra-music-mirrors.txt
+			MirrorList: http://www.openra.net/packages/ra-scores-mirrors.txt
 			Extract:
 				^Content/ra/v2/scores.mix: scores.mix
 	Sources:
