@@ -1199,7 +1199,7 @@ Templates:
 			5: Rock
 	Template@79:
 		Id: 79
-		Images: falls01.des
+		Images: falls1.des
 		Size: 3,2
 		Category: River
 		Tiles:
@@ -1211,7 +1211,7 @@ Templates:
 			5: Rock
 	Template@80:
 		Id: 80
-		Images: falls02.des
+		Images: falls2.des
 		Size: 3,3
 		Category: River
 		Tiles:
@@ -1226,7 +1226,7 @@ Templates:
 			8: Rock
 	Template@90:
 		Id: 90
-		Images: ford01.des
+		Images: ford1.des
 		Size: 3,3
 		Category: Bridge
 		Tiles:
@@ -1241,7 +1241,7 @@ Templates:
 			8: Clear
 	Template@91:
 		Id: 91
-		Images: ford02.des
+		Images: ford2.des
 		Size: 3,3
 		Category: Bridge
 		Tiles:
@@ -2224,7 +2224,7 @@ Templates:
 			5: Rock
 	Template@346:
 		Id: 346
-		Images: falls03.des
+		Images: falls3.des
 		Size: 3,2
 		Category: Water Cliffs
 		Tiles:
@@ -2236,7 +2236,7 @@ Templates:
 			5: Rock
 	Template@347:
 		Id: 347
-		Images: falls04.des
+		Images: falls4.des
 		Size: 2,3
 		Category: Water Cliffs
 		Tiles:

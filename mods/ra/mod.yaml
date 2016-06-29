@@ -10,6 +10,7 @@ RequiresMods:
 Packages:
 	~^Content/ra/v2/
 	~^Content/ra/v2/expand
+	~^Content/ra/v2/cnc
 	.
 	$ra: ra
 	$cnc: cnc
@@ -31,6 +32,7 @@ Packages:
 	~movies2.mix
 	~expand2.mix
 	~hires1.mix
+	~desert.mix
 	ra|bits
 	ra|bits/desert
 	ra|uibits
@@ -231,29 +233,33 @@ ModContent:
 	Packages:
 		base: Base Game Files
 			TestFiles: ^Content/ra/v2/allies.mix, ^Content/ra/v2/conquer.mix, ^Content/ra/v2/interior.mix, ^Content/ra/v2/redalert.mix, ^Content/ra/v2/russian.mix, ^Content/ra/v2/snow.mix, ^Content/ra/v2/sounds.mix, ^Content/ra/v2/temperat.mix
-			Sources: allied, allied-linux, soviet, soviet-linux, tfd, origin
+			Sources: allied, allied-linux, soviet, soviet-linux, tfd, ra-origin
 			Required: true
 			Download: basefiles
 		aftermathbase: Aftermath Expansion Files
 			TestFiles: ^Content/ra/v2/expand/expand2.mix, ^Content/ra/v2/expand/hires1.mix, ^Content/ra/v2/expand/lores1.mix, ^Content/ra/v2/expand/chrotnk1.aud, ^Content/ra/v2/expand/fixit1.aud, ^Content/ra/v2/expand/jburn1.aud, ^Content/ra/v2/expand/jchrge1.aud, ^Content/ra/v2/expand/jcrisp1.aud, ^Content/ra/v2/expand/jdance1.aud, ^Content/ra/v2/expand/jjuice1.aud, ^Content/ra/v2/expand/jjump1.aud, ^Content/ra/v2/expand/jlight1.aud, ^Content/ra/v2/expand/jpower1.aud, ^Content/ra/v2/expand/jshock1.aud, ^Content/ra/v2/expand/jyes1.aud, ^Content/ra/v2/expand/madchrg2.aud, ^Content/ra/v2/expand/madexplo.aud, ^Content/ra/v2/expand/mboss1.aud, ^Content/ra/v2/expand/mhear1.aud, ^Content/ra/v2/expand/mhotdig1.aud, ^Content/ra/v2/expand/mhowdy1.aud, ^Content/ra/v2/expand/mhuh1.aud, ^Content/ra/v2/expand/mlaff1.aud, ^Content/ra/v2/expand/mrise1.aud, ^Content/ra/v2/expand/mwrench1.aud, ^Content/ra/v2/expand/myeehaw1.aud, ^Content/ra/v2/expand/myes1.aud
-			Sources: aftermath, aftermath-linux, tfd, origin
+			Sources: aftermath, aftermath-linux, tfd, ra-origin
+			Required: true
+		cncdesert: C&C Desert Tileset
+			TestFiles: ^Content/ra/v2/cnc/desert.mix
+			Sources: tfd, cnc-origin, cnc95, cnc95-linux
 			Required: true
 		music: Base Game Music
 			TestFiles: ^Content/ra/v2/scores.mix
-			Sources: allied, allied-linux, soviet, soviet-linux, tfd, origin
+			Sources: allied, allied-linux, soviet, soviet-linux, tfd, ra-origin
 			Download: music
 		movies-allied: Allied Campaign Briefings
 			TestFiles: ^Content/ra/v2/movies1.mix
-			Sources: allied, allied-linux, tfd, origin
+			Sources: allied, allied-linux, tfd, ra-origin
 		movies-soviet: Soviet Campaign Briefings
 			TestFiles: ^Content/ra/v2/movies2.mix
-			Sources: soviet, soviet-linux, tfd, origin
+			Sources: soviet, soviet-linux, tfd, ra-origin
 		music-counterstrike: Counterstrike Music
 			TestFiles: ^Content/ra/v2/expand/araziod.aud, ^Content/ra/v2/expand/backstab.aud, ^Content/ra/v2/expand/chaos2.aud, ^Content/ra/v2/expand/shut_it.aud, ^Content/ra/v2/expand/2nd_hand.aud, ^Content/ra/v2/expand/twinmix1.aud, ^Content/ra/v2/expand/under3.aud, ^Content/ra/v2/expand/vr2.aud, 
-			Sources: counterstrike, counterstrike-linux, origin
+			Sources: counterstrike, counterstrike-linux, ra-origin
 		music-aftermath: Aftermath Music
 			TestFiles: ^Content/ra/v2/expand/await.aud, ^Content/ra/v2/expand/bog.aud, ^Content/ra/v2/expand/float_v2.aud, ^Content/ra/v2/expand/gloom.aud, ^Content/ra/v2/expand/grndwire.aud, ^Content/ra/v2/expand/rpt.aud, ^Content/ra/v2/expand/search.aud, ^Content/ra/v2/expand/traction.aud, ^Content/ra/v2/expand/wastelnd.aud
-			Sources: aftermath, aftermath-linux, origin
+			Sources: aftermath, aftermath-linux, ra-origin
 	Downloads:
 		basefiles: Base Freeware Content
 			MirrorList: http://www.openra.net/packages/ra-mirrors.txt
@@ -709,6 +715,7 @@ ModContent:
 			Install:
 				extract-iscab: data1.hdr
 					Volumes:
+						2: data2.cab
 						3: data3.cab
 						4: data4.cab
 						5: data5.cab
@@ -718,6 +725,7 @@ ModContent:
 						^Content/ra/v2/expand/hires1.mix: Red Alert\\HIRES1.MIX
 						^Content/ra/v2/expand/lores1.mix: Red Alert\\LORES1.MIX
 						^Content/ra/v2/expand/expand2.mix: Red Alert\\EXPAND2.MIX
+						^Content/ra/v2/cnc/desert.mix: CnC\\DESERT.MIX
 				extract-raw: ^Content/ra/v2/main.mix
 					^Content/ra/v2/movies1.mix:
 						Offset: 417051805
@@ -822,7 +830,7 @@ ModContent:
 						Offset: 844509702
 						Length: 9073
 				delete: ^Content/ra/v2/main.mix
-		origin: C&C The Ultimate Collection (Origin version, English)
+		ra-origin: C&C The Ultimate Collection (Origin version, English)
 			Type: Install
 			RegistryKey: HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\EA Games\Command and Conquer Red Alert
 			RegistryValue: Install Dir
@@ -955,3 +963,25 @@ ModContent:
 					^Content/ra/v2/expand/myes1.aud:
 						Offset: 844509702
 						Length: 9073
+		cnc-origin: Command & Conquer (Origin version, English)
+			Type: Install
+			RegistryKey: HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\EA Games\CNC and The Covert Operations
+			RegistryValue: Install Dir
+			IDFiles:
+				CNC95Launcher.exe: 1d711adf09ac08738b2599b3092a1b448169b32a
+				CONQUER.MIX: 833e02a09aae694659eb312d3838367f681d1b30
+			Install:
+				copy: .
+					^Content/ra/v2/cnc/desert.mix: DESERT.MIX
+		cnc95: C&C Gold (GDI or Nod Disc, English)
+			IDFiles:
+				CONQUER.MIX: 833e02a09aae694659eb312d3838367f681d1b30
+			Install:
+				copy: .
+					^Content/ra/v2/cnc/desert.mix: DESERT.MIX
+		cnc95-linux: C&C Gold (GDI or Nod Disc, English)
+			IDFiles:
+				conquer.mix: 833e02a09aae694659eb312d3838367f681d1b30
+			Install:
+				copy: .
+					^Content/ra/v2/cnc/desert.mix: desert.mix
