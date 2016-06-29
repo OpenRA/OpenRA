@@ -55,7 +55,7 @@ namespace OpenRA.Mods.Common.Commands
 
 		public void RegisterHelp(string name, string description)
 		{
-			helpDescriptions.Add(name, description);
+			helpDescriptions[name] = description;
 		}
 	}
 }
