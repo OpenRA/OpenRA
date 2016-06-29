@@ -17,6 +17,7 @@ Packages:
 	./mods/common: common
 	~main.mix
 	~conquer.mix
+	~lores.mix: lores
 	~hires.mix
 	~local.mix
 	~sounds.mix
