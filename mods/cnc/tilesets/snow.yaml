@@ -727,12 +727,9 @@ Templates:
 		Id: 69
 		Images: p03.sno
 		Size: 1,1
-		PickAny: True
 		Category: Debris
 		Tiles:
 			0: Wall
-			1: Clear
-			2: Clear
 	Template@70:
 		Id: 70
 		Images: p04.sno
