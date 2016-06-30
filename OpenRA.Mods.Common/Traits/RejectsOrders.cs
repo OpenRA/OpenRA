@@ -15,24 +15,20 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Can be used to make a unit partly uncontrollable by the player.")]
-	public class RejectsOrdersInfo : ITraitInfo
+	public class RejectsOrdersInfo : UpgradableTraitInfo
 	{
 		[Desc("Possible values include Attack, AttackMove, Guard, Move.")]
 		public readonly HashSet<string> Except = new HashSet<string>();
 
-		public object Create(ActorInitializer init) { return new RejectsOrders(this); }
+		public override object Create(ActorInitializer init) { return new RejectsOrders(this); }
 	}
 
-	public class RejectsOrders
+	public class RejectsOrders : UpgradableTrait<RejectsOrdersInfo>
 	{
-		public HashSet<string> Except { get { return info.Except; } }
-
-		readonly RejectsOrdersInfo info;
+		public HashSet<string> Except { get { return Info.Except; } }
 
 		public RejectsOrders(RejectsOrdersInfo info)
-		{
-			this.info = info;
-		}
+			: base(info) { }
 	}
 
 	public static class RejectsOrdersExts
@@ -40,7 +36,7 @@ namespace OpenRA.Mods.Common.Traits
 		public static bool AcceptsOrder(this Actor self, string orderString)
 		{
 			var r = self.TraitOrDefault<RejectsOrders>();
-			return r == null || r.Except.Contains(orderString);
+			return r == null || r.IsTraitDisabled || r.Except.Contains(orderString);
 		}
 	}
 }
