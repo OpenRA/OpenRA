@@ -8,7 +8,6 @@ World:
 		Briefing: GDI is attempting to retake Egypt.\n\nUse every available resource in your efforts to stop them.\n\nThe populace has once again swayed in support of GDI forces, so show no mercy in dealing with the villagers.
 		LossVideo: banner.vqa
 		BriefingVideo: nod9.vqa
-	MapOptions:
 	SmudgeLayer@SCORCH:
 		InitialSmudges:
 			20,55: sc2,0

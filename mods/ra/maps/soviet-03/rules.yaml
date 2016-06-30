@@ -7,7 +7,6 @@ World:
 		StartVideo: search.vqa
 		WinVideo: execute.vqa
 		LossVideo: take_off.vqa
-	MapOptions:
 	ScriptLobbyDropdown@difficulty:
 		ID: difficulty
 		Label: Difficulty
