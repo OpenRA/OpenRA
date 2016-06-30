@@ -101,6 +101,7 @@ Grenade:
 			Wood: 100
 			Light: 25
 			Heavy: 25
+			Concrete: 100
 		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
