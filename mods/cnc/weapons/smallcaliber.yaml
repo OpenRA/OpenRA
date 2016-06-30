@@ -185,7 +185,7 @@ APCGun.AA:
 	Report: gun20.aud
 	ValidTargets: Air
 	Projectile: Bullet
-		Speed: 1c682
+		Speed: 2c0
 		Blockable: false
 	Warhead@1Dam: SpreadDamage
 		Spread: 128

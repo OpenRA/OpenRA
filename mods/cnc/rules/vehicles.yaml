@@ -15,7 +15,7 @@ MCV:
 		Speed: 71
 		Crushes: crate, infantry
 	Health:
-		HP: 950
+		HP: 1200
 	Armor:
 		Type: Heavy
 	RevealsShroud:
@@ -137,7 +137,7 @@ ARTY:
 		Prerequisites: anyhq, ~techlevel.medium
 		Queue: Vehicle.Nod
 	Mobile:
-		TurnSpeed: 2
+		TurnSpeed: 4
 		Speed: 85
 	Health:
 		HP: 75
