@@ -73,13 +73,13 @@ WorldLoaded = function()
 	Trigger.OnKilled(Biolab, function()
 		player.MarkCompletedObjective(destroyBiotechCenterObjective)
 	end)
-	
+
 	Trigger.OnCapture(Biolab, function()
 		Biolab.Kill()
 	end)
 
 	Trigger.OnDamaged(Biolab, HuntTriggerFunction)
-	
+
 	AIRepairBuildings(enemy)
 	AIRebuildHarvesters(enemy)
 
@@ -101,7 +101,7 @@ end
 
 Tick = function()
 	if DateTime.GameTime > DateTime.Seconds(5) and player.HasNoRequiredUnits() then
-		player.MarkFailedObjective(destroyBiotechCenterObjective)		
+		player.MarkFailedObjective(destroyBiotechCenterObjective)
 	end
 end
 
