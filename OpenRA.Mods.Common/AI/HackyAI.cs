@@ -27,6 +27,7 @@ namespace OpenRA.Mods.Common.AI
 		public class UnitCategories
 		{
 			public readonly HashSet<string> Mcv = new HashSet<string>();
+			public readonly HashSet<string> ExcludeFromSquads = new HashSet<string>();
 		}
 
 		public class BuildingCategories
@@ -153,7 +154,7 @@ namespace OpenRA.Mods.Common.AI
 		[Desc("What buildings to the AI should build.", "What % of the total base must be this type of building.")]
 		public readonly Dictionary<string, float> BuildingFractions = null;
 
-		[Desc("Tells the AI what unit types fall under the same common name. Only supported entry is Mcv.")]
+		[Desc("Tells the AI what unit types fall under the same common name. Supported entries are Mcv and ExcludeFromSquads.")]
 		[FieldLoader.LoadUsing("LoadUnitCategories", true)]
 		public readonly UnitCategories UnitsCommonNames;
 
@@ -681,7 +682,8 @@ namespace OpenRA.Mods.Common.AI
 		void FindNewUnits(Actor self)
 		{
 			var newUnits = self.World.ActorsHavingTrait<IPositionable>()
-				.Where(a => a.Owner == Player && !Info.UnitsCommonNames.Mcv.Contains(a.Info.Name) && !activeUnits.Contains(a));
+				.Where(a => a.Owner == Player && !Info.UnitsCommonNames.Mcv.Contains(a.Info.Name) &&
+					!Info.UnitsCommonNames.ExcludeFromSquads.Contains(a.Info.Name) && !activeUnits.Contains(a));
 
 			foreach (var a in newUnits)
 			{
