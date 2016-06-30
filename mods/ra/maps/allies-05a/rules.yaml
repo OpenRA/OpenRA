@@ -8,7 +8,7 @@ World:
 		WinVideo: tanya2.vqa
 		LossVideo: grvestne.vqa
 	MapOptions:
-		TechLevel: Medium
+		TechLevel: medium
 	ScriptLobbyDropdown@difficulty:
 		ID: difficulty
 		Label: Difficulty
