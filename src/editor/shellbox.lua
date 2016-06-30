@@ -194,10 +194,10 @@ local function shellPrint(marker, text, newline)
   console:EnsureVisibleEnforcePolicy(console:GetLineCount()-1)
 end
 
+displayShellDirect = function (...) shellPrint(nil, concat("\t", ...), true) end
 DisplayShell = function (...) shellPrint(OUTPUT_MARKER, concat("\t", ...), true) end
 DisplayShellErr = function (...) shellPrint(ERROR_MARKER, concat("\t", ...), true) end
 DisplayShellMsg = function (...) shellPrint(MESSAGE_MARKER, concat("\t", ...), true) end
-DisplayShellDirect = function (...) shellPrint(nil, concat("\t", ...), true) end
   -- don't print anything; just mark the line with a prompt mark
 DisplayShellPrompt = function (...) console:MarkerAdd(console:GetLineCount()-1, PROMPT_MARKER) end
 
@@ -393,7 +393,7 @@ function ShellExecuteCode(code)
     bottomnotebook:SetSelection(index)
   end
 
-  DisplayShellDirect(code)
+  displayShellDirect(code)
   executeShellCode(code)
 end
 
@@ -489,7 +489,7 @@ console:Connect(wx.wxEVT_KEY_DOWN,
         if promptText == 'clear' then
           console:Erase()
         else
-          DisplayShellDirect('\n')
+          displayShellDirect('\n')
           executeShellCode(promptText)
         end
         currentHistory = getPromptLine() -- reset history
