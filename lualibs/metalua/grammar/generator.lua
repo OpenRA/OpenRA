@@ -46,6 +46,7 @@
 
 local M = { }
 
+local pp    = require 'metalua.pprint'
 local lexer = require 'metalua.grammar.lexer'
 
 --------------------------------------------------------------------------------
@@ -112,7 +113,7 @@ local function raw_parse_sequence (lx, p)
         else -- Invalid parser definition, this is *not* a parsing error
             error(string.format(
                       "Sequence `%s': element #%i is neither a string nor a parser: %s",
-                      p.name, i, table.tostring(e)))
+                      p.name, i, pp.tostring(e)))
         end
     end
     return r
