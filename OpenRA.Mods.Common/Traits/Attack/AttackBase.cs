@@ -186,7 +186,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			// PERF: Avoid LINQ.
 			foreach (var armament in Armaments)
-				if (armament.Weapon.IsValidAgainst(t, self.World, self))
+				if (!armament.OutOfAmmo && armament.Weapon.IsValidAgainst(t, self.World, self))
 					return true;
 
 			return false;
@@ -203,6 +203,10 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				if (armament.IsTraitDisabled)
 					continue;
+
+				if (armament.OutOfAmmo)
+					continue;
+
 				var range = armament.Weapon.MinRange;
 				if (min > range)
 					min = range;
@@ -222,6 +226,62 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				if (armament.IsTraitDisabled)
 					continue;
+
+				if (armament.OutOfAmmo)
+					continue;
+
+				var range = armament.MaxRange();
+				if (max < range)
+					max = range;
+			}
+
+			return max;
+		}
+
+		public WDist GetMinimumRangeVersusTarget(Target target)
+		{
+			if (IsTraitDisabled)
+				return WDist.Zero;
+
+			// PERF: Avoid LINQ.
+			var min = WDist.MaxValue;
+			foreach (var armament in Armaments)
+			{
+				if (armament.IsTraitDisabled)
+					continue;
+
+				if (armament.OutOfAmmo)
+					continue;
+
+				if (!armament.Weapon.IsValidAgainst(target, self.World, self))
+					continue;
+
+				var range = armament.Weapon.MinRange;
+				if (min > range)
+					min = range;
+			}
+
+			return min != WDist.MaxValue ? min : WDist.Zero;
+		}
+
+		public WDist GetMaximumRangeVersusTarget(Target target)
+		{
+			if (IsTraitDisabled)
+				return WDist.Zero;
+
+			// PERF: Avoid LINQ.
+			var max = WDist.Zero;
+			foreach (var armament in Armaments)
+			{
+				if (armament.IsTraitDisabled)
+					continue;
+
+				if (armament.OutOfAmmo)
+					continue;
+
+				if (!armament.Weapon.IsValidAgainst(target, self.World, self))
+					continue;
+
 				var range = armament.MaxRange();
 				if (max < range)
 					max = range;
@@ -282,7 +342,7 @@ namespace OpenRA.Mods.Common.Traits
 		public bool IsReachableTarget(Target target, bool allowMove)
 		{
 			return HasAnyValidWeapons(target)
-				&& (target.IsInRange(self.CenterPosition, GetMaximumRange()) || (allowMove && self.Info.HasTraitInfo<IMoveInfo>()));
+				&& (target.IsInRange(self.CenterPosition, GetMaximumRangeVersusTarget(target)) || (allowMove && self.Info.HasTraitInfo<IMoveInfo>()));
 		}
 
 		public Stance UnforcedAttackTargetStances()
@@ -327,9 +387,16 @@ namespace OpenRA.Mods.Common.Traits
 					modifiers |= TargetModifiers.ForceAttack;
 
 				var forceAttack = modifiers.HasModifier(TargetModifiers.ForceAttack);
-				var a = ab.ChooseArmamentsForTarget(target, forceAttack).FirstOrDefault();
-				if (a == null)
+				var armaments = ab.ChooseArmamentsForTarget(target, forceAttack);
+				if (!armaments.Any())
 					return false;
+
+				// Use valid armament with highest range out of those that have ammo
+				// If all are out of ammo, just use valid armament with highest range
+				armaments = armaments.OrderByDescending(x => x.MaxRange());
+				var a = armaments.FirstOrDefault(x => !x.OutOfAmmo);
+				if (a == null)
+					a = armaments.First();
 
 				cursor = !target.IsInRange(self.CenterPosition, a.MaxRange())
 					? ab.Info.OutsideRangeCursor ?? a.Info.OutsideRangeCursor
@@ -354,9 +421,16 @@ namespace OpenRA.Mods.Common.Traits
 					return false;
 
 				var target = Target.FromCell(self.World, location);
-				var a = ab.ChooseArmamentsForTarget(target, true).FirstOrDefault();
-				if (a == null)
+				var armaments = ab.ChooseArmamentsForTarget(target, true);
+				if (!armaments.Any())
 					return false;
+
+				// Use valid armament with highest range out of those that have ammo
+				// If all are out of ammo, just use valid armament with highest range
+				armaments = armaments.OrderByDescending(x => x.MaxRange());
+				var a = armaments.FirstOrDefault(x => !x.OutOfAmmo);
+				if (a == null)
+					a = armaments.First();
 
 				cursor = !target.IsInRange(self.CenterPosition, a.MaxRange())
 					? ab.Info.OutsideRangeCursor ?? a.Info.OutsideRangeCursor

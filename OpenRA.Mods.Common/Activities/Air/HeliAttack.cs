@@ -65,9 +65,8 @@ namespace OpenRA.Mods.Common.Activities
 				return ActivityUtils.SequenceActivities(new HeliFly(self, newTarget));
 			}
 
-			// If all ammo pools are depleted and none reload automatically, return to helipad to reload and then move to next activity
-			// TODO: This should check whether there is ammo left that is actually suitable for the target
-			if (ammoPools.All(x => !x.Info.SelfReloads && !x.HasAmmo()))
+			// If any AmmoPool is depleted and no weapon is valid against target, return to helipad to reload and then move to next activity
+			if (ammoPools.Any(x => !x.Info.SelfReloads && !x.HasAmmo()) && !attackHeli.HasAnyValidWeapons(target))
 				return ActivityUtils.SequenceActivities(new HeliReturnToBase(self), NextActivity);
 
 			var dist = target.CenterPosition - self.CenterPosition;
@@ -80,14 +79,11 @@ namespace OpenRA.Mods.Common.Activities
 				return this;
 
 			// Fly towards the target
-			// TODO: Fix that the helicopter won't do anything if it has multiple weapons with different ranges
-			// and the weapon with the longest range is out of ammo
-			if (!target.IsInRange(self.CenterPosition, attackHeli.GetMaximumRange()))
+			if (!target.IsInRange(self.CenterPosition, attackHeli.GetMaximumRangeVersusTarget(target)))
 				helicopter.SetPosition(self, helicopter.CenterPosition + helicopter.FlyStep(desiredFacing));
 
 			// Fly backwards from the target
-			// TODO: Same problem as with MaximumRange
-			if (target.IsInRange(self.CenterPosition, attackHeli.GetMinimumRange()))
+			if (target.IsInRange(self.CenterPosition, attackHeli.GetMinimumRangeVersusTarget(target)))
 			{
 				// Facing 0 doesn't work with the following position change
 				var facing = 1;
