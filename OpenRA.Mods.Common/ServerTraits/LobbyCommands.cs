@@ -60,7 +60,8 @@ namespace OpenRA.Mods.Common.Server
 
 		static void CheckAutoStart(S server)
 		{
-			var playerClients = server.LobbyInfo.Clients.Where(c => c.Bot == null && c.Slot != null);
+			// A spectating admin is included for checking these rules
+			var playerClients = server.LobbyInfo.Clients.Where(c => (c.Bot == null && c.Slot != null) || c.IsAdmin);
 
 			// Are all players ready?
 			if (!playerClients.Any() || playerClients.Any(c => c.State != Session.ClientState.Ready))
@@ -188,6 +189,7 @@ namespace OpenRA.Mods.Common.Server
 							client.SpawnPoint = 0;
 							client.Color = HSLColor.FromRGB(255, 255, 255);
 							server.SyncLobbyClients();
+							CheckAutoStart(server);
 							return true;
 						}
 						else
