@@ -52,10 +52,15 @@ namespace OpenRA.FileSystem
 
 		public void Update(string filename, byte[] contents)
 		{
-			if (!Directory.Exists(path))
-				Directory.CreateDirectory(path);
+			// HACK: ZipFiles can't be loaded as read-write from a stream, so we are
+			// forced to bypass the parent package and load them with their full path
+			// in FileSystem.OpenPackage.  Their internal name therefore contains the
+			// full parent path too.  We need to be careful to not add a second path
+			// prefix to these hacked packages.
+			var filePath = filename.StartsWith(path) ? filename : Path.Combine(path, filename);
 
-			using (var s = File.Create(Path.Combine(path, filename)))
+			Directory.CreateDirectory(Path.GetDirectoryName(filePath));
+			using (var s = File.Create(filePath))
 				s.Write(contents, 0, contents.Length);
 		}
 
