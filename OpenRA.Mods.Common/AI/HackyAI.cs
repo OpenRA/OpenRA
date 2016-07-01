@@ -16,12 +16,28 @@ using System.Linq;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Pathfinder;
 using OpenRA.Mods.Common.Traits;
-using OpenRA.Primitives;
 using OpenRA.Support;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.AI
 {
+	class CaptureTarget<TInfoType> where TInfoType : class, ITraitInfoInterface
+	{
+		internal readonly Actor Actor;
+		internal readonly TInfoType Info;
+
+		/// <summary>The order string given to the capturer so they can capture this actor.</summary>
+		/// <example>ExternalCaptureActor</example>
+		internal readonly string OrderString;
+
+		internal CaptureTarget(Actor actor, string orderString)
+		{
+			Actor = actor;
+			Info = actor.Info.TraitInfoOrDefault<TInfoType>();
+			OrderString = orderString;
+		}
+	}
+
 	public sealed class HackyAIInfo : IBotInfo, ITraitInfo
 	{
 		public class UnitCategories
@@ -174,6 +190,27 @@ namespace OpenRA.Mods.Common.AI
 		[FieldLoader.LoadUsing("LoadDecisions")]
 		public readonly List<SupportPowerDecision> PowerDecisions = new List<SupportPowerDecision>();
 
+		[Desc("Actor types that can capture other actors (via `Captures` or `ExternalCaptures`).",
+			"Leave this empty to disable capturing.")]
+		public HashSet<string> CapturingActorTypes = new HashSet<string>();
+
+		[Desc("Actor types that can be targeted for capturing.",
+			"Leave this empty to include all actors.")]
+		public HashSet<string> CapturableActorTypes = new HashSet<string>();
+
+		[Desc("Minimum delay (in ticks) between trying to capture with CapturingActorTypes.")]
+		public readonly int MinimumCaptureDelay = 375;
+
+		[Desc("Maximum number of options to consider for capturing.",
+			"If a value less than 1 is given 1 will be used instead.")]
+		public readonly int MaximumCaptureTargetOptions = 10;
+
+		[Desc("Should visibility (Shroud, Fog, Cloak, etc) be considered when searching for capturable targets?")]
+		public readonly bool CheckCaptureTargetsForVisibility = true;
+
+		[Desc("Player stances that capturers should attempt to target.")]
+		public readonly Stance CapturableStances = Stance.Enemy | Stance.Neutral;
+
 		static object LoadUnitCategories(MiniYaml yaml)
 		{
 			var categories = yaml.Nodes.First(n => n.Key == "UnitsCommonNames");
@@ -254,6 +291,8 @@ namespace OpenRA.Mods.Common.AI
 		int assignRolesTicks;
 		int attackForceTicks;
 		int minAttackForceDelayTicks;
+		int minCaptureDelayTicks;
+		readonly int maximumCaptureTargetOptions;
 
 		readonly Queue<Order> orders = new Queue<Order>();
 
@@ -279,6 +318,8 @@ namespace OpenRA.Mods.Common.AI
 
 			foreach (var decision in info.PowerDecisions)
 				powerDecisions.Add(decision.OrderName, decision);
+
+			maximumCaptureTargetOptions = Math.Max(1, Info.MaximumCaptureTargetOptions);
 		}
 
 		public static void BotDebug(string s, params object[] args)
@@ -311,6 +352,7 @@ namespace OpenRA.Mods.Common.AI
 			assignRolesTicks = Random.Next(0, Info.AssignRolesInterval);
 			attackForceTicks = Random.Next(0, Info.AttackForceInterval);
 			minAttackForceDelayTicks = Random.Next(0, Info.MinimumAttackForceDelay);
+			minCaptureDelayTicks = Random.Next(0, Info.MinimumCaptureDelay);
 
 			var tileset = World.Map.Rules.TileSet;
 			resourceTypeIndices = new BitArray(tileset.TerrainInfo.Length); // Big enough
@@ -631,6 +673,95 @@ namespace OpenRA.Mods.Common.AI
 			}
 
 			FindAndDeployBackupMcv(self);
+
+			if (--minCaptureDelayTicks <= 0)
+			{
+				minCaptureDelayTicks = Info.MinimumCaptureDelay;
+				QueueCaptureOrders();
+			}
+		}
+
+		IEnumerable<Actor> GetVisibleActorsBelongingToPlayer(Player owner)
+		{
+			foreach (var actor in GetActorsThatCanBeOrderedByPlayer(owner))
+				if (actor.CanBeViewedByPlayer(owner))
+					yield return actor;
+		}
+
+		IEnumerable<Actor> GetActorsThatCanBeOrderedByPlayer(Player owner)
+		{
+			foreach (var actor in World.Actors)
+				if (actor.Owner == owner && !actor.IsDead && actor.IsInWorld)
+					yield return actor;
+		}
+
+		void QueueCaptureOrders()
+		{
+			if (!Info.CapturingActorTypes.Any() || Player.WinState != WinState.Undefined)
+				return;
+
+			var capturers = unitsHangingAroundTheBase.Where(a => a.IsIdle && Info.CapturingActorTypes.Contains(a.Info.Name)).ToArray();
+			if (capturers.Length == 0)
+				return;
+
+			var randPlayer = World.Players.Where(p => !p.Spectating
+				&& Info.CapturableStances.HasStance(Player.Stances[p])).Random(Random);
+
+			var targetOptions = Info.CheckCaptureTargetsForVisibility
+				? GetVisibleActorsBelongingToPlayer(randPlayer)
+				: GetActorsThatCanBeOrderedByPlayer(randPlayer);
+
+			var capturableTargetOptions = targetOptions
+				.Select(a => new CaptureTarget<CapturableInfo>(a, "CaptureActor"))
+				.Where(target => target.Info != null && capturers.Any(capturer => target.Info.CanBeTargetedBy(capturer, target.Actor.Owner)))
+				.OrderByDescending(target => target.Actor.GetSellValue())
+				.Take(maximumCaptureTargetOptions);
+
+			var externalCapturableTargetOptions = targetOptions
+				.Select(a => new CaptureTarget<ExternalCapturableInfo>(a, "ExternalCaptureActor"))
+				.Where(target => target.Info != null && capturers.Any(capturer => target.Info.CanBeTargetedBy(capturer, target.Actor.Owner)))
+				.OrderByDescending(target => target.Actor.GetSellValue())
+				.Take(maximumCaptureTargetOptions);
+
+			if (Info.CapturableActorTypes.Any())
+			{
+				capturableTargetOptions = capturableTargetOptions.Where(target => Info.CapturableActorTypes.Contains(target.Actor.Info.Name.ToLowerInvariant()));
+				externalCapturableTargetOptions = externalCapturableTargetOptions.Where(target => Info.CapturableActorTypes.Contains(target.Actor.Info.Name.ToLowerInvariant()));
+			}
+
+			if (!capturableTargetOptions.Any() && !externalCapturableTargetOptions.Any())
+				return;
+
+			var capturesCapturers = capturers.Where(a => a.Info.HasTraitInfo<CapturesInfo>());
+			var externalCapturers = capturers.Except(capturesCapturers).Where(a => a.Info.HasTraitInfo<ExternalCapturesInfo>());
+
+			foreach (var capturer in capturesCapturers)
+				QueueCaptureOrderFor(capturer, GetCapturerTargetClosestToOrDefault(capturer, capturableTargetOptions));
+
+			foreach (var capturer in externalCapturers)
+				QueueCaptureOrderFor(capturer, GetCapturerTargetClosestToOrDefault(capturer, externalCapturableTargetOptions));
+		}
+
+		void QueueCaptureOrderFor<TTargetType>(Actor capturer, CaptureTarget<TTargetType> target) where TTargetType : class, ITraitInfoInterface
+		{
+			if (capturer == null)
+				return;
+
+			if (target == null)
+				return;
+
+			if (target.Actor == null)
+				return;
+
+			QueueOrder(new Order(target.OrderString, capturer, true) { TargetActor = target.Actor });
+			BotDebug("AI ({0}): Ordered {1} to capture {2}", Player.ClientIndex, capturer, target.Actor);
+			activeUnits.Remove(capturer);
+		}
+
+		CaptureTarget<TTargetType> GetCapturerTargetClosestToOrDefault<TTargetType>(Actor capturer, IEnumerable<CaptureTarget<TTargetType>> targets)
+			where TTargetType : class, ITraitInfoInterface
+		{
+			return targets.MinByOrDefault(target => (target.Actor.CenterPosition - capturer.CenterPosition).LengthSquared);
 		}
 
 		CPos FindNextResource(Actor harvester)
