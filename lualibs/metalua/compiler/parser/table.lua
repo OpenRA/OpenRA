@@ -50,7 +50,8 @@ return function(M)
         local e = M.expr (lx)
         if not lx :is_keyword (lx :peek(), "=") then return e end
         lx :next(); -- skip the "="
-        local key = M.id2string(e) -- will fail on non-identifiers
+        local ok, key = pcall(M.id2string, e) -- will fail on non-identifiers
+        if not ok then return gg.parse_error (lx, "Identifier expected.") end
         local val = M.expr(lx)
         local r = { tag="Pair", key, val }
         r.lineinfo = { first = key.lineinfo.first, last = val.lineinfo.last }
