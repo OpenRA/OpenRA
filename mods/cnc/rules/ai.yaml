@@ -46,7 +46,12 @@ Player:
 			silo: 0%
 			fix: 1%
 			hpad: 2%
+		CapturingActorTypes: e6
+		CapturableActorTypes: fact, fact.gdi, fact.nod, nuke, nuk2, proc, pyle, hand, afld, weap, hpad, hq, fix, eye, tmpl, obli, v19
+		CheckCaptureTargetsForVisibility: false
+		MaximumCaptureTargetOptions: 15
 		UnitsToBuild:
+			e6: 5%
 			e1: 14%
 			e3: 7%
 			e2: 10%
