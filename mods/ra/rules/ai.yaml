@@ -42,7 +42,12 @@ Player:
 			stek: 1%
 			fix: 0.1%
 			dome: 10%
+		CapturingActorTypes: e6
+		CapturableActorTypes: mslo, gap, iron, pdox, atek, weap, fact, proc, silo, hpad, afld, powr, apwr, stek, barr, kenn, tent, fix, oilb
+		CheckCaptureTargetsForVisibility: false
+		MaximumCaptureTargetOptions: 15
 		UnitsToBuild:
+			e6: 5%
 			e1: 50%
 			e2: 20%
 			e3: 10%
