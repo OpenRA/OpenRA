@@ -27,16 +27,23 @@ namespace OpenRA.Mods.Common.Traits.Render
 		[Desc("Custom palette is a player palette BaseName")]
 		public readonly bool IsPlayerPalette = false;
 
+		[Desc("Delay in ticks before overlay starts, either relative to attack preparation or attack.")]
+		public readonly int Delay = 0;
+
+		[Desc("Should the overlay be delayed relative to preparation or actual attack?")]
+		public readonly AttackDelayType DelayRelativeTo = AttackDelayType.Preparation;
+
 		public object Create(ActorInitializer init) { return new WithAttackOverlay(init, this); }
 	}
 
-	public class WithAttackOverlay : INotifyAttack
+	public class WithAttackOverlay : INotifyAttack, ITick
 	{
 		readonly Animation overlay;
 		readonly RenderSprites renderSprites;
 		readonly WithAttackOverlayInfo info;
 
 		bool attacking;
+		int tick;
 
 		public WithAttackOverlay(ActorInitializer init, WithAttackOverlayInfo info)
 		{
@@ -50,12 +57,38 @@ namespace OpenRA.Mods.Common.Traits.Render
 				info.Palette, info.IsPlayerPalette);
 		}
 
-		void INotifyAttack.Attacking(Actor self, Target target, Armament a, Barrel barrel) { }
-
-		void INotifyAttack.PreparingAttack(Actor self, Target target, Armament a, Barrel barrel)
+		void PlayOverlay(Actor self)
 		{
 			attacking = true;
 			overlay.PlayThen(info.Sequence, () => attacking = false);
+		}
+
+		void INotifyAttack.Attacking(Actor self, Target target, Armament a, Barrel barrel)
+		{
+			if (info.DelayRelativeTo == AttackDelayType.Attack)
+			{
+				if (info.Delay > 0)
+					tick = info.Delay;
+				else
+					PlayOverlay(self);
+			}
+		}
+
+		void INotifyAttack.PreparingAttack(Actor self, Target target, Armament a, Barrel barrel)
+		{
+			if (info.DelayRelativeTo == AttackDelayType.Preparation)
+			{
+				if (info.Delay > 0)
+					tick = info.Delay;
+				else
+					PlayOverlay(self);
+			}
+		}
+
+		void ITick.Tick(Actor self)
+		{
+			if (info.Delay > 0 && --tick == 0)
+				PlayOverlay(self);
 		}
 	}
 }

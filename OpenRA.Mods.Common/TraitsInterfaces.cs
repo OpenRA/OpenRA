@@ -19,6 +19,8 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
+	public enum AttackDelayType { Preparation, Attack }
+
 	public interface IQuantizeBodyOrientationInfo : ITraitInfo
 	{
 		int QuantizedBodyFacings(ActorInfo ai, SequenceProvider sequenceProvider, string race);
