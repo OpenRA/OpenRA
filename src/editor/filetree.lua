@@ -739,6 +739,10 @@ treeSetConnectorsAndIcons(projtree)
 -- proj functions
 -- ---------------
 
+local function appendPathSep(dir)
+  return (dir and #dir > 0 and wx.wxFileName.DirName(dir):GetFullPath() or nil)
+end
+
 function filetree:updateProjectDir(newdir)
   if (not newdir) or not wx.wxDirExists(newdir) then return end
   local dirname = wx.wxFileName.DirName(newdir)
@@ -754,10 +758,10 @@ function filetree:updateProjectDir(newdir)
   local intfname = ide.interpreter and ide.interpreter.fname
 
   if filetree.projdir and #filetree.projdir > 0 then
-    PackageEventHandle("onProjectClose", filetree.projdir)
+    PackageEventHandle("onProjectClose", appendPathSep(filetree.projdir))
   end
 
-  PackageEventHandle("onProjectPreLoad", newdir)
+  PackageEventHandle("onProjectPreLoad", appendPathSep(newdir))
 
   if ide.config.projectautoopen and filetree.projdir then
     StoreRestoreProjectTabs(filetree.projdir, newdir, intfname)
@@ -782,13 +786,10 @@ function filetree:updateProjectDir(newdir)
   -- refresh Recent Projects menu item
   ide.frame:AddPendingEvent(wx.wxUpdateUIEvent(ID_RECENTPROJECTS))
 
-  PackageEventHandle("onProjectLoad", newdir)
+  PackageEventHandle("onProjectLoad", appendPathSep(newdir))
 end
 
-function FileTreeGetDir()
-  return (filetree.projdir and #filetree.projdir > 0
-    and wx.wxFileName.DirName(filetree.projdir):GetFullPath() or nil)
-end
+function FileTreeGetDir() return appendPathSep(filetree.projdir) end
 
 function FileTreeSetProjects(tab)
   filetree.projdirlist = tab
@@ -797,9 +798,7 @@ function FileTreeSetProjects(tab)
   end
 end
 
-function FileTreeGetProjects()
-  return filetree.projdirlist
-end
+function FileTreeGetProjects() return filetree.projdirlist end
 
 local function getProjectLabels()
   local labels = {}
