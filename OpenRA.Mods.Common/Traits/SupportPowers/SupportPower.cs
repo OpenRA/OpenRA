@@ -38,7 +38,9 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string SelectTargetSound = null;
 		public readonly string SelectTargetSpeechNotification = null;
 		public readonly string InsufficientPowerSound = null;
+		public readonly string InsufficientPowerSpeechNotification = null;
 		public readonly string LaunchSound = null;
+		public readonly string LaunchSpeechNotification = null;
 		public readonly string IncomingSound = null;
 		public readonly string IncomingSpeechNotification = null;
 
