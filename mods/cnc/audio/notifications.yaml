@@ -49,20 +49,38 @@ Speech:
 
 Sounds:
 	Notifications:
+		Appear: appear1
 		Beacon: bleep2
-		CashTickDown:tone16
-		CashTickUp:tone15
+		Beepy2: beepy2
+		Beepy3: beepy3
+		Beepy6: beepy6
+		CashTickDown: tone16
+		CashTickUp: tone15
 		ChatLine: scold1
 		ClickDisabledSound: scold2
 		ClickSound: button
+		Cloak: trans1
+		Clock: clock1
+		Construction: constru2
+		Country1: country1
+		Country4: country4
 		DisablePower: bleep11
 		EnablePower: bleep12
+		HeavyDoor: hvydoor1
+		Keystroke: keystrok
 		LevelUp: text2
+		NewTarget: newtarg1
 		RadarDown: powrdn1
 		RadarUp: comcntr1
+		Sell: cashturn
 		SignalFlare: flare1
 		SignalFlareEast: flaree1
 		SignalFlareNorth: flaren1
 		SignalFlareSouth: flares1
 		SignalFlareWest: flarew1
 		TabClick: button
+		Target1: target1
+		Target2: target2
+		Target3: target3
+		Text: text2
+		World: world2
