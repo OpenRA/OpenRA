@@ -9,8 +9,10 @@
  */
 #endregion
 
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using ICSharpCode.SharpZipLib.Zip;
 using SZipFile = ICSharpCode.SharpZipLib.Zip.ZipFile;
@@ -19,32 +21,60 @@ namespace OpenRA.FileSystem
 {
 	public sealed class ZipFile : IReadWritePackage
 	{
+		public IReadWritePackage Parent { get; private set; }
 		public string Name { get; private set; }
-		SZipFile pkg;
+		readonly Stream pkgStream;
+		readonly SZipFile pkg;
 
 		static ZipFile()
 		{
 			ZipConstants.DefaultCodePage = Encoding.UTF8.CodePage;
 		}
 
-		public ZipFile(FileSystem context, string filename, Stream stream, bool createOrClearContents = false)
+		public ZipFile(Stream stream, string name, IReadOnlyPackage parent = null)
 		{
-			Name = filename;
+			// SharpZipLib breaks when asked to update archives loaded from outside streams or files
+			// We can work around this by creating a clean in-memory-only file, cutting all outside references
+			pkgStream = new MemoryStream();
+			stream.CopyTo(pkgStream);
+			pkgStream.Position = 0;
 
-			if (createOrClearContents)
-				pkg = SZipFile.Create(stream);
-			else
-				pkg = new SZipFile(stream);
+			Name = name;
+			Parent = parent as IReadWritePackage;
+			pkg = new SZipFile(pkgStream);
 		}
 
-		public ZipFile(IReadOnlyFileSystem context, string filename, bool createOrClearContents = false)
+		public ZipFile(IReadOnlyFileSystem context, string filename)
 		{
-			Name = filename;
+			string name;
+			IReadOnlyPackage p;
+			if (!context.TryGetPackageContaining(filename, out p, out name))
+				throw new FileNotFoundException("Unable to find parent package for " + filename);
 
-			if (createOrClearContents)
-				pkg = SZipFile.Create(filename);
-			else
-				pkg = new SZipFile(filename);
+			Name = name;
+			Parent = p as IReadWritePackage;
+
+			// SharpZipLib breaks when asked to update archives loaded from outside streams or files
+			// We can work around this by creating a clean in-memory-only file, cutting all outside references
+			pkgStream = new MemoryStream();
+			p.GetStream(name).CopyTo(pkgStream);
+			pkgStream.Position = 0;
+
+			pkg = new SZipFile(pkgStream);
+		}
+
+		ZipFile(string filename, IReadWritePackage parent)
+		{
+			pkgStream = new MemoryStream();
+
+			Name = filename;
+			Parent = parent;
+			pkg = SZipFile.Create(pkgStream);
+		}
+
+		public static ZipFile Create(string filename, IReadWritePackage parent)
+		{
+			return new ZipFile(filename, parent);
 		}
 
 		public Stream GetStream(string filename)
@@ -76,11 +106,23 @@ namespace OpenRA.FileSystem
 			return pkg.GetEntry(filename) != null;
 		}
 
+		void Commit()
+		{
+			if (Parent == null)
+				throw new InvalidDataException("Cannot update ZipFile without writable parent");
+
+			var pos = pkgStream.Position;
+			pkgStream.Position = 0;
+			Parent.Update(Name, pkgStream.ReadBytes((int)pkgStream.Length));
+			pkgStream.Position = pos;
+		}
+
 		public void Update(string filename, byte[] contents)
 		{
 			pkg.BeginUpdate();
-			pkg.Add(new StaticMemoryDataSource(contents), filename);
+			pkg.Add(new StaticStreamDataSource(new MemoryStream(contents)), filename);
 			pkg.CommitUpdate();
+			Commit();
 		}
 
 		public void Delete(string filename)
@@ -88,6 +130,7 @@ namespace OpenRA.FileSystem
 			pkg.BeginUpdate();
 			pkg.Delete(filename);
 			pkg.CommitUpdate();
+			Commit();
 		}
 
 		public void Dispose()
@@ -97,17 +140,17 @@ namespace OpenRA.FileSystem
 		}
 	}
 
-	class StaticMemoryDataSource : IStaticDataSource
+	class StaticStreamDataSource : IStaticDataSource
 	{
-		byte[] data;
-		public StaticMemoryDataSource(byte[] data)
+		readonly Stream s;
+		public StaticStreamDataSource(Stream s)
 		{
-			this.data = data;
+			this.s = s;
 		}
 
 		public Stream GetSource()
 		{
-			return new MemoryStream(data);
+			return s;
 		}
 	}
 }

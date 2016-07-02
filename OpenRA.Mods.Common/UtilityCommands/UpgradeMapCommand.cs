@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using OpenRA.FileSystem;
 
@@ -35,12 +36,19 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			if (yaml.Value != null)
 			{
 				var files = FieldLoader.GetValue<string[]>("value", yaml.Value);
-			    foreach (var filename in files)
-			    {
-			        var fileNodes = MiniYaml.FromStream(map.Package.GetStream(filename), filename);
+				foreach (var filename in files)
+				{
+					var fileNodes = MiniYaml.FromStream(map.Open(filename), filename);
 					processYaml(modData, engineDate, ref fileNodes, null, 0);
-			        ((IReadWritePackage)map.Package).Update(filename, Encoding.ASCII.GetBytes(fileNodes.WriteToString()));
-			    }
+
+					// HACK: Obtain the writable save path using knowledge of the underlying filesystem workings
+					var packagePath = filename;
+					var package = map.Package;
+					if (filename.Contains("|"))
+						modData.DefaultFileSystem.TryGetPackageContaining(filename, out package, out packagePath);
+
+					((IReadWritePackage)package).Update(packagePath, Encoding.ASCII.GetBytes(fileNodes.WriteToString()));
+				}
 			}
 
 			processYaml(modData, engineDate, ref yaml.Nodes, null, 1);
@@ -71,7 +79,11 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			// HACK: The engine code assumes that Game.modData is set.
 			Game.ModData = modData;
 
-			var package = modData.ModFiles.OpenWritablePackage(args[1]);
+			// HACK: We know that maps can only be oramap or folders, which are ReadWrite
+			var package = modData.ModFiles.OpenPackage(args[1], new Folder(".")) as IReadWritePackage;
+			if (package == null)
+				throw new FileNotFoundException(args[1]);
+
 			var engineDate = Exts.ParseIntegerInvariant(args[2]);
 			UpgradeMap(modData, package, engineDate);
 		}
