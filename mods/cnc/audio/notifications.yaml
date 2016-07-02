@@ -3,49 +3,49 @@ Speech:
 		gdi: gdi
 		nod: nod
 	Notifications:
-		Repairing: repair1
-		LowPower: lopower1
-		SilosNeeded: silos1
-		PrimaryBuildingSelected: pribldg1
-		BuildingCannotPlaceAudio: deploy1
-		NewOptions: newopt1
-		Win: accom1
-		Lose: fail1
 		BaseAttack: baseatk1
+		Building: bldging1
+		BuildingCannotPlaceAudio: deploy1
+		BuildingCaptured: capt1
+		BuildingLost: strclost
+		Cancelled: cancel1
+		CivilianBuildingCaptured: civcapt1
+		CivilianKilled: civdead1
+		ConstructionComplete: constru1
 		HarvesterAttack:
 		Leave: batlcon1
-		StartGame:
-		UnitReady: unitredy
+		Lose: fail1
+		LowPower: lopower1
+		NewOptions: newopt1
 		NoBuild: nobuild1
-		Training: bldging1
 		OnHold: onhold1
-		Cancelled: cancel1
-		Building: bldging1
-		ConstructionComplete: constru1
+		PrimaryBuildingSelected: pribldg1
 		Reinforce: reinfor1
+		Repairing: repair1
+		SilosNeeded: silos1
+		StartGame:
+		Training: bldging1
 		UnitLost: unitlost
-		BuildingLost: strclost
-		CivilianKilled: civdead1
-		BuildingCaptured: capt1
-		CivilianBuildingCaptured: civcapt1
-	DisablePrefixes: Repairing, LowPower, SilosNeeded, PrimaryBuildingSelected, BuildingCannotPlaceAudio, NewOptions, AbilityInsufficientPower, Win, Lose, BaseAttack, HarvesterAttack, Leave, UnitReady, NoBuild, Training, OnHold, Cancelled, Building, ConstructionComplete, Reinforce, UnitLost, BuildingLost, CivilianKilled, CivilianBuildingCaptured
+		UnitReady: unitredy
+		Win: accom1
+	DisablePrefixes: AbilityInsufficientPower, BaseAttack, Building, BuildingCannotPlaceAudio, BuildingLost, Cancelled, CivilianBuildingCaptured, CivilianKilled, ConstructionComplete, HarvesterAttack, Leave, Lose, LowPower, NewOptions, NoBuild, OnHold, PrimaryBuildingSelected, Reinforce, Repairing, SilosNeeded, Training, UnitLost, UnitReady, Win
 
 Sounds:
 	Notifications:
-		RadarUp: comcntr1
-		RadarDown: powrdn1
-		CashTickUp:tone15
+		Beacon: bleep2
 		CashTickDown:tone16
-		LevelUp: text2
+		CashTickUp:tone15
+		ChatLine: scold1
+		ClickDisabledSound: scold2
+		ClickSound: button
 		DisablePower: bleep11
 		EnablePower: bleep12
-		ChatLine: scold1
-		TabClick: button
-		ClickSound: button
-		ClickDisabledSound: scold2
-		Beacon: bleep2
+		LevelUp: text2
+		RadarDown: powrdn1
+		RadarUp: comcntr1
 		SignalFlare: flare1
 		SignalFlareEast: flaree1
 		SignalFlareNorth: flaren1
 		SignalFlareSouth: flares1
 		SignalFlareWest: flarew1
+		TabClick: button
