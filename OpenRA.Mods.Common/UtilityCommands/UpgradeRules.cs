@@ -185,6 +185,33 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				if (engineVersion < 20160702)
+				{
+					if (node.Key.StartsWith("GivesExperience"))
+					{
+						var ff = "FriendlyFire";
+						var ffNode = node.Value.Nodes.FirstOrDefault(n => n.Key == ff);
+						if (ffNode != null)
+						{
+							var newStanceStr = "";
+							if (FieldLoader.GetValue<bool>(ff, ffNode.Value.Value))
+								newStanceStr = "Neutral, Enemy, Ally";
+							else
+								newStanceStr = "Neutral, Enemy";
+
+							node.Value.Nodes.Add(new MiniYamlNode("ValidStances", newStanceStr));
+						}
+
+						node.Value.Nodes.Remove(ffNode);
+					}
+					else if (node.Key.StartsWith("GivesBounty"))
+					{
+						var stancesNode = node.Value.Nodes.FirstOrDefault(n => n.Key == "Stances");
+						if (stancesNode != null)
+							stancesNode.Key = "ValidStances";
+					}
+				}
+
 				UpgradeActorRules(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 
