@@ -44,7 +44,7 @@ namespace OpenRA.Graphics
 				st = ss.SecondaryTop;
 				sr = ss.SecondaryRight;
 				sb = ss.SecondaryBottom;
-				attribC = -(attribC + ChannelSelect[(int)ss.Channel] / 10);
+				attribC = -(attribC + ChannelSelect[(int)ss.SecondaryChannel] / 10);
 			}
 
 			vertices[nv] = new Vertex(a, r.Left, r.Top, sl, st, paletteTextureIndex, attribC);
