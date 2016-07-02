@@ -30,7 +30,6 @@ MSLO:
 		SelectTargetSpeechNotification: SelectTarget
 		InsufficientPowerSound: nopowr1.aud
 		IncomingSpeechNotification: AbombLaunchDetected
-		LaunchSound:
 		MissileWeapon: atomic
 		SpawnOffset: 0,427,0
 		DisplayTimer: True

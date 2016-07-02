@@ -630,7 +630,6 @@ TMPL:
 		ChargeTime: 300
 		Description: Nuclear Strike
 		LongDesc: Launch a tactical nuclear warhead.\nApplies heavy damage over a large area.
-		BeginChargeSound:
 		EndChargeSpeechNotification: NuclearWeaponAvailable
 		SelectTargetSpeechNotification: SelectTarget
 		InsufficientPowerSound: nopower1.aud
