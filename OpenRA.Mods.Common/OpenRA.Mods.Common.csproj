@@ -165,6 +165,7 @@
     <Compile Include="Commands\DevCommands.cs" />
     <Compile Include="Commands\HelpCommand.cs" />
     <Compile Include="Commands\PlayerCommands.cs" />
+    <Compile Include="Commands\StatsCommand.cs" />
     <Compile Include="Graphics\ActorPreview.cs" />
     <Compile Include="Graphics\BeamRenderable.cs" />
     <Compile Include="Graphics\ContrailRenderable.cs" />
