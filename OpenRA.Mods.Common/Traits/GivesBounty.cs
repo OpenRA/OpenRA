@@ -10,7 +10,6 @@
 #endregion
 
 using System.Collections.Generic;
-using System.Linq;
 using OpenRA.Mods.Common.Effects;
 using OpenRA.Mods.Common.Warheads;
 using OpenRA.Traits;
@@ -27,7 +26,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int LevelMod = 125;
 
 		[Desc("Stance the attacking player needs to receive the bounty.")]
-		public readonly Stance[] Stances = { Stance.Neutral, Stance.Enemy };
+		public readonly Stance ValidStances = Stance.Neutral | Stance.Enemy;
 
 		[Desc("Whether to show a floating text announcing the won bounty.")]
 		public readonly bool ShowBounty = true;
@@ -64,7 +63,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (e.Attacker == null || e.Attacker.Disposed)
 				return;
 
-			if (!info.Stances.Contains(e.Attacker.Owner.Stances[self.Owner]))
+			if (!info.ValidStances.HasStance(e.Attacker.Owner.Stances[self.Owner]))
 				return;
 
 			var warhead = e.Warhead as DamageWarhead;
