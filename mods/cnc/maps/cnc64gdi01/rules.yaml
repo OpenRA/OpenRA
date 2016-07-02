@@ -57,7 +57,7 @@ airstrike.proxy:
 		LongDesc: Deploy an aerial napalm strike.\nBurns buildings and infantry along a line.
 		EndChargeSpeechNotification: AirstrikeReady
 		SelectTargetSpeechNotification: SelectTarget
-		InsufficientPowerSound: nopower1.aud
+		InsufficientPowerSpeechNotification: InsufficientPower
 		IncomingSpeechNotification: EnemyPlanesApproaching
 		UnitType: a10
 		DisplayBeacon: True

@@ -493,7 +493,7 @@ HQ:
 		LongDesc: Deploy an aerial napalm strike.\nBurns buildings and infantry along a line.
 		EndChargeSpeechNotification: AirstrikeReady
 		SelectTargetSpeechNotification: SelectTarget
-		InsufficientPowerSound: nopower1.aud
+		InsufficientPowerSpeechNotification: InsufficientPower
 		IncomingSpeechNotification: EnemyPlanesApproaching
 		UnitType: a10
 		DisplayBeacon: True
@@ -585,7 +585,7 @@ EYE:
 		EndChargeSpeechNotification: IonCannonReady
 		LaunchSound: ion1.aud
 		SelectTargetSpeechNotification: SelectTarget
-		InsufficientPowerSound: nopower1.aud
+		InsufficientPowerSpeechNotification: InsufficientPower
 		DisplayRadarPing: True
 		CameraActor: camera.small
 	SupportPowerChargeBar:
@@ -632,8 +632,8 @@ TMPL:
 		LongDesc: Launch a tactical nuclear warhead.\nApplies heavy damage over a large area.
 		EndChargeSpeechNotification: NuclearWeaponAvailable
 		SelectTargetSpeechNotification: SelectTarget
-		InsufficientPowerSound: nopower1.aud
-		LaunchSound: nuklnch1.aud
+		InsufficientPowerSpeechNotification: InsufficientPower
+		LaunchSpeechNotification: NuclearWeaponLaunched
 		IncomingSpeechNotification: NuclearWarheadApproaching
 		MissileWeapon: atomic
 		DisplayBeacon: True

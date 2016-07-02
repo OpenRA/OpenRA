@@ -28,7 +28,7 @@ MSLO:
 		BeginChargeSpeechNotification: AbombPrepping
 		EndChargeSpeechNotification: AbombReady
 		SelectTargetSpeechNotification: SelectTarget
-		InsufficientPowerSound: nopowr1.aud
+		InsufficientPowerSpeechNotification: InsufficientPower
 		IncomingSpeechNotification: AbombLaunchDetected
 		MissileWeapon: atomic
 		SpawnOffset: 0,427,0
@@ -310,7 +310,7 @@ IRON:
 		LongDesc: Makes a group of units invulnerable\nfor 20 seconds.
 		Duration: 500
 		SelectTargetSpeechNotification: SelectTarget
-		InsufficientPowerSound: nopowr1.aud
+		InsufficientPowerSpeechNotification: InsufficientPower
 		BeginChargeSpeechNotification: IronCurtainCharging
 		EndChargeSpeechNotification: IronCurtainReady
 		DisplayRadarPing: True
@@ -363,7 +363,7 @@ PDOX:
 		Description: Chronoshift
 		LongDesc: Teleports a group of units across\nthe map for 20 seconds.
 		SelectTargetSpeechNotification: SelectTarget
-		InsufficientPowerSound: nopowr1.aud
+		InsufficientPowerSpeechNotification: InsufficientPower
 		BeginChargeSpeechNotification: ChronosphereCharging
 		EndChargeSpeechNotification: ChronosphereReady
 		Duration: 20
@@ -377,7 +377,7 @@ PDOX:
 		Description: Advanced Chronoshift
 		LongDesc: Teleports a large group of units across\nthe map for 20 seconds.
 		SelectTargetSpeechNotification: SelectTarget
-		InsufficientPowerSound: nopowr1.aud
+		InsufficientPowerSpeechNotification: InsufficientPower
 		BeginChargeSpeechNotification: ChronosphereCharging
 		EndChargeSpeechNotification: ChronosphereReady
 		Duration: 20
@@ -768,7 +768,7 @@ ATEK:
 		Description: GPS Satellite
 		LongDesc: Reveals map terrain and provides tactical\ninformation. Requires power and active radar.
 		RevealDelay: 15
-		LaunchSound: satlnch1.aud
+		LaunchSpeechNotification: SatelliteLaunched
 		DisplayTimer: True
 	SupportPowerChargeBar:
 	RequiresPower:
