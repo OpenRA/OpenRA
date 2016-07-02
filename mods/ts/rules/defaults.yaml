@@ -839,6 +839,7 @@
 	-MustBeDestroyed:
 	-WithSpriteBody:
 	WithGateSpriteBody:
+		OpenSequence: open
 	Tooltip:
 		Description: Automated barrier that opens for allied units.
 	Gate:
