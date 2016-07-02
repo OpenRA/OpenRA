@@ -491,10 +491,10 @@ HQ:
 		QuantizedFacings: 8
 		Description: Air Strike
 		LongDesc: Deploy an aerial napalm strike.\nBurns buildings and infantry along a line.
-		EndChargeSound: airredy1.aud
-		SelectTargetSound: select1.aud
+		EndChargeSpeechNotification: AirstrikeReady
+		SelectTargetSpeechNotification: SelectTarget
 		InsufficientPowerSound: nopower1.aud
-		IncomingSound: enemya.aud
+		IncomingSpeechNotification: EnemyPlanesApproaching
 		UnitType: a10
 		DisplayBeacon: True
 		BeaconPoster: airstrike
@@ -581,10 +581,10 @@ EYE:
 		ChargeTime: 180
 		Description: Ion Cannon
 		LongDesc: Initiate an Ion Cannon strike.\nApplies instant damage to a small area.
-		BeginChargeSound: ionchrg1.aud
-		EndChargeSound: ionredy1.aud
+		BeginChargeSpeechNotification: IonCannonCharging
+		EndChargeSpeechNotification: IonCannonReady
 		LaunchSound: ion1.aud
-		SelectTargetSound: select1.aud
+		SelectTargetSpeechNotification: SelectTarget
 		InsufficientPowerSound: nopower1.aud
 		DisplayRadarPing: True
 		CameraActor: camera.small
@@ -631,11 +631,11 @@ TMPL:
 		Description: Nuclear Strike
 		LongDesc: Launch a tactical nuclear warhead.\nApplies heavy damage over a large area.
 		BeginChargeSound:
-		EndChargeSound: nukavail.aud
-		SelectTargetSound: select1.aud
+		EndChargeSpeechNotification: NuclearWeaponAvailable
+		SelectTargetSpeechNotification: SelectTarget
 		InsufficientPowerSound: nopower1.aud
 		LaunchSound: nuklnch1.aud
-		IncomingSound: nuke1.aud
+		IncomingSpeechNotification: NuclearWarheadApproaching
 		MissileWeapon: atomic
 		DisplayBeacon: True
 		BeaconPoster: atomic

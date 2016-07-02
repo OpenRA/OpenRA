@@ -280,7 +280,7 @@ powerproxy.parabombs:
 		OneShot: true
 		AllowMultiple: true
 		UnitType: badr.bomber
-		SelectTargetSound: slcttgt1.aud
+		SelectTargetSpeechNotification: SelectTarget
 		QuantizedFacings: 8
 		DisplayBeacon: True
 		BeaconPoster: pbmbicon
@@ -293,8 +293,8 @@ powerproxy.sonarpulse:
 		Description: Sonar Pulse
 		LongDesc: Reveals all submarines in the vicinity for a \nshort time.
 		ChargeTime: 30
-		EndChargeSound: pulse1.aud
-		SelectTargetSound: slcttgt1.aud
+		EndChargeSpeechNotification: SonarPulseReady
+		SelectTargetSpeechNotification: SelectTarget
 		Actor: sonar
 		LifeTime: 250
 		DeploySound: sonpulse.aud
@@ -308,7 +308,7 @@ powerproxy.paratroopers:
 		Description: Paratroopers
 		LongDesc: A Badger drops a squad of infantry\nanywhere on the map.
 		DropItems: E1,E1,E1,E3,E3
-		SelectTargetSound: slcttgt1.aud
+		SelectTargetSpeechNotification: SelectTarget
 		AllowImpassableCells: false
 		QuantizedFacings: 8
 		CameraActor: camera.paradrop
