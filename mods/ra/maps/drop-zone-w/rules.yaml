@@ -12,7 +12,7 @@ World:
 		AllyBuildRadiusEnabled: False
 	MapOptions:
 		TechLevelLocked: True
-		TechLevel: Unrestricted
+		TechLevel: unrestricted
 
 UNITCRATE:
 	Inherits: ^Crate

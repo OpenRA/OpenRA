@@ -12,7 +12,7 @@ World:
 		WinVideo: radrraid.vqa
 		LossVideo: allymorf.vqa
 	MapOptions:
-		TechLevel: Medium
+		TechLevel: medium
 	ScriptLobbyDropdown@difficulty:
 		ID: difficulty
 		Label: Difficulty

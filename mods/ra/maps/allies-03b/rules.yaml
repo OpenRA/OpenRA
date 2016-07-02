@@ -6,7 +6,6 @@ World:
 		StartVideo: brdgtilt.vqa
 		WinVideo: toofar.vqa
 		LossVideo: sovtstar.vqa
-	MapOptions:
 	ScriptLobbyDropdown@difficulty:
 		ID: difficulty
 		Label: Difficulty

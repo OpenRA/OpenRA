@@ -37,7 +37,7 @@ World:
 		Locked: True
 	MapOptions:
 		TechLevelLocked: True
-		TechLevel: Unrestricted
+		TechLevel: unrestricted
 		ShortGameLocked: True
 		ShortGameEnabled: False
 	ScriptLobbyDropdown@difficulty:

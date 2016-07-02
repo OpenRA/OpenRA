@@ -12,7 +12,7 @@ World:
 		WinVideo: strafe.vqa
 		LossVideo: sovbatl.vqa
 	MapOptions:
-		TechLevel: Medium
+		TechLevel: medium
 	ScriptLobbyDropdown@difficulty:
 		ID: difficulty
 		Label: Difficulty

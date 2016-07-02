@@ -7,7 +7,6 @@ World:
 		Scripts: survival01.lua
 	MissionData:
 		Briefing: LANDCOM 66 HQS.\nTOP SECRET.\nTO: FIELD COMMANDER A34\n\nTHE SOVIETS STARTED HEAVY ATTACKS AT OUR POSITION.\n SURVIVE AND HOLD THE BASE UNTIL OUR FRENCH ALLIES ARRIVE.\n\nCONFIRMATION CODE 5593.\n\nTRANSMISSION ENDS.
-	MapOptions:
 	ScriptLobbyDropdown@difficulty:
 		ID: difficulty
 		Label: Difficulty

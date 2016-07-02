@@ -9,7 +9,7 @@ World:
 		Briefing: Bring the Atreides forces up to combat strength - quickly. Guard against surprise attacks and ensure Spice production.\n\nThe Ordos forces are light but numerous. To combat the Ordos, you have been granted license to produce Quads, which have a greater anti-vehicle capability than Trikes. Upgrade your Light Factories to allow production of these units.\n\nMeet any agression with overwhelming force.\n\nGood luck.\n
 		BriefingVideo: A_BR03_E.VQA
 	MapOptions:
-		TechLevel: Low
+		TechLevel: low
 	ScriptLobbyDropdown@difficulty:
 		ID: difficulty
 		Label: Difficulty

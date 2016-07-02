@@ -6,7 +6,7 @@ World:
 		AllyBuildRadiusEnabled: False
 	MapOptions:
 		TechLevelLocked: True
-		TechLevel: Unrestricted
+		TechLevel: unrestricted
 
 APWR:
 	Buildable:

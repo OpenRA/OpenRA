@@ -7,7 +7,6 @@ World:
 		StartVideo: countdwn.vqa
 		WinVideo: averted.vqa
 		LossVideo: nukestok.vqa
-	MapOptions:
 	ScriptLobbyDropdown@difficulty:
 		ID: difficulty
 		Label: Difficulty
