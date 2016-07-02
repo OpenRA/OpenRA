@@ -806,9 +806,10 @@
 		QuantizedFacings: 1
 
 ^Railway:
+	Inherits: ^TerrainOverlay
 	EditorOnlyTooltip:
 		Name: Railway
-	Inherits: ^TerrainOverlay
+	AutoSelectionSize:
 
 ^Tunnel:
 	Inherits: ^TerrainOverlay
