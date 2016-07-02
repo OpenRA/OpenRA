@@ -372,7 +372,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{ "TECHLEVEL", "techlevel" },
 				{ "STARTINGUNITS", "startingunits" },
 				{ "STARTINGCASH", "startingcash" },
-				{ "DIFFICULTY", "difficulty" }
+				{ "DIFFICULTY", "difficulty" },
+				{ "GAMESPEED", "gamespeed" }
 			};
 
 			var allOptions = new CachedTransform<MapPreview, LobbyOption[]>(
@@ -426,44 +427,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					if (label != null)
 						label.IsVisible = () => option.Update(Map) != null;
 				}
-			}
-
-			var gameSpeed = optionsBin.GetOrNull<DropDownButtonWidget>("GAMESPEED_DROPDOWNBUTTON");
-			if (gameSpeed != null)
-			{
-				var speeds = modData.Manifest.Get<GameSpeeds>().Speeds;
-
-				gameSpeed.IsDisabled = configurationDisabled;
-				gameSpeed.GetText = () =>
-				{
-					if (Map.Status != MapStatus.Available)
-						return "Not Available";
-
-					GameSpeed speed;
-					if (!speeds.TryGetValue(orderManager.LobbyInfo.GlobalSettings.GameSpeedType, out speed))
-						return "Unknown";
-
-					return speed.Name;
-				};
-
-				gameSpeed.OnMouseDown = _ =>
-				{
-					var options = speeds.Select(s => new DropDownOption
-					{
-						Title = s.Value.Name,
-						IsSelected = () => orderManager.LobbyInfo.GlobalSettings.GameSpeedType == s.Key,
-						OnClick = () => orderManager.IssueOrder(Order.Command("gamespeed {0}".F(s.Key)))
-					});
-
-					Func<DropDownOption, ScrollItemWidget, ScrollItemWidget> setupItem = (option, template) =>
-					{
-						var item = ScrollItemWidget.Setup(template, option.IsSelected, option.OnClick);
-						item.Get<LabelWidget>("LABEL").GetText = () => option.Title;
-						return item;
-					};
-
-					gameSpeed.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", options.Count() * 30, options, setupItem);
-				};
 			}
 
 			var disconnectButton = lobby.Get<ButtonWidget>("DISCONNECT_BUTTON");

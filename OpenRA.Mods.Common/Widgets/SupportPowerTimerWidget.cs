@@ -39,12 +39,7 @@ namespace OpenRA.Mods.Common.Widgets
 			// Timers in replays should be synced to the effective game time, not the playback time.
 			timestep = world.Timestep;
 			if (world.IsReplay)
-			{
-				GameSpeed speed;
-				var gameSpeeds = Game.ModData.Manifest.Get<GameSpeeds>();
-				if (gameSpeeds.Speeds.TryGetValue(world.LobbyInfo.GlobalSettings.GameSpeedType, out speed))
-					timestep = speed.Timestep;
-			}
+				timestep = world.WorldActor.Trait<MapOptions>().GameSpeed.Timestep;
 		}
 
 		public override void Tick()

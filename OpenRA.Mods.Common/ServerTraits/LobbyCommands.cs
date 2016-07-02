@@ -356,7 +356,7 @@ namespace OpenRA.Mods.Common.Server
 								.Where(ss => ss != null)
 								.ToDictionary(ss => ss.PlayerReference, ss => ss);
 
-							LoadMapSettings(server.LobbyInfo.GlobalSettings, server.Map.Rules);
+							LoadMapSettings(server, server.LobbyInfo.GlobalSettings, server.Map.Rules);
 
 							// Reset client states
 							foreach (var c in server.LobbyInfo.Clients)
@@ -463,6 +463,13 @@ namespace OpenRA.Mods.Common.Server
 
 						oo.Value = oo.PreferredValue = split[1];
 
+						if (option.Id == "gamespeed")
+						{
+							var speed = server.ModData.Manifest.Get<GameSpeeds>().Speeds[oo.Value];
+							server.LobbyInfo.GlobalSettings.Timestep = speed.Timestep;
+							server.LobbyInfo.GlobalSettings.OrderLatency = speed.OrderLatency;
+						}
+
 						server.SyncLobbyGlobalSettings();
 						server.SendMessage(option.ValueChangedMessage(client.Name, split[1]));
 
@@ -507,38 +514,6 @@ namespace OpenRA.Mods.Common.Server
 						}
 
 						server.SyncLobbyClients();
-						return true;
-					}
-				},
-				{ "gamespeed",
-					s =>
-					{
-						if (server.LobbyInfo.GlobalSettings.GameSpeedType == s)
-							return true;
-
-						if (!client.IsAdmin)
-						{
-							server.SendOrderTo(conn, "Message", "Only the host can set that option.");
-							return true;
-						}
-
-						var gameSpeeds = server.ModData.Manifest.Get<GameSpeeds>();
-
-						GameSpeed speed;
-						if (!gameSpeeds.Speeds.TryGetValue(s, out speed))
-						{
-							server.SendOrderTo(conn, "Message", "Invalid game speed selected.");
-							return true;
-						}
-
-						server.LobbyInfo.GlobalSettings.GameSpeedType = s;
-						server.LobbyInfo.GlobalSettings.Timestep = speed.Timestep;
-						server.LobbyInfo.GlobalSettings.OrderLatency =
-							server.LobbyInfo.IsSinglePlayer ? 1 : speed.OrderLatency;
-
-						server.SyncLobbyInfo();
-						server.SendMessage("{0} changed Game Speed to {1}.".F(client.Name, speed.Name));
-
 						return true;
 					}
 				},
@@ -786,7 +761,7 @@ namespace OpenRA.Mods.Common.Server
 				.Where(s => s != null)
 				.ToDictionary(s => s.PlayerReference, s => s);
 
-			LoadMapSettings(server.LobbyInfo.GlobalSettings, server.Map.Rules);
+			LoadMapSettings(server, server.LobbyInfo.GlobalSettings, server.Map.Rules);
 		}
 
 		static Session.Slot MakeSlotFromPlayerReference(PlayerReference pr)
@@ -805,7 +780,7 @@ namespace OpenRA.Mods.Common.Server
 			};
 		}
 
-		public static void LoadMapSettings(Session.Global gs, Ruleset rules)
+		public static void LoadMapSettings(S server, Session.Global gs, Ruleset rules)
 		{
 			var options = rules.Actors["player"].TraitInfos<ILobbyOptions>()
 				.Concat(rules.Actors["world"].TraitInfos<ILobbyOptions>())
@@ -836,6 +811,13 @@ namespace OpenRA.Mods.Common.Server
 				state.Value = value;
 				state.PreferredValue = preferredValue;
 				gs.LobbyOptions[o.Id] = state;
+
+				if (o.Id == "gamespeed")
+				{
+					var speed = server.ModData.Manifest.Get<GameSpeeds>().Speeds[value];
+					server.LobbyInfo.GlobalSettings.Timestep = speed.Timestep;
+					server.LobbyInfo.GlobalSettings.OrderLatency = speed.OrderLatency;
+				}
 			}
 		}
 

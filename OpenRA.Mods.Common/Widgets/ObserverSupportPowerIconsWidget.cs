@@ -44,13 +44,10 @@ namespace OpenRA.Mods.Common.Widgets
 			clocks = new Dictionary<string, Animation>();
 			icon = new Animation(world, "icon");
 
-			// Timers should be synced to the effective game time, not the playback time.
-			GameSpeed speed;
-			var gameSpeeds = Game.ModData.Manifest.Get<GameSpeeds>();
-			if (gameSpeeds.Speeds.TryGetValue(world.LobbyInfo.GlobalSettings.GameSpeedType, out speed))
-				timestep = speed.Timestep;
-			else
-				timestep = world.Timestep;
+			// Timers in replays should be synced to the effective game time, not the playback time.
+			timestep = world.Timestep;
+			if (world.IsReplay)
+				timestep = world.WorldActor.Trait<MapOptions>().GameSpeed.Timestep;
 		}
 
 		protected ObserverSupportPowerIconsWidget(ObserverSupportPowerIconsWidget other)
