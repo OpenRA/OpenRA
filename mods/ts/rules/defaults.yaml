@@ -809,6 +809,7 @@
 	Inherits: ^TerrainOverlay
 	EditorOnlyTooltip:
 		Name: Railway
+	AutoSelectionSize:
 
 ^Tunnel:
 	Inherits: ^TerrainOverlay
