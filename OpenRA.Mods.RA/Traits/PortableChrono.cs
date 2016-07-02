@@ -39,6 +39,12 @@ namespace OpenRA.Mods.RA.Traits
 		[Desc("Cursor to display when unable to deploy the actor.")]
 		public readonly string DeployBlockedCursor = "deploy-blocked";
 
+		[Desc("Cursor to display when targeting a teleport location.")]
+		public readonly string TargetCursor = "chrono-target";
+
+		[Desc("Cursor to display when the targeted location is blocked.")]
+		public readonly string TargetBlockedCursor = "move-blocked";
+
 		[VoiceReference] public readonly string Voice = "Action";
 
 		public object Create(ActorInitializer init) { return new PortableChrono(this); }
@@ -64,7 +70,7 @@ namespace OpenRA.Mods.RA.Traits
 		{
 			get
 			{
-				yield return new PortableChronoOrderTargeter();
+				yield return new PortableChronoOrderTargeter(Info.TargetCursor);
 				yield return new DeployOrderTargeter("PortableChronoDeploy", 5,
 					() => CanTeleport ? Info.DeployCursor : Info.DeployBlockedCursor);
 			}
@@ -73,7 +79,7 @@ namespace OpenRA.Mods.RA.Traits
 		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
 		{
 			if (order.OrderID == "PortableChronoDeploy" && CanTeleport)
-				self.World.OrderGenerator = new PortableChronoOrderGenerator(self);
+				self.World.OrderGenerator = new PortableChronoOrderGenerator(self, Info);
 
 			if (order.OrderID == "PortableChronoTeleport")
 				return new Order(order.OrderID, self, queued) { TargetLocation = self.World.Map.CellContaining(target.CenterPosition) };
@@ -116,6 +122,13 @@ namespace OpenRA.Mods.RA.Traits
 
 	class PortableChronoOrderTargeter : IOrderTargeter
 	{
+		readonly string targetCursor;
+
+		public PortableChronoOrderTargeter(string targetCursor)
+		{
+			this.targetCursor = targetCursor;
+		}
+
 		public string OrderID { get { return "PortableChronoTeleport"; } }
 		public int OrderPriority { get { return 5; } }
 		public bool IsQueued { get; protected set; }
@@ -132,7 +145,7 @@ namespace OpenRA.Mods.RA.Traits
 
 				if (self.IsInWorld && self.Owner.Shroud.IsExplored(xy))
 				{
-					cursor = "chrono-target";
+					cursor = targetCursor;
 					return true;
 				}
 
@@ -146,10 +159,12 @@ namespace OpenRA.Mods.RA.Traits
 	class PortableChronoOrderGenerator : IOrderGenerator
 	{
 		readonly Actor self;
+		readonly PortableChronoInfo info;
 
-		public PortableChronoOrderGenerator(Actor self)
+		public PortableChronoOrderGenerator(Actor self, PortableChronoInfo info)
 		{
 			this.self = self;
+			this.info = info;
 		}
 
 		public IEnumerable<Order> Order(World world, CPos cell, int2 worldPixel, MouseInput mi)
@@ -199,9 +214,9 @@ namespace OpenRA.Mods.RA.Traits
 		{
 			if (self.IsInWorld && self.Location != cell
 				&& self.Trait<PortableChrono>().CanTeleport && self.Owner.Shroud.IsExplored(cell))
-				return "chrono-target";
+				return info.TargetCursor;
 			else
-				return "move-blocked";
+				return info.TargetBlockedCursor;
 		}
 	}
 }
