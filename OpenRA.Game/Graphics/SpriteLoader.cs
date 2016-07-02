@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -43,16 +44,47 @@ namespace OpenRA.Graphics
 	public class SpriteCache
 	{
 		public readonly SheetBuilder SheetBuilder;
-		readonly Cache<string, Sprite[]> sprites;
+		readonly ISpriteLoader[] loaders;
+		readonly IReadOnlyFileSystem fileSystem;
+
+		readonly Dictionary<string, List<Sprite[]>> sprites = new Dictionary<string, List<Sprite[]>>();
 
 		public SpriteCache(IReadOnlyFileSystem fileSystem, ISpriteLoader[] loaders, SheetBuilder sheetBuilder)
 		{
 			SheetBuilder = sheetBuilder;
-
-			sprites = new Cache<string, Sprite[]>(filename => SpriteLoader.GetSprites(fileSystem, filename, loaders, sheetBuilder));
+			this.fileSystem = fileSystem;
+			this.loaders = loaders;
 		}
 
-		public Sprite[] this[string filename] { get { return sprites[filename]; } }
+		Sprite[] LoadSprite(string filename, List<Sprite[]> cache)
+		{
+			var sprite = SpriteLoader.GetSprites(fileSystem, filename, loaders, SheetBuilder);
+			cache.Add(sprite);
+			return sprite;
+		}
+
+		/// <summary>Returns the first set of sprites with the given filename.</summary>
+		public Sprite[] this[string filename]
+		{
+			get
+			{
+				var allSprites = sprites.GetOrAdd(filename);
+				var sprite = allSprites.FirstOrDefault();
+				return sprite ?? LoadSprite(filename, allSprites);
+			}
+		}
+
+		/// <summary>Returns all instances of sets of sprites with the given filename</summary>
+		public IEnumerable<Sprite[]> AllCached(string filename)
+		{
+			return sprites.GetOrAdd(filename);
+		}
+
+		/// <summary>Loads and caches a new instance of sprites with the given filename</summary>
+		public Sprite[] Reload(string filename)
+		{
+			return LoadSprite(filename, sprites.GetOrAdd(filename));
+		}
 	}
 
 	public class FrameCache
