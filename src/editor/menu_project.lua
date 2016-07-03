@@ -468,7 +468,7 @@ frame:Connect(ID_COMMANDLINEPARAMETERS, wx.wxEVT_COMMAND_MENU_SELECTED,
     local params = ide:GetTextFromUser(TR("Enter command line parameters"),
       TR("Command line parameters"), ide.config.arg.any or "")
     -- params is `nil` when the dialog is canceled
-    if params then ide.config.arg.any = #params > 0 and params or nil end
+    if params then ide:SetConfig("arg.any", #params > 0 and params or nil, ide:GetProject()) end
   end)
 frame:Connect(ID_COMMANDLINEPARAMETERS, wx.wxEVT_UPDATE_UI,
   function (event)
@@ -479,7 +479,7 @@ frame:Connect(ID_COMMANDLINEPARAMETERS, wx.wxEVT_UPDATE_UI,
 ide:AddPackage("core.project", {
     onAppLoad = function(self, app)
       local settings = self:GetSettings()
-      if settings.arg then ide.config.arg.any = settings.arg end
+      if settings.arg then ide:SetConfig("arg.any", settings.arg, ide:GetProject()) end
     end,
     onAppClose = function(self, app)
       local settings = self:GetSettings()

@@ -712,6 +712,7 @@ function ide:AddConfig(name, files)
     config = require('mobdebug').dump(self.config, {nocode = true}),
     configmeta = getmetatable(self.config),
     packages = {},
+    overrides = {},
   }
   -- build a list of existing packages
   local packages = {}
@@ -727,6 +728,20 @@ function ide:AddConfig(name, files)
   end
   ReApplySpecAndStyles() -- apply current config to the UI
 end
+local function setLongKey(tbl, key, value)
+  local paths = {}
+  for path in key:gmatch("([^%.]+)") do table.insert(paths, path) end
+  while #paths > 0 do
+    local lastkey = table.remove(paths, 1)
+    if #paths > 0 then
+      if tbl[lastkey] == nil then tbl[lastkey] = {} end
+      tbl = tbl[lastkey]
+      if type(tbl) ~= "table" then return end
+    else
+      tbl[lastkey] = value
+    end
+  end
+end
 function ide:RemoveConfig(name)
   if not name or not configcache[name] then return end
   -- unregister cached packages
@@ -735,12 +750,19 @@ function ide:RemoveConfig(name)
   local ok, res = LoadSafe(configcache[name].config)
   if ok then
     self.config = res
+    -- restore overrides
+    for key, value in pairs(configcache[name].overrides) do setLongKey(self.config, key, value) end
     if configcache[name].configmeta then setmetatable(self.config, configcache[name].configmeta) end
   else
     DisplayOutputLn(("Error while restoring configuration: '%s'."):format(res))
   end
   configcache[name] = nil -- clear the slot after use
   ReApplySpecAndStyles() -- apply current config to the UI
+end
+function ide:SetConfig(key, value, name)
+  setLongKey(self.config, key, value) -- set config["foo.bar"] as config.foo.bar
+  if not name or not configcache[name] then return end
+  configcache[name].overrides[key] = value
 end
 
 local panels = {}
