@@ -48,7 +48,8 @@ namespace OpenRA.Mods.Common.Commands
 
 		public void RegisterCommand(string name, IChatCommand command)
 		{
-			Commands.Add(name.ToLowerInvariant(), command);
+			// Override possible duplicates instead of crashing.
+			Commands[name.ToLowerInvariant()] = command;
 		}
 	}
 
