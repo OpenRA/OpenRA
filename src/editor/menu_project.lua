@@ -477,14 +477,17 @@ frame:Connect(ID_COMMANDLINEPARAMETERS, wx.wxEVT_UPDATE_UI,
 
 -- save and restore command line parameters
 ide:AddPackage("core.project", {
-    onAppLoad = function(self, app)
+    onProjectLoad = function(self, project)
       local settings = self:GetSettings()
-      if settings.arg then ide:SetConfig("arg.any", settings.arg, ide:GetProject()) end
+      if type(settings.arg) == "table" then
+        ide:SetConfig("arg.any", settings.arg[project], project)
+      end
     end,
-    onAppClose = function(self, app)
+    onProjectClose = function(self, project)
       local settings = self:GetSettings()
-      if settings.arg ~= ide.config.arg.any then
-        settings.arg = ide.config.arg.any
+      if type(settings.arg) ~= "table" then settings.arg = {} end
+      if settings.arg[project] ~= ide.config.arg.any then
+        settings.arg[project] = ide.config.arg.any
         self:SetSettings(settings)
       end
     end,
