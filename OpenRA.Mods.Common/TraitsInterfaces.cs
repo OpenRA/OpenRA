@@ -19,6 +19,8 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
+	public enum AttackDelayType { Preparation, Attack }
+
 	public interface IQuantizeBodyOrientationInfo : ITraitInfo
 	{
 		int QuantizedBodyFacings(ActorInfo ai, SequenceProvider sequenceProvider, string race);
@@ -34,7 +36,13 @@ namespace OpenRA.Mods.Common.Traits
 		IEnumerable<IRenderable> Render(WorldRenderer wr, World w, ActorInfo ai, WPos centerPosition);
 	}
 
-	public interface INotifyAttack { void Attacking(Actor self, Target target, Armament a, Barrel barrel); }
+	[RequireExplicitImplementation]
+	public interface INotifyAttack
+	{
+		void Attacking(Actor self, Target target, Armament a, Barrel barrel);
+		void PreparingAttack(Actor self, Target target, Armament a, Barrel barrel);
+	}
+
 	public interface INotifyBurstComplete { void FiredBurst(Actor self, Target target, Armament a); }
 	public interface INotifyCharging { void Charging(Actor self, Target target); }
 	public interface INotifyChat { bool OnChat(string from, string message); }

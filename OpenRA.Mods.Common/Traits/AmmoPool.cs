@@ -98,11 +98,13 @@ namespace OpenRA.Mods.Common.Traits
 			return true;
 		}
 
-		public void Attacking(Actor self, Target target, Armament a, Barrel barrel)
+		void INotifyAttack.Attacking(Actor self, Target target, Armament a, Barrel barrel)
 		{
 			if (a != null && a.Info.AmmoPoolName == Info.Name)
 				TakeAmmo();
 		}
+
+		void INotifyAttack.PreparingAttack(Actor self, Target target, Armament a, Barrel barrel) { }
 
 		public void Tick(Actor self)
 		{

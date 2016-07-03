@@ -105,10 +105,12 @@ namespace OpenRA.Mods.Common.Traits.Render
 			}
 		}
 
-		public void Attacking(Actor self, Target target, Armament a, Barrel barrel)
+		void INotifyAttack.PreparingAttack(Actor self, Target target, Armament a, Barrel barrel)
 		{
 			Attacking(self, target);
 		}
+
+		void INotifyAttack.Attacking(Actor self, Target target, Armament a, Barrel barrel) { }
 
 		public virtual void Tick(Actor self)
 		{

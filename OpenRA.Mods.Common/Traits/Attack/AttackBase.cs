@@ -145,6 +145,9 @@ namespace OpenRA.Mods.Common.Traits
 				self.SetTargetLine(target, Color.Red);
 				AttackTarget(target, order.Queued, true, forceAttack);
 			}
+
+			if (order.OrderString == "Stop")
+				self.CancelActivity();
 		}
 
 		static Target TargetFromOrder(Actor self, Order order)

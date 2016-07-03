@@ -98,6 +98,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyAttack.Attacking(Actor self, Target target, Armament a, Barrel barrel) { if (Info.UncloakOn.HasFlag(UncloakType.Attack)) Uncloak(); }
 
+		void INotifyAttack.PreparingAttack(Actor self, Target target, Armament a, Barrel barrel) { }
+
 		void INotifyDamageStateChanged.DamageStateChanged(Actor self, AttackInfo e)
 		{
 			damageDisabled = e.DamageState >= DamageState.Critical;

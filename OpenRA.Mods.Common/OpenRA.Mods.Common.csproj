@@ -428,6 +428,7 @@
     <Compile Include="Traits\Render\WithSpriteBarrel.cs" />
     <Compile Include="Traits\Render\WithBuildingExplosion.cs" />
     <Compile Include="Traits\Render\WithAttackAnimation.cs" />
+    <Compile Include="Traits\Render\WithAttackOverlay.cs" />
     <Compile Include="Traits\Render\WithMoveAnimation.cs" />
     <Compile Include="Traits\Render\WithSiloAnimation.cs" />
     <Compile Include="Traits\Render\WithBuildingPlacedAnimation.cs" />
@@ -480,6 +481,7 @@
     <Compile Include="Traits\Sound\CaptureNotification.cs" />
     <Compile Include="Traits\Sound\DeathSounds.cs" />
     <Compile Include="Traits\Sound\SoundOnDamageTransition.cs" />
+    <Compile Include="Traits\Sound\AttackSounds.cs" />
     <Compile Include="Traits\SupplyTruck.cs" />
     <Compile Include="Traits\SupportPowers\AirstrikePower.cs" />
     <Compile Include="Traits\SupportPowers\GrantUpgradePower.cs" />

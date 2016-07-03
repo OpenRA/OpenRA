@@ -64,23 +64,17 @@ namespace OpenRA.Mods.Common.Traits
 			return base.CanAttack(self, target);
 		}
 
-		public void Attacking(Actor self, Target target, Armament a, Barrel barrel)
+		void INotifyAttack.Attacking(Actor self, Target target, Armament a, Barrel barrel)
 		{
 			--charges;
 			timeToRecharge = info.ReloadDelay;
 		}
 
+		void INotifyAttack.PreparingAttack(Actor self, Target target, Armament a, Barrel barrel) { }
+
 		public override Activity GetAttackActivity(Actor self, Target newTarget, bool allowMove, bool forceAttack)
 		{
 			return new ChargeAttack(this, newTarget);
-		}
-
-		public override void ResolveOrder(Actor self, Order order)
-		{
-			base.ResolveOrder(self, order);
-
-			if (order.OrderString == "Stop")
-				self.CancelActivity();
 		}
 
 		class ChargeAttack : Activity

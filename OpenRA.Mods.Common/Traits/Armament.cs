@@ -223,6 +223,9 @@ namespace OpenRA.Mods.Common.Traits
 				GuidedTarget = target
 			};
 
+			foreach (var na in self.TraitsImplementing<INotifyAttack>())
+				na.PreparingAttack(self, target, this, barrel);
+
 			ScheduleDelayedAction(Info.FireDelay, () =>
 			{
 				if (args.Weapon.Projectile != null)

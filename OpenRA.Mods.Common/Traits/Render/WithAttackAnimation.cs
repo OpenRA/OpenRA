@@ -28,6 +28,12 @@ namespace OpenRA.Mods.Common.Traits.Render
 		[Desc("Shown while reloading.")]
 		[SequenceReference(null, true)] public readonly string ReloadPrefix = null;
 
+		[Desc("Delay in ticks before animation starts, either relative to attack preparation or attack.")]
+		public readonly int Delay = 0;
+
+		[Desc("Should the animation be delayed relative to preparation or actual attack?")]
+		public readonly AttackDelayType DelayRelativeTo = AttackDelayType.Preparation;
+
 		public object Create(ActorInitializer init) { return new WithAttackAnimation(init, this); }
 	}
 
@@ -38,6 +44,8 @@ namespace OpenRA.Mods.Common.Traits.Render
 		readonly Armament armament;
 		readonly WithSpriteBody wsb;
 
+		int tick;
+
 		public WithAttackAnimation(ActorInitializer init, WithAttackAnimationInfo info)
 		{
 			this.info = info;
@@ -47,14 +55,39 @@ namespace OpenRA.Mods.Common.Traits.Render
 			wsb = init.Self.Trait<WithSpriteBody>();
 		}
 
-		public void Attacking(Actor self, Target target, Armament a, Barrel barrel)
+		void PlayAttackAnimation(Actor self)
 		{
 			if (!string.IsNullOrEmpty(info.AttackSequence))
 				wsb.PlayCustomAnimation(self, info.AttackSequence, () => wsb.CancelCustomAnimation(self));
 		}
 
-		public void Tick(Actor self)
+		void INotifyAttack.Attacking(Actor self, Target target, Armament a, Barrel barrel)
 		{
+			if (info.DelayRelativeTo == AttackDelayType.Attack)
+			{
+				if (info.Delay > 0)
+					tick = info.Delay;
+				else
+					PlayAttackAnimation(self);
+			}
+		}
+
+		void INotifyAttack.PreparingAttack(Actor self, Target target, Armament a, Barrel barrel)
+		{
+			if (info.DelayRelativeTo == AttackDelayType.Preparation)
+			{
+				if (info.Delay > 0)
+					tick = info.Delay;
+				else
+					PlayAttackAnimation(self);
+			}
+		}
+
+		void ITick.Tick(Actor self)
+		{
+			if (info.Delay > 0 && --tick == 0)
+				PlayAttackAnimation(self);
+
 			if (string.IsNullOrEmpty(info.AimSequence) && string.IsNullOrEmpty(info.ReloadPrefix))
 				return;
 
