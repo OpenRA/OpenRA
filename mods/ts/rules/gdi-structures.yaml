@@ -109,12 +109,11 @@ GAPILE:
 	ProvidesPrerequisite@buildingname:
 	SelectionDecorations:
 		VisualBounds: 88, 56, 0, -8
-	WithDecoration@primary:
+	WithTextDecoration@primary:
 		RequiresSelection: true
-		Image: pips
-		Sequence: tag-primary
-		Palette: pips
-		ReferencePoint: Center
+		Text: PRIMARY
+		ReferencePoint: Top
+		Color: E0D048
 		ZOffset: 256
 		UpgradeTypes: primary
 		UpgradeMinEnabledLevel: 1
@@ -171,12 +170,11 @@ GAWEAP:
 	ProvidesPrerequisite@buildingname:
 	SelectionDecorations:
 		VisualBounds: 154, 100, -2, -12
-	WithDecoration@primary:
+	WithTextDecoration@primary:
 		RequiresSelection: true
-		Image: pips
-		Sequence: tag-primary
-		Palette: pips
-		ReferencePoint: Center
+		Text: PRIMARY
+		ReferencePoint: Top
+		Color: E0D048
 		ZOffset: 256
 		UpgradeTypes: primary
 		UpgradeMinEnabledLevel: 1
@@ -224,12 +222,11 @@ GAHPAD:
 	ProvidesPrerequisite@buildingname:
 	SelectionDecorations:
 		VisualBounds: 88, 66, 0, -5
-	WithDecoration@primary:
+	WithTextDecoration@primary:
 		RequiresSelection: true
-		Image: pips
-		Sequence: tag-primary
-		Palette: pips
-		ReferencePoint: Center
+		Text: PRIMARY
+		ReferencePoint: Top
+		Color: E0D048
 		ZOffset: 256
 		UpgradeTypes: primary
 		UpgradeMinEnabledLevel: 1
