@@ -99,28 +99,28 @@ namespace OpenRA.Mods.Common.Traits.Render
 			var pos = wr.ScreenPxPosition(self.CenterPosition);
 			var tl = wr.Viewport.WorldToViewPx(pos + new int2(b.Left, b.Top));
 			var bl = wr.Viewport.WorldToViewPx(pos + new int2(b.Left, b.Bottom));
+			var pal = wr.Palette(Info.Palette);
 
-			foreach (var r in DrawControlGroup(wr, self, tl))
+			foreach (var r in DrawControlGroup(wr, self, tl, pal))
 				yield return r;
 
-			foreach (var r in DrawPips(wr, self, bl))
+			foreach (var r in DrawPips(wr, self, bl, pal))
 				yield return r;
 		}
 
-		IEnumerable<IRenderable> DrawControlGroup(WorldRenderer wr, Actor self, int2 basePosition)
+		IEnumerable<IRenderable> DrawControlGroup(WorldRenderer wr, Actor self, int2 basePosition, PaletteReference palette)
 		{
 			var group = self.World.Selection.GetControlGroupForActor(self);
 			if (group == null)
 				yield break;
 
-			var pal = wr.Palette(Info.Palette);
 			pipImages.PlayFetchIndex(Info.GroupSequence, () => (int)group);
 
 			var pos = basePosition - (0.5f * pipImages.Image.Size.XY).ToInt2() + new int2(9, 5);
-			yield return new UISpriteRenderable(pipImages.Image, self.CenterPosition, pos, 0, pal, 1f);
+			yield return new UISpriteRenderable(pipImages.Image, self.CenterPosition, pos, 0, palette, 1f);
 		}
 
-		IEnumerable<IRenderable> DrawPips(WorldRenderer wr, Actor self, int2 basePosition)
+		IEnumerable<IRenderable> DrawPips(WorldRenderer wr, Actor self, int2 basePosition, PaletteReference palette)
 		{
 			var pipSources = self.TraitsImplementing<IPips>();
 			if (!pipSources.Any())
@@ -131,7 +131,6 @@ namespace OpenRA.Mods.Common.Traits.Render
 			var pipSize = pipImages.Image.Size.XY.ToInt2();
 			var pipxyBase = basePosition + new int2(1 - pipSize.X / 2, -(3 + pipSize.Y / 2));
 			var pipxyOffset = new int2(0, 0);
-			var pal = wr.Palette(Info.Palette);
 			var width = self.VisualBounds.Width;
 
 			foreach (var pips in pipSources)
@@ -148,7 +147,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 					pipImages.PlayRepeating(PipStrings[(int)pip]);
 					pipxyOffset += new int2(pipSize.X, 0);
 
-					yield return new UISpriteRenderable(pipImages.Image, self.CenterPosition, pipxyBase + pipxyOffset, 0, pal, 1f);
+					yield return new UISpriteRenderable(pipImages.Image, self.CenterPosition, pipxyBase + pipxyOffset, 0, palette, 1f);
 				}
 
 				// Increment row
