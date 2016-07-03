@@ -34,6 +34,11 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		public readonly Color SelectionBoxColor = Color.White;
 
+		public readonly string Image = "pips";
+
+		[Desc("Sprite sequence used to render the control group 0-9 numbers.")]
+		[SequenceReference("Image")] public readonly string GroupSequence = "groups";
+
 		public object Create(ActorInitializer init) { return new SelectionDecorations(init.Self, this); }
 
 		public int[] SelectionBoxBounds { get { return VisualBounds; } }
@@ -104,9 +109,9 @@ namespace OpenRA.Mods.Common.Traits.Render
 			if (group == null)
 				yield break;
 
-			var pipImages = new Animation(self.World, "pips");
+			var pipImages = new Animation(self.World, Info.Image);
 			var pal = wr.Palette(Info.Palette);
-			pipImages.PlayFetchIndex("groups", () => (int)group);
+			pipImages.PlayFetchIndex(Info.GroupSequence, () => (int)group);
 			pipImages.Tick();
 
 			var pos = basePosition - (0.5f * pipImages.Image.Size.XY).ToInt2() + new int2(9, 5);
@@ -119,7 +124,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			if (!pipSources.Any())
 				yield break;
 
-			var pipImages = new Animation(self.World, "pips");
+			var pipImages = new Animation(self.World, Info.Image);
 			pipImages.PlayRepeating(PipStrings[0]);
 
 			var pipSize = pipImages.Image.Size.XY.ToInt2();
