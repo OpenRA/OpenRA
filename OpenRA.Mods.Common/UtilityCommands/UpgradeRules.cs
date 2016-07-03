@@ -212,6 +212,16 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				if (engineVersion < 20160703)
+				{
+					if (node.Key.StartsWith("WithDecoration") || node.Key.StartsWith("WithRankDecoration") || node.Key.StartsWith("WithDecorationCarryable"))
+					{
+						var stancesNode = node.Value.Nodes.FirstOrDefault(n => n.Key == "Stances");
+						if (stancesNode != null)
+							stancesNode.Key = "ValidStances";
+					}
+				}
+
 				UpgradeActorRules(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 

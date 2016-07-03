@@ -40,7 +40,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public readonly int ZOffset = 1;
 
 		[Desc("Player stances who can view the decoration.")]
-		public readonly Stance Stances = Stance.Ally;
+		public readonly Stance ValidStances = Stance.Ally;
 
 		[Desc("Should this be visible only when selected?")]
 		public readonly bool RequiresSelection = false;
@@ -86,7 +86,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			if (self.World.RenderPlayer != null)
 			{
 				var stance = self.Owner.Stances[self.World.RenderPlayer];
-				if (!Info.Stances.HasStance(stance))
+				if (!Info.ValidStances.HasStance(stance))
 					return Enumerable.Empty<IRenderable>();
 			}
 
