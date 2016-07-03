@@ -876,6 +876,7 @@ local function closeWindow(event)
 
   ShowFullScreen(false)
 
+  if ide:GetProject() then PackageEventHandle("onProjectClose", ide:GetProject()) end
   PackageEventHandle("onAppClose")
 
   -- first need to detach all processes IDE has launched as the current
