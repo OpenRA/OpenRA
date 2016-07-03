@@ -133,7 +133,6 @@ NASAM:
 		Queue: Defense
 		Prerequisites: naradr, ~structures.nod
 		BuildPaletteOrder: 60
-	Building:
 	Selectable:
 		Bounds: 40, 30, -3, -8
 	RequiresPower:
@@ -151,7 +150,7 @@ NASAM:
 		InitialFacing: 224
 	AttackTurreted:
 	WithSpriteTurret:
-		Recoils: no
+		Recoils: false
 	Armament:
 		Weapon: RedEye2
 		LocalOffset: 384,0,576

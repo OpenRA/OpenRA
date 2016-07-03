@@ -5,7 +5,7 @@ DPOD:
 	Tooltip:
 		Name: Drop Pod
 	Aircraft:
-		LandWhenIdle: yes
+		LandWhenIdle: true
 		TurnSpeed: 5
 		Speed: 149
 		InitialFacing: 0
@@ -14,9 +14,6 @@ DPOD:
 		HP: 60
 	Armor:
 		Type: Light
-	RevealsShroud:
-		Range: 0
-		Type: CenterPosition
 	Cargo:
 		Types: Infantry
 		MaxWeight: 1
@@ -41,7 +38,7 @@ DSHP:
 	Tooltip:
 		Name: Dropship
 	Aircraft:
-		LandWhenIdle: yes
+		LandWhenIdle: true
 		TurnSpeed: 5
 		Speed: 168
 		InitialFacing: 0
@@ -167,7 +164,7 @@ ORCATRAN:
 		Prerequisites: ~disabled
 	RenderSprites:
 	Aircraft:
-		LandWhenIdle: yes
+		LandWhenIdle: true
 		TurnSpeed: 5
 		Speed: 84
 		InitialFacing: 0
@@ -203,7 +200,7 @@ TRNSPORT:
 		BuildPaletteOrder: 10
 		Prerequisites: ~gahpad, gadept
 	Aircraft:
-		LandWhenIdle: yes
+		LandWhenIdle: true
 		TurnSpeed: 5
 		Speed: 149
 		InitialFacing: 0
@@ -357,7 +354,7 @@ HUNTER:
 	AutoSelectionSize:
 	DrawLineToTarget:
 	AppearsOnRadar:
-		UseLocation: yes
+		UseLocation: true
 	Selectable:
 	SelectionDecorations:
 		Palette: pips
