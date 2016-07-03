@@ -34,14 +34,21 @@ namespace OpenRA.Mods.Common.Graphics
 			var nodes = node.Value.ToDictionary();
 
 			MiniYaml defaults;
-			if (nodes.TryGetValue("Defaults", out defaults))
+			try
 			{
-				nodes.Remove("Defaults");
-				foreach (var n in nodes)
+				if (nodes.TryGetValue("Defaults", out defaults))
 				{
-					n.Value.Nodes = MiniYaml.Merge(new[] { defaults.Nodes, n.Value.Nodes });
-					n.Value.Value = n.Value.Value ?? defaults.Value;
+					nodes.Remove("Defaults");
+					foreach (var n in nodes)
+					{
+						n.Value.Nodes = MiniYaml.Merge(new[] { defaults.Nodes, n.Value.Nodes });
+						n.Value.Value = n.Value.Value ?? defaults.Value;
+					}
 				}
+			}
+			catch (Exception e)
+			{
+				throw new Exception("Error occurred while parsing {0}".F(node.Key), e);
 			}
 
 			foreach (var kvp in nodes)
