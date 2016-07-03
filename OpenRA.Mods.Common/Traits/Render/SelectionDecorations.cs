@@ -50,12 +50,16 @@ namespace OpenRA.Mods.Common.Traits.Render
 		static readonly string[] PipStrings = { "pip-empty", "pip-green", "pip-yellow", "pip-red", "pip-gray", "pip-blue", "pip-ammo", "pip-ammoempty" };
 
 		public readonly SelectionDecorationsInfo Info;
+
 		readonly Actor self;
+		readonly Animation pipImages;
 
 		public SelectionDecorations(Actor self, SelectionDecorationsInfo info)
 		{
 			this.self = self;
 			Info = info;
+
+			pipImages = new Animation(self.World, Info.Image);
 		}
 
 		IEnumerable<WPos> ActivityTargetPath()
@@ -109,7 +113,6 @@ namespace OpenRA.Mods.Common.Traits.Render
 			if (group == null)
 				yield break;
 
-			var pipImages = new Animation(self.World, Info.Image);
 			var pal = wr.Palette(Info.Palette);
 			pipImages.PlayFetchIndex(Info.GroupSequence, () => (int)group);
 			pipImages.Tick();
@@ -124,7 +127,6 @@ namespace OpenRA.Mods.Common.Traits.Render
 			if (!pipSources.Any())
 				yield break;
 
-			var pipImages = new Animation(self.World, Info.Image);
 			pipImages.PlayRepeating(PipStrings[0]);
 
 			var pipSize = pipImages.Image.Size.XY.ToInt2();
