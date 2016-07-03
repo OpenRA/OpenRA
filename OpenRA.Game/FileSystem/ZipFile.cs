@@ -137,6 +137,9 @@ namespace OpenRA.FileSystem
 		{
 			if (pkg != null)
 				pkg.Close();
+
+			if (pkgStream != null)
+				pkgStream.Dispose();
 		}
 	}
 
