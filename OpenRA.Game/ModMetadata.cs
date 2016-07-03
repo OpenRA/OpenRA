@@ -47,7 +47,8 @@ namespace OpenRA
 					{
 						try
 						{
-							package = new ZipFile(File.OpenRead(pair.Second), pair.Second);
+							using (var fileStream = File.OpenRead(pair.Second))
+								package = new ZipFile(fileStream, pair.Second);
 						}
 						catch
 						{
