@@ -365,7 +365,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				return;
 
 			var orders = new[] {
-				Order.Command("gamespeed {0}".F(gameSpeed)),
+				Order.Command("option gamespeed {0}".F(gameSpeed)),
 				Order.Command("option difficulty {0}".F(difficulty)),
 				Order.Command("state {0}".F(Session.ClientState.Ready))
 			};

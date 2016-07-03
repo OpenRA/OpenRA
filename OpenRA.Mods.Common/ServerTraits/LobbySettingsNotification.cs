@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Common.Server
 				return;
 
 			var defaults = new Session.Global();
-			LobbyCommands.LoadMapSettings(defaults, server.Map.Rules);
+			LobbyCommands.LoadMapSettings(server, defaults, server.Map.Rules);
 
 			var options = server.Map.Rules.Actors["player"].TraitInfos<ILobbyOptions>()
 				.Concat(server.Map.Rules.Actors["world"].TraitInfos<ILobbyOptions>())

@@ -403,8 +403,6 @@ namespace OpenRA.Server
 				if (handshake.Mod == "{DEV_VERSION}")
 					SendMessage("{0} is running an unversioned development build, ".F(client.Name) +
 						"and may desynchronize the game state if they have incompatible rules.");
-
-				SetOrderLag();
 			}
 			catch (Exception ex)
 			{
@@ -412,24 +410,6 @@ namespace OpenRA.Server
 				Log.Write("server", ex.ToString());
 				DropClient(newConn);
 			}
-		}
-
-		void SetOrderLag()
-		{
-			int latency = 1;
-			if (!LobbyInfo.IsSinglePlayer)
-			{
-				var gameSpeeds = ModData.Manifest.Get<GameSpeeds>();
-				GameSpeed speed;
-				if (gameSpeeds.Speeds.TryGetValue(LobbyInfo.GlobalSettings.GameSpeedType, out speed))
-					latency = speed.OrderLatency;
-				else
-					latency = 3;
-			}
-
-			LobbyInfo.GlobalSettings.OrderLatency = latency;
-
-			SyncLobbyGlobalSettings();
 		}
 
 		void DispatchOrdersToClient(Connection c, int client, int frame, byte[] data)
@@ -620,8 +600,6 @@ namespace OpenRA.Server
 				toDrop.Socket.Disconnect(false);
 			}
 			catch { }
-
-			SetOrderLag();
 		}
 
 		public void SyncLobbyInfo()
@@ -701,6 +679,10 @@ namespace OpenRA.Server
 				SendOrderTo(c, "ServerError", "You have been kicked from the server!");
 				DropClient(c);
 			}
+
+			// HACK: Turn down the latency if there is only one real player
+			if (LobbyInfo.IsSinglePlayer)
+				LobbyInfo.GlobalSettings.OrderLatency = 1;
 
 			SyncLobbyInfo();
 			State = ServerState.GameStarted;

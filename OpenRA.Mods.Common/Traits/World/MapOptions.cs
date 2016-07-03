@@ -30,6 +30,12 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Prevent the tech level from being changed in the lobby.")]
 		public readonly bool TechLevelLocked = false;
 
+		[Desc("Default game speed.")]
+		public readonly string GameSpeed = "default";
+
+		[Desc("Prevent the game speed from being changed in the lobby.")]
+		public readonly bool GameSpeedLocked = false;
+
 		IEnumerable<LobbyOption> ILobbyOptions.LobbyOptions(Ruleset rules)
 		{
 			yield return new LobbyBooleanOption("shortgame", "Short Game", ShortGameEnabled, ShortGameLocked);
@@ -41,6 +47,14 @@ namespace OpenRA.Mods.Common.Traits
 				yield return new LobbyOption("techlevel", "Tech Level",
 					new ReadOnlyDictionary<string, string>(techLevels),
 					TechLevel, TechLevelLocked);
+
+			var gameSpeeds = Game.ModData.Manifest.Get<GameSpeeds>().Speeds
+				.ToDictionary(s => s.Key, s => s.Value.Name);
+
+			// NOTE: The server hardcodes special-case logic for this option id
+			yield return new LobbyOption("gamespeed", "Game Speed",
+				new ReadOnlyDictionary<string, string>(gameSpeeds),
+				GameSpeed, GameSpeedLocked);
 		}
 
 		public object Create(ActorInitializer init) { return new MapOptions(this); }
@@ -52,6 +66,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public bool ShortGame { get; private set; }
 		public string TechLevel { get; private set; }
+		public GameSpeed GameSpeed { get; private set; }
 
 		public MapOptions(MapOptionsInfo info)
 		{
@@ -65,6 +80,11 @@ namespace OpenRA.Mods.Common.Traits
 
 			TechLevel = self.World.LobbyInfo.GlobalSettings
 				.OptionOrDefault("techlevel", info.TechLevel);
+
+			var speed = self.World.LobbyInfo.GlobalSettings
+				.OptionOrDefault("gamespeed", info.GameSpeed);
+
+			GameSpeed = Game.ModData.Manifest.Get<GameSpeeds>().Speeds[speed];
 		}
 	}
 }

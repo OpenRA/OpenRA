@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using OpenRA.Mods.Common.Traits;
 using OpenRA.Network;
 using OpenRA.Widgets;
 
@@ -43,12 +44,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				// Timers in replays should be synced to the effective game time, not the playback time.
 				var timestep = world.Timestep;
 				if (world.IsReplay)
-				{
-					GameSpeed speed;
-					var gameSpeeds = Game.ModData.Manifest.Get<GameSpeeds>();
-					if (gameSpeeds.Speeds.TryGetValue(world.LobbyInfo.GlobalSettings.GameSpeedType, out speed))
-						timestep = speed.Timestep;
-				}
+					timestep = world.WorldActor.Trait<MapOptions>().GameSpeed.Timestep;
 
 				timer.GetText = () =>
 				{
