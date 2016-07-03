@@ -44,7 +44,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public int[] SelectionBoxBounds { get { return VisualBounds; } }
 	}
 
-	public class SelectionDecorations : IPostRenderSelection
+	public class SelectionDecorations : IPostRenderSelection, ITick
 	{
 		// depends on the order of pips in TraitsInterfaces.cs!
 		static readonly string[] PipStrings = { "pip-empty", "pip-green", "pip-yellow", "pip-red", "pip-gray", "pip-blue", "pip-ammo", "pip-ammoempty" };
@@ -115,7 +115,6 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 			var pal = wr.Palette(Info.Palette);
 			pipImages.PlayFetchIndex(Info.GroupSequence, () => (int)group);
-			pipImages.Tick();
 
 			var pos = basePosition - (0.5f * pipImages.Image.Size.XY).ToInt2() + new int2(9, 5);
 			yield return new UISpriteRenderable(pipImages.Image, self.CenterPosition, pos, 0, pal, 1f);
@@ -155,6 +154,11 @@ namespace OpenRA.Mods.Common.Traits.Render
 				// Increment row
 				pipxyOffset = new int2(0, pipxyOffset.Y - (pipSize.Y + 1));
 			}
+		}
+
+		void ITick.Tick(Actor self)
+		{
+			pipImages.Tick();
 		}
 	}
 }
