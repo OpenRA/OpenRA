@@ -212,6 +212,18 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				// ParticleDensityFactor was converted from a float to an int
+				if (engineVersion < 20160703 && node.Key == "WeatherOverlay")
+				{
+					var density = node.Value.Nodes.FirstOrDefault(n => n.Key == "ParticleDensityFactor");
+					if (density != null)
+					{
+						var value = float.Parse(density.Value.Value, CultureInfo.InvariantCulture);
+						value = (int)Math.Round(value * 1000000, 0);
+						density.Value.Value = value.ToString();
+					}
+				}
+
 				UpgradeActorRules(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 
