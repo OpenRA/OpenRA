@@ -172,7 +172,8 @@ namespace OpenRA.Mods.Common.Traits
 				init.Add(facings);
 			}
 
-			facings.Value(self.World).Add(Name, TurretFacing);
+			if (!facings.Value(self.World).ContainsKey(Name))
+				facings.Value(self.World).Add(Name, TurretFacing);
 		}
 
 		void IActorPreviewInitModifier.ModifyActorPreviewInit(Actor self, TypeDictionary inits)
