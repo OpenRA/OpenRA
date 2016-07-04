@@ -439,6 +439,7 @@
     <Compile Include="Traits\Render\WithDamageOverlay.cs" />
     <Compile Include="Traits\Render\WithDeathAnimation.cs" />
     <Compile Include="Traits\Render\WithDecoration.cs" />
+    <Compile Include="Traits\Render\WithTextDecoration.cs" />
     <Compile Include="Traits\Render\WithDockingAnimation.cs" />
     <Compile Include="Traits\Render\WithDockedOverlay.cs" />
     <Compile Include="Traits\Render\WithHarvestAnimation.cs" />

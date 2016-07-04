@@ -90,9 +90,6 @@ pips:
 	groups: pipsra #TODO: backfall to RA asset
 		Start: 8
 		Length: 10
-	tag-primary: pipsra #TODO: backfall to RA asset
-		Start: 2
-		Offset: 0, 2
 	pip-empty: pips2
 	pip-green: pips2
 		Start: 1

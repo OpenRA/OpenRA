@@ -11,33 +11,26 @@
 
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using OpenRA.Graphics;
+using OpenRA.Mods.Common.Graphics;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits.Render
 {
-	[Flags]
-	public enum ReferencePoints
+	[Desc("Displays a text overlay relative to the selection box.")]
+	public class WithTextDecorationInfo : UpgradableTraitInfo
 	{
-		Center = 0,
-		Top = 1,
-		Bottom = 2,
-		Left = 4,
-		Right = 8,
-	}
+		[FieldLoader.Require] [Translate] public readonly string Text = null;
 
-	[Desc("Displays a custom UI overlay relative to the selection box.")]
-	public class WithDecorationInfo : UpgradableTraitInfo
-	{
-		[Desc("Image used for this decoration. Defaults to the actor's type.")]
-		public readonly string Image = null;
+		public readonly string Font = "TinyBold";
 
-		[Desc("Sequence used for this decoration (can be animated).")]
-		public readonly string Sequence = null;
+		[Desc("Display in this color when not using the player color.")]
+		public readonly Color Color = Color.White;
 
-		[Desc("Palette to render the sprite in. Reference the world actor's PaletteFrom* traits.")]
-		[PaletteReference] public readonly string Palette = "chrome";
+		[Desc("Use the player color of the current owner.")]
+		public readonly bool UsePlayerColor = false;
 
 		[Desc("Point in the actor's selection box used as reference for offsetting the decoration image. " +
 			"Possible values are combinations of Center, Top, Bottom, Left, Right.")]
@@ -52,23 +45,25 @@ namespace OpenRA.Mods.Common.Traits.Render
 		[Desc("Should this be visible only when selected?")]
 		public readonly bool RequiresSelection = false;
 
-		public override object Create(ActorInitializer init) { return new WithDecoration(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new WithTextDecoration(init.Self, this); }
 	}
 
-	public class WithDecoration : UpgradableTrait<WithDecorationInfo>, ITick, IRender, IPostRenderSelection
+	public class WithTextDecoration : UpgradableTrait<WithTextDecorationInfo>, IRender, IPostRenderSelection, INotifyCapture
 	{
-		protected readonly Animation Anim;
-
-		readonly string image;
 		readonly Actor self;
+		readonly SpriteFont font;
 
-		public WithDecoration(Actor self, WithDecorationInfo info)
+		Color color;
+
+		public WithTextDecoration(Actor self, WithTextDecorationInfo info)
 			: base(info)
 		{
 			this.self = self;
-			image = info.Image ?? self.Info.Name;
-			Anim = new Animation(self.World, image, () => self.World.Paused);
-			Anim.PlayRepeating(info.Sequence);
+
+			if (!Game.Renderer.Fonts.TryGetValue(info.Font, out font))
+				throw new YamlException("Could not find font '{0}'".F(info.Font));
+
+			color = Info.UsePlayerColor ? self.Owner.Color.RGB : Info.Color;
 		}
 
 		public virtual bool ShouldRender(Actor self) { return true; }
@@ -85,7 +80,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		IEnumerable<IRenderable> RenderInner(Actor self, WorldRenderer wr)
 		{
-			if (IsTraitDisabled || self.IsDead || !self.IsInWorld || Anim == null)
+			if (IsTraitDisabled || self.IsDead || !self.IsInWorld)
 				return Enumerable.Empty<IRenderable>();
 
 			if (self.World.RenderPlayer != null)
@@ -99,10 +94,10 @@ namespace OpenRA.Mods.Common.Traits.Render
 				return Enumerable.Empty<IRenderable>();
 
 			var bounds = self.VisualBounds;
-			var halfSize = (0.5f * Anim.Image.Size.XY).ToInt2();
+			var halfSize = font.Measure(Info.Text) / 2;
 
 			var boundsOffset = new int2(bounds.Left + bounds.Right, bounds.Top + bounds.Bottom) / 2;
-			var sizeOffset = -halfSize;
+			var sizeOffset = new int2();
 			if (Info.ReferencePoint.HasFlag(ReferencePoints.Top))
 			{
 				boundsOffset -= new int2(0, bounds.Height / 2);
@@ -125,10 +120,14 @@ namespace OpenRA.Mods.Common.Traits.Render
 				sizeOffset -= new int2(halfSize.X, 0);
 			}
 
-			var pxPos = wr.Viewport.WorldToViewPx(wr.ScreenPxPosition(self.CenterPosition) + boundsOffset) + sizeOffset;
-			return new IRenderable[] { new UISpriteRenderable(Anim.Image, self.CenterPosition, pxPos, Info.ZOffset, wr.Palette(Info.Palette), 1f) };
+			var screenPos = wr.ScreenPxPosition(self.CenterPosition) + boundsOffset + sizeOffset;
+			return new IRenderable[] { new TextRenderable(font, wr.ProjectedPosition(screenPos), Info.ZOffset, color, Info.Text) };
 		}
 
-		public void Tick(Actor self) { Anim.Tick(); }
+		void INotifyCapture.OnCapture(Actor self, Actor captor, Player oldOwner, Player newOwner)
+		{
+			if (Info.UsePlayerColor)
+				color = newOwner.Color.RGB;
+		}
 	}
 }

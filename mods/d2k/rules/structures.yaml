@@ -97,10 +97,9 @@ construction_yard:
 		ZOffset: 256
 		UpgradeTypes: stardecoration
 		UpgradeMinEnabledLevel: 1
-	WithDecoration@primary:
+	WithTextDecoration@primary:
 		RequiresSelection: true
-		Image: pips
-		Sequence: tag-primary
+		Text: PRIMARY
 		ReferencePoint: Top
 		ZOffset: 256
 		UpgradeTypes: primary
@@ -212,10 +211,9 @@ barracks:
 		ZOffset: 256
 		UpgradeTypes: stardecoration
 		UpgradeMinEnabledLevel: 1
-	WithDecoration@primary:
+	WithTextDecoration@primary:
 		RequiresSelection: true
-		Image: pips
-		Sequence: tag-primary
+		Text: PRIMARY
 		ReferencePoint: Top
 		ZOffset: 256
 		UpgradeTypes: primary
@@ -394,10 +392,9 @@ light_factory:
 		ZOffset: 256
 		UpgradeTypes: stardecoration
 		UpgradeMinEnabledLevel: 1
-	WithDecoration@primary:
+	WithTextDecoration@primary:
 		RequiresSelection: true
-		Image: pips
-		Sequence: tag-primary
+		Text: PRIMARY
 		ReferencePoint: Top
 		ZOffset: 256
 		UpgradeTypes: primary
@@ -476,10 +473,9 @@ heavy_factory:
 		ZOffset: 256
 		UpgradeTypes: stardecoration
 		UpgradeMinEnabledLevel: 1
-	WithDecoration@primary:
+	WithTextDecoration@primary:
 		RequiresSelection: true
-		Image: pips
-		Sequence: tag-primary
+		Text: PRIMARY
 		ReferencePoint: Top
 		ZOffset: 256
 		UpgradeTypes: primary
@@ -593,10 +589,9 @@ starport:
 	Power:
 		Amount: -150
 	ProvidesPrerequisite@buildingname:
-	WithDecoration@primary:
+	WithTextDecoration@primary:
 		RequiresSelection: true
-		Image: pips
-		Sequence: tag-primary
+		Text: PRIMARY
 		ReferencePoint: Top
 		ZOffset: 256
 		UpgradeTypes: primary
