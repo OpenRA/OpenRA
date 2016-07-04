@@ -273,7 +273,7 @@
     <Compile Include="Traits\Attack\AttackOmni.cs" />
     <Compile Include="Traits\Attack\AttackSuicides.cs" />
     <Compile Include="Traits\Attack\AttackTurreted.cs" />
-    <Compile Include="Traits\Attack\AttackWander.cs" />
+    <Compile Include="Traits\AttackWander.cs" />
     <Compile Include="Traits\AutoTarget.cs" />
     <Compile Include="Traits\BlocksProjectiles.cs" />
     <Compile Include="Traits\Buildable.cs" />
