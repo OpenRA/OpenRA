@@ -1,0 +1,300 @@
+Container@MAINMENU:
+	Logic: MainMenuLogic
+	Children:
+		Container@MUSICBUTTONS:
+			Logic: MusicControllerLogic
+			Children:
+				LogicKeyListener@MUSICCONTROLLER_KEYHANDLER:
+		Background@BORDER:
+			Background: mainmenu-border
+			X: 0 - 15
+			Y: 0 - 15
+			Width: WINDOW_RIGHT + 30
+			Height: WINDOW_BOTTOM + 30
+		Image@LOGO:
+			X: WINDOW_RIGHT - 296
+			Y: 30
+			ImageCollection: logos
+			ImageName: logo
+		Label@VERSION_LABEL:
+			X: WINDOW_RIGHT - 296
+			Y: 296 - 20
+			Width: 296 - 20
+			Height: 25
+			Align: Center
+			Font: Regular
+			Contrast: True
+		Container@MENUS:
+			X: 13 + (WINDOW_RIGHT - 522) / 4 - WIDTH / 2
+			Y: WINDOW_BOTTOM/2-HEIGHT/2
+			Width: 200
+			Height: 320
+			Children:
+				Background@MAIN_MENU:
+					Width: PARENT_RIGHT
+					Height: PARENT_BOTTOM
+					Children:
+						Label@MAINMENU_LABEL_TITLE:
+							X: 0
+							Y: 20
+							Width: 200
+							Height: 30
+							Text: OpenRA
+							Align: Center
+							Font: Bold
+						Button@SINGLEPLAYER_BUTTON:
+							X: PARENT_RIGHT/2-WIDTH/2
+							Y: 60
+							Width: 140
+							Height: 30
+							Text: Singleplayer
+							Font: Bold
+						Button@MULTIPLAYER_BUTTON:
+							X: PARENT_RIGHT/2-WIDTH/2
+							Y: 100
+							Width: 140
+							Height: 30
+							Text: Multiplayer
+							Font: Bold
+						Button@SETTINGS_BUTTON:
+							X: PARENT_RIGHT/2-WIDTH/2
+							Y: 140
+							Width: 140
+							Height: 30
+							Text: Settings
+							Font: Bold
+						Button@EXTRAS_BUTTON:
+							X: PARENT_RIGHT/2-WIDTH/2
+							Y: 180
+							Width: 140
+							Height: 30
+							Text: Extras
+							Font: Bold
+						Button@MODS_BUTTON:
+							X: PARENT_RIGHT/2-WIDTH/2
+							Y: 220
+							Width: 140
+							Height: 30
+							Text: Mods
+							Font: Bold
+						Button@QUIT_BUTTON:
+							X: PARENT_RIGHT/2-WIDTH/2
+							Y: 260
+							Width: 140
+							Height: 30
+							Text: Quit
+							Font: Bold
+				Background@SINGLEPLAYER_MENU:
+					Width: PARENT_RIGHT
+					Height: PARENT_BOTTOM
+					Children:
+						Label@SINGLEPLAYER_MENU_TITLE:
+							X: 0
+							Y: 20
+							Width: 200
+							Height: 30
+							Text: Singleplayer
+							Align: Center
+							Font: Bold
+						Button@SKIRMISH_BUTTON:
+							X: PARENT_RIGHT/2-WIDTH/2
+							Y: 60
+							Width: 140
+							Height: 30
+							Text: Skirmish
+							Font: Bold
+						Button@MISSIONS_BUTTON:
+							X: PARENT_RIGHT/2-WIDTH/2
+							Y: 100
+							Width: 140
+							Height: 30
+							Text: Missions
+							Font: Bold
+						Button@BACK_BUTTON:
+							X: PARENT_RIGHT/2-WIDTH/2
+							Key: escape
+							Y: 260
+							Width: 140
+							Height: 30
+							Text: Back
+							Font: Bold
+				Background@EXTRAS_MENU:
+					Width: PARENT_RIGHT
+					Height: PARENT_BOTTOM
+					Children:
+						Label@EXTRAS_MENU_TITLE:
+							X: 0
+							Y: 20
+							Width: 200
+							Height: 30
+							Text: Extras
+							Align: Center
+							Font: Bold
+						Button@REPLAYS_BUTTON:
+							X: PARENT_RIGHT/2-WIDTH/2
+							Y: 60
+							Width: 140
+							Height: 30
+							Text: Replays
+							Font: Bold
+						Button@MUSIC_BUTTON:
+							X: PARENT_RIGHT/2-WIDTH/2
+							Y: 100
+							Width: 140
+							Height: 30
+							Text: Music
+							Font: Bold
+						Button@MAP_EDITOR_BUTTON:
+							X: PARENT_RIGHT/2-WIDTH/2
+							Y: 140
+							Width: 140
+							Height: 30
+							Text: Map Editor
+							Font: Bold
+						Button@ASSETBROWSER_BUTTON:
+							X: PARENT_RIGHT/2-WIDTH/2
+							Y: 180
+							Width: 140
+							Height: 30
+							Text: Asset Browser
+							Font: Bold
+						Button@CREDITS_BUTTON:
+							X: PARENT_RIGHT/2-WIDTH/2
+							Y: 220
+							Width: 140
+							Height: 30
+							Text: Credits
+							Font: Bold
+						Button@BACK_BUTTON:
+							X: PARENT_RIGHT/2-WIDTH/2
+							Key: escape
+							Y: 260
+							Width: 140
+							Height: 30
+							Text: Back
+							Font: Bold
+				Background@MAP_EDITOR_MENU:
+					Width: PARENT_RIGHT
+					Height: PARENT_BOTTOM
+					Children:
+						Label@MAP_EDITOR_MENU_TITLE:
+							X: 0
+							Y: 20
+							Width: 200
+							Height: 30
+							Text: Map Editor
+							Align: Center
+							Font: Bold
+						Button@NEW_MAP_BUTTON:
+							X: PARENT_RIGHT/2-WIDTH/2
+							Y: 60
+							Width: 140
+							Height: 30
+							Text: New Map
+							Font: Bold
+						Button@LOAD_MAP_BUTTON:
+							X: PARENT_RIGHT/2-WIDTH/2
+							Y: 100
+							Width: 140
+							Height: 30
+							Text: Load Map
+							Font: Bold
+						Button@BACK_BUTTON:
+							X: PARENT_RIGHT/2-WIDTH/2
+							Key: escape
+							Y: 260
+							Width: 140
+							Height: 30
+							Text: Back
+							Font: Bold
+		Background@SYSTEM_INFO_PROMPT:
+			X: (WINDOW_RIGHT - WIDTH)/2
+			Y: (WINDOW_BOTTOM - HEIGHT)/2
+			Width: 520
+			Height: 260
+			Children:
+				Label@PROMPT_TITLE:
+					Width: PARENT_RIGHT
+					Y: 20
+					Height: 25
+					Font: Bold
+					Align: Center
+					Text: System Information
+				Label@PROMPT_TEXT_A:
+					X: 15
+					Y: 50
+					Width: PARENT_RIGHT - 30
+					Height: 16
+					Align: Center
+					Text: We would like to collect some details that will help us optimize OpenRA.
+				Label@PROMPT_TEXT_B:
+					X: 15
+					Y: 68
+					Width: PARENT_RIGHT - 30
+					Height: 16
+					Align: Center
+					Text: With your permission, the following anonymous system data will be sent:
+				ScrollPanel@SYSINFO_DATA:
+					X: 20
+					Y: 98
+					Width: PARENT_RIGHT - 40
+					TopBottomSpacing: 4
+					ItemSpacing: 4
+					Height: 110
+					Children:
+						Label@DATA_TEMPLATE:
+							X: 8
+							Height: 13
+							VAlign: Top
+							Font: Small
+				Checkbox@SYSINFO_CHECKBOX:
+					X: 40
+					Y: PARENT_BOTTOM - 42
+					Width: 200
+					Height: 20
+					Font: Regular
+					Text: Send System Information
+				Button@BACK_BUTTON:
+					X: PARENT_RIGHT - WIDTH - 20
+					Y: PARENT_BOTTOM - 45
+					Width: 120
+					Height: 25
+					Text: Continue
+					Font: Bold
+					Key: return
+		Container@PERFORMANCE_INFO:
+			Logic: PerfDebugLogic
+			Children:
+				Label@PERF_TEXT:
+					X: 30
+					Y: WINDOW_BOTTOM - 70
+					Width: 170
+					Height: 40
+					Contrast: true
+				Background@GRAPH_BG:
+					ClickThrough: true
+					Background: dialog4
+					X: WINDOW_RIGHT - 240
+					Y: WINDOW_BOTTOM - 240
+					Width: 210
+					Height: 210
+					Children:
+						PerfGraph@GRAPH:
+							X: 5
+							Y: 5
+							Width: 200
+							Height: 200
+		Background@NEWS_BG:
+			X: (WINDOW_RIGHT - WIDTH)/2
+			Y: 35
+			Width: 430
+			Height: 55
+			Children:
+				DropDownButton@NEWS_BUTTON:
+					Background: newsbutton
+					X: 15
+					Y: 15
+					Width: 400
+					Height: 25
+					Text: Battlefield News
+					Font: Bold

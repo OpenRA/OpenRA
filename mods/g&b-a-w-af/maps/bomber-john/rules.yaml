@@ -1,0 +1,202 @@
+World:
+	-CrateSpawner:
+	-SpawnMPUnits:
+	MapBuildRadius:
+		AllyBuildRadiusLocked: True
+		AllyBuildRadiusEnabled: False
+	MapOptions:
+		TechLevelLocked: True
+		TechLevel: unrestricted
+
+APWR:
+	Buildable:
+		Prerequisites: ~disabled
+
+STEK:
+	Buildable:
+		Prerequisites: ~disabled
+
+BARR:
+	Buildable:
+		Prerequisites: ~disabled
+
+FIX:
+	Buildable:
+		Prerequisites: ~disabled
+
+POWR:
+	Buildable:
+		Prerequisites: ~disabled
+
+AFLD:
+	Buildable:
+		Prerequisites: ~disabled
+
+PROC:
+	Buildable:
+		Prerequisites: ~disabled
+
+WEAP:
+	Buildable:
+		Prerequisites: ~disabled
+
+DOME:
+	Buildable:
+		Prerequisites: ~disabled
+
+SPEN:
+	Buildable:
+		Prerequisites: ~disabled
+
+SILO:
+	Buildable:
+		Prerequisites: ~disabled
+
+Player:
+	ClassicProductionQueue@Building:
+		BuildSpeed: 40
+	Shroud:
+		FogLocked: True
+		FogEnabled: True
+		ExploredMapLocked: True
+		ExploredMapEnabled: False
+	PlayerResources:
+		DefaultCashLocked: True
+		DefaultCash: 60
+
+MNLYR:
+	Inherits: ^Tank
+	Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 30
+		Prerequisites: fix
+	Valued:
+		Cost: 800
+	Tooltip:
+		Name: Bomber
+		Description: Lays mines to destroy unwary enemy units.\n  Unarmed
+	Health:
+		HP: 500
+	Armor:
+		Type: Heavy
+	Mobile:
+		Speed: 128
+		WaitAverage: 1
+		WaitSpread: 1
+		TurnSpeed: 900
+	RevealsShroud:
+		Range: 40c0
+	MustBeDestroyed:
+		RequiredForShortGame: true
+	Transforms:
+		IntoActor: ftur
+		Offset: 0,0
+		Facing: 96
+	CashTrickler:
+		Period: 150
+		Amount: 20
+	RenderSprites:
+		Image: MNLY
+	Chronoshiftable:
+		ReturnToOrigin: false
+
+FTUR:
+	Health:
+		HP: 1000
+	Transforms:
+		IntoActor: mnlyr
+		Offset: 0,0
+		Facing: 96
+	MustBeDestroyed:
+		RequiredForShortGame: true
+	CashTrickler:
+		Period: 150
+		Amount: 30
+	ChronoshiftPower:
+		Icon: chrono
+		ChargeTime: 60
+		Description: Chronoshift
+		LongDesc: Teleport a group of vehicles across\nthe map.
+		SelectTargetSound: slcttgt1.aud
+		BeginChargeSound: chrochr1.aud
+		EndChargeSound: chrordy1.aud
+		Range: 3
+	GrantUpgradePower@IRONCURTAIN:
+		Icon: invuln
+		ChargeTime: 30
+		Description: Invulnerability
+		LongDesc: Makes a unit invulnerable\nfor 3 seconds.
+		Duration: 75
+		SelectTargetSound: slcttgt1.aud
+		BeginChargeSound: ironchg1.aud
+		EndChargeSound: ironrdy1.aud
+		Range: 1
+		Upgrades: invulnerability
+		GrantUpgradeSequence: idle
+	Power:
+		Amount: 0
+
+MINVV:
+	Inherits@1: ^SpriteActor
+	HiddenUnderFog:
+	Building:
+		Adjacent: 99
+		TerrainTypes: Clear,Road
+	ProvidesPrerequisite:
+		Prerequisite: MNLYVV
+	Buildable:
+		Queue: Building
+		BuildPaletteOrder: 30
+	Valued:
+		Cost: 30
+	Health:
+		HP: 200
+	RenderSprites:
+		Image: miner
+	WithSpriteBody:
+	Tooltip:
+		Name: Bomb
+		Description: Bomb (Hotkey B)
+	SelfHealing:
+		Step: -1
+		Delay: 1
+		HealIfBelow: 101
+		DamageCooldown: 0
+	Explodes:
+		Weapon: CrateNuke
+		EmptyWeapon: CrateNuke
+
+T17:
+	Health:
+		HP: 999999999
+	Building:
+		Adjacent: 99
+	GivesBuildableArea:
+	Production:
+		Produces: Building
+	BaseBuilding:
+	Tooltip:
+		Name: Tree
+	ChronoshiftPower:
+		Icon: chrono
+		ChargeTime: 60
+		Description: Chronoshift
+		LongDesc: Teleport a group of vehicles across\nthe map.
+		SelectTargetSound: slcttgt1.aud
+		BeginChargeSound: chrochr1.aud
+		EndChargeSound: chrordy1.aud
+		Duration: 999999
+		KillCargo: yes
+		Range: 3
+	GrantUpgradePower@IRONCURTAIN:
+		Icon: invuln
+		ChargeTime: 30
+		Description: Invulnerability
+		LongDesc: Makes a unit invulnerable\nfor 3 seconds.
+		Duration: 75
+		SelectTargetSound: slcttgt1.aud
+		BeginChargeSound: ironchg1.aud
+		EndChargeSound: ironrdy1.aud
+		Range: 1
+		Upgrades: invulnerability
+		GrantUpgradeSequence: idle

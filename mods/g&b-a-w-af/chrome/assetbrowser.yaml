@@ -1,0 +1,192 @@
+Background@ASSETBROWSER_PANEL:
+	Logic: AssetBrowserLogic
+		SupportedFormats: .shp, .r8, .tmp, .tem, .des, .sno, .int, .vqa
+	X: (WINDOW_RIGHT - WIDTH)/2
+	Y: (WINDOW_BOTTOM - HEIGHT)/2
+	Width: 700
+	Height: 500
+	Children:
+		LogicTicker@ANIMATION_TICKER:
+		ColorPreviewManager@COLOR_MANAGER:
+		Label@ASSETBROWSER_TITLE:
+			Y: 20
+			Width: PARENT_RIGHT
+			Height: 25
+			Font: Bold
+			Align: Center
+			Text: Asset Browser
+		Label@SOURCE_SELECTOR_DESC:
+			X: 20
+			Y: 35
+			Width: 160
+			Height: 25
+			Font: TinyBold
+			Align: Center
+			Text: Select asset source
+		DropDownButton@SOURCE_SELECTOR:
+			X: 20
+			Y: 60
+			Width: 160
+			Height: 25
+			Font: Bold
+			Text: Folders
+		ScrollPanel@ASSET_LIST:
+			X: 20
+			Y: 90
+			Width: 160
+			Height: 275
+			CollapseHiddenChildren: True
+			Children:
+				ScrollItem@ASSET_TEMPLATE:
+					Width: PARENT_RIGHT-27
+					Height: 25
+					X: 2
+					Y: 0
+					Visible: false
+					Children:
+						Label@TITLE:
+							X: 10
+							Width: PARENT_RIGHT-20
+							Height: 25
+		Label@FILENAME_DESC:
+			X: 20
+			Y: 370
+			Width: 160
+			Height: 25
+			Font: TinyBold
+			Align: Center
+			Text: Filter by name
+		TextField@FILENAME_INPUT:
+			X: 20
+			Y: 395
+			Width: 160
+			Height: 25
+		Label@PALETTE_DESC:
+			X: PARENT_RIGHT-WIDTH-270
+			Y: 60
+			Width: 150
+			Height: 25
+			Font: Bold
+			Align: Right
+			Text: Palette:
+		DropDownButton@PALETTE_SELECTOR:
+			X: PARENT_RIGHT-WIDTH-110
+			Y: 60
+			Width: 150
+			Height: 25
+			Font: Bold
+		DropDownButton@COLOR:
+			X: PARENT_RIGHT-WIDTH-20
+			Y: 60
+			Width: 80
+			Height: 25
+			Children:
+				ColorBlock@COLORBLOCK:
+					X: 5
+					Y: 6
+					Width: PARENT_RIGHT-35
+					Height: PARENT_BOTTOM-12
+		Background@SPRITE_BG:
+			X: 190
+			Y: 90
+			Width: 490
+			Height: 330
+			Background: dialog3
+			Children:
+				Sprite@SPRITE:
+					Width: PARENT_RIGHT
+					Height: PARENT_BOTTOM
+				VqaPlayer@PLAYER:
+					Width: PARENT_RIGHT
+					Height: PARENT_BOTTOM
+					AspectRatio: 1
+		Container@FRAME_SELECTOR:
+			X: 190
+			Y: 425
+			Children:
+				Button@BUTTON_PREV:
+					X: 0
+					Y: 0
+					Width: 25
+					Height: 25
+					Children:
+						Image@IMAGE_PREV:
+							X: 0
+							Y: 0
+							Width: 25
+							Height: 25
+							ImageCollection: music
+							ImageName: prev
+				Button@BUTTON_PLAY:
+					X: 35
+					Y: 0
+					Width: 25
+					Height: 25
+					Children:
+						Image@IMAGE_PLAY:
+							X: 0
+							Y: 0
+							Width: 25
+							Height: 25
+							ImageCollection: music
+							ImageName: play
+				Button@BUTTON_PAUSE:
+					Visible: no
+					X: 35
+					Y: 0
+					Width: 25
+					Height: 25
+					Children:
+						Image@IMAGE_PAUSE:
+							X: 0
+							Y: 0
+							Width: 25
+							Height: 25
+							ImageCollection: music
+							ImageName: pause
+				Button@BUTTON_STOP:
+					X: 70
+					Y: 0
+					Width: 25
+					Height: 25
+					Children:
+						Image@IMAGE_STOP:
+							X: 0
+							Y: 0
+							Width: 25
+							Height: 25
+							ImageCollection: music
+							ImageName: stop
+				Button@BUTTON_NEXT:
+					X: 105
+					Y: 0
+					Width: 25
+					Height: 25
+					Children:
+						Image@IMAGE_NEXT:
+							X: 0
+							Y: 0
+							Width: 25
+							Height: 25
+							ImageCollection: music
+							ImageName: next
+				Slider@FRAME_SLIDER:
+					X: 140
+					Y: 3
+					Width: 300
+					Height: 20
+					MinimumValue: 0
+				Label@FRAME_COUNT:
+					X: 445
+					Width: 40
+					Height: 25
+					Font: TinyBold
+					Align: Left
+		Button@CLOSE_BUTTON:
+			Key: escape
+			X: PARENT_RIGHT-180
+			Y: PARENT_BOTTOM-45
+			Width: 160
+			Height: 25
+			Font: Bold
+			Text: Close

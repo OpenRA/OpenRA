@@ -1,0 +1,112 @@
+Background@MULTIPLAYER_PANEL:
+	Logic: MultiplayerLogic
+	X: (WINDOW_RIGHT - WIDTH)/2
+	Y: (WINDOW_BOTTOM - HEIGHT)/2
+	Width: 808
+	Height: 600
+	Children:
+		Label@TITLE:
+			Y: 15
+			Width: PARENT_RIGHT
+			Height: 25
+			Text: Multiplayer
+			Align: Center
+			Font: Bold
+		DropDownButton@FILTERS_DROPDOWNBUTTON:
+			X: 20
+			Y: 321
+			Width: 158
+			Height: 25
+			Text: Filter Games
+			Font: Bold
+		Button@REFRESH_BUTTON:
+			X: 183
+			Y: 321
+			Width: 100
+			Height: 25
+			Text: Refresh
+			Font: Bold
+		Button@BROWSER_TAB:
+			X: 288
+			Y: 315
+			Width: 105
+			Height: 31
+			Text: Browse
+			Font: Bold
+		Button@DIRECTCONNECT_TAB:
+			X: 393
+			Y: 315
+			Width: 105
+			Height: 31
+			Text: Direct IP
+			Font: Bold
+		Button@CREATE_TAB:
+			X: 498
+			Y: 315
+			Width: 105
+			Height: 31
+			Text: Create
+			Font: Bold
+		Container@TOP_PANELS_ROOT:
+			X: 20
+			Y: 37
+			Width: PARENT_RIGHT - 40
+			Height: PARENT_BOTTOM
+		Container@GLOBALCHAT_ROOT:
+			X: 20
+			Y: 351
+			Width: PARENT_RIGHT - 40
+			Height: PARENT_BOTTOM - 401
+		TooltipContainer@TOOLTIP_CONTAINER:
+		Button@BACK_BUTTON:
+			Key: escape
+			X: PARENT_RIGHT - WIDTH - 20
+			Y: PARENT_BOTTOM - HEIGHT - 20
+			Width: 120
+			Height: 25
+			Text: Back
+			Font: Bold
+
+ScrollPanel@MULTIPLAYER_FILTER_PANEL:
+	Width: 158
+	Height: 130
+	Children:
+		Checkbox@WAITING_FOR_PLAYERS:
+			X: 5
+			Y: 5
+			Width: PARENT_RIGHT-29
+			Height: 20
+			Text: Waiting
+			TextColor: 32CD32
+			Font: Regular
+		Checkbox@EMPTY:
+			X: 5
+			Y: 30
+			Width: PARENT_RIGHT-29
+			Height: 20
+			Text: Empty
+			Font: Regular
+		Checkbox@PASSWORD_PROTECTED:
+			X: 5
+			Y: 55
+			Width: PARENT_RIGHT-29
+			Height: 20
+			Text: Protected
+			TextColor: FF0000
+			Font: Regular
+		Checkbox@ALREADY_STARTED:
+			X: 5
+			Y: 80
+			Width: PARENT_RIGHT-29
+			Height: 20
+			Text: Started
+			TextColor: FFA500
+			Font: Regular
+		Checkbox@INCOMPATIBLE_VERSION:
+			X: 5
+			Y: 105
+			Width: PARENT_RIGHT-29
+			Height: 20
+			Text: Incompatible
+			TextColor: BEBEBE
+			Font: Regular

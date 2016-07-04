@@ -1,0 +1,288 @@
+SS:
+	Inherits: ^Ship
+	Buildable:
+		Queue: Ship
+		BuildAtProductionType: Submarine
+		BuildPaletteOrder: 30
+		Prerequisites: ~spen, ~techlevel.medium
+	Valued:
+		Cost: 950
+	Tooltip:
+		Name: Submarine
+		Description: Submerged anti-ship unit\narmed with torpedoes.\nCan detect other submarines.\n  Strong vs Naval units\n  Weak vs Ground units, Aircraft\n  Special Ability: Submerge
+	Health:
+		HP: 250
+	Armor:
+		Type: Light
+	Mobile:
+		TurnSpeed: 4
+		Speed: 71
+	RevealsShroud:
+		Range: 6c0
+	Targetable:
+		TargetTypes: Ground, Water, Repair
+		UpgradeTypes: underwater
+		UpgradeMaxEnabledLevel: 0
+	Targetable@UNDERWATER:
+		TargetTypes: Underwater, Repair
+		UpgradeTypes: underwater
+		UpgradeMinEnabledLevel: 1
+	Cloak:
+		CloakTypes: Underwater
+		InitialDelay: 0
+		CloakDelay: 50
+		CloakSound: subshow1.aud
+		UncloakSound: subshow1.aud
+		WhileCloakedUpgrades: underwater
+		Palette: submerged
+	Armament:
+		Weapon: TorpTube
+		LocalOffset: 0,-171,0, 0,171,0
+		FireDelay: 2
+	AttackFrontal:
+	SelectionDecorations:
+		VisualBounds: 38,38
+	AutoTarget:
+		InitialStance: HoldFire
+		InitialStanceAI: ReturnFire
+	DetectCloaked:
+		CloakTypes: Underwater
+		Range: 4c0
+	RenderDetectionCircle:
+	Explodes:
+		Weapon: UnitExplodeSubmarine
+		EmptyWeapon: UnitExplodeSubmarine
+	-MustBeDestroyed:
+
+MSUB:
+	Inherits: ^Ship
+	Buildable:
+		Queue: Ship
+		BuildAtProductionType: Submarine
+		BuildPaletteOrder: 60
+		Prerequisites: ~spen, stek, ~techlevel.high
+	Valued:
+		Cost: 2400
+	Tooltip:
+		Name: Missile Submarine
+		Description: Submerged anti-ground unit armed with\nlong-range ballistic missiles.\nCan detect other submarines.\n  Strong vs Buildings, Ground units\n  Weak vs Naval units, Aircraft\n  Special Ability: Submerge
+	Health:
+		HP: 400
+	Armor:
+		Type: Light
+	Mobile:
+		TurnSpeed: 3
+		Speed: 42
+	RevealsShroud:
+		Range: 6c0
+	Targetable:
+		TargetTypes: Ground, Water, Repair
+		UpgradeTypes: underwater
+		UpgradeMaxEnabledLevel: 0
+	Targetable@UNDERWATER:
+		TargetTypes: Underwater, Repair
+		UpgradeTypes: underwater
+		UpgradeMinEnabledLevel: 1
+	Cloak:
+		CloakTypes: Underwater
+		InitialDelay: 0
+		CloakDelay: 100
+		CloakSound: subshow1.aud
+		UncloakSound: subshow1.aud
+		WhileCloakedUpgrades: underwater
+		Palette: submerged
+	Armament:
+		Weapon: SubMissile
+		LocalOffset: 0,-171,0, 0,171,0
+		FireDelay: 2
+	AttackFrontal:
+	SelectionDecorations:
+		VisualBounds: 44,44
+	AutoTarget:
+		InitialStance: HoldFire
+		InitialStanceAI: ReturnFire
+	DetectCloaked:
+		CloakTypes: Underwater
+		Range: 4c0
+	RenderDetectionCircle:
+	Explodes:
+		Weapon: UnitExplodeSubmarine
+		EmptyWeapon: UnitExplodeSubmarine
+	-MustBeDestroyed:
+
+DD:
+	Inherits: ^Ship
+	Buildable:
+		Queue: Ship
+		BuildAtProductionType: Boat
+		BuildPaletteOrder: 40
+		Prerequisites: ~syrd, dome, ~techlevel.medium
+	Valued:
+		Cost: 1000
+	Tooltip:
+		Name: Destroyer
+		Description: Fast multi-role ship.\nCan detect submarines.\n  Strong vs Naval units, Light armor, Aircraft\n  Weak vs Infantry, Tanks
+	Health:
+		HP: 400
+	Armor:
+		Type: Heavy
+	Mobile:
+		TurnSpeed: 7
+		Speed: 85
+	RevealsShroud:
+		Range: 6c0
+	Turreted:
+		TurnSpeed: 7
+		Offset: 341,0,128
+	Armament@PRIMARY:
+		Weapon: Stinger
+		LocalOffset: 0,-100,0, 0,100,0
+		LocalYaw: 64, -64
+	Armament@SECONDARY:
+		Weapon: DepthCharge
+		LocalOffset: 0,-100,0, 0,100,0
+		LocalYaw: 80, -80
+	Armament@TERTIARY:
+		Weapon: StingerAA
+		LocalOffset: 0,-100,0, 0,100,0
+		LocalYaw: 64, -64
+	AttackTurreted:
+	SelectionDecorations:
+		VisualBounds: 38,38
+	WithSpriteTurret:
+	AutoTarget:
+	DetectCloaked:
+		CloakTypes: Underwater
+		Range: 4c0
+	RenderDetectionCircle:
+
+CA:
+	Inherits: ^Ship
+	Buildable:
+		Queue: Ship
+		BuildAtProductionType: Boat
+		BuildPaletteOrder: 50
+		Prerequisites: ~syrd, atek, ~techlevel.high
+	Valued:
+		Cost: 2400
+	Tooltip:
+		Name: Cruiser
+		Description: Very slow long-range ship.\n  Strong vs Buildings, Ground units\n  Weak vs Naval units, Aircraft
+	Health:
+		HP: 800
+	Armor:
+		Type: Heavy
+	Mobile:
+		TurnSpeed: 3
+		Speed: 42
+	RevealsShroud:
+		Range: 7c0
+	Turreted@PRIMARY:
+		Turret: primary
+		Offset: -864,0,128
+		TurnSpeed: 3
+	Turreted@SECONDARY:
+		Turret: secondary
+		Offset: 768,0,128
+		TurnSpeed: 3
+	Armament@PRIMARY:
+		Turret: primary
+		Weapon: 8Inch
+		LocalOffset: 480,-100,40, 480,100,40
+		Recoil: 171
+		RecoilRecovery: 34
+		MuzzleSequence: muzzle
+	Armament@SECONDARY:
+		Name: secondary
+		Turret: secondary
+		Weapon: 8Inch
+		LocalOffset: 480,-100,40, 480,100,40
+		Recoil: 171
+		RecoilRecovery: 34
+		MuzzleSequence: muzzle
+	AttackTurreted:
+	WithMuzzleOverlay:
+	SelectionDecorations:
+		VisualBounds: 44,44
+	WithSpriteTurret@PRIMARY:
+		Turret: primary
+	WithSpriteTurret@SECONDARY:
+		Turret: secondary
+	AutoTarget:
+
+LST:
+	Inherits: ^Ship
+	Buildable:
+		Queue: Ship
+		BuildPaletteOrder: 10
+		Prerequisites: ~techlevel.low
+	Valued:
+		Cost: 700
+	Tooltip:
+		Name: Transport
+		Description: General-purpose naval transport.\nCan carry infantry and tanks.\n  Unarmed
+	Health:
+		HP: 350
+	Armor:
+		Type: Heavy
+	Mobile:
+		UpgradeTypes: notmobile
+		UpgradeMaxEnabledLevel: 0
+		TurnSpeed: 10
+		Speed: 113
+	RevealsShroud:
+		Range: 6c0
+	SelectionDecorations:
+		VisualBounds: 36,36
+	WithLandingCraftAnimation:
+		OpenTerrainTypes: Clear, Rough, Road, Ore, Gems, Beach
+	Cargo:
+		Types: Infantry, Vehicle
+		MaxWeight: 5
+		PipCount: 5
+		PassengerFacing: 0
+		LoadingUpgrades: notmobile
+	-Chronoshiftable:
+
+PT:
+	Inherits: ^Ship
+	Buildable:
+		Queue: Ship
+		BuildAtProductionType: Boat
+		BuildPaletteOrder: 20
+		Prerequisites: ~syrd, ~techlevel.medium
+	Valued:
+		Cost: 500
+	Tooltip:
+		Name: Gunboat
+		Description: Light scout & support ship.\nCan detect submarines.\n  Strong vs Naval units\n  Weak vs Ground units, Aircraft
+	Health:
+		HP: 200
+	Armor:
+		Type: Heavy
+	Mobile:
+		TurnSpeed: 7
+		Speed: 128
+	RevealsShroud:
+		Range: 7c0
+	Turreted:
+		TurnSpeed: 7
+		Offset: 512,0,0
+	Armament@PRIMARY:
+		Weapon: 2Inch
+		LocalOffset: 208,0,48
+		MuzzleSequence: muzzle
+	Armament@SECONDARY:
+		Name: secondary
+		Weapon: DepthCharge
+		MuzzleSequence: muzzle
+	AttackTurreted:
+	WithMuzzleOverlay:
+	SelectionDecorations:
+		VisualBounds: 36,36
+	WithSpriteTurret:
+	AutoTarget:
+	DetectCloaked:
+		CloakTypes: Underwater
+		Range: 4c0
+	RenderDetectionCircle:

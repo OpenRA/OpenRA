@@ -1,0 +1,162 @@
+MapFormat: 11
+
+RequiresMod: ra
+
+Title: Drop Zone
+
+Author: Holloweye
+
+Tileset: TEMPERAT
+
+MapSize: 64,64
+
+Bounds: 16,16,32,32
+
+Visibility: Lobby
+
+Categories: Drop Zone
+
+Players:
+	PlayerReference@Neutral:
+		Name: Neutral
+		OwnsWorld: True
+		NonCombatant: True
+		Faction: allies
+	PlayerReference@Multi0:
+		Name: Multi0
+		Playable: True
+		AllowBots: False
+		LockFaction: True
+		Faction: soviet
+	PlayerReference@Multi1:
+		Name: Multi1
+		Playable: True
+		AllowBots: False
+		LockFaction: True
+		Faction: soviet
+	PlayerReference@Multi2:
+		Name: Multi2
+		Playable: True
+		AllowBots: False
+		LockFaction: True
+		Faction: soviet
+	PlayerReference@Multi3:
+		Name: Multi3
+		Playable: True
+		AllowBots: False
+		LockFaction: True
+		Faction: soviet
+	PlayerReference@Multi4:
+		Name: Multi4
+		Playable: True
+		AllowBots: False
+		LockFaction: True
+		Faction: soviet
+	PlayerReference@Multi5:
+		Name: Multi5
+		Playable: True
+		AllowBots: False
+		LockFaction: True
+		Faction: soviet
+	PlayerReference@Multi6:
+		Name: Multi6
+		Playable: True
+		AllowBots: False
+		LockFaction: True
+		Faction: soviet
+	PlayerReference@Multi7:
+		Name: Multi7
+		Playable: True
+		AllowBots: False
+		LockFaction: True
+		Faction: soviet
+
+Actors:
+	Actor0: apc
+		Location: 28,28
+		Owner: Multi0
+	Actor1: apc
+		Location: 30,28
+		Owner: Multi1
+	Actor2: apc
+		Location: 32,28
+		Owner: Multi2
+	Actor3: apc
+		Location: 32,30
+		Owner: Multi3
+	Actor4: apc
+		Location: 32,32
+		Owner: Multi4
+	Actor5: apc
+		Location: 30,32
+		Owner: Multi5
+	Actor6: apc
+		Location: 28,32
+		Owner: Multi6
+	Actor7: apc
+		Location: 28,30
+		Owner: Multi7
+	Actor9: tc04
+		Location: 18,43
+		Owner: Neutral
+	Actor10: tc02
+		Location: 44,44
+		Owner: Neutral
+	Actor11: t10
+		Location: 23,24
+		Owner: Neutral
+	Actor12: t08
+		Location: 34,23
+		Owner: Neutral
+	Actor13: t12
+		Location: 38,27
+		Owner: Neutral
+	Actor14: t12
+		Location: 35,35
+		Owner: Neutral
+	Actor15: tc04
+		Location: 43,18
+		Owner: Neutral
+	Actor16: tc05
+		Location: 18,18
+		Owner: Neutral
+	Actor17: t12
+		Location: 22,35
+		Owner: Neutral
+	Actor18: t07
+		Location: 18,28
+		Owner: Neutral
+	Actor19: t07
+		Location: 45,39
+		Owner: Neutral
+	Actor20: t07
+		Location: 40,18
+		Owner: Neutral
+	Actor8: mpspawn
+		Location: 29,29
+		Owner: Neutral
+	Actor21: mpspawn
+		Location: 29,30
+		Owner: Neutral
+	Actor22: mpspawn
+		Location: 29,31
+		Owner: Neutral
+	Actor23: mpspawn
+		Location: 30,31
+		Owner: Neutral
+	Actor24: mpspawn
+		Location: 31,31
+		Owner: Neutral
+	Actor25: mpspawn
+		Location: 31,30
+		Owner: Neutral
+	Actor26: mpspawn
+		Location: 31,29
+		Owner: Neutral
+	Actor27: mpspawn
+		Location: 30,29
+		Owner: Neutral
+
+Rules: rules.yaml
+
+Weapons: weapons.yaml

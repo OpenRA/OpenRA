@@ -1,0 +1,244 @@
+Background@SIMPLE_TOOLTIP:
+	Logic: SimpleTooltipLogic
+	Background: dialog4
+	Height: 32
+	Children:
+		Container@LINE_HEIGHT:
+			Y: 3
+			Height: 19
+		Label@LABEL:
+			X: 7
+			Y: 0-1
+			Height: 23
+			Font: Bold
+
+Background@BUTTON_TOOLTIP:
+	Logic: ButtonTooltipLogic
+	Background: dialog4
+	Height: 29
+	Children:
+		Label@LABEL:
+			X: 7
+			Y: 2
+			Height: 23
+			Font: Bold
+		Label@HOTKEY:
+			Visible: false
+			Y: 2
+			Height: 23
+			TextColor: FFFF00
+			Font: Bold
+
+Background@WORLD_TOOLTIP:
+	Logic: WorldTooltipLogic
+	Background: dialog4
+	Children:
+		Container@SINGLE_HEIGHT:
+			Height: 29
+		Container@DOUBLE_HEIGHT:
+			Height: 50
+		Label@LABEL:
+			X: 7
+			Y: 2
+			Height: 23
+			Font: Bold
+		Image@FLAG:
+			X: 7
+			Y: 27
+			Width: 32
+			Height: 16
+		Label@OWNER:
+			X: 45
+			Y: 22
+			Height: 23
+			Font: Bold
+		Label@EXTRA:
+			X: 7
+			Y: 50
+			Height: 5
+			Font: Bold
+
+Background@SPAWN_TOOLTIP:
+	Logic: SpawnSelectorTooltipLogic
+	Background: dialog4
+	Width: 7
+	Children:
+		Container@SINGLE_HEIGHT:
+			Height: 29
+		Container@DOUBLE_HEIGHT:
+			Height: 44
+		Label@LABEL:
+			Y: 2
+			Height: 23
+			Font: Bold
+		Image@FLAG:
+			X: 7
+			Y: 7
+			Width: 32
+			Height: 16
+		Label@TEAM:
+			Y: 23
+			Height: 15
+			Font: TinyBold
+			Align: center
+
+Background@CLIENT_TOOLTIP:
+	Logic: ClientTooltipLogic
+	Background: dialog4
+	Height: 51
+	Width: 7
+	Children:
+		Label@ADMIN:
+			Y: 4
+			Height: 18
+			Font: Bold
+			Text: Game Admin
+			Align: Center
+		Label@IP:
+			Y: 7
+			Width: 5
+			Height: 10
+			Font: TinyBold
+			Align: Center
+		Label@LOCATION:
+			Y: 19
+			Height: 10
+			Font: TinyBold
+			Align: Center
+		Label@LATENCY_PREFIX:
+			X: 10
+			Y: 31
+			Height: 10
+			Font: TinyBold
+			Text: Latency:
+		Label@LATENCY:
+			Y: 31
+			Height: 10
+			Font: TinyBold
+
+Background@INGAME_CLIENT_TOOLTIP:
+	Logic: ClientTooltipLogic
+	Background: dialog4
+	Height: 41
+	Width: 7
+	Children:
+		Label@ADMIN:
+			Y: 4
+			Height: 18
+			Font: Bold
+			Text: Game Admin
+			Align: Center
+		Label@IP:
+			Y: 7
+			Width: 5
+			Height: 10
+			Font: TinyBold
+			Align: Center
+		Label@LOCATION:
+			Y: 19
+			Height: 10
+			Font: TinyBold
+			Align: Center
+
+Background@PRODUCTION_TOOLTIP:
+	Logic: ProductionTooltipLogic
+	Background: dialog4
+	Width: 200
+	Height: 65
+	Children:
+		Label@NAME:
+			X: 7
+			Y: 2
+			Height: 23
+			Font: Bold
+		Label@HOTKEY:
+			Visible: false
+			Y: 2
+			Height: 23
+			TextColor: FFFF00
+			Font: Bold
+		Label@REQUIRES:
+			X: 7
+			Y: 21
+			Height: 23
+			Font: TinyBold
+			Text: Requires {0}
+		Label@DESC:
+			X: 7
+			Y: 41
+			Height: 23
+			Font: TinyBold
+			VAlign: Top
+		Image@COST_ICON:
+			Y: 5
+			Width: 16
+			ImageCollection: sidebar-bits
+			ImageName: production-tooltip-cost
+		Label@COST:
+			Height: 23
+			Font: Bold
+		Image@TIME_ICON:
+			X: 3
+			Y: 26
+			Width: 16
+			ImageCollection: sidebar-bits
+			ImageName: production-tooltip-time
+		Label@TIME:
+			Y: 21
+			Height: 23
+			Font: Bold
+		Image@POWER_ICON:
+			Y: 46
+			Width: 16
+			ImageCollection: sidebar-bits
+			ImageName: production-tooltip-power
+		Label@POWER:
+			Y: 41
+			Height: 23
+			Font: Bold
+
+Background@SUPPORT_POWER_TOOLTIP:
+	Logic: SupportPowerTooltipLogic
+	Background: dialog4
+	Width: 200
+	Height: 29
+	Children:
+		Label@NAME:
+			X: 7
+			Y: 2
+			Height: 20
+			Font: Bold
+		Label@HOTKEY:
+			Visible: false
+			Y: 2
+			Height: 20
+			TextColor: FFFF00
+			Font: Bold
+		Label@TIME:
+			Y: 8
+			Font: TinyBold
+			VAlign: Top
+		Label@DESC:
+			X: 7
+			Y: 22
+			Font: TinyBold
+			VAlign: Top
+
+Background@FACTION_DESCRIPTION_TOOLTIP:
+	Logic: FactionTooltipLogic
+	Background: dialog4
+	Children:
+		Label@HEADER:
+			X: 7
+			Y: 6
+			Width: 8
+			Height: 12
+			Font: Bold
+			VAlign: Top
+		Label@DESCRIPTION:
+			X: 14
+			Y: 0
+			Width: 15
+			Height: 14
+			Font: TinyBold
+			VAlign: Top

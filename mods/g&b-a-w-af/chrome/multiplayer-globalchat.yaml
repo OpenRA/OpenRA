@@ -1,0 +1,103 @@
+Container@GLOBALCHAT_PANEL:
+	Logic: GlobalChatLogic
+	Width: PARENT_RIGHT
+	Height: PARENT_BOTTOM
+	Children:
+		Container@GLOBALCHAT_MAIN_PANEL:
+			Width: PARENT_RIGHT
+			Height: PARENT_BOTTOM
+			Children:
+				Background@TOPIC:
+					Width: 582
+					Height: 20
+					Background: dialog2
+					Children:
+						Label@CHANNEL_TOPIC:
+							X: 10
+							Y: 0-1
+							Width: PARENT_RIGHT - 20
+							Height: PARENT_BOTTOM
+							Font: TinyBold
+							Align: Center
+				ScrollPanel@HISTORY_PANEL:
+					Y: 20
+					Width: 582
+					Height: PARENT_BOTTOM - 50
+					TopBottomSpacing: 4
+					ItemSpacing: 4
+					Children:
+						Label@HISTORY_TEMPLATE:
+							X: 5
+							Width: 530
+							WordWrap: True
+				TextField@CHAT_TEXTFIELD:
+					Y: PARENT_BOTTOM - 25
+					Width: 582
+					Height: 25
+					LeftMargin: 60
+					Children:
+						Label@LABEL_CHATTYPE:
+							Y: 0-1
+							Width: 55
+							Height: 25
+							Align: Right
+							Text: Global:
+				ScrollPanel@NICKNAME_PANEL:
+					X: PARENT_RIGHT-WIDTH
+					Width: 174
+					Height: PARENT_BOTTOM - 30
+					Children:
+						Container@NICKNAME_TEMPLATE:
+							Height: 20
+							Width: PARENT_RIGHT-25
+							Children:
+								Image@INDICATOR:
+									ImageCollection: lobby-bits
+									ImageName: admin
+									X: 4
+									Y: 9
+								Label@NICK:
+									X: 15
+									Width: PARENT_RIGHT-15
+									Height: 20
+				Button@DISCONNECT_BUTTON:
+					X: PARENT_RIGHT-WIDTH
+					Y: PARENT_BOTTOM - 25
+					Width: 174
+					Height: 25
+					Text: Leave Chat
+					Font: Bold
+		Background@GLOBALCHAT_CONNECT_PANEL:
+			Width: PARENT_RIGHT
+			Height: PARENT_BOTTOM
+			Background: scrollpanel-bg
+			Children:
+				Label@GLOBAL_CHAT_LABEL:
+					Y: PARENT_BOTTOM / 4
+					Width: PARENT_RIGHT
+					Align: Center
+					Text: Global Chat
+					Font: Bold
+				Label@NICKNAME_LABEL:
+					X: 200
+					Y: PARENT_BOTTOM / 4 + 35
+					Text: Nickname:
+				TextField@NICKNAME_TEXTFIELD:
+					X: 270
+					Y: PARENT_BOTTOM / 4 + 25
+					Width: 150
+					Height: 25
+				Checkbox@CONNECT_AUTOMATICALLY_CHECKBOX:
+					X: 270
+					Y: PARENT_BOTTOM / 4 + 75
+					Height: 20
+					Width: 180
+					Font: Regular
+					Text: Connect Automatically
+				Button@CONNECT_BUTTON:
+					X: 430
+					Y: PARENT_BOTTOM / 4 + 25
+					Width: 100
+					Height: 25
+					Text: Connect
+					Font: Bold

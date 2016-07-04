@@ -1,0 +1,115 @@
+Background@LOBBY_OPTIONS_BIN:
+	Width: PARENT_RIGHT
+	Height: PARENT_BOTTOM
+	Background: dialog3
+	Children:
+		Label@TITLE:
+			X: 0
+			Y: 0 - 27
+			Width: PARENT_RIGHT
+			Height: 25
+			Font: Bold
+			Align: Center
+			Text: Map Options
+		Container:
+			X: 30
+			Y: 30
+			Width: PARENT_RIGHT-60
+			Height: PARENT_BOTTOM-75
+			Children:
+				Checkbox@EXPLORED_MAP_CHECKBOX:
+					Width: 150
+					Height: 20
+					Text: Explored Map
+				Checkbox@FOG_CHECKBOX:
+					Y: 35
+					Width: 150
+					Height: 20
+					Text: Fog of War
+				Checkbox@CRATES_CHECKBOX:
+					X: 170
+					Width: 225
+					Height: 20
+					Text: Crates
+				Checkbox@ALLYBUILDRADIUS_CHECKBOX:
+					X: 170
+					Y: 35
+					Width: 225
+					Height: 20
+					Text: Build off Allies' ConYards
+				Checkbox@SHORTGAME_CHECKBOX:
+					X: 400
+					Width: 150
+					Height: 20
+					Text: Short Game
+				Checkbox@ALLOWCHEATS_CHECKBOX:
+					X: 400
+					Y: 35
+					Width: 150
+					Height: 20
+					Text: Debug Menu
+				Label@DIFFICULTY_DESC:
+					X: PARENT_RIGHT - WIDTH - 165
+					Y: 70
+					Width: 160
+					Height: 25
+					Text: Mission Difficulty:
+					Align: Right
+				DropDownButton@DIFFICULTY_DROPDOWNBUTTON:
+					X: PARENT_RIGHT - WIDTH
+					Y: 70
+					Width: 160
+					Height: 25
+					Font: Regular
+				Label@STARTINGCASH_DESC:
+					Y: 110
+					Width: 80
+					Height: 25
+					Text: Starting Cash:
+					Align: Right
+				DropDownButton@STARTINGCASH_DROPDOWNBUTTON:
+					X: 85
+					Y: 110
+					Width: 160
+					Height: 25
+					Font: Regular
+					Text: $5000
+				Label@STARTINGUNITS_DESC:
+					X: PARENT_RIGHT - WIDTH - 165
+					Y: 110
+					Width: 120
+					Height: 25
+					Text: Starting Units:
+					Align: Right
+				DropDownButton@STARTINGUNITS_DROPDOWNBUTTON:
+					X: PARENT_RIGHT - WIDTH
+					Y: 110
+					Width: 160
+					Height: 25
+					Font: Regular
+				DropDownButton@TECHLEVEL_DROPDOWNBUTTON:
+					X: 85
+					Y: 150
+					Width: 160
+					Height: 25
+					Font: Regular
+					Text: 10
+				Label@TECHLEVEL_DESC:
+					Y: 150
+					Width: 80
+					Height: 25
+					Text: Tech Level:
+					Align: Right
+				Label@GAMESPEED_DESC:
+					X: PARENT_RIGHT - WIDTH - 165
+					Y: 150
+					Width: 120
+					Height: 25
+					Text: Game Speed:
+					Align: Right
+				DropDownButton@GAMESPEED_DROPDOWNBUTTON:
+					X: PARENT_RIGHT - WIDTH
+					Y: 150
+					Width: 160
+					Height: 25
+					Font: Regular

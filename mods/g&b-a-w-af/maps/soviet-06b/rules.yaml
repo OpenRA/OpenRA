@@ -1,0 +1,162 @@
+Player:
+	PlayerResources:
+		DefaultCash: 11500
+
+World:
+	LuaScript:
+		Scripts: soviet06b.lua, soviet06b-AI.lua, soviet06b-reinforcements_teams.lua
+	MissionData:
+		Briefing: There is a special cargo that needs to be transported to a nearby Soviet base in the northeast.\n\nMake sure the trucks reach their destination intact. Along the way, there is a bridge which the Allies may have destroyed.\n\nIf so, use the Naval options at your disposal. Our attack subs will make short work of any Allied boats you discover.
+		BriefingVideo: soviet6.vqa
+		StartVideo: onthprwl.vqa
+		WinVideo: sitduck.vqa
+		LossVideo: dpthchrg.vqa
+	ScriptLobbyDropdown@difficulty:
+		ID: difficulty
+		Label: Difficulty
+		Values:
+			easy: Easy
+			normal: Normal
+			hard: Hard
+		Default: easy
+
+APWR:
+	Buildable:
+		Prerequisites: ~structures.allies
+
+ARTY:
+	Buildable:
+		Prerequisites: ~vehicles.allies, ~techlevel.low
+
+ATEK:
+	Buildable:
+		Prerequisites: ~disabled
+
+BRIK:
+	Buildable:
+		Prerequisites: ~disabled
+
+TSLA:
+	Buildable:
+		Prerequisites: ~disabled
+
+SAM:
+	Buildable:
+		Prerequisites: ~disabled
+
+IRON:
+	Buildable:
+		Prerequisites: ~disabled
+
+MECH:
+	Buildable:
+		Prerequisites: ~disabled
+
+MSLO:
+	Buildable:
+		Prerequisites: ~disabled
+
+E3:
+	Buildable:
+		Prerequisites: ~tent
+
+E7:
+	Buildable:
+		Prerequisites: ~disabled
+
+SHOK:
+	Buildable:
+		Prerequisites: ~disabled
+
+SPY:
+	Buildable:
+		Prerequisites: ~disabled
+
+SNIPER:
+	Buildable:
+		Prerequisites: ~disabled
+
+HIJACKER:
+	Buildable:
+		Prerequisites: ~disabled
+
+MIG:
+	Buildable:
+		Prerequisites: ~disabled
+
+FTRK:
+	Buildable:
+		Prerequisites: ~disabled
+
+2TNK:
+	Buildable:
+		Prerequisites: ~vehicles.allies, ~techlevel.low
+
+4TNK:
+	Buildable:
+		Prerequisites: ~disabled
+
+APC:
+	Buildable:
+		Prerequisites: ~disabled
+
+TRUK:
+	-SpawnActorOnDeath:
+	-SupplyTruck:
+	Buildable:
+		Prerequisites: ~disabled
+
+QTNK:
+	Buildable:
+		Prerequisites: ~disabled
+
+MCV:
+	Buildable:
+		Prerequisites: ~disabled
+
+MSUB:
+	Buildable:
+		Prerequisites: ~disabled
+
+STEK:
+	Buildable:
+		Prerequisites: ~disabled
+
+PDOX:
+	Buildable:
+		Prerequisites: ~disabled
+
+MRJ:
+	Buildable:
+		Prerequisites: ~disabled
+
+CA:
+	Buildable:
+		Prerequisites: ~disabled
+
+HELI:
+	Buildable:
+		Prerequisites: ~disabled
+
+GAP:
+	Buildable:
+		Prerequisites: ~disabled
+
+MNLY.AT:
+	Buildable:
+		Prerequisites: ~disabled
+
+DOG:
+	Health:
+		HP: 25
+	AutoTarget:
+		ScanRadius: 5
+
+HARV:
+	Harvester:
+		SearchFromProcRadius: 50
+		SearchFromOrderRadius: 50
+
+AFLD:
+	ParatroopersPower@paratroopers:
+		DropItems: E1,E1,E1,E1,E1

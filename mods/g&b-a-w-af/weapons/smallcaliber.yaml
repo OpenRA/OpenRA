@@ -1,0 +1,359 @@
+Colt45:
+	ReloadDelay: 5
+	Range: 7c0
+	Report: gun5.aud
+	ValidTargets: Ground, Infantry
+	InvalidTargets: Vehicle, Tank, Water, Structure, Wall, Husk
+	Projectile: Bullet
+		Speed: 1c682
+	Warhead@1Dam: SpreadDamage
+		Spread: 42
+		Damage: 50
+		ValidTargets: Barrel, Infantry
+		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
+	Warhead@2Eff: CreateEffect
+		Explosions: piff
+		InvalidImpactTypes: Water
+	Warhead@3EffWater: CreateEffect
+		Explosions: water_piff
+		ValidImpactTypes: Water
+
+ZSU-23:
+	Burst: 2
+	BurstDelay: 5
+	ReloadDelay: 0
+	Range: 10c0
+	Report: aacanon3.aud
+	ValidTargets: Air
+	Projectile: Bullet
+		Speed: 3c340
+		Blockable: false
+	Warhead@1Dam: SpreadDamage
+		Spread: 213
+		Damage: 12
+		ValidTargets: Air
+		Versus:
+			None: 30
+			Wood: 75
+			Light: 75
+			Concrete: 50
+		DamageTypes: Prone50Percent, TriggerProne, DefaultDeath
+	Warhead@2Eff: CreateEffect
+		Explosions: small_explosion_air
+
+Vulcan:
+	ReloadDelay: 30
+	Range: 6c0
+	Report: gun13.aud
+	Projectile: Bullet
+		Speed: 1c682
+	Warhead@1Dam_1: SpreadDamage
+		Spread: 128
+		Damage: 10
+		Versus:
+			None: 200
+			Wood: 50
+			Light: 60
+			Heavy: 25
+			Concrete: 25
+		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
+	Warhead@2Eff_1: CreateEffect
+		Explosions: piffs
+		InvalidImpactTypes: Water
+	Warhead@2Eff_1Water: CreateEffect
+		Explosions: water_piffs
+		ValidImpactTypes: Water
+	Warhead@3Dam_2: SpreadDamage
+		Spread: 128
+		Damage: 10
+		Delay: 2
+		Versus:
+			None: 200
+			Wood: 50
+			Light: 60
+			Heavy: 25
+			Concrete: 25
+		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
+	Warhead@4Eff_2: CreateEffect
+		Explosions: piffs
+		InvalidImpactTypes: Water
+		Delay: 2
+	Warhead@4Eff_2Water: CreateEffect
+		Explosions: water_piffs
+		ValidImpactTypes: Water
+		Delay: 2
+	Warhead@5Dam_3: SpreadDamage
+		Spread: 128
+		Damage: 10
+		Delay: 4
+		Versus:
+			None: 200
+			Wood: 50
+			Light: 60
+			Heavy: 25
+			Concrete: 25
+		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
+	Warhead@6Eff_3: CreateEffect
+		Explosions: piffs
+		InvalidImpactTypes: Water
+		Delay: 4
+	Warhead@6Eff_3Water: CreateEffect
+		Explosions: water_piffs
+		ValidImpactTypes: Water
+		Delay: 4
+	Warhead@7Dam_4: SpreadDamage
+		Spread: 128
+		Damage: 10
+		Delay: 6
+		Versus:
+			None: 200
+			Wood: 50
+			Light: 60
+			Heavy: 25
+			Concrete: 25
+		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
+	Warhead@8Eff_4: CreateEffect
+		Explosions: piffs
+		InvalidImpactTypes: Water
+		Delay: 6
+	Warhead@8Eff_4Water: CreateEffect
+		Explosions: water_piffs
+		ValidImpactTypes: Water
+		Delay: 6
+	Warhead@9Dam_5: SpreadDamage
+		Spread: 128
+		Damage: 10
+		Delay: 8
+		Versus:
+			None: 200
+			Wood: 50
+			Light: 60
+			Heavy: 25
+			Concrete: 25
+		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
+	Warhead@10Eff_5: CreateEffect
+		Explosions: piffs
+		InvalidImpactTypes: Water
+		Delay: 8
+	Warhead@10Eff_5Water: CreateEffect
+		Explosions: water_piffs
+		ValidImpactTypes: Water
+		Delay: 8
+	Warhead@11Dam_6: SpreadDamage
+		Spread: 128
+		Damage: 10
+		Delay: 10
+		Versus:
+			None: 200
+			Wood: 50
+			Light: 60
+			Heavy: 25
+			Concrete: 25
+		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
+	Warhead@12Eff_6: CreateEffect
+		Explosions: piffs
+		InvalidImpactTypes: Water
+		Delay: 10
+	Warhead@12Eff_6Water: CreateEffect
+		Explosions: water_piffs
+		ValidImpactTypes: Water
+		Delay: 10
+
+ChainGun:
+	ReloadDelay: 10
+	Range: 5c0
+	MinRange: 0c768
+	Report: gun13.aud
+	Projectile: Bullet
+		Speed: 1c682
+		Blockable: false
+	Warhead@1Dam: SpreadDamage
+		Spread: 128
+		Damage: 30
+		Versus:
+			None: 120
+			Wood: 50
+			Light: 60
+			Heavy: 25
+			Concrete: 25
+		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
+	Warhead@2Eff: CreateEffect
+		Explosions: piffs
+		InvalidImpactTypes: Water
+	Warhead@3EffWater: CreateEffect
+		Explosions: water_piffs
+		ValidImpactTypes: Water
+
+ChainGun.Yak:
+	ReloadDelay: 3
+	Range: 5c0
+	MinRange: 3c0
+	Report: gun13.aud
+	Projectile: Bullet
+		Speed: 1c682
+		Blockable: false
+	Warhead@1Dam: SpreadDamage
+		Spread: 128
+		Damage: 40
+		Versus:
+			Wood: 50
+			Light: 60
+			Heavy: 25
+			Concrete: 25
+		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
+	Warhead@2Eff: CreateEffect
+		Explosions: piffs
+		InvalidImpactTypes: Water
+	Warhead@3EffWater: CreateEffect
+		Explosions: water_piffs
+		ValidImpactTypes: Water
+
+Pistol:
+	ReloadDelay: 7
+	Range: 3c0
+	Report: gun27.aud
+	Projectile: Bullet
+		Speed: 1c682
+	Warhead@1Dam: SpreadDamage
+		Spread: 128
+		Damage: 1
+		Versus:
+			Wood: 50
+			Light: 60
+			Heavy: 25
+			Concrete: 25
+		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
+	Warhead@2Eff: CreateEffect
+		Explosions: piff
+		InvalidImpactTypes: Water
+	Warhead@3EffWater: CreateEffect
+		Explosions: water_piff
+		ValidImpactTypes: Water
+
+M1Carbine:
+	ReloadDelay: 20
+	Range: 5c0
+	Report: gun11.aud
+	Projectile: Bullet
+		Speed: 1c682
+	Warhead@1Dam: SpreadDamage
+		Spread: 128
+		Damage: 15
+		Versus:
+			Wood: 25
+			Light: 30
+			Heavy: 15
+			Concrete: 10
+		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
+	Warhead@2Eff: CreateEffect
+		Explosions: piffs
+		InvalidImpactTypes: Water
+	Warhead@3EffWater: CreateEffect
+		Explosions: water_piffs
+		ValidImpactTypes: Water
+
+M60mg:
+	ReloadDelay: 30
+	Range: 4c0
+	Report: pillbox1.aud
+	Burst: 5
+	Projectile: Bullet
+		Speed: 1c682
+	Warhead@1Dam: SpreadDamage
+		Spread: 128
+		Damage: 15
+		Versus:
+			Wood: 10
+			Light: 30
+			Heavy: 15
+			Concrete: 10
+		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
+	Warhead@2Eff: CreateEffect
+		Explosions: piffs
+		InvalidImpactTypes: Water
+	Warhead@3EffWater: CreateEffect
+		Explosions: water_piffs
+		ValidImpactTypes: Water
+
+SilencedPPK:
+	ReloadDelay: 80
+	Range: 2c512
+	Report: silppk.aud
+	ValidTargets: Ground, Infantry
+	InvalidTargets: Vehicle, Tank, Water, Structure, Wall, Husk
+	Projectile: Bullet
+		Speed: 1c682
+	Warhead@1Dam: SpreadDamage
+		Spread: 128
+		Damage: 150
+		ValidTargets: Infantry
+		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
+	Warhead@2Eff: CreateEffect
+		Explosions: piffs
+		InvalidImpactTypes: Water
+	Warhead@3EffWater: CreateEffect
+		Explosions: water_piffs
+		ValidImpactTypes: Water
+
+FLAK-23-AA:
+	ReloadDelay: 10
+	Range: 8c0
+	Report: aacanon3.aud
+	ValidTargets: Air
+	Projectile: Bullet
+		Speed: 1c682
+		Blockable: false
+	Warhead@1Dam: SpreadDamage
+		Spread: 213
+		Damage: 20
+		ValidTargets: Air, Ground, Water
+		Versus:
+			None: 40
+			Wood: 10
+			Light: 60
+			Heavy: 10
+			Concrete: 20
+		DamageTypes: Prone50Percent, TriggerProne, DefaultDeath
+	Warhead@2EffAir: CreateEffect
+		Explosions: small_explosion_air
+		ValidImpactTypes: Air, AirHit
+
+FLAK-23-AG:
+	ReloadDelay: 10
+	Range: 6c0
+	Report: aacanon3.aud
+	ValidTargets: Ground, Water
+	Projectile: Bullet
+		Speed: 1c682
+		Blockable: false
+	Warhead@1Dam: SpreadDamage
+		Spread: 213
+		Damage: 20
+		ValidTargets: Air, Ground, Water
+		Versus:
+			None: 40
+			Wood: 10
+			Light: 60
+			Heavy: 10
+			Concrete: 20
+		DamageTypes: Prone50Percent, TriggerProne, DefaultDeath
+	Warhead@2Eff: CreateEffect
+		Explosions: small_explosion_air
+		InvalidImpactTypes: Air, AirHit
+	Warhead@3EffWater: CreateEffect
+		Explosions: small_splash
+		ValidImpactTypes: Water
+
+Sniper:
+	Report: gun5.aud
+	ReloadDelay: 70
+	Range: 10c0
+	ValidTargets: Ground, Infantry
+	InvalidTargets: Vehicle, Tank, Water, Structure, Wall, Husk
+	Projectile: Bullet
+		Speed: 1c682
+	Warhead@1Dam: SpreadDamage
+		Spread: 42
+		Damage: 140
+		ValidTargets: Infantry
+		DamageTypes: Prone50Percent, TriggerProne, BulletDeath

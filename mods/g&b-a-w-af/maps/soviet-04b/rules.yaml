@@ -1,0 +1,87 @@
+Player:
+	PlayerResources:
+		DefaultCash: 5000
+
+World:
+	LuaScript:
+		Scripts: soviet04b.lua, soviet04b-AI.lua, soviet04b-reinforcements_teams.lua
+	MissionData:
+		Briefing: The Allied base in this region is proving to be problematic.\n\nYour mission is to take it out so that we can begin to move forces through this area.\n\nAs long as they have communications they will be able to call upon heavy reinforcements.\n\nCrush their communications, and they should be easier to remove.
+		BriefingVideo: soviet4.vqa
+		StartVideo: sovmcv.vqa
+		WinVideo: radrraid.vqa
+		LossVideo: allymorf.vqa
+	MapOptions:
+		TechLevel: medium
+	ScriptLobbyDropdown@difficulty:
+		ID: difficulty
+		Label: Difficulty
+		Values:
+			easy: Easy
+			normal: Normal
+			hard: Hard
+		Default: easy
+
+AFLD:
+	ParatroopersPower@paratroopers:
+		DropItems: E1,E1,E1,E2,E2
+
+TSLA:
+	Buildable:
+		Prerequisites: ~disabled
+
+SAM:
+	Buildable:
+		Prerequisites: ~disabled
+
+HPAD:
+	Buildable:
+		Prerequisites: ~disabled
+
+APWR:
+	Buildable:
+		Prerequisites: ~disabled
+
+BRIK:
+	Buildable:
+		Prerequisites: ~disabled
+
+E3:
+	Buildable:
+		Prerequisites: ~tent
+
+E4:
+	Buildable:
+		Prerequisites: ~disabled
+
+HIJACKER:
+	Buildable:
+		Prerequisites: ~disabled
+
+SPY:
+	Buildable:
+		Prerequisites: ~disabled
+
+MECH:
+	Buildable:
+		Prerequisites: ~disabled
+
+MCV:
+	Buildable:
+		Prerequisites: ~disabled
+
+FTRK:
+	Buildable:
+		Prerequisites: ~disabled
+
+TRUK:
+	Buildable:
+		Prerequisites: ~disabled
+
+APC:
+	Buildable:
+		Prerequisites: ~disabled
+
+AGUN:
+	Buildable:
+		Prerequisites: ~disabled

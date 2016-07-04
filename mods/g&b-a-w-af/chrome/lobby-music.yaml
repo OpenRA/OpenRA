@@ -1,0 +1,186 @@
+Container@LOBBY_MUSIC_BIN:
+	Logic: MusicPlayerLogic
+	Width: PARENT_RIGHT
+	Height: PARENT_BOTTOM
+	Children:
+		LogicTicker@SONG_WATCHER:
+		Container@LABEL_CONTAINER:
+			Y: 0-25
+			Width: PARENT_RIGHT
+			Children:
+				Label@MUSIC:
+					Width: 268
+					Height: 25
+					Text: Music
+					Align: Center
+					Font: Bold
+				Label@TITLE:
+					X: 278
+					Width: 230
+					Height: 25
+					Text: Track
+					Font: Bold
+				Label@TYPE:
+					X: PARENT_RIGHT-63
+					Height: 25
+					Width: 50
+					Text: Length
+					Font: Bold
+		Background@CONTROLS:
+			Background: dialog3
+			Width: 268
+			Height: PARENT_BOTTOM
+			Children:
+				Label@MUTE_LABEL:
+					X: 25
+					Y: 10
+					Width: 300
+					Height: 20
+					Font: Small
+				Label@TITLE_LABEL:
+					Y: 45
+					Width: PARENT_RIGHT
+					Height: 25
+					Align: Center
+					Font: Bold
+				Label@TIME_LABEL:
+					Y: 65
+					Width: PARENT_RIGHT
+					Height: 25
+					Align: Center
+				Container@BUTTONS:
+					X: (PARENT_RIGHT - WIDTH) / 2
+					Y: 100
+					Width: 131
+					Children:
+						Button@BUTTON_PREV:
+							Width: 26
+							Height: 26
+							IgnoreChildMouseOver: true
+							Children:
+								Image@IMAGE_PREV:
+									Width: 25
+									Height: 25
+									ImageCollection: music
+									ImageName: prev
+						Button@BUTTON_PLAY:
+							X: 35
+							Width: 26
+							Height: 26
+							IgnoreChildMouseOver: true
+							Children:
+								Image@IMAGE_PLAY:
+									Width: 25
+									Height: 25
+									ImageCollection: music
+									ImageName: play
+						Button@BUTTON_PAUSE:
+							Visible: false
+							X: 35
+							Width: 26
+							Height: 26
+							IgnoreChildMouseOver: true
+							Children:
+								Image@IMAGE_PAUSE:
+									Width: 25
+									Height: 25
+									ImageCollection: music
+									ImageName: pause
+						Button@BUTTON_STOP:
+							X: 70
+							Width: 26
+							Height: 26
+							IgnoreChildMouseOver: true
+							Children:
+								Image@IMAGE_STOP:
+									Width: 25
+									Height: 25
+									ImageCollection: music
+									ImageName: stop
+						Button@BUTTON_NEXT:
+							X: 105
+							Width: 26
+							Height: 26
+							IgnoreChildMouseOver: true
+							Children:
+								Image@IMAGE_NEXT:
+									Width: 25
+									Height: 25
+									ImageCollection: music
+									ImageName: next
+				Checkbox@SHUFFLE:
+					X: 25
+					Y: 150
+					Width: 85
+					Height: 20
+					Font: Regular
+					Text: Shuffle
+				Checkbox@REPEAT:
+					X: PARENT_RIGHT-15-WIDTH
+					Y: 150
+					Width: 70
+					Height: 20
+					Font: Regular
+					Text: Loop
+				Label@VOLUME_LABEL:
+					Y: 180
+					Width: 65
+					Height: 25
+					Align: Right
+					Text: Volume:
+				Slider@MUSIC_SLIDER:
+					X: 70
+					Y: 186
+					Width: PARENT_RIGHT - 80
+					Height: 20
+					Ticks: 5
+		ScrollPanel@MUSIC_LIST:
+			X: 268
+			Width: PARENT_RIGHT-268
+			Height: PARENT_BOTTOM
+			Children:
+				ScrollItem@MUSIC_TEMPLATE:
+					Width: PARENT_RIGHT-27
+					Height: 25
+					X: 2
+					Visible: false
+					Children:
+						Label@TITLE:
+							X: 10
+							Width: PARENT_RIGHT-50
+							Height: 25
+						Label@LENGTH:
+							X: PARENT_RIGHT-60
+							Width: 50
+							Height: 25
+							Align: Right
+		Container@NO_MUSIC_LABEL:
+			X: 268
+			Width: PARENT_RIGHT-268
+			Visible: false
+			Children:
+				Label@TITLE:
+					Y: 65
+					Width: PARENT_RIGHT-24
+					Height: 25
+					Font: Bold
+					Align: Center
+					Text: Music Not Installed
+				Label@DESCA:
+					Y: 85
+					Width: PARENT_RIGHT-24
+					Height: 25
+					Align: Center
+					Text: The game music can be installed
+				Label@DESCB:
+					Y: 105
+					Width: PARENT_RIGHT-24
+					Height: 25
+					Align: Center
+					Text: from the "Manage Content" menu
+				Label@DESCC:
+					Y: 125
+					Width: PARENT_RIGHT-24
+					Height: 25
+					Align: Center
+					Text: in the mod chooser.

@@ -1,0 +1,312 @@
+World:
+	-CrateSpawner:
+	-SpawnMPUnits:
+	-MPStartLocations:
+	MapBuildRadius:
+		AllyBuildRadiusLocked: True
+		AllyBuildRadiusEnabled: False
+	MapOptions:
+		TechLevelLocked: True
+		TechLevel: unrestricted
+
+Player:
+	ClassicProductionQueue@Infantry:
+		BuildSpeed: 100
+	ClassicProductionQueue@Vehicle:
+		BuildSpeed: 100
+	Shroud:
+		FogLocked: True
+		FogEnabled: True
+		ExploredMapLocked: True
+		ExploredMapEnabled: False
+	PlayerResources:
+		DefaultCashLocked: True
+		DefaultCash: 100
+
+OILB:
+	Health:
+		HP: 6000
+
+BARR:
+	Buildable:
+		Prerequisites: ~disabled
+	Health:
+		HP: 5000
+	Production:
+		Produces: Building, Infantry, Soldier, Dog
+	BaseProvider:
+		Range: 16c0
+	Power:
+		Amount: 0
+
+WEAP:
+	Buildable:
+		Prerequisites: ~disabled
+	Health:
+		HP: 10000
+	Valued:
+		Cost: 2000
+	Power:
+		Amount: 0
+
+FTUR:
+	Power:
+		Amount: 0
+
+SPEN:
+	Buildable:
+		Prerequisites: ~disabled
+
+DOME:
+	Buildable:
+		Prerequisites: ~disabled
+
+PROC:
+	Buildable:
+		Prerequisites: ~disabled
+
+SILO:
+	Buildable:
+		Prerequisites: ~disabled
+
+APWR:
+	Buildable:
+		Prerequisites: ~disabled
+
+STEK:
+	Buildable:
+		Prerequisites: ~disabled
+
+FIX:
+	Buildable:
+		Prerequisites: ~disabled
+
+POWR:
+	Buildable:
+		Prerequisites: ~disabled
+
+MIG:
+	Buildable:
+		Prerequisites: afld
+	Valued:
+		Cost: 2000
+
+YAK:
+	Buildable:
+		Prerequisites: afld
+	Valued:
+		Cost: 150
+
+TRAN:
+	Buildable:
+		Prerequisites: hpad
+	Valued:
+		Cost: 150
+
+HIND:
+	Buildable:
+		Prerequisites: hpad
+	Valued:
+		Cost: 200
+
+HELI:
+	Buildable:
+		Prerequisites: hpad
+	Valued:
+		Cost: 200
+
+HPAD:
+	Buildable:
+		Prerequisites: barr
+	Valued:
+		Cost: 200
+	Power:
+		Amount: 0
+
+FENC:
+	Buildable:
+		Queue: Building
+		Prerequisites: barr
+	Valued:
+		Cost: 10
+
+AFLD:
+	Buildable:
+		Prerequisites: barr
+	Valued:
+		Cost: 200
+	Power:
+		Amount: 0
+
+DOG:
+	Buildable:
+		Prerequisites: barr
+	Valued:
+		Cost: 20
+
+E1:
+	Buildable:
+		Prerequisites: barr
+	Valued:
+		Cost: 20
+
+E2:
+	Buildable:
+		Prerequisites: barr
+	Valued:
+		Cost: 32
+
+E3:
+	Buildable:
+		Prerequisites: barr
+	Valued:
+		Cost: 60
+
+E4:
+	Buildable:
+		Prerequisites: barr
+	Valued:
+		Cost: 60
+
+E6:
+	Buildable:
+		Prerequisites: barr
+	Valued:
+		Cost: 100
+
+SPY:
+	Buildable:
+		Prerequisites: barr
+	Valued:
+		Cost: 100
+
+E7:
+	Buildable:
+		Prerequisites: barr
+	Valued:
+		Cost: 400
+
+MEDI:
+	Buildable:
+		Prerequisites: barr
+	Valued:
+		Cost: 60
+
+SHOK:
+	Buildable:
+		Prerequisites: barr
+	Valued:
+		Cost: 200
+
+SNIPER:
+	Buildable:
+		Prerequisites: barr
+	Valued:
+		Cost: 200
+
+HIJACKER:
+	Buildable:
+		Prerequisites: ~disabled
+
+V2RL:
+	Buildable:
+		Prerequisites: weap
+	Valued:
+		Cost: 1250
+
+1TNK:
+	Buildable:
+		Prerequisites: weap
+	Valued:
+		Cost: 125
+
+2TNK:
+	Buildable:
+		Prerequisites: weap
+	Valued:
+		Cost: 175
+
+3TNK:
+	Buildable:
+		Prerequisites: weap
+	Valued:
+		Cost: 250
+
+4TNK:
+	Buildable:
+		Prerequisites: weap
+	Valued:
+		Cost: 500
+
+ARTY:
+	Buildable:
+		Prerequisites: weap
+	Valued:
+		Cost: 1000
+
+HARV:
+	Buildable:
+		Prerequisites: ~disabled
+
+MCV:
+	Buildable:
+		Prerequisites: ~disabled
+
+MNLY.AP:
+	Buildable:
+		Prerequisites: ~disabled
+
+MNLY.AT:
+	Buildable:
+		Prerequisites: ~disabled
+
+TRUK:
+	Buildable:
+		Prerequisites: ~disabled
+
+STNK:
+	Buildable:
+		Prerequisites: ~disabled
+
+MRJ:
+	Buildable:
+		Prerequisites: ~disabled
+
+MGG:
+	Buildable:
+		Prerequisites: ~disabled
+
+CTNK:
+	Buildable:
+		Prerequisites: ~disabled
+
+JEEP:
+	Buildable:
+		Prerequisites: weap
+	Valued:
+		Cost: 50
+
+APC:
+	Buildable:
+		Prerequisites: weap
+	Valued:
+		Cost: 250
+
+TTNK:
+	Buildable:
+		Prerequisites: weap
+	Valued:
+		Cost: 200
+
+FTRK:
+	Buildable:
+		Prerequisites: weap
+	Valued:
+		Cost: 150
+
+DTRK:
+	Buildable:
+		BuildPaletteOrder: 10
+		Prerequisites: weap
+	Valued:
+		Cost: 150

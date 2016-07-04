@@ -1,0 +1,287 @@
+Background@REPLAYBROWSER_PANEL:
+	Logic: ReplayBrowserLogic
+	X: (WINDOW_RIGHT - WIDTH)/2
+	Y: (WINDOW_BOTTOM - HEIGHT)/2
+	Width: 780
+	Height: 535
+	Children:
+		Container@FILTER_AND_MANAGE_CONTAINER:
+			X: 20
+			Y: 20
+			Width: 280
+			Height: PARENT_BOTTOM - 75
+			Children:
+				Container@FILTERS:
+					Width: 280
+					Height: 320
+					Children:
+						Label@FILTERS_TITLE:
+							X: 85
+							Width: PARENT_RIGHT - 85
+							Height: 25
+							Font: Bold
+							Align: Center
+							Text: Filter
+						Label@FLT_GAMETYPE_DESC:
+							X: 0
+							Y: 30
+							Width: 80
+							Height: 25
+							Text: Type:
+							Align: Right
+						DropDownButton@FLT_GAMETYPE_DROPDOWNBUTTON:
+							X: 85
+							Y: 30
+							Width: PARENT_RIGHT - 85
+							Height: 25
+							Text: Any
+						Label@FLT_DATE_DESC:
+							X: 0
+							Y: 60
+							Width: 80
+							Height: 25
+							Text: Date:
+							Align: Right
+						DropDownButton@FLT_DATE_DROPDOWNBUTTON:
+							X: 85
+							Y: 60
+							Width: PARENT_RIGHT - 85
+							Height: 25
+							Text: Any
+						Label@FLT_DURATION_DESC:
+							X: 0
+							Y: 90
+							Width: 80
+							Height: 25
+							Text: Duration:
+							Align: Right
+						DropDownButton@FLT_DURATION_DROPDOWNBUTTON:
+							X: 85
+							Y: 90
+							Width: PARENT_RIGHT - 85
+							Height: 25
+							Text: Any
+						Label@FLT_MAPNAME_DESC:
+							X: 0
+							Y: 120
+							Width: 80
+							Height: 25
+							Text: Map:
+							Align: Right
+						DropDownButton@FLT_MAPNAME_DROPDOWNBUTTON:
+							X: 85
+							Y: 120
+							Width: PARENT_RIGHT - 85
+							Height: 25
+							Text: Any
+						Label@FLT_PLAYER_DESC:
+							X: 0
+							Y: 150
+							Width: 80
+							Height: 25
+							Text: Player:
+							Align: Right
+						DropDownButton@FLT_PLAYER_DROPDOWNBUTTON:
+							X: 85
+							Y: 150
+							Width: PARENT_RIGHT - 85
+							Height: 25
+							Text: Anyone
+						Label@FLT_OUTCOME_DESC:
+							X: 0
+							Y: 180
+							Width: 80
+							Height: 25
+							Text: Outcome:
+							Align: Right
+						DropDownButton@FLT_OUTCOME_DROPDOWNBUTTON:
+							X: 85
+							Y: 180
+							Width: PARENT_RIGHT - 85
+							Height: 25
+							Text: Any
+						Label@FLT_FACTION_DESC:
+							X: 0
+							Y: 210
+							Width: 80
+							Height: 25
+							Text: Faction:
+							Align: Right
+						DropDownButton@FLT_FACTION_DROPDOWNBUTTON:
+							X: 85
+							Y: 210
+							Width: PARENT_RIGHT - 85
+							Height: 25
+							Text: Any
+						Button@FLT_RESET_BUTTON:
+							X: 85
+							Y: 250
+							Width: PARENT_RIGHT - 85
+							Height: 25
+							Text: Reset Filters
+							Font: Bold
+				Container@MANAGEMENT:
+					X: 85
+					Y: PARENT_BOTTOM - 115
+					Width: PARENT_RIGHT - 85
+					Height: 115
+					Children:
+						Label@MANAGE_TITLE:
+							Width: PARENT_RIGHT
+							Height: 25
+							Font: Bold
+							Align: Center
+							Text: Manage
+						Button@MNG_RENSEL_BUTTON:
+							Y: 30
+							Width: PARENT_RIGHT
+							Height: 25
+							Text: Rename
+							Font: Bold
+							Key: F2
+						Button@MNG_DELSEL_BUTTON:
+							Y: 60
+							Width: PARENT_RIGHT
+							Height: 25
+							Text: Delete
+							Font: Bold
+							Key: Delete
+						Button@MNG_DELALL_BUTTON:
+							Y: 90
+							Width: PARENT_RIGHT
+							Height: 25
+							Text: Delete All
+							Font: Bold
+		Container@REPLAY_LIST_CONTAINER:
+			X: 310
+			Y: 20
+			Width: 245
+			Height: PARENT_BOTTOM - 20 - 55
+			Children:
+				Label@REPLAYBROWSER_LABEL_TITLE:
+					Width: PARENT_RIGHT
+					Height: 25
+					Text: Choose Replay
+					Align: Center
+					Font: Bold
+				ScrollPanel@REPLAY_LIST:
+					X: 0
+					Y: 30
+					Width: PARENT_RIGHT
+					Height: PARENT_BOTTOM - 30
+					CollapseHiddenChildren: True
+					Children:
+						ScrollItem@REPLAY_TEMPLATE:
+							Width: PARENT_RIGHT-27
+							Height: 25
+							X: 2
+							Visible: false
+							Children:
+								Label@TITLE:
+									X: 10
+									Width: PARENT_RIGHT-20
+									Height: 25
+		Container@MAP_BG_CONTAINER:
+			X: PARENT_RIGHT - WIDTH - 20
+			Y: 20
+			Width: 194
+			Height: 30 + 194
+			Children:
+				Label@MAP_BG_TITLE:
+					Width: PARENT_RIGHT
+					Height: 25
+					Text: Preview
+					Align: Center
+					Font: Bold
+				Background@MAP_BG:
+					Y: 30
+					Width: 194
+					Height: 194
+					Background: dialog3
+					Children:
+						MapPreview@MAP_PREVIEW:
+							X: 1
+							Y: 1
+							Width: 192
+							Height: 192
+							TooltipContainer: TOOLTIP_CONTAINER
+		Container@REPLAY_INFO:
+			X: PARENT_RIGHT - WIDTH - 20
+			Y: 20 + 30+194 + 10
+			Width: 194
+			Height: PARENT_BOTTOM - 20 - 30-194 - 10 - 55
+			Children:
+				Label@MAP_TITLE:
+					Y: 0
+					Width: PARENT_RIGHT
+					Height: 15
+					Font: Bold
+					Align: Center
+				Label@MAP_TYPE:
+					Y: 15
+					Width: PARENT_RIGHT
+					Height: 15
+					Font: TinyBold
+					Align: Center
+				Label@DURATION:
+					Y: 30
+					Width: PARENT_RIGHT
+					Height: 15
+					Font: Tiny
+					Align: Center
+				ScrollPanel@PLAYER_LIST:
+					Y: 50
+					Width: PARENT_RIGHT
+					Height: PARENT_BOTTOM - 50
+					IgnoreChildMouseOver: true
+					Children:
+						ScrollItem@HEADER:
+							BaseName: scrollheader
+							Width: PARENT_RIGHT-27
+							Height: 13
+							X: 2
+							Y: 0
+							Visible: false
+							Children:
+								Label@LABEL:
+									Font: TinyBold
+									Width: PARENT_RIGHT
+									Height: 10
+									Align: Center
+						ScrollItem@TEMPLATE:
+							Width: PARENT_RIGHT-27
+							Height: 25
+							X: 2
+							Y: 0
+							Visible: false
+							Children:
+								Image@FLAG:
+									X: 4
+									Y: 6
+									Width: 32
+									Height: 16
+								Label@LABEL:
+									X: 40
+									Width: PARENT_RIGHT-50
+									Height: 25
+								Label@NOFLAG_LABEL:
+									X: 5
+									Width: PARENT_RIGHT
+									Height: 25
+		Button@WATCH_BUTTON:
+			X: PARENT_RIGHT - 140 - 130
+			Y: PARENT_BOTTOM - 45
+			Width: 120
+			Height: 25
+			Text: Watch
+			Font: Bold
+			Key: return
+		Button@CANCEL_BUTTON:
+			X: PARENT_RIGHT - 140
+			Y: PARENT_BOTTOM - 45
+			Width: 120
+			Height: 25
+			Text: Cancel
+			Font: Bold
+			Key: escape
+		TooltipContainer@TOOLTIP_CONTAINER:

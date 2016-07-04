@@ -1,0 +1,213 @@
+World:
+	LuaScript:
+		Scripts: allies05a.lua, allies05a-AI.lua
+	MissionData:
+		Briefing: Rescue Tanya.\n\nOnce disguised, your spy can move past any enemy unit, except dogs, without being detected. Direct him into the weapons factory located at a nearby Soviet Base where he will hijack a truck and free Tanya.\n\nWith Tanya's help, take out the air defenses on the island and a Chinook will arrive to rescue her.\n\nThen destroy all remaining Soviet buildings and units.
+		BriefingVideo: ally5.vqa
+		StartVideo: tanya1.vqa
+		WinVideo: tanya2.vqa
+		LossVideo: grvestne.vqa
+	MapOptions:
+		TechLevel: medium
+	ScriptLobbyDropdown@difficulty:
+		ID: difficulty
+		Label: Difficulty
+		Values:
+			easy: Easy
+			normal: Normal
+			hard: Hard
+			tough: Real tough guy
+		Default: easy
+
+Camera.Truk:
+	AlwaysVisible:
+	Mobile:
+		TerrainSpeeds:
+	RevealsShroud:
+		Range: 4c0
+	ScriptTriggers:
+
+FTUR:
+	DetectCloaked:
+		Range: 0
+
+TSLA:
+	DetectCloaked:
+		Range: 0
+	Buildable:
+		Prerequisites: ~disabled
+
+SAM:
+	DetectCloaked:
+		Range: 0
+	Buildable:
+		Prerequisites: ~disabled
+
+LST:
+	-Selectable:
+	Targetable:
+		TargetTypes: Ground, Water
+
+LST.IN:
+	Inherits: LST
+	RenderSprites:
+		Image: LST
+	Cargo:
+		Types: disabled
+
+TRAN:
+	-Selectable:
+	RevealsShroud:
+		Range: 4c0
+	Targetable@GROUND:
+		TargetTypes: Ground
+
+TRAN.IN:
+	Inherits: TRAN
+	RenderSprites:
+		Image: TRAN
+	Cargo:
+		Types: disabled
+
+TRUK.mission:
+	Inherits: TRUK
+	Buildable:
+		Prerequisites: ~disabled
+	WithFacingSpriteBody:
+	-SpawnActorOnDeath:
+	-EjectOnDeath:
+	RenderSprites:
+		Image: TRUK
+
+SPY:
+	Infiltrates:
+		Types: Mission Objectives
+
+WEAP:
+	-InfiltrateForSupportPower:
+	Targetable:
+		TargetTypes: Ground, C4, DetonateAttack, Structure, Mission Objectives
+
+MISS:
+	Tooltip:
+		Name: Prison
+	Targetable:
+		TargetTypes: Ground, C4, DetonateAttack, Structure, Mission Objectives
+
+Colt:
+	Inherits: ^Defense
+	AutoTargetIgnore:
+	Valued:
+		Cost: 800
+	Building:
+		Footprint: _ x
+		Dimensions: 1,2
+	Health:
+		HP: 400
+	Armor:
+		Type: Heavy
+	RevealsShroud:
+		Range: 0c0
+	Turreted:
+		TurnSpeed: 15
+		InitialFacing: 224
+	RenderSprites:
+		Image: AGUN
+	Armament:
+		Weapon: MissionColt
+		LocalOffset: 432,150,-30, 432,-150,-30
+	AttackTurreted:
+	AutoTarget:
+	-Selectable:
+	-Huntable:
+
+E1.Autotarget:
+	Inherits: E1
+	Buildable:
+		Prerequisites: ~disabled
+	RevealsShroud:
+		Range: 8c0
+	AutoTarget:
+		ScanRadius: 7
+	RenderSprites:
+		Image: E1
+
+E2.Autotarget:
+	Inherits: E2
+	Buildable:
+		Prerequisites: ~disabled
+	RevealsShroud:
+		Range: 8c0
+	AutoTarget:
+		ScanRadius: 7
+	RenderSprites:
+		Image: E2
+
+AFLD:
+	AirstrikePower@spyplane:
+		Prerequisites: ~disabled
+	ParatroopersPower@paratroopers:
+		Prerequisites: ~disabled
+
+FCOM:
+	MustBeDestroyed:
+
+4TNK:
+	Buildable:
+		Prerequisites: ~disabled
+
+MCV:
+	Buildable:
+		Prerequisites: ~disabled
+
+MNLY.AP:
+	Buildable:
+		Prerequisites: ~disabled
+
+TTNK:
+	Buildable:
+		Prerequisites: ~disabled
+
+FTRK:
+	Buildable:
+		Prerequisites: ~disabled
+
+DTRK:
+	Buildable:
+		Prerequisites: ~disabled
+
+QTNK:
+	Buildable:
+		Prerequisites: ~disabled
+
+MSLO:
+	Buildable:
+		Prerequisites: ~disabled
+
+SPEN:
+	Buildable:
+		Prerequisites: ~disabled
+
+IRON:
+	Buildable:
+		Prerequisites: ~disabled
+
+STEK:
+	Buildable:
+		Prerequisites: ~disabled
+
+E6:
+	Buildable:
+		Prerequisites: ~disabled
+
+HIJACKER:
+	Buildable:
+		Prerequisites: ~disabled
+
+SHOK:
+	Buildable:
+		Prerequisites: ~disabled
+
+MIG:
+	Buildable:
+		Prerequisites: ~disabled

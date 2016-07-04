@@ -1,0 +1,53 @@
+World:
+	LuaScript:
+		Scripts: allies01.lua
+	MissionData:
+		Briefing: Rescue Einstein from the Headquarters inside this Soviet complex.\n\nOnce found, evacuate him via the helicopter at the signal flare.\n\nEinstein and Tanya must be kept alive at all costs.\n\nBeware the Soviet's Tesla Coils.\n\nDirect Tanya to destroy the westmost power plants to take them off-line.
+		BackgroundVideo: prolog.vqa
+		BriefingVideo: ally1.vqa
+		StartVideo: landing.vqa
+		WinVideo: snowbomb.vqa
+		LossVideo: bmap.vqa
+
+TRAN.Extraction:
+	Inherits: TRAN
+	WithFacingSpriteBody:
+	RevealsShroud:
+		Range: 0c0
+	RejectsOrders:
+	-Selectable:
+	Cargo:
+		Types: Einstein
+		MaxWeight: 1
+	AutoSelectionSize:
+	RenderSprites:
+		Image: tran
+
+TRAN.Insertion:
+	Inherits: TRAN.Extraction
+	WithFacingSpriteBody:
+	Cargo:
+		MaxWeight: 0
+	AutoSelectionSize:
+	RenderSprites:
+		Image: tran
+
+EINSTEIN:
+	Passenger:
+		CargoType: Einstein
+
+^CivInfantry:
+	RevealsShroud:
+		Range: 0c0
+
+C8:
+	Inherits@2: ^ArmedCivilian
+	AutoTarget:
+
+JEEP:
+	Cargo:
+		Types: Infantry, Einstein
+
+TSLA:
+	Power:
+		Amount: -150
