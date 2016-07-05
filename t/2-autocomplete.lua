@@ -93,11 +93,12 @@ ok(limitdepth(1000, function() EditorAutoComplete(editor) end),
 ide.apis.lua.baselib.io.valuetype = nil
 ReloadLuaAPI()
 
-local interpreter = ide:GetInterpreter():GetFileName()
-ProjectSetInterpreter("gideros")
+editor:SetText('')
+editor:AddText('local error = true\n')
+IndicateAll(editor)
 
-local ac = CreateAutoCompList(editor, "Bitmap.n")
-local _, c = ac:gsub("new", "new")
+local ac = CreateAutoCompList(editor, "err")
+local _, c = ac:gsub("error", "error")
 ok(c == 1,
   ("Auto-complete (strategy=%s) doesn't offer duplicates with the same name ('%s')."):format(s, ac))
 
@@ -110,8 +111,6 @@ for k, v in pairs({
   is(ac, v,
     ("Auto-complete (strategy=%s) for '%s' offers results in the expected order."):format(s, k))
 end
-
-ProjectSetInterpreter(interpreter)
 
 editor:SetText('')
 editor:AddText('local t = require("table")\nt.')
