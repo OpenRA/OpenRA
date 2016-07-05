@@ -329,6 +329,36 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			}
 		}
 
+		static int RemapD2k106Sequence(int frame)
+		{
+			if (frame < 2518)
+				return frame;
+			if (frame < 3370)
+				return frame + 248;
+			if (frame < 4011)
+				return frame + 253;
+			if (frame < 4036)
+				return frame + 261;
+			return frame + 264;
+		}
+
+		internal static void UpgradeSequences(ModData modData, int engineVersion, ref List<MiniYamlNode> nodes, MiniYamlNode parent, int depth)
+		{
+			foreach (var node in nodes)
+			{
+				if (engineVersion < 20160730 && modData.Manifest.Mod.Id == "d2k" && depth == 2)
+				{
+					if (node.Key == "Start")
+						node.Value.Value = RemapD2k106Sequence(FieldLoader.GetValue<int>("", node.Value.Value)).ToString();
+					if (node.Key == "Frames")
+						node.Value.Value = FieldLoader.GetValue<int[]>("", node.Value.Value)
+							.Select(RemapD2k106Sequence).JoinWith(", ");
+				}
+
+				UpgradeSequences(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);
+			}
+		}
+
 		internal static void UpgradeTileset(ModData modData, int engineVersion, ref List<MiniYamlNode> nodes, MiniYamlNode parent, int depth)
 		{
 			foreach (var node in nodes)

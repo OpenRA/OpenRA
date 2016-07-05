@@ -3,7 +3,7 @@ mcv:
 		Start: 1795
 		Facings: -32
 	icon: DATA.R8
-		Start: 4023
+		Start: 4284
 		Offset: -30,-24
 
 mcv.husk:
@@ -17,19 +17,19 @@ harvester:
 		Start: 1699
 		Facings: -32
 	harvest: DATA.R8
-		Start: 3631
+		Start: 3884
 		Length: 6
 		Facings: -8
 		Tick: 80
 		ZOffset: 1
 		BlendMode: Multiply
 	dock: DATA.R8
-		Start: 3370
+		Start: 3623
 		Length: 10
 	dock-loop: DATA.R8
-		Start: 3380
+		Start: 3633
 	icon: DATA.R8
-		Start: 4019
+		Start: 4280
 		Offset: -30,-24
 
 harvester.husk:
@@ -43,12 +43,12 @@ trike:
 		Start: 1635
 		Facings: -32
 	muzzle: DATA.R8
-		Start: 3839
+		Start: 4092
 		Tick: 50
 		Facings: -32
 		BlendMode: Additive
 	icon: DATA.R8
-		Start: 4041
+		Start: 4305
 		Offset: -30,-24
 
 quad:
@@ -56,7 +56,7 @@ quad:
 		Start: 1667
 		Facings: -32
 	icon: DATA.R8
-		Start: 4018
+		Start: 4279
 		Offset: -30,-24
 
 siege_tank:
@@ -67,11 +67,11 @@ siege_tank:
 		Start: 1891
 		Facings: -32
 	muzzle: DATA.R8
-		Start: 3418
+		Start: 3671
 		Length: 3
 		BlendMode: Additive
 	icon: DATA.R8
-		Start: 4026
+		Start: 4287
 		Offset: -30,-24
 
 siege_tank.husk:
@@ -89,7 +89,7 @@ missile_tank:
 		Start: 1603
 		Facings: -32
 	icon: DATA.R8
-		Start: 4024
+		Start: 4285
 		Offset: -30,-24
 
 missile_tank.husk:
@@ -103,7 +103,7 @@ sonic_tank:
 		Start: 1827
 		Facings: -32
 	icon: DATA.R8
-		Start: 4027
+		Start: 4288
 		Offset: -30,-24
 
 sonic_tank.husk:
@@ -120,12 +120,12 @@ combat_tank_a:
 		Start: 1859
 		Facings: -32
 	muzzle: DATA.R8
-		Start: 3775
+		Start: 4028
 		Tick: 60
 		Facings: -32
 		BlendMode: Additive
 	icon: DATA.R8
-		Start: 4020
+		Start: 4281
 		Offset: -30,-24
 
 combat_tank_a.husk:
@@ -146,12 +146,12 @@ combat_tank_h:
 		Start: 2115
 		Facings: -32
 	muzzle: DATA.R8
-		Start: 3775
+		Start: 4028
 		Tick: 60
 		Facings: -32
 		BlendMode: Additive
 	icon: DATA.R8
-		Start: 4021
+		Start: 4282
 		Offset: -30,-24
 
 combat_tank_h.husk:
@@ -172,12 +172,12 @@ combat_tank_o:
 		Start: 2485
 		Facings: -32
 	muzzle: DATA.R8
-		Start: 3775
+		Start: 4028
 		Tick: 60
 		Facings: -32
 		BlendMode: Additive
 	icon: DATA.R8
-		Start: 4022
+		Start: 4283
 		Offset: -30,-24
 
 combat_tank_o.husk:
@@ -195,12 +195,12 @@ devastator:
 		Start: 2083
 		Facings: -32
 	muzzle: DATA.R8
-		Start: 3807
+		Start: 4060
 		Tick: 80
 		Facings: -32
 		BlendMode: Additive
 	icon: DATA.R8
-		Start: 4028
+		Start: 4289
 		Offset: -30,-24
 
 devastator.husk:
@@ -214,12 +214,12 @@ raider:
 		Start: 2421
 		Facings: -32
 	muzzle: DATA.R8
-		Start: 3743
+		Start: 3996
 		Tick: 50
 		Facings: -32
 		BlendMode: Additive
 	icon: DATA.R8
-		Start: 4017
+		Start: 4278
 		Offset: -30,-24
 
 stealth_raider:
@@ -227,18 +227,20 @@ stealth_raider:
 		Start: 2421
 		Facings: -32
 	muzzle: DATA.R8
-		Start: 3743
+		Start: 3996
 		Tick: 50
 		Facings: -32
 		BlendMode: Additive
-	icon: raidersicon.shp # 4282 in 1.06 DATA.R8
+	icon: DATA.R8
+		Start: 4298
+		Offset: -30,-24
 
 deviator:
 	idle: DATA.R8
 		Start: 2389
 		Facings: -32
 	icon: DATA.R8
-		Start: 4025
+		Start: 4286
 		Offset: -30,-24
 
 deviator.husk:

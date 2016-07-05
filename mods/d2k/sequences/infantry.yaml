@@ -56,7 +56,7 @@ light_inf:
 		Tick: 800
 		ZOffset: -511
 	icon: DATA.R8
-		Start: 4011
+		Start: 4272
 		Offset: -30,-24
 
 trooper:
@@ -116,7 +116,7 @@ trooper:
 		Tick: 800
 		ZOffset: -511
 	icon: DATA.R8
-		Start: 4012
+		Start: 4273
 		Offset: -30,-24
 
 engineer:
@@ -167,7 +167,7 @@ engineer:
 		Tick: 800
 		ZOffset: -511
 	icon: DATA.R8
-		Start: 4013
+		Start: 4274
 		Offset: -30,-24
 
 thumper:
@@ -201,7 +201,7 @@ thumper:
 		Length: 5
 		Tick: 480
 	thump-sand: DATA.R8
-		Frames: 3629, 3630, 3626, 3627, 3628
+		Frames: 3882, 3883, 3879, 3880, 3881
 		Length: 5
 		Tick: 480
 		BlendMode: Multiply
@@ -227,7 +227,7 @@ thumper:
 		Tick: 800
 		ZOffset: -511
 	icon: DATA.R8
-		Start: 4014
+		Start: 4275
 		Offset: -30,-24
 
 thumping:
@@ -243,7 +243,7 @@ thumping:
 		Length: 5
 		Tick: 150
 	icon: DATA.R8
-		Frames: 4014
+		Frames: 4275
 		Offset: -30,-24
 
 fremen:
@@ -304,7 +304,7 @@ fremen:
 		Tick: 800
 		ZOffset: -511
 	icon: DATA.R8
-		Start: 4032
+		Start: 4293
 		Offset: -30,-24
 
 saboteur:
@@ -355,7 +355,7 @@ saboteur:
 		Tick: 800
 		ZOffset: -511
 	icon: DATA.R8
-		Start: 4034
+		Start: 4295
 		Offset: -30,-24
 
 sardaukar:
@@ -416,99 +416,104 @@ sardaukar:
 		Tick: 800
 		ZOffset: -511
 	icon: DATA.R8
-		Start: 4015
+		Start: 4276
 		Offset: -30,-24
 
-grenadier: # 2502 - 2749 in 1.06 DATA.R8
-	Defaults:
-		Offset: 1,-4
-	stand: grenadier.shp
+grenadier:
+	stand: DATA.R8
+		Start: 2518
 		Facings: -8
-	idle: grenadier.shp
-		Start: 203
-		Length: 16
-	run: grenadier.shp
-		Start: 8
-		Length: 6
-		Facings: 8
-		Tick: 120
-	throw: grenadier.shp
-		Start: 56
-		Length: 6
-		Facings: 8
-		Tick: 120
-	die1: grenadier.shp
-		Start: 176
-		Length: 19
-	die2: grenadier.shp
-		Start: 176
-		Length: 19
-	die3: grenadier.shp
-		Start: 176
-		Length: 19
-	die4: grenadier.shp
-		Start: 176
-		Length: 19
-	die-crushed: grenadier.shp
-		Start: 195
+		Transpose: true
+	idle: DATA.R8
+		Frames: 2700, 2707, 2714, 2721, 2728, 2735, 2742, 2749
 		Length: 8
+	idle2: DATA.R8
+		Frames: 2699, 2706, 2713, 2720, 2727, 2734, 2741, 2748
+		Length: 8
+	run: DATA.R8
+		Start: 2526
+		Length: 6
+		Facings: -8
+		Transpose: true
+		Tick: 120
+	throw: DATA.R8
+		Start: 2574
+		Length: 6
+		Facings: -8
+		Transpose: true
+		Tick: 120
+	die1: DATA.R8
+		Frames: 2694, 2701, 2708, 2715, 2722, 2729, 2736, 2743
+		Length: 19
+	die2: DATA.R8
+		Frames: 2695, 2702, 2709, 2716, 2723, 2730, 2737, 2744
+		Length: 19
+	die3: DATA.R8
+		Frames: 2696, 2703, 2710, 2717, 2724, 2731, 2738, 2745
+		Length: 19
+	die4: DATA.R8
+		Frames: 2697, 2704, 2711, 2718, 2725, 2732, 2738, 2746
+		Length: 19
+	die-crushed: DATA.R8
+		Frames: 2698, 2705, 2712, 2719, 2726, 2733, 2740, 2747
 		Tick: 800
 		ZOffset: -511
-	prone-stand: grenadier.shp
-		Start: 104
+	prone-stand: DATA.R8
+		Start: 2622
 		Length: 4
 		Facings: 8
-	prone-run: grenadier.shp
-		Start: 104
+	prone-run: DATA.R8
+		Start: 2654
 		Length: 4
 		Facings: 8
 		Tick: 120
-	prone-throw: grenadier.shp
+	prone-throw: DATA.R8
 		Start: 136
 		Length: 5
 		Facings: 8
 		Tick: 120
-	icon: grenadiericon.shp # 4281 in 1.06 DATA.R8
-		Offset: 0,0
+	icon: DATA.R8
+		Start: 4297
+		Offset: -30,-24
 
 sandworm:
 	mouth: DATA.R8
-		Start: 3549
+		Start: 3802
 		Length: 15
 		Tick: 100
 	sand: DATA.R8
-		Start: 3565
+		Start: 3818
 		Length: 20
 		Tick: 100
 	idle: DATA.R8
 		Start: 39
 	lightninga: DATA.R8
-		Start: 3591
+		Start: 3844
 		Length: 5
 		Tick: 80
 		BlendMode: Additive
 	lightningb: DATA.R8
-		Start: 3596
+		Start: 3849
 		Length: 5
 		Tick: 80
 		BlendMode: Additive
 	lightningc: DATA.R8
-		Start: 3601
+		Start: 3854
 		Length: 5
 		Tick: 80
 		BlendMode: Additive
 	lightningd: DATA.R8
-		Start: 3606
+		Start: 3859
 		Length: 5
 		Tick: 80
 		BlendMode: Additive
 	lightninge: DATA.R8
-		Start: 3611
+		Start: 3864
 		Length: 5
 		Tick: 80
 		BlendMode: Additive
 	lightningf: DATA.R8
-		Start: 3616
+		Start: 3869
 		Length: 5
 		Tick: 80
 		BlendMode: Additive

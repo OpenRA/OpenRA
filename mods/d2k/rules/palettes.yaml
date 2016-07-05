@@ -35,7 +35,7 @@
 	PaletteFromR8@moveflash:
 		Name: moveflash
 		Filename: DATA.R8
-		Offset: 2572352
+		Offset: 2652107
 		InvertColor: true
 		AllowModifiers: false
 	PaletteFromRGBA@disabled:
