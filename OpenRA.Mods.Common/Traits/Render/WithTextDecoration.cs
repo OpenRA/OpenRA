@@ -20,7 +20,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits.Render
 {
 	[Desc("Displays a text overlay relative to the selection box.")]
-	public class WithTextDecorationInfo : UpgradableTraitInfo
+	public class WithTextDecorationInfo : UpgradableTraitInfo, IRulesetLoaded
 	{
 		[FieldLoader.Require] [Translate] public readonly string Text = null;
 
@@ -46,6 +46,12 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public readonly bool RequiresSelection = false;
 
 		public override object Create(ActorInitializer init) { return new WithTextDecoration(init.Self, this); }
+
+		void IRulesetLoaded<ActorInfo>.RulesetLoaded(Ruleset rules, ActorInfo info)
+		{
+			if (!Game.ModData.Manifest.Fonts.ContainsKey(Font))
+				throw new YamlException("Font '{0}' is not listed in the mod.yaml's Fonts section".F(Font));
+		}
 	}
 
 	public class WithTextDecoration : UpgradableTrait<WithTextDecorationInfo>, IRender, IPostRenderSelection, INotifyCapture
@@ -61,7 +67,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			this.self = self;
 
 			if (!Game.Renderer.Fonts.TryGetValue(info.Font, out font))
-				throw new YamlException("Could not find font '{0}'".F(info.Font));
+				throw new YamlException("Font '{0}' is not listed in the mod.yaml's Fonts section".F(info.Font));
 
 			color = Info.UsePlayerColor ? self.Owner.Color.RGB : Info.Color;
 		}
