@@ -19,6 +19,7 @@ Terrain:
 	TerrainType@Concrete:
 		Type: Concrete
 		TargetTypes: Ground
+		AcceptsSmudgeType: RockCrater
 		Color: E8C498
 	TerrainType@Dune:
 		Type: Dune
