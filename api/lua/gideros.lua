@@ -3535,12 +3535,16 @@ while true do
 
   if newclass and class:lower() ~= newclass:lower() then
     class = newclass
-    if not class:match('%.') then
+    if not class:match('%.') and not _G[class] then
       t[class] = t[class] or {childs = {}, type = "class", inherits = inherits[class]} end
   end
   s = s:gsub('^'..class..'%.', ""):gsub('^'..class:lower()..'%:', "")
-  local const, value = s:match('^([A-Z_0-9]+)[ -]+(.+)$')
   local fun, args, desc = s:match('(%w+)(%b())%s*(.*)%s*$')
+  local const, value = s:match('^([A-Z_0-9]+)[ -]+(.+)$')
+  -- try one more time with lowercase/mixed constants if nothing has been found
+  if not const and not fun and s:find(" value ") then
+    const, value = s:match('^([%w_]+)[ -]+(.+)$')
+  end
   if #class == 0 then
     -- do nothing; haven't found a single class yet; skipping Lua methods
   elseif _G[class] then
