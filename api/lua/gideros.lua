@@ -4,7 +4,13 @@
 -- also available in <Gideros>/Resources/gideros_annot.api.
 -- the conversion script is at the bottom of this file.
 
-return {
+-- To process:
+-- 1. download the API description and save it as gideros_annot.api
+-- 2. run "../../bin/lua gideros.lua <gideros_annot.api >newapi" from ZBS/api/lua folder
+-- 3. copy the content of "newapi" file to replace "api" table in gideros.lua
+-- 4. launch the IDE and switch to gideros to confirm that it's loading without issues
+
+local api = {
  Accelerometer = {
   childs = {
    getAcceleration = {
@@ -3482,9 +3488,12 @@ return {
  }
 }
 
+-- when loaded as a package, return the package; otherwise continue with the script
+if pcall(debug.getlocal, 4, 1) then return api end
+
 --[[
   Conversion script for Gideros API (http://docs.giderosmobile.com/reference/autocomplete.php)
-  Run the script as: lua gideros-conv.lua <gideros_annot.api >gideros.lua
+  Run as "../../bin/lua gideros.lua <gideros_annot.api >newapi" from ZBS/api/lua folder
 
   Event
   Event.new(type) creates a new Event object
@@ -3505,6 +3514,7 @@ return {
   + create different methods for Application and application
   + missing new() methods for some classes (+geolocation, +gyroscope, +accelerometer, +storekit)
   + application, stage, world are global variables
+--]]
 
 ------------------------>> cut here <<-----------------------------
 
@@ -3602,6 +3612,8 @@ for _, class in ipairs{'StoreKit'} do
   end
 end
 
-print('return ' .. (require 'mobdebug').line(t, {indent = ' ', comment = false}))
+package.path = package.path .. ';../../lualibs/?/?.lua;../../lualibs/?.lua'
+package.cpath = package.cpath .. ';../../bin/clibs/?.dll'
+print((require 'mobdebug').line(t, {indent = ' ', comment = false}))
 
------------------------->> cut here <<-----------------------------]]
+------------------------>> cut here <<-----------------------------
