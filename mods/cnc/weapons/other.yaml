@@ -19,6 +19,7 @@ Flamethrower:
 		DamageTypes: Prone50Percent, TriggerProne, FireDeath, Incendiary
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Scorch
+		InvalidTargets: Vehicle, Structure, Wall
 	Warhead@3Eff: CreateEffect
 		Explosions: small_napalm
 		ImpactSounds: flamer2.aud
@@ -46,6 +47,7 @@ BigFlamer:
 		DamageTypes: Prone50Percent, TriggerProne, FireDeath, Incendiary
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Scorch
+		InvalidTargets: Vehicle, Structure, Wall
 	Warhead@3Eff: CreateEffect
 		Explosions: med_napalm
 		ImpactSounds: flamer2.aud
@@ -67,6 +69,7 @@ Chemspray:
 		DamageTypes: Prone50Percent, TriggerProne, TiberiumDeath
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Scorch
+		InvalidTargets: Vehicle, Structure, Wall, Husk, Trees, Creep
 	Warhead@3Eff: CreateEffect
 		Explosions: chemball
 		ImpactSounds: xplos.aud
@@ -92,6 +95,7 @@ Grenade:
 		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
+		InvalidTargets: Vehicle, Structure, Wall, Husk, Trees, Creep
 	Warhead@3Eff: CreateEffect
 		Explosions: small_poof
 		ImpactSounds: xplos.aud
@@ -117,6 +121,7 @@ Napalm:
 		DamageTypes: Prone50Percent, TriggerProne, FireDeath, Incendiary
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Scorch
+		InvalidTargets: Vehicle, Structure, Wall
 	Warhead@3Eff: CreateEffect
 		Explosions: med_napalm
 		ImpactSounds: flamer2.aud
@@ -137,6 +142,7 @@ Laser:
 		DamageTypes: Prone50Percent, TriggerProne, FireDeath
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Scorch
+		InvalidTargets: Vehicle, Structure, Wall, Husk, Trees, Creep
 
 Tiberium:
 	ReloadDelay: 16

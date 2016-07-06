@@ -346,7 +346,7 @@
 	Selectable:
 		Bounds: 24,24
 	Targetable:
-		TargetTypes: Ground
+		TargetTypes: Ground, Creep
 	HiddenUnderFog:
 	RenderSprites:
 		Palette: terrain
@@ -392,7 +392,7 @@
 	Selectable:
 		Bounds: 24,24
 	Targetable:
-		TargetTypes: Ground
+		TargetTypes: Ground, Creep
 	AutoTarget:
 		ScanRadius: 5
 	AttackMove:

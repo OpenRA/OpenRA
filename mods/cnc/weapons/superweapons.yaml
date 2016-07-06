@@ -32,6 +32,7 @@ Atomic:
 		Delay: 3
 	Warhead@5Smu_areanukea: LeaveSmudge
 		SmudgeType: Scorch
+		InvalidTargets: Vehicle, Structure, Wall
 		Size: 3
 		Delay: 3
 	Warhead@6Eff_areanukea: CreateEffect
@@ -54,6 +55,7 @@ Atomic:
 		Delay: 6
 	Warhead@9Smu_areanukeb: LeaveSmudge
 		SmudgeType: Scorch
+		InvalidTargets: Vehicle, Structure, Wall
 		Size: 4
 		Delay: 6
 	Warhead@10Dam_areanukec: SpreadDamage
@@ -73,6 +75,7 @@ Atomic:
 		Delay: 9
 	Warhead@12Smu_areanukec: LeaveSmudge
 		SmudgeType: Scorch
+		InvalidTargets: Vehicle, Structure, Wall
 		Size: 5
 		Delay: 9
 
@@ -86,8 +89,10 @@ IonCannon:
 		DamageTypes: Prone50Percent, TriggerProne, FireDeath, Incendiary
 	Warhead@2Smu_impact: LeaveSmudge
 		SmudgeType: Scorch
+		InvalidTargets: Vehicle, Structure, Wall, Husk, Trees, Creep
 	Warhead@3Smu_area: LeaveSmudge
 		SmudgeType: Scorch
+		InvalidTargets: Vehicle, Structure, Wall, Husk, Trees, Creep
 		Size: 1
 		Delay: 3
 	Warhead@4Res_area2: DestroyResource
@@ -95,5 +100,6 @@ IonCannon:
 		Delay: 6
 	Warhead@5Smu_area2: LeaveSmudge
 		SmudgeType: Scorch
+		InvalidTargets: Vehicle, Structure, Wall, Husk, Trees, Creep
 		Size: 2,1
 		Delay: 6
