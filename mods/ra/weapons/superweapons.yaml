@@ -18,6 +18,7 @@ ParaBomb:
 		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
+		InvalidTargets: Vehicle, Tank, Structure, Wall, Husk, Trees
 	Warhead@3Eff: CreateEffect
 		Explosions: artillery_explosion
 		ImpactSounds: kaboom15.aud
@@ -41,6 +42,7 @@ Atomic:
 		Size: 1
 	Warhead@3Smu_impact: LeaveSmudge
 		SmudgeType: Scorch
+		InvalidTargets: Vehicle, Tank, Structure, Wall
 		Size: 1
 	Warhead@4Eff_impact: CreateEffect
 		Explosions: nuke
@@ -59,6 +61,7 @@ Atomic:
 		Delay: 5
 	Warhead@7Smu_areanuke1: LeaveSmudge
 		SmudgeType: Scorch
+		InvalidTargets: Vehicle, Tank, Structure, Wall, Husk, Trees
 		Size: 2
 		Delay: 5
 	Warhead@8Eff_areanuke1: CreateEffect
@@ -78,6 +81,7 @@ Atomic:
 		Delay: 10
 	Warhead@11Smu_areanuke2: LeaveSmudge
 		SmudgeType: Scorch
+		InvalidTargets: Vehicle, Tank, Structure, Wall, Husk, Trees
 		Size: 3
 		Delay: 10
 	Warhead@12Dam_areanuke3: SpreadDamage
@@ -94,6 +98,7 @@ Atomic:
 		Delay: 15
 	Warhead@14Smu_areanuke3: LeaveSmudge
 		SmudgeType: Scorch
+		InvalidTargets: Vehicle, Tank, Structure, Wall, Husk, Trees
 		Size: 4
 		Delay: 15
 	Warhead@15Dam_areanuke4: SpreadDamage
@@ -110,5 +115,6 @@ Atomic:
 		Delay: 20
 	Warhead@17Smu_areanuke4: LeaveSmudge
 		SmudgeType: Scorch
+		InvalidTargets: Vehicle, Tank, Structure, Wall, Husk, Trees
 		Size: 5
 		Delay: 20

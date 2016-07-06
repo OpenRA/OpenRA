@@ -14,6 +14,7 @@ CrateNapalm:
 		DamageTypes: Prone50Percent, TriggerProne, FireDeath, Incendiary
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Scorch
+		InvalidTargets: Structure, Wall, Trees
 	Warhead@3Eff: CreateEffect
 		Explosions: napalm
 		ImpactSounds: firebl3.aud
@@ -33,6 +34,9 @@ CrateExplosion:
 	Warhead@2Eff: CreateEffect
 		Explosions: self_destruct
 		ImpactSounds: kaboom15.aud
+	Warhead@3Smu: LeaveSmudge
+		SmudgeType: Crater
+		InvalidTargets: Structure, Wall, Trees
 
 CrateNuke:
 	ValidTargets: Ground, Trees, Water, Air
@@ -64,6 +68,7 @@ CrateNuke:
 		Delay: 4
 	Warhead@6Smu_areanuke: LeaveSmudge
 		SmudgeType: Scorch
+		InvalidTargets: Vehicle, Tank, Structure, Wall, Trees
 		Size: 5,4
 		Delay: 4
 	Warhead@7Eff_areanuke: CreateEffect
@@ -130,6 +135,7 @@ MiniNuke:
 		Delay: 15
 	Warhead@11Smu_areanuke3: LeaveSmudge
 		SmudgeType: Scorch
+		InvalidTargets: Vehicle, Tank, Structure, Wall, Trees
 		Size: 4
 		Delay: 15
 
@@ -152,6 +158,9 @@ UnitExplode:
 		Explosions: large_splash
 		ImpactSounds: splash9.aud
 		ValidImpactTypes: Water
+	Warhead@4Smu: LeaveSmudge
+		SmudgeType: Crater
+		InvalidTargets: Structure, Wall, Trees
 
 UnitExplodeShip:
 	Warhead@1Dam: SpreadDamage
@@ -199,6 +208,9 @@ UnitExplodeSmall:
 		Explosions: large_splash
 		ImpactSounds: splash9.aud
 		ValidImpactTypes: Water
+	Warhead@4Smu: LeaveSmudge
+		SmudgeType: Crater
+		InvalidTargets: Structure, Wall, Trees
 
 ArtilleryExplode:
 	Warhead@1Dam: SpreadDamage
@@ -218,6 +230,9 @@ ArtilleryExplode:
 		Explosions: large_splash
 		ImpactSounds: splash9.aud
 		ValidImpactTypes: Water
+	Warhead@4Smu: LeaveSmudge
+		SmudgeType: Crater
+		InvalidTargets: Structure, Wall, Trees
 
 V2Explode:
 	Inherits: SCUD
@@ -239,7 +254,7 @@ BarrelExplode:
 		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath, Incendiary
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Scorch
-		Size: 2,1
+		Size: 2
 		Delay: 5
 	Warhead@3Eff: CreateEffect
 		Explosions: napalm
@@ -255,6 +270,9 @@ ATMine:
 	Warhead@2Eff: CreateEffect
 		Explosions: large_explosion
 		ImpactSounds: mineblo1.aud
+	Warhead@3Smu: LeaveSmudge
+		SmudgeType: Crater
+		InvalidTargets: Structure, Wall, Trees
 
 APMine:
 	Warhead@1Dam: SpreadDamage
@@ -265,6 +283,9 @@ APMine:
 	Warhead@2Eff: CreateEffect
 		Explosions: napalm
 		ImpactSounds: mine1.aud
+	Warhead@3Smu: LeaveSmudge
+		SmudgeType: Scorch
+		InvalidTargets: Structure, Wall, Trees
 
 OreExplosion:
 	Warhead@1Dam: SpreadDamage
