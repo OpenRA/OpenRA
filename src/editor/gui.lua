@@ -260,6 +260,7 @@ local function createNotebook(frame)
         { },
         { ID_COPYFULLPATH, TR("Copy Full Path") },
         { ID_SHOWLOCATION, TR("Show Location") },
+        { ID_REFRESHSEARCHRESULTS, TR("Refresh Search Results") },
       }
 
       PackageEventHandle("onMenuEditorTab", menu, notebook, event, selection)
@@ -284,14 +285,29 @@ local function createNotebook(frame)
   -- the following three methods require handling of closing in the idle event,
   -- because of wxwidgets issue that causes crash on OSX when the last page is closed
   -- (http://trac.wxwidgets.org/ticket/15417)
+  notebook:Connect(ID_CLOSE, wx.wxEVT_UPDATE_UI, IfAtLeastOneTab)
   notebook:Connect(ID_CLOSE, wx.wxEVT_COMMAND_MENU_SELECTED, function()
       ide:DoWhenIdle(function() ClosePage(selection) end)
     end)
+
+  notebook:Connect(ID_CLOSEALL, wx.wxEVT_UPDATE_UI, IfAtLeastOneTab)
   notebook:Connect(ID_CLOSEALL, wx.wxEVT_COMMAND_MENU_SELECTED, function()
       ide:DoWhenIdle(function() CloseAllPagesExcept(nil) end)
     end)
+
+  notebook:Connect(ID_CLOSEOTHER, wx.wxEVT_UPDATE_UI, function(event)
+      event:Enable(notebook:GetPageCount() > 1)
+    end)
   notebook:Connect(ID_CLOSEOTHER, wx.wxEVT_COMMAND_MENU_SELECTED, function()
       ide:DoWhenIdle(function() CloseAllPagesExcept(selection) end)
+    end)
+
+  notebook:Connect(ID_CLOSESEARCHRESULTS, wx.wxEVT_UPDATE_UI, function(event)
+      local ispreview = false
+      for p = 0, notebook:GetPageCount()-1 do
+        ispreview = ispreview or isPreview(notebook:GetPage(p))
+      end
+      event:Enable(ispreview)
     end)
   notebook:Connect(ID_CLOSESEARCHRESULTS, wx.wxEVT_COMMAND_MENU_SELECTED, function()
       ide:DoWhenIdle(function()
@@ -300,17 +316,12 @@ local function createNotebook(frame)
           end
         end)
     end)
-  notebook:Connect(ID_CLOSE, wx.wxEVT_UPDATE_UI, IfAtLeastOneTab)
-  notebook:Connect(ID_CLOSEALL, wx.wxEVT_UPDATE_UI, IfAtLeastOneTab)
-  notebook:Connect(ID_CLOSEOTHER, wx.wxEVT_UPDATE_UI, function(event)
-      event:Enable(notebook:GetPageCount() > 1)
+
+  notebook:Connect(ID_REFRESHSEARCHRESULTS, wx.wxEVT_UPDATE_UI, function(event)
+      event:Enable(isPreview(notebook:GetPage(selection)))
     end)
-  notebook:Connect(ID_CLOSESEARCHRESULTS, wx.wxEVT_UPDATE_UI, function(event)
-      local ispreview = false
-      for p = 0, notebook:GetPageCount()-1 do
-        ispreview = ispreview or isPreview(notebook:GetPage(p))
-      end
-      event:Enable(ispreview)
+  notebook:Connect(ID_REFRESHSEARCHRESULTS, wx.wxEVT_COMMAND_MENU_SELECTED, function()
+      ide.findReplace:RefreshResults(notebook:GetPage(selection))
     end)
 
   notebook:Connect(ID_SHOWLOCATION, wx.wxEVT_COMMAND_MENU_SELECTED, function()
@@ -485,6 +496,8 @@ local function createBottomNotebook(frame)
       local menu = ide:MakeMenu {
         { ID_CLOSE, TR("&Close Page") },
         { ID_CLOSESEARCHRESULTS, TR("Close Search Results Pages") },
+        { },
+        { ID_REFRESHSEARCHRESULTS, TR("Refresh Search Results") },
       }
 
       PackageEventHandle("onMenuOutputTab", menu, bottomnotebook, event, selection)
@@ -498,6 +511,7 @@ local function createBottomNotebook(frame)
   bottomnotebook:Connect(ID_CLOSE, wx.wxEVT_UPDATE_UI, function(event)
       event:Enable(isPreview(bottomnotebook:GetPage(selection)))
     end)
+
   bottomnotebook:Connect(ID_CLOSESEARCHRESULTS, wx.wxEVT_COMMAND_MENU_SELECTED, function()
       ide:DoWhenIdle(function()
           for p = bottomnotebook:GetPageCount()-1, 0, -1 do
@@ -511,6 +525,13 @@ local function createBottomNotebook(frame)
         ispreview = ispreview or isPreview(bottomnotebook:GetPage(p))
       end
       event:Enable(ispreview)
+    end)
+
+  bottomnotebook:Connect(ID_REFRESHSEARCHRESULTS, wx.wxEVT_UPDATE_UI, function(event)
+      event:Enable(isPreview(bottomnotebook:GetPage(selection)))
+    end)
+  bottomnotebook:Connect(ID_REFRESHSEARCHRESULTS, wx.wxEVT_COMMAND_MENU_SELECTED, function()
+      ide.findReplace:RefreshResults(bottomnotebook:GetPage(selection))
     end)
 
   local errorlog = ide:CreateStyledTextCtrl(bottomnotebook, wx.wxID_ANY,

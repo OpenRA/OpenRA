@@ -1154,6 +1154,16 @@ function findReplace:refreshPanel(replace, infiles)
   self.findCtrl:SetSelection(-1, -1) -- select the content
 end
 
+function findReplace:RefreshResults(editor)
+  if not ide:IsValidCtrl(editor) or not editor.searchpreview then return end
+
+  self:Show(false, true) -- always show "Find" when refreshing
+  self:SetFind(editor.searchpreview)
+  editor:SetFocus() -- set the focus on the editor as it may be in an inactive tab
+  self.reseditor = editor:DynamicCast("wxStyledTextCtrl") -- show the results in the same tab
+  self:RunInFiles(false) -- only refresh search results, no replace
+end
+
 function findReplace:Show(replace,infiles)
   self:refreshPanel(replace,infiles)
 end
