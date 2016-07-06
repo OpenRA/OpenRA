@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -29,6 +30,9 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int HealIfBelow = 50;
 
 		public readonly int DamageCooldown = 0;
+
+		[Desc("Apply the selfhealing using these damagetypes.")]
+		public readonly HashSet<string> DamageTypes = new HashSet<string>();
 
 		public override object Create(ActorInitializer init) { return new SelfHealing(init.Self, this); }
 	}
@@ -63,7 +67,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (--ticks <= 0)
 			{
 				ticks = Info.Delay;
-				self.InflictDamage(self, new Damage(-(Info.Step + Info.PercentageStep * health.MaxHP / 100)));
+				self.InflictDamage(self, new Damage(-(Info.Step + Info.PercentageStep * health.MaxHP / 100), Info.DamageTypes));
 			}
 		}
 
