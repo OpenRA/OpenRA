@@ -98,8 +98,11 @@ namespace OpenRA.Mods.Common.Traits.Render
 			if ((isMoving && !Info.TrailWhileMoving) || (!isMoving && !Info.TrailWhileStationary))
 				return;
 
-			if (isMoving && wasStationary)
+			if (isMoving == wasStationary)
+			{
 				cachedInterval = Info.StartDelay;
+				ticks = 0;
+			}
 
 			if (++ticks >= cachedInterval)
 			{
@@ -125,7 +128,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 				cachedFacing = facing != null ? facing.Facing : 0;
 				ticks = 0;
 
-				cachedInterval = isMoving && !wasStationary ? Info.MovingInterval : Info.StationaryInterval;
+				cachedInterval = isMoving ? Info.MovingInterval : Info.StationaryInterval;
 			}
 		}
 
