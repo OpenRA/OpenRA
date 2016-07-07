@@ -24,6 +24,7 @@
 		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: SandCrater, RockCrater
+		InvalidTargets: Vehicle, Structure
 	Warhead@3Eff: CreateEffect
 		Explosions: small_napalm
 		ImpactSounds: EXPLSML4.WAV
@@ -52,62 +53,17 @@
 		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: SandCrater, RockCrater
+		InvalidTargets: Vehicle, Structure
 	Warhead@3Eff: CreateEffect
 		Explosions: small_napalm
 
 80mm_H:
+	Inherits: 80mm_A
 	ReloadDelay: 55
-	Range: 4c0
-	Report: MEDTANK1.WAV
-	Projectile: Bullet
-		Speed: 562
-		Inaccuracy: 380
-		Image: 120mm
-	Warhead@1Dam: SpreadDamage
-		Spread: 256
-		Falloff: 100, 50, 25, 0
-		Damage: 270
-		Versus:
-			none: 20
-			wall: 50
-			building: 50
-			wood: 60
-			heavy: 75
-			invulnerable: 0
-			cy: 20
-			harvester: 50
-		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
-	Warhead@2Smu: LeaveSmudge
-		SmudgeType: SandCrater, RockCrater
-	Warhead@3Eff: CreateEffect
-		Explosions: small_napalm
 
 80mm_O:
+	Inherits: 80mm_A
 	ReloadDelay: 45
-	Range: 4c0
-	Report: MEDTANK1.WAV
-	Projectile: Bullet
-		Speed: 562
-		Inaccuracy: 380
-		Image: 120mm
-	Warhead@1Dam: SpreadDamage
-		Spread: 256
-		Falloff: 100, 50, 25, 0
-		Damage: 270
-		Versus:
-			none: 20
-			wall: 50
-			building: 50
-			wood: 60
-			heavy: 75
-			invulnerable: 0
-			cy: 20
-			harvester: 50
-		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
-	Warhead@2Smu: LeaveSmudge
-		SmudgeType: SandCrater, RockCrater
-	Warhead@3Eff: CreateEffect
-		Explosions: small_napalm
 
 DevBullet:
 	ReloadDelay: 75
@@ -130,6 +86,7 @@ DevBullet:
 		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: SandCrater, RockCrater
+		InvalidTargets: Vehicle, Structure
 	Warhead@3Eff: CreateEffect
 		Explosions: shockwave
 		ImpactSounds: EXPLMD1.WAV
@@ -161,6 +118,7 @@ DevBullet:
 		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: SandCrater, RockCrater
+		InvalidTargets: Vehicle, Structure
 	Warhead@3Eff: CreateEffect
 		Explosions: med_explosion
 		ImpactSounds: EXPLMD2.WAV
