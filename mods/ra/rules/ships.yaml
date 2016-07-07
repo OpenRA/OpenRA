@@ -230,6 +230,8 @@ LST:
 		UpgradeMaxEnabledLevel: 0
 		TurnSpeed: 10
 		Speed: 113
+		TerrainSpeeds:
+			Beach: 70
 	RevealsShroud:
 		Range: 6c0
 	SelectionDecorations:
