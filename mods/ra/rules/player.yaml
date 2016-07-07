@@ -73,6 +73,9 @@ Player:
 		Prerequisites: techlevel.infonly, techlevel.low, techlevel.medium, techlevel.high, techlevel.unrestricted
 		Id: unrestricted
 	GlobalUpgradeManager:
+	ProvidesPrerequisiteFromAllies@ally.england:
+		AlliedFactions: england
+		Prerequisite: ally.england
 	EnemyWatcher:
 	VeteranProductionIconOverlay:
 		Image: iconchevrons

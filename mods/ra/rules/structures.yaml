@@ -1416,7 +1416,7 @@ KENN:
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 175
-		Prerequisites: anypower, ~structures.soviet, ~techlevel.infonly
+		Prerequisites: ally.england, anypower, ~structures.soviet, ~techlevel.infonly
 	Valued:
 		Cost: 100
 	Tooltip:
