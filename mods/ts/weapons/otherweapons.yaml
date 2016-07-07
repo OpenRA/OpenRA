@@ -20,6 +20,7 @@ FireballLauncher:
 		DamageTypes: Prone100Percent, TriggerProne, FireDeath
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: SmallScorch
+		InvalidTargets: Vehicle, Building, Wall
 
 FiendShard:
 	ReloadDelay: 30

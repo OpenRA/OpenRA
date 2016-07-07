@@ -524,7 +524,7 @@
 	AppearsOnRadar:
 		UseLocation: true
 	Targetable@GROUND:
-		TargetTypes: Ground
+		TargetTypes: Ground, Vehicle
 		UpgradeTypes: airborne
 		UpgradeMaxEnabledLevel: 0
 	Targetable@AIRBORNE:
@@ -628,7 +628,7 @@
 	Selectable:
 		Bounds: 26,26,0,-3
 	Targetable:
-		TargetTypes: Ground
+		TargetTypes: Ground, Creep
 	AttackMove:
 	HiddenUnderFog:
 	PoisonedByTiberium:
@@ -742,7 +742,7 @@
 		Palette: pips
 	Selectable:
 	Targetable:
-		TargetTypes: Ground, Repair
+		TargetTypes: Ground, Building, Repair
 	Guardable:
 	HiddenUnderFog:
 	ActorLostNotification:

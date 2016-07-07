@@ -37,6 +37,7 @@ MultiCluster:
 		ValidImpactTypes: Water
 	Warhead@4Smu: LeaveSmudge
 		SmudgeType: MediumCrater
+		InvalidTargets: Vehicle, Building, Wall
 
 SuicideBomb:
 	ReloadDelay: 1
@@ -74,7 +75,8 @@ IonCannon:
 		DamageTypes: Prone50Percent, TriggerProne, EnergyDeath
 	Warhead@4Smu_area: LeaveSmudge
 		SmudgeType: SmallScorch
-		Size: 2,1
+		InvalidTargets: Vehicle, Building, Wall
+		Size: 2
 		Delay: 3
 
 EMPulseCannon:
@@ -111,6 +113,7 @@ ClusterMissile:
 		Size: 1
 	Warhead@ClusterSmudges0: LeaveSmudge
 		SmudgeType: LargeCrater
+		InvalidTargets: Vehicle, Building, Wall
 		Size: 1
 	Warhead@ClusterDamage1: SpreadDamage
 		Spread: 2c0
@@ -126,6 +129,7 @@ ClusterMissile:
 		Delay: 5
 	Warhead@ClusterSmudges1: LeaveSmudge
 		SmudgeType: LargeScorch
+		InvalidTargets: Vehicle, Building, Wall
 		Size: 2
 		Delay: 5
 	Warhead@ClusterDamage2: SpreadDamage
@@ -142,6 +146,7 @@ ClusterMissile:
 		Delay: 10
 	Warhead@ClusterSmudges2: LeaveSmudge
 		SmudgeType: LargeScorch
+		InvalidTargets: Vehicle, Building, Wall
 		Size: 3
 		Delay: 10
 	Warhead@ClusterDamage3: SpreadDamage
@@ -158,6 +163,7 @@ ClusterMissile:
 		Delay: 15
 	Warhead@ClusterSmudges3: LeaveSmudge
 		SmudgeType: MediumScorch
+		InvalidTargets: Vehicle, Building, Wall
 		Size: 4
 		Delay: 15
 	Warhead@ClusterDamage4: SpreadDamage
@@ -174,5 +180,6 @@ ClusterMissile:
 		Delay: 20
 	Warhead@ClusterSmudges4: LeaveSmudge
 		SmudgeType: SmallScorch
+		InvalidTargets: Vehicle, Building, Wall
 		Size: 5
 		Delay: 20

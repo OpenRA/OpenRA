@@ -135,6 +135,7 @@ CyCannon:
 		ValidImpactTypes: Water
 	Warhead@4Smu: LeaveSmudge
 		SmudgeType: SmallScorch
+		InvalidTargets: Vehicle, Building, Wall
 
 Proton:
 	ReloadDelay: 50
@@ -170,6 +171,9 @@ Proton:
 		ExplosionPalette: player
 		ImpactSounds: ssplash3.aud
 		ValidImpactTypes: Water
+	Warhead@4Smu: LeaveSmudge
+		SmudgeType: MediumScorch
+		InvalidTargets: Vehicle, Building, Wall
 
 ObeliskLaserFire:
 	ReloadDelay: 1
