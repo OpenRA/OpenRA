@@ -22,7 +22,7 @@ return {
         table.insert(paths, p)
       end
       if not moai then
-        DisplayOutputLn("Can't find moai executable in any of the folders in PATH or MOAI_BIN: "
+        ide:Print("Can't find moai executable in any of the folders in PATH or MOAI_BIN: "
           ..table.concat(paths, ", "))
         return
       end
@@ -37,7 +37,7 @@ return {
         if file then break end
       end
       if not file then
-        DisplayOutputLn("Can't find any of the specified entry points ("
+        ide:Print("Can't find any of the specified entry points ("
           ..table.concat(epoints, ", ")
           ..") in the current project; continuing with the current file...")
       end
@@ -58,7 +58,7 @@ return {
       file = tmpfile:GetFullPath()
       local f = io.open(file, "w")
       if not f then
-        DisplayOutputLn("Can't open temporary file '"..file.."' for writing.")
+        ide:Print("Can't open temporary file '"..file.."' for writing.")
         return 
       end
       f:write(code)

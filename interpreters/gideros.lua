@@ -6,7 +6,7 @@ local mac = ide.osname == "Macintosh"
 
 local function isValidPid(bid, cmd)
   if not bid or bid == -1 or bid == 0 then
-    DisplayOutputLn(("Program unable to run as '%s'."):format(cmd))
+    ide:Print(("Program unable to run as '%s'."):format(cmd))
     return
   end
   return bid
@@ -41,13 +41,13 @@ return {
         table.insert(paths, p)
       end
       if not gideros then
-        DisplayOutputLn("Can't find gideros executable in any of the folders in PATH: "
+        ide:Print("Can't find gideros executable in any of the folders in PATH: "
           ..table.concat(paths, ", "))
         return
       end
     end
     if gideros and not wx.wxFileName(gideros):FileExists() then
-      DisplayOutputLn("Can't find the specified gideros executable '"..gideros.."'.")
+      ide:Print("Can't find the specified gideros executable '"..gideros.."'.")
       return
     end
 
@@ -58,7 +58,7 @@ return {
     local giderospath = giderostools:GetPath(wx.wxPATH_GET_VOLUME)
     local gdrbridge = GetFullPathIfExists(giderospath, win and 'gdrbridge.exe' or 'gdrbridge')
     if not gdrbridge then
-      DisplayOutputLn("Can't find gideros bridge executable in '"..giderospath.."'.")
+      ide:Print("Can't find gideros bridge executable in '"..giderospath.."'.")
       return
     end
 
@@ -66,12 +66,12 @@ return {
     local file
     for _, proj in ipairs(FileSysGetRecursive(self:fworkdir(wfilename), false, "*.gproj")) do
       if file then
-        DisplayOutputLn("Found multiple .gproj files in the project directory; ignored '"..proj.."'.")
+        ide:Print("Found multiple .gproj files in the project directory; ignored '"..proj.."'.")
       end
       file = file or proj
     end
     if not file then
-      DisplayOutputLn("Can't find gideros project file in the project directory.")
+      ide:Print("Can't find gideros project file in the project directory.")
       return
     end
 
@@ -82,7 +82,7 @@ return {
     local remote = ide.config.gideros and ide.config.gideros.remote
     if remote then
       local cmd = ('"%s" %s "%s"'):format(gdrbridge, 'setip', remote)
-      DisplayOutputLn(("Configuring remote player at %s."):format(remote))
+      ide:Print(("Configuring remote player at %s."):format(remote))
       local bid = wx.wxExecute(cmd, wx.wxEXEC_ASYNC)
       if not isValidPid(bid, cmd) then return end
       waitToComplete(bid) -- wait for a bit to give Gideros chance to connect
@@ -95,14 +95,14 @@ return {
           ide:ExecuteCommand(cmd,self:fworkdir(wfilename),function(s)
               -- remove all "status" messages from the output
               s = s:gsub("%f[\r\n]%s*%*.-[\r\n]",""):gsub("^%s*%*.-[\r\n]+","")
-              DisplayOutput(s)
+              ide:Write(s)
             end)
         end)
       if not pid then return end
     end
 
     do
-      DisplayOutputLn("Starting the player and waiting for the bridge to connect at '"..gdrbridge.."'.")
+      ide:Print("Starting the player and waiting for the bridge to connect at '"..gdrbridge.."'.")
       local cmd = ('"%s" %s'):format(gdrbridge, 'isconnected')
       local attempts, connected = 15
       for _ = 1, attempts do
@@ -126,18 +126,18 @@ return {
         if connected == nil and proc then
           wx.wxProcess.Kill(bid, wx.wxSIGKILL, wx.wxKILL_CHILDREN)
           if not remote then wx.wxProcess.Kill(pid, wx.wxSIGKILL, wx.wxKILL_CHILDREN) end
-          DisplayOutputLn("Couldn't connect to the player. Try again or check starting the player and the bridge manually.")
+          ide:Print("Couldn't connect to the player. Try again or check starting the player and the bridge manually.")
           return
         end
       end
       if not connected then
         if not remote then wx.wxProcess.Kill(pid, wx.wxSIGKILL, wx.wxKILL_CHILDREN) end
-        DisplayOutputLn("Couldn't connect after "..attempts.." attempts. Try again or check starting the player manually.")
+        ide:Print("Couldn't connect after "..attempts.." attempts. Try again or check starting the player manually.")
         return
       end
 
       local cmd = ('"%s" %s "%s"'):format(gdrbridge, 'play', file)
-      DisplayOutputLn(("Starting project file '%s'."):format(file))
+      ide:Print(("Starting project file '%s'."):format(file))
       local bid = wx.wxExecute(cmd, wx.wxEXEC_ASYNC)
       if not isValidPid(bid, cmd) then return end
     end

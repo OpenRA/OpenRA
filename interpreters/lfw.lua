@@ -29,7 +29,7 @@ return {
       filepath = tmpfile:GetFullPath()
       local f = io.open(filepath, "w")
       if not f then
-        DisplayOutputLn("Can't open temporary file '"..filepath.."' for writing.")
+        ide:Print("Can't open temporary file '"..filepath.."' for writing.")
         return
       end
       f:write(rundebug)

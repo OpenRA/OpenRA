@@ -23,7 +23,7 @@ return {
         table.insert(paths, p)
       end
       if not busted then
-        DisplayOutputLn("Can't find busted executable in any of the folders in PATH: "
+        ide:Print("Can't find busted executable in any of the folders in PATH: "
           ..table.concat(paths, ", "))
         return
       end
@@ -39,7 +39,7 @@ return {
       helper = tmpfile:GetFullPath()..".lua" -- busted likes .lua files more than .tmp files
       local f = io.open(helper, "w")
       if not f then
-        DisplayOutputLn("Can't open temporary file '"..helper.."' for writing.")
+        ide:Print("Can't open temporary file '"..helper.."' for writing.")
         return 
       end
       f:write("require('mobdebug').start()")

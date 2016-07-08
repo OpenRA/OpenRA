@@ -31,10 +31,10 @@ return {
         winapi.set_encoding(winapi.CP_UTF8)
         local shortpath = winapi.short_path(filepath)
         if shortpath == filepath then
-          DisplayOutputLn(
+          ide:Print(
             ("Can't get short path for a Unicode file name '%s' to open the file.")
             :format(filepath))
-          DisplayOutputLn(
+          ide:Print(
             ("You can enable short names by using `fsutil 8dot3name set %s: 0` and recreate the file or directory.")
             :format(wfilename:GetVolume()))
         end
@@ -53,7 +53,7 @@ return {
       filepath = tmpfile:GetFullPath()
       local f = io.open(filepath, "w")
       if not f then
-        DisplayOutputLn("Can't open temporary file '"..filepath.."' for writing.")
+        ide:Print("Can't open temporary file '"..filepath.."' for writing.")
         return
       end
       f:write(rundebug)
