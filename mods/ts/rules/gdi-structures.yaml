@@ -94,6 +94,7 @@ GAPILE:
 	Exit@1:
 		SpawnOffset: -256,1024,0
 		ExitCell: 2,2
+	ExitsDebugOverlay:
 	Production:
 		Produces: Infantry
 	PrimaryBuilding:
@@ -150,6 +151,7 @@ GAWEAP:
 		SpawnOffset: -384,-384,0
 		ExitCell: 3,1
 		ExitDelay: 5
+	ExitsDebugOverlay:
 	Production:
 		Produces: Vehicle
 	PrimaryBuilding:
@@ -199,6 +201,7 @@ GAHPAD:
 		Range: 5c0
 	Exit@1:
 		SpawnOffset: 0,-256,0
+	ExitsDebugOverlay:
 	RallyPoint:
 		Palette: mouse
 		IsPlayerPalette: false
@@ -416,6 +419,7 @@ GAPLUG:
 	Production:
 		Produces: HunterSeeker
 	Exit@1:
+	ExitsDebugOverlay:
 	SupportPowerChargeBar:
 	Power:
 		Amount: -150

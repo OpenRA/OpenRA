@@ -55,6 +55,7 @@
 		AllowUnderActors: true
 		TerrainType: Veins
 	TerrainGeometryOverlay:
+	ExitsDebugOverlayManager:
 
 World:
 	Inherits: ^BaseWorld

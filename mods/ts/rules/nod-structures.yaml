@@ -101,6 +101,7 @@ NAHAND:
 	Exit@1:
 		SpawnOffset: 384,768,0
 		ExitCell: 3,2
+	ExitsDebugOverlay:
 	RallyPoint:
 		Offset: 3,3
 		Palette: mouse
@@ -159,6 +160,7 @@ NAWEAP:
 		SpawnOffset: -384,-384,0
 		ExitCell: 3,1
 		ExitDelay: 5
+	ExitsDebugOverlay:
 	Production:
 		Produces: Vehicle
 	PrimaryBuilding:
@@ -204,6 +206,7 @@ NAHPAD:
 		Range: 5c0
 	Exit@1:
 		SpawnOffset: 0,-256,0
+	ExitsDebugOverlay:
 	RallyPoint:
 		Palette: mouse
 		IsPlayerPalette: false
@@ -351,6 +354,7 @@ NATMPL:
 	Production:
 		Produces: HunterSeeker
 	Exit@1:
+	ExitsDebugOverlay:
 
 NASTLH:
 	Inherits: ^Building
