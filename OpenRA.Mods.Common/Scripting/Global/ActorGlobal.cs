@@ -64,8 +64,9 @@ namespace OpenRA.Mods.Common.Scripting
 			return a;
 		}
 
-		[Desc("Returns the build time (in ticks) of the requested unit type.")]
-		public int BuildTime(string type)
+		[Desc("Returns the build time (in ticks) of the requested unit type.",
+			"An optional second value can be used to exactly specify the producing queue type.")]
+		public int BuildTime(string type, string queue = null)
 		{
 			ActorInfo ai;
 			if (!Context.World.Map.Rules.Actors.TryGetValue(type, out ai))
@@ -80,10 +81,35 @@ namespace OpenRA.Mods.Common.Scripting
 			if (time == -1)
 			{
 				var valued = ai.TraitInfoOrDefault<ValuedInfo>();
-				time = valued != null ? valued.Cost : 0;
+				if (valued == null)
+					return 0;
+				else
+					time = valued.Cost;
 			}
 
-			time = time * bi.BuildDurationModifier / 100;
+			int pbi;
+			if (queue != null)
+			{
+				var pqueue = Context.World.Map.Rules.Actors.Values.SelectMany(a => a.TraitInfos<ProductionQueueInfo>()
+					.Where(x => x.Type == queue)).FirstOrDefault();
+
+				if (pqueue == null)
+					throw new LuaException("The specified queue '{0}' does not exist!".F(queue));
+
+				pbi = pqueue.BuildDurationModifier;
+			}
+			else
+			{
+				var pqueue = Context.World.Map.Rules.Actors.Values.SelectMany(a => a.TraitInfos<ProductionQueueInfo>()
+					.Where(x => bi.Queue.Contains(x.Type))).FirstOrDefault();
+
+				if (pqueue == null)
+					throw new LuaException("No actors can produce actor '{0}'!".F(type));
+
+				pbi = pqueue.BuildDurationModifier;
+			}
+
+			time = time * bi.BuildDurationModifier * pbi / 10000;
 			return time;
 		}
 
