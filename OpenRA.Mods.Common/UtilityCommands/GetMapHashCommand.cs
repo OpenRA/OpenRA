@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using OpenRA.FileSystem;
 
 namespace OpenRA.Mods.Common.UtilityCommands
 {
@@ -25,7 +26,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 		[Desc("MAPFILE", "Generate hash of specified oramap file.")]
 		public void Run(ModData modData, string[] args)
 		{
-			using (var package = modData.ModFiles.OpenPackage(args[1]))
+			using (var package = modData.ModFiles.OpenPackage(args[1], new Folder(".")))
 				Console.WriteLine(Map.ComputeUID(package));
 		}
 	}

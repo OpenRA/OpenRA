@@ -54,7 +54,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 		{
 			Game.ModData = modData;
 
-			var map = new Map(modData, modData.ModFiles.OpenPackage(args[1]));
+			var map = new Map(modData, modData.ModFiles.OpenPackage(args[1], new Folder(".")));
 			MergeAndPrint(map, "Rules", map.RuleDefinitions);
 			MergeAndPrint(map, "Sequences", map.SequenceDefinitions);
 			MergeAndPrint(map, "VoxelSequences", map.VoxelSequenceDefinitions);
