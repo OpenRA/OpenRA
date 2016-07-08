@@ -213,6 +213,7 @@
 	AttackMove:
 	Passenger:
 		CargoType: Infantry
+		GrantUpgrades: Passenger
 	HiddenUnderFog:
 	ActorLostNotification:
 	GivesBounty:

@@ -88,17 +88,7 @@ V2RL:
 		Crushes: wall, mine, crate, infantry
 	RevealsShroud:
 		Range: 5c0
-	Turreted:
-		TurnSpeed: 5
-	Armament:
-		Weapon: 90mm
-		Recoil: 128
-		RecoilRecovery: 38
-		LocalOffset: 720,0,80
-		MuzzleSequence: muzzle
-	AttackTurreted:
 	WithMuzzleOverlay:
-	WithSpriteTurret:
 	AutoTarget:
 	SpawnActorOnDeath:
 		Actor: 2TNK.Husk
@@ -106,6 +96,82 @@ V2RL:
 		VisualBounds: 28,28
 	ProducibleWithLevel:
 		Prerequisites: vehicles.upgraded
+	Turreted@empty:
+		TurnSpeed: 5
+		UpgradeTypes: Passenger
+		UpgradeMaxEnabledLevel: 0
+		UpgradeMaxAcceptedLevel: 2
+	Turreted@1pass:
+		TurnSpeed: 5
+		Turret: 1pass
+		UpgradeTypes: Passenger
+		UpgradeMinEnabledLevel: 1
+		UpgradeMaxEnabledLevel: 1
+		UpgradeMaxAcceptedLevel: 2
+	Turreted@2pass:
+		TurnSpeed: 5
+		Turret: 2pass
+		UpgradeTypes: Passenger
+		UpgradeMinEnabledLevel: 2
+		UpgradeMaxAcceptedLevel: 2
+	Armament@empty:
+		Weapon: 90mm
+		Recoil: 128
+		RecoilRecovery: 38
+		LocalOffset: 720,0,80
+		MuzzleSequence: muzzle
+	Armament@1pass:
+		Name: 1pass
+		Turret: 1pass
+		Weapon: 105mm
+		Recoil: 128
+		RecoilRecovery: 38
+		LocalOffset: 768,85,90, 768,-85,90
+		MuzzleSequence: muzzle
+	Armament@2pass:
+		Name: 2pass
+		Turret: 2pass
+		Weapon: MammothTusk
+		LocalOffset: -85,384,340, -85,-384,340
+		LocalYaw: -100,100
+		Recoil: 43
+		MuzzleSequence: muzzle
+	AttackTurreted@empty:
+		UpgradeTypes: Passenger
+		UpgradeMaxEnabledLevel: 0
+		UpgradeMaxAcceptedLevel: 2
+	AttackTurreted@1pass:
+		Armaments: 1pass
+		UpgradeTypes: Passenger
+		UpgradeMinEnabledLevel: 1
+		UpgradeMaxEnabledLevel: 1
+		UpgradeMaxAcceptedLevel: 2
+	AttackTurreted@2pass:
+		Armaments: 1pass,2pass
+		UpgradeTypes: Passenger
+		UpgradeMinEnabledLevel: 2
+		UpgradeMaxAcceptedLevel: 2
+	WithSpriteTurret@empty:
+		UpgradeTypes: Passenger
+		UpgradeMaxEnabledLevel: 0
+		UpgradeMaxAcceptedLevel: 2
+	WithSpriteTurret@1pass:
+		Sequence: 1pass-turret
+		Turret: 1pass
+		UpgradeTypes: Passenger
+		UpgradeMinEnabledLevel: 1
+		UpgradeMaxEnabledLevel: 1
+		UpgradeMaxAcceptedLevel: 2
+	WithSpriteTurret@2pass:
+		Sequence: 2pass-turret
+		Turret: 2pass
+		UpgradeTypes: Passenger
+		UpgradeMinEnabledLevel: 2
+		UpgradeMaxAcceptedLevel: 2
+	Cargo:
+		Types: Infantry
+		MaxWeight: 2
+		PipCount: 2
 
 3TNK:
 	Inherits: ^Tank
