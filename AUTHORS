@@ -157,8 +157,9 @@ under the MIT license.
 Using FuzzyLogicLibrary (fuzzynet) by Dmitry
 Kaluzhny and released under the GNU GPL terms.
 
-Using Mono.Nat by Alan McGovern and Ben
-Motmans and distributed under the MIT license.
+Using Open.Nat by Lucas Ontivero, based on the work
+of Alan McGovern and Ben Motmans and distributed
+under the MIT license.
 
 Using ICSharpCode.SharpZipLib initially by Mike
 Krueger and distributed under the GNU GPL terms.
