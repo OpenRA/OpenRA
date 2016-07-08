@@ -23,6 +23,7 @@ namespace OpenRA.Server
 			Log.AddChannel("debug", "dedicated-debug.log");
 			Log.AddChannel("perf", "dedicated-perf.log");
 			Log.AddChannel("server", "dedicated-server.log");
+			Log.AddChannel("nat", "dedicated-nat.log");
 
 			// HACK: The engine code assumes that Game.Settings is set.
 			// This isn't nearly as bad as ModData, but is still not very nice.
