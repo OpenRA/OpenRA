@@ -122,6 +122,7 @@ namespace OpenRA.Mods.Common.Widgets
 			tooltipContainer.Value.RemoveTooltip();
 		}
 
+		int lastScrollTime = 0;
 		public override void Draw()
 		{
 			if (IsJoystickScrolling)
@@ -131,6 +132,30 @@ namespace OpenRA.Mods.Common.Widgets
 
 				var scroll = (joystickScrollEnd.Value - joystickScrollStart.Value).ToFloat2() * rate;
 				worldRenderer.Viewport.Scroll(scroll, false);
+			}
+			else
+			{
+				edgeDirections = ScrollDirection.None;
+				if (Game.Settings.Game.ViewportEdgeScroll && Game.HasInputFocus)
+					edgeDirections = CheckForDirections();
+
+				if (keyboardDirections != ScrollDirection.None || edgeDirections != ScrollDirection.None)
+				{
+					var scroll = float2.Zero;
+
+					foreach (var kv in ScrollOffsets)
+						if (keyboardDirections.Includes(kv.Key) || edgeDirections.Includes(kv.Key))
+							scroll += kv.Value;
+
+					// Scroll rate is defined for a 40ms interval
+					var deltaScale = Math.Min(Game.RunTime - lastScrollTime, 25f);
+
+					var length = Math.Max(1, scroll.Length);
+					scroll *= (deltaScale / (25 * length)) * Game.Settings.Game.ViewportEdgeScrollStep;
+
+					worldRenderer.Viewport.Scroll(scroll, false);
+					lastScrollTime = Game.RunTime;
+				}
 			}
 
 			UpdateMouseover();
@@ -403,27 +428,6 @@ namespace OpenRA.Mods.Common.Widgets
 			}
 
 			return false;
-		}
-
-		public override void Tick()
-		{
-			edgeDirections = ScrollDirection.None;
-			if (Game.Settings.Game.ViewportEdgeScroll && Game.HasInputFocus)
-				edgeDirections = CheckForDirections();
-
-			if (keyboardDirections != ScrollDirection.None || edgeDirections != ScrollDirection.None)
-			{
-				var scroll = float2.Zero;
-
-				foreach (var kv in ScrollOffsets)
-					if (keyboardDirections.Includes(kv.Key) || edgeDirections.Includes(kv.Key))
-						scroll += kv.Value;
-
-				var length = Math.Max(1, scroll.Length);
-				scroll *= (1f / length) * Game.Settings.Game.ViewportEdgeScrollStep;
-
-				worldRenderer.Viewport.Scroll(scroll, false);
-			}
 		}
 
 		ScrollDirection CheckForDirections()
