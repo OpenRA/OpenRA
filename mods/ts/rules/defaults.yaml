@@ -93,6 +93,7 @@
 	Inherits@2: ^SpriteActor
 	Inherits@3: ^Cloakable
 	Huntable:
+	WithTextControlGroupDecoration:
 	SelectionDecorations:
 		Palette: pips
 	Selectable:
@@ -268,6 +269,7 @@
 			BlueTiberium: 90
 				PathingCost: 90
 			Veins: 50
+	WithTextControlGroupDecoration:
 	SelectionDecorations:
 		Palette: pips
 	Selectable:
@@ -439,6 +441,7 @@
 		Voice: Move
 	Selectable:
 		Bounds: 40,24
+	WithTextControlGroupDecoration:
 	SelectionDecorations:
 		Palette: pips
 	Voiced:
@@ -540,6 +543,7 @@
 		UpgradeTypes: airborne
 		UpgradeMinEnabledLevel: 1
 	Selectable:
+	WithTextControlGroupDecoration:
 	SelectionDecorations:
 		Palette: pips
 	Aircraft:
@@ -633,6 +637,7 @@
 			Tiberium: 100
 			BlueTiberium: 100
 			Veins: 100
+	WithTextControlGroupDecoration:
 	SelectionDecorations:
 		Palette: pips
 	Selectable:
@@ -747,6 +752,7 @@
 		TerrainTypes: Clear, Road, DirtRoad, Rough
 	WithSpriteBody:
 	WithMakeAnimation:
+	WithTextControlGroupDecoration:
 	SelectionDecorations:
 		Palette: pips
 	Selectable:
@@ -784,6 +790,7 @@
 		Range: 5c0
 	Selectable:
 		Bounds: 40,24
+	WithTextControlGroupDecoration:
 	SelectionDecorations:
 		Palette: pips
 	Voiced:
