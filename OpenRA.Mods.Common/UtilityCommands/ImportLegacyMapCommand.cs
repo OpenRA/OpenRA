@@ -254,8 +254,8 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				.Select(kv => Pair.New(Exts.ParseIntegerInvariant(kv.Key),
 					LocationFromMapOffset(Exts.ParseIntegerInvariant(kv.Value), MapSize)));
 
-			// Add waypoint actors
-			foreach (var kv in wps)
+			// Add waypoint actors skipping duplicate entries
+			foreach (var kv in wps.DistinctBy(location => location.Second))
 			{
 				if (!singlePlayer && kv.First <= 7)
 				{
