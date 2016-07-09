@@ -263,6 +263,7 @@ function ProjectDebug(skipcheck, debtype)
       debugger:Run()
     end
   else
+    if not debugger:IsListening() then debugger:Listen() end
     local debcall = (debuggers[debtype or "debug"]):
       format(debugger:GetHostName(), debugger:GetPortNumber())
     local fname = getNameToRun(skipcheck)
@@ -352,11 +353,8 @@ frame:Connect(ID_RUNNOW, wx.wxEVT_UPDATE_UI,
 
 frame:Connect(ID_ATTACHDEBUG, wx.wxEVT_COMMAND_MENU_SELECTED,
   function (event)
-    if event:IsChecked() then
-      if (ide.interpreter.fattachdebug) then ide.interpreter:fattachdebug() end
-    else
-      ide:GetDebugger():Listen(false) -- stop listening
-    end
+    ide:GetDebugger():Listen(event:IsChecked()) -- start/stop listening
+    if event:IsChecked() and ide.interpreter.fattachdebug then ide.interpreter:fattachdebug() end
   end)
 frame:Connect(ID_ATTACHDEBUG, wx.wxEVT_UPDATE_UI,
   function (event)

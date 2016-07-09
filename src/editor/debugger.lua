@@ -596,6 +596,8 @@ function debugger:Listen(start)
     return
   end
 
+  if debugger.listening then return end
+
   local server, err = socket.bind("*", debugger.portnumber)
   if not server then
     DisplayOutputLn(TR("Can't start debugger server at %s:%d: %s.")
@@ -1484,11 +1486,8 @@ function debugger:OutputSet(stream, mode, options)
   return self:handle(("output %s %s"):format(stream, mode), nil, options)
 end
 
-function DebuggerAttachDefault(options)
-  local debugger = ide:GetDebugger()
-  debugger.options = options
-  if not debugger.listening then debugger:Listen() end
-end
+function DebuggerAttachDefault(options) ide:GetDebugger():SetOptions(options) end
+function debugger:SetOptions(options) debugger.options = options end
 
 function debugger:Stop()
   local debugger = self

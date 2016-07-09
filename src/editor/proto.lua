@@ -58,7 +58,7 @@ ide.proto.Interpreter = {__index = {
     local proj = ide:GetProject()
     return proj and proj:gsub("[\\/]$","") or wfilename:GetPath(wx.wxPATH_GET_VOLUME)
   end,
-  fattachdebug = function(self) DebuggerAttachDefault() end,
+  fattachdebug = function(self) ide:GetDebugger():SetOptions() end,
 }}
 
 ide.proto.Debugger = {__index = {
