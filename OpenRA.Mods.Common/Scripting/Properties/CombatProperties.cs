@@ -23,13 +23,11 @@ namespace OpenRA.Mods.Common.Scripting
 	public class CombatProperties : ScriptActorProperties, Requires<AttackBaseInfo>, Requires<IMoveInfo>
 	{
 		readonly IMove move;
-		readonly AttackBase attackBase;
 
 		public CombatProperties(ScriptContext context, Actor self)
 			: base(context, self)
 		{
 			move = self.Trait<IMove>();
-			attackBase = self.Trait<AttackBase>();
 		}
 
 		[ScriptActorPropertyActivity]
@@ -74,6 +72,18 @@ namespace OpenRA.Mods.Common.Scripting
 			if (repeat)
 				using (var f = func.CopyReference() as LuaFunction)
 					Self.QueueActivity(new CallFunc(() => PatrolUntil(waypoints, f, wait)));
+		}
+	}
+
+	[ScriptPropertyGroup("Combat")]
+	public class GeneralCombatProperties : ScriptActorProperties, Requires<AttackBaseInfo>
+	{
+		readonly AttackBase attackBase;
+
+		public GeneralCombatProperties(ScriptContext context, Actor self)
+			: base(context, self)
+		{
+			attackBase = self.Trait<AttackBase>();
 		}
 
 		[Desc("Attack the target actor. The target actor needs to be visible.")]

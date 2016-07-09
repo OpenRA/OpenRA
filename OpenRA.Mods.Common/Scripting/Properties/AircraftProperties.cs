@@ -46,5 +46,19 @@ namespace OpenRA.Mods.Common.Scripting
 			else
 				Self.QueueActivity(new HeliReturnToBase(Self));
 		}
+
+		[ScriptActorPropertyActivity]
+		[Desc("Queues a landing activity on the specififed actor.")]
+		public void Land(Actor landOn)
+		{
+			Self.QueueActivity(new Land(Self, Target.FromActor(landOn)));
+		}
+
+		[ScriptActorPropertyActivity]
+		[Desc("Starts the resupplying activity when being on a host building.")]
+		public void Resupply()
+		{
+			Self.QueueActivity(new ResupplyAircraft(Self));
+		}
 	}
 }
