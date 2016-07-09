@@ -49,7 +49,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 		public void Run(ModData modData, string[] args)
 		{
 			Game.ModData = modData;
-			map = new Map(modData, modData.ModFiles.OpenPackage(args[1]));
+			map = new Map(modData, modData.ModFiles.OpenPackage(args[1], new Folder(".")));
 			Console.WriteLine("Resizing map {0} from {1} to {2},{3}", map.Title, map.MapSize, width, height);
 			map.Resize(width, height);
 

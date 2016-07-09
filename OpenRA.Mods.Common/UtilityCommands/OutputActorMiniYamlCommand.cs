@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Linq;
+using OpenRA.FileSystem;
 
 namespace OpenRA.Mods.Common.UtilityCommands
 {
@@ -27,7 +28,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				try
 				{
 					mapPath = args[2];
-					map = new Map(modData, modData.ModFiles.OpenPackage(mapPath));
+					map = new Map(modData, modData.ModFiles.OpenPackage(mapPath, new Folder(".")));
 				}
 				catch (InvalidDataException)
 				{
