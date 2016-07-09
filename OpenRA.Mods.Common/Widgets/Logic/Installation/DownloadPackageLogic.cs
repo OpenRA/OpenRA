@@ -142,7 +142,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						foreach (var kv in download.Extract)
 						{
 							var entry = z.GetEntry(kv.Value);
-							if (!entry.IsFile)
+							if (entry == null || !entry.IsFile)
 								continue;
 
 							onExtractProgress("Extracting " + entry.Name);
