@@ -35,14 +35,14 @@ BigFlamer:
 	Burst: 2
 	BurstDelay: 25
 	Warhead@1Dam: SpreadDamage
-		Spread: 341
+		Spread: 400
 		Damage: 75
 		InvalidTargets: Wall
 		ValidTargets: Ground, Trees
 		Versus:
 			None: 100
 			Wood: 100
-			Light: 67
+			Light: 100
 			Heavy: 25
 		DamageTypes: Prone50Percent, TriggerProne, FireDeath, Incendiary
 	Warhead@2Smu: LeaveSmudge

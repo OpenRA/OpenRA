@@ -524,7 +524,7 @@ FIX:
 	SelectionDecorations:
 		VisualBounds: 72,48
 	Health:
-		HP: 600
+		HP: 700
 	RevealsShroud:
 		Range: 5c0
 	Bib:

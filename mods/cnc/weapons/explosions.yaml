@@ -1,7 +1,7 @@
 FlametankExplode:
 	Warhead@1Dam: SpreadDamage
 		Spread: 1c0
-		Damage: 100
+		Damage: 115
 		DamageTypes: Prone50Percent, TriggerProne, FireDeath
 	Warhead@2Eff: CreateEffect
 		Explosions: big_napalm
