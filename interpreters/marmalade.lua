@@ -233,5 +233,4 @@ return {
     return CommandLineRun(cmd,GetPathWithSep(projdir),true,true)
   end,
   hasdebugger = true,
-  fattachdebug = function(self) DebuggerAttachDefault() end,
 }

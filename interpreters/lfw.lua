@@ -69,7 +69,6 @@ return {
       and ide.config.path.projectdir or wfilename:GetPath(wx.wxPATH_GET_VOLUME)
   end,
   hasdebugger = true,
-  fattachdebug = function(self) DebuggerAttachDefault() end,
   scratchextloop = false,
   unhideanywindow = true,
   takeparameters = true,

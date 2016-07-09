@@ -87,6 +87,5 @@ return {
       function() if rundebug then wx.wxRemoveFile(file) end end)
   end,
   hasdebugger = true,
-  fattachdebug = function(self) DebuggerAttachDefault() end,
   scratchextloop = true,
 }

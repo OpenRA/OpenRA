@@ -97,6 +97,5 @@ return {
       function() if uhw and cfg.showconsole then uhw.ConsoleWindowClass = cwc end end)
   end,
   hasdebugger = true,
-  fattachdebug = function(self) DebuggerAttachDefault() end,
   scratchextloop = true,
 }

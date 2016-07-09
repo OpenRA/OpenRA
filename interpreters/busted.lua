@@ -53,5 +53,4 @@ return {
       function() if helper then wx.wxRemoveFile(helper) end end)
   end,
   hasdebugger = true,
-  fattachdebug = function(self) DebuggerAttachDefault() end,
 }

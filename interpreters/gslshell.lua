@@ -82,7 +82,6 @@ return {
       function() if rundebug then wx.wxRemoveFile(filepath) end end)
   end,
   hasdebugger = true,
-  fattachdebug = function(self) DebuggerAttachDefault() end,
   skipcompile = true,
   unhideanywindow = true,
   scratchextloop = false,

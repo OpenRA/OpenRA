@@ -144,6 +144,5 @@ return {
     return pid
   end,
   hasdebugger = true,
-  fattachdebug = function(self) DebuggerAttachDefault() end,
   scratchextloop = true,
 }
