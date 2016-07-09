@@ -375,8 +375,11 @@ do
   local exepath = wx.wxStandardPaths.Get():GetExecutablePath()
   if ide.osname == "Windows" and exepath:find("%.exe$") then
     fullPath = exepath
-  elseif not wx.wxIsAbsolutePath(fullPath) then
-    fullPath = wx.wxGetCwd().."/"..fullPath
+  -- path handling only works correctly on UTF8-valid strings, so check for that.
+  -- This may be caused by the launcher on Windows using ANSI methods for command line
+  -- processing. Keep the path as is for UTF-8 invalid strings as it's still good enough
+  elseif not wx.wxIsAbsolutePath(fullPath) and wx.wxString().FromUTF8(fullPath) == fullPath then
+    fullPath = MergeFullPath(wx.wxGetCwd(), fullPath)
   end
 
   ide.editorFilename = fullPath
