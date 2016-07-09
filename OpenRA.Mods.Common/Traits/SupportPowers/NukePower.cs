@@ -27,6 +27,9 @@ namespace OpenRA.Mods.Common.Traits
 			"Also image to use for the missile.")]
 		public readonly string MissileWeapon = "";
 
+		[Desc("Altitude above terrain below which to explode. Zero effectively deactivates airburst.")]
+		public readonly WDist AirburstAltitude = WDist.Zero;
+
 		[Desc("Sprite sequence for the ascending missile.")]
 		[SequenceReference("MissileWeapon")] public readonly string MissileUp = "up";
 
@@ -112,7 +115,7 @@ namespace OpenRA.Mods.Common.Traits
 				wsb.PlayCustomAnimation(self, info.ActivationSequence, () => wsb.CancelCustomAnimation(self));
 			}
 
-			var targetPosition = self.World.Map.CenterOfCell(order.TargetLocation);
+			var targetPosition = self.World.Map.CenterOfCell(order.TargetLocation) + new WVec(WDist.Zero, WDist.Zero, info.AirburstAltitude);
 			var palette = info.IsPlayerPalette ? info.MissilePalette + self.Owner.InternalName : info.MissilePalette;
 			var missile = new NukeLaunch(self.Owner, info.MissileWeapon, info.WeaponInfo, palette, info.MissileUp, info.MissileDown,
 				self.CenterPosition + body.LocalToWorld(info.SpawnOffset),
