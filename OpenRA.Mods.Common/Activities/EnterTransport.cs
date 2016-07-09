@@ -17,9 +17,9 @@ namespace OpenRA.Mods.Common.Activities
 {
 	class EnterTransport : Enter
 	{
-		readonly Actor transport;
 		readonly Passenger passenger;
 		readonly int maxTries;
+		Actor transport;
 		Cargo cargo;
 
 		public EnterTransport(Actor self, Actor transport, int maxTries = 0, bool targetCenter = false)
@@ -64,7 +64,7 @@ namespace OpenRA.Mods.Common.Activities
 			var type = target.Actor.Info.Name;
 			return TryGetAlternateTargetInCircle(
 				self, passenger.Info.AlternateTransportScanRange,
-				t => cargo = t.Actor.Trait<Cargo>(), // update cargo
+				t => { transport = t.Actor; cargo = t.Actor.Trait<Cargo>(); }, // update transport and cargo
 				a => { var c = a.TraitOrDefault<Cargo>(); return c != null && (c.Unloading || c.CanLoad(a, self)); },
 				new Func<Actor, bool>[] { a => a.Info.Name == type }); // Prefer transports of the same type
 		}
