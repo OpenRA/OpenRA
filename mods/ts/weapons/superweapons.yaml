@@ -1,22 +1,22 @@
 MultiCluster:
 	ReloadDelay: 80
-	Range: 6c0
-	Report: misl1.aud
+	Range: 15c0
 	ValidTargets: Ground
 	Projectile: Missile
-		MaximumLaunchSpeed: 170
+		MaximumLaunchSpeed: 192
 		Arm: 2
 		Blockable: false
 		Shadow: true
 		Inaccuracy: 128
-		Image: DRAGON
+		Image: clustermissile
+		Sequences: cluster
 		HorizontalRateOfTurn: 8
-		RangeLimit: 7c204
-		Palette: ra
-		MinimumLaunchSpeed: 75
+		Palette: player
+		UsePlayerPalette: true
+		MinimumLaunchSpeed: 192
 		Speed: 384
 	Warhead@1Dam: SpreadDamage
-		Spread: 128
+		Spread: 512
 		Damage: 65
 		ValidTargets: Ground
 		Versus:
@@ -98,88 +98,6 @@ EMPulseCannon:
 
 ClusterMissile:
 	ValidTargets: Ground, Water, Air
-	Warhead@ImpactDamage0: SpreadDamage
-		Spread: 1c0
-		Damage: 150
-		Falloff: 1000, 368, 135, 50, 18, 7, 0
-		ValidTargets: Ground, Water, Air
-		Versus:
-			Concrete: 25
-		DamageTypes: Prone50Percent, TriggerProne, FireDeath
-	Warhead@SoundEffect0: CreateEffect
-		Explosions: large_explosion
-		ImpactSounds: expnew19.aud
-	Warhead@ResourceDestruction0: DestroyResource
-		Size: 1
-	Warhead@ClusterSmudges0: LeaveSmudge
-		SmudgeType: LargeCrater
-		InvalidTargets: Vehicle, Building, Wall
-		Size: 1
-	Warhead@ClusterDamage1: SpreadDamage
-		Spread: 2c0
-		Damage: 60
-		Falloff: 1000, 368, 135, 50, 18, 7, 0
-		Delay: 5
-		ValidTargets: Ground, Water, Air
-		Versus:
-			Concrete: 25
-		DamageTypes: Prone50Percent, TriggerProne, FireDeath
-	Warhead@ResourceDestruction1: DestroyResource
-		Size: 2
-		Delay: 5
-	Warhead@ClusterSmudges1: LeaveSmudge
-		SmudgeType: LargeScorch
-		InvalidTargets: Vehicle, Building, Wall
-		Size: 2
-		Delay: 5
-	Warhead@ClusterDamage2: SpreadDamage
-		Spread: 3c0
-		Damage: 60
-		Falloff: 1000, 368, 135, 50, 18, 7, 0
-		Delay: 10
-		ValidTargets: Ground, Water, Air
-		Versus:
-			Concrete: 25
-		DamageTypes: Prone50Percent, TriggerProne, FireDeath
-	Warhead@ResourceDestruction2: DestroyResource
-		Size: 3
-		Delay: 10
-	Warhead@ClusterSmudges2: LeaveSmudge
-		SmudgeType: LargeScorch
-		InvalidTargets: Vehicle, Building, Wall
-		Size: 3
-		Delay: 10
-	Warhead@ClusterDamage3: SpreadDamage
-		Spread: 4c0
-		Damage: 60
-		Falloff: 1000, 368, 135, 50, 18, 7, 0
-		Delay: 15
-		ValidTargets: Ground, Water, Air
-		Versus:
-			Concrete: 25
-		DamageTypes: Prone50Percent, TriggerProne, FireDeath
-	Warhead@ResourceDestruction3: DestroyResource
-		Size: 4
-		Delay: 15
-	Warhead@ClusterSmudges3: LeaveSmudge
-		SmudgeType: MediumScorch
-		InvalidTargets: Vehicle, Building, Wall
-		Size: 4
-		Delay: 15
-	Warhead@ClusterDamage4: SpreadDamage
-		Spread: 5c0
-		Damage: 60
-		Falloff: 1000, 368, 135, 50, 18, 7, 0
-		Delay: 20
-		ValidTargets: Ground, Water, Air
-		Versus:
-			Concrete: 25
-		DamageTypes: Prone50Percent, TriggerProne, FireDeath
-	Warhead@ResourceDestruction4: DestroyResource
-		Size: 5
-		Delay: 20
-	Warhead@ClusterSmudges4: LeaveSmudge
-		SmudgeType: SmallScorch
-		InvalidTargets: Vehicle, Building, Wall
-		Size: 5
-		Delay: 20
+	Warhead@1Cluster: FireCluster
+		Range: 3, 3
+		Weapon: MultiCluster

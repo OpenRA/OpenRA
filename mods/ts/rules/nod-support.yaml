@@ -242,7 +242,9 @@ NAMISL:
 		IncomingSpeechNotification: MissileLaunchDetected
 		LaunchSound: icbm1.aud
 		MissileWeapon: ClusterMissile
-		SpawnOffset: 0,427,0
+		MissilePalette: player
+		IsPlayerPalette: true
+		AirburstAltitude: 10c0
 		DisplayTimer: False
 		DisplayBeacon: False
 		DisplayRadarPing: True
