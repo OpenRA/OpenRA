@@ -1121,6 +1121,26 @@ namespace OpenRA
 			return FindTilesInAnnulus(center, 0, maxRange, allowOutsideBounds);
 		}
 
+		public IEnumerable<CPos> FindTilesInRectangle(CPos center, int width, int height, bool allowOutsideBounds = false)
+		{
+			var x = center.X - (width - 1) / 2;
+			var y = center.Y - (height - 1) / 2;
+
+			Func<CPos, bool> valid = Contains;
+			if (allowOutsideBounds)
+				valid = Tiles.Contains;
+
+			for (var i = 0; i < width; i++)
+			{
+				for (var j = 0; j < height; j++)
+				{
+					var t = new CPos(x + i, y + j);
+					if (valid(t))
+						yield return t;
+				}
+			}
+		}
+
 		public Stream Open(string filename)
 		{
 			// Explicit package paths never refer to a map
