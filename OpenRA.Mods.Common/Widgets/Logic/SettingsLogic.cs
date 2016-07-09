@@ -473,7 +473,16 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					{ "MapPushTop", "Jump to top edge" },
 					{ "MapPushBottom", "Jump to bottom edge" },
 					{ "MapPushLeftEdge", "Jump to left edge" },
-					{ "MapPushRightEdge", "Jump to right edge" }
+					{ "MapPushRightEdge", "Jump to right edge" },
+
+					{ "ViewPortBookmarkSaveSlot1", "Record bookmark #1" },
+					{ "ViewPortBookmarkUseSlot1", "Jump to bookmark #1" },
+					{ "ViewPortBookmarkSaveSlot2", "Record bookmark #2" },
+					{ "ViewPortBookmarkUseSlot2", "Jump to bookmark #2" },
+					{ "ViewPortBookmarkSaveSlot3", "Record bookmark #3" },
+					{ "ViewPortBookmarkUseSlot3", "Jump to bookmark #3" },
+					{ "ViewPortBookmarkSaveSlot4", "Record bookmark #4" },
+					{ "ViewPortBookmarkUseSlot4", "Jump to bookmark #4" }
 				};
 
 				var header = ScrollItemWidget.Setup(hotkeyHeader, returnTrue, doNothing);
