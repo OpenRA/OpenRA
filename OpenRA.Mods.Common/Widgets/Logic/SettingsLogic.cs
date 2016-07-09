@@ -450,21 +450,34 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					{ "CycleStatusBarsKey", "Cycle status bars display" },
 					{ "TogglePixelDoubleKey", "Toggle pixel doubling" },
 					{ "ToggleMuteKey", "Toggle audio mute" },
-					{ "TogglePlayerStanceColorsKey", "Toggle player stance colors" },
-
-					{ "MapScrollUp", "Map scroll up" },
-					{ "MapScrollDown", "Map scroll down" },
-					{ "MapScrollLeft", "Map scroll left" },
-					{ "MapScrollRight", "Map scroll right" },
-
-					{ "MapPushTop", "Map push to top" },
-					{ "MapPushBottom", "Map push to bottom" },
-					{ "MapPushLeftEdge", "Map push to left edge" },
-					{ "MapPushRightEdge", "Map push to right edge" }
+					{ "TogglePlayerStanceColorsKey", "Toggle player stance colors" }
 				};
 
 				var header = ScrollItemWidget.Setup(hotkeyHeader, returnTrue, doNothing);
 				header.Get<LabelWidget>("LABEL").GetText = () => "Game Commands";
+				hotkeyList.AddChild(header);
+
+				foreach (var kv in hotkeys)
+					BindHotkeyPref(kv, ks, globalTemplate, hotkeyList);
+			}
+
+			// Viewport
+			{
+				var hotkeys = new Dictionary<string, string>()
+				{
+					{ "MapScrollUp", "Scroll up" },
+					{ "MapScrollDown", "Scroll down" },
+					{ "MapScrollLeft", "Scroll left" },
+					{ "MapScrollRight", "Scroll right" },
+
+					{ "MapPushTop", "Jump to top edge" },
+					{ "MapPushBottom", "Jump to bottom edge" },
+					{ "MapPushLeftEdge", "Jump to left edge" },
+					{ "MapPushRightEdge", "Jump to right edge" }
+				};
+
+				var header = ScrollItemWidget.Setup(hotkeyHeader, returnTrue, doNothing);
+				header.Get<LabelWidget>("LABEL").GetText = () => "Viewport Commands";
 				hotkeyList.AddChild(header);
 
 				foreach (var kv in hotkeys)
