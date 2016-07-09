@@ -27,6 +27,7 @@ Bazooka:
 		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: SandCrater, RockCrater
+		InvalidTargets: Vehicle, Structure
 	Warhead@3Eff: CreateEffect
 		Explosions: tiny_explosion
 		ImpactSounds: EXPLSML1.WAV
@@ -59,6 +60,7 @@ Rocket:
 		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: SandCrater, RockCrater
+		InvalidTargets: Vehicle, Structure
 	Warhead@3Eff: CreateEffect
 		Explosions: rocket_explosion
 		ExplosionPalette: effect75alpha
@@ -102,6 +104,7 @@ TowerMissile:
 		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: SandCrater, RockCrater
+		InvalidTargets: Vehicle, Structure
 	Warhead@3Eff: CreateEffect
 		Explosions: small_explosion
 		ImpactSounds: EXPLSML1.WAV
@@ -143,6 +146,7 @@ mtank_pri:
 		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: SandCrater, RockCrater
+		InvalidTargets: Vehicle, Structure
 	Warhead@3Eff: CreateEffect
 		Explosions: small_explosion
 		ImpactSounds: EXPLSML1.WAV
@@ -181,8 +185,6 @@ DeviatorMissile:
 			cy: 10
 			harvester: 20
 		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
-	Warhead@2Smu: LeaveSmudge
-		SmudgeType: SandCrater, RockCrater
 	Warhead@3Eff: CreateEffect
 		Explosions: deviator
 		ExplosionPalette: deviatorgas

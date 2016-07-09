@@ -6,6 +6,8 @@ FlametankExplode:
 	Warhead@2Eff: CreateEffect
 		Explosions: big_napalm
 		ImpactSounds: xplobig6.aud
+	Warhead@3Smu: LeaveSmudge
+		SmudgeType: Scorch
 
 HeliCrash:
 	Warhead@1Dam: SpreadDamage
@@ -15,6 +17,9 @@ HeliCrash:
 	Warhead@2Eff: CreateEffect
 		Explosions: poof
 		ImpactSounds: xplos.aud
+	Warhead@3Smu: LeaveSmudge
+		SmudgeType: Crater
+		InvalidTargets: Vehicle, Structure, Wall, Husk, Trees, Creep
 
 HeliExplode:
 	Warhead@1Dam: SpreadDamage
@@ -36,6 +41,8 @@ UnitExplode:
 	Warhead@2Eff: CreateEffect
 		Explosions: poof
 		ImpactSounds: xplobig6.aud
+	Warhead@3Smu: LeaveSmudge
+		SmudgeType: Crater
 
 UnitExplodeShip:
 	Inherits: UnitExplode
@@ -55,6 +62,8 @@ UnitExplodeSmall:
 	Warhead@2Eff: CreateEffect
 		Explosions: big_frag
 		ImpactSounds: xplobig4.aud
+	Warhead@3Smu: LeaveSmudge
+		SmudgeType: Crater
 
 GrenadierExplode:
 	Warhead@1Dam: SpreadDamage
@@ -69,6 +78,8 @@ GrenadierExplode:
 	Warhead@2Eff: CreateEffect
 		Explosions: poof
 		ImpactSounds: xplosml2.aud
+	Warhead@3Smu: LeaveSmudge
+		SmudgeType: Crater
 
 Napalm.Crate:
 	Warhead@1Dam: SpreadDamage

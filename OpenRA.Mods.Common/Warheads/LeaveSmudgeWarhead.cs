@@ -38,7 +38,12 @@ namespace OpenRA.Mods.Common.Warheads
 			foreach (var sc in allCells)
 			{
 				var smudgeType = world.Map.GetTerrainInfo(sc).AcceptsSmudgeType.FirstOrDefault(SmudgeType.Contains);
-				if (smudgeType == null) continue;
+				if (smudgeType == null)
+					continue;
+
+				var cellActors = world.ActorMap.GetActorsAt(sc);
+				if (cellActors.Any(a => !IsValidAgainst(a, firedBy)))
+					continue;
 
 				SmudgeLayer smudgeLayer;
 				if (!smudgeLayers.TryGetValue(smudgeType, out smudgeLayer))

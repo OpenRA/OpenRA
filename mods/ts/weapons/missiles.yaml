@@ -42,6 +42,7 @@ Bazooka:
 		ImpactSounds: expnew05.aud
 	Warhead@5Smu: LeaveSmudge
 		SmudgeType: SmallCrater
+		InvalidTargets: Vehicle, Building, Wall
 
 HoverMissile:
 	ReloadDelay: 68
@@ -88,6 +89,7 @@ HoverMissile:
 		ImpactSounds: expnew06.aud
 	Warhead@5: LeaveSmudge
 		SmudgeType: SmallCrater
+		InvalidTargets: Vehicle, Building, Wall
 
 MammothTusk:
 	ReloadDelay: 80
@@ -170,6 +172,7 @@ BikeMissile:
 		ValidImpactTypes: Water
 	Warhead@4Smu: LeaveSmudge
 		SmudgeType: SmallCrater
+		InvalidTargets: Vehicle, Building, Wall
 
 Dragon:
 	ReloadDelay: 50
@@ -216,6 +219,7 @@ Dragon:
 		ImpactSounds: expnew06.aud
 	Warhead@5Smu: LeaveSmudge
 		SmudgeType: SmallCrater
+		InvalidTargets: Vehicle, Building, Wall
 
 Hellfire:
 	ReloadDelay: 50
@@ -262,6 +266,7 @@ Hellfire:
 		ImpactSounds: expnew06.aud
 	Warhead@5Smu: LeaveSmudge
 		SmudgeType: SmallCrater
+		InvalidTargets: Vehicle, Building, Wall
 
 RedEye2:
 	ReloadDelay: 55

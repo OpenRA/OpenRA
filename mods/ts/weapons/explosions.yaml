@@ -12,6 +12,9 @@ UnitExplode:
 	Warhead@2Eff: CreateEffect
 		Explosions: large_twlt
 		ImpactSounds: expnew09.aud
+	Warhead@4Smu: LeaveSmudge
+		SmudgeType: MediumCrater
+		InvalidTargets: Building, Wall
 
 UnitExplodeSmall:
 	Warhead@1Dam: SpreadDamage
@@ -26,6 +29,9 @@ UnitExplodeSmall:
 	Warhead@2Eff: CreateEffect
 		Explosions: medium_brnl
 		ImpactSounds: expnew13.aud
+	Warhead@4Smu: LeaveSmudge
+		SmudgeType: SmallCrater
+		InvalidTargets: Building, Wall
 
 CyborgExplode:
 	Warhead@1Eff: CreateEffect
