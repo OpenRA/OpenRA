@@ -57,7 +57,8 @@ namespace OpenRA.FileSystem
 			// SharpZipLib breaks when asked to update archives loaded from outside streams or files
 			// We can work around this by creating a clean in-memory-only file, cutting all outside references
 			pkgStream = new MemoryStream();
-			p.GetStream(name).CopyTo(pkgStream);
+			using (var sourceStream = p.GetStream(name))
+				sourceStream.CopyTo(pkgStream);
 			pkgStream.Position = 0;
 
 			pkg = new SZipFile(pkgStream);
