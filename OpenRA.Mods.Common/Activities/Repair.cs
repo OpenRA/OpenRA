@@ -74,7 +74,7 @@ namespace OpenRA.Mods.Common.Activities
 				self.InflictDamage(self, -hpToRepair, null);
 
 				foreach (var depot in host.TraitsImplementing<INotifyRepair>())
-					depot.Repairing(self, host);
+					depot.Repairing(host, self);
 
 				remainingTicks = repairsUnits.Interval;
 			}

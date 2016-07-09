@@ -24,20 +24,34 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public object Create(ActorInitializer init) { return new WithRepairAnimation(init.Self, this); }
 	}
 
-	public class WithRepairAnimation : INotifyRepair
+	public class WithRepairAnimation : INotifyRepair, INotifyBuildComplete, INotifySold
 	{
 		readonly WithRepairAnimationInfo info;
+		readonly WithSpriteBody spriteBody;
+		bool buildComplete;
 
 		public WithRepairAnimation(Actor self, WithRepairAnimationInfo info)
 		{
 			this.info = info;
+			spriteBody = self.TraitOrDefault<WithSpriteBody>();
 		}
 
-		public void Repairing(Actor self, Actor host)
+		public void Repairing(Actor self, Actor target)
 		{
-			var spriteBody = host.TraitOrDefault<WithSpriteBody>();
-			if (spriteBody != null && !(info.PauseOnLowPower && self.IsDisabled()))
-				spriteBody.PlayCustomAnimation(host, info.Sequence, () => spriteBody.CancelCustomAnimation(host));
+			if (buildComplete && spriteBody != null && !(info.PauseOnLowPower && self.IsDisabled()))
+				spriteBody.PlayCustomAnimation(self, info.Sequence, () => spriteBody.CancelCustomAnimation(self));
 		}
+
+		public void BuildingComplete(Actor self)
+		{
+			buildComplete = true;
+		}
+
+		public void Selling(Actor self)
+		{
+			buildComplete = false;
+		}
+
+		public void Sold(Actor self) { }
 	}
 }
