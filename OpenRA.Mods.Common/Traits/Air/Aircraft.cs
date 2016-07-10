@@ -271,6 +271,8 @@ namespace OpenRA.Mods.Common.Traits
 
 			reservation.Dispose();
 			reservation = null;
+			if (self.World.Map.DistanceAboveTerrain(CenterPosition).Length <= Info.LandAltitude.Length)
+				self.QueueActivity(new TakeOff(self));
 		}
 
 		public bool AircraftCanEnter(Actor a)
