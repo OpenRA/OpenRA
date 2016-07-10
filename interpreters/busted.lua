@@ -33,7 +33,7 @@ return {
     local helper
     if rundebug then
       -- start running the application right away
-      DebuggerAttachDefault({runstart = ide.config.debugger.runonstart ~= false})
+      ide:GetDebugger():SetOptions({runstart = ide.config.debugger.runonstart ~= false})
       local tmpfile = wx.wxFileName()
       tmpfile:AssignTempFileName(".")
       helper = tmpfile:GetFullPath()..".lua" -- busted likes .lua files more than .tmp files

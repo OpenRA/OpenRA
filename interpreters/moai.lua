@@ -45,7 +45,7 @@ return {
 
     if rundebug then
       -- start running the application right away
-      DebuggerAttachDefault({startwith = file,
+      ide:GetDebugger():SetOptions({startwith = file,
         runstart = ide.config.debugger.runonstart ~= false})
       local code = (
 [[xpcall(function() 

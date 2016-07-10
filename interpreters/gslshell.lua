@@ -50,7 +50,7 @@ return {
 
     local filepath = wfilename:GetFullPath()
     if rundebug then
-      DebuggerAttachDefault({runstart = ide.config.debugger.runonstart == true})
+      ide:GetDebugger():SetOptions({runstart = ide.config.debugger.runonstart == true})
 
       local tmpfile = wx.wxFileName()
       tmpfile:AssignTempFileName(".")

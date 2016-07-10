@@ -75,8 +75,10 @@ return {
       return
     end
 
-    if rundebug then DebuggerAttachDefault(
-      {redirect = "c", runstart = ide.config.debugger.runonstart ~= false}) end
+    if rundebug then
+      ide:GetDebugger():SetOptions(
+        {redirect = "c", runstart = ide.config.debugger.runonstart ~= false})
+    end
 
     local pid
     local remote = ide.config.gideros and ide.config.gideros.remote

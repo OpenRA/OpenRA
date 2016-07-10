@@ -210,7 +210,7 @@ return {
 
     if rundebug then
       -- start running the application right away
-      DebuggerAttachDefault({redirect = mac and "r" or "c", basedir = datadir,
+      ide:GetDebugger():SetOptions({redirect = mac and "r" or "c", basedir = datadir,
         runstart = ide.config.debugger.runonstart ~= false})
 
       -- copy mobdebug.lua to the configured datadir or project folder

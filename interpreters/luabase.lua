@@ -43,7 +43,7 @@ return {
     end
 
     if rundebug then
-      DebuggerAttachDefault({runstart = ide.config.debugger.runonstart == true})
+      ide:GetDebugger():SetOptions({runstart = ide.config.debugger.runonstart == true})
 
       -- update arg to point to the proper file
       rundebug = ('if arg then arg[0] = [[%s]] end '):format(filepath)..rundebug

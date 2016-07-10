@@ -42,7 +42,7 @@ return {
 
     if rundebug then
       -- start running the application right away
-      DebuggerAttachDefault({startwith = file, redirect = "r",
+      ide:GetDebugger():SetOptions({startwith = file, redirect = "r",
         runstart = ide.config.debugger.runonstart ~= false})
 
       local function needRefresh(mdbl, mdbc)

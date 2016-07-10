@@ -18,7 +18,7 @@ return {
     exe = exe or exePath()
     local filepath = wfilename:GetFullPath()
     if rundebug then
-      DebuggerAttachDefault({basedir = self:fworkdir(wfilename),
+      ide:GetDebugger():SetOptions({basedir = self:fworkdir(wfilename),
         runstart = ide.config.debugger.runonstart == true})
 
       -- update arg to point to the proper file
