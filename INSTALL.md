@@ -42,6 +42,7 @@ Debian/Ubuntu
 * libsdl2-2.0-0
 * xdg-utils
 * zenity
+* curl
 
 openSUSE
 --------
@@ -54,6 +55,7 @@ openSUSE
 * lua51
 * xdg-utils
 * zenity
+* curl
 
 Gentoo
 ------
@@ -69,3 +71,4 @@ Gentoo
 * dev-lang/lua-5.1.5
 * x11-misc/xdg-utils
 * gnome-extra/zenity
+* net-misc/curl
