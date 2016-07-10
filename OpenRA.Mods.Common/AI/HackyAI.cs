@@ -134,6 +134,9 @@ namespace OpenRA.Mods.Common.AI
 			"Should match maximum adjacency of naval structures.")]
 		public readonly int CheckForWaterRadius = 8;
 
+		[Desc("Terrain types which are considered water for base building purposes.")]
+		public readonly HashSet<string> WaterTerrainTypes = new HashSet<string> { "Water" };
+
 		[Desc("Avoid enemy actors nearby when searching for a new resource patch. Should be somewhere near the max weapon range.")]
 		public readonly WDist HarvesterEnemyAvoidanceRadius = WDist.FromCells(8);
 
@@ -323,14 +326,13 @@ namespace OpenRA.Mods.Common.AI
 
 			foreach (var b in baseProviders)
 			{
-				// TODO: Unhardcode terrain type
-				// TODO2: Properly check building foundation rather than 3x3 area
+				// TODO: Properly check building foundation rather than 3x3 area
 				var playerWorld = Player.World;
 				var countWaterCells = Map.FindTilesInCircle(b.Location, Info.MaxBaseRadius)
 					.Where(c => playerWorld.Map.Contains(c)
-						&& playerWorld.Map.GetTerrainInfo(c).IsWater
+						&& Info.WaterTerrainTypes.Contains(playerWorld.Map.GetTerrainInfo(c).Type)
 						&& Util.AdjacentCells(playerWorld, Target.FromCell(playerWorld, c))
-							.All(a => playerWorld.Map.GetTerrainInfo(a).IsWater))
+							.All(a => Info.WaterTerrainTypes.Contains(playerWorld.Map.GetTerrainInfo(a).Type)))
 					.Count();
 
 				if (countWaterCells > 0)
@@ -348,14 +350,13 @@ namespace OpenRA.Mods.Common.AI
 
 			foreach (var a in areaProviders)
 			{
-				// TODO: Unhardcode terrain type
-				// TODO2: Properly check building foundation rather than 3x3 area
+				// TODO: Properly check building foundation rather than 3x3 area
 				var playerWorld = Player.World;
 				var adjacentWater = Map.FindTilesInCircle(a.Location, Info.CheckForWaterRadius)
 					.Where(c => playerWorld.Map.Contains(c)
-						&& playerWorld.Map.GetTerrainInfo(c).IsWater
+						&& Info.WaterTerrainTypes.Contains(playerWorld.Map.GetTerrainInfo(c).Type)
 						&& Util.AdjacentCells(playerWorld, Target.FromCell(playerWorld, c))
-							.All(b => playerWorld.Map.GetTerrainInfo(b).IsWater))
+							.All(ac => Info.WaterTerrainTypes.Contains(playerWorld.Map.GetTerrainInfo(ac).Type)))
 					.Count();
 
 				if (adjacentWater > 0)
