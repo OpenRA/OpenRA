@@ -24,6 +24,9 @@ namespace OpenRA.Mods.Common.Traits.Render
 		[Desc("Easteregg sequences to use in December.")]
 		public readonly string[] XmasImages = { };
 
+		[Desc("Terrain types on which to display WaterSequence.")]
+		public readonly HashSet<string> WaterTerrainTypes = new HashSet<string> { "Water" };
+
 		[SequenceReference] public readonly string IdleSequence = "idle";
 		[SequenceReference] public readonly string WaterSequence = null;
 		[SequenceReference] public readonly string LandSequence = null;
@@ -74,7 +77,8 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		void PlaySequence()
 		{
-			var sequence = self.World.Map.GetTerrainInfo(self.Location).IsWater ? info.WaterSequence : info.LandSequence;
+			var onWater = info.WaterTerrainTypes.Contains(self.World.Map.GetTerrainInfo(self.Location).Type);
+			var sequence = onWater ? info.WaterSequence : info.LandSequence;
 			if (!string.IsNullOrEmpty(sequence))
 				anim.PlayRepeating(sequence);
 		}
