@@ -30,6 +30,11 @@ namespace OpenRA
 			return actors.MinByOrDefault(a => (a.CenterPosition - pos).LengthSquared);
 		}
 
+		public static WPos PositionClosestTo(this IEnumerable<WPos> positions, WPos pos)
+		{
+			return positions.MinByOrDefault(p => (p - pos).LengthSquared);
+		}
+
 		public static IEnumerable<Actor> FindActorsInCircle(this World world, WPos origin, WDist r)
 		{
 			// Target ranges are calculated in 2D, so ignore height differences
