@@ -49,6 +49,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		public bool CanGiveTo(Actor collector)
 		{
+			if (collector.Owner.NonCombatant)
+				return false;
+
 			if (info.ValidFactions.Any() && !info.ValidFactions.Contains(collector.Owner.Faction.InternalName))
 				return false;
 
