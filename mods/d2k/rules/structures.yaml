@@ -43,7 +43,7 @@ concreteb:
 
 construction_yard:
 	Inherits: ^Building
-	-DamagedWithoutFoundation:
+	-DamagedByTerrain:
 	Building:
 		Footprint: xxx xxx
 		Dimensions: 3,2

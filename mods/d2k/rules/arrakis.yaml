@@ -125,7 +125,7 @@ sietch:
 		Type: wood
 	RevealsShroud:
 		Range: 10c0
-	-DamagedWithoutFoundation:
+	-DamagedByTerrain:
 	-GivesBuildableArea:
 	-Sellable:
 	-Capturable:

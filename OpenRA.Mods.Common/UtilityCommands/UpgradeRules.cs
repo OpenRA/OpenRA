@@ -222,6 +222,40 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				if (engineVersion < 20160704)
+				{
+					if (node.Key.Contains("PoisonedByTiberium"))
+					{
+						node.Key = node.Key.Replace("PoisonedByTiberium", "DamagedByTerrain");
+						if (!node.Key.StartsWith("-"))
+						{
+							if (node.Value.Nodes.Any(a => a.Key == "Resources"))
+								node.Value.Nodes.Where(n => n.Key == "Resources").Do(n => n.Key = "Terrain");
+							else
+								node.Value.Nodes.Add(new MiniYamlNode("Terrain", new MiniYaml("Tiberium, BlueTiberium")));
+
+							if (!node.Value.Nodes.Any(a => a.Key == "Weapon"))
+								node.Value.Nodes.Add(new MiniYamlNode("Weapon", new MiniYaml("Tiberium")));
+						}
+					}
+
+					if (node.Key.Contains("DamagedWithoutFoundation"))
+					{
+						node.Key = node.Key.Replace("DamagedWithoutFoundation", "DamagedByTerrain");
+						if (!node.Key.StartsWith("-"))
+						{
+							if (!node.Value.Nodes.Any(a => a.Key == "Weapon"))
+								node.Value.Nodes.Add(new MiniYamlNode("Weapon", new MiniYaml("weathering")));
+
+							Console.WriteLine("SafeTerrain isn't converted. Setup an inverted check using Terrain.");
+
+							node.Value.Nodes.Add(new MiniYamlNode("StartOnThreshold", new MiniYaml("true")));
+							if (!node.Value.Nodes.Any(a => a.Key == "DamageThreshold"))
+								node.Value.Nodes.Add(new MiniYamlNode("DamageThreshold", new MiniYaml("50")));
+						}
+					}
+				}
+
 				UpgradeActorRules(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 

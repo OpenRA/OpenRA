@@ -284,7 +284,9 @@
 		Voice: Move
 	HiddenUnderFog:
 	ActorLostNotification:
-	PoisonedByTiberium:
+	DamagedByTerrain:
+		Terrain: Tiberium, BlueTiberium
+		Weapon: Tiberium
 	Guard:
 		Voice: Move
 	Guardable:
@@ -383,8 +385,9 @@
 	RevealsShroud:
 		Range: 4c0
 	MustBeDestroyed:
-	PoisonedByTiberium:
+	DamagedByTerrain:
 		Weapon: TiberiumHeal
+		Terrain: Tiberium, BlueTiberium
 	WithPermanentInjury:
 	WithInfantryBody:
 		AttackSequence: attack
@@ -465,9 +468,9 @@
 		Weapons: SmallDebris
 		Pieces: 3, 7
 		Range: 2c0, 5c0
-	PoisonedByTiberium:
+	DamagedByTerrain:
 		Weapon: Veins
-		Resources: Veins
+		Terrain: Veins
 	UpgradeOnDamage@DAMAGED:
 		Upgrades: damagedspeed
 		ValidDamageStates: Heavy
@@ -633,8 +636,9 @@
 		TargetTypes: Ground, Creep
 	AttackMove:
 	HiddenUnderFog:
-	PoisonedByTiberium:
+	DamagedByTerrain:
 		Weapon: TiberiumHeal
+		Terrain: Tiberium, BlueTiberium
 	Guardable:
 	WithSpriteBody:
 
