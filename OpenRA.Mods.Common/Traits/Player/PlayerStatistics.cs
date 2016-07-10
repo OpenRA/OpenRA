@@ -20,10 +20,10 @@ namespace OpenRA.Mods.Common.Traits
 		public object Create(ActorInitializer init) { return new PlayerStatistics(init.Self); }
 	}
 
-	public class PlayerStatistics : ITick, IResolveOrder
+	public class PlayerStatistics : ITick, IResolveOrder, INotifyCreated
 	{
-		World world;
-		Player player;
+		PlayerResources resources;
+		PlayerExperience experience;
 
 		public int OrderCount;
 
@@ -31,7 +31,15 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			get
 			{
-				return player.PlayerActor.Trait<PlayerResources>().Earned - earnedAtBeginningOfMinute;
+				return resources != null ? resources.Earned - earnedAtBeginningOfMinute : 0;
+			}
+		}
+
+		public int Experience
+		{
+			get
+			{
+				return experience != null ? experience.Experience : 0;
 			}
 		}
 
@@ -47,23 +55,25 @@ namespace OpenRA.Mods.Common.Traits
 		public int BuildingsKilled;
 		public int BuildingsDead;
 
-		public PlayerStatistics(Actor self)
+		public PlayerStatistics(Actor self) { }
+
+		void INotifyCreated.Created(Actor self)
 		{
-			world = self.World;
-			player = self.Owner;
+			resources = self.TraitOrDefault<PlayerResources>();
+			experience = self.TraitOrDefault<PlayerExperience>();
 		}
 
 		void UpdateEarnedThisMinute()
 		{
 			EarnedSamples.Enqueue(EarnedThisMinute);
-			earnedAtBeginningOfMinute = player.PlayerActor.Trait<PlayerResources>().Earned;
+			earnedAtBeginningOfMinute = resources != null ? resources.Earned : 0;
 			if (EarnedSamples.Count > 100)
 				EarnedSamples.Dequeue();
 		}
 
 		public void Tick(Actor self)
 		{
-			if (world.WorldTick % 1500 == 1)
+			if (self.World.WorldTick % 1500 == 1)
 				UpdateEarnedThisMinute();
 		}
 
