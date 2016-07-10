@@ -26,6 +26,12 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Destroy the unit after capturing.")]
 		public readonly bool ConsumeActor = false;
 
+		[Desc("Experience granted to the capturing player.")]
+		public readonly int PlayerExperience = 0;
+
+		[Desc("Stance that the structure's previous owner needs to have for the capturing player to receive Experience.")]
+		public readonly Stance PlayerExperienceStances = Stance.Enemy;
+
 		[VoiceReference] public readonly string Voice = "Action";
 
 		public object Create(ActorInitializer init) { return new ExternalCaptures(init.Self, this); }
