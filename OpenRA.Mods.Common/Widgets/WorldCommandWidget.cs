@@ -100,7 +100,7 @@ namespace OpenRA.Mods.Common.Widgets
 		bool PerformAttackMove()
 		{
 			var actors = world.Selection.Actors
-				.Where(a => a.Owner == world.LocalPlayer)
+				.Where(a => a.Owner == world.LocalPlayer && a.Info.HasTraitInfo<AttackMoveInfo>())
 				.ToArray();
 
 			if (actors.Any())
