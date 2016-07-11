@@ -14,6 +14,9 @@ SendInsertionHelicopter = function()
 	local tanya = passengers[1]
 	Trigger.OnKilled(tanya, TanyaKilledInAction)
 	tanya.Stance = "HoldFire"
+	Trigger.AfterDelay(DateTime.Seconds(4), function()
+		Media.DisplayMessage("According to the rules of engagement I need your explicit orders to fire, Commander!", "Tanya")
+	end)
 end
 
 SendJeeps = function()
