@@ -61,13 +61,6 @@ SlimeAttack:
 			Concrete: 20
 		DamageTypes: Prone100Percent, TriggerProne, SmallExplosionDeath
 
-Tiberium:
-	ReloadDelay: 16
-	Warhead@1Dam: SpreadDamage
-		Spread: 42
-		Damage: 2
-		DamageTypes: ExplosionDeath, TriggerVisceroid
-
 Veins:
 	ReloadDelay: 16
 	Warhead@Damage: SpreadDamage

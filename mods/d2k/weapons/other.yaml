@@ -216,11 +216,6 @@ grenade:
 		Explosions: med_explosion
 		ImpactSounds: EXPLLG5.WAV
 
-Weathering:
-	ReloadDelay: 100
-	Warhead@1Dam: SpreadDamage
-		Damage: 10
-
 GrenDeath:
 	Warhead@1Dam: SpreadDamage
 		Spread: 320

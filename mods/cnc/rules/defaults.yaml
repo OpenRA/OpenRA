@@ -215,7 +215,9 @@
 		UpgradeTypes: hazmatsuits
 		UpgradeMaxEnabledLevel: 0
 		Terrain: Tiberium, BlueTiberium
-		Weapon: Tiberium
+		Damage: 2
+		DamageInterval: 16
+		DamageTypes: TiberiumDeath
 	GlobalUpgradable@BIO:
 		Upgrades: hazmatsuits
 		Prerequisites: bio
@@ -420,7 +422,9 @@
 		Voice: Move
 	Guardable:
 	DamagedByTerrain:
-		Weapon: Heal
+		Damage: -1
+		DamageInterval: 4
+		DamageTypes: TiberiumDeath
 		Terrain: Tiberium, BlueTiberium
 	Voiced:
 		VoiceSet: DinoVoice

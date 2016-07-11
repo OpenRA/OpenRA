@@ -25,6 +25,7 @@ WEEDGUY:
 
 UMAGON:
 	Inherits: ^Soldier
+	Inherits@2: ^HealsOnTiberium
 	Valued:
 		Cost: 400
 	Tooltip:
@@ -35,9 +36,6 @@ UMAGON:
 		Speed: 71
 	Health:
 		HP: 150
-	DamagedByTerrain:
-		Weapon: TiberiumHeal
-		Terrain: Tiberium, BlueTiberium
 	Passenger:
 	RevealsShroud:
 		Range: 7c0
@@ -83,6 +81,7 @@ CHAMSPY:
 
 MUTANT:
 	Inherits: ^Soldier
+	Inherits@2: ^HealsOnTiberium
 	Valued:
 		Cost: 100
 	Tooltip:
@@ -91,9 +90,6 @@ MUTANT:
 		VoiceSet: Mutant
 	Health:
 		HP: 50
-	DamagedByTerrain:
-		Weapon: TiberiumHeal
-		Terrain: Tiberium, BlueTiberium
 	Mobile:
 		Speed: 56
 	RevealsShroud:
@@ -109,6 +105,7 @@ MUTANT:
 
 MWMN:
 	Inherits: ^Soldier
+	Inherits@2: ^HealsOnTiberium
 	Valued:
 		Cost: 100
 	Tooltip:
@@ -117,9 +114,6 @@ MWMN:
 		VoiceSet: CivilianFemale
 	Health:
 		HP: 50
-	DamagedByTerrain:
-		Weapon: TiberiumHeal
-		Terrain: Tiberium, BlueTiberium
 	Mobile:
 		Speed: 56
 	RevealsShroud:
@@ -135,6 +129,7 @@ MWMN:
 
 MUTANT3:
 	Inherits: ^Soldier
+	Inherits@2: ^HealsOnTiberium
 	Valued:
 		Cost: 100
 	Tooltip:
@@ -143,9 +138,6 @@ MUTANT3:
 		VoiceSet: Mutant
 	Health:
 		HP: 50
-	DamagedByTerrain:
-		Weapon: TiberiumHeal
-		Terrain: Tiberium, BlueTiberium
 	Mobile:
 		Speed: 56
 	RevealsShroud:
@@ -161,6 +153,7 @@ MUTANT3:
 
 TRATOS:
 	Inherits: ^Soldier
+	Inherits@2: ^HealsOnTiberium
 	Valued:
 		Cost: 100
 	Tooltip:
@@ -169,9 +162,6 @@ TRATOS:
 		VoiceSet: Tratos
 	Health:
 		HP: 200
-	DamagedByTerrain:
-		Weapon: TiberiumHeal
-		Terrain: Tiberium, BlueTiberium
 	Mobile:
 		Speed: 71
 	RevealsShroud:
@@ -219,15 +209,13 @@ SLAV:
 DOGGIE:
 	Inherits@1: ^Infantry
 	Inherits@2: ^RegularInfantryDeath
+	Inherits@3: ^HealsOnTiberium
 	Tooltip:
 		Name: Tiberian Fiend
 	Health:
 		HP: 250
 		Shape: Circle
 			Radius: 213
-	DamagedByTerrain:
-		Weapon: TiberiumHeal
-		Terrain: Tiberium, BlueTiberium
 	Valued:
 		Cost: 100
 	Armor:
