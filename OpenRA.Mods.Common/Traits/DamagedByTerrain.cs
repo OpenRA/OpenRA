@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007-2016 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using System.Linq;
 using OpenRA.GameRules;
 using OpenRA.Traits;
@@ -16,10 +17,16 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("This actor receives damage from the given weapon when on the specified terrain type.")]
-	class DamagedByTerrainInfo : UpgradableTraitInfo, IRulesetLoaded, Requires<HealthInfo>
+	class DamagedByTerrainInfo : UpgradableTraitInfo, Requires<HealthInfo>
 	{
-		[Desc("The weapon which is used to damage the actor.")]
-		[WeaponReference, FieldLoader.Require] public readonly string Weapon;
+		[Desc("Amount of damage received per DamageInterval ticks.")]
+		[FieldLoader.Require] public readonly int Damage = 0;
+
+		[Desc("Delay between receiving damage.")]
+		public readonly int DamageInterval = 0;
+
+		[Desc("Apply the damage using these damagetypes.")]
+		public readonly HashSet<string> DamageTypes = new HashSet<string>();
 
 		[Desc("Terrain types where the actor will take damage.")]
 		[FieldLoader.Require] public readonly string[] Terrain = { };
@@ -30,10 +37,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Inflict damage down to the DamageThreshold when the actor gets created on damaging terrain.")]
 		public readonly bool StartOnThreshold = false;
 
-		public WeaponInfo WeaponInfo { get; private set; }
-
 		public override object Create(ActorInitializer init) { return new DamagedByTerrain(init.Self, this); }
-		public void RulesetLoaded(Ruleset rules, ActorInfo ai) { WeaponInfo = rules.Weapons[Weapon.ToLowerInvariant()]; }
 	}
 
 	class DamagedByTerrain : UpgradableTrait<DamagedByTerrainInfo>, ITick, ISync, INotifyAddedToWorld
@@ -70,7 +74,7 @@ namespace OpenRA.Mods.Common.Traits
 			// Actors start with maximum damage applied
 			var delta = health.HP - damageThreshold;
 			if (delta > 0)
-				health.InflictDamage(self, self.World.WorldActor, new Damage(delta), false);
+				self.InflictDamage(self.World.WorldActor, new Damage(delta, Info.DamageTypes));
 		}
 
 		public void Tick(Actor self)
@@ -86,8 +90,8 @@ namespace OpenRA.Mods.Common.Traits
 			if (!Info.Terrain.Contains(t.Type))
 				return;
 
-			Info.WeaponInfo.Impact(Target.FromActor(self), self.World.WorldActor, Enumerable.Empty<int>());
-			damageTicks = Info.WeaponInfo.ReloadDelay;
+			self.InflictDamage(self.World.WorldActor, new Damage(Info.Damage, Info.DamageTypes));
+			damageTicks = Info.DamageInterval;
 		}
 	}
 }
