@@ -168,10 +168,6 @@ explosion:
 	small_grey_explosion: xgrysml2
 	medium_grey_explosion: xgrymed1
 	large_grey_explosion: xgrymed2
-	veins: veinatac
-		Length: 12
-		UseTilesetExtension: true
-		ZOffset: 1023
 
 discus:
 	idle:

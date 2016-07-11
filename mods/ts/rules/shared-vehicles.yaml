@@ -96,7 +96,9 @@ HARV:
 		FactionImages:
 			gdi: harv.gdi
 			nod: harv.nod
-	-DamagedByTerrain:
+	-DamagedByTerrain@VEINS:
+	-UpgradeOnTerrain@VEINS:
+	-WithIdleOverlay@VEINS:
 
 LPST:
 	Inherits: ^VoxelTank

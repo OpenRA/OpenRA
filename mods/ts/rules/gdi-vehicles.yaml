@@ -93,7 +93,9 @@ HVR:
 		TrailWhileStationary: True
 		StationaryInterval: 18
 		MovingInterval: 6
-	-DamagedByTerrain:
+	-DamagedByTerrain@VEINS:
+	-UpgradeOnTerrain@VEINS:
+	-WithIdleOverlay@VEINS:
 
 SMECH:
 	Inherits: ^Vehicle
@@ -132,7 +134,9 @@ SMECH:
 		MoveSequence: run
 	Selectable:
 		Bounds: 20, 32, 0, -8
-	-DamagedByTerrain:
+	-DamagedByTerrain@VEINS:
+	-UpgradeOnTerrain@VEINS:
+	-WithIdleOverlay@VEINS:
 
 MMCH:
 	Inherits: ^Tank
