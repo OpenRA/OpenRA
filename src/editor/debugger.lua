@@ -1202,7 +1202,10 @@ local function debuggerCreateStackWindow()
     if file then
       local editor = LoadFile(file,nil,true)
       editor:SetFocus()
-      if line then editor:GotoLine(line-1) end
+      if line then
+        editor:GotoLine(line-1)
+        editor:EnsureVisibleEnforcePolicy(line-1) -- make sure the line is visible (unfolded)
+      end
     end
   end)
 
