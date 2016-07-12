@@ -100,10 +100,10 @@ namespace OpenRA.Mods.Common.Widgets
 		bool PerformAttackMove()
 		{
 			var actors = world.Selection.Actors
-				.Where(a => a.Owner == world.LocalPlayer && a.Info.HasTraitInfo<AttackMoveInfo>() && a.Info.HasTraitInfo<AutoTargetInfo>())
+				.Where(a => a.Owner == world.LocalPlayer)
 				.ToArray();
 
-			if (actors.Any())
+			if (actors.Any(a => a.Info.HasTraitInfo<AttackMoveInfo>() && a.Info.HasTraitInfo<AutoTargetInfo>()))
 				world.OrderGenerator = new GenericSelectTarget(actors,
 					"AttackMove", "attackmove", Game.Settings.Game.MouseButtonPreference.Action);
 
@@ -183,9 +183,9 @@ namespace OpenRA.Mods.Common.Widgets
 		bool PerformGuard()
 		{
 			var actors = world.Selection.Actors
-				.Where(a => !a.Disposed && a.Owner == world.LocalPlayer && a.Info.HasTraitInfo<GuardInfo>() && a.Info.HasTraitInfo<AutoTargetInfo>());
+				.Where(a => !a.Disposed && a.Owner == world.LocalPlayer);
 
-			if (actors.Any())
+			if (actors.Any(a => a.Info.HasTraitInfo<GuardInfo>() && a.Info.HasTraitInfo<AutoTargetInfo>()))
 				world.OrderGenerator = new GuardOrderGenerator(actors,
 					"Guard", "guard", Game.Settings.Game.MouseButtonPreference.Action);
 
