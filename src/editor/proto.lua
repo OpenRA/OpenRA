@@ -51,6 +51,7 @@ ide.proto.Interpreter = {__index = {
   GetCommandLineArg = function(self, name)
     return ide.config.arg and (ide.config.arg.any or ide.config.arg[name or self.fname])
   end,
+  UpdateStatus = function(self) ide:SetStatus(self.name, 4) end,
   fprojdir = function(self,wfilename)
     return wfilename:GetPath(wx.wxPATH_GET_VOLUME)
   end,

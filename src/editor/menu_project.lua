@@ -62,18 +62,20 @@ local function selectInterpreter(id)
   menuBar:Enable(id, false)
 
   local changed = ide.interpreter ~= interpreters[id]
-  if ide.interpreter and changed then
-    PackageEventHandle("onInterpreterClose", ide.interpreter)
-  end
-  if interpreters[id] and changed then
-    PackageEventHandle("onInterpreterLoad", interpreters[id])
+  if changed then
+    if ide.interpreter then PackageEventHandle("onInterpreterClose", ide.interpreter) end
+    if interpreters[id] then PackageEventHandle("onInterpreterLoad", interpreters[id]) end
   end
 
   ide.interpreter = interpreters[id]
 
   ide:GetDebugger():Shutdown()
 
-  ide:SetStatus(ide.interpreter.name or "", 4)
+  if ide.interpreter then
+    ide.interpreter:UpdateStatus()
+  else
+    ide:SetStatus("", 4)
+  end
   if changed then ReloadLuaAPI() end
 end
 
