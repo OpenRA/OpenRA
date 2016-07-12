@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 	[Desc("Provides an overlay for the Tiberian Dawn hover craft.")]
 	public class WithRoofInfo : ITraitInfo, Requires<RenderSpritesInfo>
 	{
-		public readonly string Sequence = "roof";
+		[SequenceReference] public readonly string Sequence = "roof";
 
 		public object Create(ActorInitializer init) { return new WithRoof(init.Self, this); }
 	}
