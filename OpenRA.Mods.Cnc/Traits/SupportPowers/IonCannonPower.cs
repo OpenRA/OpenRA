@@ -27,8 +27,12 @@ namespace OpenRA.Mods.Cnc.Traits
 		[Desc("Amount of time to keep the camera alive")]
 		public readonly int CameraRemoveDelay = 25;
 
-		[Desc("Effect sequence to display")]
+		[Desc("Effect sequence sprite image")]
 		public readonly string Effect = "ionsfx";
+
+		[Desc("Effect sequence to display")]
+		[SequenceReference("Effect")] public readonly string EffectSequence = "idle";
+
 		[PaletteReference] public readonly string EffectPalette = "effect";
 
 		[Desc("Which weapon to fire"), WeaponReference]
@@ -60,7 +64,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			self.World.AddFrameEndTask(w =>
 			{
 				Game.Sound.Play(Info.LaunchSound, self.World.Map.CenterOfCell(order.TargetLocation));
-				w.Add(new IonCannon(self.Owner, info.WeaponInfo, w, order.TargetLocation, info.Effect, info.EffectPalette, info.WeaponDelay));
+				w.Add(new IonCannon(self.Owner, info.WeaponInfo, w, order.TargetLocation, info.Effect, info.EffectSequence, info.EffectPalette, info.WeaponDelay));
 
 				if (info.CameraActor == null)
 					return;
