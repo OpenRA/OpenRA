@@ -18,10 +18,10 @@ namespace OpenRA.Mods.AS.Effects
 {
 	public class InstantExplodeInfo : IProjectileInfo
 	{
-		public IEffect Create(ProjectileArgs args) { return new InstantExplode(this, args); }
+		public IProjectile Create(ProjectileArgs args) { return new InstantExplode(this, args); }
 	}
 
-	class InstantExplode : IEffect
+	class InstantExplode : IProjectile
 	{
 		private ProjectileArgs args;
 

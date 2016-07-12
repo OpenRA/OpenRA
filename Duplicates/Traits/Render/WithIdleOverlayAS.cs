@@ -8,8 +8,10 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using OpenRA.Graphics;
+using OpenRA.Mods.Common;
 using OpenRA.Mods.Common.Graphics;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Mods.Common.Traits.Render;
@@ -33,15 +35,28 @@ namespace OpenRA.Mods.AS.Traits.Render
 				p = init.WorldRenderer.Palette(Palette);
 
 			var idleImage = Image != null ? Image : image;
+			Func<int> facing;
+			if (init.Contains<DynamicFacingInit>())
+				facing = init.Get<DynamicFacingInit, Func<int>>();
+			else
+			{
+				var f = init.Contains<FacingInit>() ? init.Get<FacingInit, int>() : 0;
+				facing = () => f;
+			}
 
-			var body = init.Actor.TraitInfo<BodyOrientationInfo>();
-			var facing = init.Contains<FacingInit>() ? init.Get<FacingInit, int>() : 0;
-			var anim = new Animation(init.World, idleImage, () => facing);
+			var anim = new Animation(init.World, idleImage, facing);
 			anim.PlayRepeating(RenderSprites.NormalizeSequence(anim, init.GetDamageState(), Sequence));
 
-			var orientation = body.QuantizeOrientation(new WRot(WAngle.Zero, WAngle.Zero, WAngle.FromFacing(facing)), facings);
-			var offset = body.LocalToWorld(Offset.Rotate(orientation));
-			yield return new SpriteActorPreview(anim, offset, offset.Y + offset.Z + 1, p, rs.Scale);
+			var body = init.Actor.TraitInfo<BodyOrientationInfo>();
+			Func<WRot> orientation = () => body.QuantizeOrientation(WRot.FromFacing(facing()), facings);
+			Func<WVec> offset = () => body.LocalToWorld(Offset.Rotate(orientation()));
+			Func<int> zOffset = () =>
+			{
+				var tmpOffset = offset();
+				return tmpOffset.Y + tmpOffset.Z + 1;
+			};
+
+			yield return new SpriteActorPreview(anim, offset, zOffset, p, rs.Scale);
 		}
 	}
 
