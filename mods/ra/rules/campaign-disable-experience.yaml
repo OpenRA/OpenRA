@@ -1,0 +1,43 @@
+^ExistsInWorld:
+	GivesExperience:
+		PlayerExperienceModifier: 0
+
+^Building:
+	RepairableBuilding:
+		PlayerExperience: 0
+
+E6:
+	Captures:
+		PlayerExperience: 0
+
+SPY:
+	Infiltrates:
+		PlayerExperience: 0
+
+MECH:
+	Captures:
+		PlayerExperience: 0
+
+THF:
+	Infiltrates:
+		PlayerExperience: 0
+
+HIJACKER:
+	Captures:
+		PlayerExperience: 0
+
+SPEN:
+	RepairsUnits:
+		PlayerExperience: 0
+
+SYRD:
+	RepairsUnits:
+		PlayerExperience: 0
+
+FIX:
+	RepairsUnits:
+		PlayerExperience: 0
+
+TRUK:
+	SupplyTruck:
+		PlayerExperience: 0
