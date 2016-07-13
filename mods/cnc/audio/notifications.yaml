@@ -3,49 +3,84 @@ Speech:
 		gdi: gdi
 		nod: nod
 	Notifications:
-		Repairing: repair1
-		LowPower: lopower1
-		SilosNeeded: silos1
-		PrimaryBuildingSelected: pribldg1
-		BuildingCannotPlaceAudio: deploy1
-		NewOptions: newopt1
-		Win: accom1
-		Lose: fail1
+		AirstrikeReady: airredy1
 		BaseAttack: baseatk1
-		HarvesterAttack:
-		Leave: batlcon1
-		StartGame:
-		UnitReady: unitredy
-		NoBuild: nobuild1
-		Training: bldging1
-		OnHold: onhold1
-		Cancelled: cancel1
 		Building: bldging1
-		ConstructionComplete: constru1
-		Reinforce: reinfor1
-		UnitLost: unitlost
-		BuildingLost: strclost
-		CivilianKilled: civdead1
+		BuildingCannotPlaceAudio: deploy1
 		BuildingCaptured: capt1
+		BuildingInProgress: bldg1
+		BuildingLost: strclost
+		Cancelled: cancel1
 		CivilianBuildingCaptured: civcapt1
-	DisablePrefixes: Repairing, LowPower, SilosNeeded, PrimaryBuildingSelected, BuildingCannotPlaceAudio, NewOptions, AbilityInsufficientPower, Win, Lose, BaseAttack, HarvesterAttack, Leave, UnitReady, NoBuild, Training, OnHold, Cancelled, Building, ConstructionComplete, Reinforce, UnitLost, BuildingLost, CivilianKilled, CivilianBuildingCaptured
+		CivilianKilled: civdead1
+		ConstructionComplete: constru1
+		EnemyUnitsApproaching: enmyunit
+		EnemyStructureDestroyed: estrucx
+		EnemyPlanesApproaching: enemya
+		HarvesterAttack:
+		InsufficientPower: nopower1
+		IonCannonCharging: ionchrg1
+		IonCannonReady: ionredy1
+		Leave: batlcon1
+		Lose: fail1
+		LowPower: lopower1
+		MissionAccomplished: accom1
+		MissionFailed: fail1
+		NewOptions: newopt1
+		NoBuild: nobuild1
+		NodStructureDestroyed: nstruc1
+		NotReady: noredy1
+		NuclearWarheadApproaching: nuke1
+		NuclearWeaponAvailable: nukavail
+		NuclearWeaponLaunched: nuklnch1
+		OnHold: onhold1
+		PrimaryBuildingSelected: pribldg1
+		Reinforce: reinfor1
+		Repairing: repair1
+		SelectTarget: select1
+		SilosNeeded: silos1
+		StartGame:
+		Training: bldging1
+		UnitDestroyed: dead1
+		UnitLost: unitlost
+		UnitReady: unitredy
+		Win: accom1
+	DisablePrefixes: AbilityInsufficientPower, BaseAttack, Building, BuildingCannotPlaceAudio, BuildingInProgress, BuildingLost, Cancelled, CivilianBuildingCaptured, CivilianKilled, ConstructionComplete, EnemyUnitsApproaching, EnemyStructureDestroyed, EnemyPlanesApproaching, HarvesterAttack, InsufficientPower, IonCannonCharging, IonCannonReady, Leave, Lose, LowPower, MissionAccomplished, MissionFailed, NewOptions, NoBuild, NodStructureDestroyed, NotReady, NuclearWarheadApproaching, NuclearWeaponAvailable, NuclearWeaponLaunched, OnHold, PrimaryBuildingSelected, Reinforce, Repairing, SelectTarget, SilosNeeded, Training, UnitLost, UnitReady, Win
 
 Sounds:
 	Notifications:
-		RadarUp: comcntr1
-		RadarDown: powrdn1
-		CashTickUp:tone15
-		CashTickDown:tone16
-		LevelUp: text2
+		Appear: appear1
+		Beacon: bleep2
+		Beepy2: beepy2
+		Beepy3: beepy3
+		Beepy6: beepy6
+		CashTickDown: tone16
+		CashTickUp: tone15
+		ChatLine: scold1
+		ClickDisabledSound: scold2
+		ClickSound: button
+		Cloak: trans1
+		Clock: clock1
+		Construction: constru2
+		Country1: country1
+		Country4: country4
 		DisablePower: bleep11
 		EnablePower: bleep12
-		ChatLine: scold1
-		TabClick: button
-		ClickSound: button
-		ClickDisabledSound: scold2
-		Beacon: bleep2
+		HeavyDoor: hvydoor1
+		Keystroke: keystrok
+		LevelUp: text2
+		NewTarget: newtarg1
+		RadarDown: powrdn1
+		RadarUp: comcntr1
+		Sell: cashturn
 		SignalFlare: flare1
 		SignalFlareEast: flaree1
 		SignalFlareNorth: flaren1
 		SignalFlareSouth: flares1
 		SignalFlareWest: flarew1
+		TabClick: button
+		Target1: target1
+		Target2: target2
+		Target3: target3
+		Text: text2
+		World: world2

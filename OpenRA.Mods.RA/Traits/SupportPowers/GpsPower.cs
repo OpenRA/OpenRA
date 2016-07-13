@@ -75,6 +75,8 @@ namespace OpenRA.Mods.RA.Traits
 			self.World.AddFrameEndTask(w =>
 			{
 				Game.Sound.PlayToPlayer(self.Owner, Info.LaunchSound);
+				Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech",
+					Info.LaunchSpeechNotification, self.Owner.Faction.InternalName);
 
 				w.Add(new SatelliteLaunch(self, info));
 

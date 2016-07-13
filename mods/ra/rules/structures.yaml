@@ -25,12 +25,11 @@ MSLO:
 		ChargeTime: 540
 		Description: Atom Bomb
 		LongDesc: Launches a devastating atomic bomb\nat a target location.
-		BeginChargeSound: aprep1.aud
-		EndChargeSound: aready1.aud
-		SelectTargetSound: slcttgt1.aud
-		InsufficientPowerSound: nopowr1.aud
-		IncomingSound: alaunch1.aud
-		LaunchSound:
+		BeginChargeSpeechNotification: AbombPrepping
+		EndChargeSpeechNotification: AbombReady
+		SelectTargetSpeechNotification: SelectTarget
+		InsufficientPowerSpeechNotification: InsufficientPower
+		IncomingSpeechNotification: AbombLaunchDetected
 		MissileWeapon: atomic
 		SpawnOffset: 0,427,0
 		DisplayTimer: True
@@ -310,10 +309,10 @@ IRON:
 		Description: Invulnerability
 		LongDesc: Makes a group of units invulnerable\nfor 20 seconds.
 		Duration: 500
-		SelectTargetSound: slcttgt1.aud
-		InsufficientPowerSound: nopowr1.aud
-		BeginChargeSound: ironchg1.aud
-		EndChargeSound: ironrdy1.aud
+		SelectTargetSpeechNotification: SelectTarget
+		InsufficientPowerSpeechNotification: InsufficientPower
+		BeginChargeSpeechNotification: IronCurtainCharging
+		EndChargeSpeechNotification: IronCurtainReady
 		DisplayRadarPing: True
 		Upgrades: invulnerability
 	SupportPowerChargeBar:
@@ -363,10 +362,10 @@ PDOX:
 		ChargeTime: 120
 		Description: Chronoshift
 		LongDesc: Teleports a group of units across\nthe map for 20 seconds.
-		SelectTargetSound: slcttgt1.aud
-		InsufficientPowerSound: nopowr1.aud
-		BeginChargeSound: chrochr1.aud
-		EndChargeSound: chrordy1.aud
+		SelectTargetSpeechNotification: SelectTarget
+		InsufficientPowerSpeechNotification: InsufficientPower
+		BeginChargeSpeechNotification: ChronosphereCharging
+		EndChargeSpeechNotification: ChronosphereReady
 		Duration: 20
 		KillCargo: yes
 		DisplayRadarPing: True
@@ -377,10 +376,10 @@ PDOX:
 		ChargeTime: 120
 		Description: Advanced Chronoshift
 		LongDesc: Teleports a large group of units across\nthe map for 20 seconds.
-		SelectTargetSound: slcttgt1.aud
-		InsufficientPowerSound: nopowr1.aud
-		BeginChargeSound: chrochr1.aud
-		EndChargeSound: chrordy1.aud
+		SelectTargetSpeechNotification: SelectTarget
+		InsufficientPowerSpeechNotification: InsufficientPower
+		BeginChargeSpeechNotification: ChronosphereCharging
+		EndChargeSpeechNotification: ChronosphereReady
 		Duration: 20
 		KillCargo: yes
 		DisplayRadarPing: True
@@ -769,7 +768,7 @@ ATEK:
 		Description: GPS Satellite
 		LongDesc: Reveals map terrain and provides tactical\ninformation. Requires power and active radar.
 		RevealDelay: 15
-		LaunchSound: satlnch1.aud
+		LaunchSpeechNotification: SatelliteLaunched
 		DisplayTimer: True
 	SupportPowerChargeBar:
 	RequiresPower:
@@ -1175,8 +1174,8 @@ AFLD:
 		ChargeTime: 180
 		Description: Spy Plane
 		LongDesc: Reveals an area of the map\nand cloaked enemy units.
-		SelectTargetSound: slcttgt1.aud
-		EndChargeSound: spypln1.aud
+		SelectTargetSpeechNotification: SelectTarget
+		EndChargeSpeechNotification: SpyPlaneReady
 		CameraActor: camera.spyplane
 		CameraRemoveDelay: 150
 		UnitType: u2
@@ -1191,7 +1190,7 @@ AFLD:
 		Description: Paratroopers
 		LongDesc: A Badger drops a squad of infantry\nanywhere on the map.
 		DropItems: E1,E1,E1,E3,E3
-		SelectTargetSound: slcttgt1.aud
+		SelectTargetSpeechNotification: SelectTarget
 		AllowImpassableCells: false
 		QuantizedFacings: 8
 		CameraActor: camera.paradrop
@@ -1204,7 +1203,7 @@ AFLD:
 		ChargeTime: 360
 		Description: Parabombs
 		LongDesc: A squad of Badgers drops parachuted\nbombs on your target.
-		SelectTargetSound: slcttgt1.aud
+		SelectTargetSpeechNotification: SelectTarget
 		CameraActor: camera
 		CameraRemoveDelay: 150
 		UnitType: badr.bomber
