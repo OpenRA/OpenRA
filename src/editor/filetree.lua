@@ -23,11 +23,6 @@ local image = {
   DIRECTORYMAPPED = 4,
 }
 
-MergeSettings(filetree.settings, ide:AddPackage('core.filetree', {}):GetSettings())
-
--- generic tree
--- ------------
-
 local function getIcon(name, isdir)
   local startfile = GetFullPathIfExists(FileTreeGetDir(),
     filetree.settings.startfile[FileTreeGetDir()])
@@ -901,3 +896,34 @@ function FileTreeFindByPartialName(name)
   end
   return
 end
+
+local watcher
+local package = ide:AddPackage('core.filetree', {
+    onProjectLoad = function(plugin, project)
+      if not ide.config.filetree.showchanges or not wx.wxFileSystemWatcher then return end
+      if not watcher then
+        watcher = wx.wxFileSystemWatcher()
+        watcher:SetOwner(ide:GetMainFrame())
+
+        local needrefresh = {}
+        ide:GetMainFrame():Connect(wx.wxEVT_FSWATCHER, function(event)
+            -- using `GetNewPath` to make it work with rename operations
+            needrefresh[event:GetNewPath():GetFullPath()] = event:GetChangeType()
+            ide:DoWhenIdle(function()
+                for file, kind in pairs(needrefresh) do
+                  -- if the file is removed, try to find a non-existing file in the same folder
+                  -- as this will trigger a refresh of that folder
+                  ide:GetProjectTree():FindItem(file..(kind == wx.wxFSW_EVENT_DELETE and "/../\1"  or ""))
+                end
+                needrefresh = {}
+              end)
+          end)
+      end
+      watcher:RemoveAll()
+      local projdir = wx.wxFileName.DirName(project)
+      projdir:DontFollowLink()
+      watcher:AddTree(projdir,
+        wx.wxFSW_EVENT_CREATE + wx.wxFSW_EVENT_DELETE + wx.wxFSW_EVENT_RENAME)
+    end,
+  })
+MergeSettings(filetree.settings, package:GetSettings())

@@ -95,6 +95,7 @@ ide = {
     },
     filetree = {
       mousemove = true,
+      showchanges = true,
     },
     outline = {
       jumptocurrentfunction = true,
