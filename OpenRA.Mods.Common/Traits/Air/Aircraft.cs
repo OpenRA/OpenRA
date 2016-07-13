@@ -83,6 +83,12 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Sound to play when the actor is landing.")]
 		public readonly string LandingSound = null;
 
+		[Desc("The distance of the resupply base that the aircraft will wait for its turn.")]
+		public readonly WDist WaitDistanceFromResupplyBase = new WDist(3072);
+
+		[Desc("The number of ticks that a airplane will wait to make a new search for an available airport.")]
+		public readonly int NumberOfTicksToVerifyAvailableAirport = 150;
+
 		public IReadOnlyDictionary<CPos, SubCell> OccupiedCells(ActorInfo info, CPos location, SubCell subCell = SubCell.Any) { return new ReadOnlyDictionary<CPos, SubCell>(); }
 		bool IOccupySpaceInfo.SharesCell { get { return false; } }
 	}
@@ -98,6 +104,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		UpgradeManager um;
 		IDisposable reservation;
+		Actor reservedActor;
 		IEnumerable<int> speedModifiers;
 
 		[Sync] public int Facing { get; set; }
@@ -181,6 +188,13 @@ namespace OpenRA.Mods.Common.Traits
 			if (!Info.Repulsable)
 				return WVec.Zero;
 
+			if (reservation != null)
+			{
+				var distanceFromReservationActor = (reservedActor.CenterPosition - self.CenterPosition).HorizontalLength;
+				if (distanceFromReservationActor < Info.WaitDistanceFromResupplyBase.Length)
+					return WVec.Zero;
+			}
+
 			// Repulsion only applies when we're flying!
 			var altitude = self.World.Map.DistanceAboveTerrain(CenterPosition).Length;
 			if (altitude != Info.CruiseAltitude.Length)
@@ -261,7 +275,10 @@ namespace OpenRA.Mods.Common.Traits
 			UnReserve();
 			var reservable = target.TraitOrDefault<Reservable>();
 			if (reservable != null)
+			{
 				reservation = reservable.Reserve(target, self, this);
+				reservedActor = target;
+			}
 		}
 
 		public void UnReserve()
@@ -271,6 +288,8 @@ namespace OpenRA.Mods.Common.Traits
 
 			reservation.Dispose();
 			reservation = null;
+			reservedActor = null;
+
 			if (self.World.Map.DistanceAboveTerrain(CenterPosition).Length <= Info.LandAltitude.Length)
 				self.QueueActivity(new TakeOff(self));
 		}

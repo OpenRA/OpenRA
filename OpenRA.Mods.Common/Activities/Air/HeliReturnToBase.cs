@@ -44,13 +44,28 @@ namespace OpenRA.Mods.Common.Activities
 			{
 				var rearmBuildings = heli.Info.RearmBuildings;
 				var nearestHpad = self.World.ActorsHavingTrait<Reservable>()
-									.Where(a => a.Owner == self.Owner && rearmBuildings.Contains(a.Info.Name))
-									.ClosestTo(self);
+					.Where(a => a.Owner == self.Owner && rearmBuildings.Contains(a.Info.Name))
+					.ClosestTo(self);
 
 				if (nearestHpad == null)
 					return ActivityUtils.SequenceActivities(new Turn(self, initialFacing), new HeliLand(self, true), NextActivity);
 				else
-					return ActivityUtils.SequenceActivities(new HeliFly(self, Target.FromActor(nearestHpad)));
+				{
+					var distanceFromHelipad = (nearestHpad.CenterPosition - self.CenterPosition).HorizontalLength;
+					var distanceLength = heli.Info.WaitDistanceFromResupplyBase.Length;
+
+					// If no pad is available, move near one and wait
+					if (distanceFromHelipad > distanceLength)
+					{
+						var randomPosition = WVec.FromPDF(self.World.SharedRandom, 2) * distanceLength / 1024;
+
+						var target = Target.FromPos(nearestHpad.CenterPosition + randomPosition);
+
+						return ActivityUtils.SequenceActivities(new HeliFly(self, target, WDist.Zero, heli.Info.WaitDistanceFromResupplyBase), this);
+					}
+
+					return this;
+				}
 			}
 
 			heli.MakeReservation(dest);
@@ -62,7 +77,8 @@ namespace OpenRA.Mods.Common.Activities
 				new HeliFly(self, Target.FromPos(dest.CenterPosition + offset)),
 				new Turn(self, initialFacing),
 				new HeliLand(self, false),
-				new ResupplyAircraft(self));
+				new ResupplyAircraft(self),
+				NextActivity);
 		}
 	}
 }
