@@ -155,9 +155,11 @@ namespace OpenRA.Scripting
 				.ToArray();
 
 			ActorCommands = new Cache<ActorInfo, Type[]>(FilterActorCommands);
-			PlayerCommands = Game.ModData.ObjectCreator
+
+			var knownPlayerCommands = Game.ModData.ObjectCreator
 				.GetTypesImplementing<ScriptPlayerProperties>()
 				.ToArray();
+			PlayerCommands = FilterCommands(world.Map.Rules.Actors["player"], knownPlayerCommands);
 
 			runtime.Globals["GameDir"] = Platform.GameDir;
 			runtime.DoBuffer(File.Open(Platform.ResolvePath(".", "lua", "scriptwrapper.lua"), FileMode.Open, FileAccess.Read).ReadAllText(), "scriptwrapper.lua").Dispose();
@@ -281,8 +283,13 @@ namespace OpenRA.Scripting
 		static readonly object[] NoArguments = new object[0];
 		Type[] FilterActorCommands(ActorInfo ai)
 		{
+			return FilterCommands(ai, knownActorCommands);
+		}
+
+		Type[] FilterCommands(ActorInfo ai, Type[] knownCommands)
+		{
 			var method = typeof(ActorInfo).GetMethod("HasTraitInfo");
-			return knownActorCommands.Where(c => ExtractRequiredTypes(c)
+			return knownCommands.Where(c => ExtractRequiredTypes(c)
 				.All(t => (bool)method.MakeGenericMethod(t).Invoke(ai, NoArguments)))
 				.ToArray();
 		}
