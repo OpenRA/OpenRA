@@ -468,11 +468,16 @@ frame:Connect(ID_COMMANDLINEPARAMETERS, wx.wxEVT_COMMAND_MENU_SELECTED,
     local params = ide:GetTextFromUser(TR("Enter command line parameters"),
       TR("Command line parameters"), ide.config.arg.any or "")
     -- params is `nil` when the dialog is canceled
-    if params then ide:SetConfig("arg.any", #params > 0 and params or nil, ide:GetProject()) end
+    if params then
+      ide:SetConfig("arg.any", #params > 0 and params or nil, ide:GetProject())
+      local interpreter = ide:GetInterpreter()
+      if interpreter then interpreter:UpdateStatus() end
+    end
   end)
 frame:Connect(ID_COMMANDLINEPARAMETERS, wx.wxEVT_UPDATE_UI,
   function (event)
-    event:Enable(ide.interpreter and ide.interpreter.takeparameters and true or false)
+    local interpreter = ide:GetInterpreter()
+    event:Enable(interpreter and interpreter.takeparameters and true or false)
   end)
 
 -- save and restore command line parameters
@@ -482,6 +487,8 @@ ide:AddPackage("core.project", {
       if type(settings.arg) == "table" then
         ide:SetConfig("arg.any", settings.arg[project], project)
       end
+      local interpreter = ide:GetInterpreter()
+      if interpreter then interpreter:UpdateStatus() end
     end,
     onProjectClose = function(self, project)
       local settings = self:GetSettings()
