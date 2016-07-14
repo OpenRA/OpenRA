@@ -250,7 +250,6 @@
   <ItemGroup>
     <Compile Include="FileSystem\D2kSoundResources.cs" />
     <Compile Include="FileSystem\Folder.cs" />
-    <Compile Include="FileSystem\InstallShieldCABExtractor.cs" />
     <Compile Include="FileSystem\InstallShieldPackage.cs" />
     <Compile Include="FileSystem\MixFile.cs" />
     <Compile Include="FileSystem\Pak.cs" />

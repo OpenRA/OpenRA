@@ -234,6 +234,25 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 								break;
 							}
 
+							case "extract-iscab":
+							{
+								ExtractFromISCab(path, i.Value, extracted, m => message = m);
+								break;
+							}
+
+							case "delete":
+							{
+								var sourcePath = Path.Combine(path, i.Value.Value);
+
+								// Try as an absolute path
+								if (!File.Exists(sourcePath))
+									sourcePath = Platform.ResolvePath(i.Value.Value);
+
+								Log.Write("debug", "Deleting {0}", sourcePath);
+								File.Delete(sourcePath);
+								break;
+							}
+
 							default:
 								Log.Write("debug", "Unknown installation command {0} - ignoring", i.Key);
 								break;
@@ -282,6 +301,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		static void ExtractFromPackage(ExtractionType type, string path, MiniYaml actionYaml, List<string> extractedFiles, Action<string> updateMessage)
 		{
 			var sourcePath = Path.Combine(path, actionYaml.Value);
+
+			// Try as an absolute path
+			if (!File.Exists(sourcePath))
+				sourcePath = Platform.ResolvePath(actionYaml.Value);
+
 			using (var source = File.OpenRead(sourcePath))
 			{
 				foreach (var node in actionYaml.Nodes)
@@ -344,6 +368,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		static void ExtractFromMSCab(string path, MiniYaml actionYaml, List<string> extractedFiles, Action<string> updateMessage)
 		{
 			var sourcePath = Path.Combine(path, actionYaml.Value);
+
+			// Try as an absolute path
+			if (!File.Exists(sourcePath))
+				sourcePath = Platform.ResolvePath(actionYaml.Value);
+
 			using (var source = File.OpenRead(sourcePath))
 			{
 				var reader = new MSCabCompression(source);
@@ -367,6 +396,64 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						reader.ExtractFile(node.Value.Value, target, onProgress);
 					}
 				}
+			}
+		}
+
+		static void ExtractFromISCab(string path, MiniYaml actionYaml, List<string> extractedFiles, Action<string> updateMessage)
+		{
+			var sourcePath = Path.Combine(path, actionYaml.Value);
+
+			// Try as an absolute path
+			if (!File.Exists(sourcePath))
+				sourcePath = Platform.ResolvePath(actionYaml.Value);
+
+			var volumeNode = actionYaml.Nodes.FirstOrDefault(n => n.Key == "Volumes");
+			if (volumeNode == null)
+				throw new InvalidDataException("extract-iscab entry doesn't define a Volumes node");
+
+			var extractNode = actionYaml.Nodes.FirstOrDefault(n => n.Key == "Extract");
+			if (extractNode == null)
+				throw new InvalidDataException("extract-iscab entry doesn't define an Extract node");
+
+			var volumes = new Dictionary<int, Stream>();
+			try
+			{
+				foreach (var node in volumeNode.Value.Nodes)
+				{
+					var volume = FieldLoader.GetValue<int>("(key)", node.Key);
+					var stream = File.OpenRead(Path.Combine(path, node.Value.Value));
+					volumes.Add(volume, stream);
+				}
+
+				using (var source = File.OpenRead(sourcePath))
+				{
+					var reader = new InstallShieldCABCompression(source, volumes);
+					foreach (var node in extractNode.Value.Nodes)
+					{
+						var targetPath = Platform.ResolvePath(node.Key);
+
+						if (File.Exists(targetPath))
+						{
+							Log.Write("install", "Skipping installed file " + targetPath);
+							continue;
+						}
+
+						extractedFiles.Add(targetPath);
+						Directory.CreateDirectory(Path.GetDirectoryName(targetPath));
+						using (var target = File.OpenWrite(targetPath))
+						{
+							Log.Write("install", "Extracting {0} -> {1}".F(sourcePath, targetPath));
+							var displayFilename = Path.GetFileName(Path.GetFileName(targetPath));
+							Action<int> onProgress = percent => updateMessage("Extracting {0} ({1}%)".F(displayFilename, percent));
+							reader.ExtractFile(node.Value.Value, target, onProgress);
+						}
+					}
+				}
+			}
+			finally
+			{
+				foreach (var kv in volumes)
+					kv.Value.Dispose();
 			}
 		}
 

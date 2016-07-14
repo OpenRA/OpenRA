@@ -233,19 +233,19 @@ ModContent:
 	Packages:
 		base: Base Game Files
 			TestFiles: ^Content/ra/allies.mix, ^Content/ra/conquer.mix, ^Content/ra/interior.mix, ^Content/ra/redalert.mix, ^Content/ra/russian.mix, ^Content/ra/snow.mix, ^Content/ra/sounds.mix, ^Content/ra/temperat.mix
-			Sources: allied, allied-linux, soviet, soviet-linux, origin
+			Sources: allied, allied-linux, soviet, soviet-linux, tfd, origin
 			Required: true
 			Download: basefiles
 		music: Base Game Music
 			TestFiles: ^Content/ra/scores.mix
-			Sources: allied, allied-linux, soviet, soviet-linux, origin
+			Sources: allied, allied-linux, soviet, soviet-linux, tfd, origin
 			Download: music
 		movies-allied: Allied Campaign Briefings
 			TestFiles: ^Content/ra/movies1.mix
-			Sources: allied, allied-linux, origin
+			Sources: allied, allied-linux, tfd, origin
 		movies-soviet: Soviet Campaign Briefings
 			TestFiles: ^Content/ra/movies2.mix
-			Sources: soviet, soviet-linux, origin
+			Sources: soviet, soviet-linux, tfd, origin
 		music-counterstrike: Counterstrike Music
 			TestFiles: ^Content/ra/music/araziod.aud, ^Content/ra/music/backstab.aud, ^Content/ra/music/chaos2.aud, ^Content/ra/music/shut_it.aud, ^Content/ra/music/2nd_hand.aud, ^Content/ra/music/twinmix1.aud, ^Content/ra/music/under3.aud, ^Content/ra/music/vr2.aud, 
 			Sources: counterstrike, counterstrike-linux, origin
@@ -536,6 +536,51 @@ ModContent:
 					^Content/ra/music/wastelnd.aud:
 						Offset: 263929718
 						Length: 2721563
+		tfd: C&C The First Decade (English)
+			IDFiles:
+				data1.hdr: bef3a08c3fc1b1caf28ca0dbb97c1f900005930e
+				data1.cab: 12ad6113a6890a1b4d5651a75378c963eaf513b9
+			Install:
+				extract-iscab: data1.hdr
+					Volumes:
+						3: data3.cab
+						4: data4.cab
+						5: data5.cab
+					Extract:
+						^Content/ra/main.mix: Red Alert\\MAIN.MIX
+						^Content/ra/redalert.mix: Red Alert\\REDALERT.MIX
+				extract-raw: ^Content/ra/main.mix
+					^Content/ra/movies1.mix:
+						Offset: 417051805
+						Length: 404691306
+					^Content/ra/interior.mix:
+						Offset: 821743111
+						Length: 249490
+					^Content/ra/conquer.mix:
+						Offset: 840028549
+						Length: 2192279
+					^Content/ra/allies.mix:
+						Offset: 842220828
+						Length: 319181
+					^Content/ra/temperat.mix:
+						Offset: 842540009
+						Length: 1043672
+					^Content/ra/sounds.mix:
+						Offset: 843583681
+						Length: 1385637
+					^Content/ra/snow.mix:
+						Offset: 844969318
+						Length: 1035716
+					^Content/ra/scores.mix:
+						Offset: 846005034
+						Length: 67742203
+					^Content/ra/russian.mix:
+						Offset: 913747237
+						Length: 274732
+					^Content/ra/movies2.mix:
+						Offset: 914022190
+						Length: 417051731
+				delete: ^Content/ra/main.mix
 		origin: C&C The Ultimate Collection (Origin version, English)
 			Type: Install
 			RegistryKey: HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\EA Games\Command and Conquer Red Alert
