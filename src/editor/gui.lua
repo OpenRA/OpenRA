@@ -52,7 +52,21 @@ local function createFrame()
   statusBar:Connect(wx.wxEVT_LEFT_DOWN, function (event)
       local rect = wx.wxRect()
       statusBar:GetFieldRect(4, rect)
-      if rect:Contains(event:GetPosition()) then -- click on the interpreter
+      if rect:Contains(event:GetPosition()) then -- click on the interpreter section
+        local interpreter = ide:GetInterpreter()
+        if interpreter and interpreter.takeparameters and interpreter:GetCommandLineArg() then
+          rect:SetWidth(statusBar:GetTextExtent(ide:GetInterpreter():GetName()..": "))
+          if not rect:Contains(event:GetPosition()) then
+            local menuitem = ide:FindMenuItem(ID.COMMANDLINEPARAMETERS)
+            if menuitem then
+              local menu = ide:MakeMenu {
+                { ID_COMMANDLINEPARAMETERS, TR("Command Line Parameters...")..KSC(ID_COMMANDLINEPARAMETERS) },
+              }
+              if menu then statusBar:PopupMenu(menu) end
+            end
+            return
+          end
+        end
         local menuitem = ide:FindMenuItem(ID.INTERPRETER)
         if menuitem then
           local menu = ide:CloneMenu(menuitem:GetSubMenu())
