@@ -10,6 +10,8 @@ install:
 
 cache:
   - thirdparty\download -> thirdparty\fetch-thirdparty-deps.ps1
+  - C:\ProgramData\chocolatey\bin -> appveyor.yml
+  - C:\ProgramData\chocolatey\lib -> appveyor.yml
 
 before_build:
 - make dependencies
@@ -59,8 +61,8 @@ after_test:
   - '"%ProgramFiles(x86)%\Pandoc\pandoc.exe" -o DOCUMENTATION.html DOCUMENTATION.md'
   - '"%ProgramFiles(x86)%\Pandoc\pandoc.exe" -o Lua-API.html Lua-API.md'
   - ps: cp OpenRA.Game/OpenRA.ico .
-  - choco install nsis.install -version 2.51 -y
-  - '"%ProgramFiles(x86)%\NSIS\makensis.exe" /DSRCDIR="%APPVEYOR_BUILD_FOLDER%" /DDEPSDIR="%APPVEYOR_BUILD_FOLDER%\thirdparty\download\windows" /V3 packaging/windows/OpenRA.nsi'
+  - choco install nsis.portable -version 2.51 -y
+  - '"C:\ProgramData\chocolatey\bin\makensis.exe" /DSRCDIR="%APPVEYOR_BUILD_FOLDER%" /DDEPSDIR="%APPVEYOR_BUILD_FOLDER%\thirdparty\download\windows" /V3 packaging/windows/OpenRA.nsi'
   - if defined APPVEYOR_REPO_TAG_NAME set VERSION=%APPVEYOR_REPO_TAG_NAME%
   - if not defined APPVEYOR_REPO_TAG_NAME set VERSION=%APPVEYOR_REPO_COMMIT:~0,7%
   - move /Y %APPVEYOR_BUILD_FOLDER%\packaging\windows\OpenRA.Setup.exe %APPVEYOR_BUILD_FOLDER%\OpenRA-%VERSION%.exe
