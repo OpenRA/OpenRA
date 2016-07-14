@@ -209,7 +209,10 @@ namespace OpenRA.Mods.Common.Traits
 		[FieldFromYamlKey] readonly int value = 100;
 		readonly bool allowZero;
 		public HealthInit() { }
-		public HealthInit(int init, bool allowZero = false)
+		public HealthInit(int init)
+			: this(init, false) { }
+
+		public HealthInit(int init, bool allowZero)
 		{
 			this.allowZero = allowZero;
 			value = init;
