@@ -62,7 +62,17 @@ local function createFrame()
               local menu = ide:MakeMenu {
                 { ID_COMMANDLINEPARAMETERS, TR("Command Line Parameters...")..KSC(ID_COMMANDLINEPARAMETERS) },
               }
-              if menu then statusBar:PopupMenu(menu) end
+              local cmdargs = ide:GetPackage("core.project"):GetCmdLines()
+              if #cmdargs > 0 then menu:PrependSeparator() end
+              local function setParams(ev) ide:SetCommandLineParameters(menu:GetLabel(ev:GetId())) end
+              -- do in the reverse order as `Prepend` is used;
+              -- skip the first item as it's already selected
+              for i = #cmdargs, 2, -1 do
+                local id = ID("status.commandparameters."..i)
+                menu:Prepend(id, cmdargs[i])
+                menu:Connect(id, wx.wxEVT_COMMAND_MENU_SELECTED, setParams)
+              end
+              statusBar:PopupMenu(menu)
             end
             return
           end
