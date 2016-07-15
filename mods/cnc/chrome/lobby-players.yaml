@@ -300,6 +300,20 @@ Container@LOBBY_PLAYER_BIN:
 							Text: Spectator
 							Align: Center
 							Font: Bold
+						Image@STATUS_IMAGE:
+							X: 521
+							Y: 4
+							Width: 20
+							Height: 20
+							ImageCollection: checkbox-bits
+							ImageName: checked
+							Visible: false
+						Checkbox@STATUS_CHECKBOX:
+							X: 527
+							Y: 2
+							Width: 20
+							Height: 20
+							Visible: false
 				Container@TEMPLATE_NONEDITABLE_SPECTATOR:
 					X: 5
 					Width: 530
@@ -350,6 +364,14 @@ Container@LOBBY_PLAYER_BIN:
 							Text: Spectator
 							Align: Center
 							Font: Bold
+						Image@STATUS_IMAGE:
+							X: 527
+							Y: 4
+							Width: 20
+							Height: 20
+							ImageCollection: checkbox-bits
+							ImageName: checked
+							Visible: false
 				Container@TEMPLATE_NEW_SPECTATOR:
 					X: 5
 					Width: 529

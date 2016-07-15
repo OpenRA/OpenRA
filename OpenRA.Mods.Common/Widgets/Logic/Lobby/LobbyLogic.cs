@@ -708,7 +708,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					LobbyUtils.SetupEditableFactionWidget(template, slot, client, orderManager, factions);
 					LobbyUtils.SetupEditableTeamWidget(template, slot, client, orderManager, Map);
 					LobbyUtils.SetupEditableSpawnWidget(template, slot, client, orderManager, Map);
-					LobbyUtils.SetupEditableReadyWidget(template, slot, client, orderManager, Map, !Map.RulesLoaded || Map.InvalidCustomRules);
+					LobbyUtils.SetupEditableReadyWidget(template, slot, client, orderManager, Map);
 				}
 				else
 				{
@@ -754,6 +754,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						template = editableSpectatorTemplate.Clone();
 
 					LobbyUtils.SetupEditableNameWidget(template, null, c, orderManager);
+
+					if (client.IsAdmin)
+						LobbyUtils.SetupEditableReadyWidget(template, null, client, orderManager, Map);
 				}
 				else
 				{
@@ -764,6 +767,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					LobbyUtils.SetupNameWidget(template, null, client);
 					LobbyUtils.SetupKickWidget(template, null, client, orderManager, lobby,
 						() => panel = PanelType.Kick, () => panel = PanelType.Players);
+
+					if (client.IsAdmin)
+						LobbyUtils.SetupReadyWidget(template, null, client);
 				}
 
 				LobbyUtils.SetupClientWidget(template, c, orderManager, true);
