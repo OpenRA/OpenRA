@@ -29,12 +29,15 @@ namespace OpenRA.Mods.Common.UtilityCommands
 		[Desc("DATA.HDR", "Lists the filenames contained within an Installshield CAB volume set")]
 		public void Run(ModData modData, string[] args)
 		{
-			var package = new InstallShieldCABCompression(File.OpenRead(args[1]), null);
-			foreach (var volume in package.Contents.OrderBy(kv => kv.Key))
+			using (var file = File.OpenRead(args[1]))
 			{
-				Console.WriteLine("Volume: {0}", volume.Key);
-				foreach (var filename in volume.Value)
-					Console.WriteLine("\t{0}", filename);
+				var package = new InstallShieldCABCompression(file, null);
+				foreach (var volume in package.Contents.OrderBy(kv => kv.Key))
+				{
+					Console.WriteLine("Volume: {0}", volume.Key);
+					foreach (var filename in volume.Value)
+						Console.WriteLine("\t{0}", filename);
+				}
 			}
 		}
 	}
