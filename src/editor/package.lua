@@ -884,6 +884,14 @@ function ide:IsProjectSubDirectory(dir)
   return path:SameAs(wx.wxFileName(projdir))
 end
 
+function ide:SetCommandLineParameters(params)
+  if not params then return end
+  ide:SetConfig("arg.any", #params > 0 and params or nil, ide:GetProject())
+  if #params > 0 then ide:GetPackage("core.project"):AddCmdLine(params) end
+  local interpreter = ide:GetInterpreter()
+  if interpreter then interpreter:UpdateStatus() end
+end
+
 function ide:ActivateFile(filename)
   if wx.wxDirExists(filename) then
     ProjectUpdateProjectDir(filename)

@@ -175,6 +175,7 @@ ide = {
     symbolindexinactivity = 2, -- seconds
     filehistorylength = 20,
     projecthistorylength = 20,
+    commandlinehistorylength = 10,
     bordersize = 3,
     savebak = false,
     singleinstance = false,

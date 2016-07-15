@@ -468,11 +468,7 @@ frame:Connect(ID_COMMANDLINEPARAMETERS, wx.wxEVT_COMMAND_MENU_SELECTED,
     local params = ide:GetTextFromUser(TR("Enter command line parameters"),
       TR("Command line parameters"), ide.config.arg.any or "")
     -- params is `nil` when the dialog is canceled
-    if params then
-      ide:SetConfig("arg.any", #params > 0 and params or nil, ide:GetProject())
-      local interpreter = ide:GetInterpreter()
-      if interpreter then interpreter:UpdateStatus() end
-    end
+    if params then ide:SetCommandLineParameters(params) end
   end)
 frame:Connect(ID_COMMANDLINEPARAMETERS, wx.wxEVT_UPDATE_UI,
   function (event)
@@ -482,6 +478,15 @@ frame:Connect(ID_COMMANDLINEPARAMETERS, wx.wxEVT_UPDATE_UI,
 
 -- save and restore command line parameters
 ide:AddPackage("core.project", {
+    AddCmdLine = function(self, params)
+      local settings = self:GetSettings()
+      local arglist = settings.arglist or {}
+      PrependStringToArray(arglist, params, ide.config.commandlinehistorylength)
+      settings.arglist = arglist
+      self:SetSettings(settings)
+    end,
+    GetCmdLines = function(self) return self:GetSettings().arglist or {} end,
+
     onProjectLoad = function(self, project)
       local settings = self:GetSettings()
       if type(settings.arg) == "table" then
