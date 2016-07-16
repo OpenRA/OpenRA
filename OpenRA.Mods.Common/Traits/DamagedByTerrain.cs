@@ -62,6 +62,9 @@ namespace OpenRA.Mods.Common.Traits
 					safeTiles++;
 			}
 
+			if (totalTiles == 0)
+				return;
+
 			damageThreshold = (Info.DamageThreshold * health.MaxHP + (100 - Info.DamageThreshold) * safeTiles * health.MaxHP / totalTiles) / 100;
 
 			// Actors start with maximum damage applied
