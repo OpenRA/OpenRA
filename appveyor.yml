@@ -52,7 +52,7 @@ test_script:
   - nunit3-console OpenRA.Test.dll --result=myresults.xml;format=AppVeyor
 
 after_test:
-  - choco install pandoc -y
+  - choco install pandoc -y --force
   - '"%ProgramFiles(x86)%\Pandoc\pandoc.exe" -o README.html README.md'
   - '"%ProgramFiles(x86)%\Pandoc\pandoc.exe" -o CONTRIBUTING.html CONTRIBUTING.md'
   - appveyor DownloadFile "https://raw.githubusercontent.com/wiki/OpenRA/OpenRA/Changelog.md" -FileName Changelog.md
