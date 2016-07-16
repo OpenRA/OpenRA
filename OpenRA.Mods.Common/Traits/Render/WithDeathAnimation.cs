@@ -84,7 +84,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 				palette += self.Owner.InternalName;
 
 			// Killed by some non-standard means
-			if (e.Warhead == null || !(e.Warhead is DamageWarhead))
+			if (e.Damage.DamageTypes.Count == 0)
 			{
 				if (Info.FallbackSequence != null)
 					SpawnDeathAnimation(self, self.CenterPosition, rs.GetImage(self), Info.FallbackSequence, palette);
@@ -95,8 +95,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			var sequence = Info.DeathSequence;
 			if (Info.UseDeathTypeSuffix)
 			{
-				var warhead = e.Warhead as DamageWarhead;
-				var damageType = Info.DeathTypes.Keys.FirstOrDefault(warhead.DamageTypes.Contains);
+				var damageType = Info.DeathTypes.Keys.FirstOrDefault(e.Damage.DamageTypes.Contains);
 				if (damageType == null)
 					return;
 

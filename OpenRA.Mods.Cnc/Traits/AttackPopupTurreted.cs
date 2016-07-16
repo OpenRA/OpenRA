@@ -112,7 +112,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			}
 		}
 
-		public int GetDamageModifier(Actor attacker, IWarhead warhead)
+		public int GetDamageModifier(Actor attacker, Damage damage)
 		{
 			return state == PopupState.Closed ? info.ClosedDamageMultiplier : 100;
 		}

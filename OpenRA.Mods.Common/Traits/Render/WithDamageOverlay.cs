@@ -55,12 +55,11 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		public void Damaged(Actor self, AttackInfo e)
 		{
-			var warhead = e.Warhead as DamageWarhead;
-			if (info.DamageTypes.Count > 0 && (warhead != null && !warhead.DamageTypes.Overlaps(info.DamageTypes)))
+			if (info.DamageTypes.Count > 0 && !e.Damage.DamageTypes.Overlaps(info.DamageTypes))
 				return;
 
 			if (isSmoking) return;
-			if (e.Damage < 0) return;	/* getting healed */
+			if (e.Damage.Value < 0) return;	/* getting healed */
 			if (e.DamageState < info.MinimumDamageState) return;
 			if (e.DamageState > info.MaximumDamageState) return;
 

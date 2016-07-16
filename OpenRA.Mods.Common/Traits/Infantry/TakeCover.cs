@@ -56,8 +56,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void Damaged(Actor self, AttackInfo e)
 		{
-			var warhead = e.Warhead as DamageWarhead;
-			if (e.Damage <= 0 || warhead == null || !warhead.DamageTypes.Overlaps(info.DamageTriggers))
+			if (e.Damage.Value <= 0 || !e.Damage.DamageTypes.Overlaps(info.DamageTriggers))
 				return;
 
 			if (!IsProne)
@@ -79,16 +78,15 @@ namespace OpenRA.Mods.Common.Traits
 			get { return true; }
 		}
 
-		public int GetDamageModifier(Actor attacker, IWarhead warhead)
+		public int GetDamageModifier(Actor attacker, Damage damage)
 		{
 			if (!IsProne)
 				return 100;
 
-			var damageWh = warhead as DamageWarhead;
-			if (damageWh == null)
+			if (damage.DamageTypes.Count == 0)
 				return 100;
 
-			var modifierPercentages = info.DamageModifiers.Where(x => damageWh.DamageTypes.Contains(x.Key)).Select(x => x.Value);
+			var modifierPercentages = info.DamageModifiers.Where(x => damage.DamageTypes.Contains(x.Key)).Select(x => x.Value);
 			return Util.ApplyPercentageModifiers(100, modifierPercentages);
 		}
 

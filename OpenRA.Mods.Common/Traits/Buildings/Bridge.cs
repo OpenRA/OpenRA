@@ -292,7 +292,7 @@ namespace OpenRA.Mods.Common.Traits
 					KillUnitsOnBridge();
 				}
 				else
-					health.InflictDamage(self, repairer, -health.MaxHP, null, true);
+					health.InflictDamage(self, repairer, new Damage(-health.MaxHP), true);
 				if (direction < 0 ? neighbours[0] == null && neighbours[1] == null : Hut != null || neighbours[direction] == null)
 					onComplete(); // Done if single or reached other hut
 			});

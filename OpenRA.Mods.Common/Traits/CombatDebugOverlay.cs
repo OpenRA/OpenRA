@@ -116,14 +116,14 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void Damaged(Actor self, AttackInfo e)
 		{
-			if (devMode == null || !devMode.ShowCombatGeometry || e.Damage == 0)
+			if (devMode == null || !devMode.ShowCombatGeometry || e.Damage.Value == 0)
 				return;
 
 			if (healthInfo == null)
 				return;
 
 			var maxHP = healthInfo.HP > 0 ? healthInfo.HP : 1;
-			var damageText = "{0} ({1}%)".F(-e.Damage, e.Damage * 100 / maxHP);
+			var damageText = "{0} ({1}%)".F(-e.Damage.Value, e.Damage.Value * 100 / maxHP);
 
 			self.World.AddFrameEndTask(w => w.Add(new FloatingText(self.CenterPosition, e.Attacker.Owner.Color.RGB, damageText, 30)));
 		}

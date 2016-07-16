@@ -317,12 +317,12 @@ namespace OpenRA
 			return (health == null) ? DamageState.Undamaged : health.DamageState;
 		}
 
-		public void InflictDamage(Actor attacker, int damage, IWarhead warhead)
+		public void InflictDamage(Actor attacker, Damage damage)
 		{
 			if (Disposed || health == null)
 				return;
 
-			health.InflictDamage(this, attacker, damage, warhead, false);
+			health.InflictDamage(this, attacker, damage, false);
 		}
 
 		public void Kill(Actor attacker)

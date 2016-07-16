@@ -39,10 +39,7 @@ namespace OpenRA.Mods.Common.Traits.Sound
 
 		public void Killed(Actor self, AttackInfo e)
 		{
-			var warhead = e.Warhead as DamageWarhead;
-
-			// If the warhead is null, the actor was killed by some non-standard means
-			if (info.DeathTypes.Count == 0 || (warhead != null && warhead.DamageTypes.Overlaps(info.DeathTypes)))
+			if (info.DeathTypes.Count == 0 || e.Damage.DamageTypes.Overlaps(info.DeathTypes))
 				self.PlayVoiceLocal(info.Voice, info.VolumeMultiplier);
 		}
 	}

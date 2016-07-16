@@ -65,7 +65,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!self.Info.HasTraitInfo<BuildingInfo>())
 				return;
 
-			if (e.Attacker.Owner.IsAlliedWith(self.Owner) && e.Damage <= 0)
+			if (e.Attacker.Owner.IsAlliedWith(self.Owner) && e.Damage.Value <= 0)
 				return;
 
 			if (self.World.WorldTick - lastAttackTime > info.NotifyInterval * 25)

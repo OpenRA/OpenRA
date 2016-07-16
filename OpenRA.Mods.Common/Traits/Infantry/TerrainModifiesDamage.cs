@@ -41,10 +41,9 @@ namespace OpenRA.Mods.Common.Traits
 			this.self = self;
 		}
 
-		public int GetDamageModifier(Actor attacker, IWarhead warhead)
+		public int GetDamageModifier(Actor attacker, Damage damage)
 		{
-			var damageWh = warhead as DamageWarhead;
-			if (attacker.Owner.IsAlliedWith(self.Owner) && (damageWh != null && damageWh.Damage < 0) && !Info.ModifyHealing)
+			if (attacker.Owner.IsAlliedWith(self.Owner) && damage.Value < 0 && !Info.ModifyHealing)
 				return FullDamage;
 
 			var world = self.World;
