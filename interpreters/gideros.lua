@@ -97,7 +97,7 @@ return {
           ide:ExecuteCommand(cmd,self:fworkdir(wfilename),function(s)
               -- remove all "status" messages from the output
               s = s:gsub("%f[\r\n]%s*%*.-[\r\n]",""):gsub("^%s*%*.-[\r\n]+","")
-              ide:Write(s)
+              ide:GetOutput():Write(s)
             end)
         end)
       if not pid then return end
