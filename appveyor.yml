@@ -10,8 +10,6 @@ install:
 
 cache:
   - thirdparty\download -> thirdparty\fetch-thirdparty-deps.ps1
-  - C:\ProgramData\chocolatey\bin -> appveyor.yml
-  - C:\ProgramData\chocolatey\lib -> appveyor.yml
 
 before_build:
 - make dependencies
@@ -52,17 +50,11 @@ test_script:
   - nunit3-console OpenRA.Test.dll --result=myresults.xml;format=AppVeyor
 
 after_test:
-  - choco install pandoc -y --force
-  - '"%ProgramFiles(x86)%\Pandoc\pandoc.exe" -o README.html README.md'
-  - '"%ProgramFiles(x86)%\Pandoc\pandoc.exe" -o CONTRIBUTING.html CONTRIBUTING.md'
   - appveyor DownloadFile "https://raw.githubusercontent.com/wiki/OpenRA/OpenRA/Changelog.md" -FileName Changelog.md
-  - '"%ProgramFiles(x86)%\Pandoc\pandoc.exe" -o Changelog.html CHANGELOG.md'
   - make docs
-  - '"%ProgramFiles(x86)%\Pandoc\pandoc.exe" -o DOCUMENTATION.html DOCUMENTATION.md'
-  - '"%ProgramFiles(x86)%\Pandoc\pandoc.exe" -o Lua-API.html Lua-API.md'
+  - ps: dir *.md | % {gc $_ -Raw | .\ConvertFrom-Markdown.ps1 | Out-File -FilePath "$($_.Name.TrimEnd(".md")).html"}
   - ps: cp OpenRA.Game/OpenRA.ico .
-  - choco install nsis.portable -version 2.51 -y
-  - '"C:\ProgramData\chocolatey\bin\makensis.exe" /DSRCDIR="%APPVEYOR_BUILD_FOLDER%" /DDEPSDIR="%APPVEYOR_BUILD_FOLDER%\thirdparty\download\windows" /V3 packaging/windows/OpenRA.nsi'
+  - '"C:\Program Files (x86)\NSIS\makensis.exe" /DSRCDIR="%APPVEYOR_BUILD_FOLDER%" /DDEPSDIR="%APPVEYOR_BUILD_FOLDER%\thirdparty\download\windows" /V3 packaging/windows/OpenRA.nsi'
   - if defined APPVEYOR_REPO_TAG_NAME set VERSION=%APPVEYOR_REPO_TAG_NAME%
   - if not defined APPVEYOR_REPO_TAG_NAME set VERSION=%APPVEYOR_REPO_COMMIT:~0,7%
   - move /Y %APPVEYOR_BUILD_FOLDER%\packaging\windows\OpenRA.Setup.exe %APPVEYOR_BUILD_FOLDER%\OpenRA-%VERSION%.exe
