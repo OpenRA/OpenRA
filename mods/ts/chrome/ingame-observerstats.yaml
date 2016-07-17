@@ -74,16 +74,24 @@ Background@INGAME_OBSERVERSTATS_BG:
 							Font: Bold
 							Text: Deaths
 							Align: Right
-						Label@KD_RATIO_HEADER:
+						Label@ASSETS_DESTROYED_HEADER:
 							X: 625
 							Y: 40
-							Width: 80
+							Width: 60
 							Height: 25
 							Font: Bold
-							Text: Kills/Deaths
+							Text: Destroyed
+							Align: Right
+						Label@ASSETS_LOST_HEADER:
+							X: 685
+							Y: 40
+							Width: 60
+							Height: 25
+							Font: Bold
+							Text: Lost
 							Align: Right
 						Label@ACTIONS_MIN_HEADER:
-							X: 755
+							X: 805
 							Y: 40
 							Width: 40
 							Height: 25
@@ -193,20 +201,20 @@ Background@INGAME_OBSERVERSTATS_BG:
 							Height: 25
 							Font: Bold
 							Text: Player
-						Label@KILLS_COST_HEADER:
-							X: 245
+						Label@ASSETS_DESTROYED_HEADER:
+							X: 230
 							Y: 40
 							Width: 60
 							Height: 25
 							Font: Bold
-							Text: Kills
-						Label@DEATHS_COST_HEADER:
+							Text: Destroyed
+						Label@ASSETS_LOST_HEADER:
 							X: 325
 							Y: 40
 							Width: 60
 							Height: 25
 							Font: Bold
-							Text: Deaths
+							Text: Lost
 						Label@UNITS_KILLED_HEADER:
 							X: 425
 							Y: 40
@@ -319,14 +327,20 @@ Background@INGAME_OBSERVERSTATS_BG:
 									Width: 40
 									Height: PARENT_BOTTOM
 									Align: Right
-								Label@KD_RATIO:
+								Label@ASSETS_DESTROYED:
 									X: 595
 									Y: 0
-									Width: 80
+									Width: 60
+									Height: PARENT_BOTTOM
+									Align: Right
+								Label@ASSETS_LOST:
+									X: 660
+									Y: 0
+									Width: 60
 									Height: PARENT_BOTTOM
 									Align: Right
 								Label@ACTIONS_MIN:
-									X: 725
+									X: 775
 									Y: 0
 									Width: 40
 									Height: PARENT_BOTTOM
@@ -436,12 +450,12 @@ Background@INGAME_OBSERVERSTATS_BG:
 									Width: 160
 									Height: PARENT_BOTTOM
 									Font: Bold
-								Label@KILLS_COST:
+								Label@ASSETS_DESTROYED:
 									X: 215
 									Y: 0
 									Width: 60
 									Height: PARENT_BOTTOM
-								Label@DEATHS_COST:
+								Label@ASSETS_LOST:
 									X: 295
 									Y: 0
 									Width: 60
