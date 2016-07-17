@@ -270,6 +270,16 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				if (engineVersion < 20160717)
+				{
+					if (depth == 0)
+					{
+						var selectionDecorations = node.Value.Nodes.FirstOrDefault(n => n.Key == "SelectionDecorations");
+						if (selectionDecorations != null)
+							node.Value.Nodes.Add(selectionDecorations = new MiniYamlNode("WithSpriteControlGroup", ""));
+					}
+				}
+
 				UpgradeActorRules(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 
