@@ -200,8 +200,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var stats = player.PlayerActor.TraitOrDefault<PlayerStatistics>();
 			if (stats == null) return template;
-			template.Get<LabelWidget>("KILLS_COST").GetText = () => "$" + stats.KillsCost;
-			template.Get<LabelWidget>("DEATHS_COST").GetText = () => "$" + stats.DeathsCost;
+			template.Get<LabelWidget>("ASSETS_DESTROYED").GetText = () => "$" + stats.KillsCost;
+			template.Get<LabelWidget>("ASSETS_LOST").GetText = () => "$" + stats.DeathsCost;
 			template.Get<LabelWidget>("UNITS_KILLED").GetText = () => stats.UnitsKilled.ToString();
 			template.Get<LabelWidget>("UNITS_DEAD").GetText = () => stats.UnitsDead.ToString();
 			template.Get<LabelWidget>("BUILDINGS_KILLED").GetText = () => stats.BuildingsKilled.ToString();
@@ -271,7 +271,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (stats == null) return template;
 			template.Get<LabelWidget>("KILLS").GetText = () => (stats.UnitsKilled + stats.BuildingsKilled).ToString();
 			template.Get<LabelWidget>("DEATHS").GetText = () => (stats.UnitsDead + stats.BuildingsDead).ToString();
-			template.Get<LabelWidget>("KD_RATIO").GetText = () => KillDeathRatio(stats.UnitsKilled + stats.BuildingsKilled, stats.UnitsDead + stats.BuildingsDead);
+			template.Get<LabelWidget>("ASSETS_DESTROYED").GetText = () => "$" + stats.KillsCost;
+			template.Get<LabelWidget>("ASSETS_LOST").GetText = () => "$" + stats.DeathsCost;
 			template.Get<LabelWidget>("ACTIONS_MIN").GetText = () => AverageOrdersPerMinute(stats.OrderCount);
 
 			return template;
