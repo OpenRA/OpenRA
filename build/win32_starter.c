@@ -132,7 +132,7 @@ PCHAR* CommandLineToArgv(PCHAR CmdLine,int* _argc)
   return argv;
 }
 
-PCHAR MultiByteToUTF8(LPCWSTR text) {
+PCHAR WideCharToUTF8(LPCWSTR text) {
   int size_needed = WideCharToMultiByte(CP_UTF8, 0, text, -1, NULL, 0, NULL, NULL);
   PCHAR buffer = (PCHAR)GlobalAlloc(GMEM_FIXED, size_needed);
   WideCharToMultiByte(CP_UTF8, 0, text, -1, buffer, size_needed, NULL, NULL);
@@ -142,7 +142,7 @@ PCHAR MultiByteToUTF8(LPCWSTR text) {
 int WINAPI WinMain(HINSTANCE hInstance,  HINSTANCE hPrevInstance,  LPSTR lpCmdLine, int nCmdShow)
 {
   int argc;
-  char ** argv = CommandLineToArgv(MultiByteToUTF8(GetCommandLineW()),&argc);
+  char ** argv = CommandLineToArgv(WideCharToUTF8(GetCommandLineW()),&argc);
   HINSTANCE hinstLib;
 
   char buffer[MAX_PATH],*file;
@@ -198,18 +198,17 @@ int WINAPI WinMain(HINSTANCE hInstance,  HINSTANCE hPrevInstance,  LPSTR lpCmdLi
           lua_pcall(L,0,0,0);
         else
           MessageBox(NULL,
-          TEXT("An unexpected error occured while loading the lua chunk."),
-          TEXT("Failed to start editor"),
-          MB_OK|MB_ICONERROR);
+            TEXT("An unexpected error occured while loading the lua chunk."),
+            TEXT("Failed to start editor"),
+            MB_OK|MB_ICONERROR);
       } else
         MessageBox(NULL,
-        TEXT("Couldn't initialize a luastate"),
-        TEXT("Failed to start editor"),
-        MB_OK|MB_ICONERROR);
+          TEXT("Couldn't initialize a luastate"),
+          TEXT("Failed to start editor"),
+          MB_OK|MB_ICONERROR);
     } else {
       MessageBox(NULL,
-        TEXT("Could not load all functions that are supposed to be located in the lua51.dll\n"
-        "This is not supposed to be happening..."),
+        TEXT("Could not load all functions that are supposed to be located in lua51.dll."),
         TEXT("Failed to start editor"),
         MB_OK|MB_ICONERROR);
     }
@@ -218,7 +217,7 @@ int WINAPI WinMain(HINSTANCE hInstance,  HINSTANCE hPrevInstance,  LPSTR lpCmdLi
     FreeLibrary(hinstLib);
   } else {
     MessageBox(NULL,
-      TEXT("The lua51.dll could not be found or loaded, please check the working directory of the application.\n"),
+      TEXT("lua51.dll could not be found or loaded, please check the working directory of the application."),
       TEXT("Failed to initialize editor"),
       MB_OK|MB_ICONERROR);
   }
