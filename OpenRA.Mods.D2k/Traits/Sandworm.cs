@@ -111,6 +111,13 @@ namespace OpenRA.Mods.D2k.Traits
 
 			while (!self.World.Map.Contains(moveTo) || !mobile.CanEnterCell(moveTo, null, false))
 			{
+				// without this check, this while can be infinity loop
+				if (moveTo == self.Location)
+				{
+					self.CancelActivity();
+					return;
+				}
+
 				noiseDirection /= 2;
 				moveTo = self.World.Map.CellContaining(self.CenterPosition + noiseDirection);
 			}
