@@ -332,6 +332,8 @@ namespace OpenRA.Mods.Common.Traits
 		CPos fromCell, toCell;
 		public SubCell FromSubCell, ToSubCell;
 
+		CPos currentDestination;
+
 		[Sync] public int Facing
 		{
 			get { return facing; }
@@ -523,6 +525,11 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				if (!Info.MoveIntoShroud && !self.Owner.Shroud.IsExplored(order.TargetLocation))
 					return;
+
+				if (order.TargetLocation == currentDestination)
+					return;
+
+				currentDestination = order.TargetLocation;
 
 				PerformMove(self, self.World.Map.Clamp(order.TargetLocation),
 					order.Queued && !self.IsIdle);
