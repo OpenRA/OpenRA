@@ -9,6 +9,7 @@ local bottomnotebook = frame.bottomnotebook
 local out = bottomnotebook.errorlog
 
 local MESSAGE_MARKER = StylesGetMarker("message")
+local ERROR_MARKER = StylesGetMarker("error")
 local PROMPT_MARKER = StylesGetMarker("prompt")
 local PROMPT_MARKER_VALUE = 2^PROMPT_MARKER
 
@@ -20,6 +21,7 @@ out:StyleClearAll()
 out:SetMarginWidth(1, 16) -- marker margin
 out:SetMarginType(1, wxstc.wxSTC_MARGIN_SYMBOL)
 out:MarkerDefine(StylesGetMarker("message"))
+out:MarkerDefine(StylesGetMarker("error"))
 out:MarkerDefine(StylesGetMarker("prompt"))
 out:SetReadOnly(true)
 if (ide.config.outputshell.usewrap) then
@@ -86,6 +88,11 @@ end
 
 function out:Print(...) return ide:Print(...) end
 function out:Write(...) return DisplayOutputNoMarker(...) end
+function out:Error(...)
+  out:MarkerAdd(out:GetLineCount()-1, ERROR_MARKER)
+  DisplayOutputNoMarker(...)
+  DisplayOutputNoMarker("\n")
+end
 
 local streamins = {}
 local streamerrs = {}
