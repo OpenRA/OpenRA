@@ -34,6 +34,7 @@ namespace OpenRA.Mods.Common.Widgets
 		readonly World world;
 		readonly WorldRenderer worldRenderer;
 		readonly RadarPings radarPings;
+		readonly ResourceLayer resourceLayer;
 		readonly bool isRectangularIsometric;
 		readonly int cellWidth;
 		readonly int previewWidth;
@@ -64,6 +65,7 @@ namespace OpenRA.Mods.Common.Widgets
 			this.world = world;
 			this.worldRenderer = worldRenderer;
 			radarPings = world.WorldActor.TraitOrDefault<RadarPings>();
+			resourceLayer = world.WorldActor.Trait<ResourceLayer>();
 
 			isRectangularIsometric = world.Map.Grid.Type == MapGridType.RectangularIsometric;
 			cellWidth = isRectangularIsometric ? 2 : 1;
@@ -137,15 +139,23 @@ namespace OpenRA.Mods.Common.Widgets
 				return;
 
 			var custom = world.Map.CustomTerrain[uv];
+			var tileset = world.Map.Rules.TileSet;
 			int leftColor, rightColor;
 			if (custom == byte.MaxValue)
 			{
-				var type = world.Map.Rules.TileSet.GetTileInfo(world.Map.Tiles[uv]);
+				var type = tileset.GetTileInfo(world.Map.Tiles[uv]);
 				leftColor = type != null ? type.LeftColor.ToArgb() : Color.Black.ToArgb();
 				rightColor = type != null ? type.RightColor.ToArgb() : Color.Black.ToArgb();
 			}
 			else
+			{
+				// special case as resources are hidden under fog
+				var resource = resourceLayer.GetRenderedResource(cell);
+				if (resource != null)
+					custom = tileset.GetTerrainIndex(resource.Info.TerrainType);
+
 				leftColor = rightColor = world.Map.Rules.TileSet[custom].Color.ToArgb();
+			}
 
 			var stride = radarSheet.Size.Width;
 
