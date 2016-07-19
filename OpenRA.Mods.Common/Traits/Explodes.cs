@@ -77,7 +77,7 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			if (weapon.Report != null && weapon.Report.Any())
-				Game.Sound.Play(weapon.Report.Random(e.Attacker.World.SharedRandom), self.CenterPosition);
+				Game.Sound.Play(weapon.Report.Random(Game.CosmeticRandom), self.CenterPosition);
 
 			// Use .FromPos since this actor is killed. Cannot use Target.FromActor
 			weapon.Impact(Target.FromPos(self.CenterPosition), e.Attacker, Enumerable.Empty<int>());
