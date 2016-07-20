@@ -42,9 +42,6 @@ trike:
 	idle: DATA.R8
 		Start: 1635
 		Facings: -32
-	unload: DATA.R8
-		Start: 1635
-		Facings: -32
 	muzzle: DATA.R8
 		Start: 3839
 		Tick: 50
@@ -56,9 +53,6 @@ trike:
 
 quad:
 	idle: DATA.R8
-		Start: 1667
-		Facings: -32
-	unload: DATA.R8
 		Start: 1667
 		Facings: -32
 	icon: DATA.R8
@@ -219,9 +213,6 @@ raider:
 	idle: DATA.R8
 		Start: 2421
 		Facings: -32
-	unload: DATA.R8
-		Start: 2421
-		Facings: -32
 	muzzle: DATA.R8
 		Start: 3743
 		Tick: 50
@@ -233,9 +224,6 @@ raider:
 
 stealth_raider:
 	idle: DATA.R8
-		Start: 2421
-		Facings: -32
-	unload: DATA.R8
 		Start: 2421
 		Facings: -32
 	muzzle: DATA.R8

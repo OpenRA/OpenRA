@@ -193,9 +193,6 @@ jeep:
 	muzzle: minigun
 		Length: 6
 		Facings: 8
-	unload:
-		Facings: 32
-		UseClassicFacingFudge: True
 	icon: jeepicon
 
 apc:
