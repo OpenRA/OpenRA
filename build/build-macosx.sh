@@ -43,6 +43,10 @@ LUASEC_BASENAME="luasec-0.6"
 LUASEC_FILENAME="$LUASEC_BASENAME.zip"
 LUASEC_URL="https://github.com/brunoos/luasec/archive/$LUASEC_FILENAME"
 
+LFS_BASENAME="v_1_6_3"
+LFS_FILENAME="$LFS_BASENAME.tar.gz"
+LFS_URL="https://github.com/keplerproject/luafilesystem/archive/$LFS_FILENAME"
+
 WXWIDGETSDEBUG="--disable-debug"
 WXLUABUILD="MinSizeRel"
 
@@ -73,6 +77,9 @@ for ARG in "$@"; do
     ;;
   luasocket)
     BUILD_LUASOCKET=true
+    ;;
+  lfs)
+    BUILD_LFS=true
     ;;
   debug)
     WXWIDGETSDEBUG="--enable-debug=max"
@@ -262,6 +269,20 @@ if [ $BUILD_LUASOCKET ]; then
   rm -rf "$LUASOCKET_FILENAME" "$LUASOCKET_BASENAME"
 fi
 
+# build lfs
+if [ $BUILD_LFS ]; then
+  wget --no-check-certificate -c "$LFS_URL" -O "$LFS_FILENAME" || { echo "Error: failed to download lfs"; exit 1; }
+  tar -xzf "$LFS_FILENAME"
+  mv "luafilesystem-$LFS_BASENAME" "$LFS_BASENAME"
+  cd "$LFS_BASENAME/src"
+  mkdir -p "$INSTALL_DIR/lib/lua/$LUAD/"
+  gcc $BUILD_FLAGS -o "$INSTALL_DIR/lib/lua/$LUAD/lfs.dylib" lfs.c -llua$LUAV \
+    || { echo "Error: failed to build lfs"; exit 1; }
+  [ -f "$INSTALL_DIR/lib/lua/$LUAD/lfs.dylib" ] || { echo "Error: lfs.dylib isn't found"; exit 1; }
+  cd ../..
+  rm -rf "$LFS_FILENAME" "$LFS_BASENAME"
+fi
+
 # build LuaSec
 if [ $BUILD_LUASEC ]; then
   # build LuaSec
@@ -292,6 +313,7 @@ if [ $BUILD_LUA ]; then
   cp "$INSTALL_DIR/bin/lua$LUAS" "$INSTALL_DIR/lib/liblua$LUAS.dylib" "$BIN_DIR"
 fi
 [ $BUILD_WXLUA ] && cp "$INSTALL_DIR/lib/libwx.dylib" "$BIN_DIR/clibs"
+[ $BUILD_LFS ] && cp "$INSTALL_DIR/lib/lua/$LUAD/lfs.dylib" "$BIN_DIR/clibs$LUAS"
 
 if [ $BUILD_LUASOCKET ]; then
   mkdir -p "$BIN_DIR/clibs$LUAS/"{mime,socket}

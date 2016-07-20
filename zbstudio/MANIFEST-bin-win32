@@ -6,9 +6,11 @@ bin/clibs/mime/core.dll
 bin/clibs/socket/core.dll
 bin/clibs/wx.dll
 bin/clibs52/liblua.dll
+bin/clibs52/lfs.dll
 bin/clibs52/mime/core.dll
 bin/clibs52/socket/core.dll
 bin/clibs53/mime/core.dll
+bin/clibs53/lfs.dll
 bin/clibs53/socket/core.dll
 bin/lua.exe
 bin/lua5.1.dll
