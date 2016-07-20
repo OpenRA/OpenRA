@@ -66,11 +66,14 @@ local function createFrame()
               if #cmdargs > 0 then menu:PrependSeparator() end
               local function setParams(ev) ide:SetCommandLineParameters(menu:GetLabel(ev:GetId())) end
               -- do in the reverse order as `Prepend` is used;
-              -- skip the first item as it's already selected
-              for i = #cmdargs, 2, -1 do
-                local id = ID("status.commandparameters."..i)
-                menu:Prepend(id, cmdargs[i])
-                menu:Connect(id, wx.wxEVT_COMMAND_MENU_SELECTED, setParams)
+              -- skip the currently set parameters
+              local curargs = interpreter:GetCommandLineArg()
+              for i = #cmdargs, 1, -1 do
+                if cmdargs[i] ~= curargs then
+                  local id = ID("status.commandparameters."..i)
+                  menu:Prepend(id, cmdargs[i])
+                  menu:Connect(id, wx.wxEVT_COMMAND_MENU_SELECTED, setParams)
+                end
               end
               statusBar:PopupMenu(menu)
             end
