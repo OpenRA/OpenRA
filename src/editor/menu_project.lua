@@ -297,8 +297,9 @@ frame:Connect(ID_BREAKPOINTNEXT, wx.wxEVT_COMMAND_MENU_SELECTED,
       local osx = ide.osname == "Macintosh"
       DisplayOutputLn(("You used '%s' shortcut that has been changed from toggling a breakpoint to navigating to the next breakpoint in the document.")
         :format(BPNSC))
+      -- replace Ctrl with Cmd, but not in RawCtrl
       DisplayOutputLn(("To toggle a breakpoint, use '%s' or click in the editor margin.")
-        :format(KSC(ID_BREAKPOINTTOGGLE):gsub("\t",""):gsub("Ctrl", osx and "Cmd" or "Ctrl")))
+        :format(KSC(ID_BREAKPOINTTOGGLE):gsub("\t",""):gsub("%f[%w]Ctrl", osx and "Cmd" or "Ctrl")))
     end
   end)
 frame:Connect(ID_BREAKPOINTPREV, wx.wxEVT_COMMAND_MENU_SELECTED,
