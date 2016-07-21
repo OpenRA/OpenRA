@@ -242,7 +242,7 @@ local function treeSetConnectorsAndIcons(tree)
     for k, m in ipairs(mapped) do
       if m == dir then table.remove(mapped, k) end
     end
-    filetree.settings.mapped[project] = mapped
+    filetree.settings.mapped[project] = #mapped > 0 and mapped or nil
     refreshAncestors(tree:GetRootItem())
   end
   local function mapDir()
