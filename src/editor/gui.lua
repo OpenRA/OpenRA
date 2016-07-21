@@ -101,8 +101,9 @@ local function createFrame()
 end
 
 local function SCinB(id) -- shortcut in brackets
+  local osx = ide.osname == "Macintosh"
   local shortcut = KSC(id):gsub("\t","")
-  return shortcut and #shortcut > 0 and (" ("..shortcut..")") or ""
+  return shortcut and #shortcut > 0 and (" ("..shortcut:gsub("%f[%w]Ctrl", osx and "Cmd" or "Ctrl")..")") or ""
 end
 
 local function menuDropDownPosition(event)
