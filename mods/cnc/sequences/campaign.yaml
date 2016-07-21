@@ -2,9 +2,6 @@ lst:
 	idle: lstnew
 		UseClassicFacingFudge: True
 		Facings: 32
-	unload: lstnew
-		UseClassicFacingFudge: True
-		Facings: 32
 	roof: lstnew2
 		UseClassicFacingFudge: True
 		Facings: 32

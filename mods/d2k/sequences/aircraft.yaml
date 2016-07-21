@@ -2,13 +2,9 @@ carryall:
 	idle: DATA.R8
 		Start: 1923
 		Facings: -32
-	unload: DATA.R8
-		Start: 1923
-		Facings: -32
 	icon: DATA.R8
 		Start: 4029
 		Offset: -30,-24
-
 
 ornithopter:
 	idle: DATA.R8
