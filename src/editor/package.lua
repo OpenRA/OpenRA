@@ -154,7 +154,9 @@ end
 function ide:CloneMenu(menu)
   if not menu then return end
   local newmenu = wx.wxMenu({})
-  local node = menu:GetMenuItems():GetFirst()
+  local ok, node = pcall(function() return menu:GetMenuItems():GetFirst() end)
+  -- some wxwidgets versions may not have GetFirst, so return an empty menu in this case
+  if not ok then return newmenu end
   while node do
     local item = node:GetData():DynamicCast("wxMenuItem")
     newmenu:Append(item:GetId(), item:GetItemLabel(), item:GetHelp(), item:GetKind())
