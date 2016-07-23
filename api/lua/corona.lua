@@ -1,5 +1,5 @@
 -- Original author Sergey Lerg; updates by Paul Kulchenko
--- Converted from CoronaSDK-APIDOC-2015-2731;
+-- Converted from CoronaSDK-APIDOC-2016-2906;
 -- the conversion script is at the bottom of this file
 
 -- To process:
@@ -106,7 +106,7 @@ local api = {
     type = "value"
    },
    isBullet = {
-    description = "A boolean for whether the body should be treated as a \"bullet\". Bullets are subject to continuous collision detection rather than periodic collision detection at world time steps. This is more computationally expensive but it can prevent <nobr>fast-moving</nobr> objects from passing through solid barriers. The default is `false`.",
+    description = "A boolean for whether the body should be treated as a \"bullet.\" Bullets are subject to continuous collision detection rather than periodic collision detection at world time steps. This is more computationally expensive but it can prevent <nobr>fast-moving</nobr> objects from passing through solid barriers. The default is `false`.",
     type = "value"
    },
    isFixedRotation = {
@@ -168,7 +168,7 @@ local api = {
    }
   },
   description = "Button objects are created using widget.newButton().",
-  inherits = "_EventListener",
+  inherits = "_EventDispatcher",
   type = "class"
  },
  _CirclePath = {
@@ -433,7 +433,7 @@ local api = {
    }
   },
   description = "All drawing that occurs on the screen is accomplished by creating display objects. Anything that appears on the screen is an instance of a display object.",
-  inherits = "_EventListener",
+  inherits = "_EventDispatcher",
   type = "class"
  },
  _EmitterObject = {
@@ -457,32 +457,44 @@ local api = {
     type = "method"
    }
   },
-  description = "This object is used to display particle effects created with Particle Designer(http://71squared.com/particledesigner).",
+  description = "This object is used to display particle effects.",
   inherits = "_DisplayObject",
   type = "class"
  },
- _EventListener = {
+ _EventDispatcher = {
   childs = {
    addEventListener = {
     args = "( eventName, listener )",
     description = "Adds a listener to the object's list of listeners. When the named event occurs, the listener will be invoked and be supplied with a table representing the event.",
-    returns = "()",
+    returns = "(Boolean)",
     type = "method"
    },
    dispatchEvent = {
     args = "( event )",
-    description = "Dispatches specified `event` to object. The event parameter must be a table with a `name` property which is a String object, if it has a listener registered to receive name events. We recommend you also include a `target` property in your event to the event so that your listener can know which object received the event.",
+    description = "Dispatches specified `event` to object. The event parameter must be a table with a `name` property which is a string object, if it has a listener registered to receive name events. We recommend you also include a `target` property in your event to the event so that your listener can know which object received the event.",
     returns = "()",
     type = "method"
    },
    removeEventListener = {
     args = "( eventName, listener )",
     description = "Removes the specified listener from the object's list of listeners so that it no longer is notified of events corresponding to the specified event.",
+    returns = "(Boolean)",
+    type = "method"
+   }
+  },
+  description = "`EventDispatcher` is any DisplayObject object which can receive events.",
+  type = "class"
+ },
+ _EventListener = {
+  childs = {
+   addEventListener = {
+    args = "( eventName, listener )",
+    description = "Adds a listener to the object’s list of listeners. When the named event occurs, the listener will be invoked and be supplied with a table representing the event.",
     returns = "()",
     type = "method"
    }
   },
-  description = "`EventListener` is any DisplayObject object) that can receive events.",
+  description = "",
   type = "class"
  },
  _File = {
@@ -507,7 +519,7 @@ local api = {
    },
    read = {
     args = "( [fmt1] [, fmt2] [, ...] )",
-    description = "Reads a file, according to the given formats, which specify what to read. For each format, the function returns a String) with the characters read, or `nil` if it cannot read data with the specified format. When called without formats, it uses a default format that reads the entire next line.",
+    description = "Reads a file, according to the given formats which specify what to read. For each format, the function returns a String) with the characters read, or `nil` if it cannot read data with the specified format. When called without formats, it uses a default format that reads the entire next line.",
     returns = "(String)",
     type = "method",
     valuetype = "string"
@@ -637,6 +649,14 @@ local api = {
  },
  _InputDevice = {
   childs = {
+   MFiProfile = {
+    description = "A string that specifies which MFi controller profile the device conforms to:",
+    type = "value"
+   },
+   allowsRotation = {
+    description = "This value is specific to the Apple TV Remote (object.MFiProfile is `\"microGamepad\"`).",
+    type = "value"
+   },
    androidDeviceId = {
     description = "The unique integer ID assigned to the input device by Android.",
     type = "value"
@@ -657,6 +677,10 @@ local api = {
     description = "The name that was assigned to the input device by the system or end-user. Can be used to display the name of the device to the end-user, such as on a key/button binding screen.",
     type = "value"
    },
+   driver = {
+    description = "A string which specifies the <nobr>platform-dependent</nobr> backend of the device (if any):",
+    type = "value"
+   },
    getAxes = {
     args = "()",
     description = "Fetches information about all axis inputs available on the device. This information can be used to detect the device's capabilities, such as whether or not an analog joystick is available.",
@@ -671,6 +695,18 @@ local api = {
     description = "Provides the input device's unique string ID which will be consistent between reboots. That is, the ID for the input device will not change after rebooting the system. This means that this ID can be saved to file and used to set up key bindings with a very specific input device.",
     type = "value"
    },
+   playerNumber = {
+    description = "Read-only property which returns the player number assigned to a game controller by the system, such as a Windows' XInput (Xbox) game controller or <nobr>Android 5.0+</nobr> game controller. For Windows XInput game controllers, this number ranges between `1` and `4`, typically indicated by a light on the controller. On Android TV and <nobr>Amazon Fire TV</nobr>, this number ranges between `1` and `4` as well.",
+    type = "value"
+   },
+   productName = {
+    description = "This is typically the product name assigned to the device by the manufacturer. Unlike the displayName property, the product name will not change at runtime. You can use this name to profile game controllers so that you can safely assume what buttons or axes are available on the device and automatically bind them to your game's controls.",
+    type = "value"
+   },
+   reportsAbsoluteDpadValues = {
+    description = "This value is specific to the Apple TV Remote (object.MFiProfile is `\"microGamepad\"`).",
+    type = "value"
+   },
    type = {
     description = "A string that specifies what kind of device is connected to the system. Possible values are:",
     type = "value"
@@ -682,7 +718,7 @@ local api = {
     type = "method"
    }
   },
-  description = "An object of this type respresents one input device such as a keyboard, mouse, touchscreen, gamepad, etc. This object provides access to the input device's information and its current connection status.",
+  description = "An object of this type respresent one input device such as a keyboard, mouse, touchscreen, gamepad, etc. This object provides access to the input device's information and its current connection status.",
   type = "class"
  },
  _Joint = {
@@ -925,10 +961,9 @@ local api = {
    },
    getUserLocation = {
     args = "()",
-    description = "Returns a table containing values for the user's current location. The coordinates are returned as a mapLocation event.",
-    returns = "(location)",
-    type = "method",
-    valuetype = "_location"
+    description = "Returns a table containing values for the user's current location, including:",
+    returns = "(Table)",
+    type = "method"
    },
    isLocationVisible = {
     description = "A read-only Boolean value indicating whether the user's current location is visible within the area currently displayed on the map. This is based on an approximation, so it may be that the value is true when the user's position is slightly offscreen.",
@@ -1174,26 +1209,32 @@ local api = {
    }
   },
   description = "PickerWheel objects are created using widget.newPickerWheel().",
-  inherits = "_EventListener",
+  inherits = "_EventDispatcher",
   type = "class"
  },
  _ProgressViewWidget = {
   childs = {
    getProgress = {
+    args = "()",
     description = "Returns the current progress value of a ProgressView.",
-    type = "value"
+    returns = "(Number)",
+    type = "method"
    },
    resizeView = {
+    args = "( newWidth )",
     description = "Resizes the width of a ProgressView after creation.",
-    type = "value"
+    returns = "()",
+    type = "method"
    },
    setProgress = {
+    args = "( progress )",
     description = "Sets the current progress of a ProgressView.",
-    type = "value"
+    returns = "()",
+    type = "method"
    }
   },
   description = "ProgressView objects are created using widget.newProgressView().",
-  inherits = "_EventListener",
+  inherits = "_EventDispatcher",
   type = "class"
  },
  _Recording = {
@@ -1248,7 +1289,7 @@ local api = {
   childs = {
    hasEventSource = {
     args = "( eventSourceName )",
-    description = "Determines if the device is capable of providing events for a given event source such as an `\"accelerometer\"` or `\"gyroscope\"`. You should call this function before calling the Runtime:addEventListener() function.",
+    description = "Determines if the device is capable of providing events for a given event source such as `\"accelerometer\"` or `\"gyroscope\"`.",
     returns = "(Boolean)",
     type = "method"
    },
@@ -1257,16 +1298,22 @@ local api = {
     description = "Disables the runtime error alert that appears if the application hits an error condition. This is shorthand for defining your own unhandledError listener and returning `true`.",
     returns = "()",
     type = "method"
+   },
+   setCheckGlobals = {
+    args = "( enabled )",
+    description = "Allows the usage of global variables to be flagged. Because Lua automatically assumes that any variable it doesn't recognize is a global variable, typos in variable names can lead to unexpected behavior. For example, accessing a variable that has never been set will yield a value of `nil`. ",
+    returns = "()",
+    type = "method"
    }
   },
-  description = "The `Runtime` class inherits from EventListener. It is a singleton class, meaning there is only one instance, accessible via the global `Runtime`.",
-  inherits = "_EventListener",
+  description = "The `Runtime` class inherits from EventDispatcher. It is a singleton class, meaning there is only one instance, accessible via the global runtime.",
+  inherits = "_EventDispatcher",
   type = "class"
  },
  _Scene = {
   childs = {},
   description = "Scene objects are the focal point of the Composer.",
-  inherits = "_EventListener",
+  inherits = "_EventDispatcher",
   type = "class"
  },
  _ScrollViewWidget = {
@@ -1341,7 +1388,7 @@ local api = {
    }
   },
   description = "SegmentedControl objects are created using widget.newSegmentedControl().",
-  inherits = "_EventListener",
+  inherits = "_EventDispatcher",
   type = "class"
  },
  _ShapeObject = {
@@ -1393,7 +1440,7 @@ local api = {
    }
   },
   description = "Slider objects are created using widget.newSlider().",
-  inherits = "_EventListener",
+  inherits = "_EventDispatcher",
   type = "class"
  },
  _SnapshotObject = {
@@ -1453,7 +1500,7 @@ local api = {
    }
   },
   description = "Spinner objects are created using widget.newSpinner().",
-  inherits = "_EventListener",
+  inherits = "_EventDispatcher",
   type = "class"
  },
  _SpriteObject = {
@@ -1510,8 +1557,8 @@ local api = {
  _StageObject = {
   childs = {
    setFocus = {
-    args = "( object [, touchID ] )",
-    description = "Sets a specific display object as the target for all future hit events (`\"touch\"` and `\"tap\"`). Pass `nil` to restore default behavior for hit event dispatches. This is typically used to implement buttons that change appearance when a user initially presses them.",
+    args = "( displayObject [, touchID] )",
+    description = "Sets a specific display object as the target for all future hit events (`\"touch\"` and `\"tap\"`). Pass `nil` to restore default behavior for touch/tap event dispatches.",
     returns = "()",
     type = "method"
    }
@@ -1548,7 +1595,7 @@ local api = {
    }
   },
   description = "Stepper.",
-  inherits = "_EventListener",
+  inherits = "_EventDispatcher",
   type = "class"
  },
  _SwitchWidget = {
@@ -1565,7 +1612,7 @@ local api = {
    }
   },
   description = "Switch objects are created using widget.newSwitch().",
-  inherits = "_EventListener",
+  inherits = "_EventDispatcher",
   type = "class"
  },
  _TabBarWidget = {
@@ -1578,7 +1625,7 @@ local api = {
    }
   },
   description = "TabBar objects are created using widget.newTabBar().",
-  inherits = "_EventListener",
+  inherits = "_EventDispatcher",
   type = "class"
  },
  _TableViewWidget = {
@@ -1707,7 +1754,7 @@ local api = {
     type = "value"
    }
   },
-  description = "A native text box is a scrollable, multi-line input field for displaying <nobr>text-based</nobr> content. See native.newTextBox() for more details.",
+  description = "A native text box is a scrollable, <nobr>multi-line</nobr> input field for displaying <nobr>text-based</nobr> content. See native.newTextBox() for more details.",
   inherits = "_NativeDisplayObject",
   type = "class"
  },
@@ -1718,7 +1765,7 @@ local api = {
     type = "value"
    },
    autocorrectionType = {
-    description = "This iOS-only property controls the type of auto-correction performed. Possible values are:",
+    description = "This iOS-only property controls the type of <nobr>auto-correction</nobr> performed. Possible values are:",
     type = "value"
    },
    font = {
@@ -1738,7 +1785,7 @@ local api = {
     type = "value"
    },
    isSecure = {
-    description = "Controls whether text in the field is obscured, e.g. passwords. Default is `false`.",
+    description = "Controls whether text in the field is obscured. This is useful for passwords. Default is `false`.",
     type = "value"
    },
    placeholder = {
@@ -1858,6 +1905,59 @@ local api = {
   inherits = "_TextureResource",
   type = "class"
  },
+ _TextureResourceCanvas = {
+  childs = {
+   anchorX = {
+    description = "This property can be used to change the origin point of the rendered canvas. Anchor point units are relative which means that setting `anchorX` to `1.0` will offset contents of the canvas by texture.width. Default is `0.0`.",
+    type = "value"
+   },
+   anchorY = {
+    description = "This property can be used to change the origin point of the rendered canvas. Anchor point units are relative which means that setting `anchorY` to `1.0` will offset contents of the canvas by texture.height. Default is `0.0`.",
+    type = "value"
+   },
+   cache = {
+    description = "After being rendered to the TextureResourceCanvas is moved to this group.",
+    type = "value"
+   },
+   draw = {
+    args = "( object )",
+    description = "This method adds/renders a display object.",
+    returns = "()",
+    type = "method"
+   },
+   height = {
+    description = "This property indicates the height in which objects can be rendered within a TextureResourceCanvas. Essentially, if a display object drawn to the canvas is equal to this height, it will occupy the entire vertical space.",
+    type = "value"
+   },
+   invalidate = {
+    args = "( [params] )",
+    description = "This method schedules display objects queued for rendering via texture:draw() to be rendered to the texture before the next frame.",
+    returns = "()",
+    type = "method"
+   },
+   pixelHeight = {
+    description = "This read-only property indicates the vertical pixel dimensions of the texture that the canvas resource is rendered to.",
+    type = "value"
+   },
+   pixelWidth = {
+    description = "This read-only property indicates the horizontal pixel dimensions of the texture that the canvas resource is rendered to.",
+    type = "value"
+   },
+   setBackground = {
+    args = "( gray )",
+    description = "Sets the fill color of the texture, also known as the \"clear color\" or the background. The entire texture will be set to the specified color during the next scheduled <nobr>non-accumulative</nobr> rendering. Default is transparent.",
+    returns = "()",
+    type = "method"
+   },
+   width = {
+    description = "This read-only property indicates the width in which objects can be rendered within a TextureResourceCanvas. Essentially, if a display object drawn to the canvas is equal to this width, it will occupy the entire horizontal space.",
+    type = "value"
+   }
+  },
+  description = "The object created by graphics.newTexture()(https://en.wikipedia.org/wiki/Render_Target).",
+  inherits = "_TextureResource",
+  type = "class"
+ },
  _Video = {
   childs = {
    currentTime = {
@@ -1958,7 +2058,7 @@ local api = {
  },
  ads = {
   childs = {},
-  description = "Corona supports the following ad networks for in-app advertising. Please proceed to the respective documentation regarding ad implementation.",
+  description = "Corona supports a variety of ad provider plugins for <nobr>in-app</nobr> advertising. Please see __Ads/Monetization__ in the Plugins directory for options.",
   type = "lib"
  },
  analytics = {
@@ -2041,7 +2141,7 @@ local api = {
    loadSound = {
     args = "( audiofileName [, baseDir ]  )",
     description = "Loads an entire file completely into memory and returns a reference to the audio data. Files that are loaded completely into memory may be reused/played/shared simultaneously on multiple channels so you only need to load one instance of the file. You should use this to load all your short sounds, especially ones you may play frequently. For best results, load all the sounds at the launch of your app or the start of a new level/scene.",
-    returns = "(Object)",
+    returns = "(Table)",
     type = "function"
    },
    loadStream = {
@@ -2157,7 +2257,7 @@ local api = {
    },
    getVariable = {
     args = "( variableName )",
-    description = "This function retrieves the value of a variable (from within the Composer object) that you previously set via composer.setVariable().",
+    description = "Retrieves the value of a variable from within the Composer module that was previously set via composer.setVariable().",
     returns = "()",
     type = "function"
    },
@@ -2189,7 +2289,7 @@ local api = {
    },
    newScene = {
     args = "( ccscene )",
-    description = "This function creates new scene objects which can be used with the Composer Library, or references scenes created within the Composer GUI.",
+    description = "This function creates new scene objects which can be used with the Composer library, or references scenes created within the Composer GUI.",
     returns = "(Table)",
     type = "function"
    },
@@ -2206,20 +2306,20 @@ local api = {
     type = "value"
    },
    removeHidden = {
-    args = "( shouldRecycle )",
+    args = "( [shouldRecycle] )",
     description = "This function removes (or optionally recycles) all scenes __except__ for the currently active scene. A destroy event is first dispatched to all of these scenes.",
     returns = "()",
     type = "function"
    },
    removeScene = {
-    args = "( sceneName, shouldRecycle )",
+    args = "( sceneName [, shouldRecycle] )",
     description = "This function removes the specified scene (or optionally recycles it). A destroy event is first dispatched to the scene.",
     returns = "()",
     type = "function"
    },
    setVariable = {
     args = "( variableName, value )",
-    description = "This function sets a variable (within the Composer module) which you can access from any other scene via  composer.getVariable().",
+    description = "This function sets a variable within the Composer module which you can access from any other scene via  composer.getVariable().",
     returns = "()",
     type = "function"
    },
@@ -2378,35 +2478,35 @@ local api = {
     type = "function"
    },
    newCircle = {
-    args = "( xCenter, yCenter, radius )",
+    args = "( [parent,] xCenter, yCenter, radius )",
     description = "Creates a circle with radius radius centered at specified coordinates (`xCenter`, `yCenter`). The local origin is at the center of the circle and the anchor point is initialized to this local origin.",
     returns = "(ShapeObject)",
     type = "function",
     valuetype = "_ShapeObject"
    },
    newContainer = {
-    args = "( [parent, ] width, height )",
+    args = "( [parent,] width, height )",
     description = "Containers are a special kind of group in which the children are clipped (masked) by the bounds of the container.",
     returns = "()",
     type = "function"
    },
    newEmbossedText = {
-    args = "( { options } )",
+    args = "( options )",
     description = "Creates an embossed text object. The local origin is at the center of the text and the anchor point is initialized to this local origin.",
     returns = "(TextObject)",
     type = "function",
     valuetype = "_TextObject"
    },
    newEmitter = {
-    args = "( emitterParams )",
-    description = "This function is used to create an EmitterObject(http://71squared.com/particledesigner).",
+    args = "( emitterParams [, baseDir] )",
+    description = "This function creates an EmitterObject, used to display particle effects.",
     returns = "(EmitterObject)",
     type = "function",
     valuetype = "_EmitterObject"
    },
    newGroup = {
     args = "()",
-    description = "Creates a group in which you can add and remove child display objects. Initially, there are no children in a group. The local origin is at the parent's origin; the anchor point is initialized to this local origin.",
+    description = "Creates a display group for organizing/layering display objects. Initially, there are no children in a group. The local origin is at the parent's origin; the anchor point is initialized to this local origin.",
     returns = "(GroupObject)",
     type = "function",
     valuetype = "_GroupObject"
@@ -2420,48 +2520,55 @@ local api = {
    },
    newImageRect = {
     args = "()",
-    description = "Displays an image on the screen from a file (supports tinting via object:setFillColor is initialized to this local origin.",
+    description = "Displays an image on the screen from a file. This image supports tinting via object:setFillColor is initialized to this local origin.",
     returns = "(DisplayObject)",
     type = "function",
     valuetype = "_DisplayObject"
    },
    newLine = {
-    args = "( [parentGroup,] x1, y1, x2, y2 [, x3, y3, ... ] )",
+    args = "( [parent,] x1, y1, x2, y2 [, x3, y3, ... ] )",
     description = "Draw a line from one point to another. Optionally, you may append points to the end of the line to create outline shapes or paths.",
     returns = "(LineObject)",
     type = "function",
     valuetype = "_LineObject"
    },
+   newMesh = {
+    args = "( [parent,] [x, y,] options )",
+    description = "Draws a mesh shape by providing vertices of the shape. The local origin is at the center of the mesh and the anchor point is initialized to this local origin.",
+    returns = "(ShapeObject)",
+    type = "function",
+    valuetype = "_ShapeObject"
+   },
    newPolygon = {
-    args = "( x, y, vertices )",
+    args = "( [parent,] x, y, vertices )",
     description = "Draws a polygon shape by providing the outline (contour) of the shape. This includes convex or concave shapes. Self-intersecting shapes, however, are not supported and will result in undefined behavior.",
     returns = "(ShapeObject)",
     type = "function",
     valuetype = "_ShapeObject"
    },
    newRect = {
-    args = "( x, y, width, height )",
+    args = "( [parent,] x, y, width, height )",
     description = "Creates a rectangle object. The local origin is at the center of the rectangle and the anchor point is initialized to this local origin.",
     returns = "(ShapeObject)",
     type = "function",
     valuetype = "_ShapeObject"
    },
    newRoundedRect = {
-    args = "( x, y, width, height, cornerRadius )",
+    args = "( [parent,] x, y, width, height, cornerRadius )",
     description = "Creates a rounded rectangle object. The corners are rounded by quarter circles of a specified radius value. The local origin is at the center of the rectangle and the anchor point is initialized to this local origin.",
     returns = "(ShapeObject)",
     type = "function",
     valuetype = "_ShapeObject"
    },
    newSnapshot = {
-    args = "( w, h )",
+    args = "( [parent,] w, h )",
     description = "Snapshot objects let you capture a group of display objects and render them into a flattened image. The image is defined by objects that are added to the snapshot's group property.",
     returns = "(SnapshotObject)",
     type = "function",
     valuetype = "_SnapshotObject"
    },
    newSprite = {
-    args = "( imageSheet, sequenceData )",
+    args = "( [parent,] imageSheet, sequenceData )",
     description = "Creates a sprite object. Sprites allow for animated sequences of frames that reside on __image sheets__. Please see the Sprite Animation and Image Sheets guides for more information.",
     returns = "(SpriteObject)",
     type = "function",
@@ -2475,16 +2582,16 @@ local api = {
     valuetype = "_TextObject"
    },
    pixelHeight = {
-    description = "The height of the screen, in pixels.",
+    description = "The height of the screen for mobile device apps, or the height of the window for desktop apps. This value is in pixels and is always relative to portrait orientation.",
     type = "value"
    },
    pixelWidth = {
-    description = "The width of the screen, in pixels.",
+    description = "The width of the screen for mobile device apps, or the width of the window for desktop apps. This value is in pixels and is always relative to portrait orientation.",
     type = "value"
    },
    remove = {
     args = "( object )",
-    description = "Removes a group or object if not `nil`.",
+    description = "Removes an object or group if not `nil`.",
     returns = "()",
     type = "function"
    },
@@ -2521,11 +2628,11 @@ local api = {
     type = "function"
    },
    statusBarHeight = {
-    description = "A read-only property representing the height of the status bar in content pixels on iOS devices.",
+    description = "A read-only property representing the height of the status bar in content pixels.",
     type = "value"
    },
    topStatusBarContentHeight = {
-    description = "An iOS read-only property representing the height of the status bar in content coordinates.",
+    description = "A read-only property representing the height of the status bar in content coordinates.",
     type = "value"
    },
    viewableContentHeight = {
@@ -2542,6 +2649,11 @@ local api = {
  easing = {
   childs = {},
   description = "Easing functions provide a simple way of interpolating between two values to achieve varied animations. They are used in conjunction with the transition library.",
+  type = "lib"
+ },
+ event = {
+  childs = {},
+  description = "",
   type = "lib"
  },
  facebook = {
@@ -2564,7 +2676,7 @@ local api = {
    },
    newImageSheet = {
     args = "( filename, [baseDir, ] options )",
-    description = "ImageSheet.",
+    description = "ImageSheet and they can also be used to preload many static images.",
     returns = "(ImageSheet)",
     type = "function",
     valuetype = "_ImageSheet"
@@ -2671,7 +2783,13 @@ local api = {
   childs = {
    decode = {
     args = "( data [, position [, nullval]] )",
-    description = "Decodes the JSON-encoded data structure and returns a Lua object (table) with the appropriate data. The return values are a Lua object or `nil`, the position of the next character that doesn't belong to the object, or <nobr>(in case of errors)</nobr> an error message.",
+    description = "Decodes the JSON-encoded data structure and returns a Lua object (table) with the data. The return value is a Lua object when the data is successfully decoded or, in the case of an error, three values: `nil`, the position of the next character that doesn't belong to the object, and an error message.",
+    returns = "(Table)",
+    type = "function"
+   },
+   decodeFile = {
+    args = "( filename [, position [, nullval]] )",
+    description = "Decodes the contents of a file that is expected to contain <nobr>JSON-encoded</nobr> data and returns a Lua object (table) with the appropriate data. The return value is a Lua object when the data is successfully decoded or, in the case of an error, three values: `nil`, the position of the next character that doesn't belong to the object, and an error message. Errors can either relate to issues opening the file or to JSON syntax issues.",
     returns = "(Table)",
     type = "function"
    },
@@ -2684,7 +2802,7 @@ local api = {
    },
    prettify = {
     args = "( obj )",
-    description = "Returns a string which is a human readable representation of the given object (or valid JSON string). The string is indented and the top-level keys are sorted into alphabetical order.",
+    description = "Returns a string which is a human readable representation of the given object (or valid JSON string). The string is indented and the top-level keys are sorted into alphabetical order suitable for displaying on the console with `print()`.",
     returns = "(String)",
     type = "function",
     valuetype = "string"
@@ -2863,8 +2981,8 @@ local api = {
     type = "function"
    },
    randomseed = {
-    args = "( x )",
-    description = "Sets `x` as the \"seed\" for the pseudo-random generator: equal seeds produce equal sequences of numbers.",
+    args = "( seed )",
+    description = "Sets the \"seed\" for the pseudo-random number generator. The same seed will produce the same sequence of random numbers each time and can be useful for testing but it is generally more desirable to have a different sequence for each run by using something like the current time as the seed (see below).",
     returns = "()",
     type = "function"
    },
@@ -2915,7 +3033,7 @@ local api = {
     type = "value"
    },
    capturePhoto = {
-    args = "( { listener, [, destination] } )",
+    args = "( { listener [, destination] } )",
     description = "Opens a platform-specific interface to the device's camera. This function is asynchronous, meaning that it returns immediately so the calling code will continue to execute until the end of its scope; after that, the application will be suspended until the session is complete. By default, the image object is added to the top of the current stage, although there is an option to save the image to a directory instead.",
     returns = "()",
     type = "function"
@@ -3054,7 +3172,7 @@ local api = {
    },
    newFont = {
     args = "( name [, size] )",
-    description = "Creates a font object that you can use to specify fonts in native text fields and text boxes.",
+    description = "Creates a font object that you can use to specify fonts in native text fields, native text boxes, and text display objects.",
     returns = "(Userdata)",
     type = "function"
    },
@@ -3124,7 +3242,7 @@ local api = {
     type = "function"
    },
    showAlert = {
-    args = "( title, message [, { buttonLabels } [, listener] ] )",
+    args = "( title, message [, buttonLabels [, listener] ] )",
     description = "Displays a popup alert box with one or more buttons, using a native alert control. Program activity, including animation, will continue in the background, but all other user interactivity will be blocked until the user selects a button or cancels the dialog.",
     returns = "(Object)",
     type = "function"
@@ -3174,7 +3292,7 @@ local api = {
    request = {
     args = "( url, method, listener [, params] )",
     description = "Makes an asynchronous HTTP or HTTPS request to a URL. This function returns a handle that can be passed to network.cancel() in order to cancel the request.",
-    returns = "(Object)",
+    returns = "(Table)",
     type = "function"
    },
    setStatusListener = {
@@ -3458,6 +3576,24 @@ local api = {
   description = "Physics are commonly used for apps that involve a simulation of objects that move, collide, and interact under various physical forces like gravity. Corona makes it very easy to add physics to your apps, even if you've never worked with a physics engine before. While the underlying engine is built around the popular Box2D, we've taken a different design approach which eliminates a lot of the coding that is traditionally required.",
   type = "lib"
  },
+ productList = {
+  childs = {
+   invalidProducts = {
+    description = "An array (table) of strings representing a list of unavailable/invalid product identifiers.",
+    type = "value"
+   },
+   name = {
+    description = "The string `\"productList\"`.",
+    type = "value"
+   },
+   products = {
+    description = "Lua array (table) where each element is itself a Lua table containing the following product information:",
+    type = "value"
+   }
+  },
+  description = "The following event properties are passed to the listener function specified in store.loadProducts().",
+  type = "lib"
+ },
  socket = {
   childs = {},
   description = "Corona currently includes the version 2.02 of the LuaSocket libraries. These Lua modules implement common network protocols such as SMTP, HTTP, and FTP. Also included are features to support MIME (common encodings), URL manipulation, and LTN12 for transferring and filtering data.",
@@ -3475,49 +3611,45 @@ local api = {
  },
  store = {
   childs = {
-   availableStores = {
-    description = "Array of store names for which Corona supports <nobr>in-app</nobr> purchases on the current device. This can also be used in conjunction with <nobr>`native.showPopup( \"appStore\" )`</nobr> \\(reference\\).",
-    type = "value"
-   },
    canLoadProducts = {
-    description = "This property will be `true` if the initialized store supports the loading of products. Following this check, the store.loadProducts() function will retrieve information about items available for sale. This includes the title, description, product identifier, type, and other details.",
+    description = "This property will be `true` if the store supports the loading of products. Following confirmation, the store.loadProducts() function can be used to retrieve information about items available for sale.",
     type = "value"
    },
    canMakePurchases = {
-    description = "This property is `true` if purchases are allowed, `false` otherwise.",
+    description = "On iOS, there is a setting which disables <nobr>in-app</nobr> purchasing, commonly used to prevent children from purchasing items without permission. Use this property to check in advance if purchasing is allowed and notify the user if purchasing is forbidden.",
     type = "value"
    },
    finishTransaction = {
     args = "( transaction )",
-    description = "Notifies the Apple iTunes Store that a transaction is complete.",
+    description = "Notifies the Apple Store that a transaction is complete.",
     returns = "()",
     type = "function"
    },
    init = {
-    args = "( [storeName,] listener )",
-    description = "Activates in-app purchases <nobr>(in-app billing</nobr> as it is known on Android platforms). Allows you to receive callbacks with the listener function that you specify.",
+    args = "( listener )",
+    description = "This call is required and must be executed before making other Apple IAP calls. This prepares the Apple IAP library and, upon successful initialization, sets store.isActive to `true`.",
     returns = "()",
     type = "function"
    },
    isActive = {
-    description = "To confirm that a store is properly initialized after calling store.init(), check the `store.isActive()` property. This will be `true` if the store has successfully initialized. Currently, it will be `false` on a Corona app built for Amazon or Nook.",
+    description = "Boolean. This will be `true` upon successful initialization, `false` otherwise.",
     type = "value"
    },
    loadProducts = {
-    args = "( productIdentifiers, listener )",
-    description = "iOS and the Google Play Marketplace support loading of product information that you've entered into iTunes Connect(https://itunesconnect.apple.com/) or the Google Play Developer Console(https://play.google.com/apps/publish/). Corona provides the store.canLoadProducts property which will be `true` if the initialized store supports the loading of products. Following this check, the `store.loadProducts()` function will retrieve information about items available for sale. This includes the title, description, product identifier, type, and other details.",
+    args = "( productIdentifiers, productListener )",
+    description = "Initiates a request to retrieve item data, dispatching a productList event to the listener defined as `productListener`.",
     returns = "()",
     type = "function"
    },
    purchase = {
-    args = "()",
-    description = "Initiates a purchase transaction on a provided list of products.",
+    args = "( productIdentifiers )",
+    description = "Initiates a purchase transaction on provided product(s) by sending out a purchase request to the store, then dispatches a storeTransaction.",
     returns = "()",
     type = "function"
    },
    restore = {
     args = "()",
-    description = "Users who wipe the information on a device or buy a new device, may wish to restore previously purchased items without paying for them again. The `store.restore()` API initiates this process.",
+    description = "Users who wipe the information on a device or buy a new device may wish to restore previously purchased items. This function initiates the process of retrieving all valid purchases.",
     returns = "()",
     type = "function"
    },
@@ -3526,7 +3658,33 @@ local api = {
     type = "value"
    }
   },
-  description = "This feature allows you to support in-app purchases. Currently, only the Apple iTunes Store and the Google Play Marketplace are supported. In the future, other storefronts may be added.",
+  description = "This library allows you to support <nobr>in-app</nobr> purchasing on iOS, including <nobr>in-game</nobr> currency, upgrades, and more.",
+  type = "lib"
+ },
+ storeTransaction = {
+  childs = {
+   errorString = {
+    description = "If an error value stating the cause of the error.",
+    type = "value"
+   },
+   errorType = {
+    description = "If an error value stating the type of error.",
+    type = "value"
+   },
+   isError = {
+    description = "Boolean stating the reason.",
+    type = "value"
+   },
+   name = {
+    description = "The string `\"storeTransaction\"`.",
+    type = "value"
+   },
+   transaction = {
+    description = "This table contains the following <nobr>read-only</nobr> properties pertaining to the transaction:",
+    type = "value"
+   }
+  },
+  description = "The following event properties are passed to the listener function specified in store.init().",
   type = "lib"
  },
  string = {
@@ -3543,6 +3701,12 @@ local api = {
     returns = "(String)",
     type = "function",
     valuetype = "string"
+   },
+   ends = {
+    args = "( s, suffix )",
+    description = "Returns a boolean `true` or `false` depending on whether a given string ends with the specified `suffix` characters.",
+    returns = "(Boolean)",
+    type = "function"
    },
    find = {
     args = "( s, pattern [, init [, plain]] )",
@@ -3604,6 +3768,12 @@ local api = {
     type = "function",
     valuetype = "string"
    },
+   starts = {
+    args = "( s, prefix )",
+    description = "Returns a boolean `true` or `false` depending on whether a given string starts with the specified `prefix` characters.",
+    returns = "(Boolean)",
+    type = "function"
+   },
    sub = {
     args = "( s, i [, j] )",
     description = "Returns a substring (a specified portion of an existing string).",
@@ -3646,6 +3816,12 @@ local api = {
     returns = "()",
     type = "function"
    },
+   canOpenURL = {
+    args = "( url )",
+    description = "Returns a boolean.",
+    returns = "(Boolean)",
+    type = "function"
+   },
    cancelNotification = {
     args = "()",
     returns = "()",
@@ -3685,7 +3861,7 @@ local api = {
    },
    getTimer = {
     args = "()",
-    description = "Returns time in milliseconds since application launch. ",
+    description = "Returns time in milliseconds since application launch. The fractional part of the returned value may return microseconds if the hardware supports it.",
     returns = "(Number)",
     type = "function"
    },
@@ -3695,9 +3871,16 @@ local api = {
     returns = "(Boolean)",
     type = "function"
    },
+   newEventDispatcher = {
+    args = "()",
+    description = "Returns a new EventDispatcher function. ",
+    returns = "(EventDispatcher)",
+    type = "function",
+    valuetype = "_EventDispatcher"
+   },
    openURL = {
     args = "( url )",
-    description = "Open a web page in the browser, create an email, or dial a phone number.",
+    description = "Open a web page in the browser, create an email, or dial a phone number. Executing this function will close the app and switch to the <nobr>built-in</nobr> browser, email, or phone app.",
     returns = "(Boolean)",
     type = "function"
    },
@@ -3731,7 +3914,7 @@ local api = {
    },
    setIdleTimer = {
     args = "( enabled )",
-    description = "Controls whether the idle timer is enabled. If set to `true`, the timer will be active (default) or inactive if `false`. When active, the idle timer dims the screen and eventually puts the device to sleep when no user activity occurs (e.g. screen touches).",
+    description = "Controls whether the idle timer is enabled. If set to `true`, the timer will be active (default) or inactive if `false`. When active, the idle timer dims the screen and eventually puts the device to sleep when no user activity occurs.",
     returns = "()",
     type = "function"
    },
@@ -3760,7 +3943,7 @@ local api = {
     type = "function"
    }
   },
-  description = "The system functions listed here return information about the system (device information, current orientation, etc.) and control system functions (enable multitouch, control the idle time, accelerometer, GPS, etc.)",
+  description = "Collectively, the system functions listed here return system information and control system functions — get device information, enable multitouch, control the idle time, accelerometer, GPS, etc.",
   type = "lib"
  },
  table = {
@@ -3786,7 +3969,7 @@ local api = {
    },
    insert = {
     args = "( t, value )",
-    description = "Insert a given value into a table. If a position is given insert the value before the element currently at that position.",
+    description = "Inserts a given value into a table. If a position is given, inserts the value before the element currently at that position.",
     returns = "()",
     type = "function"
    },
@@ -3828,8 +4011,8 @@ local api = {
    },
    performWithDelay = {
     args = "( delay, listener [, iterations] )",
-    description = "Call a specified function after a delay. This function returns an object to cancel the invocation of the specified listener.",
-    returns = "(Object)",
+    description = "Calls a specified function after a delay. This function returns a table to cancel the invocation of the specified listener.",
+    returns = "(Table)",
     type = "function"
    },
    resume = {
@@ -3914,13 +4097,13 @@ local api = {
    scaleTo = {
     args = "( target, params )",
     description = "Scales an object to the specified `xScale` and `yScale` amounts over a specified time.",
-    returns = "(Object)",
+    returns = "(Table)",
     type = "function"
    },
    to = {
     args = "( target, params )",
     description = "Animates (transitions) a display object algorithm. Use this to move, rotate, fade, or scale an object over a specific period of time.",
-    returns = "(Object)",
+    returns = "(Table)",
     type = "function"
    }
   },
@@ -3929,10 +4112,6 @@ local api = {
  },
  widget = {
   childs = {
-   migration = {
-    description = "This guide aims to ease your migration from widgets v1.0 to widgets v2.0",
-    type = "value"
-   },
    newButton = {
     args = "( options )",
     description = "Creates a Button object.",
