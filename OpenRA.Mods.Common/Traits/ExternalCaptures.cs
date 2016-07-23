@@ -34,6 +34,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		[VoiceReference] public readonly string Voice = "Action";
 
+		public readonly string CaptureCursor = "ability";
+		public readonly string CaptureBlockedCursor = "move-blocked";
+
 		public object Create(ActorInitializer init) { return new ExternalCaptures(init.Self, this); }
 	}
 
@@ -122,7 +125,8 @@ namespace OpenRA.Mods.Common.Traits
 			var c = target.TraitOrDefault<ExternalCapturable>();
 
 			var canTargetActor = c != null && !c.CaptureInProgress && c.Info.CanBeTargetedBy(self, target.Owner);
-			cursor = canTargetActor ? "ability" : "move-blocked";
+			var capturesInfo = self.Trait<ExternalCaptures>().Info;
+			cursor = canTargetActor ? capturesInfo.CaptureCursor : capturesInfo.CaptureBlockedCursor;
 			return canTargetActor;
 		}
 
@@ -131,7 +135,8 @@ namespace OpenRA.Mods.Common.Traits
 			var c = target.Info.TraitInfoOrDefault<ExternalCapturableInfo>();
 
 			var canTargetActor = c != null && c.CanBeTargetedBy(self, target.Owner);
-			cursor = canTargetActor ? "ability" : "move-blocked";
+			var capturesInfo = self.Trait<ExternalCaptures>().Info;
+			cursor = canTargetActor ? capturesInfo.CaptureCursor : capturesInfo.CaptureBlockedCursor;
 			return canTargetActor;
 		}
 	}

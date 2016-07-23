@@ -35,6 +35,10 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Stance that the structure's previous owner needs to have for the capturing player to receive Experience.")]
 		public readonly Stance PlayerExperienceStances = Stance.Enemy;
 
+		public readonly string SabotageCursor = "capture";
+		public readonly string EnterCursor = "enter";
+		public readonly string EnterBlockedCursor = "enter-blocked";
+
 		[VoiceReference] public readonly string Voice = "Action";
 
 		public object Create(ActorInitializer init) { return new Captures(init.Self, this); }
@@ -101,10 +105,11 @@ namespace OpenRA.Mods.Common.Traits
 
 			public override bool CanTargetActor(Actor self, Actor target, TargetModifiers modifiers, ref string cursor)
 			{
+				var capturesInfo = self.Trait<Captures>().Info;
 				var c = target.Info.TraitInfoOrDefault<CapturableInfo>();
 				if (c == null || !c.CanBeTargetedBy(self, target.Owner))
 				{
-					cursor = "enter-blocked";
+					cursor = capturesInfo.EnterBlockedCursor;
 					return false;
 				}
 
@@ -112,16 +117,17 @@ namespace OpenRA.Mods.Common.Traits
 				var lowEnoughHealth = health.HP <= c.CaptureThreshold * health.MaxHP / 100;
 
 				cursor = !sabotage || lowEnoughHealth || target.Owner.NonCombatant
-					? "enter" : "capture";
+					? capturesInfo.EnterCursor : capturesInfo.SabotageCursor;
 				return true;
 			}
 
 			public override bool CanTargetFrozenActor(Actor self, FrozenActor target, TargetModifiers modifiers, ref string cursor)
 			{
+				var capturesInfo = self.Trait<Captures>().Info;
 				var c = target.Info.TraitInfoOrDefault<CapturableInfo>();
 				if (c == null || !c.CanBeTargetedBy(self, target.Owner))
 				{
-					cursor = "enter-blocked";
+					cursor = capturesInfo.EnterCursor;
 					return false;
 				}
 
@@ -129,7 +135,7 @@ namespace OpenRA.Mods.Common.Traits
 				var lowEnoughHealth = target.HP <= c.CaptureThreshold * health.HP / 100;
 
 				cursor = !sabotage || lowEnoughHealth || target.Owner.NonCombatant
-					? "enter" : "capture";
+					? capturesInfo.EnterCursor : capturesInfo.SabotageCursor;
 
 				return true;
 			}
