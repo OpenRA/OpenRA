@@ -34,3 +34,4 @@ Player:
 		Id: unrestricted
 	GlobalUpgradeManager:
 	ResourceStorageWarning:
+	PlayerExperience:

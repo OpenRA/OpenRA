@@ -3,6 +3,7 @@
 	UpdatesPlayerStatistics:
 	CombatDebugOverlay:
 	GivesExperience:
+		PlayerExperienceModifier: 1
 	ScriptTriggers:
 	UpgradeManager:
 	Huntable:
@@ -125,6 +126,7 @@
 	Capturable:
 	RepairableBuilding:
 		IndicatorPalette: mouse
+		PlayerExperience: 25
 	WithDeathAnimation:
 		DeathSequence: dead
 		UseDeathTypeSuffix: false

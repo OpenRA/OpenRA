@@ -210,6 +210,7 @@ GAHPAD:
 	PrimaryBuilding:
 	Reservable:
 	RepairsUnits:
+		PlayerExperience: 15
 	ProductionBar:
 	WithIdleOverlay@PLATFORM:
 		Sequence: idle-platform
@@ -256,6 +257,7 @@ GADEPT:
 		Range: 5c0
 	Reservable:
 	RepairsUnits:
+		PlayerExperience: 15
 	RallyPoint:
 		Palette: mouse
 		IsPlayerPalette: false

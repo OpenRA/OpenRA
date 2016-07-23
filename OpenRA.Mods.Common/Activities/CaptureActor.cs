@@ -65,6 +65,13 @@ namespace OpenRA.Mods.Common.Activities
 
 					if (building != null && building.Locked)
 						building.Unlock();
+
+					if (self.Owner.Stances[oldOwner].HasStance(capturesInfo.PlayerExperienceStances))
+					{
+						var exp = self.Owner.PlayerActor.TraitOrDefault<PlayerExperience>();
+						if (exp != null)
+							exp.GiveExperience(capturesInfo.PlayerExperience);
+					}
 				}
 				else
 				{

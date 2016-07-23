@@ -37,6 +37,9 @@ namespace OpenRA.Mods.RA.Traits
 		[Desc("Notification to play when a building is infiltrated.")]
 		public readonly string Notification = "BuildingInfiltrated";
 
+		[Desc("Experience to grant to the infiltrating player.")]
+		public readonly int PlayerExperience = 0;
+
 		public object Create(ActorInitializer init) { return new Infiltrates(this); }
 	}
 
@@ -112,7 +115,7 @@ namespace OpenRA.Mods.RA.Traits
 				self.CancelActivity();
 
 			self.SetTargetLine(target, Color.Red);
-			self.QueueActivity(new Infiltrate(self, target.Actor, info.EnterBehaviour, info.ValidStances, info.Notification));
+			self.QueueActivity(new Infiltrate(self, target.Actor, info.EnterBehaviour, info.ValidStances, info.Notification, info.PlayerExperience));
 		}
 	}
 

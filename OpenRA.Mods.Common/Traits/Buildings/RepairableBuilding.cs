@@ -35,6 +35,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Suffixed by the internal repairing player name.")]
 		public readonly string IndicatorPalettePrefix = "player";
 
+		[Desc("Experience gained by a player for repairing structures of allied players.")]
+		public readonly int PlayerExperience = 0;
+
 		public override object Create(ActorInitializer init) { return new RepairableBuilding(init.Self, this); }
 	}
 
@@ -133,6 +136,16 @@ namespace OpenRA.Mods.Common.Traits
 
 				if (health.DamageState == DamageState.Undamaged)
 				{
+					Repairers.Do(r =>
+					{
+						if (r == self.Owner)
+							return;
+
+						var exp = r.PlayerActor.TraitOrDefault<PlayerExperience>();
+						if (exp != null)
+							exp.GiveExperience(Info.PlayerExperience);
+					});
+
 					Repairers.Clear();
 					RepairActive = false;
 					return;

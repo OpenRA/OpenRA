@@ -58,6 +58,7 @@ ENGINEER:
 		RepairNotification: BridgeRepaired
 	Captures:
 		CaptureTypes: building
+		PlayerExperience: 50
 	-AutoTarget:
 	-GainsExperience:
 	RenderSprites:

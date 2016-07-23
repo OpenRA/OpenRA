@@ -21,13 +21,15 @@ namespace OpenRA.Mods.RA.Activities
 		readonly Stance validStances;
 		readonly Cloak cloak;
 		readonly string notification;
+		readonly int experience;
 
-		public Infiltrate(Actor self, Actor target, EnterBehaviour enterBehaviour, Stance validStances, string notification)
+		public Infiltrate(Actor self, Actor target, EnterBehaviour enterBehaviour, Stance validStances, string notification, int experience)
 			: base(self, target, enterBehaviour)
 		{
 			this.target = target;
 			this.validStances = validStances;
 			this.notification = notification;
+			this.experience = experience;
 			cloak = self.TraitOrDefault<Cloak>();
 		}
 
@@ -45,6 +47,10 @@ namespace OpenRA.Mods.RA.Activities
 
 			foreach (var t in target.TraitsImplementing<INotifyInfiltrated>())
 				t.Infiltrated(target, self);
+
+			var exp = self.Owner.PlayerActor.TraitOrDefault<PlayerExperience>();
+			if (exp != null)
+				exp.GiveExperience(experience);
 
 			if (!string.IsNullOrEmpty(notification))
 				Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech",

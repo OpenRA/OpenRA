@@ -22,10 +22,18 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		[Desc("Types of actors that it can capture, as long as the type also exists in the Capturable Type: trait.")]
 		public readonly HashSet<string> CaptureTypes = new HashSet<string> { "building" };
+
 		[Desc("Unit will do damage to the actor instead of capturing it. Unit is destroyed when sabotaging.")]
 		public readonly bool Sabotage = true;
+
 		[Desc("Only used if Sabotage=true. Sabotage damage expressed as a percentage of enemy health removed.")]
 		public readonly int SabotageHPRemoval = 50;
+
+		[Desc("Experience granted to the capturing player.")]
+		public readonly int PlayerExperience = 0;
+
+		[Desc("Stance that the structure's previous owner needs to have for the capturing player to receive Experience.")]
+		public readonly Stance PlayerExperienceStances = Stance.Enemy;
 
 		[VoiceReference] public readonly string Voice = "Action";
 

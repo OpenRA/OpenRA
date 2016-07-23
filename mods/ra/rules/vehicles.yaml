@@ -488,6 +488,7 @@ TRUK:
 		Range: 4c0
 	SupplyTruck:
 		Payload: 500
+		PlayerExperience: 50
 	SpawnActorOnDeath:
 		Actor: moneycrate
 

@@ -136,6 +136,7 @@ SPEN:
 	-EmitInfantryOnSell:
 	RepairsUnits:
 		FinishRepairingNotification: UnitRepaired
+		PlayerExperience: 15
 	RallyPoint:
 	ProductionBar:
 	Power:
@@ -225,6 +226,7 @@ SYRD:
 	-EmitInfantryOnSell:
 	RepairsUnits:
 		FinishRepairingNotification: UnitRepaired
+		PlayerExperience: 15
 	RallyPoint:
 	ProductionBar:
 	Power:
@@ -1569,6 +1571,7 @@ FIX:
 	RepairsUnits:
 		Interval: 10
 		FinishRepairingNotification: UnitRepaired
+		PlayerExperience: 15
 	WithRepairAnimation:
 	Power:
 		Amount: -30

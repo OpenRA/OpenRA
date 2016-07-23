@@ -1,0 +1,15 @@
+^ExistsInWorld:
+	GivesExperience:
+		PlayerExperienceModifier: 0
+
+^Building:
+	RepairableBuilding:
+		PlayerExperience: 0
+
+engineer:
+	Captures:
+		PlayerExperience: 0
+
+repair_pad:
+	RepairsUnits:
+		PlayerExperience: 0

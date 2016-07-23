@@ -44,6 +44,7 @@ engineer:
 	EngineerRepair:
 	Captures:
 		CaptureTypes: building, husk
+		PlayerExperience: 50
 	-AutoTarget:
 	Voiced:
 		VoiceSet: EngineerVoice

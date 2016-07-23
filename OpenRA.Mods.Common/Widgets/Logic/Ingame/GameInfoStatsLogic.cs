@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using OpenRA.Mods.Common.Traits;
@@ -59,58 +60,70 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				playerPanel.Bounds.Height += objectiveGroup.Bounds.Height;
 			}
 
+			var teamTemplate = playerPanel.Get<ScrollItemWidget>("TEAM_TEMPLATE");
 			var playerTemplate = playerPanel.Get("PLAYER_TEMPLATE");
 			playerPanel.RemoveChildren();
 
-			foreach (var p in world.Players.Where(a => !a.NonCombatant))
+			var teams = world.Players.Where(p => !p.NonCombatant && p.Playable)
+				.Select(p => new Pair<Player, PlayerStatistics>(p, p.PlayerActor.TraitOrDefault<PlayerStatistics>()))
+				.OrderByDescending(p => p.Second != null ? p.Second.Experience : 0)
+				.GroupBy(p => (world.LobbyInfo.ClientWithIndex(p.First.ClientIndex) ?? new Session.Client()).Team)
+				.OrderByDescending(g => g.Sum(gg => gg.Second != null ? gg.Second.Experience : 0));
+
+			foreach (var t in teams)
 			{
-				var pp = p;
-				var client = world.LobbyInfo.ClientWithIndex(pp.ClientIndex);
-				var item = playerTemplate.Clone();
-				LobbyUtils.SetupClientWidget(item, client, orderManager, client != null && client.Bot == null);
-				var nameLabel = item.Get<LabelWidget>("NAME");
-				var nameFont = Game.Renderer.Fonts[nameLabel.Font];
-
-				var suffixLength = new CachedTransform<string, int>(s => nameFont.Measure(s).X);
-				var name = new CachedTransform<Pair<string, int>, string>(c =>
-					WidgetUtils.TruncateText(c.First, nameLabel.Bounds.Width - c.Second, nameFont));
-
-				nameLabel.GetText = () =>
+				if (teams.Count() > 1)
 				{
-					var suffix = pp.WinState == WinState.Undefined ? "" : " (" + pp.WinState + ")";
-					if (client != null && client.State == Session.ClientState.Disconnected)
-						suffix = " (Gone)";
+					var teamHeader = ScrollItemWidget.Setup(teamTemplate, () => true, () => { });
+					teamHeader.Get<LabelWidget>("TEAM").GetText = () => t.Key == 0 ? "No Team" : "Team {0}".F(t.Key);
+					var teamRating = teamHeader.Get<LabelWidget>("TEAM_SCORE");
+					teamRating.GetText = () => t.Sum(gg => gg.Second != null ? gg.Second.Experience : 0).ToString();
 
-					var sl = suffixLength.Update(suffix);
-					return name.Update(Pair.New(pp.PlayerName, sl)) + suffix;
-				};
-				nameLabel.GetColor = () => pp.Color.RGB;
-
-				var flag = item.Get<ImageWidget>("FACTIONFLAG");
-				flag.GetImageCollection = () => "flags";
-				if (player == null || player.Stances[pp] == Stance.Ally || player.WinState != WinState.Undefined)
-				{
-					flag.GetImageName = () => pp.Faction.InternalName;
-					item.Get<LabelWidget>("FACTION").GetText = () => pp.Faction.Name;
-				}
-				else
-				{
-					flag.GetImageName = () => pp.DisplayFaction.InternalName;
-					item.Get<LabelWidget>("FACTION").GetText = () => pp.DisplayFaction.Name;
+					playerPanel.AddChild(teamHeader);
 				}
 
-				var team = item.Get<LabelWidget>("TEAM");
-				var teamNumber = pp.PlayerReference.Playable ? ((client == null) ? 0 : client.Team) : pp.PlayerReference.Team;
-				team.GetText = () => (teamNumber == 0) ? "-" : teamNumber.ToString();
-				playerPanel.AddChild(item);
+				foreach (var p in t.ToList())
+				{
+					var pp = p.First;
+					var client = world.LobbyInfo.ClientWithIndex(pp.ClientIndex);
+					var item = playerTemplate.Clone();
+					LobbyUtils.SetupClientWidget(item, client, orderManager, client != null && client.Bot == null);
+					var nameLabel = item.Get<LabelWidget>("NAME");
+					var nameFont = Game.Renderer.Fonts[nameLabel.Font];
 
-				var stats = pp.PlayerActor.TraitOrDefault<PlayerStatistics>();
-				if (stats == null)
-					break;
-				var totalKills = stats.UnitsKilled + stats.BuildingsKilled;
-				var totalDeaths = stats.UnitsDead + stats.BuildingsDead;
-				item.Get<LabelWidget>("KILLS").GetText = () => totalKills.ToString();
-				item.Get<LabelWidget>("DEATHS").GetText = () => totalDeaths.ToString();
+					var suffixLength = new CachedTransform<string, int>(s => nameFont.Measure(s).X);
+					var name = new CachedTransform<Pair<string, int>, string>(c =>
+						WidgetUtils.TruncateText(c.First, nameLabel.Bounds.Width - c.Second, nameFont));
+
+					nameLabel.GetText = () =>
+					{
+						var suffix = pp.WinState == WinState.Undefined ? "" : " (" + pp.WinState + ")";
+						if (client != null && client.State == Session.ClientState.Disconnected)
+							suffix = " (Gone)";
+
+						var sl = suffixLength.Update(suffix);
+						return name.Update(Pair.New(pp.PlayerName, sl)) + suffix;
+					};
+					nameLabel.GetColor = () => pp.Color.RGB;
+
+					var flag = item.Get<ImageWidget>("FACTIONFLAG");
+					flag.GetImageCollection = () => "flags";
+					if (player == null || player.Stances[pp] == Stance.Ally || player.WinState != WinState.Undefined)
+					{
+						flag.GetImageName = () => pp.Faction.InternalName;
+						item.Get<LabelWidget>("FACTION").GetText = () => pp.Faction.Name;
+					}
+					else
+					{
+						flag.GetImageName = () => pp.DisplayFaction.InternalName;
+						item.Get<LabelWidget>("FACTION").GetText = () => pp.DisplayFaction.Name;
+					}
+
+					var experience = p.Second != null ? p.Second.Experience : 0;
+					item.Get<LabelWidget>("SCORE").GetText = () => experience.ToString();
+
+					playerPanel.AddChild(item);
+				}
 			}
 		}
 	}

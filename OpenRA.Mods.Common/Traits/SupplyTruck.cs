@@ -23,6 +23,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("The amount of cash the owner receives.")]
 		public readonly int Payload = 500;
 
+		[Desc("The amount of experience the donating player receives.")]
+		public readonly int PlayerExperience = 0;
+
 		[VoiceReference] public readonly string Voice = "Action";
 
 		public object Create(ActorInitializer init) { return new SupplyTruck(this); }
@@ -71,7 +74,7 @@ namespace OpenRA.Mods.Common.Traits
 				self.CancelActivity();
 
 			self.SetTargetLine(target, Color.Yellow);
-			self.QueueActivity(new DonateSupplies(self, target.Actor, info.Payload));
+			self.QueueActivity(new DonateSupplies(self, target.Actor, info.Payload, info.PlayerExperience));
 		}
 
 		class SupplyTruckOrderTargeter : UnitOrderTargeter

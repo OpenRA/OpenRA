@@ -30,7 +30,7 @@ namespace OpenRA.Mods.RA.Scripting
 		[Desc("Infiltrate the target actor.")]
 		public void Infiltrate(Actor target)
 		{
-			Self.QueueActivity(new Infiltrate(Self, target, info.EnterBehaviour, info.ValidStances, info.Notification));
+			Self.QueueActivity(new Infiltrate(Self, target, info.EnterBehaviour, info.ValidStances, info.Notification, info.PlayerExperience));
 		}
 	}
 }

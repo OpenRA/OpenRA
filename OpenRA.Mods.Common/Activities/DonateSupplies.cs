@@ -10,6 +10,7 @@
 #endregion
 
 using OpenRA.Mods.Common.Effects;
+using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Activities
@@ -18,12 +19,14 @@ namespace OpenRA.Mods.Common.Activities
 	{
 		readonly Actor target;
 		readonly int payload;
+		readonly int experience;
 
-		public DonateSupplies(Actor self, Actor target, int payload)
+		public DonateSupplies(Actor self, Actor target, int payload, int playerExperience)
 			: base(self, target, EnterBehaviour.Dispose)
 		{
 			this.target = target;
 			this.payload = payload;
+			this.experience = playerExperience;
 		}
 
 		protected override void OnInside(Actor self)
@@ -32,6 +35,10 @@ namespace OpenRA.Mods.Common.Activities
 				return;
 
 			target.Owner.PlayerActor.Trait<PlayerResources>().GiveCash(payload);
+
+			var exp = self.Owner.PlayerActor.TraitOrDefault<PlayerExperience>();
+			if (exp != null && target.Owner != self.Owner)
+				exp.GiveExperience(experience);
 
 			if (self.Owner.IsAlliedWith(self.World.RenderPlayer))
 				self.World.AddFrameEndTask(w => w.Add(new FloatingText(target.CenterPosition, target.Owner.Color.RGB, FloatingText.FormatCashTick(payload), 30)));

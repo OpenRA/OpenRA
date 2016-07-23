@@ -769,6 +769,7 @@ repair_pad:
 		Interval: 10
 		HpPerStep: 80
 		FinishRepairingNotification: UnitRepaired
+		PlayerExperience: 15
 	RallyPoint:
 		Offset: 1,3
 	RenderSprites:

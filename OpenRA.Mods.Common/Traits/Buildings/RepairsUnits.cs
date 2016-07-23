@@ -27,6 +27,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		[Desc("The sound played when repairing a unit is done.")]
 		public readonly string FinishRepairingNotification = null;
+
+		[Desc("Experience gained by the player owning this actor for repairing an allied unit.")]
+		public readonly int PlayerExperience = 0;
 	}
 
 	public class RepairsUnits { }
