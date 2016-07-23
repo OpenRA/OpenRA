@@ -2,7 +2,14 @@
 -- Converted from CoronaSDK-APIDOC-2015-2731;
 -- the conversion script is at the bottom of this file
 
-do return {
+-- To process:
+-- 1. extract `CoronaSDK-APIDOC-year-build.zip`
+-- 2. copy `library`, `type`, and `event` folders to `ZBS/api/lua` folder
+-- 3. run "../../bin/lua corona.lua >newapi" from ZBS/api/lua folder
+-- 4. copy the content of "newapi" file to replace "love" table in love2d.lua
+-- 4. launch the IDE and switch to love2d to confirm that it's loading without issues
+
+local api = {
  _BitmapPaint = {
   childs = {
    rotation = {
@@ -4013,11 +4020,14 @@ do return {
   type = "lib"
  }
 }
-end
 
--->-o-<-- Save this part as corona-script.lua in this folder,
--- open with ZBS and run with F6.
--- The script will overwrite api/lua/corona.lua in this installation of ZBS.
+-- when loaded as a package, return the package; otherwise continue with the script
+if pcall(debug.getlocal, 4, 1) then return api end
+
+-- The followng script is used to convert Corona API descriptions to api/lua/corona.lua.
+
+package.path = package.path .. ';../../lualibs/?/?.lua;../../lualibs/?.lua'
+package.cpath = package.cpath .. ';../../bin/clibs/?.dll'
 
 local mobdebug = require('mobdebug')
 local lfs = require('lfs')
@@ -4082,7 +4092,7 @@ local function stripTags(line)
   :gsub('&minus;', '-')
   :gsub('&[lr]dquo;', '"')
   :gsub('&sup(%d);', '%1')
-  :gsub('’', "'") -- replace unicode quote
+  :gsub('â€™', "'") -- replace unicode quote
 end
 
 local function extractOverview(filename)
@@ -4196,14 +4206,4 @@ end
 processApiDir('library', 'lib')
 processApiDir('type', 'class')
 
-local _, path = nil, arg[-3]:gsub('[\\/]', DIR_SEP)
-repeat
-  path, _ = extractPath(path)
-until endswith(path, 'bin')
-path, _ = extractPath(path)
--- Path to ZeroBraneStudio dir
-local filename = path .. DIR_SEP .. 'api' .. DIR_SEP .. 'lua' .. DIR_SEP .. 'corona.lua'
-local file = io.open(filename, 'w')
-file:write('do return ')
-file:write(mobdebug.line(API, {indent = ' ', comment = false}),"\nend\n")
-file:close()
+print(mobdebug.line(API, {indent = ' ', comment = false}))
