@@ -57,8 +57,8 @@ cp thirdparty/download/SDL2-CS* packaging/built
 # OpenAL-CS
 cp thirdparty/download/OpenAL-CS* packaging/built
 
-# Mono.NAT for UPnP support
-cp thirdparty/download/Mono.Nat.dll packaging/built
+# Open.NAT for UPnP support
+cp thirdparty/download/Open.Nat.dll packaging/built
 
 # Eluant (Lua integration)
 cp thirdparty/download/Eluant* packaging/built
@@ -67,7 +67,6 @@ cp thirdparty/download/Eluant* packaging/built
 cp thirdparty/download/MaxMind.Db.dll packaging/built
 cp thirdparty/download/MaxMind.GeoIP2.dll packaging/built
 cp thirdparty/download/Newtonsoft.Json.dll packaging/built
-cp thirdparty/download/RestSharp.dll packaging/built
 
 # global chat
 cp thirdparty/download/SmarIrc4net.dll packaging/built
