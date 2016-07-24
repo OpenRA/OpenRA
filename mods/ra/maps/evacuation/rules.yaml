@@ -200,11 +200,6 @@ MSUB:
 	Buildable:
 		Prerequisites: ~disabled
 
-CAMERA.Large:
-	Inherits: CAMERA
-	RevealsShroud:
-		Range: 1000c0
-
 Camera.SAM:
 	Inherits: CAMERA
 	RevealsShroud:
