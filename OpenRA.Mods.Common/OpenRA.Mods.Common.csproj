@@ -252,6 +252,7 @@
     <Compile Include="Scripting\Properties\ProductionProperties.cs" />
     <Compile Include="Scripting\Properties\RepairableBuildingProperties.cs" />
     <Compile Include="Scripting\Properties\ResourceProperties.cs" />
+    <Compile Include="Scripting\Properties\SellableProperties.cs" />
     <Compile Include="Scripting\Properties\TransformProperties.cs" />
     <Compile Include="Scripting\Properties\TransportProperties.cs" />
     <Compile Include="Scripting\Properties\UpgradeProperties.cs" />
