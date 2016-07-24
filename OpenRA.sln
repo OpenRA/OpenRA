@@ -73,6 +73,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Red Alert Lua scripts", "Re
 		mods\ra\maps\fort-lonestar\fort-lonestar-AI.lua = mods\ra\maps\fort-lonestar\fort-lonestar-AI.lua
 		mods\ra\maps\fort-lonestar\fort-lonestar.lua = mods\ra\maps\fort-lonestar\fort-lonestar.lua
 		mods\ra\maps\intervention\intervention.lua = mods\ra\maps\intervention\intervention.lua
+		mods\ra\maps\infiltration\infiltration.lua = mods\ra\maps\infiltration\infiltration.lua
 		mods\ra\maps\monster-tank-madness\monster-tank-madness.lua = mods\ra\maps\monster-tank-madness\monster-tank-madness.lua
 		mods\ra\maps\evacuation\evacuation.lua = mods\ra\maps\evacuation\evacuation.lua
 		mods\ra\maps\exodus\exodus.lua = mods\ra\maps\exodus\exodus.lua
