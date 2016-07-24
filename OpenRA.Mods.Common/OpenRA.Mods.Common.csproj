@@ -508,6 +508,7 @@
     <Compile Include="Traits\Upgrades\UpgradableTrait.cs" />
     <Compile Include="Traits\Upgrades\UpgradeActorsNear.cs" />
     <Compile Include="Traits\Upgrades\UpgradeOnDamageState.cs" />
+    <Compile Include="Traits\Upgrades\UpgradeOnTarget.cs" />
     <Compile Include="Traits\Upgrades\UpgradeOnTerrain.cs" />
     <Compile Include="Traits\Upgrades\UpgradeManager.cs" />
     <Compile Include="Traits\Valued.cs" />
