@@ -250,12 +250,17 @@ local function treeSetConnectorsAndIcons(tree)
     local dirPicker = wx.wxDirDialog(ide.frame, TR("Choose a directory to map"),
       project ~= "" and project or wx.wxGetCwd(), wx.wxDIRP_DIR_MUST_EXIST)
     if dirPicker:ShowModal(true) ~= wx.wxID_OK then return end
-    local dir = wx.wxFileName.DirName(FixDir(dirPicker:GetPath())):GetFullPath()
+    local dir = wx.wxFileName.DirName(FixDir(dirPicker:GetPath()))
+    local path = dir:GetFullPath()
+
+    -- don't remap the project directory
+    if dir:SameAs(wx.wxFileName(project)) then return end
+
     local mapped = filetree.settings.mapped[project] or {}
     for _, m in ipairs(mapped) do
-      if m == dir then return end -- already on the list
+      if m == path then return end -- already on the list
     end
-    table.insert(mapped, dir)
+    table.insert(mapped, path)
     filetree.settings.mapped[project] = mapped
     refreshAncestors(tree:GetRootItem())
   end
