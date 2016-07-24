@@ -15,7 +15,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	[Desc("Controls the map difficulty, tech level, and short game lobby options.")]
+	[Desc("Controls the game speed, tech level, and short game lobby options.")]
 	public class MapOptionsInfo : ITraitInfo, ILobbyOptions
 	{
 		[Desc("Default value of the short game checkbox in the lobby.")]
