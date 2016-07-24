@@ -60,7 +60,7 @@ namespace OpenRA.Mods.Common.Effects
 
 			pos = launchPos;
 			if (weapon.Report != null && weapon.Report.Any())
-				Game.Sound.Play(weapon.Report.Random(firedBy.World.SharedRandom), pos);
+				Game.Sound.Play(weapon.Report.Random(Game.CosmeticRandom), pos);
 
 			if (skipAscent)
 				ticks = turn;
