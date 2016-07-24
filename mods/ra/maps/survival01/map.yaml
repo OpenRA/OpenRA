@@ -1033,9 +1033,6 @@ Actors:
 	Actor346: t15
 		Location: 57,24
 		Owner: Neutral
-	Actor1000: camera.large
-		Location: 1,1
-		Owner: Soviets
 	FlameTower3: ftur
 		Location: 78,17
 		Owner: Soviets

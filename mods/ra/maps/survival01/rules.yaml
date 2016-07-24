@@ -30,11 +30,6 @@ CAMERA.sam:
 	RevealsShroud:
 		Range: 4c0
 
-CAMERA.Large:
-	Inherits: CAMERA
-	RevealsShroud:
-		Range: 1000
-
 AFLD.mission:
 	Inherits: AFLD
 	-AirstrikePower@spyplane:
