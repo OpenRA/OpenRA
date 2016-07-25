@@ -16,8 +16,7 @@
 		RemoveInstead: true
 	Buildable:
 		Queue: Building
-		Prerequisites: construction_yard
-		BuildPaletteOrder: 10
+		BuildPaletteOrder: 10 
 
 concretea:
 	Inherits: ^concrete
@@ -42,7 +41,7 @@ concreteb:
 		Value: 81
 	Buildable:
 		BuildPaletteOrder: 40
-		Prerequisites: construction_yard, upgrade.conyard
+		Prerequisites: upgrade.conyard
 
 construction_yard:
 	Inherits: ^Building
@@ -112,7 +111,6 @@ wind_trap:
 	Inherits: ^Building
 	Buildable:
 		Queue: Building
-		Prerequisites: construction_yard
 		BuildPaletteOrder: 20
 	Selectable:
 		Bounds: 64,64
@@ -150,7 +148,7 @@ wind_trap:
 barracks:
 	Inherits: ^Building
 	Buildable:
-		Prerequisites: construction_yard, wind_trap
+		Prerequisites: wind_trap
 		Queue: Building
 		BuildPaletteOrder: 50
 	Selectable:
@@ -225,7 +223,7 @@ barracks:
 refinery:
 	Inherits: ^Building
 	Buildable:
-		Prerequisites: construction_yard, wind_trap
+		Prerequisites: wind_trap
 		Queue: Building
 		BuildPaletteOrder: 30
 	Selectable:
@@ -280,7 +278,7 @@ refinery:
 silo:
 	Inherits: ^Building
 	Buildable:
-		Prerequisites: construction_yard, refinery
+		Prerequisites: refinery
 		Queue: Building
 		BuildPaletteOrder: 100
 	Selectable:
@@ -327,7 +325,7 @@ silo:
 light_factory:
 	Inherits: ^Building
 	Buildable:
-		Prerequisites: construction_yard, refinery
+		Prerequisites: refinery
 		Queue: Building
 		BuildPaletteOrder: 60
 	Selectable:
@@ -406,7 +404,7 @@ light_factory:
 heavy_factory:
 	Inherits: ^Building
 	Buildable:
-		Prerequisites: construction_yard, refinery
+		Prerequisites: refinery
 		Queue: Building
 		BuildPaletteOrder: 90
 	Selectable:
@@ -492,7 +490,7 @@ outpost:
 		PowerdownSound: DisablePower
 	DisabledOverlay:
 	Buildable:
-		Prerequisites: construction_yard, barracks, ~techlevel.medium
+		Prerequisites: barracks, ~techlevel.medium
 		Queue: Building
 		BuildPaletteOrder: 80
 	Selectable:
@@ -535,7 +533,7 @@ starport:
 		Name: Starport
 		Description: Dropzone for quick reinforcements, at a price.\n  Requires power to operate
 	Buildable:
-		Prerequisites: construction_yard, heavy_factory, outpost, ~techlevel.high
+		Prerequisites: heavy_factory, outpost, ~techlevel.high
 		Queue: Building
 		BuildPaletteOrder: 70
 	Valued:
@@ -606,7 +604,7 @@ wall:
 	HiddenUnderShroud:
 	Buildable:
 		Queue: Building
-		Prerequisites: construction_yard, barracks
+		Prerequisites: barracks
 		BuildPaletteOrder: 130
 	SoundOnDamageTransition:
 		DamagedSounds:
@@ -658,7 +656,7 @@ medium_gun_turret:
 	Inherits: ^Defense
 	Buildable:
 		Queue: Building
-		Prerequisites: construction_yard, barracks
+		Prerequisites: barracks
 		BuildPaletteOrder: 160
 	Valued:
 		Cost: 550
@@ -700,7 +698,7 @@ large_gun_turret:
 	Inherits: ^Defense
 	Buildable:
 		Queue: Building
-		Prerequisites: construction_yard, outpost, upgrade.conyard, ~techlevel.medium
+		Prerequisites: outpost, upgrade.conyard, ~techlevel.medium
 		BuildPaletteOrder: 170
 	Valued:
 		Cost: 750
@@ -745,7 +743,7 @@ repair_pad:
 	Inherits: ^Building
 	Buildable:
 		Queue: Building
-		Prerequisites: construction_yard, heavy_factory, upgrade.heavy, ~techlevel.medium
+		Prerequisites: heavy_factory, upgrade.heavy, ~techlevel.medium
 		BuildPaletteOrder: 120
 	Valued:
 		Cost: 800
@@ -790,7 +788,7 @@ repair_pad:
 high_tech_factory:
 	Inherits: ^Building
 	Buildable:
-		Prerequisites: construction_yard, outpost, ~techlevel.medium
+		Prerequisites: outpost, ~techlevel.medium
 		Queue: Building
 		BuildPaletteOrder: 110
 	Selectable:
@@ -860,7 +858,7 @@ research_centre:
 	Inherits: ^Building
 	Buildable:
 		Queue: Building
-		Prerequisites: construction_yard, outpost, heavy_factory, upgrade.heavy, ~techlevel.high
+		Prerequisites: outpost, heavy_factory, upgrade.heavy, ~techlevel.high
 		BuildPaletteOrder: 150
 	Selectable:
 		Bounds: 96,64,0,16
@@ -899,7 +897,7 @@ research_centre:
 palace:
 	Inherits: ^Building
 	Buildable:
-		Prerequisites: construction_yard, research_centre, ~techlevel.high
+		Prerequisites: research_centre, ~techlevel.high
 		Queue: Building
 		BuildPaletteOrder: 140
 	Selectable:
