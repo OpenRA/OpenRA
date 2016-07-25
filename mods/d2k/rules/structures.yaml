@@ -16,7 +16,7 @@
 		RemoveInstead: true
 	Buildable:
 		Queue: Building
-		BuildPaletteOrder: 10 
+		BuildPaletteOrder: 10
 
 concretea:
 	Inherits: ^concrete
