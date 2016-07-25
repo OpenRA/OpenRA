@@ -24,6 +24,7 @@ namespace OpenRA.Mods.Common.Activities
 		int length;
 		int ticks = 0;
 
+		/// <summary> Decorational move that doesn't change actor position. </summary>
 		public Drag(Actor self, WPos start, WPos end, int length)
 		{
 			positionable = self.Trait<IPositionable>();
