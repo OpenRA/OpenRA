@@ -619,7 +619,7 @@ local function treeSetConnectorsAndIcons(tree)
   tree:Connect(wx.wxEVT_RIGHT_DOWN,
     function (event)
       local item_id = tree:HitTest(event:GetPosition())
-      if PackageEventHandle("onFiletreeRDown", tree, event, item_id) == false then
+      if PackageEventHandle("onFiletreeRDown", tree, event, item_id and item_id:IsOk() and item_id or nil) == false then
         return
       end
       event:Skip()
@@ -634,11 +634,11 @@ local function treeSetConnectorsAndIcons(tree)
         + wx.wxTREE_HITTEST_ONITEMICON + wx.wxTREE_HITTEST_ONITEMRIGHT)
       local item_id, flags = tree:HitTest(event:GetPosition())
 
-      if PackageEventHandle("onFiletreeLDown", tree, event, item_id) == false then
+      if PackageEventHandle("onFiletreeLDown", tree, event, item_id and item_id:IsOk() and item_id or nil) == false then
         return
       end
 
-      if item_id and bit.band(flags, mask) > 0 then
+      if item_id and item_id:IsOk() and bit.band(flags, mask) > 0 then
         if tree:IsDirectory(item_id) then
           tree:Toggle(item_id)
           tree:SelectItem(item_id)
