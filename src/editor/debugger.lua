@@ -44,6 +44,8 @@ local stackmaxnum = ide.config.debugger.maxdatanum
 local stackmaxlevel = ide.config.debugger.maxdatalevel
 local params = {comment = false, nocode = true, maxlevel = stackmaxlevel, maxnum = stackmaxnum}
 
+local function displayError(...) return ide:GetOutput():Error(...) end
+
 local function fixUTF8(...)
   local t = {...}
   -- convert to escaped decimal code as these can only appear in strings
@@ -301,7 +303,7 @@ local function killProcess(pid)
     if ret == wx.wxKILL_OK then
       DisplayOutputLn(TR("Program stopped (pid: %d)."):format(pid))
     elseif ret ~= wx.wxKILL_NO_PROCESS then
-      DisplayOutputLn(TR("Unable to stop program (pid: %d), code %d."):format(pid, ret))
+      displayError(TR("Unable to stop program (pid: %d), code %d."):format(pid, ret))
       return false
     end
   end
@@ -431,7 +433,7 @@ function debugger:ActivateDocument(file, line, activatehow)
     -- only report files once per session and if not asked to skip
     if not debugger.missing[file] and activatehow ~= activate.NOREPORT then
       debugger.missing[file] = true
-      DisplayOutputLn(TR("Couldn't activate file '%s' for debugging; continuing without it.")
+      displayError(TR("Couldn't activate file '%s' for debugging; continuing without it.")
         :format(file))
     end
   end
@@ -591,7 +593,7 @@ function debugger:Listen(start)
         :format(debugger.hostname, debugger.portnumber))
       debugger.listening = false
     else
-      DisplayOutputLn(TR("Can't stop debugger server as it is not started."))
+      displayError(TR("Can't stop debugger server as it is not started."))
     end
     return
   end
@@ -600,7 +602,7 @@ function debugger:Listen(start)
 
   local server, err = socket.bind("*", debugger.portnumber)
   if not server then
-    DisplayOutputLn(TR("Can't start debugger server at %s:%d: %s.")
+    displayError(TR("Can't start debugger server at %s:%d: %s.")
       :format(debugger.hostname, debugger.portnumber, err or TR("unknown error")))
     return
   end
@@ -616,7 +618,7 @@ function debugger:Listen(start)
       -- pull any pending data not processed yet
       if debugger.running then debugger:Update() end
       if debugger.server and options.refuseonconflict then
-        DisplayOutputLn(TR("Refused a request to start a new debugging session as there is one in progress already."))
+        displayError(TR("Refused a request to start a new debugging session as there is one in progress already."))
         return
       end
 
@@ -625,7 +627,7 @@ function debugger:Listen(start)
         -- ignore errors that happen because debugging session is
         -- terminated during handshake (server == nil in this case).
         if debugger.server then
-          DisplayOutputLn(TR("Can't start debugging session due to internal error '%s'."):format(error))
+          displayError(TR("Can't start debugging session due to internal error '%s'."):format(error))
         end
         debugger:terminate()
       end)
@@ -659,7 +661,7 @@ function debugger:Listen(start)
         or (wxfilepath and wxfilepath:GetFullPath())
 
       if not startfile then
-        DisplayOutputLn(TR("Can't start debugging without an opened file or with the current file not being saved ('%s').")
+        displayError(TR("Can't start debugging without an opened file or with the current file not being saved ('%s').")
           :format(ide.config.default.fullname))
         return debugger:terminate()
       end
@@ -676,7 +678,7 @@ function debugger:Listen(start)
       local init = options.init or ide.config.debugger.init
       if init then
         local _, _, err = debugger:execute(init)
-        if err then DisplayOutputLn(TR("Ignored error in debugger initialization code: %s."):format(err)) end
+        if err then displayError(TR("Ignored error in debugger initialization code: %s."):format(err)) end
       end
 
       debugger:reSetBreakpoints()
@@ -700,7 +702,7 @@ function debugger:Listen(start)
                 if ok then
                   m = res
                 else
-                  DisplayOutputLn("Output filter failed: "..res)
+                  displayError("Output filter failed: "..res)
                   return
                 end
               end
@@ -711,7 +713,7 @@ function debugger:Listen(start)
       if (options.startwith) then
         local file, line, err = debugger:loadfile(options.startwith)
         if err then
-          DisplayOutputLn(TR("Can't run the entry point script ('%s').")
+          displayError(TR("Can't run the entry point script ('%s').")
             :format(options.startwith)
             .." "..TR("Compilation error")
             ..":\n"..err)
@@ -722,7 +724,7 @@ function debugger:Listen(start)
             options.runstart = false
           end
         elseif file and line then
-          DisplayOutputLn(TR("Debugging suspended at '%s:%s' (couldn't activate the file).")
+          displayError(TR("Debugging suspended at '%s:%s' (couldn't activate the file).")
             :format(file, line))
         end
       elseif not (options.run or debugger.scratchpad) then
@@ -732,7 +734,7 @@ function debugger:Listen(start)
         -- with start() method, which can't load new files
         -- if file and line are set, this indicates option #2
         if err then
-          DisplayOutputLn(TR("Can't start debugging for '%s'."):format(startfile)
+          displayError(TR("Can't start debugging for '%s'."):format(startfile)
             .." "..TR("Compilation error")
             ..":\n"..err)
           return debugger:terminate()
@@ -770,7 +772,7 @@ function debugger:Listen(start)
           end
 
           if not activated then
-            DisplayOutputLn(TR("Debugging suspended at '%s:%s' (couldn't activate the file).")
+            displayError(TR("Debugging suspended at '%s:%s' (couldn't activate the file).")
               :format(file, line))
           end
 
@@ -781,7 +783,7 @@ function debugger:Listen(start)
           debugger.scratchable = true
           local activated = debugger:ActivateDocument(startfile, 0) -- find the appropriate line
           if not activated then
-            DisplayOutputLn(TR("Debugging suspended at '%s:%s' (couldn't activate the file).")
+            displayError(TR("Debugging suspended at '%s:%s' (couldn't activate the file).")
               :format(startfile, '?'))
           end
         end
@@ -865,7 +867,7 @@ function debugger:exec(command, func)
           local file, line, err = debugger:handle(out or command)
           if out then out = nil end
           if line == nil then
-            if err then DisplayOutputLn(err) end
+            if err then displayError(err) end
             debugger:teardown()
             return
           elseif not debugger.server then
@@ -892,7 +894,7 @@ function debugger:exec(command, func)
               -- If this happens, stop and report allowing users to set
               -- breakpoints and step through.
               if debugger.breaking then
-                DisplayOutputLn(TR("Debugging suspended at '%s:%s' (couldn't activate the file).")
+                displayError(TR("Debugging suspended at '%s:%s' (couldn't activate the file).")
                   :format(file, line))
                 debugger:updateStackAndWatches()
                 return
@@ -1620,7 +1622,7 @@ function debugger:ScratchpadRefresh()
           if prefix == TR("Scratchpad error") and fragment and #fragment > 30 then
             err = err:gsub(q(fragment), function(s) return s:sub(1,30)..'...' end)
           end
-          DisplayOutputLn(prefix
+          displayError(prefix
             ..(line and (" "..TR("on line %d"):format(line)) or "")
             ..":\n"..err:gsub('stack traceback:.+', ''):gsub('\n+$', ''))
         end
