@@ -64,6 +64,7 @@ OpenRA.Launcher.Mac/OpenRA.xcodeproj/*.mode1v3
 DOCUMENTATION.md
 WEAPONS.md
 Lua-API.md
+Settings.md
 *.html
 openra.6
 
