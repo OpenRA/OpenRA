@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Common.Traits
 	class DamagedByTerrainInfo : UpgradableTraitInfo, IRulesetLoaded, Requires<HealthInfo>
 	{
 		[Desc("The weapon which is used to damage the actor.")]
-		[WeaponReference, FieldLoader.Require] public readonly string Weapon;
+		[WeaponReference, FieldLoader.Require] public readonly string Weapon = null;
 
 		[Desc("Terrain types where the actor will take damage.")]
 		[FieldLoader.Require] public readonly string[] Terrain = { };
