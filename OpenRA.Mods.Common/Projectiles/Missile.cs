@@ -32,7 +32,10 @@ namespace OpenRA.Mods.Common.Projectiles
 		[SequenceReference("Image")] public readonly string[] Sequences = { "idle" };
 
 		[Desc("Palette used to render the projectile sequence.")]
-		[PaletteReference] public readonly string Palette = "effect";
+		[PaletteReference("UsePlayerPalette")] public readonly string Palette = "effect";
+
+		[Desc("Use the Player Palette to render the projectile sequence.")]
+		public readonly bool UsePlayerPalette = false;
 
 		[Desc("Should the projectile's shadow be rendered?")]
 		public readonly bool Shadow = false;
@@ -157,6 +160,7 @@ namespace OpenRA.Mods.Common.Projectiles
 		readonly MissileInfo info;
 		readonly ProjectileArgs args;
 		readonly Animation anim;
+		readonly string palette;
 
 		readonly WVec gravity;
 
@@ -201,6 +205,10 @@ namespace OpenRA.Mods.Common.Projectiles
 			gravity = new WVec(0, 0, -info.Gravity);
 			targetPosition = args.PassiveTarget;
 			rangeLimit = info.RangeLimit != WDist.Zero ? info.RangeLimit : args.Weapon.Range;
+
+			palette = info.Palette;
+			if (info.UsePlayerPalette)
+				palette += args.SourceActor.Owner.InternalName;
 
 			var world = args.SourceActor.World;
 
@@ -876,8 +884,7 @@ namespace OpenRA.Mods.Common.Projectiles
 						yield return r;
 				}
 
-				var palette = wr.Palette(info.Palette);
-				foreach (var r in anim.Render(pos, palette))
+				foreach (var r in anim.Render(pos, wr.Palette(palette)))
 					yield return r;
 			}
 		}
