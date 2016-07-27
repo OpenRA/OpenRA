@@ -16,18 +16,18 @@ using OpenRA.Graphics;
 namespace OpenRA.Mods.Common.Projectiles
 {
 	[Desc("Simple invisible direct on target actor fake projectile.")]
-	public class MeleeAttackInfo : IProjectileInfo
+	public class InstantHitInfo : IProjectileInfo
 	{
-		public IProjectile Create(ProjectileArgs args) { return new MeleeAttack(this, args); }
+		public IProjectile Create(ProjectileArgs args) { return new InstantHit(this, args); }
 	}
 
-	public class MeleeAttack : IProjectile
+	public class InstantHit : IProjectile
 	{
 		readonly ProjectileArgs args;
 
 		bool doneDamage;
 
-		public MeleeAttack(MeleeAttackInfo info, ProjectileArgs args)
+		public InstantHit(InstantHitInfo info, ProjectileArgs args)
 		{
 			this.args = args;
 		}
