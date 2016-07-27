@@ -165,18 +165,10 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void RemoveSmudge(CPos loc)
 		{
-			if (dirty.ContainsKey(loc))
-			{
-				var tile = dirty[loc];
-				tile.Depth = 0;
-				tile.Sprite = null;
-				dirty[loc] = tile;
-			}
-			else
-			{
-				var st = smudges.Keys.Random(world.SharedRandom);
-				dirty[loc] = new Smudge { Type = st, Depth = 0, Sprite = null };
-			}
+			var tile = dirty.ContainsKey(loc) ? dirty[loc] : new Smudge();
+
+			tile.Sprite = null;
+			dirty[loc] = tile;
 		}
 
 		public void TickRender(WorldRenderer wr, Actor self)
