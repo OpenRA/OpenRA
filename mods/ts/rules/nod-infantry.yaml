@@ -95,6 +95,7 @@ CYC2:
 
 MHIJACK:
 	Inherits: ^Soldier
+	Inherits@2: ^HealsOnTiberium
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 60
@@ -109,9 +110,6 @@ MHIJACK:
 		VoiceSet: Hijacker
 	Health:
 		HP: 300
-	DamagedByTerrain:
-		Weapon: TiberiumHeal
-		Terrain: Tiberium, BlueTiberium
 	Mobile:
 		Speed: 99
 	-Crushable:

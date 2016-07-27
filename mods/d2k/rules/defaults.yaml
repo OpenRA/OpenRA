@@ -280,7 +280,8 @@
 	WithCrumbleOverlay:
 	Demolishable:
 	DamagedByTerrain:
-		Weapon: weathering
+		Damage: 10
+		DamageInterval: 100
 		Terrain: Rock
 		DamageThreshold: 50
 		StartOnThreshold: true

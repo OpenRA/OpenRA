@@ -288,7 +288,9 @@
 	ActorLostNotification:
 	DamagedByTerrain:
 		Terrain: Tiberium, BlueTiberium
-		Weapon: Tiberium
+		Damage: 2
+		DamageInterval: 16
+		DamageTypes: ExplosionDeath, TriggerVisceroid
 	Guard:
 		Voice: Move
 	Guardable:
@@ -376,6 +378,7 @@
 ^Cyborg:
 	Inherits@1: ^Infantry
 	Inherits@2: ^EmpDisableMobile
+	Inherits@3: ^HealsOnTiberium
 	ExplosionOnDamageTransition:
 		Weapon: CyborgExplode
 		DamageState: Critical
@@ -387,9 +390,6 @@
 	RevealsShroud:
 		Range: 4c0
 	MustBeDestroyed:
-	DamagedByTerrain:
-		Weapon: TiberiumHeal
-		Terrain: Tiberium, BlueTiberium
 	WithPermanentInjury:
 	WithInfantryBody:
 		AttackSequence: attack
@@ -419,6 +419,7 @@
 	Inherits@2: ^ExistsInWorld
 	Inherits@3: ^EmpDisableMobile
 	Inherits@4: ^Cloakable
+	Inherits@5: ^DamagedByVeins
 	DrawLineToTarget:
 	Mobile:
 		Crushes: crate
@@ -470,9 +471,6 @@
 		Weapons: SmallDebris
 		Pieces: 3, 7
 		Range: 2c0, 5c0
-	DamagedByTerrain:
-		Weapon: Veins
-		Terrain: Veins
 	UpgradeOnDamage@DAMAGED:
 		Upgrades: damagedspeed
 		ValidDamageStates: Heavy
@@ -609,6 +607,7 @@
 ^Visceroid:
 	Inherits@1: ^ExistsInWorld
 	Inherits@2: ^SpriteActor
+	Inherits@3: ^HealsOnTiberium
 	DrawLineToTarget:
 	Health:
 		Shape: Circle
@@ -638,9 +637,6 @@
 		TargetTypes: Ground, Creep
 	AttackMove:
 	HiddenUnderFog:
-	DamagedByTerrain:
-		Weapon: TiberiumHeal
-		Terrain: Tiberium, BlueTiberium
 	Guardable:
 	WithSpriteBody:
 
@@ -871,3 +867,23 @@
 		WallConnections: 0,-1, 0,3
 	LineBuildNode:
 		Connections: 0,-1, 0,1
+
+^HealsOnTiberium:
+	DamagedByTerrain:
+		Damage: -2
+		DamageInterval: 16
+		Terrain: Tiberium, BlueTiberium
+
+^DamagedByVeins:
+	DamagedByTerrain@VEINS:
+		Damage: 5
+		DamageInterval: 16
+		DamageTypes: BulletDeath
+		Terrain: Veins
+	UpgradeOnTerrain@VEINS:
+		TerrainTypes: Veins
+		Upgrades: veins
+	WithIdleOverlay@VEINS:
+		Sequence: veins
+		UpgradeTypes: veins
+		UpgradeMinEnabledLevel: 1

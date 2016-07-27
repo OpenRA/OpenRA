@@ -144,13 +144,6 @@ Laser:
 		SmudgeType: Scorch
 		InvalidTargets: Vehicle, Structure, Wall, Husk, Trees, Creep
 
-Tiberium:
-	ReloadDelay: 16
-	Warhead@1Dam: SpreadDamage
-		Spread: 42
-		Damage: 2
-		DamageTypes: TiberiumDeath
-
 TiberiumExplosion:
 	Warhead@1Dam: SpreadDamage
 		Spread: 9
@@ -167,12 +160,6 @@ TiberiumExplosion:
 	Warhead@3Eff: CreateEffect
 		Explosions: chemball
 		ImpactSounds: xplosml2.aud
-
-Heal:
-	ReloadDelay: 4
-	Warhead@1Dam: SpreadDamage
-		Spread: 42
-		Damage: -1
 
 Tail:
 	ReloadDelay: 30

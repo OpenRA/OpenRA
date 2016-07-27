@@ -27,7 +27,9 @@ BGGY:
 		Voice: Attack
 	AutoTarget:
 	WithMuzzleOverlay:
-	-DamagedByTerrain:
+	-DamagedByTerrain@VEINS:
+	-UpgradeOnTerrain@VEINS:
+	-WithIdleOverlay@VEINS:
 
 BIKE:
 	Inherits: ^VoxelVehicle
@@ -257,7 +259,9 @@ WEED:
 	-WithVoxelBody:
 	WithVoxelUnloadBody:
 	-GainsExperience:
-	-DamagedByTerrain:
+	-DamagedByTerrain@VEINS:
+	-UpgradeOnTerrain@VEINS:
+	-WithIdleOverlay@VEINS:
 
 SAPC:
 	Inherits: ^VoxelTank

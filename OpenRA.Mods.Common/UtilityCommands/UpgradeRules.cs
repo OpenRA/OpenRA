@@ -234,8 +234,9 @@ namespace OpenRA.Mods.Common.UtilityCommands
 							else
 								node.Value.Nodes.Add(new MiniYamlNode("Terrain", new MiniYaml("Tiberium, BlueTiberium")));
 
-							if (!node.Value.Nodes.Any(a => a.Key == "Weapon"))
-								node.Value.Nodes.Add(new MiniYamlNode("Weapon", new MiniYaml("Tiberium")));
+							Console.WriteLine("PoisonedByTiberium: Weapon isn't converted. Copy out the appropriate");
+							Console.WriteLine("weapon's Damage, ReloadDelay and DamageTypes to DamagedByTerrain's Damage,");
+							Console.WriteLine("DamageInterval and DamageTypes, respectively, then remove the Weapon tag.");
 						}
 					}
 
@@ -244,8 +245,9 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						node.Key = node.Key.Replace("DamagedWithoutFoundation", "DamagedByTerrain");
 						if (!node.Key.StartsWith("-"))
 						{
-							if (!node.Value.Nodes.Any(a => a.Key == "Weapon"))
-								node.Value.Nodes.Add(new MiniYamlNode("Weapon", new MiniYaml("weathering")));
+							Console.WriteLine("DamagedWithoutFoundation: Weapon isn't converted. Copy out the appropriate");
+							Console.WriteLine("weapon's Damage, ReloadDelay and DamageTypes to DamagedByTerrain's Damage,");
+							Console.WriteLine("DamageInterval and DamageTypes, respectively, then remove the Weapon tag.");
 
 							Console.WriteLine("SafeTerrain isn't converted. Setup an inverted check using Terrain.");
 

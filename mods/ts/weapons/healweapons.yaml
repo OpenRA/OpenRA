@@ -23,9 +23,3 @@ Repair:
 		Spread: 213
 		Damage: -50
 		ValidTargets: Repair
-
-TiberiumHeal:
-	ReloadDelay: 16
-	Warhead@1Dam: SpreadDamage
-		Spread: 42
-		Damage: -2

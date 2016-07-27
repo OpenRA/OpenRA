@@ -1,51 +1,48 @@
-mcv.gdi:
+^VehicleOverlays:
 	emp-overlay: emp_fx01
 		Length: *
 		BlendMode: Additive
+	veins: veinatac
+		Length: 12
+		UseTilesetExtension: true
+		ZOffset: 1023
+		Offset: 0, -12
+
+mcv.gdi:
+	Inherits: ^VehicleOverlays
 	icon: sidebar-gdi|mcvicon
 
 mcv.nod:
-	emp-overlay: emp_fx01
-		Length: *
-		BlendMode: Additive
+	Inherits: ^VehicleOverlays
 	icon: sidebar-nod|mcvicon
 
 apc:
-	emp-overlay: emp_fx01
-		Length: *
-		BlendMode: Additive
+	Inherits: ^VehicleOverlays
 	icon: apcicon
 
 harv.gdi:
-	emp-overlay: emp_fx01
-		Length: *
-		BlendMode: Additive
+	Inherits: ^VehicleOverlays
 	harvest: harvestr
 		Length: *
 	icon: sidebar-gdi|harvicon
 
 harv.nod:
-	emp-overlay: emp_fx01
-		Length: *
-		BlendMode: Additive
+	Inherits: ^VehicleOverlays
 	harvest: harvestr
 		Length: *
 	icon: sidebar-nod|harvicon
 
 hvr:
-	emp-overlay: emp_fx01
-		Length: *
-		BlendMode: Additive
+	Inherits: ^VehicleOverlays
 	icon: hovricon
 
 4tnk:
-	emp-overlay: emp_fx01
-		Length: *
-		BlendMode: Additive
+	Inherits: ^VehicleOverlays
 	muzzle: gunfire
 		Length: *
 
 lpst.gdi:
+	Inherits: ^VehicleOverlays
 	idle: gadpsa
 		Offset: 0, -12
 		ShadowStart: 3
@@ -53,12 +50,10 @@ lpst.gdi:
 		Offset: 0, -12
 		Length: 36
 		ShadowStart: 36
-	emp-overlay: emp_fx01
-		Length: *
-		BlendMode: Additive
 	icon: sidebar-gdi|lpsticon
 
 lpst.nod:
+	Inherits: ^VehicleOverlays
 	idle: gadpsa
 		Offset: 0, -12
 		ShadowStart: 3
@@ -66,42 +61,30 @@ lpst.nod:
 		Offset: 0, -12
 		Length: 36
 		ShadowStart: 36
-	emp-overlay: emp_fx01
-		Length: *
-		BlendMode: Additive
 	icon: sidebar-nod|lpsticon
 
 repair:
-	emp-overlay: emp_fx01
-		Length: *
-		BlendMode: Additive
+	Inherits: ^VehicleOverlays
 	icon: rboticon
 
 art2:
-	emp-overlay: emp_fx01
-		Length: *
-		BlendMode: Additive
+	Inherits: ^VehicleOverlays
 	icon: artyicon
 
 weed:
-	emp-overlay: emp_fx01
-		Length: *
-		BlendMode: Additive
+	Inherits: ^VehicleOverlays
 	icon: weedicon
 
 hmec:
-	emp-overlay: emp_fx01
-		Length: *
-		BlendMode: Additive
+	Inherits: ^VehicleOverlays
 	icon: hmecicon
 
 bike:
-	emp-overlay: emp_fx01
-		Length: *
-		BlendMode: Additive
+	Inherits: ^VehicleOverlays
 	icon: cyclicon
 
 bggy:
+	Inherits: ^VehicleOverlays
 	Defaults:
 		Length: *
 	muzzle0: mgun-n
@@ -112,29 +95,22 @@ bggy:
 	muzzle5: mgun-se
 	muzzle6: mgun-e
 	muzzle7: mgun-ne
-	emp-overlay: emp_fx01
-		BlendMode: Additive
 	icon: bggyicon
 
 sapc:
-	emp-overlay: emp_fx01
-		Length: *
-		BlendMode: Additive
+	Inherits: ^VehicleOverlays
 	icon: sapcicon
 
 subtank:
-	emp-overlay: emp_fx01
-		Length: *
-		BlendMode: Additive
+	Inherits: ^VehicleOverlays
 	icon: subticon
 
 sonic:
-	emp-overlay: emp_fx01
-		Length: *
-		BlendMode: Additive
+	Inherits: ^VehicleOverlays
 	icon: soniicon
 
 ttnk:
+	Inherits: ^VehicleOverlays
 	idle: gatick
 		ShadowStart: 3
 		Offset: 0, -12
@@ -148,18 +124,14 @@ ttnk:
 		Offset: 0, -12
 	muzzle: gunfire
 		Length: *
-	emp-overlay: emp_fx01
-		Length: *
-		BlendMode: Additive
 	icon: tickicon
 
 stnk:
-	emp-overlay: emp_fx01
-		Length: *
-		BlendMode: Additive
+	Inherits: ^VehicleOverlays
 	icon: stnkicon
 
 mmch:
+	Inherits: ^VehicleOverlays
 	stand:
 		Facings: -8
 		Stride: 15
@@ -173,21 +145,17 @@ mmch:
 		Facings: -32
 	muzzle: gunfire
 		Length: *
-	emp-overlay: emp_fx01
-		Length: *
-		BlendMode: Additive
 	icon: mmchicon
 
 gghunt:
+	Inherits: ^VehicleOverlays
 	idle:
 		Facings: 1
 		Length: 8
 		ShadowStart: 8
-	emp-overlay: emp_fx01
-		Length: *
-		BlendMode: Additive
 
 smech:
+	Inherits: ^VehicleOverlays
 	Defaults:
 		Offset: 0,0,8
 	stand:
@@ -204,67 +172,34 @@ smech:
 		Facings: -8
 		ShadowStart: 240
 		Tick: 100
-	emp-overlay: emp_fx01
-		Length: *
-		BlendMode: Additive
 	icon: smchicon
 
 trucka:
-	emp-overlay: emp_fx01
-		Length: *
-		ZOffset: 512
-		BlendMode: Additive
+	Inherits: ^VehicleOverlays
 
 truckb:
-	emp-overlay: emp_fx01
-		Length: *
-		ZOffset: 512
-		BlendMode: Additive
+	Inherits: ^VehicleOverlays
 
 icbm:
-	emp-overlay: emp_fx01
-		Length: *
-		ZOffset: 512
-		BlendMode: Additive
+	Inherits: ^VehicleOverlays
 
 bus:
-	emp-overlay: emp_fx01
-		Length: *
-		ZOffset: 512
-		BlendMode: Additive
+	Inherits: ^VehicleOverlays
 
 pick:
-	emp-overlay: emp_fx01
-		Length: *
-		ZOffset: 512
-		BlendMode: Additive
+	Inherits: ^VehicleOverlays
 
 car:
-	emp-overlay: emp_fx01
-		Length: *
-		ZOffset: 512
-		BlendMode: Additive
+	Inherits: ^VehicleOverlays
 
 wini:
-	emp-overlay: emp_fx01
-		Length: *
-		ZOffset: 512
-		BlendMode: Additive
+	Inherits: ^VehicleOverlays
 
 locomotive:
-	emp-overlay: emp_fx01
-		Length: *
-		ZOffset: 512
-		BlendMode: Additive
+	Inherits: ^VehicleOverlays
 
 traincar:
-	emp-overlay: emp_fx01
-		Length: *
-		ZOffset: 512
-		BlendMode: Additive
+	Inherits: ^VehicleOverlays
 
 cargocar:
-	emp-overlay: emp_fx01
-		Length: *
-		ZOffset: 512
-		BlendMode: Additive
+	Inherits: ^VehicleOverlays
