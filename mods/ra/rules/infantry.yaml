@@ -20,6 +20,8 @@ DOG:
 	Mobile:
 		Speed: 99
 		Voice: Move
+		UpgradeTypes: rip
+		UpgradeMaxEnabledLevel: 0
 	Guard:
 		Voice: Move
 	Passenger:
@@ -30,15 +32,44 @@ DOG:
 		Weapon: DogJaw
 	AttackLeap:
 		Voice: Attack
+		LeapUpgrades: leap
 	AttackMove:
 		Voice: Move
+	UpgradeOnAttack:
+		AttackingUpgrades: rip
+		AttackingDelay: 30
+	UpgradeOnTarget:
+		Upgrades: rush
 	AutoTarget:
 		InitialStance: AttackAnything
 	Targetable:
 		TargetTypes: Ground, Infantry
 	WithInfantryBody:
-		AttackSequence: shoot
+		MoveSequence: walk
 		StandSequences: stand
+		AttackSequence: eat
+		UpgradeTypes: leap, rush, rip
+		UpgradeMaxEnabledLevel: 0
+	WithInfantryBody@RUSH:
+		MoveSequence: run
+		AttackSequence: run
+		UpgradeTypes: rush
+		UpgradeMinEnabledLevel: 1
+	WithInfantryBody@LEAP:
+		MoveSequence: jump
+		AttackSequence: jump
+		UpgradeTypes: leap
+		UpgradeMinEnabledLevel: 1
+	WithInfantryBody@EAT:
+		MoveSequence: eat
+		AttackSequence: eat
+		StandSequences: eat
+		IdleSequences: eat
+		UpgradeTypes: rip
+		UpgradeMinEnabledLevel: 1
+	SpeedMultiplier@HUNGER:
+		Modifier: 150
+		UpgradeTypes: rush
 	IgnoresDisguise:
 	DetectCloaked:
 		CloakTypes: Cloak, Hijacker
