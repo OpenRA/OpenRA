@@ -164,7 +164,7 @@ V2RL:
 	Armor:
 		Type: Heavy
 	Mobile:
-		Speed: 50
+		Speed: 42
 		Crushes: wall, mine, crate, infantry, heavywall
 	RevealsShroud:
 		Range: 6c0
