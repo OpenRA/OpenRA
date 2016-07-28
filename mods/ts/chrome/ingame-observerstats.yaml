@@ -96,7 +96,7 @@ Background@INGAME_OBSERVERSTATS_BG:
 							Width: 95
 							Height: 25
 							Font: Bold
-							Text: Experience
+							Text: Score
 							Align: Right
 						Label@ACTIONS_MIN_HEADER:
 							X: 860
