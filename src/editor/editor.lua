@@ -1117,17 +1117,17 @@ function CreateEditor(bare)
       end
     end)
 
-  editor:Connect(wxstc.wxEVT_STC_SAVEPOINTREACHED,
-    function ()
+  local function updateModified()
+    local update = function()
       local doc = ide:GetDocument(editor)
-      if doc then doc:SetModified(false) end
-    end)
-
-  editor:Connect(wxstc.wxEVT_STC_SAVEPOINTLEFT,
-    function ()
-      local doc = ide:GetDocument(editor)
-      if doc then doc:SetModified(true) end
-    end)
+      if doc then doc:SetModified(editor:GetModify()) end
+    end
+    -- delay update on Unix/Linux as it seems to hang the application on ArchLinux;
+    -- execute immediately on other platforms
+    if ide.osname == "Unix" then editor:DoWhenIdle(update) else update() end
+  end
+  editor:Connect(wxstc.wxEVT_STC_SAVEPOINTREACHED, updateModified)
+  editor:Connect(wxstc.wxEVT_STC_SAVEPOINTLEFT, updateModified)
 
   -- "updateStatusText" should be called in UPDATEUI event, but it creates
   -- several performance problems on Windows (using wx2.9.5+) when
