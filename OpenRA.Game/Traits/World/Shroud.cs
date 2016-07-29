@@ -40,7 +40,7 @@ namespace OpenRA.Traits
 		public object Create(ActorInitializer init) { return new Shroud(init.Self, this); }
 	}
 
-	public class Shroud : ISync, INotifyCreated
+	public class Shroud : ISync, INotifyCreated, ITick
 	{
 		public event Action<IEnumerable<PPos>> CellsChanged;
 
@@ -56,6 +56,8 @@ namespace OpenRA.Traits
 		// can't make us invalid.
 		readonly Dictionary<Actor, PPos[]> visibility = new Dictionary<Actor, PPos[]>();
 		readonly Dictionary<Actor, PPos[]> generation = new Dictionary<Actor, PPos[]>();
+		readonly Dictionary<Actor, int> timeout = new Dictionary<Actor, int>();
+		int timer;
 
 		[Sync] bool disabled;
 		public bool Disabled
@@ -92,7 +94,7 @@ namespace OpenRA.Traits
 			explored = new CellLayer<bool>(map);
 		}
 
-		void INotifyCreated.Created(Actor self)
+		public void Created(Actor self)
 		{
 			var gs = self.World.LobbyInfo.GlobalSettings;
 			fogEnabled = gs.OptionOrDefault("fog", info.FogEnabled);
@@ -100,6 +102,17 @@ namespace OpenRA.Traits
 			ExploreMapEnabled = gs.OptionOrDefault("explored", info.ExploredMapEnabled);
 			if (ExploreMapEnabled)
 				self.World.AddFrameEndTask(w => ExploreAll());
+		}
+
+		public void Tick(Actor self)
+		{
+			foreach (Actor a in timeout.Where(t => t.Value <= timer).Select(t => t.Key).ToList())
+			{
+				RemoveVisibility(a);
+				timeout.Remove(a);
+			}
+
+			timer++;
 		}
 
 		void Invalidate(IEnumerable<PPos> changed)
@@ -160,6 +173,12 @@ namespace OpenRA.Traits
 
 		public void RemoveVisibility(Actor a)
 		{
+			if (!a.IsInWorld && !timeout.ContainsKey(a))
+			{
+				timeout.Add(a, timer + Game.Timestep);
+				return;
+			}
+
 			PPos[] visible;
 			if (!visibility.TryGetValue(a, out visible))
 				return;
