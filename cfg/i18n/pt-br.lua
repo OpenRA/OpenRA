@@ -1,5 +1,4 @@
 --- @author Evandro Costa <evandro.co>
---- @date 26/12/2014
 return {
   [0] = function(c) return c == 1 and 1 or 2 end, -- plural
   ["%s event failed: %s"] = "Evento %s falhou: %s", -- src\editor\package.lua
@@ -68,7 +67,7 @@ return {
   ["C&lear Output Window"] = "&Limpar janela de saída", -- src\editor\gui.lua, src\editor\menu_project.lua
   ["C&omment/Uncomment"] = "C&omentar/Descomentar", -- src\editor\menu_edit.lua
   ["Can't evaluate the expression while the application is running."] = "Impossível executar a expressão enquanto a aplicação estiver em execução.", -- src\editor\debugger.lua
-  ["Can't open file '%s': %s"] = "Impossível abrir o arquivo '%s': %s", -- src\editor\findreplace.lua, src\editor\singleinstance.lua, src\editor\inspect.lua, src\editor\outline.lua
+  ["Can't open file '%s': %s"] = "Impossível abrir o arquivo '%s': %s", -- src\editor\findreplace.lua, src\editor\package.lua, src\editor\inspect.lua, src\editor\outline.lua
   ["Can't process auto-recovery record; invalid format: %s."] = "Impossível de processar registro de autorrecuperação; formato inválido: %s.", -- src\editor\commands.lua
   ["Can't replace in read-only text."] = nil, -- src\editor\findreplace.lua
   ["Can't run the entry point script ('%s')."] = "Impossível de executar o ponto de entrada do script ('%s').", -- src\editor\debugger.lua
@@ -82,15 +81,18 @@ return {
   ["Choose a project directory"] = "Selecionar pasta do projeto", -- src\editor\toolbar.lua, src\editor\menu_project.lua, src\editor\filetree.lua
   ["Choose a search directory"] = nil, -- src\editor\findreplace.lua
   ["Choose..."] = "Selecionar...", -- src\editor\findreplace.lua, src\editor\menu_project.lua, src\editor\filetree.lua
+  ["Clear Bookmarks In Project"] = nil, -- src\editor\markers.lua
+  ["Clear Breakpoints In Project"] = nil, -- src\editor\markers.lua
   ["Clear Items"] = "Limpar itens", -- src\editor\findreplace.lua, src\editor\menu_file.lua
   ["Clear items from this list"] = "Limpar itens desta lista", -- src\editor\menu_file.lua
   ["Clear the output window before compiling or debugging"] = "Limpar janela de saída antes de compilar ou depurar", -- src\editor\menu_project.lua
   ["Close &Other Pages"] = "Fechar &outras guias", -- src\editor\gui.lua
   ["Close A&ll Pages"] = "Fechar todas as guias", -- src\editor\gui.lua
+  ["Close Search Results Pages"] = nil, -- src\editor\gui.lua
   ["Close the current editor window"] = "Fechar janela do editor atual", -- src\editor\menu_file.lua
   ["Co&ntinue"] = "Co&ntinuar", -- src\editor\menu_project.lua
   ["Col: %d"] = "Col: %d", -- src\editor\editor.lua
-  ["Command Line Parameters..."] = "Parâmetros da linha de comandos...", -- src\editor\menu_project.lua
+  ["Command Line Parameters..."] = "Parâmetros da linha de comandos...", -- src\editor\gui.lua, src\editor\menu_project.lua
   ["Command line parameters"] = "Parâmetros da linha de comandos", -- src\editor\menu_project.lua
   ["Comment or uncomment current or selected lines"] = {"Comentar ou descomentar a linha atual", "Comentar ou descomentar as linhas selecionadas"}, -- src\editor\menu_edit.lua
   ["Compilation error"] = "Erro na compilação", -- src\editor\commands.lua, src\editor\debugger.lua
@@ -145,12 +147,14 @@ return {
   ["Find and replace text in files"] = "Localizar e substituir texto em arquivos", -- src\editor\menu_search.lua
   ["Find and replace text"] = "Localizar e substituir texto", -- src\editor\toolbar.lua, src\editor\menu_search.lua
   ["Find in files"] = "Localizar em arquivos", -- src\editor\toolbar.lua
+  ["Find next"] = nil, -- src\editor\toolbar.lua
   ["Find text in files"] = "Localizar texto em arquivos", -- src\editor\menu_search.lua
   ["Find text"] = "Localizar texto", -- src\editor\toolbar.lua, src\editor\menu_search.lua
   ["Find the earlier text occurence"] = "Localizar a ocorrência anterior do texto", -- src\editor\menu_search.lua
   ["Find the next text occurrence"] = "Localizar a ocorrência posterior do texto", -- src\editor\menu_search.lua
-  ["Find"] = "Localizar", -- src\editor\toolbar.lua
   ["Fold or unfold all code folds"] = "Expandir ou recolher todos os blocos do código", -- src\editor\menu_edit.lua
+  ["Fold or unfold current line"] = nil, -- src\editor\menu_edit.lua
+  ["Fold/Unfold Current &Line"] = nil, -- src\editor\menu_edit.lua
   ["Formatting page %d..."] = nil, -- src\editor\print.lua
   ["Found %d instance."] = {}, -- src\editor\findreplace.lua
   ["Found auto-recovery record and restored saved session."] = "Registro de autorrecuperação encontrado e sessão restaurada.", -- src\editor\commands.lua
@@ -224,6 +228,7 @@ return {
   ["Recent Projects"] = "Projetos recentes", -- src\editor\menu_file.lua
   ["Redo last edit undone"] = "Refazer última edição desfeita", -- src\editor\menu_edit.lua
   ["Refresh Index"] = nil, -- src\editor\outline.lua
+  ["Refresh Search Results"] = nil, -- src\editor\gui.lua
   ["Refresh indexed symbols from files in the selected directory"] = nil, -- src\editor\outline.lua
   ["Refresh"] = "Refrescar", -- src\editor\filetree.lua
   ["Refused a request to start a new debugging session as there is one in progress already."] = "Solicitação de início de uma nova sessão de depuração recusado porque já existe um em progresso.", -- src\editor\debugger.lua
