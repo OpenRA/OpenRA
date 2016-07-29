@@ -1,5 +1,294 @@
 # ZeroBrane Studio Changelog
 
+## Current master (Jul 28 2016)
+
+### Highlights
+  - Added refresh of search results from the right-click-on-tab menu.
+  - Added fix for `Ctrl-(Shift-)Tab` navigation on OSX (#298).
+  - Added reverse search on `Shift-Enter` (closes #604).
+  - Updated Gideros API for version 2016.06.
+  - Updated Corona API for v2016.2906.
+  - Updated Love2d API for 0.10.1 (closes #537, #247).
+
+### Special thanks
+  - To [fnaith](https://github.com/fnaith) for adding translation to Traditional Chinese.
+  - To [Christoph Kubisch](https://github.com/pixeljetstream) for luxinia cleanup.
+
+### Improvements
+  - Added workaround for hanging during editing on ArchLinux when tab name is modified (#673).
+  - Added checks to ensure that only valid tree items are passed to `onFiletree*Down` callbacks.
+  - Added disallowing mapping of the project directory.
+  - Added workaround for `GetFirst` method missing on `wxMenuItemList` in some Linux packages (#671).
+  - Added `Error` method for the Output object (#166).
+  - Added history of command line parameters to the menu in the status bar (closes #665).
+  - Added `SetCommandLineParameters` method (#665, #166).
+  - Added showing menu when clicked on command line parameters in the status bar (#665).
+  - Added command line parameters to the status bar after the interpreter (#665).
+  - Added `UpdateStatus` interpreter method (#166).
+  - Added unfolding of the target line after navigation from the Stack window.
+  - Added debugger `SetOptions` method and deprecated `DebuggerAttachDefault` (#166).
+  - Added refresh of search results from the right-click-on-tab menu.
+  - Added saving of command line options per project.
+  - Added explicit `onProjectClose` event before closing the application (#166).
+  - Added `Error` method for console (#166).
+  - Added checks in stack panel to avoid throwing errors on improperly formatted stack message.
+  - Added translation of menus and messages to traditional chinese (closes #659).
+  - Added `ActivateFile` method instead of a global function (#166).
+  - Added global menu items for clearing breakpoints and bookmarks.
+  - Added markers menu to clear bookmarks in a project.
+  - Added markers menu to clear breakpoints in a project.
+  - Added workaround for `Ctrl-(Shift-)Tab` processing on Linux.
+  - Added enforcing scrolling in the output panel to make sure added text is visible.
+  - Added `IsProjectSubDirectory` method (#166).
+  - Added storing start time to measure uptime for error reporting.
+  - Added `ShowRange` editor method to move desiged range into view.
+  - Added `onMenuOutputTab` event and closing search results in the Output notebook.
+  - Added tab menu to close all search result pages in the editor notebook.
+  - Added wxwidgets ticket number for a Ubuntu issue with stock menu items.
+  - Added `GetCommandLineArg` interpreter method (#166).
+  - Added requesting attention before showing an error message in case the app is in the background.
+  - Added shortcuts for navigation to prev/next tab (closes #648, #298).
+  - Added Scintilla license.
+  - Added checks to windows to be present and indexes to be valid after tab movements.
+  - Added search in Output and Console panels when no editor tab is opened.
+  - Added enabling full screen view when supported, for example on OSX (#260).
+  - Added `ScrollRange` to improve showing of search results on long wrapped lines (#260).
+  - Added setting focus on tab content after selection in Output and Project notebooks.
+  - Added setting focus on tab content after drag-and-drop in Output and Project notebooks.
+  - Added initialization for `startat` config option in auto-complete.
+  - Added skipping auto-complete suggestions after markup in comments.
+  - Added `onDebuggerPreActivate` debugger method (#166).
+  - Added `UpdateStatus` debugger method (#166).
+  - Added `Break` debugger method (#166).
+  - Added `SetRemote` and `GetRemote` Console methods. Removed `ShellSupportRemote`.
+  - Added `Erase` method for the Output object (#166).
+  - Added `GetAccelerator` and `GetAccelerators` methods (#166).
+  - Added `SetAccelerator` method (#166).
+  - Added metalua license.
+  - Added luainspect license.
+  - Added copas license.
+  - Added `SetInterpreter` method (#166).
+  - Added ignoring `tooltips_class32` window on Windows (closes #631).
+  - Added `SetModTime` method for the document (#166).
+  - Added `SetFilePath` method for the document (#166).
+  - Added `Print` and `Write` method to the Output object (#166).
+  - Added menu item to un/fold the current line with `Shift-F12` default shortcut (closes #616).
+  - Added `Shift+click-on-fold-margin` to un/fold the line the click was on (#616).
+  - Added `Find Next` toolbar/menu icon to distinguish from `Find` (#603).
+  - Added keeping command line parameters after canceling the dialog (closes #610).
+  - Added `GetTextFromUser` method to better report canceled dialog (#166).
+  - Added saving command line parameters between restarts (closes #583).
+  - Added `GetPackage` method (#166).
+  - Added workaround to fix `Ctrl-(Shift-)Tab` navigation on OSX (#298).
+  - Added `AddTimer` method (#166).
+  - Added `io.write` support to the local console (#606).
+  - Added `Print` and `Write` method to the console object (#166).
+  - Added checks for indicator value types to not fail on invalid configuration (closes #607).
+  - Added `Breakpoint` and `Stop` commands to debugger tests.
+  - Added debugger tests.
+  - Added showing names of test files in the test results.
+  - Added explicit conversion to a number for line numbers in document activation.
+  - Added return value to the `package` command in config files.
+  - Added support for icons in the menu controlled by `menuicon` (closes #603); thanks to @tdev.
+  - Added reverse search on `Shift-Enter` (closes #604).
+  - Added marker tinting controlled by `markertint`.
+  - Added `GetTintedColor` method (#166).
+  - Added setting initial `imagetint` value.
+  - Added `IsListening` debugger method (#166).
+  - Added debugger `GetConsole` method (#166).
+  - Added `SetDebugger` method and updated debugger initialization to set fields (#166).
+  - Added address/port information to debugger verbose output.
+  - Added `SetLaunchedProcess` method (#166).
+  - Added `BreakpointToggle` method to the debugger (#166).
+  - Added `RefreshPanels` debugger method (#166).
+  - Added `AddPanelFlex` method to pick how to better add panel (#166).
+  - Added debugger method to refresh debugger panels.
+  - Added `debugger.refuseonconflict` to control when debugger connections can be refused.
+  - Added `ActivateDocument` debugger method (#166).
+  - Added `onDebuggerCommand` method (#166).
+  - Added `onDebuggerStatusUpdate` method (#166).
+  - Added `onDebuggerActivate` method (#166).
+  - Added `onDebuggerPerClose` and `onDebuggerClose` methods (#166).
+  - Added `onDebuggerPerLoad` and `onDebuggerLoad` methods (#166).
+  - Added `editor.linenumber` to configure showing of line numbers in the editor.
+  - Added workaround to enable closing all tabs on OSX.
+  - Added workaround to fix rendering artifacts on OSX (fixes #590).
+  - Added check for editor being valid in delayed outline redrawing.
+  - Added reporting of error messages after process completion for Gideros interpreter.
+  - Added expanding folded line after marker navigation (closes #595).
+  - Added resetting app position when the saved position is outside of the screen (closes #593).
+  - Added `editor.commentlinetoggle` to configure toggling comments by line (closes #591).
+  - Allow copying of selection in Local console when floating (fixes #596).
+  - Allowed space(s) in function calls before opening parenthesis when showing tooltip (closes #635).
+  - Allowed shortcuts for editor menu items (closes #597, closes #405).
+  - Allowed optional `version` parameter to execution path in Lua interpreter.
+  - Allowed `MarkerToggle` method to accept marker name in addition to marker number.
+  - Improved path merge for the main editor path (#663).
+  - Improved handling of constant values in Gideros API processing.
+  - Improved whitespace handling in commandbar pattern matching (#31).
+  - Ignore statements on the line with function definition that ends with an `end` (closes #611).
+  - Increased default `bordersize` value to improve dragging with a track pad (closes #637).
+  - Moved DROP_FILES handler to associate with editor tabs on Windows.
+  - Modified adding icons to menu items to avoid duplice items on Win10 (#603).
+  - Minor update to use editor `BreakpointToggle` method.
+  - Moved folder toggling inside activation logic to allow skipping (#602).
+  - Opens the item in the file tree on double clicking the item
+  - Removed `ID_TOGGLEBREAKPOINT` identifier as it was deprecated in the previous version (1.30).
+  - Renamed debugger method `quickeval` to `EvalAsync` for consistency.
+  - Reorganized tests to provide package reference to the test functions to set callbacks.
+  - Replaced use of debugger fields with debugger methods.
+  - Reorganized process killing to avoid multiple attempts at terminating debugger sessions.
+  - Removed Estrela shell interpreter no longer used.
+  - Refactored focus processing after switching to the IDE (#577).
+  - Renamed `onAppDone` event to `onAppShutdown` for consistency (#166).
+  - Removed limit on `stdout` content sent from the application being debugged.
+  - removing old luxinia related files, now found at https://github.com/pixeljetstream/luxinia1/zbstudio-integration
+  - Removed adding BOM when opening non-existing files in the editor.
+  - Removed deprecated `DebuggerAttachDefault` call from interpreters.
+  - Removed setting background on whitespaces as it causes gaps in selection (closes #657).
+  - Refactored `fattachdebug` from the interpreter code.
+  - Relaxed markup formatting to allow markup symbols to be marked as well.
+  - Refactored `BreakpointToggle` method to make it work consistently with other marker handling.
+  - Refactored preview check when closing tabs.
+  - Refactored empty line check to use Editor method.
+  - Reorganized component load order to allow `ide` methods to be used from config files.
+  - Removed interpreters filter as it's not longer needed or used.
+  - Removed forced styling from folding requests as it left markup in comments non-styled.
+  - Removed debugger definitions as they are obsolete.
+  - Removed hardcoded values for any-marker mask.
+  - Renamed `RefreshPanels` debugger method for consistency (#166).
+  - Reorganized console printing to work with partial output.
+  - Removed `svn` from dependencies for Linux build scripts (as it's not longer used).
+  - Simplified logic for launching ext-associated apps from Project popup menu.
+  - Switched recovery record to use plain/fast serialization.
+  - Updated Windows build script to use openssl 1.0.2h (#260).
+  - Updated debugger tests to handle activation executed before command is completed.
+  - Updated debugger error messages to use error markers in the Output window.
+  - Updated Gideros API for version 2016.06.
+  - Updated Corona API for v2016.2906.
+  - Updated Corona API processing script to work from `api/lua` folder.
+  - Updated tooltip shortcuts to match modifiers in the main menu (`Cmd` instead of `Ctrl`).
+  - Updated warning message to only update `Ctrl` shortcut (and not `RawCtrl`).
+  - Updated project tree to clear settings from projects with all mappings removed.
+  - Updated Gideros script to simplify processing of its API descriptions.
+  - Updated config settings to support 'overrides' when settings are modified between snapshots.
+  - Updated `onProject*` directory parameter to use the same format as `GetProject`.
+  - Update metalua to properly report `identifier expected` error in table fields.
+  - Updated metalua to remove usage of missing `table.tostring` method.
+  - Updated global function to make it local in the file.
+  - Updated Love2d interpreter default to start debugging without stopping.
+  - Updated to use console `Print` and `Error` methods instead of global functions.
+  - Updated Love2d API for 0.10.1 (closes #537, #247).
+  - Updated file activation test as filename case may be different on OSX.
+  - Updated marker handling to use `MarkerToggle` method as it's more generic.
+  - Updated `ActivateFile` method to also accept directories.
+  - Updated formatting.
+  - Updated debugger `BreakpointToggle`/`RunTo` methods to take 1-base line nums for consistency.
+  - Updated editor menu processing to allow Run-to-Cursor when clicked anywhere on the line.
+  - Updated search to use `ShowRange` instead of `ScrollRange`.
+  - Updated interpreters to use `GetCommandLineArg` method.
+  - Updated comment check in toggling breakpoint to use comment indicator from the editor spec.
+  - Updated keymap documentation to add `RawCtrl` example.
+  - Updated `GetInterpreter` method to accept interpreter name and return its value (#166).
+  - Updated to use `GetColour` ArtProvider method instead of an obsolete one (#260).
+  - Updated full screen view processing to reduce flicker with auxiliary panels.
+  - Updated last line calculation for markup styling to cover all shown lines (affected by 513a3f67).
+  - Updated interpreter definition to add missing fields.
+  - Updated `ActivateDocument` to add an option to clear line markers.
+  - Updated remote mapping in the debugger to avoid mapping matching paths.
+  - Updated valid property check to work with `nil` properties after wxlua upgrade (#260).
+  - Updated `SetDebugger` to re-assign remote console to the new debugger.
+  - Updated `package` processing to also check main `packages` directory (closes #640, #555).
+  - Updated `package` processing to use better path splitting method.
+  - Updated `Rename All Instances` menu item to remove unnecessary whitespace.
+  - Updated icon handling in the menu to work with `SetBitmap` taking two parameters (#603, #260).
+  - Updated menu item icon processing to avoid assert on Linux.
+  - Updated README to use better wording.
+  - Updated handling of clicks on errors to jump to a proper error line (closes #620).
+  - Updated copyright year in the About screen.
+  - Updated local variables to use more informative names.
+  - Updated menu generation to use a three-parameter `wxMenu` constructor to avoid crash on Win7.
+  - Updated core components to use `Print` method instead of removed `print` function.
+  - Updated path normalization to keep leading up-directory references in relative paths.
+  - Updated Lua base interpreter to use `GetRootPath`.
+  - Updated build scripts to use wxwidgets311 branch in wxlua (#260).
+  - Updated Linux build scripts to add GL dependencies (#260).
+  - Updated debugger to better handle incoming session while the current one is being set up.
+  - Updated build scripts to build luasec on OSX and Linux (#260).
+  - Updated Remote Console to pick a better error message for failed commands.
+  - Updated editor calltip to use line number instead of position in getting text height.
+  - Updated Windows build script to copy luasec Lua modules (#260).
+  - Updated build scripts to check for required parameters first.
+  - Updated timers to use `AddTimer` method.
+  - Updated tests to use temporary folder for debugger tests.
+  - Updated test module to better report skipped tests.
+  - Updated debugger to use `verbose` option instead of the global `print`.
+  - Updated `Wait` and `Update` debugger methods to uppercase.
+  - Updated `Run` and `RunTo` debugger methods to uppercase.
+  - Updated `Step`, `Over`, and `Out` debugger methods to uppercase.
+  - Updated build script to strip luasec libraries on Windows.
+  - Updated Windows build script to use the latest luasec and openssl libraries.
+  - Updated `Listen` debugger method to uppercase (as it's public).
+  - Updated debugger to avoid double reporting of stopping when scratchpad is turned off.
+  - Updated debugger to use proper debugger objects.
+  - Updated debugger termination to stop suspended process without socket leftovers.
+  - Updated debugger kill logic to report success to better handle process termination.
+  - Updated `ActivateDocument` method to use immediate rather than delayed activation (#166).
+  - Updated debug interface to replace global functions with debugger methods (#166).
+  - Updated build scripts to remove WebView as it triggers a dependency on Linux (#260).
+  - Updated package example to use current API.
+  - Updated message to better describe the situation when interpreter not loaded.
+  - Updated build scripts to add WebView support (#260).
+  - Updated build scripts to add GL canvas support (#260).
+  - Updated build scripts to use own wxlua repository (#260).
+  - Updated build scripts to strip wxlua library directly.
+  - Updated build script to change tab closing icon on OSX (#260).
+  - Updated build script to remove wxlua error check (#260).
+  - Updated build script to remove checks for `svn` as these are no longer needed.
+  - Updated Chinese translation; thanks to Allan Cylakes (#70).
+  - Updated idle processing to handle items in the same order as they are submitted.
+  - Updated build script to use OpenSSL 1.0.2f, which fixes a security issue.
+  - Updated luasec build script (Win) to use Lua 5.3 compatible version and build shared dlls.
+  - Updated OpenSSL link for the more recent version to include in luasec.
+  - Updated copyright message in the OSX manifest file.
+  - Updated `AddMarker` method to fail when no valid colors provided (#587).
+  - Upgraded MobDebug (0.6371) to add path normalization to file names that don't start with `@`.
+  - Upgraded MobDebug (0.636) to populate vararg values in the main chunk during debugging.
+  - Upgraded to Mobdebug 0.635 to add path normalization in debugger.
+  - Upgraded MobDebug (0.634) to add `verbose` option to the `handle` method.
+  - Upgraded Mobdebug (0.6331) to not fail on `output` method when debugging is not started.
+  - Upgraded MobDebug (0.633) to add handling of empty output stream.
+  - Upgraded MobDebug (0.632) to add LuaJIT fix and `output` method.
+  - Updated MobDebug to v0.63.
+
+### Fixes
+  - Fixed run-time error when auto-complete configured with `strategy=1` or `=0` (fixes #660).
+  - Fixed debugger error on Linux when live coding is activated.
+  - Fixed check for custom Lua interpreters to avoid conflict with system libs (ref 4ba15eb6).
+  - Fixed remote file mapping in the debugger for dynamic chunks when no name is provided.
+  - Fixed default value shown in the file search `scope` panel when no editor tab is opened.
+  - Fixed indentation of fragments with partial long strings/comments (fixes #639, ref #324).
+  - Fixed selection of other tabs after tab move in Output and Project noteboooks.
+  - Fixed selecting proper tabs after dragging tabs in the split part of the editor notebook.
+  - Fixed line calculations for markup styling to properly style comments after folded fragments.
+  - Fixed keeping current line marker when commands are executed in the debugger.
+  - Fixed anchoring in up-dir template check (follow-up to cb8b9a63).
+  - Fixed restoring split tab configuration that was broken by 97c7bb96.
+  - Fixed added empty line after Console commands with no results (added by 60fe447f).
+  - Fixed using proper debugger object from Stack and Watch functions (fixes #608).
+  - Fixed line number reported in `onEditorMarkerUpdate` event callback.
+  - Fixed reporting debugger stopping when using `Done` command while running.
+  - Fixed selection of the test file to avoid skipping some.
+  - Fixed incorrect `ranlib` path in luasec build script on Windows.
+  - Fixed remote console not working after using `Break` when running scratchpad.
+  - Fixed termination of the debugging when stopped while suspended.
+  - Fixed merging some debugger options with `false` values.
+  - Fixed stripping path in build scripts on OSX and Linux.
+  - Fixed mouse selection in commandbar on OSX (#31).
+  - Fixed restoring editor focus on OSX when switching to the IDE (#577).
+  - Fixed toolbar disappearing after using FullScreen mode and stopping debugging (fixes #594).
+  - Fixed setting editor focus when switching from commandbar on OSX (fixes #577).
+
 ## v1.30 (Jan 21 2016)
 
 ### Highlights
