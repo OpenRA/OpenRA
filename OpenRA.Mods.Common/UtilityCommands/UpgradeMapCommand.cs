@@ -58,18 +58,22 @@ namespace OpenRA.Mods.Common.UtilityCommands
 		{
 			UpgradeRules.UpgradeMapFormat(modData, package);
 
-			if (engineDate < UpgradeRules.MinimumSupportedVersion)
+			var map = new Map(modData, package);
+			if (map.RuleDefinitions != null || map.WeaponDefinitions != null)
 			{
-				Console.WriteLine("Unsupported engine version. Use the release-{0} utility to update to that version, and then try again",
-					UpgradeRules.MinimumSupportedVersion);
-				return;
+				if (engineDate < UpgradeRules.MinimumSupportedVersion)
+				{
+					Console.WriteLine("Unsupported engine version. Use the release-{0} utility to update to that version, and then try again",
+						UpgradeRules.MinimumSupportedVersion);
+					return;
+				}
+
+				ProcessYaml(modData, map, map.WeaponDefinitions, engineDate, UpgradeRules.UpgradeWeaponRules);
+				ProcessYaml(modData, map, map.RuleDefinitions, engineDate, UpgradeRules.UpgradeActorRules);
+				UpgradeRules.UpgradePlayers(modData, engineDate, ref map.PlayerDefinitions, null, 0);
+				UpgradeRules.UpgradeActors(modData, engineDate, ref map.ActorDefinitions, null, 0);
 			}
 
-			var map = new Map(modData, package);
-			ProcessYaml(modData, map, map.WeaponDefinitions, engineDate, UpgradeRules.UpgradeWeaponRules);
-			ProcessYaml(modData, map, map.RuleDefinitions, engineDate, UpgradeRules.UpgradeActorRules);
-			UpgradeRules.UpgradePlayers(modData, engineDate, ref map.PlayerDefinitions, null, 0);
-			UpgradeRules.UpgradeActors(modData, engineDate, ref map.ActorDefinitions, null, 0);
 			map.Save(package);
 		}
 
