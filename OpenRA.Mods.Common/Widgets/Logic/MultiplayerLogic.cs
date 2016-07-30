@@ -296,11 +296,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			searchStatus = SearchStatus.Fetching;
 
-			Action<DownloadDataCompletedEventArgs, bool> onComplete = (i, cancelled) =>
+			Action<DownloadDataCompletedEventArgs> onComplete = i =>
 			{
 				currentQuery = null;
 
-				if (i.Error != null || cancelled)
+				if (i.Error != null)
 				{
 					RefreshServerListInner(null);
 					return;

@@ -444,13 +444,13 @@ namespace OpenRA
 					}
 
 					Action<DownloadProgressChangedEventArgs> onDownloadProgress = i => { DownloadBytes = i.BytesReceived; DownloadPercentage = i.ProgressPercentage; };
-					Action<DownloadDataCompletedEventArgs, bool> onDownloadComplete = (i, cancelled) =>
+					Action<DownloadDataCompletedEventArgs> onDownloadComplete = i =>
 					{
 						download = null;
 
-						if (cancelled || i.Error != null)
+						if (i.Error != null)
 						{
-							Log.Write("debug", "Remote map download failed with error: {0}", i.Error != null ? i.Error.Message : "cancelled");
+							Log.Write("debug", "Remote map download failed with error: {0}", Download.FormatErrorMessage(i.Error));
 							Log.Write("debug", "URL was: {0}", mapUrl);
 
 							innerData.Status = MapStatus.DownloadError;
@@ -487,7 +487,7 @@ namespace OpenRA
 			if (download == null)
 				return;
 
-			download.Cancel();
+			download.CancelAsync();
 			download = null;
 		}
 

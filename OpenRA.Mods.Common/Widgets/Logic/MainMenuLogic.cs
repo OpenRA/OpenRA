@@ -294,8 +294,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 								.JoinWith("&");
 
 						new Download(newsURL, cacheFile, e => { },
-							(e, c) => NewsDownloadComplete(e, cacheFile, currentNews,
-							() => newsButton.AttachPanel(newsPanel)));
+							e => NewsDownloadComplete(e, cacheFile, currentNews,
+								() => newsButton.AttachPanel(newsPanel)));
 					}
 
 					newsButton.OnClick = () => newsButton.AttachPanel(newsPanel);

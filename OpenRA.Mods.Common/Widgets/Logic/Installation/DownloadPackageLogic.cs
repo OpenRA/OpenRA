@@ -115,17 +115,19 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				retryButton.IsVisible = () => true;
 			});
 
-			Action<AsyncCompletedEventArgs, bool> onDownloadComplete = (i, cancelled) =>
+			Action<AsyncCompletedEventArgs> onDownloadComplete = i =>
 			{
-				if (i.Error != null)
+				if (i.Cancelled)
 				{
-					onError(Download.FormatErrorMessage(i.Error));
+					deleteTempFile();
+					Game.RunAfterTick(Ui.CloseWindow);
 					return;
 				}
 
-				if (cancelled)
+				if (i.Error != null)
 				{
-					onError("Download cancelled");
+					deleteTempFile();
+					onError(Download.FormatErrorMessage(i.Error));
 					return;
 				}
 
@@ -185,27 +187,27 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				downloadHost = new Uri(url).Host;
 				var dl = new Download(url, file, onDownloadProgress, onDownloadComplete);
-				cancelButton.OnClick = () => { dl.Cancel(); deleteTempFile(); Ui.CloseWindow(); };
-				retryButton.OnClick = () => { dl.Cancel(); ShowDownloadDialog(); };
+				cancelButton.OnClick = dl.CancelAsync;
+				retryButton.OnClick = ShowDownloadDialog;
 			};
 
 			if (download.MirrorList != null)
 			{
 				Log.Write("install", "Fetching mirrors from " + download.MirrorList);
 
-				Action<DownloadDataCompletedEventArgs, bool> onFetchMirrorsComplete = (i, cancelled) =>
+				Action<DownloadDataCompletedEventArgs> onFetchMirrorsComplete = i =>
 				{
 					progressBar.Indeterminate = true;
+
+					if (i.Cancelled)
+					{
+						Game.RunAfterTick(Ui.CloseWindow);
+						return;
+					}
 
 					if (i.Error != null)
 					{
 						onError(Download.FormatErrorMessage(i.Error));
-						return;
-					}
-
-					if (cancelled)
-					{
-						onError("Download cancelled");
 						return;
 					}
 
@@ -224,8 +226,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				};
 
 				var updateMirrors = new Download(download.MirrorList, onDownloadProgress, onFetchMirrorsComplete);
-				cancelButton.OnClick = () => { updateMirrors.Cancel(); Ui.CloseWindow(); };
-				retryButton.OnClick = () => { updateMirrors.Cancel(); ShowDownloadDialog(); };
+				cancelButton.OnClick = updateMirrors.CancelAsync;
+				retryButton.OnClick = ShowDownloadDialog;
 			}
 			else
 				downloadUrl(download.URL);
