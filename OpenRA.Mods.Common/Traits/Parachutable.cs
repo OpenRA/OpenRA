@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Mods.Common.Effects;
 using OpenRA.Traits;
@@ -31,6 +32,9 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string WaterImpactSound = null;
 		[SequenceReference("Image")] public readonly string WaterCorpseSequence = null;
 		[PaletteReference] public readonly string WaterCorpsePalette = "effect";
+
+		[Desc("Terrain types on which to display WaterCorpseSequence.")]
+		public readonly HashSet<string> WaterTerrainTypes = new HashSet<string> { "Water" };
 
 		public readonly int FallRate = 13;
 
@@ -59,19 +63,23 @@ namespace OpenRA.Mods.Common.Traits
 			if (!info.KilledOnImpassableTerrain)
 				return;
 
-			if (positionable.CanEnterCell(self.Location, self))
+			var cell = self.Location;
+			if (self.World.Map.Contains(cell))
 				return;
 
-			if (ignore != null && self.World.ActorMap.GetActorsAt(self.Location).Any(a => a != ignore))
+			if (positionable.CanEnterCell(cell, self))
 				return;
 
-			var terrain = self.World.Map.GetTerrainInfo(self.Location);
+			if (ignore != null && self.World.ActorMap.GetActorsAt(cell).Any(a => a != ignore))
+				return;
 
-			var sound = terrain.IsWater ? info.WaterImpactSound : info.GroundImpactSound;
+			var onWater = info.WaterTerrainTypes.Contains(self.World.Map.GetTerrainInfo(cell).Type);
+
+			var sound = onWater ? info.WaterImpactSound : info.GroundImpactSound;
 			Game.Sound.Play(sound, self.CenterPosition);
 
-			var sequence = terrain.IsWater ? info.WaterCorpseSequence : info.GroundCorpseSequence;
-			var palette = terrain.IsWater ? info.WaterCorpsePalette : info.GroundCorpsePalette;
+			var sequence = onWater ? info.WaterCorpseSequence : info.GroundCorpseSequence;
+			var palette = onWater ? info.WaterCorpsePalette : info.GroundCorpsePalette;
 			if (sequence != null && palette != null)
 				self.World.AddFrameEndTask(w => w.Add(new SpriteEffect(self.OccupiesSpace.CenterPosition, w, info.Image, sequence, palette)));
 
