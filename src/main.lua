@@ -899,8 +899,21 @@ if ide:IsValidProperty(ide:GetMainFrame(), "EnableFullScreenView") then
   ide:GetMainFrame():EnableFullScreenView()
 end
 
-wx.wxGetApp().MacOpenFiles = function(files)
-  for _, filename in ipairs(files) do ide:ActivateFile(filename) end
+do
+  local args = {}
+  for _, a in ipairs(arg or {}) do args[a] = true end
+
+  wx.wxGetApp().MacOpenFiles = function(files)
+    for _, filename in ipairs(files) do
+      -- in some cases, OSX sends the last command line parameter that looks like a filename
+      -- to OpenFile callback, which gets reported to MacOpenFiles.
+      -- I've tried to trace why this happens, but the only reference I could find
+      -- is this one: http://lists.apple.com/archives/cocoa-dev/2009/May/msg00480.html
+      -- To avoid this issue, the filename is skipped if it's present in `arg`.
+      if not args[filename] then ide:ActivateFile(filename) end
+    end
+    args = {} -- reset the argument cache as it only needs to be checked on the initial launch
+  end
 end
 
 wx.wxGetApp():MainLoop()
