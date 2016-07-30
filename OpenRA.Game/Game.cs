@@ -345,13 +345,6 @@ namespace OpenRA
 			using (new PerfTimer("LoadMaps"))
 				ModData.MapCache.LoadMaps();
 
-			if (ModData.Manifest.Contains<Migrations>())
-			{
-				var reload = ModData.Manifest.Get<Migrations>().Run();
-				if (reload)
-					InitializeMod(mod, args);
-			}
-
 			var content = ModData.Manifest.Get<ModContent>();
 			var isModContentInstalled = content.Packages
 				.Where(p => p.Value.Required)
