@@ -49,6 +49,7 @@ namespace OpenRA.Platforms.Default
 		readonly Dictionary<uint, PoolSlot> sourcePool = new Dictionary<uint, PoolSlot>();
 		float volume = 1f;
 		IntPtr device;
+		IntPtr context;
 
 		static string[] QueryDevices(string label, int type)
 		{
@@ -103,10 +104,10 @@ namespace OpenRA.Platforms.Default
 					throw new InvalidOperationException("Can't create OpenAL device");
 			}
 
-			var ctx = ALC10.alcCreateContext(device, null);
-			if (ctx == IntPtr.Zero)
+			context = ALC10.alcCreateContext(device, null);
+			if (context == IntPtr.Zero)
 				throw new InvalidOperationException("Can't create OpenAL context");
-			ALC10.alcMakeContextCurrent(ctx);
+			ALC10.alcMakeContextCurrent(context);
 
 			for (var i = 0; i < PoolSize; i++)
 			{
@@ -303,17 +304,24 @@ namespace OpenRA.Platforms.Default
 
 		~OpenAlSoundEngine()
 		{
-			Game.RunAfterTick(() => Dispose(false));
+			Dispose(false);
 		}
 
 		public void Dispose()
 		{
-			Game.RunAfterTick(() => Dispose(true));
+			Dispose(true);
 			GC.SuppressFinalize(this);
 		}
 
 		void Dispose(bool disposing)
 		{
+			if (context != IntPtr.Zero)
+			{
+				ALC10.alcMakeContextCurrent(IntPtr.Zero);
+				ALC10.alcDestroyContext(context);
+				context = IntPtr.Zero;
+			}
+
 			if (device != IntPtr.Zero)
 			{
 				ALC10.alcCloseDevice(device);
