@@ -1324,24 +1324,24 @@ zombie:
 	icon: zombicon
 
 ant:
-	stand:
+	stand: ant1
 		Facings: 8
-	stand2:
+	stand2: ant1
 		Start: 8
 		Length: 8
-	run:
+	run: ant1
 		Start: 8
 		Length: 8
 		Facings: 8
-	bite:
+	bite: ant1
 		Start: 72
 		Length: 4
 		Facings: 8
-	die:
+	die: ant1
 		Start: 104
 		Length: 8
 		Tick: 300
-	die-crushed:
+	die-crushed: ant1
 		Start: 104
 		Length: 8
 		Tick: 400

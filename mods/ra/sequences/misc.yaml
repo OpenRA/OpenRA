@@ -144,16 +144,16 @@ beacon:
 	circles: fpls
 		Length: *
 		ZOffset: 2047
-	atomicon: lores-atomicon
+	atomicon: lores|atomicon
 		Length: *
 		Offset: 0,-42
-	pbmbicon: lores-pbmbicon
+	pbmbicon: lores|pbmbicon
 		Length: *
 		Offset: 0,-42
-	camicon: lores-camicon
+	camicon: lores|camicon
 		Length: *
 		Offset: 0,-42
-	pinficon: lores-pinficon
+	pinficon: lores|pinficon
 		Length: *
 		Offset: 0,-42
 	clock: beaconclock

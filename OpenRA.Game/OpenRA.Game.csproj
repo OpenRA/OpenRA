@@ -245,7 +245,6 @@
     <Compile Include="FileSystem\ZipFolder.cs" />
     <Compile Include="Primitives\float3.cs" />
     <Compile Include="ModContent.cs" />
-    <Compile Include="Migrations.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FileSystem\D2kSoundResources.cs" />
