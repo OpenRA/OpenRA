@@ -68,6 +68,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			var map = new Map(modData, package);
 			ProcessYaml(modData, map, map.WeaponDefinitions, engineDate, UpgradeRules.UpgradeWeaponRules);
 			ProcessYaml(modData, map, map.RuleDefinitions, engineDate, UpgradeRules.UpgradeActorRules);
+			ProcessYaml(modData, map, map.SequenceDefinitions, engineDate, UpgradeRules.UpgradeSequences);
 			UpgradeRules.UpgradePlayers(modData, engineDate, ref map.PlayerDefinitions, null, 0);
 			UpgradeRules.UpgradeActors(modData, engineDate, ref map.ActorDefinitions, null, 0);
 			map.Save(package);

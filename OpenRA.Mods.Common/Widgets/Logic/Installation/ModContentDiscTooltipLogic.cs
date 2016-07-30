@@ -30,7 +30,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var font = Game.Renderer.Fonts[template.Font];
 			var discTitles = getText().Split('\n');
 
-			var maxWidth = 0;
+			var maxWidth = Game.Renderer.Fonts[desc.Font].Measure(desc.Text).X;
 			var sideMargin = desc.Bounds.X;
 			var bottomMargin = discs.Bounds.Height;
 			foreach (var disc in discTitles)

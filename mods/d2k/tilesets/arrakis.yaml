@@ -4235,56 +4235,64 @@ Templates:
 			1: Rough
 	Template@500:
 		Id: 500
-		Images: bloxxmas00.tmp
+		Images: BLOXXMAS.R8
+		Frames: 305
 		Size: 1,1
 		Category: Sand-Detail
 		Tiles:
 			0: Cliff
 	Template@501:
 		Id: 501
-		Images: bloxxmas01.tmp
+		Images: BLOXXMAS.R8
+		Frames: 325
 		Size: 1,1
 		Category: Sand-Detail
 		Tiles:
 			0: Cliff
 	Template@502:
 		Id: 502
-		Images: bloxxmas02.tmp
+		Images: BLOXXMAS.R8
+		Frames: 311
 		Size: 1,1
 		Category: Sand-Detail
 		Tiles:
 			0: Cliff
 	Template@503:
 		Id: 503
-		Images: bloxxmas03.tmp
+		Images: BLOXXMAS.R8
+		Frames: 312
 		Size: 1,1
 		Category: Sand-Detail
 		Tiles:
 			0: Cliff
 	Template@504:
 		Id: 504
-		Images: bloxxmas04.tmp
+		Images: BLOXXMAS.R8
+		Frames: 330
 		Size: 1,1
 		Category: Sand-Detail
 		Tiles:
 			0: Cliff
 	Template@505:
 		Id: 505
-		Images: bloxxmas05.tmp
+		Images: BLOXXMAS.R8
+		Frames: 316
 		Size: 1,1
 		Category: Sand-Detail
 		Tiles:
 			0: Cliff
 	Template@506:
 		Id: 506
-		Images: bloxxmas06.tmp
+		Images: BLOXXMAS.R8
+		Frames: 297
 		Size: 1,1
 		Category: Sand-Detail
 		Tiles:
 			0: Cliff
 	Template@507:
 		Id: 507
-		Images: bloxxmas07.tmp
+		Images: BLOXXMAS.R8
+		Frames: 356, 357
 		Size: 2,1
 		Category: Sand-Detail
 		Tiles:
@@ -4292,28 +4300,32 @@ Templates:
 			1: Cliff
 	Template@508:
 		Id: 508
-		Images: bloxxmas08.tmp
+		Images: BLOXXMAS.R8
+		Frames: 355
 		Size: 1,1
 		Category: Sand-Detail
 		Tiles:
 			0: Cliff
 	Template@509:
 		Id: 509
-		Images: bloxxmas09.tmp
+		Images: BLOXXMAS.R8
+		Frames: 375
 		Size: 1,1
 		Category: Sand-Detail
 		Tiles:
 			0: Cliff
 	Template@510:
 		Id: 510
-		Images: bloxxmas10.tmp
+		Images: BLOXXMAS.R8
+		Frames: 395
 		Size: 1,1
 		Category: Sand-Detail
 		Tiles:
 			0: Cliff
 	Template@511:
 		Id: 511
-		Images: bloxxmas11.tmp
+		Images: BLOXXMAS.R8
+		Frames: 414, 415, 434, 435
 		Size: 2,2
 		Category: Sand-Detail
 		Tiles:
@@ -4323,7 +4335,8 @@ Templates:
 			3: Cliff
 	Template@512:
 		Id: 512
-		Images: bloxxmas12.tmp
+		Images: BLOXXMAS.R8
+		Frames: 353, 354, 373, 374, 393, 394
 		Size: 2,3
 		Category: Sand-Detail
 		Tiles:
@@ -4335,7 +4348,8 @@ Templates:
 			5: Cliff
 	Template@513:
 		Id: 513
-		Images: bloxxmas13.tmp
+		Images: BLOXXMAS.R8
+		Frames: 350, 351, 352, 370, 371, 372, 390, 391, 392
 		Size: 3,3
 		Category: Rock-Detail
 		Tiles:
@@ -4350,7 +4364,8 @@ Templates:
 			8: Cliff
 	Template@514:
 		Id: 514
-		Images: bloxxmas14.tmp
+		Images: BLOXXMAS.R8
+		Frames: 347, 348, 349, 367, 368, 369, 387, 388, 389
 		Size: 3,3
 		Category: Rock-Detail
 		Tiles:
@@ -4365,7 +4380,8 @@ Templates:
 			8: Rock
 	Template@515:
 		Id: 515
-		Images: bloxxmas15.tmp
+		Images: BLOXXMAS.R8
+		Frames: 340, 341, 342, 343, 360, 361, 362, 363, 380, 381, 382, 383
 		Size: 4,3
 		Category: Rock-Detail
 		Tiles:
@@ -4383,28 +4399,32 @@ Templates:
 			11: Cliff
 	Template@516:
 		Id: 516
-		Images: bloxxmas16.tmp
+		Images: BLOXXMAS.R8
+		Frames: 717
 		Size: 1,1
 		Category: Sand-Detail
 		Tiles:
 			0: Cliff
 	Template@517:
 		Id: 517
-		Images: bloxxmas17.tmp
+		Images: BLOXXMAS.R8
+		Frames: 718
 		Size: 1,1
 		Category: Sand-Detail
 		Tiles:
 			0: Cliff
 	Template@518:
 		Id: 518
-		Images: bloxxmas18.tmp
+		Images: BLOXXMAS.R8
+		Frames: 737
 		Size: 1,1
 		Category: Sand-Detail
 		Tiles:
 			0: Cliff
 	Template@519:
 		Id: 519
-		Images: bloxxmas19.tmp
+		Images: BLOXXMAS.R8
+		Frames: 738, 739, 758, 759
 		Size: 2,2
 		Category: Sand-Detail
 		Tiles:
@@ -4414,7 +4434,8 @@ Templates:
 			3: Cliff
 	Template@520:
 		Id: 520
-		Images: bloxxmas20.tmp
+		Images: BLOXXMAS.R8
+		Frames: 652, 653, 672, 673
 		Size: 2,2
 		Category: Sand-Detail
 		Tiles:
