@@ -379,9 +379,27 @@ local function treeSetConnectorsAndIcons(tree)
     return true
   end
 
+  tree:Connect(wx.wxEVT_COMMAND_TREE_ITEM_COLLAPSED,
+    function (event)
+      PackageEventHandle("onFiletreeCollapse", tree, event, event:GetItem())
+    end)
+  tree:Connect(wx.wxEVT_COMMAND_TREE_ITEM_EXPANDED,
+    function (event)
+      PackageEventHandle("onFiletreeExpand", tree, event, event:GetItem())
+    end)
+  tree:Connect(wx.wxEVT_COMMAND_TREE_ITEM_COLLAPSING,
+    function (event)
+      if PackageEventHandle("onFiletreePreCollapse", tree, event, event:GetItem()) == false then
+        return
+      end
+    end)
   tree:Connect(wx.wxEVT_COMMAND_TREE_ITEM_EXPANDING,
     function (event)
       local item_id = event:GetItem()
+      if PackageEventHandle("onFiletreePreExpand", tree, event, item_id) == false then
+        return
+      end
+
       local dir = tree:GetItemFullName(item_id)
       if wx.wxDirExists(dir) then treeAddDir(tree,item_id,dir) -- refresh folder
       else refreshAncestors(tree:GetItemParent(item_id)) end -- stale content
