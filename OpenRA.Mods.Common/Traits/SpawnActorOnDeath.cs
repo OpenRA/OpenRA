@@ -9,8 +9,9 @@
  */
 #endregion
 
+using System;
 using System.Linq;
-using OpenRA.Mods.Common.Warheads;
+using OpenRA.Effects;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
@@ -45,6 +46,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Should an actor only be spawned when the 'Creeps' setting is true?")]
 		public readonly bool RequiresLobbyCreeps = false;
 
+		[Desc("Time (in ticks) until spawn (0 means instant).")]
+		public readonly int SpawnDelay = 0;
+
 		public object Create(ActorInitializer init) { return new SpawnActorOnDeath(init, this); }
 	}
 
@@ -61,7 +65,7 @@ namespace OpenRA.Mods.Common.Traits
 			faction = init.Contains<FactionInit>() ? init.Get<FactionInit, string>() : init.Self.Owner.Faction.InternalName;
 		}
 
-		public void Killed(Actor self, AttackInfo e)
+		public void Killed(Actor self, AttackInfo attackInfo)
 		{
 			if (!enabled)
 				return;
@@ -72,7 +76,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (self.World.SharedRandom.Next(100) > info.Probability)
 				return;
 
-			if (info.DeathType != null && !e.Damage.DamageTypes.Contains(info.DeathType))
+			if (info.DeathType != null && !attackInfo.Damage.DamageTypes.Contains(info.DeathType))
 				return;
 
 			self.World.AddFrameEndTask(w =>
@@ -92,7 +96,7 @@ namespace OpenRA.Mods.Common.Traits
 				if (info.OwnerType == OwnerType.Victim)
 					td.Add(new OwnerInit(self.Owner));
 				else if (info.OwnerType == OwnerType.Killer)
-					td.Add(new OwnerInit(e.Attacker.Owner));
+					td.Add(new OwnerInit(attackInfo.Attacker.Owner));
 				else
 					td.Add(new OwnerInit(self.World.Players.First(p => p.InternalName == info.InternalOwner)));
 
@@ -106,7 +110,11 @@ namespace OpenRA.Mods.Common.Traits
 					.Select(ihm => ihm.HuskActor(self))
 					.FirstOrDefault(a => a != null);
 
-				w.CreateActor(huskActor ?? info.Actor, td);
+				Action act = () => w.CreateActor(huskActor ?? info.Actor, td);
+				if (info.SpawnDelay > 0)
+					w.Add(new DelayedAction(info.SpawnDelay, act));
+				else
+					act();
 			});
 		}
 	}
