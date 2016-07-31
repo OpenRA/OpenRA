@@ -46,9 +46,10 @@ namespace OpenRA.Platforms.Default
 		const int GroupDistanceSqr = GroupDistance * GroupDistance;
 		const int PoolSize = 32;
 
-		IntPtr device;
+		readonly Dictionary<uint, PoolSlot> sourcePool = new Dictionary<uint, PoolSlot>();
 		float volume = 1f;
-		Dictionary<uint, PoolSlot> sourcePool = new Dictionary<uint, PoolSlot>();
+		IntPtr device;
+		IntPtr context;
 
 		static string[] QueryDevices(string label, int type)
 		{
@@ -66,7 +67,7 @@ namespace OpenRA.Platforms.Default
 			do
 			{
 				var str = Marshal.PtrToStringAuto(next);
-				next += UnicodeEncoding.Default.GetByteCount(str) + 1;
+				next += Encoding.Default.GetByteCount(str) + 1;
 				devices.Add(str);
 			} while (Marshal.ReadByte(next) != 0);
 
@@ -103,10 +104,10 @@ namespace OpenRA.Platforms.Default
 					throw new InvalidOperationException("Can't create OpenAL device");
 			}
 
-			var ctx = ALC10.alcCreateContext(device, null);
-			if (ctx == IntPtr.Zero)
+			context = ALC10.alcCreateContext(device, null);
+			if (context == IntPtr.Zero)
 				throw new InvalidOperationException("Can't create OpenAL context");
-			ALC10.alcMakeContextCurrent(ctx);
+			ALC10.alcMakeContextCurrent(context);
 
 			for (var i = 0; i < PoolSize; i++)
 			{
@@ -255,13 +256,13 @@ namespace OpenRA.Platforms.Default
 
 		public void SetSoundVolume(float volume, ISound music, ISound video)
 		{
-			var sounds = sourcePool.Select(s => s.Key).Where(b =>
+			var sounds = sourcePool.Keys.Where(key =>
 			{
 				int state;
-				AL10.alGetSourcei(b, AL10.AL_SOURCE_STATE, out state);
+				AL10.alGetSourcei(key, AL10.AL_SOURCE_STATE, out state);
 				return (state == AL10.AL_PLAYING || state == AL10.AL_PAUSED) &&
-					   (music == null || b != ((OpenAlSound)music).Source) &&
-					   (video == null || b != ((OpenAlSound)video).Source);
+					   (music == null || key != ((OpenAlSound)music).Source) &&
+					   (video == null || key != ((OpenAlSound)video).Source);
 			});
 
 			foreach (var s in sounds)
@@ -303,17 +304,24 @@ namespace OpenRA.Platforms.Default
 
 		~OpenAlSoundEngine()
 		{
-			Game.RunAfterTick(() => Dispose(false));
+			Dispose(false);
 		}
 
 		public void Dispose()
 		{
-			Game.RunAfterTick(() => Dispose(true));
+			Dispose(true);
 			GC.SuppressFinalize(this);
 		}
 
 		void Dispose(bool disposing)
 		{
+			if (context != IntPtr.Zero)
+			{
+				ALC10.alcMakeContextCurrent(IntPtr.Zero);
+				ALC10.alcDestroyContext(context);
+				context = IntPtr.Zero;
+			}
+
 			if (device != IntPtr.Zero)
 			{
 				ALC10.alcCloseDevice(device);
@@ -343,8 +351,8 @@ namespace OpenRA.Platforms.Default
 
 	class OpenAlSound : ISound
 	{
-		public readonly uint Source = uint.MaxValue;
-		float volume = 1f;
+		public readonly uint Source;
+		float volume;
 
 		public OpenAlSound(uint source, uint buffer, bool looping, bool relative, WPos pos, float volume)
 		{
@@ -365,15 +373,8 @@ namespace OpenRA.Platforms.Default
 
 		public float Volume
 		{
-			get
-			{
-				return volume;
-			}
-
-			set
-			{
-				AL10.alSourcef(Source, AL10.AL_GAIN, volume = value);
-			}
+			get { return volume; }
+			set { AL10.alSourcef(Source, AL10.AL_GAIN, volume = value); }
 		}
 
 		public float SeekPosition
