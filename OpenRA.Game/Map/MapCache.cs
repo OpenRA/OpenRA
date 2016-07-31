@@ -128,11 +128,11 @@ namespace OpenRA
 
 			var url = Game.Settings.Game.MapRepository + "hash/" + string.Join(",", maps.Keys) + "/yaml";
 
-			Action<DownloadDataCompletedEventArgs, bool> onInfoComplete = (i, cancelled) =>
+			Action<DownloadDataCompletedEventArgs> onInfoComplete = i =>
 			{
-				if (cancelled || i.Error != null)
+				if (i.Error != null)
 				{
-					Log.Write("debug", "Remote map query failed with error: {0}", i.Error != null ? i.Error.Message : "cancelled");
+					Log.Write("debug", "Remote map query failed with error: {0}", Download.FormatErrorMessage(i.Error));
 					Log.Write("debug", "URL was: {0}", url);
 					foreach (var p in maps.Values)
 						p.UpdateRemoteSearch(MapStatus.Unavailable, null);

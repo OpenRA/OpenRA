@@ -17,8 +17,8 @@ namespace OpenRA
 {
 	public class Download
 	{
+		readonly object syncObject = new object();
 		WebClient wc;
-		bool cancelled;
 
 		public static string FormatErrorMessage(Exception e)
 		{
@@ -28,6 +28,8 @@ namespace OpenRA
 
 			switch (ex.Status)
 			{
+				case WebExceptionStatus.RequestCanceled:
+					return "Cancelled";
 				case WebExceptionStatus.NameResolutionFailure:
 					return "DNS lookup failed";
 				case WebExceptionStatus.Timeout:
@@ -41,40 +43,42 @@ namespace OpenRA
 			}
 		}
 
-		public Download(string url, string path, Action<DownloadProgressChangedEventArgs> onProgress, Action<AsyncCompletedEventArgs, bool> onComplete)
+		public Download(string url, string path, Action<DownloadProgressChangedEventArgs> onProgress, Action<AsyncCompletedEventArgs> onComplete)
 		{
-			wc = new WebClient();
-			wc.Proxy = null;
-
-			wc.DownloadProgressChanged += (_, a) => onProgress(a);
-			wc.DownloadFileCompleted += (_, a) => onComplete(a, cancelled);
-
-			Game.OnQuit += Cancel;
-			wc.DownloadFileCompleted += (_, a) => { Game.OnQuit -= Cancel; };
-
-			wc.DownloadFileAsync(new Uri(url), path);
+			lock (syncObject)
+			{
+				wc = new WebClient { Proxy = null };
+				wc.DownloadProgressChanged += (_, a) => onProgress(a);
+				wc.DownloadFileCompleted += (_, a) => { DisposeWebClient(); onComplete(a); };
+				wc.DownloadFileAsync(new Uri(url), path);
+			}
 		}
 
-		public Download(string url, Action<DownloadProgressChangedEventArgs> onProgress, Action<DownloadDataCompletedEventArgs, bool> onComplete)
+		public Download(string url, Action<DownloadProgressChangedEventArgs> onProgress, Action<DownloadDataCompletedEventArgs> onComplete)
 		{
-			wc = new WebClient();
-			wc.Proxy = null;
-
-			wc.DownloadProgressChanged += (_, a) => onProgress(a);
-			wc.DownloadDataCompleted += (_, a) => onComplete(a, cancelled);
-
-			Game.OnQuit += Cancel;
-			wc.DownloadDataCompleted += (_, a) => { Game.OnQuit -= Cancel; };
-
-			wc.DownloadDataAsync(new Uri(url));
+			lock (syncObject)
+			{
+				wc = new WebClient { Proxy = null };
+				wc.DownloadProgressChanged += (_, a) => onProgress(a);
+				wc.DownloadDataCompleted += (_, a) => { DisposeWebClient(); onComplete(a); };
+				wc.DownloadDataAsync(new Uri(url));
+			}
 		}
 
-		public void Cancel()
+		void DisposeWebClient()
 		{
-			Game.OnQuit -= Cancel;
-			wc.CancelAsync();
-			wc.Dispose();
-			cancelled = true;
+			lock (syncObject)
+			{
+				wc.Dispose();
+				wc = null;
+			}
+		}
+
+		public void CancelAsync()
+		{
+			lock (syncObject)
+				if (wc != null)
+					wc.CancelAsync();
 		}
 	}
 }
