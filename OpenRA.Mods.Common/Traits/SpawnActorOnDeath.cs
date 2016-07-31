@@ -11,6 +11,8 @@
 
 using System.Linq;
 using OpenRA.Mods.Common.Warheads;
+using System;
+using OpenRA.Effects;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
@@ -45,6 +47,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Should an actor only be spawned when the 'Creeps' setting is true?")]
 		public readonly bool RequiresLobbyCreeps = false;
 
+		[Desc("Time (in frames) until spawn (0 means instant)")]
+		public readonly int SpawnDelay = 0;
+
 		public object Create(ActorInitializer init) { return new SpawnActorOnDeath(init, this); }
 	}
 
@@ -53,6 +58,7 @@ namespace OpenRA.Mods.Common.Traits
 		readonly SpawnActorOnDeathInfo info;
 		readonly string faction;
 		readonly bool enabled;
+		string huskActor;
 
 		public SpawnActorOnDeath(ActorInitializer init, SpawnActorOnDeathInfo info)
 		{
@@ -75,38 +81,43 @@ namespace OpenRA.Mods.Common.Traits
 			if (info.DeathType != null && !e.Damage.DamageTypes.Contains(info.DeathType))
 				return;
 
+			// Actor has been disposed by something else before its death (for example `Enter`).
+			if (self.Disposed)
+				return;
+
+			var td = new TypeDictionary
+					{
+						new ParentActorInit(self),
+						new LocationInit(self.Location),
+						new CenterPositionInit(self.CenterPosition),
+						new FactionInit(faction)
+					};
+
+			if (info.OwnerType == OwnerType.Victim)
+				td.Add(new OwnerInit(self.Owner));
+			else if (info.OwnerType == OwnerType.Killer)
+				td.Add(new OwnerInit(e.Attacker.Owner));
+			else
+				td.Add(new OwnerInit(self.World.Players.First(p => p.InternalName == info.InternalOwner)));
+
+			if (info.SkipMakeAnimations)
+				td.Add(new SkipMakeAnimsInit());
+
+			foreach (var modifier in self.TraitsImplementing<IDeathActorInitModifier>())
+				modifier.ModifyDeathActorInit(self, td);
+
+			huskActor = self.TraitsImplementing<IHuskModifier>()
+				.Select(ihm => ihm.HuskActor(self))
+				.FirstOrDefault(a => a != null);
+
+
 			self.World.AddFrameEndTask(w =>
 			{
-				// Actor has been disposed by something else before its death (for example `Enter`).
-				if (self.Disposed)
-					return;
-
-				var td = new TypeDictionary
-				{
-					new ParentActorInit(self),
-					new LocationInit(self.Location),
-					new CenterPositionInit(self.CenterPosition),
-					new FactionInit(faction)
-				};
-
-				if (info.OwnerType == OwnerType.Victim)
-					td.Add(new OwnerInit(self.Owner));
-				else if (info.OwnerType == OwnerType.Killer)
-					td.Add(new OwnerInit(e.Attacker.Owner));
+				Action act = () => w.CreateActor(huskActor ?? info.Actor, td);
+				if (info.SpawnDelay > 0)
+					w.Add(new DelayedAction(info.SpawnDelay, act));
 				else
-					td.Add(new OwnerInit(self.World.Players.First(p => p.InternalName == info.InternalOwner)));
-
-				if (info.SkipMakeAnimations)
-					td.Add(new SkipMakeAnimsInit());
-
-				foreach (var modifier in self.TraitsImplementing<IDeathActorInitModifier>())
-					modifier.ModifyDeathActorInit(self, td);
-
-				var huskActor = self.TraitsImplementing<IHuskModifier>()
-					.Select(ihm => ihm.HuskActor(self))
-					.FirstOrDefault(a => a != null);
-
-				w.CreateActor(huskActor ?? info.Actor, td);
+					act();
 			});
 		}
 	}
