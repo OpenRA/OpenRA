@@ -96,7 +96,7 @@
 	MustBeDestroyed:
 	Voiced:
 		VoiceSet: VehicleVoice
-	Carryable:
+	AutoCarryable:
 		CarryableUpgrades: notmobile
 	WithDecorationCarryable:
 		Image: pips
