@@ -74,6 +74,7 @@ ide = {
       linenumber = true,
     },
     debugger = {
+      allowediting = false,
       verbose = false,
       hostname = nil,
       port = nil,
