@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenRA.Game", "OpenRA.Game\OpenRA.Game.csproj", "{0DFB103F-2962-400F-8C6D-E2C28CCBA633}"
 EndProject
@@ -69,11 +69,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Red Alert Lua scripts", "Re
 		mods\ra\maps\allies-05a\allies05a-AI.lua = mods\ra\maps\allies-05a\allies05a-AI.lua
 		mods\ra\maps\allies-05a\allies05a.lua = mods\ra\maps\allies-05a\allies05a.lua
 		mods\ra\maps\desert-shellmap\desert-shellmap.lua = mods\ra\maps\desert-shellmap\desert-shellmap.lua
+		mods\ra\maps\evacuation\evacuation.lua = mods\ra\maps\evacuation\evacuation.lua
 		mods\ra\maps\fort-lonestar\fort-lonestar-AI.lua = mods\ra\maps\fort-lonestar\fort-lonestar-AI.lua
 		mods\ra\maps\fort-lonestar\fort-lonestar.lua = mods\ra\maps\fort-lonestar\fort-lonestar.lua
 		mods\ra\maps\intervention\intervention.lua = mods\ra\maps\intervention\intervention.lua
 		mods\ra\maps\monster-tank-madness\monster-tank-madness.lua = mods\ra\maps\monster-tank-madness\monster-tank-madness.lua
-		mods\ra\maps\evacuation\evacuation.lua = mods\ra\maps\evacuation\evacuation.lua
 		mods\ra\maps\soviet-01\soviet01.lua = mods\ra\maps\soviet-01\soviet01.lua
 		mods\ra\maps\soviet-02a\soviet02a.lua = mods\ra\maps\soviet-02a\soviet02a.lua
 		mods\ra\maps\soviet-02b\soviet02b.lua = mods\ra\maps\soviet-02b\soviet02b.lua
