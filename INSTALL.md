@@ -79,6 +79,6 @@ OSX
 
 Use `make dependencies` to map the native libraries to your system.
 
-To compile OpenRA, run `make all` from the command line.
+To compile OpenRA, run `make` from the command line.
 
 Run with `mono --debug OpenRA.Game.exe`.
