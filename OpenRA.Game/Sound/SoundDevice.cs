@@ -29,13 +29,11 @@ namespace OpenRA
 
 	public class SoundDevice
 	{
-		public readonly string Engine;
 		public readonly string Device;
 		public readonly string Label;
 
-		public SoundDevice(string engine, string device, string label)
+		public SoundDevice(string device, string label)
 		{
-			Engine = engine;
 			Device = device;
 			Label = label;
 		}

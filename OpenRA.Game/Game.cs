@@ -17,6 +17,7 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using OpenRA.Chat;
@@ -252,16 +253,26 @@ namespace OpenRA
 			Log.AddChannel("irc", "irc.log");
 			Log.AddChannel("nat", "nat.log");
 
-			var renderers = new[] { Settings.Graphics.Renderer, "Default", null };
-			foreach (var r in renderers)
+			var platforms = new[] { Settings.Game.Platform, "Default", null };
+			foreach (var p in platforms)
 			{
-				if (r == null)
-					throw new InvalidOperationException("No suitable renderers were found. Check graphics.log for details.");
+				if (p == null)
+					throw new InvalidOperationException("Failed to initialize platform-integration library. Check graphics.log for details.");
 
-				Settings.Graphics.Renderer = r;
+				Settings.Game.Platform = p;
 				try
 				{
-					Renderer = new Renderer(Settings.Graphics, Settings.Server);
+					var rendererPath = Platform.ResolvePath(Path.Combine(".", "OpenRA.Platforms." + p + ".dll"));
+					var assembly = Assembly.LoadFile(rendererPath);
+
+					var platformType = assembly.GetTypes().SingleOrDefault(t => typeof(IPlatform).IsAssignableFrom(t));
+					if (platformType == null)
+						throw new InvalidOperationException("Platform dll must include exactly one IPlatform implementation.");
+
+					var platform = (IPlatform)platformType.GetConstructor(Type.EmptyTypes).Invoke(null);
+					Renderer = new Renderer(platform, Settings.Graphics);
+					Sound = new Sound(platform, Settings.Sound);
+
 					break;
 				}
 				catch (Exception e)
@@ -280,8 +291,6 @@ namespace OpenRA
 				discoverNat = UPnP.DiscoverNatDevices(Settings.Server.NatDiscoveryTimeout);
 				Game.Settings.Server.AllowPortForward = true;
 			}
-
-			Sound = new Sound(Settings.Sound.Engine);
 
 			GlobalChat = new GlobalChat();
 
