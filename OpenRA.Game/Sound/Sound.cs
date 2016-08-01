@@ -43,6 +43,9 @@ namespace OpenRA
 		public Sound(IPlatform platform, SoundSettings soundSettings)
 		{
 			soundEngine = platform.CreateSound(soundSettings.Device);
+
+			if (soundSettings.Mute)
+				MuteAudio();
 		}
 
 		ISoundSource LoadSound(ISoundLoader[] loaders, IReadOnlyFileSystem fileSystem, string filename)
@@ -221,12 +224,6 @@ namespace OpenRA
 
 			MusicPlaying = false;
 			soundEngine.PauseSound(music, true);
-		}
-
-		public float GlobalVolume
-		{
-			get { return soundEngine.Volume; }
-			set { soundEngine.Volume = value; }
 		}
 
 		float soundVolumeModifier = 1.0f;
