@@ -1,5 +1,3 @@
-local G = ... -- this now points to the global environment
-local ide, wx = G.ide, G.wx
 local mac = ide.osname == 'Macintosh'
 local win = ide.osname == "Windows"
 if mac then
