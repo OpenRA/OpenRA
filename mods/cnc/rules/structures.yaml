@@ -692,9 +692,9 @@ GUN:
 SAM:
 	Inherits: ^Defense
 	Valued:
-		Cost: 700
+		Cost: 650
 	CustomBuildTimeValue:
-		Value: 2000
+		Value: 1700
 	Tooltip:
 		Name: SAM Site
 		Description: Anti-Aircraft base defense.\n  Strong vs Aircraft\n  Cannot target Ground units.
@@ -903,7 +903,9 @@ CYCL:
 BRIK:
 	Inherits: ^Wall
 	Valued:
-		Cost: 100
+		Cost: 150
+	CustomBuildTimeValue:
+		Value: 500
 	CustomSellValue:
 		Value: 0
 	Tooltip:
