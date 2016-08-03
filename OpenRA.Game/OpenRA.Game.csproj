@@ -214,7 +214,7 @@
     <Compile Include="Input\InputHandler.cs" />
     <Compile Include="Input\Keycode.cs" />
     <Compile Include="Input\Hotkey.cs" />
-    <Compile Include="Graphics\IGraphicsDevice.cs" />
+    <Compile Include="Graphics\PlatformInterfaces.cs" />
     <Compile Include="Sound\Sound.cs" />
     <Compile Include="Sound\SoundDevice.cs" />
     <Compile Include="Graphics\SelectionBarsRenderable.cs" />
