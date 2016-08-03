@@ -28,8 +28,9 @@ namespace OpenRA.Mods.Common.Traits.Render
 		[Desc("Sprite sequence used to render the control group 0-9 numbers.")]
 		[SequenceReference("Image")] public readonly string GroupSequence = "groups";
 
-		[Desc("Manual offset in screen pixel.")]
-		public readonly int2 ScreenOffset = new int2(9, 5);
+		[Desc("Point in the actor's selection box used as reference for offsetting the decoration image. " +
+			"Possible values are combinations of Center, Top, Bottom, Left, Right.")]
+		public readonly ReferencePoints ReferencePoint = ReferencePoints.Top | ReferencePoints.Left;
 
 		public object Create(ActorInitializer init) { return new WithSpriteControlGroupDecoration(init.Self, this); }
 	}
@@ -57,16 +58,12 @@ namespace OpenRA.Mods.Common.Traits.Render
 			if (self.Owner != wr.World.LocalPlayer)
 				yield break;
 
-			var b = self.VisualBounds;
-			var pos = wr.ScreenPxPosition(self.CenterPosition);
-			var tl = wr.Viewport.WorldToViewPx(pos + new int2(b.Left, b.Top));
 			var pal = wr.Palette(Info.Palette);
-
-			foreach (var r in DrawControlGroup(wr, self, tl, pal))
+			foreach (var r in DrawControlGroup(wr, self, pal))
 				yield return r;
 		}
 
-		IEnumerable<IRenderable> DrawControlGroup(WorldRenderer wr, Actor self, int2 basePosition, PaletteReference palette)
+		IEnumerable<IRenderable> DrawControlGroup(WorldRenderer wr, Actor self, PaletteReference palette)
 		{
 			var group = self.World.Selection.GetControlGroupForActor(self);
 			if (group == null)
@@ -74,8 +71,35 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 			pipImages.PlayFetchIndex(Info.GroupSequence, () => (int)group);
 
-			var pos = basePosition - (0.5f * pipImages.Image.Size.XY).ToInt2() + Info.ScreenOffset;
-			yield return new UISpriteRenderable(pipImages.Image, self.CenterPosition, pos, 0, palette, 1f);
+			var bounds = self.VisualBounds;
+			var halfSize = (0.5f * pipImages.Image.Size.XY).ToInt2();
+
+			var boundsOffset = new int2(bounds.Left + bounds.Right, bounds.Top + bounds.Bottom) / 2;
+			var sizeOffset = -halfSize;
+			if (Info.ReferencePoint.HasFlag(ReferencePoints.Top))
+			{
+				boundsOffset -= new int2(0, bounds.Height / 2);
+				sizeOffset += new int2(0, halfSize.Y);
+			}
+			else if (Info.ReferencePoint.HasFlag(ReferencePoints.Bottom))
+			{
+				boundsOffset += new int2(0, bounds.Height / 2);
+				sizeOffset -= new int2(0, halfSize.Y);
+			}
+
+			if (Info.ReferencePoint.HasFlag(ReferencePoints.Left))
+			{
+				boundsOffset -= new int2(bounds.Width / 2, 0);
+				sizeOffset += new int2(halfSize.X, 0);
+			}
+			else if (Info.ReferencePoint.HasFlag(ReferencePoints.Right))
+			{
+				boundsOffset += new int2(bounds.Width / 2, 0);
+				sizeOffset -= new int2(halfSize.X, 0);
+			}
+
+			var pxPos = wr.Viewport.WorldToViewPx(wr.ScreenPxPosition(self.CenterPosition) + boundsOffset) + sizeOffset;
+			yield return new UISpriteRenderable(pipImages.Image, self.CenterPosition, pxPos, 0, palette, 1f);
 		}
 	}
 }
