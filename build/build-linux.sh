@@ -63,13 +63,16 @@ WXLUABUILD="MinSizeRel"
 for ARG in "$@"; do
   case $ARG in
   5.2)
+    BUILD_LUA=true
     BUILD_52=true
     ;;
   5.3)
+    BUILD_LUA=true
     BUILD_53=true
     BUILD_FLAGS="$BUILD_FLAGS -DLUA_COMPAT_APIINTCASTS"
     ;;
   jit)
+    BUILD_LUA=true
     BUILD_JIT=true
     ;;
   wxwidgets)
@@ -102,6 +105,9 @@ for ARG in "$@"; do
     BUILD_LUA=true
     BUILD_WXLUA=true
     BUILD_LUASOCKET=true
+    BUILD_LUASEC=true
+    BUILD_LFS=true
+    BUILD_LPEG=true
     ;;
   *)
     echo "Error: invalid argument $ARG"
@@ -240,10 +246,10 @@ if [ $BUILD_LUASOCKET ]; then
   unzip "$LUASOCKET_FILENAME"
   cd "$LUASOCKET_BASENAME"
   mkdir -p "$INSTALL_DIR/lib/lua/$LUAV/"{mime,socket}
-  gcc $BUILD_FLAGS -o "$INSTALL_DIR/lib/lua/$LUAV/mime/core.so" src/mime.c -llua \
+  gcc $BUILD_FLAGS -o "$INSTALL_DIR/lib/lua/$LUAV/mime/core.so" src/mime.c \
     || { echo "Error: failed to build LuaSocket"; exit 1; }
   gcc $BUILD_FLAGS -o "$INSTALL_DIR/lib/lua/$LUAV/socket/core.so" \
-    src/{auxiliar.c,buffer.c,except.c,inet.c,io.c,luasocket.c,options.c,select.c,tcp.c,timeout.c,udp.c,usocket.c} -llua \
+    src/{auxiliar.c,buffer.c,except.c,inet.c,io.c,luasocket.c,options.c,select.c,tcp.c,timeout.c,udp.c,usocket.c} \
     || { echo "Error: failed to build LuaSocket"; exit 1; }
   mkdir -p "$INSTALL_DIR/share/lua/$LUAV/socket"
   cp src/{ftp.lua,http.lua,smtp.lua,tp.lua,url.lua} "$INSTALL_DIR/share/lua/$LUAV/socket"

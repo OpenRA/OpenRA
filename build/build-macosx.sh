@@ -58,13 +58,16 @@ WXLUABUILD="MinSizeRel"
 for ARG in "$@"; do
   case $ARG in
   5.2)
+    BUILD_LUA=true
     BUILD_52=true
     ;;
   5.3)
+    BUILD_LUA=true
     BUILD_53=true
     BUILD_FLAGS="$BUILD_FLAGS -DLUA_COMPAT_APIINTCASTS"
     ;;
   jit)
+    BUILD_LUA=true
     BUILD_JIT=true
     ;;
   wxwidgets)
@@ -97,6 +100,9 @@ for ARG in "$@"; do
     BUILD_LUA=true
     BUILD_WXLUA=true
     BUILD_LUASOCKET=true
+    BUILD_LUASEC=true
+    BUILD_LFS=true
+    BUILD_LPEG=true
     ;;
   *)
     echo "Error: invalid argument $ARG"
