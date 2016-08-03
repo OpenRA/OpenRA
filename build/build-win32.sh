@@ -41,6 +41,10 @@ LFS_BASENAME="v_1_6_3"
 LFS_FILENAME="$LFS_BASENAME.tar.gz"
 LFS_URL="https://github.com/keplerproject/luafilesystem/archive/$LFS_FILENAME"
 
+LPEG_BASENAME="lpeg-1.0.0"
+LPEG_FILENAME="$LPEG_BASENAME.tar.gz"
+LPEG_URL="http://www.inf.puc-rio.br/~roberto/lpeg/$LPEG_FILENAME"
+
 WINAPI_BASENAME="winapi"
 WINAPI_URL="https://github.com/stevedonovan/winapi.git"
 
@@ -80,6 +84,9 @@ for ARG in "$@"; do
     ;;
   lfs)
     BUILD_LFS=true
+    ;;
+  lpeg)
+    BUILD_LPEG=true
     ;;
   zbstudio)
     BUILD_ZBSTUDIO=true
@@ -286,6 +293,20 @@ if [ $BUILD_LFS ]; then
   rm -rf "$LFS_FILENAME" "$LFS_BASENAME"
 fi
 
+
+# build lpeg
+if [ $BUILD_LPEG ]; then
+  wget --no-check-certificate -c "$LPEG_URL" -O "$LPEG_FILENAME" || { echo "Error: failed to download lpeg"; exit 1; }
+  tar -xzf "$LPEG_FILENAME"
+  cd "$LPEG_BASENAME"
+  mkdir -p "$INSTALL_DIR/lib/lua/$LUAD/"
+  gcc $BUILD_FLAGS -o "$INSTALL_DIR/lib/lua/$LUAD/lpeg.dll" lptree.c lpvm.c lpcap.c lpcode.c lpprint.c -llua$LUAV \
+    || { echo "Error: failed to build lpeg"; exit 1; }
+  [ -f "$INSTALL_DIR/lib/lua/$LUAD/lpeg.dll" ] || { echo "Error: lpeg.dll isn't found"; exit 1; }
+  cd ..
+  rm -rf "$LPEG_FILENAME" "$LPEG_BASENAME"
+fi
+
 # build LuaSec
 if [ $BUILD_LUASEC ]; then
   # build openSSL
@@ -344,6 +365,7 @@ mkdir -p "$BIN_DIR" || { echo "Error: cannot create directory $BIN_DIR"; exit 1;
 [ $BUILD_WXLUA ] && cp "$INSTALL_DIR/bin/libwx.dll" "$BIN_DIR/clibs$LUAS/wx.dll"
 [ $BUILD_WINAPI ] && cp "$INSTALL_DIR/lib/lua/$LUAD/winapi.dll" "$BIN_DIR/clibs$LUAS"
 [ $BUILD_LFS ] && cp "$INSTALL_DIR/lib/lua/$LUAD/lfs.dll" "$BIN_DIR/clibs$LUAS"
+[ $BUILD_LPEG ] && cp "$INSTALL_DIR/lib/lua/$LUAD/lpeg.dll" "$BIN_DIR/clibs$LUAS"
 
 if [ $BUILD_LUASOCKET ]; then
   mkdir -p "$BIN_DIR/clibs$LUAS/"{mime,socket}

@@ -52,6 +52,10 @@ LFS_BASENAME="v_1_6_3"
 LFS_FILENAME="$LFS_BASENAME.tar.gz"
 LFS_URL="https://github.com/keplerproject/luafilesystem/archive/$LFS_FILENAME"
 
+LPEG_BASENAME="lpeg-1.0.0"
+LPEG_FILENAME="$LPEG_BASENAME.tar.gz"
+LPEG_URL="http://www.inf.puc-rio.br/~roberto/lpeg/$LPEG_FILENAME"
+
 WXWIDGETSDEBUG="--disable-debug"
 WXLUABUILD="MinSizeRel"
 
@@ -85,6 +89,9 @@ for ARG in "$@"; do
     ;;
   lfs)
     BUILD_LFS=true
+    ;;
+  lpeg)
+    BUILD_LPEG=true
     ;;
   debug)
     WXWIDGETSDEBUG="--enable-debug=max --enable-debug_gdb"
@@ -261,6 +268,19 @@ if [ $BUILD_LFS ]; then
   rm -rf "$LFS_FILENAME" "$LFS_BASENAME"
 fi
 
+# build lpeg
+if [ $BUILD_LPEG ]; then
+  wget --no-check-certificate -c "$LPEG_URL" -O "$LPEG_FILENAME" || { echo "Error: failed to download lpeg"; exit 1; }
+  tar -xzf "$LPEG_FILENAME"
+  cd "$LPEG_BASENAME"
+  mkdir -p "$INSTALL_DIR/lib/lua/$LUAD/"
+  gcc $BUILD_FLAGS -o "$INSTALL_DIR/lib/lua/$LUAD/lpeg.so" lptree.c lpvm.c lpcap.c lpcode.c lpprint.c \
+    || { echo "Error: failed to build lpeg"; exit 1; }
+  [ -f "$INSTALL_DIR/lib/lua/$LUAD/lpeg.so" ] || { echo "Error: lpeg.so isn't found"; exit 1; }
+  cd ..
+  rm -rf "$LPEG_FILENAME" "$LPEG_BASENAME"
+fi
+
 # build LuaSec
 if [ $BUILD_LUASEC ]; then
   # build LuaSec
@@ -287,6 +307,7 @@ mkdir -p "$BIN_DIR" || { echo "Error: cannot create directory $BIN_DIR"; exit 1;
 [ $BUILD_LUA ] && cp "$INSTALL_DIR/bin/lua$LUAS" "$BIN_DIR"
 [ $BUILD_WXLUA ] && cp "$INSTALL_DIR/lib/libwx.so" "$BIN_DIR/clibs"
 [ $BUILD_LFS ] && cp "$INSTALL_DIR/lib/lua/$LUAD/lfs.so" "$BIN_DIR/clibs$LUAS"
+[ $BUILD_LPEG ] && cp "$INSTALL_DIR/lib/lua/$LUAD/lpeg.so" "$BIN_DIR/clibs$LUAS"
 
 if [ $BUILD_LUASOCKET ]; then
   mkdir -p "$BIN_DIR/clibs$LUAS/"{mime,socket}

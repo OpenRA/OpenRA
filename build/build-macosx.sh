@@ -47,6 +47,10 @@ LFS_BASENAME="v_1_6_3"
 LFS_FILENAME="$LFS_BASENAME.tar.gz"
 LFS_URL="https://github.com/keplerproject/luafilesystem/archive/$LFS_FILENAME"
 
+LPEG_BASENAME="lpeg-1.0.0"
+LPEG_FILENAME="$LPEG_BASENAME.tar.gz"
+LPEG_URL="http://www.inf.puc-rio.br/~roberto/lpeg/$LPEG_FILENAME"
+
 WXWIDGETSDEBUG="--disable-debug"
 WXLUABUILD="MinSizeRel"
 
@@ -80,6 +84,9 @@ for ARG in "$@"; do
     ;;
   lfs)
     BUILD_LFS=true
+    ;;
+  lpeg)
+    BUILD_LPEG=true
     ;;
   debug)
     WXWIDGETSDEBUG="--enable-debug=max"
@@ -276,11 +283,24 @@ if [ $BUILD_LFS ]; then
   mv "luafilesystem-$LFS_BASENAME" "$LFS_BASENAME"
   cd "$LFS_BASENAME/src"
   mkdir -p "$INSTALL_DIR/lib/lua/$LUAD/"
-  gcc $BUILD_FLAGS -o "$INSTALL_DIR/lib/lua/$LUAD/lfs.dylib" lfs.c -llua$LUAV \
+  gcc $BUILD_FLAGS -o "$INSTALL_DIR/lib/lua/$LUAD/lfs.dylib" lfs.c \
     || { echo "Error: failed to build lfs"; exit 1; }
   [ -f "$INSTALL_DIR/lib/lua/$LUAD/lfs.dylib" ] || { echo "Error: lfs.dylib isn't found"; exit 1; }
   cd ../..
   rm -rf "$LFS_FILENAME" "$LFS_BASENAME"
+fi
+
+# build lpeg
+if [ $BUILD_LPEG ]; then
+  wget --no-check-certificate -c "$LPEG_URL" -O "$LPEG_FILENAME" || { echo "Error: failed to download lpeg"; exit 1; }
+  tar -xzf "$LPEG_FILENAME"
+  cd "$LPEG_BASENAME"
+  mkdir -p "$INSTALL_DIR/lib/lua/$LUAD/"
+  gcc $BUILD_FLAGS -o "$INSTALL_DIR/lib/lua/$LUAD/lpeg.dylib" lptree.c lpvm.c lpcap.c lpcode.c lpprint.c \
+    || { echo "Error: failed to build lpeg"; exit 1; }
+  [ -f "$INSTALL_DIR/lib/lua/$LUAD/lpeg.dylib" ] || { echo "Error: lpeg.dylib isn't found"; exit 1; }
+  cd ..
+  rm -rf "$LPEG_FILENAME" "$LPEG_BASENAME"
 fi
 
 # build LuaSec
@@ -314,6 +334,7 @@ if [ $BUILD_LUA ]; then
 fi
 [ $BUILD_WXLUA ] && cp "$INSTALL_DIR/lib/libwx.dylib" "$BIN_DIR/clibs"
 [ $BUILD_LFS ] && cp "$INSTALL_DIR/lib/lua/$LUAD/lfs.dylib" "$BIN_DIR/clibs$LUAS"
+[ $BUILD_LPEG ] && cp "$INSTALL_DIR/lib/lua/$LUAD/lpeg.dylib" "$BIN_DIR/clibs$LUAS"
 
 if [ $BUILD_LUASOCKET ]; then
   mkdir -p "$BIN_DIR/clibs$LUAS/"{mime,socket}

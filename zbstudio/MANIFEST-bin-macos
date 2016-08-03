@@ -1,12 +1,15 @@
 bin/clibs/git/core.dylib
 bin/clibs/lfs.dylib
+bin/clibs/lpeg.dylib
 bin/clibs/mime/core.dylib
 bin/clibs/libwx.dylib
 bin/clibs/socket/core.dylib
 bin/clibs52/lfs.dylib
+bin/clibs52/lpeg.dylib
 bin/clibs52/mime/core.dylib
 bin/clibs52/socket/core.dylib
 bin/clibs53/lfs.dylib
+bin/clibs53/lpeg.dylib
 bin/clibs53/mime/core.dylib
 bin/clibs53/socket/core.dylib
 bin/liblua.dylib
