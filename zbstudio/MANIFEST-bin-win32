@@ -5,16 +5,19 @@ bin/clibs/libzlib.dll
 bin/clibs/lpeg.dll
 bin/clibs/mime/core.dll
 bin/clibs/socket/core.dll
+bin/clibs/ssl.dll
 bin/clibs/wx.dll
 bin/clibs52/liblua.dll
 bin/clibs52/lfs.dll
 bin/clibs52/lpeg.dll
 bin/clibs52/mime/core.dll
 bin/clibs52/socket/core.dll
+bin/clibs52/ssl.dll
 bin/clibs53/lfs.dll
 bin/clibs53/lpeg.dll
 bin/clibs53/mime/core.dll
 bin/clibs53/socket/core.dll
+bin/clibs53/ssl.dll
 bin/lua.exe
 bin/lua5.1.dll
 bin/lua51.dll
@@ -22,5 +25,7 @@ bin/lua52.dll
 bin/lua52.exe
 bin/lua53.dll
 bin/lua53.exe
+bin/libeay32.dll
+bin/ssleay32.dll
 bin/winapi.dll
 zbstudio.exe
