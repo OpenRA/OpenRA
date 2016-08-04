@@ -207,7 +207,11 @@ function MarkupStyle(editor, lines, linee)
     -- this fixes an issue with duplicate lines in Scintilla when
     -- invisible styles hide some of the content that would be wrapped.
     local wrapmode = editor:GetWrapMode()
-    if wrapmode ~= wxstc.wxSTC_WRAP_NONE then editor:SetWrapMode(wrapmode) end
+    if wrapmode ~= wxstc.wxSTC_WRAP_NONE then
+      -- change the wrap mode to force recalculation
+      editor:SetWrapMode(wxstc.wxSTC_WRAP_NONE)
+      editor:SetWrapMode(wrapmode)
+    end
     -- if some of the lines have folded, this can make not styled lines visible
     MarkupStyle(editor, linee+1) -- style to the end in this case
   end
