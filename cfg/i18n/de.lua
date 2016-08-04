@@ -80,7 +80,7 @@ return {
   ["Choose a project directory"] = "Projektverzeichnis auswählen", -- src\editor\toolbar.lua, src\editor\menu_project.lua, src\editor\filetree.lua
   ["Choose a search directory"] = "Bitte Verzeichnis zum Durchsuchen auswählen.", -- src\editor\findreplace.lua
   ["Choose..."] = "Wählen...", -- src\editor\findreplace.lua, src\editor\menu_project.lua, src\editor\filetree.lua
-  ["Clear Bookmarks In Project"] = "Projekt-Lesezeichen löschen" -- src\editor\markers.lua
+  ["Clear Bookmarks In Project"] = "Projekt-Lesezeichen löschen", -- src\editor\markers.lua
   ["Clear Breakpoints In Project"] = "Projekt-Haltepunkte löschen", -- src\editor\markers.lua
   ["Clear Items"] = "Liste &löschen", -- src\editor\findreplace.lua, src\editor\menu_file.lua
   ["Clear items from this list"] = "Diese Liste löschen", -- src\editor\menu_file.lua
