@@ -16,10 +16,12 @@ namespace OpenRA
 	public class Utility
 	{
 		public readonly ModData ModData;
+		public readonly InstalledMods Mods;
 
-		public Utility(ModData modData)
+		public Utility(ModData modData, InstalledMods mods)
 		{
 			ModData = modData;
+			Mods = mods;
 		}
 	}
 

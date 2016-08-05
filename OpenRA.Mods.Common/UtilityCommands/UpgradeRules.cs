@@ -346,7 +346,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 		{
 			foreach (var node in nodes)
 			{
-				if (engineVersion < 20160730 && modData.Manifest.Mod.Id == "d2k" && depth == 2)
+				if (engineVersion < 20160730 && modData.Manifest.Id == "d2k" && depth == 2)
 				{
 					if (node.Key == "Start")
 						node.Value.Value = RemapD2k106Sequence(FieldLoader.GetValue<int>("", node.Value.Value)).ToString();
@@ -416,7 +416,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			foreach (var node in nodes)
 			{
 				// Fix RA building footprints to not use _ when it's not necessary
-				if (engineVersion < 20160619 && modData.Manifest.Mod.Id == "ra" && depth == 1)
+				if (engineVersion < 20160619 && modData.Manifest.Id == "ra" && depth == 1)
 				{
 					var buildings = new List<string>() { "tsla", "gap", "agun", "apwr", "fapw" };
 					if (buildings.Contains(parent.Value.Value) && node.Key == "Location")
@@ -424,7 +424,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				}
 
 				// Fix TD building footprints to not use _ when it's not necessary
-				if (engineVersion < 20160619 && modData.Manifest.Mod.Id == "cnc" && depth == 1)
+				if (engineVersion < 20160619 && modData.Manifest.Id == "cnc" && depth == 1)
 				{
 					var buildings = new List<string>() { "atwr", "obli", "tmpl", "weap", "hand" };
 					if (buildings.Contains(parent.Value.Value) && node.Key == "Location")

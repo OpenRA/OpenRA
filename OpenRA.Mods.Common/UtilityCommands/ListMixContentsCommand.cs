@@ -31,7 +31,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			var filename = Path.GetFileName(args[1]);
 			var path = Path.GetDirectoryName(args[1]);
 
-			var fs = new OpenRA.FileSystem.FileSystem();
+			var fs = new FileSystem.FileSystem(utility.Mods);
 
 			// Needed to access the global mix database
 			fs.LoadFromManifest(utility.ModData.Manifest);

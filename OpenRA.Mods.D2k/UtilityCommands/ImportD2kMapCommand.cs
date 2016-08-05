@@ -31,7 +31,7 @@ namespace OpenRA.Mods.D2k.UtilityCommands
 			Game.ModData = utility.ModData;
 
 			var rules = Ruleset.LoadDefaultsForTileSet(utility.ModData, "ARRAKIS");
-			var map = D2kMapImporter.Import(args[1], utility.ModData.Manifest.Mod.Id, args[2], rules);
+			var map = D2kMapImporter.Import(args[1], utility.ModData.Manifest.Id, args[2], rules);
 
 			if (map == null)
 				return;

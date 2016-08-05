@@ -79,7 +79,7 @@ namespace OpenRA.Mods.Common.LoadScreens
 				if (replayMeta != null)
 				{
 					var mod = replayMeta.GameInfo.Mod;
-					if (mod != null && mod != Game.ModData.Manifest.Mod.Id && ModMetadata.AllMods.ContainsKey(mod))
+					if (mod != null && mod != Game.ModData.Manifest.Id && Game.Mods.ContainsKey(mod))
 						Game.InitializeMod(mod, args);
 				}
 

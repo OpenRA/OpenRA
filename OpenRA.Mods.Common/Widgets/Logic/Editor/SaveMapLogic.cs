@@ -165,7 +165,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				if (playerDefinitions != null)
 					map.PlayerDefinitions = playerDefinitions;
 
-				map.RequiresMod = modData.Manifest.Mod.Id;
+				map.RequiresMod = modData.Manifest.Id;
 
 				var combinedPath = Platform.ResolvePath(Path.Combine(selectedDirectory.Folder.Name, filename.Text + fileTypes[fileType].Extension));
 

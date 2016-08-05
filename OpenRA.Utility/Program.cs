@@ -16,6 +16,8 @@ using System.Runtime.Serialization;
 
 namespace OpenRA
 {
+	using UtilityActions = Dictionary<string, KeyValuePair<Action<Utility, string[]>, Func<string[], bool>>>;
+
 	[Serializable]
 	public class NoSuchCommandException : Exception
 	{
@@ -37,27 +39,29 @@ namespace OpenRA
 	{
 		static void Main(string[] args)
 		{
-			if (args.Length == 0)
-			{
-				PrintUsage(null);
-				return;
-			}
-
 			Log.AddChannel("perf", null);
 			Log.AddChannel("debug", null);
 
-			var modName = args[0];
-			if (!ModMetadata.AllMods.Keys.Contains(modName))
+			Game.InitializeSettings(Arguments.Empty);
+			var mods = new InstalledMods();
+
+			if (args.Length == 0)
 			{
-				PrintUsage(null);
+				PrintUsage(mods, null);
 				return;
 			}
 
-			Game.InitializeSettings(Arguments.Empty);
-			var modData = new ModData(modName);
-			var utility = new Utility(modData);
+			var modName = args[0];
+			if (!mods.Keys.Contains(modName))
+			{
+				PrintUsage(mods, null);
+				return;
+			}
+
+			var modData = new ModData(mods[modName], mods);
+			var utility = new Utility(modData, mods);
 			args = args.Skip(1).ToArray();
-			var actions = new Dictionary<string, KeyValuePair<Action<Utility, string[]>, Func<string[], bool>>>();
+			var actions = new UtilityActions();
 			foreach (var commandType in modData.ObjectCreator.GetTypesImplementing<IUtilityCommand>())
 			{
 				var command = (IUtilityCommand)Activator.CreateInstance(commandType);
@@ -67,7 +71,7 @@ namespace OpenRA
 
 			if (args.Length == 0)
 			{
-				PrintUsage(actions);
+				PrintUsage(mods, actions);
 				return;
 			}
 
@@ -106,10 +110,10 @@ namespace OpenRA
 			}
 		}
 
-		static void PrintUsage(IDictionary<string, KeyValuePair<Action<Utility, string[]>, Func<string[], bool>>> actions)
+		static void PrintUsage(InstalledMods mods, UtilityActions actions)
 		{
 			Console.WriteLine("Run `OpenRA.Utility.exe [MOD]` to see a list of available commands.");
-			Console.WriteLine("The available mods are: " + string.Join(", ", ModMetadata.AllMods.Keys));
+			Console.WriteLine("The available mods are: " + string.Join(", ", mods.Keys));
 			Console.WriteLine();
 
 			if (actions == null)

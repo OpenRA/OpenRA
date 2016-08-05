@@ -11,7 +11,6 @@
 
 using System;
 using System.IO;
-using System.Linq;
 using OpenRA.FileSystem;
 
 namespace OpenRA.Mods.Common.UtilityCommands
@@ -31,7 +30,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			var filename = Path.GetFileName(args[1]);
 			var path = Path.GetDirectoryName(args[1]);
 
-			var fs = new OpenRA.FileSystem.FileSystem();
+			var fs = new FileSystem.FileSystem(utility.Mods);
 			fs.Mount(path, "parent");
 			var package = new InstallShieldPackage(fs, "parent|" + filename);
 

@@ -34,6 +34,8 @@ namespace OpenRA
 	/// <summary> Describes what is to be loaded in order to run a mod. </summary>
 	public class Manifest
 	{
+		public readonly string Id;
+		public readonly IReadOnlyPackage Package;
 		public readonly ModMetadata Mod;
 		public readonly string[]
 			Rules, ServerTraits,
@@ -60,14 +62,15 @@ namespace OpenRA
 		readonly TypeDictionary modules = new TypeDictionary();
 		readonly Dictionary<string, MiniYaml> yaml;
 
-		public Manifest(string modId)
-		{
-			var package = ModMetadata.AllMods[modId].Package;
+		bool customDataLoaded;
 
+		public Manifest(string modId, IReadOnlyPackage package)
+		{
+			Id = modId;
+			Package = package;
 			yaml = new MiniYaml(null, MiniYaml.FromStream(package.GetStream("mod.yaml"), "mod.yaml")).ToDictionary();
 
 			Mod = FieldLoader.Load<ModMetadata>(yaml["Metadata"]);
-			Mod.Id = modId;
 
 			// TODO: Use fieldloader
 			MapFolders = YamlDictionary(yaml, "MapFolders");
@@ -106,7 +109,7 @@ namespace OpenRA
 			RequiresMods = yaml["RequiresMods"].ToDictionary(my => my.Value);
 
 			// Allow inherited mods to import parent maps.
-			var compat = new List<string> { Mod.Id };
+			var compat = new List<string> { Id };
 
 			if (yaml.ContainsKey("SupportsMapsFrom"))
 				compat.AddRange(yaml["SupportsMapsFrom"].Value.Split(',').Select(c => c.Trim()));
@@ -147,6 +150,8 @@ namespace OpenRA
 
 				modules.Add(module);
 			}
+
+			customDataLoaded = true;
 		}
 
 		static string[] YamlList(Dictionary<string, MiniYaml> yaml, string key, bool parsePaths = false)
@@ -171,8 +176,12 @@ namespace OpenRA
 			return modules.Contains<T>();
 		}
 
+		/// <summary>Load a cached IGlobalModData instance.</summary>
 		public T Get<T>() where T : IGlobalModData
 		{
+			if (!customDataLoaded)
+				throw new InvalidOperationException("Attempted to call Manifest.Get() before loading custom data!");
+
 			var module = modules.GetOrDefault<T>();
 
 			// Lazily create the default values if not explicitly defined.
@@ -183,6 +192,37 @@ namespace OpenRA
 			}
 
 			return module;
+		}
+
+		/// <summary>
+		/// Load an uncached IGlobalModData instance directly from the manifest yaml.
+		/// This should only be used by external mods that want to query data from this mod.
+		/// </summary>
+		public T Get<T>(ObjectCreator oc) where T : IGlobalModData
+		{
+			MiniYaml data;
+			var t = typeof(T);
+			if (!yaml.TryGetValue(t.Name, out data))
+			{
+				// Lazily create the default values if not explicitly defined.
+				return (T)oc.CreateBasic(t);
+			}
+
+			IGlobalModData module;
+			var ctor = t.GetConstructor(new[] { typeof(MiniYaml) });
+			if (ctor != null)
+			{
+				// Class has opted-in to DIY initialization
+				module = (IGlobalModData)ctor.Invoke(new object[] { data.Value });
+			}
+			else
+			{
+				// Automatically load the child nodes using FieldLoader
+				module = oc.CreateObject<IGlobalModData>(t.Name);
+				FieldLoader.Load(module, data);
+			}
+
+			return (T)module;
 		}
 	}
 }

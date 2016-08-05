@@ -74,7 +74,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					Author = "Westwood Studios",
 				};
 
-				Map.RequiresMod = ModData.Manifest.Mod.Id;
+				Map.RequiresMod = ModData.Manifest.Id;
 
 				SetBounds(Map, mapSection);
 

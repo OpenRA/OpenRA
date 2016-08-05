@@ -30,9 +30,11 @@ namespace OpenRA.Server
 			Game.InitializeSettings(new Arguments(args));
 			var settings = Game.Settings.Server;
 
-			// HACK: The engine code *still* assumes that Game.ModData is set
 			var mod = Game.Settings.Game.Mod;
-			var modData = Game.ModData = new ModData(mod, false);
+			var mods = new InstalledMods();
+
+			// HACK: The engine code *still* assumes that Game.ModData is set
+			var modData = Game.ModData = new ModData(mods[mod], mods);
 			modData.MapCache.LoadMaps();
 
 			settings.Map = modData.MapCache.ChooseInitialMap(settings.Map, new MersenneTwister());

@@ -168,7 +168,7 @@ namespace OpenRA.Mods.TS.UtilityCommands
 				Title = basic.GetValue("Name", Path.GetFileNameWithoutExtension(filename)),
 				Author = "Westwood Studios",
 				Bounds = new Rectangle(iniBounds[0], iniBounds[1], iniBounds[2], 2 * iniBounds[3] + 2 * iniBounds[1]),
-				RequiresMod = utility.ModData.Manifest.Mod.Id
+				RequiresMod = utility.ModData.Manifest.Id
 			};
 
 			var fullSize = new int2(iniSize[2], iniSize[3]);

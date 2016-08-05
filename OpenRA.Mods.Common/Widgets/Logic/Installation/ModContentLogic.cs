@@ -10,7 +10,6 @@
 #endregion
 
 using System;
-using System.IO;
 using System.Linq;
 using OpenRA.Widgets;
 
@@ -24,11 +23,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		bool discAvailable;
 
 		[ObjectCreator.UseCtor]
-		public ModContentLogic(Widget widget, string modId, Action onCancel)
+		public ModContentLogic(Widget widget, Manifest mod, ModContent content, Action onCancel)
 		{
+			this.content = content;
+
 			var panel = widget.Get("CONTENT_PANEL");
 
-			content = ModMetadata.AllMods[modId].ModContent;
 			scrollPanel = panel.Get<ScrollPanelWidget>("PACKAGES");
 			template = scrollPanel.Get<ContainerWidget>("PACKAGE_TEMPLATE");
 
