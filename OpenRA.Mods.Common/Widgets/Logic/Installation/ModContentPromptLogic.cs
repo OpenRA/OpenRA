@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Linq;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
@@ -54,9 +55,18 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			quickButton.Bounds.Y += headerHeight;
 			quickButton.OnClick = () =>
 			{
+				var modFileSystem = new FileSystem.FileSystem(Game.Mods);
+				modFileSystem.LoadFromManifest(mod);
+				var downloadYaml = MiniYaml.Load(modFileSystem, content.Downloads, null);
+				modFileSystem.UnmountAll();
+
+				var download = downloadYaml.FirstOrDefault(n => n.Key == content.QuickDownload);
+				if (download == null)
+					throw new InvalidOperationException("Mod QuickDownload `{0}` definition not found.".F(content.QuickDownload));
+
 				Ui.OpenWindow("PACKAGE_DOWNLOAD_PANEL", new WidgetArgs
 				{
-					{ "download", content.Downloads[content.QuickDownload] },
+					{ "download", new ModContent.ModDownload(download.Value) },
 					{ "onSuccess", continueLoading }
 				});
 			};
