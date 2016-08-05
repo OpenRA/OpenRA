@@ -22,15 +22,15 @@ namespace OpenRA.Mods.Common.UtilityCommands
 {
 	class RemapShpCommand : IUtilityCommand
 	{
-		public string Name { get { return "--remap"; } }
+		string IUtilityCommand.Name { get { return "--remap"; } }
 
-		public bool ValidateArguments(string[] args)
+		bool IUtilityCommand.ValidateArguments(string[] args)
 		{
 			return args.Length >= 5;
 		}
 
 		[Desc("SRCMOD:PAL DESTMOD:PAL SRCSHP DESTSHP", "Remap SHPs to another palette")]
-		public void Run(ModData modData, string[] args)
+		void IUtilityCommand.Run(Utility utility, string[] args)
 		{
 			var remap = new Dictionary<int, int>();
 

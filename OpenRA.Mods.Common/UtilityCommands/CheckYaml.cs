@@ -18,7 +18,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 {
 	class CheckYaml : IUtilityCommand
 	{
-		public string Name { get { return "--check-yaml"; } }
+		string IUtilityCommand.Name { get { return "--check-yaml"; } }
 
 		static int errors = 0;
 
@@ -34,16 +34,16 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			Console.WriteLine("OpenRA.Utility(1,1): Warning: {0}", e);
 		}
 
-		public bool ValidateArguments(string[] args)
+		bool IUtilityCommand.ValidateArguments(string[] args)
 		{
 			return true;
 		}
 
 		[Desc("[MAPFILE]", "Check a mod or map for certain yaml errors.")]
-		public void Run(ModData modData, string[] args)
+		void IUtilityCommand.Run(Utility utility, string[] args)
 		{
 			// HACK: The engine code assumes that Game.modData is set.
-			Game.ModData = modData;
+			var modData = Game.ModData = utility.ModData;
 
 			try
 			{

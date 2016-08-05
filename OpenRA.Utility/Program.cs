@@ -14,7 +14,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
 
-namespace OpenRA.Utility
+namespace OpenRA
 {
 	[Serializable]
 	public class NoSuchCommandException : Exception
@@ -55,12 +55,13 @@ namespace OpenRA.Utility
 
 			Game.InitializeSettings(Arguments.Empty);
 			var modData = new ModData(modName);
+			var utility = new Utility(modData);
 			args = args.Skip(1).ToArray();
-			var actions = new Dictionary<string, KeyValuePair<Action<ModData, string[]>, Func<string[], bool>>>();
+			var actions = new Dictionary<string, KeyValuePair<Action<Utility, string[]>, Func<string[], bool>>>();
 			foreach (var commandType in modData.ObjectCreator.GetTypesImplementing<IUtilityCommand>())
 			{
 				var command = (IUtilityCommand)Activator.CreateInstance(commandType);
-				var kvp = new KeyValuePair<Action<ModData, string[]>, Func<string[], bool>>(command.Run, command.ValidateArguments);
+				var kvp = new KeyValuePair<Action<Utility, string[]>, Func<string[], bool>>(command.Run, command.ValidateArguments);
 				actions.Add(command.Name, kvp);
 			}
 
@@ -81,7 +82,7 @@ namespace OpenRA.Utility
 
 				if (validateActionArgs.Invoke(args))
 				{
-					action.Invoke(modData, args);
+					action.Invoke(utility, args);
 				}
 				else
 				{
@@ -105,7 +106,7 @@ namespace OpenRA.Utility
 			}
 		}
 
-		static void PrintUsage(IDictionary<string, KeyValuePair<Action<ModData, string[]>, Func<string[], bool>>> actions)
+		static void PrintUsage(IDictionary<string, KeyValuePair<Action<Utility, string[]>, Func<string[], bool>>> actions)
 		{
 			Console.WriteLine("Run `OpenRA.Utility.exe [MOD]` to see a list of available commands.");
 			Console.WriteLine("The available mods are: " + string.Join(", ", ModMetadata.AllMods.Keys));
@@ -122,7 +123,7 @@ namespace OpenRA.Utility
 			}
 		}
 
-		static void GetActionUsage(string key, Action<ModData, string[]> action)
+		static void GetActionUsage(string key, Action<Utility, string[]> action)
 		{
 			var descParts = action.Method.GetCustomAttributes<DescAttribute>(true)
 					.SelectMany(d => d.Lines).ToArray();

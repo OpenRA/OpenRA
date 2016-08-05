@@ -19,21 +19,21 @@ namespace OpenRA.Mods.TS.UtilityCommands
 {
 	class ImportLegacySequenceCommand : IUtilityCommand
 	{
-		public bool ValidateArguments(string[] args)
+		bool IUtilityCommand.ValidateArguments(string[] args)
 		{
 			return args.Length >= 2;
 		}
 
-		public string Name { get { return "--sequence-import"; } }
+		string IUtilityCommand.Name { get { return "--sequence-import"; } }
 
 		IniFile file;
 		MapGrid grid;
 
 		[Desc("FILENAME", "Convert ART.INI to the OpenRA sequence definition format.")]
-		public void Run(ModData modData, string[] args)
+		void IUtilityCommand.Run(Utility utility, string[] args)
 		{
 			// HACK: The engine code assumes that Game.modData is set.
-			Game.ModData = modData;
+			Game.ModData = utility.ModData;
 
 			grid = Game.ModData.Manifest.Get<MapGrid>();
 

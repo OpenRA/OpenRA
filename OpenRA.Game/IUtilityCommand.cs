@@ -9,8 +9,21 @@
  */
 #endregion
 
+using OpenRA.Traits;
+
 namespace OpenRA
 {
+	public class Utility
+	{
+		public readonly ModData ModData;
+
+		public Utility(ModData modData)
+		{
+			ModData = modData;
+		}
+	}
+
+	[RequireExplicitImplementation]
 	public interface IUtilityCommand
 	{
 		/// <summary>
@@ -20,6 +33,6 @@ namespace OpenRA
 
 		bool ValidateArguments(string[] args);
 
-		void Run(ModData modData, string[] args);
+		void Run(Utility utility, string[] args);
 	}
 }

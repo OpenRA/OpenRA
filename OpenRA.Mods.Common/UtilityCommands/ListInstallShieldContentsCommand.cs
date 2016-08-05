@@ -18,15 +18,15 @@ namespace OpenRA.Mods.Common.UtilityCommands
 {
 	class ListInstallShieldContents : IUtilityCommand
 	{
-		public string Name { get { return "--list-installshield"; } }
+		string IUtilityCommand.Name { get { return "--list-installshield"; } }
 
-		public bool ValidateArguments(string[] args)
+		bool IUtilityCommand.ValidateArguments(string[] args)
 		{
 			return args.Length == 2;
 		}
 
 		[Desc("ARCHIVE.Z", "Lists the content ranges for a InstallShield V3 file")]
-		public void Run(ModData modData, string[] args)
+		void IUtilityCommand.Run(Utility utility, string[] args)
 		{
 			var filename = Path.GetFileName(args[1]);
 			var path = Path.GetDirectoryName(args[1]);

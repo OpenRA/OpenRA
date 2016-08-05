@@ -20,18 +20,18 @@ namespace OpenRA.Mods.Common.UtilityCommands
 {
 	class FixClassicTilesets : IUtilityCommand
 	{
-		public string Name { get { return "--fix-classic-tilesets"; } }
+		string IUtilityCommand.Name { get { return "--fix-classic-tilesets"; } }
 
-		public bool ValidateArguments(string[] args)
+		bool IUtilityCommand.ValidateArguments(string[] args)
 		{
 			return args.Length >= 2;
 		}
 
 		[Desc("EXTENSIONS", "Fixes missing template tile definitions and adds filename extensions.")]
-		public void Run(ModData modData, string[] args)
+		void IUtilityCommand.Run(Utility utility, string[] args)
 		{
 			// HACK: The engine code assumes that Game.modData is set.
-			Game.ModData = modData;
+			var modData = Game.ModData = utility.ModData;
 
 			var imageField = typeof(TerrainTemplateInfo).GetField("Image");
 			var pickAnyField = typeof(TerrainTemplateInfo).GetField("PickAny");
