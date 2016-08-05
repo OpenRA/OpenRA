@@ -79,7 +79,7 @@ namespace OpenRA.Mods.Common.Server
 							(int)server.State,
 							numPlayers,
 							numBots,
-							"{0}@{1}".F(mod.Id, mod.Mod.Version),
+							"{0}@{1}".F(mod.Id, mod.Metadata.Version),
 							server.LobbyInfo.GlobalSettings.Map,
 							numSlots,
 							numSpectators,

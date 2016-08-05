@@ -31,12 +31,21 @@ namespace OpenRA
 		}
 	}
 
+	public class ModMetadata
+	{
+		public string Title;
+		public string Description;
+		public string Version;
+		public string Author;
+		public bool Hidden;
+	}
+
 	/// <summary> Describes what is to be loaded in order to run a mod. </summary>
 	public class Manifest
 	{
 		public readonly string Id;
 		public readonly IReadOnlyPackage Package;
-		public readonly ModMetadata Mod;
+		public readonly ModMetadata Metadata;
 		public readonly string[]
 			Rules, ServerTraits,
 			Sequences, VoxelSequences, Cursors, Chrome, Assemblies, ChromeLayout,
@@ -70,7 +79,7 @@ namespace OpenRA
 			Package = package;
 			yaml = new MiniYaml(null, MiniYaml.FromStream(package.GetStream("mod.yaml"), "mod.yaml")).ToDictionary();
 
-			Mod = FieldLoader.Load<ModMetadata>(yaml["Metadata"]);
+			Metadata = FieldLoader.Load<ModMetadata>(yaml["Metadata"]);
 
 			// TODO: Use fieldloader
 			MapFolders = YamlDictionary(yaml, "MapFolders");

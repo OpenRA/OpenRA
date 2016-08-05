@@ -68,7 +68,7 @@ namespace OpenRA.Mods.Cnc
 			brightBlock = new Sprite(sheet, new Rectangle(320, 0, 16, 35), TextureChannel.Alpha);
 			dimBlock = new Sprite(sheet, new Rectangle(336, 0, 16, 35), TextureChannel.Alpha);
 
-			versionText = modData.Manifest.Mod.Version;
+			versionText = modData.Manifest.Metadata.Version;
 		}
 
 		bool setup;

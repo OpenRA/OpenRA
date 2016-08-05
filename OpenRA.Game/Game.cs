@@ -306,7 +306,7 @@ namespace OpenRA
 			Mods = new InstalledMods();
 			Console.WriteLine("Available mods:");
 			foreach (var mod in Mods)
-				Console.WriteLine("\t{0}: {1} ({2})", mod.Key, mod.Value.Mod.Title, mod.Value.Mod.Version);
+				Console.WriteLine("\t{0}: {1} ({2})", mod.Key, mod.Value.Metadata.Title, mod.Value.Metadata.Version);
 
 			InitializeMod(Settings.Game.Mod, args);
 		}
@@ -319,7 +319,7 @@ namespace OpenRA
 		public static bool IsModInstalled(KeyValuePair<string, string> mod)
 		{
 			return Mods.ContainsKey(mod.Key)
-				&& Mods[mod.Key].Mod.Version == mod.Value
+				&& Mods[mod.Key].Metadata.Version == mod.Value
 				&& IsModInstalled(mod.Key);
 		}
 
@@ -471,7 +471,7 @@ namespace OpenRA
 
 			ThreadPool.QueueUserWorkItem(_ =>
 			{
-				var mod = ModData.Manifest.Mod;
+				var mod = ModData.Manifest.Metadata;
 				var directory = Platform.ResolvePath("^", "Screenshots", ModData.Manifest.Id, mod.Version);
 				Directory.CreateDirectory(directory);
 

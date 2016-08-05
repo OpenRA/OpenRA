@@ -57,7 +57,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				var maps = new List<Map>();
 				if (args.Length < 2)
 				{
-					Console.WriteLine("Testing mod: {0}".F(modData.Manifest.Mod.Title));
+					Console.WriteLine("Testing mod: {0}".F(modData.Manifest.Metadata.Title));
 
 					// Run all rule checks on the default mod rules.
 					CheckRules(modData, modData.DefaultRules);

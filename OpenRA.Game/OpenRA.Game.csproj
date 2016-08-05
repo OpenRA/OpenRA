@@ -204,7 +204,6 @@
     <Compile Include="Traits\Player\FixedColorPalette.cs" />
     <Compile Include="Primitives\ReadOnlyDictionary.cs" />
     <Compile Include="Primitives\ReadOnlyList.cs" />
-    <Compile Include="ModMetadata.cs" />
     <Compile Include="GameRules\Ruleset.cs" />
     <Compile Include="Support\MersenneTwister.cs" />
     <Compile Include="GameInformation.cs" />

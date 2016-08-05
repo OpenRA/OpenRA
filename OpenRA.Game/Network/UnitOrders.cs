@@ -138,7 +138,7 @@ namespace OpenRA.Network
 						Manifest serverMod;
 						if (request.Mod != mod.Id &&
 							Game.Mods.TryGetValue(request.Mod, out serverMod) &&
-							serverMod.Mod.Version == request.Version)
+							serverMod.Metadata.Version == request.Version)
 						{
 							var replay = orderManager.Connection as ReplayConnection;
 							var launchCommand = replay != null ?
@@ -170,7 +170,7 @@ namespace OpenRA.Network
 						{
 							Client = info,
 							Mod = mod.Id,
-							Version = mod.Mod.Version,
+							Version = mod.Metadata.Version,
 							Password = orderManager.Password
 						};
 

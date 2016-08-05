@@ -263,7 +263,7 @@ namespace OpenRA.Server
 				var request = new HandshakeRequest
 				{
 					Mod = ModData.Manifest.Id,
-					Version = ModData.Manifest.Mod.Version,
+					Version = ModData.Manifest.Metadata.Version,
 					Map = LobbyInfo.GlobalSettings.Map
 				};
 
@@ -337,7 +337,7 @@ namespace OpenRA.Server
 					return;
 				}
 
-				if (ModData.Manifest.Mod.Version != handshake.Version && !LobbyInfo.GlobalSettings.AllowVersionMismatch)
+				if (ModData.Manifest.Metadata.Version != handshake.Version && !LobbyInfo.GlobalSettings.AllowVersionMismatch)
 				{
 					Log.Write("server", "Rejected connection from {0}; Not running the same version.",
 						newConn.Socket.RemoteEndPoint);

@@ -69,9 +69,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			modTemplate = modList.Get<ButtonWidget>("MOD_TEMPLATE");
 
 			modChooserPanel.Get<LabelWidget>("MOD_DESC").GetText = () => selectedDescription;
-			modChooserPanel.Get<LabelWidget>("MOD_TITLE").GetText = () => selectedMod.Mod.Title;
+			modChooserPanel.Get<LabelWidget>("MOD_TITLE").GetText = () => selectedMod.Metadata.Title;
 			modChooserPanel.Get<LabelWidget>("MOD_AUTHOR").GetText = () => selectedAuthor;
-			modChooserPanel.Get<LabelWidget>("MOD_VERSION").GetText = () => selectedMod.Mod.Version;
+			modChooserPanel.Get<LabelWidget>("MOD_VERSION").GetText = () => selectedMod.Metadata.Version;
 
 			var prevMod = modChooserPanel.Get<ButtonWidget>("PREV_MOD");
 			prevMod.OnClick = () => { modOffset -= 1; RebuildModList(); };
@@ -89,8 +89,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			};
 
 			sheetBuilder = new SheetBuilder(SheetType.BGRA);
-			allMods = Game.Mods.Values.Where(m => !m.Mod.Hidden)
-				.OrderBy(m => m.Mod.Title)
+			allMods = Game.Mods.Values.Where(m => !m.Metadata.Hidden)
+				.OrderBy(m => m.Metadata.Title)
 				.ToArray();
 
 			// Load preview images, and eat any errors
@@ -153,7 +153,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						SelectMod(mod);
 				};
 
-				item.TooltipText = mod.Mod.Title;
+				item.TooltipText = mod.Metadata.Title;
 
 				if (j < 9)
 					item.Key = new Hotkey((Keycode)((int)Keycode.NUMBER_1 + j), Modifiers.None);
@@ -170,8 +170,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		void SelectMod(Manifest mod)
 		{
 			selectedMod = mod;
-			selectedAuthor = "By " + (mod.Mod.Author ?? "unknown author");
-			selectedDescription = (mod.Mod.Description ?? "").Replace("\\n", "\n");
+			selectedAuthor = "By " + (mod.Metadata.Author ?? "unknown author");
+			selectedDescription = (mod.Metadata.Description ?? "").Replace("\\n", "\n");
 			var selectedIndex = Array.IndexOf(allMods, mod);
 			if (selectedIndex - modOffset > 4)
 				modOffset = selectedIndex - 4;

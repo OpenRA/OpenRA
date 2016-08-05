@@ -31,7 +31,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			// HACK: The engine code assumes that Game.modData is set.
 			Game.ModData = utility.ModData;
 
-			Console.WriteLine("This is an automatically generated listing of the new Lua map scripting API, generated for {0} of OpenRA.", Game.ModData.Manifest.Mod.Version);
+			Console.WriteLine("This is an automatically generated listing of the new Lua map scripting API, generated for {0} of OpenRA.", Game.ModData.Manifest.Metadata.Version);
 			Console.WriteLine();
 			Console.WriteLine("OpenRA allows custom maps and missions to be scripted using Lua 5.1.\n" +
 				"These scripts run in a sandbox that prevents access to unsafe functions (e.g. OS or file access), " +
