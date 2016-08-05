@@ -224,6 +224,7 @@ namespace OpenRA
 	{
 		void Init(ModData m, Dictionary<string, string> info);
 		void Display();
+		bool RequiredContentIsInstalled();
 		void StartGame(Arguments args);
 	}
 }

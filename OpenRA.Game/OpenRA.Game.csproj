@@ -243,7 +243,6 @@
     <Compile Include="Traits\ActivityUtils.cs" />
     <Compile Include="FileSystem\ZipFolder.cs" />
     <Compile Include="Primitives\float3.cs" />
-    <Compile Include="ModContent.cs" />
     <Compile Include="InstalledMods.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -36,6 +36,8 @@ namespace OpenRA.Mods.Cnc
 
 		public override void Init(ModData modData, Dictionary<string, string> info)
 		{
+			base.Init(modData, info);
+
 			loadInfo = info;
 
 			// Avoid standard loading mechanisms so we
