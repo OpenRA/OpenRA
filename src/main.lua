@@ -820,7 +820,8 @@ if ide.osname == 'Macintosh' then
       if nb:GetId() ~= ctrl:GetParent():GetId()
       or ctrl:GetClassInfo():GetClassName() == "wxAuiTabCtrl" then
         local frwd = not wx.wxGetKeyState(wx.WXK_SHIFT)
-        if not frwd and nb:GetSelection() == 0
+        if nb:GetId() ~= ctrl:GetParent():GetId()
+        or not frwd and nb:GetSelection() == 0
         or frwd and nb:GetSelection() == nb:GetPageCount()-1 then
           nb:AdvanceSelection(frwd)
           focus = nb:GetPage(nb:GetSelection())
