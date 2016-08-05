@@ -23,9 +23,9 @@ namespace OpenRA
 	{
 		readonly Dictionary<string, Manifest> mods;
 
-		public InstalledMods()
+		public InstalledMods(string customModPath)
 		{
-			mods = GetInstalledMods();
+			mods = GetInstalledMods(customModPath);
 		}
 
 		static IEnumerable<Pair<string, string>> GetCandidateMods()
@@ -89,10 +89,14 @@ namespace OpenRA
 			}
 		}
 
-		static Dictionary<string, Manifest> GetInstalledMods()
+		static Dictionary<string, Manifest> GetInstalledMods(string customModPath)
 		{
 			var ret = new Dictionary<string, Manifest>();
-			foreach (var pair in GetCandidateMods())
+			var candidates = GetCandidateMods();
+			if (customModPath != null)
+				candidates = candidates.Append(Pair.New(Path.GetFileNameWithoutExtension(customModPath), customModPath));
+
+			foreach (var pair in candidates)
 			{
 				var mod = LoadMod(pair.First, pair.Second);
 

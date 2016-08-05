@@ -244,6 +244,16 @@ namespace OpenRA
 		{
 			Console.WriteLine("Platform is {0}", Platform.CurrentPlatform);
 
+			// Special case handling of Game.Mod argument: if it matches a real filesystem path
+			// then we use this to override the mod search path, and replace it with the mod id
+			var modArgument = args.GetValue("Game.Mod", null);
+			string customModPath = null;
+			if (modArgument != null && (File.Exists(modArgument) || Directory.Exists(modArgument)))
+			{
+				customModPath = modArgument;
+				args.ReplaceValue("Game.Mod", Path.GetFileNameWithoutExtension(modArgument));
+			}
+
 			InitializeSettings(args);
 
 			Log.AddChannel("perf", "perf.log");
@@ -303,7 +313,7 @@ namespace OpenRA
 
 			GlobalChat = new GlobalChat();
 
-			Mods = new InstalledMods();
+			Mods = new InstalledMods(customModPath);
 			Console.WriteLine("Available mods:");
 			foreach (var mod in Mods)
 				Console.WriteLine("\t{0}: {1} ({2})", mod.Key, mod.Value.Metadata.Title, mod.Value.Metadata.Version);

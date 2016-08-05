@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
 
@@ -43,22 +44,29 @@ namespace OpenRA
 			Log.AddChannel("debug", null);
 
 			Game.InitializeSettings(Arguments.Empty);
-			var mods = new InstalledMods();
 
 			if (args.Length == 0)
 			{
-				PrintUsage(mods, null);
+				PrintUsage(new InstalledMods(null), null);
 				return;
 			}
 
-			var modName = args[0];
-			if (!mods.Keys.Contains(modName))
+			var modId = args[0];
+			string customModPath = null;
+			if (File.Exists(modId) || Directory.Exists(modId))
+			{
+				customModPath = modId;
+				modId = Path.GetFileNameWithoutExtension(modId);
+			}
+
+			var mods = new InstalledMods(customModPath);
+			if (!mods.Keys.Contains(modId))
 			{
 				PrintUsage(mods, null);
 				return;
 			}
 
-			var modData = new ModData(mods[modName], mods);
+			var modData = new ModData(mods[modId], mods);
 			var utility = new Utility(modData, mods);
 			args = args.Skip(1).ToArray();
 			var actions = new UtilityActions();
