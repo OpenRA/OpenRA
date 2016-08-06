@@ -38,7 +38,8 @@
 		UpgradeTypes: inaccuracy
 		Modifier: 90, 80, 70, 50
 	SelfHealing@ELITE:
-		Step: 2
+		Step: 0
+		PercentageStep: 4
 		Delay: 125
 		HealIfBelow: 100
 		DamageCooldown: 125
