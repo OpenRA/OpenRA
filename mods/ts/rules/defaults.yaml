@@ -867,6 +867,8 @@
 	EditorOnlyTooltip:
 		Name: Railway
 	AutoSelectionSize:
+	ChangesTerrain:
+		TerrainType: Rail
 
 ^Tunnel:
 	Inherits: ^TerrainOverlay
