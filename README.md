@@ -28,8 +28,6 @@ Check our [Playing the Game](https://github.com/OpenRA/OpenRA/wiki/Playing-the-g
 * See [Hacking](http://wiki.openra.net/Hacking) for an overview of the engine.
 * To get your patches merged, please adhere to the [Contributing](https://github.com/OpenRA/OpenRA/blob/bleed/CONTRIBUTING.md) guidelines.
 
-[![Issue Stats](http://issuestats.com/github/OpenRA/OpenRA/badge/pr)](http://issuestats.com/github/OpenRA/OpenRA) [![Issue Stats](http://issuestats.com/github/OpenRA/OpenRA/badge/issue)](http://issuestats.com/github/OpenRA/OpenRA)
-
 ## Mapping
 
 * We offer a [Mapping](http://wiki.openra.net/Mapping) Tutorial as you can change gameplay drastically with custom rules.
