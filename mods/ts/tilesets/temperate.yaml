@@ -16,33 +16,33 @@ Terrain:
 		RestrictPlayerColor: true
 	TerrainType@Road:
 		Type: Road
-		Color: 745537
+		Color: 7a7a7a
 		TargetTypes: Ground
 	TerrainType@Rail:
 		Type: Rail
-		Color: 745537
+		Color: 2b405a
 		TargetTypes: Ground
 	TerrainType@Impassable:
 		Type: Impassable
-		Color: 745537
+		Color: 000000
 		TargetTypes: Ground
 	TerrainType@Water:
 		Type: Water
-		Color: 745537
+		Color: 1f59a3
 		TargetTypes: Water
 		IsWater: True
 		RestrictPlayerColor: true
 	TerrainType@DirtRoad:
 		Type: DirtRoad
-		Color: 745537
+		Color: 906f49
 		TargetTypes: Ground
 	TerrainType@Rough:
 		Type: Rough
-		Color: 745537
+		Color: 005406
 		TargetTypes: Ground
 	TerrainType@Cliff:
 		Type: Cliff
-		Color: 745537
+		Color: 492b08
 		TargetTypes: Ground
 	TerrainType@Tiberium:
 		Type: Tiberium
