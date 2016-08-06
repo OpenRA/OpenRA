@@ -23,9 +23,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		enum PanelType { Display, Audio, Input, Advanced }
 
 		static readonly string OriginalSoundDevice;
-		static readonly string OriginalSoundEngine;
 		static readonly WindowMode OriginalGraphicsMode;
-		static readonly string OriginalGraphicsRenderer;
 		static readonly int2 OriginalGraphicsWindowedSize;
 		static readonly int2 OriginalGraphicsFullscreenSize;
 
@@ -43,9 +41,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			var original = Game.Settings;
 			OriginalSoundDevice = original.Sound.Device;
-			OriginalSoundEngine = original.Sound.Engine;
 			OriginalGraphicsMode = original.Graphics.Mode;
-			OriginalGraphicsRenderer = original.Graphics.Renderer;
 			OriginalGraphicsWindowedSize = original.Graphics.WindowedSize;
 			OriginalGraphicsFullscreenSize = original.Graphics.FullscreenSize;
 		}
@@ -72,9 +68,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				Action closeAndExit = () => { Ui.CloseWindow(); onExit(); };
 				if (OriginalSoundDevice != current.Sound.Device ||
-					OriginalSoundEngine != current.Sound.Engine ||
 					OriginalGraphicsMode != current.Graphics.Mode ||
-					OriginalGraphicsRenderer != current.Graphics.Renderer ||
 					OriginalGraphicsWindowedSize != current.Graphics.WindowedSize ||
 					OriginalGraphicsFullscreenSize != current.Graphics.FullscreenSize)
 					ConfirmationDialogs.ButtonPrompt(
@@ -336,7 +330,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 
 			var devices = Game.Sound.AvailableDevices();
-			soundDevice = devices.FirstOrDefault(d => d.Engine == ss.Engine && d.Device == ss.Device) ?? devices.First();
+			soundDevice = devices.FirstOrDefault(d => d.Device == ss.Device) ?? devices.First();
 
 			var audioDeviceDropdown = panel.Get<DropDownButtonWidget>("AUDIO_DEVICE");
 			audioDeviceDropdown.OnMouseDown = _ => ShowAudioDeviceDropdown(audioDeviceDropdown, devices);
@@ -349,7 +343,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			return () =>
 			{
 				ss.Device = soundDevice.Device;
-				ss.Engine = soundDevice.Engine;
 			};
 		}
 
@@ -365,7 +358,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				ss.CashTicks = dss.CashTicks;
 				ss.Mute = dss.Mute;
 				ss.Device = dss.Device;
-				ss.Engine = dss.Engine;
 
 				panel.Get<SliderWidget>("SOUND_VOLUME").Value = ss.SoundVolume;
 				Game.Sound.SoundVolume = ss.SoundVolume;

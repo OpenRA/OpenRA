@@ -12,9 +12,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.IO;
 using System.Linq;
-using System.Reflection;
 using OpenRA.Graphics;
 using OpenRA.Support;
 
@@ -49,14 +47,12 @@ namespace OpenRA
 		ITexture currentPaletteTexture;
 		IBatchRenderer currentBatchRenderer;
 
-		public Renderer(GraphicSettings graphicSettings, ServerSettings serverSettings)
+		public Renderer(IPlatform platform, GraphicSettings graphicSettings)
 		{
 			var resolution = GetResolution(graphicSettings);
 
-			var rendererName = graphicSettings.Renderer;
-			var rendererPath = Platform.ResolvePath(Path.Combine(".", "OpenRA.Platforms." + rendererName + ".dll"));
+			Device = platform.CreateGraphics(new Size(resolution.Width, resolution.Height), graphicSettings.Mode);
 
-			Device = CreateDevice(Assembly.LoadFile(rendererPath), resolution.Width, resolution.Height, graphicSettings.Mode);
 			TempBufferSize = graphicSettings.BatchSize;
 			SheetSize = graphicSettings.SheetSize;
 
@@ -77,17 +73,6 @@ namespace OpenRA
 				? graphicsSettings.WindowedSize
 				: graphicsSettings.FullscreenSize;
 			return new Size(size.X, size.Y);
-		}
-
-		static IGraphicsDevice CreateDevice(Assembly platformDll, int width, int height, WindowMode window)
-		{
-			foreach (PlatformAttribute r in platformDll.GetCustomAttributes(typeof(PlatformAttribute), false))
-			{
-				var factory = (IDeviceFactory)r.Type.GetConstructor(Type.EmptyTypes).Invoke(null);
-				return factory.CreateGraphics(new Size(width, height), window);
-			}
-
-			throw new InvalidOperationException("Renderer DLL is missing RendererAttribute to tell us what type to use!");
 		}
 
 		public void InitializeFonts(ModData modData)

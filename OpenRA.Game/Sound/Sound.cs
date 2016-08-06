@@ -11,8 +11,6 @@
 
 using System;
 using System.IO;
-using System.Linq;
-using System.Reflection;
 using OpenRA.FileSystem;
 using OpenRA.GameRules;
 using OpenRA.Primitives;
@@ -42,21 +40,12 @@ namespace OpenRA
 		ISound video;
 		MusicInfo currentMusic;
 
-		public Sound(string engineName)
+		public Sound(IPlatform platform, SoundSettings soundSettings)
 		{
-			var enginePath = Platform.ResolvePath(".", "OpenRA.Platforms." + engineName + ".dll");
-			soundEngine = CreateDevice(Assembly.LoadFile(enginePath));
-		}
+			soundEngine = platform.CreateSound(soundSettings.Device);
 
-		static ISoundEngine CreateDevice(Assembly platformDll)
-		{
-			foreach (PlatformAttribute r in platformDll.GetCustomAttributes(typeof(PlatformAttribute), false))
-			{
-				var factory = (IDeviceFactory)r.Type.GetConstructor(Type.EmptyTypes).Invoke(null);
-				return factory.CreateSound();
-			}
-
-			throw new InvalidOperationException("Platform DLL is missing PlatformAttribute to tell us what type to use!");
+			if (soundSettings.Mute)
+				MuteAudio();
 		}
 
 		ISoundSource LoadSound(ISoundLoader[] loaders, IReadOnlyFileSystem fileSystem, string filename)
@@ -92,12 +81,7 @@ namespace OpenRA
 
 		public SoundDevice[] AvailableDevices()
 		{
-			var defaultDevices = new[]
-			{
-				new SoundDevice("Null", null, "Output Disabled")
-			};
-
-			return defaultDevices.Concat(soundEngine.AvailableDevices()).ToArray();
+			return soundEngine.AvailableDevices();
 		}
 
 		public void SetListenerPosition(WPos position)
@@ -240,12 +224,6 @@ namespace OpenRA
 
 			MusicPlaying = false;
 			soundEngine.PauseSound(music, true);
-		}
-
-		public float GlobalVolume
-		{
-			get { return soundEngine.Volume; }
-			set { soundEngine.Volume = value; }
 		}
 
 		float soundVolumeModifier = 1.0f;

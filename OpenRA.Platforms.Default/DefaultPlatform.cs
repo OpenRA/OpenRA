@@ -12,20 +12,18 @@
 using System.Drawing;
 using OpenRA;
 
-[assembly: Platform(typeof(OpenRA.Platforms.Default.DeviceFactory))]
-
 namespace OpenRA.Platforms.Default
 {
-	public class DeviceFactory : IDeviceFactory
+	public class DefaultPlatform : IPlatform
 	{
 		public IGraphicsDevice CreateGraphics(Size size, WindowMode windowMode)
 		{
 			return new Sdl2GraphicsDevice(size, windowMode);
 		}
 
-		public ISoundEngine CreateSound()
+		public ISoundEngine CreateSound(string device)
 		{
-			return new OpenAlSoundEngine();
+			return new OpenAlSoundEngine(device);
 		}
 	}
 }

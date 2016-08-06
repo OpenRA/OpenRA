@@ -24,11 +24,10 @@ namespace OpenRA.Platforms.Default
 		{
 			var defaultDevices = new[]
 			{
-				new SoundDevice("Default", null, "Default Output"),
-				new SoundDevice("Null", null, "Output Disabled")
+				new SoundDevice(null, "Default Output"),
 			};
 
-			var physicalDevices = PhysicalDevices().Select(d => new SoundDevice("Default", d, d));
+			var physicalDevices = PhysicalDevices().Select(d => new SoundDevice(d, d));
 			return defaultDevices.Concat(physicalDevices).ToArray();
 		}
 
@@ -86,16 +85,14 @@ namespace OpenRA.Platforms.Default
 			return new string[] { };
 		}
 
-		public OpenAlSoundEngine()
+		public OpenAlSoundEngine(string deviceName)
 		{
-			Console.WriteLine("Using OpenAL sound engine");
-
-			if (Game.Settings.Sound.Device != null)
-				Console.WriteLine("Using device `{0}`", Game.Settings.Sound.Device);
+			if (deviceName != null)
+				Console.WriteLine("Using sound device `{0}`", deviceName);
 			else
-				Console.WriteLine("Using default device");
+				Console.WriteLine("Using default sound device");
 
-			device = ALC10.alcOpenDevice(Game.Settings.Sound.Device);
+			device = ALC10.alcOpenDevice(deviceName);
 			if (device == IntPtr.Zero)
 			{
 				Console.WriteLine("Failed to open device. Falling back to default");
@@ -209,9 +206,6 @@ namespace OpenRA.Platforms.Default
 			uint source;
 			if (!TryGetSourceFromPool(out source))
 				return null;
-
-			if (Game.Settings.Sound.Mute)
-				Game.Sound.MuteAudio();
 
 			var slot = sourcePool[source];
 			slot.Pos = pos;
