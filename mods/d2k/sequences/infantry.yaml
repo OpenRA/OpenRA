@@ -444,16 +444,16 @@ grenadier:
 		Tick: 120
 	die1: DATA.R8
 		Frames: 2694, 2701, 2708, 2715, 2722, 2729, 2736, 2743
-		Length: 19
+		Length: 8
 	die2: DATA.R8
 		Frames: 2695, 2702, 2709, 2716, 2723, 2730, 2737, 2744
-		Length: 19
+		Length: 8
 	die3: DATA.R8
 		Frames: 2696, 2703, 2710, 2717, 2724, 2731, 2738, 2745
-		Length: 19
+		Length: 8
 	die4: DATA.R8
 		Frames: 2697, 2704, 2711, 2718, 2725, 2732, 2738, 2746
-		Length: 19
+		Length: 8
 	die-crushed: DATA.R8
 		Frames: 2698, 2705, 2712, 2719, 2726, 2733, 2740, 2747
 		Tick: 800
