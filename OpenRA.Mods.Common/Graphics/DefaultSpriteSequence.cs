@@ -254,6 +254,11 @@ namespace OpenRA.Mods.Common.Graphics
 						"{0}: Sequence {1}.{2}: Length must be <= stride"
 						.F(info.Nodes[0].Location, sequence, animation));
 
+				if (Frames != null && Length > Frames.Length)
+					throw new InvalidOperationException(
+						"{0}: Sequence {1}.{2}: Length must be <= Frames.Length"
+						.F(info.Nodes[0].Location, sequence, animation));
+
 				if (Start < 0 || Start + Facings * Stride > sprites.Length)
 					throw new InvalidOperationException(
 						"{5}: Sequence {0}.{1} uses frames [{2}..{3}], but only 0..{4} actually exist"
