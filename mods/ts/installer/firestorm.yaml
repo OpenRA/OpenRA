@@ -1,0 +1,10 @@
+firestorm: Firestorm Expansion (English)
+	IDFiles:
+		README.TXT: f2810b540fce8f3880250213ee08c57780d81c20
+		Ts3.dsk: bc564449a15a61e5d350c2632d327ab386d991c9
+	Install:
+		copy: .
+			^Content/ts/expand01.mix: Install/expand01.mix
+			^Content/ts/scores.mix: scores.mix
+			^Content/ts/scores01.mix: scores01.mix
+			^Content/ts/movies03.mix: movies03.mix
