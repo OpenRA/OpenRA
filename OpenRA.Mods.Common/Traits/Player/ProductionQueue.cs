@@ -309,12 +309,6 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		public virtual int GetBuildTime(string unitString)
-		{
-			var actorInfo = self.World.Map.Rules.Actors[unitString];
-			return GetBuildTime(actorInfo, actorInfo.TraitInfo<BuildableInfo>());
-		}
-
 		public virtual int GetBuildTime(ActorInfo unit, BuildableInfo bi)
 		{
 			if (developerMode.FastBuild)
@@ -423,6 +417,8 @@ namespace OpenRA.Mods.Common.Traits
 		public bool Started { get; private set; }
 		public int Slowdown { get; private set; }
 
+		readonly ActorInfo ai;
+		readonly BuildableInfo bi;
 		readonly PowerManager pm;
 
 		public ProductionItem(ProductionQueue queue, string item, int cost, PowerManager pm, Action onComplete)
@@ -433,13 +429,15 @@ namespace OpenRA.Mods.Common.Traits
 			OnComplete = onComplete;
 			Queue = queue;
 			this.pm = pm;
+			ai = Queue.Actor.World.Map.Rules.Actors[Item];
+			bi = ai.TraitInfo<BuildableInfo>();
 		}
 
 		public void Tick(PlayerResources pr)
 		{
 			if (!Started)
 			{
-				var time = Queue.GetBuildTime(Item);
+				var time = Queue.GetBuildTime(ai, bi);
 				if (time > 0)
 					RemainingTime = TotalTime = time;
 

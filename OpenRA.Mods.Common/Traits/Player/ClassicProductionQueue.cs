@@ -118,12 +118,6 @@ namespace OpenRA.Mods.Common.Traits
 			return false;
 		}
 
-		public override int GetBuildTime(string unitString)
-		{
-			var actorInfo = self.World.Map.Rules.Actors[unitString];
-			return GetBuildTime(actorInfo, actorInfo.TraitInfo<BuildableInfo>());
-		}
-
 		public override int GetBuildTime(ActorInfo unit, BuildableInfo bi)
 		{
 			if (developerMode.FastBuild)
