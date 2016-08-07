@@ -19,3 +19,7 @@ music: Freeware Music
 	MirrorList: http://www.openra.net/packages/ts-music-mirrors.txt
 	Extract:
 		^Content/ts/scores.mix: scores.mix
+expansion: Expansion Freeware Content
+	MirrorList: http://www.openra.net/packages/fs-mirrors.txt
+	Extract:
+		^Content/ts/expand01.mix: expand01.mix
