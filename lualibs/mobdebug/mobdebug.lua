@@ -19,7 +19,7 @@ end)("os")
 
 local mobdebug = {
   _NAME = "mobdebug",
-  _VERSION = "0.6371",
+  _VERSION = "0.64",
   _COPYRIGHT = "Paul Kulchenko",
   _DESCRIPTION = "Mobile Remote Debugger for the Lua programming language",
   port = os and os.getenv and tonumber((os.getenv("MOBDEBUG_PORT"))) or 8172,
@@ -798,6 +798,7 @@ local function debugger_loop(sev, svars, sfile, sline)
           status, res = stringify_results(pcall(func))
         end
         if status then
+          if mobdebug.onscratch then mobdebug.onscratch(res) end
           server:send("200 OK " .. tostring(#res) .. "\n")
           server:send(res)
         else
@@ -1470,7 +1471,11 @@ local function handle(params, client, options)
     local _, _, stream, mode = string.find(params, "^[a-z]+%s+(%w+)%s+([dcr])%s*$")
     if stream and mode then
       client:send("OUTPUT "..stream.." "..mode.."\n")
-      local resp = client:receive()
+      local resp, err = client:receive()
+      if not resp then
+        print("Unknown error: "..err)
+        return nil, nil, "Debugger connection error: "..err
+      end
       local _, _, status = string.find(resp, "^(%d+)%s+%w+%s*$")
       if status == "200" then
         print("Stream "..stream.." redirected")
@@ -1499,7 +1504,7 @@ local function handle(params, client, options)
       local resp, err = client:receive()
       if not resp then
         print("Unknown error: "..err)
-        return nil, nil, "Debugger connection closed"
+        return nil, nil, "Debugger connection error: "..err
       end
       local _, _, status = string.find(resp, "^(%d+)%s+%w+%s*$")
       if status == "200" then
@@ -1634,6 +1639,7 @@ mobdebug.pause = function() step_into = true end
 mobdebug.yield = nil -- callback
 mobdebug.output = output
 mobdebug.onexit = os and os.exit or done
+mobdebug.onscratch = nil -- callback
 mobdebug.basedir = function(b) if b then basedir = b end return basedir end
 
 return mobdebug
