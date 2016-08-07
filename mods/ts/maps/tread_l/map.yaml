@@ -1247,3 +1247,11 @@ Rules:
 	World:
 		GlobalLightingPaletteEffect:
 			Ambient: 0.75
+	LOBRDG_A:
+		Targetable:
+			TargetTypes: Ground, Building
+			RequiresForceFire: true
+		Health:
+			HP: 1000
+		Armor:
+			Type: Concrete
