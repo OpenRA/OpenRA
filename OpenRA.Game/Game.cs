@@ -279,6 +279,12 @@ namespace OpenRA
 				{
 					Log.Write("graphics", "{0}", e);
 					Console.WriteLine("Renderer initialization failed. Check graphics.log for details.");
+
+					if (Renderer != null)
+						Renderer.Dispose();
+
+					if (Sound != null)
+						Sound.Dispose();
 				}
 			}
 
