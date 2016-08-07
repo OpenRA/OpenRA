@@ -278,7 +278,7 @@ namespace OpenRA
 				catch (Exception e)
 				{
 					Log.Write("graphics", "{0}", e);
-					Console.WriteLine("Renderer initialization failed. Fallback in place. Check graphics.log for details.");
+					Console.WriteLine("Renderer initialization failed. Check graphics.log for details.");
 				}
 			}
 
