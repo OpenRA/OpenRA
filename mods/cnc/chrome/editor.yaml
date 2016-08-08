@@ -134,6 +134,7 @@ Background@SAVE_MAP_PANEL:
 					Y: 85
 					Width: 220
 					Height: 25
+					Text: Map Visibility
 					Font: Regular
 				Label@DIRECTORY_LABEL:
 					X: 10
@@ -180,6 +181,16 @@ Background@SAVE_MAP_PANEL:
 			Height: 35
 			Text: Save
 			Font: Bold
+
+ScrollPanel@MAP_SAVE_VISIBILITY_PANEL:
+	Width: 220
+	Height: 64
+	Children:
+		Checkbox@VISIBILITY_TEMPLATE:
+			X: 5
+			Width: PARENT_RIGHT - 29
+			Height: 20
+			Font: Regular
 
 Container@EDITOR_ROOT:
 	Logic: LoadMapEditorLogic
