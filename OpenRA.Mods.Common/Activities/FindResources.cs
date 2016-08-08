@@ -79,7 +79,11 @@ namespace OpenRA.Mods.Common.Activities
 					n.MovingToResources(self, moveTo, this);
 
 				var randFrames = self.World.SharedRandom.Next(100, 175);
-				return ActivityUtils.SequenceActivities(NextActivity, new Wait(randFrames), this);
+
+				// Avoid creating an activity cycle
+				var next = NextActivity;
+				NextActivity = null;
+				return ActivityUtils.SequenceActivities(next, new Wait(randFrames), this);
 			}
 			else
 			{
