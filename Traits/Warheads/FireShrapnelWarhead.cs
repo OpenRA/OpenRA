@@ -28,6 +28,9 @@ namespace OpenRA.Mods.AS.Warheads
 		[Desc("The percentage of aiming this shrapnel to a suitable target actor.")]
 		public readonly int AimChance = 0;
 
+		[Desc("What diplomatic stances can be targeted by the shrapnel.")]
+		public readonly Stance AimTargetStances = Stance.Ally | Stance.Neutral | Stance.Enemy;
+
 		[Desc("Allow this shrapnel to be thrown randomly when no targets found.")]
 		public readonly bool ThrowWithoutTarget = true;
 
@@ -55,7 +58,9 @@ namespace OpenRA.Mods.AS.Warheads
 			var directActors = world.FindActorsInCircle(target.CenterPosition, TargetSearchRadius);
 
 			var availableTargetActors = world.FindActorsInCircle(target.CenterPosition, weapon.Range)
-				.Where(x => (AllowDirectHit || !directActors.Contains(x)) && weapon.IsValidAgainst(Target.FromActor(x), firedBy.World, firedBy))
+				.Where(x => (AllowDirectHit || !directActors.Contains(x)) 
+					&& weapon.IsValidAgainst(Target.FromActor(x), firedBy.World, firedBy)
+					&& AimTargetStances.HasStance(firedBy.Owner.Stances[x.Owner]))
 				.Shuffle(world.SharedRandom);
 
 			var targetActor = availableTargetActors.GetEnumerator();
