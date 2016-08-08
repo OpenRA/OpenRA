@@ -85,7 +85,7 @@ fi
 
 if [ ! -f Open.Nat.dll ]; then
 	echo "Fetching Open.Nat from NuGet"
-	get Open.Nat 2.0.16
+	get Open.Nat 2.1.0
 	cp ./Open.Nat/lib/net45/Open.Nat.dll .
 	rm -rf Open.Nat
 fi
