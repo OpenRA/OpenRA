@@ -19,7 +19,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.AS.Warheads
 {
 	[Desc("Spawn actors upon explosion.")]
-	public class SpawnActorWarhead : Warhead
+	public class SpawnActorWarhead : WarheadAS
 	{
 		[Desc("The cell range to try placing the actors within.")]
 		public readonly int Range = 10;
@@ -39,7 +39,12 @@ namespace OpenRA.Mods.AS.Warheads
 		public override void DoImpact(Target target, Actor firedBy, IEnumerable<int> damageModifiers)
 		{
 			var map = firedBy.World.Map;
-			var targetCells = map.FindTilesInCircle(map.CellContaining(target.CenterPosition), Range);
+			var targetCell = map.CellContaining(target.CenterPosition);
+
+			if (!IsValidImpact(target.CenterPosition, firedBy))
+				return;
+
+			var targetCells = map.FindTilesInCircle(targetCell, Range);
 			var cell = targetCells.GetEnumerator();
 
 			foreach (var a in Actors)
