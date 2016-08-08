@@ -91,6 +91,7 @@
     <Compile Include="Duplicates\Traits\Sound\AnnounceOnBuildAS.cs" />
     <Compile Include="Duplicates\Traits\Sound\AnnounceOnKillAS.cs" />
     <Compile Include="Lint\CheckSpawnActorWarheads.cs" />
+    <Compile Include="Lint\CheckTargetHealthRadiusAS.cs" />
     <Compile Include="Projectiles\InstantExplode.cs" />
     <Compile Include="Traits\UpgradeCrusher.cs" />
     <Compile Include="Traits\Multipliers\HealthPercentageFirepowerMultiplier.cs" />
