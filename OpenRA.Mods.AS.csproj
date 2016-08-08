@@ -97,6 +97,7 @@
     <Compile Include="Traits\Multipliers\HealthPercentageFirepowerMultiplier.cs" />
     <Compile Include="Traits\SupportPowers\DetonateWeaponPower.cs" />
     <Compile Include="Traits\Warheads\FireClusterWarhead.cs" />
+    <Compile Include="Traits\Warheads\FireShrapnelWarhead.cs" />
     <Compile Include="Traits\Warheads\SpawnActorWarhead.cs" />
     <Compile Include="Traits\Warheads\WarheadAS.cs" />
     <Compile Include="Traits\World\PaletteFromJasc32File.cs" />
