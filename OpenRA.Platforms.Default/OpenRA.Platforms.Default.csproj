@@ -38,9 +38,6 @@
     <Reference Include="Eluant">
       <HintPath>..\thirdparty\download\Eluant.dll</HintPath>
     </Reference>
-    <Reference Include="SDL2-CS">
-      <HintPath>..\thirdparty\download\SDL2-CS.dll</HintPath>
-    </Reference>
     <Reference Include="OpenAL-CS">
       <HintPath>..\thirdparty\download\OpenAL-CS.dll</HintPath>
     </Reference>
@@ -57,6 +54,8 @@
     <Compile Include="VertexBuffer.cs" />
     <Compile Include="OpenAlSoundEngine.cs" />
     <Compile Include="OpenGL.cs" />
+    <Compile Include="SDL2.cs" />
+    <Compile Include="LPUtf8StrMarshaler.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

@@ -126,13 +126,6 @@ if (!(Test-Path "FuzzyLogicLibrary.dll"))
 	rmdir FuzzyLogicLibrary -Recurse
 }
 
-if (!(Test-Path "SDL2-CS.dll"))
-{
-	echo "Fetching SDL2-CS from GitHub."
-	$target = Join-Path $pwd.ToString() "SDL2-CS.dll"
-	(New-Object System.Net.WebClient).DownloadFile("https://github.com/OpenRA/SDL2-CS/releases/download/20151227/SDL2-CS.dll", $target)
-}
-
 if (!(Test-Path "OpenAL-CS.dll"))
 {
 	echo "Fetching OpenAL-CS from GitHub."
