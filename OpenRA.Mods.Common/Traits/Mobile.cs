@@ -332,6 +332,8 @@ namespace OpenRA.Mods.Common.Traits
 		CPos fromCell, toCell;
 		public SubCell FromSubCell, ToSubCell;
 
+		public List<Target> WaypointTargets = new List<Target>();
+
 		[Sync] public int Facing
 		{
 			get { return facing; }
@@ -505,8 +507,6 @@ namespace OpenRA.Mods.Common.Traits
 			TicksBeforePathing = AverageTicksBeforePathing + self.World.SharedRandom.Next(-SpreadTicksBeforePathing, SpreadTicksBeforePathing);
 
 			self.QueueActivity(new Move(self, currentLocation, WDist.FromCells(8)));
-
-			self.SetTargetLine(Target.FromCell(self.World, currentLocation), Color.Green);
 		}
 
 		protected void PerformMove(Actor self, CPos targetLocation, bool queued)
@@ -514,7 +514,14 @@ namespace OpenRA.Mods.Common.Traits
 			if (queued)
 				self.QueueActivity(new CallFunc(() => PerformMoveInner(self, targetLocation, true)));
 			else
+			{
+				WaypointTargets.Clear();
 				PerformMoveInner(self, targetLocation, false);
+			}
+
+			var currentLocation = NearestMoveableCell(targetLocation);
+			WaypointTargets.Add(Target.FromCell(self.World, currentLocation));
+			self.SetTargetLines(WaypointTargets, Color.Green);
 		}
 
 		public void ResolveOrder(Actor self, Order order)
