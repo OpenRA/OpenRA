@@ -50,13 +50,15 @@ local function runtests()
   for _,file in ipairs(files) do
     local testfn, err = loadfile(file)
     if not testfn then
-      print(("Error loading test file '%s': '%s'."):format(file, err))
+      ide:Print(("Error loading test file '%s': '%s'."):format(file, err))
+      break
     else
       setfenv(testfn, env)
-      print("# "..file)
+      ide:Print("# "..file)
       local ok, err = pcall(testfn, pkg)
       if not ok then
-        print(("Error executing test file '%s': '%s'."):format(file, err))
+        ide:Print(("Error executing test file '%s': '%s'."):format(file, err))
+        break
       end
     end
   end
