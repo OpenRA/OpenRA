@@ -100,7 +100,6 @@ namespace OpenRA.Mods.Common.Traits
 			var line = self.TraitOrDefault<DrawLineToTarget>();
 			if (line != null)
 				line.SetTargets(self, targets, color, true);
-				// self.World.AddFrameEndTask(w => line.SetTargets(self, targets, color, false));
 		}
 
 		public static void SetTargetLine(this Actor self, Target target, Color color)
