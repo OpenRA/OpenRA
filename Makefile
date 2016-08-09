@@ -118,7 +118,7 @@ pdefault_SRCS := $(shell find OpenRA.Platforms.Default/ -iname '*.cs')
 pdefault_TARGET = OpenRA.Platforms.Default.dll
 pdefault_KIND = library
 pdefault_DEPS = $(game_TARGET)
-pdefault_LIBS = $(COMMON_LIBS) thirdparty/download/OpenAL-CS.dll $(pdefault_DEPS)
+pdefault_LIBS = $(COMMON_LIBS) $(pdefault_DEPS)
 PROGRAMS += pdefault
 platforms: $(pdefault_TARGET)
 
@@ -404,7 +404,6 @@ install-core: default
 	@$(CP_R) glsl "$(DATA_INSTALL_DIR)"
 	@$(CP_R) lua "$(DATA_INSTALL_DIR)"
 	@$(CP) OpenRA.Platforms.Default.dll.config "$(DATA_INSTALL_DIR)"
-	@$(CP) OpenAL-CS* "$(DATA_INSTALL_DIR)"
 	@$(CP) Eluant* "$(DATA_INSTALL_DIR)"
 	@$(INSTALL_PROGRAM) ICSharpCode.SharpZipLib.dll "$(DATA_INSTALL_DIR)"
 	@$(INSTALL_PROGRAM) FuzzyLogicLibrary.dll "$(DATA_INSTALL_DIR)"

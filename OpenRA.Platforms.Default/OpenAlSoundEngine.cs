@@ -109,7 +109,7 @@ namespace OpenRA.Platforms.Default
 			for (var i = 0; i < PoolSize; i++)
 			{
 				var source = 0U;
-				AL10.alGenSources(new IntPtr(1), out source);
+				AL10.alGenSources(1, out source);
 				if (AL10.alGetError() != AL10.AL_NO_ERROR)
 				{
 					Log.Write("sound", "Failed generating OpenAL source {0}", i);
@@ -338,8 +338,8 @@ namespace OpenRA.Platforms.Default
 
 		public OpenAlSoundSource(byte[] data, int channels, int sampleBits, int sampleRate)
 		{
-			AL10.alGenBuffers(new IntPtr(1), out Buffer);
-			AL10.alBufferData(Buffer, MakeALFormat(channels, sampleBits), data, new IntPtr(data.Length), new IntPtr(sampleRate));
+			AL10.alGenBuffers(1, out Buffer);
+			AL10.alBufferData(Buffer, MakeALFormat(channels, sampleBits), data, data.Length, sampleRate);
 		}
 	}
 

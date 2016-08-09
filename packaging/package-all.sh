@@ -51,9 +51,6 @@ cp thirdparty/download/FuzzyLogicLibrary.dll packaging/built
 # SharpFont for FreeType support
 cp thirdparty/download/SharpFont* packaging/built
 
-# OpenAL-CS
-cp thirdparty/download/OpenAL-CS* packaging/built
-
 # Open.NAT for UPnP support
 cp thirdparty/download/Open.Nat.dll packaging/built
 
