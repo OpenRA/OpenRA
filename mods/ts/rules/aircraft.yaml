@@ -9,7 +9,7 @@ DPOD:
 		TurnSpeed: 5
 		Speed: 149
 		InitialFacing: 0
-		LandableTerrainTypes: Clear
+		LandableTerrainTypes: Clear,Road,Rail,DirtRoad,Rough,Tiberium,BlueTiberium,Veins
 	Health:
 		HP: 60
 	Armor:
@@ -42,7 +42,7 @@ DSHP:
 		TurnSpeed: 5
 		Speed: 168
 		InitialFacing: 0
-		LandableTerrainTypes: Clear
+		LandableTerrainTypes: Clear,Road,Rail,DirtRoad,Rough,Tiberium,BlueTiberium,Veins
 		TakeoffSound: dropup1.aud
 		LandingSound: dropdwn1.aud
 		IdealSeparation: 1275
@@ -168,7 +168,7 @@ ORCATRAN:
 		TurnSpeed: 5
 		Speed: 84
 		InitialFacing: 0
-		LandableTerrainTypes: Clear
+		LandableTerrainTypes: Clear,Road,Rail,DirtRoad,Rough,Tiberium,BlueTiberium,Veins
 		TakeoffSound: orcaup1.aud
 		LandingSound: orcadwn1.aud
 		IdealSeparation: 1275
@@ -204,7 +204,7 @@ TRNSPORT:
 		TurnSpeed: 5
 		Speed: 149
 		InitialFacing: 0
-		LandableTerrainTypes: Clear
+		LandableTerrainTypes: Clear,Road,Rail,DirtRoad,Rough,Tiberium,BlueTiberium,Veins
 		TakeoffSound: dropup1.aud
 		LandingSound: dropdwn1.aud
 		AltitudeVelocity: 64
