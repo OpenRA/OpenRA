@@ -101,7 +101,8 @@ namespace OpenRA.Mods.AS.Warheads
 
 					Source = target.CenterPosition,
 					SourceActor = firedBy,
-					GuidedTarget = shrapnelTarget
+					GuidedTarget = shrapnelTarget,
+					PassiveTarget = shrapnelTarget.CenterPosition
 				};
 
 				if (args.Weapon.Projectile != null)
