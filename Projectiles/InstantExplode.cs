@@ -23,9 +23,9 @@ namespace OpenRA.Mods.AS.Effects
 
 	class InstantExplode : IProjectile
 	{
-		private ProjectileArgs args;
+		readonly ProjectileArgs args;
 
-		public InstantExplode(InstantExplodeInfo instantExplodeInfo, ProjectileArgs args)
+		public InstantExplode(InstantExplodeInfo info, ProjectileArgs args)
 		{
 			this.args = args;
 		}
