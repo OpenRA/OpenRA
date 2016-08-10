@@ -6,7 +6,6 @@
 		PlayerExperienceModifier: 1
 	ScriptTriggers:
 	UpgradeManager:
-	Huntable:
 	RenderDebugState:
 
 ^SpriteActor:
@@ -93,6 +92,7 @@
 	Inherits@1: ^ExistsInWorld
 	Inherits@2: ^SpriteActor
 	Inherits@3: ^Cloakable
+	Huntable:
 	SelectionDecorations:
 		Palette: pips
 	Selectable:
@@ -239,6 +239,7 @@
 	Inherits@2: ^ExistsInWorld
 	Inherits@3: ^SpriteActor
 	Inherits@4: ^Cloakable
+	Huntable:
 	DrawLineToTarget:
 	Health:
 		HP: 50
@@ -420,6 +421,7 @@
 	Inherits@3: ^EmpDisableMobile
 	Inherits@4: ^Cloakable
 	Inherits@5: ^DamagedByVeins
+	Huntable:
 	DrawLineToTarget:
 	Mobile:
 		Crushes: crate
@@ -525,6 +527,7 @@
 	Inherits@1: ^GainsExperience
 	Inherits@2: ^ExistsInWorld
 	Inherits@3: ^Cloakable
+	Huntable:
 	DrawLineToTarget:
 	AppearsOnRadar:
 		UseLocation: true
@@ -608,6 +611,7 @@
 	Inherits@1: ^ExistsInWorld
 	Inherits@2: ^SpriteActor
 	Inherits@3: ^HealsOnTiberium
+	Huntable:
 	DrawLineToTarget:
 	Health:
 		Shape: Circle
@@ -729,6 +733,7 @@
 	Inherits@1: ^GainsExperience
 	Inherits@2: ^ExistsInWorld
 	Inherits@3: ^SpriteActor
+	Huntable:
 	Voiced:
 		VoiceSet: Vehicle
 	AttackTurreted:
@@ -755,6 +760,7 @@
 	Inherits@1: ^EmpDisableMobile
 	Inherits@2: ^ExistsInWorld
 	Inherits@3: ^Cloakable
+	Huntable:
 	RenderVoxels:
 	RenderSprites:
 	WithVoxelBody:
@@ -823,6 +829,7 @@
 
 ^Gate:
 	Inherits: ^Building
+	Huntable:
 	Valued:
 		Cost: 250
 	Health:
