@@ -62,7 +62,11 @@ namespace OpenRA.Mods.RA.Traits
 			{
 				case "BeginMinefield":
 					var start = self.World.Map.CellContaining(target.CenterPosition);
-					self.World.OrderGenerator = new MinefieldOrderGenerator(self, start);
+					if (self.World.OrderGenerator is MinefieldOrderGenerator)
+						((MinefieldOrderGenerator)self.World.OrderGenerator).AddMinelayer(self, start);
+					else
+						self.World.OrderGenerator = new MinefieldOrderGenerator(self, start);
+
 					return new Order("BeginMinefield", self, false) { TargetLocation = start };
 				case "PlaceMine":
 					return new Order("PlaceMine", self, false) { TargetLocation = self.Location };
@@ -130,19 +134,24 @@ namespace OpenRA.Mods.RA.Traits
 
 		class MinefieldOrderGenerator : IOrderGenerator
 		{
-			readonly Actor minelayer;
-			readonly CPos minefieldStart;
+			readonly List<Actor> minelayers;
 			readonly Sprite tileOk;
 			readonly Sprite tileBlocked;
+			readonly CPos minefieldStart;
 
-			public MinefieldOrderGenerator(Actor self, CPos xy)
+			public MinefieldOrderGenerator(Actor a, CPos xy)
 			{
-				minelayer = self;
+				minelayers = new List<Actor>() { a };
 				minefieldStart = xy;
 
-				var tileset = self.World.Map.Tileset.ToLowerInvariant();
-				tileOk = self.World.Map.Rules.Sequences.GetSequence("overlay", "build-valid-{0}".F(tileset)).GetSprite(0);
-				tileBlocked = self.World.Map.Rules.Sequences.GetSequence("overlay", "build-invalid").GetSprite(0);
+				var tileset = a.World.Map.Tileset.ToLowerInvariant();
+				tileOk = a.World.Map.Rules.Sequences.GetSequence("overlay", "build-valid-{0}".F(tileset)).GetSprite(0);
+				tileBlocked = a.World.Map.Rules.Sequences.GetSequence("overlay", "build-invalid").GetSprite(0);
+			}
+
+			public void AddMinelayer(Actor a, CPos xy)
+			{
+				minelayers.Add(a);
 			}
 
 			public IEnumerable<Order> Order(World world, CPos cell, int2 worldPixel, MouseInput mi)
@@ -160,14 +169,16 @@ namespace OpenRA.Mods.RA.Traits
 
 				if (mi.Button == Game.Settings.Game.MouseButtonPreference.Action && underCursor == null)
 				{
-					minelayer.World.CancelInputMode();
-					yield return new Order("PlaceMinefield", minelayer, false) { TargetLocation = cell };
+					minelayers.First().World.CancelInputMode();
+					foreach (var minelayer in minelayers)
+						yield return new Order("PlaceMinefield", minelayer, false) { TargetLocation = cell };
 				}
 			}
 
 			public void Tick(World world)
 			{
-				if (!minelayer.IsInWorld || minelayer.IsDead)
+				minelayers.RemoveAll(minelayer => !minelayer.IsInWorld || minelayer.IsDead);
+				if (!minelayers.Any())
 					world.CancelInputMode();
 			}
 
@@ -175,12 +186,13 @@ namespace OpenRA.Mods.RA.Traits
 			public IEnumerable<IRenderable> Render(WorldRenderer wr, World world) { yield break; }
 			public IEnumerable<IRenderable> RenderAfterWorld(WorldRenderer wr, World world)
 			{
-				if (!minelayer.IsInWorld)
+				if (!minelayers.Any())
 					yield break;
 
-				var movement = minelayer.Trait<IPositionable>();
+				// We get the biggest depth so we cover all cells that mines could be placed on.
 				var minefield = GetMinefieldCells(minefieldStart, lastMousePos,
-					minelayer.Info.TraitInfo<MinelayerInfo>().MinefieldDepth);
+					minelayers.Max(m => m.Info.TraitInfo<MinelayerInfo>().MinefieldDepth));
+				var movement = minelayers.First().Trait<IPositionable>();
 
 				var pal = wr.Palette(TileSet.TerrainPaletteInternalName);
 				foreach (var c in minefield)
