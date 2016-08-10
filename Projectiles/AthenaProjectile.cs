@@ -19,7 +19,7 @@ namespace OpenRA.Mods.AS.Effects
 	public class AthenaProjectileInfo : IProjectileInfo
 	{
 		[Desc("Explosion altitude added to target actor.")]
-		public readonly WDist Altitude = new WDist(0);
+		public readonly WDist Altitude = WDist.Zero;
 
 		[Desc("Delay between firing and exploding.")]
 		public readonly int Delay = 0;
@@ -32,7 +32,6 @@ namespace OpenRA.Mods.AS.Effects
 		readonly ProjectileArgs args;
 		readonly WDist altitude;
 
-		WPos target;
 		int delay;
 
 		public AthenaProjectile(AthenaProjectileInfo info, ProjectileArgs args)
@@ -46,6 +45,7 @@ namespace OpenRA.Mods.AS.Effects
 		{
 			if (--delay < 0)
 			{
+				WPos target;
 				if (args.GuidedTarget.IsValidFor(args.SourceActor))
 					target = args.GuidedTarget.CenterPosition + new WVec(WDist.Zero, WDist.Zero, altitude);
 				else
