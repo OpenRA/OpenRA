@@ -179,7 +179,9 @@ namespace OpenRA.Mods.Common.Activities
 			if (firstFacing != mobile.Facing)
 			{
 				path.Add(nextCell.Value.First);
-				return ActivityUtils.SequenceActivities(new Turn(self, firstFacing), this);
+				var turn_activity = new Turn(self, firstFacing);
+				turn_activity.NextActivity = this;
+				return turn_activity;
 			}
 			else
 			{
@@ -195,6 +197,8 @@ namespace OpenRA.Mods.Common.Activities
 					mobile.Facing,
 					mobile.Facing,
 					0);
+
+				move.NextActivity = this.NextActivity;
 
 				return move;
 			}
@@ -213,11 +217,7 @@ namespace OpenRA.Mods.Common.Activities
 		Pair<CPos, SubCell>? PopPath(Actor self)
 		{
 			if (path.Count == 0)
-			{
-				if (mobile.WaypointTargets.Count() > 0)
-				mobile.WaypointTargets.Remove(mobile.WaypointTargets.First());
 				return null;
-			}
 
 			var nextCell = path[path.Count - 1];
 
@@ -291,10 +291,10 @@ namespace OpenRA.Mods.Common.Activities
 			return Target.None;
 		}
 
-		abstract class MovePart : Activity
+		public abstract class MovePart : Activity
 		{
-			protected readonly Move Move;
-			protected readonly WPos From, To;
+			public readonly Move Move;
+			public readonly WPos From, To;
 			protected readonly int FromFacing, ToFacing;
 			protected readonly int MoveFractionTotal;
 			protected int moveFraction;
@@ -368,7 +368,7 @@ namespace OpenRA.Mods.Common.Activities
 			}
 		}
 
-		class MoveFirstHalf : MovePart
+		public class MoveFirstHalf : MovePart
 		{
 			public MoveFirstHalf(Move move, WPos from, WPos to, int fromFacing, int toFacing, int startingFraction)
 				: base(move, from, to, fromFacing, toFacing, startingFraction) { }
@@ -420,7 +420,7 @@ namespace OpenRA.Mods.Common.Activities
 			}
 		}
 
-		class MoveSecondHalf : MovePart
+		public class MoveSecondHalf : MovePart
 		{
 			public MoveSecondHalf(Move move, WPos from, WPos to, int fromFacing, int toFacing, int startingFraction)
 				: base(move, from, to, fromFacing, toFacing, startingFraction) { }
