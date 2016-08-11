@@ -80,7 +80,7 @@ namespace OpenRA.Mods.Common.Traits
 				if (target.Type == TargetType.Invalid)
 					continue;
 
-					valid_targets.Add(target.CenterPosition);
+				valid_targets.Add(target.CenterPosition);
 			}
 
 			yield return new TargetLineRenderable(valid_targets, c);

@@ -500,11 +500,9 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 			}
 
-			if (!queued) self.CancelActivity();
-
 			TicksBeforePathing = AverageTicksBeforePathing + self.World.SharedRandom.Next(-SpreadTicksBeforePathing, SpreadTicksBeforePathing);
 
-			self.QueueActivity(new Move(self, currentLocation, WDist.FromCells(8)));
+			self.QueueActivity(queued, new Move(self, currentLocation, WDist.FromCells(8)));
 		}
 
 		protected void PerformMove(Actor self, CPos targetLocation, bool queued)
@@ -513,14 +511,30 @@ namespace OpenRA.Mods.Common.Traits
 
 			var activity = self.GetCurrentActivity();
 			List<Target> currentTargets = new List<Target>();
-			while (activity != null)
-			{
-				if (activity is Move)
-				{
-					currentTargets.Add(((Move)activity).GetTargets(self).Last());
-				}
 
-				activity = activity.NextActivity;
+			if (queued)
+			{
+				while (activity != null)
+				{
+					if (activity is Move)
+					{
+						currentTargets.Add(Target.FromCell(self.World, ((Move)activity).GetDestination()));
+					}
+					else if (activity is Move.MoveFirstHalf)
+					{
+						currentTargets.Add(Target.FromCell(self.World, ((Move.MoveFirstHalf)activity).Move.GetDestination()));
+					}
+					else if (activity is Move.MoveSecondHalf)
+					{
+						currentTargets.Add(Target.FromCell(self.World, ((Move.MoveSecondHalf)activity).Move.GetDestination()));
+					}
+
+					activity = activity.NextActivity;
+				}
+			}
+			else
+			{
+				currentTargets.Add(Target.FromCell(self.World, targetLocation));
 			}
 
 			self.SetTargetLines(currentTargets, Color.Green);

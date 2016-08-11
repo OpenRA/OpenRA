@@ -282,6 +282,11 @@ namespace OpenRA.Mods.Common.Activities
 			base.Cancel(self);
 		}
 
+		public CPos GetDestination()
+		{
+			return this.destination.Value;
+		}
+
 		public override IEnumerable<Target> GetTargets(Actor self)
 		{
 			if (path != null)
@@ -294,7 +299,7 @@ namespace OpenRA.Mods.Common.Activities
 		public abstract class MovePart : Activity
 		{
 			public readonly Move Move;
-			public readonly WPos From, To;
+			protected readonly WPos From, To;
 			protected readonly int FromFacing, ToFacing;
 			protected readonly int MoveFractionTotal;
 			protected int moveFraction;
@@ -397,7 +402,7 @@ namespace OpenRA.Mods.Common.Activities
 							mobile.Facing,
 							Util.GetNearestFacing(mobile.Facing, self.World.Map.FacingBetween(mobile.ToCell, nextCell.Value.First, mobile.Facing)),
 							moveFraction - MoveFractionTotal);
-
+ret.NextActivity = this.NextActivity;
 						mobile.FinishedMoving(self);
 						mobile.SetLocation(mobile.ToCell, mobile.ToSubCell, nextCell.Value.First, nextCell.Value.Second);
 						return ret;
@@ -413,7 +418,7 @@ namespace OpenRA.Mods.Common.Activities
 					mobile.Facing,
 					mobile.Facing,
 					moveFraction - MoveFractionTotal);
-
+ret2.NextActivity = this.NextActivity;
 				mobile.EnteringCell(self);
 				mobile.SetLocation(mobile.ToCell, mobile.ToSubCell, mobile.ToCell, mobile.ToSubCell);
 				return ret2;
