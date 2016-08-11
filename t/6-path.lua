@@ -80,7 +80,7 @@ ok(lcp:find(ide.osclibs, 1, true) ~= 1,
 
 _G.CommandLineRun = CLR
 
-wx.wxSetEnv('LUA_PATH', LPATH or "")
-wx.wxSetEnv('LUA_CPATH', LCPATH or "")
-wx.wxSetEnv('LUA_CPATH_5_2', LCPATH52 or "")
+if LPATH then wx.wxSetEnv('LUA_PATH', LPATH) else wx.wxUnsetEnv('LUA_PATH') end
+if LCPATH then wx.wxSetEnv('LUA_CPATH', LCPATH) else wx.wxUnsetEnv('LUA_CPATH') end
+if LCPATH52 then wx.wxSetEnv('LUA_CPATH_5_2', LCPATH52) else wx.wxUnsetEnv('LUA_CPATH_5_2') end
 ide.test.setLuaPaths(mainpath, ide.osname)
