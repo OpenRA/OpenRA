@@ -13,7 +13,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	[Desc("Applies an upgrade to actors within a specified range.")]
+	[Desc("Applies an upgrade to the actor at specified damage states.")]
 	public class UpgradeOnDamageInfo : ITraitInfo, Requires<UpgradeManagerInfo>
 	{
 		[UpgradeGrantedReference, FieldLoader.Require]
