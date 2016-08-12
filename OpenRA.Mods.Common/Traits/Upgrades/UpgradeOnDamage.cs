@@ -14,7 +14,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Applies an upgrade to the actor at specified damage states.")]
-	public class UpgradeOnDamageInfo : ITraitInfo, Requires<UpgradeManagerInfo>
+	public class UpgradeOnDamageInfo : ITraitInfo, Requires<UpgradeManagerInfo>, Requires<HealthInfo>
 	{
 		[UpgradeGrantedReference, FieldLoader.Require]
 		[Desc("The upgrades to grant.")]
@@ -35,16 +35,36 @@ namespace OpenRA.Mods.Common.Traits
 		public object Create(ActorInitializer init) { return new UpgradeOnDamage(init.Self, this); }
 	}
 
-	public class UpgradeOnDamage : INotifyDamageStateChanged
+	public class UpgradeOnDamage : INotifyDamageStateChanged, INotifyCreated
 	{
 		readonly UpgradeOnDamageInfo info;
 		readonly UpgradeManager um;
+		readonly Health health;
 		bool granted;
 
 		public UpgradeOnDamage(Actor self, UpgradeOnDamageInfo info)
 		{
 			this.info = info;
 			um = self.Trait<UpgradeManager>();
+			health = self.Trait<Health>();
+		}
+
+		void INotifyCreated.Created(Actor self)
+		{
+			GrantUpgradeOnValidDamageState(self, health.DamageState);
+		}
+
+		void GrantUpgradeOnValidDamageState(Actor self, DamageState state)
+		{
+			if (!info.ValidDamageStates.HasFlag(state))
+				return;
+
+			granted = true;
+			var rand = Game.CosmeticRandom;
+			var sound = info.EnabledSounds.RandomOrDefault(rand);
+			Game.Sound.Play(sound, self.CenterPosition);
+			foreach (var u in info.Upgrades)
+				um.GrantUpgrade(self, u, this);
 		}
 
 		void INotifyDamageStateChanged.DamageStateChanged(Actor self, AttackInfo e)
@@ -52,18 +72,12 @@ namespace OpenRA.Mods.Common.Traits
 			if (granted && info.GrantPermanently)
 				return;
 
-			var rand = Game.CosmeticRandom;
-			if (!granted && info.ValidDamageStates.HasFlag(e.DamageState) && !info.ValidDamageStates.HasFlag(e.PreviousDamageState))
-			{
-				granted = true;
-				var sound = info.EnabledSounds.RandomOrDefault(rand);
-				Game.Sound.Play(sound, self.CenterPosition);
-				foreach (var u in info.Upgrades)
-					um.GrantUpgrade(self, u, this);
-			}
+			if (!granted && !info.ValidDamageStates.HasFlag(e.PreviousDamageState))
+				GrantUpgradeOnValidDamageState(self, health.DamageState);
 			else if (granted && !info.ValidDamageStates.HasFlag(e.DamageState) && info.ValidDamageStates.HasFlag(e.PreviousDamageState))
 			{
 				granted = false;
+				var rand = Game.CosmeticRandom;
 				var sound = info.DisabledSounds.RandomOrDefault(rand);
 				Game.Sound.Play(sound, self.CenterPosition);
 				foreach (var u in info.Upgrades)
