@@ -44,14 +44,11 @@ namespace OpenRA.Mods.Common.Traits
 		public UpgradeOnDamage(Actor self, UpgradeOnDamageInfo info)
 		{
 			this.info = info;
-			um = self.TraitOrDefault<UpgradeManager>();
+			um = self.Trait<UpgradeManager>();
 		}
 
 		void INotifyDamageStateChanged.DamageStateChanged(Actor self, AttackInfo e)
 		{
-			if (um == null)
-				return;
-
 			if (granted && info.GrantPermanently)
 				return;
 
