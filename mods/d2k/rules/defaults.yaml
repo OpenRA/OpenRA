@@ -6,7 +6,6 @@
 		PlayerExperienceModifier: 1
 	ScriptTriggers:
 	UpgradeManager:
-	Huntable:
 	RenderDebugState:
 
 ^SpriteActor:
@@ -59,6 +58,7 @@
 	Inherits@1: ^ExistsInWorld
 	Inherits@2: ^GainsExperience
 	Inherits@3: ^SpriteActor
+	Huntable:
 	Mobile:
 		UpgradeTypes: notmobile
 		UpgradeMaxEnabledLevel: 0
@@ -161,6 +161,7 @@
 	Inherits@1: ^ExistsInWorld
 	Inherits@2: ^GainsExperience
 	Inherits@3: ^SpriteActor
+	Huntable:
 	Health:
 		Shape: Circle
 			Radius: 96
@@ -227,6 +228,7 @@
 ^Plane:
 	Inherits@1: ^ExistsInWorld
 	Inherits@2: ^SpriteActor
+	Huntable:
 	AppearsOnRadar:
 		UseLocation: true
 	HiddenUnderFog:
@@ -241,6 +243,7 @@
 ^Building:
 	Inherits@1: ^ExistsInWorld
 	Inherits@2: ^SpriteActor
+	Huntable:
 	SelectionDecorations:
 	Selectable:
 		Priority: 2
