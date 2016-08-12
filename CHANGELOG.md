@@ -1,6 +1,6 @@
 # ZeroBrane Studio Changelog
 
-## Current master (Jul 28 2016)
+## Current master (Aug 11 2016)
 
 ### Highlights
   - Added refresh of search results from the right-click-on-tab menu.
@@ -12,9 +12,16 @@
 
 ### Special thanks
   - To [fnaith](https://github.com/fnaith) for adding translation to Traditional Chinese.
+  - To [Roland Yonaba](https://github.com/Yonaba/) for French translation update.
+  - To [Inigo Sola](https://github.com/inigosola) for Spanish translation update.
+  - To [riidom](https://github.com/riidom) for German translation update.
+  - To [Leo Bartoloni](https://github.com/bartoleo) for Italian translation update.
   - To [Christoph Kubisch](https://github.com/pixeljetstream) for luxinia cleanup.
 
 ### Improvements
+  - Added slight improvement for Ctrl-Tab workaround on OSX.
+  - Added default setting for `debugger.allowediting` config option.
+  - Adding new Spanish translations (#70, closes #677).
   - Added workaround for hanging during editing on ArchLinux when tab name is modified (#673).
   - Added checks to ensure that only valid tree items are passed to `onFiletree*Down` callbacks.
   - Added disallowing mapping of the project directory.
@@ -123,6 +130,7 @@
   - Allowed shortcuts for editor menu items (closes #597, closes #405).
   - Allowed optional `version` parameter to execution path in Lua interpreter.
   - Allowed `MarkerToggle` method to accept marker name in addition to marker number.
+  - Improved the fix to avoid duplicate lines in the editor on OSX (follow-up to 9344280d).
   - Improved path merge for the main editor path (#663).
   - Improved handling of constant values in Gideros API processing.
   - Improved whitespace handling in commandbar pattern matching (#31).
@@ -161,6 +169,14 @@
   - Removed `svn` from dependencies for Linux build scripts (as it's not longer used).
   - Simplified logic for launching ext-associated apps from Project popup menu.
   - Switched recovery record to use plain/fast serialization.
+  - Updated tests to stop when files with tests failed to load/execute.
+  - Update de.lua
+  - Updated Italian Translation
+  - Updated zh-tw translation (#70, closes #679).
+  - Updated french translation (#70)
+  - Updated Russian translation (#70).
+  - Updated translation files with new messages (#70).
+  - Updated translation call to not appear on the warnings list (#70).
   - Updated Windows build script to use openssl 1.0.2h (#260).
   - Updated debugger tests to handle activation executed before command is completed.
   - Updated debugger error messages to use error markers in the Output window.
@@ -252,6 +268,7 @@
   - Updated OpenSSL link for the more recent version to include in luasec.
   - Updated copyright message in the OSX manifest file.
   - Updated `AddMarker` method to fail when no valid colors provided (#587).
+  - Upgraded Mobdebug (0.64) to improve error checking after OUTPUT command.
   - Upgraded MobDebug (0.6371) to add path normalization to file names that don't start with `@`.
   - Upgraded MobDebug (0.636) to populate vararg values in the main chunk during debugging.
   - Upgraded to Mobdebug 0.635 to add path normalization in debugger.
