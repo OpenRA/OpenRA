@@ -683,7 +683,7 @@ namespace OpenRA.Mods.Common.AI
 		IEnumerable<Actor> GetVisibleActorsBelongingToPlayer(Player owner)
 		{
 			foreach (var actor in GetActorsThatCanBeOrderedByPlayer(owner))
-				if (actor.CanBeViewedByPlayer(owner))
+				if (actor.CanBeViewedByPlayer(Player))
 					yield return actor;
 		}
 
