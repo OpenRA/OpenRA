@@ -659,20 +659,19 @@ namespace OpenRA.Mods.Common.AI
 					s.Update();
 			}
 
-			if (--assignRolesTicks > 0)
-				return;
+			if (--assignRolesTicks <= 0)
+			{
+				assignRolesTicks = Info.AssignRolesInterval;
+				GiveOrdersToIdleHarvesters();
+				FindNewUnits(self);
+				FindAndDeployBackupMcv(self);
+			}
 
-			assignRolesTicks = Info.AssignRolesInterval;
-
-			GiveOrdersToIdleHarvesters();
-			FindNewUnits(self);
 			if (--minAttackForceDelayTicks <= 0)
 			{
 				minAttackForceDelayTicks = Info.MinimumAttackForceDelay;
 				CreateAttackForce();
 			}
-
-			FindAndDeployBackupMcv(self);
 
 			if (--minCaptureDelayTicks <= 0)
 			{
