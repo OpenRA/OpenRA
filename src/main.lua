@@ -731,7 +731,6 @@ local function resolveConflict(localid, globalid)
   end
 end
 
-local at = {}
 for lid in pairs(remap) do
   local shortcut = ide.config.keymap[lid]
   -- find a (potential) conflict for this shortcut (if any)

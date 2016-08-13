@@ -259,7 +259,6 @@ local function indexFromQueue()
 end
 
 local function createOutlineWindow()
-  local REFRESH, REINDEX = 1, 2
   local width, height = 360, 200
   local ctrl = wx.wxTreeCtrl(ide.frame, wx.wxID_ANY,
     wx.wxDefaultPosition, wx.wxSize(width, height),

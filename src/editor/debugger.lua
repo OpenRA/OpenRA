@@ -1814,7 +1814,7 @@ end
 
 debugger = ide:SetDebugger(setmetatable({}, {__index = protodeb}))
 
-local package = ide:AddPackage('core.debugger', {
+ide:AddPackage('core.debugger', {
     onEditorMarkerUpdate = function(self, editor, marker, line, value)
       if marker ~= BREAKPOINT_MARKER then return end
 

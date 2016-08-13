@@ -593,7 +593,7 @@ function CreateAutoCompList(editor,key,pos)
   local last = key:match("([%w_]+)%s*$")
   if (last and #last >= (ide.config.acandtip.startat or 2)) then
     last = last:lower()
-    for i,v in ipairs(dynamicwords[last] or {}) do
+    for _, v in ipairs(dynamicwords[last] or {}) do
       -- ignore if word == last and sole user
       if (v:lower() == last and dywordentries[v] == 1) then break end
       table.insert(apilist, v)

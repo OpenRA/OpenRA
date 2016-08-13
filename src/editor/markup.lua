@@ -107,7 +107,6 @@ local function ismarkup (tx)
 
     local s,e,cap
     local qsep = q(sep)
-    local nonsep = ("[^%s]"):format(qsep)
     local nonspace = "[^%s]"
     if sep == MD_MARK_HEAD then
       -- always search from the start of the line

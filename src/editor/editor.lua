@@ -1261,7 +1261,6 @@ function CreateEditor(bare)
     function (event)
       local keycode = event:GetKeyCode()
       local mod = event:GetModifiers()
-      local first, last = 0, notebook:GetPageCount()-1
       if PackageEventHandle("onEditorKeyDown", editor, event) == false then
         -- this event has already been handled
       elseif keycode == wx.WXK_ESCAPE then
