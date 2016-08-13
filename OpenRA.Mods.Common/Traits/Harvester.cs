@@ -296,6 +296,8 @@ namespace OpenRA.Mods.Common.Traits
 			return contents.Count == 0;
 		}
 
+		public IIssueOrderInfo OrderInfo { get { return null; } }
+
 		public IEnumerable<IOrderTargeter> Orders
 		{
 			get
@@ -454,31 +456,30 @@ namespace OpenRA.Mods.Common.Traits
 			public bool IsQueued { get; protected set; }
 			public bool TargetOverridesSelection(TargetModifiers modifiers) { return true; }
 
-			public bool CanTarget(Actor self, Target target, List<Actor> othersAtTarget, ref TargetModifiers modifiers, ref string cursor)
+			public bool CanTarget(Actor self, Target target, ref IEnumerable<UIOrder> uiOrders, ref TargetModifiers modifiers)
 			{
-				if (target.Type != TargetType.Terrain)
+				if (modifiers.HasModifier(TargetModifiers.ForceMove) ||
+					target.Type != TargetType.Terrain)
 					return false;
-
-				if (modifiers.HasModifier(TargetModifiers.ForceMove))
-					return false;
-
-				var location = self.World.Map.CellContaining(target.CenterPosition);
 
 				// Don't leak info about resources under the shroud
+				var location = self.World.Map.CellContaining(target.CenterPosition);
 				if (!self.Owner.Shroud.IsExplored(location))
 					return false;
 
 				var res = self.World.WorldActor.Trait<ResourceLayer>().GetRenderedResource(location);
 				var info = self.Info.TraitInfo<HarvesterInfo>();
+				return res != null && info.Resources.Contains(res.Info.Name);
+			}
 
-				if (res == null || !info.Resources.Contains(res.Info.Name))
-					return false;
-
+			public bool SetupTarget(Actor self, Target target, List<Actor> othersAtTarget, ref IEnumerable<UIOrder> uiOrders, ref TargetModifiers modifiers, ref string cursor)
+			{
 				cursor = "harvest";
 				IsQueued = modifiers.HasModifier(TargetModifiers.ForceQueue);
-
 				return true;
 			}
+
+			public void OrderIssued(Actor self) { }
 		}
 	}
 }

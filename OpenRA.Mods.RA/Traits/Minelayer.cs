@@ -16,6 +16,7 @@ using OpenRA.Graphics;
 using OpenRA.Mods.Common.Orders;
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Traits;
+using OpenRA.Mods.Common.Traits;
 
 namespace OpenRA.Mods.RA.Traits
 {
@@ -46,6 +47,8 @@ namespace OpenRA.Mods.RA.Traits
 			var tileset = self.World.Map.Tileset.ToLowerInvariant();
 			tile = self.World.Map.Rules.Sequences.GetSequence("overlay", "build-valid-{0}".F(tileset)).GetSprite(0);
 		}
+
+		public IIssueOrderInfo OrderInfo { get; private set; }
 
 		public IEnumerable<IOrderTargeter> Orders
 		{
@@ -203,20 +206,20 @@ namespace OpenRA.Mods.RA.Traits
 			public int OrderPriority { get { return 5; } }
 			public bool TargetOverridesSelection(TargetModifiers modifiers) { return true; }
 
-			public bool CanTarget(Actor self, Target target, List<Actor> othersAtTarget, ref TargetModifiers modifiers, ref string cursor)
+			public bool CanTarget(Actor self, Target target, ref IEnumerable<UIOrder> uiOrders, ref TargetModifiers modifiers)
 			{
-				if (target.Type != TargetType.Terrain)
-					return false;
-
 				var location = self.World.Map.CellContaining(target.CenterPosition);
-				if (!self.World.Map.Contains(location))
-					return false;
+				return target.Type == TargetType.Terrain || self.World.Map.Contains(location);
+			}
 
+			public bool SetupTarget(Actor self, Target target, List<Actor> othersAtTarget, ref IEnumerable<UIOrder> uiOrders, ref TargetModifiers modifiers, ref string cursor)
+			{
 				cursor = "ability";
 				IsQueued = modifiers.HasModifier(TargetModifiers.ForceQueue);
-
 				return !othersAtTarget.Any() && modifiers.HasModifier(TargetModifiers.ForceAttack);
 			}
+
+			public void OrderIssued(Actor self) { }
 
 			public bool IsQueued { get; protected set; }
 		}

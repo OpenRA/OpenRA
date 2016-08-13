@@ -96,6 +96,8 @@ namespace OpenRA.Mods.RA.Traits
 			}
 		}
 
+		public IIssueOrderInfo OrderInfo { get { return null; } }
+
 		public IEnumerable<IOrderTargeter> Orders
 		{
 			get

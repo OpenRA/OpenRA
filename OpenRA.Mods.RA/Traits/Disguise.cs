@@ -92,6 +92,8 @@ namespace OpenRA.Mods.RA.Traits
 			um = Exts.Lazy(() => self.TraitOrDefault<UpgradeManager>());
 		}
 
+		public IIssueOrderInfo OrderInfo { get { return null; } }
+
 		public IEnumerable<IOrderTargeter> Orders
 		{
 			get

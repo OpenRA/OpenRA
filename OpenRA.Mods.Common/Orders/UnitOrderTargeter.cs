@@ -36,19 +36,15 @@ namespace OpenRA.Mods.Common.Orders
 		public abstract bool CanTargetActor(Actor self, Actor target, TargetModifiers modifiers, ref string cursor);
 		public abstract bool CanTargetFrozenActor(Actor self, FrozenActor target, TargetModifiers modifiers, ref string cursor);
 
-		public bool CanTarget(Actor self, Target target, List<Actor> othersAtTarget, ref TargetModifiers modifiers, ref string cursor)
+		public bool CanTarget(Actor self, Target target, ref IEnumerable<UIOrder> uiOrders, ref TargetModifiers modifiers)
 		{
-			var type = target.Type;
-			if (type != TargetType.Actor && type != TargetType.FrozenActor)
+			if (target.Type != TargetType.Actor && target.Type != TargetType.FrozenActor)
 				return false;
-
-			cursor = this.cursor;
-			IsQueued = modifiers.HasModifier(TargetModifiers.ForceQueue);
 
 			if (ForceAttack != null && modifiers.HasModifier(TargetModifiers.ForceAttack) != ForceAttack)
 				return false;
 
-			var owner = type == TargetType.FrozenActor ? target.FrozenActor.Owner : target.Actor.Owner;
+			var owner = target.Type == TargetType.FrozenActor ? target.FrozenActor.Owner : target.Actor.Owner;
 			var playerRelationship = self.Owner.Stances[owner];
 
 			if (!modifiers.HasModifier(TargetModifiers.ForceAttack) && playerRelationship == Stance.Ally && !targetAllyUnits)
@@ -57,10 +53,19 @@ namespace OpenRA.Mods.Common.Orders
 			if (!modifiers.HasModifier(TargetModifiers.ForceAttack) && playerRelationship == Stance.Enemy && !targetEnemyUnits)
 				return false;
 
-			return type == TargetType.FrozenActor ?
+			return true;
+		}
+
+		public bool SetupTarget(Actor self, Target target, List<Actor> othersAtTarget, ref IEnumerable<UIOrder> uiOrders, ref TargetModifiers modifiers, ref string cursor)
+		{
+			cursor = this.cursor;
+			IsQueued = modifiers.HasModifier(TargetModifiers.ForceQueue);
+			return target.Type == TargetType.FrozenActor ?
 				CanTargetFrozenActor(self, target.FrozenActor, modifiers, ref cursor) :
 				CanTargetActor(self, target.Actor, modifiers, ref cursor);
 		}
+
+		public void OrderIssued(Actor self) { }
 
 		public virtual bool IsQueued { get; protected set; }
 	}

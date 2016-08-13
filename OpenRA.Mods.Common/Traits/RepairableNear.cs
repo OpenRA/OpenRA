@@ -39,6 +39,8 @@ namespace OpenRA.Mods.Common.Traits
 			movement = self.Trait<IMove>();
 		}
 
+		public IIssueOrderInfo OrderInfo { get { return null; } }
+
 		public IEnumerable<IOrderTargeter> Orders
 		{
 			get

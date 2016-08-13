@@ -28,11 +28,13 @@ namespace OpenRA.Mods.Common.Orders
 
 		public AircraftMoveOrderTargeter(AircraftInfo info) { this.info = info; }
 
-		public bool CanTarget(Actor self, Target target, List<Actor> othersAtTarget, ref TargetModifiers modifiers, ref string cursor)
+		public bool CanTarget(Actor self, Target target, ref IEnumerable<UIOrder> uiOrders, ref TargetModifiers modifiers)
 		{
-			if (target.Type != TargetType.Terrain)
-				return false;
+			return target.Type == TargetType.Terrain;
+		}
 
+		public bool SetupTarget(Actor self, Target target, List<Actor> othersAtTarget, ref IEnumerable<UIOrder> uiOrders, ref TargetModifiers modifiers, ref string cursor)
+		{
 			var location = self.World.Map.CellContaining(target.CenterPosition);
 			var explored = self.Owner.Shroud.IsExplored(location);
 			cursor = self.World.Map.Contains(location) ?
@@ -46,6 +48,8 @@ namespace OpenRA.Mods.Common.Orders
 
 			return true;
 		}
+
+		public void OrderIssued(Actor self) { }
 
 		public bool IsQueued { get; protected set; }
 	}

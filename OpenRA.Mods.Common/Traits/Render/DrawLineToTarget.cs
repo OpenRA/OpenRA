@@ -60,6 +60,8 @@ namespace OpenRA.Mods.Common.Traits
 			lifetime = info.Delay;
 		}
 
+		public void Deselected(Actor a) { }
+
 		public IEnumerable<IRenderable> RenderAfterWorld(WorldRenderer wr)
 		{
 			var force = Game.GetModifierKeys().HasModifier(Modifiers.Alt);

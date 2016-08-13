@@ -99,6 +99,8 @@ namespace OpenRA.Mods.Common.Traits
 				a.CheckFire(self, facing.Value, target);
 		}
 
+		public IIssueOrderInfo OrderInfo { get { return null; } }
+
 		public IEnumerable<IOrderTargeter> Orders
 		{
 			get
@@ -374,12 +376,38 @@ namespace OpenRA.Mods.Common.Traits
 			public int OrderPriority { get; private set; }
 			public bool TargetOverridesSelection(TargetModifiers modifiers) { return true; }
 
+			public bool CanTarget(Actor self, Target target, ref IEnumerable<UIOrder> uiOrders, ref TargetModifiers modifiers)
+			{
+				switch (target.Type)
+				{
+					case TargetType.Actor:
+					case TargetType.FrozenActor:
+						return !modifiers.HasModifier(TargetModifiers.ForceMove);
+					case TargetType.Terrain:
+						return !modifiers.HasModifier(TargetModifiers.ForceMove) && modifiers.HasModifier(TargetModifiers.ForceAttack);
+					default:
+						return false;
+				}
+			}
+
+			public bool SetupTarget(Actor self, Target target, List<Actor> othersAtTarget, ref IEnumerable<UIOrder> uiOrders, ref TargetModifiers modifiers, ref string cursor)
+			{
+				switch (target.Type)
+				{
+					case TargetType.Actor:
+					case TargetType.FrozenActor:
+						return CanTargetActor(self, target, ref modifiers, ref cursor);
+					case TargetType.Terrain:
+						return CanTargetLocation(self, self.World.Map.CellContaining(target.CenterPosition), othersAtTarget, modifiers, ref cursor);
+					default:
+						return false;
+				}
+			}
+
+			public void OrderIssued(Actor self) { }
 			bool CanTargetActor(Actor self, Target target, ref TargetModifiers modifiers, ref string cursor)
 			{
 				IsQueued = modifiers.HasModifier(TargetModifiers.ForceQueue);
-
-				if (modifiers.HasModifier(TargetModifiers.ForceMove))
-					return false;
 
 				// Disguised actors are revealed by the attack cursor
 				// HACK: works around limitations in the targeting code that force the
@@ -419,10 +447,6 @@ namespace OpenRA.Mods.Common.Traits
 
 				IsQueued = modifiers.HasModifier(TargetModifiers.ForceQueue);
 
-				// Targeting the terrain is only possible with force-attack modifier
-				if (modifiers.HasModifier(TargetModifiers.ForceMove) || !modifiers.HasModifier(TargetModifiers.ForceAttack))
-					return false;
-
 				var target = Target.FromCell(self.World, location);
 				var armaments = ab.ChooseArmamentsForTarget(target, true);
 				if (!armaments.Any())
@@ -441,20 +465,6 @@ namespace OpenRA.Mods.Common.Traits
 
 				OrderID = ab.forceAttackOrderName;
 				return true;
-			}
-
-			public bool CanTarget(Actor self, Target target, List<Actor> othersAtTarget, ref TargetModifiers modifiers, ref string cursor)
-			{
-				switch (target.Type)
-				{
-					case TargetType.Actor:
-					case TargetType.FrozenActor:
-						return CanTargetActor(self, target, ref modifiers, ref cursor);
-					case TargetType.Terrain:
-						return CanTargetLocation(self, self.World.Map.CellContaining(target.CenterPosition), othersAtTarget, modifiers, ref cursor);
-					default:
-						return false;
-				}
 			}
 
 			public bool IsQueued { get; protected set; }
