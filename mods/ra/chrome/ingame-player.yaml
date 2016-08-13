@@ -362,3 +362,26 @@ Container@PLAYER_WIDGETS:
 									Y: 3
 									ImageCollection: scrollbar
 									ImageName: down_arrow
+		Container@SIDEBAR_UNIT_ORDER_VIEWER:
+			Logic: UnitOrderViewLogic
+			X: WINDOW_RIGHT / 2 - 117
+			Y: WINDOW_BOTTOM - 110
+			Width: 237
+			Height: 110
+			Children:
+				Container@ORDER_BACKGROUND:
+					Children:
+						Image@BAR:
+							Logic: AddFactionSuffixLogic
+							Width: 237
+							Height: 110
+							ClickThrough: false
+							ImageCollection: sidebar-order
+							ImageName: background
+				UnitOrderViewer@UNIT_ORDER_VIEWER:
+					X: 10
+					Y: 17
+					IconSpace: 4, 2
+					IconSize: 52, 44
+					IconMargin: 3, 3
+					

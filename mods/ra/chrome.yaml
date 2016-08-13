@@ -1,3 +1,6 @@
+sidebar-order-allies: chrome.png
+	background: 750,277,237,110
+
 sidebar-allies: chrome.png
 	background-top: 0,167,238,290
 	background-iconrow: 0,457,238,47
@@ -84,7 +87,10 @@ sidebar-button-allies-highlighted-disabled: chrome.png
 	corner-tr: 193,0,3,3
 	corner-bl: 168,25,3,3
 	corner-br: 193,25,3,3
-
+	
+sidebar-order-soviet: chrome.png
+	background: 750,167,237,110
+	
 sidebar-soviet: chrome.png
 	background-top: 274,167,238,290
 	background-iconrow: 274,457,238,47
