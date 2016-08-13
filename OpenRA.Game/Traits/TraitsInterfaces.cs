@@ -111,8 +111,32 @@ namespace OpenRA.Traits
 	public interface IRender { IEnumerable<IRenderable> Render(Actor self, WorldRenderer wr); }
 	public interface IAutoSelectionSize { int2 SelectionSize(Actor self); }
 
+	public class OrderInfo
+	{
+		[Desc("The icon that will represent the order.")]
+		public readonly string Icon = "";
+		[Desc("The name that will be displayed on the Tooltip for the order.")]
+		public readonly string Name = "";
+		[Desc("The description that will be displayed on the Tooltip for the order.")]
+		public readonly string Description = "";
+		[Desc("The order by which this order is displayed on the UI.")]
+		public readonly int UIOrder = 0;
+		[Desc("If this order is hidden from the UI.")]
+		public readonly bool Hidden = false;
+		[Desc("The hotkey that activates this order.")]
+		public readonly Hotkey Hotkey;
+	}
+
+	public interface IIssueOrderInfo : ITraitInfoInterface
+	{
+		[Desc("Dictionary of order definitions which the UI uses to issue orders to the trait.",
+			"The key of the dictionary is the Order name.")]
+		Dictionary<string, OrderInfo> IssuableOrders { get; }
+	}
+
 	public interface IIssueOrder
 	{
+		IIssueOrderInfo OrderInfo { get; }
 		IEnumerable<IOrderTargeter> Orders { get; }
 		Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued);
 	}
@@ -132,7 +156,9 @@ namespace OpenRA.Traits
 	{
 		string OrderID { get; }
 		int OrderPriority { get; }
-		bool CanTarget(Actor self, Target target, List<Actor> othersAtTarget, ref TargetModifiers modifiers, ref string cursor);
+		bool CanTarget(Actor self, Target target, ref IEnumerable<UIOrder> uiOrders, ref TargetModifiers modifiers);
+		bool SetupTarget(Actor self, Target target, List<Actor> othersAtTarget, ref IEnumerable<UIOrder> uiOrders, ref TargetModifiers modifiers, ref string cursor);
+		void OrderIssued(Actor self);
 		bool IsQueued { get; }
 		bool TargetOverridesSelection(TargetModifiers modifiers);
 	}
@@ -352,7 +378,12 @@ namespace OpenRA.Traits
 	[SuppressMessage("StyleCop.CSharp.NamingRules", "SA1302:InterfaceNamesMustBeginWithI", Justification = "Not a real interface, but more like a tag.")]
 	public interface UsesInit<T> : ITraitInfo where T : IActorInit { }
 
-	public interface INotifySelected { void Selected(Actor self); }
+	public interface INotifySelected
+	{
+		void Selected(Actor self);
+		void Deselected(Actor self);
+	}
+
 	public interface INotifySelection { void SelectionChanged(); }
 	public interface IWorldLoaded { void WorldLoaded(World w, WorldRenderer wr); }
 	public interface ICreatePlayers { void CreatePlayers(World w); }

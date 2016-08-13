@@ -145,6 +145,7 @@
     <Compile Include="ObjectCreator.cs" />
     <Compile Include="Orders\GenericSelectTarget.cs" />
     <Compile Include="Orders\IOrderGenerator.cs" />
+    <Compile Include="Orders\UIOrderManager.cs" />
     <Compile Include="Orders\UnitOrderGenerator.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Primitives\MergedStream.cs" />
