@@ -511,7 +511,6 @@ namespace OpenRA.Mods.Common.Traits
 
 			var activity = self.GetCurrentActivity();
 			List<Target> currentTargets = new List<Target>();
-
 			if (queued)
 			{
 				while (activity != null)
