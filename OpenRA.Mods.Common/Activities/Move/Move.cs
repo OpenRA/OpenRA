@@ -18,6 +18,7 @@ using OpenRA.Mods.Common.Pathfinder;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
 using OpenRA.Traits;
+using System.Drawing;
 
 namespace OpenRA.Mods.Common.Activities
 {
@@ -282,10 +283,15 @@ namespace OpenRA.Mods.Common.Activities
 			base.Cancel(self);
 		}
 
-		public CPos GetDestination()
+		public override CPos GetDestination(Actor self)
 		{
 			return this.destination.Value;
 		}
+
+		public override void DrawLines(Actor self, List<Target> currentTargets)
+{
+self.SetTargetLines(currentTargets, Color.Blue);
+}
 
 		public override IEnumerable<Target> GetTargets(Actor self)
 		{
@@ -303,6 +309,17 @@ namespace OpenRA.Mods.Common.Activities
 			protected readonly int FromFacing, ToFacing;
 			protected readonly int MoveFractionTotal;
 			protected int moveFraction;
+
+
+		public override CPos GetDestination(Actor self)
+		{
+return new CPos(-1,-1);
+		}
+	public override void DrawLines(Actor self, List<Target> currentTargets)
+{
+self.SetTargetLines(currentTargets, Color.Blue);
+}
+
 
 			public MovePart(Move move, WPos from, WPos to, int fromFacing, int toFacing, int startingFraction)
 			{

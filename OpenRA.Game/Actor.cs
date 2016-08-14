@@ -160,8 +160,37 @@ namespace OpenRA
 
 		public void Tick()
 		{
+
+int prev_count=0;
+var a = currentActivity;
+while(a!=null)
+{
+	if(a.GetDestination(this).X != -1)
+	{
+		prev_count++;
+	}
+	a=a.NextActivity;
+}
+
 			var wasIdle = IsIdle;
 			currentActivity = ActivityUtils.RunActivity(this, currentActivity);
+
+	a = currentActivity;
+	List<Target> currentTargets = new List<Target>();
+	while(a!=null)
+	{
+		if(a.GetDestination(this).X != -1)
+		{
+			currentTargets.Add(Target.FromCell(World, a.GetDestination(this)));
+		}
+		a=a.NextActivity;
+	}
+	if(currentActivity!=null && prev_count!=0)
+	{
+		currentActivity.DrawLines(this,currentTargets);
+	}
+
+
 
 			if (!wasIdle && IsIdle)
 				foreach (var n in TraitsImplementing<INotifyBecomingIdle>())
