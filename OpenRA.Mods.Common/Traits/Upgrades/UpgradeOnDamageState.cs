@@ -14,7 +14,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Applies an upgrade to the actor at specified damage states.")]
-	public class UpgradeOnDamageInfo : ITraitInfo, Requires<UpgradeManagerInfo>, Requires<HealthInfo>
+	public class UpgradeOnDamageStateInfo : ITraitInfo, Requires<UpgradeManagerInfo>, Requires<HealthInfo>
 	{
 		[UpgradeGrantedReference, FieldLoader.Require]
 		[Desc("The upgrades to grant.")]
@@ -32,17 +32,17 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Are upgrades irrevocable once the conditions have been met?")]
 		public readonly bool GrantPermanently = false;
 
-		public object Create(ActorInitializer init) { return new UpgradeOnDamage(init.Self, this); }
+		public object Create(ActorInitializer init) { return new UpgradeOnDamageState(init.Self, this); }
 	}
 
-	public class UpgradeOnDamage : INotifyDamageStateChanged, INotifyCreated
+	public class UpgradeOnDamageState : INotifyDamageStateChanged, INotifyCreated
 	{
-		readonly UpgradeOnDamageInfo info;
+		readonly UpgradeOnDamageStateInfo info;
 		readonly UpgradeManager um;
 		readonly Health health;
 		bool granted;
 
-		public UpgradeOnDamage(Actor self, UpgradeOnDamageInfo info)
+		public UpgradeOnDamageState(Actor self, UpgradeOnDamageStateInfo info)
 		{
 			this.info = info;
 			um = self.Trait<UpgradeManager>();

@@ -397,7 +397,7 @@
 	WithInfantryBody:
 		AttackSequence: attack
 		IdleSequences: idle1,idle2
-	UpgradeOnDamage@CRITICAL:
+	UpgradeOnDamageState@CRITICAL:
 		Upgrades: criticalspeed
 		ValidDamageStates: Critical
 		GrantPermanently: true
@@ -476,10 +476,10 @@
 		Weapons: SmallDebris
 		Pieces: 3, 7
 		Range: 2c0, 5c0
-	UpgradeOnDamage@DAMAGED:
+	UpgradeOnDamageState@DAMAGED:
 		Upgrades: damagedspeed
 		ValidDamageStates: Heavy
-	UpgradeOnDamage@CRITICAL:
+	UpgradeOnDamageState@CRITICAL:
 		Upgrades: criticalspeed
 		ValidDamageStates: Critical
 	SpeedMultiplier@DAMAGED:
