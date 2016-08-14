@@ -94,6 +94,7 @@
     <Compile Include="Lint\CheckTargetHealthRadiusAS.cs" />
     <Compile Include="Projectiles\AthenaProjectile.cs" />
     <Compile Include="Projectiles\InstantExplode.cs" />
+    <Compile Include="Traits\ExplodeWeapon.cs" />
     <Compile Include="Traits\UpgradeCrusher.cs" />
     <Compile Include="Traits\Multipliers\HealthPercentageFirepowerMultiplier.cs" />
     <Compile Include="Traits\SupportPowers\DetonateWeaponPower.cs" />
