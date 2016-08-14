@@ -22,6 +22,7 @@ namespace OpenRA
 
 		public CPos(int x, int y) { X = x; Y = y; }
 		public static readonly CPos Zero = new CPos(0, 0);
+		public static readonly CPos Null = new CPos(-1, -1);
 
 		public static explicit operator CPos(int2 a) { return new CPos(a.X, a.Y); }
 

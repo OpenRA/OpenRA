@@ -18,7 +18,7 @@ namespace OpenRA.Activities
 	public abstract class Activity
 	{
 		public Activity NextActivity { get; set; }
-		protected bool IsCanceled { get; private set; }
+		public bool IsCanceled { get; private set; }
 
 		public abstract Activity Tick(Actor self);
 
@@ -42,14 +42,13 @@ namespace OpenRA.Activities
 		}
 
 		public virtual CPos GetDestination(Actor self)
-{
-return new CPos(-1,-1);
-}
+		{
+			return CPos.Null;
+		}
 
 		public virtual void DrawLines(Actor self, List<Target> currentTargets)
-{
-}
-
+		{
+		}
 	}
 
 	public static class ActivityExts

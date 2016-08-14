@@ -12,13 +12,13 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.Linq;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Pathfinder;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
 using OpenRA.Traits;
-using System.Drawing;
 
 namespace OpenRA.Mods.Common.Activities
 {
@@ -310,16 +310,15 @@ self.SetTargetLines(currentTargets, Color.Blue);
 			protected readonly int MoveFractionTotal;
 			protected int moveFraction;
 
+			public override CPos GetDestination(Actor self)
+			{
+				return this.Move.destination.Value;
+			}
 
-		public override CPos GetDestination(Actor self)
-		{
-return new CPos(-1,-1);
-		}
-	public override void DrawLines(Actor self, List<Target> currentTargets)
-{
-self.SetTargetLines(currentTargets, Color.Blue);
-}
-
+			public override void DrawLines(Actor self, List<Target> currentTargets)
+			{
+				self.SetTargetLines(currentTargets, Color.Blue);
+			}
 
 			public MovePart(Move move, WPos from, WPos to, int fromFacing, int toFacing, int startingFraction)
 			{
@@ -419,7 +418,7 @@ self.SetTargetLines(currentTargets, Color.Blue);
 							mobile.Facing,
 							Util.GetNearestFacing(mobile.Facing, self.World.Map.FacingBetween(mobile.ToCell, nextCell.Value.First, mobile.Facing)),
 							moveFraction - MoveFractionTotal);
-						ret.NextActivity = this;
+						ret.NextActivity = this.Move;
 						mobile.FinishedMoving(self);
 						mobile.SetLocation(mobile.ToCell, mobile.ToSubCell, nextCell.Value.First, nextCell.Value.Second);
 						return ret;
@@ -435,7 +434,7 @@ self.SetTargetLines(currentTargets, Color.Blue);
 					mobile.Facing,
 					mobile.Facing,
 					moveFraction - MoveFractionTotal);
-				ret2.NextActivity = this;
+				ret2.NextActivity = this.Move;
 				mobile.EnteringCell(self);
 				mobile.SetLocation(mobile.ToCell, mobile.ToSubCell, mobile.ToCell, mobile.ToSubCell);
 				return ret2;

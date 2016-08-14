@@ -508,45 +508,6 @@ namespace OpenRA.Mods.Common.Traits
 		protected void PerformMove(Actor self, CPos targetLocation, bool queued)
 		{
 			PerformMoveInner(self, targetLocation, queued);
-
-
-if(!queued)
-{
-List<Target> currentTargets = new List<Target>();
-currentTargets.Add(Target.FromCell(self.World, targetLocation));
-self.SetTargetLines(currentTargets, Color.Green);
-}
-
-/*
-			var activity = self.GetCurrentActivity();
-			List<Target> currentTargets = new List<Target>();
-			if (queued)
-			{
-				while (activity != null)
-				{
-					if (activity is Move)
-					{
-						currentTargets.Add(Target.FromCell(self.World, ((Move)activity).GetDestination(self)));
-					}
-					else if (activity is Move.MoveFirstHalf)
-					{
-						currentTargets.Add(Target.FromCell(self.World, ((Move.MoveFirstHalf)activity).Move.GetDestination(self)));
-					}
-					else if (activity is Move.MoveSecondHalf)
-					{
-						currentTargets.Add(Target.FromCell(self.World, ((Move.MoveSecondHalf)activity).Move.GetDestination(self)));
-					}
-
-					activity = activity.NextActivity;
-				}
-			}
-			else
-			{
-				currentTargets.Add(Target.FromCell(self.World, targetLocation));
-			}
-
-			self.SetTargetLines(currentTargets, Color.Green);
-*/
 		}
 
 		public void ResolveOrder(Actor self, Order order)
