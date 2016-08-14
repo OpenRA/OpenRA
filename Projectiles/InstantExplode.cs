@@ -13,7 +13,7 @@ using OpenRA.GameRules;
 using OpenRA.Graphics;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.AS.Effects
+namespace OpenRA.Mods.AS.Projectiles
 {
 	public class InstantExplodeInfo : IProjectileInfo
 	{
