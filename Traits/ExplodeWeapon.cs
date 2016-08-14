@@ -30,7 +30,7 @@ namespace OpenRA.Mods.AS.Traits
 
 		public override object Create(ActorInitializer init) { return new ExplodeWeapon(init.Self, this); }
 
-		void IRulesetLoaded.RulesetLoaded(Ruleset rules, ActorInfo ai)
+		void IRulesetLoaded<ActorInfo>.RulesetLoaded(Ruleset rules, ActorInfo info)
 		{
 			WeaponInfo weaponInfo;
 
