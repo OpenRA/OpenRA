@@ -58,7 +58,7 @@ namespace OpenRA.Mods.AS.Warheads
 			var directActors = world.FindActorsInCircle(target.CenterPosition, TargetSearchRadius);
 
 			var availableTargetActors = world.FindActorsInCircle(target.CenterPosition, weapon.Range)
-				.Where(x => (AllowDirectHit || !directActors.Contains(x)) 
+				.Where(x => (AllowDirectHit || !directActors.Contains(x))
 					&& weapon.IsValidAgainst(Target.FromActor(x), firedBy.World, firedBy)
 					&& AimTargetStances.HasStance(firedBy.Owner.Stances[x.Owner]))
 				.Shuffle(world.SharedRandom);

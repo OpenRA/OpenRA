@@ -68,7 +68,7 @@ namespace OpenRA.Mods.AS.Traits
 
 			if (--fireDelay < 0)
 			{
-				weapon.Impact(Target.FromPos(self.CenterPosition), self, 
+				weapon.Impact(Target.FromPos(self.CenterPosition), self,
 					self.TraitsImplementing<IFirepowerModifier>().Select(a => a.GetFirepowerModifier()).ToArray());
 
 				if (--burst > 0)

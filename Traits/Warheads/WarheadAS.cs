@@ -15,7 +15,6 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.AS.Warheads
 {
-
 	[Desc("AS warhead extension class." +
 		"These warheads check for the Air TargetType when detonated inair!")]
 	public abstract class WarheadAS : Warhead

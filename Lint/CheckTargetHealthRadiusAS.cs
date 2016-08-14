@@ -32,15 +32,15 @@ namespace OpenRA.Mods.AS.Lint
 
 				foreach (var weaponInfo in rules.Weapons)
 				{
-					var ASWarheads = weaponInfo.Value.Warheads.OfType<WarheadAS>();
+					var warheadAS = weaponInfo.Value.Warheads.OfType<WarheadAS>();
 
-					foreach (var warhead in ASWarheads)
+					foreach (var wh in warheadAS)
 					{
 						// This warhead cannot affect this actor.
-						if (!warhead.ValidTargets.Overlaps(targetable))
+						if (!wh.ValidTargets.Overlaps(targetable))
 							continue;
 
-						if (healthTraits.Where(x => x.Shape.OuterRadius.Length > warhead.TargetSearchRadius.Length).Any())
+						if (healthTraits.Where(x => x.Shape.OuterRadius.Length > wh.TargetSearchRadius.Length).Any())
 							emitError("Actor type `{0}` has a health radius exceeding the victim scan radius of an AS warhead on `{1}`!"
 								.F(actorInfo.Key, weaponInfo.Key));
 					}
