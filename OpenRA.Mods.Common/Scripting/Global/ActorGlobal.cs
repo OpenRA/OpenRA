@@ -84,5 +84,18 @@ namespace OpenRA.Mods.Common.Scripting
 			var pi = ai.TraitInfoOrDefault<ICruiseAltitudeInfo>();
 			return pi != null ? pi.GetCruiseAltitude().Length : 0;
 		}
+
+		public int Cost(string type)
+		{
+			ActorInfo ai;
+			if (!Context.World.Map.Rules.Actors.TryGetValue(type, out ai))
+				throw new LuaException("Unknown actor type '{0}'".F(type));
+
+			var vi = ai.TraitInfoOrDefault<ValuedInfo>();
+			if (vi == null)
+				throw new LuaException("Actor type '{0}' does not have the Valued trait required to get the Cost.".F(type));
+
+			return vi.Cost;
+		}
 	}
 }
