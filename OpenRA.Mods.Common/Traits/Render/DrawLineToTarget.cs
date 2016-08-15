@@ -72,18 +72,18 @@ namespace OpenRA.Mods.Common.Traits
 			if (targets == null || targets.Count == 0)
 				yield break;
 
-			List<WPos> valid_targets = new List<WPos>();
-			valid_targets.Add(self.CenterPosition);
+			var validTargets = new List<WPos>();
+			validTargets.Add(self.CenterPosition);
 
 			foreach (var target in targets)
 			{
 				if (target.Type == TargetType.Invalid)
 					continue;
 
-				valid_targets.Add(target.CenterPosition);
+				validTargets.Add(target.CenterPosition);
 			}
 
-			yield return new TargetLineRenderable(valid_targets, c);
+			yield return new TargetLineRenderable(validTargets, c);
 		}
 
 		public void OnBecomingIdle(Actor a)

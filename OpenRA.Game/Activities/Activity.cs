@@ -40,15 +40,6 @@ namespace OpenRA.Activities
 		{
 			yield break;
 		}
-
-		public virtual CPos GetDestination(Actor self)
-		{
-			return CPos.Null;
-		}
-
-		public virtual void DrawLines(Actor self, List<Target> currentTargets)
-		{
-		}
 	}
 
 	public static class ActivityExts

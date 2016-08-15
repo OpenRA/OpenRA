@@ -180,9 +180,9 @@ namespace OpenRA.Mods.Common.Activities
 			if (firstFacing != mobile.Facing)
 			{
 				path.Add(nextCell.Value.First);
-				var turn_activity = new Turn(self, firstFacing);
-				turn_activity.NextActivity = this;
-				return turn_activity;
+				var turnActivity = new Turn(self, firstFacing);
+				turnActivity.NextActivity = this;
+				return turnActivity;
 			}
 			else
 			{
@@ -199,7 +199,6 @@ namespace OpenRA.Mods.Common.Activities
 					mobile.Facing,
 					0);
 
-				move.IsCanceled = this.IsCanceled;
 				move.NextActivity = this;
 
 				return move;
@@ -284,42 +283,18 @@ namespace OpenRA.Mods.Common.Activities
 			base.Cancel(self);
 		}
 
-		public override CPos GetDestination(Actor self)
-		{
-			return this.destination.Value;
-		}
-
-		public override void DrawLines(Actor self, List<Target> currentTargets)
-		{
-			self.SetTargetLines(currentTargets, Color.Green);
-		}
-
 		public override IEnumerable<Target> GetTargets(Actor self)
 		{
-			if (path != null)
-				return Enumerable.Reverse(path).Select(c => Target.FromCell(self.World, c));
-			if (destination != null)
-				return new Target[] { Target.FromCell(self.World, destination.Value) };
-			return Target.None;
+			return new Target[] { Target.FromCell(self.World, destination.Value) };
 		}
 
-		public abstract class MovePart : Activity
+		abstract class MovePart : Activity
 		{
-			public readonly Move Move;
+			protected readonly Move Move;
 			protected readonly WPos From, To;
 			protected readonly int FromFacing, ToFacing;
 			protected readonly int MoveFractionTotal;
 			protected int moveFraction;
-
-			public override CPos GetDestination(Actor self)
-			{
-				return this.Move.destination.Value;
-			}
-
-			public override void DrawLines(Actor self, List<Target> currentTargets)
-			{
-				self.SetTargetLines(currentTargets, Color.Blue);
-			}
 
 			public MovePart(Move move, WPos from, WPos to, int fromFacing, int toFacing, int startingFraction)
 			{
@@ -393,7 +368,7 @@ namespace OpenRA.Mods.Common.Activities
 			}
 		}
 
-		public class MoveFirstHalf : MovePart
+		class MoveFirstHalf : MovePart
 		{
 			public MoveFirstHalf(Move move, WPos from, WPos to, int fromFacing, int toFacing, int startingFraction)
 				: base(move, from, to, fromFacing, toFacing, startingFraction) { }
@@ -449,7 +424,7 @@ namespace OpenRA.Mods.Common.Activities
 			}
 		}
 
-		public class MoveSecondHalf : MovePart
+		class MoveSecondHalf : MovePart
 		{
 			public MoveSecondHalf(Move move, WPos from, WPos to, int fromFacing, int toFacing, int startingFraction)
 				: base(move, from, to, fromFacing, toFacing, startingFraction) { }

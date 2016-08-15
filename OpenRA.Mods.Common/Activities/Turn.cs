@@ -43,10 +43,5 @@ namespace OpenRA.Mods.Common.Activities
 
 			return this;
 		}
-
-		public override void DrawLines(Actor self, List<Target> currentTargets)
-		{
-			self.SetTargetLines(currentTargets, Color.Red);
-		}
 	}
 }

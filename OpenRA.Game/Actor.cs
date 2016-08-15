@@ -160,23 +160,6 @@ namespace OpenRA
 
 		public void Tick()
 		{
-			var activity_iterator = currentActivity;
-			List<Target> currentTargets = new List<Target>();
-			while (activity_iterator != null)
-			{
-				if (activity_iterator.GetDestination(this) != CPos.Null && !activity_iterator.IsCanceled)
-				{
-					currentTargets.Add(Target.FromCell(World, activity_iterator.GetDestination(this)));
-				}
-
-				activity_iterator = activity_iterator.NextActivity;
-			}
-
-			if (currentActivity != null)
-			{
-				currentActivity.DrawLines(this, currentTargets);
-			}
-
 			var wasIdle = IsIdle;
 			currentActivity = ActivityUtils.RunActivity(this, currentActivity);
 
