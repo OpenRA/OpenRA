@@ -59,16 +59,18 @@ namespace OpenRA
 		{
 			var connection = new NetworkConnection(host, port);
 			if (recordReplay)
-				connection.StartRecording(TimestampedFilename);
+				connection.StartRecording(() => { return TimestampedFilename(); });
 
 			var om = new OrderManager(host, port, password, connection);
 			JoinInner(om);
 			return om;
 		}
 
-		static string TimestampedFilename()
+		static string TimestampedFilename(bool includemilliseconds = false)
 		{
-			return DateTime.UtcNow.ToString("OpenRA-yyyy-MM-ddTHHmmssZ");
+			return includemilliseconds
+			? DateTime.UtcNow.ToString("OpenRA-yyyy-MM-ddTHHmmssfffZ")
+			: DateTime.UtcNow.ToString("OpenRA-yyyy-MM-ddTHHmmssZ");
 		}
 
 		static void JoinInner(OrderManager om)
@@ -471,7 +473,7 @@ namespace OpenRA
 				var directory = Platform.ResolvePath("^", "Screenshots", mod.Id, mod.Version);
 				Directory.CreateDirectory(directory);
 
-				var filename = TimestampedFilename();
+				var filename = TimestampedFilename(true);
 				var format = Settings.Graphics.ScreenshotFormat;
 				var extension = ImageCodecInfo.GetImageEncoders().FirstOrDefault(x => x.FormatID == format.Guid)
 					.FilenameExtension.Split(';').First().ToLowerInvariant().Substring(1);
