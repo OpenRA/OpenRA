@@ -47,6 +47,9 @@ namespace OpenRA.Mods.AS.Traits
 		[Desc("Sequence the launching actor should play when activating this power.")]
 		public readonly string ActivationSequence = "active";
 
+		[Desc("Altitude above terrain below which to explode. Zero effectively deactivates airburst.")]
+		public readonly WDist AirburstAltitude = WDist.Zero;
+
 		public WeaponInfo WeaponInfo { get; private set; }
 
 		public override object Create(ActorInitializer init) { return new DetonateWeaponPower(init.Self, this); }
@@ -79,11 +82,12 @@ namespace OpenRA.Mods.AS.Traits
 				wsb.PlayCustomAnimation(self, info.ActivationSequence);
 			}
 
-			var targetPosition = self.World.Map.CenterOfCell(order.TargetLocation);
+			var targetPosition = self.World.Map.CenterOfCell(order.TargetLocation) + new WVec(WDist.Zero, WDist.Zero, info.AirburstAltitude);
 
 			Action detonateWeapon = () => self.World.AddFrameEndTask(w => {
-				info.WeaponInfo.Impact(Target.FromCell(w, order.TargetLocation), self, Enumerable.Empty<int>());
+				info.WeaponInfo.Impact(Target.FromPos(targetPosition), self, Enumerable.Empty<int>());
 			});
+
 			self.World.AddFrameEndTask(w => w.Add(new DelayedAction(info.ActivationDelay, detonateWeapon)));
 
 			if (info.CameraActor != null)
