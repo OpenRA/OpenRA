@@ -18,7 +18,7 @@ namespace OpenRA.Activities
 	public abstract class Activity
 	{
 		public Activity NextActivity { get; set; }
-		public bool IsCanceled { get; private set; }
+		public bool IsCanceled { get; set; }
 
 		public abstract Activity Tick(Actor self);
 

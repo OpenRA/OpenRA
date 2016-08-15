@@ -199,6 +199,7 @@ namespace OpenRA.Mods.Common.Activities
 					mobile.Facing,
 					0);
 
+				move.IsCanceled = this.IsCanceled;
 				move.NextActivity = this;
 
 				return move;
@@ -289,9 +290,9 @@ namespace OpenRA.Mods.Common.Activities
 		}
 
 		public override void DrawLines(Actor self, List<Target> currentTargets)
-{
-self.SetTargetLines(currentTargets, Color.Blue);
-}
+		{
+			self.SetTargetLines(currentTargets, Color.Green);
+		}
 
 		public override IEnumerable<Target> GetTargets(Actor self)
 		{
@@ -350,6 +351,9 @@ self.SetTargetLines(currentTargets, Color.Blue);
 				if (moveFraction > MoveFractionTotal)
 					moveFraction = MoveFractionTotal;
 				UpdateCenterLocation(self, Move.mobile);
+
+				if (IsCanceled)
+					ret.NextActivity = Move.NextActivity;
 
 				return ret;
 			}
@@ -418,6 +422,8 @@ self.SetTargetLines(currentTargets, Color.Blue);
 							mobile.Facing,
 							Util.GetNearestFacing(mobile.Facing, self.World.Map.FacingBetween(mobile.ToCell, nextCell.Value.First, mobile.Facing)),
 							moveFraction - MoveFractionTotal);
+
+						ret.IsCanceled = this.Move.IsCanceled;
 						ret.NextActivity = this.Move;
 						mobile.FinishedMoving(self);
 						mobile.SetLocation(mobile.ToCell, mobile.ToSubCell, nextCell.Value.First, nextCell.Value.Second);
@@ -434,6 +440,8 @@ self.SetTargetLines(currentTargets, Color.Blue);
 					mobile.Facing,
 					mobile.Facing,
 					moveFraction - MoveFractionTotal);
+
+				ret2.IsCanceled = this.Move.IsCanceled;
 				ret2.NextActivity = this.Move;
 				mobile.EnteringCell(self);
 				mobile.SetLocation(mobile.ToCell, mobile.ToSubCell, mobile.ToCell, mobile.ToSubCell);
