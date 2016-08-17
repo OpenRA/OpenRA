@@ -121,11 +121,11 @@ namespace OpenRA.Mods.Common.Traits
 			if (proc == null) return;
 			if (proc.Disposed) return;
 
-			var linkedHarvs = proc.World.ActorsHavingTrait<Harvester>(h => h.LinkedProc == proc)
+			/*var linkedHarvs = proc.World.ActorsHavingTrait<Harvester>(h => h.LinkedProc == proc)
 				.Select(a => Target.FromActor(a))
-				.ToList();
+				.ToList();*/
 
-			proc.SetTargetLines(linkedHarvs, Color.Gold);
+			proc.SetTargetLines(Color.Gold);
 		}
 
 		public void LinkProc(Actor self, Actor proc)

@@ -509,19 +509,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			PerformMoveInner(self, targetLocation, queued);
 
-			var activityIterator = self.GetCurrentActivity();
-			var currentTargets = new List<Target>();
-			while (activityIterator != null)
-			{
-				if (activityIterator.GetTargets(self).Count() > 0 && !activityIterator.IsCanceled)
-				{
-					currentTargets.Add(activityIterator.GetTargets(self).Last());
-				}
-
-				activityIterator = activityIterator.NextActivity;
-			}
-
-			self.SetTargetLines(currentTargets, Color.Green);
+			self.SetTargetLines(Color.Green);
 		}
 
 		public void ResolveOrder(Actor self, Order order)
