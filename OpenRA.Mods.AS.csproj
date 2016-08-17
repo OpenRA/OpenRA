@@ -97,6 +97,7 @@
     <Compile Include="Traits\Crate\GiveRandomActorCrateAction.cs" />
     <Compile Include="Traits\EligibleForRandomActorCrate.cs" />
     <Compile Include="Traits\ExplodeWeapon.cs" />
+    <Compile Include="Traits\Player\PlayerSilo.cs" />
     <Compile Include="Traits\UpgradeCrusher.cs" />
     <Compile Include="Traits\Multipliers\HealthPercentageFirepowerMultiplier.cs" />
     <Compile Include="Traits\SupportPowers\DetonateWeaponPower.cs" />
