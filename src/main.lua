@@ -514,9 +514,7 @@ do
         -- package can be defined inline, like "package {...}"
         if type(p) == 'table' then
           num = num + 1
-          local name = 'config'..num..'package'
-          ide.packages[name] = setmetatable(p, ide.proto.Plugin)
-          return ide.packages[name] -- this returns the package object, so it can be referenced
+          return ide:AddPackage('config'..num..'package', p)
         -- package can be included as "package 'file.lua'" or "package 'folder/'"
         elseif type(p) == 'string' then
           local config = ide.configqueue[#ide.configqueue]
