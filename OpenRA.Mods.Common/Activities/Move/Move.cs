@@ -196,8 +196,6 @@ namespace OpenRA.Mods.Common.Activities
 					mobile.Facing,
 					0);
 
-				move.NextActivity = this;
-
 				return move;
 			}
 		}
@@ -392,7 +390,6 @@ namespace OpenRA.Mods.Common.Activities
 							Util.GetNearestFacing(mobile.Facing, self.World.Map.FacingBetween(mobile.ToCell, nextCell.Value.First, mobile.Facing)),
 							moveFraction - MoveFractionTotal);
 
-						ret.NextActivity = this.Move;
 						mobile.FinishedMoving(self);
 						mobile.SetLocation(mobile.ToCell, mobile.ToSubCell, nextCell.Value.First, nextCell.Value.Second);
 						return ret;
@@ -409,7 +406,6 @@ namespace OpenRA.Mods.Common.Activities
 					mobile.Facing,
 					moveFraction - MoveFractionTotal);
 
-				ret2.NextActivity = this.Move;
 				mobile.EnteringCell(self);
 				mobile.SetLocation(mobile.ToCell, mobile.ToSubCell, mobile.ToCell, mobile.ToSubCell);
 				return ret2;

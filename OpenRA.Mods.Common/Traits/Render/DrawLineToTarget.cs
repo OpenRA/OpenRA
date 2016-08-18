@@ -74,17 +74,17 @@ namespace OpenRA.Mods.Common.Traits
 			var activityIterator = self.GetCurrentActivity();
 			while (activityIterator != null)
 			{
-				if (activityIterator.GetTargets(self).Count() > 0 && !activityIterator.IsCanceled && activityIterator is Move)
+				if (activityIterator is Move.MovePart)
+					activityIterator = ((Move.MovePart)activityIterator).Move;
+
+				if (activityIterator.GetTargets(self).Count() > 0 && !activityIterator.IsCanceled)
 				{
 					Target target = activityIterator.GetTargets(self).Last();
 					if (target.Type != TargetType.Invalid)
 						validTargets.Add(target.CenterPosition);
 				}
 
-				if (activityIterator.IsCanceled && activityIterator is Move.MovePart)
-					activityIterator = ((Move.MovePart)activityIterator).Move.NextActivity;
-				else
-					activityIterator = activityIterator.NextActivity;
+				activityIterator = activityIterator.NextActivity;
 			}
 
 			return new[] { (IRenderable)new TargetLineRenderable(validTargets, c) };
