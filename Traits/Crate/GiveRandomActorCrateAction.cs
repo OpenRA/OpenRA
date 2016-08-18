@@ -99,10 +99,12 @@ namespace OpenRA.Mods.AS.Traits
 					};
 
 					collector.World.AddFrameEndTask(w => w.CreateActor(unit.Name, td));
+
+					base.Activate(collector);
+
+					return;
 				}
 			}
-
-			base.Activate(collector);
 		}
 	}
 }
