@@ -191,6 +191,7 @@
 			Beach: 80
 	SelectionDecorations:
 	WithSpriteControlGroupDecoration:
+		ReferencePoint: Top
 	Selectable:
 		Bounds: 12,18,0,-8
 	Targetable:
