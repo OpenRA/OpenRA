@@ -44,7 +44,6 @@ namespace OpenRA.Mods.AS.Traits
 
 	class ExplodeWeapon : UpgradableTrait<ExplodeWeaponInfo>, ITick
 	{
-		readonly Actor self;
 		readonly ExplodeWeaponInfo info;
 		readonly WeaponInfo weapon;
 
@@ -54,7 +53,6 @@ namespace OpenRA.Mods.AS.Traits
 		public ExplodeWeapon(Actor self, ExplodeWeaponInfo info)
 			: base(info)
 		{
-			this.self = self;
 			this.info = info;
 
 			weapon = info.WeaponInfo;

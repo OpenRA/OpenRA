@@ -18,7 +18,6 @@ namespace OpenRA.Mods.AS.Activities
 	{
 		readonly IPositionable pos;
 		readonly WVec fallVector;
-		readonly Actor ignore;
 
 		WPos dropPosition;
 		WPos currentPosition;
@@ -27,7 +26,6 @@ namespace OpenRA.Mods.AS.Activities
 		public FallDown(Actor self, WPos dropPosition, int fallRate, Actor ignoreActor = null)
 		{
 			pos = self.TraitOrDefault<IPositionable>();
-			ignore = ignoreActor;
 
 			fallVector = new WVec(0, 0, fallRate);
 			this.dropPosition = dropPosition;

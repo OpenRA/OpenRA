@@ -50,8 +50,6 @@ namespace OpenRA.Mods.AS.Warheads
 			var world = firedBy.World;
 			var map = world.Map;
 
-			var targetCell = map.CellContaining(target.CenterPosition);
-
 			if (!IsValidImpact(target.CenterPosition, firedBy))
 				return;
 
