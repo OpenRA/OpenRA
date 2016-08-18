@@ -910,6 +910,7 @@ do
       -- I've tried to trace why this happens, but the only reference I could find
       -- is this one: http://lists.apple.com/archives/cocoa-dev/2009/May/msg00480.html
       -- To avoid this issue, the filename is skipped if it's present in `arg`.
+      -- Also see http://trac.wxwidgets.org/ticket/14558 for related discussion.
       if not args[filename] then ide:ActivateFile(filename) end
     end
     args = {} -- reset the argument cache as it only needs to be checked on the initial launch
