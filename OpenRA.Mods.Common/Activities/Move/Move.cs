@@ -179,9 +179,7 @@ namespace OpenRA.Mods.Common.Activities
 			if (firstFacing != mobile.Facing)
 			{
 				path.Add(nextCell.Value.First);
-				var turnActivity = new Turn(self, firstFacing);
-				turnActivity.NextActivity = this;
-				return turnActivity;
+				return ActivityUtils.SequenceActivities(new Turn(self, firstFacing), this);
 			}
 			else
 			{
@@ -287,9 +285,9 @@ namespace OpenRA.Mods.Common.Activities
 			return new Target[] { Target.FromCell(self.World, destination.Value) };
 		}
 
-		abstract class MovePart : Activity
+		public abstract class MovePart : Activity
 		{
-			protected readonly Move Move;
+			public readonly Move Move;
 			protected readonly WPos From, To;
 			protected readonly int FromFacing, ToFacing;
 			protected readonly int MoveFractionTotal;
@@ -325,9 +323,6 @@ namespace OpenRA.Mods.Common.Activities
 				if (moveFraction > MoveFractionTotal)
 					moveFraction = MoveFractionTotal;
 				UpdateCenterLocation(self, Move.mobile);
-
-				if (IsCanceled)
-					ret.NextActivity = Move.NextActivity;
 
 				return ret;
 			}
@@ -397,7 +392,6 @@ namespace OpenRA.Mods.Common.Activities
 							Util.GetNearestFacing(mobile.Facing, self.World.Map.FacingBetween(mobile.ToCell, nextCell.Value.First, mobile.Facing)),
 							moveFraction - MoveFractionTotal);
 
-						ret.IsCanceled = this.Move.IsCanceled;
 						ret.NextActivity = this.Move;
 						mobile.FinishedMoving(self);
 						mobile.SetLocation(mobile.ToCell, mobile.ToSubCell, nextCell.Value.First, nextCell.Value.Second);
@@ -415,7 +409,6 @@ namespace OpenRA.Mods.Common.Activities
 					mobile.Facing,
 					moveFraction - MoveFractionTotal);
 
-				ret2.IsCanceled = this.Move.IsCanceled;
 				ret2.NextActivity = this.Move;
 				mobile.EnteringCell(self);
 				mobile.SetLocation(mobile.ToCell, mobile.ToSubCell, mobile.ToCell, mobile.ToSubCell);
