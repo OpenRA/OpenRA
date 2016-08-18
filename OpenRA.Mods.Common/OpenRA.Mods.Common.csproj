@@ -474,6 +474,8 @@
     <Compile Include="Traits\SeedsResource.cs" />
     <Compile Include="Traits\StoresResources.cs" />
     <Compile Include="Traits\Render\SelectionDecorations.cs" />
+    <Compile Include="Traits\Render\WithSpriteControlGroupDecoration.cs" />
+    <Compile Include="Traits\Render\WithTextControlGroupDecoration.cs" />
     <Compile Include="Traits\SelfHealing.cs" />
     <Compile Include="Traits\Sellable.cs" />
     <Compile Include="Traits\ShakeOnDeath.cs" />

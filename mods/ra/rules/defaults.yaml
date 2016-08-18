@@ -82,6 +82,7 @@
 			Beach: 40
 		TurnSpeed: 5
 	SelectionDecorations:
+	WithSpriteControlGroupDecoration:
 	Selectable:
 		Bounds: 24, 24
 	Targetable:
@@ -189,6 +190,8 @@
 			Gems: 80
 			Beach: 80
 	SelectionDecorations:
+	WithSpriteControlGroupDecoration:
+		ReferencePoint: Top
 	Selectable:
 		Bounds: 12,18,0,-8
 	Targetable:
@@ -316,6 +319,7 @@
 		TerrainSpeeds:
 			Water: 100
 	SelectionDecorations:
+	WithSpriteControlGroupDecoration:
 	Selectable:
 		Bounds: 24,24
 	Targetable:
@@ -357,6 +361,7 @@
 	AppearsOnRadar:
 		UseLocation: true
 	SelectionDecorations:
+	WithSpriteControlGroupDecoration:
 	Selectable:
 		Bounds: 24,24
 	Aircraft:
@@ -420,6 +425,7 @@
 	Inherits@2: ^IronCurtainable
 	Inherits@3: ^SpriteActor
 	SelectionDecorations:
+	WithSpriteControlGroupDecoration:
 	Selectable:
 		Priority: 3
 	Targetable:

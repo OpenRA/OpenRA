@@ -36,9 +36,6 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		public readonly string Image = "pips";
 
-		[Desc("Sprite sequence used to render the control group 0-9 numbers.")]
-		[SequenceReference("Image")] public readonly string GroupSequence = "groups";
-
 		public object Create(ActorInitializer init) { return new SelectionDecorations(init.Self, this); }
 
 		public int[] SelectionBoxBounds { get { return VisualBounds; } }
@@ -97,27 +94,11 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 			var b = self.VisualBounds;
 			var pos = wr.ScreenPxPosition(self.CenterPosition);
-			var tl = wr.Viewport.WorldToViewPx(pos + new int2(b.Left, b.Top));
 			var bl = wr.Viewport.WorldToViewPx(pos + new int2(b.Left, b.Bottom));
 			var pal = wr.Palette(Info.Palette);
 
-			foreach (var r in DrawControlGroup(wr, self, tl, pal))
-				yield return r;
-
 			foreach (var r in DrawPips(wr, self, bl, pal))
 				yield return r;
-		}
-
-		IEnumerable<IRenderable> DrawControlGroup(WorldRenderer wr, Actor self, int2 basePosition, PaletteReference palette)
-		{
-			var group = self.World.Selection.GetControlGroupForActor(self);
-			if (group == null)
-				yield break;
-
-			pipImages.PlayFetchIndex(Info.GroupSequence, () => (int)group);
-
-			var pos = basePosition - (0.5f * pipImages.Image.Size.XY).ToInt2() + new int2(9, 5);
-			yield return new UISpriteRenderable(pipImages.Image, self.CenterPosition, pos, 0, palette, 1f);
 		}
 
 		IEnumerable<IRenderable> DrawPips(WorldRenderer wr, Actor self, int2 basePosition, PaletteReference palette)

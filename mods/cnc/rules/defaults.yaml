@@ -69,6 +69,7 @@
 			Beach: 50
 		TurnSpeed: 5
 	SelectionDecorations:
+	WithSpriteControlGroupDecoration:
 	Selectable:
 		Bounds: 24,24
 	Targetable:
@@ -133,6 +134,7 @@
 		UpgradeTypes: airborne
 		UpgradeMinEnabledLevel: 1
 	SelectionDecorations:
+	WithSpriteControlGroupDecoration:
 	Selectable:
 		Bounds: 24,24
 	Aircraft:
@@ -191,6 +193,8 @@
 				PathingCost: 300
 			Beach: 80
 	SelectionDecorations:
+	WithSpriteControlGroupDecoration:
+		ReferencePoint: Top
 	Selectable:
 		Bounds: 12,17,0,-6
 	Targetable:
@@ -351,6 +355,7 @@
 			Beach: 80
 		Voice: Move
 	SelectionDecorations:
+	WithSpriteControlGroupDecoration:
 	Selectable:
 		Bounds: 24,24
 	Targetable:
@@ -398,6 +403,7 @@
 			BlueTiberium: 100
 			Beach: 60
 	SelectionDecorations:
+	WithSpriteControlGroupDecoration:
 	Selectable:
 		Bounds: 24,24
 	Targetable:
@@ -463,6 +469,7 @@
 		TerrainSpeeds:
 			Water: 100
 	SelectionDecorations:
+	WithSpriteControlGroupDecoration:
 	Selectable:
 	Targetable:
 		TargetTypes: Ground, Water
@@ -486,6 +493,7 @@
 	Inherits@2: ^SpriteActor
 	Huntable:
 	SelectionDecorations:
+	WithSpriteControlGroupDecoration:
 	Selectable:
 		Priority: 3
 	Targetable:

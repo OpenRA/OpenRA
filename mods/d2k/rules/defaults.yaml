@@ -74,6 +74,7 @@
 			Dune: 50
 		TurnSpeed: 5
 	SelectionDecorations:
+	WithSpriteControlGroupDecoration:
 	Selectable:
 		Bounds: 32,32
 	Targetable:
@@ -183,6 +184,7 @@
 			Dune: 80
 			Rough: 80
 	SelectionDecorations:
+	WithSpriteControlGroupDecoration:
 	Selectable:
 		Bounds: 12,20,0,-4
 	Targetable:
@@ -245,6 +247,7 @@
 	Inherits@2: ^SpriteActor
 	Huntable:
 	SelectionDecorations:
+	WithSpriteControlGroupDecoration:
 	Selectable:
 		Priority: 2
 	RevealsShroud:

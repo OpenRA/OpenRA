@@ -87,9 +87,6 @@ darken:
 pips:
 	medic:
 		Start: 6
-	groups: pipsra #TODO: backfall to RA asset
-		Start: 8
-		Length: 10
 	pip-empty: pips2
 	pip-green: pips2
 		Start: 1
