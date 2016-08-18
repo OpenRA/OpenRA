@@ -1,0 +1,155 @@
+ra-origin: C&C The Ultimate Collection (Origin version, English)
+	Type: Install
+	RegistryKey: HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\EA Games\Command and Conquer Red Alert
+	RegistryValue: Install Dir
+	IDFiles:
+		RA95Launcher.exe: 22bf7a1f9f1c2498823e3216541e6012f291c2c0
+		REDALERT.MIX: 0e58f4b54f44f6cd29fecf8cf379d33cf2d4caef
+	Install:
+		copy: .
+			^Content/ra/v2/expand/2nd_hand.aud: 2nd_hand.aud
+			^Content/ra/v2/expand/araziod.aud: araziod.aud
+			^Content/ra/v2/expand/await.aud: await.aud
+			^Content/ra/v2/expand/backstab.aud: backstab.aud
+			^Content/ra/v2/expand/bog.aud: bog.aud
+			^Content/ra/v2/expand/chaos2.aud: chaos2.aud
+			^Content/ra/v2/expand/float_v2.aud: float_v2.aud
+			^Content/ra/v2/expand/gloom.aud: gloom.aud
+			^Content/ra/v2/expand/grndwire.aud: grndwire.aud
+			^Content/ra/v2/expand/rpt.aud: rpt.aud
+			^Content/ra/v2/expand/search.aud: search.aud
+			^Content/ra/v2/expand/shut_it.aud: shut_it.aud
+			^Content/ra/v2/expand/traction.aud: traction.aud
+			^Content/ra/v2/expand/twinmix1.aud: twinmix1.aud
+			^Content/ra/v2/expand/under3.aud: under3.aud
+			^Content/ra/v2/expand/vr2.aud: vr2.aud
+			^Content/ra/v2/expand/wastelnd.aud: wastelnd.aud
+			^Content/ra/v2/expand/expand2.mix: EXPAND2.MIX
+			^Content/ra/v2/expand/hires1.mix: HIRES1.MIX
+			^Content/ra/v2/expand/lores1.mix: LORES1.MIX
+		extract-raw: REDALERT.MIX
+			^Content/ra/v2/hires.mix:
+				Offset: 650612
+				Length: 5817417
+			^Content/ra/v2/local.mix:
+				Offset: 6468029
+				Length: 3829837
+			^Content/ra/v2/lores.mix:
+				Offset: 10297866
+				Length: 754800
+			^Content/ra/v2/speech.mix:
+				Offset: 23042864
+				Length: 2003464
+		extract-raw: MAIN.MIX
+			^Content/ra/v2/movies1.mix:
+				Offset: 417051805
+				Length: 404691306
+			^Content/ra/v2/interior.mix:
+				Offset: 821743111
+				Length: 249490
+			^Content/ra/v2/conquer.mix:
+				Offset: 840028549
+				Length: 2192279
+			^Content/ra/v2/allies.mix:
+				Offset: 842220828
+				Length: 319181
+			^Content/ra/v2/temperat.mix:
+				Offset: 842540009
+				Length: 1043672
+			^Content/ra/v2/sounds.mix:
+				Offset: 843583681
+				Length: 1385637
+			^Content/ra/v2/snow.mix:
+				Offset: 844969318
+				Length: 1035716
+			^Content/ra/v2/scores.mix:
+				Offset: 846005034
+				Length: 67742203
+			^Content/ra/v2/russian.mix:
+				Offset: 913747237
+				Length: 274732
+			^Content/ra/v2/movies2.mix:
+				Offset: 914022190
+				Length: 417051731
+			^Content/ra/v2/expand/chrotnk1.aud:
+				Offset: 843615985
+				Length: 22900
+			^Content/ra/v2/expand/fixit1.aud:
+				Offset: 843860963
+				Length: 10707
+			^Content/ra/v2/expand/jburn1.aud:
+				Offset: 844007001
+				Length: 23091
+			^Content/ra/v2/expand/jchrge1.aud:
+				Offset: 844030092
+				Length: 14219
+			^Content/ra/v2/expand/jcrisp1.aud:
+				Offset: 844044311
+				Length: 18211
+			^Content/ra/v2/expand/jdance1.aud:
+				Offset: 844062522
+				Length: 14315
+			^Content/ra/v2/expand/jjuice1.aud:
+				Offset: 844076837
+				Length: 9699
+			^Content/ra/v2/expand/jjump1.aud:
+				Offset: 844086536
+				Length: 8219
+			^Content/ra/v2/expand/jlight1.aud:
+				Offset: 844094755
+				Length: 9875
+			^Content/ra/v2/expand/jpower1.aud:
+				Offset: 844104630
+				Length: 13571
+			^Content/ra/v2/expand/jshock1.aud:
+				Offset: 844118201
+				Length: 14771
+			^Content/ra/v2/expand/jyes1.aud:
+				Offset: 844132972
+				Length: 13795
+			^Content/ra/v2/expand/madchrg2.aud:
+				Offset: 844262883
+				Length: 19782
+			^Content/ra/v2/expand/madexplo.aud:
+				Offset: 844282665
+				Length: 26572
+			^Content/ra/v2/expand/mboss1.aud:
+				Offset: 844314713
+				Length: 20147
+			^Content/ra/v2/expand/mhear1.aud:
+				Offset: 844340048
+				Length: 6714
+			^Content/ra/v2/expand/mhotdig1.aud:
+				Offset: 844346762
+				Length: 10674
+			^Content/ra/v2/expand/mhowdy1.aud:
+				Offset: 844357436
+				Length: 6714
+			^Content/ra/v2/expand/mhuh1.aud:
+				Offset: 844364150
+				Length: 4117
+			^Content/ra/v2/expand/mlaff1.aud:
+				Offset: 844428954
+				Length: 24133
+			^Content/ra/v2/expand/mrise1.aud:
+				Offset: 844466487
+				Length: 13523
+			^Content/ra/v2/expand/mwrench1.aud:
+				Offset: 844480010
+				Length: 10780
+			^Content/ra/v2/expand/myeehaw1.aud:
+				Offset: 844490790
+				Length: 18912
+			^Content/ra/v2/expand/myes1.aud:
+				Offset: 844509702
+				Length: 9073
+cnc-origin: Command & Conquer (Origin version, English)
+	Type: Install
+	RegistryKey: HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\EA Games\CNC and The Covert Operations
+	RegistryValue: Install Dir
+	IDFiles:
+		CNC95Launcher.exe: 1d711adf09ac08738b2599b3092a1b448169b32a
+		CONQUER.MIX: 833e02a09aae694659eb312d3838367f681d1b30
+	Install:
+		copy: .
+			^Content/ra/v2/cnc/desert.mix: DESERT.MIX

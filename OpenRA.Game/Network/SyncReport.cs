@@ -96,7 +96,7 @@ namespace OpenRA.Network
 			{
 				if (r.Frame == frame)
 				{
-					var mod = Game.ModData.Manifest.Mod;
+					var mod = Game.ModData.Manifest.Metadata;
 					Log.Write("sync", "Player: {0} ({1} {2} {3})", Game.Settings.Player.Name, Platform.CurrentPlatform, Environment.OSVersion, Platform.RuntimeVersion);
 					Log.Write("sync", "Game ID: {0} (Mod: {1} at Version {2})", orderManager.LobbyInfo.GlobalSettings.GameUid, mod.Title, mod.Version);
 					Log.Write("sync", "Sync for net frame {0} -------------", r.Frame);

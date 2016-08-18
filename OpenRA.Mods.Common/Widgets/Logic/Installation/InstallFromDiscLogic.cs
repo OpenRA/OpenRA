@@ -29,6 +29,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		enum Mode { Progress, Message, List }
 
 		readonly ModContent content;
+		readonly Dictionary<string, ModContent.ModSource> sources;
 
 		readonly Widget panel;
 		readonly LabelWidget titleLabel;
@@ -54,9 +55,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		Mode visible = Mode.Progress;
 
 		[ObjectCreator.UseCtor]
-		public InstallFromDiscLogic(Widget widget, ModContent content, Action afterInstall)
+		public InstallFromDiscLogic(Widget widget, ModContent content, Dictionary<string, ModContent.ModSource> sources, Action afterInstall)
 		{
 			this.content = content;
+			this.sources = sources;
 
 			Log.AddChannel("install", "install.log");
 
@@ -106,7 +108,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					.Where(v => v.DriveType == DriveType.CDRom && v.IsReady)
 					.Select(v => v.RootDirectory.FullName);
 
-				foreach (var kv in content.Sources)
+				foreach (var kv in sources)
 				{
 					message = "Searching for " + kv.Value.Title;
 
@@ -131,12 +133,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					}
 				}
 
-				var sources = content.Packages.Values
+				var missingSources = content.Packages.Values
 					.Where(p => !p.IsInstalled())
 					.SelectMany(p => p.Sources)
-					.Select(d => content.Sources[d]);
+					.Select(d => sources[d]);
 
-				var discs = sources
+				var discs = missingSources
 					.Where(s => s.Type == ModContent.SourceType.Disc)
 					.Select(s => s.Title)
 					.Distinct();
@@ -148,7 +150,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				if (Platform.CurrentPlatform == PlatformType.Windows)
 				{
-					var installations = sources
+					var installations = missingSources
 						.Where(s => s.Type == ModContent.SourceType.Install)
 						.Select(s => s.Title)
 						.Distinct();

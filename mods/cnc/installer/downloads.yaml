@@ -1,0 +1,16 @@
+basefiles: Base Freeware Content
+	MirrorList: http://www.openra.net/packages/cnc-mirrors.txt
+	Extract:
+		^Content/cnc/conquer.mix: conquer.mix
+		^Content/cnc/desert.mix: desert.mix
+		^Content/cnc/general.mix: general.mix
+		^Content/cnc/sounds.mix: sounds.mix
+		^Content/cnc/speech.mix: speech.mix
+		^Content/cnc/temperat.mix: temperat.mix
+		^Content/cnc/tempicnh.mix: tempicnh.mix
+		^Content/cnc/transit.mix: transit.mix
+		^Content/cnc/winter.mix: winter.mix
+music: Freeware Music
+	MirrorList: http://www.openra.net/packages/cnc-music-mirrors.txt
+	Extract:
+		^Content/cnc/scores.mix: scores.mix

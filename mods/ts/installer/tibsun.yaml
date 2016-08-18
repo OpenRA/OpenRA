@@ -1,0 +1,100 @@
+tibsun: Tiberan Sun (GDI or Nod Disc, English)
+	IDFiles:
+		README.TXT: 45745c4a0c888317ec900208a426472779c42bf7
+		AUTOPLAY.WAV: 2dfce5d00f98b641849c29942b651f4e98d30e30
+	Install:
+		copy: .
+			^Content/ts/scores.mix: SCORES.MIX
+		extract-raw: INSTALL/TIBSUN.MIX
+			^Content/ts/cache.mix:
+				Offset: 300
+				Length: 169176
+			^Content/ts/conquer.mix:
+				Offset: 169484
+				Length: 5700088
+			^Content/ts/isosnow.mix:
+				Offset: 5869580
+				Length: 7624750
+			^Content/ts/isotemp.mix:
+				Offset: 13494332
+				Length: 8617646
+			^Content/ts/local.mix:
+				Offset: 22111980
+				Length: 18044736
+			^Content/ts/sidec01.mix:
+				Offset: 40156716
+				Length: 998476
+			^Content/ts/sidec02.mix:
+				Offset: 41155196
+				Length: 1039996
+			^Content/ts/snow.mix:
+				Offset: 56104508
+				Length: 2087806
+			^Content/ts/sno.mix:
+				Offset: 58192316
+				Length: 7826
+			^Content/ts/sounds.mix:
+				Offset: 58200156
+				Length: 3224136
+			^Content/ts/speech01.mix:
+				Offset: 61424300
+				Length: 6028236
+			^Content/ts/speech02.mix:
+				Offset: 67452540
+				Length: 5596628
+			^Content/ts/tem.mix:
+				Offset: 73049180
+				Length: 7746
+			^Content/ts/temperat.mix:
+				Offset: 73056940
+				Length: 2037606
+tibsun-linux: Tiberan Sun (GDI or Nod Disc, English)
+	IDFiles:
+		readme.txt: 45745c4a0c888317ec900208a426472779c42bf7
+		autoplay.wav: 2dfce5d00f98b641849c29942b651f4e98d30e30
+	Install:
+		copy: .
+			^Content/ts/scores.mix: scores.mix
+		extract-raw: install/tibsun.mix
+			^Content/ts/cache.mix:
+				Offset: 300
+				Length: 169176
+			^Content/ts/conquer.mix:
+				Offset: 169484
+				Length: 5700088
+			^Content/ts/isosnow.mix:
+				Offset: 5869580
+				Length: 7624750
+			^Content/ts/isotemp.mix:
+				Offset: 13494332
+				Length: 8617646
+			^Content/ts/local.mix:
+				Offset: 22111980
+				Length: 18044736
+			^Content/ts/sidec01.mix:
+				Offset: 40156716
+				Length: 998476
+			^Content/ts/sidec02.mix:
+				Offset: 41155196
+				Length: 1039996
+			^Content/ts/snow.mix:
+				Offset: 56104508
+				Length: 2087806
+			^Content/ts/sno.mix:
+				Offset: 58192316
+				Length: 7826
+			^Content/ts/sounds.mix:
+				Offset: 58200156
+				Length: 3224136
+			^Content/ts/speech01.mix:
+				Offset: 61424300
+				Length: 6028236
+			^Content/ts/speech02.mix:
+				Offset: 67452540
+				Length: 5596628
+			^Content/ts/tem.mix:
+				Offset: 73049180
+				Length: 7746
+			^Content/ts/temperat.mix:
+				Offset: 73056940
+				Length: 2037606

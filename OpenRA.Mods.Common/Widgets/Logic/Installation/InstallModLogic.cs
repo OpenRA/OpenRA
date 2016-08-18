@@ -21,7 +21,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			var panel = widget.Get("INSTALL_MOD_PANEL");
 
-			var mods = ModMetadata.AllMods[modId].RequiresMods.Where(m => !Game.IsModInstalled(m)).Select(m => "{0} ({1})".F(m.Key, m.Value));
+			var mods = Game.Mods[modId].RequiresMods.Where(m => !Game.IsModInstalled(m)).Select(m => "{0} ({1})".F(m.Key, m.Value));
 			var text = string.Join(", ", mods);
 			panel.Get<LabelWidget>("MOD_LIST").Text = text;
 

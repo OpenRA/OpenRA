@@ -778,6 +778,7 @@
     <Compile Include="Activities\Air\FlyCircleTimed.cs" />
     <Compile Include="UtilityCommands\ListInstallShieldCabContentsCommand.cs" />
     <Compile Include="FileFormats\InstallShieldCABCompression.cs" />
+    <Compile Include="ModContent.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

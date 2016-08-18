@@ -1,0 +1,92 @@
+allied: Red Alert 95 (Allied Disc, English)
+	IDFiles:
+		eahelp.GID: 13a8a4a1e7d9d6d893c38df5a39262c4689aeba5
+		INSTALL/REDALERT.MIX: 0e58f4b54f44f6cd29fecf8cf379d33cf2d4caef
+	Install:
+		extract-raw: INSTALL/REDALERT.MIX
+			^Content/ra/v2/hires.mix:
+				Offset: 650612
+				Length: 5817417
+			^Content/ra/v2/local.mix:
+				Offset: 6468029
+				Length: 3829837
+			^Content/ra/v2/lores.mix:
+				Offset: 10297866
+				Length: 754800
+			^Content/ra/v2/speech.mix:
+				Offset: 23042864
+				Length: 2003464
+		extract-raw: MAIN.MIX
+			^Content/ra/v2/conquer.mix:
+				Offset: 236
+				Length: 2177047
+			^Content/ra/v2/interior.mix:
+				Offset: 17172192
+				Length: 247425
+			^Content/ra/v2/movies1.mix:
+				Offset: 17419617
+				Length: 369362336
+			^Content/ra/v2/scores.mix:
+				Offset: 386781953
+				Length: 64171360
+			^Content/ra/v2/snow.mix:
+				Offset: 450953313
+				Length: 1030861
+			^Content/ra/v2/sounds.mix:
+				Offset: 451984174
+				Length: 1006778
+			^Content/ra/v2/russian.mix:
+				Offset: 452990952
+				Length: 266077
+			^Content/ra/v2/allies.mix:
+				Offset: 453257029
+				Length: 309406
+			^Content/ra/v2/temperat.mix:
+				Offset: 453566435
+				Length: 1038859
+allied-linux: Red Alert 95 (Allied Disc, English)
+	IDFiles:
+		eahelp.gid: 13a8a4a1e7d9d6d893c38df5a39262c4689aeba5
+		install/redalert.mix: 0e58f4b54f44f6cd29fecf8cf379d33cf2d4caef
+	Install:
+		extract-raw: install/redalert.mix
+			^Content/ra/v2/hires.mix:
+				Offset: 650612
+				Length: 5817417
+			^Content/ra/v2/local.mix:
+				Offset: 6468029
+				Length: 3829837
+			^Content/ra/v2/lores.mix:
+				Offset: 10297866
+				Length: 754800
+			^Content/ra/v2/speech.mix:
+				Offset: 23042864
+				Length: 2003464
+		extract-raw: main.mix
+			^Content/ra/v2/conquer.mix:
+				Offset: 236
+				Length: 2177047
+			^Content/ra/v2/interior.mix:
+				Offset: 17172192
+				Length: 247425
+			^Content/ra/v2/movies1.mix:
+				Offset: 17419617
+				Length: 369362336
+			^Content/ra/v2/scores.mix:
+				Offset: 386781953
+				Length: 64171360
+			^Content/ra/v2/snow.mix:
+				Offset: 450953313
+				Length: 1030861
+			^Content/ra/v2/sounds.mix:
+				Offset: 451984174
+				Length: 1006778
+			^Content/ra/v2/russian.mix:
+				Offset: 452990952
+				Length: 266077
+			^Content/ra/v2/allies.mix:
+				Offset: 453257029
+				Length: 309406
+			^Content/ra/v2/temperat.mix:
+				Offset: 453566435
+				Length: 1038859

@@ -22,15 +22,15 @@ namespace OpenRA.Mods.Common.UtilityCommands
 {
 	class RemapShpCommand : IUtilityCommand
 	{
-		public string Name { get { return "--remap"; } }
+		string IUtilityCommand.Name { get { return "--remap"; } }
 
-		public bool ValidateArguments(string[] args)
+		bool IUtilityCommand.ValidateArguments(string[] args)
 		{
 			return args.Length >= 5;
 		}
 
 		[Desc("SRCMOD:PAL DESTMOD:PAL SRCSHP DESTSHP", "Remap SHPs to another palette")]
-		public void Run(ModData modData, string[] args)
+		void IUtilityCommand.Run(Utility utility, string[] args)
 		{
 			var remap = new Dictionary<int, int>();
 
@@ -39,14 +39,14 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				remap[i] = i;
 
 			var srcMod = args[1].Split(':')[0];
-			var srcModData = new ModData(srcMod);
+			var srcModData = new ModData(utility.Mods[srcMod], utility.Mods);
 			Game.ModData = srcModData;
 
 			var srcPaletteInfo = srcModData.DefaultRules.Actors["player"].TraitInfo<PlayerColorPaletteInfo>();
 			var srcRemapIndex = srcPaletteInfo.RemapIndex;
 
 			var destMod = args[2].Split(':')[0];
-			var destModData = new ModData(destMod);
+			var destModData = new ModData(utility.Mods[destMod], utility.Mods);
 			Game.ModData = destModData;
 			var destPaletteInfo = destModData.DefaultRules.Actors["player"].TraitInfo<PlayerColorPaletteInfo>();
 			var destRemapIndex = destPaletteInfo.RemapIndex;

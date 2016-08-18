@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.IO;
 using System.Net;
 using System.Threading;
 using OpenRA.Support;
@@ -20,19 +21,32 @@ namespace OpenRA.Server
 	{
 		static void Main(string[] args)
 		{
+			var arguments = new Arguments(args);
 			Log.AddChannel("debug", "dedicated-debug.log");
 			Log.AddChannel("perf", "dedicated-perf.log");
 			Log.AddChannel("server", "dedicated-server.log");
 			Log.AddChannel("nat", "dedicated-nat.log");
 
+			// Special case handling of Game.Mod argument: if it matches a real filesystem path
+			// then we use this to override the mod search path, and replace it with the mod id
+			var modArgument = arguments.GetValue("Game.Mod", null);
+			string customModPath = null;
+			if (modArgument != null && (File.Exists(modArgument) || Directory.Exists(modArgument)))
+			{
+				customModPath = modArgument;
+				arguments.ReplaceValue("Game.Mod", Path.GetFileNameWithoutExtension(modArgument));
+			}
+
 			// HACK: The engine code assumes that Game.Settings is set.
 			// This isn't nearly as bad as ModData, but is still not very nice.
-			Game.InitializeSettings(new Arguments(args));
+			Game.InitializeSettings(arguments);
 			var settings = Game.Settings.Server;
 
-			// HACK: The engine code *still* assumes that Game.ModData is set
 			var mod = Game.Settings.Game.Mod;
-			var modData = Game.ModData = new ModData(mod, false);
+			var mods = new InstalledMods(customModPath);
+
+			// HACK: The engine code *still* assumes that Game.ModData is set
+			var modData = Game.ModData = new ModData(mods[mod], mods);
 			modData.MapCache.LoadMaps();
 
 			settings.Map = modData.MapCache.ChooseInitialMap(settings.Map, new MersenneTwister());

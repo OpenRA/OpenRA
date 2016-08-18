@@ -64,7 +64,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		public MainMenuLogic(Widget widget, World world, ModData modData)
 		{
 			rootMenu = widget;
-			rootMenu.Get<LabelWidget>("VERSION_LABEL").Text = modData.Manifest.Mod.Version;
+			rootMenu.Get<LabelWidget>("VERSION_LABEL").Text = modData.Manifest.Metadata.Version;
 
 			// Menu buttons
 			var mainMenu = widget.Get("MAIN_MENU");
@@ -90,7 +90,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				// so we can't do this inside the input handler.
 				Game.RunAfterTick(() =>
 				{
-					Game.Settings.Game.PreviousMod = modData.Manifest.Mod.Id;
+					Game.Settings.Game.PreviousMod = modData.Manifest.Id;
 					Game.InitializeMod("modchooser", null);
 				});
 			};
@@ -283,9 +283,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					{
 						// Send the mod and engine version to support version-filtered news (update prompts)
 						var newsURL = Game.Settings.Game.NewsUrl + "?version={0}&mod={1}&modversion={2}".F(
-							Uri.EscapeUriString(ModMetadata.AllMods["modchooser"].Version),
-							Uri.EscapeUriString(Game.ModData.Manifest.Mod.Id),
-							Uri.EscapeUriString(Game.ModData.Manifest.Mod.Version));
+							Uri.EscapeUriString(Game.Mods["modchooser"].Metadata.Version),
+							Uri.EscapeUriString(Game.ModData.Manifest.Id),
+							Uri.EscapeUriString(Game.ModData.Manifest.Metadata.Version));
 
 						// Append system profile data if the player has opted in
 						if (Game.Settings.Debug.SendSystemInformation)

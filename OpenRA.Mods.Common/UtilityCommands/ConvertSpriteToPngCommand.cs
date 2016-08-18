@@ -21,19 +21,19 @@ namespace OpenRA.Mods.Common.UtilityCommands
 {
 	class ConvertSpriteToPngCommand : IUtilityCommand
 	{
-		public string Name { get { return "--png"; } }
+		string IUtilityCommand.Name { get { return "--png"; } }
 
-		public bool ValidateArguments(string[] args)
+		bool IUtilityCommand.ValidateArguments(string[] args)
 		{
 			return args.Length >= 3;
 		}
 
 		[Desc("SPRITEFILE PALETTE [--noshadow] [--nopadding]",
 			  "Convert a shp/tmp/R8 to a series of PNGs, optionally removing shadow")]
-		public void Run(ModData modData, string[] args)
+		void IUtilityCommand.Run(Utility utility, string[] args)
 		{
 			// HACK: The engine code assumes that Game.modData is set.
-			Game.ModData = modData;
+			var modData = Game.ModData = utility.ModData;
 
 			var src = args[1];
 			var shadowIndex = new int[] { };

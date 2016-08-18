@@ -17,18 +17,18 @@ namespace OpenRA.Mods.Common.UtilityCommands
 {
 	class CheckSquenceSprites : IUtilityCommand
 	{
-		public string Name { get { return "--check-sequence-sprites"; } }
+		string IUtilityCommand.Name { get { return "--check-sequence-sprites"; } }
 
-		public bool ValidateArguments(string[] args)
+		bool IUtilityCommand.ValidateArguments(string[] args)
 		{
 			return true;
 		}
 
 		[Desc("Check the sequence definitions for missing sprite files.")]
-		public void Run(ModData modData, string[] args)
+		void IUtilityCommand.Run(Utility utility, string[] args)
 		{
 			// HACK: The engine code assumes that Game.modData is set.
-			Game.ModData = modData;
+			var modData = Game.ModData = utility.ModData;
 
 			var failed = false;
 			modData.SpriteSequenceLoader.OnMissingSpriteError = s => { Console.WriteLine("\t" + s); failed = true; };

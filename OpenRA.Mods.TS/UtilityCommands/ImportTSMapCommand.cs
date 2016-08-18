@@ -149,10 +149,10 @@ namespace OpenRA.Mods.TS.UtilityCommands
 		};
 
 		[Desc("FILENAME", "Convert a Tiberian Sun map to the OpenRA format.")]
-		void IUtilityCommand.Run(ModData modData, string[] args)
+		void IUtilityCommand.Run(Utility utility, string[] args)
 		{
 			// HACK: The engine code assumes that Game.modData is set.
-			Game.ModData = modData;
+			Game.ModData = utility.ModData;
 
 			var filename = args[1];
 			var file = new IniFile(File.Open(args[1], FileMode.Open));
@@ -163,12 +163,12 @@ namespace OpenRA.Mods.TS.UtilityCommands
 			var iniBounds = mapSection.GetValue("LocalSize", "0, 0, 0, 0").Split(',').Select(int.Parse).ToArray();
 			var size = new Size(iniSize[2], 2 * iniSize[3]);
 
-			var map = new Map(Game.ModData, modData.DefaultTileSets[tileset], size.Width, size.Height)
+			var map = new Map(Game.ModData, utility.ModData.DefaultTileSets[tileset], size.Width, size.Height)
 			{
 				Title = basic.GetValue("Name", Path.GetFileNameWithoutExtension(filename)),
 				Author = "Westwood Studios",
 				Bounds = new Rectangle(iniBounds[0], iniBounds[1], iniBounds[2], 2 * iniBounds[3] + 2 * iniBounds[1]),
-				RequiresMod = modData.Manifest.Mod.Id
+				RequiresMod = utility.ModData.Manifest.Id
 			};
 
 			var fullSize = new int2(iniSize[2], iniSize[3]);

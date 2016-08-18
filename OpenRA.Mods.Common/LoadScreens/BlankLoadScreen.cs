@@ -12,6 +12,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using OpenRA.FileFormats;
 using OpenRA.Mods.Common.Widgets.Logic;
 using OpenRA.Widgets;
@@ -21,8 +22,12 @@ namespace OpenRA.Mods.Common.LoadScreens
 	public class BlankLoadScreen : ILoadScreen
 	{
 		public LaunchArguments Launch;
+		ModData modData;
 
-		public virtual void Init(ModData m, Dictionary<string, string> info) { }
+		public virtual void Init(ModData modData, Dictionary<string, string> info)
+		{
+			this.modData = modData;
+		}
 
 		public virtual void Display()
 		{
@@ -79,7 +84,7 @@ namespace OpenRA.Mods.Common.LoadScreens
 				if (replayMeta != null)
 				{
 					var mod = replayMeta.GameInfo.Mod;
-					if (mod != null && mod != Game.ModData.Manifest.Mod.Id && ModMetadata.AllMods.ContainsKey(mod))
+					if (mod != null && mod != Game.ModData.Manifest.Id && Game.Mods.ContainsKey(mod))
 						Game.InitializeMod(mod, args);
 				}
 
@@ -96,6 +101,14 @@ namespace OpenRA.Mods.Common.LoadScreens
 		{
 			Dispose(true);
 			GC.SuppressFinalize(this);
+		}
+
+		public bool RequiredContentIsInstalled()
+		{
+			var content = modData.Manifest.Get<ModContent>();
+			return content.Packages
+				.Where(p => p.Value.Required)
+				.All(p => p.Value.TestFiles.All(f => File.Exists(Platform.ResolvePath(f))));
 		}
 	}
 }

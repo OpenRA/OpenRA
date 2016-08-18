@@ -16,17 +16,17 @@ namespace OpenRA.Mods.Common.UtilityCommands
 {
 	class GetMapHashCommand : IUtilityCommand
 	{
-		public string Name { get { return "--map-hash"; } }
+		string IUtilityCommand.Name { get { return "--map-hash"; } }
 
-		public bool ValidateArguments(string[] args)
+		bool IUtilityCommand.ValidateArguments(string[] args)
 		{
 			return args.Length >= 2;
 		}
 
 		[Desc("MAPFILE", "Generate hash of specified oramap file.")]
-		public void Run(ModData modData, string[] args)
+		void IUtilityCommand.Run(Utility utility, string[] args)
 		{
-			using (var package = modData.ModFiles.OpenPackage(args[1], new Folder(".")))
+			using (var package = utility.ModData.ModFiles.OpenPackage(args[1], new Folder(".")))
 				Console.WriteLine(Map.ComputeUID(package));
 		}
 	}

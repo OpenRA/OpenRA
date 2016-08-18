@@ -1,0 +1,21 @@
+basefiles: Base Freeware Content
+	MirrorList: http://www.openra.net/packages/ts-mirrors.txt
+	Extract:
+		^Content/ts/cache.mix: cache.mix
+		^Content/ts/conquer.mix: conquer.mix
+		^Content/ts/isosnow.mix: isosnow.mix
+		^Content/ts/isotemp.mix: isotemp.mix
+		^Content/ts/local.mix: local.mix
+		^Content/ts/sidec01.mix: sidec01.mix
+		^Content/ts/sidec02.mix: sidec02.mix
+		^Content/ts/sno.mix: sno.mix
+		^Content/ts/snow.mix: snow.mix
+		^Content/ts/sounds.mix: sounds.mix
+		^Content/ts/speech01.mix: speech01.mix
+		^Content/ts/speech02.mix: speech02.mix
+		^Content/ts/tem.mix: tem.mix
+		^Content/ts/temperat.mix: temperat.mix
+music: Freeware Music
+	MirrorList: http://www.openra.net/packages/ts-music-mirrors.txt
+	Extract:
+		^Content/ts/scores.mix: scores.mix
