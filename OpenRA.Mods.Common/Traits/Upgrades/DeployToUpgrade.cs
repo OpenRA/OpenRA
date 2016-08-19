@@ -113,6 +113,8 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
+		public IIssueOrderInfo OrderInfo { get { return null; } }
+
 		public IEnumerable<IOrderTargeter> Orders
 		{
 			get { yield return new DeployOrderTargeter("DeployToUpgrade", 5,

@@ -11,6 +11,7 @@
 
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Graphics;
 using OpenRA.Mods.Common.Orders;
@@ -65,6 +66,8 @@ namespace OpenRA.Mods.RA.Traits
 			if (chargeTick > 0)
 				chargeTick--;
 		}
+
+		public IIssueOrderInfo OrderInfo { get { return null; } }
 
 		public IEnumerable<IOrderTargeter> Orders
 		{
@@ -134,26 +137,22 @@ namespace OpenRA.Mods.RA.Traits
 		public bool IsQueued { get; protected set; }
 		public bool TargetOverridesSelection(TargetModifiers modifiers) { return true; }
 
-		public bool CanTarget(Actor self, Target target, List<Actor> othersAtTarget, ref TargetModifiers modifiers, ref string cursor)
+		public bool CanTarget(Actor self, Target target, ref IEnumerable<UIOrder> uiOrders, ref TargetModifiers modifiers)
 		{
 			// TODO: When target modifiers are configurable this needs to be revisited
-			if (modifiers.HasModifier(TargetModifiers.ForceMove) || modifiers.HasModifier(TargetModifiers.ForceQueue))
-			{
-				var xy = self.World.Map.CellContaining(target.CenterPosition);
-
-				IsQueued = modifiers.HasModifier(TargetModifiers.ForceQueue);
-
-				if (self.IsInWorld && self.Owner.Shroud.IsExplored(xy))
-				{
-					cursor = targetCursor;
-					return true;
-				}
-
-				return false;
-			}
-
-			return false;
+			return self.IsInWorld &&
+				self.Owner.Shroud.IsExplored(self.World.Map.CellContaining(target.CenterPosition)) &&
+				(modifiers.HasModifier(TargetModifiers.ForceMove) || modifiers.HasModifier(TargetModifiers.ForceQueue));
 		}
+
+		public bool SetupTarget(Actor self, Target target, List<Actor> othersAtTarget, ref IEnumerable<UIOrder> uiOrders, ref TargetModifiers modifiers, ref string cursor)
+		{
+			IsQueued = modifiers.HasModifier(TargetModifiers.ForceQueue);
+			cursor = targetCursor;
+			return true;
+		}
+
+		public void OrderIssued(Actor self) { }
 	}
 
 	class PortableChronoOrderGenerator : IOrderGenerator

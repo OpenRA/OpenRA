@@ -442,6 +442,8 @@ namespace OpenRA.Mods.Common.Traits
 			self.World.RemoveFromMaps(self, this);
 		}
 
+		public IIssueOrderInfo OrderInfo { get { return null; } }
+
 		public IEnumerable<IOrderTargeter> Orders { get { yield return new MoveOrderTargeter(self, this); } }
 
 		// Note: Returns a valid order even if the unit can't move to the target
@@ -740,18 +742,21 @@ namespace OpenRA.Mods.Common.Traits
 			public int OrderPriority { get { return 4; } }
 			public bool IsQueued { get; protected set; }
 
-			public bool CanTarget(Actor self, Target target, List<Actor> othersAtTarget, ref TargetModifiers modifiers, ref string cursor)
+			public bool CanTarget(Actor self, Target target, ref IEnumerable<UIOrder> uiOrders, ref TargetModifiers modifiers)
 			{
-				if (rejectMove || target.Type != TargetType.Terrain)
-					return false;
+				return !rejectMove && target.Type == TargetType.Terrain;
+			}
 
-				var location = self.World.Map.CellContaining(target.CenterPosition);
+			public bool SetupTarget(Actor self, Target target, List<Actor> othersAtTarget, ref IEnumerable<UIOrder> uiOrders, ref TargetModifiers modifiers, ref string cursor)
+			{
 				IsQueued = modifiers.HasModifier(TargetModifiers.ForceQueue);
-
+				var location = self.World.Map.CellContaining(target.CenterPosition);
 				var explored = self.Owner.Shroud.IsExplored(location);
 				cursor = self.World.Map.Contains(location) ?
 					(self.World.Map.GetTerrainInfo(location).CustomCursor ?? mobile.Info.Cursor) : mobile.Info.BlockedCursor;
 
+				// We still allow the order to happen even though the destination is blocked,
+				// the pathfinder will resolve that issue.
 				if (mobile.IsTraitDisabled
 					|| (!explored && !mobile.Info.MoveIntoShroud)
 					|| (explored && mobile.Info.MovementCostForCell(self.World, location) == int.MaxValue))
@@ -759,6 +764,8 @@ namespace OpenRA.Mods.Common.Traits
 
 				return true;
 			}
+
+			public void OrderIssued(Actor self) { }
 		}
 
 		public Activity ScriptedMove(CPos cell) { return new Move(self, cell); }

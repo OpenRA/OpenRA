@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
@@ -19,7 +20,9 @@ namespace OpenRA
 {
 	public class Selection
 	{
+		public event Action<Selection> OnSelectionChanged = s => { };
 		readonly HashSet<Actor> actors = new HashSet<Actor>();
+
 		public void Add(World w, Actor a)
 		{
 			actors.Add(a);
@@ -27,6 +30,7 @@ namespace OpenRA
 				sel.Selected(a);
 			foreach (var ns in w.WorldActor.TraitsImplementing<INotifySelection>())
 				ns.SelectionChanged();
+			OnSelectionChanged(this);
 		}
 
 		public bool Contains(Actor a)
@@ -43,6 +47,11 @@ namespace OpenRA
 					actors.SymmetricExceptWith(adjNewSelection);
 				else
 				{
+					foreach (var a in actors)
+						if (!a.IsDisabled() && !a.IsDead)
+							foreach (var desel in a.TraitsImplementing<INotifySelected>())
+								desel.Deselected(a);
+
 					actors.Clear();
 					actors.UnionWith(adjNewSelection);
 				}
@@ -53,6 +62,11 @@ namespace OpenRA
 					actors.UnionWith(newSelection);
 				else
 				{
+					foreach (var a in actors)
+						if (!a.IsDisabled() && !a.IsDead)
+							foreach (var desel in a.TraitsImplementing<INotifySelected>())
+								desel.Deselected(a);
+
 					actors.Clear();
 					actors.UnionWith(newSelection);
 				}
@@ -83,6 +97,8 @@ namespace OpenRA
 				actor.PlayVoice(selectable.Voice);
 				break;
 			}
+
+			OnSelectionChanged(this);
 		}
 
 		public IEnumerable<Actor> Actors { get { return actors; } }

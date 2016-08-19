@@ -559,6 +559,8 @@
     <Compile Include="UtilityCommands\ExtractLuaDocsCommand.cs" />
     <Compile Include="UtilityCommands\ExtractSettingsDocsCommand.cs" />
     <Compile Include="UtilityCommands\ExtractTraitDocsCommand.cs" />
+    <Compile Include="Widgets\UnitOrderViewerWidget.cs" />
+    <Compile Include="Widgets\Logic\Ingame\UnitOrderViewLogic.cs" />
     <Compile Include="Widgets\Logic\Ingame\MusicControllerLogic.cs" />
     <Compile Include="WorldExtensions.cs" />
     <Compile Include="UtilityCommands\GetMapHashCommand.cs" />

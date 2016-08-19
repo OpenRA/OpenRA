@@ -65,6 +65,8 @@ namespace OpenRA.Mods.Common.Traits
 			ResetLocation(self);
 		}
 
+		public IIssueOrderInfo OrderInfo { get { return null; } }
+
 		public IEnumerable<IOrderTargeter> Orders
 		{
 			get { yield return new RallyPointOrderTargeter(); }
@@ -90,20 +92,19 @@ namespace OpenRA.Mods.Common.Traits
 			public int OrderPriority { get { return 0; } }
 			public bool TargetOverridesSelection(TargetModifiers modifiers) { return true; }
 
-			public bool CanTarget(Actor self, Target target, List<Actor> othersAtTarget, ref TargetModifiers modifiers, ref string cursor)
+			public bool CanTarget(Actor self, Target target, ref IEnumerable<UIOrder> uiOrders, ref TargetModifiers modifiers)
 			{
-				if (target.Type != TargetType.Terrain)
-					return false;
-
-				var location = self.World.Map.CellContaining(target.CenterPosition);
-				if (self.World.Map.Contains(location))
-				{
-					cursor = "ability";
-					return true;
-				}
-
-				return false;
+				return target.Type == TargetType.Terrain &&
+					self.World.Map.Contains(self.World.Map.CellContaining(target.CenterPosition));
 			}
+
+			public bool SetupTarget(Actor self, Target target, List<Actor> othersAtTarget, ref IEnumerable<UIOrder> uiOrders, ref TargetModifiers modifiers, ref string cursor)
+			{
+				cursor = "ability";
+				return true;
+			}
+
+			public void OrderIssued(Actor self) { }
 
 			public bool IsQueued { get { return false; } } // unused
 		}

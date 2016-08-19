@@ -130,6 +130,8 @@ namespace OpenRA
 			}
 		}
 
+		public UIOrderManager UIOrderManager { get; private set; }
+
 		public Selection Selection = new Selection();
 
 		public void CancelInputMode() { OrderGenerator = new UnitOrderGenerator(); }
@@ -148,10 +150,11 @@ namespace OpenRA
 			}
 		}
 
-		internal World(Map map, OrderManager orderManager, WorldType type)
+		internal World(Map map, OrderManager orderManager, UIOrderManager uiOrderManager, WorldType type)
 		{
 			Type = type;
 			OrderManager = orderManager;
+			UIOrderManager = uiOrderManager;
 			orderGenerator = new UnitOrderGenerator();
 			Map = map;
 			Timestep = orderManager.LobbyInfo.GlobalSettings.Timestep;

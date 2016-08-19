@@ -35,16 +35,19 @@ namespace OpenRA.Mods.Common.Orders
 		public int OrderPriority { get; private set; }
 		public bool TargetOverridesSelection(TargetModifiers modifiers) { return true; }
 
-		public bool CanTarget(Actor self, Target target, List<Actor> othersAtTarget, ref TargetModifiers modifiers, ref string cursor)
+		public bool CanTarget(Actor self, Target target, ref IEnumerable<UIOrder> uiOrders, ref TargetModifiers modifiers)
 		{
-			if (target.Type != TargetType.Actor)
-				return false;
+			return target.Type == TargetType.Actor && self == target.Actor;
+		}
 
+		public bool SetupTarget(Actor self, Target target, List<Actor> othersAtTarget, ref IEnumerable<UIOrder> uiOrders, ref TargetModifiers modifiers, ref string cursor)
+		{
 			IsQueued = modifiers.HasModifier(TargetModifiers.ForceQueue);
 			cursor = this.cursor();
-
-			return self == target.Actor;
+			return true;
 		}
+
+		public void OrderIssued(Actor self) { }
 
 		public bool IsQueued { get; protected set; }
 	}

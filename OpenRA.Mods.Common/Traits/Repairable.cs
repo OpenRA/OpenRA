@@ -44,6 +44,8 @@ namespace OpenRA.Mods.Common.Traits
 			ammoPools = self.TraitsImplementing<AmmoPool>().ToArray();
 		}
 
+		public IIssueOrderInfo OrderInfo { get { return null; } }
+
 		public IEnumerable<IOrderTargeter> Orders
 		{
 			get

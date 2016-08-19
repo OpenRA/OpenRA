@@ -64,6 +64,8 @@ namespace OpenRA.Mods.Common.Traits
 		public Actor Transport;
 		public Cargo ReservedCargo { get; private set; }
 
+		public IIssueOrderInfo OrderInfo { get { return null; } }
+
 		public IEnumerable<IOrderTargeter> Orders { get; private set; }
 
 		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)

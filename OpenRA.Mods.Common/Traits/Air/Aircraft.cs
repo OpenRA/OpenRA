@@ -485,6 +485,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		#region Implement order interfaces
 
+		public IIssueOrderInfo OrderInfo { get { return null; } }
+
 		public IEnumerable<IOrderTargeter> Orders
 		{
 			get

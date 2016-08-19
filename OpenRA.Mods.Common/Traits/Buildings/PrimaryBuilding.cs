@@ -50,6 +50,8 @@ namespace OpenRA.Mods.Common.Traits
 			manager = self.Trait<UpgradeManager>();
 		}
 
+		public IIssueOrderInfo OrderInfo { get { return null; } }
+
 		public IEnumerable<IOrderTargeter> Orders
 		{
 			get { yield return new DeployOrderTargeter("PrimaryProducer", 1); }

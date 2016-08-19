@@ -53,6 +53,8 @@ namespace OpenRA.Mods.Common.Traits
 			Info = info;
 		}
 
+		public IIssueOrderInfo OrderInfo { get { return null; } }
+
 		public IEnumerable<IOrderTargeter> Orders
 		{
 			get

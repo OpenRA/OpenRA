@@ -43,6 +43,7 @@ namespace OpenRA
 		public static ICursor Cursor;
 		static WorldRenderer worldRenderer;
 
+		internal static UIOrderManager UIOrderManager = new UIOrderManager();
 		internal static OrderManager OrderManager;
 		static Server.Server server;
 
@@ -82,6 +83,7 @@ namespace OpenRA
 			OrderManager = om;
 			lastConnectionState = ConnectionState.PreConnecting;
 			ConnectionStateChanged(OrderManager);
+			UIOrderManager.Clear();
 		}
 
 		public static void JoinReplay(string replayFile)
@@ -163,7 +165,7 @@ namespace OpenRA
 			using (new PerfTimer("PrepareMap"))
 				map = ModData.PrepareMap(mapUID);
 			using (new PerfTimer("NewWorld"))
-				OrderManager.World = new World(map, OrderManager, type);
+				OrderManager.World = new World(map, OrderManager, UIOrderManager, type);
 
 			worldRenderer = new WorldRenderer(ModData, OrderManager.World);
 

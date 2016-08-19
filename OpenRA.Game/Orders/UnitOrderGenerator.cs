@@ -56,7 +56,7 @@ namespace OpenRA.Orders
 			};
 
 			foreach (var o in orders)
-				yield return CheckSameOrder(o.Order, o.Trait.IssueOrder(o.Actor, o.Order, o.Target, mi.Modifiers.HasModifier(Modifiers.Shift)));
+				yield return ResolveTargeter(o.Order, o.Actor, CheckSameOrder(o.Order, o.Trait.IssueOrder(o.Actor, o.Order, o.Target, mi.Modifiers.HasModifier(Modifiers.Shift))));
 		}
 
 		public virtual void Tick(World world) { }
@@ -131,6 +131,8 @@ namespace OpenRA.Orders
 			if (self.Disposed || !target.IsValidFor(self))
 				return null;
 
+			var uiOrders = self.World.UIOrderManager.GetUIOrders(self);
+
 			var modifiers = TargetModifiers.None;
 			if (mi.Modifiers.HasModifier(Modifiers.Ctrl))
 				modifiers |= TargetModifiers.ForceAttack;
@@ -149,7 +151,9 @@ namespace OpenRA.Orders
 				{
 					var localModifiers = modifiers;
 					string cursor = null;
-					if (o.Order.CanTarget(self, target, actorsAt, ref localModifiers, ref cursor))
+
+					if (o.Order.CanTarget(self, target, ref uiOrders, ref localModifiers)
+						&& o.Order.SetupTarget(self, target, actorsAt, ref uiOrders, ref localModifiers, ref cursor))
 						return new UnitOrderResult(self, o.Order, o.Trait, cursor, target);
 				}
 
@@ -158,6 +162,12 @@ namespace OpenRA.Orders
 			}
 
 			return null;
+		}
+
+		static Order ResolveTargeter(IOrderTargeter iot, Actor a, Order order)
+		{
+			iot.OrderIssued(a);
+			return order;
 		}
 
 		static Order CheckSameOrder(IOrderTargeter iot, Order order)

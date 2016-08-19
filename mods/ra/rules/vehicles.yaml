@@ -419,6 +419,10 @@ MNLY.AP:
 		Range: 5c0
 	Minelayer:
 		Mine: MINP
+		Orders:
+			BeginMinefield:
+				Name: Minefield
+				Hotkey: L
 	MineImmune:
 	AmmoPool:
 		Ammo: 5

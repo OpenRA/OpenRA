@@ -47,6 +47,8 @@ namespace OpenRA.Mods.Common.Traits
 			this.info = info;
 		}
 
+		public IIssueOrderInfo OrderInfo { get { return null; } }
+
 		public IEnumerable<IOrderTargeter> Orders
 		{
 			get { yield return new RepairBridgeOrderTargeter(info); }
