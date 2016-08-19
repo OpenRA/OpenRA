@@ -280,22 +280,22 @@ namespace OpenRA.Mods.Common.Activities
 
 		public override IEnumerable<Target> GetTargets(Actor self)
 		{
-				var validTargets = new List<Target>();
+			var validTargets = new List<Target>();
 
-				var activityIterator = (Activity)this;
-				while (activityIterator != null)
+			var activityIterator = (Activity)this;
+			while (activityIterator != null)
+			{
+				if (!activityIterator.IsCanceled && activityIterator is Move)
 				{
-					if (!activityIterator.IsCanceled && activityIterator is Move)
-					{
-						Target target = Target.FromCell(self.World, ((Move)activityIterator).destination.Value);
-						if (target.Type != TargetType.Invalid)
-							validTargets.Add(target);
-					}
-
-					activityIterator = activityIterator.NextActivity;
+					Target target = Target.FromCell(self.World, ((Move)activityIterator).destination.Value);
+					if (target.Type != TargetType.Invalid)
+						validTargets.Add(target);
 				}
 
-				return validTargets;
+				activityIterator = activityIterator.NextActivity;
+			}
+
+			return validTargets;
 		}
 
 		abstract class MovePart : Activity
