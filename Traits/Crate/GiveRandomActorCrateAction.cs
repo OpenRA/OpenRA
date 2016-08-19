@@ -43,7 +43,7 @@ namespace OpenRA.Mods.AS.Traits
 			this.self = self;
 			this.info = info;
 
-			eligibleActors = self.World.Map.Rules.Actors.Values.Where(a => a.HasTraitInfo<EligibleForRandomActorCrateInfo>());
+			eligibleActors = self.World.Map.Rules.Actors.Values.Where(a => a.HasTraitInfo<EligibleForRandomActorCrateInfo>() && !a.Name.StartsWith("^"));
 		}
 
 		public bool CanGiveTo(Actor collector)
