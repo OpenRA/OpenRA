@@ -12,7 +12,9 @@ Player:
 		DefaultCash: 0
 
 World:
-	-CrateSpawner:
+	CrateSpawner:
+		Enabled: False
+		Locked: True
 	-SpawnMPUnits:
 	-MPStartLocations:
 	ObjectivesPanel:
