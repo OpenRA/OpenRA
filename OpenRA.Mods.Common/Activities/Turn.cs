@@ -42,5 +42,10 @@ namespace OpenRA.Mods.Common.Activities
 
 			return this;
 		}
+
+		public override IEnumerable<Target> GetTargets(Actor self)
+		{
+				return NextActivity.GetTargets(self);
+		}
 	}
 }

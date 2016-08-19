@@ -68,23 +68,18 @@ namespace OpenRA.Mods.Common.Traits
 			if (!(force || Game.Settings.Game.DrawTargetLine))
 				return new IRenderable[0];
 
+			if (self.GetCurrentActivity() == null)
+				return new IRenderable[0];
+
+			if (self.GetCurrentActivity().GetTargets(self).Count() <= 0)
+				return new IRenderable[0];
+
 			var validTargets = new List<WPos>();
 			validTargets.Add(self.CenterPosition);
 
-			var activityIterator = self.GetCurrentActivity();
-			while (activityIterator != null)
+			foreach (var target in self.GetCurrentActivity().GetTargets(self))
 			{
-				if (activityIterator is Move.MovePart)
-					activityIterator = ((Move.MovePart)activityIterator).Move;
-
-				if (activityIterator.GetTargets(self).Count() > 0 && !activityIterator.IsCanceled)
-				{
-					Target target = activityIterator.GetTargets(self).Last();
-					if (target.Type != TargetType.Invalid)
-						validTargets.Add(target.CenterPosition);
-				}
-
-				activityIterator = activityIterator.NextActivity;
+				validTargets.Add(target.CenterPosition);
 			}
 
 			return new[] { (IRenderable)new TargetLineRenderable(validTargets, c) };
