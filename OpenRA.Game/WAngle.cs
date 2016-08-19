@@ -64,6 +64,20 @@ namespace OpenRA
 			return new WAngle(Angle - 512).Tan();
 		}
 
+		public static WAngle Lerp(WAngle a, WAngle b, int mul, int div)
+		{
+			// Map 1024 <-> 0 wrapping into linear space
+			var aa = a.Angle;
+			var bb = b.Angle;
+			if (aa > bb && aa - bb > 512)
+				aa -= 1024;
+
+			if (bb > aa && bb - aa > 512)
+				bb -= 1024;
+
+			return new WAngle(aa + (bb - aa) * mul / div);
+		}
+
 		public static WAngle ArcTan(int y, int x) { return ArcTan(y, x, 1); }
 		public static WAngle ArcTan(int y, int x, int stride)
 		{
