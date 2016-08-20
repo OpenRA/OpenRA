@@ -254,3 +254,49 @@ SONIC:
 		Offset: -170,0,0
 	AutoTarget:
 	WithVoxelTurret:
+
+JUGGER:
+	Inherits@1: ^Tank
+	Inherits@2: ^Cloakable
+	-GainsExperience:
+	Valued:
+		Cost: 950
+	Tooltip:
+		Name: Juggernaut
+		Description: Juggernaut Artillery.\nNeeds to deploy in order to shoot.\n  Strong vs Ground units\n  Useless vs Aircraft
+	Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 60
+		Prerequisites: ~gaweap, garadr
+	Mobile:
+		TurnSpeed: 5
+		Speed: 58
+		Crushes: wall, crate, infantry
+		TerrainSpeeds:
+			Clear: 100
+			Road: 100
+			Rail: 100
+			DirtRoad: 100
+			Rough: 100
+			Tiberium: 100
+			BlueTiberium: 100
+			Veins: 100
+	Health:
+		HP: 250
+	Armor:
+		Type: Light
+	RevealsShroud:
+		Range: 9c0
+	BodyOrientation:
+		QuantizedFacings: 32
+	WithInfantryBody:
+	Selectable:
+		Bounds: 30, 42, 0, -8
+	Transforms:
+		IntoActor: djugg
+		Facing: 96
+		TransformSounds:
+		NoTransformSounds:
+		Voice: Move
+	Carryable:
+		CarryableHeight: 400

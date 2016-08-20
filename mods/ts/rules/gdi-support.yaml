@@ -241,3 +241,46 @@ GAPLUG3:
 		Type: plug.ioncannon
 	Power:
 		Amount: -100
+
+DJUGG:
+	Inherits@1: ^DeployedVehicle
+	Valued:
+		Cost: 950
+		Tooltip:
+		Name: Deployed Juggernaut
+	Health:
+		HP: 250
+	Armor:
+		Type: Light
+	RevealsShroud:
+		Range: 9c0
+	Turreted:
+		TurnSpeed: 4
+		InitialFacing: 128
+		Offset: 0,100,500
+	AttackTurreted:
+		Armaments: primary
+		IgnoresVisibility: False
+	Armament@PRIMARY:
+		Weapon: Jugg90mm
+		LocalOffset: 811,-100,650
+		MuzzleSequence: muzzle
+		Recoil: 78
+		RecoilRecovery: 12
+	BodyOrientation:
+		QuantizedFacings: 32
+	RenderVoxels:
+	WithVoxelBarrel:
+		LocalOffset: 100,0,50
+	WithSpriteTurret:
+	Transforms:
+		IntoActor: jugger
+		Facing: 96
+		TransformSounds: place2.aud
+		NoTransformSounds:
+		Voice: Move
+	WithMuzzleOverlay:
+	AutoTarget:
+	Explodes:
+		Weapon: UnitExplodeSmall
+		EmptyWeapon: UnitExplodeSmall
