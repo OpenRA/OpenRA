@@ -1199,7 +1199,7 @@ Templates:
 			5: Rock
 	Template@79:
 		Id: 79
-		Images: falls1.des
+		Images: falls2.des
 		Size: 3,2
 		Category: River
 		Tiles:
@@ -1211,7 +1211,7 @@ Templates:
 			5: Rock
 	Template@80:
 		Id: 80
-		Images: falls2.des
+		Images: falls1.des
 		Size: 3,3
 		Category: River
 		Tiles:
