@@ -32,7 +32,7 @@ MSLO:
 		IncomingSpeechNotification: AbombLaunchDetected
 		MissileWeapon: atomic
 		SpawnOffset: 0,427,0
-		DisplayTimer: True
+		DisplayTimerStances: Ally, Neutral, Enemy
 		DisplayBeacon: True
 		DisplayRadarPing: True
 		BeaconPoster: atomicon
@@ -771,7 +771,7 @@ ATEK:
 		LongDesc: Reveals map terrain and provides tactical\ninformation. Requires power and active radar.
 		RevealDelay: 15
 		LaunchSpeechNotification: SatelliteLaunched
-		DisplayTimer: True
+		DisplayTimerStances: Ally, Neutral, Enemy
 	SupportPowerChargeBar:
 	RequiresPower:
 	DisabledOverlay:

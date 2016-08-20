@@ -16,6 +16,7 @@ using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
+using OpenRA.Traits;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets
@@ -36,7 +37,7 @@ namespace OpenRA.Mods.Common.Widgets
 			powers = world.ActorsWithTrait<SupportPowerManager>()
 				.Where(p => !p.Actor.IsDead && !p.Actor.Owner.NonCombatant)
 				.SelectMany(s => s.Trait.Powers.Values)
-				.Where(p => p.Instances.Any() && p.Info.DisplayTimer && !p.Disabled);
+				.Where(p => p.Instances.Any() && p.Info.DisplayTimerStances != Stance.None && !p.Disabled);
 
 			// Timers in replays should be synced to the effective game time, not the playback time.
 			timestep = world.Timestep;
@@ -46,7 +47,14 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public override void Tick()
 		{
-			texts = powers.Select(p =>
+			var displayedPowers = powers.Where(p =>
+			{
+				var owner = p.Instances[0].Self.Owner;
+				var viewer = owner.World.RenderPlayer ?? owner.World.LocalPlayer;
+				return viewer == null || p.Info.DisplayTimerStances.HasStance(owner.Stances[viewer]);
+			});
+
+			texts = displayedPowers.Select(p =>
 			{
 				var time = WidgetUtils.FormatTime(p.RemainingTime, false, timestep);
 				var text = Format.F(p.Info.Description, time);

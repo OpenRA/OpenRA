@@ -291,6 +291,20 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				// DisplayTimer was replaced by DisplayTimerStances
+				if (engineVersion < 20160710)
+				{
+					if (node.Key == "DisplayTimer")
+					{
+						node.Key = "DisplayTimerStances";
+
+						if (node.Value.Value.ToLower() == "false")
+							node.Value.Value = "None";
+						else
+							node.Value.Value = "Ally, Neutral, Enemy";
+					}
+				}
+
 				UpgradeActorRules(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 

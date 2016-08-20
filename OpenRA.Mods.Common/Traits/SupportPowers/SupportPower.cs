@@ -44,7 +44,8 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string IncomingSound = null;
 		public readonly string IncomingSpeechNotification = null;
 
-		public readonly bool DisplayTimer = false;
+		[Desc("Defines to which players the timer is shown.")]
+		public readonly Stance DisplayTimerStances = Stance.None;
 
 		[Desc("Palette used for the icon.")]
 		[PaletteReference] public readonly string IconPalette = "chrome";

@@ -15,38 +15,48 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits.Render
 {
-	[Desc("Display the time remaining until the super weapon attached to the actor is ready to the player and his allies.")]
+	[Desc("Display the time remaining until the super weapon attached to the actor is ready.")]
 	class SupportPowerChargeBarInfo : ITraitInfo
 	{
+		[Desc("Defines to which players the bar is to be shown.")]
+		public readonly Stance DisplayStances = Stance.Ally;
+
 		public readonly Color Color = Color.Magenta;
 
 		public object Create(ActorInitializer init) { return new SupportPowerChargeBar(init.Self, this); }
 	}
 
-	class SupportPowerChargeBar : ISelectionBar
+	class SupportPowerChargeBar : ISelectionBar, INotifyOwnerChanged
 	{
 		readonly Actor self;
 		readonly SupportPowerChargeBarInfo info;
+		SupportPowerManager spm;
 
 		public SupportPowerChargeBar(Actor self, SupportPowerChargeBarInfo info)
 		{
 			this.self = self;
 			this.info = info;
+			spm = self.Owner.PlayerActor.Trait<SupportPowerManager>();
 		}
 
 		float ISelectionBar.GetValue()
 		{
-			if (!self.Owner.IsAlliedWith(self.World.RenderPlayer))
+			var power = spm.GetPowersForActor(self).FirstOrDefault(sp => !sp.Disabled);
+			if (power == null)
 				return 0;
 
-			var spm = self.Owner.PlayerActor.Trait<SupportPowerManager>();
-			var power = spm.GetPowersForActor(self).FirstOrDefault(sp => !sp.Disabled);
-
-			if (power == null) return 0;
+			var viewer = self.World.RenderPlayer ?? self.World.LocalPlayer;
+			if (viewer != null && info.DisplayStances.HasStance(self.Owner.Stances[viewer]))
+				return 0;
 
 			return 1 - (float)power.RemainingTime / power.TotalTime;
 		}
 
 		Color ISelectionBar.GetColor() { return info.Color; }
+
+		void INotifyOwnerChanged.OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
+		{
+			spm = newOwner.PlayerActor.Trait<SupportPowerManager>();
+		}
 	}
 }
