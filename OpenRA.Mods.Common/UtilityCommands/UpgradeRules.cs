@@ -280,6 +280,17 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				if (engineVersion < 20160818)
+				{
+					if (depth == 1 && node.Key.StartsWith("UpgradeOnDamage"))
+					{
+						var parts = node.Key.Split('@');
+						node.Key = "UpgradeOnDamageState";
+						if (parts.Length > 1)
+							node.Key += "@" + parts[1];
+					}
+				}
+
 				UpgradeActorRules(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 
