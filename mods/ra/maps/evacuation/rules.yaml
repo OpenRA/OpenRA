@@ -3,8 +3,6 @@ Player:
 		Cooperative: True
 	PlayerResources:
 		DefaultCash: 5000
-	DeveloperMode:
-		Locked: True
 
 World:
 	MissionData:
