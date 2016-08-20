@@ -574,6 +574,7 @@
     <Compile Include="Warheads\CreateResourceWarhead.cs" />
     <Compile Include="Warheads\DamageWarhead.cs" />
     <Compile Include="Warheads\DestroyResourceWarhead.cs" />
+    <Compile Include="Warheads\FireClusterWarhead.cs" />
     <Compile Include="Warheads\GrantUpgradeWarhead.cs" />
     <Compile Include="Warheads\HealthPercentageDamageWarhead.cs" />
     <Compile Include="Warheads\LeaveSmudgeWarhead.cs" />

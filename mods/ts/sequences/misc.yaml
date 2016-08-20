@@ -361,10 +361,17 @@ icon:
 	emp: pulsicon
 
 clustermissile:
-	up: null # TODO
+	up: mislmltinuke # TODO
 		Length: *
-	down: null # TODO
+		ZOffset: 1023
+		Offset: 0, -19
+	down: mislmltinuke # TODO
+		FlipX: true
 		Length: *
+		ZOffset: 1023
+	cluster: mislmlticluster
+		Facings: 32
+
 ionbeam:
 	idle:
 		Length: *
