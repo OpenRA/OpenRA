@@ -1138,7 +1138,7 @@ local function stringifyKeyIntoPrefix(name, num)
 end
 
 local function debuggerCreateStackWindow()
-  local stackCtrl = wx.wxTreeCtrl(ide.frame, wx.wxID_ANY,
+  local stackCtrl = ide:CreateTreeCtrl(ide.frame, wx.wxID_ANY,
     wx.wxDefaultPosition, wx.wxSize(width, height),
     wx.wxTR_LINES_AT_ROOT + wx.wxTR_HAS_BUTTONS + wx.wxTR_SINGLE
     + wx.wxTR_HIDE_ROOT + wx.wxNO_BORDER)
@@ -1224,7 +1224,7 @@ local function debuggerCreateStackWindow()
 end
 
 local function debuggerCreateWatchWindow()
-  local watchCtrl = wx.wxTreeCtrl(ide.frame, wx.wxID_ANY,
+  local watchCtrl = ide:CreateTreeCtrl(ide.frame, wx.wxID_ANY,
     wx.wxDefaultPosition, wx.wxSize(width, height),
     wx.wxTR_LINES_AT_ROOT + wx.wxTR_HAS_BUTTONS + wx.wxTR_SINGLE
     + wx.wxTR_HIDE_ROOT + wx.wxTR_EDIT_LABELS + wx.wxNO_BORDER)
