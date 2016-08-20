@@ -106,6 +106,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Dune 2000 Lua scripts", "Du
 		mods\d2k\maps\atreides-02b\atreides02b.lua = mods\d2k\maps\atreides-02b\atreides02b.lua
 		mods\d2k\maps\atreides-03a\atreides03a-AI.lua = mods\d2k\maps\atreides-03a\atreides03a-AI.lua
 		mods\d2k\maps\atreides-03a\atreides03a.lua = mods\d2k\maps\atreides-03a\atreides03a.lua
+		mods\d2k\maps\atreides-03b\atreides03b-AI.lua = mods\d2k\maps\atreides-03b\atreides03b-AI.lua
+		mods\d2k\maps\atreides-03b\atreides03b.lua = mods\d2k\maps\atreides-03b\atreides03b.lua
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "System Lua scripts", "System Lua scripts", "{A4D6AEA4-8009-4256-903B-8D227E50452B}"
