@@ -294,3 +294,30 @@ RedEye2:
 	Warhead@2Eff: CreateEffect
 		Explosions: tiny_twlt
 		ImpactSounds: expnew05.aud
+
+QuadLauncher:
+	ReloadDelay: 180
+	Range: 7c0
+	Report: samshot1.aud
+	ValidTargets: Air, Ground
+	Burst: 4
+	Projectile: Missile
+		MaximumLaunchSpeed: 384
+		Arm: 4 # actually DualCluster
+		Blockable: false
+		Shadow: true
+		Inaccuracy: 128
+		Image: DRAGON
+		TrailImage: small_smoke_trail
+		HorizontalRateOfTurn: 5
+		Palette: ra
+		MinimumLaunchSpeed: 75
+		Speed: 384
+	Warhead@1Dam: SpreadDamage
+		Spread: 128
+		Damage: 5
+		ValidTargets: Air, Ground
+		DamageTypes: SmallExplosionDeath
+	Warhead@2Eff: CreateEffect
+		Explosions: tiny_twlt
+		ImpactSounds: expnew05.aud

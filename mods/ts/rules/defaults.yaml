@@ -77,6 +77,25 @@
 		UpgradeTypes: notmobile
 		UpgradeMaxEnabledLevel: 0
 
+^WebDisable:
+	WithInfantryBody@WebDisable:
+		UpgradeTypes: WebDisable
+		UpgradeMinEnabledLevel: 1
+		MoveSequence: struggle
+		StandSequences: struggle
+	DisableOnUpgrade@WebDisable:
+		UpgradeTypes: WebDisable
+		UpgradeMinEnabledLevel: 1
+	TimedUpgradeBar@WebDisable:
+		Upgrade: WebDisable
+		Color: FFFFFF
+	Mobile:
+		UpgradeTypes: WebDisable
+		UpgradeMaxEnabledLevel: 0
+	WithInfantryBody:
+		UpgradeTypes: WebDisable
+		UpgradeMaxEnabledLevel: 0
+
 ^Cloakable:
 	Cloak@CLOAKGENERATOR:
 		UpgradeTypes: cloakgenerator
@@ -240,6 +259,7 @@
 	Inherits@2: ^ExistsInWorld
 	Inherits@3: ^SpriteActor
 	Inherits@4: ^Cloakable
+	Inherits@5: ^WebDisable
 	Huntable:
 	DrawLineToTarget:
 	Health:
@@ -375,8 +395,12 @@
 			Prone100Percent: 100
 			Prone350Percent: 350
 		DamageTriggers: TriggerProne
+		UpgradeTypes: WebDisable
+		UpgradeMaxEnabledLevel: 0
 	WithInfantryBody:
 		IdleSequences: idle1,idle2
+		UpgradeTypes: WebDisable
+		UpgradeMaxEnabledLevel: 0
 
 ^Cyborg:
 	Inherits@1: ^Infantry

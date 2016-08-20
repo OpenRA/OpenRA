@@ -70,3 +70,23 @@ Veins:
 	Warhead@Effect: CreateEffect
 		Explosions: veins
 		ExplosionPalette: player
+
+WebLauncher:
+	ReloadDelay: 200
+	Range: 7c0
+	Burst: 3
+	Report: fireweb1.aud
+	ValidTargets: Ground, Infantry
+	InvalidTargets: Reaper
+	Projectile: Bullet
+		Speed: 150
+		Image: web
+		Shadow: true
+		Inaccuracy: 2c0
+		Angle: 130
+		Palette: ra
+	Warhead@WEB: GrantUpgrade
+		Range: 2c0
+		Duration: 35
+		ValidTargets: Infantry
+		Upgrades: WebDisable	
