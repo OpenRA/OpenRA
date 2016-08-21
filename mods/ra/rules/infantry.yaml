@@ -185,6 +185,9 @@ E6:
 		VoiceSet: EngineerVoice
 	Selectable:
 		Priority: 5
+	DetectCloaked:
+		Range: 4c0
+		CloakTypes: Mine
 
 SPY:
 	Inherits: ^Soldier
