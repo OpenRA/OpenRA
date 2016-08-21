@@ -6,7 +6,7 @@ Minigun:
 		Speed: 1c682
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
-		Damage: 8
+		Damage: 800
 		Versus:
 			Wood: 60
 			Light: 40
@@ -29,7 +29,7 @@ M1Carbine:
 		Speed: 1c682
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
-		Damage: 15
+		Damage: 1500
 		Versus:
 			Wood: 60
 			Light: 40
@@ -52,7 +52,7 @@ Vulcan:
 		Speed: 1c682
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
-		Damage: 20
+		Damage: 2000
 		Versus:
 			Wood: 60
 			Light: 40
@@ -76,7 +76,7 @@ Vulcan2:
 		Speed: 1c682
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
-		Damage: 50
+		Damage: 5000
 		Versus:
 			None: 100
 			Wood: 60
@@ -101,7 +101,7 @@ Vulcan3:
 		Speed: 1c682
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
-		Damage: 10
+		Damage: 1000
 		Versus:
 			Wood: 60
 			Light: 40
@@ -124,7 +124,7 @@ VulcanTower:
 		Speed: 1c682
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
-		Damage: 18
+		Damage: 1800
 		Versus:
 			Wood: 60
 			Light: 40
@@ -148,7 +148,7 @@ JumpCannon:
 		Speed: 1c682
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
-		Damage: 15
+		Damage: 1500
 		Versus:
 			Wood: 60
 			Light: 40
@@ -171,7 +171,7 @@ AssaultCannon:
 		Speed: 1c682
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
-		Damage: 40
+		Damage: 4000
 		Versus:
 			Wood: 60
 			Light: 40
@@ -196,7 +196,7 @@ RaiderCannon:
 		Speed: 1c682
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
-		Damage: 40
+		Damage: 4000
 		Versus:
 			Wood: 60
 			Light: 40
@@ -220,7 +220,7 @@ HarpyClaw:
 	ValidTargets: Ground, Air
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
-		Damage: 60
+		Damage: 6000
 		ValidTargets: Ground, Air
 		Versus:
 			Wood: 60
@@ -244,7 +244,7 @@ Pistola:
 		Speed: 1c682
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
-		Damage: 2
+		Damage: 200
 		Versus:
 			Wood: 60
 			Light: 40
@@ -267,7 +267,7 @@ Sniper:
 		Speed: 1c682
 	Warhead@1Dam: SpreadDamage
 		Spread: 42
-		Damage: 150
+		Damage: 15000
 		Versus:
 			None: 100
 			Wood: 5

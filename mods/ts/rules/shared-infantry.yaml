@@ -10,7 +10,7 @@ E1:
 		Name: Light Infantry
 		Description: General-purpose infantry.\n  Strong vs Infantry\n  Weak vs Vehicles, Aircraft
 	Health:
-		HP: 125
+		HP: 12500
 	Mobile:
 		Speed: 71
 	Armament@PRIMARY:
@@ -50,7 +50,7 @@ ENGINEER:
 	Mobile:
 		Speed: 56
 	Health:
-		HP: 500
+		HP: 50000
 	Passenger:
 		PipType: Yellow
 	EngineerRepair:
@@ -88,9 +88,9 @@ FLAMEGUY:
 	WithInfantryBody:
 		IdleSequences: run
 	Health:
-		HP: 160
+		HP: 16000
 	SelfHealing:
-		Step: -10
+		Step: -1000
 		HealIfBelow: 101
 	ScaredyCat:
 	WithDeathAnimation:

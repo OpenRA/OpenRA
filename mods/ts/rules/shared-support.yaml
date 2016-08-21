@@ -17,7 +17,7 @@ NAPULS:
 	RequiresPower:
 	DisabledOverlay:
 	Health:
-		HP: 500
+		HP: 50000
 	Armor:
 		Type: Heavy
 	RevealsShroud:

@@ -12,7 +12,7 @@ MCV:
 	Selectable:
 		Priority: 3
 	Health:
-		HP: 600
+		HP: 60000
 	Armor:
 		Type: Light
 	Mobile:
@@ -72,11 +72,12 @@ HARV:
 			BlueTiberium: 80
 			Veins: 80
 	Health:
-		HP: 1000
+		HP: 100000
 	SelfHealing:
 		Delay: 10
 		HealIfBelow: 50
 		DamageCooldown: 200
+		Step: 500
 	Armor:
 		Type: Heavy
 	RevealsShroud:
@@ -114,7 +115,7 @@ LPST:
 		Name: Mobile Sensor Array
 		Description: Can detect cloaked and subterranean\nunits when deployed.\n  Unarmed
 	Health:
-		HP: 600
+		HP: 60000
 	Armor:
 		Type: Wood
 	Mobile:

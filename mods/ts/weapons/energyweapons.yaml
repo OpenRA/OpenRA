@@ -13,7 +13,7 @@ LtRail:
 	Warhead@1Dam: SpreadDamage
 		Range: 0, 32
 		Falloff: 100, 100
-		Damage: 150
+		Damage: 15000
 		InfDeath: 6
 		AffectsParent: false
 		ValidStances: Neutral, Enemy
@@ -27,7 +27,7 @@ LtRail:
 	Warhead@2Dam: SpreadDamage
 		Range: 0, 32
 		Falloff: 50, 50 # Only does half damage to friendly units
-		Damage: 150
+		Damage: 15000
 		InfDeath: 6
 		AffectsParent: false
 		ValidStances: Ally
@@ -55,7 +55,7 @@ MechRailgun:
 		Color: 00FFFFC8
 	Warhead@1Dam: SpreadDamage
 		Spread: 42
-		Damage: 200
+		Damage: 20000
 		Versus:
 			None: 200
 			Wood: 175
@@ -81,7 +81,7 @@ SonicZap:
 	Warhead@1Dam: SpreadDamage
 		Range: 0, 32
 		Falloff: 100, 100
-		Damage: 8
+		Damage: 800
 		AffectsParent: false
 		ValidStances: Neutral, Enemy
 		Versus:
@@ -91,8 +91,8 @@ SonicZap:
 	Warhead@2Dam: SpreadDamage
 		Range: 0, 32
 		Falloff: 50, 50
-		Damage: 8
 		InvalidTargets: Disruptor # Does not affect friendly disruptors at all
+		Damage: 800
 		AffectsParent: false
 		ValidStances: Ally
 		Versus:
@@ -115,7 +115,7 @@ CyCannon:
 		Speed: 384
 	Warhead@1Dam: SpreadDamage
 		Spread: 43
-		Damage: 120
+		Damage: 12000
 		ValidTargets: Ground
 		Versus:
 			None: 350
@@ -153,7 +153,7 @@ Proton:
 		RangeLimit: 35
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
-		Damage: 20
+		Damage: 2000
 		ValidTargets: Ground
 		Versus:
 			None: 25
@@ -184,7 +184,7 @@ ObeliskLaserFire:
 		ZOffset: 2047
 	Warhead@1Dam: SpreadDamage
 		Spread: 42
-		Damage: 250
+		Damage: 25000
 		DamageTypes: Prone60Percent, TriggerProne, EnergyDeath
 
 TurretLaserFire:
@@ -197,5 +197,5 @@ TurretLaserFire:
 		ZOffset: 2047
 	Warhead@1Dam: SpreadDamage
 		Spread: 42
-		Damage: 30
+		Damage: 3000
 		DamageTypes: Prone60Percent, TriggerProne, EnergyDeath

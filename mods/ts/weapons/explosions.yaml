@@ -1,7 +1,7 @@
 UnitExplode:
 	Warhead@1Dam: SpreadDamage
 		Spread: 426
-		Damage: 50
+		Damage: 5000
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		Versus:
 			None: 90
@@ -19,7 +19,7 @@ UnitExplode:
 UnitExplodeSmall:
 	Warhead@1Dam: SpreadDamage
 		Spread: 426
-		Damage: 40
+		Damage: 4000
 		Versus:
 			None: 90
 			Wood: 75
@@ -41,7 +41,7 @@ CyborgExplode:
 TiberiumExplosion:
 	Warhead@1Dam: SpreadDamage
 		Spread: 9
-		Damage: 10
+		Damage: 1000
 		Versus:
 			None: 90
 			Wood: 75

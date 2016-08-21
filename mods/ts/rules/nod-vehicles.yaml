@@ -13,7 +13,7 @@ BGGY:
 		TurnSpeed: 8
 		Speed: 142
 	Health:
-		HP: 220
+		HP: 22000
 	Armor:
 		Type: Light
 	RevealsShroud:
@@ -46,7 +46,7 @@ BIKE:
 		TurnSpeed: 8
 		Speed: 170
 	Health:
-		HP: 150
+		HP: 15000
 	Armor:
 		Type: Wood
 	RevealsShroud:
@@ -82,7 +82,7 @@ TTNK:
 		Speed: 85
 		Crushes: wall, crate, infantry
 	Health:
-		HP: 350
+		HP: 35000
 	Armor:
 		Type: Light
 		UpgradeTypes: undeployed
@@ -178,7 +178,7 @@ ART2:
 		BuildPaletteOrder: 100
 		Prerequisites: ~naweap, naradr
 	Health:
-		HP: 300
+		HP: 30000
 	Armor:
 		Type: Light
 	Mobile:
@@ -207,7 +207,7 @@ REPAIR:
 		Name: Mobile Repair Vehicle
 		Description: Repairs nearby vehicles.\n  Unarmed
 	Health:
-		HP: 200
+		HP: 20000
 	Mobile:
 		Speed: 85
 		TurnSpeed: 5
@@ -247,11 +247,12 @@ WEED:
 		Speed: 71
 		TurnSpeed: 5
 	Health:
-		HP: 600
+		HP: 60000
 	SelfHealing:
 		Delay: 10
 		HealIfBelow: 50
 		DamageCooldown: 200
+		Step: 500
 	Armor:
 		Type: Heavy
 	RevealsShroud:
@@ -278,7 +279,7 @@ SAPC:
 		TurnSpeed: 5
 		Speed: 71
 	Health:
-		HP: 175
+		HP: 17500
 	Armor:
 		Type: Heavy
 	RevealsShroud:
@@ -307,7 +308,7 @@ SUBTANK:
 		Speed: 71
 		Crushes: wall, crate, infantry
 	Health:
-		HP: 300
+		HP: 30000
 	Armor:
 		Type: Light
 	RevealsShroud:
@@ -334,7 +335,7 @@ STNK:
 		Speed: 85
 		Crushes: wall, crate, infantry
 	Health:
-		HP: 180
+		HP: 18000
 	Armor:
 		Type: Light
 	RevealsShroud:

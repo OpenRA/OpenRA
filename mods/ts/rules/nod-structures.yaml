@@ -17,7 +17,7 @@ NAPOWR:
 	Selectable:
 		Bounds: 88, 48, 2, -6
 	Health:
-		HP: 750
+		HP: 75000
 	Armor:
 		Type: Wood
 	RevealsShroud:
@@ -55,7 +55,7 @@ NAAPWR:
 	Selectable:
 		Bounds: 100, 54, 0, -4
 	Health:
-		HP: 750
+		HP: 75000
 	Armor:
 		Type: Wood
 	RevealsShroud:
@@ -93,7 +93,7 @@ NAHAND:
 	Selectable:
 		Bounds: 116, 60, 3, -6
 	Health:
-		HP: 800
+		HP: 80000
 	Armor:
 		Type: Wood
 	RevealsShroud:
@@ -147,7 +147,7 @@ NAWEAP:
 	Selectable:
 		Bounds: 149, 80, -3, -10
 	Health:
-		HP: 1000
+		HP: 100000
 	Armor:
 		Type: Heavy
 	RevealsShroud:
@@ -201,7 +201,7 @@ NAHPAD:
 		Footprint: xx xx
 		Dimensions: 2,2
 	Health:
-		HP: 600
+		HP: 60000
 	RevealsShroud:
 		Range: 5c0
 	Exit@1:
@@ -216,6 +216,7 @@ NAHPAD:
 	Reservable:
 	RepairsUnits:
 		PlayerExperience: 15
+		HpPerStep: 1000
 	ProductionBar:
 	WithIdleOverlay@PLATFORM:
 		Sequence: idle-platform
@@ -259,7 +260,7 @@ NARADR:
 	Selectable:
 		Bounds: 96, 48, 0, -6
 	Health:
-		HP: 1000
+		HP: 100000
 	Armor:
 		Type: Wood
 	RequiresPower:
@@ -304,7 +305,7 @@ NATECH:
 	Selectable:
 		Bounds: 86, 48, 0, -4
 	Health:
-		HP: 500
+		HP: 50000
 	Armor:
 		Type: Wood
 	RevealsShroud:
@@ -336,7 +337,7 @@ NATMPL:
 	Selectable:
 		Bounds: 134, 120, 12, -12
 	Health:
-		HP: 1000
+		HP: 100000
 	Armor:
 		Type: Wood
 	RevealsShroud:
@@ -372,7 +373,7 @@ NASTLH:
 		Footprint: xxx xxx
 		Dimensions: 3,2
 	Health:
-		HP: 600
+		HP: 60000
 	Armor:
 		Type: Wood
 	RevealsShroud:
@@ -419,7 +420,7 @@ NAWAST:
 	Selectable:
 		Bounds: 100, 60, 5, -5
 	Health:
-		HP: 400
+		HP: 40000
 	RevealsShroud:
 		Range: 6c0
 	TiberianSunRefinery:

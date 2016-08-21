@@ -10,7 +10,7 @@ Grenade:
 		Image: DISCUS
 	Warhead@1Dam: SpreadDamage
 		Spread: 171
-		Damage: 40
+		Damage: 4000
 		Versus:
 			None: 100
 			Wood: 85
@@ -43,7 +43,7 @@ Bomb:
 		Palette: ra
 	Warhead@1Dam: SpreadDamage
 		Spread: 298
-		Damage: 160
+		Damage: 16000
 		Versus:
 			None: 200
 			Wood: 90
@@ -77,7 +77,7 @@ RPGTower:
 		Palette: player
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
-		Damage: 110
+		Damage: 11000
 		Versus:
 			None: 30
 			Wood: 75
