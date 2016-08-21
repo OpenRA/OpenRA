@@ -1,7 +1,7 @@
 BoatMissile:
 	Warhead@Bonus: SpreadDamage
 		Spread: 128
-		Damage: 20
+		Damage: 2000
 		Versus:
 			None: 50
 			Wood: 100

@@ -47,7 +47,7 @@ OLDLST:
 
 TREX:
 	Health:
-		HP: 750
+		HP: 75000
 	Mobile:
 		Speed: 34
 	AutoTarget:
@@ -55,7 +55,7 @@ TREX:
 
 TRIC:
 	Health:
-		HP: 700
+		HP: 70000
 	Mobile:
 		Speed: 18
 	AutoTarget:
@@ -63,7 +63,7 @@ TRIC:
 
 STEG:
 	Health:
-		HP: 600
+		HP: 60000
 	Mobile:
 		Speed: 32
 

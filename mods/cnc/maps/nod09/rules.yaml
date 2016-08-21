@@ -134,7 +134,7 @@ HQ:
 
 BOAT:
 	Health:
-		HP: 1500
+		HP: 150000
 	AutoTarget:
 		InitialStance: AttackAnything
 	RejectsOrders:
@@ -182,11 +182,12 @@ PROCOUT.IN:
 RMBO.easy:
 	Inherits: RMBO
 	Health:
-		HP: 300
+		HP: 30000
 	SelfHealing:
 		Delay: 10
 		HealIfBelow: 50
 		DamageCooldown: 200
+		Step: 500
 	RenderSprites:
 		Image: RMBO
 

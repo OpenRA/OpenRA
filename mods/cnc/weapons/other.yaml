@@ -8,7 +8,7 @@ Flamethrower:
 		Speed: 1c682
 	Warhead@1Dam: SpreadDamage
 		Spread: 341
-		Damage: 40
+		Damage: 4000
 		ValidTargets: Ground, Trees
 		InvalidTargets: Wall
 		Versus:
@@ -36,7 +36,7 @@ BigFlamer:
 	BurstDelay: 25
 	Warhead@1Dam: SpreadDamage
 		Spread: 400
-		Damage: 75
+		Damage: 7500
 		InvalidTargets: Wall
 		ValidTargets: Ground, Trees
 		Versus:
@@ -60,7 +60,7 @@ Chemspray:
 		Speed: 1c682
 	Warhead@1Dam: SpreadDamage
 		Spread: 256
-		Damage: 80
+		Damage: 8000
 		Versus:
 			None: 100
 			Wood: 35
@@ -86,7 +86,7 @@ Grenade:
 		Image: BOMB
 	Warhead@1Dam: SpreadDamage
 		Spread: 341
-		Damage: 50
+		Damage: 5000
 		Versus:
 			None: 100
 			Wood: 50
@@ -110,7 +110,7 @@ Napalm:
 		Image: BOMBLET
 	Warhead@1Dam: SpreadDamage
 		Spread: 341
-		Damage: 30
+		Damage: 3000
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		ValidTargets: Ground, Water, Trees
 		Versus:
@@ -136,7 +136,7 @@ Laser:
 		ZOffset: 2047
 	Warhead@1Dam: SpreadDamage
 		Spread: 42
-		Damage: 360
+		Damage: 36000
 		Versus:
 			Wood: 50
 		DamageTypes: Prone50Percent, TriggerProne, FireDeath
@@ -147,7 +147,7 @@ Laser:
 TiberiumExplosion:
 	Warhead@1Dam: SpreadDamage
 		Spread: 9
-		Damage: 10
+		Damage: 1000
 		Versus:
 			None: 90
 			Wood: 75
@@ -169,7 +169,7 @@ Tail:
 		Speed: 1c682
 	Warhead@1Dam: SpreadDamage
 		Spread: 213
-		Damage: 180
+		Damage: 18000
 		Versus:
 			None: 90
 			Wood: 10
@@ -185,7 +185,7 @@ Horn:
 		Speed: 1c682
 	Warhead@1Dam: SpreadDamage
 		Spread: 213
-		Damage: 120
+		Damage: 12000
 		Versus:
 			None: 90
 			Wood: 10
@@ -201,7 +201,7 @@ Teeth:
 		Speed: 1c682
 	Warhead@1Dam: SpreadDamage
 		Spread: 213
-		Damage: 180
+		Damage: 18000
 		Versus:
 			None: 90
 			Wood: 10
@@ -217,7 +217,7 @@ Claw:
 		Speed: 1c682
 	Warhead@1Dam: SpreadDamage
 		Spread: 213
-		Damage: 60
+		Damage: 6000
 		Versus:
 			None: 90
 			Wood: 10

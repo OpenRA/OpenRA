@@ -40,7 +40,7 @@ Player:
 
 ^CivInfantry:
 	Health:
-		HP: 125
+		HP: 12500
 
 ^Bridge:
 	DamageMultiplier@INVULNERABLE:

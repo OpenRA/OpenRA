@@ -5,7 +5,7 @@ BOAT:
 	Tooltip:
 		Name: Gunboat
 	Health:
-		HP: 700
+		HP: 70000
 	Armor:
 		Type: Heavy
 	Mobile:
@@ -62,7 +62,7 @@ LST:
 		TurnSpeed: 4
 		Speed: 142
 	Health:
-		HP: 400
+		HP: 40000
 	Armor:
 		Type: Heavy
 	RevealsShroud:

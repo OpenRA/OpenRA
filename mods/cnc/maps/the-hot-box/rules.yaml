@@ -33,7 +33,7 @@ UNITCRATE:
 
 APC:
 	Health:
-		HP: 1000
+		HP: 100000
 	MustBeDestroyed:
 		RequiredForShortGame: true
 	-AttackMove:
