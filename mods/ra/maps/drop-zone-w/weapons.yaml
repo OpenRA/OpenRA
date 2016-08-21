@@ -17,7 +17,7 @@
 			Wood: 75
 			Light: 60
 			Heavy: 25
-		Damage: 250
+		Damage: 25000
 		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
 	Warhead@1Eff: CreateEffect
 		Explosions: large_explosion
@@ -49,7 +49,7 @@ SubMissile:
 			None: 40
 			Light: 30
 			Heavy: 30
-		Damage: 400
+		Damage: 40000
 		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
 	Warhead@1Eff: CreateEffect
 		Explosions: large_explosion

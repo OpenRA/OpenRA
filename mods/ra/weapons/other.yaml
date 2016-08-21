@@ -10,7 +10,7 @@ FireballLauncher:
 		Image: FB1
 	Warhead@1Dam: SpreadDamage
 		Spread: 213
-		Damage: 150
+		Damage: 15000
 		ValidTargets: Ground, Water, Trees
 		Versus:
 			None: 90
@@ -40,7 +40,7 @@ Flamer:
 		Inaccuracy: 853
 	Warhead@1Dam: SpreadDamage
 		Spread: 341
-		Damage: 8
+		Damage: 800
 		ValidTargets: Ground, Water, Trees
 		Versus:
 			None: 90
@@ -66,7 +66,7 @@ Napalm:
 		Blockable: false
 	Warhead@1Dam: SpreadDamage
 		Spread: 170
-		Damage: 100
+		Damage: 10000
 		ValidTargets: Ground, Water, Trees
 		Versus:
 			None: 90
@@ -98,7 +98,7 @@ Grenade:
 		Image: BOMB
 	Warhead@1Dam: SpreadDamage
 		Spread: 256
-		Damage: 60
+		Damage: 6000
 		Versus:
 			None: 50
 			Wood: 100
@@ -130,7 +130,7 @@ DepthCharge:
 		Inaccuracy: 128
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
-		Damage: 80
+		Damage: 8000
 		ValidTargets: Underwater
 		Versus:
 			None: 30
@@ -153,7 +153,7 @@ TeslaZap:
 	Projectile: TeslaZap
 	Warhead@1Dam: SpreadDamage
 		Spread: 42
-		Damage: 100
+		Damage: 10000
 		Versus:
 			None: 1000
 			Wood: 60
@@ -166,7 +166,7 @@ PortaTesla:
 	Projectile: TeslaZap
 	Warhead@1Dam: SpreadDamage
 		Spread: 42
-		Damage: 45
+		Damage: 4500
 		Versus:
 			None: 1000
 		DamageTypes: Prone50Percent, TriggerProne, ElectricityDeath
@@ -178,7 +178,7 @@ TTankZap:
 	Projectile: TeslaZap
 	Warhead@1Dam: SpreadDamage
 		Spread: 42
-		Damage: 100
+		Damage: 10000
 		Versus:
 			None: 1000
 		DamageTypes: Prone50Percent, TriggerProne, ElectricityDeath
@@ -190,7 +190,7 @@ DogJaw:
 	Report: dogg5p.aud
 	Warhead@1Dam: SpreadDamage
 		Spread: 213
-		Damage: 100
+		Damage: 10000
 		ValidTargets: Infantry
 		DamageTypes: DefaultDeath
 
@@ -203,7 +203,7 @@ Heal:
 		Speed: 1c682
 	Warhead@1Dam: SpreadDamage
 		Spread: 213
-		Damage: -50
+		Damage: -5000
 		ValidTargets: Infantry
 		DebugOverlayColor: 00FF00
 
@@ -216,13 +216,13 @@ Repair:
 		Speed: 1c682
 	Warhead@1Dam: SpreadDamage
 		Spread: 213
-		Damage: -20
+		Damage: -2000
 		ValidTargets: Repair
 		DebugOverlayColor: 00FF00
 
 Crush:
 	Warhead@1Dam: SpreadDamage
-		Damage: 100
+		Damage: 10000
 		DamageTypes: Prone50Percent, TriggerProne, DefaultDeath
 	Warhead@2Eff: CreateEffect
 		ImpactSounds: squishy2.aud
@@ -241,7 +241,7 @@ Claw:
 		Speed: 1c682
 	Warhead@1Dam: SpreadDamage
 		Spread: 213
-		Damage: 33
+		Damage: 3300
 		Versus:
 			None: 90
 			Wood: 10
@@ -257,7 +257,7 @@ Mandible:
 		Speed: 1c682
 	Warhead@1Dam: SpreadDamage
 		Spread: 213
-		Damage: 60
+		Damage: 6000
 		Versus:
 			None: 90
 			Wood: 10

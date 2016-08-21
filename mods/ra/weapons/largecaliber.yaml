@@ -7,7 +7,7 @@
 		Image: 50CAL
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
-		Damage: 16
+		Damage: 1600
 		Versus:
 			None: 30
 			Wood: 40
@@ -30,7 +30,7 @@
 		Image: 120MM
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
-		Damage: 40
+		Damage: 4000
 		Versus:
 			None: 20
 			Wood: 75
@@ -60,7 +60,7 @@
 		Image: 120MM
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
-		Damage: 40
+		Damage: 4000
 		Versus:
 			None: 20
 			Wood: 75
@@ -90,7 +90,7 @@
 		Image: 120MM
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
-		Damage: 60
+		Damage: 6000
 		InvalidTargets: Air, Infantry
 		Versus:
 			None: 20
@@ -119,7 +119,7 @@ TurretGun:
 		Image: 120MM
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
-		Damage: 60
+		Damage: 6000
 		Versus:
 			None: 20
 			Wood: 50
@@ -152,7 +152,7 @@ TurretGun:
 		ContrailLength: 30
 	Warhead@1Dam: SpreadDamage
 		Spread: 426
-		Damage: 220
+		Damage: 22000
 		Versus:
 			None: 90
 			Wood: 75
@@ -186,7 +186,7 @@ TurretGun:
 		ContrailLength: 30
 	Warhead@1Dam: SpreadDamage
 		Spread: 213
-		Damage: 25
+		Damage: 2500
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		Versus:
 			None: 60
@@ -215,7 +215,7 @@ TurretGun:
 		Image: 120MM
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
-		Damage: 25
+		Damage: 2500
 		Versus:
 			None: 30
 			Wood: 75

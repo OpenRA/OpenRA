@@ -3,7 +3,7 @@ BADR:
 	ParaDrop:
 		DropRange: 4c0
 	Health:
-		HP: 300
+		HP: 30000
 	Armor:
 		Type: Light
 	Aircraft:
@@ -42,7 +42,7 @@ BADR.Bomber:
 	Armament:
 		Weapon: ParaBomb
 	Health:
-		HP: 300
+		HP: 30000
 	Armor:
 		Type: Light
 	Aircraft:
@@ -90,7 +90,7 @@ MIG:
 		Name: Mig Attack Plane
 		Description: Fast Ground-Attack Plane.\n  Strong vs Buildings, Tanks\n  Weak vs Infantry, Light armor, Aircraft
 	Health:
-		HP: 70
+		HP: 7000
 	Armor:
 		Type: Light
 	RevealsShroud:
@@ -145,7 +145,7 @@ YAK:
 		Name: Yak Attack Plane
 		Description: Anti-Tanks & Anti-Infantry Plane.\n  Strong vs Infantry, Vehicles\n  Weak vs Aircraft
 	Health:
-		HP: 60
+		HP: 6000
 	Armor:
 		Type: Light
 	RevealsShroud:
@@ -204,7 +204,7 @@ TRAN:
 		Name: Transport Helicopter
 		Description: Fast Infantry Transport Helicopter.\n  Unarmed
 	Health:
-		HP: 120
+		HP: 12000
 	Armor:
 		Type: Light
 	RevealsShroud:
@@ -258,7 +258,7 @@ HELI:
 		Name: Longbow
 		Description: Helicopter gunship armed\nwith multi-purpose missiles.\n  Strong vs Tanks, Aircraft\n  Weak vs Infantry
 	Health:
-		HP: 120
+		HP: 12000
 	Armor:
 		Type: Light
 	RevealsShroud:
@@ -314,7 +314,7 @@ HIND:
 		Name: Hind
 		Description: Helicopter gunship armed\nwith dual chainguns.\n  Strong vs Infantry, Light armor.\n  Weak vs Tanks, Aircraft
 	Health:
-		HP: 100
+		HP: 10000
 	Armor:
 		Type: Light
 	RevealsShroud:
@@ -364,7 +364,7 @@ HIND:
 U2:
 	Inherits: ^Plane
 	Health:
-		HP: 2000
+		HP: 200000
 	Tooltip:
 		Name: Spy Plane
 	Armor:

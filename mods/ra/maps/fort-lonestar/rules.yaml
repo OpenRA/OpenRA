@@ -112,7 +112,7 @@ Player:
 
 OILB:
 	Health:
-		HP: 3000
+		HP: 300000
 	Armor:
 		Type: Wood
 	Bib:
@@ -133,7 +133,7 @@ MOBILETENT:
 	SelectionDecorations:
 		VisualBounds: 21,21
 	Health:
-		HP: 600
+		HP: 60000
 	Armor:
 		Type: Light
 	Mobile:
@@ -155,7 +155,7 @@ MOBILETENT:
 
 TENT:
 	Health:
-		HP: 1000
+		HP: 100000
 	Production:
 		Produces: Infantry, Soldier, Dog, Defense
 	-Sellable:
@@ -183,7 +183,7 @@ PBOX:
 	Valued:
 		Cost: 400
 	Health:
-		HP: 200
+		HP: 20000
 	Armor:
 		Type: Heavy
 	Power:
@@ -259,7 +259,7 @@ SNIPER:
 	Buildable:
 		Prerequisites: barracks
 	Health:
-		HP: 200
+		HP: 20000
 
 SNIPER.soviets:
 	Inherits: SNIPER
@@ -295,17 +295,17 @@ ARTY:
 	Valued:
 		Cost: 600
 	Health:
-		HP: 75
+		HP: 7500
 	RevealsShroud:
 		Range: 7c0
 
 V2RL:
 	Health:
-		HP: 100
+		HP: 10000
 
 4TNK:
 	Health:
-		HP: 2500
+		HP: 250000
 	Mobile:
 		Speed: 56
 	RevealsShroud:
@@ -321,13 +321,13 @@ V2RL:
 		Weapon: napalm
 		EmptyWeapon: napalm
 	SelfHealing:
-		Step: 2
+		Step: 200
 		Delay: 1
 		HealIfBelow: 40
 
 BADR.Bomber:
 	Health:
-		HP: 60
+		HP: 6000
 	Aircraft:
 		Speed: 280
 	AmmoPool:

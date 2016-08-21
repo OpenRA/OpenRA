@@ -11,7 +11,7 @@ SS:
 		Name: Submarine
 		Description: Submerged anti-ship unit\narmed with torpedoes.\nCan detect other submarines.\n  Strong vs Naval units\n  Weak vs Ground units, Aircraft\n  Special Ability: Submerge
 	Health:
-		HP: 250
+		HP: 25000
 	Armor:
 		Type: Light
 	Mobile:
@@ -67,7 +67,7 @@ MSUB:
 		Name: Missile Submarine
 		Description: Submerged anti-ground unit armed with\nlong-range ballistic missiles.\nCan detect other submarines.\n  Strong vs Buildings, Ground units\n  Weak vs Naval units, Aircraft\n  Special Ability: Submerge
 	Health:
-		HP: 400
+		HP: 40000
 	Armor:
 		Type: Light
 	Mobile:
@@ -123,7 +123,7 @@ DD:
 		Name: Destroyer
 		Description: Fast multi-role ship.\nCan detect submarines.\n  Strong vs Naval units, Light armor, Aircraft\n  Weak vs Infantry, Tanks
 	Health:
-		HP: 400
+		HP: 40000
 	Armor:
 		Type: Heavy
 	Mobile:
@@ -169,7 +169,7 @@ CA:
 		Name: Cruiser
 		Description: Very slow long-range ship.\n  Strong vs Buildings, Ground units\n  Weak vs Naval units, Aircraft
 	Health:
-		HP: 800
+		HP: 80000
 	Armor:
 		Type: Heavy
 	Mobile:
@@ -222,7 +222,7 @@ LST:
 		Name: Transport
 		Description: General-purpose naval transport.\nCan carry infantry and tanks.\n  Unarmed
 	Health:
-		HP: 350
+		HP: 35000
 	Armor:
 		Type: Heavy
 	Mobile:
@@ -259,7 +259,7 @@ PT:
 		Name: Gunboat
 		Description: Light scout & support ship.\nCan detect submarines.\n  Strong vs Naval units\n  Weak vs Ground units, Aircraft
 	Health:
-		HP: 200
+		HP: 20000
 	Armor:
 		Type: Heavy
 	Mobile:

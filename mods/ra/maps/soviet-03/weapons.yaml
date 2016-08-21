@@ -1,7 +1,7 @@
 MissionBarrelExplode:
 	Warhead@1Dam: SpreadDamage
 		Spread: 600
-		Damage: 200
+		Damage: 20000
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		Delay: 5
 		Versus:

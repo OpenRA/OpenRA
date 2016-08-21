@@ -103,7 +103,7 @@ Colt:
 		Footprint: _ x
 		Dimensions: 1,2
 	Health:
-		HP: 400
+		HP: 40000
 	Armor:
 		Type: Heavy
 	RevealsShroud:

@@ -15,7 +15,7 @@ FPWR:
 		Footprint: xx xx
 		Dimensions: 2,2
 	Health:
-		HP: 400
+		HP: 40000
 	Armor:
 		Type: Wood
 	Bib:
@@ -49,7 +49,7 @@ SYRF:
 	Valued:
 		Cost: 100
 	Health:
-		HP: 1000
+		HP: 100000
 	Armor:
 		Type: Light
 	EditorTilesetFilter:
@@ -80,7 +80,7 @@ SPEF:
 	Valued:
 		Cost: 100
 	Health:
-		HP: 1000
+		HP: 100000
 	Armor:
 		Type: Light
 	EditorTilesetFilter:
@@ -110,7 +110,7 @@ WEAF:
 	Valued:
 		Cost: 200
 	Health:
-		HP: 1500
+		HP: 150000
 	Armor:
 		Type: Wood
 
@@ -136,7 +136,7 @@ DOMF:
 	Valued:
 		Cost: 180
 	Health:
-		HP: 1000
+		HP: 100000
 	Armor:
 		Type: Wood
 	RequiresPower:
@@ -159,7 +159,7 @@ FIXF:
 		Footprint: _x_ xxx _x_
 		Dimensions: 3,3
 	Health:
-		HP: 800
+		HP: 80000
 	Armor:
 		Type: Wood
 	Bib:
@@ -186,7 +186,7 @@ FAPW:
 		Footprint: xxx xxx
 		Dimensions: 3,2
 	Health:
-		HP: 700
+		HP: 70000
 	Armor:
 		Type: Wood
 	Bib:
@@ -221,7 +221,7 @@ ATEF:
 	Valued:
 		Cost: 150
 	Health:
-		HP: 400
+		HP: 40000
 	Armor:
 		Type: Wood
 	RequiresPower:
@@ -251,7 +251,7 @@ PDOF:
 	Valued:
 		Cost: 150
 	Health:
-		HP: 1000
+		HP: 100000
 	Armor:
 		Type: Wood
 	Explodes:
@@ -281,7 +281,7 @@ MSLF:
 	Valued:
 		Cost: 250
 	Health:
-		HP: 1000
+		HP: 100000
 	Armor:
 		Type: Wood
 	Explodes:
@@ -311,6 +311,6 @@ FACF:
 	Valued:
 		Cost: 250
 	Health:
-		HP: 1500
+		HP: 150000
 	Armor:
 		Type: Wood

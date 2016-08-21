@@ -38,7 +38,7 @@ LST:
 	Tooltip:
 		Name: Naval Mobile HQ
 	Health:
-		HP: 1000
+		HP: 100000
 	Mobile:
 		Speed: 170
 	Armament@PRIMARY:

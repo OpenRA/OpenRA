@@ -7,7 +7,7 @@ MissionColt:
 		Speed: 1c682
 	Warhead@1Dam: SpreadDamage
 		Spread: 42
-		Damage: 50
+		Damage: 5000
 		Versus:
 			None: 0
 			Wood: 10

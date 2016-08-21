@@ -25,13 +25,13 @@ Player:
 
 OILB:
 	Health:
-		HP: 6000
+		HP: 600000
 
 BARR:
 	Buildable:
 		Prerequisites: ~disabled
 	Health:
-		HP: 5000
+		HP: 500000
 	Production:
 		Produces: Building, Infantry, Soldier, Dog
 	BaseProvider:
@@ -43,7 +43,7 @@ WEAP:
 	Buildable:
 		Prerequisites: ~disabled
 	Health:
-		HP: 10000
+		HP: 1000000
 	Valued:
 		Cost: 2000
 	Power:

@@ -2,7 +2,7 @@ CrateNapalm:
 	ValidTargets: Ground, Trees
 	Warhead@1Dam: SpreadDamage
 		Spread: 170
-		Damage: 60
+		Damage: 6000
 		ValidTargets: Ground, Trees
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		Versus:
@@ -22,7 +22,7 @@ CrateNapalm:
 CrateExplosion:
 	Warhead@1Dam: SpreadDamage
 		Spread: 426
-		Damage: 50
+		Damage: 5000
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		Versus:
 			None: 90
@@ -42,7 +42,7 @@ CrateNuke:
 	ValidTargets: Ground, Trees, Water, Air
 	Warhead@1Dam_impact: SpreadDamage
 		Spread: 1c0
-		Damage: 100
+		Damage: 10000
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		ValidTargets: Ground, Trees, Water, Air
 		Versus:
@@ -55,7 +55,7 @@ CrateNuke:
 		ImpactSounds: kaboom1.aud
 	Warhead@4Dam_areanuke: SpreadDamage
 		Spread: 1c0
-		Damage: 60
+		Damage: 6000
 		Falloff: 1000, 600, 400, 250, 150, 100, 0
 		Delay: 4
 		ValidTargets: Ground, Trees, Water, Air
@@ -79,7 +79,7 @@ MiniNuke:
 	ValidTargets: Ground, Trees, Water, Underwater, Air
 	Warhead@1Dam_impact: SpreadDamage
 		Spread: 1c0
-		Damage: 150
+		Damage: 15000
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		ValidTargets: Ground, Trees, Water, Air
 		Versus:
@@ -93,7 +93,7 @@ MiniNuke:
 		ImpactSounds: kaboom1.aud
 	Warhead@4Dam_areanuke1: SpreadDamage
 		Spread: 2c0
-		Damage: 60
+		Damage: 6000
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		Delay: 5
 		ValidTargets: Ground, Trees, Water, Underwater, Air
@@ -109,7 +109,7 @@ MiniNuke:
 		Delay: 5
 	Warhead@7Dam_areanuke2: SpreadDamage
 		Spread: 3c0
-		Damage: 60
+		Damage: 6000
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		Delay: 10
 		ValidTargets: Ground, Trees, Water, Underwater, Air
@@ -122,7 +122,7 @@ MiniNuke:
 		Delay: 10
 	Warhead@9Dam_areanuke3: SpreadDamage
 		Spread: 4c0
-		Damage: 60
+		Damage: 6000
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		Delay: 15
 		ValidTargets: Ground, Trees, Water, Underwater
@@ -142,7 +142,7 @@ MiniNuke:
 UnitExplode:
 	Warhead@1Dam: SpreadDamage
 		Spread: 426
-		Damage: 50
+		Damage: 5000
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		Versus:
 			None: 90
@@ -165,7 +165,7 @@ UnitExplode:
 UnitExplodeShip:
 	Warhead@1Dam: SpreadDamage
 		Spread: 426
-		Damage: 50
+		Damage: 5000
 		Versus:
 			None: 90
 			Wood: 75
@@ -179,7 +179,7 @@ UnitExplodeShip:
 UnitExplodeSubmarine:
 	Warhead@1Dam: SpreadDamage
 		Spread: 426
-		Damage: 50
+		Damage: 5000
 		Versus:
 			None: 90
 			Wood: 75
@@ -193,7 +193,7 @@ UnitExplodeSubmarine:
 UnitExplodeSmall:
 	Warhead@1Dam: SpreadDamage
 		Spread: 426
-		Damage: 40
+		Damage: 4000
 		Versus:
 			None: 90
 			Wood: 75
@@ -215,7 +215,7 @@ UnitExplodeSmall:
 ArtilleryExplode:
 	Warhead@1Dam: SpreadDamage
 		Spread: 426
-		Damage: 150
+		Damage: 15000
 		Versus:
 			None: 90
 			Wood: 75
@@ -241,7 +241,7 @@ V2Explode:
 BarrelExplode:
 	Warhead@1Dam: SpreadDamage
 		Spread: 426
-		Damage: 50
+		Damage: 5000
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		Delay: 5
 		ValidTargets: Ground, Trees
@@ -264,7 +264,7 @@ BarrelExplode:
 ATMine:
 	Warhead@1Dam: SpreadDamage
 		Spread: 256
-		Damage: 400
+		Damage: 40000
 		AffectsParent: true
 		DamageTypes: Prone50Percent, TriggerProne, DefaultDeath
 	Warhead@2Eff: CreateEffect
@@ -277,7 +277,7 @@ ATMine:
 APMine:
 	Warhead@1Dam: SpreadDamage
 		Spread: 256
-		Damage: 400
+		Damage: 40000
 		AffectsParent: true
 		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
 	Warhead@2Eff: CreateEffect
@@ -290,7 +290,7 @@ APMine:
 OreExplosion:
 	Warhead@1Dam: SpreadDamage
 		Spread: 9
-		Damage: 10
+		Damage: 1000
 		Versus:
 			None: 90
 			Wood: 75

@@ -18,7 +18,7 @@ Maverick:
 		RangeLimit: 14c410
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
-		Damage: 70
+		Damage: 7000
 		ValidTargets: Ground, Water
 		Versus:
 			None: 30
@@ -55,7 +55,7 @@ Dragon:
 		RangeLimit: 6c0
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
-		Damage: 50
+		Damage: 5000
 		ValidTargets: Ground, Water
 		Versus:
 			None: 10
@@ -94,7 +94,7 @@ HellfireAG:
 		RangeLimit: 8c512
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
-		Damage: 60
+		Damage: 6000
 		ValidTargets: Ground, Water
 		Versus:
 			None: 30
@@ -132,7 +132,7 @@ HellfireAA:
 		RangeLimit: 7c0
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
-		Damage: 40
+		Damage: 4000
 		ValidTargets: Air
 		Versus:
 			None: 30
@@ -166,7 +166,7 @@ MammothTusk:
 		RangeLimit: 9c614
 	Warhead@1Dam: SpreadDamage
 		Spread: 256
-		Damage: 50
+		Damage: 5000
 		ValidTargets: Air, Infantry
 		Versus:
 			None: 100
@@ -205,7 +205,7 @@ Nike:
 		Speed: 341
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
-		Damage: 50
+		Damage: 5000
 		ValidTargets: Air
 		Versus:
 			None: 90
@@ -231,7 +231,7 @@ RedEye:
 		Speed: 298
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
-		Damage: 40
+		Damage: 4000
 		ValidTargets: Air
 		Versus:
 			None: 90
@@ -258,7 +258,7 @@ SubMissile:
 		ContrailLength: 30
 	Warhead@1Dam: SpreadDamage
 		Spread: 426
-		Damage: 30
+		Damage: 3000
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		Versus:
 			None: 40
@@ -295,7 +295,7 @@ Stinger:
 		CloseEnough: 149
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
-		Damage: 30
+		Damage: 3000
 		ValidTargets: Air, Ground, Water
 		Versus:
 			None: 30
@@ -336,7 +336,7 @@ StingerAA:
 		Speed: 255
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
-		Damage: 30
+		Damage: 3000
 		ValidTargets: Air, Ground, Water
 		Versus:
 			None: 30
@@ -375,7 +375,7 @@ TorpTube:
 		Palette: shadow
 	Warhead@1Dam: SpreadDamage
 		Spread: 426
-		Damage: 180
+		Damage: 18000
 		ValidTargets: Water, Underwater, Bridge
 		Versus:
 			None: 30
@@ -412,7 +412,7 @@ SCUD:
 		Angle: 62
 	Warhead@1Dam: SpreadDamage
 		Spread: 341
-		Damage: 45
+		Damage: 4500
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		ValidTargets: Ground, Trees
 		Versus:
@@ -450,7 +450,7 @@ APTusk:
 		RangeLimit: 7c204
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
-		Damage: 30
+		Damage: 3000
 		ValidTargets: Ground, Water
 		Versus:
 			None: 25
