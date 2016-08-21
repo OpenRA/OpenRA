@@ -71,7 +71,20 @@ namespace OpenRA.Mods.Common.Scripting
 			if (!Context.World.Map.Rules.Actors.TryGetValue(type, out ai))
 				throw new LuaException("Unknown actor type '{0}'".F(type));
 
-			return ai.GetBuildTime();
+			var bi = ai.TraitInfoOrDefault<BuildableInfo>();
+
+			if (bi == null)
+				return 0;
+
+			var time = bi.BuildDuration;
+			if (time == -1)
+			{
+				var valued = ai.TraitInfoOrDefault<ValuedInfo>();
+				time = valued != null ? valued.Cost : 0;
+			}
+
+			time = time * bi.BuildDurationModifier / 100;
+			return time;
 		}
 
 		[Desc("Returns the cruise altitude of the requested unit type (zero if it is ground-based).")]

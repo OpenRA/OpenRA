@@ -311,15 +311,23 @@ namespace OpenRA.Mods.Common.Traits
 
 		public virtual int GetBuildTime(string unitString)
 		{
-			return GetBuildTime(self.World.Map.Rules.Actors[unitString]);
+			var actorInfo = self.World.Map.Rules.Actors[unitString];
+			return GetBuildTime(actorInfo, actorInfo.TraitInfo<BuildableInfo>());
 		}
 
-		public virtual int GetBuildTime(ActorInfo unit, BuildableInfo bi = null)
+		public virtual int GetBuildTime(ActorInfo unit, BuildableInfo bi)
 		{
 			if (developerMode.FastBuild)
 				return 0;
 
-			var time = unit.GetBuildTime() * Info.BuildSpeed / 100;
+			var time = bi.BuildDuration;
+			if (time == -1)
+			{
+				var valued = unit.TraitInfoOrDefault<ValuedInfo>();
+				time = valued != null ? valued.Cost : 0;
+			}
+
+			time = time * bi.BuildDurationModifier * Info.BuildSpeed / 10000;
 			return time;
 		}
 

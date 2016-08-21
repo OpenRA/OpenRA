@@ -323,7 +323,6 @@
     <Compile Include="Traits\Crates\RevealMapCrateAction.cs" />
     <Compile Include="Traits\Crates\SupportPowerCrateAction.cs" />
     <Compile Include="Traits\Crushable.cs" />
-    <Compile Include="Traits\CustomBuildTimeValue.cs" />
     <Compile Include="Traits\CustomSellValue.cs" />
     <Compile Include="Traits\CustomSelectionSize.cs" />
     <Compile Include="Traits\DamagedByTerrain.cs" />
