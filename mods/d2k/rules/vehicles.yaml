@@ -4,10 +4,10 @@ mcv:
 		Prerequisites: repair_pad, upgrade.heavy, ~techlevel.medium
 		Queue: Armor
 		BuildPaletteOrder: 110
+		BuildDuration: 648
+		BuildDurationModifier: 40
 	Valued:
 		Cost: 2000
-	CustomBuildTimeValue:
-		Value: 648
 	Tooltip:
 		Name: Mobile Construction Vehicle
 		Description: Deploys into another Construction Yard\n  Unarmed
@@ -52,10 +52,10 @@ harvester:
 		Queue: Armor
 		Prerequisites: refinery
 		BuildPaletteOrder: 10
+		BuildDuration: 540
+		BuildDurationModifier: 40
 	Valued:
 		Cost: 1200
-	CustomBuildTimeValue:
-		Value: 540
 	Tooltip:
 		Name: Spice Harvester
 		Description: Collects Spice for processing\n  Unarmed
@@ -102,10 +102,10 @@ trike:
 		Queue: Vehicle
 		BuildPaletteOrder: 10
 		Prerequisites: ~light.regulartrikes
+		BuildDuration: 194
+		BuildDurationModifier: 40
 	Valued:
 		Cost: 300
-	CustomBuildTimeValue:
-		Value: 194
 	Tooltip:
 		Name: Trike
 		Description: Fast scout\n Strong vs Infantry\n Weak vs Tanks, Aircraft
@@ -142,10 +142,10 @@ quad:
 		Queue: Vehicle
 		Prerequisites: upgrade.light, ~techlevel.medium
 		BuildPaletteOrder: 20
+		BuildDuration: 277
+		BuildDurationModifier: 40
 	Valued:
 		Cost: 400
-	CustomBuildTimeValue:
-		Value: 277
 	Tooltip:
 		Name: Missile Quad
 		Description: Missile Scout\n Strong vs Vehicles\n  Weak vs Infantry
@@ -177,10 +177,10 @@ siege_tank:
 		Queue: Armor
 		Prerequisites: upgrade.heavy, ~techlevel.medium
 		BuildPaletteOrder: 50
+		BuildDuration: 324
+		BuildDurationModifier: 40
 	Valued:
 		Cost: 700
-	CustomBuildTimeValue:
-		Value: 324
 	Tooltip:
 		Name: Siege Tank
 		Description: Siege Artillery\n  Strong vs Infantry, Buildings\n  Weak vs Tanks, Aircraft
@@ -226,10 +226,10 @@ missile_tank:
 		Queue: Armor
 		Prerequisites: ~heavy.missiletank, upgrade.heavy, research_centre, ~techlevel.high
 		BuildPaletteOrder: 60
+		BuildDuration: 441
+		BuildDurationModifier: 40
 	Valued:
 		Cost: 900
-	CustomBuildTimeValue:
-		Value: 441
 	Mobile:
 		Speed: 64
 		TurnSpeed: 5
@@ -261,10 +261,10 @@ sonic_tank:
 		Queue: Armor
 		BuildPaletteOrder: 100
 		Prerequisites: ~heavy.atreides, research_centre, ~techlevel.high
+		BuildDuration: 486
+		BuildDurationModifier: 40
 	Valued:
 		Cost: 1000
-	CustomBuildTimeValue:
-		Value: 486
 	Tooltip:
 		Name: Sonic Tank
 		Description: Fires sonic shocks\n  Strong vs Infantry, Vehicles\n  Weak vs Artillery, Aircraft
@@ -298,10 +298,10 @@ devastator:
 		Queue: Armor
 		BuildPaletteOrder: 100
 		Prerequisites: ~heavy.harkonnen, research_centre, ~techlevel.high
+		BuildDuration: 540
+		BuildDurationModifier: 40
 	Valued:
 		Cost: 1050
-	CustomBuildTimeValue:
-		Value: 540
 	Tooltip:
 		Name: Devastator
 		Description: Super Heavy Tank\n  Strong vs Tanks\n  Weak vs Artillery, Aircraft
@@ -343,10 +343,10 @@ raider:
 		Queue: Vehicle
 		BuildPaletteOrder: 10
 		Prerequisites: ~light.ordos
+		BuildDuration: 194
+		BuildDurationModifier: 40
 	Valued:
 		Cost: 350
-	CustomBuildTimeValue:
-		Value: 194
 	Tooltip:
 		Name: Raider Trike
 		Description: Improved Scout\n Strong vs Infantry, Light Vehicles
@@ -380,10 +380,10 @@ stealth_raider:
 	Buildable:
 		Prerequisites: ~light.ordos, upgrade.light, high_tech_factory, ~techlevel.medium
 		BuildPaletteOrder: 30
+		BuildDuration: 194	## Copied from Raider, not included in conversion. Both have same "BuildSpeed" in TibEd
+		BuildDurationModifier: 40
 	Valued:
 		Cost: 400
-	CustomBuildTimeValue:
-		Value: 194	## Copied from Raider, not included in conversion. Both have same "BuildSpeed" in TibEd
 	Tooltip:
 		Name: Stealth Raider Trike
 		Description: Invisible Raider Trike\n Strong vs Infantry, Light Vehicles
@@ -402,8 +402,6 @@ deviator:
 	Inherits: ^Tank
 	Valued:
 		Cost: 1000
-	CustomBuildTimeValue:
-		Value: 486
 	Tooltip:
 		Name: Deviator
 		Description: Fires a warhead which changes\nthe allegiance of enemy vehicles
@@ -411,6 +409,8 @@ deviator:
 		Queue: Armor
 		BuildPaletteOrder: 50
 		Prerequisites: ~heavy.ordos, research_centre, ~techlevel.high
+		BuildDuration: 486
+		BuildDurationModifier: 40
 	Mobile:
 		TurnSpeed: 3
 		Speed: 53
@@ -439,10 +439,10 @@ deviator:
 	Buildable:
 		Queue: Armor
 		BuildPaletteOrder: 40
+		BuildDuration: 373
+		BuildDurationModifier: 40
 	Valued:
 		Cost: 700
-	CustomBuildTimeValue:
-		Value: 373
 	Tooltip:
 		Name: Combat Tank
 		Description: Main Battle Tank\n  Strong vs Tanks\n  Weak vs Infantry, Aircraft\n \n  Atreides:      +Range\n  Harkonnen: +Health\n  Ordos:         +Speed

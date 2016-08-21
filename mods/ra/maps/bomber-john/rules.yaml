@@ -53,8 +53,6 @@ SILO:
 		Prerequisites: ~disabled
 
 Player:
-	ClassicProductionQueue@Building:
-		BuildSpeed: 40
 	Shroud:
 		FogLocked: True
 		FogEnabled: True

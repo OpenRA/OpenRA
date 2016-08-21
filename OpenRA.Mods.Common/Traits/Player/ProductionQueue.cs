@@ -35,7 +35,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly bool Sticky = true;
 
 		[Desc("This percentage value is multiplied with actor cost to translate into build time (lower means faster).")]
-		public readonly int BuildSpeed = 40;
+		public readonly int BuildDurationModifier = 100;
 
 		[Desc("The build time is multiplied with this value on low power.")]
 		public readonly int LowPowerSlowdown = 3;
@@ -309,17 +309,19 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		public virtual int GetBuildTime(string unitString)
-		{
-			return GetBuildTime(self.World.Map.Rules.Actors[unitString]);
-		}
-
-		public virtual int GetBuildTime(ActorInfo unit, BuildableInfo bi = null)
+		public virtual int GetBuildTime(ActorInfo unit, BuildableInfo bi)
 		{
 			if (developerMode.FastBuild)
 				return 0;
 
-			var time = unit.GetBuildTime() * Info.BuildSpeed / 100;
+			var time = bi.BuildDuration;
+			if (time == -1)
+			{
+				var valued = unit.TraitInfoOrDefault<ValuedInfo>();
+				time = valued != null ? valued.Cost : 0;
+			}
+
+			time = time * bi.BuildDurationModifier * Info.BuildDurationModifier / 10000;
 			return time;
 		}
 
@@ -415,6 +417,8 @@ namespace OpenRA.Mods.Common.Traits
 		public bool Started { get; private set; }
 		public int Slowdown { get; private set; }
 
+		readonly ActorInfo ai;
+		readonly BuildableInfo bi;
 		readonly PowerManager pm;
 
 		public ProductionItem(ProductionQueue queue, string item, int cost, PowerManager pm, Action onComplete)
@@ -425,13 +429,15 @@ namespace OpenRA.Mods.Common.Traits
 			OnComplete = onComplete;
 			Queue = queue;
 			this.pm = pm;
+			ai = Queue.Actor.World.Map.Rules.Actors[Item];
+			bi = ai.TraitInfo<BuildableInfo>();
 		}
 
 		public void Tick(PlayerResources pr)
 		{
 			if (!Started)
 			{
-				var time = Queue.GetBuildTime(Item);
+				var time = Queue.GetBuildTime(ai, bi);
 				if (time > 0)
 					RemainingTime = TotalTime = time;
 

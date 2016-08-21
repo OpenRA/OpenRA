@@ -118,21 +118,16 @@ namespace OpenRA.Mods.Common.Traits
 			return false;
 		}
 
-		public override int GetBuildTime(string unitString)
-		{
-			return GetBuildTime(self.World.Map.Rules.Actors[unitString]);
-		}
-
-		public override int GetBuildTime(ActorInfo unit, BuildableInfo bi = null)
+		public override int GetBuildTime(ActorInfo unit, BuildableInfo bi)
 		{
 			if (developerMode.FastBuild)
 				return 0;
 
-			var time = unit.GetBuildTime() * Info.BuildSpeed / 100;
+			var time = base.GetBuildTime(unit, bi);
 
 			if (info.SpeedUp)
 			{
-				var type = (bi ?? unit.TraitInfo<BuildableInfo>()).BuildAtProductionType ?? info.Type;
+				var type = bi.BuildAtProductionType ?? info.Type;
 
 				var selfsameProductionsCount = self.World.ActorsWithTrait<Production>()
 					.Count(p => p.Actor.Owner == self.Owner && p.Trait.Info.Produces.Contains(type));

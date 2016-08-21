@@ -3,10 +3,10 @@ light_inf:
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 10
+		BuildDuration: 54
+		BuildDurationModifier: 40
 	Valued:
 		Cost: 50
-	CustomBuildTimeValue:
-		Value: 54
 	Tooltip:
 		Name: Light Infantry
 		Description: General-purpose infantry\n  Strong vs Infantry\n  Weak vs Vehicles, Artillery
@@ -26,10 +26,10 @@ engineer:
 		Queue: Infantry
 		BuildPaletteOrder: 50
 		Prerequisites: upgrade.barracks, ~techlevel.medium
+		BuildDuration: 108
+		BuildDurationModifier: 40
 	Valued:
 		Cost: 400
-	CustomBuildTimeValue:
-		Value: 108
 	Tooltip:
 		Name: Engineer
 		Description: Infiltrates and captures enemy structures\n  Strong vs Buildings\n  Weak vs Everything
@@ -55,10 +55,10 @@ trooper:
 		Queue: Infantry
 		BuildPaletteOrder: 20
 		Prerequisites: upgrade.barracks, ~techlevel.medium
+		BuildDuration: 73
+		BuildDurationModifier: 40
 	Valued:
 		Cost: 90
-	CustomBuildTimeValue:
-		Value: 73
 	Tooltip:
 		Name: Trooper
 		Description: Anti-tank/Anti-aircraft infantry\n  Strong vs Tanks, Aircraft\n  Weak vs Infantry, Artillery
@@ -82,10 +82,10 @@ thumper:
 		Queue: Infantry
 		BuildPaletteOrder: 60
 		Prerequisites: upgrade.barracks, ~techlevel.high
+		BuildDuration: 108
+		BuildDurationModifier: 40
 	Valued:
 		Cost: 200
-	CustomBuildTimeValue:
-		Value: 108
 	Tooltip:
 		Name: Thumper
 		Description: Attracts nearby worms\n  Unarmed
@@ -171,10 +171,10 @@ grenadier:
 		Queue: Infantry
 		BuildPaletteOrder: 80
 		Prerequisites: ~barracks.atreides, upgrade.barracks, high_tech_factory, ~techlevel.medium
+		BuildDuration: 81	## Wasn't converted, copied from Sardauker who has same value in TibEd.
+		BuildDurationModifier: 40
 	Valued:
 		Cost: 80
-	CustomBuildTimeValue:
-		Value: 81	## Wasn't converted, copied from Sardauker who has same value in TibEd.
 	Tooltip:
 		Name: Grenadier
 		Description: Infantry armed with grenades. \n  Strong vs Buildings, Infantry\n  Weak vs Vehicles
@@ -200,10 +200,10 @@ sardaukar:
 		Queue: Infantry
 		BuildPaletteOrder: 80
 		Prerequisites: ~barracks.harkonnen, palace, ~techlevel.high
+		BuildDuration: 81
+		BuildDurationModifier: 40
 	Valued:
 		Cost: 200
-	CustomBuildTimeValue:
-		Value: 81
 	Tooltip:
 		Name: Sardaukar
 		Description: Elite assault infantry\n  Strong vs Infantry, Vehicles\n  Weak vs Artillery

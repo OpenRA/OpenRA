@@ -192,10 +192,10 @@ upgrade.conyard:
 		Prerequisites: construction_yard
 		Queue: Upgrade
 		BuildLimit: 1
+		BuildDuration: 590
+		BuildDurationModifier: 40
 	Valued:
 		Cost: 1000
-	CustomBuildTimeValue:
-		Value: 590
 	RenderSprites:
 		Image: conyard.harkonnen
 		FactionImages:
@@ -214,10 +214,10 @@ upgrade.barracks:
 		Prerequisites: barracks
 		Queue: Upgrade
 		BuildLimit: 1
+		BuildDuration: 290
+		BuildDurationModifier: 40
 	Valued:
 		Cost: 500
-	CustomBuildTimeValue:
-		Value: 290
 	RenderSprites:
 		Image: barracks.harkonnen
 		FactionImages:
@@ -237,10 +237,10 @@ upgrade.light:
 		Prerequisites: light_factory
 		Queue: Upgrade
 		BuildLimit: 1
+		BuildDuration: 215
+		BuildDurationModifier: 40
 	Valued:
 		Cost: 400
-	CustomBuildTimeValue:
-		Value: 215
 	RenderSprites:
 		Image: light.harkonnen
 		FactionImages:
@@ -260,10 +260,10 @@ upgrade.heavy:
 		Prerequisites: heavy_factory
 		Queue: Upgrade
 		BuildLimit: 1
+		BuildDuration: 380
+		BuildDurationModifier: 40
 	Valued:
 		Cost: 800
-	CustomBuildTimeValue:
-		Value: 380
 	RenderSprites:
 		Image: heavy.harkonnen
 		FactionImages:
@@ -283,10 +283,10 @@ upgrade.hightech:
 		Prerequisites: ~hightech.atreides, ~techlevel.superweapons
 		Queue: Upgrade
 		BuildLimit: 1
+		BuildDuration: 720
+		BuildDurationModifier: 40
 	Valued:
 		Cost: 1500
-	CustomBuildTimeValue:
-		Value: 720
 	RenderSprites:
 		Image: hightech.atreides
 	ProvidesPrerequisite@upgradename:

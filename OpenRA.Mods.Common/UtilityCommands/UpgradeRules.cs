@@ -292,7 +292,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				}
 
 				// DisplayTimer was replaced by DisplayTimerStances
-				if (engineVersion < 20160710)
+				if (engineVersion < 20160820)
 				{
 					if (node.Key == "DisplayTimer")
 					{
@@ -302,6 +302,39 @@ namespace OpenRA.Mods.Common.UtilityCommands
 							node.Value.Value = "None";
 						else
 							node.Value.Value = "Ally, Neutral, Enemy";
+					}
+				}
+
+				if (engineVersion < 20160821)
+				{
+					// Shifted custom build time properties to Buildable
+					if (depth == 0)
+					{
+						var cbtv = node.Value.Nodes.FirstOrDefault(n => n.Key == "CustomBuildTimeValue");
+						if (cbtv != null)
+						{
+							var bi = node.Value.Nodes.FirstOrDefault(n => n.Key == "Buildable");
+
+							if (bi == null)
+								node.Value.Nodes.Add(bi = new MiniYamlNode("Buildable", ""));
+
+							var value = cbtv.Value.Nodes.First(n => n.Key == "Value");
+							value.Key = "BuildDuration";
+							bi.Value.Nodes.Add(value);
+							bi.Value.Nodes.Add(new MiniYamlNode("BuildDurationModifier", "40"));
+						}
+
+						node.Value.Nodes.RemoveAll(n => n.Key == "CustomBuildTimeValue");
+						node.Value.Nodes.RemoveAll(n => n.Key == "-CustomBuildTimeValue");
+					}
+
+					// rename ProductionQueue.BuildSpeed
+					if (node.Key == "BuildSpeed")
+					{
+						node.Key = "BuildDurationModifier";
+						var oldValue = FieldLoader.GetValue<int>(node.Key, node.Value.Value);
+						oldValue = oldValue * 100 / 40;
+						node.Value.Value = oldValue.ToString();
 					}
 				}
 

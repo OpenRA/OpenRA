@@ -37,6 +37,12 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Palette used for the production icon.")]
 		[PaletteReference] public readonly string IconPalette = "chrome";
 
+		[Desc("Base build time in frames (-1 indicates to use the unit's Value).")]
+		public readonly int BuildDuration = -1;
+
+		[Desc("Percentage modifier to apply to the build duration.")]
+		public readonly int BuildDurationModifier = 60;
+
 		// TODO: UI fluff; doesn't belong here
 		public readonly int BuildPaletteOrder = 9999;
 	}
