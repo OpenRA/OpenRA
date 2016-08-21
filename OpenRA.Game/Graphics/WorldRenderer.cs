@@ -126,7 +126,10 @@ namespace OpenRA.Graphics
 				return;
 
 			if (devTrait.Value != null)
+			{
 				Game.Renderer.WorldSpriteRenderer.SetDepthPreviewEnabled(devTrait.Value.ShowDepthPreview);
+				Game.Renderer.WorldRgbaSpriteRenderer.SetDepthPreviewEnabled(devTrait.Value.ShowDepthPreview);
+			}
 
 			RefreshPalette();
 
