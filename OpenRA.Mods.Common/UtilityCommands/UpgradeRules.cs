@@ -92,6 +92,12 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			catch { }
 		}
 
+		internal static string MultiplyByFactor(int oldValue, int factor)
+		{
+			oldValue = oldValue * factor;
+			return oldValue.ToString();
+		}
+
 		internal static void UpgradeActorRules(ModData modData, int engineVersion, ref List<MiniYamlNode> nodes, MiniYamlNode parent, int depth)
 		{
 			var addNodes = new List<MiniYamlNode>();
@@ -338,6 +344,73 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				// Multiply all health and damage in shipping mods by 100 to avoid issues caused by rounding
+				if (engineVersion < 20160822)
+				{
+					var mod = modData.Manifest.Id;
+
+					if (node.Key == "HP" && parent.Key == "Health")
+					{
+						var oldValue = FieldLoader.GetValue<int>(node.Key, node.Value.Value);
+
+						if (mod == "ra" || mod == "cnc" || mod == "ts")
+							node.Value.Value = MultiplyByFactor(oldValue, 100);
+						if (mod == "d2k")
+							node.Value.Value = MultiplyByFactor(oldValue, 10);
+					}
+
+					if (node.Key.StartsWith("SelfHealing"))
+					{
+						var step = node.Value.Nodes.FirstOrDefault(n => n.Key == "Step");
+
+						if (step == null && (mod == "ra" || mod == "cnc" || mod == "ts" || mod == "d2k"))
+							node.Value.Nodes.Add(new MiniYamlNode("Step", "500"));
+						else if (step != null)
+						{
+							var oldValue = FieldLoader.GetValue<int>(step.Key, step.Value.Value);
+
+							if (mod == "ra" || mod == "cnc" || mod == "ts")
+								step.Value.Value = MultiplyByFactor(oldValue, 100);
+							if (mod == "d2k")
+								step.Value.Value = MultiplyByFactor(oldValue, 10);
+						}
+					}
+
+					if (node.Key == "RepairsUnits")
+					{
+						var step = node.Value.Nodes.FirstOrDefault(n => n.Key == "HpPerStep");
+
+						if (step == null && (mod == "ra" || mod == "cnc" || mod == "ts" || mod == "d2k"))
+							node.Value.Nodes.Add(new MiniYamlNode("HpPerStep", "1000"));
+						else if (step != null)
+						{
+							var oldValue = FieldLoader.GetValue<int>(step.Key, step.Value.Value);
+
+							if (mod == "ra" || mod == "cnc" || mod == "ts")
+								step.Value.Value = MultiplyByFactor(oldValue, 100);
+							if (mod == "d2k")
+								step.Value.Value = MultiplyByFactor(oldValue, 10);
+						}
+					}
+
+					if (node.Key == "RepairableBuilding")
+					{
+						var step = node.Value.Nodes.FirstOrDefault(n => n.Key == "RepairStep");
+
+						if (step == null && (mod == "ra" || mod == "cnc" || mod == "ts" || mod == "d2k"))
+							node.Value.Nodes.Add(new MiniYamlNode("RepairStep", "700"));
+						else if (step != null)
+						{
+							var oldValue = FieldLoader.GetValue<int>(step.Key, step.Value.Value);
+
+							if (mod == "ra" || mod == "cnc" || mod == "ts")
+								step.Value.Value = MultiplyByFactor(oldValue, 100);
+							if (mod == "d2k")
+								step.Value.Value = MultiplyByFactor(oldValue, 10);
+						}
+					}
+				}
+
 				UpgradeActorRules(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 
@@ -391,6 +464,20 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 					if (node.Key == "Velocity")
 						node.Key = "Speed";
+				}
+
+				if (engineVersion < 20160822)
+				{
+					if (node.Key == "Damage" && parent.Value.Value == "SpreadDamage")
+					{
+						var mod = modData.Manifest.Id;
+						var oldValue = FieldLoader.GetValue<int>(node.Key, node.Value.Value);
+
+						if (mod == "ra" || mod == "cnc" || mod == "ts")
+							node.Value.Value = MultiplyByFactor(oldValue, 100);
+						if (mod == "d2k")
+							node.Value.Value = MultiplyByFactor(oldValue, 10);
+					}
 				}
 
 				UpgradeWeaponRules(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);
