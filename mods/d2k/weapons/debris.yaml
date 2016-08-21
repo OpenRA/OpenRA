@@ -10,7 +10,7 @@ Debris:
 	Warhead@1Dam: SpreadDamage
 		Spread: 320
 		Falloff: 100, 60, 30, 15, 0
-		Damage: 150
+		Damage: 1500
 		Versus:
 			none: 20
 			wall: 50
@@ -45,7 +45,7 @@ Debris2:
 	Warhead@1Dam: SpreadDamage
 		Spread: 320
 		Falloff: 100, 60, 30, 15, 0
-		Damage: 250
+		Damage: 2500
 		Versus:
 			none: 90
 			wall: 5
@@ -80,7 +80,7 @@ Debris3:
 	Warhead@1Dam: SpreadDamage
 		Spread: 320
 		Falloff: 100, 60, 30, 15, 0
-		Damage: 150
+		Damage: 1500
 		Versus:
 			none: 90
 			wall: 5
@@ -115,7 +115,7 @@ Debris4:
 	Warhead@1Dam: SpreadDamage
 		Spread: 320
 		Falloff: 100, 60, 30, 15, 0
-		Damage: 250
+		Damage: 2500
 		Versus:
 			none: 90
 			wall: 5

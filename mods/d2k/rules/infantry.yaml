@@ -11,7 +11,7 @@ light_inf:
 		Name: Light Infantry
 		Description: General-purpose infantry\n  Strong vs Infantry\n  Weak vs Vehicles, Artillery
 	Health:
-		HP: 600
+		HP: 6000
 	Mobile:
 		Speed: 43
 	Armament:
@@ -34,7 +34,7 @@ engineer:
 		Name: Engineer
 		Description: Infiltrates and captures enemy structures\n  Strong vs Buildings\n  Weak vs Everything
 	Health:
-		HP: 500
+		HP: 5000
 	RevealsShroud:
 		Range: 2c768
 	Mobile:
@@ -63,7 +63,7 @@ trooper:
 		Name: Trooper
 		Description: Anti-tank/Anti-aircraft infantry\n  Strong vs Tanks, Aircraft\n  Weak vs Infantry, Artillery
 	Health:
-		HP: 700
+		HP: 7000
 	RevealsShroud:
 		Range: 4c768
 	Mobile:
@@ -90,7 +90,7 @@ thumper:
 		Name: Thumper
 		Description: Attracts nearby worms\n  Unarmed
 	Health:
-		HP: 375
+		HP: 3750
 	RevealsShroud:
 		Range: 2c768
 	Mobile:
@@ -141,7 +141,7 @@ fremen:
 	Valued:
 		Cost: 200	## actually 0, but spawns from support power at Palace
 	Health:
-		HP: 700
+		HP: 7000
 	RevealsShroud:
 		Range: 4c768
 	AutoTarget:
@@ -179,7 +179,7 @@ grenadier:
 		Name: Grenadier
 		Description: Infantry armed with grenades. \n  Strong vs Buildings, Infantry\n  Weak vs Vehicles
 	Health:
-		HP: 600
+		HP: 6000
 	Mobile:
 		Speed: 43
 	Armament:
@@ -208,7 +208,7 @@ sardaukar:
 		Name: Sardaukar
 		Description: Elite assault infantry\n  Strong vs Infantry, Vehicles\n  Weak vs Artillery
 	Health:
-		HP: 1000
+		HP: 10000
 	Mobile:
 		Speed: 31
 	RevealsShroud:
@@ -239,7 +239,7 @@ saboteur:
 		Name: Saboteur
 		Description: Sneaky infantry, armed with explosives\n  Strong vs Buildings\n  Weak vs Everything\n  Special Ability: destroy buildings
 	Health:
-		HP: 400
+		HP: 4000
 	Mobile:
 		Speed: 43
 	Demolition:

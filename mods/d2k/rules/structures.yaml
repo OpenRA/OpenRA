@@ -56,7 +56,7 @@ construction_yard:
 	Selectable:
 		Bounds: 96,64
 	Health:
-		HP: 3000
+		HP: 30000
 	Armor:
 		Type: cy
 	RevealsShroud:
@@ -126,7 +126,7 @@ wind_trap:
 		Dimensions: 2,2
 	Bib:
 	Health:
-		HP: 3000
+		HP: 30000
 	Armor:
 		Type: building
 	RevealsShroud:
@@ -165,7 +165,7 @@ barracks:
 		Dimensions: 2,2
 	Bib:
 	Health:
-		HP: 3200
+		HP: 32000
 	Armor:
 		Type: wood
 	RevealsShroud:
@@ -240,7 +240,7 @@ refinery:
 		Dimensions: 3,2
 	Bib:
 	Health:
-		HP: 3000
+		HP: 30000
 	Armor:
 		Type: building
 	RevealsShroud:
@@ -294,7 +294,7 @@ silo:
 		Adjacent: 4
 	-GivesBuildableArea:
 	Health:
-		HP: 1500
+		HP: 15000
 	Armor:
 		Type: wall
 	RevealsShroud:
@@ -342,7 +342,7 @@ light_factory:
 		Dimensions: 3,2
 	Bib:
 	Health:
-		HP: 3300
+		HP: 33000
 	Armor:
 		Type: light
 	RevealsShroud:
@@ -421,7 +421,7 @@ heavy_factory:
 		Dimensions: 3,3
 	Bib:
 	Health:
-		HP: 3500
+		HP: 35000
 	Armor:
 		Type: wood
 	RevealsShroud:
@@ -507,7 +507,7 @@ outpost:
 		Dimensions: 3,2
 	Bib:
 	Health:
-		HP: 3500
+		HP: 35000
 	Armor:
 		Type: light
 	RevealsShroud:
@@ -546,7 +546,7 @@ starport:
 	Selectable:
 		Bounds: 96,64
 	Health:
-		HP: 3500
+		HP: 35000
 	Armor:
 		Type: building
 	RevealsShroud:
@@ -624,7 +624,7 @@ wall:
 		Adjacent: 7
 		TerrainTypes: Rock, Concrete
 	Health:
-		HP: 2000
+		HP: 20000
 		Shape: Rectangle
 			TopLeft: -512, -512
 			BottomRight: 512, 512
@@ -674,7 +674,7 @@ medium_gun_turret:
 		Bounds: 32,32
 		Priority: 3
 	Health:
-		HP: 2700
+		HP: 27000
 	Armor:
 		Type: heavy
 	RevealsShroud:
@@ -716,7 +716,7 @@ large_gun_turret:
 		Bounds: 32,32
 		Priority: 3
 	Health:
-		HP: 3000
+		HP: 30000
 	Armor:
 		Type: concrete
 	RevealsShroud:
@@ -756,7 +756,7 @@ repair_pad:
 		Footprint: =x= =x= ===
 		Dimensions: 3,3
 	Health:
-		HP: 3000
+		HP: 30000
 	Armor:
 		Type: building
 	RevealsShroud:
@@ -768,7 +768,7 @@ repair_pad:
 	Reservable:
 	RepairsUnits:
 		Interval: 10
-		HpPerStep: 80
+		HpPerStep: 800
 		FinishRepairingNotification: UnitRepaired
 		PlayerExperience: 15
 	RallyPoint:
@@ -811,7 +811,7 @@ high_tech_factory:
 		Dimensions: 3,3
 	Bib:
 	Health:
-		HP: 3500
+		HP: 35000
 	Armor:
 		Type: wood
 	RevealsShroud:
@@ -875,7 +875,7 @@ research_centre:
 		Dimensions: 3,3
 	Bib:
 	Health:
-		HP: 2500
+		HP: 25000
 	Armor:
 		Type: wood
 	RevealsShroud:
@@ -916,7 +916,7 @@ palace:
 	Bib:
 		HasMinibib: True
 	Health:
-		HP: 4000
+		HP: 40000
 	Armor:
 		Type: wood
 	RevealsShroud:

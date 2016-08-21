@@ -15,7 +15,7 @@ spicebloom.spawnpoint:
 		Weapon: BloomSpawn
 		EmptyWeapon: BloomSpawn
 	Health:
-		HP: 9999
+		HP: 99990
 		Radius: 1
 	Immobile:
 		OccupiesSpace: false
@@ -42,7 +42,7 @@ spicebloom:
 		Terrain: Spice
 	Immobile:
 	Health:
-		HP: 1
+		HP: 10
 		Radius: 512
 	Targetable:
 		TargetTypes: Ground
@@ -56,7 +56,7 @@ sandworm:
 		Name: Sandworm
 		Description: Attracted by vibrations in the sand.\nWill eat units whole and has a large appetite.
 	Health:
-		HP: 9990
+		HP: 99900
 		Radius: 256
 	Armor:
 		Type: heavy
@@ -120,7 +120,7 @@ sietch:
 		Dimensions: 2,2
 		TerrainTypes: Cliff
 	Health:
-		HP: 6000
+		HP: 60000
 	Armor:
 		Type: wood
 	RevealsShroud:

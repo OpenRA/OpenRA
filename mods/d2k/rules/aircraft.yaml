@@ -6,7 +6,7 @@ carryall.reinforce:
 		Name: Carryall
 		Description: Large winged, planet-bound ship\n  Automatically lifts harvesters.
 	Health:
-		HP: 4800
+		HP: 48000
 	Armor:
 		Type: light
 	Aircraft:
@@ -35,7 +35,7 @@ carryall.reinforce:
 	RenderSprites:
 		Image: carryall
 	SelfHealing:
-		Step: 5
+		Step: 50
 		Delay: 3
 		HealIfBelow: 50
 	Buildable:
@@ -76,7 +76,7 @@ ornithopter:
 	Armament:
 		Weapon: OrniBomb
 	Health:
-		HP: 900
+		HP: 9000
 	Armor:
 		Type: light
 	Aircraft:
