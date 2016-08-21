@@ -358,7 +358,7 @@ medi:
 		Facings: 8
 		Tick: 100
 	icon: mediicon
-		
+
 mech:
 	stand:
 		Facings: 8
