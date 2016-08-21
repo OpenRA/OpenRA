@@ -200,6 +200,13 @@ namespace OpenRA.Mods.Common.Scripting
 				Game.AddChatLine(c, prefix, text);
 		}
 
+		[Desc("Display a text message only to one player.")]
+		public void PrivateMessage(Player player, string text, string prefix = "Mission [Private]", HSLColor? color = null)
+		{
+			if (Context.World.LocalPlayer == player)
+				DisplayMessage(text, prefix, color);
+		}
+
 		[Desc("Displays a debug message to the player, if \"Show Map Debug Messages\" is checked in the settings.")]
 		public void Debug(string text)
 		{
