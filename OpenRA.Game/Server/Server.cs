@@ -35,6 +35,8 @@ namespace OpenRA.Server
 
 	public class Server
 	{
+		public readonly string TwoHumansRequiredText = "This server requires at least two human players to start a match.";
+
 		public readonly IPAddress Ip;
 		public readonly int Port;
 		public readonly MersenneTwister Random = new MersenneTwister();
@@ -396,7 +398,7 @@ namespace OpenRA.Server
 					SendOrderTo(newConn, "Message", "This map contains custom rules. Game experience may change.");
 
 				if (!LobbyInfo.GlobalSettings.EnableSingleplayer)
-					SendOrderTo(newConn, "Message", "This server requires at least two human players to start a match.");
+					SendOrderTo(newConn, "Message", TwoHumansRequiredText);
 				else if (Map.Players.Players.Where(p => p.Value.Playable).All(p => !p.Value.AllowBots))
 					SendOrderTo(newConn, "Message", "Bots have been disabled on this map.");
 
