@@ -133,7 +133,7 @@ gapile:
 		Tick: 200
 		ZOffset: 1023
 	damaged-production-lights: gtpile_a
-		Start:7
+		Start: 7
 		Length: 7
 		Tick: 200
 		ZOffset: 1023
@@ -141,13 +141,13 @@ gapile:
 		Length: 7
 		Tick: 200
 	damaged-idle-light: gtpile_b
-		Start:7
+		Start: 7
 		Length: 7
 		Tick: 200
 	idle-flag: gtpile_c
 		Length: 7
 	damaged-idle-flag: gtpile_c
-		Start:7
+		Start: 7
 		Length: 7
 	make: gtpilemk
 		Length: 20

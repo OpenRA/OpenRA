@@ -365,6 +365,7 @@ clustermissile:
 		Length: *
 	down: null # TODO
 		Length: *
+
 ionbeam:
 	idle:
 		Length: *
@@ -434,7 +435,7 @@ srock05:
 dbrissm:
 	Defaults:
 		ZOffset: 1023
-		Length:*
+		Length: *
 	1: dbris1sm
 	2: dbris2sm
 	3: dbris3sm
@@ -449,7 +450,7 @@ dbrissm:
 dbrislg:
 	Defaults:
 		ZOffset: 1023
-		Length:*
+		Length: *
 	1: dbris1lg
 	2: dbris2lg
 	3: dbris3lg
