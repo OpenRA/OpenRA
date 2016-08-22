@@ -97,7 +97,7 @@ namespace OpenRA.Mods.Common.Traits
 						continue;
 
 					var exitCellCenter = self.World.Map.CenterOfCell(exitCells[i]);
-					rgbaRenderer.DrawLine(wr.ScreenPosition(spawnPos), wr.ScreenPosition(exitCellCenter), 1f, self.Owner.Color.RGB);
+					rgbaRenderer.DrawLine(wr.Screen3DPosition(spawnPos), wr.Screen3DPosition(exitCellCenter), 1f, self.Owner.Color.RGB);
 				}
 			}
 	    }

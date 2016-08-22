@@ -55,7 +55,7 @@ namespace OpenRA.Graphics
 			DrawTargetMarker(wr, color, first);
 		}
 
-		public static void DrawTargetMarker(WorldRenderer wr, Color color, float2 location)
+		public static void DrawTargetMarker(WorldRenderer wr, Color color, float3 location)
 		{
 			var iz = 1 / wr.Viewport.Zoom;
 			var offset = new float2(iz, iz);

@@ -73,8 +73,9 @@ namespace OpenRA.Mods.Common.Traits
 
 				foreach (var r in i.Range)
 				{
-					var tl = wr.ScreenPosition(i.CenterPosition - new WVec(r.Length, r.Length, 0));
-					var br = wr.ScreenPosition(i.CenterPosition + new WVec(r.Length, r.Length, 0));
+					var tl = wr.Screen3DPosition(i.CenterPosition - new WVec(r.Length, r.Length, 0));
+					var br = wr.Screen3DPosition(i.CenterPosition + new WVec(r.Length, r.Length, 0));
+
 					Game.Renderer.WorldRgbaColorRenderer.FillEllipse(tl, br, Color.FromArgb((int)alpha, i.Color));
 
 					alpha -= rangeStep;
