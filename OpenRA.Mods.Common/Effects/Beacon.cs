@@ -17,7 +17,7 @@ using OpenRA.Scripting;
 
 namespace OpenRA.Mods.Common.Effects
 {
-	public class Beacon : IEffect, IScriptBindable
+	public class Beacon : IEffect, IScriptBindable, IEffectAboveShroud
 	{
 		static readonly int MaxArrowHeight = 512;
 
@@ -78,7 +78,7 @@ namespace OpenRA.Mods.Common.Effects
 			}
 		}
 
-		public void Tick(World world)
+		void IEffect.Tick(World world)
 		{
 			arrowHeight += arrowSpeed;
 			var clamped = arrowHeight.Clamp(0, MaxArrowHeight);
@@ -98,7 +98,9 @@ namespace OpenRA.Mods.Common.Effects
 				clock.Tick();
 		}
 
-		public IEnumerable<IRenderable> Render(WorldRenderer r)
+		IEnumerable<IRenderable> IEffect.Render(WorldRenderer r) { return SpriteRenderable.None; }
+
+		IEnumerable<IRenderable> IEffectAboveShroud.RenderAboveShroud(WorldRenderer r)
 		{
 			if (!owner.IsAlliedWith(owner.World.RenderPlayer))
 				yield break;
