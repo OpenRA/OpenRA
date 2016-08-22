@@ -43,9 +43,9 @@ namespace OpenRA.Graphics
 				return;
 
 			var iz = 1 / wr.Viewport.Zoom;
-			var first = wr.ScreenPxPosition(waypoints.First());
+			var first = wr.Screen3DPosition(waypoints.First());
 			var a = first;
-			foreach (var b in waypoints.Skip(1).Select(pos => wr.ScreenPxPosition(pos)))
+			foreach (var b in waypoints.Skip(1).Select(pos => wr.Screen3DPosition(pos)))
 			{
 				Game.Renderer.WorldRgbaColorRenderer.DrawLine(a, b, iz, color);
 				DrawTargetMarker(wr, color, b);
