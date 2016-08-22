@@ -152,9 +152,9 @@ namespace OpenRA.Graphics
 			if (enableDepthBuffer)
 				Game.Renderer.ClearDepthBuffer();
 
-			foreach (var a in World.ActorsWithTrait<IPostRender>())
+			foreach (var a in World.ActorsWithTrait<IRenderAboveWorld>())
 				if (a.Actor.IsInWorld && !a.Actor.Disposed)
-					a.Trait.RenderAfterWorld(this, a.Actor);
+					a.Trait.RenderAboveWorld(a.Actor, this);
 
 			var renderShroud = World.RenderPlayer != null ? World.RenderPlayer.Shroud : null;
 
@@ -162,7 +162,7 @@ namespace OpenRA.Graphics
 				Game.Renderer.ClearDepthBuffer();
 
 			foreach (var a in World.ActorsWithTrait<IRenderShroud>())
-				a.Trait.RenderShroud(this, renderShroud);
+				a.Trait.RenderShroud(renderShroud, this);
 
 			if (devTrait.Value != null && devTrait.Value.ShowDebugGeometry)
 				for (var i = 0; i < renderables.Count; i++)
@@ -174,8 +174,8 @@ namespace OpenRA.Graphics
 			Game.Renderer.DisableScissor();
 
 			var overlayRenderables = World.Selection.Actors.Where(a => !a.Disposed)
-				.SelectMany(a => a.TraitsImplementing<IPostRenderSelection>())
-				.SelectMany(t => t.RenderAfterWorld(this));
+				.SelectMany(a => a.TraitsImplementing<IRenderAboveShroudWhenSelected>()
+					.SelectMany(t => t.RenderAboveShroud(a, this)));
 
 			Game.Renderer.WorldVoxelRenderer.BeginFrame();
 			var finalOverlayRenderables = overlayRenderables.Select(r => r.PrepareRender(this));

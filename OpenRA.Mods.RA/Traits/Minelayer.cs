@@ -31,23 +31,20 @@ namespace OpenRA.Mods.RA.Traits
 		public object Create(ActorInitializer init) { return new Minelayer(init.Self); }
 	}
 
-	public class Minelayer : IIssueOrder, IResolveOrder, IPostRenderSelection, ISync
+	public class Minelayer : IIssueOrder, IResolveOrder, IRenderAboveShroudWhenSelected, ISync
 	{
 		/* TODO: [Sync] when sync can cope with arrays! */
 		public CPos[] Minefield = null;
-		readonly Actor self;
 		readonly Sprite tile;
 		[Sync] CPos minefieldStart;
 
 		public Minelayer(Actor self)
 		{
-			this.self = self;
-
 			var tileset = self.World.Map.Tileset.ToLowerInvariant();
 			tile = self.World.Map.Rules.Sequences.GetSequence("overlay", "build-valid-{0}".F(tileset)).GetSprite(0);
 		}
 
-		public IEnumerable<IOrderTargeter> Orders
+		IEnumerable<IOrderTargeter> IIssueOrder.Orders
 		{
 			get
 			{
@@ -56,7 +53,7 @@ namespace OpenRA.Mods.RA.Traits
 			}
 		}
 
-		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
+		Order IIssueOrder.IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
 		{
 			switch (order.OrderID)
 			{
@@ -75,7 +72,7 @@ namespace OpenRA.Mods.RA.Traits
 			}
 		}
 
-		public void ResolveOrder(Actor self, Order order)
+		void IResolveOrder.ResolveOrder(Actor self, Order order)
 		{
 			if (order.OrderString == "BeginMinefield")
 				minefieldStart = order.TargetLocation;
@@ -121,7 +118,7 @@ namespace OpenRA.Mods.RA.Traits
 						yield return new CPos(i, j);
 		}
 
-		public IEnumerable<IRenderable> RenderAfterWorld(WorldRenderer wr)
+		IEnumerable<IRenderable> IRenderAboveShroudWhenSelected.RenderAboveShroud(Actor self, WorldRenderer wr)
 		{
 			if (self.Owner != self.World.LocalPlayer || Minefield == null)
 				yield break;

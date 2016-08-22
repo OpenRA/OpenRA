@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Common.Traits
 		public object Create(ActorInitializer init) { return new WarheadDebugOverlay(this); }
 	}
 
-	public class WarheadDebugOverlay : IPostRender
+	public class WarheadDebugOverlay : IRenderAboveWorld
 	{
 		class WHImpact
 		{
@@ -61,7 +61,7 @@ namespace OpenRA.Mods.Common.Traits
 			impacts.Add(new WHImpact(pos, range, info.DisplayDuration, color));
 		}
 
-		public void RenderAfterWorld(WorldRenderer wr, Actor self)
+		void IRenderAboveWorld.RenderAboveWorld(Actor self, WorldRenderer wr)
 		{
 			foreach (var i in impacts)
 			{

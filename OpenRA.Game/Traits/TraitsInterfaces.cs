@@ -374,11 +374,9 @@ namespace OpenRA.Traits
 		string SequencePrefix { get; }
 	}
 
-	public interface IPostRender { void RenderAfterWorld(WorldRenderer wr, Actor self); }
-
-	public interface IRenderShroud { void RenderShroud(WorldRenderer wr, Shroud shroud); }
-
-	public interface IPostRenderSelection { IEnumerable<IRenderable> RenderAfterWorld(WorldRenderer wr); }
+	public interface IRenderAboveWorld { void RenderAboveWorld(Actor self, WorldRenderer wr); }
+	public interface IRenderShroud { void RenderShroud(Shroud shroud, WorldRenderer wr); }
+	public interface IRenderAboveShroudWhenSelected { IEnumerable<IRenderable> RenderAboveShroud(Actor self, WorldRenderer wr); }
 
 	public interface ITargetableInfo : ITraitInfoInterface
 	{

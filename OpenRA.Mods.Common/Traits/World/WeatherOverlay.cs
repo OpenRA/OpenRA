@@ -69,7 +69,7 @@ namespace OpenRA.Mods.Common.Traits
 		public object Create(ActorInitializer init) { return new WeatherOverlay(init.World, this); }
 	}
 
-	public class WeatherOverlay : ITick, IPostRender
+	public class WeatherOverlay : ITick, IRenderAboveWorld
 	{
 		readonly WeatherOverlayInfo info;
 		readonly World world;
@@ -201,7 +201,7 @@ namespace OpenRA.Mods.Common.Traits
 			tempParticle.SwingOffset += tempParticle.SwingDirection * tempParticle.SwingSpeed;
 		}
 
-		public void Tick(Actor self)
+		void ITick.Tick(Actor self)
 		{
 			windTickCountdown--;
 		}
@@ -298,7 +298,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		public void RenderAfterWorld(WorldRenderer wr, Actor self)
+		void IRenderAboveWorld.RenderAboveWorld(Actor self, WorldRenderer wr)
 		{
 			if (!world.Paused)
 				UpdateWeatherOverlay(wr);

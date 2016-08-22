@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Common.Traits
 		public object Create(ActorInitializer init) { return new CombatDebugOverlay(init.Self); }
 	}
 
-	public class CombatDebugOverlay : IPostRender, INotifyDamage, INotifyCreated
+	public class CombatDebugOverlay : IRenderAboveWorld, INotifyDamage, INotifyCreated
 	{
 		readonly DeveloperMode devMode;
 		readonly HealthInfo healthInfo;
@@ -42,12 +42,12 @@ namespace OpenRA.Mods.Common.Traits
 			devMode = localPlayer != null ? localPlayer.PlayerActor.Trait<DeveloperMode>() : null;
 		}
 
-		public void Created(Actor self)
+		void INotifyCreated.Created(Actor self)
 		{
 			allBlockers = self.TraitsImplementing<IBlocksProjectiles>().ToArray();
 		}
 
-		public void RenderAfterWorld(WorldRenderer wr, Actor self)
+		void IRenderAboveWorld.RenderAboveWorld(Actor self, WorldRenderer wr)
 		{
 			if (devMode == null || !devMode.ShowCombatGeometry)
 				return;
@@ -114,7 +114,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		public void Damaged(Actor self, AttackInfo e)
+		void INotifyDamage.Damaged(Actor self, AttackInfo e)
 		{
 			if (devMode == null || !devMode.ShowCombatGeometry || e.Damage.Value == 0)
 				return;

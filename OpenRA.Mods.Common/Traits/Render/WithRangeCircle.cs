@@ -52,14 +52,14 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 			foreach (var a in w.ActorsWithTrait<WithRangeCircle>())
 				if (a.Trait.Info.Type == Type)
-					foreach (var r in a.Trait.RenderRangeCircle(wr))
+					foreach (var r in a.Trait.RenderRangeCircle(a.Actor, wr))
 						yield return r;
 		}
 
 		public object Create(ActorInitializer init) { return new WithRangeCircle(init.Self, this); }
 	}
 
-	class WithRangeCircle : IPostRenderSelection, IPostRender
+	class WithRangeCircle : IRenderAboveShroudWhenSelected, IRenderAboveWorld
 	{
 		public readonly WithRangeCircleInfo Info;
 		readonly Actor self;
@@ -79,7 +79,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			}
 		}
 
-		public IEnumerable<IRenderable> RenderRangeCircle(WorldRenderer wr)
+		public IEnumerable<IRenderable> RenderRangeCircle(Actor self, WorldRenderer wr)
 		{
 			if (Info.Visible == RangeCircleVisibility.WhenSelected && Visible)
 				yield return new RangeCircleRenderable(
@@ -92,12 +92,12 @@ namespace OpenRA.Mods.Common.Traits.Render
 			yield break;
 		}
 
-		IEnumerable<IRenderable> IPostRenderSelection.RenderAfterWorld(WorldRenderer wr)
+		IEnumerable<IRenderable> IRenderAboveShroudWhenSelected.RenderAboveShroud(Actor self, WorldRenderer wr)
 		{
-			return RenderRangeCircle(wr);
+			return RenderRangeCircle(self, wr);
 		}
 
-		void IPostRender.RenderAfterWorld(WorldRenderer wr, Actor self)
+		void IRenderAboveWorld.RenderAboveWorld(Actor self, WorldRenderer wr)
 		{
 			if (Info.Visible == RangeCircleVisibility.Always && Visible)
 				RangeCircleRenderable.DrawRangeCircle(
