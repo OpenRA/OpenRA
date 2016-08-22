@@ -194,31 +194,6 @@ namespace OpenRA.Graphics
 					foreach (var r in g)
 						r.RenderDebugGeometry(this);
 
-			if (World.Type == WorldType.Regular)
-			{
-				foreach (var g in World.ScreenMap.ActorsInBox(Viewport.TopLeft, Viewport.BottomRight)
-					.Where(a =>
-						!a.Disposed &&
-						!World.Selection.Contains(a) &&
-						a.Info.HasTraitInfo<SelectableInfo>() &&
-						!World.FogObscures(a)))
-				{
-					if (Game.Settings.Game.StatusBars == StatusBarsType.Standard)
-						new SelectionBarsRenderable(g, false, false).Render(this);
-
-					if (Game.Settings.Game.StatusBars == StatusBarsType.AlwaysShow)
-						new SelectionBarsRenderable(g, true, true).Render(this);
-
-					if (Game.Settings.Game.StatusBars == StatusBarsType.DamageShow)
-					{
-						if (g.GetDamageState() != DamageState.Undamaged)
-							new SelectionBarsRenderable(g, true, true).Render(this);
-						else
-							new SelectionBarsRenderable(g, false, true).Render(this);
-					}
-				}
-			}
-
 			Game.Renderer.Flush();
 		}
 
