@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using OpenRA.Effects;
 using OpenRA.Traits;
 
 namespace OpenRA.Graphics
@@ -180,8 +181,15 @@ namespace OpenRA.Graphics
 				.SelectMany(a => a.TraitsImplementing<IRenderAboveShroudWhenSelected>()
 					.SelectMany(t => t.RenderAboveShroud(a, this)));
 
+			var aboveShroudEffects = World.Effects.Select(e => e as IEffectAboveShroud)
+				.Where(e => e != null)
+				.SelectMany(e => e.RenderAboveShroud(this));
+
 			Game.Renderer.WorldVoxelRenderer.BeginFrame();
-			var finalOverlayRenderables = aboveShroud.Concat(aboveShroudSelected).Select(r => r.PrepareRender(this));
+			var finalOverlayRenderables = aboveShroud
+				.Concat(aboveShroudSelected)
+				.Concat(aboveShroudEffects)
+				.Select(r => r.PrepareRender(this));
 			Game.Renderer.WorldVoxelRenderer.EndFrame();
 
 			// HACK: Keep old grouping behaviour
