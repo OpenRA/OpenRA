@@ -28,6 +28,9 @@ namespace OpenRA.Mods.AS.Traits
 
 		public WeaponInfo WeaponInfo { get; private set; }
 
+		[Desc("Explosion offset relative to actor's position.")]
+		public readonly WVec LocalOffset = WVec.Zero;
+
 		public override object Create(ActorInitializer init) { return new ExplodeWeapon(init.Self, this); }
 
 		void IRulesetLoaded<ActorInfo>.RulesetLoaded(Ruleset rules, ActorInfo info)
@@ -66,7 +69,7 @@ namespace OpenRA.Mods.AS.Traits
 
 			if (--fireDelay < 0)
 			{
-				weapon.Impact(Target.FromPos(self.CenterPosition), self,
+				weapon.Impact(Target.FromPos(self.CenterPosition + info.LocalOffset), self,
 					self.TraitsImplementing<IFirepowerModifier>().Select(a => a.GetFirepowerModifier()).ToArray());
 
 				if (--burst > 0)
