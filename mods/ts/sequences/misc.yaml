@@ -408,65 +408,41 @@ ionring:
 		ZOffset: -512
 		Tick: 120
 
-trock01:
+^rock:
 	idle:
 		ShadowStart: 1
 		UseTilesetExtension: true
 		Offset: 0, -12
+
+trock01:
+	Inherits: ^rock
 
 trock02:
-	idle:
-		ShadowStart: 1
-		UseTilesetExtension: true
-		Offset: 0, -12
+	Inherits: ^rock
 
 trock03:
-	idle:
-		ShadowStart: 1
-		UseTilesetExtension: true
-		Offset: 0, -12
+	Inherits: ^rock
 
 trock04:
-	idle:
-		ShadowStart: 1
-		UseTilesetExtension: true
-		Offset: 0, -12
+	Inherits: ^rock
 
 trock05:
-	idle:
-		ShadowStart: 1
-		UseTilesetExtension: true
-		Offset: 0, -12
+	Inherits: ^rock
 
 srock01:
-	idle:
-		ShadowStart: 1
-		UseTilesetExtension: true
-		Offset: 0, -12
+	Inherits: ^rock
 
 srock02:
-	idle:
-		ShadowStart: 1
-		UseTilesetExtension: true
-		Offset: 0, -12
+	Inherits: ^rock
 
 srock03:
-	idle:
-		ShadowStart: 1
-		UseTilesetExtension: true
-		Offset: 0, -12
+	Inherits: ^rock
 
 srock04:
-	idle:
-		ShadowStart: 1
-		UseTilesetExtension: true
-		Offset: 0, -12
+	Inherits: ^rock
 
 srock05:
-	idle:
-		ShadowStart: 1
-		UseTilesetExtension: true
-		Offset: 0, -12
+	Inherits: ^rock
 
 dbrissm:
 	Defaults:
@@ -537,97 +513,74 @@ palet03:
 palet04:
 	idle:
 
-tracks01:
+^tracks:
 	idle:
 		UseTilesetExtension: true
 		ZOffset: -1c0
+		ZRamp: 1
+
+tracks01:
+	Inherits: ^tracks
 
 tracks02:
-	idle:
-		UseTilesetExtension: true
-		ZOffset: -1c0
+	Inherits: ^tracks
 
 tracks03:
-	idle:
-		UseTilesetExtension: true
-		ZOffset: -1c0
+	Inherits: ^tracks
 
 tracks04:
-	idle:
-		UseTilesetExtension: true
-		ZOffset: -1c0
+	Inherits: ^tracks
 
 tracks05:
-	idle:
-		UseTilesetExtension: true
-		ZOffset: -1c0
+	Inherits: ^tracks
 
 tracks06:
-	idle:
-		UseTilesetExtension: true
-		ZOffset: -1c0
+	Inherits: ^tracks
 
 tracks07:
-	idle:
-		UseTilesetExtension: true
-		ZOffset: -1c0
+	Inherits: ^tracks
 
 tracks08:
-	idle:
-		UseTilesetExtension: true
-		ZOffset: -1c0
+	Inherits: ^tracks
 
 tracks09:
-	idle:
-		UseTilesetExtension: true
-		ZOffset: -1c0
+	Inherits: ^tracks
 
 tracks10:
-	idle:
-		UseTilesetExtension: true
-		ZOffset: -1c0
+	Inherits: ^tracks
 
 tracks11:
-	idle:
-		UseTilesetExtension: true
-		ZOffset: -1c0
+	Inherits: ^tracks
 
 tracks12:
-	idle:
-		UseTilesetExtension: true
-		ZOffset: -1c0
+	Inherits: ^tracks
 
 tracks13:
-	idle:
-		UseTilesetExtension: true
-		ZOffset: -1c0
+	Inherits: ^tracks
 
 tracks14:
-	idle:
-		UseTilesetExtension: true
-		ZOffset: -1c0
+	Inherits: ^tracks
 
 tracks15:
-	idle:
-		UseTilesetExtension: true
-		ZOffset: -1c0
+	Inherits: ^tracks
 
 tracks16:
-	idle:
-		UseTilesetExtension: true
-		ZOffset: -1c0
+	Inherits: ^tracks
 
-tuntop01:
+^tuntop:
 	idle:
 		Offset: 0, -13
 		UseTilesetExtension: true
 		ShadowStart: 1
 
+tuntop01:
+	Inherits: ^tuntop
+
 tuntop02:
-	Inherits: tuntop01
+	Inherits: ^tuntop
 
 tuntop03:
-	Inherits: tuntop01
+	Inherits: ^tuntop
 
 tuntop04:
-	Inherits: tuntop01
+	Inherits: ^tuntop
