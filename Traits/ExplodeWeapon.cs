@@ -49,6 +49,7 @@ namespace OpenRA.Mods.AS.Traits
 	{
 		readonly ExplodeWeaponInfo info;
 		readonly WeaponInfo weapon;
+		readonly BodyOrientation body;
 
 		int fireDelay;
 		int burst;
@@ -60,6 +61,7 @@ namespace OpenRA.Mods.AS.Traits
 
 			weapon = info.WeaponInfo;
 			burst = weapon.Burst;
+			body = self.TraitOrDefault<BodyOrientation>();
 		}
 
 		void ITick.Tick(Actor self)
@@ -69,7 +71,11 @@ namespace OpenRA.Mods.AS.Traits
 
 			if (--fireDelay < 0)
 			{
-				weapon.Impact(Target.FromPos(self.CenterPosition + info.LocalOffset), self,
+				var localoffset = body != null
+					? body.LocalToWorld(info.LocalOffset.Rotate(body.QuantizeOrientation(self, self.Orientation)))
+					: info.LocalOffset;
+
+				weapon.Impact(Target.FromPos(self.CenterPosition + localoffset), self,
 					self.TraitsImplementing<IFirepowerModifier>().Select(a => a.GetFirepowerModifier()).ToArray());
 
 				if (--burst > 0)
