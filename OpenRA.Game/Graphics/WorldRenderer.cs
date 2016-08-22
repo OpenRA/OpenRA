@@ -173,12 +173,15 @@ namespace OpenRA.Graphics
 
 			Game.Renderer.DisableScissor();
 
-			var overlayRenderables = World.Selection.Actors.Where(a => !a.Disposed)
+			var aboveShroud = World.ActorsWithTrait<IRenderAboveShroud>().Where(a => a.Actor.IsInWorld && !a.Actor.Disposed)
+				.SelectMany(a => a.Trait.RenderAboveShroud(a.Actor, this));
+
+			var aboveShroudSelected = World.Selection.Actors.Where(a => !a.Disposed)
 				.SelectMany(a => a.TraitsImplementing<IRenderAboveShroudWhenSelected>()
 					.SelectMany(t => t.RenderAboveShroud(a, this)));
 
 			Game.Renderer.WorldVoxelRenderer.BeginFrame();
-			var finalOverlayRenderables = overlayRenderables.Select(r => r.PrepareRender(this));
+			var finalOverlayRenderables = aboveShroud.Concat(aboveShroudSelected).Select(r => r.PrepareRender(this));
 			Game.Renderer.WorldVoxelRenderer.EndFrame();
 
 			// HACK: Keep old grouping behaviour
