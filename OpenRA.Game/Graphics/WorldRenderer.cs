@@ -111,9 +111,6 @@ namespace OpenRA.Graphics
 			worldRenderables = worldRenderables.Concat(World.Effects.SelectMany(e => e.Render(this)));
 			worldRenderables = worldRenderables.OrderBy(RenderableScreenZPositionComparisonKey);
 
-			if (World.OrderGenerator != null)
-				worldRenderables = worldRenderables.Concat(World.OrderGenerator.RenderAfterWorld(this, World));
-
 			Game.Renderer.WorldVoxelRenderer.BeginFrame();
 			var renderables = worldRenderables.Select(r => r.PrepareRender(this)).ToList();
 			Game.Renderer.WorldVoxelRenderer.EndFrame();
@@ -185,10 +182,15 @@ namespace OpenRA.Graphics
 				.Where(e => e != null)
 				.SelectMany(e => e.RenderAboveShroud(this));
 
+			var aboveShroudOrderGenerator = SpriteRenderable.None;
+			if (World.OrderGenerator != null)
+				aboveShroudOrderGenerator = World.OrderGenerator.RenderAboveShroud(this, World);
+
 			Game.Renderer.WorldVoxelRenderer.BeginFrame();
 			var finalOverlayRenderables = aboveShroud
 				.Concat(aboveShroudSelected)
 				.Concat(aboveShroudEffects)
+				.Concat(aboveShroudOrderGenerator)
 				.Select(r => r.PrepareRender(this));
 			Game.Renderer.WorldVoxelRenderer.EndFrame();
 

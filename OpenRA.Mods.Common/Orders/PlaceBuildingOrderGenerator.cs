@@ -148,7 +148,7 @@ namespace OpenRA.Mods.Common.Orders
 		}
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr, World world) { yield break; }
-		public IEnumerable<IRenderable> RenderAfterWorld(WorldRenderer wr, World world)
+		public IEnumerable<IRenderable> RenderAboveShroud(WorldRenderer wr, World world)
 		{
 			var xy = wr.Viewport.ViewToWorld(Viewport.LastMousePos);
 			var topLeft = xy - FootprintUtils.AdjustForBuildingSize(buildingInfo);

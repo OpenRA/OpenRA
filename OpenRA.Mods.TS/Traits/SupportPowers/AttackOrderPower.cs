@@ -120,7 +120,7 @@ namespace OpenRA.Mods.TS.Traits
 
 		IEnumerable<IRenderable> IOrderGenerator.Render(WorldRenderer wr, World world) { yield break; }
 
-		IEnumerable<IRenderable> IOrderGenerator.RenderAfterWorld(WorldRenderer wr, World world)
+		IEnumerable<IRenderable> IOrderGenerator.RenderAboveShroud(WorldRenderer wr, World world)
 		{
 			foreach (var a in instance.Instances.Where(i => !i.Self.IsDisabled()))
 			{

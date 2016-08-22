@@ -181,7 +181,7 @@ namespace OpenRA.Mods.RA.Traits
 
 			CPos lastMousePos;
 			public IEnumerable<IRenderable> Render(WorldRenderer wr, World world) { yield break; }
-			public IEnumerable<IRenderable> RenderAfterWorld(WorldRenderer wr, World world)
+			public IEnumerable<IRenderable> RenderAboveShroud(WorldRenderer wr, World world)
 			{
 				if (!minelayers.Any())
 					yield break;
@@ -194,7 +194,7 @@ namespace OpenRA.Mods.RA.Traits
 				var pal = wr.Palette(TileSet.TerrainPaletteInternalName);
 				foreach (var c in minefield)
 				{
-					var tile = movement.CanEnterCell(c, null, false) ? tileOk : tileBlocked;
+					var tile = movement.CanEnterCell(c, null, false) && !world.ShroudObscures(c) ? tileOk : tileBlocked;
 					yield return new SpriteRenderable(tile, world.Map.CenterOfCell(c),
 						WVec.Zero, -511, pal, 1f, true);
 				}
