@@ -126,7 +126,37 @@ explosion:
 	building: twlt070
 	ionring: ring1
 		BlendMode: Additive
-		Tick: 120
+		Tick: 100
+	ionbeam: ionbeam
+		Offset: 0,-60
+		BlendMode: Additive
+		Length: *
+		Tick: 100
+	ionbeam2: ionbeam
+		Offset: 0,-180
+		BlendMode: Additive
+		Length: *
+		Tick: 100
+	ionbeam3: ionbeam
+		Offset: 0,-300
+		BlendMode: Additive
+		Length: *
+		Tick: 100
+	ionbeam4: ionbeam
+		Offset: 0,-420
+		BlendMode: Additive
+		Length: *
+		Tick: 100
+	ionbeam5: ionbeam
+		Offset: 0,-540
+		BlendMode: Additive
+		Length: *
+		Tick: 100
+	ionbeam6: ionbeam
+		Offset: 0,-660
+		BlendMode: Additive
+		Length: *
+		Tick: 100
 	pulse_explosion: pulsefx2
 		BlendMode: Additive
 		Tick: 80
@@ -365,11 +395,18 @@ clustermissile:
 		Length: *
 	down: null # TODO
 		Length: *
+
 ionbeam:
 	idle:
 		Length: *
 		Offset: 0, -78
 		ZOffset: 1023
+
+ionring: 
+	idle: ring1
+		Length: *
+		ZOffset: -512
+		Tick: 120
 
 trock01:
 	idle:
