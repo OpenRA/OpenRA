@@ -128,9 +128,12 @@ explosion:
 	Defaults:
 		Length: *
 		ZOffset: 511
+		Offset: 0, 0, 24
 	building: twlt070
+		Offset: 0, 0, 36
 	ionring: ring1
 		BlendMode: Additive
+		ZRamp: 1
 		Tick: 100
 	ionbeam: ionbeam
 		Offset: 0,-60
@@ -164,16 +167,20 @@ explosion:
 		Tick: 100
 	pulse_explosion: pulsefx2
 		BlendMode: Additive
+		ZRamp: 1
 		Tick: 80
 	small_watersplash: h2o_exp2
 	large_watersplash: h2o_exp1
+		Offset: 0, 0, 39
 	water_piff: w_piff
 	water_piffs: w_piffs
 	piff: piff
 	piffs: piffpiff
 	small_explosion: explosml
 	medium_explosion: explomed
+		Offset: 0, 0, 27
 	large_explosion: explolrg
+		Offset: 0, 0, 31
 	tiny_bang: s_bang16
 	small_bang: s_bang24
 	medium_bang: s_bang34
@@ -182,20 +189,26 @@ explosion:
 	small_brnl: s_brnl30
 	medium_brnl: s_brnl40
 	large_brnl: s_brnl58
+		Offset: 0, 0, 30
 	tiny_tumu: s_tumu22
 	small_tumu: s_tumu30
 	medium_tumu: s_tumu42
 	large_tumu: s_tumu60
+		Offset: 0, 0, 31
 	tiny_clsn: s_clsn16
 	small_clsn: s_clsn22
 	medium_clsn: s_clsn30
 	large_clsn: s_clsn42
 	verylarge_clsn: s_clsn58
+		Offset: 0, 0, 30
 	tiny_twlt: twlt026
 	small_twlt: twlt036
 	medium_twlt: twlt050
+		Offset: 0, 0, 26
 	large_twlt: twlt070
+		Offset: 0, 0, 36
 	verylarge_twlt: twlt100
+		Offset: 0, 0, 51
 	tiny_grey_explosion: xgrysml1
 	small_grey_explosion: xgrysml2
 	medium_grey_explosion: xgrymed1
