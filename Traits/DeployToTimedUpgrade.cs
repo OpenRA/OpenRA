@@ -61,7 +61,7 @@ namespace OpenRA.Mods.AS.Traits
 		public object Create(ActorInitializer init) { return new DeployToTimedUpgrade(init, this); }
 	}
 
-	public enum TimedDeployState { Charging, Ready, Active, Deploying }
+	public enum TimedDeployState { Charging, Ready, Active, Deploying, Undeploying }
 
 	public class DeployToTimedUpgrade : IResolveOrder, IIssueOrder, INotifyCreated, ISelectionBar, IOrderVoice, ISync, ITick
 	{
@@ -165,7 +165,7 @@ namespace OpenRA.Mods.AS.Traits
 
 		void RevokeDeploy()
 		{
-			deployState = TimedDeployState.Deploying;
+			deployState = TimedDeployState.Undeploying;
 
 			if (!string.IsNullOrEmpty(info.UndeploySound))
 				Game.Sound.Play(info.UndeploySound, self.CenterPosition);
@@ -208,12 +208,15 @@ namespace OpenRA.Mods.AS.Traits
 
 		float ISelectionBar.GetValue()
 		{
-			if (deployState == TimedDeployState.Deploying)
+			if (deployState == TimedDeployState.Undeploying)
 				return 0f;
+
+			if (deployState == TimedDeployState.Deploying || deployState == TimedDeployState.Ready)
+				return 1f;
 
 			return deployState == TimedDeployState.Charging
 				? (float)(info.CooldownTicks - ticks) / info.CooldownTicks
-				: (float)(info.DeployedTicks - ticks) / info.DeployedTicks;
+				: (float)ticks / info.DeployedTicks;
 		}
 
 		Color ISelectionBar.GetColor() { return deployState == TimedDeployState.Charging ? info.ChargingColor : info.DischargingColor; }
