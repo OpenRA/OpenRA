@@ -296,6 +296,7 @@ end
 local function killProcess(pid)
   if not pid then return false end
   if wx.wxProcess.Exists(pid) then
+    local _ = wx.wxLogNull() -- disable error popup; will report as needed
     -- using SIGTERM for some reason kills not only the debugee process,
     -- but also some system processes, which leads to a blue screen crash
     -- (at least on Windows Vista SP2)
