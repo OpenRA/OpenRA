@@ -24,12 +24,14 @@ harv.gdi:
 	Inherits: ^VehicleOverlays
 	harvest: harvestr
 		Length: *
+		ZRamp: 1
 	icon: sidebar-gdi|harvicon
 
 harv.nod:
 	Inherits: ^VehicleOverlays
 	harvest: harvestr
 		Length: *
+		ZRamp: 1
 	icon: sidebar-nod|harvicon
 
 hvr:
