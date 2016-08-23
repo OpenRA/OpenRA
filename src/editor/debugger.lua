@@ -1492,7 +1492,7 @@ function debugger:OutputSet(stream, mode, options)
 end
 
 function DebuggerAttachDefault(options) ide:GetDebugger():SetOptions(options) end
-function debugger:SetOptions(options) debugger.options = options end
+function debugger:SetOptions(options) self.options = options end
 
 function debugger:Stop()
   local debugger = self
