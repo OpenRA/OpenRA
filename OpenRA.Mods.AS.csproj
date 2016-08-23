@@ -95,6 +95,7 @@
     <Compile Include="Projectiles\AthenaProjectile.cs" />
     <Compile Include="Projectiles\InstantExplode.cs" />
     <Compile Include="Traits\Crate\GiveRandomActorCrateAction.cs" />
+    <Compile Include="Traits\DeployToTimedUpgrade.cs" />
     <Compile Include="Traits\EligibleForRandomActorCrate.cs" />
     <Compile Include="Traits\ExplodeWeapon.cs" />
     <Compile Include="Traits\Player\PlayerSilo.cs" />
