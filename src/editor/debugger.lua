@@ -304,8 +304,11 @@ local function killProcess(pid)
     if ret == wx.wxKILL_OK then
       DisplayOutputLn(TR("Program stopped (pid: %d)."):format(pid))
     elseif ret ~= wx.wxKILL_NO_PROCESS then
-      displayError(TR("Unable to stop program (pid: %d), code %d."):format(pid, ret))
-      return false
+      wx.wxMilliSleep(250)
+      if wx.wxProcess.Exists(pid) then
+        displayError(TR("Unable to stop program (pid: %d), code %d."):format(pid, ret))
+        return false
+      end
     end
   end
   return true
