@@ -78,8 +78,9 @@ function DisplayOutputNoMarker(...)
   if promptLine ~= wx.wxNOT_FOUND then updateInputMarker() end
 end
 function DisplayOutput(...)
-  out:MarkerAdd(out:GetLineCount()-1, MESSAGE_MARKER)
+  local line = out:GetLineCount()-1
   DisplayOutputNoMarker(...)
+  out:MarkerAdd(line, MESSAGE_MARKER)
 end
 function DisplayOutputLn(...)
   DisplayOutput(...)
@@ -89,9 +90,10 @@ end
 function out:Print(...) return ide:Print(...) end
 function out:Write(...) return DisplayOutputNoMarker(...) end
 function out:Error(...)
-  out:MarkerAdd(out:GetLineCount()-1, ERROR_MARKER)
+  local line = out:GetLineCount()-1
   DisplayOutputNoMarker(...)
   DisplayOutputNoMarker("\n")
+  out:MarkerAdd(line, ERROR_MARKER)
 end
 
 local streamins = {}
