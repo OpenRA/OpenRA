@@ -72,7 +72,7 @@ namespace OpenRA.Mods.AS.Traits
 		readonly Lazy<WithSpriteBody> body;
 
 		[Sync] int ticks;
-		[Sync] TimedDeployState deployState;
+		TimedDeployState deployState;
 
 		public DeployToTimedUpgrade(ActorInitializer init, DeployToTimedUpgradeInfo info)
 		{
