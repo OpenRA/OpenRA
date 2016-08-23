@@ -474,44 +474,49 @@ dbrislg:
 	9: dbris9lg
 	10: dbrs10lg
 
-crat01:
+^crate:
 	idle:
+		Offset: 0, 0, 12
+		DepthSprite: isodepth.shp
+
+crat01:
+	Inherits: ^crate
 
 crat02:
-	idle:
+	Inherits: ^crate
 
 crat03:
-	idle:
+	Inherits: ^crate
 
 crat04:
-	idle:
+	Inherits: ^crate
 
 crat0a:
-	idle:
+	Inherits: ^crate
 
 crat0b:
-	idle:
+	Inherits: ^crate
 
 crat0c:
-	idle:
+	Inherits: ^crate
 
 drum01:
-	idle:
+	Inherits: ^crate
 
 drum02:
-	idle:
+	Inherits: ^crate
 
 palet01:
-	idle:
+	Inherits: ^crate
 
 palet02:
-	idle:
+	Inherits: ^crate
 
 palet03:
-	idle:
+	Inherits: ^crate
 
 palet04:
-	idle:
+	Inherits: ^crate
 
 ^tracks:
 	idle:
