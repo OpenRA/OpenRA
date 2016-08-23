@@ -13,7 +13,7 @@ local function eventHandle(handlers, event, ...)
     if ok then
       if res == false then success = false end
     else
-      DisplayOutputLn(TR("%s event failed: %s"):format(event, res))
+      ide:GetOutput():Error(TR("%s event failed: %s"):format(event, res))
     end
   end
   return success
@@ -47,7 +47,7 @@ local function PackageEventHandleOne(file, event, ...)
     if ok then
       if res == false then return false end
     else
-      DisplayOutputLn(TR("%s event failed: %s"):format(event, res))
+      ide:GetOutput():Error(TR("%s event failed: %s"):format(event, res))
     end
   end
 end
