@@ -723,7 +723,7 @@ function debugger:Listen(start)
             debugger:ActivateDocument(file, line)
             options.runstart = false
           end
-        elseif file and line then
+        elseif file and line and not debugger:ActivateDocument(file, line) then
           displayError(TR("Debugging suspended at '%s:%s' (couldn't activate the file).")
             :format(file, line))
         end
