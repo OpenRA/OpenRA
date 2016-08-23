@@ -116,3 +116,4 @@ veinhole:
 		ShadowStart: 1
 		UseTilesetExtension: true
 		Offset: 0,-60
+		ZRamp: 1

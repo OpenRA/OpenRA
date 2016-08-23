@@ -294,13 +294,15 @@ wake:
 		Length: *
 		Tick: 180
 		ZOffset: -512
+		ZRamp: 1
+		Offset: 0, 0, 1
 
 resources:
 	Defaults:
 		UseTilesetExtension: true
 		Length: 12
 		ShadowStart: 12
-		Offset: 0, -12
+		Offset: 0, -12, 1.5
 		ZRamp: 1
 	tib01: tib01
 	tib02: tib02
