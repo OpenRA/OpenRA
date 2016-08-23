@@ -9,10 +9,10 @@
  */
 #endregion
 
-using OpenRA.Mods.Common.Traits;
-using OpenRA.Primitives;
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.Mods.Common.Traits;
+using OpenRA.Primitives;
 
 namespace OpenRA.Mods.AS.Traits
 {
@@ -56,12 +56,12 @@ namespace OpenRA.Mods.AS.Traits
 
 			var cells = collector.World.Map.FindTilesInCircle(self.Location, 2);
 
-			validActors = eligibleActors.Where(a => validActor(a, cells));
+			validActors = eligibleActors.Where(a => ValidActor(a, cells));
 
 			return validActors.Count() > 0 ? true : false;
 		}
 
-		bool validActor(ActorInfo a, IEnumerable<CPos> cells)
+		bool ValidActor(ActorInfo a, IEnumerable<CPos> cells)
 		{
 			foreach (var c in cells)
 			{
@@ -69,6 +69,7 @@ namespace OpenRA.Mods.AS.Traits
 				if (mi != null && mi.CanEnterCell(self.World, self, c))
 					return true;
 			}
+
 			return false;
 		}
 
