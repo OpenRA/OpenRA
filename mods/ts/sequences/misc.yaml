@@ -1,6 +1,7 @@
 overlay:
 	Defaults: place
-		Offset: 0, -12
+		Offset: 0, -12, 1
+		ZRamp: 1
 	build-valid-snow:
 	build-valid-temperate:
 	build-invalid:
@@ -9,7 +10,8 @@ overlay:
 
 editor-overlay:
 	Defaults: place
-		Offset: 0, -12
+		Offset: 0, -12, 1
+		ZRamp: 1
 	copy:
 	paste:
 		Start: 1
@@ -67,14 +69,17 @@ rank:
 mpspawn:
 	idle:
 		Length: *
+		ZRamp: 1
 
 waypoint:
 	idle:
 		Length: *
+		ZRamp: 1
 
 camera:
 	idle:
 		Length: *
+		ZRamp: 1
 
 clock:
 	idle: gclock2
@@ -281,6 +286,8 @@ moveflsh:
 		Length: *
 		Tick: 30
 		ZOffset: 2047
+		Offset: 0, 0, 48
+		ZRamp: 1
 
 wake:
 	idle: wake2
