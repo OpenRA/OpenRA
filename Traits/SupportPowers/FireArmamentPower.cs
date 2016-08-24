@@ -23,33 +23,37 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.AS.Traits
 {
-	class FireArmamentPowerInfo : SupportPowerInfo
+	[Desc("Support power type to fire a burst of armaments.")]
+	public class FireArmamentPowerInfo : SupportPowerInfo
 	{
-		[Desc("Armament names")]
+		[Desc("The `Name` of the armaments this support power is allowed to fire.")]
 		public readonly string ArmamentName = "superweapon";
 
-		[Desc("Amount of time before detonation to remove the beacon")]
+		[Desc("If `AllowMultiple` is `false`, how many instances of this support power are allowed to fire.",
+		      "Actual instances might end up less due to range/etc.")]
+		public readonly int MaximumFiringInstances = 1;
+
+		[Desc("Amount of time before detonation to remove the beacon.")]
 		public readonly int BeaconRemoveAdvance = 25;
 
 		[ActorReference]
-		[Desc("Actor to spawn before firing")]
+		[Desc("Actor to spawn before firing.")]
 		public readonly string CameraActor = null;
 
-		[Desc("Amount of time before firing to spawn the camera")]
+		[Desc("Amount of time before firing to spawn the camera.")]
 		public readonly int CameraSpawnAdvance = 25;
 
-		[Desc("Amount of time after firing to remove the camera")]
+		[Desc("Amount of time after firing to remove the camera.")]
 		public readonly int CameraRemoveDelay = 25;
 
 		public override object Create(ActorInitializer init) { return new FireArmamentPower(init.Self, this); }
 	}
 
-	class FireArmamentPower : SupportPower, ITick, INotifyBurstComplete, INotifyCreated
+	public class FireArmamentPower : SupportPower, ITick, INotifyBurstComplete, INotifyCreated
 	{
-		readonly FireArmamentPowerInfo info;
+		public readonly FireArmamentPowerInfo FireArmamentPowerInfo;
 
 		IFacing facing;
-		Armament[] armaments;
 		HashSet<Armament> activeArmaments;
 		HashSet<Turreted> turrets;
 
@@ -58,27 +62,36 @@ namespace OpenRA.Mods.AS.Traits
 		int estimatedTicks;
 		Target target;
 
+		public Armament[] Armaments;
+
 		public FireArmamentPower(Actor self, FireArmamentPowerInfo info)
 			: base(self, info)
 		{
-			this.info = info;
+			FireArmamentPowerInfo = info;
 			enabled = false;
 		}
 
 		void INotifyCreated.Created(Actor self)
 		{
 			facing = self.TraitOrDefault<IFacing>();
-			armaments = self.TraitsImplementing<Armament>().Where(t => t.Info.Name.Contains(info.ArmamentName)).ToArray();
+			Armaments = self.TraitsImplementing<Armament>().Where(t => t.Info.Name.Contains(FireArmamentPowerInfo.ArmamentName)).ToArray();
 		}
 
 		public override void Activate(Actor self, Order order, SupportPowerManager manager)
 		{
 			base.Activate(self, order, manager);
 
+			activeArmaments = Armaments.Where(x => !x.IsTraitDisabled).ToHashSet();
+
+			var armamentturrets = activeArmaments.Select(x => x.Info.Turret).ToHashSet();
+
+			// TODO: Fix this when upgradable Turreteds arrive.
+			turrets = self.TraitsImplementing<Turreted>().Where(x => armamentturrets.Contains(x.Name)).ToHashSet();
+
 			if (self.Owner.IsAlliedWith(self.World.RenderPlayer))
-				Game.Sound.Play(Info.LaunchSound);
+				Game.Sound.Play(FireArmamentPowerInfo.LaunchSound);
 			else
-				Game.Sound.Play(Info.IncomingSound);
+				Game.Sound.Play(FireArmamentPowerInfo.IncomingSound);
 
 			target = Target.FromCell(self.World, order.TargetLocation);
 
@@ -87,34 +100,34 @@ namespace OpenRA.Mods.AS.Traits
 			// TODO: Estimate the projectile travel time somehow
 			estimatedTicks = activeArmaments.Max(x => x.FireDelay);
 
-			if (info.CameraActor != null)
+			if (FireArmamentPowerInfo.CameraActor != null)
 			{
-				var camera = self.World.CreateActor(false, info.CameraActor, new TypeDictionary
+				var camera = self.World.CreateActor(false, FireArmamentPowerInfo.CameraActor, new TypeDictionary
 				                                    {
 					new LocationInit(order.TargetLocation),
 					new OwnerInit(self.Owner),
 				});
 
-				camera.QueueActivity(new Wait(info.CameraSpawnAdvance + info.CameraRemoveDelay));
+				camera.QueueActivity(new Wait(FireArmamentPowerInfo.CameraSpawnAdvance + FireArmamentPowerInfo.CameraRemoveDelay));
 				camera.QueueActivity(new RemoveSelf());
 
 				Action addCamera = () => self.World.AddFrameEndTask(w => w.Add(camera));
-				self.World.AddFrameEndTask(w => w.Add(new DelayedAction(estimatedTicks - info.CameraSpawnAdvance, addCamera)));
+				self.World.AddFrameEndTask(w => w.Add(new DelayedAction(estimatedTicks - FireArmamentPowerInfo.CameraSpawnAdvance, addCamera)));
 			}
 
-			if (Info.DisplayBeacon)
+			if (FireArmamentPowerInfo.DisplayBeacon)
 			{
 				var beacon = new Beacon(
 					order.Player,
 					self.World.Map.CenterOfCell(order.TargetLocation),
-					Info.BeaconPaletteIsPlayerPalette,
-					Info.BeaconPalette,
-					Info.BeaconImage,
-					Info.BeaconPoster,
-					Info.BeaconPosterPalette,
-					Info.ArrowSequence,
-					Info.CircleSequence,
-					Info.ClockSequence,
+					FireArmamentPowerInfo.BeaconPaletteIsPlayerPalette,
+					FireArmamentPowerInfo.BeaconPalette,
+					FireArmamentPowerInfo.BeaconImage,
+					FireArmamentPowerInfo.BeaconPoster,
+					FireArmamentPowerInfo.BeaconPosterPalette,
+					FireArmamentPowerInfo.ArrowSequence,
+					FireArmamentPowerInfo.CircleSequence,
+					FireArmamentPowerInfo.ClockSequence,
 					() => FractionComplete);
 
 				Action removeBeacon = () => self.World.AddFrameEndTask(w =>
@@ -126,7 +139,7 @@ namespace OpenRA.Mods.AS.Traits
 				self.World.AddFrameEndTask(w =>
 				                           {
 					w.Add(beacon);
-					w.Add(new DelayedAction(estimatedTicks - info.BeaconRemoveAdvance, removeBeacon));
+					w.Add(new DelayedAction(estimatedTicks - FireArmamentPowerInfo.BeaconRemoveAdvance, removeBeacon));
 				});
 			}
 
@@ -135,15 +148,8 @@ namespace OpenRA.Mods.AS.Traits
 
 		public override void SelectTarget(Actor self, string order, SupportPowerManager manager)
 		{
-			activeArmaments = armaments.Where(x => !x.IsTraitDisabled).ToHashSet();
-
-			var armamentturrets = activeArmaments.Select(x => x.Info.Turret).ToHashSet();
-
-			// TODO: Fix this when upgradable Turreteds arrive.
-			turrets = self.TraitsImplementing<Turreted>().Where(x => armamentturrets.Contains(x.Name)).ToHashSet();
-
-			Game.Sound.PlayToPlayer(manager.Self.Owner, Info.SelectTargetSound);
-			self.World.OrderGenerator = new SelectArmamentPowerTarget(self, order, manager, activeArmaments.First());
+			Game.Sound.PlayToPlayer(manager.Self.Owner, FireArmamentPowerInfo.SelectTargetSound);
+			self.World.OrderGenerator = new SelectArmamentPowerTarget(self, order, manager, this);
 		}
 
 		void ITick.Tick(Actor self)
@@ -180,9 +186,11 @@ namespace OpenRA.Mods.AS.Traits
 		readonly Actor self;
 		readonly SupportPowerManager manager;
 		readonly string order;
-		readonly Armament armament;
+		readonly FireArmamentPower power;
 
-		public SelectArmamentPowerTarget(Actor self, string order, SupportPowerManager manager, Armament armament)
+		readonly IEnumerable<Tuple<Actor, WDist, WDist>> instances;
+
+		public SelectArmamentPowerTarget(Actor self, string order, SupportPowerManager manager, FireArmamentPower power)
 		{
 			// Clear selection if using Left-Click Orders
 			if (Game.Settings.Game.UseClassicMouseStyle)
@@ -191,14 +199,51 @@ namespace OpenRA.Mods.AS.Traits
 			this.self = self;
 			this.manager = manager;
 			this.order = order;
-			this.armament = armament;
+			this.power = power;
+
+			instances = GetActualInstances(self, power);
+		}
+
+		IEnumerable<Tuple<Actor, WDist, WDist>> GetActualInstances(Actor self, FireArmamentPower power)
+		{
+			if (!power.FireArmamentPowerInfo.AllowMultiple)
+			{
+				var actorswithpower = self.World.ActorsWithTrait<FireArmamentPower>()
+					.Where(x => x.Actor.Owner == self.Owner && x.Trait.FireArmamentPowerInfo.OrderName.Contains(power.FireArmamentPowerInfo.OrderName));
+				foreach (var a in actorswithpower)
+				{
+					yield return Tuple.Create(a.Actor,
+						a.Trait.Armaments.Where(x => !x.IsTraitDisabled).Min(x => x.Weapon.MinRange),
+						a.Trait.Armaments.Where(x => !x.IsTraitDisabled).Max(x => x.Weapon.Range));
+				}
+			}
+			else
+			{
+				yield return Tuple.Create(self,
+					power.Armaments.Where(x => !x.IsTraitDisabled).Min(a => a.Weapon.MinRange),
+					power.Armaments.Where(x => !x.IsTraitDisabled).Max(a => a.Weapon.Range));
+			}
+
+			yield break;
 		}
 
 		IEnumerable<Order> IOrderGenerator.Order(World world, CPos xy, int2 worldpixel, MouseInput mi)
 		{
-			world.CancelInputMode();
+			var pos = world.Map.CenterOfCell(xy);
+
 			if (mi.Button == MouseButton.Left && IsValidTargetCell(xy))
-				yield return new Order(order, manager.Self, false) { TargetLocation = xy, SuppressVisualFeedback = true };
+			{
+				var actors = instances.Where(x => !x.Item1.IsDisabled() && (x.Item1.CenterPosition - pos).HorizontalLengthSquared < x.Item3.LengthSquared)
+					.OrderBy(x => (x.Item1.CenterPosition - pos).HorizontalLengthSquared).Select(x => x.Item1).Take(power.FireArmamentPowerInfo.MaximumFiringInstances);
+
+				world.CancelInputMode();
+				foreach (var a in actors)
+				{
+					yield return new Order(order, manager.Self, false) { TargetLocation = xy, SuppressVisualFeedback = true };
+				}
+			}
+
+			yield break;
 		}
 
 		public virtual void Tick(World world)
@@ -212,26 +257,32 @@ namespace OpenRA.Mods.AS.Traits
 
 		public IEnumerable<IRenderable> RenderAfterWorld(WorldRenderer wr, World world)
 		{
-			yield return new RangeCircleRenderable(
-				self.CenterPosition,
-				armament.Weapon.MinRange,
-				0,
-				Color.Red,
-				Color.FromArgb(96, Color.Black));
+			foreach (var i in instances)
+			{
+				if (!i.Item1.IsDisabled())
+				{
+					yield return new RangeCircleRenderable(
+						i.Item1.CenterPosition,
+						i.Item2,
+						0,
+						Color.Red,
+						Color.FromArgb(96, Color.Black));
 
-			yield return new RangeCircleRenderable(
-				self.CenterPosition,
-				armament.Weapon.Range,
-				0,
-				Color.Red,
-				Color.FromArgb(96, Color.Black));
+					yield return new RangeCircleRenderable(
+						i.Item1.CenterPosition,
+						i.Item3,
+						0,
+						Color.Red,
+						Color.FromArgb(96, Color.Black));
+				}
+			}
 
 			yield break;
 		}
 
 		string IOrderGenerator.GetCursor(World world, CPos cell, int2 worldPixel, MouseInput mi)
 		{
-			return IsValidTargetCell(cell) ? armament.Info.Cursor : "generic-blocked";
+			return IsValidTargetCell(cell) ? power.FireArmamentPowerInfo.Cursor : "generic-blocked";
 		}
 
 		bool IsValidTargetCell(CPos xy)
@@ -241,7 +292,7 @@ namespace OpenRA.Mods.AS.Traits
 
 			var tc = Target.FromCell(self.World, xy);
 
-			return tc.IsInRange(self.CenterPosition, armament.Weapon.Range) && !tc.IsInRange(self.CenterPosition, armament.Weapon.MinRange);
+			return instances.Any(x => !x.Item1.IsDisabled() && tc.IsInRange(x.Item1.CenterPosition, x.Item3) && !tc.IsInRange(x.Item1.CenterPosition, x.Item2));
 		}
 	}
 }
