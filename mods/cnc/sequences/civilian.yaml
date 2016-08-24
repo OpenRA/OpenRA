@@ -50,6 +50,7 @@ c1:
 		Start: 16
 		Length: 4
 		Tick: 1600
+
 c2:
 	Inherits: c1
 

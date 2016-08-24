@@ -131,11 +131,11 @@ hand:
 pyle:
 	idle:
 		Length: 10
-		Tick: 100		
+		Tick: 100
 	damaged-idle:
 		Start: 10
 		Length: 10
-		Tick: 100		
+		Tick: 100
 	dead:
 		Start: 20
 		Tick: 800
@@ -268,7 +268,7 @@ hpad:
 	damaged-active:
 		Start: 8
 		Length: 6
-		Tick: 100		
+		Tick: 100
 		ZOffset: -1023
 	dead:
 		Start: 14
@@ -462,7 +462,7 @@ gun:
 
 sam:
 	closed-idle:
-		Start:0
+		Start: 0
 	opening:
 		Start: 1
 		Length: 16
@@ -476,7 +476,7 @@ sam:
 		Length: 14
 		Tick: 30
 	damaged-closed-idle:
-		Start:64
+		Start: 64
 	damaged-opening:
 		Start: 65
 		Length: 16
@@ -508,7 +508,7 @@ gtwr:
 	dead:
 		Start: 2
 		Tick: 800
-	make: 
+	make:
 		Combine:
 			gtwrmake:
 				Length: 17
