@@ -1455,6 +1455,9 @@ function CreateEditor(bare)
 
       PackageEventHandle("onMenuEditor", menu, editor, event)
 
+      -- popup statuses are not refreshed on Linux, so do it manually
+      if ide.osname == "Unix" then UpdateMenuUI(menu, editor) end
+
       editor:PopupMenu(menu)
       editor:SetMouseDwellTime(dwelltime) -- restore dwelling
       pos = nil -- reset the position
