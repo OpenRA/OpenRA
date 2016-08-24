@@ -8,6 +8,13 @@
     <glob weight="60" pattern="*.orarep"/>
   </mime-type>
 
+  <mime-type type="application/x-openra-mod">
+    <icon name="openra" />
+    <generic-icon name="applications-games"/>
+    <comment>OpenRA Mod</comment>
+    <glob weight="60" pattern="*.oramod"/>
+  </mime-type>
+
   <mime-type type="x-scheme-handler/openra">
     <icon name="openra" />
     <generic-icon name="applications-games"/>

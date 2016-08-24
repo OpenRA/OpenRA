@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=Application
+Version=1.0
+Name=OpenRA
+GenericName=Real Time Strategy Game
+Comment=Reimagining of early Westwood Games
+Icon=openra
+Exec=openra Game.Mod=%f
+Terminal=false
+NoDisplay=true
+Categories=Game;StrategyGame;
+MimeType=application/x-openra-mod;
