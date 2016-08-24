@@ -1878,3 +1878,29 @@ gaplug2:
 
 gaplug3:
 	icon: rad3icon
+
+djugg:
+	Defaults:
+		Offset: 0, -12
+	idle:
+		ShadowStart: 3
+	damaged-idle:
+		Start: 1
+		ShadowStart: 4
+	muzzle: gunfire
+		Length: *
+		Offset: 0, 0
+		UseTilesetCode: false
+	emp-overlay: emp_fx01
+		Length: *
+		Offset: 0, 0
+		UseTilesetCode: false
+		ZOffset: 512
+		BlendMode: Additive
+	turret: djugg_a
+		Facings: 32
+		DepthSprite: isodepth.shp
+		Offset: 0, 0, 12
+	make: djuggmk
+		Length: 17
+		ShadowStart: 18

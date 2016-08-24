@@ -129,3 +129,39 @@
 	Warhead@4Smu: LeaveSmudge
 		SmudgeType: MediumCrater
 		InvalidTargets: Vehicle, Building, Wall
+
+Jugg90mm:
+	ReloadDelay: 150
+	Range: 18c0
+	MinRange: 5c0
+	Burst: 3
+	Report: JuggFire.aud
+	Projectile: Bullet
+		Speed: 256
+		Image: 120mm
+		Angle: 80
+		Shadow: true
+		Blockable: false	
+		Palette: ra
+		Inaccuracy: 2c0
+	Warhead@1Dam: SpreadDamage
+		Spread: 600
+		Damage: 75
+		Versus:
+			None: 80
+			Wood: 70
+			Light: 60
+			Heavy: 50
+		DamageTypes: Prone100Percent, TriggerProne, ExplosionDeath
+	Warhead@2Eff: CreateEffect
+		Explosions: large_explosion
+		ImpactSounds: expnew06.aud
+		InvalidImpactTypes: Water
+	Warhead@3EffWater: CreateEffect
+		Explosions: small_watersplash
+		ExplosionPalette: player
+		ImpactSounds: ssplash2.aud
+		ValidImpactTypes: Water
+	Warhead@4Smu: LeaveSmudge
+		SmudgeType: MediumCrater
+		InvalidTargets: Vehicle, Building, Wall

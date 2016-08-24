@@ -49,6 +49,7 @@ Packages:
 	~e01vox01.mix
 	~e01vox02.mix
 	~ecache01.mix
+# Shipped files
 	ts|bits
 	ts|uibits
 
@@ -270,8 +271,16 @@ ModContent:
 			Download: basefiles
 		music: Base Game Music
 			TestFiles: ^Content/ts/scores.mix
-			Sources: tibsun, tibsun-linux, tfd, origin
+			Sources: tibsun, tibsun-linux, tfd, origin, firestorm
 			Download: music
+		expansion: Firestorm Expansion
+			TestFiles: ^Content/ts/expand01.mix
+			Sources: firestorm, tfd
+			Required: true
+			Download: expansion
+		fs-music: Firestorm Expansion Music
+			TestFiles: ^Content/ts/scores01.mix
+			Sources: firestorm, tfd
 	Downloads:
 		ts|installer/downloads.yaml
 	Sources:
@@ -279,3 +288,4 @@ ModContent:
 		ts|installer/firstdecade.yaml
 		ts|installer/origin.yaml
 		ts|installer/tibsun.yaml
+		ts|installer/firestorm.yaml

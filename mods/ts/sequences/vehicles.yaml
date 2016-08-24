@@ -203,3 +203,15 @@ traincar:
 
 cargocar:
 	Inherits: ^VehicleOverlays
+
+jugger:
+	Inherits: ^VehicleOverlays
+	stand:
+		Facings: -8
+		Stride: 15
+		ShadowStart: 120
+	run:
+		Length: 15
+		Facings: -8
+		ShadowStart: 120
+	icon: juggicon

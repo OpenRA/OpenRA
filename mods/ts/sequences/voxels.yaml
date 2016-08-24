@@ -16,6 +16,9 @@ gaarty:
 	turret: art2tur
 	barrel: art2barl
 
+djugg:
+	barrel: djuggbar
+
 subtank:
 	idle:
 
