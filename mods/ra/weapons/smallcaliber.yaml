@@ -242,7 +242,7 @@ M1Carbine:
 		Versus:
 			Wood: 25
 			Light: 30
-			Heavy: 15
+			Heavy: 10
 			Concrete: 10
 		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
 	Warhead@2Eff: CreateEffect
@@ -265,7 +265,7 @@ M60mg:
 		Versus:
 			Wood: 10
 			Light: 30
-			Heavy: 15
+			Heavy: 10
 			Concrete: 10
 		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
 	Warhead@2Eff: CreateEffect
