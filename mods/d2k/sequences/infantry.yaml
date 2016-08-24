@@ -460,18 +460,20 @@ grenadier:
 		ZOffset: -511
 	prone-stand: DATA.R8
 		Start: 2622
-		Length: 4
-		Facings: 8
+		Facings: -8
+		Transpose: true
 	prone-run: DATA.R8
-		Start: 2654
+		Start: 2622
 		Length: 4
-		Facings: 8
+		Facings: -8
 		Tick: 120
+		Transpose: true
 	prone-throw: DATA.R8
-		Start: 136
+		Start: 2654
 		Length: 5
-		Facings: 8
+		Facings: -8
 		Tick: 120
+		Transpose: true
 	icon: DATA.R8
 		Start: 4297
 		Offset: -30,-24
