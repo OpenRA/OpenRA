@@ -43,6 +43,14 @@ LUASEC_BASENAME="luasec-0.6"
 LUASEC_FILENAME="$LUASEC_BASENAME.zip"
 LUASEC_URL="https://github.com/brunoos/luasec/archive/$LUASEC_FILENAME"
 
+LFS_BASENAME="v_1_6_3"
+LFS_FILENAME="$LFS_BASENAME.tar.gz"
+LFS_URL="https://github.com/keplerproject/luafilesystem/archive/$LFS_FILENAME"
+
+LPEG_BASENAME="lpeg-1.0.0"
+LPEG_FILENAME="$LPEG_BASENAME.tar.gz"
+LPEG_URL="http://www.inf.puc-rio.br/~roberto/lpeg/$LPEG_FILENAME"
+
 WXWIDGETSDEBUG="--disable-debug"
 WXLUABUILD="MinSizeRel"
 
@@ -50,13 +58,16 @@ WXLUABUILD="MinSizeRel"
 for ARG in "$@"; do
   case $ARG in
   5.2)
+    BUILD_LUA=true
     BUILD_52=true
     ;;
   5.3)
+    BUILD_LUA=true
     BUILD_53=true
     BUILD_FLAGS="$BUILD_FLAGS -DLUA_COMPAT_APIINTCASTS"
     ;;
   jit)
+    BUILD_LUA=true
     BUILD_JIT=true
     ;;
   wxwidgets)
@@ -74,6 +85,12 @@ for ARG in "$@"; do
   luasocket)
     BUILD_LUASOCKET=true
     ;;
+  lfs)
+    BUILD_LFS=true
+    ;;
+  lpeg)
+    BUILD_LPEG=true
+    ;;
   debug)
     WXWIDGETSDEBUG="--enable-debug=max"
     WXLUABUILD="Debug"
@@ -83,6 +100,9 @@ for ARG in "$@"; do
     BUILD_LUA=true
     BUILD_WXLUA=true
     BUILD_LUASOCKET=true
+    BUILD_LUASEC=true
+    BUILD_LFS=true
+    BUILD_LPEG=true
     ;;
   *)
     echo "Error: invalid argument $ARG"
@@ -140,9 +160,8 @@ if [ $BUILD_53 ]; then
 fi
 
 if [ $BUILD_JIT ]; then
-  LUA_BASENAME="LuaJIT-2.0.4"
-  LUA_FILENAME="$LUA_BASENAME.tar.gz"
-  LUA_URL="http://luajit.org/download/$LUA_FILENAME"
+  LUA_BASENAME="luajit"
+  LUA_URL="https://github.com/pkulchenko/luajit.git"
 fi
 
 # build wxWidgets
@@ -175,8 +194,13 @@ fi
 
 # build Lua
 if [ $BUILD_LUA ]; then
-  wget -c "$LUA_URL" -O "$LUA_FILENAME" || { echo "Error: failed to download Lua"; exit 1; }
-  tar -xzf "$LUA_FILENAME"
+  if [ $BUILD_JIT ]; then
+    git clone "$LUA_URL" "$LUA_BASENAME"
+    (cd "$LUA_BASENAME"; git checkout v2.0.4)
+  else
+    wget -c "$LUA_URL" -O "$LUA_FILENAME" || { echo "Error: failed to download Lua"; exit 1; }
+    tar -xzf "$LUA_FILENAME"
+  fi
   cd "$LUA_BASENAME"
 
   if [ $BUILD_JIT ]; then
@@ -184,8 +208,6 @@ if [ $BUILD_LUA ]; then
     make install PREFIX="$INSTALL_DIR"
     cp "src/luajit" "$INSTALL_DIR/bin/lua"
     cp "src/liblua.dylib" "$INSTALL_DIR/lib"
-    # move luajit to lua as it's expected by luasocket and other components
-    cp "$INSTALL_DIR"/include/luajit*/* "$INSTALL_DIR/include/"
   else
     sed -i "" 's/PLATS=/& macosx_dylib/' Makefile
 
@@ -260,6 +282,33 @@ if [ $BUILD_LUASOCKET ]; then
   rm -rf "$LUASOCKET_FILENAME" "$LUASOCKET_BASENAME"
 fi
 
+# build lfs
+if [ $BUILD_LFS ]; then
+  wget --no-check-certificate -c "$LFS_URL" -O "$LFS_FILENAME" || { echo "Error: failed to download lfs"; exit 1; }
+  tar -xzf "$LFS_FILENAME"
+  mv "luafilesystem-$LFS_BASENAME" "$LFS_BASENAME"
+  cd "$LFS_BASENAME/src"
+  mkdir -p "$INSTALL_DIR/lib/lua/$LUAD/"
+  gcc $BUILD_FLAGS -o "$INSTALL_DIR/lib/lua/$LUAD/lfs.dylib" lfs.c \
+    || { echo "Error: failed to build lfs"; exit 1; }
+  [ -f "$INSTALL_DIR/lib/lua/$LUAD/lfs.dylib" ] || { echo "Error: lfs.dylib isn't found"; exit 1; }
+  cd ../..
+  rm -rf "$LFS_FILENAME" "$LFS_BASENAME"
+fi
+
+# build lpeg
+if [ $BUILD_LPEG ]; then
+  wget --no-check-certificate -c "$LPEG_URL" -O "$LPEG_FILENAME" || { echo "Error: failed to download lpeg"; exit 1; }
+  tar -xzf "$LPEG_FILENAME"
+  cd "$LPEG_BASENAME"
+  mkdir -p "$INSTALL_DIR/lib/lua/$LUAD/"
+  gcc $BUILD_FLAGS -o "$INSTALL_DIR/lib/lua/$LUAD/lpeg.dylib" lptree.c lpvm.c lpcap.c lpcode.c lpprint.c \
+    || { echo "Error: failed to build lpeg"; exit 1; }
+  [ -f "$INSTALL_DIR/lib/lua/$LUAD/lpeg.dylib" ] || { echo "Error: lpeg.dylib isn't found"; exit 1; }
+  cd ..
+  rm -rf "$LPEG_FILENAME" "$LPEG_BASENAME"
+fi
+
 # build LuaSec
 if [ $BUILD_LUASEC ]; then
   # build LuaSec
@@ -289,7 +338,9 @@ if [ $BUILD_LUA ]; then
   cp "$INSTALL_DIR/bin/lua$LUAS" "$BIN_DIR/lua.app/Contents/MacOS"
   cp "$INSTALL_DIR/bin/lua$LUAS" "$INSTALL_DIR/lib/liblua$LUAS.dylib" "$BIN_DIR"
 fi
-[ $BUILD_WXLUA ] && cp "$INSTALL_DIR/lib/libwx.dylib" "$BIN_DIR"
+[ $BUILD_WXLUA ] && cp "$INSTALL_DIR/lib/libwx.dylib" "$BIN_DIR/clibs"
+[ $BUILD_LFS ] && cp "$INSTALL_DIR/lib/lua/$LUAD/lfs.dylib" "$BIN_DIR/clibs$LUAS"
+[ $BUILD_LPEG ] && cp "$INSTALL_DIR/lib/lua/$LUAD/lpeg.dylib" "$BIN_DIR/clibs$LUAS"
 
 if [ $BUILD_LUASOCKET ]; then
   mkdir -p "$BIN_DIR/clibs$LUAS/"{mime,socket}

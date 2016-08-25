@@ -5,9 +5,9 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>English</string>
 	<key>CFBundleExecutable</key>
-        <string>ZeroBraneStudio</string>
-        <key>CFBundleDisplayName</key>
-        <string>ZeroBraneStudio</string>
+	<string>ZeroBraneStudio</string>
+	<key>CFBundleDisplayName</key>
+	<string>ZeroBrane Studio Lua IDE</string>
 	<key>CFBundleGetInfoString</key>
 	<string></string>
 	<key>CFBundleIconFile</key>
@@ -17,13 +17,13 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleLongVersionString</key>
-	<string></string>
+	<string>devel</string>
 	<key>CFBundleName</key>
 	<string>ZeroBraneStudio</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string></string>
+	<string>devel</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
@@ -32,7 +32,68 @@
 	<true/>
 	<key>LSRequiresCarbon</key>
 	<true/>
+	<key>NSHighResolutionCapable</key>
+	<true/>
 	<key>NSHumanReadableCopyright</key>
 	<string>Copyright (C) 2011 Paul Kulchenko, ZeroBrane LLC</string>
+        <key>CFBundleDocumentTypes</key>
+        <array>
+                <dict>
+                        <key>CFBundleTypeExtensions</key>
+                        <array>
+                                <string>lua</string>
+                        </array>
+                        <key>CFBundleTypeName</key>
+                        <string>Lua</string>
+                        <key>CFBundleTypeRole</key>
+                        <string>Editor</string>
+                        <key>LSIsAppleDefaultForType</key>
+                        <true/>
+                        <key>NSDocumentClass</key>
+                        <string>Document</string>
+                </dict>
+                <dict>
+                        <key>CFBundleTypeName</key>
+                        <string>Document</string>
+                        <key>CFBundleTypeRole</key>
+                        <string>Editor</string>
+                        <key>LSItemContentTypes</key>
+                        <array>
+                                <string>public.plain-text</string>
+                        </array>
+                        <key>NSDocumentClass</key>
+                        <string>Document</string>
+                        <key>NSIsRelatedItemType</key>
+                        <true/>
+                </dict>
+                <dict>
+                        <key>CFBundleTypeName</key>
+                        <string>Unknown document</string>
+                        <key>CFBundleTypeRole</key>
+                        <string>Viewer</string>
+                        <key>LSItemContentTypes</key>
+                        <array>
+                                <string>public.data</string>
+                        </array>
+                        <key>NSDocumentClass</key>
+                        <string>Document</string>
+                </dict>
+                <dict>
+                        <key>CFBundleTypeName</key>
+                        <string>Folder</string>
+                        <key>CFBundleTypeOSTypes</key>
+                        <array>
+                                <string>fold</string>
+                        </array>
+                        <key>CFBundleTypeRole</key>
+                        <string>Viewer</string>
+                        <key>LSIsAppleDefaultForType</key>
+                        <false/>
+                        <key>LSTypeIsPackage</key>
+                        <false/>
+                        <key>NSDocumentClass</key>
+                        <string>Folder</string>
+                </dict>
+        </array>
 </dict>
 </plist>

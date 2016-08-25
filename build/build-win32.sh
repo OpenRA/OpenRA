@@ -41,6 +41,10 @@ LFS_BASENAME="v_1_6_3"
 LFS_FILENAME="$LFS_BASENAME.tar.gz"
 LFS_URL="https://github.com/keplerproject/luafilesystem/archive/$LFS_FILENAME"
 
+LPEG_BASENAME="lpeg-1.0.0"
+LPEG_FILENAME="$LPEG_BASENAME.tar.gz"
+LPEG_URL="http://www.inf.puc-rio.br/~roberto/lpeg/$LPEG_FILENAME"
+
 WINAPI_BASENAME="winapi"
 WINAPI_URL="https://github.com/stevedonovan/winapi.git"
 
@@ -51,13 +55,16 @@ WXLUABUILD="MinSizeRel"
 for ARG in "$@"; do
   case $ARG in
   5.2)
+    BUILD_LUA=true
     BUILD_52=true
     ;;
   5.3)
+    BUILD_LUA=true
     BUILD_53=true
     BUILD_FLAGS="$BUILD_FLAGS -DLUA_COMPAT_APIINTCASTS"
     ;;
   jit)
+    BUILD_LUA=true
     BUILD_JIT=true
     ;;
   wxwidgets)
@@ -81,6 +88,9 @@ for ARG in "$@"; do
   lfs)
     BUILD_LFS=true
     ;;
+  lpeg)
+    BUILD_LPEG=true
+    ;;
   zbstudio)
     BUILD_ZBSTUDIO=true
     ;;
@@ -95,6 +105,9 @@ for ARG in "$@"; do
     BUILD_LUASOCKET=true
     BUILD_WINAPI=true
     BUILD_ZBSTUDIO=true
+    BUILD_LUASEC=true
+    BUILD_LFS=true
+    BUILD_LPEG=true
     ;;
   *)
     echo "Error: invalid argument $ARG"
@@ -144,6 +157,7 @@ fi
 
 LUA_FILENAME="$LUA_BASENAME.tar.gz"
 LUA_URL="http://www.lua.org/ftp/$LUA_FILENAME"
+LUA_COMPAT=""
 
 if [ $BUILD_53 ]; then
   LUAV="53"
@@ -152,12 +166,12 @@ if [ $BUILD_53 ]; then
   LUA_BASENAME="lua-5.3.1"
   LUA_FILENAME="$LUA_BASENAME.tar.gz"
   LUA_URL="http://www.lua.org/ftp/$LUA_FILENAME"
+  LUA_COMPAT="MYCFLAGS=-DLUA_COMPAT_MODULE"
 fi
 
 if [ $BUILD_JIT ]; then
-  LUA_BASENAME="LuaJIT-2.0.4"
-  LUA_FILENAME="$LUA_BASENAME.tar.gz"
-  LUA_URL="http://luajit.org/download/$LUA_FILENAME"
+  LUA_BASENAME="luajit"
+  LUA_URL="https://github.com/pkulchenko/luajit.git"
 fi
 
 # build wxWidgets
@@ -168,7 +182,7 @@ if [ $BUILD_WXWIDGETS ]; then
     --enable-compat28 \
     --with-libjpeg=builtin --with-libpng=builtin --with-libtiff=no --with-expat=no \
     --with-zlib=builtin --disable-richtext \
-    CFLAGS="-Os -fno-keep-inline-dllexport" CXXFLAGS="-Os -fno-keep-inline-dllexport"
+    CFLAGS="-Os -fno-keep-inline-dllexport" CXXFLAGS="-Os -fno-keep-inline-dllexport -DNO_CXX11_REGEX"
   make $MAKEFLAGS || { echo "Error: failed to build wxWidgets"; exit 1; }
   make install
   cd ..
@@ -177,15 +191,18 @@ fi
 
 # build Lua
 if [ $BUILD_LUA ]; then
-  wget -c "$LUA_URL" -O "$LUA_FILENAME" || { echo "Error: failed to download Lua"; exit 1; }
-  tar -xzf "$LUA_FILENAME"
+  if [ $BUILD_JIT ]; then
+    git clone "$LUA_URL" "$LUA_BASENAME"
+    (cd "$LUA_BASENAME"; git checkout v2.0.4)
+  else
+    wget -c "$LUA_URL" -O "$LUA_FILENAME" || { echo "Error: failed to download Lua"; exit 1; }
+    tar -xzf "$LUA_FILENAME"
+  fi
   cd "$LUA_BASENAME"
   if [ $BUILD_JIT ]; then
     make CCOPT="-DLUAJIT_ENABLE_LUA52COMPAT" || { echo "Error: failed to build Lua"; exit 1; }
     make install PREFIX="$INSTALL_DIR"
-    cp "$INSTALL_DIR/bin/luajit.exe" "$INSTALL_DIR/bin/lua.exe"
-    # move luajit to lua as it's expected by luasocket and other components
-    cp "$INSTALL_DIR"/include/luajit*/* "$INSTALL_DIR/include/"
+    cp "$INSTALL_DIR/bin/luajit" "$INSTALL_DIR/bin/lua.exe"
   else
     # need to patch Lua io to support large (>2GB) files on Windows:
     # http://lua-users.org/lists/lua-l/2015-05/msg00370.html
@@ -197,7 +214,7 @@ if [ $BUILD_LUA ]; then
 #define l_seeknum off64_t
 #endif
 EOF
-    make mingw || { echo "Error: failed to build Lua"; exit 1; }
+    make mingw $LUA_COMPAT || { echo "Error: failed to build Lua"; exit 1; }
     make install INSTALL_TOP="$INSTALL_DIR"
   fi
   cp src/lua$LUAV.dll "$INSTALL_DIR/lib"
@@ -235,10 +252,11 @@ if [ $BUILD_WXLUA ]; then
 
   echo "set_target_properties(wxLuaModule PROPERTIES LINK_FLAGS -static)" >> modules/luamodule/CMakeLists.txt
   cmake -G "MSYS Makefiles" -DCMAKE_INSTALL_PREFIX="$INSTALL_DIR" -DCMAKE_BUILD_TYPE=$WXLUABUILD -DBUILD_SHARED_LIBS=FALSE \
+    -DCMAKE_CXX_FLAGS="-DLUA_COMPAT_MODULE" \
     -DwxWidgets_CONFIG_EXECUTABLE="$INSTALL_DIR/bin/wx-config" \
     -DwxWidgets_COMPONENTS="stc;gl;html;aui;adv;core;net;base" \
     -DwxLuaBind_COMPONENTS="stc;gl;html;aui;adv;core;net;base" -DwxLua_LUA_LIBRARY_USE_BUILTIN=FALSE \
-    -DwxLua_LUA_INCLUDE_DIR="$INSTALL_DIR/include" -DwxLua_LUA_LIBRARY="$INSTALL_DIR/lib/lua51.dll" .
+    -DwxLua_LUA_INCLUDE_DIR="$INSTALL_DIR/include" -DwxLua_LUA_LIBRARY="$INSTALL_DIR/lib/lua$LUAV.dll" .
   (cd modules/luamodule; make $MAKEFLAGS) || { echo "Error: failed to build wxLua"; exit 1; }
   (cd modules/luamodule; make install)
   [ -f "$INSTALL_DIR/bin/libwx.dll" ] || { echo "Error: libwx.dll isn't found"; exit 1; }
@@ -279,6 +297,20 @@ if [ $BUILD_LFS ]; then
   [ -f "$INSTALL_DIR/lib/lua/$LUAD/lfs.dll" ] || { echo "Error: lfs.dll isn't found"; exit 1; }
   cd ../..
   rm -rf "$LFS_FILENAME" "$LFS_BASENAME"
+fi
+
+
+# build lpeg
+if [ $BUILD_LPEG ]; then
+  wget --no-check-certificate -c "$LPEG_URL" -O "$LPEG_FILENAME" || { echo "Error: failed to download lpeg"; exit 1; }
+  tar -xzf "$LPEG_FILENAME"
+  cd "$LPEG_BASENAME"
+  mkdir -p "$INSTALL_DIR/lib/lua/$LUAD/"
+  gcc $BUILD_FLAGS -o "$INSTALL_DIR/lib/lua/$LUAD/lpeg.dll" lptree.c lpvm.c lpcap.c lpcode.c lpprint.c -llua$LUAV \
+    || { echo "Error: failed to build lpeg"; exit 1; }
+  [ -f "$INSTALL_DIR/lib/lua/$LUAD/lpeg.dll" ] || { echo "Error: lpeg.dll isn't found"; exit 1; }
+  cd ..
+  rm -rf "$LPEG_FILENAME" "$LPEG_BASENAME"
 fi
 
 # build LuaSec
@@ -336,9 +368,10 @@ fi
 mkdir -p "$BIN_DIR" || { echo "Error: cannot create directory $BIN_DIR"; exit 1; }
 
 [ $BUILD_LUA ] && cp "$INSTALL_DIR/bin/lua$LUAS.exe" "$INSTALL_DIR/lib/lua$LUAV.dll" "$BIN_DIR"
-[ $BUILD_WXLUA ] && cp "$INSTALL_DIR/bin/libwx.dll" "$BIN_DIR/wx.dll"
+[ $BUILD_WXLUA ] && cp "$INSTALL_DIR/bin/libwx.dll" "$BIN_DIR/clibs$LUAS/wx.dll"
 [ $BUILD_WINAPI ] && cp "$INSTALL_DIR/lib/lua/$LUAD/winapi.dll" "$BIN_DIR/clibs$LUAS"
 [ $BUILD_LFS ] && cp "$INSTALL_DIR/lib/lua/$LUAD/lfs.dll" "$BIN_DIR/clibs$LUAS"
+[ $BUILD_LPEG ] && cp "$INSTALL_DIR/lib/lua/$LUAD/lpeg.dll" "$BIN_DIR/clibs$LUAS"
 
 if [ $BUILD_LUASOCKET ]; then
   mkdir -p "$BIN_DIR/clibs$LUAS/"{mime,socket}

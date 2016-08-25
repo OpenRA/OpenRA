@@ -26,8 +26,8 @@ end
 
 package.cpath = (
   iswindows and 'bin/?.dll;bin/clibs/?.dll;' or
-  islinux and ('bin/linux/%s/lib?.so;bin/linux/%s/clibs/?.so;'):format(arch,arch) or
-  --[[isosx]] 'bin/lib?.dylib;bin/clibs/?.dylib;')
+  islinux and ('bin/linux/%s/lib?.so;bin/linux/%s/clibs/lib?.so;bin/linux/%s/clibs/?.so;'):format(arch,arch,arch) or
+  --[[isosx]] 'bin/lib?.dylib;bin/clibs/lib?.dylib;bin/clibs/?.dylib;')
     .. package.cpath
 package.path  = 'lualibs/?.lua;lualibs/?/?.lua;lualibs/?/init.lua;lualibs/?/?/?.lua;lualibs/?/?/init.lua;'
               .. package.path
@@ -95,6 +95,7 @@ ide = {
     },
     filetree = {
       mousemove = true,
+      showchanges = true,
     },
     outline = {
       jumptocurrentfunction = true,
@@ -340,11 +341,21 @@ local function setLuaPaths(mainpath, osname)
     .. mainpath.."lualibs/?/?/init.lua;"..mainpath.."lualibs/?/init.lua"
     .. (luadev_path and (';' .. luadev_path) or ''))
 
-  ide.osclibs = -- keep the list to use for other Lua versions
-    osname == "Windows" and mainpath.."bin/?.dll;"..mainpath.."bin/clibs/?.dll" or
-    osname == "Macintosh" and mainpath.."bin/lib?.dylib;"..mainpath.."bin/clibs/?.dylib" or
-    osname == "Unix" and mainpath..("bin/linux/%s/lib?.so;"):format(arch)
-                       ..mainpath..("bin/linux/%s/clibs/?.so"):format(arch) or
+  ide.osclibs = -- keep the list to use for various Lua versions
+    osname == "Windows" and table.concat({
+        mainpath.."bin/?.dll",
+        mainpath.."bin/clibs/?.dll",
+      },";") or
+    osname == "Macintosh" and table.concat({
+        mainpath.."bin/lib?.dylib",
+        mainpath.."bin/clibs/?.dylib",
+        mainpath.."bin/clibs/lib?.dylib",
+      },";") or
+    osname == "Unix" and table.concat({
+        mainpath..("bin/linux/%s/lib?.so"):format(arch),
+        mainpath..("bin/linux/%s/clibs/?.so"):format(arch),
+        mainpath..("bin/linux/%s/clibs/lib?.so"):format(arch),
+      },";") or
     assert(false, "Unexpected OS name")
 
   wx.wxSetEnv("LUA_CPATH",
@@ -886,6 +897,24 @@ end
 -- enable full screen view if supported (for example, on OSX)
 if ide:IsValidProperty(ide:GetMainFrame(), "EnableFullScreenView") then
   ide:GetMainFrame():EnableFullScreenView()
+end
+
+do
+  local args = {}
+  for _, a in ipairs(arg or {}) do args[a] = true end
+
+  wx.wxGetApp().MacOpenFiles = function(files)
+    for _, filename in ipairs(files) do
+      -- in some cases, OSX sends the last command line parameter that looks like a filename
+      -- to OpenFile callback, which gets reported to MacOpenFiles.
+      -- I've tried to trace why this happens, but the only reference I could find
+      -- is this one: http://lists.apple.com/archives/cocoa-dev/2009/May/msg00480.html
+      -- To avoid this issue, the filename is skipped if it's present in `arg`.
+      -- Also see http://trac.wxwidgets.org/ticket/14558 for related discussion.
+      if not args[filename] then ide:ActivateFile(filename) end
+    end
+    args = {} -- reset the argument cache as it only needs to be checked on the initial launch
+  end
 end
 
 wx.wxGetApp():MainLoop()

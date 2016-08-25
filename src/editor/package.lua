@@ -472,6 +472,26 @@ function ide:CreateStyledTextCtrl(...)
   return editor
 end
 
+function ide:CreateTreeCtrl(...)
+  local ctrl = wx.wxTreeCtrl(...)
+  if not ctrl then return end
+
+  -- LeftArrow on Linux doesn't collapse expanded nodes as it does on Windows/OSX; do it manually
+  if ide.osname == "Unix" and ide:IsValidProperty(ctrl, "GetFocusedItem") then
+    ctrl:Connect(wx.wxEVT_KEY_DOWN, function (event)
+        local keycode = event:GetKeyCode()
+        local mod = event:GetModifiers()
+        local item = ctrl:GetFocusedItem()
+        if keycode == wx.WXK_LEFT and mod == wx.wxMOD_NONE and item:IsOk() and ctrl:IsExpanded(item) then
+          ctrl:Collapse(item)
+        else
+          event:Skip()
+        end
+      end)
+  end
+  return ctrl
+end
+
 function ide:LoadFile(...) return LoadFile(...) end
 
 function ide:CopyToClipboard(text)

@@ -1,2 +1,17 @@
 icon ICON "zbstudio.ico"
 1 24 zbstudio.manifest
+1 VERSIONINFO
+{
+    BLOCK "StringFileInfo"
+    {
+        BLOCK "040904E4"
+        {
+            VALUE "CompanyName",      "ZeroBrane LLC"
+            VALUE "FileDescription",  "ZeroBrane Studio IDE"
+            VALUE "InternalName",     "zbstudio"
+            VALUE "LegalCopyright",   "All rights reserved © 2011-16 Paul Kulchenko, ZeroBrane LLC"
+            VALUE "LegalTrademarks",  "ZeroBrane®"
+            VALUE "OriginalFilename", "zbstudio.exe"
+        }
+    }
+}

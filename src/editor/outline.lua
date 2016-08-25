@@ -260,7 +260,7 @@ end
 
 local function createOutlineWindow()
   local width, height = 360, 200
-  local ctrl = wx.wxTreeCtrl(ide.frame, wx.wxID_ANY,
+  local ctrl = ide:CreateTreeCtrl(ide.frame, wx.wxID_ANY,
     wx.wxDefaultPosition, wx.wxSize(width, height),
     wx.wxTR_LINES_AT_ROOT + wx.wxTR_HAS_BUTTONS
     + wx.wxTR_HIDE_ROOT + wx.wxNO_BORDER)

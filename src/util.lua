@@ -642,6 +642,16 @@ function MergeSettings(localSettings, savedSettings)
   end
 end
 
+function UpdateMenuUI(menu, obj)
+  if not menu or not obj then return end
+  for pos = 0, menu:GetMenuItemCount()-1 do
+    local id = menu:FindItemByPosition(pos):GetId()
+    local uievent = wx.wxUpdateUIEvent(id)
+    obj:ProcessEvent(uievent)
+    menu:Enable(id, not uievent:GetSetEnabled() or uievent:GetEnabled())
+  end
+end
+
 local function plaindump(val, opts, done)
   local keyignore = opts and opts.keyignore or {}
   local final = done == nil

@@ -293,6 +293,8 @@ local function createNotebook(frame)
 
       PackageEventHandle("onMenuEditorTab", menu, notebook, event, selection)
 
+      -- popup statuses are not refreshed on Linux, so do it manually
+      if ide.osname == "Unix" then UpdateMenuUI(menu, notebook) end
       notebook:PopupMenu(menu)
     end)
 
@@ -530,6 +532,8 @@ local function createBottomNotebook(frame)
 
       PackageEventHandle("onMenuOutputTab", menu, bottomnotebook, event, selection)
 
+      -- popup statuses are not refreshed on Linux, so do it manually
+      if ide.osname == "Unix" then UpdateMenuUI(menu, bottomnotebook) end
       bottomnotebook:PopupMenu(menu)
     end)
 
@@ -579,6 +583,9 @@ local function createBottomNotebook(frame)
           { ID_CLEAROUTPUT, TR("C&lear Output Window") },
         }
       PackageEventHandle("onMenuOutput", menu, errorlog, event)
+
+      -- popup statuses are not refreshed on Linux, so do it manually
+      if ide.osname == "Unix" then UpdateMenuUI(menu, errorlog) end
       errorlog:PopupMenu(menu)
     end)
 
@@ -605,6 +612,9 @@ local function createBottomNotebook(frame)
         }
       menupos = event:GetPosition()
       PackageEventHandle("onMenuConsole", menu, shellbox, event)
+
+      -- popup statuses are not refreshed on Linux, so do it manually
+      if ide.osname == "Unix" then UpdateMenuUI(menu, shellbox) end
       shellbox:PopupMenu(menu)
     end)
 

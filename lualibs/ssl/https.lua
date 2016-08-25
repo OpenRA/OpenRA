@@ -1,6 +1,6 @@
 ----------------------------------------------------------------------------
--- LuaSec 0.4.1
--- Copyright (C) 2009-2011 PUC-Rio
+-- LuaSec 0.6
+-- Copyright (C) 2009-2016 PUC-Rio
 --
 -- Author: Pablo Musa
 -- Author: Tomas Guisasola
@@ -12,25 +12,21 @@ local ltn12  = require("ltn12")
 local http   = require("socket.http")
 local url    = require("socket.url")
 
-local table  = require("table")
-local string = require("string")
+local try    = socket.try
 
-local try          = socket.try
-local type         = type
-local pairs        = pairs
-local getmetatable = getmetatable
+--
+-- Module
+--
+local _M = {
+  _VERSION   = "0.6",
+  _COPYRIGHT = "LuaSec 0.6 - Copyright (C) 2009-2016 PUC-Rio",
+  PORT       = 443,
+}
 
-module("ssl.https")
-
-_VERSION   = "0.4.1"
-_COPYRIGHT = "LuaSec 0.4.1 - Copyright (C) 2009-2011 PUC-Rio"
-
--- Default settings
-PORT = 443
-
+-- TLS configuration
 local cfg = {
-  protocol = "tlsv1",
-  options  = "all",
+  protocol = "any",
+  options  = {"all", "no_sslv2", "no_sslv3"},
   verify   = "none",
 }
 
@@ -40,7 +36,7 @@ local cfg = {
 
 -- Insert default HTTPS port.
 local function default_https_port(u)
-   return url.build(url.parse(u, {port = PORT}))
+   return url.build(url.parse(u, {port = _M.PORT}))
 end
 
 -- Convert an URL to a table according to Luasocket needs.
@@ -113,7 +109,7 @@ end
 -- @param body optional (string)
 -- @return (string if url == string or 1), code, headers, status
 --
-function request(url, body)
+local function request(url, body)
   local result_table = {}
   local stringrequest = type(url) == "string"
   if stringrequest then
@@ -136,3 +132,11 @@ function request(url, body)
   end
   return res, code, headers, status
 end
+
+--------------------------------------------------------------------------------
+-- Export module
+--
+
+_M.request = request
+
+return _M

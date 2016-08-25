@@ -23,11 +23,6 @@ local image = {
   DIRECTORYMAPPED = 4,
 }
 
-MergeSettings(filetree.settings, ide:AddPackage('core.filetree', {}):GetSettings())
-
--- generic tree
--- ------------
-
 local function getIcon(name, isdir)
   local startfile = GetFullPathIfExists(FileTreeGetDir(),
     filetree.settings.startfile[FileTreeGetDir()])
@@ -384,9 +379,27 @@ local function treeSetConnectorsAndIcons(tree)
     return true
   end
 
+  tree:Connect(wx.wxEVT_COMMAND_TREE_ITEM_COLLAPSED,
+    function (event)
+      PackageEventHandle("onFiletreeCollapse", tree, event, event:GetItem())
+    end)
+  tree:Connect(wx.wxEVT_COMMAND_TREE_ITEM_EXPANDED,
+    function (event)
+      PackageEventHandle("onFiletreeExpand", tree, event, event:GetItem())
+    end)
+  tree:Connect(wx.wxEVT_COMMAND_TREE_ITEM_COLLAPSING,
+    function (event)
+      if PackageEventHandle("onFiletreePreCollapse", tree, event, event:GetItem()) == false then
+        return
+      end
+    end)
   tree:Connect(wx.wxEVT_COMMAND_TREE_ITEM_EXPANDING,
     function (event)
       local item_id = event:GetItem()
+      if PackageEventHandle("onFiletreePreExpand", tree, event, item_id) == false then
+        return
+      end
+
       local dir = tree:GetItemFullName(item_id)
       if wx.wxDirExists(dir) then treeAddDir(tree,item_id,dir) -- refresh folder
       else refreshAncestors(tree:GetItemParent(item_id)) end -- stale content
@@ -727,7 +740,7 @@ local function treeSetConnectorsAndIcons(tree)
 end
 
 -- project
-local projtree = wx.wxTreeCtrl(ide.frame, wx.wxID_ANY,
+local projtree = ide:CreateTreeCtrl(ide.frame, wx.wxID_ANY,
   wx.wxDefaultPosition, wx.wxDefaultSize,
   wx.wxTR_HAS_BUTTONS + wx.wxTR_SINGLE + wx.wxTR_LINES_AT_ROOT
   + wx.wxTR_EDIT_LABELS + wx.wxNO_BORDER)
@@ -901,3 +914,60 @@ function FileTreeFindByPartialName(name)
   end
   return
 end
+
+local watchers, watcher = {}
+local function watchDir(path)
+  local flags = wx.wxFSW_EVENT_CREATE + wx.wxFSW_EVENT_DELETE + wx.wxFSW_EVENT_RENAME
+  if watcher and not watchers[path] then watcher:Add(wx.wxFileName.DirName(path), flags) end
+  -- keep track of watchers even if `watcher` is not yet set to set them later
+  watchers[path] = watcher ~= nil
+end
+local function unWatchDir(path)
+  if watcher and watchers[path] then watcher:Remove(wx.wxFileName.DirName(path)) end
+  watchers[path] = nil
+end
+local package = ide:AddPackage('core.filetree', {
+    onProjectClose = function(plugin, project)
+      if watcher then watcher:RemoveAll() end
+      watchers = {}
+    end,
+
+    -- watcher can only be properly setup when MainLoop is already running, so use first idle event
+    onIdleOnce = function(plugin)
+      if not ide.config.filetree.showchanges or not wx.wxFileSystemWatcher then return end
+      if not watcher then
+        watcher = wx.wxFileSystemWatcher()
+        watcher:SetOwner(ide:GetMainFrame())
+
+        local needrefresh = {}
+        ide:GetMainFrame():Connect(wx.wxEVT_FSWATCHER, function(event)
+            -- using `GetNewPath` to make it work with rename operations
+            needrefresh[event:GetNewPath():GetFullPath()] = event:GetChangeType()
+            ide:DoWhenIdle(function()
+                for file, kind in pairs(needrefresh) do
+                  -- if the file is removed, try to find a non-existing file in the same folder
+                  -- as this will trigger a refresh of that folder
+                  local path = MergeFullPath(file, kind == wx.wxFSW_EVENT_DELETE and "../\1"  or "")
+                  ide:GetProjectTree():FindItem(path)
+                end
+                needrefresh = {}
+              end)
+          end)
+      end
+      -- start watching cached paths
+      for path, active in pairs(watchers) do watchDir(path) end
+    end,
+
+    -- check on PreExpand when expanding (as the folder may not expand if it's empty)
+    onFiletreePreExpand = function(plugin, tree, event, item_id)
+      watchDir(tree:GetItemFullName(item_id))
+    end,
+
+    -- check on Collapse when collapsing to make sure it's unwatched only when collapsed
+    onFiletreeCollapse = function(plugin, tree, event, item_id)
+      -- only unwatch if the directory is not empty;
+      -- otherwise it's collapsed without ability to expand
+      if tree:GetChildrenCount(item_id, false) > 0 then unWatchDir(tree:GetItemFullName(item_id)) end
+    end,
+  })
+MergeSettings(filetree.settings, package:GetSettings())
