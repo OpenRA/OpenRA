@@ -338,6 +338,12 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				if (engineVersion < 20160826 && depth == 0)
+				{
+					// Removed debug visualization
+					node.Value.Nodes.RemoveAll(n => n.Key == "PathfinderDebugOverlay");
+				}
+
 				UpgradeActorRules(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 

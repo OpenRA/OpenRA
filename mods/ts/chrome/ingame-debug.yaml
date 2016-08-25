@@ -93,13 +93,13 @@ Container@DEBUG_PANEL:
 			Height: 20
 			Font: Regular
 			Text: Show Unit Paths
-		Checkbox@SHOW_ASTAR:
+		Checkbox@SHOW_CUSTOMTERRAIN_OVERLAY:
 			X: 45
 			Y: 305
 			Height: 20
 			Width: 200
 			Font: Regular
-			Text: Show A* Cost
+			Text: Show Custom Terrain
 		Checkbox@SHOW_DEPTH_PREVIEW:
 			X: 45
 			Y: 335
@@ -135,10 +135,3 @@ Container@DEBUG_PANEL:
 			Width: 200
 			Font: Regular
 			Text: Show Actor Tags
-		Checkbox@SHOW_CUSTOMTERRAIN_OVERLAY:
-			X: 290
-			Y: 365
-			Height: 20
-			Width: 200
-			Font: Regular
-			Text: Show Custom Terrain

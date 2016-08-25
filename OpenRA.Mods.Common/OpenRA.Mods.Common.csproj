@@ -530,7 +530,6 @@
     <Compile Include="Pathfinder\PathFinderUnitPathCacheDecorator.cs" />
     <Compile Include="Pathfinder\PathCacheStorage.cs" />
     <Compile Include="Traits\World\PathFinder.cs" />
-    <Compile Include="Traits\World\PathfinderDebugOverlay.cs" />
     <Compile Include="Pathfinder\PathSearch.cs" />
     <Compile Include="Pathfinder\BasePathSearch.cs" />
     <Compile Include="Traits\World\PlayerPaletteFromCurrentTileset.cs" />
