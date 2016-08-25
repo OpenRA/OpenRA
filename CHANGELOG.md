@@ -1,14 +1,29 @@
 # ZeroBrane Studio Changelog
 
-## Current master (Aug 11 2016)
+## Current master (Aug 25 2016)
 
 ### Highlights
+  - Added ability to load/save files with invalid UTF-8 encoded characters.
+  - Added support for IME composition to input Chinese characters.
+  - Added support for dead key combinations (used on international keyboads).
+  - Added support for handling Unicode paths and parameters on Windows (#663).
+  - Added luasec 0.6 with openssl 1.0.2h binaries.
+  - Added lpeg 1.0 binaries.
+  - Added lfs 1.6.3 binaries (#566).
+  - Added support for indicators that apply colors to the text.
+  - Added support for multi-paste (#311).
+  - Added tracking file system changes in the project tree to auto-refresh it.
+  - Added opening files on drag-n-drop on dock icon on OSX (closes #248).
+  - Added opening files on drag-n-drop on Linux (closes #177).
   - Added refresh of search results from the right-click-on-tab menu.
-  - Added fix for `Ctrl-(Shift-)Tab` navigation on OSX (#298).
+  - Added (partial) fix for `Ctrl-(Shift-)Tab` navigation on OSX (#298).
   - Added reverse search on `Shift-Enter` (closes #604).
   - Updated Gideros API for version 2016.06.
   - Updated Corona API for v2016.2906.
   - Updated Love2d API for 0.10.1 (closes #537, #247).
+  - Updated luajit binaries to v2.0.4.
+  - Updated French, German, Italian, Spanish, Portuguese, Traditional Chinese, and Russian translations.
+  - Upgraded wxwidgets to v3.1 and Scintilla to v3.6.6.
 
 ### Special thanks
   - To [fnaith](https://github.com/fnaith) for adding translation to Traditional Chinese.
@@ -16,9 +31,18 @@
   - To [Inigo Sola](https://github.com/inigosola) for Spanish translation update.
   - To [riidom](https://github.com/riidom) for German translation update.
   - To [Leo Bartoloni](https://github.com/bartoleo) for Italian translation update.
+  - To [olueiro](https://github.com/olueiro) for updating translation to Portuguese (Brazil).
   - To [Christoph Kubisch](https://github.com/pixeljetstream) for luxinia cleanup.
 
 ### Improvements
+  - Added luasec 0.6 with openssl 1.0.2h binaries (#260).
+  - Added lpeg 1.0 build files and binaries (#260).
+  - Added lfs 1.6.3 build files and binaries (#260, #566).
+  - Added `onFiletreeExpand` and `onFiletreeCollapse` events and their `Pre*` counterparts (#166).
+  - Added tracking file system changes in the project tree to auto-refresh it (#260).
+  - Added opening files on drag-n-drop on Linux (closes #177).
+  - Added collapsing expanded nodes on `LEFT` key in tree controls on Linux (#686).
+  - Added opening files on drag-n-drop on dock icon on OSX (closes #248, #260).
   - Added slight improvement for Ctrl-Tab workaround on OSX.
   - Added default setting for `debugger.allowediting` config option.
   - Adding new Spanish translations (#70, closes #677).
@@ -126,16 +150,20 @@
   - Added resetting app position when the saved position is outside of the screen (closes #593).
   - Added `editor.commentlinetoggle` to configure toggling comments by line (closes #591).
   - Allow copying of selection in Local console when floating (fixes #596).
+  - Allowed packages registered from config files (using `package {}`) to load/save settings.
   - Allowed space(s) in function calls before opening parenthesis when showing tooltip (closes #635).
   - Allowed shortcuts for editor menu items (closes #597, closes #405).
   - Allowed optional `version` parameter to execution path in Lua interpreter.
   - Allowed `MarkerToggle` method to accept marker name in addition to marker number.
+  - Disabled error popup on failure to stop process (as it's reported in the Output window).
+  - Improved activation in debugger when the starting file is specified.
   - Improved the fix to avoid duplicate lines in the editor on OSX (follow-up to 9344280d).
   - Improved path merge for the main editor path (#663).
   - Improved handling of constant values in Gideros API processing.
   - Improved whitespace handling in commandbar pattern matching (#31).
   - Ignore statements on the line with function definition that ends with an `end` (closes #611).
   - Increased default `bordersize` value to improve dragging with a track pad (closes #637).
+  - Moved wxlua binaries to `clibs/` folder (#260).
   - Moved DROP_FILES handler to associate with editor tabs on Windows.
   - Modified adding icons to menu items to avoid duplice items on Win10 (#603).
   - Minor update to use editor `BreakpointToggle` method.
@@ -166,10 +194,18 @@
   - Removed hardcoded values for any-marker mask.
   - Renamed `RefreshPanels` debugger method for consistency (#166).
   - Reorganized console printing to work with partial output.
-  - Removed `svn` from dependencies for Linux build scripts (as it's not longer used).
   - Simplified logic for launching ext-associated apps from Project popup menu.
   - Switched recovery record to use plain/fast serialization.
-  - Updated tests to stop when files with tests failed to load/execute.
+  - Updated luajit binaries and build scripts to use v2.0.4 (#260).
+  - Updated Windows launcher to add description and fix loading of Unicode parameters (#663, #260).
+  - Updated lua52 and lua53 executable to add hidpi support manifest (#260).
+  - Updated lua executable to a generic one to simplify lua dll changes (#260).
+  - Updated OSX manifest to include `NSHighResolutionCapable` (#260).
+  - Updated initial path handling to allow loading wxlua from `clibs/` (#260).
+  - Updated package event messages to be marked as errors.
+  - Updated output messages to add markers to the first instead of the last line.
+  - Updated error reporting on failure to stop process to check for process id.
+  - Update pt-br.lua
   - Update de.lua
   - Updated Italian Translation
   - Updated zh-tw translation (#70, closes #679).
@@ -177,7 +213,6 @@
   - Updated Russian translation (#70).
   - Updated translation files with new messages (#70).
   - Updated translation call to not appear on the warnings list (#70).
-  - Updated Windows build script to use openssl 1.0.2h (#260).
   - Updated debugger tests to handle activation executed before command is completed.
   - Updated debugger error messages to use error markers in the Output window.
   - Updated Gideros API for version 2016.06.
@@ -227,14 +262,10 @@
   - Updated core components to use `Print` method instead of removed `print` function.
   - Updated path normalization to keep leading up-directory references in relative paths.
   - Updated Lua base interpreter to use `GetRootPath`.
-  - Updated build scripts to use wxwidgets311 branch in wxlua (#260).
-  - Updated Linux build scripts to add GL dependencies (#260).
   - Updated debugger to better handle incoming session while the current one is being set up.
-  - Updated build scripts to build luasec on OSX and Linux (#260).
   - Updated Remote Console to pick a better error message for failed commands.
   - Updated editor calltip to use line number instead of position in getting text height.
   - Updated Windows build script to copy luasec Lua modules (#260).
-  - Updated build scripts to check for required parameters first.
   - Updated timers to use `AddTimer` method.
   - Updated tests to use temporary folder for debugger tests.
   - Updated test module to better report skipped tests.
@@ -242,8 +273,6 @@
   - Updated `Wait` and `Update` debugger methods to uppercase.
   - Updated `Run` and `RunTo` debugger methods to uppercase.
   - Updated `Step`, `Over`, and `Out` debugger methods to uppercase.
-  - Updated build script to strip luasec libraries on Windows.
-  - Updated Windows build script to use the latest luasec and openssl libraries.
   - Updated `Listen` debugger method to uppercase (as it's public).
   - Updated debugger to avoid double reporting of stopping when scratchpad is turned off.
   - Updated debugger to use proper debugger objects.
@@ -251,34 +280,20 @@
   - Updated debugger kill logic to report success to better handle process termination.
   - Updated `ActivateDocument` method to use immediate rather than delayed activation (#166).
   - Updated debug interface to replace global functions with debugger methods (#166).
-  - Updated build scripts to remove WebView as it triggers a dependency on Linux (#260).
   - Updated package example to use current API.
   - Updated message to better describe the situation when interpreter not loaded.
-  - Updated build scripts to add WebView support (#260).
-  - Updated build scripts to add GL canvas support (#260).
-  - Updated build scripts to use own wxlua repository (#260).
-  - Updated build scripts to strip wxlua library directly.
-  - Updated build script to change tab closing icon on OSX (#260).
-  - Updated build script to remove wxlua error check (#260).
-  - Updated build script to remove checks for `svn` as these are no longer needed.
   - Updated Chinese translation; thanks to Allan Cylakes (#70).
   - Updated idle processing to handle items in the same order as they are submitted.
-  - Updated build script to use OpenSSL 1.0.2f, which fixes a security issue.
-  - Updated luasec build script (Win) to use Lua 5.3 compatible version and build shared dlls.
-  - Updated OpenSSL link for the more recent version to include in luasec.
   - Updated copyright message in the OSX manifest file.
   - Updated `AddMarker` method to fail when no valid colors provided (#587).
+  - Upgraded binaries to wxwidgets 3.1.1 (#260).
   - Upgraded Mobdebug (0.64) to improve error checking after OUTPUT command.
   - Upgraded MobDebug (0.6371) to add path normalization to file names that don't start with `@`.
   - Upgraded MobDebug (0.636) to populate vararg values in the main chunk during debugging.
   - Upgraded to Mobdebug 0.635 to add path normalization in debugger.
-  - Upgraded MobDebug (0.634) to add `verbose` option to the `handle` method.
-  - Upgraded Mobdebug (0.6331) to not fail on `output` method when debugging is not started.
-  - Upgraded MobDebug (0.633) to add handling of empty output stream.
-  - Upgraded MobDebug (0.632) to add LuaJIT fix and `output` method.
-  - Updated MobDebug to v0.63.
 
 ### Fixes
+  - Fixed setting 'enabled' status for items in popup menus on Linux.
   - Fixed run-time error when auto-complete configured with `strategy=1` or `=0` (fixes #660).
   - Fixed debugger error on Linux when live coding is activated.
   - Fixed check for custom Lua interpreters to avoid conflict with system libs (ref 4ba15eb6).
@@ -289,9 +304,7 @@
   - Fixed selecting proper tabs after dragging tabs in the split part of the editor notebook.
   - Fixed line calculations for markup styling to properly style comments after folded fragments.
   - Fixed keeping current line marker when commands are executed in the debugger.
-  - Fixed anchoring in up-dir template check (follow-up to cb8b9a63).
   - Fixed restoring split tab configuration that was broken by 97c7bb96.
-  - Fixed added empty line after Console commands with no results (added by 60fe447f).
   - Fixed using proper debugger object from Stack and Watch functions (fixes #608).
   - Fixed line number reported in `onEditorMarkerUpdate` event callback.
   - Fixed reporting debugger stopping when using `Done` command while running.
