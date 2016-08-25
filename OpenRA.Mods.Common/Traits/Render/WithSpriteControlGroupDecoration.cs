@@ -35,22 +35,19 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public object Create(ActorInitializer init) { return new WithSpriteControlGroupDecoration(init.Self, this); }
 	}
 
-	public class WithSpriteControlGroupDecoration : IPostRenderSelection
+	public class WithSpriteControlGroupDecoration : IRenderAboveShroudWhenSelected
 	{
 		public readonly WithSpriteControlGroupDecorationInfo Info;
-
-		readonly Actor self;
 		readonly Animation pipImages;
 
 		public WithSpriteControlGroupDecoration(Actor self, WithSpriteControlGroupDecorationInfo info)
 		{
-			this.self = self;
 			Info = info;
 
 			pipImages = new Animation(self.World, Info.Image);
 		}
 
-		IEnumerable<IRenderable> IPostRenderSelection.RenderAfterWorld(WorldRenderer wr)
+		IEnumerable<IRenderable> IRenderAboveShroudWhenSelected.RenderAboveShroud(Actor self, WorldRenderer wr)
 		{
 			if (self.World.FogObscures(self))
 				yield break;
@@ -59,11 +56,11 @@ namespace OpenRA.Mods.Common.Traits.Render
 				yield break;
 
 			var pal = wr.Palette(Info.Palette);
-			foreach (var r in DrawControlGroup(wr, self, pal))
+			foreach (var r in DrawControlGroup(self, wr, pal))
 				yield return r;
 		}
 
-		IEnumerable<IRenderable> DrawControlGroup(WorldRenderer wr, Actor self, PaletteReference palette)
+		IEnumerable<IRenderable> DrawControlGroup(Actor self, WorldRenderer wr, PaletteReference palette)
 		{
 			var group = self.World.Selection.GetControlGroupForActor(self);
 			if (group == null)

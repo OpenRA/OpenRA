@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using OpenRA.Effects;
 using OpenRA.Traits;
 
 namespace OpenRA.Graphics
@@ -110,9 +111,6 @@ namespace OpenRA.Graphics
 			worldRenderables = worldRenderables.Concat(World.Effects.SelectMany(e => e.Render(this)));
 			worldRenderables = worldRenderables.OrderBy(RenderableScreenZPositionComparisonKey);
 
-			if (World.OrderGenerator != null)
-				worldRenderables = worldRenderables.Concat(World.OrderGenerator.RenderAfterWorld(this, World));
-
 			Game.Renderer.WorldVoxelRenderer.BeginFrame();
 			var renderables = worldRenderables.Select(r => r.PrepareRender(this)).ToList();
 			Game.Renderer.WorldVoxelRenderer.EndFrame();
@@ -152,9 +150,9 @@ namespace OpenRA.Graphics
 			if (enableDepthBuffer)
 				Game.Renderer.ClearDepthBuffer();
 
-			foreach (var a in World.ActorsWithTrait<IPostRender>())
+			foreach (var a in World.ActorsWithTrait<IRenderAboveWorld>())
 				if (a.Actor.IsInWorld && !a.Actor.Disposed)
-					a.Trait.RenderAfterWorld(this, a.Actor);
+					a.Trait.RenderAboveWorld(a.Actor, this);
 
 			var renderShroud = World.RenderPlayer != null ? World.RenderPlayer.Shroud : null;
 
@@ -162,7 +160,7 @@ namespace OpenRA.Graphics
 				Game.Renderer.ClearDepthBuffer();
 
 			foreach (var a in World.ActorsWithTrait<IRenderShroud>())
-				a.Trait.RenderShroud(this, renderShroud);
+				a.Trait.RenderShroud(renderShroud, this);
 
 			if (devTrait.Value != null && devTrait.Value.ShowDebugGeometry)
 				for (var i = 0; i < renderables.Count; i++)
@@ -173,12 +171,27 @@ namespace OpenRA.Graphics
 
 			Game.Renderer.DisableScissor();
 
-			var overlayRenderables = World.Selection.Actors.Where(a => !a.Disposed)
-				.SelectMany(a => a.TraitsImplementing<IPostRenderSelection>())
-				.SelectMany(t => t.RenderAfterWorld(this));
+			var aboveShroud = World.ActorsWithTrait<IRenderAboveShroud>().Where(a => a.Actor.IsInWorld && !a.Actor.Disposed)
+				.SelectMany(a => a.Trait.RenderAboveShroud(a.Actor, this));
+
+			var aboveShroudSelected = World.Selection.Actors.Where(a => !a.Disposed)
+				.SelectMany(a => a.TraitsImplementing<IRenderAboveShroudWhenSelected>()
+					.SelectMany(t => t.RenderAboveShroud(a, this)));
+
+			var aboveShroudEffects = World.Effects.Select(e => e as IEffectAboveShroud)
+				.Where(e => e != null)
+				.SelectMany(e => e.RenderAboveShroud(this));
+
+			var aboveShroudOrderGenerator = SpriteRenderable.None;
+			if (World.OrderGenerator != null)
+				aboveShroudOrderGenerator = World.OrderGenerator.RenderAboveShroud(this, World);
 
 			Game.Renderer.WorldVoxelRenderer.BeginFrame();
-			var finalOverlayRenderables = overlayRenderables.Select(r => r.PrepareRender(this));
+			var finalOverlayRenderables = aboveShroud
+				.Concat(aboveShroudSelected)
+				.Concat(aboveShroudEffects)
+				.Concat(aboveShroudOrderGenerator)
+				.Select(r => r.PrepareRender(this));
 			Game.Renderer.WorldVoxelRenderer.EndFrame();
 
 			// HACK: Keep old grouping behaviour
@@ -190,31 +203,6 @@ namespace OpenRA.Graphics
 				foreach (var g in finalOverlayRenderables.GroupBy(prs => prs.GetType()))
 					foreach (var r in g)
 						r.RenderDebugGeometry(this);
-
-			if (World.Type == WorldType.Regular)
-			{
-				foreach (var g in World.ScreenMap.ActorsInBox(Viewport.TopLeft, Viewport.BottomRight)
-					.Where(a =>
-						!a.Disposed &&
-						!World.Selection.Contains(a) &&
-						a.Info.HasTraitInfo<SelectableInfo>() &&
-						!World.FogObscures(a)))
-				{
-					if (Game.Settings.Game.StatusBars == StatusBarsType.Standard)
-						new SelectionBarsRenderable(g, false, false).Render(this);
-
-					if (Game.Settings.Game.StatusBars == StatusBarsType.AlwaysShow)
-						new SelectionBarsRenderable(g, true, true).Render(this);
-
-					if (Game.Settings.Game.StatusBars == StatusBarsType.DamageShow)
-					{
-						if (g.GetDamageState() != DamageState.Undamaged)
-							new SelectionBarsRenderable(g, true, true).Render(this);
-						else
-							new SelectionBarsRenderable(g, false, true).Render(this);
-					}
-				}
-			}
 
 			Game.Renderer.Flush();
 		}

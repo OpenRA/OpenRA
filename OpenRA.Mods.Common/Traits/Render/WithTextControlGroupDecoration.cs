@@ -47,17 +47,15 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public object Create(ActorInitializer init) { return new WithTextControlGroupDecoration(init.Self, this); }
 	}
 
-	public class WithTextControlGroupDecoration : IPostRenderSelection, INotifyCapture
+	public class WithTextControlGroupDecoration : IRenderAboveShroudWhenSelected, INotifyCapture
 	{
 		readonly WithTextControlGroupDecorationInfo info;
 		readonly SpriteFont font;
-		readonly Actor self;
 
 		Color color;
 
 		public WithTextControlGroupDecoration(Actor self, WithTextControlGroupDecorationInfo info)
 		{
-			this.self = self;
 			this.info = info;
 
 			if (!Game.Renderer.Fonts.TryGetValue(info.Font, out font))
@@ -66,7 +64,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			color = info.UsePlayerColor ? self.Owner.Color.RGB : info.Color;
 		}
 
-		IEnumerable<IRenderable> IPostRenderSelection.RenderAfterWorld(WorldRenderer wr)
+		IEnumerable<IRenderable> IRenderAboveShroudWhenSelected.RenderAboveShroud(Actor self, WorldRenderer wr)
 		{
 			if (self.World.FogObscures(self))
 				yield break;
@@ -74,11 +72,11 @@ namespace OpenRA.Mods.Common.Traits.Render
 			if (self.Owner != wr.World.LocalPlayer)
 				yield break;
 
-			foreach (var r in DrawControlGroup(wr, self))
+			foreach (var r in DrawControlGroup(self, wr))
 				yield return r;
 		}
 
-		IEnumerable<IRenderable> DrawControlGroup(WorldRenderer wr, Actor self)
+		IEnumerable<IRenderable> DrawControlGroup(Actor self, WorldRenderer wr)
 		{
 			var group = self.World.Selection.GetControlGroupForActor(self);
 			if (group == null)
