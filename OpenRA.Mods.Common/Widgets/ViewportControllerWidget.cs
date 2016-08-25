@@ -305,7 +305,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 				if (mi.Event == MouseInputEvent.Up)
 				{
-					var wasJoystickScrolling = IsJoystickScrolling;
+					var wasJoystickScrolling = joystickScrollStart.HasValue && joystickScrollEnd.HasValue;
 
 					joystickScrollStart = joystickScrollEnd = null;
 					YieldMouseFocus(mi);
