@@ -189,7 +189,7 @@ grenadier:
 	AttackFrontal:
 	WithInfantryBody:
 		AttackSequence: throw
-		IdleSequences: idle
+		IdleSequences: idle, idle2
 	Explodes:
 		Weapon: GrenDeath
 		EmptyWeapon: GrenDeath
