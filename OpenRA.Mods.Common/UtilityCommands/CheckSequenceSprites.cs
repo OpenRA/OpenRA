@@ -39,7 +39,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				Console.WriteLine("Tileset: " + ts.Name);
 				var sc = new SpriteCache(modData.DefaultFileSystem, modData.SpriteLoaders, new SheetBuilder(SheetType.Indexed));
 				var nodes = MiniYaml.Merge(modData.Manifest.Sequences.Select(s => MiniYaml.FromStream(modData.DefaultFileSystem.Open(s), s)));
-				foreach (var n in nodes)
+				foreach (var n in nodes.Where(node => !node.Key.StartsWith("^")))
 					modData.SpriteSequenceLoader.ParseSequences(modData, ts, sc, n);
 			}
 
