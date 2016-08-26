@@ -21,6 +21,8 @@ namespace OpenRA.Mods.Common.Widgets
 	{
 		public readonly int RemoveTime = 0;
 		public readonly bool UseContrast = false;
+		public readonly Color BackgroundColorDark = ChromeMetrics.Get<Color>("TextContrastColorDark");
+		public readonly Color BackgroundColorLight = ChromeMetrics.Get<Color>("TextContrastColorLight");
 		public string Notification = "";
 
 		const int LogLength = 9;
@@ -57,7 +59,7 @@ namespace OpenRA.Mods.Common.Widgets
 				if (owner != null)
 				{
 					font.DrawTextWithContrast(owner, chatpos,
-						line.Color, Color.Black, UseContrast ? 1 : 0);
+						line.Color, BackgroundColorDark, BackgroundColorLight, UseContrast ? 1 : 0);
 				}
 
 				font.DrawTextWithContrast(text, chatpos + new int2(inset, 0),

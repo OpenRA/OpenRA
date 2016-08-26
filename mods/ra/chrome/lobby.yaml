@@ -93,17 +93,20 @@ Background@SERVER_LOBBY:
 									Width: 50
 									Height: 15
 									VAlign: Top
+									Shadow: True
 								Label@NAME:
 									X: 45
 									Width: 50
 									Height: 15
 									VAlign: Top
+									Shadow: True
 								Label@TEXT:
 									X: 55
 									Width: PARENT_RIGHT - 60
 									Height: 15
 									WordWrap: true
 									VAlign: Top
+									Shadow: True
 				TextField@CHAT_TEXTFIELD:
 					X: 205
 					Y: PARENT_BOTTOM - HEIGHT

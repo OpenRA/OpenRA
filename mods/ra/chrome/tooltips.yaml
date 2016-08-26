@@ -52,6 +52,7 @@ Background@WORLD_TOOLTIP:
 			Y: 22
 			Height: 23
 			Font: Bold
+			Shadow: True
 		Label@EXTRA:
 			X: 7
 			Y: 50

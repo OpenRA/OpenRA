@@ -264,6 +264,7 @@ Background@REPLAYBROWSER_PANEL:
 									X: 40
 									Width: PARENT_RIGHT-50
 									Height: 25
+									Shadow: True
 								Label@NOFLAG_LABEL:
 									X: 5
 									Width: PARENT_RIGHT
