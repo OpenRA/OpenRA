@@ -11,6 +11,7 @@ Packages:
 	~^Content/ra/v2/
 	~^Content/ra/v2/expand
 	~^Content/ra/v2/cnc
+	~^Content/ra/v2/movies
 	.
 	$ra: ra
 	$cnc: cnc
@@ -28,8 +29,6 @@ Packages:
 	~snow.mix
 	~interior.mix
 	~scores.mix
-	~movies1.mix
-	~movies2.mix
 	~expand2.mix
 	~hires1.mix
 	~desert.mix
@@ -251,10 +250,10 @@ ModContent:
 			Sources: allied, allied-linux, soviet, soviet-linux, tfd, ra-origin
 			Download: music
 		movies-allied: Allied Campaign Briefings
-			TestFiles: ^Content/ra/v2/movies1.mix
+			TestFiles: ^Content/ra/v2/movies/aagun.vqa, ^Content/ra/v2/movies/aftrmath.vqa, ^Content/ra/v2/movies/ally1.vqa, ^Content/ra/v2/movies/ally10.vqa, ^Content/ra/v2/movies/ally10b.vqa, ^Content/ra/v2/movies/ally11.vqa, ^Content/ra/v2/movies/ally12.vqa, ^Content/ra/v2/movies/ally14.vqa, ^Content/ra/v2/movies/ally2.vqa, ^Content/ra/v2/movies/ally4.vqa, ^Content/ra/v2/movies/ally5.vqa, ^Content/ra/v2/movies/ally6.vqa, ^Content/ra/v2/movies/ally8.vqa, ^Content/ra/v2/movies/ally9.vqa, ^Content/ra/v2/movies/allyend.vqa, ^Content/ra/v2/movies/allymorf.vqa, ^Content/ra/v2/movies/apcescpe.vqa, ^Content/ra/v2/movies/assess.vqa, ^Content/ra/v2/movies/battle.vqa, ^Content/ra/v2/movies/binoc.vqa, ^Content/ra/v2/movies/bmap.vqa, ^Content/ra/v2/movies/brdgtilt.vqa, ^Content/ra/v2/movies/crontest.vqa, ^Content/ra/v2/movies/cronfail.vqa, ^Content/ra/v2/movies/destroyr.vqa, ^Content/ra/v2/movies/dud.vqa, ^Content/ra/v2/movies/elevator.vqa, ^Content/ra/v2/movies/flare.vqa, ^Content/ra/v2/movies/frozen.vqa, ^Content/ra/v2/movies/grvestne.vqa, ^Content/ra/v2/movies/landing.vqa, ^Content/ra/v2/movies/masasslt.vqa, ^Content/ra/v2/movies/mcv.vqa, ^Content/ra/v2/movies/mcv_land.vqa, ^Content/ra/v2/movies/montpass.vqa, ^Content/ra/v2/movies/oildrum.vqa, ^Content/ra/v2/movies/overrun.vqa, ^Content/ra/v2/movies/prolog.vqa, ^Content/ra/v2/movies/redintro.vqa, ^Content/ra/v2/movies/shipsink.vqa, ^Content/ra/v2/movies/shorbom1.vqa, ^Content/ra/v2/movies/shorbom2.vqa, ^Content/ra/v2/movies/shorbomb.vqa, ^Content/ra/v2/movies/snowbomb.vqa, ^Content/ra/v2/movies/soviet1.vqa, ^Content/ra/v2/movies/sovtstar.vqa, ^Content/ra/v2/movies/spy.vqa, ^Content/ra/v2/movies/tanya1.vqa, ^Content/ra/v2/movies/tanya2.vqa, ^Content/ra/v2/movies/toofar.vqa, ^Content/ra/v2/movies/trinity.vqa
 			Sources: allied, allied-linux, tfd, ra-origin
 		movies-soviet: Soviet Campaign Briefings
-			TestFiles: ^Content/ra/v2/movies2.mix
+			TestFiles: ^Content/ra/v2/movies/aagun.vqa, ^Content/ra/v2/movies/cronfail.vqa, ^Content/ra/v2/movies/airfield.vqa, ^Content/ra/v2/movies/ally1.vqa, ^Content/ra/v2/movies/allymorf.vqa, ^Content/ra/v2/movies/averted.vqa, ^Content/ra/v2/movies/beachead.vqa, ^Content/ra/v2/movies/bmap.vqa, ^Content/ra/v2/movies/bombrun.vqa, ^Content/ra/v2/movies/countdwn.vqa, ^Content/ra/v2/movies/double.vqa, ^Content/ra/v2/movies/dpthchrg.vqa, ^Content/ra/v2/movies/execute.vqa, ^Content/ra/v2/movies/flare.vqa, ^Content/ra/v2/movies/landing.vqa, ^Content/ra/v2/movies/mcvbrdge.vqa, ^Content/ra/v2/movies/mig.vqa, ^Content/ra/v2/movies/movingin.vqa, ^Content/ra/v2/movies/mtnkfact.vqa, ^Content/ra/v2/movies/nukestok.vqa, ^Content/ra/v2/movies/onthprwl.vqa, ^Content/ra/v2/movies/periscop.vqa, ^Content/ra/v2/movies/prolog.vqa, ^Content/ra/v2/movies/radrraid.vqa, ^Content/ra/v2/movies/redintro.vqa, ^Content/ra/v2/movies/search.vqa, ^Content/ra/v2/movies/sfrozen.vqa, ^Content/ra/v2/movies/sitduck.vqa, ^Content/ra/v2/movies/slntsrvc.vqa, ^Content/ra/v2/movies/snowbomb.vqa, ^Content/ra/v2/movies/snstrafe.vqa, ^Content/ra/v2/movies/sovbatl.vqa, ^Content/ra/v2/movies/sovcemet.vqa, ^Content/ra/v2/movies/sovfinal.vqa, ^Content/ra/v2/movies/soviet1.vqa, ^Content/ra/v2/movies/soviet10.vqa, ^Content/ra/v2/movies/soviet11.vqa, ^Content/ra/v2/movies/soviet12.vqa, ^Content/ra/v2/movies/soviet13.vqa, ^Content/ra/v2/movies/soviet14.vqa, ^Content/ra/v2/movies/soviet2.vqa, ^Content/ra/v2/movies/soviet3.vqa, ^Content/ra/v2/movies/soviet4.vqa, ^Content/ra/v2/movies/soviet5.vqa, ^Content/ra/v2/movies/soviet6.vqa, ^Content/ra/v2/movies/soviet7.vqa, ^Content/ra/v2/movies/soviet8.vqa, ^Content/ra/v2/movies/soviet9.vqa, ^Content/ra/v2/movies/sovmcv.vqa, ^Content/ra/v2/movies/sovtstar.vqa, ^Content/ra/v2/movies/spotter.vqa, ^Content/ra/v2/movies/strafe.vqa, ^Content/ra/v2/movies/take_off.vqa, ^Content/ra/v2/movies/tesla.vqa, ^Content/ra/v2/movies/v2rocket.vqa
 			Sources: soviet, soviet-linux, tfd, ra-origin
 		music-counterstrike: Counterstrike Music
 			TestFiles: ^Content/ra/v2/expand/araziod.aud, ^Content/ra/v2/expand/backstab.aud, ^Content/ra/v2/expand/chaos2.aud, ^Content/ra/v2/expand/shut_it.aud, ^Content/ra/v2/expand/2nd_hand.aud, ^Content/ra/v2/expand/twinmix1.aud, ^Content/ra/v2/expand/under3.aud, ^Content/ra/v2/expand/vr2.aud, 

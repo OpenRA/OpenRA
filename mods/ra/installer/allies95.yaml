@@ -23,9 +23,159 @@ allied: Red Alert 95 (Allied Disc, English)
 			^Content/ra/v2/interior.mix:
 				Offset: 17172192
 				Length: 247425
-			^Content/ra/v2/movies1.mix:
-				Offset: 17419617
-				Length: 369362336
+			^Content/ra/v2/movies/aagun.vqa:
+				Offset: 37694331
+				Length: 3295512
+			^Content/ra/v2/movies/aftrmath.vqa:
+				Offset: 40989843
+				Length: 2455774
+			^Content/ra/v2/movies/ally1.vqa:
+				Offset: 43445617
+				Length: 13536324
+			^Content/ra/v2/movies/ally10.vqa:
+				Offset: 56981941
+				Length: 21506358
+			^Content/ra/v2/movies/ally10b.vqa:
+				Offset: 78488299
+				Length: 2565152
+			^Content/ra/v2/movies/ally11.vqa:
+				Offset: 81053451
+				Length: 13600398
+			^Content/ra/v2/movies/ally12.vqa:
+				Offset: 94653849
+				Length: 7719544
+			^Content/ra/v2/movies/ally14.vqa:
+				Offset: 102373393
+				Length: 11659080
+			^Content/ra/v2/movies/ally2.vqa:
+				Offset: 114032473
+				Length: 8014018
+			^Content/ra/v2/movies/ally4.vqa:
+				Offset: 122046491
+				Length: 9441906
+			^Content/ra/v2/movies/ally5.vqa:
+				Offset: 131488397
+				Length: 21900328
+			^Content/ra/v2/movies/ally6.vqa:
+				Offset: 153388725
+				Length: 26454212
+			^Content/ra/v2/movies/ally8.vqa:
+				Offset: 179842937
+				Length: 15401062
+			^Content/ra/v2/movies/ally9.vqa:
+				Offset: 195243999
+				Length: 14901460
+			^Content/ra/v2/movies/allyend.vqa:
+				Offset: 210145459
+				Length: 27285692
+			^Content/ra/v2/movies/allymorf.vqa:
+				Offset: 237431151
+				Length: 916964
+			^Content/ra/v2/movies/apcescpe.vqa:
+				Offset: 238348115
+				Length: 1627564
+			^Content/ra/v2/movies/assess.vqa:
+				Offset: 239975679
+				Length: 2929218
+			^Content/ra/v2/movies/battle.vqa:
+				Offset: 242904897
+				Length: 2881110
+			^Content/ra/v2/movies/binoc.vqa:
+				Offset: 245786007
+				Length: 4045856
+			^Content/ra/v2/movies/bmap.vqa:
+				Offset: 249831863
+				Length: 2414312
+			^Content/ra/v2/movies/brdgtilt.vqa:
+				Offset: 252246175
+				Length: 1581318
+			^Content/ra/v2/movies/crontest.vqa:
+				Offset: 253827493
+				Length: 2036620
+			^Content/ra/v2/movies/cronfail.vqa:
+				Offset: 255864113
+				Length: 1717214
+			^Content/ra/v2/movies/destroyr.vqa:
+				Offset: 257581327
+				Length: 2178828
+			^Content/ra/v2/movies/dud.vqa:
+				Offset: 259760155
+				Length: 3110418
+			^Content/ra/v2/movies/elevator.vqa:
+				Offset: 262870573
+				Length: 1741894
+			^Content/ra/v2/movies/flare.vqa:
+				Offset: 264612467
+				Length: 1731744
+			^Content/ra/v2/movies/frozen.vqa:
+				Offset: 266344211
+				Length: 1836994
+			^Content/ra/v2/movies/grvestne.vqa:
+				Offset: 268181205
+				Length: 3155668
+			^Content/ra/v2/movies/landing.vqa:
+				Offset: 271336873
+				Length: 2374106
+			^Content/ra/v2/movies/masasslt.vqa:
+				Offset: 273710979
+				Length: 5354700
+			^Content/ra/v2/movies/mcv.vqa:
+				Offset: 279065679
+				Length: 1296036
+			^Content/ra/v2/movies/mcv_land.vqa:
+				Offset: 280361715
+				Length: 1424358
+			^Content/ra/v2/movies/montpass.vqa:
+				Offset: 281786073
+				Length: 1701852
+			^Content/ra/v2/movies/oildrum.vqa:
+				Offset: 283487925
+				Length: 2430792
+			^Content/ra/v2/movies/overrun.vqa:
+				Offset: 285918717
+				Length: 2174548
+			^Content/ra/v2/movies/prolog.vqa:
+				Offset: 288093265
+				Length: 28658198
+			^Content/ra/v2/movies/redintro.vqa:
+				Offset: 316751463
+				Length: 2269452
+			^Content/ra/v2/movies/shipsink.vqa:
+				Offset: 319020915
+				Length: 3150030
+			^Content/ra/v2/movies/shorbom1.vqa:
+				Offset: 322170945
+				Length: 4046650
+			^Content/ra/v2/movies/shorbom2.vqa:
+				Offset: 326217595
+				Length: 2150364
+			^Content/ra/v2/movies/shorbomb.vqa:
+				Offset: 328367959
+				Length: 6111616
+			^Content/ra/v2/movies/snowbomb.vqa:
+				Offset: 334479575
+				Length: 2465762
+			^Content/ra/v2/movies/soviet1.vqa:
+				Offset: 336945337
+				Length: 24112060
+			^Content/ra/v2/movies/sovtstar.vqa:
+				Offset: 361057397
+				Length: 670794
+			^Content/ra/v2/movies/spy.vqa:
+				Offset: 361728191
+				Length: 1646808
+			^Content/ra/v2/movies/tanya1.vqa:
+				Offset: 363374999
+				Length: 13389684
+			^Content/ra/v2/movies/tanya2.vqa:
+				Offset: 376764683
+				Length: 4103388
+			^Content/ra/v2/movies/toofar.vqa:
+				Offset: 380868071
+				Length: 4244572
+			^Content/ra/v2/movies/trinity.vqa:
+				Offset: 385112643
+				Length: 1669310
 			^Content/ra/v2/scores.mix:
 				Offset: 386781953
 				Length: 64171360
@@ -44,6 +194,7 @@ allied: Red Alert 95 (Allied Disc, English)
 			^Content/ra/v2/temperat.mix:
 				Offset: 453566435
 				Length: 1038859
+
 allied-linux: Red Alert 95 (Allied Disc, English)
 	IDFiles:
 		eahelp.gid: 13a8a4a1e7d9d6d893c38df5a39262c4689aeba5
@@ -69,9 +220,159 @@ allied-linux: Red Alert 95 (Allied Disc, English)
 			^Content/ra/v2/interior.mix:
 				Offset: 17172192
 				Length: 247425
-			^Content/ra/v2/movies1.mix:
-				Offset: 17419617
-				Length: 369362336
+			^Content/ra/v2/movies/aagun.vqa:
+				Offset: 37694331
+				Length: 3295512
+			^Content/ra/v2/movies/aftrmath.vqa:
+				Offset: 40989843
+				Length: 2455774
+			^Content/ra/v2/movies/ally1.vqa:
+				Offset: 43445617
+				Length: 13536324
+			^Content/ra/v2/movies/ally10.vqa:
+				Offset: 56981941
+				Length: 21506358
+			^Content/ra/v2/movies/ally10b.vqa:
+				Offset: 78488299
+				Length: 2565152
+			^Content/ra/v2/movies/ally11.vqa:
+				Offset: 81053451
+				Length: 13600398
+			^Content/ra/v2/movies/ally12.vqa:
+				Offset: 94653849
+				Length: 7719544
+			^Content/ra/v2/movies/ally14.vqa:
+				Offset: 102373393
+				Length: 11659080
+			^Content/ra/v2/movies/ally2.vqa:
+				Offset: 114032473
+				Length: 8014018
+			^Content/ra/v2/movies/ally4.vqa:
+				Offset: 122046491
+				Length: 9441906
+			^Content/ra/v2/movies/ally5.vqa:
+				Offset: 131488397
+				Length: 21900328
+			^Content/ra/v2/movies/ally6.vqa:
+				Offset: 153388725
+				Length: 26454212
+			^Content/ra/v2/movies/ally8.vqa:
+				Offset: 179842937
+				Length: 15401062
+			^Content/ra/v2/movies/ally9.vqa:
+				Offset: 195243999
+				Length: 14901460
+			^Content/ra/v2/movies/allyend.vqa:
+				Offset: 210145459
+				Length: 27285692
+			^Content/ra/v2/movies/allymorf.vqa:
+				Offset: 237431151
+				Length: 916964
+			^Content/ra/v2/movies/apcescpe.vqa:
+				Offset: 238348115
+				Length: 1627564
+			^Content/ra/v2/movies/assess.vqa:
+				Offset: 239975679
+				Length: 2929218
+			^Content/ra/v2/movies/battle.vqa:
+				Offset: 242904897
+				Length: 2881110
+			^Content/ra/v2/movies/binoc.vqa:
+				Offset: 245786007
+				Length: 4045856
+			^Content/ra/v2/movies/bmap.vqa:
+				Offset: 249831863
+				Length: 2414312
+			^Content/ra/v2/movies/brdgtilt.vqa:
+				Offset: 252246175
+				Length: 1581318
+			^Content/ra/v2/movies/crontest.vqa:
+				Offset: 253827493
+				Length: 2036620
+			^Content/ra/v2/movies/cronfail.vqa:
+				Offset: 255864113
+				Length: 1717214
+			^Content/ra/v2/movies/destroyr.vqa:
+				Offset: 257581327
+				Length: 2178828
+			^Content/ra/v2/movies/dud.vqa:
+				Offset: 259760155
+				Length: 3110418
+			^Content/ra/v2/movies/elevator.vqa:
+				Offset: 262870573
+				Length: 1741894
+			^Content/ra/v2/movies/flare.vqa:
+				Offset: 264612467
+				Length: 1731744
+			^Content/ra/v2/movies/frozen.vqa:
+				Offset: 266344211
+				Length: 1836994
+			^Content/ra/v2/movies/grvestne.vqa:
+				Offset: 268181205
+				Length: 3155668
+			^Content/ra/v2/movies/landing.vqa:
+				Offset: 271336873
+				Length: 2374106
+			^Content/ra/v2/movies/masasslt.vqa:
+				Offset: 273710979
+				Length: 5354700
+			^Content/ra/v2/movies/mcv.vqa:
+				Offset: 279065679
+				Length: 1296036
+			^Content/ra/v2/movies/mcv_land.vqa:
+				Offset: 280361715
+				Length: 1424358
+			^Content/ra/v2/movies/montpass.vqa:
+				Offset: 281786073
+				Length: 1701852
+			^Content/ra/v2/movies/oildrum.vqa:
+				Offset: 283487925
+				Length: 2430792
+			^Content/ra/v2/movies/overrun.vqa:
+				Offset: 285918717
+				Length: 2174548
+			^Content/ra/v2/movies/prolog.vqa:
+				Offset: 288093265
+				Length: 28658198
+			^Content/ra/v2/movies/redintro.vqa:
+				Offset: 316751463
+				Length: 2269452
+			^Content/ra/v2/movies/shipsink.vqa:
+				Offset: 319020915
+				Length: 3150030
+			^Content/ra/v2/movies/shorbom1.vqa:
+				Offset: 322170945
+				Length: 4046650
+			^Content/ra/v2/movies/shorbom2.vqa:
+				Offset: 326217595
+				Length: 2150364
+			^Content/ra/v2/movies/shorbomb.vqa:
+				Offset: 328367959
+				Length: 6111616
+			^Content/ra/v2/movies/snowbomb.vqa:
+				Offset: 334479575
+				Length: 2465762
+			^Content/ra/v2/movies/soviet1.vqa:
+				Offset: 336945337
+				Length: 24112060
+			^Content/ra/v2/movies/sovtstar.vqa:
+				Offset: 361057397
+				Length: 670794
+			^Content/ra/v2/movies/spy.vqa:
+				Offset: 361728191
+				Length: 1646808
+			^Content/ra/v2/movies/tanya1.vqa:
+				Offset: 363374999
+				Length: 13389684
+			^Content/ra/v2/movies/tanya2.vqa:
+				Offset: 376764683
+				Length: 4103388
+			^Content/ra/v2/movies/toofar.vqa:
+				Offset: 380868071
+				Length: 4244572
+			^Content/ra/v2/movies/trinity.vqa:
+				Offset: 385112643
+				Length: 1669310
 			^Content/ra/v2/scores.mix:
 				Offset: 386781953
 				Length: 64171360
