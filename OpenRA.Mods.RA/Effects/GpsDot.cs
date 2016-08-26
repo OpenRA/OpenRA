@@ -37,7 +37,7 @@ namespace OpenRA.Mods.RA.Effects
 		}
 	}
 
-	class GpsDot : IEffect
+	class GpsDot : IEffect, IEffectAboveShroud
 	{
 		readonly Actor self;
 		readonly GpsDotInfo info;
@@ -119,7 +119,7 @@ namespace OpenRA.Mods.RA.Effects
 			return frozen[player].FromID(self.ActorID);
 		}
 
-		public void Tick(World world)
+		void IEffect.Tick(World world)
 		{
 			if (self.Disposed)
 				world.AddFrameEndTask(w => w.Remove(this));
@@ -137,7 +137,9 @@ namespace OpenRA.Mods.RA.Effects
 			}
 		}
 
-		public IEnumerable<IRenderable> Render(WorldRenderer wr)
+		IEnumerable<IRenderable> IEffect.Render(WorldRenderer wr) { return SpriteRenderable.None; }
+
+		IEnumerable<IRenderable> IEffectAboveShroud.RenderAboveShroud(WorldRenderer wr)
 		{
 			if (self.World.RenderPlayer == null || !dotStates[self.World.RenderPlayer].ShouldRender || self.Disposed)
 				return SpriteRenderable.None;
