@@ -1,6 +1,6 @@
 # ZeroBrane Studio Changelog
 
-## Current master (Aug 25 2016)
+## v1.40 (Aug 26 2016)
 
 ### Highlights
   - Added ability to load/save files with invalid UTF-8 encoded characters.
@@ -10,13 +10,10 @@
   - Added luasec 0.6 with openssl 1.0.2h binaries.
   - Added lpeg 1.0 binaries.
   - Added lfs 1.6.3 binaries (#566).
-  - Added support for indicators that apply colors to the text.
-  - Added support for multi-paste (#311).
   - Added tracking file system changes in the project tree to auto-refresh it.
   - Added opening files on drag-n-drop on dock icon on OSX (closes #248).
   - Added opening files on drag-n-drop on Linux (closes #177).
   - Added refresh of search results from the right-click-on-tab menu.
-  - Added (partial) fix for `Ctrl-(Shift-)Tab` navigation on OSX (#298).
   - Added reverse search on `Shift-Enter` (closes #604).
   - Updated Gideros API for version 2016.06.
   - Updated Corona API for v2016.2906.
@@ -233,7 +230,6 @@
   - Updated file activation test as filename case may be different on OSX.
   - Updated marker handling to use `MarkerToggle` method as it's more generic.
   - Updated `ActivateFile` method to also accept directories.
-  - Updated formatting.
   - Updated debugger `BreakpointToggle`/`RunTo` methods to take 1-base line nums for consistency.
   - Updated editor menu processing to allow Run-to-Cursor when clicked anywhere on the line.
   - Updated search to use `ShowRange` instead of `ScrollRange`.
@@ -254,10 +250,8 @@
   - Updated `Rename All Instances` menu item to remove unnecessary whitespace.
   - Updated icon handling in the menu to work with `SetBitmap` taking two parameters (#603, #260).
   - Updated menu item icon processing to avoid assert on Linux.
-  - Updated README to use better wording.
   - Updated handling of clicks on errors to jump to a proper error line (closes #620).
   - Updated copyright year in the About screen.
-  - Updated local variables to use more informative names.
   - Updated menu generation to use a three-parameter `wxMenu` constructor to avoid crash on Win7.
   - Updated core components to use `Print` method instead of removed `print` function.
   - Updated path normalization to keep leading up-directory references in relative paths.
