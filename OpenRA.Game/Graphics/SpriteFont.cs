@@ -14,6 +14,7 @@ using System.Drawing;
 using System.Linq;
 using OpenRA.Primitives;
 using OpenRA.Support;
+using OpenRA.Widgets;
 using SharpFont;
 
 namespace OpenRA.Graphics
@@ -91,6 +92,11 @@ namespace OpenRA.Graphics
 			}
 
 			DrawText(text, location, fg);
+		}
+
+		public void DrawTextWithContrast(string text, float2 location, Color fg, Color bgDark, Color bgLight, int offset)
+		{
+			DrawTextWithContrast(text, location, fg, WidgetUtils.GetContrastColor(fg, bgDark, bgLight), offset);
 		}
 
 		public int2 Measure(string text)
