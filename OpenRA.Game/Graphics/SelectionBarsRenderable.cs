@@ -53,7 +53,7 @@ namespace OpenRA.Graphics
 			foreach (var extraBar in actor.TraitsImplementing<ISelectionBar>())
 			{
 				var value = extraBar.GetValue();
-				if (value != 0)
+				if (value != 0 || extraBar.DisplayWhenEmpty)
 				{
 					start.Y += (int)(4 / wr.Viewport.Zoom);
 					end.Y += (int)(4 / wr.Viewport.Zoom);

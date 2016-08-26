@@ -118,6 +118,7 @@ namespace OpenRA.Mods.RA.Traits
 		}
 
 		Color ISelectionBar.GetColor() { return Color.Magenta; }
+		bool ISelectionBar.DisplayWhenEmpty { get { return false; } }
 	}
 
 	class PortableChronoOrderTargeter : IOrderTargeter
