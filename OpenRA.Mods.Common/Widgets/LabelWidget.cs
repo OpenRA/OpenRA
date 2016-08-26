@@ -27,7 +27,7 @@ namespace OpenRA.Mods.Common.Widgets
 		public string Font = ChromeMetrics.Get<string>("TextFont");
 		public Color TextColor = ChromeMetrics.Get<Color>("TextColor");
 		public bool Contrast = ChromeMetrics.Get<bool>("TextContrast");
-		public Color ContrastColor = ChromeMetrics.Get<Color>("TextContrastColor");
+		public Color ContrastColor = ChromeMetrics.Get<Color>("TextContrastColorDark");
 		public bool WordWrap = false;
 		public Func<string> GetText;
 		public Func<Color> GetColor;

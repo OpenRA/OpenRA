@@ -36,7 +36,7 @@ namespace OpenRA.Mods.Common.Widgets
 		public Color TextColor = ChromeMetrics.Get<Color>("ButtonTextColor");
 		public Color TextColorDisabled = ChromeMetrics.Get<Color>("ButtonTextColorDisabled");
 		public bool Contrast = ChromeMetrics.Get<bool>("ButtonTextContrast");
-		public Color ContrastColor = ChromeMetrics.Get<Color>("ButtonTextContrastColor");
+		public Color ContrastColor = ChromeMetrics.Get<Color>("ButtonTextContrastColorDark");
 		public bool Disabled = false;
 		public bool Highlighted = false;
 		public Func<string> GetText;
