@@ -6,6 +6,7 @@ Metrics:
 	ButtonTextColor: FFFFFF
 	ButtonTextColorDisabled: 808080
 	ButtonTextContrast: false
+	ButtonTextShadow: false
 	ButtonTextContrastColorDark: 000000
 	ButtonTextContrastColorLight: 7F7F7F
 	ButtonBaseLine: 0
@@ -20,6 +21,7 @@ Metrics:
 	TextFont: Regular
 	TextColor: FFFFFF
 	TextContrast: false
+	TextShadow: false
 	TextContrastColorDark: 000000
 	TextContrastColorLight: 7F7F7F
 	ColorPickerRemapIndices: 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95
