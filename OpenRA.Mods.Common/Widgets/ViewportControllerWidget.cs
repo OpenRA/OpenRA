@@ -35,6 +35,7 @@ namespace OpenRA.Mods.Common.Widgets
 		public int EdgeCornerScrollThreshold = 35;
 
 		int2? joystickScrollStart, joystickScrollEnd;
+		bool isStandardScrolling;
 
 		static readonly Dictionary<ScrollDirection, string> ScrollCursors = new Dictionary<ScrollDirection, string>
 		{
@@ -287,9 +288,18 @@ namespace OpenRA.Mods.Common.Widgets
 			{
 				if (mi.Event == MouseInputEvent.Move)
 				{
+					isStandardScrolling = true;
 					var d = scrollType == MouseScrollType.Inverted ? -1 : 1;
 					worldRenderer.Viewport.Scroll((Viewport.LastMousePos - mi.Location) * d, false);
 					return true;
+				}
+				else if (mi.Event == MouseInputEvent.Up)
+				{
+					var wasStandardScrolling = isStandardScrolling;
+					isStandardScrolling = false;
+
+					if (wasStandardScrolling)
+						return true;
 				}
 			}
 
