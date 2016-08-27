@@ -127,6 +127,7 @@ namespace OpenRA.Graphics
 			{
 				Game.Renderer.WorldSpriteRenderer.SetDepthPreviewEnabled(devTrait.Value.ShowDepthPreview);
 				Game.Renderer.WorldRgbaSpriteRenderer.SetDepthPreviewEnabled(devTrait.Value.ShowDepthPreview);
+				Game.Renderer.WorldRgbaColorRenderer.SetDepthPreviewEnabled(devTrait.Value.ShowDepthPreview);
 			}
 
 			RefreshPalette();
@@ -162,10 +163,6 @@ namespace OpenRA.Graphics
 			foreach (var a in World.ActorsWithTrait<IRenderShroud>())
 				a.Trait.RenderShroud(renderShroud, this);
 
-			if (devTrait.Value != null && devTrait.Value.ShowDebugGeometry)
-				for (var i = 0; i < renderables.Count; i++)
-					renderables[i].RenderDebugGeometry(this);
-
 			if (enableDepthBuffer)
 				Game.Renderer.Device.DisableDepthBuffer();
 
@@ -200,9 +197,14 @@ namespace OpenRA.Graphics
 					r.Render(this);
 
 			if (devTrait.Value != null && devTrait.Value.ShowDebugGeometry)
+			{
+				for (var i = 0; i < renderables.Count; i++)
+					renderables[i].RenderDebugGeometry(this);
+
 				foreach (var g in finalOverlayRenderables.GroupBy(prs => prs.GetType()))
 					foreach (var r in g)
 						r.RenderDebugGeometry(this);
+			}
 
 			Game.Renderer.Flush();
 		}
@@ -232,28 +234,34 @@ namespace OpenRA.Graphics
 			return new int2((int)Math.Round(px.X), (int)Math.Round(px.Y));
 		}
 
-		// For scaling vectors to pixel sizes in the voxel renderer
-		public void ScreenVectorComponents(WVec vec, out float x, out float y, out float z)
+		public float3 Screen3DPxPosition(WPos pos)
 		{
-			x = TileSize.Width * vec.X / 1024f;
-			y = TileSize.Height * (vec.Y - vec.Z) / 1024f;
-			z = TileSize.Height * vec.Z / 1024f;
+			// Round to nearest pixel
+			var px = Screen3DPosition(pos);
+			return new float3((float)Math.Round(px.X), (float)Math.Round(px.Y), px.Z);
+		}
+
+		// For scaling vectors to pixel sizes in the voxel renderer
+		public float3 ScreenVectorComponents(WVec vec)
+		{
+			return new float3(
+				TileSize.Width * vec.X / 1024f,
+				TileSize.Height * (vec.Y - vec.Z) / 1024f,
+				TileSize.Height * vec.Z / 1024f);
 		}
 
 		// For scaling vectors to pixel sizes in the voxel renderer
 		public float[] ScreenVector(WVec vec)
 		{
-			float x, y, z;
-			ScreenVectorComponents(vec, out x, out y, out z);
-			return new[] { x, y, z, 1f };
+			var xyz = ScreenVectorComponents(vec);
+			return new[] { xyz.X, xyz.Y, xyz.Z, 1f };
 		}
 
 		public int2 ScreenPxOffset(WVec vec)
 		{
 			// Round to nearest pixel
-			float x, y, z;
-			ScreenVectorComponents(vec, out x, out y, out z);
-			return new int2((int)Math.Round(x), (int)Math.Round(y));
+			var xyz = ScreenVectorComponents(vec);
+			return new int2((int)Math.Round(xyz.X), (int)Math.Round(xyz.Y));
 		}
 
 		public float ScreenZPosition(WPos pos, int offset)

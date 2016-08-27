@@ -112,13 +112,13 @@ namespace OpenRA.Mods.Common.HitShapes
 			var c = Color.Yellow;
 			RangeCircleRenderable.DrawRangeCircle(wr, a, Radius, 1, c, 0, c);
 			RangeCircleRenderable.DrawRangeCircle(wr, b, Radius, 1, c, 0, c);
-			wcr.DrawLine(new[] { wr.ScreenPosition(a - offset1), wr.ScreenPosition(b - offset1) }, 1, c);
-			wcr.DrawLine(new[] { wr.ScreenPosition(a + offset1), wr.ScreenPosition(b + offset1) }, 1, c);
+			wcr.DrawLine(new[] { wr.Screen3DPosition(a - offset1), wr.Screen3DPosition(b - offset1) }, 1, c);
+			wcr.DrawLine(new[] { wr.Screen3DPosition(a + offset1), wr.Screen3DPosition(b + offset1) }, 1, c);
 
 			RangeCircleRenderable.DrawRangeCircle(wr, aa, Radius, 1, c, 0, c);
 			RangeCircleRenderable.DrawRangeCircle(wr, bb, Radius, 1, c, 0, c);
-			wcr.DrawLine(new[] { wr.ScreenPosition(aa - offset2), wr.ScreenPosition(bb - offset2) }, 1, c);
-			wcr.DrawLine(new[] { wr.ScreenPosition(aa + offset2), wr.ScreenPosition(bb + offset2) }, 1, c);
+			wcr.DrawLine(new[] { wr.Screen3DPosition(aa - offset2), wr.Screen3DPosition(bb - offset2) }, 1, c);
+			wcr.DrawLine(new[] { wr.Screen3DPosition(aa + offset2), wr.Screen3DPosition(bb + offset2) }, 1, c);
 		}
 	}
 }

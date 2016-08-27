@@ -67,13 +67,13 @@ namespace OpenRA.Mods.Common.Graphics
 		public void Render(WorldRenderer wr)
 		{
 			var wcr = Game.Renderer.WorldRgbaColorRenderer;
-			var center = wr.ScreenPosition(centerPosition);
+			var center = wr.Screen3DPosition(centerPosition);
 
 			for (var i = 0; i < trailCount; i++)
 			{
 				var angle = trailAngle - new WAngle(i * (trailSeparation.Angle <= 512 ? 1 : -1));
 				var length = radius.Length * new WVec(angle.Cos(), angle.Sin(), 0) / 1024;
-				var end = wr.ScreenPosition(centerPosition + length);
+				var end = wr.Screen3DPosition(centerPosition + length);
 				var alpha = color.A - i * color.A / trailCount;
 
 				wcr.DrawLine(center, end, 3, Color.FromArgb(alpha, contrastColor));

@@ -45,11 +45,11 @@ namespace OpenRA.Mods.Common.Graphics
 		public void Render(WorldRenderer wr)
 		{
 			var iz = 1 / wr.Viewport.Zoom;
-			var screenPos = wr.ScreenPxPosition(pos);
+			var screenPos = wr.Screen3DPxPosition(pos);
 			var tl = screenPos + new float2(visualBounds.Left, visualBounds.Top);
 			var br = screenPos + new float2(visualBounds.Right, visualBounds.Bottom);
-			var tr = new float2(br.X, tl.Y);
-			var bl = new float2(tl.X, br.Y);
+			var tr = new float3(br.X, tl.Y, screenPos.Z);
+			var bl = new float3(tl.X, br.Y, screenPos.Z);
 			var u = new float2(4 * iz, 0);
 			var v = new float2(0, 4 * iz);
 

@@ -58,8 +58,8 @@ namespace OpenRA.Mods.Common.Graphics
 			var offset = new WVec(radius.Length, 0, 0);
 			for (var i = 0; i < RangeCircleSegments; i++)
 			{
-				var a = wr.ScreenPosition(centerPosition + offset.Rotate(RangeCircleStartRotations[i]));
-				var b = wr.ScreenPosition(centerPosition + offset.Rotate(RangeCircleEndRotations[i]));
+				var a = wr.Screen3DPosition(centerPosition + offset.Rotate(RangeCircleStartRotations[i]));
+				var b = wr.Screen3DPosition(centerPosition + offset.Rotate(RangeCircleEndRotations[i]));
 
 				if (contrastWidth > 0)
 					wcr.DrawLine(a, b, contrastWidth / wr.Viewport.Zoom, contrastColor);

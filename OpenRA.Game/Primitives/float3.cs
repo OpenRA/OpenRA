@@ -37,6 +37,14 @@ namespace OpenRA
 		public static float3 operator /(float3 a, float3 b) { return new float3(a.X / b.X, a.Y / b.Y, a.Z / b.Z); }
 		public static float3 operator /(float3 a, float b) { return new float3(a.X / b, a.Y / b, a.Z / b); }
 
+		public static float3 Lerp(float3 a, float3 b, float t)
+		{
+			return new float3(
+				float2.Lerp(a.X, b.X, t),
+				float2.Lerp(a.Y, b.Y, t),
+				float2.Lerp(a.Z, b.Z, t));
+		}
+
 		public static bool operator ==(float3 me, float3 other) { return me.X == other.X && me.Y == other.Y && me.Z == other.Z; }
 		public static bool operator !=(float3 me, float3 other) { return !(me == other); }
 		public override int GetHashCode() { return X.GetHashCode() ^ Y.GetHashCode() ^ Z.GetHashCode(); }

@@ -129,7 +129,7 @@ namespace OpenRA.Mods.Common.Graphics
 			{
 				var groundPos = voxel.pos - new WVec(0, 0, wr.World.Map.DistanceAboveTerrain(voxel.pos).Length);
 				var groundZ = wr.World.Map.Grid.TileSize.Height * (groundPos.Z - voxel.pos.Z) / 1024f;
-				var pxOrigin = wr.ScreenPosition(voxel.pos);
+				var pxOrigin = wr.Screen3DPosition(voxel.pos);
 				var shadowOrigin = pxOrigin - groundZ * (new float2(renderProxy.ShadowDirection, 1));
 				var iz = 1 / wr.Viewport.Zoom;
 
@@ -141,13 +141,12 @@ namespace OpenRA.Mods.Common.Graphics
 				var c = Color.Purple;
 				var psb = renderProxy.ProjectedShadowBounds;
 
-				// TODO: add float3 support to WorldRgbaColorRenderer
 				Game.Renderer.WorldRgbaColorRenderer.DrawPolygon(new[]
 				{
-					shadowOrigin + psb[1].XY,
-					shadowOrigin + psb[3].XY,
-					shadowOrigin + psb[0].XY,
-					shadowOrigin + psb[2].XY
+					shadowOrigin + psb[1],
+					shadowOrigin + psb[3],
+					shadowOrigin + psb[0],
+					shadowOrigin + psb[2]
 				}, iz, c);
 
 				// Draw voxel bounding box
@@ -161,9 +160,7 @@ namespace OpenRA.Mods.Common.Graphics
 					var worldTransform = v.RotationFunc().Reverse().Aggregate(scaleTransform,
 						(x, y) => OpenRA.Graphics.Util.MatrixMultiply(x, OpenRA.Graphics.Util.MakeFloatMatrix(y.AsMatrix())));
 
-					float sx, sy, sz;
-					wr.ScreenVectorComponents(v.OffsetFunc(), out sx, out sy, out sz);
-					var pxPos = pxOrigin + new float2(sx, sy);
+					var pxPos = pxOrigin + wr.ScreenVectorComponents(v.OffsetFunc());
 					var screenTransform = OpenRA.Graphics.Util.MatrixMultiply(cameraTransform, worldTransform);
 					DrawBoundsBox(pxPos, screenTransform, bounds, iz, Color.Yellow);
 				}
@@ -172,15 +169,15 @@ namespace OpenRA.Mods.Common.Graphics
 			static readonly uint[] CornerXIndex = new uint[] { 0, 0, 0, 0, 3, 3, 3, 3 };
 			static readonly uint[] CornerYIndex = new uint[] { 1, 1, 4, 4, 1, 1, 4, 4 };
 			static readonly uint[] CornerZIndex = new uint[] { 2, 5, 2, 5, 2, 5, 2, 5 };
-			static void DrawBoundsBox(float2 pxPos, float[] transform, float[] bounds, float width, Color c)
+			static void DrawBoundsBox(float3 pxPos, float[] transform, float[] bounds, float width, Color c)
 			{
 				var wcr = Game.Renderer.WorldRgbaColorRenderer;
-				var corners = new float2[8];
+				var corners = new float3[8];
 				for (var i = 0; i < 8; i++)
 				{
 					var vec = new float[] { bounds[CornerXIndex[i]], bounds[CornerYIndex[i]], bounds[CornerZIndex[i]], 1 };
 					var screen = OpenRA.Graphics.Util.MatrixVectorMultiply(transform, vec);
-					corners[i] = pxPos + new float2(screen[0], screen[1]);
+					corners[i] = pxPos + new float3(screen[0], screen[1], screen[2]);
 				}
 
 				// Front face
@@ -221,9 +218,7 @@ namespace OpenRA.Mods.Common.Graphics
 					var worldTransform = v.RotationFunc().Reverse().Aggregate(scaleTransform,
 						(x, y) => OpenRA.Graphics.Util.MatrixMultiply(x, OpenRA.Graphics.Util.MakeFloatMatrix(y.AsMatrix())));
 
-					float sx, sy, sz;
-					wr.ScreenVectorComponents(v.OffsetFunc(), out sx, out sy, out sz);
-					var pxPos = pxOrigin + new float3(sx, sy, sz);
+					var pxPos = pxOrigin + wr.ScreenVectorComponents(v.OffsetFunc());
 					var screenTransform = OpenRA.Graphics.Util.MatrixMultiply(cameraTransform, worldTransform);
 
 					for (var i = 0; i < 8; i++)

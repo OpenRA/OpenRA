@@ -53,7 +53,7 @@ namespace OpenRA.Mods.Common.Graphics
 		public void RenderDebugGeometry(WorldRenderer wr)
 		{
 			var size = font.Measure(text).ToFloat2();
-			var offset = wr.ScreenPxPosition(pos) - 0.5f * size;
+			var offset = wr.Screen3DPxPosition(pos) - 0.5f * size;
 			Game.Renderer.WorldRgbaColorRenderer.DrawRect(offset, offset + size, 1 / wr.Viewport.Zoom, Color.Red);
 		}
 

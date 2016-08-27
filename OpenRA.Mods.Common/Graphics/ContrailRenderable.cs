@@ -75,7 +75,7 @@ namespace OpenRA.Mods.Common.Graphics
 				var nextColor = Exts.ColorLerp(i * 1f / (length - 4), color, Color.Transparent);
 
 				if (!world.FogObscures(curPos) && !world.FogObscures(nextPos))
-					wcr.DrawLine(wr.ScreenPosition(curPos), wr.ScreenPosition(nextPos), screenWidth, curColor, nextColor);
+					wcr.DrawLine(wr.Screen3DPosition(curPos), wr.Screen3DPosition(nextPos), screenWidth, curColor, nextColor);
 
 				curPos = nextPos;
 				curColor = nextColor;
