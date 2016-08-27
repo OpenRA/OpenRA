@@ -8,7 +8,7 @@ Colt45:
 		Speed: 1c682
 	Warhead@1Dam: SpreadDamage
 		Spread: 42
-		Damage: 50
+		Damage: 5000
 		ValidTargets: Barrel, Infantry
 		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
 	Warhead@2Eff: CreateEffect
@@ -30,7 +30,7 @@ ZSU-23:
 		Blockable: false
 	Warhead@1Dam: SpreadDamage
 		Spread: 213
-		Damage: 12
+		Damage: 1200
 		ValidTargets: Air
 		Versus:
 			None: 30
@@ -49,7 +49,7 @@ Vulcan:
 		Speed: 1c682
 	Warhead@1Dam_1: SpreadDamage
 		Spread: 128
-		Damage: 10
+		Damage: 1000
 		Versus:
 			None: 200
 			Wood: 50
@@ -65,7 +65,7 @@ Vulcan:
 		ValidImpactTypes: Water
 	Warhead@3Dam_2: SpreadDamage
 		Spread: 128
-		Damage: 10
+		Damage: 1000
 		Delay: 2
 		Versus:
 			None: 200
@@ -84,7 +84,7 @@ Vulcan:
 		Delay: 2
 	Warhead@5Dam_3: SpreadDamage
 		Spread: 128
-		Damage: 10
+		Damage: 1000
 		Delay: 4
 		Versus:
 			None: 200
@@ -103,7 +103,7 @@ Vulcan:
 		Delay: 4
 	Warhead@7Dam_4: SpreadDamage
 		Spread: 128
-		Damage: 10
+		Damage: 1000
 		Delay: 6
 		Versus:
 			None: 200
@@ -122,7 +122,7 @@ Vulcan:
 		Delay: 6
 	Warhead@9Dam_5: SpreadDamage
 		Spread: 128
-		Damage: 10
+		Damage: 1000
 		Delay: 8
 		Versus:
 			None: 200
@@ -141,7 +141,7 @@ Vulcan:
 		Delay: 8
 	Warhead@11Dam_6: SpreadDamage
 		Spread: 128
-		Damage: 10
+		Damage: 1000
 		Delay: 10
 		Versus:
 			None: 200
@@ -169,7 +169,7 @@ ChainGun:
 		Blockable: false
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
-		Damage: 30
+		Damage: 3000
 		Versus:
 			None: 120
 			Wood: 50
@@ -194,7 +194,7 @@ ChainGun.Yak:
 		Blockable: false
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
-		Damage: 40
+		Damage: 4000
 		Versus:
 			Wood: 50
 			Light: 60
@@ -216,7 +216,7 @@ Pistol:
 		Speed: 1c682
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
-		Damage: 1
+		Damage: 100
 		Versus:
 			Wood: 50
 			Light: 60
@@ -238,7 +238,7 @@ M1Carbine:
 		Speed: 1c682
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
-		Damage: 15
+		Damage: 1500
 		Versus:
 			Wood: 25
 			Light: 30
@@ -261,7 +261,7 @@ M60mg:
 		Speed: 1c682
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
-		Damage: 15
+		Damage: 1500
 		Versus:
 			Wood: 10
 			Light: 30
@@ -285,7 +285,7 @@ SilencedPPK:
 		Speed: 1c682
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
-		Damage: 150
+		Damage: 15000
 		ValidTargets: Infantry
 		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
 	Warhead@2Eff: CreateEffect
@@ -305,7 +305,7 @@ FLAK-23-AA:
 		Blockable: false
 	Warhead@1Dam: SpreadDamage
 		Spread: 213
-		Damage: 20
+		Damage: 2000
 		ValidTargets: Air, Ground, Water
 		Versus:
 			None: 40
@@ -328,7 +328,7 @@ FLAK-23-AG:
 		Blockable: false
 	Warhead@1Dam: SpreadDamage
 		Spread: 213
-		Damage: 20
+		Damage: 2000
 		ValidTargets: Air, Ground, Water
 		Versus:
 			None: 40
@@ -354,6 +354,6 @@ Sniper:
 		Speed: 1c682
 	Warhead@1Dam: SpreadDamage
 		Spread: 42
-		Damage: 140
+		Damage: 14000
 		ValidTargets: Infantry
 		DamageTypes: Prone50Percent, TriggerProne, BulletDeath

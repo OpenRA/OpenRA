@@ -11,7 +11,7 @@ E1:
 	Mobile:
 		Speed: 56
 	Health:
-		HP: 50
+		HP: 5000
 	Armament:
 		Weapon: M16
 	AttackFrontal:
@@ -33,7 +33,7 @@ E2:
 	Mobile:
 		Speed: 71
 	Health:
-		HP: 50
+		HP: 5000
 	Armament:
 		Weapon: Grenade
 		LocalOffset: 0,0,427
@@ -59,7 +59,7 @@ E3:
 	Mobile:
 		Speed: 42
 	Health:
-		HP: 45
+		HP: 4500
 	AutoTarget:
 		ScanRadius: 6
 	Armament:
@@ -84,7 +84,7 @@ E4:
 	Mobile:
 		Speed: 56
 	Health:
-		HP: 90
+		HP: 9000
 	Armament:
 		Weapon: Flamethrower
 		LocalOffset: 341,0,256
@@ -114,7 +114,7 @@ E5:
 			BlueTiberium: 90
 				PathingCost: 90
 	Health:
-		HP: 90
+		HP: 9000
 	Armament:
 		Weapon: Chemspray
 		LocalOffset: 341,0,256
@@ -139,7 +139,7 @@ E6:
 	Mobile:
 		Speed: 56
 	Health:
-		HP: 25
+		HP: 2500
 	Passenger:
 		PipType: Yellow
 	EngineerRepair:
@@ -167,7 +167,7 @@ RMBO:
 	Guard:
 		Voice: Move
 	Health:
-		HP: 150
+		HP: 15000
 	Passenger:
 		PipType: Red
 		Voice: Move

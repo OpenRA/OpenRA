@@ -3,5 +3,5 @@ Nike:
 
 Maverick:
 	Warhead@1Dam: SpreadDamage
-		Damage: 175
+		Damage: 17500
 		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath

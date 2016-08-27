@@ -3,5 +3,5 @@ M60mg:
 	ReloadDelay: 20
 	Burst: 1
 	Warhead: SpreadDamage
-		Damage: 20
+		Damage: 2000
 		DamageTypes: Prone50Percent, TriggerProne, BulletDeath

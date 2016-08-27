@@ -10,7 +10,7 @@ FireballLauncher:
 	BurstDelay: 5
 	Warhead@1Dam: SpreadDamage
 		Spread: 341
-		Damage: 25
+		Damage: 2500
 		Versus:
 			None: 600
 			Wood: 148
@@ -35,7 +35,7 @@ FiendShard:
 		Angle: 60
 		Palette: greentiberium
 	Warhead@1Dam: SpreadDamage
-		Damage: 35
+		Damage: 3500
 		Versus:
 			Light: 60
 			Heavy: 40
@@ -54,7 +54,7 @@ SlimeAttack:
 	Projectile: Bullet
 		Speed: 426
 	Warhead@1Dam: SpreadDamage
-		Damage: 100
+		Damage: 10000
 		Versus:
 			Light: 60
 			Heavy: 40
@@ -65,7 +65,7 @@ Veins:
 	ReloadDelay: 16
 	Warhead@Damage: SpreadDamage
 		Spread: 42
-		Damage: 5
+		Damage: 500
 		DamageTypes: BulletDeath
 	Warhead@Effect: CreateEffect
 		Explosions: veins

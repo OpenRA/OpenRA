@@ -17,7 +17,7 @@ MultiCluster:
 		Speed: 384
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
-		Damage: 65
+		Damage: 6500
 		ValidTargets: Ground
 		Versus:
 			None: 25
@@ -45,7 +45,7 @@ SuicideBomb:
 	Report: hunter2.aud
 	Warhead@1Dam: SpreadDamage
 		Spread: 256
-		Damage: 110
+		Damage: 11000
 		Falloff: 10000, 3680, 1350, 500, 180, 70, 0
 		Versus:
 			None: 90
@@ -59,13 +59,13 @@ IonCannon:
 	ValidTargets: Ground, Air
 	Warhead@1Dam_impact: SpreadDamage
 		Spread: 1c0
-		Damage: 100
+		Damage: 10000
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		ValidTargets: Ground, Air
 		DamageTypes: Prone100Percent, TriggerProne, EnergyDeath
 	Warhead@2Dam_area: SpreadDamage
 		Spread: 1c0
-		Damage: 250
+		Damage: 25000
 		Falloff: 100, 50, 25, 0
 		Delay: 3
 		ValidTargets: Ground, Air
@@ -110,7 +110,7 @@ ClusterMissile:
 	ValidTargets: Ground, Water, Air
 	Warhead@ImpactDamage0: SpreadDamage
 		Spread: 1c0
-		Damage: 150
+		Damage: 15000
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		ValidTargets: Ground, Water, Air
 		Versus:
@@ -127,7 +127,7 @@ ClusterMissile:
 		Size: 1
 	Warhead@ClusterDamage1: SpreadDamage
 		Spread: 2c0
-		Damage: 60
+		Damage: 6000
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		Delay: 5
 		ValidTargets: Ground, Water, Air
@@ -144,7 +144,7 @@ ClusterMissile:
 		Delay: 5
 	Warhead@ClusterDamage2: SpreadDamage
 		Spread: 3c0
-		Damage: 60
+		Damage: 6000
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		Delay: 10
 		ValidTargets: Ground, Water, Air
@@ -161,7 +161,7 @@ ClusterMissile:
 		Delay: 10
 	Warhead@ClusterDamage3: SpreadDamage
 		Spread: 4c0
-		Damage: 60
+		Damage: 6000
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		Delay: 15
 		ValidTargets: Ground, Water, Air
@@ -178,7 +178,7 @@ ClusterMissile:
 		Delay: 15
 	Warhead@ClusterDamage4: SpreadDamage
 		Spread: 5c0
-		Damage: 60
+		Damage: 6000
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		Delay: 20
 		ValidTargets: Ground, Water, Air

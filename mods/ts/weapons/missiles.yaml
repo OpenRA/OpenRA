@@ -18,7 +18,7 @@ Bazooka:
 		Speed: 384
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
-		Damage: 25
+		Damage: 2500
 		ValidTargets: Ground, Air
 		Versus:
 			None: 25
@@ -65,7 +65,7 @@ HoverMissile:
 		Speed: 384
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
-		Damage: 30
+		Damage: 3000
 		ValidTargets: Ground, Air
 		Versus:
 			None: 25
@@ -111,7 +111,7 @@ MammothTusk:
 		Speed: 384
 	Warhead@1Dam: SpreadDamage
 		Spread: 171
-		Damage: 40
+		Damage: 4000
 		ValidTargets: Air
 		Versus:
 			None: 100
@@ -152,7 +152,7 @@ BikeMissile:
 		Speed: 384
 	Warhead@1Dam: SpreadDamage
 		Spread: 256
-		Damage: 40
+		Damage: 4000
 		ValidTargets: Ground
 		Versus:
 			None: 25
@@ -195,7 +195,7 @@ Dragon:
 		Speed: 384
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
-		Damage: 30
+		Damage: 3000
 		ValidTargets: Ground, Air
 		Versus:
 			None: 25
@@ -242,7 +242,7 @@ Hellfire:
 		Speed: 384
 	Warhead@1Dam: SpreadDamage
 		Spread: 85
-		Damage: 30
+		Damage: 3000
 		ValidTargets: Ground
 		Versus:
 			None: 30
@@ -288,7 +288,7 @@ RedEye2:
 		Speed: 384
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
-		Damage: 33
+		Damage: 3300
 		ValidTargets: Air
 		DamageTypes: SmallExplosionDeath
 	Warhead@2Eff: CreateEffect

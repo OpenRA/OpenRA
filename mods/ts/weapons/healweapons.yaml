@@ -8,7 +8,7 @@ Heal:
 	Warhead@1Dam: SpreadDamage
 		DebugOverlayColor: 00FF00
 		Spread: 213
-		Damage: -50
+		Damage: -5000
 		ValidTargets: Infantry
 
 Repair:
@@ -21,5 +21,5 @@ Repair:
 	Warhead@1Dam: SpreadDamage
 		DebugOverlayColor: 00FF00
 		Spread: 213
-		Damage: -50
+		Damage: -5000
 		ValidTargets: Repair

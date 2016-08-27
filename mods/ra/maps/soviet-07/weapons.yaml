@@ -6,7 +6,7 @@ M1CarbineInterior:
 		Speed: 1c682
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
-		Damage: 15
+		Damage: 1500
 		Versus:
 			Wood: 25
 			Light: 30
@@ -31,7 +31,7 @@ FireballLauncherInterior:
 		Image: FB1
 	Warhead@1Dam: SpreadDamage
 		Spread: 213
-		Damage: 150
+		Damage: 15000
 		Versus:
 			None: 90
 			Wood: 50
@@ -48,7 +48,7 @@ FireballLauncherInterior:
 MissionBarrelExplodeInterior:
 	Warhead@1Dam: SpreadDamage
 		Spread: 350
-		Damage: 250
+		Damage: 25000
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		Delay: 5
 		Versus:

@@ -14,7 +14,7 @@ MSLO:
 		Footprint: xx
 		Dimensions: 2,1
 	Health:
-		HP: 1000
+		HP: 100000
 	Armor:
 		Type: Wood
 	RevealsShroud:
@@ -70,7 +70,7 @@ GAP:
 	WithSpriteBody:
 		PauseAnimationWhenDisabled: true
 	Health:
-		HP: 1000
+		HP: 100000
 	Armor:
 		Type: Wood
 	RevealsShroud:
@@ -109,7 +109,7 @@ SPEN:
 		TerrainTypes: Water
 	-GivesBuildableArea:
 	Health:
-		HP: 1000
+		HP: 100000
 	Armor:
 		Type: Light
 	RevealsShroud:
@@ -137,6 +137,7 @@ SPEN:
 	RepairsUnits:
 		FinishRepairingNotification: UnitRepaired
 		PlayerExperience: 15
+		HpPerStep: 1000
 	RallyPoint:
 	ProductionBar:
 	Power:
@@ -199,7 +200,7 @@ SYRD:
 		TerrainTypes: Water
 	-GivesBuildableArea:
 	Health:
-		HP: 1000
+		HP: 100000
 	Armor:
 		Type: Light
 	RevealsShroud:
@@ -227,6 +228,7 @@ SYRD:
 	RepairsUnits:
 		FinishRepairingNotification: UnitRepaired
 		PlayerExperience: 15
+		HpPerStep: 1000
 	RallyPoint:
 	ProductionBar:
 	Power:
@@ -298,7 +300,7 @@ IRON:
 	SelectionDecorations:
 		VisualBounds: 50,50,0,-12
 	Health:
-		HP: 1000
+		HP: 100000
 	Armor:
 		Type: Wood
 	RevealsShroud:
@@ -344,7 +346,7 @@ PDOX:
 		PowerdownSound: DisablePower
 	DisabledOverlay:
 	Health:
-		HP: 1000
+		HP: 100000
 	Armor:
 		Type: Wood
 	RevealsShroud:
@@ -415,7 +417,7 @@ TSLA:
 		PowerdownSound: DisablePower
 	DisabledOverlay:
 	Health:
-		HP: 400
+		HP: 40000
 	Armor:
 		Type: Heavy
 	RevealsShroud:
@@ -459,7 +461,7 @@ AGUN:
 		PowerdownSound: DisablePower
 	DisabledOverlay:
 	Health:
-		HP: 400
+		HP: 40000
 	Armor:
 		Type: Heavy
 	RevealsShroud:
@@ -510,7 +512,7 @@ DOME:
 		PowerdownSound: DisablePower
 	DisabledOverlay:
 	Health:
-		HP: 1000
+		HP: 100000
 	Armor:
 		Type: Wood
 	RevealsShroud:
@@ -538,7 +540,7 @@ PBOX:
 	Valued:
 		Cost: 400
 	Health:
-		HP: 400
+		HP: 40000
 	Armor:
 		Type: Heavy
 	RevealsShroud:
@@ -583,7 +585,7 @@ HBOX:
 	Valued:
 		Cost: 600
 	Health:
-		HP: 600
+		HP: 60000
 	Armor:
 		Type: Heavy
 	RevealsShroud:
@@ -631,7 +633,7 @@ GUN:
 		Description: Anti-Armor base defense.\nCan detect cloaked units.\n  Strong vs Vehicles\n  Weak vs Infantry, Aircraft
 	Building:
 	Health:
-		HP: 400
+		HP: 40000
 	Armor:
 		Type: Heavy
 	RevealsShroud:
@@ -671,7 +673,7 @@ FTUR:
 		Description: Anti-Infantry base defense.\nCan detect cloaked units.\n  Strong vs Infantry, Light armor\n  Weak vs Tanks, Aircraft
 	Building:
 	Health:
-		HP: 400
+		HP: 40000
 	Armor:
 		Type: Heavy
 	RevealsShroud:
@@ -714,7 +716,7 @@ SAM:
 	CanPowerDown:
 	DisabledOverlay:
 	Health:
-		HP: 400
+		HP: 40000
 	Armor:
 		Type: Heavy
 	RevealsShroud:
@@ -757,7 +759,7 @@ ATEK:
 		Footprint: xx xx
 		Dimensions: 2,2
 	Health:
-		HP: 400
+		HP: 40000
 	Armor:
 		Type: Wood
 	RevealsShroud:
@@ -794,7 +796,7 @@ WEAP:
 		Footprint: xxx xxx
 		Dimensions: 3,2
 	Health:
-		HP: 1500
+		HP: 150000
 	Armor:
 		Type: Wood
 	RevealsShroud:
@@ -917,7 +919,7 @@ FACT:
 		Factions: ukraine
 		Prerequisite: structures.ukraine
 	Health:
-		HP: 1500
+		HP: 150000
 	Armor:
 		Type: Wood
 	RevealsShroud:
@@ -975,7 +977,7 @@ PROC:
 	Targetable:
 		TargetTypes: Ground, Structure, C4, DetonateAttack, SpyInfiltrate
 	Health:
-		HP: 900
+		HP: 90000
 	Armor:
 		Type: Wood
 	RevealsShroud:
@@ -1022,7 +1024,7 @@ SILO:
 	Building:
 	-GivesBuildableArea:
 	Health:
-		HP: 300
+		HP: 30000
 	Armor:
 		Type: Wood
 	RevealsShroud:
@@ -1054,7 +1056,7 @@ HPAD:
 		Footprint: xx xx
 		Dimensions: 2,2
 	Health:
-		HP: 800
+		HP: 80000
 	Armor:
 		Type: Wood
 	RevealsShroud:
@@ -1132,7 +1134,7 @@ AFLD:
 		Footprint: xxx xxx
 		Dimensions: 3,2
 	Health:
-		HP: 1000
+		HP: 100000
 	Armor:
 		Type: Wood
 	RevealsShroud:
@@ -1250,7 +1252,7 @@ POWR:
 		Footprint: xx xx
 		Dimensions: 2,2
 	Health:
-		HP: 400
+		HP: 40000
 	Armor:
 		Type: Wood
 	RevealsShroud:
@@ -1291,7 +1293,7 @@ APWR:
 	SelectionDecorations:
 		VisualBounds: 72,68,0,-10
 	Health:
-		HP: 700
+		HP: 70000
 	Armor:
 		Type: Wood
 	RevealsShroud:
@@ -1328,7 +1330,7 @@ STEK:
 		Footprint: xxx xxx
 		Dimensions: 3,2
 	Health:
-		HP: 600
+		HP: 60000
 	Armor:
 		Type: Wood
 	RevealsShroud:
@@ -1353,7 +1355,7 @@ BARR:
 		Footprint: xx xx
 		Dimensions: 2,2
 	Health:
-		HP: 800
+		HP: 80000
 	Armor:
 		Type: Wood
 	RevealsShroud:
@@ -1426,7 +1428,7 @@ KENN:
 	Building:
 	-GivesBuildableArea:
 	Health:
-		HP: 300
+		HP: 30000
 	Armor:
 		Type: Wood
 	RevealsShroud:
@@ -1475,7 +1477,7 @@ TENT:
 		Footprint: xx xx
 		Dimensions: 2,2
 	Health:
-		HP: 800
+		HP: 80000
 	Armor:
 		Type: Wood
 	RevealsShroud:
@@ -1559,7 +1561,7 @@ FIX:
 	SelectionDecorations:
 		VisualBounds: 72,48
 	Health:
-		HP: 800
+		HP: 80000
 	Armor:
 		Type: Wood
 	RevealsShroud:
@@ -1572,6 +1574,7 @@ FIX:
 		Interval: 10
 		FinishRepairingNotification: UnitRepaired
 		PlayerExperience: 15
+		HpPerStep: 1000
 	WithRepairAnimation:
 	Power:
 		Amount: -30
@@ -1591,7 +1594,7 @@ SBAG:
 		Name: Sandbag Wall
 		Description: Stops infantry and light vehicles.\nCan be crushed by tanks.
 	Health:
-		HP: 300
+		HP: 30000
 	Armor:
 		Type: Wood
 	LineBuild:
@@ -1616,7 +1619,7 @@ FENC:
 		Name: Wire Fence
 		Description: Stops infantry and light vehicles.\nCan be crushed by tanks.
 	Health:
-		HP: 300
+		HP: 30000
 	Armor:
 		Type: Wood
 	LineBuild:
@@ -1644,7 +1647,7 @@ BRIK:
 		DamagedSounds: crmble2.aud
 		DestroyedSounds: kaboom30.aud
 	Health:
-		HP: 500
+		HP: 50000
 	Armor:
 		Type: Concrete
 	Crushable:

@@ -9,7 +9,7 @@ GACNST:
 		BuildPaletteOrder: 1000
 		Prerequisites: ~disabled
 	Health:
-		HP: 1500
+		HP: 150000
 	Armor:
 		Type: Wood
 	RevealsShroud:
@@ -70,7 +70,7 @@ PROC:
 	Selectable:
 		Bounds: 134, 96, 0, -12
 	Health:
-		HP: 900
+		HP: 90000
 	RevealsShroud:
 		Range: 6c0
 	TiberianSunRefinery:
@@ -124,7 +124,7 @@ GASILO:
 		Bounds: 80, 48, -5, 0
 	-GivesBuildableArea:
 	Health:
-		HP: 300
+		HP: 30000
 	Armor:
 		Type: Wood
 	RevealsShroud:

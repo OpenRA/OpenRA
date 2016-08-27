@@ -8,7 +8,7 @@ Sniper:
 		Speed: 1c682
 	Warhead@1Dam: SpreadDamage
 		Spread: 42
-		Damage: 100
+		Damage: 10000
 		ValidTargets: Infantry
 		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
 
@@ -20,7 +20,7 @@ HighV:
 		Speed: 1c682
 	Warhead@1Dam: SpreadDamage
 		Spread: 683
-		Damage: 30
+		Damage: 3000
 		Versus:
 			None: 100
 			Wood: 50
@@ -43,7 +43,7 @@ HeliAGGun:
 		Blockable: false
 	Warhead@1Dam: SpreadDamage
 		Spread: 256
-		Damage: 20
+		Damage: 2000
 		ValidTargets: Ground
 		Versus:
 			None: 100
@@ -67,7 +67,7 @@ HeliAAGun:
 		Blockable: false
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
-		Damage: 20
+		Damage: 2000
 		ValidTargets: Air
 		Versus:
 			None: 100
@@ -87,7 +87,7 @@ Pistol:
 		Speed: 1c682
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
-		Damage: 1
+		Damage: 100
 		InvalidTargets: Wall
 		Versus:
 			None: 100
@@ -107,7 +107,7 @@ M16:
 		Speed: 1c682
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
-		Damage: 15
+		Damage: 1500
 		InvalidTargets: Wall
 		Versus:
 			None: 100
@@ -128,7 +128,7 @@ MachineGun:
 		Speed: 1c682
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
-		Damage: 15
+		Damage: 1500
 		InvalidTargets: Wall
 		Versus:
 			None: 100
@@ -148,7 +148,7 @@ Vulcan:
 		Speed: 1c682
 	Warhead@1Dam: SpreadDamage
 		Spread: 426
-		Damage: 100
+		Damage: 10000
 		ValidTargets: Ground, Water
 		Versus:
 			None: 100
@@ -168,7 +168,7 @@ APCGun:
 		Speed: 1c682
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
-		Damage: 15
+		Damage: 1500
 		ValidTargets: Ground
 		Versus:
 			None: 50
@@ -189,7 +189,7 @@ APCGun.AA:
 		Blockable: false
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
-		Damage: 25
+		Damage: 2500
 		ValidTargets: Air
 		Versus:
 			Heavy: 50

@@ -17,7 +17,7 @@ SuperTankPrimary:
 		Image: 120MM
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
-		Damage: 50
+		Damage: 5000
 		InvalidTargets: Air, Infantry
 		Versus:
 			None: 20

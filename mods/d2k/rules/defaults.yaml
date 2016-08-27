@@ -111,7 +111,7 @@
 ^Husk:
 	Inherits@1: ^SpriteActor
 	Health:
-		HP: 75
+		HP: 750
 	Armor:
 		Type: light
 	HiddenUnderFog:
@@ -146,7 +146,7 @@
 
 ^TowerHusk:
 	Health:
-		HP: 125
+		HP: 1250
 	Armor:
 		Type: concrete
 	Husk:
@@ -271,6 +271,7 @@
 		Sequences: building, self_destruct, large_explosion
 	RepairableBuilding:
 		PlayerExperience: 25
+		RepairStep: 700
 	EmitInfantryOnSell:
 		ActorTypes: light_inf
 	MustBeDestroyed:

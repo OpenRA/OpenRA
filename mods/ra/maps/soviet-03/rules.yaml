@@ -28,23 +28,23 @@ World:
 ^Helicopter:
 	-GivesBounty:
 	Health:
-		HP: 9000
+		HP: 900000
 
 BARL:
 	Health:
-		HP: 1
+		HP: 100
 	Explodes:
 		Weapon: MissionBarrelExplode
 
 BRL3:
 	Health:
-		HP: 1
+		HP: 100
 	Explodes:
 		Weapon: MissionBarrelExplode
 
 FENC:
 	Health:
-		HP: 9000
+		HP: 900000
 
 V01:
 	Cargo:

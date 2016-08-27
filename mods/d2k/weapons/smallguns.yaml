@@ -7,7 +7,7 @@ LMG:
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Falloff: 100, 50, 25, 0
-		Damage: 125
+		Damage: 1250
 		Versus:
 			wall: 10
 			building: 25
@@ -30,7 +30,7 @@ Fremen_S:
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Falloff: 100, 50, 25, 0
-		Damage: 125
+		Damage: 1250
 		Versus:
 			wall: 10
 			building: 25
@@ -54,7 +54,7 @@ M_LMG:
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Falloff: 100, 50, 25, 0
-		Damage: 125
+		Damage: 1250
 		Versus:
 			wall: 10
 			building: 25
@@ -77,7 +77,7 @@ M_HMG:
 	Warhead@1Dam: SpreadDamage
 		Spread: 192
 		Falloff: 100, 50, 25, 0
-		Damage: 250
+		Damage: 2500
 		Versus:
 			none: 25
 			building: 50
@@ -100,7 +100,7 @@ Fremen_L:
 	Warhead@1Dam: SpreadDamage
 		Spread: 192
 		Falloff: 100, 50, 25, 0
-		Damage: 250
+		Damage: 2500
 		Versus:
 			none: 25
 			building: 50
@@ -122,7 +122,7 @@ HMG:
 	Warhead@1Dam: SpreadDamage
 		Spread: 160
 		Falloff: 100, 60, 30, 0
-		Damage: 180
+		Damage: 1800
 		Versus:
 			wall: 10
 			building: 25
@@ -145,7 +145,7 @@ HMGo:
 	Warhead@1Dam: SpreadDamage
 		Spread: 160
 		Falloff: 100, 60, 30, 0
-		Damage: 180
+		Damage: 1800
 		Versus:
 			wall: 10
 			building: 25

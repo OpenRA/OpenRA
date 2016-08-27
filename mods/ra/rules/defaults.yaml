@@ -36,7 +36,7 @@
 		UpgradeTypes: inaccuracy
 		Modifier: 90, 80, 70, 50
 	SelfHealing@ELITE:
-		Step: 2
+		Step: 200
 		Delay: 100
 		HealIfBelow: 100
 		DamageCooldown: 125
@@ -170,7 +170,7 @@
 	Huntable:
 	DrawLineToTarget:
 	Health:
-		HP: 25
+		HP: 2500
 		Shape: Circle
 			Radius: 128
 	Armor:
@@ -225,7 +225,7 @@
 	Tooltip:
 		GenericName: Soldier
 	SelfHealing@HOSPITAL:
-		Step: 5
+		Step: 500
 		Delay: 100
 		HealIfBelow: 100
 		DamageCooldown: 125
@@ -461,6 +461,7 @@
 	GivesBuildableArea:
 	RepairableBuilding:
 		PlayerExperience: 25
+		RepairStep: 700
 	EngineerRepairable:
 	AcceptsSupplies:
 	WithMakeAnimation:
@@ -523,7 +524,7 @@
 	FrozenUnderFog:
 	FrozenUnderFogUpdatedByGps:
 	Health:
-		HP: 100
+		HP: 10000
 		Shape: Rectangle
 			TopLeft: -512, -512
 			BottomRight: 512, 512
@@ -533,7 +534,7 @@
 	Valued:
 		Cost: 250
 	Health:
-		HP: 350
+		HP: 35000
 	Armor:
 		Type: Heavy
 	LineBuildNode:
@@ -556,7 +557,7 @@
 	Inherits: ^BasicBuilding
 	Huntable:
 	Health:
-		HP: 400
+		HP: 40000
 	Armor:
 		Type: Wood
 	Tooltip:
@@ -568,7 +569,7 @@
 	Inherits: ^Building
 	-GivesBuildableArea:
 	Health:
-		HP: 100
+		HP: 10000
 	Explodes:
 		Weapon: Demolish
 		DamageThreshold: 90
@@ -589,7 +590,7 @@
 	CustomSelectionSize:
 		CustomBounds: 24,24
 	Health:
-		HP: 10
+		HP: 1000
 	Explodes:
 		Weapon: UnitExplode
 	Tooltip:
@@ -632,7 +633,7 @@
 	RadarColorFromTerrain:
 		Terrain: Tree
 	Health:
-		HP: 500
+		HP: 50000
 	Armor:
 		Type: Wood
 	Targetable:
@@ -674,7 +675,7 @@
 ^BasicHusk:
 	Inherits@1: ^SpriteActor
 	Health:
-		HP: 280
+		HP: 28000
 	Armor:
 		Type: Heavy
 	HiddenUnderFog:
@@ -749,7 +750,7 @@
 	CustomSelectionSize:
 		CustomBounds: 96,48
 	Health:
-		HP: 1000
+		HP: 100000
 	Armor:
 		Type: Concrete
 	AutoTargetIgnore:
@@ -822,7 +823,7 @@
 		DetonateClasses: mine
 		AvoidFriendly: false
 	Health:
-		HP: 100
+		HP: 10000
 		NotifyAppliedDamage: false
 	Armor:
 		Type: Light

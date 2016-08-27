@@ -16,7 +16,7 @@ DOG:
 	SelectionDecorations:
 		VisualBounds: 12,17,-1,-4
 	Health:
-		HP: 12
+		HP: 1200
 	Mobile:
 		Speed: 99
 		Voice: Move
@@ -59,7 +59,7 @@ E1:
 		Name: Rifle Infantry
 		Description: General-purpose infantry.\n  Strong vs Infantry\n  Weak vs Vehicles, Aircraft
 	Health:
-		HP: 50
+		HP: 5000
 	Armament@PRIMARY:
 		Weapon: M1Carbine
 	Armament@GARRISONED:
@@ -85,7 +85,7 @@ E2:
 		Name: Grenadier
 		Description: Infantry armed with grenades.\n  Strong vs Buildings, Infantry\n  Weak vs Vehicles, Aircraft
 	Health:
-		HP: 50
+		HP: 5000
 	Mobile:
 		Speed: 71
 	Armament@PRIMARY:
@@ -118,7 +118,7 @@ E3:
 		Name: Rocket Soldier
 		Description: Anti-tank/Anti-aircraft infantry.\n  Strong vs Vehicles, Aircraft\n  Weak vs Infantry
 	Health:
-		HP: 45
+		HP: 4500
 	Armament@PRIMARY:
 		Weapon: RedEye
 		LocalOffset: 0,0,555
@@ -147,7 +147,7 @@ E4:
 		Name: Flamethrower
 		Description: Advanced anti-structure unit.\n  Strong vs Infantry, Buildings\n  Weak vs Vehicles, Aircraft
 	Health:
-		HP: 40
+		HP: 4000
 	Armament@PRIMARY:
 		Weapon: Flamer
 		LocalOffset: 427,0,341
@@ -263,7 +263,7 @@ E7:
 		Name: Tanya
 		Description: Elite commando infantry. Armed with\ndual pistols and C4.\n  Strong vs Infantry, Buildings\n  Weak vs Vehicles, Aircraft\n  Special Ability: Destroy Building with C4\nMaximum 1 can be trained.
 	Health:
-		HP: 100
+		HP: 10000
 	Mobile:
 		Speed: 71
 		Voice: Move
@@ -309,7 +309,7 @@ MEDI:
 		Name: Medic
 		Description: Heals nearby infantry.\n  Unarmed
 	Health:
-		HP: 80
+		HP: 8000
 	RevealsShroud:
 		Range: 3c0
 	Passenger:
@@ -340,7 +340,7 @@ MECH:
 		Name: Mechanic
 		Description: Repairs nearby vehicles and restores\nhusks to working condition by capturing them.\n  Unarmed
 	Health:
-		HP: 80
+		HP: 8000
 	Mobile:
 		Voice: Move
 	RevealsShroud:
@@ -450,7 +450,7 @@ HIJACKER:
 		Name: Hijacker
 		Description: Hijacks enemy vehicles.\n  Unarmed
 	Health:
-		HP: 50
+		HP: 5000
 	RevealsShroud:
 		Range: 5c0
 	Passenger:
@@ -489,7 +489,7 @@ SHOK:
 		Name: Shock Trooper
 		Description: Elite infantry with portable tesla coils.\n  Strong vs Infantry, Vehicles\n  Weak vs Aircraft
 	Health:
-		HP: 60
+		HP: 6000
 	Mobile:
 		Voice: Move
 	RevealsShroud:
@@ -528,7 +528,7 @@ SNIPER:
 		BuildPaletteOrder: 80
 		Prerequisites: ~disabled
 	Health:
-		HP: 80
+		HP: 8000
 	Passenger:
 		PipType: Red
 	RevealsShroud:
@@ -571,7 +571,7 @@ Zombie:
 		BuildPaletteOrder: 200
 		Prerequisites: ~bio
 	Health:
-		HP: 250
+		HP: 25000
 	Mobile:
 		Speed: 42
 	AutoTarget:
@@ -603,7 +603,7 @@ Ant:
 	SelectionDecorations:
 		VisualBounds: 30,30,0,-2
 	Health:
-		HP: 750
+		HP: 75000
 		Shape: Circle
 			Radius: 469
 	Mobile:

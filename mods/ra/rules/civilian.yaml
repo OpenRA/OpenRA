@@ -64,7 +64,7 @@ FCOM:
 	Valued:
 		Cost: 2000
 	Health:
-		HP: 400
+		HP: 40000
 	Armor:
 		Type: Wood
 	Tooltip:
@@ -84,7 +84,7 @@ HOSP:
 		Footprint: xx xx
 		Dimensions: 2,2
 	Health:
-		HP: 1000
+		HP: 100000
 	ExternalCapturable:
 	ExternalCapturableBar:
 	EngineerRepairable:
@@ -249,7 +249,7 @@ BARL:
 	CustomSelectionSize:
 		CustomBounds: 24,24
 	Health:
-		HP: 10
+		HP: 1000
 	Explodes:
 		Weapon: BarrelExplode
 	Tooltip:
@@ -270,7 +270,7 @@ BRL3:
 	CustomSelectionSize:
 		CustomBounds: 24,24
 	Health:
-		HP: 10
+		HP: 1000
 	Explodes:
 		Weapon: BarrelExplode
 	Tooltip:
@@ -304,7 +304,7 @@ MISS:
 	Valued:
 		Cost: 2000
 	Health:
-		HP: 400
+		HP: 40000
 	RevealsShroud:
 		Range: 3c0
 	Armor:
@@ -348,7 +348,7 @@ OILB:
 		Footprint: xx xx
 		Dimensions: 2,2
 	Health:
-		HP: 1000
+		HP: 100000
 	RevealsShroud:
 		Range: 3c0
 	ExternalCapturable:

@@ -3,5 +3,5 @@ PortaTesla:
 	Range: 10c0
 	Warhead: SpreadDamage
 		Spread: 42
-		Damage: 80
+		Damage: 8000
 		DamageTypes: Prone50Percent, TriggerProne, FireDeath

@@ -4,4 +4,4 @@ Napalm.IN:
 		Image: BOMBLET
 	Warhead@1Dam: SpreadDamage
 		Spread: 1000
-		Damage: 1500
+		Damage: 150000

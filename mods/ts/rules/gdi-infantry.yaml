@@ -10,7 +10,7 @@ E2:
 		Name: Disc Thrower
 		Description: Infantry armed with special explosive discs.\n  Strong vs Buildings, Infantry\n  Weak vs Vehicles, Aircraft
 	Health:
-		HP: 150
+		HP: 15000
 	Mobile:
 		Speed: 56
 	Armament:
@@ -42,7 +42,7 @@ MEDIC:
 	Mobile:
 		Speed: 56
 	Health:
-		HP: 125
+		HP: 12500
 	Crushable:
 		CrushSound: squishy2.aud
 	Armament:
@@ -56,6 +56,7 @@ MEDIC:
 		AttackSequence: heal
 	SelfHealing:
 		Delay: 60
+		Step: 500
 	Passenger:
 		PipType: Red
 
@@ -75,7 +76,7 @@ JUMPJET:
 	Mobile:
 		Speed: 56
 	Health:
-		HP: 120
+		HP: 12000
 	Armor:
 		Type: Light
 	Passenger:
@@ -113,7 +114,7 @@ GHOST:
 	Mobile:
 		Speed: 56
 	Health:
-		HP: 200
+		HP: 20000
 	Passenger:
 	RevealsShroud:
 		Range: 6c0

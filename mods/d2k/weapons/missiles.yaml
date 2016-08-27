@@ -14,7 +14,7 @@ Bazooka:
 	Warhead@1Dam: SpreadDamage
 		Spread: 192
 		Falloff: 100, 50, 25, 0
-		Damage: 300
+		Damage: 3000
 		Versus:
 			none: 8
 			wall: 75
@@ -48,7 +48,7 @@ Rocket:
 	Warhead@1Dam: SpreadDamage
 		Spread: 160
 		Falloff: 100, 50, 25, 0
-		Damage: 250
+		Damage: 2500
 		Versus:
 			none: 25
 			building: 50
@@ -90,7 +90,7 @@ TowerMissile:
 	Warhead@1Dam: SpreadDamage
 		Spread: 256
 		Falloff: 100, 50, 25, 0
-		Damage: 480
+		Damage: 4800
 		ValidTargets: Ground, Air
 		Versus:
 			none: 15
@@ -132,7 +132,7 @@ mtank_pri:
 	Warhead@1Dam: SpreadDamage
 		Spread: 256
 		Falloff: 100, 50, 25, 0
-		Damage: 600
+		Damage: 6000
 		ValidTargets: Ground, Air
 		Versus:
 			none: 15
@@ -173,7 +173,7 @@ DeviatorMissile:
 	Warhead@1Dam: SpreadDamage
 		Spread: 256
 		Falloff: 100, 50, 25, 0
-		Damage: 500
+		Damage: 5000
 		Versus:
 			none: 20
 			wall: 20

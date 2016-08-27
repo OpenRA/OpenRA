@@ -17,7 +17,7 @@ TRAN:
 		LandableTerrainTypes: Clear,Rough,Road,Ore,Beach,Tiberium,BlueTiberium
 		AltitudeVelocity: 0c100
 	Health:
-		HP: 90
+		HP: 9000
 	Armor:
 		Type: Light
 	RevealsShroud:
@@ -72,7 +72,7 @@ HELI:
 		TurnSpeed: 4
 		Speed: 186
 	Health:
-		HP: 125
+		HP: 12500
 	Armor:
 		Type: Light
 	RevealsShroud:
@@ -132,7 +132,7 @@ ORCA:
 		TurnSpeed: 4
 		Speed: 186
 	Health:
-		HP: 90
+		HP: 9000
 	Armor:
 		Type: Light
 	RevealsShroud:
@@ -179,7 +179,7 @@ C17:
 		AirborneUpgrades: airborne
 		MaximumPitch: 36
 	Health:
-		HP: 25
+		HP: 2500
 	Armor:
 		Type: Heavy
 	HiddenUnderFog:
@@ -216,7 +216,7 @@ A10:
 		Repulsable: False
 		AirborneUpgrades: airborne
 	Health:
-		HP: 150
+		HP: 15000
 	Armor:
 		Type: Heavy
 	AttackBomber:

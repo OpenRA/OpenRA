@@ -15,7 +15,7 @@ Sound:
 	Warhead@1Dam: SpreadDamage
 		Range: 0, 32
 		Falloff: 100, 100
-		Damage: 150
+		Damage: 1500
 		AffectsParent: false
 		ValidStances: Neutral, Enemy
 		Versus:
@@ -29,8 +29,8 @@ Sound:
 	Warhead@2Dam: SpreadDamage
 		Range: 0, 32
 		Falloff: 50, 50 # Only does half damage to friendly units
-		Damage: 150
 		InvalidTargets: Sonictank # Does not affect friendly sonic tanks at all
+		Damage: 1500
 		AffectsParent: false
 		ValidStances: Ally
 		Versus:
@@ -52,7 +52,7 @@ Heal:
 	Warhead@1Dam: SpreadDamage
 		Spread: 160
 		Falloff: 100, 100, 0
-		Damage: -200
+		Damage: -2000
 		ValidTargets: Infantry
 		DebugOverlayColor: 00FF00
 
@@ -64,7 +64,7 @@ WormJaw:
 		InvalidTargets: Structure, Infantry
 		Spread: 768
 		Falloff: 100, 100, 0
-		Damage: 10000
+		Damage: 100000
 
 OrniBomb:
 	ReloadDelay: 25
@@ -76,7 +76,7 @@ OrniBomb:
 	Warhead@1Dam: SpreadDamage
 		Spread: 320
 		Falloff: 100, 60, 30, 15, 0
-		Damage: 1000 #400 in original, reduce when bombers can do multiple passes
+		Damage: 10000
 		Versus:
 			none: 90
 			wall: 50
@@ -97,7 +97,7 @@ OrniBomb:
 
 Crush:
 	Warhead@1Dam: SpreadDamage
-		Damage: 100
+		Damage: 1000
 		DamageTypes: ExplosionDeath
 	Warhead@2Eff: CreateEffect
 		ImpactSounds: CRUSH1.WAV
@@ -113,7 +113,7 @@ Atomic:
 	Warhead@1Dam: SpreadDamage
 		Spread: 1c0
 		Falloff: 200, 100, 50, 25, 12, 0
-		Damage: 2700	##225 in vanilla but of course is a cluster bomb instead, so damage spread out
+		Damage: 27000
 		Versus:
 			none: 90
 			wall: 50
@@ -133,7 +133,7 @@ CrateNuke:
 	Warhead@1Dam: SpreadDamage
 		Spread: 320
 		Falloff: 100, 60, 30, 15, 0
-		Damage: 500
+		Damage: 5000
 		Versus:
 			none: 90
 			wall: 50
@@ -154,7 +154,7 @@ CrateExplosion:
 	Warhead@1Dam: SpreadDamage
 		Spread: 320
 		Falloff: 100, 60, 30, 15, 0
-		Damage: 500
+		Damage: 5000
 		Versus:
 			none: 90
 			wall: 5
@@ -199,7 +199,7 @@ grenade:
 	Warhead@1Dam: SpreadDamage
 		Spread: 320
 		Falloff: 100, 65, 35, 20, 0
-		Damage: 150
+		Damage: 1500
 		Versus:
 			none: 125
 			wood: 70
@@ -220,7 +220,7 @@ GrenDeath:
 	Warhead@1Dam: SpreadDamage
 		Spread: 320
 		Falloff: 100, 60, 30, 15, 0
-		Damage: 150
+		Damage: 1500
 		Versus:
 			none: 125
 			wood: 70
@@ -240,7 +240,7 @@ SardDeath:
 	Warhead@1Dam: SpreadDamage
 		Spread: 256
 		Falloff: 100, 50, 25, 0
-		Damage: 300
+		Damage: 3000
 		Versus:
 			none: 15
 			wall: 75
@@ -267,7 +267,7 @@ SpiceExplosion:
 	Warhead@1Dam: SpreadDamage
 		Spread: 320
 		Falloff: 100, 60, 30, 15, 0
-		Damage: 75
+		Damage: 750
 		Versus:
 			none: 90
 			wall: 5
@@ -296,7 +296,7 @@ BloomExplosion:
 	Warhead@1Dam: SpreadDamage
 		Spread: 320
 		Falloff: 100, 60, 30, 15, 0
-		Damage: 750
+		Damage: 7500
 		Versus:
 			none: 90
 			wall: 5

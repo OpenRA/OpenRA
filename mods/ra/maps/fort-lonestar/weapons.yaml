@@ -13,7 +13,7 @@
 		Versus:
 			None: 75
 			Concrete: 100
-		Damage: 150
+		Damage: 15000
 	Warhead@3Eff: CreateEffect
 		Explosions: self_destruct
 
@@ -38,7 +38,7 @@ MammothTusk:
 			Light: 110
 			Heavy: 100
 			Concrete: 200
-		Damage: 250
+		Damage: 25000
 	Warhead@3Eff: CreateEffect
 		Explosions: nuke
 
@@ -65,7 +65,7 @@ TankNapalm:
 			Light: 100
 			Heavy: 100
 			Concrete: 100
-		Damage: 15
+		Damage: 1500
 		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Scorch
@@ -86,7 +86,7 @@ ParaBomb:
 			Wood: 100
 			Light: 60
 			Concrete: 25
-		Damage: 200
+		Damage: 20000
 		DamageTypes: Prone50Percent, TriggerProne, FireDeath
 	Warhead@3Eff: CreateEffect
 		Explosions: napalm
@@ -111,7 +111,7 @@ ParaBomb:
 			Wood: 100
 			Heavy: 75
 			Concrete: 35
-		Damage: 20
+		Damage: 2000
 		DamageTypes: Prone50Percent, TriggerProne, FireDeath
 	Warhead@3Eff: CreateEffect
 		Explosions: small_napalm
@@ -134,7 +134,7 @@ FLAK-23:
 			Light: 30
 			Heavy: 40
 			Concrete: 30
-		Damage: 25
+		Damage: 2500
 		DamageTypes: Prone50Percent, TriggerProne, DefaultDeath
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Scorch
@@ -158,7 +158,7 @@ SCUD:
 			Wood: 90
 			Light: 80
 			Heavy: 70
-		Damage: 500
+		Damage: 50000
 		AffectsParent: true
 	Warhead@3Eff: CreateEffect
 		Explosions: nuke

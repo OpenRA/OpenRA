@@ -1,7 +1,7 @@
 FlametankExplode:
 	Warhead@1Dam: SpreadDamage
 		Spread: 1c0
-		Damage: 115
+		Damage: 11500
 		DamageTypes: Prone50Percent, TriggerProne, FireDeath
 	Warhead@2Eff: CreateEffect
 		Explosions: big_napalm
@@ -12,7 +12,7 @@ FlametankExplode:
 HeliCrash:
 	Warhead@1Dam: SpreadDamage
 		Spread: 426
-		Damage: 40
+		Damage: 4000
 		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
 	Warhead@2Eff: CreateEffect
 		Explosions: poof
@@ -31,7 +31,7 @@ HeliExplode:
 UnitExplode:
 	Warhead@1Dam: SpreadDamage
 		Spread: 426
-		Damage: 50
+		Damage: 5000
 		Versus:
 			None: 90
 			Wood: 75
@@ -52,7 +52,7 @@ UnitExplodeShip:
 UnitExplodeSmall:
 	Warhead@1Dam: SpreadDamage
 		Spread: 426
-		Damage: 40
+		Damage: 4000
 		Versus:
 			None: 90
 			Wood: 75
@@ -68,7 +68,7 @@ UnitExplodeSmall:
 GrenadierExplode:
 	Warhead@1Dam: SpreadDamage
 		Spread: 256
-		Damage: 10
+		Damage: 1000
 		Versus:
 			None: 90
 			Wood: 75
@@ -84,7 +84,7 @@ GrenadierExplode:
 Napalm.Crate:
 	Warhead@1Dam: SpreadDamage
 		Spread: 170
-		Damage: 50
+		Damage: 5000
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		Versus:
 			None: 90

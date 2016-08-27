@@ -11,7 +11,7 @@
 	Warhead@1Dam: SpreadDamage
 		Spread: 256
 		Falloff: 100, 50, 25, 0
-		Damage: 290
+		Damage: 2900
 		Versus:
 			none: 20
 			wall: 50
@@ -40,7 +40,7 @@
 	Warhead@1Dam: SpreadDamage
 		Spread: 256
 		Falloff: 100, 50, 25, 0
-		Damage: 270
+		Damage: 2700
 		Versus:
 			none: 20
 			wall: 50
@@ -76,7 +76,7 @@ DevBullet:
 	Warhead@1Dam: SpreadDamage
 		Spread: 384
 		Falloff: 100, 50, 25, 0
-		Damage: 650
+		Damage: 6500
 		Versus:
 			none: 50
 			building: 75
@@ -106,7 +106,7 @@ DevBullet:
 	Warhead@1Dam: SpreadDamage
 		Spread: 416
 		Falloff: 100, 65, 35, 20, 0
-		Damage: 450
+		Damage: 4500
 		Versus:
 			none: 125
 			wood: 70

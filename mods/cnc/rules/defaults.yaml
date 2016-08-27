@@ -37,7 +37,7 @@
 		UpgradeTypes: inaccuracy
 		Modifier: 90, 80, 70, 50
 	SelfHealing@ELITE:
-		Step: 2
+		Step: 200
 		Delay: 100
 		HealIfBelow: 100
 		DamageCooldown: 125
@@ -246,7 +246,7 @@
 		CrushSound: squish2.aud
 	Guardable:
 	SelfHealing@HOSPITAL:
-		Step: 5
+		Step: 500
 		Delay: 100
 		HealIfBelow: 100
 		DamageCooldown: 125
@@ -301,7 +301,7 @@
 	Mobile:
 		Speed: 56
 	Health:
-		HP: 25
+		HP: 2500
 	RevealsShroud:
 		Range: 2c0
 	ActorLostNotification:
@@ -328,7 +328,7 @@
 	Inherits@2: ^SpriteActor
 	Huntable:
 	Health:
-		HP: 1000
+		HP: 100000
 		Shape: Circle
 			Radius: 128
 	Armor:
@@ -385,7 +385,7 @@
 	Inherits@2: ^SpriteActor
 	Huntable:
 	Health:
-		HP: 300
+		HP: 30000
 		Shape: Circle
 			Radius: 427
 	Armor:
@@ -534,7 +534,7 @@
 		RequiredForShortGame: true
 	RepairableBuilding:
 		RepairPercent: 40
-		RepairStep: 14
+		RepairStep: 1400
 		PlayerExperience: 15
 	WithDeathAnimation:
 		DeathSequence: dead
@@ -552,7 +552,7 @@
 	Inherits: ^Building
 	-UpgradeManager:
 	Health:
-		HP: 400
+		HP: 40000
 	Tooltip:
 		GenericName: Civilian Building
 		GenericStancePrefix: false
@@ -580,7 +580,7 @@
 		Notification: CivilianBuildingCaptured
 	RepairableBuilding:
 		RepairPercent: 40
-		RepairStep: 14
+		RepairStep: 1400
 		PlayerExperience: 15
 	EngineerRepairable:
 	RevealsShroud:
@@ -646,7 +646,7 @@
 	FrozenUnderFog:
 	ScriptTriggers:
 	Health:
-		HP: 100
+		HP: 10000
 		Shape: Rectangle
 			TopLeft: -512, -512
 			BottomRight: 512, 512
@@ -666,7 +666,7 @@
 	RadarColorFromTerrain:
 		Terrain: Tree
 	Health:
-		HP: 500
+		HP: 50000
 	Armor:
 		Type: Wood
 	Targetable:
@@ -742,7 +742,7 @@
 ^CommonHuskDefaults:
 	Inherits@1: ^SpriteActor
 	Health:
-		HP: 140
+		HP: 14000
 	Armor:
 		Type: Light
 	HiddenUnderFog:
@@ -801,7 +801,7 @@
 		RequiresForceFire: yes
 		TargetTypes: Ground, Water
 	Health:
-		HP: 500
+		HP: 50000
 	SoundOnDamageTransition:
 		DamagedSounds: xplos.aud
 		DestroyedSounds: xplobig4.aud

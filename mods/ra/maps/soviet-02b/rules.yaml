@@ -89,6 +89,7 @@ GUN:
 
 FCOM:
 	RepairableBuilding:
+		RepairStep: 700
 
 AFLD:
 	Buildable:
@@ -100,7 +101,7 @@ AFLD:
 
 DOG:
 	Health:
-		HP: 25
+		HP: 2500
 	AutoTarget:
 		ScanRadius: 5
 
@@ -111,13 +112,13 @@ HARV:
 
 BARL:
 	Health:
-		HP: 1
+		HP: 100
 	Explodes:
 		Weapon: MissionBarrelExplode
 
 BRL3:
 	Health:
-		HP: 1
+		HP: 100
 	Explodes:
 		Weapon: MissionBarrelExplode
 

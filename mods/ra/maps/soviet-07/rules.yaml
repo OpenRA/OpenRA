@@ -21,13 +21,13 @@ World:
 
 BARL:
 	Health:
-		HP: 1
+		HP: 100
 	Explodes:
 		Weapon: MissionBarrelExplodeInterior
 
 BRL3:
 	Health:
-		HP: 1
+		HP: 100
 	Explodes:
 		Weapon: MissionBarrelExplodeInterior
 

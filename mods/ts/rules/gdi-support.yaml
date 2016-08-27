@@ -13,7 +13,7 @@ GAWALL:
 		Name: Concrete Wall
 		Description: Stops infantry and blocks enemy fire.\nCan NOT be crushed by tanks.
 	Health:
-		HP: 225
+		HP: 22500
 	Armor:
 		Type: Concrete
 	BlocksProjectiles:
@@ -60,7 +60,7 @@ GACTWR:
 		Bounds: 48, 36, 0, -6
 	DisabledOverlay:
 	Health:
-		HP: 500
+		HP: 50000
 	Armor:
 		Type: Light
 	BlocksProjectiles:

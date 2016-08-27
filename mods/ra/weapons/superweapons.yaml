@@ -9,7 +9,7 @@ ParaBomb:
 		Acceleration: 0
 	Warhead@1Dam: SpreadDamage
 		Spread: 768
-		Damage: 300
+		Damage: 30000
 		Versus:
 			None: 30
 			Wood: 75
@@ -32,7 +32,7 @@ Atomic:
 	ValidTargets: Ground, Trees, Water, Underwater, Air
 	Warhead@1Dam_impact: SpreadDamage
 		Spread: 1c0
-		Damage: 150
+		Damage: 15000
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		ValidTargets: Ground, Trees, Water, Underwater, Air
 		Versus:
@@ -49,7 +49,7 @@ Atomic:
 		ImpactSounds: kaboom1.aud
 	Warhead@5Dam_areanuke1: SpreadDamage
 		Spread: 2c0
-		Damage: 60
+		Damage: 6000
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		Delay: 5
 		ValidTargets: Ground, Trees, Water, Underwater, Air
@@ -69,7 +69,7 @@ Atomic:
 		Delay: 5
 	Warhead@9Dam_areanuke2: SpreadDamage
 		Spread: 3c0
-		Damage: 60
+		Damage: 6000
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		Delay: 10
 		ValidTargets: Ground, Trees, Water, Underwater, Air
@@ -86,7 +86,7 @@ Atomic:
 		Delay: 10
 	Warhead@12Dam_areanuke3: SpreadDamage
 		Spread: 4c0
-		Damage: 60
+		Damage: 6000
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		Delay: 15
 		ValidTargets: Ground, Trees, Water, Underwater, Air
@@ -103,7 +103,7 @@ Atomic:
 		Delay: 15
 	Warhead@15Dam_areanuke4: SpreadDamage
 		Spread: 5c0
-		Damage: 60
+		Damage: 6000
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		Delay: 20
 		ValidTargets: Ground, Trees, Water, Underwater, Air

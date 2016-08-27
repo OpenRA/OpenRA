@@ -94,7 +94,7 @@ AFLD:
 
 DOG:
 	Health:
-		HP: 25
+		HP: 2500
 	AutoTarget:
 		ScanRadius: 5
 

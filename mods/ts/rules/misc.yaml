@@ -46,7 +46,7 @@ CAMERA:
 	Immobile:
 		OccupiesSpace: false
 	Health:
-		HP: 1000
+		HP: 100000
 	RevealsShroud:
 		Range: 10c0
 		Type: CenterPosition

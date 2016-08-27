@@ -7,7 +7,7 @@
 		Speed: 853
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
-		Damage: 25
+		Damage: 2500
 		Versus:
 			None: 25
 			Wood: 75
@@ -30,7 +30,7 @@
 		Speed: 682
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
-		Damage: 30
+		Damage: 3000
 		Versus:
 			None: 30
 			Wood: 75
@@ -53,7 +53,7 @@
 		Speed: 682
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
-		Damage: 40
+		Damage: 4000
 		Versus:
 			None: 25
 			Wood: 100
@@ -78,7 +78,7 @@
 		Speed: 682
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
-		Damage: 40
+		Damage: 4000
 		Versus:
 			None: 25
 			Wood: 100
@@ -101,7 +101,7 @@ TurretGun:
 		Speed: 853
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
-		Damage: 40
+		Damage: 4000
 		Versus:
 			None: 20
 			Wood: 25
@@ -129,7 +129,7 @@ ArtilleryShell:
 		Image: 120MM
 	Warhead@1Dam: SpreadDamage
 		Spread: 341
-		Damage: 150
+		Damage: 15000
 		Versus:
 			None: 100
 			Wood: 80

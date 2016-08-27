@@ -9,7 +9,7 @@ FACT:
 		Footprint: xxx xxx
 		Dimensions: 3,2
 	Health:
-		HP: 2000
+		HP: 200000
 	Armor:
 		Type: Wood
 	RevealsShroud:
@@ -107,7 +107,7 @@ NUKE:
 		Footprint: xx xx
 		Dimensions: 2,2
 	Health:
-		HP: 500
+		HP: 50000
 	RevealsShroud:
 		Range: 4c0
 	Bib:
@@ -132,7 +132,7 @@ NUK2:
 		Footprint: xx xx
 		Dimensions: 2,2
 	Health:
-		HP: 700
+		HP: 70000
 	RevealsShroud:
 		Range: 4c0
 	Bib:
@@ -155,7 +155,7 @@ PROC:
 		Footprint: _x_ xxx ===
 		Dimensions: 3,3
 	Health:
-		HP: 900
+		HP: 90000
 	RevealsShroud:
 		Range: 6c0
 	Bib:
@@ -201,7 +201,7 @@ SILO:
 		Dimensions: 2,1
 	-GivesBuildableArea:
 	Health:
-		HP: 400
+		HP: 40000
 	RevealsShroud:
 		Range: 4c0
 	Bib:
@@ -239,7 +239,7 @@ PYLE:
 		Footprint: xx xx
 		Dimensions: 2,2
 	Health:
-		HP: 500
+		HP: 50000
 	RevealsShroud:
 		Range: 5c0
 	Bib:
@@ -281,7 +281,7 @@ HAND:
 		Footprint: xx xx
 		Dimensions: 2,2
 	Health:
-		HP: 500
+		HP: 50000
 	RevealsShroud:
 		Range: 5c0
 	Bib:
@@ -323,7 +323,7 @@ AFLD:
 		Footprint: xxxx xxxx
 		Dimensions: 4,2
 	Health:
-		HP: 1000
+		HP: 100000
 	RevealsShroud:
 		Range: 7c0
 	Bib:
@@ -369,7 +369,7 @@ WEAP:
 	SelectionDecorations:
 		VisualBounds: 72,64,0,-16
 	Health:
-		HP: 1000
+		HP: 100000
 	RevealsShroud:
 		Range: 4c0
 	Bib:
@@ -408,7 +408,7 @@ HPAD:
 		Footprint: xx xx
 		Dimensions: 2,2
 	Health:
-		HP: 500
+		HP: 50000
 	RevealsShroud:
 		Range: 5c0
 	Exit@1:
@@ -418,6 +418,7 @@ HPAD:
 	Reservable:
 	RepairsUnits:
 		PlayerExperience: 25
+		HpPerStep: 1000
 	WithRepairAnimation:
 	RallyPoint:
 	ProductionQueue@GDI:
@@ -466,7 +467,7 @@ HQ:
 	WithSpriteBody:
 		PauseAnimationWhenDisabled: true
 	Health:
-		HP: 700
+		HP: 70000
 	RevealsShroud:
 		Range: 10c0
 	Bib:
@@ -515,7 +516,7 @@ FIX:
 	SelectionDecorations:
 		VisualBounds: 72,48
 	Health:
-		HP: 700
+		HP: 70000
 	RevealsShroud:
 		Range: 5c0
 	Bib:
@@ -524,6 +525,7 @@ FIX:
 	RepairsUnits:
 		Interval: 15
 		PlayerExperience: 25
+		HpPerStep: 1000
 	RallyPoint:
 	WithRepairAnimation:
 	Power:
@@ -558,7 +560,7 @@ EYE:
 	WithSpriteBody:
 		PauseAnimationWhenDisabled: true
 	Health:
-		HP: 1200
+		HP: 120000
 	RevealsShroud:
 		Range: 10c0
 	Bib:
@@ -611,7 +613,7 @@ TMPL:
 		PowerdownSound: DisablePower
 	DisabledOverlay:
 	Health:
-		HP: 2000
+		HP: 200000
 	RevealsShroud:
 		Range: 6c0
 	Bib:
@@ -653,7 +655,7 @@ GUN:
 		BuildDurationModifier: 40
 	Building:
 	Health:
-		HP: 400
+		HP: 40000
 	Armor:
 		Type: Heavy
 	RevealsShroud:
@@ -698,7 +700,7 @@ SAM:
 	RequiresPower:
 	DisabledOverlay:
 	Health:
-		HP: 400
+		HP: 40000
 	Armor:
 		Type: Heavy
 	RevealsShroud:
@@ -741,7 +743,7 @@ OBLI:
 	RequiresPower:
 	DisabledOverlay:
 	Health:
-		HP: 600
+		HP: 60000
 	Armor:
 		Type: Heavy
 	RevealsShroud:
@@ -778,7 +780,7 @@ GTWR:
 		BuildDurationModifier: 40
 	Building:
 	Health:
-		HP: 400
+		HP: 40000
 	RevealsShroud:
 		Range: 7c0
 	Bib:
@@ -818,7 +820,7 @@ ATWR:
 	RequiresPower:
 	DisabledOverlay:
 	Health:
-		HP: 600
+		HP: 60000
 	Armor:
 		Type: Heavy
 	RevealsShroud:
@@ -906,7 +908,7 @@ BRIK:
 		BuildDuration: 500
 		BuildDurationModifier: 40
 	Health:
-		HP: 250
+		HP: 25000
 	Armor:
 		Type: Heavy
 	BlocksProjectiles:

@@ -9,7 +9,7 @@
 		TurnSpeed: 5
 		Crushes: wall, crate, infantry
 	Health:
-		HP: 600
+		HP: 60000
 	Armor:
 		Type: Heavy
 	RevealsShroud:
@@ -30,6 +30,7 @@
 		Delay: 10
 		HealIfBelow: 50
 		DamageCooldown: 200
+		Step: 500
 	WithVoxelTurret:
 	WithVoxelBarrel:
 	WithMuzzleOverlay:
@@ -41,7 +42,7 @@
 	Tooltip:
 		Name: Truck
 	Health:
-		HP: 200
+		HP: 20000
 	Armor:
 		Type: Light
 	Mobile:
@@ -62,7 +63,7 @@ ICBM:
 	Tooltip:
 		Name: Ballistic Missile Launcher
 	Health:
-		HP: 500
+		HP: 50000
 	Armor:
 		Type: Light
 	Mobile:
@@ -88,7 +89,7 @@ BUS:
 		TurnSpeed: 5
 		Speed: 113
 	Health:
-		HP: 100
+		HP: 10000
 	Armor:
 		Type: Light
 	RevealsShroud:
@@ -111,7 +112,7 @@ PICK:
 		TurnSpeed: 5
 		Speed: 113
 	Health:
-		HP: 100
+		HP: 10000
 	Armor:
 		Type: Light
 	RevealsShroud:
@@ -134,7 +135,7 @@ CAR:
 		TurnSpeed: 5
 		Speed: 113
 	Health:
-		HP: 100
+		HP: 10000
 	Armor:
 		Type: Light
 	RevealsShroud:
@@ -157,7 +158,7 @@ WINI:
 		TurnSpeed: 5
 		Speed: 113
 	Health:
-		HP: 200
+		HP: 20000
 	Armor:
 		Type: Light
 	RevealsShroud:

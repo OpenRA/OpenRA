@@ -3,7 +3,7 @@ Atomic:
 	Report: nukemisl.aud
 	Warhead@1Dam_impact: SpreadDamage
 		Spread: 1c0
-		Damage: 150
+		Damage: 15000
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		ValidTargets: Ground, Air, Trees
 		Versus:
@@ -17,7 +17,7 @@ Atomic:
 		ImpactSounds: nukexplo.aud
 	Warhead@3Dam_areanukea: SpreadDamage
 		Spread: 2c512
-		Damage: 100
+		Damage: 10000
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		Delay: 3
 		ValidTargets: Ground, Air
@@ -40,7 +40,7 @@ Atomic:
 		Delay: 3
 	Warhead@7Dam_areanukeb: SpreadDamage
 		Spread: 3c768
-		Damage: 50
+		Damage: 5000
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		Delay: 6
 		ValidTargets: Ground, Air, Trees
@@ -60,7 +60,7 @@ Atomic:
 		Delay: 6
 	Warhead@10Dam_areanukec: SpreadDamage
 		Spread: 5c0
-		Damage: 20
+		Damage: 2000
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		Delay: 9
 		ValidTargets: Ground, Air, Trees
@@ -83,7 +83,7 @@ IonCannon:
 	ValidTargets: Ground, Air, Trees
 	Warhead@1Dam_impact: SpreadDamage
 		Range: 0, 1c1, 2c1, 2c512
-		Damage: 100
+		Damage: 10000
 		Falloff: 1000, 1000, 250, 100
 		ValidTargets: Ground, Air, Trees
 		DamageTypes: Prone50Percent, TriggerProne, FireDeath, Incendiary

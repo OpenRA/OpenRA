@@ -15,7 +15,7 @@ mcv:
 		Class: mcv
 		Priority: 3
 	Health:
-		HP: 4500
+		HP: 45000
 	Armor:
 		Type: light
 	Mobile:
@@ -42,7 +42,7 @@ mcv:
 	SelectionDecorations:
 		VisualBounds: 42,42
 	SelfHealing:
-		Step: 5
+		Step: 50
 		Delay: 3
 		HealIfBelow: 50
 
@@ -71,7 +71,7 @@ harvester:
 		SearchFromProcRadius: 30
 		SearchFromOrderRadius: 15
 	Health:
-		HP: 4500
+		HP: 45000
 	Armor:
 		Type: harvester
 	Mobile:
@@ -92,7 +92,7 @@ harvester:
 	SelectionDecorations:
 		VisualBounds: 42,42
 	SelfHealing:
-		Step: 5
+		Step: 50
 		Delay: 3
 		HealIfBelow: 50
 
@@ -112,7 +112,7 @@ trike:
 	Selectable:
 		Class: trike
 	Health:
-		HP: 900
+		HP: 9000
 	Armor:
 		Type: wood
 	Mobile:
@@ -150,7 +150,7 @@ quad:
 		Name: Missile Quad
 		Description: Missile Scout\n Strong vs Vehicles\n  Weak vs Infantry
 	Health:
-		HP: 1100
+		HP: 11000
 	Armor:
 		Type: light
 	Mobile:
@@ -185,7 +185,7 @@ siege_tank:
 		Name: Siege Tank
 		Description: Siege Artillery\n  Strong vs Infantry, Buildings\n  Weak vs Tanks, Aircraft
 	Health:
-		HP: 1200
+		HP: 12000
 	Armor:
 		Type: light
 	Mobile:
@@ -234,7 +234,7 @@ missile_tank:
 		Speed: 64
 		TurnSpeed: 5
 	Health:
-		HP: 1300
+		HP: 13000
 	Armor:
 		Type: wood
 	RevealsShroud:
@@ -269,7 +269,7 @@ sonic_tank:
 		Name: Sonic Tank
 		Description: Fires sonic shocks\n  Strong vs Infantry, Vehicles\n  Weak vs Artillery, Aircraft
 	Health:
-		HP: 3000
+		HP: 30000
 	Armor:
 		Type: light
 	Mobile:
@@ -306,7 +306,7 @@ devastator:
 		Name: Devastator
 		Description: Super Heavy Tank\n  Strong vs Tanks\n  Weak vs Artillery, Aircraft
 	Health:
-		HP: 5000
+		HP: 50000
 	Armor:
 		Type: heavy
 	Mobile:
@@ -333,7 +333,7 @@ devastator:
 	SelectionDecorations:
 		VisualBounds: 44,38,0,0
 	SelfHealing:
-		Step: 5
+		Step: 50
 		Delay: 3
 		HealIfBelow: 50
 
@@ -351,7 +351,7 @@ raider:
 		Name: Raider Trike
 		Description: Improved Scout\n Strong vs Infantry, Light Vehicles
 	Health:
-		HP: 1000
+		HP: 10000
 	Armor:
 		Type: wood
 	Mobile:
@@ -415,7 +415,7 @@ deviator:
 		TurnSpeed: 3
 		Speed: 53
 	Health:
-		HP: 1100
+		HP: 11000
 	Armor:
 		Type: wood
 	RevealsShroud:
@@ -447,7 +447,7 @@ deviator:
 		Name: Combat Tank
 		Description: Main Battle Tank\n  Strong vs Tanks\n  Weak vs Infantry, Aircraft\n \n  Atreides:      +Range\n  Harkonnen: +Health\n  Ordos:         +Speed
 	Health:
-		HP: 2100
+		HP: 21000
 	Armor:
 		Type: heavy
 	Mobile:
@@ -494,7 +494,7 @@ combat_tank_h:
 	Mobile:
 		Speed: 64
 	Health:
-		HP: 2700
+		HP: 27000
 	SpawnActorOnDeath:
 		Actor: combat_tank_h.husk
 
@@ -509,6 +509,6 @@ combat_tank_o:
 	Mobile:
 		Speed: 85
 	Health:
-		HP: 1800
+		HP: 18000
 	SpawnActorOnDeath:
 		Actor: combat_tank_o.husk

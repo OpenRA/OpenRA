@@ -177,7 +177,7 @@ airstrike.proxy:
 
 BOAT:
 	Health:
-		HP: 1500
+		HP: 150000
 	AutoTarget:
 		InitialStance: AttackAnything
 	RejectsOrders:

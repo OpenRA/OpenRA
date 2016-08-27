@@ -16,7 +16,7 @@ Rockets:
 		RangeLimit: 7c204
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
-		Damage: 35
+		Damage: 3500
 		ValidTargets: Ground, Air
 		Versus:
 			None: 30
@@ -50,7 +50,7 @@ BikeRockets:
 		RangeLimit: 7c204
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
-		Damage: 30
+		Damage: 3000
 		ValidTargets: Ground, Air
 		Versus:
 			None: 25
@@ -85,7 +85,7 @@ OrcaAGMissiles:
 		RangeLimit: 6c0
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
-		Damage: 25
+		Damage: 2500
 		ValidTargets: Ground
 		Versus:
 			None: 50
@@ -120,7 +120,7 @@ OrcaAAMissiles:
 		RangeLimit: 6c0
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
-		Damage: 25
+		Damage: 2500
 		ValidTargets: Air
 		Versus:
 			Light: 75
@@ -149,7 +149,7 @@ MammothMissiles:
 		RangeLimit: 6c0
 	Warhead@1Dam: SpreadDamage
 		Spread: 298
-		Damage: 45
+		Damage: 4500
 		ValidTargets: Ground, Air
 		Versus:
 			None: 50
@@ -190,7 +190,7 @@ MammothMissiles:
 		Speed: 341
 	Warhead@1Dam: SpreadDamage
 		Spread: 683
-		Damage: 25
+		Damage: 2500
 		ValidTargets: Ground
 		Versus:
 			None: 35
@@ -224,7 +224,7 @@ MammothMissiles:
 		RangeLimit: 8c409
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
-		Damage: 60
+		Damage: 6000
 		ValidTargets: Ground, Air
 		Versus:
 			None: 25
@@ -257,7 +257,7 @@ BoatMissile:
 		RangeLimit: 9c614
 	Warhead@1Dam: SpreadDamage
 		Spread: 256
-		Damage: 60
+		Damage: 6000
 		Versus:
 			None: 90
 			Wood: 75
@@ -293,7 +293,7 @@ TowerMissle:
 		RangeLimit: 8c409
 	Warhead@1Dam: SpreadDamage
 		Spread: 683
-		Damage: 25
+		Damage: 2500
 		ValidTargets: Ground
 		Versus:
 			None: 50
@@ -330,7 +330,7 @@ SAMMissile:
 			Wood: 100
 			Light: 100
 			Heavy: 75
-		Damage: 35
+		Damage: 3500
 		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
 	Warhead@3Eff: CreateEffect
 		Explosions: small_building
@@ -352,7 +352,7 @@ HonestJohn:
 		Angle: 88
 	Warhead@1Dam: SpreadDamage
 		Spread: 256
-		Damage: 100
+		Damage: 10000
 		Versus:
 			None: 90
 			Wood: 75
@@ -384,7 +384,7 @@ Patriot:
 		ValidTargets: Air
 		Versus:
 			Heavy: 75
-		Damage: 50
+		Damage: 5000
 		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
 	Warhead@3Eff: CreateEffect
 		Explosions: poof

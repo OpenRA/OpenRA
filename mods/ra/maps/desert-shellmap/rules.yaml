@@ -91,7 +91,7 @@ Ant:
 	Buildable:
 		Prerequisites: barr
 	Health:
-		HP: 200
+		HP: 20000
 
 E7:
 	-AnnounceOnKill:

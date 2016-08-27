@@ -5,7 +5,7 @@ V19:
 		Footprint: x
 		Dimensions: 1,1
 	Health:
-		HP: 1000
+		HP: 100000
 	Tooltip:
 		Name: Oil Derrick
 	SpawnActorOnDeath:
@@ -31,7 +31,7 @@ HOSP:
 		Footprint: xx xx
 		Dimensions: 2,2
 	Health:
-		HP: 2500
+		HP: 250000
 	Tooltip:
 		Name: Hospital
 	SpawnActorOnDeath:
@@ -56,7 +56,7 @@ BIO:
 		Footprint: xx xx
 		Dimensions: 2,2
 	Health:
-		HP: 2500
+		HP: 250000
 	Tooltip:
 		Name: Biological Lab
 		Description: Grants Tiberium immunity to infantry.
