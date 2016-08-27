@@ -344,6 +344,20 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					node.Value.Nodes.RemoveAll(n => n.Key == "PathfinderDebugOverlay");
 				}
 
+				// AlliedMissiles on JamsMissiles was changed from a boolean to a Stances field and renamed
+				if (engineVersion < 20160827)
+				{
+					if (node.Key == "JamsMissiles")
+					{
+						var alliedMissiles = node.Value.Nodes.FirstOrDefault(n => n.Key == "AlliedMissiles");
+						if (alliedMissiles != null)
+						{
+							alliedMissiles.Value.Value = FieldLoader.GetValue<bool>("AlliedMissiles", alliedMissiles.Value.Value) ? "Ally, Neutral, Enemy" : "Neutral, Enemy";
+							alliedMissiles.Key = "DeflectionStances";
+						}
+					}
+				}
+
 				UpgradeActorRules(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 
