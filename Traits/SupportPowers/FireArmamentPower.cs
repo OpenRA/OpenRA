@@ -255,7 +255,7 @@ namespace OpenRA.Mods.AS.Traits
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr, World world) { yield break; }
 
-		public IEnumerable<IRenderable> RenderAfterWorld(WorldRenderer wr, World world)
+		public IEnumerable<IRenderable> RenderAboveShroud(WorldRenderer wr, World world)
 		{
 			foreach (var i in instances)
 			{
