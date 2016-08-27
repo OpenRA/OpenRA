@@ -150,7 +150,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void ContinueHarvesting(Actor self)
 		{
-			// Move out of the refinery dock and continue harvesting:
+			// Move out of the refinery dock and continue harvesting
 			UnblockRefinery(self);
 			self.QueueActivity(new FindResources(self));
 		}
@@ -220,6 +220,13 @@ namespace OpenRA.Mods.Common.Traits
 					// Get out of the way:
 					var unblockCell = LastHarvestedCell ?? (deliveryLoc + Info.UnblockCell);
 					var moveTo = mobile.NearestMoveableCell(unblockCell, 1, 5);
+
+					// TODO: The harvest-deliver-return sequence is a horrible mess of duplicated code and edge-cases
+					var notify = self.TraitsImplementing<INotifyHarvesterAction>();
+					var findResources = new FindResources(self);
+					foreach (var n in notify)
+						n.MovingToResources(self, moveTo, findResources);
+
 					self.QueueActivity(mobile.MoveTo(moveTo, 1));
 					self.SetTargetLine(Target.FromCell(self.World, moveTo), Color.Gray, false);
 				}
@@ -363,13 +370,13 @@ namespace OpenRA.Mods.Common.Traits
 					loc = self.Location;
 				}
 
-				var next = new FindResources(self);
-				self.QueueActivity(next);
+				var findResources = new FindResources(self);
+				self.QueueActivity(findResources);
 				self.SetTargetLine(Target.FromCell(self.World, loc.Value), Color.Red);
 
 				var notify = self.TraitsImplementing<INotifyHarvesterAction>();
 				foreach (var n in notify)
-					n.MovingToResources(self, loc.Value, next);
+					n.MovingToResources(self, loc.Value, findResources);
 
 				LastOrderLocation = loc;
 
@@ -392,12 +399,12 @@ namespace OpenRA.Mods.Common.Traits
 
 				self.CancelActivity();
 
-				var next = new DeliverResources(self);
-				self.QueueActivity(next);
+				var deliver = new DeliverResources(self);
+				self.QueueActivity(deliver);
 
 				var notify = self.TraitsImplementing<INotifyHarvesterAction>();
 				foreach (var n in notify)
-					n.MovingToRefinery(self, order.TargetLocation, next);
+					n.MovingToRefinery(self, order.TargetLocation, deliver);
 			}
 			else if (order.OrderString == "Stop" || order.OrderString == "Move")
 			{

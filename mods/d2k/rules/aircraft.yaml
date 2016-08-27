@@ -16,7 +16,6 @@ carryall.reinforce:
 		TurnSpeed: 4
 		LandableTerrainTypes: Sand, Rock, Transition, Spice, SpiceSand, Dune
 		Repulsable: False
-		LandAltitude: 100
 		LandWhenIdle: False
 		AirborneUpgrades: airborne
 		CanHover: True
@@ -31,7 +30,9 @@ carryall.reinforce:
 	SpawnActorOnDeath:
 		Actor: carryall.husk
 	Carryall:
-		Automatic: False
+		LoadingDelay: 10
+		UnloadingDelay: 15
+		LocalOffset: 0, 0, -128
 	RenderSprites:
 		Image: carryall
 	SelfHealing:
@@ -44,8 +45,11 @@ carryall.reinforce:
 
 carryall:
 	Inherits: carryall.reinforce
-	Carryall:
-		Automatic: True
+	-Carryall:
+	AutoCarryall:
+		LoadingDelay: 10
+		UnloadingDelay: 15
+		LocalOffset: 0, 0, -128
 	Buildable:
 		Queue: Aircraft
 		BuildPaletteOrder: 120

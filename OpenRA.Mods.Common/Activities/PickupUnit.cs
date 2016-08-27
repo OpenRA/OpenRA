@@ -19,87 +19,150 @@ namespace OpenRA.Mods.Common.Activities
 	{
 		readonly Actor cargo;
 		readonly IMove movement;
-		readonly Carryable carryable;
-		readonly Carryall carryall;
-		readonly Aircraft aircraft;
-		readonly IFacing cargoFacing;
-		readonly IFacing selfFacing;
 
-		enum State { Intercept, LockCarryable, MoveToCarryable, Turn, Pickup, TakeOff }
+		readonly Carryall carryall;
+		readonly IFacing carryallFacing;
+
+		readonly Carryable carryable;
+		readonly IFacing carryableFacing;
+		readonly BodyOrientation carryableBody;
+
+		readonly int delay;
+
+		enum State { Intercept, LockCarryable, MoveToCarryable, Turn, Land, Wait, Pickup, Aborted }
 
 		State state;
+		Activity innerActivity;
 
-		public PickupUnit(Actor self, Actor cargo)
+		public PickupUnit(Actor self, Actor cargo, int delay)
 		{
 			this.cargo = cargo;
+			this.delay = delay;
 			carryable = cargo.Trait<Carryable>();
-			cargoFacing = cargo.Trait<IFacing>();
+			carryableFacing = cargo.Trait<IFacing>();
+			carryableBody = cargo.Trait<BodyOrientation>();
+
 			movement = self.Trait<IMove>();
 			carryall = self.Trait<Carryall>();
-			aircraft = self.Trait<Aircraft>();
-			selfFacing = self.Trait<IFacing>();
+			carryallFacing = self.Trait<IFacing>();
+
 			state = State.Intercept;
 		}
 
 		public override Activity Tick(Actor self)
 		{
-			if (cargo.IsDead || !carryall.IsBusy)
+			if (innerActivity != null)
 			{
-				carryall.UnreserveCarryable();
+				innerActivity = ActivityUtils.RunActivity(self, innerActivity);
+				return this;
+			}
+
+			if (cargo != carryall.Carryable)
+				return NextActivity;
+
+			if (cargo.IsDead || IsCanceled)
+			{
+				carryall.UnreserveCarryable(self);
 				return NextActivity;
 			}
+
+			if (carryall.State == Carryall.CarryallState.Idle)
+				return NextActivity;
 
 			switch (state)
 			{
 				case State.Intercept:
+					innerActivity = movement.MoveWithinRange(Target.FromActor(cargo), WDist.FromCells(4));
 					state = State.LockCarryable;
-					return ActivityUtils.SequenceActivities(movement.MoveWithinRange(Target.FromActor(cargo), WDist.FromCells(4)), this);
+					return this;
 
 				case State.LockCarryable:
-					// Last check
-					if (carryable.StandbyForPickup(self))
+					state = State.MoveToCarryable;
+					if (!carryable.LockForPickup(cargo, self))
+						state = State.Aborted;
+					return this;
+
+				case State.MoveToCarryable:
+				{
+					// Line up with the attachment point
+					var localOffset = carryall.OffsetForCarryable(self, cargo).Rotate(carryableBody.QuantizeOrientation(self, cargo.Orientation));
+					var targetPosition = cargo.CenterPosition - carryableBody.LocalToWorld(localOffset);
+					if ((self.CenterPosition - targetPosition).HorizontalLengthSquared != 0)
+					{
+						// Run the first tick of the move activity immediately to avoid a one-frame pause
+						innerActivity = ActivityUtils.RunActivity(self, new HeliFly(self, Target.FromPos(targetPosition)));
+						return this;
+					}
+
+					state = State.Turn;
+					return this;
+				}
+
+				case State.Turn:
+					if (carryallFacing.Facing != carryableFacing.Facing)
+					{
+						innerActivity = new Turn(self, carryableFacing.Facing);
+						return this;
+					}
+
+					state = State.Land;
+					return this;
+
+				case State.Land:
+				{
+					var localOffset = carryall.OffsetForCarryable(self, cargo).Rotate(carryableBody.QuantizeOrientation(self, cargo.Orientation));
+					var targetPosition = cargo.CenterPosition - carryableBody.LocalToWorld(localOffset);
+					if ((self.CenterPosition - targetPosition).HorizontalLengthSquared != 0 || carryallFacing.Facing != carryableFacing.Facing)
 					{
 						state = State.MoveToCarryable;
 						return this;
 					}
 
-					// We got cancelled
-					carryall.UnreserveCarryable();
-					return NextActivity;
-
-				case State.MoveToCarryable: // We arrived, move on top
-					if (self.Location == cargo.Location)
+					if (targetPosition.Z != self.CenterPosition.Z)
 					{
-						state = State.Turn;
+						innerActivity = new HeliLand(self, false, self.World.Map.DistanceAboveTerrain(targetPosition));
 						return this;
 					}
 
-					return ActivityUtils.SequenceActivities(movement.MoveTo(cargo.Location, 0), this);
+					state = delay > 0 ? State.Wait : State.Pickup;
+					return this;
+				}
 
-				case State.Turn: // Align facing and Land
-					if (selfFacing.Facing != cargoFacing.Facing)
-						return ActivityUtils.SequenceActivities(new Turn(self, cargoFacing.Facing), this);
+				case State.Wait:
 					state = State.Pickup;
-					return ActivityUtils.SequenceActivities(new HeliLand(self, false), new Wait(10), this);
+					innerActivity = new Wait(delay, false);
+					return this;
 
 				case State.Pickup:
 					// Remove our carryable from world
-					self.World.AddFrameEndTask(w => cargo.World.Remove(cargo));
-					carryall.AttachCarryable(cargo);
-					state = State.TakeOff;
-					return this;
-				case State.TakeOff:
-					if (HeliFly.AdjustAltitude(self, aircraft, aircraft.Info.CruiseAltitude))
-						return this;
+					Attach(self);
 					return NextActivity;
+
+				case State.Aborted:
+					// We got cancelled
+					carryall.UnreserveCarryable(self);
+					break;
 			}
 
 			return NextActivity;
 		}
 
+		void Attach(Actor self)
+		{
+			self.World.AddFrameEndTask(w =>
+			{
+				cargo.World.Remove(cargo);
+				carryable.Attached(cargo);
+				carryall.AttachCarryable(self, cargo);
+			});
+		}
+
 		public override void Cancel(Actor self)
 		{
-			// TODO: Drop the unit at the nearest available cell
+			if (innerActivity != null)
+				innerActivity.Cancel(self);
+
+			base.Cancel(self);
 		}
 	}
 }

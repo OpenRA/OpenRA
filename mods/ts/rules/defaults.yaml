@@ -488,6 +488,7 @@
 	SpeedMultiplier@CRITICAL:
 		UpgradeTypes: criticalspeed
 		Modifier: 60
+	Carryable:
 
 ^Tank:
 	Inherits: ^Vehicle

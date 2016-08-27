@@ -15,10 +15,10 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Orders
 {
-	class AircraftMoveOrderTargeter : IOrderTargeter
+	public class AircraftMoveOrderTargeter : IOrderTargeter
 	{
-		public string OrderID { get { return "Move"; } }
-		public int OrderPriority { get { return 4; } }
+		public string OrderID { get; protected set; }
+		public int OrderPriority { get; protected set; }
 		public bool TargetOverridesSelection(TargetModifiers modifiers)
 		{
 			return modifiers.HasModifier(TargetModifiers.ForceMove);
@@ -26,9 +26,14 @@ namespace OpenRA.Mods.Common.Orders
 
 		readonly AircraftInfo info;
 
-		public AircraftMoveOrderTargeter(AircraftInfo info) { this.info = info; }
+		public AircraftMoveOrderTargeter(AircraftInfo info)
+		{
+			this.info = info;
+			OrderID = "Move";
+			OrderPriority = 4;
+		}
 
-		public bool CanTarget(Actor self, Target target, List<Actor> othersAtTarget, ref TargetModifiers modifiers, ref string cursor)
+		public virtual bool CanTarget(Actor self, Target target, List<Actor> othersAtTarget, ref TargetModifiers modifiers, ref string cursor)
 		{
 			if (target.Type != TargetType.Terrain)
 				return false;
