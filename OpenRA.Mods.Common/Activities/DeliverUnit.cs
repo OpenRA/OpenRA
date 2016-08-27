@@ -187,6 +187,13 @@ namespace OpenRA.Mods.Common.Activities
 			var targetPosition = self.CenterPosition + body.LocalToWorld(localOffset);
 			var targetLocation = self.World.Map.CellContaining(targetPosition);
 			positionable.SetPosition(carryall.Carryable, targetLocation, SubCell.FullCell);
+
+			// HACK: directly manipulate the turret facings to match the new orientation
+			// This can eventually go away, when we make turret facings relative to the body
+			var facingDelta = carryallFacing.Facing - carryableFacing.Facing;
+			foreach (var t in carryall.Carryable.TraitsImplementing<Turreted>())
+				t.TurretFacing += facingDelta;
+
 			carryableFacing.Facing = carryallFacing.Facing;
 
 			// Put back into world
