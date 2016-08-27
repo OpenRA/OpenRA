@@ -312,7 +312,8 @@ namespace OpenRA.Mods.Common.Activities
 				MoveFractionTotal = (to - from).Length;
 
 				// Calculate an elliptical arc that joins from and to
-				if (fromFacing != toFacing)
+				var delta = Util.NormalizeFacing(fromFacing - toFacing);
+				if (delta != 0 && delta != 128)
 				{
 					// The center of rotation is where the normal vectors cross
 					var u = new WVec(1024, 0, 0).Rotate(WRot.FromFacing(fromFacing));
