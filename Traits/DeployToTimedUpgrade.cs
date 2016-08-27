@@ -219,6 +219,8 @@ namespace OpenRA.Mods.AS.Traits
 				: (float)ticks / info.DeployedTicks;
 		}
 
+		bool ISelectionBar.DisplayWhenEmpty { get { return true; } }
+
 		Color ISelectionBar.GetColor() { return deployState == TimedDeployState.Charging ? info.ChargingColor : info.DischargingColor; }
 	}
 }
