@@ -25,6 +25,7 @@ namespace OpenRA.Mods.Common.Widgets
 		public Func<Player> GetPlayer;
 		readonly World world;
 		readonly WorldRenderer worldRenderer;
+		readonly int timestep;
 		Dictionary<ProductionQueue, Animation> clocks;
 
 		public int IconWidth = 32;
@@ -41,6 +42,7 @@ namespace OpenRA.Mods.Common.Widgets
 			this.world = world;
 			this.worldRenderer = worldRenderer;
 			clocks = new Dictionary<ProductionQueue, Animation>();
+			timestep = world.IsReplay ? world.WorldActor.Trait<MapOptions>().GameSpeed.Timestep : world.Timestep;
 		}
 
 		protected ObserverProductionIconsWidget(ObserverProductionIconsWidget other)
@@ -49,6 +51,7 @@ namespace OpenRA.Mods.Common.Widgets
 			GetPlayer = other.GetPlayer;
 			world = other.world;
 			worldRenderer = other.worldRenderer;
+			timestep = other.timestep;
 			clocks = other.clocks;
 
 			IconWidth = other.IconWidth;
@@ -107,7 +110,7 @@ namespace OpenRA.Mods.Common.Widgets
 				WidgetUtils.DrawSHPCentered(clock.Image, location + 0.5f * iconSize, worldRenderer.Palette(ClockPalette), 0.5f);
 
 				var tiny = Game.Renderer.Fonts["Tiny"];
-				var text = GetOverlayForItem(current, world.Timestep);
+				var text = GetOverlayForItem(current, timestep);
 				tiny.DrawTextWithContrast(text,
 					location + new float2(16, 16) - new float2(tiny.Measure(text).X / 2, 0),
 					Color.White, Color.Black, 1);
@@ -116,8 +119,12 @@ namespace OpenRA.Mods.Common.Widgets
 
 		static string GetOverlayForItem(ProductionItem item, int timestep)
 		{
-			if (item.Paused) return "ON HOLD";
-			if (item.Done) return "READY";
+			if (item.Paused)
+				return "ON HOLD";
+
+			if (item.Done)
+				return "READY";
+
 			return WidgetUtils.FormatTime(item.RemainingTimeActual, timestep);
 		}
 
