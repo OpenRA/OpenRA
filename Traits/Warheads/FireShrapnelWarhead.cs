@@ -67,7 +67,7 @@ namespace OpenRA.Mods.AS.Warheads
 			{
 				Target shrapnelTarget = Target.Invalid;
 
-				if (world.SharedRandom.Next(100) <= AimChance && targetActor.MoveNext())
+				if (world.SharedRandom.Next(100) < AimChance && targetActor.MoveNext())
 					shrapnelTarget = Target.FromActor(targetActor.Current);
 
 				if (ThrowWithoutTarget && shrapnelTarget.Type == TargetType.Invalid)
