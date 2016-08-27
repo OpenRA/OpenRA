@@ -144,7 +144,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			var cell = self.World.Map.CellContaining(pos);
 			SetLocation(self, cell);
-			SetVisualPosition(self, self.World.Map.CenterOfCell(cell) + new WVec(0, 0, pos.Z));
+			SetVisualPosition(self, self.World.Map.CenterOfCell(cell) + new WVec(WDist.Zero, WDist.Zero, self.World.Map.DistanceAboveTerrain(pos)));
 		}
 
 		// Sets the location (Location) and visual position (CenterPosition)
