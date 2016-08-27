@@ -54,7 +54,7 @@ namespace OpenRA.Mods.Common.Scripting
 		{
 			get
 			{
-				var c = Player.World.LobbyInfo.Clients[Player.ClientIndex];
+				var c = Player.World.LobbyInfo.Clients.FirstOrDefault(i => i.Index == Player.ClientIndex);
 				return c != null ? c.Team : 0;
 			}
 		}
