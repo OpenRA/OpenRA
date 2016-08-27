@@ -215,7 +215,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 			var blockedDirections = worldRenderer.Viewport.GetBlockedDirections();
 
-			if (IsJoystickScrolling)
+			if (IsJoystickScrolling || isStandardScrolling)
 			{
 				foreach (var dir in JoystickCursors)
 					if (blockedDirections.Includes(dir.Key))
