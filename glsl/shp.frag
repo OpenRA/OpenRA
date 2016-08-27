@@ -8,6 +8,21 @@ varying vec2 vTexMetadata;
 varying vec4 vChannelMask;
 varying vec4 vDepthMask;
 
+float jet_r(float x)
+{
+	return x < 0.7 ? 4.0 * x - 1.5 : -4.0 * x + 4.5;
+}
+
+float jet_g(float x)
+{
+	return x < 0.5 ? 4.0 * x - 0.5 : -4.0 * x + 3.5;
+}
+
+float jet_b(float x)
+{
+	return x < 0.3 ? 4.0 * x + 0.5 : -4.0 * x + 2.5;
+}
+
 void main()
 {
 	vec4 x = texture2D(DiffuseTexture, vTexCoord.st);
@@ -30,8 +45,11 @@ void main()
 
 	if (EnableDepthPreview)
 	{
-		// Front of the depth buffer is at 0, but we want to render it as bright
-		gl_FragColor = vec4(vec3(1.0 - gl_FragDepth), 1.0);
+		float x = 1.0 - gl_FragDepth;
+		float r = clamp(jet_r(x), 0.0, 1.0);
+		float g = clamp(jet_g(x), 0.0, 1.0);
+		float b = clamp(jet_b(x), 0.0, 1.0);
+		gl_FragColor = vec4(r, g, b, 1.0);
 	}
 	else
 		gl_FragColor = c;
