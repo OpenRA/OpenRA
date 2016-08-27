@@ -138,13 +138,16 @@ mmch:
 		Facings: -8
 		Stride: 15
 		ShadowStart: 152
+		Offset: 0, 0, 12
 	run:
 		Length: 15
 		Facings: -8
 		ShadowStart: 152
+		Offset: 0, 0, 12
 	turret:
 		Start: 120
 		Facings: -32
+		Offset: 0, 0, 12
 	muzzle: gunfire
 		Length: *
 	icon: mmchicon
