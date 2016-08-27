@@ -67,7 +67,7 @@ Container@SKIRMISH_STATS:
 					Visible: false
 					Children:
 						Label@TEAM:
-							X: 2
+							X: 6
 							Y: 0-2
 							Width: 160
 							Height: 20
