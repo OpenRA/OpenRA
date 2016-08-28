@@ -45,7 +45,7 @@ crate:
 	idle:
 		ShadowStart: 1
 		UseTilesetExtension: true
-		Offset: 0, -10
+		Offset: 0, -10, 10
 
 crate-effects:
 	Defaults:
