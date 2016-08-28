@@ -17,7 +17,7 @@ FireballLauncher:
 			Wood: 50
 			Light: 60
 			Heavy: 25
-			Concrete: 50
+			Concrete: 20
 		DamageTypes: Prone50Percent, TriggerProne, FireDeath, Incendiary
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Scorch
@@ -47,7 +47,7 @@ Flamer:
 			Wood: 100
 			Light: 60
 			Heavy: 25
-			Concrete: 50
+			Concrete: 20
 		DamageTypes: Prone50Percent, TriggerProne, FireDeath, Incendiary
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Scorch
