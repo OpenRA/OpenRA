@@ -197,7 +197,7 @@ namespace OpenRA.Mods.Common
 				return "Set of {0}".F(t.GetGenericArguments().Select(FriendlyTypeName).ToArray());
 
 			if (t.IsGenericType && t.GetGenericTypeDefinition() == typeof(Dictionary<,>))
-				return "Dictionary<{0},{1}>".F(t.GetGenericArguments().Select(FriendlyTypeName).ToArray());
+				return "Mapping of {0} to {1}".F(t.GetGenericArguments().Select(FriendlyTypeName).ToArray());
 
 			if (t.IsSubclassOf(typeof(Array)))
 				return "Multiple {0}".F(FriendlyTypeName(t.GetElementType()));
