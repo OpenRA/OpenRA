@@ -301,6 +301,7 @@ cabhut:
 		DepthSprite: isodepth.shp
 		UseTilesetCode: true
 		Offset: 0, -12, 12
+		ShadowStart: 1
 
 ^cacrsh:
 	idle:
