@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.GameRules;
+using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Support;
 using OpenRA.Traits;
@@ -188,6 +189,59 @@ namespace OpenRA.Mods.Common
 		{
 			return rules.Actors.Where(a => a.Value.HasTraitInfo<IBlocksProjectilesInfo>())
 				.SelectMany(a => a.Value.TraitInfos<HitShapeInfo>()).Max(h => h.Type.OuterRadius);
+		}
+
+		public static string FriendlyTypeName(Type t)
+		{
+			if (t.IsGenericType && t.GetGenericTypeDefinition() == typeof(HashSet<>))
+				return "Set of {0}".F(t.GetGenericArguments().Select(FriendlyTypeName).ToArray());
+
+			if (t.IsGenericType && t.GetGenericTypeDefinition() == typeof(Dictionary<,>))
+				return "Dictionary<{0},{1}>".F(t.GetGenericArguments().Select(FriendlyTypeName).ToArray());
+
+			if (t.IsSubclassOf(typeof(Array)))
+				return "Multiple {0}".F(FriendlyTypeName(t.GetElementType()));
+
+			if (t.IsGenericType && t.GetGenericTypeDefinition() == typeof(Primitives.Cache<,>))
+				return "Cached<{0},{1}>".F(t.GetGenericArguments().Select(FriendlyTypeName).ToArray());
+
+			if (t == typeof(int) || t == typeof(uint))
+				return "Integer";
+
+			if (t == typeof(int2))
+				return "2D Integer";
+
+			if (t == typeof(float) || t == typeof(decimal))
+				return "Real Number";
+
+			if (t == typeof(float2))
+				return "2D Real Number";
+
+			if (t == typeof(CPos))
+				return "2D Cell Position";
+
+			if (t == typeof(CVec))
+				return "2D Cell Vector";
+
+			if (t == typeof(WAngle))
+				return "1D World Angle";
+
+			if (t == typeof(WRot))
+				return "3D World Rotation";
+
+			if (t == typeof(WPos))
+				return "3D World Position";
+
+			if (t == typeof(WDist))
+				return "1D World Distance";
+
+			if (t == typeof(WVec))
+				return "3D World Vector";
+
+			if (t == typeof(HSLColor))
+				return "Color";
+
+			return t.Name;
 		}
 	}
 }
