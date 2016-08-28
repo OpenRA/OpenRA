@@ -234,7 +234,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var stats = player.PlayerActor.TraitOrDefault<PlayerStatistics>();
 			if (stats == null) return template;
 
-			template.Get<LabelWidget>("CASH").GetText = () => "$" + (res.DisplayCash + res.DisplayResources);
+			template.Get<LabelWidget>("CASH").GetText = () => "$" + (res.Cash + res.Resources);
 			template.Get<LabelWidget>("EARNED_MIN").GetText = () => AverageEarnedPerMinute(res.Earned);
 			template.Get<LabelWidget>("EARNED_THIS_MIN").GetText = () => "$" + stats.EarnedThisMinute;
 			template.Get<LabelWidget>("EARNED").GetText = () => "$" + res.Earned;
@@ -259,7 +259,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			LobbyUtils.AddPlayerFlagAndName(template, player);
 
 			var res = player.PlayerActor.Trait<PlayerResources>();
-			template.Get<LabelWidget>("CASH").GetText = () => "$" + (res.DisplayCash + res.DisplayResources);
+			template.Get<LabelWidget>("CASH").GetText = () => "$" + (res.Cash + res.Resources);
 			template.Get<LabelWidget>("EARNED_MIN").GetText = () => AverageEarnedPerMinute(res.Earned);
 
 			var powerRes = player.PlayerActor.Trait<PowerManager>();

@@ -45,8 +45,6 @@ namespace OpenRA.Traits
 
 	public class PlayerResources : ITick, ISync
 	{
-		const float DisplayCashFracPerFrame = .07f;
-		const int DisplayCashDeltaPerFrame = 37;
 		readonly PlayerResourcesInfo info;
 		readonly Player owner;
 
@@ -66,9 +64,6 @@ namespace OpenRA.Traits
 
 		[Sync] public int Resources;
 		[Sync] public int ResourceCapacity;
-
-		public int DisplayCash;
-		public int DisplayResources;
 
 		public int Earned;
 		public int Spent;
@@ -160,63 +155,14 @@ namespace OpenRA.Traits
 			return true;
 		}
 
-		int nextCashTickTime = 0;
-
 		public void Tick(Actor self)
 		{
-			if (nextCashTickTime > 0)
-				nextCashTickTime--;
-
 			ResourceCapacity = self.World.ActorsWithTrait<IStoreResources>()
 				.Where(a => a.Actor.Owner == owner)
 				.Sum(a => a.Trait.Capacity);
 
 			if (Resources > ResourceCapacity)
 				Resources = ResourceCapacity;
-
-			var diff = Math.Abs(Cash - DisplayCash);
-			var move = Math.Min(Math.Max((int)(diff * DisplayCashFracPerFrame), DisplayCashDeltaPerFrame), diff);
-
-			if (DisplayCash < Cash)
-			{
-				DisplayCash += move;
-				PlayCashTickUp(self);
-			}
-			else if (DisplayCash > Cash)
-			{
-				DisplayCash -= move;
-				PlayCashTickDown(self);
-			}
-
-			diff = Math.Abs(Resources - DisplayResources);
-			move = Math.Min(Math.Max((int)(diff * DisplayCashFracPerFrame),
-					DisplayCashDeltaPerFrame), diff);
-
-			if (DisplayResources < Resources)
-			{
-				DisplayResources += move;
-				PlayCashTickUp(self);
-			}
-			else if (DisplayResources > Resources)
-			{
-				DisplayResources -= move;
-				PlayCashTickDown(self);
-			}
-		}
-
-		public void PlayCashTickUp(Actor self)
-		{
-			if (Game.Settings.Sound.CashTicks)
-				Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Sounds", "CashTickUp", self.Owner.Faction.InternalName);
-		}
-
-		public void PlayCashTickDown(Actor self)
-		{
-			if (Game.Settings.Sound.CashTicks && nextCashTickTime == 0)
-			{
-				Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Sounds", "CashTickDown", self.Owner.Faction.InternalName);
-				nextCashTickTime = 2;
-			}
 		}
 	}
 }
