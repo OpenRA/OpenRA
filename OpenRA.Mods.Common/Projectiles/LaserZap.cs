@@ -36,7 +36,7 @@ namespace OpenRA.Mods.Common.Projectiles
 
 		public readonly bool UsePlayerColor = false;
 
-		[Desc("Laser color in (A,)R,G,B.")]
+		[Desc("Laser color.")]
 		public readonly Color Color = Color.Red;
 
 		[Desc("Impact animation.")]
