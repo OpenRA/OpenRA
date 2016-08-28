@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using OpenRA.GameRules;
 using OpenRA.Graphics;
@@ -238,8 +239,8 @@ namespace OpenRA.Mods.Common
 			if (t == typeof(WVec))
 				return "3D World Vector";
 
-			if (t == typeof(HSLColor))
-				return "Color";
+			if (t == typeof(HSLColor) || t == typeof(Color))
+				return "Color (RRGGBB[AA] notation)";
 
 			return t.Name;
 		}
