@@ -201,7 +201,10 @@ namespace OpenRA.Mods.Common
 				return "Mapping of {0} to {1}".F(t.GetGenericArguments().Select(FriendlyTypeName).ToArray());
 
 			if (t.IsSubclassOf(typeof(Array)))
-				return "Multiple {0}".F(FriendlyTypeName(t.GetElementType()));
+				return "Collection of {0}".F(FriendlyTypeName(t.GetElementType()));
+
+			if (t.IsGenericType && t.GetGenericTypeDefinition().GetInterfaces().Any(e => e.IsGenericType && e.GetGenericTypeDefinition() == typeof(IEnumerable<>)))
+				return "Collection of {0}".F(FriendlyTypeName(t.GetGenericArguments().First()));
 
 			if (t == typeof(int) || t == typeof(uint))
 				return "Integer";
@@ -238,6 +241,12 @@ namespace OpenRA.Mods.Common
 
 			if (t == typeof(HSLColor) || t == typeof(Color))
 				return "Color (RRGGBB[AA] notation)";
+
+			if (t == typeof(IProjectileInfo))
+				return "Projectile";
+
+			if (t == typeof(IWarhead))
+				return "Warhead";
 
 			return t.Name;
 		}

@@ -28,6 +28,7 @@ rm -rf $HOME/openra-wiki
 git clone git@github.com:OpenRA/OpenRA.wiki.git $HOME/openra-wiki
 
 mono --debug ../OpenRA.Utility.exe all --docs > "${HOME}/openra-wiki/Traits${TAG}.md"
+mono --debug ../OpenRA.Utility.exe all --weapon-docs > "${HOME}/openra-wiki/Weapons${TAG}.md"
 mono --debug ../OpenRA.Utility.exe all --lua-docs > "${HOME}/openra-wiki/Lua API${TAG}.md"
 
 pushd $HOME/openra-wiki
