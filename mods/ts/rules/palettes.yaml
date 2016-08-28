@@ -57,6 +57,7 @@
 	PaletteFromFile@alpha:
 		Name: alpha
 		Filename: alpha.pal
+		AllowModifiers: false
 	PaletteFromRGBA@shadow:
 		Name: shadow
 		R: 0
