@@ -94,6 +94,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (labelUPnP != null)
 				labelUPnP.IsVisible = () => !Game.Settings.Server.DiscoverNatDevices;
 
+			var labelUPnPUnsupported = panel.GetOrNull<LabelWidget>("UPNP_UNSUPPORTED_NOTICE");
+			if (labelUPnPUnsupported != null)
+				labelUPnPUnsupported.IsVisible = () => Game.Settings.Server.DiscoverNatDevices && !Game.Settings.Server.AllowPortForward;
+
 			var passwordField = panel.GetOrNull<PasswordFieldWidget>("PASSWORD");
 			if (passwordField != null)
 				passwordField.Text = Game.Settings.Server.Password;
