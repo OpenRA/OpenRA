@@ -1206,10 +1206,40 @@ Actors:
 	Actor340: waypoint
 		Location: 138,-28
 		Owner: Neutral
-	Actor341: crat03
+	Actor341: lobrdg_r_ne
+		Location: 160,-137
+		Owner: Neutral
+	Actor345: lobrdg_a
+		Location: 160,-136
+		Owner: Neutral
+	Actor346: lobrdg_a
+		Location: 160,-135
+		Owner: Neutral
+	Actor351: lobrdg_a
+		Location: 160,-134
+		Owner: Neutral
+	Actor352: lobrdg_a
+		Location: 160,-133
+		Owner: Neutral
+	Actor357: lobrdg_a
+		Location: 160,-132
+		Owner: Neutral
+	Actor358: lobrdg_a
+		Location: 160,-131
+		Owner: Neutral
+	Actor363: lobrdg_a
+		Location: 160,-130
+		Owner: Neutral
+	Actor364: lobrdg_a
+		Location: 160,-129
+		Owner: Neutral
+	Actor369: lobrdg_r_sw
+		Location: 160,-128
+		Owner: Neutral
+	Actor371: crat03
 		Location: 158,-61
 		Owner: Neutral
-	Actor342: crat01
+	Actor372: crat01
 		Location: 123,20
 		Owner: Neutral
 
@@ -1217,3 +1247,11 @@ Rules:
 	World:
 		GlobalLightingPaletteEffect:
 			Ambient: 0.75
+	LOBRDG_A:
+		Targetable:
+			TargetTypes: Ground, Building
+			RequiresForceFire: true
+		Health:
+			HP: 1000
+		Armor:
+			Type: Concrete

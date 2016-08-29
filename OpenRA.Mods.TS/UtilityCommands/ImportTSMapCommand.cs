@@ -18,6 +18,7 @@ using OpenRA.FileSystem;
 using OpenRA.Mods.Common;
 using OpenRA.Mods.Common.FileFormats;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Traits;
 
 namespace OpenRA.Mods.TS.UtilityCommands
 {
@@ -72,40 +73,41 @@ namespace OpenRA.Mods.TS.UtilityCommands
 			{ 0x47, "palet02" },
 			{ 0x48, "palet03" },
 			{ 0x49, "palet04" },
-			/*
-			{ 0x4A, "lobrdg01" },
-			{ 0x4B, "lobrdg02" },
-			{ 0x4C, "lobrdg03" },
-			{ 0x4D, "lobrdg04" },
-			{ 0x4E, "lobrdg05" },
-			{ 0x4F, "lobrdg06" },
-			{ 0x50, "lobrdg07" },
-			{ 0x51, "lobrdg08" },
-			{ 0x52, "lobrdg09" },
-			{ 0x53, "lobrdg10" },
-			{ 0x54, "lobrdg11" },
-			{ 0x55, "lobrdg12" },
-			{ 0x56, "lobrdg13" },
-			{ 0x57, "lobrdg14" },
-			{ 0x58, "lobrdg15" },
-			{ 0x59, "lobrdg16" },
-			{ 0x5A, "lobrdg17" },
-			{ 0x5B, "lobrdg18" },
-			{ 0x5C, "lobrdg19" },
-			{ 0x5D, "lobrdg20" },
-			{ 0x5E, "lobrdg21" },
-			{ 0x5F, "lobrdg22" },
-			{ 0x60, "lobrdg23" },
-			{ 0x61, "lobrdg24" },
-			{ 0x62, "lobrdg25" },
-			{ 0x63, "lobrdg26" },
-			{ 0x64, "lobrdg27" },
-			{ 0x65, "lobrdg28" },
-			{ 0x7A, "lobrdg1" },
-			{ 0x7B, "lobrdg2" },
-			{ 0x7C, "lobrdg3" },
-			{ 0x7D, "lobrdg4" },
-			*/
+
+			{ 0x4A, "lobrdg_b" }, // lobrdg01
+			{ 0x4B, "lobrdg_b" }, // lobrdg02
+			{ 0x4C, "lobrdg_b" }, // lobrdg03
+			{ 0x4D, "lobrdg_b" }, // lobrdg04
+			{ 0x4E, "lobrdg_b" }, // lobrdg05
+			{ 0x4F, "lobrdg_b" }, // lobrdg06
+			{ 0x50, "lobrdg_b" }, // lobrdg07
+			{ 0x51, "lobrdg_b" }, // lobrdg08
+			{ 0x52, "lobrdg_b" }, // lobrdg09
+			{ 0x53, "lobrdg_a" }, // lobrdg10
+			{ 0x54, "lobrdg_a" }, // lobrdg11
+			{ 0x55, "lobrdg_a" }, // lobrdg12
+			{ 0x56, "lobrdg_a" }, // lobrdg13
+			{ 0x57, "lobrdg_a" }, // lobrdg14
+			{ 0x58, "lobrdg_a" }, // lobrdg15
+			{ 0x59, "lobrdg_a" }, // lobrdg16
+			{ 0x5A, "lobrdg_a" }, // lobrdg17
+			{ 0x5B, "lobrdg_a" }, // lobrdg18
+			{ 0x5C, "lobrdg_r_se" }, // lobrdg19
+			{ 0x5D, "lobrdg_r_se" }, // lobrdg20
+			{ 0x5E, "lobrdg_r_nw" }, // lobrdg21
+			{ 0x5F, "lobrdg_r_nw" }, // lobrdg22
+			{ 0x60, "lobrdg_r_ne" }, // lobrdg23
+			{ 0x61, "lobrdg_r_ne" }, // lobrdg24
+			{ 0x62, "lobrdg_r_sw" }, // lobrdg25
+			{ 0x63, "lobrdg_r_sw" }, // lobrdg26
+			{ 0x64, "lobrdg_b_d" }, // lobrdg27
+			{ 0x65, "lobrdg_a_d" }, // lobrdg28
+
+			{ 0x7A, "lobrdg_r_se" }, // lobrdg1
+			{ 0x7B, "lobrdg_r_nw" }, // lobrdg2
+			{ 0x7C, "lobrdg_r_ne" }, // lobrdg3
+			{ 0x7D, "lobrdg_r_sw" }, // lobrdg4
+
 			{ 0xA7, "veinhole" },
 			{ 0xA8, "srock01" },
 			{ 0xA9, "srock02" },
@@ -119,6 +121,93 @@ namespace OpenRA.Mods.TS.UtilityCommands
 			{ 0xB1, "trock05" },
 			{ 0xBB, "veinholedummy" },
 			{ 0xBC, "crate" }
+		};
+
+		static readonly Dictionary<byte, Size> OverlayShapes = new Dictionary<byte, Size>()
+		{
+			{ 0x4A, new Size(1, 3) },
+			{ 0x4B, new Size(1, 3) },
+			{ 0x4C, new Size(1, 3) },
+			{ 0x4D, new Size(1, 3) },
+			{ 0x4E, new Size(1, 3) },
+			{ 0x4F, new Size(1, 3) },
+			{ 0x50, new Size(1, 3) },
+			{ 0x51, new Size(1, 3) },
+			{ 0x52, new Size(1, 3) },
+			{ 0x53, new Size(3, 1) },
+			{ 0x54, new Size(3, 1) },
+			{ 0x55, new Size(3, 1) },
+			{ 0x56, new Size(3, 1) },
+			{ 0x57, new Size(3, 1) },
+			{ 0x58, new Size(3, 1) },
+			{ 0x59, new Size(3, 1) },
+			{ 0x5A, new Size(3, 1) },
+			{ 0x5B, new Size(3, 1) },
+			{ 0x5C, new Size(1, 3) },
+			{ 0x5D, new Size(1, 3) },
+			{ 0x5E, new Size(1, 3) },
+			{ 0x5F, new Size(1, 3) },
+			{ 0x60, new Size(3, 1) },
+			{ 0x61, new Size(3, 1) },
+			{ 0x62, new Size(3, 1) },
+			{ 0x63, new Size(3, 1) },
+			{ 0x64, new Size(1, 3) },
+			{ 0x65, new Size(3, 1) },
+			{ 0x7A, new Size(1, 3) },
+			{ 0x7B, new Size(1, 3) },
+			{ 0x7C, new Size(3, 1) },
+			{ 0x7D, new Size(3, 1) },
+		};
+
+		static readonly Dictionary<byte, DamageState> OverlayToHealth = new Dictionary<byte, DamageState>()
+		{
+			// 1,3 bridge tiles
+			{ 0x4A, DamageState.Undamaged },
+			{ 0x4B, DamageState.Undamaged },
+			{ 0x4C, DamageState.Undamaged },
+			{ 0x4D, DamageState.Undamaged },
+
+			{ 0x4E, DamageState.Heavy },
+			{ 0x4F, DamageState.Heavy },
+
+			{ 0x50, DamageState.Heavy },
+
+			{ 0x51, DamageState.Critical },
+			{ 0x52, DamageState.Critical },
+
+			// 3,1 bridge tiles
+			{ 0x53, DamageState.Undamaged },
+			{ 0x54, DamageState.Undamaged },
+			{ 0x55, DamageState.Undamaged },
+			{ 0x56, DamageState.Undamaged },
+
+			{ 0x57, DamageState.Heavy },
+			{ 0x58, DamageState.Heavy },
+
+			{ 0x59, DamageState.Heavy },
+
+			{ 0x5A, DamageState.Critical },
+			{ 0x5B, DamageState.Critical },
+
+			// Ramps
+			{ 0x5C, DamageState.Undamaged },
+			{ 0x5D, DamageState.Heavy },
+			{ 0x5E, DamageState.Undamaged },
+			{ 0x5F, DamageState.Heavy },
+			{ 0x60, DamageState.Undamaged },
+			{ 0x61, DamageState.Heavy },
+			{ 0x62, DamageState.Undamaged },
+			{ 0x63, DamageState.Heavy },
+
+			// Ramp duplicates
+			{ 0x7A, DamageState.Undamaged },
+			{ 0x7B, DamageState.Undamaged },
+			{ 0x7C, DamageState.Undamaged },
+			{ 0x7D, DamageState.Undamaged },
+
+			// actually dead, placeholders for resurrection
+			{ 0x64, DamageState.Undamaged },
+			{ 0x65, DamageState.Undamaged },
 		};
 
 		static readonly Dictionary<byte, byte[]> ResourceFromOverlay = new Dictionary<byte, byte[]>()
@@ -274,6 +363,9 @@ namespace OpenRA.Mods.TS.UtilityCommands
 			var overlayDataPack = new byte[1 << 18];
 			UnpackLCW(overlayDataCompressed, overlayDataPack, temp);
 
+			var overlayIndex = new CellLayer<int>(map);
+			overlayIndex.Clear(0xFF);
+
 			for (var y = 0; y < fullSize.Y; y++)
 			{
 				for (var x = fullSize.X * 2 - 2; x >= 0; x--)
@@ -288,37 +380,78 @@ namespace OpenRA.Mods.TS.UtilityCommands
 					if (!map.Resources.Contains(uv))
 						continue;
 
-					var idx = rx + 512 * ry;
-					var overlayType = overlayPack[idx];
-					if (overlayType == 0xFF)
-						continue;
-
-					string actorType;
-					if (OverlayToActor.TryGetValue(overlayType, out actorType))
-					{
-						var ar = new ActorReference(actorType)
-						{
-							new LocationInit(uv.ToCPos(map)),
-							new OwnerInit("Neutral")
-						};
-
-						map.ActorDefinitions.Add(new MiniYamlNode("Actor" + map.ActorDefinitions.Count, ar.Save()));
-						continue;
-					}
-
-					var resourceType = ResourceFromOverlay
-						.Where(kv => kv.Value.Contains(overlayType))
-						.Select(kv => kv.Key)
-						.FirstOrDefault();
-
-					if (resourceType != 0)
-					{
-						map.Resources[uv] = new ResourceTile(resourceType, overlayDataPack[idx]);
-						continue;
-					}
-
-					Console.WriteLine("{0} unknown overlay {1}", uv, overlayType);
+					overlayIndex[uv] = rx + 512 * ry;
 				}
+			}
+
+			foreach (var cell in map.AllCells)
+			{
+				var overlayType = overlayPack[overlayIndex[cell]];
+				if (overlayType == 0xFF)
+					continue;
+
+				string actorType;
+				if (OverlayToActor.TryGetValue(overlayType, out actorType))
+				{
+					var shape = new Size(1, 1);
+					if (OverlayShapes.TryGetValue(overlayType, out shape))
+					{
+						// Only import the top-left cell of multi-celled overlays
+						var aboveType = overlayPack[overlayIndex[cell - new CVec(1, 0)]];
+						if (shape.Width > 1 && aboveType != 0xFF)
+						{
+							string a;
+							if (OverlayToActor.TryGetValue(aboveType, out a) && a == actorType)
+								continue;
+						}
+
+						var leftType = overlayPack[overlayIndex[cell - new CVec(0, 1)]];
+						if (shape.Height > 1 && leftType != 0xFF)
+						{
+							string a;
+							if (OverlayToActor.TryGetValue(leftType, out a) && a == actorType)
+								continue;
+						}
+					}
+
+					var ar = new ActorReference(actorType)
+					{
+						new LocationInit(cell),
+						new OwnerInit("Neutral")
+					};
+
+					DamageState damageState;
+					if (OverlayToHealth.TryGetValue(overlayType, out damageState))
+					{
+						var health = 100;
+						if (damageState == DamageState.Critical)
+							health = 25;
+						else if (damageState == DamageState.Heavy)
+							health = 50;
+						else if (damageState == DamageState.Medium)
+							health = 75;
+
+						if (health != 100)
+							ar.Add(new HealthInit(health));
+					}
+
+					map.ActorDefinitions.Add(new MiniYamlNode("Actor" + map.ActorDefinitions.Count, ar.Save()));
+
+					continue;
+				}
+
+				var resourceType = ResourceFromOverlay
+					.Where(kv => kv.Value.Contains(overlayType))
+					.Select(kv => kv.Key)
+					.FirstOrDefault();
+
+				if (resourceType != 0)
+				{
+					map.Resources[cell] = new ResourceTile(resourceType, overlayDataPack[overlayIndex[cell]]);
+					continue;
+				}
+
+				Console.WriteLine("{0} unknown overlay {1}", cell, overlayType);
 			}
 		}
 

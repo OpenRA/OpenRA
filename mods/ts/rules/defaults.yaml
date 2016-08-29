@@ -883,6 +883,36 @@
 	LineBuildNode:
 		Connections: 0,-1, 0,1
 
+^LowBridge:
+	AlwaysVisible:
+	RenderSprites:
+		Palette: terraindecoration
+	WithSpriteBody:
+	AutoSelectionSize:
+	AppearsOnRadar:
+	RadarColorFromTerrain:
+		Terrain: Road
+	BodyOrientation:
+		UseClassicPerspectiveFudge: false
+		QuantizedFacings: 1
+	Tooltip:
+		Name: Bridge
+	Health:
+
+^LowBridge_A:
+	Inherits: ^LowBridge
+	Building:
+		Footprint: ___
+		Dimensions: 3, 1
+	LowBridge:
+
+^LowBridge_B:
+	Inherits: ^LowBridge
+	Building:
+		Footprint: _ _ _
+		Dimensions: 1, 3
+	LowBridge:
+
 ^HealsOnTiberium:
 	DamagedByTerrain:
 		Damage: -2
