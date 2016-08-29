@@ -194,12 +194,6 @@ Container@EDITOR_WORLD_ROOT:
 	Logic: LoadIngamePerfLogic, MapEditorLogic
 	Children:
 		Container@PERF_ROOT:
-		ViewportController:
-			X: 0
-			Y: 0
-			Width: WINDOW_RIGHT
-			Height: WINDOW_BOTTOM
-			TooltipContainer: TOOLTIP_CONTAINER
 		EditorViewportController@MAP_EDITOR:
 			Width: WINDOW_RIGHT
 			Height: WINDOW_BOTTOM
@@ -212,6 +206,10 @@ Container@EDITOR_WORLD_ROOT:
 					Visible: false
 				Sprite@DRAG_LAYER_PREVIEW:
 					Visible: false
+		ViewportController:
+			Width: WINDOW_RIGHT
+			Height: WINDOW_BOTTOM
+			IgnoreMouseOver: True
 		Background@RADAR_BG:
 			X: WINDOW_RIGHT-255
 			Y: 5
