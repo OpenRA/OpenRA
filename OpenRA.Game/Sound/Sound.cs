@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 using OpenRA.FileSystem;
 using OpenRA.GameRules;
@@ -39,6 +40,7 @@ namespace OpenRA
 		ISound music;
 		ISound video;
 		MusicInfo currentMusic;
+		Dictionary<uint, ISound> currentSounds = new Dictionary<uint, ISound>();
 
 		public Sound(IPlatform platform, SoundSettings soundSettings)
 		{
@@ -348,9 +350,18 @@ namespace OpenRA
 			var name = prefix + clip + suffix;
 
 			if (!string.IsNullOrEmpty(name) && (p == null || p == p.World.LocalPlayer))
-				soundEngine.Play2D(sounds[name],
+			{
+				var sound = soundEngine.Play2D(sounds[name],
 					false, relative, pos,
 					InternalSoundVolume * volumeModifier, attenuateVolume);
+				if (id != 0)
+				{
+					if (currentSounds.ContainsKey(id))
+						soundEngine.StopSound(currentSounds[id]);
+
+					currentSounds[id] = sound;
+				}
+			}
 
 			return true;
 		}
