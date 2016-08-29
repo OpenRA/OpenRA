@@ -546,7 +546,7 @@ MRJ:
 		Range: 15c0
 	JamsMissiles:
 		Range: 4c0
-		AlliedMissiles: False
+		DeflectionStances: Neutral, Enemy
 	RenderJammerCircle:
 	DetectCloaked:
 		Range: 6c0
