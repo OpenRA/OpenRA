@@ -60,7 +60,12 @@ Section "-Reg" Reg
 	WriteRegStr HKLM "Software\Classes\.orarep" "" "OpenRA_replay"
 	WriteRegStr HKLM "Software\Classes\OpenRA_replay\DefaultIcon" "" "$INSTDIR\OpenRA.ico,0"
 	WriteRegStr HKLM "Software\Classes\OpenRA_replay\Shell\Open\Command" "" "$INSTDIR\OpenRA.exe Launch.Replay=$\"%1$\""
-	
+
+	; oramod file association
+	WriteRegStr HKLM "Software\Classes\.oramod" "" "OpenRA_mod"
+	WriteRegStr HKLM "Software\Classes\OpenRA_mod\DefaultIcon" "" "$INSTDIR\OpenRA.ico,0"
+	WriteRegStr HKLM "Software\Classes\OpenRA_mod\Shell\Open\Command" "" "$INSTDIR\OpenRA.exe Game.Mod=$\"%1$\""
+
 	; OpenRA URL Scheme
 	WriteRegStr HKLM "Software\Classes\openra" "" "URL:OpenRA scheme"
 	WriteRegStr HKLM "Software\Classes\openra" "URL Protocol" ""
