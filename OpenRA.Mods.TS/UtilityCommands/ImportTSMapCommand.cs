@@ -121,6 +121,42 @@ namespace OpenRA.Mods.TS.UtilityCommands
 			{ 0xBC, "crate" }
 		};
 
+		static readonly Dictionary<byte, Size> OverlayShapes = new Dictionary<byte, Size>()
+		{
+			{ 0x4A, new Size(1, 3) },
+			{ 0x4B, new Size(1, 3) },
+			{ 0x4C, new Size(1, 3) },
+			{ 0x4D, new Size(1, 3) },
+			{ 0x4E, new Size(1, 3) },
+			{ 0x4F, new Size(1, 3) },
+			{ 0x50, new Size(1, 3) },
+			{ 0x51, new Size(1, 3) },
+			{ 0x52, new Size(1, 3) },
+			{ 0x53, new Size(3, 1) },
+			{ 0x54, new Size(3, 1) },
+			{ 0x55, new Size(3, 1) },
+			{ 0x56, new Size(3, 1) },
+			{ 0x57, new Size(3, 1) },
+			{ 0x58, new Size(3, 1) },
+			{ 0x59, new Size(3, 1) },
+			{ 0x5A, new Size(3, 1) },
+			{ 0x5B, new Size(3, 1) },
+			{ 0x5C, new Size(1, 3) },
+			{ 0x5D, new Size(1, 3) },
+			{ 0x5E, new Size(1, 3) },
+			{ 0x5F, new Size(1, 3) },
+			{ 0x60, new Size(3, 1) },
+			{ 0x61, new Size(3, 1) },
+			{ 0x62, new Size(3, 1) },
+			{ 0x63, new Size(3, 1) },
+			{ 0x64, new Size(1, 3) },
+			{ 0x65, new Size(3, 1) },
+			{ 0x7A, new Size(1, 3) },
+			{ 0x7B, new Size(1, 3) },
+			{ 0x7C, new Size(3, 1) },
+			{ 0x7D, new Size(3, 1) },
+		};
+
 		static readonly Dictionary<byte, byte[]> ResourceFromOverlay = new Dictionary<byte, byte[]>()
 		{
 			// "tib" - Regular Tiberium
@@ -274,6 +310,9 @@ namespace OpenRA.Mods.TS.UtilityCommands
 			var overlayDataPack = new byte[1 << 18];
 			UnpackLCW(overlayDataCompressed, overlayDataPack, temp);
 
+			var overlayIndex = new CellLayer<int>(map);
+			overlayIndex.Clear(0xFF);
+
 			for (var y = 0; y < fullSize.Y; y++)
 			{
 				for (var x = fullSize.X * 2 - 2; x >= 0; x--)
@@ -288,37 +327,63 @@ namespace OpenRA.Mods.TS.UtilityCommands
 					if (!map.Resources.Contains(uv))
 						continue;
 
-					var idx = rx + 512 * ry;
-					var overlayType = overlayPack[idx];
-					if (overlayType == 0xFF)
-						continue;
-
-					string actorType;
-					if (OverlayToActor.TryGetValue(overlayType, out actorType))
-					{
-						var ar = new ActorReference(actorType)
-						{
-							new LocationInit(uv.ToCPos(map)),
-							new OwnerInit("Neutral")
-						};
-
-						map.ActorDefinitions.Add(new MiniYamlNode("Actor" + map.ActorDefinitions.Count, ar.Save()));
-						continue;
-					}
-
-					var resourceType = ResourceFromOverlay
-						.Where(kv => kv.Value.Contains(overlayType))
-						.Select(kv => kv.Key)
-						.FirstOrDefault();
-
-					if (resourceType != 0)
-					{
-						map.Resources[uv] = new ResourceTile(resourceType, overlayDataPack[idx]);
-						continue;
-					}
-
-					Console.WriteLine("{0} unknown overlay {1}", uv, overlayType);
+					overlayIndex[uv] = rx + 512 * ry;
 				}
+			}
+
+			foreach (var cell in map.AllCells)
+			{
+				var overlayType = overlayPack[overlayIndex[cell]];
+				if (overlayType == 0xFF)
+					continue;
+
+				string actorType;
+				if (OverlayToActor.TryGetValue(overlayType, out actorType))
+				{
+					var shape = new Size(1, 1);
+					if (OverlayShapes.TryGetValue(overlayType, out shape))
+					{
+						// Only import the top-left cell of multi-celled overlays
+						var aboveType = overlayPack[overlayIndex[cell - new CVec(1, 0)]];
+						if (shape.Width > 1 && aboveType != 0xFF)
+						{
+							string a;
+							if (OverlayToActor.TryGetValue(aboveType, out a) && a == actorType)
+								continue;
+						}
+
+						var leftType = overlayPack[overlayIndex[cell - new CVec(0, 1)]];
+						if (shape.Height > 1 && leftType != 0xFF)
+						{
+							string a;
+							if (OverlayToActor.TryGetValue(leftType, out a) && a == actorType)
+								continue;
+						}
+					}
+
+					var ar = new ActorReference(actorType)
+					{
+						new LocationInit(cell),
+						new OwnerInit("Neutral")
+					};
+
+					map.ActorDefinitions.Add(new MiniYamlNode("Actor" + map.ActorDefinitions.Count, ar.Save()));
+
+					continue;
+				}
+
+				var resourceType = ResourceFromOverlay
+					.Where(kv => kv.Value.Contains(overlayType))
+					.Select(kv => kv.Key)
+					.FirstOrDefault();
+
+				if (resourceType != 0)
+				{
+					map.Resources[cell] = new ResourceTile(resourceType, overlayDataPack[overlayIndex[cell]]);
+					continue;
+				}
+
+				Console.WriteLine("{0} unknown overlay {1}", cell, overlayType);
 			}
 		}
 
