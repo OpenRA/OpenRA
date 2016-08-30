@@ -151,7 +151,7 @@ namespace OpenRA.Mods.Common.Traits
 			else
 			{
 				// Existing smudge; make it deeper
-				var tile = dirty.ContainsKey(loc) ? dirty[loc] : tiles[loc];
+				var tile = dirty.ContainsKey(loc) && dirty[loc].Sprite != null ? dirty[loc] : tiles[loc];
 				var maxDepth = smudges[tile.Type].Length;
 				if (tile.Depth < maxDepth - 1)
 				{
