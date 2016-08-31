@@ -12,7 +12,7 @@ World:
 		Label: Difficulty
 		Values:
 			easy: Easy
-			medium: Medium
+			normal: Normal
 			hard: Hard
 		Default: easy
 
