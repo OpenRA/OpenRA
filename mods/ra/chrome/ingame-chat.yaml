@@ -14,7 +14,7 @@ Container@CHAT_PANEL:
 					Width: PARENT_RIGHT
 					Height: PARENT_BOTTOM
 					RemoveTime: 250
-					UseContrast: yes
+					UseShadow: True
 		Container@CHAT_CHROME:
 			Width: PARENT_RIGHT
 			Height: PARENT_BOTTOM

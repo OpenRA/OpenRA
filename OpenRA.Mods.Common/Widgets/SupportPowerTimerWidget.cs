@@ -83,7 +83,7 @@ namespace OpenRA.Mods.Common.Widgets
 			foreach (var t in texts)
 			{
 				var font = Game.Renderer.Fonts[Font];
-				font.DrawTextWithContrast(t.First, new float2(Bounds.Location) + new float2(0, y), t.Second, bgDark, bgLight, 1);
+				font.DrawTextWithShadow(t.First, new float2(Bounds.Location) + new float2(0, y), t.Second, bgDark, bgLight, 1);
 				y += (font.Measure(t.First).Y + 5) * (int)Order;
 			}
 		}
