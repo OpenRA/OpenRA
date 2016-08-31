@@ -68,30 +68,7 @@ namespace OpenRA.Mods.RA.Activities
 			self.Generation++;
 
 			if (killCargo && teleporter != null)
-			{
-				var cargo = self.TraitOrDefault<Cargo>();
-				if (cargo != null)
-				{
-					var actorsToLoad = new List<Actor>();
-					while (!cargo.IsEmpty(self))
-					{
-						var a = cargo.Unload(self);
-						var chronoshiftable = a.TraitOrDefault<Chronoshiftable>();
-						if (chronoshiftable != null && !chronoshiftable.Info.ExplodeInstead)
-						{
-							actorsToLoad.Add(a);
-							continue;
-						}
-
-						// Kill all the units that are unloaded into the void
-						// Kill() handles kill and death statistics
-						a.Kill(teleporter);
-					}
-
-					foreach (var a in actorsToLoad)
-						cargo.Load(self, a);
-				}
-			}
+				KillCargo(self);
 
 			// Consume teleport charges if this wasn't triggered via chronosphere
 			if (teleporter == self && pc != null)
@@ -136,6 +113,34 @@ namespace OpenRA.Mods.RA.Activities
 			}
 
 			return null;
+		}
+
+		void KillCargo(Actor self)
+		{
+			var cargo = self.TraitOrDefault<Cargo>();
+			if (cargo != null)
+			{
+				var actorsToLoad = new List<Actor>();
+				while (!cargo.IsEmpty(self))
+				{
+					var a = cargo.Unload(self);
+					KillCargo(a);
+
+					var chronoshiftable = a.TraitOrDefault<Chronoshiftable>();
+					if (chronoshiftable != null && !chronoshiftable.Info.ExplodeInstead)
+					{
+						actorsToLoad.Add(a);
+						continue;
+					}
+
+					// Kill all the units that are unloaded into the void
+					// Kill() handles kill and death statistics
+					a.Kill(teleporter);
+				}
+
+				foreach (var a in actorsToLoad)
+					cargo.Load(self, a);
+			}
 		}
 	}
 }
