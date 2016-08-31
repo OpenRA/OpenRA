@@ -1,5 +1,5 @@
 25mm:
-	ReloadDelay: 13
+	ReloadDelay: 26
 	Range: 4c0
 	Report: cannon2.aud
 	Projectile: Bullet
@@ -7,11 +7,12 @@
 		Image: 50CAL
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
-		Damage: 16
+		Damage: 32
 		Versus:
 			None: 30
 			Wood: 40
-			Heavy: 40
+			Light: 120
+			Heavy: 45
 			Concrete: 30
 		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
 	Warhead@3EffGround: CreateEffect
