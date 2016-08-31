@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Traits;
@@ -66,19 +67,29 @@ namespace OpenRA.Mods.RA.Activities
 			self.Trait<IPositionable>().SetPosition(self, destination);
 			self.Generation++;
 
-			if (killCargo)
+			if (killCargo && teleporter != null)
 			{
 				var cargo = self.TraitOrDefault<Cargo>();
-				if (cargo != null && teleporter != null)
+				if (cargo != null)
 				{
+					var actorsToLoad = new List<Actor>();
 					while (!cargo.IsEmpty(self))
 					{
 						var a = cargo.Unload(self);
+						var chronoshiftable = a.TraitOrDefault<Chronoshiftable>();
+						if (chronoshiftable != null && !chronoshiftable.Info.ExplodeInstead)
+						{
+							actorsToLoad.Add(a);
+							continue;
+						}
 
 						// Kill all the units that are unloaded into the void
 						// Kill() handles kill and death statistics
 						a.Kill(teleporter);
 					}
+
+					foreach (var a in actorsToLoad)
+						cargo.Load(self, a);
 				}
 			}
 
