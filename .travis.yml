@@ -2,7 +2,7 @@
 # see travis-ci.org for details
 
 language: csharp
-mono: 4.2.1
+mono: 4.4.2
 
 # http://docs.travis-ci.com/user/migrating-from-legacy
 sudo: false
