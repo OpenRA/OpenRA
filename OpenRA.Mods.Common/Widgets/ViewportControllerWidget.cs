@@ -210,7 +210,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public override string GetCursor(int2 pos)
 		{
-			if (!IsJoystickScrolling &&
+			if (!(IsJoystickScrolling || isStandardScrolling) &&
 				(!Game.Settings.Game.ViewportEdgeScroll || Ui.MouseOverWidget != this))
 				return null;
 
