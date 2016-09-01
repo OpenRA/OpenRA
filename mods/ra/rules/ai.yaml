@@ -66,7 +66,12 @@ Player:
 			4tnk: 10%
 			ttnk: 10%
 			stnk: 5%
+			ctnk: 3%
+			mrj: 2%
+			mgg: 1%
 		UnitLimits:
+			mrj: 1
+			mgg: 1
 			dog: 4
 			e6: 3
 			harv: 8
@@ -195,6 +200,9 @@ Player:
 			4tnk: 15%
 			ttnk: 15%
 			stnk: 10%
+			ctnk: 6%
+			mrj: 2.5%
+			mgg: 1%
 			heli: 30%
 			hind: 30%
 			mig: 30%
@@ -205,6 +213,8 @@ Player:
 			ca: 10%
 			pt: 10%
 		UnitLimits:
+			mrj: 1
+			mgg: 1
 			dog: 4
 			e6: 1
 			medi: 3
@@ -335,6 +345,9 @@ Player:
 			4tnk: 20%
 			ttnk: 20%
 			stnk: 15%
+			ctnk: 9%
+			mrj: 3%
+			mgg: 1%
 			heli: 30%
 			hind: 30%
 			mig: 30%
@@ -345,6 +358,8 @@ Player:
 			ca: 10%
 			pt: 10%
 		UnitLimits:
+			mrj: 1
+			mgg: 1
 			dog: 4
 			e6: 1
 			medi: 4
