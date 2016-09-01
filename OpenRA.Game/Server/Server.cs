@@ -306,7 +306,7 @@ namespace OpenRA.Server
 					Slot = LobbyInfo.FirstEmptySlot(),
 					PreferredColor = handshake.Client.Color,
 					Color = handshake.Client.Color,
-					Faction = "Random",
+					Faction = handshake.Client.Faction,
 					SpawnPoint = 0,
 					Team = 0,
 					State = Session.ClientState.Invalid,
