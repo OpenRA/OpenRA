@@ -70,8 +70,8 @@ fi
 
 if [ ! -f nunit.framework.dll ]; then
 	echo "Fetching NUnit from NuGet"
-	get NUnit 3.0.1
-	cp ./NUnit/lib/net40/nunit.framework* .
+	get NUnit 3.4.1
+	cp ./NUnit/lib/net45/nunit.framework* .
 	rm -rf NUnit
 fi
 
