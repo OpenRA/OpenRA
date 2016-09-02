@@ -308,57 +308,67 @@ Background@INGAME_OBSERVERSTATS_BG:
 									Width: 160
 									Height: PARENT_BOTTOM
 									Font: Bold
+									Shadow: True
 								Label@CASH:
 									X: 215
 									Y: 0
 									Width: 80
 									Height: PARENT_BOTTOM
+									Shadow: True
 								Label@EARNED_MIN:
 									X: 295
 									Y: 0
 									Width: 60
 									Height: PARENT_BOTTOM
+									Shadow: True
 								Label@POWER:
 									X: 395
 									Y: 0
 									Width: 80
 									Height: PARENT_BOTTOM
+									Shadow: True
 								Label@KILLS:
 									X: 455
 									Y: 0
 									Width: 60
 									Height: PARENT_BOTTOM
 									Align: Right
+									Shadow: True
 								Label@DEATHS:
 									X: 515
 									Y: 0
 									Width: 60
 									Height: PARENT_BOTTOM
 									Align: Right
+									Shadow: True
 								Label@ASSETS_DESTROYED:
 									X: 575
 									Y: 0
 									Width: 80
 									Height: PARENT_BOTTOM
 									Align: Right
+									Shadow: True
 								Label@ASSETS_LOST:
 									X: 655
 									Y: 0
 									Width: 80
 									Height: PARENT_BOTTOM
 									Align: Right
+									Shadow: True
 								Label@EXPERIENCE:
 									X: 735
 									Y: 0
 									Width: 95
 									Height: PARENT_BOTTOM
 									Align: Right
+									Shadow: True
 								Label@ACTIONS_MIN:
 									X: 830
 									Y: 0
 									Width: 90
 									Height: PARENT_BOTTOM
 									Align: Right
+									Shadow: True
 						ScrollItem@ECONOMY_PLAYER_TEMPLATE:
 							X: 0
 							Y: 0
@@ -378,42 +388,50 @@ Background@INGAME_OBSERVERSTATS_BG:
 									Width: 160
 									Height: PARENT_BOTTOM
 									Font: Bold
+									Shadow: True
 								Label@CASH:
 									X: 215
 									Y: 0
 									Width: 80
 									Height: PARENT_BOTTOM
+									Shadow: True
 								Label@EARNED_MIN:
 									X: 295
 									Y: 0
 									Width: 60
 									Height: PARENT_BOTTOM
+									Shadow: True
 								Label@EARNED_THIS_MIN:
 									X: 395
 									Y: 0
 									Width: 60
 									Height: PARENT_BOTTOM
+									Shadow: True
 								Label@ASSETS:
 									X: 535
 									Y: 0
 									Width: 60
 									Height: PARENT_BOTTOM
+									Shadow: True
 								Label@EARNED:
 									X: 615
 									Y: 0
 									Width: 60
 									Height: PARENT_BOTTOM
+									Shadow: True
 								Label@SPENT:
 									X: 695
 									Y: 0
 									Width: 60
 									Height: PARENT_BOTTOM
+									Shadow: True
 								Label@HARVESTERS:
 									X: 775
 									Y: 0
 									Width: 60
 									Height: PARENT_BOTTOM
 									Align: Right
+									Shadow: True
 						ScrollItem@PRODUCTION_PLAYER_TEMPLATE:
 							X: 0
 							Y: 0
@@ -433,6 +451,7 @@ Background@INGAME_OBSERVERSTATS_BG:
 									Width: 160
 									Height: PARENT_BOTTOM
 									Font: Bold
+									Shadow: True
 								ObserverProductionIcons@PRODUCTION_ICONS:
 									X: 215
 									Y: 0
@@ -462,40 +481,47 @@ Background@INGAME_OBSERVERSTATS_BG:
 									Width: 160
 									Height: PARENT_BOTTOM
 									Font: Bold
+									Shadow: True
 								Label@ASSETS_DESTROYED:
 									X: 215
 									Y: 0
 									Width: 60
 									Height: PARENT_BOTTOM
+									Shadow: True
 								Label@ASSETS_LOST:
 									X: 295
 									Y: 0
 									Width: 60
 									Height: PARENT_BOTTOM
+									Shadow: True
 								Label@UNITS_KILLED:
 									X: 395
 									Y: 0
 									Width: 40
 									Height: PARENT_BOTTOM
 									Align: Right
+									Shadow: True
 								Label@UNITS_DEAD:
 									X: 495
 									Y: 0
 									Width: 40
 									Height: PARENT_BOTTOM
 									Align: Right
+									Shadow: True
 								Label@BUILDINGS_KILLED:
 									X: 615
 									Y: 0
 									Width: 40
 									Height: PARENT_BOTTOM
 									Align: Right
+									Shadow: True
 								Label@BUILDINGS_DEAD:
 									X: 715
 									Y: 0
 									Width: 40
 									Height: PARENT_BOTTOM
 									Align: Right
+									Shadow: True
 						Container@EARNED_THIS_MIN_GRAPH_TEMPLATE:
 							X: 10
 							Y: 10

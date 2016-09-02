@@ -250,6 +250,12 @@ namespace OpenRA.Widgets
 
 			return trimmed;
 		}
+
+		public static Color GetContrastColor(Color fgColor, Color bgDark, Color bgLight)
+		{
+			var fg = new HSLColor(fgColor);
+			return fg.RGB == Color.White || fg.L > 80 ? bgDark : bgLight;
+		}
 	}
 
 	public class CachedTransform<T, U>

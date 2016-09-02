@@ -88,6 +88,7 @@ Container@SKIRMISH_STATS:
 							X: 10
 							Width: 210
 							Height: 25
+							Shadow: True
 						ClientTooltipRegion@CLIENT_REGION:
 							TooltipContainer: TOOLTIP_CONTAINER
 							Template: INGAME_CLIENT_TOOLTIP
@@ -103,8 +104,10 @@ Container@SKIRMISH_STATS:
 							X: 264
 							Width: 86
 							Height: 25
+							Shadow: True
 						Label@SCORE:
 							X: 360
 							Width: 75
 							Height: 25
 							Align: Right
+							Shadow: True

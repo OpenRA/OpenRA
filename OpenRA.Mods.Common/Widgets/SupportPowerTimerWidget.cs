@@ -29,7 +29,8 @@ namespace OpenRA.Mods.Common.Widgets
 
 		readonly int timestep;
 		readonly IEnumerable<SupportPowerInstance> powers;
-		Tuple<string, Color, Color>[] texts;
+		readonly Color bgDark, bgLight;
+		Pair<string, Color>[] texts;
 
 		[ObjectCreator.UseCtor]
 		public SupportPowerTimerWidget(World world)
@@ -43,6 +44,9 @@ namespace OpenRA.Mods.Common.Widgets
 			timestep = world.Timestep;
 			if (world.IsReplay)
 				timestep = world.WorldActor.Trait<MapOptions>().GameSpeed.Timestep;
+
+			bgDark = ChromeMetrics.Get<Color>("TextContrastColorDark");
+			bgLight = ChromeMetrics.Get<Color>("TextContrastColorLight");
 		}
 
 		public override void Tick()
@@ -66,11 +70,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 				var color = !p.Ready || Game.LocalTick % 50 < 25 ? playerColor : Color.White;
 
-				var inversedColor = self.Owner.Color;
-				var inversedL = color == Color.White || inversedColor.L > 128 ? (byte)0 : (byte)255;
-				inversedColor = new HSLColor(inversedColor.H, 0, inversedL);
-
-				return Tuple.Create(text, color, inversedColor.RGB);
+				return Pair.New(text, color);
 			}).ToArray();
 		}
 
@@ -83,8 +83,8 @@ namespace OpenRA.Mods.Common.Widgets
 			foreach (var t in texts)
 			{
 				var font = Game.Renderer.Fonts[Font];
-				font.DrawTextWithContrast(t.Item1, new float2(Bounds.Location) + new float2(0, y), t.Item2, t.Item3, 1);
-				y += (font.Measure(t.Item1).Y + 5) * (int)Order;
+				font.DrawTextWithShadow(t.First, new float2(Bounds.Location) + new float2(0, y), t.Second, bgDark, bgLight, 1);
+				y += (font.Measure(t.First).Y + 5) * (int)Order;
 			}
 		}
 

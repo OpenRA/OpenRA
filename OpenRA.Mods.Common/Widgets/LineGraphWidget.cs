@@ -40,6 +40,8 @@ namespace OpenRA.Mods.Common.Widgets
 		public bool DisplayFirstYAxisValue = false;
 		public string LabelFont;
 		public string AxisFont;
+		public Color BackgroundColorDark = ChromeMetrics.Get<Color>("TextContrastColorDark");
+		public Color BackgroundColorLight = ChromeMetrics.Get<Color>("TextContrastColorLight");
 
 		public LineGraphWidget()
 		{
@@ -79,6 +81,8 @@ namespace OpenRA.Mods.Common.Widgets
 			DisplayFirstYAxisValue = other.DisplayFirstYAxisValue;
 			LabelFont = other.LabelFont;
 			AxisFont = other.AxisFont;
+			BackgroundColorDark = other.BackgroundColorDark;
+			BackgroundColorLight = other.BackgroundColorLight;
 		}
 
 		public override void Draw()
@@ -131,10 +135,12 @@ namespace OpenRA.Mods.Common.Widgets
 						}), 1, color);
 
 					if (lastPoint != 0f)
-						tiny.DrawText(GetValueFormat().F(lastPoint), origin + new float2(lastX * xStep, -lastPoint * scale - 2), color);
+						tiny.DrawTextWithShadow(GetValueFormat().F(lastPoint), origin + new float2(lastX * xStep, -lastPoint * scale - 2),
+							color, BackgroundColorDark, BackgroundColorLight, 1);
 				}
 
-				tiny.DrawText(key, new float2(rect.Left, rect.Top) + new float2(5, 10 * keyOffset + 3), color);
+				tiny.DrawTextWithShadow(key, new float2(rect.Left, rect.Top) + new float2(5, 10 * keyOffset + 3),
+					color, BackgroundColorDark, BackgroundColorLight, 1);
 				keyOffset++;
 			}
 
