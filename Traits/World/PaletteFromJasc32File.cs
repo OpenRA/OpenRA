@@ -84,7 +84,7 @@ namespace OpenRA.Mods.AS.Traits
 			get
 			{
 				// Only expose the palette if it is available for the shellmap's tileset (which is a requirement for its use).
-				if ((info.Tilesets.Count == 0 || info.Tilesets.Contains(world.Map.Rules.TileSet.Id))
+				if ((info.Tilesets.Count() == 0 || info.Tilesets.Contains(world.Map.Rules.TileSet.Id))
 					&& !info.ExcludeTilesets.Contains(world.Map.Rules.TileSet.Id))
 					yield return info.Name;
 			}
