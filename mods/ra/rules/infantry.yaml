@@ -621,7 +621,7 @@ Ant:
 	Armament:
 		Weapon: mandible
 	Targetable:
-		TargetTypes: Ground, Infantry
+		TargetTypes: Ground, Infantry, Ant
 	WithDeathAnimation:
 		UseDeathTypeSuffix: false
 	Voiced:

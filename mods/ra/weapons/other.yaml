@@ -192,6 +192,7 @@ DogJaw:
 		Spread: 213
 		Damage: 100
 		ValidTargets: Infantry
+		InvalidTargets: Ant
 		DamageTypes: DefaultDeath
 
 Heal:
