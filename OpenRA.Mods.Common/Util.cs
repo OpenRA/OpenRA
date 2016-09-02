@@ -73,12 +73,14 @@ namespace OpenRA.Mods.Common
 			}
 		}
 
+		/// <summary>Wraps an arbitrary integer facing value into the range 0 - 255</summary>
 		public static int NormalizeFacing(int f)
 		{
 			if (f >= 0)
 				return f & 0xFF;
 
-			return 0xFF - (-f & 0xFF);
+			var negative = -f & 0xFF;
+			return negative == 0 ? 0 : 256 - negative;
 		}
 
 		public static WPos BetweenCells(World w, CPos from, CPos to)
