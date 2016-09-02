@@ -36,7 +36,7 @@ namespace OpenRA.Mods.Common.Activities
 				return ActivityUtils.SequenceActivities(
 					aircraft.GetResupplyActivities(host)
 					.Append(new CallFunc(() => aircraft.UnReserve()))
-					.Append(new WaitFor(() => NextActivity != null || Reservable.IsReserved(host)))
+					.Append(new WaitFor(() => NextActivity != null || host.IsDead || Reservable.IsReserved(host)))
 					.Append(new TakeOff(self))
 					.Append(NextActivity).ToArray());
 
