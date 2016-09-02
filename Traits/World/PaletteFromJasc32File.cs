@@ -27,8 +27,11 @@ namespace OpenRA.Mods.AS.Traits
 		[Desc("Internal palette name.")]
 		public readonly string Name = null;
 
-		[Desc("If defined, load the palette only for this tileset.")]
-		public readonly string Tileset = null;
+		[Desc("If defined, load the palette only for these tileset.")]
+		public readonly string[] Tilesets = { };
+
+		[Desc("If defined, prevents the palette being loaded on these tilesets.")]
+		public readonly string[] ExcludeTilesets = { };
 
 		[FieldLoader.Require]
 		[Desc("Name of the file to load.")]
@@ -81,7 +84,8 @@ namespace OpenRA.Mods.AS.Traits
 			get
 			{
 				// Only expose the palette if it is available for the shellmap's tileset (which is a requirement for its use).
-				if (info.Tileset == null || info.Tileset == world.Map.Rules.TileSet.Id)
+				if ((info.Tilesets.Count == 0 || info.Tilesets.Contains(world.Map.Rules.TileSet.Id))
+					&& !info.ExcludeTilesets.Contains(world.Map.Rules.TileSet.Id))
 					yield return info.Name;
 			}
 		}
