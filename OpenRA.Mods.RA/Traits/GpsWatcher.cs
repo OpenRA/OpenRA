@@ -28,16 +28,22 @@ namespace OpenRA.Mods.RA.Traits
 
 	class GpsWatcher : ISync, IFogVisibilityModifier
 	{
-		[Sync] bool enabled;
-		[Sync] bool grantedAllies;
-		[Sync] bool granted;
-
-		public bool Active { get { return granted || grantedAllies; } }
+		public bool Active { get { return active || allyActive; } }
 
 		readonly Player owner;
 
 		readonly List<Actor> sources = new List<Actor>();
 		readonly HashSet<TraitPair<IOnGpsRefreshed>> notifyOnRefresh = new HashSet<TraitPair<IOnGpsRefreshed>>();
+
+		// Whether this watcher has been enabled (by launching a satellite)
+		[Sync] bool enabled;
+
+		// Whether this watcher has explored the terrain (by becoming enabled, or an ally becoming enabled)
+		[Sync] bool explored;
+
+		// Whether this or an ally's watcher is currently active (> 0 sources and enabled)
+		[Sync] bool active;
+		[Sync] bool allyActive;
 
 		public GpsWatcher(Player owner)
 		{
@@ -77,12 +83,18 @@ namespace OpenRA.Mods.RA.Traits
 		void RefreshInner()
 		{
 			var wasActive = Active;
+			var allyWatchers = owner.World.ActorsWithTrait<GpsWatcher>().Where(kv => kv.Actor.Owner.IsAlliedWith(owner));
 
-			granted = sources.Count > 0 && enabled;
-			grantedAllies = owner.World.ActorsHavingTrait<GpsWatcher>(g => g.granted).Any(p => p.Owner.IsAlliedWith(owner));
+			active = sources.Count > 0 && enabled;
+			allyActive = allyWatchers.Any(w => w.Trait.active);
 
-			if (Active)
+			// Shroud is only explored once, when the watcher is first enabled
+			var allyEnabled = allyWatchers.Any(w => w.Trait.enabled);
+			if ((enabled || allyEnabled) && !explored)
+			{
+				explored = true;
 				owner.Shroud.ExploreAll();
+			}
 
 			if (wasActive != Active)
 				foreach (var tp in notifyOnRefresh.ToList())
