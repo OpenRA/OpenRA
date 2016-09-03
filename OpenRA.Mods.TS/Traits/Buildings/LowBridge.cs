@@ -20,7 +20,7 @@ namespace OpenRA.Mods.TS.Traits
 	[Desc("Bridge actor that can't be passed underneath.")]
 	class LowBridgeInfo : ITraitInfo, Requires<BuildingInfo>
 	{
-		public readonly string TerrainType = "Road";
+		public readonly string TerrainType = "Bridge";
 
 		public object Create(ActorInitializer init) { return new LowBridge(init.Self, this); }
 	}

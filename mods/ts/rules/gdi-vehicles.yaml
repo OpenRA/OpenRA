@@ -62,6 +62,7 @@ HVR:
 		TerrainSpeeds:
 			Clear: 100
 			Road: 100
+			Bridge: 100
 			Rail: 100
 			DirtRoad: 100
 			Rough: 100

@@ -261,6 +261,7 @@
 		TerrainSpeeds:
 			Clear: 90
 			Road: 100
+			Bridge: 100
 			Rail: 90
 			DirtRoad: 100
 			Rough: 80
@@ -430,6 +431,7 @@
 		TerrainSpeeds:
 			Clear: 70
 			Road: 100
+			Bridge: 100
 			Rail: 50
 			DirtRoad: 90
 			Rough: 40
@@ -497,6 +499,7 @@
 		TerrainSpeeds:
 			Clear: 70
 			Road: 100
+			Bridge: 100
 			Rail: 100
 			DirtRoad: 90
 			Rough: 60
@@ -632,6 +635,7 @@
 		TerrainSpeeds:
 			Clear: 90
 			Road: 100
+			Bridge: 100
 			Rail: 80
 			DirtRoad: 90
 			Rough: 70
@@ -891,7 +895,7 @@
 	AutoSelectionSize:
 	AppearsOnRadar:
 	RadarColorFromTerrain:
-		Terrain: Road
+		Terrain: Bridge
 	BodyOrientation:
 		UseClassicPerspectiveFudge: false
 		QuantizedFacings: 1
