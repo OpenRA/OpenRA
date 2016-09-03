@@ -45,33 +45,30 @@ namespace OpenRA.Mods.RA.Traits
 		public void RemoveSource(Actor source)
 		{
 			sources.Remove(source);
-			RefreshGps(source);
+			Refresh();
 		}
 
 		public void AddSource(Actor source)
 		{
 			sources.Add(source);
-			RefreshGps(source);
+			Refresh();
 		}
 
-		public void Launch(Actor atek, GpsPowerInfo info)
+		public void Launch(Actor source, GpsPowerInfo info)
 		{
-			atek.World.Add(new DelayedAction(info.RevealDelay * 25, () =>
+			source.World.Add(new DelayedAction(info.RevealDelay * 25, () =>
 			{
 				Launched = true;
-				RefreshGps(atek);
+				Refresh();
 			}));
 		}
 
-		public void RefreshGps(Actor atek)
+		void Refresh()
 		{
 			RefreshGranted();
 
-			foreach (var i in atek.World.ActorsWithTrait<GpsWatcher>())
+			foreach (var i in owner.World.ActorsWithTrait<GpsWatcher>())
 				i.Trait.RefreshGranted();
-
-			if ((Granted || GrantedAllies) && atek.Owner.IsAlliedWith(owner))
-				atek.Owner.Shroud.ExploreAll();
 		}
 
 		void RefreshGranted()
