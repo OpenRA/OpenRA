@@ -65,15 +65,15 @@ namespace OpenRA.Mods.Common.Traits
 			return (slevel > 0) ? slevel * info.LevelMod : 100;
 		}
 
-		int GetBountyValue(Actor self, int percentage)
+		int GetBountyValue(Actor self)
 		{
 			// Divide by 10000 because of GetMultiplier and info.Percentage.
-			return self.GetSellValue() * GetMultiplier() * percentage / 10000;
+			return self.GetSellValue() * GetMultiplier() * info.Percentage / 10000;
 		}
 
 		int GetDisplayedBountyValue(Actor self)
 		{
-			var bounty = GetBountyValue(self, info.Percentage);
+			var bounty = GetBountyValue(self);
 			if (cargo == null)
 				return bounty;
 
@@ -102,7 +102,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (info.ShowBounty && self.IsInWorld && displayedBounty > 0 && e.Attacker.Owner.IsAlliedWith(self.World.RenderPlayer))
 				e.Attacker.World.AddFrameEndTask(w => w.Add(new FloatingText(self.CenterPosition, e.Attacker.Owner.Color.RGB, FloatingText.FormatCashTick(displayedBounty), 30)));
 
-			e.Attacker.Owner.PlayerActor.Trait<PlayerResources>().GiveCash(GetBountyValue(self, info.Percentage));
+			e.Attacker.Owner.PlayerActor.Trait<PlayerResources>().GiveCash(GetBountyValue(self));
 		}
 	}
 }
