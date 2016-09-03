@@ -17,11 +17,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	public class InstallModLogic : ChromeLogic
 	{
 		[ObjectCreator.UseCtor]
-		public InstallModLogic(Widget widget, string modId)
+		public InstallModLogic(Widget widget, Manifest mod)
 		{
 			var panel = widget.Get("INSTALL_MOD_PANEL");
 
-			var mods = Game.Mods[modId].RequiresMods.Where(m => !Game.IsModInstalled(m)).Select(m => "{0} ({1})".F(m.Key, m.Value));
+			var mods = mod.RequiresMods.Where(m => !Game.IsModInstalled(m)).Select(m => "{0} ({1})".F(m.Key, m.Value));
 			var text = string.Join(", ", mods);
 			panel.Get<LabelWidget>("MOD_LIST").Text = text;
 
