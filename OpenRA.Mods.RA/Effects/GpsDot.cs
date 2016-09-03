@@ -129,7 +129,7 @@ namespace OpenRA.Mods.RA.Effects
 				var state = dotStates[playerIndex];
 				var shouldRender = false;
 				if (self.IsInWorld && !self.IsDead)
-					state.IsTargetable = (state.Gps.Granted || state.Gps.GrantedAllies) && IsTargetableBy(world.Players[playerIndex], out shouldRender);
+					state.IsTargetable = state.Gps.Active && IsTargetableBy(world.Players[playerIndex], out shouldRender);
 
 				state.ShouldRender = state.IsTargetable && shouldRender;
 			}

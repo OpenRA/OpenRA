@@ -28,9 +28,11 @@ namespace OpenRA.Mods.RA.Traits
 
 	class GpsWatcher : ISync, IFogVisibilityModifier
 	{
-		[Sync] public bool Launched { get; private set; }
-		[Sync] public bool GrantedAllies { get; private set; }
-		[Sync] public bool Granted { get; private set; }
+		[Sync] bool enabled;
+		[Sync] bool grantedAllies;
+		[Sync] bool granted;
+
+		public bool Active { get { return granted || grantedAllies; } }
 
 		readonly Player owner;
 
@@ -58,38 +60,38 @@ namespace OpenRA.Mods.RA.Traits
 		{
 			source.World.Add(new DelayedAction(info.RevealDelay * 25, () =>
 			{
-				Launched = true;
+				enabled = true;
 				Refresh();
 			}));
 		}
 
 		void Refresh()
 		{
-			RefreshGranted();
+			RefreshInner();
 
-			foreach (var i in owner.World.ActorsWithTrait<GpsWatcher>())
-				i.Trait.RefreshGranted();
+			// Refresh the state of all allied players (including ourselves, again...)
+			foreach (var i in owner.World.ActorsWithTrait<GpsWatcher>().Where(kv => kv.Actor.Owner.IsAlliedWith(owner)))
+				i.Trait.RefreshInner();
 		}
 
-		void RefreshGranted()
+		void RefreshInner()
 		{
-			var wasGranted = Granted;
-			var wasGrantedAllies = GrantedAllies;
+			var wasActive = Active;
 
-			Granted = sources.Count > 0 && Launched;
-			GrantedAllies = owner.World.ActorsHavingTrait<GpsWatcher>(g => g.Granted).Any(p => p.Owner.IsAlliedWith(owner));
+			granted = sources.Count > 0 && enabled;
+			grantedAllies = owner.World.ActorsHavingTrait<GpsWatcher>(g => g.granted).Any(p => p.Owner.IsAlliedWith(owner));
 
-			if (Granted || GrantedAllies)
+			if (Active)
 				owner.Shroud.ExploreAll();
 
-			if (wasGranted != Granted || wasGrantedAllies != GrantedAllies)
+			if (wasActive != Active)
 				foreach (var tp in notifyOnRefresh.ToList())
 					tp.Trait.OnGpsRefresh(tp.Actor, owner);
 		}
 
 		public bool HasFogVisibility()
 		{
-			return Granted || GrantedAllies;
+			return Active;
 		}
 
 		public bool IsVisible(Actor actor)
