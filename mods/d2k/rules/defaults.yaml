@@ -192,6 +192,7 @@
 	QuantizeFacingsFromSequence:
 		Sequence: stand
 	WithInfantryBody:
+		IdleSequences: idle1, idle2
 	TakeCover:
 		DamageModifiers:
 			Prone50Percent: 50
