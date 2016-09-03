@@ -27,11 +27,13 @@ namespace OpenRA.Mods.Common.Traits
 		public object Create(ActorInitializer init) { return new BaseProvider(init.Self, this); }
 	}
 
-	public class BaseProvider : ITick, IRenderAboveShroudWhenSelected, ISelectionBar
+	public class BaseProvider : ITick, INotifyCreated, IRenderAboveShroudWhenSelected, ISelectionBar
 	{
 		public readonly BaseProviderInfo Info;
 		readonly DeveloperMode devMode;
 		readonly Actor self;
+
+		Building building;
 
 		int total;
 		int progress;
@@ -44,6 +46,11 @@ namespace OpenRA.Mods.Common.Traits
 			devMode = self.Owner.PlayerActor.Trait<DeveloperMode>();
 			progress = total = info.InitialDelay;
 			allyBuildEnabled = self.World.WorldActor.Trait<MapBuildRadius>().AllyBuildRadiusEnabled;
+		}
+
+		void INotifyCreated.Created(Actor self)
+		{
+			building = self.TraitOrDefault<Building>();
 		}
 
 		void ITick.Tick(Actor self)
@@ -59,6 +66,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		public bool Ready()
 		{
+			if (building != null && building.Locked)
+				return false;
+
 			return devMode.FastBuild || progress == 0;
 		}
 
