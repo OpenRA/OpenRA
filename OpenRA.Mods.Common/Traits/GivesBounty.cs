@@ -38,19 +38,26 @@ namespace OpenRA.Mods.Common.Traits
 		public object Create(ActorInitializer init) { return new GivesBounty(init.Self, this); }
 	}
 
-	class GivesBounty : INotifyKilled
+	class GivesBounty : INotifyKilled, INotifyCreated
 	{
 		readonly GivesBountyInfo info;
+		GainsExperience gainsExp;
+		Cargo cargo;
 
 		public GivesBounty(Actor self, GivesBountyInfo info)
 		{
 			this.info = info;
 		}
 
-		int GetMultiplier(Actor self)
+		void INotifyCreated.Created(Actor self)
 		{
-			// returns 100's as 1, so as to keep accuracy for longer.
-			var gainsExp = self.TraitOrDefault<GainsExperience>();
+			gainsExp = self.TraitOrDefault<GainsExperience>();
+			cargo = self.TraitOrDefault<Cargo>();
+		}
+
+		// Returns 100's as 1, so as to keep accuracy for longer.
+		int GetMultiplier()
+		{
 			if (gainsExp == null)
 				return 100;
 
@@ -61,13 +68,12 @@ namespace OpenRA.Mods.Common.Traits
 		int GetBountyValue(Actor self, int percentage)
 		{
 			// Divide by 10000 because of GetMultiplier and info.Percentage.
-			return self.GetSellValue() * GetMultiplier(self) * percentage / 10000;
+			return self.GetSellValue() * GetMultiplier() * percentage / 10000;
 		}
 
 		int GetDisplayedBountyValue(Actor self)
 		{
 			var bounty = GetBountyValue(self, info.Percentage);
-			var cargo = self.TraitOrDefault<Cargo>();
 			if (cargo == null)
 				return bounty;
 
