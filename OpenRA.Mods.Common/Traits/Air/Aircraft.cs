@@ -104,13 +104,14 @@ namespace OpenRA.Mods.Common.Traits
 
 		UpgradeManager um;
 		IDisposable reservation;
-		Actor reservedActor;
 		IEnumerable<int> speedModifiers;
 
 		[Sync] public int Facing { get; set; }
 		[Sync] public WPos CenterPosition { get; private set; }
 		public CPos TopLeft { get { return self.World.Map.CellContaining(CenterPosition); } }
 		public int TurnSpeed { get { return Info.TurnSpeed; } }
+		public Actor ReservedActor { get; private set; }
+		public bool MayYieldReservation;
 
 		bool airborne;
 		bool cruising;
@@ -190,7 +191,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (reservation != null)
 			{
-				var distanceFromReservationActor = (reservedActor.CenterPosition - self.CenterPosition).HorizontalLength;
+				var distanceFromReservationActor = (ReservedActor.CenterPosition - self.CenterPosition).HorizontalLength;
 				if (distanceFromReservationActor < Info.WaitDistanceFromResupplyBase.Length)
 					return WVec.Zero;
 			}
@@ -277,7 +278,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (reservable != null)
 			{
 				reservation = reservable.Reserve(target, self, this);
-				reservedActor = target;
+				ReservedActor = target;
 			}
 		}
 
@@ -288,7 +289,8 @@ namespace OpenRA.Mods.Common.Traits
 
 			reservation.Dispose();
 			reservation = null;
-			reservedActor = null;
+			ReservedActor = null;
+			MayYieldReservation = false;
 
 			if (self.World.Map.DistanceAboveTerrain(CenterPosition).Length <= Info.LandAltitude.Length)
 				self.QueueActivity(new TakeOff(self));
@@ -614,8 +616,6 @@ namespace OpenRA.Mods.Common.Traits
 
 				self.QueueActivity(new ResupplyAircraft(self));
 			}
-			else
-				UnReserve();
 		}
 
 		#endregion
