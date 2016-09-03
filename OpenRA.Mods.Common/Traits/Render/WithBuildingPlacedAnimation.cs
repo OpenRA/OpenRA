@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public object Create(ActorInitializer init) { return new WithBuildingPlacedAnimation(init.Self, this); }
 	}
 
-	public class WithBuildingPlacedAnimation : INotifyBuildingPlaced, INotifyBuildComplete
+	public class WithBuildingPlacedAnimation : INotifyBuildingPlaced, INotifyBuildComplete, INotifySold, INotifyTransform
 	{
 		readonly WithBuildingPlacedAnimationInfo info;
 		readonly WithSpriteBody wsb;
@@ -39,6 +39,20 @@ namespace OpenRA.Mods.Common.Traits.Render
 		{
 			buildComplete = true;
 		}
+
+		public void Sold(Actor self) { }
+		public void Selling(Actor self)
+		{
+			buildComplete = false;
+		}
+
+		public void BeforeTransform(Actor self)
+		{
+			buildComplete = false;
+		}
+
+		public void OnTransform(Actor self) { }
+		public void AfterTransform(Actor self) { }
 
 		public void BuildingPlaced(Actor self)
 		{
