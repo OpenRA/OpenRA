@@ -34,7 +34,7 @@ namespace OpenRA.Mods.RA.Traits
 
 		readonly Player owner;
 
-		readonly List<Actor> actors = new List<Actor>();
+		readonly List<Actor> sources = new List<Actor>();
 		readonly HashSet<TraitPair<IOnGpsRefreshed>> notifyOnRefresh = new HashSet<TraitPair<IOnGpsRefreshed>>();
 
 		public GpsWatcher(Player owner)
@@ -42,26 +42,25 @@ namespace OpenRA.Mods.RA.Traits
 			this.owner = owner;
 		}
 
-		public void GpsRemove(Actor atek)
+		public void RemoveSource(Actor source)
 		{
-			actors.Remove(atek);
-			RefreshGps(atek);
+			sources.Remove(source);
+			RefreshGps(source);
 		}
 
-		public void GpsAdd(Actor atek)
+		public void AddSource(Actor source)
 		{
-			actors.Add(atek);
-			RefreshGps(atek);
+			sources.Add(source);
+			RefreshGps(source);
 		}
 
 		public void Launch(Actor atek, GpsPowerInfo info)
 		{
-			atek.World.Add(new DelayedAction(info.RevealDelay * 25,
-				() =>
-				{
-					Launched = true;
-					RefreshGps(atek);
-				}));
+			atek.World.Add(new DelayedAction(info.RevealDelay * 25, () =>
+			{
+				Launched = true;
+				RefreshGps(atek);
+			}));
 		}
 
 		public void RefreshGps(Actor atek)
@@ -80,7 +79,7 @@ namespace OpenRA.Mods.RA.Traits
 			var wasGranted = Granted;
 			var wasGrantedAllies = GrantedAllies;
 
-			Granted = actors.Count > 0 && Launched;
+			Granted = sources.Count > 0 && Launched;
 			GrantedAllies = owner.World.ActorsHavingTrait<GpsWatcher>(g => g.Granted).Any(p => p.Owner.IsAlliedWith(owner));
 
 			if (Granted || GrantedAllies)

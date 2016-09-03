@@ -52,15 +52,15 @@ namespace OpenRA.Mods.RA.Traits
 	{
 		readonly Actor self;
 		readonly GpsPowerInfo info;
-		GpsWatcher owner;
+		GpsWatcher watcher;
 
 		public GpsPower(Actor self, GpsPowerInfo info)
 			: base(self, info)
 		{
 			this.self = self;
 			this.info = info;
-			owner = self.Owner.PlayerActor.Trait<GpsWatcher>();
-			owner.GpsAdd(self);
+			watcher = self.Owner.PlayerActor.Trait<GpsWatcher>();
+			watcher.AddSource(self);
 		}
 
 		public override void Charged(Actor self, string key)
@@ -80,26 +80,20 @@ namespace OpenRA.Mods.RA.Traits
 
 				w.Add(new SatelliteLaunch(self, info));
 
-				owner.Launch(self, info);
+				watcher.Launch(self, info);
 			});
 		}
 
-		public void Killed(Actor self, AttackInfo e) { RemoveGps(self); }
+		public void Killed(Actor self, AttackInfo e) { watcher.RemoveSource(self); }
 
 		public void Selling(Actor self) { }
-		public void Sold(Actor self) { RemoveGps(self); }
-
-		void RemoveGps(Actor self)
-		{
-			// Extra function just in case something needs to be added later
-			owner.GpsRemove(self);
-		}
+		public void Sold(Actor self) { watcher.RemoveSource(self); }
 
 		public void OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
 		{
-			RemoveGps(self);
-			owner = newOwner.PlayerActor.Trait<GpsWatcher>();
-			owner.GpsAdd(self);
+			watcher.RemoveSource(self);
+			watcher = newOwner.PlayerActor.Trait<GpsWatcher>();
+			watcher.AddSource(self);
 		}
 
 		bool NoActiveRadar { get { return !self.World.ActorsHavingTrait<ProvidesRadar>(r => r.IsActive).Any(a => a.Owner == self.Owner); } }
@@ -110,12 +104,12 @@ namespace OpenRA.Mods.RA.Traits
 			if (!wasDisabled && (self.IsDisabled() || (info.RequiresActiveRadar && NoActiveRadar)))
 			{
 				wasDisabled = true;
-				RemoveGps(self);
+				watcher.RemoveSource(self);
 			}
 			else if (wasDisabled && !self.IsDisabled() && !(info.RequiresActiveRadar && NoActiveRadar))
 			{
 				wasDisabled = false;
-				owner.GpsAdd(self);
+				watcher.AddSource(self);
 			}
 		}
 	}
