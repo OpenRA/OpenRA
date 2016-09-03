@@ -48,11 +48,13 @@ namespace OpenRA.Mods.RA.Traits
 		public override object Create(ActorInitializer init) { return new GpsPower(init.Self, this); }
 	}
 
-	class GpsPower : SupportPower, INotifyKilled, INotifySold, INotifyOwnerChanged, ITick
+	class GpsPower : SupportPower, INotifyAddedToWorld, INotifyRemovedFromWorld, INotifyOwnerChanged, ITick
 	{
 		readonly Actor self;
 		readonly GpsPowerInfo info;
+
 		GpsWatcher watcher;
+		bool wasEnabled;
 
 		public GpsPower(Actor self, GpsPowerInfo info)
 			: base(self, info)
@@ -60,7 +62,6 @@ namespace OpenRA.Mods.RA.Traits
 			this.self = self;
 			this.info = info;
 			watcher = self.Owner.PlayerActor.Trait<GpsWatcher>();
-			watcher.AddSource(self);
 		}
 
 		public override void Charged(Actor self, string key)
@@ -84,33 +85,35 @@ namespace OpenRA.Mods.RA.Traits
 			});
 		}
 
-		public void Killed(Actor self, AttackInfo e) { watcher.RemoveSource(self); }
-
-		public void Selling(Actor self) { }
-		public void Sold(Actor self) { watcher.RemoveSource(self); }
-
 		public void OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
 		{
-			watcher.RemoveSource(self);
+			// Note: watcher registration is already handled by removal/addition from world
 			watcher = newOwner.PlayerActor.Trait<GpsWatcher>();
-			watcher.AddSource(self);
+		}
+
+		void INotifyAddedToWorld.AddedToWorld(Actor self)
+		{
+			// Registration will happen in the next tick if needed
+			wasEnabled = false;
+		}
+
+		void INotifyRemovedFromWorld.RemovedFromWorld(Actor self)
+		{
+			if (wasEnabled)
+				watcher.RemoveSource(self);
 		}
 
 		bool NoActiveRadar { get { return !self.World.ActorsHavingTrait<ProvidesRadar>(r => r.IsActive).Any(a => a.Owner == self.Owner); } }
-		bool wasDisabled;
 
-		public void Tick(Actor self)
+		void ITick.Tick(Actor self)
 		{
-			if (!wasDisabled && (self.IsDisabled() || (info.RequiresActiveRadar && NoActiveRadar)))
-			{
-				wasDisabled = true;
-				watcher.RemoveSource(self);
-			}
-			else if (wasDisabled && !self.IsDisabled() && !(info.RequiresActiveRadar && NoActiveRadar))
-			{
-				wasDisabled = false;
+			var isEnabled = !(self.IsDisabled() || (info.RequiresActiveRadar && NoActiveRadar));
+			if (!wasEnabled && isEnabled)
 				watcher.AddSource(self);
-			}
+			else if (wasEnabled && !isEnabled)
+				watcher.RemoveSource(self);
+
+			wasEnabled = isEnabled;
 		}
 	}
 }
