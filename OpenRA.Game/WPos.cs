@@ -63,11 +63,12 @@ namespace OpenRA
 			if (pitch.Angle == 0)
 				return ret;
 
-			var tempoffset = (decimal)(b - a).Length * pitch.Tan() * mul * (div - mul) / (1024 * div * div);
+			// Add an additional quadratic variation to height
+			// Uses decimal to avoid integer overflow
+			var offset = (decimal)(b - a).Length * pitch.Tan() * mul * (div - mul) / (1024 * div * div);
+			var clampedOffset = (int)(offset + (decimal)ret.Z).Clamp<decimal>((decimal)int.MinValue, (decimal)int.MaxValue);
 
-			var offset = (int)Math.Min(Math.Max((decimal)int.MinValue, tempoffset + (decimal)ret.Z), (decimal)int.MaxValue);
-
-			return new WPos(ret.X, ret.Y, offset);
+			return new WPos(ret.X, ret.Y, clampedOffset);
 		}
 
 		public override int GetHashCode() { return X.GetHashCode() ^ Y.GetHashCode() ^ Z.GetHashCode(); }
