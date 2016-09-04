@@ -32,6 +32,9 @@ namespace OpenRA.Mods.RA.Traits
 		[Sync] public bool GrantedAllies { get; private set; }
 		[Sync] public bool Granted { get; private set; }
 
+		// Whether this watcher has explored the terrain (by becoming Launched, or an ally becoming Launched)
+		[Sync] bool explored;
+
 		readonly Player owner;
 
 		readonly List<Actor> actors = new List<Actor>();
@@ -70,21 +73,23 @@ namespace OpenRA.Mods.RA.Traits
 
 			foreach (var i in atek.World.ActorsWithTrait<GpsWatcher>())
 				i.Trait.RefreshGranted();
-
-			if ((Granted || GrantedAllies) && atek.Owner.IsAlliedWith(owner))
-				atek.Owner.Shroud.ExploreAll();
 		}
 
 		void RefreshGranted()
 		{
 			var wasGranted = Granted;
 			var wasGrantedAllies = GrantedAllies;
+			var allyWatchers = owner.World.ActorsWithTrait<GpsWatcher>().Where(kv => kv.Actor.Owner.IsAlliedWith(owner));
 
 			Granted = actors.Count > 0 && Launched;
-			GrantedAllies = owner.World.ActorsHavingTrait<GpsWatcher>(g => g.Granted).Any(p => p.Owner.IsAlliedWith(owner));
+			GrantedAllies = allyWatchers.Any(w => w.Trait.Granted);
 
-			if (Granted || GrantedAllies)
+			var allyLaunched = allyWatchers.Any(w => w.Trait.Launched);
+			if ((Launched || allyLaunched) && !explored)
+			{
+				explored = true;
 				owner.Shroud.ExploreAll();
+			}
 
 			if (wasGranted != Granted || wasGrantedAllies != GrantedAllies)
 				foreach (var tp in notifyOnRefresh.ToList())
