@@ -23,7 +23,7 @@ namespace OpenRA.Mods.Common.Scripting
 		OnIdle, OnDamaged, OnKilled, OnProduction, OnOtherProduction, OnPlayerWon, OnPlayerLost,
 		OnObjectiveAdded, OnObjectiveCompleted, OnObjectiveFailed, OnCapture, OnInfiltrated,
 		OnAddedToWorld, OnRemovedFromWorld, OnDiscovered, OnPlayerDiscovered,
-		OnPassengerEntered, OnPassengerExited
+		OnPassengerEntered, OnPassengerExited, OnSelling, OnSold
 	}
 
 	[Desc("Allows map scripts to attach triggers to this actor via the Triggers global.")]
@@ -34,7 +34,7 @@ namespace OpenRA.Mods.Common.Scripting
 
 	public sealed class ScriptTriggers : INotifyIdle, INotifyDamage, INotifyKilled, INotifyProduction, INotifyOtherProduction,
 		INotifyObjectivesUpdated, INotifyCapture, INotifyInfiltrated, INotifyAddedToWorld, INotifyRemovedFromWorld, INotifyDiscovered, INotifyActorDisposing,
-		INotifyPassengerEntered, INotifyPassengerExited
+		INotifyPassengerEntered, INotifyPassengerExited, INotifySold
 	{
 		readonly World world;
 		readonly Actor self;
@@ -362,6 +362,46 @@ namespace OpenRA.Mods.Common.Scripting
 
 			// Run any internally bound callbacks
 			OnRemovedInternal(self);
+		}
+
+		void INotifySold.Selling(Actor self)
+		{
+			if (world.Disposing)
+				return;
+
+			// Run Lua callbacks
+			foreach (var f in Triggerables(Trigger.OnSelling))
+			{
+				try
+				{
+					f.Function.Call(f.Self).Dispose();
+				}
+				catch (Exception ex)
+				{
+					f.Context.FatalError(ex.Message);
+					return;
+				}
+			}
+		}
+
+		void INotifySold.Sold(Actor self)
+		{
+			if (world.Disposing)
+				return;
+
+			// Run Lua callbacks
+			foreach (var f in Triggerables(Trigger.OnSold))
+			{
+				try
+				{
+					f.Function.Call(f.Self).Dispose();
+				}
+				catch (Exception ex)
+				{
+					f.Context.FatalError(ex.Message);
+					return;
+				}
+			}
 		}
 
 		public void UnitProducedByOther(Actor self, Actor producee, Actor produced)
