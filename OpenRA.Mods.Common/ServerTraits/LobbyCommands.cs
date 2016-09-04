@@ -610,7 +610,7 @@ namespace OpenRA.Mods.Common.Server
 						var newFaction = parts[1];
 						targetClient.Faction = newFaction;
 
-						if (targetClient.Index == client.Index && newFaction == client.Faction) 
+						if (targetClient.Index == client.Index && newFaction == client.Faction)
 						{
 							client.PreferredFaction = client.Faction;
 
