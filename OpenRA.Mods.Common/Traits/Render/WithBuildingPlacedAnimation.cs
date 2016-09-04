@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public object Create(ActorInitializer init) { return new WithBuildingPlacedAnimation(init.Self, this); }
 	}
 
-	public class WithBuildingPlacedAnimation : INotifyBuildingPlaced, INotifyBuildComplete
+	public class WithBuildingPlacedAnimation : INotifyBuildingPlaced, INotifyBuildComplete, INotifySold, INotifyTransform
 	{
 		readonly WithBuildingPlacedAnimationInfo info;
 		readonly WithSpriteBody wsb;
@@ -35,12 +35,26 @@ namespace OpenRA.Mods.Common.Traits.Render
 			buildComplete = !self.Info.HasTraitInfo<BuildingInfo>();
 		}
 
-		public void BuildingComplete(Actor self)
+		void INotifyBuildComplete.BuildingComplete(Actor self)
 		{
 			buildComplete = true;
 		}
 
-		public void BuildingPlaced(Actor self)
+		void INotifySold.Sold(Actor self) { }
+		void INotifySold.Selling(Actor self)
+		{
+			buildComplete = false;
+		}
+
+		void INotifyTransform.BeforeTransform(Actor self)
+		{
+			buildComplete = false;
+		}
+
+		void INotifyTransform.OnTransform(Actor self) { }
+		void INotifyTransform.AfterTransform(Actor self) { }
+
+		void INotifyBuildingPlaced.BuildingPlaced(Actor self)
 		{
 			if (buildComplete)
 				wsb.PlayCustomAnimation(self, info.Sequence, () => wsb.CancelCustomAnimation(self));
