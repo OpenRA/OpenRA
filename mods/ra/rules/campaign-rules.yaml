@@ -29,9 +29,7 @@ World:
 
 E7.noautotarget:
 	Inherits: E7
-	AutoTarget:
-		EnableStances: false
-	-AttackMove:
+	-AutoTarget:
 	RenderSprites:
 		Image: E7
 

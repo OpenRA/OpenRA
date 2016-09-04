@@ -24,7 +24,6 @@ if Map.LobbyOption("difficulty") == "easy" then
 	TanyaType = "e7"
 else
 	TanyaType = "e7.noautotarget"
-	ChangeStance = true
 end
 
 IdleHunt = function(actor)
@@ -63,8 +62,7 @@ end
 SetupAlliedUnits = function()
 	Tanya = Actor.Create(TanyaType, true, { Owner = player, Location = TanyaWaypoint.Location, Facing = 128 })
 
-	if ChangeStance then
-		Tanya.Stance = "HoldFire"
+	if TanyaType == "e7.noautotarget" then
 		Trigger.AfterDelay(DateTime.Seconds(2), function()
 			Media.DisplayMessage("According to the rules of engagement I need your explicit orders to fire, Commander!", "Tanya")
 		end)

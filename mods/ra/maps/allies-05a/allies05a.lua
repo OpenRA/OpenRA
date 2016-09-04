@@ -5,13 +5,11 @@ if Map.LobbyOption("difficulty") == "easy" then
 	SpecialCameras = true
 elseif Map.LobbyOption("difficulty") == "normal" then
 	TanyaType = "e7.noautotarget"
-	ChangeStance = true
 	ReinforceCash = 2250
 	HoldAITime = DateTime.Minutes(2)
 	SpecialCameras = true
 else
 	TanyaType = "e7.noautotarget"
-	ChangeStance = true
 	ReinforceCash = 1500
 	HoldAITime = DateTime.Minutes(1) + DateTime.Seconds(30)
 	SendWaterTransports = true
@@ -177,8 +175,7 @@ FreeTanya = function()
 	Tanya.Demolish(Prison)
 	Tanya.Move(Tanya.Location + CVec.New(Utils.RandomInteger(-1, 2), 1))
 
-	if ChangeStance then
-		Tanya.Stance = "HoldFire"
+	if TanyaType == "e7.noautotarget" then
 		Trigger.AfterDelay(DateTime.Seconds(1), function()
 			Media.DisplayMessage("According to the rules of engagement I need your explicit orders to fire, Commander!", "Tanya")
 		end)
