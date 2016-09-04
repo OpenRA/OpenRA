@@ -155,7 +155,8 @@ namespace OpenRA.Network
 
 						var faction = "";
 
-						if (!Game.Settings.Game.LastFaction.TryGetValue(mod.Id, out faction)) {
+						if (!Game.Settings.Game.LastFaction.TryGetValue(mod.Id, out faction)) 
+						{
 							faction = "Random";
 						}
 

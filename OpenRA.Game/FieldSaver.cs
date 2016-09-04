@@ -109,11 +109,13 @@ namespace OpenRA
 			}
 
 			// TODO: This should have support for multiple layers of Dictionaries.
-			if (t.IsGenericType && t.GetGenericTypeDefinition() == typeof(Dictionary<,>)) {
+			if (t.IsGenericType && t.GetGenericTypeDefinition() == typeof(Dictionary<,>)) 
+			{
 				var result = "";
 				var dict = (System.Collections.IDictionary)v;
 				result += Environment.NewLine;
-				foreach (var kvp in dict) {
+				foreach (var kvp in dict) 
+				{
 					var key = ((System.Collections.DictionaryEntry)kvp).Key;
 					var value = ((System.Collections.DictionaryEntry)kvp).Value;
 

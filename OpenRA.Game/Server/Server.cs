@@ -297,7 +297,8 @@ namespace OpenRA.Server
 					return;
 				}
 
-				var client = new Session.Client {
+				var client = new Session.Client 		
+				{
 					Name = OpenRA.Settings.SanitizedPlayerName(handshake.Client.Name),
 					IpAddress = ((IPEndPoint)newConn.Socket.RemoteEndPoint).Address.ToString(),
 					Index = newConn.PlayerIndex,
