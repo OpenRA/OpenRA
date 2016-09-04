@@ -39,10 +39,12 @@ namespace OpenRA.Mods.AS.Traits
 		public object Create(ActorInitializer init) { return new GivesProximityBounty(init.Self, this); }
 	}
 
-	class GivesProximityBounty : INotifyKilled
+	class GivesProximityBounty : INotifyKilled, INotifyCreated
 	{
 		readonly GivesProximityBountyInfo info;
 		public HashSet<ProximityBounty> Collectors;
+		GainsExperience gainsExp;
+		Cargo cargo;
 
 		public GivesProximityBounty(Actor self, GivesProximityBountyInfo info)
 		{
@@ -50,15 +52,42 @@ namespace OpenRA.Mods.AS.Traits
 			Collectors = new HashSet<ProximityBounty>();
 		}
 
-		int GetMultiplier(Actor self)
+		void INotifyCreated.Created(Actor self)
+		{
+			gainsExp = self.TraitOrDefault<GainsExperience>();
+			cargo = self.TraitOrDefault<Cargo>();
+		}
+
+		int GetMultiplier()
 		{
 			// returns 100's as 1, so as to keep accuracy for longer.
-			var gainsExp = self.TraitOrDefault<GainsExperience>();
 			if (gainsExp == null)
 				return 100;
 
 			var slevel = gainsExp.Level;
 			return (slevel > 0) ? slevel * info.LevelMod : 100;
+		}
+
+		int GetBountyValue(Actor self)
+		{
+			// Divide by 10000 because of GetMultiplier and info.Percentage.
+			return self.GetSellValue() * GetMultiplier() * info.Percentage / 10000;
+		}
+
+		int GetDisplayedBountyValue(Actor self, HashSet<string> deathTypes)
+		{
+			var bounty = GetBountyValue(self);
+			if (cargo == null)
+				return bounty;
+
+			foreach (var a in cargo.Passengers)
+			{
+				var givesProximityBounty = a.TraitsImplementing<GivesProximityBounty>().Where(gpb => deathTypes.Overlaps(gpb.info.DeathTypes));
+				foreach(var gpb in givesProximityBounty)
+					bounty += gpb.GetDisplayedBountyValue(a, deathTypes);
+			}
+
+			return bounty;
 		}
 
 		void INotifyKilled.Killed(Actor self, AttackInfo e)
@@ -75,11 +104,6 @@ namespace OpenRA.Mods.AS.Traits
 			if (info.DeathTypes.Count > 0 && !e.Damage.DamageTypes.Overlaps(info.DeathTypes))
 				return;
 
-			var cost = self.GetSellValue();
-
-			// 2 hundreds because of GetMultiplier and info.Percentage.
-			var bounty = cost * GetMultiplier(self) * info.Percentage / 10000;
-
 			foreach (var c in Collectors)
 			{
 				if (info.BountyTypes.Count > 0 && !info.BountyTypes.Contains(c.Info.BountyType))
@@ -88,7 +112,7 @@ namespace OpenRA.Mods.AS.Traits
 				if (!c.Info.ValidStances.HasStance(e.Attacker.Owner.Stances[self.Owner]))
 					return;
 
-				c.AddBounty(bounty);
+				c.AddBounty(GetDisplayedBountyValue(self, e.Damage.DamageTypes));
 			}
 		}
 	}
