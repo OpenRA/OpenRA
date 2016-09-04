@@ -94,6 +94,8 @@
     <Compile Include="Traits\Warheads\WarheadAS.cs" />
     <Compile Include="Traits\World\PaletteFromJasc32File.cs" />
     <Compile Include="Traits\ReloadAmmoWhenEnabled.cs" />
+    <Compile Include="Traits\GivesProximityBounty.cs" />
+    <Compile Include="Traits\ProximityBounty.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Traits\Render\" />
