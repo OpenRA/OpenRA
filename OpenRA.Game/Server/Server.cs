@@ -75,13 +75,12 @@ namespace OpenRA.Server
 			if (pr == null)
 				return;
 
-			if (pr.LockFaction)
-				c.Faction = pr.Faction;
 			if (pr.LockSpawn)
 				c.SpawnPoint = pr.Spawn;
 			if (pr.LockTeam)
 				c.Team = pr.Team;
 
+			c.Faction = pr.LockFaction ? pr.Faction : c.PreferredFaction;
 			c.Color = pr.LockColor ? pr.Color : c.PreferredColor;
 		}
 
@@ -298,15 +297,15 @@ namespace OpenRA.Server
 					return;
 				}
 
-				var client = new Session.Client
-				{
+				var client = new Session.Client {
 					Name = OpenRA.Settings.SanitizedPlayerName(handshake.Client.Name),
 					IpAddress = ((IPEndPoint)newConn.Socket.RemoteEndPoint).Address.ToString(),
 					Index = newConn.PlayerIndex,
 					Slot = LobbyInfo.FirstEmptySlot(),
 					PreferredColor = handshake.Client.Color,
 					Color = handshake.Client.Color,
-					Faction = "Random",
+					Faction = handshake.Client.Faction,
+					PreferredFaction = handshake.Client.Faction,
 					SpawnPoint = 0,
 					Team = 0,
 					State = Session.ClientState.Invalid,

@@ -303,6 +303,7 @@ namespace OpenRA.Mods.Common.Server
 								Bot = botType,
 								Slot = parts[0],
 								Faction = "Random",
+								PreferredFaction = "Random",
 								SpawnPoint = 0,
 								Team = 0,
 								State = Session.ClientState.NotReady,
@@ -606,7 +607,17 @@ namespace OpenRA.Mods.Common.Server
 							return true;
 						}
 
-						targetClient.Faction = parts[1];
+						var newFaction = parts[1];
+						targetClient.Faction = newFaction;
+
+						if (targetClient.Index == client.Index && newFaction == client.Faction) {
+							client.PreferredFaction = client.Faction;
+
+							//Save preferred faction to settings.
+							Game.Settings.Game.LastFaction[Game.ModData.Manifest.Id] = client.PreferredFaction;
+							Game.Settings.Save();
+						}
+
 						server.SyncLobbyClients();
 						return true;
 					}
@@ -845,6 +856,13 @@ namespace OpenRA.Mods.Common.Server
 		public void ClientJoined(S server, Connection conn)
 		{
 			var client = server.GetClient(conn);
+
+			// Validate whether faction is allowed and set to random if it isn't
+			var factions = server.Map.Rules.Actors["world"].TraitInfos<FactionInfo>()
+				.Where(f => f.Selectable).Select(f => f.InternalName);
+
+			if (!factions.Contains(client.Faction))
+				client.Faction = "Random";
 
 			// Validate whether color is allowed and get an alternative if it isn't
 			if (client.Slot == null || !server.LobbyInfo.Slots[client.Slot].LockColor)
