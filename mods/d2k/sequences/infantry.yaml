@@ -479,7 +479,7 @@ sardaukar:
 
 grenadier:
 	stand: DATA.R8
-		Start: 2518
+		Start: 2606
 		Facings: -8
 		Transpose: true
 	idle: DATA.R8
@@ -496,7 +496,7 @@ grenadier:
 		Tick: 120
 	throw: DATA.R8
 		Start: 2574
-		Length: 6
+		Length: 5
 		Facings: -8
 		Transpose: true
 		Tick: 120

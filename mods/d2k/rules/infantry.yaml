@@ -184,8 +184,8 @@ grenadier:
 		Speed: 43
 	Armament:
 		Weapon: grenade
-		LocalOffset: 0,0,320
-		FireDelay: 15
+		LocalOffset: 192,0,224
+		FireDelay: 3
 	AttackFrontal:
 	WithInfantryBody:
 		AttackSequence: throw
