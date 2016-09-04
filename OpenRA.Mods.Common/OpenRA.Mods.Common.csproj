@@ -213,7 +213,8 @@
     <Compile Include="Scripting\Properties\AircraftProperties.cs" />
     <Compile Include="Scripting\ScriptUpgradesCache.cs" />
     <Compile Include="Scripting\Properties\CaptureProperties.cs" />
-    <Compile Include="ServerTraits\LobbyCommands.cs" />
+    <Compile Include="ServerTraits\LobbyCommands.cs">
+    </Compile>
     <Compile Include="ServerTraits\LobbySettingsNotification.cs" />
     <Compile Include="ServerTraits\MasterServerPinger.cs" />
     <Compile Include="ServerTraits\PlayerPinger.cs" />

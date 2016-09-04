@@ -105,6 +105,11 @@ namespace OpenRA.Network
 							break;
 						}
 
+						// Save most recently chosen Faction.
+						var client = orderManager.LobbyInfo.ClientWithIndex(clientId);
+						Game.Settings.Game.LastFaction[Game.ModData.Manifest.Id] = client.Faction;
+						Game.Settings.Save();
+
 						Game.AddChatLine(Color.White, "Server", "The game has started.");
 						Game.StartGame(orderManager.LobbyInfo.GlobalSettings.Map, WorldType.Regular);
 						break;
@@ -152,15 +157,22 @@ namespace OpenRA.Network
 						}
 
 						Game.Settings.Player.Name = Settings.SanitizedPlayerName(Game.Settings.Player.Name);
-						Game.Settings.Save();
+
+						var faction = "";
+
+						if (!Game.Settings.Game.LastFaction.TryGetValue(mod.Id, out faction)) 
+						{
+							faction = "Random";
+							Game.Settings.Save();
+						}
 
 						// Otherwise send the handshake with our current settings and let the server reject us
-						var info = new Session.Client()
-						{
+						var info = new Session.Client() {
 							Name = Game.Settings.Player.Name,
 							PreferredColor = Game.Settings.Player.Color,
 							Color = Game.Settings.Player.Color,
-							Faction = "Random",
+							Faction = faction,
+							PreferredFaction = faction,
 							SpawnPoint = 0,
 							Team = 0,
 							State = Session.ClientState.Invalid

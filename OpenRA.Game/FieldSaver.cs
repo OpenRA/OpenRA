@@ -108,20 +108,19 @@ namespace OpenRA
 				return ((System.Collections.IEnumerable)v).Cast<object>().Select(FormatValue).JoinWith(", ");
 			}
 
-			// This is only for documentation generation
-			if (t.IsGenericType && t.GetGenericTypeDefinition() == typeof(Dictionary<,>))
-			{
+			// TODO: This should have support for multiple layers of Dictionaries.
+			if (t.IsGenericType && t.GetGenericTypeDefinition() == typeof(Dictionary<,>)) {
 				var result = "";
 				var dict = (System.Collections.IDictionary)v;
-				foreach (var kvp in dict)
-				{
+				result += Environment.NewLine;
+				foreach (var kvp in dict) {
 					var key = ((System.Collections.DictionaryEntry)kvp).Key;
 					var value = ((System.Collections.DictionaryEntry)kvp).Value;
 
 					var formattedKey = FormatValue(key);
 					var formattedValue = FormatValue(value);
 
-					result += "{0}: {1}{2}".F(formattedKey, formattedValue, Environment.NewLine);
+					result += "{0}{1}: {2}{3}".F("\t\t", formattedKey, formattedValue, Environment.NewLine);
 				}
 
 				return result;
