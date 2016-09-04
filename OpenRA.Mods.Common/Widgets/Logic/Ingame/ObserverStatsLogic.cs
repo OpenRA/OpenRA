@@ -171,6 +171,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					(p.PlayerActor.TraitOrDefault<PlayerStatistics>() ?? new PlayerStatistics(p.PlayerActor)).EarnedSamples.Select(s => (float)s)));
 
 			playerStatsPanel.AddChild(template);
+			playerStatsPanel.ScrollToTop();
 		}
 
 		void DisplayStats(Func<Player, ScrollItemWidget> createItem)
