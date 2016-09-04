@@ -152,15 +152,21 @@ namespace OpenRA.Network
 						}
 
 						Game.Settings.Player.Name = Settings.SanitizedPlayerName(Game.Settings.Player.Name);
+
+						var faction = "";
+
+						if (!Game.Settings.Game.LastFaction.TryGetValue(mod.Id, out faction)) 
+							faction = "Random";
+
 						Game.Settings.Save();
 
 						// Otherwise send the handshake with our current settings and let the server reject us
-						var info = new Session.Client()
-						{
+						var info = new Session.Client() {
 							Name = Game.Settings.Player.Name,
 							PreferredColor = Game.Settings.Player.Color,
 							Color = Game.Settings.Player.Color,
-							Faction = "Random",
+							Faction = faction,
+							PreferredFaction = faction,
 							SpawnPoint = 0,
 							Team = 0,
 							State = Session.ClientState.Invalid
