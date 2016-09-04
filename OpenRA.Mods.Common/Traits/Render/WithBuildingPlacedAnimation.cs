@@ -35,26 +35,26 @@ namespace OpenRA.Mods.Common.Traits.Render
 			buildComplete = !self.Info.HasTraitInfo<BuildingInfo>();
 		}
 
-		public void BuildingComplete(Actor self)
+		void INotifyBuildComplete.BuildingComplete(Actor self)
 		{
 			buildComplete = true;
 		}
 
-		public void Sold(Actor self) { }
-		public void Selling(Actor self)
+		void INotifySold.Sold(Actor self) { }
+		void INotifySold.Selling(Actor self)
 		{
 			buildComplete = false;
 		}
 
-		public void BeforeTransform(Actor self)
+		void INotifyTransform.BeforeTransform(Actor self)
 		{
 			buildComplete = false;
 		}
 
-		public void OnTransform(Actor self) { }
-		public void AfterTransform(Actor self) { }
+		void INotifyTransform.OnTransform(Actor self) { }
+		void INotifyTransform.AfterTransform(Actor self) { }
 
-		public void BuildingPlaced(Actor self)
+		void INotifyBuildingPlaced.BuildingPlaced(Actor self)
 		{
 			if (buildComplete)
 				wsb.PlayCustomAnimation(self, info.Sequence, () => wsb.CancelCustomAnimation(self));
