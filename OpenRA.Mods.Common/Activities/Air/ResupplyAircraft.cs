@@ -19,6 +19,7 @@ namespace OpenRA.Mods.Common.Activities
 	public class ResupplyAircraft : Activity
 	{
 		readonly Aircraft aircraft;
+		Activity inner;
 
 		public ResupplyAircraft(Actor self)
 		{
@@ -27,22 +28,45 @@ namespace OpenRA.Mods.Common.Activities
 
 		public override Activity Tick(Actor self)
 		{
-			var host = aircraft.GetActorBelow();
-
-			if (host == null)
+			if (IsCanceled)
 				return NextActivity;
 
-			if (aircraft.IsPlane)
-				return ActivityUtils.SequenceActivities(
-					aircraft.GetResupplyActivities(host)
-					.Append(new CallFunc(() => aircraft.UnReserve()))
-					.Append(new WaitFor(() => NextActivity != null || Reservable.IsReserved(host)))
-					.Append(new TakeOff(self))
-					.Append(NextActivity).ToArray());
+			if (inner == null)
+			{
+				var host = aircraft.GetActorBelow();
 
-			// If is helicopter move away as soon as the resupply ends
-			return ActivityUtils.SequenceActivities(
-				aircraft.GetResupplyActivities(host).Append(new TakeOff(self)).Append(NextActivity).ToArray());
+				if (host == null)
+					return NextActivity;
+
+				if (aircraft.IsPlane)
+				{
+					inner = ActivityUtils.SequenceActivities(
+						aircraft.GetResupplyActivities(host)
+						.Append(new CallFunc(() => aircraft.MayYieldReservation = true))
+						.Append(new WaitFor(() => NextActivity != null || aircraft.ReservedActor == null))
+						.ToArray());
+				}
+				else
+				{
+					// Helicopters should take off from their helipad immediately after resupplying.
+					// HACK: NextActivity needs to be appended here because otherwise TakeOff does stupid things.
+					inner = ActivityUtils.SequenceActivities(
+						aircraft.GetResupplyActivities(host).Append(new TakeOff(self)).Append(NextActivity).ToArray());
+				}
+			}
+			else
+				inner = ActivityUtils.RunActivity(self, inner);
+
+			// The inner == NextActivity check is needed here because of the TakeOff issue mentioned in the comment above.
+			return inner == null || inner == NextActivity ? NextActivity : this;
+		}
+
+		public override void Cancel(Actor self)
+		{
+			if (!IsCanceled && inner != null)
+				inner.Cancel(self);
+
+			base.Cancel(self);
 		}
 	}
 }
