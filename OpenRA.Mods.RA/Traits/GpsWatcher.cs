@@ -28,72 +28,82 @@ namespace OpenRA.Mods.RA.Traits
 
 	class GpsWatcher : ISync, IFogVisibilityModifier
 	{
-		[Sync] public bool Launched { get; private set; }
-		[Sync] public bool GrantedAllies { get; private set; }
-		[Sync] public bool Granted { get; private set; }
+		public bool Active { get { return active || allyActive; } }
 
 		readonly Player owner;
 
-		readonly List<Actor> actors = new List<Actor>();
+		readonly List<Actor> sources = new List<Actor>();
 		readonly HashSet<TraitPair<IOnGpsRefreshed>> notifyOnRefresh = new HashSet<TraitPair<IOnGpsRefreshed>>();
+
+		// Whether this watcher has been enabled (by launching a satellite)
+		[Sync] bool enabled;
+
+		// Whether this watcher has explored the terrain (by becoming enabled, or an ally becoming enabled)
+		[Sync] bool explored;
+
+		// Whether this or an ally's watcher is currently active (> 0 sources and enabled)
+		[Sync] bool active;
+		[Sync] bool allyActive;
 
 		public GpsWatcher(Player owner)
 		{
 			this.owner = owner;
 		}
 
-		public void GpsRemove(Actor atek)
+		public void RemoveSource(Actor source)
 		{
-			actors.Remove(atek);
-			RefreshGps(atek);
+			sources.Remove(source);
+			Refresh();
 		}
 
-		public void GpsAdd(Actor atek)
+		public void AddSource(Actor source)
 		{
-			actors.Add(atek);
-			RefreshGps(atek);
+			sources.Add(source);
+			Refresh();
 		}
 
-		public void Launch(Actor atek, GpsPowerInfo info)
+		public void Launch(Actor source, GpsPowerInfo info)
 		{
-			atek.World.Add(new DelayedAction(info.RevealDelay * 25,
-				() =>
-				{
-					Launched = true;
-					RefreshGps(atek);
-				}));
+			source.World.Add(new DelayedAction(info.RevealDelay * 25, () =>
+			{
+				enabled = true;
+				Refresh();
+			}));
 		}
 
-		public void RefreshGps(Actor atek)
+		void Refresh()
 		{
-			RefreshGranted();
+			RefreshInner();
 
-			foreach (var i in atek.World.ActorsWithTrait<GpsWatcher>())
-				i.Trait.RefreshGranted();
-
-			if ((Granted || GrantedAllies) && atek.Owner.IsAlliedWith(owner))
-				atek.Owner.Shroud.ExploreAll();
+			// Refresh the state of all allied players (including ourselves, again...)
+			foreach (var i in owner.World.ActorsWithTrait<GpsWatcher>().Where(kv => kv.Actor.Owner.IsAlliedWith(owner)))
+				i.Trait.RefreshInner();
 		}
 
-		void RefreshGranted()
+		void RefreshInner()
 		{
-			var wasGranted = Granted;
-			var wasGrantedAllies = GrantedAllies;
+			var wasActive = Active;
+			var allyWatchers = owner.World.ActorsWithTrait<GpsWatcher>().Where(kv => kv.Actor.Owner.IsAlliedWith(owner));
 
-			Granted = actors.Count > 0 && Launched;
-			GrantedAllies = owner.World.ActorsHavingTrait<GpsWatcher>(g => g.Granted).Any(p => p.Owner.IsAlliedWith(owner));
+			active = sources.Count > 0 && enabled;
+			allyActive = allyWatchers.Any(w => w.Trait.active);
 
-			if (Granted || GrantedAllies)
+			// Shroud is only explored once, when the watcher is first enabled
+			var allyEnabled = allyWatchers.Any(w => w.Trait.enabled);
+			if ((enabled || allyEnabled) && !explored)
+			{
+				explored = true;
 				owner.Shroud.ExploreAll();
+			}
 
-			if (wasGranted != Granted || wasGrantedAllies != GrantedAllies)
+			if (wasActive != Active)
 				foreach (var tp in notifyOnRefresh.ToList())
 					tp.Trait.OnGpsRefresh(tp.Actor, owner);
 		}
 
 		public bool HasFogVisibility()
 		{
-			return Granted || GrantedAllies;
+			return Active;
 		}
 
 		public bool IsVisible(Actor actor)

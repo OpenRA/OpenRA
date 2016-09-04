@@ -95,8 +95,7 @@ namespace OpenRA.Mods.RA.Traits
 
 		void ActOnFrozenActorForTraits(Traits t, FrozenActorAction action)
 		{
-			if (t.FrozenActorLayer == null || t.GpsWatcher == null ||
-				!t.GpsWatcher.Granted || !t.GpsWatcher.GrantedAllies)
+			if (t.FrozenActorLayer == null || t.GpsWatcher == null || !t.GpsWatcher.Active)
 				return;
 
 			var fa = t.FrozenActorLayer.FromID(self.ActorID);
