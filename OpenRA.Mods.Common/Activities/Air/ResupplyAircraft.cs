@@ -49,9 +49,11 @@ namespace OpenRA.Mods.Common.Activities
 				else
 				{
 					// Helicopters should take off from their helipad immediately after resupplying.
-					// HACK: NextActivity needs to be appended here because otherwise TakeOff does stupid things.
+					// HACK: Append NextActivity to TakeOff to avoid moving to the Rallypoint (if NextActivity is non-null).
 					inner = ActivityUtils.SequenceActivities(
-						aircraft.GetResupplyActivities(host).Append(new TakeOff(self)).Append(NextActivity).ToArray());
+						aircraft.GetResupplyActivities(host)
+						.Append(new CallFunc(() => aircraft.MayYieldReservation = true))
+						.Append(new TakeOff(self)).Append(NextActivity).ToArray());
 				}
 			}
 			else
