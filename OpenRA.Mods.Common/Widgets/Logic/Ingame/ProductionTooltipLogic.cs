@@ -55,7 +55,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				if (actor == null || actor == lastActor)
 					return;
 
-				var tooltip = actor.TraitInfo<TooltipInfo>();
+				var tooltip = actor.TraitInfos<TooltipInfo>().First(Exts.IsTraitEnabled);
 				var buildable = actor.TraitInfo<BuildableInfo>();
 				var cost = actor.TraitInfo<ValuedInfo>().Cost;
 
@@ -115,7 +115,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			ActorInfo ai;
 			if (rules.Actors.TryGetValue(a.ToLowerInvariant(), out ai) && ai.HasTraitInfo<TooltipInfo>())
-				return ai.TraitInfo<TooltipInfo>().Name;
+			{
+				var actorTooltip = ai.TraitInfos<TooltipInfo>().FirstOrDefault(Exts.IsTraitEnabled);
+				if (actorTooltip != null)
+					return actorTooltip.Name;
+			}
 
 			return a;
 		}

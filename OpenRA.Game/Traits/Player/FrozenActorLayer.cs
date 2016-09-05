@@ -40,7 +40,7 @@ namespace OpenRA.Traits
 
 		public ITooltipInfo TooltipInfo { get; private set; }
 		public Player TooltipOwner { get; private set; }
-		readonly ITooltip tooltip;
+		readonly ITooltip[] tooltips;
 
 		public int HP { get; private set; }
 		public DamageState DamageState { get; private set; }
@@ -80,7 +80,7 @@ namespace OpenRA.Traits
 			Bounds = self.Bounds;
 			TargetTypes = self.GetEnabledTargetTypes().ToHashSet();
 
-			tooltip = self.TraitsImplementing<ITooltip>().FirstOrDefault();
+			tooltips = self.TraitsImplementing<ITooltip>().ToArray();
 			health = self.TraitOrDefault<IHealth>();
 
 			UpdateVisibility();
@@ -101,6 +101,7 @@ namespace OpenRA.Traits
 				DamageState = health.DamageState;
 			}
 
+			var tooltip = tooltips.FirstOrDefault(Exts.IsTraitEnabled);
 			if (tooltip != null)
 			{
 				TooltipInfo = tooltip.TooltipInfo;
