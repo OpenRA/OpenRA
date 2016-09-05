@@ -123,6 +123,7 @@ E3:
 		Weapon: RedEye
 		LocalOffset: 0,0,555
 	Armament@SECONDARY:
+		Name: secondary
 		Weapon: Dragon
 		LocalOffset: 0,0,555
 	Armament@GARRISONED:
