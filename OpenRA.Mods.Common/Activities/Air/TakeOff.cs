@@ -28,9 +28,6 @@ namespace OpenRA.Mods.Common.Activities
 
 		public override Activity Tick(Actor self)
 		{
-			if (NextActivity == null)
-				self.CancelActivity();
-
 			aircraft.UnReserve();
 
 			var host = aircraft.GetActorBelow();
