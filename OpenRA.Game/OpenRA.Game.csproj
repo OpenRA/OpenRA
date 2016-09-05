@@ -338,12 +338,28 @@
     <Content Include="OpenRA.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
   <Target Name="AfterBuild">
+    <Copy
+      SourceFiles="$(TargetPath)"
+      DestinationFolder="$(SolutionDir)"/>
+    <!--
+        We need to copy OpenRA.Game.pdb (not `.dll.pdb`). This is only necessary on Windows.
+        Mono outputs a `.dll.mdb` so we can just append `.mdb` directly.
+    -->
+    <Copy
+      SourceFiles="$(TargetDir)$(TargetName).pdb"
+      DestinationFolder="$(SolutionDir)"
+      Condition="'$(OS)' == 'Windows_NT'"/>
+    <Copy
+      SourceFiles="$(TargetPath).mdb"
+      DestinationFolder="$(SolutionDir)"
+      Condition="'$(OS)' == 'Unix'"/>
+    <!-- Uncomment these lines when debugging or adding to this target
+    <Message Text="DEBUG OS:                     $(OS)"/>
+    <Message Text="DEBUG SolutionDir:            $(SolutionDir)"/>
+    <Message Text="DEBUG TargetPath:             $(TargetPath)"/>
+    <Message Text="DEBUG TargetDir:              $(TargetDir)"/>
+    <Message Text="DEBUG TargetName:             $(TargetName)"/>
+    -->
   </Target>
-  -->
-  <ItemGroup />
 </Project>
