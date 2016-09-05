@@ -396,7 +396,7 @@ namespace OpenRA.Mods.Common.Projectiles
 			if ((tp.Actor.CenterPosition - pos).HorizontalLengthSquared > tp.Trait.Range.LengthSquared)
 				return false;
 
-			if (!tp.Actor.Owner.Stances[args.SourceActor.Owner].HasStance(tp.Trait.DeflectionStances))
+			if (!tp.Trait.DeflectionStances.HasStance(tp.Actor.Owner.Stances[args.SourceActor.Owner]))
 				return false;
 
 			return tp.Actor.World.SharedRandom.Next(100 / tp.Trait.Chance) == 0;
