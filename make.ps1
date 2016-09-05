@@ -80,6 +80,8 @@ elseif ($command -eq "clean")
 		rm *.dll
 		rm *.dll.config
 		rm mods/*/*.dll
+		rm *.pdb
+		rm mods/*/*.pdb
 		if (Test-Path thirdparty/download/)
 		{
 			rmdir thirdparty/download -Recurse -Force
