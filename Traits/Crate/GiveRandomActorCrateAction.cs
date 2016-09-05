@@ -25,6 +25,9 @@ namespace OpenRA.Mods.AS.Traits
 		[Desc("Override the owner of the newly spawned unit: e.g. Creeps or Neutral")]
 		public readonly string Owner = null;
 
+		[Desc("Valid `EligibleForRandomActorCrate` types this crate can pick from.")]
+		public readonly HashSet<string> Type = new HashSet<string> { "crateunit" };
+
 		public override object Create(ActorInitializer init) { return new GiveRandomActorCrateAction(init.Self, this); }
 	}
 
@@ -43,7 +46,8 @@ namespace OpenRA.Mods.AS.Traits
 			this.self = self;
 			this.info = info;
 
-			eligibleActors = self.World.Map.Rules.Actors.Values.Where(a => a.HasTraitInfo<EligibleForRandomActorCrateInfo>() && !a.Name.StartsWith("^"));
+			eligibleActors = self.World.Map.Rules.Actors.Values.Where(a => a.HasTraitInfo<EligibleForRandomActorCrateInfo>() && !a.Name.StartsWith("^")
+				&& a.TraitInfos<EligibleForRandomActorCrateInfo>().Any(c => info.Type.Contains(c.Type)));
 		}
 
 		public bool CanGiveTo(Actor collector)

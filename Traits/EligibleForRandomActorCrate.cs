@@ -13,7 +13,10 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.AS.Traits
 {
 	[Desc("Tag trait for `GiveRandomActor` crate action.")]
-	public class EligibleForRandomActorCrateInfo : TraitInfo<EligibleForRandomActorCrate> { }
+	public class EligibleForRandomActorCrateInfo : TraitInfo<EligibleForRandomActorCrate>
+	{
+		public readonly string Type = "crateunit";
+	}
 
 	public class EligibleForRandomActorCrate { }
 }
