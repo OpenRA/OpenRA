@@ -1,37 +1,14 @@
 # General dumping-ground for UI element sizes, etc.
 
 Metrics:
-	ButtonDepth: 1
-	ButtonFont: Regular
-	ButtonTextColor: FFFFFF
-	ButtonTextColorDisabled: 808080
-	ButtonTextContrast: false
-	ButtonTextShadow: false
-	ButtonTextContrastColorDark: 000000
-	ButtonTextContrastColorLight: 7F7F7F
-	ButtonBaseLine: 0
-	CheckboxPressedState: false
-	HotkeyFont: Regular
-	HotkeyColor: FFFFFF
-	HotkeyColorDisabled: 808080
-	TextfieldFont: Regular
-	TextfieldColor: FFFFFF
-	TextfieldColorDisabled: 808080
-	TextfieldColorInvalid: FFC0C0
-	TextFont: Regular
-	TextColor: FFFFFF
-	TextContrast: false
-	TextShadow: false
-	TextContrastColorDark: 000000
-	TextContrastColorLight: 7F7F7F
-	ColorPickerRemapIndices: 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95
 	ColorPickerActorType: ^fact.colorpicker
+	ColorPickerRemapIndices: 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95
 	FactionSuffix-allies: allies
 	FactionSuffix-england: allies
 	FactionSuffix-france: allies
 	FactionSuffix-germany: allies
-	FactionSuffix-soviet: soviet
 	FactionSuffix-russia: soviet
+	FactionSuffix-soviet: soviet
 	FactionSuffix-ukraine: soviet
-	IncompatibleVersionColor: D3D3D3
 	IncompatibleProtectedGameColor: B22222
+	IncompatibleVersionColor: D3D3D3
