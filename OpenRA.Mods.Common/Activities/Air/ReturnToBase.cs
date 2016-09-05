@@ -112,7 +112,11 @@ namespace OpenRA.Mods.Common.Activities
 						new FlyCircleTimed(self, plane.Info.NumberOfTicksToVerifyAvailableAirport),
 						this);
 				else
+				{
+					// Prevent an infinite loop in case we'd return to the activity that called ReturnToBase in the first place. Go idle instead.
+					Cancel(self);
 					return NextActivity;
+				}
 			}
 
 			List<Activity> landingProcedures = new List<Activity>();
