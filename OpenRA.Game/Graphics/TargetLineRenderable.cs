@@ -43,9 +43,9 @@ namespace OpenRA.Graphics
 				return;
 
 			var iz = 1 / wr.Viewport.Zoom;
-			var first = wr.ScreenPxPosition(waypoints.First());
+			var first = wr.Screen3DPosition(waypoints.First());
 			var a = first;
-			foreach (var b in waypoints.Skip(1).Select(pos => wr.ScreenPxPosition(pos)))
+			foreach (var b in waypoints.Skip(1).Select(pos => wr.Screen3DPosition(pos)))
 			{
 				Game.Renderer.WorldRgbaColorRenderer.DrawLine(a, b, iz, color);
 				DrawTargetMarker(wr, color, b);
@@ -55,7 +55,7 @@ namespace OpenRA.Graphics
 			DrawTargetMarker(wr, color, first);
 		}
 
-		public static void DrawTargetMarker(WorldRenderer wr, Color color, float2 location)
+		public static void DrawTargetMarker(WorldRenderer wr, Color color, float3 location)
 		{
 			var iz = 1 / wr.Viewport.Zoom;
 			var offset = new float2(iz, iz);

@@ -38,14 +38,14 @@ namespace OpenRA.Network
 		{
 			FieldLoader.Load(this, yaml);
 
-			ModMetadata mod;
+			Manifest mod;
 			var modVersion = Mods.Split('@');
-			if (modVersion.Length == 2 && ModMetadata.AllMods.TryGetValue(modVersion[0], out mod))
+			if (modVersion.Length == 2 && Game.Mods.TryGetValue(modVersion[0], out mod))
 			{
 				ModId = modVersion[0];
 				ModVersion = modVersion[1];
-				ModLabel = "{0} ({1})".F(mod.Title, modVersion[1]);
-				IsCompatible = Game.Settings.Debug.IgnoreVersionMismatch || ModVersion == mod.Version;
+				ModLabel = "{0} ({1})".F(mod.Metadata.Title, modVersion[1]);
+				IsCompatible = Game.Settings.Debug.IgnoreVersionMismatch || ModVersion == mod.Metadata.Version;
 			}
 			else
 				ModLabel = "Unknown mod: {0}".F(Mods);

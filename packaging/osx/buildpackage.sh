@@ -1,7 +1,7 @@
 #!/bin/bash
 # OpenRA packaging script for Mac OSX
 
-LAUNCHER_TAG="osx-launcher-20150412"
+LAUNCHER_TAG="osx-launcher-20160824"
 
 if [ $# -ne "3" ]; then
 	echo "Usage: `basename $0` tag files-dir outputdir"

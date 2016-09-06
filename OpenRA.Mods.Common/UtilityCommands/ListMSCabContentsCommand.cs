@@ -17,15 +17,15 @@ namespace OpenRA.Mods.Common.UtilityCommands
 {
 	class ListMSCabContentsCommand : IUtilityCommand
 	{
-		public string Name { get { return "--list-mscab"; } }
+		string IUtilityCommand.Name { get { return "--list-mscab"; } }
 
-		public bool ValidateArguments(string[] args)
+		bool IUtilityCommand.ValidateArguments(string[] args)
 		{
 			return args.Length == 2;
 		}
 
 		[Desc("ARCHIVE.CAB", "Lists the filenames contained within a MSCAB file")]
-		public void Run(ModData modData, string[] args)
+		void IUtilityCommand.Run(Utility utility, string[] args)
 		{
 			var package = new MSCabCompression(File.OpenRead(args[1]));
 			foreach (var file in package.Contents)

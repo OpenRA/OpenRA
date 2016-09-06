@@ -70,7 +70,6 @@ World:
 		Sequence: craters
 	ResourceLayer:
 	ResourceClaimLayer:
-	PathfinderDebugOverlay:
 	WarheadDebugOverlay:
 	CustomTerrainDebugOverlay:
 	MapCreeps:

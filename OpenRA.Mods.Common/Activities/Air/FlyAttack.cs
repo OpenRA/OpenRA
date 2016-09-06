@@ -19,6 +19,7 @@ namespace OpenRA.Mods.Common.Activities
 	public class FlyAttack : Activity
 	{
 		readonly Target target;
+		readonly Aircraft aircraft;
 		readonly AttackPlane attackPlane;
 		readonly AmmoPool[] ammoPools;
 
@@ -28,6 +29,7 @@ namespace OpenRA.Mods.Common.Activities
 		public FlyAttack(Actor self, Target target)
 		{
 			this.target = target;
+			aircraft = self.Trait<Aircraft>();
 			attackPlane = self.TraitOrDefault<AttackPlane>();
 			ammoPools = self.TraitsImplementing<AmmoPool>().ToArray();
 			ticksUntilTurn = attackPlane.AttackPlaneInfo.AttackTurnDelay;
@@ -38,10 +40,9 @@ namespace OpenRA.Mods.Common.Activities
 			if (!target.IsValidFor(self))
 				return NextActivity;
 
-			// Move to the next activity only if all ammo pools are depleted and none reload automatically
 			// TODO: This should check whether there is ammo left that is actually suitable for the target
 			if (ammoPools.All(x => !x.Info.SelfReloads && !x.HasAmmo()))
-				return ActivityUtils.SequenceActivities(new ReturnToBase(self), NextActivity);
+				return ActivityUtils.SequenceActivities(new ReturnToBase(self), this);
 
 			if (attackPlane != null)
 				attackPlane.DoAttack(self, target);
@@ -56,6 +57,10 @@ namespace OpenRA.Mods.Common.Activities
 					inner = ActivityUtils.SequenceActivities(new FlyTimed(ticksUntilTurn, self), new Fly(self, target), new FlyTimed(ticksUntilTurn, self));
 				else
 					inner = ActivityUtils.SequenceActivities(new Fly(self, target), new FlyTimed(ticksUntilTurn, self));
+
+				// HACK: This needs to be done in this round-about way because TakeOff doesn't behave as expected when it doesn't have a NextActivity.
+				if (self.World.Map.DistanceAboveTerrain(self.CenterPosition).Length < aircraft.Info.MinAirborneAltitude)
+					inner = ActivityUtils.SequenceActivities(new TakeOff(self), inner);
 			}
 
 			inner = ActivityUtils.RunActivity(self, inner);

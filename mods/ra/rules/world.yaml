@@ -118,7 +118,6 @@ World:
 		Sequence: craters
 	ResourceLayer:
 	ResourceClaimLayer:
-	PathfinderDebugOverlay:
 	WarheadDebugOverlay:
 	SpawnMapActors:
 	MapBuildRadius:

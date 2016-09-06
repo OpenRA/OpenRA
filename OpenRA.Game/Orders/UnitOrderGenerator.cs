@@ -61,7 +61,7 @@ namespace OpenRA.Orders
 
 		public virtual void Tick(World world) { }
 		public virtual IEnumerable<IRenderable> Render(WorldRenderer wr, World world) { yield break; }
-		public virtual IEnumerable<IRenderable> RenderAfterWorld(WorldRenderer wr, World world) { yield break; }
+		public virtual IEnumerable<IRenderable> RenderAboveShroud(WorldRenderer wr, World world) { yield break; }
 
 		public virtual string GetCursor(World world, CPos cell, int2 worldPixel, MouseInput mi)
 		{

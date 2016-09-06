@@ -6,7 +6,9 @@ Metrics:
 	ButtonTextColor: FFFFFF
 	ButtonTextColorDisabled: 808080
 	ButtonTextContrast: false
-	ButtonTextContrastColor: 000000
+	ButtonTextShadow: false
+	ButtonTextContrastColorDark: 000000
+	ButtonTextContrastColorLight: 7F7F7F
 	ButtonBaseLine: 2
 	CheckboxPressedState: true
 	HotkeyFont: Regular
@@ -19,5 +21,7 @@ Metrics:
 	TextFont: Regular
 	TextColor: FFFFFF
 	TextContrast: false
-	TextContrastColor: 000000
+	TextShadow: false
+	TextContrastColorDark: 000000
+	TextContrastColorLight: 7F7F7F
 	ColorPickerRemapIndices: 176, 178, 180, 182, 184, 186, 189, 191, 177, 179, 181, 183, 185, 187, 188, 190

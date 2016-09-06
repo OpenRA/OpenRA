@@ -129,16 +129,16 @@ namespace OpenRA.Mods.Common.HitShapes
 				var positions = targetablePositions.SelectMany(tp => tp.TargetablePositions(actor));
 				foreach (var pos in positions)
 				{
-					var vertsTop = combatOverlayVertsTop.Select(v => wr.ScreenPosition(pos + v.Rotate(orientation)));
-					var vertsBottom = combatOverlayVertsBottom.Select(v => wr.ScreenPosition(pos + v.Rotate(orientation)));
+					var vertsTop = combatOverlayVertsTop.Select(v => wr.Screen3DPosition(pos + v.Rotate(orientation)));
+					var vertsBottom = combatOverlayVertsBottom.Select(v => wr.Screen3DPosition(pos + v.Rotate(orientation)));
 					wcr.DrawPolygon(vertsTop.ToArray(), 1, Color.Yellow);
 					wcr.DrawPolygon(vertsBottom.ToArray(), 1, Color.Yellow);
 				}
 			}
 			else
 			{
-				var vertsTop = combatOverlayVertsTop.Select(v => wr.ScreenPosition(actorPos + v.Rotate(orientation)));
-				var vertsBottom = combatOverlayVertsBottom.Select(v => wr.ScreenPosition(actorPos + v.Rotate(orientation)));
+				var vertsTop = combatOverlayVertsTop.Select(v => wr.Screen3DPosition(actorPos + v.Rotate(orientation)));
+				var vertsBottom = combatOverlayVertsBottom.Select(v => wr.Screen3DPosition(actorPos + v.Rotate(orientation)));
 				wcr.DrawPolygon(vertsTop.ToArray(), 1, Color.Yellow);
 				wcr.DrawPolygon(vertsBottom.ToArray(), 1, Color.Yellow);
 			}

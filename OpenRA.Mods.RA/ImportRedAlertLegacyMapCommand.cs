@@ -25,13 +25,11 @@ namespace OpenRA.Mods.RA.UtilityCommands
 		// TODO: 128x128 is probably not true for "mega maps" from the expansions.
 		public ImportRedAlertLegacyMapCommand() : base(128) { }
 
-		public string Name { get { return "--import-ra-map"; } }
+		string IUtilityCommand.Name { get { return "--import-ra-map"; } }
+		bool IUtilityCommand.ValidateArguments(string[] args) { return ValidateArguments(args); }
 
 		[Desc("FILENAME", "Convert a legacy Red Alert INI/MPR map to the OpenRA format.")]
-		public override void Run(ModData modData, string[] args)
-		{
-			base.Run(modData, args);
-		}
+		void IUtilityCommand.Run(Utility utility, string[] args) { Run(utility, args); }
 
 		public override void ValidateMapFormat(int format)
 		{

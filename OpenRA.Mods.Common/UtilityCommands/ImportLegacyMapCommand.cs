@@ -38,18 +38,15 @@ namespace OpenRA.Mods.Common.UtilityCommands
 		bool singlePlayer;
 		int spawnCount;
 
-		public bool ValidateArguments(string[] args)
+		protected bool ValidateArguments(string[] args)
 		{
 			return args.Length >= 2;
 		}
 
-		[Desc("FILENAME", "Convert a legacy INI/MPR map to the OpenRA format.")]
-		public virtual void Run(ModData modData, string[] args)
+		protected void Run(Utility utility, string[] args)
 		{
-			ModData = modData;
-
 			// HACK: The engine code assumes that Game.modData is set.
-			Game.ModData = modData;
+			Game.ModData = ModData = utility.ModData;
 
 			var filename = args[1];
 			using (var stream = File.OpenRead(filename))
@@ -68,16 +65,16 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 				// The original game isn't case sensitive, but we are.
 				var tileset = GetTileset(mapSection).ToUpperInvariant();
-				if (!modData.DefaultTileSets.ContainsKey(tileset))
+				if (!ModData.DefaultTileSets.ContainsKey(tileset))
 					throw new InvalidDataException("Unknown tileset {0}".F(tileset));
 
-				Map = new Map(modData, modData.DefaultTileSets[tileset], MapSize, MapSize)
+				Map = new Map(ModData, ModData.DefaultTileSets[tileset], MapSize, MapSize)
 				{
 					Title = basic.GetValue("Name", Path.GetFileNameWithoutExtension(filename)),
 					Author = "Westwood Studios",
 				};
 
-				Map.RequiresMod = modData.Manifest.Mod.Id;
+				Map.RequiresMod = ModData.Manifest.Id;
 
 				SetBounds(Map, mapSection);
 

@@ -65,14 +65,14 @@ namespace OpenRA.Graphics
 
 		public void RenderDebugGeometry(WorldRenderer wr)
 		{
-			var offset = ScreenPosition(wr) + sprite.Offset.XY;
-			Game.Renderer.WorldRgbaColorRenderer.DrawRect(offset.XY, (offset + sprite.Size).XY, 1 / wr.Viewport.Zoom, Color.Red);
+			var screenOffset = ScreenPosition(wr) + sprite.Offset;
+			Game.Renderer.WorldRgbaColorRenderer.DrawRect(screenOffset, screenOffset + sprite.Size, 1 / wr.Viewport.Zoom, Color.Red);
 		}
 
 		public Rectangle ScreenBounds(WorldRenderer wr)
 		{
-			var offset = ScreenPosition(wr) + sprite.Offset;
-			return new Rectangle((int)offset.X, (int)offset.Y, (int)sprite.Size.X, (int)sprite.Size.Y);
+			var screenOffset = ScreenPosition(wr) + sprite.Offset;
+			return new Rectangle((int)screenOffset.X, (int)screenOffset.Y, (int)sprite.Size.X, (int)sprite.Size.Y);
 		}
 	}
 }

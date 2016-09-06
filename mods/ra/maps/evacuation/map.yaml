@@ -12,7 +12,7 @@ MapSize: 128,128
 
 Bounds: 16,16,96,96
 
-Visibility: MissionSelector, Lobby
+Visibility: Lobby, MissionSelector
 
 Categories: Mission, Cooperative Mission
 

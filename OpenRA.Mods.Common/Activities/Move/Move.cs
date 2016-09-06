@@ -220,7 +220,7 @@ namespace OpenRA.Mods.Common.Activities
 			var containsTemporaryBlocker = WorldUtils.ContainsTemporaryBlocker(self.World, nextCell, self);
 
 			// Next cell in the move is blocked by another actor
-			if (containsTemporaryBlocker || !mobile.CanMoveFreelyInto(nextCell, ignoredActor, true))
+			if (containsTemporaryBlocker || !mobile.CanEnterCell(nextCell, ignoredActor, true))
 			{
 				// Are we close enough?
 				var cellRange = nearEnough.Length / 1024;
@@ -303,6 +303,12 @@ namespace OpenRA.Mods.Common.Activities
 			protected readonly Move Move;
 			protected readonly WPos From, To;
 			protected readonly int FromFacing, ToFacing;
+			protected readonly WPos ArcCenter;
+			protected readonly int ArcFromLength;
+			protected readonly WAngle ArcFromAngle;
+			protected readonly int ArcToLength;
+			protected readonly WAngle ArcToAngle;
+
 			protected readonly int MoveFractionTotal;
 			protected int moveFraction;
 
@@ -315,6 +321,25 @@ namespace OpenRA.Mods.Common.Activities
 				ToFacing = toFacing;
 				moveFraction = startingFraction;
 				MoveFractionTotal = (to - from).Length;
+
+				// Calculate an elliptical arc that joins from and to
+				var delta = Util.NormalizeFacing(fromFacing - toFacing);
+				if (delta != 0 && delta != 128)
+				{
+					// The center of rotation is where the normal vectors cross
+					var u = new WVec(1024, 0, 0).Rotate(WRot.FromFacing(fromFacing));
+					var v = new WVec(1024, 0, 0).Rotate(WRot.FromFacing(toFacing));
+					var w = from - to;
+					var s = (v.Y * w.X - v.X * w.Y) * 1024 / (v.X * u.Y - v.Y * u.X);
+					var x = from.X + s * u.X / 1024;
+					var y = from.Y + s * u.Y / 1024;
+
+					ArcCenter = new WPos(x, y, 0);
+					ArcFromLength = (ArcCenter - from).HorizontalLength;
+					ArcFromAngle = (ArcCenter - from).Yaw;
+					ArcToLength = (ArcCenter - to).HorizontalLength;
+					ArcToAngle = (ArcCenter - to).Yaw;
+				}
 			}
 
 			public override void Cancel(Actor self)
@@ -355,9 +380,22 @@ namespace OpenRA.Mods.Common.Activities
 
 			void UpdateCenterLocation(Actor self, Mobile mobile)
 			{
-				// avoid division through zero
+				// Avoid division through zero
 				if (MoveFractionTotal != 0)
-					mobile.SetVisualPosition(self, WPos.Lerp(From, To, moveFraction, MoveFractionTotal));
+				{
+					WPos pos;
+					if (FromFacing != ToFacing)
+					{
+						var angle = WAngle.Lerp(ArcFromAngle, ArcToAngle, moveFraction, MoveFractionTotal);
+						var length = int2.Lerp(ArcFromLength, ArcToLength, moveFraction, MoveFractionTotal);
+						var height = int2.Lerp(From.Z, To.Z, moveFraction, MoveFractionTotal);
+						pos = ArcCenter + new WVec(0, length, height).Rotate(WRot.FromYaw(angle));
+					}
+					else
+						pos = WPos.Lerp(From, To, moveFraction, MoveFractionTotal);
+
+					mobile.SetVisualPosition(self, pos);
+				}
 				else
 					mobile.SetVisualPosition(self, To);
 

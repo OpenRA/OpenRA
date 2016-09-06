@@ -270,6 +270,94 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				if (engineVersion < 20160717)
+				{
+					if (depth == 0)
+					{
+						var selectionDecorations = node.Value.Nodes.FirstOrDefault(n => n.Key == "SelectionDecorations");
+						if (selectionDecorations != null)
+							node.Value.Nodes.Add(selectionDecorations = new MiniYamlNode("WithSpriteControlGroup", ""));
+					}
+				}
+
+				if (engineVersion < 20160818)
+				{
+					if (depth == 1 && node.Key.StartsWith("UpgradeOnDamage"))
+					{
+						var parts = node.Key.Split('@');
+						node.Key = "UpgradeOnDamageState";
+						if (parts.Length > 1)
+							node.Key += "@" + parts[1];
+					}
+				}
+
+				// DisplayTimer was replaced by DisplayTimerStances
+				if (engineVersion < 20160820)
+				{
+					if (node.Key == "DisplayTimer")
+					{
+						node.Key = "DisplayTimerStances";
+
+						if (node.Value.Value.ToLower() == "false")
+							node.Value.Value = "None";
+						else
+							node.Value.Value = "Ally, Neutral, Enemy";
+					}
+				}
+
+				if (engineVersion < 20160821)
+				{
+					// Shifted custom build time properties to Buildable
+					if (depth == 0)
+					{
+						var cbtv = node.Value.Nodes.FirstOrDefault(n => n.Key == "CustomBuildTimeValue");
+						if (cbtv != null)
+						{
+							var bi = node.Value.Nodes.FirstOrDefault(n => n.Key == "Buildable");
+
+							if (bi == null)
+								node.Value.Nodes.Add(bi = new MiniYamlNode("Buildable", ""));
+
+							var value = cbtv.Value.Nodes.First(n => n.Key == "Value");
+							value.Key = "BuildDuration";
+							bi.Value.Nodes.Add(value);
+							bi.Value.Nodes.Add(new MiniYamlNode("BuildDurationModifier", "40"));
+						}
+
+						node.Value.Nodes.RemoveAll(n => n.Key == "CustomBuildTimeValue");
+						node.Value.Nodes.RemoveAll(n => n.Key == "-CustomBuildTimeValue");
+					}
+
+					// rename ProductionQueue.BuildSpeed
+					if (node.Key == "BuildSpeed")
+					{
+						node.Key = "BuildDurationModifier";
+						var oldValue = FieldLoader.GetValue<int>(node.Key, node.Value.Value);
+						oldValue = oldValue * 100 / 40;
+						node.Value.Value = oldValue.ToString();
+					}
+				}
+
+				if (engineVersion < 20160826 && depth == 0)
+				{
+					// Removed debug visualization
+					node.Value.Nodes.RemoveAll(n => n.Key == "PathfinderDebugOverlay");
+				}
+
+				// AlliedMissiles on JamsMissiles was changed from a boolean to a Stances field and renamed
+				if (engineVersion < 20160827)
+				{
+					if (node.Key == "JamsMissiles")
+					{
+						var alliedMissiles = node.Value.Nodes.FirstOrDefault(n => n.Key == "AlliedMissiles");
+						if (alliedMissiles != null)
+						{
+							alliedMissiles.Value.Value = FieldLoader.GetValue<bool>("AlliedMissiles", alliedMissiles.Value.Value) ? "Ally, Neutral, Enemy" : "Neutral, Enemy";
+							alliedMissiles.Key = "DeflectionStances";
+						}
+					}
+				}
+
 				UpgradeActorRules(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 
@@ -346,7 +434,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 		{
 			foreach (var node in nodes)
 			{
-				if (engineVersion < 20160730 && modData.Manifest.Mod.Id == "d2k" && depth == 2)
+				if (engineVersion < 20160730 && modData.Manifest.Id == "d2k" && depth == 2)
 				{
 					if (node.Key == "Start")
 						node.Value.Value = RemapD2k106Sequence(FieldLoader.GetValue<int>("", node.Value.Value)).ToString();
@@ -416,7 +504,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			foreach (var node in nodes)
 			{
 				// Fix RA building footprints to not use _ when it's not necessary
-				if (engineVersion < 20160619 && modData.Manifest.Mod.Id == "ra" && depth == 1)
+				if (engineVersion < 20160619 && modData.Manifest.Id == "ra" && depth == 1)
 				{
 					var buildings = new List<string>() { "tsla", "gap", "agun", "apwr", "fapw" };
 					if (buildings.Contains(parent.Value.Value) && node.Key == "Location")
@@ -424,7 +512,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				}
 
 				// Fix TD building footprints to not use _ when it's not necessary
-				if (engineVersion < 20160619 && modData.Manifest.Mod.Id == "cnc" && depth == 1)
+				if (engineVersion < 20160619 && modData.Manifest.Id == "cnc" && depth == 1)
 				{
 					var buildings = new List<string>() { "atwr", "obli", "tmpl", "weap", "hand" };
 					if (buildings.Contains(parent.Value.Value) && node.Key == "Location")

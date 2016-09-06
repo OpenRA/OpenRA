@@ -35,7 +35,7 @@ namespace OpenRA.Mods.Common.Traits
 		public virtual object Create(ActorInitializer init) { return new EditorSelectionLayer(init.Self, this); }
 	}
 
-	public class EditorSelectionLayer : IWorldLoaded, IPostRender
+	public class EditorSelectionLayer : IWorldLoaded, IRenderAboveWorld
 	{
 		readonly EditorSelectionLayerInfo info;
 		readonly Map map;
@@ -57,7 +57,7 @@ namespace OpenRA.Mods.Common.Traits
 			pasteSprite = map.Rules.Sequences.GetSequence(info.Image, info.PasteSequence).GetSprite(0);
 		}
 
-		public void WorldLoaded(World w, WorldRenderer wr)
+		void IWorldLoaded.WorldLoaded(World w, WorldRenderer wr)
 		{
 			if (w.Type != WorldType.Editor)
 				return;
@@ -80,7 +80,7 @@ namespace OpenRA.Mods.Common.Traits
 			CopyRegion = PasteRegion = null;
 		}
 
-		public void RenderAfterWorld(WorldRenderer wr, Actor self)
+		void IRenderAboveWorld.RenderAboveWorld(Actor self, WorldRenderer wr)
 		{
 			if (wr.World.Type != WorldType.Editor)
 				return;

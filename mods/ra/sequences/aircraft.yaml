@@ -56,7 +56,7 @@ tran:
 	unload: tran2
 		Start: 35
 	icon: tranicon
-		
+
 tran1husk:
 	idle:
 

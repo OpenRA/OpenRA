@@ -29,11 +29,19 @@ namespace OpenRA.Mods.Common.Traits
 				return;		/* nothing to do */
 
 			if (!Target.FromActor(reservedFor).IsValidFor(self))
-				reservedFor = null;		/* not likely to arrive now. */
+			{
+				/* Not likely to arrive now. */
+				reservedForAircraft.UnReserve();
+				reservedFor = null;
+				reservedForAircraft = null;
+			}
 		}
 
 		public IDisposable Reserve(Actor self, Actor forActor, Aircraft forAircraft)
 		{
+			if (reservedForAircraft != null && reservedForAircraft.MayYieldReservation)
+				reservedForAircraft.UnReserve();
+
 			reservedFor = forActor;
 			reservedForAircraft = forAircraft;
 
@@ -53,7 +61,7 @@ namespace OpenRA.Mods.Common.Traits
 		public static bool IsReserved(Actor a)
 		{
 			var res = a.TraitOrDefault<Reservable>();
-			return res != null && res.reservedFor != null;
+			return res != null && res.reservedForAircraft != null && !res.reservedForAircraft.MayYieldReservation;
 		}
 
 		public void Disposing(Actor self)

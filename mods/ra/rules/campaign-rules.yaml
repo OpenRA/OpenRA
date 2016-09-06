@@ -12,7 +12,9 @@ Player:
 		DefaultCash: 0
 
 World:
-	-CrateSpawner:
+	CrateSpawner:
+		Enabled: False
+		Locked: True
 	-SpawnMPUnits:
 	-MPStartLocations:
 	ObjectivesPanel:
@@ -27,12 +29,9 @@ World:
 
 E7.noautotarget:
 	Inherits: E7
-	AutoTarget:
-		EnableStances: false
-	-AttackMove:
+	-AutoTarget:
 	RenderSprites:
 		Image: E7
 
 ^Vehicle:
 	Demolishable:
-

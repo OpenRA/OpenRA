@@ -23,15 +23,15 @@ namespace OpenRA.Mods.Common.UtilityCommands
 {
 	class ConvertPngToShpCommand : IUtilityCommand
 	{
-		public string Name { get { return "--shp"; } }
+		string IUtilityCommand.Name { get { return "--shp"; } }
 
-		public bool ValidateArguments(string[] args)
+		bool IUtilityCommand.ValidateArguments(string[] args)
 		{
 			return args.Length >= 2;
 		}
 
 		[Desc("PNGFILE [PNGFILE ...]", "Combine a list of PNG images into a SHP")]
-		public void Run(ModData modData, string[] args)
+		void IUtilityCommand.Run(Utility utility, string[] args)
 		{
 			var inputFiles = GlobArgs(args).OrderBy(a => a).ToList();
 			var dest = inputFiles[0].Split('-').First() + ".shp";

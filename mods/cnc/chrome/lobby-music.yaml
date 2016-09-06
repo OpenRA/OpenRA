@@ -32,7 +32,7 @@ Container@LOBBY_MUSIC_BIN:
 			Height: PARENT_BOTTOM
 			Children:
 				Label@MUTE_LABEL:
-					X: 25
+					X: 60
 					Y: 10
 					Width: 300
 					Height: 20

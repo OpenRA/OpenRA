@@ -32,7 +32,7 @@ namespace OpenRA.Mods.Common.Traits
 		object ITraitInfo.Create(ActorInitializer init) { return new ExitsDebugOverlay(init.Self, this); }
 	}
 
-	public class ExitsDebugOverlay : IPostRender
+	public class ExitsDebugOverlay : IRenderAboveWorld
 	{
 		readonly ExitsDebugOverlayManager manager;
 		readonly ExitsDebugOverlayInfo info;
@@ -51,7 +51,7 @@ namespace OpenRA.Mods.Common.Traits
 			exits = self.Info.TraitInfos<ExitInfo>().ToArray();
 		}
 
-		void IPostRender.RenderAfterWorld(WorldRenderer wr, Actor self)
+		void IRenderAboveWorld.RenderAboveWorld(Actor self, WorldRenderer wr)
 		{
 			if (manager == null || !manager.Enabled)
 				return;
@@ -97,7 +97,7 @@ namespace OpenRA.Mods.Common.Traits
 						continue;
 
 					var exitCellCenter = self.World.Map.CenterOfCell(exitCells[i]);
-					rgbaRenderer.DrawLine(wr.ScreenPosition(spawnPos), wr.ScreenPosition(exitCellCenter), 1f, self.Owner.Color.RGB);
+					rgbaRenderer.DrawLine(wr.Screen3DPosition(spawnPos), wr.Screen3DPosition(exitCellCenter), 1f, self.Owner.Color.RGB);
 				}
 			}
 	    }

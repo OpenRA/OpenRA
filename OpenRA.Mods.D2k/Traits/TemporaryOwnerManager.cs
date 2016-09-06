@@ -79,5 +79,7 @@ namespace OpenRA.Mods.D2k.Traits
 		{
 			return info.BarColor;
 		}
+
+		bool ISelectionBar.DisplayWhenEmpty { get { return false; } }
 	}
 }

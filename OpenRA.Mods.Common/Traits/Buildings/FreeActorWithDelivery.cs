@@ -54,12 +54,10 @@ namespace OpenRA.Mods.Common.Traits
 			CreateActors(actorName, carrierActorName, out cargo, out carrier);
 
 			var carryable = cargo.Trait<Carryable>();
-			carryable.Destination = location;
-			carryable.Reserve(carrier);
+			carryable.Reserve(cargo, carrier);
 
-			carrier.Trait<Carryall>().AttachCarryable(cargo);
-
-			carrier.QueueActivity(new DeliverUnit(carrier));
+			carrier.Trait<Carryall>().AttachCarryable(carrier, cargo);
+			carrier.QueueActivity(new DeliverUnit(carrier, location));
 			carrier.QueueActivity(new HeliFly(carrier, Target.FromCell(self.World, self.World.Map.ChooseRandomEdgeCell(self.World.SharedRandom))));
 			carrier.QueueActivity(new RemoveSelf());
 

@@ -64,9 +64,6 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			var cell = self.Location;
-			if (self.World.Map.Contains(cell))
-				return;
-
 			if (positionable.CanEnterCell(cell, self))
 				return;
 

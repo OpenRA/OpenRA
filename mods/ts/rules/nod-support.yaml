@@ -243,7 +243,7 @@ NAMISL:
 		LaunchSound: icbm1.aud
 		MissileWeapon: ClusterMissile
 		SpawnOffset: 0,427,0
-		DisplayTimer: False
+		DisplayTimerStances: None
 		DisplayBeacon: False
 		DisplayRadarPing: True
 		BeaconPoster:

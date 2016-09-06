@@ -11,11 +11,14 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
 
-namespace OpenRA.Utility
+namespace OpenRA
 {
+	using UtilityActions = Dictionary<string, KeyValuePair<Action<Utility, string[]>, Func<string[], bool>>>;
+
 	[Serializable]
 	public class NoSuchCommandException : Exception
 	{
@@ -37,36 +40,46 @@ namespace OpenRA.Utility
 	{
 		static void Main(string[] args)
 		{
-			if (args.Length == 0)
-			{
-				PrintUsage(null);
-				return;
-			}
-
 			Log.AddChannel("perf", null);
 			Log.AddChannel("debug", null);
 
-			var modName = args[0];
-			if (!ModMetadata.AllMods.Keys.Contains(modName))
+			Game.InitializeSettings(Arguments.Empty);
+
+			if (args.Length == 0)
 			{
-				PrintUsage(null);
+				PrintUsage(new InstalledMods(null), null);
 				return;
 			}
 
-			Game.InitializeSettings(Arguments.Empty);
-			var modData = new ModData(modName);
+			var modId = args[0];
+			string customModPath = null;
+			if (File.Exists(modId) || Directory.Exists(modId))
+			{
+				customModPath = modId;
+				modId = Path.GetFileNameWithoutExtension(modId);
+			}
+
+			var mods = new InstalledMods(customModPath);
+			if (!mods.Keys.Contains(modId))
+			{
+				PrintUsage(mods, null);
+				return;
+			}
+
+			var modData = new ModData(mods[modId], mods);
+			var utility = new Utility(modData, mods);
 			args = args.Skip(1).ToArray();
-			var actions = new Dictionary<string, KeyValuePair<Action<ModData, string[]>, Func<string[], bool>>>();
+			var actions = new UtilityActions();
 			foreach (var commandType in modData.ObjectCreator.GetTypesImplementing<IUtilityCommand>())
 			{
 				var command = (IUtilityCommand)Activator.CreateInstance(commandType);
-				var kvp = new KeyValuePair<Action<ModData, string[]>, Func<string[], bool>>(command.Run, command.ValidateArguments);
+				var kvp = new KeyValuePair<Action<Utility, string[]>, Func<string[], bool>>(command.Run, command.ValidateArguments);
 				actions.Add(command.Name, kvp);
 			}
 
 			if (args.Length == 0)
 			{
-				PrintUsage(actions);
+				PrintUsage(mods, actions);
 				return;
 			}
 
@@ -81,7 +94,7 @@ namespace OpenRA.Utility
 
 				if (validateActionArgs.Invoke(args))
 				{
-					action.Invoke(modData, args);
+					action.Invoke(utility, args);
 				}
 				else
 				{
@@ -105,10 +118,10 @@ namespace OpenRA.Utility
 			}
 		}
 
-		static void PrintUsage(IDictionary<string, KeyValuePair<Action<ModData, string[]>, Func<string[], bool>>> actions)
+		static void PrintUsage(InstalledMods mods, UtilityActions actions)
 		{
 			Console.WriteLine("Run `OpenRA.Utility.exe [MOD]` to see a list of available commands.");
-			Console.WriteLine("The available mods are: " + string.Join(", ", ModMetadata.AllMods.Keys));
+			Console.WriteLine("The available mods are: " + string.Join(", ", mods.Keys));
 			Console.WriteLine();
 
 			if (actions == null)
@@ -122,7 +135,7 @@ namespace OpenRA.Utility
 			}
 		}
 
-		static void GetActionUsage(string key, Action<ModData, string[]> action)
+		static void GetActionUsage(string key, Action<Utility, string[]> action)
 		{
 			var descParts = action.Method.GetCustomAttributes<DescAttribute>(true)
 					.SelectMany(d => d.Lines).ToArray();

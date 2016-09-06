@@ -128,6 +128,7 @@ namespace OpenRA.Mods.RA.Traits
 		}
 
 		Color ISelectionBar.GetColor() { return info.TimeBarColor; }
+		bool ISelectionBar.DisplayWhenEmpty { get { return false; } }
 
 		public void ModifyDeathActorInit(Actor self, TypeDictionary init)
 		{

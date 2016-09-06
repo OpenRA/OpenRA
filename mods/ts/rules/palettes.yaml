@@ -57,6 +57,7 @@
 	PaletteFromFile@alpha:
 		Name: alpha
 		Filename: alpha.pal
+		AllowModifiers: false
 	PaletteFromRGBA@shadow:
 		Name: shadow
 		R: 0
@@ -107,6 +108,10 @@
 	PaletteFromPlayerPaletteWithAlpha@cloak:
 		BaseName: cloak
 		BasePalette: player
+		Alpha: 0.55
+	PaletteFromPaletteWithAlpha@terrainalpha:
+		BasePalette: terraindecoration
+		Name: terrainalpha
 		Alpha: 0.55
 	PlayerHighlightPalette:
 	MenuPaletteEffect:

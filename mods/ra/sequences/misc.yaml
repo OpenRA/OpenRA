@@ -211,7 +211,7 @@ litning:
 		ZOffset: 1023
 
 fb1:
-	idle: 
+	idle:
 		Length: *
 		ZOffset: 1023
 
@@ -469,6 +469,12 @@ gpsdot:
 		Start: 5
 	Structure:
 		Start: 6
+	Oil:
+		Start: 7
+	Hospital:
+		Start: 8
+	Biohazard:
+		Start: 9
 
 icon:
 	abomb: atomicon

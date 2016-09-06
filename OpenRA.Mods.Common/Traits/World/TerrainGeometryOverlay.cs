@@ -20,14 +20,14 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Renders a debug overlay showing the terrain cells. Attach this to the world actor.")]
 	public class TerrainGeometryOverlayInfo : TraitInfo<TerrainGeometryOverlay> { }
 
-	public class TerrainGeometryOverlay : IPostRender, IWorldLoaded, IChatCommand
+	public class TerrainGeometryOverlay : IRenderAboveWorld, IWorldLoaded, IChatCommand
 	{
 		const string CommandName = "terrainoverlay";
 		const string CommandDesc = "Toggles the terrain geometry overlay";
 
 		public bool Enabled;
 
-		public void WorldLoaded(World w, WorldRenderer wr)
+		void IWorldLoaded.WorldLoaded(World w, WorldRenderer wr)
 		{
 			var console = w.WorldActor.TraitOrDefault<ChatCommands>();
 			var help = w.WorldActor.TraitOrDefault<HelpCommand>();
@@ -39,13 +39,13 @@ namespace OpenRA.Mods.Common.Traits
 			help.RegisterHelp(CommandName, CommandDesc);
 		}
 
-		public void InvokeCommand(string name, string arg)
+		void IChatCommand.InvokeCommand(string name, string arg)
 		{
 			if (name == CommandName)
 				Enabled ^= true;
 		}
 
-		public void RenderAfterWorld(WorldRenderer wr, Actor self)
+		void IRenderAboveWorld.RenderAboveWorld(Actor self, WorldRenderer wr)
 		{
 			if (!Enabled)
 				return;
@@ -69,7 +69,7 @@ namespace OpenRA.Mods.Common.Traits
 				var corners = map.Grid.CellCorners[ramp];
 				var color = corners.Select(c => colors[height + c.Z / 512]).ToArray();
 				var pos = map.CenterOfCell(uv.ToCPos(map));
-				var screen = corners.Select(c => wr.ScreenPxPosition(pos + c).ToFloat2()).ToArray();
+				var screen = corners.Select(c => wr.Screen3DPxPosition(pos + c)).ToArray();
 				var width = (uv == mouseCell ? 3 : 1) / wr.Viewport.Zoom;
 
 				// Colors change between points, so render separately
@@ -85,7 +85,7 @@ namespace OpenRA.Mods.Common.Traits
 			foreach (var puv in map.ProjectedCellsCovering(mouseCell))
 			{
 				var pos = map.CenterOfCell(((MPos)puv).ToCPos(map));
-				var screen = projectedCorners.Select(c => wr.ScreenPxPosition(pos + c - new WVec(0, 0, pos.Z)).ToFloat2()).ToArray();
+				var screen = projectedCorners.Select(c => wr.Screen3DPxPosition(pos + c - new WVec(0, 0, pos.Z))).ToArray();
 				for (var i = 0; i < 4; i++)
 				{
 					var j = (i + 1) % 4;

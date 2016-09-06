@@ -54,7 +54,9 @@ namespace OpenRA.Mods.Common.Widgets
 			if (IsValidDragbox)
 			{
 				// Render actors in the dragbox
-				Game.Renderer.WorldRgbaColorRenderer.DrawRect(dragStart, mousePos,
+				var a = new float3(dragStart.X, dragStart.Y, dragStart.Y);
+				var b = new float3(mousePos.X, mousePos.Y, mousePos.Y);
+				Game.Renderer.WorldRgbaColorRenderer.DrawRect(a, b,
 					1 / worldRenderer.Viewport.Zoom, Color.White);
 				foreach (var u in SelectActorsInBoxWithDeadzone(World, dragStart, mousePos))
 					DrawRollover(u);

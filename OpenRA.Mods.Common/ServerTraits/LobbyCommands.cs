@@ -126,7 +126,7 @@ namespace OpenRA.Mods.Common.Server
 						if (!server.LobbyInfo.GlobalSettings.EnableSingleplayer &&
 							server.LobbyInfo.Clients.Where(c => c.Bot == null && c.Slot != null).Count() == 1)
 						{
-							server.SendOrderTo(conn, "Message", "This server requires at least two human players to start match.");
+							server.SendOrderTo(conn, "Message", server.TwoHumansRequiredText);
 							return true;
 						}
 
@@ -404,7 +404,7 @@ namespace OpenRA.Mods.Common.Server
 								server.SendMessage("This map contains custom rules. Game experience may change.");
 
 							if (!server.LobbyInfo.GlobalSettings.EnableSingleplayer)
-								server.SendMessage("This server requires at least two human players to start match.");
+								server.SendMessage(server.TwoHumansRequiredText);
 							else if (server.Map.Players.Players.Where(p => p.Value.Playable).All(p => !p.Value.AllowBots))
 								server.SendMessage("Bots have been disabled on this map.");
 						};

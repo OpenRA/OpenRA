@@ -5,7 +5,9 @@ Metrics:
 	ButtonTextColor: FFFFFF
 	ButtonTextColorDisabled: 808080
 	ButtonTextContrast: false
-	ButtonTextContrastColor: 000000
+	ButtonTextShadow: false
+	ButtonTextContrastColorDark: 000000
+	ButtonTextContrastColorLight: 7F7F7F
 	ButtonBaseLine: 0
 	CheckboxPressedState: false
 	HotkeyFont: Regular
@@ -18,6 +20,8 @@ Metrics:
 	TextFont: Regular
 	TextColor: FFFFFF
 	TextContrast: false
-	TextContrastColor: 000000
+	TextShadow: false
+	TextContrastColorDark: 000000
+	TextContrastColorLight: 7F7F7F
 	ColorPickerRemapIndices: 255, 254, 253, 252, 251, 250, 249, 248, 247, 246, 245, 244, 243, 242, 241, 240
 	ColorPickerActorType: ^carryall.colorpicker

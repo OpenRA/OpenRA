@@ -17,22 +17,22 @@ namespace OpenRA.Mods.Common.UtilityCommands
 {
 	class CheckCodeStyle : IUtilityCommand
 	{
-		public string Name { get { return "--check-code-style"; } }
+		string IUtilityCommand.Name { get { return "--check-code-style"; } }
 		int violationCount;
 
-		public bool ValidateArguments(string[] args)
+		bool IUtilityCommand.ValidateArguments(string[] args)
 		{
 			return args.Length >= 2;
 		}
 
 		[Desc("DIRECTORY", "Check the *.cs source code files in a directory for code style violations.")]
-		public void Run(ModData modData, string[] args)
+		void IUtilityCommand.Run(Utility utility, string[] args)
 		{
 			var relativePath = args[1];
 			var projectPath = Path.GetFullPath(relativePath);
 
 			// HACK: The engine code assumes that Game.modData is set.
-			Game.ModData = modData;
+			Game.ModData = utility.ModData;
 
 			var console = new StyleCopConsole(null, false, null, null, true);
 			var project = new CodeProject(0, projectPath, new Configuration(null));

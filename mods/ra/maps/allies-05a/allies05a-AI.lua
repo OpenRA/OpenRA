@@ -251,25 +251,28 @@ ProduceAircraft = function()
 			Trigger.AfterDelay(DateTime.Minutes(1), ProduceAircraft)
 		end
 
-		local target = nil
-		Trigger.OnIdle(yak, function()
-			if not target or target.IsDead or (not target.IsInWorld) then
+		TargetAndAttack(yak)
+	end)
+end
 
-				local enemies = Utils.Where(Map.ActorsInWorld, function(self) return self.Owner == greece and self.HasProperty("Health") end)
-				if #enemies > 0 then
-					target = Utils.Random(enemies)
-				else
-					yak.Wait(DateTime.Seconds(5))
-				end
-			end
+TargetAndAttack = function(yak, target)
+	if not target or target.IsDead or (not target.IsInWorld) then
+		local enemies = Utils.Where(Map.ActorsInWorld, function(self) return self.Owner == greece and self.HasProperty("Health") end)
+		if #enemies > 0 then
+			target = Utils.Random(enemies)
+		else
+			yak.Wait(DateTime.Seconds(5))
+		end
+	end
 
-			if target and yak.AmmoCount() > 0 then
-				yak.Attack(target)
-			else
-				yak.ReturnToBase()
-				yak.Resupply()
-			end
-		end)
+	if target and yak.AmmoCount() > 0 then
+		yak.Attack(target)
+	else
+		yak.ReturnToBase()
+	end
+
+	yak.CallFunc(function()
+		TargetAndAttack(yak, target)
 	end)
 end
 

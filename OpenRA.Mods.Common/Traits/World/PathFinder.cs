@@ -115,10 +115,6 @@ namespace OpenRA.Mods.Common.Traits
 
 		public List<CPos> FindPath(IPathSearch search)
 		{
-			var dbg = world.WorldActor.TraitOrDefault<PathfinderDebugOverlay>();
-			if (dbg != null && dbg.Visible)
-				search.Debug = true;
-
 			List<CPos> path = null;
 
 			while (search.CanExpand)
@@ -130,9 +126,6 @@ namespace OpenRA.Mods.Common.Traits
 					break;
 				}
 			}
-
-			if (dbg != null && dbg.Visible)
-				dbg.AddLayer(search.Considered, search.MaxCost, search.Owner);
 
 			search.Graph.Dispose();
 
@@ -148,13 +141,6 @@ namespace OpenRA.Mods.Common.Traits
 		public List<CPos> FindBidiPath(IPathSearch fromSrc, IPathSearch fromDest)
 		{
 			List<CPos> path = null;
-
-			var dbg = world.WorldActor.TraitOrDefault<PathfinderDebugOverlay>();
-			if (dbg != null && dbg.Visible)
-			{
-				fromSrc.Debug = true;
-				fromDest.Debug = true;
-			}
 
 			while (fromSrc.CanExpand && fromDest.CanExpand)
 			{
@@ -177,12 +163,6 @@ namespace OpenRA.Mods.Common.Traits
 					path = MakeBidiPath(fromSrc, fromDest, q);
 					break;
 				}
-			}
-
-			if (dbg != null && dbg.Visible)
-			{
-				dbg.AddLayer(fromSrc.Considered, fromSrc.MaxCost, fromSrc.Owner);
-				dbg.AddLayer(fromDest.Considered, fromDest.MaxCost, fromDest.Owner);
 			}
 
 			fromSrc.Graph.Dispose();

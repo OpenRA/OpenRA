@@ -13,6 +13,7 @@ World:
 		InitialSmudges:
 			37,24: sc6,0
 			36,18: sc6,0
+
 Player:
 	EnemyWatcher:
 	PlayerResources:
