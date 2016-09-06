@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using OpenRA.Activities;
 using OpenRA.Traits;
 
@@ -39,6 +40,11 @@ namespace OpenRA.Mods.Common.Activities
 			facing.Facing = Util.TickFacing(facing.Facing, desiredFacing, facing.TurnSpeed);
 
 			return this;
+		}
+
+		public override IEnumerable<Target> GetTargets(Actor self)
+		{
+			return NextActivity.GetTargets(self);
 		}
 	}
 }
