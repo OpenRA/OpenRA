@@ -31,17 +31,25 @@ namespace OpenRA.Mods.Cnc.Traits
 
 	class ProductionAirdrop : Production
 	{
+		readonly ProductionAirdropInfo info;
 		public ProductionAirdrop(ActorInitializer init, ProductionAirdropInfo info)
-			: base(init, info) { }
+			: base(init, info)
+		{
+			this.info = info;
+		}
 
 		public override bool Produce(Actor self, ActorInfo producee, string factionVariant)
 		{
 			var owner = self.Owner;
+			var aircraftInfo = self.World.Map.Rules.Actors[info.ActorType].TraitInfo<AircraftInfo>();
+
+			// WDist required to take off or land
+			var landDistance = aircraftInfo.CruiseAltitude.Length * 1024 / aircraftInfo.MaximumPitch.Tan();
 
 			// Start a fixed distance away: the width of the map.
 			// This makes the production timing independent of spawnpoint
 			var startPos = self.Location + new CVec(owner.World.Map.Bounds.Width, 0);
-			var endPos = new CPos(owner.World.Map.Bounds.Left - 5, self.Location.Y);
+			var endPos = new CPos(owner.World.Map.Bounds.Left - 2 * landDistance / 1024, self.Location.Y);
 
 			// Assume a single exit point for simplicity
 			var exit = self.Info.TraitInfos<ExitInfo>().First();
@@ -49,23 +57,19 @@ namespace OpenRA.Mods.Cnc.Traits
 			foreach (var tower in self.TraitsImplementing<INotifyDelivery>())
 				tower.IncomingDelivery(self);
 
-			var info = (ProductionAirdropInfo)Info;
-			var actorType = info.ActorType;
-
 			owner.World.AddFrameEndTask(w =>
 			{
 				if (!self.IsInWorld || self.IsDead)
 					return;
 
-				var altitude = self.World.Map.Rules.Actors[actorType].TraitInfo<AircraftInfo>().CruiseAltitude;
-				var actor = w.CreateActor(actorType, new TypeDictionary
+				var actor = w.CreateActor(info.ActorType, new TypeDictionary
 				{
-					new CenterPositionInit(w.Map.CenterOfCell(startPos) + new WVec(WDist.Zero, WDist.Zero, altitude)),
+					new CenterPositionInit(w.Map.CenterOfCell(startPos) + new WVec(WDist.Zero, WDist.Zero, aircraftInfo.CruiseAltitude)),
 					new OwnerInit(owner),
 					new FacingInit(64)
 				});
 
-				actor.QueueActivity(new Fly(actor, Target.FromCell(w, self.Location + new CVec(12, 0))));
+				actor.QueueActivity(new Fly(actor, Target.FromPos(self.CenterPosition + new WVec(landDistance, 0, 0))));
 				actor.QueueActivity(new Land(actor, Target.FromActor(self)));
 				actor.QueueActivity(new CallFunc(() =>
 				{

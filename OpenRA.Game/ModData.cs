@@ -33,7 +33,7 @@ namespace OpenRA
 		public ILoadScreen LoadScreen { get; private set; }
 		public VoxelLoader VoxelLoader { get; private set; }
 		public CursorProvider CursorProvider { get; private set; }
-		public FS ModFiles = new FS();
+		public FS ModFiles;
 		public IReadOnlyFileSystem DefaultFileSystem { get { return ModFiles; } }
 
 		readonly Lazy<Ruleset> defaultRules;
@@ -45,10 +45,14 @@ namespace OpenRA
 		readonly Lazy<IReadOnlyDictionary<string, SequenceProvider>> defaultSequences;
 		public IReadOnlyDictionary<string, SequenceProvider> DefaultSequences { get { return defaultSequences.Value; } }
 
-		public ModData(string mod, bool useLoadScreen = false)
+		public ModData(Manifest mod, InstalledMods mods, bool useLoadScreen = false)
 		{
 			Languages = new string[0];
-			Manifest = new Manifest(mod);
+
+			ModFiles = new FS(mods);
+
+			// Take a local copy of the manifest
+			Manifest = new Manifest(mod.Id, mod.Package);
 			ModFiles.LoadFromManifest(Manifest);
 
 			ObjectCreator = new ObjectCreator(Manifest, ModFiles);
@@ -220,6 +224,7 @@ namespace OpenRA
 	{
 		void Init(ModData m, Dictionary<string, string> info);
 		void Display();
+		bool RequiredContentIsInstalled();
 		void StartGame(Arguments args);
 	}
 }

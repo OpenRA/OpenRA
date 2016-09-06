@@ -280,7 +280,7 @@ namespace OpenRA.Traits
 	public interface IPips { IEnumerable<PipType> GetPips(Actor self); }
 
 	[RequireExplicitImplementation]
-	public interface ISelectionBar { float GetValue(); Color GetColor(); }
+	public interface ISelectionBar { float GetValue(); Color GetColor(); bool DisplayWhenEmpty { get; } }
 
 	public interface IPositionableInfo : ITraitInfoInterface { }
 	public interface IPositionable : IOccupySpace
@@ -374,11 +374,10 @@ namespace OpenRA.Traits
 		string SequencePrefix { get; }
 	}
 
-	public interface IPostRender { void RenderAfterWorld(WorldRenderer wr, Actor self); }
-
-	public interface IRenderShroud { void RenderShroud(WorldRenderer wr, Shroud shroud); }
-
-	public interface IPostRenderSelection { IEnumerable<IRenderable> RenderAfterWorld(WorldRenderer wr); }
+	public interface IRenderAboveWorld { void RenderAboveWorld(Actor self, WorldRenderer wr); }
+	public interface IRenderShroud { void RenderShroud(Shroud shroud, WorldRenderer wr); }
+	public interface IRenderAboveShroud { IEnumerable<IRenderable> RenderAboveShroud(Actor self, WorldRenderer wr); }
+	public interface IRenderAboveShroudWhenSelected { IEnumerable<IRenderable> RenderAboveShroud(Actor self, WorldRenderer wr); }
 
 	public interface ITargetableInfo : ITraitInfoInterface
 	{

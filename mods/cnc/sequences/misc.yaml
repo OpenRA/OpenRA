@@ -73,7 +73,7 @@ smoke_m:
 		ZOffset: 512
 
 laserfire:
-	idle:veh-hit3
+	idle: veh-hit3
 		Length: *
 		ZOffset: 511
 
@@ -238,6 +238,7 @@ camera:
 clock:
 	idle: hclock
 		Length: *
+
 pips:
 	pip-empty:
 	pip-green:

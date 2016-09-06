@@ -24,7 +24,7 @@
 	ResourceType@Tiberium:
 		ResourceType: 1
 		Palette: greentiberium
-		Variants: tib01, tib02, tib03, tib04, tib05, tib06, tib07, tib08, tib09, tib10, tib11, tib12, tib13, tib14, tib15, tib16, tib17, tib18, tib19, tib20
+		Variants: tib01, tib02, tib03, tib04, tib05, tib06, tib07, tib08, tib09, tib10, tib11, tib12
 		MaxDensity: 12
 		ValuePerUnit: 50
 		Name: Tiberium
@@ -35,7 +35,7 @@
 	ResourceType@BlueTiberium:
 		ResourceType: 2
 		Palette: bluetiberium
-		Variants: tib01, tib02, tib03, tib04, tib05, tib06, tib07, tib08, tib09, tib10, tib11, tib12, tib13, tib14, tib15, tib16, tib17, tib18, tib19, tib20
+		Variants: tib01, tib02, tib03, tib04, tib05, tib06, tib07, tib08, tib09, tib10, tib11, tib12
 		MaxDensity: 12
 		ValuePerUnit: 100
 		Name: BlueTiberium
@@ -97,7 +97,6 @@ World:
 	ResourceLayer:
 	CustomTerrainDebugOverlay:
 	ResourceClaimLayer:
-	PathfinderDebugOverlay:
 	WarheadDebugOverlay:
 	MapCreeps:
 	SpawnMapActors:

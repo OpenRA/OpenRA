@@ -55,16 +55,16 @@ namespace OpenRA.Mods.Common.Graphics
 			{
 				var delta = length * width.Length / (2 * vecLength);
 				var corner = new WVec(-delta.Y, delta.X, delta.Z);
-				var a = wr.ScreenPosition(pos - corner);
-				var b = wr.ScreenPosition(pos + corner);
-				var c = wr.ScreenPosition(pos + corner + length);
-				var d = wr.ScreenPosition(pos - corner + length);
+				var a = wr.Screen3DPosition(pos - corner);
+				var b = wr.Screen3DPosition(pos + corner);
+				var c = wr.Screen3DPosition(pos + corner + length);
+				var d = wr.Screen3DPosition(pos - corner + length);
 				Game.Renderer.WorldRgbaColorRenderer.FillRect(a, b, c, d, color);
 			}
 			else
 			{
-				var start = wr.ScreenPosition(pos);
-				var end = wr.ScreenPosition(pos + length);
+				var start = wr.Screen3DPosition(pos);
+				var end = wr.Screen3DPosition(pos + length);
 				var screenWidth = wr.ScreenVector(new WVec(width, WDist.Zero, WDist.Zero))[0];
 				Game.Renderer.WorldRgbaColorRenderer.DrawLine(start, end, screenWidth, color);
 			}

@@ -59,8 +59,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			replayList = panel.Get<ScrollPanelWidget>("REPLAY_LIST");
 			var template = panel.Get<ScrollItemWidget>("REPLAY_TEMPLATE");
 
-			var mod = modData.Manifest.Mod;
-			var dir = Platform.ResolvePath("^", "Replays", mod.Id, mod.Version);
+			var mod = modData.Manifest;
+			var dir = Platform.ResolvePath("^", "Replays", mod.Id, mod.Metadata.Version);
 
 			if (Directory.Exists(dir))
 				ThreadPool.QueueUserWorkItem(_ => LoadReplays(dir, template));

@@ -125,6 +125,37 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					playerPanel.AddChild(item);
 				}
 			}
+
+			var spectators = orderManager.LobbyInfo.Clients.Where(c => c.IsObserver).ToList();
+			if (spectators.Any())
+			{
+				var spectatorHeader = ScrollItemWidget.Setup(teamTemplate, () => true, () => { });
+				spectatorHeader.Get<LabelWidget>("TEAM").GetText = () => "Spectators";
+
+				playerPanel.AddChild(spectatorHeader);
+
+				foreach (var client in spectators)
+				{
+					var item = playerTemplate.Clone();
+					LobbyUtils.SetupClientWidget(item, client, orderManager, client != null && client.Bot == null);
+					var nameLabel = item.Get<LabelWidget>("NAME");
+					var nameFont = Game.Renderer.Fonts[nameLabel.Font];
+
+					var suffixLength = new CachedTransform<string, int>(s => nameFont.Measure(s).X);
+					var name = new CachedTransform<Pair<string, int>, string>(c =>
+						WidgetUtils.TruncateText(c.First, nameLabel.Bounds.Width - c.Second, nameFont));
+
+					nameLabel.GetText = () =>
+					{
+						var suffix = client.State == Session.ClientState.Disconnected ? " (Gone)" : "";
+						var sl = suffixLength.Update(suffix);
+						return name.Update(Pair.New(client.Name, sl)) + suffix;
+					};
+
+					item.Get<ImageWidget>("FACTIONFLAG").IsVisible = () => false;
+					playerPanel.AddChild(item);
+				}
+			}
 		}
 	}
 }

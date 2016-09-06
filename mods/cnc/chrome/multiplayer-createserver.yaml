@@ -92,6 +92,24 @@ Container@MULTIPLAYER_CREATESERVER_PANEL:
 							Height: 20
 							Font: Regular
 							Text: Automatic port forwarding
+						Label@UPNP_NOTICE:
+							X: 130
+							Y: 180
+							Width: 200
+							Height: 25
+							Font: Tiny
+							Align: Left
+							WordWrap: True
+							Text: Requires Network Discovery (UPnP). Enable in Settings - Advanced.
+						Label@UPNP_UNSUPPORTED_NOTICE:
+							X: 130
+							Y: 180
+							Width: 220
+							Height: 25
+							Font: Tiny
+							Align: Left
+							WordWrap: True
+							Text: Your router does not seem to support UPnP. Please consult your router's manual.
 		Container@SIDEBAR:
 			X: PARENT_RIGHT-WIDTH
 			Y: 30

@@ -32,7 +32,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (mpe != null)
 				mpe.Fade(mpe.Info.MenuEffect);
 
-			menu.Get<LabelWidget>("VERSION_LABEL").Text = modData.Manifest.Mod.Version;
+			menu.Get<LabelWidget>("VERSION_LABEL").Text = modData.Manifest.Metadata.Version;
 
 			var hideMenu = false;
 			menu.Get("MENU_BUTTONS").IsVisible = () => !hideMenu;

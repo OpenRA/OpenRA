@@ -52,7 +52,7 @@ namespace OpenRA.Mods.Common.Server
 			lastPing = Game.RunTime;
 			isBusy = true;
 
-			var mod = server.ModData.Manifest.Mod;
+			var mod = server.ModData.Manifest;
 
 			// important to grab these on the main server thread, not in the worker we're about to spawn -- they may be modified
 			// by the main thread as clients join and leave.
@@ -79,7 +79,7 @@ namespace OpenRA.Mods.Common.Server
 							(int)server.State,
 							numPlayers,
 							numBots,
-							"{0}@{1}".F(mod.Id, mod.Version),
+							"{0}@{1}".F(mod.Id, mod.Metadata.Version),
 							server.LobbyInfo.GlobalSettings.Map,
 							numSlots,
 							numSpectators,

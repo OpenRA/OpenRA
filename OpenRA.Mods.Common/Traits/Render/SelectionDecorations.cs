@@ -36,33 +36,28 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		public readonly string Image = "pips";
 
-		[Desc("Sprite sequence used to render the control group 0-9 numbers.")]
-		[SequenceReference("Image")] public readonly string GroupSequence = "groups";
-
 		public object Create(ActorInitializer init) { return new SelectionDecorations(init.Self, this); }
 
 		public int[] SelectionBoxBounds { get { return VisualBounds; } }
 	}
 
-	public class SelectionDecorations : IPostRenderSelection, ITick
+	public class SelectionDecorations : IRenderAboveShroud, ITick
 	{
 		// depends on the order of pips in TraitsInterfaces.cs!
 		static readonly string[] PipStrings = { "pip-empty", "pip-green", "pip-yellow", "pip-red", "pip-gray", "pip-blue", "pip-ammo", "pip-ammoempty" };
 
 		public readonly SelectionDecorationsInfo Info;
 
-		readonly Actor self;
 		readonly Animation pipImages;
 
 		public SelectionDecorations(Actor self, SelectionDecorationsInfo info)
 		{
-			this.self = self;
 			Info = info;
 
 			pipImages = new Animation(self.World, Info.Image);
 		}
 
-		IEnumerable<WPos> ActivityTargetPath()
+		IEnumerable<WPos> ActivityTargetPath(Actor self)
 		{
 			if (!self.IsInWorld || self.IsDead)
 				yield break;
@@ -78,49 +73,51 @@ namespace OpenRA.Mods.Common.Traits.Render
 			}
 		}
 
-		public IEnumerable<IRenderable> RenderAfterWorld(WorldRenderer wr)
+		IEnumerable<IRenderable> IRenderAboveShroud.RenderAboveShroud(Actor self, WorldRenderer wr)
 		{
 			if (self.World.FogObscures(self))
 				yield break;
 
-			if (Info.RenderSelectionBox)
+			var selected = self.World.Selection.Contains(self);
+			var regularWorld = self.World.Type == WorldType.Regular;
+			var statusBars = Game.Settings.Game.StatusBars;
+
+			// Health bars are shown when:
+			//  * actor is selected
+			//  * status bar preference is set to "always show"
+			//  * status bar preference is set to "when damaged" and actor is damaged
+			var displayHealth = selected || (regularWorld && statusBars == StatusBarsType.AlwaysShow)
+				|| (regularWorld && statusBars == StatusBarsType.DamageShow && self.GetDamageState() != DamageState.Undamaged);
+
+			// Extra bars are shown when:
+			//  * actor is selected
+			//  * status bar preference is set to "always show"
+			//  * status bar preference is set to "when damaged"
+			var displayExtra = selected || (regularWorld && statusBars != StatusBarsType.Standard);
+
+			if (Info.RenderSelectionBox && selected)
 				yield return new SelectionBoxRenderable(self, Info.SelectionBoxColor);
 
-			if (Info.RenderSelectionBars)
-				yield return new SelectionBarsRenderable(self, true, true);
+			if (Info.RenderSelectionBars && (displayHealth || displayExtra))
+				yield return new SelectionBarsRenderable(self, displayHealth, displayExtra);
 
-			if (!self.Owner.IsAlliedWith(wr.World.RenderPlayer))
+			// Target lines and pips are always only displayed for selected allied actors
+			if (!selected || !self.Owner.IsAlliedWith(wr.World.RenderPlayer))
 				yield break;
 
 			if (self.World.LocalPlayer != null && self.World.LocalPlayer.PlayerActor.Trait<DeveloperMode>().PathDebug)
-				yield return new TargetLineRenderable(ActivityTargetPath(), Color.Green);
+				yield return new TargetLineRenderable(ActivityTargetPath(self), Color.Green);
 
 			var b = self.VisualBounds;
 			var pos = wr.ScreenPxPosition(self.CenterPosition);
-			var tl = wr.Viewport.WorldToViewPx(pos + new int2(b.Left, b.Top));
 			var bl = wr.Viewport.WorldToViewPx(pos + new int2(b.Left, b.Bottom));
 			var pal = wr.Palette(Info.Palette);
 
-			foreach (var r in DrawControlGroup(wr, self, tl, pal))
-				yield return r;
-
-			foreach (var r in DrawPips(wr, self, bl, pal))
+			foreach (var r in DrawPips(self, wr, bl, pal))
 				yield return r;
 		}
 
-		IEnumerable<IRenderable> DrawControlGroup(WorldRenderer wr, Actor self, int2 basePosition, PaletteReference palette)
-		{
-			var group = self.World.Selection.GetControlGroupForActor(self);
-			if (group == null)
-				yield break;
-
-			pipImages.PlayFetchIndex(Info.GroupSequence, () => (int)group);
-
-			var pos = basePosition - (0.5f * pipImages.Image.Size.XY).ToInt2() + new int2(9, 5);
-			yield return new UISpriteRenderable(pipImages.Image, self.CenterPosition, pos, 0, palette, 1f);
-		}
-
-		IEnumerable<IRenderable> DrawPips(WorldRenderer wr, Actor self, int2 basePosition, PaletteReference palette)
+		IEnumerable<IRenderable> DrawPips(Actor self, WorldRenderer wr, int2 basePosition, PaletteReference palette)
 		{
 			var pipSources = self.TraitsImplementing<IPips>();
 			if (!pipSources.Any())

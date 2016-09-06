@@ -20,23 +20,23 @@ namespace OpenRA.Mods.Common.UtilityCommands
 {
 	class ExtractTraitDocsCommand : IUtilityCommand
 	{
-		public string Name { get { return "--docs"; } }
+		string IUtilityCommand.Name { get { return "--docs"; } }
 
-		public bool ValidateArguments(string[] args)
+		bool IUtilityCommand.ValidateArguments(string[] args)
 		{
 			return true;
 		}
 
 		[Desc("Generate trait documentation in MarkDown format.")]
-		public void Run(ModData modData, string[] args)
+		void IUtilityCommand.Run(Utility utility, string[] args)
 		{
 			// HACK: The engine code assumes that Game.modData is set.
-			Game.ModData = modData;
+			Game.ModData = utility.ModData;
 
 			Console.WriteLine(
 				"This documentation is aimed at modders. It displays all traits with default values and developer commentary. " +
 				"Please do not edit it directly, but add new `[Desc(\"String\")]` tags to the source code. This file has been " +
-				"automatically generated for version {0} of OpenRA.", Game.ModData.Manifest.Mod.Version);
+				"automatically generated for version {0} of OpenRA.", utility.ModData.Manifest.Metadata.Version);
 			Console.WriteLine();
 
 			var toc = new StringBuilder();

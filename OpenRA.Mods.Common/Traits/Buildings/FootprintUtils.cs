@@ -50,6 +50,13 @@ namespace OpenRA.Mods.Common.Traits
 				yield return tile + position;
 		}
 
+		public static IEnumerable<CPos> PathableTiles(string name, BuildingInfo buildingInfo, CPos position)
+		{
+			var footprint = buildingInfo.Footprint.Where(x => !char.IsWhiteSpace(x)).ToArray();
+			foreach (var tile in TilesWhere(name, buildingInfo.Dimensions, footprint, a => a == '_'))
+				yield return tile + position;
+		}
+
 		static IEnumerable<CVec> TilesWhere(string name, CVec dim, char[] footprint, Func<char, bool> cond)
 		{
 			if (footprint.Length != dim.X * dim.Y)

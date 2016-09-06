@@ -17,7 +17,7 @@ namespace OpenRA.Mods.Common.Traits
 	public class ResourceStorageWarningInfo : ITraitInfo, Requires<PlayerResourcesInfo>
 	{
 		[Desc("Interval, in seconds, at which to check if more storage is needed.")]
-		public readonly int AdviceInterval = 10;
+		public readonly int AdviceInterval = 20;
 
 		[Desc("The percentage threshold above which a warning is played.")]
 		public readonly int Threshold = 80;

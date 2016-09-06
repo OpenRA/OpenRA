@@ -31,6 +31,8 @@ namespace OpenRA.Mods.Common.LoadScreens
 
 		public override void Init(ModData modData, Dictionary<string, string> info)
 		{
+			base.Init(modData, info);
+
 			// Avoid standard loading mechanisms so we
 			// can display the loadscreen as early as possible
 			r = Game.Renderer;

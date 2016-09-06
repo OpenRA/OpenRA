@@ -171,7 +171,7 @@ namespace OpenRA
 		public float ViewportEdgeScrollStep = 10f;
 		public float UIScrollSpeed = 50f;
 		public int SelectionDeadzone = 24;
-		public int JoystickScrollDeadzone = 8;
+		public int MouseScrollDeadzone = 8;
 
 		public bool UseClassicMouseStyle = false;
 		public StatusBarsType StatusBars = StatusBarsType.Standard;

@@ -216,7 +216,7 @@ Trigger.OnEnteredFootprint(ReinforcementsTrigger, function(a, id)
 
 		Trigger.AfterDelay(DateTime.Minutes(2), function()
 			Flare.Destroy()
-			FlareCamera.Kill()
+			FlareCamera.Destroy()
 		end)
 	end
 end)

@@ -25,7 +25,6 @@ FACT:
 		Type: Building.GDI
 		Factions: gdi
 		Group: Building
-		BuildSpeed: 40
 		LowPowerSlowdown: 2
 		QueuedAudio: Building
 		ReadyAudio: ConstructionComplete
@@ -33,7 +32,6 @@ FACT:
 		Type: Building.Nod
 		Factions: nod
 		Group: Building
-		BuildSpeed: 40
 		LowPowerSlowdown: 2
 		QueuedAudio: Building
 		ReadyAudio: ConstructionComplete
@@ -41,7 +39,6 @@ FACT:
 		Type: Defence.GDI
 		Factions: gdi
 		Group: Defence
-		BuildSpeed: 40
 		LowPowerSlowdown: 3
 		QueuedAudio: Building
 		ReadyAudio: ConstructionComplete
@@ -49,7 +46,6 @@ FACT:
 		Type: Defence.Nod
 		Factions: nod
 		Group: Defence
-		BuildSpeed: 40
 		LowPowerSlowdown: 3
 		QueuedAudio: Building
 		ReadyAudio: ConstructionComplete
@@ -260,7 +256,6 @@ PYLE:
 		Type: Infantry.GDI
 		Group: Infantry
 		RequireOwner: false
-		BuildSpeed: 40
 		LowPowerSlowdown: 3
 	ProductionBar:
 	Power:
@@ -301,7 +296,6 @@ HAND:
 		Type: Infantry.Nod
 		Group: Infantry
 		RequireOwner: false
-		BuildSpeed: 40
 		LowPowerSlowdown: 3
 	ProductionBar:
 	Power:
@@ -347,7 +341,6 @@ AFLD:
 		Type: Vehicle.Nod
 		Group: Vehicle
 		RequireOwner: false
-		BuildSpeed: 40
 		LowPowerSlowdown: 3
 		ReadyAudio:
 	ProductionBar:
@@ -394,7 +387,6 @@ WEAP:
 		Type: Vehicle.GDI
 		RequireOwner: false
 		Group: Vehicle
-		BuildSpeed: 40
 		LowPowerSlowdown: 3
 	ProductionBar:
 	Power:
@@ -432,13 +424,11 @@ HPAD:
 		Type: Aircraft.GDI
 		Factions: gdi
 		Group: Aircraft
-		BuildSpeed: 40
 		LowPowerSlowdown: 3
 	ProductionQueue@Nod:
 		Type: Aircraft.Nod
 		Factions: nod
 		Group: Aircraft
-		BuildSpeed: 40
 		LowPowerSlowdown: 3
 	ProductionBar@GDI:
 		ProductionType: Aircraft.GDI
@@ -652,8 +642,6 @@ GUN:
 	Inherits: ^Defense
 	Valued:
 		Cost: 600
-	CustomBuildTimeValue:
-		Value: 1440
 	Tooltip:
 		Name: Turret
 		Description: Basic Anti-Tank base defense.\n  Strong vs Tanks, vehicles\n  Weak vs Infantry
@@ -661,6 +649,8 @@ GUN:
 		BuildPaletteOrder: 45
 		Prerequisites: barracks
 		Queue: Defence.GDI, Defence.Nod
+		BuildDuration: 1440
+		BuildDurationModifier: 40
 	Building:
 	Health:
 		HP: 400
@@ -693,8 +683,6 @@ SAM:
 	Inherits: ^Defense
 	Valued:
 		Cost: 650
-	CustomBuildTimeValue:
-		Value: 1700
 	Tooltip:
 		Name: SAM Site
 		Description: Anti-Aircraft base defense.\n  Strong vs Aircraft\n  Cannot target Ground units.
@@ -702,6 +690,8 @@ SAM:
 		BuildPaletteOrder: 50
 		Prerequisites: hand
 		Queue: Defence.Nod
+		BuildDuration: 1700
+		BuildDurationModifier: 40
 	Building:
 		Footprint: xx
 		Dimensions: 2,1
@@ -735,8 +725,6 @@ OBLI:
 	Inherits: ^Defense
 	Valued:
 		Cost: 1500
-	CustomBuildTimeValue:
-		Value: 3120
 	Tooltip:
 		Name: Obelisk of Light
 		Description: Advanced base defense.\nRequires power to operate.\n  Strong vs all Ground units\n  Cannot target Aircraft
@@ -744,6 +732,8 @@ OBLI:
 		BuildPaletteOrder: 60
 		Prerequisites: tmpl, ~techlevel.high
 		Queue: Defence.Nod
+		BuildDuration: 3120
+		BuildDurationModifier: 40
 	Selectable:
 		Bounds: 24,24
 	SelectionDecorations:
@@ -777,8 +767,6 @@ GTWR:
 	Inherits: ^Defense
 	Valued:
 		Cost: 600
-	CustomBuildTimeValue:
-		Value: 1440
 	Tooltip:
 		Name: Guard Tower
 		Description: Basic defensive structure.\n  Strong vs Infantry\n  Weak vs Tanks
@@ -786,6 +774,8 @@ GTWR:
 		BuildPaletteOrder: 40
 		Prerequisites: barracks
 		Queue: Defence.GDI, Defence.Nod
+		BuildDuration: 1440
+		BuildDurationModifier: 40
 	Building:
 	Health:
 		HP: 400
@@ -812,8 +802,6 @@ ATWR:
 	Inherits: ^Defense
 	Valued:
 		Cost: 1000
-	CustomBuildTimeValue:
-		Value: 2880
 	Tooltip:
 		Name: Advanced Guard Tower
 		Description: All-purpose defensive structure.\n  Strong vs Aircraft, Tanks\n  Weak vs Infantry
@@ -821,6 +809,8 @@ ATWR:
 		BuildPaletteOrder: 60
 		Prerequisites: anyhq, ~techlevel.medium
 		Queue: Defence.GDI
+		BuildDuration: 2880
+		BuildDurationModifier: 40
 	Selectable:
 		Bounds: 24,24
 	SelectionDecorations:
@@ -904,8 +894,6 @@ BRIK:
 	Inherits: ^Wall
 	Valued:
 		Cost: 150
-	CustomBuildTimeValue:
-		Value: 500
 	CustomSellValue:
 		Value: 0
 	Tooltip:
@@ -915,6 +903,8 @@ BRIK:
 		BuildPaletteOrder: 30
 		Prerequisites: vehicleproduction
 		Queue: Defence.GDI, Defence.Nod
+		BuildDuration: 500
+		BuildDurationModifier: 40
 	Health:
 		HP: 250
 	Armor:

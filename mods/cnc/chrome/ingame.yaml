@@ -220,10 +220,12 @@ Container@OBSERVER_WIDGETS:
 					X: 40
 					Width: 60
 					Height: 25
+					Shadow: True
 				Label@NOFLAG_LABEL:
 					X: 5
 					Width: PARENT_RIGHT
 					Height: 25
+					Shadow: True
 
 Container@PLAYER_WIDGETS:
 	Children:

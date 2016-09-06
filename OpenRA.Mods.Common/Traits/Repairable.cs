@@ -149,7 +149,7 @@ namespace OpenRA.Mods.Common.Traits
 			if ((self.CenterPosition - target.CenterPosition).LengthSquared < transport.MinimumDistance.LengthSquared)
 				return;
 
-			transport.RequestTransport(targetCell, nextActivity);
+			transport.RequestTransport(self, targetCell, nextActivity);
 		}
 	}
 }

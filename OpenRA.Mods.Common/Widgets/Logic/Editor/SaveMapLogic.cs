@@ -52,23 +52,29 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var author = widget.Get<TextFieldWidget>("AUTHOR");
 			author.Text = map.Author;
 
-			// TODO: This should use a multi-selection dropdown once they exist
-			var visibilityDropdown = widget.Get<DropDownButtonWidget>("VISIBILITY_DROPDOWN");
-			{
-				var mapVisibility = new List<string>(Enum.GetNames(typeof(MapVisibility)));
-				Func<string, ScrollItemWidget, ScrollItemWidget> setupItem = (option, template) =>
-				{
-					var item = ScrollItemWidget.Setup(template,
-						() => visibilityDropdown.Text == option,
-						() => { visibilityDropdown.Text = option; });
-					item.Get<LabelWidget>("LABEL").GetText = () => option;
-					return item;
-				};
+			var visibilityPanel = Ui.LoadWidget("MAP_SAVE_VISIBILITY_PANEL", null, new WidgetArgs());
+			var visOptionTemplate = visibilityPanel.Get<CheckboxWidget>("VISIBILITY_TEMPLATE");
+			visibilityPanel.RemoveChildren();
 
-				visibilityDropdown.Text = Enum.GetName(typeof(MapVisibility), map.Visibility);
-				visibilityDropdown.OnClick = () =>
-					visibilityDropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 210, mapVisibility, setupItem);
+			foreach (MapVisibility visibilityOption in Enum.GetValues(typeof(MapVisibility)))
+			{
+				// To prevent users from breaking the game only show the 'Shellmap' option when it is already set.
+				if (visibilityOption == MapVisibility.Shellmap && !map.Visibility.HasFlag(visibilityOption))
+					continue;
+
+				var checkbox = (CheckboxWidget)visOptionTemplate.Clone();
+				checkbox.GetText = () => visibilityOption.ToString();
+				checkbox.IsChecked = () => map.Visibility.HasFlag(visibilityOption);
+				checkbox.OnClick = () => map.Visibility ^= visibilityOption;
+				visibilityPanel.AddChild(checkbox);
 			}
+
+			var visibilityDropdown = widget.Get<DropDownButtonWidget>("VISIBILITY_DROPDOWN");
+			visibilityDropdown.OnMouseDown = _ =>
+			{
+				visibilityDropdown.RemovePanel();
+				visibilityDropdown.AttachPanel(visibilityPanel);
+			};
 
 			var writableDirectories = new List<SaveDirectory>();
 			SaveDirectory selectedDirectory = null;
@@ -157,7 +163,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				map.Title = title.Text;
 				map.Author = author.Text;
-				map.Visibility = (MapVisibility)Enum.Parse(typeof(MapVisibility), visibilityDropdown.Text);
 
 				if (actorDefinitions != null)
 					map.ActorDefinitions = actorDefinitions;
@@ -165,7 +170,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				if (playerDefinitions != null)
 					map.PlayerDefinitions = playerDefinitions;
 
-				map.RequiresMod = modData.Manifest.Mod.Id;
+				map.RequiresMod = modData.Manifest.Id;
 
 				var combinedPath = Platform.ResolvePath(Path.Combine(selectedDirectory.Folder.Name, filename.Text + fileTypes[fileType].Extension));
 

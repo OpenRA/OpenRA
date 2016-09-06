@@ -73,19 +73,23 @@ namespace OpenRA.Mods.Common.Activities
 				self.QueueActivity(mobile.MoveTo(moveTo, 1));
 				self.SetTargetLine(Target.FromCell(self.World, moveTo), Color.Gray, false);
 
+				// TODO: The harvest-deliver-return sequence is a horrible mess of duplicated code and edge-cases
+				var notify = self.TraitsImplementing<INotifyHarvesterAction>();
+				foreach (var n in notify)
+					n.MovingToResources(self, moveTo, this);
+
 				var randFrames = self.World.SharedRandom.Next(100, 175);
-				return ActivityUtils.SequenceActivities(NextActivity, new Wait(randFrames), this);
+
+				// Avoid creating an activity cycle
+				var next = NextActivity;
+				NextActivity = null;
+				return ActivityUtils.SequenceActivities(next, new Wait(randFrames), this);
 			}
 			else
 			{
-				var next = this;
-
 				// Attempt to claim a resource as ours
-				if (territory != null)
-				{
-					if (!territory.ClaimResource(self, closestHarvestablePosition.Value))
-						return ActivityUtils.SequenceActivities(new Wait(25), next);
-				}
+				if (territory != null && !territory.ClaimResource(self, closestHarvestablePosition.Value))
+					return ActivityUtils.SequenceActivities(new Wait(25), this);
 
 				// If not given a direct order, assume ordered to the first resource location we find:
 				if (!harv.LastOrderLocation.HasValue)
@@ -93,12 +97,12 @@ namespace OpenRA.Mods.Common.Activities
 
 				self.SetTargetLine(Target.FromCell(self.World, closestHarvestablePosition.Value), Color.Red, false);
 
+				// TODO: The harvest-deliver-return sequence is a horrible mess of duplicated code and edge-cases
 				var notify = self.TraitsImplementing<INotifyHarvesterAction>();
-
 				foreach (var n in notify)
-					n.MovingToResources(self, closestHarvestablePosition.Value, next);
+					n.MovingToResources(self, closestHarvestablePosition.Value, this);
 
-				return ActivityUtils.SequenceActivities(mobile.MoveTo(closestHarvestablePosition.Value, 1), new HarvestResource(self), next);
+				return ActivityUtils.SequenceActivities(mobile.MoveTo(closestHarvestablePosition.Value, 1), new HarvestResource(self), this);
 			}
 		}
 

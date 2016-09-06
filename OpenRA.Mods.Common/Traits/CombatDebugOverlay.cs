@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Common.Traits
 		public object Create(ActorInitializer init) { return new CombatDebugOverlay(init.Self); }
 	}
 
-	public class CombatDebugOverlay : IPostRender, INotifyDamage, INotifyCreated
+	public class CombatDebugOverlay : IRenderAboveWorld, INotifyDamage, INotifyCreated
 	{
 		readonly DeveloperMode devMode;
 		readonly HealthInfo healthInfo;
@@ -42,12 +42,12 @@ namespace OpenRA.Mods.Common.Traits
 			devMode = localPlayer != null ? localPlayer.PlayerActor.Trait<DeveloperMode>() : null;
 		}
 
-		public void Created(Actor self)
+		void INotifyCreated.Created(Actor self)
 		{
 			allBlockers = self.TraitsImplementing<IBlocksProjectiles>().ToArray();
 		}
 
-		public void RenderAfterWorld(WorldRenderer wr, Actor self)
+		void IRenderAboveWorld.RenderAboveWorld(Actor self, WorldRenderer wr)
 		{
 			if (devMode == null || !devMode.ShowCombatGeometry)
 				return;
@@ -63,8 +63,8 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				var hc = Color.Orange;
 				var height = new WVec(0, 0, blockers.Max(b => b.BlockingHeight.Length));
-				var ha = wr.ScreenPosition(self.CenterPosition);
-				var hb = wr.ScreenPosition(self.CenterPosition + height);
+				var ha = wr.Screen3DPosition(self.CenterPosition);
+				var hb = wr.Screen3DPosition(self.CenterPosition + height);
 				wcr.DrawLine(ha, hb, iz, hc);
 				TargetLineRenderable.DrawTargetMarker(wr, hc, ha);
 				TargetLineRenderable.DrawTargetMarker(wr, hc, hb);
@@ -89,9 +89,9 @@ namespace OpenRA.Mods.Common.Traits
 					var da = coords.Value.LocalToWorld(new WVec(224, 0, 0).Rotate(WRot.FromYaw(p.Yaw + p.Cone)).Rotate(bodyOrientation));
 					var db = coords.Value.LocalToWorld(new WVec(224, 0, 0).Rotate(WRot.FromYaw(p.Yaw - p.Cone)).Rotate(bodyOrientation));
 
-					var o = wr.ScreenPosition(pos);
-					var a = wr.ScreenPosition(pos + da * 224 / da.Length);
-					var b = wr.ScreenPosition(pos + db * 224 / db.Length);
+					var o = wr.Screen3DPosition(pos);
+					var a = wr.Screen3DPosition(pos + da * 224 / da.Length);
+					var b = wr.Screen3DPosition(pos + db * 224 / db.Length);
 					wcr.DrawLine(o, a, iz, c);
 					wcr.DrawLine(o, b, iz, c);
 				}
@@ -106,15 +106,15 @@ namespace OpenRA.Mods.Common.Traits
 					var muzzle = self.CenterPosition + a.MuzzleOffset(self, b);
 					var dirOffset = new WVec(0, -224, 0).Rotate(a.MuzzleOrientation(self, b));
 
-					var sm = wr.ScreenPosition(muzzle);
-					var sd = wr.ScreenPosition(muzzle + dirOffset);
+					var sm = wr.Screen3DPosition(muzzle);
+					var sd = wr.Screen3DPosition(muzzle + dirOffset);
 					wcr.DrawLine(sm, sd, iz, c);
 					TargetLineRenderable.DrawTargetMarker(wr, c, sm);
 				}
 			}
 		}
 
-		public void Damaged(Actor self, AttackInfo e)
+		void INotifyDamage.Damaged(Actor self, AttackInfo e)
 		{
 			if (devMode == null || !devMode.ShowCombatGeometry || e.Damage.Value == 0)
 				return;

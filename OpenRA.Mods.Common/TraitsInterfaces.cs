@@ -112,9 +112,9 @@ namespace OpenRA.Mods.Common.Traits
 	public interface ICallForTransport
 	{
 		WDist MinimumDistance { get; }
-		bool WantsTransport { get; set; }
+		bool WantsTransport { get; }
 		void MovementCancelled(Actor self);
-		void RequestTransport(CPos destination, Activity afterLandActivity);
+		void RequestTransport(Actor self, CPos destination, Activity afterLandActivity);
 	}
 
 	public interface IDeathActorInitModifier

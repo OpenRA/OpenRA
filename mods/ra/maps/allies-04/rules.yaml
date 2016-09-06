@@ -1,0 +1,107 @@
+Player:
+	PlayerResources:
+		DefaultCash: 5000
+
+World:
+	LuaScript:
+		Scripts: allies04.lua, allies04-AI.lua
+	MissionData:
+		Briefing: Soviet forces are trying to retake the pass you cleared for our convoys.\n\nDon't let this happen. Hold the pass and prevent the Soviets from taking this vital area.\n\nDestroy all Soviet units and buildings in this region.
+		BriefingVideo: ally4.vqa
+		StartVideo: binoc.vqa
+		WinVideo: oildrum.vqa
+		LossVideo: bmap.vqa
+	MapOptions:
+		TechLevel: medium
+	ScriptLobbyDropdown@difficulty:
+		ID: difficulty
+		Label: Difficulty
+		Values:
+			easy: Easy
+			normal: Normal
+			hard: Hard
+		Default: easy
+
+powerproxy.paratroopers:
+	ParatroopersPower:
+		DropItems: E1,E1,E1,E2,E2
+
+V2RL:
+	Buildable:
+		Prerequisites: ~disabled
+
+2TNK:
+	Buildable:
+		Prerequisites: ~disabled
+
+3TNK:
+	Buildable:
+		Prerequisites: ~vehicles.soviet
+
+ARTY:
+	Buildable:
+		Prerequisites: ~disabled
+
+MCV:
+	Buildable:
+		Prerequisites: ~disabled
+
+TRUK:
+	Buildable:
+		Prerequisites: ~disabled
+
+SPEN:
+	Buildable:
+		Prerequisites: ~disabled
+
+SYRD:
+	Buildable:
+		Prerequisites: ~disabled
+
+APWR:
+	Buildable:
+		Prerequisites: ~disabled
+
+TSLA:
+	Buildable:
+		Prerequisites: ~disabled
+
+SAM:
+	Buildable:
+		Prerequisites: ~disabled
+
+AGUN:
+	Buildable:
+		Prerequisites: ~disabled
+
+AFLD:
+	Buildable:
+		Prerequisites: ~disabled
+
+HPAD:
+	Buildable:
+		Prerequisites: ~disabled
+
+BRIK:
+	Buildable:
+		Prerequisites: ~disabled
+
+E4:
+	Buildable:
+		Prerequisites: ~disabled
+
+E6:
+	Buildable:
+		Prerequisites: ~disabled
+
+SPY:
+	Buildable:
+		Prerequisites: ~disabled
+
+MECH:
+	Buildable:
+		Prerequisites: ~disabled
+
+HIJACKER:
+	Buildable:
+		Prerequisites: ~disabled

@@ -290,12 +290,12 @@ medic:
 		Start: 86
 		Length: 6
 		Facings: 8
-		ShadowStart: 378
+		ShadowStart: 393
 	prone-stand:
 		Start: 86
 		Facings: 8
 		Stride: 6
-		ShadowStart: 378
+		ShadowStart: 393
 	die-twirling:
 		Start: 134
 		Length: 15

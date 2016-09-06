@@ -89,7 +89,7 @@ if (!(Test-Path "windows/SDL2.dll"))
 if (!(Test-Path "Open.Nat.dll"))
 {
 	echo "Fetching Open.Nat from NuGet."
-	./nuget.exe install Open.Nat -Version 2.0.16 -ExcludeVersion
+	./nuget.exe install Open.Nat -Version 2.1.0 -ExcludeVersion
 	cp Open.Nat/lib/net45/Open.Nat.dll .
 	rmdir Open.Nat -Recurse
 }

@@ -193,8 +193,8 @@ Container@MUSIC_PANEL:
 			Height: 35
 			Text: Back
 		Label@MUTE_LABEL:
-			X: 165
-			Y: 399
+			X: 100
+			Y: 337
 			Width: 300
 			Height: 20
 			Font: Small

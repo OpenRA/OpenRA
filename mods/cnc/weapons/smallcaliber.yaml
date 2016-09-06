@@ -113,7 +113,7 @@ M16:
 			None: 100
 			Wood: 25
 			Light: 30
-			Heavy: 15
+			Heavy: 10
 		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
 	Warhead@2Eff: CreateEffect
 		Explosions: piff

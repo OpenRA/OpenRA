@@ -15,11 +15,11 @@ namespace OpenRA.Mods.Common.UtilityCommands
 {
 	class Rgba2Hex : IUtilityCommand
 	{
-		public string Name { get { return "--rgba2hex"; } }
+		string IUtilityCommand.Name { get { return "--rgba2hex"; } }
 
 		static readonly char[] Comma = new char[] { ',' };
 
-		public bool ValidateArguments(string[] args)
+		bool IUtilityCommand.ValidateArguments(string[] args)
 		{
 			if (args.Length <= 1)
 				return PrintUsage();
@@ -74,7 +74,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 		}
 
 		[Desc("Convert r,g,b[,a] triples/quads into hex colors")]
-		public void Run(ModData modData, string[] args)
+		void IUtilityCommand.Run(Utility utility, string[] args)
 		{
 			for (int i = 1; i < args.Length;)
 			{
@@ -104,11 +104,11 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 	class Argb2Hex : IUtilityCommand
 	{
-		public string Name { get { return "--argb2hex"; } }
+		string IUtilityCommand.Name { get { return "--argb2hex"; } }
 
 		static readonly char[] Comma = new char[] { ',' };
 
-		public bool ValidateArguments(string[] args)
+		bool IUtilityCommand.ValidateArguments(string[] args)
 		{
 			if (args.Length <= 1)
 				return PrintUsage();
@@ -180,7 +180,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 		}
 
 		[Desc("Convert a,r,g,b legacy colors into hex colors")]
-		public void Run(ModData modData, string[] args)
+		void IUtilityCommand.Run(Utility utility, string[] args)
 		{
 			for (int i = 1; i < args.Length;)
 			{

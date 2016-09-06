@@ -100,6 +100,8 @@ HOSP:
 	WithBuildingExplosion:
 		Delay: 1
 	ProvidesPrerequisite@buildingname:
+	GpsDot:
+		String: Hospital
 
 V01:
 	Inherits: ^CivBuilding
@@ -335,6 +337,8 @@ BIO:
 	WithBuildingExplosion:
 		Delay: 1
 	ProvidesPrerequisite@buildingname:
+	GpsDot:
+		String: Biohazard
 
 OILB:
 	Inherits: ^TechBuilding
@@ -358,6 +362,8 @@ OILB:
 		Name: Oil Derrick
 	Explodes:
 		Weapon: BarrelExplode
+	GpsDot:
+		String: Oil
 
 BR1:
 	Inherits: ^Bridge

@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Linq;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
@@ -17,12 +18,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	public class ModContentPromptLogic : ChromeLogic
 	{
 		[ObjectCreator.UseCtor]
-		public ModContentPromptLogic(Widget widget, string modId, Action continueLoading)
+		public ModContentPromptLogic(Widget widget, Manifest mod, ModContent content, Action continueLoading)
 		{
 			var panel = widget.Get("CONTENT_PROMPT_PANEL");
-
-			var mod = ModMetadata.AllMods[modId];
-			var content = ModMetadata.AllMods[modId].ModContent;
 
 			var headerTemplate = panel.Get<LabelWidget>("HEADER_TEMPLATE");
 			var headerLines = !string.IsNullOrEmpty(content.InstallPromptMessage) ? content.InstallPromptMessage.Replace("\\n", "\n").Split('\n') : new string[0];
@@ -46,7 +44,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				Ui.OpenWindow("CONTENT_PANEL", new WidgetArgs
 				{
-					{ "modId", modId },
+					{ "mod", mod },
+					{ "content", content },
 					{ "onCancel", Ui.CloseWindow }
 				});
 			};
@@ -56,9 +55,18 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			quickButton.Bounds.Y += headerHeight;
 			quickButton.OnClick = () =>
 			{
+				var modFileSystem = new FileSystem.FileSystem(Game.Mods);
+				modFileSystem.LoadFromManifest(mod);
+				var downloadYaml = MiniYaml.Load(modFileSystem, content.Downloads, null);
+				modFileSystem.UnmountAll();
+
+				var download = downloadYaml.FirstOrDefault(n => n.Key == content.QuickDownload);
+				if (download == null)
+					throw new InvalidOperationException("Mod QuickDownload `{0}` definition not found.".F(content.QuickDownload));
+
 				Ui.OpenWindow("PACKAGE_DOWNLOAD_PANEL", new WidgetArgs
 				{
-					{ "download", content.Downloads[content.QuickDownload] },
+					{ "download", new ModContent.ModDownload(download.Value) },
 					{ "onSuccess", continueLoading }
 				});
 			};

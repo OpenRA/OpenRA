@@ -48,14 +48,11 @@ Player:
 			upgrade.hightech: 0.1%
 		UnitsToBuild:
 			carryall: 1%
-			light_inf: 6%
-			trooper: 5%
-			medic: 1%
-			fremen: 0.5%
-			sardaukar: 1.5%
-			saboteur: 0.5%
+			light_inf: 65%
+			trooper: 40%
+			sardaukar: 20%
 			harvester: 1%
-			grenadier: 1%
+			grenadier: 20%
 			trike.starport: 5%
 			quad.starport: 7.5%
 			siege_tank.starport: 5%
@@ -165,13 +162,10 @@ Player:
 			upgrade.hightech: 0.1%
 		UnitsToBuild:
 			carryall: 1%
-			light_inf: 2%
-			trooper: 2%
-			medic: 0.5%
-			fremen: 0.25%
-			sardaukar: 1%
-			saboteur: 0.5%
-			grenadier: 1%
+			light_inf: 65%
+			trooper: 40%
+			sardaukar: 20%
+			grenadier: 20%
 			harvester: 1%
 			trike.starport: 7.5%
 			quad.starport: 12.5%
@@ -282,13 +276,10 @@ Player:
 			upgrade.hightech: 0.1%
 		UnitsToBuild:
 			carryall: 1%
-			light_inf: 15%
-			trooper: 13%
-			medic: 2%
-			fremen: 1%
-			sardaukar: 3%
-			saboteur: 1%
-			grenadier: 2%
+			light_inf: 65%
+			trooper: 40%
+			sardaukar: 20%
+			grenadier: 20%
 			harvester: 1%
 			trike.starport: 5%
 			quad.starport: 7.5%

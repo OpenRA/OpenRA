@@ -43,9 +43,6 @@ namespace OpenRA.Mods.Common.Activities
 
 		public override void Cancel(Actor self)
 		{
-			if (transportable != null)
-				transportable.WantsTransport = false;
-
 			if (inner != null)
 				inner.Cancel(self);
 		}

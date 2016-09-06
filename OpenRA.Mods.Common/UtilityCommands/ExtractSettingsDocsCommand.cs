@@ -16,21 +16,21 @@ namespace OpenRA.Mods.Common.UtilityCommands
 {
 	class ExtractSettingsDocsCommand : IUtilityCommand
 	{
-		public string Name { get { return "--settings-docs"; } }
+		string IUtilityCommand.Name { get { return "--settings-docs"; } }
 
-		public bool ValidateArguments(string[] args)
+		bool IUtilityCommand.ValidateArguments(string[] args)
 		{
 			return true;
 		}
 
 		[Desc("Generate settings documentation in markdown format.")]
-		public void Run(ModData modData, string[] args)
+		void IUtilityCommand.Run(Utility utility, string[] args)
 		{
-			Game.ModData = modData;
+			Game.ModData = utility.ModData;
 			Console.WriteLine(
 				"This documentation is aimed at server administrators. It displays all settings with default values and description. " +
 				"Please do not edit it directly, but add new `[Desc(\"String\")]` tags to the source code. This file has been " +
-				"automatically generated for version {0} of OpenRA.", Game.ModData.Manifest.Mod.Version);
+				"automatically generated for version {0} of OpenRA.", utility.ModData.Manifest.Metadata.Version);
 			Console.WriteLine();
 			Console.WriteLine("All settings can be changed by starting the game via a command-line parameter like `Game.Mod=ra`.");
 			Console.WriteLine();

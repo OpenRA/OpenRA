@@ -6,7 +6,6 @@
 		PlayerExperienceModifier: 1
 	ScriptTriggers:
 	UpgradeManager:
-	Huntable:
 	RenderDebugState:
 
 ^SpriteActor:
@@ -93,6 +92,8 @@
 	Inherits@1: ^ExistsInWorld
 	Inherits@2: ^SpriteActor
 	Inherits@3: ^Cloakable
+	Huntable:
+	WithTextControlGroupDecoration:
 	SelectionDecorations:
 		Palette: pips
 	Selectable:
@@ -239,6 +240,7 @@
 	Inherits@2: ^ExistsInWorld
 	Inherits@3: ^SpriteActor
 	Inherits@4: ^Cloakable
+	Huntable:
 	DrawLineToTarget:
 	Health:
 		HP: 50
@@ -267,6 +269,7 @@
 			BlueTiberium: 90
 				PathingCost: 90
 			Veins: 50
+	WithTextControlGroupDecoration:
 	SelectionDecorations:
 		Palette: pips
 	Selectable:
@@ -394,7 +397,7 @@
 	WithInfantryBody:
 		AttackSequence: attack
 		IdleSequences: idle1,idle2
-	UpgradeOnDamage@CRITICAL:
+	UpgradeOnDamageState@CRITICAL:
 		Upgrades: criticalspeed
 		ValidDamageStates: Critical
 		GrantPermanently: true
@@ -420,6 +423,7 @@
 	Inherits@3: ^EmpDisableMobile
 	Inherits@4: ^Cloakable
 	Inherits@5: ^DamagedByVeins
+	Huntable:
 	DrawLineToTarget:
 	Mobile:
 		Crushes: crate
@@ -437,6 +441,7 @@
 		Voice: Move
 	Selectable:
 		Bounds: 40,24
+	WithTextControlGroupDecoration:
 	SelectionDecorations:
 		Palette: pips
 	Voiced:
@@ -471,10 +476,10 @@
 		Weapons: SmallDebris
 		Pieces: 3, 7
 		Range: 2c0, 5c0
-	UpgradeOnDamage@DAMAGED:
+	UpgradeOnDamageState@DAMAGED:
 		Upgrades: damagedspeed
 		ValidDamageStates: Heavy
-	UpgradeOnDamage@CRITICAL:
+	UpgradeOnDamageState@CRITICAL:
 		Upgrades: criticalspeed
 		ValidDamageStates: Critical
 	SpeedMultiplier@DAMAGED:
@@ -483,6 +488,7 @@
 	SpeedMultiplier@CRITICAL:
 		UpgradeTypes: criticalspeed
 		Modifier: 60
+	Carryable:
 
 ^Tank:
 	Inherits: ^Vehicle
@@ -525,6 +531,7 @@
 	Inherits@1: ^GainsExperience
 	Inherits@2: ^ExistsInWorld
 	Inherits@3: ^Cloakable
+	Huntable:
 	DrawLineToTarget:
 	AppearsOnRadar:
 		UseLocation: true
@@ -537,6 +544,7 @@
 		UpgradeTypes: airborne
 		UpgradeMinEnabledLevel: 1
 	Selectable:
+	WithTextControlGroupDecoration:
 	SelectionDecorations:
 		Palette: pips
 	Aircraft:
@@ -608,6 +616,7 @@
 	Inherits@1: ^ExistsInWorld
 	Inherits@2: ^SpriteActor
 	Inherits@3: ^HealsOnTiberium
+	Huntable:
 	DrawLineToTarget:
 	Health:
 		Shape: Circle
@@ -629,6 +638,7 @@
 			Tiberium: 100
 			BlueTiberium: 100
 			Veins: 100
+	WithTextControlGroupDecoration:
 	SelectionDecorations:
 		Palette: pips
 	Selectable:
@@ -729,6 +739,7 @@
 	Inherits@1: ^GainsExperience
 	Inherits@2: ^ExistsInWorld
 	Inherits@3: ^SpriteActor
+	Huntable:
 	Voiced:
 		VoiceSet: Vehicle
 	AttackTurreted:
@@ -742,6 +753,7 @@
 		TerrainTypes: Clear, Road, DirtRoad, Rough
 	WithSpriteBody:
 	WithMakeAnimation:
+	WithTextControlGroupDecoration:
 	SelectionDecorations:
 		Palette: pips
 	Selectable:
@@ -755,6 +767,7 @@
 	Inherits@1: ^EmpDisableMobile
 	Inherits@2: ^ExistsInWorld
 	Inherits@3: ^Cloakable
+	Huntable:
 	RenderVoxels:
 	RenderSprites:
 	WithVoxelBody:
@@ -778,6 +791,7 @@
 		Range: 5c0
 	Selectable:
 		Bounds: 40,24
+	WithTextControlGroupDecoration:
 	SelectionDecorations:
 		Palette: pips
 	Voiced:
@@ -823,6 +837,7 @@
 
 ^Gate:
 	Inherits: ^Building
+	Huntable:
 	Valued:
 		Cost: 250
 	Health:
@@ -867,6 +882,36 @@
 		WallConnections: 0,-1, 0,3
 	LineBuildNode:
 		Connections: 0,-1, 0,1
+
+^LowBridge:
+	AlwaysVisible:
+	RenderSprites:
+		Palette: terraindecoration
+	WithSpriteBody:
+	AutoSelectionSize:
+	AppearsOnRadar:
+	RadarColorFromTerrain:
+		Terrain: Road
+	BodyOrientation:
+		UseClassicPerspectiveFudge: false
+		QuantizedFacings: 1
+	Tooltip:
+		Name: Bridge
+	Health:
+
+^LowBridge_A:
+	Inherits: ^LowBridge
+	Building:
+		Footprint: ___
+		Dimensions: 3, 1
+	LowBridge:
+
+^LowBridge_B:
+	Inherits: ^LowBridge
+	Building:
+		Footprint: _ _ _
+		Dimensions: 1, 3
+	LowBridge:
 
 ^HealsOnTiberium:
 	DamagedByTerrain:

@@ -35,6 +35,8 @@ namespace OpenRA.Server
 
 	public class Server
 	{
+		public readonly string TwoHumansRequiredText = "This server requires at least two human players to start a match.";
+
 		public readonly IPAddress Ip;
 		public readonly int Port;
 		public readonly MersenneTwister Random = new MersenneTwister();
@@ -158,7 +160,7 @@ namespace OpenRA.Server
 				foreach (var t in serverTraits.WithInterface<INotifyServerStart>())
 					t.ServerStarted(this);
 
-				Log.Write("server", "Initial mod: {0}", ModData.Manifest.Mod.Id);
+				Log.Write("server", "Initial mod: {0}", ModData.Manifest.Id);
 				Log.Write("server", "Initial map: {0}", LobbyInfo.GlobalSettings.Map);
 
 				var timeout = serverTraits.WithInterface<ITick>().Min(t => t.TickTimeout);
@@ -218,10 +220,6 @@ namespace OpenRA.Server
 			}) { IsBackground = true }.Start();
 		}
 
-		/* lobby rework TODO:
-		 *	- "teams together" option for team games -- will eliminate most need
-		 *		for manual spawnpoint choosing.
-		 */
 		int nextPlayerIndex;
 		public int ChooseFreePlayerIndex()
 		{
@@ -262,8 +260,8 @@ namespace OpenRA.Server
 				// Dispatch a handshake order
 				var request = new HandshakeRequest
 				{
-					Mod = ModData.Manifest.Mod.Id,
-					Version = ModData.Manifest.Mod.Version,
+					Mod = ModData.Manifest.Id,
+					Version = ModData.Manifest.Metadata.Version,
 					Map = LobbyInfo.GlobalSettings.Map
 				};
 
@@ -327,7 +325,7 @@ namespace OpenRA.Server
 				else
 					client.Color = HSLColor.FromRGB(255, 255, 255);
 
-				if (ModData.Manifest.Mod.Id != handshake.Mod)
+				if (ModData.Manifest.Id != handshake.Mod)
 				{
 					Log.Write("server", "Rejected connection from {0}; mods do not match.",
 						newConn.Socket.RemoteEndPoint);
@@ -337,7 +335,7 @@ namespace OpenRA.Server
 					return;
 				}
 
-				if (ModData.Manifest.Mod.Version != handshake.Version && !LobbyInfo.GlobalSettings.AllowVersionMismatch)
+				if (ModData.Manifest.Metadata.Version != handshake.Version && !LobbyInfo.GlobalSettings.AllowVersionMismatch)
 				{
 					Log.Write("server", "Rejected connection from {0}; Not running the same version.",
 						newConn.Socket.RemoteEndPoint);
@@ -396,7 +394,7 @@ namespace OpenRA.Server
 					SendOrderTo(newConn, "Message", "This map contains custom rules. Game experience may change.");
 
 				if (!LobbyInfo.GlobalSettings.EnableSingleplayer)
-					SendOrderTo(newConn, "Message", "This server requires at least two human players to start a match.");
+					SendOrderTo(newConn, "Message", TwoHumansRequiredText);
 				else if (Map.Players.Players.Where(p => p.Value.Playable).All(p => !p.Value.AllowBots))
 					SendOrderTo(newConn, "Message", "Bots have been disabled on this map.");
 

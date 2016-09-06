@@ -17,15 +17,15 @@ namespace OpenRA.Mods.Common.UtilityCommands
 {
 	class ReplayMetadataCommand : IUtilityCommand
 	{
-		public string Name { get { return "--replay-metadata"; } }
+		string IUtilityCommand.Name { get { return "--replay-metadata"; } }
 
-		public bool ValidateArguments(string[] args)
+		bool IUtilityCommand.ValidateArguments(string[] args)
 		{
 			return args.Length >= 2;
 		}
 
 		[Desc("REPLAYFILE", "Print the game metadata from a replay file.")]
-		public void Run(ModData modData, string[] args)
+		void IUtilityCommand.Run(Utility utility, string[] args)
 		{
 			var replay = ReplayMetadata.Read(args[1]);
 			if (replay == null)

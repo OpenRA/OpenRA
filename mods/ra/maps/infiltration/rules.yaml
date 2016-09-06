@@ -1,0 +1,228 @@
+World:
+	GlobalLightingPaletteEffect@HAZE:
+		Red: 1
+		Green: 0.55
+		Blue: 0
+	MissionData:
+		Briefing: The Soviets are currently developing a new weapon system at a secret research laboratory. This is a reconnaissance mission. Do not engage until we know what we are up against and wait for reinforcements. Our civilian contacts reported a heavily guarded installation under ruthless command.
+	LuaScript:
+		Scripts: infiltration.lua
+	ScriptLobbyDropdown@difficulty:
+		ID: difficulty
+		Label: Difficulty
+		Values:
+			easy: Easy
+			normal: Normal
+			hard: Hard
+		Default: normal
+
+^Palettes:
+	FixedColorPalette@SovietTruk:
+		Base: player
+		Name: truk-soviets
+		RemapIndex: 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95
+		Color: FE1100
+
+MISS:
+	AutoTargetIgnore:
+	Targetable:
+		TargetTypes: Ground, C4, DetonateAttack, Structure, MissionObjective
+
+LST.Unselectable.UnloadOnly:
+	Inherits: LST
+	-Selectable:
+	RenderSprites:
+		Image: LST
+	Buildable:
+		Prerequisites: ~disabled
+	Cargo:
+		MaxWeight: 0
+		PipCount: 0
+	AutoTargetIgnore:
+
+SPY.Strong:
+	Inherits: SPY
+	Buildable:
+		Prerequisites: ~disabled
+	RenderSprites:
+		Image: SPY
+	Health:
+		HP: 100
+	RevealsShroud:
+		Range: 6c0
+	Infiltrates:
+		Types: MissionObjective
+	ExternalCaptures:
+		CaptureTypes: MissionObjective
+	EditorOnlyTooltip:
+		Description: RenderDebugState.OnOwnerChange will crash
+	-RenderDebugState:
+	Passenger:
+		GrantUpgrades: mobile
+
+DOG.Patrol:
+	Inherits: DOG
+	Buildable:
+		Prerequisites: ~disabled
+	Mobile:
+		Speed: 56
+	RenderSprites:
+		Image: DOG
+
+TRUK.Hijackable:
+	Inherits: TRUK
+	Buildable:
+		Prerequisites: ~disabled
+	Mobile:
+		UpgradeTypes: mobile
+		UpgradeMinEnabledLevel: 1
+	Cargo:
+		Types: Infantry
+		MaxWeight: 5
+		PipCount: 5
+	AutoTargetIgnore:
+	-Huntable:
+	ExternalCapturable:
+		Type: MissionObjective
+		CaptureCompleteTime: 1
+	-SupplyTruck:
+	RenderSprites:
+		Image: TRUK
+		Palette: truk-soviets
+	RevealsShroud:
+		Range: 6c0
+	Voiced:
+		VoiceSet: SpyVoice
+
+E7:
+	Buildable:
+		Prerequisites: ~disabled
+
+TRAN:
+	Buildable:
+		Prerequisites: ~disabled
+
+BARR:
+	Buildable:
+		Prerequisites: ~disabled
+
+MIG:
+	Buildable:
+		Prerequisites: ~disabled
+
+HELI:
+	Buildable:
+		Prerequisites: ~disabled
+
+SS:
+	Buildable:
+		Prerequisites: ~disabled
+	AutoTarget:
+		InitialStanceAI: Defend
+
+ARTY:
+	Buildable:
+		Prerequisites: ~disabled
+
+AGUN:
+	Buildable:
+		Prerequisites: ~disabled
+
+MSUB:
+	Buildable:
+		Prerequisites: ~disabled
+
+CA:
+	Buildable:
+		Prerequisites: ~disabled
+
+MSLO:
+	Buildable:
+		Prerequisites: ~disabled
+
+SPEN:
+	Buildable:
+		Prerequisites: ~disabled
+
+IRON:
+	Buildable:
+		Prerequisites: ~disabled
+
+PDOX:
+	Buildable:
+		Prerequisites: ~disabled
+
+TSLA:
+	Buildable:
+		Prerequisites: ~disabled
+
+FTUR:
+	Buildable:
+		Prerequisites: ~disabled
+
+SAM:
+	Buildable:
+		Prerequisites: ~disabled
+
+HPAD:
+	Buildable:
+		Prerequisites: ~disabled
+
+AFLD:
+	Buildable:
+		Prerequisites: ~disabled
+
+ATEK:
+	Buildable:
+		Prerequisites: ~disabled
+
+STEK:
+	Buildable:
+		Prerequisites: ~disabled
+
+4TNK:
+	Buildable:
+		Prerequisites: ~disabled
+
+MCV:
+	Buildable:
+		Prerequisites: ~disabled
+	EditorOnlyTooltip:
+		Description: RenderDebugState.OnOwnerChange will crash
+	-RenderDebugState:
+
+APC:
+	Buildable:
+		Prerequisites: ~disabled
+
+MNLY.AP:
+	Buildable:
+		Prerequisites: ~disabled
+
+MNLY.AT:
+	Buildable:
+		Prerequisites: ~disabled
+
+TTNK:
+	Buildable:
+		Prerequisites: ~disabled
+
+FTRK:
+	Buildable:
+		Prerequisites: ~disabled
+
+CTNK:
+	Buildable:
+		Prerequisites: ~disabled
+
+MGG:
+	Buildable:
+		Prerequisites: ~disabled
+
+MRJ:
+	Buildable:
+		Prerequisites: ~disabled
+
+GAP:
+	Buildable:
+		Prerequisites: ~disabled

@@ -48,7 +48,8 @@ namespace OpenRA.Mods.Common.Widgets
 			var font = Game.Renderer.Fonts[Font];
 			var color = GetColor();
 			var colordisabled = GetColorDisabled();
-			var contrast = GetContrastColor();
+			var bgDark = GetContrastColorDark();
+			var bgLight = GetContrastColorLight();
 			var rect = RenderBounds;
 			var text = GetText();
 			var textSize = font.Measure(text);
@@ -64,7 +65,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 			if (Contrast)
 				font.DrawTextWithContrast(text, position,
-					disabled ? colordisabled : color, contrast, 2);
+					disabled ? colordisabled : color, bgDark, bgLight, 2);
 			else
 				font.DrawText(text, position,
 					disabled ? colordisabled : color);

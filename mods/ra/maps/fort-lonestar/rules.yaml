@@ -86,7 +86,7 @@ FORTCRATE:
 
 Player:
 	ClassicProductionQueue@Infantry:
-		BuildSpeed: 100
+		BuildDurationModifier: 250
 	-EnemyWatcher:
 	Shroud:
 		FogLocked: True

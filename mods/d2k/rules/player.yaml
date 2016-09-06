@@ -3,7 +3,7 @@ Player:
 	TechTree:
 	ClassicProductionQueue@Building:
 		Type: Building
-		BuildSpeed: 100
+		BuildDurationModifier: 250
 		LowPowerSlowdown: 3
 		QueuedAudio: Building
 		ReadyAudio: BuildingReady
@@ -11,7 +11,7 @@ Player:
 		SpeedUp: true
 	ClassicProductionQueue@Upgrade:
 		Type: Upgrade
-		BuildSpeed: 100
+		BuildDurationModifier: 250
 		LowPowerSlowdown: 0
 		QueuedAudio: Upgrading
 		ReadyAudio: NewOptions
@@ -19,34 +19,34 @@ Player:
 		SpeedUp: true
 	ClassicProductionQueue@Infantry:
 		Type: Infantry
-		BuildSpeed: 100
+		BuildDurationModifier: 250
 		LowPowerSlowdown: 3
 		BlockedAudio: NoRoom
 		SpeedUp: true
 	ClassicProductionQueue@Vehicle:
 		Type: Vehicle
-		BuildSpeed: 100
+		BuildDurationModifier: 250
 		LowPowerSlowdown: 3
 		QueuedAudio: Building
 		BlockedAudio: NoRoom
 		SpeedUp: true
 	ClassicProductionQueue@Armor:
 		Type: Armor
-		BuildSpeed: 100
+		BuildDurationModifier: 250
 		LowPowerSlowdown: 3
 		QueuedAudio: Building
 		BlockedAudio: NoRoom
 		SpeedUp: true
 	ClassicProductionQueue@Starport:
 		Type: Starport
-		BuildSpeed: 85
+		BuildDurationModifier: 212
 		LowPowerSlowdown: 0
 		BlockedAudio: NoRoom
 		QueuedAudio: OrderPlaced
 		ReadyAudio:
 	ClassicProductionQueue@Aircraft:
 		Type: Aircraft
-		BuildSpeed: 125
+		BuildDurationModifier: 312
 		LowPowerSlowdown: 3
 		QueuedAudio: Building
 		BlockedAudio: NoRoom

@@ -118,6 +118,7 @@ namespace OpenRA.Mods.RA.Traits
 		}
 
 		Color ISelectionBar.GetColor() { return Color.Magenta; }
+		bool ISelectionBar.DisplayWhenEmpty { get { return false; } }
 	}
 
 	class PortableChronoOrderTargeter : IOrderTargeter
@@ -194,7 +195,7 @@ namespace OpenRA.Mods.RA.Traits
 			yield break;
 		}
 
-		public IEnumerable<IRenderable> RenderAfterWorld(WorldRenderer wr, World world)
+		public IEnumerable<IRenderable> RenderAboveShroud(WorldRenderer wr, World world)
 		{
 			if (!self.IsInWorld || self.Owner != self.World.LocalPlayer)
 				yield break;
