@@ -24,23 +24,16 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	{
 		readonly Widget modList;
 		readonly ButtonWidget modTemplate;
-		readonly Manifest[] allMods;
+		readonly ModMetadata[] allMods;
 		readonly Dictionary<string, Sprite> previews = new Dictionary<string, Sprite>();
 		readonly Dictionary<string, Sprite> logos = new Dictionary<string, Sprite>();
-		readonly Cache<Manifest, ModContent> content = new Cache<Manifest, ModContent>(LoadModContent);
-
 		readonly Widget modChooserPanel;
 		readonly ButtonWidget loadButton;
 		readonly SheetBuilder sheetBuilder;
-		Manifest selectedMod;
+		ModMetadata selectedMod;
 		string selectedAuthor;
 		string selectedDescription;
 		int modOffset = 0;
-
-		static ModContent LoadModContent(Manifest mod)
-		{
-			return mod.Get<ModContent>(Game.ModData.ObjectCreator);
-		}
 
 		[ObjectCreator.UseCtor]
 		public ModBrowserLogic(Widget widget, ModData modData)
@@ -48,15 +41,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			modChooserPanel = widget;
 			loadButton = modChooserPanel.Get<ButtonWidget>("LOAD_BUTTON");
 			loadButton.OnClick = () => LoadMod(selectedMod);
-			loadButton.IsDisabled = () => selectedMod.Id == modData.Manifest.Id;
+			loadButton.IsDisabled = () => selectedMod.Id == modData.Manifest.Mod.Id;
 
 			var contentButton = modChooserPanel.Get<ButtonWidget>("CONFIGURE_BUTTON");
+			contentButton.IsDisabled = () => selectedMod.ModContent == null;
 			contentButton.OnClick = () =>
 			{
 				var widgetArgs = new WidgetArgs
 				{
-					{ "mod", selectedMod },
-					{ "content", content[selectedMod] },
+					{ "modId", selectedMod.Id },
 					{ "onCancel", () => { } }
 				};
 
@@ -69,9 +62,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			modTemplate = modList.Get<ButtonWidget>("MOD_TEMPLATE");
 
 			modChooserPanel.Get<LabelWidget>("MOD_DESC").GetText = () => selectedDescription;
-			modChooserPanel.Get<LabelWidget>("MOD_TITLE").GetText = () => selectedMod.Metadata.Title;
+			modChooserPanel.Get<LabelWidget>("MOD_TITLE").GetText = () => selectedMod.Title;
 			modChooserPanel.Get<LabelWidget>("MOD_AUTHOR").GetText = () => selectedAuthor;
-			modChooserPanel.Get<LabelWidget>("MOD_VERSION").GetText = () => selectedMod.Metadata.Version;
+			modChooserPanel.Get<LabelWidget>("MOD_VERSION").GetText = () => selectedMod.Version;
 
 			var prevMod = modChooserPanel.Get<ButtonWidget>("PREV_MOD");
 			prevMod.OnClick = () => { modOffset -= 1; RebuildModList(); };
@@ -89,8 +82,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			};
 
 			sheetBuilder = new SheetBuilder(SheetType.BGRA);
-			allMods = Game.Mods.Values.Where(m => !m.Metadata.Hidden)
-				.OrderBy(m => m.Metadata.Title)
+			allMods = ModMetadata.AllMods.Values.Where(m => !m.Hidden)
+				.OrderBy(m => m.Title)
 				.ToArray();
 
 			// Load preview images, and eat any errors
@@ -98,7 +91,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				try
 				{
-					using (var stream = mod.Package.GetStream("preview.png"))
+					using (var stream = ModMetadata.AllMods[mod.Id].Package.GetStream("preview.png"))
 						using (var preview = new Bitmap(stream))
 							if (preview.Width == 296 && preview.Height == 196)
 								previews.Add(mod.Id, sheetBuilder.Add(preview));
@@ -107,7 +100,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				try
 				{
-					using (var stream = mod.Package.GetStream("logo.png"))
+					using (var stream = ModMetadata.AllMods[mod.Id].Package.GetStream("logo.png"))
 						using (var logo = new Bitmap(stream))
 							if (logo.Width == 96 && logo.Height == 96)
 								logos.Add(mod.Id, sheetBuilder.Add(logo));
@@ -115,9 +108,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				catch (Exception) { }
 			}
 
-			Manifest initialMod;
-			Game.Mods.TryGetValue(Game.Settings.Game.PreviousMod, out initialMod);
-			SelectMod(initialMod != null && initialMod.Id != "modchooser" ? initialMod : Game.Mods["ra"]);
+			ModMetadata initialMod;
+			ModMetadata.AllMods.TryGetValue(Game.Settings.Game.PreviousMod, out initialMod);
+			SelectMod(initialMod != null && initialMod.Id != "modchooser" ? initialMod : ModMetadata.AllMods["ra"]);
 
 			RebuildModList();
 		}
@@ -153,7 +146,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						SelectMod(mod);
 				};
 
-				item.TooltipText = mod.Metadata.Title;
+				item.TooltipText = mod.Title;
 
 				if (j < 9)
 					item.Key = new Hotkey((Keycode)((int)Keycode.NUMBER_1 + j), Modifiers.None);
@@ -167,25 +160,23 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 		}
 
-		void SelectMod(Manifest mod)
+		void SelectMod(ModMetadata mod)
 		{
 			selectedMod = mod;
-			selectedAuthor = "By " + (mod.Metadata.Author ?? "unknown author");
-			selectedDescription = (mod.Metadata.Description ?? "").Replace("\\n", "\n");
+			selectedAuthor = "By " + (mod.Author ?? "unknown author");
+			selectedDescription = (mod.Description ?? "").Replace("\\n", "\n");
 			var selectedIndex = Array.IndexOf(allMods, mod);
 			if (selectedIndex - modOffset > 4)
 				modOffset = selectedIndex - 4;
 		}
 
-		void LoadMod(Manifest mod)
+		void LoadMod(ModMetadata mod)
 		{
-			var modId = mod.Id;
-			if (!Game.IsModInstalled(modId))
+			if (!Game.IsModInstalled(mod.Id))
 			{
 				var widgetArgs = new WidgetArgs
 				{
-					{ "mod", selectedMod },
-					{ "content", content[selectedMod] },
+					{ "modId", mod.Id }
 				};
 
 				Ui.OpenWindow("INSTALL_MOD_PANEL", widgetArgs);
@@ -197,9 +188,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var widgetArgs = new WidgetArgs
 				{
 					{ "continueLoading", () =>
-						Game.RunAfterTick(() => Game.InitializeMod(modId, new Arguments())) },
-					{ "mod", selectedMod },
-					{ "content", content[selectedMod] },
+						Game.RunAfterTick(() => Game.InitializeMod(mod.Id, new Arguments())) },
+					{ "modId", mod.Id }
 				};
 
 				Ui.OpenWindow("CONTENT_PROMPT_PANEL", widgetArgs);
@@ -211,13 +201,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				Ui.CloseWindow();
 				sheetBuilder.Dispose();
-				Game.InitializeMod(modId, null);
+				Game.InitializeMod(mod.Id, null);
 			});
 		}
 
-		bool IsModInstalled(Manifest mod)
+		static bool IsModInstalled(ModMetadata mod)
 		{
-			return content[mod].Packages
+			return mod.ModContent.Packages
 				.Where(p => p.Value.Required)
 				.All(p => p.Value.TestFiles.All(f => File.Exists(Platform.ResolvePath(f))));
 		}

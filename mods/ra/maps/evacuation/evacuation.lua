@@ -5,8 +5,10 @@ DeathThreshold =
 }
 
 TanyaType = "e7"
+TanyaStance = "AttackAnything"
 if Map.LobbyOption("difficulty") ~= "easy" then
 	TanyaType = "e7.noautotarget"
+	TanyaStance = "HoldFire"
 end
 
 RepairTriggerThreshold =
@@ -23,7 +25,7 @@ TownUnits =
 	TownUnit08, TownUnit09, TownUnit10, TownUnit11, TownUnit12, TownUnit13, TownUnit14,
 }
 
-ParabombDelay = DateTime.Seconds(30)
+ParabombDelay = DateTime.Seconds(30) 
 ParatroopersDelay = DateTime.Minutes(5)
 Paratroopers =
 {
@@ -279,6 +281,7 @@ end
 
 SpawnTanya = function()
 	Tanya = Actor.Create(TanyaType, true, { Owner = allies1, Location = TanyaLocation.Location })
+	Tanya.Stance = TanyaStance
 
 	if Map.LobbyOption("difficulty") ~= "easy" and allies1.IsLocalPlayer then
 		Trigger.AfterDelay(DateTime.Seconds(2), function()

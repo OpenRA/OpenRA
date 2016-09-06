@@ -129,9 +129,11 @@ namespace OpenRA.Mods.Common.Traits
 		public IEnumerable<IRenderable> Render(WorldRenderer wr, World w, ActorInfo ai, WPos centerPosition)
 		{
 			if (!RequiresBaseProvider)
-				return SpriteRenderable.None;
+				yield break;
 
-			return w.ActorsWithTrait<BaseProvider>().SelectMany(a => a.Trait.RangeCircleRenderables(wr));
+			foreach (var a in w.ActorsWithTrait<BaseProvider>())
+				foreach (var r in a.Trait.RenderAfterWorld(wr))
+					yield return r;
 		}
 	}
 

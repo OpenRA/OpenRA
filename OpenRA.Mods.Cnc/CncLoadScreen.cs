@@ -36,8 +36,6 @@ namespace OpenRA.Mods.Cnc
 
 		public override void Init(ModData modData, Dictionary<string, string> info)
 		{
-			base.Init(modData, info);
-
 			loadInfo = info;
 
 			// Avoid standard loading mechanisms so we
@@ -70,7 +68,7 @@ namespace OpenRA.Mods.Cnc
 			brightBlock = new Sprite(sheet, new Rectangle(320, 0, 16, 35), TextureChannel.Alpha);
 			dimBlock = new Sprite(sheet, new Rectangle(336, 0, 16, 35), TextureChannel.Alpha);
 
-			versionText = modData.Manifest.Metadata.Version;
+			versionText = modData.Manifest.Mod.Version;
 		}
 
 		bool setup;

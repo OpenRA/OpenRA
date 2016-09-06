@@ -18,14 +18,14 @@ namespace OpenRA.Mods.Common.UtilityCommands
 {
 	public class ResizeMapCommand : IUtilityCommand
 	{
-		string IUtilityCommand.Name { get { return "--resize-map"; } }
+		public string Name { get { return "--resize-map"; } }
 
 		int width;
 		int height;
 
 		Map map;
 
-		bool IUtilityCommand.ValidateArguments(string[] args)
+		public bool ValidateArguments(string[] args)
 		{
 			if (args.Length < 4)
 				return false;
@@ -46,9 +46,9 @@ namespace OpenRA.Mods.Common.UtilityCommands
 		}
 
 		[Desc("MAPFILE", "WIDTH", "HEIGHT", "Resize the map at the bottom corners.")]
-		void IUtilityCommand.Run(Utility utility, string[] args)
+		public void Run(ModData modData, string[] args)
 		{
-			var modData = Game.ModData = utility.ModData;
+			Game.ModData = modData;
 			map = new Map(modData, modData.ModFiles.OpenPackage(args[1], new Folder(".")));
 			Console.WriteLine("Resizing map {0} from {1} to {2},{3}", map.Title, map.MapSize, width, height);
 			map.Resize(width, height);

@@ -20,24 +20,19 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int ForceHealthPercentage = 0;
 		public readonly bool SkipMakeAnims = true;
 
-		public virtual object Create(ActorInitializer init) { return new TransformOnCapture(init, this); }
+		public virtual object Create(ActorInitializer init) { return new TransformOnCapture(this); }
 	}
 
 	public class TransformOnCapture : INotifyCapture
 	{
 		readonly TransformOnCaptureInfo info;
-		readonly string faction;
 
-		public TransformOnCapture(ActorInitializer init, TransformOnCaptureInfo info)
-		{
-			this.info = info;
-			faction = init.Contains<FactionInit>() ? init.Get<FactionInit, string>() : init.Self.Owner.Faction.InternalName;
-		}
+		public TransformOnCapture(TransformOnCaptureInfo info) { this.info = info; }
 
 		public void OnCapture(Actor self, Actor captor, Player oldOwner, Player newOwner)
 		{
 			var facing = self.TraitOrDefault<IFacing>();
-			var transform = new Transform(self, info.IntoActor) { ForceHealthPercentage = info.ForceHealthPercentage, Faction = faction };
+			var transform = new Transform(self, info.IntoActor) { ForceHealthPercentage = info.ForceHealthPercentage };
 			if (facing != null) transform.Facing = facing.Facing;
 			transform.SkipMakeAnims = info.SkipMakeAnims;
 			self.CancelActivity();

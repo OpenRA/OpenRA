@@ -27,6 +27,8 @@ namespace OpenRA.Mods.Common.Pathfinder
 		/// </summary>
 		IEnumerable<Pair<CPos, int>> Considered { get; }
 
+		bool Debug { get; set; }
+
 		Player Owner { get; }
 
 		int MaxCost { get; }
@@ -84,6 +86,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 			Graph = graph;
 			OpenQueue = new PriorityQueue<GraphConnection>(GraphConnection.ConnectionCostComparer);
 			StartPoints = new PriorityQueue<GraphConnection>(GraphConnection.ConnectionCostComparer);
+			Debug = false;
 			MaxCost = 0;
 		}
 

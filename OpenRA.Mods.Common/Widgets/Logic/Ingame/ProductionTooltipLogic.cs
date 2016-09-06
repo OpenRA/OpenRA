@@ -90,7 +90,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				var costString = cost.ToString();
 				costLabel.GetText = () => costString;
-				costLabel.GetColor = () => pr.Cash + pr.Resources >= cost
+				costLabel.GetColor = () => pr.DisplayCash + pr.DisplayResources >= cost
 					? Color.White : Color.Red;
 
 				var descString = tooltip.Description.Replace("\\n", "\n");

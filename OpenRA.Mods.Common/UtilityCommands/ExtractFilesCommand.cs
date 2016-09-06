@@ -17,21 +17,21 @@ namespace OpenRA.Mods.Common.UtilityCommands
 {
 	class ExtractFilesCommand : IUtilityCommand
 	{
-		string IUtilityCommand.Name { get { return "--extract"; } }
+		public string Name { get { return "--extract"; } }
 
-		bool IUtilityCommand.ValidateArguments(string[] args)
+		public bool ValidateArguments(string[] args)
 		{
 			return args.Length >= 2;
 		}
 
 		[Desc("Extract files from mod packages to the current directory")]
-		void IUtilityCommand.Run(Utility utility, string[] args)
+		public void Run(ModData modData, string[] args)
 		{
 			var files = args.Skip(1);
 
 			foreach (var f in files)
 			{
-				var src = utility.ModData.DefaultFileSystem.Open(f);
+				var src = modData.DefaultFileSystem.Open(f);
 				if (src == null)
 					throw new InvalidOperationException("File not found: {0}".F(f));
 				var data = src.ReadAllBytes();

@@ -18,7 +18,7 @@ using OpenRA.Scripting;
 
 namespace OpenRA.Mods.TS.Effects
 {
-	public class AnimatedBeacon : IEffect, IEffectAboveShroud
+	public class AnimatedBeacon : IEffect
 	{
 		readonly Player owner;
 		readonly WPos position;
@@ -43,21 +43,19 @@ namespace OpenRA.Mods.TS.Effects
 				owner.World.Add(new DelayedAction(duration, () => owner.World.Remove(this)));
 		}
 
-		void IEffect.Tick(World world)
+		public void Tick(World world)
 		{
 			if (beacon != null)
 				beacon.Tick();
 		}
 
-		IEnumerable<IRenderable> IEffect.Render(WorldRenderer r) { return SpriteRenderable.None; }
-
-		IEnumerable<IRenderable> IEffectAboveShroud.RenderAboveShroud(WorldRenderer r)
+		public IEnumerable<IRenderable> Render(WorldRenderer r)
 		{
 			if (beacon == null)
-				return SpriteRenderable.None;
+				return Enumerable.Empty<IRenderable>();
 
 			if (!owner.IsAlliedWith(owner.World.RenderPlayer))
-				return SpriteRenderable.None;
+				return Enumerable.Empty<IRenderable>();
 
 			var palette = r.Palette(isPlayerPalette ? beaconPalette + owner.InternalName : beaconPalette);
 			return beacon.Render(position, palette);

@@ -49,7 +49,6 @@ Background@WORLD_TOOLTIP:
 			Y: 19
 			Height: 23
 			Font: Bold
-			Shadow: True
 		Label@EXTRA:
 			X: 5
 			Y: 47

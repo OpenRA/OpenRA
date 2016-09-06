@@ -252,7 +252,6 @@
     <Compile Include="Scripting\Properties\ProductionProperties.cs" />
     <Compile Include="Scripting\Properties\RepairableBuildingProperties.cs" />
     <Compile Include="Scripting\Properties\ResourceProperties.cs" />
-    <Compile Include="Scripting\Properties\SellableProperties.cs" />
     <Compile Include="Scripting\Properties\TransformProperties.cs" />
     <Compile Include="Scripting\Properties\TransportProperties.cs" />
     <Compile Include="Scripting\Properties\UpgradeProperties.cs" />
@@ -324,6 +323,7 @@
     <Compile Include="Traits\Crates\RevealMapCrateAction.cs" />
     <Compile Include="Traits\Crates\SupportPowerCrateAction.cs" />
     <Compile Include="Traits\Crushable.cs" />
+    <Compile Include="Traits\CustomBuildTimeValue.cs" />
     <Compile Include="Traits\CustomSellValue.cs" />
     <Compile Include="Traits\CustomSelectionSize.cs" />
     <Compile Include="Traits\DamagedByTerrain.cs" />
@@ -474,8 +474,6 @@
     <Compile Include="Traits\SeedsResource.cs" />
     <Compile Include="Traits\StoresResources.cs" />
     <Compile Include="Traits\Render\SelectionDecorations.cs" />
-    <Compile Include="Traits\Render\WithSpriteControlGroupDecoration.cs" />
-    <Compile Include="Traits\Render\WithTextControlGroupDecoration.cs" />
     <Compile Include="Traits\SelfHealing.cs" />
     <Compile Include="Traits\Sellable.cs" />
     <Compile Include="Traits\ShakeOnDeath.cs" />
@@ -507,7 +505,7 @@
     <Compile Include="Traits\Upgrades\DisableOnUpgrade.cs" />
     <Compile Include="Traits\Upgrades\UpgradableTrait.cs" />
     <Compile Include="Traits\Upgrades\UpgradeActorsNear.cs" />
-    <Compile Include="Traits\Upgrades\UpgradeOnDamageState.cs" />
+    <Compile Include="Traits\Upgrades\UpgradeOnDamage.cs" />
     <Compile Include="Traits\Upgrades\UpgradeOnTerrain.cs" />
     <Compile Include="Traits\Upgrades\UpgradeManager.cs" />
     <Compile Include="Traits\Valued.cs" />
@@ -531,6 +529,7 @@
     <Compile Include="Pathfinder\PathFinderUnitPathCacheDecorator.cs" />
     <Compile Include="Pathfinder\PathCacheStorage.cs" />
     <Compile Include="Traits\World\PathFinder.cs" />
+    <Compile Include="Traits\World\PathfinderDebugOverlay.cs" />
     <Compile Include="Pathfinder\PathSearch.cs" />
     <Compile Include="Pathfinder\BasePathSearch.cs" />
     <Compile Include="Traits\World\PlayerPaletteFromCurrentTileset.cs" />
@@ -779,9 +778,6 @@
     <Compile Include="Activities\Air\FlyCircleTimed.cs" />
     <Compile Include="UtilityCommands\ListInstallShieldCabContentsCommand.cs" />
     <Compile Include="FileFormats\InstallShieldCABCompression.cs" />
-    <Compile Include="ModContent.cs" />
-    <Compile Include="Traits\AutoCarryable.cs" />
-    <Compile Include="Traits\AutoCarryall.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

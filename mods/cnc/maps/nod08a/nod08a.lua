@@ -153,7 +153,7 @@ Trigger.OnAllKilledOrCaptured(Outpost, function()
 		end)
 
 		Trigger.AfterDelay(DateTime.Minutes(1), function()
-			FlareCamera.Destroy()
+			FlareCamera.Kill()
 			Flare.Destroy()
 		end)
 

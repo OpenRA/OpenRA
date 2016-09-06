@@ -16,7 +16,7 @@ using OpenRA.Mods.Common.Traits;
 
 namespace OpenRA.Mods.Common.Effects
 {
-	class PowerdownIndicator : IEffect, IEffectAboveShroud
+	class PowerdownIndicator : IEffect
 	{
 		readonly Actor a;
 		readonly Animation anim;
@@ -31,7 +31,7 @@ namespace OpenRA.Mods.Common.Effects
 			anim.PlayRepeating(canPowerDown.Info.IndicatorSequence);
 		}
 
-		void IEffect.Tick(World world)
+		public void Tick(World world)
 		{
 			if (!a.IsInWorld || a.IsDead || !canPowerDown.Disabled)
 				world.AddFrameEndTask(w => w.Remove(this));
@@ -39,9 +39,7 @@ namespace OpenRA.Mods.Common.Effects
 			anim.Tick();
 		}
 
-		IEnumerable<IRenderable> IEffect.Render(WorldRenderer wr) { return SpriteRenderable.None; }
-
-		IEnumerable<IRenderable> IEffectAboveShroud.RenderAboveShroud(WorldRenderer wr)
+		public IEnumerable<IRenderable> Render(WorldRenderer wr)
 		{
 			if (a.Disposed || wr.World.FogObscures(a))
 				return SpriteRenderable.None;

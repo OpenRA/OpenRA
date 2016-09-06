@@ -1,4 +1,4 @@
-^tibtree:
+tibtre01:
 	Defaults:
 		UseTilesetExtension: true
 		Offset: 0, -12
@@ -10,14 +10,29 @@
 		ShadowStart: 12
 		Tick: 160
 
-tibtre01:
-	Inherits: ^tibtree
-
 tibtre02:
-	Inherits: ^tibtree
+	Defaults:
+		UseTilesetExtension: true
+		Offset: 0, -12
+	idle:
+		ShadowStart: 11
+	active:
+		Start: 1
+		Length: 10
+		ShadowStart: 12
+		Tick: 160
 
 tibtre03:
-	Inherits: ^tibtree
+	Defaults:
+		UseTilesetExtension: true
+		Offset: 0, -12
+	idle:
+		ShadowStart: 11
+	active:
+		Start: 1
+		Length: 10
+		ShadowStart: 12
+		Tick: 160
 
 bigblue:
 	Defaults:
@@ -30,86 +45,155 @@ bigblue:
 		ShadowStart: 11
 		Tick: 160
 
-^tree:
+tree01:
 	idle:
 		ShadowStart: 1
 		UseTilesetExtension: true
 		Offset: 0, -12
 
-tree01:
-	Inherits: ^tree
-
 tree02:
-	Inherits: ^tree
+	idle:
+		ShadowStart: 1
+		UseTilesetExtension: true
+		Offset: 0, -12
 
 tree03:
-	Inherits: ^tree
+	idle:
+		ShadowStart: 1
+		UseTilesetExtension: true
+		Offset: 0, -12
 
 tree04:
-	Inherits: ^tree
+	idle:
+		ShadowStart: 1
+		UseTilesetExtension: true
+		Offset: 0, -12
 
 tree05:
-	Inherits: ^tree
+	idle:
+		ShadowStart: 1
+		UseTilesetExtension: true
+		Offset: 0, -12
 
 tree06:
-	Inherits: ^tree
+	idle:
+		ShadowStart: 1
+		UseTilesetExtension: true
+		Offset: 0, -12
 
 tree07:
-	Inherits: ^tree
+	idle:
+		ShadowStart: 1
+		UseTilesetExtension: true
+		Offset: 0, -12
 
 tree08:
-	Inherits: ^tree
+	idle:
+		ShadowStart: 1
+		UseTilesetExtension: true
+		Offset: 0, -12
 
 tree09:
-	Inherits: ^tree
+	idle:
+		ShadowStart: 1
+		UseTilesetExtension: true
+		Offset: 0, -12
 
 tree10:
-	Inherits: ^tree
+	idle:
+		ShadowStart: 1
+		UseTilesetExtension: true
+		Offset: 0, -12
 
 tree11:
-	Inherits: ^tree
+	idle:
+		ShadowStart: 1
+		UseTilesetExtension: true
+		Offset: 0, -12
 
 tree12:
-	Inherits: ^tree
+	idle:
+		ShadowStart: 1
+		UseTilesetExtension: true
+		Offset: 0, -12
 
 tree13:
-	Inherits: ^tree
+	idle:
+		ShadowStart: 1
+		UseTilesetExtension: true
+		Offset: 0, -12
 
 tree14:
-	Inherits: ^tree
+	idle:
+		ShadowStart: 1
+		UseTilesetExtension: true
+		Offset: 0, -12
 
 tree15:
-	Inherits: ^tree
+	idle:
+		ShadowStart: 1
+		UseTilesetExtension: true
+		Offset: 0, -12
 
 tree16:
-	Inherits: ^tree
+	idle:
+		ShadowStart: 1
+		UseTilesetExtension: true
+		Offset: 0, -12
 
 tree17:
-	Inherits: ^tree
+	idle:
+		ShadowStart: 1
+		UseTilesetExtension: true
+		Offset: 0, -12
 
 tree18:
-	Inherits: ^tree
+	idle:
+		ShadowStart: 1
+		UseTilesetExtension: true
+		Offset: 0, -12
 
 tree19:
-	Inherits: ^tree
+	idle:
+		ShadowStart: 1
+		UseTilesetExtension: true
+		Offset: 0, -12
 
 tree20:
-	Inherits: ^tree
+	idle:
+		ShadowStart: 1
+		UseTilesetExtension: true
+		Offset: 0, -12
 
 tree21:
-	Inherits: ^tree
+	idle:
+		ShadowStart: 1
+		UseTilesetExtension: true
+		Offset: 0, -12
 
 tree22:
-	Inherits: ^tree
+	idle:
+		ShadowStart: 1
+		UseTilesetExtension: true
+		Offset: 0, -12
 
 tree23:
-	Inherits: ^tree
+	idle:
+		ShadowStart: 1
+		UseTilesetExtension: true
+		Offset: 0, -12
 
 tree24:
-	Inherits: ^tree
+	idle:
+		ShadowStart: 1
+		UseTilesetExtension: true
+		Offset: 0, -12
 
 tree25:
-	Inherits: ^tree
+	idle:
+		ShadowStart: 1
+		UseTilesetExtension: true
+		Offset: 0, -12
 
 veinhole:
 	idle:

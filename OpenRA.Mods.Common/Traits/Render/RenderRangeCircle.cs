@@ -32,24 +32,23 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public IEnumerable<IRenderable> Render(WorldRenderer wr, World w, ActorInfo ai, WPos centerPosition)
 		{
 			if (range == WDist.Zero)
-				return SpriteRenderable.None;
+				yield break;
 
-			var localRange = new RangeCircleRenderable(
+			yield return new RangeCircleRenderable(
 				centerPosition,
 				range,
 				0,
 				Color.FromArgb(128, Color.Yellow),
 				Color.FromArgb(96, Color.Black));
 
-			var otherRanges = w.ActorsWithTrait<RenderRangeCircle>()
-				.Where(a => a.Trait.Info.RangeCircleType == RangeCircleType)
-				.SelectMany(a => a.Trait.RangeCircleRenderables(wr));
-
-			return otherRanges.Append(localRange);
+			foreach (var a in w.ActorsWithTrait<RenderRangeCircle>())
+				if (a.Actor.Owner.IsAlliedWith(w.RenderPlayer))
+					if (a.Actor.Info.TraitInfo<RenderRangeCircleInfo>().RangeCircleType == RangeCircleType)
+						foreach (var r in a.Trait.RenderAfterWorld(wr))
+							yield return r;
 		}
 
-		public object Create(ActorInitializer init) { return new RenderRangeCircle(init.Self, this); }
-
+		public object Create(ActorInitializer init) { return new RenderRangeCircle(init.Self); }
 		public void RulesetLoaded(Ruleset rules, ActorInfo ai)
 		{
 			var armaments = ai.TraitInfos<ArmamentInfo>().Where(a => a.UpgradeMinEnabledLevel == 0);
@@ -61,21 +60,18 @@ namespace OpenRA.Mods.Common.Traits.Render
 		}
 	}
 
-	class RenderRangeCircle : IRenderAboveShroudWhenSelected
+	class RenderRangeCircle : IPostRenderSelection
 	{
-		public readonly RenderRangeCircleInfo Info;
 		readonly Actor self;
 		readonly AttackBase attack;
 
-		public RenderRangeCircle(Actor self, RenderRangeCircleInfo info)
+		public RenderRangeCircle(Actor self)
 		{
-			Info = info;
-
 			this.self = self;
 			attack = self.Trait<AttackBase>();
 		}
 
-		public IEnumerable<IRenderable> RangeCircleRenderables(WorldRenderer wr)
+		public IEnumerable<IRenderable> RenderAfterWorld(WorldRenderer wr)
 		{
 			if (!self.Owner.IsAlliedWith(self.World.RenderPlayer))
 				yield break;
@@ -90,11 +86,6 @@ namespace OpenRA.Mods.Common.Traits.Render
 				0,
 				Color.FromArgb(128, Color.Yellow),
 				Color.FromArgb(96, Color.Black));
-		}
-
-		IEnumerable<IRenderable> IRenderAboveShroudWhenSelected.RenderAboveShroud(Actor self, WorldRenderer wr)
-		{
-			return RangeCircleRenderables(wr);
 		}
 	}
 }

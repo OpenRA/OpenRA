@@ -55,32 +55,32 @@ namespace OpenRA.Mods.Common.Traits.Render
 			rs.Add(anim, info.Palette, info.IsPlayerPalette);
 		}
 
-		void INotifyBuildComplete.BuildingComplete(Actor self)
+		public void BuildingComplete(Actor self)
 		{
 			buildComplete = true;
 			visible = false;
 		}
 
-		void INotifySold.Sold(Actor self) { }
-		void INotifySold.Selling(Actor self)
+		public void Sold(Actor self) { }
+		public void Selling(Actor self)
 		{
 			buildComplete = false;
 		}
 
-		void INotifyTransform.BeforeTransform(Actor self)
+		public void BeforeTransform(Actor self)
 		{
 			buildComplete = false;
 		}
 
-		void INotifyTransform.OnTransform(Actor self) { }
-		void INotifyTransform.AfterTransform(Actor self) { }
+		public void OnTransform(Actor self) { }
+		public void AfterTransform(Actor self) { }
 
-		void INotifyDamageStateChanged.DamageStateChanged(Actor self, AttackInfo e)
+		public void DamageStateChanged(Actor self, AttackInfo e)
 		{
 			overlay.ReplaceAnim(RenderSprites.NormalizeSequence(overlay, e.DamageState, overlay.CurrentSequence.Name));
 		}
 
-		void INotifyBuildingPlaced.BuildingPlaced(Actor self)
+		public void BuildingPlaced(Actor self)
 		{
 			visible = true;
 			overlay.PlayThen(overlay.CurrentSequence.Name, () => visible = false);

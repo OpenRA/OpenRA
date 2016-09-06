@@ -25,17 +25,14 @@ namespace OpenRA.Mods.Common.Traits
 		public virtual object Create(ActorInitializer init) { return new DrawLineToTarget(init.Self, this); }
 	}
 
-	public class DrawLineToTarget : IRenderAboveShroudWhenSelected, INotifySelected, INotifyBecomingIdle
+	public class DrawLineToTarget : IPostRenderSelection, INotifySelected, INotifyBecomingIdle
 	{
-		readonly DrawLineToTargetInfo info;
-		List<Target> targets;
+		Actor self;
+		DrawLineToTargetInfo info;
 		Color c;
 		int lifetime;
 
-		public DrawLineToTarget(Actor self, DrawLineToTargetInfo info)
-		{
-			this.info = info;
-		}
+		public DrawLineToTarget(Actor self, DrawLineToTargetInfo info) { this.self = self; this.info = info; }
 
 		public void SetTarget(Actor self, Target target, Color c, bool display)
 		{
@@ -53,7 +50,7 @@ namespace OpenRA.Mods.Common.Traits
 				lifetime = info.Delay;
 		}
 
-		void INotifySelected.Selected(Actor a)
+		public void Selected(Actor a)
 		{
 			if (a.IsIdle)
 				return;
@@ -62,7 +59,7 @@ namespace OpenRA.Mods.Common.Traits
 			lifetime = info.Delay;
 		}
 
-		IEnumerable<IRenderable> IRenderAboveShroudWhenSelected.RenderAboveShroud(Actor self, WorldRenderer wr)
+		public IEnumerable<IRenderable> RenderAfterWorld(WorldRenderer wr)
 		{
 			var force = Game.GetModifierKeys().HasModifier(Modifiers.Alt);
 			if ((lifetime <= 0 || --lifetime <= 0) && !force)
@@ -88,7 +85,7 @@ namespace OpenRA.Mods.Common.Traits
 			return new[] { (IRenderable)new TargetLineRenderable(validTargets, c) };
 		}
 
-		void INotifyBecomingIdle.OnBecomingIdle(Actor a)
+		public void OnBecomingIdle(Actor a)
 		{
 		}
 	}

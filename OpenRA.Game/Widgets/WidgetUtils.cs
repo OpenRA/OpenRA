@@ -70,9 +70,7 @@ namespace OpenRA.Widgets
 
 		public static void FillEllipseWithColor(Rectangle r, Color c)
 		{
-			var tl = new float2(r.Left, r.Top);
-			var br = new float2(r.Right, r.Bottom);
-			Game.Renderer.RgbaColorRenderer.FillEllipse(tl, br, c);
+			Game.Renderer.RgbaColorRenderer.FillEllipse(new RectangleF(r.X, r.Y, r.Width, r.Height), c);
 		}
 
 		public static int[] GetBorderSizes(string collection)
@@ -249,12 +247,6 @@ namespace OpenRA.Widgets
 			}
 
 			return trimmed;
-		}
-
-		public static Color GetContrastColor(Color fgColor, Color bgDark, Color bgLight)
-		{
-			var fg = new HSLColor(fgColor);
-			return fg.RGB == Color.White || fg.L > 80 ? bgDark : bgLight;
 		}
 	}
 

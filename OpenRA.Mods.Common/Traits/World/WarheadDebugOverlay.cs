@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Common.Traits
 		public object Create(ActorInitializer init) { return new WarheadDebugOverlay(this); }
 	}
 
-	public class WarheadDebugOverlay : IRenderAboveWorld
+	public class WarheadDebugOverlay : IPostRender
 	{
 		class WHImpact
 		{
@@ -61,7 +61,7 @@ namespace OpenRA.Mods.Common.Traits
 			impacts.Add(new WHImpact(pos, range, info.DisplayDuration, color));
 		}
 
-		void IRenderAboveWorld.RenderAboveWorld(Actor self, WorldRenderer wr)
+		public void RenderAfterWorld(WorldRenderer wr, Actor self)
 		{
 			foreach (var i in impacts)
 			{
@@ -73,10 +73,11 @@ namespace OpenRA.Mods.Common.Traits
 
 				foreach (var r in i.Range)
 				{
-					var tl = wr.Screen3DPosition(i.CenterPosition - new WVec(r.Length, r.Length, 0));
-					var br = wr.Screen3DPosition(i.CenterPosition + new WVec(r.Length, r.Length, 0));
+					var tl = wr.ScreenPosition(i.CenterPosition - new WVec(r.Length, r.Length, 0));
+					var br = wr.ScreenPosition(i.CenterPosition + new WVec(r.Length, r.Length, 0));
+					var rect = RectangleF.FromLTRB(tl.X, tl.Y, br.X, br.Y);
 
-					Game.Renderer.WorldRgbaColorRenderer.FillEllipse(tl, br, Color.FromArgb((int)alpha, i.Color));
+					Game.Renderer.WorldRgbaColorRenderer.FillEllipse(rect, Color.FromArgb((int)alpha, i.Color));
 
 					alpha -= rangeStep;
 				}

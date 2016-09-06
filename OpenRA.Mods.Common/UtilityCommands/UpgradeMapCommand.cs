@@ -19,9 +19,9 @@ namespace OpenRA.Mods.Common.UtilityCommands
 {
 	class UpgradeMapCommand : IUtilityCommand
 	{
-		string IUtilityCommand.Name { get { return "--upgrade-map"; } }
+		public string Name { get { return "--upgrade-map"; } }
 
-		bool IUtilityCommand.ValidateArguments(string[] args)
+		public bool ValidateArguments(string[] args)
 		{
 			return args.Length >= 3;
 		}
@@ -75,10 +75,10 @@ namespace OpenRA.Mods.Common.UtilityCommands
 		}
 
 		[Desc("MAP", "CURRENTENGINE", "Upgrade map rules to the latest engine version.")]
-		void IUtilityCommand.Run(Utility utility, string[] args)
+		public void Run(ModData modData, string[] args)
 		{
 			// HACK: The engine code assumes that Game.modData is set.
-			var modData = Game.ModData = utility.ModData;
+			Game.ModData = modData;
 
 			// HACK: We know that maps can only be oramap or folders, which are ReadWrite
 			var package = modData.ModFiles.OpenPackage(args[1], new Folder(".")) as IReadWritePackage;

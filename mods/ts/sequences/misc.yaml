@@ -87,6 +87,9 @@ darken:
 pips:
 	medic:
 		Start: 6
+	groups: pipsra #TODO: backfall to RA asset
+		Start: 8
+		Length: 10
 	pip-empty: pips2
 	pip-green: pips2
 		Start: 1
@@ -126,37 +129,7 @@ explosion:
 	building: twlt070
 	ionring: ring1
 		BlendMode: Additive
-		Tick: 100
-	ionbeam: ionbeam
-		Offset: 0,-60
-		BlendMode: Additive
-		Length: *
-		Tick: 100
-	ionbeam2: ionbeam
-		Offset: 0,-180
-		BlendMode: Additive
-		Length: *
-		Tick: 100
-	ionbeam3: ionbeam
-		Offset: 0,-300
-		BlendMode: Additive
-		Length: *
-		Tick: 100
-	ionbeam4: ionbeam
-		Offset: 0,-420
-		BlendMode: Additive
-		Length: *
-		Tick: 100
-	ionbeam5: ionbeam
-		Offset: 0,-540
-		BlendMode: Additive
-		Length: *
-		Tick: 100
-	ionbeam6: ionbeam
-		Offset: 0,-660
-		BlendMode: Additive
-		Length: *
-		Tick: 100
+		Tick: 120
 	pulse_explosion: pulsefx2
 		BlendMode: Additive
 		Tick: 80
@@ -307,14 +280,14 @@ resources:
 	tib10: tib10
 	tib11: tib11
 	tib12: tib12
-	tib13: tib13 # TODO: NW ramp variant, currently unused
-	tib14: tib14 # TODO: NW ramp variant, currently unused
-	tib15: tib15 # TODO: NE ramp variant, currently unused
-	tib16: tib16 # TODO: NE ramp variant, currently unused
-	tib17: tib17 # TODO: SE ramp variant, currently unused
-	tib18: tib18 # TODO: SE ramp variant, currently unused
-	tib19: tib19 # TODO: SW ramp variant, currently unused
-	tib20: tib20 # TODO: SW ramp variant, currently unused
+	tib13: tib13
+	tib14: tib14
+	tib15: tib15
+	tib16: tib16
+	tib17: tib17
+	tib18: tib18
+	tib19: tib19
+	tib20: tib20
 	veins: veins
 		Length: 1
 		Start: 52
@@ -395,59 +368,76 @@ clustermissile:
 		Length: *
 	down: null # TODO
 		Length: *
-
 ionbeam:
 	idle:
 		Length: *
 		Offset: 0, -78
 		ZOffset: 1023
 
-ionring: 
-	idle: ring1
-		Length: *
-		ZOffset: -512
-		Tick: 120
-
-^rock:
+trock01:
 	idle:
 		ShadowStart: 1
 		UseTilesetExtension: true
 		Offset: 0, -12
 
-trock01:
-	Inherits: ^rock
-
 trock02:
-	Inherits: ^rock
+	idle:
+		ShadowStart: 1
+		UseTilesetExtension: true
+		Offset: 0, -12
 
 trock03:
-	Inherits: ^rock
+	idle:
+		ShadowStart: 1
+		UseTilesetExtension: true
+		Offset: 0, -12
 
 trock04:
-	Inherits: ^rock
+	idle:
+		ShadowStart: 1
+		UseTilesetExtension: true
+		Offset: 0, -12
 
 trock05:
-	Inherits: ^rock
+	idle:
+		ShadowStart: 1
+		UseTilesetExtension: true
+		Offset: 0, -12
 
 srock01:
-	Inherits: ^rock
+	idle:
+		ShadowStart: 1
+		UseTilesetExtension: true
+		Offset: 0, -12
 
 srock02:
-	Inherits: ^rock
+	idle:
+		ShadowStart: 1
+		UseTilesetExtension: true
+		Offset: 0, -12
 
 srock03:
-	Inherits: ^rock
+	idle:
+		ShadowStart: 1
+		UseTilesetExtension: true
+		Offset: 0, -12
 
 srock04:
-	Inherits: ^rock
+	idle:
+		ShadowStart: 1
+		UseTilesetExtension: true
+		Offset: 0, -12
 
 srock05:
-	Inherits: ^rock
+	idle:
+		ShadowStart: 1
+		UseTilesetExtension: true
+		Offset: 0, -12
 
 dbrissm:
 	Defaults:
 		ZOffset: 1023
-		Length: *
+		Length:*
 	1: dbris1sm
 	2: dbris2sm
 	3: dbris3sm
@@ -462,7 +452,7 @@ dbrissm:
 dbrislg:
 	Defaults:
 		ZOffset: 1023
-		Length: *
+		Length:*
 	1: dbris1lg
 	2: dbris2lg
 	3: dbris3lg
@@ -474,118 +464,136 @@ dbrislg:
 	9: dbris9lg
 	10: dbrs10lg
 
-^crate:
-	idle:
-		Offset: 0, 0, 12
-		DepthSprite: isodepth.shp
-
 crat01:
-	Inherits: ^crate
+	idle:
 
 crat02:
-	Inherits: ^crate
+	idle:
 
 crat03:
-	Inherits: ^crate
+	idle:
 
 crat04:
-	Inherits: ^crate
+	idle:
 
 crat0a:
-	Inherits: ^crate
+	idle:
 
 crat0b:
-	Inherits: ^crate
+	idle:
 
 crat0c:
-	Inherits: ^crate
+	idle:
 
 drum01:
-	Inherits: ^crate
+	idle:
 
 drum02:
-	Inherits: ^crate
+	idle:
 
 palet01:
-	Inherits: ^crate
+	idle:
 
 palet02:
-	Inherits: ^crate
+	idle:
 
 palet03:
-	Inherits: ^crate
+	idle:
 
 palet04:
-	Inherits: ^crate
+	idle:
 
-^tracks:
+tracks01:
 	idle:
 		UseTilesetExtension: true
 		ZOffset: -1c0
-		ZRamp: 1
-
-tracks01:
-	Inherits: ^tracks
 
 tracks02:
-	Inherits: ^tracks
+	idle:
+		UseTilesetExtension: true
+		ZOffset: -1c0
 
 tracks03:
-	Inherits: ^tracks
+	idle:
+		UseTilesetExtension: true
+		ZOffset: -1c0
 
 tracks04:
-	Inherits: ^tracks
+	idle:
+		UseTilesetExtension: true
+		ZOffset: -1c0
 
 tracks05:
-	Inherits: ^tracks
+	idle:
+		UseTilesetExtension: true
+		ZOffset: -1c0
 
 tracks06:
-	Inherits: ^tracks
+	idle:
+		UseTilesetExtension: true
+		ZOffset: -1c0
 
 tracks07:
-	Inherits: ^tracks
+	idle:
+		UseTilesetExtension: true
+		ZOffset: -1c0
 
 tracks08:
-	Inherits: ^tracks
+	idle:
+		UseTilesetExtension: true
+		ZOffset: -1c0
 
 tracks09:
-	Inherits: ^tracks
+	idle:
+		UseTilesetExtension: true
+		ZOffset: -1c0
 
 tracks10:
-	Inherits: ^tracks
+	idle:
+		UseTilesetExtension: true
+		ZOffset: -1c0
 
 tracks11:
-	Inherits: ^tracks
+	idle:
+		UseTilesetExtension: true
+		ZOffset: -1c0
 
 tracks12:
-	Inherits: ^tracks
+	idle:
+		UseTilesetExtension: true
+		ZOffset: -1c0
 
 tracks13:
-	Inherits: ^tracks
+	idle:
+		UseTilesetExtension: true
+		ZOffset: -1c0
 
 tracks14:
-	Inherits: ^tracks
+	idle:
+		UseTilesetExtension: true
+		ZOffset: -1c0
 
 tracks15:
-	Inherits: ^tracks
+	idle:
+		UseTilesetExtension: true
+		ZOffset: -1c0
 
 tracks16:
-	Inherits: ^tracks
+	idle:
+		UseTilesetExtension: true
+		ZOffset: -1c0
 
-^tuntop:
+tuntop01:
 	idle:
 		Offset: 0, -13
 		UseTilesetExtension: true
 		ShadowStart: 1
 
-tuntop01:
-	Inherits: ^tuntop
-
 tuntop02:
-	Inherits: ^tuntop
+	Inherits: tuntop01
 
 tuntop03:
-	Inherits: ^tuntop
+	Inherits: tuntop01
 
 tuntop04:
-	Inherits: ^tuntop
+	Inherits: tuntop01

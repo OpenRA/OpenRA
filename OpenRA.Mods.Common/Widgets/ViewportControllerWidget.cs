@@ -35,8 +35,6 @@ namespace OpenRA.Mods.Common.Widgets
 		public int EdgeCornerScrollThreshold = 35;
 
 		int2? joystickScrollStart, joystickScrollEnd;
-		int2? standardScrollStart;
-		bool isStandardScrolling;
 
 		static readonly Dictionary<ScrollDirection, string> ScrollCursors = new Dictionary<ScrollDirection, string>
 		{
@@ -210,13 +208,13 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public override string GetCursor(int2 pos)
 		{
-			if (!(IsJoystickScrolling || isStandardScrolling) &&
+			if (!IsJoystickScrolling &&
 				(!Game.Settings.Game.ViewportEdgeScroll || Ui.MouseOverWidget != this))
 				return null;
 
 			var blockedDirections = worldRenderer.Viewport.GetBlockedDirections();
 
-			if (IsJoystickScrolling || isStandardScrolling)
+			if (IsJoystickScrolling)
 			{
 				foreach (var dir in JoystickCursors)
 					if (blockedDirections.Includes(dir.Key))
@@ -236,7 +234,7 @@ namespace OpenRA.Mods.Common.Widgets
 			get
 			{
 				return joystickScrollStart.HasValue && joystickScrollEnd.HasValue &&
-					(joystickScrollStart.Value - joystickScrollEnd.Value).Length > Game.Settings.Game.MouseScrollDeadzone;
+					(joystickScrollStart.Value - joystickScrollEnd.Value).Length > Game.Settings.Game.JoystickScrollDeadzone;
 			}
 		}
 
@@ -287,24 +285,11 @@ namespace OpenRA.Mods.Common.Widgets
 
 			if (scrollType == MouseScrollType.Standard || scrollType == MouseScrollType.Inverted)
 			{
-				if (mi.Event == MouseInputEvent.Down && !isStandardScrolling)
-					standardScrollStart = mi.Location;
-				else if (mi.Event == MouseInputEvent.Move && (isStandardScrolling ||
-					(standardScrollStart.HasValue && ((standardScrollStart.Value - mi.Location).Length > Game.Settings.Game.MouseScrollDeadzone))))
+				if (mi.Event == MouseInputEvent.Move)
 				{
-					isStandardScrolling = true;
 					var d = scrollType == MouseScrollType.Inverted ? -1 : 1;
 					worldRenderer.Viewport.Scroll((Viewport.LastMousePos - mi.Location) * d, false);
 					return true;
-				}
-				else if (mi.Event == MouseInputEvent.Up)
-				{
-					var wasStandardScrolling = isStandardScrolling;
-					isStandardScrolling = false;
-					standardScrollStart = null;
-
-					if (wasStandardScrolling)
-						return true;
 				}
 			}
 

@@ -50,9 +50,9 @@ namespace OpenRA.Mods.Common.UtilityCommands
 		}
 
 		[Desc("MAPFILE", "Merge custom map rules into a form suitable for including in map.yaml.")]
-		void IUtilityCommand.Run(Utility utility, string[] args)
+		void IUtilityCommand.Run(ModData modData, string[] args)
 		{
-			var modData = Game.ModData = utility.ModData;
+			Game.ModData = modData;
 
 			var map = new Map(modData, modData.ModFiles.OpenPackage(args[1], new Folder(".")));
 			MergeAndPrint(map, "Rules", map.RuleDefinitions);

@@ -52,8 +52,8 @@ Player:
 			naobel: 3%
 		UnitsToBuild:
 			e1: 80%
-			e2: 25%
-			e3: 25%
+			e2: 8%
+			e3: 8%
 			cyborg: 15%
 			jumpjet: 15%
 			repair: 2%
@@ -70,6 +70,4 @@ Player:
 			stnk: 8%
 		UnitLimits:
 			harv: 12
-			medic: 3
-			repair: 3
 		SquadSize: 20

@@ -74,6 +74,7 @@ World:
 		ValidGround: Sand, Dune, Rock, SpiceSand
 		InitialSpawnDelay: 1500
 	DomainIndex:
+	PathfinderDebugOverlay:
 	WarheadDebugOverlay:
 	BuildableTerrainLayer:
 	D2kResourceLayer:

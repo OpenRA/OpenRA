@@ -12,7 +12,6 @@
 using System;
 using System.Drawing;
 using OpenRA.Graphics;
-using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Graphics
 {
@@ -22,26 +21,16 @@ namespace OpenRA.Mods.Common.Graphics
 		readonly WPos pos;
 		readonly int zOffset;
 		readonly Color color;
-		readonly Color bgDark;
-		readonly Color bgLight;
 		readonly string text;
 
-		public TextRenderable(SpriteFont font, WPos pos, int zOffset, Color color, Color bgDark, Color bgLight, string text)
+		public TextRenderable(SpriteFont font, WPos pos, int zOffset, Color color, string text)
 		{
 			this.font = font;
 			this.pos = pos;
 			this.zOffset = zOffset;
 			this.color = color;
-			this.bgDark = bgDark;
-			this.bgLight = bgLight;
 			this.text = text;
 		}
-
-		public TextRenderable(SpriteFont font, WPos pos, int zOffset, Color color, string text)
-			: this(font, pos, zOffset, color,
-			       ChromeMetrics.Get<Color>("TextContrastColorDark"),
-			       ChromeMetrics.Get<Color>("TextContrastColorLight"),
-			       text) { }
 
 		public WPos Pos { get { return pos; } }
 		public PaletteReference Palette { get { return null; } }
@@ -58,13 +47,13 @@ namespace OpenRA.Mods.Common.Graphics
 		{
 			var screenPos = wr.Viewport.Zoom * (wr.ScreenPosition(pos) - wr.Viewport.TopLeft.ToFloat2()) - 0.5f * font.Measure(text).ToFloat2();
 			var screenPxPos = new float2((float)Math.Round(screenPos.X), (float)Math.Round(screenPos.Y));
-			font.DrawTextWithContrast(text, screenPxPos, color, bgDark, bgLight, 1);
+			font.DrawTextWithContrast(text, screenPxPos, color, Color.Black, 1);
 		}
 
 		public void RenderDebugGeometry(WorldRenderer wr)
 		{
 			var size = font.Measure(text).ToFloat2();
-			var offset = wr.Screen3DPxPosition(pos) - 0.5f * size;
+			var offset = wr.ScreenPxPosition(pos) - 0.5f * size;
 			Game.Renderer.WorldRgbaColorRenderer.DrawRect(offset, offset + size, 1 / wr.Viewport.Zoom, Color.Red);
 		}
 

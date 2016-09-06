@@ -72,12 +72,3 @@ Gentoo
 * x11-misc/xdg-utils
 * gnome-extra/zenity
 * net-misc/curl
-
-OSX
-=====
-
-Use `make dependencies` to map the native libraries to your system.
-
-To compile OpenRA, run `make` from the command line.
-
-Run with `mono --debug OpenRA.Game.exe`.

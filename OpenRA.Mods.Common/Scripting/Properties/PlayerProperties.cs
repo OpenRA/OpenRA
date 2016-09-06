@@ -39,25 +39,18 @@ namespace OpenRA.Mods.Common.Scripting
 			get
 			{
 				Game.Debug("The property `PlayerProperties.Race` is deprecated! Use `PlayerProperties.Faction` instead!");
-				return Player.Faction.InternalName;
+				return Player.PlayerReference.Faction;
 			}
 		}
 
 		[Desc("The player's faction.")]
-		public string Faction { get { return Player.Faction.InternalName; } }
+		public string Faction { get { return Player.PlayerReference.Faction; } }
 
 		[Desc("The player's spawnpoint ID.")]
 		public int Spawn { get { return Player.SpawnPoint; } }
 
 		[Desc("The player's team ID.")]
-		public int Team
-		{
-			get
-			{
-				var c = Player.World.LobbyInfo.Clients.FirstOrDefault(i => i.Index == Player.ClientIndex);
-				return c != null ? c.Team : 0;
-			}
-		}
+		public int Team { get { return Player.PlayerReference.Team; } }
 
 		[Desc("Returns true if the player is a bot.")]
 		public bool IsBot { get { return Player.IsBot; } }

@@ -316,9 +316,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			};
 
 			var queryURL = Game.Settings.Server.MasterServer + "games?version={0}&mod={1}&modversion={2}".F(
-				Uri.EscapeUriString(Game.Mods["modchooser"].Metadata.Version),
-				Uri.EscapeUriString(Game.ModData.Manifest.Id),
-				Uri.EscapeUriString(Game.ModData.Manifest.Metadata.Version));
+				Uri.EscapeUriString(ModMetadata.AllMods["modchooser"].Version),
+				Uri.EscapeUriString(Game.ModData.Manifest.Mod.Id),
+				Uri.EscapeUriString(Game.ModData.Manifest.Mod.Version));
 
 			currentQuery = new Download(queryURL, _ => { }, onComplete);
 		}
@@ -330,7 +330,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				return 0;
 
 			// Games for the current mod+version are sorted first
-			if (testEntry.ModId == modData.Manifest.Id)
+			if (testEntry.ModId == modData.Manifest.Mod.Id)
 				return 2;
 
 			// Followed by games for different mods that are joinable

@@ -73,10 +73,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Red Alert Lua scripts", "Re
 		mods\ra\maps\fort-lonestar\fort-lonestar-AI.lua = mods\ra\maps\fort-lonestar\fort-lonestar-AI.lua
 		mods\ra\maps\fort-lonestar\fort-lonestar.lua = mods\ra\maps\fort-lonestar\fort-lonestar.lua
 		mods\ra\maps\intervention\intervention.lua = mods\ra\maps\intervention\intervention.lua
-		mods\ra\maps\infiltration\infiltration.lua = mods\ra\maps\infiltration\infiltration.lua
 		mods\ra\maps\monster-tank-madness\monster-tank-madness.lua = mods\ra\maps\monster-tank-madness\monster-tank-madness.lua
-		mods\ra\maps\evacuation\evacuation.lua = mods\ra\maps\evacuation\evacuation.lua
-		mods\ra\maps\exodus\exodus.lua = mods\ra\maps\exodus\exodus.lua
 		mods\ra\maps\soviet-01\soviet01.lua = mods\ra\maps\soviet-01\soviet01.lua
 		mods\ra\maps\soviet-02a\soviet02a.lua = mods\ra\maps\soviet-02a\soviet02a.lua
 		mods\ra\maps\soviet-02b\soviet02b.lua = mods\ra\maps\soviet-02b\soviet02b.lua
@@ -109,8 +106,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Dune 2000 Lua scripts", "Du
 		mods\d2k\maps\atreides-02b\atreides02b.lua = mods\d2k\maps\atreides-02b\atreides02b.lua
 		mods\d2k\maps\atreides-03a\atreides03a-AI.lua = mods\d2k\maps\atreides-03a\atreides03a-AI.lua
 		mods\d2k\maps\atreides-03a\atreides03a.lua = mods\d2k\maps\atreides-03a\atreides03a.lua
-		mods\d2k\maps\atreides-03b\atreides03b-AI.lua = mods\d2k\maps\atreides-03b\atreides03b-AI.lua
-		mods\d2k\maps\atreides-03b\atreides03b.lua = mods\d2k\maps\atreides-03b\atreides03b.lua
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "System Lua scripts", "System Lua scripts", "{A4D6AEA4-8009-4256-903B-8D227E50452B}"

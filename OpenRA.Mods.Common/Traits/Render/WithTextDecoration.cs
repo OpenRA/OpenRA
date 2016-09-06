@@ -54,28 +54,34 @@ namespace OpenRA.Mods.Common.Traits.Render
 		}
 	}
 
-	public class WithTextDecoration : UpgradableTrait<WithTextDecorationInfo>, IRender, IRenderAboveShroudWhenSelected, INotifyCapture
+	public class WithTextDecoration : UpgradableTrait<WithTextDecorationInfo>, IRender, IPostRenderSelection, INotifyCapture
 	{
+		readonly Actor self;
 		readonly SpriteFont font;
+
 		Color color;
 
 		public WithTextDecoration(Actor self, WithTextDecorationInfo info)
 			: base(info)
 		{
-			font = Game.Renderer.Fonts[info.Font];
+			this.self = self;
+
+			if (!Game.Renderer.Fonts.TryGetValue(info.Font, out font))
+				throw new YamlException("Font '{0}' is not listed in the mod.yaml's Fonts section".F(info.Font));
+
 			color = Info.UsePlayerColor ? self.Owner.Color.RGB : Info.Color;
 		}
 
 		public virtual bool ShouldRender(Actor self) { return true; }
 
-		IEnumerable<IRenderable> IRender.Render(Actor self, WorldRenderer wr)
+		public IEnumerable<IRenderable> Render(Actor self, WorldRenderer wr)
 		{
-			return !Info.RequiresSelection ? RenderInner(self, wr) : SpriteRenderable.None;
+			return !Info.RequiresSelection ? RenderInner(self, wr) : Enumerable.Empty<IRenderable>();
 		}
 
-		IEnumerable<IRenderable> IRenderAboveShroudWhenSelected.RenderAboveShroud(Actor self, WorldRenderer wr)
+		public IEnumerable<IRenderable> RenderAfterWorld(WorldRenderer wr)
 		{
-			return Info.RequiresSelection ? RenderInner(self, wr) : SpriteRenderable.None;
+			return Info.RequiresSelection ? RenderInner(self, wr) : Enumerable.Empty<IRenderable>();
 		}
 
 		IEnumerable<IRenderable> RenderInner(Actor self, WorldRenderer wr)

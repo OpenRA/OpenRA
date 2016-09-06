@@ -17,18 +17,12 @@ namespace OpenRA.Mods.Common.Activities
 	public class HeliLand : Activity
 	{
 		readonly Aircraft helicopter;
-		readonly WDist landAltitude;
-		readonly bool requireSpace;
-
+		bool requireSpace;
 		bool playedSound;
 
 		public HeliLand(Actor self, bool requireSpace)
-			: this(self, requireSpace, self.Info.TraitInfo<AircraftInfo>().LandAltitude) { }
-
-		public HeliLand(Actor self, bool requireSpace, WDist landAltitude)
 		{
 			this.requireSpace = requireSpace;
-			this.landAltitude = landAltitude;
 			helicopter = self.Trait<Aircraft>();
 		}
 
@@ -46,7 +40,7 @@ namespace OpenRA.Mods.Common.Activities
 				playedSound = true;
 			}
 
-			if (HeliFly.AdjustAltitude(self, helicopter, landAltitude))
+			if (HeliFly.AdjustAltitude(self, helicopter, helicopter.Info.LandAltitude))
 				return this;
 
 			return NextActivity;

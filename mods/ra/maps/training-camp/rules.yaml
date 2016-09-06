@@ -11,9 +11,9 @@ World:
 
 Player:
 	ClassicProductionQueue@Infantry:
-		BuildDurationModifier: 250
+		BuildSpeed: 100
 	ClassicProductionQueue@Vehicle:
-		BuildDurationModifier: 250
+		BuildSpeed: 100
 	Shroud:
 		FogLocked: True
 		FogEnabled: True

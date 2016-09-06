@@ -18,20 +18,20 @@ namespace OpenRA.Mods.Common.UtilityCommands
 {
 	class ExtractLanguageStringsCommand : IUtilityCommand
 	{
-		string IUtilityCommand.Name { get { return "--extract-language-strings"; } }
+		public string Name { get { return "--extract-language-strings"; } }
 
-		bool IUtilityCommand.ValidateArguments(string[] args)
+		public bool ValidateArguments(string[] args)
 		{
 			return true;
 		}
 
 		[Desc("Extract translatable strings that are not yet localized and update chrome layout.")]
-		void IUtilityCommand.Run(Utility utility, string[] args)
+		public void Run(ModData modData, string[] args)
 		{
 			// HACK: The engine code assumes that Game.modData is set.
-			var modData = Game.ModData = utility.ModData;
+			Game.ModData = modData;
 
-			var types = modData.ObjectCreator.GetTypes();
+			var types = Game.ModData.ObjectCreator.GetTypes();
 			var translatableFields = types.SelectMany(t => t.GetFields())
 				.Where(f => f.HasAttribute<TranslateAttribute>()).Distinct();
 

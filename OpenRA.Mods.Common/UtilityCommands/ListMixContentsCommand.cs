@@ -18,23 +18,23 @@ namespace OpenRA.Mods.Common.UtilityCommands
 {
 	class ListMixContents : IUtilityCommand
 	{
-		string IUtilityCommand.Name { get { return "--list-mix"; } }
+		public string Name { get { return "--list-mix"; } }
 
-		bool IUtilityCommand.ValidateArguments(string[] args)
+		public bool ValidateArguments(string[] args)
 		{
 			return args.Length == 2;
 		}
 
 		[Desc("ARCHIVE.MIX", "Lists the content ranges for a mix file")]
-		void IUtilityCommand.Run(Utility utility, string[] args)
+		public void Run(ModData modData, string[] args)
 		{
 			var filename = Path.GetFileName(args[1]);
 			var path = Path.GetDirectoryName(args[1]);
 
-			var fs = new FileSystem.FileSystem(utility.Mods);
+			var fs = new OpenRA.FileSystem.FileSystem();
 
 			// Needed to access the global mix database
-			fs.LoadFromManifest(utility.ModData.Manifest);
+			fs.LoadFromManifest(modData.Manifest);
 
 			fs.Mount(path, "parent");
 			var package = new MixFile(fs, "parent|" + filename);

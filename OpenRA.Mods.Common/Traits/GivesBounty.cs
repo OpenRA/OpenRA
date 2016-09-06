@@ -38,53 +38,24 @@ namespace OpenRA.Mods.Common.Traits
 		public object Create(ActorInitializer init) { return new GivesBounty(init.Self, this); }
 	}
 
-	class GivesBounty : INotifyKilled, INotifyCreated
+	class GivesBounty : INotifyKilled
 	{
 		readonly GivesBountyInfo info;
-		GainsExperience gainsExp;
-		Cargo cargo;
 
 		public GivesBounty(Actor self, GivesBountyInfo info)
 		{
 			this.info = info;
 		}
 
-		void INotifyCreated.Created(Actor self)
+		int GetMultiplier(Actor self)
 		{
-			gainsExp = self.TraitOrDefault<GainsExperience>();
-			cargo = self.TraitOrDefault<Cargo>();
-		}
-
-		// Returns 100's as 1, so as to keep accuracy for longer.
-		int GetMultiplier()
-		{
+			// returns 100's as 1, so as to keep accuracy for longer.
+			var gainsExp = self.TraitOrDefault<GainsExperience>();
 			if (gainsExp == null)
 				return 100;
 
 			var slevel = gainsExp.Level;
 			return (slevel > 0) ? slevel * info.LevelMod : 100;
-		}
-
-		int GetBountyValue(Actor self)
-		{
-			// Divide by 10000 because of GetMultiplier and info.Percentage.
-			return self.GetSellValue() * GetMultiplier() * info.Percentage / 10000;
-		}
-
-		int GetDisplayedBountyValue(Actor self)
-		{
-			var bounty = GetBountyValue(self);
-			if (cargo == null)
-				return bounty;
-
-			foreach (var a in cargo.Passengers)
-			{
-				var givesBounty = a.TraitOrDefault<GivesBounty>();
-				if (givesBounty != null)
-					bounty += givesBounty.GetDisplayedBountyValue(a);
-			}
-
-			return bounty;
 		}
 
 		void INotifyKilled.Killed(Actor self, AttackInfo e)
@@ -98,11 +69,15 @@ namespace OpenRA.Mods.Common.Traits
 			if (info.DeathTypes.Count > 0 && !e.Damage.DamageTypes.Overlaps(info.DeathTypes))
 				return;
 
-			var displayedBounty = GetDisplayedBountyValue(self);
-			if (info.ShowBounty && self.IsInWorld && displayedBounty > 0 && e.Attacker.Owner.IsAlliedWith(self.World.RenderPlayer))
-				e.Attacker.World.AddFrameEndTask(w => w.Add(new FloatingText(self.CenterPosition, e.Attacker.Owner.Color.RGB, FloatingText.FormatCashTick(displayedBounty), 30)));
+			var cost = self.GetSellValue();
 
-			e.Attacker.Owner.PlayerActor.Trait<PlayerResources>().GiveCash(GetBountyValue(self));
+			// 2 hundreds because of GetMultiplier and info.Percentage.
+			var bounty = cost * GetMultiplier(self) * info.Percentage / 10000;
+
+			if (info.ShowBounty && bounty > 0 && e.Attacker.Owner.IsAlliedWith(self.World.RenderPlayer))
+				e.Attacker.World.AddFrameEndTask(w => w.Add(new FloatingText(self.CenterPosition, e.Attacker.Owner.Color.RGB, FloatingText.FormatCashTick(bounty), 30)));
+
+			e.Attacker.Owner.PlayerActor.Trait<PlayerResources>().GiveCash(bounty);
 		}
 	}
 }

@@ -19,6 +19,4 @@ namespace OpenRA.Effects
 		void Tick(World world);
 		IEnumerable<IRenderable> Render(WorldRenderer r);
 	}
-
-	public interface IEffectAboveShroud { IEnumerable<IRenderable> RenderAboveShroud(WorldRenderer wr); }
 }

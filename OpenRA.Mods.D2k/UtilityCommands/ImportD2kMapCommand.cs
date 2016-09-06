@@ -17,21 +17,21 @@ namespace OpenRA.Mods.D2k.UtilityCommands
 {
 	class ImportD2kMapCommand : IUtilityCommand
 	{
-		string IUtilityCommand.Name { get { return "--import-d2k-map"; } }
+		public string Name { get { return "--import-d2k-map"; } }
 
-		bool IUtilityCommand.ValidateArguments(string[] args)
+		public bool ValidateArguments(string[] args)
 		{
 			return args.Length >= 3;
 		}
 
 		[Desc("FILENAME", "TILESET", "Convert a legacy Dune 2000 MAP file to the OpenRA format.")]
-		void IUtilityCommand.Run(Utility utility, string[] args)
+		public void Run(ModData modData, string[] args)
 		{
 			// HACK: The engine code assumes that Game.modData is set.
-			Game.ModData = utility.ModData;
+			Game.ModData = modData;
 
-			var rules = Ruleset.LoadDefaultsForTileSet(utility.ModData, "ARRAKIS");
-			var map = D2kMapImporter.Import(args[1], utility.ModData.Manifest.Id, args[2], rules);
+			var rules = Ruleset.LoadDefaultsForTileSet(modData, "ARRAKIS");
+			var map = D2kMapImporter.Import(args[1], modData.Manifest.Mod.Id, args[2], rules);
 
 			if (map == null)
 				return;

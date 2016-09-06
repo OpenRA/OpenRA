@@ -55,15 +55,17 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public override object Create(ActorInitializer init) { return new WithDecoration(init.Self, this); }
 	}
 
-	public class WithDecoration : UpgradableTrait<WithDecorationInfo>, ITick, IRender, IRenderAboveShroudWhenSelected
+	public class WithDecoration : UpgradableTrait<WithDecorationInfo>, ITick, IRender, IPostRenderSelection
 	{
 		protected readonly Animation Anim;
 
 		readonly string image;
+		readonly Actor self;
 
 		public WithDecoration(Actor self, WithDecorationInfo info)
 			: base(info)
 		{
+			this.self = self;
 			image = info.Image ?? self.Info.Name;
 			Anim = new Animation(self.World, image, () => self.World.Paused);
 			Anim.PlayRepeating(info.Sequence);
@@ -71,14 +73,14 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		public virtual bool ShouldRender(Actor self) { return true; }
 
-		IEnumerable<IRenderable> IRender.Render(Actor self, WorldRenderer wr)
+		public IEnumerable<IRenderable> Render(Actor self, WorldRenderer wr)
 		{
-			return !Info.RequiresSelection ? RenderInner(self, wr) : SpriteRenderable.None;
+			return !Info.RequiresSelection ? RenderInner(self, wr) : Enumerable.Empty<IRenderable>();
 		}
 
-		IEnumerable<IRenderable> IRenderAboveShroudWhenSelected.RenderAboveShroud(Actor self, WorldRenderer wr)
+		public IEnumerable<IRenderable> RenderAfterWorld(WorldRenderer wr)
 		{
-			return Info.RequiresSelection ? RenderInner(self, wr) : SpriteRenderable.None;
+			return Info.RequiresSelection ? RenderInner(self, wr) : Enumerable.Empty<IRenderable>();
 		}
 
 		IEnumerable<IRenderable> RenderInner(Actor self, WorldRenderer wr)
@@ -127,6 +129,6 @@ namespace OpenRA.Mods.Common.Traits.Render
 			return new IRenderable[] { new UISpriteRenderable(Anim.Image, self.CenterPosition, pxPos, Info.ZOffset, wr.Palette(Info.Palette), 1f) };
 		}
 
-		void ITick.Tick(Actor self) { Anim.Tick(); }
+		public void Tick(Actor self) { Anim.Tick(); }
 	}
 }

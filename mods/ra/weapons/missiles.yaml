@@ -61,7 +61,7 @@ Dragon:
 			None: 10
 			Wood: 75
 			Light: 35
-			Concrete: 50
+			Concrete: 20
 		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater

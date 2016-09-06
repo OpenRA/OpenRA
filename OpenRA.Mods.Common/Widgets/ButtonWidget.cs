@@ -36,16 +36,13 @@ namespace OpenRA.Mods.Common.Widgets
 		public Color TextColor = ChromeMetrics.Get<Color>("ButtonTextColor");
 		public Color TextColorDisabled = ChromeMetrics.Get<Color>("ButtonTextColorDisabled");
 		public bool Contrast = ChromeMetrics.Get<bool>("ButtonTextContrast");
-		public bool Shadow = ChromeMetrics.Get<bool>("ButtonTextShadow");
-		public Color ContrastColorDark = ChromeMetrics.Get<Color>("ButtonTextContrastColorDark");
-		public Color ContrastColorLight = ChromeMetrics.Get<Color>("ButtonTextContrastColorLight");
+		public Color ContrastColor = ChromeMetrics.Get<Color>("ButtonTextContrastColor");
 		public bool Disabled = false;
 		public bool Highlighted = false;
 		public Func<string> GetText;
 		public Func<Color> GetColor;
 		public Func<Color> GetColorDisabled;
-		public Func<Color> GetContrastColorDark;
-		public Func<Color> GetContrastColorLight;
+		public Func<Color> GetContrastColor;
 		public Func<bool> IsDisabled;
 		public Func<bool> IsHighlighted;
 		public Action<MouseInput> OnMouseDown = _ => { };
@@ -70,8 +67,7 @@ namespace OpenRA.Mods.Common.Widgets
 			GetText = () => Text;
 			GetColor = () => TextColor;
 			GetColorDisabled = () => TextColorDisabled;
-			GetContrastColorDark = () => ContrastColorDark;
-			GetContrastColorLight = () => ContrastColorLight;
+			GetContrastColor = () => ContrastColor;
 			OnMouseUp = _ => OnClick();
 			OnKeyPress = _ => OnClick();
 			IsDisabled = () => Disabled;
@@ -92,17 +88,14 @@ namespace OpenRA.Mods.Common.Widgets
 			TextColor = other.TextColor;
 			TextColorDisabled = other.TextColorDisabled;
 			Contrast = other.Contrast;
-			Shadow = other.Shadow;
+			ContrastColor = other.ContrastColor;
 			Depressed = other.Depressed;
 			Background = other.Background;
 			VisualHeight = other.VisualHeight;
 			GetText = other.GetText;
 			GetColor = other.GetColor;
 			GetColorDisabled = other.GetColorDisabled;
-			ContrastColorDark = other.ContrastColorDark;
-			ContrastColorLight = other.ContrastColorLight;
-			GetContrastColorDark = other.GetContrastColorDark;
-			GetContrastColorLight = other.GetContrastColorLight;
+			GetContrastColor = other.GetContrastColor;
 			OnMouseDown = other.OnMouseDown;
 			Disabled = other.Disabled;
 			IsDisabled = other.IsDisabled;
@@ -220,12 +213,12 @@ namespace OpenRA.Mods.Common.Widgets
 			var rb = RenderBounds;
 			var disabled = IsDisabled();
 			var highlighted = IsHighlighted();
+
 			var font = Game.Renderer.Fonts[Font];
 			var text = GetText();
 			var color = GetColor();
 			var colordisabled = GetColorDisabled();
-			var bgDark = GetContrastColorDark();
-			var bgLight = GetContrastColorLight();
+			var contrast = GetContrastColor();
 			var s = font.Measure(text);
 			var stateOffset = Depressed ? new int2(VisualHeight, VisualHeight) : new int2(0, 0);
 			var position = new int2(rb.X + (UsableWidth - s.X) / 2, rb.Y - BaseLine + (Bounds.Height - s.Y) / 2);
@@ -233,9 +226,7 @@ namespace OpenRA.Mods.Common.Widgets
 			DrawBackground(rb, disabled, Depressed, Ui.MouseOverWidget == this, highlighted);
 			if (Contrast)
 				font.DrawTextWithContrast(text, position + stateOffset,
-					disabled ? colordisabled : color, bgDark, bgLight, 2);
-			else if (Shadow)
-				font.DrawTextWithShadow(text, position, color, bgDark, bgLight, 1);
+					disabled ? colordisabled : color, contrast, 2);
 			else
 				font.DrawText(text, position + stateOffset,
 					disabled ? colordisabled : color);

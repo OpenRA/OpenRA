@@ -28,9 +28,9 @@ namespace OpenRA.Mods.Common.UtilityCommands
 		int violationCount;
 
 		[Desc("Check for explicit interface implementation violations in all assemblies referenced by the specified mod.")]
-		void IUtilityCommand.Run(Utility utility, string[] args)
+		void IUtilityCommand.Run(ModData modData, string[] args)
 		{
-			var types = utility.ModData.ObjectCreator.GetTypes();
+			var types = modData.ObjectCreator.GetTypes();
 
 			foreach (var implementingType in types.Where(t => !t.IsInterface))
 			{

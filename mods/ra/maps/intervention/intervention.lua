@@ -11,7 +11,7 @@ BeachheadTrigger =
 
 Difficulty = Map.LobbyOption("difficulty")
 
-if Difficulty == "normal" then
+if Difficulty == "medium" then
 	BaseRaidInterval = DateTime.Minutes(3)
 	BaseFrontAttackInterval = DateTime.Minutes(3) + DateTime.Seconds(30)
 	BaseRearAttackInterval = DateTime.Minutes(8)

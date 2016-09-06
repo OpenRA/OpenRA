@@ -10,13 +10,14 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Linq;
 using OpenRA.Effects;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
 
 namespace OpenRA.Mods.Common.Effects
 {
-	class RallyPointIndicator : IEffect, IEffectAboveShroud
+	class RallyPointIndicator : IEffect
 	{
 		readonly Actor building;
 		readonly RallyPoint rp;
@@ -40,7 +41,7 @@ namespace OpenRA.Mods.Common.Effects
 			circles.Play(rp.Info.CirclesSequence);
 		}
 
-		void IEffect.Tick(World world)
+		public void Tick(World world)
 		{
 			flag.Tick();
 			circles.Tick();
@@ -75,9 +76,7 @@ namespace OpenRA.Mods.Common.Effects
 				world.AddFrameEndTask(w => w.Remove(this));
 		}
 
-		IEnumerable<IRenderable> IEffect.Render(WorldRenderer wr) { return SpriteRenderable.None; }
-
-		IEnumerable<IRenderable> IEffectAboveShroud.RenderAboveShroud(WorldRenderer wr)
+		public IEnumerable<IRenderable> Render(WorldRenderer wr)
 		{
 			if (!building.IsInWorld || !building.Owner.IsAlliedWith(building.World.LocalPlayer))
 				return SpriteRenderable.None;

@@ -42,8 +42,6 @@ namespace OpenRA.Mods.Common.Traits
 			return Color.Yellow;
 		}
 
-		bool ISelectionBar.DisplayWhenEmpty { get { return false; } }
-
 		public int GetPowerModifier()
 		{
 			return playerPower.PowerOutageRemainingTicks > 0 ? 0 : 100;

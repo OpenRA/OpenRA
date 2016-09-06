@@ -17,18 +17,18 @@ namespace OpenRA.Mods.Common.UtilityCommands
 {
 	class CheckSquenceSprites : IUtilityCommand
 	{
-		string IUtilityCommand.Name { get { return "--check-sequence-sprites"; } }
+		public string Name { get { return "--check-sequence-sprites"; } }
 
-		bool IUtilityCommand.ValidateArguments(string[] args)
+		public bool ValidateArguments(string[] args)
 		{
 			return true;
 		}
 
 		[Desc("Check the sequence definitions for missing sprite files.")]
-		void IUtilityCommand.Run(Utility utility, string[] args)
+		public void Run(ModData modData, string[] args)
 		{
 			// HACK: The engine code assumes that Game.modData is set.
-			var modData = Game.ModData = utility.ModData;
+			Game.ModData = modData;
 
 			var failed = false;
 			modData.SpriteSequenceLoader.OnMissingSpriteError = s => { Console.WriteLine("\t" + s); failed = true; };
@@ -39,7 +39,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				Console.WriteLine("Tileset: " + ts.Name);
 				var sc = new SpriteCache(modData.DefaultFileSystem, modData.SpriteLoaders, new SheetBuilder(SheetType.Indexed));
 				var nodes = MiniYaml.Merge(modData.Manifest.Sequences.Select(s => MiniYaml.FromStream(modData.DefaultFileSystem.Open(s), s)));
-				foreach (var n in nodes.Where(node => !node.Key.StartsWith("^")))
+				foreach (var n in nodes)
 					modData.SpriteSequenceLoader.ParseSequences(modData, ts, sc, n);
 			}
 

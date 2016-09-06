@@ -10,7 +10,7 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using OpenRA.Widgets;
 
@@ -21,32 +21,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly ModContent content;
 		readonly ScrollPanelWidget scrollPanel;
 		readonly Widget template;
-
-		readonly Dictionary<string, ModContent.ModSource> sources = new Dictionary<string, ModContent.ModSource>();
-		readonly Dictionary<string, ModContent.ModDownload> downloads = new Dictionary<string, ModContent.ModDownload>();
-
 		bool discAvailable;
 
 		[ObjectCreator.UseCtor]
-		public ModContentLogic(Widget widget, Manifest mod, ModContent content, Action onCancel)
+		public ModContentLogic(Widget widget, string modId, Action onCancel)
 		{
-			this.content = content;
-
 			var panel = widget.Get("CONTENT_PANEL");
 
-			var modFileSystem = new FileSystem.FileSystem(Game.Mods);
-			modFileSystem.LoadFromManifest(mod);
-
-			var sourceYaml = MiniYaml.Load(modFileSystem, content.Sources, null);
-			foreach (var s in sourceYaml)
-				sources.Add(s.Key, new ModContent.ModSource(s.Value));
-
-			var downloadYaml = MiniYaml.Load(modFileSystem, content.Downloads, null);
-			foreach (var d in downloadYaml)
-				downloads.Add(d.Key, new ModContent.ModDownload(d.Value));
-
-			modFileSystem.UnmountAll();
-
+			content = ModMetadata.AllMods[modId].ModContent;
 			scrollPanel = panel.Get<ScrollPanelWidget>("PACKAGES");
 			template = scrollPanel.Get<ContainerWidget>("PACKAGE_TEMPLATE");
 
@@ -74,7 +56,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			discButton.OnClick = () => Ui.OpenWindow("DISC_INSTALL_PANEL", new WidgetArgs
 			{
 				{ "afterInstall", () => { } },
-				{ "sources", sources },
 				{ "content", content }
 			});
 
@@ -106,9 +87,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				requiredWidget.IsVisible = () => p.Value.Required;
 
 				var sourceWidget = container.Get<ImageWidget>("DISC");
-				var sourceTitles = p.Value.Sources.Select(s => sources[s].Title).Distinct();
-				var sourceList = sourceTitles.JoinWith("\n");
-				var isSourceAvailable = sourceTitles.Any();
+				var sources = p.Value.Sources.Select(s => content.Sources[s].Title).Distinct();
+				var sourceList = sources.JoinWith("\n");
+				var isSourceAvailable = sources.Any();
 				sourceWidget.GetTooltipText = () => sourceList;
 				sourceWidget.IsVisible = () => isSourceAvailable;
 
@@ -119,9 +100,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				if (downloadEnabled)
 				{
+					var download = content.Downloads[p.Value.Download];
 					var widgetArgs = new WidgetArgs
 					{
-						{ "download", downloads[p.Value.Download] },
+						{ "download", download },
 						{ "onSuccess", () => { } }
 					};
 

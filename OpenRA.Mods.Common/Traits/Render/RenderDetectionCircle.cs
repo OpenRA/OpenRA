@@ -35,17 +35,19 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public object Create(ActorInitializer init) { return new RenderDetectionCircle(init.Self, this); }
 	}
 
-	class RenderDetectionCircle : ITick, IRenderAboveShroudWhenSelected
+	class RenderDetectionCircle : ITick, IPostRenderSelection
 	{
 		readonly RenderDetectionCircleInfo info;
+		readonly Actor self;
 		WAngle lineAngle;
 
 		public RenderDetectionCircle(Actor self, RenderDetectionCircleInfo info)
 		{
 			this.info = info;
+			this.self = self;
 		}
 
-		IEnumerable<IRenderable> IRenderAboveShroudWhenSelected.RenderAboveShroud(Actor self, WorldRenderer wr)
+		public IEnumerable<IRenderable> RenderAfterWorld(WorldRenderer wr)
 		{
 			if (!self.Owner.IsAlliedWith(self.World.RenderPlayer))
 				yield break;
@@ -69,7 +71,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 				info.ContrastColor);
 		}
 
-		void ITick.Tick(Actor self)
+		public void Tick(Actor self)
 		{
 			lineAngle += info.UpdateLineTick;
 		}

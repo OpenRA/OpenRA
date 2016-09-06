@@ -19,9 +19,9 @@ namespace OpenRA.Mods.Common.UtilityCommands
 {
 	class UpgradeModCommand : IUtilityCommand
 	{
-		string IUtilityCommand.Name { get { return "--upgrade-mod"; } }
+		public string Name { get { return "--upgrade-mod"; } }
 
-		bool IUtilityCommand.ValidateArguments(string[] args)
+		public bool ValidateArguments(string[] args)
 		{
 			return args.Length >= 2;
 		}
@@ -53,10 +53,10 @@ namespace OpenRA.Mods.Common.UtilityCommands
 		}
 
 		[Desc("CURRENTENGINE", "Upgrade mod rules to the latest engine version.")]
-		void IUtilityCommand.Run(Utility utility, string[] args)
+		public void Run(ModData modData, string[] args)
 		{
 			// HACK: The engine code assumes that Game.modData is set.
-			var modData = Game.ModData = utility.ModData;
+			Game.ModData = modData;
 			modData.MapCache.LoadMaps();
 
 			var engineDate = Exts.ParseIntegerInvariant(args[1]);

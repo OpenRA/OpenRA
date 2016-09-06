@@ -15,17 +15,16 @@ namespace OpenRA.Mods.Common.UtilityCommands
 		}
 
 		[Desc("ACTOR-TYPE [PATH/TO/MAP]", "Display the finalized, merged MiniYaml tree for the given actor type. Input values are case-sensitive.")]
-		void IUtilityCommand.Run(Utility utility, string[] args)
+		void IUtilityCommand.Run(ModData modData, string[] args)
 		{
 			// HACK: The engine code assumes that Game.modData is set.
-			var modData = Game.ModData = utility.ModData;
+			Game.ModData = modData;
 
 			var actorType = args[1];
 			string mapPath = null;
 
 			Map map = null;
 			if (args.Length == 3)
-			{
 				try
 				{
 					mapPath = args[2];
@@ -36,7 +35,6 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					Console.WriteLine("Could not load map '{0}'.", mapPath);
 					Environment.Exit(2);
 				}
-			}
 
 			var fs = map ?? modData.DefaultFileSystem;
 			var topLevelNodes = MiniYaml.Load(fs, modData.Manifest.Rules, map == null ? null : map.RuleDefinitions);

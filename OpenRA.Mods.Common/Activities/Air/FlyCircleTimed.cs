@@ -18,7 +18,7 @@ namespace OpenRA.Mods.Common.Activities
 	{
 		int remainingTicks;
 
-		public FlyCircleTimed(Actor self, int ticks) : base(self)
+		public FlyCircleTimed(int ticks, Actor self) : base(self)
 		{
 			remainingTicks = ticks;
 		}

@@ -66,11 +66,9 @@ namespace OpenRA.Mods.Common.Activities
 			if (insideMaxRange && !insideMinRange)
 				return NextActivity;
 
+			// Close enough (ported from old code which checked length against sqrt(50) px)
 			var d = target.CenterPosition - self.CenterPosition;
-
-			// The next move would overshoot, so consider it close enough
-			var move = plane.FlyStep(plane.Facing);
-			if (d.HorizontalLengthSquared < move.HorizontalLengthSquared)
+			if (d.HorizontalLengthSquared < 91022)
 				return NextActivity;
 
 			// Don't turn until we've reached the cruise altitude

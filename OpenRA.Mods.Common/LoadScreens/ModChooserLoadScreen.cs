@@ -11,6 +11,7 @@
 
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using OpenRA.Graphics;
 using OpenRA.Widgets;
 
@@ -56,11 +57,6 @@ namespace OpenRA.Mods.Common.LoadScreens
 		{
 			if (sprite != null)
 				sprite.Sheet.Dispose();
-		}
-
-		public bool RequiredContentIsInstalled()
-		{
-			return true;
 		}
 	}
 }

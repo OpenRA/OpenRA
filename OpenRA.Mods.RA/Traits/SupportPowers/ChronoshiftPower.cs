@@ -151,7 +151,7 @@ namespace OpenRA.Mods.RA.Traits
 					world.CancelInputMode();
 			}
 
-			public IEnumerable<IRenderable> RenderAboveShroud(WorldRenderer wr, World world)
+			public IEnumerable<IRenderable> RenderAfterWorld(WorldRenderer wr, World world)
 			{
 				var xy = wr.Viewport.ViewToWorld(Viewport.LastMousePos);
 				var targetUnits = power.UnitsInRange(xy).Where(a => !world.FogObscures(a));
@@ -236,19 +236,36 @@ namespace OpenRA.Mods.RA.Traits
 					world.CancelInputMode();
 			}
 
-			public IEnumerable<IRenderable> RenderAboveShroud(WorldRenderer wr, World world)
+			public IEnumerable<IRenderable> RenderAfterWorld(WorldRenderer wr, World world)
+			{
+				foreach (var unit in power.UnitsInRange(sourceLocation))
+					if (manager.Self.Owner.CanTargetActor(unit))
+						yield return new SelectionBoxRenderable(unit, Color.Red);
+			}
+
+			public IEnumerable<IRenderable> Render(WorldRenderer wr, World world)
 			{
 				var xy = wr.Viewport.ViewToWorld(Viewport.LastMousePos);
 				var palette = wr.Palette(power.Info.IconPalette);
 
+				// Source tiles
+				foreach (var t in world.Map.FindTilesInCircle(sourceLocation, range))
+					yield return new SpriteRenderable(sourceTile, wr.World.Map.CenterOfCell(t), WVec.Zero, -511, palette, 1f, true);
+
 				// Destination tiles
 				foreach (var t in world.Map.FindTilesInCircle(xy, range))
-				{
-					var tile = manager.Self.Owner.Shroud.IsExplored(t) ? validTile : invalidTile;
-					yield return new SpriteRenderable(tile, wr.World.Map.CenterOfCell(t), WVec.Zero, -511, palette, 1f, true);
-				}
+					yield return new SpriteRenderable(sourceTile, wr.World.Map.CenterOfCell(t), WVec.Zero, -511, palette, 1f, true);
 
 				// Unit previews
+				foreach (var unit in power.UnitsInRange(sourceLocation))
+				{
+					var offset = world.Map.CenterOfCell(xy) - world.Map.CenterOfCell(sourceLocation);
+					if (manager.Self.Owner.CanTargetActor(unit))
+						foreach (var r in unit.Render(wr))
+							yield return r.OffsetBy(offset);
+				}
+
+				// Unit tiles
 				foreach (var unit in power.UnitsInRange(sourceLocation))
 				{
 					if (manager.Self.Owner.CanTargetActor(unit))
@@ -259,25 +276,7 @@ namespace OpenRA.Mods.RA.Traits
 						var tile = canEnter ? validTile : invalidTile;
 						yield return new SpriteRenderable(tile, wr.World.Map.CenterOfCell(targetCell), WVec.Zero, -511, palette, 1f, true);
 					}
-
-					var offset = world.Map.CenterOfCell(xy) - world.Map.CenterOfCell(sourceLocation);
-					if (manager.Self.Owner.CanTargetActor(unit))
-						foreach (var r in unit.Render(wr))
-							yield return r.OffsetBy(offset);
 				}
-
-				foreach (var unit in power.UnitsInRange(sourceLocation))
-					if (manager.Self.Owner.CanTargetActor(unit))
-						yield return new SelectionBoxRenderable(unit, Color.Red);
-			}
-
-			public IEnumerable<IRenderable> Render(WorldRenderer wr, World world)
-			{
-				var palette = wr.Palette(power.Info.IconPalette);
-
-				// Source tiles
-				foreach (var t in world.Map.FindTilesInCircle(sourceLocation, range))
-					yield return new SpriteRenderable(sourceTile, wr.World.Map.CenterOfCell(t), WVec.Zero, -511, palette, 1f, true);
 			}
 
 			bool IsValidTarget(CPos xy)

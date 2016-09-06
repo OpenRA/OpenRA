@@ -132,13 +132,13 @@ namespace OpenRA.Network
 				case "HandshakeRequest":
 					{
 						// Switch to the server's mod if we need and are able to
-						var mod = Game.ModData.Manifest;
+						var mod = Game.ModData.Manifest.Mod;
 						var request = HandshakeRequest.Deserialize(order.TargetString);
 
-						Manifest serverMod;
+						ModMetadata serverMod;
 						if (request.Mod != mod.Id &&
-							Game.Mods.TryGetValue(request.Mod, out serverMod) &&
-							serverMod.Metadata.Version == request.Version)
+							ModMetadata.AllMods.TryGetValue(request.Mod, out serverMod) &&
+							serverMod.Version == request.Version)
 						{
 							var replay = orderManager.Connection as ReplayConnection;
 							var launchCommand = replay != null ?
@@ -170,7 +170,7 @@ namespace OpenRA.Network
 						{
 							Client = info,
 							Mod = mod.Id,
-							Version = mod.Metadata.Version,
+							Version = mod.Version,
 							Password = orderManager.Password
 						};
 

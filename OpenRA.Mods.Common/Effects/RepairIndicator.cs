@@ -17,7 +17,7 @@ using OpenRA.Mods.Common.Traits;
 
 namespace OpenRA.Mods.Common.Effects
 {
-	class RepairIndicator : IEffect, IEffectAboveShroud
+	class RepairIndicator : IEffect
 	{
 		readonly Actor building;
 		readonly Animation anim;
@@ -35,7 +35,7 @@ namespace OpenRA.Mods.Common.Effects
 			CycleRepairer();
 		}
 
-		void IEffect.Tick(World world)
+		public void Tick(World world)
 		{
 			if (!building.IsInWorld || building.IsDead || !rb.Repairers.Any())
 				world.AddFrameEndTask(w => w.Remove(this));
@@ -43,9 +43,7 @@ namespace OpenRA.Mods.Common.Effects
 			anim.Tick();
 		}
 
-		IEnumerable<IRenderable> IEffect.Render(WorldRenderer wr) { return SpriteRenderable.None; }
-
-		IEnumerable<IRenderable> IEffectAboveShroud.RenderAboveShroud(WorldRenderer wr)
+		public IEnumerable<IRenderable> Render(WorldRenderer wr)
 		{
 			if (building.Disposed || rb.Repairers.Count == 0 || wr.World.FogObscures(building))
 				return SpriteRenderable.None;

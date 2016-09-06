@@ -14,7 +14,6 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using OpenRA.Graphics;
-using OpenRA.Primitives;
 
 namespace OpenRA.Mods.Common.Graphics
 {
@@ -108,12 +107,7 @@ namespace OpenRA.Mods.Common.Graphics
 			{
 				var groundPos = voxel.pos - new WVec(0, 0, wr.World.Map.DistanceAboveTerrain(voxel.pos).Length);
 				var groundZ = wr.World.Map.Grid.TileSize.Height * (groundPos.Z - voxel.pos.Z) / 1024f;
-				var pxOrigin = wr.Screen3DPosition(voxel.pos);
-
-				// HACK: We don't have enough texture channels to pass the depth data to the shader
-				// so for now just offset everything forward so that the back corner is rendered at pos.
-				pxOrigin -= new float3(0, 0, Screen3DBounds(wr).Second.X);
-
+				var pxOrigin = wr.ScreenPosition(voxel.pos);
 				var shadowOrigin = pxOrigin - groundZ * (new float2(renderProxy.ShadowDirection, 1));
 
 				var psb = renderProxy.ProjectedShadowBounds;
@@ -129,7 +123,7 @@ namespace OpenRA.Mods.Common.Graphics
 			{
 				var groundPos = voxel.pos - new WVec(0, 0, wr.World.Map.DistanceAboveTerrain(voxel.pos).Length);
 				var groundZ = wr.World.Map.Grid.TileSize.Height * (groundPos.Z - voxel.pos.Z) / 1024f;
-				var pxOrigin = wr.Screen3DPosition(voxel.pos);
+				var pxOrigin = wr.ScreenPosition(voxel.pos);
 				var shadowOrigin = pxOrigin - groundZ * (new float2(renderProxy.ShadowDirection, 1));
 				var iz = 1 / wr.Viewport.Zoom;
 
@@ -160,7 +154,9 @@ namespace OpenRA.Mods.Common.Graphics
 					var worldTransform = v.RotationFunc().Reverse().Aggregate(scaleTransform,
 						(x, y) => OpenRA.Graphics.Util.MatrixMultiply(x, OpenRA.Graphics.Util.MakeFloatMatrix(y.AsMatrix())));
 
-					var pxPos = pxOrigin + wr.ScreenVectorComponents(v.OffsetFunc());
+					float sx, sy, sz;
+					wr.ScreenVectorComponents(v.OffsetFunc(), out sx, out sy, out sz);
+					var pxPos = pxOrigin + new float2(sx, sy);
 					var screenTransform = OpenRA.Graphics.Util.MatrixMultiply(cameraTransform, worldTransform);
 					DrawBoundsBox(pxPos, screenTransform, bounds, iz, Color.Yellow);
 				}
@@ -169,15 +165,15 @@ namespace OpenRA.Mods.Common.Graphics
 			static readonly uint[] CornerXIndex = new uint[] { 0, 0, 0, 0, 3, 3, 3, 3 };
 			static readonly uint[] CornerYIndex = new uint[] { 1, 1, 4, 4, 1, 1, 4, 4 };
 			static readonly uint[] CornerZIndex = new uint[] { 2, 5, 2, 5, 2, 5, 2, 5 };
-			static void DrawBoundsBox(float3 pxPos, float[] transform, float[] bounds, float width, Color c)
+			static void DrawBoundsBox(float2 pxPos, float[] transform, float[] bounds, float width, Color c)
 			{
 				var wcr = Game.Renderer.WorldRgbaColorRenderer;
-				var corners = new float3[8];
+				var corners = new float2[8];
 				for (var i = 0; i < 8; i++)
 				{
 					var vec = new float[] { bounds[CornerXIndex[i]], bounds[CornerYIndex[i]], bounds[CornerZIndex[i]], 1 };
 					var screen = OpenRA.Graphics.Util.MatrixVectorMultiply(transform, vec);
-					corners[i] = pxPos + new float3(screen[0], screen[1], screen[2]);
+					corners[i] = pxPos + new float2(screen[0], screen[1]);
 				}
 
 				// Front face
@@ -195,11 +191,6 @@ namespace OpenRA.Mods.Common.Graphics
 
 			public Rectangle ScreenBounds(WorldRenderer wr)
 			{
-				return Screen3DBounds(wr).First;
-			}
-
-			Pair<Rectangle, float2> Screen3DBounds(WorldRenderer wr)
-			{
 				var pxOrigin = wr.ScreenPosition(voxel.pos);
 				var draw = voxel.voxels.Where(v => v.DisableFunc == null || !v.DisableFunc());
 				var scaleTransform = OpenRA.Graphics.Util.ScaleMatrix(voxel.scale, voxel.scale, voxel.scale);
@@ -207,18 +198,17 @@ namespace OpenRA.Mods.Common.Graphics
 
 				var minX = float.MaxValue;
 				var minY = float.MaxValue;
-				var minZ = float.MaxValue;
 				var maxX = float.MinValue;
 				var maxY = float.MinValue;
-				var maxZ = float.MinValue;
-
 				foreach (var v in draw)
 				{
 					var bounds = v.Voxel.Bounds(v.FrameFunc());
 					var worldTransform = v.RotationFunc().Reverse().Aggregate(scaleTransform,
 						(x, y) => OpenRA.Graphics.Util.MatrixMultiply(x, OpenRA.Graphics.Util.MakeFloatMatrix(y.AsMatrix())));
 
-					var pxPos = pxOrigin + wr.ScreenVectorComponents(v.OffsetFunc());
+					float sx, sy, sz;
+					wr.ScreenVectorComponents(v.OffsetFunc(), out sx, out sy, out sz);
+					var pxPos = pxOrigin + new float2(sx, sy);
 					var screenTransform = OpenRA.Graphics.Util.MatrixMultiply(cameraTransform, worldTransform);
 
 					for (var i = 0; i < 8; i++)
@@ -227,14 +217,12 @@ namespace OpenRA.Mods.Common.Graphics
 						var screen = OpenRA.Graphics.Util.MatrixVectorMultiply(screenTransform, vec);
 						minX = Math.Min(minX, pxPos.X + screen[0]);
 						minY = Math.Min(minY, pxPos.Y + screen[1]);
-						minZ = Math.Min(minZ, pxPos.Z + screen[2]);
 						maxX = Math.Max(maxX, pxPos.X + screen[0]);
 						maxY = Math.Max(maxY, pxPos.Y + screen[1]);
-						maxZ = Math.Max(minZ, pxPos.Z + screen[2]);
 					}
 				}
 
-				return Pair.New(Rectangle.FromLTRB((int)minX, (int)minY, (int)maxX, (int)maxY), new float2(minZ, maxZ));
+				return Rectangle.FromLTRB((int)minX, (int)minY, (int)maxX, (int)maxY);
 			}
 		}
 	}

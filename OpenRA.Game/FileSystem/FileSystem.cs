@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using OpenRA.Primitives;
 
 namespace OpenRA.FileSystem
@@ -33,14 +34,8 @@ namespace OpenRA.FileSystem
 
 		// Mod packages that should not be disposed
 		readonly List<IReadOnlyPackage> modPackages = new List<IReadOnlyPackage>();
-		readonly IReadOnlyDictionary<string, Manifest> installedMods;
 
 		Cache<string, List<IReadOnlyPackage>> fileIndex = new Cache<string, List<IReadOnlyPackage>>(_ => new List<IReadOnlyPackage>());
-
-		public FileSystem(IReadOnlyDictionary<string, Manifest> installedMods)
-		{
-			this.installedMods = installedMods;
-		}
 
 		public IReadOnlyPackage OpenPackage(string filename)
 		{
@@ -113,9 +108,9 @@ namespace OpenRA.FileSystem
 				{
 					name = name.Substring(1);
 
-					Manifest mod;
-					if (!installedMods.TryGetValue(name, out mod))
-						throw new InvalidOperationException("Could not load mod '{0}'. Available mods: {1}".F(name, installedMods.Keys.JoinWith(", ")));
+					ModMetadata mod;
+					if (!ModMetadata.AllMods.TryGetValue(name, out mod))
+						throw new InvalidOperationException("Could not load mod '{0}'. Available mods: {1}".F(name, ModMetadata.AllMods.Keys.JoinWith(", ")));
 
 					package = mod.Package;
 					modPackages.Add(package);

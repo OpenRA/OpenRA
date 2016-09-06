@@ -20,21 +20,21 @@ namespace OpenRA.Mods.TS.UtilityCommands
 {
 	class LegacyRulesImporter : IUtilityCommand
 	{
-		bool IUtilityCommand.ValidateArguments(string[] args)
+		public bool ValidateArguments(string[] args)
 		{
 			return args.Length >= 3;
 		}
 
-		string IUtilityCommand.Name { get { return "--rules-import"; } }
+		public string Name { get { return "--rules-import"; } }
 
 		IniFile rulesIni;
 		IniFile artIni;
 
 		[Desc("RULES.INI", "ART.INI", "Convert ART.INI and RULES.INI to the OpenRA rules definition format.")]
-		void IUtilityCommand.Run(Utility utility, string[] args)
+		public void Run(ModData modData, string[] args)
 		{
 			// HACK: The engine code assumes that Game.modData is set.
-			Game.ModData = utility.ModData;
+			Game.ModData = modData;
 
 			rulesIni = new IniFile(File.Open(args[1], FileMode.Open));
 			artIni = new IniFile(File.Open(args[2], FileMode.Open));

@@ -20,22 +20,22 @@ namespace OpenRA.Mods.TS.UtilityCommands
 {
 	class ImportLegacyTilesetCommand : IUtilityCommand
 	{
-		string IUtilityCommand.Name { get { return "--tileset-import"; } }
+		public string Name { get { return "--tileset-import"; } }
 
-		bool IUtilityCommand.ValidateArguments(string[] args)
+		public bool ValidateArguments(string[] args)
 		{
 			return args.Length >= 3;
 		}
 
 		[Desc("FILENAME", "TEMPLATEEXTENSION", "[TILESETNAME]", "Convert a legacy tileset to the OpenRA format.")]
-		void IUtilityCommand.Run(Utility utility, string[] args)
+		public void Run(ModData modData, string[] args)
 		{
 			// HACK: The engine code assumes that Game.modData is set.
-			var modData = Game.ModData = utility.ModData;
+			Game.ModData = modData;
 
 			var file = new IniFile(File.Open(args[1], FileMode.Open));
 			var extension = args[2];
-			var tileSize = utility.ModData.Manifest.Get<MapGrid>().TileSize;
+			var tileSize = modData.Manifest.Get<MapGrid>().TileSize;
 
 			var templateIndex = 0;
 

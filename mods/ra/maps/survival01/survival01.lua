@@ -8,7 +8,7 @@ if Difficulty == "easy" then
 	DamageModifier = 0.5
 	LongBowReinforcements = { "heli", "heli" }
 	ParadropArtillery = true
-elseif Difficulty == "normal" then
+elseif Difficulty == "medium" then
 	AttackAtFrameIncrement = DateTime.Seconds(18)
 	AttackAtFrameIncrementInf = DateTime.Seconds(12)
 	TimerTicks = DateTime.Minutes(20)

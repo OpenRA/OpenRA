@@ -11,9 +11,9 @@ World:
 		ID: difficulty
 		Label: Difficulty
 		Values:
-			normal: Normal
+			medium: Medium
 			hard: Hard
-		Default: normal
+		Default: medium
 
 CAMERA:
 	RevealsShroud:

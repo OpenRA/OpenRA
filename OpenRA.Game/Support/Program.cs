@@ -52,7 +52,7 @@ namespace OpenRA
 
 			if (Game.ModData != null)
 			{
-				var mod = Game.ModData.Manifest.Metadata;
+				var mod = Game.ModData.Manifest.Mod;
 				Log.Write("exception", "{0} Mod at Version {1}", mod.Title, mod.Version);
 			}
 

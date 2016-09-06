@@ -39,6 +39,5 @@ namespace OpenRA.Mods.Common.Traits
 		}
 
 		Color ISelectionBar.GetColor() { return Color.Orange; }
-		bool ISelectionBar.DisplayWhenEmpty { get { return false; } }
 	}
 }

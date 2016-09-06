@@ -151,7 +151,7 @@ namespace OpenRA.Mods.Common.Traits
 			notVisibleEdges = info.UseExtendedIndex ? Edges.AllSides : Edges.AllCorners;
 		}
 
-		void IWorldLoaded.WorldLoaded(World w, WorldRenderer wr)
+		public void WorldLoaded(World w, WorldRenderer wr)
 		{
 			// Initialize tile cache
 			// This includes the region outside the visible area to cover any sprites peeking outside the map
@@ -230,7 +230,7 @@ namespace OpenRA.Mods.Common.Traits
 			cellsDirty.UnionWith(cells);
 		}
 
-		void IRenderShroud.RenderShroud(Shroud shroud, WorldRenderer wr)
+		public void RenderShroud(WorldRenderer wr, Shroud shroud)
 		{
 			if (currentShroud != shroud)
 			{

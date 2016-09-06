@@ -130,7 +130,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			Game.BeforeGameStart += UnregisterEvents;
 
 			CloseChat();
-			chatText.IsDisabled = () => world.IsReplay;
 		}
 
 		bool SwitchTeamChat()

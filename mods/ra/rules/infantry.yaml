@@ -568,9 +568,8 @@ Zombie:
 		Description: Slow undead. Attacks in close combat.
 	Buildable:
 		Queue: Infantry
-		BuildAtProductionType: Soldier
 		BuildPaletteOrder: 200
-		Prerequisites: ~barracks, ~bio
+		Prerequisites: ~bio
 	Health:
 		HP: 250
 	Mobile:
@@ -597,9 +596,8 @@ Ant:
 		GenericName: Ant
 	Buildable:
 		Queue: Infantry
-		BuildAtProductionType: Soldier
 		BuildPaletteOrder: 1954
-		Prerequisites: ~barracks, ~bio
+		Prerequisites: ~bio
 	Selectable:
 		Bounds: 24,24,0,-5
 	SelectionDecorations:
@@ -621,7 +619,7 @@ Ant:
 	Armament:
 		Weapon: mandible
 	Targetable:
-		TargetTypes: Ground, Infantry, Ant
+		TargetTypes: Ground, Infantry
 	WithDeathAnimation:
 		UseDeathTypeSuffix: false
 	Voiced:

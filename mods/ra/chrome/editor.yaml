@@ -127,7 +127,6 @@ Background@SAVE_MAP_PANEL:
 			Y: 130
 			Width: 220
 			Height: 25
-			Text: Map Visibility
 		Label@DIRECTORY_LABEL:
 			X: 10
 			Y: 164
@@ -173,16 +172,6 @@ Background@SAVE_MAP_PANEL:
 			Font: Bold
 			Key: escape
 
-ScrollPanel@MAP_SAVE_VISIBILITY_PANEL:
-	Width: 220
-	Height: 64
-	Children:
-		Checkbox@VISIBILITY_TEMPLATE:
-			X: 5
-			Width: PARENT_RIGHT - 29
-			Height: 20
-			Font: Regular
-
 Container@EDITOR_ROOT:
 	Logic: LoadMapEditorLogic
 	Children:
@@ -194,6 +183,12 @@ Container@EDITOR_WORLD_ROOT:
 	Logic: LoadIngamePerfLogic, MapEditorLogic
 	Children:
 		Container@PERF_ROOT:
+		ViewportController:
+			X: 0
+			Y: 0
+			Width: WINDOW_RIGHT
+			Height: WINDOW_BOTTOM
+			TooltipContainer: TOOLTIP_CONTAINER
 		EditorViewportController@MAP_EDITOR:
 			Width: WINDOW_RIGHT
 			Height: WINDOW_BOTTOM
@@ -206,10 +201,6 @@ Container@EDITOR_WORLD_ROOT:
 					Visible: false
 				Sprite@DRAG_LAYER_PREVIEW:
 					Visible: false
-		ViewportController:
-			Width: WINDOW_RIGHT
-			Height: WINDOW_BOTTOM
-			IgnoreMouseOver: True
 		Background@RADAR_BG:
 			X: WINDOW_RIGHT-255
 			Y: 5

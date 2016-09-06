@@ -20,7 +20,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.RA.Traits
 {
 	// TODO: remove all the Render*Circle duplication
-	class RenderJammerCircleInfo : TraitInfo<RenderJammerCircle>, IPlaceBuildingDecorationInfo
+	class RenderJammerCircleInfo : ITraitInfo, IPlaceBuildingDecorationInfo
 	{
 		public IEnumerable<IRenderable> Render(WorldRenderer wr, World w, ActorInfo ai, WPos centerPosition)
 		{
@@ -48,14 +48,20 @@ namespace OpenRA.Mods.RA.Traits
 
 			foreach (var a in w.ActorsWithTrait<RenderJammerCircle>())
 				if (a.Actor.Owner.IsAlliedWith(w.RenderPlayer))
-					foreach (var r in a.Trait.RenderAboveShroud(a.Actor, wr))
+					foreach (var r in a.Trait.RenderAfterWorld(wr))
 						yield return r;
 		}
+
+		public object Create(ActorInitializer init) { return new RenderJammerCircle(init.Self); }
 	}
 
-	class RenderJammerCircle : IRenderAboveShroudWhenSelected
+	class RenderJammerCircle : IPostRenderSelection
 	{
-		public IEnumerable<IRenderable> RenderAboveShroud(Actor self, WorldRenderer wr)
+		Actor self;
+
+		public RenderJammerCircle(Actor self) { this.self = self; }
+
+		public IEnumerable<IRenderable> RenderAfterWorld(WorldRenderer wr)
 		{
 			if (!self.Owner.IsAlliedWith(self.World.RenderPlayer))
 				yield break;

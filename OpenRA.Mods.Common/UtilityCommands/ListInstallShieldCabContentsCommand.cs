@@ -19,15 +19,15 @@ namespace OpenRA.Mods.Common.UtilityCommands
 {
 	class ListInstallShieldCabContentsCommand : IUtilityCommand
 	{
-		string IUtilityCommand.Name { get { return "--list-installshield-cab"; } }
+		public string Name { get { return "--list-installshield-cab"; } }
 
-		bool IUtilityCommand.ValidateArguments(string[] args)
+		public bool ValidateArguments(string[] args)
 		{
 			return args.Length == 2;
 		}
 
 		[Desc("DATA.HDR", "Lists the filenames contained within an Installshield CAB volume set")]
-		void IUtilityCommand.Run(Utility utility, string[] args)
+		public void Run(ModData modData, string[] args)
 		{
 			using (var file = File.OpenRead(args[1]))
 			{

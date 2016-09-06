@@ -16,15 +16,15 @@ namespace OpenRA.Mods.Common.UtilityCommands
 {
 	class CreateManPage : IUtilityCommand
 	{
-		string IUtilityCommand.Name { get { return "--man-page"; } }
+		public string Name { get { return "--man-page"; } }
 
-		bool IUtilityCommand.ValidateArguments(string[] args)
+		public bool ValidateArguments(string[] args)
 		{
 			return true;
 		}
 
 		[Desc("Create a man page in troff format.")]
-		void IUtilityCommand.Run(Utility utility, string[] args)
+		public void Run(ModData modData, string[] args)
 		{
 			Console.WriteLine(".TH OPENRA 6");
 			Console.WriteLine(".SH NAME");

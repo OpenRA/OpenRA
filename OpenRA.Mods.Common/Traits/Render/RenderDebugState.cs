@@ -27,7 +27,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public object Create(ActorInitializer init) { return new RenderDebugState(init.Self, this); }
 	}
 
-	class RenderDebugState : INotifyAddedToWorld, INotifyOwnerChanged, IRenderAboveShroudWhenSelected
+	class RenderDebugState : INotifyAddedToWorld, INotifyOwnerChanged, IPostRenderSelection
 	{
 		readonly DeveloperMode devMode;
 		readonly SpriteFont font;
@@ -53,12 +53,12 @@ namespace OpenRA.Mods.Common.Traits.Render
 			ai = self.Owner.PlayerActor.TraitsImplementing<HackyAI>().FirstOrDefault(x => x.IsEnabled);
 		}
 
-		void INotifyAddedToWorld.AddedToWorld(Actor self)
+		public void AddedToWorld(Actor self)
 		{
 			tagString = self.ToString();
 		}
 
-		void INotifyOwnerChanged.OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
+		public void OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
 		{
 			color = GetColor();
 		}
@@ -68,7 +68,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			return self.EffectiveOwner != null ? self.EffectiveOwner.Owner.Color.RGB : self.Owner.Color.RGB;
 		}
 
-		IEnumerable<IRenderable> IRenderAboveShroudWhenSelected.RenderAboveShroud(Actor self, WorldRenderer wr)
+		public IEnumerable<IRenderable> RenderAfterWorld(WorldRenderer wr)
 		{
 			if (devMode == null || !devMode.ShowActorTags)
 				yield break;

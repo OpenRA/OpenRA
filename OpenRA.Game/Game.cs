@@ -21,7 +21,6 @@ using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using OpenRA.Chat;
-using OpenRA.FileSystem;
 using OpenRA.Graphics;
 using OpenRA.Network;
 using OpenRA.Primitives;
@@ -35,8 +34,6 @@ namespace OpenRA
 		public const int NetTickScale = 3; // 120 ms net tick for 40 ms local tick
 		public const int Timestep = 40;
 		public const int TimestepJankThreshold = 250; // Don't catch up for delays larger than 250ms
-
-		public static InstalledMods Mods { get; private set; }
 
 		public static ModData ModData;
 		public static Settings Settings;
@@ -62,18 +59,16 @@ namespace OpenRA
 		{
 			var connection = new NetworkConnection(host, port);
 			if (recordReplay)
-				connection.StartRecording(() => { return TimestampedFilename(); });
+				connection.StartRecording(TimestampedFilename);
 
 			var om = new OrderManager(host, port, password, connection);
 			JoinInner(om);
 			return om;
 		}
 
-		static string TimestampedFilename(bool includemilliseconds = false)
+		static string TimestampedFilename()
 		{
-			return includemilliseconds
-			? DateTime.UtcNow.ToString("OpenRA-yyyy-MM-ddTHHmmssfffZ")
-			: DateTime.UtcNow.ToString("OpenRA-yyyy-MM-ddTHHmmssZ");
+			return DateTime.UtcNow.ToString("OpenRA-yyyy-MM-ddTHHmmssZ");
 		}
 
 		static void JoinInner(OrderManager om)
@@ -246,16 +241,6 @@ namespace OpenRA
 		{
 			Console.WriteLine("Platform is {0}", Platform.CurrentPlatform);
 
-			// Special case handling of Game.Mod argument: if it matches a real filesystem path
-			// then we use this to override the mod search path, and replace it with the mod id
-			var modArgument = args.GetValue("Game.Mod", null);
-			string customModPath = null;
-			if (modArgument != null && (File.Exists(modArgument) || Directory.Exists(modArgument)))
-			{
-				customModPath = modArgument;
-				args.ReplaceValue("Game.Mod", Path.GetFileNameWithoutExtension(modArgument));
-			}
-
 			InitializeSettings(args);
 
 			Log.AddChannel("perf", "perf.log");
@@ -293,13 +278,7 @@ namespace OpenRA
 				catch (Exception e)
 				{
 					Log.Write("graphics", "{0}", e);
-					Console.WriteLine("Renderer initialization failed. Check graphics.log for details.");
-
-					if (Renderer != null)
-						Renderer.Dispose();
-
-					if (Sound != null)
-						Sound.Dispose();
+					Console.WriteLine("Renderer initialization failed. Fallback in place. Check graphics.log for details.");
 				}
 			}
 
@@ -315,23 +294,22 @@ namespace OpenRA
 
 			GlobalChat = new GlobalChat();
 
-			Mods = new InstalledMods(customModPath);
 			Console.WriteLine("Available mods:");
-			foreach (var mod in Mods)
-				Console.WriteLine("\t{0}: {1} ({2})", mod.Key, mod.Value.Metadata.Title, mod.Value.Metadata.Version);
+			foreach (var mod in ModMetadata.AllMods)
+				Console.WriteLine("\t{0}: {1} ({2})", mod.Key, mod.Value.Title, mod.Value.Version);
 
 			InitializeMod(Settings.Game.Mod, args);
 		}
 
 		public static bool IsModInstalled(string modId)
 		{
-			return Mods.ContainsKey(modId) && Mods[modId].RequiresMods.All(IsModInstalled);
+			return ModMetadata.AllMods[modId].RequiresMods.All(IsModInstalled);
 		}
 
 		public static bool IsModInstalled(KeyValuePair<string, string> mod)
 		{
-			return Mods.ContainsKey(mod.Key)
-				&& Mods[mod.Key].Metadata.Version == mod.Value
+			return ModMetadata.AllMods.ContainsKey(mod.Key)
+				&& ModMetadata.AllMods[mod.Key].Version == mod.Value
 				&& IsModInstalled(mod.Key);
 		}
 
@@ -363,7 +341,7 @@ namespace OpenRA
 			ModData = null;
 
 			// Fall back to default if the mod doesn't exist or has missing prerequisites.
-			if (!IsModInstalled(mod))
+			if (!ModMetadata.AllMods.ContainsKey(mod) || !IsModInstalled(mod))
 				mod = new GameSettings().Mod;
 
 			Console.WriteLine("Loading mod: {0}", mod);
@@ -371,13 +349,18 @@ namespace OpenRA
 
 			Sound.StopVideo();
 
-			ModData = new ModData(Mods[mod], Mods, true);
+			ModData = new ModData(mod, true);
 
 			using (new PerfTimer("LoadMaps"))
 				ModData.MapCache.LoadMaps();
 
+			var content = ModData.Manifest.Get<ModContent>();
+			var isModContentInstalled = content.Packages
+				.Where(p => p.Value.Required)
+				.All(p => p.Value.TestFiles.All(f => File.Exists(Platform.ResolvePath(f))));
+
 			// Mod assets are missing!
-			if (!ModData.LoadScreen.RequiredContentIsInstalled())
+			if (!isModContentInstalled)
 			{
 				InitializeMod("modchooser", new Arguments());
 				return;
@@ -478,11 +461,11 @@ namespace OpenRA
 
 			ThreadPool.QueueUserWorkItem(_ =>
 			{
-				var mod = ModData.Manifest.Metadata;
-				var directory = Platform.ResolvePath("^", "Screenshots", ModData.Manifest.Id, mod.Version);
+				var mod = ModData.Manifest.Mod;
+				var directory = Platform.ResolvePath("^", "Screenshots", mod.Id, mod.Version);
 				Directory.CreateDirectory(directory);
 
-				var filename = TimestampedFilename(true);
+				var filename = TimestampedFilename();
 				var format = Settings.Graphics.ScreenshotFormat;
 				var extension = ImageCodecInfo.GetImageEncoders().FirstOrDefault(x => x.FormatID == format.Guid)
 					.FilenameExtension.Split(';').First().ToLowerInvariant().Substring(1);

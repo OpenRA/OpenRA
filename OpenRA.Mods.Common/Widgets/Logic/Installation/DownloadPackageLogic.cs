@@ -113,7 +113,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				progressBar.Percentage = 100;
 				getStatusText = () => "Error: " + s;
 				retryButton.IsVisible = () => true;
-				cancelButton.OnClick = Ui.CloseWindow;
 			});
 
 			Action<AsyncCompletedEventArgs> onDownloadComplete = i =>

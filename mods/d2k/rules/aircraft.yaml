@@ -2,6 +2,8 @@ carryall.reinforce:
 	Inherits: ^Plane
 	Valued:
 		Cost: 1100
+	CustomBuildTimeValue:
+		Value: 648
 	Tooltip:
 		Name: Carryall
 		Description: Large winged, planet-bound ship\n  Automatically lifts harvesters.
@@ -16,6 +18,7 @@ carryall.reinforce:
 		TurnSpeed: 4
 		LandableTerrainTypes: Sand, Rock, Transition, Spice, SpiceSand, Dune
 		Repulsable: False
+		LandAltitude: 100
 		LandWhenIdle: False
 		AirborneUpgrades: airborne
 		CanHover: True
@@ -30,26 +33,18 @@ carryall.reinforce:
 	SpawnActorOnDeath:
 		Actor: carryall.husk
 	Carryall:
-		LoadingDelay: 10
-		UnloadingDelay: 15
-		LocalOffset: 0, 0, -128
+		Automatic: False
 	RenderSprites:
 		Image: carryall
 	SelfHealing:
 		Step: 5
 		Delay: 3
 		HealIfBelow: 50
-	Buildable:
-		BuildDuration: 648
-		BuildDurationModifier: 40
 
 carryall:
 	Inherits: carryall.reinforce
-	-Carryall:
-	AutoCarryall:
-		LoadingDelay: 10
-		UnloadingDelay: 15
-		LocalOffset: 0, 0, -128
+	Carryall:
+		Automatic: True
 	Buildable:
 		Queue: Aircraft
 		BuildPaletteOrder: 120

@@ -107,8 +107,8 @@ namespace OpenRA.Mods.Common.Traits
 		List<Pair<int, Action>> delayedActions = new List<Pair<int, Action>>();
 
 		public WDist Recoil;
-		public int FireDelay { get; protected set; }
-		public int Burst { get; protected set; }
+		public int FireDelay { get; private set; }
+		public int Burst { get; private set; }
 
 		public Armament(Actor self, ArmamentInfo info)
 			: base(info)
@@ -134,12 +134,12 @@ namespace OpenRA.Mods.Common.Traits
 			Barrels = barrels.ToArray();
 		}
 
-		public virtual WDist MaxRange()
+		public WDist MaxRange()
 		{
 			return new WDist(Util.ApplyPercentageModifiers(Weapon.Range.Length, rangeModifiers));
 		}
 
-		public virtual void Created(Actor self)
+		public void Created(Actor self)
 		{
 			turret = self.TraitsImplementing<Turreted>().FirstOrDefault(t => t.Name == Info.Turret);
 			ammoPool = self.TraitsImplementing<AmmoPool>().FirstOrDefault(la => la.Info.Name == Info.AmmoPoolName);
@@ -147,7 +147,7 @@ namespace OpenRA.Mods.Common.Traits
 			rangeModifiers = self.TraitsImplementing<IRangeModifier>().ToArray().Select(m => m.GetRangeModifier());
 		}
 
-		public virtual void Tick(Actor self)
+		public void Tick(Actor self)
 		{
 			if (IsTraitDisabled)
 				return;
@@ -168,7 +168,7 @@ namespace OpenRA.Mods.Common.Traits
 			delayedActions.RemoveAll(a => a.First <= 0);
 		}
 
-		protected void ScheduleDelayedAction(int t, Action a)
+		void ScheduleDelayedAction(int t, Action a)
 		{
 			if (t > 0)
 				delayedActions.Add(Pair.New(t, a));
@@ -178,7 +178,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		// Note: facing is only used by the legacy positioning code
 		// The world coordinate model uses Actor.Orientation
-		public virtual Barrel CheckFire(Actor self, IFacing facing, Target target)
+		public Barrel CheckFire(Actor self, IFacing facing, Target target)
 		{
 			if (IsReloading)
 				return null;
@@ -260,12 +260,11 @@ namespace OpenRA.Mods.Common.Traits
 			return barrel;
 		}
 
-		public virtual bool OutOfAmmo { get { return ammoPool != null && !ammoPool.Info.SelfReloads && !ammoPool.HasAmmo(); } }
-		public virtual bool IsReloading { get { return FireDelay > 0 || IsTraitDisabled; } }
-		public virtual bool AllowExplode { get { return !IsReloading; } }
-		bool IExplodeModifier.ShouldExplode(Actor self) { return AllowExplode; }
+		public bool IsReloading { get { return FireDelay > 0 || IsTraitDisabled; } }
+		public bool ShouldExplode(Actor self) { return !IsReloading; }
+		public bool OutOfAmmo { get { return ammoPool != null && !ammoPool.Info.SelfReloads && !ammoPool.HasAmmo(); } }
 
-		public virtual WVec MuzzleOffset(Actor self, Barrel b)
+		public WVec MuzzleOffset(Actor self, Barrel b)
 		{
 			var bodyOrientation = coords.QuantizeOrientation(self, self.Orientation);
 			var localOffset = b.Offset + new WVec(-Recoil, WDist.Zero, WDist.Zero);
@@ -282,7 +281,7 @@ namespace OpenRA.Mods.Common.Traits
 			return coords.LocalToWorld(localOffset.Rotate(bodyOrientation));
 		}
 
-		public virtual WRot MuzzleOrientation(Actor self, Barrel b)
+		public WRot MuzzleOrientation(Actor self, Barrel b)
 		{
 			var orientation = turret != null ? turret.WorldOrientation(self) :
 				coords.QuantizeOrientation(self, self.Orientation);

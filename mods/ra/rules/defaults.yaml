@@ -5,6 +5,7 @@
 		PlayerExperienceModifier: 1
 	ScriptTriggers:
 	UpgradeManager:
+	Huntable:
 	RenderDebugState:
 
 ^SpriteActor:
@@ -67,7 +68,6 @@
 	Inherits@2: ^GainsExperience
 	Inherits@3: ^IronCurtainable
 	Inherits@4: ^SpriteActor
-	Huntable:
 	DrawLineToTarget:
 	UpdatesPlayerStatistics:
 	Mobile:
@@ -82,7 +82,6 @@
 			Beach: 40
 		TurnSpeed: 5
 	SelectionDecorations:
-	WithSpriteControlGroupDecoration:
 	Selectable:
 		Bounds: 24, 24
 	Targetable:
@@ -167,7 +166,6 @@
 	Inherits@1: ^ExistsInWorld
 	Inherits@2: ^GainsExperience
 	Inherits@3: ^SpriteActor
-	Huntable:
 	DrawLineToTarget:
 	Health:
 		HP: 25
@@ -190,8 +188,6 @@
 			Gems: 80
 			Beach: 80
 	SelectionDecorations:
-	WithSpriteControlGroupDecoration:
-		ReferencePoint: Top
 	Selectable:
 		Bounds: 12,18,0,-8
 	Targetable:
@@ -311,7 +307,6 @@
 	Inherits@2: ^GainsExperience
 	Inherits@3: ^IronCurtainable
 	Inherits@4: ^SpriteActor
-	Huntable:
 	DrawLineToTarget:
 	UpdatesPlayerStatistics:
 	Mobile:
@@ -319,7 +314,6 @@
 		TerrainSpeeds:
 			Water: 100
 	SelectionDecorations:
-	WithSpriteControlGroupDecoration:
 	Selectable:
 		Bounds: 24,24
 	Targetable:
@@ -355,13 +349,11 @@
 	Inherits@2: ^GainsExperience
 	Inherits@3: ^IronCurtainable
 	Inherits@4: ^SpriteActor
-	Huntable:
 	DrawLineToTarget:
 	UpdatesPlayerStatistics:
 	AppearsOnRadar:
 		UseLocation: true
 	SelectionDecorations:
-	WithSpriteControlGroupDecoration:
 	Selectable:
 		Bounds: 24,24
 	Aircraft:
@@ -425,7 +417,6 @@
 	Inherits@2: ^IronCurtainable
 	Inherits@3: ^SpriteActor
 	SelectionDecorations:
-	WithSpriteControlGroupDecoration:
 	Selectable:
 		Priority: 3
 	Targetable:
@@ -456,7 +447,6 @@
 
 ^Building:
 	Inherits: ^BasicBuilding
-	Huntable:
 	UpdatesPlayerStatistics:
 	GivesBuildableArea:
 	RepairableBuilding:
@@ -554,7 +544,6 @@
 
 ^TechBuilding:
 	Inherits: ^BasicBuilding
-	Huntable:
 	Health:
 		HP: 400
 	Armor:

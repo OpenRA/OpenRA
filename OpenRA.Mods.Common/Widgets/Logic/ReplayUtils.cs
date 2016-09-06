@@ -34,10 +34,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (mod == null)
 				return IncompatibleReplayDialog("unknown mod", mod, onCancel);
 
-			if (!Game.Mods.ContainsKey(mod))
+			var allMods = ModMetadata.AllMods;
+			if (!allMods.ContainsKey(mod))
 				return IncompatibleReplayDialog("unavailable mod", mod, onCancel);
-
-			if (Game.Mods[mod].Metadata.Version != version)
+			else if (allMods[mod].Version != version)
 				return IncompatibleReplayDialog("incompatible version", version, onCancel);
 
 			if (replayMeta.GameInfo.MapPreview.Status != MapStatus.Available)

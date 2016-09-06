@@ -13,16 +13,10 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	[Desc("This actor deflects missiles.")]
 	public class JamsMissilesInfo : ITraitInfo
 	{
-		[Desc("Range of the deflection.")]
 		public readonly WDist Range = WDist.Zero;
-
-		[Desc("What diplomatic stances are affected.")]
-		public readonly Stance DeflectionStances = Stance.Ally | Stance.Neutral | Stance.Enemy;
-
-		[Desc("Chance of deflecting missiles.")]
+		public readonly bool AlliedMissiles = true;
 		public readonly int Chance = 100;
 
 		public object Create(ActorInitializer init) { return new JamsMissiles(this); }
@@ -33,7 +27,7 @@ namespace OpenRA.Mods.Common.Traits
 		readonly JamsMissilesInfo info;
 
 		public WDist Range { get { return info.Range; } }
-		public Stance DeflectionStances { get { return info.DeflectionStances; } }
+		public bool AlliedMissiles { get { return info.AlliedMissiles; } }
 		public int Chance { get { return info.Chance; } }
 
 		public JamsMissiles(JamsMissilesInfo info) { this.info = info; }

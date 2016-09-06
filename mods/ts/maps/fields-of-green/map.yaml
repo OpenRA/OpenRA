@@ -1422,6 +1422,7 @@ Actors:
 Rules:
 	Player:
 		-ConquestVictoryConditions:
+
 	World:
 		-CrateSpawner:
 		-StartGameNotification:
@@ -1438,21 +1439,27 @@ Rules:
 			Ambient: 0.7
 		ScriptUpgradesCache:
 			Upgrades: unkillable
+
 	HARV:
 		-Targetable:
+
 	GALITE:
 		-Targetable:
+
 	APC:
 		Cargo:
 			InitialUnits: e1, e1, e2, e2, medic
+
 	GACTWR:
 		DamageMultiplier@UNKILLABLE:
 			UpgradeTypes: unkillable
 			Modifier: 0, 0
+
 	NAOBEL:
 		DamageMultiplier@UNKILLABLE:
 			UpgradeTypes: unkillable
 			Modifier: 0, 0
+
 	NALASR:
 		DamageMultiplier@UNKILLABLE:
 			UpgradeTypes: unkillable

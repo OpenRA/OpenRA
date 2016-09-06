@@ -47,15 +47,15 @@ namespace OpenRA.Graphics
 			}
 		}
 
-		public void DrawLine(float3 start, float3 end, float width, Color startColor, Color endColor)
+		public void DrawLine(float2 start, float2 end, float width, Color startColor, Color endColor)
 		{
 			renderer.CurrentBatchRenderer = this;
 
 			if (nv + 6 > renderer.TempBufferSize)
 				Flush();
 
-			var delta = (end - start) / (end - start).XY.Length;
-			var corner = width / 2 * new float3(-delta.Y, delta.X, delta.Z);
+			var delta = (end - start) / (end - start).Length;
+			var corner = width / 2 * new float2(-delta.Y, delta.X);
 
 			startColor = Util.PremultiplyAlpha(startColor);
 			var sr = startColor.R / 255.0f;
@@ -77,14 +77,14 @@ namespace OpenRA.Graphics
 			vertices[nv++] = new Vertex(start - corner + Offset, sr, sg, sb, sa, 0, 0);
 		}
 
-		public void DrawLine(float3 start, float3 end, float width, Color color)
+		public void DrawLine(float2 start, float2 end, float width, Color color)
 		{
 			renderer.CurrentBatchRenderer = this;
 
 			if (nv + 6 > renderer.TempBufferSize)
 				Flush();
 
-			var delta = (end - start) / (end - start).XY.Length;
+			var delta = (end - start) / (end - start).Length;
 			var corner = width / 2 * new float2(-delta.Y, delta.X);
 
 			color = Util.PremultiplyAlpha(color);
@@ -102,21 +102,20 @@ namespace OpenRA.Graphics
 		}
 
 		/// <summary>
-		/// Calculate the 2D intersection of two lines.
-		/// Will behave badly if the lines are parallel.
-		/// Z position is the average of a and b (ignores actual intersection point if it exists)
+		/// Calculate the intersection of two lines.
+		/// Will behave badly if the lines are parallel
 		/// </summary>
-		float3 IntersectionOf(float3 a, float3 da, float3 b, float3 db)
+		float2 IntersectionOf(float2 a, float2 da, float2 b, float2 db)
 		{
 			var crossA = a.X * (a.Y + da.Y) - a.Y * (a.X + da.X);
 			var crossB = b.X * (b.Y + db.Y) - b.Y * (b.X + db.X);
 			var x = da.X * crossB - db.X * crossA;
 			var y = da.Y * crossB - db.Y * crossA;
 			var d = da.X * db.Y - da.Y * db.X;
-			return new float3(x / d, y / d, 0.5f * (a.Z + b.Z));
+			return new float2(x, y) / d;
 		}
 
-		void DrawDisconnectedLine(IEnumerable<float3> points, float width, Color color)
+		void DrawDisconnectedLine(IEnumerable<float2> points, float width, Color color)
 		{
 			using (var e = points.GetEnumerator())
 			{
@@ -133,7 +132,7 @@ namespace OpenRA.Graphics
 			}
 		}
 
-		void DrawConnectedLine(float3[] points, float width, Color color, bool closed)
+		void DrawConnectedLine(float2[] points, float width, Color color, bool closed)
 		{
 			// Not a line
 			if (points.Length < 2)
@@ -155,8 +154,8 @@ namespace OpenRA.Graphics
 
 			var start = points[0];
 			var end = points[1];
-			var dir = (end - start) / (end - start).XY.Length;
-			var corner = width / 2 * new float3(-dir.Y, dir.X, dir.Z);
+			var dir = (end - start) / (end - start).Length;
+			var corner = width / 2 * new float2(-dir.Y, dir.X);
 
 			// Corners for start of line segment
 			var ca = start - corner;
@@ -166,8 +165,8 @@ namespace OpenRA.Graphics
 			if (closed)
 			{
 				var prev = points[points.Length - 1];
-				var prevDir = (start - prev) / (start - prev).XY.Length;
-				var prevCorner = width / 2 * new float3(-prevDir.Y, prevDir.X, prevDir.Z);
+				var prevDir = (start - prev) / (start - prev).Length;
+				var prevCorner = width / 2 * new float2(-prevDir.Y, prevDir.X);
 				ca = IntersectionOf(start - prevCorner, prevDir, start - corner, dir);
 				cb = IntersectionOf(start + prevCorner, prevDir, start + corner, dir);
 			}
@@ -176,8 +175,8 @@ namespace OpenRA.Graphics
 			for (var i = 0; i < limit; i++)
 			{
 				var next = points[(i + 2) % points.Length];
-				var nextDir = (next - end) / (next - end).XY.Length;
-				var nextCorner = width / 2 * new float3(-nextDir.Y, nextDir.X, nextDir.Z);
+				var nextDir = (next - end) / (next - end).Length;
+				var nextCorner = width / 2 * new float2(-nextDir.Y, nextDir.X);
 
 				// Vertices for the corners joining start-end to end-next
 				var cc = closed || i < limit ? IntersectionOf(end + corner, dir, end + nextCorner, nextDir) : end + corner;
@@ -206,42 +205,32 @@ namespace OpenRA.Graphics
 
 		public void DrawLine(IEnumerable<float2> points, float width, Color color, bool connectSegments = false)
 		{
-			DrawLine(points.Select(p => new float3(p, 0)), width, color, connectSegments);
-		}
-
-		public void DrawLine(IEnumerable<float3> points, float width, Color color, bool connectSegments = false)
-		{
 			if (!connectSegments)
 				DrawDisconnectedLine(points, width, color);
 			else
-				DrawConnectedLine(points as float3[] ?? points.ToArray(), width, color, false);
-		}
-
-		public void DrawPolygon(float3[] vertices, float width, Color color)
-		{
-			DrawConnectedLine(vertices, width, color, true);
+				DrawConnectedLine(points as float2[] ?? points.ToArray(), width, color, false);
 		}
 
 		public void DrawPolygon(float2[] vertices, float width, Color color)
 		{
-			DrawConnectedLine(vertices.Select(v => new float3(v, 0)).ToArray(), width, color, true);
+			DrawConnectedLine(vertices, width, color, true);
 		}
 
-		public void DrawRect(float3 tl, float3 br, float width, Color color)
+		public void DrawRect(float2 tl, float2 br, float width, Color color)
 		{
-			var tr = new float3(br.X, tl.Y, tl.Z);
-			var bl = new float3(tl.X, br.Y, br.Z);
+			var tr = new float2(br.X, tl.Y);
+			var bl = new float2(tl.X, br.Y);
 			DrawPolygon(new[] { tl, tr, br, bl }, width, color);
 		}
 
-		public void FillRect(float3 tl, float3 br, Color color)
+		public void FillRect(float2 tl, float2 br, Color color)
 		{
-			var tr = new float3(br.X, tl.Y, tl.Z);
-			var bl = new float3(tl.X, br.Y, br.Z);
+			var tr = new float2(br.X, tl.Y);
+			var bl = new float2(tl.X, br.Y);
 			FillRect(tl, tr, br, bl, color);
 		}
 
-		public void FillRect(float3 a, float3 b, float3 c, float3 d, Color color)
+		public void FillRect(float2 a, float2 b, float2 c, float2 d, Color color)
 		{
 			renderer.CurrentBatchRenderer = this;
 
@@ -262,34 +251,25 @@ namespace OpenRA.Graphics
 			vertices[nv++] = new Vertex(a + Offset, cr, cg, cb, ca, 0, 0);
 		}
 
-		public void FillEllipse(float3 tl, float3 br, Color color, int vertices = 32)
+		public void FillEllipse(RectangleF r, Color color, int vertices = 32)
 		{
 			// TODO: Create an ellipse polygon instead
-			var a = (br.X - tl.X) / 2;
-			var b = (br.Y - tl.Y) / 2;
-			var xc = (br.X + tl.X) / 2;
-			var yc = (br.Y + tl.Y) / 2;
-			for (var y = tl.Y; y <= br.Y; y++)
+			var a = (r.Right - r.Left) / 2;
+			var b = (r.Bottom - r.Top) / 2;
+			var xc = (r.Right + r.Left) / 2;
+			var yc = (r.Bottom + r.Top) / 2;
+			for (var y = r.Top; y <= r.Bottom; y++)
 			{
-				var z = float2.Lerp(tl.Z, br.Z, (y - tl.Y) / (br.Y - tl.Y));
 				var dx = a * (float)Math.Sqrt(1 - (y - yc) * (y - yc) / b / b);
-				DrawLine(new float3(xc - dx, y, z), new float3(xc + dx, y, z), 1, color);
+				DrawLine(new float2(xc - dx, y), new float2(xc + dx, y), 1, color);
 			}
 		}
 
-		public void SetViewportParams(Size screen, float depthScale, float depthOffset, float zoom, int2 scroll)
+		public void SetViewportParams(Size screen, float zoom, int2 scroll)
 		{
-			shader.SetVec("Scroll", scroll.X, scroll.Y, scroll.Y);
-			shader.SetVec("r1",
-				zoom * 2f / screen.Width,
-				-zoom * 2f / screen.Height,
-				-depthScale * zoom / screen.Height);
-			shader.SetVec("r2", -1, 1, 1 - depthOffset);
-		}
-
-		public void SetDepthPreviewEnabled(bool enabled)
-		{
-			shader.SetBool("EnableDepthPreview", enabled);
+			shader.SetVec("Scroll", scroll.X, scroll.Y);
+			shader.SetVec("r1", zoom * 2f / screen.Width, -zoom * 2f / screen.Height);
+			shader.SetVec("r2", -1, 1);
 		}
 	}
 }

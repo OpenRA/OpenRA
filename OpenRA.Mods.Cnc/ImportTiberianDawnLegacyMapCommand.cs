@@ -24,11 +24,13 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 		// NOTE: 64x64 map size is a C&C95 engine limitation
 		public ImportTiberianDawnLegacyMapCommand() : base(64) { }
 
-		string IUtilityCommand.Name { get { return "--import-td-map"; } }
-		bool IUtilityCommand.ValidateArguments(string[] args) { return ValidateArguments(args); }
+		public string Name { get { return "--import-td-map"; } }
 
 		[Desc("FILENAME", "Convert a legacy Tiberian Dawn INI/MPR map to the OpenRA format.")]
-		void IUtilityCommand.Run(Utility utility, string[] args) { Run(utility, args); }
+		public override void Run(ModData modData, string[] args)
+		{
+			base.Run(modData, args);
+		}
 
 		public override void ValidateMapFormat(int format)
 		{

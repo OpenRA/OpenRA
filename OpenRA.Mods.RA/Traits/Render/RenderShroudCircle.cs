@@ -11,7 +11,6 @@
 
 using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Graphics;
 using OpenRA.Mods.Common.Traits;
@@ -19,27 +18,33 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Traits
 {
-	class RenderShroudCircleInfo : TraitInfo<RenderShroudCircle>, IPlaceBuildingDecorationInfo
+	class RenderShroudCircleInfo : ITraitInfo, IPlaceBuildingDecorationInfo
 	{
 		public IEnumerable<IRenderable> Render(WorldRenderer wr, World w, ActorInfo ai, WPos centerPosition)
 		{
-			var localRange = new RangeCircleRenderable(
+			yield return new RangeCircleRenderable(
 				centerPosition,
 				ai.TraitInfo<CreatesShroudInfo>().Range,
 				0,
 				Color.FromArgb(128, Color.Cyan),
 				Color.FromArgb(96, Color.Black));
 
-			var otherRanges = w.ActorsWithTrait<RenderShroudCircle>()
-				.SelectMany(a => a.Trait.RangeCircleRenderables(a.Actor, wr));
-
-			return otherRanges.Append(localRange);
+			foreach (var a in w.ActorsWithTrait<RenderShroudCircle>())
+				if (a.Actor.Owner.IsAlliedWith(w.RenderPlayer))
+					foreach (var r in a.Trait.RenderAfterWorld(wr))
+						yield return r;
 		}
+
+		public object Create(ActorInitializer init) { return new RenderShroudCircle(init.Self); }
 	}
 
-	class RenderShroudCircle : IRenderAboveShroudWhenSelected
+	class RenderShroudCircle : IPostRenderSelection
 	{
-		public IEnumerable<IRenderable> RangeCircleRenderables(Actor self, WorldRenderer wr)
+		Actor self;
+
+		public RenderShroudCircle(Actor self) { this.self = self; }
+
+		public IEnumerable<IRenderable> RenderAfterWorld(WorldRenderer wr)
 		{
 			if (!self.Owner.IsAlliedWith(self.World.RenderPlayer))
 				yield break;
@@ -50,11 +55,6 @@ namespace OpenRA.Mods.RA.Traits
 				0,
 				Color.FromArgb(128, Color.Cyan),
 				Color.FromArgb(96, Color.Black));
-		}
-
-		IEnumerable<IRenderable> IRenderAboveShroudWhenSelected.RenderAboveShroud(Actor self, WorldRenderer wr)
-		{
-			return RangeCircleRenderables(self, wr);
 		}
 	}
 }
