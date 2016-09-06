@@ -120,5 +120,17 @@ namespace OpenRA.Mods.Common.Traits
 					Info.RadarPingDuration);
 			}
 		}
+
+		public virtual void PlayLaunchSounds()
+		{
+			var renderPlayer = Self.World.RenderPlayer;
+			var isAllied = Self.Owner.IsAlliedWith(renderPlayer);
+			Game.Sound.Play(isAllied ? Info.LaunchSound : Info.IncomingSound);
+
+			// IsAlliedWith returns true if renderPlayer is null, so we are safe here.
+			var toPlayer = isAllied ? renderPlayer ?? Self.Owner : renderPlayer;
+			var speech = isAllied ? Info.LaunchSpeechNotification : Info.IncomingSpeechNotification;
+			Game.Sound.PlayNotification(Self.World.Map.Rules, toPlayer, "Speech", speech, toPlayer.Faction.InternalName);
+		}
 	}
 }
