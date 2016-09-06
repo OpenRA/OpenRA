@@ -14,7 +14,7 @@ Bounds: 4,1,58,50
 
 Visibility: MissionSelector
 
-Categories: Mission
+Categories: Campaign
 
 LockPreview: True
 
@@ -155,319 +155,319 @@ Actors:
 		Owner: Nod
 	Actor36: brik
 		Location: 58,19
-		Owner: Neutral
+		Owner: Nod
 	Actor37: brik
 		Location: 57,19
-		Owner: Neutral
+		Owner: Nod
 	Actor38: brik
 		Location: 56,19
-		Owner: Neutral
+		Owner: Nod
 	Actor39: brik
 		Location: 55,19
-		Owner: Neutral
+		Owner: Nod
 	Actor40: brik
 		Location: 54,19
-		Owner: Neutral
+		Owner: Nod
 	Actor41: brik
 		Location: 53,19
-		Owner: Neutral
+		Owner: Nod
 	Actor42: brik
 		Location: 52,19
-		Owner: Neutral
+		Owner: Nod
 	Actor43: brik
 		Location: 47,19
-		Owner: Neutral
+		Owner: Nod
 	Actor44: brik
 		Location: 46,19
-		Owner: Neutral
+		Owner: Nod
 	Actor45: brik
 		Location: 45,19
-		Owner: Neutral
+		Owner: Nod
 	Actor46: brik
 		Location: 44,19
-		Owner: Neutral
+		Owner: Nod
 	Actor47: brik
 		Location: 43,19
-		Owner: Neutral
+		Owner: Nod
 	Actor48: brik
 		Location: 42,19
-		Owner: Neutral
+		Owner: Nod
 	Actor49: brik
 		Location: 41,19
-		Owner: Neutral
+		Owner: Nod
 	Actor50: brik
 		Location: 40,19
-		Owner: Neutral
+		Owner: Nod
 	Actor51: brik
 		Location: 58,18
-		Owner: Neutral
+		Owner: Nod
 	Actor52: brik
 		Location: 57,18
-		Owner: Neutral
+		Owner: Nod
 	Actor53: brik
 		Location: 53,18
-		Owner: Neutral
+		Owner: Nod
 	Actor54: brik
 		Location: 52,18
-		Owner: Neutral
+		Owner: Nod
 	Actor55: brik
 		Location: 47,18
-		Owner: Neutral
+		Owner: Nod
 	Actor56: brik
 		Location: 46,18
-		Owner: Neutral
+		Owner: Nod
 	Actor57: brik
 		Location: 41,18
-		Owner: Neutral
+		Owner: Nod
 	Actor58: brik
 		Location: 40,18
-		Owner: Neutral
+		Owner: Nod
 	Actor59: brik
 		Location: 58,17
-		Owner: Neutral
+		Owner: Nod
 	Actor60: brik
 		Location: 40,17
-		Owner: Neutral
+		Owner: Nod
 	Actor61: brik
 		Location: 58,16
-		Owner: Neutral
+		Owner: Nod
 	Actor62: brik
 		Location: 40,16
-		Owner: Neutral
+		Owner: Nod
 	Actor63: brik
 		Location: 58,15
-		Owner: Neutral
+		Owner: Nod
 	Actor64: brik
 		Location: 40,15
-		Owner: Neutral
+		Owner: Nod
 	Actor65: brik
 		Location: 58,14
-		Owner: Neutral
+		Owner: Nod
 	Actor66: brik
 		Location: 41,14
-		Owner: Neutral
+		Owner: Nod
 	Actor67: brik
 		Location: 40,14
-		Owner: Neutral
+		Owner: Nod
 	Actor68: brik
 		Location: 58,13
-		Owner: Neutral
+		Owner: Nod
 	Actor69: brik
 		Location: 41,13
-		Owner: Neutral
+		Owner: Nod
 	Actor70: brik
 		Location: 40,13
-		Owner: Neutral
+		Owner: Nod
 	Actor71: brik
 		Location: 58,12
-		Owner: Neutral
+		Owner: Nod
 	Actor72: brik
 		Location: 58,11
-		Owner: Neutral
+		Owner: Nod
 	Actor73: brik
 		Location: 57,11
-		Owner: Neutral
+		Owner: Nod
 	Actor74: brik
 		Location: 58,10
-		Owner: Neutral
+		Owner: Nod
 	Actor75: brik
 		Location: 57,10
-		Owner: Neutral
+		Owner: Nod
 	Actor76: brik
 		Location: 41,10
-		Owner: Neutral
+		Owner: Nod
 	Actor77: brik
 		Location: 40,10
-		Owner: Neutral
+		Owner: Nod
 	Actor78: brik
 		Location: 41,9
-		Owner: Neutral
+		Owner: Nod
 	Actor79: brik
 		Location: 40,9
-		Owner: Neutral
+		Owner: Nod
 	Actor80: cycl
 		Location: 58,8
-		Owner: Neutral
+		Owner: Nod
 	Actor81: cycl
 		Location: 54,8
-		Owner: Neutral
+		Owner: Nod
 	Actor82: cycl
 		Location: 48,8
-		Owner: Neutral
+		Owner: Nod
 	Actor83: cycl
 		Location: 47,8
-		Owner: Neutral
+		Owner: Nod
 	Actor84: cycl
 		Location: 44,8
-		Owner: Neutral
+		Owner: Nod
 	Actor85: cycl
 		Location: 43,8
-		Owner: Neutral
+		Owner: Nod
 	Actor86: brik
 		Location: 40,8
-		Owner: Neutral
+		Owner: Nod
 	Actor87: brik
 		Location: 61,7
-		Owner: Neutral
+		Owner: Nod
 	Actor88: brik
 		Location: 60,7
-		Owner: Neutral
+		Owner: Nod
 	Actor89: cycl
 		Location: 59,7
-		Owner: Neutral
+		Owner: Nod
 	Actor90: cycl
 		Location: 58,7
-		Owner: Neutral
+		Owner: Nod
 	Actor91: cycl
 		Location: 54,7
-		Owner: Neutral
+		Owner: Nod
 	Actor92: cycl
 		Location: 53,7
-		Owner: Neutral
+		Owner: Nod
 	Actor93: cycl
 		Location: 52,7
-		Owner: Neutral
+		Owner: Nod
 	Actor94: cycl
 		Location: 51,7
-		Owner: Neutral
+		Owner: Nod
 	Actor95: cycl
 		Location: 50,7
-		Owner: Neutral
+		Owner: Nod
 	Actor96: cycl
 		Location: 49,7
-		Owner: Neutral
+		Owner: Nod
 	Actor97: cycl
 		Location: 48,7
-		Owner: Neutral
+		Owner: Nod
 	Actor98: cycl
 		Location: 43,7
-		Owner: Neutral
+		Owner: Nod
 	Actor99: brik
 		Location: 40,7
-		Owner: Neutral
+		Owner: Nod
 	Actor100: brik
 		Location: 61,6
-		Owner: Neutral
+		Owner: Nod
 	Actor101: brik
 		Location: 60,6
-		Owner: Neutral
+		Owner: Nod
 	Actor102: cycl
 		Location: 48,6
-		Owner: Neutral
+		Owner: Nod
 	Actor103: cycl
 		Location: 43,6
-		Owner: Neutral
+		Owner: Nod
 	Actor104: brik
 		Location: 40,6
-		Owner: Neutral
+		Owner: Nod
 	Actor105: brik
 		Location: 61,5
-		Owner: Neutral
+		Owner: Nod
 	Actor106: cycl
 		Location: 48,5
-		Owner: Neutral
+		Owner: Nod
 	Actor107: cycl
 		Location: 47,5
-		Owner: Neutral
+		Owner: Nod
 	Actor108: cycl
 		Location: 46,5
-		Owner: Neutral
+		Owner: Nod
 	Actor109: cycl
 		Location: 45,5
-		Owner: Neutral
+		Owner: Nod
 	Actor110: cycl
 		Location: 44,5
-		Owner: Neutral
+		Owner: Nod
 	Actor111: cycl
 		Location: 43,5
-		Owner: Neutral
+		Owner: Nod
 	Actor112: brik
 		Location: 40,5
-		Owner: Neutral
+		Owner: Nod
 	Actor113: brik
 		Location: 61,4
-		Owner: Neutral
+		Owner: Nod
 	Actor114: brik
 		Location: 40,4
-		Owner: Neutral
+		Owner: Nod
 	Actor115: brik
 		Location: 61,3
-		Owner: Neutral
+		Owner: Nod
 	Actor116: brik
 		Location: 60,3
-		Owner: Neutral
+		Owner: Nod
 	Actor117: brik
 		Location: 41,3
-		Owner: Neutral
+		Owner: Nod
 	Actor118: brik
 		Location: 40,3
-		Owner: Neutral
+		Owner: Nod
 	Actor119: brik
 		Location: 61,2
-		Owner: Neutral
+		Owner: Nod
 	Actor120: brik
 		Location: 60,2
-		Owner: Neutral
+		Owner: Nod
 	Actor121: brik
 		Location: 59,2
-		Owner: Neutral
+		Owner: Nod
 	Actor122: brik
 		Location: 58,2
-		Owner: Neutral
+		Owner: Nod
 	Actor123: brik
 		Location: 57,2
-		Owner: Neutral
+		Owner: Nod
 	Actor124: brik
 		Location: 56,2
-		Owner: Neutral
+		Owner: Nod
 	Actor125: brik
 		Location: 55,2
-		Owner: Neutral
+		Owner: Nod
 	Actor126: brik
 		Location: 54,2
-		Owner: Neutral
+		Owner: Nod
 	Actor127: brik
 		Location: 53,2
-		Owner: Neutral
+		Owner: Nod
 	Actor128: brik
 		Location: 52,2
-		Owner: Neutral
+		Owner: Nod
 	Actor129: brik
 		Location: 51,2
-		Owner: Neutral
+		Owner: Nod
 	Actor130: brik
 		Location: 50,2
-		Owner: Neutral
+		Owner: Nod
 	Actor131: brik
 		Location: 49,2
-		Owner: Neutral
+		Owner: Nod
 	Actor132: brik
 		Location: 48,2
-		Owner: Neutral
+		Owner: Nod
 	Actor133: brik
 		Location: 47,2
-		Owner: Neutral
+		Owner: Nod
 	Actor134: brik
 		Location: 46,2
-		Owner: Neutral
+		Owner: Nod
 	Actor135: brik
 		Location: 45,2
-		Owner: Neutral
+		Owner: Nod
 	Actor136: brik
 		Location: 44,2
-		Owner: Neutral
+		Owner: Nod
 	Actor137: brik
 		Location: 43,2
-		Owner: Neutral
+		Owner: Nod
 	Actor138: brik
 		Location: 42,2
-		Owner: Neutral
+		Owner: Nod
 	Actor139: brik
 		Location: 41,2
-		Owner: Neutral
+		Owner: Nod
 	Actor140: brik
 		Location: 40,2
-		Owner: Neutral
+		Owner: Nod
 	Actor141: t01
 		Location: 30,36
 		Owner: Neutral
