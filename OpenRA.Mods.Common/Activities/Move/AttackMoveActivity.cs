@@ -61,5 +61,19 @@ namespace OpenRA.Mods.Common.Activities
 
 			return Target.None;
 		}
+
+		public override IEnumerable<TargetLineNode> TargetLineNodes(Actor self)
+		{
+			// Attack move is a special case.
+			// It is natural to show combat while attacking something and
+			// when it is not, it should show "move".
+			if (inner != null)
+			{
+				foreach (var n in inner.RootActivity.TargetLineNodes(self))
+					yield return n;
+			}
+
+			yield break;
+		}
 	}
 }

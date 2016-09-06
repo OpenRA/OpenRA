@@ -71,7 +71,8 @@ namespace OpenRA.Mods.Common
 			var frozen = order.Target.FrozenActor;
 
 			// Flashes the frozen proxy
-			self.SetTargetLine(frozen, targetLine, true);
+			frozen.Flash();
+			self.ShowTargetLines();
 
 			// Target is still alive - resolve the real order
 			if (frozen.Actor != null && frozen.Actor.IsInWorld)

@@ -9,6 +9,8 @@
  */
 #endregion
 
+using System.Collections.Generic;
+using System.Drawing;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
@@ -47,6 +49,13 @@ namespace OpenRA.Mods.Common.Activities
 			}
 
 			return ActivityUtils.SequenceActivities(path, this);
+		}
+
+		public override IEnumerable<TargetLineNode> TargetLineNodes(Actor self)
+		{
+			// Since GuardTargetActivity encapsulates AttackMove-Guard case,
+			// the only use case left is the actual attack case which should be drawn in red.
+			yield return new TargetLineNode(target, Color.Red);
 		}
 	}
 }

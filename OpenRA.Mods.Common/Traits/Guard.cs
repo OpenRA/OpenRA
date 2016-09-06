@@ -49,10 +49,11 @@ namespace OpenRA.Mods.Common.Traits
 			if (!queued)
 				self.CancelActivity();
 
-			self.SetTargetLine(target, Color.Yellow);
-
 			var range = target.Actor.Info.TraitInfo<GuardableInfo>().Range;
-			self.QueueActivity(new AttackMoveActivity(self, move.MoveFollow(self, target, WDist.Zero, range)));
+			var inner = new AttackMoveActivity(self, move.MoveFollow(self, target, WDist.Zero, range));
+			self.QueueActivity(false, new GuardTargetActivity(self, target, inner));
+
+			self.ShowTargetLines();
 		}
 
 		public string VoicePhraseForOrder(Actor self, Order order)

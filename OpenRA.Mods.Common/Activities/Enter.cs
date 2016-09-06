@@ -10,6 +10,8 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Traits;
@@ -292,6 +294,11 @@ namespace OpenRA.Mods.Common.Activities
 				return NextActivity;
 
 			return this;
+		}
+
+		public override IEnumerable<TargetLineNode> TargetLineNodes(Actor self)
+		{
+			yield return new TargetLineNode(Target, Color.Yellow);
 		}
 	}
 }

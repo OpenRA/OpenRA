@@ -11,12 +11,29 @@
 
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using OpenRA.Traits;
 
 namespace OpenRA.Activities
 {
 	public enum ActivityState { Queued, Active, Done, Canceled }
+
+	public struct TargetLineNode
+	{
+		public readonly Target Target;
+		public readonly Color Color;
+		public readonly bool IsTerminal;
+
+		public TargetLineNode(Target target, Color color, bool isTerminal = false)
+		{
+			// Note: Not all activities are drawable. In that case, pass Target.Invalid as target,
+			// if "yield break" in TargetLineNode(Actor self) is not feasible.
+			Target = target;
+			Color = color;
+			IsTerminal = isTerminal;
+		}
+	}
 
 	/*
 	 * Activities are actions carried out by actors during each tick.
@@ -265,6 +282,11 @@ namespace OpenRA.Activities
 		{
 			yield break;
 		}
+
+		public virtual IEnumerable<TargetLineNode> TargetLineNodes(Actor self)
+		{
+			yield break;
+		}
 	}
 
 	/// <summary>
@@ -287,17 +309,6 @@ namespace OpenRA.Activities
 				else
 					return ParentActivity;
 			}
-		}
-	}
-
-	public static class ActivityExts
-	{
-		public static IEnumerable<Target> GetTargetQueue(this Actor self)
-		{
-			return self.CurrentActivity
-				.Iterate(u => u.NextActivity)
-				.TakeWhile(u => u != null)
-				.SelectMany(u => u.GetTargets(self));
 		}
 	}
 }

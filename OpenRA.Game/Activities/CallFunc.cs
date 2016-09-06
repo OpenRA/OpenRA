@@ -10,11 +10,16 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
+using System.Drawing;
+using OpenRA.Traits;
 
 namespace OpenRA.Activities
 {
 	public class CallFunc : Activity
 	{
+		TargetLineNode targetLineNode;
+
 		public CallFunc(Action a) { this.a = a; }
 		public CallFunc(Action a, bool interruptible)
 		{
@@ -28,6 +33,16 @@ namespace OpenRA.Activities
 		{
 			if (a != null) a();
 			return NextActivity;
+		}
+
+		public void SetTargetLineNode(Target target, Color color, bool isTerminal = false)
+		{
+			targetLineNode = new TargetLineNode(target, color, isTerminal);
+		}
+
+		public override IEnumerable<TargetLineNode> TargetLineNodes(Actor self)
+		{
+			yield return targetLineNode;
 		}
 	}
 }

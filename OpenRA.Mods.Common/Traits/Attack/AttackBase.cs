@@ -146,8 +146,8 @@ namespace OpenRA.Mods.Common.Traits
 				if (!target.IsValidFor(self))
 					return;
 
-				self.SetTargetLine(target, Color.Red);
 				AttackTarget(target, order.Queued, true, forceAttack);
+				self.ShowTargetLines();
 			}
 
 			if (order.OrderString == "Stop")

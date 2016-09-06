@@ -627,8 +627,8 @@ namespace OpenRA.Mods.Common.Traits
 
 				TicksBeforePathing = AverageTicksBeforePathing + self.World.SharedRandom.Next(-SpreadTicksBeforePathing, SpreadTicksBeforePathing);
 
-				self.SetTargetLine(Target.FromCell(self.World, loc), Color.Green);
 				self.QueueActivity(order.Queued, new Move(self, loc, WDist.FromCells(8), null, true));
+				self.ShowTargetLines();
 			}
 
 			if (order.OrderString == "Stop")
@@ -795,7 +795,6 @@ namespace OpenRA.Mods.Common.Traits
 			if (moveTo.HasValue)
 			{
 				self.CancelActivity();
-				self.SetTargetLine(Target.FromCell(self.World, moveTo.Value), Color.Green, false);
 				self.QueueActivity(new Move(self, moveTo.Value, WDist.Zero));
 
 				Log.Write("debug", "OnNudge #{0} from {1} to {2}",

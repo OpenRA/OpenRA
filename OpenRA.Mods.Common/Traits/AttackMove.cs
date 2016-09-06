@@ -120,8 +120,8 @@ namespace OpenRA.Mods.Common.Traits
 					return;
 
 				TargetLocation = move.NearestMoveableCell(order.TargetLocation);
-				self.SetTargetLine(Target.FromCell(self.World, TargetLocation.Value), Color.Red);
 				Activate(self, order.OrderString == "AssaultMove");
+				self.ShowTargetLines();
 			}
 		}
 	}

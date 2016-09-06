@@ -85,8 +85,8 @@ namespace OpenRA.Mods.Common.Traits
 			if (!order.Queued)
 				self.CancelActivity();
 
-			self.SetTargetLine(target, Color.Red);
 			self.QueueActivity(new CaptureActor(self, target.Actor));
+			self.ShowTargetLines();
 		}
 
 		class CaptureOrderTargeter : UnitOrderTargeter

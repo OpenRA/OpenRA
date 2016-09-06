@@ -102,12 +102,10 @@ namespace OpenRA.Mods.Common.Traits
 				if (!CanEnter(order.TargetActor)) return;
 				if (!IsCorrectCargoType(order.TargetActor)) return;
 
-				var target = Target.FromOrder(self.World, order);
-				self.SetTargetLine(target, Color.Green);
-
 				self.CancelActivity();
 				var transports = order.OrderString == "EnterTransports";
 				self.QueueActivity(new EnterTransport(self, order.TargetActor, transports ? Info.MaxAlternateTransportAttempts : 0, !transports));
+				self.ShowTargetLines();
 			}
 		}
 

@@ -9,11 +9,13 @@
  */
 #endregion
 
+using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
+using OpenRA.Activities;
 using OpenRA.Effects;
 using OpenRA.Mods.Common.Effects;
 using OpenRA.Mods.Common.Traits;
-using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Activities
 {
@@ -74,6 +76,11 @@ namespace OpenRA.Mods.Common.Activities
 						demolishables.Do(d => d.Demolish(target, self));
 				}));
 			});
+		}
+
+		public override IEnumerable<TargetLineNode> TargetLineNodes(Actor self)
+		{
+			yield return new TargetLineNode(Target, Color.Red);
 		}
 	}
 }

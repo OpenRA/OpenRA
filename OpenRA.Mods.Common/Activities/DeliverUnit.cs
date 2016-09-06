@@ -9,7 +9,8 @@
  */
 #endregion
 
-using System.Linq;
+using System.Collections.Generic;
+using System.Drawing;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
@@ -213,6 +214,15 @@ namespace OpenRA.Mods.Common.Activities
 				return false;
 
 			return base.Cancel(self);
+		}
+
+		public override IEnumerable<TargetLineNode> TargetLineNodes(Actor self)
+		{
+			if (innerActivity == null)
+				yield break;
+
+			foreach (var tln in innerActivity.TargetLineNodes(self))
+				yield return tln;
 		}
 	}
 }
