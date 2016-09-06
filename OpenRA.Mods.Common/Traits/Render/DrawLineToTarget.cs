@@ -11,7 +11,9 @@
 
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using OpenRA.Graphics;
+using OpenRA.Mods.Common.Activities;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -37,16 +39,14 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void SetTarget(Actor self, Target target, Color c, bool display)
 		{
-			targets = new List<Target> { target };
 			this.c = c;
 
 			if (display)
 				lifetime = info.Delay;
 		}
 
-		public void SetTargets(Actor self, List<Target> targets, Color c, bool display)
+		public void SetTargets(Actor self, Color c, bool display)
 		{
-			this.targets = targets;
 			this.c = c;
 
 			if (display)
@@ -66,37 +66,40 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			var force = Game.GetModifierKeys().HasModifier(Modifiers.Alt);
 			if ((lifetime <= 0 || --lifetime <= 0) && !force)
-				yield break;
+				return new IRenderable[0];
 
 			if (!(force || Game.Settings.Game.DrawTargetLine))
-				yield break;
+				return new IRenderable[0];
 
-			if (targets == null || targets.Count == 0)
-				yield break;
+			if (self.GetCurrentActivity() == null)
+				return new IRenderable[0];
 
-			foreach (var target in targets)
+			if (self.GetCurrentActivity().GetTargets(self).Count() <= 0)
+				return new IRenderable[0];
+
+			var validTargets = new List<WPos>();
+			validTargets.Add(self.CenterPosition);
+
+			foreach (var target in self.GetCurrentActivity().GetTargets(self))
 			{
-				if (target.Type == TargetType.Invalid)
-					continue;
-
-				yield return new TargetLineRenderable(new[] { self.CenterPosition, target.CenterPosition }, c);
+				validTargets.Add(target.CenterPosition);
 			}
+
+			return new[] { (IRenderable)new TargetLineRenderable(validTargets, c) };
 		}
 
 		void INotifyBecomingIdle.OnBecomingIdle(Actor a)
 		{
-			if (a.IsIdle)
-				targets = null;
 		}
 	}
 
 	public static class LineTargetExts
 	{
-		public static void SetTargetLines(this Actor self, List<Target> targets, Color color)
+		public static void SetTargetLines(this Actor self, Color color)
 		{
 			var line = self.TraitOrDefault<DrawLineToTarget>();
 			if (line != null)
-				self.World.AddFrameEndTask(w => line.SetTargets(self, targets, color, false));
+				line.SetTargets(self, color, true);
 		}
 
 		public static void SetTargetLine(this Actor self, Target target, Color color)
