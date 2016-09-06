@@ -28,7 +28,7 @@ namespace OpenRA.Mods.Common.Traits
 	public class DrawLineToTarget : IPostRenderSelection, INotifySelected, INotifyBecomingIdle
 	{
 		readonly DrawLineToTargetInfo info;
-		Actor self;
+		List<Target> targets;
 		Color c;
 		int lifetime;
 
