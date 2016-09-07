@@ -165,8 +165,6 @@ ORCA:
 
 C17:
 	Inherits: ^Plane
-	ParaDrop:
-		LZRange: 1
 	Tooltip:
 		Name: Supply Aircraft
 		Description: Drops vehicle reinforcements on Airstrips
