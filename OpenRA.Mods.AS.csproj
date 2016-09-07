@@ -96,9 +96,13 @@
     <Compile Include="Traits\ReloadAmmoWhenEnabled.cs" />
     <Compile Include="Traits\GivesProximityBounty.cs" />
     <Compile Include="Traits\ProximityBounty.cs" />
+    <Compile Include="Traits\ActorTag.cs" />
+    <Compile Include="Scripting\Global\ActorTagGlobal.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Traits\Render\" />
+    <Folder Include="Scripting\" />
+    <Folder Include="Scripting\Global\" />
   </ItemGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -83,7 +83,7 @@ namespace OpenRA.Mods.AS.Traits
 			foreach (var a in cargo.Passengers)
 			{
 				var givesProximityBounty = a.TraitsImplementing<GivesProximityBounty>().Where(gpb => deathTypes.Overlaps(gpb.info.DeathTypes));
-				foreach(var gpb in givesProximityBounty)
+				foreach (var gpb in givesProximityBounty)
 					bounty += gpb.GetDisplayedBountyValue(a, deathTypes);
 			}
 
