@@ -57,7 +57,7 @@ namespace OpenRA.Mods.Common.Projectiles
 		[Desc("Extra search radius beyond beam width. Required to ensure affecting actors with large health radius.")]
 		public readonly WDist TargetExtraSearchRadius = new WDist(1536);
 
-		[Desc("Should the beam be visuall rendered? False = Beam is invisible.")]
+		[Desc("Should the beam be visually rendered? False = Beam is invisible.")]
 		public readonly bool RenderBeam = true;
 
 		[Desc("Equivalent to sequence ZOffset. Controls Z sorting.")]

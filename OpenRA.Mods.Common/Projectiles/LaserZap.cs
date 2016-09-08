@@ -36,7 +36,7 @@ namespace OpenRA.Mods.Common.Projectiles
 
 		public readonly bool UsePlayerColor = false;
 
-		[Desc("Laser color.")]
+		[Desc("Color of the beam.")]
 		public readonly Color Color = Color.Red;
 
 		[Desc("Impact animation.")]
@@ -50,7 +50,7 @@ namespace OpenRA.Mods.Common.Projectiles
 		public IProjectile Create(ProjectileArgs args)
 		{
 			var c = UsePlayerColor ? args.SourceActor.Owner.Color.RGB : Color;
-			return new LaserZap(args, this, c);
+			return new LaserZap(this, args, c);
 		}
 	}
 
@@ -65,7 +65,7 @@ namespace OpenRA.Mods.Common.Projectiles
 		bool animationComplete;
 		WPos target;
 
-		public LaserZap(ProjectileArgs args, LaserZapInfo info, Color color)
+		public LaserZap(LaserZapInfo info, ProjectileArgs args, Color color)
 		{
 			this.args = args;
 			this.info = info;
