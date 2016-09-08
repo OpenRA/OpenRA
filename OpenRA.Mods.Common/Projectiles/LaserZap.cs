@@ -32,7 +32,7 @@ namespace OpenRA.Mods.Common.Projectiles
 		[Desc("Equivalent to sequence ZOffset. Controls Z sorting.")]
 		public readonly int ZOffset = 0;
 
-		public readonly int BeamDuration = 10;
+		public readonly int Duration = 10;
 
 		public readonly bool UsePlayerColor = false;
 
@@ -94,7 +94,7 @@ namespace OpenRA.Mods.Common.Projectiles
 			if (hitanim != null)
 				hitanim.Tick();
 
-			if (++ticks >= info.BeamDuration && animationComplete)
+			if (++ticks >= info.Duration && animationComplete)
 				world.AddFrameEndTask(w => w.Remove(this));
 		}
 
@@ -104,9 +104,9 @@ namespace OpenRA.Mods.Common.Projectiles
 				wr.World.FogObscures(args.Source))
 				yield break;
 
-			if (ticks < info.BeamDuration)
+			if (ticks < info.Duration)
 			{
-				var rc = Color.FromArgb((info.BeamDuration - ticks) * color.A / info.BeamDuration, color);
+				var rc = Color.FromArgb((info.Duration - ticks) * color.A / info.Duration, color);
 				yield return new BeamRenderable(args.Source, info.ZOffset, target - args.Source, info.Shape, info.Width, rc);
 			}
 

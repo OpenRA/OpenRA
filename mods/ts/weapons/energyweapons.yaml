@@ -193,7 +193,7 @@ TurretLaserFire:
 	Report: lastur1.aud
 	Projectile: LaserZap
 		Width: 50
-		BeamDuration: 5
+		Duration: 5
 		ZOffset: 2047
 		Color: FF000045
 	Warhead@1Dam: SpreadDamage
