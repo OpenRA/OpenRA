@@ -36,7 +36,7 @@ namespace OpenRA.Mods.Common.Projectiles
 
 		public readonly bool UsePlayerColor = false;
 
-		[Desc("Laser color in (A,)R,G,B.")]
+		[Desc("Laser color.")]
 		public readonly Color Color = Color.Red;
 
 		[Desc("Impact animation.")]
@@ -106,7 +106,7 @@ namespace OpenRA.Mods.Common.Projectiles
 
 			if (ticks < info.BeamDuration)
 			{
-				var rc = Color.FromArgb((info.BeamDuration - ticks) * 255 / info.BeamDuration, color);
+				var rc = Color.FromArgb((info.BeamDuration - ticks) * color.A / info.BeamDuration, color);
 				yield return new BeamRenderable(args.Source, info.ZOffset, target - args.Source, info.Shape, info.Width, rc);
 			}
 

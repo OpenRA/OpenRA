@@ -195,6 +195,7 @@ TurretLaserFire:
 		Width: 50
 		BeamDuration: 5
 		ZOffset: 2047
+		Color: FF000045
 	Warhead@1Dam: SpreadDamage
 		Spread: 42
 		Damage: 30
