@@ -198,7 +198,7 @@ sardaukar:
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 80
-		Prerequisites: ~barracks.harkonnen, palace, ~techlevel.high
+		Prerequisites: ~barracks.harkonnen, upgrade.barracks, high_tech_factory, ~techlevel.high
 		BuildDuration: 81
 		BuildDurationModifier: 40
 	Valued:
