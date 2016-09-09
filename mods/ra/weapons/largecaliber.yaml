@@ -146,7 +146,7 @@ TurretGun:
 	Projectile: Bullet
 		Speed: 204
 		Blockable: false
-		Angle: 62
+		LaunchAngle: 62
 		Inaccuracy: 1c682
 		Image: 120MM
 		ContrailLength: 30
@@ -180,7 +180,7 @@ TurretGun:
 	Projectile: Bullet
 		Speed: 204
 		Blockable: false
-		Angle: 62
+		LaunchAngle: 62
 		Inaccuracy: 2c938
 		Image: 120MM
 		ContrailLength: 30

@@ -5,7 +5,7 @@ Grenade:
 		Speed: 85
 		Blockable: false
 		Shadow: true
-		Angle: 45
+		LaunchAngle: 45
 		Inaccuracy: 384
 		Image: DISCUS
 	Warhead@1Dam: SpreadDamage
@@ -72,7 +72,7 @@ RPGTower:
 		Speed: 384
 		Blockable: false
 		Shadow: true
-		Angle: 62
+		LaunchAngle: 62
 		Image: canister
 		Palette: player
 	Warhead@1Dam: SpreadDamage

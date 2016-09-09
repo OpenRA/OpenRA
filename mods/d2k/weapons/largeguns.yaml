@@ -99,7 +99,7 @@ DevBullet:
 		Speed: 192
 		Blockable: false
 		Shadow: yes
-		Angle: 62
+		LaunchAngle: 62
 		Inaccuracy: 768
 		ContrailLength: 20
 		Image: 155mm

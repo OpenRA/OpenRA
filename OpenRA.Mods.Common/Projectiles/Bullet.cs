@@ -61,7 +61,7 @@ namespace OpenRA.Mods.Common.Projectiles
 		public readonly WDist TargetExtraSearchRadius = new WDist(1536);
 
 		[Desc("Arc in WAngles, two values indicate variable arc.")]
-		public readonly WAngle[] Angle = { WAngle.Zero };
+		public readonly WAngle[] LaunchAngle = { WAngle.Zero };
 
 		[Desc("Interval in ticks between each spawned Trail animation.")]
 		public readonly int TrailInterval = 2;
@@ -111,10 +111,10 @@ namespace OpenRA.Mods.Common.Projectiles
 
 			var world = args.SourceActor.World;
 
-			if (info.Angle.Length > 1)
-				angle = new WAngle(world.SharedRandom.Next(info.Angle[0].Angle, info.Angle[1].Angle));
+			if (info.LaunchAngle.Length > 1)
+				angle = new WAngle(world.SharedRandom.Next(info.LaunchAngle[0].Angle, info.LaunchAngle[1].Angle));
 			else
-				angle = info.Angle[0];
+				angle = info.LaunchAngle[0];
 
 			if (info.Speed.Length > 1)
 				speed = new WDist(world.SharedRandom.Next(info.Speed[0].Length, info.Speed[1].Length));

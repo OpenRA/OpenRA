@@ -192,7 +192,7 @@ grenade:
 	Projectile: Bullet
 		Speed: 256
 		Blockable: false
-		Angle: 75
+		LaunchAngle: 75
 		Inaccuracy: 416
 		Image: grenade
 		Shadow: true
@@ -261,7 +261,7 @@ SpiceExplosion:
 	Projectile: Bullet
 		Speed: 50, 75
 		Blockable: false
-		Angle: 60, 90
+		LaunchAngle: 60, 90
 		TrailImage: large_trail
 		Image: 120mm
 	Warhead@1Dam: SpreadDamage

@@ -4,7 +4,7 @@ Debris:
 	Projectile: Bullet
 		Speed: 32, 96
 		Blockable: false
-		Angle: 30, 90
+		LaunchAngle: 30, 90
 		Inaccuracy: 1c256
 		Image: shrapnel
 	Warhead@1Dam: SpreadDamage
@@ -36,7 +36,7 @@ Debris2:
 	Projectile: Bullet
 		Speed: 32, 96
 		Blockable: false
-		Angle: 30, 90
+		LaunchAngle: 30, 90
 		Inaccuracy: 1c256
 		Image: shrapnel2
 		TrailImage: bazooka_trail
@@ -71,7 +71,7 @@ Debris3:
 	Projectile: Bullet
 		Speed: 32, 96
 		Blockable: false
-		Angle: 30, 90
+		LaunchAngle: 30, 90
 		Inaccuracy: 1c256
 		Image: shrapnel3
 		TrailImage: large_trail
@@ -106,7 +106,7 @@ Debris4:
 	Projectile: Bullet
 		Speed: 32, 96
 		Blockable: false
-		Angle: 30, 90
+		LaunchAngle: 30, 90
 		Inaccuracy: 1c256
 		Image: shrapnel4
 		TrailImage: large_trail

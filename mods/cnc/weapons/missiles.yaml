@@ -182,7 +182,7 @@ MammothMissiles:
 		Blockable: false
 		Shadow: true
 		Inaccuracy: 853
-		Angle: 62
+		LaunchAngle: 62
 		Image: DRAGON
 		RateOfTurn: 2
 		ContrailLength: 10
@@ -349,7 +349,7 @@ HonestJohn:
 		TrailImage: smokey
 		Speed: 187
 		RangeLimit: 35
-		Angle: 88
+		LaunchAngle: 88
 	Warhead@1Dam: SpreadDamage
 		Spread: 256
 		Damage: 100
