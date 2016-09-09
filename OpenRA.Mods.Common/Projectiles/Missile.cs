@@ -159,6 +159,9 @@ namespace OpenRA.Mods.Common.Projectiles
 		readonly Animation anim;
 
 		readonly WVec gravity;
+		readonly int minLaunchSpeed;
+		readonly int maxLaunchSpeed;
+		readonly int maxSpeed;
 
 		int ticks;
 
@@ -201,6 +204,9 @@ namespace OpenRA.Mods.Common.Projectiles
 			gravity = new WVec(0, 0, -info.Gravity);
 			targetPosition = args.PassiveTarget;
 			rangeLimit = info.RangeLimit != WDist.Zero ? info.RangeLimit : args.Weapon.Range;
+			minLaunchSpeed = info.MinimumLaunchSpeed.Length > -1 ? info.MinimumLaunchSpeed.Length : info.Speed.Length;
+			maxLaunchSpeed = info.MaximumLaunchSpeed.Length > -1 ? info.MaximumLaunchSpeed.Length : info.Speed.Length;
+			maxSpeed = info.Speed.Length;
 
 			var world = args.SourceActor.World;
 
@@ -248,9 +254,7 @@ namespace OpenRA.Mods.Common.Projectiles
 		void DetermineLaunchSpeedAndAngleForIncline(int predClfDist, int diffClfMslHgt, int relTarHorDist,
 			out int speed, out int vFacing)
 		{
-			var minLaunchSpeed = info.MinimumLaunchSpeed.Length > -1 ? info.MinimumLaunchSpeed.Length : info.Speed.Length;
-			var maxLaunchSpeed = info.MaximumLaunchSpeed.Length > -1 ? info.MaximumLaunchSpeed.Length : info.Speed.Length;
-			speed = info.MaximumLaunchSpeed.Length > -1 ? info.MaximumLaunchSpeed.Length : info.Speed.Length;
+			speed = maxLaunchSpeed;
 
 			// Find smallest vertical facing, for which the missile will be able to climb terrAltDiff w-units
 			// within hHeightChange w-units all the while ending the ascent with vertical facing 0
@@ -291,7 +295,7 @@ namespace OpenRA.Mods.Common.Projectiles
 		// TODO: Double check Launch parameter determination
 		void DetermineLaunchSpeedAndAngle(World world, out int speed, out int vFacing)
 		{
-			speed = info.MaximumLaunchSpeed.Length > -1 ? info.MaximumLaunchSpeed.Length : info.Speed.Length;
+			speed = maxLaunchSpeed;
 			loopRadius = LoopRadius(speed, info.VerticalRateOfTurn);
 
 			// Compute current distance from target position
@@ -310,7 +314,7 @@ namespace OpenRA.Mods.Common.Projectiles
 			else if (lastHt != 0)
 			{
 				vFacing = System.Math.Max((sbyte)(info.MinimumLaunchAngle.Angle >> 2), (sbyte)0);
-				speed = info.MaximumLaunchSpeed.Length > -1 ? info.MaximumLaunchSpeed.Length : info.Speed.Length;
+				speed = maxLaunchSpeed;
 			}
 			else
 			{
@@ -404,7 +408,7 @@ namespace OpenRA.Mods.Common.Projectiles
 
 		void ChangeSpeed(int sign = 1)
 		{
-			speed = (speed + sign * info.Acceleration.Length).Clamp(0, info.Speed.Length);
+			speed = (speed + sign * info.Acceleration.Length).Clamp(0, maxSpeed);
 
 			// Compute the vertical loop radius
 			loopRadius = LoopRadius(speed, info.VerticalRateOfTurn);
@@ -415,7 +419,7 @@ namespace OpenRA.Mods.Common.Projectiles
 			// Compute the projectile's freefall displacement
 			var move = velocity + gravity / 2;
 			velocity += gravity;
-			var velRatio = info.Speed.Length * 1024 / velocity.Length;
+			var velRatio = maxSpeed * 1024 / velocity.Length;
 			if (velRatio < 1024)
 				velocity = velocity * velRatio / 1024;
 
