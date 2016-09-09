@@ -162,6 +162,8 @@ namespace OpenRA.Mods.Common.Projectiles
 		readonly int minLaunchSpeed;
 		readonly int maxLaunchSpeed;
 		readonly int maxSpeed;
+		readonly WAngle minLaunchAngle;
+		readonly WAngle maxLaunchAngle;
 
 		int ticks;
 
@@ -207,6 +209,8 @@ namespace OpenRA.Mods.Common.Projectiles
 			minLaunchSpeed = info.MinimumLaunchSpeed.Length > -1 ? info.MinimumLaunchSpeed.Length : info.Speed.Length;
 			maxLaunchSpeed = info.MaximumLaunchSpeed.Length > -1 ? info.MaximumLaunchSpeed.Length : info.Speed.Length;
 			maxSpeed = info.Speed.Length;
+			minLaunchAngle = info.MinimumLaunchAngle;
+			maxLaunchAngle = info.MaximumLaunchAngle;
 
 			var world = args.SourceActor.World;
 
@@ -258,7 +262,7 @@ namespace OpenRA.Mods.Common.Projectiles
 
 			// Find smallest vertical facing, for which the missile will be able to climb terrAltDiff w-units
 			// within hHeightChange w-units all the while ending the ascent with vertical facing 0
-			vFacing = info.MaximumLaunchAngle.Angle >> 2;
+			vFacing = maxLaunchAngle.Angle >> 2;
 
 			// Compute minimum speed necessary to both be able to face directly upwards and have enough space
 			// to hit the target without passing it by (and thus having to do horizontal loops)
@@ -286,8 +290,8 @@ namespace OpenRA.Mods.Common.Projectiles
 				// Find least vertical facing that will allow the missile to climb
 				// terrAltDiff w-units within hHeightChange w-units
 				// all the while ending the ascent with vertical facing 0
-				vFacing = BisectionSearch(System.Math.Max((sbyte)(info.MinimumLaunchAngle.Angle >> 2), (sbyte)0),
-					(sbyte)(info.MaximumLaunchAngle.Angle >> 2),
+				vFacing = BisectionSearch(System.Math.Max((sbyte)(minLaunchAngle.Angle >> 2), (sbyte)0),
+					(sbyte)(maxLaunchAngle.Angle >> 2),
 					vFac => !WillClimbWithinDistance(vFac, loopRadius, predClfDist, diffClfMslHgt)) + 1;
 			}
 		}
@@ -313,7 +317,7 @@ namespace OpenRA.Mods.Common.Projectiles
 				DetermineLaunchSpeedAndAngleForIncline(predClfDist, diffClfMslHgt, relTarHorDist, out speed, out vFacing);
 			else if (lastHt != 0)
 			{
-				vFacing = System.Math.Max((sbyte)(info.MinimumLaunchAngle.Angle >> 2), (sbyte)0);
+				vFacing = System.Math.Max((sbyte)(minLaunchAngle.Angle >> 2), (sbyte)0);
 				speed = maxLaunchSpeed;
 			}
 			else
@@ -328,8 +332,8 @@ namespace OpenRA.Mods.Common.Projectiles
 					vFacing = 0;
 
 				// Make sure the chosen vertical facing adheres to prescribed bounds
-				vFacing = vFacing.Clamp((sbyte)(info.MinimumLaunchAngle.Angle >> 2),
-					(sbyte)(info.MaximumLaunchAngle.Angle >> 2));
+				vFacing = vFacing.Clamp((sbyte)(minLaunchAngle.Angle >> 2),
+					(sbyte)(maxLaunchAngle.Angle >> 2));
 			}
 		}
 
