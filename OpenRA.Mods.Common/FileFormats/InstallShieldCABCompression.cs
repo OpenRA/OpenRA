@@ -322,7 +322,7 @@ namespace OpenRA.Mods.Common.FileFormats
 						fileOffset = head.FirstFileOffset;
 					}
 					else
-						throw new Exception("Cannot Resolve Remaining Stream");
+						throw new InvalidDataException("Cannot Resolve Remaining Stream");
 				}
 				else
 				{
@@ -403,7 +403,7 @@ namespace OpenRA.Mods.Common.FileFormats
 		void ExtractFile(FileDescriptor file, Stream output, Action<int> onProgress = null)
 		{
 			if (file.Flags.HasFlag(CABFlags.FileInvalid))
-				throw new Exception("File Invalid");
+				throw new InvalidDataException("File Invalid");
 
 			if (file.LinkFlags.HasFlag(LinkFlags.Prev))
 			{

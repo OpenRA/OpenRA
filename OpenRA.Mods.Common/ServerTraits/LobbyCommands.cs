@@ -756,7 +756,7 @@ namespace OpenRA.Mods.Common.Server
 			var uid = server.LobbyInfo.GlobalSettings.Map;
 			server.Map = server.ModData.MapCache[uid];
 			if (server.Map.Status != MapStatus.Available)
-				throw new Exception("Map {0} not found".F(uid));
+				throw new InvalidOperationException("Map {0} not found".F(uid));
 
 			server.LobbyInfo.Slots = server.Map.Players.Players
 				.Select(p => MakeSlotFromPlayerReference(p.Value))
