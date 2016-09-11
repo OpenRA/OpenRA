@@ -48,6 +48,7 @@ namespace OpenRA.Platforms.Default
 
 		// Errors
 		public const int GL_NO_ERROR = 0;
+		public const int GL_OUT_OF_MEMORY = 0x505;
 
 		// BeginMode
 		public const int GL_POINTS = 0;
@@ -489,9 +490,14 @@ namespace OpenRA.Platforms.Default
 			var n = glGetError();
 			if (n != GL_NO_ERROR)
 			{
-				var error = "GL Error: {0}\n{1}".F(n, new StackTrace());
+				var errorText = n == GL_OUT_OF_MEMORY ? "Out Of Memory" : n.ToString();
+				var error = "GL Error: {0}\n{1}".F(errorText, new StackTrace());
 				WriteGraphicsLog(error);
-				throw new InvalidOperationException("OpenGL Error: See graphics.log for details.");
+				const string ExceptionMessage = "OpenGL Error: See graphics.log for details.";
+				if (n == GL_OUT_OF_MEMORY)
+					throw new OutOfMemoryException(ExceptionMessage);
+				else
+					throw new InvalidOperationException(ExceptionMessage);
 			}
 		}
 

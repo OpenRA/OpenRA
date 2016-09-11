@@ -46,7 +46,7 @@ namespace OpenRA
 			}
 		}
 
-		static void FatalError(Exception e)
+		static void FatalError(Exception ex)
 		{
 			Log.AddChannel("exception", "exception.log");
 
@@ -65,49 +65,62 @@ namespace OpenRA
 			Log.Write("exception", "Date: {0:u}", DateTime.UtcNow);
 			Log.Write("exception", "Operating System: {0} ({1})", Platform.CurrentPlatform, Environment.OSVersion);
 			Log.Write("exception", "Runtime Version: {0}", Platform.RuntimeVersion);
-			var rpt = BuildExceptionReport(e).ToString();
+			var rpt = BuildExceptionReport(ex).ToString();
 			Log.Write("exception", "{0}", rpt);
 			Console.Error.WriteLine(rpt);
 		}
 
-		static StringBuilder BuildExceptionReport(Exception e)
+		static StringBuilder BuildExceptionReport(Exception ex)
 		{
-			return BuildExceptionReport(e, new StringBuilder(), 0);
+			return BuildExceptionReport(ex, new StringBuilder(), 0);
 		}
 
-		static void Indent(StringBuilder sb, int d)
+		static StringBuilder AppendIndentedFormatLine(this StringBuilder sb, int indent, string format, params object[] args)
 		{
-			sb.Append(new string(' ', d * 2));
+			return sb.Append(new string(' ', indent * 2)).AppendFormat(format, args).AppendLine();
 		}
 
-		static StringBuilder BuildExceptionReport(Exception e, StringBuilder sb, int d)
+		static StringBuilder BuildExceptionReport(Exception ex, StringBuilder sb, int indent)
 		{
-			if (e == null)
+			if (ex == null)
 				return sb;
 
-			sb.AppendFormat("Exception of type `{0}`: {1}", e.GetType().FullName, e.Message);
+			sb.AppendIndentedFormatLine(indent, "Exception of type `{0}`: {1}", ex.GetType().FullName, ex.Message);
 
-			var tle = e as TypeLoadException;
+			var tle = ex as TypeLoadException;
+			var oom = ex as OutOfMemoryException;
 			if (tle != null)
 			{
-				sb.AppendLine();
-				Indent(sb, d);
-				sb.AppendFormat("TypeName=`{0}`", tle.TypeName);
+				sb.AppendIndentedFormatLine(indent, "TypeName=`{0}`", tle.TypeName);
+			}
+			else if (oom != null)
+			{
+				var gcMemoryBeforeCollect = GC.GetTotalMemory(false);
+				GC.Collect();
+				GC.WaitForPendingFinalizers();
+				GC.Collect();
+				sb.AppendIndentedFormatLine(indent, "GC Memory (post-collect)={0:N0}", GC.GetTotalMemory(false));
+				sb.AppendIndentedFormatLine(indent, "GC Memory (pre-collect)={0:N0}", gcMemoryBeforeCollect);
+
+				using (var p = Process.GetCurrentProcess())
+				{
+					sb.AppendIndentedFormatLine(indent, "Working Set={0:N0}", p.WorkingSet64);
+					sb.AppendIndentedFormatLine(indent, "Private Memory={0:N0}", p.PrivateMemorySize64);
+					sb.AppendIndentedFormatLine(indent, "Virtual Memory={0:N0}", p.VirtualMemorySize64);
+				}
 			}
 			else
 			{
 				// TODO: more exception types
 			}
 
-			if (e.InnerException != null)
+			if (ex.InnerException != null)
 			{
-				sb.AppendLine();
-				Indent(sb, d); sb.Append("Inner ");
-				BuildExceptionReport(e.InnerException, sb, d + 1);
+				sb.AppendIndentedFormatLine(indent, "Inner");
+				BuildExceptionReport(ex.InnerException, sb, indent + 1);
 			}
 
-			sb.AppendLine();
-			Indent(sb, d); sb.Append(e.StackTrace);
+			sb.AppendIndentedFormatLine(indent, "{0}", ex.StackTrace);
 
 			return sb;
 		}
