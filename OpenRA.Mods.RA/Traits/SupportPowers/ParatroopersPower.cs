@@ -153,11 +153,14 @@ namespace OpenRA.Mods.RA.Traits
 
 			self.World.AddFrameEndTask(w =>
 			{
-				var isAllied = self.Owner.IsAlliedWith(self.World.RenderPlayer);
+				var renderPlayer = self.World.RenderPlayer;
+				var isAllied = self.Owner.IsAlliedWith(renderPlayer);
 				Game.Sound.Play(isAllied ? Info.LaunchSound : Info.IncomingSound);
 
+				// IsAlliedWith returns true if renderPlayer is null, so we are safe here.
+				var toPlayer = isAllied ? renderPlayer ?? self.Owner : renderPlayer;
 				var speech = isAllied ? Info.LaunchSpeechNotification : Info.IncomingSpeechNotification;
-				Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", speech, self.Owner.Faction.InternalName);
+				Game.Sound.PlayNotification(self.World.Map.Rules, toPlayer, "Speech", speech, toPlayer.Faction.InternalName);
 
 				Actor distanceTestActor = null;
 
