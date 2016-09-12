@@ -92,19 +92,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override void Activate(Actor self, Order order, SupportPowerManager manager)
 		{
 			base.Activate(self, order, manager);
-
-			if (self.Owner.IsAlliedWith(self.World.RenderPlayer))
-			{
-				Game.Sound.Play(Info.LaunchSound);
-				Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech",
-					Info.LaunchSpeechNotification, self.Owner.Faction.InternalName);
-			}
-			else
-			{
-				Game.Sound.Play(Info.IncomingSound);
-				Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech",
-					Info.IncomingSpeechNotification, self.Owner.Faction.InternalName);
-			}
+			PlayLaunchSounds();
 
 			if (!string.IsNullOrEmpty(info.ActivationSequence))
 			{

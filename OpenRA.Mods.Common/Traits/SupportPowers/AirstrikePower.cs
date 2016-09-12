@@ -127,11 +127,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			self.World.AddFrameEndTask(w =>
 			{
-				var isAllied = self.Owner.IsAlliedWith(self.World.RenderPlayer);
-				Game.Sound.Play(isAllied ? Info.LaunchSound : Info.IncomingSound);
-
-				var speech = isAllied ? Info.LaunchSpeechNotification : Info.IncomingSpeechNotification;
-				Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", speech, self.Owner.Faction.InternalName);
+				PlayLaunchSounds();
 
 				Actor distanceTestActor = null;
 				for (var i = -info.SquadSize / 2; i <= info.SquadSize / 2; i++)
