@@ -1,7 +1,7 @@
 ^tibtree:
 	Defaults:
 		UseTilesetExtension: true
-		Offset: 0, -12
+		Offset: 0, -12, 12
 	idle:
 		ShadowStart: 11
 	active:
@@ -21,7 +21,7 @@ tibtre03:
 
 bigblue:
 	Defaults:
-		Offset: 0, -12
+		Offset: 0, -12, 12
 	idle: bigblue2
 		ShadowStart: 10
 	active: bigblue2
@@ -34,7 +34,7 @@ bigblue:
 	idle:
 		ShadowStart: 1
 		UseTilesetExtension: true
-		Offset: 0, -12
+		Offset: 0, -12, 12
 
 tree01:
 	Inherits: ^tree
@@ -116,3 +116,4 @@ veinhole:
 		ShadowStart: 1
 		UseTilesetExtension: true
 		Offset: 0,-60
+		ZRamp: 1

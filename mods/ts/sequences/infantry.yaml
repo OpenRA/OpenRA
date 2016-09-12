@@ -1,6 +1,7 @@
 ^BasicInfantry:
 	Defaults:
 		Tick: 80
+		Offset: 0, 0, 16
 	stand:
 		Facings: 8
 		ShadowStart: 292
@@ -182,6 +183,7 @@ civ3:
 cyborg:
 	Defaults:
 		Tick: 80
+		Offset: 0, 0, 16
 	stand:
 		Facings: 8
 		ShadowStart: 370
@@ -225,9 +227,12 @@ cyborg:
 	icon: cybiicon
 
 cyc2:
+	Defaults:
+		Offset: 0, 0, 16
 	stand:
 		Facings: 8
 		ShadowStart: 308
+		Offset: 0, 0, 16
 	run:
 		Start: 8
 		Length: 9
@@ -270,6 +275,7 @@ cyc2:
 medic:
 	Defaults:
 		Tick: 80
+		Offset: 0, 0, 16
 	stand:
 		Facings: 8
 		ShadowStart: 307
@@ -328,6 +334,7 @@ medic:
 jumpjet:
 	Defaults:
 		Tick: 80
+		Offset: 0, 0, 16
 	stand:
 		Facings: 8
 		ShadowStart: 451
@@ -389,6 +396,7 @@ jumpjet:
 weedguy:
 	Defaults: weed
 		Tick: 80
+		Offset: 0, 0, 16
 	stand:
 		Facings: 8
 		ShadowStart: 202
@@ -455,6 +463,7 @@ weedguy:
 doggie:
 	Defaults:
 		Tick: 80
+		Offset: 0, 0, 16
 	stand:
 		Facings: 8
 		ShadowStart: 119
@@ -509,23 +518,27 @@ vissml:
 		Length: 90
 		ShadowStart: 90
 		Tick: 80
+		Offset: 0, 0, 16
 
 vislrg:
 	idle:
 		Length: 90
 		ShadowStart: 90
 		Tick: 80
+		Offset: 0, 0, 16
 	muzzle: vislgatk # TODO: unused
 		Length: 5
 		Facings: 8
 		ShadowStart: 40
 		Tick: 80
+		Offset: 0, 0, 16
 
 flameguy:
 	Defaults:
 		Facings: 8
 		Tick: 80
 		ShadowStart: 148
+		Offset: 0, 0, 16
 	idle:
 	stand:
 	run:

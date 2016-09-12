@@ -1,5 +1,6 @@
 ^VehicleOverlays:
 	emp-overlay: emp_fx01
+		Offset: 0, 0, 24
 		Length: *
 		BlendMode: Additive
 	veins: veinatac
@@ -24,12 +25,14 @@ harv.gdi:
 	Inherits: ^VehicleOverlays
 	harvest: harvestr
 		Length: *
+		ZRamp: 1
 	icon: sidebar-gdi|harvicon
 
 harv.nod:
 	Inherits: ^VehicleOverlays
 	harvest: harvestr
 		Length: *
+		ZRamp: 1
 	icon: sidebar-nod|harvicon
 
 hvr:
@@ -113,15 +116,15 @@ ttnk:
 	Inherits: ^VehicleOverlays
 	idle: gatick
 		ShadowStart: 3
-		Offset: 0, -12
+		Offset: 0, -12, 12
 	damaged-idle: gatick
 		Start: 1
 		ShadowStart: 4
-		Offset: 0, -12
+		Offset: 0, -12, 12
 	make: gatickmk
 		Length: 24
 		ShadowStart: 24
-		Offset: 0, -12
+		Offset: 0, -12, 12
 	muzzle: gunfire
 		Length: *
 	icon: tickicon
@@ -136,13 +139,16 @@ mmch:
 		Facings: -8
 		Stride: 15
 		ShadowStart: 152
+		Offset: 0, 0, 12
 	run:
 		Length: 15
 		Facings: -8
 		ShadowStart: 152
+		Offset: 0, 0, 12
 	turret:
 		Start: 120
 		Facings: -32
+		Offset: 0, 0, 12
 	muzzle: gunfire
 		Length: *
 	icon: mmchicon

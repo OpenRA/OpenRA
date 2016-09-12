@@ -43,7 +43,7 @@ gacnst:
 		Length: 10
 	emp-overlay: emp_fx01
 		Length: *
-		Offset: 0, 0
+		Offset: 0, 0, 37
 		UseTilesetCode: false
 		ZOffset: 512
 		BlendMode: Additive
@@ -101,7 +101,7 @@ gapowr:
 		ShadowStart: 20
 	emp-overlay: emp_fx01
 		Length: *
-		Offset: 0, 0
+		Offset: 0, 0, 25
 		UseTilesetCode: false
 		ZOffset: 512
 		BlendMode: Additive
@@ -154,7 +154,7 @@ gapile:
 		ShadowStart: 20
 	emp-overlay: emp_fx01
 		Length: *
-		Offset: 0, 0
+		Offset: 0, 0, 25
 		UseTilesetCode: false
 		ZOffset: 512
 		BlendMode: Additive
@@ -252,7 +252,7 @@ gaweap:
 		-DepthSprite:
 	emp-overlay: emp_fx01
 		Length: *
-		Offset: 0, 0
+		Offset: 0, 0, 23
 		UseTilesetCode: false
 		ZOffset: 512
 		BlendMode: Additive
@@ -288,13 +288,13 @@ napowr:
 		ShadowStart: 19
 	emp-overlay: emp_fx01
 		Length: *
-		Offset: 0, 0
+		Offset: 0, 0, 25
 		UseTilesetCode: false
 		ZOffset: 512
 		BlendMode: Additive
 		-DepthSprite:
 	icon: npwricon
-		Offset: 0, 0
+		Offset: 0, 0, 25
 		UseTilesetCode: false
 		-DepthSprite:
 
@@ -325,7 +325,7 @@ naapwr:
 		ShadowStart: 19
 	emp-overlay: emp_fx01
 		Length: *
-		Offset: 0, 0
+		Offset: 0, 0, 31
 		UseTilesetCode: false
 		ZOffset: 512
 		BlendMode: Additive
@@ -371,7 +371,7 @@ nahand:
 		ShadowStart: 15
 	emp-overlay: emp_fx01
 		Length: *
-		Offset: 0, 0
+		Offset: 0, 0, 31
 		UseTilesetCode: false
 		ZOffset: 512
 		BlendMode: Additive
@@ -454,7 +454,7 @@ naweap:
 		-DepthSprite:
 	emp-overlay: emp_fx01
 		Length: *
-		Offset: 0, 0
+		Offset: 0, 0, 31
 		UseTilesetCode: false
 		ZOffset: 512
 		BlendMode: Additive
@@ -490,7 +490,7 @@ naradr:
 		ShadowStart: 20
 	emp-overlay: emp_fx01
 		Length: *
-		Offset: 0, 0
+		Offset: 0, 0, 25
 		UseTilesetCode: false
 		ZOffset: 512
 		BlendMode: Additive
@@ -525,7 +525,7 @@ natech:
 		ShadowStart: 18
 	emp-overlay: emp_fx01
 		Length: *
-		Offset: 0, 0
+		Offset: 0, 0, 25
 		UseTilesetCode: false
 		ZOffset: 512
 		BlendMode: Additive
@@ -562,7 +562,7 @@ natmpl:
 		ShadowStart: 17
 	emp-overlay: emp_fx01
 		Length: *
-		Offset: 0, 0
+		Offset: 0, 0, 43
 		UseTilesetCode: false
 		ZOffset: 512
 		BlendMode: Additive
@@ -600,7 +600,7 @@ garadr:
 		ShadowStart: 20
 	emp-overlay: emp_fx01
 		Length: *
-		Offset: 0, 0
+		Offset: 0, 0, 25
 		UseTilesetCode: false
 		ZOffset: 512
 		BlendMode: Additive
@@ -637,7 +637,7 @@ gatech:
 		ShadowStart: 20
 	emp-overlay: emp_fx01
 		Length: *
-		Offset: 0, 0
+		Offset: 0, 0, 31
 		UseTilesetCode: false
 		ZOffset: 512
 		BlendMode: Additive
@@ -719,7 +719,7 @@ gagate_a:
 		Length: 9
 	emp-overlay: emp_fx01
 		Length: *
-		Offset: 0, 0
+		Offset: 0, 0, 25
 		UseTilesetCode: false
 		ZOffset: 512
 		BlendMode: Additive
@@ -763,7 +763,7 @@ gagate_b:
 		Length: 9
 	emp-overlay: emp_fx01
 		Length: *
-		Offset: 0, 0
+		Offset: 0, 0, 25
 		UseTilesetCode: false
 		ZOffset: 512
 		BlendMode: Additive
@@ -812,7 +812,7 @@ nagate_a:
 		Length: 6
 	emp-overlay: emp_fx01
 		Length: *
-		Offset: 0, 0
+		Offset: 0, 0, 25
 		UseTilesetCode: false
 		ZOffset: 512
 		BlendMode: Additive
@@ -857,7 +857,7 @@ nagate_b:
 		Length: 6
 	emp-overlay: emp_fx01
 		Length: *
-		Offset: 0, 0
+		Offset: 0, 0, 25
 		UseTilesetCode: false
 		ZOffset: 512
 		BlendMode: Additive
@@ -900,7 +900,7 @@ gaicbm:
 		ShadowStart: 4
 	emp-overlay: emp_fx01
 		Length: *
-		Offset: 0, 0
+		Offset: 0, 0, 13
 		UseTilesetCode: false
 		ZOffset: 512
 		BlendMode: Additive
@@ -925,7 +925,7 @@ gaarty:
 		UseTilesetCode: false
 	emp-overlay: emp_fx01
 		Length: *
-		Offset: 0, 0
+		Offset: 0, 0, 13
 		UseTilesetCode: false
 		ZOffset: 512
 		BlendMode: Additive
@@ -960,7 +960,7 @@ naobel:
 		ShadowStart: 19
 	emp-overlay: emp_fx01
 		Length: *
-		Offset: 0, 0
+		Offset: 0, 0, 25
 		UseTilesetCode: false
 		ZOffset: 512
 		BlendMode: Additive
@@ -989,7 +989,7 @@ nalasr:
 		ShadowStart: 21
 	emp-overlay: emp_fx01
 		Length: *
-		Offset: 0, 0
+		Offset: 0, 0, 13
 		UseTilesetCode: false
 		ZOffset: 512
 		BlendMode: Additive
@@ -1026,7 +1026,7 @@ nasam:
 		Offset: 0, -12, 12
 	emp-overlay: emp_fx01
 		Length: *
-		Offset: 0, 0
+		Offset: 0, 0, 2
 		UseTilesetCode: false
 		ZOffset: 512
 		BlendMode: Additive
@@ -1055,7 +1055,7 @@ napuls.gdi:
 		ShadowStart: 20
 	emp-overlay: emp_fx01
 		Length: *
-		Offset: 0, 0
+		Offset: 0, 0, 25
 		UseTilesetCode: false
 		ZOffset: 512
 		BlendMode: Additive
@@ -1086,7 +1086,7 @@ napuls.nod:
 		ShadowStart: 20
 	emp-overlay: emp_fx01
 		Length: *
-		Offset: 0, 0
+		Offset: 0, 0, 25
 		UseTilesetCode: false
 		ZOffset: 512
 		BlendMode: Additive
@@ -1123,7 +1123,7 @@ nastlh:
 		ShadowStart: 20
 	emp-overlay: emp_fx01
 		Length: *
-		Offset: 0, 0
+		Offset: 0, 0, 31
 		UseTilesetCode: false
 		ZOffset: 512
 		BlendMode: Additive
@@ -1197,7 +1197,7 @@ gactwr:
 		UseTilesetCode: false
 	emp-overlay: emp_fx01
 		Length: *
-		Offset: 0, 0
+		Offset: 0, 0, 13
 		UseTilesetCode: false
 		ZOffset: 512
 		BlendMode: Additive
@@ -1276,7 +1276,7 @@ gahpad:
 		DepthSprite: isodepth.shp
 	emp-overlay: emp_fx01
 		Length: *
-		Offset: 0, 0
+		Offset: 0, 0, 2
 		UseTilesetCode: false
 		ZOffset: 512
 		BlendMode: Additive
@@ -1341,7 +1341,7 @@ nahpad:
 		DepthSprite: isodepth.shp
 	emp-overlay: emp_fx01
 		Length: *
-		Offset: 0, 0
+		Offset: 0, 0, 2
 		UseTilesetCode: false
 		ZOffset: 512
 		BlendMode: Additive
@@ -1400,7 +1400,7 @@ proc.gdi:
 		-DepthSprite:
 	emp-overlay: emp_fx01
 		Length: *
-		Offset: 0, 0
+		Offset: 0, 0, 21
 		UseTilesetCode: false
 		ZOffset: 512
 		BlendMode: Additive
@@ -1461,7 +1461,7 @@ proc.nod:
 		-DepthSprite:
 	emp-overlay: emp_fx01
 		Length: *
-		Offset: 0, 0
+		Offset: 0, 0, 21
 		UseTilesetCode: false
 		ZOffset: 512
 		BlendMode: Additive
@@ -1526,7 +1526,7 @@ nawast:
 		Offset: 0, -36, 3
 	emp-overlay: emp_fx01
 		Length: *
-		Offset: 0, 0
+		Offset: 0, 0, 25
 		UseTilesetCode: false
 		ZOffset: 512
 		BlendMode: Additive
@@ -1573,7 +1573,7 @@ gasilo.gdi:
 		ShadowStart: 20
 	emp-overlay: emp_fx01
 		Length: *
-		Offset: 0, 0
+		Offset: 0, 0, 25
 		UseTilesetCode: false
 		ZOffset: 512
 		BlendMode: Additive
@@ -1620,7 +1620,7 @@ gasilo.nod:
 		ShadowStart: 20
 	emp-overlay: emp_fx01
 		Length: *
-		Offset: 0, 0
+		Offset: 0, 0, 25
 		UseTilesetCode: false
 		ZOffset: 512
 		BlendMode: Additive
@@ -1687,7 +1687,7 @@ gadept.gdi:
 		ShadowStart: 10
 	emp-overlay: emp_fx01
 		Length: *
-		Offset: 0, 0
+		Offset: 0, 0, 37
 		UseTilesetCode: false
 		ZOffset: 512
 		BlendMode: Additive
@@ -1754,7 +1754,7 @@ gadept.nod:
 		ShadowStart: 10
 	emp-overlay: emp_fx01
 		Length: *
-		Offset: 0, 0
+		Offset: 0, 0, 37
 		UseTilesetCode: false
 		ZOffset: 512
 		BlendMode: Additive
@@ -1794,7 +1794,7 @@ namisl:
 		Tick: 80
 	emp-overlay: emp_fx01
 		Length: *
-		Offset: 0, 0
+		Offset: 0, 0, 25
 		UseTilesetCode: false
 		ZOffset: 512
 		BlendMode: Additive
@@ -1863,7 +1863,7 @@ gaplug:
 		ShadowStart: 17
 	emp-overlay: emp_fx01
 		Length: *
-		Offset: 0, 0
+		Offset: 0, 0, 31
 		UseTilesetCode: false
 		ZOffset: 512
 		BlendMode: Additive
