@@ -66,7 +66,7 @@ namespace OpenRA.Mods.Cnc.Traits
 
 			self.World.AddFrameEndTask(w =>
 			{
-				Game.Sound.Play(Info.LaunchSound);
+				PlayLaunchSounds();
 				Game.Sound.Play(info.OnFireSound, self.World.Map.CenterOfCell(order.TargetLocation));
 				w.Add(new IonCannon(self.Owner, info.WeaponInfo, w, self.CenterPosition, order.TargetLocation,
 					info.Effect, info.EffectSequence, info.EffectPalette, info.WeaponDelay));
