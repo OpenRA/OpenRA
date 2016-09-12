@@ -575,9 +575,9 @@ EYE:
 		LongDesc: Initiate an Ion Cannon strike.\nApplies instant damage to a small area.
 		BeginChargeSpeechNotification: IonCannonCharging
 		EndChargeSpeechNotification: IonCannonReady
-		LaunchSound: ion1.aud
 		SelectTargetSpeechNotification: SelectTarget
 		InsufficientPowerSpeechNotification: InsufficientPower
+		OnFireSound: ion1.aud
 		DisplayRadarPing: True
 		CameraActor: camera.small
 	SupportPowerChargeBar:
