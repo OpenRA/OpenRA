@@ -84,10 +84,6 @@ BOAT:
 	Buildable:
 		Prerequisites: ~disabled
 
-LST:
-	Buildable:
-		Prerequisites: ~disabled
-
 FTNK:
 	Buildable:
 		Prerequisites: ~disabled

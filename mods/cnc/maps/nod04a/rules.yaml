@@ -96,14 +96,6 @@ MCV:
 	Buildable:
 		Prerequisites: ~disabled
 
-LST:
-	Buildable:
-		Prerequisites: ~disabled
-
-C17:
-	Buildable:
-		Prerequisites: ~disabled
-
 SAM:
 	Buildable:
 		Prerequisites: ~disabled
