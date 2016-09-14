@@ -102,14 +102,14 @@ namespace OpenRA
 			path = path.TrimEnd(new char[] { ' ', '\t' });
 
 			// paths starting with ^ are relative to the support dir
-			if (path.StartsWith("^"))
+			if (path.StartsWith("^", StringComparison.Ordinal))
 				path = SupportDir + path.Substring(1);
 
 			// paths starting with . are relative to the game dir
 			if (path == ".")
 				return GameDir;
 
-			if (path.StartsWith("./") || path.StartsWith(".\\"))
+			if (path.StartsWith("./", StringComparison.Ordinal) || path.StartsWith(".\\", StringComparison.Ordinal))
 				path = GameDir + path.Substring(2);
 
 			return path;
@@ -124,10 +124,10 @@ namespace OpenRA
 		/// <summary>Replace the full path prefix with the special notation characters ^ or .</summary>
 		public static string UnresolvePath(string path)
 		{
-			if (path.StartsWith(SupportDir))
+			if (path.StartsWith(SupportDir, StringComparison.Ordinal))
 				path = "^" + path.Substring(SupportDir.Length);
 
-			if (path.StartsWith(GameDir))
+			if (path.StartsWith(GameDir, StringComparison.Ordinal))
 				path = "./" + path.Substring(GameDir.Length);
 
 			return path;
