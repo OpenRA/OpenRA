@@ -106,6 +106,9 @@ namespace OpenRA
 				path = SupportDir + path.Substring(1);
 
 			// paths starting with . are relative to the game dir
+			if (path == ".")
+				return GameDir;
+
 			if (path.StartsWith("./") || path.StartsWith(".\\"))
 				path = GameDir + path.Substring(2);
 
