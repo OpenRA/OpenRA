@@ -39,8 +39,8 @@ namespace OpenRA
 				var kernelName = p.StandardOutput.ReadToEnd();
 				if (kernelName.Contains("Darwin"))
 					return PlatformType.OSX;
-				else
-					return PlatformType.Linux;
+
+				return PlatformType.Linux;
 			}
 			catch { }
 
@@ -82,7 +82,6 @@ namespace OpenRA
 				case PlatformType.OSX:
 					dir += "/Library/Application Support/OpenRA";
 					break;
-				case PlatformType.Linux:
 				default:
 					dir += "/.openra";
 					break;
@@ -101,11 +100,11 @@ namespace OpenRA
 		{
 			path = path.TrimEnd(new char[] { ' ', '\t' });
 
-			// paths starting with ^ are relative to the support dir
+			// Paths starting with ^ are relative to the support dir
 			if (path.StartsWith("^", StringComparison.Ordinal))
 				path = SupportDir + path.Substring(1);
 
-			// paths starting with . are relative to the game dir
+			// Paths starting with . are relative to the game dir
 			if (path == ".")
 				return GameDir;
 
