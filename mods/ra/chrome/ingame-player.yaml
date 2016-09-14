@@ -3,6 +3,9 @@ Container@PLAYER_WIDGETS:
 		LogicKeyListener@CONTROLGROUP_KEYHANDLER:
 			Logic: ControlGroupLogic
 		LogicTicker@SIDEBAR_TICKER:
+		UnitCommand:
+			Width: WINDOW_RIGHT
+			Height: WINDOW_BOTTOM
 		Container@SUPPORT_POWERS:
 			Logic: SupportPowerBinLogic
 			X: 10

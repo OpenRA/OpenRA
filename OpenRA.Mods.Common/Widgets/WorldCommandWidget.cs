@@ -13,15 +13,13 @@ using System;
 using System.Drawing;
 using System.Linq;
 using OpenRA.Graphics;
-using OpenRA.Mods.Common.Orders;
 using OpenRA.Mods.Common.Traits;
-using OpenRA.Orders;
-using OpenRA.Primitives;
 using OpenRA.Traits;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets
 {
+	/// <summary> Contains all functions that are valid for players and observers/spectators. </summary>
 	public class WorldCommandWidget : Widget
 	{
 		readonly World world;
@@ -65,131 +63,9 @@ namespace OpenRA.Mods.Common.Widgets
 
 				if (key == ks.ToSelectionKey)
 					return ToSelection();
-
-				// Put all functions that are valid for observers/spectators above this line.
-				if (world.LocalPlayer == null || world.LocalPlayer.Spectating)
-					return false;
-
-				// Put all functions that aren't unit-specific before this line!
-				if (!world.Selection.Actors.Any() || world.IsGameOver)
-					return false;
-
-				if (key == ks.AttackMoveKey)
-					return PerformAttackMove();
-
-				if (key == ks.StopKey)
-					return PerformStop();
-
-				if (key == ks.ScatterKey)
-					return PerformScatter();
-
-				if (key == ks.DeployKey)
-					return PerformDeploy();
-
-				if (key == ks.StanceCycleKey)
-					return PerformStanceCycle();
-
-				if (key == ks.GuardKey)
-					return PerformGuard();
 			}
 
 			return false;
-		}
-
-		// TODO: take ALL this garbage and route it through the OrderTargeter stuff.
-		bool PerformAttackMove()
-		{
-			var actors = world.Selection.Actors
-				.Where(a => a.Owner == world.LocalPlayer)
-				.ToArray();
-
-			if (actors.Any(a => a.Info.HasTraitInfo<AttackMoveInfo>() && a.Info.HasTraitInfo<AutoTargetInfo>()))
-				world.OrderGenerator = new GenericSelectTarget(actors,
-					"AttackMove", "attackmove", Game.Settings.Game.MouseButtonPreference.Action);
-
-			return true;
-		}
-
-		void PerformKeyboardOrderOnSelection(Func<Actor, Order> f)
-		{
-			var orders = world.Selection.Actors
-				.Where(a => a.Owner == world.LocalPlayer && !a.Disposed)
-				.Select(f)
-				.ToArray();
-
-			foreach (var o in orders)
-				world.IssueOrder(o);
-
-			world.PlayVoiceForOrders(orders);
-		}
-
-		bool PerformStop()
-		{
-			PerformKeyboardOrderOnSelection(a => new Order("Stop", a, false));
-			return true;
-		}
-
-		bool PerformScatter()
-		{
-			PerformKeyboardOrderOnSelection(a => new Order("Scatter", a, false));
-			return true;
-		}
-
-		bool PerformDeploy()
-		{
-			// HACK: multiple orders here
-			PerformKeyboardOrderOnSelection(a => new Order("ReturnToBase", a, false));
-			PerformKeyboardOrderOnSelection(a => new Order("DeployTransform", a, false));
-			PerformKeyboardOrderOnSelection(a => new Order("Unload", a, false));
-			PerformKeyboardOrderOnSelection(a => new Order("Detonate", a, false));
-			PerformKeyboardOrderOnSelection(a => new Order("DeployToUpgrade", a, false));
-			return true;
-		}
-
-		bool PerformStanceCycle()
-		{
-			var actor = world.Selection.Actors
-				.Where(a => a.Owner == world.LocalPlayer && !a.Disposed)
-				.Select(a => Pair.New(a, a.TraitOrDefault<AutoTarget>()))
-				.FirstOrDefault(a => a.Second != null);
-
-			if (actor.First == null)
-				return true;
-
-			var ati = actor.First.Info.TraitInfoOrDefault<AutoTargetInfo>();
-			if (ati == null || !ati.EnableStances)
-				return false;
-
-			var stances = Enum<UnitStance>.GetValues();
-			var nextStance = stances.Concat(stances)
-				.SkipWhile(s => s != actor.Second.PredictedStance)
-				.Skip(1)
-				.First();
-
-			PerformKeyboardOrderOnSelection(a =>
-			{
-				var at = a.TraitOrDefault<AutoTarget>();
-				if (at != null)
-					at.PredictedStance = nextStance;
-
-				return new Order("SetUnitStance", a, false) { ExtraData = (uint)nextStance };
-			});
-
-			Game.Debug("Unit stance set to: {0}".F(nextStance));
-
-			return true;
-		}
-
-		bool PerformGuard()
-		{
-			var actors = world.Selection.Actors
-				.Where(a => !a.Disposed && a.Owner == world.LocalPlayer);
-
-			if (actors.Any(a => a.Info.HasTraitInfo<GuardInfo>() && a.Info.HasTraitInfo<AutoTargetInfo>()))
-				world.OrderGenerator = new GuardOrderGenerator(actors,
-					"Guard", "guard", Game.Settings.Game.MouseButtonPreference.Action);
-
-			return true;
 		}
 
 		bool CycleBases()
