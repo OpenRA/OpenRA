@@ -35,8 +35,10 @@ namespace OpenRA.Mods.Common.Server
 			foreach (var kv in server.LobbyInfo.GlobalSettings.LobbyOptions)
 			{
 				Session.LobbyOptionState def;
+				LobbyOption option;
 				if (!defaults.LobbyOptions.TryGetValue(kv.Key, out def) || kv.Value.Value != def.Value)
-					server.SendOrderTo(conn, "Message", options[kv.Key].Name + ": " + kv.Value.Value);
+					if (options.TryGetValue(kv.Key, out option))
+						server.SendOrderTo(conn, "Message", option.Name + ": " + kv.Value.Value);
 			}
 		}
 	}
