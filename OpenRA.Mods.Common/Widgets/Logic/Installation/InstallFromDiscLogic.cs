@@ -96,6 +96,18 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			DetectContentDisks();
 		}
 
+		static bool IsValidDrive(DriveInfo d)
+		{
+			if (d.DriveType == DriveType.CDRom && d.IsReady)
+				return true;
+
+			// HACK: the "TFD" DVD is detected as a fixed udf-formatted drive on OSX
+			if (d.DriveType == DriveType.Fixed && d.DriveFormat == "udf")
+				return true;
+
+			return false;
+		}
+
 		void DetectContentDisks()
 		{
 			var message = "Detecting drives";
@@ -105,7 +117,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			new Task(() =>
 			{
 				var volumes = DriveInfo.GetDrives()
-					.Where(v => v.DriveType == DriveType.CDRom && v.IsReady)
+					.Where(IsValidDrive)
 					.Select(v => v.RootDirectory.FullName);
 
 				foreach (var kv in sources)
