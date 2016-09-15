@@ -45,7 +45,7 @@ namespace OpenRA.Mods.Common.Traits
 		protected UpgradeMultiplierTrait(UpgradeMultiplierTraitInfo info, string modifierType, string actorType)
 		{
 			if (info.Modifier.Length == 0)
-				throw new Exception("No modifiers in " + modifierType + " for " + actorType);
+				throw new ArgumentException("No modifiers in " + modifierType + " for " + actorType);
 			this.info = info;
 			IsTraitDisabled = info.UpgradeTypes.Length > 0 && info.BaseLevel > 0;
 			level = IsTraitDisabled ? 0 : info.BaseLevel;

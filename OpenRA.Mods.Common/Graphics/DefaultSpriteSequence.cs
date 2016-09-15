@@ -48,7 +48,7 @@ namespace OpenRA.Mods.Common.Graphics
 			}
 			catch (Exception e)
 			{
-				throw new Exception("Error occurred while parsing {0}".F(node.Key), e);
+				throw new InvalidDataException("Error occurred while parsing {0}".F(node.Key), e);
 			}
 
 			foreach (var kvp in nodes)

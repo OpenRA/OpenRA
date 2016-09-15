@@ -276,7 +276,7 @@ namespace OpenRA.Mods.D2k.UtilityCommands
 				stream = File.OpenRead(filename);
 
 				if (stream.Length == 0 || stream.Length % 4 != 0)
-					throw new Exception("The map is in an unrecognized format!");
+					throw new ArgumentException("The map is in an unrecognized format!", "filename");
 
 				Initialize(filename);
 				FillMap();
