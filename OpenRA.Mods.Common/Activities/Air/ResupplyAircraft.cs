@@ -42,7 +42,7 @@ namespace OpenRA.Mods.Common.Activities
 				{
 					inner = ActivityUtils.SequenceActivities(
 						aircraft.GetResupplyActivities(host)
-						.Append(new CallFunc(() => aircraft.MayYieldReservation = true))
+						.Append(new AllowYieldingReservation(self))
 						.Append(new WaitFor(() => NextActivity != null || aircraft.ReservedActor == null))
 						.ToArray());
 				}
@@ -52,7 +52,7 @@ namespace OpenRA.Mods.Common.Activities
 					// HACK: Append NextActivity to TakeOff to avoid moving to the Rallypoint (if NextActivity is non-null).
 					inner = ActivityUtils.SequenceActivities(
 						aircraft.GetResupplyActivities(host)
-						.Append(new CallFunc(() => aircraft.MayYieldReservation = true))
+						.Append(new AllowYieldingReservation(self))
 						.Append(new TakeOff(self)).Append(NextActivity).ToArray());
 				}
 			}

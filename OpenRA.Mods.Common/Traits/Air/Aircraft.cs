@@ -111,7 +111,7 @@ namespace OpenRA.Mods.Common.Traits
 		public CPos TopLeft { get { return self.World.Map.CellContaining(CenterPosition); } }
 		public int TurnSpeed { get { return Info.TurnSpeed; } }
 		public Actor ReservedActor { get; private set; }
-		public bool MayYieldReservation;
+		public bool MayYieldReservation { get; private set; }
 
 		bool airborne;
 		bool cruising;
@@ -280,6 +280,14 @@ namespace OpenRA.Mods.Common.Traits
 				reservation = reservable.Reserve(target, self, this);
 				ReservedActor = target;
 			}
+		}
+
+		public void AllowYieldingReservation()
+		{
+			if (reservation == null)
+				return;
+
+			MayYieldReservation = true;
 		}
 
 		public void UnReserve()
