@@ -131,6 +131,21 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			CloseChat();
 			chatText.IsDisabled = () => world.IsReplay;
+
+			var keyListener = chatChrome.Get<LogicKeyListenerWidget>("KEY_LISTENER");
+			keyListener.OnKeyPress = e =>
+			{
+				if (e.Event == KeyInputEvent.Up || !chatText.IsDisabled())
+					return false;
+
+				if ((e.Key == Keycode.RETURN || e.Key == Keycode.KP_ENTER || e.Key == Keycode.ESCAPE) && e.Modifiers == Modifiers.None)
+				{
+					CloseChat();
+					return true;
+				}
+
+				return false;
+			};
 		}
 
 		bool SwitchTeamChat()
@@ -151,7 +166,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			chatText.Text = "";
 			chatChrome.Visible = true;
 			chatScrollPanel.ScrollToBottom();
-			chatText.TakeKeyboardFocus();
+			if (!chatText.IsDisabled())
+				chatText.TakeKeyboardFocus();
 			chatOverlay.Visible = false;
 		}
 
