@@ -77,7 +77,13 @@ namespace OpenRA.Mods.Common.LoadScreens
 			// Load a replay directly
 			if (!string.IsNullOrEmpty(Launch.Replay))
 			{
-				var replayMeta = ReplayMetadata.Read(Launch.Replay);
+				ReplayMetadata replayMeta = null;
+				try
+				{
+					replayMeta = ReplayMetadata.Read(Launch.Replay);
+				}
+				catch { }
+
 				if (ReplayUtils.PromptConfirmReplayCompatibility(replayMeta, Game.LoadShellMap))
 					Game.JoinReplay(Launch.Replay);
 
