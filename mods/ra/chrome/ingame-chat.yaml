@@ -37,6 +37,7 @@ Container@CHAT_PANEL:
 					Height: 25
 					Text: X
 					Font: Bold
+				LogicKeyListener@KEY_LISTENER:
 				ScrollPanel@CHAT_SCROLLPANEL:
 					Y: PARENT_BOTTOM - HEIGHT - 30
 					Width: 550
