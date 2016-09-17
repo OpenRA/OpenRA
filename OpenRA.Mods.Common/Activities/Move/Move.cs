@@ -12,6 +12,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.Linq;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Pathfinder;
@@ -278,29 +279,14 @@ namespace OpenRA.Mods.Common.Activities
 			base.Cancel(self);
 		}
 
-		public override IEnumerable<Target> GetTargets(Actor self)
+		public override KeyValuePair<Target?, Color?> GetTargets(Actor self)
 		{
-			var validTargets = new List<Target>();
-
-			var activityIterator = (Activity)this;
-			while (activityIterator != null)
-			{
-				if (!activityIterator.IsCanceled && activityIterator is Move)
-				{
-					Target target = Target.FromCell(self.World, ((Move)activityIterator).destination.Value);
-					if (target.Type != TargetType.Invalid)
-						validTargets.Add(target);
-				}
-
-				activityIterator = activityIterator.NextActivity;
-			}
-
-			return validTargets;
+     return new KeyValuePair<Target?, Color?>(Target.FromCell(self.World, this.destination.Value), Color.Green);
 		}
 
-		abstract class MovePart : Activity
+		public abstract class MovePart : Activity
 		{
-			protected readonly Move Move;
+			public readonly Move Move;
 			protected readonly WPos From, To;
 			protected readonly int FromFacing, ToFacing;
 			protected readonly WPos ArcCenter;
@@ -407,7 +393,7 @@ namespace OpenRA.Mods.Common.Activities
 
 			protected abstract MovePart OnComplete(Actor self, Mobile mobile, Move parent);
 
-			public override IEnumerable<Target> GetTargets(Actor self)
+			public override KeyValuePair<Target?, Color?> GetTargets(Actor self)
 			{
 				return Move.GetTargets(self);
 			}
