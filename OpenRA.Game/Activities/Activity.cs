@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using OpenRA.Traits;
 
@@ -262,9 +263,9 @@ namespace OpenRA.Activities
 			}
 		}
 
-		public virtual IEnumerable<Target> GetTargets(Actor self)
+		public virtual KeyValuePair<Target?, Color?> GetTargets(Actor self)
 		{
-			yield break;
+			return new KeyValuePair<Target?, Color?>(null, null);
 		}
 	}
 
@@ -293,6 +294,7 @@ namespace OpenRA.Activities
 
 	public static class ActivityExts
 	{
+/*
 		public static IEnumerable<Target> GetTargetQueue(this Actor self)
 		{
 			return self.CurrentActivity
@@ -300,5 +302,6 @@ namespace OpenRA.Activities
 				.TakeWhile(u => u != null)
 				.SelectMany(u => u.GetTargets(self));
 		}
+*/
 	}
 }

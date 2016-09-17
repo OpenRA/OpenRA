@@ -10,6 +10,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Drawing;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
@@ -54,12 +55,12 @@ namespace OpenRA.Mods.Common.Activities
 			return base.Cancel(self, keepQueue);
 		}
 
-		public override IEnumerable<Target> GetTargets(Actor self)
+		public override KeyValuePair<Target?, Color?> GetTargets(Actor self)
 		{
 			if (inner != null)
 				return inner.GetTargets(self);
 
-			return Target.None;
+			return new KeyValuePair<Target?, Color?>(null, null);
 		}
 	}
 }
