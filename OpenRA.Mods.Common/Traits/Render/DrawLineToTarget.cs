@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Common.Traits
 		public virtual object Create(ActorInitializer init) { return new DrawLineToTarget(init.Self, this); }
 	}
 
-	public class DrawLineToTarget : IRenderAboveShroudWhenSelected, INotifySelected, INotifyBecomingIdle
+	public class DrawLineToTarget : IRenderAboveShroudWhenSelected, INotifySelected
 	{
 		readonly DrawLineToTargetInfo info;
 		Color c;
@@ -36,15 +36,7 @@ namespace OpenRA.Mods.Common.Traits
 			this.info = info;
 		}
 
-		public void SetTarget(Actor self, Target target, Color c, bool display)
-		{
-			this.c = c;
-
-			if (display)
-				lifetime = info.Delay;
-		}
-
-		public void SetTargets(Actor self, Color c, bool display)
+		public void SetTarget(Actor self, Color c, bool display)
 		{
 			this.c = c;
 
@@ -70,25 +62,25 @@ namespace OpenRA.Mods.Common.Traits
 			if (!(force || Game.Settings.Game.DrawTargetLine))
 				return new IRenderable[0];
 
-			if (self.GetCurrentActivity() == null)
+			var current_activity = self.GetCurrentActivity();
+
+			if (current_activity == null)
 				return new IRenderable[0];
 
-			if (self.GetCurrentActivity().GetTargets(self).Count() <= 0)
+			var current_targets = current_activity.GetTargets(self);
+
+			if (current_targets.Count() <= 0)
 				return new IRenderable[0];
 
 			var validTargets = new List<WPos>();
 			validTargets.Add(self.CenterPosition);
 
-			foreach (var target in self.GetCurrentActivity().GetTargets(self))
+			foreach (var target in current_targets)
 			{
 				validTargets.Add(target.CenterPosition);
 			}
 
 			return new[] { (IRenderable)new TargetLineRenderable(validTargets, c) };
-		}
-
-		void INotifyBecomingIdle.OnBecomingIdle(Actor a)
-		{
 		}
 	}
 
@@ -98,7 +90,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			var line = self.TraitOrDefault<DrawLineToTarget>();
 			if (line != null)
-				self.World.AddFrameEndTask(w => line.SetTargets(self, color, true));
+				self.World.AddFrameEndTask(w => line.SetTarget(self, color, true));
 		}
 
 		public static void SetTargetLine(this Actor self, Target target, Color color)
@@ -118,7 +110,7 @@ namespace OpenRA.Mods.Common.Traits
 
 				var line = self.TraitOrDefault<DrawLineToTarget>();
 				if (line != null)
-					line.SetTarget(self, target, color, display);
+					line.SetTarget(self, color, display);
 			});
 		}
 
@@ -136,7 +128,7 @@ namespace OpenRA.Mods.Common.Traits
 
 				var line = self.TraitOrDefault<DrawLineToTarget>();
 				if (line != null)
-					line.SetTarget(self, Target.FromPos(target.CenterPosition), color, display);
+					line.SetTarget(self, color, display);
 			});
 		}
 	}
