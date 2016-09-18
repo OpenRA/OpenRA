@@ -76,6 +76,7 @@ namespace OpenRA
 		public void Initialize(ISoundLoader[] loaders, IReadOnlyFileSystem fileSystem)
 		{
 			sounds = new Cache<string, ISoundSource>(s => LoadSound(loaders, fileSystem, s));
+			currentSounds = new Dictionary<uint, ISound>();
 			music = null;
 			currentMusic = null;
 			video = null;
