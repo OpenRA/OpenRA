@@ -1116,6 +1116,7 @@ HPAD:
 		ZOffset: 256
 		UpgradeTypes: primary
 		UpgradeMinEnabledLevel: 1
+	WithRearmAnimation:
 
 AFLD:
 	Inherits: ^Building
@@ -1232,6 +1233,7 @@ AFLD:
 		ZOffset: 256
 		UpgradeTypes: primary
 		UpgradeMinEnabledLevel: 1
+	WithRearmAnimation:
 
 POWR:
 	Inherits: ^Building
@@ -1573,6 +1575,7 @@ FIX:
 		FinishRepairingNotification: UnitRepaired
 		PlayerExperience: 15
 	WithRepairAnimation:
+	WithRearmAnimation:
 	Power:
 		Amount: -30
 	ProvidesPrerequisite@buildingname:
