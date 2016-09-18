@@ -618,9 +618,9 @@ namespace OpenRA.Mods.Common.Traits
 				UnReserve();
 				self.CancelActivity();
 				if (IsPlane)
-					self.QueueActivity(new ReturnToBase(self));
+					self.QueueActivity(new ReturnToBase(self, null, false));
 				else
-					self.QueueActivity(new HeliReturnToBase(self));
+					self.QueueActivity(new HeliReturnToBase(self, false));
 
 				self.QueueActivity(new ResupplyAircraft(self));
 			}
