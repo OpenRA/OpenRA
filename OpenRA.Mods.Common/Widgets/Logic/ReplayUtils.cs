@@ -24,7 +24,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				onCancel = DoNothing;
 
 			if (replayMeta == null)
-				return IncompatibleReplayDialog("outdated engine", null, onCancel);
+			{
+				ConfirmationDialogs.ButtonPrompt("Incompatible Replay", "Replay metadata could not be read.", onCancel: onCancel);
+				return false;
+			}
 
 			var version = replayMeta.GameInfo.Version;
 			if (version == null)
