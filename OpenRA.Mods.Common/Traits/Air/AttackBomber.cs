@@ -47,8 +47,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void Tick(Actor self)
 		{
-			var cp = self.CenterPosition;
-			var bombTarget = Target.FromPos(cp - new WVec(0, 0, cp.Z));
+			var bombHeight = self.World.Map.DistanceAboveTerrain(self.CenterPosition);
+			var bombTarget = Target.FromPos(self.CenterPosition - new WVec(WDist.Zero, WDist.Zero, bombHeight));
 			var wasInAttackRange = inAttackRange;
 			var wasFacingTarget = facingTarget;
 
@@ -77,9 +77,11 @@ namespace OpenRA.Mods.Common.Traits
 					if (!target.IsInRange(self.CenterPosition, a.MaxRange()))
 						continue;
 
-					var t = Target.FromPos(cp - new WVec(0, a.MaxRange().Length / 2, cp.Z).Rotate(WRot.FromFacing(f)));
 					inAttackRange = true;
-					a.CheckFire(self, facing.Value, t);
+
+					var gunPos = self.CenterPosition - new WVec(0, a.MaxRange().Length / 2, 0).Rotate(WRot.FromFacing(f));
+					var gunHeight = self.World.Map.DistanceAboveTerrain(gunPos);
+					a.CheckFire(self, facing.Value, Target.FromPos(gunPos - new WVec(WDist.Zero, WDist.Zero, gunHeight)));
 				}
 			}
 
