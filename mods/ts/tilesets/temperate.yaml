@@ -3,7 +3,7 @@ General:
 	Id: TEMPERATE
 	Palette: isotem.pal
 	HeightDebugColors: 00000080, 00004480, 00008880, 0000CC80, 0000FF80, 4400CC80, 88008880, CC004480, FF110080, FF550080, FF990080, FFDD0080, DDFF0080, 99FF0080, 55FF0080, 11FF0080
-	EditorTemplateOrder: Misc Buildings, Clear, Cliff Pieces, Ice Flow, House, Blank, Ice Ramps, Cliff Set, Civilian Buildings, Shore Pieces, Rough LAT tile, Clear/Rough LAT, Cliff/Water pieces, Bendy Dirt Roads, Dirt Road Junctions, Straight Dirt Roads, Bridges, Paved Roads, Water, Dirt Road Slopes, Slope Set Pieces, Dead Oil Tanker, Ruins, Waterfalls, Ground 01, Ground 02, Sand, Sand/Clear LAT, Rough ground, Paved Road Ends, TrainBridges, Pavement, Pavement/Clear LAT, Paved road bits, Green, Green/Clear LAT, Ramp edge fixup, Water slopes, Pavement (Use for LAT), Paved Road Slopes, Monorail Slopes, Waterfalls-B, Waterfalls-C, Waterfalls-D, Tunnel Floor, Tunnel Side, TrackTunnel Floor, Destroyable Cliffs, Water Caves, Scrin Wreckage, DirtTrackTunnel Floor, DirtTunnel Floor
+	EditorTemplateOrder: Misc Buildings, Clear, Cliff Pieces, Ice Flow, House, Blank, Ice Ramps, Cliff Set, Civilian Buildings, Shore Pieces, Rough LAT tile, Clear/Rough LAT, Cliff/Water pieces, Bendy Dirt Roads, Dirt Road Junctions, Straight Dirt Roads, Bridges, Paved Roads, Water, Dirt Road Slopes, Slope Set Pieces, Dead Oil Tanker, Ruins, Waterfalls, Ground 01, Ground 02, Sand, Sand/Clear LAT, Rough ground, Paved Road Ends, TrainBridges, Pavement, Pavement/Clear LAT, Paved road bits, Green, Green/Clear LAT, Ramp edge fixup, Water slopes, Pavement (Use for LAT), Paved Road Slopes, Monorail Slopes, Waterfalls-B, Waterfalls-C, Waterfalls-D, Tunnel Floor, Tunnel Side, TrackTunnel Floor, Destroyable Cliffs, Water Caves, Scrin Wreckage, DirtTrackTunnel Floor, DirtTunnel Floor, Crystal LAT tile, Clear Crystal LAT, Swampy, Swampy LAT, Blue Mold, Blue Mold LAT, Crystal Cliff, Kodiak Crash
 	SheetSize: 2048
 	EnableDepth: true
 
@@ -18632,5 +18632,1835 @@ Templates:
 			11: Clear
 				LeftColor: 6E5940
 				RightColor: 6D583E
+				ZOffset: -12
+				ZRamp: 0
+	Template@960:
+		Category: Crystal LAT tile
+		Id: 960
+		Images: crys01.tem, crys01a.tem, crys01b.tem, crys01c.tem, crys01d.tem, crys01e.tem, crys01f.tem, crys01g.tem
+		Size: 1, 1
+		Tiles:
+			0: Rough
+				LeftColor: 349324
+				RightColor: 349023
+				ZOffset: -12
+				ZRamp: 0
+	Template@961:
+		Category: Clear Crystal LAT
+		Id: 961
+		Images: cylat01.tem, cylat01a.tem
+		Size: 1, 1
+		Tiles:
+			0: Rough
+				LeftColor: 427E28
+				RightColor: 4A762B
+				ZOffset: -12
+				ZRamp: 0
+	Template@962:
+		Category: Clear Crystal LAT
+		Id: 962
+		Images: cylat02.tem, cylat02a.tem
+		Size: 1, 1
+		Tiles:
+			0: Rough
+				LeftColor: 348D22
+				RightColor: 4A6F2B
+				ZOffset: -12
+				ZRamp: 0
+	Template@963:
+		Category: Clear Crystal LAT
+		Id: 963
+		Images: cylat03.tem, cylat03a.tem
+		Size: 1, 1
+		Tiles:
+			0: Rough
+				LeftColor: 307A1C
+				RightColor: 557E36
+				ZOffset: -12
+				ZRamp: 0
+	Template@964:
+		Category: Clear Crystal LAT
+		Id: 964
+		Images: cylat04.tem, cylat04a.tem
+		Size: 1, 1
+		Tiles:
+			0: Rough
+				LeftColor: 399426
+				RightColor: 606538
+				ZOffset: -12
+				ZRamp: 0
+	Template@965:
+		Category: Clear Crystal LAT
+		Id: 965
+		Images: cylat05.tem, cylat05a.tem
+		Size: 1, 1
+		Tiles:
+			0: Rough
+				LeftColor: 4E692E
+				RightColor: 337D1D
+				ZOffset: -12
+				ZRamp: 0
+	Template@966:
+		Category: Clear Crystal LAT
+		Id: 966
+		Images: cylat06.tem, cylat06a.tem
+		Size: 1, 1
+		Tiles:
+			0: Rough
+				LeftColor: 517532
+				RightColor: 49862F
+				ZOffset: -12
+				ZRamp: 0
+	Template@967:
+		Category: Clear Crystal LAT
+		Id: 967
+		Images: cylat07.tem, cylat07a.tem
+		Size: 1, 1
+		Tiles:
+			0: Rough
+				LeftColor: 4A702D
+				RightColor: 4A732B
+				ZOffset: -12
+				ZRamp: 0
+	Template@968:
+		Category: Clear Crystal LAT
+		Id: 968
+		Images: cylat08.tem, cylat08a.tem
+		Size: 1, 1
+		Tiles:
+			0: Rough
+				LeftColor: 44712A
+				RightColor: 68593D
+				ZOffset: -12
+				ZRamp: 0
+	Template@969:
+		Category: Clear Crystal LAT
+		Id: 969
+		Images: cylat09.tem, cylat09a.tem
+		Size: 1, 1
+		Tiles:
+			0: Rough
+				LeftColor: 467D2D
+				RightColor: 3A9D29
+				ZOffset: -12
+				ZRamp: 0
+	Template@970:
+		Category: Clear Crystal LAT
+		Id: 970
+		Images: cylat10.tem, cylat10a.tem
+		Size: 1, 1
+		Tiles:
+			0: Rough
+				LeftColor: 4D712E
+				RightColor: 4B6E2A
+				ZOffset: -12
+				ZRamp: 0
+	Template@971:
+		Category: Clear Crystal LAT
+		Id: 971
+		Images: cylat11.tem, cylat11a.tem
+		Size: 1, 1
+		Tiles:
+			0: Rough
+				LeftColor: 4E7532
+				RightColor: 497E2F
+				ZOffset: -12
+				ZRamp: 0
+	Template@972:
+		Category: Clear Crystal LAT
+		Id: 972
+		Images: cylat12.tem, cylat12a.tem
+		Size: 1, 1
+		Tiles:
+			0: Rough
+				LeftColor: 586F37
+				RightColor: 6B5A3E
+				ZOffset: -12
+				ZRamp: 0
+	Template@973:
+		Category: Clear Crystal LAT
+		Id: 973
+		Images: cylat13.tem, cylat13a.tem
+		Size: 1, 1
+		Tiles:
+			0: Rough
+				LeftColor: 696140
+				RightColor: 32781D
+				ZOffset: -12
+				ZRamp: 0
+	Template@974:
+		Category: Clear Crystal LAT
+		Id: 974
+		Images: cylat14.tem, cylat14a.tem
+		Size: 1, 1
+		Tiles:
+			0: Rough
+				LeftColor: 665A39
+				RightColor: 507330
+				ZOffset: -12
+				ZRamp: 0
+	Template@975:
+		Category: Clear Crystal LAT
+		Id: 975
+		Images: cylat15.tem, cylat15a.tem
+		Size: 1, 1
+		Tiles:
+			0: Rough
+				LeftColor: 675A3A
+				RightColor: 577C35
+				ZOffset: -12
+				ZRamp: 0
+	Template@976:
+		Category: Clear Crystal LAT
+		Id: 976
+		Images: cylat16.tem, cylat16a.tem
+		Size: 1, 1
+		Tiles:
+			0: Rough
+				LeftColor: 51682E
+				RightColor: 586433
+				ZOffset: -12
+				ZRamp: 0
+	Template@977:
+		Category: Swampy
+		Id: 977
+		Images: swamp01.tem, swamp01a.tem, swamp01b.tem, swamp01c.tem, swamp01d.tem, swamp01e.tem, swamp01f.tem, swamp01g.tem
+		Size: 1, 1
+		Tiles:
+			0: Water
+				LeftColor: 252A0D
+				RightColor: 292D10
+				ZOffset: -12
+				ZRamp: 0
+	Template@978:
+		Category: Swampy
+		Id: 978
+		Images: swamp02.tem
+		Size: 2, 2
+		Tiles:
+			0: Water
+				LeftColor: 293328
+				RightColor: 2F3526
+				ZOffset: -12
+				ZRamp: 0
+			1: Water
+				LeftColor: 384138
+				RightColor: 292D0F
+				ZOffset: -12
+				ZRamp: 0
+			2: Water
+				LeftColor: 27311F
+				RightColor: 2A372A
+				ZOffset: -12
+				ZRamp: 0
+			3: Water
+				LeftColor: 28332D
+				RightColor: 2A321F
+				ZOffset: -12
+				ZRamp: 0
+	Template@979:
+		Category: Swampy
+		Id: 979
+		Images: swamp03.tem
+		Size: 2, 2
+		Tiles:
+			0: Water
+				LeftColor: 2A3016
+				RightColor: 2E351F
+				ZOffset: -12
+				ZRamp: 0
+			1: Water
+				LeftColor: 2F3B2D
+				RightColor: 2B3012
+				ZOffset: -12
+				ZRamp: 0
+			2: Water
+				LeftColor: 272D13
+				RightColor: 2B3523
+				ZOffset: -12
+				ZRamp: 0
+			3: Water
+				LeftColor: 28321D
+				RightColor: 262E0E
+				ZOffset: -12
+				ZRamp: 0
+	Template@980:
+		Category: Swampy
+		Id: 980
+		Images: swamp04.tem
+		Size: 2, 2
+		Tiles:
+			0: Water
+				LeftColor: 252B0C
+				RightColor: 21270A
+				ZOffset: -12
+				ZRamp: 0
+			1: Water
+				LeftColor: 2A2F0E
+				RightColor: 2A2E0F
+				ZOffset: -12
+				ZRamp: 0
+			2: Water
+				LeftColor: 282D0E
+				RightColor: 2A2E0F
+				ZOffset: -12
+				ZRamp: 0
+			3: Water
+				LeftColor: 272C0E
+				RightColor: 292D0E
+				ZOffset: -12
+				ZRamp: 0
+	Template@981:
+		Category: Swampy
+		Id: 981
+		Images: swamp05.tem
+		Size: 1, 1
+		Tiles:
+			0: Water
+				LeftColor: 252E1D
+				RightColor: 262D17
+				ZOffset: -12
+				ZRamp: 0
+	Template@982:
+		Category: Swampy
+		Id: 982
+		Images: swamp06.tem
+		Size: 1, 1
+		Tiles:
+			0: Water
+				LeftColor: 2A300D
+				RightColor: 28321D
+				ZOffset: -12
+				ZRamp: 0
+	Template@983:
+		Category: Swampy
+		Id: 983
+		Images: swamp07.tem
+		Size: 1, 1
+		Tiles:
+			0: Water
+				LeftColor: 272C0E
+				RightColor: 2C3110
+				ZOffset: -12
+				ZRamp: 0
+	Template@984:
+		Category: Swampy
+		Id: 984
+		Images: swamp08.tem
+		Size: 1, 1
+		Tiles:
+			0: Water
+				LeftColor: 292E0E
+				RightColor: 292F0E
+				ZOffset: -12
+				ZRamp: 0
+	Template@985:
+		Category: Swampy
+		Id: 985
+		Images: swamp09.tem
+		Size: 1, 1
+		Tiles:
+			0: Water
+				LeftColor: 292E0E
+				RightColor: 292F0E
+				ZOffset: -12
+				ZRamp: 0
+	Template@986:
+		Category: Swampy LAT
+		Id: 986
+		Images: slat01.tem, slat01a.tem
+		Size: 1, 1
+		Tiles:
+			0: Water
+				LeftColor: 1E271A
+				RightColor: 202819
+				ZOffset: -12
+				ZRamp: 0
+	Template@987:
+		Category: Swampy LAT
+		Id: 987
+		Images: slat02.tem, slat02a.tem
+		Size: 1, 1
+		Tiles:
+			0: Water
+				LeftColor: 21280F
+				RightColor: 1C2827
+				ZOffset: -12
+				ZRamp: 0
+	Template@988:
+		Category: Swampy LAT
+		Id: 988
+		Images: slat03.tem, slat03a.tem
+		Size: 1, 1
+		Tiles:
+			0: Water
+				LeftColor: 262B0D
+				RightColor: 21291C
+				ZOffset: -12
+				ZRamp: 0
+	Template@989:
+		Category: Swampy LAT
+		Id: 989
+		Images: slat04.tem, slat04a.tem
+		Size: 1, 1
+		Tiles:
+			0: Water
+				LeftColor: 222A16
+				RightColor: 152639
+				ZOffset: -12
+				ZRamp: 0
+	Template@990:
+		Category: Swampy LAT
+		Id: 990
+		Images: slat05.tem, slat05a.tem
+		Size: 1, 1
+		Tiles:
+			0: Water
+				LeftColor: 1C261E
+				RightColor: 262C10
+				ZOffset: -12
+				ZRamp: 0
+	Template@991:
+		Category: Swampy LAT
+		Id: 991
+		Images: slat06.tem, slat06a.tem
+		Size: 1, 1
+		Tiles:
+			0: Water
+				LeftColor: 1C2824
+				RightColor: 20291C
+				ZOffset: -12
+				ZRamp: 0
+	Template@992:
+		Category: Swampy LAT
+		Id: 992
+		Images: slat07.tem, slat07a.tem
+		Size: 1, 1
+		Tiles:
+			0: Water
+				LeftColor: 1E2618
+				RightColor: 1E2921
+				ZOffset: -12
+				ZRamp: 0
+	Template@993:
+		Category: Swampy LAT
+		Id: 993
+		Images: slat08.tem, slat08a.tem
+		Size: 1, 1
+		Tiles:
+			0: Water
+				LeftColor: 17252C
+				RightColor: 122339
+				ZOffset: -12
+				ZRamp: 0
+	Template@994:
+		Category: Swampy LAT
+		Id: 994
+		Images: slat09.tem, slat09a.tem
+		Size: 1, 1
+		Tiles:
+			0: Water
+				LeftColor: 222A17
+				RightColor: 272C0D
+				ZOffset: -12
+				ZRamp: 0
+	Template@995:
+		Category: Swampy LAT
+		Id: 995
+		Images: slat10.tem, slat10a.tem
+		Size: 1, 1
+		Tiles:
+			0: Water
+				LeftColor: 192525
+				RightColor: 1F291F
+				ZOffset: -12
+				ZRamp: 0
+	Template@996:
+		Category: Swampy LAT
+		Id: 996
+		Images: slat11.tem, slat11a.tem
+		Size: 1, 1
+		Tiles:
+			0: Water
+				LeftColor: 1B2729
+				RightColor: 1B2729
+				ZOffset: -12
+				ZRamp: 0
+	Template@997:
+		Category: Swampy LAT
+		Id: 997
+		Images: slat12.tem, slat12a.tem
+		Size: 1, 1
+		Tiles:
+			0: Water
+				LeftColor: 182528
+				RightColor: 122339
+				ZOffset: -12
+				ZRamp: 0
+	Template@998:
+		Category: Swampy LAT
+		Id: 998
+		Images: slat13.tem, slat13a.tem
+		Size: 1, 1
+		Tiles:
+			0: Water
+				LeftColor: 152431
+				RightColor: 222A13
+				ZOffset: -12
+				ZRamp: 0
+	Template@999:
+		Category: Swampy LAT
+		Id: 999
+		Images: slat14.tem, slat14a.tem
+		Size: 1, 1
+		Tiles:
+			0: Water
+				LeftColor: 152534
+				RightColor: 1F2A24
+				ZOffset: -12
+				ZRamp: 0
+	Template@1000:
+		Category: Swampy LAT
+		Id: 1000
+		Images: slat15.tem, slat15a.tem
+		Size: 1, 1
+		Tiles:
+			0: Water
+				LeftColor: 102133
+				RightColor: 1D2926
+				ZOffset: -12
+				ZRamp: 0
+	Template@1001:
+		Category: Swampy LAT
+		Id: 1001
+		Images: slat16.tem, slat16a.tem
+		Size: 1, 1
+		Tiles:
+			0: Water
+				LeftColor: 19272C
+				RightColor: 1B2723
+				ZOffset: -12
+				ZRamp: 0
+	Template@1002:
+		Category: Blue Mold
+		Id: 1002
+		Images: blue01.tem, blue01a.tem, blue01b.tem, blue01c.tem, blue01d.tem, blue01e.tem, blue01f.tem, blue01g.tem
+		Size: 1, 1
+		Tiles:
+			0: Cliff
+				LeftColor: 4C5666
+				RightColor: 576274
+				ZOffset: -12
+				ZRamp: 0
+	Template@1003:
+		Category: Blue Mold LAT
+		Id: 1003
+		Images: blat01.tem, blat01a.tem
+		Size: 1, 1
+		Tiles:
+			0: Rough
+				LeftColor: 636364
+				RightColor: 5F5C5A
+				ZOffset: -12
+				ZRamp: 0
+	Template@1004:
+		Category: Blue Mold LAT
+		Id: 1004
+		Images: blat02.tem, blat02a.tem
+		Size: 1, 1
+		Tiles:
+			0: Rough
+				LeftColor: 57606F
+				RightColor: 696054
+				ZOffset: -12
+				ZRamp: 0
+	Template@1005:
+		Category: Blue Mold LAT
+		Id: 1005
+		Images: blat03.tem, blat03a.tem
+		Size: 1, 1
+		Tiles:
+			0: Rough
+				LeftColor: 495463
+				RightColor: 5B5A59
+				ZOffset: -12
+				ZRamp: 0
+	Template@1006:
+		Category: Blue Mold LAT
+		Id: 1006
+		Images: blat04.tem, blat04a.tem
+		Size: 1, 1
+		Tiles:
+			0: Rough
+				LeftColor: 5B6576
+				RightColor: 6B5E4E
+				ZOffset: -12
+				ZRamp: 0
+	Template@1007:
+		Category: Blue Mold LAT
+		Id: 1007
+		Images: blat05.tem, blat05a.tem
+		Size: 1, 1
+		Tiles:
+			0: Rough
+				LeftColor: 625E57
+				RightColor: 5A616C
+				ZOffset: -12
+				ZRamp: 0
+	Template@1008:
+		Category: Blue Mold LAT
+		Id: 1008
+		Images: blat06.tem, blat06a.tem
+		Size: 1, 1
+		Tiles:
+			0: Rough
+				LeftColor: 6B6660
+				RightColor: 636063
+				ZOffset: -12
+				ZRamp: 0
+	Template@1009:
+		Category: Blue Mold LAT
+		Id: 1009
+		Images: blat07.tem, blat07a.tem
+		Size: 1, 1
+		Tiles:
+			0: Rough
+				LeftColor: 646468
+				RightColor: 5E5D5B
+				ZOffset: -12
+				ZRamp: 0
+	Template@1010:
+		Category: Blue Mold LAT
+		Id: 1010
+		Images: blat08.tem, blat08a.tem
+		Size: 1, 1
+		Tiles:
+			0: Clear
+				LeftColor: 635C54
+				RightColor: 6D5A42
+				ZOffset: -12
+				ZRamp: 0
+	Template@1011:
+		Category: Blue Mold LAT
+		Id: 1011
+		Images: blat09.tem, blat09a.tem
+		Size: 1, 1
+		Tiles:
+			0: Rough
+				LeftColor: 605A56
+				RightColor: 5F6368
+				ZOffset: -12
+				ZRamp: 0
+	Template@1012:
+		Category: Blue Mold LAT
+		Id: 1012
+		Images: blat10.tem, blat10a.tem
+		Size: 1, 1
+		Tiles:
+			0: Rough
+				LeftColor: 636468
+				RightColor: 68645F
+				ZOffset: -12
+				ZRamp: 0
+	Template@1013:
+		Category: Blue Mold LAT
+		Id: 1013
+		Images: blat11.tem, blat11a.tem
+		Size: 1, 1
+		Tiles:
+			0: Rough
+				LeftColor: 625F60
+				RightColor: 656363
+				ZOffset: -12
+				ZRamp: 0
+	Template@1014:
+		Category: Blue Mold LAT
+		Id: 1014
+		Images: blat12.tem, blat12a.tem
+		Size: 1, 1
+		Tiles:
+			0: Clear
+				LeftColor: 655D54
+				RightColor: 6D5940
+				ZOffset: -12
+				ZRamp: 0
+	Template@1015:
+		Category: Blue Mold LAT
+		Id: 1015
+		Images: blat13.tem, blat13a.tem
+		Size: 1, 1
+		Tiles:
+			0: Rough
+				LeftColor: 6D5F4E
+				RightColor: 566174
+				ZOffset: -12
+				ZRamp: 0
+	Template@1016:
+		Category: Blue Mold LAT
+		Id: 1016
+		Images: blat14.tem, blat14a.tem
+		Size: 1, 1
+		Tiles:
+			0: Clear
+				LeftColor: 705B41
+				RightColor: 655C4F
+				ZOffset: -12
+				ZRamp: 0
+	Template@1017:
+		Category: Blue Mold LAT
+		Id: 1017
+		Images: blat15.tem, blat15a.tem
+		Size: 1, 1
+		Tiles:
+			0: Clear
+				LeftColor: 6E583F
+				RightColor: 695D50
+				ZOffset: -12
+				ZRamp: 0
+	Template@1018:
+		Category: Blue Mold LAT
+		Id: 1018
+		Images: blat16.tem, blat16a.tem
+		Size: 1, 1
+		Tiles:
+			0: Rough
+				LeftColor: 6A5F55
+				RightColor: 655A4F
+				ZOffset: -12
+				ZRamp: 0
+	Template@1019:
+		Category: Crystal Cliff
+		Id: 1019
+		Images: ccliff01.tem
+		Size: 2, 2
+		Tiles:
+			0: Cliff
+				Height: 4
+				LeftColor: 325E22
+				RightColor: 2E6E1F
+				ZOffset: -12
+				ZRamp: 0
+			1: Cliff
+				Height: 4
+				LeftColor: 2C5F1E
+				RightColor: 405B2C
+				ZOffset: -12
+				ZRamp: 0
+			2: Cliff
+				LeftColor: 615443
+				RightColor: 3B7325
+				ZOffset: -12
+				ZRamp: 0
+			3: Cliff
+				LeftColor: 4D7331
+				RightColor: 3E5A2A
+				ZOffset: -12
+				ZRamp: 0
+	Template@1020:
+		Category: Crystal Cliff
+		Id: 1020
+		Images: ccliff02.tem
+		Size: 2, 2
+		Tiles:
+			0: Cliff
+				Height: 4
+				LeftColor: 455E30
+				RightColor: 4B5931
+				ZOffset: -12
+				ZRamp: 0
+			1: Cliff
+				Height: 4
+				LeftColor: 515539
+				RightColor: 514536
+				ZOffset: -12
+				ZRamp: 0
+			2: Cliff
+				LeftColor: 4C8935
+				RightColor: 405C26
+				ZOffset: -12
+				ZRamp: 0
+			3: Cliff
+				LeftColor: 3B7926
+				RightColor: 555D3D
+				ZOffset: -12
+				ZRamp: 0
+	Template@1021:
+		Category: Crystal Cliff
+		Id: 1021
+		Images: ccliff03.tem
+		Size: 2, 2
+		Tiles:
+			0: Cliff
+				Height: 4
+				LeftColor: 3C5B28
+				RightColor: 415A2B
+				ZOffset: -12
+				ZRamp: 0
+			1: Cliff
+				LeftColor: 366E23
+				RightColor: 425D27
+				ZOffset: -12
+				ZRamp: 0
+			2: Cliff
+				LeftColor: 4C4B3B
+				RightColor: 497035
+				ZOffset: -12
+				ZRamp: 0
+	Template@1022:
+		Category: Crystal Cliff
+		Id: 1022
+		Images: ccliff04.tem
+		Size: 1, 1
+		Tiles:
+			0: Cliff
+				LeftColor: 486632
+				RightColor: 4B5739
+				ZOffset: -12
+				ZRamp: 0
+	Template@1023:
+		Category: Crystal Cliff
+		Id: 1023
+		Images: ccliff05.tem
+		Size: 2, 2
+		Tiles:
+			0: Cliff
+				Height: 4
+				LeftColor: 2C701D
+				RightColor: 3E632A
+				ZOffset: -12
+				ZRamp: 0
+			1: Cliff
+				LeftColor: 3F692A
+				RightColor: 39461F
+				ZOffset: -12
+				ZRamp: 0
+			2: Cliff
+				Height: 4
+				LeftColor: 304920
+				RightColor: 3B502C
+				ZOffset: -12
+				ZRamp: 0
+			3: Cliff
+				LeftColor: 4A4728
+				RightColor: 374D23
+				ZOffset: -12
+				ZRamp: 0
+	Template@1024:
+		Category: Crystal Cliff
+		Id: 1024
+		Images: ccliff06.tem
+		Size: 2, 2
+		Tiles:
+			0: Cliff
+				Height: 4
+				LeftColor: 414A2C
+				RightColor: 3B4726
+				ZOffset: -12
+				ZRamp: 0
+			1: Cliff
+				LeftColor: 366F20
+				RightColor: 355120
+				ZOffset: -12
+				ZRamp: 0
+			2: Cliff
+				Height: 4
+				LeftColor: 4B4330
+				RightColor: 345724
+				ZOffset: -12
+				ZRamp: 0
+			3: Cliff
+				LeftColor: 575034
+				RightColor: 2F6A1F
+				ZOffset: -12
+				ZRamp: 0
+	Template@1025:
+		Category: Kodiak Crash
+		Id: 1025
+		Images: crash01.tem
+		Size: 6, 9
+		Tiles:
+			0: Clear
+				LeftColor: 705A40
+				RightColor: 6C573D
+				ZOffset: -12
+				ZRamp: 0
+			6: Clear
+				LeftColor: 69533A
+				RightColor: 635038
+				ZOffset: -12
+				ZRamp: 0
+			7: Clear
+				LeftColor: 4E3E29
+				RightColor: 4C3B25
+				ZOffset: -12
+				ZRamp: 0
+			8: Clear
+				LeftColor: 4E3B23
+				RightColor: 513E25
+				ZOffset: -12
+				ZRamp: 0
+			9: Clear
+				LeftColor: 45351F
+				RightColor: 413119
+				ZOffset: -12
+				ZRamp: 0
+			10: Clear
+				LeftColor: 433420
+				RightColor: 42331E
+				ZOffset: -12
+				ZRamp: 0
+			12: Clear
+				LeftColor: 69543A
+				RightColor: 5D4A33
+				ZOffset: -12
+				ZRamp: 0
+			13: Clear
+				LeftColor: 4A3A27
+				RightColor: 463520
+				ZOffset: -12
+				ZRamp: 0
+			14: Clear
+				LeftColor: 42341F
+				RightColor: 473723
+				ZOffset: -12
+				ZRamp: 0
+			15: Clear
+				LeftColor: 4A3924
+				RightColor: 47341E
+				ZOffset: -12
+				ZRamp: 0
+			16: Clear
+				LeftColor: 362815
+				RightColor: 332715
+				ZOffset: -12
+				ZRamp: 0
+			18: Clear
+				LeftColor: 69553E
+				RightColor: 5D4930
+				ZOffset: -12
+				ZRamp: 0
+			19: Clear
+				LeftColor: 493721
+				RightColor: 44331E
+				ZOffset: -12
+				ZRamp: 0
+			20: Clear
+				LeftColor: 3B2E1C
+				RightColor: 43321C
+				ZOffset: -12
+				ZRamp: 0
+			21: Clear
+				LeftColor: 2E2210
+				RightColor: 3C2F1B
+				ZOffset: -12
+				ZRamp: 0
+			22: Clear
+				LeftColor: 342713
+				RightColor: 473621
+				ZOffset: -12
+				ZRamp: 0
+			24: Clear
+				LeftColor: 6C583E
+				RightColor: 635039
+				ZOffset: -12
+				ZRamp: 0
+			25: Clear
+				LeftColor: 51402C
+				RightColor: 44341E
+				ZOffset: -12
+				ZRamp: 0
+			26: Clear
+				LeftColor: 392C17
+				RightColor: 312512
+				ZOffset: -12
+				ZRamp: 0
+			27: Clear
+				LeftColor: 3B2E1B
+				RightColor: 382814
+				ZOffset: -12
+				ZRamp: 0
+			28: Clear
+				LeftColor: 41301A
+				RightColor: 332512
+				ZOffset: -12
+				ZRamp: 0
+			30: Clear
+				LeftColor: 66523C
+				RightColor: 634F38
+				ZOffset: -12
+				ZRamp: 0
+			31: Clear
+				LeftColor: 554330
+				RightColor: 53412E
+				ZOffset: -12
+				ZRamp: 0
+			32: Clear
+				LeftColor: 53412D
+				RightColor: 483622
+				ZOffset: -12
+				ZRamp: 0
+			33: Clear
+				LeftColor: 463522
+				RightColor: 473520
+				ZOffset: -12
+				ZRamp: 0
+			34: Clear
+				LeftColor: 43311B
+				RightColor: 3F2E1A
+				ZOffset: -12
+				ZRamp: 0
+			35: Cliff
+				LeftColor: 2A1E0D
+				RightColor: 352714
+				ZOffset: -12
+				ZRamp: 0
+			36: Clear
+				LeftColor: 6C573F
+				RightColor: 624D37
+				ZOffset: -12
+				ZRamp: 0
+			37: Clear
+				LeftColor: 54422F
+				RightColor: 4F3C2A
+				ZOffset: -12
+				ZRamp: 0
+			38: Clear
+				LeftColor: 463724
+				RightColor: 433523
+				ZOffset: -12
+				ZRamp: 0
+			39: Clear
+				LeftColor: 3B2C17
+				RightColor: 3F2F1B
+				ZOffset: -12
+				ZRamp: 0
+			40: Clear
+				LeftColor: 604A28
+				RightColor: 4D3A1F
+				ZOffset: -12
+				ZRamp: 0
+			41: Cliff
+				LeftColor: 927043
+				RightColor: 5E4A2B
+				ZOffset: -12
+				ZRamp: 0
+			42: Clear
+				LeftColor: 6D5941
+				RightColor: 64503B
+				ZOffset: -12
+				ZRamp: 0
+			43: Clear
+				LeftColor: 55432F
+				RightColor: 4E3D29
+				ZOffset: -12
+				ZRamp: 0
+			44: Clear
+				LeftColor: 45341F
+				RightColor: 483621
+				ZOffset: -12
+				ZRamp: 0
+			45: Clear
+				LeftColor: 3E2E18
+				RightColor: 3E2E19
+				ZOffset: -12
+				ZRamp: 0
+			46: Cliff
+				LeftColor: 755F34
+				RightColor: 8D713E
+				ZOffset: -12
+				ZRamp: 0
+			48: Clear
+				LeftColor: 705A40
+				RightColor: 6E573D
+				ZOffset: -12
+				ZRamp: 0
+			49: Clear
+				LeftColor: 6C573E
+				RightColor: 604D37
+				ZOffset: -12
+				ZRamp: 0
+			50: Clear
+				LeftColor: 675139
+				RightColor: 4E3D28
+				ZOffset: -12
+				ZRamp: 0
+			51: Clear
+				LeftColor: 64513A
+				RightColor: 58442B
+				ZOffset: -12
+				ZRamp: 0
+			52: Clear
+				LeftColor: 5A4730
+				RightColor: 4F3C26
+				ZOffset: -12
+				ZRamp: 0
+	Template@1026:
+		Category: Kodiak Crash
+		Id: 1026
+		Images: crash02.tem
+		Size: 4, 3
+		Tiles:
+			1: Cliff
+				LeftColor: 715B39
+				RightColor: 48381F
+				ZOffset: -12
+				ZRamp: 0
+			4: Cliff
+				LeftColor: 6C512C
+				RightColor: 87693B
+				ZOffset: -12
+				ZRamp: 0
+			5: Cliff
+				LeftColor: 413219
+				RightColor: 3D3628
+				ZOffset: -12
+				ZRamp: 0
+			6: Cliff
+				LeftColor: 423523
+				RightColor: 2E2616
+				ZOffset: -12
+				ZRamp: 0
+			8: Clear
+				LeftColor: 6E5935
+				RightColor: 453722
+				ZOffset: -12
+				ZRamp: 0
+			9: Clear
+				LeftColor: 634E36
+				RightColor: 58462E
+				ZOffset: -12
+				ZRamp: 0
+			10: Clear
+				LeftColor: 6F5A40
+				RightColor: 6D573D
+				ZOffset: -12
+				ZRamp: 0
+			11: Clear
+				LeftColor: 685239
+				RightColor: 503D27
+				ZOffset: -12
+				ZRamp: 0
+	Template@1027:
+		Category: Kodiak Crash
+		Id: 1027
+		Images: crash03.tem
+		Size: 12, 9
+		Tiles:
+			0: Cliff
+				LeftColor: 745B33
+				RightColor: 4E3D20
+				ZOffset: -12
+				ZRamp: 0
+			1: Cliff
+				LeftColor: 5F4929
+				RightColor: 4E3C20
+				ZOffset: -12
+				ZRamp: 0
+			2: Cliff
+				LeftColor: 5E4623
+				RightColor: 4C3C21
+				ZOffset: -12
+				ZRamp: 0
+			3: Cliff
+				LeftColor: 382F1D
+				RightColor: 52432C
+				ZOffset: -12
+				ZRamp: 0
+			12: Cliff
+				LeftColor: 5E4726
+				RightColor: 49381E
+				ZOffset: -12
+				ZRamp: 0
+			13: Cliff
+				LeftColor: 5E4927
+				RightColor: 69502C
+				ZOffset: -12
+				ZRamp: 0
+			14: Cliff
+				LeftColor: 5A4525
+				RightColor: 584425
+				ZOffset: -12
+				ZRamp: 0
+			15: Cliff
+				LeftColor: 604A28
+				RightColor: 423A2E
+				ZOffset: -12
+				ZRamp: 0
+			16: Cliff
+				LeftColor: 4C3F29
+				RightColor: 392F1D
+				ZOffset: -12
+				ZRamp: 0
+			17: Cliff
+				LeftColor: 312713
+				RightColor: 372914
+				ZOffset: -12
+				ZRamp: 0
+			18: Cliff
+				LeftColor: 352912
+				RightColor: 342812
+				ZOffset: -12
+				ZRamp: 0
+			19: Cliff
+				LeftColor: 362C1C
+				RightColor: 281F0F
+				ZOffset: -12
+				ZRamp: 0
+			24: Cliff
+				LeftColor: 2D210F
+				RightColor: 41321A
+				ZOffset: -12
+				ZRamp: 0
+			25: Cliff
+				LeftColor: 3D2E18
+				RightColor: 7D5E35
+				ZOffset: -12
+				ZRamp: 0
+			26: Cliff
+				LeftColor: 715630
+				RightColor: 5D4625
+				ZOffset: -12
+				ZRamp: 0
+			27: Cliff
+				LeftColor: 69502C
+				RightColor: 564425
+				ZOffset: -12
+				ZRamp: 0
+			28: Clear
+				LeftColor: 48391C
+				RightColor: 4E3D1E
+				ZOffset: -12
+				ZRamp: 0
+			29: Clear
+				LeftColor: 45371B
+				RightColor: 1D170C
+				ZOffset: -12
+				ZRamp: 0
+			30: Clear
+				LeftColor: 453825
+				RightColor: 524128
+				ZOffset: -12
+				ZRamp: 0
+			31: Clear
+				LeftColor: 53432B
+				RightColor: 372C1A
+				ZOffset: -12
+				ZRamp: 0
+			32: Cliff
+				LeftColor: 564530
+				RightColor: 443725
+				ZOffset: -12
+				ZRamp: 0
+			33: Cliff
+				LeftColor: 50402B
+				RightColor: 54442E
+				ZOffset: -12
+				ZRamp: 0
+			37: Cliff
+				LeftColor: 211A0C
+				RightColor: 1F180C
+				ZOffset: -12
+				ZRamp: 0
+			38: Cliff
+				LeftColor: 2D2214
+				RightColor: 5A4525
+				ZOffset: -12
+				ZRamp: 0
+			39: Cliff
+				LeftColor: A6874B
+				RightColor: 6F5836
+				ZOffset: -12
+				ZRamp: 0
+			40: Clear
+				LeftColor: 81653B
+				RightColor: 5B4927
+				ZOffset: -12
+				ZRamp: 0
+			41: Clear
+				LeftColor: 624F2A
+				RightColor: 3A2D15
+				ZOffset: -12
+				ZRamp: 0
+			42: Clear
+				LeftColor: 352913
+				RightColor: 3B2E19
+				ZOffset: -12
+				ZRamp: 0
+			43: Clear
+				LeftColor: 524028
+				RightColor: 5C4B32
+				ZOffset: -12
+				ZRamp: 0
+			44: Clear
+				LeftColor: 5B4832
+				RightColor: 5A4933
+				ZOffset: -12
+				ZRamp: 0
+			45: Rough
+				LeftColor: 654F34
+				RightColor: 645036
+				ZOffset: -12
+				ZRamp: 0
+			46: Cliff
+				LeftColor: 554533
+				RightColor: 68543A
+				ZOffset: -12
+				ZRamp: 0
+			50: Cliff
+				LeftColor: 2D2414
+				RightColor: 322715
+				ZOffset: -12
+				ZRamp: 0
+			51: Cliff
+				LeftColor: 352B1B
+				RightColor: 947743
+				ZOffset: -12
+				ZRamp: 0
+			52: Cliff
+				LeftColor: 836B42
+				RightColor: B38E54
+				ZOffset: -12
+				ZRamp: 0
+			53: Cliff
+				LeftColor: 786138
+				RightColor: 5E4A27
+				ZOffset: -12
+				ZRamp: 0
+			54: Cliff
+				LeftColor: 302613
+				RightColor: 332815
+				ZOffset: -12
+				ZRamp: 0
+			55: Clear
+				LeftColor: 665239
+				RightColor: 69543A
+				ZOffset: -12
+				ZRamp: 0
+			56: Clear
+				LeftColor: 705B42
+				RightColor: 6B563E
+				ZOffset: -12
+				ZRamp: 0
+			57: Clear
+				LeftColor: 6C573F
+				RightColor: 624E38
+				ZOffset: -12
+				ZRamp: 0
+			58: Rough
+				LeftColor: 523F29
+				RightColor: 423623
+				ZOffset: -12
+				ZRamp: 0
+			59: Cliff
+				LeftColor: 3F321E
+				RightColor: 725A34
+				ZOffset: -12
+				ZRamp: 0
+			63: Clear
+				LeftColor: 453621
+				RightColor: 493923
+				ZOffset: -12
+				ZRamp: 0
+			64: Cliff
+				LeftColor: 473622
+				RightColor: 40301A
+				ZOffset: -12
+				ZRamp: 0
+			65: Cliff
+				LeftColor: 4A3820
+				RightColor: 372A17
+				ZOffset: -12
+				ZRamp: 0
+			66: Clear
+				LeftColor: 58462F
+				RightColor: 624D33
+				ZOffset: -12
+				ZRamp: 0
+			67: Clear
+				LeftColor: 5E4931
+				RightColor: 67523A
+				ZOffset: -12
+				ZRamp: 0
+			68: Clear
+				LeftColor: 6B573E
+				RightColor: 6D573D
+				ZOffset: -12
+				ZRamp: 0
+			69: Clear
+				LeftColor: 6B563E
+				RightColor: 634E36
+				ZOffset: -12
+				ZRamp: 0
+			70: Clear
+				LeftColor: 4F3F2E
+				RightColor: 443724
+				ZOffset: -12
+				ZRamp: 0
+			71: Rough
+				LeftColor: 4E402F
+				RightColor: 443828
+				ZOffset: -12
+				ZRamp: 0
+			76: Clear
+				LeftColor: 564834
+				RightColor: 5E4931
+				ZOffset: -12
+				ZRamp: 0
+			77: Clear
+				LeftColor: 685137
+				RightColor: 59452E
+				ZOffset: -12
+				ZRamp: 0
+			78: Clear
+				LeftColor: 51412E
+				RightColor: 69543C
+				ZOffset: -12
+				ZRamp: 0
+			79: Clear
+				LeftColor: 523F2A
+				RightColor: 57432D
+				ZOffset: -12
+				ZRamp: 0
+			80: Clear
+				LeftColor: 5C4831
+				RightColor: 68533B
+				ZOffset: -12
+				ZRamp: 0
+			81: Clear
+				LeftColor: 594530
+				RightColor: 5E4B35
+				ZOffset: -12
+				ZRamp: 0
+			82: Clear
+				LeftColor: 4E3C28
+				RightColor: 503E29
+				ZOffset: -12
+				ZRamp: 0
+			83: Clear
+				LeftColor: 574129
+				RightColor: 4C3C28
+				ZOffset: -12
+				ZRamp: 0
+			90: Clear
+				LeftColor: 705B43
+				RightColor: 5C4935
+				ZOffset: -12
+				ZRamp: 0
+			91: Clear
+				LeftColor: 6C563D
+				RightColor: 695233
+				ZOffset: -12
+				ZRamp: 0
+			92: Clear
+				LeftColor: 5E4A31
+				RightColor: 54422C
+				ZOffset: -12
+				ZRamp: 0
+			93: Clear
+				LeftColor: 604B34
+				RightColor: 54422D
+				ZOffset: -12
+				ZRamp: 0
+			94: Clear
+				LeftColor: 4F3C28
+				RightColor: 4E3C27
+				ZOffset: -12
+				ZRamp: 0
+			95: Rough
+				LeftColor: 554228
+				RightColor: 574628
+				ZOffset: -12
+				ZRamp: 0
+			104: Clear
+				LeftColor: 705A40
+				RightColor: 6E593E
+				ZOffset: -12
+				ZRamp: 0
+			105: Clear
+				LeftColor: 6B573F
+				RightColor: 65523B
+				ZOffset: -12
+				ZRamp: 0
+			106: Clear
+				LeftColor: 604C38
+				RightColor: 51412F
+				ZOffset: -12
+				ZRamp: 0
+			107: Clear
+				LeftColor: 5E4B35
+				RightColor: 5D4A34
+				ZOffset: -12
+				ZRamp: 0
+	Template@1028:
+		Category: Kodiak Crash
+		Id: 1028
+		Images: crash04.tem
+		Size: 6, 4
+		Tiles:
+			0: Cliff
+				LeftColor: 352C1C
+				RightColor: 4B3C28
+				ZOffset: -12
+				ZRamp: 0
+			1: Cliff
+				LeftColor: 56462E
+				RightColor: 775C34
+				ZOffset: -12
+				ZRamp: 0
+			6: Rough
+				LeftColor: 504432
+				RightColor: 403728
+				ZOffset: -12
+				ZRamp: 0
+			7: Cliff
+				LeftColor: 362D1C
+				RightColor: 4E3F29
+				ZOffset: -12
+				ZRamp: 0
+			8: Cliff
+				LeftColor: 433624
+				RightColor: 4B3F2C
+				ZOffset: -12
+				ZRamp: 0
+			9: Cliff
+				LeftColor: 564835
+				RightColor: 524430
+				ZOffset: -12
+				ZRamp: 0
+			12: Clear
+				LeftColor: 3F321F
+				RightColor: 3C301E
+				ZOffset: -12
+				ZRamp: 0
+			13: Clear
+				LeftColor: 54432F
+				RightColor: 473A29
+				ZOffset: -12
+				ZRamp: 0
+			14: Clear
+				LeftColor: 493D2E
+				RightColor: 463927
+				ZOffset: -12
+				ZRamp: 0
+			15: Clear
+				LeftColor: 524430
+				RightColor: 483A26
+				ZOffset: -12
+				ZRamp: 0
+			16: Clear
+				LeftColor: 4E3F2C
+				RightColor: 524332
+				ZOffset: -12
+				ZRamp: 0
+			17: Clear
+				LeftColor: 63503B
+				RightColor: 6C583F
+				ZOffset: -12
+				ZRamp: 0
+			18: Clear
+				LeftColor: 69543D
+				RightColor: 66513A
+				ZOffset: -12
+				ZRamp: 0
+			19: Clear
+				LeftColor: 6C573D
+				RightColor: 66523A
+				ZOffset: -12
+				ZRamp: 0
+			20: Clear
+				LeftColor: 6F5A42
+				RightColor: 65523B
+				ZOffset: -12
+				ZRamp: 0
+			21: Clear
+				LeftColor: 6C573E
+				RightColor: 5E4B35
+				ZOffset: -12
+				ZRamp: 0
+			22: Clear
+				LeftColor: 6D5941
+				RightColor: 6E5A42
+				ZOffset: -12
+				ZRamp: 0
+			23: Clear
+				LeftColor: 705C43
+				RightColor: 6D583F
+				ZOffset: -12
+				ZRamp: 0
+	Template@1029:
+		Category: Kodiak Crash
+		Id: 1029
+		Images: crash05.tem
+		Size: 8, 4
+		Tiles:
+			0: Cliff
+				Height: 4
+				LeftColor: 524637
+				RightColor: 594B38
+				ZOffset: -12
+				ZRamp: 0
+			8: Cliff
+				LeftColor: 594F3F
+				RightColor: 4F4A41
+				ZOffset: -12
+				ZRamp: 0
+			9: Cliff
+				Height: 4
+				LeftColor: 49463F
+				RightColor: 494338
+				ZOffset: -12
+				ZRamp: 0
+			10: Cliff
+				Height: 4
+				LeftColor: 2B2824
+				RightColor: 4F4537
+				ZOffset: -12
+				ZRamp: 0
+			11: Cliff
+				Height: 4
+				LeftColor: 353028
+				RightColor: 473F34
+				ZOffset: -12
+				ZRamp: 0
+			12: Cliff
+				Height: 4
+				LeftColor: 433D34
+				RightColor: 483E32
+				ZOffset: -12
+				ZRamp: 0
+			17: Cliff
+				LeftColor: 5D4D38
+				RightColor: 554B3C
+				ZOffset: -12
+				ZRamp: 0
+			18: Cliff
+				LeftColor: 51412D
+				RightColor: 504739
+				ZOffset: -12
+				ZRamp: 0
+			19: Cliff
+				LeftColor: 483925
+				RightColor: 4E4335
+				ZOffset: -12
+				ZRamp: 0
+			20: Cliff
+				LeftColor: 4B3B22
+				RightColor: 413C34
+				ZOffset: -12
+				ZRamp: 0
+			21: Cliff
+				Height: 4
+				LeftColor: 2D2C28
+				RightColor: 37322B
+				ZOffset: -12
+				ZRamp: 0
+			22: Cliff
+				Height: 4
+				LeftColor: 4A4338
+				RightColor: 4F4436
+				ZOffset: -12
+				ZRamp: 0
+			23: Cliff
+				Height: 4
+				LeftColor: 494237
+				RightColor: 4D4233
+				ZOffset: -12
+				ZRamp: 0
+			29: Cliff
+				LeftColor: 3B3019
+				RightColor: 42351E
+				ZOffset: -12
+				ZRamp: 0
+			30: Cliff
+				LeftColor: 544023
+				RightColor: 493F2E
+				ZOffset: -12
+				ZRamp: 0
+			31: Cliff
+				LeftColor: 5E4928
+				RightColor: 584D3D
+				ZOffset: -12
+				ZRamp: 0
+	Template@1030:
+		Category: Kodiak Crash
+		Id: 1030
+		Images: crash06.tem
+		Size: 8, 5
+		Tiles:
+			0: Cliff
+				Height: 4
+				LeftColor: 524637
+				RightColor: 594B38
+				ZOffset: -12
+				ZRamp: 0
+			8: Cliff
+				LeftColor: 534225
+				RightColor: 5B4E39
+				ZOffset: -12
+				ZRamp: 0
+			9: Cliff
+				Height: 4
+				LeftColor: 49463F
+				RightColor: 494338
+				ZOffset: -12
+				ZRamp: 0
+			10: Cliff
+				Height: 4
+				LeftColor: 4D463A
+				RightColor: 4C4234
+				ZOffset: -12
+				ZRamp: 0
+			11: Cliff
+				Height: 4
+				LeftColor: 4A4135
+				RightColor: 4F4436
+				ZOffset: -12
+				ZRamp: 0
+			12: Cliff
+				Height: 4
+				LeftColor: 433D34
+				RightColor: 483E32
+				ZOffset: -12
+				ZRamp: 0
+			17: Cliff
+				LeftColor: 5A462B
+				RightColor: 493A22
+				ZOffset: -12
+				ZRamp: 0
+			18: Cliff
+				LeftColor: 3E3117
+				RightColor: 534939
+				ZOffset: -12
+				ZRamp: 0
+			19: Cliff
+				LeftColor: 392C15
+				RightColor: 433D33
+				ZOffset: -12
+				ZRamp: 0
+			20: Cliff
+				LeftColor: 403729
+				RightColor: 3E3A34
+				ZOffset: -12
+				ZRamp: 0
+			21: Cliff
+				Height: 4
+				LeftColor: 2D2C28
+				RightColor: 37322B
+				ZOffset: -12
+				ZRamp: 0
+			22: Cliff
+				Height: 4
+				LeftColor: 524637
+				RightColor: 594B38
+				ZOffset: -12
+				ZRamp: 0
+			29: Cliff
+				LeftColor: 453723
+				RightColor: 473A2A
+				ZOffset: -12
+				ZRamp: 0
+			30: Cliff
+				LeftColor: 584B38
+				RightColor: 4F4A41
+				ZOffset: -12
+				ZRamp: 0
+			31: Cliff
+				Height: 4
+				LeftColor: 49463F
+				RightColor: 494338
+				ZOffset: -12
+				ZRamp: 0
+			39: Cliff
+				LeftColor: 513F21
+				RightColor: 262319
+				ZOffset: -12
+				ZRamp: 0
+	Template@1031:
+		Category: Kodiak Crash
+		Id: 1031
+		Images: crash07.tem
+		Size: 7, 6
+		Tiles:
+			0: Cliff
+				Height: 4
+				LeftColor: 4B4337
+				RightColor: 4B4030
+				ZOffset: -12
+				ZRamp: 0
+			7: Cliff
+				Height: 4
+				LeftColor: 3F3B34
+				RightColor: 504537
+				ZOffset: -12
+				ZRamp: 0
+			14: Cliff
+				LeftColor: 836337
+				RightColor: 43351C
+				ZOffset: -12
+				ZRamp: 0
+			15: Cliff
+				Height: 4
+				LeftColor: 1F1D19
+				RightColor: 3F3B34
+				ZOffset: -12
+				ZRamp: 0
+			16: Cliff
+				Height: 4
+				LeftColor: 46423B
+				RightColor: 4D4437
+				ZOffset: -12
+				ZRamp: 0
+			22: Cliff
+				LeftColor: 654E2C
+				RightColor: 4B3A1E
+				ZOffset: -12
+				ZRamp: 0
+			23: Cliff
+				LeftColor: 624B2A
+				RightColor: 3A3221
+				ZOffset: -12
+				ZRamp: 0
+			24: Cliff
+				Height: 4
+				LeftColor: 3A3730
+				RightColor: 3B352C
+				ZOffset: -12
+				ZRamp: 0
+			25: Cliff
+				Height: 4
+				LeftColor: 46423B
+				RightColor: 51422F
+				ZOffset: -12
+				ZRamp: 0
+			31: Cliff
+				LeftColor: 624B2C
+				RightColor: 4E3E26
+				ZOffset: -12
+				ZRamp: 0
+			32: Cliff
+				LeftColor: 413625
+				RightColor: 4E483E
+				ZOffset: -12
+				ZRamp: 0
+			33: Cliff
+				Height: 4
+				LeftColor: 48453E
+				RightColor: 413A30
+				ZOffset: -12
+				ZRamp: 0
+			34: Cliff
+				Height: 4
+				LeftColor: 4F4639
+				RightColor: 514536
+				ZOffset: -12
+				ZRamp: 0
+			40: Cliff
+				LeftColor: 392D1A
+				RightColor: 40392D
+				ZOffset: -12
+				ZRamp: 0
+			41: Cliff
+				LeftColor: 5C5041
+				RightColor: 585349
 				ZOffset: -12
 				ZRamp: 0
