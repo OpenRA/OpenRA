@@ -165,7 +165,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var windowModeDropdown = panel.Get<DropDownButtonWidget>("MODE_DROPDOWN");
 			windowModeDropdown.OnMouseDown = _ => ShowWindowModeDropdown(windowModeDropdown, ds);
 			windowModeDropdown.GetText = () => ds.Mode == WindowMode.Windowed ?
-				"Windowed" : ds.Mode == WindowMode.Fullscreen ? "Fullscreen" : "Pseudo-Fullscreen";
+				"Windowed" : ds.Mode == WindowMode.Fullscreen ? "Fullscreen (Legacy)" : "Fullscreen";
 
 			var statusBarsDropDown = panel.Get<DropDownButtonWidget>("STATUS_BAR_DROPDOWN");
 			statusBarsDropDown.OnMouseDown = _ => ShowStatusBarsDropdown(statusBarsDropDown, gs);
@@ -748,8 +748,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			var options = new Dictionary<string, WindowMode>()
 			{
-				{ "Pseudo-Fullscreen", WindowMode.PseudoFullscreen },
-				{ "Fullscreen", WindowMode.Fullscreen },
+				{ "Fullscreen", WindowMode.PseudoFullscreen },
+				{ "Fullscreen (Legacy)", WindowMode.Fullscreen },
 				{ "Windowed", WindowMode.Windowed },
 			};
 
