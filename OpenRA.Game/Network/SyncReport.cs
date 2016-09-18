@@ -92,6 +92,8 @@ namespace OpenRA.Network
 
 		internal void DumpSyncReport(int frame, IEnumerable<FrameData.ClientOrder> orders)
 		{
+			Log.AddChannel("sync", "syncreport.log");
+
 			foreach (var r in syncReports)
 			{
 				if (r.Frame == frame)
