@@ -9,6 +9,7 @@ LOBRDG_A_D:
 	EditorOnlyTooltip:
 		Name: Dead Bridge
 	-LowBridge:
+	-AppearsOnRadar:
 
 LOBRDG_B:
 	Inherits: ^LowBridge_B
@@ -21,6 +22,7 @@ LOBRDG_B_D:
 	EditorOnlyTooltip:
 		Name: Dead Bridge
 	-LowBridge:
+	-AppearsOnRadar:
 
 LOBRDG_R_SE:
 	Inherits: ^LowBridge_B

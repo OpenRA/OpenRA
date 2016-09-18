@@ -18,6 +18,10 @@ Terrain:
 		Type: Road
 		Color: 2D2B28
 		TargetTypes: Ground
+	TerrainType@Bridge:
+		Type: Bridge
+		Color: 5A5C5A
+		TargetTypes: Ground
 	TerrainType@Rail:
 		Type: Rail
 		Color: 363739

@@ -78,6 +78,7 @@ FLAMEGUY:
 		TerrainSpeeds:
 			Clear: 45
 			Road: 50
+			Bridge: 50
 			Rail: 45
 			DirtRoad: 50
 			Rough: 40
