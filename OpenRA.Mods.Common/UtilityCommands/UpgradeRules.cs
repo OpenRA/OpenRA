@@ -358,6 +358,15 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				// Add a warning to add WithRearmAnimation to actors that might need it.
+				// Update rule added during prep-1609 stable period, date needs fixing after release.
+				if (engineVersion < 20160918 && depth == 2)
+				{
+					if (node.Key == "RearmBuildings")
+						foreach (var host in node.Value.Value.Split(','))
+							Console.WriteLine("Actor type `{0}` is denoted as a RearmBuilding. Consider adding the `WithRearmAnimation` trait to it.".F(host));
+				}
+
 				UpgradeActorRules(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 
