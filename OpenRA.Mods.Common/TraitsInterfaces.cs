@@ -139,4 +139,7 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		void ModifyActorPreviewInit(Actor self, TypeDictionary inits);
 	}
+
+	[RequireExplicitImplementation]
+	public interface INotifyRearm { void Rearming(Actor host, Actor other); }
 }
