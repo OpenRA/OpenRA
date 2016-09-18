@@ -40,6 +40,8 @@ namespace OpenRA.Mods.AS.Traits
 		[Desc("Map listed indices to shadow. Ignores previous color.")]
 		public readonly int[] ShadowIndex = { };
 
+		public readonly bool Premultiply = true;
+
 		public readonly bool AllowModifiers = true;
 
 		public object Create(ActorInitializer init) { return new PaletteFromJasc32File(init.World, this); }
@@ -67,9 +69,21 @@ namespace OpenRA.Mods.AS.Traits
 				for (var i = 0; i < Palette.Size; i++)
 				{
 					var split = lines[i + 3].Split(' ');
-					colors[i] = (split.Count() == 4)
-						? (uint)Color.FromArgb(int.Parse(split[3]), int.Parse(split[0]), int.Parse(split[1]), int.Parse(split[2])).ToArgb()
-						: (uint)Color.FromArgb(int.Parse(split[0]), int.Parse(split[1]), int.Parse(split[2])).ToArgb();
+
+					if (split.Count() == 4)
+					{
+					var alpha = int.Parse(split[3]);
+						if (info.Premultiply)
+						{
+							colors[i] = (uint)Color.FromArgb(alpha, int.Parse(split[0]) * alpha / 255, int.Parse(split[1]) * alpha / 255, int.Parse(split[2]) * alpha / 255).ToArgb();
+						}
+						else
+						{
+							colors[i] = (uint)Color.FromArgb(alpha, int.Parse(split[0]), int.Parse(split[1]), int.Parse(split[2])).ToArgb();
+						}
+					}
+					else
+						colors[i] = (uint)Color.FromArgb(int.Parse(split[0]), int.Parse(split[1]), int.Parse(split[2])).ToArgb();
 				}
 
 				foreach (var i in info.ShadowIndex)
