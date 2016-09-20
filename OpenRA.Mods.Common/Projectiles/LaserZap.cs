@@ -42,6 +42,9 @@ namespace OpenRA.Mods.Common.Projectiles
 		[Desc("Beam follows the target.")]
 		public readonly bool TracksTarget = true;
 
+		[Desc("Maximum offset at the maximum range.")]
+		public readonly WDist Inaccuracy = WDist.Zero;
+
 		[Desc("Draw a second beam (for 'glow' effect).")]
 		public readonly bool SecondaryBeam = false;
 
@@ -74,7 +77,7 @@ namespace OpenRA.Mods.Common.Projectiles
 		}
 	}
 
-	public class LaserZap : IProjectile
+	public class LaserZap : IProjectile, ISync
 	{
 		readonly ProjectileArgs args;
 		readonly LaserZapInfo info;
@@ -84,7 +87,8 @@ namespace OpenRA.Mods.Common.Projectiles
 		int ticks = 0;
 		bool doneDamage;
 		bool animationComplete;
-		WPos target;
+		[Sync] WPos target;
+		[Sync] WPos source;
 
 		public LaserZap(LaserZapInfo info, ProjectileArgs args, Color color)
 		{
@@ -93,6 +97,14 @@ namespace OpenRA.Mods.Common.Projectiles
 			this.color = color;
 			secondaryColor = info.SecondaryBeamUsePlayerColor ? args.SourceActor.Owner.Color.RGB : info.SecondaryBeamColor;
 			target = args.PassiveTarget;
+			source = args.Source;
+
+			if (info.Inaccuracy.Length > 0)
+			{
+				var inaccuracy = OpenRA.Mods.Common.Util.ApplyPercentageModifiers(info.Inaccuracy.Length, args.InaccuracyModifiers);
+				var maxOffset = inaccuracy * (target - source).Length / args.Weapon.Range.Length;
+				target += WVec.FromPDF(args.SourceActor.World.SharedRandom, 2) * maxOffset / 1024;
+			}
 
 			if (!string.IsNullOrEmpty(info.HitAnim))
 				hitanim = new Animation(args.SourceActor.World, info.HitAnim);
