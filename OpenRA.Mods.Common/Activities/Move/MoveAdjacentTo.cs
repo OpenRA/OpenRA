@@ -90,7 +90,6 @@ namespace OpenRA.Mods.Common.Activities
 				if (inner != null)
 					inner.Cancel(self);
 
-				self.SetTargetLine(Target.FromCell(self.World, targetPosition), Color.Green);
 				return ActivityUtils.RunActivity(self, new AttackMoveActivity(self, mobile.MoveTo(targetPosition, 0)));
 			}
 

@@ -71,7 +71,6 @@ namespace OpenRA.Mods.Common.Activities
 				var unblockCell = harv.LastHarvestedCell ?? (self.Location + harvInfo.UnblockCell);
 				var moveTo = mobile.NearestMoveableCell(unblockCell, 2, 5);
 				self.QueueActivity(mobile.MoveTo(moveTo, 1));
-				self.SetTargetLine(Target.FromCell(self.World, moveTo), Color.Gray, false);
 
 				// TODO: The harvest-deliver-return sequence is a horrible mess of duplicated code and edge-cases
 				var notify = self.TraitsImplementing<INotifyHarvesterAction>();
@@ -94,8 +93,6 @@ namespace OpenRA.Mods.Common.Activities
 				// If not given a direct order, assume ordered to the first resource location we find:
 				if (!harv.LastOrderLocation.HasValue)
 					harv.LastOrderLocation = closestHarvestablePosition;
-
-				self.SetTargetLine(Target.FromCell(self.World, closestHarvestablePosition.Value), Color.Red, false);
 
 				// TODO: The harvest-deliver-return sequence is a horrible mess of duplicated code and edge-cases
 				var notify = self.TraitsImplementing<INotifyHarvesterAction>();

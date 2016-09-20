@@ -508,8 +508,6 @@ namespace OpenRA.Mods.Common.Traits
 		protected void PerformMove(Actor self, CPos targetLocation, bool queued)
 		{
 			PerformMoveInner(self, targetLocation, queued);
-
-			self.SetTargetLines(Color.Green);
 		}
 
 		public void ResolveOrder(Actor self, Order order)
@@ -677,7 +675,6 @@ namespace OpenRA.Mods.Common.Traits
 			if (moveTo.HasValue)
 			{
 				self.CancelActivity();
-				self.SetTargetLine(Target.FromCell(self.World, moveTo.Value), Color.Green, false);
 				self.QueueActivity(new Move(self, moveTo.Value, WDist.Zero));
 
 				Log.Write("debug", "OnNudge #{0} from {1} to {2}",

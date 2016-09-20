@@ -61,7 +61,6 @@ namespace OpenRA.Mods.Common.Activities
 			var proc = harv.LinkedProc;
 			var iao = proc.Trait<IAcceptResources>();
 
-			self.SetTargetLine(Target.FromActor(proc), Color.Green, false);
 			if (self.Location != proc.Location + iao.DeliveryOffset)
 			{
 				var notify = self.TraitsImplementing<INotifyHarvesterAction>();

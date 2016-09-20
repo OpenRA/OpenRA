@@ -179,7 +179,6 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			TargetedActor = targetActor;
 			var target = Target.FromActor(targetActor);
-			self.SetTargetLine(target, Color.Red, false);
 
 			var activeAttackBases = attackBases.Where(Exts.IsTraitEnabled);
 			foreach (var ab in activeAttackBases)

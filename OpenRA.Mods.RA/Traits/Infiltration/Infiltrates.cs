@@ -114,7 +114,6 @@ namespace OpenRA.Mods.RA.Traits
 			if (!order.Queued)
 				self.CancelActivity();
 
-			self.SetTargetLine(target, Color.Red);
 			self.QueueActivity(new Infiltrate(self, target.Actor, info.EnterBehaviour, info.ValidStances, info.Notification, info.PlayerExperience));
 		}
 	}
