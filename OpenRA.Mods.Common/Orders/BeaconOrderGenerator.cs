@@ -19,7 +19,9 @@ namespace OpenRA.Mods.Common.Orders
 		public IEnumerable<Order> Order(World world, CPos cell, int2 worldPixel, MouseInput mi)
 		{
 			world.CancelInputMode();
-			yield return new Order("PlaceBeacon", world.LocalPlayer.PlayerActor, false) { TargetLocation = cell, SuppressVisualFeedback = true };
+
+			if (mi.Button == MouseButton.Left)
+				yield return new Order("PlaceBeacon", world.LocalPlayer.PlayerActor, false) { TargetLocation = cell, SuppressVisualFeedback = true };
 		}
 
 		public virtual void Tick(World world) { }
