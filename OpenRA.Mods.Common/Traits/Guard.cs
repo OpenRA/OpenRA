@@ -50,8 +50,6 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void GuardTarget(Actor self, Target target)
 		{
-			self.SetTargetLine(target, Color.Yellow);
-
 			var range = target.Actor.Info.TraitInfo<GuardableInfo>().Range;
 			self.QueueActivity(false, new AttackMoveActivity(self, move.MoveFollow(self, target, WDist.Zero, range)));
 		}

@@ -72,8 +72,6 @@ namespace OpenRA.Mods.Common.Traits
 				if (!order.Queued)
 					self.CancelActivity();
 
-				self.SetTargetLine(target, Color.Red);
-
 				self.QueueActivity(move.MoveToTarget(self, target));
 
 				self.QueueActivity(new CallFunc(() => self.Kill(self)));

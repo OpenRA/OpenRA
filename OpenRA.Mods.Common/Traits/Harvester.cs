@@ -127,8 +127,6 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			if (proc == null) return;
 			if (proc.Disposed) return;
-
-			proc.SetTargetLines(Color.Gold);
 		}
 
 		public void LinkProc(Actor self, Actor proc)
@@ -231,7 +229,6 @@ namespace OpenRA.Mods.Common.Traits
 						n.MovingToResources(self, moveTo, findResources);
 
 					self.QueueActivity(mobile.MoveTo(moveTo, 1));
-					self.SetTargetLines(Color.Gray);
 				}
 			}
 		}
@@ -249,7 +246,6 @@ namespace OpenRA.Mods.Common.Traits
 				var cell = self.Location;
 				var moveTo = mobile.NearestMoveableCell(cell, 2, 5);
 				self.QueueActivity(mobile.MoveTo(moveTo, 0));
-				self.SetTargetLines(Color.Gray);
 
 				// Find more resources but not at this location:
 				self.QueueActivity(new FindResources(self, cell));
@@ -374,7 +370,6 @@ namespace OpenRA.Mods.Common.Traits
 
 				var findResources = new FindResources(self);
 				self.QueueActivity(findResources);
-				self.SetTargetLines(Color.Red);
 
 				var notify = self.TraitsImplementing<INotifyHarvesterAction>();
 				foreach (var n in notify)
@@ -396,8 +391,6 @@ namespace OpenRA.Mods.Common.Traits
 					LinkProc(self, OwnerLinkedProc = order.TargetActor);
 
 				idleSmart = true;
-
-				self.SetTargetLines(Color.Green);
 
 				self.CancelActivity();
 

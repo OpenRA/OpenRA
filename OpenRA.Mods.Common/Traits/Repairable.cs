@@ -93,7 +93,6 @@ namespace OpenRA.Mods.Common.Traits
 					return;
 
 				var target = Target.FromOrder(self.World, order);
-				self.SetTargetLine(target, Color.Green);
 
 				self.CancelActivity();
 				self.QueueActivity(new WaitForTransport(self, ActivityUtils.SequenceActivities(new MoveAdjacentTo(self, target),
@@ -121,7 +120,6 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				self.QueueActivity(new CallFunc(() =>
 				{
-					self.SetTargetLine(Target.FromCell(self.World, rp.Location), Color.Green);
 					self.QueueActivity(movement.MoveTo(rp.Location, order.TargetActor));
 				}));
 			}

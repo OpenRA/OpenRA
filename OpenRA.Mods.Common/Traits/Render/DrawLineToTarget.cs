@@ -56,6 +56,9 @@ namespace OpenRA.Mods.Common.Traits
 		IEnumerable<IRenderable> IRenderAboveShroudWhenSelected.RenderAboveShroud(Actor self, WorldRenderer wr)
 		{
 			var force = Game.GetModifierKeys().HasModifier(Modifiers.Alt);
+
+lifetime = 1;//How do I handle the lifetime now?
+
 			if ((lifetime <= 0 || --lifetime <= 0) && !force)
 				return new IRenderable[0];
 
@@ -86,56 +89,9 @@ namespace OpenRA.Mods.Common.Traits
 				activityIterator = activityIterator.NextActivity;
 			}
 
+c = Color.Green;//How do I handle the colors now?
+
 			return new[] { (IRenderable)new TargetLineRenderable(validTargets, c) };
-		}
-	}
-
-	public static class LineTargetExts
-	{
-		public static void SetTargetLines(this Actor self, Color color)
-		{
-			var line = self.TraitOrDefault<DrawLineToTarget>();
-			if (line != null)
-				self.World.AddFrameEndTask(w => line.SetTarget(self, color, true));
-		}
-
-		public static void SetTargetLine(this Actor self, Target target, Color color)
-		{
-			self.SetTargetLine(target, color, true);
-		}
-
-		public static void SetTargetLine(this Actor self, Target target, Color color, bool display)
-		{
-			if (self.Owner != self.World.LocalPlayer)
-				return;
-
-			self.World.AddFrameEndTask(w =>
-			{
-				if (self.Disposed)
-					return;
-
-				var line = self.TraitOrDefault<DrawLineToTarget>();
-				if (line != null)
-					line.SetTarget(self, color, display);
-			});
-		}
-
-		public static void SetTargetLine(this Actor self, FrozenActor target, Color color, bool display)
-		{
-			if (self.Owner != self.World.LocalPlayer)
-				return;
-
-			self.World.AddFrameEndTask(w =>
-			{
-				if (self.Disposed)
-					return;
-
-				target.Flash();
-
-				var line = self.TraitOrDefault<DrawLineToTarget>();
-				if (line != null)
-					line.SetTarget(self, color, display);
-			});
 		}
 	}
 }
