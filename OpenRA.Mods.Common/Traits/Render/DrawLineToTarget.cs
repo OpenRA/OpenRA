@@ -56,8 +56,7 @@ namespace OpenRA.Mods.Common.Traits
 		IEnumerable<IRenderable> IRenderAboveShroudWhenSelected.RenderAboveShroud(Actor self, WorldRenderer wr)
 		{
 			var force = Game.GetModifierKeys().HasModifier(Modifiers.Alt);
-
-lifetime = 1;//How do I handle the lifetime now?
+			lifetime = 1; ////How do I handle the lifetime now?
 
 			if ((lifetime <= 0 || --lifetime <= 0) && !force)
 				return new IRenderable[0];
@@ -89,7 +88,7 @@ lifetime = 1;//How do I handle the lifetime now?
 				activityIterator = activityIterator.NextActivity;
 			}
 
-c = Color.Green;//How do I handle the colors now?
+			c = Color.Green; ////How do I handle the colors now?
 
 			return new[] { (IRenderable)new TargetLineRenderable(validTargets, c) };
 		}
