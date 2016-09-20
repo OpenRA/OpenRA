@@ -22,7 +22,7 @@ namespace OpenRA.Widgets
 	{
 		public static Widget Root = new RootWidget();
 
-		public static int LastTickTime = Game.RunTime;
+		public static long LastTickTime = Game.RunTime;
 
 		static readonly Stack<Widget> WindowList = new Stack<Widget>();
 

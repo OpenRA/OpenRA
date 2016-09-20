@@ -21,7 +21,7 @@ namespace OpenRA.Primitives
 	{
 		readonly List<DelayedAction> actions = new List<DelayedAction>();
 
-		public void Add(Action a, int desiredTime)
+		public void Add(Action a, long desiredTime)
 		{
 			if (a == null)
 				throw new ArgumentNullException("a");
@@ -34,7 +34,7 @@ namespace OpenRA.Primitives
 			}
 		}
 
-		public void PerformActions(int currentTime)
+		public void PerformActions(long currentTime)
 		{
 			DelayedAction[] pendingActions;
 			lock (actions)
@@ -67,10 +67,10 @@ namespace OpenRA.Primitives
 
 	struct DelayedAction : IComparable<DelayedAction>
 	{
-		public readonly int Time;
+		public readonly long Time;
 		public readonly Action Action;
 
-		public DelayedAction(Action action, int time)
+		public DelayedAction(Action action, long time)
 		{
 			Action = action;
 			Time = time;

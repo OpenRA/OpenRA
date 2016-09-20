@@ -489,6 +489,11 @@ namespace OpenRA
 			return int.TryParse(s, NumberStyles.Integer, NumberFormatInfo.InvariantInfo, out i);
 		}
 
+		public static bool TryParseInt64Invariant(string s, out long i)
+		{
+			return long.TryParse(s, NumberStyles.Integer, NumberFormatInfo.InvariantInfo, out i);
+		}
+
 		public static bool IsTraitEnabled(this object trait)
 		{
 			return trait as IDisabledTrait == null || !(trait as IDisabledTrait).IsTraitDisabled;

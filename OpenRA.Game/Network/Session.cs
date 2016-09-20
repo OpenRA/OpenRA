@@ -135,9 +135,9 @@ namespace OpenRA.Network
 		public class ClientPing
 		{
 			public int Index;
-			public int Latency = -1;
-			public int LatencyJitter = -1;
-			public int[] LatencyHistory = { };
+			public long Latency = -1;
+			public long LatencyJitter = -1;
+			public long[] LatencyHistory = { };
 
 			public static ClientPing Deserialize(MiniYaml data)
 			{

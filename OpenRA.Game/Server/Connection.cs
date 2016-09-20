@@ -26,9 +26,9 @@ namespace OpenRA.Server
 		public int Frame = 0;
 		public int MostRecentFrame = 0;
 
-		public int TimeSinceLastResponse { get { return Game.RunTime - lastReceivedTime; } }
+		public long TimeSinceLastResponse { get { return Game.RunTime - lastReceivedTime; } }
 		public bool TimeoutMessageShown = false;
-		int lastReceivedTime = 0;
+		long lastReceivedTime = 0;
 
 		/* client data */
 		public int PlayerIndex;
