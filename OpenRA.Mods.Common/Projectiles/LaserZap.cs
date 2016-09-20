@@ -39,6 +39,9 @@ namespace OpenRA.Mods.Common.Projectiles
 		[Desc("Color of the beam.")]
 		public readonly Color Color = Color.Red;
 
+		[Desc("Beam follows the target.")]
+		public readonly bool TracksTarget = true;
+
 		[Desc("Draw a second beam (for 'glow' effect).")]
 		public readonly bool SecondaryBeam = false;
 
@@ -98,7 +101,7 @@ namespace OpenRA.Mods.Common.Projectiles
 		public void Tick(World world)
 		{
 			// Beam tracks target
-			if (args.GuidedTarget.IsValidFor(args.SourceActor))
+			if (info.TracksTarget && args.GuidedTarget.IsValidFor(args.SourceActor))
 				target = args.GuidedTarget.CenterPosition;
 
 			if (!doneDamage)
