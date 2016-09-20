@@ -67,11 +67,6 @@ namespace OpenRA.Mods.Common.Traits
 			if (current_activity == null)
 				return new IRenderable[0];
 
-			var current_targets = current_activity.GetTargets(self);
-
-			if (current_targets.Key == null)
-				return new IRenderable[0];
-
 			var validTargets = new List<WPos>();
 			validTargets.Add(self.CenterPosition);
 
@@ -81,10 +76,12 @@ namespace OpenRA.Mods.Common.Traits
 				if (activityIterator is OpenRA.Mods.Common.Activities.Move.MovePart)
 					activityIterator = ((OpenRA.Mods.Common.Activities.Move.MovePart)activityIterator).Move;
 
-				Target target = (Target)activityIterator.GetTargets(self).Key;
-
-				if (!activityIterator.IsCanceled && activityIterator.GetTargets(self).Key != null && target.Type != TargetType.Invalid)
-					validTargets.Add(target.CenterPosition);
+				foreach (var pair in activityIterator.GetTargets(self))
+				{
+					Target target = pair.Key;
+					if (!activityIterator.IsCanceled && target.Type != TargetType.Invalid)
+						validTargets.Add(target.CenterPosition);
+				}
 
 				activityIterator = activityIterator.NextActivity;
 			}

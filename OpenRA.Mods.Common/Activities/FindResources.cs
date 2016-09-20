@@ -143,9 +143,9 @@ namespace OpenRA.Mods.Common.Activities
 			return null;
 		}
 
-		public override KeyValuePair<Target?, Color?> GetTargets(Actor self)
+		public override IEnumerable<KeyValuePair<Target, Color>> GetTargets(Actor self)
 		{
-			return new KeyValuePair<Target?, Color?>(Target.FromCell(self.World, self.Location), Color.Green);
+			return new[] { new KeyValuePair<Target, Color>(Target.FromCell(self.World, self.Location), Color.Green) };
 		}
 	}
 }

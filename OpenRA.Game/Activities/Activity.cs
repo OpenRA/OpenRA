@@ -37,9 +37,9 @@ namespace OpenRA.Activities
 				NextActivity = activity;
 		}
 
-		public virtual KeyValuePair<Target?, Color?> GetTargets(Actor self)
+		public virtual IEnumerable<KeyValuePair<Target, Color>> GetTargets(Actor self)
 		{
-			return new KeyValuePair<Target?, Color?>(null, null);
+			return new KeyValuePair<Target, Color>[0];
 		}
 	}
 

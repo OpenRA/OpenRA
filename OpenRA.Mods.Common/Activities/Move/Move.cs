@@ -279,9 +279,9 @@ namespace OpenRA.Mods.Common.Activities
 			base.Cancel(self);
 		}
 
-		public override KeyValuePair<Target?, Color?> GetTargets(Actor self)
+		public override IEnumerable<KeyValuePair<Target, Color>> GetTargets(Actor self)
 		{
-     return new KeyValuePair<Target?, Color?>(Target.FromCell(self.World, this.destination.Value), Color.Green);
+			return new[] { new KeyValuePair<Target, Color>(Target.FromCell(self.World, this.destination.Value), Color.Green) };
 		}
 
 		public abstract class MovePart : Activity
@@ -392,11 +392,6 @@ namespace OpenRA.Mods.Common.Activities
 			}
 
 			protected abstract MovePart OnComplete(Actor self, Mobile mobile, Move parent);
-
-			public override KeyValuePair<Target?, Color?> GetTargets(Actor self)
-			{
-				return Move.GetTargets(self);
-			}
 		}
 
 		class MoveFirstHalf : MovePart

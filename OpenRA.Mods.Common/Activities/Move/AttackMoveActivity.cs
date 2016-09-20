@@ -55,12 +55,12 @@ namespace OpenRA.Mods.Common.Activities
 			base.Cancel(self);
 		}
 
-		public override KeyValuePair<Target?, Color?> GetTargets(Actor self)
+		public override IEnumerable<KeyValuePair<Target, Color>> GetTargets(Actor self)
 		{
 			if (inner != null)
 				return inner.GetTargets(self);
 
-			return new KeyValuePair<Target?, Color?>(null, null);
+			return new KeyValuePair<Target, Color>[0];
 		}
 	}
 }

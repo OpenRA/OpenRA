@@ -65,9 +65,9 @@ namespace OpenRA.Mods.Common.Traits.Render
 			var activity = self.GetCurrentActivity();
 			if (activity != null)
 			{
-				Target target = (Target)activity.GetTargets(self).Key;
 				yield return self.CenterPosition;
-				yield return target.CenterPosition;
+				foreach (var target in activity.GetTargets(self))
+					yield return target.Key.CenterPosition;
 			}
 		}
 
