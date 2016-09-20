@@ -85,9 +85,9 @@ namespace OpenRA.Mods.Common.Activities
 			return this;
 		}
 
-		public override KeyValuePair<Target?, Color?> GetTargets(Actor self)
+		public override IEnumerable<KeyValuePair<Target, Color>> GetTargets(Actor self)
 		{
-			return new KeyValuePair<Target?, Color?>(target, Color.Green);
+			return new[] { new KeyValuePair<Target, Color>(target, Color.Green) };
 		}
 	}
 

@@ -88,9 +88,9 @@ namespace OpenRA.Mods.Common.Activities
 			return base.Cancel(self);
 		}
 
-		public override KeyValuePair<Target?, Color?> GetTargets(Actor self)
+		public override IEnumerable<KeyValuePair<Target, Color>> GetTargets(Actor self)
 		{
-			return new KeyValuePair<Target?, Color?>(Target.FromActor(Refinery), Color.Green);
+			return new[] { new KeyValuePair<Target, Color>(Target.FromActor(Refinery), Color.Green) };
 		}
 
 		public abstract Activity OnStateDock(Actor self);

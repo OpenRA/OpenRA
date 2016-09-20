@@ -153,12 +153,12 @@ namespace OpenRA.Mods.Common.Activities
 				return pathFinder.FindBidiPath(fromSrc, fromDest);
 		}
 
-		public override KeyValuePair<Target?, Color?> GetTargets(Actor self)
+		public override IEnumerable<KeyValuePair<Target, Color>> GetTargets(Actor self)
 		{
 			if (inner != null)
 				return inner.GetTargets(self);
 
-			return new KeyValuePair<Target?, Color?>(null, null);
+			return new KeyValuePair<Target, Color>[0];
 		}
 
 		public override bool Cancel(Actor self, bool keepQueue = false)
