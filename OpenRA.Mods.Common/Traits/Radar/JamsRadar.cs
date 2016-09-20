@@ -14,11 +14,24 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits.Radar
 {
 	[Desc("When an actor with this trait is in range of an actor with ProvidesRadar, it will temporarily disable the radar minimap for the enemy player.")]
-	public class JamsRadarInfo : TraitInfo<JamsRadar>
+	public class JamsRadarInfo : ITraitInfo
 	{
 		[Desc("Range for jamming.")]
 		public readonly WDist Range = WDist.Zero;
+
+		[Desc("Which diplomatic stances are affected.")]
+		public readonly Stance Stances = Stance.Enemy | Stance.Neutral;
+
+		public object Create(ActorInitializer init) { return new JamsRadar(this); }
 	}
 
-	public class JamsRadar { }
+	public class JamsRadar
+	{
+		public readonly JamsRadarInfo Info;
+
+		public JamsRadar(JamsRadarInfo info)
+		{
+			Info = info;
+		}
+	}
 }

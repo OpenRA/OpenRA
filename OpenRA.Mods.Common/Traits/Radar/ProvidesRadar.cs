@@ -28,9 +28,8 @@ namespace OpenRA.Mods.Common.Traits.Radar
 			// Check if powered
 			if (self.IsDisabled()) return false;
 
-			return self.World.ActorsWithTrait<JamsRadar>().All(a => a.Actor.Owner.Stances[self.Owner] == Stance.Ally
-				|| (self.CenterPosition - a.Actor.CenterPosition).HorizontalLengthSquared
-					> a.Actor.Info.TraitInfo<JamsRadarInfo>().Range.LengthSquared);
+			return self.World.ActorsWithTrait<JamsRadar>().All(a => !a.Trait.Info.Stances.HasStance(a.Actor.Owner.Stances[self.Owner])
+				|| (self.CenterPosition - a.Actor.CenterPosition).HorizontalLengthSquared > a.Trait.Info.Range.LengthSquared);
 		}
 	}
 }
