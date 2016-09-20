@@ -96,7 +96,7 @@ namespace OpenRA
 
 		// More accurate replacement for Environment.TickCount
 		static Stopwatch stopwatch = Stopwatch.StartNew();
-		public static int RunTime { get { return (int)stopwatch.ElapsedMilliseconds; } }
+		public static long RunTime { get { return stopwatch.ElapsedMilliseconds; } }
 
 		public static int RenderFrame = 0;
 		public static int NetFrameNumber { get { return OrderManager.NetFrameNumber; } }
@@ -736,7 +736,7 @@ namespace OpenRA
 					}
 				}
 				else
-					Thread.Sleep(nextUpdate - now);
+					Thread.Sleep((int)(nextUpdate - now));
 			}
 		}
 

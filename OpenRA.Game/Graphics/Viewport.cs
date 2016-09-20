@@ -80,7 +80,7 @@ namespace OpenRA.Graphics
 			}
 		}
 
-		public static int TicksSinceLastMove = 0;
+		public static long TicksSinceLastMove = 0;
 		public static int2 LastMousePos;
 
 		float ClosestTo(float[] collection, float target)

@@ -124,7 +124,7 @@ namespace OpenRA.Mods.Common.Widgets
 			tooltipContainer.Value.RemoveTooltip();
 		}
 
-		int lastScrollTime = 0;
+		long lastScrollTime = 0;
 		public override void Draw()
 		{
 			if (IsJoystickScrolling)

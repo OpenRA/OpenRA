@@ -39,7 +39,7 @@ namespace OpenRA.Mods.Common.Server
 		public void GameStarted(S server) { PingMasterServer(server); }
 		public void GameEnded(S server) { PingMasterServer(server); }
 
-		int lastPing = 0;
+		long lastPing = 0;
 		bool isInitialPing = true;
 
 		volatile bool isBusy;
