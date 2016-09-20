@@ -54,9 +54,6 @@ SPY.Strong:
 		Types: MissionObjective
 	ExternalCaptures:
 		CaptureTypes: MissionObjective
-	EditorOnlyTooltip:
-		Description: RenderDebugState.OnOwnerChange will crash
-	-RenderDebugState:
 	Passenger:
 		GrantUpgrades: mobile
 
@@ -187,9 +184,6 @@ STEK:
 MCV:
 	Buildable:
 		Prerequisites: ~disabled
-	EditorOnlyTooltip:
-		Description: RenderDebugState.OnOwnerChange will crash
-	-RenderDebugState:
 
 APC:
 	Buildable:
