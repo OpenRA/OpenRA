@@ -39,6 +39,23 @@ namespace OpenRA.Mods.Common.Projectiles
 		[Desc("Color of the beam.")]
 		public readonly Color Color = Color.Red;
 
+		[Desc("Draw a second beam (for 'glow' effect).")]
+		public readonly bool SecondaryBeam = false;
+
+		[Desc("The width of the zap.")]
+		public readonly WDist SecondaryBeamWidth = new WDist(86);
+
+		[Desc("The shape of the beam.  Accepts values Cylindrical or Flat.")]
+		public readonly BeamRenderableShape SecondaryBeamShape = BeamRenderableShape.Cylindrical;
+
+		[Desc("Equivalent to sequence ZOffset. Controls Z sorting.")]
+		public readonly int SecondaryBeamZOffset = 0;
+
+		public readonly bool SecondaryBeamUsePlayerColor = false;
+
+		[Desc("Color of the secondary beam.")]
+		public readonly Color SecondaryBeamColor = Color.Red;
+
 		[Desc("Impact animation.")]
 		public readonly string HitAnim = null;
 
@@ -59,8 +76,9 @@ namespace OpenRA.Mods.Common.Projectiles
 		readonly ProjectileArgs args;
 		readonly LaserZapInfo info;
 		readonly Animation hitanim;
+		readonly Color color;
+		readonly Color secondaryColor;
 		int ticks = 0;
-		Color color;
 		bool doneDamage;
 		bool animationComplete;
 		WPos target;
@@ -70,6 +88,7 @@ namespace OpenRA.Mods.Common.Projectiles
 			this.args = args;
 			this.info = info;
 			this.color = color;
+			secondaryColor = info.SecondaryBeamUsePlayerColor ? args.SourceActor.Owner.Color.RGB : info.SecondaryBeamColor;
 			target = args.PassiveTarget;
 
 			if (!string.IsNullOrEmpty(info.HitAnim))
@@ -108,6 +127,13 @@ namespace OpenRA.Mods.Common.Projectiles
 			{
 				var rc = Color.FromArgb((info.Duration - ticks) * color.A / info.Duration, color);
 				yield return new BeamRenderable(args.Source, info.ZOffset, target - args.Source, info.Shape, info.Width, rc);
+
+				if (info.SecondaryBeam)
+				{
+					var src = Color.FromArgb((info.Duration - ticks) * secondaryColor.A / info.Duration, secondaryColor);
+					yield return new BeamRenderable(args.Source, info.SecondaryBeamZOffset, target - args.Source,
+						info.SecondaryBeamShape, info.SecondaryBeamWidth, src);
+				}
 			}
 
 			if (hitanim != null)
