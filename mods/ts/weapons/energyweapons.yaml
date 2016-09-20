@@ -180,8 +180,14 @@ ObeliskLaserFire:
 	Range: 10c512
 	Report: obelray1.aud
 	Projectile: LaserZap
-		Width: 85
+		Width: 72
+		Duration: 15
 		ZOffset: 2047
+		Color: FF000080
+		SecondaryBeam: true
+		SecondaryBeamWidth: 180
+		SecondaryBeamZOffset: 2047
+		SecondaryBeamColor: FF000040
 	Warhead@1Dam: SpreadDamage
 		Spread: 42
 		Damage: 250
@@ -192,10 +198,14 @@ TurretLaserFire:
 	Range: 5c512
 	Report: lastur1.aud
 	Projectile: LaserZap
-		Width: 50
-		Duration: 5
+		Width: 36
+		Duration: 8
 		ZOffset: 2047
-		Color: FF000045
+		Color: FF000080
+		SecondaryBeam: true
+		SecondaryBeamWidth: 144
+		SecondaryBeamZOffset: 2047
+		SecondaryBeamColor: FF000030
 	Warhead@1Dam: SpreadDamage
 		Spread: 42
 		Damage: 30
