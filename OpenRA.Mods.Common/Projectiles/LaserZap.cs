@@ -16,6 +16,7 @@ using OpenRA.GameRules;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Effects;
 using OpenRA.Mods.Common.Graphics;
+using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Projectiles
@@ -44,6 +45,12 @@ namespace OpenRA.Mods.Common.Projectiles
 
 		[Desc("Maximum offset at the maximum range.")]
 		public readonly WDist Inaccuracy = WDist.Zero;
+
+		[Desc("Extra search radius beyond beam width. Required to ensure affecting actors with large health radius.")]
+		public readonly WDist TargetExtraSearchRadius = new WDist(1536);
+
+		[Desc("Beam can be blocked.")]
+		public readonly bool Blockable = false;
 
 		[Desc("Draw a second beam (for 'glow' effect).")]
 		public readonly bool SecondaryBeam = false;
@@ -115,6 +122,14 @@ namespace OpenRA.Mods.Common.Projectiles
 			// Beam tracks target
 			if (info.TracksTarget && args.GuidedTarget.IsValidFor(args.SourceActor))
 				target = args.GuidedTarget.CenterPosition;
+
+			// Check for blocking actors
+			WPos blockedPos;
+			if (info.Blockable && BlocksProjectiles.AnyBlockingActorsBetween(world, source, target,
+				info.Width, info.TargetExtraSearchRadius, out blockedPos))
+			{
+				target = blockedPos;
+			}
 
 			if (!doneDamage)
 			{
