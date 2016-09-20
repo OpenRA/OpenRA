@@ -28,20 +28,11 @@ namespace OpenRA.Mods.Common.Traits
 	public class DrawLineToTarget : IRenderAboveShroudWhenSelected, INotifySelected
 	{
 		readonly DrawLineToTargetInfo info;
-		Color c;
 		int lifetime;
 
 		public DrawLineToTarget(Actor self, DrawLineToTargetInfo info)
 		{
 			this.info = info;
-		}
-
-		public void SetTarget(Actor self, Color c, bool display)
-		{
-			this.c = c;
-
-			if (display)
-				lifetime = info.Delay;
 		}
 
 		void INotifySelected.Selected(Actor a)
@@ -56,7 +47,7 @@ namespace OpenRA.Mods.Common.Traits
 		IEnumerable<IRenderable> IRenderAboveShroudWhenSelected.RenderAboveShroud(Actor self, WorldRenderer wr)
 		{
 			var force = Game.GetModifierKeys().HasModifier(Modifiers.Alt);
-			lifetime = 1; ////How do I handle the lifetime now?
+			lifetime = 10; ////How do I handle the lifetime now?
 
 			if ((lifetime <= 0 || --lifetime <= 0) && !force)
 				return new IRenderable[0];
@@ -72,7 +63,10 @@ namespace OpenRA.Mods.Common.Traits
 			var validTargets = new List<WPos>();
 			validTargets.Add(self.CenterPosition);
 
+			Color color = Color.Gray;
+
 			var activityIterator = current_activity;
+
 			while (activityIterator != null)
 			{
 				if (activityIterator is OpenRA.Mods.Common.Activities.Move.MovePart)
@@ -82,15 +76,16 @@ namespace OpenRA.Mods.Common.Traits
 				{
 					Target target = pair.Key;
 					if (!activityIterator.IsCanceled && target.Type != TargetType.Invalid)
+					{
 						validTargets.Add(target.CenterPosition);
+						color = pair.Value;
+					}
 				}
 
 				activityIterator = activityIterator.NextActivity;
 			}
 
-			c = Color.Green; ////How do I handle the colors now?
-
-			return new[] { (IRenderable)new TargetLineRenderable(validTargets, c) };
+			return new[] { (IRenderable)new TargetLineRenderable(validTargets, color) };
 		}
 	}
 }
