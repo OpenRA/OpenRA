@@ -19,15 +19,22 @@ namespace OpenRA.Mods.Common.Activities
 	public class Repair : Activity
 	{
 		readonly RepairsUnitsInfo repairsUnits;
-		readonly Actor host;
+		readonly Target host;
+		readonly WDist closeEnough;
+
 		int remainingTicks;
 		Health health;
 		bool played = false;
 
-		public Repair(Actor host)
+		public Repair(Actor self, Actor host)
+			: this(self, host, WDist.Zero) { }
+
+		public Repair(Actor self, Actor host, WDist closeEnough)
 		{
-			this.host = host;
+			this.host = Target.FromActor(host);
+			this.closeEnough = closeEnough;
 			repairsUnits = host.Info.TraitInfo<RepairsUnitsInfo>();
+			health = self.TraitOrDefault<Health>();
 		}
 
 		public override Activity Tick(Actor self)
@@ -40,18 +47,17 @@ namespace OpenRA.Mods.Common.Activities
 				return this;
 			}
 
-			if (host == null || !host.IsInWorld)
+			if (host.Type == TargetType.Invalid || health == null)
 				return NextActivity;
 
-			health = self.TraitOrDefault<Health>();
-			if (health == null)
+			if (closeEnough.LengthSquared > 0 && !host.IsInRange(self.CenterPosition, closeEnough))
 				return NextActivity;
 
 			if (health.DamageState == DamageState.Undamaged)
 			{
-				if (host.Owner != self.Owner)
+				if (host.Actor.Owner != self.Owner)
 				{
-					var exp = host.Owner.PlayerActor.TraitOrDefault<PlayerExperience>();
+					var exp = host.Actor.Owner.PlayerActor.TraitOrDefault<PlayerExperience>();
 					if (exp != null)
 						exp.GiveExperience(repairsUnits.PlayerExperience);
 				}
@@ -80,8 +86,8 @@ namespace OpenRA.Mods.Common.Activities
 
 				self.InflictDamage(self, new Damage(-hpToRepair));
 
-				foreach (var depot in host.TraitsImplementing<INotifyRepair>())
-					depot.Repairing(host, self);
+				foreach (var depot in host.Actor.TraitsImplementing<INotifyRepair>())
+					depot.Repairing(host.Actor, self);
 
 				remainingTicks = repairsUnits.Interval;
 			}
