@@ -69,7 +69,17 @@ namespace OpenRA.Mods.Common.Traits.Render
 			Anim.PlayRepeating(info.Sequence);
 		}
 
-		public virtual bool ShouldRender(Actor self) { return true; }
+		protected virtual bool ShouldRender(Actor self)
+		{
+			if (self.World.RenderPlayer != null)
+			{
+				var stance = self.Owner.Stances[self.World.RenderPlayer];
+				if (!Info.ValidStances.HasStance(stance))
+					return false;
+			}
+
+			return true;
+		}
 
 		IEnumerable<IRenderable> IRenderAboveShroud.RenderAboveShroud(Actor self, WorldRenderer wr)
 		{
@@ -85,13 +95,6 @@ namespace OpenRA.Mods.Common.Traits.Render
 		{
 			if (IsTraitDisabled || self.IsDead || !self.IsInWorld || Anim == null)
 				return Enumerable.Empty<IRenderable>();
-
-			if (self.World.RenderPlayer != null)
-			{
-				var stance = self.Owner.Stances[self.World.RenderPlayer];
-				if (!Info.ValidStances.HasStance(stance))
-					return Enumerable.Empty<IRenderable>();
-			}
 
 			if (!ShouldRender(self) || self.World.FogObscures(self))
 				return Enumerable.Empty<IRenderable>();
