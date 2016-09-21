@@ -255,6 +255,7 @@ pips:
 		Length: *
 	groups: pdigits
 		Length: *
+		Offset: 9, 5
 	pip-hazmat: pip-hazmat
 		Length: *
 
