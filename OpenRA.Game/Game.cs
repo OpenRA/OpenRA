@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -71,9 +72,8 @@ namespace OpenRA
 
 		static string TimestampedFilename(bool includemilliseconds = false)
 		{
-			return includemilliseconds
-			? DateTime.UtcNow.ToString("OpenRA-yyyy-MM-ddTHHmmssfffZ")
-			: DateTime.UtcNow.ToString("OpenRA-yyyy-MM-ddTHHmmssZ");
+			var format = includemilliseconds ? "yyyy-MM-ddTHHmmssfffZ" : "yyyy-MM-ddTHHmmssZ";
+			return "OpenRA-" + DateTime.UtcNow.ToString(format, CultureInfo.InvariantCulture);
 		}
 
 		static void JoinInner(OrderManager om)

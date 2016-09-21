@@ -11,6 +11,7 @@
 
 using System;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -48,7 +49,7 @@ namespace OpenRA
 
 		static void FatalError(Exception ex)
 		{
-			var exceptionName = "exception-" + DateTime.UtcNow.ToString("yyyy-MM-ddTHHmmssZ") + ".log";
+			var exceptionName = "exception-" + DateTime.UtcNow.ToString("yyyy-MM-ddTHHmmssZ", CultureInfo.InvariantCulture) + ".log";
 			Log.AddChannel("exception", exceptionName);
 
 			if (Game.ModData != null)
