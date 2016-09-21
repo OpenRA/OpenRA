@@ -150,9 +150,10 @@ namespace OpenRA
 					foreach (var kv in yaml)
 						maps[kv.Key].UpdateRemoteSearch(MapStatus.DownloadAvailable, kv.Value, mapDetailsReceived);
 				}
-				catch
+				catch (Exception e)
 				{
 					Log.Write("debug", "Can't parse remote map search data:\n{0}", data);
+					Log.Write("debug", "Exception: {0}", e);
 					if (queryFailed != null)
 						queryFailed();
 				}

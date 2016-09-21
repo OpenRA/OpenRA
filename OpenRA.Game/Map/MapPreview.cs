@@ -367,7 +367,15 @@ namespace OpenRA
 						spawns[j / 2] = new CPos(r.spawnpoints[j], r.spawnpoints[j + 1]);
 					newData.SpawnPoints = spawns;
 					newData.GridType = r.map_grid_type;
-					newData.Preview = new Bitmap(new MemoryStream(Convert.FromBase64String(r.minimap)));
+					try
+					{
+						newData.Preview = new Bitmap(new MemoryStream(Convert.FromBase64String(r.minimap)));
+					}
+					catch (Exception e)
+					{
+						Log.Write("debug", "Failed parsing mapserver minimap response: {0}", e);
+						newData.Preview = null;
+					}
 
 					var playersString = Encoding.UTF8.GetString(Convert.FromBase64String(r.players_block));
 					newData.Players = new MapPlayers(MiniYaml.FromString(playersString));
@@ -389,7 +397,10 @@ namespace OpenRA
 						return Pair.New(rules, flagged);
 					});
 				}
-				catch (Exception) { }
+				catch (Exception e)
+				{
+					Log.Write("debug", "Failed parsing mapserver response: {0}", e);
+				}
 
 				// Commit updated data before running the callbacks
 				innerData = newData;
