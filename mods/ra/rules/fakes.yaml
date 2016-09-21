@@ -1,5 +1,6 @@
 FPWR:
 	Inherits: ^FakeBuilding
+	Inherits@infiltrate: ^InfiltratableFake
 	Buildable:
 		BuildPaletteOrder: 870
 		Queue: Defense
@@ -26,6 +27,7 @@ FPWR:
 
 SYRF:
 	Inherits: ^FakeBuilding
+	Inherits@infiltrate: ^InfiltratableFake
 	Buildable:
 		BuildPaletteOrder: 890
 		Queue: Defense
@@ -38,7 +40,7 @@ SYRF:
 		GenericVisibility: Enemy
 		GenericStancePrefix: False
 	Targetable:
-		TargetTypes: Ground, Water, Structure
+		TargetTypes: Ground, Water, Structure, SpyInfiltrate
 	Building:
 		Footprint: xxx xxx xxx
 		Dimensions: 3,3
@@ -57,8 +59,9 @@ SYRF:
 
 SPEF:
 	Inherits: ^FakeBuilding
+	Inherits@infiltrate: ^InfiltratableFake
 	Targetable:
-		TargetTypes: Ground, Water, Structure
+		TargetTypes: Ground, Water, Structure, SpyInfiltrate
 	Buildable:
 		BuildPaletteOrder: 890
 		Queue: Defense
@@ -88,6 +91,7 @@ SPEF:
 
 WEAF:
 	Inherits: ^FakeBuilding
+	Inherits@infiltrate: ^InfiltratableFake
 	Buildable:
 		BuildPaletteOrder: 920
 		Prerequisites: ~structures.france, ~techlevel.medium
@@ -116,6 +120,7 @@ WEAF:
 
 DOMF:
 	Inherits: ^FakeBuilding
+	Inherits@infiltrate: ^InfiltratableFake
 	Tooltip:
 		Icon: fake-icon
 		Name: Fake Radar Dome
@@ -171,6 +176,7 @@ FIXF:
 
 FAPW:
 	Inherits: ^FakeBuilding
+	Inherits@infiltrate: ^InfiltratableFake
 	Buildable:
 		BuildPaletteOrder: 950
 		Queue: Defense
