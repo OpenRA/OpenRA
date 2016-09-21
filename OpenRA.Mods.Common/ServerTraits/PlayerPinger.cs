@@ -24,8 +24,8 @@ namespace OpenRA.Mods.Common.Server
 		// TickTimeout is in microseconds
 		public int TickTimeout { get { return PingInterval * 100; } }
 
-		int lastPing = 0;
-		int lastConnReport = 0;
+		long lastPing = 0;
+		long lastConnReport = 0;
 		bool isInitialPing = true;
 
 		public void Tick(S server)

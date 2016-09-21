@@ -506,8 +506,8 @@ namespace OpenRA.Server
 					break;
 				case "Pong":
 					{
-						int pingSent;
-						if (!OpenRA.Exts.TryParseIntegerInvariant(so.Data, out pingSent))
+						long pingSent;
+						if (!OpenRA.Exts.TryParseInt64Invariant(so.Data, out pingSent))
 						{
 							Log.Write("server", "Invalid order pong payload: {0}", so.Data);
 							break;
