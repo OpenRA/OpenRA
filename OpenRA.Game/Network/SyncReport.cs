@@ -92,7 +92,8 @@ namespace OpenRA.Network
 
 		internal void DumpSyncReport(int frame, IEnumerable<FrameData.ClientOrder> orders)
 		{
-			Log.AddChannel("sync", "syncreport.log");
+			var reportName = "syncreport-" + DateTime.UtcNow.ToString("yyyy-MM-ddTHHmmssZ") + ".log";
+			Log.AddChannel("sync", reportName);
 
 			foreach (var r in syncReports)
 			{

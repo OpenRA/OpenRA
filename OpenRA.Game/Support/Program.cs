@@ -48,7 +48,8 @@ namespace OpenRA
 
 		static void FatalError(Exception ex)
 		{
-			Log.AddChannel("exception", "exception.log");
+			var exceptionName = "exception-" + DateTime.UtcNow.ToString("yyyy-MM-ddTHHmmssZ") + ".log";
+			Log.AddChannel("exception", exceptionName);
 
 			if (Game.ModData != null)
 			{
