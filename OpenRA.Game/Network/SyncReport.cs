@@ -18,6 +18,7 @@ using OpenRA.Primitives;
 
 namespace OpenRA.Network
 {
+	using System.Globalization;
 	using NamesValuesPair = Pair<string[], object[]>;
 
 	class SyncReport
@@ -92,7 +93,8 @@ namespace OpenRA.Network
 
 		internal void DumpSyncReport(int frame, IEnumerable<FrameData.ClientOrder> orders)
 		{
-			Log.AddChannel("sync", "syncreport.log");
+			var reportName = "syncreport-" + DateTime.UtcNow.ToString("yyyy-MM-ddTHHmmssZ", CultureInfo.InvariantCulture) + ".log";
+			Log.AddChannel("sync", reportName);
 
 			foreach (var r in syncReports)
 			{
