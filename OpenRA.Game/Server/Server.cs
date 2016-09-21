@@ -185,17 +185,21 @@ namespace OpenRA.Server
 					foreach (var s in checkRead)
 					{
 						if (s == listener.Server)
+						{
 							AcceptConnection();
-						else if (PreConns.Count > 0)
-						{
-							var p = PreConns.SingleOrDefault(c => c.Socket == s);
-							if (p != null) p.ReadData(this);
+							continue;
 						}
-						else if (Conns.Count > 0)
+
+						var preConn = PreConns.SingleOrDefault(c => c.Socket == s);
+						if (preConn != null)
 						{
-							var conn = Conns.SingleOrDefault(c => c.Socket == s);
-							if (conn != null) conn.ReadData(this);
+							preConn.ReadData(this);
+							continue;
 						}
+
+						var conn = Conns.SingleOrDefault(c => c.Socket == s);
+						if (conn != null)
+							conn.ReadData(this);
 					}
 
 					foreach (var t in serverTraits.WithInterface<ITick>())
