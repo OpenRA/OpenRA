@@ -12,6 +12,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.Linq;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Pathfinder;
@@ -278,18 +279,14 @@ namespace OpenRA.Mods.Common.Activities
 			base.Cancel(self);
 		}
 
-		public override IEnumerable<Target> GetTargets(Actor self)
+		public override IEnumerable<KeyValuePair<Target, Color>> GetTargets(Actor self)
 		{
-			if (path != null)
-				return Enumerable.Reverse(path).Select(c => Target.FromCell(self.World, c));
-			if (destination != null)
-				return new Target[] { Target.FromCell(self.World, destination.Value) };
-			return Target.None;
+			return new[] { new KeyValuePair<Target, Color>(Target.FromCell(self.World, this.destination.Value), Color.Green) };
 		}
 
-		abstract class MovePart : Activity
+		public abstract class MovePart : Activity
 		{
-			protected readonly Move Move;
+			public readonly Move Move;
 			protected readonly WPos From, To;
 			protected readonly int FromFacing, ToFacing;
 			protected readonly WPos ArcCenter;
@@ -395,11 +392,6 @@ namespace OpenRA.Mods.Common.Activities
 			}
 
 			protected abstract MovePart OnComplete(Actor self, Mobile mobile, Move parent);
-
-			public override IEnumerable<Target> GetTargets(Actor self)
-			{
-				return Move.GetTargets(self);
-			}
 		}
 
 		class MoveFirstHalf : MovePart

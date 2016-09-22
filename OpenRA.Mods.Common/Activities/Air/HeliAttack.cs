@@ -61,7 +61,6 @@ namespace OpenRA.Mods.Common.Activities
 				var newTarget = Target.FromCell(self.World, self.World.Map.CellContaining(target.CenterPosition));
 
 				self.CancelActivity();
-				self.SetTargetLine(newTarget, Color.Green);
 				return ActivityUtils.SequenceActivities(new HeliFly(self, newTarget));
 			}
 

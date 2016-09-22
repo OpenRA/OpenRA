@@ -83,8 +83,6 @@ namespace OpenRA.Mods.Common.Traits
 				if (hut.BridgeDamageState == DamageState.Undamaged || hut.Repairing || hut.Bridge.IsDangling)
 					return;
 
-				self.SetTargetLine(Target.FromOrder(self.World, order), Color.Yellow);
-
 				self.CancelActivity();
 				self.QueueActivity(new RepairBridge(self, order.TargetActor, info.EnterBehaviour, info.RepairNotification));
 			}

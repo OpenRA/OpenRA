@@ -80,8 +80,6 @@ namespace OpenRA.Mods.Common.Traits
 				self.CancelActivity();
 				self.QueueActivity(movement.MoveWithinRange(target, info.CloseEnough));
 				self.QueueActivity(new Repair(order.TargetActor));
-
-				self.SetTargetLine(target, Color.Green, false);
 			}
 		}
 	}

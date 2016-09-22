@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
@@ -87,9 +88,9 @@ namespace OpenRA.Mods.Common.Activities
 			base.Cancel(self);
 		}
 
-		public override IEnumerable<Target> GetTargets(Actor self)
+		public override IEnumerable<KeyValuePair<Target, Color>> GetTargets(Actor self)
 		{
-			yield return Target.FromActor(Refinery);
+			return new[] { new KeyValuePair<Target, Color>(Target.FromActor(Refinery), Color.Green) };
 		}
 
 		public abstract Activity OnStateDock(Actor self);

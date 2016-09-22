@@ -11,7 +11,9 @@
 
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using OpenRA.Graphics;
+using OpenRA.Mods.Common.Activities;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -23,34 +25,14 @@ namespace OpenRA.Mods.Common.Traits
 		public virtual object Create(ActorInitializer init) { return new DrawLineToTarget(init.Self, this); }
 	}
 
-	public class DrawLineToTarget : IRenderAboveShroudWhenSelected, INotifySelected, INotifyBecomingIdle
+	public class DrawLineToTarget : IRenderAboveShroudWhenSelected, INotifySelected
 	{
 		readonly DrawLineToTargetInfo info;
-		List<Target> targets;
-		Color c;
 		int lifetime;
 
 		public DrawLineToTarget(Actor self, DrawLineToTargetInfo info)
 		{
 			this.info = info;
-		}
-
-		public void SetTarget(Actor self, Target target, Color c, bool display)
-		{
-			targets = new List<Target> { target };
-			this.c = c;
-
-			if (display)
-				lifetime = info.Delay;
-		}
-
-		public void SetTargets(Actor self, List<Target> targets, Color c, bool display)
-		{
-			this.targets = targets;
-			this.c = c;
-
-			if (display)
-				lifetime = info.Delay;
 		}
 
 		void INotifySelected.Selected(Actor a)
@@ -65,77 +47,45 @@ namespace OpenRA.Mods.Common.Traits
 		IEnumerable<IRenderable> IRenderAboveShroudWhenSelected.RenderAboveShroud(Actor self, WorldRenderer wr)
 		{
 			var force = Game.GetModifierKeys().HasModifier(Modifiers.Alt);
+			lifetime = 10; ////How do I handle the lifetime now?
+
 			if ((lifetime <= 0 || --lifetime <= 0) && !force)
-				yield break;
+				return new IRenderable[0];
 
 			if (!(force || Game.Settings.Game.DrawTargetLine))
-				yield break;
+				return new IRenderable[0];
 
-			if (targets == null || targets.Count == 0)
-				yield break;
+			var current_activity = self.GetCurrentActivity();
 
-			foreach (var target in targets)
+			if (current_activity == null)
+				return new IRenderable[0];
+
+			var validTargets = new List<WPos>();
+			validTargets.Add(self.CenterPosition);
+
+			Color color = Color.Gray;
+
+			var activityIterator = current_activity;
+
+			while (activityIterator != null)
 			{
-				if (target.Type == TargetType.Invalid)
-					continue;
+				if (activityIterator is OpenRA.Mods.Common.Activities.Move.MovePart)
+					activityIterator = ((OpenRA.Mods.Common.Activities.Move.MovePart)activityIterator).Move;
 
-				yield return new TargetLineRenderable(new[] { self.CenterPosition, target.CenterPosition }, c);
+				foreach (var pair in activityIterator.GetTargets(self))
+				{
+					Target target = pair.Key;
+					if (!activityIterator.IsCanceled && target.Type != TargetType.Invalid)
+					{
+						validTargets.Add(target.CenterPosition);
+						color = pair.Value;
+					}
+				}
+
+				activityIterator = activityIterator.NextActivity;
 			}
-		}
 
-		void INotifyBecomingIdle.OnBecomingIdle(Actor a)
-		{
-			if (a.IsIdle)
-				targets = null;
-		}
-	}
-
-	public static class LineTargetExts
-	{
-		public static void SetTargetLines(this Actor self, List<Target> targets, Color color)
-		{
-			var line = self.TraitOrDefault<DrawLineToTarget>();
-			if (line != null)
-				self.World.AddFrameEndTask(w => line.SetTargets(self, targets, color, false));
-		}
-
-		public static void SetTargetLine(this Actor self, Target target, Color color)
-		{
-			self.SetTargetLine(target, color, true);
-		}
-
-		public static void SetTargetLine(this Actor self, Target target, Color color, bool display)
-		{
-			if (self.Owner != self.World.LocalPlayer)
-				return;
-
-			self.World.AddFrameEndTask(w =>
-			{
-				if (self.Disposed)
-					return;
-
-				var line = self.TraitOrDefault<DrawLineToTarget>();
-				if (line != null)
-					line.SetTarget(self, target, color, display);
-			});
-		}
-
-		public static void SetTargetLine(this Actor self, FrozenActor target, Color color, bool display)
-		{
-			if (self.Owner != self.World.LocalPlayer)
-				return;
-
-			self.World.AddFrameEndTask(w =>
-			{
-				if (self.Disposed)
-					return;
-
-				target.Flash();
-
-				var line = self.TraitOrDefault<DrawLineToTarget>();
-				if (line != null)
-					line.SetTarget(self, Target.FromPos(target.CenterPosition), color, display);
-			});
+			return new[] { (IRenderable)new TargetLineRenderable(validTargets, color) };
 		}
 	}
 }

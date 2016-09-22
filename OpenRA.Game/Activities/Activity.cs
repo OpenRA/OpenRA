@@ -10,6 +10,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using OpenRA.Traits;
 
@@ -18,7 +19,7 @@ namespace OpenRA.Activities
 	public abstract class Activity
 	{
 		public Activity NextActivity { get; set; }
-		protected bool IsCanceled { get; private set; }
+		public bool IsCanceled { get; private set; }
 
 		public abstract Activity Tick(Actor self);
 
@@ -36,14 +37,15 @@ namespace OpenRA.Activities
 				NextActivity = activity;
 		}
 
-		public virtual IEnumerable<Target> GetTargets(Actor self)
+		public virtual IEnumerable<KeyValuePair<Target, Color>> GetTargets(Actor self)
 		{
-			yield break;
+			return new KeyValuePair<Target, Color>[0];
 		}
 	}
 
 	public static class ActivityExts
 	{
+/*
 		public static IEnumerable<Target> GetTargetQueue(this Actor self)
 		{
 			return self.GetCurrentActivity()
@@ -51,5 +53,6 @@ namespace OpenRA.Activities
 				.TakeWhile(u => u != null)
 				.SelectMany(u => u.GetTargets(self));
 		}
+*/
 	}
 }

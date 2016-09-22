@@ -90,7 +90,6 @@ namespace OpenRA.Mods.Common.Activities
 				if (inner != null)
 					inner.Cancel(self);
 
-				self.SetTargetLine(Target.FromCell(self.World, targetPosition), Color.Green);
 				return ActivityUtils.RunActivity(self, new AttackMoveActivity(self, mobile.MoveTo(targetPosition, 0)));
 			}
 
@@ -153,12 +152,12 @@ namespace OpenRA.Mods.Common.Activities
 				return pathFinder.FindBidiPath(fromSrc, fromDest);
 		}
 
-		public override IEnumerable<Target> GetTargets(Actor self)
+		public override IEnumerable<KeyValuePair<Target, Color>> GetTargets(Actor self)
 		{
 			if (inner != null)
 				return inner.GetTargets(self);
 
-			return Target.None;
+			return new KeyValuePair<Target, Color>[0];
 		}
 
 		public override void Cancel(Actor self)

@@ -500,21 +500,14 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 			}
 
-			if (!queued) self.CancelActivity();
-
 			TicksBeforePathing = AverageTicksBeforePathing + self.World.SharedRandom.Next(-SpreadTicksBeforePathing, SpreadTicksBeforePathing);
 
-			self.QueueActivity(new Move(self, currentLocation, WDist.FromCells(8)));
-
-			self.SetTargetLine(Target.FromCell(self.World, currentLocation), Color.Green);
+			self.QueueActivity(queued, new Move(self, currentLocation, WDist.FromCells(8)));
 		}
 
 		protected void PerformMove(Actor self, CPos targetLocation, bool queued)
 		{
-			if (queued)
-				self.QueueActivity(new CallFunc(() => PerformMoveInner(self, targetLocation, true)));
-			else
-				PerformMoveInner(self, targetLocation, false);
+			PerformMoveInner(self, targetLocation, queued);
 		}
 
 		public void ResolveOrder(Actor self, Order order)
@@ -682,7 +675,6 @@ namespace OpenRA.Mods.Common.Traits
 			if (moveTo.HasValue)
 			{
 				self.CancelActivity();
-				self.SetTargetLine(Target.FromCell(self.World, moveTo.Value), Color.Green, false);
 				self.QueueActivity(new Move(self, moveTo.Value, WDist.Zero));
 
 				Log.Write("debug", "OnNudge #{0} from {1} to {2}",
