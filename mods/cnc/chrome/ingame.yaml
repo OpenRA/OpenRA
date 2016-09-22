@@ -40,6 +40,9 @@ Container@INGAME_ROOT:
 					Width: WINDOW_RIGHT
 					Height: WINDOW_BOTTOM
 					TooltipContainer: TOOLTIP_CONTAINER
+				WorldCommand:
+					Width: WINDOW_RIGHT
+					Height: WINDOW_BOTTOM
 				Container@PLAYER_ROOT:
 		Container@MENU_ROOT:
 		TooltipContainer@TOOLTIP_CONTAINER:
@@ -232,7 +235,7 @@ Container@PLAYER_WIDGETS:
 		LogicKeyListener@CONTROLGROUP_KEYHANDLER:
 			Logic: ControlGroupLogic
 		LogicTicker@SIDEBAR_TICKER:
-		WorldCommand:
+		UnitCommand:
 			Width: WINDOW_RIGHT
 			Height: WINDOW_BOTTOM
 		Container@SUPPORT_POWERS:
