@@ -69,33 +69,20 @@ namespace OpenRA.Mods.Common.Traits.Render
 			pipImages.PlayFetchIndex(Info.GroupSequence, () => (int)group);
 
 			var bounds = self.VisualBounds;
-			var halfSize = (0.5f * pipImages.Image.Size.XY).ToInt2();
-
-			var boundsOffset = new int2(bounds.Left + bounds.Right, bounds.Top + bounds.Bottom) / 2;
-			var sizeOffset = -halfSize;
+			var boundsOffset = 0.5f * new float2(bounds.Left + bounds.Right, bounds.Top + bounds.Bottom);
 			if (Info.ReferencePoint.HasFlag(ReferencePoints.Top))
-			{
-				boundsOffset -= new int2(0, bounds.Height / 2);
-				sizeOffset += new int2(0, halfSize.Y);
-			}
-			else if (Info.ReferencePoint.HasFlag(ReferencePoints.Bottom))
-			{
-				boundsOffset += new int2(0, bounds.Height / 2);
-				sizeOffset -= new int2(0, halfSize.Y);
-			}
+				boundsOffset -= new float2(0, 0.5f * bounds.Height);
+
+			if (Info.ReferencePoint.HasFlag(ReferencePoints.Bottom))
+				boundsOffset += new float2(0, 0.5f * bounds.Height);
 
 			if (Info.ReferencePoint.HasFlag(ReferencePoints.Left))
-			{
-				boundsOffset -= new int2(bounds.Width / 2, 0);
-				sizeOffset += new int2(halfSize.X, 0);
-			}
-			else if (Info.ReferencePoint.HasFlag(ReferencePoints.Right))
-			{
-				boundsOffset += new int2(bounds.Width / 2, 0);
-				sizeOffset -= new int2(halfSize.X, 0);
-			}
+				boundsOffset -= new float2(0.5f * bounds.Width, 0);
 
-			var pxPos = wr.Viewport.WorldToViewPx(wr.ScreenPxPosition(self.CenterPosition) + boundsOffset) + sizeOffset;
+			if (Info.ReferencePoint.HasFlag(ReferencePoints.Right))
+				boundsOffset += new float2(0.5f * bounds.Width, 0);
+
+			var pxPos = wr.Viewport.WorldToViewPx(wr.ScreenPxPosition(self.CenterPosition) + boundsOffset.ToInt2()) - (0.5f * pipImages.Image.Size.XY).ToInt2();
 			yield return new UISpriteRenderable(pipImages.Image, self.CenterPosition, pxPos, 0, palette, 1f);
 		}
 	}

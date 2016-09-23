@@ -93,6 +93,7 @@ pips:
 	groups:
 		Start: 8
 		Length: 10
+		Offset: 9, 5
 	medic:
 		Start: 20
 #	ready:

@@ -124,6 +124,7 @@ pips:
 	groups: DATA.R8
 		Start: 17
 		Length: 10
+		Offset: 3, 3
 	pickup-indicator: DATA.R8
 		Start: 112
 	pip-empty: DATA.R8
