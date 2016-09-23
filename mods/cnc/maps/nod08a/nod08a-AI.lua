@@ -114,7 +114,7 @@ ProduceHarvester = function(building)
 end
 
 ProduceInfantry = function(building)
-	if building.IsDead then
+	if building.IsDead or building.Owner ~= enemy then
 		return
 	elseif not CheckForHarvester() then
 		Trigger.AfterDelay(DateTime.Seconds(10), function() ProduceInfantry(building) end)
@@ -138,7 +138,7 @@ ProduceInfantry = function(building)
 end
 
 ProduceVehicle = function(building)
-	if building.IsDead then
+	if building.IsDead or building.Owner ~= enemy then
 		return
 	elseif not CheckForHarvester() then
 		ProduceHarvester(building)
