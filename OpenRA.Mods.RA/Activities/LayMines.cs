@@ -57,7 +57,7 @@ namespace OpenRA.Mods.RA.Activities
 					new MoveAdjacentTo(self, Target.FromActor(rearmTarget)),
 					movement.MoveTo(self.World.Map.CellContaining(rearmTarget.CenterPosition), rearmTarget),
 					new Rearm(self),
-					new Repair(rearmTarget),
+					new Repair(self, rearmTarget),
 					this);
 			}
 

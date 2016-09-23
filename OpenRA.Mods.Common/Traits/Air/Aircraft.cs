@@ -341,7 +341,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (Info.RearmBuildings.Contains(name))
 				yield return new Rearm(self);
 			if (Info.RepairBuildings.Contains(name))
-				yield return new Repair(a);
+				yield return new Repair(self, a);
 		}
 
 		public void ModifyDeathActorInit(Actor self, TypeDictionary init)
