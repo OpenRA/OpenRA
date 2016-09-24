@@ -24,12 +24,14 @@ Container@OBSERVER_WIDGETS:
 			Width: 100
 			Height: 55
 			Children:
-				Label@GAME_TIMER:
+				LabelWithTooltip@GAME_TIMER:
 					Width: PARENT_RIGHT
 					Height: 30
 					Align: Center
 					Font: Title
 					Contrast: true
+					TooltipContainer: TOOLTIP_CONTAINER
+					TooltipTemplate: SIMPLE_TOOLTIP
 				Label@GAME_TIMER_STATUS:
 					Y: 32
 					Width: PARENT_RIGHT

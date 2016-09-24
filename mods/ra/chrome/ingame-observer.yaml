@@ -21,19 +21,14 @@ Container@OBSERVER_WIDGETS:
 					Height: 22
 					Background: sidebar-button-observer
 					Children:
-						Label@GAME_TIMER:
+						LabelWithTooltip@GAME_TIMER:
 							Y: 0-1
-							Width: PARENT_RIGHT - 30
+							Width: PARENT_RIGHT
 							Height: PARENT_BOTTOM
 							Align: Center
 							Font: TinyBold
-						Label@GAME_TIMER_PERCENTAGE:
-							X: PARENT_RIGHT - 40
-							Y: 0-1
-							Width: 30
-							Height: PARENT_BOTTOM
-							Align: Right
-							Font: TinyBold
+							TooltipContainer: TOOLTIP_CONTAINER
+							TooltipTemplate: SIMPLE_TOOLTIP
 				Container@TOP_BUTTONS:
 					Logic: MenuButtonsChromeLogic
 					X: 9

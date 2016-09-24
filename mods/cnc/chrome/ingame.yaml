@@ -10,25 +10,14 @@ Container@INGAME_ROOT:
 			Children:
 				LogicTicker@DISCONNECT_WATCHER:
 					Logic: DisconnectWatcherLogic
-				Container@GAME_TIMER_BLOCK:
-					Logic: GameTimerLogic
-					X: WINDOW_RIGHT/2 - WIDTH
-					Width: 100
-					Height: 55
-					Children:
-						Label@GAME_TIMER:
-							Width: PARENT_RIGHT
-							Height: 30
-							Align: Center
-							Font: Title
-							Contrast: true
-						Label@GAME_TIMER_STATUS:
-							Y: 35
-							Width: PARENT_RIGHT
-							Height: 15
-							Align: Center
-							Font: Bold
-							Contrast: true
+				Label@MISSION_TEXT:
+					X: WINDOW_RIGHT/2 - 256
+					Y: 22
+					Width: 512
+					Height: 25
+					Font: Bold
+					Align: Center
+					Contrast: true
 				StrategicProgress@STRATEGIC_PROGRESS:
 					X: WINDOW_RIGHT/2
 					Y: 40
@@ -43,17 +32,30 @@ Container@INGAME_ROOT:
 				WorldCommand:
 					Width: WINDOW_RIGHT
 					Height: WINDOW_BOTTOM
+				Container@GAME_TIMER_BLOCK:
+					Logic: GameTimerLogic
+					X: WINDOW_RIGHT/2 - WIDTH
+					Width: 100
+					Height: 55
+					Children:
+						LabelWithTooltip@GAME_TIMER:
+							Width: PARENT_RIGHT
+							Height: 30
+							Align: Center
+							Font: Title
+							Contrast: true
+							TooltipContainer: TOOLTIP_CONTAINER
+							TooltipTemplate: SIMPLE_TOOLTIP
+						Label@GAME_TIMER_STATUS:
+							Y: 35
+							Width: PARENT_RIGHT
+							Height: 15
+							Align: Center
+							Font: Bold
+							Contrast: true
 				Container@PLAYER_ROOT:
 		Container@MENU_ROOT:
 		TooltipContainer@TOOLTIP_CONTAINER:
-		Label@MISSION_TEXT:
-			X: WINDOW_RIGHT/2 - 256
-			Y: 22
-			Width: 512
-			Height: 25
-			Font: Bold
-			Align: Center
-			Contrast: true
 
 Container@PERF_WIDGETS:
 	Logic: PerfDebugLogic

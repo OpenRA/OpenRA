@@ -62,14 +62,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				status.GetText = statusText;
 			}
 
-			var percentage = widget.GetOrNull<LabelWidget>("GAME_TIMER_PERCENTAGE");
-			if (percentage != null)
+			var timerTooltip = timer as LabelWithTooltipWidget;
+			if (timerTooltip != null)
 			{
 				var connection = orderManager.Connection as ReplayConnection;
 				if (connection != null && connection.TickCount != 0)
-					percentage.GetText = () => "({0}%)".F(orderManager.NetFrameNumber * 100 / connection.TickCount);
-				else if (timer != null)
-					timer.Bounds.Width += percentage.Bounds.Width;
+					timerTooltip.GetTooltipText = () => "{0}% complete".F(orderManager.NetFrameNumber * 100 / connection.TickCount);
+				else
+					timerTooltip.GetTooltipText = null;
 			}
 		}
 	}
