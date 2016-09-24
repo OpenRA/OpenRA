@@ -146,7 +146,7 @@ namespace OpenRA.Mods.Common.Traits
 			if ((!dirty.ContainsKey(loc) || dirty[loc].Sprite == null) && !tiles.ContainsKey(loc))
 			{
 				// No smudge; create a new one
-				var st = smudges.Keys.Random(world.SharedRandom);
+				var st = smudges.Keys.Random(Game.CosmeticRandom);
 				dirty[loc] = new Smudge { Type = st, Depth = 0, Sprite = smudges[st][0] };
 			}
 			else
