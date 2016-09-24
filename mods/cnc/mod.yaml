@@ -227,22 +227,22 @@ ModContent:
 	Packages:
 		base: Base Game Files
 			TestFiles: ^Content/cnc/conquer.mix, ^Content/cnc/desert.mix, ^Content/cnc/sounds.mix, ^Content/cnc/speech.mix, ^Content/cnc/temperat.mix, ^Content/cnc/tempicnh.mix, ^Content/cnc/winter.mix
-			Sources: gdi95, gdi95-linux, nod95, nod95-linux, tfd, origin
+			Sources: gdi95, gdi95-linux, nod95, nod95-linux, tfd, tfd-installed, origin
 			Required: true
 			Download: basefiles
 		music: Base Game Music
 			TestFiles: ^Content/cnc/scores.mix
-			Sources: gdi95, gdi95-linux, nod95, nod95-linux, tfd, origin
+			Sources: gdi95, gdi95-linux, nod95, nod95-linux, tfd, tfd-installed, origin
 			Download: music
 		movies-gdi: GDI Campaign Briefings
 			TestFiles: ^Content/cnc/movies/visor.vqa, ^Content/cnc/movies/turtkill.vqa, ^Content/cnc/movies/trailer.vqa, ^Content/cnc/movies/tbrinfo3.vqa, ^Content/cnc/movies/tbrinfo2.vqa, ^Content/cnc/movies/tbrinfo1.vqa, ^Content/cnc/movies/seige.vqa, ^Content/cnc/movies/samsite.vqa, ^Content/cnc/movies/samdie.vqa, ^Content/cnc/movies/sabotage.vqa, ^Content/cnc/movies/retro.vqa, ^Content/cnc/movies/podium.vqa, ^Content/cnc/movies/planecra.vqa, ^Content/cnc/movies/pintle.vqa, ^Content/cnc/movies/paratrop.vqa, ^Content/cnc/movies/nodsweep.vqa, ^Content/cnc/movies/nodlose.vqa, ^Content/cnc/movies/nodflees.vqa, ^Content/cnc/movies/nod1.vqa, ^Content/cnc/movies/nitejump.vqa, ^Content/cnc/movies/napalm.vqa, ^Content/cnc/movies/logo.vqa, ^Content/cnc/movies/landing.vqa, ^Content/cnc/movies/intro2.vqa, ^Content/cnc/movies/hellvaly.vqa, ^Content/cnc/movies/gunboat.vqa, ^Content/cnc/movies/generic.vqa, ^Content/cnc/movies/gdilose.vqa, ^Content/cnc/movies/gdifinb.vqa, ^Content/cnc/movies/gdifina.vqa, ^Content/cnc/movies/gdiend2.vqa, ^Content/cnc/movies/gdiend1.vqa, ^Content/cnc/movies/gdi9.vqa, ^Content/cnc/movies/gdi8b.vqa, ^Content/cnc/movies/gdi8a.vqa, ^Content/cnc/movies/gdi7.vqa, ^Content/cnc/movies/gdi6.vqa, ^Content/cnc/movies/gdi5.vqa, ^Content/cnc/movies/gdi4b.vqa, ^Content/cnc/movies/gdi4a.vqa, ^Content/cnc/movies/gdi3lose.vqa, ^Content/cnc/movies/gdi3.vqa, ^Content/cnc/movies/gdi2.vqa, ^Content/cnc/movies/gdi15.vqa, ^Content/cnc/movies/gdi14.vqa, ^Content/cnc/movies/gdi13.vqa, ^Content/cnc/movies/gdi12.vqa, ^Content/cnc/movies/gdi11.vqa, ^Content/cnc/movies/gdi10.vqa, ^Content/cnc/movies/gdi1.vqa, ^Content/cnc/movies/gameover.vqa, ^Content/cnc/movies/forestkl.vqa, ^Content/cnc/movies/flyy.vqa, ^Content/cnc/movies/flag.vqa, ^Content/cnc/movies/dino.vqa, ^Content/cnc/movies/desolat.vqa, ^Content/cnc/movies/consyard.vqa, ^Content/cnc/movies/cc2tease.vqa, ^Content/cnc/movies/burdet2.vqa, ^Content/cnc/movies/burdet1.vqa, ^Content/cnc/movies/bombflee.vqa, ^Content/cnc/movies/bombaway.vqa, ^Content/cnc/movies/bkground.vqa, ^Content/cnc/movies/bcanyon.vqa, ^Content/cnc/movies/banner.vqa
-			Sources: gdi95, gdi95-linux, tfd, origin
+			Sources: gdi95, gdi95-linux, tfd, tfd-installed, origin
 		movies-nod: Nod Campaign Briefings
 			TestFiles: ^Content/cnc/movies/visor.vqa, ^Content/cnc/movies/trtkil_d.vqa, ^Content/cnc/movies/trailer.vqa, ^Content/cnc/movies/tiberfx.vqa, ^Content/cnc/movies/tankkill.vqa, ^Content/cnc/movies/tankgo.vqa, ^Content/cnc/movies/sundial.vqa, ^Content/cnc/movies/stealth.vqa, ^Content/cnc/movies/spycrash.vqa, ^Content/cnc/movies/sethpre.vqa, ^Content/cnc/movies/seige.vqa, ^Content/cnc/movies/samsite.vqa, ^Content/cnc/movies/retro.vqa, ^Content/cnc/movies/refint.vqa, ^Content/cnc/movies/obel.vqa, ^Content/cnc/movies/nuke.vqa, ^Content/cnc/movies/nodlose.vqa, ^Content/cnc/movies/nodfinal.vqa, ^Content/cnc/movies/nodend4.vqa, ^Content/cnc/movies/nodend3.vqa, ^Content/cnc/movies/nodend2.vqa, ^Content/cnc/movies/nodend1.vqa, ^Content/cnc/movies/nod9.vqa, ^Content/cnc/movies/nod8.vqa, ^Content/cnc/movies/nod7b.vqa, ^Content/cnc/movies/nod7a.vqa, ^Content/cnc/movies/nod6.vqa, ^Content/cnc/movies/nod5.vqa, ^Content/cnc/movies/nod4b.vqa, ^Content/cnc/movies/nod4a.vqa, ^Content/cnc/movies/nod3.vqa, ^Content/cnc/movies/nod2.vqa, ^Content/cnc/movies/nod1pre.vqa, ^Content/cnc/movies/nod13.vqa, ^Content/cnc/movies/nod12.vqa, ^Content/cnc/movies/nod11.vqa, ^Content/cnc/movies/nod10b.vqa, ^Content/cnc/movies/nod10a.vqa, ^Content/cnc/movies/nod1.vqa, ^Content/cnc/movies/logo.vqa, ^Content/cnc/movies/landing.vqa, ^Content/cnc/movies/kanepre.vqa, ^Content/cnc/movies/intro2.vqa, ^Content/cnc/movies/insites.vqa, ^Content/cnc/movies/generic.vqa, ^Content/cnc/movies/gdi1.vqa, ^Content/cnc/movies/gameover.vqa, ^Content/cnc/movies/forestkl.vqa, ^Content/cnc/movies/flag.vqa, ^Content/cnc/movies/dino.vqa, ^Content/cnc/movies/dessweep.vqa, ^Content/cnc/movies/deskill.vqa, ^Content/cnc/movies/desflees.vqa, ^Content/cnc/movies/consyard.vqa, ^Content/cnc/movies/cc2tease.vqa, ^Content/cnc/movies/bombflee.vqa, ^Content/cnc/movies/bombaway.vqa, ^Content/cnc/movies/bcanyon.vqa, ^Content/cnc/movies/banner.vqa, ^Content/cnc/movies/akira.vqa, ^Content/cnc/movies/airstrk.vqa
-			Sources: nod95, nod95-linux, tfd, origin
+			Sources: nod95, nod95-linux, tfd, tfd-installed, origin
 		music-covertops: Covert Operations Music
 			TestFiles: ^Content/cnc/scores-covertops.mix
-			Sources: covertops, covertops-linux, tfd, origin
+			Sources: covertops, covertops-linux, tfd, tfd-installed, origin
 	Downloads:
 		cnc|installer/downloads.yaml
 	Sources:
