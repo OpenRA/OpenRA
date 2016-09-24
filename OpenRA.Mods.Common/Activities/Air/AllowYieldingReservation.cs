@@ -11,36 +11,22 @@
 
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Traits;
-using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Activities
 {
-	public class TakeOff : Activity
+	public class AllowYieldingReservation : Activity
 	{
 		readonly Aircraft aircraft;
-		readonly IMove move;
 
-		public TakeOff(Actor self)
+		public AllowYieldingReservation(Actor self)
 		{
 			aircraft = self.Trait<Aircraft>();
-			move = self.Trait<IMove>();
 		}
 
 		public override Activity Tick(Actor self)
 		{
-			aircraft.UnReserve();
-
-			var host = aircraft.GetActorBelow();
-			var hasHost = host != null;
-			var rp = hasHost ? host.TraitOrDefault<RallyPoint>() : null;
-
-			var destination = rp != null ? rp.Location :
-				(hasHost ? self.World.Map.CellContaining(host.CenterPosition) : self.Location);
-
-			if (NextActivity == null)
-				return new AttackMoveActivity(self, move.MoveTo(destination, 1));
-			else
-				return NextActivity;
+			aircraft.AllowYieldingReservation();
+			return NextActivity;
 		}
 	}
 }
