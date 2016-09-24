@@ -100,6 +100,13 @@ Background@ASSETBROWSER_PANEL:
 					Width: PARENT_RIGHT
 					Height: PARENT_BOTTOM
 					AspectRatio: 1
+				Label@ERROR:
+					X: 5
+					Width: 490 - 10
+					Height: 330
+					Align: Center
+					Visible: false
+					Text: Error displaying {filename} check assetbrowser.log
 		Container@FRAME_SELECTOR:
 			X: 190
 			Y: 425
