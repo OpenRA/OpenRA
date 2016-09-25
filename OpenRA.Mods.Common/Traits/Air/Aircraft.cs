@@ -69,6 +69,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Does this actor need to turn before landing?")]
 		public readonly bool TurnToLand = false;
 
+		[Desc("Does this actor cancel its previous activity after resupplying?")]
+		public readonly bool AbortOnResupply = false;
+
 		public readonly WDist LandAltitude = WDist.Zero;
 
 		[Desc("How fast this actor ascends or descends when using horizontal take off/landing.")]

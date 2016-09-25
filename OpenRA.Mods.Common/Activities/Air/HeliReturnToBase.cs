@@ -82,7 +82,7 @@ namespace OpenRA.Mods.Common.Activities
 					new Turn(self, initialFacing),
 					new HeliLand(self, false),
 					new ResupplyAircraft(self),
-					NextActivity);
+					!heli.Info.AbortOnResupply ? NextActivity : null);
 			}
 
 			return ActivityUtils.SequenceActivities(
