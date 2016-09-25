@@ -149,7 +149,8 @@ namespace OpenRA.Mods.Common.Activities
 				landingProcedures.Add(new ResupplyAircraft(self));
 			}
 
-			landingProcedures.Add(NextActivity);
+			if (!planeInfo.AbortOnResupply)
+				landingProcedures.Add(NextActivity);
 
 			return ActivityUtils.SequenceActivities(landingProcedures.ToArray());
 		}
