@@ -36,7 +36,7 @@ namespace OpenRA.Mods.Common.Widgets
 			preview.GetScale = () => worldRenderer.Viewport.Zoom;
 			preview.IsVisible = () => editorWidget.CurrentBrush == this;
 
-			var variant = resource.Variants.FirstOrDefault();
+			var variant = resource.Sequences.FirstOrDefault();
 			var sequence = wr.World.Map.Rules.Sequences.GetSequence("resources", variant);
 			var sprite = sequence.GetSprite(resource.MaxDensity - 1);
 			preview.GetSprite = () => sprite;

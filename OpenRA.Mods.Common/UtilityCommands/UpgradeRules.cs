@@ -367,6 +367,25 @@ namespace OpenRA.Mods.Common.UtilityCommands
 							Console.WriteLine("Actor type `{0}` is denoted as a RearmBuilding. Consider adding the `WithRearmAnimation` trait to it.".F(host));
 				}
 
+				// Resource type properties were renamed, and support for tooltips added
+				if (engineVersion < 20160925)
+				{
+					if (node.Key.StartsWith("ResourceType"))
+					{
+						var image = node.Value.Nodes.FirstOrDefault(n => n.Key == "Sequence");
+						if (image != null)
+							image.Key = "Image";
+
+						var sequences = node.Value.Nodes.FirstOrDefault(n => n.Key == "Variants");
+						if (sequences != null)
+							sequences.Key = "Sequences";
+
+						var name = node.Value.Nodes.FirstOrDefault(n => n.Key == "Name");
+						if (name != null)
+							node.Value.Nodes.Add(new MiniYamlNode("Type", name.Value.Value));
+					}
+				}
+
 				UpgradeActorRules(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 

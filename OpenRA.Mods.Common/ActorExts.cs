@@ -127,7 +127,7 @@ namespace OpenRA.Mods.Common
 				return false;
 
 			// Can the harvester collect this kind of resource?
-			if (!harvInfo.Resources.Contains(resType.Info.Name))
+			if (!harvInfo.Resources.Contains(resType.Info.Type))
 				return false;
 
 			if (territory != null)

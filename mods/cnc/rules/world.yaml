@@ -26,25 +26,27 @@
 		InternalName: nod
 		Description: Brotherhood of Nod\nThe Brotherhood is a religious cult centered around their leader Kane\nand the alien substance Tiberium. They utilize stealth technology\nand guerilla tactics to defeat those who oppose them.
 	ResourceType@green-tib:
+		Type: Tiberium
+		Name: Tiberium
+		PipColor: Green
 		ResourceType: 1
 		Palette: staticterrain
 		TerrainType: Tiberium
-		Variants: ti1,ti2,ti3,ti4,ti5,ti6,ti7,ti8,ti9,ti10,ti11,ti12
+		Sequences: ti1,ti2,ti3,ti4,ti5,ti6,ti7,ti8,ti9,ti10,ti11,ti12
 		MaxDensity: 12
 		ValuePerUnit: 35
-		Name: Tiberium
-		PipColor: Green
 		AllowedTerrainTypes: Clear,Road
 		AllowUnderActors: true
 	ResourceType@blue-tib:
+		Type: BlueTiberium
+		Name: Tiberium
+		PipColor: Blue
 		ResourceType: 2
 		Palette: bluetiberium
 		TerrainType: BlueTiberium
-		Variants: bti1,bti2,bti3,bti4,bti5,bti6,bti7,bti8,bti9,bti10,bti11,bti12
+		Sequences: bti1,bti2,bti3,bti4,bti5,bti6,bti7,bti8,bti9,bti10,bti11,bti12
 		MaxDensity: 12
 		ValuePerUnit: 60
-		Name: BlueTiberium
-		PipColor: Blue
 		AllowedTerrainTypes: Clear,Road
 		AllowUnderActors: true
 

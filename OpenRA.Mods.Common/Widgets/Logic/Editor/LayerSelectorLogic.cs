@@ -56,7 +56,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				layerPreview.IsVisible = () => true;
 				layerPreview.GetPalette = () => resource.Palette;
 
-				var variant = resource.Variants.FirstOrDefault();
+				var variant = resource.Sequences.FirstOrDefault();
 				var sequence = rules.Sequences.GetSequence("resources", variant);
 				var frame = sequence.Frames != null ? sequence.Frames.Last() : resource.MaxDensity - 1;
 				layerPreview.GetSprite = () => sequence.GetSprite(frame);
@@ -67,7 +67,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				newResourcePreviewTemplate.Bounds.Height = tileSize.Height + (layerPreview.Bounds.Y * 2);
 
 				newResourcePreviewTemplate.IsVisible = () => true;
-				newResourcePreviewTemplate.GetTooltipText = () => resource.Name;
+				newResourcePreviewTemplate.GetTooltipText = () => resource.Type;
 
 				layerTemplateList.AddChild(newResourcePreviewTemplate);
 			}

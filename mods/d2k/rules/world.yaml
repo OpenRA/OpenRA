@@ -44,14 +44,15 @@
 		InternalName: smuggler
 		Selectable: false
 	ResourceType@Spice:
+		Type: Spice
+		Name: Spice
+		PipColor: green
 		ResourceType: 1
 		Palette: d2k
 		TerrainType: Spice
-		Variants: spice
+		Sequences: spice
 		MaxDensity: 20
 		ValuePerUnit: 25
-		Name: Spice
-		PipColor: green
 		AllowedTerrainTypes: SpiceSand
 		AllowUnderActors: true
 

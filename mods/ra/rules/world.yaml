@@ -65,27 +65,29 @@
 		Side: Random
 		Description: A random Soviet country.
 	ResourceType@ore:
+		Type: Ore
+		Name: Valuable Minerals
+		PipColor: Yellow
 		ResourceType: 1
+		TerrainType: Ore
 		Palette: player
-		Variants: gold01,gold02,gold03,gold04
+		Sequences: gold01,gold02,gold03,gold04
 		MaxDensity: 12
 		ValuePerUnit: 25
-		Name: Ore
-		PipColor: Yellow
 		AllowedTerrainTypes: Clear,Road
 		AllowUnderActors: true
-		TerrainType: Ore
 	ResourceType@gem:
+		Type: Gems
+		Name: Valuable Minerals
+		PipColor: Red
 		ResourceType: 2
+		TerrainType: Gems
 		Palette: player
-		Variants: gem01,gem02,gem03,gem04
+		Sequences: gem01,gem02,gem03,gem04
 		MaxDensity: 3
 		ValuePerUnit: 50
-		Name: Gems
-		PipColor: Red
 		AllowedTerrainTypes: Clear,Road
 		AllowUnderActors: true
-		TerrainType: Gems
 
 World:
 	Inherits: ^BaseWorld

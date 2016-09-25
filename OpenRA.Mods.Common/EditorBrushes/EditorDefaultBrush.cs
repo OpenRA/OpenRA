@@ -76,7 +76,7 @@ namespace OpenRA.Mods.Common.Widgets
 			if (underCursor != null)
 				editorWidget.SetTooltip(underCursor.Tooltip);
 			else if (mapResources.Contains(cell) && resources.TryGetValue(mapResources[cell].Type, out type))
-				editorWidget.SetTooltip(type.Info.Name);
+				editorWidget.SetTooltip(type.Info.Type);
 			else
 				editorWidget.SetTooltip(null);
 
