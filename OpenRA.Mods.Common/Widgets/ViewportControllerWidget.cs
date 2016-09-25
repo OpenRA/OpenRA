@@ -13,15 +13,18 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
+using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets
 {
-	public enum WorldTooltipType { None, Unexplored, Actor, FrozenActor }
+	public enum WorldTooltipType { None, Unexplored, Actor, FrozenActor, Resource }
 
 	public class ViewportControllerWidget : Widget
 	{
+		readonly ResourceLayer resourceLayer;
+
 		public readonly string TooltipTemplate = "WORLD_TOOLTIP";
 		public readonly string TooltipContainer;
 		Lazy<TooltipContainerWidget> tooltipContainer;
@@ -30,6 +33,7 @@ namespace OpenRA.Mods.Common.Widgets
 		public ITooltip ActorTooltip { get; private set; }
 		public IProvideTooltipInfo[] ActorTooltipExtra { get; private set; }
 		public FrozenActor FrozenActorTooltip { get; private set; }
+		public ResourceType ResourceTooltip { get; private set; }
 
 		public int EdgeScrollThreshold = 15;
 		public int EdgeCornerScrollThreshold = 35;
@@ -105,6 +109,8 @@ namespace OpenRA.Mods.Common.Widgets
 			this.worldRenderer = worldRenderer;
 			tooltipContainer = Exts.Lazy(() =>
 				Ui.Root.Get<TooltipContainerWidget>(TooltipContainer));
+
+			resourceLayer = world.WorldActor.TraitOrDefault<ResourceLayer>();
 		}
 
 		public override void MouseEntered()
@@ -198,13 +204,24 @@ namespace OpenRA.Mods.Common.Widgets
 			if (frozen != null)
 			{
 				var actor = frozen.Actor;
-				if (actor != null && actor.TraitsImplementing<IVisibilityModifier>().Any(t => !t.IsVisible(actor, world.RenderPlayer)))
+				if (actor != null && actor.TraitsImplementing<IVisibilityModifier>().All(t => t.IsVisible(actor, world.RenderPlayer)))
+				{
+					FrozenActorTooltip = frozen;
+					if (frozen.Actor != null)
+						ActorTooltipExtra = frozen.Actor.TraitsImplementing<IProvideTooltipInfo>().ToArray();
+					TooltipType = WorldTooltipType.FrozenActor;
 					return;
+				}
+			}
 
-				FrozenActorTooltip = frozen;
-				if (frozen.Actor != null)
-					ActorTooltipExtra = frozen.Actor.TraitsImplementing<IProvideTooltipInfo>().ToArray();
-				TooltipType = WorldTooltipType.FrozenActor;
+			if (resourceLayer != null)
+			{
+				var resource = resourceLayer.GetRenderedResource(cell);
+				if (resource != null)
+				{
+					TooltipType = WorldTooltipType.Resource;
+					ResourceTooltip = resource;
+				}
 			}
 		}
 

@@ -57,6 +57,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					case WorldTooltipType.Unexplored:
 						labelText = "Unrevealed Terrain";
 						break;
+					case WorldTooltipType.Resource:
+						labelText = viewport.ResourceTooltip.Info.Name;
+						break;
 					case WorldTooltipType.Actor:
 						{
 							o = viewport.ActorTooltip.Owner;
