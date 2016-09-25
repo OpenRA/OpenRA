@@ -70,7 +70,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly bool TurnToLand = false;
 
 		[Desc("Does this actor cancel its previous activity after resupplying?")]
-		public readonly bool AbortOnResupply = false;
+		public readonly bool AbortOnResupply = true;
 
 		public readonly WDist LandAltitude = WDist.Zero;
 
