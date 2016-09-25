@@ -583,7 +583,7 @@ HBOX:
 	Valued:
 		Cost: 600
 	Health:
-		HP: 600
+		HP: 450
 	Armor:
 		Type: Heavy
 	RevealsShroud:
