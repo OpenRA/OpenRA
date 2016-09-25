@@ -91,11 +91,13 @@ namespace OpenRA
 			var ax = Math.Abs(x);
 
 			// Find the closest angle that satisfies y = x*tan(theta)
-			var bestVal = int.MaxValue;
+			// Uses a long to store bestVal to eliminate integer overflow issues in the common cases
+			// (may still fail for unrealistically large ax and ay)
+			var bestVal = long.MaxValue;
 			var bestAngle = 0;
 			for (var i = 0; i < 256; i += stride)
 			{
-				var val = Math.Abs(1024 * ay - ax * TanTable[i]);
+				var val = Math.Abs(1024 * ay - (long)ax * TanTable[i]);
 				if (val < bestVal)
 				{
 					bestVal = val;
