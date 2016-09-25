@@ -62,7 +62,7 @@ MSUB:
 		BuildPaletteOrder: 60
 		Prerequisites: ~spen, stek, ~techlevel.high
 	Valued:
-		Cost: 2400
+		Cost: 2000
 	Tooltip:
 		Name: Missile Submarine
 		Description: Submerged anti-ground unit armed with\nlong-range ballistic missiles.\nCan detect other submarines.\n  Strong vs Buildings, Ground units\n  Weak vs Naval units, Aircraft\n  Special Ability: Submerge
@@ -71,7 +71,7 @@ MSUB:
 	Armor:
 		Type: Light
 	Mobile:
-		TurnSpeed: 3
+		TurnSpeed: 2
 		Speed: 42
 	RevealsShroud:
 		Range: 6c0
@@ -91,8 +91,12 @@ MSUB:
 		UncloakSound: subshow1.aud
 		WhileCloakedUpgrades: underwater
 		Palette: submerged
-	Armament:
+	Armament@PRIMARY:
 		Weapon: SubMissile
+		LocalOffset: 0,-171,0, 0,171,0
+		FireDelay: 2
+	Armament@SECONDARY:
+		Weapon: SubMissileAA
 		LocalOffset: 0,-171,0, 0,171,0
 		FireDelay: 2
 	AttackFrontal:
