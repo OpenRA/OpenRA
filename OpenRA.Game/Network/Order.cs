@@ -64,7 +64,8 @@ namespace OpenRA
 
 		public static Order Deserialize(World world, BinaryReader r)
 		{
-			switch (r.ReadByte())
+			var magic = r.ReadByte();
+			switch (magic)
 			{
 				case 0xFF:
 					{
@@ -98,7 +99,10 @@ namespace OpenRA
 					}
 
 				default:
-					throw new NotImplementedException();
+					{
+						Log.Write("debug", "Received unknown order with magic {0}", magic);
+						return null;
+					}
 			}
 		}
 
