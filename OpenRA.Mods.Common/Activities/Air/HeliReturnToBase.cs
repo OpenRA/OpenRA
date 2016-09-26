@@ -19,10 +19,14 @@ namespace OpenRA.Mods.Common.Activities
 	public class HeliReturnToBase : Activity
 	{
 		readonly Aircraft heli;
+		readonly bool alwaysLand;
+		readonly bool abortOnResupply;
 
-		public HeliReturnToBase(Actor self)
+		public HeliReturnToBase(Actor self, bool abortOnResupply, bool alwaysLand = true)
 		{
 			heli = self.Trait<Aircraft>();
+			this.alwaysLand = alwaysLand;
+			this.abortOnResupply = abortOnResupply;
 		}
 
 		public Actor ChooseHelipad(Actor self)
@@ -68,17 +72,36 @@ namespace OpenRA.Mods.Common.Activities
 				}
 			}
 
-			heli.MakeReservation(dest);
-
 			var exit = dest.Info.TraitInfos<ExitInfo>().FirstOrDefault();
 			var offset = (exit != null) ? exit.SpawnOffset : WVec.Zero;
 
+			if (ShouldLandAtBuilding(self, dest))
+			{
+				heli.MakeReservation(dest);
+
+				return ActivityUtils.SequenceActivities(
+					new HeliFly(self, Target.FromPos(dest.CenterPosition + offset)),
+					new Turn(self, initialFacing),
+					new HeliLand(self, false),
+					new ResupplyAircraft(self),
+					!abortOnResupply ? NextActivity : null);
+			}
+
 			return ActivityUtils.SequenceActivities(
 				new HeliFly(self, Target.FromPos(dest.CenterPosition + offset)),
-				new Turn(self, initialFacing),
-				new HeliLand(self, false),
-				new ResupplyAircraft(self),
 				NextActivity);
+		}
+
+		bool ShouldLandAtBuilding(Actor self, Actor dest)
+		{
+			if (alwaysLand)
+				return true;
+
+			if (heli.Info.RepairBuildings.Contains(dest.Info.Name) && self.GetDamageState() != DamageState.Undamaged)
+				return true;
+
+			return heli.Info.RearmBuildings.Contains(dest.Info.Name) && self.TraitsImplementing<AmmoPool>()
+					.Any(p => !p.Info.SelfReloads && !p.FullAmmo());
 		}
 	}
 }

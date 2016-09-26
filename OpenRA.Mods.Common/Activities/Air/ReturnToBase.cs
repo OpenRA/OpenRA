@@ -22,13 +22,17 @@ namespace OpenRA.Mods.Common.Activities
 	{
 		readonly Aircraft plane;
 		readonly AircraftInfo planeInfo;
+		readonly bool alwaysLand;
+		readonly bool abortOnResupply;
 		bool isCalculated;
 		Actor dest;
 		WPos w1, w2, w3;
 
-		public ReturnToBase(Actor self, Actor dest = null)
+		public ReturnToBase(Actor self, bool abortOnResupply, Actor dest = null, bool alwaysLand = true)
 		{
 			this.dest = dest;
+			this.alwaysLand = alwaysLand;
+			this.abortOnResupply = abortOnResupply;
 			plane = self.Trait<Aircraft>();
 			planeInfo = self.Info.TraitInfo<AircraftInfo>();
 		}
@@ -50,8 +54,6 @@ namespace OpenRA.Mods.Common.Activities
 
 			if (dest == null)
 				return;
-
-			plane.MakeReservation(dest);
 
 			var landPos = dest.CenterPosition;
 			var altitude = planeInfo.CruiseAltitude.Length;
@@ -94,6 +96,18 @@ namespace OpenRA.Mods.Common.Activities
 			isCalculated = true;
 		}
 
+		bool ShouldLandAtBuilding(Actor self, Actor dest)
+		{
+			if (alwaysLand)
+				return true;
+
+			if (planeInfo.RepairBuildings.Contains(dest.Info.Name) && self.GetDamageState() != DamageState.Undamaged)
+				return true;
+
+			return planeInfo.RearmBuildings.Contains(dest.Info.Name) && self.TraitsImplementing<AmmoPool>()
+					.Any(p => !p.Info.SelfReloads && !p.FullAmmo());
+		}
+
 		public override Activity Tick(Actor self)
 		{
 			if (IsCanceled || self.IsDead)
@@ -128,9 +142,17 @@ namespace OpenRA.Mods.Common.Activities
 
 			// Fix a problem when the airplane is send to resupply near the airport
 			landingProcedures.Add(new Fly(self, Target.FromPos(w3), WDist.Zero, new WDist(turnRadius / 2)));
-			landingProcedures.Add(new Land(self, Target.FromActor(dest)));
-			landingProcedures.Add(new ResupplyAircraft(self));
-			landingProcedures.Add(NextActivity);
+
+			if (ShouldLandAtBuilding(self, dest))
+			{
+				plane.MakeReservation(dest);
+
+				landingProcedures.Add(new Land(self, Target.FromActor(dest)));
+				landingProcedures.Add(new ResupplyAircraft(self));
+			}
+
+			if (!abortOnResupply)
+				landingProcedures.Add(NextActivity);
 
 			return ActivityUtils.SequenceActivities(landingProcedures.ToArray());
 		}

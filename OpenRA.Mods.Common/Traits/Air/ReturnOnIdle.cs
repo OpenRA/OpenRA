@@ -39,7 +39,7 @@ namespace OpenRA.Mods.Common.Traits
 			var airfield = ReturnToBase.ChooseAirfield(self, true);
 			if (airfield != null)
 			{
-				self.QueueActivity(new ReturnToBase(self, airfield));
+				self.QueueActivity(new ReturnToBase(self, aircraftInfo.AbortOnResupply, airfield));
 				self.QueueActivity(new ResupplyAircraft(self));
 			}
 			else
