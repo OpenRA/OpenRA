@@ -4,9 +4,6 @@ e1:
 	stand2:
 		Start: 8
 		Facings: 8
-	stand3:
-		Start: 128
-		Length: 16
 	run:
 		Start: 16
 		Length: 6
@@ -29,7 +26,11 @@ e1:
 		Length: 4
 		Facings: 8
 		Tick: 100
-	standup-0:
+	liedown:
+		Start: 128
+		Length: 2
+		Facings: 8
+	standup:
 		Start: 176
 		Length: 2
 		Facings: 8
@@ -94,9 +95,6 @@ sniper:
 		Start: 64
 		Length: 16
 		Facings: 8
-	stand3:
-		Start: 192
-		Length: 16
 	prone-stand:
 		Start: 208
 		Stride: 4
@@ -110,6 +108,10 @@ sniper:
 		Length: 4
 		Facings: 8
 		Tick: 100
+	liedown:
+		Start: 192
+		Length: 2
+		Facings: 8
 	standup:
 		Start: 240
 		Length: 2
@@ -866,7 +868,7 @@ gnrl:
 		Start: 104
 		Length: 4
 		Facings: 8
-	standup-0:
+	standup:
 		Start: 136
 		Length: 2
 		Facings: 8
@@ -923,9 +925,6 @@ shok:
 		Start: 64
 		Length: 16
 		Facings: 8
-	stand3:
-		Start: 192
-		Length: 16
 	prone-stand:
 		Start: 208
 		Stride: 4
@@ -939,6 +938,10 @@ shok:
 		Length: 4
 		Facings: 8
 		Tick: 120
+	liedown:
+		Start: 192
+		Length: 2
+		Facings: 8
 	standup:
 		Start: 240
 		Length: 2

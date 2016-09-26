@@ -32,7 +32,7 @@ light_inf:
 		Facings: -8
 		Transpose: true
 		Tick: 110
-	standup-0: DATA.R8
+	standup: DATA.R8
 		Start: 302
 		Facings: -8
 		Transpose: true
@@ -101,7 +101,7 @@ trooper:
 		Facings: -8
 		Transpose: true
 		Tick: 120
-	standup-0: DATA.R8
+	standup: DATA.R8
 		Start: 554
 		Facings: -8
 		Transpose: true
@@ -154,7 +154,7 @@ engineer:
 		Facings: -8
 		Transpose: true
 		Tick: 120
-	standup-0: DATA.R8
+	standup: DATA.R8
 		Start: 1262
 		Facings: -8
 		Transpose: true
@@ -213,7 +213,7 @@ thumper:
 		Facings: -8
 		Transpose: true
 		Tick: 120
-	standup-0: DATA.R8
+	standup: DATA.R8
 		Start: 1462
 		Facings: -8
 		Transpose: true
@@ -312,7 +312,7 @@ fremen:
 		Facings: -8
 		Transpose: true
 		Tick: 120
-	standup-0: DATA.R8
+	standup: DATA.R8
 		Start: 790
 		Facings: -8
 		Transpose: true
@@ -376,7 +376,7 @@ saboteur:
 		Facings: -8
 		Transpose: true
 		Tick: 120
-	standup-0: DATA.R8
+	standup: DATA.R8
 		Start: 2245
 		Facings: -8
 		Transpose: true
@@ -442,7 +442,7 @@ sardaukar:
 		Facings: -8
 		Transpose: true
 		Tick: 120
-	standup-0: DATA.R8
+	standup: DATA.R8
 		Start: 1026
 		Facings: -8
 		Transpose: true
