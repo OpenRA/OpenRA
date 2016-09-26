@@ -86,6 +86,8 @@ namespace OpenRA.Mods.Common.Projectiles
 			{
 				if (hitanim != null)
 					hitanim.PlayThen(info.HitAnimSequence, () => animationComplete = true);
+				else
+					animationComplete = true;
 
 				args.Weapon.Impact(Target.FromPos(target), args.SourceActor, args.DamageModifiers);
 				doneDamage = true;
