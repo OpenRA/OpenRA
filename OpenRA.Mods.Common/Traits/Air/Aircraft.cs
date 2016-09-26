@@ -562,9 +562,9 @@ namespace OpenRA.Mods.Common.Traits
 				if (Reservable.IsReserved(order.TargetActor))
 				{
 					if (IsPlane)
-						self.QueueActivity(new ReturnToBase(self));
+						self.QueueActivity(new ReturnToBase(self, Info.AbortOnResupply));
 					else
-						self.QueueActivity(new HeliReturnToBase(self));
+						self.QueueActivity(new HeliReturnToBase(self, Info.AbortOnResupply));
 				}
 				else
 				{
@@ -573,7 +573,7 @@ namespace OpenRA.Mods.Common.Traits
 					if (IsPlane)
 					{
 						self.QueueActivity(order.Queued, ActivityUtils.SequenceActivities(
-							new ReturnToBase(self, order.TargetActor),
+							new ReturnToBase(self, Info.AbortOnResupply, order.TargetActor),
 							new ResupplyAircraft(self)));
 					}
 					else
@@ -621,9 +621,9 @@ namespace OpenRA.Mods.Common.Traits
 				UnReserve();
 				self.CancelActivity();
 				if (IsPlane)
-					self.QueueActivity(new ReturnToBase(self, null, false));
+					self.QueueActivity(new ReturnToBase(self, Info.AbortOnResupply, null, false));
 				else
-					self.QueueActivity(new HeliReturnToBase(self, false));
+					self.QueueActivity(new HeliReturnToBase(self, Info.AbortOnResupply, false));
 			}
 		}
 

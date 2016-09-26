@@ -20,11 +20,13 @@ namespace OpenRA.Mods.Common.Activities
 	{
 		readonly Aircraft heli;
 		readonly bool alwaysLand;
+		readonly bool abortOnResupply;
 
-		public HeliReturnToBase(Actor self, bool alwaysLand = true)
+		public HeliReturnToBase(Actor self, bool abortOnResupply, bool alwaysLand = true)
 		{
 			heli = self.Trait<Aircraft>();
 			this.alwaysLand = alwaysLand;
+			this.abortOnResupply = abortOnResupply;
 		}
 
 		public Actor ChooseHelipad(Actor self)
@@ -82,7 +84,7 @@ namespace OpenRA.Mods.Common.Activities
 					new Turn(self, initialFacing),
 					new HeliLand(self, false),
 					new ResupplyAircraft(self),
-					!heli.Info.AbortOnResupply ? NextActivity : null);
+					!abortOnResupply ? NextActivity : null);
 			}
 
 			return ActivityUtils.SequenceActivities(

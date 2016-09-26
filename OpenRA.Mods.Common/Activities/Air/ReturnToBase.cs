@@ -23,14 +23,16 @@ namespace OpenRA.Mods.Common.Activities
 		readonly Aircraft plane;
 		readonly AircraftInfo planeInfo;
 		readonly bool alwaysLand;
+		readonly bool abortOnResupply;
 		bool isCalculated;
 		Actor dest;
 		WPos w1, w2, w3;
 
-		public ReturnToBase(Actor self, Actor dest = null, bool alwaysLand = true)
+		public ReturnToBase(Actor self, bool abortOnResupply, Actor dest = null, bool alwaysLand = true)
 		{
 			this.dest = dest;
 			this.alwaysLand = alwaysLand;
+			this.abortOnResupply = abortOnResupply;
 			plane = self.Trait<Aircraft>();
 			planeInfo = self.Info.TraitInfo<AircraftInfo>();
 		}
@@ -149,7 +151,7 @@ namespace OpenRA.Mods.Common.Activities
 				landingProcedures.Add(new ResupplyAircraft(self));
 			}
 
-			if (!planeInfo.AbortOnResupply)
+			if (!abortOnResupply)
 				landingProcedures.Add(NextActivity);
 
 			return ActivityUtils.SequenceActivities(landingProcedures.ToArray());
