@@ -42,9 +42,9 @@ namespace OpenRA.Mods.Common.Scripting
 		public void ReturnToBase(Actor airfield = null)
 		{
 			if (isPlane)
-				Self.QueueActivity(new ReturnToBase(Self, airfield));
+				Self.QueueActivity(new ReturnToBase(Self, false, airfield));
 			else
-				Self.QueueActivity(new HeliReturnToBase(Self));
+				Self.QueueActivity(new HeliReturnToBase(Self, false));
 		}
 
 		[ScriptActorPropertyActivity]
