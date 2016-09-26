@@ -268,12 +268,12 @@ ModContent:
 	Packages:
 		base: Base Game Files
 			TestFiles: ^Content/ts/cache.mix, ^Content/ts/conquer.mix, ^Content/ts/isosnow.mix, ^Content/ts/isotemp.mix, ^Content/ts/local.mix, ^Content/ts/sidec01.mix, ^Content/ts/sidec02.mix, ^Content/ts/sno.mix, ^Content/ts/snow.mix, ^Content/ts/sounds.mix, ^Content/ts/speech01.mix, ^Content/ts/tem.mix, ^Content/ts/temperat.mix
-			Sources: tibsun, tibsun-linux, tfd, origin
+			Sources: tibsun, tibsun-linux, tfd, tfd-installed, origin
 			Required: true
 			Download: basefiles
 		music: Base Game Music
 			TestFiles: ^Content/ts/scores.mix
-			Sources: tibsun, tibsun-linux, tfd, origin
+			Sources: tibsun, tibsun-linux, tfd, tfd-installed, origin
 			Download: music
 	Downloads:
 		ts|installer/downloads.yaml
