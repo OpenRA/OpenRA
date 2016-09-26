@@ -47,6 +47,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		bool isVideoLoaded = false;
 		int currentFrame;
 
+		LabelWidget errorLabelWidget;
+		SpriteFont errorFont;
+		bool IsErrorLabelVisible { get { return errorLabelWidget != null && errorLabelWidget.Visible; } }
+
 		[ObjectCreator.UseCtor]
 		public AssetBrowserLogic(Widget widget, Action onExit, ModData modData, World world, Dictionary<string, MiniYaml> logicArgs)
 		{
@@ -84,12 +88,16 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				spriteWidget.GetSprite = () => currentSprites != null ? currentSprites[currentFrame] : null;
 				currentPalette = spriteWidget.Palette;
 				spriteWidget.GetPalette = () => currentPalette;
-				spriteWidget.IsVisible = () => !isVideoLoaded;
+				spriteWidget.IsVisible = () => !isVideoLoaded && !IsErrorLabelVisible;
 			}
 
 			var playerWidget = panel.GetOrNull<VqaPlayerWidget>("PLAYER");
 			if (playerWidget != null)
-				playerWidget.IsVisible = () => isVideoLoaded;
+				playerWidget.IsVisible = () => isVideoLoaded && !IsErrorLabelVisible;
+
+			errorLabelWidget = panel.GetOrNull<LabelWidget>("ERROR");
+			if (errorLabelWidget != null)
+				errorFont = Game.Renderer.Fonts[errorLabelWidget.Font];
 
 			var paletteDropDown = panel.GetOrNull<DropDownButtonWidget>("PALETTE_SELECTOR");
 			if (paletteDropDown != null)
@@ -314,24 +322,43 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (!modData.DefaultFileSystem.Exists(filename))
 				return false;
 
-			if (Path.GetExtension(filename.ToLowerInvariant()) == ".vqa")
+			errorLabelWidget.Visible = false;
+
+			try
 			{
-				player = panel.Get<VqaPlayerWidget>("PLAYER");
-				currentFilename = filename;
-				player.Load(filename);
-				player.DrawOverlay = false;
-				isVideoLoaded = true;
-				frameSlider.MaximumValue = (float)player.Video.Frames - 1;
-				frameSlider.Ticks = 0;
-				return true;
-			}
-			else
-			{
+				if (Path.GetExtension(filename.ToLowerInvariant()) == ".vqa")
+				{
+					player = panel.Get<VqaPlayerWidget>("PLAYER");
+					currentFilename = filename;
+					player.Load(filename);
+					player.DrawOverlay = false;
+					isVideoLoaded = true;
+					frameSlider.MaximumValue = (float)player.Video.Frames - 1;
+					frameSlider.Ticks = 0;
+					return true;
+				}
+
 				currentFilename = filename;
 				currentSprites = world.Map.Rules.Sequences.SpriteCache[filename];
 				currentFrame = 0;
 				frameSlider.MaximumValue = (float)currentSprites.Length - 1;
 				frameSlider.Ticks = currentSprites.Length;
+			}
+			catch (Exception ex)
+			{
+				if (errorLabelWidget != null)
+				{
+					errorLabelWidget.Text = WidgetUtils.TruncateText(errorLabelWidget.Text.Replace("{filename}", filename),
+						errorLabelWidget.Bounds.Width, errorFont);
+
+					currentSprites = new Sprite[0];
+					errorLabelWidget.Visible = true;
+				}
+
+				Log.AddChannel("assetbrowser", "assetbrowser.log");
+				Log.Write("assetbrowser", "Error reading {0}:{3} {1}{3}{2}", filename, ex.Message, ex.StackTrace, Environment.NewLine);
+
+				return false;
 			}
 
 			return true;
