@@ -44,7 +44,7 @@
 		ShadowStart: 451
 		Tick: 800
 		ZOffset: -511
-	standup-0:
+	standup:
 		Start: 260
 		Length: 2
 		Facings: 8
@@ -318,7 +318,7 @@ medic:
 		ShadowStart: 451
 		Tick: 800
 		ZOffset: -511
-	standup-0:
+	standup:
 		Start: 260
 		Length: 2
 		Facings: 8
@@ -384,7 +384,7 @@ jumpjet:
 		Length: 6
 		Facings: 8
 		ShadowStart: 663
-	standup-0:
+	standup:
 		Start: 260
 		Length: 2
 		Facings: 8
@@ -413,7 +413,7 @@ weedguy:
 		Start: 56
 		Facings: 8
 		ShadowStart: 258
-	standup-0:
+	standup:
 		Start: 112
 		Length: 2
 		Facings: 8

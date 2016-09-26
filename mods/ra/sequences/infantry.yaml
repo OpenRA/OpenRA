@@ -30,7 +30,7 @@ e1:
 		Start: 128
 		Length: 2
 		Facings: 8
-	standup-0:
+	standup:
 		Start: 176
 		Length: 2
 		Facings: 8
@@ -868,7 +868,7 @@ gnrl:
 		Start: 104
 		Length: 4
 		Facings: 8
-	standup-0:
+	standup:
 		Start: 136
 		Length: 2
 		Facings: 8
