@@ -65,7 +65,7 @@ MSUB:
 		Cost: 2000
 	Tooltip:
 		Name: Missile Submarine
-		Description: Submerged anti-ground unit armed with\nlong-range ballistic missiles.\nCan detect other submarines.\n  Strong vs Buildings, Ground units\n  Weak vs Naval units, Aircraft\n  Special Ability: Submerge
+		Description: Submerged anti-ground siege unit\nwith basic anti-air capabilities.\nCan detect other submarines.\n  Strong vs Buildings, Ground units, Aircraft\n  Weak vs Naval units\n  Special Ability: Submerge
 	Health:
 		HP: 400
 	Armor:
