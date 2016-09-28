@@ -249,16 +249,16 @@ SubMissile:
 	Burst: 2
 	Report: missile6.aud
 	Projectile: Bullet
-		Speed: 102
+		Speed: 162
 		Blockable: false
-		Angle: 165
+		Angle: 105
 		Inaccuracy: 2c938
 		Image: MISSILE
 		TrailImage: smokey
 		ContrailLength: 30
 	Warhead@1Dam: SpreadDamage
 		Spread: 426
-		Damage: 30
+		Damage: 25
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		Versus:
 			None: 40
@@ -276,6 +276,19 @@ SubMissile:
 		Explosions: large_splash
 		ImpactSounds: splash9.aud
 		ValidImpactTypes: Water
+
+SubMissileAA:
+	Inherits: SubMissile
+	Range: 6c0
+	ValidTargets: Air
+	Projectile: Missile
+		Speed: 162
+		Inaccuracy: 0c938
+		HorizontalRateOfTurn: 1
+		RangeLimit: 7c0
+	Warhead@1Dam: SpreadDamage
+		Damage: 20
+		ValidTargets: Air
 
 Stinger:
 	ReloadDelay: 60
