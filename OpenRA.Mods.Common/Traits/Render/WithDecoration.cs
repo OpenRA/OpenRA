@@ -52,6 +52,9 @@ namespace OpenRA.Mods.Common.Traits.Render
 		[Desc("Should this be visible only when selected?")]
 		public readonly bool RequiresSelection = false;
 
+		[Desc("Should this be scaled with zoom level?")]
+		public readonly bool ScaleToZoom = false;
+
 		public override object Create(ActorInitializer init) { return new WithDecoration(init.Self, this); }
 	}
 
@@ -124,7 +127,8 @@ namespace OpenRA.Mods.Common.Traits.Render
 			}
 
 			var pxPos = wr.Viewport.WorldToViewPx(wr.ScreenPxPosition(self.CenterPosition) + boundsOffset) + sizeOffset;
-			return new IRenderable[] { new UISpriteRenderable(Anim.Image, self.CenterPosition, pxPos, Info.ZOffset, wr.Palette(Info.Palette), 1f) };
+			var zoom = Info.ScaleToZoom ? wr.Viewport.Zoom : 1f;
+			return new IRenderable[] { new UISpriteRenderable(Anim.Image, self.CenterPosition, pxPos, Info.ZOffset, wr.Palette(Info.Palette), zoom) };
 		}
 
 		void ITick.Tick(Actor self) { Anim.Tick(); }
