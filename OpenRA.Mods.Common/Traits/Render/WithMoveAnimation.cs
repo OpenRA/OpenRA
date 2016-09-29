@@ -27,24 +27,16 @@ namespace OpenRA.Mods.Common.Traits.Render
 		readonly IMove movement;
 		readonly WithSpriteBody wsb;
 
-		WPos cachedPosition;
-
 		public WithMoveAnimation(ActorInitializer init, WithMoveAnimationInfo info)
 		{
 			this.info = info;
 			movement = init.Self.Trait<IMove>();
 			wsb = init.Self.Trait<WithSpriteBody>();
-
-			cachedPosition = init.Self.CenterPosition;
 		}
 
 		public void Tick(Actor self)
 		{
-			var oldCachedPosition = cachedPosition;
-			cachedPosition = self.CenterPosition;
-
-			// Flying units set IsMoving whenever they are airborne, which isn't enough for our purposes
-			var isMoving = movement.IsMoving && !self.IsDead && (oldCachedPosition - cachedPosition).HorizontalLengthSquared != 0;
+			var isMoving = movement.IsMoving && !self.IsDead;
 			if (isMoving ^ (wsb.DefaultAnimation.CurrentSequence.Name != info.MoveSequence))
 				return;
 
