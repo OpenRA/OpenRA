@@ -55,7 +55,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				switch (viewport.TooltipType)
 				{
 					case WorldTooltipType.Unexplored:
-						labelText = "Unexplored Terrain";
+						labelText = "Unrevealed Terrain";
+						break;
+					case WorldTooltipType.Resource:
+						labelText = viewport.ResourceTooltip.Info.Name;
 						break;
 					case WorldTooltipType.Actor:
 						{

@@ -478,7 +478,7 @@ namespace OpenRA.Mods.Common.Traits
 				var res = self.World.WorldActor.Trait<ResourceLayer>().GetRenderedResource(location);
 				var info = self.Info.TraitInfo<HarvesterInfo>();
 
-				if (res == null || !info.Resources.Contains(res.Info.Name))
+				if (res == null || !info.Resources.Contains(res.Info.Type))
 					return false;
 
 				cursor = "harvest";

@@ -82,7 +82,7 @@ namespace OpenRA.Mods.D2k.Traits
 			self = init.Self;
 
 			resLayer = self.World.WorldActor.Trait<ResourceLayer>();
-			resType = self.World.WorldActor.TraitsImplementing<ResourceType>().First(t => t.Info.Name == info.ResourceType);
+			resType = self.World.WorldActor.TraitsImplementing<ResourceType>().First(t => t.Info.Type == info.ResourceType);
 
 			var render = self.Trait<RenderSprites>();
 			anim = new AnimationWithOffset(new Animation(init.Self.World, render.GetImage(self)), null, () => self.IsDead);

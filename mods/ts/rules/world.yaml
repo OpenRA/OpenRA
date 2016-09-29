@@ -22,35 +22,38 @@
 		Name: Nod
 		InternalName: nod
 	ResourceType@Tiberium:
-		ResourceType: 1
-		Palette: greentiberium
-		Variants: tib01, tib02, tib03, tib04, tib05, tib06, tib07, tib08, tib09, tib10, tib11, tib12
-		MaxDensity: 12
-		ValuePerUnit: 50
+		Type: Tiberium
 		Name: Tiberium
 		PipColor: Green
+		ResourceType: 1
+		Palette: greentiberium
+		Sequences: tib01, tib02, tib03, tib04, tib05, tib06, tib07, tib08, tib09, tib10, tib11, tib12
+		MaxDensity: 12
+		ValuePerUnit: 50
 		AllowedTerrainTypes: Clear, Rough, DirtRoad
 		AllowUnderActors: true
 		TerrainType: Tiberium
 	ResourceType@BlueTiberium:
+		Type: BlueTiberium
+		Name: Tiberium
+		PipColor: Blue
 		ResourceType: 2
 		Palette: bluetiberium
-		Variants: tib01, tib02, tib03, tib04, tib05, tib06, tib07, tib08, tib09, tib10, tib11, tib12
+		Sequences: tib01, tib02, tib03, tib04, tib05, tib06, tib07, tib08, tib09, tib10, tib11, tib12
 		MaxDensity: 12
 		ValuePerUnit: 100
-		Name: BlueTiberium
-		PipColor: Blue
 		AllowedTerrainTypes: Clear, Rough, DirtRoad
 		AllowUnderActors: true
 		TerrainType: BlueTiberium
 	ResourceType@Veins:
-		ResourceType: 3
-		Palette: player
-		Variants: veins
-		MaxDensity: 1
-		ValuePerUnit: 0
+		Type: Veins
 		Name: Veins
 		PipColor: Red
+		ResourceType: 3
+		Palette: player
+		Sequences: veins
+		MaxDensity: 1
+		ValuePerUnit: 0
 		AllowedTerrainTypes: Clear
 		AllowUnderActors: true
 		TerrainType: Veins

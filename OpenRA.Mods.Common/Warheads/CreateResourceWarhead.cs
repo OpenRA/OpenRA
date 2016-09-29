@@ -38,7 +38,7 @@ namespace OpenRA.Mods.Common.Warheads
 			var allCells = world.Map.FindTilesInAnnulus(targetTile, minRange, Size[0]);
 
 			var resourceType = world.WorldActor.TraitsImplementing<ResourceType>()
-				.FirstOrDefault(t => t.Info.Name == AddsResourceType);
+				.FirstOrDefault(t => t.Info.Type == AddsResourceType);
 
 			if (resourceType == null)
 				Log.Write("debug", "Warhead defines an invalid resource type '{0}'".F(AddsResourceType));
