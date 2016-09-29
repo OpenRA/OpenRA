@@ -118,6 +118,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		bool airborne;
 		bool cruising;
+		bool firstTick = true;
 
 		public Aircraft(ActorInitializer init, AircraftInfo info)
 		{
@@ -154,7 +155,6 @@ namespace OpenRA.Mods.Common.Traits
 				OnCruisingAltitudeReached();
 		}
 
-		bool firstTick = true;
 		public virtual void Tick(Actor self)
 		{
 			if (firstTick)
