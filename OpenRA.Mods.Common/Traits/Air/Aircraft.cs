@@ -266,12 +266,12 @@ namespace OpenRA.Mods.Common.Traits
 
 		protected void ReserveSpawnBuilding()
 		{
-			/* HACK: not spawning in the air, so try to assoc. with our afld. */
-			var afld = GetActorBelow();
-			if (afld == null)
+			// HACK: Not spawning in the air, so try to associate with our spawner.
+			var spawner = GetActorBelow();
+			if (spawner == null)
 				return;
 
-			MakeReservation(afld);
+			MakeReservation(spawner);
 		}
 
 		public void MakeReservation(Actor target)
