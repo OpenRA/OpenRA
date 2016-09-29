@@ -115,10 +115,14 @@ namespace OpenRA.Mods.Common.Traits
 		public int TurnSpeed { get { return Info.TurnSpeed; } }
 		public Actor ReservedActor { get; private set; }
 		public bool MayYieldReservation { get; private set; }
+		public bool IsMovingVertically { get; private set; }
 
 		bool airborne;
 		bool cruising;
 		bool firstTick = true;
+
+		bool isMoving;
+		WPos cachedPosition;
 
 		public Aircraft(ActorInitializer init, AircraftInfo info)
 		{
@@ -142,6 +146,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			um = self.TraitOrDefault<UpgradeManager>();
 			speedModifiers = self.TraitsImplementing<ISpeedModifier>().ToArray().Select(sm => sm.GetSpeedModifier());
+			cachedPosition = self.CenterPosition;
 		}
 
 		public void AddedToWorld(Actor self)
@@ -173,6 +178,11 @@ namespace OpenRA.Mods.Common.Traits
 
 				self.QueueActivity(new TakeOff(self));
 			}
+
+			var oldCachedPosition = cachedPosition;
+			cachedPosition = self.CenterPosition;
+			isMoving = (oldCachedPosition - cachedPosition).HorizontalLengthSquared != 0;
+			IsMovingVertically = (oldCachedPosition - cachedPosition).VerticalLengthSquared != 0;
 
 			Repulse();
 		}
@@ -483,7 +493,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public CPos NearestMoveableCell(CPos cell) { return cell; }
 
-		public bool IsMoving { get { return self.World.Map.DistanceAboveTerrain(CenterPosition).Length > 0; } set { } }
+		public bool IsMoving { get { return isMoving; } set { } }
 
 		public bool CanEnterTargetNow(Actor self, Target target)
 		{
