@@ -104,7 +104,7 @@ aban18:
 
 ^bboard1x1:
 	Defaults:
-		Offset: 0, -12
+		Offset: 0, -12, 6
 	idle:
 		ShadowStart: 2
 	damaged-idle:
@@ -114,6 +114,15 @@ aban18:
 ^bboard1x2:
 	Defaults:
 		Offset: 12, -18
+	idle:
+		ShadowStart: 2
+	damaged-idle:
+		Start: 1
+		ShadowStart: 3
+
+^bboard2x1:
+	Defaults:
+		Offset: -12, -18
 	idle:
 		ShadowStart: 2
 	damaged-idle:
@@ -160,13 +169,13 @@ bboard13:
 	Inherits: ^bboard1x1
 
 bboard14:
-	Inherits: ^bboard1x2
+	Inherits: ^bboard2x1
 
 bboard15:
-	Inherits: ^bboard1x2
+	Inherits: ^bboard2x1
 
 bboard16:
-	Inherits: ^bboard1x2
+	Inherits: ^bboard2x1
 
 ^cabase:
 	Defaults:
@@ -187,12 +196,21 @@ bboard16:
 	Inherits: ^cabase
 	Defaults:
 		Offset: 12, -18, 18
+		DepthSpriteOffset: 12, 0
+		UseTilesetCode: true
+
+^ca2x1:
+	Inherits: ^cabase
+	Defaults:
+		Offset: -12, -18, 18
+		DepthSpriteOffset: -12, 0
 		UseTilesetCode: true
 
 ^ca2x3:
 	Inherits: ^cabase
 	Defaults:
 		Offset: 12, -30, 30
+		DepthSpriteOffset: 12, 0
 		UseTilesetCode: true
 
 ^ca3x3:
@@ -244,7 +262,7 @@ ca0012:
 	Inherits: ^ca1x2
 
 ca0013:
-	Inherits: ^ca1x2
+	Inherits: ^ca2x1
 
 ca0014:
 	Inherits: ^ca1x1
@@ -369,21 +387,31 @@ capyr03:
 	Inherits: ^cabase
 	Defaults:
 		Offset: 12, -30, 30
+		DepthSpriteOffset: 12, 0
+
+^city3x2:
+	Inherits: ^cabase
+	Defaults:
+		Offset: -12, -30, 30
+		DepthSpriteOffset: -12, 0
 
 ^city3x5:
 	Inherits: ^cabase
 	Defaults:
 		Offset: 24, -48, 48
+		DepthSpriteOffset: 24, 0
 
 ^city4x2:
 	Inherits: ^cabase
 	Defaults:
 		Offset: -24, -36, 36
+		DepthSpriteOffset: -24, 0
 
 ^city4x3:
 	Inherits: ^cabase
 	Defaults:
 		Offset: -12, -42, 42
+		DepthSpriteOffset: -12, 0
 
 city01:
 	Inherits: ^city4x2
@@ -392,13 +420,13 @@ city02:
 	Inherits: ^city2x3
 
 city03:
-	Inherits: ^city2x3
+	Inherits: ^city3x2
 
 city04:
-	Inherits: ^city2x3
+	Inherits: ^city3x2
 
 city05:
-	Inherits: ^city2x3
+	Inherits: ^city3x2
 
 city06:
 	Inherits: ^city4x2
@@ -432,6 +460,8 @@ city15:
 
 city16:
 	Inherits: ^city4x2
+	Defaults:
+		DepthSpriteOffset: -10, 0
 
 city17:
 	Inherits: ^city4x3
