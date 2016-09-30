@@ -403,7 +403,7 @@ GAPLUG:
 		Icon: ioncannon
 		Effect: ionring
 		WeaponDelay: 0
-		ChargeTime: 180
+		ChargeTime: 510
 		Description: Ion Cannon
 		LongDesc: Initiate an Ion Cannon strike.\nApplies instant damage to a small area.
 		EndChargeSpeechNotification: IonCannonReady
