@@ -17,7 +17,7 @@ E3:
 		Speed: 42
 	Armament@PRIMARY:
 		Weapon: Bazooka
-		LocalOffset: 128,0,640
+		LocalOffset: 252,0,684
 	AttackFrontal:
 		Voice: Attack
 	WithInfantryBody:
