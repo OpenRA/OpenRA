@@ -49,9 +49,9 @@ fi
 
 if [ ! -f MaxMind.GeoIP2.dll ]; then
 	echo "Fetching MaxMind.GeoIP2 from NuGet"
-	get Newtonsoft.Json 8.0.3
-	get MaxMind.Db 2.0.0
-	get MaxMind.GeoIP2 2.6.0
+	get Newtonsoft.Json 9.0.1
+	get MaxMind.Db 2.1.2
+	get MaxMind.GeoIP2 2.7.1
 	cp ./MaxMind.Db/lib/net45/MaxMind.Db.* .
 	rm -rf MaxMind.Db
 	cp ./MaxMind.GeoIP2/lib/net45/MaxMind.GeoIP2* .

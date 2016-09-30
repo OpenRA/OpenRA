@@ -38,7 +38,7 @@ if (!(Test-Path "ICSharpCode.SharpZipLib.dll"))
 if (!(Test-Path "MaxMind.GeoIP2.dll"))
 {
 	echo "Fetching MaxMind.GeoIP2 from NuGet."
-	./nuget.exe install MaxMind.GeoIP2 -Version 2.6.0 -ExcludeVersion
+	./nuget.exe install MaxMind.GeoIP2 -Version 2.7.1 -ExcludeVersion
 	cp MaxMind.Db/lib/net45/MaxMind.Db.* .
 	rmdir MaxMind.Db -Recurse
 	cp MaxMind.GeoIP2/lib/net45/MaxMind.GeoIP2* .
