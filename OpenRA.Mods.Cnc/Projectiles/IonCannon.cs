@@ -29,7 +29,7 @@ namespace OpenRA.Mods.Cnc.Effects
 		int weaponDelay;
 		bool impacted = false;
 
-		public IonCannon(Player firedBy, WeaponInfo weapon, World world, CPos location, string effect, string sequence, string palette, int delay)
+		public IonCannon(Player firedBy, WeaponInfo weapon, World world, WPos launchPos, CPos location, string effect, string sequence, string palette, int delay)
 		{
 			this.firedBy = firedBy;
 			this.weapon = weapon;
@@ -38,6 +38,9 @@ namespace OpenRA.Mods.Cnc.Effects
 			target = Target.FromCell(world, location);
 			anim = new Animation(world, effect);
 			anim.PlayThen(sequence, () => Finish(world));
+
+			if (weapon.Report != null && weapon.Report.Any())
+				Game.Sound.Play(weapon.Report.Random(firedBy.World.SharedRandom), launchPos);
 		}
 
 		public void Tick(World world)
