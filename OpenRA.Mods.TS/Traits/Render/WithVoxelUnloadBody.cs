@@ -28,6 +28,9 @@ namespace OpenRA.Mods.TS.Traits.Render
 		[Desc("Voxel sequence name to use when undocked from a refinery.")]
 		public readonly string IdleSequence = "idle";
 
+		[Desc("Defines if the Voxel should have a shadow.")]
+		public readonly bool ShowShadow = true;
+
 		public object Create(ActorInitializer init) { return new WithVoxelUnloadBody(init.Self, this); }
 
 		public IEnumerable<VoxelAnimation> RenderPreviewVoxels(
@@ -37,7 +40,7 @@ namespace OpenRA.Mods.TS.Traits.Render
 			var voxel = VoxelProvider.GetVoxel(image, "idle");
 			yield return new VoxelAnimation(voxel, () => WVec.Zero,
 				() => new[] { body.QuantizeOrientation(orientation(), facings) },
-				() => false, () => 0);
+				() => false, () => 0, ShowShadow);
 		}
 	}
 
@@ -56,7 +59,7 @@ namespace OpenRA.Mods.TS.Traits.Render
 			rv.Add(new VoxelAnimation(idleVoxel, () => WVec.Zero,
 				() => new[] { body.QuantizeOrientation(self, self.Orientation) },
 				() => Docked,
-				() => 0));
+				() => 0, info.ShowShadow));
 
 			// Selection size
 			var rvi = self.Info.TraitInfo<RenderVoxelsInfo>();
@@ -67,7 +70,7 @@ namespace OpenRA.Mods.TS.Traits.Render
 			rv.Add(new VoxelAnimation(unloadVoxel, () => WVec.Zero,
 				() => new[] { body.QuantizeOrientation(self, self.Orientation) },
 				() => !Docked,
-				() => 0));
+				() => 0, info.ShowShadow));
 		}
 
 		public int2 SelectionSize(Actor self) { return size; }

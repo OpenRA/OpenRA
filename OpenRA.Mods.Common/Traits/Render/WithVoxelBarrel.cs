@@ -29,6 +29,9 @@ namespace OpenRA.Mods.Common.Traits.Render
 		[Desc("Visual offset")]
 		public readonly WVec LocalOffset = WVec.Zero;
 
+		[Desc("Defines if the Voxel should have a shadow.")]
+		public readonly bool ShowShadow = true;
+
 		public override object Create(ActorInitializer init) { return new WithVoxelBarrel(init.Self, this); }
 
 		public IEnumerable<VoxelAnimation> RenderPreviewVoxels(
@@ -53,7 +56,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			Func<WVec> barrelOffset = () => body.LocalToWorld((t.Offset + LocalOffset.Rotate(quantizedTurret())).Rotate(quantizedBody()));
 
 			yield return new VoxelAnimation(voxel, barrelOffset, () => new[] { turretOrientation(), orientation() },
-				() => false, () => 0);
+				() => false, () => 0, ShowShadow);
 		}
 	}
 
@@ -82,7 +85,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			var rv = self.Trait<RenderVoxels>();
 			rv.Add(new VoxelAnimation(VoxelProvider.GetVoxel(rv.Image, Info.Sequence),
 				BarrelOffset, BarrelRotation,
-				() => IsTraitDisabled || !buildComplete, () => 0));
+				() => IsTraitDisabled || !buildComplete, () => 0, info.ShowShadow));
 		}
 
 		WVec BarrelOffset()

@@ -24,7 +24,11 @@ namespace OpenRA.Mods.TS.Traits.Render
 {
 	public class WithVoxelWalkerBodyInfo : ITraitInfo, IRenderActorPreviewVoxelsInfo,  Requires<RenderVoxelsInfo>, Requires<IMoveInfo>, Requires<IFacingInfo>
 	{
+		[Desc("The speed of the walker's legs.")]
 		public readonly int TickRate = 5;
+
+		[Desc("Defines if the Voxel should have a shadow.")]
+		public readonly bool ShowShadow = true;
 		public object Create(ActorInitializer init) { return new WithVoxelWalkerBody(init.Self, this); }
 
 		public IEnumerable<VoxelAnimation> RenderPreviewVoxels(
@@ -36,7 +40,7 @@ namespace OpenRA.Mods.TS.Traits.Render
 
 			yield return new VoxelAnimation(voxel, () => WVec.Zero,
 				() => new[] { body.QuantizeOrientation(orientation(), facings) },
-				() => false, () => frame);
+				() => false, () => frame, ShowShadow);
 		}
 	}
 
@@ -62,7 +66,7 @@ namespace OpenRA.Mods.TS.Traits.Render
 			frames = voxel.Frames;
 			rv.Add(new VoxelAnimation(voxel, () => WVec.Zero,
 				() => new[] { body.QuantizeOrientation(self, self.Orientation) },
-				() => false, () => frame));
+				() => false, () => frame, info.ShowShadow));
 
 			// Selection size
 			var rvi = self.Info.TraitInfo<RenderVoxelsInfo>();

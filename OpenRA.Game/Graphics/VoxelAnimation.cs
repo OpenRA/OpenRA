@@ -21,14 +21,16 @@ namespace OpenRA.Graphics
 		public readonly Func<IEnumerable<WRot>> RotationFunc;
 		public readonly Func<bool> DisableFunc;
 		public readonly Func<uint> FrameFunc;
+		public readonly bool ShowShadow;
 
-		public VoxelAnimation(Voxel voxel, Func<WVec> offset, Func<IEnumerable<WRot>> rotation, Func<bool> disable, Func<uint> frame)
+		public VoxelAnimation(Voxel voxel, Func<WVec> offset, Func<IEnumerable<WRot>> rotation, Func<bool> disable, Func<uint> frame, bool showshadow)
 		{
 			Voxel = voxel;
 			OffsetFunc = offset;
 			RotationFunc = rotation;
 			DisableFunc = disable;
 			FrameFunc = frame;
+			ShowShadow = showshadow;
 		}
 	}
 }
