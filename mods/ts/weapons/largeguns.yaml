@@ -19,7 +19,7 @@
 			Concrete: 60
 		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
 	Warhead@2Eff: CreateEffect
-		Explosions: medium_clsn
+		Explosions: small_clsn
 		ImpactSounds: expnew14.aud
 		InvalidImpactTypes: Water
 	Warhead@3EffWater: CreateEffect
@@ -48,7 +48,7 @@
 			Concrete: 60
 		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
 	Warhead@2Eff: CreateEffect
-		Explosions: large_clsn
+		Explosions: medium_clsn
 		ImpactSounds: expnew14.aud
 		InvalidImpactTypes: Water
 	Warhead@3EffWater: CreateEffect
