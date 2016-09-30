@@ -116,7 +116,7 @@ World:
 		ClassName: Light
 		Factions: gdi
 		BaseActor: mcv
-		SupportActors: e1,e1,e1,e2,e2
+		SupportActors: e1,e1,e1,smech
 		InnerSupportRadius: 3
 		OuterSupportRadius: 5
 	MPStartUnits@light.nod:
@@ -124,7 +124,7 @@ World:
 		ClassName: Light
 		Factions: nod
 		BaseActor: mcv
-		SupportActors: e1,e1,e1,e3,e3
+		SupportActors: e1,e1,e1,bggy
 		InnerSupportRadius: 3
 		OuterSupportRadius: 5
 	MPStartUnits@med.gdi:
@@ -132,7 +132,7 @@ World:
 		ClassName: Medium
 		Factions: gdi
 		BaseActor: mcv
-		SupportActors: e1,e1,e2,jumpjet,smech
+		SupportActors: e1,e1,e2,e2,jumpjet,smech
 		InnerSupportRadius: 3
 		OuterSupportRadius: 5
 	MPStartUnits@med.nod:
@@ -140,7 +140,7 @@ World:
 		ClassName: Medium
 		Factions: nod
 		BaseActor: mcv
-		SupportActors: e1,e1,e3,cyborg,bggy
+		SupportActors: e1,e1,e3,e3,cyborg,bggy
 		InnerSupportRadius: 3
 		OuterSupportRadius: 5
 	MPStartUnits@heavy.gdi:
@@ -148,7 +148,7 @@ World:
 		ClassName: Heavy
 		Factions: gdi
 		BaseActor: mcv
-		SupportActors: e1,e2,e2,smech,mmch
+		SupportActors: e1,e1,e2,e2,jumpjet,smech,smech,mmch
 		InnerSupportRadius: 3
 		OuterSupportRadius: 5
 	MPStartUnits@heavy.nod:
@@ -156,7 +156,7 @@ World:
 		ClassName: Heavy
 		Factions: nod
 		BaseActor: mcv
-		SupportActors: e1,e3,bggy,bike,ttnk
+		SupportActors: e1,e1,e3,e3,cyborg,bggy,bike,ttnk
 		InnerSupportRadius: 3
 		OuterSupportRadius: 5
 	MPStartLocations:
