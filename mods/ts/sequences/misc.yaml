@@ -51,6 +51,7 @@ crate-effects:
 	Defaults:
 		Length: *
 		ZOffset: 2047
+		Offset: 0, 0, 24
 	dollar: money
 	reveal-map: reveal
 	hide-map: shroudx
@@ -211,22 +212,26 @@ discus:
 	idle:
 		Length: *
 		ZOffset: 1023
+		Offset: 0, 0, 12
 
 canister:
 	idle:
 		Length: *
 		ZOffset: 1023
+		Offset: 0, 0, 12
 
 pulsball:
 	idle:
 		Length: *
 		BlendMode: Additive
 		ZOffset: 1023
+		Offset: 0, 0, 24
 
 dragon:
 	idle:
 		Facings: 32
 		ZOffset: 1023
+		Offset: 0, 0, 6
 
 crystal4:
 	idle:
@@ -234,15 +239,18 @@ crystal4:
 		ShadowStart: 15
 		UseTilesetExtension: true
 		ZOffset: 1023
+		Offset: 0, 0, 6
 
 120mm:
 	idle:
 		ZOffset: 1023
+		Offset: 0, 0, 4
 
 torpedo:
 	idle:
 		Length: *
 		ZOffset: 1023
+		Offset: 0, 0, 8
 
 flameall:
 	idle:
@@ -250,42 +258,51 @@ flameall:
 		Facings: -8
 		Tick: 160
 		ZOffset: 1023
+		Offset: 0, 0, 24
 
 largesmoke:
 	idle: lgrysmk1
 		Length: *
 		ZOffset: 1023
+		Offset: 0, 0, 24
 
 smallsmoke:
 	idle: sgrysmk1
 		Length: *
 		ZOffset: 1023
+		Offset: 0, 0, 24
 
 large_smoke_trail:
 	idle: smokey
 		Length: *
 		ZOffset: 1023
+		Offset: 0, 0, 24
 
 small_smoke_trail:
 	idle: smokey2
 		Length: *
 		ZOffset: 1023
+		Offset: 0, 0, 24
 
 largefire:
 	idle: fire1
 		Length: *
+		Offset: 0, 0, 36
 
 mediumfire:
 	idle: fire2
 		Length: *
+		Offset: 0, 0, 24
 
 smallfire:
 	idle: fire3
 		Length: *
+		Offset: 0, 0, 24
 
 tinyfire:
 	idle: fire4
 		Length: *
+		Offset: 0, 0, 24
 
 moveflsh:
 	idle: ring
