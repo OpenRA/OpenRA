@@ -48,12 +48,22 @@ namespace OpenRA.Mods.Common.Activities
 				}
 				else
 				{
-					// Helicopters should take off from their helipad immediately after resupplying.
-					// HACK: Append NextActivity to TakeOff to avoid moving to the Rallypoint (if NextActivity is non-null).
-					inner = ActivityUtils.SequenceActivities(
-						aircraft.GetResupplyActivities(host)
-						.Append(new AllowYieldingReservation(self))
-						.Append(new TakeOff(self)).Append(NextActivity).ToArray());
+					if (self.GetDamageState () == DamageState.Undamaged) {
+						// Helicopters should take off from their helipad immediately after resupplying.
+						// HACK: Append NextActivity to TakeOff to avoid moving to the Rallypoint (if NextActivity is non-null).
+						inner = ActivityUtils.SequenceActivities (
+							aircraft.GetResupplyActivities (host)
+						.Append (new AllowYieldingReservation (self))
+						.Append (new TakeOff (self)).Append (NextActivity).ToArray ());
+					} 
+					else 
+					{
+						// allow the player opportunity to heal a helo
+						inner = ActivityUtils.SequenceActivities (
+							aircraft.GetResupplyActivities (host)
+							.Append (new AllowYieldingReservation (self))
+							.Append (NextActivity).ToArray ());
+					}
 				}
 			}
 			else
