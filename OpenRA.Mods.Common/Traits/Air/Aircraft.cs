@@ -564,7 +564,7 @@ namespace OpenRA.Mods.Common.Traits
 					if (IsPlane)
 						self.QueueActivity(new ReturnToBase(self, Info.AbortOnResupply));
 					else
-						self.QueueActivity(new HeliReturnToBase(self, Info.AbortOnResupply));
+						self.QueueActivity(new HeliReturnToBase(self, Info.AbortOnResupply, true));
 				}
 				else
 				{
@@ -588,8 +588,7 @@ namespace OpenRA.Mods.Common.Traits
 							self.QueueActivity(new HeliFly(self, Target.FromPos(order.TargetActor.CenterPosition + offset)));
 							self.QueueActivity(new Turn(self, Info.InitialFacing));
 							self.QueueActivity(new HeliLand(self, false));
-							self.QueueActivity(new ResupplyAircraft(self));
-							self.QueueActivity(new TakeOff(self));
+							self.QueueActivity(new ResupplyAircraft(self, true));
 						};
 
 						self.QueueActivity(order.Queued, new CallFunc(enter));
@@ -623,7 +622,7 @@ namespace OpenRA.Mods.Common.Traits
 				if (IsPlane)
 					self.QueueActivity(new ReturnToBase(self, Info.AbortOnResupply, null, false));
 				else
-					self.QueueActivity(new HeliReturnToBase(self, Info.AbortOnResupply, true, false));
+					self.QueueActivity(new HeliReturnToBase(self, Info.AbortOnResupply, true, true));
 			}
 		}
 

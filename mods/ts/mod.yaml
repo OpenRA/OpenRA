@@ -1,11 +1,11 @@
 Metadata:
 	Title: Tiberian Sun
 	Description: Developer stub, not yet ready for release!
-	Version: git-785611e
+	Version: git-ab685b6
 	Author: the OpenRA Developers
 
 RequiresMods:
-	modchooser: git-785611e
+	modchooser: git-ab685b6
 
 Packages:
 	~^Content/ts
@@ -54,7 +54,7 @@ Packages:
 
 MapFolders:
 	ts|maps: System
-	~^maps/ts/git-785611e: User
+	~^maps/ts/git-ab685b6: User
 
 Rules:
 	ts|rules/ai.yaml

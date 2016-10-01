@@ -1,11 +1,11 @@
 Metadata:
 	Title: Tiberian Dawn
 	Description: Join the Global Defense Initiative or the Brotherhood of Nod in our\nrecreation of the classic game that started it all.\n\nTiberian Dawn modernizes the original Command & Conquer gameplay\nby introducing features from later games, including per-factory\nproduction queues, unit veterancy, and capturable tech structures.
-	Version: git-785611e
+	Version: git-ab685b6
 	Author: the OpenRA Developers
 
 RequiresMods:
-	modchooser: git-785611e
+	modchooser: git-ab685b6
 
 Packages:
 	~^Content/cnc
@@ -34,7 +34,7 @@ Packages:
 
 MapFolders:
 	cnc|maps: System
-	~^maps/cnc/git-785611e: User
+	~^maps/cnc/git-ab685b6: User
 
 Rules:
 	cnc|rules/misc.yaml
