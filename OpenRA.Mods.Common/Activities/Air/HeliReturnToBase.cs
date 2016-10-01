@@ -20,10 +20,10 @@ namespace OpenRA.Mods.Common.Activities
 	{
 		readonly Aircraft heli;
 		readonly bool alwaysLand;
-        readonly bool idleOnPad;
+		readonly bool idleOnPad;
 		readonly bool abortOnResupply;
 
-		public HeliReturnToBase(Actor self, bool abortOnResupply, bool idleOnPad = false, bool alwaysLand = true)
+		public HeliReturnToBase(Actor self, bool abortOnResupply, bool alwaysLand = true, bool idleOnPad = false)
 		{
 			heli = self.Trait<Aircraft>();
 			this.alwaysLand = alwaysLand;
@@ -102,8 +102,9 @@ namespace OpenRA.Mods.Common.Activities
 			if (heli.Info.RepairBuildings.Contains(dest.Info.Name) && self.GetDamageState() != DamageState.Undamaged)
 				return true;
 
+			// allow mechanics to heal damaged units at their rearming pad when "Return to Base" order is issued
 			return heli.Info.RearmBuildings.Contains(dest.Info.Name) && self.TraitsImplementing<AmmoPool>()
-					.Any(p => !p.Info.SelfReloads && !p.FullAmmo());
+				.Any(p => !p.Info.SelfReloads && (!p.FullAmmo() || (idleOnPad && self.GetDamageState() != DamageState.Undamaged)));
 		}
 	}
 }
