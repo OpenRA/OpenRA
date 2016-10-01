@@ -51,7 +51,7 @@ namespace OpenRA.Mods.Common.Activities
 				else
 				{
                     // Helicopters should take off from their helipad immediately after resupplying,
-                    // unless the "Enter" or "Return to Base Command" was explictly given by user
+                    // unless the "Enter" or "Return to Base" command was explictly given by user
                     // HACK: Append NextActivity to TakeOff to avoid moving to the Rallypoint (if NextActivity is non-null).
                     if (idleOnPad == false)
                     {
