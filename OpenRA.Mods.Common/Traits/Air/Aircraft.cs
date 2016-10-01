@@ -588,8 +588,7 @@ namespace OpenRA.Mods.Common.Traits
 							self.QueueActivity(new HeliFly(self, Target.FromPos(order.TargetActor.CenterPosition + offset)));
 							self.QueueActivity(new Turn(self, Info.InitialFacing));
 							self.QueueActivity(new HeliLand(self, false));
-							self.QueueActivity(new ResupplyAircraft(self, 
-								Info.RearmBuildings.Contains(order.TargetActor.Info.Name)));
+							self.QueueActivity(new ResupplyAircraft(self, Info.RearmBuildings.Contains(order.TargetActor.Info.Name)));
 						};
 
 						self.QueueActivity(order.Queued, new CallFunc(enter));
