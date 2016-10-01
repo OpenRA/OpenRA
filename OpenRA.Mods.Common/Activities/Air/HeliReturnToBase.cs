@@ -20,12 +20,14 @@ namespace OpenRA.Mods.Common.Activities
 	{
 		readonly Aircraft heli;
 		readonly bool alwaysLand;
+        readonly bool idleOnPad;
 		readonly bool abortOnResupply;
 
-		public HeliReturnToBase(Actor self, bool abortOnResupply, bool alwaysLand = true)
+		public HeliReturnToBase(Actor self, bool abortOnResupply, bool idleOnPad = false, bool alwaysLand = true)
 		{
 			heli = self.Trait<Aircraft>();
 			this.alwaysLand = alwaysLand;
+            this.idleOnPad = idleOnPad;
 			this.abortOnResupply = abortOnResupply;
 		}
 
@@ -83,7 +85,7 @@ namespace OpenRA.Mods.Common.Activities
 					new HeliFly(self, Target.FromPos(dest.CenterPosition + offset)),
 					new Turn(self, initialFacing),
 					new HeliLand(self, false),
-					new ResupplyAircraft(self),
+					new ResupplyAircraft(self, idleOnPad),
 					!abortOnResupply ? NextActivity : null);
 			}
 

@@ -1,6 +1,6 @@
 Metadata:
 	Title: All mods
-	Version: {DEV_VERSION}
+	Version: git-785611e
 	Author: The OpenRA Developers
 	Hidden: true
 	Description: Depending on all DLLs.

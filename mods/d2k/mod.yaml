@@ -1,11 +1,11 @@
 Metadata:
 	Title: Dune 2000
 	Description: Three great houses fight for the precious spice, melange.\nHe who controls the spice controls the universe!\n\nTry to establish a foothold on the desert planet Arrakis\nwith its harsh environmental conditions and protect your\nharvesting operations from giant sandworms as well as\nruthless enemy factions.
-	Version: {DEV_VERSION}
+	Version: git-785611e
 	Author: the OpenRA Developers
 
 RequiresMods:
-	modchooser: {DEV_VERSION}
+	modchooser: git-785611e
 
 Packages:
 	~^Content/d2k/v2/
@@ -25,7 +25,7 @@ Packages:
 
 MapFolders:
 	d2k|maps: System
-	~^maps/d2k/{DEV_VERSION}: User
+	~^maps/d2k/git-785611e: User
 
 Rules:
 	d2k|rules/misc.yaml
