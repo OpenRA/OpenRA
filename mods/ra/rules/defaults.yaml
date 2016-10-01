@@ -582,6 +582,16 @@
 	-EmitInfantryOnSell:
 	-MustBeDestroyed:
 
+^InfiltratableFake:
+	Targetable:
+		TargetTypes: Ground, Structure, C4, DetonateAttack, SpyInfiltrate
+	InfiltrateForDecoration:
+		RequiresSelection: true
+		Image: pips
+		Sequence: tag-fake
+		ReferencePoint: Top
+		ZOffset: 256
+
 ^AmmoBox:
 	Inherits: ^TechBuilding
 	-Selectable:

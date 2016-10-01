@@ -31,9 +31,9 @@ namespace OpenRA.Mods.D2k.Traits.Render
 			carryable = self.Trait<Carryable>();
 		}
 
-		public override bool ShouldRender(Actor self)
+		protected override bool ShouldRender(Actor self)
 		{
-			return carryable.Reserved;
+			return carryable.Reserved && base.ShouldRender(self);
 		}
 	}
 }
