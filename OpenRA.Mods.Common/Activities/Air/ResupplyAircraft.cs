@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Common.Activities
 		public ResupplyAircraft(Actor self, bool idleOnPad = false)
 		{
 			aircraft = self.Trait<Aircraft>();
-            this.idleOnPad = idleOnPad;
+			this.idleOnPad = idleOnPad;
         }
 
 		public override Activity Tick(Actor self)
