@@ -1,4 +1,4 @@
-tibsun: Tiberan Sun (GDI or Nod Disc, English)
+tibsun: Tiberian Sun (GDI or Nod Disc, English)
 	IDFiles:
 		README.TXT: 45745c4a0c888317ec900208a426472779c42bf7
 		AUTOPLAY.WAV: 2dfce5d00f98b641849c29942b651f4e98d30e30
@@ -48,7 +48,7 @@ tibsun: Tiberan Sun (GDI or Nod Disc, English)
 			^Content/ts/temperat.mix:
 				Offset: 73056940
 				Length: 2037606
-tibsun-linux: Tiberan Sun (GDI or Nod Disc, English)
+tibsun-linux: Tiberian Sun (GDI or Nod Disc, English)
 	IDFiles:
 		readme.txt: 45745c4a0c888317ec900208a426472779c42bf7
 		autoplay.wav: 2dfce5d00f98b641849c29942b651f4e98d30e30

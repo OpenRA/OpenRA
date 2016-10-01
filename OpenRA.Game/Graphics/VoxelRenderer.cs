@@ -212,8 +212,9 @@ namespace OpenRA.Graphics
 							lightAmbientColor, lightDiffuseColor, color.TextureMidIndex, normals.TextureMidIndex);
 
 						// Disable shadow normals by forcing zero diffuse and identity ambient light
-						Render(rd, Util.MatrixMultiply(shadow, t), lightDirection,
-							ShadowAmbient, ShadowDiffuse, shadowPalette.TextureMidIndex, normals.TextureMidIndex);
+						if (v.ShowShadow)
+							Render(rd, Util.MatrixMultiply(shadow, t), lightDirection,
+								ShadowAmbient, ShadowDiffuse, shadowPalette.TextureMidIndex, normals.TextureMidIndex);
 					}
 				}
 			}));

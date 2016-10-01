@@ -26,6 +26,9 @@ namespace OpenRA.Mods.Common.Traits.Render
 		[Desc("Turreted 'Turret' key to display")]
 		public readonly string Turret = "primary";
 
+		[Desc("Defines if the Voxel should have a shadow.")]
+		public readonly bool ShowShadow = true;
+
 		public override object Create(ActorInitializer init) { return new WithVoxelTurret(init.Self, this); }
 
 		public IEnumerable<VoxelAnimation> RenderPreviewVoxels(
@@ -44,7 +47,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			var turretFacing = Turreted.TurretFacingFromInit(init, t.InitialFacing, Turret);
 			Func<WRot> turretBodyOrientation = () => WRot.FromYaw(WAngle.FromFacing(turretFacing()) - orientation().Yaw);
 			yield return new VoxelAnimation(voxel, turretOffset,
-				() => new[] { turretBodyOrientation(), body.QuantizeOrientation(orientation(), facings) }, () => false, () => 0);
+				() => new[] { turretBodyOrientation(), body.QuantizeOrientation(orientation(), facings) }, () => false, () => 0, ShowShadow);
 		}
 	}
 
@@ -69,7 +72,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			var rv = self.Trait<RenderVoxels>();
 			rv.Add(new VoxelAnimation(VoxelProvider.GetVoxel(rv.Image, Info.Sequence),
 				() => turreted.Position(self), TurretRotation,
-				() => IsTraitDisabled || !buildComplete, () => 0));
+				() => IsTraitDisabled || !buildComplete, () => 0, info.ShowShadow));
 		}
 
 		IEnumerable<WRot> TurretRotation()
