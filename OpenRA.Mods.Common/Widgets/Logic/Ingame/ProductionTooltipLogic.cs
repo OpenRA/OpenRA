@@ -93,7 +93,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				costLabel.GetColor = () => pr.Cash + pr.Resources >= cost
 					? Color.White : Color.Red;
 
-				var descString = tooltip.Description.Replace("\\n", "\n");
+				var descString = buildable.Description.Replace("\\n", "\n");
 				descLabel.GetText = () => descString;
 
 				var leftWidth = new[] { nameWidth + hotkeyWidth, requiresFont.Measure(requiresString).X, descFont.Measure(descString).X }.Aggregate(Math.Max);

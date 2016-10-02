@@ -15,7 +15,6 @@ namespace OpenRA.Mods.Common.Traits
 {
 	public abstract class TooltipInfoBase : ITraitInfo
 	{
-		[Translate] public readonly string Description = "";
 		[Translate] public readonly string Name = "";
 
 		public abstract object Create(ActorInitializer init);

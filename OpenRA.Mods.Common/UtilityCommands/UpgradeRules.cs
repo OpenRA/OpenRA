@@ -397,6 +397,25 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				// Move production description from Tooltip to Buildable
+				if (engineVersion < 20161016)
+				{
+					var tooltipChild = node.Value.Nodes.FirstOrDefault(n => n.Key == "Tooltip");
+					if (tooltipChild != null || (tooltipChild = node.Value.Nodes.FirstOrDefault(n => n.Key == "DisguiseToolTip")) != null)
+					{
+						var descNode = tooltipChild.Value.Nodes.FirstOrDefault(n => n.Key == "Description");
+						if (descNode != null)
+						{
+							var buildableNode = node.Value.Nodes.FirstOrDefault(n => n.Key == "Buildable");
+							if (buildableNode == null)
+								node.Value.Nodes.Add(buildableNode = new MiniYamlNode("Buildable", ""));
+
+							buildableNode.Value.Nodes.Add(descNode);
+							tooltipChild.Value.Nodes.Remove(descNode);
+						}
+					}
+				}
+
 				UpgradeActorRules(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 
