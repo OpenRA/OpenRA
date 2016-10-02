@@ -22,7 +22,6 @@ using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using OpenRA.Chat;
-using OpenRA.FileSystem;
 using OpenRA.Graphics;
 using OpenRA.Network;
 using OpenRA.Primitives;
