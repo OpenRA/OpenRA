@@ -245,7 +245,6 @@ VISC_SML:
 	Inherits: ^Visceroid
 	Tooltip:
 		Name: Baby Visceroid
-		Description: infantry transmorgifies into this
 	Health:
 		HP: 200
 	AttackWander:
@@ -254,12 +253,13 @@ VISC_SML:
 		MaxMoveDelayInTicks: 60
 	RenderSprites:
 		Image: vissml
+	Buildable:
+		Description: infantry transmorgifies into this
 
 VISC_LRG:
 	Inherits: ^Visceroid
 	Tooltip:
 		Name: Adult Visceroid
-		Description: 2 small visceroids combine into this
 	Health:
 		HP: 500
 	Armament:
@@ -275,6 +275,8 @@ VISC_LRG:
 		Crushes: crate, infantry
 	RenderSprites:
 		Image: vislrg
+	Buildable:
+		Description: 2 small visceroids combine into this
 
 CIV1:
 	Inherits: ^CivilianInfantry

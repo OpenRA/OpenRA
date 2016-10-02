@@ -4,11 +4,11 @@ TRAN:
 		Cost: 750
 	Tooltip:
 		Name: Chinook Transport
-		Description: Fast Infantry Transport Helicopter.\n  Unarmed
 	Buildable:
 		BuildPaletteOrder: 10
 		Prerequisites: hpad
 		Queue: Aircraft.GDI, Aircraft.Nod
+		Description: Fast Infantry Transport Helicopter.\n  Unarmed
 	Aircraft:
 		LandWhenIdle: true
 		TurnSpeed: 5
@@ -61,11 +61,11 @@ HELI:
 		Cost: 1200
 	Tooltip:
 		Name: Apache Longbow
-		Description: Helicopter Gunship with Chainguns.\n  Strong vs Infantry, Light Vehicles and\n  Aircraft\n  Weak vs Tanks
 	Buildable:
 		BuildPaletteOrder: 20
 		Prerequisites: hpad, anyhq, ~techlevel.medium
 		Queue: Aircraft.Nod
+		Description: Helicopter Gunship with Chainguns.\n  Strong vs Infantry, Light Vehicles and\n  Aircraft\n  Weak vs Tanks
 	Aircraft:
 		RearmBuildings: hpad
 		InitialFacing: 224
@@ -121,11 +121,11 @@ ORCA:
 		Cost: 1200
 	Tooltip:
 		Name: Orca
-		Description: Helicopter Gunship with AG Missiles.\n  Strong vs Buildings, Tanks\n  Weak vs Infantry
 	Buildable:
 		BuildPaletteOrder: 20
 		Prerequisites: hpad, anyhq, ~techlevel.medium
 		Queue: Aircraft.GDI
+		Description: Helicopter Gunship with AG Missiles.\n  Strong vs Buildings, Tanks\n  Weak vs Infantry
 	Aircraft:
 		RearmBuildings: hpad
 		InitialFacing: 224
@@ -167,7 +167,6 @@ C17:
 	Inherits: ^Plane
 	Tooltip:
 		Name: Supply Aircraft
-		Description: Drops vehicle reinforcements on Airstrips
 	Valued:
 		Cost: 2000
 	Aircraft:
@@ -200,12 +199,13 @@ C17:
 	Contrail@4:
 		Offset: -261,650,0
 		TrailLength: 15
+	Buildable:
+		Description: Drops vehicle reinforcements on Airstrips
 
 A10:
 	Inherits: ^Plane
 	Tooltip:
 		Name: A10 Bomber
-		Description: Used to deliver air strikes.
 	Valued:
 		Cost: 2000
 	Aircraft:
@@ -236,6 +236,8 @@ A10:
 	Contrail@2:
 		Offset: -640,-171,0
 		TrailLength: 15
+	Buildable:
+		Description: Used to deliver air strikes.
 
 TRAN.Husk:
 	Inherits: ^HelicopterHusk

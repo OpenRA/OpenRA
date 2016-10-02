@@ -4,12 +4,12 @@ MSLO:
 		Cost: 2500
 	Tooltip:
 		Name: Missile Silo
-		Description: Provides an atomic bomb.\nRequires power to operate.\n  Special Ability: Atom Bomb\nMaximum 1 can be built.
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 140
 		Prerequisites: techcenter, ~techlevel.unrestricted
 		BuildLimit: 1
+		Description: Provides an atomic bomb.\nRequires power to operate.\n  Special Ability: Atom Bomb\nMaximum 1 can be built.
 	Building:
 		Footprint: xx
 		Dimensions: 2,1
@@ -55,11 +55,11 @@ GAP:
 		Cost: 800
 	Tooltip:
 		Name: Gap Generator
-		Description: Obscures the enemy's view with shroud.\nRequires power to operate.
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 110
 		Prerequisites: atek, ~structures.allies, ~techlevel.high
+		Description: Obscures the enemy's view with shroud.\nRequires power to operate.
 	Selectable:
 		Bounds: 24,24
 	SelectionDecorations:
@@ -95,11 +95,11 @@ SPEN:
 		Cost: 800
 	Tooltip:
 		Name: Sub Pen
-		Description: Produces and repairs\nsubmarines and transports.
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 50
 		Prerequisites: anypower, ~structures.soviet, ~techlevel.low
+		Description: Produces and repairs\nsubmarines and transports.
 	Targetable:
 		TargetTypes: Ground, Water, Structure, C4, DetonateAttack, SpyInfiltrate
 	Building:
@@ -185,11 +185,11 @@ SYRD:
 		Queue: Building
 		BuildPaletteOrder: 40
 		Prerequisites: anypower, ~structures.allies, ~techlevel.low
+		Description: Produces and repairs ships\nand transports.
 	Valued:
 		Cost: 1000
 	Tooltip:
 		Name: Shipyard
-		Description: Produces and repairs ships\nand transports.
 	Targetable:
 		TargetTypes: Ground, Water, Structure, C4, DetonateAttack, SpyInfiltrate
 	Building:
@@ -280,11 +280,11 @@ IRON:
 		BuildPaletteOrder: 130
 		Prerequisites: stek, ~structures.soviet, ~techlevel.unrestricted
 		BuildLimit: 1
+		Description: Makes a group of units invulnerable\nfor a short time.\nRequires power to operate.\n  Special Ability: Invulnerability\nMaximum 1 can be built.
 	Valued:
 		Cost: 1500
 	Tooltip:
 		Name: Iron Curtain
-		Description: Makes a group of units invulnerable\nfor a short time.\nRequires power to operate.\n  Special Ability: Invulnerability\nMaximum 1 can be built.
 	Building:
 		Footprint: xx
 		Dimensions: 2,1
@@ -330,11 +330,11 @@ PDOX:
 		BuildPaletteOrder: 120
 		Prerequisites: atek, ~structures.allies, ~techlevel.unrestricted
 		BuildLimit: 1
+		Description: Teleports a group of units across the\nmap for a short time.\nRequires power to operate.\n  Special Ability: Chronoshift\nMaximum 1 can be built.
 	Valued:
 		Cost: 1500
 	Tooltip:
 		Name: Chronosphere
-		Description: Teleports a group of units across the\nmap for a short time.\nRequires power to operate.\n  Special Ability: Chronoshift\nMaximum 1 can be built.
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
@@ -400,11 +400,11 @@ TSLA:
 		Queue: Defense
 		BuildPaletteOrder: 80
 		Prerequisites: weap, ~structures.soviet, ~techlevel.medium
+		Description: Advanced base defense.\nRequires power to operate.\nCan detect cloaked units.\n  Strong vs Vehicles, Infantry\n  Weak vs Aircraft
 	Valued:
 		Cost: 1200
 	Tooltip:
 		Name: Tesla Coil
-		Description: Advanced base defense.\nRequires power to operate.\nCan detect cloaked units.\n  Strong vs Vehicles, Infantry\n  Weak vs Aircraft
 	RequiresPower:
 	Selectable:
 		Bounds: 24,24
@@ -444,11 +444,11 @@ AGUN:
 		Queue: Defense
 		BuildPaletteOrder: 90
 		Prerequisites: dome, ~structures.allies, ~techlevel.medium
+		Description: Anti-Air base defense.\nRequires power to operate.\nCan detect cloaked units.\n  Strong vs Aircraft\n  Weak vs Ground units
 	Valued:
 		Cost: 800
 	Tooltip:
 		Name: AA Gun
-		Description: Anti-Air base defense.\nRequires power to operate.\nCan detect cloaked units.\n  Strong vs Aircraft\n  Weak vs Ground units
 	Selectable:
 		Bounds: 24,24
 	SelectionDecorations:
@@ -494,11 +494,11 @@ DOME:
 		Queue: Building
 		BuildPaletteOrder: 90
 		Prerequisites: proc, ~techlevel.medium
+		Description: Provides an overview\nof the battlefield.\nCan detect cloaked units.\n  Requires power to operate.
 	Valued:
 		Cost: 1800
 	Tooltip:
 		Name: Radar Dome
-		Description: Provides an overview\nof the battlefield.\nCan detect cloaked units.\n  Requires power to operate.
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
@@ -529,12 +529,12 @@ PBOX:
 	Inherits: ^Defense
 	Tooltip:
 		Name: Pillbox
-		Description: Static defense with a fireport for a\ngarrisoned soldier.\nCan detect cloaked units.\n  Strong vs Infantry, Light armor\n  Weak vs Tanks, Aircraft
 	Building:
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 40
 		Prerequisites: tent, ~structures.allies, ~techlevel.low
+		Description: Static defense with a fireport for a\ngarrisoned soldier.\nCan detect cloaked units.\n  Strong vs Infantry, Light armor\n  Weak vs Tanks, Aircraft
 	Valued:
 		Cost: 400
 	Health:
@@ -574,12 +574,12 @@ HBOX:
 	Inherits: ^Defense
 	Tooltip:
 		Name: Camo Pillbox
-		Description: Camouflaged static defense with a fireport\nfor a garrisoned soldier.\nCan detect cloaked units.\n  Strong vs Infantry, Light armor\n  Weak vs Tanks, Aircraft
 	Building:
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 50
 		Prerequisites: tent, ~structures.allies, ~techlevel.medium
+		Description: Camouflaged static defense with a fireport\nfor a garrisoned soldier.\nCan detect cloaked units.\n  Strong vs Infantry, Light armor\n  Weak vs Tanks, Aircraft
 	Valued:
 		Cost: 600
 	Health:
@@ -624,11 +624,11 @@ GUN:
 		Queue: Defense
 		BuildPaletteOrder: 70
 		Prerequisites: tent, ~structures.allies, ~techlevel.medium
+		Description: Anti-Armor base defense.\nCan detect cloaked units.\n  Strong vs Vehicles\n  Weak vs Infantry, Aircraft
 	Valued:
 		Cost: 600
 	Tooltip:
 		Name: Turret
-		Description: Anti-Armor base defense.\nCan detect cloaked units.\n  Strong vs Vehicles\n  Weak vs Infantry, Aircraft
 	Building:
 	Health:
 		HP: 400
@@ -664,11 +664,11 @@ FTUR:
 		Queue: Defense
 		BuildPaletteOrder: 60
 		Prerequisites: barr, ~structures.soviet, ~techlevel.low
+		Description: Anti-Infantry base defense.\nCan detect cloaked units.\n  Strong vs Infantry, Light armor\n  Weak vs Tanks, Aircraft
 	Valued:
 		Cost: 600
 	Tooltip:
 		Name: Flame Tower
-		Description: Anti-Infantry base defense.\nCan detect cloaked units.\n  Strong vs Infantry, Light armor\n  Weak vs Tanks, Aircraft
 	Building:
 	Health:
 		HP: 400
@@ -702,11 +702,11 @@ SAM:
 		Queue: Defense
 		BuildPaletteOrder: 100
 		Prerequisites: dome, ~structures.soviet, ~techlevel.medium
+		Description: Anti-Air base defense.\nRequires power to operate.\nCan detect cloaked units.\n  Strong vs Aircraft\n  Weak vs Ground units
 	Valued:
 		Cost: 750
 	Tooltip:
 		Name: SAM Site
-		Description: Anti-Air base defense.\nRequires power to operate.\nCan detect cloaked units.\n  Strong vs Aircraft\n  Weak vs Ground units
 	Building:
 		Footprint: xx
 		Dimensions: 2,1
@@ -746,11 +746,11 @@ ATEK:
 		Queue: Building
 		BuildPaletteOrder: 140
 		Prerequisites: weap, dome, ~structures.allies, ~techlevel.high
+		Description: Provides Allied advanced technologies.\n  Special Ability: GPS Satellite
 	Valued:
 		Cost: 1500
 	Tooltip:
 		Name: Allied Tech Center
-		Description: Provides Allied advanced technologies.\n  Special Ability: GPS Satellite
 	ProvidesPrerequisite:
 		Prerequisite: techcenter
 	Building:
@@ -785,11 +785,11 @@ WEAP:
 		Queue: Building
 		BuildPaletteOrder: 80
 		Prerequisites: proc, ~techlevel.low
+		Description: Produces vehicles.
 	Valued:
 		Cost: 2000
 	Tooltip:
 		Name: War Factory
-		Description: Produces vehicles.
 	Building:
 		Footprint: xxx xxx
 		Dimensions: 3,2
@@ -889,6 +889,7 @@ FACT:
 		Queue: Building
 		BuildPaletteOrder: 1000
 		Prerequisites: ~disabled
+		Description: Produces structures.
 	ProvidesPrerequisite@allies:
 		Factions: allies, england, france, germany
 		Prerequisite: structures.allies
@@ -929,7 +930,6 @@ FACT:
 		Cost: 2500
 	Tooltip:
 		Name: Construction Yard
-		Description: Produces structures.
 	CustomSellValue:
 		Value: 2500
 	BaseBuilding:
@@ -960,11 +960,11 @@ PROC:
 		Queue: Building
 		BuildPaletteOrder: 60
 		Prerequisites: anypower, ~techlevel.infonly
+		Description: Refines Ore and Gems\ninto credits.
 	Valued:
 		Cost: 1400
 	Tooltip:
 		Name: Ore Refinery
-		Description: Refines Ore and Gems\ninto credits.
 	Building:
 		Footprint: _x_ xxx x==
 		Dimensions: 3,3
@@ -1014,11 +1014,11 @@ SILO:
 		Queue: Defense
 		BuildPaletteOrder: 35
 		Prerequisites: proc, ~techlevel.infonly
+		Description: Stores excess refined\nOre and Gems.
 	Valued:
 		Cost: 150
 	Tooltip:
 		Name: Silo
-		Description: Stores excess refined\nOre and Gems.
 	Building:
 	-GivesBuildableArea:
 	Health:
@@ -1045,11 +1045,11 @@ HPAD:
 		Queue: Building
 		BuildPaletteOrder: 120
 		Prerequisites: dome, ~structures.allies, ~techlevel.medium
+		Description: Produces and reloads\nhelicopters.
 	Valued:
 		Cost: 500
 	Tooltip:
 		Name: Helipad
-		Description: Produces and reloads\nhelicopters.
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
@@ -1124,11 +1124,11 @@ AFLD:
 		Queue: Building
 		BuildPaletteOrder: 130
 		Prerequisites: dome, ~structures.soviet, ~techlevel.medium
+		Description: Produces and reloads aircraft.\n  Special Ability: Paratroopers\n  Special Ability: Spy Plane
 	Valued:
 		Cost: 500
 	Tooltip:
 		Name: Airfield
-		Description: Produces and reloads aircraft.\n  Special Ability: Paratroopers\n  Special Ability: Spy Plane
 	Building:
 		Footprint: xxx xxx
 		Dimensions: 3,2
@@ -1241,11 +1241,11 @@ POWR:
 		Queue: Building
 		BuildPaletteOrder: 10
 		Prerequisites: ~techlevel.infonly
+		Description: Provides power for other structures.
 	Valued:
 		Cost: 300
 	Tooltip:
 		Name: Power Plant
-		Description: Provides power for other structures.
 	ProvidesPrerequisite:
 		Prerequisite: anypower
 	Building:
@@ -1278,11 +1278,11 @@ APWR:
 		Queue: Building
 		BuildPaletteOrder: 110
 		Prerequisites: dome, ~techlevel.medium
+		Description: Provides double the power of a\nstandard Power Plant.
 	Valued:
 		Cost: 500
 	Tooltip:
 		Name: Advanced Power Plant
-		Description: Provides double the power of a\nstandard Power Plant.
 	ProvidesPrerequisite:
 		Prerequisite: anypower
 	Building:
@@ -1319,11 +1319,11 @@ STEK:
 		Queue: Building
 		BuildPaletteOrder: 150
 		Prerequisites: weap, dome, ~structures.soviet, ~techlevel.high
+		Description: Provides Soviet advanced technologies.
 	Valued:
 		Cost: 1500
 	Tooltip:
 		Name: Soviet Tech Center
-		Description: Provides Soviet advanced technologies.
 	ProvidesPrerequisite:
 		Prerequisite: techcenter
 	Building:
@@ -1346,11 +1346,11 @@ BARR:
 		Queue: Building
 		BuildPaletteOrder: 30
 		Prerequisites: anypower, ~structures.soviet, ~techlevel.infonly
+		Description: Trains infantry.
 	Valued:
 		Cost: 400
 	Tooltip:
 		Name: Soviet Barracks
-		Description: Trains infantry.
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
@@ -1420,11 +1420,11 @@ KENN:
 		Queue: Building
 		BuildPaletteOrder: 175
 		Prerequisites: anypower, ~structures.soviet, ~techlevel.infonly
+		Description: Trains Attack Dogs.
 	Valued:
 		Cost: 100
 	Tooltip:
 		Name: Kennel
-		Description: Trains Attack Dogs.
 	Building:
 	-GivesBuildableArea:
 	Health:
@@ -1468,11 +1468,11 @@ TENT:
 		Queue: Building
 		BuildPaletteOrder: 20
 		Prerequisites: anypower, ~structures.allies, ~techlevel.infonly
+		Description: Trains infantry.
 	Valued:
 		Cost: 400
 	Tooltip:
 		Name: Allied Barracks
-		Description: Trains infantry.
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
@@ -1548,11 +1548,11 @@ FIX:
 		Queue: Building
 		BuildPaletteOrder: 100
 		Prerequisites: weap, ~techlevel.medium
+		Description: Repairs vehicles for credits.
 	Valued:
 		Cost: 1200
 	Tooltip:
 		Name: Service Depot
-		Description: Repairs vehicles for credits.
 	Building:
 		Footprint: _x_ xxx _x_
 		Dimensions: 3,3
@@ -1586,13 +1586,13 @@ SBAG:
 		Queue: Defense
 		BuildPaletteOrder: 10
 		Prerequisites: fact, ~structures.allies, ~techlevel.low
+		Description: Stops infantry and light vehicles.\nCan be crushed by tanks.
 	Valued:
 		Cost: 25
 	CustomSellValue:
 		Value: 0
 	Tooltip:
 		Name: Sandbag Wall
-		Description: Stops infantry and light vehicles.\nCan be crushed by tanks.
 	Health:
 		HP: 300
 	Armor:
@@ -1611,13 +1611,13 @@ FENC:
 		Queue: Defense
 		BuildPaletteOrder: 20
 		Prerequisites: fact, ~structures.soviet, ~techlevel.low
+		Description: Stops infantry and light vehicles.\nCan be crushed by tanks.
 	Valued:
 		Cost: 25
 	CustomSellValue:
 		Value: 0
 	Tooltip:
 		Name: Wire Fence
-		Description: Stops infantry and light vehicles.\nCan be crushed by tanks.
 	Health:
 		HP: 300
 	Armor:
@@ -1636,13 +1636,13 @@ BRIK:
 		Queue: Defense
 		BuildPaletteOrder: 30
 		Prerequisites: fact, ~techlevel.medium
+		Description: Stop units and blocks enemy fire.
 	Valued:
 		Cost: 100
 	CustomSellValue:
 		Value: 0
 	Tooltip:
 		Name: Concrete Wall
-		Description: Stop units and blocks enemy fire.
 	SoundOnDamageTransition:
 		DamagedSounds: crmble2.aud
 		DestroyedSounds: kaboom30.aud
@@ -1738,16 +1738,19 @@ BARRACKS:
 	AlwaysVisible:
 	Tooltip:
 		Name: Infantry Production
+	Buildable:
 		Description: Infantry Production
 
 TECHCENTER:
 	AlwaysVisible:
 	Tooltip:
 		Name: Tech Center
+	Buildable:
 		Description: Tech Center
 
 ANYPOWER:
 	AlwaysVisible:
 	Tooltip:
 		Name: Power Plant
+	Buildable:
 		Description: Power Plant

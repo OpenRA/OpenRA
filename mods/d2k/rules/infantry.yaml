@@ -5,11 +5,11 @@ light_inf:
 		BuildPaletteOrder: 10
 		BuildDuration: 54
 		BuildDurationModifier: 40
+		Description: General-purpose infantry\n  Strong vs Infantry\n  Weak vs Vehicles, Artillery
 	Valued:
 		Cost: 50
 	Tooltip:
 		Name: Light Infantry
-		Description: General-purpose infantry\n  Strong vs Infantry\n  Weak vs Vehicles, Artillery
 	Health:
 		HP: 600
 	Mobile:
@@ -28,11 +28,11 @@ engineer:
 		Prerequisites: upgrade.barracks, ~techlevel.medium
 		BuildDuration: 108
 		BuildDurationModifier: 40
+		Description: Infiltrates and captures enemy structures\n  Strong vs Buildings\n  Weak vs Everything
 	Valued:
 		Cost: 400
 	Tooltip:
 		Name: Engineer
-		Description: Infiltrates and captures enemy structures\n  Strong vs Buildings\n  Weak vs Everything
 	Health:
 		HP: 500
 	RevealsShroud:
@@ -57,11 +57,11 @@ trooper:
 		Prerequisites: upgrade.barracks, ~techlevel.medium
 		BuildDuration: 73
 		BuildDurationModifier: 40
+		Description: Anti-tank/Anti-aircraft infantry\n  Strong vs Tanks, Aircraft\n  Weak vs Infantry, Artillery
 	Valued:
 		Cost: 90
 	Tooltip:
 		Name: Trooper
-		Description: Anti-tank/Anti-aircraft infantry\n  Strong vs Tanks, Aircraft\n  Weak vs Infantry, Artillery
 	Health:
 		HP: 700
 	RevealsShroud:
@@ -84,11 +84,11 @@ thumper:
 		Prerequisites: upgrade.barracks, ~techlevel.high
 		BuildDuration: 108
 		BuildDurationModifier: 40
+		Description: Attracts nearby worms\n  Unarmed
 	Valued:
 		Cost: 200
 	Tooltip:
 		Name: Thumper
-		Description: Attracts nearby worms\n  Unarmed
 	Health:
 		HP: 375
 	RevealsShroud:
@@ -131,11 +131,11 @@ fremen:
 	Inherits: ^Infantry
 	Tooltip:
 		Name: Fremen
-		Description: Elite sniper infantry unit\n  Strong vs Infantry\n  Weak vs Vehicles\n  Special Ability: Invisibility
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 100
 		Prerequisites: ~disabled
+		Description: Elite sniper infantry unit\n  Strong vs Infantry\n  Weak vs Vehicles\n  Special Ability: Invisibility
 	Mobile:
 		Speed: 43
 	Valued:
@@ -173,11 +173,11 @@ grenadier:
 		Prerequisites: ~barracks.atreides, upgrade.barracks, high_tech_factory, ~techlevel.medium
 		BuildDuration: 81	## Wasn't converted, copied from Sardauker who has same value in TibEd.
 		BuildDurationModifier: 40
+		Description: Infantry armed with grenades. \n  Strong vs Buildings, Infantry\n  Weak vs Vehicles
 	Valued:
 		Cost: 80
 	Tooltip:
 		Name: Grenadier
-		Description: Infantry armed with grenades. \n  Strong vs Buildings, Infantry\n  Weak vs Vehicles
 	Health:
 		HP: 600
 	Mobile:
@@ -201,11 +201,11 @@ sardaukar:
 		Prerequisites: ~barracks.harkonnen, upgrade.barracks, high_tech_factory, ~techlevel.high
 		BuildDuration: 81
 		BuildDurationModifier: 40
+		Description: Elite assault infantry\n  Strong vs Infantry, Vehicles\n  Weak vs Artillery
 	Valued:
 		Cost: 200
 	Tooltip:
 		Name: Sardaukar
-		Description: Elite assault infantry\n  Strong vs Infantry, Vehicles\n  Weak vs Artillery
 	Health:
 		HP: 1000
 	Mobile:
@@ -232,11 +232,11 @@ saboteur:
 		Queue: Infantry
 		BuildPaletteOrder: 100
 		Prerequisites: ~disabled
+		Description: Sneaky infantry, armed with explosives\n  Strong vs Buildings\n  Weak vs Everything\n  Special Ability: destroy buildings
 	Valued:
 		Cost: 300	## actually 0, but spawns from support power at Palace
 	Tooltip:
 		Name: Saboteur
-		Description: Sneaky infantry, armed with explosives\n  Strong vs Buildings\n  Weak vs Everything\n  Special Ability: destroy buildings
 	Health:
 		HP: 400
 	Mobile:
@@ -259,10 +259,10 @@ saboteur:
 nsfremen:
 	Inherits: fremen
 	Tooltip:
-		Description: Elite sniper infantry unit\n  Strong vs Infantry\n  Weak vs Vehicles
 	Buildable:
 		BuildPaletteOrder: 105
 		Prerequisites: ~disabled
+		Description: Elite sniper infantry unit\n  Strong vs Infantry\n  Weak vs Vehicles
 	RenderSprites:
 		Image: fremen
 	-Cloak:

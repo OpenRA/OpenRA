@@ -4,11 +4,11 @@ NAPULS:
 		Cost: 1000
 	Tooltip:
 		Name: E.M. Pulse Cannon
-		Description: Disables mechanical units in an area.\nRequires power to operate.
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 90
 		Prerequisites: radar
+		Description: Disables mechanical units in an area.\nRequires power to operate.
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2

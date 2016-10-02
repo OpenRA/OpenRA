@@ -4,11 +4,11 @@ E1:
 		Queue: Infantry
 		BuildPaletteOrder: 10
 		Prerequisites: ~barracks
+		Description: General-purpose infantry.\n  Strong vs Infantry\n  Weak vs Vehicles, Aircraft
 	Valued:
 		Cost: 120
 	Tooltip:
 		Name: Light Infantry
-		Description: General-purpose infantry.\n  Strong vs Infantry\n  Weak vs Vehicles, Aircraft
 	Health:
 		HP: 125
 	Mobile:
@@ -40,11 +40,11 @@ ENGINEER:
 		Cost: 500
 	Tooltip:
 		Name: Engineer
-		Description: Infiltrates and captures enemy structures.\n  Unarmed
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 30
 		Prerequisites: ~barracks
+		Description: Infiltrates and captures enemy structures.\n  Unarmed
 	Voiced:
 		VoiceSet: Engineer
 	Mobile:

@@ -5,10 +5,10 @@ FPWR:
 		BuildPaletteOrder: 870
 		Queue: Defense
 		Prerequisites: ~structures.france, ~techlevel.infonly
+		Description: Looks like a Power Plant.
 	Tooltip:
 		Icon: fake-icon
 		Name: Fake Power Plant
-		Description: Looks like a Power Plant.
 		GenericName: Power Plant
 		GenericVisibility: Enemy
 		GenericStancePrefix: False
@@ -32,10 +32,10 @@ SYRF:
 		BuildPaletteOrder: 890
 		Queue: Defense
 		Prerequisites: ~structures.france, ~techlevel.medium
+		Description: Looks like a Shipyard.
 	Tooltip:
 		Icon: fake-icon
 		Name: Fake Shipyard
-		Description: Looks like a Shipyard.
 		GenericName: Shipyard
 		GenericVisibility: Enemy
 		GenericStancePrefix: False
@@ -66,10 +66,10 @@ SPEF:
 		BuildPaletteOrder: 890
 		Queue: Defense
 		Prerequisites: ~disabled
+		Description: Looks like a Sub Pen.
 	Tooltip:
 		Icon: fake-icon
 		Name: Fake Sub Pen
-		Description: Looks like a Sub Pen.
 		GenericName: Sub Pen
 		GenericVisibility: Enemy
 		GenericStancePrefix: False
@@ -96,10 +96,10 @@ WEAF:
 		BuildPaletteOrder: 920
 		Prerequisites: ~structures.france, ~techlevel.medium
 		Queue: Defense
+		Description: Looks like a War Factory.
 	Tooltip:
 		Icon: fake-icon
 		Name: Fake War Factory
-		Description: Looks like a War Factory.
 		GenericName: War Factory
 		GenericVisibility: Enemy
 		GenericStancePrefix: False
@@ -124,7 +124,6 @@ DOMF:
 	Tooltip:
 		Icon: fake-icon
 		Name: Fake Radar Dome
-		Description: Looks like a Radar Dome.
 		GenericName: Radar Dome
 		GenericVisibility: Enemy
 		GenericStancePrefix: False
@@ -132,6 +131,7 @@ DOMF:
 		BuildPaletteOrder: 930
 		Queue: Defense
 		Prerequisites: ~structures.france, ~techlevel.medium
+		Description: Looks like a Radar Dome.
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
@@ -153,10 +153,10 @@ FIXF:
 		BuildPaletteOrder: 940
 		Queue: Defense
 		Prerequisites: ~structures.france, ~techlevel.medium
+		Description: Looks like a Service Depot.
 	Tooltip:
 		Icon: fake-icon
 		Name: Fake Service Depot
-		Description: Looks like a Service Depot.
 		GenericName: Service Depot
 		GenericVisibility: Enemy
 		GenericStancePrefix: False
@@ -181,10 +181,10 @@ FAPW:
 		BuildPaletteOrder: 950
 		Queue: Defense
 		Prerequisites: ~structures.france, ~techlevel.medium
+		Description: Looks like an Advanced Power Plant.
 	Tooltip:
 		Icon: fake-icon
 		Name: Fake Advanced Power Plant
-		Description: Looks like an Advanced Power Plant.
 		GenericName: Advanced Power Plant
 		GenericVisibility: Enemy
 		GenericStancePrefix: False
@@ -210,7 +210,6 @@ ATEF:
 	Tooltip:
 		Icon: fake-icon
 		Name: Fake Allied Tech Center
-		Description: Looks like an Allied Tech Center.
 		GenericName: Allied Tech Center
 		GenericVisibility: Enemy
 		GenericStancePrefix: False
@@ -218,6 +217,7 @@ ATEF:
 		BuildPaletteOrder: 970
 		Queue: Defense
 		Prerequisites: ~structures.france, ~techlevel.high
+		Description: Looks like an Allied Tech Center.
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
@@ -238,7 +238,6 @@ PDOF:
 	Tooltip:
 		Icon: fake-icon
 		Name: Fake Chronosphere
-		Description: Looks like a Chronosphere.
 		GenericName: Chronosphere
 		GenericVisibility: Enemy
 		GenericStancePrefix: False
@@ -247,6 +246,7 @@ PDOF:
 		Queue: Defense
 		Prerequisites: ~structures.france, ~techlevel.unrestricted
 		BuildLimit: 1
+		Description: Looks like a Chronosphere.
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
@@ -270,7 +270,6 @@ MSLF:
 	Tooltip:
 		Icon: fake-icon
 		Name: Fake Missile Silo
-		Description: Looks like a Missile Silo.
 		GenericName: Missile Silo
 		GenericVisibility: Enemy
 		GenericStancePrefix: False
@@ -279,6 +278,7 @@ MSLF:
 		Queue: Defense
 		Prerequisites: ~structures.france, ~techlevel.unrestricted
 		BuildLimit: 1
+		Description: Looks like a Missile Silo.
 	Building:
 		Footprint: xx
 		Dimensions: 2,1
@@ -301,10 +301,10 @@ FACF:
 		BuildPaletteOrder: 1000
 		Queue: Defense
 		Prerequisites: ~structures.france, ~techlevel.medium
+		Description: Looks like a Construction Yard.
 	Tooltip:
 		Icon: fake-icon
 		Name: Fake Construction Yard
-		Description: Looks like a Construction Yard.
 		GenericName: Construction Yard
 		GenericVisibility: Enemy
 		GenericStancePrefix: False

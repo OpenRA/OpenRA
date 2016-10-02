@@ -68,11 +68,11 @@ ORCA:
 		Cost: 1000
 	Tooltip:
 		Name: Orca Fighter
-		Description: Fast assault gunship with\ndual missile launchers.\n  Strong vs Buildings, Vehicles\n  Weak vs Infantry, Aircraft
 	Buildable:
 		Queue: Air
 		BuildPaletteOrder: 20
 		Prerequisites: ~gahpad
+		Description: Fast assault gunship with\ndual missile launchers.\n  Strong vs Buildings, Vehicles\n  Weak vs Infantry, Aircraft
 	Selectable:
 		Bounds: 30,24
 	Aircraft:
@@ -109,11 +109,11 @@ ORCAB:
 		Cost: 1600
 	Tooltip:
 		Name: Orca Bomber
-		Description: Heavy bomber.\n  Strong vs Buildings, Vehicles\n  Weak vs Infantry, Aircraft
 	Buildable:
 		Queue: Air
 		BuildPaletteOrder: 20
 		Prerequisites: ~gahpad, gatech
+		Description: Heavy bomber.\n  Strong vs Buildings, Vehicles\n  Weak vs Infantry, Aircraft
 	Selectable:
 		Bounds: 30,24
 	Aircraft:
@@ -194,11 +194,11 @@ TRNSPORT:
 		Cost: 750
 	Tooltip:
 		Name: Carryall
-		Description: VTOL aircraft capable of lifting\nand transporting vehicles.\n  Unarmed
 	Buildable:
 		Queue: Air
 		BuildPaletteOrder: 10
 		Prerequisites: ~gahpad, gadept
+		Description: VTOL aircraft capable of lifting\nand transporting vehicles.\n  Unarmed
 	Aircraft:
 		LandWhenIdle: true
 		TurnSpeed: 5
@@ -231,11 +231,11 @@ SCRIN:
 		Cost: 1500
 	Tooltip:
 		Name: Banshee Fighter
-		Description: Advanced fighter-bomber craft\nwith twin plasma cannons.\n  Strong vs Buildings, Vehicles\n  Weak vs Infantry, Aircraft
 	Buildable:
 		Queue: Air
 		BuildPaletteOrder: 20
 		Prerequisites: ~nahpad, natech
+		Description: Advanced fighter-bomber craft\nwith twin plasma cannons.\n  Strong vs Buildings, Vehicles\n  Weak vs Infantry, Aircraft
 	Selectable:
 		Bounds: 30,24
 	Voiced:
@@ -278,11 +278,11 @@ APACHE:
 		Cost: 1000
 	Tooltip:
 		Name: Harpy
-		Description: Anti-personnel support gunship\narmed with dual chain guns.\n  Strong vs Infantry, Light armor, Aircraft\n  Weak vs Vehicles
 	Buildable:
 		Queue: Air
 		BuildPaletteOrder: 20
 		Prerequisites: ~nahpad
+		Description: Anti-personnel support gunship\narmed with dual chain guns.\n  Strong vs Infantry, Light armor, Aircraft\n  Weak vs Vehicles
 	Selectable:
 		Bounds: 30,24
 	Aircraft:

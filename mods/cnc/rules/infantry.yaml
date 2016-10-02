@@ -4,10 +4,10 @@ E1:
 		Cost: 100
 	Tooltip:
 		Name: Minigunner
-		Description: General-purpose infantry.\n  Strong vs Infantry\n  Weak vs Vehicles
 	Buildable:
 		BuildPaletteOrder: 10
 		Queue: Infantry.GDI, Infantry.Nod
+		Description: General-purpose infantry.\n  Strong vs Infantry\n  Weak vs Vehicles
 	Mobile:
 		Speed: 56
 	Health:
@@ -25,11 +25,11 @@ E2:
 		Cost: 160
 	Tooltip:
 		Name: Grenadier
-		Description: Fast infantry armed with grenades. \n  Strong vs Buildings, slow-moving targets
 	Buildable:
 		BuildPaletteOrder: 40
 		Prerequisites: anyhq, ~techlevel.medium
 		Queue: Infantry.GDI
+		Description: Fast infantry armed with grenades. \n  Strong vs Buildings, slow-moving targets
 	Mobile:
 		Speed: 71
 	Health:
@@ -52,10 +52,10 @@ E3:
 		Cost: 300
 	Tooltip:
 		Name: Rocket Soldier
-		Description: Anti-tank/Anti-aircraft infantry. \n  Strong vs Tanks, Aircraft\n  Weak vs Infantry
 	Buildable:
 		BuildPaletteOrder: 20
 		Queue: Infantry.GDI, Infantry.Nod
+		Description: Anti-tank/Anti-aircraft infantry. \n  Strong vs Tanks, Aircraft\n  Weak vs Infantry
 	Mobile:
 		Speed: 42
 	Health:
@@ -76,11 +76,11 @@ E4:
 		Cost: 200
 	Tooltip:
 		Name: Flamethrower
-		Description: Advanced Anti-infantry unit.\n  Strong vs Infantry, Buildings\n  Weak vs Tanks
 	Buildable:
 		BuildPaletteOrder: 40
 		Prerequisites: anyhq, ~techlevel.medium
 		Queue: Infantry.Nod
+		Description: Advanced Anti-infantry unit.\n  Strong vs Infantry, Buildings\n  Weak vs Tanks
 	Mobile:
 		Speed: 56
 	Health:
@@ -101,11 +101,11 @@ E5:
 		Cost: 300
 	Tooltip:
 		Name: Chemical Warrior
-		Description: Advanced general-purpose infantry.\n  Strong vs all Ground units
 	Buildable:
 		BuildPaletteOrder: 50
 		Prerequisites: tmpl, ~techlevel.high
 		Queue: Infantry.Nod
+		Description: Advanced general-purpose infantry.\n  Strong vs all Ground units
 	Mobile:
 		Speed: 56
 		TerrainSpeeds:
@@ -132,10 +132,10 @@ E6:
 		Cost: 500
 	Tooltip:
 		Name: Engineer
-		Description: Damages and captures enemy structures.\n  Unarmed
 	Buildable:
 		BuildPaletteOrder: 30
 		Queue: Infantry.GDI, Infantry.Nod
+		Description: Damages and captures enemy structures.\n  Unarmed
 	Mobile:
 		Speed: 56
 	Health:
@@ -156,11 +156,11 @@ RMBO:
 		Cost: 1000
 	Tooltip:
 		Name: Commando
-		Description: Elite sniper infantry unit.\n  Strong vs Infantry, Buildings\n  Weak vs Vehicles
 	Buildable:
 		BuildPaletteOrder: 50
 		Prerequisites: eye, ~techlevel.high
 		Queue: Infantry.GDI
+		Description: Elite sniper infantry unit.\n  Strong vs Infantry, Buildings\n  Weak vs Vehicles
 	Mobile:
 		Speed: 71
 		Voice: Move
@@ -199,47 +199,51 @@ PVICE:
 	Buildable:
 		Queue: Biolab
 		BuildPaletteOrder: 40
-	Tooltip:
 		Description: Mutated abomination that spits liquid Tiberium.\n  Strong vs Infantry, Buildings\n  Weak vs Aircraft
+	Tooltip:
 	ActorLostNotification:
 
 STEG:
 	Inherits: ^DINO
 	Tooltip:
 		Name: Stegosaurus
-		Description: A large, heavily built, herbivorous quadruped
 	Armament:
 		Weapon: tail
 	WithDeathAnimation:
 		DeathSequencePalette: terrain
 		DeathPaletteIsPlayerPalette: false
+	Buildable:
+		Description: A large, heavily built, herbivorous quadruped
 
 TREX:
 	Inherits: ^DINO
 	Tooltip:
 		Name: Tyrannosaurus rex
-		Description: Bipedal carnivore with a massive skull
 	Armament:
 		Weapon: teeth
 	Selectable:
 		Bounds: 48,36,2,1
 	SelectionDecorations:
 		VisualBounds: 52,38
+	Buildable:
+		Description: Bipedal carnivore with a massive skull
 
 TRIC:
 	Inherits: ^DINO
 	Tooltip:
 		Name: Triceratops
-		Description: Quadruped with large bony frill and three horns
 	Armament:
 		Weapon: horn
 	SelectionDecorations:
 		VisualBounds: 34,24,0,2
+	Buildable:
+		Description: Quadruped with large bony frill and three horns
 
 RAPT:
 	Inherits: ^DINO
 	Tooltip:
 		Name: Velociraptor
-		Description: Bipedal with enlarged sickle-shaped claw on each hindfoot
 	Armament:
 		Weapon: claw
+	Buildable:
+		Description: Bipedal with enlarged sickle-shaped claw on each hindfoot

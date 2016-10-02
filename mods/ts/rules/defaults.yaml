@@ -158,9 +158,10 @@
 	RevealsShroud:
 		Range: 4c0
 	Tooltip:
-		Description: Civilian Building
 	RenderSprites:
 		Palette: terraindecoration
+	Buildable:
+		Description: Civilian Building
 
 ^CivBillboard:
 	Inherits: ^CivBuilding
@@ -858,7 +859,6 @@
 	WithGateSpriteBody:
 		OpenSequence: open
 	Tooltip:
-		Description: Automated barrier that opens for allied units.
 	Gate:
 		Adjacent: 4
 		BuildSounds: place2.aud
@@ -866,6 +866,8 @@
 		ClosingSound: gatedwn1.aud
 		TerrainTypes: Clear, Rough, Road, DirtRoad, Green, Sand, Pavement
 		BlocksProjectilesHeight: 640
+	Buildable:
+		Description: Automated barrier that opens for allied units.
 
 ^Gate_A:
 	Inherits: ^Gate

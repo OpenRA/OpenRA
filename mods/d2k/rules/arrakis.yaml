@@ -54,7 +54,6 @@ sandworm:
 	Inherits@1: ^SpriteActor
 	Tooltip:
 		Name: Sandworm
-		Description: Attracted by vibrations in the sand.\nWill eat units whole and has a large appetite.
 	Health:
 		HP: 9990
 		Radius: 256
@@ -110,6 +109,8 @@ sandworm:
 		UpgradeTypes: attacking
 		UpgradeMaxEnabledLevel: 0
 	UpgradeManager:
+	Buildable:
+		Description: Attracted by vibrations in the sand.\nWill eat units whole and has a large appetite.
 
 sietch:
 	Inherits: ^Building

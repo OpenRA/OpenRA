@@ -4,11 +4,11 @@ NAPOWR:
 		Queue: Building
 		BuildPaletteOrder: 0
 		Prerequisites: ~structures.nod
+		Description: Provides power for other structures.
 	Valued:
 		Cost: 300
 	Tooltip:
 		Name: Nod Power Plant
-		Description: Provides power for other structures.
 	ProvidesPrerequisite:
 		Prerequisite: anypower
 	Building:
@@ -42,11 +42,11 @@ NAAPWR:
 		Queue: Building
 		BuildPaletteOrder: 5
 		Prerequisites: factory, ~structures.nod
+		Description: Provides twice as much power as\nthe normal Power Plant.
 	Valued:
 		Cost: 500
 	Tooltip:
 		Name: Advanced Power Plant
-		Description: Provides twice as much power as\nthe normal Power Plant.
 	ProvidesPrerequisite:
 		Prerequisite: anypower
 	Building:
@@ -80,11 +80,11 @@ NAHAND:
 		Queue: Building
 		BuildPaletteOrder: 30
 		Prerequisites: anypower, ~structures.nod
+		Description: Produces infantry.
 	Valued:
 		Cost: 300
 	Tooltip:
 		Name: Hand of Nod
-		Description: Produces infantry.
 	ProvidesPrerequisite:
 		Prerequisite: barracks
 	Building:
@@ -134,13 +134,13 @@ NAWEAP:
 		Cost: 2000
 	Tooltip:
 		Name: Nod War Factory
-		Description: Produces vehicles.
 	ProvidesPrerequisite:
 		Prerequisite: factory
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 50
 		Prerequisites: proc, ~structures.nod
+		Description: Produces vehicles.
 	Building:
 		Footprint: xxx= xxx= xxx=
 		Dimensions: 4,3
@@ -192,11 +192,11 @@ NAHPAD:
 		Cost: 500
 	Tooltip:
 		Name: Helipad
-		Description: Produces, rearms and\nrepairs helicopters.
 	Buildable:
 		BuildPaletteOrder: 60
 		Queue: Building
 		Prerequisites: naradr, ~structures.nod
+		Description: Produces, rearms and\nrepairs helicopters.
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
@@ -246,11 +246,11 @@ NARADR:
 		Queue: Building
 		BuildPaletteOrder: 90
 		Prerequisites: proc, ~structures.nod
+		Description: Provides an overview of the battlefield.\nCan detect cloaked units.\nRequires power to operate.
 	Valued:
 		Cost: 1000
 	Tooltip:
 		Name: Nod Radar
-		Description: Provides an overview of the battlefield.\nCan detect cloaked units.\nRequires power to operate.
 	ProvidesPrerequisite:
 		Prerequisite: radar
 	Building:
@@ -291,11 +291,11 @@ NATECH:
 		Queue: Building
 		BuildPaletteOrder: 100
 		Prerequisites: naweap, naradr, ~structures.nod
+		Description: Provides access to advanced Nod technologies.
 	Valued:
 		Cost: 1500
 	Tooltip:
 		Name: Nod Tech Center
-		Description: Provides access to advanced Nod technologies.
 	ProvidesPrerequisite:
 		Prerequisite: tech
 	Building:
@@ -323,12 +323,12 @@ NATMPL:
 		Queue: Building
 		BuildPaletteOrder: 200
 		Prerequisites: natech, ~structures.nod
+		Description: Provides access to advanced Nod technologies.
 	ProvidesPrerequisite@buildingname:
 	Valued:
 		Cost: 2000
 	Tooltip:
 		Name: Temple of Nod
-		Description: Provides access to advanced Nod technologies.
 	Building:
 		Adjacent: 3
 		Footprint: xxxx xxxx xxxx
@@ -363,11 +363,11 @@ NASTLH:
 		Cost: 2500
 	Tooltip:
 		Name: Stealth Generator
-		Description: Generates a cloaking field\nto hide your forces from the enemy.
 	Buildable:
 		BuildPaletteOrder: 80
 		Prerequisites: proc, natech, ~structures.nod
 		Queue: Building
+		Description: Generates a cloaking field\nto hide your forces from the enemy.
 	Building:
 		Footprint: xxx xxx
 		Dimensions: 3,2
@@ -407,12 +407,12 @@ NAWAST:
 		Cost: 1600
 	Tooltip:
 		Name: Waste Refinery
-		Description: Processes Veins\ninto useable resources.\nMaximum 1 can be built.
 	Buildable:
 		BuildPaletteOrder: 110
 		Prerequisites: namisl, ~structures.nod
 		Queue: Building
 		BuildLimit: 1
+		Description: Processes Veins\ninto useable resources.\nMaximum 1 can be built.
 	Building:
 		Footprint: =x= xx= =x=
 		Dimensions: 3,3

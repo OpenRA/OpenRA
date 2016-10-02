@@ -4,6 +4,7 @@ NAWALL:
 		Queue: Defense
 		BuildPaletteOrder: 1001
 		Prerequisites: ~structures.nod
+		Description: Stops infantry and blocks enemy fire.\nCan NOT be crushed by tanks.
 	-SoundOnDamageTransition:
 	Valued:
 		Cost: 50
@@ -11,7 +12,6 @@ NAWALL:
 		Value: 0
 	Tooltip:
 		Name: Concrete Wall
-		Description: Stops infantry and blocks enemy fire.\nCan NOT be crushed by tanks.
 	Health:
 		HP: 225
 	Armor:
@@ -47,11 +47,11 @@ NALASR:
 		Cost: 300
 	Tooltip:
 		Name: Laser Turret
-		Description: Basic base defense.\nRequires power to operate.\n  Strong vs Ground units\n  Weak vs Aircraft
 	Buildable:
 		Queue: Defense
 		Prerequisites: nahand, ~structures.nod
 		BuildPaletteOrder: 50
+		Description: Basic base defense.\nRequires power to operate.\n  Strong vs Ground units\n  Weak vs Aircraft
 	Building:
 	Selectable:
 		Bounds: 40, 30, -8, -6
@@ -87,11 +87,11 @@ NAOBEL:
 		Cost: 1500
 	Tooltip:
 		Name: Obelisk of Light
-		Description: Advanced base defense.\nRequires power to operate.\n  Strong vs Ground units\n  Weak vs Aircraft
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 90
 		Prerequisites: natech, ~structures.nod
+		Description: Advanced base defense.\nRequires power to operate.\n  Strong vs Ground units\n  Weak vs Aircraft
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
@@ -128,11 +128,11 @@ NASAM:
 		Cost: 500
 	Tooltip:
 		Name: S.A.M. Site
-		Description: Nod Anti-Air base defense.\nRequires power to operate.\n  Strong vs Aircraft\n  Weak vs Ground units
 	Buildable:
 		Queue: Defense
 		Prerequisites: naradr, ~structures.nod
 		BuildPaletteOrder: 60
+		Description: Nod Anti-Air base defense.\nRequires power to operate.\n  Strong vs Aircraft\n  Weak vs Ground units
 	Selectable:
 		Bounds: 40, 30, -3, -8
 	RequiresPower:
@@ -201,11 +201,11 @@ NAMISL:
 		BuildPaletteOrder: 100
 		Prerequisites: natech, ~structures.nod
 		BuildLimit: 1
+		Description: Launches a devastating missile\nat a target location.\nRequires power to operate.\nMaximum 1 can be built.
 	Valued:
 		Cost: 1300
 	Tooltip:
 		Name: Nod Missile Silo
-		Description: Launches a devastating missile\nat a target location.\nRequires power to operate.\nMaximum 1 can be built.
 	ProvidesPrerequisite:
 		Prerequisite: tech
 	Building:

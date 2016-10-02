@@ -4,11 +4,11 @@ MCV:
 		Queue: Vehicle
 		BuildPaletteOrder: 110
 		Prerequisites: ~factory, tech
+		Description: Deploys into another Construction Yard.\n  Unarmed
 	Valued:
 		Cost: 2000
 	Tooltip:
 		Name: Mobile Construction Vehicle
-		Description: Deploys into another Construction Yard.\n  Unarmed
 	Selectable:
 		Priority: 3
 	Health:
@@ -43,11 +43,11 @@ HARV:
 		Cost: 1400
 	Tooltip:
 		Name: Harvester
-		Description: Collects Tiberium for processing.\n  Unarmed
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 10
 		Prerequisites: ~factory, proc
+		Description: Collects Tiberium for processing.\n  Unarmed
 	Selectable:
 		Priority: 7
 		Bounds: 36,36
@@ -109,11 +109,11 @@ LPST:
 		Queue: Vehicle
 		BuildPaletteOrder: 100
 		Prerequisites: ~factory, radar
+		Description: Can detect cloaked and subterranean\nunits when deployed.\n  Unarmed
 	Valued:
 		Cost: 950
 	Tooltip:
 		Name: Mobile Sensor Array
-		Description: Can detect cloaked and subterranean\nunits when deployed.\n  Unarmed
 	Health:
 		HP: 600
 	Armor:
