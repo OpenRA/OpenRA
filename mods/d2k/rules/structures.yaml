@@ -44,6 +44,8 @@ concreteb:
 
 construction_yard:
 	Inherits: ^Building
+	Buildable:
+		Description: Produces structures.
 	-DamagedByTerrain:
 	Building:
 		Footprint: xxx xxx
