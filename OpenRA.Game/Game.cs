@@ -882,5 +882,10 @@ namespace OpenRA
 		{
 			return OrderManager != null && OrderManager.World == world && !world.Disposing;
 		}
+
+		public static bool SetClipboardText(string text)
+		{
+			return Renderer.Window.SetClipboardText(text);
+		}
 	}
 }
