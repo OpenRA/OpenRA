@@ -26,7 +26,7 @@ namespace OpenRA.Mods.Common.Activities
 		{
 			aircraft = self.Trait<Aircraft>();
 			this.idleOnPad = idleOnPad;
-        }
+		}
 
 		public override Activity Tick(Actor self)
 		{
@@ -50,23 +50,23 @@ namespace OpenRA.Mods.Common.Activities
 				}
 				else
 				{
-                    // Helicopters should take off from their helipad immediately after resupplying,
-                    // unless the "Enter" or "Return to Base" command was explictly given by user
-                    // HACK: Append NextActivity to TakeOff to avoid moving to the Rallypoint (if NextActivity is non-null).
-                    if (idleOnPad == false)
-                    {
-                        inner = ActivityUtils.SequenceActivities(
-                            aircraft.GetResupplyActivities(host)
-                        .Append(new AllowYieldingReservation(self))
-                        .Append(new TakeOff(self)).Append(NextActivity).ToArray());
-                    }
-                    else
-                    {
-                        inner = ActivityUtils.SequenceActivities(
-                           aircraft.GetResupplyActivities(host)
-                       .Append(new AllowYieldingReservation(self))
-                       .Append(NextActivity).ToArray());
-                    }
+					// Helicopters should take off from their helipad immediately after resupplying,
+					// unless the "Enter" or "Return to Base" command was explictly given by user
+					// HACK: Append NextActivity to TakeOff to avoid moving to the Rallypoint (if NextActivity is non-null).
+					if (idleOnPad == false)
+					{
+					inner = ActivityUtils.SequenceActivities(
+						aircraft.GetResupplyActivities(host)
+						.Append(new AllowYieldingReservation(self))
+						.Append(new TakeOff(self)).Append(NextActivity).ToArray());
+					}
+					else
+					{
+					inner = ActivityUtils.SequenceActivities(
+						aircraft.GetResupplyActivities(host)
+						.Append(new AllowYieldingReservation(self))
+						.Append(NextActivity).ToArray());
+					}
 				}
 			}
 			else

@@ -27,7 +27,7 @@ namespace OpenRA.Mods.Common.Activities
 		{
 			heli = self.Trait<Aircraft>();
 			this.alwaysLand = alwaysLand;
-            this.idleOnPad = idleOnPad;
+			this.idleOnPad = idleOnPad;
 			this.abortOnResupply = abortOnResupply;
 		}
 
