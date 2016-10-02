@@ -83,11 +83,24 @@ namespace OpenRA
 		public LuaValue Subtract(LuaRuntime runtime, LuaValue left, LuaValue right)
 		{
 			CPos a;
-			CVec b;
-			if (!left.TryGetClrValue(out a) || !right.TryGetClrValue(out b))
-				throw new LuaException("Attempted to call CPos.Subtract(CPos, CVec) with invalid arguments ({0}, {1})".F(left.WrappedClrType().Name, right.WrappedClrType().Name));
+			var rightType = right.WrappedClrType();
+			if (!left.TryGetClrValue(out a))
+				throw new LuaException("Attempted to call CPos.Subtract(CPos, (CPos|CVec)) with invalid arguments ({0}, {1})".F(left.WrappedClrType().Name, rightType.Name));
 
-			return new LuaCustomClrObject(a - b);
+			if (rightType == typeof(CPos))
+			{
+				CPos b;
+				right.TryGetClrValue(out b);
+				return new LuaCustomClrObject(a - b);
+			}
+			else if (rightType == typeof(CVec))
+			{
+				CVec b;
+				right.TryGetClrValue(out b);
+				return new LuaCustomClrObject(a - b);
+			}
+
+			throw new LuaException("Attempted to call CPos.Subtract(CPos, (CPos|CVec)) with invalid arguments ({0}, {1})".F(left.WrappedClrType().Name, rightType.Name));
 		}
 
 		public LuaValue Equals(LuaRuntime runtime, LuaValue left, LuaValue right)
