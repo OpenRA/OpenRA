@@ -304,12 +304,12 @@ namespace OpenRA
 
 			GeoIP.Initialize();
 
-			if (!Game.Settings.Server.DiscoverNatDevices)
-				Game.Settings.Server.AllowPortForward = false;
+			if (!Settings.Server.DiscoverNatDevices)
+				Settings.Server.AllowPortForward = false;
 			else
 			{
 				discoverNat = UPnP.DiscoverNatDevices(Settings.Server.NatDiscoveryTimeout);
-				Game.Settings.Server.AllowPortForward = true;
+				Settings.Server.AllowPortForward = true;
 			}
 
 			GlobalChat = new GlobalChat();
@@ -427,7 +427,7 @@ namespace OpenRA
 			{
 				Console.WriteLine("NAT discovery failed: {0}", e.Message);
 				Log.Write("nat", e.ToString());
-				Game.Settings.Server.AllowPortForward = false;
+				Settings.Server.AllowPortForward = false;
 			}
 
 			ModData.LoadScreen.StartGame(args);
