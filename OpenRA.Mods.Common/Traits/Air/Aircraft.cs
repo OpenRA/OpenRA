@@ -115,13 +115,13 @@ namespace OpenRA.Mods.Common.Traits
 		public int TurnSpeed { get { return Info.TurnSpeed; } }
 		public Actor ReservedActor { get; private set; }
 		public bool MayYieldReservation { get; private set; }
-		public bool IsMovingVertically { get; private set; }
 
 		bool airborne;
 		bool cruising;
 		bool firstTick = true;
 
 		bool isMoving;
+		bool isMovingVertically;
 		WPos cachedPosition;
 
 		public Aircraft(ActorInitializer init, AircraftInfo info)
@@ -182,7 +182,7 @@ namespace OpenRA.Mods.Common.Traits
 			var oldCachedPosition = cachedPosition;
 			cachedPosition = self.CenterPosition;
 			isMoving = (oldCachedPosition - cachedPosition).HorizontalLengthSquared != 0;
-			IsMovingVertically = (oldCachedPosition - cachedPosition).VerticalLengthSquared != 0;
+			isMovingVertically = (oldCachedPosition - cachedPosition).VerticalLengthSquared != 0;
 
 			Repulse();
 		}
@@ -494,6 +494,8 @@ namespace OpenRA.Mods.Common.Traits
 		public CPos NearestMoveableCell(CPos cell) { return cell; }
 
 		public bool IsMoving { get { return isMoving; } set { } }
+
+		public bool IsMovingVertically { get { return isMovingVertically; } set { } }
 
 		public bool CanEnterTargetNow(Actor self, Target target)
 		{

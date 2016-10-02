@@ -327,6 +327,7 @@ namespace OpenRA.Mods.Common.Traits
 		readonly Actor self;
 		readonly Lazy<IEnumerable<int>> speedModifiers;
 		public bool IsMoving { get; set; }
+		public bool IsMovingVertically { get { return false; } set { } }
 
 		int facing;
 		CPos fromCell, toCell;
