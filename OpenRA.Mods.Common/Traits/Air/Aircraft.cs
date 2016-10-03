@@ -623,7 +623,7 @@ namespace OpenRA.Mods.Common.Traits
 				if (IsPlane)
 					self.QueueActivity(new ReturnToBase(self, Info.AbortOnResupply, null, false));
 				else
-					self.QueueActivity(new HeliReturnToBase(self, Info.AbortOnResupply, false));
+					self.QueueActivity(new HeliReturnToBase(self, Info.AbortOnResupply, null, false));
 			}
 		}
 
