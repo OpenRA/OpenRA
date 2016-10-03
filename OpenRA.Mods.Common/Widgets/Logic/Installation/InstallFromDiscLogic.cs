@@ -13,8 +13,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Security.Cryptography;
 using System.Threading.Tasks;
+using OpenRA;
 using OpenRA.FileFormats;
 using OpenRA.Mods.Common.FileFormats;
 using OpenRA.Widgets;
@@ -507,12 +507,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						return false;
 
 					using (var fileStream = File.OpenRead(filePath))
-					using (var csp = SHA1.Create())
-					{
-						var hash = new string(csp.ComputeHash(fileStream).SelectMany(a => a.ToString("x2")).ToArray());
-						if (hash != kv.Value)
+						if (CryptoUtil.SHA1Hash(fileStream) != kv.Value)
 							return false;
-					}
 				}
 			}
 			catch (Exception)

@@ -11,11 +11,8 @@
 
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Security.Cryptography;
-using OpenRA.FileSystem;
 using OpenRA.Primitives;
 
 namespace OpenRA
@@ -52,10 +49,7 @@ namespace OpenRA
 				//   (a) loading duplicate data into the application domain, breaking the world.
 				//   (b) crashing if the assembly has already been loaded.
 				// We can't check the internal name of the assembly, so we'll work off the data instead
-				string hash;
-				using (var ms = new MemoryStream(data))
-					using (var csp = SHA1.Create())
-						hash = new string(csp.ComputeHash(data).SelectMany(a => a.ToString("x2")).ToArray());
+				var hash = CryptoUtil.SHA1Hash(data);
 
 				Assembly assembly;
 				if (!ResolvedAssemblies.TryGetValue(hash, out assembly))
