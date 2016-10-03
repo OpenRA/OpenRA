@@ -60,7 +60,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new Cloak(this); }
 	}
 
-	public class Cloak : UpgradableTrait<CloakInfo>, IRenderModifier, INotifyDamageStateChanged,
+	public class Cloak : UpgradableTrait<CloakInfo>, IRenderModifier, INotifyDamage,
 	INotifyAttack, ITick, IVisibilityModifier, IRadarColorModifier, INotifyCreated, INotifyHarvesterAction
 	{
 		[Sync] int remainingTime;
@@ -100,7 +100,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyAttack.PreparingAttack(Actor self, Target target, Armament a, Barrel barrel) { }
 
-		void INotifyDamageStateChanged.DamageStateChanged(Actor self, AttackInfo e)
+		void INotifyDamage.Damaged(Actor self, AttackInfo e)
 		{
 			damageDisabled = e.DamageState >= DamageState.Critical;
 			if (damageDisabled || Info.UncloakOn.HasFlag(UncloakType.Damage))
