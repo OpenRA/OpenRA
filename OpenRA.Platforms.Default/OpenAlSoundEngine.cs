@@ -55,20 +55,35 @@ namespace OpenRA.Platforms.Default
 			// Clear error bit
 			AL10.alGetError();
 
-			var devices = new List<string>();
-			var next = ALC10.alcGetString(IntPtr.Zero, type);
-			if (next == IntPtr.Zero || AL10.alGetError() != AL10.AL_NO_ERROR)
+			// Returns a null separated list of strings, terminated by two nulls.
+			var devicesPtr = ALC10.alcGetString(IntPtr.Zero, type);
+			if (devicesPtr == IntPtr.Zero || AL10.alGetError() != AL10.AL_NO_ERROR)
 			{
 				Log.Write("sound", "Failed to query OpenAL device list using {0}", label);
-				return new string[] { };
+				return new string[0];
 			}
 
-			do
+			var devices = new List<string>();
+			var buffer = new List<byte>();
+			var offset = 0;
+
+			while (true)
 			{
-				var str = Marshal.PtrToStringAuto(next);
-				next += Encoding.Default.GetByteCount(str) + 1;
-				devices.Add(str);
-			} while (Marshal.ReadByte(next) != 0);
+				var b = Marshal.ReadByte(devicesPtr, offset++);
+				if (b != 0)
+				{
+					buffer.Add(b);
+					continue;
+				}
+
+				// A null indicates termination of that string, so add that to our list.
+				devices.Add(Encoding.Default.GetString(buffer.ToArray()));
+				buffer.Clear();
+
+				// Two successive nulls indicates the end of the list.
+				if (Marshal.ReadByte(devicesPtr, offset) == 0)
+					break;
+			}
 
 			return devices.ToArray();
 		}
