@@ -204,31 +204,30 @@ ManageSovietUnits = function()
 	Utils.Do(scatteredUnits, IdleHunt)
 end
 
-AircraftTargets = function()
+AircraftTargets = function(yak)
 	local targets = Utils.Where(Map.ActorsInWorld, function(a)
-		return (a.Owner == allies1 or a.Owner == allies2) and a.HasProperty("Health")
+		return (a.Owner == allies1 or a.Owner == allies2) and a.HasProperty("Health") and yak.CanTarget(a)
 	end)
 
-	-- prefer mobile units
+	-- Prefer mobile units
 	table.sort(targets, function(a, b) return a.HasProperty("Move") and not b.HasProperty("Move") end)
 
 	return targets
 end
 
 YakAttack = function(yak, target)
-	if not target or target.IsDead or (not target.IsInWorld) then
-		local targets = AircraftTargets()
+	if not target or target.IsDead or (not target.IsInWorld) or (not yak.CanTarget(target)) then
+		local targets = AircraftTargets(yak)
 		if #targets > 0 then
 			target = Utils.Random(targets)
-		else
-			yak.Wait(DateTime.Seconds(5))
 		end
 	end
 
-	if target and yak.AmmoCount() > 0 then
+	if target and yak.AmmoCount() > 0 and yak.CanTarget(target) then
 		yak.Attack(target)
 	else
-		yak.ReturnToBase() -- includes yak.Resupply()
+		-- Includes yak.Resupply()
+		yak.ReturnToBase()
 	end
 
 	yak.CallFunc(function()
