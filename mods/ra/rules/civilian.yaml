@@ -240,12 +240,16 @@ V19.Husk:
 		StartSequence: fire-start
 		Sequence: fire-loop
 	-Selectable:
+	SelectionDecorations:
+		RenderSelectionBars: False
 	-Targetable:
 	-Demolishable:
 
 BARL:
 	Inherits: ^TechBuilding
 	-Selectable:
+	SelectionDecorations:
+		RenderSelectionBars: False
 	CustomSelectionSize:
 		CustomBounds: 24,24
 	Health:
@@ -267,6 +271,8 @@ BARL:
 BRL3:
 	Inherits: ^TechBuilding
 	-Selectable:
+	SelectionDecorations:
+		RenderSelectionBars: False
 	CustomSelectionSize:
 		CustomBounds: 24,24
 	Health:
