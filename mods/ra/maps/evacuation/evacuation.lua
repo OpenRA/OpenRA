@@ -75,7 +75,7 @@ end
 Yak = nil
 YakAttack = function(yak)
 	local targets = Map.ActorsInCircle(YakAttackPoint.CenterPosition, WDist.FromCells(10), function(a)
-		return a.Owner == allies1 and not a.IsDead and a ~= Einstein and a ~= Tanya and a ~= Engineer
+		return a.Owner == allies1 and not a.IsDead and a ~= Einstein and a ~= Tanya and a ~= Engineer and yak.CanTarget(a)
 	end)
 
 	if (#targets > 0) then
