@@ -68,7 +68,7 @@ Assemblies:
 	d2k|OpenRA.Mods.D2k.dll
 
 ChromeLayout:
-	d2k|chrome/ingame.yaml
+	ra|chrome/ingame.yaml
 	ra|chrome/ingame-chat.yaml
 	ra|chrome/ingame-fmvplayer.yaml
 	d2k|chrome/ingame-menu.yaml
@@ -92,7 +92,7 @@ ChromeLayout:
 	ra|chrome/lobby-music.yaml
 	ra|chrome/lobby-kickdialogs.yaml
 	ra|chrome/lobby-globalchat.yaml
-	d2k|chrome/color-picker.yaml
+	ra|chrome/color-picker.yaml
 	ra|chrome/map-chooser.yaml
 	ra|chrome/multiplayer.yaml
 	ra|chrome/multiplayer-browser.yaml
