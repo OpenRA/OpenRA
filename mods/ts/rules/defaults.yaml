@@ -104,7 +104,7 @@
 		Dimensions: 1,1
 		Footprint: x
 		BuildSounds: place2.aud
-		TerrainTypes: Clear, Road, DirtRoad, Rough
+		TerrainTypes: Clear, Road, Green, Pavement, DirtRoad, Rough
 		Adjacent: 4
 	FrozenUnderFog:
 	SoundOnDamageTransition:
@@ -265,11 +265,12 @@
 			Rail: 90
 			DirtRoad: 100
 			Rough: 80
-			Tiberium: 90
+			Sand: 45
+			Tiberium: 40
 				PathingCost: 90
-			BlueTiberium: 90
+			BlueTiberium: 40
 				PathingCost: 90
-			Veins: 50
+			Veins: 40
 	WithTextControlGroupDecoration:
 	SelectionDecorations:
 		Palette: pips
@@ -315,6 +316,18 @@
 		ReferencePoint: Bottom, Right
 		UpgradeTypes: hospitalheal
 		UpgradeMinEnabledLevel: 1
+	UpgradeOnDamageState@DAMAGED:
+		Upgrades: damagedspeed
+		ValidDamageStates: Heavy
+	UpgradeOnDamageState@CRITICAL:
+		Upgrades: criticalspeed
+		ValidDamageStates: Critical
+	SpeedMultiplier@DAMAGED:
+		UpgradeTypes: damagedspeed
+		Modifier: 70
+	SpeedMultiplier@CRITICAL:
+		UpgradeTypes: criticalspeed
+		Modifier: 40
 
 ^RegularInfantryDeath:
 	WithDeathAnimation@normal:
@@ -435,9 +448,10 @@
 			Rail: 50
 			DirtRoad: 90
 			Rough: 40
-			Tiberium: 50
-			BlueTiberium: 50
-			Veins: 50
+			Sand: 40
+			Tiberium: 30
+			BlueTiberium: 30
+			Veins: 30
 				PathingCost: 90
 		TurnSpeed: 5
 		Voice: Move
@@ -503,9 +517,10 @@
 			Rail: 100
 			DirtRoad: 90
 			Rough: 60
-			Tiberium: 70
-			BlueTiberium: 70
-			Veins: 70
+			Sand: 40
+			Tiberium: 30
+			BlueTiberium: 30
+			Veins: 30
 
 ^VoxelVehicle:
 	Inherits: ^Vehicle
