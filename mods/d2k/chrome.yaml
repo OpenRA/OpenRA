@@ -150,8 +150,8 @@ dialog4: dialog.png
 	corner-br: 571,446,6,6
 
 lobby-bits: buttons.png
-	spawn-unclaimed: 159,5,23,22
-	spawn-claimed: 127,5,23,22
+	spawn-unclaimed: 158,5,23,22
+	spawn-claimed: 126,5,23,22
 	admin: 186,5,7,5
 	colorpicker: 127,5,23,22
 	huepicker: 194,0,7,15
