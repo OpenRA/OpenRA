@@ -590,6 +590,7 @@
 ^CivField:
 	Inherits: ^CivBuilding
 	-Selectable:
+	-SelectionDecorations:
 	Tooltip:
 		GenericName: Field
 	-WithBuildingExplosion:
