@@ -98,5 +98,11 @@ namespace OpenRA.Mods.Common.Scripting
 
 			attackBase.AttackTarget(target, true, allowMove, forceAttack);
 		}
+
+		[Desc("Checks if the targeted actor is a valid target for this actor.")]
+		public bool CanTarget(Actor targetActor)
+		{
+			return Target.FromActor(targetActor).IsValidFor(Self);
+		}
 	}
 }
