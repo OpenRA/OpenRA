@@ -720,6 +720,29 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				// Capture bonus was decoupled from CashTrickler to a separate trait.
+				if (engineVersion < 20170108 && depth == 0)
+				{
+					var trickler = node.Value.Nodes.FirstOrDefault(n => n.Key == "CashTrickler");
+					if (trickler != null)
+					{
+						var capture = trickler.Value.Nodes.FirstOrDefault(n => n.Key == "CaptureAmount");
+						if (capture != null)
+						{
+							var gcoc = new MiniYamlNode("GivesCashOnCapture", "");
+							gcoc.Value.Nodes.Add(capture);
+							trickler.Value.Nodes.Remove(capture);
+
+							var show = trickler.Value.Nodes.FirstOrDefault(n => n.Key == "ShowTicks");
+							if (show != null)
+								gcoc.Value.Nodes.Add(show);
+
+							node.Value.Nodes.Add(gcoc);
+							RenameNodeKey(capture, "Amount");
+						}
+					}
+				}
+
 				UpgradeActorRules(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 

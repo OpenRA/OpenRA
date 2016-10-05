@@ -15,7 +15,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Lets the actor generate cash in a set periodic time.")]
-	class CashTricklerInfo : ITraitInfo
+	class CashTricklerInfo : ConditionalTraitInfo
 	{
 		[Desc("Number of ticks to wait between giving money.")]
 		public readonly int Period = 50;
@@ -23,37 +23,30 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int Amount = 15;
 		[Desc("Whether to show the cash tick indicators (+$15 rising from actor).")]
 		public readonly bool ShowTicks = true;
-		[Desc("Amount of money awarded for capturing the actor.")]
-		public readonly int CaptureAmount = 0;
 
-		public object Create(ActorInitializer init) { return new CashTrickler(this); }
+		public override object Create(ActorInitializer init) { return new CashTrickler(this); }
 	}
 
-	class CashTrickler : ITick, ISync, INotifyCapture
+	class CashTrickler : ConditionalTrait<CashTricklerInfo>, ITick, ISync
 	{
 		readonly CashTricklerInfo info;
 		[Sync] int ticks;
 		public CashTrickler(CashTricklerInfo info)
+			: base(info)
 		{
 			this.info = info;
 		}
 
 		public void Tick(Actor self)
 		{
+			if (IsTraitDisabled)
+				return;
+
 			if (--ticks < 0)
 			{
 				ticks = info.Period;
 				self.Owner.PlayerActor.Trait<PlayerResources>().GiveCash(info.Amount);
 				MaybeAddCashTick(self, info.Amount);
-			}
-		}
-
-		public void OnCapture(Actor self, Actor captor, Player oldOwner, Player newOwner)
-		{
-			if (info.CaptureAmount > 0)
-			{
-				newOwner.PlayerActor.Trait<PlayerResources>().GiveCash(info.CaptureAmount);
-				MaybeAddCashTick(self, info.CaptureAmount);
 			}
 		}
 
