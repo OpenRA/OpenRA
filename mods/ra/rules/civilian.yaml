@@ -357,13 +357,14 @@ OILB:
 	CashTrickler:
 		Period: 375
 		Amount: 100
-		CaptureAmount: 100
 	Tooltip:
 		Name: Oil Derrick
 	Explodes:
 		Weapon: BarrelExplode
 	GpsDot:
 		String: Oil
+	GiveCashOnCapture:
+		CaptureAmount: 100
 
 BR1:
 	Inherits: ^Bridge

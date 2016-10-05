@@ -1,4 +1,4 @@
-#region Copyright & License Information
+﻿#region Copyright & License Information
 /*
  * Copyright 2007-2016 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
@@ -14,39 +14,36 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	[Desc("Lets the actor generate cash in a set periodic time.")]
-	class CashTricklerInfo : UpgradableTraitInfo
+	[Desc("Lets the actor grant cash when captured.")]
+	class GiveCashOnCaptureInfo : UpgradableTraitInfo
 	{
-		[Desc("Number of ticks to wait between giving money.")]
-		public readonly int Period = 50;
-		[Desc("Amount of money to give each time.")]
-		public readonly int Amount = 15;
 		[Desc("Whether to show the cash tick indicators (+$15 rising from actor).")]
 		public readonly bool ShowTicks = true;
+		[Desc("Amount of money awarded for capturing the actor.")]
+		public readonly int CaptureAmount = 0;
 
-		public override object Create(ActorInitializer init) { return new CashTrickler(this); }
+		public override object Create(ActorInitializer init) { return new GiveCashOnCapture(this); }
 	}
 
-	class CashTrickler : UpgradableTrait<CashTricklerInfo>, ITick, ISync
+	class GiveCashOnCapture : UpgradableTrait<GiveCashOnCaptureInfo>, INotifyCapture
 	{
-		readonly CashTricklerInfo info;
-		[Sync] int ticks;
-		public CashTrickler(CashTricklerInfo info)
+		readonly GiveCashOnCaptureInfo info;
+
+		public GiveCashOnCapture(GiveCashOnCaptureInfo info)
 			: base(info)
 		{
 			this.info = info;
 		}
 
-		public void Tick(Actor self)
+		void INotifyCapture.OnCapture(Actor self, Actor captor, Player oldOwner, Player newOwner)
 		{
 			if (IsTraitDisabled)
 				return;
 
-			if (--ticks < 0)
+			if (info.CaptureAmount > 0)
 			{
-				ticks = info.Period;
-				self.Owner.PlayerActor.Trait<PlayerResources>().GiveCash(info.Amount);
-				MaybeAddCashTick(self, info.Amount);
+				newOwner.PlayerActor.Trait<PlayerResources>().GiveCash(info.CaptureAmount);
+				MaybeAddCashTick(self, info.CaptureAmount);
 			}
 		}
 
