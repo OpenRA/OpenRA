@@ -49,15 +49,17 @@ namespace OpenRA.Traits
 
 			readonly Action<Actor> onActorEntered;
 			readonly Action<Actor> onActorExited;
+			readonly Action<Tuple<Actor, Player, Player>> onOwnerChanged;
 
 			IEnumerable<Actor> currentActors = Enumerable.Empty<Actor>();
 
-			public CellTrigger(CPos[] footprint, Action<Actor> onActorEntered, Action<Actor> onActorExited)
+			public CellTrigger(CPos[] footprint, Action<Actor> onActorEntered, Action<Actor> onActorExited, Action<Tuple<Actor, Player, Player>> onOwnerChanged)
 			{
 				Footprint = footprint;
 
 				this.onActorEntered = onActorEntered;
 				this.onActorExited = onActorExited;
+				this.onOwnerChanged = onOwnerChanged;
 
 				// Notify any actors that are initially inside the trigger zone
 				Dirty = true;
@@ -67,6 +69,18 @@ namespace OpenRA.Traits
 			{
 				if (!Dirty)
 					return;
+
+				if (actorMap.ActorsWithChangedOwner.Any())
+				{
+					var ownerschanged = currentActors.Intersect(actorMap.ActorsWithChangedOwner.Select(x => x.Item1));
+					foreach (var a in actorMap.ActorsWithChangedOwner)
+					{
+						if (ownerschanged.Contains(a.Item1))
+						{
+							onOwnerChanged(a);
+						}
+					}
+				}
 
 				var oldActors = currentActors;
 				currentActors = Footprint.SelectMany(actorMap.GetActorsAt).ToList();
@@ -95,6 +109,7 @@ namespace OpenRA.Traits
 
 			readonly Action<Actor> onActorEntered;
 			readonly Action<Actor> onActorExited;
+			readonly Action<Tuple<Actor, Player, Player>> onOwnerChanged;
 
 			WPos position;
 			WDist range;
@@ -102,10 +117,12 @@ namespace OpenRA.Traits
 
 			IEnumerable<Actor> currentActors = Enumerable.Empty<Actor>();
 
-			public ProximityTrigger(WPos pos, WDist range, WDist vRange, Action<Actor> onActorEntered, Action<Actor> onActorExited)
+			public ProximityTrigger(WPos pos, WDist range, WDist vRange,
+				Action<Actor> onActorEntered, Action<Actor> onActorExited, Action<Tuple<Actor, Player, Player>> onOwnerChanged)
 			{
 				this.onActorEntered = onActorEntered;
 				this.onActorExited = onActorExited;
+				this.onOwnerChanged = onOwnerChanged;
 
 				Update(pos, range, vRange);
 			}
@@ -128,6 +145,18 @@ namespace OpenRA.Traits
 			{
 				if (!Dirty)
 					return;
+
+				if (am.ActorsWithChangedOwner.Any())
+				{
+					var ownerschanged = currentActors.Intersect(am.ActorsWithChangedOwner.Select(x => x.Item1));
+					foreach (var a in am.ActorsWithChangedOwner)
+					{
+						if (ownerschanged.Contains(a.Item1))
+						{
+							onOwnerChanged(a);
+						}
+					}
+				}
 
 				var oldActors = currentActors;
 				var delta = new WVec(range, range, WDist.Zero);
@@ -175,6 +204,8 @@ namespace OpenRA.Traits
 		readonly HashSet<Actor> addActorPosition = new HashSet<Actor>();
 		readonly HashSet<Actor> removeActorPosition = new HashSet<Actor>();
 		readonly Predicate<Actor> actorShouldBeRemoved;
+
+		public HashSet<Tuple<Actor, Player, Player>> ActorsWithChangedOwner = new HashSet<Tuple<Actor, Player, Player>>();
 
 		public ActorMap(World world, ActorMapInfo info)
 		{
@@ -407,12 +438,14 @@ namespace OpenRA.Traits
 
 			foreach (var t in proximityTriggers)
 				t.Value.Tick(this);
+
+			ActorsWithChangedOwner.Clear();
 		}
 
-		public int AddCellTrigger(CPos[] cells, Action<Actor> onEntry, Action<Actor> onExit)
+		public int AddCellTrigger(CPos[] cells, Action<Actor> onEntry, Action<Actor> onExit, Action<Tuple<Actor, Player, Player>> onChangedOwner)
 		{
 			var id = nextTriggerId++;
-			var t = new CellTrigger(cells, onEntry, onExit);
+			var t = new CellTrigger(cells, onEntry, onExit, onChangedOwner);
 			cellTriggers.Add(id, t);
 
 			foreach (var c in cells)
@@ -444,10 +477,10 @@ namespace OpenRA.Traits
 			}
 		}
 
-		public int AddProximityTrigger(WPos pos, WDist range, WDist vRange, Action<Actor> onEntry, Action<Actor> onExit)
+		public int AddProximityTrigger(WPos pos, WDist range, WDist vRange, Action<Actor> onEntry, Action<Actor> onExit, Action<Tuple<Actor, Player, Player>> onChangedOwner)
 		{
 			var id = nextTriggerId++;
-			var t = new ProximityTrigger(pos, range, vRange, onEntry, onExit);
+			var t = new ProximityTrigger(pos, range, vRange, onEntry, onExit, onChangedOwner);
 			proximityTriggers.Add(id, t);
 
 			foreach (var bin in BinsInBox(t.TopLeft, t.BottomRight))

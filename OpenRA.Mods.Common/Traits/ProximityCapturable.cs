@@ -9,12 +9,10 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
-using OpenRA.Graphics;
 using OpenRA.Mods.Common.Effects;
-using OpenRA.Mods.Common.Graphics;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -67,7 +65,7 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			// TODO: Eventually support CellTriggers as well
-			proximityTrigger = self.World.ActorMap.AddProximityTrigger(self.CenterPosition, Info.Range, WDist.Zero, ActorEntered, ActorLeft);
+			proximityTrigger = self.World.ActorMap.AddProximityTrigger(self.CenterPosition, Info.Range, WDist.Zero, ActorEntered, ActorLeft, ActorChangedOwner);
 		}
 
 		void INotifyRemovedFromWorld.RemovedFromWorld(Actor self)
@@ -103,6 +101,14 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			actorsInRange.Remove(other);
+			UpdateOwnership();
+		}
+
+		void ActorChangedOwner(Tuple<Actor, Player, Player> other)
+		{
+			if (skipTriggerUpdate || !CanBeCapturedBy(other.Item1))
+				return;
+
 			UpdateOwnership();
 		}
 

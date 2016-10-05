@@ -301,6 +301,8 @@ namespace OpenRA
 				Owner = newOwner;
 				Generation++;
 
+				w.ActorMap.ActorsWithChangedOwner.Add(new Tuple<Actor, Player, Player>(this, oldOwner, newOwner));
+
 				foreach (var t in TraitsImplementing<INotifyOwnerChanged>())
 					t.OnOwnerChanged(this, oldOwner, newOwner);
 
