@@ -135,8 +135,8 @@ namespace OpenRA.Mods.AS.Traits
 			if (!Info.ValidStances.HasStance(stance))
 				return;
 
-			var gpb = a.TraitOrDefault<GivesProximityBounty>();
-			if (gpb != null)
+			var gpbs = a.TraitsImplementing<GivesProximityBounty>();
+			foreach (var gpb in gpbs)
 				gpb.Collectors.Add(this);
 		}
 
@@ -157,8 +157,8 @@ namespace OpenRA.Mods.AS.Traits
 				if (!Info.ValidStances.HasStance(stance))
 					return;
 
-				var gpb = produced.TraitOrDefault<GivesProximityBounty>();
-				if (gpb != null)
+				var gpbs = produced.TraitsImplementing<GivesProximityBounty>();
+				foreach (var gpb in gpbs)
 					gpb.Collectors.Add(this);
 			}
 		}
@@ -172,8 +172,8 @@ namespace OpenRA.Mods.AS.Traits
 			if (!Info.ValidStances.HasStance(stance))
 				return;
 
-			var gpb = a.TraitOrDefault<GivesProximityBounty>();
-			if (gpb != null)
+			var gpbs = a.TraitsImplementing<GivesProximityBounty>();
+			foreach (var gpb in gpbs)
 				gpb.Collectors.Remove(this);
 		}
 	}
