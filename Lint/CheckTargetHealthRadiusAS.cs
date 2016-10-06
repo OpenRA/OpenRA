@@ -40,7 +40,7 @@ namespace OpenRA.Mods.AS.Lint
 						if (!wh.ValidTargets.Overlaps(targetable))
 							continue;
 
-						if (healthTraits.Where(x => x.Shape.OuterRadius.Length > wh.TargetSearchRadius.Length).Any())
+						if (healthTraits.Any(x => x.Shape.OuterRadius.Length > wh.TargetSearchRadius.Length))
 							emitError("Actor type `{0}` has a health radius exceeding the victim scan radius of an AS warhead on `{1}`!"
 								.F(actorInfo.Key, weaponInfo.Key));
 					}
