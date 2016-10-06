@@ -49,7 +49,7 @@ namespace OpenRA.Mods.Common.Effects
 
 		public IEnumerable<IRenderable> RenderAboveShroud(WorldRenderer wr)
 		{
-			if (wr.World.FogObscures(pos))
+			if (wr.World.FogObscures(pos) || wr.World.ShroudObscures(pos))
 				yield break;
 
 			// Arbitrary large value used for the z-offset to try and ensure the text displays above everything else.
