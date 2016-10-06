@@ -74,7 +74,7 @@ namespace OpenRA.Mods.AS.Traits
 			return self.GetSellValue() * GetMultiplier() * info.Percentage / 10000;
 		}
 
-		int GetDisplayedBountyValue(Actor self, HashSet<string> deathTypes)
+		int GetDisplayedBountyValue(Actor self, HashSet<string> deathTypes, string bountyType)
 		{
 			var bounty = GetBountyValue(self);
 			if (cargo == null)
@@ -82,9 +82,10 @@ namespace OpenRA.Mods.AS.Traits
 
 			foreach (var a in cargo.Passengers)
 			{
-				var givesProximityBounty = a.TraitsImplementing<GivesProximityBounty>().Where(gpb => deathTypes.Overlaps(gpb.info.DeathTypes));
+				var givesProximityBounty = a.TraitsImplementing<GivesProximityBounty>().Where(gpb => deathTypes.Overlaps(gpb.info.DeathTypes)
+					&& (gpb.info.BountyTypes.Count == 0 || gpb.info.BountyTypes.Contains(bountyType)));
 				foreach (var gpb in givesProximityBounty)
-					bounty += gpb.GetDisplayedBountyValue(a, deathTypes);
+					bounty += gpb.GetDisplayedBountyValue(a, deathTypes, bountyType);
 			}
 
 			return bounty;
@@ -112,7 +113,7 @@ namespace OpenRA.Mods.AS.Traits
 				if (!c.Info.ValidStances.HasStance(e.Attacker.Owner.Stances[self.Owner]))
 					return;
 
-				c.AddBounty(GetDisplayedBountyValue(self, e.Damage.DamageTypes));
+				c.AddBounty(GetDisplayedBountyValue(self, e.Damage.DamageTypes, c.Info.BountyType));
 			}
 		}
 	}
