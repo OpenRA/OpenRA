@@ -3,8 +3,6 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
-    <ProductVersion>10.0.0</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{6DEEE499-98E5-4977-AAAE-CEAE165F17CF}</ProjectGuid>
     <OutputType>Library</OutputType>
     <RootNamespace>OpenRA.Mods.AS</RootNamespace>
@@ -99,6 +97,7 @@
     <Compile Include="Traits\ActorTag.cs" />
     <Compile Include="Scripting\Global\ActorTagGlobal.cs" />
     <Compile Include="UtilityCommands\ImportASMapCommand.cs" />
+    <Compile Include="Traits\Warheads\PromotionWarhead.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Traits\Render\" />
