@@ -231,19 +231,17 @@ namespace OpenRA.Mods.AS.Traits
 		{
 			var pos = world.Map.CenterOfCell(xy);
 
+			world.CancelInputMode();
 			if (mi.Button == MouseButton.Left && IsValidTargetCell(xy))
 			{
 				var actors = instances.Where(x => !x.Item1.IsDisabled() && (x.Item1.CenterPosition - pos).HorizontalLengthSquared < x.Item3.LengthSquared)
 					.OrderBy(x => (x.Item1.CenterPosition - pos).HorizontalLengthSquared).Select(x => x.Item1).Take(power.FireArmamentPowerInfo.MaximumFiringInstances);
 
-				world.CancelInputMode();
 				foreach (var a in actors)
 				{
 					yield return new Order(order, manager.Self, false) { TargetLocation = xy, SuppressVisualFeedback = true };
 				}
 			}
-
-			yield break;
 		}
 
 		public virtual void Tick(World world)
