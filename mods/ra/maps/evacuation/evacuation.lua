@@ -73,16 +73,16 @@ SpawnAlliedReinforcements = function()
 end
 
 Yak = nil
-YakAttack = function(yak)
+YakAttack = function()
 	local targets = Map.ActorsInCircle(YakAttackPoint.CenterPosition, WDist.FromCells(10), function(a)
-		return a.Owner == allies1 and not a.IsDead and a ~= Einstein and a ~= Tanya and a ~= Engineer and yak.CanTarget(a)
+		return a.Owner == allies1 and not a.IsDead and a ~= Einstein and a ~= Tanya and a ~= Engineer and Yak.CanTarget(a)
 	end)
 
 	if (#targets > 0) then
-		yak.Attack(Utils.Random(targets))
+		Yak.Attack(Utils.Random(targets))
 	end
-	yak.Move(Map.ClosestEdgeCell(yak.Location))
-	yak.Destroy()
+	Yak.Move(Map.ClosestEdgeCell(Yak.Location))
+	Yak.Destroy()
 	Trigger.OnRemovedFromWorld(Yak, function()
 		Yak = nil
 	end)
@@ -269,7 +269,9 @@ SetupTriggers = function()
 			return
 		end
 
-		Yak = Reinforcements.Reinforce(soviets, { "yak" }, { YakEntryPoint.Location, YakAttackPoint.Location + CVec.New(0, -10) }, 0, YakAttack)[1]
+		Yak = Actor.Create("yak", true, { Owner = soviets, Location = YakEntryPoint.Location, CenterPosition = YakEntryPoint.CenterPosition + WVec.New(0, 0, Actor.CruiseAltitude("yak")) })
+		Yak.Move(YakAttackPoint.Location + CVec.New(0, -10))
+		Yak.CallFunc(YakAttack)
 	end)
 
 	Trigger.AfterDelay(ParabombDelay, SendParabombs)
