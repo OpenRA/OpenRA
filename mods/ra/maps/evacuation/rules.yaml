@@ -72,6 +72,10 @@ MECH:
 	Buildable:
 		Prerequisites: ~disabled
 
+HIJACKER:
+	Buildable:
+		Prerequisites: ~disabled
+
 SPEN:
 	Buildable:
 		Prerequisites: ~disabled
