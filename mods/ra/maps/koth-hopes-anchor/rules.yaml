@@ -12,6 +12,8 @@ MISS:
 	DamageMultiplier@INVULNERABLE:
 		Modifier: 0
 	-Selectable:
+	SelectionDecorations:
+		RenderSelectionBars: False
 	-Targetable:
 
 Player:

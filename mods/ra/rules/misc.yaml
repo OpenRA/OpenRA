@@ -365,4 +365,5 @@ CTFLAG:
 	DamageMultiplier@INVULNERABLE:
 		Modifier: 0
 	-Selectable:
+	-SelectionDecorations:
 	-Targetable:

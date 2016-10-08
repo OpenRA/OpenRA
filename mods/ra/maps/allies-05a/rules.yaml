@@ -119,6 +119,7 @@ Colt:
 	AttackTurreted:
 	AutoTarget:
 	-Selectable:
+	-SelectionDecorations:
 	-Huntable:
 
 E1.Autotarget:

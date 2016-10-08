@@ -595,6 +595,8 @@
 ^AmmoBox:
 	Inherits: ^TechBuilding
 	-Selectable:
+	SelectionDecorations:
+		RenderSelectionBars: False
 	CustomSelectionSize:
 		CustomBounds: 24,24
 	Health:
@@ -619,6 +621,7 @@
 ^CivField:
 	Inherits: ^CivBuilding
 	-Selectable:
+	-SelectionDecorations:
 	Tooltip:
 		Name: Field
 	-Targetable:
