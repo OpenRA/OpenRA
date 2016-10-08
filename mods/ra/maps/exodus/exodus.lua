@@ -184,6 +184,9 @@ end
 
 IdleHunt = function(unit)
 	Trigger.OnIdle(unit, unit.Hunt)
+	Trigger.OnCapture(unit, function()
+		Trigger.ClearAll(unit)
+	end)
 end
 
 ManageSovietUnits = function()
