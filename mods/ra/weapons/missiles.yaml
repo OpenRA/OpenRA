@@ -251,7 +251,7 @@ SubMissile:
 	Projectile: Bullet
 		Speed: 162
 		Blockable: false
-		Angle: 105
+		Angle: 120
 		Inaccuracy: 2c938
 		Image: MISSILE
 		TrailImage: smokey
@@ -279,16 +279,16 @@ SubMissile:
 
 SubMissileAA:
 	Inherits: SubMissile
-	Range: 6c0
+	Range: 8c0
 	ValidTargets: Air
 	Projectile: Missile
-		Speed: 162
-		Inaccuracy: 0c938
-		HorizontalRateOfTurn: 1
-		RangeLimit: 7c0
+		Speed: 234
+		Inaccuracy: 0c614
+		HorizontalRateOfTurn: 15
+		RangeLimit: 9c0
 	Warhead@1Dam: SpreadDamage
-		Damage: 20
-		ValidTargets: Air
+		Damage: 15
+		ValidTargets: Air, Ground, Water
 
 Stinger:
 	ReloadDelay: 60
