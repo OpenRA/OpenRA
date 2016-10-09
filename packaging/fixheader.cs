@@ -29,6 +29,9 @@ namespace fixheader
 
 			data[corHeaderOffset + 16] |= 2;
 
+			// Set Flag "Application can handle large (>2GB) addresses (/LARGEADDRESSAWARE)"
+			data[peOffset + 4 + 18] |= 0x20;
+
 			File.WriteAllBytes(args[0], data);
 		}
 
