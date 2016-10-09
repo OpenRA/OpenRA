@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -27,16 +28,16 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public readonly WDist FallbackRange = WDist.Zero;
 
 		// Computed range
-		WDist range;
+		Lazy<WDist> range;
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr, World w, ActorInfo ai, WPos centerPosition)
 		{
-			if (range == WDist.Zero)
+			if (range == null || range.Value == WDist.Zero)
 				return SpriteRenderable.None;
 
 			var localRange = new RangeCircleRenderable(
 				centerPosition,
-				range,
+				range.Value,
 				0,
 				Color.FromArgb(128, Color.Yellow),
 				Color.FromArgb(96, Color.Black));
@@ -52,12 +53,16 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		public void RulesetLoaded(Ruleset rules, ActorInfo ai)
 		{
-			var armaments = ai.TraitInfos<ArmamentInfo>().Where(a => a.UpgradeMinEnabledLevel == 0);
+			// ArmamentInfo.ModifiedRange is set by RulesetLoaded, and may not have been initialized yet.
+			// Defer this lookup until we really need it to ensure we get the correct value.
+			range = Exts.Lazy(() =>
+			{
+				var armaments = ai.TraitInfos<ArmamentInfo>().Where(a => a.UpgradeMinEnabledLevel == 0);
+				if (!armaments.Any())
+					return FallbackRange;
 
-			if (armaments.Any())
-				range = armaments.Select(a => a.ModifiedRange).Max();
-			else
-				range = FallbackRange;
+				return armaments.Max(a => a.ModifiedRange);
+			});
 		}
 	}
 
