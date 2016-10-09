@@ -110,7 +110,7 @@ NAOBEL:
 		LocalOffset: 1400,210,800
 	AttackCharge:
 		ChargeAudio: obelpowr.aud
-		InitialChargeDelay: 120
+		InitialChargeDelay: 65
 	WithChargeOverlay:
 		Sequence: active
 		Palette: player

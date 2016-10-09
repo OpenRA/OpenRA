@@ -16,6 +16,7 @@ using OpenRA.GameRules;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Effects;
 using OpenRA.Mods.Common.Graphics;
+using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Projectiles
@@ -32,12 +33,41 @@ namespace OpenRA.Mods.Common.Projectiles
 		[Desc("Equivalent to sequence ZOffset. Controls Z sorting.")]
 		public readonly int ZOffset = 0;
 
-		public readonly int BeamDuration = 10;
+		public readonly int Duration = 10;
 
 		public readonly bool UsePlayerColor = false;
 
-		[Desc("Laser color.")]
+		[Desc("Color of the beam.")]
 		public readonly Color Color = Color.Red;
+
+		[Desc("Beam follows the target.")]
+		public readonly bool TracksTarget = true;
+
+		[Desc("Maximum offset at the maximum range.")]
+		public readonly WDist Inaccuracy = WDist.Zero;
+
+		[Desc("Extra search radius beyond beam width. Required to ensure affecting actors with large health radius.")]
+		public readonly WDist TargetExtraSearchRadius = new WDist(1536);
+
+		[Desc("Beam can be blocked.")]
+		public readonly bool Blockable = false;
+
+		[Desc("Draw a second beam (for 'glow' effect).")]
+		public readonly bool SecondaryBeam = false;
+
+		[Desc("The width of the zap.")]
+		public readonly WDist SecondaryBeamWidth = new WDist(86);
+
+		[Desc("The shape of the beam.  Accepts values Cylindrical or Flat.")]
+		public readonly BeamRenderableShape SecondaryBeamShape = BeamRenderableShape.Cylindrical;
+
+		[Desc("Equivalent to sequence ZOffset. Controls Z sorting.")]
+		public readonly int SecondaryBeamZOffset = 0;
+
+		public readonly bool SecondaryBeamUsePlayerColor = false;
+
+		[Desc("Color of the secondary beam.")]
+		public readonly Color SecondaryBeamColor = Color.Red;
 
 		[Desc("Impact animation.")]
 		public readonly string HitAnim = null;
@@ -50,27 +80,38 @@ namespace OpenRA.Mods.Common.Projectiles
 		public IProjectile Create(ProjectileArgs args)
 		{
 			var c = UsePlayerColor ? args.SourceActor.Owner.Color.RGB : Color;
-			return new LaserZap(args, this, c);
+			return new LaserZap(this, args, c);
 		}
 	}
 
-	public class LaserZap : IProjectile
+	public class LaserZap : IProjectile, ISync
 	{
 		readonly ProjectileArgs args;
 		readonly LaserZapInfo info;
 		readonly Animation hitanim;
+		readonly Color color;
+		readonly Color secondaryColor;
 		int ticks = 0;
-		Color color;
 		bool doneDamage;
 		bool animationComplete;
-		WPos target;
+		[Sync] WPos target;
+		[Sync] WPos source;
 
-		public LaserZap(ProjectileArgs args, LaserZapInfo info, Color color)
+		public LaserZap(LaserZapInfo info, ProjectileArgs args, Color color)
 		{
 			this.args = args;
 			this.info = info;
 			this.color = color;
+			secondaryColor = info.SecondaryBeamUsePlayerColor ? args.SourceActor.Owner.Color.RGB : info.SecondaryBeamColor;
 			target = args.PassiveTarget;
+			source = args.Source;
+
+			if (info.Inaccuracy.Length > 0)
+			{
+				var inaccuracy = OpenRA.Mods.Common.Util.ApplyPercentageModifiers(info.Inaccuracy.Length, args.InaccuracyModifiers);
+				var maxOffset = inaccuracy * (target - source).Length / args.Weapon.Range.Length;
+				target += WVec.FromPDF(args.SourceActor.World.SharedRandom, 2) * maxOffset / 1024;
+			}
 
 			if (!string.IsNullOrEmpty(info.HitAnim))
 				hitanim = new Animation(args.SourceActor.World, info.HitAnim);
@@ -79,8 +120,16 @@ namespace OpenRA.Mods.Common.Projectiles
 		public void Tick(World world)
 		{
 			// Beam tracks target
-			if (args.GuidedTarget.IsValidFor(args.SourceActor))
+			if (info.TracksTarget && args.GuidedTarget.IsValidFor(args.SourceActor))
 				target = args.GuidedTarget.CenterPosition;
+
+			// Check for blocking actors
+			WPos blockedPos;
+			if (info.Blockable && BlocksProjectiles.AnyBlockingActorsBetween(world, source, target,
+				info.Width, info.TargetExtraSearchRadius, out blockedPos))
+			{
+				target = blockedPos;
+			}
 
 			if (!doneDamage)
 			{
@@ -96,7 +145,7 @@ namespace OpenRA.Mods.Common.Projectiles
 			if (hitanim != null)
 				hitanim.Tick();
 
-			if (++ticks >= info.BeamDuration && animationComplete)
+			if (++ticks >= info.Duration && animationComplete)
 				world.AddFrameEndTask(w => w.Remove(this));
 		}
 
@@ -106,10 +155,17 @@ namespace OpenRA.Mods.Common.Projectiles
 				wr.World.FogObscures(args.Source))
 				yield break;
 
-			if (ticks < info.BeamDuration)
+			if (ticks < info.Duration)
 			{
-				var rc = Color.FromArgb((info.BeamDuration - ticks) * color.A / info.BeamDuration, color);
+				var rc = Color.FromArgb((info.Duration - ticks) * color.A / info.Duration, color);
 				yield return new BeamRenderable(args.Source, info.ZOffset, target - args.Source, info.Shape, info.Width, rc);
+
+				if (info.SecondaryBeam)
+				{
+					var src = Color.FromArgb((info.Duration - ticks) * secondaryColor.A / info.Duration, secondaryColor);
+					yield return new BeamRenderable(args.Source, info.SecondaryBeamZOffset, target - args.Source,
+						info.SecondaryBeamShape, info.SecondaryBeamWidth, src);
+				}
 			}
 
 			if (hitanim != null)

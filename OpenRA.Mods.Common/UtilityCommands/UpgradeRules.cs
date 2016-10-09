@@ -441,6 +441,13 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						node.Key = "Speed";
 				}
 
+				// Rename LaserZap BeamDuration to just Duration
+				if (engineVersion < 20161009)
+				{
+					if (node.Key == "BeamDuration")
+						node.Key = "Duration";
+				}
+
 				UpgradeWeaponRules(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}
