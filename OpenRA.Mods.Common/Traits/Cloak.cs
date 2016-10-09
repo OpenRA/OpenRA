@@ -43,7 +43,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		[Desc("Events leading to the actor getting uncloaked. Possible values are: Attack, Move, Unload, Infiltrate, Demolish, Dock and Damage")]
 		public readonly UncloakType UncloakOn = UncloakType.Attack
-			| UncloakType.Unload | UncloakType.Infiltrate | UncloakType.Demolish | UncloakType.Dock;
+			| UncloakType.Unload | UncloakType.Infiltrate | UncloakType.Demolish | UncloakType.Dock | UncloakType.Damage;
 
 		public readonly string CloakSound = null;
 		public readonly string UncloakSound = null;
