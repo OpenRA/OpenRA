@@ -74,7 +74,7 @@ namespace OpenRA.Mods.Common.AI
 
 			if (waterState == Water.NotChecked)
 			{
-				if (ai.EnoughWaterToBuildNaval())
+				if (ai.ProviderHasEnoughCells<BaseProvider>(ai.Info.MaxBaseRadius, ai.Info.WaterTerrainTypes))
 					waterState = Water.EnoughWater;
 				else
 				{
@@ -252,7 +252,7 @@ namespace OpenRA.Mods.Common.AI
 			// Only consider building this if there is enough water inside the base perimeter and there are close enough adjacent buildings
 			if (waterState == Water.EnoughWater && ai.Info.NewProductionCashThreshold > 0
 				&& playerResources.Resources > ai.Info.NewProductionCashThreshold
-				&& ai.CloseEnoughToWater())
+				&& ai.ProviderHasEnoughCells<GivesBuildableArea>(ai.Info.CheckForWaterRadius, ai.Info.WaterTerrainTypes))
 			{
 				var navalproduction = GetProducibleBuilding(ai.Info.BuildingCommonNames.NavalProduction, buildableThings);
 				if (navalproduction != null && HasSufficientPowerForActor(navalproduction))
@@ -306,7 +306,7 @@ namespace OpenRA.Mods.Common.AI
 				// and any structure providing buildable area close enough to that water.
 				// TODO: Extend this check to cover any naval structure, not just production.
 				if (ai.Info.BuildingCommonNames.NavalProduction.Contains(name)
-					&& (waterState == Water.NotEnoughWater || !ai.CloseEnoughToWater()))
+					&& (waterState == Water.NotEnoughWater || !ai.ProviderHasEnoughCells<GivesBuildableArea>(ai.Info.MaxBaseRadius, ai.Info.WaterTerrainTypes)))
 					continue;
 
 				// Will this put us into low power?
