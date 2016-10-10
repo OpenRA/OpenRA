@@ -159,6 +159,7 @@
     <Compile Include="Projectiles\AreaBeam.cs" />
     <Compile Include="Projectiles\Bullet.cs" />
     <Compile Include="Projectiles\GravityBomb.cs" />
+    <Compile Include="Projectiles\InstantHit.cs" />
     <Compile Include="Projectiles\LaserZap.cs" />
     <Compile Include="Projectiles\Missile.cs" />
     <Compile Include="Projectiles\NukeLaunch.cs" />
@@ -510,6 +511,8 @@
     <Compile Include="Traits\Upgrades\UpgradableTrait.cs" />
     <Compile Include="Traits\Upgrades\UpgradeActorsNear.cs" />
     <Compile Include="Traits\Upgrades\UpgradeOnDamageState.cs" />
+    <Compile Include="Traits\Upgrades\UpgradeOnAttack.cs" />
+    <Compile Include="Traits\Upgrades\UpgradeOnTarget.cs" />
     <Compile Include="Traits\Upgrades\UpgradeOnTerrain.cs" />
     <Compile Include="Traits\Upgrades\UpgradeManager.cs" />
     <Compile Include="Traits\Valued.cs" />
@@ -572,6 +575,7 @@
     <Compile Include="UtilityCommands\UpgradeModCommand.cs" />
     <Compile Include="UtilityCommands\UpgradeRules.cs" />
     <Compile Include="UtilityCommands\Rgba2Hex.cs" />
+    <Compile Include="Warheads\ActorDamageWarhead.cs" />
     <Compile Include="Warheads\CreateEffectWarhead.cs" />
     <Compile Include="Warheads\CreateResourceWarhead.cs" />
     <Compile Include="Warheads\DamageWarhead.cs" />

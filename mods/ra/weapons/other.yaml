@@ -188,8 +188,8 @@ DogJaw:
 	ReloadDelay: 10
 	Range: 3c0
 	Report: dogg5p.aud
-	Warhead@1Dam: SpreadDamage
-		Spread: 213
+	Projectile: InstantHit
+	Warhead: ActorDamage
 		Damage: 100
 		ValidTargets: Infantry
 		InvalidTargets: Ant

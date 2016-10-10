@@ -53,5 +53,10 @@ namespace OpenRA.Mods.Common.Activities
 		{
 			return Target.IsInRange(origin, maxRange) && !Target.IsInRange(origin, minRange);
 		}
+
+		public override IEnumerable<Target> GetTargets(Actor self)
+		{
+			yield return Target;
+		}
 	}
 }

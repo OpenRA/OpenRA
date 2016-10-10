@@ -9,70 +9,54 @@
  */
 #endregion
 
-using System;
-using System.Linq;
+using System.Collections.Generic;
 using OpenRA.Activities;
-using OpenRA.GameRules;
 using OpenRA.Mods.Common.Traits;
-using OpenRA.Mods.Common.Traits.Render;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Activities
 {
-	class Leap : Activity
+	public class Leap : Activity
 	{
 		readonly Mobile mobile;
-		readonly WeaponInfo weapon;
+		readonly WPos origin, destination;
 		readonly int length;
 
-		WPos from;
-		WPos to;
-		int ticks;
-		WAngle angle;
+		int ticks = 0;
 
-		public Leap(Actor self, Actor target, WeaponInfo weapon, WDist speed, WAngle angle)
+		/// <summary> Visible move that changes the position in the world. </summary>
+		public Leap(Actor self, WPos origin, WPos destination, int length, Mobile mobile)
 		{
-			var targetMobile = target.TraitOrDefault<Mobile>();
-			if (targetMobile == null)
-				throw new InvalidOperationException("Leap requires a target actor with the Mobile trait");
-
-			this.weapon = weapon;
-			this.angle = angle;
-			mobile = self.Trait<Mobile>();
-			mobile.SetLocation(mobile.FromCell, mobile.FromSubCell, targetMobile.FromCell, targetMobile.FromSubCell);
-			mobile.IsMoving = true;
-
-			from = self.CenterPosition;
-			to = self.World.Map.CenterOfSubCell(targetMobile.FromCell, targetMobile.FromSubCell);
-			length = Math.Max((to - from).Length / speed.Length, 1);
-
-			// HACK: why isn't this using the interface?
-			self.Trait<WithInfantryBody>().Attacking(self, Target.FromActor(target));
-
-			if (weapon.Report != null && weapon.Report.Any())
-				Game.Sound.Play(weapon.Report.Random(self.World.SharedRandom), self.CenterPosition);
+			this.mobile = mobile;
+			this.origin = origin;
+			this.destination = destination;
+			this.length = length;
 		}
 
 		public override Activity Tick(Actor self)
 		{
-			if (ticks == 0 && IsCanceled)
-				return NextActivity;
+			var position = length > 1 ? WPos.Lerp(origin, destination, ticks, length - 1) : destination;
 
-			mobile.SetVisualPosition(self, WPos.LerpQuadratic(from, to, angle, ++ticks, length));
-			if (ticks >= length)
+			mobile.SetVisualPosition(self, position);
+			if (++ticks >= length)
 			{
-				mobile.SetLocation(mobile.ToCell, mobile.ToSubCell, mobile.ToCell, mobile.ToSubCell);
-				mobile.FinishedMoving(self);
 				mobile.IsMoving = false;
-
-				self.World.ActorMap.GetActorsAt(mobile.ToCell, mobile.ToSubCell)
-					.Except(new[] { self }).Where(t => weapon.IsValidAgainst(t, self))
-					.Do(t => t.Kill(self));
+				mobile.SetPosition(self, position);
 
 				return NextActivity;
 			}
 
+			mobile.IsMoving = true;
+
 			return this;
 		}
+
+		public override IEnumerable<Target> GetTargets(Actor self)
+		{
+			yield return Target.FromPos(destination);
+		}
+
+		// Cannot be cancelled
+		public override void Cancel(Actor self) { }
 	}
 }

@@ -499,9 +499,19 @@ e2:
 dog:
 	stand:
 		Facings: 8
-	run:
+	walk:
 		Start: 8
 		Length: 6
+		Facings: 8
+		Tick: 80
+	run:
+		Start: 56
+		Length: 6
+		Facings: 8
+		Tick: 80
+	eat:
+		Start: 104
+		Length: 14
 		Facings: 8
 		Tick: 80
 	idle1:
@@ -537,7 +547,7 @@ dog:
 		TilesetOverrides:
 			DESERT: TEMPERAT
 			INTERIOR: TEMPERAT
-	shoot: dogbullt
+	jump: dogbullt
 		Length: 4
 		Facings: 8
 	icon: dogicon
