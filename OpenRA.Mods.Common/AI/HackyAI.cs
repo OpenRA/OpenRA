@@ -964,8 +964,12 @@ namespace OpenRA.Mods.Common.AI
 				if (!mcv.IsIdle)
 					continue;
 
+				// If we lack a base, we need to make sure we don't restrict deployment of the MCV to the base!
+				var restrictToBase =
+					Info.RestrictMCVDeploymentFallbackToBase &&
+					CountBuildingByCommonName(Info.BuildingCommonNames.ConstructionYard, Player) > 0;
 				var factType = mcv.Info.TraitInfo<TransformsInfo>().IntoActor;
-				var desiredLocation = ChooseBuildLocation(factType, Info.RestrictMCVDeploymentFallbackToBase, BuildingType.Building);
+				var desiredLocation = ChooseBuildLocation(factType, restrictToBase, BuildingType.Building);
 				if (desiredLocation == null)
 					continue;
 
