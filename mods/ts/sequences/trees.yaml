@@ -30,6 +30,18 @@ bigblue:
 		ShadowStart: 11
 		Tick: 160
 
+bigblue3:
+	Defaults: bigblue3.tem
+		Offset: 0, -12, 12
+		AddExtension: false
+	idle:
+		ShadowStart: 10
+	active:
+		Start: 1
+		Length: 9
+		ShadowStart: 11
+		Tick: 160
+
 ^tree:
 	idle:
 		ShadowStart: 1
@@ -109,6 +121,51 @@ tree24:
 	Inherits: ^tree
 
 tree25:
+	Inherits: ^tree
+
+fona01:
+	Inherits: ^tree
+
+fona02:
+	Inherits: ^tree
+
+fona03:
+	Inherits: ^tree
+
+fona04:
+	Inherits: ^tree
+
+fona05:
+	Inherits: ^tree
+
+fona06:
+	Inherits: ^tree
+
+fona07:
+	Inherits: ^tree
+
+fona08:
+	Inherits: ^tree
+
+fona09:
+	Inherits: ^tree
+
+fona10:
+	Inherits: ^tree
+
+fona11:
+	Inherits: ^tree
+
+fona12:
+	Inherits: ^tree
+
+fona13:
+	Inherits: ^tree
+
+fona14:
+	Inherits: ^tree
+
+fona15:
 	Inherits: ^tree
 
 veinhole:
