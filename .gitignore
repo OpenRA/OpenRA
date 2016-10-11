@@ -21,6 +21,7 @@ _ReSharper.*/
 # binaries
 mods/*/*.dll
 mods/*/*.mdb
+mods/*/*.pdb
 /*.dll
 /*.dll.config
 /*.so
