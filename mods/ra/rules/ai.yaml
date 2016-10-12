@@ -42,16 +42,11 @@ Player:
 			stek: 1%
 			fix: 0.1%
 			dome: 10%
-		CapturingActorTypes: e6
-		CapturableActorTypes: mslo, gap, iron, pdox, atek, weap, fact, proc, silo, hpad, afld, powr, apwr, stek, barr, kenn, tent, fix, oilb
-		CheckCaptureTargetsForVisibility: false
-		MaximumCaptureTargetOptions: 15
 		UnitsToBuild:
 			e1: 65%
 			e2: 25%
 			e3: 40%
 			e4: 15%
-			e6: 5%
 			dog: 15%
 			shok: 15%
 			harv: 10%
@@ -68,7 +63,6 @@ Player:
 			stnk: 5%
 		UnitLimits:
 			dog: 4
-			e6: 3
 			harv: 8
 		SquadSize: 20
 		SupportPowerDecision@spyplane:
@@ -174,8 +168,6 @@ Player:
 			e2: 25%
 			e3: 40%
 			e4: 15%
-			medi: 3%
-			mech: 3%
 			dog: 15%
 			shok: 15%
 			harv: 10%
@@ -201,8 +193,6 @@ Player:
 			pt: 10%
 		UnitLimits:
 			dog: 4
-			medi: 3
-			mech: 3
 			harv: 8
 		SquadSize: 40
 		SupportPowerDecision@spyplane:
@@ -308,8 +298,6 @@ Player:
 			e2: 25%
 			e3: 40%
 			e4: 15%
-			medi: 5%
-			mech: 5%
 			dog: 15%
 			shok: 15%
 			harv: 10%
@@ -335,8 +323,6 @@ Player:
 			pt: 10%
 		UnitLimits:
 			dog: 4
-			medi: 4
-			mech: 4
 			harv: 8
 		SquadSize: 10
 		SupportPowerDecision@spyplane:
