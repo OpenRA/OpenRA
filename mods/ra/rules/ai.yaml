@@ -406,6 +406,8 @@ Player:
 		BuildingLimits:
 			proc: 4
 			dome: 1
+			barr: 1
+			tent: 1
 			spen: 1
 			syrd: 1
 			hpad: 8
