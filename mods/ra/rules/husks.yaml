@@ -95,7 +95,7 @@ TRAN.Husk:
 		Offset: 597,0,213
 		Sequence: rotor2
 	RevealsShroud:
-		Range: 12c0
+		Range: 10c0
 		Type: CenterPosition
 	RenderSprites:
 		Image: tran

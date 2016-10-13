@@ -245,7 +245,7 @@ TRAN.Husk:
 		TurnSpeed: 5
 		Speed: 140
 	RevealsShroud:
-		Range: 8c0
+		Range: 10c0
 		Type: CenterPosition
 	WithIdleOverlay@ROTOR1:
 		Offset: 597,0,85
