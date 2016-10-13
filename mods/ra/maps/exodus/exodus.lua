@@ -139,17 +139,18 @@ end
 
 SovietGroupSize = 5
 SpawnSovietUnits = function()
-	local spawnPoint = Utils.Random(SovietEntryPoints)
-	local rallyPoint = Utils.Random(SovietRallyPoints)
-	local route = { spawnPoint.Location, rallyPoint.Location }
 
 	local units = SovietUnits1
 	if DateTime.GameTime >= SovietUnits2Ticks[Difficulty] then
 		units = SovietUnits2
 	end
 
-	local unit = { Utils.Random(units) }
-	Reinforcements.Reinforce(soviets, unit, route)
+	local unitType = Utils.Random(units)
+	local spawnPoint = Utils.Random(SovietEntryPoints)
+	local rallyPoint = Utils.Random(SovietRallyPoints)
+	local actor = Actor.Create(unitType, true, { Owner = soviets, Location = spawnPoint.Location })
+	actor.AttackMove(rallyPoint.Location)
+	IdleHunt(actor)
 
 	local delay = math.max(attackAtFrame - 5, minAttackAtFrame)
 	Trigger.AfterDelay(delay, SpawnSovietUnits)
@@ -184,24 +185,9 @@ end
 
 IdleHunt = function(unit)
 	Trigger.OnIdle(unit, unit.Hunt)
-end
-
-ManageSovietUnits = function()
-	Utils.Do(SovietRallyPoints, function(rallyPoint)
-		local radius = WDist.FromCells(8)
-		local units = Map.ActorsInCircle(rallyPoint.CenterPosition, radius, function(actor)
-			return actor.Owner == soviets and actor.HasProperty("Hunt")
-		end)
-
-		if #units > SovietGroupSize then
-			Utils.Do(units, IdleHunt)
-		end
+	Trigger.OnCapture(unit, function()
+		Trigger.ClearAll(unit)
 	end)
-
-	local scatteredUnits = Utils.Where(soviets.GetGroundAttackers(), function(unit)
-		return not Map.IsNamedActor(unit) and unit.IsIdle and unit.HasProperty("Hunt")
-	end)
-	Utils.Do(scatteredUnits, IdleHunt)
 end
 
 AircraftTargets = function()
@@ -294,7 +280,6 @@ end
 
 Tick = function()
 	if DateTime.GameTime % 100 == 0 then
-		ManageSovietUnits()
 		ManageSovietAircraft()
 
 		Utils.Do(humans, function(player)
