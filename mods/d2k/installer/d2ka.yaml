@@ -1,4 +1,4 @@
-d2k: Dune 2000 (English)
+d2k-a: Dune 2000 (English)
 	IDFiles:
 		MUSIC/AMBUSH.AUD: bd5926a56a83bc0e49f96037e1f909014ac0772a
 		SETUP/SETUP.Z: 937f5ceb1236bf3f3d4e43929305ffe5004078e7
@@ -854,7 +854,7 @@ d2k: Dune 2000 (English)
 			^Content/d2k/v2/SOUND.RS:
 				Offset: 20559431
 				Length: 1929247
-d2k-linux: Dune 2000 (English)
+d2k-a-linux: Dune 2000 (English)
 	IDFiles:
 		music/ambush.aud: bd5926a56a83bc0e49f96037e1f909014ac0772a
 		setup/setup.z: 937f5ceb1236bf3f3d4e43929305ffe5004078e7

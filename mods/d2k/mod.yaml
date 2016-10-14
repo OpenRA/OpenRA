@@ -206,7 +206,7 @@ ModContent:
 	Packages:
 		base: Base Game Files
 			TestFiles: ^Content/d2k/v2/BLOXBASE.R8, ^Content/d2k/v2/BLOXBAT.R8, ^Content/d2k/v2/BLOXBGBS.R8, ^Content/d2k/v2/BLOXICE.R8, ^Content/d2k/v2/BLOXTREE.R8, ^Content/d2k/v2/BLOXWAST.R8, ^Content/d2k/v2/SOUND.RS, ^Content/d2k/v2/PALETTE.BIN, ^Content/d2k/v2/FONT.BIN,  ^Content/d2k/v2/FONTCOL.FNT,  ^Content/d2k/v2/FONTCOL.FPL
-			Sources: d2k, d2k-linux, gruntmods
+			Sources: d2k-a, d2k-a-linux, d2k-b, d2k-b-linux, gruntmods
 			Required: true
 			Download: basefiles
 		patch: 1.06 Patch Content
@@ -216,13 +216,14 @@ ModContent:
 			Download: patch106
 		music: Game Music
 			TestFiles: ^Content/d2k/v2/Music/AMBUSH.AUD
-			Sources: d2k, d2k-linux, gruntmods
+			Sources: d2k-a, d2k-a-linux, d2k-b, d2k-b-linux, gruntmods
 		movies: Campaign Briefings
 			TestFiles: ^Content/d2k/v2/Movies/A_BR01_E.VQA
-			Sources: d2k, d2k-linux
+			Sources: d2k-a, d2k-a-linux, d2k-b, d2k-b-linux
 	Downloads:
 		d2k|installer/downloads.yaml
 	Sources:
-		d2k|installer/d2k.yaml
+		d2k|installer/d2ka.yaml
+		d2k|installer/d2kb.yaml
 		d2k|installer/downloads.yaml
 		d2k|installer/gruntmods.yaml
