@@ -1166,35 +1166,35 @@ gactwr:
 		Facings: 32
 	muzzle0: mgun-n
 		Length: *
-		Offset: 0, 0
+		Offset: 0, 0, 12
 		UseTilesetCode: false
 	muzzle1: mgun-nw
 		Length: *
-		Offset: 0, 0
+		Offset: 0, 0, 12
 		UseTilesetCode: false
 	muzzle2: mgun-w
 		Length: *
-		Offset: 0, 0
+		Offset: 0, 0, 12
 		UseTilesetCode: false
 	muzzle3: mgun-sw
 		Length: *
-		Offset: 0, 0
+		Offset: 0, 0, 12
 		UseTilesetCode: false
 	muzzle4: mgun-s
 		Length: *
-		Offset: 0, 0
+		Offset: 0, 0, 12
 		UseTilesetCode: false
 	muzzle5: mgun-se
 		Length: *
-		Offset: 0, 0
+		Offset: 0, 0, 12
 		UseTilesetCode: false
 	muzzle6: mgun-e
 		Length: *
-		Offset: 0, 0
+		Offset: 0, 0, 12
 		UseTilesetCode: false
 	muzzle7: mgun-ne
 		Length: *
-		Offset: 0, 0
+		Offset: 0, 0, 12
 		UseTilesetCode: false
 	emp-overlay: emp_fx01
 		Length: *
