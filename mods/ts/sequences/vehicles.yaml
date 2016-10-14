@@ -153,6 +153,7 @@ mmch:
 		Offset: 0, 0, 12
 	muzzle: gunfire
 		Length: *
+		Offset: 0, 0, 12
 	icon: mmchicon
 
 gghunt:
