@@ -257,15 +257,13 @@ end
 
 TargetAndAttack = function(yak, target)
 	if not target or target.IsDead or (not target.IsInWorld) then
-		local enemies = Utils.Where(Map.ActorsInWorld, function(self) return self.Owner == greece and self.HasProperty("Health") end)
+		local enemies = Utils.Where(Map.ActorsInWorld, function(self) return self.Owner == greece and self.HasProperty("Health") and yak.CanTarget(self) end)
 		if #enemies > 0 then
 			target = Utils.Random(enemies)
-		else
-			yak.Wait(DateTime.Seconds(5))
 		end
 	end
 
-	if target and yak.AmmoCount() > 0 then
+	if target and yak.AmmoCount() > 0 and yak.CanTarget(target) then
 		yak.Attack(target)
 	else
 		yak.ReturnToBase()

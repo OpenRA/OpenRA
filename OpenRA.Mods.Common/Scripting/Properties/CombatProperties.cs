@@ -90,13 +90,19 @@ namespace OpenRA.Mods.Common.Scripting
 		public void Attack(Actor targetActor, bool allowMove = true, bool forceAttack = false)
 		{
 			var target = Target.FromActor(targetActor);
-			if (!target.IsValidFor(Self) || target.Type == TargetType.FrozenActor)
+			if (!target.IsValidFor(Self))
 				Log.Write("lua", "{1} is an invalid target for {0}!", Self, targetActor);
 
 			if (!targetActor.Info.HasTraitInfo<FrozenUnderFogInfo>() && !Self.Owner.CanTargetActor(targetActor))
 				Log.Write("lua", "{1} is not revealed for player {0}!", Self.Owner, targetActor);
 
 			attackBase.AttackTarget(target, true, allowMove, forceAttack);
+		}
+
+		[Desc("Checks if the targeted actor is a valid target for this actor.")]
+		public bool CanTarget(Actor targetActor)
+		{
+			return Target.FromActor(targetActor).IsValidFor(Self);
 		}
 	}
 }
