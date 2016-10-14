@@ -419,10 +419,12 @@ icon:
 	emp: pulsicon
 
 clustermissile:
-	up: null # TODO
-		Length: *
-	down: null # TODO
-		Length: *
+	up: mltimisl-placeholder # TODO: use voxel
+		Frames: 0
+		Length: 1
+	down: mltimisl-placeholder # TODO: use voxel
+		Frames: 1
+		Length: 1
 
 ionbeam:
 	idle:
