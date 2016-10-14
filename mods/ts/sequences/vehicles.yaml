@@ -7,7 +7,7 @@
 		Length: 12
 		UseTilesetExtension: true
 		ZOffset: 1023
-		Offset: 0, -12
+		Offset: 0, -12, 24
 
 mcv.gdi:
 	Inherits: ^VehicleOverlays

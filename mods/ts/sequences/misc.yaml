@@ -355,6 +355,7 @@ resources:
 		Start: 52
 		ShadowStart: -1
 		Tick: 180
+		Offset: 0, -12, 2.5
 
 shroud:
 	Defaults:
