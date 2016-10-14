@@ -303,7 +303,7 @@
 		Weapon: Pistol
 	AttackFrontal:
 	WithInfantryBody:
-		AttackSequence: shoot
+		DefaultAttackSequence: shoot
 
 ^Ship:
 	Inherits@1: ^ExistsInWorld

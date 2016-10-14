@@ -37,7 +37,7 @@ DOG:
 	Targetable:
 		TargetTypes: Ground, Infantry
 	WithInfantryBody:
-		AttackSequence: shoot
+		DefaultAttackSequence: shoot
 		StandSequences: stand
 	IgnoresDisguise:
 	DetectCloaked:
@@ -68,7 +68,7 @@ E1:
 		MuzzleSequence: garrison-muzzle
 	AttackFrontal:
 	WithInfantryBody:
-		AttackSequence: shoot
+		DefaultAttackSequence: shoot
 	ProducibleWithLevel:
 		Prerequisites: barracks.upgraded
 
@@ -98,7 +98,7 @@ E2:
 		FireDelay: 15
 	AttackFrontal:
 	WithInfantryBody:
-		AttackSequence: throw
+		DefaultAttackSequence: throw
 	Explodes:
 		Weapon: UnitExplodeSmall
 		Chance: 50
@@ -131,7 +131,7 @@ E3:
 		Weapon: Dragon
 	AttackFrontal:
 	WithInfantryBody:
-		AttackSequence: shoot
+		DefaultAttackSequence: shoot
 	ProducibleWithLevel:
 		Prerequisites: barracks.upgraded
 
@@ -158,7 +158,7 @@ E4:
 		Weapon: Flamer
 	AttackFrontal:
 	WithInfantryBody:
-		AttackSequence: shoot
+		DefaultAttackSequence: shoot
 	ProducibleWithLevel:
 		Prerequisites: barracks.upgraded
 
@@ -288,7 +288,7 @@ E7:
 		MuzzleSequence: garrison-muzzle
 	AttackFrontal:
 	WithInfantryBody:
-		AttackSequence: shoot
+		DefaultAttackSequence: shoot
 		StandSequences: stand
 	AnnounceOnBuild:
 	AnnounceOnKill:
@@ -324,7 +324,7 @@ MEDI:
 	AttackFrontal:
 	WithInfantryBody:
 		StandSequences: stand
-		AttackSequence: heal
+		DefaultAttackSequence: heal
 	Voiced:
 		VoiceSet: MedicVoice
 
@@ -361,7 +361,7 @@ MECH:
 		CaptureTypes: husk
 		PlayerExperience: 25
 	WithInfantryBody:
-		AttackSequence: repair
+		DefaultAttackSequence: repair
 		StandSequences: stand
 	Voiced:
 		VoiceSet: MechanicVoice
@@ -510,7 +510,7 @@ SHOK:
 	Guard:
 		Voice: Move
 	WithInfantryBody:
-		AttackSequence: shoot
+		DefaultAttackSequence: shoot
 	Voiced:
 		VoiceSet: ShokVoice
 	ProducibleWithLevel:
@@ -545,7 +545,7 @@ SNIPER:
 		MuzzleSequence: garrison-muzzle
 	AttackFrontal:
 	WithInfantryBody:
-		AttackSequence: shoot
+		DefaultAttackSequence: shoot
 	Cloak:
 		InitialDelay: 250
 		CloakDelay: 120
@@ -580,7 +580,7 @@ Zombie:
 		ScanRadius: 5
 	AttackFrontal:
 	WithInfantryBody:
-		AttackSequence: bite
+		DefaultAttackSequence: bite
 		IdleSequences: idle1
 	Armament:
 		Weapon: claw
@@ -618,7 +618,7 @@ Ant:
 		ScanRadius: 5
 	AttackFrontal:
 	WithInfantryBody:
-		AttackSequence: bite
+		DefaultAttackSequence: bite
 	Armament:
 		Weapon: mandible
 	Targetable:

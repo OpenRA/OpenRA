@@ -320,7 +320,7 @@
 		Weapon: Pistol
 	AttackFrontal:
 	WithInfantryBody:
-		AttackSequence: shoot
+		DefaultAttackSequence: shoot
 
 ^DINO:
 	Inherits@1: ^ExistsInWorld
@@ -365,7 +365,7 @@
 	QuantizeFacingsFromSequence:
 		Sequence: stand
 	WithInfantryBody:
-		AttackSequence: attack
+		DefaultAttackSequence: attack
 	WithDeathAnimation:
 		UseDeathTypeSuffix: false
 	AutoTarget:

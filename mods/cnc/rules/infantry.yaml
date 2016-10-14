@@ -17,7 +17,7 @@ E1:
 	AttackFrontal:
 	WithInfantryBody:
 		IdleSequences: idle1,idle2,idle3,idle4
-		AttackSequence: shoot
+		DefaultAttackSequence: shoot
 
 E2:
 	Inherits: ^Soldier
@@ -40,7 +40,7 @@ E2:
 		FireDelay: 15
 	AttackFrontal:
 	WithInfantryBody:
-		AttackSequence: throw
+		DefaultAttackSequence: throw
 	Explodes:
 		Weapon: GrenadierExplode
 		EmptyWeapon: GrenadierExplode
@@ -68,7 +68,7 @@ E3:
 		FireDelay: 5
 	AttackFrontal:
 	WithInfantryBody:
-		AttackSequence: shoot
+		DefaultAttackSequence: shoot
 
 E4:
 	Inherits: ^Soldier
@@ -93,7 +93,7 @@ E4:
 	AttackFrontal:
 	WithMuzzleOverlay:
 	WithInfantryBody:
-		AttackSequence: shoot
+		DefaultAttackSequence: shoot
 
 E5:
 	Inherits: ^Soldier
@@ -124,7 +124,7 @@ E5:
 	WithMuzzleOverlay:
 	-DamagedByTerrain:
 	WithInfantryBody:
-		AttackSequence: shoot
+		DefaultAttackSequence: shoot
 
 E6:
 	Inherits: ^Soldier
@@ -185,7 +185,7 @@ RMBO:
 	AttackMove:
 		Voice: Attack
 	WithInfantryBody:
-		AttackSequence: shoot
+		DefaultAttackSequence: shoot
 		IdleSequences: idle1,idle2,idle3
 	AnnounceOnBuild:
 	AnnounceOnKill:

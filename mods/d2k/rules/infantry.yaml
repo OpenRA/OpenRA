@@ -18,7 +18,7 @@ light_inf:
 		Weapon: LMG
 	AttackFrontal:
 	WithInfantryBody:
-		AttackSequence: shoot
+		DefaultAttackSequence: shoot
 
 engineer:
 	Inherits: ^Infantry
@@ -73,7 +73,7 @@ trooper:
 		LocalOffset: 128,0,256
 	AttackFrontal:
 	WithInfantryBody:
-		AttackSequence: shoot
+		DefaultAttackSequence: shoot
 
 thumper:
 	Inherits: ^Infantry
@@ -154,7 +154,7 @@ fremen:
 		Weapon: Fremen_L
 	AttackFrontal:
 	WithInfantryBody:
-		AttackSequence: shoot
+		DefaultAttackSequence: shoot
 	Cloak:
 		InitialDelay: 85
 		CloakDelay: 85
@@ -188,7 +188,7 @@ grenadier:
 		FireDelay: 3
 	AttackFrontal:
 	WithInfantryBody:
-		AttackSequence: throw
+		DefaultAttackSequence: throw
 	Explodes:
 		Weapon: GrenDeath
 		EmptyWeapon: GrenDeath
@@ -213,7 +213,7 @@ sardaukar:
 	RevealsShroud:
 		Range: 4c768
 	WithInfantryBody:
-		AttackSequence: shoot
+		DefaultAttackSequence: shoot
 	Armament@PRIMARY:
 		Weapon: M_LMG
 	Armament@SECONDARY:

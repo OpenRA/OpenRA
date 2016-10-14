@@ -386,6 +386,17 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				// Renamed AttackSequence to DefaultAttackSequence in WithInfantryBody.
+				if (engineVersion < 20161014)
+				{
+					if (node.Key == "WithInfantryBody")
+					{
+						var attackSequence = node.Value.Nodes.FirstOrDefault(n => n.Key == "AttackSequence");
+						if (attackSequence != null)
+							attackSequence.Key = "DefaultAttackSequence";
+					}
+				}
+
 				UpgradeActorRules(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 

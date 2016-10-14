@@ -24,9 +24,9 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public readonly int MaxIdleDelay = 110;
 
 		[SequenceReference] public readonly string MoveSequence = "run";
-		[SequenceReference] public readonly string AttackSequence = null;
+		[SequenceReference] public readonly string DefaultAttackSequence = null;
 
-		// TODO: [SequenceReference] isn't smart enough to use Dictionarys.
+		// TODO: [SequenceReference] isn't smart enough to use Dictionaries.
 		[Desc("Attack sequence to use for each armament.")]
 		[FieldLoader.LoadUsing("LoadWeaponSequences")]
 		public readonly Dictionary<string, string> AttackSequences = new Dictionary<string, string>();
@@ -114,7 +114,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		{
 			string sequence;
 			if (!Info.AttackSequences.TryGetValue(a.Info.Name, out sequence))
-				sequence = Info.AttackSequence;
+				sequence = Info.DefaultAttackSequence;
 
 			if (!string.IsNullOrEmpty(sequence) && DefaultAnimation.HasSequence(NormalizeInfantrySequence(self, sequence)))
 			{

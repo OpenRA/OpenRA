@@ -396,7 +396,7 @@
 	MustBeDestroyed:
 	WithPermanentInjury:
 	WithInfantryBody:
-		AttackSequence: attack
+		DefaultAttackSequence: attack
 		IdleSequences: idle1,idle2
 	UpgradeOnDamageState@CRITICAL:
 		Upgrades: criticalspeed
