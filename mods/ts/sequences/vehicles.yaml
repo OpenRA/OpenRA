@@ -128,6 +128,7 @@ ttnk:
 		Offset: 0, -12, 12
 	muzzle: gunfire
 		Length: *
+		Offset: 0, 0, 24
 	icon: tickicon
 
 stnk:

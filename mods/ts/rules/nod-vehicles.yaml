@@ -89,14 +89,14 @@ TTNK:
 		UpgradeMinEnabledLevel: 1
 	Armament@PRIMARY:
 		Weapon: 90mm
-		LocalOffset: 256,0,256
+		LocalOffset: 288,0,256
 		UpgradeTypes: eliteweapon
 		UpgradeMaxEnabledLevel: 0
 		UpgradeMaxAcceptedLevel: 1
 		MuzzleSequence: muzzle
 	Armament@ELITE:
 		Weapon: 120mmx
-		LocalOffset: 256,0,256
+		LocalOffset: 288,0,256
 		UpgradeTypes: eliteweapon
 		UpgradeMinEnabledLevel: 1
 		MuzzleSequence: muzzle
