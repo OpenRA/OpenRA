@@ -358,8 +358,9 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				// Update rules added during prep-1609 stable period, dates need fixing after release.
+
 				// Add a warning to add WithRearmAnimation to actors that might need it.
-				// Update rule added during prep-1609 stable period, date needs fixing after release.
 				if (engineVersion < 20160918 && depth == 2)
 				{
 					if (node.Key == "RearmBuildings")
@@ -383,6 +384,28 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						var name = node.Value.Nodes.FirstOrDefault(n => n.Key == "Name");
 						if (name != null)
 							node.Value.Nodes.Add(new MiniYamlNode("Type", name.Value.Value));
+					}
+				}
+
+				// Capture bonus was decoupled from CashTrickler to a separate trait.
+				if (engineVersion < 20161005 && depth == 0)
+				{
+					var trickler = node.Value.Nodes.FirstOrDefault(n => n.Key == "CashTrickler");
+					if (trickler != null)
+					{
+						var capture = trickler.Value.Nodes.FirstOrDefault(n => n.Key == "CaptureAmount");
+						if (capture != null)
+						{
+							var gcoc = new MiniYamlNode("GiveCashOnCapture", "");
+							gcoc.Value.Nodes.Add(capture);
+							trickler.Value.Nodes.Remove(capture);
+
+							var show = trickler.Value.Nodes.FirstOrDefault(n => n.Key == "ShowTicks");
+							if (show != null)
+								gcoc.Value.Nodes.Add(show);
+
+							node.Value.Nodes.Add(gcoc);
+						}
 					}
 				}
 

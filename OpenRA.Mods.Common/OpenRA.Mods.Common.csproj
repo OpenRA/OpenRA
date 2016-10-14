@@ -329,6 +329,7 @@
     <Compile Include="Traits\ExternalCapturableBar.cs" />
     <Compile Include="Traits\ExternalCaptures.cs" />
     <Compile Include="Traits\GainsExperience.cs" />
+    <Compile Include="Traits\GiveCashOnCapture.cs" />
     <Compile Include="Traits\GivesBounty.cs" />
     <Compile Include="Traits\GivesExperience.cs" />
     <Compile Include="Traits\GlobalUpgradable.cs" />
