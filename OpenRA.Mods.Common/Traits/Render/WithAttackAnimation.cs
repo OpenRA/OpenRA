@@ -14,7 +14,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits.Render
 {
-	public class WithAttackAnimationInfo : ITraitInfo, Requires<WithSpriteBodyInfo>, Requires<ArmamentInfo>, Requires<AttackBaseInfo>
+	public class WithAttackAnimationInfo : UpgradableTraitInfo, Requires<WithSpriteBodyInfo>, Requires<ArmamentInfo>, Requires<AttackBaseInfo>
 	{
 		[Desc("Armament name")]
 		public readonly string Armament = "primary";
@@ -34,39 +34,62 @@ namespace OpenRA.Mods.Common.Traits.Render
 		[Desc("Should the animation be delayed relative to preparation or actual attack?")]
 		public readonly AttackDelayType DelayRelativeTo = AttackDelayType.Preparation;
 
-		public object Create(ActorInitializer init) { return new WithAttackAnimation(init, this); }
+		public override object Create(ActorInitializer init) { return new WithAttackAnimation(init, this); }
 	}
 
-	public class WithAttackAnimation : ITick, INotifyAttack
+	public class WithAttackAnimation : UpgradableTrait<WithAttackAnimationInfo>, ITick, INotifyAttack
 	{
-		readonly WithAttackAnimationInfo info;
 		readonly AttackBase attack;
 		readonly Armament armament;
-		readonly WithSpriteBody wsb;
+		readonly WithSpriteBody[] wsbs;
 
 		int tick;
 
 		public WithAttackAnimation(ActorInitializer init, WithAttackAnimationInfo info)
+			: base(info)
 		{
-			this.info = info;
 			attack = init.Self.Trait<AttackBase>();
 			armament = init.Self.TraitsImplementing<Armament>()
 				.Single(a => a.Info.Name == info.Armament);
-			wsb = init.Self.Trait<WithSpriteBody>();
+			wsbs = init.Self.TraitsImplementing<WithSpriteBody>().ToArray();
 		}
 
 		void PlayAttackAnimation(Actor self)
 		{
-			if (!string.IsNullOrEmpty(info.AttackSequence))
-				wsb.PlayCustomAnimation(self, info.AttackSequence, () => wsb.CancelCustomAnimation(self));
+			foreach (var wsb in wsbs)
+				if (!wsb.IsTraitDisabled && !string.IsNullOrEmpty(Info.AttackSequence))
+					wsb.PlayCustomAnimation(self, Info.AttackSequence, () => wsb.CancelCustomAnimation(self));
+		}
+
+		void PlayAimSequence()
+		{
+			if (string.IsNullOrEmpty(Info.AimSequence) && string.IsNullOrEmpty(Info.ReloadPrefix))
+				return;
+
+			foreach (var wsb in wsbs)
+			{
+				if (!wsb.IsTraitDisabled)
+				{
+					var sequence = wsb.Info.Sequence;
+					if (!string.IsNullOrEmpty(Info.AimSequence) && attack.IsAttacking)
+						sequence = Info.AimSequence;
+
+					var prefix = (armament.IsReloading && !string.IsNullOrEmpty(Info.ReloadPrefix)) ? Info.ReloadPrefix : "";
+
+					if (!string.IsNullOrEmpty(prefix) && sequence != (prefix + sequence))
+						sequence = prefix + sequence;
+
+					wsb.DefaultAnimation.ReplaceAnim(sequence);
+				}
+			}
 		}
 
 		void INotifyAttack.Attacking(Actor self, Target target, Armament a, Barrel barrel)
 		{
-			if (info.DelayRelativeTo == AttackDelayType.Attack)
+			if (Info.DelayRelativeTo == AttackDelayType.Attack)
 			{
-				if (info.Delay > 0)
-					tick = info.Delay;
+				if (Info.Delay > 0)
+					tick = Info.Delay;
 				else
 					PlayAttackAnimation(self);
 			}
@@ -74,10 +97,10 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		void INotifyAttack.PreparingAttack(Actor self, Target target, Armament a, Barrel barrel)
 		{
-			if (info.DelayRelativeTo == AttackDelayType.Preparation)
+			if (Info.DelayRelativeTo == AttackDelayType.Preparation)
 			{
-				if (info.Delay > 0)
-					tick = info.Delay;
+				if (Info.Delay > 0)
+					tick = Info.Delay;
 				else
 					PlayAttackAnimation(self);
 			}
@@ -85,22 +108,13 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		void ITick.Tick(Actor self)
 		{
-			if (info.Delay > 0 && --tick == 0)
-				PlayAttackAnimation(self);
-
-			if (string.IsNullOrEmpty(info.AimSequence) && string.IsNullOrEmpty(info.ReloadPrefix))
+			if (IsTraitDisabled)
 				return;
 
-			var sequence = wsb.Info.Sequence;
-			if (!string.IsNullOrEmpty(info.AimSequence) && attack.IsAttacking)
-				sequence = info.AimSequence;
+			if (Info.Delay > 0 && --tick == 0)
+				PlayAttackAnimation(self);
 
-			var prefix = (armament.IsReloading && !string.IsNullOrEmpty(info.ReloadPrefix)) ? info.ReloadPrefix : "";
-
-			if (!string.IsNullOrEmpty(prefix) && sequence != (prefix + sequence))
-				sequence = prefix + sequence;
-
-			wsb.DefaultAnimation.ReplaceAnim(sequence);
+			PlayAimSequence();
 		}
 	}
 }
