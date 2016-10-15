@@ -66,7 +66,8 @@ namespace OpenRA.Mods.Common.Scripting
 			"The first member of the entryPath array will be the units' spawnpoint, " +
 			"while the last one will be their destination. If actionFunc is given, " +
 			"it will be executed once a unit has reached its destination. actionFunc " +
-			"will be called as actionFunc(Actor actor)")]
+			"will be called as actionFunc(Actor actor). " +
+			"Returns a table containing the deployed units.")]
 		public Actor[] Reinforce(Player owner, string[] actorTypes, CPos[] entryPath, int interval = 25, LuaFunction actionFunc = null)
 		{
 			var actors = new List<Actor>();
@@ -107,7 +108,9 @@ namespace OpenRA.Mods.Common.Scripting
 			"has reached the destination, it will unload its cargo unless a custom actionFunc has " +
 			"been supplied. Afterwards, the transport will follow the exitPath and leave the map, " +
 			"unless a custom exitFunc has been supplied. actionFunc will be called as " +
-			"actionFunc(Actor transport, Actor[] cargo). exitFunc will be called as exitFunc(Actor transport).")]
+			"actionFunc(Actor transport, Actor[] cargo). exitFunc will be called as exitFunc(Actor transport). " +
+			"Returns a table in which the first value is the transport, " +
+			"and the second a table containing the deployed units.")]
 		public LuaTable ReinforceWithTransport(Player owner, string actorType, string[] cargoTypes, CPos[] entryPath, CPos[] exitPath = null,
 			LuaFunction actionFunc = null, LuaFunction exitFunc = null)
 		{
