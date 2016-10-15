@@ -45,7 +45,6 @@ namespace OpenRA
 
 		public Activity CurrentActivity { get; private set; }
 
-		public Group Group;
 		public int Generation;
 
 		public Rectangle Bounds { get; private set; }

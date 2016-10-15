@@ -371,7 +371,6 @@
     <Compile Include="Traits\PaletteEffects\FlashPaletteEffect.cs" />
     <Compile Include="Traits\PaletteEffects\MenuPaletteEffect.cs" />
     <Compile Include="Traits\PaletteEffects\RotationPaletteEffect.cs" />
-    <Compile Include="Traits\Player\ActorGroupProxy.cs" />
     <Compile Include="Traits\Player\AllyRepair.cs" />
     <Compile Include="Traits\Player\BaseAttackNotifier.cs" />
     <Compile Include="Traits\Player\ClassicProductionQueue.cs" />
