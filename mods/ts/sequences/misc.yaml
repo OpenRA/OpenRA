@@ -50,8 +50,7 @@ crate:
 crate-effects:
 	Defaults:
 		Length: *
-		ZOffset: 2047
-		Offset: 0, 0, 24
+		Offset: 0, 0, 96
 	dollar: money
 	reveal-map: reveal
 	hide-map: shroudx
