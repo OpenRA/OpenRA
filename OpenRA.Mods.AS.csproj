@@ -99,6 +99,7 @@
     <Compile Include="UtilityCommands\ImportASMapCommand.cs" />
     <Compile Include="Traits\Warheads\PromotionWarhead.cs" />
     <Compile Include="Traits\GrantPeriodicUpgrades.cs" />
+    <Compile Include="Traits\Render\WithVoxelHelicopterBody.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Traits\Render\" />
