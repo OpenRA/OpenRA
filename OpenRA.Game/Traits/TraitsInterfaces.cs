@@ -308,6 +308,7 @@ namespace OpenRA.Traits
 		Activity VisualMove(Actor self, WPos fromPos, WPos toPos);
 		CPos NearestMoveableCell(CPos target);
 		bool IsMoving { get; set; }
+		bool IsMovingVertically { get; set; }
 		bool CanEnterTargetNow(Actor self, Target target);
 	}
 

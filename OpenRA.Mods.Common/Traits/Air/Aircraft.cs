@@ -118,6 +118,11 @@ namespace OpenRA.Mods.Common.Traits
 
 		bool airborne;
 		bool cruising;
+		bool firstTick = true;
+
+		bool isMoving;
+		bool isMovingVertically;
+		WPos cachedPosition;
 
 		public Aircraft(ActorInitializer init, AircraftInfo info)
 		{
@@ -141,6 +146,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			um = self.TraitOrDefault<UpgradeManager>();
 			speedModifiers = self.TraitsImplementing<ISpeedModifier>().ToArray().Select(sm => sm.GetSpeedModifier());
+			cachedPosition = self.CenterPosition;
 		}
 
 		public void AddedToWorld(Actor self)
@@ -154,7 +160,6 @@ namespace OpenRA.Mods.Common.Traits
 				OnCruisingAltitudeReached();
 		}
 
-		bool firstTick = true;
 		public virtual void Tick(Actor self)
 		{
 			if (firstTick)
@@ -173,6 +178,11 @@ namespace OpenRA.Mods.Common.Traits
 
 				self.QueueActivity(new TakeOff(self));
 			}
+
+			var oldCachedPosition = cachedPosition;
+			cachedPosition = self.CenterPosition;
+			isMoving = (oldCachedPosition - cachedPosition).HorizontalLengthSquared != 0;
+			isMovingVertically = (oldCachedPosition - cachedPosition).VerticalLengthSquared != 0;
 
 			Repulse();
 		}
@@ -266,12 +276,12 @@ namespace OpenRA.Mods.Common.Traits
 
 		protected void ReserveSpawnBuilding()
 		{
-			/* HACK: not spawning in the air, so try to assoc. with our afld. */
-			var afld = GetActorBelow();
-			if (afld == null)
+			// HACK: Not spawning in the air, so try to associate with our spawner.
+			var spawner = GetActorBelow();
+			if (spawner == null)
 				return;
 
-			MakeReservation(afld);
+			MakeReservation(spawner);
 		}
 
 		public void MakeReservation(Actor target)
@@ -483,7 +493,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		public CPos NearestMoveableCell(CPos cell) { return cell; }
 
-		public bool IsMoving { get { return self.World.Map.DistanceAboveTerrain(CenterPosition).Length > 0; } set { } }
+		public bool IsMoving { get { return isMoving; } set { } }
+
+		public bool IsMovingVertically { get { return isMovingVertically; } set { } }
 
 		public bool CanEnterTargetNow(Actor self, Target target)
 		{
