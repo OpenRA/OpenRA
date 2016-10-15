@@ -578,6 +578,10 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					if (node.Key.StartsWith("UncloakOn", StringComparison.Ordinal))
 						node.Value.Value = node.Value.Value.Replace("Damage", "Damage, Heal, SelfHeal");
 
+				// Removed dead ActorGroupProxy trait
+				if (engineVersion < 20170318)
+					node.Value.Nodes.RemoveAll(n => n.Key == "ActorGroupProxy");
+
 				UpgradeActorRules(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 

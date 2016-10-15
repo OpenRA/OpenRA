@@ -41,7 +41,6 @@ Player:
 	AllyRepair:
 	PlayerResources:
 		InsufficientFundsNotification: InsufficientFunds
-	ActorGroupProxy:
 	DeveloperMode:
 		Enabled: true
 	Shroud:
