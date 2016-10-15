@@ -208,7 +208,7 @@ namespace OpenRA.Mods.AS.Traits
 
 		float ISelectionBar.GetValue()
 		{
-			if (deployState == TimedDeployState.Undeploying)
+			if (!info.ShowSelectionBar || deployState == TimedDeployState.Undeploying)
 				return 0f;
 
 			if (deployState == TimedDeployState.Deploying || deployState == TimedDeployState.Ready)
@@ -219,7 +219,7 @@ namespace OpenRA.Mods.AS.Traits
 				: (float)ticks / info.DeployedTicks;
 		}
 
-		bool ISelectionBar.DisplayWhenEmpty { get { return true; } }
+		bool ISelectionBar.DisplayWhenEmpty { get { return info.ShowSelectionBar; } }
 
 		Color ISelectionBar.GetColor() { return deployState == TimedDeployState.Charging ? info.ChargingColor : info.DischargingColor; }
 	}
