@@ -43,7 +43,7 @@ namespace OpenRA.Mods.Common.Activities
 			if (self.Owner.IsAlliedWith(self.World.RenderPlayer))
 				self.World.AddFrameEndTask(w => w.Add(new FloatingText(target.CenterPosition, target.Owner.Color.RGB, FloatingText.FormatCashTick(payload), 30)));
 
-			return false;
+			return true;
 		}
 	}
 }
