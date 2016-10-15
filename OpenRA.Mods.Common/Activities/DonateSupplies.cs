@@ -29,10 +29,10 @@ namespace OpenRA.Mods.Common.Activities
 			this.experience = playerExperience;
 		}
 
-		protected override void OnInside(Actor self)
+		protected override bool OnInside(Actor self)
 		{
 			if (target.IsDead)
-				return;
+				return false;
 
 			target.Owner.PlayerActor.Trait<PlayerResources>().GiveCash(payload);
 
@@ -42,6 +42,8 @@ namespace OpenRA.Mods.Common.Activities
 
 			if (self.Owner.IsAlliedWith(self.World.RenderPlayer))
 				self.World.AddFrameEndTask(w => w.Add(new FloatingText(target.CenterPosition, target.Owner.Color.RGB, FloatingText.FormatCashTick(payload), 30)));
+
+			return false;
 		}
 	}
 }

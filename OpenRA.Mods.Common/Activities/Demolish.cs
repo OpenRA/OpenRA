@@ -48,7 +48,7 @@ namespace OpenRA.Mods.Common.Activities
 			return demolishables.Any(i => i.IsValidTarget(target, self));
 		}
 
-		protected override void OnInside(Actor self)
+		protected override bool OnInside(Actor self)
 		{
 			self.World.AddFrameEndTask(w =>
 			{
@@ -79,6 +79,7 @@ namespace OpenRA.Mods.Common.Activities
 						demolishables.Do(d => d.Demolish(target, self));
 				}));
 			});
+            return false;
 		}
 	}
 }
