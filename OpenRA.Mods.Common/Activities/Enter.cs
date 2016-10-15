@@ -217,11 +217,11 @@ namespace OpenRA.Mods.Common.Activities
 						return State.ApproachingOrEntering;
 					}
 
-					var shouldDispose = OnInside(self);
+					var completed = OnInside(self);
 
-					if (enterBehaviour == EnterBehaviour.Suicide)
+					if (enterBehaviour == EnterBehaviour.Suicide && completed)
 						self.Kill(self);
-					else if (enterBehaviour == EnterBehaviour.Dispose && shouldDispose)
+					else if (enterBehaviour == EnterBehaviour.Dispose && completed)
 						self.Dispose();
 
 					// Return if Abort(Actor) or Done(self) was called from OnInside.

@@ -79,6 +79,7 @@ namespace OpenRA.Mods.Common.Activities
 						demolishables.Do(d => d.Demolish(target, self));
 				}));
 			});
+
             return false;
 		}
 	}
