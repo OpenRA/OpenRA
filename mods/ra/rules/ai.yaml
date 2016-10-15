@@ -19,8 +19,6 @@ Player:
 			kenn: 1
 			dome: 1
 			weap: 1
-			hpad: 4
-			afld: 4
 			atek: 1
 			stek: 1
 			fix: 1
@@ -35,6 +33,7 @@ Player:
 			pbox: 7%
 			gun: 7%
 			tsla: 5%
+			gap: 2%
 			ftur: 10%
 			agun: 5%
 			sam: 5%
@@ -163,6 +162,7 @@ Player:
 			gun: 7%
 			ftur: 10%
 			tsla: 5%
+			gap: 2%
 			fix: 1%
 			agun: 5%
 			sam: 1%
@@ -296,6 +296,7 @@ Player:
 			gun: 10%
 			ftur: 10%
 			tsla: 7%
+			gap: 3%
 			fix: 0.1%
 			dome: 10%
 			agun: 5%
@@ -403,6 +404,8 @@ Player:
 		BuildingLimits:
 			proc: 4
 			dome: 1
+			barr: 1
+			tent: 1
 			spen: 1
 			syrd: 1
 			hpad: 8
