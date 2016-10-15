@@ -44,7 +44,7 @@ UMAGON:
 	AttackFrontal:
 		Voice: Attack
 	WithInfantryBody:
-		AttackSequence: attack
+		DefaultAttackSequence: attack
 	ProducibleWithLevel:
 		Prerequisites: barracks.upgraded
 
@@ -99,7 +99,7 @@ MUTANT:
 	AttackFrontal:
 		Voice: Attack
 	WithInfantryBody:
-		AttackSequence: attack
+		DefaultAttackSequence: attack
 	ProducibleWithLevel:
 		Prerequisites: barracks.upgraded
 
@@ -123,7 +123,7 @@ MWMN:
 	AttackFrontal:
 		Voice: Attack
 	WithInfantryBody:
-		AttackSequence: attack
+		DefaultAttackSequence: attack
 	ProducibleWithLevel:
 		Prerequisites: barracks.upgraded
 
@@ -147,7 +147,7 @@ MUTANT3:
 	AttackFrontal:
 		Voice: Attack
 	WithInfantryBody:
-		AttackSequence: attack
+		DefaultAttackSequence: attack
 	ProducibleWithLevel:
 		Prerequisites: barracks.upgraded
 
@@ -168,7 +168,7 @@ TRATOS:
 		Range: 4c0
 	-AutoTarget:
 	WithInfantryBody:
-		AttackSequence: attack
+		DefaultAttackSequence: attack
 
 OXANNA:
 	Inherits: ^Soldier
@@ -186,7 +186,7 @@ OXANNA:
 		Range: 4c0
 	-AutoTarget:
 	WithInfantryBody:
-		AttackSequence: attack
+		DefaultAttackSequence: attack
 
 SLAV:
 	Inherits: ^Soldier
@@ -204,7 +204,7 @@ SLAV:
 		Range: 4c0
 	-AutoTarget:
 	WithInfantryBody:
-		AttackSequence: attack
+		DefaultAttackSequence: attack
 
 DOGGIE:
 	Inherits@1: ^Infantry
@@ -279,7 +279,7 @@ VISC_LRG:
 CIV1:
 	Inherits: ^CivilianInfantry
 	WithInfantryBody:
-		AttackSequence: attack
+		DefaultAttackSequence: attack
 	Armament:
 		Weapon: Pistola
 	AttackFrontal:
@@ -292,7 +292,7 @@ CIV2:
 CIV3:
 	Inherits: ^CivilianInfantry
 	WithInfantryBody:
-		AttackSequence: attack
+		DefaultAttackSequence: attack
 	Armament:
 		Weapon: Pistola
 	AttackFrontal:

@@ -51,7 +51,7 @@ namespace OpenRA.Mods.RA.Traits
 				return;
 
 			self.CancelActivity();
-			self.QueueActivity(new Leap(self, target.Actor, a.Weapon, info.Speed, info.Angle));
+			self.QueueActivity(new Leap(self, target.Actor, a, info.Speed, info.Angle));
 		}
 	}
 }

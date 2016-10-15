@@ -24,9 +24,23 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public readonly int MaxIdleDelay = 110;
 
 		[SequenceReference] public readonly string MoveSequence = "run";
-		[SequenceReference] public readonly string AttackSequence = null;
+		[SequenceReference] public readonly string DefaultAttackSequence = null;
+
+		// TODO: [SequenceReference] isn't smart enough to use Dictionaries.
+		[Desc("Attack sequence to use for each armament.")]
+		[FieldLoader.LoadUsing("LoadWeaponSequences")]
+		public readonly Dictionary<string, string> AttackSequences = new Dictionary<string, string>();
 		[SequenceReference] public readonly string[] IdleSequences = { };
 		[SequenceReference] public readonly string[] StandSequences = { "stand" };
+
+		public static object LoadWeaponSequences(MiniYaml yaml)
+		{
+			var md = yaml.ToDictionary();
+
+			return md.ContainsKey("AttackSequences")
+				? md["AttackSequences"].ToDictionary(my => FieldLoader.GetValue<string>("(value)", my.Value))
+				: new Dictionary<string, string>();
+		}
 
 		public override object Create(ActorInitializer init) { return new WithInfantryBody(init, this); }
 
@@ -96,18 +110,22 @@ namespace OpenRA.Mods.Common.Traits.Render
 			return !IsModifyingSequence;
 		}
 
-		public void Attacking(Actor self, Target target)
+		public void Attacking(Actor self, Target target, Armament a)
 		{
-			if (!string.IsNullOrEmpty(Info.AttackSequence) && DefaultAnimation.HasSequence(NormalizeInfantrySequence(self, Info.AttackSequence)))
+			string sequence;
+			if (!Info.AttackSequences.TryGetValue(a.Info.Name, out sequence))
+				sequence = Info.DefaultAttackSequence;
+
+			if (!string.IsNullOrEmpty(sequence) && DefaultAnimation.HasSequence(NormalizeInfantrySequence(self, sequence)))
 			{
 				state = AnimationState.Attacking;
-				DefaultAnimation.PlayThen(NormalizeInfantrySequence(self, Info.AttackSequence), () => state = AnimationState.Idle);
+				DefaultAnimation.PlayThen(NormalizeInfantrySequence(self, sequence), () => state = AnimationState.Idle);
 			}
 		}
 
 		void INotifyAttack.PreparingAttack(Actor self, Target target, Armament a, Barrel barrel)
 		{
-			Attacking(self, target);
+			Attacking(self, target, a);
 		}
 
 		void INotifyAttack.Attacking(Actor self, Target target, Armament a, Barrel barrel) { }

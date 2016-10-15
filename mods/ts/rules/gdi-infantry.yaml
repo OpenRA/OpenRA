@@ -20,7 +20,7 @@ E2:
 	AttackFrontal:
 		Voice: Attack
 	WithInfantryBody:
-		AttackSequence: attack
+		DefaultAttackSequence: attack
 	ProducibleWithLevel:
 		Prerequisites: barracks.upgraded
 
@@ -53,7 +53,7 @@ MEDIC:
 		OutsideRangeCursor: heal
 	AttackFrontal:
 	WithInfantryBody:
-		AttackSequence: heal
+		DefaultAttackSequence: heal
 	SelfHealing:
 		Delay: 60
 	Passenger:
@@ -88,7 +88,7 @@ JUMPJET:
 	AttackFrontal:
 		Voice: Attack
 	WithInfantryBody:
-		AttackSequence: attack
+		DefaultAttackSequence: attack
 	-TakeCover:
 	ProducibleWithLevel:
 		Prerequisites: barracks.upgraded
@@ -128,6 +128,6 @@ GHOST:
 		DetonationDelay: 45
 		Voice: Attack
 	WithInfantryBody:
-		AttackSequence: attack
+		DefaultAttackSequence: attack
 	ProducibleWithLevel:
 		Prerequisites: barracks.upgraded
