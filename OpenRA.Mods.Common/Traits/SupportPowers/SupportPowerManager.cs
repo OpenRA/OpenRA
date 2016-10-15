@@ -160,7 +160,7 @@ namespace OpenRA.Mods.Common.Traits
 		public int RemainingTime;
 		public int TotalTime;
 		public bool Active { get; private set; }
-		public bool Disabled { get { return !prereqsAvailable || !instancesEnabled; } }
+		public bool Disabled { get { return (!prereqsAvailable && !manager.DevMode.AllTech) || !instancesEnabled; } }
 
 		public SupportPowerInfo Info { get { return Instances.Select(i => i.Info).FirstOrDefault(); } }
 		public bool Ready { get { return Active && RemainingTime == 0; } }
