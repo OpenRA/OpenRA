@@ -19,6 +19,7 @@ namespace OpenRA
 	public struct WAngle : IEquatable<WAngle>
 	{
 		public readonly int Angle;
+		public int AngleSquared { get { return (int)Angle * Angle; } }
 
 		public WAngle(int a)
 		{
