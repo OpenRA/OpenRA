@@ -97,11 +97,11 @@ namespace OpenRA.Mods.Common.Projectiles
 		string trailPalette;
 
 		[Sync] WPos pos, target;
-		[Sync] int length;
+		int length;
 		[Sync] int facing;
-		[Sync] int ticks, smokeTicks;
+		int ticks, smokeTicks;
 
-		[Sync] public Actor SourceActor { get { return args.SourceActor; } }
+		public Actor SourceActor { get { return args.SourceActor; } }
 
 		public Bullet(BulletInfo info, ProjectileArgs args)
 		{
