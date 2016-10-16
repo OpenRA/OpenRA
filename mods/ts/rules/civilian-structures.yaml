@@ -683,7 +683,6 @@ CAHOSP:
 	Inherits: ^BasicBuilding
 	Tooltip:
 		Name: Civilian Hospital
-		Description: Gives friendly units a medkit to heal themselves.
 	Building:
 		Footprint: xxx xxx xxx xxx
 		Dimensions: 3, 4
@@ -696,6 +695,8 @@ CAHOSP:
 	Capturable:
 	CaptureNotification:
 	ProvidesPrerequisite@BuildingName:
+	Buildable:
+		Description: Gives friendly units a medkit to heal themselves.
 
 CAPYR01:
 	Inherits: ^CivBuilding
@@ -1051,7 +1052,6 @@ CTDAM:
 	Inherits: ^CivBuilding
 	Tooltip:
 		Name: Hydroelectric Dam
-		Description: Provides power for other structures
 	Building:
 		Footprint: xx xx xx xx xx
 		Dimensions: 2, 5
@@ -1070,6 +1070,8 @@ CTDAM:
 		Sequence: idle-lights
 	WithIdleOverlay@WATER:
 		Sequence: idle-water
+	Buildable:
+		Description: Provides power for other structures
 
 CTVEGA:
 	Inherits: ^CivBuilding
@@ -1195,6 +1197,7 @@ GASAND:
 		Queue: Defense
 		BuildPaletteOrder: 1000
 		Prerequisites: ~disabled
+		Description: Stops infantry and light vehicles.\nCan be crushed by tanks.
 	SoundOnDamageTransition:
 		DamagedSounds: sandbag1.aud
 		DestroyedSounds: sandbag1.aud
@@ -1204,7 +1207,6 @@ GASAND:
 		Value: 0
 	Tooltip:
 		Name: Sandbags
-		Description: Stops infantry and light vehicles.\nCan be crushed by tanks.
 	Health:
 		HP: 250
 	Armor:
@@ -1279,6 +1281,7 @@ TSTLAMP:
 	RenderSprites:
 		Image: galite
 	Tooltip:
+	Buildable:
 		Description: light post with alpha blending
 
 GAICBM:

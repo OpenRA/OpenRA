@@ -68,11 +68,11 @@ MNLYR:
 		Queue: Vehicle
 		BuildPaletteOrder: 30
 		Prerequisites: fix
+		Description: Lays mines to destroy unwary enemy units.\n  Unarmed
 	Valued:
 		Cost: 800
 	Tooltip:
 		Name: Bomber
-		Description: Lays mines to destroy unwary enemy units.\n  Unarmed
 	Health:
 		HP: 500
 	Armor:
@@ -145,6 +145,7 @@ MINVV:
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 30
+		Description: Bomb (Hotkey B)
 	Valued:
 		Cost: 30
 	Health:
@@ -154,7 +155,6 @@ MINVV:
 	WithSpriteBody:
 	Tooltip:
 		Name: Bomb
-		Description: Bomb (Hotkey B)
 	SelfHealing:
 		Step: -1
 		Delay: 1

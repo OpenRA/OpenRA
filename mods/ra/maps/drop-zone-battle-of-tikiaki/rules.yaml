@@ -55,13 +55,14 @@ APC:
 HARV:
 	Tooltip:
 		Name: Bomb Truck
-		Description: Explodes like a damn nuke!
 	Health:
 		HP: 100
 	Explodes:
 		Weapon: CrateNuke
 		EmptyWeapon: CrateNuke
 	AttackSuicides:
+	Buildable:
+		Description: Explodes like a damn nuke!
 
 SHOK:
 	Health:

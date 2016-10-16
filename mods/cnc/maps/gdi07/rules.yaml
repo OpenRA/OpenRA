@@ -120,8 +120,9 @@ OLDLST:
 
 HQ:
 	Tooltip:
-		Description: Provides an overview of the battlefield.\n  Requires power to operate.
 	-AirstrikePower:
+	Buildable:
+		Description: Provides an overview of the battlefield.\n  Requires power to operate.
 
 airstrike.proxy:
 	AlwaysVisible:

@@ -8,6 +8,7 @@ GACNST:
 		Queue: Building
 		BuildPaletteOrder: 1000
 		Prerequisites: ~disabled
+		Description: Builds base structures.
 	Health:
 		HP: 1500
 	Armor:
@@ -20,7 +21,6 @@ GACNST:
 		Cost: 2500
 	Tooltip:
 		Name: Construction Yard
-		Description: Builds base structures.
 	CustomSellValue:
 		Value: 2500
 	BaseBuilding:
@@ -59,11 +59,11 @@ PROC:
 		Cost: 2000
 	Tooltip:
 		Name: Tiberium Refinery
-		Description: Processes raw Tiberium\ninto useable resources.
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 20
 		Prerequisites: anypower
+		Description: Processes raw Tiberium\ninto useable resources.
 	Building:
 		Footprint: xxx= xx== xxx=
 		Dimensions: 4,3
@@ -112,11 +112,11 @@ GASILO:
 		Queue: Building
 		BuildPaletteOrder: 70
 		Prerequisites: proc
+		Description: Stores excess Tiberium.
 	Valued:
 		Cost: 150
 	Tooltip:
 		Name: Silo
-		Description: Stores excess Tiberium.
 	Building:
 		Footprint: xx xx
 		Dimensions: 2, 2
@@ -152,28 +152,33 @@ ANYPOWER:
 	AlwaysVisible:
 	Tooltip:
 		Name: Power Plant
+	Buildable:
 		Description: Power Plant
 
 BARRACKS:
 	AlwaysVisible:
 	Tooltip:
 		Name: Infantry Production
+	Buildable:
 		Description: Infantry Production
 
 FACTORY:
 	AlwaysVisible:
 	Tooltip:
 		Name: Vehicle Production
+	Buildable:
 		Description: Vehicle Production
 
 RADAR:
 	AlwaysVisible:
 	Tooltip:
 		Name: Radar
+	Buildable:
 		Description: Radar
 
 TECH:
 	AlwaysVisible:
 	Tooltip:
 		Name: Tech Center
+	Buildable:
 		Description: Tech Center

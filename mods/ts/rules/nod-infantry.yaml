@@ -4,11 +4,11 @@ E3:
 		Queue: Infantry
 		BuildPaletteOrder: 20
 		Prerequisites: ~nahand
+		Description: Anti-tank infantry.\n  Strong vs Vehicles, Aircraft, Buildings\n  Weak vs Infantry
 	Valued:
 		Cost: 250
 	Tooltip:
 		Name: Rocket Infantry
-		Description: Anti-tank infantry.\n  Strong vs Vehicles, Aircraft, Buildings\n  Weak vs Infantry
 	Voiced:
 		VoiceSet: Rocket
 	Health:
@@ -33,11 +33,11 @@ CYBORG:
 		Cost: 650
 	Tooltip:
 		Name: Cyborg Infantry
-		Description: Cybernetic infantry unit.\n  Strong vs Infantry, Light armor\n  Weak vs Vehicles, Aircraft
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 40
 		Prerequisites: ~nahand
+		Description: Cybernetic infantry unit.\n  Strong vs Infantry, Light armor\n  Weak vs Vehicles, Aircraft
 	Selectable:
 		Bounds: 16,31,0,-10
 	Voiced:
@@ -66,12 +66,12 @@ CYC2:
 		Cost: 2000
 	Tooltip:
 		Name: Cyborg Commando
-		Description: Elite cybernetic infantry unit.\n  Strong vs Infantry, Vehicles, Buildings\n  Weak vs Aircraft\nMaximum 1 can be trained.
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 50
 		Prerequisites: ~nahand, natmpl
 		BuildLimit: 1
+		Description: Elite cybernetic infantry unit.\n  Strong vs Infantry, Vehicles, Buildings\n  Weak vs Aircraft\nMaximum 1 can be trained.
 	Selectable:
 		Bounds: 16,32,-1,-12
 	Voiced:
@@ -100,11 +100,11 @@ MHIJACK:
 		Queue: Infantry
 		BuildPaletteOrder: 60
 		Prerequisites: ~nahand, natmpl
+		Description: Hijacks enemy vehicles.\n  Unarmed
 	Valued:
 		Cost: 1850
 	Tooltip:
 		Name: Mutant Hijacker
-		Description: Hijacks enemy vehicles.\n  Unarmed
 		BuildLimit: 1
 	Voiced:
 		VoiceSet: Hijacker

@@ -59,7 +59,6 @@ BIO:
 		HP: 2500
 	Tooltip:
 		Name: Biological Lab
-		Description: Grants Tiberium immunity to infantry.
 	Exit@1:
 		SpawnOffset: 0,-426,0
 		ExitCell: 0,-1
@@ -76,6 +75,8 @@ BIO:
 	SpawnActorOnDeath:
 		Actor: BIO.Husk
 	ProvidesPrerequisite@buildingname:
+	Buildable:
+		Description: Grants Tiberium immunity to infantry.
 
 BIO.Husk:
 	Inherits: ^CivBuildingHusk

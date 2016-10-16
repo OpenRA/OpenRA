@@ -10,7 +10,6 @@
 		TerrainTypes: Rock
 	Tooltip:
 		Name: Concrete
-		Description: Provides a strong foundation that prevents\ndamage from the terrain.
 	RenderSprites:
 	KillsSelf:
 		RemoveInstead: true
@@ -18,6 +17,7 @@
 		Queue: Building
 		Prerequisites: construction_yard
 		BuildPaletteOrder: 10
+		Description: Provides a strong foundation that prevents\ndamage from the terrain.
 
 concretea:
 	Inherits: ^concrete
@@ -44,6 +44,8 @@ concreteb:
 
 construction_yard:
 	Inherits: ^Building
+	Buildable:
+		Description: Produces structures.
 	-DamagedByTerrain:
 	Building:
 		Footprint: xxx xxx
@@ -114,13 +116,13 @@ wind_trap:
 		BuildPaletteOrder: 10
 		BuildDuration: 180
 		BuildDurationModifier: 40
+		Description: Provides power for other structures
 	Selectable:
 		Bounds: 64,64
 	Valued:
 		Cost: 225
 	Tooltip:
 		Name: Wind Trap
-		Description: Provides power for other structures
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
@@ -153,13 +155,13 @@ barracks:
 		BuildPaletteOrder: 40
 		BuildDuration: 231
 		BuildDurationModifier: 40
+		Description: Trains infantry
 	Selectable:
 		Bounds: 64,64
 	Valued:
 		Cost: 225
 	Tooltip:
 		Name: Barracks
-		Description: Trains infantry
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
@@ -228,13 +230,13 @@ refinery:
 		BuildPaletteOrder: 20
 		BuildDuration: 540
 		BuildDurationModifier: 40
+		Description: Harvesters unload Spice here for processing
 	Selectable:
 		Bounds: 96,64
 	Valued:
 		Cost: 1500
 	Tooltip:
 		Name: Spice Refinery
-		Description: Harvesters unload Spice here for processing
 	Building:
 		Footprint: =xx xx=
 		Dimensions: 3,2
@@ -283,13 +285,13 @@ silo:
 		BuildPaletteOrder: 30
 		BuildDuration: 135
 		BuildDurationModifier: 40
+		Description: Stores excess harvested Spice
 	Selectable:
 		Bounds: 32,32
 	Valued:
 		Cost: 120
 	Tooltip:
 		Name: Silo
-		Description: Stores excess harvested Spice
 	Building:
 		Adjacent: 4
 	-GivesBuildableArea:
@@ -330,13 +332,13 @@ light_factory:
 		BuildPaletteOrder: 70
 		BuildDuration: 277
 		BuildDurationModifier: 40
+		Description: Produces light vehicles
 	Selectable:
 		Bounds: 96,64
 	Valued:
 		Cost: 500
 	Tooltip:
 		Name: Light Factory
-		Description: Produces light vehicles
 	Building:
 		Footprint: xxx xx=
 		Dimensions: 3,2
@@ -409,13 +411,13 @@ heavy_factory:
 		BuildPaletteOrder: 100
 		BuildDuration: 648
 		BuildDurationModifier: 40
+		Description: Produces heavy vehicles
 	Selectable:
 		Bounds: 96,68,0,12
 	Valued:
 		Cost: 1000
 	Tooltip:
 		Name: Heavy Factory
-		Description: Produces heavy vehicles
 	Building:
 		Footprint: _x_ xxx =xx
 		Dimensions: 3,3
@@ -495,13 +497,13 @@ outpost:
 		BuildPaletteOrder: 50
 		BuildDuration: 270
 		BuildDurationModifier: 40
+		Description: Provides a radar map of the battlefield\n  Requires power to operate
 	Selectable:
 		Bounds: 96,72,0,-8
 	Valued:
 		Cost: 750
 	Tooltip:
 		Name: Outpost
-		Description: Provides a radar map of the battlefield\n  Requires power to operate
 	Building:
 		Footprint: xxx xxx
 		Dimensions: 3,2
@@ -531,13 +533,13 @@ starport:
 	Inherits: ^Building
 	Tooltip:
 		Name: Starport
-		Description: Dropzone for quick reinforcements, at a price.\n  Requires power to operate
 	Buildable:
 		Prerequisites: construction_yard, heavy_factory, outpost, ~techlevel.high
 		Queue: Building
 		BuildPaletteOrder: 80
 		BuildDuration: 540
 		BuildDurationModifier: 40
+		Description: Dropzone for quick reinforcements, at a price.\n  Requires power to operate
 	Valued:
 		Cost: 1500
 	Building:
@@ -608,6 +610,7 @@ wall:
 		BuildPaletteOrder: 60
 		BuildDuration: 54
 		BuildDurationModifier: 40
+		Description: Stop units and blocks enemy fire.
 	SoundOnDamageTransition:
 		DamagedSounds:
 		DestroyedSounds: EXPLSML4.WAV
@@ -617,7 +620,6 @@ wall:
 		Value: 0
 	Tooltip:
 		Name: Concrete Wall
-		Description: Stop units and blocks enemy fire.
 	AppearsOnRadar:
 	Building:
 		BuildSounds: CHUNG.WAV
@@ -660,11 +662,11 @@ medium_gun_turret:
 		BuildPaletteOrder: 90
 		BuildDuration: 231
 		BuildDurationModifier: 40
+		Description: Defensive structure\n  Strong vs Tanks\n  Weak vs Infantry, Aircraft
 	Valued:
 		Cost: 550
 	Tooltip:
 		Name: Gun Turret
-		Description: Defensive structure\n  Strong vs Tanks\n  Weak vs Infantry, Aircraft
 	Building:
 		Adjacent: 4
 		BuildSounds: CHUNG.WAV
@@ -702,11 +704,11 @@ large_gun_turret:
 		BuildPaletteOrder: 120
 		BuildDuration: 270
 		BuildDurationModifier: 40
+		Description: Defensive structure\n  Strong vs Infantry, Aircraft\n  Weak vs Tanks\n\n  Requires power to operate
 	Valued:
 		Cost: 750
 	Tooltip:
 		Name: Rocket Turret
-		Description: Defensive structure\n  Strong vs Infantry, Aircraft\n  Weak vs Tanks\n\n  Requires power to operate
 	Building:
 		Adjacent: 4
 		BuildSounds: CHUNG.WAV
@@ -747,11 +749,11 @@ repair_pad:
 		BuildPaletteOrder: 130
 		BuildDuration: 324
 		BuildDurationModifier: 40
+		Description: Repairs vehicles\n Allows construction of MCVs
 	Valued:
 		Cost: 800
 	Tooltip:
 		Name: Repair Pad
-		Description: Repairs vehicles\n Allows construction of MCVs
 	Building:
 		Footprint: =x= =x= ===
 		Dimensions: 3,3
@@ -794,13 +796,13 @@ high_tech_factory:
 		BuildPaletteOrder: 110
 		BuildDuration: 405
 		BuildDurationModifier: 40
+		Description: Unlocks advanced technology
 	Selectable:
 		Bounds: 96,68,0,12
 	Valued:
 		Cost: 1150
 	Tooltip:
 		Name: High Tech Factory
-		Description: Unlocks advanced technology
 	ProductionFromMapEdge:
 		Produces: Aircraft
 	Exit:
@@ -863,13 +865,13 @@ research_centre:
 		BuildPaletteOrder: 140
 		BuildDuration: 270
 		BuildDurationModifier: 40
+		Description: Unlocks experimental tanks
 	Selectable:
 		Bounds: 96,64,0,16
 	Valued:
 		Cost: 1000
 	Tooltip:
 		Name: Ix Lab
-		Description: Unlocks experimental tanks
 	Building:
 		Footprint: _x_ xxx xxx
 		Dimensions: 3,3
@@ -903,13 +905,13 @@ palace:
 		BuildPaletteOrder: 150
 		BuildDuration: 810
 		BuildDurationModifier: 40
+		Description: Unlocks elite infantry
 	Selectable:
 		Bounds: 96,96
 	Valued:
 		Cost: 1600
 	Tooltip:
 		Name: Palace
-		Description: Unlocks elite infantry
 	Building:
 		Footprint: xx= xxx =xx
 		Dimensions: 3,3

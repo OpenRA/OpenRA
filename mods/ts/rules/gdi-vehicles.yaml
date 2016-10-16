@@ -4,11 +4,11 @@ APC:
 		Cost: 800
 	Tooltip:
 		Name: Amphibious APC
-		Description: Armored infantry transport.\nCan move on water.\n  Unarmed
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 30
 		Prerequisites: ~gaweap, gapile
+		Description: Armored infantry transport.\nCan move on water.\n  Unarmed
 	Mobile:
 		TurnSpeed: 5
 		Speed: 113
@@ -52,11 +52,11 @@ HVR:
 		Cost: 900
 	Tooltip:
 		Name: Hover MLRS
-		Description: Hovering vehicle armed with\nlong range missiles.\n  Strong vs Vehicles, Aircraft\n  Weak vs Infantry
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 50
 		Prerequisites: ~gaweap, garadr
+		Description: Hovering vehicle armed with\nlong range missiles.\n  Strong vs Vehicles, Aircraft\n  Weak vs Infantry
 	Mobile:
 		Speed: 99
 		TerrainSpeeds:
@@ -104,11 +104,11 @@ SMECH:
 		Cost: 500
 	Tooltip:
 		Name: Wolverine
-		Description: Anti-personnel walker.\n  Strong vs Infantry, Light armor\n  Weak vs Vehicles, Aircraft
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 10
 		Prerequisites: ~gaweap
+		Description: Anti-personnel walker.\n  Strong vs Infantry, Light armor\n  Weak vs Vehicles, Aircraft
 	Mobile:
 		TurnSpeed: 5
 		Speed: 99
@@ -145,11 +145,11 @@ MMCH:
 		Cost: 800
 	Tooltip:
 		Name: Titan
-		Description: General purpose mechanized walker.\n  Strong vs Vehicles\n  Weak vs Infantry, Aircraft
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 30
 		Prerequisites: ~gaweap
+		Description: General purpose mechanized walker.\n  Strong vs Vehicles\n  Weak vs Infantry, Aircraft
 	Mobile:
 		TurnSpeed: 5
 		Speed: 56
@@ -192,12 +192,12 @@ HMEC:
 		Cost: 3000
 	Tooltip:
 		Name: Mammoth Mk. II
-		Description: Slow heavy walker.\nArmed with dual railguns and rocket launchers.\n  Strong vs Infantry, Vehicles, Aircraft and Buildings\n  Weak vs Nothing\nMaximum 1 can be built.
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 80
 		Prerequisites: ~gaweap, gatech
 		BuildLimit: 1
+		Description: Slow heavy walker.\nArmed with dual railguns and rocket launchers.\n  Strong vs Infantry, Vehicles, Aircraft and Buildings\n  Weak vs Nothing\nMaximum 1 can be built.
 	Mobile:
 		TurnSpeed: 3
 		Speed: 42
@@ -232,11 +232,11 @@ SONIC:
 		Cost: 1300
 	Tooltip:
 		Name: Disruptor
-		Description: Armored high-tech vehicle with\nlong range and sonic armament.\n  Strong vs Infantry, Vehicles, Buildings\n  Weak vs Aircraft
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 70
 		Prerequisites: ~gaweap, gatech
+		Description: Armored high-tech vehicle with\nlong range and sonic armament.\n  Strong vs Infantry, Vehicles, Buildings\n  Weak vs Aircraft
 	Targetable:
 		TargetTypes: Ground, Vehicle, Repair, Disruptor
 	Mobile:

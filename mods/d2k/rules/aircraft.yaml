@@ -4,7 +4,6 @@ carryall.reinforce:
 		Cost: 1100
 	Tooltip:
 		Name: Carryall
-		Description: Large winged, planet-bound ship\n  Automatically lifts harvesters.
 	Health:
 		HP: 4800
 	Armor:
@@ -42,6 +41,7 @@ carryall.reinforce:
 	Buildable:
 		BuildDuration: 648
 		BuildDurationModifier: 40
+		Description: Large winged, planet-bound ship\n  Automatically lifts harvesters.
 
 carryall:
 	Inherits: carryall.reinforce
@@ -60,7 +60,6 @@ frigate:
 		DropRange: 1c0
 	Tooltip:
 		Name: Frigate
-		Description: Supply spacecraft
 	Aircraft:
 		Speed: 189 # 126 * ~1.5 for balance reasons
 		TurnSpeed: 1
@@ -72,6 +71,8 @@ frigate:
 		PipCount: 10
 	FlyAwayOnIdle:
 	RejectsOrders:
+	Buildable:
+		Description: Supply spacecraft
 
 ornithopter:
 	Inherits: ^Plane

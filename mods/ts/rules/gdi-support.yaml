@@ -4,6 +4,7 @@ GAWALL:
 		Queue: Defense
 		BuildPaletteOrder: 20
 		Prerequisites: ~structures.gdi
+		Description: Stops infantry and blocks enemy fire.\nCan NOT be crushed by tanks.
 	-SoundOnDamageTransition:
 	Valued:
 		Cost: 50
@@ -11,7 +12,6 @@ GAWALL:
 		Value: 0
 	Tooltip:
 		Name: Concrete Wall
-		Description: Stops infantry and blocks enemy fire.\nCan NOT be crushed by tanks.
 	Health:
 		HP: 225
 	Armor:
@@ -50,11 +50,11 @@ GACTWR:
 		Cost: 200
 	Tooltip:
 		Name: Component Tower
-		Description: Modular tower for base defenses.
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 30
 		Prerequisites: gapile, ~structures.gdi
+		Description: Modular tower for base defenses.
 	Building:
 	Selectable:
 		Bounds: 48, 36, 0, -6
@@ -152,11 +152,11 @@ GAVULC:
 		Cost: 150
 	Tooltip:
 		Name: Vulcan Tower
-		Description: Basic base defense.\nDoes not require power to operate.\n  Strong vs Infantry, Light armor\n  Weak vs Aircraft
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 40
 		Prerequisites: gactwr, gapile, ~structures.gdi
+		Description: Basic base defense.\nDoes not require power to operate.\n  Strong vs Infantry, Light armor\n  Weak vs Aircraft
 	Plug:
 		Type: tower.vulcan
 	Power:
@@ -168,11 +168,11 @@ GAROCK:
 		Cost: 600
 	Tooltip:
 		Name: RPG Upgrade
-		Description: GDI Advanced base defense.\nDoes not require power to operate.\n  Strong vs Armored ground units\n  Weak vs Aircraft
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 40
 		Prerequisites: gactwr, gapile, ~structures.gdi
+		Description: GDI Advanced base defense.\nDoes not require power to operate.\n  Strong vs Armored ground units\n  Weak vs Aircraft
 	Plug:
 		Type: tower.rocket
 	Power:
@@ -184,11 +184,11 @@ GACSAM:
 		Cost: 300
 	Tooltip:
 		Name: SAM Upgrade
-		Description: GDI Anti-Air base defense.\nDoes not require power to operate.\n  Strong vs Aircraft\n  Weak vs Ground units
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 40
 		Prerequisites: gactwr, garadr, ~structures.gdi
+		Description: GDI Anti-Air base defense.\nDoes not require power to operate.\n  Strong vs Aircraft\n  Weak vs Ground units
 	Plug:
 		Type: tower.sam
 	Power:
@@ -200,11 +200,11 @@ GAPOWRUP:
 		Cost: 150
 	Tooltip:
 		Name: Power Turbine
-		Description: Provides extra power generation.
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 10
 		Prerequisites: gapowr, ~structures.gdi
+		Description: Provides extra power generation.
 	Plug:
 		Type: powrup
 	Power:
@@ -216,11 +216,11 @@ GAPLUG2:
 		Cost: 1000
 	Tooltip:
 		Name: Seeker Control
-		Description: Enables use of the hunter-seeker droid.
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 1000
 		Prerequisites: gaplug, gatech, gaweap, ~structures.gdi
+		Description: Enables use of the hunter-seeker droid.
 	Plug:
 		Type: plug.hunterseeker
 	Power:
@@ -232,11 +232,11 @@ GAPLUG3:
 		Cost: 1500
 	Tooltip:
 		Name: Ion Cannon Uplink
-		Description: Enables use of the Ion Cannon.
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 1000
 		Prerequisites: gaplug, gatech, ~structures.gdi
+		Description: Enables use of the Ion Cannon.
 	Plug:
 		Type: plug.ioncannon
 	Power:

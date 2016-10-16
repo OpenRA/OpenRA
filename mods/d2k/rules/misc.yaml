@@ -184,7 +184,6 @@ upgrade.conyard:
 	AlwaysVisible:
 	Tooltip:
 		Name: Construction Yard Upgrade
-		Description: Unlocks new construction options
 	Buildable:
 		BuildPaletteOrder: 50
 		Prerequisites: construction_yard
@@ -192,6 +191,7 @@ upgrade.conyard:
 		BuildLimit: 1
 		BuildDuration: 590
 		BuildDurationModifier: 40
+		Description: Unlocks new construction options
 	Valued:
 		Cost: 1000
 	RenderSprites:
@@ -206,7 +206,6 @@ upgrade.barracks:
 	AlwaysVisible:
 	Tooltip:
 		Name: Barracks Upgrade
-		Description: Unlocks additional infantry
 	Buildable:
 		BuildPaletteOrder: 50
 		Prerequisites: barracks
@@ -214,6 +213,7 @@ upgrade.barracks:
 		BuildLimit: 1
 		BuildDuration: 290
 		BuildDurationModifier: 40
+		Description: Unlocks additional infantry
 	Valued:
 		Cost: 500
 	RenderSprites:
@@ -229,7 +229,6 @@ upgrade.light:
 	AlwaysVisible:
 	Tooltip:
 		Name: Light Factory Upgrade
-		Description: Unlocks additional light units
 	Buildable:
 		BuildPaletteOrder: 50
 		Prerequisites: light_factory
@@ -237,6 +236,7 @@ upgrade.light:
 		BuildLimit: 1
 		BuildDuration: 215
 		BuildDurationModifier: 40
+		Description: Unlocks additional light units
 	Valued:
 		Cost: 400
 	RenderSprites:
@@ -252,7 +252,6 @@ upgrade.heavy:
 	AlwaysVisible:
 	Tooltip:
 		Name: Heavy Factory Upgrade
-		Description: Unlocks advanced technology and heavy weapons
 	Buildable:
 		BuildPaletteOrder: 50
 		Prerequisites: heavy_factory
@@ -260,6 +259,7 @@ upgrade.heavy:
 		BuildLimit: 1
 		BuildDuration: 380
 		BuildDurationModifier: 40
+		Description: Unlocks advanced technology and heavy weapons
 	Valued:
 		Cost: 800
 	RenderSprites:
@@ -275,7 +275,6 @@ upgrade.hightech:
 	AlwaysVisible:
 	Tooltip:
 		Name: High Tech Factory Upgrade
-		Description: Unlocks the Air Strike superweapon
 	Buildable:
 		BuildPaletteOrder: 50
 		Prerequisites: ~hightech.atreides, ~techlevel.superweapons
@@ -283,6 +282,7 @@ upgrade.hightech:
 		BuildLimit: 1
 		BuildDuration: 720
 		BuildDurationModifier: 40
+		Description: Unlocks the Air Strike superweapon
 	Valued:
 		Cost: 1500
 	RenderSprites:

@@ -4,11 +4,11 @@ V2RL:
 		Queue: Vehicle
 		BuildPaletteOrder: 80
 		Prerequisites: dome, ~vehicles.soviet, ~techlevel.medium
+		Description: Long-range rocket artillery.\n  Strong vs Infantry, Light armor, Buildings\n  Weak vs Tanks, Aircraft
 	Valued:
 		Cost: 900
 	Tooltip:
 		Name: V2 Rocket
-		Description: Long-range rocket artillery.\n  Strong vs Infantry, Light armor, Buildings\n  Weak vs Tanks, Aircraft
 	Health:
 		HP: 200
 	Armor:
@@ -37,11 +37,11 @@ V2RL:
 		Queue: Vehicle
 		BuildPaletteOrder: 50
 		Prerequisites: ~vehicles.allies, ~techlevel.low
+		Description: Light Tank, good for scouting.\n  Strong vs Light armor\n  Weak vs Infantry, Tanks, Aircraft
 	Valued:
 		Cost: 700
 	Tooltip:
 		Name: Light Tank
-		Description: Light Tank, good for scouting.\n  Strong vs Light armor\n  Weak vs Infantry, Tanks, Aircraft
 	Health:
 		HP: 220
 	Armor:
@@ -74,11 +74,11 @@ V2RL:
 		Queue: Vehicle
 		BuildPaletteOrder: 120
 		Prerequisites: fix, ~vehicles.allies, ~techlevel.medium
+		Description: Allied Main Battle Tank.\n  Strong vs Vehicles\n  Weak vs Infantry, Aircraft
 	Valued:
 		Cost: 850
 	Tooltip:
 		Name: Medium Tank
-		Description: Allied Main Battle Tank.\n  Strong vs Vehicles\n  Weak vs Infantry, Aircraft
 	Health:
 		HP: 450
 	Armor:
@@ -113,11 +113,11 @@ V2RL:
 		Queue: Vehicle
 		BuildPaletteOrder: 130
 		Prerequisites: fix, ~vehicles.soviet, ~techlevel.medium
+		Description: Soviet Main Battle Tank, with dual cannons\n  Strong vs Vehicles\n  Weak vs Infantry, Aircraft
 	Valued:
 		Cost: 1150
 	Tooltip:
 		Name: Heavy Tank
-		Description: Soviet Main Battle Tank, with dual cannons\n  Strong vs Vehicles\n  Weak vs Infantry, Aircraft
 	Health:
 		HP: 550
 	Armor:
@@ -154,11 +154,11 @@ V2RL:
 		Prerequisites: fix, stek, ~vehicles.soviet, ~techlevel.high
 		BuildDuration: 2500
 		BuildDurationModifier: 40
+		Description: Big and slow tank, with anti-air capability.\n  Strong vs Vehicles, Infantry, Aircraft\n  Weak vs Nothing
 	Valued:
 		Cost: 2000
 	Tooltip:
 		Name: Mammoth Tank
-		Description: Big and slow tank, with anti-air capability.\n  Strong vs Vehicles, Infantry, Aircraft\n  Weak vs Nothing
 	Health:
 		HP: 900
 	Armor:
@@ -205,11 +205,11 @@ ARTY:
 		Queue: Vehicle
 		BuildPaletteOrder: 70
 		Prerequisites: dome, ~vehicles.allies, ~techlevel.medium
+		Description: Long-range artillery.\n  Strong vs Infantry, Buildings\n  Weak vs Vehicles, Aircraft
 	Valued:
 		Cost: 800
 	Tooltip:
 		Name: Artillery
-		Description: Long-range artillery.\n  Strong vs Infantry, Buildings\n  Weak vs Vehicles, Aircraft
 	Health:
 		HP: 100
 	Armor:
@@ -239,12 +239,12 @@ HARV:
 		Queue: Vehicle
 		BuildPaletteOrder: 10
 		Prerequisites: proc, ~techlevel.infonly
+		Description: Collects Ore and Gems for processing.\n  Unarmed
 	Valued:
 		Cost: 1100
 	Tooltip:
 		Name: Ore Truck
 		GenericName: Harvester
-		Description: Collects Ore and Gems for processing.\n  Unarmed
 	Selectable:
 		Priority: 7
 	SelectionDecorations:
@@ -290,11 +290,11 @@ MCV:
 		Prerequisites: fix, ~techlevel.medium
 		BuildDuration: 2000
 		BuildDurationModifier: 40
+		Description: Deploys into another Construction Yard.\n  Unarmed
 	Valued:
 		Cost: 2000
 	Tooltip:
 		Name: Mobile Construction Vehicle
-		Description: Deploys into another Construction Yard.\n  Unarmed
 	Selectable:
 		Priority: 4
 	SelectionDecorations:
@@ -326,11 +326,11 @@ JEEP:
 		Queue: Vehicle
 		BuildPaletteOrder: 30
 		Prerequisites: ~vehicles.allies, ~techlevel.low
+		Description: Fast scout & anti-infantry vehicle.\n  Strong vs Infantry\n  Weak vs Vehicles, Aircraft
 	Valued:
 		Cost: 500
 	Tooltip:
 		Name: Ranger
-		Description: Fast scout & anti-infantry vehicle.\n  Strong vs Infantry\n  Weak vs Vehicles, Aircraft
 	Health:
 		HP: 150
 	Armor:
@@ -366,11 +366,11 @@ APC:
 		Queue: Vehicle
 		BuildPaletteOrder: 40
 		Prerequisites: ~vehicles.soviet, ~techlevel.low
+		Description: Tough infantry transport.\n  Strong vs Infantry, Light armor\n  Weak vs Tanks, Aircraft
 	Valued:
 		Cost: 850
 	Tooltip:
 		Name: Armored Personnel Carrier
-		Description: Tough infantry transport.\n  Strong vs Infantry, Light armor\n  Weak vs Tanks, Aircraft
 	Health:
 		HP: 300
 	Armor:
@@ -403,11 +403,11 @@ MNLY.AP:
 		Queue: Vehicle
 		BuildPaletteOrder: 110
 		Prerequisites: fix, ~vehicles.soviet, ~techlevel.medium
+		Description: Lays mines to destroy\nunwary enemy units.\nCan detect mines.\n  Unarmed
 	Valued:
 		Cost: 800
 	Tooltip:
 		Name: Minelayer
-		Description: Lays mines to destroy\nunwary enemy units.\nCan detect mines.\n  Unarmed
 	Health:
 		HP: 150
 	Armor:
@@ -438,11 +438,11 @@ MNLY.AT:
 		Queue: Vehicle
 		BuildPaletteOrder: 100
 		Prerequisites: fix, ~vehicles.allies, ~techlevel.medium
+		Description: Lays mines to destroy\nunwary enemy units.\nCan detect mines.\n  Unarmed
 	Valued:
 		Cost: 800
 	Tooltip:
 		Name: Minelayer
-		Description: Lays mines to destroy\nunwary enemy units.\nCan detect mines.\n  Unarmed
 	Health:
 		HP: 150
 	Armor:
@@ -473,11 +473,11 @@ TRUK:
 		Queue: Vehicle
 		BuildPaletteOrder: 20
 		Prerequisites: ~techlevel.low
+		Description: Transports cash to other players.\n  Unarmed
 	Valued:
 		Cost: 500
 	Tooltip:
 		Name: Supply Truck
-		Description: Transports cash to other players.\n  Unarmed
 	Health:
 		HP: 110
 	Armor:
@@ -498,11 +498,11 @@ MGG:
 		Queue: Vehicle
 		BuildPaletteOrder: 160
 		Prerequisites: atek, ~vehicles.france, ~techlevel.high
+		Description: Regenerates the shroud nearby, \nobscuring the area.\n  Unarmed
 	Valued:
 		Cost: 1200
 	Tooltip:
 		Name: Mobile Gap Generator
-		Description: Regenerates the shroud nearby, \nobscuring the area.\n  Unarmed
 	Health:
 		HP: 220
 	Armor:
@@ -526,11 +526,11 @@ MRJ:
 		Cost: 800
 	Tooltip:
 		Name: Mobile Radar Jammer
-		Description: Jams nearby enemy radar domes\nand deflects incoming missiles.\nCan detect cloaked units.\n  Unarmed
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 150
 		Prerequisites: atek, ~vehicles.allies, ~techlevel.high
+		Description: Jams nearby enemy radar domes\nand deflects incoming missiles.\nCan detect cloaked units.\n  Unarmed
 	Health:
 		HP: 220
 	Armor:
@@ -557,11 +557,11 @@ TTNK:
 		Queue: Vehicle
 		BuildPaletteOrder: 180
 		Prerequisites: tsla, stek, ~vehicles.russia, ~techlevel.high
+		Description: Tank with mounted tesla coil.\n  Strong vs Infantry, Vehicles, Buildings\n  Weak vs Aircraft
 	Valued:
 		Cost: 1350
 	Tooltip:
 		Name: Tesla Tank
-		Description: Tank with mounted tesla coil.\n  Strong vs Infantry, Vehicles, Buildings\n  Weak vs Aircraft
 	Health:
 		HP: 400
 	Armor:
@@ -590,11 +590,11 @@ FTRK:
 		Queue: Vehicle
 		BuildPaletteOrder: 60
 		Prerequisites: ~vehicles.soviet, ~techlevel.low
+		Description: Mobile unit with mounted Flak Cannon.\n  Strong vs Infantry, Light armor, Aircraft\n  Weak vs Tanks
 	Valued:
 		Cost: 600
 	Tooltip:
 		Name: Mobile Flak
-		Description: Mobile unit with mounted Flak Cannon.\n  Strong vs Infantry, Light armor, Aircraft\n  Weak vs Tanks
 	Health:
 		HP: 150
 	Armor:
@@ -632,11 +632,11 @@ DTRK:
 		Queue: Vehicle
 		BuildPaletteOrder: 170
 		Prerequisites: stek, ~vehicles.ukraine, ~techlevel.high
+		Description: Demolition Truck, actively armed with\nnuclear explosives. Has very weak armor.
 	Valued:
 		Cost: 2500
 	Tooltip:
 		Name: Demolition Truck
-		Description: Demolition Truck, actively armed with\nnuclear explosives. Has very weak armor.
 	Health:
 		HP: 50
 	Armor:
@@ -662,11 +662,11 @@ CTNK:
 		Queue: Vehicle
 		BuildPaletteOrder: 210
 		Prerequisites: atek, ~vehicles.germany, ~techlevel.high
+		Description: Chrono Tank, teleports to areas within range.\n  Strong vs Vehicles, Buildings\n  Weak vs Infantry, Aircraft\n  Special ability: Can teleport
 	Valued:
 		Cost: 1350
 	Tooltip:
 		Name: Chrono Tank
-		Description: Chrono Tank, teleports to areas within range.\n  Strong vs Vehicles, Buildings\n  Weak vs Infantry, Aircraft\n  Special ability: Can teleport
 	SelectionDecorations:
 		VisualBounds: 30,30
 	Health:
@@ -699,11 +699,11 @@ QTNK:
 		Queue: Vehicle
 		BuildPaletteOrder: 200
 		Prerequisites: fix, stek, ~vehicles.soviet, ~techlevel.high
+		Description: Deals seismic damage to nearby vehicles\nand structures.\n  Strong vs Vehicles, Buildings\n  Weak vs Infantry, Aircraft
 	Valued:
 		Cost: 2000
 	Tooltip:
 		Name: MAD Tank
-		Description: Deals seismic damage to nearby vehicles\nand structures.\n  Strong vs Vehicles, Buildings\n  Weak vs Infantry, Aircraft
 	Health:
 		HP: 900
 	Armor:
@@ -726,11 +726,11 @@ STNK:
 		Queue: Vehicle
 		BuildPaletteOrder: 140
 		Prerequisites: atek, ~vehicles.england, ~techlevel.high
+		Description: Lightly armored infantry transport\nwhich can cloak. Can detect cloaked units.\n  Strong vs Light armor\n  Weak vs Infantry, Tanks, Aircraft
 	Valued:
 		Cost: 1350
 	Tooltip:
 		Name: Phase Transport
-		Description: Lightly armored infantry transport\nwhich can cloak. Can detect cloaked units.\n  Strong vs Light armor\n  Weak vs Infantry, Tanks, Aircraft
 	Health:
 		HP: 300
 	Armor:

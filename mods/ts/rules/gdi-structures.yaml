@@ -4,11 +4,11 @@ GAPOWR:
 		Queue: Building
 		BuildPaletteOrder: 0
 		Prerequisites: ~structures.gdi
+		Description: Provides power for other structures.
 	Valued:
 		Cost: 300
 	Tooltip:
 		Name: GDI Power Plant
-		Description: Provides power for other structures.
 	ProvidesPrerequisite:
 		Prerequisite: anypower
 	Building:
@@ -69,11 +69,11 @@ GAPILE:
 		Queue: Building
 		BuildPaletteOrder: 30
 		Prerequisites: anypower, ~structures.gdi
+		Description: Produces infantry.
 	Valued:
 		Cost: 300
 	Tooltip:
 		Name: GDI Barracks
-		Description: Produces infantry.
 	ProvidesPrerequisite:
 		Prerequisite: barracks
 	Building:
@@ -125,13 +125,13 @@ GAWEAP:
 		Cost: 2000
 	Tooltip:
 		Name: GDI War Factory
-		Description: Produces vehicles.
 	ProvidesPrerequisite:
 		Prerequisite: factory
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 50
 		Prerequisites: proc, ~structures.gdi
+		Description: Produces vehicles.
 	Building:
 		Footprint: xxx= xxx= xxx=
 		Dimensions: 4,3
@@ -187,11 +187,11 @@ GAHPAD:
 		Cost: 500
 	Tooltip:
 		Name: Helipad
-		Description: Produces, rearms and\nrepairs helicopters.
 	Buildable:
 		BuildPaletteOrder: 60
 		Queue: Building
 		Prerequisites: garadr, ~structures.gdi
+		Description: Produces, rearms and\nrepairs helicopters.
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
@@ -241,11 +241,11 @@ GADEPT:
 		Cost: 1200
 	Tooltip:
 		Name: Service Depot
-		Description: Repairs vehicles.
 	Buildable:
 		BuildPaletteOrder: 80
 		Prerequisites: factory, ~structures.gdi
 		Queue: Building
+		Description: Repairs vehicles.
 	Building:
 		Footprint: =x= xxx =x=
 		Dimensions: 3,3
@@ -291,11 +291,11 @@ GARADR:
 		Queue: Building
 		BuildPaletteOrder: 90
 		Prerequisites: proc, ~structures.gdi
+		Description: Provides an overview of the battlefield.\nCan detect cloaked units.\nRequires power to operate.
 	Valued:
 		Cost: 1000
 	Tooltip:
 		Name: GDI Radar
-		Description: Provides an overview of the battlefield.\nCan detect cloaked units.\nRequires power to operate.
 	ProvidesPrerequisite:
 		Prerequisite: radar
 	Building:
@@ -336,11 +336,11 @@ GATECH:
 		Queue: Building
 		BuildPaletteOrder: 100
 		Prerequisites: gaweap, garadr, ~structures.gdi
+		Description: Provides access to advanced GDI technologies.
 	Valued:
 		Cost: 1500
 	Tooltip:
 		Name: GDI Tech Center
-		Description: Provides access to advanced GDI technologies.
 	ProvidesPrerequisite:
 		Prerequisite: tech
 	Building:
@@ -368,13 +368,13 @@ GAPLUG:
 		Cost: 1000
 	Tooltip:
 		Name: GDI Upgrade Center
-		Description: Can be upgraded for additional technology.
 	Selectable:
 		Bounds: 115,72,0,-12
 	Buildable:
 		BuildPaletteOrder: 100
 		Prerequisites: proc, gatech, ~structures.gdi
 		Queue: Building
+		Description: Can be upgraded for additional technology.
 	Building:
 		Footprint: xxx xxx
 		Dimensions: 2,3

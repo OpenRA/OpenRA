@@ -542,7 +542,6 @@
 	WithGateSpriteBody:
 	Tooltip:
 		Name: Gate
-		Description: Automated barrier that opens for allied units.
 	Gate:
 		Adjacent: 4
 		BlocksProjectilesHeight: 0
@@ -550,6 +549,8 @@
 		OpeningSound: cashturn.aud
 		ClosingSound: cashturn.aud
 		TerrainTypes: Clear, Road
+	Buildable:
+		Description: Automated barrier that opens for allied units.
 
 ^TechBuilding:
 	Inherits: ^BasicBuilding

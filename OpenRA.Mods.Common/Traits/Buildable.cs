@@ -45,6 +45,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		// TODO: UI fluff; doesn't belong here
 		public readonly int BuildPaletteOrder = 9999;
+
+		[Desc("Text shown in the production tooltip.")]
+		[Translate] public readonly string Description = "";
 	}
 
 	public class Buildable { }

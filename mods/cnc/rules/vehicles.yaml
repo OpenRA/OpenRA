@@ -4,11 +4,11 @@ MCV:
 		Cost: 4000
 	Tooltip:
 		Name: Mobile Construction Vehicle
-		Description: Deploys into another Construction Yard.\n  Unarmed
 	Buildable:
 		BuildPaletteOrder: 100
 		Prerequisites: anyhq, ~techlevel.medium, fix
 		Queue: Vehicle.GDI, Vehicle.Nod
+		Description: Deploys into another Construction Yard.\n  Unarmed
 	Selectable:
 		Priority: 4
 	Mobile:
@@ -43,11 +43,11 @@ HARV:
 	Tooltip:
 		Name: Harvester
 		GenericName: Harvester
-		Description: Collects Tiberium for processing.\n  Unarmed
 	Buildable:
 		BuildPaletteOrder: 10
 		Prerequisites: proc
 		Queue: Vehicle.GDI, Vehicle.Nod
+		Description: Collects Tiberium for processing.\n  Unarmed
 	Selectable:
 		Priority: 7
 	Harvester:
@@ -82,11 +82,11 @@ APC:
 		Cost: 600
 	Tooltip:
 		Name: APC
-		Description: Armed infantry transport.\nCan attack Aircraft.\n  Strong vs Vehicles\n  Weak vs Infantry
 	Buildable:
 		BuildPaletteOrder: 30
 		Prerequisites: pyle
 		Queue: Vehicle.GDI
+		Description: Armed infantry transport.\nCan attack Aircraft.\n  Strong vs Vehicles\n  Weak vs Infantry
 	Mobile:
 		UpgradeTypes: notmobile
 		UpgradeMaxEnabledLevel: 0
@@ -131,11 +131,11 @@ ARTY:
 		Cost: 600
 	Tooltip:
 		Name: Artillery
-		Description: Long-range artillery.\n  Strong vs Infantry, Vehicles and Buildings
 	Buildable:
 		BuildPaletteOrder: 60
 		Prerequisites: anyhq, ~techlevel.medium
 		Queue: Vehicle.Nod
+		Description: Long-range artillery.\n  Strong vs Infantry, Vehicles and Buildings
 	Mobile:
 		TurnSpeed: 4
 		Speed: 85
@@ -166,11 +166,11 @@ FTNK:
 		Cost: 600
 	Tooltip:
 		Name: Flame Tank
-		Description: Heavily armored flame-throwing vehicle.\n  Strong vs Infantry, Buildings and Vehicles\n  Weak vs Tanks
 	Buildable:
 		BuildPaletteOrder: 50
 		Prerequisites: anyhq, ~techlevel.medium
 		Queue: Vehicle.Nod
+		Description: Heavily armored flame-throwing vehicle.\n  Strong vs Infantry, Buildings and Vehicles\n  Weak vs Tanks
 	Mobile:
 		TurnSpeed: 7
 		Speed: 99
@@ -199,11 +199,11 @@ BGGY:
 		Cost: 300
 	Tooltip:
 		Name: Nod Buggy
-		Description: Fast scout and anti-infantry vehicle.\n  Strong vs Infantry\n  Weak vs Tanks
 	Buildable:
 		BuildPaletteOrder: 20
 		Prerequisites: afld
 		Queue: Vehicle.Nod
+		Description: Fast scout and anti-infantry vehicle.\n  Strong vs Infantry\n  Weak vs Tanks
 	Mobile:
 		TurnSpeed: 10
 		Speed: 170
@@ -233,11 +233,11 @@ BIKE:
 		Cost: 500
 	Tooltip:
 		Name: Recon Bike
-		Description: Fast scout vehicle, armed with\nrockets.\nCan attack Aircraft.\n  Strong vs Vehicles, Tanks\n  Weak vs Infantry
 	Buildable:
 		BuildPaletteOrder: 30
 		Prerequisites: afld
 		Queue: Vehicle.Nod
+		Description: Fast scout vehicle, armed with\nrockets.\nCan attack Aircraft.\n  Strong vs Vehicles, Tanks\n  Weak vs Infantry
 	Mobile:
 		TurnSpeed: 10
 		Speed: 213
@@ -269,11 +269,11 @@ JEEP:
 		Cost: 400
 	Tooltip:
 		Name: Hum-Vee
-		Description: Fast scout and anti-infantry vehicle.\n  Strong vs Infantry\n  Weak vs Tanks
 	Buildable:
 		BuildPaletteOrder: 20
 		Prerequisites: weap
 		Queue: Vehicle.GDI
+		Description: Fast scout and anti-infantry vehicle.\n  Strong vs Infantry\n  Weak vs Tanks
 	Mobile:
 		TurnSpeed: 10
 		Speed: 156
@@ -303,11 +303,11 @@ LTNK:
 		Cost: 700
 	Tooltip:
 		Name: Light Tank
-		Description: Fast, light tank.\n  Strong vs Vehicles, Tanks\n  Weak vs Infantry
 	Buildable:
 		BuildPaletteOrder: 40
 		Prerequisites: anyhq, ~techlevel.medium
 		Queue: Vehicle.Nod
+		Description: Fast, light tank.\n  Strong vs Vehicles, Tanks\n  Weak vs Infantry
 	Mobile:
 		TurnSpeed: 7
 		Speed: 110
@@ -338,11 +338,11 @@ MTNK:
 		Cost: 800
 	Tooltip:
 		Name: Medium Tank
-		Description: General-Purpose GDI Tank.\n  Strong vs Tanks, Vehicles\n  Weak vs Infantry
 	Buildable:
 		BuildPaletteOrder: 40
 		Prerequisites: anyhq, ~techlevel.medium
 		Queue: Vehicle.GDI
+		Description: General-Purpose GDI Tank.\n  Strong vs Tanks, Vehicles\n  Weak vs Infantry
 	Mobile:
 		Speed: 85
 	Health:
@@ -374,11 +374,11 @@ HTNK:
 		Cost: 1500
 	Tooltip:
 		Name: Mammoth Tank
-		Description: Heavily armored GDI Tank.\nCan attack Aircraft.\n  Strong vs Everything
 	Buildable:
 		BuildPaletteOrder: 60
 		Prerequisites: eye, ~techlevel.high
 		Queue: Vehicle.GDI
+		Description: Heavily armored GDI Tank.\nCan attack Aircraft.\n  Strong vs Everything
 	Mobile:
 		Crushes: wall, heavywall, crate, infantry
 		Speed: 56
@@ -423,11 +423,11 @@ MSAM:
 		Cost: 1000
 	Tooltip:
 		Name: Rocket Launcher
-		Description: Long range rocket artillery.\n  Strong vs all Ground units.
 	Buildable:
 		BuildPaletteOrder: 50
 		Prerequisites: anyhq, ~techlevel.medium
 		Queue: Vehicle.GDI
+		Description: Long range rocket artillery.\n  Strong vs all Ground units.
 	Mobile:
 		Speed: 85
 		TurnSpeed: 4
@@ -459,11 +459,11 @@ MLRS:
 		Cost: 600
 	Tooltip:
 		Name: Mobile S.A.M.
-		Description: Powerful anti-air unit.\nCannot attack Ground units.
 	Buildable:
 		BuildPaletteOrder: 70
 		Prerequisites: anyhq, ~techlevel.medium
 		Queue: Vehicle.Nod
+		Description: Powerful anti-air unit.\nCannot attack Ground units.
 	Mobile:
 		Speed: 99
 		TurnSpeed: 7
@@ -501,11 +501,11 @@ STNK:
 		Cost: 900
 	Tooltip:
 		Name: Stealth Tank
-		Description: Long-range missile tank that can cloak.\nCan attack Aircraft.\nHas weak armor. Can be spotted by infantry and defense structures.\n  Strong vs Vehicles, Tanks\n  Weak vs Infantry.
 	Buildable:
 		BuildPaletteOrder: 90
 		Prerequisites: tmpl, ~techlevel.high
 		Queue: Vehicle.Nod
+		Description: Long-range missile tank that can cloak.\nCan attack Aircraft.\nHas weak armor. Can be spotted by infantry and defense structures.\n  Strong vs Vehicles, Tanks\n  Weak vs Infantry.
 	Mobile:
 		TurnSpeed: 10
 		Speed: 142
@@ -540,7 +540,6 @@ MHQ:
 		Cost: 1000
 	Tooltip:
 		Name: Mobile HQ
-		Description: Mobile base of operations
 	Health:
 		HP: 200
 	Armor:
@@ -552,3 +551,5 @@ MHQ:
 	WithIdleOverlay@SPINNER:
 		Sequence: spinner
 		Offset: -256,0,256
+	Buildable:
+		Description: Mobile base of operations
