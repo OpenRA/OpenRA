@@ -25,7 +25,7 @@ V2RL:
 	AutoTarget:
 	Explodes:
 		Weapon: V2Explode
-	WithAttackAnimation:
+	WithAimAnimation:
 		AimSequence: aim
 		ReloadPrefix: empty-
 	ProducibleWithLevel:
