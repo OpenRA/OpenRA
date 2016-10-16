@@ -21,29 +21,6 @@
 		Explosions: small_frag
 		ImpactSounds: xplos.aud
 
-105mm:
-	ReloadDelay: 50
-	Range: 4c768
-	Report: tnkfire4.aud
-	Projectile: Bullet
-		Image: 120MM
-		Speed: 682
-	Warhead@1Dam: SpreadDamage
-		Spread: 128
-		Damage: 30
-		Versus:
-			None: 30
-			Wood: 75
-			Light: 75
-			Heavy: 100
-		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
-	Warhead@2Smu: LeaveSmudge
-		SmudgeType: Crater
-		InvalidTargets: Vehicle, Structure, Wall, Husk, Trees, Creep
-	Warhead@3Eff: CreateEffect
-		Explosions: small_frag
-		ImpactSounds: xplos.aud
-
 120mm:
 	ReloadDelay: 40
 	Range: 4c768

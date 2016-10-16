@@ -336,35 +336,6 @@ SAMMissile:
 		Explosions: small_building
 		ImpactSounds: xplos.aud
 
-HonestJohn:
-	ReloadDelay: 200
-	Range: 10c0
-	Report: rocket1.aud
-	Projectile: Bullet
-		Arm: 10
-		Blockable: false
-		Shadow: true
-		Inaccuracy: 213
-		Image: patriot
-		TrailImage: smokey
-		Speed: 187
-		RangeLimit: 35
-		LaunchAngle: 88
-	Warhead@1Dam: SpreadDamage
-		Spread: 256
-		Damage: 100
-		Versus:
-			None: 90
-			Wood: 75
-			Light: 60
-			Heavy: 25
-		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
-	Warhead@2Smu: LeaveSmudge
-		SmudgeType: Crater
-	Warhead@3Eff: CreateEffect
-		Explosions: small_poof
-		ImpactSounds: xplos.aud
-
 Patriot:
 	ReloadDelay: 25
 	Range: 9c0
