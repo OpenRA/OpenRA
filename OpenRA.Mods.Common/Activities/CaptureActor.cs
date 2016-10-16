@@ -81,7 +81,6 @@ namespace OpenRA.Mods.Common.Activities
 
 				self.Dispose();
 			});
-
 			return false;
 		}
 	}

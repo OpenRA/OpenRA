@@ -55,7 +55,6 @@ namespace OpenRA.Mods.Common.Activities
 			});
 
 			Done(self);
-
             return false;
 		}
 
