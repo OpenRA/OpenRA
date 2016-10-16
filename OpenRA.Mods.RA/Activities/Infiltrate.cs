@@ -56,7 +56,7 @@ namespace OpenRA.Mods.RA.Activities
 				Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech",
 					notification, self.Owner.Faction.InternalName);
 
-            return true;
+            return false;
 		}
 	}
 }
