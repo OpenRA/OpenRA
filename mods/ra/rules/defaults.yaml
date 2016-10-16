@@ -828,8 +828,7 @@
 ^Mine:
 	Inherits: ^SpriteActor
 	WithSpriteBody:
-	HiddenUnderShroud:
-		Type: CenterPosition
+	HiddenUnderFog:
 	Mine:
 		CrushClasses: mine
 		DetonateClasses: mine
@@ -844,6 +843,7 @@
 		UncloakSound:
 		Palette:
 		CloakTypes: Mine
+		InitialDelay: 0
 	Tooltip:
 		Name: Mine
 	Targetable:
