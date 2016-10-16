@@ -340,21 +340,13 @@
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Target Name="AfterBuild">
-    <Copy
-      SourceFiles="$(TargetPath)"
-      DestinationFolder="$(SolutionDir)"/>
+    <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(SolutionDir)" />
     <!--
         We need to copy OpenRA.Game.pdb (not `.dll.pdb`). This is only necessary on Windows.
         Mono outputs a `.dll.mdb` so we can just append `.mdb` directly.
     -->
-    <Copy
-      SourceFiles="$(TargetDir)$(TargetName).pdb"
-      DestinationFolder="$(SolutionDir)"
-      Condition="'$(OS)' == 'Windows_NT'"/>
-    <Copy
-      SourceFiles="$(TargetPath).mdb"
-      DestinationFolder="$(SolutionDir)"
-      Condition="'$(OS)' == 'Unix'"/>
+    <Copy SourceFiles="$(TargetDir)$(TargetName).pdb" DestinationFolder="$(SolutionDir)" Condition="'$(OS)' == 'Windows_NT'" />
+    <Copy SourceFiles="$(TargetPath).mdb" DestinationFolder="$(SolutionDir)" Condition="'$(OS)' == 'Unix'" />
     <!-- Uncomment these lines when debugging or adding to this target
     <Message Text="DEBUG OS:                     $(OS)"/>
     <Message Text="DEBUG SolutionDir:            $(SolutionDir)"/>
@@ -363,4 +355,11 @@
     <Message Text="DEBUG TargetName:             $(TargetName)"/>
     -->
   </Target>
+  <PropertyGroup>
+    <PostBuildEvent>IF  EXIST  "%25VS140COMNTOOLS%25"  CALL  "%25VS140COMNTOOLS%25vsvars32.bat"
+IF  EXIST  "%25VS120COMNTOOLS%25"  CALL  "%25VS120COMNTOOLS%25vsvars32.bat"
+IF  EXIST  "%25VS110COMNTOOLS%25"  CALL  "%25VS110COMNTOOLS%25vsvars32.bat"
+IF  EXIST  "%25VS100COMNTOOLS%25"  CALL  "%25VS100COMNTOOLS%25vsvars32.bat"
+editbin.exe /LARGEADDRESSAWARE "$(TargetPath)"</PostBuildEvent>
+  </PropertyGroup>
 </Project>
