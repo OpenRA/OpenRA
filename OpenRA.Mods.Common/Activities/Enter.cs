@@ -55,7 +55,7 @@ namespace OpenRA.Mods.Common.Activities
 		}
 
 		protected virtual void Unreserve(Actor self, bool abort) { }
-        protected virtual bool OnInside(Actor self) { return true; }
+		protected virtual void OnInside(Actor self) { }
 
 		protected bool TryGetAlternateTargetInCircle(
 			Actor self, WDist radius, Action<Target> update, Func<Actor, bool> primaryFilter, Func<Actor, bool>[] preferenceFilters = null)
@@ -217,11 +217,11 @@ namespace OpenRA.Mods.Common.Activities
 						return State.ApproachingOrEntering;
 					}
 
-					var shouldDispose = OnInside(self);
+					OnInside(self);
 
 					if (enterBehaviour == EnterBehaviour.Suicide)
 						self.Kill(self);
-					else if (enterBehaviour == EnterBehaviour.Dispose && shouldDispose)
+					else if (enterBehaviour == EnterBehaviour.Dispose)
 						self.Dispose();
 
 					// Return if Abort(Actor) or Done(self) was called from OnInside.

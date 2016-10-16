@@ -37,13 +37,13 @@ namespace OpenRA.Mods.Common.Activities
 			return !capturable.BeingCaptured && capturable.Info.CanBeTargetedBy(self, actor.Owner);
 		}
 
-		protected override bool OnInside(Actor self)
+		protected override void OnInside(Actor self)
 		{
-            if (actor.IsDead || capturable.BeingCaptured)
-				return false;
+			if (actor.IsDead || capturable.BeingCaptured)
+				return;
 
 			if (building != null && !building.Lock())
-				return false;
+				return;
 
 			self.World.AddFrameEndTask(w =>
 			{
@@ -81,7 +81,6 @@ namespace OpenRA.Mods.Common.Activities
 
 				self.Dispose();
 			});
-			return false;
 		}
 	}
 }

@@ -18,13 +18,11 @@ namespace OpenRA.Mods.Common.Activities
 	{
 		readonly Actor target;
 		readonly Health health;
-        readonly Stance validStances;
 
-        public RepairBuilding(Actor self, Actor target, EnterBehaviour enterBehaviour, Stance validStances)
+		public RepairBuilding(Actor self, Actor target, EnterBehaviour enterBehaviour)
 			: base(self, target, enterBehaviour)
 		{
 			this.target = target;
-            this.validStances = validStances;
 			health = target.Trait<Health>();
 		}
 
@@ -33,17 +31,12 @@ namespace OpenRA.Mods.Common.Activities
 			return health.DamageState != DamageState.Undamaged;
 		}
 
-		protected override bool OnInside(Actor self)
+		protected override void OnInside(Actor self)
 		{
-			var stance = self.Owner.Stances[target.Owner];
-			if (!stance.HasStance(validStances))
-				return false;
-
-            if (health.DamageState == DamageState.Undamaged)
-				return false;
+			if (health.DamageState == DamageState.Undamaged)
+				return;
 
 			target.InflictDamage(self, new Damage(-health.MaxHP));
-			return true;
 		}
 	}
 }

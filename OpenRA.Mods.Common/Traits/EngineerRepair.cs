@@ -26,9 +26,6 @@ namespace OpenRA.Mods.Common.Traits
 			"Possible values are Exit, Suicide, Dispose.")]
 		public readonly EnterBehaviour EnterBehaviour = EnterBehaviour.Dispose;
 
-		[Desc("What diplomatic stances allow target to be repaired by this actor.")]
-		public readonly Stance ValidStances = Stance.Ally;
-
 		public object Create(ActorInitializer init) { return new EngineerRepair(init, this); }
 	}
 
@@ -99,7 +96,7 @@ namespace OpenRA.Mods.Common.Traits
 				self.CancelActivity();
 
 			self.SetTargetLine(target, Color.Yellow);
-			self.QueueActivity(new RepairBuilding(self, target.Actor, info.EnterBehaviour, info.ValidStances));
+			self.QueueActivity(new RepairBuilding(self, target.Actor, info.EnterBehaviour));
 		}
 
 		class EngineerRepairOrderTargeter : UnitOrderTargeter

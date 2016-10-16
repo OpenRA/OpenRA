@@ -33,14 +33,14 @@ namespace OpenRA.Mods.RA.Activities
 			cloak = self.TraitOrDefault<Cloak>();
 		}
 
-		protected override bool OnInside(Actor self)
+		protected override void OnInside(Actor self)
 		{
 			if (target.IsDead)
-				return false;
+				return;
 
 			var stance = self.Owner.Stances[target.Owner];
 			if (!validStances.HasStance(stance))
-				return false;
+				return;
 
 			if (cloak != null && cloak.Info.UncloakOn.HasFlag(UncloakType.Infiltrate))
 				cloak.Uncloak();
@@ -55,8 +55,6 @@ namespace OpenRA.Mods.RA.Activities
 			if (!string.IsNullOrEmpty(notification))
 				Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech",
 					notification, self.Owner.Faction.InternalName);
-
-            return false;
 		}
 	}
 }

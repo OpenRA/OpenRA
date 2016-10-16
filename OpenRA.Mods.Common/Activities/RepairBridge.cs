@@ -31,16 +31,14 @@ namespace OpenRA.Mods.Common.Activities
 			return hut.BridgeDamageState != DamageState.Undamaged && !hut.Repairing && hut.Bridge.GetHut(0) != null && hut.Bridge.GetHut(1) != null;
 		}
 
-		protected override bool OnInside(Actor self)
+		protected override void OnInside(Actor self)
 		{
-            if (hut.BridgeDamageState == DamageState.Undamaged || hut.Repairing || hut.Bridge.GetHut(0) == null || hut.Bridge.GetHut(1) == null)
-                return false;
+			if (hut.BridgeDamageState == DamageState.Undamaged || hut.Repairing || hut.Bridge.GetHut(0) == null || hut.Bridge.GetHut(1) == null)
+				return;
 
 			hut.Repair(self);
 
 			Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", notification, self.Owner.Faction.InternalName);
-
-            return true;
 		}
 	}
 }

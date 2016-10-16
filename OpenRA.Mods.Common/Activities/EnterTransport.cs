@@ -43,7 +43,7 @@ namespace OpenRA.Mods.Common.Activities
 			return ReserveStatus.Pending;
 		}
 
-		protected override bool OnInside(Actor self)
+		protected override void OnInside(Actor self)
 		{
 			self.World.AddFrameEndTask(w =>
 			{
@@ -55,7 +55,6 @@ namespace OpenRA.Mods.Common.Activities
 			});
 
 			Done(self);
-            return false;
 		}
 
 		protected override bool TryGetAlternateTarget(Actor self, int tries, ref Target target)
