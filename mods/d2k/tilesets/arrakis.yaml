@@ -6124,4 +6124,24 @@ Templates:
 		Category: Sand-Detail
 		Tiles:
 			0: Rough
+	Template@1080:
+		Id: 1080
+		Images: BLOXWAST.R8
+		Frames: 627, 628
+		Size: 2,1
+		Category: Rotten-Base
+		Tiles:
+			0: Rough
+			1: Rough
+	Template@1081:
+		Id: 1081
+		Images: BLOXWAST.R8
+		Frames: 609, 610, 629, 630
+		Size: 2,2
+		Category: Rotten-Base
+		Tiles:
+			0: Rough
+			1: Cliff
+			2: Rough			
+			3: Rough			
 			
