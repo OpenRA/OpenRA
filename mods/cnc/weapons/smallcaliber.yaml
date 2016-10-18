@@ -12,7 +12,7 @@ Sniper:
 		ValidTargets: Infantry
 		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
 
-HighV:
+^HeavyMG:
 	ReloadDelay: 25
 	Range: 6c0
 	Report: gun8.aud
@@ -30,81 +30,51 @@ HighV:
 	Warhead@2Eff: CreateEffect
 		Explosions: piffs
 
+HighV:
+	Inherits: ^HeavyMG
+
 HeliAGGun:
+	Inherits: ^HeavyMG
 	ReloadDelay: 20
 	Burst: 2
 	BurstDelay: 0
 	Range: 4c0
 	MinRange: 0c768
-	ValidTargets: Ground
 	Report: gun5.aud
 	Projectile: Bullet
-		Speed: 1c682
 		Blockable: false
 	Warhead@1Dam: SpreadDamage
 		Spread: 256
 		Damage: 20
-		ValidTargets: Ground
 		Versus:
 			None: 100
 			Wood: 50
 			Light: 75
 			Heavy: 25
-		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
-	Warhead@2Eff: CreateEffect
-		Explosions: piffs
 
 HeliAAGun:
-	ReloadDelay: 20
-	Burst: 2
-	BurstDelay: 0
-	Range: 4c0
-	MinRange: 0c768
+	Inherits: HeliAGGun
 	ValidTargets: Air
-	Report: gun5.aud
-	Projectile: Bullet
-		Speed: 1c682
-		Blockable: false
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
-		Damage: 20
 		ValidTargets: Air
 		Versus:
-			None: 100
-			Wood: 50
 			Light: 50
-			Heavy: 25
-		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
-	Warhead@2Eff: CreateEffect
-		Explosions: piffs
 
 Pistol:
+	Inherits: ^LightMG
 	ReloadDelay: 7
 	Range: 3c0
-	InvalidTargets: Wall
 	Report: gun18.aud
-	Projectile: Bullet
-		Speed: 1c682
 	Warhead@1Dam: SpreadDamage
-		Spread: 128
 		Damage: 1
-		InvalidTargets: Wall
-		Versus:
-			None: 100
-			Wood: 50
-			Light: 50
-			Heavy: 25
-		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
-	Warhead@2Eff: CreateEffect
-		Explosions: piff
 
-M16:
+^LightMG:
+	Inherits: ^HeavyMG
 	ReloadDelay: 20
 	Range: 4c0
 	InvalidTargets: Wall
 	Report: mgun2.aud
-	Projectile: Bullet
-		Speed: 1c682
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 15
@@ -114,62 +84,45 @@ M16:
 			Wood: 25
 			Light: 30
 			Heavy: 10
-		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
 	Warhead@2Eff: CreateEffect
 		Explosions: piff
 
+M16:
+	Inherits: ^LightMG
+
 MachineGun:
-	ReloadDelay: 20
+	Inherits: ^LightMG
 	Burst: 5
-	InvalidTargets: Wall
-	Range: 4c0
 	Report: mgun11.aud
-	Projectile: Bullet
-		Speed: 1c682
 	Warhead@1Dam: SpreadDamage
-		Spread: 128
-		Damage: 15
-		InvalidTargets: Wall
 		Versus:
-			None: 100
 			Wood: 10
 			Light: 50
-			Heavy: 10
-		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
 	Warhead@2Eff: CreateEffect
 		Explosions: piffs
 
 Vulcan:
-	ValidTargets: Ground, Water
+	Inherits: ^HeavyMG
 	ReloadDelay: 2
-	Range: 6c0
 	Report: gun5.aud
-	Projectile: Bullet
-		Speed: 1c682
 	Warhead@1Dam: SpreadDamage
 		Spread: 426
 		Damage: 100
-		ValidTargets: Ground, Water
 		Versus:
 			None: 100
 			Wood: 25
 			Light: 100
 			Heavy: 35
-		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
-	Warhead@2Eff: CreateEffect
-		Explosions: piffs
 
 APCGun:
 	ReloadDelay: 18
 	Range: 5c0
 	Report: gun20.aud
-	ValidTargets: Ground
 	Projectile: Bullet
 		Speed: 1c682
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 15
-		ValidTargets: Ground
 		Versus:
 			None: 50
 			Wood: 50
@@ -180,19 +133,16 @@ APCGun:
 		Explosions: small_poof
 
 APCGun.AA:
-	ReloadDelay: 18
+	Inherits: APCGun
 	Range: 7c0
-	Report: gun20.aud
 	ValidTargets: Air
 	Projectile: Bullet
 		Speed: 2c0
 		Blockable: false
 	Warhead@1Dam: SpreadDamage
-		Spread: 128
 		Damage: 25
 		ValidTargets: Air
 		Versus:
-			Heavy: 50
-		DamageTypes: Prone50Percent, TriggerProne, DefaultDeath
+			Light: 100
 	Warhead@2Eff: CreateEffect
 		Explosions: small_frag
