@@ -75,8 +75,6 @@ BIO:
 	SpawnActorOnDeath:
 		Actor: BIO.Husk
 	ProvidesPrerequisite@buildingname:
-	Buildable:
-		Description: Grants Tiberium immunity to infantry.
 
 BIO.Husk:
 	Inherits: ^CivBuildingHusk
