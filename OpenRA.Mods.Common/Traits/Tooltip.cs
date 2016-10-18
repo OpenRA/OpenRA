@@ -42,9 +42,6 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Show the actor's owner and their faction flag")]
 		public readonly bool ShowOwnerRow = true;
 
-		[Desc("Sequence of the actor that contains the cameo.")]
-		public readonly string Icon = "icon";
-
 		public override object Create(ActorInitializer init) { return new Tooltip(init.Self, this); }
 
 		public string TooltipForPlayerStance(Stance stance)

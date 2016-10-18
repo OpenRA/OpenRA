@@ -353,7 +353,6 @@ BARB:
 		Type: Light
 	Tooltip:
 		Name: Barbwire Fence
-		Icon: barbicnh
 	LineBuild:
 		NodeTypes: barbwire
 	LineBuildNode:
@@ -367,7 +366,6 @@ WOOD:
 		Type: Wood
 	Tooltip:
 		Name: Wooden Fence
-		Icon: woodicnh
 	LineBuild:
 		NodeTypes: woodfence
 	LineBuildNode:

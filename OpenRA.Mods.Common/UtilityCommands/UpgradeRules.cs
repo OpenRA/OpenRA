@@ -400,8 +400,8 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				// Move production description from Tooltip to Buildable
 				if (engineVersion < 20161016)
 				{
-					var tooltipChild = node.Value.Nodes.FirstOrDefault(n => n.Key == "Tooltip");
-					if (tooltipChild != null || (tooltipChild = node.Value.Nodes.FirstOrDefault(n => n.Key == "DisguiseToolTip")) != null)
+					var tooltipChild = node.Value.Nodes.FirstOrDefault(n => n.Key == "Tooltip" || n.Key == "DisguiseToolTip");
+					if (tooltipChild != null)
 					{
 						var descNode = tooltipChild.Value.Nodes.FirstOrDefault(n => n.Key == "Description");
 						if (descNode != null)
@@ -412,6 +412,25 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 							buildableNode.Value.Nodes.Add(descNode);
 							tooltipChild.Value.Nodes.Remove(descNode);
+						}
+					}
+				}
+
+				// Move production icon sequence from Tooltip to Buildable
+				if (engineVersion < 20161022)
+				{
+					var tooltipChild = node.Value.Nodes.FirstOrDefault(n => n.Key == "Tooltip" || n.Key == "DisguiseToolTip");
+					if (tooltipChild != null)
+					{
+						var iconNode = tooltipChild.Value.Nodes.FirstOrDefault(n => n.Key == "Icon");
+						if (iconNode != null)
+						{
+							var buildableNode = node.Value.Nodes.FirstOrDefault(n => n.Key == "Buildable");
+							if (buildableNode == null)
+								node.Value.Nodes.Add(buildableNode = new MiniYamlNode("Buildable", ""));
+
+							buildableNode.Value.Nodes.Add(iconNode);
+							tooltipChild.Value.Nodes.Remove(iconNode);
 						}
 					}
 				}

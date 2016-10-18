@@ -6,8 +6,8 @@ FPWR:
 		Queue: Defense
 		Prerequisites: ~structures.france, ~techlevel.infonly
 		Description: Looks like a Power Plant.
-	Tooltip:
 		Icon: fake-icon
+	Tooltip:
 		Name: Fake Power Plant
 		GenericName: Power Plant
 		GenericVisibility: Enemy
@@ -33,8 +33,8 @@ SYRF:
 		Queue: Defense
 		Prerequisites: ~structures.france, ~techlevel.medium
 		Description: Looks like a Shipyard.
-	Tooltip:
 		Icon: fake-icon
+	Tooltip:
 		Name: Fake Shipyard
 		GenericName: Shipyard
 		GenericVisibility: Enemy
@@ -67,8 +67,8 @@ SPEF:
 		Queue: Defense
 		Prerequisites: ~disabled
 		Description: Looks like a Sub Pen.
-	Tooltip:
 		Icon: fake-icon
+	Tooltip:
 		Name: Fake Sub Pen
 		GenericName: Sub Pen
 		GenericVisibility: Enemy
@@ -97,8 +97,8 @@ WEAF:
 		Prerequisites: ~structures.france, ~techlevel.medium
 		Queue: Defense
 		Description: Looks like a War Factory.
-	Tooltip:
 		Icon: fake-icon
+	Tooltip:
 		Name: Fake War Factory
 		GenericName: War Factory
 		GenericVisibility: Enemy
@@ -122,7 +122,6 @@ DOMF:
 	Inherits: ^FakeBuilding
 	Inherits@infiltrate: ^InfiltratableFake
 	Tooltip:
-		Icon: fake-icon
 		Name: Fake Radar Dome
 		GenericName: Radar Dome
 		GenericVisibility: Enemy
@@ -132,6 +131,7 @@ DOMF:
 		Queue: Defense
 		Prerequisites: ~structures.france, ~techlevel.medium
 		Description: Looks like a Radar Dome.
+		Icon: fake-icon
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
@@ -154,8 +154,8 @@ FIXF:
 		Queue: Defense
 		Prerequisites: ~structures.france, ~techlevel.medium
 		Description: Looks like a Service Depot.
-	Tooltip:
 		Icon: fake-icon
+	Tooltip:
 		Name: Fake Service Depot
 		GenericName: Service Depot
 		GenericVisibility: Enemy
@@ -182,8 +182,8 @@ FAPW:
 		Queue: Defense
 		Prerequisites: ~structures.france, ~techlevel.medium
 		Description: Looks like an Advanced Power Plant.
-	Tooltip:
 		Icon: fake-icon
+	Tooltip:
 		Name: Fake Advanced Power Plant
 		GenericName: Advanced Power Plant
 		GenericVisibility: Enemy
@@ -208,7 +208,6 @@ FAPW:
 ATEF:
 	Inherits: ^FakeBuilding
 	Tooltip:
-		Icon: fake-icon
 		Name: Fake Allied Tech Center
 		GenericName: Allied Tech Center
 		GenericVisibility: Enemy
@@ -218,6 +217,7 @@ ATEF:
 		Queue: Defense
 		Prerequisites: ~structures.france, ~techlevel.high
 		Description: Looks like an Allied Tech Center.
+		Icon: fake-icon
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
@@ -236,7 +236,6 @@ ATEF:
 PDOF:
 	Inherits: ^FakeBuilding
 	Tooltip:
-		Icon: fake-icon
 		Name: Fake Chronosphere
 		GenericName: Chronosphere
 		GenericVisibility: Enemy
@@ -247,6 +246,7 @@ PDOF:
 		Prerequisites: ~structures.france, ~techlevel.unrestricted
 		BuildLimit: 1
 		Description: Looks like a Chronosphere.
+		Icon: fake-icon
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
@@ -268,7 +268,6 @@ PDOF:
 MSLF:
 	Inherits: ^FakeBuilding
 	Tooltip:
-		Icon: fake-icon
 		Name: Fake Missile Silo
 		GenericName: Missile Silo
 		GenericVisibility: Enemy
@@ -279,6 +278,7 @@ MSLF:
 		Prerequisites: ~structures.france, ~techlevel.unrestricted
 		BuildLimit: 1
 		Description: Looks like a Missile Silo.
+		Icon: fake-icon
 	Building:
 		Footprint: xx
 		Dimensions: 2,1
@@ -302,8 +302,8 @@ FACF:
 		Queue: Defense
 		Prerequisites: ~structures.france, ~techlevel.medium
 		Description: Looks like a Construction Yard.
-	Tooltip:
 		Icon: fake-icon
+	Tooltip:
 		Name: Fake Construction Yard
 		GenericName: Construction Yard
 		GenericVisibility: Enemy
