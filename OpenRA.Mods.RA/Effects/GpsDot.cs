@@ -111,7 +111,7 @@ namespace OpenRA.Mods.RA.Effects
 
 			shouldRenderIndicator = !f2.HasRenderables;
 
-			return f2.Visible && !f2.Shrouded && !toPlayer.World.ShroudObscures(self.CenterPosition);
+			return f2.Visible && !f2.Shrouded && toPlayer.Shroud.IsExplored(self.CenterPosition);
 		}
 
 		FrozenActor FrozenActorForPlayer(Player player)
