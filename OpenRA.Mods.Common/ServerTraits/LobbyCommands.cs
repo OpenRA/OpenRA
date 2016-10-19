@@ -821,8 +821,8 @@ namespace OpenRA.Mods.Common.Server
 				if (o.Id == "gamespeed")
 				{
 					var speed = server.ModData.Manifest.Get<GameSpeeds>().Speeds[value];
-					server.LobbyInfo.GlobalSettings.Timestep = speed.Timestep;
-					server.LobbyInfo.GlobalSettings.OrderLatency = speed.OrderLatency;
+					gs.Timestep = speed.Timestep;
+					gs.OrderLatency = speed.OrderLatency;
 				}
 			}
 		}
