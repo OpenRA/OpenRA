@@ -55,7 +55,7 @@ namespace OpenRA.Mods.Common.Traits
 				.ToArray();
 		}
 
-		public void Tick(Actor self)
+		void ITick.Tick(Actor self)
 		{
 			if (!self.IsInWorld)
 				return;
@@ -79,7 +79,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		public void AddedToWorld(Actor self)
+		void INotifyAddedToWorld.AddedToWorld(Actor self)
 		{
 			var centerPosition = self.CenterPosition;
 			var projectedPos = centerPosition - new WVec(0, centerPosition.Z, centerPosition.Z);
@@ -90,7 +90,7 @@ namespace OpenRA.Mods.Common.Traits
 				AddCellsToPlayerShroud(self, p, cells);
 		}
 
-		public void RemovedFromWorld(Actor self)
+		void INotifyRemovedFromWorld.RemovedFromWorld(Actor self)
 		{
 			foreach (var p in self.World.Players)
 				RemoveCellsFromPlayerShroud(self, p);
