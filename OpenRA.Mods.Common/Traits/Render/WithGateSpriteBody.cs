@@ -45,7 +45,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		}
 	}
 
-	class WithGateSpriteBody : WithSpriteBody, INotifyRemovedFromWorld, INotifyBuildComplete, IWallConnector, ITick
+	class WithGateSpriteBody : WithSpriteBody, INotifyRemovedFromWorld, IWallConnector, ITick
 	{
 		readonly WithGateSpriteBodyInfo gateInfo;
 		readonly Gate gate;
@@ -88,7 +88,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			UpdateState(self);
 		}
 
-		public override void BuildingComplete(Actor self)
+		protected override void OnBuildComplete(Actor self)
 		{
 			UpdateState(self);
 			UpdateNeighbours(self);

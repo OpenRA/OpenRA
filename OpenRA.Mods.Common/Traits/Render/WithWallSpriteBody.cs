@@ -136,7 +136,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			dirty = false;
 		}
 
-		public override void BuildingComplete(Actor self)
+		protected override void OnBuildComplete(Actor self)
 		{
 			DefaultAnimation.PlayFetchIndex(NormalizeSequence(self, Info.Sequence), () => adjacent);
 			UpdateNeighbours(self);

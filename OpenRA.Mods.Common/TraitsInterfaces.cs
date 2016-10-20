@@ -70,6 +70,7 @@ namespace OpenRA.Mods.Common.Traits
 		void PreparingAttack(Actor self, Target target, Armament a, Barrel barrel);
 	}
 
+	[RequireExplicitImplementation]
 	public interface INotifyBuildComplete { void BuildingComplete(Actor self); }
 	public interface INotifyBuildingPlaced { void BuildingPlaced(Actor self); }
 	public interface INotifyRepair { void Repairing(Actor self, Actor target); }

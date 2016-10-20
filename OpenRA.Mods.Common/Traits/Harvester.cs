@@ -111,7 +111,7 @@ namespace OpenRA.Mods.Common.Traits
 				self.QueueActivity(new FindResources(self));
 		}
 
-		public void BuildingComplete(Actor self)
+		void INotifyBuildComplete.BuildingComplete(Actor self)
 		{
 			if (Info.SearchOnCreation)
 				self.QueueActivity(new FindResources(self));

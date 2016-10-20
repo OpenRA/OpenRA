@@ -51,7 +51,7 @@ namespace OpenRA.Mods.D2k.Traits.Render
 			rs.Add(anim, info.Palette, info.IsPlayerPalette);
 		}
 
-		public void BuildingComplete(Actor self)
+		void INotifyBuildComplete.BuildingComplete(Actor self)
 		{
 			buildComplete = true;
 		}

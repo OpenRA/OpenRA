@@ -102,7 +102,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			}
 		}
 
-		public void BuildingComplete(Actor self)
+		void INotifyBuildComplete.BuildingComplete(Actor self)
 		{
 			if (skippedMakeAnimation)
 			{
