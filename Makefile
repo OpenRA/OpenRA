@@ -190,6 +190,9 @@ check-scripts:
 
 check: utility mods
 	@echo
+	@echo "Checking for explicit interface violations..."
+	@mono --debug OpenRA.Utility.exe all --check-explicit-interfaces
+	@echo
 	@echo "Checking for code style violations in OpenRA.Game..."
 	@mono --debug OpenRA.Utility.exe ra --check-code-style OpenRA.Game
 	@echo
@@ -219,9 +222,6 @@ check: utility mods
 	@echo
 	@echo "Checking for code style violations in OpenRA.Test..."
 	@mono --debug OpenRA.Utility.exe ra --check-code-style OpenRA.Test
-	@echo
-	@echo "Checking for explicit interface violations..."
-	@mono --debug OpenRA.Utility.exe all --check-explicit-interfaces
 	@echo
 	@echo "Checking for code style violations in OpenRA.Server..."
 	@mono --debug OpenRA.Utility.exe ra --check-code-style OpenRA.Server
