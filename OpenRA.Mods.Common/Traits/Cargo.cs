@@ -422,12 +422,6 @@ namespace OpenRA.Mods.Common.Traits
 		}
 	}
 
-	[RequireExplicitImplementation]
-	public interface INotifyPassengerEntered { void OnPassengerEntered(Actor self, Actor passenger); }
-
-	[RequireExplicitImplementation]
-	public interface INotifyPassengerExited { void OnPassengerExited(Actor self, Actor passenger); }
-
 	public class RuntimeCargoInit : IActorInit<Actor[]>, ISuppressInitExport
 	{
 		[FieldFromYamlKey]

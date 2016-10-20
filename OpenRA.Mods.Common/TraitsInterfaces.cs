@@ -60,6 +60,12 @@ namespace OpenRA.Mods.Common.Traits
 	[RequireExplicitImplementation]
 	public interface INotifyBlockingMove { void OnNotifyBlockingMove(Actor self, Actor blocking); }
 
+	[RequireExplicitImplementation]
+	public interface INotifyPassengerEntered { void OnPassengerEntered(Actor self, Actor passenger); }
+
+	[RequireExplicitImplementation]
+	public interface INotifyPassengerExited { void OnPassengerExited(Actor self, Actor passenger); }
+
 	public interface IUpgradable
 	{
 		IEnumerable<string> UpgradeTypes { get; }
