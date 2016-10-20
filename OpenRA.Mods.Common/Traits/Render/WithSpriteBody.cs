@@ -117,10 +117,15 @@ namespace OpenRA.Mods.Common.Traits.Render
 			DefaultAnimation.PlayRepeating(NormalizeSequence(self, Info.Sequence));
 		}
 
-		public virtual void DamageStateChanged(Actor self, AttackInfo e)
+		protected virtual void DamageStateChanged(Actor self)
 		{
 			if (DefaultAnimation.CurrentSequence != null)
 				DefaultAnimation.ReplaceAnim(NormalizeSequence(self, DefaultAnimation.CurrentSequence.Name));
+		}
+
+		void INotifyDamageStateChanged.DamageStateChanged(Actor self, AttackInfo e)
+		{
+			DamageStateChanged(self);
 		}
 	}
 }

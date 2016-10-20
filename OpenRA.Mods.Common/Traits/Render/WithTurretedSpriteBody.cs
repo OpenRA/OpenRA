@@ -54,9 +54,9 @@ namespace OpenRA.Mods.Common.Traits.Render
 			turreted.QuantizedFacings = DefaultAnimation.CurrentSequence.Facings;
 		}
 
-		public override void DamageStateChanged(Actor self, AttackInfo e)
+		protected override void DamageStateChanged(Actor self)
 		{
-			base.DamageStateChanged(self, e);
+			base.DamageStateChanged(self);
 			turreted.QuantizedFacings = DefaultAnimation.CurrentSequence.Facings;
 		}
 	}

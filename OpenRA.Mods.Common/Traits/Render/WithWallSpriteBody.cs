@@ -101,7 +101,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			wallInfo = info;
 		}
 
-		public override void DamageStateChanged(Actor self, AttackInfo e)
+		protected override void DamageStateChanged(Actor self)
 		{
 			DefaultAnimation.PlayFetchIndex(NormalizeSequence(self, Info.Sequence), () => adjacent);
 		}

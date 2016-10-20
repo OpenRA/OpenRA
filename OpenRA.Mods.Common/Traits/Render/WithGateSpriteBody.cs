@@ -83,7 +83,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			return int2.Lerp(0, DefaultAnimation.CurrentSequence.Length - 1, gate.Position, gate.OpenPosition);
 		}
 
-		public override void DamageStateChanged(Actor self, AttackInfo e)
+		protected override void DamageStateChanged(Actor self)
 		{
 			UpdateState(self);
 		}
