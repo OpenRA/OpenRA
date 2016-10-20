@@ -31,6 +31,9 @@ namespace OpenRA.Mods.Common.Lint
 
 			if (!map.Categories.Any())
 				emitError("Map does not define any categories.");
+
+			if (map.InvalidCustomRules)
+				emitError("Map contains invalid custom rules.");
 		}
 	}
 }
