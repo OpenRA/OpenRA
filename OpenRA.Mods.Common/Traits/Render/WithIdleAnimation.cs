@@ -59,11 +59,11 @@ namespace OpenRA.Mods.Common.Traits.Render
 			buildComplete = true;
 		}
 
-		public void Selling(Actor self)
+		void INotifySold.Selling(Actor self)
 		{
 			buildComplete = false;
 		}
 
-		public void Sold(Actor self) { }
+		void INotifySold.Sold(Actor self) { }
 	}
 }

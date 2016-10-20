@@ -356,8 +356,8 @@ namespace OpenRA.Mods.Common.Traits
 			cargo.Clear();
 		}
 
-		public void Selling(Actor self) { }
-		public void Sold(Actor self)
+		void INotifySold.Selling(Actor self) { }
+		void INotifySold.Sold(Actor self)
 		{
 			if (!Info.EjectOnSell || cargo == null)
 				return;

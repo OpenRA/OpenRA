@@ -86,8 +86,8 @@ namespace OpenRA.Mods.RA.Traits
 
 		public void Killed(Actor self, AttackInfo e) { RemoveGps(self); }
 
-		public void Selling(Actor self) { }
-		public void Sold(Actor self) { RemoveGps(self); }
+		void INotifySold.Selling(Actor self) { }
+		void INotifySold.Sold(Actor self) { RemoveGps(self); }
 
 		void RemoveGps(Actor self)
 		{

@@ -66,7 +66,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			playerResources = newOwner.PlayerActor.Trait<PlayerResources>();
 		}
 
-		public void Selling(Actor self) { rs.Remove(anim); }
-		public void Sold(Actor self) { }
+		void INotifySold.Selling(Actor self) { rs.Remove(anim); }
+		void INotifySold.Sold(Actor self) { }
 	}
 }

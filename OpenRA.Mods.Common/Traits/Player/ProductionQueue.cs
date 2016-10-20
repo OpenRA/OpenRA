@@ -139,8 +139,8 @@ namespace OpenRA.Mods.Common.Traits
 		}
 
 		public void Killed(Actor killed, AttackInfo e) { if (killed == self) { ClearQueue(); Enabled = false; } }
-		public void Selling(Actor self) { ClearQueue(); Enabled = false; }
-		public void Sold(Actor self) { }
+		void INotifySold.Selling(Actor self) { ClearQueue(); Enabled = false; }
+		void INotifySold.Sold(Actor self) { }
 
 		public void BeforeTransform(Actor self) { ClearQueue(); Enabled = false; }
 		public void OnTransform(Actor self) { }

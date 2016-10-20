@@ -143,7 +143,6 @@ namespace OpenRA.Traits
 	public interface INotifyCreated { void Created(Actor self); }
 	public interface INotifyAddedToWorld { void AddedToWorld(Actor self); }
 	public interface INotifyRemovedFromWorld { void RemovedFromWorld(Actor self); }
-	public interface INotifySold { void Selling(Actor self); void Sold(Actor self); }
 	public interface INotifyDamage { void Damaged(Actor self, AttackInfo e); }
 	public interface INotifyDamageStateChanged { void DamageStateChanged(Actor self, AttackInfo e); }
 	public interface INotifyRepair { void Repairing(Actor self, Actor target); }

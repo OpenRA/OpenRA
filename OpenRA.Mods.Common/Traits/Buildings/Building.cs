@@ -143,7 +143,7 @@ namespace OpenRA.Mods.Common.Traits
 		readonly Actor self;
 		public readonly bool SkipMakeAnimation;
 
-		/* shared activity lock: undeploy, sell, capture, etc */
+		// Shared activity lock: undeploy, sell, capture, etc.
 		[Sync] public bool Locked = true;
 
 		public bool Lock()
@@ -181,7 +181,7 @@ namespace OpenRA.Mods.Common.Traits
 			return OccupiedCells().Select(c => self.World.Map.CenterOfCell(c.First));
 		}
 
-		public void Created(Actor self)
+		void INotifyCreated.Created(Actor self)
 		{
 			if (SkipMakeAnimation || !self.Info.HasTraitInfo<WithMakeAnimationInfo>())
 				NotifyBuildingComplete(self);
@@ -199,7 +199,7 @@ namespace OpenRA.Mods.Common.Traits
 				self.World.ScreenMap.Add(self);
 		}
 
-		public void RemovedFromWorld(Actor self)
+		void INotifyRemovedFromWorld.RemovedFromWorld(Actor self)
 		{
 			self.World.ActorMap.RemoveInfluence(self, this);
 			self.World.ActorMap.RemovePosition(self, this);
@@ -220,7 +220,7 @@ namespace OpenRA.Mods.Common.Traits
 				notify.BuildingComplete(self);
 		}
 
-		public void Selling(Actor self)
+		void INotifySold.Selling(Actor self)
 		{
 			if (Info.RemoveSmudgesOnSell)
 				RemoveSmudges();
@@ -228,9 +228,9 @@ namespace OpenRA.Mods.Common.Traits
 			BuildComplete = false;
 		}
 
-		public void Sold(Actor self) { }
+		void INotifySold.Sold(Actor self) { }
 
-		public void BeforeTransform(Actor self)
+		void INotifyTransform.BeforeTransform(Actor self)
 		{
 			if (Info.RemoveSmudgesOnTransform)
 				RemoveSmudges();
@@ -239,8 +239,8 @@ namespace OpenRA.Mods.Common.Traits
 				Game.Sound.PlayToPlayer(self.Owner, s, self.CenterPosition);
 		}
 
-		public void OnTransform(Actor self) { }
-		public void AfterTransform(Actor self) { }
+		void INotifyTransform.OnTransform(Actor self) { }
+		void INotifyTransform.AfterTransform(Actor self) { }
 
 		public void RemoveSmudges()
 		{

@@ -37,6 +37,13 @@ namespace OpenRA.Mods.Common.Traits
 	}
 
 	[RequireExplicitImplementation]
+	public interface INotifySold
+	{
+		void Selling(Actor self);
+		void Sold(Actor self);
+	}
+
+	[RequireExplicitImplementation]
 	public interface INotifyAttack
 	{
 		void Attacking(Actor self, Target target, Armament a, Barrel barrel);

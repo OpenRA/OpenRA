@@ -76,9 +76,13 @@ namespace OpenRA.Mods.Common.Traits
 				reservedForAircraft.UnReserve();
 		}
 
-		public void Selling(Actor self) { Sold(self); }
+		void INotifySold.Selling(Actor self)
+		{
+			if (reservedForAircraft != null)
+				reservedForAircraft.UnReserve();
+		}
 
-		public void Sold(Actor self)
+		void INotifySold.Sold(Actor self)
 		{
 			if (reservedForAircraft != null)
 				reservedForAircraft.UnReserve();

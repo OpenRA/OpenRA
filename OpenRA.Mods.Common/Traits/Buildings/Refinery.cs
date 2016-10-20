@@ -168,8 +168,8 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		public void Selling(Actor self) { CancelDock(self); }
-		public void Sold(Actor self)
+		void INotifySold.Selling(Actor self) { CancelDock(self); }
+		void INotifySold.Sold(Actor self)
 		{
 			foreach (var harv in GetLinkedHarvesters())
 				harv.Trait.UnlinkProc(harv.Actor, self);
