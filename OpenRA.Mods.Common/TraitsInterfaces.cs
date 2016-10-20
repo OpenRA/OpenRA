@@ -72,6 +72,10 @@ namespace OpenRA.Mods.Common.Traits
 
 	[RequireExplicitImplementation]
 	public interface INotifyBuildComplete { void BuildingComplete(Actor self); }
+
+	[RequireExplicitImplementation]
+	public interface INotifyDamageStateChanged { void DamageStateChanged(Actor self, AttackInfo e); }
+
 	public interface INotifyBuildingPlaced { void BuildingPlaced(Actor self); }
 	public interface INotifyRepair { void Repairing(Actor self, Actor target); }
 	public interface INotifyBurstComplete { void FiredBurst(Actor self, Target target, Armament a); }
