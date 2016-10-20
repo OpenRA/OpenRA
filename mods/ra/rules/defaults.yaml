@@ -418,6 +418,16 @@
 		UpgradeMinEnabledLevel: 1
 	BodyOrientation:
 		UseClassicFacingFudge: True
+	RevealsShroud@GROUNDED:
+		Range: 5c0
+		Type: CenterPosition
+		UpgradeTypes: airborne
+		UpgradeMaxEnabledLevel: 0
+	RevealsShroud:
+		Range: 10c0
+		Type: CenterPosition
+		UpgradeTypes: airborne
+		UpgradeMinEnabledLevel: 1
 
 ^BasicBuilding:
 	Inherits@1: ^ExistsInWorld
