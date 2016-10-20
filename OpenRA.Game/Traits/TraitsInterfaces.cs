@@ -319,8 +319,6 @@ namespace OpenRA.Traits
 		bool IsBlocking(Actor self, CPos cell);
 	}
 
-	public interface INotifyBlockingMove { void OnNotifyBlockingMove(Actor self, Actor blocking); }
-
 	public interface IFacing
 	{
 		int TurnSpeed { get; }

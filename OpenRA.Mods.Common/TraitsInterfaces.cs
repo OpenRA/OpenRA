@@ -50,6 +50,9 @@ namespace OpenRA.Mods.Common.Traits
 	public interface IRenderActorPreviewInfo : ITraitInfo { IEnumerable<IActorPreview> RenderPreview(ActorPreviewInitializer init); }
 	public interface ICruiseAltitudeInfo : ITraitInfo { WDist GetCruiseAltitude(); }
 
+	[RequireExplicitImplementation]
+	public interface INotifyBlockingMove { void OnNotifyBlockingMove(Actor self, Actor blocking); }
+
 	public interface IUpgradable
 	{
 		IEnumerable<string> UpgradeTypes { get; }
