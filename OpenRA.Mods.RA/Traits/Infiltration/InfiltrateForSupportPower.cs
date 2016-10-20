@@ -31,7 +31,7 @@ namespace OpenRA.Mods.RA.Traits
 			this.info = info;
 		}
 
-		public void Infiltrated(Actor self, Actor infiltrator)
+		void INotifyInfiltrated.Infiltrated(Actor self, Actor infiltrator)
 		{
 			infiltrator.World.AddFrameEndTask(w => w.CreateActor(info.Proxy, new TypeDictionary
 			{

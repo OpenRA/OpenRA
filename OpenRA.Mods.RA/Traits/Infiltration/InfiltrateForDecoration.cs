@@ -30,7 +30,7 @@ namespace OpenRA.Mods.RA.Traits
 		public InfiltrateForDecoration(Actor self, InfiltrateForDecorationInfo info)
 			: base(self, info) { }
 
-		public void Infiltrated(Actor self, Actor infiltrator)
+		void INotifyInfiltrated.Infiltrated(Actor self, Actor infiltrator)
 		{
 			infiltrators.Add(infiltrator.Owner);
 		}

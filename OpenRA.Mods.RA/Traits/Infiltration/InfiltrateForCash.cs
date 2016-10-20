@@ -41,7 +41,7 @@ namespace OpenRA.Mods.RA.Traits
 
 		public InfiltrateForCash(InfiltrateForCashInfo info) { this.info = info; }
 
-		public void Infiltrated(Actor self, Actor infiltrator)
+		void INotifyInfiltrated.Infiltrated(Actor self, Actor infiltrator)
 		{
 			var targetResources = self.Owner.PlayerActor.Trait<PlayerResources>();
 			var spyResources = infiltrator.Owner.PlayerActor.Trait<PlayerResources>();
