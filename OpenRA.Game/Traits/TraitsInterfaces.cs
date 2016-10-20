@@ -66,20 +66,6 @@ namespace OpenRA.Traits
 		}
 	}
 
-	[Flags]
-	public enum ImpactType
-	{
-		None = 0,
-		Ground = 1,
-		GroundHit = 2,
-		Water = 4,
-		WaterHit = 8,
-		Air = 16,
-		AirHit = 32,
-		TargetTerrain = 64,
-		TargetHit = 128
-	}
-
 	public class AttackInfo
 	{
 		public Damage Damage;

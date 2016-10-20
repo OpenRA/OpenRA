@@ -9,12 +9,27 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Warheads
 {
+	[Flags]
+	public enum ImpactType
+	{
+		None = 0,
+		Ground = 1,
+		GroundHit = 2,
+		Water = 4,
+		WaterHit = 8,
+		Air = 16,
+		AirHit = 32,
+		TargetTerrain = 64,
+		TargetHit = 128
+	}
+
 	[Desc("Base warhead class. This can be used to derive other warheads from.")]
 	public abstract class Warhead : IWarhead
 	{
@@ -32,6 +47,7 @@ namespace OpenRA.Mods.Common.Warheads
 
 		[Desc("Delay in ticks before applying the warhead effect.", "0 = instant (old model).")]
 		public readonly int Delay = 0;
+
 		int IWarhead.Delay { get { return Delay; } }
 
 		[Desc("The color used for this warhead's visualization in the world's `WarheadDebugOverlay` trait.")]
