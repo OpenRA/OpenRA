@@ -41,7 +41,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			ticks = info.Interval;
 		}
 
-		public void Tick(Actor self)
+		void ITick.Tick(Actor self)
 		{
 			if (!buildComplete || IsTraitDisabled)
 				return;
@@ -54,7 +54,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			}
 		}
 
-		public void BuildingComplete(Actor self)
+		void INotifyBuildComplete.BuildingComplete(Actor self)
 		{
 			buildComplete = true;
 		}

@@ -69,7 +69,7 @@ namespace OpenRA.Mods.D2k.Traits.Render
 				anim.Animation.PlayThen(info.Sequence, PlayDeliveryOverlay);
 		}
 
-		public void BuildingComplete(Actor self)
+		void INotifyBuildComplete.BuildingComplete(Actor self)
 		{
 			self.World.AddFrameEndTask(w => w.Add(new DelayedAction(120, () =>
 				buildComplete = true)));
@@ -81,7 +81,7 @@ namespace OpenRA.Mods.D2k.Traits.Render
 			buildComplete = false;
 		}
 
-		public void IncomingDelivery(Actor self) { delivering = true; PlayDeliveryOverlay(); }
-		public void Delivered(Actor self) { delivering = false; }
+		void INotifyDelivery.IncomingDelivery(Actor self) { delivering = true; PlayDeliveryOverlay(); }
+		void INotifyDelivery.Delivered(Actor self) { delivering = false; }
 	}
 }

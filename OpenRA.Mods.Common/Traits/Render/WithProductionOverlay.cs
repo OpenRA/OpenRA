@@ -80,19 +80,19 @@ namespace OpenRA.Mods.Common.Traits.Render
 				throw new InvalidOperationException("Can't find production queues.");
 		}
 
-		public void Created(Actor self)
+		void INotifyCreated.Created(Actor self)
 		{
 			if (buildComplete)
 				SelectQueue(self);
 		}
 
-		public void BuildingComplete(Actor self)
+		void INotifyBuildComplete.BuildingComplete(Actor self)
 		{
 			buildComplete = true;
 			SelectQueue(self);
 		}
 
-		public void OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
+		void INotifyOwnerChanged.OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
 		{
 			self.World.AddFrameEndTask(w => SelectQueue(self));
 		}
@@ -103,7 +103,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			buildComplete = false;
 		}
 
-		public void DamageStateChanged(Actor self, AttackInfo e)
+		void INotifyDamageStateChanged.DamageStateChanged(Actor self, AttackInfo e)
 		{
 			overlay.ReplaceAnim(RenderSprites.NormalizeSequence(overlay, e.DamageState, overlay.CurrentSequence.Name));
 		}

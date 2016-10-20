@@ -124,7 +124,7 @@ namespace OpenRA.Mods.Common.Traits
 			facing = Exts.Lazy(self.TraitOrDefault<IFacing>);
 		}
 
-		public void Created(Actor self)
+		void INotifyCreated.Created(Actor self)
 		{
 			aircraft = self.TraitOrDefault<Aircraft>();
 		}
@@ -320,7 +320,7 @@ namespace OpenRA.Mods.Common.Traits
 				upgradeManager.GrantUpgrade(self, u, p);
 		}
 
-		public void Killed(Actor self, AttackInfo e)
+		void INotifyKilled.Killed(Actor self, AttackInfo e)
 		{
 			if (Info.EjectOnDeath)
 				while (!IsEmpty(self) && CanUnload())
@@ -348,7 +348,7 @@ namespace OpenRA.Mods.Common.Traits
 			cargo.Clear();
 		}
 
-		public void Disposing(Actor self)
+		void INotifyActorDisposing.Disposing(Actor self)
 		{
 			foreach (var c in cargo)
 				c.Dispose();
@@ -377,7 +377,7 @@ namespace OpenRA.Mods.Common.Traits
 			});
 		}
 
-		public void OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
+		void INotifyOwnerChanged.OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
 		{
 			if (cargo == null)
 				return;
@@ -389,7 +389,7 @@ namespace OpenRA.Mods.Common.Traits
 			});
 		}
 
-		public void AddedToWorld(Actor self)
+		void INotifyAddedToWorld.AddedToWorld(Actor self)
 		{
 			// Force location update to avoid issues when initial spawn is outside map
 			currentCell = self.Location;
@@ -397,7 +397,7 @@ namespace OpenRA.Mods.Common.Traits
 		}
 
 		bool initialized;
-		public void Tick(Actor self)
+		void ITick.Tick(Actor self)
 		{
 			// Notify initial cargo load
 			if (!initialized)
