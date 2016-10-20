@@ -83,7 +83,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			return true;
 		}
 
-		public void TickIdle(Actor self)
+		void INotifyIdle.TickIdle(Actor self)
 		{
 			if (state == PopupState.Open && idleTicks++ > info.CloseDelay)
 			{

@@ -106,7 +106,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			DefaultAnimation.PlayFetchIndex(NormalizeSequence(self, Info.Sequence), () => adjacent);
 		}
 
-		public void Tick(Actor self)
+		void ITick.Tick(Actor self)
 		{
 			if (!dirty)
 				return;
