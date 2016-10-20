@@ -139,7 +139,7 @@ namespace OpenRA.Mods.Common.Traits
 			return new WDist(Util.ApplyPercentageModifiers(Weapon.Range.Length, rangeModifiers));
 		}
 
-		public virtual void Created(Actor self)
+		protected virtual void Created(Actor self)
 		{
 			turret = self.TraitsImplementing<Turreted>().FirstOrDefault(t => t.Name == Info.Turret);
 			ammoPool = self.TraitsImplementing<AmmoPool>().FirstOrDefault(la => la.Info.Name == Info.AmmoPoolName);
@@ -147,7 +147,7 @@ namespace OpenRA.Mods.Common.Traits
 			rangeModifiers = self.TraitsImplementing<IRangeModifier>().ToArray().Select(m => m.GetRangeModifier());
 		}
 
-		public virtual void Tick(Actor self)
+		protected virtual void Tick(Actor self)
 		{
 			if (IsTraitDisabled)
 				return;
@@ -166,6 +166,18 @@ namespace OpenRA.Mods.Common.Traits
 			}
 
 			delayedActions.RemoveAll(a => a.First <= 0);
+		}
+
+		void INotifyCreated.Created(Actor self)
+		{
+			// Split into a protected method to allow subclassing
+			Created(self);
+		}
+
+		void ITick.Tick(Actor self)
+		{
+			// Split into a protected method to allow subclassing
+			Tick(self);
 		}
 
 		protected void ScheduleDelayedAction(int t, Action a)
