@@ -43,6 +43,26 @@ namespace OpenRA.Mods.Common.Traits
 		void Sold(Actor self);
 	}
 
+	public interface IDemolishableInfo : ITraitInfoInterface { bool IsValidTarget(ActorInfo actorInfo, Actor saboteur); }
+	public interface IDemolishable
+	{
+		void Demolish(Actor self, Actor saboteur);
+		bool IsValidTarget(Actor self, Actor saboteur);
+	}
+
+	[RequireExplicitImplementation]
+	public interface ICrushable
+	{
+		bool CrushableBy(Actor self, Actor crusher, HashSet<string> crushClasses);
+	}
+
+	[RequireExplicitImplementation]
+	public interface INotifyCrushed
+	{
+		void OnCrush(Actor self, Actor crusher, HashSet<string> crushClasses);
+		void WarnCrush(Actor self, Actor crusher, HashSet<string> crushClasses);
+	}
+
 	[RequireExplicitImplementation]
 	public interface INotifyAttack
 	{
@@ -50,10 +70,20 @@ namespace OpenRA.Mods.Common.Traits
 		void PreparingAttack(Actor self, Target target, Armament a, Barrel barrel);
 	}
 
+	public interface INotifyBuildComplete { void BuildingComplete(Actor self); }
+	public interface INotifyBuildingPlaced { void BuildingPlaced(Actor self); }
+	public interface INotifyRepair { void Repairing(Actor self, Actor target); }
 	public interface INotifyBurstComplete { void FiredBurst(Actor self, Target target, Armament a); }
 	public interface INotifyCharging { void Charging(Actor self, Target target); }
 	public interface INotifyChat { bool OnChat(string from, string message); }
+	public interface INotifyProduction { void UnitProduced(Actor self, Actor other, CPos exit); }
+	public interface INotifyOtherProduction { void UnitProducedByOther(Actor self, Actor producer, Actor produced); }
+	public interface INotifyDelivery { void IncomingDelivery(Actor self); void Delivered(Actor self); }
+	public interface INotifyDocking { void Docked(Actor self, Actor harvester); void Undocked(Actor self, Actor harvester); }
 	public interface INotifyParachuteLanded { void OnLanded(Actor ignore); }
+	public interface INotifyCapture { void OnCapture(Actor self, Actor captor, Player oldOwner, Player newOwner); }
+	public interface INotifyInfiltrated { void Infiltrated(Actor self, Actor infiltrator); }
+	public interface INotifyDiscovered { void OnDiscovered(Actor self, Player discoverer, bool playNotification); }
 	public interface IRenderActorPreviewInfo : ITraitInfo { IEnumerable<IActorPreview> RenderPreview(ActorPreviewInitializer init); }
 	public interface ICruiseAltitudeInfo : ITraitInfo { WDist GetCruiseAltitude(); }
 

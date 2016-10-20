@@ -131,20 +131,11 @@ namespace OpenRA.Traits
 	public interface INotifyRemovedFromWorld { void RemovedFromWorld(Actor self); }
 	public interface INotifyDamage { void Damaged(Actor self, AttackInfo e); }
 	public interface INotifyDamageStateChanged { void DamageStateChanged(Actor self, AttackInfo e); }
-	public interface INotifyRepair { void Repairing(Actor self, Actor target); }
 	public interface INotifyKilled { void Killed(Actor self, AttackInfo e); }
 	public interface INotifyActorDisposing { void Disposing(Actor self); }
 	public interface INotifyAppliedDamage { void AppliedDamage(Actor self, Actor damaged, AttackInfo e); }
-	public interface INotifyBuildComplete { void BuildingComplete(Actor self); }
-	public interface INotifyBuildingPlaced { void BuildingPlaced(Actor self); }
-	public interface INotifyProduction { void UnitProduced(Actor self, Actor other, CPos exit); }
-	public interface INotifyOtherProduction { void UnitProducedByOther(Actor self, Actor producer, Actor produced); }
-	public interface INotifyDelivery { void IncomingDelivery(Actor self); void Delivered(Actor self); }
 	public interface INotifyOwnerChanged { void OnOwnerChanged(Actor self, Player oldOwner, Player newOwner); }
 	public interface INotifyEffectiveOwnerChanged { void OnEffectiveOwnerChanged(Actor self, Player oldEffectiveOwner, Player newEffectiveOwner); }
-	public interface INotifyCapture { void OnCapture(Actor self, Actor captor, Player oldOwner, Player newOwner); }
-	public interface INotifyInfiltrated { void Infiltrated(Actor self, Actor infiltrator); }
-	public interface INotifyDiscovered { void OnDiscovered(Actor self, Player discoverer, bool playNotification); }
 
 	public interface ISeedableResource { void Seed(Actor self); }
 
@@ -161,15 +152,7 @@ namespace OpenRA.Traits
 		bool HasVoice(Actor self, string voice);
 	}
 
-	public interface IDemolishableInfo : ITraitInfoInterface { bool IsValidTarget(ActorInfo actorInfo, Actor saboteur); }
-	public interface IDemolishable
-	{
-		void Demolish(Actor self, Actor saboteur);
-		bool IsValidTarget(Actor self, Actor saboteur);
-	}
-
 	public interface IStoreResources { int Capacity { get; } }
-	public interface INotifyDocking { void Docked(Actor self, Actor harvester); void Undocked(Actor self, Actor harvester); }
 
 	public interface IEffectiveOwner
 	{
@@ -311,19 +294,6 @@ namespace OpenRA.Traits
 	}
 
 	public interface IFacingInfo : ITraitInfoInterface { int GetInitialFacing(); }
-
-	[RequireExplicitImplementation]
-	public interface ICrushable
-	{
-		bool CrushableBy(Actor self, Actor crusher, HashSet<string> crushClasses);
-	}
-
-	[RequireExplicitImplementation]
-	public interface INotifyCrushed
-	{
-		void OnCrush(Actor self, Actor crusher, HashSet<string> crushClasses);
-		void WarnCrush(Actor self, Actor crusher, HashSet<string> crushClasses);
-	}
 
 	public interface ITraitInfoInterface { }
 	public interface ITraitInfo : ITraitInfoInterface { object Create(ActorInitializer init); }
