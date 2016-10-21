@@ -932,6 +932,8 @@ FACT:
 		Name: Construction Yard
 	CustomSellValue:
 		Value: 2500
+	EmitInfantryOnSell:
+		ActorTypes: e1,e1,e1,tecn,tecn,e6
 	BaseBuilding:
 	Transforms:
 		IntoActor: mcv

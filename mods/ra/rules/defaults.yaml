@@ -466,7 +466,7 @@
 	ExternalCapturable:
 	ExternalCapturableBar:
 	EmitInfantryOnSell:
-		ActorTypes: e1,e1,e1,e1,e1,e1,e1,e1,e1,e1,e1,e1,e1,e1,e1,c1,c2,c3,c4,c5,c6,c7,c8,c9,c10,e6,e6,e6,e6,e6
+		ActorTypes: e1,e1,e1,tecn,tecn
 	MustBeDestroyed:
 		RequiredForShortGame: true
 	GpsDot:
@@ -477,7 +477,7 @@
 ^ScienceBuilding:
 	Inherits: ^Building
 	EmitInfantryOnSell:
-		ActorTypes: e1,e1,e1,e1,c1,c2,c3,c4,c5,c6,c7,c8,c9,c10,e6,e6,e6,e6,e6,chan,chan,chan,chan
+		ActorTypes: e1,e1,e1,e1,tecn,tecn,tecn,tecn,tecn,tecn,tecn,tecn,tecn,tecn,e6,e6,e6,e6,e6,chan,chan,chan,chan
 
 ^Defense:
 	Inherits: ^Building

@@ -56,6 +56,15 @@ C10:
 	Voiced:
 		VoiceSet: CivilianFemaleVoice
 
+TECN:
+	Inherits@1: ^CivInfantry
+	Inherits@2: ^ArmedCivilian
+	AutoTarget:
+	Tooltip:
+		Name: Technician
+	RenderSprites:
+		Image: C1
+
 FCOM:
 	Inherits: ^TechBuilding
 	Building:
