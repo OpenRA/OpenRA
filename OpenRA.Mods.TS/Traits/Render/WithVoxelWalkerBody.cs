@@ -24,6 +24,8 @@ namespace OpenRA.Mods.TS.Traits.Render
 {
 	public class WithVoxelWalkerBodyInfo : ITraitInfo, IRenderActorPreviewVoxelsInfo,  Requires<RenderVoxelsInfo>, Requires<IMoveInfo>, Requires<IFacingInfo>
 	{
+		public readonly string Sequence = "idle";
+
 		[Desc("The speed of the walker's legs.")]
 		public readonly int TickRate = 5;
 
@@ -34,7 +36,7 @@ namespace OpenRA.Mods.TS.Traits.Render
 		public IEnumerable<VoxelAnimation> RenderPreviewVoxels(
 			ActorPreviewInitializer init, RenderVoxelsInfo rv, string image, Func<WRot> orientation, int facings, PaletteReference p)
 		{
-			var voxel = VoxelProvider.GetVoxel(image, "idle");
+			var voxel = VoxelProvider.GetVoxel(image, Sequence);
 			var body = init.Actor.TraitInfo<BodyOrientationInfo>();
 			var frame = init.Contains<BodyAnimationFrameInit>() ? init.Get<BodyAnimationFrameInit, uint>() : 0;
 
@@ -62,7 +64,7 @@ namespace OpenRA.Mods.TS.Traits.Render
 			var body = self.Trait<BodyOrientation>();
 			var rv = self.Trait<RenderVoxels>();
 
-			var voxel = VoxelProvider.GetVoxel(rv.Image, "idle");
+			var voxel = VoxelProvider.GetVoxel(rv.Image, info.Sequence);
 			frames = voxel.Frames;
 			rv.Add(new VoxelAnimation(voxel, () => WVec.Zero,
 				() => new[] { body.QuantizeOrientation(self, self.Orientation) },
