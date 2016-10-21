@@ -420,6 +420,7 @@
     <Compile Include="Traits\Render\TimedUpgradeBar.cs" />
     <Compile Include="Traits\Render\WithSpriteBarrel.cs" />
     <Compile Include="Traits\Render\WithBuildingExplosion.cs" />
+    <Compile Include="Traits\Render\WithAimAnimation.cs" />
     <Compile Include="Traits\Render\WithAttackAnimation.cs" />
     <Compile Include="Traits\Render\WithAttackOverlay.cs" />
     <Compile Include="Traits\Render\WithMoveAnimation.cs" />
@@ -705,6 +706,7 @@
     <Compile Include="Traits\World\PaletteFromPlayerPaletteWithAlpha.cs" />
     <Compile Include="Traits\Modifiers\HiddenUnderShroud.cs" />
     <Compile Include="Lint\CheckDefaultVisibility.cs" />
+    <Compile Include="Lint\CheckAnimations.cs" />
     <Compile Include="Traits\Modifiers\AlwaysVisible.cs" />
     <Compile Include="Traits\AffectsShroud.cs" />
     <Compile Include="Traits\CreatesShroud.cs" />

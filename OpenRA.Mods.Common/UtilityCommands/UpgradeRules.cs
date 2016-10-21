@@ -416,6 +416,17 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				// Split WithAimAnimation from WithAttackAnimation.
+				if (engineVersion < 20161016)
+				{
+					if (node.Key == "WithAttackAnimation")
+					{
+						var aimSequence = node.Value.Nodes.FirstOrDefault(n => n.Key == "AimSequence");
+						if (aimSequence != null)
+							node.Key = "WithAimAnimation";
+					}
+				}
+
 				UpgradeActorRules(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 
