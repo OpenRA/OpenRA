@@ -51,6 +51,9 @@
 		ShadowStart: 552
 	die-melting: electro
 		Length: *
+	struggle: webguy
+		Length: 6
+		ShadowStart: 6
 
 ^BasicInfantryAttack:
 	attack:
@@ -271,6 +274,31 @@ cyc2:
 		ZOffset: 512
 		BlendMode: Additive
 	icon: cybcicon
+
+reaper:
+	Defaults:
+		Tick: 80
+	stand:
+		Facings: -8
+		ShadowStart: 117
+	run:
+		Start: 8
+		Tick: 60
+		Length: 12
+		Facings: -8
+		ShadowStart: 125
+	shoot:
+		Facings: -8
+		ShadowStart: 117
+	die:
+		Start: 104
+		Length: 13
+		ShadowStart: 221
+	emp-overlay: emp_fx01
+		Length: *
+		ZOffset: 512
+		BlendMode: Additive
+	icon: reapicon
 
 medic:
 	Defaults:

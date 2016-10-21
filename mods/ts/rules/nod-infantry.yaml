@@ -93,6 +93,51 @@ CYC2:
 	ProducibleWithLevel:
 		Prerequisites: barracks.upgraded
 
+REAPER:
+	Inherits: ^Cyborg
+	Valued:
+		Cost: 1100
+	Tooltip:
+		Name: Cyborg Reaper
+		Description: Four legged cyborg walker.\n  Strong vs Aircraft, Infantry\n  Weak vs Vehicles, Buildings.
+	Buildable:
+		Queue: Infantry
+		SharesCell: false
+		BuildPaletteOrder: 15
+		Prerequisites: ~natech
+	Selectable:
+		Bounds: 40,40,0,-10
+	Targetable:
+		TargetTypes: Ground, Infantry, Reaper
+	Mobile:
+		Speed: 50
+		SharesCell: False
+		-UpgradeTypes: WebDisable
+	Explodes:
+		Weapon: UnitExplodeSmall
+		EmptyWeapon: UnitExplodeSmall
+	Health:
+		HP: 400
+	Voiced:
+		VoiceSet: CyborgReaper
+	Armor:
+		Type: Light
+	Armament@PRIMARY:
+		Weapon: QuadLauncher
+		LocalOffset: 0,0,500
+	Armament@SECONDARY:
+		Weapon: WebLauncher
+		LocalOffset: 0,0,2000
+	AttackFrontal:
+		Voice: Attack
+	-WithPermanentInjury:
+	WithDeathAnimation:
+		FallbackSequence: die
+		UseDeathTypeSuffix: false
+	-WithInfantryBody@WebDisable:
+	-DisableOnUpgrade@WebDisable:
+	-TimedUpgradeBar@WebDisable:
+
 MHIJACK:
 	Inherits: ^Soldier
 	Inherits@2: ^HealsOnTiberium

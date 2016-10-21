@@ -246,6 +246,10 @@ crystal4:
 	idle:
 		ZOffset: 1023
 
+web:
+	idle:
+		ZOffset: 1023
+
 torpedo:
 	idle:
 		Length: *

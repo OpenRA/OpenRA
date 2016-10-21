@@ -117,6 +117,16 @@ CyborgCommando:
 		Attack: 23-i014, 23-i018, 23-i020, 23-i022
 		Die: 22-n104, 22-n106, 22-n108
 
+CyborgReaper:
+	Voices:
+		Select: 60-n100, 60-n102, 60-n104
+		Move: 60-n106, 60-n108, 60-n110
+		Action: 60-n106, 60-n108, 60-n110
+		Attack: 60-n112, 60-n114, 60-n116
+		Die: 69-n102,
+		Burned: 22-n106
+		Zapped: electro1
+
 Mutant:
 	Voices:
 		Select: 15-i032, 15-i048
