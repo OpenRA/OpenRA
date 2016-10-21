@@ -65,7 +65,7 @@ namespace OpenRA.Mods.Common.Activities
 			return TryGetAlternateTargetInCircle(
 				self, passenger.Info.AlternateTransportScanRange,
 				t => { transport = t.Actor; cargo = t.Actor.Trait<Cargo>(); }, // update transport and cargo
-				a => { var c = a.TraitOrDefault<Cargo>(); return c != null && (c.Unloading || c.CanLoad(a, self)); },
+				a => { var c = a.TraitOrDefault<Cargo>(); return c != null && c.Info.Types.Contains(passenger.Info.CargoType) && (c.Unloading || c.CanLoad(a, self)); },
 				new Func<Actor, bool>[] { a => a.Info.Name == type }); // Prefer transports of the same type
 		}
 	}
