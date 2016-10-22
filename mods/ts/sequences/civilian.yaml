@@ -27,26 +27,31 @@ ammocrat:
 	Inherits: ^abanbase
 	Defaults:
 		Offset: 36, -42, 42
+		DepthSpriteOffset: 24, 0
 
 ^aban2x6:
 	Inherits: ^abanbase
 	Defaults:
 		Offset: 48, -48, 48
+		DepthSpriteOffset: 36, 0
 
 ^aban3x2:
 	Inherits: ^abanbase
 	Defaults:
 		Offset: -12, -30, 30
+		DepthSpriteOffset: -12, 0
 
 ^aban4x2:
 	Inherits: ^abanbase
 	Defaults:
 		Offset: -24, -36, 36
+		DepthSpriteOffset: -24, 0
 
 ^aban5x3:
 	Inherits: ^abanbase
 	Defaults:
 		Offset: -24, -48, 48
+		DepthSpriteOffset: -24, 0
 
 aban01:
 	Inherits: ^aban2x6
