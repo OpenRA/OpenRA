@@ -405,7 +405,7 @@ capyr03:
 	Inherits: ^cabase
 	Defaults:
 		Offset: -24, -36, 36
-		DepthSpriteOffset: -24, 0
+		DepthSpriteOffset: -24, 48
 
 ^city4x3:
 	Inherits: ^cabase
@@ -415,6 +415,8 @@ capyr03:
 
 city01:
 	Inherits: ^city4x2
+	Defaults:
+		Offset: -12, -30, 36
 
 city02:
 	Inherits: ^city2x3
@@ -433,6 +435,8 @@ city06:
 
 city07:
 	Inherits: ^city4x2
+	Defaults:
+		Offset: -12, -30, 36
 
 city08:
 	Inherits: ^city2x2
@@ -461,7 +465,7 @@ city15:
 city16:
 	Inherits: ^city4x2
 	Defaults:
-		DepthSpriteOffset: -10, 0
+		Offset: -24, -30, 36
 
 city17:
 	Inherits: ^city4x3
