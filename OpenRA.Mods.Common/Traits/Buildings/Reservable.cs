@@ -23,14 +23,15 @@ namespace OpenRA.Mods.Common.Traits
 		Actor reservedFor;
 		Aircraft reservedForAircraft;
 
-		public void Tick(Actor self)
+		void ITick.Tick(Actor self)
 		{
+			// Nothing to do.
 			if (reservedFor == null)
-				return;		/* nothing to do */
+				return;
 
 			if (!Target.FromActor(reservedFor).IsValidFor(self))
 			{
-				/* Not likely to arrive now. */
+				// Not likely to arrive now.
 				reservedForAircraft.UnReserve();
 				reservedFor = null;
 				reservedForAircraft = null;
@@ -64,24 +65,17 @@ namespace OpenRA.Mods.Common.Traits
 			return res != null && res.reservedForAircraft != null && !res.reservedForAircraft.MayYieldReservation;
 		}
 
-		public void Disposing(Actor self)
+		private void UnReserve()
 		{
 			if (reservedForAircraft != null)
 				reservedForAircraft.UnReserve();
 		}
 
-		public void OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
-		{
-			if (reservedForAircraft != null)
-				reservedForAircraft.UnReserve();
-		}
+		void INotifyActorDisposing.Disposing(Actor self) { UnReserve(); }
 
-		public void Selling(Actor self) { Sold(self); }
+		void INotifyOwnerChanged.OnOwnerChanged(Actor self, Player oldOwner, Player newOwner) { UnReserve(); }
 
-		public void Sold(Actor self)
-		{
-			if (reservedForAircraft != null)
-				reservedForAircraft.UnReserve();
-		}
+		void INotifySold.Selling(Actor self) { UnReserve(); }
+		void INotifySold.Sold(Actor self) { UnReserve(); }
 	}
 }

@@ -49,19 +49,19 @@ namespace OpenRA.Mods.Common.Traits.Render
 				info.Palette, info.IsPlayerPalette);
 		}
 
-		public void Charging(Actor self, Target target)
+		void INotifyCharging.Charging(Actor self, Target target)
 		{
 			charging = true;
 			overlay.PlayThen(RenderSprites.NormalizeSequence(overlay, self.GetDamageState(), info.Sequence), () => charging = false);
 		}
 
-		public void DamageStateChanged(Actor self, AttackInfo e)
+		void INotifyDamageStateChanged.DamageStateChanged(Actor self, AttackInfo e)
 		{
 			overlay.ReplaceAnim(RenderSprites.NormalizeSequence(overlay, e.DamageState, info.Sequence));
 		}
 
-		public void Sold(Actor self) { }
-		public void Selling(Actor self)
+		void INotifySold.Sold(Actor self) { }
+		void INotifySold.Selling(Actor self)
 		{
 			charging = false;
 		}

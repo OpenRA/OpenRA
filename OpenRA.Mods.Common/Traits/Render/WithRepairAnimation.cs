@@ -36,22 +36,22 @@ namespace OpenRA.Mods.Common.Traits.Render
 			spriteBody = self.TraitOrDefault<WithSpriteBody>();
 		}
 
-		public void Repairing(Actor self, Actor target)
+		void INotifyRepair.Repairing(Actor self, Actor target)
 		{
 			if (buildComplete && spriteBody != null && !(info.PauseOnLowPower && self.IsDisabled()))
 				spriteBody.PlayCustomAnimation(self, info.Sequence, () => spriteBody.CancelCustomAnimation(self));
 		}
 
-		public void BuildingComplete(Actor self)
+		void INotifyBuildComplete.BuildingComplete(Actor self)
 		{
 			buildComplete = true;
 		}
 
-		public void Selling(Actor self)
+		void INotifySold.Selling(Actor self)
 		{
 			buildComplete = false;
 		}
 
-		public void Sold(Actor self) { }
+		void INotifySold.Sold(Actor self) { }
 	}
 }

@@ -78,6 +78,7 @@ namespace OpenRA.Mods.Common.Traits
 		readonly Mobile mobile;
 		Dictionary<ResourceTypeInfo, int> contents = new Dictionary<ResourceTypeInfo, int>();
 		bool idleSmart = true;
+		int idleDuration;
 
 		[Sync] public Actor OwnerLinkedProc = null;
 		[Sync] public Actor LastLinkedProc = null;
@@ -233,7 +234,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		public void OnNotifyBlockingMove(Actor self, Actor blocking)
+		void INotifyBlockingMove.OnNotifyBlockingMove(Actor self, Actor blocking)
 		{
 			// I'm blocking someone else from moving to my location:
 			var act = self.GetCurrentActivity();
@@ -253,7 +254,6 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		int idleDuration;
 		public void TickIdle(Actor self)
 		{
 			// Should we be intelligent while idle?

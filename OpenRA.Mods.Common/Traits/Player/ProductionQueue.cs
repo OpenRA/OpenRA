@@ -118,7 +118,7 @@ namespace OpenRA.Mods.Common.Traits
 			queue.Clear();
 		}
 
-		public void OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
+		void INotifyOwnerChanged.OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
 		{
 			ClearQueue();
 
@@ -138,13 +138,13 @@ namespace OpenRA.Mods.Common.Traits
 			newOwner.PlayerActor.Trait<TechTree>().Update();
 		}
 
-		public void Killed(Actor killed, AttackInfo e) { if (killed == self) { ClearQueue(); Enabled = false; } }
-		public void Selling(Actor self) { ClearQueue(); Enabled = false; }
-		public void Sold(Actor self) { }
+		void INotifyKilled.Killed(Actor killed, AttackInfo e) { if (killed == self) { ClearQueue(); Enabled = false; } }
+		void INotifySold.Selling(Actor self) { ClearQueue(); Enabled = false; }
+		void INotifySold.Sold(Actor self) { }
 
-		public void BeforeTransform(Actor self) { ClearQueue(); Enabled = false; }
-		public void OnTransform(Actor self) { }
-		public void AfterTransform(Actor self) { }
+		void INotifyTransform.BeforeTransform(Actor self) { ClearQueue(); Enabled = false; }
+		void INotifyTransform.OnTransform(Actor self) { }
+		void INotifyTransform.AfterTransform(Actor self) { }
 
 		void CacheProducibles(Actor playerActor)
 		{

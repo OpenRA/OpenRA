@@ -65,19 +65,19 @@ namespace OpenRA.Mods.Common.Traits.Render
 				anim.Animation.PlayThen(info.Sequence, PlayDockingOverlay);
 		}
 
-		public void BuildingComplete(Actor self)
+		void INotifyBuildComplete.BuildingComplete(Actor self)
 		{
 			self.World.AddFrameEndTask(w => w.Add(new DelayedAction(120, () =>
 					buildComplete = true)));
 		}
 
-		public void Sold(Actor self) { }
-		public void Selling(Actor self)
+		void INotifySold.Sold(Actor self) { }
+		void INotifySold.Selling(Actor self)
 		{
 			buildComplete = false;
 		}
 
-		public void Docked(Actor self, Actor harvester) { docked = true; PlayDockingOverlay(); }
-		public void Undocked(Actor self, Actor harvester) { docked = false; }
+		void INotifyDocking.Docked(Actor self, Actor harvester) { docked = true; PlayDockingOverlay(); }
+		void INotifyDocking.Undocked(Actor self, Actor harvester) { docked = false; }
 	}
 }

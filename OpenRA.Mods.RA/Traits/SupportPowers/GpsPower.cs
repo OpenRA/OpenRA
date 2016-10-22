@@ -84,10 +84,10 @@ namespace OpenRA.Mods.RA.Traits
 			});
 		}
 
-		public void Killed(Actor self, AttackInfo e) { RemoveGps(self); }
+		void INotifyKilled.Killed(Actor self, AttackInfo e) { RemoveGps(self); }
 
-		public void Selling(Actor self) { }
-		public void Sold(Actor self) { RemoveGps(self); }
+		void INotifySold.Selling(Actor self) { }
+		void INotifySold.Sold(Actor self) { RemoveGps(self); }
 
 		void RemoveGps(Actor self)
 		{
@@ -95,7 +95,7 @@ namespace OpenRA.Mods.RA.Traits
 			owner.GpsRemove(self);
 		}
 
-		public void OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
+		void INotifyOwnerChanged.OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
 		{
 			RemoveGps(self);
 			owner = newOwner.PlayerActor.Trait<GpsWatcher>();
@@ -105,7 +105,7 @@ namespace OpenRA.Mods.RA.Traits
 		bool NoActiveRadar { get { return !self.World.ActorsHavingTrait<ProvidesRadar>(r => r.IsActive).Any(a => a.Owner == self.Owner); } }
 		bool wasDisabled;
 
-		public void Tick(Actor self)
+		void ITick.Tick(Actor self)
 		{
 			if (!wasDisabled && (self.IsDisabled() || (info.RequiresActiveRadar && NoActiveRadar)))
 			{

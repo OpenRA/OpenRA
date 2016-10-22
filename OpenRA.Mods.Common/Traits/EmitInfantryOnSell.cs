@@ -45,7 +45,7 @@ namespace OpenRA.Mods.Common.Traits
 			correctFaction = factionsList.Count == 0 || factionsList.Contains(self.Owner.Faction.InternalName);
 		}
 
-		public void Selling(Actor self) { }
+		void INotifySold.Selling(Actor self) { }
 
 		void Emit(Actor self)
 		{
@@ -85,6 +85,6 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		public void Sold(Actor self) { Emit(self); }
+		void INotifySold.Sold(Actor self) { Emit(self); }
 	}
 }
