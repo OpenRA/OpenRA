@@ -223,5 +223,6 @@ namespace OpenRA.Mods.Common.Traits
 	[RequireExplicitImplementation]
 	public interface IRangeModifierInfo : ITraitInfoInterface { int GetRangeModifierDefault(); }
 
+	[RequireExplicitImplementation]
 	public interface IPowerModifier { int GetPowerModifier(); }
 }

@@ -26,9 +26,11 @@ namespace OpenRA.Mods.Common.Traits
 		public PowerMultiplier(Actor self, PowerMultiplierInfo info)
 			: base(info, "PowerMultiplier", self.Info.Name) { power = self.Owner.PlayerActor.Trait<PowerManager>(); }
 
-		public int GetPowerModifier() { return GetModifier(); }
+		int IPowerModifier.GetPowerModifier() { return GetModifier(); }
+
 		protected override void Update(Actor self) { power.UpdateActor(self); }
-		public void OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
+
+		void INotifyOwnerChanged.OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
 		{
 			power = newOwner.PlayerActor.Trait<PowerManager>();
 		}

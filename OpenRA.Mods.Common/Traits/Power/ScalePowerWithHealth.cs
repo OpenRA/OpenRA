@@ -30,13 +30,14 @@ namespace OpenRA.Mods.Common.Traits
 			health = self.Trait<Health>();
 		}
 
-		public int GetPowerModifier()
+		int IPowerModifier.GetPowerModifier()
 		{
 			return 100 * health.HP / health.MaxHP;
 		}
 
-		public void Damaged(Actor self, AttackInfo e) { power.UpdateActor(self); }
-		public void OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
+		void INotifyDamage.Damaged(Actor self, AttackInfo e) { power.UpdateActor(self); }
+
+		void INotifyOwnerChanged.OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
 		{
 			power = newOwner.PlayerActor.Trait<PowerManager>();
 		}
