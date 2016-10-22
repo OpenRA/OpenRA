@@ -38,13 +38,13 @@ namespace OpenRA.Mods.Common.Scripting
 		}
 
 		[ScriptActorPropertyActivity]
-		[Desc("Return to the base, which is either the airfield given, or an auto-selected one otherwise.")]
-		public void ReturnToBase(Actor airfield = null)
+		[Desc("Return to the base, which is either the destination given, or an auto-selected one otherwise.")]
+		public void ReturnToBase(Actor destination = null)
 		{
 			if (isPlane)
-				Self.QueueActivity(new ReturnToBase(Self, false, airfield));
+				Self.QueueActivity(new ReturnToBase(Self, false, destination));
 			else
-				Self.QueueActivity(new HeliReturnToBase(Self, false));
+				Self.QueueActivity(new HeliReturnToBase(Self, false, destination));
 		}
 
 		[ScriptActorPropertyActivity]
