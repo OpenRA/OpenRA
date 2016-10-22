@@ -56,12 +56,12 @@ BIKE:
 		UpgradeTypes: eliteweapon
 		UpgradeMaxEnabledLevel: 0
 		UpgradeMaxAcceptedLevel: 1
-		LocalOffset: -128,-170,213, -128,170,213
+		LocalOffset: -108,-144,360, -108,144,360
 	Armament@ELITE:
 		Weapon: HoverMissile
 		UpgradeTypes: eliteweapon
 		UpgradeMinEnabledLevel: 1
-		LocalOffset: -128,-170,213, -128,170,213
+		LocalOffset: -108,-144,360, -108,144,360
 	AttackFrontal:
 		Voice: Attack
 	AutoTarget:

@@ -401,9 +401,11 @@ GAPLUG:
 		UpgradeTypes: plug.ioncannon
 		UpgradeMinEnabledLevel: 1
 		Icon: ioncannon
-		Effect: ionring
+		Effect: explosion
+		EffectSequence: ionring
+		EffectPalette: effectalpha75
 		WeaponDelay: 0
-		ChargeTime: 180
+		ChargeTime: 510
 		Description: Ion Cannon
 		LongDesc: Initiate an Ion Cannon strike.\nApplies instant damage to a small area.
 		EndChargeSpeechNotification: IonCannonReady

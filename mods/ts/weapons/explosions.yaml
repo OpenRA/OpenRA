@@ -11,6 +11,7 @@ UnitExplode:
 		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
 	Warhead@2Eff: CreateEffect
 		Explosions: large_twlt
+		ExplosionPalette: effectalpha75
 		ImpactSounds: expnew09.aud
 	Warhead@4Smu: LeaveSmudge
 		SmudgeType: MediumCrater
@@ -53,6 +54,7 @@ TiberiumExplosion:
 		Size: 1,1
 	Warhead@3Eff: CreateEffect
 		Explosions: large_explosion
+		ExplosionPalette: effectalpha75
 		ImpactSounds: expnew09.aud
 
 SmallDebris:

@@ -53,6 +53,7 @@ Bomb:
 		DamageTypes: Prone100Percent, TriggerProne, ExplosionDeath
 	Warhead@2Eff: CreateEffect
 		Explosions: large_explosion
+		ExplosionPalette: effectalpha75
 		ImpactSounds: expnew09.aud
 		InvalidImpactTypes: Water
 	Warhead@3EffWater: CreateEffect

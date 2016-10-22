@@ -125,7 +125,8 @@ CyCannon:
 			Concrete: 80
 		DamageTypes: Prone350Percent, TriggerProne, EnergyDeath
 	Warhead@2Eff: CreateEffect
-		Explosions: large_bang
+		Explosions: large_explosion
+		ExplosionPalette: effectalpha75
 		ImpactSounds: expnew12.aud
 		InvalidImpactTypes: Water
 	Warhead@3EffWater: CreateEffect

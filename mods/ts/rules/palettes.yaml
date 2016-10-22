@@ -41,6 +41,18 @@
 	PaletteFromFile@effect:
 		Name: effect
 		Filename: anim.pal
+	PaletteFromPaletteWithAlpha@effectalpha25:
+		Name: effectalpha25
+		Alpha: 0.25
+		BasePalette: effect
+	PaletteFromPaletteWithAlpha@effectalpha50:
+		Name: effectalpha50
+		Alpha: 0.5
+		BasePalette: effect
+	PaletteFromPaletteWithAlpha@effectalpha75:
+		Name: effectalpha75
+		Alpha: 0.75
+		BasePalette: effect
 	PaletteFromFile@sidebar:
 		Name: sidebar
 		Filename: sidebar-nod|sidebar.pal
