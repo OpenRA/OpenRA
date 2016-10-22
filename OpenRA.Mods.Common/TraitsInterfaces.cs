@@ -217,7 +217,11 @@ namespace OpenRA.Mods.Common.Traits
 
 	[RequireExplicitImplementation]
 	public interface IInaccuracyModifier { int GetInaccuracyModifier(); }
+
+	[RequireExplicitImplementation]
 	public interface IRangeModifier { int GetRangeModifier(); }
+	[RequireExplicitImplementation]
 	public interface IRangeModifierInfo : ITraitInfoInterface { int GetRangeModifierDefault(); }
+
 	public interface IPowerModifier { int GetPowerModifier(); }
 }

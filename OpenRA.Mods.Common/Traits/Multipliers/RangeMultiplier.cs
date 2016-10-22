@@ -18,7 +18,7 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		public override object Create(ActorInitializer init) { return new RangeMultiplier(this, init.Self.Info.Name); }
 
-		public int GetRangeModifierDefault()
+		int IRangeModifierInfo.GetRangeModifierDefault()
 		{
 			return BaseLevel > 0 || UpgradeTypes.Length == 0 ? 100 : Modifier[0];
 		}
@@ -29,6 +29,6 @@ namespace OpenRA.Mods.Common.Traits
 		public RangeMultiplier(RangeMultiplierInfo info, string actorType)
 			: base(info, "RangeMultiplier", actorType) { }
 
-		public int GetRangeModifier() { return GetModifier(); }
+		int IRangeModifier.GetRangeModifier() { return GetModifier(); }
 	}
 }
