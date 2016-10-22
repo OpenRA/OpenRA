@@ -11,6 +11,7 @@
 
 using Eluant;
 using OpenRA.Mods.Common.Activities;
+using OpenRA.Mods.Common.Effects;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Scripting;
 using OpenRA.Traits;
@@ -71,6 +72,13 @@ namespace OpenRA.Mods.Common.Scripting
 		public bool HasProperty(string name)
 		{
 			return Self.HasScriptProperty(name);
+		}
+
+		[Desc("Render a target flash on the actor. If set, 'asPlayer'",
+			"defines which player palette to use. Duration is in ticks.")]
+		public void Flash(int duration = 4, Player asPlayer = null)
+		{
+			Self.World.Add(new FlashTarget(Self, asPlayer, duration));
 		}
 	}
 
