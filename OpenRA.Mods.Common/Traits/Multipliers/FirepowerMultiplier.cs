@@ -24,6 +24,6 @@ namespace OpenRA.Mods.Common.Traits
 		public FirepowerMultiplier(FirepowerMultiplierInfo info, string actorType)
 			: base(info, "FirepowerMultiplier", actorType) { }
 
-		public int GetFirepowerModifier() { return GetModifier(); }
+		int IFirepowerModifier.GetFirepowerModifier() { return GetModifier(); }
 	}
 }

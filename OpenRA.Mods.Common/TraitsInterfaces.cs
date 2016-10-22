@@ -208,6 +208,8 @@ namespace OpenRA.Mods.Common.Traits
 
 	[RequireExplicitImplementation]
 	public interface ISpeedModifier { int GetSpeedModifier(); }
+
+	[RequireExplicitImplementation]
 	public interface IFirepowerModifier { int GetFirepowerModifier(); }
 	public interface IReloadModifier { int GetReloadModifier(); }
 	public interface IInaccuracyModifier { int GetInaccuracyModifier(); }
