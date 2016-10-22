@@ -24,6 +24,6 @@ namespace OpenRA.Mods.Common.Traits
 		public InaccuracyMultiplier(InaccuracyMultiplierInfo info, string actorType)
 			: base(info, "InaccuracyMultiplier", actorType) { }
 
-		public int GetInaccuracyModifier() { return GetModifier(); }
+		int IInaccuracyModifier.GetInaccuracyModifier() { return GetModifier(); }
 	}
 }

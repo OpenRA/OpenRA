@@ -214,6 +214,8 @@ namespace OpenRA.Mods.Common.Traits
 
 	[RequireExplicitImplementation]
 	public interface IReloadModifier { int GetReloadModifier(); }
+
+	[RequireExplicitImplementation]
 	public interface IInaccuracyModifier { int GetInaccuracyModifier(); }
 	public interface IRangeModifier { int GetRangeModifier(); }
 	public interface IRangeModifierInfo : ITraitInfoInterface { int GetRangeModifierDefault(); }
