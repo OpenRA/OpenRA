@@ -150,7 +150,7 @@ SellWalls = function(id)
 
 	local walls = AIPlayers[id].GetActorsByType("brik")
 	Utils.Do(walls, function(wall)
-		wall.Destroy()
+		wall.Sell()
 	end)
 end
 
