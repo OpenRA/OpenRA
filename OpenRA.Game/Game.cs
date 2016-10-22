@@ -566,7 +566,9 @@ namespace OpenRA
 					else
 						PerfHistory.Tick();
 
-					Sync.CheckSyncUnchanged(world, () => world.TickRender(worldRenderer));
+					// Wait until we have done our first world Tick before TickRendering
+					if (orderManager.LocalFrameNumber > 0)
+						Sync.CheckSyncUnchanged(world, () => world.TickRender(worldRenderer));
 				}
 			}
 		}
