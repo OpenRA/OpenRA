@@ -893,6 +893,7 @@ gaicbm:
 		Offset: 0, -12, 12
 		UseTilesetCode: true
 		DepthSprite: isodepth.shp
+		DepthSpriteOffset: -12, 6
 	idle:
 		ShadowStart: 3
 	damaged-idle:

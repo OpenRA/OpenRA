@@ -344,6 +344,7 @@ cacrsh05:
 cahosp:
 	Defaults:
 		DepthSprite: isodepth.shp
+		DepthSpriteOffset: 12, 0
 		UseTilesetCode: true
 		Offset: 12, -42, 42
 	idle:
@@ -547,6 +548,7 @@ gaoldcc6:
 gakodk:
 	Defaults:
 		DepthSprite: isodepth.shp
+		DepthSpriteOffset: -24, 0
 		UseTilesetCode: true
 		Offset: -24, -36, 36
 	idle:
@@ -642,6 +644,7 @@ galite:
 namntk:
 	Defaults:
 		DepthSprite: isodepth.shp
+		DepthSpriteOffset: 24, 0
 		UseTilesetCode: true
 		Offset: 24, -24, 24
 	idle:
