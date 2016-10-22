@@ -205,6 +205,8 @@ namespace OpenRA.Mods.Common.Traits
 
 	[RequireExplicitImplementation]
 	public interface IDamageModifier { int GetDamageModifier(Actor attacker, Damage damage); }
+
+	[RequireExplicitImplementation]
 	public interface ISpeedModifier { int GetSpeedModifier(); }
 	public interface IFirepowerModifier { int GetFirepowerModifier(); }
 	public interface IReloadModifier { int GetReloadModifier(); }

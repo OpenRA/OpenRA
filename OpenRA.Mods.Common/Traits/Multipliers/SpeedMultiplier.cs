@@ -24,6 +24,6 @@ namespace OpenRA.Mods.Common.Traits
 		public SpeedMultiplier(SpeedMultiplierInfo info, string actorType)
 			: base(info, "SpeedMultiplier", actorType) { }
 
-		public int GetSpeedModifier() { return GetModifier(); }
+		int ISpeedModifier.GetSpeedModifier() { return GetModifier(); }
 	}
 }
