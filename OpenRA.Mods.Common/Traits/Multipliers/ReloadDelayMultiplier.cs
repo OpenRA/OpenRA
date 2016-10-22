@@ -24,6 +24,6 @@ namespace OpenRA.Mods.Common.Traits
 		public ReloadDelayMultiplier(ReloadDelayMultiplierInfo info, string actorType)
 			: base(info, "ReloadDelayMultiplier", actorType) { }
 
-		public int GetReloadModifier() { return GetModifier(); }
+		int IReloadModifier.GetReloadModifier() { return GetModifier(); }
 	}
 }

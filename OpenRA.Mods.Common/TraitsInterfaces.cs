@@ -211,6 +211,8 @@ namespace OpenRA.Mods.Common.Traits
 
 	[RequireExplicitImplementation]
 	public interface IFirepowerModifier { int GetFirepowerModifier(); }
+
+	[RequireExplicitImplementation]
 	public interface IReloadModifier { int GetReloadModifier(); }
 	public interface IInaccuracyModifier { int GetInaccuracyModifier(); }
 	public interface IRangeModifier { int GetRangeModifier(); }
