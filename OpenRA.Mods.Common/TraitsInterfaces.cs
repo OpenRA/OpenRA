@@ -202,4 +202,13 @@ namespace OpenRA.Mods.Common.Traits
 		bool IsModifyingSequence { get; }
 		string SequencePrefix { get; }
 	}
+
+	public interface IDamageModifier { int GetDamageModifier(Actor attacker, Damage damage); }
+	public interface ISpeedModifier { int GetSpeedModifier(); }
+	public interface IFirepowerModifier { int GetFirepowerModifier(); }
+	public interface IReloadModifier { int GetReloadModifier(); }
+	public interface IInaccuracyModifier { int GetInaccuracyModifier(); }
+	public interface IRangeModifier { int GetRangeModifier(); }
+	public interface IRangeModifierInfo : ITraitInfoInterface { int GetRangeModifierDefault(); }
+	public interface IPowerModifier { int GetPowerModifier(); }
 }

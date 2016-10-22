@@ -233,14 +233,6 @@ namespace OpenRA.Traits
 	}
 
 	public interface IRenderModifier { IEnumerable<IRenderable> ModifyRender(Actor self, WorldRenderer wr, IEnumerable<IRenderable> r); }
-	public interface IDamageModifier { int GetDamageModifier(Actor attacker, Damage damage); }
-	public interface ISpeedModifier { int GetSpeedModifier(); }
-	public interface IFirepowerModifier { int GetFirepowerModifier(); }
-	public interface IReloadModifier { int GetReloadModifier(); }
-	public interface IInaccuracyModifier { int GetInaccuracyModifier(); }
-	public interface IRangeModifier { int GetRangeModifier(); }
-	public interface IRangeModifierInfo : ITraitInfoInterface { int GetRangeModifierDefault(); }
-	public interface IPowerModifier { int GetPowerModifier(); }
 	public interface ILoadsPalettes { void LoadPalettes(WorldRenderer wr); }
 	public interface ILoadsPlayerPalettes { void LoadPlayerPalettes(WorldRenderer wr, string playerName, HSLColor playerColor, bool replaceExisting); }
 	public interface IPaletteModifier { void AdjustPalette(IReadOnlyDictionary<string, MutablePalette> b); }
