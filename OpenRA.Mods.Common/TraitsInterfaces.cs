@@ -195,4 +195,11 @@ namespace OpenRA.Mods.Common.Traits
 
 	[RequireExplicitImplementation]
 	public interface INotifyRearm { void Rearming(Actor host, Actor other); }
+
+	[RequireExplicitImplementation]
+	public interface IRenderInfantrySequenceModifier
+	{
+		bool IsModifyingSequence { get; }
+		string SequencePrefix { get; }
+	}
 }

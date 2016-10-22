@@ -321,12 +321,6 @@ namespace OpenRA.Traits
 	public interface INotifyBecomingIdle { void OnBecomingIdle(Actor self); }
 	public interface INotifyIdle { void TickIdle(Actor self); }
 
-	public interface IRenderInfantrySequenceModifier
-	{
-		bool IsModifyingSequence { get; }
-		string SequencePrefix { get; }
-	}
-
 	public interface IRenderAboveWorld { void RenderAboveWorld(Actor self, WorldRenderer wr); }
 	public interface IRenderShroud { void RenderShroud(Shroud shroud, WorldRenderer wr); }
 	public interface IRenderAboveShroud { IEnumerable<IRenderable> RenderAboveShroud(Actor self, WorldRenderer wr); }

@@ -9,6 +9,7 @@
  */
 #endregion
 
+using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.TS.Traits.Render
@@ -29,15 +30,15 @@ namespace OpenRA.Mods.TS.Traits.Render
 
 		bool isInjured;
 
-		public bool IsModifyingSequence { get { return isInjured; } }
-		public string SequencePrefix { get { return info.InjuredSequencePrefix; } }
+		bool IRenderInfantrySequenceModifier.IsModifyingSequence { get { return isInjured; } }
+		string IRenderInfantrySequenceModifier.SequencePrefix { get { return info.InjuredSequencePrefix; } }
 
 		public WithPermanentInjury(ActorInitializer init, WithPermanentInjuryInfo info)
 		{
 			this.info = info;
 		}
 
-		public void Damaged(Actor self, AttackInfo e)
+		void INotifyDamage.Damaged(Actor self, AttackInfo e)
 		{
 			if (e.DamageState == info.TriggeringDamageStage)
 				isInjured = true;
