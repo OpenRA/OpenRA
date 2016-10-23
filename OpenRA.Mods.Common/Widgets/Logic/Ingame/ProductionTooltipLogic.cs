@@ -55,14 +55,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				if (actor == null || actor == lastActor)
 					return;
 
-				var tooltip = actor.TraitInfos<TooltipInfo>().First(Exts.IsTraitEnabled);
+				var tooltip = actor.TraitInfos<TooltipInfo>().FirstOrDefault(Exts.IsTraitEnabled);
+				var name = tooltip != null ? tooltip.Name : actor.Name;
 				var buildable = actor.TraitInfo<BuildableInfo>();
 				var cost = actor.TraitInfo<ValuedInfo>().Cost;
 
-				nameLabel.GetText = () => tooltip.Name;
+				nameLabel.GetText = () => name;
 
 				var hotkey = palette.TooltipIcon.Hotkey;
-				var nameWidth = font.Measure(tooltip.Name).X;
+				var nameWidth = font.Measure(name).X;
 				var hotkeyText = "({0})".F(hotkey.DisplayString());
 				var hotkeyWidth = hotkey.IsValid() ? font.Measure(hotkeyText).X + 2 * nameLabel.Bounds.X : 0;
 				hotkeyLabel.GetText = () => hotkeyText;
@@ -103,7 +104,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				timeLabel.Bounds.X = powerLabel.Bounds.X = costLabel.Bounds.X = timeIcon.Bounds.Right + iconMargin;
 				widget.Bounds.Width = leftWidth + rightWidth + 3 * nameLabel.Bounds.X + timeIcon.Bounds.Width + iconMargin;
 
-				var leftHeight = font.Measure(tooltip.Name).Y + requiresFont.Measure(requiresString).Y + descFont.Measure(descString).Y;
+				var leftHeight = font.Measure(name).Y + requiresFont.Measure(requiresString).Y + descFont.Measure(descString).Y;
 				var rightHeight = font.Measure(powerString).Y + font.Measure(timeString).Y + font.Measure(costString).Y;
 				widget.Bounds.Height = Math.Max(leftHeight, rightHeight) * 3 / 2 + 3 * nameLabel.Bounds.Y;
 

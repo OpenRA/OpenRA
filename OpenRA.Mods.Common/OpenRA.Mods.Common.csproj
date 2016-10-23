@@ -176,6 +176,7 @@
     <Compile Include="Lint\CheckActorReferences.cs" />
     <Compile Include="Lint\CheckSyncAnnotations.cs" />
     <Compile Include="Lint\CheckTraitPrerequisites.cs" />
+    <Compile Include="Lint\CheckTooltips.cs" />
     <Compile Include="Lint\CheckDeathTypes.cs" />
     <Compile Include="Lint\CheckRangeLimit.cs" />
     <Compile Include="Lint\CheckVoiceReferences.cs" />
