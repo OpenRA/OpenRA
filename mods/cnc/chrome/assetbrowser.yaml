@@ -117,7 +117,7 @@ Container@ASSETBROWSER_PANEL:
 									X: 5
 									Y: 30
 									Width: 490 - 10
-									Height: 330
+									Height: 325
 									Align: Center
 									Visible: false
 				Container@FRAME_SELECTOR:
