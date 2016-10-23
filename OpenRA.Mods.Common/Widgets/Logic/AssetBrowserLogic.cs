@@ -47,19 +47,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		bool isVideoLoaded = false;
 		int currentFrame;
 
-		LabelWidget errorLabelWidget;
+		LabelWidget errorLabel;
 		LabelWidget errorLabelFilename;
 		SpriteFont errorFont;
-		bool isErrorLabelVisible
-		{
-			get
-			{
-				return errorLabelWidget != null
-					&& errorLabelWidget.Visible
-					&& errorLabelFilename != null
-					&& errorLabelFilename.Visible;
-			}
-		}
+		bool isErrorLabelVisible { get { return errorLabel != null && errorLabel.Visible; } }
 
 		[ObjectCreator.UseCtor]
 		public AssetBrowserLogic(Widget widget, Action onExit, ModData modData, World world, Dictionary<string, MiniYaml> logicArgs)
@@ -105,11 +96,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (playerWidget != null)
 				playerWidget.IsVisible = () => isVideoLoaded && !isErrorLabelVisible;
 
-			errorLabelWidget = panel.GetOrNull<LabelWidget>("ERROR");
-			errorLabelFilename = panel.GetOrNull<LabelWidget>("ERROR_FILENAME");
-
-			if (errorLabelWidget != null && errorLabelFilename != null)
-				errorFont = Game.Renderer.Fonts[errorLabelWidget.Font];
+			errorLabel = panel.GetOrNull<LabelWidget>("ERROR");
+			if (errorLabel != null)
+			{
+				errorFont = Game.Renderer.Fonts[errorLabel.Font];
+				errorLabelFilename = errorLabel.GetOrNull<LabelWidget>("ERROR_FILENAME");
+			}
 
 			var paletteDropDown = panel.GetOrNull<DropDownButtonWidget>("PALETTE_SELECTOR");
 			if (paletteDropDown != null)
@@ -334,8 +326,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (!modData.DefaultFileSystem.Exists(filename))
 				return false;
 
-			if (errorLabelWidget != null)
-				errorLabelWidget.Visible = false;
+			if (errorLabel != null)
+				errorLabel.Visible = false;
 
 			if (errorLabelFilename != null)
 				errorLabelFilename.Visible = false;
@@ -362,12 +354,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 			catch (Exception ex)
 			{
-				if (errorLabelWidget != null && errorLabelFilename != null)
+				if (errorLabel != null)
 				{
-					errorLabelFilename.GetText = () => WidgetUtils.TruncateText(filename, errorLabelWidget.Bounds.Width, errorFont);
+					errorLabelFilename.GetText = () => WidgetUtils.TruncateText(filename, errorLabel.Bounds.Width, errorFont);
 					currentSprites = new Sprite[0];
-					errorLabelWidget.Visible = true;
-					errorLabelFilename.Visible = true;
+					errorLabel.Visible = true;
+
+					if (errorLabelFilename != null)
+						errorLabelFilename.Visible = true;
 				}
 
 				Log.AddChannel("assetbrowser", "assetbrowser.log");
