@@ -240,6 +240,11 @@ namespace OpenRA
 				rc.Metadata = new ReplayMetadata(gameInfo);
 		}
 
+		public void SetWorldOwner(Player p)
+		{
+			WorldActor.Owner = p;
+		}
+
 		public Actor CreateActor(string name, TypeDictionary initDict)
 		{
 			return CreateActor(true, name, initDict);

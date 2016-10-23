@@ -38,7 +38,7 @@ namespace OpenRA
 
 		public readonly uint ActorID;
 
-		public Player Owner { get; set; }
+		public Player Owner { get; internal set; }
 
 		public bool IsInWorld { get; internal set; }
 		public bool Disposed { get; private set; }

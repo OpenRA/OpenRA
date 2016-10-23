@@ -32,7 +32,7 @@ namespace OpenRA.Mods.Common.Traits
 				var player = new Player(w, null, kv.Value);
 				worldPlayers.Add(player);
 				if (kv.Value.OwnsWorld)
-					w.WorldActor.Owner = player;
+					w.SetWorldOwner(player);
 			}
 
 			Player localPlayer = null;

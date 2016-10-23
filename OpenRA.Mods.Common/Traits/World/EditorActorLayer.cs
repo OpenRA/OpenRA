@@ -53,7 +53,7 @@ namespace OpenRA.Mods.Common.Traits
 			Players = new MapPlayers(w.Map.PlayerDefinitions);
 
 			var worldOwner = Players.Players.Select(kvp => kvp.Value).First(p => !p.Playable && p.OwnsWorld);
-			w.WorldActor.Owner = new Player(w, null, worldOwner);
+			w.SetWorldOwner(new Player(w, null, worldOwner));
 		}
 
 		public void WorldLoaded(World world, WorldRenderer wr)
