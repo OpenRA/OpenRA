@@ -114,6 +114,12 @@ LPST:
 		Cost: 950
 	Tooltip:
 		Name: Mobile Sensor Array
+		UpgradeTypes: deployed
+		UpgradeMaxEnabledLevel: 0
+	Tooltip@DEPLOYED:
+		Name: Mobile Sensor Array (deployed)
+		UpgradeTypes: deployed
+		UpgradeMinEnabledLevel: 1
 	Health:
 		HP: 600
 	Armor:
