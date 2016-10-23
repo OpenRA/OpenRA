@@ -20,7 +20,13 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		public RevealsShroud(Actor self, RevealsShroudInfo info)
 			: base(self, info) { }
-		protected override void AddCellsToPlayerShroud(Actor self, Player p, PPos[] uv) { p.Shroud.AddProjectedVisibility(self, uv); }
-		protected override void RemoveCellsFromPlayerShroud(Actor self, Player p) { p.Shroud.RemoveVisibility(self); }
+
+		protected override void AddCellsToPlayerShroud(Actor self, Player p, PPos[] uv)
+		{
+			if (self.Owner.IsAlliedWith(p))
+				p.Shroud.AddProjectedVisibility(this, uv);
+		}
+
+		protected override void RemoveCellsFromPlayerShroud(Actor self, Player p) { p.Shroud.RemoveVisibility(this); }
 	}
 }

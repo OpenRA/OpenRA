@@ -20,8 +20,15 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		public CreatesShroud(Actor self, CreatesShroudInfo info)
 			: base(self, info) { }
-		protected override void AddCellsToPlayerShroud(Actor self, Player p, PPos[] uv) { p.Shroud.AddProjectedShroudGeneration(self, uv); }
-		protected override void RemoveCellsFromPlayerShroud(Actor self, Player p) { p.Shroud.RemoveShroudGeneration(self); }
+
+		protected override void AddCellsToPlayerShroud(Actor self, Player p, PPos[] uv)
+		{
+			if (!self.Owner.IsAlliedWith(p))
+				p.Shroud.AddProjectedShroudGeneration(this, uv);
+		}
+
+		protected override void RemoveCellsFromPlayerShroud(Actor self, Player p) { p.Shroud.RemoveShroudGeneration(this); }
+
 		protected override bool IsDisabled(Actor self) { return self.IsDisabled(); }
 	}
 }
