@@ -362,7 +362,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 			catch (Exception ex)
 			{
-				if (errorLabelWidget != null)
+				if (errorLabelWidget != null && errorLabelFilename != null)
 				{
 					errorLabelFilename.GetText = () => WidgetUtils.TruncateText(filename, errorLabelWidget.Bounds.Width, errorFont);
 					currentSprites = new Sprite[0];
