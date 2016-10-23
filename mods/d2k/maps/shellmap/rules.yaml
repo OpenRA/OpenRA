@@ -1,3 +1,7 @@
+Player:
+	-ConquestVictoryConditions:
+	-HarvesterInsurance:
+
 World:
 	-CrateSpawner:
 	-SpawnMPUnits:
@@ -6,10 +10,113 @@ World:
 		ValuePerUnit: 0
 	WormManager:
 		Minimum: 1
-		Maximum: 1
+		Maximum: 3
 	MusicPlaylist:
 		BackgroundMusic: options
+	LuaScript:
+		Scripts: d2k-shellmap.lua
 
-large_gun_turret:
-	Power:
-		Amount: 300
+^ExistsInWorld:
+	-GivesExperience:
+        
+^Building:
+	DamageMultiplier@UNKILLABLE:
+		Modifier: 0, 0
+
+wall:
+	DamageMultiplier@UNKILLABLE:
+		Modifier: 0, 0
+
+upgrade.conyard:
+	Valued:
+		Cost: 0
+
+upgrade.barracks:
+	Valued:
+		Cost: 0
+
+upgrade.light:
+	Valued:
+		Cost: 0
+
+upgrade.heavy:
+	Valued:
+		Cost: 0
+
+upgrade.hightech:
+	Valued:
+		Cost: 0
+
+light_inf:
+	Valued:
+		Cost: 0
+
+trooper:
+	Valued:
+		Cost: 0
+
+grenadier:
+	Valued:
+		Cost: 0
+
+sardaukar:
+	Valued:
+		Cost: 0
+
+trike:
+	Valued:
+		Cost: 0
+
+raider:
+	Valued:
+		Cost: 0
+
+stealth_raider:
+	Valued:
+		Cost: 0
+
+quad:
+	Valued:
+		Cost: 0
+
+^combat_tank:
+	Valued:
+		Cost: 0
+
+siege_tank:
+	Valued:
+		Cost: 0
+
+missile_tank:
+	Valued:
+		Cost: 0
+
+carryall.reinforce:
+	Cargo:
+		MaxWeight: 10
+
+barracks:
+	ProvidesPrerequisite@harkonnen:
+		Prerequisite: barracks.harkonnen
+		Factions: harkonnen, corrino
+
+light_factory:
+	ProvidesPrerequisite@harkonnen:
+		Prerequisite: light.harkonnen
+		Factions: harkonnen, corrino
+	ProvidesPrerequisite@trikes:
+		Prerequisite: light.regulartrikes
+		Factions: atreides, harkonnen, corrino
+        
+heavy_factory:
+	ProvidesPrerequisite@harkonnen:
+		Prerequisite: heavy.harkonnen
+		Factions: harkonnen, corrino
+	ProvidesPrerequisite@missiletank:
+		Prerequisite: heavy.missiletank
+		Factions: atreides, harkonnen, corrino
+
+starport:
+	ProvidesPrerequisite@harkonnen:
+		Prerequisite: starport.harkonnen
+		Factions: harkonnen, corrino
