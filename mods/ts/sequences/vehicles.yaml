@@ -7,7 +7,7 @@
 		Length: 12
 		UseTilesetExtension: true
 		ZOffset: 1023
-		Offset: 0, -12
+		Offset: 0, -12, 24
 
 mcv.gdi:
 	Inherits: ^VehicleOverlays
@@ -89,6 +89,7 @@ bggy:
 	Inherits: ^VehicleOverlays
 	Defaults:
 		Length: *
+		Offset: 0, 0, 24
 	muzzle0: mgun-n
 	muzzle1: mgun-nw
 	muzzle2: mgun-w
@@ -98,6 +99,7 @@ bggy:
 	muzzle6: mgun-e
 	muzzle7: mgun-ne
 	icon: bggyicon
+		Offset: 0, 0
 
 sapc:
 	Inherits: ^VehicleOverlays
@@ -126,6 +128,7 @@ ttnk:
 		Offset: 0, -12, 12
 	muzzle: gunfire
 		Length: *
+		Offset: 0, 0, 24
 	icon: tickicon
 
 stnk:
@@ -150,6 +153,7 @@ mmch:
 		Offset: 0, 0, 12
 	muzzle: gunfire
 		Length: *
+		Offset: 0, 0, 12
 	icon: mmchicon
 
 gghunt:
