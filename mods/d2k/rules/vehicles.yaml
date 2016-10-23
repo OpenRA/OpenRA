@@ -390,6 +390,7 @@ stealth_raider:
 	Cloak:
 		InitialDelay: 45
 		CloakDelay: 90
+		UncloakOn: Attack, Unload, Infiltrate, Demolish, Dock, Damage
 		CloakSound: STEALTH1.WAV
 		UncloakSound: STEALTH2.WAV
 		IsPlayerPalette: true
