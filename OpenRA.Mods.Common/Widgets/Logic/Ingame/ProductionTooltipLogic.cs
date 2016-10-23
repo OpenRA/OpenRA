@@ -115,7 +115,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		static string ActorName(Ruleset rules, string a)
 		{
 			ActorInfo ai;
-			if (rules.Actors.TryGetValue(a.ToLowerInvariant(), out ai) && ai.HasTraitInfo<TooltipInfo>())
+			if (rules.Actors.TryGetValue(a.ToLowerInvariant(), out ai))
 			{
 				var actorTooltip = ai.TraitInfos<TooltipInfo>().FirstOrDefault(Exts.IsTraitEnabled);
 				if (actorTooltip != null)
