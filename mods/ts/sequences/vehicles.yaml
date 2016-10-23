@@ -47,23 +47,22 @@ hvr:
 lpst.gdi:
 	Inherits: ^VehicleOverlays
 	idle: gadpsa
-		Offset: 0, -12
+		DepthSprite: isodepth.shp
+		DepthSpriteOffset: -6, -6
+		Offset: 0, -12, 12
+		UseTilesetCode: true
 		ShadowStart: 3
 	make: gadpsamk
-		Offset: 0, -12
+		DepthSprite: isodepth.shp
+		DepthSpriteOffset: -6, -6
+		Offset: 0, -12, 12
+		UseTilesetCode: true
 		Length: 36
 		ShadowStart: 36
 	icon: sidebar-gdi|lpsticon
 
 lpst.nod:
-	Inherits: ^VehicleOverlays
-	idle: gadpsa
-		Offset: 0, -12
-		ShadowStart: 3
-	make: gadpsamk
-		Offset: 0, -12
-		Length: 36
-		ShadowStart: 36
+	Inherits: lpst.gdi
 	icon: sidebar-nod|lpsticon
 
 repair:
