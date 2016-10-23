@@ -71,16 +71,19 @@ mpspawn:
 	idle:
 		Length: *
 		ZRamp: 1
+		Offset: 0, 0, 24
 
 waypoint:
 	idle:
 		Length: *
 		ZRamp: 1
+		Offset: 0, 0, 24
 
 camera:
 	idle:
 		Length: *
 		ZRamp: 1
+		Offset: 0, 0, 24
 
 clock:
 	idle: gclock2
