@@ -156,7 +156,10 @@ namespace OpenRA.Mods.Common.Traits
 				paxPos[a.Actor].SetVisualPosition(a.Actor, pos + PortOffset(self, port));
 
 				var barrel = a.CheckFire(a.Actor, facing.Value, target);
-				if (barrel != null && a.Info.MuzzleSequence != null)
+				if (barrel == null)
+					return;
+
+				if (a.Info.MuzzleSequence != null)
 				{
 					// Muzzle facing is fixed once the firing starts
 					var muzzleAnim = new Animation(self.World, paxRender[a.Actor].GetImage(a.Actor), () => muzzleFacing);

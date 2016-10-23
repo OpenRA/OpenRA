@@ -64,7 +64,7 @@ namespace OpenRA.Mods.D2k.Traits
 				return;
 
 			self.CancelActivity();
-			self.QueueActivity(new SwallowActor(self, target, a.Weapon));
+			self.QueueActivity(new SwallowActor(self, target, a, facing.Value));
 		}
 	}
 }
