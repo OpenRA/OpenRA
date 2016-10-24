@@ -33,9 +33,9 @@ namespace OpenRA.Mods.Common.Traits
 			if (!info.ValidStances.HasStance(p.Stances[self.Owner]))
 				return;
 
-			p.Shroud.AddProjectedVisibility(this, uv);
+			p.Shroud.AddSource(this, Shroud.SourceType.Visibility, uv);
 		}
 
-		protected override void RemoveCellsFromPlayerShroud(Actor self, Player p) { p.Shroud.RemoveVisibility(this); }
+		protected override void RemoveCellsFromPlayerShroud(Actor self, Player p) { p.Shroud.RemoveSource(this); }
 	}
 }

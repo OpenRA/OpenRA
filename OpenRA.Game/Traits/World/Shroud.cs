@@ -11,8 +11,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using OpenRA.Network;
 
 namespace OpenRA.Traits
 {
@@ -42,20 +40,36 @@ namespace OpenRA.Traits
 
 	public class Shroud : ISync, INotifyCreated
 	{
+		public enum SourceType : byte { Shroud, Visibility }
 		public event Action<IEnumerable<PPos>> CellsChanged;
+
+		enum ShroudCellType : byte { Shroud, Fog, Visible }
+		class ShroudSource
+		{
+			public readonly SourceType Type;
+			public readonly PPos[] ProjectedCells;
+
+			public ShroudSource(SourceType type, PPos[] projectedCells)
+			{
+				Type = type;
+				ProjectedCells = projectedCells;
+			}
+		}
 
 		readonly Actor self;
 		readonly ShroudInfo info;
 		readonly Map map;
 
+		// Individual shroud modifier sources (type and area)
+		readonly Dictionary<object, ShroudSource> sources = new Dictionary<object, ShroudSource>();
+
+		// Per-cell count of each source type, used to resolve the final cell type
 		readonly CellLayer<short> visibleCount;
 		readonly CellLayer<short> generatedShroudCount;
 		readonly CellLayer<bool> explored;
 
-		// Cache of visibility that was added, so no matter what crazy trait code does, it
-		// can't make us invalid.
-		readonly Dictionary<object, PPos[]> visibility = new Dictionary<object, PPos[]>();
-		readonly Dictionary<object, PPos[]> generation = new Dictionary<object, PPos[]>();
+		// Per-cell cache of the resolved cell type (shroud/fog/visible)
+		readonly CellLayer<ShroudCellType> resolvedType;
 
 		[Sync] bool disabled;
 		public bool Disabled
@@ -81,6 +95,9 @@ namespace OpenRA.Traits
 
 		public int Hash { get; private set; }
 
+		// Enabled at runtime on first use
+		bool shroudGenerationEnabled;
+
 		public Shroud(Actor self, ShroudInfo info)
 		{
 			this.self = self;
@@ -90,6 +107,9 @@ namespace OpenRA.Traits
 			visibleCount = new CellLayer<short>(map);
 			generatedShroudCount = new CellLayer<short>(map);
 			explored = new CellLayer<bool>(map);
+
+			// Defaults to 0 = Shroud
+			resolvedType = new CellLayer<ShroudCellType>(map);
 		}
 
 		void INotifyCreated.Created(Actor self)
@@ -104,6 +124,17 @@ namespace OpenRA.Traits
 
 		void Invalidate(IEnumerable<PPos> changed)
 		{
+			foreach (var puv in changed)
+			{
+				var uv = (MPos)puv;
+				var type = ShroudCellType.Shroud;
+
+				if (explored[uv] && (!shroudGenerationEnabled || generatedShroudCount[uv] == 0 || visibleCount[uv] > 0))
+					type = visibleCount[uv] > 0 ? ShroudCellType.Visible: ShroudCellType.Fog;
+
+				resolvedType[uv] = type;
+			}
+
 			if (CellsChanged != null)
 				CellsChanged(changed);
 
@@ -135,66 +166,62 @@ namespace OpenRA.Traits
 			return ProjectedCellsInRange(map, map.CenterOfCell(cell), range);
 		}
 
-		public void AddProjectedVisibility(object key, PPos[] visible)
+		public void AddSource(object key, SourceType type, PPos[] projectedCells)
 		{
-			foreach (var puv in visible)
+			if (sources.ContainsKey(key))
+				throw new InvalidOperationException("Attempting to add duplicate shroud source");
+
+			sources[key] = new ShroudSource(type, projectedCells);
+
+			foreach (var puv in projectedCells)
 			{
 				// Force cells outside the visible bounds invisible
 				if (!map.Contains(puv))
 					continue;
 
 				var uv = (MPos)puv;
-				visibleCount[uv]++;
-				explored[uv] = true;
+				switch (type)
+				{
+					case SourceType.Visibility:
+						visibleCount[uv]++;
+						explored[uv] = true;
+						break;
+					case SourceType.Shroud:
+						shroudGenerationEnabled = true;
+						generatedShroudCount[uv]++;
+						break;
+				}
 			}
 
-			if (visibility.ContainsKey(key))
-				throw new InvalidOperationException("Attempting to add duplicate actor visibility");
-
-			visibility[key] = visible;
-			Invalidate(visible);
+			Invalidate(projectedCells);
 		}
 
-		public void RemoveVisibility(object key)
+		public void RemoveSource(object key)
 		{
-			PPos[] visible;
-			if (!visibility.TryGetValue(key, out visible))
+			ShroudSource state;
+			if (!sources.TryGetValue(key, out state))
 				return;
 
-			foreach (var puv in visible)
+			foreach (var puv in state.ProjectedCells)
 			{
 				// Cells outside the visible bounds don't increment visibleCount
 				if (map.Contains(puv))
-					visibleCount[(MPos)puv]--;
+				{
+					var uv = (MPos)puv;
+					switch (state.Type)
+					{
+						case SourceType.Visibility:
+							visibleCount[uv]--;
+							break;
+						case SourceType.Shroud:
+							generatedShroudCount[uv]--;
+							break;
+					}
+				}
 			}
 
-			visibility.Remove(key);
-			Invalidate(visible);
-		}
-
-		public void AddProjectedShroudGeneration(object key, PPos[] shrouded)
-		{
-			foreach (var uv in shrouded)
-				generatedShroudCount[(MPos)uv]++;
-
-			if (generation.ContainsKey(key))
-				throw new InvalidOperationException("Attempting to add duplicate shroud generation");
-
-			generation[key] = shrouded;
-			Invalidate(shrouded);
-		}
-
-		public void RemoveShroudGeneration(object key)
-		{
-			PPos[] shrouded;
-			if (!generation.TryGetValue(key, out shrouded))
-				return;
-
-			foreach (var uv in shrouded)
-				generatedShroudCount[(MPos)uv]--;
-
-			generation.Remove(key);
-			Invalidate(shrouded);
+			sources.Remove(key);
+			Invalidate(state.ProjectedCells);
 		}
 
 		public void ExploreProjectedCells(World world, IEnumerable<PPos> cells)
@@ -292,8 +319,7 @@ namespace OpenRA.Traits
 			if (Disabled)
 				return map.Contains(puv);
 
-			var uv = (MPos)puv;
-			return explored.Contains(uv) && explored[uv] && (generatedShroudCount[uv] == 0 || visibleCount[uv] > 0);
+			return resolvedType[(MPos)puv] > ShroudCellType.Shroud;
 		}
 
 		public bool IsVisible(WPos pos)
@@ -308,7 +334,7 @@ namespace OpenRA.Traits
 
 		public bool IsVisible(MPos uv)
 		{
-			if (!visibleCount.Contains(uv))
+			if (!resolvedType.Contains(uv))
 				return false;
 
 			foreach (var puv in map.ProjectedCellsCovering(uv))
@@ -325,7 +351,7 @@ namespace OpenRA.Traits
 				return map.Contains(puv);
 
 			var uv = (MPos)puv;
-			return visibleCount.Contains(uv) && visibleCount[uv] > 0;
+			return resolvedType.Contains(uv) && resolvedType[uv] == ShroudCellType.Visible;
 		}
 
 		public bool Contains(PPos uv)
