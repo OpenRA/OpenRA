@@ -1,52 +1,11 @@
-function FindMSBuild
-{
-	$msBuildVersions = @("4.0")
-	foreach ($msBuildVersion in $msBuildVersions)
-	{
-		$key = "HKLM:\SOFTWARE\Microsoft\MSBuild\ToolsVersions\{0}" -f $msBuildVersion
-		$property = Get-ItemProperty $key -ErrorAction SilentlyContinue
-		if ($property -eq $null -or $property.MSBuildToolsPath -eq $null)
-		{
-			continue
-		}
-		$path = Join-Path $property.MSBuildToolsPath -ChildPath "MSBuild.exe"
-		if (Test-Path $path)
-		{
-			return $path
-		}
-	}
-	return $null
-}
+####### The starting point for the script is the bottom #######
 
-function UtilityNotFound
+###############################################################
+########################## FUNCTIONS ##########################
+###############################################################
+function All-Command 
 {
-	echo "OpenRA.Utility.exe could not be found. Build the project first using the `"all`" command."
-}
-
-if ($args.Length -eq 0)
-{
-	echo "Command list:"
-	echo ""
-	echo "  all             Builds the game and its development tools."
-	echo "  dependencies    Copies the game's dependencies into the main game folder."
-	echo "  version         Sets the version strings for the default mods to the latest"
-	echo "                  version for the current Git branch."
-	echo "  clean           Removes all built and copied files. Use the 'all' and"
-	echo "                  'dependencies' commands to restore removed files."
-	echo "  test            Tests the default mods for errors."
-	echo "  check           Checks .cs files for StyleCop violations."
-	echo "  check-scripts   Checks .lua files for syntax errors."
-	echo "  docs            Generates the trait and Lua API documentation."
-	echo ""
-	$command = (Read-Host "Enter command").Split(' ', 2)
-}
-else
-{
-	$command = $args
-}
-
-if ($command -eq "all")
-{
+	Dependencies-Command 
 	$msBuild = FindMSBuild
 	$msBuildArguments = "/t:Rebuild /nr:false"
 	if ($msBuild -eq $null)
@@ -66,7 +25,8 @@ if ($command -eq "all")
 		}
 	}
 }
-elseif ($command -eq "clean")
+
+function Clean-Command 
 {
 	$msBuild = FindMSBuild
 	$msBuildArguments = "/t:Clean /nr:false"
@@ -89,8 +49,9 @@ elseif ($command -eq "clean")
 		echo "Clean complete."
 	}
 }
-elseif ($command -eq "version")
-{	
+
+function Version-Command 
+{
 	if ($command.Length -gt 1)
 	{
 		$version = $command[1]
@@ -131,7 +92,8 @@ elseif ($command -eq "version")
 		echo ("Version strings set to '{0}'." -f $version)
 	}
 }
-elseif ($command -eq "dependencies")
+
+function Dependencies-Command
 {
 	cd thirdparty
 	./fetch-thirdparty-deps.ps1
@@ -141,7 +103,8 @@ elseif ($command -eq "dependencies")
 	cd ..
 	echo "Dependencies copied."
 }
-elseif ($command -eq "test")
+
+function Test-Command
 {
 	if (Test-Path OpenRA.Utility.exe)
 	{
@@ -160,8 +123,8 @@ elseif ($command -eq "test")
 		UtilityNotFound
 	}
 }
-elseif ($command -eq "check")
-{
+
+function Check-Command {
 	if (Test-Path OpenRA.Utility.exe)
 	{
 		echo "Checking for explicit interface violations..."
@@ -192,7 +155,8 @@ elseif ($command -eq "check")
 		UtilityNotFound
 	}
 }
-elseif ($command -eq "check-scripts")
+
+function Check-Scripts-Command
 {
 	if ((Get-Command "luac.exe" -ErrorAction SilentlyContinue) -ne $null)
 	{
@@ -212,7 +176,8 @@ elseif ($command -eq "check-scripts")
 		echo "luac.exe could not be found. Please install Lua."
 	}
 }
-elseif ($command -eq "docs")
+
+function Docs-Command
 {
 	if (Test-Path OpenRA.Utility.exe)
 	{
@@ -225,11 +190,70 @@ elseif ($command -eq "docs")
 		UtilityNotFound
 	}
 }
-else
+
+function FindMSBuild
 {
-	echo ("Invalid command '{0}'" -f $command)
+	$msBuildVersions = @("4.0")
+	foreach ($msBuildVersion in $msBuildVersions)
+	{
+		$key = "HKLM:\SOFTWARE\Microsoft\MSBuild\ToolsVersions\{0}" -f $msBuildVersion
+		$property = Get-ItemProperty $key -ErrorAction SilentlyContinue
+		if ($property -eq $null -or $property.MSBuildToolsPath -eq $null)
+		{
+			continue
+		}
+		$path = Join-Path $property.MSBuildToolsPath -ChildPath "MSBuild.exe"
+		if (Test-Path $path)
+		{
+			return $path
+		}
+	}
+	return $null
 }
 
+function UtilityNotFound
+{
+	echo "OpenRA.Utility.exe could not be found. Build the project first using the `"all`" command."
+}
+###############################################################
+############################ Main #############################
+###############################################################
+if ($args.Length -eq 0)
+{
+	echo "Command list:"
+	echo ""
+	echo "  all             Builds the game and its development tools."
+	echo "  dependencies    Copies the game's dependencies into the main game folder."
+	echo "  version         Sets the version strings for the default mods to the latest"
+	echo "                  version for the current Git branch."
+	echo "  clean           Removes all built and copied files. Use the 'all' and"
+	echo "                  'dependencies' commands to restore removed files."
+	echo "  test            Tests the default mods for errors."
+	echo "  check           Checks .cs files for StyleCop violations."
+	echo "  check-scripts   Checks .lua files for syntax errors."
+	echo "  docs            Generates the trait and Lua API documentation."
+	echo ""
+	$command = (Read-Host "Enter command").Split(' ', 2)
+}
+else
+{
+	$command = $args
+}
+
+switch ($command) 
+{
+	"all" { All-Command }
+	"dependencies" { Dependencies-Command }
+	"version" { Version-Command }
+	"clean" { Clean-Command }
+	"test" { Test-Command }
+	"check" { Check-Command }
+	"check-scripts" { Check-Scripts-Command }
+	"docs" { Docs-Command }
+	Default { echo ("Invalid command '{0}'" -f $command) }
+}
+
+#In case the script was called without any parameters we keep the window open 
 if ($args.Length -eq 0)
 {
 	echo "Press enter to continue."
