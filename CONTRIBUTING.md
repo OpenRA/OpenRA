@@ -17,7 +17,7 @@
 
 Please `git rebase` to the latest revision of the bleed branch.
 
-Don't forget to add youself to [AUTHORS](https://github.com/OpenRA/OpenRA/blob/bleed/AUTHORS).
+Don't forget to add yourself to [AUTHORS](https://github.com/OpenRA/OpenRA/blob/bleed/AUTHORS).
 
 Please propose a [CHANGELOG](https://github.com/OpenRA/OpenRA/wiki/CHANGELOG) entry in the pull-request comments.
 
