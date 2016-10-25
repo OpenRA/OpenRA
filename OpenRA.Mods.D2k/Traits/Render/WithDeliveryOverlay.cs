@@ -71,8 +71,7 @@ namespace OpenRA.Mods.D2k.Traits.Render
 
 		void INotifyBuildComplete.BuildingComplete(Actor self)
 		{
-			self.World.AddFrameEndTask(w => w.Add(new DelayedAction(120, () =>
-				buildComplete = true)));
+			buildComplete = true;
 		}
 
 		void INotifySold.Sold(Actor self) { }
