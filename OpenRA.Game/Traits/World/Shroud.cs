@@ -40,7 +40,7 @@ namespace OpenRA.Traits
 
 	public class Shroud : ISync, INotifyCreated
 	{
-		public enum SourceType : byte { Shroud, Visibility }
+		public enum SourceType : byte { PassiveVisibility, Shroud, Visibility }
 		public event Action<IEnumerable<PPos>> CellsChanged;
 
 		enum ShroudCellType : byte { Shroud, Fog, Visible }
@@ -64,6 +64,7 @@ namespace OpenRA.Traits
 		readonly Dictionary<object, ShroudSource> sources = new Dictionary<object, ShroudSource>();
 
 		// Per-cell count of each source type, used to resolve the final cell type
+		readonly CellLayer<short> passiveVisibleCount;
 		readonly CellLayer<short> visibleCount;
 		readonly CellLayer<short> generatedShroudCount;
 		readonly CellLayer<bool> explored;
@@ -97,6 +98,7 @@ namespace OpenRA.Traits
 
 		// Enabled at runtime on first use
 		bool shroudGenerationEnabled;
+		bool passiveVisibilityEnabled;
 
 		public Shroud(Actor self, ShroudInfo info)
 		{
@@ -104,6 +106,7 @@ namespace OpenRA.Traits
 			this.info = info;
 			map = self.World.Map;
 
+			passiveVisibleCount = new CellLayer<short>(map);
 			visibleCount = new CellLayer<short>(map);
 			generatedShroudCount = new CellLayer<short>(map);
 			explored = new CellLayer<bool>(map);
@@ -130,7 +133,13 @@ namespace OpenRA.Traits
 				var type = ShroudCellType.Shroud;
 
 				if (explored[uv] && (!shroudGenerationEnabled || generatedShroudCount[uv] == 0 || visibleCount[uv] > 0))
-					type = visibleCount[uv] > 0 ? ShroudCellType.Visible: ShroudCellType.Fog;
+				{
+					var count = visibleCount[uv];
+					if (passiveVisibilityEnabled)
+						count += passiveVisibleCount[uv];
+
+					type = count > 0 ? ShroudCellType.Visible : ShroudCellType.Fog;
+				}
 
 				resolvedType[uv] = type;
 			}
@@ -182,6 +191,11 @@ namespace OpenRA.Traits
 				var uv = (MPos)puv;
 				switch (type)
 				{
+					case SourceType.PassiveVisibility:
+						passiveVisibilityEnabled = true;
+						passiveVisibleCount[uv]++;
+						explored[uv] = true;
+						break;
 					case SourceType.Visibility:
 						visibleCount[uv]++;
 						explored[uv] = true;
@@ -210,6 +224,9 @@ namespace OpenRA.Traits
 					var uv = (MPos)puv;
 					switch (state.Type)
 					{
+						case SourceType.PassiveVisibility:
+							passiveVisibleCount[uv]--;
+							break;
 						case SourceType.Visibility:
 							visibleCount[uv]--;
 							break;
@@ -281,7 +298,7 @@ namespace OpenRA.Traits
 			foreach (var puv in map.ProjectedCellBounds)
 			{
 				var uv = (MPos)puv;
-				var visible = visibleCount[uv] > 0;
+				var visible = visibleCount[uv] + passiveVisibleCount[uv] > 0;
 				if (explored[uv] != visible)
 				{
 					explored[uv] = visible;
