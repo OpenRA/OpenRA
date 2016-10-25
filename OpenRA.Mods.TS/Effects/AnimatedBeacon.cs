@@ -25,6 +25,9 @@ namespace OpenRA.Mods.TS.Effects
 		readonly string beaconPalette;
 		readonly bool isPlayerPalette;
 		readonly Animation beacon;
+		readonly int duration;
+
+		int tick;
 
 		public AnimatedBeacon(Player owner, WPos position, int duration, string beaconPalette, bool isPlayerPalette, string beaconImage, string beaconSequence)
 		{
@@ -32,6 +35,7 @@ namespace OpenRA.Mods.TS.Effects
 			this.position = position;
 			this.beaconPalette = beaconPalette;
 			this.isPlayerPalette = isPlayerPalette;
+			this.duration = duration;
 
 			if (!string.IsNullOrEmpty(beaconSequence))
 			{
@@ -47,6 +51,9 @@ namespace OpenRA.Mods.TS.Effects
 		{
 			if (beacon != null)
 				beacon.Tick();
+
+			if (duration > 0 && duration <= tick++)
+				owner.World.AddFrameEndTask(w => w.Remove(this));
 		}
 
 		IEnumerable<IRenderable> IEffect.Render(WorldRenderer r) { return SpriteRenderable.None; }
