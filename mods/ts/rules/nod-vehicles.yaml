@@ -72,6 +72,12 @@ TTNK:
 		Cost: 800
 	Tooltip:
 		Name: Tick Tank
+		UpgradeTypes: deployed
+		UpgradeMaxEnabledLevel: 0
+	Tooltip@DEPLOYED:
+		Name: Tick Tank (deployed)
+		UpgradeTypes: deployed
+		UpgradeMinEnabledLevel: 1
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 60
