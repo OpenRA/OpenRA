@@ -206,10 +206,12 @@ namespace OpenRA
 				CurrentActivity.Queue(nextActivity);
 		}
 
-		public void CancelActivity()
+		public bool CancelActivity()
 		{
 			if (CurrentActivity != null)
-				CurrentActivity.Cancel(this);
+				return CurrentActivity.Cancel(this);
+
+			return true;
 		}
 
 		public override int GetHashCode()

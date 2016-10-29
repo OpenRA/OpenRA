@@ -37,6 +37,7 @@ namespace OpenRA.Mods.Common.Activities
 			para = self.Info.TraitInfo<ParachutableInfo>();
 			fallVector = new WVec(0, 0, para.FallRate);
 			this.dropPosition = dropPosition;
+			IsInterruptible = false;
 		}
 
 		Activity FirstTick(Actor self)
@@ -91,8 +92,5 @@ namespace OpenRA.Mods.Common.Activities
 		{
 			NextActivity = activity;
 		}
-
-		// Cannot be cancelled
-		public override void Cancel(Actor self) { }
 	}
 }

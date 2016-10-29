@@ -46,12 +46,12 @@ namespace OpenRA.Mods.Common.Activities
 			return this;
 		}
 
-		public override void Cancel(Actor self)
+		public override bool Cancel(Actor self)
 		{
-			if (inner != null)
-				inner.Cancel(self);
+			if (!IsCanceled && inner != null && !inner.Cancel(self))
+				return false;
 
-			base.Cancel(self);
+			return base.Cancel(self);
 		}
 
 		public override IEnumerable<Target> GetTargets(Actor self)

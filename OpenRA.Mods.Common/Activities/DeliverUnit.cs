@@ -207,12 +207,12 @@ namespace OpenRA.Mods.Common.Activities
 			});
 		}
 
-		public override void Cancel(Actor self)
+		public override bool Cancel(Actor self)
 		{
-			if (innerActivity != null)
-				innerActivity.Cancel(self);
+			if (!IsCanceled && innerActivity != null && !innerActivity.Cancel(self))
+				return false;
 
-			base.Cancel(self);
+			return base.Cancel(self);
 		}
 	}
 }

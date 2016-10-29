@@ -32,6 +32,7 @@ namespace OpenRA.Mods.Common.Activities
 			this.start = start;
 			this.end = end;
 			this.length = length;
+			IsInterruptible = false;
 		}
 
 		public override Activity Tick(Actor self)
@@ -62,8 +63,5 @@ namespace OpenRA.Mods.Common.Activities
 		{
 			yield return Target.FromPos(end);
 		}
-
-		// Cannot be cancelled
-		public override void Cancel(Actor self) { }
 	}
 }

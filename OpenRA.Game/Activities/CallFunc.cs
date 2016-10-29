@@ -19,22 +19,15 @@ namespace OpenRA.Activities
 		public CallFunc(Action a, bool interruptable)
 		{
 			this.a = a;
-			this.interruptable = interruptable;
+			IsInterruptible = interruptable;
 		}
 
 		Action a;
-		bool interruptable;
 
 		public override Activity Tick(Actor self)
 		{
 			if (a != null) a();
 			return NextActivity;
-		}
-
-		public override void Cancel(Actor self)
-		{
-			if (interruptable)
-				base.Cancel(self);
 		}
 	}
 }
