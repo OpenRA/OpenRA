@@ -103,7 +103,7 @@ EMPulseCannon:
 		Speed: 425
 		Blockable: false
 		Shadow: true
-		Angle: 62
+		LaunchAngle: 62
 		Image: pulsball
 	Warhead@1Eff: CreateEffect
 		Explosions: pulse_explosion

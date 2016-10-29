@@ -251,7 +251,7 @@ SubMissile:
 	Projectile: Bullet
 		Speed: 162
 		Blockable: false
-		Angle: 120
+		LaunchAngle: 120
 		Inaccuracy: 2c938
 		Image: MISSILE
 		TrailImage: smokey
@@ -422,7 +422,7 @@ SCUD:
 		TrailDelay: 5
 		Inaccuracy: 213
 		Image: V2
-		Angle: 62
+		LaunchAngle: 62
 	Warhead@1Dam: SpreadDamage
 		Spread: 341
 		Damage: 45

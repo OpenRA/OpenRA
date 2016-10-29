@@ -497,6 +497,13 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						node.Key = "Duration";
 				}
 
+				// Rename Bullet Angle to LaunchAngle
+				if (engineVersion < 20161016)
+				{
+					if (node.Key == "Angle")
+						node.Key = "LaunchAngle";
+				}
+
 				UpgradeWeaponRules(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}

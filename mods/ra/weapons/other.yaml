@@ -36,7 +36,7 @@ Flamer:
 		Speed: 170
 		TrailImage: fb4
 		Image: fb3
-		Angle: 62
+		LaunchAngle: 62
 		Inaccuracy: 853
 	Warhead@1Dam: SpreadDamage
 		Spread: 341
@@ -93,7 +93,7 @@ Grenade:
 	Projectile: Bullet
 		Speed: 136
 		Blockable: false
-		Angle: 62
+		LaunchAngle: 62
 		Inaccuracy: 554
 		Image: BOMB
 	Warhead@1Dam: SpreadDamage
@@ -125,7 +125,7 @@ DepthCharge:
 	Projectile: Bullet
 		Speed: 85
 		Image: BOMB
-		Angle: 62
+		LaunchAngle: 62
 		Blockable: false
 		Inaccuracy: 128
 	Warhead@1Dam: SpreadDamage

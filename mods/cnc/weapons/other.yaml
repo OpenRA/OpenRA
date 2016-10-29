@@ -81,7 +81,7 @@ Grenade:
 	Projectile: Bullet
 		Speed: 140
 		Blockable: false
-		Angle: 62
+		LaunchAngle: 62
 		Inaccuracy: 213
 		Image: BOMB
 	Warhead@1Dam: SpreadDamage

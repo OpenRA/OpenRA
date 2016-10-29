@@ -32,7 +32,7 @@ FiendShard:
 		Image: CRYSTAL4
 		Inaccuracy: 512
 		Shadow: true
-		Angle: 60
+		LaunchAngle: 60
 		Palette: greentiberium
 	Warhead@1Dam: SpreadDamage
 		Damage: 35
