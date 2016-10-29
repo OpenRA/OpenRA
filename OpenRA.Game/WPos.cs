@@ -95,7 +95,7 @@ namespace OpenRA
 			WPos a;
 			var rightType = right.WrappedClrType();
 			if (!left.TryGetClrValue(out a))
-				throw new LuaException("Attempted to call WPos.Subtract(WPos, WVec) with invalid arguments ({0}, {1})".F(left.WrappedClrType().Name, rightType));
+				throw new LuaException("Attempted to call WPos.Subtract(WPos, (WPos|WVec)) with invalid arguments ({0}, {1})".F(left.WrappedClrType().Name, rightType.Name));
 
 			if (rightType == typeof(WPos))
 			{
@@ -110,7 +110,7 @@ namespace OpenRA
 				return new LuaCustomClrObject(a - b);
 			}
 
-			throw new LuaException("Attempted to call WPos.Subtract(WPos, WVec) with invalid arguments ({0}, {1})".F(left.WrappedClrType().Name, rightType));
+			throw new LuaException("Attempted to call WPos.Subtract(WPos, (WPos|WVec)) with invalid arguments ({0}, {1})".F(left.WrappedClrType().Name, rightType.Name));
 		}
 
 		public LuaValue Equals(LuaRuntime runtime, LuaValue left, LuaValue right)
