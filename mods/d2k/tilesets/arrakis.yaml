@@ -3,7 +3,7 @@ General:
 	Id: ARRAKIS
 	SheetSize: 1024
 	Palette: PALETTE.BIN
-	EditorTemplateOrder: Basic, Dune, Sand-Detail, Brick, Sand-Cliff, Sand-Smooth, Cliff-Type-Changer, Rock-Sand-Smooth, Rock-Detail, Rock-Cliff, Rock-Cliff-Rock, Rotten-Base, Dead-Worm, Ice, Ice-Detail, Rock-Cliff-Sand, Sand-Platform, Unidentified
+	EditorTemplateOrder: Basic, Dune, Sand-Detail, Brick, Sand-Cliff, Sand-Smooth, Cliff-Type-Changer, Rock-Sand-Smooth, Rock-Detail, Rock-Cliff, Rock-Cliff-Rock, Rotten-Base, Dead-Worm, Ice, Ice-Detail, Rock-Cliff-Sand, Sand-Platform, Unidentified, DO_NOT_USE-Duplicates
 	IgnoreTileSpriteOffsets: True
 	HeightDebugColors: 880000
 
@@ -2465,7 +2465,7 @@ Templates:
 		Images: BLOXBAT.R8
 		Frames: 551
 		Size: 1,1
-		Category: Rotten-Base
+		Category: DO_NOT_USE-Duplicates
 		Tiles:
 			0: Cliff
 	Template@306:
@@ -2473,7 +2473,7 @@ Templates:
 		Images: BLOXBAT.R8
 		Frames: 607, 608, 627, 628
 		Size: 2,2
-		Category: Rotten-Base
+		Category: DO_NOT_USE-Duplicates
 		Tiles:
 			0: Rough
 			1: Cliff
@@ -2609,7 +2609,7 @@ Templates:
 		Images: BLOXBAT.R8
 		Frames: 701, 702
 		Size: 2,1
-		Category: Sand-Detail
+		Category: DO_NOT_USE-Duplicates
 		Tiles:
 			0: Sand
 			1: Sand
@@ -2694,7 +2694,7 @@ Templates:
 		Images: BLOXBAT.R8
 		Frames: 538, 539, 558, 559
 		Size: 2,2
-		Category: Rock-Detail
+		Category: DO_NOT_USE-Duplicates
 		Tiles:
 			0: Rough
 			1: Rough
@@ -2951,7 +2951,7 @@ Templates:
 		Images: BLOXBGBS.R8
 		Frames: 700
 		Size: 1,1
-		Category: Sand-Detail
+		Category: DO_NOT_USE-Duplicates
 		Tiles:
 			0: Sand
 	Template@353:
@@ -3025,7 +3025,7 @@ Templates:
 		Images: BLOXBGBS.R8
 		Frames: 718, 719, 738, 739
 		Size: 2,2
-		Category: Sand-Detail
+		Category: DO_NOT_USE-Duplicates
 		Tiles:
 			0: Rough
 			1: Sand
@@ -3273,7 +3273,7 @@ Templates:
 		Images: BLOXICE.R8
 		Frames: 607, 608, 627, 628
 		Size: 2,2
-		Category: Sand-Detail
+		Category: DO_NOT_USE-Duplicates
 		Tiles:
 			0: Rough
 			1: Rough
@@ -3284,7 +3284,7 @@ Templates:
 		Images: BLOXICE.R8
 		Frames: 609, 610, 629, 630
 		Size: 2,2
-		Category: Sand-Detail
+		Category: DO_NOT_USE-Duplicates
 		Tiles:
 			0: Rough
 			1: Sand
@@ -3757,7 +3757,7 @@ Templates:
 		Images: BLOXTREE.R8
 		Frames: 729
 		Size: 1,1
-		Category: Sand-Detail
+		Category: DO_NOT_USE-Duplicates
 		Tiles:
 			0: Cliff
 	Template@434:
@@ -4096,7 +4096,7 @@ Templates:
 		Images: BLOXWAST.R8
 		Frames: 4
 		Size: 1,1
-		Category: Sand-Detail
+		Category: DO_NOT_USE-Duplicates
 		Tiles:
 			0: Cliff
 	Template@469:
@@ -4104,7 +4104,7 @@ Templates:
 		Images: BLOXWAST.R8
 		Frames: 5
 		Size: 1,1
-		Category: Sand-Detail
+		Category: DO_NOT_USE-Duplicates
 		Tiles:
 			0: Cliff
 	Template@470:
@@ -5729,7 +5729,7 @@ Templates:
 		Images: BLOXBGBS.R8
 		Frames: 684, 685, 704, 705
 		Size: 2,2
-		Category: Rock-Detail
+		Category: DO_NOT_USE-Duplicates
 		Tiles:
 			0: Rough
 			1: Rough
@@ -5750,7 +5750,7 @@ Templates:
 		Images: BLOXBGBS.R8
 		Frames: 355
 		Size: 1,1
-		Category: Rock-Detail
+		Category: DO_NOT_USE-Duplicates
 		Tiles:
 			0: Rough
 	Template@1039:
@@ -5758,7 +5758,7 @@ Templates:
 		Images: BLOXBGBS.R8
 		Frames: 375
 		Size: 1,1
-		Category: Rock-Detail
+		Category: DO_NOT_USE-Duplicates
 		Tiles:
 			0: Rough
 	Template@1040:
@@ -5798,7 +5798,7 @@ Templates:
 		Images: BLOXTREE.R8
 		Frames: 683, 684, 685, 706, 703, 704, 705, 726, 723, 724, 725, 746, 743, 744, 745, 747
 		Size: 4,4
-		Category: Sand-Detail
+		Category: DO_NOT_USE-Duplicates
 		Tiles:
 			0: Sand
 			1: Cliff
@@ -5821,7 +5821,7 @@ Templates:
 		Images: BLOXTREE.R8
 		Frames: 369, 370, 389, 390
 		Size: 2, 2
-		Category: Sand-Detail
+		Category: DO_NOT_USE-Duplicates
 		Tiles:
 			0: Rough
 			1: Rough
@@ -5832,7 +5832,7 @@ Templates:
 		Images: BLOXTREE.R8
 		Frames: 700
 		Size: 1,1
-		Category: Sand-Detail
+		Category: DO_NOT_USE-Duplicates
 		Tiles:
 			0: Rough
 	Template@1047:
@@ -5916,7 +5916,7 @@ Templates:
 		Images: BLOXTREE.R8
 		Frames: 661, 662, 681, 682
 		Size: 2,2
-		Category: Rotten-Base
+		Category: DO_NOT_USE-Duplicates
 		Tiles:
 			0: Rough
 			1: Cliff
@@ -5937,9 +5937,9 @@ Templates:
 		Size: 2,2
 		Category: Rock-Detail
 		Tiles:
-			0: Cliff
-			1: Cliff
-			3: Cliff
+			0: Rough
+			1: Rough
+			3: Rough
 	Template@1059:
 		Id: 1059
 		Images: BLOXWAST.R8
@@ -5947,8 +5947,8 @@ Templates:
 		Size: 1,2
 		Category: Rock-Detail
 		Tiles:
-			0: Cliff
-			1: Cliff
+			0: Rough
+			1: Rough
 	Template@1060:
 		Id: 1060
 		Images: BLOXWAST.R8
@@ -5981,7 +5981,7 @@ Templates:
 		Images: BLOXWAST.R8
 		Frames: 380
 		Size: 1,1
-		Category: Sand-Detail
+		Category: DO_NOT_USE-Duplicates
 		Tiles:
 			0: Rough
 	Template@1064:
@@ -5997,7 +5997,7 @@ Templates:
 		Images: BLOXWAST.R8
 		Frames: 608
 		Size: 1,1
-		Category: Sand-Detail
+		Category: DO_NOT_USE-Duplicates
 		Tiles:
 			0: Cliff
 	Template@1066:
@@ -6005,7 +6005,7 @@ Templates:
 		Images: BLOXWAST.R8
 		Frames: 597
 		Size: 1,1
-		Category: Sand-Detail
+		Category: DO_NOT_USE-Duplicates
 		Tiles:
 			0: Rough
 	Template@1067:
@@ -6013,7 +6013,7 @@ Templates:
 		Images: BLOXWAST.R8
 		Frames: 719
 		Size: 1,1
-		Category: Sand-Detail
+		Category: DO_NOT_USE-Duplicates
 		Tiles:
 			0: Sand
 	Template@1068:
@@ -6029,7 +6029,7 @@ Templates:
 		Images: BLOXWAST.R8
 		Frames: 381
 		Size: 1,1
-		Category: Sand-Detail
+		Category: DO_NOT_USE-Duplicates
 		Tiles:
 			0: Rough
 	Template@1070:
@@ -6037,7 +6037,7 @@ Templates:
 		Images: BLOXWAST.R8
 		Frames: 343
 		Size: 1,1
-		Category: Sand-Detail
+		Category: DO_NOT_USE-Duplicates
 		Tiles:
 			0: Rough
 	Template@1071:
@@ -6045,7 +6045,7 @@ Templates:
 		Images: BLOXWAST.R8
 		Frames: 340, 341, 360, 361
 		Size: 2,2
-		Category: Rotten-Base
+		Category: DO_NOT_USE-Duplicates
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -6056,7 +6056,7 @@ Templates:
 		Images: BLOXWAST.R8
 		Frames: 660, 661, 662, 680, 681, 682
 		Size: 3,2
-		Category: Rock-Cliff
+		Category: DO_NOT_USE-Duplicates
 		Tiles:
 			0: Rock
 			1: Cliff
@@ -6069,7 +6069,7 @@ Templates:
 		Images: BLOXWAST.R8
 		Frames: 598, 599
 		Size: 2,1
-		Category: Sand-Detail
+		Category: DO_NOT_USE-Duplicates
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -6094,7 +6094,7 @@ Templates:
 		Images: BLOXWAST.R8
 		Frames: 362, 363, 364
 		Size: 3,1
-		Category: Sand-Detail
+		Category: DO_NOT_USE-Duplicates
 		Tiles:
 			0: Cliff
 			1: Rough
@@ -6129,7 +6129,7 @@ Templates:
 		Images: BLOXWAST.R8
 		Frames: 627, 628
 		Size: 2,1
-		Category: Rotten-Base
+		Category: DO_NOT_USE-Duplicates
 		Tiles:
 			0: Rough
 			1: Rough
@@ -6138,7 +6138,7 @@ Templates:
 		Images: BLOXWAST.R8
 		Frames: 609, 610, 629, 630
 		Size: 2,2
-		Category: Rotten-Base
+		Category: DO_NOT_USE-Duplicates
 		Tiles:
 			0: Rough
 			1: Cliff
