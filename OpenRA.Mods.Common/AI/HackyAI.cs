@@ -794,8 +794,7 @@ namespace OpenRA.Mods.Common.AI
 
 				if (!harvester.IsIdle)
 				{
-					var act = harvester.GetCurrentActivity();
-
+					var act = harvester.CurrentActivity;
 					if (act.NextActivity == null || act.NextActivity.GetType() != typeof(FindResources))
 						continue;
 				}

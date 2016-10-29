@@ -76,7 +76,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			yield return new TextRenderable(font, self.CenterPosition - offset, 0, color, tagString);
 
 			// Get the actor's activity.
-			var activity = self.GetCurrentActivity();
+			var activity = self.CurrentActivity;
 			if (activity != null)
 			{
 				var activityName = activity.GetType().ToString().Split('.').Last();

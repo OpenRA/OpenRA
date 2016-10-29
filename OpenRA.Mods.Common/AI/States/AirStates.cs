@@ -125,10 +125,10 @@ namespace OpenRA.Mods.Common.AI
 
 		protected static bool IsRearm(Actor a)
 		{
-			var activity = a.GetCurrentActivity();
-			if (activity == null)
+			if (a.IsIdle)
 				return false;
 
+			var activity = a.CurrentActivity;
 			var type = activity.GetType();
 			if (type == typeof(Rearm) || type == typeof(ResupplyAircraft))
 				return true;

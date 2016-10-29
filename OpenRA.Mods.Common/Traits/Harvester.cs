@@ -237,7 +237,7 @@ namespace OpenRA.Mods.Common.Traits
 		void INotifyBlockingMove.OnNotifyBlockingMove(Actor self, Actor blocking)
 		{
 			// I'm blocking someone else from moving to my location:
-			var act = self.GetCurrentActivity();
+			var act = self.CurrentActivity;
 
 			// If I'm just waiting around then get out of the way:
 			if (act is Wait)
