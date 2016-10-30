@@ -31,16 +31,18 @@ namespace OpenRA.Mods.Common.Traits
 		public object Create(ActorInitializer init) { return new PlaceBuilding(this); }
 	}
 
-	public class PlaceBuilding : IResolveOrder
+	public class PlaceBuilding : IResolveOrder, ITick
 	{
 		readonly PlaceBuildingInfo info;
+		bool triggerNotification;
+		int tick;
 
 		public PlaceBuilding(PlaceBuildingInfo info)
 		{
 			this.info = info;
 		}
 
-		public void ResolveOrder(Actor self, Order order)
+		void IResolveOrder.ResolveOrder(Actor self, Order order)
 		{
 			var os = order.OrderString;
 			if (os != "PlaceBuilding" &&
@@ -143,9 +145,24 @@ namespace OpenRA.Mods.Common.Traits
 				}
 
 				if (GetNumBuildables(self.Owner) > prevItems)
-					w.Add(new DelayedAction(info.NewOptionsNotificationDelay,
-							() => Game.Sound.PlayNotification(self.World.Map.Rules, order.Player, "Speech", info.NewOptionsNotification, order.Player.Faction.InternalName)));
+					triggerNotification = true;
 			});
+		}
+
+		void ITick.Tick(Actor self)
+		{
+			if (!triggerNotification)
+				return;
+
+			if (tick++ >= info.NewOptionsNotificationDelay)
+				PlayNotification(self);
+		}
+
+		void PlayNotification(Actor self)
+		{
+			Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", info.NewOptionsNotification, self.Owner.Faction.InternalName);
+			triggerNotification = false;
+			tick = 0;
 		}
 
 		static int GetNumBuildables(Player p)
