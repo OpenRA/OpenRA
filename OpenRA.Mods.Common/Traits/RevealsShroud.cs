@@ -9,18 +9,33 @@
  */
 #endregion
 
+using OpenRA.Traits;
+
 namespace OpenRA.Mods.Common.Traits
 {
 	public class RevealsShroudInfo : AffectsShroudInfo
 	{
+		[Desc("Stance the watching player needs to see the shroud removed.")]
+		public readonly Stance ValidStances = Stance.Ally;
+
 		public override object Create(ActorInitializer init) { return new RevealsShroud(init.Self, this); }
 	}
 
 	public class RevealsShroud : AffectsShroud
 	{
+		readonly RevealsShroudInfo info;
+
 		public RevealsShroud(Actor self, RevealsShroudInfo info)
-			: base(self, info) { }
-		protected override void AddCellsToPlayerShroud(Actor self, Player p, PPos[] uv) { p.Shroud.AddProjectedVisibility(self, uv); }
-		protected override void RemoveCellsFromPlayerShroud(Actor self, Player p) { p.Shroud.RemoveVisibility(self); }
+			: base(self, info) { this.info = info; }
+
+		protected override void AddCellsToPlayerShroud(Actor self, Player p, PPos[] uv)
+		{
+			if (!info.ValidStances.HasStance(p.Stances[self.Owner]))
+				return;
+
+			p.Shroud.AddProjectedVisibility(this, uv);
+		}
+
+		protected override void RemoveCellsFromPlayerShroud(Actor self, Player p) { p.Shroud.RemoveVisibility(this); }
 	}
 }

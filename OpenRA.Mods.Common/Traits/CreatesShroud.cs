@@ -9,19 +9,35 @@
  */
 #endregion
 
+using OpenRA.Traits;
+
 namespace OpenRA.Mods.Common.Traits
 {
 	public class CreatesShroudInfo : AffectsShroudInfo
 	{
+		[Desc("Stance the watching player needs to see the generated shroud.")]
+		public readonly Stance ValidStances = Stance.Neutral | Stance.Enemy;
+
 		public override object Create(ActorInitializer init) { return new CreatesShroud(init.Self, this); }
 	}
 
 	public class CreatesShroud : AffectsShroud
 	{
+		readonly CreatesShroudInfo info;
+
 		public CreatesShroud(Actor self, CreatesShroudInfo info)
-			: base(self, info) { }
-		protected override void AddCellsToPlayerShroud(Actor self, Player p, PPos[] uv) { p.Shroud.AddProjectedShroudGeneration(self, uv); }
-		protected override void RemoveCellsFromPlayerShroud(Actor self, Player p) { p.Shroud.RemoveShroudGeneration(self); }
+			: base(self, info) { this.info = info; }
+
+		protected override void AddCellsToPlayerShroud(Actor self, Player p, PPos[] uv)
+		{
+			if (!info.ValidStances.HasStance(p.Stances[self.Owner]))
+				return;
+
+			p.Shroud.AddProjectedShroudGeneration(this, uv);
+		}
+
+		protected override void RemoveCellsFromPlayerShroud(Actor self, Player p) { p.Shroud.RemoveShroudGeneration(this); }
+
 		protected override bool IsDisabled(Actor self) { return self.IsDisabled(); }
 	}
 }

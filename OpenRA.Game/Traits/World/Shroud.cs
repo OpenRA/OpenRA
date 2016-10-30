@@ -54,8 +54,8 @@ namespace OpenRA.Traits
 
 		// Cache of visibility that was added, so no matter what crazy trait code does, it
 		// can't make us invalid.
-		readonly Dictionary<Actor, PPos[]> visibility = new Dictionary<Actor, PPos[]>();
-		readonly Dictionary<Actor, PPos[]> generation = new Dictionary<Actor, PPos[]>();
+		readonly Dictionary<object, PPos[]> visibility = new Dictionary<object, PPos[]>();
+		readonly Dictionary<object, PPos[]> generation = new Dictionary<object, PPos[]>();
 
 		[Sync] bool disabled;
 		public bool Disabled
@@ -135,11 +135,8 @@ namespace OpenRA.Traits
 			return ProjectedCellsInRange(map, map.CenterOfCell(cell), range);
 		}
 
-		public void AddProjectedVisibility(Actor a, PPos[] visible)
+		public void AddProjectedVisibility(object key, PPos[] visible)
 		{
-			if (!a.Owner.IsAlliedWith(self.Owner))
-				return;
-
 			foreach (var puv in visible)
 			{
 				// Force cells outside the visible bounds invisible
@@ -151,17 +148,17 @@ namespace OpenRA.Traits
 				explored[uv] = true;
 			}
 
-			if (visibility.ContainsKey(a))
+			if (visibility.ContainsKey(key))
 				throw new InvalidOperationException("Attempting to add duplicate actor visibility");
 
-			visibility[a] = visible;
+			visibility[key] = visible;
 			Invalidate(visible);
 		}
 
-		public void RemoveVisibility(Actor a)
+		public void RemoveVisibility(object key)
 		{
 			PPos[] visible;
-			if (!visibility.TryGetValue(a, out visible))
+			if (!visibility.TryGetValue(key, out visible))
 				return;
 
 			foreach (var puv in visible)
@@ -171,62 +168,33 @@ namespace OpenRA.Traits
 					visibleCount[(MPos)puv]--;
 			}
 
-			visibility.Remove(a);
+			visibility.Remove(key);
 			Invalidate(visible);
 		}
 
-		public void AddProjectedShroudGeneration(Actor a, PPos[] shrouded)
+		public void AddProjectedShroudGeneration(object key, PPos[] shrouded)
 		{
-			if (a.Owner.IsAlliedWith(self.Owner))
-				return;
-
 			foreach (var uv in shrouded)
 				generatedShroudCount[(MPos)uv]++;
 
-			if (generation.ContainsKey(a))
+			if (generation.ContainsKey(key))
 				throw new InvalidOperationException("Attempting to add duplicate shroud generation");
 
-			generation[a] = shrouded;
+			generation[key] = shrouded;
 			Invalidate(shrouded);
 		}
 
-		public void RemoveShroudGeneration(Actor a)
+		public void RemoveShroudGeneration(object key)
 		{
 			PPos[] shrouded;
-			if (!generation.TryGetValue(a, out shrouded))
+			if (!generation.TryGetValue(key, out shrouded))
 				return;
 
 			foreach (var uv in shrouded)
 				generatedShroudCount[(MPos)uv]--;
 
-			generation.Remove(a);
+			generation.Remove(key);
 			Invalidate(shrouded);
-		}
-
-		public void UpdatePlayerStance(World w, Player player, Stance oldStance, Stance newStance)
-		{
-			if (oldStance == newStance)
-				return;
-
-			foreach (var a in w.Actors.Where(a => a.Owner == player))
-			{
-				PPos[] visible = null;
-				PPos[] shrouded = null;
-				foreach (var p in self.World.Players)
-				{
-					if (p.Shroud.visibility.TryGetValue(self, out visible))
-					{
-						p.Shroud.RemoveVisibility(self);
-						p.Shroud.AddProjectedVisibility(self, visible);
-					}
-
-					if (p.Shroud.generation.TryGetValue(self, out shrouded))
-					{
-						p.Shroud.RemoveShroudGeneration(self);
-						p.Shroud.AddProjectedShroudGeneration(self, shrouded);
-					}
-				}
-			}
 		}
 
 		public void ExploreProjectedCells(World world, IEnumerable<PPos> cells)
