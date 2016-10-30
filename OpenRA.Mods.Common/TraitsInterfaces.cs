@@ -70,7 +70,12 @@ namespace OpenRA.Mods.Common.Traits
 		void PreparingAttack(Actor self, Target target, Armament a, Barrel barrel);
 	}
 
+	[RequireExplicitImplementation]
 	public interface INotifyBuildComplete { void BuildingComplete(Actor self); }
+
+	[RequireExplicitImplementation]
+	public interface INotifyDamageStateChanged { void DamageStateChanged(Actor self, AttackInfo e); }
+
 	public interface INotifyBuildingPlaced { void BuildingPlaced(Actor self); }
 	public interface INotifyRepair { void Repairing(Actor self, Actor target); }
 	public interface INotifyBurstComplete { void FiredBurst(Actor self, Target target, Armament a); }
@@ -82,10 +87,12 @@ namespace OpenRA.Mods.Common.Traits
 	public interface INotifyDocking { void Docked(Actor self, Actor harvester); void Undocked(Actor self, Actor harvester); }
 	public interface INotifyParachuteLanded { void OnLanded(Actor ignore); }
 	public interface INotifyCapture { void OnCapture(Actor self, Actor captor, Player oldOwner, Player newOwner); }
-	public interface INotifyInfiltrated { void Infiltrated(Actor self, Actor infiltrator); }
 	public interface INotifyDiscovered { void OnDiscovered(Actor self, Player discoverer, bool playNotification); }
 	public interface IRenderActorPreviewInfo : ITraitInfo { IEnumerable<IActorPreview> RenderPreview(ActorPreviewInitializer init); }
 	public interface ICruiseAltitudeInfo : ITraitInfo { WDist GetCruiseAltitude(); }
+
+	[RequireExplicitImplementation]
+	public interface INotifyInfiltrated { void Infiltrated(Actor self, Actor infiltrator); }
 
 	[RequireExplicitImplementation]
 	public interface INotifyBlockingMove { void OnNotifyBlockingMove(Actor self, Actor blocking); }

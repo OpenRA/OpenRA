@@ -113,19 +113,30 @@ namespace OpenRA.Mods.Common.Traits.Render
 			return RenderSprites.NormalizeSequence(DefaultAnimation, self.GetDamageState(), sequence);
 		}
 
-		public virtual void DamageStateChanged(Actor self, AttackInfo e)
+		protected virtual void DamageStateChanged(Actor self)
 		{
 			if (DefaultAnimation.CurrentSequence != null)
 				DefaultAnimation.ReplaceAnim(NormalizeSequence(self, DefaultAnimation.CurrentSequence.Name));
 		}
 
-		public virtual void Tick(Actor self)
+		protected virtual void Tick(Actor self)
 		{
 			if (Info.AimSequence == null)
 				return;
 
 			var sequence = Attack.IsAttacking ? Info.AimSequence : Info.Sequence;
 			DefaultAnimation.ReplaceAnim(sequence);
+		}
+
+		void INotifyDamageStateChanged.DamageStateChanged(Actor self, AttackInfo e)
+		{
+			DamageStateChanged(self);
+		}
+
+		void ITick.Tick(Actor self)
+		{
+			// Split into a protected method to allow subclassing
+			Tick(self);
 		}
 
 		void INotifyBuildComplete.BuildingComplete(Actor self) { buildComplete = true; }

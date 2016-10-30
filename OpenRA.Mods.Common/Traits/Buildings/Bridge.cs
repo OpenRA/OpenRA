@@ -308,7 +308,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		public void DamageStateChanged(Actor self, AttackInfo e)
+		void INotifyDamageStateChanged.DamageStateChanged(Actor self, AttackInfo e)
 		{
 			Do((b, d) => b.UpdateState());
 

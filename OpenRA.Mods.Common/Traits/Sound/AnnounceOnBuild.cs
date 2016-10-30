@@ -31,7 +31,7 @@ namespace OpenRA.Mods.Common.Traits.Sound
 			this.info = info;
 		}
 
-		public void BuildingComplete(Actor self)
+		void INotifyBuildComplete.BuildingComplete(Actor self)
 		{
 			self.PlayVoice(info.Voice);
 		}

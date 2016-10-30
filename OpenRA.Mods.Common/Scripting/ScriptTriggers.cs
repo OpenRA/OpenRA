@@ -302,7 +302,7 @@ namespace OpenRA.Mods.Common.Scripting
 			OnCapturedInternal(self);
 		}
 
-		public void Infiltrated(Actor self, Actor infiltrator)
+		void INotifyInfiltrated.Infiltrated(Actor self, Actor infiltrator)
 		{
 			if (world.Disposing)
 				return;

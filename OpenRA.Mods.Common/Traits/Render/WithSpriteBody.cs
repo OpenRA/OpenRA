@@ -75,10 +75,15 @@ namespace OpenRA.Mods.Common.Traits.Render
 			return RenderSprites.NormalizeSequence(DefaultAnimation, self.GetDamageState(), sequence);
 		}
 
-		// TODO: Get rid of INotifyBuildComplete in favor of using the upgrade system
-		public virtual void BuildingComplete(Actor self)
+		protected virtual void OnBuildComplete(Actor self)
 		{
 			DefaultAnimation.PlayRepeating(NormalizeSequence(self, Info.Sequence));
+		}
+
+		// TODO: Get rid of INotifyBuildComplete in favor of using the upgrade system
+		void INotifyBuildComplete.BuildingComplete(Actor self)
+		{
+			OnBuildComplete(self);
 		}
 
 		public void PlayCustomAnimation(Actor self, string name, Action after = null)
@@ -112,10 +117,15 @@ namespace OpenRA.Mods.Common.Traits.Render
 			DefaultAnimation.PlayRepeating(NormalizeSequence(self, Info.Sequence));
 		}
 
-		public virtual void DamageStateChanged(Actor self, AttackInfo e)
+		protected virtual void DamageStateChanged(Actor self)
 		{
 			if (DefaultAnimation.CurrentSequence != null)
 				DefaultAnimation.ReplaceAnim(NormalizeSequence(self, DefaultAnimation.CurrentSequence.Name));
+		}
+
+		void INotifyDamageStateChanged.DamageStateChanged(Actor self, AttackInfo e)
+		{
+			DamageStateChanged(self);
 		}
 	}
 }

@@ -105,13 +105,13 @@ namespace OpenRA.Mods.Common.Traits
 			self.QueueActivity(new CallFunc(() => ChooseNewProc(self, null)));
 		}
 
-		public void Created(Actor self)
+		void INotifyCreated.Created(Actor self)
 		{
 			if (Info.SearchOnCreation)
 				self.QueueActivity(new FindResources(self));
 		}
 
-		public void BuildingComplete(Actor self)
+		void INotifyBuildComplete.BuildingComplete(Actor self)
 		{
 			if (Info.SearchOnCreation)
 				self.QueueActivity(new FindResources(self));
@@ -254,7 +254,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		public void TickIdle(Actor self)
+		void INotifyIdle.TickIdle(Actor self)
 		{
 			// Should we be intelligent while idle?
 			if (!idleSmart) return;

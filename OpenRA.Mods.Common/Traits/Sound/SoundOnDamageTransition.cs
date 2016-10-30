@@ -33,7 +33,7 @@ namespace OpenRA.Mods.Common.Traits.Sound
 			this.info = info;
 		}
 
-		public void DamageStateChanged(Actor self, AttackInfo e)
+		void INotifyDamageStateChanged.DamageStateChanged(Actor self, AttackInfo e)
 		{
 			var rand = Game.CosmeticRandom;
 

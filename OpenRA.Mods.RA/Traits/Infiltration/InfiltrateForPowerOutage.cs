@@ -32,12 +32,12 @@ namespace OpenRA.Mods.RA.Traits
 			playerPower = self.Owner.PlayerActor.Trait<PowerManager>();
 		}
 
-		public void Infiltrated(Actor self, Actor infiltrator)
+		void INotifyInfiltrated.Infiltrated(Actor self, Actor infiltrator)
 		{
 			playerPower.TriggerPowerOutage(info.Duration);
 		}
 
-		public void OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
+		void INotifyOwnerChanged.OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
 		{
 			playerPower = self.Owner.PlayerActor.Trait<PowerManager>();
 		}

@@ -38,7 +38,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			playerResources = init.Self.Owner.PlayerActor.Trait<PlayerResources>();
 		}
 
-		public void BuildingComplete(Actor self)
+		void INotifyBuildComplete.BuildingComplete(Actor self)
 		{
 			wsb.DefaultAnimation.PlayFetchIndex(wsb.NormalizeSequence(self, info.Sequence),
 				() => playerResources.ResourceCapacity != 0
@@ -46,7 +46,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 					: 0);
 		}
 
-		public void OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
+		void INotifyOwnerChanged.OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
 		{
 			playerResources = newOwner.PlayerActor.Trait<PlayerResources>();
 
