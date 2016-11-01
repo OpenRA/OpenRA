@@ -405,7 +405,7 @@ Actors:
 		SubCell: 1
 		Facing: 96
 		TurretFacing: 192
-	Minelayer: mnly.at
+	Minelayer: mnly
 		Owner: GoodGuy
 		Location: 67,45
 		Facing: 92

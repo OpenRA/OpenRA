@@ -152,11 +152,11 @@ APC:
 	Buildable:
 		Prerequisites: ~disabled
 
-MNLY.AP:
+MNLY:
 	Buildable:
 		Prerequisites: ~disabled
 
-MNLY.AT:
+MNLY:
 	Buildable:
 		Prerequisites: ~disabled
 
