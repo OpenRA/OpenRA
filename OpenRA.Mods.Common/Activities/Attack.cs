@@ -78,10 +78,11 @@ namespace OpenRA.Mods.Common.Activities
 				return NextActivity;
 
 			var type = Target.Type;
-			if (!Target.IsValidFor(self) || type == TargetType.FrozenActor)
+			if (!Target.IsValidFor(self))
 				return NextActivity;
 
-			if (attack.Info.AttackRequiresEnteringCell && !positionable.CanEnterCell(Target.Actor.Location, null, false))
+			var positionableLoc = self.World.Map.CellContaining(Target.CenterPosition);
+			if (attack.Info.AttackRequiresEnteringCell && !positionable.CanEnterCell(positionableLoc, null, false))
 				return NextActivity;
 
 			// Drop the target if it moves under the shroud / fog.

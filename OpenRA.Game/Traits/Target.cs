@@ -72,6 +72,10 @@ namespace OpenRA.Traits
 					if (actor.Generation != generation)
 						return TargetType.Invalid;
 				}
+				else if (type == TargetType.FrozenActor && !frozen.Visible)
+				{
+					return TargetType.Invalid;
+				}
 
 				return type;
 			}
