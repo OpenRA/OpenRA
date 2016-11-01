@@ -161,7 +161,7 @@ MCV:
 	Buildable:
 		Prerequisites: ~disabled
 
-MNLY.AP:
+MNLY:
 	Buildable:
 		Prerequisites: ~disabled
 

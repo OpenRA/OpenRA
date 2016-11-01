@@ -159,11 +159,7 @@ MGG:
 	Buildable:
 		Prerequisites: ~disabled
 
-MNLY.AT:
-	Buildable:
-		Prerequisites: ~disabled
-
-MNLY.AP:
+MNLY:
 	Buildable:
 		Prerequisites: ~disabled
 
