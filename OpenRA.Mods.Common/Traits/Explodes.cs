@@ -20,13 +20,13 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("This actor explodes when killed.")]
 	public class ExplodesInfo : ITraitInfo, IRulesetLoaded, Requires<HealthInfo>
 	{
-		[WeaponReference, FieldLoader.Require, Desc("Weapon to use for explosion if ammo/payload is loaded.")]
+		[WeaponReference, FieldLoader.Require, Desc("Default weapon to use for explosion if ammo/payload is loaded.")]
 		public readonly string Weapon = "UnitExplode";
 
-		[WeaponReference, Desc("Weapon to use for explosion if no ammo/payload is loaded.")]
+		[WeaponReference, Desc("Fallback weapon to use for explosion if empty (no ammo/payload).")]
 		public readonly string EmptyWeapon = "UnitExplode";
 
-		[Desc("Chance that the explosion will use Weapon if the actor has ammo/payload.")]
+		[Desc("Chance that the explosion will use Weapon instead of EmptyWeapon when exploding, provided the actor has ammo/payload.")]
 		public readonly int LoadedChance = 100;
 
 		[Desc("Chance that this actor will explode at all.")]
