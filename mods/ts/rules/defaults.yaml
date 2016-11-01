@@ -126,8 +126,10 @@
 		DamagedSounds: expnew01.aud
 		DestroyedSounds: crmble2.aud
 	WithSpriteBody:
-	WithBuildingExplosion:
-		Sequences: building, large_bang, large_brnl, verylarge_clsn, large_tumu
+	Explodes:
+		Weapon: BuildingExplosions
+		EmptyWeapon: BuildingExplosions
+		Type: Footprint
 	EngineerRepairable:
 	ShakeOnDeath:
 	AcceptsSupplies:

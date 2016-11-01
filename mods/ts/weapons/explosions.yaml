@@ -34,6 +34,13 @@ UnitExplodeSmall:
 		SmudgeType: SmallCrater
 		InvalidTargets: Building, Wall
 
+BuildingExplosions:
+	Warhead@1Eff: CreateEffect
+		Explosions: building, large_bang, large_brnl, verylarge_clsn, large_tumu
+		ExplosionPalette: effectalpha75
+	Warhead@2Smu: LeaveSmudge
+		SmudgeType: MediumCrater
+
 CyborgExplode:
 	Warhead@1Eff: CreateEffect
 		Explosions: medium_bang
