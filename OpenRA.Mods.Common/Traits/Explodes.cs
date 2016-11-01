@@ -17,6 +17,8 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
+	public enum ExplosionType { Footprint, CenterPosition }
+
 	[Desc("This actor explodes when killed.")]
 	public class ExplodesInfo : ITraitInfo, IRulesetLoaded, Requires<HealthInfo>
 	{
@@ -38,6 +40,10 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("DeathType(s) that trigger the explosion. Leave empty to always trigger an explosion.")]
 		public readonly HashSet<string> DeathTypes = new HashSet<string>();
 
+		[Desc("Possible values are CenterPosition (explosion at the actors' center) and ",
+			"Footprint (explosion on each occupied cell).")]
+		public readonly ExplosionType Type = ExplosionType.CenterPosition;
+
 		public WeaponInfo WeaponInfo { get; private set; }
 		public WeaponInfo EmptyWeaponInfo { get; private set; }
 
@@ -49,16 +55,21 @@ namespace OpenRA.Mods.Common.Traits
 		}
 	}
 
-	public class Explodes : INotifyKilled, INotifyDamage
+	public class Explodes : INotifyKilled, INotifyDamage, INotifyCreated
 	{
 		readonly ExplodesInfo info;
-
 		readonly Health health;
+		BuildingInfo buildingInfo;
 
 		public Explodes(ExplodesInfo info, Actor self)
 		{
 			this.info = info;
 			health = self.Trait<Health>();
+		}
+
+		void INotifyCreated.Created(Actor self)
+		{
+			buildingInfo = self.Info.TraitInfoOrDefault<BuildingInfo>();
 		}
 
 		void INotifyKilled.Killed(Actor self, AttackInfo e)
@@ -78,6 +89,15 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (weapon.Report != null && weapon.Report.Any())
 				Game.Sound.Play(weapon.Report.Random(e.Attacker.World.SharedRandom), self.CenterPosition);
+
+			if (info.Type == ExplosionType.Footprint && buildingInfo != null)
+			{
+				var cells = FootprintUtils.UnpathableTiles(self.Info.Name, buildingInfo, self.Location);
+				foreach (var c in cells)
+					weapon.Impact(Target.FromPos(self.World.Map.CenterOfCell(c)), e.Attacker, Enumerable.Empty<int>());
+
+				return;
+			}
 
 			// Use .FromPos since this actor is killed. Cannot use Target.FromActor
 			weapon.Impact(Target.FromPos(self.CenterPosition), e.Attacker, Enumerable.Empty<int>());
