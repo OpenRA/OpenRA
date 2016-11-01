@@ -419,7 +419,6 @@
     <Compile Include="Traits\Render\SupportPowerChargeBar.cs" />
     <Compile Include="Traits\Render\TimedConditionBar.cs" />
     <Compile Include="Traits\Render\WithSpriteBarrel.cs" />
-    <Compile Include="Traits\Render\WithBuildingExplosion.cs" />
     <Compile Include="Traits\Render\WithAttackAnimation.cs" />
     <Compile Include="Traits\Render\WithAttackOverlay.cs" />
     <Compile Include="Traits\Render\WithMoveAnimation.cs" />

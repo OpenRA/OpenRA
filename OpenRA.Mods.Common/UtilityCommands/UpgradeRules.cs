@@ -542,6 +542,19 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						RenameNodeKey(node, "LegacyBridgeLayer");
 				}
 
+				// Removed WithBuildingExplosion
+				if (engineVersion < 20161210)
+				{
+					if (node.Key == "WithBuildingExplosion")
+					{
+						node.Value.Nodes.Add(new MiniYamlNode("Type", "Footprint"));
+						node.Value.Nodes.Add(new MiniYamlNode("Weapon", "UnitExplodeSmall"));
+						node.Key = "Explodes";
+						Console.WriteLine("The trait WithBuildingExplosion has been removed and superseded by additional 'Explodes' functionality.");
+						Console.WriteLine("If you need a delayed building explosion, use 'Explodes' with 'Type: Footprint' and a cosmetic weapon with warhead delay.");
+					}
+				}
+
 				UpgradeActorRules(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 
