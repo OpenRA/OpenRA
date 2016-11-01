@@ -332,8 +332,10 @@
 		DamagedSounds: EXPLSML1.WAV
 		DestroyedSounds: EXPLHG1.WAV
 	WithSpriteBody:
-	WithBuildingExplosion:
-		Sequences: building, self_destruct, large_explosion
+	Explodes:
+		Type: Footprint
+		Weapon: BuildingExplode
+		EmptyWeapon: BuildingExplode
 	RepairableBuilding:
 		PlayerExperience: 25
 	EmitInfantryOnSell:

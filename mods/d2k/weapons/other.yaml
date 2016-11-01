@@ -186,6 +186,10 @@ UnitExplodeLarge:
 		Explosions: large_explosion
 		ImpactSounds: EXPLLG2.WAV
 
+BuildingExplode:
+	Warhead@1Eff: CreateEffect
+		Explosions: building, self_destruct, large_explosion
+
 grenade:
 	ReloadDelay: 50
 	Range: 4c0
