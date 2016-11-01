@@ -403,7 +403,7 @@ MNLY.AP:
 		Queue: Vehicle
 		BuildPaletteOrder: 110
 		Prerequisites: fix, ~vehicles.soviet, ~techlevel.medium
-		Description: Lays mines to destroy\nunwary enemy units.\nCan detect mines.\n  Unarmed
+		Description: Lays anti-personnel mines to destroy\nunwary enemy soldiers.\nCan detect mines.\n  Unarmed
 	Valued:
 		Cost: 800
 	Tooltip:
@@ -438,7 +438,7 @@ MNLY.AT:
 		Queue: Vehicle
 		BuildPaletteOrder: 100
 		Prerequisites: fix, ~vehicles.allies, ~techlevel.medium
-		Description: Lays mines to destroy\nunwary enemy units.\nCan detect mines.\n  Unarmed
+		Description: Lays anti-tank mines to destroy\nunwary enemy units.\nCan detect mines.\n  Unarmed
 	Valued:
 		Cost: 800
 	Tooltip:
