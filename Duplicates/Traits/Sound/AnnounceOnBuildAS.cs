@@ -8,6 +8,7 @@
  */
 #endregion
 
+using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.AS.Traits
@@ -33,7 +34,7 @@ namespace OpenRA.Mods.AS.Traits
 			this.info = info;
 		}
 
-		public void BuildingComplete(Actor self)
+		void INotifyBuildComplete.BuildingComplete(Actor self)
 		{
 			if (info.OnlyToOwner && self.Owner != self.World.RenderPlayer)
 				return;
