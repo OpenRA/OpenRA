@@ -30,6 +30,7 @@ namespace OpenRA.Mods.Common.Traits.Sound
 		ISound currentSound;
 		bool wasDisabled = true;
 		int interval;
+		WPos cachedPosition;
 
 		public AmbientSound(AmbientSoundInfo info)
 			: base(info)
@@ -47,13 +48,21 @@ namespace OpenRA.Mods.Common.Traits.Sound
 
 			if (Info.Interval <= 0)
 			{
-				if (!wasDisabled)
+				var moved = self.OccupiesSpace != null && cachedPosition != self.CenterPosition;
+				if (!wasDisabled && !moved)
 					return;
 
 				wasDisabled = false;
 
-				if (self.OccupiesSpace != null)
+				if (moved)
+				{
+					// Otherwise the sound never gets stopped when the actor is on the move
+					Game.Sound.StopSound(currentSound);
+					currentSound = null;
+
+					cachedPosition = self.CenterPosition;
 					currentSound = Game.Sound.PlayLooped(Info.SoundFile, self.CenterPosition);
+				}
 				else
 					currentSound = Game.Sound.PlayLooped(Info.SoundFile);
 
