@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Common.Traits.Sound
 		[Desc("Interval between playing the sound (in ticks).")]
 		public readonly int Interval = 0;
 
-		public override object Create(ActorInitializer init) { return new AmbientSound(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new AmbientSound(this); }
 	}
 
 	class AmbientSound : UpgradableTrait<AmbientSoundInfo>, ITick
@@ -31,7 +31,7 @@ namespace OpenRA.Mods.Common.Traits.Sound
 		bool wasDisabled = true;
 		int interval;
 
-		public AmbientSound(Actor self, AmbientSoundInfo info)
+		public AmbientSound(AmbientSoundInfo info)
 			: base(info)
 		{
 			interval = info.Interval;
@@ -47,18 +47,20 @@ namespace OpenRA.Mods.Common.Traits.Sound
 				return;
 			}
 
-			if (wasDisabled && Info.Interval <= 0)
+			if (Info.Interval <= 0)
 			{
+				if (!wasDisabled)
+					return;
+
+				wasDisabled = false;
+
 				if (self.OccupiesSpace != null)
 					currentSound = Game.Sound.PlayLooped(Info.SoundFile, self.CenterPosition);
 				else
 					currentSound = Game.Sound.PlayLooped(Info.SoundFile);
-			}
 
-			wasDisabled = false;
-
-			if (Info.Interval <= 0)
 				return;
+			}
 
 			if (interval-- > 0)
 				return;
