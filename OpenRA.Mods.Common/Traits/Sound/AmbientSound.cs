@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Common.Traits.Sound
 		public override object Create(ActorInitializer init) { return new AmbientSound(this); }
 	}
 
-	class AmbientSound : UpgradableTrait<AmbientSoundInfo>, ITick
+	class AmbientSound : UpgradableTrait<AmbientSoundInfo>, ITick, INotifyRemovedFromWorld
 	{
 		ISound currentSound;
 		bool wasDisabled = true;
@@ -39,11 +39,9 @@ namespace OpenRA.Mods.Common.Traits.Sound
 
 		public void Tick(Actor self)
 		{
-			if (IsTraitDisabled)
+			if (IsTraitDisabled || !self.IsInWorld)
 			{
-				Game.Sound.StopSound(currentSound);
-				currentSound = null;
-				wasDisabled = true;
+				StopSound();
 				return;
 			}
 
@@ -71,6 +69,18 @@ namespace OpenRA.Mods.Common.Traits.Sound
 				Game.Sound.Play(Info.SoundFile, self.CenterPosition);
 			else
 				Game.Sound.Play(Info.SoundFile);
+		}
+
+		void INotifyRemovedFromWorld.RemovedFromWorld(Actor self)
+		{
+			StopSound();
+		}
+
+		void StopSound()
+		{
+			Game.Sound.StopSound(currentSound);
+			currentSound = null;
+			wasDisabled = true;
 		}
 	}
 }
