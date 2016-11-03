@@ -159,11 +159,10 @@ namespace OpenRA.GameRules
 			{
 				var wh = warhead; // force the closure to bind to the current warhead
 
-				Action a = () => wh.DoImpact(target, firedBy, damageModifiers);
 				if (wh.Delay > 0)
-					firedBy.World.AddFrameEndTask(w => w.Add(new DelayedAction(wh.Delay, a)));
+					firedBy.World.AddFrameEndTask(w => w.Add(new DelayedImpact(wh.Delay, wh, target, firedBy, damageModifiers)));
 				else
-					a();
+					wh.DoImpact(target, firedBy, damageModifiers);
 			}
 		}
 	}
