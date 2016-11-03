@@ -520,6 +520,8 @@ DOME:
 	InfiltrateForExploration:
 	DetectCloaked:
 		Range: 10c0
+		UpgradeTypes: powered
+		UpgradeMinEnabledLevel: 1
 	RenderDetectionCircle:
 	Power:
 		Amount: -40

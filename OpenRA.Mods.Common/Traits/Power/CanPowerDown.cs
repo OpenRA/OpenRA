@@ -15,15 +15,17 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("The player can disable the power individually on this actor.")]
-	public class CanPowerDownInfo : UpgradableTraitInfo, Requires<PowerInfo>
+	public class CanPowerDownInfo : UpgradableTraitInfo, Requires<PowerInfo>, Requires<UpgradeManagerInfo>
 	{
 		[Desc("Restore power when this trait is disabled.")]
 		public readonly bool CancelWhenDisabled = false;
 
 		public readonly string IndicatorImage = "poweroff";
-		[SequenceReference("IndicatorImage")] public readonly string IndicatorSequence = "offline";
+		[SequenceReference("IndicatorImage")]
+		public readonly string IndicatorSequence = "offline";
 
-		[PaletteReference] public readonly string IndicatorPalette = "chrome";
+		[PaletteReference]
+		public readonly string IndicatorPalette = "chrome";
 
 		public readonly string PowerupSound = null;
 		public readonly string PowerdownSound = null;
@@ -31,11 +33,15 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string PowerupSpeech = null;
 		public readonly string PowerdownSpeech = null;
 
+		[Desc("Upgrades to grant/revoke when power is enabled/disabled, respectively.")]
+		public readonly string[] PoweredUpgrades = { "powered" };
+
 		public override object Create(ActorInitializer init) { return new CanPowerDown(init.Self, this); }
 	}
 
-	public class CanPowerDown : UpgradableTrait<CanPowerDownInfo>, IPowerModifier, IResolveOrder, IDisable, INotifyOwnerChanged
+	public class CanPowerDown : UpgradableTrait<CanPowerDownInfo>, IPowerModifier, IResolveOrder, IDisable, INotifyOwnerChanged, INotifyCreated
 	{
+		readonly UpgradeManager upgradeManager;
 		[Sync] bool disabled = false;
 		PowerManager power;
 
@@ -43,6 +49,13 @@ namespace OpenRA.Mods.Common.Traits
 			: base(info)
 		{
 			power = self.Owner.PlayerActor.Trait<PowerManager>();
+			upgradeManager = self.Trait<UpgradeManager>();
+		}
+
+		public void Created(Actor self)
+		{
+			foreach (var u in Info.PoweredUpgrades)
+				upgradeManager.GrantUpgrade(self, u, this);
 		}
 
 		public bool Disabled { get { return disabled; } }
@@ -53,17 +66,23 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				disabled = !disabled;
 
-				if (Info.PowerupSound != null && disabled)
+				if (disabled)
+				{
+					foreach (var u in Info.PoweredUpgrades)
+						upgradeManager.RevokeUpgrade(self, u, this);
+
 					Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Sounds", Info.PowerupSound, self.Owner.Faction.InternalName);
-
-				if (Info.PowerdownSound != null && !disabled)
-					Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Sounds", Info.PowerdownSound, self.Owner.Faction.InternalName);
-
-				if (Info.PowerupSpeech != null && disabled)
 					Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", Info.PowerupSpeech, self.Owner.Faction.InternalName);
+				}
 
-				if (Info.PowerdownSpeech != null && !disabled)
+				if (!disabled)
+				{
+					foreach (var u in Info.PoweredUpgrades)
+						upgradeManager.GrantUpgrade(self, u, this);
+
+					Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Sounds", Info.PowerdownSound, self.Owner.Faction.InternalName);
 					Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", Info.PowerdownSpeech, self.Owner.Faction.InternalName);
+				}
 
 				power.UpdateActor(self);
 
@@ -88,11 +107,9 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 			disabled = false;
 
-			if (Info.PowerupSound != null)
-				Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Sound", Info.PowerupSound, self.Owner.Faction.InternalName);
+			Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Sound", Info.PowerupSound, self.Owner.Faction.InternalName);
 
-			if (Info.PowerupSpeech != null)
-				Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", Info.PowerupSpeech, self.Owner.Faction.InternalName);
+			Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", Info.PowerupSpeech, self.Owner.Faction.InternalName);
 
 			power.UpdateActor(self);
 		}
