@@ -93,7 +93,7 @@ namespace OpenRA.Mods.D2k.Traits
 			anim.Animation.Play(info.GrowthSequences[0]);
 		}
 
-		public void Tick(Actor self)
+		void ITick.Tick(Actor self)
 		{
 			if (!self.World.Map.Contains(self.Location))
 				return;
@@ -158,7 +158,7 @@ namespace OpenRA.Mods.D2k.Traits
 			}
 		}
 
-		public void Killed(Actor self, AttackInfo e)
+		void INotifyKilled.Killed(Actor self, AttackInfo e)
 		{
 			if (!string.IsNullOrEmpty(info.Weapon))
 				SeedResources(self);
