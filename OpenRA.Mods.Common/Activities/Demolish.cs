@@ -63,8 +63,7 @@ namespace OpenRA.Mods.Common.Activities
 					building.Lock();
 
 				for (var f = 0; f < flashes; f++)
-					w.Add(new DelayedAction(flashesDelay + f * flashInterval, () =>
-						w.Add(new FlashTarget(target, ticks: flashDuration))));
+					w.Add(new FlashTarget(target, null, flashDuration, flashesDelay + f * flashInterval));
 
 				w.Add(new DelayedAction(delay, () =>
 				{
