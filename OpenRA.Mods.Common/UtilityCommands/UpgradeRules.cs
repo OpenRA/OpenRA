@@ -781,6 +781,26 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					if (node.Key.StartsWith("UpgradeOverlay", StringComparison.Ordinal))
 						RenameNodeKey(node, "WithColoredOverlay" + node.Key.Substring(14));
 
+				// Remove SpiceBloom.RespawnDelay to get rid of DelayedAction, and rename GrowthDelay to Lifetime
+				if (engineVersion < 20170203)
+				{
+					var spiceBloom = node.Value.Nodes.FirstOrDefault(n => n.Key == "SpiceBloom");
+					if (spiceBloom != null)
+					{
+						var respawnDelay = spiceBloom.Value.Nodes.FirstOrDefault(n => n.Key == "RespawnDelay");
+						if (respawnDelay != null)
+						{
+							spiceBloom.Value.Nodes.Remove(respawnDelay);
+							Console.WriteLine("RespawnDelay has been removed from SpiceBloom for technical reasons.");
+							Console.WriteLine("Increase self-kill delay of the spice bloom spawnpoint actor instead.");
+						}
+
+						var growthDelay = spiceBloom.Value.Nodes.FirstOrDefault(n => n.Key == "GrowthDelay");
+						if (growthDelay != null)
+							growthDelay.Key = "Lifetime";
+					}
+				}
+
 				UpgradeActorRules(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 

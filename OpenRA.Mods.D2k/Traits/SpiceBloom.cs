@@ -32,11 +32,8 @@ namespace OpenRA.Mods.D2k.Traits
 		[SequenceReference]
 		public readonly string[] GrowthSequences = { "grow1", "grow2", "grow3" };
 
-		[Desc("The range of time (in ticks) that the spicebloom will take to respawn.")]
-		public readonly int[] RespawnDelay = { 1500, 2500 };
-
-		[Desc("The range of time (in ticks) that the spicebloom will take to grow.")]
-		public readonly int[] GrowthDelay = { 1000, 3000 };
+		[Desc("The range of time (in ticks) that the spicebloom will take to grow until it blows up.")]
+		public readonly int[] Lifetime = { 1000, 3000 };
 
 		public readonly string ResourceType = "Spice";
 
@@ -72,7 +69,6 @@ namespace OpenRA.Mods.D2k.Traits
 		readonly ResourceLayer resLayer;
 		readonly AnimationWithOffset anim;
 
-		readonly int respawnTicks;
 		readonly int growTicks;
 		int ticks;
 
@@ -88,8 +84,7 @@ namespace OpenRA.Mods.D2k.Traits
 			anim = new AnimationWithOffset(new Animation(init.Self.World, render.GetImage(self)), null, () => self.IsDead);
 			render.Add(anim);
 
-			respawnTicks = self.World.SharedRandom.Next(info.RespawnDelay[0], info.RespawnDelay[1]);
-			growTicks = self.World.SharedRandom.Next(info.GrowthDelay[0], info.GrowthDelay[1]);
+			growTicks = self.World.SharedRandom.Next(info.Lifetime[0], info.Lifetime[1]);
 			anim.Animation.Play(info.GrowthSequences[0]);
 		}
 
@@ -163,19 +158,17 @@ namespace OpenRA.Mods.D2k.Traits
 			if (!string.IsNullOrEmpty(info.Weapon))
 				SeedResources(self);
 
-			self.World.AddFrameEndTask(t => t.Add(new DelayedAction(respawnTicks, () =>
+			var td = new TypeDictionary
 			{
-				var td = new TypeDictionary
-				{
-					new ParentActorInit(self),
-					new LocationInit(self.Location),
-					new CenterPositionInit(self.CenterPosition),
-					new OwnerInit(self.Owner),
-					new FactionInit(self.Owner.Faction.InternalName),
-					new SkipMakeAnimsInit()
-				};
-				self.World.CreateActor(info.SpawnActor, td);
-			})));
+				new ParentActorInit(self),
+				new LocationInit(self.Location),
+				new CenterPositionInit(self.CenterPosition),
+				new OwnerInit(self.Owner),
+				new FactionInit(self.Owner.Faction.InternalName),
+				new SkipMakeAnimsInit()
+			};
+
+			self.World.AddFrameEndTask(w => w.CreateActor(info.SpawnActor, td));
 		}
 	}
 }

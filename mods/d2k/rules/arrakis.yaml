@@ -1,16 +1,22 @@
 spicebloom.spawnpoint:
-	HiddenUnderShroud:
-		Type: CenterPosition
+	EditorOnlyTooltip:
+		Name: Spice Bloom spawnpoint
+	AlwaysVisible:
+	RenderSpritesEditorOnly:
+		Image: spicebloom
+	WithSpriteBody:
+		Sequence: grow1
 	BodyOrientation:
 		QuantizedFacings: 1
-	RenderSprites:
-		Image: spicebloom
-	SpiceBloom:
-		GrowthTerrainTypes: SpiceSand
-		SpawnActor: spicebloom
-		GrowthSequences: grow0
-		GrowthDelay: 250, 750
-		RespawnDelay: 1, 2
+	ConditionManager:
+	GrantConditionOnTerrain:
+		Condition: clearsand
+		TerrainTypes: SpiceSand
+	KillsSelf:
+		RequiresCondition: clearsand
+		Delay: 1750, 3250
+	SpawnActorOnDeath:
+		Actor: spicebloom
 	Explodes:
 		Weapon: BloomSpawn
 		EmptyWeapon: BloomSpawn
