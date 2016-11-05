@@ -704,6 +704,22 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						RenameNodeKey(node, "-ConditionManager");
 				}
 
+				// Replaced NukePower CameraActor with CameraRange (effect-based reveal)
+				if (engineVersion < 20161227)
+				{
+					var nukePower = node.Value.Nodes.FirstOrDefault(n => n.Key.StartsWith("NukePower"));
+					if (nukePower != null)
+					{
+						var cameraActor = nukePower.Value.Nodes.FirstOrDefault(n => n.Key == "CameraActor");
+						if (cameraActor != null)
+						{
+							nukePower.Value.Nodes.Remove(cameraActor);
+							nukePower.Value.Nodes.Add(new MiniYamlNode("CameraRange", "10"));
+							Console.WriteLine("If your camera actor had a different reveal range than 10, you'll need to correct that manually");
+						}
+					}
+				}
+
 				UpgradeActorRules(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 
