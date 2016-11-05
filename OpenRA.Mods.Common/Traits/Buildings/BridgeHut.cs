@@ -43,7 +43,7 @@ namespace OpenRA.Mods.Common.Traits
 			Bridge.Do((b, d) => b.Repair(repairer, d, () => repairDirections--));
 		}
 
-		public void Demolish(Actor self, Actor saboteur)
+		void IDemolishable.Demolish(Actor self, Actor saboteur, int delay)
 		{
 			Bridge.Do((b, d) => b.Demolish(saboteur, d));
 		}

@@ -65,18 +65,8 @@ namespace OpenRA.Mods.Common.Activities
 				for (var f = 0; f < flashes; f++)
 					w.Add(new FlashTarget(target, null, flashDuration, flashesDelay + f * flashInterval));
 
-				w.Add(new DelayedAction(delay, () =>
-				{
-					if (target.IsDead)
-						return;
-
-					var modifiers = target.TraitsImplementing<IDamageModifier>()
-						.Concat(self.Owner.PlayerActor.TraitsImplementing<IDamageModifier>())
-						.Select(t => t.GetDamageModifier(self, null));
-
-					if (Util.ApplyPercentageModifiers(100, modifiers) > 0)
-						demolishables.Do(d => d.Demolish(target, self));
-				}));
+				foreach (var d in demolishables)
+					d.Demolish(target, self, delay);
 			});
 		}
 	}

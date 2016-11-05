@@ -46,7 +46,7 @@ namespace OpenRA.Mods.Common.Traits
 	public interface IDemolishableInfo : ITraitInfoInterface { bool IsValidTarget(ActorInfo actorInfo, Actor saboteur); }
 	public interface IDemolishable
 	{
-		void Demolish(Actor self, Actor saboteur);
+		void Demolish(Actor self, Actor saboteur, int delay);
 		bool IsValidTarget(Actor self, Actor saboteur);
 	}
 
