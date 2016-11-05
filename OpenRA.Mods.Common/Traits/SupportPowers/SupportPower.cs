@@ -64,6 +64,9 @@ namespace OpenRA.Mods.Common.Traits
 		[SequenceReference("BeaconImage")] public readonly string ArrowSequence = "arrow";
 		[SequenceReference("BeaconImage")] public readonly string CircleSequence = "circles";
 
+		[Desc("Delay after launch, measured in ticks.")]
+		public readonly int BeaconDelay = 0;
+
 		public readonly bool DisplayRadarPing = false;
 
 		[Desc("Measured in ticks.")]
