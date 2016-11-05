@@ -39,19 +39,19 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Palette to use for the missile weapon image.")]
 		[PaletteReference("IsPlayerPalette")] public readonly string MissilePalette = "effect";
 
-		[Desc("Custom palette is a player palette BaseName")]
+		[Desc("Custom palette is a player palette BaseName.")]
 		public readonly bool IsPlayerPalette = false;
 
-		[Desc("Travel time - split equally between ascent and descent")]
+		[Desc("Travel time - split equally between ascent and descent.")]
 		public readonly int FlightDelay = 400;
 
-		[Desc("Visual ascent velocity in WDist / tick")]
+		[Desc("Visual ascent velocity in WDist / tick.")]
 		public readonly WDist FlightVelocity = new WDist(512);
 
-		[Desc("Descend immediately on the target, with half the FlightDelay")]
+		[Desc("Descend immediately on the target, with half the FlightDelay.")]
 		public readonly bool SkipAscent = false;
 
-		[Desc("Amount of time before detonation to remove the beacon")]
+		[Desc("Amount of time before detonation to remove the beacon.")]
 		public readonly int BeaconRemoveAdvance = 25;
 
 		[Desc("Range of cells the camera should reveal around target cell.")]
@@ -60,10 +60,10 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Reveal cells to players with these stances only.")]
 		public readonly Stance CameraStances = Stance.Ally;
 
-		[Desc("Amount of time before detonation to spawn the camera")]
+		[Desc("Amount of time before detonation to spawn the camera.")]
 		public readonly int CameraSpawnAdvance = 25;
 
-		[Desc("Amount of time after detonation to remove the camera")]
+		[Desc("Amount of time after detonation to remove the camera.")]
 		public readonly int CameraRemoveDelay = 25;
 
 		[Desc("Corresponds to `Type` from `FlashPaletteEffect` on the world actor.")]
