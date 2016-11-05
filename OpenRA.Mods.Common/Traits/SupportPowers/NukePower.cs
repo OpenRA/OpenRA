@@ -54,9 +54,11 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Amount of time before detonation to remove the beacon")]
 		public readonly int BeaconRemoveAdvance = 25;
 
-		[ActorReference]
-		[Desc("Actor to spawn before detonation")]
-		public readonly string CameraActor = null;
+		[Desc("Range of cells the camera should reveal around target cell.")]
+		public readonly WDist CameraRange = WDist.Zero;
+
+		[Desc("Reveal cells to players with these stances only.")]
+		public readonly Stance CameraStances = Stance.Ally;
 
 		[Desc("Amount of time before detonation to spawn the camera")]
 		public readonly int CameraSpawnAdvance = 25;
@@ -114,19 +116,10 @@ namespace OpenRA.Mods.Common.Traits
 
 			self.World.AddFrameEndTask(w => w.Add(missile));
 
-			if (info.CameraActor != null)
+			if (info.CameraRange != WDist.Zero)
 			{
-				var camera = self.World.CreateActor(false, info.CameraActor, new TypeDictionary
-				{
-					new LocationInit(order.TargetLocation),
-					new OwnerInit(self.Owner),
-				});
-
-				camera.QueueActivity(new Wait(info.CameraSpawnAdvance + info.CameraRemoveDelay));
-				camera.QueueActivity(new RemoveSelf());
-
-				Action addCamera = () => self.World.AddFrameEndTask(w => w.Add(camera));
-				self.World.AddFrameEndTask(w => w.Add(new DelayedAction(info.FlightDelay - info.CameraSpawnAdvance, addCamera)));
+				self.World.AddFrameEndTask(w => w.Add(new RevealShroudEffect(targetPosition, info.CameraRange, Shroud.SourceType.Visibility, self.Owner, info.CameraStances,
+					info.FlightDelay - info.CameraSpawnAdvance, info.CameraSpawnAdvance + info.CameraRemoveDelay)));
 			}
 
 			if (Info.DisplayBeacon)
@@ -142,18 +135,13 @@ namespace OpenRA.Mods.Common.Traits
 					Info.ArrowSequence,
 					Info.CircleSequence,
 					Info.ClockSequence,
-					() => missile.FractionComplete);
-
-				Action removeBeacon = () => self.World.AddFrameEndTask(w =>
-				{
-					w.Remove(beacon);
-					beacon = null;
-				});
+					() => missile.FractionComplete,
+					Info.BeaconDelay,
+					info.FlightDelay - info.BeaconRemoveAdvance);
 
 				self.World.AddFrameEndTask(w =>
 				{
 					w.Add(beacon);
-					w.Add(new DelayedAction(info.FlightDelay - info.BeaconRemoveAdvance, removeBeacon));
 				});
 			}
 		}

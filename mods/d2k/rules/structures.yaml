@@ -951,7 +951,7 @@ palace:
 		SpawnOffset: -512,1c171,0
 		DisplayBeacon: True
 		DisplayRadarPing: True
-		CameraActor: camera
+		CameraRange: 10c0
 		ActivationSequence:
 	ProduceActorPower@fremen:
 		Description: Recruit Fremen
