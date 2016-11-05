@@ -9,8 +9,6 @@
  */
 #endregion
 
-using OpenRA.Traits;
-
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("The inaccuracy of this actor is multiplied based on upgrade level if specified.")]
@@ -24,6 +22,6 @@ namespace OpenRA.Mods.Common.Traits
 		public InaccuracyMultiplier(InaccuracyMultiplierInfo info, string actorType)
 			: base(info, "InaccuracyMultiplier", actorType) { }
 
-		public int GetInaccuracyModifier() { return GetModifier(); }
+		int IInaccuracyModifier.GetInaccuracyModifier() { return GetModifier(); }
 	}
 }

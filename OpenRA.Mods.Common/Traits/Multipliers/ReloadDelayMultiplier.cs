@@ -9,8 +9,6 @@
  */
 #endregion
 
-using OpenRA.Traits;
-
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("The reloading time of this actor is multiplied based on upgrade level if specified.")]
@@ -24,6 +22,6 @@ namespace OpenRA.Mods.Common.Traits
 		public ReloadDelayMultiplier(ReloadDelayMultiplierInfo info, string actorType)
 			: base(info, "ReloadDelayMultiplier", actorType) { }
 
-		public int GetReloadModifier() { return GetModifier(); }
+		int IReloadModifier.GetReloadModifier() { return GetModifier(); }
 	}
 }

@@ -195,4 +195,35 @@ namespace OpenRA.Mods.Common.Traits
 
 	[RequireExplicitImplementation]
 	public interface INotifyRearm { void Rearming(Actor host, Actor other); }
+
+	[RequireExplicitImplementation]
+	public interface IRenderInfantrySequenceModifier
+	{
+		bool IsModifyingSequence { get; }
+		string SequencePrefix { get; }
+	}
+
+	[RequireExplicitImplementation]
+	public interface IDamageModifier { int GetDamageModifier(Actor attacker, Damage damage); }
+
+	[RequireExplicitImplementation]
+	public interface ISpeedModifier { int GetSpeedModifier(); }
+
+	[RequireExplicitImplementation]
+	public interface IFirepowerModifier { int GetFirepowerModifier(); }
+
+	[RequireExplicitImplementation]
+	public interface IReloadModifier { int GetReloadModifier(); }
+
+	[RequireExplicitImplementation]
+	public interface IInaccuracyModifier { int GetInaccuracyModifier(); }
+
+	[RequireExplicitImplementation]
+	public interface IRangeModifier { int GetRangeModifier(); }
+
+	[RequireExplicitImplementation]
+	public interface IRangeModifierInfo : ITraitInfoInterface { int GetRangeModifierDefault(); }
+
+	[RequireExplicitImplementation]
+	public interface IPowerModifier { int GetPowerModifier(); }
 }

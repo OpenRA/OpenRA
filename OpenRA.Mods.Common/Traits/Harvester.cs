@@ -447,9 +447,9 @@ namespace OpenRA.Mods.Common.Traits
 				yield return GetPipAt(i);
 		}
 
-		public bool ShouldExplode(Actor self) { return !IsEmpty; }
+		bool IExplodeModifier.ShouldExplode(Actor self) { return !IsEmpty; }
 
-		public int GetSpeedModifier()
+		int ISpeedModifier.GetSpeedModifier()
 		{
 			return 100 - (100 - Info.FullyLoadedSpeed) * contents.Values.Sum() / Info.Capacity;
 		}

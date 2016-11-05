@@ -233,14 +233,6 @@ namespace OpenRA.Traits
 	}
 
 	public interface IRenderModifier { IEnumerable<IRenderable> ModifyRender(Actor self, WorldRenderer wr, IEnumerable<IRenderable> r); }
-	public interface IDamageModifier { int GetDamageModifier(Actor attacker, Damage damage); }
-	public interface ISpeedModifier { int GetSpeedModifier(); }
-	public interface IFirepowerModifier { int GetFirepowerModifier(); }
-	public interface IReloadModifier { int GetReloadModifier(); }
-	public interface IInaccuracyModifier { int GetInaccuracyModifier(); }
-	public interface IRangeModifier { int GetRangeModifier(); }
-	public interface IRangeModifierInfo : ITraitInfoInterface { int GetRangeModifierDefault(); }
-	public interface IPowerModifier { int GetPowerModifier(); }
 	public interface ILoadsPalettes { void LoadPalettes(WorldRenderer wr); }
 	public interface ILoadsPlayerPalettes { void LoadPlayerPalettes(WorldRenderer wr, string playerName, HSLColor playerColor, bool replaceExisting); }
 	public interface IPaletteModifier { void AdjustPalette(IReadOnlyDictionary<string, MutablePalette> b); }
@@ -320,12 +312,6 @@ namespace OpenRA.Traits
 	public interface IRenderOverlay { void Render(WorldRenderer wr); }
 	public interface INotifyBecomingIdle { void OnBecomingIdle(Actor self); }
 	public interface INotifyIdle { void TickIdle(Actor self); }
-
-	public interface IRenderInfantrySequenceModifier
-	{
-		bool IsModifyingSequence { get; }
-		string SequencePrefix { get; }
-	}
 
 	public interface IRenderAboveWorld { void RenderAboveWorld(Actor self, WorldRenderer wr); }
 	public interface IRenderShroud { void RenderShroud(Shroud shroud, WorldRenderer wr); }

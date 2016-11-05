@@ -47,7 +47,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public bool Disabled { get { return disabled; } }
 
-		public void ResolveOrder(Actor self, Order order)
+		void IResolveOrder.ResolveOrder(Actor self, Order order)
 		{
 			if (!IsTraitDisabled && order.OrderString == "PowerDown")
 			{
@@ -72,12 +72,12 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		public int GetPowerModifier()
+		int IPowerModifier.GetPowerModifier()
 		{
 			return !IsTraitDisabled && disabled ? 0 : 100;
 		}
 
-		public void OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
+		void INotifyOwnerChanged.OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
 		{
 			power = newOwner.PlayerActor.Trait<PowerManager>();
 		}
@@ -86,6 +86,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			if (!disabled || !Info.CancelWhenDisabled)
 				return;
+
 			disabled = false;
 
 			if (Info.PowerupSound != null)

@@ -38,8 +38,8 @@ namespace OpenRA.Mods.Common.Traits
 		[Sync] int panicStartedTick;
 		bool Panicking { get { return panicStartedTick > 0; } }
 
-		public bool IsModifyingSequence { get { return Panicking; } }
-		public string SequencePrefix { get { return info.PanicSequencePrefix; } }
+		bool IRenderInfantrySequenceModifier.IsModifyingSequence { get { return Panicking; } }
+		string IRenderInfantrySequenceModifier.SequencePrefix { get { return info.PanicSequencePrefix; } }
 
 		public ScaredyCat(Actor self, ScaredyCatInfo info)
 		{
@@ -48,7 +48,7 @@ namespace OpenRA.Mods.Common.Traits
 			mobile = self.Trait<Mobile>();
 		}
 
-		public void Panic()
+		void Panic()
 		{
 			if (!Panicking)
 				self.CancelActivity();
@@ -56,7 +56,7 @@ namespace OpenRA.Mods.Common.Traits
 			panicStartedTick = self.World.WorldTick;
 		}
 
-		public void Tick(Actor self)
+		void ITick.Tick(Actor self)
 		{
 			if (!Panicking)
 				return;
@@ -68,7 +68,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		public void TickIdle(Actor self)
+		void INotifyIdle.TickIdle(Actor self)
 		{
 			if (!Panicking)
 				return;
@@ -76,7 +76,7 @@ namespace OpenRA.Mods.Common.Traits
 			mobile.Nudge(self, self, true);
 		}
 
-		public void Damaged(Actor self, AttackInfo e)
+		void INotifyDamage.Damaged(Actor self, AttackInfo e)
 		{
 			if (e.Damage.Value > 0)
 				Panic();
@@ -90,7 +90,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyAttack.PreparingAttack(Actor self, Target target, Armament a, Barrel barrel) { }
 
-		public int GetSpeedModifier()
+		int ISpeedModifier.GetSpeedModifier()
 		{
 			return Panicking ? info.PanicSpeedModifier : 100;
 		}

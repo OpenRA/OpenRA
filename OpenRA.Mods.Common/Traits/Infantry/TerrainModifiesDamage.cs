@@ -41,7 +41,7 @@ namespace OpenRA.Mods.Common.Traits
 			this.self = self;
 		}
 
-		public int GetDamageModifier(Actor attacker, Damage damage)
+		int IDamageModifier.GetDamageModifier(Actor attacker, Damage damage)
 		{
 			if (attacker.Owner.IsAlliedWith(self.Owner) && damage.Value < 0 && !Info.ModifyHealing)
 				return FullDamage;
