@@ -220,6 +220,7 @@ namespace OpenRA.Mods.Common.Traits
 
 	[RequireExplicitImplementation]
 	public interface IRangeModifier { int GetRangeModifier(); }
+
 	[RequireExplicitImplementation]
 	public interface IRangeModifierInfo : ITraitInfoInterface { int GetRangeModifierDefault(); }
 
