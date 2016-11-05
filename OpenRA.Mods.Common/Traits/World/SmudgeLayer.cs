@@ -139,6 +139,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void AddSmudge(CPos loc)
 		{
+			if (!world.Map.Contains(loc))
+				return;
+
 			if (Game.CosmeticRandom.Next(0, 100) <= Info.SmokePercentage)
 				world.AddFrameEndTask(w => w.Add(new SpriteEffect(world.Map.CenterOfCell(loc), w, Info.SmokeType, Info.SmokeSequence, Info.SmokePalette)));
 
@@ -167,6 +170,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void RemoveSmudge(CPos loc)
 		{
+			if (!world.Map.Contains(loc))
+				return;
+
 			var tile = dirty.ContainsKey(loc) ? dirty[loc] : new Smudge();
 
 			// Setting Sprite to null to indicate a deleted smudge.
