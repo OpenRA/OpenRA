@@ -97,9 +97,16 @@ MIG:
 		HP: 70
 	Armor:
 		Type: Light
+	RevealsShroud@GROUNDED:
+		Range: 5c0
+		Type: CenterPosition
+		UpgradeTypes: airborne
+		UpgradeMaxEnabledLevel: 0
 	RevealsShroud:
 		Range: 12c0
 		Type: CenterPosition
+		UpgradeTypes: airborne
+		UpgradeMinEnabledLevel: 1
 	Armament:
 		Weapon: Maverick
 		LocalOffset: 0,-640,0, 0,640,0
@@ -152,9 +159,16 @@ YAK:
 		HP: 60
 	Armor:
 		Type: Light
+	RevealsShroud@GROUNDED:
+		Range: 5c0
+		Type: CenterPosition
+		UpgradeTypes: airborne
+		UpgradeMaxEnabledLevel: 0
 	RevealsShroud:
 		Range: 10c0
 		Type: CenterPosition
+		UpgradeTypes: airborne
+		UpgradeMinEnabledLevel: 1
 	Armament@PRIMARY:
 		Weapon: ChainGun.Yak
 		LocalOffset: 256,-213,0
@@ -211,9 +225,6 @@ TRAN:
 		HP: 120
 	Armor:
 		Type: Light
-	RevealsShroud:
-		Range: 10c0
-		Type: CenterPosition
 	Aircraft:
 		InitialFacing: 224
 		TurnSpeed: 5
@@ -267,7 +278,6 @@ HELI:
 		Type: Light
 	RevealsShroud:
 		Range: 12c0
-		Type: CenterPosition
 	Armament@PRIMARY:
 		Weapon: HellfireAA
 		LocalOffset: 0,-213,-85
@@ -321,9 +331,6 @@ HIND:
 		HP: 100
 	Armor:
 		Type: Light
-	RevealsShroud:
-		Range: 10c0
-		Type: CenterPosition
 	Armament@PRIMARY:
 		Weapon: ChainGun
 		LocalOffset: 85,-213,-85

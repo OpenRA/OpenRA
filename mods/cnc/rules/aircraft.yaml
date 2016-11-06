@@ -20,9 +20,6 @@ TRAN:
 		HP: 90
 	Armor:
 		Type: Light
-	RevealsShroud:
-		Range: 10c0
-		Type: CenterPosition
 	WithIdleOverlay@ROTOR1AIR:
 		Offset: 597,0,85
 		Sequence: rotor
@@ -75,9 +72,6 @@ HELI:
 		HP: 125
 	Armor:
 		Type: Light
-	RevealsShroud:
-		Range: 10c0
-		Type: CenterPosition
 	Armament@PRIMARY:
 		Weapon: HeliAGGun
 		LocalOffset: 128,-213,-85, 128,213,-85
@@ -135,9 +129,6 @@ ORCA:
 		HP: 90
 	Armor:
 		Type: Light
-	RevealsShroud:
-		Range: 10c0
-		Type: CenterPosition
 	Armament@PRIMARY:
 		Weapon: OrcaAGMissiles
 		LocalOffset: 427,-171,-213, 427,171,-213
