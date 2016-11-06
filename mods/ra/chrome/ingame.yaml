@@ -10,6 +10,14 @@ Container@INGAME_ROOT:
 			Children:
 				LogicTicker@DISCONNECT_WATCHER:
 					Logic: DisconnectWatcherLogic
+				Label@MISSION_TEXT:
+					X: WINDOW_RIGHT/2 - 256
+					Y: 22
+					Width: 512
+					Height: 25
+					Font: Bold
+					Align: Center
+					Contrast: true
 				WorldInteractionController@INTERACTION_CONTROLLER:
 					Width: WINDOW_RIGHT
 					Height: WINDOW_BOTTOM
@@ -27,11 +35,3 @@ Container@INGAME_ROOT:
 				Container@PERF_ROOT:
 		Container@MENU_ROOT:
 		TooltipContainer@TOOLTIP_CONTAINER:
-		Label@MISSION_TEXT:
-			X: WINDOW_RIGHT/2 - 256
-			Y: 22
-			Width: 512
-			Height: 25
-			Font: Bold
-			Align: Center
-			Contrast: true
