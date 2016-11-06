@@ -32,7 +32,7 @@ namespace OpenRA.Mods.AS.Traits
 			health = self.Trait<Health>();
 		}
 
-		public int GetFirepowerModifier()
+		int IFirepowerModifier.GetFirepowerModifier()
 		{
 			return IsTraitDisabled ? 100 : 100 * health.HP / health.MaxHP;
 		}
