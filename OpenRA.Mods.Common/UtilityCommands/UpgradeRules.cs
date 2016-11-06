@@ -369,8 +369,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				}
 
 				// Add a warning to add WithRearmAnimation to actors that might need it.
-				// Update rule added during prep-1609 stable period, date needs fixing after release.
-				if (engineVersion < 20160918 && depth == 2)
+				if (engineVersion < 20161020 && depth == 2)
 				{
 					if (node.Key == "RearmBuildings")
 						foreach (var host in node.Value.Value.Split(','))
@@ -378,7 +377,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				}
 
 				// Resource type properties were renamed, and support for tooltips added
-				if (engineVersion < 20160925)
+				if (engineVersion < 20161020)
 				{
 					if (node.Key.StartsWith("ResourceType"))
 					{
@@ -397,7 +396,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				}
 
 				// Renamed AttackSequence to DefaultAttackSequence in WithInfantryBody.
-				if (engineVersion < 20161014)
+				if (engineVersion < 20161020)
 				{
 					if (node.Key == "WithInfantryBody")
 					{
@@ -408,7 +407,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				}
 
 				// Move production description from Tooltip to Buildable
-				if (engineVersion < 20161016)
+				if (engineVersion < 20161020)
 				{
 					var tooltipChild = node.Value.Nodes.FirstOrDefault(n => n.Key == "Tooltip" || n.Key == "DisguiseToolTip");
 					if (tooltipChild != null)
