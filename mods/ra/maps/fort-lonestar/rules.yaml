@@ -117,7 +117,7 @@ OILB:
 	RevealsShroud:
 		Range: 3c0
 	CashTrickler:
-		Period: 250
+		Interval: 250
 		Amount: 50
 
 MOBILETENT:

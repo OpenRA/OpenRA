@@ -18,11 +18,16 @@ namespace OpenRA.Mods.Common.Traits
 	class CashTricklerInfo : ConditionalTraitInfo
 	{
 		[Desc("Number of ticks to wait between giving money.")]
-		public readonly int Period = 50;
+		public readonly int Interval = 50;
+
 		[Desc("Amount of money to give each time.")]
 		public readonly int Amount = 15;
-		[Desc("Whether to show the cash tick indicators (+$15 rising from actor).")]
+
+		[Desc("Whether to show the cash tick indicators rising from the actor.")]
 		public readonly bool ShowTicks = true;
+
+		[Desc("How long to show the cash tick indicator when enabled.")]
+		public readonly int DisplayDuration = 30;
 
 		public override object Create(ActorInitializer init) { return new CashTrickler(this); }
 	}
@@ -31,29 +36,32 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		readonly CashTricklerInfo info;
 		[Sync] int ticks;
+
 		public CashTrickler(CashTricklerInfo info)
 			: base(info)
 		{
 			this.info = info;
 		}
 
-		public void Tick(Actor self)
+		void ITick.Tick(Actor self)
 		{
 			if (IsTraitDisabled)
 				return;
 
 			if (--ticks < 0)
 			{
-				ticks = info.Period;
+				ticks = info.Interval;
 				self.Owner.PlayerActor.Trait<PlayerResources>().GiveCash(info.Amount);
-				MaybeAddCashTick(self, info.Amount);
+
+				if (info.ShowTicks)
+					AddCashTick(self, info.Amount);
 			}
 		}
 
-		void MaybeAddCashTick(Actor self, int amount)
+		void AddCashTick(Actor self, int amount)
 		{
-			if (info.ShowTicks)
-				self.World.AddFrameEndTask(w => w.Add(new FloatingText(self.CenterPosition, self.Owner.Color.RGB, FloatingText.FormatCashTick(amount), 30)));
+			self.World.AddFrameEndTask(w => w.Add(
+				new FloatingText(self.CenterPosition, self.Owner.Color.RGB, FloatingText.FormatCashTick(amount), info.DisplayDuration)));
 		}
 	}
 }

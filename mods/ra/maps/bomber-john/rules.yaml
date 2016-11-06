@@ -91,7 +91,7 @@ MNLYR:
 		Offset: 0,0
 		Facing: 96
 	CashTrickler:
-		Period: 150
+		Interval: 150
 		Amount: 20
 	RenderSprites:
 		Image: MNLY
@@ -108,7 +108,7 @@ FTUR:
 	MustBeDestroyed:
 		RequiredForShortGame: true
 	CashTrickler:
-		Period: 150
+		Interval: 150
 		Amount: 30
 	ChronoshiftPower:
 		Icon: chrono

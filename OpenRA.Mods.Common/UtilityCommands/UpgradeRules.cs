@@ -740,6 +740,10 @@ namespace OpenRA.Mods.Common.UtilityCommands
 							node.Value.Nodes.Add(gcoc);
 							RenameNodeKey(capture, "Amount");
 						}
+
+						var period = trickler.Value.Nodes.FirstOrDefault(n => n.Key == "Period");
+						if (period != null)
+							period.Key = "Interval";
 					}
 				}
 

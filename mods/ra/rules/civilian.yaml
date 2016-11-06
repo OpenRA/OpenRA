@@ -364,7 +364,7 @@ OILB:
 	ExternalCapturableBar:
 	EngineerRepairable:
 	CashTrickler:
-		Period: 375
+		Interval: 375
 		Amount: 100
 	Tooltip:
 		Name: Oil Derrick
