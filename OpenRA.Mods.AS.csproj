@@ -100,12 +100,15 @@
     <Compile Include="Traits\Warheads\PromotionWarhead.cs" />
     <Compile Include="Traits\GrantPeriodicUpgrades.cs" />
     <Compile Include="Traits\Render\WithVoxelHelicopterBody.cs" />
+    <Compile Include="Traits\SmokeParticleEmitter.cs" />
+    <Compile Include="Effects\SmokeParticle.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Traits\Render\" />
     <Folder Include="Scripting\" />
     <Folder Include="Scripting\Global\" />
     <Folder Include="UtilityCommands\" />
+    <Folder Include="Effects\" />
   </ItemGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
