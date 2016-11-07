@@ -20,13 +20,13 @@ namespace OpenRA.Mods.AS.Effects
 		readonly World world;
 		readonly string palette;
 		readonly Animation anim;
-		readonly WVec gravity;
+		readonly WVec[] gravity;
 		readonly bool visibleThroughFog;
 		readonly bool scaleSizeWithZoom;
 
-		private WPos pos;
+		WPos pos;
 
-		public SmokeParticle(WPos pos, WVec gravity, World world, string image, string sequence, string palette, bool visibleThroughFog = false, bool scaleSizeWithZoom = false)
+		public SmokeParticle(WPos pos, WVec[] gravity, World world, string image, string sequence, string palette, bool visibleThroughFog = false, bool scaleSizeWithZoom = false)
 		{
 			this.world = world;
 			this.pos = pos;
@@ -41,7 +41,13 @@ namespace OpenRA.Mods.AS.Effects
 		public void Tick(World world)
 		{
 			anim.Tick();
-			pos = new WPos(pos.X + gravity.X, pos.Y + gravity.Y, pos.Z + gravity.Z);
+
+			var offset = gravity.Length == 2
+				? new WVec(world.SharedRandom.Next(gravity[0].X, gravity[1].X), world.SharedRandom.Next(gravity[0].Y, gravity[1].Y),
+					world.SharedRandom.Next(gravity[0].Z, gravity[1].Z))
+				: gravity[0];
+
+			pos += offset;
 		}
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)

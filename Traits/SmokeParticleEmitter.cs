@@ -54,7 +54,7 @@ namespace OpenRA.Mods.AS.Traits
 				? new WVec(random.Next(Info.Offset[0].X, Info.Offset[1].X), random.Next(Info.Offset[0].Y, Info.Offset[1].Y), random.Next(Info.Offset[0].Z, Info.Offset[1].Z))
 				: Info.Offset[0];
 
-			spawnpos = new WPos(self.CenterPosition.X + offset.X, self.CenterPosition.Y + offset.Y, self.CenterPosition.Z + offset.Z);
+			spawnpos = self.CenterPosition + offset;
 		}
 
 		public void Tick(Actor self)
@@ -66,12 +66,7 @@ namespace OpenRA.Mods.AS.Traits
 			{
 				ticks = Info.SpawnFrequency.Length == 2 ? random.Next(Info.SpawnFrequency[0], Info.SpawnFrequency[1]) : Info.SpawnFrequency[0];
 
-				var gravity = Info.Gravity.Length == 2
-					? new WVec(random.Next(Info.Gravity[0].X, Info.Gravity[1].X), random.Next(Info.Gravity[0].Y, Info.Gravity[1].Y),
-						random.Next(Info.Gravity[0].Z, Info.Gravity[1].Z))
-					: Info.Gravity[0];
-
-				self.World.AddFrameEndTask(w => w.Add(new SmokeParticle(spawnpos, gravity, w, Info.Image, Info.Sequence, Info.Palette, false, false)));
+				self.World.AddFrameEndTask(w => w.Add(new SmokeParticle(spawnpos, Info.Gravity, w, Info.Image, Info.Sequence, Info.Palette, false, false)));
 			}
 		}
 	}
