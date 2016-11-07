@@ -40,8 +40,8 @@ namespace OpenRA.Mods.AS.Traits
 
 	public class SmokeParticleEmitter : UpgradableTrait<SmokeParticleEmitterInfo>, ITick
 	{
-		readonly WPos spawnpos;
 		readonly MersenneTwister random;
+		readonly WVec offset;
 
 		int ticks;
 
@@ -50,11 +50,9 @@ namespace OpenRA.Mods.AS.Traits
 		{
 			random = self.World.SharedRandom;
 
-			var offset = Info.Offset.Length == 2
+			offset = Info.Offset.Length == 2
 				? new WVec(random.Next(Info.Offset[0].X, Info.Offset[1].X), random.Next(Info.Offset[0].Y, Info.Offset[1].Y), random.Next(Info.Offset[0].Z, Info.Offset[1].Z))
 				: Info.Offset[0];
-
-			spawnpos = self.CenterPosition + offset;
 		}
 
 		public void Tick(Actor self)
@@ -66,7 +64,7 @@ namespace OpenRA.Mods.AS.Traits
 			{
 				ticks = Info.SpawnFrequency.Length == 2 ? random.Next(Info.SpawnFrequency[0], Info.SpawnFrequency[1]) : Info.SpawnFrequency[0];
 
-				self.World.AddFrameEndTask(w => w.Add(new SmokeParticle(spawnpos, Info.Gravity, w, Info.Image, Info.Sequence, Info.Palette, false, false)));
+				self.World.AddFrameEndTask(w => w.Add(new SmokeParticle(self.CenterPosition + offset, Info.Gravity, w, Info.Image, Info.Sequence, Info.Palette, false, false)));
 			}
 		}
 	}

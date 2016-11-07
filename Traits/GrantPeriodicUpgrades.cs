@@ -36,7 +36,7 @@ namespace OpenRA.Mods.AS.Traits
 		public readonly Color CooldownColor = Color.DarkRed;
 		public readonly Color ActiveColor = Color.DarkMagenta;
 
-		public object Create(ActorInitializer init) { return new GrantPeriodicUpgrades(init, this); }
+		public override object Create(ActorInitializer init) { return new GrantPeriodicUpgrades(init, this); }
 	}
 
 	public class GrantPeriodicUpgrades : UpgradableTrait<GrantPeriodicUpgradesInfo>, INotifyCreated, ISelectionBar, ITick
@@ -47,16 +47,14 @@ namespace OpenRA.Mods.AS.Traits
 
 		[Sync] int ticks;
 		int cooldown, active;
-		bool isEnabled;
+		bool isEnabled, isSuspended;
 
 		public GrantPeriodicUpgrades(ActorInitializer init, GrantPeriodicUpgradesInfo info)
-			: base (info)
+			: base(info)
 		{
 			self = init.Self;
 			this.info = info;
 			manager = self.Trait<UpgradeManager>();
-
-			SetDefaultState();
 		}
 
 		void SetDefaultState()
@@ -67,7 +65,8 @@ namespace OpenRA.Mods.AS.Traits
 					? self.World.SharedRandom.Next(info.ActiveDuration[0], info.ActiveDuration[1])
 					: info.ActiveDuration[0];
 				active = ticks;
-				isEnabled = true;
+				if (info.StartsGranted != isEnabled)
+					EnableUpgrade();
 			}
 			else
 			{
@@ -75,15 +74,15 @@ namespace OpenRA.Mods.AS.Traits
 					? self.World.SharedRandom.Next(info.CooldownDuration[0], info.CooldownDuration[1])
 					: info.CooldownDuration[0];
 				cooldown = ticks;
-				isEnabled = false;
+				if (info.StartsGranted != isEnabled)
+					DisableUpgrade();
 			}
 		}
 
 		void INotifyCreated.Created(Actor self)
 		{
-			if (isEnabled)
-				foreach (var up in info.Upgrades)
-					manager.GrantUpgrade(self, up, this);
+			if (!IsTraitDisabled)
+				SetDefaultState();
 		}
 
 		void ITick.Tick(Actor self)
@@ -92,25 +91,19 @@ namespace OpenRA.Mods.AS.Traits
 			{
 				if (isEnabled)
 				{
-					foreach (var up in info.Upgrades)
-						manager.RevokeUpgrade(self, up, this);
-
 					ticks = info.CooldownDuration.Length == 2
 						? self.World.SharedRandom.Next(info.CooldownDuration[0], info.CooldownDuration[1])
 						: info.CooldownDuration[0];
 					cooldown = ticks;
-					isEnabled = false;
+					DisableUpgrade();
 				}
 				else
 				{
-					foreach (var up in info.Upgrades)
-						manager.GrantUpgrade(self, up, this);
-
 					ticks = info.ActiveDuration.Length == 2
 						? self.World.SharedRandom.Next(info.ActiveDuration[0], info.ActiveDuration[1])
 						: info.ActiveDuration[0];
 					active = ticks;
-					isEnabled = true;
+					EnableUpgrade();
 				}
 			}
 		}
@@ -118,9 +111,36 @@ namespace OpenRA.Mods.AS.Traits
 		protected override void UpgradeEnabled(Actor self)
 		{
 			if (info.ResetTraitOnEnable)
-			{
 				SetDefaultState();
+			else if (isSuspended)
+				EnableUpgrade();
+
+			isSuspended = false;
+		}
+
+		protected override void UpgradeDisabled(Actor self)
+		{
+			if (isEnabled)
+			{
+				DisableUpgrade();
+				isSuspended = true;
 			}
+		}
+
+		void EnableUpgrade()
+		{
+			foreach (var up in info.Upgrades)
+				manager.GrantUpgrade(self, up, this);
+
+			isEnabled = true;
+		}
+
+		void DisableUpgrade()
+		{
+			foreach (var up in info.Upgrades)
+				manager.RevokeUpgrade(self, up, this);
+
+			isEnabled = false;
 		}
 
 		float ISelectionBar.GetValue()
