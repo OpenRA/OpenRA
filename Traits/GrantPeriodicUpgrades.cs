@@ -16,7 +16,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.AS.Traits
 {
 	[Desc("Grant upgrades periodically.")]
-	public class GrantPeriodicUpgradesInfo : ITraitInfo, Requires<UpgradeManagerInfo>
+	public class GrantPeriodicUpgradesInfo : UpgradableTraitInfo, Requires<UpgradeManagerInfo>
 	{
 		[UpgradeGrantedReference, FieldLoader.Require]
 		[Desc("The upgrades to grant.")]
@@ -28,16 +28,18 @@ namespace OpenRA.Mods.AS.Traits
 		[Desc("The range of time (in ticks) that the upgrades will be enabled.")]
 		public readonly int[] ActiveDuration = { 100 };
 
-		public readonly bool StartsEnabled = false;
+		public readonly bool StartsGranted = false;
 
-		public readonly bool ShowSelectionBar = true;
+		public readonly bool ResetTraitOnEnable = false;
+
+		public readonly bool ShowSelectionBar = false;
 		public readonly Color CooldownColor = Color.DarkRed;
 		public readonly Color ActiveColor = Color.DarkMagenta;
 
 		public object Create(ActorInitializer init) { return new GrantPeriodicUpgrades(init, this); }
 	}
 
-	public class GrantPeriodicUpgrades : INotifyCreated, ISelectionBar, ISync, ITick
+	public class GrantPeriodicUpgrades : UpgradableTrait<GrantPeriodicUpgradesInfo>, INotifyCreated, ISelectionBar, ITick
 	{
 		readonly Actor self;
 		readonly GrantPeriodicUpgradesInfo info;
@@ -48,12 +50,18 @@ namespace OpenRA.Mods.AS.Traits
 		bool isEnabled;
 
 		public GrantPeriodicUpgrades(ActorInitializer init, GrantPeriodicUpgradesInfo info)
+			: base (info)
 		{
 			self = init.Self;
 			this.info = info;
 			manager = self.Trait<UpgradeManager>();
 
-			if (info.StartsEnabled)
+			SetDefaultState();
+		}
+
+		void SetDefaultState()
+		{
+			if (info.StartsGranted)
 			{
 				ticks = info.ActiveDuration.Length == 2
 					? self.World.SharedRandom.Next(info.ActiveDuration[0], info.ActiveDuration[1])
@@ -80,7 +88,7 @@ namespace OpenRA.Mods.AS.Traits
 
 		void ITick.Tick(Actor self)
 		{
-			if (--ticks < 0)
+			if (!IsTraitDisabled && --ticks < 0)
 			{
 				if (isEnabled)
 				{
@@ -104,6 +112,14 @@ namespace OpenRA.Mods.AS.Traits
 					active = ticks;
 					isEnabled = true;
 				}
+			}
+		}
+
+		protected override void UpgradeEnabled(Actor self)
+		{
+			if (info.ResetTraitOnEnable)
+			{
+				SetDefaultState();
 			}
 		}
 
