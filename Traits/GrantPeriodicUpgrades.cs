@@ -23,10 +23,10 @@ namespace OpenRA.Mods.AS.Traits
 		public readonly string[] Upgrades = { };
 
 		[Desc("The range of time (in ticks) that the upgrades will take to be granted.")]
-		public readonly int[] CooldownDuration = { 1000, 1000 };
+		public readonly int[] CooldownDuration = { 1000 };
 
 		[Desc("The range of time (in ticks) that the upgrades will be enabled.")]
-		public readonly int[] ActiveDuration = { 100, 100 };
+		public readonly int[] ActiveDuration = { 100 };
 
 		public readonly bool StartsEnabled = false;
 
@@ -55,12 +55,18 @@ namespace OpenRA.Mods.AS.Traits
 
 			if (info.StartsEnabled)
 			{
-				ticks = active = self.World.SharedRandom.Next(info.ActiveDuration[0], info.ActiveDuration[1]);
+				ticks = info.ActiveDuration.Length == 2
+					? self.World.SharedRandom.Next(info.ActiveDuration[0], info.ActiveDuration[1])
+					: info.ActiveDuration[0];
+				active = ticks;
 				isEnabled = true;
 			}
 			else
 			{
-				ticks = cooldown = self.World.SharedRandom.Next(info.CooldownDuration[0], info.CooldownDuration[1]);
+				ticks = info.CooldownDuration.Length == 2
+					? self.World.SharedRandom.Next(info.CooldownDuration[0], info.CooldownDuration[1])
+					: info.CooldownDuration[0];
+				cooldown = ticks;
 				isEnabled = false;
 			}
 		}
@@ -81,7 +87,10 @@ namespace OpenRA.Mods.AS.Traits
 					foreach (var up in info.Upgrades)
 						manager.RevokeUpgrade(self, up, this);
 
-					ticks = cooldown = self.World.SharedRandom.Next(info.CooldownDuration[0], info.CooldownDuration[1]);
+					ticks = info.CooldownDuration.Length == 2
+						? self.World.SharedRandom.Next(info.CooldownDuration[0], info.CooldownDuration[1])
+						: info.CooldownDuration[0];
+					cooldown = ticks;
 					isEnabled = false;
 				}
 				else
@@ -89,7 +98,10 @@ namespace OpenRA.Mods.AS.Traits
 					foreach (var up in info.Upgrades)
 						manager.GrantUpgrade(self, up, this);
 
-					ticks = active = self.World.SharedRandom.Next(info.ActiveDuration[0], info.ActiveDuration[1]);
+					ticks = info.ActiveDuration.Length == 2
+						? self.World.SharedRandom.Next(info.ActiveDuration[0], info.ActiveDuration[1])
+						: info.ActiveDuration[0];
+					active = ticks;
 					isEnabled = true;
 				}
 			}

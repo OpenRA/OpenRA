@@ -21,7 +21,7 @@ namespace OpenRA.Mods.AS.Traits
 		public readonly WVec[] Offset = { WVec.Zero };
 
 		[Desc("Randomize particle gravity.")]
-		public readonly WVec[] Gravity = { new WVec(0, 1, 0) };
+		public readonly WVec[] Gravity = { WVec.Zero };
 
 		[Desc("How many particles should spawn.")]
 		public readonly int[] SpawnFrequency = { 100, 150 };
