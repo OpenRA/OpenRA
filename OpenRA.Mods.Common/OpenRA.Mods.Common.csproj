@@ -777,6 +777,10 @@
     <Compile Include="Traits\Upgrades\GrantCondition.cs" />
     <Compile Include="Traits\Upgrades\ExternalConditions.cs" />
     <Compile Include="Traits\Upgrades\StackedCondition.cs" />
+    <Compile Include="Traits\Buildings\BridgeHut.cs" />
+    <Compile Include="Traits\Buildings\BridgePlaceholder.cs" />
+    <Compile Include="Traits\Buildings\GroundLevelBridge.cs" />
+    <Compile Include="Traits\World\BridgeLayer.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="AfterBuild">

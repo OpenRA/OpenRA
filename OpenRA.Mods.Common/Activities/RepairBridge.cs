@@ -16,27 +16,47 @@ namespace OpenRA.Mods.Common.Activities
 {
 	class RepairBridge : Enter
 	{
+		readonly Actor target;
 		readonly LegacyBridgeHut legacyHut;
+		readonly BridgeHut hut;
 		readonly string notification;
 
 		public RepairBridge(Actor self, Actor target, EnterBehaviour enterBehaviour, string notification)
 			: base(self, target, enterBehaviour)
 		{
-			legacyHut = target.Trait<LegacyBridgeHut>();
+			this.target = target;
+			legacyHut = target.TraitOrDefault<LegacyBridgeHut>();
+			hut = target.TraitOrDefault<BridgeHut>();
 			this.notification = notification;
 		}
 
 		protected override bool CanReserve(Actor self)
 		{
-			return legacyHut.BridgeDamageState != DamageState.Undamaged && !legacyHut.Repairing && legacyHut.Bridge.GetHut(0) != null && legacyHut.Bridge.GetHut(1) != null;
+			if (legacyHut != null)
+				return legacyHut.BridgeDamageState != DamageState.Undamaged && !legacyHut.Repairing && legacyHut.Bridge.GetHut(0) != null && legacyHut.Bridge.GetHut(1) != null;
+
+			if (hut != null)
+				return hut.BridgeDamageState != DamageState.Undamaged && !hut.Repairing;
+
+			return false;
 		}
 
 		protected override void OnInside(Actor self)
 		{
-			if (legacyHut.BridgeDamageState == DamageState.Undamaged || legacyHut.Repairing || legacyHut.Bridge.GetHut(0) == null || legacyHut.Bridge.GetHut(1) == null)
-				return;
+			if (legacyHut != null)
+			{
+				if (legacyHut.BridgeDamageState == DamageState.Undamaged || legacyHut.Repairing || legacyHut.Bridge.GetHut(0) == null || legacyHut.Bridge.GetHut(1) == null)
+					return;
 
-			legacyHut.Repair(self);
+				legacyHut.Repair(self);
+			}
+			else if (hut != null)
+			{
+				if (hut.BridgeDamageState == DamageState.Undamaged || hut.Repairing)
+					return;
+
+				hut.Repair(target, self);
+			}
 
 			Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", notification, self.Owner.Faction.InternalName);
 		}
