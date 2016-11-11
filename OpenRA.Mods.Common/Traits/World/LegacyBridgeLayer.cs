@@ -17,22 +17,22 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	class BridgeLayerInfo : ITraitInfo
+	class LegacyBridgeLayerInfo : ITraitInfo
 	{
 		[ActorReference]
 		public readonly string[] Bridges = { "bridge1", "bridge2" };
 
-		public object Create(ActorInitializer init) { return new BridgeLayer(init.Self, this); }
+		public object Create(ActorInitializer init) { return new LegacyBridgeLayer(init.Self, this); }
 	}
 
-	class BridgeLayer : IWorldLoaded
+	class LegacyBridgeLayer : IWorldLoaded
 	{
-		readonly BridgeLayerInfo info;
+		readonly LegacyBridgeLayerInfo info;
 		readonly Dictionary<ushort, Pair<string, int>> bridgeTypes = new Dictionary<ushort, Pair<string, int>>();
 
 		CellLayer<Bridge> bridges;
 
-		public BridgeLayer(Actor self, BridgeLayerInfo info)
+		public LegacyBridgeLayer(Actor self, LegacyBridgeLayerInfo info)
 		{
 			this.info = info;
 		}
