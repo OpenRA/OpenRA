@@ -435,6 +435,13 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				if (engineVersion < 20161111)
+				{
+					// rename BridgeHut to LegacyBridgeHut
+					if (node.Key == "BridgeHut")
+						node.Key = "LegacyBridgeHut";
+				}
+
 				UpgradeActorRules(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 

@@ -16,27 +16,27 @@ namespace OpenRA.Mods.Common.Activities
 {
 	class RepairBridge : Enter
 	{
-		readonly BridgeHut hut;
+		readonly LegacyBridgeHut legacyHut;
 		readonly string notification;
 
 		public RepairBridge(Actor self, Actor target, EnterBehaviour enterBehaviour, string notification)
 			: base(self, target, enterBehaviour)
 		{
-			hut = target.Trait<BridgeHut>();
+			legacyHut = target.Trait<LegacyBridgeHut>();
 			this.notification = notification;
 		}
 
 		protected override bool CanReserve(Actor self)
 		{
-			return hut.BridgeDamageState != DamageState.Undamaged && !hut.Repairing && hut.Bridge.GetHut(0) != null && hut.Bridge.GetHut(1) != null;
+			return legacyHut.BridgeDamageState != DamageState.Undamaged && !legacyHut.Repairing && legacyHut.Bridge.GetHut(0) != null && legacyHut.Bridge.GetHut(1) != null;
 		}
 
 		protected override void OnInside(Actor self)
 		{
-			if (hut.BridgeDamageState == DamageState.Undamaged || hut.Repairing || hut.Bridge.GetHut(0) == null || hut.Bridge.GetHut(1) == null)
+			if (legacyHut.BridgeDamageState == DamageState.Undamaged || legacyHut.Repairing || legacyHut.Bridge.GetHut(0) == null || legacyHut.Bridge.GetHut(1) == null)
 				return;
 
-			hut.Repair(self);
+			legacyHut.Repair(self);
 
 			Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", notification, self.Owner.Faction.InternalName);
 		}
