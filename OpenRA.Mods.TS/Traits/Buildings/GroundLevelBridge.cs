@@ -10,27 +10,25 @@
 #endregion
 
 using System.Collections.Generic;
-using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
-using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.TS.Traits
 {
 	[Desc("Bridge actor that can't be passed underneath.")]
-	class LowBridgeInfo : ITraitInfo, Requires<BuildingInfo>
+	class GroundLevelBridgeInfo : ITraitInfo, Requires<BuildingInfo>
 	{
 		public readonly string TerrainType = "Bridge";
 
-		public object Create(ActorInitializer init) { return new LowBridge(init.Self, this); }
+		public object Create(ActorInitializer init) { return new GroundLevelBridge(init.Self, this); }
 	}
 
-	class LowBridge : INotifyAddedToWorld, INotifyRemovedFromWorld
+	class GroundLevelBridge : INotifyAddedToWorld, INotifyRemovedFromWorld
 	{
-		readonly LowBridgeInfo info;
+		readonly GroundLevelBridgeInfo info;
 		readonly IEnumerable<CPos> cells;
 
-		public LowBridge(Actor self, LowBridgeInfo info)
+		public GroundLevelBridge(Actor self, GroundLevelBridgeInfo info)
 		{
 			this.info = info;
 
