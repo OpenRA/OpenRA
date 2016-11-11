@@ -58,7 +58,7 @@ World:
 	HelpCommand:
 	ScreenShaker:
 	BuildingInfluence:
-	BridgeLayer:
+	LegacyBridgeLayer:
 		Bridges: bridge1, bridge2, bridge3, bridge4
 	ProductionQueueFromSelection:
 		ProductionTabsWidget: PRODUCTION_TABS

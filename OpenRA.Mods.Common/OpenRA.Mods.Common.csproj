@@ -503,7 +503,7 @@
     <Compile Include="Traits\Valued.cs" />
     <Compile Include="Traits\Voiced.cs" />
     <Compile Include="Traits\Wanders.cs" />
-    <Compile Include="Traits\World\BridgeLayer.cs" />
+    <Compile Include="Traits\World\LegacyBridgeLayer.cs" />
     <Compile Include="Traits\World\CrateSpawner.cs" />
     <Compile Include="Traits\World\CreateMPPlayers.cs" />
     <Compile Include="Traits\World\DomainIndex.cs" />

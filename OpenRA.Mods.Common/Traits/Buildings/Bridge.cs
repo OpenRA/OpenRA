@@ -135,7 +135,7 @@ namespace OpenRA.Mods.Common.Traits
 			return tileSet.GetTerrainIndex(new TerrainTile(template, (byte)index));
 		}
 
-		public void LinkNeighbouringBridges(World world, BridgeLayer bridges)
+		public void LinkNeighbouringBridges(World world, LegacyBridgeLayer bridges)
 		{
 			for (var d = 0; d <= 1; d++)
 			{
@@ -171,7 +171,7 @@ namespace OpenRA.Mods.Common.Traits
 		}
 
 		public LegacyBridgeHut GetHut(int index) { return huts[index]; }
-		public Bridge GetNeighbor(int[] offset, BridgeLayer bridges)
+		public Bridge GetNeighbor(int[] offset, LegacyBridgeLayer bridges)
 		{
 			if (offset == null)
 				return null;
