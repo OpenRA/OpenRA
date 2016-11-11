@@ -17,7 +17,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	[Desc("Can enter a BridgeHut to trigger a repair.")]
+	[Desc("Can enter a LegacyBridgeHut to trigger a repair.")]
 	class RepairsBridgesInfo : ITraitInfo
 	{
 		[VoiceReference] public readonly string Voice = "Action";
@@ -26,7 +26,7 @@ namespace OpenRA.Mods.Common.Traits
 			"Possible values are Exit, Suicide, Dispose.")]
 		public readonly EnterBehaviour EnterBehaviour = EnterBehaviour.Dispose;
 
-		[Desc("Cursor to use when targeting a BridgeHut of an unrepaired bridge.")]
+		[Desc("Cursor to use when targeting a LegacyBridgeHut of an unrepaired bridge.")]
 		public readonly string TargetCursor = "goldwrench";
 
 		[Desc("Cursor to use when repairing is denied.")]
@@ -65,22 +65,22 @@ namespace OpenRA.Mods.Common.Traits
 			if (order.OrderString != "RepairBridge")
 				return null;
 
-			var hut = order.TargetActor.TraitOrDefault<BridgeHut>();
-			if (hut == null)
+			var legacyHut = order.TargetActor.TraitOrDefault<LegacyBridgeHut>();
+			if (legacyHut == null)
 				return null;
 
-			return hut.BridgeDamageState == DamageState.Undamaged || hut.Repairing || hut.Bridge.IsDangling ? null : info.Voice;
+			return legacyHut.BridgeDamageState == DamageState.Undamaged || legacyHut.Repairing || legacyHut.Bridge.IsDangling ? null : info.Voice;
 		}
 
 		public void ResolveOrder(Actor self, Order order)
 		{
 			if (order.OrderString == "RepairBridge")
 			{
-				var hut = order.TargetActor.TraitOrDefault<BridgeHut>();
-				if (hut == null)
+				var legacyHut = order.TargetActor.TraitOrDefault<LegacyBridgeHut>();
+				if (legacyHut == null)
 					return;
 
-				if (hut.BridgeDamageState == DamageState.Undamaged || hut.Repairing || hut.Bridge.IsDangling)
+				if (legacyHut.BridgeDamageState == DamageState.Undamaged || legacyHut.Repairing || legacyHut.Bridge.IsDangling)
 					return;
 
 				self.SetTargetLine(Target.FromOrder(self.World, order), Color.Yellow);
@@ -102,12 +102,12 @@ namespace OpenRA.Mods.Common.Traits
 
 			public override bool CanTargetActor(Actor self, Actor target, TargetModifiers modifiers, ref string cursor)
 			{
-				var hut = target.TraitOrDefault<BridgeHut>();
-				if (hut == null)
+				var legacyHut = target.TraitOrDefault<LegacyBridgeHut>();
+				if (legacyHut == null)
 					return false;
 
 				// Require force attack to heal partially damaged bridges to avoid unnecessary cursor noise
-				var damage = hut.BridgeDamageState;
+				var damage = legacyHut.BridgeDamageState;
 				if (!modifiers.HasModifier(TargetModifiers.ForceAttack) && damage != DamageState.Dead)
 					return false;
 
@@ -116,7 +116,7 @@ namespace OpenRA.Mods.Common.Traits
 					return false;
 
 				// Can't repair a bridge that is undamaged, already under repair, or dangling
-				if (damage == DamageState.Undamaged || hut.Repairing || hut.Bridge.IsDangling)
+				if (damage == DamageState.Undamaged || legacyHut.Repairing || legacyHut.Bridge.IsDangling)
 					cursor = info.TargetBlockedCursor;
 
 				return true;

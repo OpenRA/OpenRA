@@ -274,7 +274,7 @@
     <Compile Include="Traits\Buildings\BaseProvider.cs" />
     <Compile Include="Traits\Buildings\Bib.cs" />
     <Compile Include="Traits\Buildings\Bridge.cs" />
-    <Compile Include="Traits\Buildings\BridgeHut.cs" />
+    <Compile Include="Traits\Buildings\LegacyBridgeHut.cs" />
     <Compile Include="Traits\Buildings\Building.cs" />
     <Compile Include="Traits\Buildings\BuildingInfluence.cs" />
     <Compile Include="Traits\Buildings\BuildingUtils.cs" />

@@ -448,7 +448,7 @@ BRIDGEHUT:
 		Dimensions: 2,2
 	CustomSelectionSize:
 		CustomBounds: 48,48
-	BridgeHut:
+	LegacyBridgeHut:
 	Targetable:
 		TargetTypes: BridgeHut, C4
 

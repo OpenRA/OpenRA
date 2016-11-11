@@ -78,7 +78,7 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		readonly BuildingInfo building;
 		readonly Bridge[] neighbours = new Bridge[2];
-		readonly BridgeHut[] huts = new BridgeHut[2]; // Huts before this / first & after this / last
+		readonly LegacyBridgeHut[] huts = new LegacyBridgeHut[2]; // Huts before this / first & after this / last
 		readonly Health health;
 		readonly Actor self;
 		readonly BridgeInfo info;
@@ -88,7 +88,7 @@ namespace OpenRA.Mods.Common.Traits
 		ushort template;
 		Dictionary<CPos, byte> footprint;
 
-		public BridgeHut Hut { get; private set; }
+		public LegacyBridgeHut Hut { get; private set; }
 		public bool IsDangling { get { return isDangling.Value; } }
 
 		public Bridge(Actor self, BridgeInfo info)
@@ -152,7 +152,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		internal void AddHut(BridgeHut hut)
+		internal void AddHut(LegacyBridgeHut hut)
 		{
 			// TODO: This method is incomprehensible and fragile, and should be rewritten.
 			if (huts[0] == huts[1])
@@ -170,7 +170,7 @@ namespace OpenRA.Mods.Common.Traits
 				Hut = null;
 		}
 
-		public BridgeHut GetHut(int index) { return huts[index]; }
+		public LegacyBridgeHut GetHut(int index) { return huts[index]; }
 		public Bridge GetNeighbor(int[] offset, BridgeLayer bridges)
 		{
 			if (offset == null)
