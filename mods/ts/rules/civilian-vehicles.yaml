@@ -14,6 +14,7 @@
 		Type: Heavy
 	RevealsShroud:
 		Range: 6c0
+		MaxHeightDelta: 3
 	Turreted:
 		TurnSpeed: 3
 	Armament@PRIMARY:
@@ -48,6 +49,7 @@
 		Speed: 56
 	RevealsShroud:
 		Range: 5c0
+		MaxHeightDelta: 3
 
 TRUCKA:
 	Inherits: ^TRUCK
@@ -70,6 +72,7 @@ ICBM:
 		TurnSpeed: 5
 	RevealsShroud:
 		Range: 7c0
+		MaxHeightDelta: 3
 	Transforms:
 		IntoActor: gaicbm
 		Offset: -1,-1
@@ -93,6 +96,7 @@ BUS:
 		Type: Light
 	RevealsShroud:
 		Range: 5c0
+		MaxHeightDelta: 3
 	Cargo:
 		Types: Infantry
 		MaxWeight: 20
@@ -116,6 +120,7 @@ PICK:
 		Type: Light
 	RevealsShroud:
 		Range: 5c0
+		MaxHeightDelta: 3
 	Cargo:
 		Types: Infantry
 		MaxWeight: 2
@@ -139,6 +144,7 @@ CAR:
 		Type: Light
 	RevealsShroud:
 		Range: 5c0
+		MaxHeightDelta: 3
 	Cargo:
 		Types: Infantry
 		MaxWeight: 4
@@ -162,6 +168,7 @@ WINI:
 		Type: Light
 	RevealsShroud:
 		Range: 5c0
+		MaxHeightDelta: 3
 	Cargo:
 		Types: Infantry
 		MaxWeight: 5

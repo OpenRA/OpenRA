@@ -22,6 +22,7 @@ NAPOWR:
 		Type: Wood
 	RevealsShroud:
 		Range: 4c0
+		MaxHeightDelta: 3
 	WithIdleOverlay@LIGHTS:
 		Sequence: idle-lights
 	Power:
@@ -60,6 +61,7 @@ NAAPWR:
 		Type: Wood
 	RevealsShroud:
 		Range: 4c0
+		MaxHeightDelta: 3
 	WithIdleOverlay@LIGHTS:
 		Sequence: idle-lights
 	Power:
@@ -98,6 +100,7 @@ NAHAND:
 		Type: Wood
 	RevealsShroud:
 		Range: 5c0
+		MaxHeightDelta: 3
 	Exit@1:
 		SpawnOffset: 384,768,0
 		ExitCell: 3,2
@@ -152,6 +155,7 @@ NAWEAP:
 		Type: Heavy
 	RevealsShroud:
 		Range: 4c0
+		MaxHeightDelta: 3
 	RallyPoint:
 		Offset: 4,1
 		Palette: mouse
@@ -204,6 +208,7 @@ NAHPAD:
 		HP: 600
 	RevealsShroud:
 		Range: 5c0
+		MaxHeightDelta: 3
 	Exit@1:
 		SpawnOffset: 0,-256,0
 	ExitsDebugOverlay:
@@ -274,6 +279,7 @@ NARADR:
 	RenderDetectionCircle:
 	RevealsShroud:
 		Range: 10c0
+		MaxHeightDelta: 3
 	WithIdleOverlay@DISH:
 		Sequence: idle-dish
 		PauseOnLowPower: true
@@ -309,6 +315,7 @@ NATECH:
 		Type: Wood
 	RevealsShroud:
 		Range: 4c0
+		MaxHeightDelta: 3
 	WithIdleOverlay@LIGHTS:
 		Sequence: idle-lights
 	Power:
@@ -341,6 +348,7 @@ NATMPL:
 		Type: Wood
 	RevealsShroud:
 		Range: 6c0
+		MaxHeightDelta: 3
 	Power:
 		Amount: -200
 	WithIdleOverlay@LIGHTS:
@@ -377,6 +385,7 @@ NASTLH:
 		Type: Wood
 	RevealsShroud:
 		Range: 6c0
+		MaxHeightDelta: 3
 	WithIdleOverlay@pulse:
 		Sequence: pulse
 		PauseOnLowPower: true
@@ -422,6 +431,7 @@ NAWAST:
 		HP: 400
 	RevealsShroud:
 		Range: 6c0
+		MaxHeightDelta: 3
 	TiberianSunRefinery:
 		DockAngle: 160
 		DockOffset: 2,1

@@ -115,7 +115,7 @@ namespace OpenRA.Traits
 				Hash += 1;
 		}
 
-		public static IEnumerable<PPos> ProjectedCellsInRange(Map map, WPos pos, WDist range)
+		public static IEnumerable<PPos> ProjectedCellsInRange(Map map, WPos pos, WDist range, int maxHeightDelta = -1)
 		{
 			// Account for potential extra half-cell from odd-height terrain
 			var r = (range.Length + 1023 + 512) / 1024;
@@ -124,15 +124,22 @@ namespace OpenRA.Traits
 			// Project actor position into the shroud plane
 			var projectedPos = pos - new WVec(0, pos.Z, pos.Z);
 			var projectedCell = map.CellContaining(projectedPos);
+			var projectedHeight = pos.Z / 512;
 
 			foreach (var c in map.FindTilesInCircle(projectedCell, r, true))
+			{
 				if ((map.CenterOfCell(c) - projectedPos).HorizontalLengthSquared <= limit)
-					yield return (PPos)c.ToMPos(map);
+				{
+					var puv = (PPos)c.ToMPos(map);
+					if (maxHeightDelta < 0 || map.ProjectedHeight(puv) < projectedHeight + maxHeightDelta)
+						yield return puv;
+				}
+			}
 		}
 
-		public static IEnumerable<PPos> ProjectedCellsInRange(Map map, CPos cell, WDist range)
+		public static IEnumerable<PPos> ProjectedCellsInRange(Map map, CPos cell, WDist range, int maxHeightDelta = -1)
 		{
-			return ProjectedCellsInRange(map, map.CenterOfCell(cell), range);
+			return ProjectedCellsInRange(map, map.CenterOfCell(cell), range, maxHeightDelta);
 		}
 
 		public void AddProjectedVisibility(object key, PPos[] visible)

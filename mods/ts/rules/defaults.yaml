@@ -157,6 +157,7 @@
 		Type: Wood
 	RevealsShroud:
 		Range: 4c0
+		MaxHeightDelta: 3
 	Tooltip:
 	RenderSprites:
 		Palette: terraindecoration
@@ -254,6 +255,7 @@
 		Cost: 10
 	RevealsShroud:
 		Range: 2c0
+		MaxHeightDelta: 3
 	Mobile:
 		Voice: Move
 		Speed: 71
@@ -794,6 +796,7 @@
 		Type: Light
 	RevealsShroud:
 		Range: 5c0
+		MaxHeightDelta: 3
 	Selectable:
 		Bounds: 40,24
 	WithTextControlGroupDecoration:

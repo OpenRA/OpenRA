@@ -18,6 +18,7 @@ BGGY:
 		Type: Light
 	RevealsShroud:
 		Range: 6c0
+		MaxHeightDelta: 3
 	Armament:
 		Weapon: RaiderCannon
 		LocalOffset: 0,-43,384, 0,43,384
@@ -51,6 +52,7 @@ BIKE:
 		Type: Wood
 	RevealsShroud:
 		Range: 5c0
+		MaxHeightDelta: 3
 	Armament@PRIMARY:
 		Weapon: BikeMissile
 		UpgradeTypes: eliteweapon
@@ -109,6 +111,7 @@ TTNK:
 	WithMuzzleOverlay:
 	RevealsShroud:
 		Range: 5c0
+		MaxHeightDelta: 3
 	RenderSprites:
 		Image: ttnk
 	DeployToUpgrade:
@@ -192,6 +195,7 @@ ART2:
 		TurnSpeed: 2
 	RevealsShroud:
 		Range: 9c0
+		MaxHeightDelta: 3
 	RenderVoxels:
 		LightAmbientColor: 0.4, 0.4, 0.4
 	Transforms:
@@ -219,6 +223,7 @@ REPAIR:
 		TurnSpeed: 5
 	RevealsShroud:
 		Range: 5c0
+		MaxHeightDelta: 3
 	Armament:
 		Weapon: Repair
 		Cursor: repair
@@ -262,6 +267,7 @@ WEED:
 		Type: Heavy
 	RevealsShroud:
 		Range: 4c0
+		MaxHeightDelta: 3
 	-WithVoxelBody:
 	WithVoxelUnloadBody:
 	-GainsExperience:
@@ -289,6 +295,7 @@ SAPC:
 		Type: Heavy
 	RevealsShroud:
 		Range: 5c0
+		MaxHeightDelta: 3
 	Cargo:
 		Types: Infantry
 		MaxWeight: 5
@@ -318,6 +325,7 @@ SUBTANK:
 		Type: Light
 	RevealsShroud:
 		Range: 5c0
+		MaxHeightDelta: 3
 	Armament:
 		Weapon: FireballLauncher
 	AttackFrontal:
@@ -345,6 +353,7 @@ STNK:
 		Type: Light
 	RevealsShroud:
 		Range: 5c0
+		MaxHeightDelta: 3
 	Cloak:
 		InitialDelay: 90
 		CloakDelay: 90
