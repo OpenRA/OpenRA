@@ -8,7 +8,7 @@ LOBRDG_A_D:
 		Palette: terrainalpha
 	EditorOnlyTooltip:
 		Name: Dead Bridge
-	-LowBridge:
+	-GroundLevelBridge:
 	-AppearsOnRadar:
 
 LOBRDG_B:
@@ -21,7 +21,7 @@ LOBRDG_B_D:
 		Palette: terrainalpha
 	EditorOnlyTooltip:
 		Name: Dead Bridge
-	-LowBridge:
+	-GroundLevelBridge:
 	-AppearsOnRadar:
 
 LOBRDG_R_SE:
