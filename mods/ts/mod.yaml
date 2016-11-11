@@ -147,6 +147,7 @@ ChromeLayout:
 	ra|chrome/ingame-perf.yaml
 	ts|chrome/ingame-debug.yaml
 	ra|chrome/mainmenu.yaml
+	ts|chrome/mainmenu-prerelease-notification.yaml
 	ra|chrome/settings.yaml
 	ra|chrome/credits.yaml
 	ra|chrome/lobby.yaml
