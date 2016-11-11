@@ -138,7 +138,8 @@ namespace OpenRA.Server
 
 			randomSeed = (int)DateTime.Now.ToBinary();
 
-			if (Settings.AllowPortForward)
+			// UPnP is only supported for servers created by the game client.
+			if (!dedicated && Settings.AllowPortForward)
 				UPnP.ForwardPort(Settings.ListenPort, Settings.ExternalPort).Wait();
 
 			foreach (var trait in modData.Manifest.ServerTraits)
@@ -209,7 +210,7 @@ namespace OpenRA.Server
 					if (State == ServerState.ShuttingDown)
 					{
 						EndGame();
-						if (Settings.AllowPortForward)
+						if (!dedicated && Settings.AllowPortForward)
 							UPnP.RemovePortForward().Wait();
 						break;
 					}
