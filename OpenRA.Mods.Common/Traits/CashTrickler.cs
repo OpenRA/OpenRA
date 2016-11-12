@@ -9,13 +9,14 @@
  */
 #endregion
 
+using System;
 using OpenRA.Mods.Common.Effects;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Lets the actor generate cash in a set periodic time.")]
-	class CashTricklerInfo : ConditionalTraitInfo
+	public class CashTricklerInfo : ConditionalTraitInfo
 	{
 		[Desc("Number of ticks to wait between giving money.")]
 		public readonly int Interval = 50;
@@ -32,15 +33,26 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new CashTrickler(this); }
 	}
 
-	class CashTrickler : ConditionalTrait<CashTricklerInfo>, ITick, ISync
+	public class CashTrickler : ConditionalTrait<CashTricklerInfo>, ITick, ISync, INotifyCreated, INotifyOwnerChanged
 	{
 		readonly CashTricklerInfo info;
+		PlayerResources resources;
 		[Sync] int ticks;
 
 		public CashTrickler(CashTricklerInfo info)
 			: base(info)
 		{
 			this.info = info;
+		}
+
+		void INotifyCreated.Created(Actor self)
+		{
+			resources = self.Owner.PlayerActor.Trait<PlayerResources>();
+		}
+
+		void INotifyOwnerChanged.OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
+		{
+			resources = newOwner.PlayerActor.Trait<PlayerResources>();
 		}
 
 		void ITick.Tick(Actor self)
@@ -51,10 +63,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (--ticks < 0)
 			{
 				ticks = info.Interval;
-				self.Owner.PlayerActor.Trait<PlayerResources>().GiveCash(info.Amount);
-
-				if (info.ShowTicks)
-					AddCashTick(self, info.Amount);
+				ModifyCash(self, self.Owner, info.Amount);
 			}
 		}
 
@@ -62,6 +71,25 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			self.World.AddFrameEndTask(w => w.Add(
 				new FloatingText(self.CenterPosition, self.Owner.Color.RGB, FloatingText.FormatCashTick(amount), info.DisplayDuration)));
+		}
+
+		void ModifyCash(Actor self, Player newOwner, int amount)
+		{
+			if (amount < 0)
+			{
+				// Check whether the amount of cash to be removed would exceed available player cash, in that case only remove all the player cash
+				var drain = Math.Min(resources.Cash + resources.Resources, -amount);
+				resources.TakeCash(drain);
+
+				if (info.ShowTicks)
+					AddCashTick(self, -drain);
+			}
+			else
+			{
+				resources.GiveCash(amount);
+				if (info.ShowTicks)
+					AddCashTick(self, amount);
+			}
 		}
 	}
 }
