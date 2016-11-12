@@ -134,6 +134,8 @@ E3:
 		DefaultAttackSequence: shoot
 	ProducibleWithLevel:
 		Prerequisites: barracks.upgraded
+	AutoTarget:
+		ScanRadius: 5
 
 E4:
 	Inherits: ^Soldier
