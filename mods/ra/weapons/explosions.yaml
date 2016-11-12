@@ -212,6 +212,13 @@ UnitExplodeSmall:
 		SmudgeType: Crater
 		InvalidTargets: Structure, Wall, Trees
 
+# Used to panic civilians which are emitted from a killed CivBuilding
+CivBuildingExplosion:
+	Warhead@1Dam: SpreadDamage
+		Spread: 64
+		Damage: 1
+		Delay: 1
+
 ArtilleryExplode:
 	Warhead@1Dam: SpreadDamage
 		Spread: 426
