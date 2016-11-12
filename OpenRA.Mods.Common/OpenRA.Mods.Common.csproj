@@ -756,7 +756,6 @@
     <Compile Include="UtilityCommands\ListMixContentsCommand.cs" />
     <Compile Include="UtilityCommands\ListMSCabContentsCommand.cs" />
     <Compile Include="FileFormats\MSCabCompression.cs" />
-    <Compile Include="UtilityCommands\OutputActorMiniYamlCommand.cs" />
     <Compile Include="Traits\World\ScriptLobbyDropdown.cs" />
     <Compile Include="Activities\DeliverUnit.cs" />
     <Compile Include="Activities\PickupUnit.cs" />
@@ -781,6 +780,10 @@
     <Compile Include="Traits\World\BridgeLayer.cs" />
     <Compile Include="Traits\Render\WithBridgeSpriteBody.cs" />
     <Compile Include="Traits\Render\WithDeadBridgeSpriteBody.cs" />
+    <Compile Include="UtilityCommands\OutputResolvedRulesCommand.cs" />
+    <Compile Include="UtilityCommands\Utilities.cs" />
+    <Compile Include="UtilityCommands\OutputResolvedSequencesCommand.cs" />
+    <Compile Include="UtilityCommands\OutputResolvedWeaponsCommand.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="AfterBuild">
