@@ -70,6 +70,7 @@
     <Compile Include="Effects\AnimatedBeacon.cs" />
     <Compile Include="UtilityCommands\LegacyRulesImporter.cs" />
     <Compile Include="UtilityCommands\LegacySequenceImporter.cs" />
+    <Compile Include="Widgets\Logic\PreReleaseWarningPrompt.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Target Name="AfterBuild">

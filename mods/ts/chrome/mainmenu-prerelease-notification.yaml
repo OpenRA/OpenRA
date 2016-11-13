@@ -1,0 +1,55 @@
+Background@MAINMENU_PRERELEASE_NOTIFICATION:
+	Logic: PreReleaseWarningPrompt
+	X: (WINDOW_RIGHT - WIDTH)/2
+	Y: (WINDOW_BOTTOM - HEIGHT)/2
+	Width: 520
+	Height: 195
+	Children:
+		Label@PROMPT_TITLE:
+			Width: PARENT_RIGHT
+			Y: 20
+			Height: 25
+			Font: Bold
+			Align: Center
+			Text: Tiberian Sun developer preview
+		Label@PROMPT_TEXT_A:
+			X: 15
+			Y: 50
+			Width: PARENT_RIGHT - 30
+			Height: 16
+			Align: Center
+			Text: This pre-alpha build of OpenRA's Tiberian Sun mod is made available
+		Label@PROMPT_TEXT_B:
+			X: 15
+			Y: 68
+			Width: PARENT_RIGHT - 30
+			Height: 16
+			Align: Center
+			Text: for the community to follow development and as example for modders.
+		Label@PROMPT_TEXT_C:
+			X: 15
+			Y: 104
+			Width: PARENT_RIGHT - 30
+			Height: 16
+			Align: Center
+			Text: Many features are missing or incomplete, performance has not been
+		Label@PROMPT_TEXT_D:
+			X: 15
+			Y: 122
+			Width: PARENT_RIGHT - 30
+			Height: 16
+			Align: Center
+			Text: optimized, and balance will not be addressed until a future beta. 
+		Label@PROMPT_TEXT_E:
+			X: 15
+			Y: 140
+			Width: PARENT_RIGHT - 30
+			Height: 16
+			Align: Center
+		Button@CONTINUE_BUTTON:
+			X: PARENT_RIGHT - WIDTH - 20
+			Y: PARENT_BOTTOM - 45
+			Width: 120
+			Height: 25
+			Text: I Understand
+			Font: Bold
