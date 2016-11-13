@@ -55,14 +55,11 @@ BIKE:
 		MaxHeightDelta: 3
 	Armament@PRIMARY:
 		Weapon: BikeMissile
-		UpgradeTypes: eliteweapon
-		UpgradeMaxEnabledLevel: 0
-		UpgradeMaxAcceptedLevel: 1
+		RequiresCondition: !rank-elite
 		LocalOffset: -108,-144,360, -108,144,360
 	Armament@ELITE:
 		Weapon: HoverMissile
-		UpgradeTypes: eliteweapon
-		UpgradeMinEnabledLevel: 1
+		RequiresCondition: rank-elite
 		LocalOffset: -108,-144,360, -108,144,360
 	AttackFrontal:
 		Voice: Attack
@@ -74,12 +71,10 @@ TTNK:
 		Cost: 800
 	Tooltip:
 		Name: Tick Tank
-		UpgradeTypes: deployed
-		UpgradeMaxEnabledLevel: 0
+		RequiresCondition: !deployed
 	Tooltip@DEPLOYED:
 		Name: Tick Tank (deployed)
-		UpgradeTypes: deployed
-		UpgradeMinEnabledLevel: 1
+		RequiresCondition: deployed
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 60
@@ -93,20 +88,16 @@ TTNK:
 		HP: 350
 	Armor:
 		Type: Light
-		UpgradeTypes: undeployed
-		UpgradeMinEnabledLevel: 1
+		RequiresCondition: undeployed
 	Armament@PRIMARY:
 		Weapon: 90mm
 		LocalOffset: 288,0,256
-		UpgradeTypes: eliteweapon
-		UpgradeMaxEnabledLevel: 0
-		UpgradeMaxAcceptedLevel: 1
+		RequiresCondition: !rank-elite
 		MuzzleSequence: muzzle
 	Armament@ELITE:
 		Weapon: 120mmx
 		LocalOffset: 288,0,256
-		UpgradeTypes: eliteweapon
-		UpgradeMinEnabledLevel: 1
+		RequiresCondition: rank-elite
 		MuzzleSequence: muzzle
 	WithMuzzleOverlay:
 	RevealsShroud:
@@ -123,16 +114,12 @@ TTNK:
 		DeploySound: place2.aud
 		UndeploySound: clicky1.aud
 	WithVoxelBody:
-		UpgradeTypes: undeployed
-		UpgradeMinEnabledLevel: 1
+		RequiresCondition: undeployed
 	WithSpriteBody@deployed:
-		UpgradeTypes: undeployed
-		UpgradeMaxEnabledLevel: 0
+		RequiresCondition: !undeployed
 	AttackFrontal:
 		Voice: Attack
-		UpgradeTypes: undeployed
-		UpgradeMinEnabledLevel: 1
-		UpgradeMaxAcceptedLevel: 1
+		RequiresCondition: undeployed
 	Turreted:
 		TurnSpeed: 6
 		Turret: deployed
@@ -141,38 +128,31 @@ TTNK:
 	WithVoxelBarrel:
 		Armament: deployed
 		LocalOffset: 128, 0, 256
-		UpgradeTypes: deployed
-		UpgradeMinEnabledLevel: 1
+		RequiresCondition: deployed
 	WithVoxelTurret@deployed:
 		Turret: deployed
-		UpgradeTypes: deployed
-		UpgradeMinEnabledLevel: 1
+		RequiresCondition: deployed
 	AttackTurreted@deployed:
 		Voice: Attack
 		Armaments: deployed
-		UpgradeTypes: deployed
-		UpgradeMinEnabledLevel: 1
+		RequiresCondition: deployed
 	Armament@deployed:
 		Name: deployed
 		Turret: deployed
 		Weapon: 90mm
 		LocalOffset: 384,0,256
-		UpgradeTypes: eliteweapon
-		UpgradeMaxEnabledLevel: 0
-		UpgradeMaxAcceptedLevel: 1
+		RequiresCondition: !rank-elite
 		MuzzleSequence: muzzle
 	Armament@deployedElite:
 		Name: deployed
 		Turret: deployed
 		Weapon: 120mmx
 		LocalOffset: 384,0,256
-		UpgradeTypes: eliteweapon
-		UpgradeMinEnabledLevel: 1
+		RequiresCondition: rank-elite
 		MuzzleSequence: muzzle
 	Armor@deployed:
 		Type: Concrete
-		UpgradeTypes: deployed
-		UpgradeMinEnabledLevel: 1
+		RequiresCondition: deployed
 	AutoTarget:
 
 ART2:

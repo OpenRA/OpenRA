@@ -128,8 +128,7 @@ NAHAND:
 		ReferencePoint: Top
 		Color: E0D048
 		ZOffset: 256
-		UpgradeTypes: primary
-		UpgradeMinEnabledLevel: 1
+		RequiresCondition: primary
 
 NAWEAP:
 	Inherits: ^Building
@@ -187,8 +186,7 @@ NAWEAP:
 		ReferencePoint: Top
 		Color: E0D048
 		ZOffset: 256
-		UpgradeTypes: primary
-		UpgradeMinEnabledLevel: 1
+		RequiresCondition: primary
 
 NAHPAD:
 	Inherits: ^Building
@@ -242,8 +240,7 @@ NAHPAD:
 		ReferencePoint: Top
 		Color: E0D048
 		ZOffset: 256
-		UpgradeTypes: primary
-		UpgradeMinEnabledLevel: 1
+		RequiresCondition: primary
 
 NARADR:
 	Inherits: ^Building

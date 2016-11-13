@@ -77,21 +77,21 @@ CRATE:
 	GrantUpgradeCrateAction@cloak:
 		SelectionShares: 5
 		Effect: stealth
-		Upgrades: cloakgenerator
+		Upgrades: crate-cloak
 		Notification: cloak5.aud
 	GrantUpgradeCrateAction@firepower:
 		SelectionShares: 5
 		Effect: firepower
-		Upgrades: firepower
+		Upgrades: crate-firepower
 		Notification: 00-i070.aud
 	GrantUpgradeCrateAction@armor:
 		SelectionShares: 5
 		Effect: armor
-		Upgrades: damage
+		Upgrades: crate-damage
 		Notification: 00-i068.aud
 	GrantUpgradeCrateAction@speed:
 		SelectionShares: 5
-		Upgrades: speed
+		Upgrades: crate-speed
 		Notification: 00-i080.aud
 
 SROCK01:

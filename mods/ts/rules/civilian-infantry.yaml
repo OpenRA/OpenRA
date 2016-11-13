@@ -70,8 +70,7 @@ CHAMSPY:
 		Palette: pips
 		ReferencePoint: Top, Right
 		ZOffset: 256
-		UpgradeTypes: disguise
-		UpgradeMinEnabledLevel: 1
+		RequiresCondition: disguise
 	Infiltrates:
 		Types: SpyInfiltrate
 	-AutoTarget:

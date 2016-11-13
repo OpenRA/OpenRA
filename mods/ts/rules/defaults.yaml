@@ -18,69 +18,80 @@
 ^GainsExperience:
 	GainsExperience:
 		Upgrades:
-			500: rank, firepower, damage, speed, reload
-			1000: rank, firepower, damage, speed, reload, selfheal, eliteweapon
-	FirepowerMultiplier@EXPERIENCE:
-		UpgradeTypes: firepower
-		Modifier: 110, 130
-	DamageMultiplier@EXPERIENCE:
-		UpgradeTypes: damage
-		Modifier: 90, 75
-	SpeedMultiplier@EXPERIENCE:
-		UpgradeTypes: speed
-		Modifier: 120, 140
-	ReloadDelayMultiplier@EXPERIENCE:
-		UpgradeTypes: reload
-		Modifier: 90, 75
+			500: rank-veteran
+			1000: rank-elite
+	FirepowerMultiplier@VETERAN:
+		RequiresCondition: (rank-veteran && !rank-elite) || crate-firepower
+		Modifier: 110
+	FirepowerMultiplier@ELITE:
+		RequiresCondition: rank-elite || (rank-veteran && crate-firepower)
+		Modifier: 130
+	DamageMultiplier@VETERAN:
+		RequiresCondition: (rank-veteran && !rank-elite) || crate-damage
+		Modifier: 90
+	DamageMultiplier@ELITE:
+		RequiresCondition: rank-elite || (rank-veteran && crate-damage)
+		Modifier: 75
+	SpeedMultiplier@VETERAN:
+		RequiresCondition: (rank-veteran && !rank-elite) || crate-speed
+		Modifier: 120
+	SpeedMultiplier@ELITE:
+		RequiresCondition: rank-elite || (rank-veteran && crate-speed)
+		Modifier: 140
+	ReloadDelayMultiplier@VETERAN:
+		RequiresCondition: rank-veteran && !rank-elite
+		Modifier: 90
+	ReloadDelayMultiplier@ELITE:
+		RequiresCondition: rank-elite
+		Modifier: 75
 	SelfHealing@ELITE:
 		Step: 2
 		Delay: 100
 		HealIfBelow: 100
 		DamageCooldown: 125
-		UpgradeTypes: selfheal
-		UpgradeMinEnabledLevel: 1
-	WithRankDecoration:
+		RequiresCondition: rank-elite
+	WithDecoration@VETERAN:
 		Image: rank
-		Sequence: rank
+		Sequence: veteran
 		Palette: ra
 		ReferencePoint: Bottom, Right
-		UpgradeTypes: rank
+		RequiresCondition: rank-veteran && !rank-elite
 		ZOffset: 256
-		UpgradeMinEnabledLevel: 1
-		UpgradeMaxAcceptedLevel: 2
+	WithDecoration@ELITE:
+		Image: rank
+		Sequence: elite
+		Palette: ra
+		ReferencePoint: Bottom, Right
+		RequiresCondition: rank-elite
+		ZOffset: 256
 
 ^EmpDisable:
 	UpgradeOverlay@EMPDISABLE:
-		UpgradeTypes: empdisable
-		UpgradeMinEnabledLevel: 1
+		RequiresCondition: empdisable
 		Palette: disabled
 	DisableOnUpgrade@EMPDISABLE:
-		UpgradeTypes: empdisable
-		UpgradeMinEnabledLevel: 1
+		RequiresCondition: empdisable
 	TimedUpgradeBar@EMPDISABLE:
 		Upgrade: empdisable
 		Color: FFFFFF
 	WithIdleOverlay@EMPDISABLE:
 		Sequence: emp-overlay
 		Palette: effect
-		UpgradeTypes: empdisable
+		RequiresCondition: empdisable
 		ShowToEnemies: true
 		ZOffset: 512
-		UpgradeMinEnabledLevel: 1
 	PowerMultiplier@EMPDISABLE:
-		UpgradeTypes: empdisable
+		RequiresCondition: empdisable
 		Modifier: 0
 
 ^EmpDisableMobile:
 	Inherits: ^EmpDisable
 	Mobile:
-		UpgradeTypes: notmobile
-		UpgradeMaxEnabledLevel: 0
+		RequiresCondition: !notmobile
 
 ^Cloakable:
 	Cloak@CLOAKGENERATOR:
-		UpgradeTypes: cloakgenerator
-		UpgradeMinEnabledLevel: 1
+		RequiresCondition: cloakgenerator || crate-cloak
 		InitialDelay: 0
 		CloakDelay: 90
 		IsPlayerPalette: true
@@ -306,8 +317,7 @@
 		Delay: 100
 		HealIfBelow: 100
 		DamageCooldown: 125
-		UpgradeTypes: hospitalheal
-		UpgradeMinEnabledLevel: 1
+		RequiresCondition: hospitalheal
 	GlobalUpgradable@HOSPITAL:
 		Upgrades: hospitalheal
 		Prerequisites: cahosp
@@ -316,8 +326,7 @@
 		Sequence: medic
 		Palette: pips
 		ReferencePoint: Bottom, Right
-		UpgradeTypes: hospitalheal
-		UpgradeMinEnabledLevel: 1
+		RequiresCondition: hospitalheal
 
 ^RegularInfantryDeath:
 	WithDeathAnimation@normal:
@@ -406,7 +415,7 @@
 		ValidDamageStates: Critical
 		GrantPermanently: true
 	SpeedMultiplier@CRITICAL:
-		UpgradeTypes: criticalspeed
+		RequiresCondition: criticalspeed
 		Modifier: 50
 
 ^CivilianInfantry:
@@ -488,10 +497,10 @@
 		Upgrades: criticalspeed
 		ValidDamageStates: Critical
 	SpeedMultiplier@DAMAGED:
-		UpgradeTypes: damagedspeed
+		RequiresCondition: damagedspeed
 		Modifier: 80
 	SpeedMultiplier@CRITICAL:
-		UpgradeTypes: criticalspeed
+		RequiresCondition: criticalspeed
 		Modifier: 60
 	Carryable:
 
@@ -543,12 +552,10 @@
 		UseLocation: true
 	Targetable@GROUND:
 		TargetTypes: Ground, Vehicle
-		UpgradeTypes: airborne
-		UpgradeMaxEnabledLevel: 0
+		RequiresCondition: !airborne
 	Targetable@AIRBORNE:
 		TargetTypes: Air
-		UpgradeTypes: airborne
-		UpgradeMinEnabledLevel: 1
+		RequiresCondition: airborne
 	Selectable:
 	WithTextControlGroupDecoration:
 	SelectionDecorations:
@@ -584,8 +591,7 @@
 		CruiseAltitude: 2048
 		CanHover: True
 	Hovers@CRUISING:
-		UpgradeTypes: cruising
-		UpgradeMinEnabledLevel: 1
+		RequiresCondition: cruising
 
 ^Plane:
 	Inherits: ^Aircraft
@@ -939,5 +945,4 @@
 		Upgrades: veins
 	WithIdleOverlay@VEINS:
 		Sequence: veins
-		UpgradeTypes: veins
-		UpgradeMinEnabledLevel: 1
+		RequiresCondition: veins

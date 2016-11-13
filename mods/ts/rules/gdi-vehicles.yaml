@@ -34,12 +34,10 @@ APC:
 		Upgrades: inwater
 		TerrainTypes: Water
 	WithVoxelBody:
-		UpgradeTypes: inwater
-		UpgradeMaxEnabledLevel: 0
+		RequiresCondition: !inwater
 	WithVoxelBody@water:
 		Sequence: water
-		UpgradeTypes: inwater
-		UpgradeMinEnabledLevel: 1
+		RequiresCondition: inwater
 	LeavesTrails:
 		Image: wake
 		Palette: effect

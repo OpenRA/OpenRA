@@ -116,12 +116,10 @@ LPST:
 		Cost: 950
 	Tooltip:
 		Name: Mobile Sensor Array
-		UpgradeTypes: deployed
-		UpgradeMaxEnabledLevel: 0
+		RequiresCondition: !deployed
 	Tooltip@DEPLOYED:
 		Name: Mobile Sensor Array (deployed)
-		UpgradeTypes: deployed
-		UpgradeMinEnabledLevel: 1
+		RequiresCondition: deployed
 	Health:
 		HP: 600
 	Armor:
@@ -147,14 +145,11 @@ LPST:
 		UndeploySound: clicky1.aud
 	WithVoxelBody:
 		Image: lpst
-		UpgradeTypes: undeployed
-		UpgradeMinEnabledLevel: 1
+		RequiresCondition: undeployed
 	WithSpriteBody@deployed:
-		UpgradeTypes: undeployed
-		UpgradeMaxEnabledLevel: 0
+		RequiresCondition: !undeployed
 	DetectCloaked:
-		UpgradeTypes: deployed
-		UpgradeMinEnabledLevel: 1
+		RequiresCondition: deployed
 		Range: 18c0
 	RenderDetectionCircle:
 		TrailCount: 3

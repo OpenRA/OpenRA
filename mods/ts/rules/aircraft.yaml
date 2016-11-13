@@ -147,8 +147,7 @@ ORCAB:
 	AutoTarget:
 	RenderSprites:
 	Hovers@CRUISING:
-		UpgradeTypes: cruising
-		UpgradeMinEnabledLevel: 1
+		RequiresCondition: cruising
 	SpawnActorOnDeath:
 		Actor: ORCAB.Husk
 
@@ -310,13 +309,11 @@ APACHE:
 	WithIdleOverlay@ROTORAIR:
 		Offset: 85,0,384
 		Sequence: rotor
-		UpgradeTypes: airborne
-		UpgradeMinEnabledLevel: 1
+		RequiresCondition: airborne
 	WithIdleOverlay@ROTORGROUND:
 		Offset: 85,0,384
 		Sequence: slow-rotor
-		UpgradeTypes: airborne
-		UpgradeMaxEnabledLevel: 0
+		RequiresCondition: !airborne
 	RenderSprites:
 	SpawnActorOnDeath:
 		Actor: APACHE.Husk
@@ -351,8 +348,7 @@ HUNTER:
 		Image: GGHUNT
 	WithFacingSpriteBody:
 	Hovers@CRUISING:
-		UpgradeTypes: cruising
-		UpgradeMinEnabledLevel: 1
+		RequiresCondition: cruising
 	QuantizeFacingsFromSequence:
 	AutoSelectionSize:
 	DrawLineToTarget:
