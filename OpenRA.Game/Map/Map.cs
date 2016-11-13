@@ -492,7 +492,13 @@ namespace OpenRA
 			{
 				var inverse = inverseCellProjection[(MPos)puv];
 				if (inverse.Any())
-					return Height[inverse.MaxBy(uv => uv.V)];
+				{
+					// The original games treat the top of cliffs the same way as the bottom
+					// This information isn't stored in the map data, so query the offset from the tileset
+					var temp = inverse.MaxBy(uv => uv.V);
+					var terrain = Tiles[temp];
+					return (byte)(Height[temp] - Rules.TileSet.Templates[terrain.Type][terrain.Index].Height);
+				}
 
 				// Try the next cell down if this is a cliff face
 				puv = new PPos(puv.U, puv.V + 1);
