@@ -17,16 +17,44 @@ using System.Linq;
 using System.Media;
 using System.Reflection;
 using System.Windows.Forms;
+using Microsoft.Win32;
 
 namespace OpenRA
 {
 	class GameMonitor
 	{
+		static readonly string[] VisualStudioRuntimeVersions = { "10.0", "11.0", "12.0" };
+
 		static Process gameProcess;
 
 		[STAThread]
 		static void Main(string[] args)
 		{
+			if (Platform.CurrentPlatform == PlatformType.Windows)
+			{
+				var visualStudioRuntimeInstalled = 0;
+
+				foreach (var version in VisualStudioRuntimeVersions)
+				{
+					var key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\DevDiv\VC\Servicing\{0}\RuntimeMinimum\".F(version), false);
+					if (key != null && visualStudioRuntimeInstalled == 0)
+						visualStudioRuntimeInstalled = (int)key.GetValue("Install", 0);
+
+					key.Close();
+				}
+
+				if (visualStudioRuntimeInstalled == 0)
+				{
+					var result = MessageBox.Show("OpenRA needs the Microsoft Visual C++ 2010 (or above) x86 Redistributable installed.",
+							"Visual C++ runtime not found.", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+					if (result == DialogResult.OK)
+						Process.Start("http://www.microsoft.com/en-us/download/details.aspx?id=5555");
+
+					return;
+				}
+			}
+
 			var executableDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 			var processName = Path.Combine(executableDirectory, "OpenRA.Game.exe");
 
