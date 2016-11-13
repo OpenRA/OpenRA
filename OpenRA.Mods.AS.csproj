@@ -102,6 +102,8 @@
     <Compile Include="Traits\Render\WithVoxelHelicopterBody.cs" />
     <Compile Include="Traits\SmokeParticleEmitter.cs" />
     <Compile Include="Effects\SmokeParticle.cs" />
+    <Compile Include="Traits\HordeBonus.cs" />
+    <Compile Include="Traits\GrantHordeBonus.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Traits\Render\" />
