@@ -45,7 +45,7 @@ namespace OpenRA.Mods.Common.Traits
 		[PaletteReference] public readonly string MuzzlePalette = "effect";
 
 		public override object Create(ActorInitializer init) { return new AttackGarrisoned(init.Self, this); }
-		public void RulesetLoaded(Ruleset rules, ActorInfo ai)
+		public override void RulesetLoaded(Ruleset rules, ActorInfo ai)
 		{
 			if (PortOffsets.Length == 0)
 				throw new YamlException("PortOffsets must have at least one entry.");
@@ -67,6 +67,8 @@ namespace OpenRA.Mods.Common.Traits
 					Cone = PortCones[i],
 				};
 			}
+
+			base.RulesetLoaded(rules, ai);
 		}
 	}
 

@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Common.Traits
 	}
 
 	[Desc("Allows you to attach weapons to the unit (use @IdentifierSuffix for > 1)")]
-	public class ArmamentInfo : UpgradableTraitInfo, IRulesetLoaded, Requires<AttackBaseInfo>
+	public class ArmamentInfo : UpgradableTraitInfo, Requires<AttackBaseInfo>
 	{
 		public readonly string Name = "primary";
 
@@ -79,7 +79,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public override object Create(ActorInitializer init) { return new Armament(init.Self, this); }
 
-		public void RulesetLoaded(Ruleset rules, ActorInfo ai)
+		public override void RulesetLoaded(Ruleset rules, ActorInfo ai)
 		{
 			WeaponInfo weaponInfo;
 
@@ -91,6 +91,8 @@ namespace OpenRA.Mods.Common.Traits
 			ModifiedRange = new WDist(Util.ApplyPercentageModifiers(
 				WeaponInfo.Range.Length,
 				ai.TraitInfos<IRangeModifierInfo>().Select(m => m.GetRangeModifierDefault())));
+
+			base.RulesetLoaded(rules, ai);
 		}
 	}
 

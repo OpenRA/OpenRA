@@ -47,7 +47,11 @@ namespace OpenRA.Mods.Cnc.Traits
 		public readonly string OnFireSound = null;
 
 		public override object Create(ActorInitializer init) { return new IonCannonPower(init.Self, this); }
-		public void RulesetLoaded(Ruleset rules, ActorInfo ai) { WeaponInfo = rules.Weapons[Weapon.ToLowerInvariant()]; }
+		public override void RulesetLoaded(Ruleset rules, ActorInfo ai)
+		{
+			WeaponInfo = rules.Weapons[Weapon.ToLowerInvariant()];
+			base.RulesetLoaded(rules, ai);
+		}
 	}
 
 	class IonCannonPower : SupportPower

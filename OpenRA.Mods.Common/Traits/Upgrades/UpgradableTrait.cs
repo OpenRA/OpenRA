@@ -10,12 +10,14 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Linq;
+using OpenRA.Support;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
 	/// <summary>Use as base class for *Info to subclass of UpgradableTrait. (See UpgradableTrait.)</summary>
-	public abstract class UpgradableTraitInfo : IUpgradableInfo
+	public abstract class UpgradableTraitInfo : IUpgradableInfo, IRulesetLoaded
 	{
 		[UpgradeUsedReference]
 		[Desc("The upgrade types which can enable or disable this trait.")]
@@ -34,6 +36,16 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int UpgradeMaxAcceptedLevel = 1;
 
 		public abstract object Create(ActorInitializer init);
+
+		// HACK: A shim for all the ActorPreview code that used to query UpgradeMinEnabledLevel directly
+		// This can go away after we introduce an InitialUpgrades ActorInit and have the traits query the
+		// condition directly
+		public bool EnabledByDefault { get; private set; }
+
+		public virtual void RulesetLoaded(Ruleset rules, ActorInfo ai)
+		{
+			EnabledByDefault = UpgradeMinEnabledLevel < 1;
+		}
 	}
 
 	/// <summary>
