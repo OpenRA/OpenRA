@@ -12,12 +12,19 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.Support;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
 	public abstract class UpgradeMultiplierTraitInfo : ITraitInfo
 	{
+		[Desc("Boolean expression defining the condition to enable this trait.",
+			"Overrides UpgradeTypes/BaseLevel if set.",
+			"Only the first Modifier will be used when the condition is enabled.")]
+		[UpgradeUsedReference]
+		public readonly BooleanExpression RequiresCondition = null;
+
 		[UpgradeUsedReference]
 		[Desc("Accepted upgrade types.")]
 		public readonly string[] UpgradeTypes = { };
@@ -37,22 +44,43 @@ namespace OpenRA.Mods.Common.Traits
 	public abstract class UpgradeMultiplierTrait : IUpgradable, IDisabledTrait, ISync
 	{
 		readonly UpgradeMultiplierTraitInfo info;
+		readonly Dictionary<string, bool> conditions = new Dictionary<string, bool>();
+
 		[Sync] int level = 0;
 		[Sync] public bool IsTraitDisabled { get; private set; }
-		public int AdjustedLevel { get { return level - info.BaseLevel; } }
-		public IEnumerable<string> UpgradeTypes { get { return info.UpgradeTypes; } }
+
+		IEnumerable<string> IUpgradable.UpgradeTypes
+		{
+			get
+			{
+				if (info.RequiresCondition != null)
+					return info.RequiresCondition.Variables;
+
+				return info.UpgradeTypes;
+			}
+		}
 
 		protected UpgradeMultiplierTrait(UpgradeMultiplierTraitInfo info, string modifierType, string actorType)
 		{
+			this.info = info;
 			if (info.Modifier.Length == 0)
 				throw new ArgumentException("No modifiers in " + modifierType + " for " + actorType);
-			this.info = info;
-			IsTraitDisabled = info.UpgradeTypes.Length > 0 && info.BaseLevel > 0;
-			level = IsTraitDisabled ? 0 : info.BaseLevel;
+
+			// TODO: Set initial state from a future ConditionsInit
+			if (info.RequiresCondition != null)
+				IsTraitDisabled = !info.RequiresCondition.Evaluate(conditions);
+			else
+			{
+				IsTraitDisabled = info.UpgradeTypes != null && info.UpgradeTypes.Length > 0 && info.BaseLevel > 0;
+				level = IsTraitDisabled ? 0 : info.BaseLevel;
+			}
 		}
 
 		public bool AcceptsUpgradeLevel(Actor self, string type, int level)
 		{
+			if (info.RequiresCondition != null)
+				return level == 1;
+
 			return level < info.Modifier.Length + info.BaseLevel;
 		}
 
@@ -61,15 +89,28 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void UpgradeLevelChanged(Actor self, string type, int oldLevel, int newLevel)
 		{
-			if (!UpgradeTypes.Contains(type))
-				return;
-			level = newLevel.Clamp(0, Math.Max(info.Modifier.Length + info.BaseLevel - 1, 0));
-			IsTraitDisabled = level < info.BaseLevel;
+			if (info.RequiresCondition != null)
+			{
+				conditions[type] = newLevel > 0;
+				IsTraitDisabled = !info.RequiresCondition.Evaluate(conditions);
+			}
+			else
+			{
+				if (!info.UpgradeTypes.Contains(type))
+					return;
+
+				level = newLevel.Clamp(0, Math.Max(info.Modifier.Length + info.BaseLevel - 1, 0));
+				IsTraitDisabled = level < info.BaseLevel;
+			}
+
 			Update(self);
 		}
 
 		public int GetModifier()
 		{
+			if (info.RequiresCondition != null)
+				return IsTraitDisabled ? 100 : info.Modifier[0];
+
 			return IsTraitDisabled ? 100 : info.Modifier[level - info.BaseLevel];
 		}
 	}
