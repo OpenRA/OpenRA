@@ -16,10 +16,10 @@ namespace OpenRA.Activities
 	public class CallFunc : Activity
 	{
 		public CallFunc(Action a) { this.a = a; }
-		public CallFunc(Action a, bool interruptable)
+		public CallFunc(Action a, bool interruptible)
 		{
 			this.a = a;
-			IsInterruptible = interruptable;
+			IsInterruptible = interruptible;
 		}
 
 		Action a;
