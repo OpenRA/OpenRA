@@ -87,6 +87,10 @@ namespace OpenRA.Graphics
 			else
 				sprite = emptySprite;
 
+			// The vertex buffer does not have geometry for cells outside the map
+			if (!map.Contains(uv))
+				return;
+
 			var offset = rowStride * uv.V + 6 * uv.U;
 			Util.FastCreateQuad(vertices, pos, sprite, palette.TextureIndex, offset, sprite.Size);
 
