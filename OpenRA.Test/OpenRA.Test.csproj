@@ -55,6 +55,7 @@
     <Compile Include="OpenRA.Mods.Common\ShapeTest.cs" />
     <Compile Include="OpenRA.Game\OrderTest.cs" />
     <Compile Include="OpenRA.Game\PlatformTest.cs" />
+    <Compile Include="OpenRA.Game\BooleanExpressionTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.Game\OpenRA.Game.csproj">
