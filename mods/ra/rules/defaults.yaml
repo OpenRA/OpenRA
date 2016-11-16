@@ -616,6 +616,17 @@
 		Palette: terrain
 	EditorTilesetFilter:
 		ExcludeTilesets: INTERIOR
+	SpawnActorOnDeath@1:
+		Actor: c1
+		Probability: 40
+	SpawnActorOnDeath@2:
+		Actor: c4
+		Probability: 20
+	SpawnActorOnDeath@3:
+		Actor: c3
+		Probability: 15
+	Explodes:
+		Weapon: CivBuildingExplosion
 
 ^CivField:
 	Inherits: ^CivBuilding
