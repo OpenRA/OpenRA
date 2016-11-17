@@ -226,8 +226,7 @@ SPY:
 		Palette: effect
 		ReferencePoint: Top, Right
 		ZOffset: 256
-		UpgradeTypes: disguise
-		UpgradeMinEnabledLevel: 1
+		RequiresCondition: disguise
 	IgnoresDisguise:
 	DetectCloaked:
 		CloakTypes: Cloak, Hijacker

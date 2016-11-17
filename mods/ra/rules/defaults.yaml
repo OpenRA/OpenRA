@@ -40,8 +40,7 @@
 		Delay: 100
 		HealIfBelow: 100
 		DamageCooldown: 125
-		UpgradeTypes: selfheal
-		UpgradeMinEnabledLevel: 1
+		RequiresCondition: selfheal
 	WithRankDecoration:
 		Image: rank
 		Sequence: rank
@@ -54,8 +53,7 @@
 
 ^IronCurtainable:
 	UpgradeOverlay@IRONCURTAIN:
-		UpgradeTypes: invulnerability
-		UpgradeMinEnabledLevel: 1
+		RequiresCondition: invulnerability
 	DamageMultiplier@IRONCURTAIN:
 		UpgradeTypes: invulnerability
 		Modifier: 0
@@ -87,8 +85,7 @@
 		Bounds: 24, 24
 	Targetable:
 		TargetTypes: Ground, Repair, Vehicle
-		UpgradeTypes: parachute
-		UpgradeMaxEnabledLevel: 0
+		RequiresCondition: !parachute
 	Repairable:
 	Chronoshiftable:
 	Passenger:
@@ -133,14 +130,13 @@
 		EmptyWeapon: UnitExplodeSmall
 	WithFacingSpriteBody:
 	WithParachute:
-		UpgradeTypes: parachute
-		UpgradeMinEnabledLevel: 1
 		ShadowImage: parach-shadow
 		ShadowSequence: idle
 		Image: parach
 		Sequence: idle
 		OpeningSequence: open
 		Offset: 0,0,200
+		RequiresCondition: parachute
 	BodyOrientation:
 		UseClassicFacingFudge: True
 
@@ -195,8 +191,7 @@
 		Bounds: 12,18,0,-8
 	Targetable:
 		TargetTypes: Ground, Infantry, Disguise
-		UpgradeTypes: parachute
-		UpgradeMaxEnabledLevel: 0
+		RequiresCondition: !parachute
 	QuantizeFacingsFromSequence:
 		Sequence: stand
 	WithInfantryBody:
@@ -228,8 +223,7 @@
 		Delay: 100
 		HealIfBelow: 100
 		DamageCooldown: 125
-		UpgradeTypes: hospitalheal
-		UpgradeMinEnabledLevel: 1
+		RequiresCondition: hospitalheal
 	GlobalUpgradable:
 		Upgrades: hospitalheal
 		Prerequisites: hosp
@@ -252,14 +246,13 @@
 	Voiced:
 		VoiceSet: GenericVoice
 	WithParachute:
-		UpgradeTypes: parachute
-		UpgradeMinEnabledLevel: 1
 		ShadowImage: parach-shadow
 		ShadowSequence: idle
 		Image: parach
 		Sequence: idle
 		OpeningSequence: open
 		Offset: 0,0,427
+		RequiresCondition: parachute
 
 ^Soldier:
 	Inherits: ^Infantry
@@ -370,12 +363,10 @@
 		CruisingUpgrades: cruising
 	Targetable@GROUND:
 		TargetTypes: Ground, Repair, Vehicle
-		UpgradeTypes: airborne
-		UpgradeMaxEnabledLevel: 0
+		RequiresCondition: !airborne
 	Targetable@AIRBORNE:
 		TargetTypes: Air
-		UpgradeTypes: airborne
-		UpgradeMinEnabledLevel: 1
+		RequiresCondition: airborne
 	HiddenUnderFog:
 		Type: CenterPosition
 	AttackMove:
@@ -414,8 +405,7 @@
 	GpsDot:
 		String: Helicopter
 	Hovers@CRUISING:
-		UpgradeTypes: cruising
-		UpgradeMinEnabledLevel: 1
+		RequiresCondition: cruising
 	BodyOrientation:
 		UseClassicFacingFudge: True
 
@@ -825,13 +815,12 @@
 		KilledOnImpassableTerrain: false
 	Passenger:
 	WithParachute:
-		UpgradeTypes: parachute
-		UpgradeMinEnabledLevel: 1
 		Image: parach
 		Sequence: idle
 		OpeningSequence: open
 		ShadowImage: parach-shadow
 		ShadowSequence: idle
+		RequiresCondition: parachute
 	UpgradeManager:
 
 ^Mine:

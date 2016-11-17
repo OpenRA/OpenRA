@@ -174,8 +174,7 @@ SPEN:
 		Sequence: tag-primary
 		ReferencePoint: Top
 		ZOffset: 256
-		UpgradeTypes: primary
-		UpgradeMinEnabledLevel: 1
+		RequiresCondition: primary
 
 SYRD:
 	Inherits: ^Building
@@ -270,8 +269,7 @@ SYRD:
 		Sequence: tag-primary
 		ReferencePoint: Top
 		ZOffset: 256
-		UpgradeTypes: primary
-		UpgradeMinEnabledLevel: 1
+		RequiresCondition: primary
 
 IRON:
 	Inherits: ^ScienceBuilding
@@ -877,8 +875,7 @@ WEAP:
 		Sequence: tag-primary
 		ReferencePoint: Top
 		ZOffset: 256
-		UpgradeTypes: primary
-		UpgradeMinEnabledLevel: 1
+		RequiresCondition: primary
 
 FACT:
 	Inherits: ^Building
@@ -1116,8 +1113,7 @@ HPAD:
 		Sequence: tag-primary
 		ReferencePoint: Top
 		ZOffset: 256
-		UpgradeTypes: primary
-		UpgradeMinEnabledLevel: 1
+		RequiresCondition: primary
 	WithRearmAnimation:
 
 AFLD:
@@ -1233,8 +1229,7 @@ AFLD:
 		Sequence: tag-primary
 		ReferencePoint: Top
 		ZOffset: 256
-		UpgradeTypes: primary
-		UpgradeMinEnabledLevel: 1
+		RequiresCondition: primary
 	WithRearmAnimation:
 
 POWR:
@@ -1413,8 +1408,7 @@ BARR:
 		Sequence: tag-primary
 		ReferencePoint: Top
 		ZOffset: 256
-		UpgradeTypes: primary
-		UpgradeMinEnabledLevel: 1
+		RequiresCondition: primary
 
 KENN:
 	Inherits: ^Building
@@ -1461,8 +1455,7 @@ KENN:
 		Sequence: tag-primary
 		ReferencePoint: Top
 		ZOffset: 256
-		UpgradeTypes: primary
-		UpgradeMinEnabledLevel: 1
+		RequiresCondition: primary
 
 TENT:
 	Inherits: ^Building
@@ -1541,8 +1534,7 @@ TENT:
 		Sequence: tag-primary
 		ReferencePoint: Top
 		ZOffset: 256
-		UpgradeTypes: primary
-		UpgradeMinEnabledLevel: 1
+		RequiresCondition: primary
 
 FIX:
 	Inherits: ^Building
