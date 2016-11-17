@@ -356,12 +356,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				if (errorLabel != null)
 				{
-					errorLabelFilename.GetText = () => WidgetUtils.TruncateText(filename, errorLabel.Bounds.Width, errorFont);
 					currentSprites = new Sprite[0];
 					errorLabel.Visible = true;
 
 					if (errorLabelFilename != null)
+					{
+						errorLabelFilename.GetText = () => WidgetUtils.TruncateText(filename, errorLabel.Bounds.Width, errorFont);
 						errorLabelFilename.Visible = true;
+					}
 				}
 
 				Log.AddChannel("assetbrowser", "assetbrowser.log");
