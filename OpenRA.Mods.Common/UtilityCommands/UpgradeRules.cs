@@ -435,6 +435,48 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				// Rename Replaced upgrade consumers with conditions
+				if (engineVersion < 20161117)
+				{
+					var upgradeTypesNode = node.Value.Nodes.FirstOrDefault(n => n.Key == "UpgradeTypes");
+					if (upgradeTypesNode != null)
+					{
+						var upgradeMinEnabledLevel = 0;
+						var upgradeMaxEnabledLevel = int.MaxValue;
+						var upgradeMaxAcceptedLevel = 1;
+						var upgradeTypes = FieldLoader.GetValue<string[]>("", upgradeTypesNode.Value.Value);
+						var minEnabledNode = node.Value.Nodes.FirstOrDefault(n => n.Key == "UpgradeMinEnabledLevel");
+						if (minEnabledNode != null)
+							upgradeMinEnabledLevel = FieldLoader.GetValue<int>("", minEnabledNode.Value.Value);
+
+						var maxEnabledNode = node.Value.Nodes.FirstOrDefault(n => n.Key == "UpgradeMaxEnabledLevel");
+						if (maxEnabledNode != null)
+							upgradeMaxEnabledLevel = FieldLoader.GetValue<int>("", maxEnabledNode.Value.Value);
+
+						var maxAcceptedNode = node.Value.Nodes.FirstOrDefault(n => n.Key == "UpgradeMaxAcceptedLevel");
+						if (maxAcceptedNode != null)
+							upgradeMaxAcceptedLevel = FieldLoader.GetValue<int>("", maxAcceptedNode.Value.Value);
+
+						var processed = false;
+						if (upgradeTypes.Length == 1 && upgradeMinEnabledLevel == 0 && upgradeMaxEnabledLevel == 0 && upgradeMaxAcceptedLevel == 1)
+						{
+							node.Value.Nodes.Add(new MiniYamlNode("RequiresCondition", "!" + upgradeTypes.First()));
+							processed = true;
+						}
+						else if (upgradeTypes.Length == 1 && upgradeMinEnabledLevel == 1 && upgradeMaxEnabledLevel == int.MaxValue && upgradeMaxAcceptedLevel == 1)
+						{
+							node.Value.Nodes.Add(new MiniYamlNode("RequiresCondition", upgradeTypes.First()));
+							processed = true;
+						}
+
+						if (processed)
+							node.Value.Nodes.RemoveAll(n => n.Key == "UpgradeTypes" || n.Key == "UpgradeMinEnabledLevel" ||
+								n.Key == "UpgradeMaxEnabledLevel" || n.Key == "UpgradeMaxAcceptedLevel");
+						else
+							Console.WriteLine("Unable to automatically migrate {0}:{1} UpgradeTypes to RequiresCondition. This must be corrected manually", parent.Key, node.Key);
+					}
+				}
+
 				UpgradeActorRules(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 
