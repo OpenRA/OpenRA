@@ -17,41 +17,105 @@
 ^GainsExperience:
 	GainsExperience:
 		Upgrades:
-			200: firepower, damage, speed, reload, inaccuracy, rank
-			400: firepower, damage, speed, reload, inaccuracy, rank
-			800: firepower, damage, speed, reload, inaccuracy, rank
-			1600: firepower, damage, speed, reload, inaccuracy, rank, eliteweapon, selfheal
-	FirepowerMultiplier@EXPERIENCE:
-		UpgradeTypes: firepower
-		Modifier: 105, 110, 115, 125
-	DamageMultiplier@EXPERIENCE:
-		UpgradeTypes: damage
-		Modifier: 96, 92, 88, 80
-	SpeedMultiplier@EXPERIENCE:
-		UpgradeTypes: speed
-		Modifier: 105, 110, 115, 125
-	ReloadDelayMultiplier@EXPERIENCE:
-		UpgradeTypes: reload
-		Modifier: 96, 92, 88, 80
-	InaccuracyMultiplier@EXPERIENCE:
-		UpgradeTypes: inaccuracy
-		Modifier: 90, 80, 70, 50
+			200: rank-veteran-1
+			400: rank-veteran-2
+			800: rank-veteran-3
+			1600: rank-elite
+	DamageMultiplier@RANK-1:
+		RequiresCondition: rank-veteran-1 && !rank-veteran-2
+		Modifier: 96
+	DamageMultiplier@RANK-2:
+		RequiresCondition: rank-veteran-2 && !rank-veteran-3
+		Modifier: 92
+	DamageMultiplier@RANK-3:
+		RequiresCondition: rank-veteran-3 && !rank-elite
+		Modifier: 88
+	DamageMultiplier@RANK-ELITE:
+		RequiresCondition: rank-elite
+		Modifier: 80
+	FirepowerMultiplier@RANK-1:
+		RequiresCondition: rank-veteran-1 && !rank-veteran-2
+		Modifier: 105
+	FirepowerMultiplier@RANK-2:
+		RequiresCondition: rank-veteran-2 && !rank-veteran-3
+		Modifier: 110
+	FirepowerMultiplier@RANK-3:
+		RequiresCondition: rank-veteran-3 && !rank-elite
+		Modifier: 115
+	FirepowerMultiplier@RANK-ELITE:
+		RequiresCondition: rank-elite
+		Modifier: 125
+	SpeedMultiplier@RANK-1:
+		RequiresCondition: rank-veteran-1 && !rank-veteran-2
+		Modifier: 105
+	SpeedMultiplier@RANK-2:
+		RequiresCondition: rank-veteran-2 && !rank-veteran-3
+		Modifier: 110
+	SpeedMultiplier@RANK-3:
+		RequiresCondition: rank-veteran-3 && !rank-elite
+		Modifier: 115
+	SpeedMultiplier@RANK-ELITE:
+		RequiresCondition: rank-elite
+		Modifier: 125
+	ReloadDelayMultiplier@RANK-1:
+		RequiresCondition: rank-veteran-1 && !rank-veteran-2
+		Modifier: 96
+	ReloadDelayMultiplier@RANK-2:
+		RequiresCondition: rank-veteran-2 && !rank-veteran-3
+		Modifier: 92
+	ReloadDelayMultiplier@RANK-3:
+		RequiresCondition: rank-veteran-3 && !rank-elite
+		Modifier: 88
+	ReloadDelayMultiplier@RANK-ELITE:
+		RequiresCondition: rank-elite
+		Modifier: 80
+	InaccuracyMultiplier@RANK-1:
+		RequiresCondition: rank-veteran-1 && !rank-veteran-2
+		Modifier: 90
+	InaccuracyMultiplier@RANK-2:
+		RequiresCondition: rank-veteran-2 && !rank-veteran-3
+		Modifier: 80
+	InaccuracyMultiplier@RANK-3:
+		RequiresCondition: rank-veteran-3 && !rank-elite
+		Modifier: 70
+	InaccuracyMultiplier@RANK-ELITE:
+		RequiresCondition: rank-elite
+		Modifier: 50
 	SelfHealing@ELITE:
 		Step: 0
 		PercentageStep: 4
 		Delay: 125
 		HealIfBelow: 100
 		DamageCooldown: 125
-		RequiresCondition: selfheal
-	WithRankDecoration:
+		RequiresCondition: rank-elite
+	WithDecoration@RANK-1:
 		Image: rank
-		Sequence: rank
+		Sequence: rank-veteran-1
 		Palette: effect
 		ReferencePoint: Bottom, Right
-		UpgradeTypes: rank
+		RequiresCondition: rank-veteran-1 && !rank-veteran-2
 		ZOffset: 256
-		UpgradeMinEnabledLevel: 1
-		UpgradeMaxAcceptedLevel: 4
+	WithDecoration@RANK-2:
+		Image: rank
+		Sequence: rank-veteran-2
+		Palette: effect
+		ReferencePoint: Bottom, Right
+		RequiresCondition: rank-veteran-2 && !rank-veteran-3
+		ZOffset: 256
+	WithDecoration@RANK-3:
+		Image: rank
+		Sequence: rank-veteran-3
+		Palette: effect
+		ReferencePoint: Bottom, Right
+		RequiresCondition: rank-veteran-3 && !rank-elite
+		ZOffset: 256
+	WithDecoration@RANK-ELITE:
+		Image: rank
+		Sequence: rank-elite
+		Palette: effect
+		ReferencePoint: Bottom, Right
+		RequiresCondition: rank-elite
+		ZOffset: 256
 
 ^Vehicle:
 	Inherits@1: ^ExistsInWorld
