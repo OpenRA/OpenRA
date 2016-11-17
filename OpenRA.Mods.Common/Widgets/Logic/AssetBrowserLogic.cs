@@ -50,7 +50,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		LabelWidget errorLabel;
 		LabelWidget errorLabelFilename;
 		SpriteFont errorFont;
-		bool isErrorLabelVisible { get { return errorLabel != null && errorLabel.Visible; } }
+		bool IsErrorLabelVisible { get { return errorLabel != null && errorLabel.Visible; } }
 
 		[ObjectCreator.UseCtor]
 		public AssetBrowserLogic(Widget widget, Action onExit, ModData modData, World world, Dictionary<string, MiniYaml> logicArgs)
@@ -89,12 +89,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				spriteWidget.GetSprite = () => currentSprites != null ? currentSprites[currentFrame] : null;
 				currentPalette = spriteWidget.Palette;
 				spriteWidget.GetPalette = () => currentPalette;
-				spriteWidget.IsVisible = () => !isVideoLoaded && !isErrorLabelVisible;
+				spriteWidget.IsVisible = () => !isVideoLoaded && !IsErrorLabelVisible;
 			}
 
 			var playerWidget = panel.GetOrNull<VqaPlayerWidget>("PLAYER");
 			if (playerWidget != null)
-				playerWidget.IsVisible = () => isVideoLoaded && !isErrorLabelVisible;
+				playerWidget.IsVisible = () => isVideoLoaded && !IsErrorLabelVisible;
 
 			errorLabel = panel.GetOrNull<LabelWidget>("ERROR");
 			if (errorLabel != null)
