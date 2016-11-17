@@ -72,13 +72,11 @@ sandworm:
 	WithIdleAnimation:
 		Interval: 160
 		Sequences: lightninga, lightningb, lightningc, lightningd, lightninge, lightningf
-		UpgradeTypes: attacking
-		UpgradeMaxEnabledLevel: 0
+		RequiresCondition: !attacking
 	AmbientSound:
 		SoundFile: WRMSIGN1.WAV
 		Interval: 160
-		UpgradeTypes: attacking
-		UpgradeMaxEnabledLevel: 0
+		RequiresCondition: !attacking
 	WithAttackOverlay@mouth:
 		Sequence: mouth
 	WithAttackOverlay@sand:
@@ -106,8 +104,7 @@ sandworm:
 		Type: CenterPosition
 		TerrainTypes: Sand, Dune, SpiceSand, Spice
 		MovingInterval: 3
-		UpgradeTypes: attacking
-		UpgradeMaxEnabledLevel: 0
+		RequiresCondition: !attacking
 	UpgradeManager:
 	Buildable:
 		Description: Attracted by vibrations in the sand.\nWill eat units whole and has a large appetite.

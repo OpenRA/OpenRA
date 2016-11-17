@@ -98,15 +98,13 @@ construction_yard:
 		Sequence: tag-upgraded
 		ReferencePoint: Top, Right
 		ZOffset: 256
-		UpgradeTypes: stardecoration
-		UpgradeMinEnabledLevel: 1
+		RequiresCondition: stardecoration
 	WithTextDecoration@primary:
 		RequiresSelection: true
 		Text: PRIMARY
 		ReferencePoint: Top
 		ZOffset: 256
-		UpgradeTypes: primary
-		UpgradeMinEnabledLevel: 1
+		RequiresCondition: primary
 
 wind_trap:
 	Inherits: ^Building
@@ -212,15 +210,13 @@ barracks:
 		Sequence: tag-upgraded
 		ReferencePoint: Top, Right
 		ZOffset: 256
-		UpgradeTypes: stardecoration
-		UpgradeMinEnabledLevel: 1
+		RequiresCondition: stardecoration
 	WithTextDecoration@primary:
 		RequiresSelection: true
 		Text: PRIMARY
 		ReferencePoint: Top
 		ZOffset: 256
-		UpgradeTypes: primary
-		UpgradeMinEnabledLevel: 1
+		RequiresCondition: primary
 
 refinery:
 	Inherits: ^Building
@@ -393,15 +389,13 @@ light_factory:
 		Sequence: tag-upgraded
 		ReferencePoint: Top, Right
 		ZOffset: 256
-		UpgradeTypes: stardecoration
-		UpgradeMinEnabledLevel: 1
+		RequiresCondition: stardecoration
 	WithTextDecoration@primary:
 		RequiresSelection: true
 		Text: PRIMARY
 		ReferencePoint: Top
 		ZOffset: 256
-		UpgradeTypes: primary
-		UpgradeMinEnabledLevel: 1
+		RequiresCondition: primary
 
 heavy_factory:
 	Inherits: ^Building
@@ -474,15 +468,13 @@ heavy_factory:
 		Sequence: tag-upgraded
 		ReferencePoint: Top, Right
 		ZOffset: 256
-		UpgradeTypes: stardecoration
-		UpgradeMinEnabledLevel: 1
+		RequiresCondition: stardecoration
 	WithTextDecoration@primary:
 		RequiresSelection: true
 		Text: PRIMARY
 		ReferencePoint: Top
 		ZOffset: 256
-		UpgradeTypes: primary
-		UpgradeMinEnabledLevel: 1
+		RequiresCondition: primary
 
 outpost:
 	Inherits: ^Building
@@ -597,8 +589,7 @@ starport:
 		Text: PRIMARY
 		ReferencePoint: Top
 		ZOffset: 256
-		UpgradeTypes: primary
-		UpgradeMinEnabledLevel: 1
+		RequiresCondition: primary
 
 wall:
 	Inherits@1: ^SpriteActor
@@ -854,8 +845,7 @@ high_tech_factory:
 		Sequence: tag-upgraded
 		ReferencePoint: Top, Right
 		ZOffset: 256
-		UpgradeTypes: stardecoration
-		UpgradeMinEnabledLevel: 1
+		RequiresCondition: stardecoration
 
 research_centre:
 	Inherits: ^Building

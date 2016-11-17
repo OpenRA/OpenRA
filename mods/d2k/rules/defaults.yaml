@@ -42,8 +42,7 @@
 		Delay: 125
 		HealIfBelow: 100
 		DamageCooldown: 125
-		UpgradeTypes: selfheal
-		UpgradeMinEnabledLevel: 1
+		RequiresCondition: selfheal
 	WithRankDecoration:
 		Image: rank
 		Sequence: rank
@@ -60,8 +59,6 @@
 	Inherits@3: ^SpriteActor
 	Huntable:
 	Mobile:
-		UpgradeTypes: notmobile
-		UpgradeMaxEnabledLevel: 0
 		Crushes: crate, spicebloom
 		TerrainSpeeds:
 			Sand: 100
@@ -73,6 +70,7 @@
 			SpiceBlobs: 100
 			Dune: 50
 		TurnSpeed: 5
+		RequiresCondition: !notmobile
 	SelectionDecorations:
 	WithSpriteControlGroupDecoration:
 	Selectable:
