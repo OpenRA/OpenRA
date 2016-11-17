@@ -1633,137 +1633,171 @@ gasilo.nod:
 
 gadept.gdi:
 	Defaults: gtdept
-		Offset: 0, -36, 36
+		Offset: 0, -36, 1
+		DepthSpriteOffset: 36, 0
 		UseTilesetCode: true
-		DepthSprite: isodepth.shp
 	idle:
 		ShadowStart: 3
+		Offset: 0, -36, 12
+		DepthSprite: isodepth.shp
 	damaged-idle:
 		Start: 1
 		ShadowStart: 4
+		Offset: 0, -36, 12
+		DepthSprite: isodepth.shp
 	dead:
 		Start: 2
 		ShadowStart: 5
 		Tick: 400
+		Offset: 0, -36, 12
+		DepthSprite: isodepth.shp
 	ground: gtdeptbb
 		ShadowStart: 3
 		ZOffset: -1c611
+		ZRamp: 1
 	damaged-ground: gtdeptbb
 		Start: 1
 		ShadowStart: 4
 		ZOffset: -1c611
+		ZRamp: 1
 	dead-ground: gtdeptbb
 		Start: 2
 		ShadowStart: 5
 		ZOffset: -1c611
 		Tick: 400
+		ZRamp: 1
 	idle-light: gtdept_b
 		Length: 7
 		Tick: 120
+		ZRamp: 1
 	damaged-idle-light: gtdept_b
 		Start: 7
 		Length: 7
 		Tick: 120
+		ZRamp: 1
 	circuits: gtdept_a
 		Length: 5
 		ZOffset: -1c511
 		Tick: 120
+		ZRamp: 1
 	damaged-circuits: gtdept_a
 		Start: 5
 		Length: 5
 		ZOffset: -1c511
 		Tick: 120
+		ZRamp: 1
 	crane: gtdept_c
 		Length: 16
+		Offset: 0, -36, 12
+		DepthSprite: isodepth.shp
 	platform: gtdept_d
 		Length: 7
 		ZOffset: -1c511
+		ZRamp: 1
 	damaged-platform: gtdept_d
 		Start: 7
 		Length: 7
 		ZOffset: -1c511
+		ZRamp: 1
 	make: gtdeptmk
 		Length: 10
 		Tick: 60
 		ShadowStart: 10
+		Offset: 0, -36, 36
+		ZRamp: 1
 	emp-overlay: emp_fx01
 		Length: *
-		Offset: 0, 0, 37
+		Offset: 0, 0, 8
 		UseTilesetCode: false
 		ZOffset: 512
 		BlendMode: Additive
-		-DepthSprite:
 	icon: sidebar-gdi|fixicon
 		Offset: 0, 0
 		UseTilesetCode: false
-		-DepthSprite:
 
 gadept.nod:
 	Defaults: gtdept
-		Offset: 0, -36, 36
+		Offset: 0, -36, 1
+		DepthSpriteOffset: 36, 0
 		UseTilesetCode: true
-		DepthSprite: isodepth.shp
 	idle:
 		ShadowStart: 3
+		Offset: 0, -36, 12
+		DepthSprite: isodepth.shp
 	damaged-idle:
 		Start: 1
 		ShadowStart: 4
+		Offset: 0, -36, 12
+		DepthSprite: isodepth.shp
 	dead:
 		Start: 2
 		ShadowStart: 5
 		Tick: 400
+		Offset: 0, -36, 12
+		DepthSprite: isodepth.shp
 	ground: gtdeptbb
 		ShadowStart: 3
 		ZOffset: -1c611
+		ZRamp: 1
 	damaged-ground: gtdeptbb
 		Start: 1
 		ShadowStart: 4
 		ZOffset: -1c611
+		ZRamp: 1
 	dead-ground: gtdeptbb
 		Start: 2
 		ShadowStart: 5
 		ZOffset: -1c611
 		Tick: 400
+		ZRamp: 1
 	idle-light: gtdept_b
 		Length: 7
 		Tick: 120
+		ZRamp: 1
 	damaged-idle-light: gtdept_b
 		Start: 7
 		Length: 7
 		Tick: 120
+		ZRamp: 1
 	circuits: gtdept_a
 		Length: 5
 		ZOffset: -1c511
 		Tick: 120
+		ZRamp: 1
 	damaged-circuits: gtdept_a
 		Start: 5
 		Length: 5
 		ZOffset: -1c511
 		Tick: 120
+		ZRamp: 1
 	crane: gtdept_c
 		Length: 16
+		Offset: 0, -36, 12
+		DepthSprite: isodepth.shp
 	platform: gtdept_d
 		Length: 7
 		ZOffset: -1c511
+		ZRamp: 1
 	damaged-platform: gtdept_d
 		Start: 7
 		Length: 7
 		ZOffset: -1c511
+		ZRamp: 1
 	make: gtdeptmk
 		Length: 10
 		Tick: 60
 		ShadowStart: 10
+		Offset: 0, -36, 36
+		ZRamp: 1
 	emp-overlay: emp_fx01
 		Length: *
-		Offset: 0, 0, 37
+		Offset: 0, 0, 8
 		UseTilesetCode: false
 		ZOffset: 512
 		BlendMode: Additive
-		-DepthSprite:
 	icon: sidebar-nod|fixicon
 		Offset: 76, 66
 		UseTilesetCode: false
-		-DepthSprite:
 
 namisl:
 	Defaults:
