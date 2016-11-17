@@ -11,17 +11,21 @@
 
 namespace OpenRA.Mods.Common.Traits
 {
-	[Desc("The speed of this actor is multiplied based on upgrade level if specified.")]
-	public class SpeedMultiplierInfo : UpgradeMultiplierTraitInfo
+	[Desc("Modifies the movement speed of this actor.")]
+	public class SpeedMultiplierInfo : UpgradableTraitInfo
 	{
-		public override object Create(ActorInitializer init) { return new SpeedMultiplier(this, init.Self.Info.Name); }
+		[FieldLoader.Require]
+		[Desc("Percentage modifier to apply.")]
+		public readonly int Modifier = 100;
+
+		public override object Create(ActorInitializer init) { return new SpeedMultiplier(this); }
 	}
 
-	public class SpeedMultiplier : UpgradeMultiplierTrait, ISpeedModifier
+	public class SpeedMultiplier : UpgradableTrait<SpeedMultiplierInfo>, ISpeedModifier
 	{
-		public SpeedMultiplier(SpeedMultiplierInfo info, string actorType)
-			: base(info, "SpeedMultiplier", actorType) { }
+		public SpeedMultiplier(SpeedMultiplierInfo info)
+			: base(info) { }
 
-		int ISpeedModifier.GetSpeedModifier() { return GetModifier(); }
+		int ISpeedModifier.GetSpeedModifier() { return IsTraitDisabled ? 100 : Info.Modifier; }
 	}
 }

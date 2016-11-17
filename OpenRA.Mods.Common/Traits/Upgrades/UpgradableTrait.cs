@@ -22,25 +22,8 @@ namespace OpenRA.Mods.Common.Traits
 		static readonly Dictionary<string, bool> NoConditions = new Dictionary<string, bool>();
 
 		[UpgradeUsedReference]
-		[Desc("Boolean expression defining the condition to enable this trait.",
-			"Overrides UpgradeTypes/UpgradeMinEnabledLevel/UpgradeMaxEnabledLevel/UpgradeMaxAcceptedLevel if set.")]
+		[Desc("Boolean expression defining the condition to enable this trait.")]
 		public readonly BooleanExpression RequiresCondition = null;
-
-		[UpgradeUsedReference]
-		[Desc("The upgrade types which can enable or disable this trait.")]
-		public readonly HashSet<string> UpgradeTypes = new HashSet<string>();
-
-		[Desc("The minimum upgrade level at which this trait is enabled.", "Defaults to 0 (enabled by default).")]
-		public readonly int UpgradeMinEnabledLevel = 0;
-
-		[Desc("The maximum upgrade level at which the trait is enabled.",
-			"Defaults to UpgradeMaxAcceptedLevel (enabled for all levels greater than UpgradeMinEnabledLevel).",
-			"Set this to a value smaller than UpgradeMaxAcceptedLevel to disable the trait at higher levels.",
-			"Use UpgradeMaxAcceptedLevel: 2 (1 more) to be able to extend upgrade time.")]
-		public readonly int UpgradeMaxEnabledLevel = int.MaxValue;
-
-		[Desc("The maximum upgrade level that this trait will accept.")]
-		public readonly int UpgradeMaxAcceptedLevel = 1;
 
 		public abstract object Create(ActorInitializer init);
 
@@ -51,8 +34,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public virtual void RulesetLoaded(Ruleset rules, ActorInfo ai)
 		{
-			EnabledByDefault = RequiresCondition != null ?
-				RequiresCondition.Evaluate(NoConditions) : UpgradeMinEnabledLevel < 1;
+			EnabledByDefault = RequiresCondition != null ? RequiresCondition.Evaluate(NoConditions) : true;
 		}
 	}
 
@@ -73,7 +55,7 @@ namespace OpenRA.Mods.Common.Traits
 				if (Info.RequiresCondition != null)
 					return Info.RequiresCondition.Variables;
 
-				return Info.UpgradeTypes;
+				return Enumerable.Empty<string>();
 			}
 		}
 
@@ -84,42 +66,20 @@ namespace OpenRA.Mods.Common.Traits
 			Info = info;
 
 			// TODO: Set initial state from a ConditionsInit once that exists
-			if (info.RequiresCondition != null)
-				IsTraitDisabled = !info.RequiresCondition.Evaluate(conditions);
-			else
-				IsTraitDisabled = info.UpgradeTypes != null && info.UpgradeTypes.Count > 0 && info.UpgradeMinEnabledLevel > 0;
+			IsTraitDisabled = info.RequiresCondition != null ?
+				!info.RequiresCondition.Evaluate(conditions) : false;
 		}
 
 		bool IUpgradable.AcceptsUpgradeLevel(Actor self, string type, int level)
 		{
-			if (Info.RequiresCondition != null)
-				return level == 1;
-
-			return level > 0 && level <= Info.UpgradeMaxAcceptedLevel;
+			return level == 1;
 		}
 
 		void IUpgradable.UpgradeLevelChanged(Actor self, string type, int oldLevel, int newLevel)
 		{
 			var wasDisabled = IsTraitDisabled;
-
-			if (Info.RequiresCondition != null)
-			{
-				conditions[type] = newLevel > 0;
-				IsTraitDisabled = !Info.RequiresCondition.Evaluate(conditions);
-			}
-			else
-			{
-				if (!Info.UpgradeTypes.Contains(type))
-					return;
-
-				// Restrict the levels to the allowed range
-				oldLevel = oldLevel.Clamp(0, Info.UpgradeMaxAcceptedLevel);
-				newLevel = newLevel.Clamp(0, Info.UpgradeMaxAcceptedLevel);
-				if (oldLevel == newLevel)
-					return;
-
-				IsTraitDisabled = newLevel < Info.UpgradeMinEnabledLevel || newLevel > Info.UpgradeMaxEnabledLevel;
-			}
+			conditions[type] = newLevel > 0;
+			IsTraitDisabled = !Info.RequiresCondition.Evaluate(conditions);
 
 			UpgradeLevelChanged(self, oldLevel, newLevel);
 

@@ -357,7 +357,6 @@
     <Compile Include="Traits\Parachutable.cs" />
     <Compile Include="Traits\ParaDrop.cs" />
     <Compile Include="Traits\Passenger.cs" />
-    <Compile Include="Traits\Multipliers\UpgradableMultiplierTrait.cs" />
     <Compile Include="Traits\Multipliers\DamageMultiplier.cs" />
     <Compile Include="Traits\Multipliers\FirepowerMultiplier.cs" />
     <Compile Include="Traits\Multipliers\InaccuracyMultiplier.cs" />
@@ -443,7 +442,6 @@
     <Compile Include="Traits\Render\WithMuzzleOverlay.cs" />
     <Compile Include="Traits\Render\WithParachute.cs" />
     <Compile Include="Traits\Render\WithRangeCircle.cs" />
-    <Compile Include="Traits\Render\WithRankDecoration.cs" />
     <Compile Include="Traits\Render\WithRearmAnimation.cs" />
     <Compile Include="Traits\Render\WithRepairAnimation.cs" />
     <Compile Include="Traits\Render\WithRepairOverlay.cs" />

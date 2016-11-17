@@ -13,19 +13,25 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	[Desc("Damage taken by this actor is multiplied based on upgrade level.",
-		"Decrease to increase actor's apparent strength.",
+	[Desc("Modifies the damage applied to this actor.",
 		"Use 0 to make actor invulnerable.")]
-	public class DamageMultiplierInfo : UpgradeMultiplierTraitInfo
+	public class DamageMultiplierInfo : UpgradableTraitInfo
 	{
-		public override object Create(ActorInitializer init) { return new DamageMultiplier(this, init.Self.Info.Name); }
+		[FieldLoader.Require]
+		[Desc("Percentage modifier to apply.")]
+		public readonly int Modifier = 100;
+
+		public override object Create(ActorInitializer init) { return new DamageMultiplier(this); }
 	}
 
-	public class DamageMultiplier : UpgradeMultiplierTrait, IDamageModifier
+	public class DamageMultiplier : UpgradableTrait<DamageMultiplierInfo>, IDamageModifier
 	{
-		public DamageMultiplier(DamageMultiplierInfo info, string actorType)
-			: base(info, "DamageMultiplier", actorType) { }
+		public DamageMultiplier(DamageMultiplierInfo info)
+			: base(info) { }
 
-		int IDamageModifier.GetDamageModifier(Actor attacker, Damage damage) { return GetModifier(); }
+		int IDamageModifier.GetDamageModifier(Actor attacker, Damage damage)
+		{
+			return IsTraitDisabled ? 100 : Info.Modifier;
+		}
 	}
 }

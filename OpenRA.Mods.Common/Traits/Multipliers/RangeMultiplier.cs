@@ -11,22 +11,21 @@
 
 namespace OpenRA.Mods.Common.Traits
 {
-	[Desc("Range of this actor is multiplied based on upgrade level.")]
-	public class RangeMultiplierInfo : UpgradeMultiplierTraitInfo, IRangeModifierInfo
+	[Desc("Modifies the range of weapons fired by this actor.")]
+	public class RangeMultiplierInfo : UpgradableTraitInfo
 	{
-		public override object Create(ActorInitializer init) { return new RangeMultiplier(this, init.Self.Info.Name); }
+		[FieldLoader.Require]
+		[Desc("Percentage modifier to apply.")]
+		public readonly int Modifier = 100;
 
-		int IRangeModifierInfo.GetRangeModifierDefault()
-		{
-			return BaseLevel > 0 || UpgradeTypes.Length == 0 ? 100 : Modifier[0];
-		}
+		public override object Create(ActorInitializer init) { return new RangeMultiplier(this); }
 	}
 
-	public class RangeMultiplier : UpgradeMultiplierTrait, IRangeModifier
+	public class RangeMultiplier : UpgradableTrait<RangeMultiplierInfo>, IRangeModifierInfo
 	{
-		public RangeMultiplier(RangeMultiplierInfo info, string actorType)
-			: base(info, "RangeMultiplier", actorType) { }
+		public RangeMultiplier(RangeMultiplierInfo info)
+			: base(info) { }
 
-		int IRangeModifier.GetRangeModifier() { return GetModifier(); }
+		int IRangeModifierInfo.GetRangeModifierDefault() { return IsTraitDisabled ? 100 : Info.Modifier; }
 	}
 }
