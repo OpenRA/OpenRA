@@ -41,8 +41,7 @@
 		Delay: 100
 		HealIfBelow: 100
 		DamageCooldown: 125
-		UpgradeTypes: selfheal
-		UpgradeMinEnabledLevel: 1
+		RequiresCondition: selfheal
 	WithRankDecoration:
 		Image: rank
 		Sequence: rank
@@ -91,12 +90,11 @@
 	Tooltip:
 		GenericName: Vehicle
 	Cloak:
-		UpgradeTypes: cloak
-		UpgradeMinEnabledLevel: 1
 		InitialDelay: 15
 		CloakDelay: 90
 		CloakSound: trans1.aud
 		UncloakSound: trans1.aud
+		RequiresCondition: cloak
 	MustBeDestroyed:
 	Voiced:
 		VoiceSet: VehicleVoice
@@ -127,12 +125,10 @@
 		UseLocation: yes
 	Targetable@GROUND:
 		TargetTypes: Ground, Vehicle
-		UpgradeTypes: airborne
-		UpgradeMaxEnabledLevel: 0
+		RequiresCondition: !airborne
 	Targetable@AIRBORNE:
 		TargetTypes: Air
-		UpgradeTypes: airborne
-		UpgradeMinEnabledLevel: 1
+		RequiresCondition: airborne
 	SelectionDecorations:
 	WithSpriteControlGroupDecoration:
 	Selectable:
@@ -160,8 +156,7 @@
 		Offset: 43, 128, 0
 		ZOffset: -129
 	Hovers@CRUISING:
-		UpgradeTypes: cruising
-		UpgradeMinEnabledLevel: 1
+		RequiresCondition: cruising
 	MustBeDestroyed:
 	Voiced:
 		VoiceSet: VehicleVoice
@@ -217,12 +212,11 @@
 		CargoType: Infantry
 	HiddenUnderFog:
 	DamagedByTerrain:
-		UpgradeTypes: hazmatsuits
-		UpgradeMaxEnabledLevel: 0
 		Terrain: Tiberium, BlueTiberium
 		Damage: 2
 		DamageInterval: 16
 		DamageTypes: TiberiumDeath
+		RequiresCondition: !hazmatsuits
 	GlobalUpgradable@BIO:
 		Upgrades: hazmatsuits
 		Prerequisites: bio
@@ -230,8 +224,7 @@
 		Image: pips
 		Sequence: pip-hazmat
 		ReferencePoint: Bottom, Right
-		UpgradeTypes: hazmatsuits
-		UpgradeMinEnabledLevel: 1
+		RequiresCondition: hazmatsuits
 	ActorLostNotification:
 	SpawnActorOnDeath:
 		Probability: 10
@@ -249,8 +242,7 @@
 		Delay: 100
 		HealIfBelow: 100
 		DamageCooldown: 125
-		UpgradeTypes: hospitalheal
-		UpgradeMinEnabledLevel: 1
+		RequiresCondition: hospitalheal
 	GlobalUpgradable@HOSPITAL:
 		Upgrades: hospitalheal
 		Prerequisites: hosp
@@ -258,8 +250,7 @@
 		Image: pips
 		Sequence: pip-heal
 		ReferencePoint: Bottom, Right
-		UpgradeTypes: hospitalheal
-		UpgradeMinEnabledLevel: 1
+		RequiresCondition: hospitalheal
 	DetectCloaked:
 		Range: 2c0
 	DeathSounds@NORMAL:
