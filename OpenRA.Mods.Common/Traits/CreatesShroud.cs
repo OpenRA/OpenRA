@@ -33,10 +33,10 @@ namespace OpenRA.Mods.Common.Traits
 			if (!info.ValidStances.HasStance(p.Stances[self.Owner]))
 				return;
 
-			p.Shroud.AddProjectedShroudGeneration(this, uv);
+			p.Shroud.AddSource(this, Shroud.SourceType.Shroud, uv);
 		}
 
-		protected override void RemoveCellsFromPlayerShroud(Actor self, Player p) { p.Shroud.RemoveShroudGeneration(this); }
+		protected override void RemoveCellsFromPlayerShroud(Actor self, Player p) { p.Shroud.RemoveSource(this); }
 
 		protected override bool IsDisabled(Actor self) { return self.IsDisabled(); }
 	}
