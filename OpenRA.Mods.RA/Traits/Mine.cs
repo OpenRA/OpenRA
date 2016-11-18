@@ -19,6 +19,7 @@ namespace OpenRA.Mods.RA.Traits
 	{
 		public readonly HashSet<string> CrushClasses = new HashSet<string>();
 		public readonly bool AvoidFriendly = true;
+		public readonly bool BlockFriendly = true;
 		public readonly HashSet<string> DetonateClasses = new HashSet<string>();
 
 		public object Create(ActorInitializer init) { return new Mine(this); }
@@ -52,6 +53,9 @@ namespace OpenRA.Mods.RA.Traits
 
 		bool ICrushable.CrushableBy(Actor self, Actor crusher, HashSet<string> crushClasses)
 		{
+			if (info.BlockFriendly && !crusher.Info.HasTraitInfo<MineImmuneInfo>() && self.Owner.Stances[crusher.Owner] == Stance.Ally)
+				return false;
+
 			return info.CrushClasses.Overlaps(crushClasses);
 		}
 	}
