@@ -774,6 +774,7 @@
     <Compile Include="Traits\AutoCarryable.cs" />
     <Compile Include="Traits\AutoCarryall.cs" />
     <Compile Include="Traits\World\CliffBackImpassabilityLayer.cs" />
+    <Compile Include="Traits\Upgrades\GrantCondition.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="AfterBuild">
