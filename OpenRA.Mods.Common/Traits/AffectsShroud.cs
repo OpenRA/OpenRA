@@ -18,6 +18,9 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		public readonly WDist Range = WDist.Zero;
 
+		[Desc("If >= 0, prevent cells that are this much higher than the actor from being revealed.")]
+		public readonly int MaxHeightDelta = -1;
+
 		[Desc("Possible values are CenterPosition (measure range from the center) and ",
 			"Footprint (measure range from the footprint)")]
 		public readonly VisibilityType Type = VisibilityType.Footprint;
@@ -47,10 +50,10 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (Info.Type == VisibilityType.Footprint)
 				return self.OccupiesSpace.OccupiedCells()
-					.SelectMany(kv => Shroud.ProjectedCellsInRange(map, kv.First, range))
+					.SelectMany(kv => Shroud.ProjectedCellsInRange(map, kv.First, range, Info.MaxHeightDelta))
 					.Distinct().ToArray();
 
-			return Shroud.ProjectedCellsInRange(map, self.CenterPosition, range)
+			return Shroud.ProjectedCellsInRange(map, self.CenterPosition, range, Info.MaxHeightDelta)
 				.ToArray();
 		}
 

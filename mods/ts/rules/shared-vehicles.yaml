@@ -19,6 +19,7 @@ MCV:
 		Speed: 85
 	RevealsShroud:
 		Range: 4c0
+		MaxHeightDelta: 3
 	MustBeDestroyed:
 		RequiredForShortGame: true
 	BaseBuilding:
@@ -82,6 +83,7 @@ HARV:
 		Type: Heavy
 	RevealsShroud:
 		Range: 4c0
+		MaxHeightDelta: 3
 	-GainsExperience:
 	-WithVoxelBody:
 	WithVoxelUnloadBody:
@@ -129,6 +131,7 @@ LPST:
 		TurnSpeed: 5
 	RevealsShroud:
 		Range: 7c0
+		MaxHeightDelta: 3
 	RenderSprites:
 		Image: lpst.gdi
 		FactionImages:

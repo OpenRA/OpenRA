@@ -20,6 +20,7 @@ GAPOWR:
 		Type: Wood
 	RevealsShroud:
 		Range: 4c0
+		MaxHeightDelta: 3
 	WithIdleOverlay@LIGHTS:
 		Sequence: idle-lights
 	WithIdleOverlay@PLUG:
@@ -87,6 +88,7 @@ GAPILE:
 		Type: Wood
 	RevealsShroud:
 		Range: 5c0
+		MaxHeightDelta: 3
 	RallyPoint:
 		Offset: 2,3
 		Palette: mouse
@@ -141,6 +143,7 @@ GAWEAP:
 		HP: 1000
 	RevealsShroud:
 		Range: 4c0
+		MaxHeightDelta: 3
 	Armor:
 		Type: Heavy
 	RallyPoint:
@@ -199,6 +202,7 @@ GAHPAD:
 		HP: 600
 	RevealsShroud:
 		Range: 5c0
+		MaxHeightDelta: 3
 	Exit@1:
 		SpawnOffset: 0,-256,0
 	ExitsDebugOverlay:
@@ -255,6 +259,7 @@ GADEPT:
 		HP: 1100
 	RevealsShroud:
 		Range: 5c0
+		MaxHeightDelta: 3
 	Reservable:
 	RepairsUnits:
 		PlayerExperience: 15
@@ -319,6 +324,7 @@ GARADR:
 	RenderDetectionCircle:
 	RevealsShroud:
 		Range: 10c0
+		MaxHeightDelta: 3
 	WithIdleOverlay@DISH:
 		Sequence: idle-dish
 		PauseOnLowPower: yes
@@ -354,6 +360,7 @@ GATECH:
 		Type: Wood
 	RevealsShroud:
 		Range: 4c0
+		MaxHeightDelta: 3
 	WithIdleOverlay@LIGHTS:
 		Sequence: idle-lights
 	Power:
@@ -396,6 +403,7 @@ GAPLUG:
 		Type: Wood
 	RevealsShroud:
 		Range: 6c0
+		MaxHeightDelta: 3
 	IonCannonPower:
 		Cursor: ioncannon
 		UpgradeTypes: plug.ioncannon

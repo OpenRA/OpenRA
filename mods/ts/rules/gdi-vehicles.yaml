@@ -20,6 +20,7 @@ APC:
 		Type: Heavy
 	RevealsShroud:
 		Range: 5c0
+		MaxHeightDelta: 3
 	Turreted:
 		TurnSpeed: 10
 	Cargo:
@@ -76,6 +77,7 @@ HVR:
 		Type: Wood
 	RevealsShroud:
 		Range: 7c0
+		MaxHeightDelta: 3
 	Armament:
 		Weapon: HoverMissile
 		LocalOffset: 0,171,384, 0,-171,384
@@ -118,6 +120,7 @@ SMECH:
 		Type: Light
 	RevealsShroud:
 		Range: 6c0
+		MaxHeightDelta: 3
 	AttackFrontal:
 		Voice: Attack
 	AutoTarget:
@@ -160,6 +163,7 @@ MMCH:
 		Type: Heavy
 	RevealsShroud:
 		Range: 8c0
+		MaxHeightDelta: 3
 	BodyOrientation:
 		QuantizedFacings: 32
 		UseClassicPerspectiveFudge: False
@@ -209,6 +213,7 @@ HMEC:
 		Type: Heavy
 	RevealsShroud:
 		Range: 8c0
+		MaxHeightDelta: 3
 	AttackFrontal:
 		Voice: Attack
 	AutoTarget:
@@ -249,6 +254,7 @@ SONIC:
 		Type: Heavy
 	RevealsShroud:
 		Range: 7c0
+		MaxHeightDelta: 3
 	Armament:
 		Weapon: SonicZap
 		LocalOffset: -50,0,410

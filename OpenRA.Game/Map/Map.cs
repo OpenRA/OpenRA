@@ -241,6 +241,7 @@ namespace OpenRA
 		bool initializedCellProjection;
 		CellLayer<PPos[]> cellProjection;
 		CellLayer<List<MPos>> inverseCellProjection;
+		CellLayer<byte> projectedHeight;
 
 		public static string ComputeUID(IReadOnlyPackage package)
 		{
@@ -420,6 +421,7 @@ namespace OpenRA
 
 			cellProjection = new CellLayer<PPos[]>(this);
 			inverseCellProjection = new CellLayer<List<MPos>>(this);
+			projectedHeight = new CellLayer<byte>(this);
 
 			// Initialize collections
 			foreach (var cell in AllCells)
@@ -455,13 +457,54 @@ namespace OpenRA
 
 			// Remove old reverse projection
 			foreach (var puv in cellProjection[uv])
-				inverseCellProjection[(MPos)puv].Remove(uv);
+			{
+				var temp = (MPos)puv;
+				inverseCellProjection[temp].Remove(uv);
+				projectedHeight[temp] = ProjectedCellHeightInner(puv);
+			}
 
 			var projected = ProjectCellInner(uv);
 			cellProjection[uv] = projected;
 
 			foreach (var puv in projected)
-				inverseCellProjection[(MPos)puv].Add(uv);
+			{
+				var temp = (MPos)puv;
+				inverseCellProjection[temp].Add(uv);
+
+				var height = ProjectedCellHeightInner(puv);
+				projectedHeight[temp] = height;
+
+				// Propagate height up cliff faces
+				while (true)
+				{
+					temp = new MPos(temp.U, temp.V - 1);
+					if (!inverseCellProjection.Contains(temp) || inverseCellProjection[temp].Any())
+						break;
+
+					projectedHeight[temp] = height;
+				}
+			}
+		}
+
+		byte ProjectedCellHeightInner(PPos puv)
+		{
+			while (inverseCellProjection.Contains((MPos)puv))
+			{
+				var inverse = inverseCellProjection[(MPos)puv];
+				if (inverse.Any())
+				{
+					// The original games treat the top of cliffs the same way as the bottom
+					// This information isn't stored in the map data, so query the offset from the tileset
+					var temp = inverse.MaxBy(uv => uv.V);
+					var terrain = Tiles[temp];
+					return (byte)(Height[temp] - Rules.TileSet.Templates[terrain.Type][terrain.Index].Height);
+				}
+
+				// Try the next cell down if this is a cliff face
+				puv = new PPos(puv.U, puv.V + 1);
+			}
+
+			return 0;
 		}
 
 		PPos[] ProjectCellInner(MPos uv)
@@ -784,6 +827,11 @@ namespace OpenRA
 				return new List<MPos>();
 
 			return inverseCellProjection[uv];
+		}
+
+		public byte ProjectedHeight(PPos puv)
+		{
+			return projectedHeight[(MPos)puv];
 		}
 
 		public int FacingBetween(CPos cell, CPos towards, int fallbackfacing)
