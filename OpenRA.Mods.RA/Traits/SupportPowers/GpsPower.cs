@@ -79,8 +79,6 @@ namespace OpenRA.Mods.RA.Traits
 					Info.LaunchSpeechNotification, self.Owner.Faction.InternalName);
 
 				w.Add(new SatelliteLaunch(self, info));
-
-				owner.Launch(self, info);
 			});
 		}
 

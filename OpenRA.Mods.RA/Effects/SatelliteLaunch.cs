@@ -43,7 +43,7 @@ namespace OpenRA.Mods.RA.Effects
 			if (++frame == 19)
 			{
 				var palette = info.SatellitePaletteIsPlayerPalette ? info.SatellitePalette + launcher.Owner.InternalName : info.SatellitePalette;
-				world.AddFrameEndTask(w => w.Add(new GpsSatellite(world, pos, info.SatelliteImage, info.SatelliteSequence, palette)));
+				world.AddFrameEndTask(w => w.Add(new GpsSatellite(world, pos, info.SatelliteImage, info.SatelliteSequence, palette, info.RevealDelay * 25, launcher.Owner)));
 			}
 		}
 

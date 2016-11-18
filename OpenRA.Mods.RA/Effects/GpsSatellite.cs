@@ -18,14 +18,19 @@ namespace OpenRA.Mods.RA.Effects
 {
 	class GpsSatellite : IEffect
 	{
+		readonly Player launcher;
 		readonly Animation anim;
 		readonly string palette;
+		readonly int revealDelay;
 		WPos pos;
+		int tick;
 
-		public GpsSatellite(World world, WPos pos, string image, string sequence, string palette)
+		public GpsSatellite(World world, WPos pos, string image, string sequence, string palette, int revealDelay, Player launcher)
 		{
 			this.palette = palette;
 			this.pos = pos;
+			this.launcher = launcher;
+			this.revealDelay = revealDelay;
 
 			anim = new Animation(world, image);
 			anim.PlayRepeating(sequence);
@@ -36,8 +41,12 @@ namespace OpenRA.Mods.RA.Effects
 			anim.Tick();
 			pos += new WVec(0, 0, 427);
 
-			if (pos.Z > pos.Y)
+			if (++tick > revealDelay)
+			{
+				var watcher = launcher.PlayerActor.Trait<GpsWatcher>();
+				watcher.ReachedOrbit(launcher);
 				world.AddFrameEndTask(w => w.Remove(this));
+			}
 		}
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)
