@@ -43,7 +43,7 @@ namespace OpenRA
 		public bool IsInWorld { get; internal set; }
 		public bool Disposed { get; private set; }
 
-		Activity currentActivity;
+		public Activity CurrentActivity { get; private set; }
 
 		public Group Group;
 		public int Generation;
@@ -54,7 +54,7 @@ namespace OpenRA
 		public IOccupySpace OccupiesSpace { get; private set; }
 		public ITargetable[] Targetables { get; private set; }
 
-		public bool IsIdle { get { return currentActivity == null; } }
+		public bool IsIdle { get { return CurrentActivity == null; } }
 		public bool IsDead { get { return Disposed || (health != null && health.IsDead); } }
 
 		public CPos Location { get { return OccupiesSpace.TopLeft; } }
@@ -161,7 +161,7 @@ namespace OpenRA
 		public void Tick()
 		{
 			var wasIdle = IsIdle;
-			currentActivity = ActivityUtils.RunActivity(this, currentActivity);
+			CurrentActivity = ActivityUtils.RunActivity(this, CurrentActivity);
 
 			if (!wasIdle && IsIdle)
 				foreach (var n in TraitsImplementing<INotifyBecomingIdle>())
@@ -200,21 +200,18 @@ namespace OpenRA
 
 		public void QueueActivity(Activity nextActivity)
 		{
-			if (currentActivity == null)
-				currentActivity = nextActivity;
+			if (CurrentActivity == null)
+				CurrentActivity = nextActivity;
 			else
-				currentActivity.Queue(nextActivity);
+				CurrentActivity.Queue(nextActivity);
 		}
 
-		public void CancelActivity()
+		public bool CancelActivity()
 		{
-			if (currentActivity != null)
-				currentActivity.Cancel(this);
-		}
+			if (CurrentActivity != null)
+				return CurrentActivity.Cancel(this);
 
-		public Activity GetCurrentActivity()
-		{
-			return currentActivity;
+			return true;
 		}
 
 		public override int GetHashCode()

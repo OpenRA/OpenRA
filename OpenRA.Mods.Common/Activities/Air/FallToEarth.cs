@@ -26,6 +26,7 @@ namespace OpenRA.Mods.Common.Activities
 		public FallToEarth(Actor self, FallsToEarthInfo info)
 		{
 			this.info = info;
+			IsInterruptible = false;
 			aircraft = self.Trait<Aircraft>();
 			if (info.Spins)
 				acceleration = self.World.SharedRandom.Next(2) * 2 - 1;
@@ -57,8 +58,5 @@ namespace OpenRA.Mods.Common.Activities
 
 			return this;
 		}
-
-		// Cannot be cancelled
-		public override void Cancel(Actor self) { }
 	}
 }

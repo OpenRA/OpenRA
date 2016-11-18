@@ -44,15 +44,16 @@ namespace OpenRA.Mods.Common.AI
 			if (a.IsIdle)
 				return false;
 
-			var type = a.GetCurrentActivity().GetType();
+			var activity = a.CurrentActivity;
+			var type = activity.GetType();
 			if (type == typeof(Attack) || type == typeof(FlyAttack))
 				return true;
 
-			var next = a.GetCurrentActivity().NextActivity;
+			var next = activity.NextActivity;
 			if (next == null)
 				return false;
 
-			var nextType = a.GetCurrentActivity().NextActivity.GetType();
+			var nextType = next.GetType();
 			if (nextType == typeof(Attack) || nextType == typeof(FlyAttack))
 				return true;
 

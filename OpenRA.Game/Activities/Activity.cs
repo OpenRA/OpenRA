@@ -18,14 +18,25 @@ namespace OpenRA.Activities
 	public abstract class Activity
 	{
 		public Activity NextActivity { get; set; }
+		public bool IsInterruptible { get; protected set; }
 		protected bool IsCanceled { get; private set; }
+
+		public Activity()
+		{
+			IsInterruptible = true;
+		}
 
 		public abstract Activity Tick(Actor self);
 
-		public virtual void Cancel(Actor self)
+		public virtual bool Cancel(Actor self)
 		{
+			if (!IsInterruptible)
+				return false;
+
 			IsCanceled = true;
 			NextActivity = null;
+
+			return true;
 		}
 
 		public virtual void Queue(Activity activity)
@@ -46,7 +57,7 @@ namespace OpenRA.Activities
 	{
 		public static IEnumerable<Target> GetTargetQueue(this Actor self)
 		{
-			return self.GetCurrentActivity()
+			return self.CurrentActivity
 				.Iterate(u => u.NextActivity)
 				.TakeWhile(u => u != null)
 				.SelectMany(u => u.GetTargets(self));

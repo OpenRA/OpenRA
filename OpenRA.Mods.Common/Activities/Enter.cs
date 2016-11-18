@@ -112,13 +112,15 @@ namespace OpenRA.Mods.Common.Activities
 				inner.Cancel(self);
 		}
 
-		public override void Cancel(Actor self)
+		public override bool Cancel(Actor self)
 		{
 			AbortOrExit(self);
 			if (nextState < State.Exiting)
-				base.Cancel(self);
+				return base.Cancel(self);
 			else
 				NextActivity = null;
+
+			return true;
 		}
 
 		ReserveStatus TryReserveElseTryAlternateReserve(Actor self)

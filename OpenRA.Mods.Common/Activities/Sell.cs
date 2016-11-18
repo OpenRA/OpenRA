@@ -27,6 +27,7 @@ namespace OpenRA.Mods.Common.Activities
 			health = self.TraitOrDefault<Health>();
 			sellableInfo = self.Info.TraitInfo<SellableInfo>();
 			playerResources = self.Owner.PlayerActor.Trait<PlayerResources>();
+			IsInterruptible = false;
 		}
 
 		public override Activity Tick(Actor self)
@@ -45,8 +46,5 @@ namespace OpenRA.Mods.Common.Activities
 			self.Dispose();
 			return this;
 		}
-
-		// Cannot be cancelled
-		public override void Cancel(Actor self) { }
 	}
 }

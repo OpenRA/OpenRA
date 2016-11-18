@@ -30,6 +30,7 @@ namespace OpenRA.Mods.Common.Activities
 		{
 			movement = self.Trait<IMove>();
 			harv = self.Trait<Harvester>();
+			IsInterruptible = false;
 		}
 
 		public override Activity Tick(Actor self)
@@ -79,8 +80,5 @@ namespace OpenRA.Mods.Common.Activities
 
 			return ActivityUtils.SequenceActivities(new Wait(10), this);
 		}
-
-		// Cannot be cancelled
-		public override void Cancel(Actor self) { }
 	}
 }

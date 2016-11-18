@@ -272,10 +272,10 @@ namespace OpenRA.Mods.Common.Activities
 			return Pair.New(nextCell, subCell);
 		}
 
-		public override void Cancel(Actor self)
+		public override bool Cancel(Actor self)
 		{
 			path = NoPath;
-			base.Cancel(self);
+			return base.Cancel(self);
 		}
 
 		public override IEnumerable<Target> GetTargets(Actor self)
@@ -331,10 +331,10 @@ namespace OpenRA.Mods.Common.Activities
 				}
 			}
 
-			public override void Cancel(Actor self)
+			public override bool Cancel(Actor self)
 			{
 				Move.Cancel(self);
-				base.Cancel(self);
+				return base.Cancel(self);
 			}
 
 			public override void Queue(Activity activity)

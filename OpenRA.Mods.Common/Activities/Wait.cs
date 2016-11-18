@@ -17,13 +17,12 @@ namespace OpenRA.Mods.Common.Activities
 	public class Wait : Activity
 	{
 		int remainingTicks;
-		bool interruptable = true;
 
 		public Wait(int period) { remainingTicks = period; }
-		public Wait(int period, bool interruptable)
+		public Wait(int period, bool interruptible)
 		{
 			remainingTicks = period;
-			this.interruptable = interruptable;
+			IsInterruptible = interruptible;
 		}
 
 		public override Activity Tick(Actor self)
@@ -31,26 +30,25 @@ namespace OpenRA.Mods.Common.Activities
 			return (remainingTicks-- == 0) ? NextActivity : this;
 		}
 
-		public override void Cancel(Actor self)
+		public override bool Cancel(Actor self)
 		{
-			if (!interruptable)
-				return;
+			if (!base.Cancel(self))
+				return false;
 
 			remainingTicks = 0;
-			base.Cancel(self);
+			return true;
 		}
 	}
 
 	public class WaitFor : Activity
 	{
 		Func<bool> f;
-		bool interruptable = true;
 
 		public WaitFor(Func<bool> f) { this.f = f; }
-		public WaitFor(Func<bool> f, bool interruptable)
+		public WaitFor(Func<bool> f, bool interruptible)
 		{
 			this.f = f;
-			this.interruptable = interruptable;
+			IsInterruptible = interruptible;
 		}
 
 		public override Activity Tick(Actor self)
@@ -58,13 +56,13 @@ namespace OpenRA.Mods.Common.Activities
 			return (f == null || f()) ? NextActivity : this;
 		}
 
-		public override void Cancel(Actor self)
+		public override bool Cancel(Actor self)
 		{
-			if (!interruptable)
-				return;
+			if (!base.Cancel(self))
+				return false;
 
 			f = null;
-			base.Cancel(self);
+			return true;
 		}
 	}
 }

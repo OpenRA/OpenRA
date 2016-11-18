@@ -62,7 +62,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			if (!self.IsInWorld || self.IsDead)
 				yield break;
 
-			var activity = self.GetCurrentActivity();
+			var activity = self.CurrentActivity;
 			if (activity != null)
 			{
 				var targets = activity.GetTargets(self);
