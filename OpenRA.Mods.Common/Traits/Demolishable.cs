@@ -71,6 +71,12 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (Util.ApplyPercentageModifiers(100, modifiers) > 0)
 				self.Kill(saboteur);
+			else
+			{
+				var building = self.TraitOrDefault<Building>();
+				if (building != null)
+					building.Unlock();
+			}
 		}
 	}
 }
