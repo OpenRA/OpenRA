@@ -15,38 +15,41 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Can be carried by actors with the `Carryall` trait.")]
-	public class CarryableInfo : ITraitInfo
+	public class CarryableInfo : UpgradableTraitInfo
 	{
 		[UpgradeGrantedReference]
-		[Desc("The upgrades to grant to self while waiting or being carried.")]
-		public readonly string[] CarryableUpgrades = { };
+		[Desc("The condition to grant to self while a carryall has been reserved.")]
+		public readonly string ReservedCondition = "carryall-reserved";
+
+		[UpgradeGrantedReference]
+		[Desc("The condition to grant to self while being carried.")]
+		public readonly string CarriedCondition = "carried";
 
 		[Desc("Carryall attachment point relative to body.")]
 		public readonly WVec LocalOffset = WVec.Zero;
 
-		public virtual object Create(ActorInitializer init) { return new Carryable(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new Carryable(init.Self, this); }
 	}
 
-	public class Carryable : INotifyCreated
+	public class Carryable : UpgradableTrait<CarryableInfo>
 	{
-		readonly CarryableInfo info;
 		UpgradeManager upgradeManager;
+		int reservedToken = UpgradeManager.InvalidConditionToken;
+		int carriedToken = UpgradeManager.InvalidConditionToken;
 
 		public Actor Carrier { get; private set; }
 		public bool Reserved { get { return state != State.Free; } }
 		public CPos? Destination { get; protected set; }
-		public bool WantsTransport { get { return Destination != null; } }
+		public bool WantsTransport { get { return Destination != null && !IsTraitDisabled; } }
 
 		protected enum State { Free, Reserved, Locked }
 		protected State state = State.Free;
 		protected bool attached;
 
 		public Carryable(Actor self, CarryableInfo info)
-		{
-			this.info = info;
-		}
+			: base(info) { }
 
-		void INotifyCreated.Created(Actor self)
+		protected override void Created(Actor self)
 		{
 			upgradeManager = self.Trait<UpgradeManager>();
 		}
@@ -57,8 +60,9 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			attached = true;
-			foreach (var u in info.CarryableUpgrades)
-				upgradeManager.GrantUpgrade(self, u, this);
+
+			if (carriedToken == UpgradeManager.InvalidConditionToken)
+				carriedToken = upgradeManager.GrantCondition(self, Info.CarriedCondition);
 		}
 
 		// This gets called by carrier after we touched down
@@ -68,17 +72,22 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			attached = false;
-			foreach (var u in info.CarryableUpgrades)
-				upgradeManager.RevokeUpgrade(self, u, this);
+
+			if (carriedToken != UpgradeManager.InvalidConditionToken)
+				carriedToken = upgradeManager.RevokeCondition(self, carriedToken);
 		}
 
 		public virtual bool Reserve(Actor self, Actor carrier)
 		{
-			if (Reserved)
+			if (Reserved || IsTraitDisabled)
 				return false;
 
 			state = State.Reserved;
 			Carrier = carrier;
+
+			if (reservedToken == UpgradeManager.InvalidConditionToken)
+				reservedToken = upgradeManager.GrantCondition(self, Info.ReservedCondition);
+
 			return true;
 		}
 
@@ -86,6 +95,9 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			state = State.Free;
 			Carrier = null;
+
+			if (reservedToken != UpgradeManager.InvalidConditionToken)
+				reservedToken = upgradeManager.RevokeCondition(self, reservedToken);
 		}
 
 		// Prepare for transport pickup
