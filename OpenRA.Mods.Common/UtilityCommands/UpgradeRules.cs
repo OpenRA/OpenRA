@@ -477,6 +477,27 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				if (engineVersion < 20161119)
+				{
+					// Migrated carryalls over to new conditions system
+					var carryableUpgradesNode = node.Value.Nodes.FirstOrDefault(n => n.Key == "CarryableUpgrades");
+					if (carryableUpgradesNode != null)
+					{
+						var conditions = FieldLoader.GetValue<string[]>("", carryableUpgradesNode.Value.Value);
+						if (conditions.Length > 1)
+							Console.WriteLine("Unable to automatically migrate {0}:{1} CarryableUpgrades to CarriedCondition. This must be corrected manually",
+								parent.Key, node.Key);
+						else
+							carryableUpgradesNode.Key = "CarriedCondition";
+					}
+
+					if (node.Key == "WithDecorationCarryable")
+					{
+						node.Key = "WithDecoration@CARRYALL";
+						node.Value.Nodes.Add(new MiniYamlNode("RequiresCondition", "carryall-reserved"));
+					}
+				}
+
 				UpgradeActorRules(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 

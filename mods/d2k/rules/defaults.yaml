@@ -159,11 +159,12 @@
 	Voiced:
 		VoiceSet: VehicleVoice
 	AutoCarryable:
-		CarryableUpgrades: notmobile
-	WithDecorationCarryable:
+		CarriedCondition: notmobile
+	WithDecoration@CARRYALL:
 		Image: pips
 		Sequence: pickup-indicator
 		Offset: -12, -12
+		RequiresCondition: carryall-reserved
 
 ^Tank:
 	Inherits: ^Vehicle
