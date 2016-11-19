@@ -181,7 +181,6 @@
     <Compile Include="Lint\CheckDeathTypes.cs" />
     <Compile Include="Lint\CheckRangeLimit.cs" />
     <Compile Include="Lint\CheckVoiceReferences.cs" />
-    <Compile Include="Lint\CheckUpgrades.cs" />
     <Compile Include="Lint\CheckTargetHealthRadius.cs" />
     <Compile Include="Lint\LintBuildablePrerequisites.cs" />
     <Compile Include="Lint\LintExts.cs" />
