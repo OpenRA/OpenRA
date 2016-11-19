@@ -113,10 +113,12 @@ TTNK:
 		AllowedTerrainTypes: Clear, Road, DirtRoad, Rough
 		DeploySound: place2.aud
 		UndeploySound: clicky1.aud
+	GrantCondition@PREVIEWWORKAROUND:
+		Condition: real-actor
 	WithVoxelBody:
 		RequiresCondition: undeployed
 	WithSpriteBody@deployed:
-		RequiresCondition: !undeployed
+		RequiresCondition: !undeployed && real-actor
 	AttackFrontal:
 		Voice: Attack
 		RequiresCondition: undeployed
@@ -154,6 +156,8 @@ TTNK:
 		Type: Concrete
 		RequiresCondition: deployed
 	AutoTarget:
+	Carryable:
+		RequiresCondition: undeployed
 
 ART2:
 	Inherits: ^VoxelTank
