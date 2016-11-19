@@ -128,7 +128,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			rs.Add(anim, info.Palette, info.IsPlayerPalette);
 		}
 
-		protected override void UpgradeEnabled(Actor self)
+		protected override void TraitEnabled(Actor self)
 		{
 			if (info.Image == null)
 				return;
@@ -136,7 +136,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			anim.Animation.PlayThen(info.OpeningSequence, () => anim.Animation.PlayRepeating(info.Sequence));
 		}
 
-		protected override void UpgradeDisabled(Actor self)
+		protected override void TraitDisabled(Actor self)
 		{
 			if (info.Image == null)
 				return;

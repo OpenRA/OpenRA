@@ -96,7 +96,7 @@ namespace OpenRA.Mods.Common.Traits
 		}
 	}
 
-	public class Armament : UpgradableTrait<ArmamentInfo>, INotifyCreated, ITick, IExplodeModifier
+	public class Armament : UpgradableTrait<ArmamentInfo>, ITick, IExplodeModifier
 	{
 		public readonly WeaponInfo Weapon;
 		public readonly Barrel[] Barrels;
@@ -141,12 +141,14 @@ namespace OpenRA.Mods.Common.Traits
 			return new WDist(Util.ApplyPercentageModifiers(Weapon.Range.Length, rangeModifiers));
 		}
 
-		protected virtual void Created(Actor self)
+		protected override void Created(Actor self)
 		{
 			turret = self.TraitsImplementing<Turreted>().FirstOrDefault(t => t.Name == Info.Turret);
 			ammoPool = self.TraitsImplementing<AmmoPool>().FirstOrDefault(la => la.Info.Name == Info.AmmoPoolName);
 			coords = self.Trait<BodyOrientation>();
 			rangeModifiers = self.TraitsImplementing<IRangeModifier>().ToArray().Select(m => m.GetRangeModifier());
+
+			base.Created(self);
 		}
 
 		protected virtual void Tick(Actor self)
@@ -168,12 +170,6 @@ namespace OpenRA.Mods.Common.Traits
 			}
 
 			delayedActions.RemoveAll(a => a.First <= 0);
-		}
-
-		void INotifyCreated.Created(Actor self)
-		{
-			// Split into a protected method to allow subclassing
-			Created(self);
 		}
 
 		void ITick.Tick(Actor self)

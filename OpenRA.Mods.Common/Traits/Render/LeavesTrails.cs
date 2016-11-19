@@ -61,7 +61,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public override object Create(ActorInitializer init) { return new LeavesTrails(init.Self, this); }
 	}
 
-	public class LeavesTrails : UpgradableTrait<LeavesTrailsInfo>, ITick, INotifyCreated
+	public class LeavesTrails : UpgradableTrait<LeavesTrailsInfo>, ITick
 	{
 		BodyOrientation body;
 		IFacing facing;
@@ -75,12 +75,14 @@ namespace OpenRA.Mods.Common.Traits.Render
 		}
 
 		WPos cachedPosition;
-		public void Created(Actor self)
+		protected override void Created(Actor self)
 		{
 			body = self.Trait<BodyOrientation>();
 			facing = self.TraitOrDefault<IFacing>();
 			cachedFacing = facing != null ? facing.Facing : 0;
 			cachedPosition = self.CenterPosition;
+
+			base.Created(self);
 		}
 
 		int ticks;
@@ -132,7 +134,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			}
 		}
 
-		protected override void UpgradeEnabled(Actor self)
+		protected override void TraitEnabled(Actor self)
 		{
 			cachedPosition = self.CenterPosition;
 		}

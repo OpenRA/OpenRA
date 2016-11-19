@@ -222,7 +222,7 @@ namespace OpenRA.Support
 			return new VariableToken(start, expression.Substring(start));
 		}
 
-		static bool ParseSymbol(VariableToken t, Dictionary<string, bool> symbols)
+		static bool ParseSymbol(VariableToken t, IReadOnlyDictionary<string, bool> symbols)
 		{
 			bool value;
 			symbols.TryGetValue(t.Symbol, out value);
@@ -271,7 +271,7 @@ namespace OpenRA.Support
 				yield return s.Pop();
 		}
 
-		public bool Evaluate(Dictionary<string, bool> symbols)
+		public bool Evaluate(IReadOnlyDictionary<string, bool> symbols)
 		{
 			var s = new Stack<bool>();
 			foreach (var t in postfix)

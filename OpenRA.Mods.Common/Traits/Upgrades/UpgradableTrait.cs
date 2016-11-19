@@ -17,9 +17,9 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	/// <summary>Use as base class for *Info to subclass of UpgradableTrait. (See UpgradableTrait.)</summary>
-	public abstract class UpgradableTraitInfo : IUpgradableInfo, IRulesetLoaded
+	public abstract class UpgradableTraitInfo : IConditionConsumerInfo, IRulesetLoaded
 	{
-		static readonly Dictionary<string, bool> NoConditions = new Dictionary<string, bool>();
+		static readonly IReadOnlyDictionary<string, bool> NoConditions = new ReadOnlyDictionary<string, bool>(new Dictionary<string, bool>());
 
 		[UpgradeUsedReference]
 		[Desc("Boolean expression defining the condition to enable this trait.")]
@@ -43,12 +43,11 @@ namespace OpenRA.Mods.Common.Traits
 	/// Requires basing *Info on UpgradableTraitInfo and using base(info) constructor.
 	/// Note that EnabledByUpgrade is not called at creation even if this starts as enabled.
 	/// </summary>
-	public abstract class UpgradableTrait<InfoType> : IUpgradable, IDisabledTrait, ISync where InfoType : UpgradableTraitInfo
+	public abstract class UpgradableTrait<InfoType> : IConditionConsumer, IDisabledTrait, INotifyCreated, ISync where InfoType : UpgradableTraitInfo
 	{
 		public readonly InfoType Info;
-		readonly Dictionary<string, bool> conditions = new Dictionary<string, bool>();
 
-		IEnumerable<string> IUpgradable.UpgradeTypes
+		IEnumerable<string> IConditionConsumer.Conditions
 		{
 			get
 			{
@@ -65,36 +64,38 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			Info = info;
 
-			// TODO: Set initial state from a ConditionsInit once that exists
-			IsTraitDisabled = info.RequiresCondition != null ?
-				!info.RequiresCondition.Evaluate(conditions) : false;
+			// Conditional traits will be enabled (if appropriate) by the UpgradeManager
+			// calling IConditionConsumer.ConditionsChanged at the end of INotifyCreated.
+			IsTraitDisabled = Info.RequiresCondition != null;
 		}
 
-		bool IUpgradable.AcceptsUpgradeLevel(Actor self, string type, int level)
+		protected virtual void Created(Actor self)
 		{
-			return level == 1;
+			if (Info.RequiresCondition == null)
+				TraitEnabled(self);
 		}
 
-		void IUpgradable.UpgradeLevelChanged(Actor self, string type, int oldLevel, int newLevel)
+		void INotifyCreated.Created(Actor self) { Created(self); }
+
+		void IConditionConsumer.ConditionsChanged(Actor self, IReadOnlyDictionary<string, bool> conditions)
 		{
+			if (Info.RequiresCondition == null)
+				return;
+
 			var wasDisabled = IsTraitDisabled;
-			conditions[type] = newLevel > 0;
 			IsTraitDisabled = !Info.RequiresCondition.Evaluate(conditions);
-
-			UpgradeLevelChanged(self, oldLevel, newLevel);
 
 			if (IsTraitDisabled != wasDisabled)
 			{
 				if (wasDisabled)
-					UpgradeEnabled(self);
+					TraitEnabled(self);
 				else
-					UpgradeDisabled(self);
+					TraitDisabled(self);
 			}
 		}
 
-		// Subclasses can add upgrade support by querying IsTraitDisabled and/or overriding these methods.
-		protected virtual void UpgradeLevelChanged(Actor self, int oldLevel, int newLevel) { }
-		protected virtual void UpgradeEnabled(Actor self) { }
-		protected virtual void UpgradeDisabled(Actor self) { }
+		// Subclasses can add condition support by querying IsTraitDisabled and/or overriding these methods.
+		protected virtual void TraitEnabled(Actor self) { }
+		protected virtual void TraitDisabled(Actor self) { }
 	}
 }

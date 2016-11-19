@@ -31,7 +31,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new Wanders(init.Self, this); }
 	}
 
-	public class Wanders : UpgradableTrait<WandersInfo>, INotifyCreated, INotifyIdle, INotifyBecomingIdle
+	public class Wanders : UpgradableTrait<WandersInfo>, INotifyIdle, INotifyBecomingIdle
 	{
 		readonly Actor self;
 		readonly WandersInfo info;
@@ -50,9 +50,11 @@ namespace OpenRA.Mods.Common.Traits
 			effectiveMoveRadius = info.WanderMoveRadius;
 		}
 
-		void INotifyCreated.Created(Actor self)
+		protected override void Created(Actor self)
 		{
 			move = self.Trait<IMove>() as IResolveOrder;
+
+			base.Created(self);
 		}
 
 		public virtual void OnBecomingIdle(Actor self)

@@ -33,8 +33,8 @@ namespace OpenRA.Mods.Common.Traits
 			power = self.Owner.PlayerActor.Trait<PowerManager>();
 		}
 
-		protected override void UpgradeEnabled(Actor self) { power.UpdateActor(self); }
-		protected override void UpgradeDisabled(Actor self) { power.UpdateActor(self); }
+		protected override void TraitEnabled(Actor self) { power.UpdateActor(self); }
+		protected override void TraitDisabled(Actor self) { power.UpdateActor(self); }
 
 		int IPowerModifier.GetPowerModifier() { return IsTraitDisabled ? 100 : Info.Modifier; }
 
