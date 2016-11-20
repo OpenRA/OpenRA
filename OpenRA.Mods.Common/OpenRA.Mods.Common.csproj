@@ -776,6 +776,7 @@
     <Compile Include="Traits\World\CliffBackImpassabilityLayer.cs" />
     <Compile Include="Traits\Upgrades\GrantCondition.cs" />
     <Compile Include="Traits\Upgrades\ExternalConditions.cs" />
+    <Compile Include="Traits\Upgrades\StackedCondition.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="AfterBuild">

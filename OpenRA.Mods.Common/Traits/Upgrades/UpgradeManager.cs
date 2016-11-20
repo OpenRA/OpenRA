@@ -31,7 +31,6 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		/// <summary>Value used to represent an invalid token.</summary>
 		public static readonly int InvalidConditionToken = -1;
-		string[] externalConditions = { };
 
 		class ConditionTimer
 		{
@@ -63,6 +62,15 @@ namespace OpenRA.Mods.Common.Traits
 
 		/// <summary>Each granted condition receives a unique token that is used when revoking.</summary>
 		Dictionary<int, string> tokens = new Dictionary<int, string>();
+
+		/// <summary>Set of whitelisted externally grantable conditions cached from ExternalConditions traits.</summary>
+		string[] externalConditions = { };
+
+		/// <summary>Set of conditions that are monitored for stacked bonuses, and the bonus conditions that they grant.</summary>
+		readonly Dictionary<string, string[]> stackedConditions = new Dictionary<string, string[]>();
+
+		/// <summary>Tokens granted by the stacked condition bonuses defined in stackedConditions.</summary>
+		readonly Dictionary<string, Stack<int>> stackedTokens = new Dictionary<string, Stack<int>>();
 
 		int nextToken = 1;
 
@@ -109,15 +117,21 @@ namespace OpenRA.Mods.Common.Traits
 				conditionCache[kv.Value] = conditionState.Tokens.Count > 0;
 			}
 
-			// Update all traits with their initial condition state
-			foreach (var consumer in allConsumers)
-				consumer.ConditionsChanged(self, readOnlyConditionCache);
-
 			// Build external condition whitelist
 			externalConditions = self.Info.TraitInfos<ExternalConditionsInfo>()
 				.SelectMany(t => t.Conditions)
 				.Distinct()
 				.ToArray();
+
+			foreach (var sc in self.Info.TraitInfos<StackedConditionInfo>())
+			{
+				stackedConditions[sc.Condition] = sc.StackedConditions;
+				stackedTokens[sc.Condition] = new Stack<int>();
+			}
+
+			// Update all traits with their initial condition state
+			foreach (var consumer in allConsumers)
+				consumer.ConditionsChanged(self, readOnlyConditionCache);
 		}
 
 		void UpdateConditionState(Actor self, string condition, int token, bool isRevoke)
@@ -135,6 +149,18 @@ namespace OpenRA.Mods.Common.Traits
 
 			foreach (var t in conditionState.Consumers)
 				t.ConditionsChanged(self, readOnlyConditionCache);
+
+			string[] sc;
+			if (stackedConditions.TryGetValue(condition, out sc))
+			{
+				var target = (conditionState.Tokens.Count - 1).Clamp(0, sc.Length);
+				var st = stackedTokens[condition];
+				for (var i = st.Count; i < target; i++)
+					st.Push(GrantCondition(self, sc[i]));
+
+				for (var i = st.Count; i > target; i--)
+					RevokeCondition(self, st.Pop());
+			}
 		}
 
 		/// <summary>Grants a specified condition.</summary>
@@ -193,7 +219,14 @@ namespace OpenRA.Mods.Common.Traits
 			if (state == null)
 				throw new InvalidOperationException("AcceptsExternalCondition cannot be queried before the actor has been fully created.");
 
-			return externalConditions.Contains(condition) && !conditionCache[condition];
+			if (!externalConditions.Contains(condition))
+				return false;
+
+			string[] sc;
+			if (stackedConditions.TryGetValue(condition, out sc))
+				return stackedTokens[condition].Count < sc.Length;
+
+			return !conditionCache[condition];
 		}
 
 		/// <summary>Returns whether the specified token is valid for RevokeCondition</summary>
