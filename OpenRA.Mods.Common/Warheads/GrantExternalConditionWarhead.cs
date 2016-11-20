@@ -10,19 +10,18 @@
 #endregion
 
 using System.Collections.Generic;
-using System.Linq;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Warheads
 {
-	public class GrantUpgradeWarhead : Warhead
+	public class GrantExternalConditionWarhead : Warhead
 	{
-		[UpgradeGrantedReference]
-		[Desc("The upgrades to apply.")]
-		public readonly string[] Upgrades = { };
+		[FieldLoader.Require]
+		[Desc("The condition to apply. Must be included in the target actor's ExternalConditions list.")]
+		public readonly string Condition = null;
 
-		[Desc("Duration of the upgrade (in ticks). Set to 0 for a permanent upgrade.")]
+		[Desc("Duration of the condition (in ticks). Set to 0 for a permanent condition.")]
 		public readonly int Duration = 0;
 
 		public readonly WDist Range = WDist.FromCells(1);
@@ -38,22 +37,10 @@ namespace OpenRA.Mods.Common.Warheads
 					continue;
 
 				var um = a.TraitOrDefault<UpgradeManager>();
-				if (um == null)
-					continue;
 
-				foreach (var u in Upgrades)
-				{
-					if (Duration > 0)
-					{
-						if (um.AcknowledgesUpgrade(a, u))
-							um.GrantTimedUpgrade(a, u, Duration, firedBy, Upgrades.Count(upg => upg == u));
-					}
-					else
-					{
-						if (um.AcceptsUpgrade(a, u))
-							um.GrantUpgrade(a, u, this);
-					}
-				}
+				// Condition token is ignored because we never revoke this condition.
+				if (um != null && um.AcceptsExternalCondition(a, Condition))
+					um.GrantCondition(a, Condition, true, Duration);
 			}
 		}
 	}
