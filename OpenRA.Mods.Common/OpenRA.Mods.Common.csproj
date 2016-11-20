@@ -307,7 +307,7 @@
     <Compile Include="Traits\Crates\GiveCashCrateAction.cs" />
     <Compile Include="Traits\Crates\GiveMcvCrateAction.cs" />
     <Compile Include="Traits\Crates\GiveUnitCrateAction.cs" />
-    <Compile Include="Traits\Crates\GrantUpgradeCrateAction.cs" />
+    <Compile Include="Traits\Crates\GrantExternalConditionCrateAction.cs" />
     <Compile Include="Traits\Crates\HealUnitsCrateAction.cs" />
     <Compile Include="Traits\Crates\HideMapCrateAction.cs" />
     <Compile Include="Traits\Crates\LevelUpCrateAction.cs" />

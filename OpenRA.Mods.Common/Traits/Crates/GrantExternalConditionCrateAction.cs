@@ -15,11 +15,11 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Grants an upgrade to the collector.")]
-	public class GrantUpgradeCrateActionInfo : CrateActionInfo
+	public class GrantExternalConditionCrateActionInfo : CrateActionInfo
 	{
-		[UpgradeGrantedReference, FieldLoader.Require]
-		[Desc("The upgrades to apply.")]
-		public readonly string[] Upgrades = { };
+		[FieldLoader.Require]
+		[Desc("The condition to apply. Must be included in the target actor's ExternalConditions list.")]
+		public readonly string Condition = null;
 
 		[Desc("Duration of the upgrade (in ticks). Set to 0 for a permanent upgrade.")]
 		public readonly int Duration = 0;
@@ -30,37 +30,36 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("The maximum number of extra collectors to grant the crate action to.", "-1 = no limit")]
 		public readonly int MaxExtraCollectors = 4;
 
-		public override object Create(ActorInitializer init) { return new GrantUpgradeCrateAction(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new GrantExternalConditionCrateAction(init.Self, this); }
 	}
 
-	public class GrantUpgradeCrateAction : CrateAction
+	public class GrantExternalConditionCrateAction : CrateAction
 	{
 		readonly Actor self;
-		readonly GrantUpgradeCrateActionInfo info;
+		readonly GrantExternalConditionCrateActionInfo info;
 
-		public GrantUpgradeCrateAction(Actor self, GrantUpgradeCrateActionInfo info)
+		public GrantExternalConditionCrateAction(Actor self, GrantExternalConditionCrateActionInfo info)
 			: base(self, info)
 		{
 			this.self = self;
 			this.info = info;
 		}
 
-		bool AcceptsUpgrade(Actor a)
+		bool AcceptsCondition(Actor a)
 		{
 			var um = a.TraitOrDefault<UpgradeManager>();
-			return um != null && (info.Duration > 0 ?
-				info.Upgrades.Any(u => um.AcknowledgesUpgrade(a, u)) : info.Upgrades.Any(u => um.AcceptsUpgrade(a, u)));
+			return um != null && um.AcceptsExternalCondition(a, info.Condition);
 		}
 
 		public override int GetSelectionShares(Actor collector)
 		{
-			return AcceptsUpgrade(collector) ? info.SelectionShares : 0;
+			return AcceptsCondition(collector) ? info.SelectionShares : 0;
 		}
 
 		public override void Activate(Actor collector)
 		{
 			var actorsInRange = self.World.FindActorsInCircle(self.CenterPosition, info.Range)
-				.Where(a => a != self && a != collector && a.Owner == collector.Owner && AcceptsUpgrade(a));
+				.Where(a => a != self && a != collector && a.Owner == collector.Owner && AcceptsCondition(a));
 
 			if (info.MaxExtraCollectors > -1)
 				actorsInRange = actorsInRange.Take(info.MaxExtraCollectors);
@@ -73,19 +72,10 @@ namespace OpenRA.Mods.Common.Traits
 						continue;
 
 					var um = a.TraitOrDefault<UpgradeManager>();
-					foreach (var u in info.Upgrades)
-					{
-						if (info.Duration > 0)
-						{
-							if (um.AcknowledgesUpgrade(a, u))
-								um.GrantTimedUpgrade(a, u, info.Duration);
-						}
-						else
-						{
-							if (um.AcceptsUpgrade(a, u))
-								um.GrantUpgrade(a, u, this);
-						}
-					}
+
+					// Condition token is ignored because we never revoke this condition.
+					if (um != null)
+						um.GrantCondition(a, info.Condition, true, info.Duration);
 				}
 			});
 
