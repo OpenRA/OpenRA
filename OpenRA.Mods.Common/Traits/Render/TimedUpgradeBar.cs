@@ -26,7 +26,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public object Create(ActorInitializer init) { return new TimedUpgradeBar(init.Self, this); }
 	}
 
-	class TimedUpgradeBar : ISelectionBar, INotifyCreated
+	class TimedUpgradeBar : ISelectionBar, IConditionTimerWatcher
 	{
 		readonly TimedUpgradeBarInfo info;
 		readonly Actor self;
@@ -38,15 +38,12 @@ namespace OpenRA.Mods.Common.Traits.Render
 			this.info = info;
 		}
 
-		public void Created(Actor self)
+		void IConditionTimerWatcher.Update(int duration, int remaining)
 		{
-			self.Trait<UpgradeManager>().RegisterWatcher(info.Upgrade, Update);
+			value = duration > 0 ? remaining * 1f / duration : 0;
 		}
 
-		public void Update(int duration, int remaining)
-		{
-			value = remaining * 1f / duration;
-		}
+		string IConditionTimerWatcher.Condition { get { return info.Upgrade; } }
 
 		float ISelectionBar.GetValue()
 		{

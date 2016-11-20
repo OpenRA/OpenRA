@@ -17,6 +17,13 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
+	[RequireExplicitImplementation]
+	public interface IConditionTimerWatcher
+	{
+		string Condition { get; }
+		void Update(int duration, int remaining);
+	}
+
 	[Desc("Attach this to a unit to enable dynamic upgrades by warheads, experience, crates, support powers, etc.")]
 	public class UpgradeManagerInfo : TraitInfo<UpgradeManager>, Requires<IConditionConsumerInfo> { }
 
@@ -26,38 +33,16 @@ namespace OpenRA.Mods.Common.Traits
 		public static readonly int InvalidConditionToken = -1;
 		string[] externalConditions = { };
 
-		class TimedCondition
+		class ConditionTimer
 		{
-			public class ConditionSource
-			{
-				public readonly object Source;
-				public int Remaining;
-
-				public ConditionSource(int duration, object source)
-				{
-					Remaining = duration;
-					Source = source;
-				}
-			}
-
-			public readonly string Condition;
+			public readonly int Token;
 			public readonly int Duration;
-			public readonly HashSet<ConditionSource> Sources;
-			public int Remaining; // Equal to maximum of all Sources.Remaining
+			public int Remaining;
 
-			public TimedCondition(string condition, int duration, object source)
+			public ConditionTimer(int token, int duration)
 			{
-				Condition = condition;
-				Duration = duration;
-				Remaining = duration;
-				Sources = new HashSet<ConditionSource> { new ConditionSource(duration, source) };
-			}
-
-			public void Tick()
-			{
-				Remaining--;
-				foreach (var source in Sources)
-					source.Remaining--;
+				Token = token;
+				Duration = Remaining = duration;
 			}
 		}
 
@@ -70,12 +55,11 @@ namespace OpenRA.Mods.Common.Traits
 			public readonly HashSet<int> Tokens = new HashSet<int>();
 
 			/// <summary>External callbacks that are to be executed when a timed condition changes.</summary>
-			public readonly List<Action<int, int>> Watchers = new List<Action<int, int>>();
+			public readonly List<IConditionTimerWatcher> Watchers = new List<IConditionTimerWatcher>();
 		}
 
-		readonly List<TimedCondition> timedConditions = new List<TimedCondition>();
-
 		Dictionary<string, ConditionState> state;
+		readonly Dictionary<string, List<ConditionTimer>> timers = new Dictionary<string, List<ConditionTimer>>();
 
 		/// <summary>Each granted condition receives a unique token that is used when revoking.</summary>
 		Dictionary<int, string> tokens = new Dictionary<int, string>();
@@ -83,10 +67,10 @@ namespace OpenRA.Mods.Common.Traits
 		int nextToken = 1;
 
 		/// <summary>Temporary shim between the old and new upgrade/condition grant and revoke methods.</summary>
-		Dictionary<Pair<object, string>, int> objectTokenShim = new Dictionary<Pair<object, string>, int>();
+		readonly Dictionary<Pair<object, string>, int> objectTokenShim = new Dictionary<Pair<object, string>, int>();
 
 		/// <summary>Cache of condition -> enabled state for quick evaluation of boolean conditions.</summary>
-		Dictionary<string, bool> conditionCache = new Dictionary<string, bool>();
+		readonly Dictionary<string, bool> conditionCache = new Dictionary<string, bool>();
 
 		/// <summary>Read-only version of conditionCache that is passed to IConditionConsumers.</summary>
 		IReadOnlyDictionary<string, bool> readOnlyConditionCache;
@@ -97,12 +81,19 @@ namespace OpenRA.Mods.Common.Traits
 			readOnlyConditionCache = new ReadOnlyDictionary<string, bool>(conditionCache);
 
 			var allConsumers = new HashSet<IConditionConsumer>();
+			var allWatchers = self.TraitsImplementing<IConditionTimerWatcher>().ToList();
+
 			foreach (var consumer in self.TraitsImplementing<IConditionConsumer>())
 			{
 				allConsumers.Add(consumer);
 				foreach (var condition in consumer.Conditions)
 				{
-					state.GetOrAdd(condition).Consumers.Add(consumer);
+					var cs = state.GetOrAdd(condition);
+					cs.Consumers.Add(consumer);
+					foreach (var w in allWatchers)
+						if (w.Condition == condition)
+							cs.Watchers.Add(w);
+
 					conditionCache[condition] = false;
 				}
 			}
@@ -149,13 +140,17 @@ namespace OpenRA.Mods.Common.Traits
 		/// <summary>Grants a specified condition.</summary>
 		/// <returns>The token that is used to revoke this condition.</returns>
 		/// <param name="external">Validate against the external condition whitelist.</param>
-		public int GrantCondition(Actor self, string condition, bool external = false)
+		/// <param name="duration">Automatically revoke condition after this delay if non-zero.</param>
+		public int GrantCondition(Actor self, string condition, bool external = false, int duration = 0)
 		{
 			if (external && !externalConditions.Contains(condition))
 				return InvalidConditionToken;
 
 			var token = nextToken++;
 			tokens.Add(token, condition);
+
+			if (duration > 0)
+				timers.GetOrAdd(condition).Add(new ConditionTimer(token, duration));
 
 			// Conditions may be granted before the state is initialized.
 			// These conditions will be processed in INotifyCreated.Created.
@@ -176,6 +171,15 @@ namespace OpenRA.Mods.Common.Traits
 
 			tokens.Remove(token);
 
+			// Clean up timers
+			List<ConditionTimer> ct;
+			if (timers.TryGetValue(condition, out ct))
+			{
+				ct.RemoveAll(t => t.Token == token);
+				if (!ct.Any())
+					timers.Remove(condition);
+			}
+
 			// Conditions may be granted and revoked before the state is initialized.
 			if (state != null)
 				UpdateConditionState(self, condition, token, true);
@@ -192,6 +196,45 @@ namespace OpenRA.Mods.Common.Traits
 			return externalConditions.Contains(condition) && !conditionCache[condition];
 		}
 
+		/// <summary>Returns whether the specified token is valid for RevokeCondition</summary>
+		public bool TokenValid(Actor self, int token)
+		{
+			return tokens.ContainsKey(token);
+		}
+
+		readonly HashSet<int> timersToRemove = new HashSet<int>();
+		void ITick.Tick(Actor self)
+		{
+			// Watchers will be receiving notifications while the condition is enabled.
+			// They will also be provided with the number of ticks before the condition is disabled,
+			// as well as the duration of the longest active instance.
+			foreach (var kv in timers)
+			{
+				var duration = 0;
+				var remaining = 0;
+				foreach (var t in kv.Value)
+				{
+					if (--t.Remaining <= 0)
+						timersToRemove.Add(t.Token);
+
+					// Track the duration and remaining time for the longest remaining timer
+					if (t.Remaining > remaining)
+					{
+						duration = t.Duration;
+						remaining = t.Remaining;
+					}
+				}
+
+				foreach (var w in state[kv.Key].Watchers)
+					w.Update(duration, remaining);
+			}
+
+			foreach (var t in timersToRemove)
+				RevokeCondition(self, t);
+
+			timersToRemove.Clear();
+		}
+
 		#region Shim methods for legacy upgrade granting code
 
 		void CheckCanManageConditions()
@@ -200,36 +243,12 @@ namespace OpenRA.Mods.Common.Traits
 				throw new InvalidOperationException("Conditions cannot be managed until the actor has been fully created.");
 		}
 
-		/// <summary>Upgrade level increments are limited to dupesAllowed per source, i.e., if a single
-		/// source attempts granting more upgrades than dupesAllowed, they will not accumulate. They will
-		/// replace each other instead, leaving only the most recently granted upgrade active. Each new
-		/// upgrade granting request will increment the upgrade's level until AcceptsUpgrade starts
-		/// returning false. Then, when no new levels are accepted, the upgrade source with the shortest
-		/// remaining upgrade duration will be replaced by the new source.</summary>
 		public void GrantTimedUpgrade(Actor self, string upgrade, int duration, object source = null, int dupesAllowed = 1)
 		{
-			var timed = timedConditions.FirstOrDefault(u => u.Condition == upgrade);
-			if (timed == null)
-			{
-				timed = new TimedCondition(upgrade, duration, source);
-				timedConditions.Add(timed);
-				GrantUpgrade(self, upgrade, timed);
-				return;
-			}
-
-			var srcs = timed.Sources.Where(s => s.Source == source);
-			if (srcs.Count() < dupesAllowed)
-			{
-				timed.Sources.Add(new TimedCondition.ConditionSource(duration, source));
-				if (AcceptsUpgrade(self, upgrade))
-					GrantUpgrade(self, upgrade, timed);
-				else
-					timed.Sources.Remove(timed.Sources.MinBy(s => s.Remaining));
-			}
-			else
-				srcs.MinBy(s => s.Remaining).Remaining = duration;
-
-			timed.Remaining = Math.Max(duration, timed.Remaining);
+			CheckCanManageConditions();
+			var token = GrantCondition(self, upgrade, false, duration);
+			if (source != null)
+				objectTokenShim[Pair.New(source, upgrade)] = token;
 		}
 
 		public void GrantUpgrade(Actor self, string upgrade, object source)
@@ -260,39 +279,6 @@ namespace OpenRA.Mods.Common.Traits
 				return false;
 
 			return !enabled;
-		}
-
-		public void RegisterWatcher(string upgrade, Action<int, int> action)
-		{
-			CheckCanManageConditions();
-
-			ConditionState s;
-			if (!state.TryGetValue(upgrade, out s))
-				return;
-
-			s.Watchers.Add(action);
-		}
-
-		/// <summary>Watchers will be receiving notifications while the condition is enabled.
-		/// They will also be provided with the number of ticks before the condition is disabled,
-		/// as well as the duration in ticks of the timed upgrade (provided in the first call to
-		/// GrantTimedUpgrade).</summary>
-		void ITick.Tick(Actor self)
-		{
-			foreach (var u in timedConditions)
-			{
-				u.Tick();
-				foreach (var source in u.Sources)
-					if (source.Remaining <= 0)
-						RevokeUpgrade(self, u.Condition, u);
-
-				u.Sources.RemoveWhere(source => source.Remaining <= 0);
-
-				foreach (var a in state[u.Condition].Watchers)
-					a(u.Duration, u.Remaining);
-			}
-
-			timedConditions.RemoveAll(u => u.Remaining <= 0);
 		}
 
 		#endregion
