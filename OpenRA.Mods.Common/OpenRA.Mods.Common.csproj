@@ -480,7 +480,7 @@
     <Compile Include="Traits\Sound\AttackSounds.cs" />
     <Compile Include="Traits\SupplyTruck.cs" />
     <Compile Include="Traits\SupportPowers\AirstrikePower.cs" />
-    <Compile Include="Traits\SupportPowers\GrantUpgradePower.cs" />
+    <Compile Include="Traits\SupportPowers\GrantExternalConditionPower.cs" />
     <Compile Include="Traits\SupportPowers\NukePower.cs" />
     <Compile Include="Traits\SupportPowers\SupportPower.cs" />
     <Compile Include="Traits\SupportPowers\SupportPowerManager.cs" />
