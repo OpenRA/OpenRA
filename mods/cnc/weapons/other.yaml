@@ -44,23 +44,20 @@ BigFlamer:
 		Explosions: med_napalm
 
 Chemspray:
+	Inherits: ^FlameWeapon
 	ReloadDelay: 65
 	Range: 3c0
-	Report: flamer2.aud
-	Projectile: Bullet
-		Speed: 1c682
+	InvalidTargets:
 	Warhead@1Dam: SpreadDamage
 		Spread: 256
 		Damage: 80
+		InvalidTargets:
 		Versus:
 			None: 70
 			Wood: 35
 			Light: 75
 			Heavy: 75
 		DamageTypes: Prone50Percent, TriggerProne, TiberiumDeath
-	Warhead@2Smu: LeaveSmudge
-		SmudgeType: Scorch
-		InvalidTargets: Vehicle, Structure, Wall, Husk, Trees, Creep
 	Warhead@3Eff: CreateEffect
 		Explosions: chemball
 		ImpactSounds: xplos.aud
