@@ -33,6 +33,18 @@ Sniper:
 HighV:
 	Inherits: ^HeavyMG
 
+Vulcan:
+	Inherits: ^HeavyMG
+	ReloadDelay: 2
+	Report: gun5.aud
+	Warhead@1Dam: SpreadDamage
+		Spread: 426
+		Damage: 100
+		Versus:
+			Wood: 25
+			Light: 100
+			Heavy: 35
+
 HeliAGGun:
 	Inherits: ^HeavyMG
 	ReloadDelay: 20
@@ -100,19 +112,6 @@ MachineGun:
 			Light: 50
 	Warhead@2Eff: CreateEffect
 		Explosions: piffs
-
-Vulcan:
-	Inherits: ^HeavyMG
-	ReloadDelay: 2
-	Report: gun5.aud
-	Warhead@1Dam: SpreadDamage
-		Spread: 426
-		Damage: 100
-		Versus:
-			None: 100
-			Wood: 25
-			Light: 100
-			Heavy: 35
 
 APCGun:
 	ReloadDelay: 18
