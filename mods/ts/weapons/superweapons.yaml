@@ -110,7 +110,7 @@ EMPulseCannon:
 	Warhead@emp: GrantUpgrade
 		Range: 4c0
 		Duration: 250
-		Upgrades: empdisable, notmobile
+		Upgrades: empdisable
 
 ClusterMissile:
 	ValidTargets: Ground, Water, Air

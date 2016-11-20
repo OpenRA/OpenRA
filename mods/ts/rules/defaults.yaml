@@ -87,7 +87,7 @@
 ^EmpDisableMobile:
 	Inherits: ^EmpDisable
 	Mobile:
-		RequiresCondition: !notmobile
+		RequiresCondition: !empdisable && !deployed && !loading
 
 ^Cloakable:
 	Cloak@CLOAKGENERATOR:
@@ -795,7 +795,7 @@
 	Cargo:
 		Types: Infantry
 		UnloadVoice: Unload
-		LoadingUpgrades: notmobile
+		LoadingUpgrades: loading
 	Health:
 		HP: 100
 	Armor:
