@@ -15,7 +15,7 @@
 
 ^GainsExperience:
 	GainsExperience:
-		Upgrades:		
+		Upgrades:
 			200: rank-veteran-1
 			400: rank-veteran-2
 			800: rank-veteran-3
@@ -121,8 +121,10 @@
 	DamageMultiplier@IRONCURTAIN:
 		RequiresCondition: invulnerability
 		Modifier: 0
-	TimedUpgradeBar:
-		Upgrade: invulnerability
+	TimedConditionBar:
+		Condition: invulnerability
+	ExternalConditions@INVULNERABILITY:
+		Conditions: invulnerability
 
 ^Vehicle:
 	Inherits@1: ^ExistsInWorld

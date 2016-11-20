@@ -303,7 +303,7 @@ IRON:
 		Range: 10c0
 	Bib:
 		HasMinibib: Yes
-	GrantUpgradePower@IRONCURTAIN:
+	GrantExternalConditionPower@IRONCURTAIN:
 		Icon: invuln
 		ChargeTime: 120
 		Description: Invulnerability
@@ -314,7 +314,8 @@ IRON:
 		BeginChargeSpeechNotification: IronCurtainCharging
 		EndChargeSpeechNotification: IronCurtainReady
 		DisplayRadarPing: True
-		Upgrades: invulnerability
+		Condition: invulnerability
+		OnFireSound: ironcur9.aud
 	SupportPowerChargeBar:
 	Power:
 		Amount: -200
