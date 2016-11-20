@@ -24,6 +24,7 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		/// <summary>Value used to represent an invalid token.</summary>
 		public static readonly int InvalidConditionToken = -1;
+		string[] externalConditions = { };
 
 		class TimedCondition
 		{
@@ -120,6 +121,12 @@ namespace OpenRA.Mods.Common.Traits
 			// Update all traits with their initial condition state
 			foreach (var consumer in allConsumers)
 				consumer.ConditionsChanged(self, readOnlyConditionCache);
+
+			// Build external condition whitelist
+			externalConditions = self.Info.TraitInfos<ExternalConditionsInfo>()
+				.SelectMany(t => t.Conditions)
+				.Distinct()
+				.ToArray();
 		}
 
 		void UpdateConditionState(Actor self, string condition, int token, bool isRevoke)
@@ -141,8 +148,12 @@ namespace OpenRA.Mods.Common.Traits
 
 		/// <summary>Grants a specified condition.</summary>
 		/// <returns>The token that is used to revoke this condition.</returns>
-		public int GrantCondition(Actor self, string condition)
+		/// <param name="external">Validate against the external condition whitelist.</param>
+		public int GrantCondition(Actor self, string condition, bool external = false)
 		{
+			if (external && !externalConditions.Contains(condition))
+				return InvalidConditionToken;
+
 			var token = nextToken++;
 			tokens.Add(token, condition);
 
@@ -155,7 +166,7 @@ namespace OpenRA.Mods.Common.Traits
 		}
 
 		/// <summary>Revokes a previously granted condition.</summary>
-		/// <returns>The invalid token ID</returns>
+		/// <returns>The invalid token ID.</returns>
 		/// <param name="token">The token ID returned by GrantCondition.</param>
 		public int RevokeCondition(Actor self, int token)
 		{
@@ -170,6 +181,15 @@ namespace OpenRA.Mods.Common.Traits
 				UpdateConditionState(self, condition, token, true);
 
 			return InvalidConditionToken;
+		}
+
+		/// <summary>Returns true if the given external condition will have an effect on this actor.</summary>
+		public bool AcceptsExternalCondition(Actor self, string condition)
+		{
+			if (state == null)
+				throw new InvalidOperationException("AcceptsExternalCondition cannot be queried before the actor has been fully created.");
+
+			return externalConditions.Contains(condition) && !conditionCache[condition];
 		}
 
 		#region Shim methods for legacy upgrade granting code
