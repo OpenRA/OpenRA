@@ -81,3 +81,26 @@ ArtilleryShell:
 	Warhead@3Eff: CreateEffect
 		Explosions: poof
 		ImpactSounds: xplosml2.aud
+
+Grenade:
+	Inherits: ^BallisticWeapon
+	ReloadDelay: 50
+	Range: 4c0
+	Report: toss1.aud
+	Projectile: Bullet
+		Speed: 140
+		Blockable: false
+		LaunchAngle: 62
+		Inaccuracy: 813
+		Image: BOMB
+	Warhead@1Dam: SpreadDamage
+		Spread: 341
+		Damage: 50
+		Versus:
+			None: 100
+			Wood: 50
+			Light: 80
+			Heavy: 35
+		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
+	Warhead@3Eff: CreateEffect
+		Explosions: small_poof
