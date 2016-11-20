@@ -1,4 +1,31 @@
+^DamagingExplosion:
+	Warhead@1Dam: SpreadDamage
+		Spread: 426
+		Damage: 40
+		Versus:
+			None: 100
+			Wood: 100
+			Light: 100
+			Heavy: 100
+		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
+	Warhead@2Eff: CreateEffect
+		Explosions: poof
+		ImpactSounds: xplos.aud
+	Warhead@3Smu: LeaveSmudge
+		SmudgeType: Crater
+		InvalidTargets: Vehicle, Structure, Wall, Husk, Trees, Creep
+
+^DamagingExplosionHE:
+	Inherits: ^DamagingExplosion
+	Warhead@1Dam: SpreadDamage
+		Versus:
+			None: 90
+			Wood: 75
+			Light: 60
+			Heavy: 25
+
 FlametankExplode:
+	Inherits: ^DamagingExplosion
 	Warhead@1Dam: SpreadDamage
 		Spread: 1c0
 		Damage: 115
@@ -10,16 +37,7 @@ FlametankExplode:
 		SmudgeType: Scorch
 
 HeliCrash:
-	Warhead@1Dam: SpreadDamage
-		Spread: 426
-		Damage: 40
-		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
-	Warhead@2Eff: CreateEffect
-		Explosions: poof
-		ImpactSounds: xplos.aud
-	Warhead@3Smu: LeaveSmudge
-		SmudgeType: Crater
-		InvalidTargets: Vehicle, Structure, Wall, Husk, Trees, Creep
+	Inherits: ^DamagingExplosion
 
 HeliExplode:
 	Warhead@1Dam: SpreadDamage
@@ -29,57 +47,34 @@ HeliExplode:
 		ImpactSounds: xplos.aud
 
 UnitExplode:
+	Inherits: ^DamagingExplosionHE
 	Warhead@1Dam: SpreadDamage
-		Spread: 426
 		Damage: 50
-		Versus:
-			None: 90
-			Wood: 75
-			Light: 60
-			Heavy: 25
-		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
 	Warhead@2Eff: CreateEffect
-		Explosions: poof
 		ImpactSounds: xplobig6.aud
-	Warhead@3Smu: LeaveSmudge
-		SmudgeType: Crater
 
 UnitExplodeShip:
-	Inherits: UnitExplode
+	Inherits: ^DamagingExplosionHE
+	Warhead@1Dam: SpreadDamage
+		Damage: 50
 	Warhead@2Eff: CreateEffect
 		Explosions: building
+		ImpactSounds: xplobig6.aud
 
 UnitExplodeSmall:
-	Warhead@1Dam: SpreadDamage
-		Spread: 426
-		Damage: 40
-		Versus:
-			None: 90
-			Wood: 75
-			Light: 60
-			Heavy: 25
-		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
+	Inherits: ^DamagingExplosionHE
 	Warhead@2Eff: CreateEffect
 		Explosions: big_frag
 		ImpactSounds: xplobig4.aud
-	Warhead@3Smu: LeaveSmudge
-		SmudgeType: Crater
 
 GrenadierExplode:
+	Inherits: ^DamagingExplosionHE
 	Warhead@1Dam: SpreadDamage
 		Spread: 256
 		Damage: 10
-		Versus:
-			None: 90
-			Wood: 75
-			Light: 60
-			Heavy: 25
 		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
 	Warhead@2Eff: CreateEffect
-		Explosions: poof
 		ImpactSounds: xplosml2.aud
-	Warhead@3Smu: LeaveSmudge
-		SmudgeType: Crater
 
 BuildingExplode:
 	Warhead@1Eff: CreateEffect
@@ -90,19 +85,17 @@ BuildingExplode:
 		Delay: 1
 
 Napalm.Crate:
+	Inherits: ^DamagingExplosionHE
 	Warhead@1Dam: SpreadDamage
 		Spread: 170
 		Damage: 50
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		Versus:
-			None: 90
 			Wood: 100
-			Light: 60
-			Heavy: 25
 		AffectsParent: true
 		DamageTypes: Prone50Percent, TriggerProne, FireDeath
-	Warhead@2Smu: LeaveSmudge
-		SmudgeType: Scorch
-	Warhead@3Eff: CreateEffect
+	Warhead@2Eff: CreateEffect
 		Explosions: med_napalm
 		ImpactSounds: flamer2.aud
+	Warhead@3Smu: LeaveSmudge
+		SmudgeType: Scorch
