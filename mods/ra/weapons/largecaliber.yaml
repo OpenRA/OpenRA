@@ -91,7 +91,7 @@
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 60
-		InvalidTargets: Air, Infantry
+		InvalidTargets: Air
 		Versus:
 			None: 20
 			Wood: 75
