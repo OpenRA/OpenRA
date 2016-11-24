@@ -88,7 +88,7 @@ namespace OpenRA.Graphics
 				sprite = emptySprite;
 
 			// The vertex buffer does not have geometry for cells outside the map
-			if (!map.Contains(uv))
+			if (!map.Tiles.Contains(uv))
 				return;
 
 			var offset = rowStride * uv.V + 6 * uv.U;
