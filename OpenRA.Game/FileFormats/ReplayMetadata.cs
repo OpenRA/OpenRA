@@ -85,10 +85,10 @@ namespace OpenRA.FileFormats
 				{
 					if (!fs.CanSeek)
 						return null;
-		
+
 					if (fs.Length < 20)
 						return null;
-		
+
 					fs.Seek(-(4 + 4), SeekOrigin.End);
 					var dataLength = fs.ReadInt32();
 					if (fs.ReadInt32() == MetaEndMarker)
