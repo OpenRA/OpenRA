@@ -343,7 +343,8 @@ namespace OpenRA.Traits
 			if (Disabled)
 				return map.Contains(puv);
 
-			return resolvedType[(MPos)puv] > ShroudCellType.Shroud;
+			var uv = (MPos)puv;
+			return resolvedType.Contains(uv) && resolvedType[uv] > ShroudCellType.Shroud;
 		}
 
 		public bool IsVisible(WPos pos)
