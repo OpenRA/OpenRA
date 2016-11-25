@@ -79,45 +79,27 @@ namespace OpenRA.FileFormats
 
 		public static ReplayMetadata Read(string path)
 		{
-			using (var fs = new FileStream(path, FileMode.Open))
-				return Read(fs, path);
-		}
-
-		static ReplayMetadata Read(FileStream fs, string path)
-		{
-			if (!fs.CanSeek)
-				return null;
-
-			if (fs.Length < 20)
-				return null;
-
 			try
 			{
-				fs.Seek(-(4 + 4), SeekOrigin.End);
-				var dataLength = fs.ReadInt32();
-				if (fs.ReadInt32() == MetaEndMarker)
+				using (var fs = new FileStream(path, FileMode.Open))
 				{
-					// go back by (end marker + length storage + data + version + start marker) bytes
-					fs.Seek(-(4 + 4 + dataLength + 4 + 4), SeekOrigin.Current);
-					try
+					if (!fs.CanSeek)
+						return null;
+		
+					if (fs.Length < 20)
+						return null;
+		
+					fs.Seek(-(4 + 4), SeekOrigin.End);
+					var dataLength = fs.ReadInt32();
+					if (fs.ReadInt32() == MetaEndMarker)
 					{
+						// Go back by (end marker + length storage + data + version + start marker) bytes
+						fs.Seek(-(4 + 4 + dataLength + 4 + 4), SeekOrigin.Current);
 						return new ReplayMetadata(fs, path);
-					}
-					catch (YamlException ex)
-					{
-						Log.Write("debug", ex.ToString());
-					}
-					catch (InvalidOperationException ex)
-					{
-						Log.Write("debug", ex.ToString());
-					}
-					catch (NotSupportedException ex)
-					{
-						Log.Write("debug", ex.ToString());
 					}
 				}
 			}
-			catch (IOException ex)
+			catch (Exception ex)
 			{
 				Log.Write("debug", ex.ToString());
 			}
