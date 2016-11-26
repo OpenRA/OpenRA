@@ -28,7 +28,7 @@ namespace OpenRA.Mods.Common.Lint
 				var ios = actorInfo.Value.TraitInfoOrDefault<IOccupySpaceInfo>();
 				foreach (var rsi in actorInfo.Value.TraitInfos<RevealsShroudInfo>())
 				{
-					if (rsi.Type == VisibilityType.CenterPosition)
+					if (rsi.Type != VisibilityType.Footprint)
 						continue;
 
 					if (ios == null)
