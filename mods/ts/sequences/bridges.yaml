@@ -8,29 +8,39 @@
 
 lobrdg_a:
 	Inherits: ^bridge
-	idle: lobrdg10 # lobrdg11, 12, 13
-	damaged-idle: lobrdg16
-	sw: lobrdg14
-	damaged-sw: lobrdg17
-	ne: lobrdg15
-	damaged-ne: lobrdg18
+	idle: lobrdg10
+	idle2: lobrdg11
+	idle3: lobrdg12
+	idle4: lobrdg13
+	adead: lobrdg15
+	bdead: lobrdg14
+	abdead: lobrdg16
 
 lobrdg_a_d:
 	Inherits: ^bridge
-	idle: lobrdg10 # actually lobrdg28
+	idle: lobrdg28
+	aramp: lobrdg17
+	bramp: lobrdg18
+	abramp: lobrdg28
+	editor: lobrdg10
 
 lobrdg_b:
 	Inherits: ^bridge
-	idle: lobrdg01 # lobrdg02, 03, 04
-	damaged-idle: lobrdg07
-	se: lobrdg06
-	damaged-se: lobrdg09
-	nw: lobrdg05
-	damaged-nw: lobrdg08
+	idle: lobrdg01
+	idle2: lobrdg02
+	idle3: lobrdg03
+	idle4: lobrdg04
+	adead: lobrdg05
+	bdead: lobrdg06
+	abdead: lobrdg07
 
 lobrdg_b_d:
 	Inherits: ^bridge
-	idle: lobrdg01 # actually lobrdg27
+	idle: lobrdg27
+	aramp: lobrdg08
+	bramp: lobrdg09
+	abramp: lobrdg27
+	editor: lobrdg01
 
 lobrdg_r_se:
 	Inherits: ^bridge

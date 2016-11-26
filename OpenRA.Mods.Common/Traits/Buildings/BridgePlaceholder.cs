@@ -15,12 +15,13 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	[Desc("Placeholder actor that transforms into another actor type when repaired.")]
+	[Desc("Placeholder actor used for dead segments and bridge end ramps.")]
 	class BridgePlaceholderInfo : ITraitInfo
 	{
 		public readonly string Type = "GroundLevelBridge";
 
-		[FieldLoader.Require]
+		public readonly DamageState DamageState = DamageState.Undamaged;
+
 		[Desc("Actor type to replace with on repair.")]
 		[ActorReference] public readonly string ReplaceWithActor = null;
 
@@ -54,6 +55,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		void IBridgeSegment.Repair(Actor repairer)
 		{
+			if (Info.ReplaceWithActor == null)
+				return;
+
 			self.World.AddFrameEndTask(w =>
 			{
 				self.Dispose();
@@ -68,11 +72,11 @@ namespace OpenRA.Mods.Common.Traits
 
 		void IBridgeSegment.Demolish(Actor saboteur)
 		{
-			// Do nothing, we're already dead
+			// Do nothing
 		}
 
 		string IBridgeSegment.Type { get { return Info.Type; } }
-		DamageState IBridgeSegment.DamageState { get { return DamageState.Dead; } }
+		DamageState IBridgeSegment.DamageState { get { return Info.DamageState; } }
 		bool IBridgeSegment.Valid { get { return self.IsInWorld; } }
 		CVec[] IBridgeSegment.NeighbourOffsets { get { return Info.NeighbourOffsets; } }
 		CPos IBridgeSegment.Location { get { return self.Location; } }

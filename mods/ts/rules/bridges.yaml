@@ -49,19 +49,32 @@ LOBRDG_A:
 		NeighbourOffsets: 1,-1, 1,1
 	SpawnActorOnDeath:
 		Actor: lobrdg_a_d
+	-WithSpriteBody:
+	WithBridgeSpriteBody:
+		AOffset: 1,-1
+		BOffset: 1,1
+		Sequences: idle, idle2, idle3, idle4
+		ADestroyedSequences: adead
+		BDestroyedSequences: bdead
+		ABDestroyedSequences: abdead
 
 LOBRDG_A_D:
 	Inherits: LOBRDG_A
-	-RenderSprites:
-	RenderSpritesEditorOnly:
-		Palette: terrainalpha
 	EditorOnlyTooltip:
 		Name: Dead Bridge
 	-GroundLevelBridge:
 	-AppearsOnRadar:
 	BridgePlaceholder:
+		DamageState: Dead
 		ReplaceWithActor: lobrdg_a
 		NeighbourOffsets: 1,-1, 1,1
+	-WithBridgeSpriteBody:
+	WithDeadBridgeSpriteBody:
+		RampActors: lobrdg_r_ne, lobrdg_r_sw
+		AOffset: 1,-1
+		BOffset: 1,1
+	CustomSelectionSize:
+		CustomBounds: 96, 48
 
 LOBRDG_B:
 	Inherits: ^LowBridge
@@ -72,52 +85,69 @@ LOBRDG_B:
 		NeighbourOffsets: -1,1, 1,1
 	SpawnActorOnDeath:
 		Actor: lobrdg_b_d
+	-WithSpriteBody:
+	WithBridgeSpriteBody:
+		AOffset: -1,1
+		BOffset: 1,1
+		Sequences: idle, idle2, idle3, idle4
+		ADestroyedSequences: adead
+		BDestroyedSequences: bdead
+		ABDestroyedSequences: abdead
 
 LOBRDG_B_D:
 	Inherits: LOBRDG_B
-	-RenderSprites:
-	RenderSpritesEditorOnly:
-		Palette: terrainalpha
 	EditorOnlyTooltip:
 		Name: Dead Bridge
 	-GroundLevelBridge:
 	-AppearsOnRadar:
 	BridgePlaceholder:
+		DamageState: Dead
 		ReplaceWithActor: lobrdg_b
 		NeighbourOffsets: -1,1, 1,1
+	-WithBridgeSpriteBody:
+	WithDeadBridgeSpriteBody:
+		RampActors: lobrdg_r_nw, lobrdg_r_se
+		AOffset: 1,1
+		BOffset: -1,1
+	CustomSelectionSize:
+		CustomBounds: 96, 48
 
 LOBRDG_R_SE:
 	Inherits: ^LowBridgeRamp
 	Building:
 		Footprint: _ _ _
 		Dimensions: 1, 3
+	BridgePlaceholder:
+		NeighbourOffsets: -1,1
 	EditorOnlyTooltip:
 		Name: Bridge Ramp
-		Description: South East
 
 LOBRDG_R_NW:
 	Inherits: ^LowBridgeRamp
 	Building:
 		Footprint: _ _ _
 		Dimensions: 1, 3
+	BridgePlaceholder:
+		NeighbourOffsets: 1,1
 	EditorOnlyTooltip:
 		Name: Bridge Ramp
-		Description: North West
 
 LOBRDG_R_NE:
 	Inherits: ^LowBridgeRamp
 	Building:
 		Footprint: ___
 		Dimensions: 3, 1
+	BridgePlaceholder:
+		NeighbourOffsets: 1,1
 	EditorOnlyTooltip:
 		Name: Bridge Ramp
-		Description: North East
 
 LOBRDG_R_SW:
 	Inherits: ^LowBridgeRamp
 	Building:
 		Footprint: ___
 		Dimensions: 3, 1
+	BridgePlaceholder:
+		NeighbourOffsets: 1,-1
 	EditorOnlyTooltip:
 		Name: Bridge Ramp
-		Description: South West
