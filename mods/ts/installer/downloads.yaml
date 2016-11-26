@@ -208,6 +208,8 @@ fstorm-music: Expansion Freeware Music
 	Extract:
 		^Content/ts/firestorm/dmachine.aud: firestorm/dmachine.aud
 		^Content/ts/firestorm/elusive.aud: firestorm/elusive.aud
+		^Content/ts/firestorm/fsmap.aud: firestorm/fsmap.aud
+		^Content/ts/firestorm/fsmenu.aud: firestorm/fsmenu.aud
 		^Content/ts/firestorm/hacker.aud: firestorm/hacker.aud
 		^Content/ts/firestorm/infiltra.aud: firestorm/infiltra.aud
 		^Content/ts/firestorm/kmachine.aud: firestorm/kmachine.aud
