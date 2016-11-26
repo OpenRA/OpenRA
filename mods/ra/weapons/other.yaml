@@ -205,6 +205,7 @@ Heal:
 	Warhead@1Dam: SpreadDamage
 		Spread: 213
 		Damage: -50
+		ValidStances: Ally
 		ValidTargets: Infantry
 		DebugOverlayColor: 00FF00
 
@@ -216,6 +217,7 @@ Repair:
 	Projectile: Bullet
 		Speed: 1c682
 	Warhead@1Dam: SpreadDamage
+		ValidStances: Ally
 		Spread: 213
 		Damage: -20
 		ValidTargets: Repair
