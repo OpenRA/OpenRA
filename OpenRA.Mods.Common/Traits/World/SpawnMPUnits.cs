@@ -75,7 +75,7 @@ namespace OpenRA.Mods.Common.Traits
 					new LocationInit(sp),
 					new OwnerInit(p),
 					new SkipMakeAnimsInit(),
-					new FacingInit(128),
+					new FacingInit(unitGroup.BaseActorFacing < 0 ? w.SharedRandom.Next(256) : unitGroup.BaseActorFacing),
 				});
 			}
 
@@ -99,7 +99,7 @@ namespace OpenRA.Mods.Common.Traits
 					new OwnerInit(p),
 					new LocationInit(cell),
 					new SubCellInit(subCell),
-					new FacingInit(w.SharedRandom.Next(256))
+					new FacingInit(unitGroup.SupportActorsFacing < 0 ? w.SharedRandom.Next(256) : unitGroup.SupportActorsFacing)
 				});
 			}
 		}
