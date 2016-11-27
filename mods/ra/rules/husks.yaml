@@ -96,7 +96,7 @@ TRAN.Husk:
 		Sequence: rotor2
 	RevealsShroud:
 		Range: 10c0
-		Type: CenterPosition
+		Type: GroundPosition
 	RenderSprites:
 		Image: tran
 
@@ -149,7 +149,7 @@ MIG.Husk:
 		MinDamage: Undamaged
 	RevealsShroud:
 		Range: 12c0
-		Type: CenterPosition
+		Type: GroundPosition
 	RenderSprites:
 		Image: mig
 
@@ -168,7 +168,7 @@ YAK.Husk:
 		MinDamage: Undamaged
 	RevealsShroud:
 		Range: 10c0
-		Type: CenterPosition
+		Type: GroundPosition
 	RenderSprites:
 		Image: yak
 
@@ -187,7 +187,7 @@ HELI.Husk:
 		MinDamage: Undamaged
 	RevealsShroud:
 		Range: 12c0
-		Type: CenterPosition
+		Type: GroundPosition
 	RenderSprites:
 		Image: heli
 
@@ -205,7 +205,7 @@ HIND.Husk:
 		MinDamage: Undamaged
 	RevealsShroud:
 		Range: 10c0
-		Type: CenterPosition
+		Type: GroundPosition
 	RenderSprites:
 		Image: hind
 

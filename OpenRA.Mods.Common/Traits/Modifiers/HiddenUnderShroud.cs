@@ -15,7 +15,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public enum VisibilityType { Footprint, CenterPosition }
+	public enum VisibilityType { Footprint, CenterPosition, GroundPosition }
 
 	[Desc("The actor stays invisible under the shroud.")]
 	public class HiddenUnderShroudInfo : ITraitInfo, IDefaultVisibilityInfo

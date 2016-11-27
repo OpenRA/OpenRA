@@ -53,7 +53,11 @@ namespace OpenRA.Mods.Common.Traits
 					.SelectMany(kv => Shroud.ProjectedCellsInRange(map, kv.First, range, Info.MaxHeightDelta))
 					.Distinct().ToArray();
 
-			return Shroud.ProjectedCellsInRange(map, self.CenterPosition, range, Info.MaxHeightDelta)
+			var pos = self.CenterPosition;
+			if (Info.Type == VisibilityType.GroundPosition)
+				pos -= new WVec(WDist.Zero, WDist.Zero, self.World.Map.DistanceAboveTerrain(pos));
+
+			return Shroud.ProjectedCellsInRange(map, pos, range, Info.MaxHeightDelta)
 				.ToArray();
 		}
 
