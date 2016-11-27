@@ -59,6 +59,7 @@
 		TerrainType: Veins
 	TerrainGeometryOverlay:
 	ExitsDebugOverlayManager:
+	CliffBackImpassabilityLayer:
 
 World:
 	Inherits: ^BaseWorld
