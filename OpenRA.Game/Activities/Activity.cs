@@ -9,14 +9,19 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Traits;
 
 namespace OpenRA.Activities
 {
+	public enum ActivityState { Queued, Active, Done }
+
 	public abstract class Activity
 	{
+		public ActivityState State { get; private set; }
+
 		public Activity NextActivity { get; set; }
 		public bool IsInterruptible { get; protected set; }
 		protected bool IsCanceled { get; private set; }
@@ -26,7 +31,38 @@ namespace OpenRA.Activities
 			IsInterruptible = true;
 		}
 
+		public Activity TickOuter(Actor self)
+		{
+			if (State == ActivityState.Done && Game.Settings.Debug.StrictActivityChecking)
+				throw new InvalidOperationException("Actor {0} attempted to tick activity {1} after it had already completed.".F(self, this.GetType()));
+
+			if (State == ActivityState.Queued)
+			{
+				OnFirstRun(self);
+				State = ActivityState.Active;
+			}
+
+			var ret = Tick(self);
+			if (ret != this)
+			{
+				State = ActivityState.Done;
+				OnLastRun(self);
+			}
+
+			return ret;
+		}
+
 		public abstract Activity Tick(Actor self);
+
+		/// <summary>
+		/// Runs once immediately before the first Tick() execution.
+		/// </summary>
+		protected virtual void OnFirstRun(Actor self) { }
+
+		/// <summary>
+		/// Runs once immediately after the last Tick() execution.
+		/// </summary>
+		protected virtual void OnLastRun(Actor self) { }
 
 		public virtual bool Cancel(Actor self)
 		{
