@@ -69,6 +69,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Activities\FallDown.cs" />
+    <Compile Include="Duplicates\Projectiles\MissileAS.cs" />
     <Compile Include="Duplicates\Traits\EjectOnDeathAS.cs" />
     <Compile Include="Duplicates\Traits\Render\WithIdleOverlayAS.cs" />
     <Compile Include="Duplicates\Traits\Sound\AnnounceOnBuildAS.cs" />
@@ -105,13 +106,7 @@
     <Compile Include="Traits\HordeBonus.cs" />
     <Compile Include="Traits\GrantHordeBonus.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Traits\Render\" />
-    <Folder Include="Scripting\" />
-    <Folder Include="Scripting\Global\" />
-    <Folder Include="UtilityCommands\" />
-    <Folder Include="Effects\" />
-  </ItemGroup>
+  <ItemGroup />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
