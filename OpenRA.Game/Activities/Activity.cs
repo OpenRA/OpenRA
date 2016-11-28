@@ -18,11 +18,140 @@ namespace OpenRA.Activities
 {
 	public enum ActivityState { Queued, Active, Done }
 
+	/*
+	 * Activities are actions carried out by actors during each tick.
+	 *
+	 * Activities exist in a graph data structure built up amongst themselves. Each activity has a parent activity,
+	 * optionally child activities, and usually a next activity. An actor's CurrentActivity is a pointer into that graph
+	 * and moves through it as activities run.
+	 *
+	 * There are two kinds of activities, the base activity and composite activities. They differ in the way their children
+	 * are run: while a base activity is responsible for running its children itself, a composite activity relies on the actor's
+	 * activity-running code. Therefore, the actor's CurrentActivity stays on the base activity while it runs its children. With
+	 * composite activities however, the CurrentActivity moves through the list of children as they run.
+	 *
+	 *
+	 * Things to be aware of when writing activities:
+	 *
+	 * - Use "return NextActivity" at least once somewhere in the tick method.
+	 * - Do not use "return new SomeActivity()" as that will break the graph. Queue the new activity and use "return NextActivity" instead.
+	 * - Do not "reuse" (with "SequenceActivities", for example) activity objects that have already finished running.
+	 *   Queue a new instance instead.
+	 * - Avoid calling actor.CancelActivity(). It is almost always a bug. Call activity.Cancel() instead.
+	 * - A composite activity will run at least twice. The first time when it returns its children,
+	 *   the second time when its last child returns its Parent.
+	 * - Do not return the Parent explicitly unless you have an extremly good reason. "return NextActivity"
+	 *   will do the right thing in all circumstances.
+	 * - You do not need to care about the ChildActivity pointer advancing through the list of children,
+	 *   the activity code already takes care of that.
+	 * - If you want to check whether there are any follow-up activities queued, check against "NextInQueue"
+	 *   in favour of "NextActivity" to avoid checking against the Parent activity.
+	 *
+	 *
+	 * Guide when to use which kind of activity:
+	 *
+	 * - The activity does not have any children -> base activity
+	 * - The activity needs to run preparatory steps during each tick before its children can be run -> base activity
+	 * - The activity or the actor is left in a bogus state when one of the child activities is canceled -> base activity
+	 * - The activity's children are self-contained and can run independently of the parent -> composite activity
+	 * - The activity does not have any or little logic of its own, but is just composed of sub-steps -> composite activity
+	*/
 	public abstract class Activity
 	{
 		public ActivityState State { get; private set; }
 
-		public Activity NextActivity { get; set; }
+		/// <summary>
+		/// Returns the top-most activity *from the point of view of the calling activity*. Note that the root activity
+		/// can and likely will have next activities of its own, which would in turn be the root for their children.
+		/// </summary>
+		public Activity RootActivity
+		{
+			get
+			{
+				var p = this;
+				while (p.ParentActivity != null)
+					p = p.ParentActivity;
+
+				return p;
+			}
+		}
+
+		Activity parentActivity;
+		public Activity ParentActivity
+		{
+			get
+			{
+				return parentActivity;
+			}
+
+			protected set
+			{
+				parentActivity = value;
+
+				var next = NextInQueue;
+				if (next != null)
+					next.ParentActivity = parentActivity;
+			}
+		}
+
+		Activity childActivity;
+		protected Activity ChildActivity
+		{
+			get
+			{
+				return childActivity != null && childActivity.State != ActivityState.Done ? childActivity : null;
+			}
+
+			set
+			{
+				if (value == this || value == ParentActivity || value == NextInQueue)
+					childActivity = null;
+				else
+				{
+					childActivity = value;
+
+					if (childActivity != null)
+						childActivity.ParentActivity = this;
+				}
+			}
+		}
+
+		Activity nextActivity;
+
+		/// <summary>
+		/// The getter will return either the next activity or, if there is none, the parent one.
+		/// </summary>
+		public virtual Activity NextActivity
+		{
+			get
+			{
+				return nextActivity != null ? nextActivity : ParentActivity;
+			}
+
+			set
+			{
+				if (value == this || value == ParentActivity || (value != null && value.ParentActivity == this))
+					nextActivity = null;
+				else
+				{
+					nextActivity = value;
+
+					if (nextActivity != null)
+						nextActivity.ParentActivity = ParentActivity;
+				}
+			}
+		}
+
+		/// <summary>
+		/// The getter will return the next activity on the same level _only_, in contrast to NextActivity.
+		/// Use this to check whether there are any follow-up activities queued.
+		/// </summary>
+		public Activity NextInQueue
+		{
+			get { return nextActivity; }
+			set { NextActivity = value; }
+		}
+
 		public bool IsInterruptible { get; protected set; }
 		protected bool IsCanceled { get; private set; }
 
@@ -43,8 +172,13 @@ namespace OpenRA.Activities
 			}
 
 			var ret = Tick(self);
-			if (ret != this)
+			if (ret == null || (ret != this && ret.ParentActivity != this))
 			{
+				// Make sure that the Parent's ChildActivity pointer is moved forwards as the child queue advances.
+				// The Child's ParentActivity will be set automatically during assignment.
+				if (ParentActivity != null && ParentActivity != ret)
+					ParentActivity.ChildActivity = ret;
+
 				State = ActivityState.Done;
 				OnLastRun(self);
 			}
@@ -69,23 +203,58 @@ namespace OpenRA.Activities
 			if (!IsInterruptible)
 				return false;
 
+			if (ChildActivity != null && !ChildActivity.Cancel(self))
+				return false;
+
 			IsCanceled = true;
 			NextActivity = null;
+			ChildActivity = null;
 
 			return true;
 		}
 
 		public virtual void Queue(Activity activity)
 		{
-			if (NextActivity != null)
-				NextActivity.Queue(activity);
+			if (NextInQueue != null)
+				NextInQueue.Queue(activity);
 			else
-				NextActivity = activity;
+				NextInQueue = activity;
+		}
+
+		public virtual void QueueChild(Activity activity)
+		{
+			if (ChildActivity != null)
+				ChildActivity.Queue(activity);
+			else
+				ChildActivity = activity;
 		}
 
 		public virtual IEnumerable<Target> GetTargets(Actor self)
 		{
 			yield break;
+		}
+	}
+
+	/// <summary>
+	/// In contrast to the base activity class, which is responsible for running its children itself,
+	/// composite activities rely on the actor's activity-running logic for their children.
+	/// </summary>
+	public abstract class CompositeActivity : Activity
+	{
+		/// <summary>
+		/// The getter will return the first non-null value of either child, next or parent activity, in that order, or ultimately null.
+		/// </summary>
+		public override Activity NextActivity
+		{
+			get
+			{
+				if (ChildActivity != null)
+					return ChildActivity;
+				else if (NextInQueue != null)
+					return NextInQueue;
+				else
+					return ParentActivity;
+			}
 		}
 	}
 
