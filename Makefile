@@ -291,6 +291,7 @@ server: $(server_TARGET)
 
 # Patches binary headers to work around a mono bug
 fixheader.exe: packaging/fixheader.cs
+	@command -v $(CSC) >/dev/null || (echo "Mono is not installed. Please install Mono from http://www.mono-project.com/download/ before building OpenRA."; exit 1)
 	@echo CSC fixheader.exe
 	@$(CSC) packaging/fixheader.cs $(CSFLAGS) -out:fixheader.exe -t:exe $(COMMON_LIBS:%=-r:%)
 
