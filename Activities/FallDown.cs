@@ -26,7 +26,7 @@ namespace OpenRA.Mods.AS.Activities
 		public FallDown(Actor self, WPos dropPosition, int fallRate, Actor ignoreActor = null)
 		{
 			pos = self.TraitOrDefault<IPositionable>();
-
+			IsInterruptible = false;
 			fallVector = new WVec(0, 0, fallRate);
 			this.dropPosition = dropPosition;
 		}
@@ -72,8 +72,5 @@ namespace OpenRA.Mods.AS.Activities
 		{
 			NextActivity = activity;
 		}
-
-		// Cannot be cancelled
-		public override void Cancel(Actor self) { }
 	}
 }
