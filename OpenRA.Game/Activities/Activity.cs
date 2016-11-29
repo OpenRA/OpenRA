@@ -231,6 +231,34 @@ namespace OpenRA.Activities
 				ChildActivity = activity;
 		}
 
+		/// <summary>
+		/// Prints the activity tree, starting from the root or optionally from a given origin.
+		///
+		/// Call this method from any place that's called during a tick, such as the Tick() method itself or
+		/// the Before(First|Last)Run() methods. The origin activity will be marked in the output.
+		/// </summary>
+		/// <param name="origin">Activity from which to start traversing, and which to mark. If null, mark the calling activity, and start traversal from the root.</param>
+		/// <param name="level">Initial level of indentation.</param>
+		protected void PrintActivityTree(Activity origin = null, int level = 0)
+		{
+			if (origin == null)
+				RootActivity.PrintActivityTree(this);
+			else
+			{
+				Console.Write(new string(' ', level * 2));
+				if (origin == this)
+					Console.Write("*");
+
+				Console.WriteLine(this.GetType().ToString().Split('.').Last());
+
+				if (ChildActivity != null)
+					ChildActivity.PrintActivityTree(origin, level + 1);
+
+				if (NextInQueue != null)
+					NextInQueue.PrintActivityTree(origin, level);
+			}
+		}
+
 		public virtual IEnumerable<Target> GetTargets(Actor self)
 		{
 			yield break;
