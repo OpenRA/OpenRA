@@ -9,103 +9,51 @@
  */
 #endregion
 
-using System.Collections.Generic;
-using System.Linq;
-using OpenRA.Graphics;
-using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	class BridgeLayerInfo : ITraitInfo
+	interface IBridgeSegment
 	{
-		[ActorReference]
-		public readonly string[] Bridges = { "bridge1", "bridge2" };
+		void Repair(Actor repairer);
+		void Demolish(Actor saboteur);
 
-		public object Create(ActorInitializer init) { return new BridgeLayer(init.Self, this); }
+		string Type { get; }
+		DamageState DamageState { get; }
+		CVec[] NeighbourOffsets { get; }
+		bool Valid { get; }
+		CPos Location { get; }
 	}
 
-	class BridgeLayer : IWorldLoaded
+	class BridgeLayerInfo : ITraitInfo
 	{
-		readonly BridgeLayerInfo info;
-		readonly Dictionary<ushort, Pair<string, int>> bridgeTypes = new Dictionary<ushort, Pair<string, int>>();
+		public object Create(ActorInitializer init) { return new BridgeLayer(init.World); }
+	}
 
-		CellLayer<Bridge> bridges;
+	class BridgeLayer
+	{
+		readonly CellLayer<Actor> bridges;
 
-		public BridgeLayer(Actor self, BridgeLayerInfo info)
+		public BridgeLayer(World world)
 		{
-			this.info = info;
+			bridges = new CellLayer<Actor>(world.Map);
 		}
 
-		public void WorldLoaded(World w, WorldRenderer wr)
+		public Actor this[CPos cell] { get { return bridges[cell]; } }
+
+		public void Add(Actor b)
 		{
-			bridges = new CellLayer<Bridge>(w.Map);
-
-			// Build a list of templates that should be overlayed with bridges
-			foreach (var bridge in info.Bridges)
-			{
-				var bi = w.Map.Rules.Actors[bridge].TraitInfo<BridgeInfo>();
-				foreach (var template in bi.Templates)
-					bridgeTypes.Add(template.First, Pair.New(bridge, template.Second));
-			}
-
-			// Take all templates to overlay from the map
-			foreach (var cell in w.Map.AllCells.Where(cell => bridgeTypes.ContainsKey(w.Map.Tiles[cell].Type)))
-				ConvertBridgeToActor(w, cell);
-
-			// Link adjacent (long)-bridges so that artwork is updated correctly
-			foreach (var p in w.ActorsWithTrait<Bridge>())
-				p.Trait.LinkNeighbouringBridges(w, this);
+			var buildingInfo = b.Info.TraitInfo<BuildingInfo>();
+			foreach (var c in FootprintUtils.PathableTiles(b.Info.Name, buildingInfo, b.Location))
+				bridges[c] = b;
 		}
 
-		void ConvertBridgeToActor(World w, CPos cell)
+		public void Remove(Actor b)
 		{
-			// This cell already has a bridge overlaying it from a previous iteration
-			if (bridges[cell] != null)
-				return;
-
-			// Correlate the tile "image" aka subtile with its position to find the template origin
-			var tile = w.Map.Tiles[cell].Type;
-			var index = w.Map.Tiles[cell].Index;
-			var template = w.Map.Rules.TileSet.Templates[tile];
-			var ni = cell.X - index % template.Size.X;
-			var nj = cell.Y - index / template.Size.X;
-
-			// Create a new actor for this bridge and keep track of which subtiles this bridge includes
-			var bridge = w.CreateActor(bridgeTypes[tile].First, new TypeDictionary
-			{
-				new LocationInit(new CPos(ni, nj)),
-				new OwnerInit(w.WorldActor.Owner),
-				new HealthInit(bridgeTypes[tile].Second, true),
-			}).Trait<Bridge>();
-
-			var subTiles = new Dictionary<CPos, byte>();
-			var mapTiles = w.Map.Tiles;
-
-			// For each subtile in the template
-			for (byte ind = 0; ind < template.Size.X * template.Size.Y; ind++)
-			{
-				// Where do we expect to find the subtile
-				var subtile = new CPos(ni + ind % template.Size.X, nj + ind / template.Size.X);
-
-				// This isn't the bridge you're looking for
-				if (!mapTiles.Contains(subtile) || mapTiles[subtile].Type != tile || mapTiles[subtile].Index != ind)
-					continue;
-
-				subTiles.Add(subtile, ind);
-				bridges[subtile] = bridge;
-			}
-
-			bridge.Create(tile, subTiles);
-		}
-
-		// Used to check for neighbouring bridges
-		public Bridge GetBridge(CPos cell)
-		{
-			if (!bridges.Contains(cell))
-				return null;
-
-			return bridges[cell];
+			var buildingInfo = b.Info.TraitInfo<BuildingInfo>();
+			foreach (var c in FootprintUtils.PathableTiles(b.Info.Name, buildingInfo, b.Location))
+				if (bridges[c] == b)
+					bridges[c] = null;
 		}
 	}
 }

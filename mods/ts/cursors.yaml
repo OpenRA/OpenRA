@@ -141,10 +141,10 @@ Cursors:
 			Start: 120
 			Length: 9
 		goldwrench:
-			Start: 170
-			Length: 24
+			Start: 150
+			Length: 20
 		goldwrench-blocked: #TODO
-			Start: 213
+			Start: 190
 			Length: 1
 		ioncannon:
 			Start: 279

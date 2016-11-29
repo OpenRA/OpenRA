@@ -78,3 +78,11 @@ LargeDebris:
 		Image: dbrislg
 		Sequences: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
 		Shadow: true
+
+Demolish:
+	Warhead@1Dam: SpreadDamage
+		DamageTypes: DefaultDeath
+	Warhead@2Eff: CreateEffect
+		Explosions: large_twlt
+		ExplosionPalette: effectalpha75
+		ImpactSounds: expnew09.aud

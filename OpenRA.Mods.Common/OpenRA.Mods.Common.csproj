@@ -275,7 +275,7 @@
     <Compile Include="Traits\Buildings\BaseProvider.cs" />
     <Compile Include="Traits\Buildings\Bib.cs" />
     <Compile Include="Traits\Buildings\Bridge.cs" />
-    <Compile Include="Traits\Buildings\BridgeHut.cs" />
+    <Compile Include="Traits\Buildings\LegacyBridgeHut.cs" />
     <Compile Include="Traits\Buildings\Building.cs" />
     <Compile Include="Traits\Buildings\BuildingInfluence.cs" />
     <Compile Include="Traits\Buildings\BuildingUtils.cs" />
@@ -506,7 +506,7 @@
     <Compile Include="Traits\Valued.cs" />
     <Compile Include="Traits\Voiced.cs" />
     <Compile Include="Traits\Wanders.cs" />
-    <Compile Include="Traits\World\BridgeLayer.cs" />
+    <Compile Include="Traits\World\LegacyBridgeLayer.cs" />
     <Compile Include="Traits\World\CrateSpawner.cs" />
     <Compile Include="Traits\World\CreateMPPlayers.cs" />
     <Compile Include="Traits\World\DomainIndex.cs" />
@@ -777,6 +777,10 @@
     <Compile Include="Traits\AutoCarryable.cs" />
     <Compile Include="Traits\AutoCarryall.cs" />
     <Compile Include="Traits\World\CliffBackImpassabilityLayer.cs" />
+    <Compile Include="Traits\Buildings\BridgeHut.cs" />
+    <Compile Include="Traits\Buildings\BridgePlaceholder.cs" />
+    <Compile Include="Traits\Buildings\GroundLevelBridge.cs" />
+    <Compile Include="Traits\World\BridgeLayer.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="AfterBuild">

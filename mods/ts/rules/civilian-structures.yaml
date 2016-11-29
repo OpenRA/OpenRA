@@ -645,19 +645,6 @@ CAARMR:
 		Prerequisite: barracks.upgraded
 	Capturable:
 
-CABHUT:
-	Inherits: ^CivBuilding
-	Tooltip:
-		Name: Bridge repair hut
-	Building:
-		Adjacent: 0
-		Footprint: x
-		Dimensions: 1, 1
-	Health:
-		HP: 2000
-	RenderSprites:
-		Palette: player
-
 CACRSH01:
 	Inherits: ^Decoration
 	Tooltip:

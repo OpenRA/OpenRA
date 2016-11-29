@@ -1,49 +1,123 @@
+CABHUT:
+	Inherits: ^BasicBuilding
+	Tooltip:
+		Name: Bridge repair hut
+	Building:
+		Adjacent: 0
+		Footprint: x
+		Dimensions: 1, 1
+	BridgeHut:
+		NeighbourOffsets: -1,-1, -1,0, -1,1, 0,-1, 0,1, 1,-1, 1,0, 1,1
+	RenderSprites:
+		Palette: player
+	Targetable:
+		TargetTypes: C4
+	-SelectionDecorations:
+	-Demolishable:
+
+^LowBridgeRamp:
+	AlwaysVisible:
+	RenderSprites:
+		Palette: terraindecoration
+	WithSpriteBody:
+	AutoSelectionSize:
+	AppearsOnRadar:
+	RadarColorFromTerrain:
+		Terrain: Bridge
+	BodyOrientation:
+		UseClassicPerspectiveFudge: false
+		QuantizedFacings: 1
+	Tooltip:
+		Name: Bridge
+
+^LowBridge:
+	Inherits: ^LowBridgeRamp
+	Targetable:
+		TargetTypes: Ground, Building
+		RequiresForceFire: true
+	Health:
+		HP: 500
+	Armor:
+		Type: Concrete
+
 LOBRDG_A:
-	Inherits: ^LowBridge_A
+	Inherits: ^LowBridge
+	Building:
+		Footprint: ___
+		Dimensions: 3, 1
+	GroundLevelBridge:
+		NeighbourOffsets: 1,-1, 1,1
+	SpawnActorOnDeath:
+		Actor: lobrdg_a_d
 
 LOBRDG_A_D:
-	Inherits: ^LowBridge_A
+	Inherits: LOBRDG_A
 	-RenderSprites:
 	RenderSpritesEditorOnly:
 		Palette: terrainalpha
 	EditorOnlyTooltip:
 		Name: Dead Bridge
-	-LowBridge:
+	-GroundLevelBridge:
 	-AppearsOnRadar:
+	BridgePlaceholder:
+		ReplaceWithActor: lobrdg_a
+		NeighbourOffsets: 1,-1, 1,1
 
 LOBRDG_B:
-	Inherits: ^LowBridge_B
+	Inherits: ^LowBridge
+	Building:
+		Footprint: _ _ _
+		Dimensions: 1, 3
+	GroundLevelBridge:
+		NeighbourOffsets: -1,1, 1,1
+	SpawnActorOnDeath:
+		Actor: lobrdg_b_d
 
 LOBRDG_B_D:
-	Inherits: ^LowBridge_B
+	Inherits: LOBRDG_B
 	-RenderSprites:
 	RenderSpritesEditorOnly:
 		Palette: terrainalpha
 	EditorOnlyTooltip:
 		Name: Dead Bridge
-	-LowBridge:
+	-GroundLevelBridge:
 	-AppearsOnRadar:
+	BridgePlaceholder:
+		ReplaceWithActor: lobrdg_b
+		NeighbourOffsets: -1,1, 1,1
 
 LOBRDG_R_SE:
-	Inherits: ^LowBridge_B
+	Inherits: ^LowBridgeRamp
+	Building:
+		Footprint: _ _ _
+		Dimensions: 1, 3
 	EditorOnlyTooltip:
 		Name: Bridge Ramp
 		Description: South East
 
 LOBRDG_R_NW:
-	Inherits: ^LowBridge_B
+	Inherits: ^LowBridgeRamp
+	Building:
+		Footprint: _ _ _
+		Dimensions: 1, 3
 	EditorOnlyTooltip:
 		Name: Bridge Ramp
 		Description: North West
 
 LOBRDG_R_NE:
-	Inherits: ^LowBridge_A
+	Inherits: ^LowBridgeRamp
+	Building:
+		Footprint: ___
+		Dimensions: 3, 1
 	EditorOnlyTooltip:
 		Name: Bridge Ramp
 		Description: North East
 
 LOBRDG_R_SW:
-	Inherits: ^LowBridge_A
+	Inherits: ^LowBridgeRamp
+	Building:
+		Footprint: ___
+		Dimensions: 3, 1
 	EditorOnlyTooltip:
 		Name: Bridge Ramp
 		Description: South West
