@@ -21,11 +21,11 @@ World:
         
 ^Building:
 	DamageMultiplier@UNKILLABLE:
-		Modifier: 0, 0
+		Modifier: 0
 
 wall:
 	DamageMultiplier@UNKILLABLE:
-		Modifier: 0, 0
+		Modifier: 0
 
 upgrade.conyard:
 	Valued:

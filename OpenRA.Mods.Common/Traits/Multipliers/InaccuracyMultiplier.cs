@@ -11,17 +11,21 @@
 
 namespace OpenRA.Mods.Common.Traits
 {
-	[Desc("The inaccuracy of this actor is multiplied based on upgrade level if specified.")]
-	public class InaccuracyMultiplierInfo : UpgradeMultiplierTraitInfo
+	[Desc("Modifies the inaccuracy of weapons fired by this actor.")]
+	public class InaccuracyMultiplierInfo : UpgradableTraitInfo
 	{
-		public override object Create(ActorInitializer init) { return new InaccuracyMultiplier(this, init.Self.Info.Name); }
+		[FieldLoader.Require]
+		[Desc("Percentage modifier to apply.")]
+		public readonly int Modifier = 100;
+
+		public override object Create(ActorInitializer init) { return new InaccuracyMultiplier(this); }
 	}
 
-	public class InaccuracyMultiplier : UpgradeMultiplierTrait, IInaccuracyModifier
+	public class InaccuracyMultiplier : UpgradableTrait<InaccuracyMultiplierInfo>, IInaccuracyModifier
 	{
-		public InaccuracyMultiplier(InaccuracyMultiplierInfo info, string actorType)
-			: base(info, "InaccuracyMultiplier", actorType) { }
+		public InaccuracyMultiplier(InaccuracyMultiplierInfo info)
+			: base(info) { }
 
-		int IInaccuracyModifier.GetInaccuracyModifier() { return GetModifier(); }
+		int IInaccuracyModifier.GetInaccuracyModifier() { return IsTraitDisabled ? 100 : Info.Modifier; }
 	}
 }

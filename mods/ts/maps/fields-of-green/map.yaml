@@ -1447,13 +1447,13 @@ Rules:
 			InitialUnits: e1, e1, e2, e2, medic
 	GACTWR:
 		DamageMultiplier@UNKILLABLE:
-			UpgradeTypes: unkillable
-			Modifier: 0, 0
+			RequiresCondition: unkillable
+			Modifier: 0
 	NAOBEL:
 		DamageMultiplier@UNKILLABLE:
-			UpgradeTypes: unkillable
-			Modifier: 0, 0
+			RequiresCondition: unkillable
+			Modifier: 0
 	NALASR:
 		DamageMultiplier@UNKILLABLE:
-			UpgradeTypes: unkillable
-			Modifier: 0, 0
+			RequiresCondition: unkillable
+			Modifier: 0

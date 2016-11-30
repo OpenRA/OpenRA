@@ -13,22 +13,30 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	[Desc("The power usage/output of this actor is multiplied based on upgrade level if specified.")]
-	public class PowerMultiplierInfo : UpgradeMultiplierTraitInfo
+	[Desc("Modifies the power usage/output of this actor.")]
+	public class PowerMultiplierInfo : UpgradableTraitInfo
 	{
+		[FieldLoader.Require]
+		[Desc("Percentage modifier to apply.")]
+		public readonly int Modifier = 100;
+
 		public override object Create(ActorInitializer init) { return new PowerMultiplier(init.Self, this); }
 	}
 
-	public class PowerMultiplier : UpgradeMultiplierTrait, IPowerModifier, INotifyOwnerChanged
+	public class PowerMultiplier : UpgradableTrait<PowerMultiplierInfo>, IPowerModifier, INotifyOwnerChanged
 	{
 		PowerManager power;
 
 		public PowerMultiplier(Actor self, PowerMultiplierInfo info)
-			: base(info, "PowerMultiplier", self.Info.Name) { power = self.Owner.PlayerActor.Trait<PowerManager>(); }
+			: base(info)
+		{
+			power = self.Owner.PlayerActor.Trait<PowerManager>();
+		}
 
-		int IPowerModifier.GetPowerModifier() { return GetModifier(); }
+		protected override void TraitEnabled(Actor self) { power.UpdateActor(self); }
+		protected override void TraitDisabled(Actor self) { power.UpdateActor(self); }
 
-		protected override void Update(Actor self) { power.UpdateActor(self); }
+		int IPowerModifier.GetPowerModifier() { return IsTraitDisabled ? 100 : Info.Modifier; }
 
 		void INotifyOwnerChanged.OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
 		{

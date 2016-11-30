@@ -57,7 +57,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			// Defer this lookup until we really need it to ensure we get the correct value.
 			range = Exts.Lazy(() =>
 			{
-				var armaments = ai.TraitInfos<ArmamentInfo>().Where(a => a.UpgradeMinEnabledLevel == 0);
+				var armaments = ai.TraitInfos<ArmamentInfo>().Where(a => a.EnabledByDefault);
 				if (!armaments.Any())
 					return FallbackRange;
 

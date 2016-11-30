@@ -68,61 +68,51 @@ GACTWR:
 	BodyOrientation:
 		QuantizedFacings: 32
 	DetectCloaked:
-		UpgradeTypes: tower
-		UpgradeMinEnabledLevel: 1
+		RequiresCondition: tower.vulcan || tower.rocket || tower.sam
 	Turreted:
 		TurnSpeed: 10
 		InitialFacing: 224
 	AttackTurreted:
-		UpgradeTypes: tower
-		UpgradeMinEnabledLevel: 1
+		RequiresCondition: tower.vulcan || tower.rocket || tower.sam
 	CanPowerDown:
 		IndicatorPalette: mouse
 		PowerupSpeech: EnablePower
 		PowerdownSpeech: DisablePower
 	WithSpriteTurret@VULC:
-		UpgradeTypes: tower.vulcan
-		UpgradeMinEnabledLevel: 1
+		RequiresCondition: tower.vulcan
 		Recoils: false
 		Sequence: turret-vulcan
 	WithSpriteTurret@ROCKET:
-		UpgradeTypes: tower.rocket
-		UpgradeMinEnabledLevel: 1
+		RequiresCondition: tower.rocket
 		Recoils: false
 		Sequence: turret-rocket
 	WithSpriteTurret@SAM:
-		UpgradeTypes: tower.sam
-		UpgradeMinEnabledLevel: 1
+		RequiresCondition: tower.sam
 		Recoils: false
 		Sequence: turret-sam
 	Armament@VULCPRIMARY:
-		UpgradeTypes: tower.vulcan
-		UpgradeMinEnabledLevel: 1
+		RequiresCondition: tower.vulcan
 		Weapon: VulcanTower
 		LocalOffset: 416,85,960
 		MuzzleSequence: muzzle
 		MuzzleSplitFacings: 8
 	Armament@VULCSECONDARY:
-		UpgradeTypes: tower.vulcan
-		UpgradeMinEnabledLevel: 1
+		RequiresCondition: tower.vulcan
 		Name: secondary
 		Weapon: VulcanTower
 		LocalOffset: 416,-85,960
 		MuzzleSequence: muzzle
 		MuzzleSplitFacings: 8
 	Armament@ROCKET:
-		UpgradeTypes: tower.rocket
-		UpgradeMinEnabledLevel: 1
+		RequiresCondition: tower.rocket
 		Weapon: RPGTower
 		LocalOffset: 192,-65,1056
 	Armament@SAM:
-		UpgradeTypes: tower.sam
-		UpgradeMinEnabledLevel: 1
+		RequiresCondition: tower.sam
 		Weapon: RedEye2
 		LocalOffset: 384,0,1200
 	WithMuzzleOverlay:
-		UpgradeTypes: tower.vulcan
-		UpgradeMinEnabledLevel: 1
+		RequiresCondition: tower.vulcan
 	WithIdleOverlay@LIGHTS:
 		Sequence: idle-lights
 	LineBuildNode:
@@ -130,18 +120,16 @@ GACTWR:
 	Power@base:
 		Amount: -10
 	Power@turrets:
-		UpgradeTypes: tower
-		UpgradeMinEnabledLevel: 1
+		RequiresCondition: tower.vulcan || tower.rocket || tower.sam
 		Amount: -20
 	Power@samextra:
-		UpgradeTypes: tower.sam
-		UpgradeMinEnabledLevel: 1
+		RequiresCondition: tower.sam
 		Amount: -10
 	Pluggable:
 		Upgrades:
-			tower.vulcan: tower, tower.vulcan
-			tower.rocket: tower, tower.rocket
-			tower.sam: tower, tower.sam
+			tower.vulcan: tower.vulcan
+			tower.rocket: tower.rocket
+			tower.sam: tower.sam
 	ProvidesPrerequisite@buildingname:
 	SelectionDecorations:
 		VisualBounds: 48, 48, 0, -12

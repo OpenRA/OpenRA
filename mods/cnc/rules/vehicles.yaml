@@ -88,10 +88,9 @@ APC:
 		Queue: Vehicle.GDI
 		Description: Armed infantry transport.\nCan attack Aircraft.\n  Strong vs Vehicles\n  Weak vs Infantry
 	Mobile:
-		UpgradeTypes: notmobile
-		UpgradeMaxEnabledLevel: 0
 		TurnSpeed: 8
 		Speed: 128
+		RequiresCondition: !notmobile
 	Health:
 		HP: 210
 	Armor:
@@ -517,7 +516,7 @@ STNK:
 	RevealsShroud:
 		Range: 7c0
 	Cloak:
-		-UpgradeTypes:
+		-RequiresCondition:
 		InitialDelay: 90
 		CloakDelay: 90
 		CloakSound: trans1.aud

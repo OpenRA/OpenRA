@@ -21,12 +21,10 @@ SS:
 		Range: 6c0
 	Targetable:
 		TargetTypes: Ground, Water, Repair
-		UpgradeTypes: underwater
-		UpgradeMaxEnabledLevel: 0
+		RequiresCondition: !underwater
 	Targetable@UNDERWATER:
 		TargetTypes: Underwater, Repair
-		UpgradeTypes: underwater
-		UpgradeMinEnabledLevel: 1
+		RequiresCondition: underwater
 	Cloak:
 		CloakTypes: Underwater
 		InitialDelay: 0
@@ -77,12 +75,10 @@ MSUB:
 		Range: 6c0
 	Targetable:
 		TargetTypes: Ground, Water, Repair
-		UpgradeTypes: underwater
-		UpgradeMaxEnabledLevel: 0
+		RequiresCondition: !underwater
 	Targetable@UNDERWATER:
 		TargetTypes: Underwater, Repair
-		UpgradeTypes: underwater
-		UpgradeMinEnabledLevel: 1
+		RequiresCondition: underwater
 	Cloak:
 		CloakTypes: Underwater
 		InitialDelay: 0
@@ -230,12 +226,11 @@ LST:
 	Armor:
 		Type: Heavy
 	Mobile:
-		UpgradeTypes: notmobile
-		UpgradeMaxEnabledLevel: 0
 		TurnSpeed: 10
 		Speed: 113
 		TerrainSpeeds:
 			Beach: 70
+		RequiresCondition: !notmobile
 	RevealsShroud:
 		Range: 6c0
 	SelectionDecorations:

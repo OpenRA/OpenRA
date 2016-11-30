@@ -15,7 +15,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Can be carried by actors with the `Carryall` trait.")]
-	public class CarryableInfo : ITraitInfo, Requires<UpgradeManagerInfo>
+	public class CarryableInfo : ITraitInfo
 	{
 		[UpgradeGrantedReference]
 		[Desc("The upgrades to grant to self while waiting or being carried.")]
@@ -27,10 +27,10 @@ namespace OpenRA.Mods.Common.Traits
 		public virtual object Create(ActorInitializer init) { return new Carryable(init.Self, this); }
 	}
 
-	public class Carryable
+	public class Carryable : INotifyCreated
 	{
 		readonly CarryableInfo info;
-		readonly UpgradeManager upgradeManager;
+		UpgradeManager upgradeManager;
 
 		public Actor Carrier { get; private set; }
 		public bool Reserved { get { return state != State.Free; } }
@@ -44,6 +44,10 @@ namespace OpenRA.Mods.Common.Traits
 		public Carryable(Actor self, CarryableInfo info)
 		{
 			this.info = info;
+		}
+
+		void INotifyCreated.Created(Actor self)
+		{
 			upgradeManager = self.Trait<UpgradeManager>();
 		}
 

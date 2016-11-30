@@ -21,11 +21,11 @@ namespace OpenRA.Test
 	[TestFixture]
 	public class BooleanExpressionTest
 	{
-		Dictionary<string, bool> testValues = new Dictionary<string, bool>()
+		IReadOnlyDictionary<string, bool> testValues = new ReadOnlyDictionary<string, bool>(new Dictionary<string, bool>()
 		{
 			{ "true", true },
 			{ "false", false }
-		};
+		});
 
 		void AssertFalse(string expression)
 		{

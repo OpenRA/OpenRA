@@ -151,8 +151,13 @@ poweroff:
 		ZOffset: 2047
 
 rank:
-	rank: rank.shp
-		Length: *
+	rank-veteran-1: rank.shp
+	rank-veteran-2: rank.shp
+		Start: 1
+	rank-veteran-3: rank.shp
+		Start: 2
+	rank-elite: rank.shp
+		Start: 3
 
 overlay:
 	Defaults: DATA.R8

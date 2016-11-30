@@ -74,7 +74,11 @@ namespace OpenRA.Mods.Common.Traits
 		public WeaponInfo WeaponInfo { get; private set; }
 
 		public override object Create(ActorInitializer init) { return new NukePower(init.Self, this); }
-		public void RulesetLoaded(Ruleset rules, ActorInfo ai) { WeaponInfo = rules.Weapons[MissileWeapon.ToLowerInvariant()]; }
+		public override void RulesetLoaded(Ruleset rules, ActorInfo ai)
+		{
+			WeaponInfo = rules.Weapons[MissileWeapon.ToLowerInvariant()];
+			base.RulesetLoaded(rules, ai);
+		}
 	}
 
 	class NukePower : SupportPower

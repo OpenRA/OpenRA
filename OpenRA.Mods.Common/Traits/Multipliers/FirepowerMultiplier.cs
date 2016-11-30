@@ -11,17 +11,21 @@
 
 namespace OpenRA.Mods.Common.Traits
 {
-	[Desc("The firepower of this actor is multiplied based on upgrade level if specified.")]
-	public class FirepowerMultiplierInfo : UpgradeMultiplierTraitInfo
+	[Desc("Modifies the damage applied by this actor.")]
+	public class FirepowerMultiplierInfo : UpgradableTraitInfo
 	{
-		public override object Create(ActorInitializer init) { return new FirepowerMultiplier(this, init.Self.Info.Name); }
+		[FieldLoader.Require]
+		[Desc("Percentage modifier to apply.")]
+		public readonly int Modifier = 100;
+
+		public override object Create(ActorInitializer init) { return new FirepowerMultiplier(this); }
 	}
 
-	public class FirepowerMultiplier : UpgradeMultiplierTrait, IFirepowerModifier
+	public class FirepowerMultiplier : UpgradableTrait<FirepowerMultiplierInfo>, IFirepowerModifier
 	{
-		public FirepowerMultiplier(FirepowerMultiplierInfo info, string actorType)
-			: base(info, "FirepowerMultiplier", actorType) { }
+		public FirepowerMultiplier(FirepowerMultiplierInfo info)
+			: base(info) { }
 
-		int IFirepowerModifier.GetFirepowerModifier() { return GetModifier(); }
+		int IFirepowerModifier.GetFirepowerModifier() { return IsTraitDisabled ? 100 : Info.Modifier; }
 	}
 }

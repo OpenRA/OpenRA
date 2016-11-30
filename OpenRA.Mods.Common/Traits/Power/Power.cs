@@ -41,8 +41,8 @@ namespace OpenRA.Mods.Common.Traits
 			powerModifiers = Exts.Lazy(() => self.TraitsImplementing<IPowerModifier>().ToArray());
 		}
 
-		protected override void UpgradeEnabled(Actor self) { PlayerPower.UpdateActor(self); }
-		protected override void UpgradeDisabled(Actor self) { PlayerPower.UpdateActor(self); }
+		protected override void TraitEnabled(Actor self) { PlayerPower.UpdateActor(self); }
+		protected override void TraitDisabled(Actor self) { PlayerPower.UpdateActor(self); }
 		public void AddedToWorld(Actor self) { PlayerPower.UpdateActor(self); }
 		public void RemovedFromWorld(Actor self) { PlayerPower.RemoveActor(self); }
 		public void OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)

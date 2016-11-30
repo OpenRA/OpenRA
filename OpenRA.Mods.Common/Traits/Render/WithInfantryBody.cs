@@ -52,7 +52,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		}
 	}
 
-	public class WithInfantryBody : UpgradableTrait<WithInfantryBodyInfo>, ITick, INotifyAttack, INotifyIdle, INotifyCreated
+	public class WithInfantryBody : UpgradableTrait<WithInfantryBodyInfo>, ITick, INotifyAttack, INotifyIdle
 	{
 		readonly IMove move;
 		protected readonly Animation DefaultAnimation;
@@ -90,9 +90,11 @@ namespace OpenRA.Mods.Common.Traits.Render
 			}
 		}
 
-		public void Created(Actor self)
+		protected override void Created(Actor self)
 		{
 			rsm = self.TraitOrDefault<IRenderInfantrySequenceModifier>();
+
+			base.Created(self);
 		}
 
 		protected virtual string NormalizeInfantrySequence(Actor self, string baseSequence)

@@ -20,12 +20,10 @@ carryall.reinforce:
 		CanHover: True
 	Targetable@GROUND:
 		TargetTypes: Ground, Vehicle
-		UpgradeTypes: airborne
-		UpgradeMaxEnabledLevel: 0
+		RequiresCondition: !airborne
 	Targetable@AIRBORNE:
 		TargetTypes: Air
-		UpgradeTypes: airborne
-		UpgradeMinEnabledLevel: 1
+		RequiresCondition: airborne
 	SpawnActorOnDeath:
 		Actor: carryall.husk
 	Carryall:

@@ -29,10 +29,10 @@ namespace OpenRA.Mods.Common.Traits
 		public void AddedToWorld(Actor self)
 		{
 			if (!IsTraitDisabled)
-				UpgradeEnabled(self);
+				TraitEnabled(self);
 		}
 
-		protected override void UpgradeEnabled(Actor self)
+		protected override void TraitEnabled(Actor self)
 		{
 			if (self.IsDead)
 				return;

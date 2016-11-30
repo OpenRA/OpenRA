@@ -103,15 +103,14 @@ namespace OpenRA.Mods.Common.Traits
 	[RequireExplicitImplementation]
 	public interface INotifyPassengerExited { void OnPassengerExited(Actor self, Actor passenger); }
 
-	public interface IUpgradable
-	{
-		IEnumerable<string> UpgradeTypes { get; }
-		bool AcceptsUpgradeLevel(Actor self, string type, int level);
-		void UpgradeLevelChanged(Actor self, string type, int oldLevel, int newLevel);
-	}
+	[RequireExplicitImplementation]
+	public interface IConditionConsumerInfo : ITraitInfo { }
 
-	// Implement to construct before UpgradeManager
-	public interface IUpgradableInfo : ITraitInfo { }
+	public interface IConditionConsumer
+	{
+		IEnumerable<string> Conditions { get; }
+		void ConditionsChanged(Actor self, IReadOnlyDictionary<string, bool> conditions);
+	}
 
 	public interface INotifyHarvesterAction
 	{

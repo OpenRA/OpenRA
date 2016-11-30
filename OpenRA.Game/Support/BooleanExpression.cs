@@ -18,6 +18,7 @@ namespace OpenRA.Support
 {
 	public class BooleanExpression
 	{
+		public readonly string Expression;
 		readonly HashSet<string> variables = new HashSet<string>();
 		public IEnumerable<string> Variables { get { return variables; } }
 
@@ -68,6 +69,7 @@ namespace OpenRA.Support
 
 		public BooleanExpression(string expression)
 		{
+			Expression = expression;
 			var openParens = 0;
 			var closeParens = 0;
 			var tokens = new List<Token>();
@@ -220,7 +222,7 @@ namespace OpenRA.Support
 			return new VariableToken(start, expression.Substring(start));
 		}
 
-		static bool ParseSymbol(VariableToken t, Dictionary<string, bool> symbols)
+		static bool ParseSymbol(VariableToken t, IReadOnlyDictionary<string, bool> symbols)
 		{
 			bool value;
 			symbols.TryGetValue(t.Symbol, out value);
@@ -269,7 +271,7 @@ namespace OpenRA.Support
 				yield return s.Pop();
 		}
 
-		public bool Evaluate(Dictionary<string, bool> symbols)
+		public bool Evaluate(IReadOnlyDictionary<string, bool> symbols)
 		{
 			var s = new Stack<bool>();
 			foreach (var t in postfix)

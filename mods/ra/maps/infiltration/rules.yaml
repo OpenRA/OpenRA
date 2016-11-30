@@ -71,8 +71,7 @@ TRUK.Hijackable:
 	Buildable:
 		Prerequisites: ~disabled
 	Mobile:
-		UpgradeTypes: mobile
-		UpgradeMinEnabledLevel: 1
+		RequiresCondition: mobile
 	Cargo:
 		Types: Infantry
 		MaxWeight: 5

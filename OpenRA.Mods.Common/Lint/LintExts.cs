@@ -11,7 +11,9 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
+using OpenRA.Support;
 
 namespace OpenRA.Mods.Common.Lint
 {
@@ -26,8 +28,13 @@ namespace OpenRA.Mods.Common.Lint
 				return (string[])fieldInfo.GetValue(ruleInfo);
 			if (type == typeof(HashSet<string>))
 				return (HashSet<string>)fieldInfo.GetValue(ruleInfo);
+			if (type == typeof(BooleanExpression))
+			{
+				var expr = (BooleanExpression)fieldInfo.GetValue(ruleInfo);
+				return expr != null ? expr.Variables : Enumerable.Empty<string>();
+			}
 
-			emitError("Bad type for reference on {0}.{1}. Supported types: string, string[], HashSet<string>"
+			emitError("Bad type for reference on {0}.{1}. Supported types: string, string[], HashSet<string>, BooleanExpression"
 				.F(ruleInfo.GetType().Name, fieldInfo.Name));
 
 			return new string[] { };

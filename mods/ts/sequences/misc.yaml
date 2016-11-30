@@ -62,9 +62,10 @@ crate-effects:
 	levelup: veteran
 
 rank:
-	rank: pips
+	veteran: pips
 		Start: 7
-		Length: 2
+	elite: pips
+		Start: 8
 
 mpspawn:
 	idle:

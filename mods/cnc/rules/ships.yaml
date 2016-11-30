@@ -46,8 +46,6 @@ LST:
 		BuildPaletteOrder: 1000
 		Prerequisites: ~disabled
 	Mobile:
-		UpgradeTypes: notmobile
-		UpgradeMaxEnabledLevel: 0
 		Crushes: crate
 		TerrainSpeeds:
 			Clear: 100
@@ -61,6 +59,7 @@ LST:
 		InitialFacing: 0
 		TurnSpeed: 4
 		Speed: 142
+		RequiresCondition: !notmobile
 	Health:
 		HP: 400
 	Armor:

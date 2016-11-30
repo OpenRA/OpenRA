@@ -223,23 +223,19 @@ TRAN:
 	WithIdleOverlay@ROTOR1AIR:
 		Offset: 597,0,213
 		Sequence: rotor
-		UpgradeTypes: airborne
-		UpgradeMinEnabledLevel: 1
+		RequiresCondition: airborne
 	WithIdleOverlay@ROTOR1GROUND:
 		Offset: 597,0,213
 		Sequence: slow-rotor
-		UpgradeTypes: airborne
-		UpgradeMaxEnabledLevel: 0
+		RequiresCondition: !airborne
 	WithIdleOverlay@ROTOR2AIR:
 		Offset: -597,0,341
 		Sequence: rotor2
-		UpgradeTypes: airborne
-		UpgradeMinEnabledLevel: 1
+		RequiresCondition: airborne
 	WithIdleOverlay@ROTOR2GROUND:
 		Offset: -597,0,341
 		Sequence: slow-rotor2
-		UpgradeTypes: airborne
-		UpgradeMaxEnabledLevel: 0
+		RequiresCondition: !airborne
 	Cargo:
 		Types: Infantry
 		MaxWeight: 8
@@ -287,13 +283,11 @@ HELI:
 	WithIdleOverlay@ROTORAIR:
 		Offset: 0,0,85
 		Sequence: rotor
-		UpgradeTypes: airborne
-		UpgradeMinEnabledLevel: 1
+		RequiresCondition: airborne
 	WithIdleOverlay@ROTORGROUND:
 		Offset: 0,0,85
 		Sequence: slow-rotor
-		UpgradeTypes: airborne
-		UpgradeMaxEnabledLevel: 0
+		RequiresCondition: !airborne
 	AmmoPool:
 		Ammo: 8
 	SelectionDecorations:
@@ -345,12 +339,10 @@ HIND:
 		InitialStanceAI: HoldFire
 	WithIdleOverlay@ROTORAIR:
 		Sequence: rotor
-		UpgradeTypes: airborne
-		UpgradeMinEnabledLevel: 1
+		RequiresCondition: airborne
 	WithIdleOverlay@ROTORGROUND:
 		Sequence: slow-rotor
-		UpgradeTypes: airborne
-		UpgradeMaxEnabledLevel: 0
+		RequiresCondition: !airborne
 	AmmoPool:
 		Ammo: 24
 		PipCount: 6

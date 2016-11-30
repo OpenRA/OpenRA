@@ -82,7 +82,7 @@ namespace OpenRA.Mods.Common.Traits
 			power = newOwner.PlayerActor.Trait<PowerManager>();
 		}
 
-		protected override void UpgradeDisabled(Actor self)
+		protected override void TraitDisabled(Actor self)
 		{
 			if (!disabled || !Info.CancelWhenDisabled)
 				return;
