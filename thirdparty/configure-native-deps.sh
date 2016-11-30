@@ -6,7 +6,7 @@
 # Copy-paste the entire script into http://shellcheck.net to check.
 ####
 
-locations="/lib /lib64 /usr/lib /usr/lib64 /usr/lib/i386-linux-gnu /usr/lib/x86_64-linux-gnu /usr/local/lib /opt/lib"
+locations="/lib /lib64 /usr/lib /usr/lib64 /usr/lib/i386-linux-gnu /usr/lib/x86_64-linux-gnu /usr/lib/mipsel-linux-gnu /usr/local/lib /opt/lib"
 sonames="liblua.so.5.1.5 liblua5.1.so.5.1 liblua5.1.so.0 liblua.so.5.1 liblua-5.1.so liblua5.1.so"
 
 if [ -f Eluant.dll.config ]; then
