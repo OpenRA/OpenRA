@@ -160,6 +160,7 @@
 		VoiceSet: VehicleVoice
 	AutoCarryable:
 		CarriedCondition: notmobile
+		ReservedCondition: carryall-reserved
 	WithDecoration@CARRYALL:
 		Image: pips
 		Sequence: pickup-indicator

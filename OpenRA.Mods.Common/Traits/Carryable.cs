@@ -19,11 +19,11 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		[UpgradeGrantedReference]
 		[Desc("The condition to grant to self while a carryall has been reserved.")]
-		public readonly string ReservedCondition = "carryall-reserved";
+		public readonly string ReservedCondition = null;
 
 		[UpgradeGrantedReference]
 		[Desc("The condition to grant to self while being carried.")]
-		public readonly string CarriedCondition = "carried";
+		public readonly string CarriedCondition = null;
 
 		[Desc("Carryall attachment point relative to body.")]
 		public readonly WVec LocalOffset = WVec.Zero;
@@ -61,7 +61,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			attached = true;
 
-			if (carriedToken == UpgradeManager.InvalidConditionToken)
+			if (carriedToken == UpgradeManager.InvalidConditionToken && !string.IsNullOrEmpty(Info.CarriedCondition))
 				carriedToken = upgradeManager.GrantCondition(self, Info.CarriedCondition);
 		}
 
@@ -85,7 +85,7 @@ namespace OpenRA.Mods.Common.Traits
 			state = State.Reserved;
 			Carrier = carrier;
 
-			if (reservedToken == UpgradeManager.InvalidConditionToken)
+			if (reservedToken == UpgradeManager.InvalidConditionToken && !string.IsNullOrEmpty(Info.ReservedCondition))
 				reservedToken = upgradeManager.GrantCondition(self, Info.ReservedCondition);
 
 			return true;
