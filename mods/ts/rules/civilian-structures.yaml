@@ -1263,7 +1263,7 @@ GALITE:
 		Prerequisites: ~disabled
 	SelectionDecorations:
 		VisualBounds: 25, 35, 0, -12
-	-Cloak@CLOAKGENERATOR:
+	-Cloak@EXTERNALCLOAK:
 
 TSTLAMP:
 	Inherits: GALITE

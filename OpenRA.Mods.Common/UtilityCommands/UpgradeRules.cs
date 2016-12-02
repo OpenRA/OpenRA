@@ -567,6 +567,15 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				if (engineVersion < 20161212)
+				{
+					if (node.Key.StartsWith("UpgradeActorsNear", StringComparison.Ordinal))
+					{
+						RenameNodeKey(node, "ProximityExternalCondition");
+						ConvertUpgradesToCondition(parent, node, "Upgrades", "Condition");
+					}
+				}
+
 				UpgradeActorRules(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 
