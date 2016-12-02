@@ -113,8 +113,8 @@ end
 
 SetupAlliedUnits = function()
 	Utils.Do(Map.NamedActors, function(a)
-		if a.Owner == allies and a.HasProperty("AcceptsUpgrade") and a.AcceptsUpgrade("unkillable") then
-			a.GrantUpgrade("unkillable")
+		if a.Owner == allies and a.HasProperty("AcceptsCondition") and a.AcceptsCondition("unkillable") then
+			a.GrantCondition("unkillable")
 			a.Stance = "Defend"
 		end
 	end)

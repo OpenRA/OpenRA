@@ -38,8 +38,8 @@ end
 
 SetupInvulnerability = function()
    Utils.Do(Map.NamedActors, function(actor)
-        if actor.HasProperty("AcceptsUpgrade") and actor.AcceptsUpgrade("unkillable") then
-            actor.GrantUpgrade("unkillable")
+        if actor.HasProperty("AcceptsCondition") and actor.AcceptsCondition("unkillable") then
+            actor.GrantCondition("unkillable")
         end
    end)
 end

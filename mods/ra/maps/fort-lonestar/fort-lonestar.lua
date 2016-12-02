@@ -98,7 +98,7 @@ SendUnits = function(entryCell, unitTypes, targetCell, extraData)
 		end)
 
 		if extraData == "IronCurtain" then
-			a.GrantTimedUpgrade("invulnerability", DateTime.Seconds(25))
+			a.GrantCondition("invulnerability", DateTime.Seconds(25))
 		end
 	end)
 end
