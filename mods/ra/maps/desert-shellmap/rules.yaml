@@ -11,8 +11,8 @@ World:
 		ValuePerUnit: 0
 	LuaScript:
 		Scripts: desert-shellmap.lua
-	ScriptUpgradesCache:
-		Upgrades: unkillable
+	ExternalConditions:
+		Conditions: unkillable
 	-StartGameNotification:
 
 ^Vehicle:

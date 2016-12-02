@@ -1436,8 +1436,8 @@ Rules:
 		GlobalLightingPaletteEffect:
 			Blue: 0.7
 			Ambient: 0.7
-		ScriptUpgradesCache:
-			Upgrades: unkillable
+		ExternalConditions:
+			Conditions: unkillable
 	HARV:
 		-Targetable:
 	GALITE:

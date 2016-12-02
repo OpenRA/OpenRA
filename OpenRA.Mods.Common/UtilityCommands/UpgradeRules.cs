@@ -555,6 +555,18 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				if (engineVersion < 20161210)
+				{
+					// Migrated lua upgrades to conditions
+					if (node.Key.StartsWith("ScriptUpgradesCache", StringComparison.Ordinal))
+					{
+						RenameNodeKey(node, "ExternalConditions");
+						var conditions = node.Value.Nodes.FirstOrDefault(n => n.Key == "Upgrades");
+						if (conditions != null)
+							conditions.Key = "Conditions";
+					}
+				}
+
 				UpgradeActorRules(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 
