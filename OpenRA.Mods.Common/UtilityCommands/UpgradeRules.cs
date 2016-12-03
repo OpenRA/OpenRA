@@ -623,6 +623,12 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						RenameNodeKey(node, "GrantConditionOnDamageState");
 						ConvertUpgradesToCondition(parent, node, "Upgrades", "Condition");
 					}
+
+					if (node.Key.StartsWith("UpgradeOnMovement", StringComparison.Ordinal))
+					{
+						RenameNodeKey(node, "GrantConditionOnMovement");
+						ConvertUpgradesToCondition(parent, node, "Upgrades", "Condition");
+					}
 				}
 
 				UpgradeActorRules(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);
