@@ -917,9 +917,9 @@
 		DamageInterval: 16
 		DamageTypes: BulletDeath
 		Terrain: Veins
-	UpgradeOnTerrain@VEINS:
+	GrantConditionOnTerrain@VEINS:
 		TerrainTypes: Veins
-		Upgrades: veins
+		Condition: veins
 	WithIdleOverlay@VEINS:
 		Sequence: veins
 		RequiresCondition: veins

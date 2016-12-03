@@ -629,6 +629,14 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						RenameNodeKey(node, "GrantConditionOnMovement");
 						ConvertUpgradesToCondition(parent, node, "Upgrades", "Condition");
 					}
+
+					if (node.Key.StartsWith("UpgradeOnTerrain", StringComparison.Ordinal))
+					{
+						RenameNodeKey(node, "GrantConditionOnTerrain");
+						ConvertUpgradesToCondition(parent, node, "Upgrades", "Condition");
+						if (!node.Value.Nodes.Any(n => n.Key == "Condition"))
+							node.Value.Nodes.Add(new MiniYamlNode("Condition", "terrain"));
+					}
 				}
 
 				UpgradeActorRules(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);

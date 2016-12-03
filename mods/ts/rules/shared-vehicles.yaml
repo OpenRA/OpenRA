@@ -100,7 +100,7 @@ HARV:
 			gdi: harv.gdi
 			nod: harv.nod
 	-DamagedByTerrain@VEINS:
-	-UpgradeOnTerrain@VEINS:
+	-GrantConditionOnTerrain@VEINS:
 	-WithIdleOverlay@VEINS:
 
 LPST:
