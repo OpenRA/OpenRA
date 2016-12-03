@@ -593,6 +593,9 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						ConvertUpgradesToCondition(parent, node, "AirborneUpgrades", "AirborneCondition");
 						ConvertUpgradesToCondition(parent, node, "CruisingUpgrades", "CruisingCondition");
 					}
+
+					if (node.Key.StartsWith("Cloak", StringComparison.Ordinal))
+						ConvertUpgradesToCondition(parent, node, "WhileCloakedUpgrades", "CloakedCondition");
 				}
 
 				UpgradeActorRules(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);

@@ -31,7 +31,7 @@ SS:
 		CloakDelay: 50
 		CloakSound: subshow1.aud
 		UncloakSound: subshow1.aud
-		WhileCloakedUpgrades: underwater
+		CloakedCondition: underwater
 		Palette: submerged
 	Armament:
 		Weapon: TorpTube
@@ -85,7 +85,7 @@ MSUB:
 		CloakDelay: 100
 		CloakSound: subshow1.aud
 		UncloakSound: subshow1.aud
-		WhileCloakedUpgrades: underwater
+		CloakedCondition: underwater
 		Palette: submerged
 	Armament@PRIMARY:
 		Weapon: SubMissile
