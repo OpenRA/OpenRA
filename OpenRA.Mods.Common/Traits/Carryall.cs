@@ -283,11 +283,14 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				if (!target.AppearsFriendlyTo(self))
 					return false;
+
 				var carryable = target.TraitOrDefault<Carryable>();
-				if (carryable == null)
+				if (carryable == null || carryable.IsTraitDisabled)
 					return false;
+
 				if (carryable.Reserved && carryable.Carrier != self)
 					return false;
+
 				return true;
 			}
 

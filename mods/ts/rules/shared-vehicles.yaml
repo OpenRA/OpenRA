@@ -130,6 +130,8 @@ LPST:
 	RevealsShroud:
 		Range: 7c0
 		MaxHeightDelta: 3
+	GrantCondition@PREVIEWWORKAROUND:
+		Condition: real-actor
 	RenderSprites:
 		Image: lpst.gdi
 		FactionImages:
@@ -147,9 +149,11 @@ LPST:
 		Image: lpst
 		RequiresCondition: undeployed
 	WithSpriteBody@deployed:
-		RequiresCondition: !undeployed
+		RequiresCondition: !undeployed && real-actor
 	DetectCloaked:
 		RequiresCondition: deployed
 		Range: 18c0
 	RenderDetectionCircle:
 		TrailCount: 3
+	Carryable:
+		RequiresCondition: undeployed
