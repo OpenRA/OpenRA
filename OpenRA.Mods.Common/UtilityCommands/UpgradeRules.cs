@@ -92,6 +92,14 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			catch { }
 		}
 
+		static void RenameNodeKey(MiniYamlNode node, string key)
+		{
+			var parts = node.Key.Split('@');
+			node.Key = key;
+			if (parts.Length > 1)
+				node.Key += "@" + parts[1];
+		}
+
 		internal static void UpgradeActorRules(ModData modData, int engineVersion, ref List<MiniYamlNode> nodes, MiniYamlNode parent, int depth)
 		{
 			var addNodes = new List<MiniYamlNode>();
@@ -118,10 +126,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						if (s != null)
 							s.Key = "Image";
 
-						var parts = node.Key.Split('@');
-						node.Key = "WithDamageOverlay";
-						if (parts.Length > 1)
-							node.Key += "@" + parts[1];
+						RenameNodeKey(node, "WithDamageOverlay");
 					}
 				}
 
@@ -135,13 +140,9 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				if (engineVersion < 20160611)
 				{
 					// Deprecated WithSpriteRotorOverlay
-					if (depth == 1 && node.Key.StartsWith("WithSpriteRotorOverlay"))
+					if (depth == 1 && node.Key.StartsWith("WithSpriteRotorOverlay", StringComparison.Ordinal))
 					{
-						var parts = node.Key.Split('@');
-						node.Key = "WithIdleOverlay";
-						if (parts.Length > 1)
-							node.Key += "@" + parts[1];
-
+						RenameNodeKey(node, "WithIdleOverlay");
 						Console.WriteLine("The 'WithSpriteRotorOverlay' trait has been removed.");
 						Console.WriteLine("Its functionality can be fully replicated with 'WithIdleOverlay' + upgrades.");
 						Console.WriteLine("Look at the helicopters in our RA / C&C1  mods for implementation details.");
