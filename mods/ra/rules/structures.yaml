@@ -134,6 +134,7 @@ SPEN:
 	Production:
 		Produces: Ship, Submarine
 	PrimaryBuilding:
+		PrimaryCondition: primary
 	-EmitInfantryOnSell:
 	RepairsUnits:
 		FinishRepairingNotification: UnitRepaired
@@ -223,6 +224,7 @@ SYRD:
 	Production:
 		Produces: Ship, Boat
 	PrimaryBuilding:
+		PrimaryCondition: primary
 	-EmitInfantryOnSell:
 	RepairsUnits:
 		FinishRepairingNotification: UnitRepaired
@@ -854,6 +856,7 @@ WEAP:
 		RequiresPrerequisites: structures.ukraine
 		Prerequisite: vehicles.ukraine
 	PrimaryBuilding:
+		PrimaryCondition: primary
 	ProductionBar:
 	Power:
 		Amount: -30
@@ -1060,6 +1063,7 @@ HPAD:
 	Reservable:
 	ProductionBar:
 	PrimaryBuilding:
+		PrimaryCondition: primary
 	Power:
 		Amount: -10
 	ProvidesPrerequisite@allies:
@@ -1206,6 +1210,7 @@ AFLD:
 	ProductionBar:
 	SupportPowerChargeBar:
 	PrimaryBuilding:
+		PrimaryCondition: primary
 	Power:
 		Amount: -20
 	ProvidesPrerequisite@buildingname:
@@ -1354,6 +1359,7 @@ BARR:
 	Production:
 		Produces: Infantry, Soldier
 	PrimaryBuilding:
+		PrimaryCondition: primary
 	ProductionBar:
 	ProvidesPrerequisite:
 		Prerequisite: barracks
@@ -1428,6 +1434,7 @@ KENN:
 	Production:
 		Produces: Infantry, Dog
 	PrimaryBuilding:
+		PrimaryCondition: primary
 	ProductionBar:
 	-EmitInfantryOnSell:
 	Power:
@@ -1472,6 +1479,7 @@ TENT:
 	Production:
 		Produces: Infantry, Soldier
 	PrimaryBuilding:
+		PrimaryCondition: primary
 	ProductionBar:
 	ProvidesPrerequisite@barracks:
 		Prerequisite: barracks

@@ -96,6 +96,7 @@ GAPILE:
 	Production:
 		Produces: Infantry
 	PrimaryBuilding:
+		PrimaryCondition: primary
 	ProductionBar:
 	WithProductionOverlay@LIGHTS:
 		Sequence: production-lights
@@ -153,6 +154,7 @@ GAWEAP:
 	Production:
 		Produces: Vehicle
 	PrimaryBuilding:
+		PrimaryCondition: primary
 	ProductionBar:
 	WithIdleOverlay@ROOF:
 		Sequence: idle-roof
@@ -206,6 +208,7 @@ GAHPAD:
 	Production:
 		Produces: Air
 	PrimaryBuilding:
+		PrimaryCondition: primary
 	Reservable:
 	RepairsUnits:
 		PlayerExperience: 15

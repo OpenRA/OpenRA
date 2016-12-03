@@ -88,6 +88,7 @@ construction_yard:
 	WithBuildingPlacedOverlay:
 		Palette: d2k
 	PrimaryBuilding:
+		PrimaryCondition: primary
 	ProvidesPrerequisite@buildingname:
 	GlobalUpgradable:
 		Prerequisites: upgrade.conyard
@@ -181,6 +182,7 @@ barracks:
 	Production:
 		Produces: Infantry
 	PrimaryBuilding:
+		PrimaryCondition: primary
 	ProductionBar:
 	ProvidesPrerequisite@atreides:
 		Prerequisite: barracks.atreides
@@ -360,6 +362,7 @@ light_factory:
 	Production:
 		Produces: Vehicle
 	PrimaryBuilding:
+		PrimaryCondition: primary
 	ProductionBar:
 	ProvidesPrerequisite@atreides:
 		Prerequisite: light.atreides
@@ -430,6 +433,7 @@ heavy_factory:
 	Production:
 		Produces: Armor
 	PrimaryBuilding:
+		PrimaryCondition: primary
 	ProductionBar:
 	ProvidesPrerequisite@atreides:
 		Prerequisite: heavy.atreides
@@ -567,6 +571,7 @@ starport:
 		Palette: starportlights
 	ProductionBar:
 	PrimaryBuilding:
+		PrimaryCondition: primary
 	RequiresPower:
 	CanPowerDown:
 		PowerupSound: EnablePower
