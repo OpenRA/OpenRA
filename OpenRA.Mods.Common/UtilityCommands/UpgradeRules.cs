@@ -596,6 +596,13 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 					if (node.Key.StartsWith("Cloak", StringComparison.Ordinal))
 						ConvertUpgradesToCondition(parent, node, "WhileCloakedUpgrades", "CloakedCondition");
+
+					if (node.Key == "Disguise")
+					{
+						ConvertUpgradesToCondition(parent, node, "Upgrades", "DisguisedCondition");
+						if (!node.Value.Nodes.Any(n => n.Key == "DisguisedCondition"))
+							node.Value.Nodes.Add(new MiniYamlNode("DisguisedCondition", "disguise"));
+					}
 				}
 
 				UpgradeActorRules(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);

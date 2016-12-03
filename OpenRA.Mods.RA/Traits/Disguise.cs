@@ -65,13 +65,13 @@ namespace OpenRA.Mods.RA.Traits
 		[VoiceReference] public readonly string Voice = "Action";
 
 		[UpgradeGrantedReference]
-		[Desc("Upgrades to grant when disguised.")]
-		public readonly string[] Upgrades = { "disguise" };
+		[Desc("The condition to grant to self while disguised.")]
+		public readonly string DisguisedCondition = null;
 
 		public object Create(ActorInitializer init) { return new Disguise(init.Self, this); }
 	}
 
-	class Disguise : IEffectiveOwner, IIssueOrder, IResolveOrder, IOrderVoice, IRadarColorModifier, INotifyAttack
+	class Disguise : INotifyCreated, IEffectiveOwner, IIssueOrder, IResolveOrder, IOrderVoice, IRadarColorModifier, INotifyAttack
 	{
 		public Player AsPlayer { get; private set; }
 		public string AsSprite { get; private set; }
@@ -82,14 +82,19 @@ namespace OpenRA.Mods.RA.Traits
 
 		readonly Actor self;
 		readonly DisguiseInfo info;
-		readonly Lazy<UpgradeManager> um;
+
+		UpgradeManager um;
+		int disguisedToken = UpgradeManager.InvalidConditionToken;
 
 		public Disguise(Actor self, DisguiseInfo info)
 		{
 			this.self = self;
 			this.info = info;
+		}
 
-			um = Exts.Lazy(() => self.TraitOrDefault<UpgradeManager>());
+		void INotifyCreated.Created(Actor self)
+		{
+			um = self.TraitOrDefault<UpgradeManager>();
 		}
 
 		public IEnumerable<IOrderTargeter> Orders
@@ -182,18 +187,12 @@ namespace OpenRA.Mods.RA.Traits
 			foreach (var t in self.TraitsImplementing<INotifyEffectiveOwnerChanged>())
 				t.OnEffectiveOwnerChanged(self, oldEffectiveOwner, AsPlayer);
 
-			if (Disguised != oldDisguiseSetting && um.Value != null)
+			if (Disguised != oldDisguiseSetting && um != null)
 			{
-				foreach (var u in info.Upgrades)
-				{
-					if (!um.Value.AcknowledgesUpgrade(self, u))
-						continue;
-
-					if (Disguised)
-						um.Value.GrantUpgrade(self, u, this);
-					else
-						um.Value.RevokeUpgrade(self, u, this);
-				}
+				if (Disguised && disguisedToken == UpgradeManager.InvalidConditionToken && !string.IsNullOrEmpty(info.DisguisedCondition))
+					disguisedToken = um.GrantCondition(self, info.DisguisedCondition);
+				else if (!Disguised && disguisedToken != UpgradeManager.InvalidConditionToken)
+					disguisedToken = um.RevokeCondition(self, disguisedToken);
 			}
 		}
 

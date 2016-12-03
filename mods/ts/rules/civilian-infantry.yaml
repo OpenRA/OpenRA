@@ -64,6 +64,7 @@ CHAMSPY:
 		Range: 9c0
 	Passenger:
 	Disguise:
+		DisguisedCondition: disguise
 	WithDecoration@disguise:
 		Image: pips
 		Sequence: pip-disguise
