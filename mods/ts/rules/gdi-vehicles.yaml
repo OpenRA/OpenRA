@@ -28,7 +28,7 @@ APC:
 		MaxWeight: 5
 		PipCount: 5
 		UnloadVoice: Unload
-		LoadingUpgrades: loading
+		LoadingCondition: loading
 		EjectOnDeath: true
 	UpgradeOnTerrain:
 		Upgrades: inwater

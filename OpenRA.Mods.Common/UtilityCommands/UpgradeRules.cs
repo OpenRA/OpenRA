@@ -574,6 +574,16 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						RenameNodeKey(node, "ProximityExternalCondition");
 						ConvertUpgradesToCondition(parent, node, "Upgrades", "Condition");
 					}
+
+					if (node.Key == "Cargo")
+						ConvertUpgradesToCondition(parent, node, "LoadingUpgrades", "LoadingCondition");
+
+					if (node.Key == "Passenger" && node.Value.Nodes.Any(n => n.Key == "GrantUpgrades"))
+					{
+						Console.WriteLine("Passenger.GrantUpgrades support has been removed.");
+						Console.WriteLine("Define passenger-conditions using Cargo.PassengerConditions on the transports instead.");
+						node.Value.Nodes.RemoveAll(n => n.Key == "GrantUpgrades");
+					}
 				}
 
 				UpgradeActorRules(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);

@@ -102,7 +102,7 @@ BUS:
 		MaxWeight: 20
 		PipCount: 5
 		UnloadVoice: Unload
-		LoadingUpgrades: loading
+		LoadingCondition: loading
 		EjectOnDeath: true
 
 PICK:
@@ -126,7 +126,7 @@ PICK:
 		MaxWeight: 2
 		PipCount: 5
 		UnloadVoice: Unload
-		LoadingUpgrades: loading
+		LoadingCondition: loading
 		EjectOnDeath: true
 
 CAR:
@@ -150,7 +150,7 @@ CAR:
 		MaxWeight: 4
 		PipCount: 5
 		UnloadVoice: Unload
-		LoadingUpgrades: loading
+		LoadingCondition: loading
 		EjectOnDeath: true
 
 WINI:
@@ -174,7 +174,7 @@ WINI:
 		MaxWeight: 5
 		PipCount: 5
 		UnloadVoice: Unload
-		LoadingUpgrades: loading
+		LoadingCondition: loading
 		EjectOnDeath: true
 
 LOCOMOTIVE:

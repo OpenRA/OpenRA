@@ -802,7 +802,7 @@
 	Cargo:
 		Types: Infantry
 		UnloadVoice: Unload
-		LoadingUpgrades: loading
+		LoadingCondition: loading
 	Health:
 		HP: 100
 	Armor:

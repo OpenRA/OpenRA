@@ -38,9 +38,6 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Range from self for looking for an alternate transport (default: 5.5 cells).")]
 		public readonly WDist AlternateTransportScanRange = WDist.FromCells(11) / 2;
 
-		[Desc("Upgrade types to grant to transport.")]
-		[UpgradeGrantedReference] public readonly string[] GrantUpgrades = { };
-
 		[VoiceReference] public readonly string Voice = "Action";
 
 		public object Create(ActorInitializer init) { return new Passenger(this); }
