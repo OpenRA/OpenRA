@@ -37,6 +37,7 @@ namespace OpenRA.Mods.D2k.Activities
 		int countdown;
 		CPos burrowLocation;
 		AttackState stance;
+		int attackingToken = UpgradeManager.InvalidConditionToken;
 
 		public SwallowActor(Actor self, Target target, WeaponInfo weapon)
 		{
@@ -45,7 +46,7 @@ namespace OpenRA.Mods.D2k.Activities
 			sandworm = self.Trait<Sandworm>();
 			positionable = self.Trait<Mobile>();
 			swallow = self.Trait<AttackSwallow>();
-			manager = self.Trait<UpgradeManager>();
+			manager = self.TraitOrDefault<UpgradeManager>();
 			radarPings = self.World.WorldActor.TraitOrDefault<RadarPings>();
 		}
 
@@ -105,10 +106,12 @@ namespace OpenRA.Mods.D2k.Activities
 			switch (stance)
 			{
 				case AttackState.Uninitialized:
-					GrantUpgrades(self);
 					stance = AttackState.Burrowed;
 					countdown = swallow.Info.AttackDelay;
 					burrowLocation = self.Location;
+					if (manager != null && attackingToken == UpgradeManager.InvalidConditionToken &&
+							!string.IsNullOrEmpty(swallow.Info.AttackingCondition))
+						attackingToken = manager.GrantCondition(self, swallow.Info.AttackingCondition);
 					break;
 				case AttackState.Burrowed:
 					if (--countdown > 0)
@@ -119,14 +122,14 @@ namespace OpenRA.Mods.D2k.Activities
 					// The target has moved too far away
 					if ((burrowLocation - targetLocation).Length > NearEnough)
 					{
-						RevokeUpgrades(self);
+						RevokeCondition(self);
 						return NextActivity;
 					}
 
 					// The target reached solid ground
 					if (!positionable.CanEnterCell(targetLocation, null, false))
 					{
-						RevokeUpgrades(self);
+						RevokeCondition(self);
 						return NextActivity;
 					}
 
@@ -135,7 +138,7 @@ namespace OpenRA.Mods.D2k.Activities
 
 					if (!targets.Any())
 					{
-						RevokeUpgrades(self);
+						RevokeCondition(self);
 						return NextActivity;
 					}
 
@@ -158,23 +161,17 @@ namespace OpenRA.Mods.D2k.Activities
 						self.World.AddFrameEndTask(w => self.Dispose());
 					}
 
-					RevokeUpgrades(self);
+					RevokeCondition(self);
 					return NextActivity;
 			}
 
 			return this;
 		}
 
-		void GrantUpgrades(Actor self)
+		void RevokeCondition(Actor self)
 		{
-			foreach (var up in swallow.Info.AttackingUpgrades)
-				manager.GrantUpgrade(self, up, this);
-		}
-
-		void RevokeUpgrades(Actor self)
-		{
-			foreach (var up in swallow.Info.AttackingUpgrades)
-				manager.RevokeUpgrade(self, up, this);
+			if (attackingToken != UpgradeManager.InvalidConditionToken)
+				attackingToken = manager.RevokeCondition(self, attackingToken);
 		}
 	}
 }

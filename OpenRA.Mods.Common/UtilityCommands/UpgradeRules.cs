@@ -637,6 +637,13 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						if (!node.Value.Nodes.Any(n => n.Key == "Condition"))
 							node.Value.Nodes.Add(new MiniYamlNode("Condition", "terrain"));
 					}
+
+					if (node.Key == "AttackSwallow")
+					{
+						ConvertUpgradesToCondition(parent, node, "AttackingUpgrades", "AttackingCondition");
+						if (!node.Value.Nodes.Any(n => n.Key == "AttackingCondition"))
+							node.Value.Nodes.Add(new MiniYamlNode("AttackingCondition", "attacking"));
+					}
 				}
 
 				UpgradeActorRules(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);

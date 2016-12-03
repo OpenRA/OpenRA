@@ -27,8 +27,8 @@ namespace OpenRA.Mods.D2k.Traits
 		public readonly int AttackDelay = 30;
 
 		[UpgradeGrantedReference]
-		[Desc("The upgrades to grant while attacking.")]
-		public readonly string[] AttackingUpgrades = { "attacking" };
+		[Desc("The condition to grant to self while attacking.")]
+		public readonly string AttackingCondition = null;
 
 		public readonly string WormAttackSound = "WORM.WAV";
 
