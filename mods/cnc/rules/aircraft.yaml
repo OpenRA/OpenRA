@@ -167,7 +167,7 @@ C17:
 		TurnSpeed: 5
 		Speed: 326
 		Repulsable: False
-		AirborneUpgrades: airborne
+		AirborneCondition: airborne
 		MaximumPitch: 36
 	Health:
 		HP: 25
@@ -206,7 +206,7 @@ A10:
 		TurnSpeed: 4
 		Speed: 373
 		Repulsable: False
-		AirborneUpgrades: airborne
+		AirborneCondition: airborne
 	Health:
 		HP: 150
 	Armor:

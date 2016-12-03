@@ -202,8 +202,8 @@
 	Aircraft:
 		RepairBuildings: hpad
 		LandWhenIdle: false
-		AirborneUpgrades: airborne
-		CruisingUpgrades: cruising
+		AirborneCondition: airborne
+		CruisingCondition: cruising
 		CanHover: True
 	HiddenUnderFog:
 		Type: CenterPosition
@@ -839,7 +839,7 @@
 		Offset: 43, 128, 0
 		ZOffset: -129
 	Aircraft:
-		AirborneUpgrades: airborne
+		AirborneCondition: airborne
 		CanHover: True
 	FallsToEarth:
 		Spins: True

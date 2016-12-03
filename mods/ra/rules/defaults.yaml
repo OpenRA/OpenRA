@@ -425,8 +425,8 @@
 	Aircraft:
 		RepairBuildings: fix
 		RearmBuildings: afld
-		AirborneUpgrades: airborne
-		CruisingUpgrades: cruising
+		AirborneCondition: airborne
+		CruisingCondition: cruising
 	Targetable@GROUND:
 		TargetTypes: Ground, Repair, Vehicle
 		RequiresCondition: !airborne
@@ -796,8 +796,8 @@
 	Tooltip:
 		GenericName: Destroyed Plane
 	Aircraft:
-		AirborneUpgrades: airborne
-		CruisingUpgrades: cruising
+		AirborneCondition: airborne
+		CruisingCondition: cruising
 	FallsToEarth:
 		Spins: False
 		Moves: True
@@ -811,8 +811,8 @@
 	Tooltip:
 		GenericName: Destroyed Helicopter
 	Aircraft:
-		AirborneUpgrades: airborne
-		CruisingUpgrades: cruising
+		AirborneCondition: airborne
+		CruisingCondition: cruising
 		CanHover: True
 	FallsToEarth:
 	BodyOrientation:

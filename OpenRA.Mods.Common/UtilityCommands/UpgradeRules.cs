@@ -586,6 +586,15 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				if (engineVersion < 20161213)
+				{
+					if (node.Key == "Aircraft")
+					{
+						ConvertUpgradesToCondition(parent, node, "AirborneUpgrades", "AirborneCondition");
+						ConvertUpgradesToCondition(parent, node, "CruisingUpgrades", "CruisingCondition");
+					}
+				}
+
 				UpgradeActorRules(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 

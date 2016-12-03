@@ -16,7 +16,7 @@ carryall.reinforce:
 		LandableTerrainTypes: Sand, Rock, Transition, Spice, SpiceSand, Dune
 		Repulsable: False
 		LandWhenIdle: False
-		AirborneUpgrades: airborne
+		AirborneCondition: airborne
 		CanHover: True
 	Targetable@GROUND:
 		TargetTypes: Ground, Vehicle
