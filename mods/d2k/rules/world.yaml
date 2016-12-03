@@ -80,6 +80,7 @@ World:
 	D2kResourceLayer:
 	ResourceClaimLayer:
 	CustomTerrainDebugOverlay:
+	TerrainDebugOverlay:
 	SmudgeLayer@Rock:
 		Type: RockCrater
 		Sequence: rockcraters
