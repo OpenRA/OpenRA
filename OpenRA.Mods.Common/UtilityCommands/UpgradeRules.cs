@@ -644,6 +644,21 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						if (!node.Value.Nodes.Any(n => n.Key == "AttackingCondition"))
 							node.Value.Nodes.Add(new MiniYamlNode("AttackingCondition", "attacking"));
 					}
+
+					if (node.Key.StartsWith("Pluggable", StringComparison.Ordinal))
+					{
+						var upgrades = node.Value.Nodes.FirstOrDefault(n => n.Key == "Upgrades");
+						if (upgrades != null)
+						{
+							upgrades.Key = "Conditions";
+							foreach (var n in upgrades.Value.Nodes)
+							{
+								var conditions = FieldLoader.GetValue<string[]>("", n.Value.Value);
+								if (conditions.Length > 1)
+									Console.WriteLine("Unable to automatically migrate multiple Pluggable upgrades to a condition. This must be corrected manually");
+							}
+						}
+					}
 				}
 
 				UpgradeActorRules(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);

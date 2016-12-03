@@ -14,13 +14,15 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class PluggableInfo : ITraitInfo, Requires<UpgradeManagerInfo>, UsesInit<PlugsInit>
+	public class PluggableInfo : ITraitInfo, UsesInit<PlugsInit>
 	{
 		[Desc("Footprint cell offset where a plug can be placed.")]
 		public readonly CVec Offset = CVec.Zero;
 
-		[FieldLoader.Require, Desc("Upgrades to grant for each accepted plug type.")]
-		public readonly Dictionary<string, string[]> Upgrades = null;
+		[FieldLoader.Require]
+		[UpgradeGrantedReference]
+		[Desc("Conditions to grant for each accepted plug type.")]
+		public readonly Dictionary<string, string> Conditions = null;
 
 		public object Create(ActorInitializer init) { return new Pluggable(init, this); }
 	}
@@ -30,14 +32,14 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly PluggableInfo Info;
 
 		readonly string initialPlug;
-		readonly UpgradeManager upgradeManager;
+		UpgradeManager upgradeManager;
+		int conditionToken = UpgradeManager.InvalidConditionToken;
 
 		string active;
 
 		public Pluggable(ActorInitializer init, PluggableInfo info)
 		{
 			Info = info;
-			upgradeManager = init.Self.Trait<UpgradeManager>();
 
 			var plugInit = init.Contains<PlugsInit>() ? init.Get<PlugsInit, Dictionary<CVec, string>>() : new Dictionary<CVec, string>();
 			if (plugInit.ContainsKey(Info.Offset))
@@ -46,24 +48,24 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void Created(Actor self)
 		{
+			upgradeManager = self.TraitOrDefault<UpgradeManager>();
+
 			if (!string.IsNullOrEmpty(initialPlug))
 				EnablePlug(self, initialPlug);
 		}
 
 		public bool AcceptsPlug(Actor self, string type)
 		{
-			return active == null && Info.Upgrades.ContainsKey(type);
+			return active == null && Info.Conditions.ContainsKey(type);
 		}
 
 		public void EnablePlug(Actor self, string type)
 		{
-			string[] upgrades;
-			if (!Info.Upgrades.TryGetValue(type, out upgrades))
+			string condition;
+			if (!Info.Conditions.TryGetValue(type, out condition))
 				return;
 
-			foreach (var u in upgrades)
-				upgradeManager.GrantUpgrade(self, u, this);
-
+			conditionToken = upgradeManager.GrantCondition(self, condition);
 			active = type;
 		}
 
@@ -72,8 +74,10 @@ namespace OpenRA.Mods.Common.Traits
 			if (type != active)
 				return;
 
-			foreach (var u in Info.Upgrades[type])
-				upgradeManager.RevokeUpgrade(self, u, this);
+			if (conditionToken != UpgradeManager.InvalidConditionToken)
+				conditionToken = upgradeManager.RevokeCondition(self, conditionToken);
+
+			active = null;
 		}
 	}
 
