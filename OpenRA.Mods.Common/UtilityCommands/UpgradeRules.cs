@@ -603,6 +603,13 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						if (!node.Value.Nodes.Any(n => n.Key == "DisguisedCondition"))
 							node.Value.Nodes.Add(new MiniYamlNode("DisguisedCondition", "disguise"));
 					}
+
+					if (node.Key == "Parachutable")
+					{
+						ConvertUpgradesToCondition(parent, node, "ParachuteUpgrade", "ParachutingCondition");
+						if (!node.Value.Nodes.Any(n => n.Key == "ParachutingCondition"))
+							node.Value.Nodes.Add(new MiniYamlNode("ParachutingCondition", "parachute"));
+					}
 				}
 
 				UpgradeActorRules(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);

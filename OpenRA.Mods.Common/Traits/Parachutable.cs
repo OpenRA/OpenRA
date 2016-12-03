@@ -39,27 +39,42 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int FallRate = 13;
 
 		[UpgradeGrantedReference]
-		[Desc("Upgrade to grant to this actor when parachuting. Normally used to render the parachute using the WithParachute trait.")]
-		public readonly string[] ParachuteUpgrade = { "parachute" };
+		[Desc("The condition to grant to self while parachuting.")]
+		public readonly string ParachutingCondition = null;
 
-		public object Create(ActorInitializer init) { return new Parachutable(init, this); }
+		public object Create(ActorInitializer init) { return new Parachutable(init.Self, this); }
 	}
 
-	class Parachutable : INotifyParachuteLanded
+	class Parachutable : INotifyCreated, INotifyParachute
 	{
-		readonly Actor self;
 		readonly ParachutableInfo info;
 		readonly IPositionable positionable;
 
-		public Parachutable(ActorInitializer init, ParachutableInfo info)
+		UpgradeManager um;
+		int parachutingToken = UpgradeManager.InvalidConditionToken;
+
+		public Parachutable(Actor self, ParachutableInfo info)
 		{
-			self = init.Self;
 			this.info = info;
 			positionable = self.Trait<IPositionable>();
 		}
 
-		void INotifyParachuteLanded.OnLanded(Actor ignore)
+		void INotifyCreated.Created(Actor self)
 		{
+			um = self.TraitOrDefault<UpgradeManager>();
+		}
+
+		void INotifyParachute.OnParachute(Actor self)
+		{
+			if (um != null && parachutingToken == UpgradeManager.InvalidConditionToken && !string.IsNullOrEmpty(info.ParachutingCondition))
+				parachutingToken = um.GrantCondition(self, info.ParachutingCondition);
+		}
+
+		void INotifyParachute.OnLanded(Actor self, Actor ignore)
+		{
+			if (parachutingToken != UpgradeManager.InvalidConditionToken)
+				parachutingToken = um.RevokeCondition(self, parachutingToken);
+
 			if (!info.KilledOnImpassableTerrain)
 				return;
 

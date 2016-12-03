@@ -191,6 +191,7 @@
 		GroundCorpsePalette:
 		WaterCorpseSequence:
 		WaterCorpsePalette:
+		ParachutingCondition: parachute
 	Explodes:
 		Weapon: UnitExplodeSmall
 		EmptyWeapon: UnitExplodeSmall
@@ -307,6 +308,7 @@
 		GroundImpactSound: squishy2.aud
 		WaterImpactSound: splash9.aud
 		WaterCorpseSequence: small_splash
+		ParachutingCondition: parachute
 	Cloneable:
 		Types: Infantry
 	Voiced:
@@ -884,6 +886,7 @@
 	Parachutable:
 		FallRate: 26
 		KilledOnImpassableTerrain: false
+		ParachutingCondition: parachute
 	Passenger:
 	WithParachute:
 		Image: parach
