@@ -35,15 +35,15 @@ namespace OpenRA.Mods.AS.Traits
 		public readonly float Ambient = 1f;
 
 		[Desc("The range of time (in ticks) that the storm will be disabled.")]
-		public readonly int[] CooldownDuration = { 1000 };
+		public readonly int[] CooldownDuration = { 1024 };
 
 		[Desc("The range of time (in ticks) that the storm will be enabled.")]
-		public readonly int[] ActiveDuration = { 100 };
+		public readonly int[] ActiveDuration = { 1 };
 
 		public readonly bool StartEnabled = false;
 
 		[Desc("How many weapons should be fired per 1000 map cells (on average).")]
-		public readonly int[] Density = { 10 };
+		public readonly int[] Density = { 1 };
 
 		public readonly WDist Altitude = WDist.Zero;
 
