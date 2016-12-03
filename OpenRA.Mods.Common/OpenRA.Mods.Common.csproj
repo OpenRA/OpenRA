@@ -494,7 +494,7 @@
     <Compile Include="Traits\Upgrades\DisableOnUpgrade.cs" />
     <Compile Include="Traits\Upgrades\UpgradableTrait.cs" />
     <Compile Include="Traits\Upgrades\ProximityExternalCondition.cs" />
-    <Compile Include="Traits\Upgrades\UpgradeOnDamageState.cs" />
+    <Compile Include="Traits\Upgrades\GrantConditionOnDamageState.cs" />
     <Compile Include="Traits\Upgrades\UpgradeOnTerrain.cs" />
     <Compile Include="Traits\Upgrades\UpgradeOnMovement.cs" />
     <Compile Include="Traits\Upgrades\UpgradeManager.cs" />

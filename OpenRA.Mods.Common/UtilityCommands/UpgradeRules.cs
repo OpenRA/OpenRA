@@ -617,6 +617,12 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						if (!node.Value.Nodes.Any(n => n.Key == "PrimaryCondition"))
 							node.Value.Nodes.Add(new MiniYamlNode("PrimaryCondition", "primary"));
 					}
+
+					if (node.Key.StartsWith("UpgradeOnDamageState", StringComparison.Ordinal))
+					{
+						RenameNodeKey(node, "GrantConditionOnDamageState");
+						ConvertUpgradesToCondition(parent, node, "Upgrades", "Condition");
+					}
 				}
 
 				UpgradeActorRules(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);

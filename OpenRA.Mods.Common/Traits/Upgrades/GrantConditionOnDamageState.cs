@@ -14,11 +14,12 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Applies an upgrade to the actor at specified damage states.")]
-	public class UpgradeOnDamageStateInfo : ITraitInfo, Requires<UpgradeManagerInfo>, Requires<HealthInfo>
+	public class GrantConditionOnDamageStateInfo : ITraitInfo, Requires<HealthInfo>
 	{
-		[UpgradeGrantedReference, FieldLoader.Require]
-		[Desc("The upgrades to grant.")]
-		public readonly string[] Upgrades = { };
+		[FieldLoader.Require]
+		[UpgradeGrantedReference]
+		[Desc("Condition to grant.")]
+		public readonly string Condition = null;
 
 		[Desc("Play a random sound from this list when enabled.")]
 		public readonly string[] EnabledSounds = { };
@@ -29,59 +30,57 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Levels of damage at which to grant upgrades.")]
 		public readonly DamageState ValidDamageStates = DamageState.Heavy | DamageState.Critical;
 
-		[Desc("Are upgrades irrevocable once the conditions have been met?")]
+		[Desc("Is the condition irrevocable once it has been activated?")]
 		public readonly bool GrantPermanently = false;
 
-		public object Create(ActorInitializer init) { return new UpgradeOnDamageState(init.Self, this); }
+		public object Create(ActorInitializer init) { return new GrantConditionOnDamageState(init.Self, this); }
 	}
 
-	public class UpgradeOnDamageState : INotifyDamageStateChanged, INotifyCreated
+	public class GrantConditionOnDamageState : INotifyDamageStateChanged, INotifyCreated
 	{
-		readonly UpgradeOnDamageStateInfo info;
-		readonly UpgradeManager um;
+		readonly GrantConditionOnDamageStateInfo info;
 		readonly Health health;
-		bool granted;
 
-		public UpgradeOnDamageState(Actor self, UpgradeOnDamageStateInfo info)
+		UpgradeManager manager;
+		int conditionToken = UpgradeManager.InvalidConditionToken;
+
+		public GrantConditionOnDamageState(Actor self, GrantConditionOnDamageStateInfo info)
 		{
 			this.info = info;
-			um = self.Trait<UpgradeManager>();
 			health = self.Trait<Health>();
 		}
 
 		void INotifyCreated.Created(Actor self)
 		{
+			manager = self.TraitOrDefault<UpgradeManager>();
 			GrantUpgradeOnValidDamageState(self, health.DamageState);
 		}
 
 		void GrantUpgradeOnValidDamageState(Actor self, DamageState state)
 		{
-			if (!info.ValidDamageStates.HasFlag(state))
+			if (!info.ValidDamageStates.HasFlag(state) || conditionToken != UpgradeManager.InvalidConditionToken)
 				return;
 
-			granted = true;
-			var rand = Game.CosmeticRandom;
-			var sound = info.EnabledSounds.RandomOrDefault(rand);
+			conditionToken = manager.GrantCondition(self, info.Condition);
+
+			var sound = info.EnabledSounds.RandomOrDefault(Game.CosmeticRandom);
 			Game.Sound.Play(sound, self.CenterPosition);
-			foreach (var u in info.Upgrades)
-				um.GrantUpgrade(self, u, this);
 		}
 
 		void INotifyDamageStateChanged.DamageStateChanged(Actor self, AttackInfo e)
 		{
-			if (granted && info.GrantPermanently)
+			var granted = conditionToken != UpgradeManager.InvalidConditionToken;
+			if ((granted && info.GrantPermanently) || manager == null)
 				return;
 
 			if (!granted && !info.ValidDamageStates.HasFlag(e.PreviousDamageState))
 				GrantUpgradeOnValidDamageState(self, health.DamageState);
 			else if (granted && !info.ValidDamageStates.HasFlag(e.DamageState) && info.ValidDamageStates.HasFlag(e.PreviousDamageState))
 			{
-				granted = false;
-				var rand = Game.CosmeticRandom;
-				var sound = info.DisabledSounds.RandomOrDefault(rand);
+				conditionToken = manager.RevokeCondition(self, conditionToken);
+
+				var sound = info.DisabledSounds.RandomOrDefault(Game.CosmeticRandom);
 				Game.Sound.Play(sound, self.CenterPosition);
-				foreach (var u in info.Upgrades)
-					um.RevokeUpgrade(self, u, this);
 			}
 		}
 	}
