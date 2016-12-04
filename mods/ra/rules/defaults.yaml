@@ -291,8 +291,8 @@
 		HealIfBelow: 100
 		DamageCooldown: 125
 		RequiresCondition: hospitalheal
-	GlobalUpgradable:
-		Upgrades: hospitalheal
+	GrantConditionOnPrerequisite:
+		Condition: hospitalheal
 		Prerequisites: hosp
 	DeathSounds@NORMAL:
 		DeathTypes: DefaultDeath, BulletDeath, SmallExplosionDeath, ExplosionDeath

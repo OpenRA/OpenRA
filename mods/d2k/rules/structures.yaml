@@ -90,9 +90,9 @@ construction_yard:
 	PrimaryBuilding:
 		PrimaryCondition: primary
 	ProvidesPrerequisite@buildingname:
-	GlobalUpgradable:
+	GrantConditionOnPrerequisite:
 		Prerequisites: upgrade.conyard
-		Upgrades: stardecoration
+		Condition: stardecoration
 	WithDecoration@upgraded:
 		RequiresSelection: true
 		Image: pips
@@ -203,9 +203,9 @@ barracks:
 			smuggler: barracks.ordos
 			mercenary: barracks.ordos
 	ProvidesPrerequisite@buildingname:
-	GlobalUpgradable:
+	GrantConditionOnPrerequisite:
 		Prerequisites: upgrade.barracks
-		Upgrades: stardecoration
+		Condition: stardecoration
 	WithDecoration@upgraded:
 		RequiresSelection: true
 		Image: pips
@@ -383,9 +383,9 @@ light_factory:
 		Sequence: idle-top
 	Power:
 		Amount: -125
-	GlobalUpgradable:
+	GrantConditionOnPrerequisite:
 		Prerequisites: upgrade.light
-		Upgrades: stardecoration
+		Condition: stardecoration
 	WithDecoration@upgraded:
 		RequiresSelection: true
 		Image: pips
@@ -463,9 +463,9 @@ heavy_factory:
 	ProvidesPrerequisite@buildingname:
 	SelectionDecorations:
 		VisualBounds: 96,96
-	GlobalUpgradable:
+	GrantConditionOnPrerequisite:
 		Prerequisites: upgrade.heavy
-		Upgrades: stardecoration
+		Condition: stardecoration
 	WithDecoration@upgraded:
 		RequiresSelection: true
 		Image: pips
@@ -841,9 +841,9 @@ high_tech_factory:
 		Amount: -75
 	SelectionDecorations:
 		VisualBounds: 96,96
-	GlobalUpgradable:
+	GrantConditionOnPrerequisite:
 		Prerequisites: upgrade.hightech
-		Upgrades: stardecoration
+		Condition: stardecoration
 	WithDecoration@upgraded:
 		RequiresSelection: true
 		Image: pips

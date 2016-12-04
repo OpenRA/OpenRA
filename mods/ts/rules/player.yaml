@@ -1,7 +1,7 @@
 Player:
 	AlwaysVisible:
 	TechTree:
-	GlobalUpgradeManager:
+	GrantConditionOnPrerequisiteManager:
 	ClassicProductionQueue@Building:
 		Type: Building
 		BuildDurationModifier: 120

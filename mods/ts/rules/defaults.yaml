@@ -326,8 +326,8 @@
 		HealIfBelow: 100
 		DamageCooldown: 125
 		RequiresCondition: hospitalheal
-	GlobalUpgradable@HOSPITAL:
-		Upgrades: hospitalheal
+	GrantConditionOnPrerequisite@HOSPITAL:
+		Condition: hospitalheal
 		Prerequisites: cahosp
 	WithDecoration@REDCROSS:
 		Image: pips

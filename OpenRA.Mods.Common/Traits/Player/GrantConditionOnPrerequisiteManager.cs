@@ -17,18 +17,18 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Attach this to the player actor.")]
-	public class GlobalUpgradeManagerInfo : ITraitInfo, Requires<TechTreeInfo>
+	public class GrantConditionOnPrerequisiteManagerInfo : ITraitInfo, Requires<TechTreeInfo>
 	{
-		public object Create(ActorInitializer init) { return new GlobalUpgradeManager(init); }
+		public object Create(ActorInitializer init) { return new GrantConditionOnPrerequisiteManager(init); }
 	}
 
-	public class GlobalUpgradeManager : ITechTreeElement
+	public class GrantConditionOnPrerequisiteManager : ITechTreeElement
 	{
 		readonly Actor self;
-		readonly Dictionary<string, List<Pair<Actor, GlobalUpgradable>>> upgradables = new Dictionary<string, List<Pair<Actor, GlobalUpgradable>>>();
+		readonly Dictionary<string, List<Pair<Actor, GrantConditionOnPrerequisite>>> upgradables = new Dictionary<string, List<Pair<Actor, GrantConditionOnPrerequisite>>>();
 		readonly TechTree techTree;
 
-		public GlobalUpgradeManager(ActorInitializer init)
+		public GrantConditionOnPrerequisiteManager(ActorInitializer init)
 		{
 			self = init.Self;
 			techTree = self.Trait<TechTree>();
@@ -39,12 +39,12 @@ namespace OpenRA.Mods.Common.Traits
 			return "upgrade_" + string.Join("_", prerequisites.OrderBy(a => a));
 		}
 
-		public void Register(Actor actor, GlobalUpgradable u, string[] prerequisites)
+		public void Register(Actor actor, GrantConditionOnPrerequisite u, string[] prerequisites)
 		{
 			var key = MakeKey(prerequisites);
 			if (!upgradables.ContainsKey(key))
 			{
-				upgradables.Add(key, new List<Pair<Actor, GlobalUpgradable>>());
+				upgradables.Add(key, new List<Pair<Actor, GrantConditionOnPrerequisite>>());
 				techTree.Add(key, prerequisites, 0, this);
 			}
 
@@ -54,7 +54,7 @@ namespace OpenRA.Mods.Common.Traits
 			u.PrerequisitesUpdated(actor, techTree.HasPrerequisites(prerequisites));
 		}
 
-		public void Unregister(Actor actor, GlobalUpgradable u, string[] prerequisites)
+		public void Unregister(Actor actor, GrantConditionOnPrerequisite u, string[] prerequisites)
 		{
 			var key = MakeKey(prerequisites);
 			var list = upgradables[key];
@@ -69,7 +69,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void PrerequisitesAvailable(string key)
 		{
-			List<Pair<Actor, GlobalUpgradable>> list;
+			List<Pair<Actor, GrantConditionOnPrerequisite>> list;
 			if (!upgradables.TryGetValue(key, out list))
 				return;
 
@@ -79,7 +79,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void PrerequisitesUnavailable(string key)
 		{
-			List<Pair<Actor, GlobalUpgradable>> list;
+			List<Pair<Actor, GrantConditionOnPrerequisite>> list;
 			if (!upgradables.TryGetValue(key, out list))
 				return;
 

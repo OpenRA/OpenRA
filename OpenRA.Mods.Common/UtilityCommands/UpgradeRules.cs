@@ -659,6 +659,15 @@ namespace OpenRA.Mods.Common.UtilityCommands
 							}
 						}
 					}
+
+					if (node.Key.StartsWith("GlobalUpgradable", StringComparison.Ordinal))
+					{
+						RenameNodeKey(node, "GrantConditionOnPrerequisite");
+						ConvertUpgradesToCondition(parent, node, "Upgrades", "Condition");
+					}
+
+					if (node.Key.StartsWith("GlobalUpgradeManager", StringComparison.Ordinal))
+						RenameNodeKey(node, "GrantConditionOnPrerequisiteManager");
 				}
 
 				UpgradeActorRules(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);

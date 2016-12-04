@@ -283,8 +283,8 @@
 		DamageInterval: 16
 		DamageTypes: TiberiumDeath
 		RequiresCondition: !hazmatsuits
-	GlobalUpgradable@BIO:
-		Upgrades: hazmatsuits
+	GrantConditionOnPrerequisite@BIO:
+		Condition: hazmatsuits
 		Prerequisites: bio
 	WithDecoration@HAZMAT:
 		Image: pips
@@ -309,8 +309,8 @@
 		HealIfBelow: 100
 		DamageCooldown: 125
 		RequiresCondition: hospitalheal
-	GlobalUpgradable@HOSPITAL:
-		Upgrades: hospitalheal
+	GrantConditionOnPrerequisite@HOSPITAL:
+		Condition: hospitalheal
 		Prerequisites: hosp
 	WithDecoration@REDCROSS:
 		Image: pips
