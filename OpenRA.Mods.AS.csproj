@@ -82,6 +82,7 @@
     <Compile Include="Traits\DeployToTimedUpgrade.cs" />
     <Compile Include="Traits\EligibleForRandomActorCrate.cs" />
     <Compile Include="Traits\ExplodeWeapon.cs" />
+    <Compile Include="Traits\PeriodicProducer.cs" />
     <Compile Include="Traits\Player\PlayerSilo.cs" />
     <Compile Include="Traits\TransformOnUpgrade.cs" />
     <Compile Include="Traits\UpgradeCrusher.cs" />

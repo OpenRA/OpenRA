@@ -39,7 +39,7 @@ namespace OpenRA.Mods.AS.Traits
 		public override object Create(ActorInitializer init) { return new GrantPeriodicUpgrades(init, this); }
 	}
 
-	public class GrantPeriodicUpgrades : UpgradableTrait<GrantPeriodicUpgradesInfo>, INotifyCreated, ISelectionBar, ITick
+	public class GrantPeriodicUpgrades : UpgradableTrait<GrantPeriodicUpgradesInfo>, INotifyCreated, ISelectionBar, ITick, ISync
 	{
 		readonly Actor self;
 		readonly GrantPeriodicUpgradesInfo info;
