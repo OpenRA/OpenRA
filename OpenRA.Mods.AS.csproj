@@ -69,11 +69,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Activities\FallDown.cs" />
+    <Compile Include="Activities\HeliFlyCircleTimed.cs" />
     <Compile Include="Duplicates\Projectiles\MissileAS.cs" />
     <Compile Include="Duplicates\Traits\EjectOnDeathAS.cs" />
     <Compile Include="Duplicates\Traits\Render\WithIdleOverlayAS.cs" />
     <Compile Include="Duplicates\Traits\Sound\AnnounceOnBuildAS.cs" />
     <Compile Include="Duplicates\Traits\Sound\AnnounceOnKillAS.cs" />
+    <Compile Include="Effects\AirstrikePowerASEffect.cs" />
     <Compile Include="Lint\CheckSpawnActorWarheads.cs" />
     <Compile Include="Lint\CheckTargetHealthRadiusAS.cs" />
     <Compile Include="Projectiles\AthenaProjectile.cs" />
@@ -84,6 +86,7 @@
     <Compile Include="Traits\ExplodeWeapon.cs" />
     <Compile Include="Traits\PeriodicProducer.cs" />
     <Compile Include="Traits\Player\PlayerSilo.cs" />
+    <Compile Include="Traits\SupportPowers\AirstrikePowerAS.cs" />
     <Compile Include="Traits\TransformOnUpgrade.cs" />
     <Compile Include="Traits\UpgradeCrusher.cs" />
     <Compile Include="Traits\Multipliers\HealthPercentageFirepowerMultiplier.cs" />
