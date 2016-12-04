@@ -29,7 +29,7 @@ namespace OpenRA.Mods.AS.Effects
 		IEnumerable<Actor> planes;
 		Actor camera = null;
 		Beacon beacon = null;
-		bool enteredRange;
+		bool enteredRange = false;
 
 		public AirstrikePowerASEffect(World world, Player p, WPos pos, IEnumerable<Actor> planes, AirstrikePowerASInfo info)
 		{
@@ -62,7 +62,7 @@ namespace OpenRA.Mods.AS.Effects
 
 		void IEffect.Tick(World world)
 		{
-			planes = planes.Where(p => !p.IsDead);
+			planes = planes.Where(p => p.IsInWorld && !p.IsDead);
 
 			if (!enteredRange && planes.Any(p => (p.OccupiesSpace.CenterPosition - pos).Length < info.BeaconDistanceOffset.Length))
 			{
@@ -84,7 +84,7 @@ namespace OpenRA.Mods.AS.Effects
 			{
 				world.AddFrameEndTask(w =>
 				{
-					var camera = w.CreateActor(info.CameraActor, new TypeDictionary
+					camera = w.CreateActor(info.CameraActor, new TypeDictionary
 						{
 							new LocationInit(world.Map.CellContaining(pos)),
 							new OwnerInit(Owner),

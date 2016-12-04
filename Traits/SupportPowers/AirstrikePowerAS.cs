@@ -139,6 +139,7 @@ namespace OpenRA.Mods.AS.Traits
 				};
 
 				var effect = new AirstrikePowerASEffect(self.World, self.Owner, target, aircrafts, info);
+				self.World.Add(effect);
 			});
 		}
 	}
