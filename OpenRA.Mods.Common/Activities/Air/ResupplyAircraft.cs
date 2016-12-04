@@ -43,24 +43,24 @@ namespace OpenRA.Mods.Common.Activities
 					inner = ActivityUtils.SequenceActivities(
 						aircraft.GetResupplyActivities(host)
 						.Append(new AllowYieldingReservation(self))
-						.Append(new WaitFor(() => NextActivity != null || aircraft.ReservedActor == null))
+						.Append(new WaitFor(() => NextInQueue != null || aircraft.ReservedActor == null))
 						.ToArray());
 				}
 				else
 				{
 					// Helicopters should take off from their helipad immediately after resupplying.
-					// HACK: Append NextActivity to TakeOff to avoid moving to the Rallypoint (if NextActivity is non-null).
+					// HACK: Append NextInQueue to TakeOff to avoid moving to the Rallypoint (if NextInQueue is non-null).
 					inner = ActivityUtils.SequenceActivities(
 						aircraft.GetResupplyActivities(host)
 						.Append(new AllowYieldingReservation(self))
-						.Append(new TakeOff(self)).Append(NextActivity).ToArray());
+						.Append(new TakeOff(self)).Append(NextInQueue).ToArray());
 				}
 			}
 			else
 				inner = ActivityUtils.RunActivity(self, inner);
 
-			// The inner == NextActivity check is needed here because of the TakeOff issue mentioned in the comment above.
-			return inner == null || inner == NextActivity ? NextActivity : this;
+			// The inner == NextInQueue check is needed here because of the TakeOff issue mentioned in the comment above.
+			return inner == null || inner == NextInQueue ? NextActivity : this;
 		}
 
 		public override bool Cancel(Actor self)

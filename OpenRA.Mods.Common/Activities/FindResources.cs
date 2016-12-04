@@ -51,8 +51,11 @@ namespace OpenRA.Mods.Common.Activities
 
 		public override Activity Tick(Actor self)
 		{
-			if (IsCanceled || NextActivity != null)
+			if (IsCanceled)
 				return NextActivity;
+
+			if (NextInQueue != null)
+				return NextInQueue;
 
 			var deliver = new DeliverResources(self);
 
@@ -81,8 +84,8 @@ namespace OpenRA.Mods.Common.Activities
 				var randFrames = self.World.SharedRandom.Next(100, 175);
 
 				// Avoid creating an activity cycle
-				var next = NextActivity;
-				NextActivity = null;
+				var next = NextInQueue;
+				NextInQueue = null;
 				return ActivityUtils.SequenceActivities(next, new Wait(randFrames), this);
 			}
 			else
