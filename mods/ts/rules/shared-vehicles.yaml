@@ -137,9 +137,9 @@ LPST:
 		FactionImages:
 			gdi: lpst.gdi
 			nod: lpst.nod
-	DeployToUpgrade:
-		DeployedUpgrades: deployed
-		UndeployedUpgrades: undeployed
+	GrantConditionOnDeploy:
+		DeployedCondition: deployed
+		UndeployedCondition: undeployed
 		DeployAnimation: make
 		Facing: 160
 		AllowedTerrainTypes: Clear, Road, DirtRoad, Rough

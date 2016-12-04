@@ -668,6 +668,13 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 					if (node.Key.StartsWith("GlobalUpgradeManager", StringComparison.Ordinal))
 						RenameNodeKey(node, "GrantConditionOnPrerequisiteManager");
+
+					if (node.Key.StartsWith("DeployToUpgrade", StringComparison.Ordinal))
+					{
+						RenameNodeKey(node, "GrantConditionOnDeploy");
+						ConvertUpgradesToCondition(parent, node, "UndeployedUpgrades", "UndeployedCondition");
+						ConvertUpgradesToCondition(parent, node, "DeployedUpgrades", "DeployedCondition");
+					}
 				}
 
 				UpgradeActorRules(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);

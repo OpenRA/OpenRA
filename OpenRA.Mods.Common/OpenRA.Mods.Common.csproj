@@ -490,7 +490,7 @@
     <Compile Include="Traits\Transforms.cs" />
     <Compile Include="Traits\Turreted.cs" />
     <Compile Include="Traits\ProducibleWithLevel.cs" />
-    <Compile Include="Traits\Upgrades\DeployToUpgrade.cs" />
+    <Compile Include="Traits\Upgrades\GrantConditionOnDeploy.cs" />
     <Compile Include="Traits\Upgrades\DisableOnUpgrade.cs" />
     <Compile Include="Traits\Upgrades\UpgradableTrait.cs" />
     <Compile Include="Traits\Upgrades\ProximityExternalCondition.cs" />
