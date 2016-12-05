@@ -22,7 +22,7 @@ namespace OpenRA.Mods.AS.Effects
 	public class AirstrikePowerASEffect : IEffect
 	{
 		readonly AirstrikePowerASInfo info;
-		readonly Player Owner;
+		readonly Player owner;
 		readonly World world;
 		readonly WPos pos;
 
@@ -35,7 +35,7 @@ namespace OpenRA.Mods.AS.Effects
 		{
 			this.info = info;
 			this.world = world;
-			this.Owner = p;
+			this.owner = p;
 			this.pos = pos;
 			this.planes = planes;
 
@@ -44,7 +44,7 @@ namespace OpenRA.Mods.AS.Effects
 				var distance = (planes.First().OccupiesSpace.CenterPosition - pos).HorizontalLength;
 
 				beacon = new Beacon(
-					Owner,
+					owner,
 					pos - new WVec(WDist.Zero, WDist.Zero, world.Map.DistanceAboveTerrain(pos)),
 					info.BeaconPaletteIsPlayerPalette,
 					info.BeaconPalette,
@@ -66,18 +66,18 @@ namespace OpenRA.Mods.AS.Effects
 
 			if (!enteredRange && planes.Any(p => (p.OccupiesSpace.CenterPosition - pos).Length < info.BeaconDistanceOffset.Length))
 			{
-					onEnterRange();
+					OnEnterRange();
 					enteredRange = true;
 			}
 
 			if (!planes.Any() || (enteredRange && planes.All(p => (p.OccupiesSpace.CenterPosition - pos).Length > info.BeaconDistanceOffset.Length)))
 			{
-				onExitRange();
+				OnExitRange();
 				world.AddFrameEndTask(w => w.Remove(this));
 			}
 		}
 
-		void onEnterRange()
+		void OnEnterRange()
 		{
 			// Spawn a camera and remove the beacon when the first plane enters the target area
 			if (info.CameraActor != null)
@@ -87,7 +87,7 @@ namespace OpenRA.Mods.AS.Effects
 					camera = w.CreateActor(info.CameraActor, new TypeDictionary
 						{
 							new LocationInit(world.Map.CellContaining(pos)),
-							new OwnerInit(Owner),
+							new OwnerInit(owner),
 						});
 				});
 			}
@@ -95,7 +95,7 @@ namespace OpenRA.Mods.AS.Effects
 			TryRemoveBeacon();
 		}
 
-		void onExitRange()
+		void OnExitRange()
 		{
 			if (camera != null)
 			{

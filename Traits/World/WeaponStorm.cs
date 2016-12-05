@@ -190,7 +190,7 @@ namespace OpenRA.Mods.AS.Traits
 					? w.SharedRandom.Next(info.CooldownDuration[0], info.CooldownDuration[1])
 					: info.CooldownDuration[0];
 
-			mapsize = world.Map.MapSize.X * world.Map.MapSize.Y; 
+			mapsize = world.Map.MapSize.X * world.Map.MapSize.Y;
 		}
 	}
 }

@@ -75,7 +75,6 @@ namespace OpenRA.Mods.AS.Traits
 
 			var startPos = target - (self.World.Map.DistanceToEdge(target, -delta) + info.Cordon).Length * delta / 1024;
 
-
 			self.World.AddFrameEndTask(w =>
 			{
 				PlayLaunchSounds();
@@ -91,7 +90,6 @@ namespace OpenRA.Mods.AS.Traits
 					// Includes the 90 degree rotation between body and world coordinates
 					var so = info.SquadOffset;
 					var spawnOffset = new WVec(i * so.Y, -Math.Abs(i) * so.X, 0).Rotate(attackRotation);
-					var targetOffset = new WVec(i * so.Y, 0, 0).Rotate(attackRotation);
 
 					var a = w.CreateActor(info.UnitType, new TypeDictionary
 					{
@@ -132,7 +130,7 @@ namespace OpenRA.Mods.AS.Traits
 						var finishPos = target + (self.World.Map.DistanceToEdge(target, delta) + info.Cordon).Length * delta / 1024;
 						a.QueueActivity(new HeliFly(a, Target.FromPos(finishPos + spawnOffset)));
 					}
-					
+
 					a.QueueActivity(new RemoveSelf());
 
 					aircrafts.Add(a);
