@@ -153,7 +153,8 @@ namespace OpenRA.Mods.Common.Traits
 	public class SupportPowerInstance
 	{
 		readonly SupportPowerManager manager;
-		readonly string key;
+
+		public readonly string Key;
 
 		public List<SupportPower> Instances;
 		public int RemainingTime;
@@ -170,7 +171,7 @@ namespace OpenRA.Mods.Common.Traits
 		public SupportPowerInstance(string key, SupportPowerManager manager)
 		{
 			this.manager = manager;
-			this.key = key;
+			Key = key;
 		}
 
 		public void PrerequisitesAvailable(bool available)
@@ -205,14 +206,14 @@ namespace OpenRA.Mods.Common.Traits
 					--RemainingTime;
 				if (!notifiedCharging)
 				{
-					power.Charging(power.Self, key);
+					power.Charging(power.Self, Key);
 					notifiedCharging = true;
 				}
 
 				if (RemainingTime == 0
 					&& !notifiedReady)
 				{
-					power.Charged(power.Self, key);
+					power.Charged(power.Self, Key);
 					notifiedReady = true;
 				}
 			}
@@ -227,7 +228,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (power == null)
 				return;
 
-			power.SelectTarget(power.Self, key, manager);
+			power.SelectTarget(power.Self, Key, manager);
 		}
 
 		public void Activate(Order order)
