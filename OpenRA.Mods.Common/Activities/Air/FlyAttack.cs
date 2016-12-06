@@ -23,7 +23,6 @@ namespace OpenRA.Mods.Common.Activities
 		readonly AttackPlane attackPlane;
 		readonly AmmoPool[] ammoPools;
 
-		Activity inner;
 		int ticksUntilTurn;
 
 		public FlyAttack(Actor self, Target target)
@@ -47,34 +46,25 @@ namespace OpenRA.Mods.Common.Activities
 			if (attackPlane != null)
 				attackPlane.DoAttack(self, target);
 
-			if (inner == null)
+			if (ChildActivity == null)
 			{
 				if (IsCanceled)
 					return NextActivity;
 
 				// TODO: This should fire each weapon at its maximum range
 				if (attackPlane != null && target.IsInRange(self.CenterPosition, attackPlane.Armaments.Select(a => a.Weapon.MinRange).Min()))
-					inner = ActivityUtils.SequenceActivities(new FlyTimed(ticksUntilTurn, self), new Fly(self, target), new FlyTimed(ticksUntilTurn, self));
+					ChildActivity = ActivityUtils.SequenceActivities(new FlyTimed(ticksUntilTurn, self), new Fly(self, target), new FlyTimed(ticksUntilTurn, self));
 				else
-					inner = ActivityUtils.SequenceActivities(new Fly(self, target), new FlyTimed(ticksUntilTurn, self));
+					ChildActivity = ActivityUtils.SequenceActivities(new Fly(self, target), new FlyTimed(ticksUntilTurn, self));
 
 				// HACK: This needs to be done in this round-about way because TakeOff doesn't behave as expected when it doesn't have a NextActivity.
 				if (self.World.Map.DistanceAboveTerrain(self.CenterPosition).Length < aircraft.Info.MinAirborneAltitude)
-					inner = ActivityUtils.SequenceActivities(new TakeOff(self), inner);
+					ChildActivity = ActivityUtils.SequenceActivities(new TakeOff(self), ChildActivity);
 			}
 
-			inner = ActivityUtils.RunActivity(self, inner);
+			ActivityUtils.RunActivity(self, ChildActivity);
 
 			return this;
-		}
-
-		public override bool Cancel(Actor self)
-		{
-			if (!IsCanceled && inner != null && !inner.Cancel(self))
-				return false;
-
-			// NextActivity must always be set to null:
-			return base.Cancel(self);
 		}
 	}
 }
