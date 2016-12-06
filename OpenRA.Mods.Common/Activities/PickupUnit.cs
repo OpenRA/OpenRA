@@ -29,9 +29,9 @@ namespace OpenRA.Mods.Common.Activities
 
 		readonly int delay;
 
-		enum State { Intercept, LockCarryable, MoveToCarryable, Turn, Land, Wait, Pickup, Aborted }
+		enum PickupState { Intercept, LockCarryable, MoveToCarryable, Turn, Land, Wait, Pickup, Aborted }
 
-		State state;
+		PickupState state;
 		Activity innerActivity;
 
 		public PickupUnit(Actor self, Actor cargo, int delay)
@@ -46,7 +46,7 @@ namespace OpenRA.Mods.Common.Activities
 			carryall = self.Trait<Carryall>();
 			carryallFacing = self.Trait<IFacing>();
 
-			state = State.Intercept;
+			state = PickupState.Intercept;
 		}
 
 		public override Activity Tick(Actor self)
@@ -71,18 +71,18 @@ namespace OpenRA.Mods.Common.Activities
 
 			switch (state)
 			{
-				case State.Intercept:
+				case PickupState.Intercept:
 					innerActivity = movement.MoveWithinRange(Target.FromActor(cargo), WDist.FromCells(4));
-					state = State.LockCarryable;
+					state = PickupState.LockCarryable;
 					return this;
 
-				case State.LockCarryable:
-					state = State.MoveToCarryable;
+				case PickupState.LockCarryable:
+					state = PickupState.MoveToCarryable;
 					if (!carryable.LockForPickup(cargo, self))
-						state = State.Aborted;
+						state = PickupState.Aborted;
 					return this;
 
-				case State.MoveToCarryable:
+				case PickupState.MoveToCarryable:
 				{
 					// Line up with the attachment point
 					var localOffset = carryall.OffsetForCarryable(self, cargo).Rotate(carryableBody.QuantizeOrientation(self, cargo.Orientation));
@@ -94,27 +94,27 @@ namespace OpenRA.Mods.Common.Activities
 						return this;
 					}
 
-					state = State.Turn;
+					state = PickupState.Turn;
 					return this;
 				}
 
-				case State.Turn:
+				case PickupState.Turn:
 					if (carryallFacing.Facing != carryableFacing.Facing)
 					{
 						innerActivity = new Turn(self, carryableFacing.Facing);
 						return this;
 					}
 
-					state = State.Land;
+					state = PickupState.Land;
 					return this;
 
-				case State.Land:
+				case PickupState.Land:
 				{
 					var localOffset = carryall.OffsetForCarryable(self, cargo).Rotate(carryableBody.QuantizeOrientation(self, cargo.Orientation));
 					var targetPosition = cargo.CenterPosition - carryableBody.LocalToWorld(localOffset);
 					if ((self.CenterPosition - targetPosition).HorizontalLengthSquared != 0 || carryallFacing.Facing != carryableFacing.Facing)
 					{
-						state = State.MoveToCarryable;
+						state = PickupState.MoveToCarryable;
 						return this;
 					}
 
@@ -124,21 +124,21 @@ namespace OpenRA.Mods.Common.Activities
 						return this;
 					}
 
-					state = delay > 0 ? State.Wait : State.Pickup;
+					state = delay > 0 ? PickupState.Wait : PickupState.Pickup;
 					return this;
 				}
 
-				case State.Wait:
-					state = State.Pickup;
+				case PickupState.Wait:
+					state = PickupState.Pickup;
 					innerActivity = new Wait(delay, false);
 					return this;
 
-				case State.Pickup:
+				case PickupState.Pickup:
 					// Remove our carryable from world
 					Attach(self);
 					return NextActivity;
 
-				case State.Aborted:
+				case PickupState.Aborted:
 					// We got cancelled
 					carryall.UnreserveCarryable(self);
 					break;

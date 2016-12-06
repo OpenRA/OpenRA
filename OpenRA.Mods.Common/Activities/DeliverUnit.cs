@@ -27,9 +27,9 @@ namespace OpenRA.Mods.Common.Activities
 		readonly IFacing carryallFacing;
 		readonly CPos destination;
 
-		enum State { Transport, Land, Wait, Release, TakeOff, Aborted }
+		enum DeliveryState { Transport, Land, Wait, Release, TakeOff, Aborted }
 
-		State state;
+		DeliveryState state;
 		Activity innerActivity;
 
 		public DeliverUnit(Actor self, CPos destination)
@@ -44,7 +44,7 @@ namespace OpenRA.Mods.Common.Activities
 			carryable = carryall.Carryable.Trait<Carryable>();
 			positionable = carryall.Carryable.Trait<IPositionable>();
 			carryableFacing = carryall.Carryable.Trait<IFacing>();
-			state = State.Transport;
+			state = DeliveryState.Transport;
 		}
 
 		CPos? FindDropLocation(CPos targetCell, WDist maxSearchDistance)
@@ -87,12 +87,12 @@ namespace OpenRA.Mods.Common.Activities
 			if (IsCanceled)
 				return NextActivity;
 
-			if ((carryall.State == Carryall.CarryallState.Idle || carryall.Carryable.IsDead) && state != State.TakeOff)
-				state = State.Aborted;
+			if ((carryall.State == Carryall.CarryallState.Idle || carryall.Carryable.IsDead) && state != DeliveryState.TakeOff)
+				state = DeliveryState.Aborted;
 
 			switch (state)
 			{
-				case State.Transport:
+				case DeliveryState.Transport:
 				{
 					var targetLocation = FindDropLocation(destination, carryall.Info.DropRange);
 
@@ -129,15 +129,15 @@ namespace OpenRA.Mods.Common.Activities
 						return this;
 					}
 
-					state = State.Land;
+					state = DeliveryState.Land;
 					return this;
 				}
 
-				case State.Land:
+				case DeliveryState.Land:
 				{
 					if (!CanDropHere())
 					{
-						state = State.Transport;
+						state = DeliveryState.Transport;
 						return this;
 					}
 
@@ -150,30 +150,30 @@ namespace OpenRA.Mods.Common.Activities
 						return this;
 					}
 
-					state = carryall.Info.UnloadingDelay > 0 ? State.Wait : State.Release;
+					state = carryall.Info.UnloadingDelay > 0 ? DeliveryState.Wait : DeliveryState.Release;
 					return this;
 				}
 
-				case State.Wait:
-					state = State.Release;
+				case DeliveryState.Wait:
+					state = DeliveryState.Release;
 					innerActivity = new Wait(carryall.Info.UnloadingDelay, false);
 					return this;
 
-				case State.Release:
+				case DeliveryState.Release:
 					if (!CanDropHere())
 					{
-						state = State.Transport;
+						state = DeliveryState.Transport;
 						return this;
 					}
 
 					Release();
-					state = State.TakeOff;
+					state = DeliveryState.TakeOff;
 					return this;
 
-				case State.TakeOff:
+				case DeliveryState.TakeOff:
 					return ActivityUtils.SequenceActivities(new HeliFly(self, Target.FromPos(self.CenterPosition)), NextActivity);
 
-				case State.Aborted:
+				case DeliveryState.Aborted:
 					carryall.UnreserveCarryable(self);
 					break;
 			}

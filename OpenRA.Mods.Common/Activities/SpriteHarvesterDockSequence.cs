@@ -33,7 +33,7 @@ namespace OpenRA.Mods.Common.Activities
 				trait.Docked();
 
 			wsb.PlayCustomAnimation(self, wda.DockSequence, () => wsb.PlayCustomAnimationRepeating(self, wda.DockLoopSequence));
-			dockingState = State.Loop;
+			dockingState = DockingState.Loop;
 			return this;
 		}
 
@@ -42,11 +42,11 @@ namespace OpenRA.Mods.Common.Activities
 			wsb.PlayCustomAnimationBackwards(self, wda.DockSequence,
 				() =>
 				{
-					dockingState = State.Complete;
+					dockingState = DockingState.Complete;
 					foreach (var trait in self.TraitsImplementing<INotifyHarvesterAction>())
 						trait.Undocked();
 				});
-			dockingState = State.Wait;
+			dockingState = DockingState.Wait;
 
 			return this;
 		}
