@@ -11,9 +11,7 @@
 
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
-using System.Threading;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Network;
@@ -23,7 +21,7 @@ using S = OpenRA.Server.Server;
 
 namespace OpenRA.Mods.Common.Server
 {
-	public class LobbyCommands : ServerTrait, IInterpretCommand, INotifyServerStart, IClientJoined
+	public class LobbyCommands : ServerTrait, IInterpretCommand, INotifyServerStart, INotifyServerEmpty, IClientJoined
 	{
 		static bool ValidateSlotCommand(S server, Connection conn, Session.Client client, string arg, bool requiresHost)
 		{
@@ -869,6 +867,21 @@ namespace OpenRA.Mods.Common.Server
 			var briefing = MissionBriefingOrDefault(server);
 			if (briefing != null)
 				server.SendOrderTo(conn, "Message", briefing);
+		}
+
+		void INotifyServerEmpty.ServerEmpty(S server)
+		{
+			// Expire any temporary bans
+			server.TempBans.Clear();
+
+			// Re-enable spectators
+			server.LobbyInfo.GlobalSettings.AllowSpectators = true;
+
+			// Reset player slots
+			server.LobbyInfo.Slots = server.Map.Players.Players
+				.Select(p => MakeSlotFromPlayerReference(p.Value))
+				.Where(ss => ss != null)
+				.ToDictionary(ss => ss.PlayerReference, ss => ss);
 		}
 
 		public PlayerReference PlayerReferenceForSlot(S server, Session.Slot slot)
