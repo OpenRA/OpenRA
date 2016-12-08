@@ -228,6 +228,15 @@ namespace OpenRA.Mods.Common.Traits
 				repulsionForce += GetRepulsionForce(actor);
 			}
 
+			// Actors outside the map bounds receive an extra nudge towards the center of the map
+			if (!self.World.Map.Contains(self.Location))
+			{
+				// The map bounds are in projected coordinates, which is technically wrong for this,
+				// but we avoid the issues in practice by guessing the middle of the map instead of the edge
+				var center = WPos.Lerp(self.World.Map.ProjectedTopLeft, self.World.Map.ProjectedBottomRight, 1, 2);
+				repulsionForce += new WVec(1024, 0, 0).Rotate(WRot.FromYaw((self.CenterPosition - center).Yaw));
+			}
+
 			if (Info.CanHover)
 				return repulsionForce;
 
