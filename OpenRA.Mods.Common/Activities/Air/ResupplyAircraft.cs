@@ -16,59 +16,40 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Activities
 {
-	public class ResupplyAircraft : Activity
+	public class ResupplyAircraft : CompositeActivity
 	{
-		readonly Aircraft aircraft;
-		Activity inner;
+		public ResupplyAircraft(Actor self) { }
 
-		public ResupplyAircraft(Actor self)
+		protected override void OnFirstRun(Actor self)
 		{
-			aircraft = self.Trait<Aircraft>();
+			var aircraft = self.Trait<Aircraft>();
+			var host = aircraft.GetActorBelow();
+
+			if (host == null)
+				return;
+
+			if (aircraft.IsPlane)
+			{
+				ChildActivity = ActivityUtils.SequenceActivities(
+					aircraft.GetResupplyActivities(host)
+					.Append(new AllowYieldingReservation(self))
+					.Append(new WaitFor(() => NextInQueue != null || aircraft.ReservedActor == null))
+					.ToArray());
+			}
+			else
+			{
+				// Helicopters should take off from their helipad immediately after resupplying.
+				// HACK: Append NextInQueue to TakeOff to avoid moving to the Rallypoint (if NextInQueue is non-null).
+				ChildActivity = ActivityUtils.SequenceActivities(
+					aircraft.GetResupplyActivities(host)
+					.Append(new AllowYieldingReservation(self))
+					.Append(new TakeOff(self)).Append(NextInQueue).ToArray());
+			}
 		}
 
 		public override Activity Tick(Actor self)
 		{
-			if (IsCanceled)
-				return NextActivity;
-
-			if (inner == null)
-			{
-				var host = aircraft.GetActorBelow();
-
-				if (host == null)
-					return NextActivity;
-
-				if (aircraft.IsPlane)
-				{
-					inner = ActivityUtils.SequenceActivities(
-						aircraft.GetResupplyActivities(host)
-						.Append(new AllowYieldingReservation(self))
-						.Append(new WaitFor(() => NextInQueue != null || aircraft.ReservedActor == null))
-						.ToArray());
-				}
-				else
-				{
-					// Helicopters should take off from their helipad immediately after resupplying.
-					// HACK: Append NextInQueue to TakeOff to avoid moving to the Rallypoint (if NextInQueue is non-null).
-					inner = ActivityUtils.SequenceActivities(
-						aircraft.GetResupplyActivities(host)
-						.Append(new AllowYieldingReservation(self))
-						.Append(new TakeOff(self)).Append(NextInQueue).ToArray());
-				}
-			}
-			else
-				inner = ActivityUtils.RunActivity(self, inner);
-
-			// The inner == NextInQueue check is needed here because of the TakeOff issue mentioned in the comment above.
-			return inner == null || inner == NextInQueue ? NextActivity : this;
-		}
-
-		public override bool Cancel(Actor self)
-		{
-			if (!IsCanceled && inner != null && !inner.Cancel(self))
-				return false;
-
-			return base.Cancel(self);
+			return NextActivity;
 		}
 	}
 }
