@@ -299,7 +299,7 @@
 	AppearsOnRadar:
 		UseLocation: true
 	HiddenUnderFog:
-		Type: CenterPosition
+		Type: GroundPosition
 		AlwaysVisibleStances: None
 	ActorLostNotification:
 	AttackMove:

@@ -571,7 +571,7 @@
 	Voiced:
 		VoiceSet: Heli
 	HiddenUnderFog:
-		Type: CenterPosition
+		Type: GroundPosition
 	AttackMove:
 		Voice: Move
 	ActorLostNotification:
@@ -614,7 +614,7 @@
 	Armor:
 		Type: Heavy
 	HiddenUnderFog:
-		Type: CenterPosition
+		Type: GroundPosition
 	AutoTargetIgnore:
 	ScriptTriggers:
 	Tooltip:
