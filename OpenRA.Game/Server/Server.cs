@@ -22,8 +22,6 @@ using OpenRA.Network;
 using OpenRA.Primitives;
 using OpenRA.Support;
 
-using XTimer = System.Timers.Timer;
-
 namespace OpenRA.Server
 {
 	public enum ServerState
@@ -59,8 +57,6 @@ namespace OpenRA.Server
 		readonly int randomSeed;
 		readonly TcpListener listener;
 		readonly TypeDictionary serverTraits = new TypeDictionary();
-
-		XTimer gameTimeout;
 
 		protected volatile ServerState internalState = ServerState.WaitingPlayers;
 
@@ -701,18 +697,6 @@ namespace OpenRA.Server
 
 			foreach (var t in serverTraits.WithInterface<IStartGame>())
 				t.GameStarted(this);
-
-			// Check TimeOut
-			if (Settings.TimeOut > 10000)
-			{
-				gameTimeout = new XTimer(Settings.TimeOut);
-				gameTimeout.Elapsed += (_, e) =>
-				{
-					Console.WriteLine("Timeout at {0}!!!", e.SignalTime);
-					Environment.Exit(0);
-				};
-				gameTimeout.Enabled = true;
-			}
 		}
 	}
 }
