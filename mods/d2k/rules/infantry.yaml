@@ -152,6 +152,7 @@ fremen:
 	Cloak:
 		InitialDelay: 85
 		CloakDelay: 85
+		UncloakOn: Attack, Unload, Infiltrate, Demolish, Dock, Damage
 		CloakSound: STEALTH1.WAV
 		UncloakSound: STEALTH2.WAV
 		IsPlayerPalette: true
@@ -245,7 +246,7 @@ saboteur:
 		CloakDelay: 85
 		CloakSound: STEALTH1.WAV
 		UncloakSound: STEALTH2.WAV
-		UncloakOn: Attack, Unload, Infiltrate, Demolish, Move
+		UncloakOn: Attack, Unload, Infiltrate, Demolish, Move, Damage
 		IsPlayerPalette: true
 	Voiced:
 		VoiceSet: SaboteurVoice
