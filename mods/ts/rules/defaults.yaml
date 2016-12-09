@@ -17,7 +17,7 @@
 
 ^GainsExperience:
 	GainsExperience:
-		Upgrades:
+		Conditions:
 			500: rank-veteran
 			1000: rank-elite
 	FirepowerMultiplier@VETERAN:
