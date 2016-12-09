@@ -119,7 +119,7 @@ FTUR:
 		BeginChargeSound: chrochr1.aud
 		EndChargeSound: chrordy1.aud
 		Range: 3
-	GrantUpgradePower@IRONCURTAIN:
+	GrantExternalConditionPower@IRONCURTAIN:
 		Icon: invuln
 		ChargeTime: 30
 		Description: Invulnerability
@@ -129,8 +129,9 @@ FTUR:
 		BeginChargeSound: ironchg1.aud
 		EndChargeSound: ironrdy1.aud
 		Range: 1
-		Upgrades: invulnerability
-		GrantUpgradeSequence: idle
+		Condition: invulnerability
+		Sequence: idle
+		OnFireSound: ironcur9.aud
 	Power:
 		Amount: 0
 
@@ -186,7 +187,7 @@ T17:
 		Duration: 999999
 		KillCargo: yes
 		Range: 3
-	GrantUpgradePower@IRONCURTAIN:
+	GrantExternalConditionPower@IRONCURTAIN:
 		Icon: invuln
 		ChargeTime: 30
 		Description: Invulnerability
@@ -196,5 +197,6 @@ T17:
 		BeginChargeSound: ironchg1.aud
 		EndChargeSound: ironrdy1.aud
 		Range: 1
-		Upgrades: invulnerability
-		GrantUpgradeSequence: idle
+		Condition: invulnerability
+		Sequence: idle
+		OnFireSound: ironcur9.aud

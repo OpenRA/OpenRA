@@ -15,38 +15,35 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits.Render
 {
 	[Desc("Visualizes the remaining time for an upgrade.")]
-	class TimedUpgradeBarInfo : ITraitInfo, Requires<UpgradeManagerInfo>
+	class TimedConditionBarInfo : ITraitInfo, Requires<UpgradeManagerInfo>
 	{
 		[FieldLoader.Require]
-		[Desc("Upgrade that this bar corresponds to")]
-		public readonly string Upgrade = null;
+		[Desc("Condition that this bar corresponds to")]
+		public readonly string Condition = null;
 
 		public readonly Color Color = Color.Red;
 
-		public object Create(ActorInitializer init) { return new TimedUpgradeBar(init.Self, this); }
+		public object Create(ActorInitializer init) { return new TimedConditionBar(init.Self, this); }
 	}
 
-	class TimedUpgradeBar : ISelectionBar, INotifyCreated
+	class TimedConditionBar : ISelectionBar, IConditionTimerWatcher
 	{
-		readonly TimedUpgradeBarInfo info;
+		readonly TimedConditionBarInfo info;
 		readonly Actor self;
 		float value;
 
-		public TimedUpgradeBar(Actor self, TimedUpgradeBarInfo info)
+		public TimedConditionBar(Actor self, TimedConditionBarInfo info)
 		{
 			this.self = self;
 			this.info = info;
 		}
 
-		public void Created(Actor self)
+		void IConditionTimerWatcher.Update(int duration, int remaining)
 		{
-			self.Trait<UpgradeManager>().RegisterWatcher(info.Upgrade, Update);
+			value = duration > 0 ? remaining * 1f / duration : 0;
 		}
 
-		public void Update(int duration, int remaining)
-		{
-			value = remaining * 1f / duration;
-		}
+		string IConditionTimerWatcher.Condition { get { return info.Condition; } }
 
 		float ISelectionBar.GetValue()
 		{

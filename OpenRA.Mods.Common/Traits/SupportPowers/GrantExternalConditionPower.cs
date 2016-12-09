@@ -19,31 +19,33 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	class GrantUpgradePowerInfo : SupportPowerInfo
+	class GrantExternalConditionPowerInfo : SupportPowerInfo
 	{
-		[UpgradeGrantedReference, FieldLoader.Require]
-		[Desc("The upgrades to apply.")]
-		public readonly string[] Upgrades = { };
+		[FieldLoader.Require]
+		[Desc("The condition to apply. Must be included in the target actor's ExternalConditions list.")]
+		public readonly string Condition = null;
 
-		[Desc("Duration of the upgrade (in ticks). Set to 0 for a permanent upgrade.")]
+		[Desc("Duration of the upgrade (in ticks). Set to 0 for a permanent condition.")]
 		public readonly int Duration = 0;
 
 		[Desc("Cells - affects whole cells only")]
 		public readonly int Range = 1;
-		public readonly string GrantUpgradeSound = "ironcur9.aud";
+
+		[Desc("Sound to instantly play at the targeted area.")]
+		public readonly string OnFireSound = null;
 
 		[SequenceReference, Desc("Sequence to play for granting actor when activated.",
 			"This requires the actor to have the WithSpriteBody trait or one of its derivatives.")]
-		public readonly string GrantUpgradeSequence = "active";
+		public readonly string Sequence = "active";
 
-		public override object Create(ActorInitializer init) { return new GrantUpgradePower(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new GrantExternalConditionPower(init.Self, this); }
 	}
 
-	class GrantUpgradePower : SupportPower
+	class GrantExternalConditionPower : SupportPower
 	{
-		GrantUpgradePowerInfo info;
+		readonly GrantExternalConditionPowerInfo info;
 
-		public GrantUpgradePower(Actor self, GrantUpgradePowerInfo info)
+		public GrantExternalConditionPower(Actor self, GrantExternalConditionPowerInfo info)
 			: base(self, info)
 		{
 			this.info = info;
@@ -60,30 +62,18 @@ namespace OpenRA.Mods.Common.Traits
 			base.Activate(self, order, manager);
 
 			var wsb = self.TraitOrDefault<WithSpriteBody>();
-			if (wsb != null && wsb.DefaultAnimation.HasSequence(info.GrantUpgradeSequence))
-				wsb.PlayCustomAnimation(self, info.GrantUpgradeSequence, () => wsb.CancelCustomAnimation(self));
+			if (wsb != null && wsb.DefaultAnimation.HasSequence(info.Sequence))
+				wsb.PlayCustomAnimation(self, info.Sequence, () => wsb.CancelCustomAnimation(self));
 
-			Game.Sound.Play(info.GrantUpgradeSound, self.World.Map.CenterOfCell(order.TargetLocation));
+			Game.Sound.Play(info.OnFireSound, self.World.Map.CenterOfCell(order.TargetLocation));
 
 			foreach (var a in UnitsInRange(order.TargetLocation))
 			{
 				var um = a.TraitOrDefault<UpgradeManager>();
-				if (um == null)
-					continue;
 
-				foreach (var u in info.Upgrades)
-				{
-					if (info.Duration > 0)
-					{
-						if (um.AcknowledgesUpgrade(a, u))
-							um.GrantTimedUpgrade(a, u, info.Duration);
-					}
-					else
-					{
-						if (um.AcceptsUpgrade(a, u))
-							um.GrantUpgrade(a, u, this);
-					}
-				}
+				// Condition token is ignored because we never revoke this condition.
+				if (um != null)
+					um.GrantCondition(a, info.Condition, true, info.Duration);
 			}
 		}
 
@@ -101,20 +91,19 @@ namespace OpenRA.Mods.Common.Traits
 					return false;
 
 				var um = a.TraitOrDefault<UpgradeManager>();
-				return um != null && (info.Duration > 0 ?
-					info.Upgrades.Any(u => um.AcknowledgesUpgrade(a, u)) : info.Upgrades.Any(u => um.AcceptsUpgrade(a, u)));
+				return um != null && um.AcceptsExternalCondition(a, info.Condition);
 			});
 		}
 
 		class SelectUpgradeTarget : IOrderGenerator
 		{
-			readonly GrantUpgradePower power;
+			readonly GrantExternalConditionPower power;
 			readonly int range;
 			readonly Sprite tile;
 			readonly SupportPowerManager manager;
 			readonly string order;
 
-			public SelectUpgradeTarget(World world, string order, SupportPowerManager manager, GrantUpgradePower power)
+			public SelectUpgradeTarget(World world, string order, SupportPowerManager manager, GrantExternalConditionPower power)
 			{
 				// Clear selection if using Left-Click Orders
 				if (Game.Settings.Game.UseClassicMouseStyle)

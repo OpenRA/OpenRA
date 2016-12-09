@@ -107,10 +107,10 @@ EMPulseCannon:
 		Image: pulsball
 	Warhead@1Eff: CreateEffect
 		Explosions: pulse_explosion
-	Warhead@emp: GrantUpgrade
+	Warhead@emp: GrantExternalCondition
 		Range: 4c0
 		Duration: 250
-		Upgrades: empdisable, notmobile
+		Condition: empdisable
 
 ClusterMissile:
 	ValidTargets: Ground, Water, Air

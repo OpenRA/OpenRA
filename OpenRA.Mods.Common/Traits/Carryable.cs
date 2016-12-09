@@ -52,6 +52,8 @@ namespace OpenRA.Mods.Common.Traits
 		protected override void Created(Actor self)
 		{
 			upgradeManager = self.Trait<UpgradeManager>();
+
+			base.Created(self);
 		}
 
 		public virtual void Attached(Actor self)

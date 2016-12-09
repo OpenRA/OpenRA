@@ -69,11 +69,11 @@ FORTCRATE:
 	GiveUnitCrateAction@e7:
 		Units: e7
 		SelectionShares: 10
-	GrantUpgradeCrateAction@ironcurtain:
+	GrantExternalConditionCrateAction@ironcurtain:
 		SelectionShares: 10
 		Effect: invuln
 		Notification: ironcur9.aud
-		Upgrades: invulnerability
+		Condition: invulnerability
 		Duration: 1200
 	ExplodeCrateAction@bigboom:
 		Weapon: SCUD

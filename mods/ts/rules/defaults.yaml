@@ -64,6 +64,8 @@
 		ReferencePoint: Bottom, Right
 		RequiresCondition: rank-elite
 		ZOffset: 256
+	ExternalConditions@CRATES:
+		Conditions: crate-firepower, crate-damage, crate-speed, crate-cloak
 
 ^EmpDisable:
 	UpgradeOverlay@EMPDISABLE:
@@ -71,8 +73,8 @@
 		Palette: disabled
 	DisableOnUpgrade@EMPDISABLE:
 		RequiresCondition: empdisable
-	TimedUpgradeBar@EMPDISABLE:
-		Upgrade: empdisable
+	TimedConditionBar@EMPDISABLE:
+		Condition: empdisable
 		Color: FFFFFF
 	WithIdleOverlay@EMPDISABLE:
 		Sequence: emp-overlay
@@ -83,11 +85,13 @@
 	PowerMultiplier@EMPDISABLE:
 		RequiresCondition: empdisable
 		Modifier: 0
+	ExternalConditions@EMPDISABLE:
+		Conditions: empdisable
 
 ^EmpDisableMobile:
 	Inherits: ^EmpDisable
 	Mobile:
-		RequiresCondition: !notmobile
+		RequiresCondition: !empdisable && !deployed && !loading
 
 ^Cloakable:
 	Cloak@CLOAKGENERATOR:
@@ -639,7 +643,6 @@
 	Mobile:
 		Speed: 113
 		TurnSpeed: 16
-		Crushes: crate
 		SharesCell: no
 		TerrainSpeeds:
 			Clear: 90
@@ -795,7 +798,7 @@
 	Cargo:
 		Types: Infantry
 		UnloadVoice: Unload
-		LoadingUpgrades: notmobile
+		LoadingUpgrades: loading
 	Health:
 		HP: 100
 	Armor:

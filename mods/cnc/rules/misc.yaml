@@ -16,10 +16,10 @@ CRATE:
 	ExplodeCrateAction@fire:
 		Weapon: Napalm.Crate
 		SelectionShares: 5
-	GrantUpgradeCrateAction@cloak:
+	GrantExternalConditionCrateAction@cloak:
 		SelectionShares: 5
 		Effect: cloak
-		Upgrades: cloak
+		Condition: cloak
 	GiveMcvCrateAction:
 		SelectionShares: 0
 		NoBaseSelectionShares: 120

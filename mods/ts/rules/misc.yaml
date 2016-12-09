@@ -74,24 +74,24 @@ CRATE:
 		SelectionShares: 0
 		NoBaseSelectionShares: 100
 		Units: mcv
-	GrantUpgradeCrateAction@cloak:
+	GrantExternalConditionCrateAction@cloak:
 		SelectionShares: 5
 		Effect: stealth
-		Upgrades: crate-cloak
+		Condition: crate-cloak
 		Notification: cloak5.aud
-	GrantUpgradeCrateAction@firepower:
+	GrantExternalConditionCrateAction@firepower:
 		SelectionShares: 5
 		Effect: firepower
-		Upgrades: crate-firepower
+		Condition: crate-firepower
 		Notification: 00-i070.aud
-	GrantUpgradeCrateAction@armor:
+	GrantExternalConditionCrateAction@armor:
 		SelectionShares: 5
 		Effect: armor
-		Upgrades: crate-damage
+		Condition: crate-damage
 		Notification: 00-i068.aud
-	GrantUpgradeCrateAction@speed:
+	GrantExternalConditionCrateAction@speed:
 		SelectionShares: 5
-		Upgrades: crate-speed
+		Condition: crate-speed
 		Notification: 00-i080.aud
 
 SROCK01:

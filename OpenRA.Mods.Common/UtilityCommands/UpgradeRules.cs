@@ -92,6 +92,28 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			catch { }
 		}
 
+		static void RenameNodeKey(MiniYamlNode node, string key)
+		{
+			var parts = node.Key.Split('@');
+			node.Key = key;
+			if (parts.Length > 1)
+				node.Key += "@" + parts[1];
+		}
+
+		static void ConvertUpgradesToCondition(MiniYamlNode parent, MiniYamlNode node, string upgradesKey, string conditionKey)
+		{
+			var upgradesNode = node.Value.Nodes.FirstOrDefault(n => n.Key == upgradesKey);
+			if (upgradesNode != null)
+			{
+				var conditions = FieldLoader.GetValue<string[]>("", upgradesNode.Value.Value);
+				if (conditions.Length > 1)
+					Console.WriteLine("Unable to automatically migrate {0}:{1} {2} to {3}. This must be corrected manually",
+						parent.Key, node.Key, upgradesKey, conditionKey);
+				else
+					upgradesNode.Key = conditionKey;
+			}
+		}
+
 		internal static void UpgradeActorRules(ModData modData, int engineVersion, ref List<MiniYamlNode> nodes, MiniYamlNode parent, int depth)
 		{
 			var addNodes = new List<MiniYamlNode>();
@@ -118,10 +140,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						if (s != null)
 							s.Key = "Image";
 
-						var parts = node.Key.Split('@');
-						node.Key = "WithDamageOverlay";
-						if (parts.Length > 1)
-							node.Key += "@" + parts[1];
+						RenameNodeKey(node, "WithDamageOverlay");
 					}
 				}
 
@@ -135,13 +154,9 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				if (engineVersion < 20160611)
 				{
 					// Deprecated WithSpriteRotorOverlay
-					if (depth == 1 && node.Key.StartsWith("WithSpriteRotorOverlay"))
+					if (depth == 1 && node.Key.StartsWith("WithSpriteRotorOverlay", StringComparison.Ordinal))
 					{
-						var parts = node.Key.Split('@');
-						node.Key = "WithIdleOverlay";
-						if (parts.Length > 1)
-							node.Key += "@" + parts[1];
-
+						RenameNodeKey(node, "WithIdleOverlay");
 						Console.WriteLine("The 'WithSpriteRotorOverlay' trait has been removed.");
 						Console.WriteLine("Its functionality can be fully replicated with 'WithIdleOverlay' + upgrades.");
 						Console.WriteLine("Look at the helicopters in our RA / C&C1  mods for implementation details.");
@@ -282,13 +297,8 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 				if (engineVersion < 20160818)
 				{
-					if (depth == 1 && node.Key.StartsWith("UpgradeOnDamage"))
-					{
-						var parts = node.Key.Split('@');
-						node.Key = "UpgradeOnDamageState";
-						if (parts.Length > 1)
-							node.Key += "@" + parts[1];
-					}
+					if (depth == 1 && node.Key.StartsWith("UpgradeOnDamage", StringComparison.Ordinal))
+						RenameNodeKey(node, "UpgradeOnDamageState");
 				}
 
 				// DisplayTimer was replaced by DisplayTimerStances
@@ -435,7 +445,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
-				// Rename Replaced upgrade consumers with conditions
+				// Replaced upgrade consumers with conditions
 				if (engineVersion < 20161117)
 				{
 					var upgradeTypesNode = node.Value.Nodes.FirstOrDefault(n => n.Key == "UpgradeTypes");
@@ -480,21 +490,45 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				if (engineVersion < 20161119)
 				{
 					// Migrated carryalls over to new conditions system
-					var carryableUpgradesNode = node.Value.Nodes.FirstOrDefault(n => n.Key == "CarryableUpgrades");
-					if (carryableUpgradesNode != null)
-					{
-						var conditions = FieldLoader.GetValue<string[]>("", carryableUpgradesNode.Value.Value);
-						if (conditions.Length > 1)
-							Console.WriteLine("Unable to automatically migrate {0}:{1} CarryableUpgrades to CarriedCondition. This must be corrected manually",
-								parent.Key, node.Key);
-						else
-							carryableUpgradesNode.Key = "CarriedCondition";
-					}
+					ConvertUpgradesToCondition(parent, node, "CarryableUpgrades", "CarriedCondition");
 
 					if (node.Key == "WithDecorationCarryable")
 					{
 						node.Key = "WithDecoration@CARRYALL";
 						node.Value.Nodes.Add(new MiniYamlNode("RequiresCondition", "carryall-reserved"));
+					}
+				}
+
+				if (engineVersion < 20161120)
+				{
+					if (node.Key.StartsWith("TimedUpgradeBar", StringComparison.Ordinal))
+					{
+						RenameNodeKey(node, "TimedConditionBar");
+						ConvertUpgradesToCondition(parent, node, "Upgrade", "Condition");
+					}
+
+					if (node.Key.StartsWith("GrantUpgradePower", StringComparison.Ordinal))
+					{
+						Console.WriteLine("GrantUpgradePower Condition must be manually added to all target actor's ExternalConditions list.");
+						RenameNodeKey(node, "GrantExternalConditionPower");
+						ConvertUpgradesToCondition(parent, node, "Upgrades", "Condition");
+
+						var soundNode = node.Value.Nodes.FirstOrDefault(n => n.Key == "GrantUpgradeSound");
+						if (soundNode != null)
+							soundNode.Key = "OnFireSound";
+						else
+							node.Value.Nodes.Add(new MiniYamlNode("OnFireSound", "ironcur9.aud"));
+
+						var sequenceNode = node.Value.Nodes.FirstOrDefault(n => n.Key == "GrantUpgradeSequence");
+						if (sequenceNode != null)
+							sequenceNode.Key = "Sequence";
+					}
+
+					if (node.Key.StartsWith("GrantUpgradeCrateAction", StringComparison.Ordinal))
+					{
+						Console.WriteLine("GrantUpgradeCrateAction Condition must be manually added to all target actor's ExternalConditions list.");
+						RenameNodeKey(node, "GrantExternalConditionCrateAction");
+						ConvertUpgradesToCondition(parent, node, "Upgrades", "Condition");
 					}
 				}
 
@@ -565,6 +599,16 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				{
 					if (node.Key == "Angle")
 						node.Key = "LaunchAngle";
+				}
+
+				if (engineVersion < 20161120)
+				{
+					if (node.Key.StartsWith("Warhead", StringComparison.Ordinal) && node.Value.Value == "GrantUpgrade")
+					{
+						node.Value.Value = "GrantExternalCondition";
+						Console.WriteLine("GrantExternalCondition Condition must be manually added to all target actor's ExternalConditions list.");
+						ConvertUpgradesToCondition(parent, node, "Upgrades", "Condition");
+					}
 				}
 
 				UpgradeWeaponRules(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);

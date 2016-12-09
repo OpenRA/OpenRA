@@ -90,11 +90,11 @@ CRATE:
 		Units: e1,e1,e4,e4,e3,e3,e3
 		ValidFactions: soviet, russia, ukraine
 		TimeDelay: 4500
-	GrantUpgradeCrateAction@invuln:
+	GrantExternalConditionCrateAction@invuln:
 		SelectionShares: 5
 		Effect: invuln
 		Notification: ironcur9.aud
-		Upgrades: invulnerability
+		Condition: invulnerability
 		Duration: 600
 
 MONEYCRATE:

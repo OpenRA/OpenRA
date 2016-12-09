@@ -106,7 +106,7 @@ TTNK:
 	RenderSprites:
 		Image: ttnk
 	DeployToUpgrade:
-		DeployedUpgrades: deployed, notmobile
+		DeployedUpgrades: deployed
 		UndeployedUpgrades: undeployed
 		DeployAnimation: make
 		Facing: 160
@@ -285,7 +285,7 @@ SAPC:
 		MaxWeight: 5
 		PipCount: 5
 		UnloadVoice: Unload
-		LoadingUpgrades: notmobile
+		LoadingUpgrades: loading
 		EjectOnDeath: true
 
 SUBTANK:

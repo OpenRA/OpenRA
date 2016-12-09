@@ -138,7 +138,7 @@ LPST:
 			gdi: lpst.gdi
 			nod: lpst.nod
 	DeployToUpgrade:
-		DeployedUpgrades: deployed, notmobile
+		DeployedUpgrades: deployed
 		UndeployedUpgrades: undeployed
 		DeployAnimation: make
 		Facing: 160
