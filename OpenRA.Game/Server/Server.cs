@@ -586,8 +586,10 @@ namespace OpenRA.Server
 
 				DispatchOrders(toDrop, frame, new byte[] { 0xbf });
 
+				// All clients have left: clean up
 				if (!Conns.Any())
-					TempBans.Clear();
+					foreach (var t in serverTraits.WithInterface<INotifyServerEmpty>())
+						t.ServerEmpty(this);
 
 				if (Conns.Any() || Dedicated)
 					SyncLobbyClients();

@@ -18,6 +18,7 @@ namespace OpenRA.Server
 	public interface IInterpretCommand { bool InterpretCommand(Server server, Connection conn, Session.Client client, string cmd); }
 	public interface INotifySyncLobbyInfo { void LobbyInfoSynced(Server server); }
 	public interface INotifyServerStart { void ServerStarted(Server server); }
+	public interface INotifyServerEmpty { void ServerEmpty(Server server); }
 	public interface INotifyServerShutdown { void ServerShutdown(Server server); }
 	public interface IStartGame { void GameStarted(Server server); }
 	public interface IClientJoined { void ClientJoined(Server server, Connection conn); }
