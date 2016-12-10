@@ -532,6 +532,16 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				// Reworking bridge logic
+				if (engineVersion < 20161210)
+				{
+					if (node.Key == "BridgeHut")
+						RenameNodeKey(node, "LegacyBridgeHut");
+
+					if (node.Key == "BridgeLayer")
+						RenameNodeKey(node, "LegacyBridgeLayer");
+				}
+
 				UpgradeActorRules(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 

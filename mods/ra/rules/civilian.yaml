@@ -522,7 +522,7 @@ BRIDGEHUT:
 	Selectable:
 		Bounds: 48,48
 		Priority: 2
-	BridgeHut:
+	LegacyBridgeHut:
 	Targetable:
 		TargetTypes: BridgeHut, C4
 
@@ -534,7 +534,7 @@ BRIDGEHUT.small:
 	Selectable:
 		Bounds: 24,24
 		Priority: 2
-	BridgeHut:
+	LegacyBridgeHut:
 	Targetable:
 		TargetTypes: BridgeHut, C4
 
