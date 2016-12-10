@@ -22,11 +22,8 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			: base(widget, world, modData)
 		{
 			var shellmapDecorations = widget.Get("SHELLMAP_DECORATIONS");
-			shellmapDecorations.IsVisible = () => menuType != MenuType.None && Game.Settings.Game.ShowShellmap;
+			shellmapDecorations.IsVisible = () => menuType != MenuType.None;
 			shellmapDecorations.Get<ImageWidget>("RECBLOCK").IsVisible = () => world.WorldTick / 25 % 2 == 0;
-
-			var shellmapDisabledDecorations = widget.Get("SHELLMAP_DISABLED_DECORATIONS");
-			shellmapDisabledDecorations.IsVisible = () => !Game.Settings.Game.ShowShellmap;
 		}
 	}
 }

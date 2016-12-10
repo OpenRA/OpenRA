@@ -158,8 +158,6 @@ namespace OpenRA
 
 		public string Platform = "Default";
 
-		public bool ShowShellmap = true;
-
 		public bool ViewportEdgeScroll = true;
 		public bool LockMouseWindow = false;
 		public MouseScrollType MiddleMouseScroll = MouseScrollType.Standard;

@@ -30,6 +30,7 @@ Container@MENU_BACKGROUND:
 					ImageCollection: shellmapbits
 					ImageName: record
 		Container@SHELLMAP_DISABLED_DECORATIONS:
+			Visible: false
 			Children:
 				Image@NOD:
 					X: WINDOW_RIGHT/2-384
