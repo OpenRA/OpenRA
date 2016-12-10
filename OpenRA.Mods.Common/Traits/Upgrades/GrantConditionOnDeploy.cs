@@ -204,7 +204,7 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			if (!string.IsNullOrEmpty(info.DeploySound))
-				Game.Sound.Play(info.DeploySound, self.CenterPosition);
+				Game.Sound.Play(SoundType.World, info.DeploySound, self.CenterPosition);
 
 			// Revoke upgrades that are used while undeployed.
 			if (!init)
@@ -227,7 +227,7 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			if (!string.IsNullOrEmpty(info.UndeploySound))
-				Game.Sound.Play(info.UndeploySound, self.CenterPosition);
+				Game.Sound.Play(SoundType.World, info.UndeploySound, self.CenterPosition);
 
 			if (!init)
 				OnUndeployStarted();

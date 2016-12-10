@@ -58,7 +58,7 @@ namespace OpenRA.Mods.Common.Traits
 			self.CancelActivity();
 
 			foreach (var s in info.SellSounds)
-				Game.Sound.PlayToPlayer(self.Owner, s, self.CenterPosition);
+				Game.Sound.PlayToPlayer(SoundType.UI, self.Owner, s, self.CenterPosition);
 
 			foreach (var ns in self.TraitsImplementing<INotifySold>())
 				ns.Selling(self);

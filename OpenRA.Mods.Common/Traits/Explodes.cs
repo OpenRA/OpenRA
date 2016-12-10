@@ -88,7 +88,7 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			if (weapon.Report != null && weapon.Report.Any())
-				Game.Sound.Play(weapon.Report.Random(e.Attacker.World.SharedRandom), self.CenterPosition);
+				Game.Sound.Play(SoundType.World, weapon.Report.Random(e.Attacker.World.SharedRandom), self.CenterPosition);
 
 			if (info.Type == ExplosionType.Footprint && buildingInfo != null)
 			{

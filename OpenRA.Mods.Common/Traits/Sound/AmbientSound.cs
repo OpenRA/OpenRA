@@ -50,9 +50,9 @@ namespace OpenRA.Mods.Common.Traits.Sound
 			if (wasDisabled && Info.Interval <= 0)
 			{
 				if (self.OccupiesSpace != null)
-					currentSound = Game.Sound.PlayLooped(Info.SoundFile, self.CenterPosition);
+					currentSound = Game.Sound.PlayLooped(SoundType.World, Info.SoundFile, self.CenterPosition);
 				else
-					currentSound = Game.Sound.PlayLooped(Info.SoundFile);
+					currentSound = Game.Sound.PlayLooped(SoundType.World, Info.SoundFile);
 			}
 
 			wasDisabled = false;
@@ -66,9 +66,9 @@ namespace OpenRA.Mods.Common.Traits.Sound
 			interval = Info.Interval;
 
 			if (self.OccupiesSpace != null)
-				Game.Sound.Play(Info.SoundFile, self.CenterPosition);
+				Game.Sound.Play(SoundType.World, Info.SoundFile, self.CenterPosition);
 			else
-				Game.Sound.Play(Info.SoundFile);
+				Game.Sound.Play(SoundType.World, Info.SoundFile);
 		}
 	}
 }

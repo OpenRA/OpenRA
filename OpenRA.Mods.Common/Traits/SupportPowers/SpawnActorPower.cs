@@ -50,7 +50,7 @@ namespace OpenRA.Mods.Common.Traits
 				{
 					var location = self.World.Map.CenterOfCell(order.TargetLocation);
 
-					Game.Sound.Play(info.DeploySound, location);
+					Game.Sound.Play(SoundType.World, info.DeploySound, location);
 
 					if (!string.IsNullOrEmpty(info.EffectSequence) && !string.IsNullOrEmpty(info.EffectPalette))
 						w.Add(new SpriteEffect(location, w, info.EffectImage, info.EffectSequence, info.EffectPalette));

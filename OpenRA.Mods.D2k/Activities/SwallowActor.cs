@@ -76,7 +76,7 @@ namespace OpenRA.Mods.D2k.Activities
 
 			var attackPosition = self.CenterPosition;
 			var affectedPlayers = targets.Select(x => x.Owner).Distinct().ToList();
-			Game.Sound.Play(swallow.Info.WormAttackSound, self.CenterPosition);
+			Game.Sound.Play(SoundType.World, swallow.Info.WormAttackSound, self.CenterPosition);
 
 			Game.RunAfterDelay(1000, () =>
 			{

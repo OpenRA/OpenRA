@@ -245,7 +245,7 @@ namespace OpenRA.Mods.Common.Traits
 						self.World.Add(projectile);
 
 					if (args.Weapon.Report != null && args.Weapon.Report.Any())
-						Game.Sound.Play(args.Weapon.Report.Random(self.World.SharedRandom), self.CenterPosition);
+						Game.Sound.Play(SoundType.World, args.Weapon.Report.Random(self.World.SharedRandom), self.CenterPosition);
 
 					foreach (var na in self.TraitsImplementing<INotifyAttack>())
 						na.Attacking(self, target, this, barrel);

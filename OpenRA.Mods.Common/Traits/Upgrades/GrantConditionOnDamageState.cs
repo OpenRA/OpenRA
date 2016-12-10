@@ -64,7 +64,7 @@ namespace OpenRA.Mods.Common.Traits
 			conditionToken = manager.GrantCondition(self, info.Condition);
 
 			var sound = info.EnabledSounds.RandomOrDefault(Game.CosmeticRandom);
-			Game.Sound.Play(sound, self.CenterPosition);
+			Game.Sound.Play(SoundType.World, sound, self.CenterPosition);
 		}
 
 		void INotifyDamageStateChanged.DamageStateChanged(Actor self, AttackInfo e)
@@ -80,7 +80,7 @@ namespace OpenRA.Mods.Common.Traits
 				conditionToken = manager.RevokeCondition(self, conditionToken);
 
 				var sound = info.DisabledSounds.RandomOrDefault(Game.CosmeticRandom);
-				Game.Sound.Play(sound, self.CenterPosition);
+				Game.Sound.Play(SoundType.World, sound, self.CenterPosition);
 			}
 		}
 	}

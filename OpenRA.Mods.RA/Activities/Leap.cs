@@ -50,7 +50,7 @@ namespace OpenRA.Mods.RA.Activities
 			self.Trait<WithInfantryBody>().Attacking(self, Target.FromActor(target), a);
 
 			if (weapon.Report != null && weapon.Report.Any())
-				Game.Sound.Play(weapon.Report.Random(self.World.SharedRandom), self.CenterPosition);
+				Game.Sound.Play(SoundType.World, weapon.Report.Random(self.World.SharedRandom), self.CenterPosition);
 		}
 
 		public override Activity Tick(Actor self)

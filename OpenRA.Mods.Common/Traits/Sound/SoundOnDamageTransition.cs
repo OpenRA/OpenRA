@@ -40,12 +40,12 @@ namespace OpenRA.Mods.Common.Traits.Sound
 			if (e.DamageState == DamageState.Dead)
 			{
 				var sound = info.DestroyedSounds.RandomOrDefault(rand);
-				Game.Sound.Play(sound, self.CenterPosition);
+				Game.Sound.Play(SoundType.World, sound, self.CenterPosition);
 			}
 			else if (e.DamageState >= DamageState.Heavy && e.PreviousDamageState < DamageState.Heavy)
 			{
 				var sound = info.DamagedSounds.RandomOrDefault(rand);
-				Game.Sound.Play(sound, self.CenterPosition);
+				Game.Sound.Play(SoundType.World, sound, self.CenterPosition);
 			}
 		}
 	}

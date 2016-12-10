@@ -148,7 +148,7 @@ namespace OpenRA.Mods.Common.Traits
 					cloakedToken = upgradeManager.GrantCondition(self, Info.CloakedCondition);
 
 				if (!self.TraitsImplementing<Cloak>().Any(a => a != this && a.Cloaked))
-					Game.Sound.Play(Info.CloakSound, self.CenterPosition);
+					Game.Sound.Play(SoundType.World, Info.CloakSound, self.CenterPosition);
 			}
 			else if (!isCloaked && wasCloaked)
 			{
@@ -156,7 +156,7 @@ namespace OpenRA.Mods.Common.Traits
 					cloakedToken = upgradeManager.RevokeCondition(self, cloakedToken);
 
 				if (!self.TraitsImplementing<Cloak>().Any(a => a != this && a.Cloaked))
-					Game.Sound.Play(Info.UncloakSound, self.CenterPosition);
+					Game.Sound.Play(SoundType.World, Info.UncloakSound, self.CenterPosition);
 			}
 
 			wasCloaked = isCloaked;

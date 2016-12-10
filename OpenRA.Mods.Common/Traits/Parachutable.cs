@@ -88,7 +88,7 @@ namespace OpenRA.Mods.Common.Traits
 			var onWater = info.WaterTerrainTypes.Contains(self.World.Map.GetTerrainInfo(cell).Type);
 
 			var sound = onWater ? info.WaterImpactSound : info.GroundImpactSound;
-			Game.Sound.Play(sound, self.CenterPosition);
+			Game.Sound.Play(SoundType.World, sound, self.CenterPosition);
 
 			var sequence = onWater ? info.WaterCorpseSequence : info.GroundCorpseSequence;
 			var palette = onWater ? info.WaterCorpsePalette : info.GroundCorpsePalette;

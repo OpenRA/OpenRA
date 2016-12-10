@@ -37,7 +37,7 @@ namespace OpenRA.Mods.TS.Traits
 
 		public override void SelectTarget(Actor self, string order, SupportPowerManager manager)
 		{
-			Game.Sound.PlayToPlayer(manager.Self.Owner, Info.SelectTargetSound);
+			Game.Sound.PlayToPlayer(SoundType.UI, manager.Self.Owner, Info.SelectTargetSound);
 			self.World.OrderGenerator = new SelectAttackPowerTarget(self, order, manager, info.Cursor, MouseButton.Left, attack);
 		}
 

@@ -50,7 +50,7 @@ namespace OpenRA.Mods.Common.Activities
 
 				self.Dispose();
 				foreach (var s in Sounds)
-					Game.Sound.PlayToPlayer(self.Owner, s, self.CenterPosition);
+					Game.Sound.PlayToPlayer(SoundType.World, self.Owner, s, self.CenterPosition);
 
 				Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", Notification, self.Owner.Faction.InternalName);
 

@@ -62,7 +62,7 @@ namespace OpenRA.Mods.Common.Traits
 				// Gate was fully open
 				if (Position == OpenPosition)
 				{
-					Game.Sound.Play(info.ClosingSound, self.CenterPosition);
+					Game.Sound.Play(SoundType.World, info.ClosingSound, self.CenterPosition);
 					self.World.ActorMap.AddInfluence(self, this);
 				}
 
@@ -72,7 +72,7 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				// Gate was fully closed
 				if (Position == 0)
-					Game.Sound.Play(info.OpeningSound, self.CenterPosition);
+					Game.Sound.Play(SoundType.World, info.OpeningSound, self.CenterPosition);
 
 				Position++;
 

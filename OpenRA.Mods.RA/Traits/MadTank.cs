@@ -159,9 +159,9 @@ namespace OpenRA.Mods.RA.Traits
 				wfsb.PlayCustomAnimationRepeating(self, info.ThumpSequence);
 			deployed = true;
 			self.QueueActivity(new Wait(info.ChargeDelay, false));
-			self.QueueActivity(new CallFunc(() => Game.Sound.Play(info.ChargeSound, self.CenterPosition)));
+			self.QueueActivity(new CallFunc(() => Game.Sound.Play(SoundType.World, info.ChargeSound, self.CenterPosition)));
 			self.QueueActivity(new Wait(info.DetonationDelay, false));
-			self.QueueActivity(new CallFunc(() => Game.Sound.Play(info.DetonationSound, self.CenterPosition)));
+			self.QueueActivity(new CallFunc(() => Game.Sound.Play(SoundType.World, info.DetonationSound, self.CenterPosition)));
 			self.QueueActivity(new CallFunc(Detonate));
 		}
 
