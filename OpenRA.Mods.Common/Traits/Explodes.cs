@@ -17,16 +17,18 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
+	public enum ExplosionType { Footprint, CenterPosition }
+
 	[Desc("This actor explodes when killed.")]
 	public class ExplodesInfo : ITraitInfo, IRulesetLoaded, Requires<HealthInfo>
 	{
-		[WeaponReference, FieldLoader.Require, Desc("Weapon to use for explosion if ammo/payload is loaded.")]
+		[WeaponReference, FieldLoader.Require, Desc("Default weapon to use for explosion if ammo/payload is loaded.")]
 		public readonly string Weapon = "UnitExplode";
 
-		[WeaponReference, Desc("Weapon to use for explosion if no ammo/payload is loaded.")]
+		[WeaponReference, Desc("Fallback weapon to use for explosion if empty (no ammo/payload).")]
 		public readonly string EmptyWeapon = "UnitExplode";
 
-		[Desc("Chance that the explosion will use Weapon if the actor has ammo/payload.")]
+		[Desc("Chance that the explosion will use Weapon instead of EmptyWeapon when exploding, provided the actor has ammo/payload.")]
 		public readonly int LoadedChance = 100;
 
 		[Desc("Chance that this actor will explode at all.")]
@@ -37,6 +39,10 @@ namespace OpenRA.Mods.Common.Traits
 
 		[Desc("DeathType(s) that trigger the explosion. Leave empty to always trigger an explosion.")]
 		public readonly HashSet<string> DeathTypes = new HashSet<string>();
+
+		[Desc("Possible values are CenterPosition (explosion at the actors' center) and ",
+			"Footprint (explosion on each occupied cell).")]
+		public readonly ExplosionType Type = ExplosionType.CenterPosition;
 
 		public WeaponInfo WeaponInfo { get; private set; }
 		public WeaponInfo EmptyWeaponInfo { get; private set; }
@@ -49,11 +55,11 @@ namespace OpenRA.Mods.Common.Traits
 		}
 	}
 
-	public class Explodes : INotifyKilled, INotifyDamage
+	public class Explodes : INotifyKilled, INotifyDamage, INotifyCreated
 	{
 		readonly ExplodesInfo info;
-
 		readonly Health health;
+		BuildingInfo buildingInfo;
 
 		public Explodes(ExplodesInfo info, Actor self)
 		{
@@ -61,7 +67,12 @@ namespace OpenRA.Mods.Common.Traits
 			health = self.Trait<Health>();
 		}
 
-		public void Killed(Actor self, AttackInfo e)
+		void INotifyCreated.Created(Actor self)
+		{
+			buildingInfo = self.Info.TraitInfoOrDefault<BuildingInfo>();
+		}
+
+		void INotifyKilled.Killed(Actor self, AttackInfo e)
 		{
 			if (!self.IsInWorld)
 				return;
@@ -79,6 +90,15 @@ namespace OpenRA.Mods.Common.Traits
 			if (weapon.Report != null && weapon.Report.Any())
 				Game.Sound.Play(weapon.Report.Random(e.Attacker.World.SharedRandom), self.CenterPosition);
 
+			if (info.Type == ExplosionType.Footprint && buildingInfo != null)
+			{
+				var cells = FootprintUtils.UnpathableTiles(self.Info.Name, buildingInfo, self.Location);
+				foreach (var c in cells)
+					weapon.Impact(Target.FromPos(self.World.Map.CenterOfCell(c)), e.Attacker, Enumerable.Empty<int>());
+
+				return;
+			}
+
 			// Use .FromPos since this actor is killed. Cannot use Target.FromActor
 			weapon.Impact(Target.FromPos(self.CenterPosition), e.Attacker, Enumerable.Empty<int>());
 		}
@@ -90,7 +110,7 @@ namespace OpenRA.Mods.Common.Traits
 			return (shouldExplode && useFullExplosion) ? info.WeaponInfo : info.EmptyWeaponInfo;
 		}
 
-		public void Damaged(Actor self, AttackInfo e)
+		void INotifyDamage.Damaged(Actor self, AttackInfo e)
 		{
 			if (info.DamageThreshold == 0)
 				return;

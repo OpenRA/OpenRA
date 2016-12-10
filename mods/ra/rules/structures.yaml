@@ -84,8 +84,9 @@ GAP:
 		Amount: -60
 	MustBeDestroyed:
 		RequiredForShortGame: false
-	WithBuildingExplosion:
-		Sequences: building, building_napalm, large_explosion, self_destruct
+	Explodes:
+		Weapon: SmallBuildingExplode
+		EmptyWeapon: SmallBuildingExplode
 
 SPEN:
 	Inherits: ^Building
@@ -434,8 +435,6 @@ TSLA:
 	DetectCloaked:
 		Range: 8c0
 	ProvidesPrerequisite@buildingname:
-	WithBuildingExplosion:
-		Sequences: building, building_napalm, large_explosion, self_destruct
 
 AGUN:
 	Inherits: ^Defense
@@ -482,8 +481,6 @@ AGUN:
 		Amount: -50
 	DetectCloaked:
 		Range: 6c0
-	WithBuildingExplosion:
-		Sequences: building, building_napalm, large_explosion, self_destruct
 	BodyOrientation:
 		UseClassicFacingFudge: True
 
@@ -566,8 +563,6 @@ PBOX:
 		Amount: -15
 	DetectCloaked:
 		Range: 6c0
-	WithBuildingExplosion:
-		Sequences: building, building_napalm, large_explosion, self_destruct
 
 HBOX:
 	Inherits: ^Defense
@@ -614,8 +609,6 @@ HBOX:
 	Power:
 		Amount: -15
 	-MustBeDestroyed:
-	WithBuildingExplosion:
-		Sequences: building, building_napalm, large_explosion, self_destruct
 
 GUN:
 	Inherits: ^Defense
@@ -652,8 +645,6 @@ GUN:
 		Amount: -40
 	DetectCloaked:
 		Range: 7c0
-	WithBuildingExplosion:
-		Sequences: building, building_napalm, large_explosion, self_destruct
 	BodyOrientation:
 		UseClassicFacingFudge: True
 
@@ -692,8 +683,9 @@ FTUR:
 	DetectCloaked:
 		Range: 6c0
 	ProvidesPrerequisite@buildingname:
-	WithBuildingExplosion:
-		Sequences: building, building_napalm, large_explosion, self_destruct
+	Explodes:
+		Weapon: BuildingExplode
+		EmptyWeapon: BuildingExplode
 
 SAM:
 	Inherits: ^Defense
@@ -950,8 +942,6 @@ FACT:
 	WithDeathAnimation:
 		DeathSequence: dead
 		UseDeathTypeSuffix: false
-	WithBuildingExplosion:
-		Delay: 1
 	ProvidesPrerequisite@buildingname:
 
 PROC:
@@ -1004,8 +994,6 @@ PROC:
 	WithDeathAnimation:
 		DeathSequence: dead
 		UseDeathTypeSuffix: false
-	WithBuildingExplosion:
-		Delay: 1
 	ProvidesPrerequisite@buildingname:
 
 SILO:
@@ -1036,8 +1024,9 @@ SILO:
 	-EmitInfantryOnSell:
 	Power:
 		Amount: -10
-	WithBuildingExplosion:
-		Sequences: building, building_napalm, large_explosion, self_destruct
+	Explodes:
+		Weapon: SmallBuildingExplode
+		EmptyWeapon: SmallBuildingExplode
 
 HPAD:
 	Inherits: ^Building
@@ -1267,8 +1256,6 @@ POWR:
 	WithDeathAnimation:
 		DeathSequence: dead
 		UseDeathTypeSuffix: false
-	WithBuildingExplosion:
-		Delay: 1
 
 APWR:
 	Inherits: ^Building
@@ -1308,8 +1295,6 @@ APWR:
 	WithDeathAnimation:
 		DeathSequence: dead
 		UseDeathTypeSuffix: false
-	WithBuildingExplosion:
-		Delay: 1
 
 STEK:
 	Inherits: ^ScienceBuilding
@@ -1448,8 +1433,6 @@ KENN:
 	Power:
 		Amount: -10
 	ProvidesPrerequisite@buildingname:
-	WithBuildingExplosion:
-		Sequences: building, building_napalm, large_explosion, self_destruct
 	WithDecoration@primary:
 		RequiresSelection: true
 		Image: pips

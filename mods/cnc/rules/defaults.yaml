@@ -563,9 +563,10 @@
 		DamagedSounds: xplos.aud
 		DestroyedSounds: crumble.aud
 	WithSpriteBody:
-	WithBuildingExplosion:
-		Sequences: building, building_napalm, med_frag, poof, small_building
-		Delay: 1
+	Explodes:
+		Type: Footprint
+		Weapon: BuildingExplode
+		EmptyWeapon: BuildingExplode
 	CaptureNotification:
 		Notification: BuildingCaptured
 		NewOwnerVoice: no
@@ -650,7 +651,7 @@
 	-SelectionDecorations:
 	Tooltip:
 		GenericName: Field
-	-WithBuildingExplosion:
+	-Explodes:
 	-Targetable:
 	-Demolishable:
 	RenderSprites:

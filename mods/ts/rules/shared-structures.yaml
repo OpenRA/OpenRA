@@ -107,6 +107,8 @@ PROC:
 		FactionImages:
 			gdi: proc.gdi
 			nod: proc.nod
+	Explodes:
+		Weapon: TiberiumExplosion
 
 GASILO:
 	Inherits: ^Building
@@ -150,6 +152,8 @@ GASILO:
 		Amount: -10
 	SelectionDecorations:
 		VisualBounds: 80, 48, -5, 0
+	Explodes:
+		Weapon: TiberiumExplosion
 
 ANYPOWER:
 	AlwaysVisible:

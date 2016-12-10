@@ -494,8 +494,10 @@
 		DamagedSounds: kaboom1.aud
 		DestroyedSounds: kaboom22.aud
 	WithSpriteBody:
-	WithBuildingExplosion:
-		Sequences: building, building_napalm, large_explosion, self_destruct, large_napalm
+	Explodes:
+		Type: Footprint
+		Weapon: BuildingExplode
+		EmptyWeapon: BuildingExplode
 	CaptureNotification:
 	ShakeOnDeath:
 	ProximityCaptor:
@@ -546,6 +548,9 @@
 	-AcceptsSupplies:
 	DrawLineToTarget:
 	RenderRangeCircle:
+	Explodes:
+		Weapon: SmallBuildingExplode
+		EmptyWeapon: SmallBuildingExplode
 
 ^Wall:
 	Inherits@1: ^ExistsInWorld
