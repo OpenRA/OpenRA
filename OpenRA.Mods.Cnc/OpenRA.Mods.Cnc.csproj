@@ -72,7 +72,6 @@
     <Compile Include="Traits\Render\WithReloadingSpriteTurret.cs" />
     <Compile Include="Traits\Render\WithRoof.cs" />
     <Compile Include="Traits\SupportPowers\IonCannonPower.cs" />
-    <Compile Include="Widgets\Logic\CncMainMenuLogic.cs" />
     <Compile Include="Widgets\Logic\ProductionTabsLogic.cs" />
     <Compile Include="ImportTiberianDawnLegacyMapCommand.cs" />
     <Compile Include="Projectiles\IonCannon.cs" />

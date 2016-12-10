@@ -1,36 +1,13 @@
 Container@MENU_BACKGROUND:
 	Width: WINDOW_RIGHT
 	Height: WINDOW_BOTTOM
-	Logic: CncMainMenuLogic
+	Logic: MainMenuLogic
 	Children:
 		Container@MUSICBUTTONS:
 			Logic: MusicControllerLogic
 			Children:
 				LogicKeyListener@MUSICCONTROLLER_KEYHANDLER:
 		Container@SHELLMAP_DECORATIONS:
-			Children:
-				Image@RETICLE:
-					X: (WINDOW_RIGHT-WIDTH)/2
-					Y: (WINDOW_BOTTOM-HEIGHT)/2
-					Width: 512
-					Height: 512
-					ImageCollection: shellmap
-					ImageName: reticle
-				Label@REC:
-					X: (WINDOW_RIGHT-512)/2+10
-					Y: (WINDOW_BOTTOM+512)/2-28
-					Height: 18
-					Font: Bold
-					Text: REC
-				Image@RECBLOCK:
-					X: (WINDOW_RIGHT-512)/2+40
-					Y: (WINDOW_BOTTOM+512)/2-25
-					Width: 16
-					Height: 16
-					ImageCollection: shellmapbits
-					ImageName: record
-		Container@SHELLMAP_DISABLED_DECORATIONS:
-			Visible: false
 			Children:
 				Image@NOD:
 					X: WINDOW_RIGHT/2-384
