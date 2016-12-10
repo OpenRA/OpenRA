@@ -8,6 +8,7 @@ World:
 		Scripts: shellmap.lua
 	MusicPlaylist:
 		BackgroundMusic: map1
+		DisableWorldSounds: true
 
 LST:
 	Mobile:

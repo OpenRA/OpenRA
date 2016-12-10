@@ -1433,6 +1433,7 @@ Rules:
 			ValuePerUnit: 0
 		MusicPlaylist:
 			BackgroundMusic: intro
+			DisableWorldSounds: true
 		GlobalLightingPaletteEffect:
 			Blue: 0.7
 			Ambient: 0.7
