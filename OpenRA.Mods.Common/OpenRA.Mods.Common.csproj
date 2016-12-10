@@ -491,7 +491,7 @@
     <Compile Include="Traits\Turreted.cs" />
     <Compile Include="Traits\ProducibleWithLevel.cs" />
     <Compile Include="Traits\Upgrades\GrantConditionOnDeploy.cs" />
-    <Compile Include="Traits\Upgrades\DisableOnUpgrade.cs" />
+    <Compile Include="Traits\Upgrades\DisableOnCondition.cs" />
     <Compile Include="Traits\Upgrades\UpgradableTrait.cs" />
     <Compile Include="Traits\Upgrades\ProximityExternalCondition.cs" />
     <Compile Include="Traits\Upgrades\GrantConditionOnDamageState.cs" />

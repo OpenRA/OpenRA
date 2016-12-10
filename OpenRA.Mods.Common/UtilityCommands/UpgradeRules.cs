@@ -690,6 +690,9 @@ namespace OpenRA.Mods.Common.UtilityCommands
 							}
 						}
 					}
+
+					if (node.Key.StartsWith("DisableOnUpgrade", StringComparison.Ordinal))
+						RenameNodeKey(node, "DisableOnCondition");
 				}
 
 				UpgradeActorRules(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);

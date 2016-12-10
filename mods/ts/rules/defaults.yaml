@@ -71,7 +71,7 @@
 	UpgradeOverlay@EMPDISABLE:
 		RequiresCondition: empdisable
 		Palette: disabled
-	DisableOnUpgrade@EMPDISABLE:
+	DisableOnCondition@EMPDISABLE:
 		RequiresCondition: empdisable
 	TimedConditionBar@EMPDISABLE:
 		Condition: empdisable
