@@ -53,6 +53,7 @@ Container@PLAYER_WIDGETS:
 							Background: sidebar-button
 							TooltipText: Debug Menu
 							TooltipContainer: TOOLTIP_CONTAINER
+							DisableWorldSounds: true
 							VisualHeight: 0
 							Children:
 								Image@ICON:
@@ -130,6 +131,7 @@ Container@PLAYER_WIDGETS:
 							Background: sidebar-button
 							TooltipText: Options
 							TooltipContainer: TOOLTIP_CONTAINER
+							DisableWorldSounds: true
 							VisualHeight: 0
 							Children:
 								Image@ICON:
