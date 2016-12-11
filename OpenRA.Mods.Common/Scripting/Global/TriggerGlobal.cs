@@ -313,7 +313,7 @@ namespace OpenRA.Mods.Common.Scripting
 				}
 			};
 
-			triggerId = Context.World.ActorMap.AddCellTrigger(cells, invokeEntry, null);
+			triggerId = Context.World.ActorMap.AddCellTrigger(cells, invokeEntry, null, null);
 
 			return triggerId;
 		}
@@ -340,7 +340,36 @@ namespace OpenRA.Mods.Common.Scripting
 				}
 			};
 
-			triggerId = Context.World.ActorMap.AddCellTrigger(cells, null, invokeExit);
+			triggerId = Context.World.ActorMap.AddCellTrigger(cells, null, invokeExit, null);
+
+			return triggerId;
+		}
+
+		[Desc("Call a function when a ground-based actor changes it's owner within this cell footprint. " +
+			"Returns the trigger id for later removal using RemoveFootprintTrigger(int id). " +
+			"The callback function will be called as func(Actor a, Player oldOwner, Player newOwner, int id).")]
+		public int OnOwnerChangedFootprint(CPos[] cells, LuaFunction func)
+		{
+			// We can't easily dispose onOwnerChange, so we'll have to rely on finalization for it.
+			var onOwnerChange = (LuaFunction)func.CopyReference();
+			var triggerId = 0;
+			Action<Tuple<Actor, Player, Player>> invokeOwnerChange = a =>
+			{
+				try
+				{
+					using (var luaActor = a.Item1.ToLuaValue(Context))
+					using (var luaOldOwner = a.Item2.ToLuaValue(Context))
+					using (var luaNewOwner = a.Item3.ToLuaValue(Context))
+					using (var id = triggerId.ToLuaValue(Context))
+						onOwnerChange.Call(luaActor, luaOldOwner, luaNewOwner, id).Dispose();
+				}
+				catch (Exception e)
+				{
+					Context.FatalError(e.Message);
+				}
+			};
+
+			triggerId = Context.World.ActorMap.AddCellTrigger(cells, null, null, invokeOwnerChange);
 
 			return triggerId;
 		}
@@ -373,7 +402,7 @@ namespace OpenRA.Mods.Common.Scripting
 				}
 			};
 
-			triggerId = Context.World.ActorMap.AddProximityTrigger(pos, range, WDist.Zero, invokeEntry, null);
+			triggerId = Context.World.ActorMap.AddProximityTrigger(pos, range, WDist.Zero, invokeEntry, null, null);
 
 			return triggerId;
 		}
@@ -400,7 +429,36 @@ namespace OpenRA.Mods.Common.Scripting
 				}
 			};
 
-			triggerId = Context.World.ActorMap.AddProximityTrigger(pos, range, WDist.Zero, null, invokeExit);
+			triggerId = Context.World.ActorMap.AddProximityTrigger(pos, range, WDist.Zero, null, invokeExit, null);
+
+			return triggerId;
+		}
+
+		[Desc("Call a function when an actor changes ownership in this range. " +
+			"Returns the trigger id for later removal using RemoveProximityTrigger(int id). " +
+			"The callback function will be called as func(Actor a, Player oldOwner, Player newOwner, int id).")]
+		public int OnOwnerChangedProximityTrigger(WPos pos, WDist range, LuaFunction func)
+		{
+			// We can't easily dispose onOwnerChange, so we'll have to rely on finalization for it.
+			var onOwnerChange = (LuaFunction)func.CopyReference();
+			var triggerId = 0;
+			Action<Tuple<Actor, Player, Player>> invokeOwnerChange = a =>
+			{
+				try
+				{
+					using (var luaActor = a.Item1.ToLuaValue(Context))
+					using (var luaOldOwner = a.Item2.ToLuaValue(Context))
+					using (var luaNewOwner = a.Item3.ToLuaValue(Context))
+					using (var id = triggerId.ToLuaValue(Context))
+						onOwnerChange.Call(luaActor, luaOldOwner, luaNewOwner, id).Dispose();
+				}
+				catch (Exception e)
+				{
+					Context.FatalError(e.Message);
+				}
+			};
+
+			triggerId = Context.World.ActorMap.AddProximityTrigger(pos, range, WDist.Zero, null, null, invokeOwnerChange);
 
 			return triggerId;
 		}

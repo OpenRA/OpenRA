@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -64,7 +65,7 @@ namespace OpenRA.Mods.Common.Traits
 		public void AddedToWorld(Actor self)
 		{
 			cachedPosition = self.CenterPosition;
-			proximityTrigger = self.World.ActorMap.AddProximityTrigger(cachedPosition, cachedRange, cachedVRange, ActorEntered, ActorExited);
+			proximityTrigger = self.World.ActorMap.AddProximityTrigger(cachedPosition, cachedRange, cachedVRange, ActorEntered, ActorExited, ActorChangedOwner);
 		}
 
 		public void RemovedFromWorld(Actor self)
@@ -149,6 +150,26 @@ namespace OpenRA.Mods.Common.Traits
 			if (um != null)
 				foreach (var u in info.Upgrades)
 					um.RevokeUpgrade(a, u, this);
+		}
+
+		void ActorChangedOwner(Tuple<Actor, Player, Player> a)
+		{
+			if (a.Item1 == self || a.Item1.Disposed || self.Disposed)
+				return;
+
+			var um = a.Item1.TraitOrDefault<UpgradeManager>();
+
+			if (info.ValidStances.HasStance(self.Owner.Stances[a.Item2]) && um != null)
+			{
+				foreach (var u in info.Upgrades)
+					um.RevokeUpgrade(a.Item1, u, this);
+			}
+
+			if (info.ValidStances.HasStance(self.Owner.Stances[a.Item3]) && um != null)
+			{
+				foreach (var u in info.Upgrades)
+					um.GrantUpgrade(a.Item1, u, this);
+			}
 		}
 	}
 }
