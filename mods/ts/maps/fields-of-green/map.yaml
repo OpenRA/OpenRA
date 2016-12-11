@@ -1436,8 +1436,6 @@ Rules:
 		GlobalLightingPaletteEffect:
 			Blue: 0.7
 			Ambient: 0.7
-		ScriptUpgradesCache:
-			Upgrades: unkillable
 	HARV:
 		-Targetable:
 	GALITE:
@@ -1449,11 +1447,17 @@ Rules:
 		DamageMultiplier@UNKILLABLE:
 			RequiresCondition: unkillable
 			Modifier: 0
+		ExternalConditions:
+			Conditions: unkillable
 	NAOBEL:
 		DamageMultiplier@UNKILLABLE:
 			RequiresCondition: unkillable
 			Modifier: 0
+		ExternalConditions:
+			Conditions: unkillable
 	NALASR:
 		DamageMultiplier@UNKILLABLE:
 			RequiresCondition: unkillable
 			Modifier: 0
+		ExternalConditions:
+			Conditions: unkillable

@@ -11,8 +11,6 @@ World:
 		ValuePerUnit: 0
 	LuaScript:
 		Scripts: desert-shellmap.lua
-	ScriptUpgradesCache:
-		Upgrades: unkillable
 	-StartGameNotification:
 
 ^Vehicle:
@@ -23,6 +21,8 @@ World:
 	DamageMultiplier@UNKILLABLE:
 		RequiresCondition: unkillable
 		Modifier: 0
+	ExternalConditions:
+		Conditions: unkillable
 
 ^Tank:
 	GivesBounty:
@@ -32,6 +32,8 @@ World:
 	DamageMultiplier@UNKILLABLE:
 		RequiresCondition: unkillable
 		Modifier: 0
+	ExternalConditions:
+		Conditions: unkillable
 
 ^Infantry:
 	GivesBounty:
@@ -47,6 +49,8 @@ World:
 	DamageMultiplier@UNKILLABLE:
 		RequiresCondition: unkillable
 		Modifier: 0
+	ExternalConditions:
+		Conditions: unkillable
 
 ^Ship:
 	GivesBounty:
@@ -56,6 +60,8 @@ World:
 	DamageMultiplier@UNKILLABLE:
 		RequiresCondition: unkillable
 		Modifier: 0
+	ExternalConditions:
+		Conditions: unkillable
 
 ^Plane:
 	GivesBounty:
@@ -63,6 +69,8 @@ World:
 	DamageMultiplier@UNKILLABLE:
 		RequiresCondition: unkillable
 		Modifier: 0
+	ExternalConditions:
+		Conditions: unkillable
 
 ^Building:
 	GivesBounty:
@@ -70,6 +78,8 @@ World:
 	DamageMultiplier@UNKILLABLE:
 		RequiresCondition: unkillable
 		Modifier: 0
+	ExternalConditions:
+		Conditions: unkillable
 
 OILB:
 	CashTrickler:
