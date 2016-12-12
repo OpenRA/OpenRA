@@ -35,7 +35,7 @@ namespace OpenRA.Mods.RA.Traits
 
 	public class Chronoshiftable : ITick, ISync, ISelectionBar, IDeathActorInitModifier, INotifyCreated
 	{
-		readonly ChronoshiftableInfo info;
+		public readonly ChronoshiftableInfo Info;
 		readonly Actor self;
 		Actor chronosphere;
 		bool killCargo;
@@ -48,7 +48,7 @@ namespace OpenRA.Mods.RA.Traits
 
 		public Chronoshiftable(ActorInitializer init, ChronoshiftableInfo info)
 		{
-			this.info = info;
+			this.Info = info;
 			self = init.Self;
 
 			if (init.Contains<ChronoshiftReturnInit>())
@@ -63,14 +63,14 @@ namespace OpenRA.Mods.RA.Traits
 
 		public void Tick(Actor self)
 		{
-			if (!info.ReturnToOrigin || ReturnTicks <= 0)
+			if (!Info.ReturnToOrigin || ReturnTicks <= 0)
 				return;
 
 			// Return to original location
 			if (--ReturnTicks == 0)
 			{
 				self.CancelActivity();
-				self.QueueActivity(new Teleport(chronosphere, Origin, null, killCargo, true, info.ChronoshiftSound));
+				self.QueueActivity(new Teleport(chronosphere, Origin, null, killCargo, true, Info.ChronoshiftSound));
 			}
 		}
 
@@ -89,7 +89,7 @@ namespace OpenRA.Mods.RA.Traits
 		public virtual bool Teleport(Actor self, CPos targetLocation, int duration, bool killCargo, Actor chronosphere)
 		{
 			// Some things appear chronoshiftable, but instead they just die.
-			if (info.ExplodeInstead)
+			if (Info.ExplodeInstead)
 			{
 				self.World.AddFrameEndTask(w =>
 				{
@@ -109,7 +109,7 @@ namespace OpenRA.Mods.RA.Traits
 
 			// Set up the teleport
 			self.CancelActivity();
-			self.QueueActivity(new Teleport(chronosphere, targetLocation, null, killCargo, true, info.ChronoshiftSound));
+			self.QueueActivity(new Teleport(chronosphere, targetLocation, null, killCargo, true, Info.ChronoshiftSound));
 
 			return true;
 		}
@@ -117,7 +117,7 @@ namespace OpenRA.Mods.RA.Traits
 		// Show the remaining time as a bar
 		float ISelectionBar.GetValue()
 		{
-			if (!info.ReturnToOrigin)
+			if (!Info.ReturnToOrigin)
 				return 0f;
 
 			// Otherwise an empty bar is rendered all the time
@@ -127,12 +127,12 @@ namespace OpenRA.Mods.RA.Traits
 			return (float)ReturnTicks / duration;
 		}
 
-		Color ISelectionBar.GetColor() { return info.TimeBarColor; }
+		Color ISelectionBar.GetColor() { return Info.TimeBarColor; }
 		bool ISelectionBar.DisplayWhenEmpty { get { return false; } }
 
 		public void ModifyDeathActorInit(Actor self, TypeDictionary init)
 		{
-			if (!info.ReturnToOrigin || ReturnTicks <= 0)
+			if (!Info.ReturnToOrigin || ReturnTicks <= 0)
 				return;
 
 			init.Add(new ChronoshiftOriginInit(Origin));
