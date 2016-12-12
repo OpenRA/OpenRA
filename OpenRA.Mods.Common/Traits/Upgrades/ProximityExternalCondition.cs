@@ -9,16 +9,17 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Applies an upgrade to actors within a specified range.")]
-	public class UpgradeActorsNearInfo : ITraitInfo
+	public class ProximityExternalConditionInfo : ITraitInfo
 	{
-		[UpgradeGrantedReference, FieldLoader.Require]
-		[Desc("The upgrades to grant.")]
-		public readonly string[] Upgrades = { };
+		[FieldLoader.Require]
+		[Desc("The condition to apply. Must be included in the target actor's ExternalConditions list.")]
+		public readonly string Condition = null;
 
 		[Desc("The range to search for actors to upgrade.")]
 		public readonly WDist Range = WDist.FromCells(3);
@@ -36,13 +37,15 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string EnableSound = null;
 		public readonly string DisableSound = null;
 
-		public object Create(ActorInitializer init) { return new UpgradeActorsNear(init.Self, this); }
+		public object Create(ActorInitializer init) { return new ProximityExternalCondition(init.Self, this); }
 	}
 
-	public class UpgradeActorsNear : ITick, INotifyAddedToWorld, INotifyRemovedFromWorld, INotifyOtherProduction
+	public class ProximityExternalCondition : ITick, INotifyAddedToWorld, INotifyRemovedFromWorld, INotifyOtherProduction
 	{
-		readonly UpgradeActorsNearInfo info;
+		readonly ProximityExternalConditionInfo info;
 		readonly Actor self;
+
+		readonly Dictionary<Actor, int> tokens = new Dictionary<Actor, int>();
 
 		int proximityTrigger;
 		WPos cachedPosition;
@@ -53,7 +56,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		bool cachedDisabled = true;
 
-		public UpgradeActorsNear(Actor self, UpgradeActorsNearInfo info)
+		public ProximityExternalCondition(Actor self, ProximityExternalConditionInfo info)
 		{
 			this.info = info;
 			this.self = self;
@@ -106,9 +109,8 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			var um = a.TraitOrDefault<UpgradeManager>();
-			if (um != null)
-				foreach (var u in info.Upgrades)
-					um.GrantUpgrade(a, u, this);
+			if (um != null && !tokens.ContainsKey(a) && um.AcceptsExternalCondition(a, info.Condition))
+				tokens[a] = um.GrantCondition(a, info.Condition, true);
 		}
 
 		public void UnitProducedByOther(Actor self, Actor producer, Actor produced)
@@ -129,26 +131,24 @@ namespace OpenRA.Mods.Common.Traits
 					return;
 
 				var um = produced.TraitOrDefault<UpgradeManager>();
-				if (um != null)
-					foreach (var u in info.Upgrades)
-						if (um.AcknowledgesUpgrade(produced, u))
-							um.GrantTimedUpgrade(produced, u, 1);
+				if (um != null && um.AcceptsExternalCondition(produced, info.Condition))
+					tokens[produced] = um.GrantCondition(produced, info.Condition, true);
 			}
 		}
 
 		void ActorExited(Actor a)
 		{
-			if (a == self || a.Disposed || self.Disposed)
+			if (a.Disposed)
 				return;
 
-			var stance = self.Owner.Stances[a.Owner];
-			if (!info.ValidStances.HasStance(stance))
+			int token;
+			if (!tokens.TryGetValue(a, out token))
 				return;
 
+			tokens.Remove(a);
 			var um = a.TraitOrDefault<UpgradeManager>();
 			if (um != null)
-				foreach (var u in info.Upgrades)
-					um.RevokeUpgrade(a, u, this);
+				um.RevokeCondition(a, token);
 		}
 	}
 }

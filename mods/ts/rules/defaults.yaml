@@ -94,7 +94,7 @@
 		RequiresCondition: !empdisable && !deployed && !loading
 
 ^Cloakable:
-	Cloak@CLOAKGENERATOR:
+	Cloak@EXTERNALCLOAK:
 		RequiresCondition: cloakgenerator || crate-cloak
 		InitialDelay: 0
 		CloakDelay: 90
@@ -102,6 +102,8 @@
 		CloakSound: cloak5.aud
 		UncloakSound: cloak5.aud
 		UncloakOn: Attack, Unload, Infiltrate, Demolish, Damage
+	ExternalConditions@EXTERNALCLOAK:
+		Conditions: cloakgenerator, crate-cloak
 
 ^BasicBuilding:
 	Inherits@1: ^ExistsInWorld

@@ -396,8 +396,8 @@ NASTLH:
 		PowerupSpeech: EnablePower
 		PowerdownSpeech: DisablePower
 		IndicatorPalette: mouse
-	UpgradeActorsNear:
-		Upgrades: cloakgenerator
+	ProximityExternalCondition:
+		Condition: cloakgenerator
 		Range: 12c0
 		EnableSound: cloak5.aud
 		DisableSound: cloak5.aud
