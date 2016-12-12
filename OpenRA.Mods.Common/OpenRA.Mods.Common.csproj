@@ -413,6 +413,7 @@
     <Compile Include="Traits\Render\WithWallSpriteBody.cs" />
     <Compile Include="Traits\Render\RenderDetectionCircle.cs" />
     <Compile Include="Traits\Render\RenderRangeCircle.cs" />
+    <Compile Include="Traits\Render\RenderUpgradeRangeCircle.cs" />
     <Compile Include="Traits\Render\RenderVoxels.cs" />
     <Compile Include="Traits\Render\ProductionBar.cs" />
     <Compile Include="Traits\Render\SupportPowerChargeBar.cs" />

@@ -402,6 +402,7 @@ NASTLH:
 		EnableSound: cloak5.aud
 		DisableSound: cloak5.aud
 		AffectsParent: true
+	RenderUpgradeRangeCircle:
 	Selectable:
 		Bounds: 106, 48, 8, -6
 	SelectionDecorations:

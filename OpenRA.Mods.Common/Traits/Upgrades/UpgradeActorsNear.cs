@@ -20,6 +20,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("The upgrades to grant.")]
 		public readonly string[] Upgrades = { };
 
+		[Desc("Type of range circle.")]
+		public readonly string RangeCircleType = null;
+
 		[Desc("The range to search for actors to upgrade.")]
 		public readonly WDist Range = WDist.FromCells(3);
 
