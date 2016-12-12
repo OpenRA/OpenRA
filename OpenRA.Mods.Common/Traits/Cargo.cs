@@ -60,6 +60,11 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string LoadingCondition = null;
 
 		[UpgradeGrantedReference]
+		[Desc("The condition to grant to self while passengers are loaded.",
+			"Condition can stack with multiple passengers.")]
+		public readonly string LoadedCondition = null;
+
+		[UpgradeGrantedReference]
 		[Desc("Conditions to grant when specified actors are loaded inside the transport.",
 			"A dictionary of [actor id]: [condition].")]
 		public readonly Dictionary<string, string> PassengerConditions = new Dictionary<string, string>();
@@ -83,6 +88,7 @@ namespace OpenRA.Mods.Common.Traits
 		Aircraft aircraft;
 		UpgradeManager upgradeManager;
 		int loadingToken = UpgradeManager.InvalidConditionToken;
+		Stack<int> loadedTokens = new Stack<int>();
 
 		CPos currentCell;
 		public IEnumerable<CPos> CurrentAdjacentCells { get; private set; }
@@ -260,6 +266,9 @@ namespace OpenRA.Mods.Common.Traits
 			if (passengerTokens.TryGetValue(a.Info.Name, out passengerToken) && passengerToken.Any())
 				upgradeManager.RevokeCondition(self, passengerToken.Pop());
 
+			if (loadedTokens.Any())
+				upgradeManager.RevokeCondition(self, loadedTokens.Pop());
+
 			return a;
 		}
 
@@ -325,6 +334,9 @@ namespace OpenRA.Mods.Common.Traits
 			string passengerCondition;
 			if (upgradeManager != null && Info.PassengerConditions.TryGetValue(a.Info.Name, out passengerCondition))
 				passengerTokens.GetOrAdd(a.Info.Name).Push(upgradeManager.GrantCondition(self, passengerCondition));
+
+			if (upgradeManager != null && !string.IsNullOrEmpty(Info.LoadedCondition))
+				loadedTokens.Push(upgradeManager.GrantCondition(self, Info.LoadedCondition));
 		}
 
 		void INotifyKilled.Killed(Actor self, AttackInfo e)
