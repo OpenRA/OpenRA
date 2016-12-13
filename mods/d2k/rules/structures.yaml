@@ -88,10 +88,11 @@ construction_yard:
 	WithBuildingPlacedOverlay:
 		Palette: d2k
 	PrimaryBuilding:
+		PrimaryCondition: primary
 	ProvidesPrerequisite@buildingname:
-	GlobalUpgradable:
+	GrantConditionOnPrerequisite:
 		Prerequisites: upgrade.conyard
-		Upgrades: stardecoration
+		Condition: stardecoration
 	WithDecoration@upgraded:
 		RequiresSelection: true
 		Image: pips
@@ -181,6 +182,7 @@ barracks:
 	Production:
 		Produces: Infantry
 	PrimaryBuilding:
+		PrimaryCondition: primary
 	ProductionBar:
 	ProvidesPrerequisite@atreides:
 		Prerequisite: barracks.atreides
@@ -201,9 +203,9 @@ barracks:
 			smuggler: barracks.ordos
 			mercenary: barracks.ordos
 	ProvidesPrerequisite@buildingname:
-	GlobalUpgradable:
+	GrantConditionOnPrerequisite:
 		Prerequisites: upgrade.barracks
-		Upgrades: stardecoration
+		Condition: stardecoration
 	WithDecoration@upgraded:
 		RequiresSelection: true
 		Image: pips
@@ -360,6 +362,7 @@ light_factory:
 	Production:
 		Produces: Vehicle
 	PrimaryBuilding:
+		PrimaryCondition: primary
 	ProductionBar:
 	ProvidesPrerequisite@atreides:
 		Prerequisite: light.atreides
@@ -380,9 +383,9 @@ light_factory:
 		Sequence: idle-top
 	Power:
 		Amount: -125
-	GlobalUpgradable:
+	GrantConditionOnPrerequisite:
 		Prerequisites: upgrade.light
-		Upgrades: stardecoration
+		Condition: stardecoration
 	WithDecoration@upgraded:
 		RequiresSelection: true
 		Image: pips
@@ -430,6 +433,7 @@ heavy_factory:
 	Production:
 		Produces: Armor
 	PrimaryBuilding:
+		PrimaryCondition: primary
 	ProductionBar:
 	ProvidesPrerequisite@atreides:
 		Prerequisite: heavy.atreides
@@ -459,9 +463,9 @@ heavy_factory:
 	ProvidesPrerequisite@buildingname:
 	SelectionDecorations:
 		VisualBounds: 96,96
-	GlobalUpgradable:
+	GrantConditionOnPrerequisite:
 		Prerequisites: upgrade.heavy
-		Upgrades: stardecoration
+		Condition: stardecoration
 	WithDecoration@upgraded:
 		RequiresSelection: true
 		Image: pips
@@ -567,6 +571,7 @@ starport:
 		Palette: starportlights
 	ProductionBar:
 	PrimaryBuilding:
+		PrimaryCondition: primary
 	RequiresPower:
 	CanPowerDown:
 		PowerupSound: EnablePower
@@ -836,9 +841,9 @@ high_tech_factory:
 		Amount: -75
 	SelectionDecorations:
 		VisualBounds: 96,96
-	GlobalUpgradable:
+	GrantConditionOnPrerequisite:
 		Prerequisites: upgrade.hightech
-		Upgrades: stardecoration
+		Condition: stardecoration
 	WithDecoration@upgraded:
 		RequiresSelection: true
 		Image: pips

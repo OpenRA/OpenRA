@@ -100,7 +100,7 @@ HARV:
 			gdi: harv.gdi
 			nod: harv.nod
 	-DamagedByTerrain@VEINS:
-	-UpgradeOnTerrain@VEINS:
+	-GrantConditionOnTerrain@VEINS:
 	-WithIdleOverlay@VEINS:
 
 LPST:
@@ -137,9 +137,9 @@ LPST:
 		FactionImages:
 			gdi: lpst.gdi
 			nod: lpst.nod
-	DeployToUpgrade:
-		DeployedUpgrades: deployed
-		UndeployedUpgrades: undeployed
+	GrantConditionOnDeploy:
+		DeployedCondition: deployed
+		UndeployedCondition: undeployed
 		DeployAnimation: make
 		Facing: 160
 		AllowedTerrainTypes: Clear, Road, DirtRoad, Rough

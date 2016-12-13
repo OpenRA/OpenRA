@@ -17,7 +17,7 @@
 
 ^GainsExperience:
 	GainsExperience:
-		Upgrades:
+		Conditions:
 			500: rank-veteran
 			1000: rank-elite
 	FirepowerMultiplier@VETERAN:
@@ -71,7 +71,7 @@
 	UpgradeOverlay@EMPDISABLE:
 		RequiresCondition: empdisable
 		Palette: disabled
-	DisableOnUpgrade@EMPDISABLE:
+	DisableOnCondition@EMPDISABLE:
 		RequiresCondition: empdisable
 	TimedConditionBar@EMPDISABLE:
 		Condition: empdisable
@@ -326,8 +326,8 @@
 		HealIfBelow: 100
 		DamageCooldown: 125
 		RequiresCondition: hospitalheal
-	GlobalUpgradable@HOSPITAL:
-		Upgrades: hospitalheal
+	GrantConditionOnPrerequisite@HOSPITAL:
+		Condition: hospitalheal
 		Prerequisites: cahosp
 	WithDecoration@REDCROSS:
 		Image: pips
@@ -418,8 +418,8 @@
 	WithInfantryBody:
 		DefaultAttackSequence: attack
 		IdleSequences: idle1,idle2
-	UpgradeOnDamageState@CRITICAL:
-		Upgrades: criticalspeed
+	GrantConditionOnDamageState@CRITICAL:
+		Condition: criticalspeed
 		ValidDamageStates: Critical
 		GrantPermanently: true
 	SpeedMultiplier@CRITICAL:
@@ -498,11 +498,11 @@
 		Weapons: SmallDebris
 		Pieces: 3, 7
 		Range: 2c0, 5c0
-	UpgradeOnDamageState@DAMAGED:
-		Upgrades: damagedspeed
+	GrantConditionOnDamageState@DAMAGED:
+		Condition: damagedspeed
 		ValidDamageStates: Heavy
-	UpgradeOnDamageState@CRITICAL:
-		Upgrades: criticalspeed
+	GrantConditionOnDamageState@CRITICAL:
+		Condition: criticalspeed
 		ValidDamageStates: Critical
 	SpeedMultiplier@DAMAGED:
 		RequiresCondition: damagedspeed
@@ -569,8 +569,8 @@
 	SelectionDecorations:
 		Palette: pips
 	Aircraft:
-		AirborneUpgrades: airborne
-		CruisingUpgrades: cruising
+		AirborneCondition: airborne
+		CruisingCondition: cruising
 		RepairBuildings: gadept
 		RearmBuildings: gahpad, nahpad
 		LandWhenIdle: false
@@ -615,8 +615,8 @@
 		QuantizedFacings: 0
 		CameraPitch: 90
 	Aircraft:
-		AirborneUpgrades: airborne
-		CruisingUpgrades: cruising
+		AirborneCondition: airborne
+		CruisingCondition: cruising
 	Health:
 		HP: 280
 	Armor:
@@ -917,9 +917,9 @@
 		DamageInterval: 16
 		DamageTypes: BulletDeath
 		Terrain: Veins
-	UpgradeOnTerrain@VEINS:
+	GrantConditionOnTerrain@VEINS:
 		TerrainTypes: Veins
-		Upgrades: veins
+		Condition: veins
 	WithIdleOverlay@VEINS:
 		Sequence: veins
 		RequiresCondition: veins

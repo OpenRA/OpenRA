@@ -41,7 +41,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		}
 	}
 
-	class WithCrateBody : INotifyParachuteLanded, INotifyAddedToWorld
+	class WithCrateBody : INotifyParachute, INotifyAddedToWorld
 	{
 		readonly Actor self;
 		readonly Animation anim;
@@ -70,7 +70,9 @@ namespace OpenRA.Mods.Common.Traits.Render
 			PlaySequence();
 		}
 
-		void INotifyParachuteLanded.OnLanded(Actor ignore)
+		void INotifyParachute.OnParachute(Actor self) { }
+
+		void INotifyParachute.OnLanded(Actor self, Actor ignore)
 		{
 			PlaySequence();
 		}

@@ -331,7 +331,7 @@
     <Compile Include="Traits\GainsExperience.cs" />
     <Compile Include="Traits\GivesBounty.cs" />
     <Compile Include="Traits\GivesExperience.cs" />
-    <Compile Include="Traits\GlobalUpgradable.cs" />
+    <Compile Include="Traits\GrantConditionOnPrerequisite.cs" />
     <Compile Include="Traits\Guard.cs" />
     <Compile Include="Traits\Guardable.cs" />
     <Compile Include="Traits\Harvester.cs" />
@@ -373,7 +373,7 @@
     <Compile Include="Traits\Player\ClassicProductionQueue.cs" />
     <Compile Include="Traits\Player\ConquestVictoryConditions.cs" />
     <Compile Include="Traits\Player\EnemyWatcher.cs" />
-    <Compile Include="Traits\Player\GlobalUpgradeManager.cs" />
+    <Compile Include="Traits\Player\GrantConditionOnPrerequisiteManager.cs" />
     <Compile Include="Traits\Player\HarvesterAttackNotifier.cs" />
     <Compile Include="Traits\Player\MissionObjectives.cs" />
     <Compile Include="Traits\Player\PlaceBeacon.cs" />
@@ -490,13 +490,13 @@
     <Compile Include="Traits\Transforms.cs" />
     <Compile Include="Traits\Turreted.cs" />
     <Compile Include="Traits\ProducibleWithLevel.cs" />
-    <Compile Include="Traits\Upgrades\DeployToUpgrade.cs" />
-    <Compile Include="Traits\Upgrades\DisableOnUpgrade.cs" />
+    <Compile Include="Traits\Upgrades\GrantConditionOnDeploy.cs" />
+    <Compile Include="Traits\Upgrades\DisableOnCondition.cs" />
     <Compile Include="Traits\Upgrades\UpgradableTrait.cs" />
     <Compile Include="Traits\Upgrades\ProximityExternalCondition.cs" />
-    <Compile Include="Traits\Upgrades\UpgradeOnDamageState.cs" />
-    <Compile Include="Traits\Upgrades\UpgradeOnTerrain.cs" />
-    <Compile Include="Traits\Upgrades\UpgradeOnMovement.cs" />
+    <Compile Include="Traits\Upgrades\GrantConditionOnDamageState.cs" />
+    <Compile Include="Traits\Upgrades\GrantConditionOnTerrain.cs" />
+    <Compile Include="Traits\Upgrades\GrantConditionOnMovement.cs" />
     <Compile Include="Traits\Upgrades\UpgradeManager.cs" />
     <Compile Include="Traits\Valued.cs" />
     <Compile Include="Traits\Voiced.cs" />

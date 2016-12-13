@@ -112,6 +112,7 @@ NAHAND:
 	Production:
 		Produces: Infantry
 	PrimaryBuilding:
+		PrimaryCondition: primary
 	ProductionBar:
 	WithIdleOverlay@LIGHTS:
 		Sequence: idle-lights
@@ -167,6 +168,7 @@ NAWEAP:
 	Production:
 		Produces: Vehicle
 	PrimaryBuilding:
+		PrimaryCondition: primary
 	ProductionBar:
 	WithIdleOverlay@ROOF:
 		Sequence: idle-roof
@@ -216,6 +218,7 @@ NAHPAD:
 	Production:
 		Produces: Air
 	PrimaryBuilding:
+		PrimaryCondition: primary
 	Reservable:
 	RepairsUnits:
 		PlayerExperience: 15

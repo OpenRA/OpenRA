@@ -14,14 +14,14 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Disable the actor when this trait is enabled by an upgrade.")]
-	public class DisableOnUpgradeInfo : UpgradableTraitInfo
+	public class DisableOnConditionInfo : UpgradableTraitInfo
 	{
-		public override object Create(ActorInitializer init) { return new DisableOnUpgrade(this); }
+		public override object Create(ActorInitializer init) { return new DisableOnCondition(this); }
 	}
 
-	public class DisableOnUpgrade : UpgradableTrait<DisableOnUpgradeInfo>, IDisable
+	public class DisableOnCondition : UpgradableTrait<DisableOnConditionInfo>, IDisable
 	{
-		public DisableOnUpgrade(DisableOnUpgradeInfo info)
+		public DisableOnCondition(DisableOnConditionInfo info)
 			: base(info) { }
 
 		public bool Disabled { get { return !IsTraitDisabled; } }

@@ -53,12 +53,12 @@ namespace OpenRA.Mods.Common.Traits
 		[VoiceReference] public readonly string Voice = "Action";
 
 		[UpgradeGrantedReference]
-		[Desc("The upgrades to grant to self while airborne.")]
-		public readonly string[] AirborneUpgrades = { };
+		[Desc("The condition to grant to self while airborne.")]
+		public readonly string AirborneCondition = null;
 
 		[UpgradeGrantedReference]
-		[Desc("The upgrades to grant to self while at cruise altitude.")]
-		public readonly string[] CruisingUpgrades = { };
+		[Desc("The condition to grant to self while at cruise altitude.")]
+		public readonly string CruisingCondition = null;
 
 		[Desc("Can the actor hover in place mid-air? If not, then the actor will have to remain in motion (circle around).")]
 		public readonly bool CanHover = false;
@@ -119,6 +119,8 @@ namespace OpenRA.Mods.Common.Traits
 		bool airborne;
 		bool cruising;
 		bool firstTick = true;
+		int airborneToken = UpgradeManager.InvalidConditionToken;
+		int cruisingToken = UpgradeManager.InvalidConditionToken;
 
 		bool isMoving;
 		bool isMovingVertically;
@@ -656,20 +658,20 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			if (airborne)
 				return;
+
 			airborne = true;
-			if (um != null)
-				foreach (var u in Info.AirborneUpgrades)
-					um.GrantUpgrade(self, u, this);
+			if (um != null && !string.IsNullOrEmpty(Info.AirborneCondition) && airborneToken == UpgradeManager.InvalidConditionToken)
+				airborneToken = um.GrantCondition(self, Info.AirborneCondition);
 		}
 
 		void OnAirborneAltitudeLeft()
 		{
 			if (!airborne)
 				return;
+
 			airborne = false;
-			if (um != null)
-				foreach (var u in Info.AirborneUpgrades)
-					um.RevokeUpgrade(self, u, this);
+			if (um != null && airborneToken != UpgradeManager.InvalidConditionToken)
+				airborneToken = um.RevokeCondition(self, airborneToken);
 		}
 
 		#endregion
@@ -680,10 +682,10 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			if (cruising)
 				return;
+
 			cruising = true;
-			if (um != null)
-				foreach (var u in Info.CruisingUpgrades)
-					um.GrantUpgrade(self, u, this);
+			if (um != null && !string.IsNullOrEmpty(Info.CruisingCondition) && cruisingToken == UpgradeManager.InvalidConditionToken)
+				cruisingToken = um.GrantCondition(self, Info.CruisingCondition);
 		}
 
 		void OnCruisingAltitudeLeft()
@@ -691,9 +693,8 @@ namespace OpenRA.Mods.Common.Traits
 			if (!cruising)
 				return;
 			cruising = false;
-			if (um != null)
-				foreach (var u in Info.CruisingUpgrades)
-					um.RevokeUpgrade(self, u, this);
+			if (um != null && cruisingToken != UpgradeManager.InvalidConditionToken)
+				cruisingToken = um.RevokeCondition(self, cruisingToken);
 		}
 
 		#endregion

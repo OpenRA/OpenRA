@@ -17,7 +17,7 @@ World:
 	GivesBounty:
 		Percentage: 0
 	GainsExperience:
-		Upgrades:
+		Conditions:
 	DamageMultiplier@UNKILLABLE:
 		RequiresCondition: unkillable
 		Modifier: 0
@@ -28,7 +28,7 @@ World:
 	GivesBounty:
 		Percentage: 0
 	GainsExperience:
-		Upgrades:
+		Conditions:
 	DamageMultiplier@UNKILLABLE:
 		RequiresCondition: unkillable
 		Modifier: 0
@@ -39,7 +39,7 @@ World:
 	GivesBounty:
 		Percentage: 0
 	GainsExperience:
-		Upgrades:
+		Conditions:
 	DeathSounds@NORMAL:
 		VolumeMultiplier: 0.1
 	DeathSounds@BURNED:
@@ -56,7 +56,7 @@ World:
 	GivesBounty:
 		Percentage: 0
 	GainsExperience:
-		Upgrades:
+		Conditions:
 	DamageMultiplier@UNKILLABLE:
 		RequiresCondition: unkillable
 		Modifier: 0

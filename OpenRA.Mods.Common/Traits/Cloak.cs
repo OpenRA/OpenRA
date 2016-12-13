@@ -54,8 +54,8 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly HashSet<string> CloakTypes = new HashSet<string> { "Cloak" };
 
 		[UpgradeGrantedReference]
-		[Desc("The upgrades to grant to self while cloaked.")]
-		public readonly string[] WhileCloakedUpgrades = { };
+		[Desc("The condition to grant to self while cloaked.")]
+		public readonly string CloakedCondition = null;
 
 		public override object Create(ActorInitializer init) { return new Cloak(this); }
 	}
@@ -70,6 +70,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		CPos? lastPos;
 		bool wasCloaked = false;
+		int cloakedToken = UpgradeManager.InvalidConditionToken;
 
 		public Cloak(CloakInfo info)
 			: base(info)
@@ -81,12 +82,11 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			upgradeManager = self.TraitOrDefault<UpgradeManager>();
 
-			// The upgrade manager exists, but may not have finished being created yet.
-			// We'll defer the upgrades until the end of the tick, at which point it will be ready.
 			if (Cloaked)
 			{
 				wasCloaked = true;
-				self.World.AddFrameEndTask(_ => GrantUpgrades(self));
+				if (upgradeManager != null && cloakedToken == UpgradeManager.InvalidConditionToken && !string.IsNullOrEmpty(Info.CloakedCondition))
+					cloakedToken = upgradeManager.GrantCondition(self, Info.CloakedCondition);
 			}
 		}
 
@@ -144,13 +144,17 @@ namespace OpenRA.Mods.Common.Traits
 			var isCloaked = Cloaked;
 			if (isCloaked && !wasCloaked)
 			{
-				GrantUpgrades(self);
+				if (upgradeManager != null && cloakedToken == UpgradeManager.InvalidConditionToken && !string.IsNullOrEmpty(Info.CloakedCondition))
+					cloakedToken = upgradeManager.GrantCondition(self, Info.CloakedCondition);
+
 				if (!self.TraitsImplementing<Cloak>().Any(a => a != this && a.Cloaked))
 					Game.Sound.Play(Info.CloakSound, self.CenterPosition);
 			}
 			else if (!isCloaked && wasCloaked)
 			{
-				RevokeUpgrades(self);
+				if (cloakedToken != UpgradeManager.InvalidConditionToken)
+					cloakedToken = upgradeManager.RevokeCondition(self, cloakedToken);
+
 				if (!self.TraitsImplementing<Cloak>().Any(a => a != this && a.Cloaked))
 					Game.Sound.Play(Info.UncloakSound, self.CenterPosition);
 			}
@@ -174,20 +178,6 @@ namespace OpenRA.Mods.Common.Traits
 				color = Color.FromArgb(128, color);
 
 			return color;
-		}
-
-		void GrantUpgrades(Actor self)
-		{
-			if (upgradeManager != null)
-				foreach (var u in Info.WhileCloakedUpgrades)
-					upgradeManager.GrantUpgrade(self, u, this);
-		}
-
-		void RevokeUpgrades(Actor self)
-		{
-			if (upgradeManager != null)
-				foreach (var u in Info.WhileCloakedUpgrades)
-					upgradeManager.RevokeUpgrade(self, u, this);
 		}
 
 		void INotifyHarvesterAction.MovingToResources(Actor self, CPos targetCell, Activity next) { }

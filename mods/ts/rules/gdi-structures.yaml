@@ -38,7 +38,7 @@ GAPOWR:
 	DisabledOverlay:
 	Pluggable@pluga:
 		Offset: 0,1
-		Upgrades:
+		Conditions:
 			powrup: powrup.a
 	Power@pluga:
 		RequiresCondition: powrup.a
@@ -48,7 +48,7 @@ GAPOWR:
 		Sequence: idle-powrupa
 	Pluggable@plugb:
 		Offset: 1,1
-		Upgrades:
+		Conditions:
 			powrup: powrup.b
 	WithIdleOverlay@plugb:
 		RequiresCondition: powrup.b
@@ -96,6 +96,7 @@ GAPILE:
 	Production:
 		Produces: Infantry
 	PrimaryBuilding:
+		PrimaryCondition: primary
 	ProductionBar:
 	WithProductionOverlay@LIGHTS:
 		Sequence: production-lights
@@ -153,6 +154,7 @@ GAWEAP:
 	Production:
 		Produces: Vehicle
 	PrimaryBuilding:
+		PrimaryCondition: primary
 	ProductionBar:
 	WithIdleOverlay@ROOF:
 		Sequence: idle-roof
@@ -206,6 +208,7 @@ GAHPAD:
 	Production:
 		Produces: Air
 	PrimaryBuilding:
+		PrimaryCondition: primary
 	Reservable:
 	RepairsUnits:
 		PlayerExperience: 15
@@ -435,7 +438,7 @@ GAPLUG:
 		Amount: -50
 	Pluggable@pluga:
 		Offset: 0,2
-		Upgrades:
+		Conditions:
 			plug.ioncannon: plug.ioncannona
 			plug.hunterseeker: plug.hunterseekera
 	WithIdleOverlay@ioncannona:
@@ -446,7 +449,7 @@ GAPLUG:
 		Sequence: idle-hunterseekera
 	Pluggable@plugb:
 		Offset: 1,2
-		Upgrades:
+		Conditions:
 			plug.ioncannon: plug.ioncannonb
 			plug.hunterseeker: plug.hunterseekerb
 	WithIdleOverlay@ioncannonb:

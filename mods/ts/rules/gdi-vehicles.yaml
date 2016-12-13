@@ -30,8 +30,8 @@ APC:
 		UnloadVoice: Unload
 		LoadingCondition: loading
 		EjectOnDeath: true
-	UpgradeOnTerrain:
-		Upgrades: inwater
+	GrantConditionOnTerrain:
+		Condition: inwater
 		TerrainTypes: Water
 	WithVoxelBody:
 		RequiresCondition: !inwater
@@ -95,7 +95,7 @@ HVR:
 		StationaryInterval: 18
 		MovingInterval: 6
 	-DamagedByTerrain@VEINS:
-	-UpgradeOnTerrain@VEINS:
+	-GrantConditionOnTerrain@VEINS:
 	-WithIdleOverlay@VEINS:
 
 SMECH:
@@ -137,7 +137,7 @@ SMECH:
 	Selectable:
 		Bounds: 20, 32, 0, -8
 	-DamagedByTerrain@VEINS:
-	-UpgradeOnTerrain@VEINS:
+	-GrantConditionOnTerrain@VEINS:
 	-WithIdleOverlay@VEINS:
 
 MMCH:

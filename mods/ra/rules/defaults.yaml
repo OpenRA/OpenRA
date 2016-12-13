@@ -15,7 +15,7 @@
 
 ^GainsExperience:
 	GainsExperience:
-		Upgrades:
+		Conditions:
 			200: rank-veteran-1
 			400: rank-veteran-2
 			800: rank-veteran-3
@@ -191,6 +191,7 @@
 		GroundCorpsePalette:
 		WaterCorpseSequence:
 		WaterCorpsePalette:
+		ParachutingCondition: parachute
 	Explodes:
 		Weapon: UnitExplodeSmall
 		EmptyWeapon: UnitExplodeSmall
@@ -290,8 +291,8 @@
 		HealIfBelow: 100
 		DamageCooldown: 125
 		RequiresCondition: hospitalheal
-	GlobalUpgradable:
-		Upgrades: hospitalheal
+	GrantConditionOnPrerequisite:
+		Condition: hospitalheal
 		Prerequisites: hosp
 	DeathSounds@NORMAL:
 		DeathTypes: DefaultDeath, BulletDeath, SmallExplosionDeath, ExplosionDeath
@@ -307,6 +308,7 @@
 		GroundImpactSound: squishy2.aud
 		WaterImpactSound: splash9.aud
 		WaterCorpseSequence: small_splash
+		ParachutingCondition: parachute
 	Cloneable:
 		Types: Infantry
 	Voiced:
@@ -425,8 +427,8 @@
 	Aircraft:
 		RepairBuildings: fix
 		RearmBuildings: afld
-		AirborneUpgrades: airborne
-		CruisingUpgrades: cruising
+		AirborneCondition: airborne
+		CruisingCondition: cruising
 	Targetable@GROUND:
 		TargetTypes: Ground, Repair, Vehicle
 		RequiresCondition: !airborne
@@ -796,8 +798,8 @@
 	Tooltip:
 		GenericName: Destroyed Plane
 	Aircraft:
-		AirborneUpgrades: airborne
-		CruisingUpgrades: cruising
+		AirborneCondition: airborne
+		CruisingCondition: cruising
 	FallsToEarth:
 		Spins: False
 		Moves: True
@@ -811,8 +813,8 @@
 	Tooltip:
 		GenericName: Destroyed Helicopter
 	Aircraft:
-		AirborneUpgrades: airborne
-		CruisingUpgrades: cruising
+		AirborneCondition: airborne
+		CruisingCondition: cruising
 		CanHover: True
 	FallsToEarth:
 	BodyOrientation:
@@ -884,6 +886,7 @@
 	Parachutable:
 		FallRate: 26
 		KilledOnImpassableTerrain: false
+		ParachutingCondition: parachute
 	Passenger:
 	WithParachute:
 		Image: parach

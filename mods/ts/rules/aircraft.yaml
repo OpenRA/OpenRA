@@ -121,7 +121,7 @@ ORCAB:
 		MaximumPitch: 120
 		TurnSpeed: 3
 		Speed: 96
-		AirborneUpgrades: airborne
+		AirborneCondition: airborne
 		MoveIntoShroud: false
 		TakeoffSound: orcaup1.aud
 		LandingSound: orcadwn1.aud
@@ -243,7 +243,7 @@ SCRIN:
 		MaximumPitch: 90
 		TurnSpeed: 3
 		Speed: 168
-		AirborneUpgrades: airborne
+		AirborneCondition: airborne
 		MoveIntoShroud: false
 		TakeoffSound: dropup1.aud
 		LandingSound: dropdwn1.aud

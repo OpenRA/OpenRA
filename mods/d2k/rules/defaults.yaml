@@ -16,7 +16,7 @@
 
 ^GainsExperience:
 	GainsExperience:
-		Upgrades:
+		Conditions:
 			200: rank-veteran-1
 			400: rank-veteran-2
 			800: rank-veteran-3

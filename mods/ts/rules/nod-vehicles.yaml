@@ -29,7 +29,7 @@ BGGY:
 	AutoTarget:
 	WithMuzzleOverlay:
 	-DamagedByTerrain@VEINS:
-	-UpgradeOnTerrain@VEINS:
+	-GrantConditionOnTerrain@VEINS:
 	-WithIdleOverlay@VEINS:
 
 BIKE:
@@ -105,9 +105,9 @@ TTNK:
 		MaxHeightDelta: 3
 	RenderSprites:
 		Image: ttnk
-	DeployToUpgrade:
-		DeployedUpgrades: deployed
-		UndeployedUpgrades: undeployed
+	GrantConditionOnDeploy:
+		DeployedCondition: deployed
+		UndeployedCondition: undeployed
 		DeployAnimation: make
 		Facing: 160
 		AllowedTerrainTypes: Clear, Road, DirtRoad, Rough
@@ -256,7 +256,7 @@ WEED:
 	WithVoxelUnloadBody:
 	-GainsExperience:
 	-DamagedByTerrain@VEINS:
-	-UpgradeOnTerrain@VEINS:
+	-GrantConditionOnTerrain@VEINS:
 	-WithIdleOverlay@VEINS:
 
 SAPC:

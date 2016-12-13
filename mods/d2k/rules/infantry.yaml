@@ -96,8 +96,8 @@ thumper:
 	Mobile:
 		Speed: 43
 		RequiresCondition: !deployed
-	DeployToUpgrade:
-		DeployedUpgrades: deployed
+	GrantConditionOnDeploy:
+		DeployedCondition: deployed
 		Facing: 128
 		AllowedTerrainTypes: Sand, Spice, Dune, SpiceSand
 	WithInfantryBody:

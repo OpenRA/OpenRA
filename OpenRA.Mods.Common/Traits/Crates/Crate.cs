@@ -41,7 +41,7 @@ namespace OpenRA.Mods.Common.Traits
 	}
 
 	class Crate : ITick, IPositionable, ICrushable, ISync,
-		INotifyParachuteLanded, INotifyAddedToWorld, INotifyRemovedFromWorld, INotifyCrushed
+		INotifyParachute, INotifyAddedToWorld, INotifyRemovedFromWorld, INotifyCrushed
 	{
 		readonly Actor self;
 		readonly CrateInfo info;
@@ -70,7 +70,8 @@ namespace OpenRA.Mods.Common.Traits
 			OnCrushInner(crusher);
 		}
 
-		void INotifyParachuteLanded.OnLanded(Actor ignore)
+		void INotifyParachute.OnParachute(Actor self) { }
+		void INotifyParachute.OnLanded(Actor self, Actor ignore)
 		{
 			// Check whether the crate landed on anything
 			var landedOn = self.World.ActorMap.GetActorsAt(self.Location)

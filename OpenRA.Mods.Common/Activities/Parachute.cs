@@ -17,7 +17,6 @@ namespace OpenRA.Mods.Common.Activities
 {
 	public class Parachute : Activity
 	{
-		readonly UpgradeManager um;
 		readonly IPositionable pos;
 		readonly ParachutableInfo para;
 		readonly WVec fallVector;
@@ -29,7 +28,6 @@ namespace OpenRA.Mods.Common.Activities
 
 		public Parachute(Actor self, WPos dropPosition, Actor ignoreActor = null)
 		{
-			um = self.TraitOrDefault<UpgradeManager>();
 			pos = self.TraitOrDefault<IPositionable>();
 			ignore = ignoreActor;
 
@@ -44,9 +42,8 @@ namespace OpenRA.Mods.Common.Activities
 		{
 			triggered = true;
 
-			if (um != null)
-				foreach (var u in para.ParachuteUpgrade)
-					um.GrantUpgrade(self, u, this);
+			foreach (var np in self.TraitsImplementing<INotifyParachute>())
+				np.OnParachute(self);
 
 			// Place the actor and retrieve its visual position (CenterPosition)
 			pos.SetPosition(self, dropPosition);
@@ -60,12 +57,8 @@ namespace OpenRA.Mods.Common.Activities
 			var dat = self.World.Map.DistanceAboveTerrain(currentPosition);
 			pos.SetPosition(self, currentPosition - new WVec(WDist.Zero, WDist.Zero, dat));
 
-			if (um != null)
-				foreach (var u in para.ParachuteUpgrade)
-					um.RevokeUpgrade(self, u, this);
-
-			foreach (var npl in self.TraitsImplementing<INotifyParachuteLanded>())
-				npl.OnLanded(ignore);
+			foreach (var np in self.TraitsImplementing<INotifyParachute>())
+				np.OnLanded(self, ignore);
 
 			return NextActivity;
 		}

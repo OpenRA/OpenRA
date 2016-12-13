@@ -211,6 +211,7 @@ SPY:
 		Voice: Move
 	Disguise:
 		Voice: Move
+		DisguisedCondition: disguise
 	Infiltrates:
 		Types: SpyInfiltrate
 		PlayerExperience: 50

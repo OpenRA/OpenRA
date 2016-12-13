@@ -19,15 +19,15 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class DeployToUpgradeInfo : ITraitInfo, Requires<UpgradeManagerInfo>
+	public class GrantConditionOnDeployInfo : ITraitInfo
 	{
 		[UpgradeGrantedReference]
-		[Desc("The upgrades to grant while the actor is undeployed.")]
-		public readonly string[] UndeployedUpgrades = { };
+		[Desc("The condition to grant while the actor is undeployed.")]
+		public readonly string UndeployedCondition = null;
 
 		[UpgradeGrantedReference, FieldLoader.Require]
-		[Desc("The upgrades to grant after deploying and revoke before undeploying.")]
-		public readonly string[] DeployedUpgrades = { };
+		[Desc("The condition to grant after deploying and revoke before undeploying.")]
+		public readonly string DeployedCondition = null;
 
 		[Desc("The terrain types that this actor can deploy on to receive these upgrades. " +
 			"Leave empty to allow any.")]
@@ -57,27 +57,28 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Can this actor undeploy?")]
 		public readonly bool CanUndeploy = true;
 
-		public object Create(ActorInitializer init) { return new DeployToUpgrade(init, this); }
+		public object Create(ActorInitializer init) { return new GrantConditionOnDeploy(init, this); }
 	}
 
 	public enum DeployState { Undeployed, Deploying, Deployed, Undeploying }
 
-	public class DeployToUpgrade : IResolveOrder, IIssueOrder, INotifyCreated
+	public class GrantConditionOnDeploy : IResolveOrder, IIssueOrder, INotifyCreated
 	{
 		readonly Actor self;
-		readonly DeployToUpgradeInfo info;
-		readonly UpgradeManager manager;
+		readonly GrantConditionOnDeployInfo info;
 		readonly bool checkTerrainType;
 		readonly bool canTurn;
 		readonly Lazy<WithSpriteBody> body;
 
 		DeployState deployState;
+		UpgradeManager manager;
+		int deployedToken = UpgradeManager.InvalidConditionToken;
+		int undeployedToken = UpgradeManager.InvalidConditionToken;
 
-		public DeployToUpgrade(ActorInitializer init, DeployToUpgradeInfo info)
+		public GrantConditionOnDeploy(ActorInitializer init, GrantConditionOnDeployInfo info)
 		{
 			self = init.Self;
 			this.info = info;
-			manager = self.Trait<UpgradeManager>();
 			checkTerrainType = info.AllowedTerrainTypes.Count > 0;
 			canTurn = self.Info.HasTraitInfo<IFacingInfo>();
 			body = Exts.Lazy(self.TraitOrDefault<WithSpriteBody>);
@@ -87,6 +88,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void Created(Actor self)
 		{
+			manager = self.TraitOrDefault<UpgradeManager>();
+
 			switch (deployState)
 			{
 				case DeployState.Undeployed:
@@ -239,32 +242,32 @@ namespace OpenRA.Mods.Common.Traits
 
 		void OnDeployStarted()
 		{
-			foreach (var up in info.UndeployedUpgrades)
-				manager.RevokeUpgrade(self, up, this);
+			if (undeployedToken != UpgradeManager.InvalidConditionToken)
+				undeployedToken = manager.RevokeCondition(self, undeployedToken);
 
 			deployState = DeployState.Deploying;
 		}
 
 		void OnDeployCompleted()
 		{
-			foreach (var up in info.DeployedUpgrades)
-				manager.GrantUpgrade(self, up, this);
+			if (manager != null && !string.IsNullOrEmpty(info.DeployedCondition) && deployedToken == UpgradeManager.InvalidConditionToken)
+				deployedToken = manager.GrantCondition(self, info.DeployedCondition);
 
 			deployState = DeployState.Deployed;
 		}
 
 		void OnUndeployStarted()
 		{
-			foreach (var up in info.DeployedUpgrades)
-				manager.RevokeUpgrade(self, up, this);
+			if (deployedToken != UpgradeManager.InvalidConditionToken)
+				deployedToken = manager.RevokeCondition(self, deployedToken);
 
 			deployState = DeployState.Deploying;
 		}
 
 		void OnUndeployCompleted()
 		{
-			foreach (var up in info.UndeployedUpgrades)
-				manager.GrantUpgrade(self, up, this);
+			if (manager != null && !string.IsNullOrEmpty(info.UndeployedCondition) && undeployedToken == UpgradeManager.InvalidConditionToken)
+				undeployedToken = manager.GrantCondition(self, info.UndeployedCondition);
 
 			deployState = DeployState.Undeployed;
 		}

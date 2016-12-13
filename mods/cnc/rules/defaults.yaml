@@ -16,7 +16,7 @@
 
 ^GainsExperience:
 	GainsExperience:
-		Upgrades:
+		Conditions:
 			200: rank-veteran-1
 			400: rank-veteran-2
 			800: rank-veteran-3
@@ -202,8 +202,8 @@
 	Aircraft:
 		RepairBuildings: hpad
 		LandWhenIdle: false
-		AirborneUpgrades: airborne
-		CruisingUpgrades: cruising
+		AirborneCondition: airborne
+		CruisingCondition: cruising
 		CanHover: True
 	HiddenUnderFog:
 		Type: CenterPosition
@@ -283,8 +283,8 @@
 		DamageInterval: 16
 		DamageTypes: TiberiumDeath
 		RequiresCondition: !hazmatsuits
-	GlobalUpgradable@BIO:
-		Upgrades: hazmatsuits
+	GrantConditionOnPrerequisite@BIO:
+		Condition: hazmatsuits
 		Prerequisites: bio
 	WithDecoration@HAZMAT:
 		Image: pips
@@ -309,8 +309,8 @@
 		HealIfBelow: 100
 		DamageCooldown: 125
 		RequiresCondition: hospitalheal
-	GlobalUpgradable@HOSPITAL:
-		Upgrades: hospitalheal
+	GrantConditionOnPrerequisite@HOSPITAL:
+		Condition: hospitalheal
 		Prerequisites: hosp
 	WithDecoration@REDCROSS:
 		Image: pips
@@ -839,7 +839,7 @@
 		Offset: 43, 128, 0
 		ZOffset: -129
 	Aircraft:
-		AirborneUpgrades: airborne
+		AirborneCondition: airborne
 		CanHover: True
 	FallsToEarth:
 		Spins: True

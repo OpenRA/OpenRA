@@ -586,6 +586,115 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				if (engineVersion < 20161213)
+				{
+					if (node.Key == "Aircraft")
+					{
+						ConvertUpgradesToCondition(parent, node, "AirborneUpgrades", "AirborneCondition");
+						ConvertUpgradesToCondition(parent, node, "CruisingUpgrades", "CruisingCondition");
+					}
+
+					if (node.Key.StartsWith("Cloak", StringComparison.Ordinal))
+						ConvertUpgradesToCondition(parent, node, "WhileCloakedUpgrades", "CloakedCondition");
+
+					if (node.Key == "Disguise")
+					{
+						ConvertUpgradesToCondition(parent, node, "Upgrades", "DisguisedCondition");
+						if (!node.Value.Nodes.Any(n => n.Key == "DisguisedCondition"))
+							node.Value.Nodes.Add(new MiniYamlNode("DisguisedCondition", "disguise"));
+					}
+
+					if (node.Key == "Parachutable")
+					{
+						ConvertUpgradesToCondition(parent, node, "ParachuteUpgrade", "ParachutingCondition");
+						if (!node.Value.Nodes.Any(n => n.Key == "ParachutingCondition"))
+							node.Value.Nodes.Add(new MiniYamlNode("ParachutingCondition", "parachute"));
+					}
+
+					if (node.Key == "PrimaryBuilding")
+					{
+						ConvertUpgradesToCondition(parent, node, "Upgrades", "PrimaryCondition");
+						if (!node.Value.Nodes.Any(n => n.Key == "PrimaryCondition"))
+							node.Value.Nodes.Add(new MiniYamlNode("PrimaryCondition", "primary"));
+					}
+
+					if (node.Key.StartsWith("UpgradeOnDamageState", StringComparison.Ordinal))
+					{
+						RenameNodeKey(node, "GrantConditionOnDamageState");
+						ConvertUpgradesToCondition(parent, node, "Upgrades", "Condition");
+					}
+
+					if (node.Key.StartsWith("UpgradeOnMovement", StringComparison.Ordinal))
+					{
+						RenameNodeKey(node, "GrantConditionOnMovement");
+						ConvertUpgradesToCondition(parent, node, "Upgrades", "Condition");
+					}
+
+					if (node.Key.StartsWith("UpgradeOnTerrain", StringComparison.Ordinal))
+					{
+						RenameNodeKey(node, "GrantConditionOnTerrain");
+						ConvertUpgradesToCondition(parent, node, "Upgrades", "Condition");
+						if (!node.Value.Nodes.Any(n => n.Key == "Condition"))
+							node.Value.Nodes.Add(new MiniYamlNode("Condition", "terrain"));
+					}
+
+					if (node.Key == "AttackSwallow")
+					{
+						ConvertUpgradesToCondition(parent, node, "AttackingUpgrades", "AttackingCondition");
+						if (!node.Value.Nodes.Any(n => n.Key == "AttackingCondition"))
+							node.Value.Nodes.Add(new MiniYamlNode("AttackingCondition", "attacking"));
+					}
+
+					if (node.Key.StartsWith("Pluggable", StringComparison.Ordinal))
+					{
+						var upgrades = node.Value.Nodes.FirstOrDefault(n => n.Key == "Upgrades");
+						if (upgrades != null)
+						{
+							upgrades.Key = "Conditions";
+							foreach (var n in upgrades.Value.Nodes)
+							{
+								var conditions = FieldLoader.GetValue<string[]>("", n.Value.Value);
+								if (conditions.Length > 1)
+									Console.WriteLine("Unable to automatically migrate multiple Pluggable upgrades to a condition. This must be corrected manually");
+							}
+						}
+					}
+
+					if (node.Key.StartsWith("GlobalUpgradable", StringComparison.Ordinal))
+					{
+						RenameNodeKey(node, "GrantConditionOnPrerequisite");
+						ConvertUpgradesToCondition(parent, node, "Upgrades", "Condition");
+					}
+
+					if (node.Key.StartsWith("GlobalUpgradeManager", StringComparison.Ordinal))
+						RenameNodeKey(node, "GrantConditionOnPrerequisiteManager");
+
+					if (node.Key.StartsWith("DeployToUpgrade", StringComparison.Ordinal))
+					{
+						RenameNodeKey(node, "GrantConditionOnDeploy");
+						ConvertUpgradesToCondition(parent, node, "UndeployedUpgrades", "UndeployedCondition");
+						ConvertUpgradesToCondition(parent, node, "DeployedUpgrades", "DeployedCondition");
+					}
+
+					if (node.Key == "GainsExperience")
+					{
+						var upgrades = node.Value.Nodes.FirstOrDefault(n => n.Key == "Upgrades");
+						if (upgrades != null)
+						{
+							upgrades.Key = "Conditions";
+							foreach (var n in upgrades.Value.Nodes)
+							{
+								var conditions = FieldLoader.GetValue<string[]>("", n.Value.Value);
+								if (conditions.Length > 1)
+									Console.WriteLine("Unable to automatically migrate multiple GainsExperience upgrades to a condition. This must be corrected manually");
+							}
+						}
+					}
+
+					if (node.Key.StartsWith("DisableOnUpgrade", StringComparison.Ordinal))
+						RenameNodeKey(node, "DisableOnCondition");
+				}
+
 				UpgradeActorRules(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 
