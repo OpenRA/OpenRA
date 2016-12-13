@@ -84,6 +84,7 @@ TTNK:
 		TurnSpeed: 5
 		Speed: 85
 		Crushes: wall, crate, infantry
+		RequiresCondition: !empdisable && undeployed
 	Health:
 		HP: 350
 	Armor:
