@@ -55,7 +55,6 @@ SPY.Strong:
 	ExternalCaptures:
 		CaptureTypes: MissionObjective
 	Passenger:
-		GrantUpgrades: mobile
 
 DOG.Patrol:
 	Inherits: DOG
@@ -76,6 +75,8 @@ TRUK.Hijackable:
 		Types: Infantry
 		MaxWeight: 5
 		PipCount: 5
+		PassengerConditions:
+			spy.strong: mobile
 	AutoTargetIgnore:
 	-Huntable:
 	ExternalCapturable:

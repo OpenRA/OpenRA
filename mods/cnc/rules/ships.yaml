@@ -76,4 +76,4 @@ LST:
 		MaxWeight: 5
 		PipCount: 5
 		PassengerFacing: 0
-		LoadingUpgrades: notmobile
+		LoadingCondition: notmobile

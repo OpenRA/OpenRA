@@ -56,8 +56,18 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string UnloadBlockedCursor = "deploy-blocked";
 
 		[UpgradeGrantedReference]
-		[Desc("The upgrades to grant to self while loading cargo.")]
-		public readonly string[] LoadingUpgrades = { };
+		[Desc("The condition to grant to self while waiting for cargo to load.")]
+		public readonly string LoadingCondition = null;
+
+		[UpgradeGrantedReference]
+		[Desc("The condition to grant to self while passengers are loaded.",
+			"Condition can stack with multiple passengers.")]
+		public readonly string LoadedCondition = null;
+
+		[UpgradeGrantedReference]
+		[Desc("Conditions to grant when specified actors are loaded inside the transport.",
+			"A dictionary of [actor id]: [condition].")]
+		public readonly Dictionary<string, string> PassengerConditions = new Dictionary<string, string>();
 
 		public object Create(ActorInitializer init) { return new Cargo(init, this); }
 	}
@@ -69,6 +79,7 @@ namespace OpenRA.Mods.Common.Traits
 		readonly Actor self;
 		readonly Stack<Actor> cargo = new Stack<Actor>();
 		readonly HashSet<Actor> reserves = new HashSet<Actor>();
+		readonly Dictionary<string, Stack<int>> passengerTokens = new Dictionary<string, Stack<int>>();
 		readonly Lazy<IFacing> facing;
 		readonly bool checkTerrainType;
 
@@ -76,6 +87,8 @@ namespace OpenRA.Mods.Common.Traits
 		int reservedWeight = 0;
 		Aircraft aircraft;
 		UpgradeManager upgradeManager;
+		int loadingToken = UpgradeManager.InvalidConditionToken;
+		Stack<int> loadedTokens = new Stack<int>();
 
 		CPos currentCell;
 		public IEnumerable<CPos> CurrentAdjacentCells { get; private set; }
@@ -193,9 +206,8 @@ namespace OpenRA.Mods.Common.Traits
 			if (!HasSpace(w))
 				return false;
 
-			if (reserves.Count == 0)
-				foreach (var u in Info.LoadingUpgrades)
-					upgradeManager.GrantUpgrade(self, u, this);
+			if (upgradeManager != null && loadingToken == UpgradeManager.InvalidConditionToken && !string.IsNullOrEmpty(Info.LoadingCondition))
+				loadingToken = upgradeManager.GrantCondition(self, Info.LoadingCondition);
 
 			reserves.Add(a);
 			reservedWeight += w;
@@ -211,9 +223,8 @@ namespace OpenRA.Mods.Common.Traits
 			reservedWeight -= GetWeight(a);
 			reserves.Remove(a);
 
-			if (reserves.Count == 0)
-				foreach (var u in Info.LoadingUpgrades)
-					upgradeManager.RevokeUpgrade(self, u, this);
+			if (loadingToken != UpgradeManager.InvalidConditionToken)
+				loadingToken = upgradeManager.RevokeCondition(self, loadingToken);
 		}
 
 		public string CursorForOrder(Actor self, Order order)
@@ -251,8 +262,12 @@ namespace OpenRA.Mods.Common.Traits
 			var p = a.Trait<Passenger>();
 			p.Transport = null;
 
-			foreach (var u in p.Info.GrantUpgrades)
-				upgradeManager.RevokeUpgrade(self, u, p);
+			Stack<int> passengerToken;
+			if (passengerTokens.TryGetValue(a.Info.Name, out passengerToken) && passengerToken.Any())
+				upgradeManager.RevokeCondition(self, passengerToken.Pop());
+
+			if (loadedTokens.Any())
+				upgradeManager.RevokeCondition(self, loadedTokens.Pop());
 
 			return a;
 		}
@@ -304,9 +319,8 @@ namespace OpenRA.Mods.Common.Traits
 				reservedWeight -= w;
 				reserves.Remove(a);
 
-				if (reserves.Count == 0)
-					foreach (var u in Info.LoadingUpgrades)
-						upgradeManager.RevokeUpgrade(self, u, this);
+				if (loadingToken != UpgradeManager.InvalidConditionToken)
+					loadingToken = upgradeManager.RevokeCondition(self, loadingToken);
 			}
 
 			// If not initialized then this will be notified in the first tick
@@ -316,8 +330,13 @@ namespace OpenRA.Mods.Common.Traits
 
 			var p = a.Trait<Passenger>();
 			p.Transport = self;
-			foreach (var u in p.Info.GrantUpgrades)
-				upgradeManager.GrantUpgrade(self, u, p);
+
+			string passengerCondition;
+			if (upgradeManager != null && Info.PassengerConditions.TryGetValue(a.Info.Name, out passengerCondition))
+				passengerTokens.GetOrAdd(a.Info.Name).Push(upgradeManager.GrantCondition(self, passengerCondition));
+
+			if (upgradeManager != null && !string.IsNullOrEmpty(Info.LoadedCondition))
+				loadedTokens.Push(upgradeManager.GrantCondition(self, Info.LoadedCondition));
 		}
 
 		void INotifyKilled.Killed(Actor self, AttackInfo e)

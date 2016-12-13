@@ -355,7 +355,7 @@ JEEP:
 		Types: Infantry
 		MaxWeight: 1
 		PipCount: 1
-		LoadingUpgrades: notmobile
+		LoadingCondition: notmobile
 	ProducibleWithLevel:
 		Prerequisites: vehicles.upgraded
 
@@ -391,7 +391,7 @@ APC:
 		Types: Infantry
 		MaxWeight: 5
 		PipCount: 5
-		LoadingUpgrades: notmobile
+		LoadingCondition: notmobile
 	ProducibleWithLevel:
 		Prerequisites: vehicles.upgraded
 
@@ -752,7 +752,7 @@ STNK:
 		Types: Infantry
 		MaxWeight: 4
 		PipCount: 4
-		LoadingUpgrades: notmobile
+		LoadingCondition: notmobile
 	Cloak:
 		InitialDelay: 125
 		CloakDelay: 250

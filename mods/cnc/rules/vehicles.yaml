@@ -120,7 +120,7 @@ APC:
 		Types: Infantry
 		MaxWeight: 5
 		PipCount: 5
-		LoadingUpgrades: notmobile
+		LoadingCondition: notmobile
 	SpawnActorOnDeath:
 		Actor: APC.Husk
 
