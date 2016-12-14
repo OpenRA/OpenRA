@@ -568,7 +568,6 @@
 		Palette: pips
 	Aircraft:
 		AirborneCondition: airborne
-		CruisingCondition: cruising
 		RepairBuildings: gadept
 		RearmBuildings: gahpad, nahpad
 		LandWhenIdle: false
@@ -596,6 +595,7 @@
 	Aircraft:
 		CruiseAltitude: 2048
 		CanHover: True
+		CruisingCondition: cruising
 	Hovers@CRUISING:
 		RequiresCondition: cruising
 
@@ -613,8 +613,6 @@
 		QuantizedFacings: 0
 		CameraPitch: 90
 	Aircraft:
-		AirborneCondition: airborne
-		CruisingCondition: cruising
 	Health:
 		HP: 280
 	Armor:

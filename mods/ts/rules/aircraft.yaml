@@ -121,7 +121,7 @@ ORCAB:
 		MaximumPitch: 120
 		TurnSpeed: 3
 		Speed: 96
-		AirborneCondition: airborne
+		CruisingCondition: cruising
 		MoveIntoShroud: false
 		TakeoffSound: orcaup1.aud
 		LandingSound: orcadwn1.aud
@@ -338,6 +338,7 @@ HUNTER:
 		Speed: 355
 		CruiseAltitude: 256
 		CanHover: True
+		CruisingCondition: cruising
 	Targetable:
 		TargetTypes: Ground, Vehicle
 	HiddenUnderFog:
