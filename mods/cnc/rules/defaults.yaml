@@ -116,6 +116,16 @@
 		RequiresCondition: rank-elite
 		ZOffset: 256
 
+^AcceptsCloakCrate:
+	Cloak:
+		InitialDelay: 15
+		CloakDelay: 90
+		CloakSound: trans1.aud
+		UncloakSound: trans1.aud
+		RequiresCondition: cloak
+	ExternalConditions@CLOAK:
+		Conditions: cloak
+
 ^Vehicle:
 	Inherits@1: ^ExistsInWorld
 	Inherits@3: ^SpriteActor
@@ -152,14 +162,6 @@
 	Guardable:
 	Tooltip:
 		GenericName: Vehicle
-	Cloak:
-		InitialDelay: 15
-		CloakDelay: 90
-		CloakSound: trans1.aud
-		UncloakSound: trans1.aud
-		RequiresCondition: cloak
-	ExternalConditions@CLOAK:
-		Conditions: cloak
 	MustBeDestroyed:
 	Voiced:
 		VoiceSet: VehicleVoice
