@@ -88,11 +88,6 @@
 	ExternalConditions@EMPDISABLE:
 		Conditions: empdisable
 
-^EmpDisableMobile:
-	Inherits: ^EmpDisable
-	Mobile:
-		RequiresCondition: !empdisable && !deployed && !loading
-
 ^Cloakable:
 	Cloak@EXTERNALCLOAK:
 		RequiresCondition: cloakgenerator || crate-cloak
@@ -401,7 +396,7 @@
 
 ^Cyborg:
 	Inherits@1: ^Infantry
-	Inherits@2: ^EmpDisableMobile
+	Inherits@2: ^EmpDisable
 	Inherits@3: ^HealsOnTiberium
 	ExplosionOnDamageTransition:
 		Weapon: CyborgExplode
@@ -425,6 +420,8 @@
 	SpeedMultiplier@CRITICAL:
 		RequiresCondition: criticalspeed
 		Modifier: 50
+	Mobile:
+		RequiresCondition: !empdisable
 
 ^CivilianInfantry:
 	Inherits@1: ^Infantry
@@ -441,7 +438,7 @@
 ^Vehicle:
 	Inherits@1: ^GainsExperience
 	Inherits@2: ^ExistsInWorld
-	Inherits@3: ^EmpDisableMobile
+	Inherits@3: ^EmpDisable
 	Inherits@4: ^Cloakable
 	Inherits@5: ^DamagedByVeins
 	Huntable:
@@ -461,6 +458,7 @@
 				PathingCost: 90
 		TurnSpeed: 5
 		Voice: Move
+		RequiresCondition: !empdisable
 	Selectable:
 		Bounds: 40,24
 	WithTextControlGroupDecoration:
@@ -784,7 +782,7 @@
 	ActorLostNotification:
 
 ^Train:
-	Inherits@1: ^EmpDisableMobile
+	Inherits@1: ^EmpDisable
 	Inherits@2: ^ExistsInWorld
 	Inherits@3: ^Cloakable
 	Huntable:
@@ -799,10 +797,10 @@
 		TurnSpeed: 5
 		Voice: Move
 		Speed: 113
+		RequiresCondition: !empdisable
 	Cargo:
 		Types: Infantry
 		UnloadVoice: Unload
-		LoadingCondition: loading
 	Health:
 		HP: 100
 	Armor:

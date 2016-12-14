@@ -84,6 +84,7 @@ TTNK:
 		TurnSpeed: 5
 		Speed: 85
 		Crushes: wall, crate, infantry
+		RequiresCondition: !empdisable && undeployed
 	Health:
 		HP: 350
 	Armor:
@@ -273,6 +274,7 @@ SAPC:
 	Mobile:
 		TurnSpeed: 5
 		Speed: 71
+		RequiresCondition: !empdisable && !loading
 	Health:
 		HP: 175
 	Armor:

@@ -127,6 +127,7 @@ LPST:
 	Mobile:
 		Speed: 85
 		TurnSpeed: 5
+		RequiresCondition: !empdisable && undeployed
 	RevealsShroud:
 		Range: 7c0
 		MaxHeightDelta: 3

@@ -90,6 +90,7 @@ BUS:
 	Mobile:
 		TurnSpeed: 5
 		Speed: 113
+		RequiresCondition: !empdisable && !loading
 	Health:
 		HP: 100
 	Armor:
@@ -114,6 +115,7 @@ PICK:
 	Mobile:
 		TurnSpeed: 5
 		Speed: 113
+		RequiresCondition: !empdisable && !loading
 	Health:
 		HP: 100
 	Armor:
@@ -138,6 +140,7 @@ CAR:
 	Mobile:
 		TurnSpeed: 5
 		Speed: 113
+		RequiresCondition: !empdisable && !loading
 	Health:
 		HP: 100
 	Armor:
@@ -162,6 +165,7 @@ WINI:
 	Mobile:
 		TurnSpeed: 5
 		Speed: 113
+		RequiresCondition: !empdisable && !loading
 	Health:
 		HP: 200
 	Armor:
