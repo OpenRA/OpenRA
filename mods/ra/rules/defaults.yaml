@@ -410,9 +410,8 @@
 		VoiceSet: VehicleVoice
 	WithFacingSpriteBody:
 
-^Plane:
+^NeutralPlane:
 	Inherits@1: ^ExistsInWorld
-	Inherits@2: ^GainsExperience
 	Inherits@3: ^IronCurtainable
 	Inherits@4: ^SpriteActor
 	Huntable:
@@ -461,6 +460,10 @@
 	MustBeDestroyed:
 	Voiced:
 		VoiceSet: GenericVoice
+
+^Plane:
+	Inherits: ^NeutralPlane
+	Inherits@2: ^GainsExperience
 
 ^Helicopter:
 	Inherits: ^Plane

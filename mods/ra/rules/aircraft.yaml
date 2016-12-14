@@ -1,5 +1,5 @@
 BADR:
-	Inherits: ^Plane
+	Inherits: ^NeutralPlane
 	ParaDrop:
 		DropRange: 4c0
 	Health:
@@ -18,7 +18,6 @@ BADR:
 	SelectionDecorations:
 		RenderSelectionBars: False
 	-Voiced:
-	-GainsExperience:
 	Tooltip:
 		Name: Badger
 	Contrail@1:
@@ -39,7 +38,7 @@ BADR:
 		Experience: 1000
 
 BADR.Bomber:
-	Inherits: ^Plane
+	Inherits: ^NeutralPlane
 	AttackBomber:
 	Armament:
 		Weapon: ParaBomb
@@ -59,7 +58,6 @@ BADR.Bomber:
 	SelectionDecorations:
 		RenderSelectionBars: False
 	-Voiced:
-	-GainsExperience:
 	Tooltip:
 		Name: Badger
 	Contrail@1:
@@ -358,7 +356,7 @@ HIND:
 		Prerequisites: aircraft.upgraded
 
 U2:
-	Inherits: ^Plane
+	Inherits: ^NeutralPlane
 	Health:
 		HP: 2000
 	Tooltip:
@@ -377,7 +375,6 @@ U2:
 		RenderSelectionBars: False
 	-Voiced:
 	-Targetable@AIRBORNE:
-	-GainsExperience:
 	Contrail@1:
 		Offset: -725,683,0
 	Contrail@2:
