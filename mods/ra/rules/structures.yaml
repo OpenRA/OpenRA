@@ -190,7 +190,7 @@ SYRD:
 	Valued:
 		Cost: 1000
 	Tooltip:
-		Name: Shipyard
+		Name: Naval Yard
 	Targetable:
 		TargetTypes: Ground, Water, Structure, C4, DetonateAttack, SpyInfiltrate
 	Building:
