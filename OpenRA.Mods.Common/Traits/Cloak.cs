@@ -53,7 +53,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public readonly HashSet<string> CloakTypes = new HashSet<string> { "Cloak" };
 
-		[UpgradeGrantedReference]
+		[GrantedConditionReference]
 		[Desc("The condition to grant to self while cloaked.")]
 		public readonly string CloakedCondition = null;
 

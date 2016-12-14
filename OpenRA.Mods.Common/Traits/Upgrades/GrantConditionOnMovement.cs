@@ -17,7 +17,7 @@ namespace OpenRA.Mods.Common.Traits
 	public class GrantConditionOnMovementInfo : UpgradableTraitInfo, Requires<IMoveInfo>
 	{
 		[FieldLoader.Require]
-		[UpgradeGrantedReference]
+		[GrantedConditionReference]
 		[Desc("Condition to grant.")]
 		public readonly string Condition = null;
 

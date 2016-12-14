@@ -21,11 +21,12 @@ namespace OpenRA.Mods.Common.Traits
 {
 	public class GrantConditionOnDeployInfo : ITraitInfo
 	{
-		[UpgradeGrantedReference]
+		[GrantedConditionReference]
 		[Desc("The condition to grant while the actor is undeployed.")]
 		public readonly string UndeployedCondition = null;
 
-		[UpgradeGrantedReference, FieldLoader.Require]
+		[FieldLoader.Require]
+		[GrantedConditionReference]
 		[Desc("The condition to grant after deploying and revoke before undeploying.")]
 		public readonly string DeployedCondition = null;
 

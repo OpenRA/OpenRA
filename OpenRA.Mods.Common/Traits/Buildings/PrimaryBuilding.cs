@@ -28,7 +28,7 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Used together with ClassicProductionQueue.")]
 	public class PrimaryBuildingInfo : ITraitInfo
 	{
-		[UpgradeGrantedReference]
+		[GrantedConditionReference]
 		[Desc("The condition to grant to self while this is the primary building.")]
 		public readonly string PrimaryCondition = null;
 

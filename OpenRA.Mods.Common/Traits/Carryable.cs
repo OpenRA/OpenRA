@@ -17,11 +17,11 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Can be carried by actors with the `Carryall` trait.")]
 	public class CarryableInfo : UpgradableTraitInfo
 	{
-		[UpgradeGrantedReference]
+		[GrantedConditionReference]
 		[Desc("The condition to grant to self while a carryall has been reserved.")]
 		public readonly string ReservedCondition = null;
 
-		[UpgradeGrantedReference]
+		[GrantedConditionReference]
 		[Desc("The condition to grant to self while being carried.")]
 		public readonly string CarriedCondition = null;
 

@@ -17,7 +17,7 @@ namespace OpenRA.Mods.Common.Traits
 	class GrantConditionInfo : UpgradableTraitInfo
 	{
 		[FieldLoader.Require]
-		[UpgradeGrantedReference]
+		[GrantedConditionReference]
 		[Desc("Condition to grant.")]
 		public readonly string Condition = null;
 

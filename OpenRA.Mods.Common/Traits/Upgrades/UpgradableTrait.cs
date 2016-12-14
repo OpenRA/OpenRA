@@ -21,7 +21,7 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		static readonly IReadOnlyDictionary<string, bool> NoConditions = new ReadOnlyDictionary<string, bool>(new Dictionary<string, bool>());
 
-		[UpgradeUsedReference]
+		[ConsumedConditionReference]
 		[Desc("Boolean expression defining the condition to enable this trait.")]
 		public readonly BooleanExpression RequiresCondition = null;
 

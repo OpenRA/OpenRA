@@ -38,7 +38,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public readonly int FallRate = 13;
 
-		[UpgradeGrantedReference]
+		[GrantedConditionReference]
 		[Desc("The condition to grant to self while parachuting.")]
 		public readonly string ParachutingCondition = null;
 

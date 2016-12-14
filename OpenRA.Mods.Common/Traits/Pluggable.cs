@@ -20,9 +20,11 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly CVec Offset = CVec.Zero;
 
 		[FieldLoader.Require]
-		[UpgradeGrantedReference]
 		[Desc("Conditions to grant for each accepted plug type.")]
 		public readonly Dictionary<string, string> Conditions = null;
+
+		[GrantedConditionReference]
+		public IEnumerable<string> LinterConditions { get { return Conditions.Values; } }
 
 		public object Create(ActorInitializer init) { return new Pluggable(init, this); }
 	}

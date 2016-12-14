@@ -64,7 +64,7 @@ namespace OpenRA.Mods.RA.Traits
 	{
 		[VoiceReference] public readonly string Voice = "Action";
 
-		[UpgradeGrantedReference]
+		[GrantedConditionReference]
 		[Desc("The condition to grant to self while disguised.")]
 		public readonly string DisguisedCondition = null;
 
