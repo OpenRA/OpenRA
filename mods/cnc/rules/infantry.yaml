@@ -1,5 +1,6 @@
 E1:
 	Inherits: ^Soldier
+	Inherits@EXPERIENCE: ^GainsExperience
 	Valued:
 		Cost: 100
 	Tooltip:
@@ -21,6 +22,7 @@ E1:
 
 E2:
 	Inherits: ^Soldier
+	Inherits@EXPERIENCE: ^GainsExperience
 	Valued:
 		Cost: 160
 	Tooltip:
@@ -48,6 +50,7 @@ E2:
 
 E3:
 	Inherits: ^Soldier
+	Inherits@EXPERIENCE: ^GainsExperience
 	Valued:
 		Cost: 300
 	Tooltip:
@@ -72,6 +75,7 @@ E3:
 
 E4:
 	Inherits: ^Soldier
+	Inherits@EXPERIENCE: ^GainsExperience
 	Valued:
 		Cost: 200
 	Tooltip:
@@ -97,6 +101,7 @@ E4:
 
 E5:
 	Inherits: ^Soldier
+	Inherits@EXPERIENCE: ^GainsExperience
 	Valued:
 		Cost: 300
 	Tooltip:
@@ -148,10 +153,10 @@ E6:
 		CaptureTypes: building, husk
 		PlayerExperience: 50
 	-AutoTarget:
-	-GainsExperience:
 
 RMBO:
 	Inherits: ^Soldier
+	Inherits@EXPERIENCE: ^GainsExperience
 	Valued:
 		Cost: 1000
 	Tooltip:

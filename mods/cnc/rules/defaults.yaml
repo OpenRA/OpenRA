@@ -118,7 +118,6 @@
 
 ^Vehicle:
 	Inherits@1: ^ExistsInWorld
-	Inherits@2: ^GainsExperience
 	Inherits@3: ^SpriteActor
 	Huntable:
 	Mobile:
@@ -184,7 +183,6 @@
 
 ^Helicopter:
 	Inherits@1: ^ExistsInWorld
-	Inherits@2: ^GainsExperience
 	Inherits@3: ^SpriteActor
 	Huntable:
 	AppearsOnRadar:
@@ -231,7 +229,6 @@
 
 ^Infantry:
 	Inherits@1: ^ExistsInWorld
-	Inherits@2: ^GainsExperience
 	Inherits@3: ^SpriteActor
 	Huntable:
 	Health:
@@ -517,7 +514,6 @@
 
 ^Ship:
 	Inherits@1: ^ExistsInWorld
-	Inherits@2: ^GainsExperience
 	Inherits@3: ^SpriteActor
 	Huntable:
 	Mobile:

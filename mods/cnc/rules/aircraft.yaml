@@ -53,6 +53,7 @@ TRAN:
 
 HELI:
 	Inherits: ^Helicopter
+	Inherits@EXPERIENCE: ^GainsExperience
 	Valued:
 		Cost: 1200
 	Tooltip:
@@ -111,6 +112,7 @@ HELI:
 
 ORCA:
 	Inherits: ^Helicopter
+	Inherits@EXPERIENCE: ^GainsExperience
 	Valued:
 		Cost: 1200
 	Tooltip:
