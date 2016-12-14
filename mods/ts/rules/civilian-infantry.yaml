@@ -263,6 +263,7 @@ VISC_SML:
 
 VISC_LRG:
 	Inherits: ^Visceroid
+	Inherits@CRATESTATS: ^CrateStatModifiers
 	Tooltip:
 		Name: Adult Visceroid
 	Health:

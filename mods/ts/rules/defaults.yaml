@@ -21,22 +21,22 @@
 			500: rank-veteran
 			1000: rank-elite
 	FirepowerMultiplier@VETERAN:
-		RequiresCondition: (rank-veteran && !rank-elite) || crate-firepower
+		RequiresCondition: rank-veteran && !rank-elite
 		Modifier: 110
 	FirepowerMultiplier@ELITE:
-		RequiresCondition: rank-elite || (rank-veteran && crate-firepower)
+		RequiresCondition: rank-elite
 		Modifier: 130
 	DamageMultiplier@VETERAN:
-		RequiresCondition: (rank-veteran && !rank-elite) || crate-damage
+		RequiresCondition: rank-veteran && !rank-elite
 		Modifier: 90
 	DamageMultiplier@ELITE:
-		RequiresCondition: rank-elite || (rank-veteran && crate-damage)
+		RequiresCondition: rank-elite
 		Modifier: 75
 	SpeedMultiplier@VETERAN:
-		RequiresCondition: (rank-veteran && !rank-elite) || crate-speed
+		RequiresCondition: rank-veteran && !rank-elite
 		Modifier: 120
 	SpeedMultiplier@ELITE:
-		RequiresCondition: rank-elite || (rank-veteran && crate-speed)
+		RequiresCondition: rank-elite
 		Modifier: 140
 	ReloadDelayMultiplier@VETERAN:
 		RequiresCondition: rank-veteran && !rank-elite
@@ -64,8 +64,19 @@
 		ReferencePoint: Bottom, Right
 		RequiresCondition: rank-elite
 		ZOffset: 256
+
+^CrateStatModifiers:
+	FirepowerMultiplier@CRATES:
+		RequiresCondition: crate-firepower
+		Modifier: 200
+	DamageMultiplier@CRATES:
+		RequiresCondition: crate-damage
+		Modifier: 50
+	SpeedMultiplier@CRATES:
+		RequiresCondition: crate-speed
+		Modifier: 170
 	ExternalConditions@CRATES:
-		Conditions: crate-firepower, crate-damage, crate-speed, crate-cloak
+		Conditions: crate-firepower, crate-damage, crate-speed
 
 ^EmpDisable:
 	UpgradeOverlay@EMPDISABLE:
@@ -255,6 +266,7 @@
 	Inherits@2: ^ExistsInWorld
 	Inherits@3: ^SpriteActor
 	Inherits@4: ^Cloakable
+	Inherits@CRATESTATS: ^CrateStatModifiers
 	Huntable:
 	DrawLineToTarget:
 	Health:
@@ -439,6 +451,7 @@
 	Inherits@3: ^EmpDisable
 	Inherits@4: ^Cloakable
 	Inherits@5: ^DamagedByVeins
+	Inherits@CRATESTATS: ^CrateStatModifiers
 	Huntable:
 	DrawLineToTarget:
 	Mobile:
