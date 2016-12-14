@@ -252,7 +252,6 @@
 	RenderSprites:
 
 ^Infantry:
-	Inherits@1: ^GainsExperience
 	Inherits@2: ^ExistsInWorld
 	Inherits@3: ^SpriteActor
 	Inherits@4: ^Cloakable
@@ -436,7 +435,6 @@
 		MaxMoveDelay: 750
 
 ^Vehicle:
-	Inherits@1: ^GainsExperience
 	Inherits@2: ^ExistsInWorld
 	Inherits@3: ^EmpDisable
 	Inherits@4: ^Cloakable
@@ -525,22 +523,15 @@
 			BlueTiberium: 70
 			Veins: 70
 
-^VoxelVehicle:
-	Inherits: ^Vehicle
-	BodyOrientation:
-		QuantizedFacings: 0
-	RenderVoxels:
-	WithVoxelBody:
-
-^VoxelTank:
-	Inherits: ^Tank
+^VoxelActor:
 	BodyOrientation:
 		QuantizedFacings: 0
 	RenderVoxels:
 	WithVoxelBody:
 
 ^CivilianVoxelVehicle:
-	Inherits: ^VoxelVehicle
+	Inherits: ^Vehicle
+	Inherits: ^VoxelActor
 	-MustBeDestroyed:
 
 ^CivilianVoxelCrusher:
@@ -549,7 +540,6 @@
 		Crushes: wall, crate, infantry
 
 ^Aircraft:
-	Inherits@1: ^GainsExperience
 	Inherits@2: ^ExistsInWorld
 	Inherits@3: ^Cloakable
 	Huntable:
@@ -598,12 +588,6 @@
 		CruisingCondition: cruising
 	Hovers@CRUISING:
 		RequiresCondition: cruising
-
-^Plane:
-	Inherits: ^Aircraft
-	Aircraft:
-		CruiseAltitude: 2560
-	ReturnOnIdle:
 
 ^AircraftHusk:
 	RenderVoxels:
@@ -750,34 +734,6 @@
 		Range: 6c0
 	DetectCloaked:
 		Range: 5c0
-
-^DeployedVehicle:
-	Inherits@1: ^GainsExperience
-	Inherits@2: ^ExistsInWorld
-	Inherits@3: ^SpriteActor
-	Huntable:
-	Voiced:
-		VoiceSet: Vehicle
-	AttackTurreted:
-		Voice: Attack
-	AutoTarget:
-	RenderRangeCircle:
-	DrawLineToTarget:
-	Building:
-		Dimensions: 1,1
-		Footprint: x
-		TerrainTypes: Clear, Road, DirtRoad, Rough
-	WithSpriteBody:
-	WithMakeAnimation:
-	WithTextControlGroupDecoration:
-	SelectionDecorations:
-		Palette: pips
-	Selectable:
-	Targetable:
-		TargetTypes: Ground, Building, Repair
-	Guardable:
-	HiddenUnderFog:
-	ActorLostNotification:
 
 ^Train:
 	Inherits@1: ^EmpDisable

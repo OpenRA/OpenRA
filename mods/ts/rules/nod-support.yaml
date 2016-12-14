@@ -160,7 +160,32 @@ NASAM:
 		VisualBounds: 40, 36, -3, -8
 
 GAARTY:
-	Inherits@1: ^DeployedVehicle
+	Inherits@1: ^GainsExperience
+	Inherits@2: ^ExistsInWorld
+	Inherits@3: ^SpriteActor
+	Huntable:
+	Voiced:
+		VoiceSet: Vehicle
+	AttackTurreted:
+		Voice: Attack
+	AutoTarget:
+	RenderRangeCircle:
+	DrawLineToTarget:
+	Building:
+		Dimensions: 1,1
+		Footprint: x
+		TerrainTypes: Clear, Road, DirtRoad, Rough
+	WithSpriteBody:
+	WithMakeAnimation:
+	WithTextControlGroupDecoration:
+	SelectionDecorations:
+		Palette: pips
+	Selectable:
+	Targetable:
+		TargetTypes: Ground, Building, Repair
+	Guardable:
+	HiddenUnderFog:
+	ActorLostNotification:
 	Valued:
 		Cost: 975
 	Tooltip:

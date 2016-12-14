@@ -1,5 +1,7 @@
 BGGY:
-	Inherits: ^VoxelVehicle
+	Inherits: ^Vehicle
+	Inherits@VOXELS: ^VoxelActor
+	Inherits@EXPERIENCE: ^GainsExperience
 	Valued:
 		Cost: 500
 	Tooltip:
@@ -33,7 +35,9 @@ BGGY:
 	-WithIdleOverlay@VEINS:
 
 BIKE:
-	Inherits: ^VoxelVehicle
+	Inherits: ^Vehicle
+	Inherits@VOXELS: ^VoxelActor
+	Inherits@EXPERIENCE: ^GainsExperience
 	Valued:
 		Cost: 600
 	Tooltip:
@@ -66,7 +70,9 @@ BIKE:
 	AutoTarget:
 
 TTNK:
-	Inherits: ^VoxelTank
+	Inherits: ^Tank
+	Inherits@VOXELS: ^VoxelActor
+	Inherits@EXPERIENCE: ^GainsExperience
 	Valued:
 		Cost: 800
 	Tooltip:
@@ -161,7 +167,9 @@ TTNK:
 		RequiresCondition: undeployed
 
 ART2:
-	Inherits: ^VoxelTank
+	Inherits: ^Tank
+	Inherits@VOXELS: ^VoxelActor
+	Inherits@EXPERIENCE: ^GainsExperience
 	Valued:
 		Cost: 975
 	Tooltip:
@@ -191,7 +199,8 @@ ART2:
 		Voice: Move
 
 REPAIR:
-	Inherits: ^VoxelTank
+	Inherits: ^Tank
+	Inherits@VOXELS: ^VoxelActor
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 70
@@ -219,7 +228,8 @@ REPAIR:
 		Voice: Attack
 
 WEED:
-	Inherits: ^VoxelTank
+	Inherits: ^Tank
+	Inherits@VOXELS: ^VoxelActor
 	Valued:
 		Cost: 1400
 	Tooltip:
@@ -255,13 +265,13 @@ WEED:
 		MaxHeightDelta: 3
 	-WithVoxelBody:
 	WithVoxelUnloadBody:
-	-GainsExperience:
 	-DamagedByTerrain@VEINS:
 	-GrantConditionOnTerrain@VEINS:
 	-WithIdleOverlay@VEINS:
 
 SAPC:
-	Inherits: ^VoxelTank
+	Inherits: ^Tank
+	Inherits@VOXELS: ^VoxelActor
 	Valued:
 		Cost: 800
 	Tooltip:
@@ -291,7 +301,9 @@ SAPC:
 		EjectOnDeath: true
 
 SUBTANK:
-	Inherits: ^VoxelTank
+	Inherits: ^Tank
+	Inherits@VOXELS: ^VoxelActor
+	Inherits@EXPERIENCE: ^GainsExperience
 	Valued:
 		Cost: 750
 	Tooltip:
@@ -319,7 +331,9 @@ SUBTANK:
 	AutoTarget:
 
 STNK:
-	Inherits: ^VoxelTank
+	Inherits: ^Tank
+	Inherits@VOXELS: ^VoxelActor
+	Inherits@EXPERIENCE: ^GainsExperience
 	Valued:
 		Cost: 1100
 	Tooltip:

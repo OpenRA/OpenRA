@@ -1,5 +1,7 @@
 4TNK:
-	Inherits: ^VoxelTank
+	Inherits: ^Tank
+	Inherits@VOXELS: ^VoxelActor
+	Inherits@EXPERIENCE: ^GainsExperience
 	Valued:
 		Cost: 1700
 	Tooltip:

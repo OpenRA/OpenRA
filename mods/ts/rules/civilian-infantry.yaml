@@ -26,6 +26,7 @@ WEEDGUY:
 UMAGON:
 	Inherits: ^Soldier
 	Inherits@2: ^HealsOnTiberium
+	Inherits@EXPERIENCE: ^GainsExperience
 	Valued:
 		Cost: 400
 	Tooltip:
@@ -82,6 +83,7 @@ CHAMSPY:
 MUTANT:
 	Inherits: ^Soldier
 	Inherits@2: ^HealsOnTiberium
+	Inherits@EXPERIENCE: ^GainsExperience
 	Valued:
 		Cost: 100
 	Tooltip:
@@ -106,6 +108,7 @@ MUTANT:
 MWMN:
 	Inherits: ^Soldier
 	Inherits@2: ^HealsOnTiberium
+	Inherits@EXPERIENCE: ^GainsExperience
 	Valued:
 		Cost: 100
 	Tooltip:
@@ -130,6 +133,7 @@ MWMN:
 MUTANT3:
 	Inherits: ^Soldier
 	Inherits@2: ^HealsOnTiberium
+	Inherits@EXPERIENCE: ^GainsExperience
 	Valued:
 		Cost: 100
 	Tooltip:
@@ -210,6 +214,7 @@ DOGGIE:
 	Inherits@1: ^Infantry
 	Inherits@2: ^RegularInfantryDeath
 	Inherits@3: ^HealsOnTiberium
+	Inherits@EXPERIENCE: ^GainsExperience
 	Tooltip:
 		Name: Tiberian Fiend
 	Health:
