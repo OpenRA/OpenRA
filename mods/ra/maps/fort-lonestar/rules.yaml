@@ -28,8 +28,6 @@ World:
 		Type: LightningStrike
 	LuaScript:
 		Scripts: fort-lonestar.lua, fort-lonestar-AI.lua
-	ExternalConditions:
-		Conditions: invulnerability
 	MapBuildRadius:
 		AllyBuildRadiusLocked: True
 		AllyBuildRadiusEnabled: True
