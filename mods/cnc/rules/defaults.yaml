@@ -839,7 +839,6 @@
 		Offset: 43, 128, 0
 		ZOffset: -129
 	Aircraft:
-		AirborneCondition: airborne
 		CanHover: True
 	FallsToEarth:
 		Spins: True
