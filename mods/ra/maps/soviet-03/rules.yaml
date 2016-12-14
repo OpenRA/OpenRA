@@ -57,7 +57,10 @@ V05:
 		Actor: healcrate
 
 DOG:
+	# HACK: Disable experience without killing the linter
 	-GainsExperience:
+	ExternalConditions@EXPERIENCE:
+		Conditions: rank-veteran-1, rank-veteran-2, rank-veteran-3, rank-elite
 
 SPY:
 	Mobile:
