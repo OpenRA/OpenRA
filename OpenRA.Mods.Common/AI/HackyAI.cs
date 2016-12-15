@@ -1027,7 +1027,7 @@ namespace OpenRA.Mods.Common.AI
 					// Valid target found, delay by a few ticks to avoid rescanning before power fires via order
 					BotDebug("AI: {2} found new target location {0} for support power {1}.", attackLocation, sp.Info.OrderName, Player.PlayerName);
 					waitingPowers[sp] += 10;
-					QueueOrder(new Order(sp.Info.OrderName, supportPowerMngr.Self, false) { TargetLocation = attackLocation.Value, SuppressVisualFeedback = true });
+					QueueOrder(new Order(sp.Key, supportPowerMngr.Self, false) { TargetLocation = attackLocation.Value, SuppressVisualFeedback = true });
 				}
 			}
 		}
@@ -1044,15 +1044,16 @@ namespace OpenRA.Mods.Common.AI
 				return null;
 			}
 
+			var map = World.Map;
 			var checkRadius = powerDecision.CoarseScanRadius;
-			for (var i = 0; i < World.Map.MapSize.X; i += checkRadius)
+			for (var i = 0; i < map.MapSize.X; i += checkRadius)
 			{
-				for (var j = 0; j < World.Map.MapSize.Y; j += checkRadius)
+				for (var j = 0; j < map.MapSize.Y; j += checkRadius)
 				{
 					var consideredAttractiveness = 0;
 
-					var tl = World.Map.CenterOfCell(new CPos(i, j));
-					var br = World.Map.CenterOfCell(new CPos(i + checkRadius, j + checkRadius));
+					var tl = World.Map.CenterOfCell(new MPos(i, j).ToCPos(map));
+					var br = World.Map.CenterOfCell(new MPos(i + checkRadius, j + checkRadius).ToCPos(map));
 					var targets = World.ActorMap.ActorsInBox(tl, br);
 
 					consideredAttractiveness = powerDecision.GetAttractiveness(targets, Player);
@@ -1060,7 +1061,7 @@ namespace OpenRA.Mods.Common.AI
 						continue;
 
 					bestAttractiveness = consideredAttractiveness;
-					bestLocation = new CPos(i, j);
+					bestLocation = new MPos(i, j).ToCPos(map);
 				}
 			}
 
