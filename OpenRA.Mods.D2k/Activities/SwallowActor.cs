@@ -14,6 +14,7 @@ using System.Drawing;
 using System.Linq;
 using OpenRA.Activities;
 using OpenRA.GameRules;
+using OpenRA.Mods.Common.Effects;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Mods.D2k.Traits;
 using OpenRA.Traits;
@@ -30,7 +31,6 @@ namespace OpenRA.Mods.D2k.Activities
 		readonly Sandworm sandworm;
 		readonly ConditionManager conditionManager;
 		readonly WeaponInfo weapon;
-		readonly RadarPings radarPings;
 		readonly AttackSwallow swallow;
 		readonly IPositionable positionable;
 
@@ -47,7 +47,6 @@ namespace OpenRA.Mods.D2k.Activities
 			positionable = self.Trait<Mobile>();
 			swallow = self.Trait<AttackSwallow>();
 			conditionManager = self.TraitOrDefault<ConditionManager>();
-			radarPings = self.World.WorldActor.TraitOrDefault<RadarPings>();
 		}
 
 		bool AttackTargets(Actor self, IEnumerable<Actor> targets)
@@ -78,19 +77,8 @@ namespace OpenRA.Mods.D2k.Activities
 			var affectedPlayers = targets.Select(x => x.Owner).Distinct().ToList();
 			Game.Sound.Play(SoundType.World, swallow.Info.WormAttackSound, self.CenterPosition);
 
-			Game.RunAfterDelay(1000, () =>
-			{
-				if (!Game.IsCurrentWorld(self.World))
-					return;
-
-				foreach (var player in affectedPlayers)
-				{
-					Game.Sound.PlayNotification(player.World.Map.Rules, player, "Speech", swallow.Info.WormAttackNotification, player.Faction.InternalName);
-
-					if (player == player.World.RenderPlayer)
-						radarPings.Add(() => true, attackPosition, Color.Red, 50);
-				}
-			});
+			foreach (var player in affectedPlayers)
+				self.World.AddFrameEndTask(w => w.Add(new MapNotificationEffect(player, "Speech", swallow.Info.WormAttackNotification, 25, true, attackPosition, Color.Red)));
 
 			foreach (var notify in self.TraitsImplementing<INotifyAttack>())
 			{
