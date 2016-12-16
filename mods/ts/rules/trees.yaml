@@ -19,6 +19,18 @@ BIGBLUE:
 		ResourceType: BlueTiberium
 		Interval: 100
 
+BIGBLUE3:
+	Inherits: ^BlossomTree
+	Tooltip:
+		Name: Large Blue Tiberium Crystal
+	RenderSprites:
+		Palette: bluetiberium
+	RadarColorFromTerrain:
+		Terrain: BlueTiberium
+	SeedsResource:
+		ResourceType: BlueTiberium
+		Interval: 100
+
 TREE01:
 	Inherits: ^Tree
 
@@ -113,3 +125,78 @@ VEINHOLE:
 		Palette: player
 	WithSpriteBody:
 	AutoSelectionSize:
+
+FONA01:
+	Inherits: ^Tree
+	Tooltip:
+		Name: Fona
+
+FONA02:
+	Inherits: ^Tree
+	Tooltip:
+		Name: Fona
+
+FONA03:
+	Inherits: ^Tree
+	Tooltip:
+		Name: Fona
+
+FONA04:
+	Inherits: ^Tree
+	Tooltip:
+		Name: Fona
+
+FONA05:
+	Inherits: ^Tree
+	Tooltip:
+		Name: Fona
+
+FONA06:
+	Inherits: ^Tree
+	Tooltip:
+		Name: Fona
+
+FONA07:
+	Inherits: ^Tree
+	Tooltip:
+		Name: Fona
+
+FONA08:
+	Inherits: ^Tree
+	Tooltip:
+		Name: Fona
+
+FONA09:
+	Inherits: ^Tree
+	Tooltip:
+		Name: Fona
+
+FONA10:
+	Inherits: ^Tree
+	Tooltip:
+		Name: Fona
+
+FONA11:
+	Inherits: ^Tree
+	Tooltip:
+		Name: Fona
+
+FONA12:
+	Inherits: ^Tree
+	Tooltip:
+		Name: Fona
+
+FONA13:
+	Inherits: ^Tree
+	Tooltip:
+		Name: Fona
+
+FONA14:
+	Inherits: ^Tree
+	Tooltip:
+		Name: Fona
+
+FONA15:
+	Inherits: ^Tree
+	Tooltip:
+		Name: Fona
