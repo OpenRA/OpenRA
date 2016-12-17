@@ -1,6 +1,7 @@
 allied: Red Alert 95 (Allied Disc, English)
 	IDFiles:
-		eahelp.GID: 13a8a4a1e7d9d6d893c38df5a39262c4689aeba5
+		MAIN.MIX: 20ebe16f91ff79be2d672f1db5bae9048ff9357c
+			Length: 4096
 		INSTALL/REDALERT.MIX: 0e58f4b54f44f6cd29fecf8cf379d33cf2d4caef
 	Install:
 		extract-raw: INSTALL/REDALERT.MIX

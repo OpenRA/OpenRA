@@ -1,6 +1,7 @@
 soviet: Red Alert 95 (Soviet Disc, English)
 	IDFiles:
-		automenu.apm: bb61132a492bfb37069a0139f95671da3655d916
+		MAIN.MIX: 9d108f18560716b684ab8b1da42cc7f3d1b52519
+			Length: 4096
 		INSTALL/REDALERT.MIX: 0e58f4b54f44f6cd29fecf8cf379d33cf2d4caef
 	Install:
 		extract-raw: INSTALL/REDALERT.MIX
