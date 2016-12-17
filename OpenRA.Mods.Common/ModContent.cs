@@ -43,6 +43,7 @@ namespace OpenRA
 			public readonly SourceType Type = SourceType.Disc;
 
 			// Used to find installation locations for SourceType.Install
+			public readonly string[] RegistryPrefixes = { string.Empty };
 			public readonly string RegistryKey;
 			public readonly string RegistryValue;
 
