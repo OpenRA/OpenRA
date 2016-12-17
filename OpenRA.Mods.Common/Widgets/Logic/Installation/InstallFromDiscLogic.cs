@@ -505,15 +505,34 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			try
 			{
-				foreach (var kv in source.IDFiles)
+				foreach (var kv in source.IDFiles.Nodes)
 				{
 					var filePath = Path.Combine(path, kv.Key);
 					if (!File.Exists(filePath))
 						return false;
 
 					using (var fileStream = File.OpenRead(filePath))
-						if (CryptoUtil.SHA1Hash(fileStream) != kv.Value)
-							return false;
+					{
+						var offsetNode = kv.Value.Nodes.FirstOrDefault(n => n.Key == "Offset");
+						var lengthNode = kv.Value.Nodes.FirstOrDefault(n => n.Key == "Length");
+						if (offsetNode != null || lengthNode != null)
+						{
+							var offset = 0L;
+							if (offsetNode != null)
+								offset = FieldLoader.GetValue<long>("Offset", offsetNode.Value.Value);
+
+							var length = fileStream.Length - offset;
+							if (lengthNode != null)
+								length = FieldLoader.GetValue<long>("Length", lengthNode.Value.Value);
+
+							fileStream.Position = offset;
+							var data = fileStream.ReadBytes((int)length);
+							if (CryptoUtil.SHA1Hash(data) != kv.Value.Value)
+								return false;
+						}
+						else if (CryptoUtil.SHA1Hash(fileStream) != kv.Value.Value)
+								return false;
+					}
 				}
 			}
 			catch (Exception)
