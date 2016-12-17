@@ -183,14 +183,15 @@ namespace OpenRA.Mods.RA.Traits
 			public IEnumerable<IRenderable> Render(WorldRenderer wr, World world) { yield break; }
 			public IEnumerable<IRenderable> RenderAboveShroud(WorldRenderer wr, World world)
 			{
-				if (!minelayers.Any())
+				var minelayer = minelayers.FirstOrDefault(m => m.IsInWorld && !m.IsDead);
+				if (minelayer == null)
 					yield break;
 
 				// We get the biggest depth so we cover all cells that mines could be placed on.
 				var minefield = GetMinefieldCells(minefieldStart, lastMousePos,
 					minelayers.Max(m => m.Info.TraitInfo<MinelayerInfo>().MinefieldDepth));
-				var movement = minelayers.First().Trait<IPositionable>();
 
+				var movement = minelayer.Trait<IPositionable>();
 				var pal = wr.Palette(TileSet.TerrainPaletteInternalName);
 				foreach (var c in minefield)
 				{
