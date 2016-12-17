@@ -1,6 +1,7 @@
 ra-origin: C&C The Ultimate Collection (Origin version, English)
 	Type: Install
-	RegistryKey: HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\EA Games\Command and Conquer Red Alert
+	RegistryPrefixes: HKEY_LOCAL_MACHINE\Software\, HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\
+	RegistryKey: EA Games\Command and Conquer Red Alert
 	RegistryValue: Install Dir
 	IDFiles:
 		RA95Launcher.exe: 22bf7a1f9f1c2498823e3216541e6012f291c2c0
@@ -455,9 +456,11 @@ ra-origin: C&C The Ultimate Collection (Origin version, English)
 			^Content/ra/v2/expand/myes1.aud:
 				Offset: 844509702
 				Length: 9073
+
 cnc-origin: Command & Conquer (Origin version, English)
 	Type: Install
-	RegistryKey: HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\EA Games\CNC and The Covert Operations
+	RegistryPrefixes: HKEY_LOCAL_MACHINE\Software\, HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\
+	RegistryKey: EA Games\CNC and The Covert Operations
 	RegistryValue: Install Dir
 	IDFiles:
 		CNC95Launcher.exe: 1d711adf09ac08738b2599b3092a1b448169b32a

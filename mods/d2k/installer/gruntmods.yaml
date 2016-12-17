@@ -1,7 +1,7 @@
-
 gruntmods: Dune 2000: GruntMods Edition
 	Type: Install
-	RegistryKey: HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Dune 2000: Gruntmods Edition
+	RegistryPrefixes: HKEY_LOCAL_MACHINE\Software\, HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\
+	RegistryKey: Dune 2000: Gruntmods Edition
 	IDFiles:
 		Dune 2000/data/BLOXXMAS.R8: afc818feda44f5873e3af07bd2191573ba9965db
 		Dune 2000/data/DATA.R8: 2b229cf4be47104a6214237039a55329f6c45bc9
