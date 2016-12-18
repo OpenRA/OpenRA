@@ -84,9 +84,9 @@ namespace OpenRA.Network
 								var player = world.FindPlayerByClient(client);
 								if (player != null && player.WinState == WinState.Lost)
 									Game.AddChatLine(client.Color.RGB, client.Name + " (Dead)", order.TargetString);
-								else if (player != null && world.LocalPlayer != null && player.Stances[world.LocalPlayer] == Stance.Ally)
-									Game.AddChatLine(client.Color.RGB, "[Team] " + client.Name, order.TargetString);
-								else if (orderManager.LocalClient != null && orderManager.LocalClient.IsObserver && client.IsObserver)
+								else if ((player != null && world.LocalPlayer != null && player.Stances[world.LocalPlayer] == Stance.Ally) || (world.IsReplay && player != null))
+									Game.AddChatLine(client.Color.RGB, "[Team" + (world.IsReplay ? " " + client.Team : "") + "] " + client.Name, order.TargetString);
+								else if ((orderManager.LocalClient != null && orderManager.LocalClient.IsObserver && client.IsObserver) || (world.IsReplay  && client.IsObserver))
 									Game.AddChatLine(client.Color.RGB, "[Spectators] " + client.Name, order.TargetString);
 							}
 						}
