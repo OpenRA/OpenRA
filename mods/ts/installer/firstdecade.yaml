@@ -10,6 +10,8 @@ tfd: C&C The First Decade (English)
 			Extract:
 				^Content/ts/scores.mix: Tiberian Sun\SUN\SCORES.MIX
 				^Content/ts/tibsun.mix: Tiberian Sun\SUN\TIBSUN.MIX
+				^Content/ts/expand01.mix: Tiberian Sun\SUN\expand01.mix
+				^Content/ts/scores01.mix: Tiberian Sun\SUN\scores01.mix
 		extract-raw: ^Content/ts/tibsun.mix
 			^Content/ts/cache.mix:
 				Offset: 300
