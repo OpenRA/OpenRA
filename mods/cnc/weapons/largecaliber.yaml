@@ -1,121 +1,64 @@
+^BallisticWeapon:
+	ReloadDelay: 40
+	Range: 4c768
+	Report: tnkfire6.aud
+	Projectile: Bullet
+		Image: 120MM
+		Speed: 682
+	Warhead@1Dam: SpreadDamage
+		Spread: 128
+		Damage: 40
+		Versus:
+			None: 25
+			Wood: 100
+			Light: 100
+			Heavy: 100
+		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
+	Warhead@2Smu: LeaveSmudge
+		SmudgeType: Crater
+		InvalidTargets: Vehicle, Structure, Wall, Husk, Trees, Creep
+	Warhead@3Eff: CreateEffect
+		Explosions: small_frag
+		ImpactSounds: xplos.aud
+
 70mm:
+	Inherits: ^BallisticWeapon
 	ReloadDelay: 30
 	Range: 4c0
 	Report: tnkfire3.aud
 	Projectile: Bullet
-		Image: 120MM
 		Speed: 853
 	Warhead@1Dam: SpreadDamage
-		Spread: 128
 		Damage: 25
 		Versus:
 			None: 25
 			Wood: 75
 			Light: 100
 			Heavy: 90
-		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
-	Warhead@2Smu: LeaveSmudge
-		SmudgeType: Crater
-		InvalidTargets: Vehicle, Structure, Wall, Husk, Trees, Creep
-	Warhead@3Eff: CreateEffect
-		Explosions: small_frag
-		ImpactSounds: xplos.aud
-
-105mm:
-	ReloadDelay: 50
-	Range: 4c768
-	Report: tnkfire4.aud
-	Projectile: Bullet
-		Image: 120MM
-		Speed: 682
-	Warhead@1Dam: SpreadDamage
-		Spread: 128
-		Damage: 30
-		Versus:
-			None: 30
-			Wood: 75
-			Light: 75
-			Heavy: 100
-		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
-	Warhead@2Smu: LeaveSmudge
-		SmudgeType: Crater
-		InvalidTargets: Vehicle, Structure, Wall, Husk, Trees, Creep
-	Warhead@3Eff: CreateEffect
-		Explosions: small_frag
-		ImpactSounds: xplos.aud
 
 120mm:
-	ReloadDelay: 40
-	Range: 4c768
-	Report: tnkfire6.aud
-	Projectile: Bullet
-		Image: 120MM
-		Speed: 682
-	Warhead@1Dam: SpreadDamage
-		Spread: 128
-		Damage: 40
-		Versus:
-			None: 25
-			Wood: 100
-			Light: 100
-			Heavy: 100
-		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
-	Warhead@2Smu: LeaveSmudge
-		SmudgeType: Crater
-		InvalidTargets: Vehicle, Structure, Wall, Husk, Trees, Creep
-	Warhead@3Eff: CreateEffect
-		Explosions: small_frag
-		ImpactSounds: xplos.aud
+	Inherits: ^BallisticWeapon
 
 120mmDual:
-	ReloadDelay: 40
-	Range: 4c768
-	Report: tnkfire6.aud
+	Inherits: ^BallisticWeapon
 	Burst: 2
 	BurstDelay: 8
-	Projectile: Bullet
-		Image: 120MM
-		Speed: 682
-	Warhead@1Dam: SpreadDamage
-		Spread: 128
-		Damage: 40
-		Versus:
-			None: 25
-			Wood: 100
-			Light: 100
-			Heavy: 100
-		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
-	Warhead@2Smu: LeaveSmudge
-		SmudgeType: Crater
-		InvalidTargets: Vehicle, Structure, Wall, Husk, Trees, Creep
-	Warhead@3Eff: CreateEffect
-		Explosions: small_frag
-		ImpactSounds: xplos.aud
 
 TurretGun:
+	Inherits: ^BallisticWeapon
 	ReloadDelay: 20
 	Range: 6c0
-	Report: tnkfire6.aud
 	Projectile: Bullet
-		Image: 120MM
 		Speed: 853
 	Warhead@1Dam: SpreadDamage
-		Spread: 128
-		Damage: 40
 		Versus:
 			None: 20
 			Wood: 25
 			Light: 100
 			Heavy: 100
-		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
-	Warhead@2Smu: LeaveSmudge
-		SmudgeType: Crater
-		InvalidTargets: Vehicle, Structure, Wall, Husk, Trees, Creep
-	Warhead@3Eff: CreateEffect
-		Explosions: small_frag
-		ImpactSounds: xplos.aud
 
 ArtilleryShell:
+	Inherits: ^BallisticWeapon
 	ReloadDelay: 65
 	Range: 11c0
 	MinRange: 2c896
@@ -126,7 +69,6 @@ ArtilleryShell:
 		LaunchAngle: 56
 		Inaccuracy: 1c256
 		ContrailLength: 30
-		Image: 120MM
 	Warhead@1Dam: SpreadDamage
 		Spread: 341
 		Damage: 150
@@ -136,9 +78,6 @@ ArtilleryShell:
 			Light: 75
 			Heavy: 50
 		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
-	Warhead@2Smu: LeaveSmudge
-		SmudgeType: Crater
-		InvalidTargets: Vehicle, Structure, Wall, Husk, Trees, Creep
 	Warhead@3Eff: CreateEffect
 		Explosions: poof
 		ImpactSounds: xplosml2.aud

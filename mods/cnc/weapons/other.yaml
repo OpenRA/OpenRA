@@ -1,5 +1,5 @@
-Flamethrower:
-	ValidTargets: Ground, Trees
+^FlameWeapon:
+	ValidTargets: Ground, Water, Trees
 	ReloadDelay: 55
 	Range: 2c512
 	InvalidTargets: Wall
@@ -9,7 +9,7 @@ Flamethrower:
 	Warhead@1Dam: SpreadDamage
 		Spread: 341
 		Damage: 40
-		ValidTargets: Ground, Trees
+		ValidTargets: Ground, Water, Trees
 		InvalidTargets: Wall
 		Versus:
 			None: 100
@@ -24,12 +24,13 @@ Flamethrower:
 		Explosions: small_napalm
 		ImpactSounds: flamer2.aud
 
+Flamethrower:
+	Inherits: ^FlameWeapon
+
 BigFlamer:
-	ValidTargets: Ground, Trees
+	Inherits: ^FlameWeapon
 	ReloadDelay: 50
 	Range: 3c512
-	InvalidTargets: Wall
-	Report: flamer2.aud
 	Projectile: Bullet
 		Speed: 341
 	Burst: 2
@@ -37,20 +38,10 @@ BigFlamer:
 	Warhead@1Dam: SpreadDamage
 		Spread: 400
 		Damage: 75
-		InvalidTargets: Wall
-		ValidTargets: Ground, Trees
 		Versus:
-			None: 100
-			Wood: 100
-			Light: 100
 			Heavy: 25
-		DamageTypes: Prone50Percent, TriggerProne, FireDeath, Incendiary
-	Warhead@2Smu: LeaveSmudge
-		SmudgeType: Scorch
-		InvalidTargets: Vehicle, Structure, Wall
 	Warhead@3Eff: CreateEffect
 		Explosions: med_napalm
-		ImpactSounds: flamer2.aud
 
 Chemspray:
 	ReloadDelay: 65
@@ -101,7 +92,7 @@ Grenade:
 		ImpactSounds: xplos.aud
 
 Napalm:
-	ValidTargets: Ground, Water, Trees
+	Inherits: ^FlameWeapon
 	ReloadDelay: 4
 	Range: 2c0
 	Burst: 2
@@ -112,19 +103,10 @@ Napalm:
 		Spread: 341
 		Damage: 30
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
-		ValidTargets: Ground, Water, Trees
 		Versus:
-			None: 100
-			Wood: 100
-			Light: 100
 			Heavy: 80
-		DamageTypes: Prone50Percent, TriggerProne, FireDeath, Incendiary
-	Warhead@2Smu: LeaveSmudge
-		SmudgeType: Scorch
-		InvalidTargets: Vehicle, Structure, Wall
 	Warhead@3Eff: CreateEffect
 		Explosions: med_napalm
-		ImpactSounds: flamer2.aud
 
 Laser:
 	ReloadDelay: 1
@@ -161,7 +143,7 @@ TiberiumExplosion:
 		Explosions: chemball
 		ImpactSounds: xplosml2.aud
 
-Tail:
+^DinoWeapon:
 	ReloadDelay: 30
 	Range: 1c0
 	Report: dinoatk1.aud
@@ -176,54 +158,24 @@ Tail:
 			Light: 30
 			Heavy: 10
 		DamageTypes: Prone50Percent, TriggerProne, RippedApartDeath
+
+Tail:
+	Inherits: ^DinoWeapon
 
 Horn:
+	Inherits: ^DinoWeapon
 	ReloadDelay: 20
-	Range: 1c0
-	Report: dinoatk1.aud
-	Projectile: Bullet
-		Speed: 1c682
 	Warhead@1Dam: SpreadDamage
-		Spread: 213
 		Damage: 120
-		Versus:
-			None: 90
-			Wood: 10
-			Light: 30
-			Heavy: 10
-		DamageTypes: Prone50Percent, TriggerProne, RippedApartDeath
 
 Teeth:
-	ReloadDelay: 30
-	Range: 1c0
-	Report: dinoatk1.aud
-	Projectile: Bullet
-		Speed: 1c682
-	Warhead@1Dam: SpreadDamage
-		Spread: 213
-		Damage: 180
-		Versus:
-			None: 90
-			Wood: 10
-			Light: 30
-			Heavy: 10
-		DamageTypes: Prone50Percent, TriggerProne, RippedApartDeath
+	Inherits: ^DinoWeapon
 
 Claw:
+	Inherits: ^DinoWeapon
 	ReloadDelay: 10
-	Range: 1c0
-	Report: dinoatk1.aud
-	Projectile: Bullet
-		Speed: 1c682
 	Warhead@1Dam: SpreadDamage
-		Spread: 213
 		Damage: 60
-		Versus:
-			None: 90
-			Wood: 10
-			Light: 30
-			Heavy: 10
-		DamageTypes: Prone50Percent, TriggerProne, RippedApartDeath
 
 Demolish:
 	Warhead@1Dam: SpreadDamage

@@ -1,4 +1,4 @@
-Rockets:
+^MissileWeapon:
 	ReloadDelay: 50
 	Range: 6c0
 	MinRange: 0c512
@@ -31,60 +31,37 @@ Rockets:
 		Explosions: small_frag
 		ImpactSounds: xplos.aud
 
+Rockets:
+	Inherits: ^MissileWeapon
+
 BikeRockets:
-	ReloadDelay: 50
-	Range: 6c0
-	Report: bazook1.aud
-	ValidTargets: Ground, Air
+	Inherits: ^MissileWeapon
 	Burst: 2
 	BurstDelay: 10
 	Projectile: Missile
-		Arm: 0
-		Blockable: false
-		Inaccuracy: 128
-		Image: DRAGON
 		HorizontalRateOfTurn: 10
-		TrailImage: smokey
-		ContrailLength: 8
 		Speed: 213
-		RangeLimit: 7c204
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 30
-		ValidTargets: Ground, Air
 		Versus:
 			None: 25
 			Wood: 75
-			Light: 100
-			Heavy: 100
-		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
-	Warhead@2Smu: LeaveSmudge
-		SmudgeType: Crater
-		InvalidTargets: Vehicle, Structure, Wall, Husk, Trees, Creep
-	Warhead@3Eff: CreateEffect
-		Explosions: small_frag
-		ImpactSounds: xplos.aud
 
 OrcaAGMissiles:
+	Inherits: ^MissileWeapon
 	ReloadDelay: 12
 	Burst: 2
 	BurstDelay: 12
 	Range: 5c0
 	MinRange: 1c256
-	Report: bazook1.aud
 	ValidTargets: Ground
 	Projectile: Missile
 		Arm: 1
-		Blockable: false
-		Inaccuracy: 128
-		Image: DRAGON
 		HorizontalRateOfTurn: 20
-		TrailImage: smokey
-		ContrailLength: 8
 		Speed: 256
 		RangeLimit: 6c0
 	Warhead@1Dam: SpreadDamage
-		Spread: 128
 		Damage: 25
 		ValidTargets: Ground
 		Versus:
@@ -92,74 +69,39 @@ OrcaAGMissiles:
 			Wood: 100
 			Light: 100
 			Heavy: 75
-		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
-	Warhead@2Smu: LeaveSmudge
-		SmudgeType: Crater
-		InvalidTargets: Vehicle, Structure, Wall, Husk, Trees, Creep
-	Warhead@3Eff: CreateEffect
-		Explosions: small_frag
-		ImpactSounds: xplos.aud
 
 OrcaAAMissiles:
-	ReloadDelay: 12
-	Burst: 2
-	BurstDelay: 12
-	Range: 5c0
-	MinRange: 1c256
-	Report: bazook1.aud
+	Inherits: OrcaAGMissiles
 	ValidTargets: Air
 	Projectile: Missile
 		Arm: 0
-		Blockable: false
-		Inaccuracy: 128
-		Image: DRAGON
-		HorizontalRateOfTurn: 20
-		TrailImage: smokey
-		ContrailLength: 8
 		Speed: 298
-		RangeLimit: 6c0
 	Warhead@1Dam: SpreadDamage
-		Spread: 128
-		Damage: 25
 		ValidTargets: Air
 		Versus:
 			Light: 75
 			Heavy: 50
-		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
-	Warhead@3Eff: CreateEffect
-		Explosions: small_frag
-		ImpactSounds: xplos.aud
+	-Warhead@2Smu: LeaveSmudge
 
 MammothMissiles:
+	Inherits: ^MissileWeapon
 	ReloadDelay: 45
 	Range: 5c0
 	Report: rocket1.aud
-	ValidTargets: Ground, Air
 	Burst: 2
 	BurstDelay: 15
 	Projectile: Missile
-		Arm: 0
-		Blockable: false
-		Inaccuracy: 128
-		Image: DRAGON
 		HorizontalRateOfTurn: 20
-		TrailImage: smokey
-		ContrailLength: 8
 		Speed: 341
 		RangeLimit: 6c0
 	Warhead@1Dam: SpreadDamage
 		Spread: 298
 		Damage: 45
-		ValidTargets: Ground, Air
 		Versus:
 			None: 50
 			Wood: 75
 			Light: 100
 			Heavy: 50
-		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
-	Warhead@2Smu: LeaveSmudge
-		SmudgeType: Crater
-		InvalidTargets: Vehicle, Structure, Wall, Husk, Trees, Creep
 	Warhead@3Eff: CreateEffect
 		Explosions: small_poof
 		ImpactSounds: xplos.aud
@@ -170,6 +112,7 @@ MammothMissiles:
 		ValidImpactTypes: Air, AirHit
 
 227mm:
+	Inherits: ^MissileWeapon
 	ReloadDelay: 100
 	Range: 12c0
 	MinRange: 3c0
@@ -178,15 +121,11 @@ MammothMissiles:
 	Report: rocket1.aud
 	ValidTargets: Ground
 	Projectile: Bullet
-		Arm: 5
-		Blockable: false
 		Shadow: true
 		Inaccuracy: 853
 		LaunchAngle: 62
 		Image: DRAGON
-		RateOfTurn: 2
 		ContrailLength: 10
-		TrailImage: smokey
 		Speed: 341
 	Warhead@1Dam: SpreadDamage
 		Spread: 683
@@ -197,62 +136,41 @@ MammothMissiles:
 			Wood: 60
 			Light: 100
 			Heavy: 50
-		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
-	Warhead@2Smu: LeaveSmudge
-		SmudgeType: Crater
-		InvalidTargets: Vehicle, Structure, Wall, Husk, Trees, Creep
 	Warhead@3Eff: CreateEffect
 		Explosions: med_frag
 		ImpactSounds: xplos.aud
 
 227mm.stnk:
+	Inherits: ^MissileWeapon
 	ReloadDelay: 70
 	Range: 7c0
 	Report: rocket1.aud
 	Burst: 2
 	BurstDelay: 10
-	ValidTargets: Ground, Air
 	Projectile: Missile
-		Arm: 0
-		Blockable: false
 		Inaccuracy: 213
-		Image: DRAGON
 		HorizontalRateOfTurn: 10
-		TrailImage: smokey
-		ContrailLength: 8
 		Speed: 213
 		RangeLimit: 8c409
 	Warhead@1Dam: SpreadDamage
-		Spread: 128
 		Damage: 60
-		ValidTargets: Ground, Air
 		Versus:
 			None: 25
 			Wood: 75
 			Light: 100
 			Heavy: 90
-		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
-	Warhead@2Smu: LeaveSmudge
-		SmudgeType: Crater
-		InvalidTargets: Vehicle, Structure, Wall, Husk, Trees, Creep
-	Warhead@3Eff: CreateEffect
-		Explosions: small_frag
-		ImpactSounds: xplos.aud
 
 BoatMissile:
+	Inherits: ^MissileWeapon
 	ReloadDelay: 35
 	Range: 8c0
 	Burst: 2
 	BurstDelay: 10
 	Report: rocket2.aud
 	Projectile: Missile
-		Arm: 0
-		Blockable: false
 		Inaccuracy: 426
 		Image: DRAGON
 		HorizontalRateOfTurn: 5
-		TrailImage: smokey
-		ContrailLength: 8
 		Speed: 170
 		RangeLimit: 9c614
 	Warhead@1Dam: SpreadDamage
@@ -264,9 +182,6 @@ BoatMissile:
 			Light: 60
 			Heavy: 25
 		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
-	Warhead@2Smu: LeaveSmudge
-		SmudgeType: Crater
-		InvalidTargets: Vehicle, Structure, Wall, Husk, Trees, Creep
 	Warhead@3Eff: CreateEffect
 		Explosions: small_poof
 		ImpactSounds: xplos.aud
@@ -277,18 +192,13 @@ BoatMissile:
 		ValidImpactTypes: Air, AirHit
 
 TowerMissle:
+	Inherits: ^MissileWeapon
 	ReloadDelay: 15
 	Range: 7c0
 	Report: rocket2.aud
 	ValidTargets: Ground
 	Projectile: Missile
-		Arm: 0
-		Blockable: false
-		Inaccuracy: 128
-		Image: DRAGON
 		HorizontalRateOfTurn: 20
-		TrailImage: smokey
-		ContrailLength: 8
 		Speed: 298
 		RangeLimit: 8c409
 	Warhead@1Dam: SpreadDamage
@@ -298,94 +208,57 @@ TowerMissle:
 		Versus:
 			None: 50
 			Wood: 25
-			Light: 100
-			Heavy: 100
 		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
-	Warhead@2Smu: LeaveSmudge
-		SmudgeType: Crater
-		InvalidTargets: Vehicle, Structure, Wall, Husk, Trees, Creep
 	Warhead@3Eff: CreateEffect
 		Explosions: med_frag
 		ImpactSounds: xplos.aud
 
 SAMMissile:
+	Inherits: ^MissileWeapon
 	ReloadDelay: 15
 	Range: 8c0
 	Report: rocket2.aud
 	ValidTargets: Air
 	Projectile: Missile
-		Arm: 0
-		Blockable: false
 		Image: MISSILE
 		HorizontalRateOfTurn: 20
 		Speed: 426
 		RangeLimit: 9c614
-		TrailImage: smokey
-		ContrailLength: 8
+		Inaccuracy: 0
 	Warhead@1Dam: SpreadDamage
 		Spread: 682
+		Damage: 35
 		ValidTargets: Air
 		Versus:
 			None: 100
 			Wood: 100
 			Light: 100
 			Heavy: 75
-		Damage: 35
-		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
+	-Warhead@2Smu: LeaveSmudge
 	Warhead@3Eff: CreateEffect
 		Explosions: small_building
 		ImpactSounds: xplos.aud
 
-HonestJohn:
-	ReloadDelay: 200
-	Range: 10c0
-	Report: rocket1.aud
-	Projectile: Bullet
-		Arm: 10
-		Blockable: false
-		Shadow: true
-		Inaccuracy: 213
-		Image: patriot
-		TrailImage: smokey
-		Speed: 187
-		RangeLimit: 35
-		LaunchAngle: 88
-	Warhead@1Dam: SpreadDamage
-		Spread: 256
-		Damage: 100
-		Versus:
-			None: 90
-			Wood: 75
-			Light: 60
-			Heavy: 25
-		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
-	Warhead@2Smu: LeaveSmudge
-		SmudgeType: Crater
-	Warhead@3Eff: CreateEffect
-		Explosions: small_poof
-		ImpactSounds: xplos.aud
-
 Patriot:
+	Inherits: ^MissileWeapon
 	ReloadDelay: 25
 	Range: 9c0
 	MinRange: 1c0
 	Report: rocket2.aud
 	ValidTargets: Air
 	Projectile: Missile
-		Blockable: false
 		Image: patriot
-		TrailImage: smokey
-		ContrailLength: 8
 		HorizontalRateOfTurn: 20
 		Speed: 300
 		RangeLimit: 10c819
+		Inaccuracy: 0
 	Warhead@1Dam: SpreadDamage
 		Spread: 682
+		Damage: 50
 		ValidTargets: Air
 		Versus:
 			Heavy: 75
-		Damage: 50
-		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
+	-Warhead@2Smu: LeaveSmudge
 	Warhead@3Eff: CreateEffect
 		Explosions: poof
 		ImpactSounds: xplos.aud
