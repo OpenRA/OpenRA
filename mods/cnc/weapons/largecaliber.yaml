@@ -1,18 +1,3 @@
-70mm:
-	Inherits: ^BallisticWeapon
-	ReloadDelay: 30
-	Range: 4c0
-	Report: tnkfire3.aud
-	Projectile: Bullet
-		Speed: 853
-	Warhead@1Dam: SpreadDamage
-		Damage: 25
-		Versus:
-			None: 25
-			Wood: 75
-			Light: 100
-			Heavy: 90
-
 ^BallisticWeapon:
 	ReloadDelay: 40
 	Range: 4c768
@@ -35,6 +20,21 @@
 	Warhead@3Eff: CreateEffect
 		Explosions: small_frag
 		ImpactSounds: xplos.aud
+
+70mm:
+	Inherits: ^BallisticWeapon
+	ReloadDelay: 30
+	Range: 4c0
+	Report: tnkfire3.aud
+	Projectile: Bullet
+		Speed: 853
+	Warhead@1Dam: SpreadDamage
+		Damage: 25
+		Versus:
+			None: 25
+			Wood: 75
+			Light: 100
+			Heavy: 90
 
 120mm:
 	Inherits: ^BallisticWeapon
