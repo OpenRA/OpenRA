@@ -9,6 +9,7 @@ RequiresMods:
 
 Packages:
 	~^Content/ts
+	~^Content/ts/firestorm
 	.
 	$ts: ts
 	./mods/common: common
@@ -264,22 +265,32 @@ ColorValidator:
 
 ModContent:
 	InstallPromptMessage: Tiberian Sun requires artwork and audio from the original game.\n\nQuick Install will automatically download this content (without music\nor videos) from a mirror of the 2012 Tiberian Sun freeware release.\n\nAdvanced Install includes options for downloading the music and for\ncopying the videos and other content from an original game disc.
-	QuickDownload: basefiles
+	QuickDownload: quickinstall
 	HeaderMessage: Game content may be extracted from the original game discs or an\nexisting digital install. OpenRA can also download the base game\nfiles from an online mirror of the 2012 freeware release of TS.
 	Packages:
-		base: Base Game Files
+		tibsun: Base Game Files
 			TestFiles: ^Content/ts/cache.mix, ^Content/ts/conquer.mix, ^Content/ts/isosnow.mix, ^Content/ts/isotemp.mix, ^Content/ts/local.mix, ^Content/ts/sidec01.mix, ^Content/ts/sidec02.mix, ^Content/ts/sno.mix, ^Content/ts/snow.mix, ^Content/ts/sounds.mix, ^Content/ts/speech01.mix, ^Content/ts/tem.mix, ^Content/ts/temperat.mix
 			Sources: tibsun, tibsun-linux, tfd, origin
 			Required: true
 			Download: basefiles
-		music: Base Game Music
+		tibsun-music: Base Game Music
 			TestFiles: ^Content/ts/scores.mix
 			Sources: tibsun, tibsun-linux, tfd, origin
-			Download: music
+			Download: tibsun-music
+		fstorm: Expansion Freeware Content
+			TestFiles: ^Content/ts/firestorm/e01sc01.mix, ^Content/ts/firestorm/e01sc02.mix, ^Content/ts/firestorm/e01vox01.mix, ^Content/ts/firestorm/e01vox02.mix
+			Sources: tfd, origin, fstorm
+			Required: true
+			Download: fstorm
+		fstorm-music: Expansion Freeware Music
+			Sources: tfd, origin, fstorm
+			TestFiles: ^Content/ts/firestorm/linkup.aud, ^Content/ts/firestorm/hacker.aud
+			Download: fstorm-music
 	Downloads:
 		ts|installer/downloads.yaml
 	Sources:
 		ts|installer/downloads.yaml
+		ts|installer/firestorm.yaml
 		ts|installer/firstdecade.yaml
 		ts|installer/origin.yaml
 		ts|installer/tibsun.yaml
