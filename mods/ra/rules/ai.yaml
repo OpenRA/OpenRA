@@ -42,7 +42,7 @@ Player:
 			fix: 0.1%
 			dome: 10%
 		CapturingActorTypes: e6
-		CapturableActorTypes: mslo, gap, iron, pdox, atek, weap, fact, proc, silo, hpad, afld, powr, apwr, stek, barr, kenn, tent, fix, oilb
+		CapturableActorTypes: mslo, gap, iron, pdox, atek, weap, fact, proc, silo, hpad, afld, powr, apwr, stek, barr, kenn, tent, dome, fix, oilb, hosp
 		CheckCaptureTargetsForVisibility: false
 		MaximumCaptureTargetOptions: 15
 		UnitsToBuild:
@@ -65,7 +65,12 @@ Player:
 			4tnk: 10%
 			ttnk: 10%
 			stnk: 5%
+			ctnk: 3%
+			mrj: 2%
+			mgg: 1%
 		UnitLimits:
+			mrj: 1
+			mgg: 1
 			dog: 4
 			e6: 3
 			harv: 8
@@ -169,11 +174,16 @@ Player:
 			atek: 1%
 			stek: 1%
 			mslo: 1%
+		CapturingActorTypes: e6
+		CapturableActorTypes: oilb, hosp
+		CheckCaptureTargetsForVisibility: false
+		MaximumCaptureTargetOptions: 5
 		UnitsToBuild:
 			e1: 65%
 			e2: 25%
 			e3: 40%
 			e4: 15%
+			e6: 3%
 			medi: 3%
 			mech: 3%
 			dog: 15%
@@ -190,6 +200,9 @@ Player:
 			4tnk: 15%
 			ttnk: 15%
 			stnk: 10%
+			ctnk: 6%
+			mrj: 2.5%
+			mgg: 1%
 			heli: 30%
 			hind: 30%
 			mig: 30%
@@ -200,7 +213,10 @@ Player:
 			ca: 10%
 			pt: 10%
 		UnitLimits:
+			mrj: 1
+			mgg: 1
 			dog: 4
+			e6: 1
 			medi: 3
 			mech: 3
 			harv: 8
@@ -304,11 +320,16 @@ Player:
 			atek: 1%
 			stek: 1%
 			mslo: 1%
+		CapturingActorTypes: e6
+		CapturableActorTypes: oilb, hosp
+		CheckCaptureTargetsForVisibility: false
+		MaximumCaptureTargetOptions: 10
 		UnitsToBuild:
 			e1: 65%
 			e2: 25%
 			e3: 40%
 			e4: 15%
+			e6: 3%
 			medi: 5%
 			mech: 5%
 			dog: 15%
@@ -325,6 +346,9 @@ Player:
 			4tnk: 20%
 			ttnk: 20%
 			stnk: 15%
+			ctnk: 9%
+			mrj: 3%
+			mgg: 1%
 			heli: 30%
 			hind: 30%
 			mig: 30%
@@ -335,7 +359,10 @@ Player:
 			ca: 10%
 			pt: 10%
 		UnitLimits:
+			mrj: 1
+			mgg: 1
 			dog: 4
+			e6: 1
 			medi: 4
 			mech: 4
 			harv: 8
