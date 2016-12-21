@@ -22,16 +22,17 @@ namespace OpenRA.Mods.Common.Traits.Sound
 		[Desc("Interval between playing the sound (in ticks).")]
 		public readonly int Interval = 0;
 
-		public override object Create(ActorInitializer init) { return new AmbientSound(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new AmbientSound(this); }
 	}
 
-	class AmbientSound : UpgradableTrait<AmbientSoundInfo>, ITick
+	class AmbientSound : UpgradableTrait<AmbientSoundInfo>, ITick, INotifyRemovedFromWorld
 	{
 		ISound currentSound;
 		bool wasDisabled = true;
 		int interval;
+		WPos cachedPosition;
 
-		public AmbientSound(Actor self, AmbientSoundInfo info)
+		public AmbientSound(AmbientSoundInfo info)
 			: base(info)
 		{
 			interval = info.Interval;
@@ -39,26 +40,34 @@ namespace OpenRA.Mods.Common.Traits.Sound
 
 		public void Tick(Actor self)
 		{
-			if (IsTraitDisabled)
+			if (IsTraitDisabled || !self.IsInWorld)
 			{
-				Game.Sound.StopSound(currentSound);
-				currentSound = null;
-				wasDisabled = true;
+				StopSound();
 				return;
 			}
-
-			if (wasDisabled && Info.Interval <= 0)
-			{
-				if (self.OccupiesSpace != null)
-					currentSound = Game.Sound.PlayLooped(Info.SoundFile, self.CenterPosition);
-				else
-					currentSound = Game.Sound.PlayLooped(Info.SoundFile);
-			}
-
-			wasDisabled = false;
 
 			if (Info.Interval <= 0)
+			{
+				var moved = self.OccupiesSpace != null && cachedPosition != self.CenterPosition;
+				if (!wasDisabled && !moved)
+					return;
+
+				wasDisabled = false;
+
+				if (moved)
+				{
+					// Otherwise the sound never gets stopped when the actor is on the move
+					Game.Sound.StopSound(currentSound);
+					currentSound = null;
+
+					cachedPosition = self.CenterPosition;
+					currentSound = Game.Sound.PlayLooped(Info.SoundFile, self.CenterPosition);
+				}
+				else
+					currentSound = Game.Sound.PlayLooped(Info.SoundFile);
+
 				return;
+			}
 
 			if (interval-- > 0)
 				return;
@@ -69,6 +78,18 @@ namespace OpenRA.Mods.Common.Traits.Sound
 				Game.Sound.Play(Info.SoundFile, self.CenterPosition);
 			else
 				Game.Sound.Play(Info.SoundFile);
+		}
+
+		void INotifyRemovedFromWorld.RemovedFromWorld(Actor self)
+		{
+			StopSound();
+		}
+
+		void StopSound()
+		{
+			Game.Sound.StopSound(currentSound);
+			currentSound = null;
+			wasDisabled = true;
 		}
 	}
 }
