@@ -58,20 +58,27 @@ CrateNuke:
 		Damage: 60
 		Falloff: 1000, 600, 400, 250, 150, 100, 0
 		Delay: 4
-		ValidTargets: Ground, Trees, Water, Air
+		ValidTargets: Ground, Water, Air
 		Versus:
 			Concrete: 25
 		AffectsParent: true
 		DamageTypes: Prone50Percent, TriggerProne, FireDeath, Incendiary
-	Warhead@5Res_areanuke: DestroyResource
+	Warhead@5Dam_areanuke: SpreadDamage
+		Spread: 1c0
+		Damage: 120
+		Falloff: 1000, 600, 400, 250, 150, 100, 0
+		Delay: 4
+		ValidTargets: Trees
+		DamageTypes: Incendiary
+	Warhead@6Res_areanuke: DestroyResource
 		Size: 5,4
 		Delay: 4
-	Warhead@6Smu_areanuke: LeaveSmudge
+	Warhead@7Smu_areanuke: LeaveSmudge
 		SmudgeType: Scorch
 		InvalidTargets: Vehicle, Tank, Structure, Wall, Trees
 		Size: 5,4
 		Delay: 4
-	Warhead@7Eff_areanuke: CreateEffect
+	Warhead@8Eff_areanuke: CreateEffect
 		ImpactSounds: kaboom22.aud
 		Delay: 4
 
@@ -112,28 +119,42 @@ MiniNuke:
 		Damage: 60
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		Delay: 10
-		ValidTargets: Ground, Trees, Water, Underwater, Air
+		ValidTargets: Ground, Water, Underwater, Air
 		Versus:
 			Concrete: 25
 		AffectsParent: true
 		DamageTypes: Prone50Percent, TriggerProne, FireDeath, Incendiary
-	Warhead@8Res_areanuke2: DestroyResource
+	Warhead@8Dam_areanuke2: SpreadDamage
+		Spread: 3c0
+		Damage: 120
+		Falloff: 1000, 368, 135, 50, 18, 7, 0
+		Delay: 10
+		ValidTargets: Trees
+		DamageTypes: Incendiary
+	Warhead@9Res_areanuke2: DestroyResource
 		Size: 3
 		Delay: 10
-	Warhead@9Dam_areanuke3: SpreadDamage
+	Warhead@10Dam_areanuke3: SpreadDamage
 		Spread: 4c0
 		Damage: 60
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		Delay: 15
-		ValidTargets: Ground, Trees, Water, Underwater
+		ValidTargets: Ground, Water, Underwater
 		Versus:
 			Concrete: 25
 		AffectsParent: true
 		DamageTypes: Prone50Percent, TriggerProne, FireDeath, Incendiary
-	Warhead@10Res_areanuke3: DestroyResource
+	Warhead@11Dam_areanuke3: SpreadDamage
+		Spread: 4c0
+		Damage: 180
+		Falloff: 1000, 368, 135, 50, 18, 7, 0
+		Delay: 15
+		ValidTargets: Trees
+		DamageTypes: Incendiary
+	Warhead@12Res_areanuke3: DestroyResource
 		Size: 4
 		Delay: 15
-	Warhead@11Smu_areanuke3: LeaveSmudge
+	Warhead@13Smu_areanuke3: LeaveSmudge
 		SmudgeType: Scorch
 		InvalidTargets: Vehicle, Tank, Structure, Wall, Trees
 		Size: 4

@@ -72,48 +72,69 @@ Atomic:
 		Damage: 60
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		Delay: 10
-		ValidTargets: Ground, Trees, Water, Underwater, Air
+		ValidTargets: Ground, Water, Underwater, Air
 		Versus:
 			Concrete: 25
 		DamageTypes: Prone50Percent, TriggerProne, FireDeath, Incendiary
-	Warhead@10Res_areanuke2: DestroyResource
+	Warhead@10Dam_areanuke2: SpreadDamage
+		Spread: 3c0
+		Damage: 120
+		Falloff: 1000, 368, 135, 50, 18, 7, 0
+		Delay: 15
+		ValidTargets: Trees
+		DamageTypes: Incendiary
+	Warhead@11Res_areanuke2: DestroyResource
 		Size: 3
 		Delay: 10
-	Warhead@11Smu_areanuke2: LeaveSmudge
+	Warhead@12Smu_areanuke2: LeaveSmudge
 		SmudgeType: Scorch
 		InvalidTargets: Vehicle, Tank, Structure, Wall, Husk, Trees
 		Size: 3
 		Delay: 10
-	Warhead@12Dam_areanuke3: SpreadDamage
+	Warhead@13Dam_areanuke3: SpreadDamage
 		Spread: 4c0
 		Damage: 60
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		Delay: 15
-		ValidTargets: Ground, Trees, Water, Underwater, Air
+		ValidTargets: Ground, Water, Underwater, Air
 		Versus:
 			Concrete: 25
 		DamageTypes: Prone50Percent, TriggerProne, FireDeath, Incendiary
-	Warhead@13Res_areanuke3: DestroyResource
+	Warhead@14Dam_areanuke3: SpreadDamage
+		Spread: 4c0
+		Damage: 120
+		Falloff: 1000, 368, 135, 50, 18, 7, 0
+		Delay: 15
+		ValidTargets: Trees
+		DamageTypes: Incendiary
+	Warhead@15Res_areanuke3: DestroyResource
 		Size: 4
 		Delay: 15
-	Warhead@14Smu_areanuke3: LeaveSmudge
+	Warhead@16Smu_areanuke3: LeaveSmudge
 		SmudgeType: Scorch
 		InvalidTargets: Vehicle, Tank, Structure, Wall, Husk, Trees
 		Size: 4
 		Delay: 15
-	Warhead@15Dam_areanuke4: SpreadDamage
+	Warhead@17Dam_areanuke4: SpreadDamage
 		Spread: 5c0
 		Damage: 60
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		Delay: 20
-		ValidTargets: Ground, Trees, Water, Underwater, Air
+		ValidTargets: Ground, Water, Underwater, Air
 		Versus:
 			Concrete: 25
 		DamageTypes: Prone50Percent, TriggerProne, FireDeath, Incendiary
-	Warhead@16Res_areanuke4: DestroyResource
+	Warhead@18Dam_areanuke4: SpreadDamage
+		Spread: 5c0
+		Damage: 120
+		Falloff: 1000, 368, 135, 50, 18, 7, 0
+		Delay: 20
+		ValidTargets: Trees
+		DamageTypes: Incendiary
+	Warhead@19Res_areanuke4: DestroyResource
 		Size: 5
 		Delay: 20
-	Warhead@17Smu_areanuke4: LeaveSmudge
+	Warhead@20Smu_areanuke4: LeaveSmudge
 		SmudgeType: Scorch
 		InvalidTargets: Vehicle, Tank, Structure, Wall, Husk, Trees
 		Size: 5
