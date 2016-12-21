@@ -436,7 +436,7 @@
 		TargetTypes: Air
 		RequiresCondition: airborne
 	HiddenUnderFog:
-		Type: CenterPosition
+		Type: GroundPosition
 	AttackMove:
 	Guard:
 	Guardable:

@@ -206,7 +206,7 @@
 		CruisingCondition: cruising
 		CanHover: True
 	HiddenUnderFog:
-		Type: CenterPosition
+		Type: GroundPosition
 	ActorLostNotification:
 	Explodes:
 		Weapon: HeliExplode
@@ -502,7 +502,7 @@
 	AppearsOnRadar:
 		UseLocation: yes
 	HiddenUnderFog:
-		Type: CenterPosition
+		Type: GroundPosition
 		AlwaysVisibleStances: None
 	ActorLostNotification:
 	AttackMove:

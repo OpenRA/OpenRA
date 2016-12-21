@@ -42,7 +42,11 @@ namespace OpenRA.Mods.Common.Traits
 			if (Info.Type == VisibilityType.Footprint)
 				return byPlayer.Shroud.AnyExplored(self.OccupiesSpace.OccupiedCells());
 
-			return byPlayer.Shroud.IsExplored(self.CenterPosition);
+			var pos = self.CenterPosition;
+			if (Info.Type == VisibilityType.GroundPosition)
+				pos -= new WVec(WDist.Zero, WDist.Zero, self.World.Map.DistanceAboveTerrain(pos));
+
+			return byPlayer.Shroud.IsExplored(pos);
 		}
 
 		public bool IsVisible(Actor self, Player byPlayer)
