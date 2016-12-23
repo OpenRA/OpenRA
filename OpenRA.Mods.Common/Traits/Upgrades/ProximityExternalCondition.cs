@@ -108,7 +108,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!info.ValidStances.HasStance(stance))
 				return;
 
-			var um = a.TraitOrDefault<UpgradeManager>();
+			var um = a.TraitOrDefault<ConditionManager>();
 			if (um != null && !tokens.ContainsKey(a) && um.AcceptsExternalCondition(a, info.Condition))
 				tokens[a] = um.GrantCondition(a, info.Condition, true);
 		}
@@ -130,7 +130,7 @@ namespace OpenRA.Mods.Common.Traits
 				if (!info.ValidStances.HasStance(stance))
 					return;
 
-				var um = produced.TraitOrDefault<UpgradeManager>();
+				var um = produced.TraitOrDefault<ConditionManager>();
 				if (um != null && um.AcceptsExternalCondition(produced, info.Condition))
 					tokens[produced] = um.GrantCondition(produced, info.Condition, true);
 			}
@@ -146,7 +146,7 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			tokens.Remove(a);
-			var um = a.TraitOrDefault<UpgradeManager>();
+			var um = a.TraitOrDefault<ConditionManager>();
 			if (um != null)
 				um.RevokeCondition(a, token);
 		}

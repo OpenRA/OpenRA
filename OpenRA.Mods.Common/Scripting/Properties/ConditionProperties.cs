@@ -20,15 +20,15 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Scripting
 {
 	[ScriptPropertyGroup("General")]
-	public class ConditionProperties : ScriptActorProperties, Requires<UpgradeManagerInfo>
+	public class ConditionProperties : ScriptActorProperties, Requires<ConditionManagerInfo>
 	{
-		readonly UpgradeManager um;
+		readonly ConditionManager um;
 		readonly Dictionary<string, Stack<int>> legacyShim = new Dictionary<string, Stack<int>>();
 
 		public ConditionProperties(ScriptContext context, Actor self)
 			: base(context, self)
 		{
-			um = self.Trait<UpgradeManager>();
+			um = self.Trait<ConditionManager>();
 		}
 
 		[Desc("Grant an external condition on this actor and return the revocation token.",

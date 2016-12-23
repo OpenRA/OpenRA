@@ -25,9 +25,9 @@ namespace OpenRA.Mods.Common.Traits
 	}
 
 	[Desc("Attach this to a unit to enable dynamic upgrades by warheads, experience, crates, support powers, etc.")]
-	public class UpgradeManagerInfo : TraitInfo<UpgradeManager>, Requires<IConditionConsumerInfo> { }
+	public class ConditionManagerInfo : TraitInfo<ConditionManager>, Requires<IConditionConsumerInfo> { }
 
-	public class UpgradeManager : INotifyCreated, ITick
+	public class ConditionManager : INotifyCreated, ITick
 	{
 		/// <summary>Value used to represent an invalid token.</summary>
 		public static readonly int InvalidConditionToken = -1;

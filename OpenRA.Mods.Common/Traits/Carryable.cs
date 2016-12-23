@@ -33,9 +33,9 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class Carryable : UpgradableTrait<CarryableInfo>
 	{
-		UpgradeManager upgradeManager;
-		int reservedToken = UpgradeManager.InvalidConditionToken;
-		int carriedToken = UpgradeManager.InvalidConditionToken;
+		ConditionManager upgradeManager;
+		int reservedToken = ConditionManager.InvalidConditionToken;
+		int carriedToken = ConditionManager.InvalidConditionToken;
 
 		public Actor Carrier { get; private set; }
 		public bool Reserved { get { return state != State.Free; } }
@@ -51,7 +51,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		protected override void Created(Actor self)
 		{
-			upgradeManager = self.Trait<UpgradeManager>();
+			upgradeManager = self.Trait<ConditionManager>();
 
 			base.Created(self);
 		}
@@ -63,7 +63,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			attached = true;
 
-			if (carriedToken == UpgradeManager.InvalidConditionToken && !string.IsNullOrEmpty(Info.CarriedCondition))
+			if (carriedToken == ConditionManager.InvalidConditionToken && !string.IsNullOrEmpty(Info.CarriedCondition))
 				carriedToken = upgradeManager.GrantCondition(self, Info.CarriedCondition);
 		}
 
@@ -75,7 +75,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			attached = false;
 
-			if (carriedToken != UpgradeManager.InvalidConditionToken)
+			if (carriedToken != ConditionManager.InvalidConditionToken)
 				carriedToken = upgradeManager.RevokeCondition(self, carriedToken);
 		}
 
@@ -87,7 +87,7 @@ namespace OpenRA.Mods.Common.Traits
 			state = State.Reserved;
 			Carrier = carrier;
 
-			if (reservedToken == UpgradeManager.InvalidConditionToken && !string.IsNullOrEmpty(Info.ReservedCondition))
+			if (reservedToken == ConditionManager.InvalidConditionToken && !string.IsNullOrEmpty(Info.ReservedCondition))
 				reservedToken = upgradeManager.GrantCondition(self, Info.ReservedCondition);
 
 			return true;
@@ -98,7 +98,7 @@ namespace OpenRA.Mods.Common.Traits
 			state = State.Free;
 			Carrier = null;
 
-			if (reservedToken != UpgradeManager.InvalidConditionToken)
+			if (reservedToken != ConditionManager.InvalidConditionToken)
 				reservedToken = upgradeManager.RevokeCondition(self, reservedToken);
 		}
 

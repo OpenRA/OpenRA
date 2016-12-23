@@ -83,8 +83,8 @@ namespace OpenRA.Mods.RA.Traits
 		readonly Actor self;
 		readonly DisguiseInfo info;
 
-		UpgradeManager um;
-		int disguisedToken = UpgradeManager.InvalidConditionToken;
+		ConditionManager um;
+		int disguisedToken = ConditionManager.InvalidConditionToken;
 
 		public Disguise(Actor self, DisguiseInfo info)
 		{
@@ -94,7 +94,7 @@ namespace OpenRA.Mods.RA.Traits
 
 		void INotifyCreated.Created(Actor self)
 		{
-			um = self.TraitOrDefault<UpgradeManager>();
+			um = self.TraitOrDefault<ConditionManager>();
 		}
 
 		public IEnumerable<IOrderTargeter> Orders
@@ -189,9 +189,9 @@ namespace OpenRA.Mods.RA.Traits
 
 			if (Disguised != oldDisguiseSetting && um != null)
 			{
-				if (Disguised && disguisedToken == UpgradeManager.InvalidConditionToken && !string.IsNullOrEmpty(info.DisguisedCondition))
+				if (Disguised && disguisedToken == ConditionManager.InvalidConditionToken && !string.IsNullOrEmpty(info.DisguisedCondition))
 					disguisedToken = um.GrantCondition(self, info.DisguisedCondition);
-				else if (!Disguised && disguisedToken != UpgradeManager.InvalidConditionToken)
+				else if (!Disguised && disguisedToken != ConditionManager.InvalidConditionToken)
 					disguisedToken = um.RevokeCondition(self, disguisedToken);
 			}
 		}

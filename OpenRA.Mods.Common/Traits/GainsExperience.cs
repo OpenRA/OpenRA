@@ -46,7 +46,7 @@ namespace OpenRA.Mods.Common.Traits
 		readonly int initialExperience;
 
 		readonly List<Pair<int, string>> nextLevel = new List<Pair<int, string>>();
-		UpgradeManager um;
+		ConditionManager um;
 
 		// Stored as a percentage of our value
 		[Sync] int experience = 0;
@@ -70,7 +70,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyCreated.Created(Actor self)
 		{
-			um = self.TraitOrDefault<UpgradeManager>();
+			um = self.TraitOrDefault<ConditionManager>();
 			if (initialExperience > 0)
 				GiveExperience(initialExperience, info.SuppressLevelupAnimation);
 		}

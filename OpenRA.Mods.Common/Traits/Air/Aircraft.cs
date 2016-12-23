@@ -105,7 +105,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly AircraftInfo Info;
 		readonly Actor self;
 
-		UpgradeManager um;
+		ConditionManager um;
 		IDisposable reservation;
 		IEnumerable<int> speedModifiers;
 
@@ -119,8 +119,8 @@ namespace OpenRA.Mods.Common.Traits
 		bool airborne;
 		bool cruising;
 		bool firstTick = true;
-		int airborneToken = UpgradeManager.InvalidConditionToken;
-		int cruisingToken = UpgradeManager.InvalidConditionToken;
+		int airborneToken = ConditionManager.InvalidConditionToken;
+		int cruisingToken = ConditionManager.InvalidConditionToken;
 
 		bool isMoving;
 		bool isMovingVertically;
@@ -146,7 +146,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void Created(Actor self)
 		{
-			um = self.TraitOrDefault<UpgradeManager>();
+			um = self.TraitOrDefault<ConditionManager>();
 			speedModifiers = self.TraitsImplementing<ISpeedModifier>().ToArray().Select(sm => sm.GetSpeedModifier());
 			cachedPosition = self.CenterPosition;
 		}
@@ -669,7 +669,7 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			airborne = true;
-			if (um != null && !string.IsNullOrEmpty(Info.AirborneCondition) && airborneToken == UpgradeManager.InvalidConditionToken)
+			if (um != null && !string.IsNullOrEmpty(Info.AirborneCondition) && airborneToken == ConditionManager.InvalidConditionToken)
 				airborneToken = um.GrantCondition(self, Info.AirborneCondition);
 		}
 
@@ -679,7 +679,7 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			airborne = false;
-			if (um != null && airborneToken != UpgradeManager.InvalidConditionToken)
+			if (um != null && airborneToken != ConditionManager.InvalidConditionToken)
 				airborneToken = um.RevokeCondition(self, airborneToken);
 		}
 
@@ -693,7 +693,7 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			cruising = true;
-			if (um != null && !string.IsNullOrEmpty(Info.CruisingCondition) && cruisingToken == UpgradeManager.InvalidConditionToken)
+			if (um != null && !string.IsNullOrEmpty(Info.CruisingCondition) && cruisingToken == ConditionManager.InvalidConditionToken)
 				cruisingToken = um.GrantCondition(self, Info.CruisingCondition);
 		}
 
@@ -702,7 +702,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!cruising)
 				return;
 			cruising = false;
-			if (um != null && cruisingToken != UpgradeManager.InvalidConditionToken)
+			if (um != null && cruisingToken != ConditionManager.InvalidConditionToken)
 				cruisingToken = um.RevokeCondition(self, cruisingToken);
 		}
 

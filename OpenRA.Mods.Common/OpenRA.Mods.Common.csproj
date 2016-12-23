@@ -498,7 +498,7 @@
     <Compile Include="Traits\Upgrades\GrantConditionOnDamageState.cs" />
     <Compile Include="Traits\Upgrades\GrantConditionOnTerrain.cs" />
     <Compile Include="Traits\Upgrades\GrantConditionOnMovement.cs" />
-    <Compile Include="Traits\Upgrades\UpgradeManager.cs" />
+    <Compile Include="Traits\Upgrades\ConditionManager.cs" />
     <Compile Include="Traits\Valued.cs" />
     <Compile Include="Traits\Voiced.cs" />
     <Compile Include="Traits\Wanders.cs" />

@@ -26,28 +26,28 @@ namespace OpenRA.Mods.Common.Traits
 
 	class GrantCondition : UpgradableTrait<GrantConditionInfo>
 	{
-		UpgradeManager manager;
-		int conditionToken = UpgradeManager.InvalidConditionToken;
+		ConditionManager manager;
+		int conditionToken = ConditionManager.InvalidConditionToken;
 
 		public GrantCondition(GrantConditionInfo info)
 			: base(info) { }
 
 		protected override void Created(Actor self)
 		{
-			manager = self.Trait<UpgradeManager>();
+			manager = self.Trait<ConditionManager>();
 
 			base.Created(self);
 		}
 
 		protected override void TraitEnabled(Actor self)
 		{
-			if (conditionToken == UpgradeManager.InvalidConditionToken)
+			if (conditionToken == ConditionManager.InvalidConditionToken)
 				conditionToken = manager.GrantCondition(self, Info.Condition);
 		}
 
 		protected override void TraitDisabled(Actor self)
 		{
-			if (conditionToken == UpgradeManager.InvalidConditionToken)
+			if (conditionToken == ConditionManager.InvalidConditionToken)
 				return;
 
 			conditionToken = manager.RevokeCondition(self, conditionToken);

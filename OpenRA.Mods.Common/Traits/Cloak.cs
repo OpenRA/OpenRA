@@ -66,11 +66,11 @@ namespace OpenRA.Mods.Common.Traits
 		[Sync] int remainingTime;
 		[Sync] bool damageDisabled;
 		bool isDocking;
-		UpgradeManager upgradeManager;
+		ConditionManager upgradeManager;
 
 		CPos? lastPos;
 		bool wasCloaked = false;
-		int cloakedToken = UpgradeManager.InvalidConditionToken;
+		int cloakedToken = ConditionManager.InvalidConditionToken;
 
 		public Cloak(CloakInfo info)
 			: base(info)
@@ -80,12 +80,12 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyCreated.Created(Actor self)
 		{
-			upgradeManager = self.TraitOrDefault<UpgradeManager>();
+			upgradeManager = self.TraitOrDefault<ConditionManager>();
 
 			if (Cloaked)
 			{
 				wasCloaked = true;
-				if (upgradeManager != null && cloakedToken == UpgradeManager.InvalidConditionToken && !string.IsNullOrEmpty(Info.CloakedCondition))
+				if (upgradeManager != null && cloakedToken == ConditionManager.InvalidConditionToken && !string.IsNullOrEmpty(Info.CloakedCondition))
 					cloakedToken = upgradeManager.GrantCondition(self, Info.CloakedCondition);
 			}
 		}
@@ -144,7 +144,7 @@ namespace OpenRA.Mods.Common.Traits
 			var isCloaked = Cloaked;
 			if (isCloaked && !wasCloaked)
 			{
-				if (upgradeManager != null && cloakedToken == UpgradeManager.InvalidConditionToken && !string.IsNullOrEmpty(Info.CloakedCondition))
+				if (upgradeManager != null && cloakedToken == ConditionManager.InvalidConditionToken && !string.IsNullOrEmpty(Info.CloakedCondition))
 					cloakedToken = upgradeManager.GrantCondition(self, Info.CloakedCondition);
 
 				if (!self.TraitsImplementing<Cloak>().Any(a => a != this && a.Cloaked))
@@ -152,7 +152,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 			else if (!isCloaked && wasCloaked)
 			{
-				if (cloakedToken != UpgradeManager.InvalidConditionToken)
+				if (cloakedToken != ConditionManager.InvalidConditionToken)
 					cloakedToken = upgradeManager.RevokeCondition(self, cloakedToken);
 
 				if (!self.TraitsImplementing<Cloak>().Any(a => a != this && a.Cloaked))

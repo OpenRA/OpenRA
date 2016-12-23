@@ -31,8 +31,8 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		readonly IMove movement;
 
-		UpgradeManager manager;
-		int conditionToken = UpgradeManager.InvalidConditionToken;
+		ConditionManager manager;
+		int conditionToken = ConditionManager.InvalidConditionToken;
 
 		public GrantConditionOnMovement(Actor self, GrantConditionOnMovementInfo info)
 			: base(info)
@@ -42,7 +42,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		protected override void Created(Actor self)
 		{
-			manager = self.TraitOrDefault<UpgradeManager>();
+			manager = self.TraitOrDefault<ConditionManager>();
 			base.Created(self);
 		}
 
@@ -53,9 +53,9 @@ namespace OpenRA.Mods.Common.Traits
 
 			var isMovingVertically = Info.ConsiderVerticalMovement ? movement.IsMovingVertically : false;
 			var isMoving = !IsTraitDisabled && !self.IsDead && (movement.IsMoving || isMovingVertically);
-			if (isMoving && conditionToken == UpgradeManager.InvalidConditionToken)
+			if (isMoving && conditionToken == ConditionManager.InvalidConditionToken)
 				conditionToken = manager.GrantCondition(self, Info.Condition);
-			else if (!isMoving && conditionToken != UpgradeManager.InvalidConditionToken)
+			else if (!isMoving && conditionToken != ConditionManager.InvalidConditionToken)
 				conditionToken = manager.RevokeCondition(self, conditionToken);
 		}
 	}

@@ -64,7 +64,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			Info = info;
 
-			// Conditional traits will be enabled (if appropriate) by the UpgradeManager
+			// Conditional traits will be enabled (if appropriate) by the ConditionManager
 			// calling IConditionConsumer.ConditionsChanged at the end of INotifyCreated.
 			IsTraitDisabled = Info.RequiresCondition != null;
 		}

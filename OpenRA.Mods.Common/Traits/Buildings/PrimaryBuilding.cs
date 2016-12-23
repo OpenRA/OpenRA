@@ -41,8 +41,8 @@ namespace OpenRA.Mods.Common.Traits
 	public class PrimaryBuilding : INotifyCreated, IIssueOrder, IResolveOrder
 	{
 		readonly PrimaryBuildingInfo info;
-		UpgradeManager um;
-		int primaryToken = UpgradeManager.InvalidConditionToken;
+		ConditionManager um;
+		int primaryToken = ConditionManager.InvalidConditionToken;
 
 		public bool IsPrimary { get; private set; }
 
@@ -53,7 +53,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyCreated.Created(Actor self)
 		{
-			um = self.TraitOrDefault<UpgradeManager>();
+			um = self.TraitOrDefault<ConditionManager>();
 		}
 
 		IEnumerable<IOrderTargeter> IIssueOrder.Orders
@@ -95,12 +95,12 @@ namespace OpenRA.Mods.Common.Traits
 						b.Trait.SetPrimaryProducer(b.Actor, false);
 				}
 
-				if (um != null && primaryToken == UpgradeManager.InvalidConditionToken && !string.IsNullOrEmpty(info.PrimaryCondition))
+				if (um != null && primaryToken == ConditionManager.InvalidConditionToken && !string.IsNullOrEmpty(info.PrimaryCondition))
 					primaryToken = um.GrantCondition(self, info.PrimaryCondition);
 
 				Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", info.SelectionNotification, self.Owner.Faction.InternalName);
 			}
-			else if (primaryToken != UpgradeManager.InvalidConditionToken)
+			else if (primaryToken != ConditionManager.InvalidConditionToken)
 				primaryToken = um.RevokeCondition(self, primaryToken);
 		}
 	}

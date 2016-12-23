@@ -36,7 +36,7 @@ namespace OpenRA.Mods.Common.Warheads
 				if (!IsValidAgainst(a, firedBy))
 					continue;
 
-				var um = a.TraitOrDefault<UpgradeManager>();
+				var um = a.TraitOrDefault<ConditionManager>();
 
 				// Condition token is ignored because we never revoke this condition.
 				if (um != null && um.AcceptsExternalCondition(a, Condition))

@@ -47,7 +47,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		bool AcceptsCondition(Actor a)
 		{
-			var um = a.TraitOrDefault<UpgradeManager>();
+			var um = a.TraitOrDefault<ConditionManager>();
 			return um != null && um.AcceptsExternalCondition(a, info.Condition);
 		}
 
@@ -71,7 +71,7 @@ namespace OpenRA.Mods.Common.Traits
 					if (!a.IsInWorld || a.IsDead)
 						continue;
 
-					var um = a.TraitOrDefault<UpgradeManager>();
+					var um = a.TraitOrDefault<ConditionManager>();
 
 					// Condition token is ignored because we never revoke this condition.
 					if (um != null)

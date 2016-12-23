@@ -88,8 +88,8 @@ namespace OpenRA.Mods.Common.Traits
 		int totalWeight = 0;
 		int reservedWeight = 0;
 		Aircraft aircraft;
-		UpgradeManager upgradeManager;
-		int loadingToken = UpgradeManager.InvalidConditionToken;
+		ConditionManager upgradeManager;
+		int loadingToken = ConditionManager.InvalidConditionToken;
 		Stack<int> loadedTokens = new Stack<int>();
 
 		CPos currentCell;
@@ -141,7 +141,7 @@ namespace OpenRA.Mods.Common.Traits
 		void INotifyCreated.Created(Actor self)
 		{
 			aircraft = self.TraitOrDefault<Aircraft>();
-			upgradeManager = self.Trait<UpgradeManager>();
+			upgradeManager = self.Trait<ConditionManager>();
 		}
 
 		static int GetWeight(Actor a) { return a.Info.TraitInfo<PassengerInfo>().Weight; }
@@ -208,7 +208,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!HasSpace(w))
 				return false;
 
-			if (upgradeManager != null && loadingToken == UpgradeManager.InvalidConditionToken && !string.IsNullOrEmpty(Info.LoadingCondition))
+			if (upgradeManager != null && loadingToken == ConditionManager.InvalidConditionToken && !string.IsNullOrEmpty(Info.LoadingCondition))
 				loadingToken = upgradeManager.GrantCondition(self, Info.LoadingCondition);
 
 			reserves.Add(a);
@@ -225,7 +225,7 @@ namespace OpenRA.Mods.Common.Traits
 			reservedWeight -= GetWeight(a);
 			reserves.Remove(a);
 
-			if (loadingToken != UpgradeManager.InvalidConditionToken)
+			if (loadingToken != ConditionManager.InvalidConditionToken)
 				loadingToken = upgradeManager.RevokeCondition(self, loadingToken);
 		}
 
@@ -321,7 +321,7 @@ namespace OpenRA.Mods.Common.Traits
 				reservedWeight -= w;
 				reserves.Remove(a);
 
-				if (loadingToken != UpgradeManager.InvalidConditionToken)
+				if (loadingToken != ConditionManager.InvalidConditionToken)
 					loadingToken = upgradeManager.RevokeCondition(self, loadingToken);
 			}
 

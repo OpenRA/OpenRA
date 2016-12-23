@@ -69,7 +69,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			foreach (var a in UnitsInRange(order.TargetLocation))
 			{
-				var um = a.TraitOrDefault<UpgradeManager>();
+				var um = a.TraitOrDefault<ConditionManager>();
 
 				// Condition token is ignored because we never revoke this condition.
 				if (um != null)
@@ -90,7 +90,7 @@ namespace OpenRA.Mods.Common.Traits
 				if (!a.Owner.IsAlliedWith(Self.Owner))
 					return false;
 
-				var um = a.TraitOrDefault<UpgradeManager>();
+				var um = a.TraitOrDefault<ConditionManager>();
 				return um != null && um.AcceptsExternalCondition(a, info.Condition);
 			});
 		}

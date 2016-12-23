@@ -34,8 +34,8 @@ namespace OpenRA.Mods.Common.Traits
 		readonly GrantConditionOnPrerequisiteInfo info;
 		readonly GrantConditionOnPrerequisiteManager globalManager;
 
-		UpgradeManager manager;
-		int conditionToken = UpgradeManager.InvalidConditionToken;
+		ConditionManager manager;
+		int conditionToken = ConditionManager.InvalidConditionToken;
 
 		bool wasAvailable;
 
@@ -47,7 +47,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyCreated.Created(Actor self)
 		{
-			manager = self.TraitOrDefault<UpgradeManager>();
+			manager = self.TraitOrDefault<ConditionManager>();
 		}
 
 		void INotifyAddedToWorld.AddedToWorld(Actor self)
@@ -67,9 +67,9 @@ namespace OpenRA.Mods.Common.Traits
 			if (available == wasAvailable || manager == null)
 				return;
 
-			if (available && conditionToken == UpgradeManager.InvalidConditionToken)
+			if (available && conditionToken == ConditionManager.InvalidConditionToken)
 				conditionToken = manager.GrantCondition(self, info.Condition);
-			else if (!available && conditionToken != UpgradeManager.InvalidConditionToken)
+			else if (!available && conditionToken != ConditionManager.InvalidConditionToken)
 				conditionToken = manager.RevokeCondition(self, conditionToken);
 
 			wasAvailable = available;

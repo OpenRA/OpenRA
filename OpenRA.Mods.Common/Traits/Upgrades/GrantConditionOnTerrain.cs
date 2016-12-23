@@ -32,8 +32,8 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		readonly GrantConditionOnTerrainInfo info;
 
-		UpgradeManager manager;
-		int conditionToken = UpgradeManager.InvalidConditionToken;
+		ConditionManager manager;
+		int conditionToken = ConditionManager.InvalidConditionToken;
 		string previousTerrain;
 
 		public GrantConditionOnTerrain(ActorInitializer init, GrantConditionOnTerrainInfo info)
@@ -43,7 +43,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyCreated.Created(Actor self)
 		{
-			manager = self.TraitOrDefault<UpgradeManager>();
+			manager = self.TraitOrDefault<ConditionManager>();
 		}
 
 		public void Tick(Actor self)
@@ -55,9 +55,9 @@ namespace OpenRA.Mods.Common.Traits
 			var wantsGranted = info.TerrainTypes.Contains(currentTerrain);
 			if (currentTerrain != previousTerrain)
 			{
-				if (wantsGranted && conditionToken == UpgradeManager.InvalidConditionToken)
+				if (wantsGranted && conditionToken == ConditionManager.InvalidConditionToken)
 					conditionToken = manager.GrantCondition(self, info.Condition);
-				else if (!wantsGranted && conditionToken != UpgradeManager.InvalidConditionToken)
+				else if (!wantsGranted && conditionToken != ConditionManager.InvalidConditionToken)
 					conditionToken = manager.RevokeCondition(self, conditionToken);
 			}
 

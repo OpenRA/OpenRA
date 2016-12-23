@@ -64,7 +64,7 @@ namespace OpenRA.Mods.Common.Lint
 				if (ungranted.Any())
 					emitError("Actor type `{0}` consumes conditions that are not granted: {1}".F(actorInfo.Key, ungranted.JoinWith(", ")));
 
-				if ((consumed.Any() || granted.Any()) && actorInfo.Value.TraitInfoOrDefault<UpgradeManagerInfo>() == null)
+				if ((consumed.Any() || granted.Any()) && actorInfo.Value.TraitInfoOrDefault<ConditionManagerInfo>() == null)
 					emitError("Actor type `{0}` defines conditions but does not include an UpgradeManager".F(actorInfo.Key));
 			}
 		}

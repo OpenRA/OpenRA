@@ -41,8 +41,8 @@ namespace OpenRA.Mods.Common.Traits
 		readonly GrantConditionOnDamageStateInfo info;
 		readonly Health health;
 
-		UpgradeManager manager;
-		int conditionToken = UpgradeManager.InvalidConditionToken;
+		ConditionManager manager;
+		int conditionToken = ConditionManager.InvalidConditionToken;
 
 		public GrantConditionOnDamageState(Actor self, GrantConditionOnDamageStateInfo info)
 		{
@@ -52,13 +52,13 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyCreated.Created(Actor self)
 		{
-			manager = self.TraitOrDefault<UpgradeManager>();
+			manager = self.TraitOrDefault<ConditionManager>();
 			GrantUpgradeOnValidDamageState(self, health.DamageState);
 		}
 
 		void GrantUpgradeOnValidDamageState(Actor self, DamageState state)
 		{
-			if (!info.ValidDamageStates.HasFlag(state) || conditionToken != UpgradeManager.InvalidConditionToken)
+			if (!info.ValidDamageStates.HasFlag(state) || conditionToken != ConditionManager.InvalidConditionToken)
 				return;
 
 			conditionToken = manager.GrantCondition(self, info.Condition);
@@ -69,7 +69,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyDamageStateChanged.DamageStateChanged(Actor self, AttackInfo e)
 		{
-			var granted = conditionToken != UpgradeManager.InvalidConditionToken;
+			var granted = conditionToken != ConditionManager.InvalidConditionToken;
 			if ((granted && info.GrantPermanently) || manager == null)
 				return;
 

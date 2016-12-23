@@ -4,7 +4,7 @@
 	GivesExperience:
 		PlayerExperienceModifier: 1
 	ScriptTriggers:
-	UpgradeManager:
+	ConditionManager:
 	RenderDebugState:
 
 ^SpriteActor:
@@ -894,7 +894,7 @@
 		ShadowImage: parach-shadow
 		ShadowSequence: idle
 		RequiresCondition: parachute
-	UpgradeManager:
+	ConditionManager:
 
 ^Mine:
 	Inherits: ^SpriteActor
