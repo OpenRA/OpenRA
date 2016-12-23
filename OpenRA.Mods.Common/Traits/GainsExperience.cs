@@ -27,6 +27,9 @@ namespace OpenRA.Mods.Common.Traits
 			"Value is a list of the upgrade types to grant")]
 		public readonly Dictionary<int, string> Conditions = null;
 
+		[GrantedConditionReference]
+		public IEnumerable<string> LinterConditions { get { return Conditions.Values; } }
+
 		[Desc("Palette for the level up sprite.")]
 		[PaletteReference] public readonly string LevelUpPalette = "effect";
 

@@ -26,7 +26,7 @@ namespace OpenRA.Mods.D2k.Traits
 		[Desc("The number of ticks it takes to get in place under the target to attack.")]
 		public readonly int AttackDelay = 30;
 
-		[UpgradeGrantedReference]
+		[GrantedConditionReference]
 		[Desc("The condition to grant to self while attacking.")]
 		public readonly string AttackingCondition = null;
 

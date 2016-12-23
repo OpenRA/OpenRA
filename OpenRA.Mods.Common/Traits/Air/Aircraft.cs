@@ -52,11 +52,11 @@ namespace OpenRA.Mods.Common.Traits
 
 		[VoiceReference] public readonly string Voice = "Action";
 
-		[UpgradeGrantedReference]
+		[GrantedConditionReference]
 		[Desc("The condition to grant to self while airborne.")]
 		public readonly string AirborneCondition = null;
 
-		[UpgradeGrantedReference]
+		[GrantedConditionReference]
 		[Desc("The condition to grant to self while at cruise altitude.")]
 		public readonly string CruisingCondition = null;
 

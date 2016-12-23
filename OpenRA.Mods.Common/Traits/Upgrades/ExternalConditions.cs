@@ -17,7 +17,7 @@ namespace OpenRA.Mods.Common.Traits
 		"Externally granted conditions that aren't explicitly whitelisted will be silently ignored.")]
 	public class ExternalConditionsInfo : TraitInfo<ExternalConditions>
 	{
-		[UpgradeGrantedReference]
+		[GrantedConditionReference]
 		public readonly string[] Conditions = { };
 	}
 

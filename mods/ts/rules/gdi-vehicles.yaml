@@ -1,5 +1,6 @@
 APC:
-	Inherits: ^VoxelTank
+	Inherits: ^Tank
+	Inherits@VOXELS: ^VoxelActor
 	Valued:
 		Cost: 800
 	Tooltip:
@@ -14,6 +15,7 @@ APC:
 		Speed: 113
 		TerrainSpeeds:
 			Water: 80
+		RequiresCondition: !empdisable && !loading
 	Health:
 		HP: 200
 	Armor:
@@ -46,7 +48,9 @@ APC:
 		MovingInterval: 6
 
 HVR:
-	Inherits: ^VoxelVehicle
+	Inherits: ^Vehicle
+	Inherits@VOXELS: ^VoxelActor
+	Inherits@EXPERIENCE: ^GainsExperience
 	Valued:
 		Cost: 900
 	Tooltip:
@@ -100,6 +104,7 @@ HVR:
 
 SMECH:
 	Inherits: ^Vehicle
+	Inherits@EXPERIENCE: ^GainsExperience
 	Valued:
 		Cost: 500
 	Tooltip:
@@ -142,6 +147,7 @@ SMECH:
 
 MMCH:
 	Inherits: ^Tank
+	Inherits@EXPERIENCE: ^GainsExperience
 	Valued:
 		Cost: 800
 	Tooltip:
@@ -189,7 +195,9 @@ MMCH:
 		LocalOffset: 0, 0, 408
 
 HMEC:
-	Inherits: ^VoxelTank
+	Inherits: ^Tank
+	Inherits@VOXELS: ^VoxelActor
+	Inherits@EXPERIENCE: ^GainsExperience
 	Valued:
 		Cost: 3000
 	Tooltip:
@@ -230,7 +238,9 @@ HMEC:
 		LocalOffset: 0, 0, 360
 
 SONIC:
-	Inherits: ^VoxelTank
+	Inherits: ^Tank
+	Inherits@VOXELS: ^VoxelActor
+	Inherits@EXPERIENCE: ^GainsExperience
 	Valued:
 		Cost: 1300
 	Tooltip:

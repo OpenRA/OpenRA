@@ -53,6 +53,7 @@ TRAN:
 
 HELI:
 	Inherits: ^Helicopter
+	Inherits@EXPERIENCE: ^GainsExperience
 	Valued:
 		Cost: 1200
 	Tooltip:
@@ -111,6 +112,7 @@ HELI:
 
 ORCA:
 	Inherits: ^Helicopter
+	Inherits@EXPERIENCE: ^GainsExperience
 	Valued:
 		Cost: 1200
 	Tooltip:
@@ -167,7 +169,6 @@ C17:
 		TurnSpeed: 5
 		Speed: 326
 		Repulsable: False
-		AirborneCondition: airborne
 		MaximumPitch: 36
 	Health:
 		HP: 25
@@ -206,7 +207,6 @@ A10:
 		TurnSpeed: 4
 		Speed: 373
 		Repulsable: False
-		AirborneCondition: airborne
 	Health:
 		HP: 150
 	Armor:

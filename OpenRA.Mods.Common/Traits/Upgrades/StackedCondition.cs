@@ -17,12 +17,12 @@ namespace OpenRA.Mods.Common.Traits
 	public class StackedConditionInfo : TraitInfo<StackedCondition>
 	{
 		[FieldLoader.Require]
-		[UpgradeUsedReference]
+		[ConsumedConditionReference]
 		[Desc("Condition to monitor.")]
 		public readonly string Condition = null;
 
 		[FieldLoader.Require]
-		[UpgradeGrantedReference]
+		[GrantedConditionReference]
 		[Desc("Conditions to grant when the monitored condition is granted multiple times.",
 			"The first entry is activated at 2x grants, second entry at 3x grants, and so on.")]
 		public readonly string[] StackedConditions = { };

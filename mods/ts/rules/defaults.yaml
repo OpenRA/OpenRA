@@ -21,22 +21,22 @@
 			500: rank-veteran
 			1000: rank-elite
 	FirepowerMultiplier@VETERAN:
-		RequiresCondition: (rank-veteran && !rank-elite) || crate-firepower
+		RequiresCondition: rank-veteran && !rank-elite
 		Modifier: 110
 	FirepowerMultiplier@ELITE:
-		RequiresCondition: rank-elite || (rank-veteran && crate-firepower)
+		RequiresCondition: rank-elite
 		Modifier: 130
 	DamageMultiplier@VETERAN:
-		RequiresCondition: (rank-veteran && !rank-elite) || crate-damage
+		RequiresCondition: rank-veteran && !rank-elite
 		Modifier: 90
 	DamageMultiplier@ELITE:
-		RequiresCondition: rank-elite || (rank-veteran && crate-damage)
+		RequiresCondition: rank-elite
 		Modifier: 75
 	SpeedMultiplier@VETERAN:
-		RequiresCondition: (rank-veteran && !rank-elite) || crate-speed
+		RequiresCondition: rank-veteran && !rank-elite
 		Modifier: 120
 	SpeedMultiplier@ELITE:
-		RequiresCondition: rank-elite || (rank-veteran && crate-speed)
+		RequiresCondition: rank-elite
 		Modifier: 140
 	ReloadDelayMultiplier@VETERAN:
 		RequiresCondition: rank-veteran && !rank-elite
@@ -64,8 +64,19 @@
 		ReferencePoint: Bottom, Right
 		RequiresCondition: rank-elite
 		ZOffset: 256
+
+^CrateStatModifiers:
+	FirepowerMultiplier@CRATES:
+		RequiresCondition: crate-firepower
+		Modifier: 200
+	DamageMultiplier@CRATES:
+		RequiresCondition: crate-damage
+		Modifier: 50
+	SpeedMultiplier@CRATES:
+		RequiresCondition: crate-speed
+		Modifier: 170
 	ExternalConditions@CRATES:
-		Conditions: crate-firepower, crate-damage, crate-speed, crate-cloak
+		Conditions: crate-firepower, crate-damage, crate-speed
 
 ^EmpDisable:
 	UpgradeOverlay@EMPDISABLE:
@@ -87,11 +98,6 @@
 		Modifier: 0
 	ExternalConditions@EMPDISABLE:
 		Conditions: empdisable
-
-^EmpDisableMobile:
-	Inherits: ^EmpDisable
-	Mobile:
-		RequiresCondition: !empdisable && !deployed && !loading
 
 ^Cloakable:
 	Cloak@EXTERNALCLOAK:
@@ -257,10 +263,10 @@
 	RenderSprites:
 
 ^Infantry:
-	Inherits@1: ^GainsExperience
 	Inherits@2: ^ExistsInWorld
 	Inherits@3: ^SpriteActor
 	Inherits@4: ^Cloakable
+	Inherits@CRATESTATS: ^CrateStatModifiers
 	Huntable:
 	DrawLineToTarget:
 	Health:
@@ -401,7 +407,7 @@
 
 ^Cyborg:
 	Inherits@1: ^Infantry
-	Inherits@2: ^EmpDisableMobile
+	Inherits@2: ^EmpDisable
 	Inherits@3: ^HealsOnTiberium
 	ExplosionOnDamageTransition:
 		Weapon: CyborgExplode
@@ -425,6 +431,8 @@
 	SpeedMultiplier@CRITICAL:
 		RequiresCondition: criticalspeed
 		Modifier: 50
+	Mobile:
+		RequiresCondition: !empdisable
 
 ^CivilianInfantry:
 	Inherits@1: ^Infantry
@@ -439,11 +447,11 @@
 		MaxMoveDelay: 750
 
 ^Vehicle:
-	Inherits@1: ^GainsExperience
 	Inherits@2: ^ExistsInWorld
-	Inherits@3: ^EmpDisableMobile
+	Inherits@3: ^EmpDisable
 	Inherits@4: ^Cloakable
 	Inherits@5: ^DamagedByVeins
+	Inherits@CRATESTATS: ^CrateStatModifiers
 	Huntable:
 	DrawLineToTarget:
 	Mobile:
@@ -461,6 +469,7 @@
 				PathingCost: 90
 		TurnSpeed: 5
 		Voice: Move
+		RequiresCondition: !empdisable
 	Selectable:
 		Bounds: 40,24
 	WithTextControlGroupDecoration:
@@ -527,22 +536,15 @@
 			BlueTiberium: 70
 			Veins: 70
 
-^VoxelVehicle:
-	Inherits: ^Vehicle
-	BodyOrientation:
-		QuantizedFacings: 0
-	RenderVoxels:
-	WithVoxelBody:
-
-^VoxelTank:
-	Inherits: ^Tank
+^VoxelActor:
 	BodyOrientation:
 		QuantizedFacings: 0
 	RenderVoxels:
 	WithVoxelBody:
 
 ^CivilianVoxelVehicle:
-	Inherits: ^VoxelVehicle
+	Inherits: ^Vehicle
+	Inherits: ^VoxelActor
 	-MustBeDestroyed:
 
 ^CivilianVoxelCrusher:
@@ -551,7 +553,6 @@
 		Crushes: wall, crate, infantry
 
 ^Aircraft:
-	Inherits@1: ^GainsExperience
 	Inherits@2: ^ExistsInWorld
 	Inherits@3: ^Cloakable
 	Huntable:
@@ -570,7 +571,6 @@
 		Palette: pips
 	Aircraft:
 		AirborneCondition: airborne
-		CruisingCondition: cruising
 		RepairBuildings: gadept
 		RearmBuildings: gahpad, nahpad
 		LandWhenIdle: false
@@ -598,14 +598,9 @@
 	Aircraft:
 		CruiseAltitude: 2048
 		CanHover: True
+		CruisingCondition: cruising
 	Hovers@CRUISING:
 		RequiresCondition: cruising
-
-^Plane:
-	Inherits: ^Aircraft
-	Aircraft:
-		CruiseAltitude: 2560
-	ReturnOnIdle:
 
 ^AircraftHusk:
 	RenderVoxels:
@@ -615,8 +610,6 @@
 		QuantizedFacings: 0
 		CameraPitch: 90
 	Aircraft:
-		AirborneCondition: airborne
-		CruisingCondition: cruising
 	Health:
 		HP: 280
 	Armor:
@@ -755,36 +748,8 @@
 	DetectCloaked:
 		Range: 5c0
 
-^DeployedVehicle:
-	Inherits@1: ^GainsExperience
-	Inherits@2: ^ExistsInWorld
-	Inherits@3: ^SpriteActor
-	Huntable:
-	Voiced:
-		VoiceSet: Vehicle
-	AttackTurreted:
-		Voice: Attack
-	AutoTarget:
-	RenderRangeCircle:
-	DrawLineToTarget:
-	Building:
-		Dimensions: 1,1
-		Footprint: x
-		TerrainTypes: Clear, Road, DirtRoad, Rough
-	WithSpriteBody:
-	WithMakeAnimation:
-	WithTextControlGroupDecoration:
-	SelectionDecorations:
-		Palette: pips
-	Selectable:
-	Targetable:
-		TargetTypes: Ground, Building, Repair
-	Guardable:
-	HiddenUnderFog:
-	ActorLostNotification:
-
 ^Train:
-	Inherits@1: ^EmpDisableMobile
+	Inherits@1: ^EmpDisable
 	Inherits@2: ^ExistsInWorld
 	Inherits@3: ^Cloakable
 	Huntable:
@@ -799,10 +764,10 @@
 		TurnSpeed: 5
 		Voice: Move
 		Speed: 113
+		RequiresCondition: !empdisable
 	Cargo:
 		Types: Infantry
 		UnloadVoice: Unload
-		LoadingCondition: loading
 	Health:
 		HP: 100
 	Armor:

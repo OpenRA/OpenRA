@@ -116,9 +116,18 @@
 		RequiresCondition: rank-elite
 		ZOffset: 256
 
+^AcceptsCloakCrate:
+	Cloak:
+		InitialDelay: 15
+		CloakDelay: 90
+		CloakSound: trans1.aud
+		UncloakSound: trans1.aud
+		RequiresCondition: cloak
+	ExternalConditions@CLOAK:
+		Conditions: cloak
+
 ^Vehicle:
 	Inherits@1: ^ExistsInWorld
-	Inherits@2: ^GainsExperience
 	Inherits@3: ^SpriteActor
 	Huntable:
 	Mobile:
@@ -153,14 +162,6 @@
 	Guardable:
 	Tooltip:
 		GenericName: Vehicle
-	Cloak:
-		InitialDelay: 15
-		CloakDelay: 90
-		CloakSound: trans1.aud
-		UncloakSound: trans1.aud
-		RequiresCondition: cloak
-	ExternalConditions@CLOAK:
-		Conditions: cloak
 	MustBeDestroyed:
 	Voiced:
 		VoiceSet: VehicleVoice
@@ -184,7 +185,6 @@
 
 ^Helicopter:
 	Inherits@1: ^ExistsInWorld
-	Inherits@2: ^GainsExperience
 	Inherits@3: ^SpriteActor
 	Huntable:
 	AppearsOnRadar:
@@ -231,7 +231,6 @@
 
 ^Infantry:
 	Inherits@1: ^ExistsInWorld
-	Inherits@2: ^GainsExperience
 	Inherits@3: ^SpriteActor
 	Huntable:
 	Health:
@@ -517,7 +516,6 @@
 
 ^Ship:
 	Inherits@1: ^ExistsInWorld
-	Inherits@2: ^GainsExperience
 	Inherits@3: ^SpriteActor
 	Huntable:
 	Mobile:
@@ -839,7 +837,6 @@
 		Offset: 43, 128, 0
 		ZOffset: -129
 	Aircraft:
-		AirborneCondition: airborne
 		CanHover: True
 	FallsToEarth:
 		Spins: True

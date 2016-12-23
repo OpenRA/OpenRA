@@ -31,13 +31,12 @@ MCV:
 	BaseBuilding:
 	SpawnActorOnDeath:
 		Actor: MCV.Husk
-	-GainsExperience:
-	-Cloak:
 	SelectionDecorations:
 		VisualBounds: 36,36
 
 HARV:
 	Inherits: ^Tank
+	Inherits@CLOAK: ^AcceptsCloakCrate
 	Valued:
 		Cost: 1000
 	Tooltip:
@@ -68,7 +67,6 @@ HARV:
 		Range: 4c0
 	SpawnActorOnDeath:
 		Actor: HARV.Husk
-	-GainsExperience:
 	WithHarvestAnimation:
 	WithDockingAnimation:
 	Explodes:
@@ -78,6 +76,8 @@ HARV:
 
 APC:
 	Inherits: ^Tank
+	Inherits@EXPERIENCE: ^GainsExperience
+	Inherits@CLOAK: ^AcceptsCloakCrate
 	Valued:
 		Cost: 600
 	Tooltip:
@@ -126,6 +126,8 @@ APC:
 
 ARTY:
 	Inherits: ^Tank
+	Inherits@EXPERIENCE: ^GainsExperience
+	Inherits@CLOAK: ^AcceptsCloakCrate
 	Valued:
 		Cost: 600
 	Tooltip:
@@ -161,6 +163,8 @@ ARTY:
 
 FTNK:
 	Inherits: ^Tank
+	Inherits@EXPERIENCE: ^GainsExperience
+	Inherits@CLOAK: ^AcceptsCloakCrate
 	Valued:
 		Cost: 600
 	Tooltip:
@@ -194,6 +198,8 @@ FTNK:
 
 BGGY:
 	Inherits: ^Vehicle
+	Inherits@@EXPERIENCE: ^GainsExperience
+	Inherits@CLOAK: ^AcceptsCloakCrate
 	Valued:
 		Cost: 300
 	Tooltip:
@@ -228,6 +234,8 @@ BGGY:
 
 BIKE:
 	Inherits: ^Vehicle
+	Inherits@EXPERIENCE: ^GainsExperience
+	Inherits@CLOAK: ^AcceptsCloakCrate
 	Valued:
 		Cost: 500
 	Tooltip:
@@ -264,6 +272,8 @@ BIKE:
 
 JEEP:
 	Inherits: ^Vehicle
+	Inherits@EXPERIENCE: ^GainsExperience
+	Inherits@CLOAK: ^AcceptsCloakCrate
 	Valued:
 		Cost: 400
 	Tooltip:
@@ -298,6 +308,8 @@ JEEP:
 
 LTNK:
 	Inherits: ^Tank
+	Inherits@EXPERIENCE: ^GainsExperience
+	Inherits@CLOAK: ^AcceptsCloakCrate
 	Valued:
 		Cost: 700
 	Tooltip:
@@ -333,6 +345,8 @@ LTNK:
 
 MTNK:
 	Inherits: ^Tank
+	Inherits@EXPERIENCE: ^GainsExperience
+	Inherits@CLOAK: ^AcceptsCloakCrate
 	Valued:
 		Cost: 800
 	Tooltip:
@@ -369,6 +383,8 @@ MTNK:
 
 HTNK:
 	Inherits: ^Tank
+	Inherits@EXPERIENCE: ^GainsExperience
+	Inherits@CLOAK: ^AcceptsCloakCrate
 	Valued:
 		Cost: 1500
 	Tooltip:
@@ -418,6 +434,8 @@ HTNK:
 
 MSAM:
 	Inherits: ^Tank
+	Inherits@EXPERIENCE: ^GainsExperience
+	Inherits@CLOAK: ^AcceptsCloakCrate
 	Valued:
 		Cost: 1000
 	Tooltip:
@@ -454,6 +472,8 @@ MSAM:
 
 MLRS:
 	Inherits: ^Tank
+	Inherits@EXPERIENCE: ^GainsExperience
+	Inherits@CLOAK: ^AcceptsCloakCrate
 	Valued:
 		Cost: 600
 	Tooltip:
@@ -496,6 +516,7 @@ MLRS:
 
 STNK:
 	Inherits: ^Vehicle
+	Inherits@EXPERIENCE: ^GainsExperience
 	Valued:
 		Cost: 900
 	Tooltip:
@@ -516,7 +537,6 @@ STNK:
 	RevealsShroud:
 		Range: 7c0
 	Cloak:
-		-RequiresCondition:
 		InitialDelay: 90
 		CloakDelay: 90
 		CloakSound: trans1.aud

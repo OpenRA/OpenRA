@@ -1,5 +1,6 @@
 E2:
 	Inherits: ^Soldier
+	Inherits@EXPERIENCE: ^GainsExperience
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 20
@@ -26,6 +27,7 @@ E2:
 
 MEDIC:
 	Inherits: ^Soldier
+	Inherits@EXPERIENCE: ^GainsExperience
 	Valued:
 		Cost: 600
 	Tooltip:
@@ -61,6 +63,7 @@ MEDIC:
 
 JUMPJET:
 	Inherits: ^Soldier
+	Inherits@EXPERIENCE: ^GainsExperience
 	Valued:
 		Cost: 600
 	Tooltip:
@@ -95,6 +98,7 @@ JUMPJET:
 
 GHOST:
 	Inherits: ^Soldier
+	Inherits@EXPERIENCE: ^GainsExperience
 	Inherits@2: ^HealsOnTiberium
 	Valued:
 		Cost: 1750

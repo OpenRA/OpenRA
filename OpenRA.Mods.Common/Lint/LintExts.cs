@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -24,20 +25,37 @@ namespace OpenRA.Mods.Common.Lint
 			var type = fieldInfo.FieldType;
 			if (type == typeof(string))
 				return new[] { (string)fieldInfo.GetValue(ruleInfo) };
-			if (type == typeof(string[]))
-				return (string[])fieldInfo.GetValue(ruleInfo);
-			if (type == typeof(HashSet<string>))
-				return (HashSet<string>)fieldInfo.GetValue(ruleInfo);
+
+			if (typeof(IEnumerable<string>).IsAssignableFrom(type))
+				return fieldInfo.GetValue(ruleInfo) as IEnumerable<string>;
+
 			if (type == typeof(BooleanExpression))
 			{
 				var expr = (BooleanExpression)fieldInfo.GetValue(ruleInfo);
 				return expr != null ? expr.Variables : Enumerable.Empty<string>();
 			}
 
-			emitError("Bad type for reference on {0}.{1}. Supported types: string, string[], HashSet<string>, BooleanExpression"
+			throw new InvalidOperationException("Bad type for reference on {0}.{1}. Supported types: string, IEnumerable<string>, BooleanExpression"
 				.F(ruleInfo.GetType().Name, fieldInfo.Name));
+		}
 
-			return new string[] { };
+		public static IEnumerable<string> GetPropertyValues(object ruleInfo, PropertyInfo propertyInfo, Action<string> emitError)
+		{
+			var type = propertyInfo.PropertyType;
+			if (type == typeof(string))
+				return new[] { (string)propertyInfo.GetValue(ruleInfo) };
+
+			if (typeof(IEnumerable).IsAssignableFrom(type))
+				return (IEnumerable<string>)propertyInfo.GetValue(ruleInfo);
+
+			if (type == typeof(BooleanExpression))
+			{
+				var expr = (BooleanExpression)propertyInfo.GetValue(ruleInfo);
+				return expr != null ? expr.Variables : Enumerable.Empty<string>();
+			}
+
+			throw new InvalidOperationException("Bad type for reference on {0}.{1}. Supported types: string, IEnumerable<string>, BooleanExpression"
+				.F(ruleInfo.GetType().Name, propertyInfo.Name));
 		}
 	}
 }

@@ -1,5 +1,6 @@
 E3:
 	Inherits: ^Soldier
+	Inherits@EXPERIENCE: ^GainsExperience
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 20
@@ -27,6 +28,7 @@ E3:
 
 CYBORG:
 	Inherits: ^Cyborg
+	Inherits@EXPERIENCE: ^GainsExperience
 	Armor:
 		Type: Light
 	Valued:
@@ -60,6 +62,7 @@ CYBORG:
 
 CYC2:
 	Inherits: ^Cyborg
+	Inherits@EXPERIENCE: ^GainsExperience
 	Armor:
 		Type: Heavy
 	Valued:

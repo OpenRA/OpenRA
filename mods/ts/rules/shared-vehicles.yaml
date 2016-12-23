@@ -1,5 +1,6 @@
 MCV:
-	Inherits: ^VoxelTank
+	Inherits: ^Tank
+	Inherits@VOXELS: ^VoxelActor
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 110
@@ -39,7 +40,8 @@ MCV:
 			nod: mcv.nod
 
 HARV:
-	Inherits: ^VoxelTank
+	Inherits: ^Tank
+	Inherits@VOXELS: ^VoxelActor
 	Valued:
 		Cost: 1400
 	Tooltip:
@@ -84,7 +86,6 @@ HARV:
 	RevealsShroud:
 		Range: 4c0
 		MaxHeightDelta: 3
-	-GainsExperience:
 	-WithVoxelBody:
 	WithVoxelUnloadBody:
 	Explodes:
@@ -104,9 +105,9 @@ HARV:
 	-WithIdleOverlay@VEINS:
 
 LPST:
-	Inherits: ^VoxelTank
+	Inherits: ^Tank
+	Inherits@VOXELS: ^VoxelActor
 	-AppearsOnRadar:
-	-GainsExperience:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 100
@@ -127,6 +128,7 @@ LPST:
 	Mobile:
 		Speed: 85
 		TurnSpeed: 5
+		RequiresCondition: !empdisable && undeployed
 	RevealsShroud:
 		Range: 7c0
 		MaxHeightDelta: 3
