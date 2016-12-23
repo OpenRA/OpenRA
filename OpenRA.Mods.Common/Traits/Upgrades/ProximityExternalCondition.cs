@@ -108,9 +108,9 @@ namespace OpenRA.Mods.Common.Traits
 			if (!info.ValidStances.HasStance(stance))
 				return;
 
-			var um = a.TraitOrDefault<ConditionManager>();
-			if (um != null && !tokens.ContainsKey(a) && um.AcceptsExternalCondition(a, info.Condition))
-				tokens[a] = um.GrantCondition(a, info.Condition, true);
+			var cm = a.TraitOrDefault<ConditionManager>();
+			if (cm != null && !tokens.ContainsKey(a) && cm.AcceptsExternalCondition(a, info.Condition))
+				tokens[a] = cm.GrantCondition(a, info.Condition, true);
 		}
 
 		public void UnitProducedByOther(Actor self, Actor producer, Actor produced)
@@ -130,9 +130,9 @@ namespace OpenRA.Mods.Common.Traits
 				if (!info.ValidStances.HasStance(stance))
 					return;
 
-				var um = produced.TraitOrDefault<ConditionManager>();
-				if (um != null && um.AcceptsExternalCondition(produced, info.Condition))
-					tokens[produced] = um.GrantCondition(produced, info.Condition, true);
+				var cm = produced.TraitOrDefault<ConditionManager>();
+				if (cm != null && cm.AcceptsExternalCondition(produced, info.Condition))
+					tokens[produced] = cm.GrantCondition(produced, info.Condition, true);
 			}
 		}
 
@@ -146,9 +146,9 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			tokens.Remove(a);
-			var um = a.TraitOrDefault<ConditionManager>();
-			if (um != null)
-				um.RevokeCondition(a, token);
+			var cm = a.TraitOrDefault<ConditionManager>();
+			if (cm != null)
+				cm.RevokeCondition(a, token);
 		}
 	}
 }

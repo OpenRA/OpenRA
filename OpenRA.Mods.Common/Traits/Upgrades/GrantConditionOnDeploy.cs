@@ -72,7 +72,7 @@ namespace OpenRA.Mods.Common.Traits
 		readonly Lazy<WithSpriteBody> body;
 
 		DeployState deployState;
-		ConditionManager manager;
+		ConditionManager conditionManager;
 		int deployedToken = ConditionManager.InvalidConditionToken;
 		int undeployedToken = ConditionManager.InvalidConditionToken;
 
@@ -89,7 +89,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void Created(Actor self)
 		{
-			manager = self.TraitOrDefault<ConditionManager>();
+			conditionManager = self.TraitOrDefault<ConditionManager>();
 
 			switch (deployState)
 			{
@@ -244,15 +244,15 @@ namespace OpenRA.Mods.Common.Traits
 		void OnDeployStarted()
 		{
 			if (undeployedToken != ConditionManager.InvalidConditionToken)
-				undeployedToken = manager.RevokeCondition(self, undeployedToken);
+				undeployedToken = conditionManager.RevokeCondition(self, undeployedToken);
 
 			deployState = DeployState.Deploying;
 		}
 
 		void OnDeployCompleted()
 		{
-			if (manager != null && !string.IsNullOrEmpty(info.DeployedCondition) && deployedToken == ConditionManager.InvalidConditionToken)
-				deployedToken = manager.GrantCondition(self, info.DeployedCondition);
+			if (conditionManager != null && !string.IsNullOrEmpty(info.DeployedCondition) && deployedToken == ConditionManager.InvalidConditionToken)
+				deployedToken = conditionManager.GrantCondition(self, info.DeployedCondition);
 
 			deployState = DeployState.Deployed;
 		}
@@ -260,15 +260,15 @@ namespace OpenRA.Mods.Common.Traits
 		void OnUndeployStarted()
 		{
 			if (deployedToken != ConditionManager.InvalidConditionToken)
-				deployedToken = manager.RevokeCondition(self, deployedToken);
+				deployedToken = conditionManager.RevokeCondition(self, deployedToken);
 
 			deployState = DeployState.Deploying;
 		}
 
 		void OnUndeployCompleted()
 		{
-			if (manager != null && !string.IsNullOrEmpty(info.UndeployedCondition) && undeployedToken == ConditionManager.InvalidConditionToken)
-				undeployedToken = manager.GrantCondition(self, info.UndeployedCondition);
+			if (conditionManager != null && !string.IsNullOrEmpty(info.UndeployedCondition) && undeployedToken == ConditionManager.InvalidConditionToken)
+				undeployedToken = conditionManager.GrantCondition(self, info.UndeployedCondition);
 
 			deployState = DeployState.Undeployed;
 		}

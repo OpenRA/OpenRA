@@ -66,7 +66,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Sync] int remainingTime;
 		[Sync] bool damageDisabled;
 		bool isDocking;
-		ConditionManager upgradeManager;
+		ConditionManager conditionManager;
 
 		CPos? lastPos;
 		bool wasCloaked = false;
@@ -80,13 +80,13 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyCreated.Created(Actor self)
 		{
-			upgradeManager = self.TraitOrDefault<ConditionManager>();
+			conditionManager = self.TraitOrDefault<ConditionManager>();
 
 			if (Cloaked)
 			{
 				wasCloaked = true;
-				if (upgradeManager != null && cloakedToken == ConditionManager.InvalidConditionToken && !string.IsNullOrEmpty(Info.CloakedCondition))
-					cloakedToken = upgradeManager.GrantCondition(self, Info.CloakedCondition);
+				if (conditionManager != null && cloakedToken == ConditionManager.InvalidConditionToken && !string.IsNullOrEmpty(Info.CloakedCondition))
+					cloakedToken = conditionManager.GrantCondition(self, Info.CloakedCondition);
 			}
 		}
 
@@ -144,8 +144,8 @@ namespace OpenRA.Mods.Common.Traits
 			var isCloaked = Cloaked;
 			if (isCloaked && !wasCloaked)
 			{
-				if (upgradeManager != null && cloakedToken == ConditionManager.InvalidConditionToken && !string.IsNullOrEmpty(Info.CloakedCondition))
-					cloakedToken = upgradeManager.GrantCondition(self, Info.CloakedCondition);
+				if (conditionManager != null && cloakedToken == ConditionManager.InvalidConditionToken && !string.IsNullOrEmpty(Info.CloakedCondition))
+					cloakedToken = conditionManager.GrantCondition(self, Info.CloakedCondition);
 
 				if (!self.TraitsImplementing<Cloak>().Any(a => a != this && a.Cloaked))
 					Game.Sound.Play(SoundType.World, Info.CloakSound, self.CenterPosition);
@@ -153,7 +153,7 @@ namespace OpenRA.Mods.Common.Traits
 			else if (!isCloaked && wasCloaked)
 			{
 				if (cloakedToken != ConditionManager.InvalidConditionToken)
-					cloakedToken = upgradeManager.RevokeCondition(self, cloakedToken);
+					cloakedToken = conditionManager.RevokeCondition(self, cloakedToken);
 
 				if (!self.TraitsImplementing<Cloak>().Any(a => a != this && a.Cloaked))
 					Game.Sound.Play(SoundType.World, Info.UncloakSound, self.CenterPosition);

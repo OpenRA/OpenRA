@@ -50,7 +50,7 @@ namespace OpenRA.Mods.Common.Traits
 		readonly ParachutableInfo info;
 		readonly IPositionable positionable;
 
-		ConditionManager um;
+		ConditionManager conditionManager;
 		int parachutingToken = ConditionManager.InvalidConditionToken;
 
 		public Parachutable(Actor self, ParachutableInfo info)
@@ -61,19 +61,19 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyCreated.Created(Actor self)
 		{
-			um = self.TraitOrDefault<ConditionManager>();
+			conditionManager = self.TraitOrDefault<ConditionManager>();
 		}
 
 		void INotifyParachute.OnParachute(Actor self)
 		{
-			if (um != null && parachutingToken == ConditionManager.InvalidConditionToken && !string.IsNullOrEmpty(info.ParachutingCondition))
-				parachutingToken = um.GrantCondition(self, info.ParachutingCondition);
+			if (conditionManager != null && parachutingToken == ConditionManager.InvalidConditionToken && !string.IsNullOrEmpty(info.ParachutingCondition))
+				parachutingToken = conditionManager.GrantCondition(self, info.ParachutingCondition);
 		}
 
 		void INotifyParachute.OnLanded(Actor self, Actor ignore)
 		{
 			if (parachutingToken != ConditionManager.InvalidConditionToken)
-				parachutingToken = um.RevokeCondition(self, parachutingToken);
+				parachutingToken = conditionManager.RevokeCondition(self, parachutingToken);
 
 			if (!info.KilledOnImpassableTerrain)
 				return;

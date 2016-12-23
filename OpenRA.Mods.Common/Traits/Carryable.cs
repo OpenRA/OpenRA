@@ -33,7 +33,7 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class Carryable : UpgradableTrait<CarryableInfo>
 	{
-		ConditionManager upgradeManager;
+		ConditionManager conditionManager;
 		int reservedToken = ConditionManager.InvalidConditionToken;
 		int carriedToken = ConditionManager.InvalidConditionToken;
 
@@ -51,7 +51,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		protected override void Created(Actor self)
 		{
-			upgradeManager = self.Trait<ConditionManager>();
+			conditionManager = self.Trait<ConditionManager>();
 
 			base.Created(self);
 		}
@@ -64,7 +64,7 @@ namespace OpenRA.Mods.Common.Traits
 			attached = true;
 
 			if (carriedToken == ConditionManager.InvalidConditionToken && !string.IsNullOrEmpty(Info.CarriedCondition))
-				carriedToken = upgradeManager.GrantCondition(self, Info.CarriedCondition);
+				carriedToken = conditionManager.GrantCondition(self, Info.CarriedCondition);
 		}
 
 		// This gets called by carrier after we touched down
@@ -76,7 +76,7 @@ namespace OpenRA.Mods.Common.Traits
 			attached = false;
 
 			if (carriedToken != ConditionManager.InvalidConditionToken)
-				carriedToken = upgradeManager.RevokeCondition(self, carriedToken);
+				carriedToken = conditionManager.RevokeCondition(self, carriedToken);
 		}
 
 		public virtual bool Reserve(Actor self, Actor carrier)
@@ -88,7 +88,7 @@ namespace OpenRA.Mods.Common.Traits
 			Carrier = carrier;
 
 			if (reservedToken == ConditionManager.InvalidConditionToken && !string.IsNullOrEmpty(Info.ReservedCondition))
-				reservedToken = upgradeManager.GrantCondition(self, Info.ReservedCondition);
+				reservedToken = conditionManager.GrantCondition(self, Info.ReservedCondition);
 
 			return true;
 		}
@@ -99,7 +99,7 @@ namespace OpenRA.Mods.Common.Traits
 			Carrier = null;
 
 			if (reservedToken != ConditionManager.InvalidConditionToken)
-				reservedToken = upgradeManager.RevokeCondition(self, reservedToken);
+				reservedToken = conditionManager.RevokeCondition(self, reservedToken);
 		}
 
 		// Prepare for transport pickup

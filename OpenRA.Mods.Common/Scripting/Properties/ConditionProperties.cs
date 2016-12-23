@@ -22,13 +22,13 @@ namespace OpenRA.Mods.Common.Scripting
 	[ScriptPropertyGroup("General")]
 	public class ConditionProperties : ScriptActorProperties, Requires<ConditionManagerInfo>
 	{
-		readonly ConditionManager um;
+		readonly ConditionManager conditionManager;
 		readonly Dictionary<string, Stack<int>> legacyShim = new Dictionary<string, Stack<int>>();
 
 		public ConditionProperties(ScriptContext context, Actor self)
 			: base(context, self)
 		{
-			um = self.Trait<ConditionManager>();
+			conditionManager = self.Trait<ConditionManager>();
 		}
 
 		[Desc("Grant an external condition on this actor and return the revocation token.",
@@ -36,22 +36,22 @@ namespace OpenRA.Mods.Common.Scripting
 			"If duration > 0 the condition will be automatically revoked after the defined number of ticks")]
 		public int GrantCondition(string condition, int duration = 0)
 		{
-			if (!um.AcceptsExternalCondition(Self, condition))
+			if (!conditionManager.AcceptsExternalCondition(Self, condition))
 				throw new InvalidDataException("Condition `{0}` has not been listed on an ExternalConditions trait".F(condition));
 
-			return um.GrantCondition(Self, condition, true, duration);
+			return conditionManager.GrantCondition(Self, condition, true, duration);
 		}
 
 		[Desc("Revoke a condition using the token returned by GrantCondition.")]
 		public void RevokeCondition(int token)
 		{
-			um.RevokeCondition(Self, token);
+			conditionManager.RevokeCondition(Self, token);
 		}
 
 		[Desc("Check whether this actor accepts a specific external condition.")]
 		public bool AcceptsCondition(string condition)
 		{
-			return um.AcceptsExternalCondition(Self, condition);
+			return conditionManager.AcceptsExternalCondition(Self, condition);
 		}
 
 		[Desc("Grant an upgrade to this actor. DEPRECATED! Will be removed.")]

@@ -28,7 +28,7 @@ namespace OpenRA.Mods.D2k.Activities
 
 		readonly Target target;
 		readonly Sandworm sandworm;
-		readonly ConditionManager manager;
+		readonly ConditionManager conditionManager;
 		readonly WeaponInfo weapon;
 		readonly RadarPings radarPings;
 		readonly AttackSwallow swallow;
@@ -46,7 +46,7 @@ namespace OpenRA.Mods.D2k.Activities
 			sandworm = self.Trait<Sandworm>();
 			positionable = self.Trait<Mobile>();
 			swallow = self.Trait<AttackSwallow>();
-			manager = self.TraitOrDefault<ConditionManager>();
+			conditionManager = self.TraitOrDefault<ConditionManager>();
 			radarPings = self.World.WorldActor.TraitOrDefault<RadarPings>();
 		}
 
@@ -109,9 +109,9 @@ namespace OpenRA.Mods.D2k.Activities
 					stance = AttackState.Burrowed;
 					countdown = swallow.Info.AttackDelay;
 					burrowLocation = self.Location;
-					if (manager != null && attackingToken == ConditionManager.InvalidConditionToken &&
+					if (conditionManager != null && attackingToken == ConditionManager.InvalidConditionToken &&
 							!string.IsNullOrEmpty(swallow.Info.AttackingCondition))
-						attackingToken = manager.GrantCondition(self, swallow.Info.AttackingCondition);
+						attackingToken = conditionManager.GrantCondition(self, swallow.Info.AttackingCondition);
 					break;
 				case AttackState.Burrowed:
 					if (--countdown > 0)
@@ -171,7 +171,7 @@ namespace OpenRA.Mods.D2k.Activities
 		void RevokeCondition(Actor self)
 		{
 			if (attackingToken != ConditionManager.InvalidConditionToken)
-				attackingToken = manager.RevokeCondition(self, attackingToken);
+				attackingToken = conditionManager.RevokeCondition(self, attackingToken);
 		}
 	}
 }

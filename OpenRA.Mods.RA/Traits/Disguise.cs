@@ -83,7 +83,7 @@ namespace OpenRA.Mods.RA.Traits
 		readonly Actor self;
 		readonly DisguiseInfo info;
 
-		ConditionManager um;
+		ConditionManager conditionManager;
 		int disguisedToken = ConditionManager.InvalidConditionToken;
 
 		public Disguise(Actor self, DisguiseInfo info)
@@ -94,7 +94,7 @@ namespace OpenRA.Mods.RA.Traits
 
 		void INotifyCreated.Created(Actor self)
 		{
-			um = self.TraitOrDefault<ConditionManager>();
+			conditionManager = self.TraitOrDefault<ConditionManager>();
 		}
 
 		public IEnumerable<IOrderTargeter> Orders
@@ -187,12 +187,12 @@ namespace OpenRA.Mods.RA.Traits
 			foreach (var t in self.TraitsImplementing<INotifyEffectiveOwnerChanged>())
 				t.OnEffectiveOwnerChanged(self, oldEffectiveOwner, AsPlayer);
 
-			if (Disguised != oldDisguiseSetting && um != null)
+			if (Disguised != oldDisguiseSetting && conditionManager != null)
 			{
 				if (Disguised && disguisedToken == ConditionManager.InvalidConditionToken && !string.IsNullOrEmpty(info.DisguisedCondition))
-					disguisedToken = um.GrantCondition(self, info.DisguisedCondition);
+					disguisedToken = conditionManager.GrantCondition(self, info.DisguisedCondition);
 				else if (!Disguised && disguisedToken != ConditionManager.InvalidConditionToken)
-					disguisedToken = um.RevokeCondition(self, disguisedToken);
+					disguisedToken = conditionManager.RevokeCondition(self, disguisedToken);
 			}
 		}
 

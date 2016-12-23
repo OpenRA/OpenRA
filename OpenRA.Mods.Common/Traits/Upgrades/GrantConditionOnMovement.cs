@@ -31,7 +31,7 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		readonly IMove movement;
 
-		ConditionManager manager;
+		ConditionManager conditionManager;
 		int conditionToken = ConditionManager.InvalidConditionToken;
 
 		public GrantConditionOnMovement(Actor self, GrantConditionOnMovementInfo info)
@@ -42,21 +42,21 @@ namespace OpenRA.Mods.Common.Traits
 
 		protected override void Created(Actor self)
 		{
-			manager = self.TraitOrDefault<ConditionManager>();
+			conditionManager = self.TraitOrDefault<ConditionManager>();
 			base.Created(self);
 		}
 
 		void ITick.Tick(Actor self)
 		{
-			if (manager == null)
+			if (conditionManager == null)
 				return;
 
 			var isMovingVertically = Info.ConsiderVerticalMovement ? movement.IsMovingVertically : false;
 			var isMoving = !IsTraitDisabled && !self.IsDead && (movement.IsMoving || isMovingVertically);
 			if (isMoving && conditionToken == ConditionManager.InvalidConditionToken)
-				conditionToken = manager.GrantCondition(self, Info.Condition);
+				conditionToken = conditionManager.GrantCondition(self, Info.Condition);
 			else if (!isMoving && conditionToken != ConditionManager.InvalidConditionToken)
-				conditionToken = manager.RevokeCondition(self, conditionToken);
+				conditionToken = conditionManager.RevokeCondition(self, conditionToken);
 		}
 	}
 }

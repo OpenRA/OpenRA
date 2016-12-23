@@ -26,7 +26,7 @@ namespace OpenRA.Mods.Common.Traits
 
 	class GrantCondition : UpgradableTrait<GrantConditionInfo>
 	{
-		ConditionManager manager;
+		ConditionManager conditionManager;
 		int conditionToken = ConditionManager.InvalidConditionToken;
 
 		public GrantCondition(GrantConditionInfo info)
@@ -34,7 +34,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		protected override void Created(Actor self)
 		{
-			manager = self.Trait<ConditionManager>();
+			conditionManager = self.Trait<ConditionManager>();
 
 			base.Created(self);
 		}
@@ -42,7 +42,7 @@ namespace OpenRA.Mods.Common.Traits
 		protected override void TraitEnabled(Actor self)
 		{
 			if (conditionToken == ConditionManager.InvalidConditionToken)
-				conditionToken = manager.GrantCondition(self, Info.Condition);
+				conditionToken = conditionManager.GrantCondition(self, Info.Condition);
 		}
 
 		protected override void TraitDisabled(Actor self)
@@ -50,7 +50,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (conditionToken == ConditionManager.InvalidConditionToken)
 				return;
 
-			conditionToken = manager.RevokeCondition(self, conditionToken);
+			conditionToken = conditionManager.RevokeCondition(self, conditionToken);
 		}
 	}
 }

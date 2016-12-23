@@ -41,7 +41,7 @@ namespace OpenRA.Mods.Common.Traits
 		readonly GrantConditionOnDamageStateInfo info;
 		readonly Health health;
 
-		ConditionManager manager;
+		ConditionManager conditionManager;
 		int conditionToken = ConditionManager.InvalidConditionToken;
 
 		public GrantConditionOnDamageState(Actor self, GrantConditionOnDamageStateInfo info)
@@ -52,7 +52,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyCreated.Created(Actor self)
 		{
-			manager = self.TraitOrDefault<ConditionManager>();
+			conditionManager = self.TraitOrDefault<ConditionManager>();
 			GrantUpgradeOnValidDamageState(self, health.DamageState);
 		}
 
@@ -61,7 +61,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!info.ValidDamageStates.HasFlag(state) || conditionToken != ConditionManager.InvalidConditionToken)
 				return;
 
-			conditionToken = manager.GrantCondition(self, info.Condition);
+			conditionToken = conditionManager.GrantCondition(self, info.Condition);
 
 			var sound = info.EnabledSounds.RandomOrDefault(Game.CosmeticRandom);
 			Game.Sound.Play(SoundType.World, sound, self.CenterPosition);
@@ -70,14 +70,14 @@ namespace OpenRA.Mods.Common.Traits
 		void INotifyDamageStateChanged.DamageStateChanged(Actor self, AttackInfo e)
 		{
 			var granted = conditionToken != ConditionManager.InvalidConditionToken;
-			if ((granted && info.GrantPermanently) || manager == null)
+			if ((granted && info.GrantPermanently) || conditionManager == null)
 				return;
 
 			if (!granted && !info.ValidDamageStates.HasFlag(e.PreviousDamageState))
 				GrantUpgradeOnValidDamageState(self, health.DamageState);
 			else if (granted && !info.ValidDamageStates.HasFlag(e.DamageState) && info.ValidDamageStates.HasFlag(e.PreviousDamageState))
 			{
-				conditionToken = manager.RevokeCondition(self, conditionToken);
+				conditionToken = conditionManager.RevokeCondition(self, conditionToken);
 
 				var sound = info.DisabledSounds.RandomOrDefault(Game.CosmeticRandom);
 				Game.Sound.Play(SoundType.World, sound, self.CenterPosition);

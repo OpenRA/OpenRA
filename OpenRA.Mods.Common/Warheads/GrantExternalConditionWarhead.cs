@@ -36,11 +36,11 @@ namespace OpenRA.Mods.Common.Warheads
 				if (!IsValidAgainst(a, firedBy))
 					continue;
 
-				var um = a.TraitOrDefault<ConditionManager>();
+				var cm = a.TraitOrDefault<ConditionManager>();
 
 				// Condition token is ignored because we never revoke this condition.
-				if (um != null && um.AcceptsExternalCondition(a, Condition))
-					um.GrantCondition(a, Condition, true, Duration);
+				if (cm != null && cm.AcceptsExternalCondition(a, Condition))
+					cm.GrantCondition(a, Condition, true, Duration);
 			}
 		}
 	}

@@ -32,7 +32,7 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		readonly GrantConditionOnTerrainInfo info;
 
-		ConditionManager manager;
+		ConditionManager conditionManager;
 		int conditionToken = ConditionManager.InvalidConditionToken;
 		string previousTerrain;
 
@@ -43,12 +43,12 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyCreated.Created(Actor self)
 		{
-			manager = self.TraitOrDefault<ConditionManager>();
+			conditionManager = self.TraitOrDefault<ConditionManager>();
 		}
 
 		public void Tick(Actor self)
 		{
-			if (manager == null)
+			if (conditionManager == null)
 				return;
 
 			var currentTerrain = self.World.Map.GetTerrainInfo(self.Location).Type;
@@ -56,9 +56,9 @@ namespace OpenRA.Mods.Common.Traits
 			if (currentTerrain != previousTerrain)
 			{
 				if (wantsGranted && conditionToken == ConditionManager.InvalidConditionToken)
-					conditionToken = manager.GrantCondition(self, info.Condition);
+					conditionToken = conditionManager.GrantCondition(self, info.Condition);
 				else if (!wantsGranted && conditionToken != ConditionManager.InvalidConditionToken)
-					conditionToken = manager.RevokeCondition(self, conditionToken);
+					conditionToken = conditionManager.RevokeCondition(self, conditionToken);
 			}
 
 			previousTerrain = currentTerrain;

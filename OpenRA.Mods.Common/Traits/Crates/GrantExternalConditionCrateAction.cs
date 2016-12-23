@@ -47,8 +47,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		bool AcceptsCondition(Actor a)
 		{
-			var um = a.TraitOrDefault<ConditionManager>();
-			return um != null && um.AcceptsExternalCondition(a, info.Condition);
+			var cm = a.TraitOrDefault<ConditionManager>();
+			return cm != null && cm.AcceptsExternalCondition(a, info.Condition);
 		}
 
 		public override int GetSelectionShares(Actor collector)
@@ -71,11 +71,11 @@ namespace OpenRA.Mods.Common.Traits
 					if (!a.IsInWorld || a.IsDead)
 						continue;
 
-					var um = a.TraitOrDefault<ConditionManager>();
+					var cm = a.TraitOrDefault<ConditionManager>();
 
 					// Condition token is ignored because we never revoke this condition.
-					if (um != null)
-						um.GrantCondition(a, info.Condition, true, info.Duration);
+					if (cm != null)
+						cm.GrantCondition(a, info.Condition, true, info.Duration);
 				}
 			});
 
