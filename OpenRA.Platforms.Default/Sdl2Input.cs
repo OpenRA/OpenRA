@@ -40,7 +40,7 @@ namespace OpenRA.Platforms.Default
 				 | ((raw & (int)SDL.SDL_Keymod.KMOD_SHIFT) != 0 ? Modifiers.Shift : 0);
 		}
 
-		public void PumpInput(IInputHandler inputHandler)
+		public void PumpInput(Sdl2GraphicsDevice device, IInputHandler inputHandler)
 		{
 			var mods = MakeModifiers((int)SDL.SDL_GetModState());
 			var scrollDelta = 0;
@@ -66,6 +66,11 @@ namespace OpenRA.Platforms.Default
 
 								case SDL.SDL_WindowEventID.SDL_WINDOWEVENT_FOCUS_GAINED:
 									Game.HasInputFocus = true;
+									break;
+
+								// Triggered when moving between displays with different DPI settings
+								case SDL.SDL_WindowEventID.SDL_WINDOWEVENT_SIZE_CHANGED:
+									device.WindowSizeChanged();
 									break;
 							}
 

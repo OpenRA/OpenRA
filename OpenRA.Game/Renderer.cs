@@ -86,7 +86,7 @@ namespace OpenRA
 					fontSheetBuilder.Dispose();
 				fontSheetBuilder = new SheetBuilder(SheetType.BGRA);
 				Fonts = modData.Manifest.Fonts.ToDictionary(x => x.Key,
-					x => new SpriteFont(x.Value.First, modData.DefaultFileSystem.Open(x.Value.First).ReadAllBytes(), x.Value.Second, fontSheetBuilder)).AsReadOnly();
+					x => new SpriteFont(x.Value.First, modData.DefaultFileSystem.Open(x.Value.First).ReadAllBytes(), x.Value.Second, Device.WindowScale, fontSheetBuilder)).AsReadOnly();
 			}
 		}
 

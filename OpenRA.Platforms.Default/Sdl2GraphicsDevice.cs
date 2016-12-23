@@ -21,10 +21,15 @@ namespace OpenRA.Platforms.Default
 	sealed class Sdl2GraphicsDevice : ThreadAffine, IGraphicsDevice
 	{
 		readonly Sdl2Input input;
+
 		IntPtr context, window;
 		bool disposed;
 
 		public Size WindowSize { get; private set; }
+		public float WindowScale { get; private set; }
+
+		internal Size SurfaceSize { get; private set; }
+		public event Action<float, float> OnWindowScaleChanged = (before, after) => { };
 
 		public Sdl2GraphicsDevice(Size windowSize, WindowMode windowMode)
 		{
@@ -50,8 +55,28 @@ namespace OpenRA.Platforms.Default
 
 			Console.WriteLine("Using resolution: {0}x{1}", WindowSize.Width, WindowSize.Height);
 
+			var windowFlags = SDL.SDL_WindowFlags.SDL_WINDOW_OPENGL;
+			if (Platform.CurrentPlatform == PlatformType.OSX)
+				windowFlags |= SDL.SDL_WindowFlags.SDL_WINDOW_ALLOW_HIGHDPI;
+
 			window = SDL.SDL_CreateWindow("OpenRA", SDL.SDL_WINDOWPOS_CENTERED, SDL.SDL_WINDOWPOS_CENTERED,
-				WindowSize.Width, WindowSize.Height, SDL.SDL_WindowFlags.SDL_WINDOW_OPENGL);
+				WindowSize.Width, WindowSize.Height, windowFlags);
+
+			SurfaceSize = WindowSize;
+			WindowScale = 1;
+
+			// Enable high resolution rendering for Retina displays
+			if (Platform.CurrentPlatform == PlatformType.OSX)
+			{
+				// OSX defines the window size in "points", with a device-dependent number of pixels per point.
+				// The window scale is simply the ratio of GL pixels / window points.
+				int width, height;
+				SDL.SDL_GL_GetDrawableSize(window, out width, out height);
+				SurfaceSize = new Size(width, height);
+				WindowScale = width * 1f / WindowSize.Width;
+			}
+
+			Console.WriteLine("Using window scale {0:F2}", WindowScale);
 
 			if (Game.Settings.Game.LockMouseWindow)
 				GrabWindowMouseFocus();
@@ -111,6 +136,26 @@ namespace OpenRA.Platforms.Default
 			{
 				SDL.SDL_ShowCursor((int)SDL.SDL_bool.SDL_TRUE);
 				SDL.SDL_SetCursor(c.Cursor);
+			}
+		}
+
+		internal void WindowSizeChanged()
+		{
+			// The ratio between pixels and points can change when moving between displays in OSX
+			// We need to recalculate our scale to account for the potential change in the actual rendered area
+			if (Platform.CurrentPlatform == PlatformType.OSX)
+			{
+				int width, height;
+				SDL.SDL_GL_GetDrawableSize(window, out width, out height);
+
+				if (width != SurfaceSize.Width || height != SurfaceSize.Height)
+				{
+					var oldScale = WindowScale;
+					SurfaceSize = new Size(width, height);
+					WindowScale = width * 1f / WindowSize.Width;
+
+					OnWindowScaleChanged(oldScale, WindowScale);
+				}
 			}
 		}
 
@@ -315,7 +360,16 @@ namespace OpenRA.Platforms.Default
 			if (height < 0)
 				height = 0;
 
-			OpenGL.glScissor(left, WindowSize.Height - (top + height), width, height);
+			var bottom = WindowSize.Height - (top + height);
+			if (WindowSize != SurfaceSize)
+			{
+				left = (int)Math.Round(WindowScale * left);
+				bottom = (int)Math.Round(WindowScale * bottom);
+				width = (int)Math.Round(WindowScale * width);
+				height = (int)Math.Round(WindowScale * height);
+			}
+
+			OpenGL.glScissor(left, bottom, width, height);
 			OpenGL.CheckGLError();
 			OpenGL.glEnable(OpenGL.GL_SCISSOR_TEST);
 			OpenGL.CheckGLError();
@@ -330,7 +384,7 @@ namespace OpenRA.Platforms.Default
 
 		public Bitmap TakeScreenshot()
 		{
-			var rect = new Rectangle(Point.Empty, WindowSize);
+			var rect = new Rectangle(Point.Empty, SurfaceSize);
 			var bitmap = new Bitmap(rect.Width, rect.Height, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
 			var data = bitmap.LockBits(rect,
 				System.Drawing.Imaging.ImageLockMode.WriteOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
@@ -362,7 +416,7 @@ namespace OpenRA.Platforms.Default
 		public void PumpInput(IInputHandler inputHandler)
 		{
 			VerifyThreadAffinity();
-			input.PumpInput(inputHandler);
+			input.PumpInput(this, inputHandler);
 		}
 
 		public string GetClipboardText()
