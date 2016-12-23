@@ -53,10 +53,10 @@ namespace OpenRA.Mods.Common.Traits
 		void INotifyCreated.Created(Actor self)
 		{
 			conditionManager = self.TraitOrDefault<ConditionManager>();
-			GrantUpgradeOnValidDamageState(self, health.DamageState);
+			GrantConditionOnValidDamageState(self, health.DamageState);
 		}
 
-		void GrantUpgradeOnValidDamageState(Actor self, DamageState state)
+		void GrantConditionOnValidDamageState(Actor self, DamageState state)
 		{
 			if (!info.ValidDamageStates.HasFlag(state) || conditionToken != ConditionManager.InvalidConditionToken)
 				return;
@@ -74,7 +74,7 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			if (!granted && !info.ValidDamageStates.HasFlag(e.PreviousDamageState))
-				GrantUpgradeOnValidDamageState(self, health.DamageState);
+				GrantConditionOnValidDamageState(self, health.DamageState);
 			else if (granted && !info.ValidDamageStates.HasFlag(e.DamageState) && info.ValidDamageStates.HasFlag(e.PreviousDamageState))
 			{
 				conditionToken = conditionManager.RevokeCondition(self, conditionToken);
