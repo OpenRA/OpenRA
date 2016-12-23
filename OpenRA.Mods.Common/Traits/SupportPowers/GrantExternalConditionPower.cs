@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("The condition to apply. Must be included in the target actor's ExternalConditions list.")]
 		public readonly string Condition = null;
 
-		[Desc("Duration of the upgrade (in ticks). Set to 0 for a permanent condition.")]
+		[Desc("Duration of the condition (in ticks). Set to 0 for a permanent condition.")]
 		public readonly int Duration = 0;
 
 		[Desc("Cells - affects whole cells only")]
@@ -103,7 +103,7 @@ namespace OpenRA.Mods.Common.Traits
 			readonly SupportPowerManager manager;
 			readonly string order;
 
-			public SelectUpgradeTarget(World world, string order, SupportPowerManager manager, GrantExternalConditionPower power)
+			public SelectConditionTarget(World world, string order, SupportPowerManager manager, GrantExternalConditionPower power)
 			{
 				// Clear selection if using Left-Click Orders
 				if (Game.Settings.Game.UseClassicMouseStyle)

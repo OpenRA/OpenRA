@@ -24,7 +24,7 @@ namespace OpenRA.Mods.Common.Traits
 		void Update(int duration, int remaining);
 	}
 
-	[Desc("Attach this to a unit to enable dynamic upgrades by warheads, experience, crates, support powers, etc.")]
+	[Desc("Attach this to a unit to enable dynamic conditions by warheads, experience, crates, support powers, etc.")]
 	public class ConditionManagerInfo : TraitInfo<ConditionManager>, Requires<IConditionConsumerInfo> { }
 
 	public class ConditionManager : INotifyCreated, ITick

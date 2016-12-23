@@ -30,8 +30,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("The condition to grant after deploying and revoke before undeploying.")]
 		public readonly string DeployedCondition = null;
 
-		[Desc("The terrain types that this actor can deploy on to receive these upgrades. " +
-			"Leave empty to allow any.")]
+		[Desc("The terrain types that this actor can deploy on. Leave empty to allow any.")]
 		public readonly HashSet<string> AllowedTerrainTypes = new HashSet<string>();
 
 		[Desc("Can this actor deploy on slopes?")]
@@ -207,19 +206,19 @@ namespace OpenRA.Mods.Common.Traits
 			if (!string.IsNullOrEmpty(info.DeploySound))
 				Game.Sound.Play(SoundType.World, info.DeploySound, self.CenterPosition);
 
-			// Revoke upgrades that are used while undeployed.
+			// Revoke condition that is applied while undeployed.
 			if (!init)
 				OnDeployStarted();
 
-			// If there is no animation to play just grant the upgrades that are used while deployed.
-			// Alternatively, play the deploy animation and then grant the upgrades.
+			// If there is no animation to play just grant the condition that is used while deployed.
+			// Alternatively, play the deploy animation and then grant the condition.
 			if (string.IsNullOrEmpty(info.DeployAnimation) || body.Value == null)
 				OnDeployCompleted();
 			else
 				body.Value.PlayCustomAnimation(self, info.DeployAnimation, OnDeployCompleted);
 		}
 
-		/// <summary>Play undeploy sound and animation and after that revoke the upgrades.</summary>
+		/// <summary>Play undeploy sound and animation and after that revoke the condition.</summary>
 		void Undeploy() { Undeploy(false); }
 		void Undeploy(bool init)
 		{
@@ -233,8 +232,8 @@ namespace OpenRA.Mods.Common.Traits
 			if (!init)
 				OnUndeployStarted();
 
-			// If there is no animation to play just grant the upgrades that are used while undeployed.
-			// Alternatively, play the undeploy animation and then grant the upgrades.
+			// If there is no animation to play just grant the condition that is used while undeployed.
+			// Alternatively, play the undeploy animation and then grant the condition.
 			if (string.IsNullOrEmpty(info.DeployAnimation) || body.Value == null)
 				OnUndeployCompleted();
 			else

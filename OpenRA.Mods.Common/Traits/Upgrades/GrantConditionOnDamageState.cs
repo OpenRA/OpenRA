@@ -13,7 +13,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	[Desc("Applies an upgrade to the actor at specified damage states.")]
+	[Desc("Applies a condition to the actor at specified damage states.")]
 	public class GrantConditionOnDamageStateInfo : ITraitInfo, Requires<HealthInfo>
 	{
 		[FieldLoader.Require]
@@ -27,7 +27,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Play a random sound from this list when disabled.")]
 		public readonly string[] DisabledSounds = { };
 
-		[Desc("Levels of damage at which to grant upgrades.")]
+		[Desc("Levels of damage at which to grant the condition.")]
 		public readonly DamageState ValidDamageStates = DamageState.Heavy | DamageState.Critical;
 
 		[Desc("Is the condition irrevocable once it has been activated?")]

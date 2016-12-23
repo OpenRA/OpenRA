@@ -13,7 +13,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	[Desc("Disable the actor when this trait is enabled by an upgrade.")]
+	[Desc("Disable the actor when this trait is enabled by a condition.")]
 	public class DisableOnConditionInfo : UpgradableTraitInfo
 	{
 		public override object Create(ActorInitializer init) { return new DisableOnCondition(this); }

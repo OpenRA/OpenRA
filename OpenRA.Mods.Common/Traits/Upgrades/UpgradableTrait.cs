@@ -28,7 +28,7 @@ namespace OpenRA.Mods.Common.Traits
 		public abstract object Create(ActorInitializer init);
 
 		// HACK: A shim for all the ActorPreview code that used to query UpgradeMinEnabledLevel directly
-		// This can go away after we introduce an InitialUpgrades ActorInit and have the traits query the
+		// This can go away after we introduce an InitialConditions ActorInit and have the traits query the
 		// condition directly
 		public bool EnabledByDefault { get; private set; }
 
@@ -39,9 +39,9 @@ namespace OpenRA.Mods.Common.Traits
 	}
 
 	/// <summary>
-	/// Abstract base for enabling and disabling trait using upgrades.
+	/// Abstract base for enabling and disabling trait using conditions.
 	/// Requires basing *Info on UpgradableTraitInfo and using base(info) constructor.
-	/// Note that EnabledByUpgrade is not called at creation even if this starts as enabled.
+	/// TraitEnabled will be called at creation if the trait starts enabled or does not use conditions.
 	/// </summary>
 	public abstract class UpgradableTrait<InfoType> : IConditionConsumer, IDisabledTrait, INotifyCreated, ISync where InfoType : UpgradableTraitInfo
 	{

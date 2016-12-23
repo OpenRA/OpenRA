@@ -661,7 +661,7 @@ namespace OpenRA.Mods.Common.Traits
 			OnAirborneAltitudeLeft();
 		}
 
-		#region Airborne upgrades
+		#region Airborne conditions
 
 		void OnAirborneAltitudeReached()
 		{
@@ -685,7 +685,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		#endregion
 
-		#region Cruising upgrades
+		#region Cruising conditions
 
 		void OnCruisingAltitudeReached()
 		{

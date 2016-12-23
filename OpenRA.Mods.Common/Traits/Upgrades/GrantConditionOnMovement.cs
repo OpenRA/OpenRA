@@ -21,7 +21,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Condition to grant.")]
 		public readonly string Condition = null;
 
-		[Desc("Apply upgrades on straight vertical movement as well.")]
+		[Desc("Apply condition on straight vertical movement as well.")]
 		public readonly bool ConsiderVerticalMovement = false;
 
 		public override object Create(ActorInitializer init) { return new GrantConditionOnMovement(init.Self, this); }

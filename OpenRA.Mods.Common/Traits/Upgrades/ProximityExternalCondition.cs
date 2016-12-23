@@ -14,24 +14,24 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	[Desc("Applies an upgrade to actors within a specified range.")]
+	[Desc("Applies a condition to actors within a specified range.")]
 	public class ProximityExternalConditionInfo : ITraitInfo
 	{
 		[FieldLoader.Require]
 		[Desc("The condition to apply. Must be included in the target actor's ExternalConditions list.")]
 		public readonly string Condition = null;
 
-		[Desc("The range to search for actors to upgrade.")]
+		[Desc("The range to search for actors.")]
 		public readonly WDist Range = WDist.FromCells(3);
 
-		[Desc("The maximum vertical range above terrain to search for actors to upgrade.",
-		"Ignored if 0 (actors are upgraded regardless of vertical distance).")]
+		[Desc("The maximum vertical range above terrain to search for actors.",
+		"Ignored if 0 (actors are selected regardless of vertical distance).")]
 		public readonly WDist MaximumVerticalOffset = WDist.Zero;
 
 		[Desc("What diplomatic stances are affected.")]
 		public readonly Stance ValidStances = Stance.Ally;
 
-		[Desc("Grant the upgrades apply to this actor.")]
+		[Desc("Condition is applied permanently to this actor.")]
 		public readonly bool AffectsParent = false;
 
 		public readonly string EnableSound = null;
@@ -119,7 +119,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (produced.OccupiesSpace == null)
 				return;
 
-			// We don't grant upgrades when disabled
+			// We don't grant conditions when disabled
 			if (self.IsDisabled())
 				return;
 

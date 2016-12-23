@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string Condition = null;
 
 		[FieldLoader.Require]
-		[Desc("Terrain names to trigger the upgrade.")]
+		[Desc("Terrain names to trigger the condition.")]
 		public readonly string[] TerrainTypes = { };
 
 		public object Create(ActorInitializer init) { return new GrantConditionOnTerrain(init, this); }

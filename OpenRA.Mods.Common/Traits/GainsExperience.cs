@@ -24,7 +24,7 @@ namespace OpenRA.Mods.Common.Traits
 		[FieldLoader.Require]
 		[Desc("Condition to grant at each level.",
 			"Key is the XP requirements for each level as a percentage of our own value.",
-			"Value is a list of the upgrade types to grant")]
+			"Value is the condition to grant.")]
 		public readonly Dictionary<int, string> Conditions = null;
 
 		[GrantedConditionReference]

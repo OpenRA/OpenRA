@@ -80,7 +80,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			DefaultAnimation.PlayRepeating(NormalizeSequence(self, Info.Sequence));
 		}
 
-		// TODO: Get rid of INotifyBuildComplete in favor of using the upgrade system
+		// TODO: Get rid of INotifyBuildComplete in favor of using the condition system
 		void INotifyBuildComplete.BuildingComplete(Actor self)
 		{
 			OnBuildComplete(self);
