@@ -751,14 +751,14 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				}
 
 				// Rename LaserZap BeamDuration to just Duration
-				if (engineVersion < 20161009)
+				if (engineVersion < 20161020)
 				{
 					if (node.Key == "BeamDuration")
 						node.Key = "Duration";
 				}
 
 				// Rename Bullet Angle to LaunchAngle
-				if (engineVersion < 20161016)
+				if (engineVersion < 20161020)
 				{
 					if (node.Key == "Angle")
 						node.Key = "LaunchAngle";
@@ -772,6 +772,13 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						Console.WriteLine("GrantExternalCondition Condition must be manually added to all target actor's ExternalConditions list.");
 						ConvertUpgradesToCondition(parent, node, "Upgrades", "Condition");
 					}
+				}
+
+				// Rename LaserZap TracksTarget to TrackTarget
+				if (engineVersion < 20161217)
+				{
+					if (node.Key == "TracksTarget")
+						node.Key = "TrackTarget";
 				}
 
 				UpgradeWeaponRules(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);

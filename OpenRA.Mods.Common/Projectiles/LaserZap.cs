@@ -41,7 +41,7 @@ namespace OpenRA.Mods.Common.Projectiles
 		public readonly Color Color = Color.Red;
 
 		[Desc("Beam follows the target.")]
-		public readonly bool TracksTarget = true;
+		public readonly bool TrackTarget = true;
 
 		[Desc("Maximum offset at the maximum range.")]
 		public readonly WDist Inaccuracy = WDist.Zero;
@@ -120,7 +120,7 @@ namespace OpenRA.Mods.Common.Projectiles
 		public void Tick(World world)
 		{
 			// Beam tracks target
-			if (info.TracksTarget && args.GuidedTarget.IsValidFor(args.SourceActor))
+			if (info.TrackTarget && args.GuidedTarget.IsValidFor(args.SourceActor))
 				target = args.GuidedTarget.CenterPosition;
 
 			// Check for blocking actors

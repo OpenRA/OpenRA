@@ -54,6 +54,9 @@ namespace OpenRA.Mods.Common.Projectiles
 		[Desc("Can this projectile be blocked when hitting actors with an IBlocksProjectiles trait.")]
 		public readonly bool Blockable = false;
 
+		[Desc("Does the beam follow the target.")]
+		public readonly bool TrackTarget = false;
+
 		[Desc("Extra search radius beyond beam width. Required to ensure affecting actors with large health radius.")]
 		public readonly WDist TargetExtraSearchRadius = new WDist(1536);
 
@@ -93,6 +96,7 @@ namespace OpenRA.Mods.Common.Projectiles
 		int tailTicks;
 		bool isHeadTravelling = true;
 		bool isTailTravelling;
+		bool continueTracking = true;
 
 		bool IsBeamComplete { get { return !isHeadTravelling && headTicks >= length &&
 			!isTailTravelling && tailTicks >= length; } }
@@ -132,8 +136,44 @@ namespace OpenRA.Mods.Common.Projectiles
 			length = Math.Max((target - headPos).Length / speed.Length, 1);
 		}
 
+		void TrackTarget()
+		{
+			if (!continueTracking)
+				return;
+
+			if (args.GuidedTarget.IsValidFor(args.SourceActor))
+			{
+				var guidedTargetPos = args.GuidedTarget.CenterPosition;
+				var targetDistance = new WDist((guidedTargetPos - args.Source).Length);
+
+				// Only continue tracking target if it's within weapon range +
+				// BeyondTargetRange to avoid edge case stuttering (start firing and immediately stop again).
+				if (targetDistance > args.Weapon.Range + info.BeyondTargetRange)
+					StopTargeting();
+				else
+				{
+					target = guidedTargetPos;
+					towardsTargetFacing = (target - args.Source).Yaw.Facing;
+
+					// Update the target position with the range we shoot beyond the target by
+					// I.e. we can deliberately overshoot, so aim for that position
+					var dir = new WVec(0, -1024, 0).Rotate(WRot.FromFacing(towardsTargetFacing));
+					target += dir * info.BeyondTargetRange.Length / 1024;
+				}
+			}
+		}
+
+		void StopTargeting()
+		{
+			continueTracking = false;
+			isTailTravelling = true;
+		}
+
 		public void Tick(World world)
 		{
+			if (info.TrackTarget)
+				TrackTarget();
+
 			if (++headTicks >= length)
 			{
 				headPos = target;
@@ -148,14 +188,14 @@ namespace OpenRA.Mods.Common.Projectiles
 				tailPos = args.Source;
 			}
 
-			// Allow for 1 cell (1024) leniency to avoid edge case stuttering (start firing and immediately stop again).
-			var outOfWeaponRange = args.Weapon.Range.Length + 1024 < (args.PassiveTarget - args.Source).Length;
+			// Allow for leniency to avoid edge case stuttering (start firing and immediately stop again).
+			var outOfWeaponRange = args.Weapon.Range + info.BeyondTargetRange < new WDist((args.PassiveTarget - args.Source).Length);
 
 			// While the head is travelling, the tail must start to follow Duration ticks later.
 			// Alternatively, also stop emitting the beam if source actor dies or is ordered to stop.
 			if ((headTicks >= info.Duration && !isTailTravelling) || args.SourceActor.IsDead ||
 				!actorAttackBase.IsAttacking || outOfWeaponRange)
-				isTailTravelling = true;
+				StopTargeting();
 
 			if (isTailTravelling)
 			{
