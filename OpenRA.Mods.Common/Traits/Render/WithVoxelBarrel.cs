@@ -18,7 +18,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits.Render
 {
-	public class WithVoxelBarrelInfo : UpgradableTraitInfo, IRenderActorPreviewVoxelsInfo, Requires<RenderVoxelsInfo>, Requires<ArmamentInfo>, Requires<TurretedInfo>
+	public class WithVoxelBarrelInfo : ConditionalTraitInfo, IRenderActorPreviewVoxelsInfo, Requires<RenderVoxelsInfo>, Requires<ArmamentInfo>, Requires<TurretedInfo>
 	{
 		[Desc("Voxel sequence name to use")]
 		public readonly string Sequence = "barrel";
@@ -60,7 +60,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		}
 	}
 
-	public class WithVoxelBarrel : UpgradableTrait<WithVoxelBarrelInfo>, INotifyBuildComplete, INotifySold, INotifyTransform
+	public class WithVoxelBarrel : ConditionalTrait<WithVoxelBarrelInfo>, INotifyBuildComplete, INotifySold, INotifyTransform
 	{
 		readonly Actor self;
 		readonly Armament armament;

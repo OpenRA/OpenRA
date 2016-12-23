@@ -15,7 +15,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("The player can disable the power individually on this actor.")]
-	public class CanPowerDownInfo : UpgradableTraitInfo, Requires<PowerInfo>
+	public class CanPowerDownInfo : ConditionalTraitInfo, Requires<PowerInfo>
 	{
 		[Desc("Restore power when this trait is disabled.")]
 		public readonly bool CancelWhenDisabled = false;
@@ -34,7 +34,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new CanPowerDown(init.Self, this); }
 	}
 
-	public class CanPowerDown : UpgradableTrait<CanPowerDownInfo>, IPowerModifier, IResolveOrder, IDisable, INotifyOwnerChanged
+	public class CanPowerDown : ConditionalTrait<CanPowerDownInfo>, IPowerModifier, IResolveOrder, IDisable, INotifyOwnerChanged
 	{
 		[Sync] bool disabled = false;
 		PowerManager power;

@@ -14,7 +14,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Modifies the power usage/output of this actor.")]
-	public class PowerMultiplierInfo : UpgradableTraitInfo
+	public class PowerMultiplierInfo : ConditionalTraitInfo
 	{
 		[FieldLoader.Require]
 		[Desc("Percentage modifier to apply.")]
@@ -23,7 +23,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new PowerMultiplier(init.Self, this); }
 	}
 
-	public class PowerMultiplier : UpgradableTrait<PowerMultiplierInfo>, IPowerModifier, INotifyOwnerChanged
+	public class PowerMultiplier : ConditionalTrait<PowerMultiplierInfo>, IPowerModifier, INotifyOwnerChanged
 	{
 		PowerManager power;
 

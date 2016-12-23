@@ -16,7 +16,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Lets the actor spread resources around it in a circle.")]
-	class SeedsResourceInfo : UpgradableTraitInfo
+	class SeedsResourceInfo : ConditionalTraitInfo
 	{
 		public readonly int Interval = 75;
 		public readonly string ResourceType = "Ore";
@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new SeedsResource(init.Self, this); }
 	}
 
-	class SeedsResource : UpgradableTrait<SeedsResourceInfo>, ITick, ISeedableResource
+	class SeedsResource : ConditionalTrait<SeedsResourceInfo>, ITick, ISeedableResource
 	{
 		readonly SeedsResourceInfo info;
 

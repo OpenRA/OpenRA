@@ -15,7 +15,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Can be carried by actors with the `Carryall` trait.")]
-	public class CarryableInfo : UpgradableTraitInfo
+	public class CarryableInfo : ConditionalTraitInfo
 	{
 		[GrantedConditionReference]
 		[Desc("The condition to grant to self while a carryall has been reserved.")]
@@ -31,7 +31,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new Carryable(init.Self, this); }
 	}
 
-	public class Carryable : UpgradableTrait<CarryableInfo>
+	public class Carryable : ConditionalTrait<CarryableInfo>
 	{
 		ConditionManager conditionManager;
 		int reservedToken = ConditionManager.InvalidConditionToken;

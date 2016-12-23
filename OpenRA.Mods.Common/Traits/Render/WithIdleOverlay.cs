@@ -18,7 +18,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits.Render
 {
 	[Desc("Renders a decorative animation on units and buildings.")]
-	public class WithIdleOverlayInfo : UpgradableTraitInfo, IRenderActorPreviewSpritesInfo, Requires<RenderSpritesInfo>, Requires<BodyOrientationInfo>
+	public class WithIdleOverlayInfo : ConditionalTraitInfo, IRenderActorPreviewSpritesInfo, Requires<RenderSpritesInfo>, Requires<BodyOrientationInfo>
 	{
 		[Desc("Animation to play when the actor is created.")]
 		[SequenceReference] public readonly string StartSequence = null;
@@ -72,7 +72,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		}
 	}
 
-	public class WithIdleOverlay : UpgradableTrait<WithIdleOverlayInfo>, INotifyDamageStateChanged, INotifyBuildComplete, INotifySold, INotifyTransform
+	public class WithIdleOverlay : ConditionalTrait<WithIdleOverlayInfo>, INotifyDamageStateChanged, INotifyBuildComplete, INotifySold, INotifyTransform
 	{
 		readonly Animation overlay;
 		bool buildComplete;

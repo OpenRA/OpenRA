@@ -12,7 +12,7 @@
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Modifies the range of weapons fired by this actor.")]
-	public class RangeMultiplierInfo : UpgradableTraitInfo
+	public class RangeMultiplierInfo : ConditionalTraitInfo
 	{
 		[FieldLoader.Require]
 		[Desc("Percentage modifier to apply.")]
@@ -21,7 +21,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new RangeMultiplier(this); }
 	}
 
-	public class RangeMultiplier : UpgradableTrait<RangeMultiplierInfo>, IRangeModifierInfo
+	public class RangeMultiplier : ConditionalTrait<RangeMultiplierInfo>, IRangeModifierInfo
 	{
 		public RangeMultiplier(RangeMultiplierInfo info)
 			: base(info) { }

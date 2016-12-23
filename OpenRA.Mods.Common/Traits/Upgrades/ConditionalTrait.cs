@@ -17,7 +17,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	/// <summary>Use as base class for *Info to subclass of UpgradableTrait. (See UpgradableTrait.)</summary>
-	public abstract class UpgradableTraitInfo : IConditionConsumerInfo, IRulesetLoaded
+	public abstract class ConditionalTraitInfo : IConditionConsumerInfo, IRulesetLoaded
 	{
 		static readonly IReadOnlyDictionary<string, bool> NoConditions = new ReadOnlyDictionary<string, bool>(new Dictionary<string, bool>());
 
@@ -43,7 +43,7 @@ namespace OpenRA.Mods.Common.Traits
 	/// Requires basing *Info on UpgradableTraitInfo and using base(info) constructor.
 	/// TraitEnabled will be called at creation if the trait starts enabled or does not use conditions.
 	/// </summary>
-	public abstract class UpgradableTrait<InfoType> : IConditionConsumer, IDisabledTrait, INotifyCreated, ISync where InfoType : UpgradableTraitInfo
+	public abstract class ConditionalTrait<InfoType> : IConditionConsumer, IDisabledTrait, INotifyCreated, ISync where InfoType : ConditionalTraitInfo
 	{
 		public readonly InfoType Info;
 
@@ -60,7 +60,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		[Sync] public bool IsTraitDisabled { get; private set; }
 
-		public UpgradableTrait(InfoType info)
+		public ConditionalTrait(InfoType info)
 		{
 			Info = info;
 

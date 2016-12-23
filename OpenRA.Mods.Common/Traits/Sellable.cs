@@ -18,7 +18,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Actor can be sold")]
-	public class SellableInfo : UpgradableTraitInfo
+	public class SellableInfo : ConditionalTraitInfo
 	{
 		public readonly int RefundPercent = 50;
 		public readonly string[] SellSounds = { };
@@ -26,7 +26,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new Sellable(init.Self, this); }
 	}
 
-	public class Sellable : UpgradableTrait<SellableInfo>, IResolveOrder, IProvideTooltipInfo
+	public class Sellable : ConditionalTrait<SellableInfo>, IResolveOrder, IProvideTooltipInfo
 	{
 		readonly Actor self;
 		readonly Lazy<Health> health;

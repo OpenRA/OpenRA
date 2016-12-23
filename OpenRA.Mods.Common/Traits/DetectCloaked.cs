@@ -14,7 +14,7 @@ using System.Collections.Generic;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Actor can reveal Cloak actors in a specified range.")]
-	public class DetectCloakedInfo : UpgradableTraitInfo
+	public class DetectCloakedInfo : ConditionalTraitInfo
 	{
 		[Desc("Specific cloak classifications I can reveal.")]
 		public readonly HashSet<string> CloakTypes = new HashSet<string> { "Cloak" };
@@ -24,7 +24,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new DetectCloaked(this); }
 	}
 
-	public class DetectCloaked : UpgradableTrait<DetectCloakedInfo>
+	public class DetectCloaked : ConditionalTrait<DetectCloakedInfo>
 	{
 		public DetectCloaked(DetectCloakedInfo info) : base(info) { }
 	}

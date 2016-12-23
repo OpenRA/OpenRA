@@ -19,7 +19,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits.Render
 {
 	[Desc("Also returns a default selection size that is calculated automatically from the voxel dimensions.")]
-	public class WithVoxelBodyInfo : UpgradableTraitInfo, IRenderActorPreviewVoxelsInfo, Requires<RenderVoxelsInfo>
+	public class WithVoxelBodyInfo : ConditionalTraitInfo, IRenderActorPreviewVoxelsInfo, Requires<RenderVoxelsInfo>
 	{
 		public readonly string Sequence = "idle";
 
@@ -39,7 +39,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		}
 	}
 
-	public class WithVoxelBody : UpgradableTrait<WithVoxelBodyInfo>, IAutoSelectionSize
+	public class WithVoxelBody : ConditionalTrait<WithVoxelBodyInfo>, IAutoSelectionSize
 	{
 		readonly int2 size;
 

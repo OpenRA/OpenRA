@@ -14,7 +14,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class GrantConditionOnMovementInfo : UpgradableTraitInfo, Requires<IMoveInfo>
+	public class GrantConditionOnMovementInfo : ConditionalTraitInfo, Requires<IMoveInfo>
 	{
 		[FieldLoader.Require]
 		[GrantedConditionReference]
@@ -27,7 +27,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new GrantConditionOnMovement(init.Self, this); }
 	}
 
-	public class GrantConditionOnMovement : UpgradableTrait<GrantConditionOnMovementInfo>, ITick
+	public class GrantConditionOnMovement : ConditionalTrait<GrantConditionOnMovementInfo>, ITick
 	{
 		readonly IMove movement;
 

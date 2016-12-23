@@ -19,7 +19,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits.Render
 {
 	[Desc("Renders barrels for units with the Turreted trait.")]
-	public class WithSpriteBarrelInfo : UpgradableTraitInfo, IRenderActorPreviewSpritesInfo, Requires<TurretedInfo>,
+	public class WithSpriteBarrelInfo : ConditionalTraitInfo, IRenderActorPreviewSpritesInfo, Requires<TurretedInfo>,
 		Requires<ArmamentInfo>, Requires<RenderSpritesInfo>, Requires<BodyOrientationInfo>
 	{
 		[Desc("Sequence name to use.")]
@@ -61,7 +61,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		}
 	}
 
-	public class WithSpriteBarrel : UpgradableTrait<WithSpriteBarrelInfo>
+	public class WithSpriteBarrel : ConditionalTrait<WithSpriteBarrelInfo>
 	{
 		public readonly Animation DefaultAnimation;
 		readonly RenderSprites rs;

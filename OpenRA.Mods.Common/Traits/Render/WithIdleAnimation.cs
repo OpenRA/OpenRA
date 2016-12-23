@@ -14,7 +14,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits.Render
 {
 	[Desc("Periodically plays an idle animation, replacing the default body animation.")]
-	public class WithIdleAnimationInfo : UpgradableTraitInfo, Requires<WithSpriteBodyInfo>
+	public class WithIdleAnimationInfo : ConditionalTraitInfo, Requires<WithSpriteBodyInfo>
 	{
 		[SequenceReference, Desc("Sequence names to use.")]
 		public readonly string[] Sequences = { "active" };
@@ -27,7 +27,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public override object Create(ActorInitializer init) { return new WithIdleAnimation(init.Self, this); }
 	}
 
-	public class WithIdleAnimation : UpgradableTrait<WithIdleAnimationInfo>, ITick, INotifyBuildComplete, INotifySold
+	public class WithIdleAnimation : ConditionalTrait<WithIdleAnimationInfo>, ITick, INotifyBuildComplete, INotifySold
 	{
 		readonly WithSpriteBody wsb;
 		bool buildComplete;

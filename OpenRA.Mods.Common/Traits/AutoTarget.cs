@@ -17,7 +17,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("The actor will automatically engage the enemy when it is in range.")]
-	public class AutoTargetInfo : UpgradableTraitInfo, Requires<AttackBaseInfo>, UsesInit<StanceInit>
+	public class AutoTargetInfo : ConditionalTraitInfo, Requires<AttackBaseInfo>, UsesInit<StanceInit>
 	{
 		[Desc("It will try to hunt down the enemy if it is not set to defend.")]
 		public readonly bool AllowMovement = true;
@@ -50,7 +50,7 @@ namespace OpenRA.Mods.Common.Traits
 
 	public enum UnitStance { HoldFire, ReturnFire, Defend, AttackAnything }
 
-	public class AutoTarget : UpgradableTrait<AutoTargetInfo>, INotifyIdle, INotifyDamage, ITick, IResolveOrder, ISync
+	public class AutoTarget : ConditionalTrait<AutoTargetInfo>, INotifyIdle, INotifyDamage, ITick, IResolveOrder, ISync
 	{
 		readonly AttackBase[] attackBases;
 		readonly AttackFollow[] attackFollows;

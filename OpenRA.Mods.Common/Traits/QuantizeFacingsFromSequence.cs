@@ -17,7 +17,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Derive facings from sprite body sequence.")]
-	public class QuantizeFacingsFromSequenceInfo : UpgradableTraitInfo, IQuantizeBodyOrientationInfo, Requires<RenderSpritesInfo>
+	public class QuantizeFacingsFromSequenceInfo : ConditionalTraitInfo, IQuantizeBodyOrientationInfo, Requires<RenderSpritesInfo>
 	{
 		[Desc("Defines sequence to derive facings from."), SequenceReference]
 		public readonly string Sequence = "idle";
@@ -34,7 +34,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new QuantizeFacingsFromSequence(this); }
 	}
 
-	public class QuantizeFacingsFromSequence : UpgradableTrait<QuantizeFacingsFromSequenceInfo>
+	public class QuantizeFacingsFromSequence : ConditionalTrait<QuantizeFacingsFromSequenceInfo>
 	{
 		public QuantizeFacingsFromSequence(QuantizeFacingsFromSequenceInfo info)
 			: base(info) { }

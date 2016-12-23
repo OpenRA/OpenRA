@@ -15,7 +15,7 @@ namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Modifies the damage applied to this actor.",
 		"Use 0 to make actor invulnerable.")]
-	public class DamageMultiplierInfo : UpgradableTraitInfo
+	public class DamageMultiplierInfo : ConditionalTraitInfo
 	{
 		[FieldLoader.Require]
 		[Desc("Percentage modifier to apply.")]
@@ -24,7 +24,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new DamageMultiplier(this); }
 	}
 
-	public class DamageMultiplier : UpgradableTrait<DamageMultiplierInfo>, IDamageModifier
+	public class DamageMultiplier : ConditionalTrait<DamageMultiplierInfo>, IDamageModifier
 	{
 		public DamageMultiplier(DamageMultiplierInfo info)
 			: base(info) { }

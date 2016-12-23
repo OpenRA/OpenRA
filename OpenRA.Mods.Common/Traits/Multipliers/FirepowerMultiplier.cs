@@ -12,7 +12,7 @@
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Modifies the damage applied by this actor.")]
-	public class FirepowerMultiplierInfo : UpgradableTraitInfo
+	public class FirepowerMultiplierInfo : ConditionalTraitInfo
 	{
 		[FieldLoader.Require]
 		[Desc("Percentage modifier to apply.")]
@@ -21,7 +21,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new FirepowerMultiplier(this); }
 	}
 
-	public class FirepowerMultiplier : UpgradableTrait<FirepowerMultiplierInfo>, IFirepowerModifier
+	public class FirepowerMultiplier : ConditionalTrait<FirepowerMultiplierInfo>, IFirepowerModifier
 	{
 		public FirepowerMultiplier(FirepowerMultiplierInfo info)
 			: base(info) { }

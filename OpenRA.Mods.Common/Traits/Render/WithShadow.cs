@@ -17,7 +17,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits.Render
 {
 	[Desc("Clones the actor sprite with another palette below it.")]
-	public class WithShadowInfo : UpgradableTraitInfo
+	public class WithShadowInfo : ConditionalTraitInfo
 	{
 		[PaletteReference] public readonly string Palette = "shadow";
 
@@ -30,7 +30,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public override object Create(ActorInitializer init) { return new WithShadow(this); }
 	}
 
-	public class WithShadow : UpgradableTrait<WithShadowInfo>, IRenderModifier
+	public class WithShadow : ConditionalTrait<WithShadowInfo>, IRenderModifier
 	{
 		readonly WithShadowInfo info;
 

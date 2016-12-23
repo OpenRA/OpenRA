@@ -12,7 +12,7 @@
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Modifies the reload time of weapons fired by this actor.")]
-	public class ReloadDelayMultiplierInfo : UpgradableTraitInfo
+	public class ReloadDelayMultiplierInfo : ConditionalTraitInfo
 	{
 		[FieldLoader.Require]
 		[Desc("Percentage modifier to apply.")]
@@ -21,7 +21,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new ReloadDelayMultiplier(this); }
 	}
 
-	public class ReloadDelayMultiplier : UpgradableTrait<ReloadDelayMultiplierInfo>, IReloadModifier
+	public class ReloadDelayMultiplier : ConditionalTrait<ReloadDelayMultiplierInfo>, IReloadModifier
 	{
 		public ReloadDelayMultiplier(ReloadDelayMultiplierInfo info)
 			: base(info) { }

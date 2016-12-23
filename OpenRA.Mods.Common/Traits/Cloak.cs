@@ -33,7 +33,7 @@ namespace OpenRA.Mods.Common.Traits
 	}
 
 	[Desc("This unit can cloak and uncloak in specific situations.")]
-	public class CloakInfo : UpgradableTraitInfo
+	public class CloakInfo : ConditionalTraitInfo
 	{
 		[Desc("Measured in game ticks.")]
 		public readonly int InitialDelay = 10;
@@ -60,7 +60,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new Cloak(this); }
 	}
 
-	public class Cloak : UpgradableTrait<CloakInfo>, IRenderModifier, INotifyDamage,
+	public class Cloak : ConditionalTrait<CloakInfo>, IRenderModifier, INotifyDamage,
 	INotifyAttack, ITick, IVisibilityModifier, IRadarColorModifier, INotifyCreated, INotifyHarvesterAction
 	{
 		[Sync] int remainingTime;

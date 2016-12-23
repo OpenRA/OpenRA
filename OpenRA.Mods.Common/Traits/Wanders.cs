@@ -15,7 +15,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Wanders around aimlessly while idle.")]
-	public class WandersInfo : UpgradableTraitInfo, Requires<IMoveInfo>
+	public class WandersInfo : ConditionalTraitInfo, Requires<IMoveInfo>
 	{
 		public readonly int WanderMoveRadius = 1;
 
@@ -31,7 +31,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new Wanders(init.Self, this); }
 	}
 
-	public class Wanders : UpgradableTrait<WandersInfo>, INotifyIdle, INotifyBecomingIdle
+	public class Wanders : ConditionalTrait<WandersInfo>, INotifyIdle, INotifyBecomingIdle
 	{
 		readonly Actor self;
 		readonly WandersInfo info;

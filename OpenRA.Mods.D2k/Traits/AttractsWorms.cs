@@ -14,7 +14,7 @@ using OpenRA.Mods.Common.Traits;
 namespace OpenRA.Mods.D2k.Traits
 {
 	[Desc("This actor makes noise, which causes them to be targeted by actors with the Sandworm trait.")]
-	public class AttractsWormsInfo : UpgradableTraitInfo
+	public class AttractsWormsInfo : ConditionalTraitInfo
 	{
 		[Desc("How much noise this actor produces.")]
 		public readonly int Intensity = 0;
@@ -31,7 +31,7 @@ namespace OpenRA.Mods.D2k.Traits
 		public override object Create(ActorInitializer init) { return new AttractsWorms(init, this); }
 	}
 
-	public class AttractsWorms : UpgradableTrait<AttractsWormsInfo>
+	public class AttractsWorms : ConditionalTrait<AttractsWormsInfo>
 	{
 		readonly Actor self;
 

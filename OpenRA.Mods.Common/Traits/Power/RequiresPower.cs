@@ -14,12 +14,12 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Needs power to operate.")]
-	class RequiresPowerInfo : UpgradableTraitInfo, ITraitInfo
+	class RequiresPowerInfo : ConditionalTraitInfo, ITraitInfo
 	{
 		public override object Create(ActorInitializer init) { return new RequiresPower(init.Self, this); }
 	}
 
-	class RequiresPower : UpgradableTrait<RequiresPowerInfo>, IDisable, INotifyOwnerChanged
+	class RequiresPower : ConditionalTrait<RequiresPowerInfo>, IDisable, INotifyOwnerChanged
 	{
 		PowerManager playerPower;
 

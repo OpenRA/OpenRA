@@ -19,7 +19,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits.Render
 {
 	[Desc("Renders a parachute on units.")]
-	public class WithParachuteInfo : UpgradableTraitInfo, IRenderActorPreviewSpritesInfo, Requires<RenderSpritesInfo>, Requires<BodyOrientationInfo>
+	public class WithParachuteInfo : ConditionalTraitInfo, IRenderActorPreviewSpritesInfo, Requires<RenderSpritesInfo>, Requires<BodyOrientationInfo>
 	{
 		[Desc("The image that contains the parachute sequences.")]
 		public readonly string Image = null;
@@ -94,7 +94,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		}
 	}
 
-	public class WithParachute : UpgradableTrait<WithParachuteInfo>, ITick, IRender
+	public class WithParachute : ConditionalTrait<WithParachuteInfo>, ITick, IRender
 	{
 		readonly Animation shadow;
 		readonly AnimationWithOffset anim;

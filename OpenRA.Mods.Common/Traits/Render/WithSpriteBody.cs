@@ -18,7 +18,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits.Render
 {
 	[Desc("Default trait for rendering sprite-based actors.")]
-	public class WithSpriteBodyInfo : UpgradableTraitInfo, IRenderActorPreviewSpritesInfo, Requires<RenderSpritesInfo>
+	public class WithSpriteBodyInfo : ConditionalTraitInfo, IRenderActorPreviewSpritesInfo, Requires<RenderSpritesInfo>
 	{
 		[Desc("Animation to play when the actor is created."), SequenceReference]
 		public readonly string StartSequence = null;
@@ -43,7 +43,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		}
 	}
 
-	public class WithSpriteBody : UpgradableTrait<WithSpriteBodyInfo>, INotifyDamageStateChanged, INotifyBuildComplete
+	public class WithSpriteBody : ConditionalTrait<WithSpriteBodyInfo>, INotifyDamageStateChanged, INotifyBuildComplete
 	{
 		public readonly Animation DefaultAnimation;
 
