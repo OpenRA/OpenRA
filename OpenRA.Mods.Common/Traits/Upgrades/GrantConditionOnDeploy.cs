@@ -119,13 +119,13 @@ namespace OpenRA.Mods.Common.Traits
 
 		public IEnumerable<IOrderTargeter> Orders
 		{
-			get { yield return new DeployOrderTargeter("DeployToUpgrade", 5,
+			get { yield return new DeployOrderTargeter("GrantConditionOnDeploy", 5,
 				() => IsCursorBlocked() ? info.DeployBlockedCursor : info.DeployCursor); }
 		}
 
 		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
 		{
-			if (order.OrderID == "DeployToUpgrade")
+			if (order.OrderID == "GrantConditionOnDeploy")
 				return new Order(order.OrderID, self, queued);
 
 			return null;
@@ -133,7 +133,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void ResolveOrder(Actor self, Order order)
 		{
-			if (order.OrderString != "DeployToUpgrade" || deployState == DeployState.Deploying || deployState == DeployState.Undeploying)
+			if (order.OrderString != "GrantConditionOnDeploy" || deployState == DeployState.Deploying || deployState == DeployState.Undeploying)
 				return;
 
 			if (!order.Queued)
