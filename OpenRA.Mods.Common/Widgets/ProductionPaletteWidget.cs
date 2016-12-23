@@ -218,14 +218,14 @@ namespace OpenRA.Mods.Common.Widgets
 		{
 			if (PickUpCompletedBuildingIcon(icon, item))
 			{
-				Game.Sound.Play(TabClick);
+				Game.Sound.Play(SoundType.UI, TabClick);
 				return true;
 			}
 
 			if (item != null && item.Paused)
 			{
 				// Resume a paused item
-				Game.Sound.Play(TabClick);
+				Game.Sound.Play(SoundType.UI, TabClick);
 				World.IssueOrder(Order.PauseProduction(CurrentQueue.Actor, icon.Name, false));
 				return true;
 			}
@@ -233,7 +233,7 @@ namespace OpenRA.Mods.Common.Widgets
 			if (CurrentQueue.BuildableItems().Any(a => a.Name == icon.Name))
 			{
 				// Queue a new item
-				Game.Sound.Play(TabClick);
+				Game.Sound.Play(SoundType.UI, TabClick);
 				Game.Sound.PlayNotification(World.Map.Rules, World.LocalPlayer, "Speech", CurrentQueue.Info.QueuedAudio, World.LocalPlayer.Faction.InternalName);
 				World.IssueOrder(Order.StartProduction(CurrentQueue.Actor, icon.Name, handleCount));
 				return true;
@@ -247,7 +247,7 @@ namespace OpenRA.Mods.Common.Widgets
 			if (item == null)
 				return false;
 
-			Game.Sound.Play(TabClick);
+			Game.Sound.Play(SoundType.UI, TabClick);
 
 			if (item.Paused || item.Done || item.TotalCost == item.RemainingCost)
 			{
@@ -271,7 +271,7 @@ namespace OpenRA.Mods.Common.Widgets
 				return false;
 
 			// Directly cancel, skipping "on-hold"
-			Game.Sound.Play(TabClick);
+			Game.Sound.Play(SoundType.UI, TabClick);
 			Game.Sound.PlayNotification(World.Map.Rules, World.LocalPlayer, "Speech", CurrentQueue.Info.CancelledAudio, World.LocalPlayer.Faction.InternalName);
 			World.IssueOrder(Order.CancelProduction(CurrentQueue.Actor, icon.Name, handleCount));
 
@@ -289,7 +289,7 @@ namespace OpenRA.Mods.Common.Widgets
 				: false;
 
 			if (!handled)
-				Game.Sound.Play(DisabledTabClick);
+				Game.Sound.Play(SoundType.UI, DisabledTabClick);
 
 			return true;
 		}

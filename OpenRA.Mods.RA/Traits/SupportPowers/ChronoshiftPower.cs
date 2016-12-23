@@ -55,7 +55,7 @@ namespace OpenRA.Mods.RA.Traits
 
 		public override void SelectTarget(Actor self, string order, SupportPowerManager manager)
 		{
-			Game.Sound.PlayToPlayer(manager.Self.Owner, Info.SelectTargetSound);
+			Game.Sound.PlayToPlayer(SoundType.UI, manager.Self.Owner, Info.SelectTargetSound);
 			self.World.OrderGenerator = new SelectChronoshiftTarget(Self.World, order, manager, this);
 		}
 

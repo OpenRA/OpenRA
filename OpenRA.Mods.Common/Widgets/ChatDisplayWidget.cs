@@ -87,7 +87,7 @@ namespace OpenRA.Mods.Common.Widgets
 			recentLines.Add(new ChatLine(from, text, Game.LocalTick + RemoveTime, c));
 
 			if (Notification != null)
-				Game.Sound.Play(Notification);
+				Game.Sound.Play(SoundType.UI, Notification);
 
 			while (recentLines.Count > LogLength)
 				recentLines.RemoveAt(0);

@@ -40,7 +40,7 @@ namespace OpenRA.Mods.Cnc.Effects
 			anim.PlayThen(sequence, () => Finish(world));
 
 			if (weapon.Report != null && weapon.Report.Any())
-				Game.Sound.Play(weapon.Report.Random(firedBy.World.SharedRandom), launchPos);
+				Game.Sound.Play(SoundType.World, weapon.Report.Random(firedBy.World.SharedRandom), launchPos);
 		}
 
 		public void Tick(World world)

@@ -56,7 +56,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!CrushableInner(crushClasses, crusher.Owner))
 				return;
 
-			Game.Sound.Play(info.CrushSound, crusher.CenterPosition);
+			Game.Sound.Play(SoundType.World, info.CrushSound, crusher.CenterPosition);
 
 			self.Kill(crusher);
 		}

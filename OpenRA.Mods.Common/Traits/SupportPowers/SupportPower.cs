@@ -89,21 +89,21 @@ namespace OpenRA.Mods.Common.Traits
 
 		public virtual void Charging(Actor self, string key)
 		{
-			Game.Sound.PlayToPlayer(self.Owner, Info.BeginChargeSound);
+			Game.Sound.PlayToPlayer(SoundType.UI, self.Owner, Info.BeginChargeSound);
 			Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech",
 				Info.BeginChargeSpeechNotification, self.Owner.Faction.InternalName);
 		}
 
 		public virtual void Charged(Actor self, string key)
 		{
-			Game.Sound.PlayToPlayer(self.Owner, Info.EndChargeSound);
+			Game.Sound.PlayToPlayer(SoundType.UI, self.Owner, Info.EndChargeSound);
 			Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech",
 				Info.EndChargeSpeechNotification, self.Owner.Faction.InternalName);
 		}
 
 		public virtual void SelectTarget(Actor self, string order, SupportPowerManager manager)
 		{
-			Game.Sound.PlayToPlayer(manager.Self.Owner, Info.SelectTargetSound);
+			Game.Sound.PlayToPlayer(SoundType.UI, manager.Self.Owner, Info.SelectTargetSound);
 			Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech",
 				Info.SelectTargetSpeechNotification, self.Owner.Faction.InternalName);
 			self.World.OrderGenerator = new SelectGenericPowerTarget(order, manager, info.Cursor, MouseButton.Left);
@@ -125,7 +125,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			var renderPlayer = Self.World.RenderPlayer;
 			var isAllied = Self.Owner.IsAlliedWith(renderPlayer);
-			Game.Sound.Play(isAllied ? Info.LaunchSound : Info.IncomingSound);
+			Game.Sound.Play(SoundType.UI, isAllied ? Info.LaunchSound : Info.IncomingSound);
 
 			// IsAlliedWith returns true if renderPlayer is null, so we are safe here.
 			var toPlayer = isAllied ? renderPlayer ?? Self.Owner : renderPlayer;

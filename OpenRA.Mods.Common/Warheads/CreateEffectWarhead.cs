@@ -115,7 +115,7 @@ namespace OpenRA.Mods.Common.Warheads
 
 			var impactSound = ImpactSounds.RandomOrDefault(Game.CosmeticRandom);
 			if (impactSound != null)
-				Game.Sound.Play(impactSound, pos);
+				Game.Sound.Play(SoundType.World, impactSound, pos);
 		}
 
 		public bool IsValidImpact(WPos pos, Actor firedBy)

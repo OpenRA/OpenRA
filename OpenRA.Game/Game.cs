@@ -533,38 +533,32 @@ namespace OpenRA
 					if (world == null)
 						return;
 
-					// Don't tick when the shellmap is disabled
-					if (world.ShouldTick)
+					var isNetTick = LocalTick % NetTickScale == 0;
+
+					if (!isNetTick || orderManager.IsReadyForNextFrame)
 					{
-						var isNetTick = LocalTick % NetTickScale == 0;
+						++orderManager.LocalFrameNumber;
 
-						if (!isNetTick || orderManager.IsReadyForNextFrame)
+						Log.Write("debug", "--Tick: {0} ({1})", LocalTick, isNetTick ? "net" : "local");
+
+						if (BenchmarkMode)
+							Log.Write("cpu", "{0};{1}".F(LocalTick, PerfHistory.Items["tick_time"].LastValue));
+
+						if (isNetTick)
+							orderManager.Tick();
+
+						Sync.CheckSyncUnchanged(world, () =>
 						{
-							++orderManager.LocalFrameNumber;
+							world.OrderGenerator.Tick(world);
+							world.Selection.Tick(world);
+						});
 
-							Log.Write("debug", "--Tick: {0} ({1})", LocalTick, isNetTick ? "net" : "local");
+						world.Tick();
 
-							if (BenchmarkMode)
-								Log.Write("cpu", "{0};{1}".F(LocalTick, PerfHistory.Items["tick_time"].LastValue));
-
-							if (isNetTick)
-								orderManager.Tick();
-
-							Sync.CheckSyncUnchanged(world, () =>
-							{
-								world.OrderGenerator.Tick(world);
-								world.Selection.Tick(world);
-							});
-
-							world.Tick();
-
-							PerfHistory.Tick();
-						}
-						else if (orderManager.NetFrameNumber == 0)
-							orderManager.LastTickTime = RunTime;
-					}
-					else
 						PerfHistory.Tick();
+					}
+					else if (orderManager.NetFrameNumber == 0)
+						orderManager.LastTickTime = RunTime;
 
 					// Wait until we have done our first world Tick before TickRendering
 					if (orderManager.LocalFrameNumber > 0)

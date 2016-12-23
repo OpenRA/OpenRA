@@ -236,7 +236,7 @@ namespace OpenRA.Mods.Common.Traits
 				RemoveSmudges();
 
 			foreach (var s in Info.UndeploySounds)
-				Game.Sound.PlayToPlayer(self.Owner, s, self.CenterPosition);
+				Game.Sound.PlayToPlayer(SoundType.World, self.Owner, s, self.CenterPosition);
 		}
 
 		void INotifyTransform.OnTransform(Actor self) { }

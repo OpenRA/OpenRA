@@ -91,6 +91,7 @@ Container@OBSERVER_WIDGETS:
 			Height: 25
 			TooltipText: Menu
 			TooltipContainer: TOOLTIP_CONTAINER
+			DisableWorldSounds: true
 			Children:
 				Image:
 					X: 7
@@ -275,6 +276,7 @@ Container@PLAYER_WIDGETS:
 					Font: Bold
 					TooltipText: Menu
 					TooltipContainer: TOOLTIP_CONTAINER
+					DisableWorldSounds: true
 					Children:
 						Image@ICON:
 							X: 7

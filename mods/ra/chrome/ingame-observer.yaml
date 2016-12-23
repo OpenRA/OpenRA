@@ -60,6 +60,7 @@ Container@OBSERVER_WIDGETS:
 							Background: sidebar-button-observer
 							TooltipText: Options
 							TooltipContainer: TOOLTIP_CONTAINER
+							DisableWorldSounds: true
 							VisualHeight: 0
 							Children:
 								Image@ICON:

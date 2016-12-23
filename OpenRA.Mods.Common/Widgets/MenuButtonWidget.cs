@@ -16,6 +16,7 @@ namespace OpenRA.Mods.Common.Widgets
 		public readonly string MenuContainer = "INGAME_MENU";
 		public readonly bool Pause = true;
 		public readonly bool HideIngameUI = true;
+		public readonly bool DisableWorldSounds = false;
 
 		[ObjectCreator.UseCtor]
 		public MenuButtonWidget(ModData modData)

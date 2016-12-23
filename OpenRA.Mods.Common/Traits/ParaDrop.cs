@@ -88,7 +88,7 @@ namespace OpenRA.Mods.Common.Traits
 				w.Add(a);
 				a.QueueActivity(new Parachute(a, self.CenterPosition));
 			});
-			Game.Sound.Play(info.ChuteSound, self.CenterPosition);
+			Game.Sound.Play(SoundType.World, info.ChuteSound, self.CenterPosition);
 		}
 
 		static bool IsSuitableCell(Actor actorToDrop, CPos p)

@@ -43,7 +43,7 @@ namespace OpenRA.Mods.Common.Traits.Sound
 		void PlaySound(Actor self)
 		{
 			if (info.Sounds.Any())
-				Game.Sound.Play(info.Sounds.Random(self.World.SharedRandom), self.CenterPosition);
+				Game.Sound.Play(SoundType.World, info.Sounds.Random(self.World.SharedRandom), self.CenterPosition);
 		}
 
 		void INotifyAttack.Attacking(Actor self, Target target, Armament a, Barrel barrel)

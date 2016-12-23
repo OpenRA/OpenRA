@@ -52,7 +52,8 @@ namespace OpenRA.Mods.Common.Scripting
 		[Desc("Play a sound file")]
 		public void PlaySound(string file)
 		{
-			Game.Sound.Play(file);
+			// TODO: Investigate how scripts use this function, and think about exposing the UI vs World distinction if needed
+			Game.Sound.Play(SoundType.World, file);
 		}
 
 		[Desc("Play track defined in music.yaml or map.yaml, or keep track empty for playing a random song.")]

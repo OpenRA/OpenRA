@@ -165,28 +165,21 @@ Background@SETTINGS_PANEL:
 					Height: 20
 					Font: Regular
 					Text: Player Stance Colors
-				Checkbox@SHOW_SHELLMAP:
-					X: 15
-					Y: 195
-					Width: 200
-					Height: 20
-					Font: Regular
-					Text: Show Shellmap
 				Label@PLAYER:
 					Text: Player:
 					X: 15
-					Y: 240
+					Y: 205
 				TextField@PLAYERNAME:
 					Text: Name
 					X: 65
-					Y: 230
+					Y: 195
 					Width: 145
 					Height: 25
 					MaxLength: 16
 				ColorPreviewManager@COLOR_MANAGER:
 				DropDownButton@PLAYERCOLOR:
 					X: 215
-					Y: 230
+					Y: 195
 					Width: 70
 					Height: 25
 					IgnoreChildMouseOver: true

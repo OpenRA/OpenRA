@@ -60,8 +60,8 @@ namespace OpenRA.Mods.RA.Activities
 
 			destination = bestCell.Value;
 
-			Game.Sound.Play(sound, self.CenterPosition);
-			Game.Sound.Play(sound, self.World.Map.CenterOfCell(destination));
+			Game.Sound.Play(SoundType.World, sound, self.CenterPosition);
+			Game.Sound.Play(SoundType.World, sound, self.World.Map.CenterOfCell(destination));
 
 			self.Trait<IPositionable>().SetPosition(self, destination);
 			self.Generation++;

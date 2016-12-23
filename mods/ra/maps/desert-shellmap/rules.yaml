@@ -7,6 +7,7 @@ World:
 	-MPStartLocations:
 	MusicPlaylist:
 		BackgroundMusic: intro
+		DisableWorldSounds: true
 	ResourceType@ore:
 		ValuePerUnit: 0
 	LuaScript:

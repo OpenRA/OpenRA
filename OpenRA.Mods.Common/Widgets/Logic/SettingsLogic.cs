@@ -154,7 +154,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			BindCheckboxPref(panel, "PIXELDOUBLE_CHECKBOX", ds, "PixelDouble");
 			BindCheckboxPref(panel, "CURSORDOUBLE_CHECKBOX", ds, "CursorDouble");
 			BindCheckboxPref(panel, "FRAME_LIMIT_CHECKBOX", ds, "CapFramerate");
-			BindCheckboxPref(panel, "SHOW_SHELLMAP", gs, "ShowShellmap");
 			BindCheckboxPref(panel, "DISPLAY_TARGET_LINES_CHECKBOX", gs, "DrawTargetLine");
 			BindCheckboxPref(panel, "PLAYER_STANCE_COLORS_CHECKBOX", gs, "UsePlayerStanceColors");
 
@@ -278,15 +277,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		Action ResetDisplayPanel(Widget panel)
 		{
 			var ds = Game.Settings.Graphics;
-			var gs = Game.Settings.Game;
 			var ps = Game.Settings.Player;
 			var dds = new GraphicSettings();
-			var dgs = new GameSettings();
 			var dps = new PlayerSettings();
 			return () =>
 			{
-				gs.ShowShellmap = dgs.ShowShellmap;
-
 				ds.CapFramerate = dds.CapFramerate;
 				ds.MaxFramerate = dds.MaxFramerate;
 				ds.Language = dds.Language;

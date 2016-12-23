@@ -103,7 +103,7 @@ namespace OpenRA.Mods.Common.Traits
 				// Only play the "Cannot deploy here" audio
 				// for non-queued orders
 				foreach (var s in info.NoTransformSounds)
-					Game.Sound.PlayToPlayer(self.Owner, s);
+					Game.Sound.PlayToPlayer(SoundType.World, self.Owner, s);
 
 				Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", info.NoTransformNotification, self.Owner.Faction.InternalName);
 

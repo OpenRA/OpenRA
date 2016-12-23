@@ -132,9 +132,6 @@ namespace OpenRA.Graphics
 
 			RefreshPalette();
 
-			if (World.Type == WorldType.Shellmap && !Game.Settings.Game.ShowShellmap)
-				return;
-
 			var renderables = GenerateRenderables();
 			var bounds = Viewport.GetScissorBounds(World.Type != WorldType.Editor);
 			Game.Renderer.EnableScissor(bounds);

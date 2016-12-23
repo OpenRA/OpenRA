@@ -53,7 +53,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public override void SelectTarget(Actor self, string order, SupportPowerManager manager)
 		{
-			Game.Sound.PlayToPlayer(manager.Self.Owner, Info.SelectTargetSound);
+			Game.Sound.PlayToPlayer(SoundType.World, manager.Self.Owner, Info.SelectTargetSound);
 			self.World.OrderGenerator = new SelectUpgradeTarget(Self.World, order, manager, this);
 		}
 
@@ -65,7 +65,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (wsb != null && wsb.DefaultAnimation.HasSequence(info.Sequence))
 				wsb.PlayCustomAnimation(self, info.Sequence, () => wsb.CancelCustomAnimation(self));
 
-			Game.Sound.Play(info.OnFireSound, self.World.Map.CenterOfCell(order.TargetLocation));
+			Game.Sound.Play(SoundType.World, info.OnFireSound, self.World.Map.CenterOfCell(order.TargetLocation));
 
 			foreach (var a in UnitsInRange(order.TargetLocation))
 			{

@@ -307,7 +307,6 @@ namespace OpenRA
 		public event Action<Actor> ActorAdded = _ => { };
 		public event Action<Actor> ActorRemoved = _ => { };
 
-		public bool ShouldTick { get { return Type != WorldType.Shellmap || Game.Settings.Game.ShowShellmap; } }
 		public bool Paused { get; internal set; }
 		public bool PredictedPaused { get; internal set; }
 		public bool PauseStateLocked { get; set; }

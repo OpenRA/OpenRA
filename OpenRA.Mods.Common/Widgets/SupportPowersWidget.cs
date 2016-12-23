@@ -115,7 +115,7 @@ namespace OpenRA.Mods.Common.Widgets
 		{
 			if (!clicked.Power.Active)
 			{
-				Game.Sound.PlayToPlayer(spm.Self.Owner, clicked.Power.Info.InsufficientPowerSound);
+				Game.Sound.PlayToPlayer(SoundType.UI, spm.Self.Owner, clicked.Power.Info.InsufficientPowerSound);
 				Game.Sound.PlayNotification(spm.Self.World.Map.Rules, spm.Self.Owner, "Speech",
 					clicked.Power.Info.InsufficientPowerSpeechNotification, spm.Self.Owner.Faction.InternalName);
 			}
