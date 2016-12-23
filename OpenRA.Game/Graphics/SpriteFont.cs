@@ -29,25 +29,35 @@ namespace OpenRA.Graphics
 		readonly Face face;
 		readonly Cache<Pair<char, Color>, GlyphInfo> glyphs;
 
-		public SpriteFont(string name, byte[] data, int size, SheetBuilder builder)
+		float deviceScale;
+
+		public SpriteFont(string name, byte[] data, int size, float scale, SheetBuilder builder)
 		{
 			if (builder.Type != SheetType.BGRA)
 				throw new ArgumentException("The sheet builder must create BGRA sheets.", "builder");
 
+			deviceScale = scale;
 			this.size = size;
 			this.builder = builder;
 
 			face = new Face(Library, data, 0);
-			face.SetPixelSizes((uint)size, (uint)size);
+			face.SetPixelSizes((uint)(size * deviceScale), (uint)(size * deviceScale));
 
 			glyphs = new Cache<Pair<char, Color>, GlyphInfo>(CreateGlyph, Pair<char, Color>.EqualityComparer);
 
 			// PERF: Cache these delegates for Measure calls.
 			Func<char, float> characterWidth = character => glyphs[Pair.New(character, Color.White)].Advance;
-			lineWidth = line => line.Sum(characterWidth);
+			lineWidth = line => line.Sum(characterWidth) / deviceScale;
 
 			PrecacheColor(Color.White, name);
 			PrecacheColor(Color.Red, name);
+		}
+
+		public void SetScale(float scale)
+		{
+			deviceScale = scale;
+			face.SetPixelSizes((uint)(size * deviceScale), (uint)(size * deviceScale));
+			glyphs.Clear();
 		}
 
 		void PrecacheColor(Color c, string name)
@@ -75,9 +85,10 @@ namespace OpenRA.Graphics
 				var g = glyphs[Pair.New(s, c)];
 				Game.Renderer.RgbaSpriteRenderer.DrawSprite(g.Sprite,
 					new float2(
-						(int)Math.Round(p.X + g.Offset.X, 0),
-						p.Y + g.Offset.Y));
-				p.X += g.Advance;
+						(int)Math.Round(p.X * deviceScale + g.Offset.X, 0) / deviceScale,
+						p.Y + g.Offset.Y / deviceScale),
+						g.Sprite.Size / deviceScale);
+				p.X += g.Advance / deviceScale;
 			}
 		}
 
@@ -85,10 +96,10 @@ namespace OpenRA.Graphics
 		{
 			if (offset > 0)
 			{
-				DrawText(text, location + new float2(-offset, 0), bg);
-				DrawText(text, location + new float2(offset, 0), bg);
-				DrawText(text, location + new float2(0, -offset), bg);
-				DrawText(text, location + new float2(0, offset), bg);
+				DrawText(text, location + new float2(-offset / deviceScale, 0), bg);
+				DrawText(text, location + new float2(offset / deviceScale, 0), bg);
+				DrawText(text, location + new float2(0, -offset / deviceScale), bg);
+				DrawText(text, location + new float2(0, offset / deviceScale), bg);
 			}
 
 			DrawText(text, location, fg);
