@@ -18,7 +18,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits.Render
 {
-	public class WithVoxelTurretInfo : UpgradableTraitInfo, IRenderActorPreviewVoxelsInfo, Requires<RenderVoxelsInfo>, Requires<TurretedInfo>
+	public class WithVoxelTurretInfo : ConditionalTraitInfo, IRenderActorPreviewVoxelsInfo, Requires<RenderVoxelsInfo>, Requires<TurretedInfo>
 	{
 		[Desc("Voxel sequence name to use")]
 		public readonly string Sequence = "turret";
@@ -51,7 +51,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		}
 	}
 
-	public class WithVoxelTurret : UpgradableTrait<WithVoxelTurretInfo>, INotifyBuildComplete, INotifySold, INotifyTransform
+	public class WithVoxelTurret : ConditionalTrait<WithVoxelTurretInfo>, INotifyBuildComplete, INotifySold, INotifyTransform
 	{
 		readonly Actor self;
 		readonly Turreted turreted;

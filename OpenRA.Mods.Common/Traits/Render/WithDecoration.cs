@@ -28,7 +28,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 	}
 
 	[Desc("Displays a custom UI overlay relative to the selection box.")]
-	public class WithDecorationInfo : UpgradableTraitInfo
+	public class WithDecorationInfo : ConditionalTraitInfo
 	{
 		[Desc("Image used for this decoration. Defaults to the actor's type.")]
 		public readonly string Image = null;
@@ -55,7 +55,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public override object Create(ActorInitializer init) { return new WithDecoration(init.Self, this); }
 	}
 
-	public class WithDecoration : UpgradableTrait<WithDecorationInfo>, ITick, IRenderAboveShroud, IRenderAboveShroudWhenSelected
+	public class WithDecoration : ConditionalTrait<WithDecorationInfo>, ITick, IRenderAboveShroud, IRenderAboveShroudWhenSelected
 	{
 		protected readonly Animation Anim;
 

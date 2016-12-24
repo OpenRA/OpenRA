@@ -24,10 +24,10 @@ namespace OpenRA.Mods.Common.Traits
 		void Update(int duration, int remaining);
 	}
 
-	[Desc("Attach this to a unit to enable dynamic upgrades by warheads, experience, crates, support powers, etc.")]
-	public class UpgradeManagerInfo : TraitInfo<UpgradeManager>, Requires<IConditionConsumerInfo> { }
+	[Desc("Attach this to a unit to enable dynamic conditions by warheads, experience, crates, support powers, etc.")]
+	public class ConditionManagerInfo : TraitInfo<ConditionManager>, Requires<IConditionConsumerInfo> { }
 
-	public class UpgradeManager : INotifyCreated, ITick
+	public class ConditionManager : INotifyCreated, ITick
 	{
 		/// <summary>Value used to represent an invalid token.</summary>
 		public static readonly int InvalidConditionToken = -1;
@@ -73,9 +73,6 @@ namespace OpenRA.Mods.Common.Traits
 		readonly Dictionary<string, Stack<int>> stackedTokens = new Dictionary<string, Stack<int>>();
 
 		int nextToken = 1;
-
-		/// <summary>Temporary shim between the old and new upgrade/condition grant and revoke methods.</summary>
-		readonly Dictionary<Pair<object, string>, int> objectTokenShim = new Dictionary<Pair<object, string>, int>();
 
 		/// <summary>Cache of condition -> enabled state for quick evaluation of boolean conditions.</summary>
 		readonly Dictionary<string, bool> conditionCache = new Dictionary<string, bool>();
@@ -267,53 +264,5 @@ namespace OpenRA.Mods.Common.Traits
 
 			timersToRemove.Clear();
 		}
-
-		#region Shim methods for legacy upgrade granting code
-
-		void CheckCanManageConditions()
-		{
-			if (state == null)
-				throw new InvalidOperationException("Conditions cannot be managed until the actor has been fully created.");
-		}
-
-		public void GrantTimedUpgrade(Actor self, string upgrade, int duration, object source = null, int dupesAllowed = 1)
-		{
-			CheckCanManageConditions();
-			var token = GrantCondition(self, upgrade, false, duration);
-			if (source != null)
-				objectTokenShim[Pair.New(source, upgrade)] = token;
-		}
-
-		public void GrantUpgrade(Actor self, string upgrade, object source)
-		{
-			CheckCanManageConditions();
-			objectTokenShim[Pair.New(source, upgrade)] = GrantCondition(self, upgrade);
-		}
-
-		public void RevokeUpgrade(Actor self, string upgrade, object source)
-		{
-			CheckCanManageConditions();
-			RevokeCondition(self, objectTokenShim[Pair.New(source, upgrade)]);
-		}
-
-		/// <summary>Returns true if the actor uses the given upgrade. Does not check the actual level of the upgrade.</summary>
-		public bool AcknowledgesUpgrade(Actor self, string upgrade)
-		{
-			CheckCanManageConditions();
-			return state.ContainsKey(upgrade);
-		}
-
-		/// <summary>Returns true only if the actor can accept another level of the upgrade.</summary>
-		public bool AcceptsUpgrade(Actor self, string upgrade)
-		{
-			CheckCanManageConditions();
-			bool enabled;
-			if (!conditionCache.TryGetValue(upgrade, out enabled))
-				return false;
-
-			return !enabled;
-		}
-
-		#endregion
 	}
 }

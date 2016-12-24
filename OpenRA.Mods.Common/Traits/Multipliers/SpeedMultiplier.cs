@@ -12,7 +12,7 @@
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Modifies the movement speed of this actor.")]
-	public class SpeedMultiplierInfo : UpgradableTraitInfo
+	public class SpeedMultiplierInfo : ConditionalTraitInfo
 	{
 		[FieldLoader.Require]
 		[Desc("Percentage modifier to apply.")]
@@ -21,7 +21,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new SpeedMultiplier(this); }
 	}
 
-	public class SpeedMultiplier : UpgradableTrait<SpeedMultiplierInfo>, ISpeedModifier
+	public class SpeedMultiplier : ConditionalTrait<SpeedMultiplierInfo>, ISpeedModifier
 	{
 		public SpeedMultiplier(SpeedMultiplierInfo info)
 			: base(info) { }

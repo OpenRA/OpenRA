@@ -33,7 +33,7 @@ namespace OpenRA.Mods.Common.Traits
 	}
 
 	[Desc("This unit can cloak and uncloak in specific situations.")]
-	public class CloakInfo : UpgradableTraitInfo
+	public class CloakInfo : ConditionalTraitInfo
 	{
 		[Desc("Measured in game ticks.")]
 		public readonly int InitialDelay = 10;
@@ -60,17 +60,17 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new Cloak(this); }
 	}
 
-	public class Cloak : UpgradableTrait<CloakInfo>, IRenderModifier, INotifyDamage,
+	public class Cloak : ConditionalTrait<CloakInfo>, IRenderModifier, INotifyDamage,
 	INotifyAttack, ITick, IVisibilityModifier, IRadarColorModifier, INotifyCreated, INotifyHarvesterAction
 	{
 		[Sync] int remainingTime;
 		[Sync] bool damageDisabled;
 		bool isDocking;
-		UpgradeManager upgradeManager;
+		ConditionManager conditionManager;
 
 		CPos? lastPos;
 		bool wasCloaked = false;
-		int cloakedToken = UpgradeManager.InvalidConditionToken;
+		int cloakedToken = ConditionManager.InvalidConditionToken;
 
 		public Cloak(CloakInfo info)
 			: base(info)
@@ -80,13 +80,13 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyCreated.Created(Actor self)
 		{
-			upgradeManager = self.TraitOrDefault<UpgradeManager>();
+			conditionManager = self.TraitOrDefault<ConditionManager>();
 
 			if (Cloaked)
 			{
 				wasCloaked = true;
-				if (upgradeManager != null && cloakedToken == UpgradeManager.InvalidConditionToken && !string.IsNullOrEmpty(Info.CloakedCondition))
-					cloakedToken = upgradeManager.GrantCondition(self, Info.CloakedCondition);
+				if (conditionManager != null && cloakedToken == ConditionManager.InvalidConditionToken && !string.IsNullOrEmpty(Info.CloakedCondition))
+					cloakedToken = conditionManager.GrantCondition(self, Info.CloakedCondition);
 			}
 		}
 
@@ -144,16 +144,16 @@ namespace OpenRA.Mods.Common.Traits
 			var isCloaked = Cloaked;
 			if (isCloaked && !wasCloaked)
 			{
-				if (upgradeManager != null && cloakedToken == UpgradeManager.InvalidConditionToken && !string.IsNullOrEmpty(Info.CloakedCondition))
-					cloakedToken = upgradeManager.GrantCondition(self, Info.CloakedCondition);
+				if (conditionManager != null && cloakedToken == ConditionManager.InvalidConditionToken && !string.IsNullOrEmpty(Info.CloakedCondition))
+					cloakedToken = conditionManager.GrantCondition(self, Info.CloakedCondition);
 
 				if (!self.TraitsImplementing<Cloak>().Any(a => a != this && a.Cloaked))
 					Game.Sound.Play(SoundType.World, Info.CloakSound, self.CenterPosition);
 			}
 			else if (!isCloaked && wasCloaked)
 			{
-				if (cloakedToken != UpgradeManager.InvalidConditionToken)
-					cloakedToken = upgradeManager.RevokeCondition(self, cloakedToken);
+				if (cloakedToken != ConditionManager.InvalidConditionToken)
+					cloakedToken = conditionManager.RevokeCondition(self, cloakedToken);
 
 				if (!self.TraitsImplementing<Cloak>().Any(a => a != this && a.Cloaked))
 					Game.Sound.Play(SoundType.World, Info.UncloakSound, self.CenterPosition);

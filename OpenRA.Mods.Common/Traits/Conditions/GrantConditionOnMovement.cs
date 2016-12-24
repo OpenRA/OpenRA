@@ -14,25 +14,25 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class GrantConditionOnMovementInfo : UpgradableTraitInfo, Requires<IMoveInfo>
+	public class GrantConditionOnMovementInfo : ConditionalTraitInfo, Requires<IMoveInfo>
 	{
 		[FieldLoader.Require]
 		[GrantedConditionReference]
 		[Desc("Condition to grant.")]
 		public readonly string Condition = null;
 
-		[Desc("Apply upgrades on straight vertical movement as well.")]
+		[Desc("Apply condition on straight vertical movement as well.")]
 		public readonly bool ConsiderVerticalMovement = false;
 
 		public override object Create(ActorInitializer init) { return new GrantConditionOnMovement(init.Self, this); }
 	}
 
-	public class GrantConditionOnMovement : UpgradableTrait<GrantConditionOnMovementInfo>, ITick
+	public class GrantConditionOnMovement : ConditionalTrait<GrantConditionOnMovementInfo>, ITick
 	{
 		readonly IMove movement;
 
-		UpgradeManager manager;
-		int conditionToken = UpgradeManager.InvalidConditionToken;
+		ConditionManager conditionManager;
+		int conditionToken = ConditionManager.InvalidConditionToken;
 
 		public GrantConditionOnMovement(Actor self, GrantConditionOnMovementInfo info)
 			: base(info)
@@ -42,21 +42,21 @@ namespace OpenRA.Mods.Common.Traits
 
 		protected override void Created(Actor self)
 		{
-			manager = self.TraitOrDefault<UpgradeManager>();
+			conditionManager = self.TraitOrDefault<ConditionManager>();
 			base.Created(self);
 		}
 
 		void ITick.Tick(Actor self)
 		{
-			if (manager == null)
+			if (conditionManager == null)
 				return;
 
 			var isMovingVertically = Info.ConsiderVerticalMovement ? movement.IsMovingVertically : false;
 			var isMoving = !IsTraitDisabled && !self.IsDead && (movement.IsMoving || isMovingVertically);
-			if (isMoving && conditionToken == UpgradeManager.InvalidConditionToken)
-				conditionToken = manager.GrantCondition(self, Info.Condition);
-			else if (!isMoving && conditionToken != UpgradeManager.InvalidConditionToken)
-				conditionToken = manager.RevokeCondition(self, conditionToken);
+			if (isMoving && conditionToken == ConditionManager.InvalidConditionToken)
+				conditionToken = conditionManager.GrantCondition(self, Info.Condition);
+			else if (!isMoving && conditionToken != ConditionManager.InvalidConditionToken)
+				conditionToken = conditionManager.RevokeCondition(self, conditionToken);
 		}
 	}
 }

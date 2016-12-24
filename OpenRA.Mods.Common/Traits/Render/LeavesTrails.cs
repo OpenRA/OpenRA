@@ -18,7 +18,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 	public enum TrailType { Cell, CenterPosition }
 
 	[Desc("Renders a sprite effect when leaving a cell.")]
-	public class LeavesTrailsInfo : UpgradableTraitInfo
+	public class LeavesTrailsInfo : ConditionalTraitInfo
 	{
 		public readonly string Image = null;
 
@@ -61,7 +61,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public override object Create(ActorInitializer init) { return new LeavesTrails(init.Self, this); }
 	}
 
-	public class LeavesTrails : UpgradableTrait<LeavesTrailsInfo>, ITick
+	public class LeavesTrails : ConditionalTrait<LeavesTrailsInfo>, ITick
 	{
 		BodyOrientation body;
 		IFacing facing;

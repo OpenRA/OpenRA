@@ -160,12 +160,12 @@ namespace OpenRA.Mods.Common.Traits
 		public int RemainingTime;
 		public int TotalTime;
 		public bool Active { get; private set; }
-		public bool Disabled { get { return !prereqsAvailable || !upgradeAvailable; } }
+		public bool Disabled { get { return !prereqsAvailable || !instancesEnabled; } }
 
 		public SupportPowerInfo Info { get { return Instances.Select(i => i.Info).FirstOrDefault(); } }
 		public bool Ready { get { return Active && RemainingTime == 0; } }
 
-		bool upgradeAvailable;
+		bool instancesEnabled;
 		bool prereqsAvailable = true;
 
 		public SupportPowerInstance(string key, SupportPowerManager manager)
@@ -188,8 +188,8 @@ namespace OpenRA.Mods.Common.Traits
 		bool notifiedReady;
 		public void Tick()
 		{
-			upgradeAvailable = Instances.Any(i => !i.IsTraitDisabled);
-			if (!upgradeAvailable)
+			instancesEnabled = Instances.Any(i => !i.IsTraitDisabled);
+			if (!instancesEnabled)
 				RemainingTime = TotalTime;
 
 			Active = !Disabled && Instances.Any(i => !i.Self.IsDisabled());

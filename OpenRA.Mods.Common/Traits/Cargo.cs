@@ -88,8 +88,8 @@ namespace OpenRA.Mods.Common.Traits
 		int totalWeight = 0;
 		int reservedWeight = 0;
 		Aircraft aircraft;
-		UpgradeManager upgradeManager;
-		int loadingToken = UpgradeManager.InvalidConditionToken;
+		ConditionManager conditionManager;
+		int loadingToken = ConditionManager.InvalidConditionToken;
 		Stack<int> loadedTokens = new Stack<int>();
 
 		CPos currentCell;
@@ -141,7 +141,7 @@ namespace OpenRA.Mods.Common.Traits
 		void INotifyCreated.Created(Actor self)
 		{
 			aircraft = self.TraitOrDefault<Aircraft>();
-			upgradeManager = self.Trait<UpgradeManager>();
+			conditionManager = self.Trait<ConditionManager>();
 		}
 
 		static int GetWeight(Actor a) { return a.Info.TraitInfo<PassengerInfo>().Weight; }
@@ -208,8 +208,8 @@ namespace OpenRA.Mods.Common.Traits
 			if (!HasSpace(w))
 				return false;
 
-			if (upgradeManager != null && loadingToken == UpgradeManager.InvalidConditionToken && !string.IsNullOrEmpty(Info.LoadingCondition))
-				loadingToken = upgradeManager.GrantCondition(self, Info.LoadingCondition);
+			if (conditionManager != null && loadingToken == ConditionManager.InvalidConditionToken && !string.IsNullOrEmpty(Info.LoadingCondition))
+				loadingToken = conditionManager.GrantCondition(self, Info.LoadingCondition);
 
 			reserves.Add(a);
 			reservedWeight += w;
@@ -225,8 +225,8 @@ namespace OpenRA.Mods.Common.Traits
 			reservedWeight -= GetWeight(a);
 			reserves.Remove(a);
 
-			if (loadingToken != UpgradeManager.InvalidConditionToken)
-				loadingToken = upgradeManager.RevokeCondition(self, loadingToken);
+			if (loadingToken != ConditionManager.InvalidConditionToken)
+				loadingToken = conditionManager.RevokeCondition(self, loadingToken);
 		}
 
 		public string CursorForOrder(Actor self, Order order)
@@ -266,10 +266,10 @@ namespace OpenRA.Mods.Common.Traits
 
 			Stack<int> passengerToken;
 			if (passengerTokens.TryGetValue(a.Info.Name, out passengerToken) && passengerToken.Any())
-				upgradeManager.RevokeCondition(self, passengerToken.Pop());
+				conditionManager.RevokeCondition(self, passengerToken.Pop());
 
 			if (loadedTokens.Any())
-				upgradeManager.RevokeCondition(self, loadedTokens.Pop());
+				conditionManager.RevokeCondition(self, loadedTokens.Pop());
 
 			return a;
 		}
@@ -321,8 +321,8 @@ namespace OpenRA.Mods.Common.Traits
 				reservedWeight -= w;
 				reserves.Remove(a);
 
-				if (loadingToken != UpgradeManager.InvalidConditionToken)
-					loadingToken = upgradeManager.RevokeCondition(self, loadingToken);
+				if (loadingToken != ConditionManager.InvalidConditionToken)
+					loadingToken = conditionManager.RevokeCondition(self, loadingToken);
 			}
 
 			// If not initialized then this will be notified in the first tick
@@ -334,11 +334,11 @@ namespace OpenRA.Mods.Common.Traits
 			p.Transport = self;
 
 			string passengerCondition;
-			if (upgradeManager != null && Info.PassengerConditions.TryGetValue(a.Info.Name, out passengerCondition))
-				passengerTokens.GetOrAdd(a.Info.Name).Push(upgradeManager.GrantCondition(self, passengerCondition));
+			if (conditionManager != null && Info.PassengerConditions.TryGetValue(a.Info.Name, out passengerCondition))
+				passengerTokens.GetOrAdd(a.Info.Name).Push(conditionManager.GrantCondition(self, passengerCondition));
 
-			if (upgradeManager != null && !string.IsNullOrEmpty(Info.LoadedCondition))
-				loadedTokens.Push(upgradeManager.GrantCondition(self, Info.LoadedCondition));
+			if (conditionManager != null && !string.IsNullOrEmpty(Info.LoadedCondition))
+				loadedTokens.Push(conditionManager.GrantCondition(self, Info.LoadedCondition));
 		}
 
 		void INotifyKilled.Killed(Actor self, AttackInfo e)

@@ -14,14 +14,14 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	[Desc("Grants an upgrade to the collector.")]
+	[Desc("Grants a condition on the collector.")]
 	public class GrantExternalConditionCrateActionInfo : CrateActionInfo
 	{
 		[FieldLoader.Require]
 		[Desc("The condition to apply. Must be included in the target actor's ExternalConditions list.")]
 		public readonly string Condition = null;
 
-		[Desc("Duration of the upgrade (in ticks). Set to 0 for a permanent upgrade.")]
+		[Desc("Duration of the condition (in ticks). Set to 0 for a permanent condition.")]
 		public readonly int Duration = 0;
 
 		[Desc("The range to search for extra collectors in.", "Extra collectors will also be granted the crate action.")]
@@ -47,8 +47,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		bool AcceptsCondition(Actor a)
 		{
-			var um = a.TraitOrDefault<UpgradeManager>();
-			return um != null && um.AcceptsExternalCondition(a, info.Condition);
+			var cm = a.TraitOrDefault<ConditionManager>();
+			return cm != null && cm.AcceptsExternalCondition(a, info.Condition);
 		}
 
 		public override int GetSelectionShares(Actor collector)
@@ -71,11 +71,11 @@ namespace OpenRA.Mods.Common.Traits
 					if (!a.IsInWorld || a.IsDead)
 						continue;
 
-					var um = a.TraitOrDefault<UpgradeManager>();
+					var cm = a.TraitOrDefault<ConditionManager>();
 
 					// Condition token is ignored because we never revoke this condition.
-					if (um != null)
-						um.GrantCondition(a, info.Condition, true, info.Duration);
+					if (cm != null)
+						cm.GrantCondition(a, info.Condition, true, info.Duration);
 				}
 			});
 

@@ -15,7 +15,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits.Sound
 {
 	[Desc("Played when preparing for an attack or attacking.")]
-	public class AttackSoundsInfo : UpgradableTraitInfo
+	public class AttackSoundsInfo : ConditionalTraitInfo
 	{
 		[Desc("Play a randomly selected sound from this list when preparing for an attack or attacking.")]
 		public readonly string[] Sounds = { };
@@ -29,7 +29,7 @@ namespace OpenRA.Mods.Common.Traits.Sound
 		public override object Create(ActorInitializer init) { return new AttackSounds(init, this); }
 	}
 
-	public class AttackSounds : UpgradableTrait<AttackSoundsInfo>, INotifyAttack, ITick
+	public class AttackSounds : ConditionalTrait<AttackSoundsInfo>, INotifyAttack, ITick
 	{
 		readonly AttackSoundsInfo info;
 		int tick;

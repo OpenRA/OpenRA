@@ -24,7 +24,7 @@ namespace OpenRA.Mods.Common.Traits
 		[FieldLoader.Require]
 		[Desc("Condition to grant at each level.",
 			"Key is the XP requirements for each level as a percentage of our own value.",
-			"Value is a list of the upgrade types to grant")]
+			"Value is the condition to grant.")]
 		public readonly Dictionary<int, string> Conditions = null;
 
 		[GrantedConditionReference]
@@ -46,7 +46,7 @@ namespace OpenRA.Mods.Common.Traits
 		readonly int initialExperience;
 
 		readonly List<Pair<int, string>> nextLevel = new List<Pair<int, string>>();
-		UpgradeManager um;
+		ConditionManager conditionManager;
 
 		// Stored as a percentage of our value
 		[Sync] int experience = 0;
@@ -70,7 +70,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyCreated.Created(Actor self)
 		{
-			um = self.TraitOrDefault<UpgradeManager>();
+			conditionManager = self.TraitOrDefault<ConditionManager>();
 			if (initialExperience > 0)
 				GiveExperience(initialExperience, info.SuppressLevelupAnimation);
 		}
@@ -92,8 +92,8 @@ namespace OpenRA.Mods.Common.Traits
 
 			while (Level < MaxLevel && experience >= nextLevel[Level].First)
 			{
-				if (um != null)
-					um.GrantCondition(self, nextLevel[Level].Second);
+				if (conditionManager != null)
+					conditionManager.GrantCondition(self, nextLevel[Level].Second);
 
 				Level++;
 

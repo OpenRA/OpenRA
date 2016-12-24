@@ -13,7 +13,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public abstract class SupportPowerInfo : UpgradableTraitInfo
+	public abstract class SupportPowerInfo : ConditionalTraitInfo
 	{
 		[Desc("Measured in seconds.")]
 		public readonly int ChargeTime = 0;
@@ -74,7 +74,7 @@ namespace OpenRA.Mods.Common.Traits
 		public SupportPowerInfo() { OrderName = GetType().Name + "Order"; }
 	}
 
-	public class SupportPower : UpgradableTrait<SupportPowerInfo>
+	public class SupportPower : ConditionalTrait<SupportPowerInfo>
 	{
 		public readonly Actor Self;
 		readonly SupportPowerInfo info;

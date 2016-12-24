@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string Condition = null;
 
 		[FieldLoader.Require]
-		[Desc("Terrain names to trigger the upgrade.")]
+		[Desc("Terrain names to trigger the condition.")]
 		public readonly string[] TerrainTypes = { };
 
 		public object Create(ActorInitializer init) { return new GrantConditionOnTerrain(init, this); }
@@ -32,8 +32,8 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		readonly GrantConditionOnTerrainInfo info;
 
-		UpgradeManager manager;
-		int conditionToken = UpgradeManager.InvalidConditionToken;
+		ConditionManager conditionManager;
+		int conditionToken = ConditionManager.InvalidConditionToken;
 		string previousTerrain;
 
 		public GrantConditionOnTerrain(ActorInitializer init, GrantConditionOnTerrainInfo info)
@@ -43,22 +43,22 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyCreated.Created(Actor self)
 		{
-			manager = self.TraitOrDefault<UpgradeManager>();
+			conditionManager = self.TraitOrDefault<ConditionManager>();
 		}
 
 		public void Tick(Actor self)
 		{
-			if (manager == null)
+			if (conditionManager == null)
 				return;
 
 			var currentTerrain = self.World.Map.GetTerrainInfo(self.Location).Type;
 			var wantsGranted = info.TerrainTypes.Contains(currentTerrain);
 			if (currentTerrain != previousTerrain)
 			{
-				if (wantsGranted && conditionToken == UpgradeManager.InvalidConditionToken)
-					conditionToken = manager.GrantCondition(self, info.Condition);
-				else if (!wantsGranted && conditionToken != UpgradeManager.InvalidConditionToken)
-					conditionToken = manager.RevokeCondition(self, conditionToken);
+				if (wantsGranted && conditionToken == ConditionManager.InvalidConditionToken)
+					conditionToken = conditionManager.GrantCondition(self, info.Condition);
+				else if (!wantsGranted && conditionToken != ConditionManager.InvalidConditionToken)
+					conditionToken = conditionManager.RevokeCondition(self, conditionToken);
 			}
 
 			previousTerrain = currentTerrain;

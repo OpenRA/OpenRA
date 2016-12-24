@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("The condition to apply. Must be included in the target actor's ExternalConditions list.")]
 		public readonly string Condition = null;
 
-		[Desc("Duration of the upgrade (in ticks). Set to 0 for a permanent condition.")]
+		[Desc("Duration of the condition (in ticks). Set to 0 for a permanent condition.")]
 		public readonly int Duration = 0;
 
 		[Desc("Cells - affects whole cells only")]
@@ -54,7 +54,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override void SelectTarget(Actor self, string order, SupportPowerManager manager)
 		{
 			Game.Sound.PlayToPlayer(SoundType.World, manager.Self.Owner, Info.SelectTargetSound);
-			self.World.OrderGenerator = new SelectUpgradeTarget(Self.World, order, manager, this);
+			self.World.OrderGenerator = new SelectConditionTarget(Self.World, order, manager, this);
 		}
 
 		public override void Activate(Actor self, Order order, SupportPowerManager manager)
@@ -69,11 +69,11 @@ namespace OpenRA.Mods.Common.Traits
 
 			foreach (var a in UnitsInRange(order.TargetLocation))
 			{
-				var um = a.TraitOrDefault<UpgradeManager>();
+				var cm = a.TraitOrDefault<ConditionManager>();
 
 				// Condition token is ignored because we never revoke this condition.
-				if (um != null)
-					um.GrantCondition(a, info.Condition, true, info.Duration);
+				if (cm != null)
+					cm.GrantCondition(a, info.Condition, true, info.Duration);
 			}
 		}
 
@@ -90,12 +90,12 @@ namespace OpenRA.Mods.Common.Traits
 				if (!a.Owner.IsAlliedWith(Self.Owner))
 					return false;
 
-				var um = a.TraitOrDefault<UpgradeManager>();
-				return um != null && um.AcceptsExternalCondition(a, info.Condition);
+				var cm = a.TraitOrDefault<ConditionManager>();
+				return cm != null && cm.AcceptsExternalCondition(a, info.Condition);
 			});
 		}
 
-		class SelectUpgradeTarget : IOrderGenerator
+		class SelectConditionTarget : IOrderGenerator
 		{
 			readonly GrantExternalConditionPower power;
 			readonly int range;
@@ -103,7 +103,7 @@ namespace OpenRA.Mods.Common.Traits
 			readonly SupportPowerManager manager;
 			readonly string order;
 
-			public SelectUpgradeTarget(World world, string order, SupportPowerManager manager, GrantExternalConditionPower power)
+			public SelectConditionTarget(World world, string order, SupportPowerManager manager, GrantExternalConditionPower power)
 			{
 				// Clear selection if using Left-Click Orders
 				if (Game.Settings.Game.UseClassicMouseStyle)

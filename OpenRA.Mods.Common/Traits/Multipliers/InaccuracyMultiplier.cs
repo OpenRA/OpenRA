@@ -12,7 +12,7 @@
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Modifies the inaccuracy of weapons fired by this actor.")]
-	public class InaccuracyMultiplierInfo : UpgradableTraitInfo
+	public class InaccuracyMultiplierInfo : ConditionalTraitInfo
 	{
 		[FieldLoader.Require]
 		[Desc("Percentage modifier to apply.")]
@@ -21,7 +21,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new InaccuracyMultiplier(this); }
 	}
 
-	public class InaccuracyMultiplier : UpgradableTrait<InaccuracyMultiplierInfo>, IInaccuracyModifier
+	public class InaccuracyMultiplier : ConditionalTrait<InaccuracyMultiplierInfo>, IInaccuracyModifier
 	{
 		public InaccuracyMultiplier(InaccuracyMultiplierInfo info)
 			: base(info) { }

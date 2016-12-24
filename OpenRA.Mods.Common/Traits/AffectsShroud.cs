@@ -14,7 +14,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public abstract class AffectsShroudInfo : UpgradableTraitInfo
+	public abstract class AffectsShroudInfo : ConditionalTraitInfo
 	{
 		public readonly WDist Range = WDist.Zero;
 
@@ -26,7 +26,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly VisibilityType Type = VisibilityType.Footprint;
 	}
 
-	public abstract class AffectsShroud : UpgradableTrait<AffectsShroudInfo>, ITick, ISync, INotifyAddedToWorld, INotifyRemovedFromWorld
+	public abstract class AffectsShroud : ConditionalTrait<AffectsShroudInfo>, ITick, ISync, INotifyAddedToWorld, INotifyRemovedFromWorld
 	{
 		static readonly PPos[] NoCells = { };
 

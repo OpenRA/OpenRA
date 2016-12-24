@@ -16,7 +16,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Actor can be targeted.")]
-	public class TargetableInfo : UpgradableTraitInfo, ITargetableInfo
+	public class TargetableInfo : ConditionalTraitInfo, ITargetableInfo
 	{
 		[Desc("Target type. Used for filtering (in)valid targets.")]
 		public readonly HashSet<string> TargetTypes = new HashSet<string>();
@@ -27,7 +27,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new Targetable(init.Self, this); }
 	}
 
-	public class Targetable : UpgradableTrait<TargetableInfo>, ITargetable
+	public class Targetable : ConditionalTrait<TargetableInfo>, ITargetable
 	{
 		protected static readonly string[] None = new string[] { };
 		protected Cloak[] cloaks;

@@ -13,7 +13,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	[Desc("Applies an upgrade to the actor at specified damage states.")]
+	[Desc("Applies a condition to the actor at specified damage states.")]
 	public class GrantConditionOnDamageStateInfo : ITraitInfo, Requires<HealthInfo>
 	{
 		[FieldLoader.Require]
@@ -27,7 +27,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Play a random sound from this list when disabled.")]
 		public readonly string[] DisabledSounds = { };
 
-		[Desc("Levels of damage at which to grant upgrades.")]
+		[Desc("Levels of damage at which to grant the condition.")]
 		public readonly DamageState ValidDamageStates = DamageState.Heavy | DamageState.Critical;
 
 		[Desc("Is the condition irrevocable once it has been activated?")]
@@ -41,8 +41,8 @@ namespace OpenRA.Mods.Common.Traits
 		readonly GrantConditionOnDamageStateInfo info;
 		readonly Health health;
 
-		UpgradeManager manager;
-		int conditionToken = UpgradeManager.InvalidConditionToken;
+		ConditionManager conditionManager;
+		int conditionToken = ConditionManager.InvalidConditionToken;
 
 		public GrantConditionOnDamageState(Actor self, GrantConditionOnDamageStateInfo info)
 		{
@@ -52,16 +52,16 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyCreated.Created(Actor self)
 		{
-			manager = self.TraitOrDefault<UpgradeManager>();
-			GrantUpgradeOnValidDamageState(self, health.DamageState);
+			conditionManager = self.TraitOrDefault<ConditionManager>();
+			GrantConditionOnValidDamageState(self, health.DamageState);
 		}
 
-		void GrantUpgradeOnValidDamageState(Actor self, DamageState state)
+		void GrantConditionOnValidDamageState(Actor self, DamageState state)
 		{
-			if (!info.ValidDamageStates.HasFlag(state) || conditionToken != UpgradeManager.InvalidConditionToken)
+			if (!info.ValidDamageStates.HasFlag(state) || conditionToken != ConditionManager.InvalidConditionToken)
 				return;
 
-			conditionToken = manager.GrantCondition(self, info.Condition);
+			conditionToken = conditionManager.GrantCondition(self, info.Condition);
 
 			var sound = info.EnabledSounds.RandomOrDefault(Game.CosmeticRandom);
 			Game.Sound.Play(SoundType.World, sound, self.CenterPosition);
@@ -69,15 +69,15 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyDamageStateChanged.DamageStateChanged(Actor self, AttackInfo e)
 		{
-			var granted = conditionToken != UpgradeManager.InvalidConditionToken;
-			if ((granted && info.GrantPermanently) || manager == null)
+			var granted = conditionToken != ConditionManager.InvalidConditionToken;
+			if ((granted && info.GrantPermanently) || conditionManager == null)
 				return;
 
 			if (!granted && !info.ValidDamageStates.HasFlag(e.PreviousDamageState))
-				GrantUpgradeOnValidDamageState(self, health.DamageState);
+				GrantConditionOnValidDamageState(self, health.DamageState);
 			else if (granted && !info.ValidDamageStates.HasFlag(e.DamageState) && info.ValidDamageStates.HasFlag(e.PreviousDamageState))
 			{
-				conditionToken = manager.RevokeCondition(self, conditionToken);
+				conditionToken = conditionManager.RevokeCondition(self, conditionToken);
 
 				var sound = info.DisabledSounds.RandomOrDefault(Game.CosmeticRandom);
 				Game.Sound.Play(SoundType.World, sound, self.CenterPosition);

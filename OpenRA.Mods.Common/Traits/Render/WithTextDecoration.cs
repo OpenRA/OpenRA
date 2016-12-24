@@ -20,7 +20,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits.Render
 {
 	[Desc("Displays a text overlay relative to the selection box.")]
-	public class WithTextDecorationInfo : UpgradableTraitInfo
+	public class WithTextDecorationInfo : ConditionalTraitInfo
 	{
 		[FieldLoader.Require] [Translate] public readonly string Text = null;
 
@@ -56,7 +56,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		}
 	}
 
-	public class WithTextDecoration : UpgradableTrait<WithTextDecorationInfo>, IRender, IRenderAboveShroudWhenSelected, INotifyCapture
+	public class WithTextDecoration : ConditionalTrait<WithTextDecorationInfo>, IRender, IRenderAboveShroudWhenSelected, INotifyCapture
 	{
 		readonly SpriteFont font;
 		Color color;

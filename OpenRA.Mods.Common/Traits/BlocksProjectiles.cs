@@ -21,14 +21,14 @@ namespace OpenRA.Mods.Common.Traits
 	}
 
 	[Desc("This actor blocks bullets and missiles with 'Blockable' property.")]
-	public class BlocksProjectilesInfo : UpgradableTraitInfo
+	public class BlocksProjectilesInfo : ConditionalTraitInfo
 	{
 		public readonly WDist Height = WDist.FromCells(1);
 
 		public override object Create(ActorInitializer init) { return new BlocksProjectiles(init.Self, this); }
 	}
 
-	public class BlocksProjectiles : UpgradableTrait<BlocksProjectilesInfo>, IBlocksProjectiles
+	public class BlocksProjectiles : ConditionalTrait<BlocksProjectilesInfo>, IBlocksProjectiles
 	{
 		public BlocksProjectiles(Actor self, BlocksProjectilesInfo info)
 			: base(info) { }

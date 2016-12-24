@@ -14,7 +14,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Grants a condition while the trait is active.")]
-	class GrantConditionInfo : UpgradableTraitInfo
+	class GrantConditionInfo : ConditionalTraitInfo
 	{
 		[FieldLoader.Require]
 		[GrantedConditionReference]
@@ -24,33 +24,33 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new GrantCondition(this); }
 	}
 
-	class GrantCondition : UpgradableTrait<GrantConditionInfo>
+	class GrantCondition : ConditionalTrait<GrantConditionInfo>
 	{
-		UpgradeManager manager;
-		int conditionToken = UpgradeManager.InvalidConditionToken;
+		ConditionManager conditionManager;
+		int conditionToken = ConditionManager.InvalidConditionToken;
 
 		public GrantCondition(GrantConditionInfo info)
 			: base(info) { }
 
 		protected override void Created(Actor self)
 		{
-			manager = self.Trait<UpgradeManager>();
+			conditionManager = self.Trait<ConditionManager>();
 
 			base.Created(self);
 		}
 
 		protected override void TraitEnabled(Actor self)
 		{
-			if (conditionToken == UpgradeManager.InvalidConditionToken)
-				conditionToken = manager.GrantCondition(self, Info.Condition);
+			if (conditionToken == ConditionManager.InvalidConditionToken)
+				conditionToken = conditionManager.GrantCondition(self, Info.Condition);
 		}
 
 		protected override void TraitDisabled(Actor self)
 		{
-			if (conditionToken == UpgradeManager.InvalidConditionToken)
+			if (conditionToken == ConditionManager.InvalidConditionToken)
 				return;
 
-			conditionToken = manager.RevokeCondition(self, conditionToken);
+			conditionToken = conditionManager.RevokeCondition(self, conditionToken);
 		}
 	}
 }

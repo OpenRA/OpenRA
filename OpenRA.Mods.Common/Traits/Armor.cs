@@ -12,14 +12,14 @@
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Used to define weapon efficiency modifiers with different percentages per Type.")]
-	public class ArmorInfo : UpgradableTraitInfo
+	public class ArmorInfo : ConditionalTraitInfo
 	{
 		public readonly string Type = null;
 
 		public override object Create(ActorInitializer init) { return new Armor(init.Self, this); }
 	}
 
-	public class Armor : UpgradableTrait<ArmorInfo>
+	public class Armor : ConditionalTrait<ArmorInfo>
 	{
 		public Armor(Actor self, ArmorInfo info)
 			: base(info) { }

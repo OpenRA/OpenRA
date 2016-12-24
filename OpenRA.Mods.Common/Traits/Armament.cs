@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Common.Traits
 	}
 
 	[Desc("Allows you to attach weapons to the unit (use @IdentifierSuffix for > 1)")]
-	public class ArmamentInfo : UpgradableTraitInfo, Requires<AttackBaseInfo>
+	public class ArmamentInfo : ConditionalTraitInfo, Requires<AttackBaseInfo>
 	{
 		public readonly string Name = "primary";
 
@@ -96,7 +96,7 @@ namespace OpenRA.Mods.Common.Traits
 		}
 	}
 
-	public class Armament : UpgradableTrait<ArmamentInfo>, ITick, IExplodeModifier
+	public class Armament : ConditionalTrait<ArmamentInfo>, ITick, IExplodeModifier
 	{
 		public readonly WeaponInfo Weapon;
 		public readonly Barrel[] Barrels;

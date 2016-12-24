@@ -19,7 +19,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits.Render
 {
 	[Desc("Renders turrets for units with the Turreted trait.")]
-	public class WithSpriteTurretInfo : UpgradableTraitInfo, IRenderActorPreviewSpritesInfo,
+	public class WithSpriteTurretInfo : ConditionalTraitInfo, IRenderActorPreviewSpritesInfo,
 		Requires<RenderSpritesInfo>, Requires<TurretedInfo>, Requires<BodyOrientationInfo>, Requires<ArmamentInfo>
 	{
 		[Desc("Sequence name to use")]
@@ -62,7 +62,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		}
 	}
 
-	public class WithSpriteTurret : UpgradableTrait<WithSpriteTurretInfo>, INotifyBuildComplete, INotifySold, INotifyTransform, ITick, INotifyDamageStateChanged
+	public class WithSpriteTurret : ConditionalTrait<WithSpriteTurretInfo>, INotifyBuildComplete, INotifySold, INotifyTransform, ITick, INotifyDamageStateChanged
 	{
 		public readonly Animation DefaultAnimation;
 		protected readonly AttackBase Attack;

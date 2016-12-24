@@ -5,7 +5,7 @@
 	GivesExperience:
 		PlayerExperienceModifier: 1
 	ScriptTriggers:
-	UpgradeManager:
+	ConditionManager:
 	RenderDebugState:
 
 ^SpriteActor:
@@ -605,7 +605,7 @@
 
 ^CivBuilding:
 	Inherits: ^Building
-	-UpgradeManager:
+	-ConditionManager:
 	Health:
 		HP: 400
 	Tooltip:

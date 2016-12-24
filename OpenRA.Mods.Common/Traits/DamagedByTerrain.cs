@@ -17,7 +17,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("This actor receives damage from the given weapon when on the specified terrain type.")]
-	class DamagedByTerrainInfo : UpgradableTraitInfo, Requires<HealthInfo>
+	class DamagedByTerrainInfo : ConditionalTraitInfo, Requires<HealthInfo>
 	{
 		[Desc("Amount of damage received per DamageInterval ticks.")]
 		[FieldLoader.Require] public readonly int Damage = 0;
@@ -40,7 +40,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new DamagedByTerrain(init.Self, this); }
 	}
 
-	class DamagedByTerrain : UpgradableTrait<DamagedByTerrainInfo>, ITick, ISync, INotifyAddedToWorld
+	class DamagedByTerrain : ConditionalTrait<DamagedByTerrainInfo>, ITick, ISync, INotifyAddedToWorld
 	{
 		readonly Health health;
 

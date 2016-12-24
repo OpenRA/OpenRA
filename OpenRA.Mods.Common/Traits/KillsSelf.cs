@@ -13,7 +13,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	class KillsSelfInfo : UpgradableTraitInfo
+	class KillsSelfInfo : ConditionalTraitInfo
 	{
 		[Desc("Remove the actor from the world (and destroy it) instead of killing it.")]
 		public readonly bool RemoveInstead = false;
@@ -21,7 +21,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new KillsSelf(this); }
 	}
 
-	class KillsSelf : UpgradableTrait<KillsSelfInfo>, INotifyAddedToWorld
+	class KillsSelf : ConditionalTrait<KillsSelfInfo>, INotifyAddedToWorld
 	{
 		public KillsSelf(KillsSelfInfo info)
 			: base(info) { }

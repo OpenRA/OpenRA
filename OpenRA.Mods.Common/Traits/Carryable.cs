@@ -15,7 +15,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Can be carried by actors with the `Carryall` trait.")]
-	public class CarryableInfo : UpgradableTraitInfo
+	public class CarryableInfo : ConditionalTraitInfo
 	{
 		[GrantedConditionReference]
 		[Desc("The condition to grant to self while a carryall has been reserved.")]
@@ -31,11 +31,11 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new Carryable(init.Self, this); }
 	}
 
-	public class Carryable : UpgradableTrait<CarryableInfo>
+	public class Carryable : ConditionalTrait<CarryableInfo>
 	{
-		UpgradeManager upgradeManager;
-		int reservedToken = UpgradeManager.InvalidConditionToken;
-		int carriedToken = UpgradeManager.InvalidConditionToken;
+		ConditionManager conditionManager;
+		int reservedToken = ConditionManager.InvalidConditionToken;
+		int carriedToken = ConditionManager.InvalidConditionToken;
 
 		public Actor Carrier { get; private set; }
 		public bool Reserved { get { return state != State.Free; } }
@@ -51,7 +51,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		protected override void Created(Actor self)
 		{
-			upgradeManager = self.Trait<UpgradeManager>();
+			conditionManager = self.Trait<ConditionManager>();
 
 			base.Created(self);
 		}
@@ -63,8 +63,8 @@ namespace OpenRA.Mods.Common.Traits
 
 			attached = true;
 
-			if (carriedToken == UpgradeManager.InvalidConditionToken && !string.IsNullOrEmpty(Info.CarriedCondition))
-				carriedToken = upgradeManager.GrantCondition(self, Info.CarriedCondition);
+			if (carriedToken == ConditionManager.InvalidConditionToken && !string.IsNullOrEmpty(Info.CarriedCondition))
+				carriedToken = conditionManager.GrantCondition(self, Info.CarriedCondition);
 		}
 
 		// This gets called by carrier after we touched down
@@ -75,8 +75,8 @@ namespace OpenRA.Mods.Common.Traits
 
 			attached = false;
 
-			if (carriedToken != UpgradeManager.InvalidConditionToken)
-				carriedToken = upgradeManager.RevokeCondition(self, carriedToken);
+			if (carriedToken != ConditionManager.InvalidConditionToken)
+				carriedToken = conditionManager.RevokeCondition(self, carriedToken);
 		}
 
 		public virtual bool Reserve(Actor self, Actor carrier)
@@ -87,8 +87,8 @@ namespace OpenRA.Mods.Common.Traits
 			state = State.Reserved;
 			Carrier = carrier;
 
-			if (reservedToken == UpgradeManager.InvalidConditionToken && !string.IsNullOrEmpty(Info.ReservedCondition))
-				reservedToken = upgradeManager.GrantCondition(self, Info.ReservedCondition);
+			if (reservedToken == ConditionManager.InvalidConditionToken && !string.IsNullOrEmpty(Info.ReservedCondition))
+				reservedToken = conditionManager.GrantCondition(self, Info.ReservedCondition);
 
 			return true;
 		}
@@ -98,8 +98,8 @@ namespace OpenRA.Mods.Common.Traits
 			state = State.Free;
 			Carrier = null;
 
-			if (reservedToken != UpgradeManager.InvalidConditionToken)
-				reservedToken = upgradeManager.RevokeCondition(self, reservedToken);
+			if (reservedToken != ConditionManager.InvalidConditionToken)
+				reservedToken = conditionManager.RevokeCondition(self, reservedToken);
 		}
 
 		// Prepare for transport pickup

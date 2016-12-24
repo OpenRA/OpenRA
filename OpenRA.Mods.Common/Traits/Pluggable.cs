@@ -34,8 +34,8 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly PluggableInfo Info;
 
 		readonly string initialPlug;
-		UpgradeManager upgradeManager;
-		int conditionToken = UpgradeManager.InvalidConditionToken;
+		ConditionManager conditionManager;
+		int conditionToken = ConditionManager.InvalidConditionToken;
 
 		string active;
 
@@ -50,7 +50,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void Created(Actor self)
 		{
-			upgradeManager = self.TraitOrDefault<UpgradeManager>();
+			conditionManager = self.TraitOrDefault<ConditionManager>();
 
 			if (!string.IsNullOrEmpty(initialPlug))
 				EnablePlug(self, initialPlug);
@@ -67,7 +67,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!Info.Conditions.TryGetValue(type, out condition))
 				return;
 
-			conditionToken = upgradeManager.GrantCondition(self, condition);
+			conditionToken = conditionManager.GrantCondition(self, condition);
 			active = type;
 		}
 
@@ -76,8 +76,8 @@ namespace OpenRA.Mods.Common.Traits
 			if (type != active)
 				return;
 
-			if (conditionToken != UpgradeManager.InvalidConditionToken)
-				conditionToken = upgradeManager.RevokeCondition(self, conditionToken);
+			if (conditionToken != ConditionManager.InvalidConditionToken)
+				conditionToken = conditionManager.RevokeCondition(self, conditionToken);
 
 			active = null;
 		}

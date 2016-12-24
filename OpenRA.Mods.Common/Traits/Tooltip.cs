@@ -13,7 +13,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public abstract class TooltipInfoBase : UpgradableTraitInfo
+	public abstract class TooltipInfoBase : ConditionalTraitInfo
 	{
 		[Translate] public readonly string Name = "";
 	}
@@ -59,7 +59,7 @@ namespace OpenRA.Mods.Common.Traits
 		public bool IsOwnerRowVisible { get { return ShowOwnerRow; } }
 	}
 
-	public class Tooltip : UpgradableTrait<TooltipInfo>, ITooltip
+	public class Tooltip : ConditionalTrait<TooltipInfo>, ITooltip
 	{
 		readonly Actor self;
 		readonly TooltipInfo info;

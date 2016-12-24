@@ -17,7 +17,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	/// <summary>Use as base class for *Info to subclass of UpgradableTrait. (See UpgradableTrait.)</summary>
-	public abstract class UpgradableTraitInfo : IConditionConsumerInfo, IRulesetLoaded
+	public abstract class ConditionalTraitInfo : IConditionConsumerInfo, IRulesetLoaded
 	{
 		static readonly IReadOnlyDictionary<string, bool> NoConditions = new ReadOnlyDictionary<string, bool>(new Dictionary<string, bool>());
 
@@ -28,7 +28,7 @@ namespace OpenRA.Mods.Common.Traits
 		public abstract object Create(ActorInitializer init);
 
 		// HACK: A shim for all the ActorPreview code that used to query UpgradeMinEnabledLevel directly
-		// This can go away after we introduce an InitialUpgrades ActorInit and have the traits query the
+		// This can go away after we introduce an InitialConditions ActorInit and have the traits query the
 		// condition directly
 		public bool EnabledByDefault { get; private set; }
 
@@ -39,11 +39,11 @@ namespace OpenRA.Mods.Common.Traits
 	}
 
 	/// <summary>
-	/// Abstract base for enabling and disabling trait using upgrades.
+	/// Abstract base for enabling and disabling trait using conditions.
 	/// Requires basing *Info on UpgradableTraitInfo and using base(info) constructor.
-	/// Note that EnabledByUpgrade is not called at creation even if this starts as enabled.
+	/// TraitEnabled will be called at creation if the trait starts enabled or does not use conditions.
 	/// </summary>
-	public abstract class UpgradableTrait<InfoType> : IConditionConsumer, IDisabledTrait, INotifyCreated, ISync where InfoType : UpgradableTraitInfo
+	public abstract class ConditionalTrait<InfoType> : IConditionConsumer, IDisabledTrait, INotifyCreated, ISync where InfoType : ConditionalTraitInfo
 	{
 		public readonly InfoType Info;
 
@@ -60,11 +60,11 @@ namespace OpenRA.Mods.Common.Traits
 
 		[Sync] public bool IsTraitDisabled { get; private set; }
 
-		public UpgradableTrait(InfoType info)
+		public ConditionalTrait(InfoType info)
 		{
 			Info = info;
 
-			// Conditional traits will be enabled (if appropriate) by the UpgradeManager
+			// Conditional traits will be enabled (if appropriate) by the ConditionManager
 			// calling IConditionConsumer.ConditionsChanged at the end of INotifyCreated.
 			IsTraitDisabled = Info.RequiresCondition != null;
 		}

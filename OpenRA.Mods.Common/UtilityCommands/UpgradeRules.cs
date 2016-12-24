@@ -695,6 +695,15 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						RenameNodeKey(node, "DisableOnCondition");
 				}
 
+				if (engineVersion < 20161223)
+				{
+					if (node.Key.StartsWith("UpgradeManager", StringComparison.Ordinal))
+						RenameNodeKey(node, "ConditionManager");
+
+					if (node.Key.StartsWith("-UpgradeManager", StringComparison.Ordinal))
+						RenameNodeKey(node, "-ConditionManager");
+				}
+
 				UpgradeActorRules(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 
