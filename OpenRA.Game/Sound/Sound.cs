@@ -23,7 +23,7 @@ namespace OpenRA
 		bool TryParseSound(Stream stream, out ISoundFormat sound);
 	}
 
-	public interface ISoundFormat
+	public interface ISoundFormat : IDisposable
 	{
 		int Channels { get; }
 		int SampleBits { get; }
@@ -67,8 +67,12 @@ namespace OpenRA
 				{
 					stream.Position = 0;
 					if (loader.TryParseSound(stream, out soundFormat))
-						return soundEngine.AddSoundSourceFromMemory(
+					{
+						var source = soundEngine.AddSoundSourceFromMemory(
 							soundFormat.GetPCMInputStream().ReadAllBytes(), soundFormat.Channels, soundFormat.SampleBits, soundFormat.SampleRate);
+						soundFormat.Dispose();
+						return source;
+					}
 				}
 			}
 

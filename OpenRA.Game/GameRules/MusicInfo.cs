@@ -42,18 +42,24 @@ namespace OpenRA.GameRules
 			if (!fileSystem.TryOpen(Filename, out stream))
 				return;
 
-			Exists = true;
-			ISoundFormat soundFormat;
-			foreach (var loader in Game.ModData.SoundLoaders)
+			try
 			{
-				if (loader.TryParseSound(stream, out soundFormat))
+				Exists = true;
+				foreach (var loader in Game.ModData.SoundLoaders)
 				{
-					Length = (int)soundFormat.LengthInSeconds;
-					break;
+					ISoundFormat soundFormat;
+					if (loader.TryParseSound(stream, out soundFormat))
+					{
+						Length = (int)soundFormat.LengthInSeconds;
+						soundFormat.Dispose();
+						break;
+					}
 				}
 			}
-
-			stream.Dispose();
+			finally
+			{
+				stream.Dispose();
+			}
 		}
 	}
 }

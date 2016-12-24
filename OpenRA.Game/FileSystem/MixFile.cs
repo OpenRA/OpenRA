@@ -78,9 +78,12 @@ namespace OpenRA.FileSystem
 			{
 				if (kv.Key == dbNameClassic || kv.Key == dbNameCRC)
 				{
-					var db = new XccLocalDatabase(GetContent(kv.Value));
-					foreach (var e in db.Entries)
-						allPossibleFilenames.Add(e);
+					using (var content = GetContent(kv.Value))
+					{
+						var db = new XccLocalDatabase(content);
+						foreach (var e in db.Entries)
+							allPossibleFilenames.Add(e);
+					}
 
 					break;
 				}

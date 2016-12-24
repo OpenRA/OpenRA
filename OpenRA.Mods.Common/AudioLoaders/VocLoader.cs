@@ -35,13 +35,14 @@ namespace OpenRA.Mods.Common.AudioLoaders
 		}
 	}
 
-	public class VocFormat : ISoundFormat
+	public sealed class VocFormat : ISoundFormat
 	{
 		public int SampleBits { get { return 8; } }
 		public int Channels { get { return 1; } }
 		public int SampleRate { get; private set; }
 		public float LengthInSeconds { get { return (float)totalSamples / SampleRate; } }
 		public Stream GetPCMInputStream() { return new VocStream(this); }
+		public void Dispose() { stream.Dispose(); }
 
 		int totalSamples = 0;
 		int samplePosition = 0;

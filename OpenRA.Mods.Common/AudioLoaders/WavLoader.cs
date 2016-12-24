@@ -48,13 +48,14 @@ namespace OpenRA.Mods.Common.AudioLoaders
 		}
 	}
 
-	public class WavFormat : ISoundFormat
+	public sealed class WavFormat : ISoundFormat
 	{
 		public int Channels { get { return reader.Value.Channels; } }
 		public int SampleBits { get { return reader.Value.BitsPerSample; } }
 		public int SampleRate { get { return reader.Value.SampleRate; } }
 		public float LengthInSeconds { get { return WavReader.WaveLength(stream); } }
 		public Stream GetPCMInputStream() { return new MemoryStream(reader.Value.RawOutput); }
+		public void Dispose() { stream.Dispose(); }
 
 		Lazy<WavReader> reader;
 
