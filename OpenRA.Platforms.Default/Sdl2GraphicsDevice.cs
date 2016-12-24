@@ -31,10 +31,17 @@ namespace OpenRA.Platforms.Default
 		internal Size SurfaceSize { get; private set; }
 		public event Action<float, float> OnWindowScaleChanged = (before, after) => { };
 
+		[DllImport("user32.dll")]
+		static extern bool SetProcessDPIAware();
+
 		public Sdl2GraphicsDevice(Size windowSize, WindowMode windowMode)
 		{
 			Console.WriteLine("Using SDL 2 with OpenGL renderer");
 			WindowSize = windowSize;
+
+			// Disable legacy scaling on Windows
+			if (Platform.CurrentPlatform == PlatformType.Windows)
+				SetProcessDPIAware();
 
 			SDL.SDL_Init(SDL.SDL_INIT_NOPARACHUTE | SDL.SDL_INIT_VIDEO);
 			SDL.SDL_GL_SetAttribute(SDL.SDL_GLattr.SDL_GL_DOUBLEBUFFER, 1);
@@ -55,10 +62,7 @@ namespace OpenRA.Platforms.Default
 
 			Console.WriteLine("Using resolution: {0}x{1}", WindowSize.Width, WindowSize.Height);
 
-			var windowFlags = SDL.SDL_WindowFlags.SDL_WINDOW_OPENGL;
-			if (Platform.CurrentPlatform == PlatformType.OSX)
-				windowFlags |= SDL.SDL_WindowFlags.SDL_WINDOW_ALLOW_HIGHDPI;
-
+			var windowFlags = SDL.SDL_WindowFlags.SDL_WINDOW_OPENGL | SDL.SDL_WindowFlags.SDL_WINDOW_ALLOW_HIGHDPI;
 			window = SDL.SDL_CreateWindow("OpenRA", SDL.SDL_WINDOWPOS_CENTERED, SDL.SDL_WINDOWPOS_CENTERED,
 				WindowSize.Width, WindowSize.Height, windowFlags);
 
@@ -74,6 +78,15 @@ namespace OpenRA.Platforms.Default
 				SDL.SDL_GL_GetDrawableSize(window, out width, out height);
 				SurfaceSize = new Size(width, height);
 				WindowScale = width * 1f / WindowSize.Width;
+			}
+			else if (Platform.CurrentPlatform == PlatformType.Windows)
+			{
+				float ddpi, hdpi, vdpi;
+				if (SDL.SDL_GetDisplayDPI(0, out ddpi, out hdpi, out vdpi) == 0)
+				{
+					WindowScale = ddpi / 96;
+					WindowSize = new Size((int)(SurfaceSize.Width / WindowScale), (int)(SurfaceSize.Height / WindowScale));
+				}
 			}
 
 			Console.WriteLine("Using window scale {0:F2}", WindowScale);
