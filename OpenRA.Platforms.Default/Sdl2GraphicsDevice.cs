@@ -141,6 +141,29 @@ namespace OpenRA.Platforms.Default
 			VerifyThreadAffinity();
 			try
 			{
+				// Pixel double the cursor on non-OSX if the window scale is large enough
+				// OSX does this for us automatically
+				if (Platform.CurrentPlatform != PlatformType.OSX && WindowScale > 1.5)
+				{
+					var scaledData = new byte[4 * data.Length];
+					for (var y = 0; y < size.Height * 4; y += 4)
+					{
+						for (var x = 0; x < size.Width * 4; x += 4)
+						{
+							var a = 4 * (y * size.Width + x);
+							var b = 4 * ((y + 1) * size.Width + x);
+							for (var i = 0; i < 4; i++)
+							{
+								scaledData[2 * a + i] = scaledData[2 * a + 4 + i] = data[a + i];
+								scaledData[2 * b + i] = scaledData[2 * b + 4 + i] = data[b + i];
+							}
+						}
+					}
+
+					size = new Size(2 * size.Width, 2 * size.Height);
+					data = scaledData;
+				}
+
 				return new SDL2HardwareCursor(size, data, hotspot);
 			}
 			catch (Exception ex)
