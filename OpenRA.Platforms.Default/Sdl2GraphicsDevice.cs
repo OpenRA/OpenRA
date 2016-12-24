@@ -88,6 +88,16 @@ namespace OpenRA.Platforms.Default
 					WindowSize = new Size((int)(SurfaceSize.Width / WindowScale), (int)(SurfaceSize.Height / WindowScale));
 				}
 			}
+			else
+			{
+				float scale = 1;
+				var scaleVariable = Environment.GetEnvironmentVariable("OPENRA_DISPLAY_SCALE");
+				if (scaleVariable != null && float.TryParse(scaleVariable, out scale))
+				{
+					WindowScale = scale;
+					WindowSize = new Size((int)(SurfaceSize.Width / WindowScale), (int)(SurfaceSize.Height / WindowScale));
+				}
+			}
 
 			Console.WriteLine("Using window scale {0:F2}", WindowScale);
 
