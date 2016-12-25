@@ -15,7 +15,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.AS.Traits
 {
 	[Desc("Reloads an AmmoPool trait externally based on the upgrade criteria.")]
-	public class ReloadAmmoWhenEnabledInfo : UpgradableTraitInfo, Requires<AmmoPoolInfo>
+	public class ReloadAmmoWhenEnabledInfo : ConditionalTraitInfo, Requires<AmmoPoolInfo>
 	{
 		[FieldLoader.Require]
 		[Desc("The AmmoPool's name you want to reload.")]
@@ -33,9 +33,10 @@ namespace OpenRA.Mods.AS.Traits
 		public override object Create(ActorInitializer init) { return new ReloadAmmoWhenEnabled(init.Self, this); }
 	}
 
-	public class ReloadAmmoWhenEnabled : UpgradableTrait<ReloadAmmoWhenEnabledInfo>, ITick
+	public class ReloadAmmoWhenEnabled : ConditionalTrait<ReloadAmmoWhenEnabledInfo>, ITick
 	{
-		ReloadAmmoWhenEnabledInfo info;
+		readonly ReloadAmmoWhenEnabledInfo info;
+
 		AmmoPool pool;
 		int delay;
 
@@ -57,14 +58,14 @@ namespace OpenRA.Mods.AS.Traits
 				for (var i = 0; i < info.ReloadCount; i++)
 				{
 					if (pool.GiveAmmo() && pool.Info.RearmSound != null)
-						Game.Sound.Play(pool.Info.RearmSound, self.CenterPosition);
+						Game.Sound.Play(SoundType.World, pool.Info.RearmSound, self.CenterPosition);
 				}
 
 				delay = info.ReloadDelay;
 			}
 		}
 
-		protected override void UpgradeEnabled(Actor self)
+		protected override void TraitEnabled(Actor self)
 		{
 			if (info.ResetDelayOnEnable)
 			{

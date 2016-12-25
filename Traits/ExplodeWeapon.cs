@@ -18,7 +18,7 @@ namespace OpenRA.Mods.AS.Traits
 {
 	[Desc("Explodes a weapon at the actor's position when enabled."
 		+ "Reload/burstdelays are used as explosion intervals.")]
-	public class ExplodeWeaponInfo : UpgradableTraitInfo, IRulesetLoaded
+	public class ExplodeWeaponInfo : ConditionalTraitInfo, IRulesetLoaded
 	{
 		[WeaponReference, FieldLoader.Require]
 		[Desc("Has to be defined in weapons.yaml as well.")]
@@ -45,7 +45,7 @@ namespace OpenRA.Mods.AS.Traits
 		}
 	}
 
-	class ExplodeWeapon : UpgradableTrait<ExplodeWeaponInfo>, ITick
+	class ExplodeWeapon : ConditionalTrait<ExplodeWeaponInfo>, ITick
 	{
 		readonly ExplodeWeaponInfo info;
 		readonly WeaponInfo weapon;
@@ -90,7 +90,7 @@ namespace OpenRA.Mods.AS.Traits
 			}
 		}
 
-		protected override void UpgradeEnabled(Actor self)
+		protected override void TraitEnabled(Actor self)
 		{
 			if (info.ResetReloadWhenEnabled)
 			{

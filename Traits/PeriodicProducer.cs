@@ -17,7 +17,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.AS.Traits
 {
 	[Desc("Produces an actor without using the standard production queue.")]
-	public class PeriodicProducerInfo : UpgradableTraitInfo
+	public class PeriodicProducerInfo : ConditionalTraitInfo
 	{
 		[ActorReference, FieldLoader.Require]
 		[Desc("Actors to produce.")]
@@ -48,7 +48,7 @@ namespace OpenRA.Mods.AS.Traits
 		public override object Create(ActorInitializer init) { return new PeriodicProducer(init, this); }
 	}
 
-	public class PeriodicProducer : UpgradableTrait<PeriodicProducerInfo>, ISelectionBar, ITick, ISync
+	public class PeriodicProducer : ConditionalTrait<PeriodicProducerInfo>, ISelectionBar, ITick, ISync
 	{
 		readonly string faction;
 		readonly PeriodicProducerInfo info;
@@ -88,7 +88,7 @@ namespace OpenRA.Mods.AS.Traits
 			}
 		}
 
-		protected override void UpgradeEnabled(Actor self)
+		protected override void TraitEnabled(Actor self)
 		{
 			if (info.ResetTraitOnEnable)
 				ticks = info.ChargeDuration;

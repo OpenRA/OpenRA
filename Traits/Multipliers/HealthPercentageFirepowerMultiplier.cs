@@ -15,14 +15,14 @@ namespace OpenRA.Mods.AS.Traits
 {
 	[Desc("Allow the actor to use it's health percentage",
 		"as a firepower multiplier.")]
-	class HealthPercentageFirepowerMultiplierInfo : UpgradableTraitInfo, ITraitInfo, Requires<HealthInfo>
+	class HealthPercentageFirepowerMultiplierInfo : ConditionalTraitInfo, ITraitInfo, Requires<HealthInfo>
 	{
 		public override object Create(ActorInitializer init) {
 			return new HealthPercentageFirepowerMultiplier(init.Self, this);
 		}
 	}
 
-	class HealthPercentageFirepowerMultiplier : UpgradableTrait<HealthPercentageFirepowerMultiplierInfo>,  IFirepowerModifier
+	class HealthPercentageFirepowerMultiplier : ConditionalTrait<HealthPercentageFirepowerMultiplierInfo>,  IFirepowerModifier
 	{
 		readonly Health health;
 

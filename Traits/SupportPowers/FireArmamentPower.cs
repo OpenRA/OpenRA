@@ -89,9 +89,9 @@ namespace OpenRA.Mods.AS.Traits
 			turrets = self.TraitsImplementing<Turreted>().Where(x => armamentturrets.Contains(x.Name)).ToHashSet();
 
 			if (self.Owner.IsAlliedWith(self.World.RenderPlayer))
-				Game.Sound.Play(FireArmamentPowerInfo.LaunchSound);
+				Game.Sound.Play(SoundType.World, FireArmamentPowerInfo.LaunchSound);
 			else
-				Game.Sound.Play(FireArmamentPowerInfo.IncomingSound);
+				Game.Sound.Play(SoundType.World, FireArmamentPowerInfo.IncomingSound);
 
 			target = Target.FromCell(self.World, order.TargetLocation);
 
@@ -148,7 +148,7 @@ namespace OpenRA.Mods.AS.Traits
 
 		public override void SelectTarget(Actor self, string order, SupportPowerManager manager)
 		{
-			Game.Sound.PlayToPlayer(manager.Self.Owner, FireArmamentPowerInfo.SelectTargetSound);
+			Game.Sound.PlayToPlayer(SoundType.UI, manager.Self.Owner, FireArmamentPowerInfo.SelectTargetSound);
 			self.World.OrderGenerator = new SelectArmamentPowerTarget(self, order, manager, this);
 		}
 

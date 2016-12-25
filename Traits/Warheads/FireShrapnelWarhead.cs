@@ -111,7 +111,7 @@ namespace OpenRA.Mods.AS.Warheads
 						firedBy.World.AddFrameEndTask(w => w.Add(projectile));
 
 					if (args.Weapon.Report != null && args.Weapon.Report.Any())
-						Game.Sound.Play(args.Weapon.Report.Random(firedBy.World.SharedRandom), target.CenterPosition);
+						Game.Sound.Play(SoundType.World, args.Weapon.Report.Random(firedBy.World.SharedRandom), target.CenterPosition);
 				}
 			}
 		}

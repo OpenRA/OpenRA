@@ -84,7 +84,7 @@ namespace OpenRA.Mods.AS.Traits
 
 			if (cachedDisabled != disabled)
 			{
-				Game.Sound.Play(disabled ? Info.DisableSound : Info.EnableSound, self.CenterPosition);
+				Game.Sound.Play(SoundType.World, disabled ? Info.DisableSound : Info.EnableSound, self.CenterPosition);
 				desiredRange = disabled ? WDist.Zero : Info.Range;
 				desiredVRange = disabled ? WDist.Zero : Info.MaximumVerticalOffset;
 				cachedDisabled = disabled;

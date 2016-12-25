@@ -15,17 +15,17 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.AS.Traits
 {
-	[Desc("Grant upgrades periodically.")]
-	public class GrantPeriodicUpgradesInfo : UpgradableTraitInfo, Requires<UpgradeManagerInfo>
+	[Desc("Grants a condition periodically.")]
+	public class GrantPeriodicConditionInfo : ConditionalTraitInfo
 	{
-		[UpgradeGrantedReference, FieldLoader.Require]
-		[Desc("The upgrades to grant.")]
-		public readonly string[] Upgrades = { };
+		[GrantedConditionReference, FieldLoader.Require]
+		[Desc("The condition to grant.")]
+		public readonly string Condition = null;
 
-		[Desc("The range of time (in ticks) that the upgrades will take to be granted.")]
+		[Desc("The range of time (in ticks) with the condition being disabled.")]
 		public readonly int[] CooldownDuration = { 1000 };
 
-		[Desc("The range of time (in ticks) that the upgrades will be enabled.")]
+		[Desc("The range of time (in ticks) with the condition being enabled.")]
 		public readonly int[] ActiveDuration = { 100 };
 
 		public readonly bool StartsGranted = false;
@@ -36,25 +36,27 @@ namespace OpenRA.Mods.AS.Traits
 		public readonly Color CooldownColor = Color.DarkRed;
 		public readonly Color ActiveColor = Color.DarkMagenta;
 
-		public override object Create(ActorInitializer init) { return new GrantPeriodicUpgrades(init, this); }
+		public override object Create(ActorInitializer init) { return new GrantPeriodicCondition(init, this); }
 	}
 
-	public class GrantPeriodicUpgrades : UpgradableTrait<GrantPeriodicUpgradesInfo>, INotifyCreated, ISelectionBar, ITick, ISync
+	public class GrantPeriodicCondition : ConditionalTrait<GrantPeriodicConditionInfo>, INotifyCreated, ISelectionBar, ITick, ISync
 	{
 		readonly Actor self;
-		readonly GrantPeriodicUpgradesInfo info;
-		readonly UpgradeManager manager;
+		readonly GrantPeriodicConditionInfo info;
 
+		ConditionManager manager;
 		[Sync] int ticks;
 		int cooldown, active;
-		bool isEnabled, isSuspended;
+		bool isSuspended;
+		int token = ConditionManager.InvalidConditionToken;
 
-		public GrantPeriodicUpgrades(ActorInitializer init, GrantPeriodicUpgradesInfo info)
+		bool isEnabled { get { return token != ConditionManager.InvalidConditionToken; } }
+
+		public GrantPeriodicCondition(ActorInitializer init, GrantPeriodicConditionInfo info)
 			: base(info)
 		{
 			self = init.Self;
 			this.info = info;
-			manager = self.Trait<UpgradeManager>();
 		}
 
 		void SetDefaultState()
@@ -66,7 +68,7 @@ namespace OpenRA.Mods.AS.Traits
 					: info.ActiveDuration[0];
 				active = ticks;
 				if (info.StartsGranted != isEnabled)
-					EnableUpgrade();
+					EnableCondition();
 			}
 			else
 			{
@@ -75,12 +77,14 @@ namespace OpenRA.Mods.AS.Traits
 					: info.CooldownDuration[0];
 				cooldown = ticks;
 				if (info.StartsGranted != isEnabled)
-					DisableUpgrade();
+					DisableCondition();
 			}
 		}
 
 		void INotifyCreated.Created(Actor self)
 		{
+			manager = self.Trait<ConditionManager>();
+
 			if (!IsTraitDisabled)
 				SetDefaultState();
 		}
@@ -95,7 +99,7 @@ namespace OpenRA.Mods.AS.Traits
 						? self.World.SharedRandom.Next(info.CooldownDuration[0], info.CooldownDuration[1])
 						: info.CooldownDuration[0];
 					cooldown = ticks;
-					DisableUpgrade();
+					DisableCondition();
 				}
 				else
 				{
@@ -103,44 +107,40 @@ namespace OpenRA.Mods.AS.Traits
 						? self.World.SharedRandom.Next(info.ActiveDuration[0], info.ActiveDuration[1])
 						: info.ActiveDuration[0];
 					active = ticks;
-					EnableUpgrade();
+					EnableCondition();
 				}
 			}
 		}
 
-		protected override void UpgradeEnabled(Actor self)
+		protected override void TraitEnabled(Actor self)
 		{
 			if (info.ResetTraitOnEnable)
 				SetDefaultState();
 			else if (isSuspended)
-				EnableUpgrade();
+				EnableCondition();
 
 			isSuspended = false;
 		}
 
-		protected override void UpgradeDisabled(Actor self)
+		protected override void TraitDisabled(Actor self)
 		{
 			if (isEnabled)
 			{
-				DisableUpgrade();
+				DisableCondition();
 				isSuspended = true;
 			}
 		}
 
-		void EnableUpgrade()
+		void EnableCondition()
 		{
-			foreach (var up in info.Upgrades)
-				manager.GrantUpgrade(self, up, this);
-
-			isEnabled = true;
+			if (token == ConditionManager.InvalidConditionToken)
+				token = manager.GrantCondition(self, info.Condition);
 		}
 
-		void DisableUpgrade()
+		void DisableCondition()
 		{
-			foreach (var up in info.Upgrades)
-				manager.RevokeUpgrade(self, up, this);
-
-			isEnabled = false;
+			if (token != ConditionManager.InvalidConditionToken)
+				token = manager.RevokeCondition(self, token);
 		}
 
 		float ISelectionBar.GetValue()

@@ -61,7 +61,12 @@ namespace OpenRA.Mods.AS.Traits
 		public WeaponInfo WeaponInfo { get; private set; }
 
 		public override object Create(ActorInitializer init) { return new DetonateWeaponPower(init.Self, this); }
-		public void RulesetLoaded(Ruleset rules, ActorInfo ai) { WeaponInfo = rules.Weapons[Weapon.ToLowerInvariant()]; }
+		public override void RulesetLoaded(Ruleset rules, ActorInfo ai)
+		{
+			base.RulesetLoaded(rules, ai);
+
+			WeaponInfo = rules.Weapons[Weapon.ToLowerInvariant()];
+		}
 	}
 
 	public class DetonateWeaponPower : SupportPower, ITick
@@ -80,9 +85,9 @@ namespace OpenRA.Mods.AS.Traits
 			base.Activate(self, order, manager);
 
 			if (self.Owner.IsAlliedWith(self.World.RenderPlayer))
-				Game.Sound.Play(Info.LaunchSound);
+				Game.Sound.Play(SoundType.World, Info.LaunchSound);
 			else
-				Game.Sound.Play(Info.IncomingSound);
+				Game.Sound.Play(SoundType.World, Info.IncomingSound);
 
 			if (!string.IsNullOrEmpty(Info.ActivationSequence))
 			{
@@ -147,7 +152,7 @@ namespace OpenRA.Mods.AS.Traits
 
 		public override void SelectTarget(Actor self, string order, SupportPowerManager manager)
 		{
-			Game.Sound.PlayToPlayer(manager.Self.Owner, Info.SelectTargetSound);
+			Game.Sound.PlayToPlayer(SoundType.UI, manager.Self.Owner, Info.SelectTargetSound);
 			self.World.OrderGenerator = new SelectDetonateWeaponPowerTarget(order, manager, this);
 		}
 

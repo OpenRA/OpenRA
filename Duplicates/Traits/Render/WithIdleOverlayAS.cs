@@ -28,7 +28,7 @@ namespace OpenRA.Mods.AS.Traits.Render
 
 		public new IEnumerable<IActorPreview> RenderPreviewSprites(ActorPreviewInitializer init, RenderSpritesInfo rs, string image, int facings, PaletteReference p)
 		{
-			if (UpgradeMinEnabledLevel > 0)
+			if (!EnabledByDefault)
 				yield break;
 
 			if (Palette != null)
@@ -60,7 +60,7 @@ namespace OpenRA.Mods.AS.Traits.Render
 		}
 	}
 
-	public class WithIdleOverlayAS : UpgradableTrait<WithIdleOverlayASInfo>, INotifyDamageStateChanged, INotifyBuildComplete, INotifySold, INotifyTransform
+	public class WithIdleOverlayAS : ConditionalTrait<WithIdleOverlayASInfo>, INotifyDamageStateChanged, INotifyBuildComplete, INotifySold, INotifyTransform
 	{
 		readonly Animation overlay;
 		bool buildComplete;

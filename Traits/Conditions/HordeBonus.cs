@@ -15,8 +15,8 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.AS.Traits
 {
-	[Desc("Grants an upgrade based on the amount of actors with an eligible GrantHordeBonus trait around this actor.")]
-	public class HordeBonusInfo : ITraitInfo
+	[Desc("Grants a condition based on the amount of actors with an eligible GrantHordeBonus trait around this actor.")]
+	public class HordeBonusInfo : ITraitInfo, Requires<ConditionManagerInfo>
 	{
 		[Desc("The range within eligible GrantHordeBonus actors are considered.")]
 		public readonly WDist Range = WDist.FromCells(2);
@@ -31,9 +31,9 @@ namespace OpenRA.Mods.AS.Traits
 		[Desc("Specifies the eligible GrantHordeBonus trait type.")]
 		public readonly string HordeType = "horde";
 
-		[UpgradeGrantedReference, FieldLoader.Require]
-		[Desc("The upgrades to grant.")]
-		public readonly string[] Upgrades = { };
+		[GrantedConditionReference, FieldLoader.Require]
+		[Desc("The condition to grant.")]
+		public readonly string Condition = null;
 
 		public readonly int Minimum = 4;
 		public readonly int Maximum = int.MaxValue;
@@ -48,7 +48,7 @@ namespace OpenRA.Mods.AS.Traits
 	{
 		readonly Actor self;
 		readonly HordeBonusInfo info;
-		readonly UpgradeManager manager;
+		readonly ConditionManager manager;
 
 		int proximityTrigger;
 		WPos cachedPosition;
@@ -61,13 +61,15 @@ namespace OpenRA.Mods.AS.Traits
 
 		HashSet<Actor> sources;
 
-		bool isEnabled;
+		int token = ConditionManager.InvalidConditionToken;
+
+		bool isEnabled { get { return token != ConditionManager.InvalidConditionToken; } }
 
 		public HordeBonus(Actor self, HordeBonusInfo info)
 		{
 			this.info = info;
 			this.self = self;
-			manager = self.Trait<UpgradeManager>();
+			manager = self.Trait<ConditionManager>();
 			cachedRange = info.Range;
 			cachedVRange = info.MaximumVerticalOffset;
 			sources = new HashSet<Actor>();
@@ -117,7 +119,7 @@ namespace OpenRA.Mods.AS.Traits
 				return;
 
 			sources.Add(a);
-			UpdateUpgradeState();
+			UpdateConditionState();
 		}
 
 		void INotifyOtherProduction.UnitProducedByOther(Actor self, Actor producer, Actor produced)
@@ -126,7 +128,7 @@ namespace OpenRA.Mods.AS.Traits
 			if (produced.OccupiesSpace == null)
 				return;
 
-			// We don't grant upgrades when disabled
+			// We don't grant conditions when disabled
 			if (self.IsDisabled())
 				return;
 
@@ -141,48 +143,34 @@ namespace OpenRA.Mods.AS.Traits
 					return;
 
 				sources.Add(produced);
-				UpdateUpgradeState();
+				UpdateConditionState();
 			}
 		}
 
 		void ActorExited(Actor a)
 		{
 			sources.Remove(a);
-			UpdateUpgradeState();
+			UpdateConditionState();
 		}
 
-		void UpdateUpgradeState()
+		void UpdateConditionState()
 		{
 			if (sources.Count() > info.Minimum && sources.Count() < info.Maximum)
 			{
 				if (!isEnabled)
-					EnableUpgrade();
+				{
+					token = manager.GrantCondition(self, info.Condition);
+					Game.Sound.Play(SoundType.World, info.EnableSound, self.CenterPosition);
+				}
 			}
 			else
 			{
 				if (isEnabled)
-					DisableUpgrade();
+				{
+					token = manager.RevokeCondition(self, token);
+					Game.Sound.Play(SoundType.World, info.DisableSound, self.CenterPosition);
+				}
 			}
-		}
-
-		void EnableUpgrade()
-		{
-			foreach (var up in info.Upgrades)
-				manager.GrantUpgrade(self, up, this);
-
-			Game.Sound.Play(info.EnableSound, self.CenterPosition);
-
-			isEnabled = true;
-		}
-
-		void DisableUpgrade()
-		{
-			foreach (var up in info.Upgrades)
-				manager.RevokeUpgrade(self, up, this);
-
-			Game.Sound.Play(info.DisableSound, self.CenterPosition);
-
-			isEnabled = false;
 		}
 	}
 }

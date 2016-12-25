@@ -20,11 +20,11 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.AS.Traits
 {
-	public class DeployToTimedUpgradeInfo : ITraitInfo, Requires<UpgradeManagerInfo>
+	public class GrantTimedConditionOnDeployInfo : ITraitInfo
 	{
-		[UpgradeGrantedReference, FieldLoader.Require]
-		[Desc("The upgrades to grant after deploying.")]
-		public readonly string[] DeployedUpgrades = { };
+		[GrantedConditionReference, FieldLoader.Require]
+		[Desc("The condition granted after deploying.")]
+		public readonly string DeployedCondition = null;
 
 		[Desc("Cooldown in ticks until the unit can deploy.")]
 		public readonly int CooldownTicks;
@@ -58,33 +58,35 @@ namespace OpenRA.Mods.AS.Traits
 		public readonly Color ChargingColor = Color.DarkRed;
 		public readonly Color DischargingColor = Color.DarkMagenta;
 
-		public object Create(ActorInitializer init) { return new DeployToTimedUpgrade(init, this); }
+		public object Create(ActorInitializer init) { return new GrantTimedConditionOnDeploy(init, this); }
 	}
 
 	public enum TimedDeployState { Charging, Ready, Active, Deploying, Undeploying }
 
-	public class DeployToTimedUpgrade : IResolveOrder, IIssueOrder, INotifyCreated, ISelectionBar, IOrderVoice, ISync, ITick
+	public class GrantTimedConditionOnDeploy : IResolveOrder, IIssueOrder, INotifyCreated, ISelectionBar, IOrderVoice, ISync, ITick
 	{
 		readonly Actor self;
-		readonly DeployToTimedUpgradeInfo info;
-		readonly UpgradeManager manager;
+		readonly GrantTimedConditionOnDeployInfo info;
 		readonly bool canTurn;
 		readonly Lazy<WithSpriteBody> body;
+		int deployedToken = ConditionManager.InvalidConditionToken;
 
+		ConditionManager manager;
 		[Sync] int ticks;
 		TimedDeployState deployState;
 
-		public DeployToTimedUpgrade(ActorInitializer init, DeployToTimedUpgradeInfo info)
+		public GrantTimedConditionOnDeploy(ActorInitializer init, GrantTimedConditionOnDeployInfo info)
 		{
 			self = init.Self;
 			this.info = info;
 			canTurn = self.Info.HasTraitInfo<IFacingInfo>();
-			manager = self.Trait<UpgradeManager>();
 			body = Exts.Lazy(self.TraitOrDefault<WithSpriteBody>);
 		}
 
 		void INotifyCreated.Created(Actor self)
 		{
+			manager = self.Trait<ConditionManager>();
+
 			if (info.StartsFullyCharged)
 			{
 				ticks = info.DeployedTicks;
@@ -99,13 +101,13 @@ namespace OpenRA.Mods.AS.Traits
 
 		IEnumerable<IOrderTargeter> IIssueOrder.Orders
 		{
-			get { yield return new DeployOrderTargeter("DeployToTimedUpgrade", 5,
+			get { yield return new DeployOrderTargeter("GrantConditionOnDeploy", 5,
 				() => IsCursorBlocked() ? info.DeployBlockedCursor : info.DeployCursor); }
 		}
 
 		Order IIssueOrder.IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
 		{
-			if (order.OrderID == "DeployToTimedUpgrade")
+			if (order.OrderID == "GrantConditionOnDeploy")
 				return new Order(order.OrderID, self, queued);
 
 			return null;
@@ -113,7 +115,7 @@ namespace OpenRA.Mods.AS.Traits
 
 		void IResolveOrder.ResolveOrder(Actor self, Order order)
 		{
-			if (order.OrderString != "DeployToTimedUpgrade" || deployState != TimedDeployState.Ready)
+			if (order.OrderString != "GrantConditionOnDeploy" || deployState != TimedDeployState.Ready)
 				return;
 
 			if (!order.Queued)
@@ -133,7 +135,7 @@ namespace OpenRA.Mods.AS.Traits
 
 		string IOrderVoice.VoicePhraseForOrder(Actor self, Order order)
 		{
-			return order.OrderString == "DeployToTimedUpgrade" && deployState != TimedDeployState.Ready ? info.Voice : null;
+			return order.OrderString == "GrantConditionOnDeploy" && deployState != TimedDeployState.Ready ? info.Voice : null;
 		}
 
 		void Deploy()
@@ -145,7 +147,7 @@ namespace OpenRA.Mods.AS.Traits
 			deployState = TimedDeployState.Deploying;
 
 			if (!string.IsNullOrEmpty(info.DeploySound))
-				Game.Sound.Play(info.DeploySound, self.CenterPosition);
+				Game.Sound.Play(SoundType.World, info.DeploySound, self.CenterPosition);
 
 			// If there is no animation to play just grant the upgrades that are used while deployed.
 			// Alternatively, play the deploy animation and then grant the upgrades.
@@ -157,8 +159,8 @@ namespace OpenRA.Mods.AS.Traits
 
 		void OnDeployCompleted()
 		{
-			foreach (var up in info.DeployedUpgrades)
-				manager.GrantUpgrade(self, up, this);
+			if (manager != null && !string.IsNullOrEmpty(info.DeployedCondition) && deployedToken == ConditionManager.InvalidConditionToken)
+				deployedToken = manager.GrantCondition(self, info.DeployedCondition);
 
 			deployState = TimedDeployState.Active;
 		}
@@ -168,7 +170,7 @@ namespace OpenRA.Mods.AS.Traits
 			deployState = TimedDeployState.Undeploying;
 
 			if (!string.IsNullOrEmpty(info.UndeploySound))
-				Game.Sound.Play(info.UndeploySound, self.CenterPosition);
+				Game.Sound.Play(SoundType.World, info.UndeploySound, self.CenterPosition);
 
 			// If there is no animation to play just grant the upgrades that are used while undeployed.
 			// Alternatively, play the undeploy animation and then grant the upgrades.
@@ -180,8 +182,8 @@ namespace OpenRA.Mods.AS.Traits
 
 		void OnUndeployCompleted()
 		{
-			foreach (var up in info.DeployedUpgrades)
-				manager.RevokeUpgrade(self, up, this);
+			if (deployedToken != ConditionManager.InvalidConditionToken)
+				deployedToken = manager.RevokeCondition(self, deployedToken);
 
 			deployState = TimedDeployState.Charging;
 			ticks = info.CooldownTicks;

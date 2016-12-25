@@ -15,7 +15,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.AS.Traits
 {
-	public class SmokeParticleEmitterInfo : UpgradableTraitInfo
+	public class SmokeParticleEmitterInfo : ConditionalTraitInfo
 	{
 		[Desc("Offset for the particle emitter.")]
 		public readonly WVec[] Offset = { WVec.Zero };
@@ -38,7 +38,7 @@ namespace OpenRA.Mods.AS.Traits
 		public override object Create(ActorInitializer init) { return new SmokeParticleEmitter(init.Self, this); }
 	}
 
-	public class SmokeParticleEmitter : UpgradableTrait<SmokeParticleEmitterInfo>, ITick
+	public class SmokeParticleEmitter : ConditionalTrait<SmokeParticleEmitterInfo>, ITick
 	{
 		readonly MersenneTwister random;
 		readonly WVec offset;

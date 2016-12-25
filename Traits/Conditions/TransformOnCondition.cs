@@ -15,29 +15,29 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.AS.Traits
 {
-	public class TransformOnUpgradeInfo : UpgradableTraitInfo
+	public class TransformOnConditionInfo : ConditionalTraitInfo
 	{
 		[ActorReference]
 		public readonly string IntoActor = null;
 		public readonly int ForceHealthPercentage = 0;
 		public readonly bool SkipMakeAnims = true;
 
-		public override object Create(ActorInitializer init) { return new TransformOnUpgrade(init, this); }
+		public override object Create(ActorInitializer init) { return new TransformOnCondition(init, this); }
 	}
 
-	public class TransformOnUpgrade : UpgradableTrait<TransformOnUpgradeInfo>
+	public class TransformOnCondition : ConditionalTrait<TransformOnConditionInfo>
 	{
-		readonly TransformOnUpgradeInfo info;
+		readonly TransformOnConditionInfo info;
 		readonly string faction;
 
-		public TransformOnUpgrade(ActorInitializer init, TransformOnUpgradeInfo info)
+		public TransformOnCondition(ActorInitializer init, TransformOnConditionInfo info)
 			: base(info)
 		{
 			this.info = info;
 			faction = init.Contains<FactionInit>() ? init.Get<FactionInit, string>() : init.Self.Owner.Faction.InternalName;
 		}
 
-		protected override void UpgradeEnabled(Actor self)
+		protected override void TraitEnabled(Actor self)
 		{
 			var facing = self.TraitOrDefault<IFacing>();
 			var transform = new Transform(self, info.IntoActor) { ForceHealthPercentage = info.ForceHealthPercentage, Faction = faction };
