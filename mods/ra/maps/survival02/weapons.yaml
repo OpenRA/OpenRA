@@ -4,7 +4,7 @@ ParaBomb:
 	Report: chute1.aud
 	Projectile: GravityBomb
 		Image: BOMBLET
-		-OpenSequence:
+		OpenSequence: idle
 	Warhead@1Dam: SpreadDamage
 		Spread: 150
 		Damage: 3500
