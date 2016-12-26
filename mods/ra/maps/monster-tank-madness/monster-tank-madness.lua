@@ -65,8 +65,12 @@ SetupAlliedBase = function()
 	DefendOutpost = player.AddSecondaryObjective("Defend and repair our outpost.")
 	player.MarkCompletedObjective(FindOutpost)
 
-	Trigger.AfterDelay(DateTime.Seconds(1), function() -- don't fail the Objective instantly
-		Trigger.OnAllRemovedFromWorld(alliedOutpost, function() player.MarkFailedObjective(DefendOutpost) end)
+	-- Don't fail the Objective instantly
+	Trigger.AfterDelay(DateTime.Seconds(1), function()
+
+		-- The actor might have been destroyed/crushed in this one second delay
+		local actors = Utils.Where(alliedOutpost, function(actor) return actor.IsInWorld end)
+		Trigger.OnAllRemovedFromWorld(actors, function() player.MarkFailedObjective(DefendOutpost) end)
 	end)
 
 	Trigger.AfterDelay(DateTime.Minutes(1) + DateTime.Seconds(40), function()
@@ -119,7 +123,7 @@ end
 
 LandingPossible = function()
 	if not beachReached and (USSRSpen.IsDead or Engineer.IsDead) and LstProduced < 1 then
-		 player.MarkFailedObjective(CrossRiver)
+		player.MarkFailedObjective(CrossRiver)
 	end
 end
 
