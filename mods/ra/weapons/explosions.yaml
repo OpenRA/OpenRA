@@ -12,12 +12,12 @@ CrateNapalm:
 			Concrete: 50
 		AffectsParent: true
 		DamageTypes: Prone50Percent, TriggerProne, FireDeath, Incendiary
-	Warhead@2Smu: LeaveSmudge
-		SmudgeType: Scorch
-		InvalidTargets: Structure, Wall, Trees
-	Warhead@3Eff: CreateEffect
+	Warhead@2Eff: CreateEffect
 		Explosions: napalm
 		ImpactSounds: firebl3.aud
+	Warhead@Smu: LeaveSmudge
+		SmudgeType: Scorch
+		InvalidTargets: Structure, Wall, Trees
 
 CrateExplosion:
 	Warhead@1Dam: SpreadDamage
@@ -34,7 +34,7 @@ CrateExplosion:
 	Warhead@2Eff: CreateEffect
 		Explosions: self_destruct
 		ImpactSounds: kaboom15.aud
-	Warhead@3Smu: LeaveSmudge
+	Warhead@Smu: LeaveSmudge
 		SmudgeType: Crater
 		InvalidTargets: Structure, Wall, Trees
 
@@ -57,7 +57,7 @@ UnitExplode:
 		Explosions: large_splash
 		ImpactSounds: splash9.aud
 		ValidImpactTypes: Water
-	Warhead@4Smu: LeaveSmudge
+	Warhead@Smu: LeaveSmudge
 		SmudgeType: Crater
 		InvalidTargets: Structure, Wall, Trees
 
@@ -107,7 +107,7 @@ UnitExplodeSmall:
 		Explosions: large_splash
 		ImpactSounds: splash9.aud
 		ValidImpactTypes: Water
-	Warhead@4Smu: LeaveSmudge
+	Warhead@Smu: LeaveSmudge
 		SmudgeType: Crater
 		InvalidTargets: Structure, Wall, Trees
 
@@ -118,7 +118,7 @@ CivBuildingExplosion:
 		Delay: 1
 	Warhead@2Eff: CreateEffect
 		Explosions: building, building_napalm, large_explosion, self_destruct
-	Warhead@3Smu: LeaveSmudge
+	Warhead@Smu: LeaveSmudge
 		SmudgeType: Crater
 		InvalidTargets: Wall, Trees
 
@@ -140,7 +140,7 @@ ArtilleryExplode:
 		Explosions: large_splash
 		ImpactSounds: splash9.aud
 		ValidImpactTypes: Water
-	Warhead@4Smu: LeaveSmudge
+	Warhead@Smu: LeaveSmudge
 		SmudgeType: Crater
 		InvalidTargets: Structure, Wall, Trees
 
@@ -149,16 +149,16 @@ V2Explode:
 	-Report:
 
 BuildingExplode:
-	Warhead@1Eff: CreateEffect
+	Warhead@2Eff: CreateEffect
 		Explosions: building, building_napalm, large_explosion, self_destruct, large_napalm
-	Warhead@2Smu: LeaveSmudge
+	Warhead@Smu: LeaveSmudge
 		SmudgeType: Crater
 		InvalidTargets: Wall, Trees
 
 SmallBuildingExplode:
-	Warhead@1Eff: CreateEffect
+	Warhead@2Eff: CreateEffect
 		Explosions: building, building_napalm, large_explosion, self_destruct
-	Warhead@2Smu: LeaveSmudge
+	Warhead@Smu: LeaveSmudge
 		SmudgeType: Crater
 		InvalidTargets: Wall, Trees
 
@@ -176,13 +176,13 @@ BarrelExplode:
 			Heavy: 25
 			Concrete: 10
 		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath, Incendiary
-	Warhead@2Smu: LeaveSmudge
-		SmudgeType: Scorch
-		Size: 2
-		Delay: 5
-	Warhead@3Eff: CreateEffect
+	Warhead@2Eff: CreateEffect
 		Explosions: napalm
 		ImpactSounds: firebl3.aud
+		Delay: 5
+	Warhead@Smu: LeaveSmudge
+		SmudgeType: Scorch
+		Size: 2
 		Delay: 5
 
 ATMine:
@@ -194,7 +194,7 @@ ATMine:
 	Warhead@2Eff: CreateEffect
 		Explosions: large_explosion
 		ImpactSounds: mineblo1.aud
-	Warhead@3Smu: LeaveSmudge
+	Warhead@Smu: LeaveSmudge
 		SmudgeType: Crater
 		InvalidTargets: Structure, Wall, Trees
 
@@ -207,7 +207,7 @@ APMine:
 	Warhead@2Eff: CreateEffect
 		Explosions: napalm
 		ImpactSounds: mine1.aud
-	Warhead@3Smu: LeaveSmudge
+	Warhead@Smu: LeaveSmudge
 		SmudgeType: Scorch
 		InvalidTargets: Structure, Wall, Trees
 
@@ -221,10 +221,10 @@ OreExplosion:
 			Light: 60
 			Heavy: 25
 		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
-	Warhead@2Res: CreateResource
+	Warhead@3Res: CreateResource
 		AddsResourceType: Ore
 		Size: 1,1
-	Warhead@3Eff: CreateEffect
+	Warhead@2Eff: CreateEffect
 		Explosions: med_explosion
 		ImpactSounds: kaboom25.aud
 
@@ -243,34 +243,34 @@ CrateNuke:
 	Warhead@3Eff_impact: CreateEffect
 		Explosions: nuke
 		ImpactSounds: kaboom1.aud
-	Warhead@4Dam_areanuke: SpreadDamage
+	Warhead@4Dam_areanuke1: SpreadDamage
 		Spread: 1c0
 		Damage: 60
 		Falloff: 1000, 600, 400, 250, 150, 100, 0
-		Delay: 4
+		Delay: 5
 		ValidTargets: Ground, Water, Air
 		Versus:
 			Concrete: 25
 		AffectsParent: true
 		DamageTypes: Prone50Percent, TriggerProne, FireDeath, Incendiary
-	Warhead@5Dam_areanuke: SpreadDamage
+	Warhead@5Res_areanuke1: DestroyResource
+		Size: 4
+		Delay: 5
+	Warhead@6Eff_areanuke1: CreateEffect
+		ImpactSounds: kaboom22.aud
+		Delay: 5
+	Warhead@6Smu_areanuke1: LeaveSmudge
+		SmudgeType: Scorch
+		InvalidTargets: Vehicle, Tank, Structure, Wall, Trees
+		Size: 4
+		Delay: 5
+	Warhead@TREEKILL: SpreadDamage
 		Spread: 1c0
 		Damage: 120
 		Falloff: 1000, 600, 400, 250, 150, 100, 0
-		Delay: 4
+		Delay: 5
 		ValidTargets: Trees
 		DamageTypes: Incendiary
-	Warhead@6Res_areanuke: DestroyResource
-		Size: 5,4
-		Delay: 4
-	Warhead@7Smu_areanuke: LeaveSmudge
-		SmudgeType: Scorch
-		InvalidTargets: Vehicle, Tank, Structure, Wall, Trees
-		Size: 5,4
-		Delay: 4
-	Warhead@8Eff_areanuke: CreateEffect
-		ImpactSounds: kaboom22.aud
-		Delay: 4
 
 MiniNuke:
 	ValidTargets: Ground, Trees, Water, Underwater, Air
