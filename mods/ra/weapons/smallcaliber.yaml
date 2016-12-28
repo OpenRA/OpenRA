@@ -21,6 +21,55 @@ ZSU-23:
 	Warhead@2Eff: CreateEffect
 		Explosions: small_explosion_air
 
+FLAK-23-AA:
+	ReloadDelay: 10
+	Range: 8c0
+	Report: aacanon3.aud
+	ValidTargets: Air
+	Projectile: Bullet
+		Speed: 1c682
+		Blockable: false
+	Warhead@1Dam: SpreadDamage
+		Spread: 213
+		Damage: 20
+		ValidTargets: Air, Ground, Water
+		Versus:
+			None: 40
+			Wood: 10
+			Light: 60
+			Heavy: 10
+			Concrete: 20
+		DamageTypes: Prone50Percent, TriggerProne, DefaultDeath
+	Warhead@2EffAir: CreateEffect
+		Explosions: small_explosion_air
+		ValidImpactTypes: Air, AirHit
+
+FLAK-23-AG:
+	ReloadDelay: 10
+	Range: 6c0
+	Report: aacanon3.aud
+	ValidTargets: Ground, Water
+	Projectile: Bullet
+		Speed: 1c682
+		Blockable: false
+	Warhead@1Dam: SpreadDamage
+		Spread: 213
+		Damage: 20
+		ValidTargets: Air, Ground, Water
+		Versus:
+			None: 40
+			Wood: 10
+			Light: 60
+			Heavy: 10
+			Concrete: 20
+		DamageTypes: Prone50Percent, TriggerProne, DefaultDeath
+	Warhead@2Eff: CreateEffect
+		Explosions: small_explosion_air
+		InvalidImpactTypes: Air, AirHit
+	Warhead@3EffWater: CreateEffect
+		Explosions: small_splash
+		ValidImpactTypes: Water
+
 Vulcan:
 	ReloadDelay: 30
 	Range: 6c0
@@ -293,55 +342,6 @@ Colt45:
 		InvalidImpactTypes: Water
 	Warhead@3EffWater: CreateEffect
 		Explosions: water_piff
-		ValidImpactTypes: Water
-
-FLAK-23-AA:
-	ReloadDelay: 10
-	Range: 8c0
-	Report: aacanon3.aud
-	ValidTargets: Air
-	Projectile: Bullet
-		Speed: 1c682
-		Blockable: false
-	Warhead@1Dam: SpreadDamage
-		Spread: 213
-		Damage: 20
-		ValidTargets: Air, Ground, Water
-		Versus:
-			None: 40
-			Wood: 10
-			Light: 60
-			Heavy: 10
-			Concrete: 20
-		DamageTypes: Prone50Percent, TriggerProne, DefaultDeath
-	Warhead@2EffAir: CreateEffect
-		Explosions: small_explosion_air
-		ValidImpactTypes: Air, AirHit
-
-FLAK-23-AG:
-	ReloadDelay: 10
-	Range: 6c0
-	Report: aacanon3.aud
-	ValidTargets: Ground, Water
-	Projectile: Bullet
-		Speed: 1c682
-		Blockable: false
-	Warhead@1Dam: SpreadDamage
-		Spread: 213
-		Damage: 20
-		ValidTargets: Air, Ground, Water
-		Versus:
-			None: 40
-			Wood: 10
-			Light: 60
-			Heavy: 10
-			Concrete: 20
-		DamageTypes: Prone50Percent, TriggerProne, DefaultDeath
-	Warhead@2Eff: CreateEffect
-		Explosions: small_explosion_air
-		InvalidImpactTypes: Air, AirHit
-	Warhead@3EffWater: CreateEffect
-		Explosions: small_splash
 		ValidImpactTypes: Water
 
 Sniper:
