@@ -130,25 +130,12 @@ Atomic:
 		ImpactSounds: EXPLLG2.WAV
 
 CrateNuke:
+	Inherits: Atomic
 	Warhead@1Dam: SpreadDamage
 		Spread: 320
 		Falloff: 100, 60, 30, 15, 0
 		Damage: 500
-		Versus:
-			none: 90
-			wall: 50
-			building: 75
-			wood: 60
-			light: 60
-			heavy: 60
-			invulnerable: 0
-			cy: 25
-			harvester: 60
 		AffectsParent: true
-		DamageTypes: Prone50Percent, TriggerProne, SoundDeath
-	Warhead@2Eff: CreateEffect
-		Explosions: nuke
-		ImpactSounds: EXPLLG2.WAV
 
 CrateExplosion:
 	Warhead@1Dam: SpreadDamage
