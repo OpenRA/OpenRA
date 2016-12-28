@@ -324,6 +324,43 @@ StingerAA:
 		ImpactSounds: splash9.aud
 		ValidImpactTypes: Water
 
+APTusk:
+	ReloadDelay: 60
+	Range: 6c0
+	Report: missile6.aud
+	ValidTargets: Ground, Water
+	Projectile: Missile
+		Speed: 298
+		Arm: 2
+		Blockable: false
+		TrailImage: smokey
+		ContrailLength: 10
+		Inaccuracy: 128
+		Image: DRAGON
+		HorizontalRateOfTurn: 10
+		RangeLimit: 7c204
+	Warhead@1Dam: SpreadDamage
+		Spread: 128
+		Damage: 30
+		ValidTargets: Ground, Water
+		Versus:
+			None: 25
+			Wood: 75
+			Light: 75
+			Concrete: 50
+		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
+	Warhead@2Smu: LeaveSmudge
+		SmudgeType: Crater
+		InvalidTargets: Vehicle, Tank, Structure, Wall, Husk, Trees
+	Warhead@3Eff: CreateEffect
+		Explosions: med_explosion
+		ImpactSounds: kaboom25.aud
+		InvalidImpactTypes: Water
+	Warhead@4EffWater: CreateEffect
+		Explosions: med_splash
+		ImpactSounds: splash9.aud
+		ValidImpactTypes: Water
+
 TorpTube:
 	ReloadDelay: 100
 	Range: 9c0
@@ -444,42 +481,5 @@ SCUD:
 		InvalidImpactTypes: Water
 	Warhead@4EffWater: CreateEffect
 		Explosions: large_splash
-		ImpactSounds: splash9.aud
-		ValidImpactTypes: Water
-
-APTusk:
-	ReloadDelay: 60
-	Range: 6c0
-	Report: missile6.aud
-	ValidTargets: Ground, Water
-	Projectile: Missile
-		Speed: 298
-		Arm: 2
-		Blockable: false
-		TrailImage: smokey
-		ContrailLength: 10
-		Inaccuracy: 128
-		Image: DRAGON
-		HorizontalRateOfTurn: 10
-		RangeLimit: 7c204
-	Warhead@1Dam: SpreadDamage
-		Spread: 128
-		Damage: 30
-		ValidTargets: Ground, Water
-		Versus:
-			None: 25
-			Wood: 75
-			Light: 75
-			Concrete: 50
-		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
-	Warhead@2Smu: LeaveSmudge
-		SmudgeType: Crater
-		InvalidTargets: Vehicle, Tank, Structure, Wall, Husk, Trees
-	Warhead@3Eff: CreateEffect
-		Explosions: med_explosion
-		ImpactSounds: kaboom25.aud
-		InvalidImpactTypes: Water
-	Warhead@4EffWater: CreateEffect
-		Explosions: med_splash
 		ImpactSounds: splash9.aud
 		ValidImpactTypes: Water
