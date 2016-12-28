@@ -246,6 +246,10 @@ GameSpeeds:
 		Name: Normal
 		Timestep: 40
 		OrderLatency: 3
+	fast:
+		Name: Fast
+		Timestep: 35
+		OrderLatency: 4
 	faster:
 		Name: Faster
 		Timestep: 30
