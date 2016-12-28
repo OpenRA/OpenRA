@@ -111,17 +111,6 @@ UnitExplodeSmall:
 		SmudgeType: Crater
 		InvalidTargets: Structure, Wall, Trees
 
-CivBuildingExplosion:
-	Warhead@1Dam: SpreadDamage # Used to panic civilians which are emitted from a killed CivBuilding
-		Spread: 64
-		Damage: 1
-		Delay: 1
-	Warhead@2Eff: CreateEffect
-		Explosions: building, building_napalm, large_explosion, self_destruct
-	Warhead@Smu: LeaveSmudge
-		SmudgeType: Crater
-		InvalidTargets: Wall, Trees
-
 ArtilleryExplode:
 	Warhead@1Dam: SpreadDamage
 		Spread: 426
@@ -156,11 +145,16 @@ BuildingExplode:
 		InvalidTargets: Wall, Trees
 
 SmallBuildingExplode:
+	Inherits: BuildingExplode
 	Warhead@2Eff: CreateEffect
 		Explosions: building, building_napalm, large_explosion, self_destruct
-	Warhead@Smu: LeaveSmudge
-		SmudgeType: Crater
-		InvalidTargets: Wall, Trees
+
+CivBuildingExplosion:
+	Inherits: SmallBuildingExplode
+	Warhead@1Dam: SpreadDamage # Used to panic civilians which are emitted from a killed CivBuilding
+		Spread: 64
+		Damage: 1
+		Delay: 1
 
 BarrelExplode:
 	Warhead@1Dam: SpreadDamage
