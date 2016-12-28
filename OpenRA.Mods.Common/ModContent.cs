@@ -43,17 +43,23 @@ namespace OpenRA
 			public readonly SourceType Type = SourceType.Disc;
 
 			// Used to find installation locations for SourceType.Install
+			public readonly string[] RegistryPrefixes = { string.Empty };
 			public readonly string RegistryKey;
 			public readonly string RegistryValue;
 
 			public readonly string Title;
-			public readonly Dictionary<string, string> IDFiles;
 
+			[FieldLoader.Ignore] public readonly MiniYaml IDFiles;
 			[FieldLoader.Ignore] public readonly List<MiniYamlNode> Install;
 
 			public ModSource(MiniYaml yaml)
 			{
 				Title = yaml.Value;
+
+				var idFiles = yaml.Nodes.FirstOrDefault(n => n.Key == "IDFiles");
+				if (idFiles != null)
+					IDFiles = idFiles.Value;
+
 				var installNode = yaml.Nodes.FirstOrDefault(n => n.Key == "Install");
 				if (installNode != null)
 					Install = installNode.Value.Nodes;
