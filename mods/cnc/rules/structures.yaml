@@ -633,7 +633,7 @@ TMPL:
 		BeaconPoster: atomic
 		BeaconPosterPalette: beaconposter
 		DisplayRadarPing: True
-		CameraActor: camera
+		CameraRange: 10c0
 	SupportPowerChargeBar:
 	Power:
 		Amount: -150

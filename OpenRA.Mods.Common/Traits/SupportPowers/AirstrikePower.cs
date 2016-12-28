@@ -176,7 +176,8 @@ namespace OpenRA.Mods.Common.Traits
 						Info.ArrowSequence,
 						Info.CircleSequence,
 						Info.ClockSequence,
-							() => 1 - ((distanceTestActor.CenterPosition - target).HorizontalLength - info.BeaconDistanceOffset.Length) * 1f / distance);
+						() => 1 - ((distanceTestActor.CenterPosition - target).HorizontalLength - info.BeaconDistanceOffset.Length) * 1f / distance,
+						Info.BeaconDelay);
 
 					w.Add(beacon);
 				}

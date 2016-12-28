@@ -36,8 +36,8 @@ MSLO:
 		DisplayBeacon: True
 		DisplayRadarPing: True
 		BeaconPoster: atomicon
-		CameraActor: camera
 		FlashType: Nuke
+		CameraRange: 10c0
 	CanPowerDown:
 		PowerupSound: EnablePower
 		PowerdownSound: DisablePower

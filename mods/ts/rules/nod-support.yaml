@@ -272,6 +272,6 @@ NAMISL:
 		DisplayBeacon: False
 		DisplayRadarPing: True
 		BeaconPoster:
-		CameraActor: camera
+		CameraRange: 10c0
 	SelectionDecorations:
 		VisualBounds: 75,48

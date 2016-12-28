@@ -138,6 +138,7 @@
     <Compile Include="Effects\Contrail.cs" />
     <Compile Include="Effects\ContrailFader.cs" />
     <Compile Include="Effects\CrateEffect.cs" />
+    <Compile Include="Effects\RevealShroudEffect.cs" />
     <Compile Include="Effects\FlashTarget.cs" />
     <Compile Include="Effects\FloatingText.cs" />
     <Compile Include="Effects\PowerdownIndicator.cs" />

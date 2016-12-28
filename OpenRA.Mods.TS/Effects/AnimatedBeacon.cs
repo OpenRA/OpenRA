@@ -27,15 +27,17 @@ namespace OpenRA.Mods.TS.Effects
 		readonly Animation beacon;
 		readonly int duration;
 
+		int delay;
 		int tick;
 
-		public AnimatedBeacon(Player owner, WPos position, int duration, string beaconPalette, bool isPlayerPalette, string beaconImage, string beaconSequence)
+		public AnimatedBeacon(Player owner, WPos position, int duration, string beaconPalette, bool isPlayerPalette, string beaconImage, string beaconSequence, int delay = 0)
 		{
 			this.owner = owner;
 			this.position = position;
 			this.beaconPalette = beaconPalette;
 			this.isPlayerPalette = isPlayerPalette;
 			this.duration = duration;
+			this.delay = delay;
 
 			if (!string.IsNullOrEmpty(beaconSequence))
 			{
@@ -49,6 +51,9 @@ namespace OpenRA.Mods.TS.Effects
 
 		void IEffect.Tick(World world)
 		{
+			if (delay-- > 0)
+				return;
+
 			if (beacon != null)
 				beacon.Tick();
 
@@ -60,6 +65,9 @@ namespace OpenRA.Mods.TS.Effects
 
 		IEnumerable<IRenderable> IEffectAboveShroud.RenderAboveShroud(WorldRenderer r)
 		{
+			if (delay > 0)
+				return SpriteRenderable.None;
+
 			if (beacon == null)
 				return SpriteRenderable.None;
 
