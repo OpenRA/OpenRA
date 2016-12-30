@@ -22,12 +22,14 @@ mkdir "${DEB_BUILD_ROOT}"
 cp -R DEBIAN "${DEB_BUILD_ROOT}"
 cp -R "${LINUX_BUILD_ROOT}/usr" "${DEB_BUILD_ROOT}"
 cp -R Eluant.dll.config "${DEB_BUILD_ROOT}/${LIBDIR}/"
+chmod 0644 "${DEB_BUILD_ROOT}/${LIBDIR}/"*.dll
+chmod 0644 "${DEB_BUILD_ROOT}/${LIBDIR}/"*/**/*.dll
 
 # Binaries go in /usr/games
 mv "${DEB_BUILD_ROOT}/usr/bin/" "${DEB_BUILD_ROOT}/usr/games/"
 sed "s|/usr/bin|/usr/games|g" "${DEB_BUILD_ROOT}/usr/games/openra" > temp
 mv -f temp "${DEB_BUILD_ROOT}/usr/games/openra"
-chmod +x "${DEB_BUILD_ROOT}/usr/games/openra"
+chmod 0755 "${DEB_BUILD_ROOT}/usr/games/openra"*
 
 # Put the copyright and changelog in /usr/share/doc/openra/
 mkdir -p "${DEB_BUILD_ROOT}/${DOCDIR}"
