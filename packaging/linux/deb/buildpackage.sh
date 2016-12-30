@@ -32,9 +32,8 @@ sed "s|/usr/bin|/usr/games|g" "${DEB_BUILD_ROOT}/usr/games/openra" > temp
 mv -f temp "${DEB_BUILD_ROOT}/usr/games/openra"
 chmod 0755 "${DEB_BUILD_ROOT}/usr/games/openra"*
 
-# Link and compress the man pages
+# Compress the man page
 gzip -9n "${DEB_BUILD_ROOT}/usr/share/man/man6/openra.6"
-ln -s openra.6.gz "${DEB_BUILD_ROOT}/usr/share/man/man6/openra-server.6.gz"
 
 # Put the copyright and changelog in /usr/share/doc/openra/
 mkdir -p "${DEB_BUILD_ROOT}/${DOCDIR}"

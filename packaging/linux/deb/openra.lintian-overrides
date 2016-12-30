@@ -1,2 +1,3 @@
 openra: duplicate-font-file usr/lib/openra/mods/common/FreeSans.ttf also in fonts-freefont-ttf
 openra: duplicate-font-file usr/lib/openra/mods/common/FreeSansBold.ttf also in fonts-freefont-ttf
+openra: binary-without-manpage usr/games/openra-server
