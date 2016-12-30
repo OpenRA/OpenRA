@@ -43,8 +43,8 @@ gzip -9 "${DEB_BUILD_ROOT}/${DOCDIR}/AUTHORS"
 DATE=`date -R`
 
 echo -e "openra (${VERSION}) unstable; urgency=low\n" > "${DEB_BUILD_ROOT}/${DOCDIR}/changelog"
-cat "../../../Changelog.md" >> "${DEB_BUILD_ROOT}/${DOCDIR}/changelog"
-echo -e "\n\n-- Paul Chote <paul@chote.net> ${DATE}" >> "${DEB_BUILD_ROOT}/${DOCDIR}/changelog"
+echo -e "  * New upstream release: $TAG" >> "${DEB_BUILD_ROOT}/${DOCDIR}/changelog"
+echo -e "\n -- Paul Chote <paul@chote.net>  ${DATE}" >> "${DEB_BUILD_ROOT}/${DOCDIR}/changelog"
 gzip -9 "${DEB_BUILD_ROOT}/${DOCDIR}/changelog"
 rm "${DEB_BUILD_ROOT}/${LIBDIR}/COPYING"
 
