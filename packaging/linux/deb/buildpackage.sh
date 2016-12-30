@@ -6,6 +6,7 @@ DEB_BUILD_ROOT=./root
 
 LIBDIR=/usr/lib/openra
 DOCDIR=/usr/share/doc/openra
+LINTIANORDIR=/usr/share/lintian/overrides
 
 E_BADARGS=85
 if [ $# -ne "3" ]
@@ -41,6 +42,10 @@ cp copyright "${DEB_BUILD_ROOT}/${DOCDIR}/copyright"
 cp "${DEB_BUILD_ROOT}/${LIBDIR}/AUTHORS" "${DEB_BUILD_ROOT}/${DOCDIR}"
 gzip -9 "${DEB_BUILD_ROOT}/${DOCDIR}/AUTHORS"
 DATE=`date -R`
+
+# Put the lintian overrides in /usr/share/lintian/overrides/
+mkdir -p "${DEB_BUILD_ROOT}/${LINTIANORDIR}"
+cp openra.lintian-overrides "${DEB_BUILD_ROOT}/${LINTIANORDIR}/openra"
 
 echo -e "openra (${VERSION}) unstable; urgency=low\n" > "${DEB_BUILD_ROOT}/${DOCDIR}/changelog"
 echo -e "  * New upstream release: $TAG" >> "${DEB_BUILD_ROOT}/${DOCDIR}/changelog"
