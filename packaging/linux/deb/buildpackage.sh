@@ -61,7 +61,7 @@ sed "s/{VERSION}/$VERSION/" DEBIAN/control | sed "s/{SIZE}/$PACKAGE_SIZE/" > "${
 pushd "${DEB_BUILD_ROOT}" >/dev/null
 
 # Calculate md5sums and clean up the ./usr/ part of them
-find . -type f -not -path "./DEBIAN/*" -print0 | xargs -0 -n1 md5sum | sed 's|\./usr/|/usr/|' > DEBIAN/md5sums
+find . -type f -not -path "./DEBIAN/*" -print0 | xargs -0 -n1 md5sum | sed 's|\./usr/|usr/|' > DEBIAN/md5sums
 chmod 0644 DEBIAN/md5sums
 
 # Replace any dashes in the version string with periods
