@@ -505,7 +505,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			TicksBeforePathing = AverageTicksBeforePathing + self.World.SharedRandom.Next(-SpreadTicksBeforePathing, SpreadTicksBeforePathing);
 
-			self.QueueActivity(new Move(self, currentLocation, WDist.FromCells(8)));
+			self.QueueActivity(new Move(self, currentLocation, WDist.FromCells(4)));
 
 			self.SetTargetLine(Target.FromCell(self.World, currentLocation), Color.Green);
 		}
