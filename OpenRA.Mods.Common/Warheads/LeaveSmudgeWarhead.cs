@@ -25,10 +25,19 @@ namespace OpenRA.Mods.Common.Warheads
 		[Desc("Type of smudge to apply to terrain.")]
 		public readonly HashSet<string> SmudgeType = new HashSet<string>();
 
+		[Desc("How close to ground must the impact happen to spawn smudges.")]
+		public readonly WDist AirThreshold = new WDist(128);
+
 		public override void DoImpact(Target target, Actor firedBy, IEnumerable<int> damageModifiers)
 		{
 			var world = firedBy.World;
-			var targetTile = world.Map.CellContaining(target.CenterPosition);
+			var pos = target.CenterPosition;
+			var dat = world.Map.DistanceAboveTerrain(pos);
+
+			if (dat > AirThreshold)
+				return;
+
+			var targetTile = world.Map.CellContaining(pos);
 			var smudgeLayers = world.WorldActor.TraitsImplementing<SmudgeLayer>().ToDictionary(x => x.Info.Type);
 
 			var minRange = (Size.Length > 1 && Size[1] > 0) ? Size[1] : 0;
