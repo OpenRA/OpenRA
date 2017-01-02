@@ -61,7 +61,7 @@ ArtilleryShell:
 	Inherits: ^BallisticWeapon
 	ReloadDelay: 65
 	Range: 11c0
-	MinRange: 2c896
+	MinRange: 3c0
 	Report: tnkfire2.aud
 	Projectile: Bullet
 		Speed: 204

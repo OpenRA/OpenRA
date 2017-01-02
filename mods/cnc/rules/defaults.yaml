@@ -292,7 +292,7 @@
 		RequiresCondition: hazmatsuits
 	ActorLostNotification:
 	SpawnActorOnDeath:
-		Probability: 10
+		Probability: 5
 		Actor: vice
 		OwnerType: InternalName
 		InternalOwner: Creeps
@@ -811,7 +811,7 @@
 	Husk:
 		AllowedTerrain: Clear, Rough, Road, Tiberium, BlueTiberium, Beach
 	Burns:
-		Interval: 2
+		Interval: 6
 	Targetable:
 		RequiresForceFire: yes
 		TargetTypes: Ground, Husk

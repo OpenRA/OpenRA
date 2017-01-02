@@ -12,10 +12,10 @@
 		ValidTargets: Ground, Water, Trees
 		InvalidTargets: Wall
 		Versus:
-			None: 100
+			None: 110
 			Wood: 100
 			Light: 100
-			Heavy: 20
+			Heavy: 10
 		DamageTypes: Prone50Percent, TriggerProne, FireDeath, Incendiary
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Scorch
@@ -53,10 +53,10 @@ Chemspray:
 		Spread: 256
 		Damage: 80
 		Versus:
-			None: 100
+			None: 70
 			Wood: 35
 			Light: 75
-			Heavy: 50
+			Heavy: 75
 		DamageTypes: Prone50Percent, TriggerProne, TiberiumDeath
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Scorch
@@ -73,7 +73,7 @@ Grenade:
 		Speed: 140
 		Blockable: false
 		LaunchAngle: 62
-		Inaccuracy: 213
+		Inaccuracy: 813
 		Image: BOMB
 	Warhead@1Dam: SpreadDamage
 		Spread: 341

@@ -8,7 +8,7 @@ FACT:
 		Footprint: xxx xxx
 		Dimensions: 3,2
 	Health:
-		HP: 2000
+		HP: 2100
 	Armor:
 		Type: Wood
 	RevealsShroud:
@@ -156,7 +156,7 @@ PROC:
 		Footprint: _x_ xxx ===
 		Dimensions: 3,3
 	Health:
-		HP: 900
+		HP: 1000
 	RevealsShroud:
 		Range: 6c0
 	Bib:
@@ -170,18 +170,18 @@ PROC:
 	StoresResources:
 		PipColor: Green
 		PipCount: 10
-		Capacity: 2000
+		Capacity: 700
 	Selectable:
 		Bounds: 72,56,0,12
 	CustomSellValue:
-		Value: 500
+		Value: 0
 	FreeActor:
 		Actor: HARV
 		SpawnOffset: 1,2
 		Facing: 64
 	WithResources:
 	Power:
-		Amount: -50
+		Amount: -40
 	ProvidesPrerequisite@buildingname:
 	SelectionDecorations:
 		VisualBounds: 73,72
@@ -202,7 +202,7 @@ SILO:
 		Dimensions: 2,1
 	-GivesBuildableArea:
 	Health:
-		HP: 400
+		HP: 500
 	RevealsShroud:
 		Range: 4c0
 	Bib:
@@ -214,7 +214,7 @@ SILO:
 	StoresResources:
 		PipCount: 10
 		PipColor: Green
-		Capacity: 2000
+		Capacity: 3000
 	-EmitInfantryOnSell:
 	Power:
 		Amount: -10
@@ -240,7 +240,7 @@ PYLE:
 		Footprint: xx xx
 		Dimensions: 2,2
 	Health:
-		HP: 500
+		HP: 600
 	RevealsShroud:
 		Range: 5c0
 	Bib:
@@ -282,7 +282,7 @@ HAND:
 		Footprint: xx xx
 		Dimensions: 2,2
 	Health:
-		HP: 500
+		HP: 600
 	RevealsShroud:
 		Range: 5c0
 	Bib:
@@ -324,7 +324,7 @@ AFLD:
 		Footprint: xxxx xxxx
 		Dimensions: 4,2
 	Health:
-		HP: 1000
+		HP: 1100
 	RevealsShroud:
 		Range: 7c0
 	Bib:
@@ -346,7 +346,7 @@ AFLD:
 		ReadyAudio:
 	ProductionBar:
 	Power:
-		Amount: -30
+		Amount: -50
 	ProvidesPrerequisite@buildingname:
 
 WEAP:
@@ -370,7 +370,7 @@ WEAP:
 	SelectionDecorations:
 		VisualBounds: 72,64,0,-16
 	Health:
-		HP: 1000
+		HP: 1100
 	RevealsShroud:
 		Range: 4c0
 	Bib:
@@ -391,7 +391,7 @@ WEAP:
 		LowPowerSlowdown: 3
 	ProductionBar:
 	Power:
-		Amount: -30
+		Amount: -50
 	ProvidesPrerequisite@buildingname:
 
 HPAD:
@@ -409,7 +409,7 @@ HPAD:
 		Footprint: xx xx
 		Dimensions: 2,2
 	Health:
-		HP: 500
+		HP: 600
 	RevealsShroud:
 		Range: 5c0
 	Exit@1:
@@ -467,7 +467,7 @@ HQ:
 	WithSpriteBody:
 		PauseAnimationWhenDisabled: true
 	Health:
-		HP: 700
+		HP: 800
 	RevealsShroud:
 		Range: 10c0
 	Bib:
@@ -478,7 +478,7 @@ HQ:
 	AirstrikePower:
 		Prerequisites: ~techlevel.superweapons
 		Icon: airstrike
-		ChargeTime: 210
+		ChargeTime: 240
 		SquadSize: 3
 		QuantizedFacings: 8
 		Description: Air Strike
@@ -495,7 +495,7 @@ HQ:
 		CameraActor: camera
 	SupportPowerChargeBar:
 	Power:
-		Amount: -40
+		Amount: -50
 
 FIX:
 	Inherits: ^BaseBuilding
@@ -516,7 +516,7 @@ FIX:
 	SelectionDecorations:
 		VisualBounds: 72,48
 	Health:
-		HP: 700
+		HP: 800
 	RevealsShroud:
 		Range: 5c0
 	Bib:
@@ -559,7 +559,7 @@ EYE:
 	WithSpriteBody:
 		PauseAnimationWhenDisabled: true
 	Health:
-		HP: 1200
+		HP: 1300
 	RevealsShroud:
 		Range: 10c0
 	Bib:
@@ -571,7 +571,7 @@ EYE:
 		Prerequisites: ~techlevel.superweapons
 		Icon: ioncannon
 		Cursor: ioncannon
-		ChargeTime: 180
+		ChargeTime: 270
 		Description: Ion Cannon
 		LongDesc: Initiate an Ion Cannon strike.\nApplies instant damage to a small area.
 		BeginChargeSpeechNotification: IonCannonCharging
@@ -612,15 +612,18 @@ TMPL:
 		PowerdownSound: DisablePower
 	DisabledOverlay:
 	Health:
-		HP: 2000
+		HP: 2100
 	RevealsShroud:
 		Range: 6c0
 	Bib:
+	RenderDetectionCircle:
+	DetectCloaked:
+		Range: 5c0
 	NukePower:
 		Prerequisites: ~techlevel.superweapons
 		Icon: abomb
 		Cursor: nuke
-		ChargeTime: 300
+		ChargeTime: 360
 		Description: Nuclear Strike
 		LongDesc: Launch a tactical nuclear warhead.\nApplies heavy damage over a large area.
 		EndChargeSpeechNotification: NuclearWeaponAvailable
@@ -654,7 +657,7 @@ GUN:
 		Description: Basic Anti-Tank base defense.\n  Strong vs Tanks, vehicles\n  Weak vs Infantry
 	Building:
 	Health:
-		HP: 400
+		HP: 410
 	Armor:
 		Type: Heavy
 	RevealsShroud:
@@ -703,7 +706,7 @@ SAM:
 	Armor:
 		Type: Heavy
 	RevealsShroud:
-		Range: 8c0
+		Range: 6c0
 	Turreted:
 		TurnSpeed: 10
 		InitialFacing: 0
@@ -762,7 +765,7 @@ OBLI:
 	DetectCloaked:
 		Range: 5c0
 	Power:
-		Amount: -150
+		Amount: -90
 
 GTWR:
 	Inherits: ^Defense
@@ -819,7 +822,7 @@ ATWR:
 	RequiresPower:
 	DisabledOverlay:
 	Health:
-		HP: 600
+		HP: 550
 	Armor:
 		Type: Heavy
 	RevealsShroud:
