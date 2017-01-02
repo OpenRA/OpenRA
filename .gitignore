@@ -23,7 +23,6 @@ mods/*/*.dll
 mods/*/*.mdb
 mods/*/*.pdb
 /*.dll
-/*.dll.config
 /*.so
 /*.dylib
 /*.pdb
@@ -31,6 +30,9 @@ mods/*/*.pdb
 /*.exe
 thirdparty/download/*
 *.mmdb.gz
+
+# dynamically generated DLL mappings
+/Eluant.dll.config
 
 # backup files by various editors
 *~

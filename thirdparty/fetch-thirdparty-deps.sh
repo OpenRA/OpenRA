@@ -98,18 +98,6 @@ if [ ! -f FuzzyLogicLibrary.dll ]; then
 	rm -rf FuzzyLogicLibrary
 fi
 
-if [ ! -f SDL2-CS.dll -o ! -f SDL2-CS.dll.config ]; then
-	echo "Fetching SDL2-CS from GitHub."
-	curl -s -L -O https://github.com/OpenRA/SDL2-CS/releases/download/20151227/SDL2-CS.dll
-	curl -s -L -O https://github.com/OpenRA/SDL2-CS/releases/download/20151227/SDL2-CS.dll.config
-fi
-
-if [ ! -f OpenAL-CS.dll -o ! -f OpenAL-CS.dll.config ]; then
-	echo "Fetching OpenAL-CS from GitHub."
-	curl -s -L -O https://github.com/OpenRA/OpenAL-CS/releases/download/20151227/OpenAL-CS.dll
-	curl -s -L -O https://github.com/OpenRA/OpenAL-CS/releases/download/20151227/OpenAL-CS.dll.config
-fi
-
 if [ ! -f Eluant.dll ]; then
 	echo "Fetching Eluant from GitHub."
 	curl -s -L -O https://github.com/OpenRA/Eluant/releases/download/20160124/Eluant.dll

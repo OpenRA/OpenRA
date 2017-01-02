@@ -118,7 +118,7 @@ pdefault_SRCS := $(shell find OpenRA.Platforms.Default/ -iname '*.cs')
 pdefault_TARGET = OpenRA.Platforms.Default.dll
 pdefault_KIND = library
 pdefault_DEPS = $(game_TARGET)
-pdefault_LIBS = $(COMMON_LIBS) thirdparty/download/SDL2-CS.dll thirdparty/download/OpenAL-CS.dll $(pdefault_DEPS)
+pdefault_LIBS = $(COMMON_LIBS) $(pdefault_DEPS)
 PROGRAMS += pdefault
 platforms: $(pdefault_TARGET)
 
@@ -330,7 +330,8 @@ mods: mod_common mod_ra mod_cnc mod_d2k mod_ts
 all: dependencies core tools
 
 clean:
-	@-$(RM_F) *.exe *.dll *.dylib *.dll.config ./OpenRA*/*.dll ./OpenRA*/*.mdb *.mdb mods/**/*.dll mods/**/*.mdb *.resources
+	@-$(RM_F) Eluant.dll.config
+	@-$(RM_F) *.exe *.dll *.dylib ./OpenRA*/*.dll ./OpenRA*/*.mdb *.mdb mods/**/*.dll mods/**/*.mdb *.resources
 	@-$(RM_RF) ./*/bin ./*/obj
 	@-$(RM_RF) ./thirdparty/download
 
@@ -403,8 +404,7 @@ install-core: default
 
 	@$(CP_R) glsl "$(DATA_INSTALL_DIR)"
 	@$(CP_R) lua "$(DATA_INSTALL_DIR)"
-	@$(CP) SDL2-CS* "$(DATA_INSTALL_DIR)"
-	@$(CP) OpenAL-CS* "$(DATA_INSTALL_DIR)"
+	@$(CP) OpenRA.Platforms.Default.dll.config "$(DATA_INSTALL_DIR)"
 	@$(CP) Eluant* "$(DATA_INSTALL_DIR)"
 	@$(INSTALL_PROGRAM) ICSharpCode.SharpZipLib.dll "$(DATA_INSTALL_DIR)"
 	@$(INSTALL_PROGRAM) FuzzyLogicLibrary.dll "$(DATA_INSTALL_DIR)"
