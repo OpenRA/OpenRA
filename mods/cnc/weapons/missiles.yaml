@@ -31,6 +31,37 @@
 		Explosions: small_frag
 		ImpactSounds: xplos.aud
 
+Dragon:
+	Inherits: ^MissileWeapon
+	ReloadDelay: 20
+	Range: 12c0
+	Report: rocket2.aud
+	ValidTargets: Air
+	Burst: 2
+	BurstDelay: 5
+	Projectile: Missile
+		Speed: 426
+		Arm: 0
+		Blockable: false
+		TrailImage: smokey
+		ContrailLength: 8
+		Inaccuracy: 128
+		Image: DRAGON
+		HorizontalRateOfTurn: 20
+		RangeLimit: 15c0
+	Warhead@1Dam: SpreadDamage
+		Spread: 128
+		Damage: 35
+		ValidTargets: Air
+		Versus:
+			None: 100
+			Wood: 100
+			Light: 100
+			Heavy: 75
+	Warhead@3Eff: CreateEffect
+		Explosions: small_building
+		ImpactSounds: xplos.aud
+
 Rockets:
 	Inherits: ^MissileWeapon
 
@@ -43,7 +74,7 @@ BikeRockets:
 		Speed: 213
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
-		Damage: 30
+		Damage: 31
 		Versus:
 			None: 25
 			Wood: 75
@@ -114,7 +145,7 @@ MammothMissiles:
 227mm:
 	Inherits: ^MissileWeapon
 	ReloadDelay: 100
-	Range: 12c0
+	Range: 11c0
 	MinRange: 3c0
 	Burst: 4
 	BurstDelay: 4
@@ -132,7 +163,7 @@ MammothMissiles:
 		Damage: 25
 		ValidTargets: Ground
 		Versus:
-			None: 35
+			None: 25
 			Wood: 60
 			Light: 100
 			Heavy: 50

@@ -3,9 +3,9 @@ Sniper:
 	ValidTargets: Ground, Infantry
 	InvalidTargets: Vehicle, Water, Structure, Wall, Husk
 	ReloadDelay: 40
-	Range: 6c0
+	Range: 8c0
 	Projectile: Bullet
-		Speed: 1c682
+		Speed: 5c682
 	Warhead@1Dam: SpreadDamage
 		Spread: 42
 		Damage: 100
@@ -126,7 +126,7 @@ APCGun:
 		Versus:
 			None: 50
 			Wood: 50
-			Light: 105
+			Light: 100
 			Heavy: 50
 		DamageTypes: Prone50Percent, TriggerProne, DefaultDeath
 	Warhead@2Eff: CreateEffect
