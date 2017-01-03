@@ -124,6 +124,10 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			var c = target.TraitOrDefault<ExternalCapturable>();
 
+			var stances = modifiers == TargetModifiers.ForceAttack ? c.Info.ForceTargetStances : c.Info.TargetStances;
+			if (!stances.HasStance(self.Owner.Stances[target.Owner]))
+				return false;
+
 			var canTargetActor = c != null && !c.CaptureInProgress && c.Info.CanBeTargetedBy(self, target.Owner);
 			var capturesInfo = self.Trait<ExternalCaptures>().Info;
 			cursor = canTargetActor ? capturesInfo.CaptureCursor : capturesInfo.CaptureBlockedCursor;

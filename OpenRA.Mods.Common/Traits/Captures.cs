@@ -113,6 +113,10 @@ namespace OpenRA.Mods.Common.Traits
 					return false;
 				}
 
+				var stances = modifiers == TargetModifiers.ForceAttack ? c.ForceTargetStances : c.TargetStances;
+				if (!stances.HasStance(self.Owner.Stances[target.Owner]))
+					return false;
+
 				var health = target.Trait<Health>();
 				var lowEnoughHealth = health.HP <= c.CaptureThreshold * health.MaxHP / 100;
 
