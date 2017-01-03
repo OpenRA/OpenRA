@@ -15,7 +15,6 @@
 		RemoveInstead: true
 	Buildable:
 		Queue: Building
-		Prerequisites: construction_yard
 		BuildPaletteOrder: 10
 		Description: Provides a strong foundation that prevents\ndamage from the terrain.
 
@@ -27,6 +26,7 @@ concretea:
 	Valued:
 		Cost: 20
 	Buildable:
+		BuildPaletteOrder: 10
 		BuildDuration: 54
 		BuildDurationModifier: 40
 
@@ -38,7 +38,8 @@ concreteb:
 	Valued:
 		Cost: 50
 	Buildable:
-		Prerequisites: construction_yard, upgrade.conyard
+		BuildPaletteOrder: 40
+		Prerequisites: upgrade.conyard
 		BuildDuration: 81
 		BuildDurationModifier: 40
 
@@ -111,8 +112,7 @@ wind_trap:
 	Inherits: ^Building
 	Buildable:
 		Queue: Building
-		Prerequisites: construction_yard
-		BuildPaletteOrder: 10
+		BuildPaletteOrder: 20
 		BuildDuration: 180
 		BuildDurationModifier: 40
 		Description: Provides power for other structures
@@ -149,9 +149,9 @@ wind_trap:
 barracks:
 	Inherits: ^Building
 	Buildable:
-		Prerequisites: construction_yard, wind_trap
+		Prerequisites: wind_trap
 		Queue: Building
-		BuildPaletteOrder: 40
+		BuildPaletteOrder: 50
 		BuildDuration: 231
 		BuildDurationModifier: 40
 		Description: Trains infantry
@@ -223,9 +223,9 @@ barracks:
 refinery:
 	Inherits: ^Building
 	Buildable:
-		Prerequisites: construction_yard, wind_trap
+		Prerequisites: wind_trap
 		Queue: Building
-		BuildPaletteOrder: 20
+		BuildPaletteOrder: 30
 		BuildDuration: 540
 		BuildDurationModifier: 40
 		Description: Harvesters unload Spice here for processing
@@ -278,9 +278,9 @@ refinery:
 silo:
 	Inherits: ^Building
 	Buildable:
-		Prerequisites: construction_yard, refinery
+		Prerequisites: refinery
 		Queue: Building
-		BuildPaletteOrder: 30
+		BuildPaletteOrder: 120
 		BuildDuration: 135
 		BuildDurationModifier: 40
 		Description: Stores excess harvested Spice
@@ -325,9 +325,9 @@ silo:
 light_factory:
 	Inherits: ^Building
 	Buildable:
-		Prerequisites: construction_yard, refinery
+		Prerequisites: refinery
 		Queue: Building
-		BuildPaletteOrder: 70
+		BuildPaletteOrder: 60
 		BuildDuration: 277
 		BuildDurationModifier: 40
 		Description: Produces light vehicles
@@ -403,9 +403,9 @@ light_factory:
 heavy_factory:
 	Inherits: ^Building
 	Buildable:
-		Prerequisites: construction_yard, refinery
+		Prerequisites: refinery
 		Queue: Building
-		BuildPaletteOrder: 100
+		BuildPaletteOrder: 90
 		BuildDuration: 648
 		BuildDurationModifier: 40
 		Description: Produces heavy vehicles
@@ -488,9 +488,9 @@ outpost:
 		PowerdownSound: DisablePower
 	DisabledOverlay:
 	Buildable:
-		Prerequisites: construction_yard, barracks, ~techlevel.medium
+		Prerequisites: barracks, ~techlevel.medium
 		Queue: Building
-		BuildPaletteOrder: 50
+		BuildPaletteOrder: 80
 		BuildDuration: 270
 		BuildDurationModifier: 40
 		Description: Provides a radar map of the battlefield\n  Requires power to operate
@@ -530,9 +530,9 @@ starport:
 	Tooltip:
 		Name: Starport
 	Buildable:
-		Prerequisites: construction_yard, heavy_factory, outpost, ~techlevel.high
+		Prerequisites: heavy_factory, outpost, ~techlevel.high
 		Queue: Building
-		BuildPaletteOrder: 80
+		BuildPaletteOrder: 70
 		BuildDuration: 540
 		BuildDurationModifier: 40
 		Description: Dropzone for quick reinforcements, at a price.\n  Requires power to operate
@@ -602,8 +602,8 @@ wall:
 	HiddenUnderShroud:
 	Buildable:
 		Queue: Building
-		Prerequisites: construction_yard, barracks
-		BuildPaletteOrder: 60
+		Prerequisites: barracks
+		BuildPaletteOrder: 130
 		BuildDuration: 54
 		BuildDurationModifier: 40
 		Description: Stop units and blocks enemy fire.
@@ -654,8 +654,8 @@ medium_gun_turret:
 	Inherits: ^Defense
 	Buildable:
 		Queue: Building
-		Prerequisites: construction_yard, barracks
-		BuildPaletteOrder: 90
+		Prerequisites: barracks
+		BuildPaletteOrder: 100
 		BuildDuration: 231
 		BuildDurationModifier: 40
 		Description: Defensive structure\n  Strong vs Tanks\n  Weak vs Infantry, Aircraft
@@ -696,8 +696,8 @@ large_gun_turret:
 	Inherits: ^Defense
 	Buildable:
 		Queue: Building
-		Prerequisites: construction_yard, outpost, upgrade.conyard, ~techlevel.medium
-		BuildPaletteOrder: 120
+		Prerequisites: outpost, upgrade.conyard, ~techlevel.medium
+		BuildPaletteOrder: 110
 		BuildDuration: 270
 		BuildDurationModifier: 40
 		Description: Defensive structure\n  Strong vs Infantry, Aircraft\n  Weak vs Tanks\n\n  Requires power to operate
@@ -741,8 +741,8 @@ repair_pad:
 	Inherits: ^Building
 	Buildable:
 		Queue: Building
-		Prerequisites: construction_yard, heavy_factory, upgrade.heavy, ~techlevel.medium
-		BuildPaletteOrder: 130
+		Prerequisites: heavy_factory, upgrade.heavy, ~techlevel.medium
+		BuildPaletteOrder: 150
 		BuildDuration: 324
 		BuildDurationModifier: 40
 		Description: Repairs vehicles\n Allows construction of MCVs
@@ -787,9 +787,9 @@ repair_pad:
 high_tech_factory:
 	Inherits: ^Building
 	Buildable:
-		Prerequisites: construction_yard, outpost, ~techlevel.medium
+		Prerequisites: outpost, ~techlevel.medium
 		Queue: Building
-		BuildPaletteOrder: 110
+		BuildPaletteOrder: 140
 		BuildDuration: 405
 		BuildDurationModifier: 40
 		Description: Unlocks advanced technology
@@ -856,8 +856,8 @@ research_centre:
 	Inherits: ^Building
 	Buildable:
 		Queue: Building
-		Prerequisites: construction_yard, outpost, heavy_factory, upgrade.heavy, ~techlevel.high
-		BuildPaletteOrder: 140
+		Prerequisites: outpost, heavy_factory, upgrade.heavy, ~techlevel.high
+		BuildPaletteOrder: 160
 		BuildDuration: 270
 		BuildDurationModifier: 40
 		Description: Unlocks experimental tanks
@@ -895,9 +895,9 @@ research_centre:
 palace:
 	Inherits: ^Building
 	Buildable:
-		Prerequisites: construction_yard, research_centre, ~techlevel.high
+		Prerequisites: research_centre, ~techlevel.high
 		Queue: Building
-		BuildPaletteOrder: 150
+		BuildPaletteOrder: 170
 		BuildDuration: 810
 		BuildDurationModifier: 40
 		Description: Unlocks elite infantry
