@@ -1,12 +1,19 @@
-MINP:
-	Inherits: ^Mine
-	Explodes:
-		Weapon: APMine
-
 MINV:
 	Inherits: ^Mine
+	RenderSprites:
+		Image: minv
+		FactionImages:
+			soviet: minp
+			russia: minp
+			ukraine: minp
 	Explodes:
 		Weapon: ATMine
+
+# Only kept for backwards-compatibility with existing and imported maps, use MINV instead
+MINP:
+	Inherits: MINV
+	Explodes:
+		Weapon: APMine
 
 CRATE:
 	Inherits: ^Crate
