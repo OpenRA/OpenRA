@@ -100,8 +100,8 @@ fi
 
 if [ ! -f SDL2-CS.dll -o ! -f SDL2-CS.dll.config ]; then
 	echo "Fetching SDL2-CS from GitHub."
-	curl -s -L -O https://github.com/OpenRA/SDL2-CS/releases/download/20151227/SDL2-CS.dll
-	curl -s -L -O https://github.com/OpenRA/SDL2-CS/releases/download/20151227/SDL2-CS.dll.config
+	curl -s -L -O https://github.com/OpenRA/SDL2-CS/releases/download/20160807/SDL2-CS.dll
+	curl -s -L -O https://github.com/OpenRA/SDL2-CS/releases/download/20160807/SDL2-CS.dll.config
 fi
 
 if [ ! -f OpenAL-CS.dll -o ! -f OpenAL-CS.dll.config ]; then
