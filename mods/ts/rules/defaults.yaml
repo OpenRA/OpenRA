@@ -306,6 +306,7 @@
 	Voiced:
 		VoiceSet: Infantry
 	Targetable:
+		RequiresCondition: !inside-tunnel
 		TargetTypes: Ground, Infantry
 	QuantizeFacingsFromSequence:
 		Sequence: stand
@@ -479,6 +480,7 @@
 	Voiced:
 		VoiceSet: Vehicle
 	Targetable:
+		RequiresCondition: !inside-tunnel
 		TargetTypes: Ground, Vehicle, Repair
 	Repairable:
 		RepairBuildings: gadept
@@ -521,6 +523,7 @@
 		RequiresCondition: criticalspeed
 		Modifier: 60
 	Carryable:
+		RequiresCondition: !inside-tunnel
 	RevealOnFire:
 
 ^Tank:

@@ -41,6 +41,7 @@ APC:
 		Sequence: water
 		RequiresCondition: inwater
 	LeavesTrails:
+		RequiresCondition: !inside-tunnel
 		Image: wake
 		Palette: effect
 		TerrainTypes: Water
@@ -92,6 +93,7 @@ HVR:
 	WithVoxelTurret:
 	Hovers:
 	LeavesTrails:
+		RequiresCondition: !inside-tunnel
 		Image: wake
 		Palette: effect
 		TerrainTypes: Water

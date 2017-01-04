@@ -38,6 +38,11 @@ namespace OpenRA.Mods.Common.Traits
 		}
 	}
 
+	public static class CustomMovementLayerType
+	{
+		public const byte Tunnel = 1;
+	}
+
 	[Desc("Unit is able to move.")]
 	public class MobileInfo : ConditionalTraitInfo, IMoveInfo, IPositionableInfo, IOccupySpaceInfo, IFacingInfo,
 		UsesInit<FacingInit>, UsesInit<LocationInit>, UsesInit<SubCellInit>
@@ -72,6 +77,10 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string BlockedCursor = "move-blocked";
 
 		[VoiceReference] public readonly string Voice = "Action";
+
+		[GrantedConditionReference]
+		[Desc("The condition to grant to self while inside a tunnel.")]
+		public readonly string TunnelCondition = null;
 
 		public override object Create(ActorInitializer init) { return new Mobile(init, this); }
 
@@ -319,8 +328,8 @@ namespace OpenRA.Mods.Common.Traits
 		bool IOccupySpaceInfo.SharesCell { get { return SharesCell; } }
 	}
 
-	public class Mobile : ConditionalTrait<MobileInfo>, IIssueOrder, IResolveOrder, IOrderVoice, IPositionable, IMove, IFacing, ISync,
-		IDeathActorInitModifier, INotifyAddedToWorld, INotifyRemovedFromWorld, INotifyBlockingMove, IActorPreviewInitModifier
+	public class Mobile : ConditionalTrait<MobileInfo>, INotifyCreated, IIssueOrder, IResolveOrder, IOrderVoice, IPositionable, IMove,
+		IFacing, ISync, IDeathActorInitModifier, INotifyAddedToWorld, INotifyRemovedFromWorld, INotifyBlockingMove, IActorPreviewInitModifier
 	{
 		const int AverageTicksBeforePathing = 5;
 		const int SpreadTicksBeforePathing = 5;
@@ -334,6 +343,8 @@ namespace OpenRA.Mods.Common.Traits
 		int facing;
 		CPos fromCell, toCell;
 		public SubCell FromSubCell, ToSubCell;
+		int tunnelToken = ConditionManager.InvalidConditionToken;
+		ConditionManager conditionManager;
 
 		[Sync] public int Facing
 		{
@@ -361,6 +372,12 @@ namespace OpenRA.Mods.Common.Traits
 			FromSubCell = fromSub;
 			ToSubCell = toSub;
 			AddInfluence();
+
+			if (toCell.Layer == CustomMovementLayerType.Tunnel && conditionManager != null &&
+					!string.IsNullOrEmpty(Info.TunnelCondition) && tunnelToken == ConditionManager.InvalidConditionToken)
+				tunnelToken = conditionManager.GrantCondition(self, Info.TunnelCondition);
+			else if (toCell.Layer != CustomMovementLayerType.Tunnel && tunnelToken != ConditionManager.InvalidConditionToken)
+				tunnelToken = conditionManager.RevokeCondition(self, tunnelToken);
 		}
 
 		public Mobile(ActorInitializer init, MobileInfo info)
@@ -386,6 +403,11 @@ namespace OpenRA.Mods.Common.Traits
 			// Use LocationInit if you want to insert the actor into the ActorMap!
 			if (init.Contains<CenterPositionInit>())
 				SetVisualPosition(self, init.Get<CenterPositionInit, WPos>());
+		}
+
+		void INotifyCreated.Created(Actor self)
+		{
+			conditionManager = self.TraitOrDefault<ConditionManager>();
 		}
 
 		// Returns a valid sub-cell

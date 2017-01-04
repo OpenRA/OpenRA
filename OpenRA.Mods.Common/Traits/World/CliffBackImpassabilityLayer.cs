@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Traits;
@@ -36,8 +37,17 @@ namespace OpenRA.Mods.Common.Traits
 		public void WorldLoaded(World w, WorldRenderer wr)
 		{
 			var tileType = w.Map.Rules.TileSet.GetTerrainIndex(info.TerrainType);
+
+			// Units are allowed behind cliffs *only* if they are part of a tunnel portal
+			var tunnelPortals = w.WorldActor.Info.TraitInfos<TerrainTunnelInfo>()
+				.SelectMany(mti => mti.PortalCells())
+				.ToHashSet();
+
 			foreach (var uv in w.Map.AllCells.MapCoords)
 			{
+				if (tunnelPortals.Contains(uv.ToCPos(w.Map)))
+					continue;
+
 				// All the map cells that visually overlap the current cell
 				var testCells = w.Map.ProjectedCellsCovering(uv)
 					.SelectMany(puv => w.Map.Unproject(puv));
