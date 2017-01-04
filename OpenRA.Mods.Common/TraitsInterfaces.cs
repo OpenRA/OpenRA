@@ -233,4 +233,18 @@ namespace OpenRA.Mods.Common.Traits
 
 	[RequireExplicitImplementation]
 	public interface IGainsExperienceModifier { int GetGainsExperienceModifier(); }
+
+	[RequireExplicitImplementation]
+	public interface ICustomMovementLayer
+	{
+		byte Index { get; }
+		bool InteractsWithDefaultLayer { get; }
+
+		bool EnabledForActor(ActorInfo a, MobileInfo mi);
+		int EntryMovementCost(ActorInfo a, MobileInfo mi, CPos cell);
+		int ExitMovementCost(ActorInfo a, MobileInfo mi, CPos cell);
+
+		byte GetTerrainIndex(CPos cell);
+		WPos CenterOfCell(CPos cell);
+	}
 }

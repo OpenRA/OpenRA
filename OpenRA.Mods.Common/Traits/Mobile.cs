@@ -151,15 +151,17 @@ namespace OpenRA.Mods.Common.Traits
 
 		public int MovementCostForCell(World world, CPos cell)
 		{
-			return MovementCostForCell(world.Map, TilesetTerrainInfo[world.Map.Rules.TileSet], cell);
+			return MovementCostForCell(world, TilesetTerrainInfo[world.Map.Rules.TileSet], cell);
 		}
 
-		int MovementCostForCell(Map map, TerrainInfo[] terrainInfos, CPos cell)
+		int MovementCostForCell(World world, TerrainInfo[] terrainInfos, CPos cell)
 		{
-			if (!map.Contains(cell))
+			if (!world.Map.Contains(cell))
 				return int.MaxValue;
 
-			var index = map.GetTerrainIndex(cell);
+			var index = cell.Layer == 0 ? world.Map.GetTerrainIndex(cell) :
+				world.GetCustomMovementLayers()[cell.Layer].GetTerrainIndex(cell);
+
 			if (index == byte.MaxValue)
 				return int.MaxValue;
 
@@ -279,7 +281,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public int MovementCostToEnterCell(WorldMovementInfo worldMovementInfo, Actor self, CPos cell, Actor ignoreActor = null, CellConditions check = CellConditions.All)
 		{
-			var cost = MovementCostForCell(worldMovementInfo.World.Map, worldMovementInfo.TerrainInfos, cell);
+			var cost = MovementCostForCell(worldMovementInfo.World, worldMovementInfo.TerrainInfos, cell);
 			if (cost == int.MaxValue || !CanMoveFreelyInto(worldMovementInfo.World, self, cell, ignoreActor, check))
 				return int.MaxValue;
 			return cost;
@@ -413,7 +415,12 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			subCell = GetValidSubCell(subCell);
 			SetLocation(cell, subCell, cell, subCell);
-			SetVisualPosition(self, self.World.Map.CenterOfSubCell(cell, subCell));
+
+			var position = cell.Layer == 0 ? self.World.Map.CenterOfCell(cell) :
+				self.World.GetCustomMovementLayers()[cell.Layer].CenterOfCell(cell);
+
+			var subcellOffset = self.World.Map.Grid.OffsetOfSubCell(subCell);
+			SetVisualPosition(self, position + subcellOffset);
 			FinishedMoving(self);
 		}
 
@@ -626,7 +633,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		public int MovementSpeedForCell(Actor self, CPos cell)
 		{
-			var index = self.World.Map.GetTerrainIndex(cell);
+			var index = cell.Layer == 0 ? self.World.Map.GetTerrainIndex(cell) :
+				self.World.GetCustomMovementLayers()[cell.Layer].GetTerrainIndex(cell);
+
 			if (index == byte.MaxValue)
 				return 0;
 
@@ -714,6 +723,21 @@ namespace OpenRA.Mods.Common.Traits
 						self.ActorID, self.Location);
 				}
 			}
+		}
+
+		public bool CanInteractWithGroundLayer(Actor self)
+		{
+			// TODO: Think about extending this to support arbitrary layer-layer checks
+			// in a way that is compatible with the other IMove types.
+			// This would then allow us to e.g. have units attack other units inside tunnels.
+			if (ToCell.Layer == 0)
+				return true;
+
+			ICustomMovementLayer layer;
+			if (self.World.GetCustomMovementLayers().TryGetValue(ToCell.Layer, out layer))
+				return layer.InteractsWithDefaultLayer;
+
+			return true;
 		}
 
 		void IActorPreviewInitModifier.ModifyActorPreviewInit(Actor self, TypeDictionary inits)

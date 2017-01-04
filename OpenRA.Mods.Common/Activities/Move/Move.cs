@@ -184,10 +184,15 @@ namespace OpenRA.Mods.Common.Activities
 			else
 			{
 				mobile.SetLocation(mobile.FromCell, mobile.FromSubCell, nextCell.Value.First, nextCell.Value.Second);
-				var from = self.World.Map.CenterOfSubCell(mobile.FromCell, mobile.FromSubCell);
+
+				var map = self.World.Map;
+				var from = (mobile.FromCell.Layer == 0 ? map.CenterOfCell(mobile.FromCell) :
+					self.World.GetCustomMovementLayers()[mobile.FromCell.Layer].CenterOfCell(mobile.FromCell)) +
+					map.Grid.OffsetOfSubCell(mobile.FromSubCell);
+
 				var to = Util.BetweenCells(self.World, mobile.FromCell, mobile.ToCell) +
-					(self.World.Map.Grid.OffsetOfSubCell(mobile.FromSubCell) +
-					self.World.Map.Grid.OffsetOfSubCell(mobile.ToSubCell)) / 2;
+					(map.Grid.OffsetOfSubCell(mobile.FromSubCell) + map.Grid.OffsetOfSubCell(mobile.ToSubCell)) / 2;
+
 				var move = new MoveFirstHalf(
 					this,
 					from,
@@ -415,21 +420,22 @@ namespace OpenRA.Mods.Common.Activities
 
 			protected override MovePart OnComplete(Actor self, Mobile mobile, Move parent)
 			{
-				var fromSubcellOffset = self.World.Map.Grid.OffsetOfSubCell(mobile.FromSubCell);
-				var toSubcellOffset = self.World.Map.Grid.OffsetOfSubCell(mobile.ToSubCell);
+				var map = self.World.Map;
+				var fromSubcellOffset = map.Grid.OffsetOfSubCell(mobile.FromSubCell);
+				var toSubcellOffset = map.Grid.OffsetOfSubCell(mobile.ToSubCell);
 
 				var nextCell = parent.PopPath(self);
 				if (nextCell != null)
 				{
 					if (IsTurn(mobile, nextCell.Value.First))
 					{
-						var nextSubcellOffset = self.World.Map.Grid.OffsetOfSubCell(nextCell.Value.Second);
+						var nextSubcellOffset = map.Grid.OffsetOfSubCell(nextCell.Value.Second);
 						var ret = new MoveFirstHalf(
 							Move,
 							Util.BetweenCells(self.World, mobile.FromCell, mobile.ToCell) + (fromSubcellOffset + toSubcellOffset) / 2,
 							Util.BetweenCells(self.World, mobile.ToCell, nextCell.Value.First) + (toSubcellOffset + nextSubcellOffset) / 2,
 							mobile.Facing,
-							Util.GetNearestFacing(mobile.Facing, self.World.Map.FacingBetween(mobile.ToCell, nextCell.Value.First, mobile.Facing)),
+							Util.GetNearestFacing(mobile.Facing, map.FacingBetween(mobile.ToCell, nextCell.Value.First, mobile.Facing)),
 							moveFraction - MoveFractionTotal);
 
 						mobile.FinishedMoving(self);
@@ -440,10 +446,13 @@ namespace OpenRA.Mods.Common.Activities
 					parent.path.Add(nextCell.Value.First);
 				}
 
+				var toPos = mobile.ToCell.Layer == 0 ? map.CenterOfCell(mobile.ToCell) :
+					self.World.GetCustomMovementLayers()[mobile.ToCell.Layer].CenterOfCell(mobile.ToCell);
+
 				var ret2 = new MoveSecondHalf(
 					Move,
 					Util.BetweenCells(self.World, mobile.FromCell, mobile.ToCell) + (fromSubcellOffset + toSubcellOffset) / 2,
-					self.World.Map.CenterOfCell(mobile.ToCell) + toSubcellOffset,
+					toPos + toSubcellOffset,
 					mobile.Facing,
 					mobile.Facing,
 					moveFraction - MoveFractionTotal);
