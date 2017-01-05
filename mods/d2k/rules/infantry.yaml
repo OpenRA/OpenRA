@@ -88,7 +88,7 @@ thumper:
 	Valued:
 		Cost: 200
 	Tooltip:
-		Name: Thumper
+		Name: Thumper Infantry
 	Health:
 		HP: 375
 	RevealsShroud:
