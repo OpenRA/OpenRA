@@ -259,7 +259,7 @@ upgrade.heavy:
 		BuildLimit: 1
 		BuildDuration: 380
 		BuildDurationModifier: 40
-		Description: Unlocks additional construction options    \n(Repair Pad, IX Research Centre) \n\nUnlocks additional heavy units \n(Siege Tank, Missile Tank, MCV)
+		Description: Unlocks additional construction options    \n(Repair Pad, IX Research Center) \n\nUnlocks additional heavy units \n(Siege Tank, Missile Tank, MCV)
 	Valued:
 		Cost: 800
 	RenderSprites:
