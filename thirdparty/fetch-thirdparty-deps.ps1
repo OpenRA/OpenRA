@@ -70,7 +70,7 @@ if (!(Test-Path "windows/SDL2.dll"))
 	echo "Fetching SDL2 from libsdl.org"
 	
 	# Download zip:
-	$zipFileName = "SDL2-2.0.4-win32-x86.zip"
+	$zipFileName = "SDL2-2.0.5-win32-x86.zip"
 	$target = Join-Path $pwd.ToString() $zipFileName
 	(New-Object System.Net.WebClient).DownloadFile("https://www.libsdl.org/release/" + $zipFileName, $target)
 	
@@ -82,7 +82,7 @@ if (!(Test-Path "windows/SDL2.dll"))
 	$destination.Copyhere($zipFile.items())
 	
 	# Remove junk files:
-	rm SDL2-2.0.4-win32-x86.zip
+	rm SDL2-2.0.5-win32-x86.zip
 	rm -path "$currentPath\windows\README-SDL.txt"
 }
 
