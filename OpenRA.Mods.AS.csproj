@@ -80,6 +80,7 @@
     <Compile Include="Lint\CheckTargetHealthRadiusAS.cs" />
     <Compile Include="Projectiles\AthenaProjectile.cs" />
     <Compile Include="Projectiles\InstantExplode.cs" />
+    <Compile Include="Traits\Conditions\GrantConditionAboveAltitude.cs" />
     <Compile Include="Traits\Crate\GiveRandomActorCrateAction.cs" />
     <Compile Include="Traits\EligibleForRandomActorCrate.cs" />
     <Compile Include="Traits\ExplodeWeapon.cs" />
@@ -125,7 +126,5 @@
 copy "$(TargetPath)" "$(SolutionDir)mods/as/"
 cd "$(SolutionDir)"</PostBuildEvent>
   </PropertyGroup>
-  <ItemGroup>
-    <Folder Include="Traits\Conditions\" />
-  </ItemGroup>
+  <ItemGroup />
 </Project>
