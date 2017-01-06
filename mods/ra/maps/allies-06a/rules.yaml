@@ -1,0 +1,98 @@
+Player:
+	PlayerResources:
+		DefaultCash: 5000
+
+World:
+	LuaScript:
+		Scripts: allies06a.lua, allies06a-AI.lua
+	MissionData:
+		Briefing: Priority one is to establish a base and get your spy into one of the Soviet Tech Centers in the base across the gulf.\nData on the Iron Curtain is in there and we need it.\n\nOnce you get the data complete your mission...\nWipe out everything.
+		BriefingVideo: ally6.vqa
+		WinVideo: allymorf.vqa
+		LossVideo: overrun.vqa
+		StartVideo: mcv.vqa
+	MapOptions:
+		TechLevel: medium
+	ScriptLobbyDropdown@difficulty:
+		ID: difficulty
+		Label: Difficulty
+		Values:
+			easy: Easy
+			normal: Normal
+			hard: Hard
+		Default: easy
+
+powerproxy.paratroopers:
+	ParatroopersPower:
+		DropItems: E1,E1,E1,E4,E4
+
+TSLA:
+	Power:
+		Amount: -150
+
+3TNK:
+	Buildable:
+		Prerequisites: ~vehicles.soviet
+
+ARTY:
+	Buildable:
+		Prerequisites: ~disabled
+
+MCV:
+	Buildable:
+		Prerequisites: ~disabled
+
+TRUK:
+	Buildable:
+		Prerequisites: ~disabled
+
+STEK:
+	Targetable:
+		TargetTypes: Ground, Water, Structure, C4, DetonateAttack, SpyInfiltrate
+
+TECH.CAM:
+	Inherits: CAMERA
+	RevealsShroud:
+		Range: 4c0
+		Type: CenterPosition
+
+APWR:
+	Buildable:
+		Prerequisites: ~disabled
+
+AFLD:
+	Buildable:
+		Prerequisites: ~disabled
+
+HPAD:
+	Buildable:
+		Prerequisites: ~disabled
+
+BRIK:
+	Buildable:
+		Prerequisites: ~disabled
+
+MECH:
+	Buildable:
+		Prerequisites: ~disabled
+
+HIJACKER:
+	Buildable:
+		Prerequisites: ~disabled
+
+DD:
+	Buildable:
+		Prerequisites: ~disabled
+
+CA:
+	Buildable:
+		Prerequisites: ~disabled
+
+MSUB:
+	Buildable:
+		Prerequisites: ~disabled
+
+SS:
+	AutoTarget:
+		InitialStanceAI: AttackAnything
+
