@@ -164,11 +164,9 @@ HMG_muzzle:
 	Range: 3c0
 	Burst: 3
 	BurstDelay: 2
+	Projectile: InstantHit
 	Warhead@TargetValidation: SpreadDamage
 
 HMGo_muzzle:
+	Inherits: HMG_muzzle
 	ReloadDelay: 14
-	Range: 3c0
-	Burst: 3
-	BurstDelay: 2
-	Warhead@TargetValidation: SpreadDamage
