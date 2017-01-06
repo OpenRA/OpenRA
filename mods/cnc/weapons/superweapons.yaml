@@ -17,8 +17,8 @@ Atomic:
 		ImpactSounds: nukexplo.aud
 	Warhead@3Dam_areanukea: SpreadDamage
 		Spread: 2c512
-		Damage: 100
-		Falloff: 1000, 368, 135, 50, 18, 7, 0
+		Damage: 110
+		Falloff: 1000, 700, 500, 300, 150, 50, 0
 		Delay: 3
 		ValidTargets: Ground, Air
 		Versus:

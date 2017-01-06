@@ -144,7 +144,7 @@ E6:
 	Mobile:
 		Speed: 56
 	Health:
-		HP: 25
+		HP: 30
 	Passenger:
 		PipType: Yellow
 	EngineerRepair:
@@ -158,13 +158,15 @@ RMBO:
 	Inherits: ^Soldier
 	Inherits@EXPERIENCE: ^GainsExperience
 	Valued:
-		Cost: 1000
+		Cost: 2000
 	Tooltip:
 		Name: Commando
 	Buildable:
 		BuildPaletteOrder: 50
 		Prerequisites: eye, ~techlevel.high
 		Queue: Infantry.GDI
+		BuildDuration: 2000
+		BuildDurationModifier: 40
 		Description: Elite sniper infantry unit.\n  Strong vs Infantry, Buildings\n  Weak vs Vehicles
 	Mobile:
 		Speed: 71

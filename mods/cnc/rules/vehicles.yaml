@@ -8,6 +8,8 @@ MCV:
 		BuildPaletteOrder: 100
 		Prerequisites: anyhq, ~techlevel.medium, fix
 		Queue: Vehicle.GDI, Vehicle.Nod
+		BuildDuration: 3750
+		BuildDurationModifier: 40
 		Description: Deploys into another Construction Yard.\n  Unarmed
 	Selectable:
 		Priority: 4
@@ -46,6 +48,8 @@ HARV:
 		BuildPaletteOrder: 10
 		Prerequisites: proc
 		Queue: Vehicle.GDI, Vehicle.Nod
+		BuildDuration: 1680
+		BuildDurationModifier: 40
 		Description: Collects Tiberium for processing.\n  Unarmed
 	Selectable:
 		Priority: 7
@@ -60,7 +64,7 @@ HARV:
 	Mobile:
 		Speed: 85
 	Health:
-		HP: 600
+		HP: 625
 	Armor:
 		Type: Heavy
 	RevealsShroud:
@@ -79,7 +83,7 @@ APC:
 	Inherits@EXPERIENCE: ^GainsExperience
 	Inherits@CLOAK: ^AcceptsCloakCrate
 	Valued:
-		Cost: 600
+		Cost: 550
 	Tooltip:
 		Name: APC
 	Buildable:
@@ -89,10 +93,10 @@ APC:
 		Description: Armed infantry transport.\nCan attack Aircraft.\n  Strong vs Vehicles\n  Weak vs Infantry
 	Mobile:
 		TurnSpeed: 8
-		Speed: 128
+		Speed: 132
 		RequiresCondition: !notmobile
 	Health:
-		HP: 210
+		HP: 215
 	Armor:
 		Type: Heavy
 	RevealsShroud:
@@ -256,7 +260,7 @@ BIKE:
 			BlueTiberium: 35
 			Beach: 35
 	Health:
-		HP: 120
+		HP: 110
 	Armor:
 		Type: Light
 	RevealsShroud:
@@ -311,13 +315,15 @@ LTNK:
 	Inherits@EXPERIENCE: ^GainsExperience
 	Inherits@CLOAK: ^AcceptsCloakCrate
 	Valued:
-		Cost: 700
+		Cost: 650
 	Tooltip:
 		Name: Light Tank
 	Buildable:
 		BuildPaletteOrder: 40
 		Prerequisites: anyhq, ~techlevel.medium
 		Queue: Vehicle.Nod
+		BuildDuration: 1020
+		BuildDurationModifier: 40
 		Description: Fast, light tank.\n  Strong vs Vehicles, Tanks\n  Weak vs Infantry
 	Mobile:
 		TurnSpeed: 7
@@ -399,7 +405,7 @@ HTNK:
 		Speed: 56
 		TurnSpeed: 3
 	Health:
-		HP: 800
+		HP: 870
 	Armor:
 		Type: Heavy
 	RevealsShroud:
@@ -487,7 +493,7 @@ MLRS:
 		Speed: 99
 		TurnSpeed: 7
 	Health:
-		HP: 120
+		HP: 180
 	Armor:
 		Type: Light
 	RevealsShroud:
