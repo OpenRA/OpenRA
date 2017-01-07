@@ -147,6 +147,7 @@
     <Compile Include="Effects\SpriteEffect.cs" />
     <Compile Include="Projectiles\AreaBeam.cs" />
     <Compile Include="Projectiles\Bullet.cs" />
+    <Compile Include="Projectiles\InstantHit.cs" />
     <Compile Include="Projectiles\GravityBomb.cs" />
     <Compile Include="Projectiles\LaserZap.cs" />
     <Compile Include="Projectiles\Missile.cs" />
