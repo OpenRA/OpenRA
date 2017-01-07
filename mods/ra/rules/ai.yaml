@@ -399,6 +399,7 @@ Player:
 			weap: 1
 			atek: 1
 			stek: 1
+			fix: 1
 		BuildingFractions:
 			proc: 29%
 			powr: 1%
@@ -411,6 +412,7 @@ Player:
 			stek: 1%
 			spen: 1%
 			syrd: 1%
+			fix: 0.1%
 			pbox: 12%
 			gun: 12%
 			ftur: 12%
