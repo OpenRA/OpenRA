@@ -23,6 +23,8 @@ concretea:
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
+	Tooltip:
+		Name: Concrete Slab
 	Valued:
 		Cost: 20
 	Buildable:
@@ -35,6 +37,8 @@ concreteb:
 	Building:
 		Footprint: xxx xxx xxx
 		Dimensions: 3,3
+	Tooltip:
+		Name: Large Concrete Slab
 	Valued:
 		Cost: 50
 	Buildable:
@@ -866,7 +870,7 @@ research_centre:
 	Valued:
 		Cost: 1000
 	Tooltip:
-		Name: Ix Lab
+		Name: IX Research Center
 	Building:
 		Footprint: _x_ xxx xxx
 		Dimensions: 3,3

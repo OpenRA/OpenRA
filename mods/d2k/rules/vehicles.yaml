@@ -442,7 +442,7 @@ deviator:
 		BuildPaletteOrder: 40
 		BuildDuration: 373
 		BuildDurationModifier: 40
-		Description: Main Battle Tank\n  Strong vs Tanks\n  Weak vs Infantry, Aircraft\n \n  Atreides:      +Range\n  Harkonnen: +Health\n  Ordos:         +Speed
+		Description: Main Battle Tank\n  Strong vs Tanks\n  Weak vs Infantry, Aircraft\n \n  Atreides:      +Range\n  Harkonnen:  +Health\n  Ordos:          +Speed
 	Valued:
 		Cost: 700
 	Tooltip:
