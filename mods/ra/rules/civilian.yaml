@@ -364,15 +364,16 @@ OILB:
 	ExternalCapturableBar:
 	EngineerRepairable:
 	CashTrickler:
-		Period: 375
+		Interval: 375
 		Amount: 100
-		CaptureAmount: 100
 	Tooltip:
 		Name: Oil Derrick
 	Explodes:
 		Weapon: BarrelExplode
 	GpsDot:
 		String: Oil
+	GivesCashOnCapture:
+		Amount: 100
 
 BR1:
 	Inherits: ^Bridge

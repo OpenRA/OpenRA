@@ -9,58 +9,87 @@
  */
 #endregion
 
+using System;
 using OpenRA.Mods.Common.Effects;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Lets the actor generate cash in a set periodic time.")]
-	class CashTricklerInfo : ITraitInfo
+	public class CashTricklerInfo : ConditionalTraitInfo
 	{
 		[Desc("Number of ticks to wait between giving money.")]
-		public readonly int Period = 50;
+		public readonly int Interval = 50;
+
 		[Desc("Amount of money to give each time.")]
 		public readonly int Amount = 15;
-		[Desc("Whether to show the cash tick indicators (+$15 rising from actor).")]
-		public readonly bool ShowTicks = true;
-		[Desc("Amount of money awarded for capturing the actor.")]
-		public readonly int CaptureAmount = 0;
 
-		public object Create(ActorInitializer init) { return new CashTrickler(this); }
+		[Desc("Whether to show the cash tick indicators rising from the actor.")]
+		public readonly bool ShowTicks = true;
+
+		[Desc("How long to show the cash tick indicator when enabled.")]
+		public readonly int DisplayDuration = 30;
+
+		public override object Create(ActorInitializer init) { return new CashTrickler(this); }
 	}
 
-	class CashTrickler : ITick, ISync, INotifyCapture
+	public class CashTrickler : ConditionalTrait<CashTricklerInfo>, ITick, ISync, INotifyCreated, INotifyOwnerChanged
 	{
 		readonly CashTricklerInfo info;
+		PlayerResources resources;
 		[Sync] int ticks;
+
 		public CashTrickler(CashTricklerInfo info)
+			: base(info)
 		{
 			this.info = info;
 		}
 
-		public void Tick(Actor self)
+		void INotifyCreated.Created(Actor self)
 		{
+			resources = self.Owner.PlayerActor.Trait<PlayerResources>();
+		}
+
+		void INotifyOwnerChanged.OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
+		{
+			resources = newOwner.PlayerActor.Trait<PlayerResources>();
+		}
+
+		void ITick.Tick(Actor self)
+		{
+			if (IsTraitDisabled)
+				return;
+
 			if (--ticks < 0)
 			{
-				ticks = info.Period;
-				self.Owner.PlayerActor.Trait<PlayerResources>().GiveCash(info.Amount);
-				MaybeAddCashTick(self, info.Amount);
+				ticks = info.Interval;
+				ModifyCash(self, self.Owner, info.Amount);
 			}
 		}
 
-		public void OnCapture(Actor self, Actor captor, Player oldOwner, Player newOwner)
+		void AddCashTick(Actor self, int amount)
 		{
-			if (info.CaptureAmount > 0)
+			self.World.AddFrameEndTask(w => w.Add(
+				new FloatingText(self.CenterPosition, self.Owner.Color.RGB, FloatingText.FormatCashTick(amount), info.DisplayDuration)));
+		}
+
+		void ModifyCash(Actor self, Player newOwner, int amount)
+		{
+			if (amount < 0)
 			{
-				newOwner.PlayerActor.Trait<PlayerResources>().GiveCash(info.CaptureAmount);
-				MaybeAddCashTick(self, info.CaptureAmount);
-			}
-		}
+				// Check whether the amount of cash to be removed would exceed available player cash, in that case only remove all the player cash
+				var drain = Math.Min(resources.Cash + resources.Resources, -amount);
+				resources.TakeCash(drain);
 
-		void MaybeAddCashTick(Actor self, int amount)
-		{
-			if (info.ShowTicks)
-				self.World.AddFrameEndTask(w => w.Add(new FloatingText(self.CenterPosition, self.Owner.Color.RGB, FloatingText.FormatCashTick(amount), 30)));
+				if (info.ShowTicks)
+					AddCashTick(self, -drain);
+			}
+			else
+			{
+				resources.GiveCash(amount);
+				if (info.ShowTicks)
+					AddCashTick(self, amount);
+			}
 		}
 	}
 }
