@@ -109,7 +109,7 @@
     <Compile Include="Traits\Conditions\GrantTimedConditionOnDeploy.cs" />
     <Compile Include="Traits\Conditions\GrantPeriodicCondition.cs" />
     <Compile Include="Traits\Conditions\TransformOnCondition.cs" />
-    <Compile Include="Traits\Conditions\GrantConditionToCrusher.cs" />
+    <Compile Include="Traits\Conditions\GrantExternalConditionToCrusher.cs" />
     <Compile Include="Traits\Conditions\HordeBonus.cs" />
     <Compile Include="Traits\Conditions\GrantHordeBonus.cs" />
   </ItemGroup>

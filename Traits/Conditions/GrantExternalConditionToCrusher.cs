@@ -15,23 +15,22 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.AS.Traits
 {
 	[Desc("Grant a condition to the crushing actor.")]
-	public class GrantConditionToCrusherInfo : ITraitInfo
+	public class GrantExternalConditionToCrusherInfo : ITraitInfo
 	{
-		[GrantedConditionReference]
-		[Desc("The condition to apply.")]
+		[Desc("The condition to apply. Must be included in the target actor's ExternalConditions list.")]
 		public readonly string Condition = null;
 
 		[Desc("Duration of the condition (in ticks). Set to 0 for a permanent upgrade.")]
 		public readonly int Duration = 0;
 
-		public virtual object Create(ActorInitializer init) { return new GrantConditionToCrusher(init.Self, this); }
+		public virtual object Create(ActorInitializer init) { return new GrantExternalConditionToCrusher(init.Self, this); }
 	}
 
-	public class GrantConditionToCrusher : INotifyCrushed
+	public class GrantExternalConditionToCrusher : INotifyCrushed
 	{
-		public readonly GrantConditionToCrusherInfo Info;
+		public readonly GrantExternalConditionToCrusherInfo Info;
 
-		public GrantConditionToCrusher(Actor self, GrantConditionToCrusherInfo info)
+		public GrantExternalConditionToCrusher(Actor self, GrantExternalConditionToCrusherInfo info)
 		{
 			this.Info = info;
 		}
@@ -42,7 +41,7 @@ namespace OpenRA.Mods.AS.Traits
 			if (um == null)
 				return;
 
-			um.GrantCondition(self, Info.Condition, duration: Info.Duration);
+			um.GrantCondition(self, Info.Condition, true, Info.Duration);
 		}
 
 		void INotifyCrushed.WarnCrush(Actor self, Actor crusher, HashSet<string> crushClasses) { }
