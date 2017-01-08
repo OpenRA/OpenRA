@@ -87,6 +87,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 		readonly MobileInfo mobileInfo;
 		readonly MobileInfo.WorldMovementInfo worldMovementInfo;
 		readonly CellInfoLayerPool.PooledCellInfoLayer pooledLayer;
+		readonly bool checkTerrainHeight;
 		CellLayer<CellInfo> groundInfo;
 
 		readonly Dictionary<byte, Pair<ICustomMovementLayer, CellLayer<CellInfo>>> customLayerInfo =
@@ -108,6 +109,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 			Actor = actor;
 			LaneBias = 1;
 			checkConditions = checkForBlocked ? CellConditions.TransientActors : CellConditions.None;
+			checkTerrainHeight = world.Map.Grid.MaximumTerrainHeight > 0;
 		}
 
 		// Sets of neighbors for each incoming direction. These exclude the neighbors which are guaranteed
@@ -192,7 +194,15 @@ namespace OpenRA.Mods.Common.Pathfinder
 				cellCost += customCost;
 			}
 
-			// directional bonuses for smoother flow!
+			// Prevent units from jumping over height discontinuities
+			if (checkTerrainHeight && neighborCPos.Layer == 0)
+			{
+				var from = neighborCPos - direction;
+				if (Math.Abs(World.Map.Height[neighborCPos] - World.Map.Height[from]) > 1)
+					return Constants.InvalidNode;
+			}
+
+			// Directional bonuses for smoother flow!
 			if (LaneBias != 0)
 			{
 				var ux = neighborCPos.X + (InReverse ? 1 : 0) & 1;
