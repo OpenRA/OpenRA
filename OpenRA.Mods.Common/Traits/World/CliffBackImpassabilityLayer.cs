@@ -21,14 +21,14 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		public readonly string TerrainType = "Impassable";
 
-		public object Create(ActorInitializer init) { return new CliffBackBlockingLayer(this); }
+		public object Create(ActorInitializer init) { return new CliffBackImpassabilityLayer(this); }
 	}
 
-	class CliffBackBlockingLayer : IWorldLoaded
+	class CliffBackImpassabilityLayer : IWorldLoaded
 	{
 		readonly CliffBackImpassabilityLayerInfo info;
 
-		public CliffBackBlockingLayer(CliffBackImpassabilityLayerInfo info)
+		public CliffBackImpassabilityLayer(CliffBackImpassabilityLayerInfo info)
 		{
 			this.info = info;
 		}
