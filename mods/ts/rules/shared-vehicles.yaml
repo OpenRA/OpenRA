@@ -19,6 +19,7 @@ MCV:
 	Mobile:
 		Speed: 85
 	RevealsShroud:
+		RequiresCondition: !inside-tunnel
 		Range: 4c0
 		MaxHeightDelta: 3
 	MustBeDestroyed:
@@ -84,6 +85,7 @@ HARV:
 	Armor:
 		Type: Heavy
 	RevealsShroud:
+		RequiresCondition: !inside-tunnel
 		Range: 4c0
 		MaxHeightDelta: 3
 	-WithVoxelBody:
@@ -129,6 +131,7 @@ LPST:
 		TurnSpeed: 5
 		RequiresCondition: !empdisable && undeployed
 	RevealsShroud:
+		RequiresCondition: !inside-tunnel
 		Range: 7c0
 		MaxHeightDelta: 3
 	GrantCondition@PREVIEWWORKAROUND:

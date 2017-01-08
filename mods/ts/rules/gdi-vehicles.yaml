@@ -21,6 +21,7 @@ APC:
 	Armor:
 		Type: Heavy
 	RevealsShroud:
+		RequiresCondition: !inside-tunnel
 		Range: 5c0
 		MaxHeightDelta: 3
 	Turreted:
@@ -79,6 +80,7 @@ HVR:
 	Armor:
 		Type: Wood
 	RevealsShroud:
+		RequiresCondition: !inside-tunnel
 		Range: 7c0
 		MaxHeightDelta: 3
 	Armament:
@@ -123,6 +125,7 @@ SMECH:
 	Armor:
 		Type: Light
 	RevealsShroud:
+		RequiresCondition: !inside-tunnel
 		Range: 6c0
 		MaxHeightDelta: 3
 	AttackFrontal:
@@ -166,6 +169,7 @@ MMCH:
 	Armor:
 		Type: Heavy
 	RevealsShroud:
+		RequiresCondition: !inside-tunnel
 		Range: 8c0
 		MaxHeightDelta: 3
 	BodyOrientation:
@@ -218,6 +222,7 @@ HMEC:
 	Armor:
 		Type: Heavy
 	RevealsShroud:
+		RequiresCondition: !inside-tunnel
 		Range: 8c0
 		MaxHeightDelta: 3
 	AttackFrontal:
@@ -261,6 +266,7 @@ SONIC:
 	Armor:
 		Type: Heavy
 	RevealsShroud:
+		RequiresCondition: !inside-tunnel
 		Range: 7c0
 		MaxHeightDelta: 3
 	Armament:

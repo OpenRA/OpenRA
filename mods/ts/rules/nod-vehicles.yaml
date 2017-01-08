@@ -19,6 +19,7 @@ BGGY:
 	Armor:
 		Type: Light
 	RevealsShroud:
+		RequiresCondition: !inside-tunnel
 		Range: 6c0
 		MaxHeightDelta: 3
 	Armament:
@@ -54,6 +55,7 @@ BIKE:
 	Armor:
 		Type: Wood
 	RevealsShroud:
+		RequiresCondition: !inside-tunnel
 		Range: 5c0
 		MaxHeightDelta: 3
 	Armament@PRIMARY:
@@ -107,6 +109,7 @@ TTNK:
 		MuzzleSequence: muzzle
 	WithMuzzleOverlay:
 	RevealsShroud:
+		RequiresCondition: !inside-tunnel
 		Range: 5c0
 		MaxHeightDelta: 3
 	RenderSprites:
@@ -188,6 +191,7 @@ ART2:
 		Speed: 71
 		TurnSpeed: 2
 	RevealsShroud:
+		RequiresCondition: !inside-tunnel
 		Range: 9c0
 		MaxHeightDelta: 3
 	RenderVoxels:
@@ -217,6 +221,7 @@ REPAIR:
 		Speed: 85
 		TurnSpeed: 5
 	RevealsShroud:
+		RequiresCondition: !inside-tunnel
 		Range: 5c0
 		MaxHeightDelta: 3
 	Armament:
@@ -262,6 +267,7 @@ WEED:
 	Armor:
 		Type: Heavy
 	RevealsShroud:
+		RequiresCondition: !inside-tunnel
 		Range: 4c0
 		MaxHeightDelta: 3
 	-WithVoxelBody:
@@ -290,6 +296,7 @@ SAPC:
 	Armor:
 		Type: Heavy
 	RevealsShroud:
+		RequiresCondition: !inside-tunnel
 		Range: 5c0
 		MaxHeightDelta: 3
 	Cargo:
@@ -322,6 +329,7 @@ SUBTANK:
 	Armor:
 		Type: Light
 	RevealsShroud:
+		RequiresCondition: !inside-tunnel
 		Range: 5c0
 		MaxHeightDelta: 3
 	Armament:
@@ -352,6 +360,7 @@ STNK:
 	Armor:
 		Type: Light
 	RevealsShroud:
+		RequiresCondition: !inside-tunnel
 		Range: 5c0
 		MaxHeightDelta: 3
 	Cloak:

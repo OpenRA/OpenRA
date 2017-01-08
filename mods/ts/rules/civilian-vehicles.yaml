@@ -17,6 +17,7 @@
 	RevealsShroud:
 		Range: 6c0
 		MaxHeightDelta: 3
+		RequiresCondition: !inside-tunnel
 	Turreted:
 		TurnSpeed: 3
 	Armament@PRIMARY:
@@ -50,6 +51,7 @@
 	Mobile:
 		Speed: 56
 	RevealsShroud:
+		RequiresCondition: !inside-tunnel
 		Range: 5c0
 		MaxHeightDelta: 3
 
@@ -73,6 +75,7 @@ ICBM:
 		Speed: 85
 		TurnSpeed: 5
 	RevealsShroud:
+		RequiresCondition: !inside-tunnel
 		Range: 7c0
 		MaxHeightDelta: 3
 	Transforms:
@@ -98,6 +101,7 @@ BUS:
 	Armor:
 		Type: Light
 	RevealsShroud:
+		RequiresCondition: !inside-tunnel
 		Range: 5c0
 		MaxHeightDelta: 3
 	Cargo:
@@ -123,6 +127,7 @@ PICK:
 	Armor:
 		Type: Light
 	RevealsShroud:
+		RequiresCondition: !inside-tunnel
 		Range: 5c0
 		MaxHeightDelta: 3
 	Cargo:
@@ -148,6 +153,7 @@ CAR:
 	Armor:
 		Type: Light
 	RevealsShroud:
+		RequiresCondition: !inside-tunnel
 		Range: 5c0
 		MaxHeightDelta: 3
 	Cargo:
@@ -173,6 +179,7 @@ WINI:
 	Armor:
 		Type: Light
 	RevealsShroud:
+		RequiresCondition: !inside-tunnel
 		Range: 5c0
 		MaxHeightDelta: 3
 	Cargo:
