@@ -142,7 +142,7 @@ namespace OpenRA.Mods.Common.Activities
 			var loc = self.Location;
 
 			foreach (var cell in targetCells)
-				if (domainIndex.IsPassable(loc, cell, movementClass) && Mobile.CanEnterCell(cell))
+				if (domainIndex.IsPassable(loc, cell, Mobile.Info, movementClass) && Mobile.CanEnterCell(cell))
 					searchCells.Add(cell);
 
 			if (!searchCells.Any())

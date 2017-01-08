@@ -127,7 +127,7 @@ namespace OpenRA.Mods.Common.Activities
 			var passable = (uint)mobileInfo.GetMovementClass(self.World.Map.Rules.TileSet);
 			List<CPos> path;
 			using (var search = PathSearch.Search(self.World, mobileInfo, self, true,
-				loc => domainIndex.IsPassable(self.Location, loc, passable) && self.CanHarvestAt(loc, resLayer, harvInfo, territory))
+				loc => domainIndex.IsPassable(self.Location, loc, mobileInfo, passable) && self.CanHarvestAt(loc, resLayer, harvInfo, territory))
 				.WithCustomCost(loc =>
 				{
 					if ((avoidCell.HasValue && loc == avoidCell.Value) ||

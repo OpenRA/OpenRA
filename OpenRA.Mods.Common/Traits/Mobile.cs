@@ -15,6 +15,7 @@ using System.Drawing;
 using System.Linq;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Activities;
+using OpenRA.Mods.Common.Effects;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
@@ -41,6 +42,7 @@ namespace OpenRA.Mods.Common.Traits
 	public static class CustomMovementLayerType
 	{
 		public const byte Tunnel = 1;
+		public const byte Subterranean = 2;
 	}
 
 	[Desc("Unit is able to move.")]
@@ -81,6 +83,37 @@ namespace OpenRA.Mods.Common.Traits
 		[GrantedConditionReference]
 		[Desc("The condition to grant to self while inside a tunnel.")]
 		public readonly string TunnelCondition = null;
+
+		[Desc("Can this unit move underground?")]
+		public readonly bool Subterranean = false;
+
+		[GrantedConditionReference]
+		[Desc("The condition to grant to self while underground.")]
+		public readonly string SubterraneanCondition = null;
+
+		[Desc("Pathfinding cost for submerging or reemerging.")]
+		public readonly int SubterraneanTransitionCost = 0;
+
+		[Desc("The terrain types that this actor can transition on. Leave empty to allow any.")]
+		public readonly HashSet<string> SubterraneanTransitionTerrainTypes = new HashSet<string>();
+
+		[Desc("Can this actor transition on slopes?")]
+		public readonly bool SubterraneanTransitionOnRamps = false;
+
+		[Desc("Depth at which the subterranian condition is applied.")]
+		public readonly WDist SubterraneanTransitionDepth = new WDist(-1024);
+
+		[Desc("Dig animation image to play when transitioning.")]
+		public readonly string SubterraneanTransitionImage = null;
+
+		[SequenceReference("SubterraneanTransitionImage")]
+		[Desc("Dig animation image to play when transitioning.")]
+		public readonly string SubterraneanTransitionSequence = null;
+
+		[PaletteReference]
+		public readonly string SubterraneanTransitionPalette = "effect";
+
+		public readonly string SubterraneanTransitionSound = null;
 
 		public override object Create(ActorInitializer init) { return new Mobile(init, this); }
 
@@ -344,6 +377,7 @@ namespace OpenRA.Mods.Common.Traits
 		CPos fromCell, toCell;
 		public SubCell FromSubCell, ToSubCell;
 		int tunnelToken = ConditionManager.InvalidConditionToken;
+		int subterraneanToken = ConditionManager.InvalidConditionToken;
 		ConditionManager conditionManager;
 
 		[Sync] public int Facing
@@ -373,11 +407,23 @@ namespace OpenRA.Mods.Common.Traits
 			ToSubCell = toSub;
 			AddInfluence();
 
+			// Tunnel condition is added/removed when starting the transition between layers
 			if (toCell.Layer == CustomMovementLayerType.Tunnel && conditionManager != null &&
 					!string.IsNullOrEmpty(Info.TunnelCondition) && tunnelToken == ConditionManager.InvalidConditionToken)
 				tunnelToken = conditionManager.GrantCondition(self, Info.TunnelCondition);
 			else if (toCell.Layer != CustomMovementLayerType.Tunnel && tunnelToken != ConditionManager.InvalidConditionToken)
 				tunnelToken = conditionManager.RevokeCondition(self, tunnelToken);
+
+			// Play submerging animation as soon as it starts to submerge (before applying the condition)
+			if (toCell.Layer == CustomMovementLayerType.Subterranean && fromCell.Layer != CustomMovementLayerType.Subterranean)
+			{
+				if (!string.IsNullOrEmpty(Info.SubterraneanTransitionSequence))
+					self.World.AddFrameEndTask(w => w.Add(new SpriteEffect(self.World.Map.CenterOfCell(fromCell), self.World, Info.SubterraneanTransitionImage,
+						Info.SubterraneanTransitionSequence, Info.SubterraneanTransitionPalette)));
+
+				if (!string.IsNullOrEmpty(Info.SubterraneanTransitionSound))
+					Game.Sound.Play(SoundType.World, Info.SubterraneanTransitionSound);
+			}
 		}
 
 		public Mobile(ActorInitializer init, MobileInfo info)
@@ -460,6 +506,32 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			CenterPosition = pos;
 			self.World.UpdateMaps(self, this);
+
+			// HACK: The submerging conditions must be applied part way through a move, and this is the only method that gets called
+			// at the right times to detect this
+			if (toCell.Layer == CustomMovementLayerType.Subterranean)
+			{
+				var depth = self.World.Map.DistanceAboveTerrain(self.CenterPosition);
+				if (subterraneanToken == ConditionManager.InvalidConditionToken && depth < Info.SubterraneanTransitionDepth && conditionManager != null
+						&& !string.IsNullOrEmpty(Info.SubterraneanCondition))
+					subterraneanToken = conditionManager.GrantCondition(self, Info.SubterraneanCondition);
+			}
+			else if (subterraneanToken != ConditionManager.InvalidConditionToken)
+			{
+				var depth = self.World.Map.DistanceAboveTerrain(self.CenterPosition);
+				if (depth > Info.SubterraneanTransitionDepth)
+				{
+					subterraneanToken = conditionManager.RevokeCondition(self, subterraneanToken);
+
+					// HACK: the submerging animation and sound won't play if a condition isn't defined
+					if (!string.IsNullOrEmpty(Info.SubterraneanTransitionSound))
+						Game.Sound.Play(SoundType.World, Info.SubterraneanTransitionSound);
+
+					if (!string.IsNullOrEmpty(Info.SubterraneanTransitionSequence))
+						self.World.AddFrameEndTask(w => w.Add(new SpriteEffect(self.World.Map.CenterOfCell(fromCell), self.World, Info.SubterraneanTransitionImage,
+							Info.SubterraneanTransitionSequence, Info.SubterraneanTransitionPalette)));
+				}
+			}
 		}
 
 		public void AddedToWorld(Actor self)

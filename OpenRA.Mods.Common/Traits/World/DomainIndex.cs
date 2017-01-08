@@ -37,11 +37,15 @@ namespace OpenRA.Mods.Common.Traits
 				domainIndexes[mc] = new MovementClassDomainIndex(world, mc);
 		}
 
-		public bool IsPassable(CPos p1, CPos p2, uint movementClass)
+		public bool IsPassable(CPos p1, CPos p2, MobileInfo mi, uint movementClass)
 		{
 			// HACK: Work around units in other movement layers from being blocked
 			// when the point in the main layer is not pathable
 			if (p1.Layer != 0 || p2.Layer != 0)
+				return true;
+
+			// HACK: Workaround until we can generalize movement classes
+			if (mi.Subterranean)
 				return true;
 
 			return domainIndexes[movementClass].IsPassable(p1, p2);

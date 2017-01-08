@@ -796,6 +796,7 @@
     <Compile Include="Traits\World\ActorMap.cs" />
     <Compile Include="Traits\World\TerrainTunnelLayer.cs" />
     <Compile Include="Traits\World\TerrainTunnel.cs" />
+    <Compile Include="Traits\World\SubterraneanActorLayer.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="AfterBuild">

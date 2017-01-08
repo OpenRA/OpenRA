@@ -631,3 +631,9 @@ tuntop03:
 
 tuntop04:
 	Inherits: ^tuntop
+
+dig:
+	idle:
+		Length: *
+		ZOffset: 511
+		Offset: 0, 0, 24

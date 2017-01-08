@@ -60,6 +60,7 @@
 	TerrainGeometryOverlay:
 	ExitsDebugOverlayManager:
 	CliffBackImpassabilityLayer:
+	SubterraneanActorLayer:
 
 World:
 	Inherits: ^BaseWorld

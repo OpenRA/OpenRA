@@ -72,6 +72,9 @@ Terrain:
 		Type: Rock
 		TargetTypes: Ground
 		Color: 44443C
+	TerrainType@Subterranean:
+		Type: Subterranean
+		Color: 745537
 
 # Automatically generated. DO NOT EDIT!
 Templates:
