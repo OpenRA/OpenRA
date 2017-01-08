@@ -165,6 +165,8 @@ TTNK:
 	AutoTarget:
 	Carryable:
 		RequiresCondition: undeployed
+	RevealOnFire:
+		ArmamentNames: primary, deployed
 
 ART2:
 	Inherits: ^Tank

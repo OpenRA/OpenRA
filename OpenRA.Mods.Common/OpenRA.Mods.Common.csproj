@@ -789,6 +789,7 @@
     <Compile Include="UtilityCommands\Utilities.cs" />
     <Compile Include="UtilityCommands\OutputResolvedSequencesCommand.cs" />
     <Compile Include="UtilityCommands\OutputResolvedWeaponsCommand.cs" />
+    <Compile Include="Traits\RevealOnFire.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="AfterBuild">
