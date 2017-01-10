@@ -219,6 +219,7 @@ Nike:
 RedEye:
 	ReloadDelay: 50
 	Range: 7c512
+	MinRange: 0c512
 	Report: missile1.aud
 	ValidTargets: Air
 	Projectile: Missile
