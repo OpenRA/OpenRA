@@ -306,6 +306,7 @@
 	RenderRangeCircle:
 	-GivesBuildableArea:
 	-WithMakeAnimation:
+	-Capturable:
 	-WithSpriteBody:
 	WithWallSpriteBody:
 	LineBuildNode:
