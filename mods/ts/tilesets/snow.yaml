@@ -75,6 +75,9 @@ Terrain:
 	TerrainType@Subterranean:
 		Type: Subterranean
 		Color: C7C9FA
+	TerrainType@Jumpjet:
+		Type: Jumpjet
+		Color: C7C9FA
 
 # Automatically generated. DO NOT EDIT!
 Templates:

@@ -43,6 +43,7 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		public const byte Tunnel = 1;
 		public const byte Subterranean = 2;
+		public const byte Jumpjet = 3;
 	}
 
 	[Desc("Unit is able to move.")]
@@ -114,6 +115,22 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string SubterraneanTransitionPalette = "effect";
 
 		public readonly string SubterraneanTransitionSound = null;
+
+		[Desc("Can this unit fly over obsticals?")]
+		public readonly bool Jumpjet = false;
+
+		[GrantedConditionReference]
+		[Desc("The condition to grant to self while flying.")]
+		public readonly string JumpjetCondition = null;
+
+		[Desc("Pathfinding cost for taking off or landing.")]
+		public readonly int JumpjetTransitionCost = 0;
+
+		[Desc("The terrain types that this actor can transition on. Leave empty to allow any.")]
+		public readonly HashSet<string> JumpjetTransitionTerrainTypes = new HashSet<string>();
+
+		[Desc("Can this actor transition on slopes?")]
+		public readonly bool JumpjetTransitionOnRamps = true;
 
 		public override object Create(ActorInitializer init) { return new Mobile(init, this); }
 
@@ -378,6 +395,7 @@ namespace OpenRA.Mods.Common.Traits
 		public SubCell FromSubCell, ToSubCell;
 		int tunnelToken = ConditionManager.InvalidConditionToken;
 		int subterraneanToken = ConditionManager.InvalidConditionToken;
+		int jumpjetToken = ConditionManager.InvalidConditionToken;
 		ConditionManager conditionManager;
 
 		[Sync] public int Facing
@@ -424,6 +442,12 @@ namespace OpenRA.Mods.Common.Traits
 				if (!string.IsNullOrEmpty(Info.SubterraneanTransitionSound))
 					Game.Sound.Play(SoundType.World, Info.SubterraneanTransitionSound);
 			}
+
+			// Grant the jumpjet condition as soon as the actor starts leaving the ground layer
+			// The condition is revoked from FinishedMoving
+			if (toCell.Layer == CustomMovementLayerType.Jumpjet && conditionManager != null &&
+					!string.IsNullOrEmpty(Info.JumpjetCondition) && jumpjetToken == ConditionManager.InvalidConditionToken)
+				jumpjetToken = conditionManager.GrantCondition(self, Info.JumpjetCondition);
 		}
 
 		public Mobile(ActorInitializer init, MobileInfo info)
@@ -699,6 +723,11 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void FinishedMoving(Actor self)
 		{
+			// Need to check both fromCell and toCell because FinishedMoving is called multiple times during the move
+			// and that condition guarantees that this only runs when the unit has finished landing.
+			if (fromCell.Layer != CustomMovementLayerType.Jumpjet && toCell.Layer != CustomMovementLayerType.Jumpjet && jumpjetToken != ConditionManager.InvalidConditionToken)
+				jumpjetToken = conditionManager.RevokeCondition(self, jumpjetToken);
+
 			// Only make actor crush if it is on the ground
 			if (!self.IsAtGroundLevel())
 				return;

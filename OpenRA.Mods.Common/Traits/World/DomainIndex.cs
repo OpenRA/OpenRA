@@ -45,7 +45,7 @@ namespace OpenRA.Mods.Common.Traits
 				return true;
 
 			// HACK: Workaround until we can generalize movement classes
-			if (mi.Subterranean)
+			if (mi.Subterranean || mi.Jumpjet)
 				return true;
 
 			return domainIndexes[movementClass].IsPassable(p1, p2);
