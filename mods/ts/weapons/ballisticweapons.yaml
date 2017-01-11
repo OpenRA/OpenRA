@@ -130,3 +130,71 @@
 	Warhead@4Smu: LeaveSmudge
 		SmudgeType: MediumCrater
 		InvalidTargets: Vehicle, Building, Wall
+
+Grenade:
+	ReloadDelay: 60
+	Range: 4c512
+	Projectile: Bullet
+		Speed: 160
+		Blockable: true
+		Shadow: true
+		LaunchAngle: 60
+		Inaccuracy: 0
+		Image: DISCUS
+		BounceCount: 2
+	Warhead@1Dam: SpreadDamage
+		Spread: 192
+		Damage: 40
+		Versus:
+			None: 100
+			Wood: 85
+			Light: 70
+			Heavy: 35
+			Concrete: 28
+		DamageTypes: Prone70Percent, TriggerProne, ExplosionDeath
+	Warhead@2Eff: CreateEffect
+		Explosions: large_grey_explosion
+		ImpactSounds: expnew13.aud
+		InvalidImpactTypes: Water
+	Warhead@3EffWater: CreateEffect
+		Explosions: small_watersplash
+		ExplosionPalette: player
+		ImpactSounds: ssplash3.aud
+		ValidImpactTypes: Water
+	Warhead@4Smu: LeaveSmudge
+		SmudgeType: MediumCrater
+		InvalidTargets: Vehicle, Building, Wall
+
+RPGTower:
+	ReloadDelay: 80
+	Range: 8c0
+	Report: glnch4.aud
+	Projectile: Bullet
+		Speed: 384
+		Blockable: false
+		Shadow: true
+		LaunchAngle: 62
+		Image: canister
+		Palette: player
+	Warhead@1Dam: SpreadDamage
+		Spread: 128
+		Damage: 110
+		Versus:
+			None: 30
+			Wood: 75
+			Light: 90
+			Heavy: 100
+			Concrete: 70
+		DamageTypes: Prone70Percent, TriggerProne, SmallExplosionDeath
+	Warhead@2Eff: CreateEffect
+		Explosions: large_clsn
+		ImpactSounds: expnew14.aud
+		InvalidImpactTypes: Water
+	Warhead@3EffWater: CreateEffect
+		Explosions: small_watersplash
+		ExplosionPalette: player
+		ImpactSounds: ssplash2.aud
+		ValidImpactTypes: Water
+	Warhead@4Smu: LeaveSmudge
+		SmudgeType: MediumCrater
+		InvalidTargets: Vehicle, Building, Wall

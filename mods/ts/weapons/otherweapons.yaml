@@ -22,6 +22,40 @@ FireballLauncher:
 		SmudgeType: SmallScorch
 		InvalidTargets: Vehicle, Building, Wall
 
+Bomb:
+	ReloadDelay: 60
+	Burst: 5
+	BurstDelay: 5
+	Range: 2c0
+	Projectile: GravityBomb
+		Speed: 170
+		Image: 120mm
+		Shadow: true
+		Palette: ra
+	Warhead@1Dam: SpreadDamage
+		Spread: 298
+		Damage: 160
+		Versus:
+			None: 200
+			Wood: 90
+			Light: 75
+			Heavy: 32
+			Concrete: 100
+		DamageTypes: Prone100Percent, TriggerProne, ExplosionDeath
+	Warhead@2Eff: CreateEffect
+		Explosions: large_explosion
+		ExplosionPalette: effectalpha75
+		ImpactSounds: expnew09.aud
+		InvalidImpactTypes: Water
+	Warhead@3EffWater: CreateEffect
+		Explosions: small_watersplash
+		ExplosionPalette: player
+		ImpactSounds: ssplash3.aud
+		ValidImpactTypes: Water
+	Warhead@4Smu: LeaveSmudge
+		SmudgeType: MediumCrater
+		InvalidTargets: Vehicle, Building, Wall
+
 FiendShard:
 	ReloadDelay: 30
 	Burst: 3
