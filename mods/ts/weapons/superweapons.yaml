@@ -56,19 +56,19 @@ SuicideBomb:
 	Warhead@2Res: DestroyResource
 
 IonCannon:
-	ValidTargets: Ground, Air
+	ValidTargets: Ground, Water, Air
 	Warhead@1Dam_impact: SpreadDamage
 		Spread: 1c0
 		Damage: 100
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
-		ValidTargets: Ground, Air
+		ValidTargets: Ground, Water, Air
 		DamageTypes: Prone100Percent, TriggerProne, EnergyDeath
 	Warhead@2Dam_area: SpreadDamage
 		Spread: 1c0
 		Damage: 250
 		Falloff: 100, 50, 25, 0
 		Delay: 3
-		ValidTargets: Ground, Air
+		ValidTargets: Ground, Water, Air
 		DamageTypes: Prone50Percent, TriggerProne, EnergyDeath
 	Warhead@3Smu_area: LeaveSmudge
 		SmudgeType: SmallScorch
