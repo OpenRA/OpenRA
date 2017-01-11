@@ -89,7 +89,7 @@ Weapons:
 	ts|weapons/energyweapons.yaml
 	ts|weapons/explosions.yaml
 	ts|weapons/healweapons.yaml
-	ts|weapons/largeguns.yaml
+	ts|weapons/ballisticweapons.yaml
 	ts|weapons/missiles.yaml
 	ts|weapons/otherweapons.yaml
 	ts|weapons/smallguns.yaml
