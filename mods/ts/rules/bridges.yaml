@@ -152,3 +152,34 @@ LOBRDG_R_SW:
 		NeighbourOffsets: 1,-1
 	EditorOnlyTooltip:
 		Name: Bridge Ramp
+
+^ElevatedBridgePlaceholder:
+	AlwaysVisible:
+	RenderSprites:
+		Palette: terraindecoration
+	WithSpriteBody:
+	AutoSelectionSize:
+	AppearsOnRadar:
+	RadarColorFromTerrain:
+		Terrain: Bridge
+	BodyOrientation:
+		UseClassicPerspectiveFudge: false
+		QuantizedFacings: 1
+	Tooltip:
+		Name: Bridge
+	Immobile:
+		OccupiesSpace: false
+	CustomSelectionSize:
+		CustomBounds: 96, 144
+
+BRIDGE1:
+	Inherits: ^ElevatedBridgePlaceholder
+
+BRIDGE2:
+	Inherits: ^ElevatedBridgePlaceholder
+
+RAILBRDG1:
+	Inherits: ^ElevatedBridgePlaceholder
+
+RAILBRDG2:
+	Inherits: ^ElevatedBridgePlaceholder

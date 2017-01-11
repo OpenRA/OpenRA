@@ -44,6 +44,7 @@ namespace OpenRA.Mods.Common.Traits
 		public const byte Tunnel = 1;
 		public const byte Subterranean = 2;
 		public const byte Jumpjet = 3;
+		public const byte ElevatedBridge = 4;
 	}
 
 	[Desc("Unit is able to move.")]
