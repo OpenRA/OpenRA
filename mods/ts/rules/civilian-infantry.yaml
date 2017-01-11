@@ -272,6 +272,7 @@ VISC_LRG:
 		HP: 500
 	Armament:
 		Weapon: SlimeAttack
+		FireDelay: 10
 	AutoTarget:
 	AttackFrontal:
 		Voice: Attack
@@ -279,6 +280,8 @@ VISC_LRG:
 		WanderMoveRadius: 2
 		MinMoveDelay: 25
 		MaxMoveDelay: 50
+	WithAttackAnimation:
+		AttackSequence: attack
 	Mobile:
 		Crushes: crate, infantry
 	RenderSprites:

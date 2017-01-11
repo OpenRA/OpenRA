@@ -664,7 +664,7 @@
 	AttackMove:
 	HiddenUnderFog:
 	Guardable:
-	WithSpriteBody:
+	WithFacingSpriteBody:
 	RevealOnFire:
 
 ^BlossomTree:

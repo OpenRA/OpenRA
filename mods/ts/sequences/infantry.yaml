@@ -526,12 +526,19 @@ vislrg:
 		ShadowStart: 90
 		Tick: 80
 		Offset: 0, 0, 16
-	muzzle: vislgatk # TODO: unused
+	attack:
+		Combine:
+			vislgatk:
+				Start: 5
+				Length: 35
+			vislgatk:
+				Start: 0
+				Length: 5
+		Facings: -8
 		Length: 5
-		Facings: 8
-		ShadowStart: 40
 		Tick: 80
 		Offset: 0, 0, 16
+#		ShadowStart: 40 # TODO: enable shadow frames
 
 flameguy:
 	Defaults:
