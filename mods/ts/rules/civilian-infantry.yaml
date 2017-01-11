@@ -221,6 +221,8 @@ DOGGIE:
 		HP: 250
 		Shape: Circle
 			Radius: 213
+	Selectable:
+		Bounds: 24,24
 	Valued:
 		Cost: 100
 	Armor:
