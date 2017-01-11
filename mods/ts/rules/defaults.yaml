@@ -302,7 +302,7 @@
 	SelectionDecorations:
 		Palette: pips
 	Selectable:
-		Bounds: 14,23,-1,-9
+		Bounds: 15,23,0,-9
 	Voiced:
 		VoiceSet: Infantry
 	Targetable:
