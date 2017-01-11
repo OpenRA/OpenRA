@@ -240,8 +240,8 @@ DOGGIE:
 		Voice: Attack
 	AttackWander:
 		WanderMoveRadius: 2
-		MinMoveDelayInTicks: 25
-		MaxMoveDelayInTicks: 45
+		MinMoveDelay: 200
+		MaxMoveDelay: 600
 	-SpawnActorOnDeath@FLAMEGUY:
 	WithDeathAnimation@fire:
 		DeathSequence: die-
@@ -256,8 +256,8 @@ VISC_SML:
 		HP: 200
 	AttackWander:
 		WanderMoveRadius: 2
-		MinMoveDelayInTicks: 30
-		MaxMoveDelayInTicks: 60
+		MinMoveDelay: 30
+		MaxMoveDelay: 60
 	RenderSprites:
 		Image: vissml
 	Buildable:
@@ -277,8 +277,8 @@ VISC_LRG:
 		Voice: Attack
 	AttackWander:
 		WanderMoveRadius: 2
-		MinMoveDelayInTicks: 25
-		MaxMoveDelayInTicks: 45
+		MinMoveDelay: 25
+		MaxMoveDelay: 50
 	Mobile:
 		Crushes: crate, infantry
 	RenderSprites:
