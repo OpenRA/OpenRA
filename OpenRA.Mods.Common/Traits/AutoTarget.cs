@@ -53,6 +53,7 @@ namespace OpenRA.Mods.Common.Traits
 	public class AutoTarget : ConditionalTrait<AutoTargetInfo>, INotifyIdle, INotifyDamage, ITick, IResolveOrder, ISync
 	{
 		readonly AttackBase[] attackBases;
+		readonly IEnumerable<AttackBase> activeAttackBases;
 		readonly AttackFollow[] attackFollows;
 		[Sync] int nextScanTime = 0;
 
@@ -68,6 +69,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			var self = init.Self;
 			attackBases = self.TraitsImplementing<AttackBase>().ToArray();
+			activeAttackBases = attackBases.Where(Exts.IsTraitEnabled);
 
 			if (init.Contains<StanceInit>())
 				Stance = init.Get<StanceInit, UnitStance>();
@@ -146,8 +148,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public Actor ScanForTarget(Actor self, bool allowMove)
 		{
-			var activeAttackBases = attackBases.Where(Exts.IsTraitEnabled);
-			if (activeAttackBases.Any() && nextScanTime <= 0)
+			if (nextScanTime <= 0 && activeAttackBases.Any())
 			{
 				nextScanTime = self.World.SharedRandom.Next(Info.MinimumScanTimeInterval, Info.MaximumScanTimeInterval);
 
@@ -160,8 +161,6 @@ namespace OpenRA.Mods.Common.Traits
 						var range = Info.ScanRadius > 0 ? WDist.FromCells(Info.ScanRadius) : ab.GetMaximumRange();
 						return ChooseTarget(self, ab, attackStances, range, allowMove);
 					}
-
-					continue;
 				}
 			}
 
@@ -181,7 +180,6 @@ namespace OpenRA.Mods.Common.Traits
 			var target = Target.FromActor(targetActor);
 			self.SetTargetLine(target, Color.Red, false);
 
-			var activeAttackBases = attackBases.Where(Exts.IsTraitEnabled);
 			foreach (var ab in activeAttackBases)
 				ab.AttackTarget(target, false, allowMove);
 		}
