@@ -92,8 +92,8 @@ namespace OpenRA.Mods.Common.Traits
 
 			foreach (var kvp in palettes)
 			{
-				if ((info.Palettes.Count > 0 && !info.Palettes.Any(kvp.Key.StartsWith))
-					|| (info.ExcludePalettes.Count > 0 && info.ExcludePalettes.Any(kvp.Key.StartsWith)))
+				if ((info.Palettes.Count > 0 && !AnyPaletteNameStartsWith(info.Palettes, kvp.Key))
+					|| (info.ExcludePalettes.Count > 0 && AnyPaletteNameStartsWith(info.ExcludePalettes, kvp.Key)))
 					continue;
 
 				var palette = kvp.Value;
@@ -104,6 +104,16 @@ namespace OpenRA.Mods.Common.Traits
 				for (var i = 0; i < info.RotationRange; i++)
 					palette[info.RotationBase + i] = rotationBuffer[i];
 			}
+		}
+
+		static bool AnyPaletteNameStartsWith(HashSet<string> names, string prefix)
+		{
+			// PERF: Avoid LINQ.
+			foreach (var name in names)
+				if (name.StartsWith(prefix))
+					return true;
+
+			return false;
 		}
 	}
 }
