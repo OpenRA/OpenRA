@@ -119,8 +119,9 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			Aggressor = attacker;
-			var allowMove = Info.AllowMovement && Stance != UnitStance.Defend;
-			if (attackFollows.All(a => a.IsTraitDisabled || !a.IsReachableTarget(a.Target, allowMove)))
+
+			bool allowMove;
+			if (ShouldAttack(out allowMove))
 				Attack(self, Aggressor, allowMove);
 		}
 
@@ -132,9 +133,21 @@ namespace OpenRA.Mods.Common.Traits
 			if (Stance < UnitStance.Defend || !Info.TargetWhenIdle)
 				return;
 
-			var allowMove = Info.AllowMovement && Stance != UnitStance.Defend;
-			if (attackFollows.All(a => a.IsTraitDisabled || !a.IsReachableTarget(a.Target, allowMove)))
+			bool allowMove;
+			if (ShouldAttack(out allowMove))
 				ScanAndAttack(self, allowMove);
+		}
+
+		bool ShouldAttack(out bool allowMove)
+		{
+			allowMove = Info.AllowMovement && Stance != UnitStance.Defend;
+
+			// PERF: Avoid LINQ.
+			foreach (var attackFollow in attackFollows)
+				if (!attackFollow.IsTraitDisabled && attackFollow.IsReachableTarget(attackFollow.Target, allowMove))
+					return false;
+
+			return true;
 		}
 
 		public void Tick(Actor self)
