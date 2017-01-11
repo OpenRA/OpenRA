@@ -148,4 +148,3 @@ RedEye2:
 	Warhead@2Eff: CreateEffect
 		Explosions: large_grey_explosion
 		ImpactSounds: expnew13.aud
-	-Warhead@3EffWater:
