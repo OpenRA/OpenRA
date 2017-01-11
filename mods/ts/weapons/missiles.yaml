@@ -35,16 +35,12 @@
 	Warhead@2Eff: CreateEffect
 		Explosions: small_clsn
 		ImpactSounds: expnew12.aud
-		InvalidImpactTypes: Water, Air, AirHit
+		InvalidImpactTypes: Water
 	Warhead@3EffWater: CreateEffect
 		Explosions: small_watersplash
 		ExplosionPalette: player
 		ImpactSounds: ssplash3.aud
 		ValidImpactTypes: Water
-	Warhead@4EffAir: CreateEffect
-		ValidImpactTypes: Air, AirHit
-		Explosions: tiny_twlt
-		ImpactSounds: expnew05.aud
 	Warhead@5Smu: LeaveSmudge
 		SmudgeType: SmallCrater
 		InvalidTargets: Vehicle, Building, Wall
@@ -93,7 +89,6 @@ MammothTusk:
 		ExplosionPalette: player
 		ImpactSounds: ssplash3.aud
 		ValidImpactTypes: Water
-	-Warhead@4EffAir:
 	-Warhead@5Smu:
 
 BikeMissile:
@@ -155,5 +150,4 @@ RedEye2:
 		Explosions: large_grey_explosion
 		ImpactSounds: expnew13.aud
 	-Warhead@3EffWater:
-	-Warhead@4EffAir:
 	-Warhead@5Smu:
