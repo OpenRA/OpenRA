@@ -63,6 +63,13 @@ namespace OpenRA.Mods.Common.Projectiles
 		[Desc("Arc in WAngles, two values indicate variable arc.")]
 		public readonly WAngle[] LaunchAngle = { WAngle.Zero };
 
+		[Desc("Up to how many times does this bullet bounce when touching ground without hitting a target.",
+			"0 implies exploding on contact with the originally targeted position.")]
+		public readonly int BounceCount = 0;
+
+		[Desc("Modify distance of each bounce by this percentage of previous distance.")]
+		public readonly int BounceRangeModifier = 60;
+
 		[Desc("Interval in ticks between each spawned Trail animation.")]
 		public readonly int TrailInterval = 2;
 
@@ -96,10 +103,11 @@ namespace OpenRA.Mods.Common.Projectiles
 		ContrailRenderable contrail;
 		string trailPalette;
 
-		[Sync] WPos pos, target;
+		[Sync] WPos pos, target, source;
 		int length;
 		[Sync] int facing;
 		int ticks, smokeTicks;
+		int remainingBounces;
 
 		public Actor SourceActor { get { return args.SourceActor; } }
 
@@ -108,6 +116,7 @@ namespace OpenRA.Mods.Common.Projectiles
 			this.info = info;
 			this.args = args;
 			pos = args.Source;
+			source = args.Source;
 
 			var world = args.SourceActor.World;
 
@@ -150,6 +159,7 @@ namespace OpenRA.Mods.Common.Projectiles
 				trailPalette += args.SourceActor.Owner.InternalName;
 
 			smokeTicks = info.TrailDelay;
+			remainingBounces = info.BounceCount;
 		}
 
 		int GetEffectiveFacing()
@@ -171,7 +181,7 @@ namespace OpenRA.Mods.Common.Projectiles
 				anim.Tick();
 
 			var lastPos = pos;
-			pos = WPos.LerpQuadratic(args.Source, target, angle, ticks, length);
+			pos = WPos.LerpQuadratic(source, target, angle, ticks, length);
 
 			// Check for walls or other blocking obstacles
 			var shouldExplode = false;
@@ -185,7 +195,7 @@ namespace OpenRA.Mods.Common.Projectiles
 
 			if (!string.IsNullOrEmpty(info.TrailImage) && --smokeTicks < 0)
 			{
-				var delayedPos = WPos.LerpQuadratic(args.Source, target, angle, ticks - info.TrailDelay, length);
+				var delayedPos = WPos.LerpQuadratic(source, target, angle, ticks - info.TrailDelay, length);
 				world.AddFrameEndTask(w => w.Add(new SpriteEffect(delayedPos, w, info.TrailImage, info.TrailSequences.Random(world.SharedRandom),
 					trailPalette, false, false, GetEffectiveFacing())));
 
@@ -195,8 +205,25 @@ namespace OpenRA.Mods.Common.Projectiles
 			if (info.ContrailLength > 0)
 				contrail.Update(pos);
 
+			var flightLengthReached = ticks++ >= length;
+			var shouldBounce = remainingBounces > 0;
+
+			if (flightLengthReached && shouldBounce)
+			{
+				target += (pos - source) * info.BounceRangeModifier / 100;
+				var dat = world.Map.DistanceAboveTerrain(target);
+				target += new WVec(0, 0, -dat.Length);
+				length = Math.Max((target - pos).Length / speed.Length, 1);
+				ticks = 0;
+				source = pos;
+				remainingBounces--;
+			}
+
 			// Flight length reached / exceeded
-			shouldExplode |= ticks++ >= length;
+			shouldExplode |= flightLengthReached && !shouldBounce;
+
+			// Driving into cell with higher height level
+			shouldExplode |= world.Map.DistanceAboveTerrain(pos).Length < 0;
 
 			if (shouldExplode)
 				Explode(world);
