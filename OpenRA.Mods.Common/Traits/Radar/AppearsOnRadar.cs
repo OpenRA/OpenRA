@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -29,6 +30,9 @@ namespace OpenRA.Mods.Common.Traits.Radar
 		readonly AppearsOnRadarInfo info;
 		IRadarColorModifier modifier;
 
+		Color currentColor = Color.Transparent;
+		Func<Pair<CPos, SubCell>, Pair<CPos, Color>> cellToSignature;
+
 		public AppearsOnRadar(AppearsOnRadarInfo info)
 		{
 			this.info = info;
@@ -48,7 +52,14 @@ namespace OpenRA.Mods.Common.Traits.Radar
 			if (info.UseLocation)
 				return new[] { Pair.New(self.Location, color) };
 
-			return self.OccupiesSpace.OccupiedCells().Select(c => Pair.New(c.First, color));
+			// PERF: Cache cellToSignature delegate to avoid allocations as color does not change often.
+			if (currentColor != color)
+			{
+				currentColor = color;
+				cellToSignature = c => Pair.New(c.First, color);
+			}
+
+			return self.OccupiesSpace.OccupiedCells().Select(cellToSignature);
 		}
 	}
 }
