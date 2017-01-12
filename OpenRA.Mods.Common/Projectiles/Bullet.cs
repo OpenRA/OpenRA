@@ -70,6 +70,9 @@ namespace OpenRA.Mods.Common.Projectiles
 		[Desc("Modify distance of each bounce by this percentage of previous distance.")]
 		public readonly int BounceRangeModifier = 60;
 
+		[Desc("If projectile touches an actor with one of these stances during or after the first bounce, trigger explosion.")]
+		public readonly Stance ValidBounceBlockerStances = Stance.Enemy | Stance.Neutral;
+
 		[Desc("Interval in ticks between each spawned Trail animation.")]
 		public readonly int TrailInterval = 2;
 
@@ -210,6 +213,7 @@ namespace OpenRA.Mods.Common.Projectiles
 
 			if (flightLengthReached && shouldBounce)
 			{
+				shouldExplode |= AnyValidTargetsInRadius(world, pos, info.Width + info.TargetExtraSearchRadius, args.SourceActor, true);
 				target += (pos - source) * info.BounceRangeModifier / 100;
 				var dat = world.Map.DistanceAboveTerrain(target);
 				target += new WVec(0, 0, -dat.Length);
@@ -224,6 +228,10 @@ namespace OpenRA.Mods.Common.Projectiles
 
 			// Driving into cell with higher height level
 			shouldExplode |= world.Map.DistanceAboveTerrain(pos).Length < 0;
+
+			// After first bounce, check for targets each tick
+			if (remainingBounces < info.BounceCount)
+				shouldExplode |= AnyValidTargetsInRadius(world, pos, info.Width + info.TargetExtraSearchRadius, args.SourceActor, true);
 
 			if (shouldExplode)
 				Explode(world);
@@ -262,6 +270,28 @@ namespace OpenRA.Mods.Common.Projectiles
 			world.AddFrameEndTask(w => w.Remove(this));
 
 			args.Weapon.Impact(Target.FromPos(pos), args.SourceActor, args.DamageModifiers);
+		}
+
+		bool AnyValidTargetsInRadius(World world, WPos pos, WDist radius, Actor firedBy, bool checkTargetType)
+		{
+			foreach (var victim in world.FindActorsInCircle(pos, radius))
+			{
+				if (checkTargetType && !Target.FromActor(victim).IsValidFor(firedBy))
+					continue;
+
+				if (!info.ValidBounceBlockerStances.HasStance(victim.Owner.Stances[firedBy.Owner]))
+					continue;
+
+				var healthInfo = victim.Info.TraitInfoOrDefault<HealthInfo>();
+				if (healthInfo == null)
+					continue;
+
+				// If the impact position is within any actor's HitShape, we have a direct hit
+				if (healthInfo.Shape.DistanceFromEdge(pos, victim).Length <= 0)
+					return true;
+			}
+
+			return false;
 		}
 	}
 }
