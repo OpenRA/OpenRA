@@ -1,15 +1,16 @@
 Grenade:
 	ReloadDelay: 60
 	Range: 4c512
-	Projectile: Bullet # TODO: Add bounce effect
-		Speed: 85
-		Blockable: false
+	Projectile: Bullet
+		Speed: 160
+		Blockable: true
 		Shadow: true
-		LaunchAngle: 45
-		Inaccuracy: 384
+		LaunchAngle: 60
+		Inaccuracy: 0
 		Image: DISCUS
+		BounceCount: 2
 	Warhead@1Dam: SpreadDamage
-		Spread: 171
+		Spread: 192
 		Damage: 40
 		Versus:
 			None: 100
