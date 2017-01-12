@@ -361,6 +361,8 @@
     <Compile Include="Traits\Passenger.cs" />
     <Compile Include="Traits\Multipliers\DamageMultiplier.cs" />
     <Compile Include="Traits\Multipliers\FirepowerMultiplier.cs" />
+    <Compile Include="Traits\Multipliers\GainsExperienceMultiplier.cs" />
+    <Compile Include="Traits\Multipliers\GivesExperienceMultiplier.cs" />
     <Compile Include="Traits\Multipliers\InaccuracyMultiplier.cs" />
     <Compile Include="Traits\Multipliers\ReloadDelayMultiplier.cs" />
     <Compile Include="Traits\Multipliers\SpeedMultiplier.cs" />

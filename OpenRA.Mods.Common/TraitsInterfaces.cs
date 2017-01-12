@@ -227,4 +227,10 @@ namespace OpenRA.Mods.Common.Traits
 
 	[RequireExplicitImplementation]
 	public interface IPowerModifier { int GetPowerModifier(); }
+
+	[RequireExplicitImplementation]
+	public interface IGivesExperienceModifier { int GetGivesExperienceModifier(); }
+
+	[RequireExplicitImplementation]
+	public interface IGainsExperienceModifier { int GetGainsExperienceModifier(); }
 }

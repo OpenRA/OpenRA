@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Linq;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -54,9 +55,16 @@ namespace OpenRA.Mods.Common.Traits
 				? info.Experience
 				: valued != null ? valued.Cost : 0;
 
+			var experienceModifier = self.TraitsImplementing<IGivesExperienceModifier>().Select(x => x.GetGivesExperienceModifier());
+			Util.ApplyPercentageModifiers(exp, experienceModifier);
+
 			var killer = e.Attacker.TraitOrDefault<GainsExperience>();
 			if (killer != null)
-				killer.GiveExperience(Util.ApplyPercentageModifiers(exp, new[] { info.ActorExperienceModifier }));
+			{
+				var killerExperienceModifier = e.Attacker.TraitsImplementing<IGainsExperienceModifier>()
+					.Select(x => x.GetGainsExperienceModifier()).Append(info.ActorExperienceModifier);
+				killer.GiveExperience(Util.ApplyPercentageModifiers(exp, killerExperienceModifier));
+			}
 
 			var attackerExp = e.Attacker.Owner.PlayerActor.TraitOrDefault<PlayerExperience>();
 			if (attackerExp != null)
