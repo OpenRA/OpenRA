@@ -14,7 +14,7 @@ Bounds: 2,4,141,226
 
 Visibility: Lobby
 
-Categories: Conquest
+Categories: Conquest, Playable, Original FS Map
 
 Players:
 	PlayerReference@Neutral:
@@ -69,56 +69,6 @@ Players:
 		Enemies: Creeps
 
 Actors:
-	Actor0: cabhut
-		Location: 126,-52
-		Owner: Neutral
-		Health: 100
-		Facing: 96
-	Actor1: cabhut
-		Location: 109,-56
-		Owner: Neutral
-		Health: 100
-		Facing: 96
-	Actor2: cabhut
-		Location: 155,-83
-		Owner: Neutral
-		Health: 100
-		Facing: 96
-	Actor3: cabhut
-		Location: 159,-106
-		Owner: Neutral
-		Health: 100
-		Facing: 96
-	Actor4: cabhut
-		Location: 101,75
-		Owner: Neutral
-		Health: 100
-		Facing: 96
-	Actor5: cabhut
-		Location: 115,79
-		Owner: Neutral
-		Health: 100
-		Facing: 96
-	Actor6: cabhut
-		Location: 154,32
-		Owner: Neutral
-		Health: 100
-		Facing: 96
-	Actor7: cabhut
-		Location: 158,18
-		Owner: Neutral
-		Health: 100
-		Facing: 96
-	Actor8: cabhut
-		Location: 221,-41
-		Owner: Neutral
-		Health: 100
-		Facing: 96
-	Actor9: cabhut
-		Location: 225,-55
-		Owner: Neutral
-		Health: 100
-		Facing: 96
 	Actor10: city15
 		Location: 58,43
 		Owner: Neutral
@@ -213,16 +163,6 @@ Actors:
 		Location: 187,-76
 		Owner: Neutral
 		Health: 50
-		Facing: 96
-	Actor29: cabhut
-		Location: 53,29
-		Owner: Neutral
-		Health: 100
-		Facing: 96
-	Actor30: cabhut
-		Location: 49,5
-		Owner: Neutral
-		Health: 100
 		Facing: 96
 	Actor31: car
 		Location: 94,42
@@ -837,8 +777,268 @@ Actors:
 	Actor233: waypoint
 		Location: 105,21
 		Owner: Neutral
+	Actor234: bridge2
+		Owner: Neutral
+		Location: 51,8
+	Actor235: bridge2
+		Owner: Neutral
+		Location: 51,9
+	Actor236: bridge2
+		Owner: Neutral
+		Location: 51,10
+	Actor237: bridge2
+		Owner: Neutral
+		Location: 51,11
+	Actor238: bridge2
+		Owner: Neutral
+		Location: 51,12
+	Actor240: bridge2
+		Owner: Neutral
+		Location: 51,13
+	Actor239: bridge2
+		Owner: Neutral
+		Location: 51,26
+	Actor241: bridge2
+		Owner: Neutral
+		Location: 51,25
+	Actor242: bridge2
+		Owner: Neutral
+		Location: 51,24
+	Actor243: bridge2
+		Owner: Neutral
+		Location: 51,23
+	Actor244: bridge2
+		Owner: Neutral
+		Location: 51,22
+	Actor245: bridge2
+		Owner: Neutral
+		Location: 51,21
+	Actor246: bridge2
+		Owner: Neutral
+		Location: 51,20
+	Actor247: bridge2
+		Owner: Neutral
+		Location: 51,19
+	Actor248: bridge2
+		Owner: Neutral
+		Location: 51,18
+	Actor249: bridge2
+		Owner: Neutral
+		Location: 51,17
+	Actor250: bridge2
+		Owner: Neutral
+		Location: 51,16
+	Actor252: bridge2
+		Owner: Neutral
+		Location: 51,15
+	Actor253: bridge2
+		Owner: Neutral
+		Location: 51,14
+	Actor251: bridge1
+		Owner: Neutral
+		Location: 104,77
+	Actor254: bridge1
+		Owner: Neutral
+		Location: 105,77
+	Actor255: bridge1
+		Owner: Neutral
+		Location: 106,77
+	Actor256: bridge1
+		Owner: Neutral
+		Location: 107,77
+	Actor257: bridge1
+		Owner: Neutral
+		Location: 108,77
+	Actor258: bridge1
+		Owner: Neutral
+		Location: 109,77
+	Actor259: bridge1
+		Owner: Neutral
+		Location: 110,77
+	Actor261: bridge1
+		Owner: Neutral
+		Location: 111,77
+	Actor262: bridge1
+		Owner: Neutral
+		Location: 112,77
+	Actor263: bridge2
+		Owner: Neutral
+		Location: 156,21
+	Actor264: bridge2
+		Owner: Neutral
+		Location: 156,22
+	Actor265: bridge2
+		Owner: Neutral
+		Location: 156,23
+	Actor266: bridge2
+		Owner: Neutral
+		Location: 156,24
+	Actor267: bridge2
+		Owner: Neutral
+		Location: 156,25
+	Actor268: bridge2
+		Owner: Neutral
+		Location: 156,26
+	Actor269: bridge2
+		Owner: Neutral
+		Location: 156,27
+	Actor270: bridge2
+		Owner: Neutral
+		Location: 156,28
+	Actor271: bridge2
+		Owner: Neutral
+		Location: 156,29
+	Actor272: bridge1
+		Owner: Neutral
+		Location: 112,-54
+	Actor273: bridge1
+		Owner: Neutral
+		Location: 113,-54
+	Actor274: bridge1
+		Owner: Neutral
+		Location: 114,-54
+	Actor275: bridge1
+		Owner: Neutral
+		Location: 115,-54
+	Actor276: bridge1
+		Owner: Neutral
+		Location: 116,-54
+	Actor277: bridge1
+		Owner: Neutral
+		Location: 117,-54
+	Actor279: bridge1
+		Owner: Neutral
+		Location: 123,-54
+	Actor280: bridge1
+		Owner: Neutral
+		Location: 122,-54
+	Actor281: bridge1
+		Owner: Neutral
+		Location: 121,-54
+	Actor283: bridge1
+		Owner: Neutral
+		Location: 120,-54
+	Actor282: bridge1
+		Owner: Neutral
+		Location: 119,-54
+	Actor284: bridge1
+		Owner: Neutral
+		Location: 118,-54
+	Actor278: bridge2
+		Owner: Neutral
+		Location: 157,-103
+	Actor285: bridge2
+		Owner: Neutral
+		Location: 157,-102
+	Actor287: bridge2
+		Owner: Neutral
+		Location: 157,-101
+	Actor286: bridge2
+		Owner: Neutral
+		Location: 157,-100
+	Actor289: bridge2
+		Owner: Neutral
+		Location: 157,-99
+	Actor288: bridge2
+		Owner: Neutral
+		Location: 157,-98
+	Actor290: bridge2
+		Owner: Neutral
+		Location: 157,-97
+	Actor291: bridge2
+		Owner: Neutral
+		Location: 157,-96
+	Actor292: bridge2
+		Owner: Neutral
+		Location: 157,-95
+	Actor293: bridge2
+		Owner: Neutral
+		Location: 157,-94
+	Actor294: bridge2
+		Owner: Neutral
+		Location: 157,-93
+	Actor295: bridge2
+		Owner: Neutral
+		Location: 157,-92
+	Actor296: bridge2
+		Owner: Neutral
+		Location: 157,-91
+	Actor297: bridge2
+		Owner: Neutral
+		Location: 157,-90
+	Actor298: bridge2
+		Owner: Neutral
+		Location: 157,-89
+	Actor299: bridge2
+		Owner: Neutral
+		Location: 157,-88
+	Actor300: bridge2
+		Owner: Neutral
+		Location: 157,-87
+	Actor301: bridge2
+		Owner: Neutral
+		Location: 157,-86
+	Actor302: bridge2
+		Owner: Neutral
+		Location: 223,-52
+	Actor303: bridge2
+		Owner: Neutral
+		Location: 223,-51
+	Actor304: bridge2
+		Owner: Neutral
+		Location: 223,-50
+	Actor305: bridge2
+		Owner: Neutral
+		Location: 223,-49
+	Actor306: bridge2
+		Owner: Neutral
+		Location: 223,-48
+	Actor307: bridge2
+		Owner: Neutral
+		Location: 223,-47
+	Actor309: bridge2
+		Owner: Neutral
+		Location: 223,-46
+	Actor308: bridge2
+		Owner: Neutral
+		Location: 223,-45
+	Actor310: bridge2
+		Owner: Neutral
+		Location: 223,-44
 
 Rules:
 	World:
 		GlobalLightingPaletteEffect:
 			Ambient: 0.93
+		TerrainTunnelLayer:
+		ElevatedBridgeLayer:
+		ElevatedBridgePlaceholder@a:
+			Location: 50, 7
+			Height: 6
+			Orientation: Y
+			Length: 20
+		ElevatedBridgePlaceholder@b:
+			Location: 103, 76
+			Height: 6
+			Orientation: X
+			Length: 10
+		ElevatedBridgePlaceholder@c:
+			Location: 111, -55
+			Height: 6
+			Orientation: X
+			Length: 13
+		ElevatedBridgePlaceholder@d:
+			Location: 155, 20
+			Height: 6
+			Orientation: Y
+			Length: 10
+		ElevatedBridgePlaceholder@e:
+			Location: 156, -104
+			Height: 6
+			Orientation: Y
+			Length: 19
+		ElevatedBridgePlaceholder@f:
+			Location: 222, -53
+			Height: 6
+			Orientation: Y
+			Length: 10
