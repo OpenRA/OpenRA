@@ -7580,7 +7580,7 @@ Templates:
 	Template@296:
 		Category: Bridges
 		Id: 296
-		Images: ovrps01.sno, ovrps01a.sno
+		Images: ovrps01.sno
 		Size: 3, 5
 		Tiles:
 			0: Cliff
@@ -7669,7 +7669,7 @@ Templates:
 	Template@297:
 		Category: Bridges
 		Id: 297
-		Images: ovrps02.sno, ovrps02a.sno
+		Images: ovrps02.sno
 		Size: 3, 5
 		Tiles:
 			0: Cliff
@@ -7758,7 +7758,7 @@ Templates:
 	Template@298:
 		Category: Bridges
 		Id: 298
-		Images: ovrps03.sno, ovrps03a.sno
+		Images: ovrps03.sno
 		Size: 2, 5
 		Tiles:
 			0: Cliff
@@ -7822,7 +7822,7 @@ Templates:
 	Template@299:
 		Category: Bridges
 		Id: 299
-		Images: ovrps04.sno, ovrps04a.sno
+		Images: ovrps04.sno
 		Size: 5, 3
 		Tiles:
 			0: Cliff
@@ -7911,7 +7911,7 @@ Templates:
 	Template@300:
 		Category: Bridges
 		Id: 300
-		Images: ovrps05.sno, ovrps05a.sno
+		Images: ovrps05.sno
 		Size: 5, 3
 		Tiles:
 			0: Cliff
@@ -8000,7 +8000,7 @@ Templates:
 	Template@301:
 		Category: Bridges
 		Id: 301
-		Images: ovrps06.sno, ovrps06a.sno
+		Images: ovrps06.sno
 		Size: 5, 2
 		Tiles:
 			0: Cliff
@@ -14328,7 +14328,7 @@ Templates:
 	Template@695:
 		Category: TrainBridges
 		Id: 695
-		Images: tovrps01.sno, tovrps01a.sno
+		Images: tovrps01.sno
 		Size: 3, 5
 		Tiles:
 			0: Cliff
@@ -14417,7 +14417,7 @@ Templates:
 	Template@696:
 		Category: TrainBridges
 		Id: 696
-		Images: tovrps02.sno, tovrps02a.sno
+		Images: tovrps02.sno
 		Size: 3, 5
 		Tiles:
 			0: Cliff
@@ -14506,7 +14506,7 @@ Templates:
 	Template@697:
 		Category: TrainBridges
 		Id: 697
-		Images: tovrps03.sno, tovrps03a.sno
+		Images: tovrps03.sno
 		Size: 2, 5
 		Tiles:
 			0: Cliff
@@ -14570,7 +14570,7 @@ Templates:
 	Template@698:
 		Category: TrainBridges
 		Id: 698
-		Images: tovrps04.sno, tovrps04a.sno
+		Images: tovrps04.sno
 		Size: 5, 3
 		Tiles:
 			0: Cliff
@@ -14659,7 +14659,7 @@ Templates:
 	Template@699:
 		Category: TrainBridges
 		Id: 699
-		Images: tovrps05.sno, tovrps05a.sno
+		Images: tovrps05.sno
 		Size: 5, 3
 		Tiles:
 			0: Cliff
@@ -14748,7 +14748,7 @@ Templates:
 	Template@700:
 		Category: TrainBridges
 		Id: 700
-		Images: tovrps06.sno, tovrps06a.sno
+		Images: tovrps06.sno
 		Size: 5, 2
 		Tiles:
 			0: Cliff
