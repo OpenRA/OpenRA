@@ -119,26 +119,6 @@ Actors:
 		Owner: Neutral
 		Health: 100
 		Facing: 96
-	Actor12: cabhut
-		Location: 174,2
-		Owner: Neutral
-		Health: 100
-		Facing: 96
-	Actor13: cabhut
-		Location: 183,6
-		Owner: Neutral
-		Health: 100
-		Facing: 96
-	Actor14: cabhut
-		Location: 239,2
-		Owner: Neutral
-		Health: 100
-		Facing: 96
-	Actor15: cabhut
-		Location: 229,-2
-		Owner: Neutral
-		Health: 100
-		Facing: 96
 	Actor16: tibtre01
 		Location: 133,-102
 		Owner: Neutral
@@ -1582,8 +1562,59 @@ Actors:
 	Actor623: tuntop02
 		Owner: Neutral
 		Location: 115,-15
+	Actor494: bridge1
+		Owner: Neutral
+		Location: 232,0
+	Actor495: bridge1
+		Owner: Neutral
+		Location: 233,0
+	Actor496: bridge1
+		Owner: Neutral
+		Location: 234,0
+	Actor497: bridge1
+		Owner: Neutral
+		Location: 235,0
+	Actor500: bridge1
+		Owner: Neutral
+		Location: 236,0
+	Actor501: bridge1
+		Owner: Neutral
+		Location: 177,4
+	Actor502: bridge1
+		Owner: Neutral
+		Location: 178,4
+	Actor503: bridge1
+		Owner: Neutral
+		Location: 179,4
+	Actor505: bridge1
+		Owner: Neutral
+		Location: 180,4
 
 Rules:
 	World:
 		GlobalLightingPaletteEffect:
 			Ambient: 0.72
+		ElevatedBridgeLayer:
+		TerrainTunnelLayer:
+		ElevatedBridgePlaceholder@a:
+			Location: 176, 3
+			Height: 6
+			Orientation: X
+			Length: 5
+		ElevatedBridgePlaceholder@b:
+			Location: 231, -1
+			Height: 6
+			Orientation: X
+			Length: 6
+		TerrainTunnel@a:
+			Location: 117, -15
+			Dimensions: 3, 25
+			Footprint: ooo ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ooo
+			Height: 2
+			TerrainType: Clear
+		TerrainTunnel@b:
+			Location: 146, -19
+			Dimensions: 3, 25
+			Footprint: ooo ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ooo
+			Height: 2
+			TerrainType: Clear
