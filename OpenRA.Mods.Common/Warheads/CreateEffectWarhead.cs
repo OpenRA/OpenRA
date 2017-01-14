@@ -47,14 +47,14 @@ namespace OpenRA.Mods.Common.Warheads
 			// We assume that a TargetSearchRadius of zero is intentional and means we should skip all scans for actor hits.
 			var scanForActors = TargetSearchRadius != WDist.Zero;
 
+			// Matching target actor
+			if (scanForActors && ValidImpactTypes.HasFlag(ImpactType.TargetHit) && GetDirectHit(world, cell, pos, firedBy, true))
+				return ImpactType.TargetHit;
+
 			// Missiles need a margin because they sometimes explode a little above ground
 			// due to their explosion check triggering slightly too early (because of CloseEnough).
 			// TODO: Base ImpactType on target altitude instead of explosion altitude.
 			var airMargin = new WDist(128);
-
-			// Matching target actor
-			if (scanForActors && ValidImpactTypes.HasFlag(ImpactType.TargetHit) && GetDirectHit(world, cell, pos, firedBy, true))
-				return ImpactType.TargetHit;
 
 			var dat = world.Map.DistanceAboveTerrain(pos);
 			var isDirectHit = scanForActors ? GetDirectHit(world, cell, pos, firedBy) : false;
