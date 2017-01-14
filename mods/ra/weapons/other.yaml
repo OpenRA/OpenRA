@@ -53,6 +53,7 @@ Flamer:
 		SmudgeType: Scorch
 		InvalidTargets: Structure, Wall
 	Warhead@3Eff: CreateEffect
+		TargetSearchRadius: 0
 		Explosions: small_napalm
 		ImpactSounds: firebl3.aud
 
