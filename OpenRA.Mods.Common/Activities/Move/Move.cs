@@ -297,6 +297,7 @@ namespace OpenRA.Mods.Common.Activities
 			protected readonly Move Move;
 			protected readonly WPos From, To;
 			protected readonly int FromFacing, ToFacing;
+			protected readonly bool EnableArc;
 			protected readonly WPos ArcCenter;
 			protected readonly int ArcFromLength;
 			protected readonly WAngle ArcFromAngle;
@@ -333,6 +334,7 @@ namespace OpenRA.Mods.Common.Activities
 					ArcFromAngle = (ArcCenter - from).Yaw;
 					ArcToLength = (ArcCenter - to).HorizontalLength;
 					ArcToAngle = (ArcCenter - to).Yaw;
+					EnableArc = true;
 				}
 			}
 
@@ -378,7 +380,7 @@ namespace OpenRA.Mods.Common.Activities
 				if (MoveFractionTotal != 0)
 				{
 					WPos pos;
-					if (FromFacing != ToFacing)
+					if (EnableArc)
 					{
 						var angle = WAngle.Lerp(ArcFromAngle, ArcToAngle, moveFraction, MoveFractionTotal);
 						var length = int2.Lerp(ArcFromLength, ArcToLength, moveFraction, MoveFractionTotal);
