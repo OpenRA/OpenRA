@@ -194,7 +194,6 @@
     <Compile Include="Traits\Player\PlayerColorPalette.cs" />
     <Compile Include="Traits\Player\PlayerHighlightPalette.cs" />
     <Compile Include="Traits\World\ScreenMap.cs" />
-    <Compile Include="Traits\World\ActorMap.cs" />
     <Compile Include="Scripting\ScriptContext.cs" />
     <Compile Include="Scripting\ScriptActorInterface.cs" />
     <Compile Include="Scripting\ScriptObjectWrapper.cs" />

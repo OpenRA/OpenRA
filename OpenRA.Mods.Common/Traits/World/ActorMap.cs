@@ -14,11 +14,10 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using OpenRA.Traits;
 
-namespace OpenRA.Traits
+namespace OpenRA.Mods.Common.Traits
 {
-	public enum SubCell { Invalid = int.MinValue, Any = int.MinValue / 2, FullCell = 0, First = 1 }
-
 	public class ActorMapInfo : ITraitInfo
 	{
 		[Desc("Size of partition bins (cells)")]
@@ -27,7 +26,7 @@ namespace OpenRA.Traits
 		public object Create(ActorInitializer init) { return new ActorMap(init.World, this); }
 	}
 
-	public class ActorMap : ITick
+	public class ActorMap : IActorMap, ITick
 	{
 		class InfluenceNode
 		{
