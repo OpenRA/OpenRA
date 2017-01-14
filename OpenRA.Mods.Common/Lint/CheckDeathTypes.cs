@@ -30,8 +30,9 @@ namespace OpenRA.Mods.Common.Lint
 
 				var deathAnimationDeathtypes = animations.SelectMany(x => x.DeathTypes.Select(y => y.Key)).ToList();
 				var spawnActorDeathtypes = actorInfo.Value.TraitInfos<SpawnActorOnDeathInfo>().Where(s => !string.IsNullOrEmpty(s.DeathType)).Select(a => a.DeathType);
+				var spawnActorOnAnyDeathType = actorInfo.Value.TraitInfos<SpawnActorOnDeathInfo>().Any(s => s.DeathType == null);
 				var deathTypes = deathAnimationDeathtypes.Concat(spawnActorDeathtypes).Distinct();
-				if (!deathTypes.Any())
+				if (!deathTypes.Any() || spawnActorOnAnyDeathType)
 					continue;
 
 				var targetable = actorInfo.Value.TraitInfos<ITargetableInfo>().SelectMany(x => x.GetTargetTypes()).ToList();
