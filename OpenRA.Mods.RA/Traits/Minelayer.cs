@@ -100,8 +100,8 @@ namespace OpenRA.Mods.RA.Traits
 
 		static IEnumerable<CPos> GetMinefieldCells(CPos start, CPos end, WDist depth)
 		{
-			var mins = CPos.Min(start, end);
-			var maxs = CPos.Max(start, end);
+			var mins = new CPos(Math.Min(start.X, end.X), Math.Min(start.Y, end.Y));
+			var maxs = new CPos(Math.Max(start.X, end.X), Math.Max(start.Y, end.Y));
 
 			/* TODO: proper endcaps, if anyone cares (which won't happen unless depth is large) */
 

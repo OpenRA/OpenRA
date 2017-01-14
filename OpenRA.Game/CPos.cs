@@ -33,9 +33,6 @@ namespace OpenRA
 		public static bool operator ==(CPos me, CPos other) { return me.X == other.X && me.Y == other.Y; }
 		public static bool operator !=(CPos me, CPos other) { return !(me == other); }
 
-		public static CPos Max(CPos a, CPos b) { return new CPos(Math.Max(a.X, b.X), Math.Max(a.Y, b.Y)); }
-		public static CPos Min(CPos a, CPos b) { return new CPos(Math.Min(a.X, b.X), Math.Min(a.Y, b.Y)); }
-
 		public override int GetHashCode() { return X.GetHashCode() ^ Y.GetHashCode(); }
 
 		public bool Equals(CPos other) { return X == other.X && Y == other.Y; }
