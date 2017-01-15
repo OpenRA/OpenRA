@@ -277,6 +277,7 @@ VISC_LRG:
 		Weapon: SlimeAttack
 		FireDelay: 10
 	AutoTarget:
+		ScanRadius: 5
 	AttackFrontal:
 		Voice: Attack
 	AttackWander:
