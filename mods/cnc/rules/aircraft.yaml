@@ -12,7 +12,7 @@ TRAN:
 	Aircraft:
 		LandWhenIdle: true
 		TurnSpeed: 5
-		Speed: 140
+		Speed: 150
 		InitialFacing: 224
 		LandableTerrainTypes: Clear,Rough,Road,Ore,Beach,Tiberium,BlueTiberium
 		AltitudeVelocity: 0c100
@@ -66,8 +66,8 @@ HELI:
 	Aircraft:
 		RearmBuildings: hpad
 		InitialFacing: 224
-		TurnSpeed: 4
-		Speed: 186
+		TurnSpeed: 7
+		Speed: 180
 	Health:
 		HP: 125
 	Armor:
@@ -125,7 +125,7 @@ ORCA:
 	Aircraft:
 		RearmBuildings: hpad
 		InitialFacing: 224
-		TurnSpeed: 4
+		TurnSpeed: 7
 		Speed: 186
 	Health:
 		HP: 90
