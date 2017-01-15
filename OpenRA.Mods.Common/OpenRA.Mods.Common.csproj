@@ -181,7 +181,6 @@
     <Compile Include="Lint\CheckRangeLimit.cs" />
     <Compile Include="Lint\CheckVoiceReferences.cs" />
     <Compile Include="Lint\CheckConditions.cs" />
-    <Compile Include="Lint\CheckTargetHealthRadius.cs" />
     <Compile Include="Lint\LintBuildablePrerequisites.cs" />
     <Compile Include="Lint\LintExts.cs" />
     <Compile Include="LoadScreens\ModContentLoadScreen.cs" />
