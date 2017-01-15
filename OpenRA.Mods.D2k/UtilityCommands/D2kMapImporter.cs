@@ -26,11 +26,11 @@ namespace OpenRA.Mods.D2k.UtilityCommands
 		{
 			{ 20, Pair.New("wormspawner", "Creeps") },
 			{ 23, Pair.New("mpspawn", "Neutral") },
-			{ 41, Pair.New("spicebloom", "Neutral") },
-			{ 42, Pair.New("spicebloom", "Neutral") },
-			{ 43, Pair.New("spicebloom", "Neutral") },
-			{ 44, Pair.New("spicebloom", "Neutral") },
-			{ 45, Pair.New("spicebloom", "Neutral") },
+			{ 41, Pair.New("spicebloom.spawnpoint", "Neutral") },
+			{ 42, Pair.New("spicebloom.spawnpoint", "Neutral") },
+			{ 43, Pair.New("spicebloom.spawnpoint", "Neutral") },
+			{ 44, Pair.New("spicebloom.spawnpoint", "Neutral") },
+			{ 45, Pair.New("spicebloom.spawnpoint", "Neutral") },
 
 			// Atreides:
 			{ 4, Pair.New("wall", "Atreides") },
