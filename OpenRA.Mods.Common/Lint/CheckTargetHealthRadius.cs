@@ -22,7 +22,12 @@ namespace OpenRA.Mods.Common.Lint
 	{
 		public void Run(Action<string> emitError, Action<string> emitWarning, Ruleset rules)
 		{
-			foreach (var actorInfo in rules.Actors)
+			var validActors = rules.Actors.Where(a => a.Value.TraitInfos<HealthInfo>().Any()).ToList();
+
+			// TODO: Make this handle multiple Health traits per actor
+			var largestHealthRadius = validActors.Max(a => a.Value.TraitInfo<HealthInfo>().Shape.OuterRadius.Length);
+
+			foreach (var actorInfo in validActors)
 			{
 				var healthTraits = actorInfo.Value.TraitInfos<HealthInfo>().ToList();
 				if (!healthTraits.Any())
@@ -31,6 +36,9 @@ namespace OpenRA.Mods.Common.Lint
 				var targetable = actorInfo.Value.TraitInfos<ITargetableInfo>().SelectMany(x => x.GetTargetTypes()).ToList();
 				if (!targetable.Any())
 					continue;
+
+				var blockerTraits = actorInfo.Value.TraitInfos<BlocksProjectilesInfo>().ToList();
+				var gate = actorInfo.Value.TraitInfoOrDefault<GateInfo>();
 
 				foreach (var weaponInfo in rules.Weapons)
 				{
@@ -46,9 +54,11 @@ namespace OpenRA.Mods.Common.Lint
 						if (!warhead.ValidTargets.Overlaps(targetable))
 							continue;
 
-						if (healthTraits.Where(x => x.Shape.OuterRadius.Length > warhead.TargetExtraSearchRadius.Length).Any())
-							emitError("Actor type `{0}` has a health radius exceeding the victim scan radius of a SpreadDamageWarhead on `{1}`!"
-								.F(actorInfo.Key, weaponInfo.Key));
+						var warheadExtraScanRadius = warhead.TargetExtraSearchRadius != WDist.Zero ? warhead.TargetExtraSearchRadius.Length : largestHealthRadius;
+						var victimScanRadius = warhead.Range[warhead.Range.Length - 1].Length + warheadExtraScanRadius;
+						if (healthTraits.Where(x => x.Shape.OuterRadius.Length > victimScanRadius).Any())
+							emitError("Actor type `{0}` has a health radius exceeding the victim scan radius of `{1}` of a SpreadDamageWarhead on `{2}`!"
+								.F(actorInfo.Key, victimScanRadius.ToString(), weaponInfo.Key));
 					}
 
 					var effectWarheads = weaponInfo.Value.Warheads.OfType<CreateEffectWarhead>();
@@ -59,32 +69,77 @@ namespace OpenRA.Mods.Common.Lint
 						if (!warhead.ValidTargets.Overlaps(targetable))
 							continue;
 
-						if (healthTraits.Where(x => x.Shape.OuterRadius.Length > warhead.TargetSearchRadius.Length).Any())
-							emitError("Actor type `{0}` has a health radius exceeding the victim scan radius of a CreateEffectWarhead on `{1}`!"
-								.F(actorInfo.Key, weaponInfo.Key));
+						var warheadScanRadius = warhead.TargetSearchRadius != WDist.Zero ? warhead.TargetSearchRadius.Length : largestHealthRadius;
+						if (healthTraits.Where(x => x.Shape.OuterRadius.Length > warheadScanRadius).Any())
+							emitError("Actor type `{0}` has a health radius exceeding the victim scan radius of `{1}` a CreateEffectWarhead on `{2}`!"
+								.F(actorInfo.Key, warheadScanRadius.ToString(), weaponInfo.Key));
 					}
 
 					var bullet = weaponInfo.Value.Projectile as BulletInfo;
+					var instant = weaponInfo.Value.Projectile as InstantHitInfo;
 					var missile = weaponInfo.Value.Projectile as MissileInfo;
 					var areabeam = weaponInfo.Value.Projectile as AreaBeamInfo;
+					var laserzap = weaponInfo.Value.Projectile as LaserZapInfo;
 
-					if (bullet == null && missile == null && areabeam == null)
+					// No blockable projectile
+					if (bullet == null && instant == null && missile == null && areabeam == null && laserzap == null)
 						continue;
 
-					var targetExtraSearchRadius = WDist.Zero;
+					// Projectile is not a bullet and actor is not a blocker
+					var actorIsBlocker = blockerTraits.Any() || (gate != null && gate.BlocksProjectilesHeight > 0);
+					if (bullet == null && !actorIsBlocker)
+						continue;
+
+					var projectileScanRadius = 0;
 
 					if (bullet != null)
-						targetExtraSearchRadius = bullet.TargetExtraSearchRadius;
+					{
+						if (!bullet.Blockable && bullet.BounceCount == 0)
+							continue;
+
+						var targetExtraSearchRadius = bullet.TargetExtraSearchRadius > WDist.Zero ? bullet.TargetExtraSearchRadius.Length : largestHealthRadius;
+						projectileScanRadius = bullet.Width.Length + targetExtraSearchRadius;
+					}
+
+					if (instant != null)
+					{
+						if (!instant.Blockable)
+							continue;
+
+						var targetExtraSearchRadius = instant.TargetExtraSearchRadius > WDist.Zero ? instant.TargetExtraSearchRadius.Length : largestHealthRadius;
+						projectileScanRadius = instant.Width.Length + targetExtraSearchRadius;
+					}
 
 					if (missile != null)
-						targetExtraSearchRadius = missile.TargetExtraSearchRadius;
+					{
+						if (!missile.Blockable)
+							continue;
+
+						var targetExtraSearchRadius = missile.TargetExtraSearchRadius > WDist.Zero ? missile.TargetExtraSearchRadius.Length : largestHealthRadius;
+						projectileScanRadius = missile.Width.Length + targetExtraSearchRadius;
+					}
 
 					if (areabeam != null)
-						targetExtraSearchRadius = areabeam.TargetExtraSearchRadius;
+					{
+						if (!areabeam.Blockable)
+							continue;
 
-					if (healthTraits.Where(x => x.Shape.OuterRadius.Length > targetExtraSearchRadius.Length).Any())
-						emitError("Actor type `{0}` has a health radius exceeding the victim scan radius of the projectile on `{1}`!"
-							.F(actorInfo.Key, weaponInfo.Key));
+						var targetExtraSearchRadius = areabeam.TargetExtraSearchRadius > WDist.Zero ? areabeam.TargetExtraSearchRadius.Length : largestHealthRadius;
+						projectileScanRadius = areabeam.Width.Length + targetExtraSearchRadius;
+					}
+
+					if (laserzap != null)
+					{
+						if (!laserzap.Blockable)
+							continue;
+
+						var targetExtraSearchRadius = laserzap.TargetExtraSearchRadius > WDist.Zero ? laserzap.TargetExtraSearchRadius.Length : largestHealthRadius;
+						projectileScanRadius = laserzap.Width.Length + targetExtraSearchRadius;
+					}
+
+					if (healthTraits.Where(x => x.Shape.OuterRadius.Length > projectileScanRadius).Any())
+						emitError("Actor type `{0}` has a health radius exceeding the victim scan radius of `{1}` on the projectile of `{2}`!"
+							.F(actorInfo.Key, projectileScanRadius.ToString(), weaponInfo.Key));
 				}
 			}
 		}
