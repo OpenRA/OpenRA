@@ -193,7 +193,7 @@ sardaukar:
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 80
-		Prerequisites: ~barracks.harkonnen, upgrade.barracks, high_tech_factory, ~techlevel.high
+		Prerequisites: ~barracks.harkonnen, upgrade.barracks, high_tech_factory, ~techlevel.medium
 		BuildDuration: 81
 		BuildDurationModifier: 40
 		Description: Elite assault infantry\n  Strong vs Infantry, Vehicles\n  Weak vs Artillery
