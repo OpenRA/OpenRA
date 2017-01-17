@@ -3859,11 +3859,11 @@ Templates:
 		Category: Rock-Cliff
 		Tiles:
 			0: Rock
-			1: Cliff
+			1: Rough
 			2: Cliff
 			3: Cliff
 			4: Cliff
-			5: Cliff
+			5: Rough
 	Template@444:
 		Id: 444
 		Images: BLOXTREE.R8
