@@ -218,6 +218,7 @@ GAARTY:
 		NoTransformSounds:
 		Voice: Move
 	WithMuzzleOverlay:
+	RevealOnFire:
 
 NAMISL:
 	Inherits: ^Building

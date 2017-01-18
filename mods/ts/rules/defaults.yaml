@@ -341,6 +341,7 @@
 		Palette: pips
 		ReferencePoint: Bottom, Right
 		RequiresCondition: hospitalheal
+	RevealOnFire:
 
 ^RegularInfantryDeath:
 	WithDeathAnimation@normal:
@@ -520,6 +521,7 @@
 		RequiresCondition: criticalspeed
 		Modifier: 60
 	Carryable:
+	RevealOnFire:
 
 ^Tank:
 	Inherits: ^Vehicle
@@ -592,6 +594,7 @@
 	MustBeDestroyed:
 	RenderVoxels:
 	WithVoxelBody:
+	RevealOnFire:
 
 ^Helicopter:
 	Inherits: ^Aircraft
@@ -662,6 +665,7 @@
 	HiddenUnderFog:
 	Guardable:
 	WithSpriteBody:
+	RevealOnFire:
 
 ^BlossomTree:
 	Inherits@1: ^SpriteActor
@@ -747,6 +751,7 @@
 		Range: 6c0
 	DetectCloaked:
 		Range: 5c0
+	RevealOnFire:
 
 ^Train:
 	Inherits@1: ^EmpDisable
