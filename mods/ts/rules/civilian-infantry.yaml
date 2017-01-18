@@ -271,6 +271,8 @@ VISC_LRG:
 		Name: Adult Visceroid
 	Health:
 		HP: 500
+	Armor:
+		Type: Heavy
 	RevealsShroud:
 		Range: 4c0
 	Armament:
