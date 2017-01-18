@@ -15,6 +15,7 @@ using OpenRA.Graphics;
 using OpenRA.Mods.Common.Graphics;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Mods.Common.Traits.Render;
+using OpenRA.Mods.TS.Traits.Render;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
@@ -38,7 +39,7 @@ namespace OpenRA.Mods.AS.Traits
 		{
 			var voxel = VoxelProvider.GetVoxel(image, Sequence);
 			var body = init.Actor.TraitInfo<BodyOrientationInfo>();
-			var frame = init.Contains<BodyAnimationFrameASInit>() ? init.Get<BodyAnimationFrameASInit, uint>() : 0;
+			var frame = init.Contains<BodyAnimationFrameInit>() ? init.Get<BodyAnimationFrameInit, uint>() : 0;
 
 			yield return new VoxelAnimation(voxel, () => WVec.Zero,
 				() => new[] { body.QuantizeOrientation(orientation(), facings) },
@@ -92,15 +93,7 @@ namespace OpenRA.Mods.AS.Traits
 
 		void IActorPreviewInitModifier.ModifyActorPreviewInit(Actor self, TypeDictionary inits)
 		{
-			inits.Add(new BodyAnimationFrameASInit(frame));
+			inits.Add(new BodyAnimationFrameInit(frame));
 		}
-	}
-
-	public class BodyAnimationFrameASInit : IActorInit<uint>
-	{
-		[FieldFromYamlKey] readonly uint value = 0;
-		public BodyAnimationFrameASInit() { }
-		public BodyAnimationFrameASInit(uint init) { value = init; }
-		public uint Value(World world) { return value; }
 	}
 }

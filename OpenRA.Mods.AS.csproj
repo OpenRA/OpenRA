@@ -66,6 +66,10 @@
       <Name>OpenRA.Mods.Common</Name>
       <Private>False</Private>
     </ProjectReference>
+    <ProjectReference Include="..\OpenRA.Mods.TS\OpenRA.Mods.TS.csproj">
+      <Project>{5457cbf5-4ce4-421e-a8bf-9fd6c9732e1d}</Project>
+      <Name>OpenRA.Mods.TS</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Activities\FallDown.cs" />
