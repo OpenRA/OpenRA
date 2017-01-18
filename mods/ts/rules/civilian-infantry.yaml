@@ -214,7 +214,6 @@ DOGGIE:
 	Inherits@1: ^Infantry
 	Inherits@2: ^RegularInfantryDeath
 	Inherits@3: ^HealsOnTiberium
-	Inherits@EXPERIENCE: ^GainsExperience
 	Tooltip:
 		Name: Tiberian Fiend
 	Health:
