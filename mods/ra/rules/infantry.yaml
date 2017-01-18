@@ -215,7 +215,10 @@ SPY:
 	Infiltrates:
 		Types: SpyInfiltrate
 		PlayerExperience: 50
-	-AutoTarget:
+	AutoTarget:
+		InitialStance: HoldFire
+		InitialStanceAI: HoldFire
+		ScanRadius: 5
 	-WithInfantryBody:
 	WithDisguisingInfantryBody:
 		AttackSequence: shoot
