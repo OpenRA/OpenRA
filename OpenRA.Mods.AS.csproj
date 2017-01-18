@@ -90,6 +90,7 @@
     <Compile Include="Traits\PeriodicProducer.cs" />
     <Compile Include="Traits\Player\PlayerSilo.cs" />
     <Compile Include="Traits\RevealOnFire.cs" />
+    <Compile Include="Traits\SpawnActorOnOwnerChange.cs" />
     <Compile Include="Traits\SupportPowers\AirstrikePowerAS.cs" />
     <Compile Include="Traits\Multipliers\HealthPercentageFirepowerMultiplier.cs" />
     <Compile Include="Traits\SupportPowers\DetonateWeaponPower.cs" />
