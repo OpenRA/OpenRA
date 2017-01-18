@@ -227,7 +227,8 @@ DOGGIE:
 		Cost: 100
 	Armor:
 		Type: Light
-	-RevealsShroud:
+	RevealsShroud:
+		Range: 4c0
 	Mobile:
 		Speed: 113
 	Voiced:
@@ -270,6 +271,8 @@ VISC_LRG:
 		Name: Adult Visceroid
 	Health:
 		HP: 500
+	RevealsShroud:
+		Range: 4c0
 	Armament:
 		Weapon: SlimeAttack
 		FireDelay: 10
