@@ -49,10 +49,9 @@ FiendShard:
 
 SlimeAttack:
 	ReloadDelay: 80
-	Range: 5c0
+	Range: 1c384
 	Report: vicer1.aud
-	Projectile: Bullet
-		Speed: 426
+	Projectile: InstantHit
 	Warhead@1Dam: SpreadDamage
 		Damage: 100
 		Versus:

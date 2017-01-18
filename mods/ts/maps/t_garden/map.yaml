@@ -126,47 +126,47 @@ Actors:
 		Facing: 96
 	Actor14: visc_lrg
 		Location: 81,22
-		Owner: Neutral
+		Owner: Creeps
 		Health: 62
 		Facing: 0
 	Actor15: visc_lrg
 		Location: 102,2
-		Owner: Neutral
+		Owner: Creeps
 		Health: 77
 		Facing: 128
 	Actor16: visc_lrg
 		Location: 35,-6
-		Owner: Neutral
+		Owner: Creeps
 		Health: 100
 		Facing: 0
 	Actor17: visc_lrg
 		Location: 148,-2
-		Owner: Neutral
+		Owner: Creeps
 		Health: 100
 		Facing: 128
 	Actor18: doggie
 		Location: 141,-23
-		Owner: Neutral
+		Owner: Creeps
 		Health: 100
 		Facing: 100
 	Actor19: doggie
 		Location: 167,11
-		Owner: Neutral
+		Owner: Creeps
 		Health: 100
 		Facing: 100
 	Actor20: doggie
 		Location: 99,81
-		Owner: Neutral
+		Owner: Creeps
 		Health: 100
 		Facing: 99
 	Actor21: doggie
 		Location: 70,53
-		Owner: Neutral
+		Owner: Creeps
 		Health: 100
 		Facing: 99
 	Actor22: doggie
 		Location: 79,-41
-		Owner: Neutral
+		Owner: Creeps
 		Health: 100
 		Facing: 99
 	Actor23: tibtre01
