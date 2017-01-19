@@ -337,6 +337,7 @@
 		Weapon: BuildingExplode
 		EmptyWeapon: BuildingExplode
 	RepairableBuilding:
+		RepairStep: 50
 		PlayerExperience: 25
 	EmitInfantryOnSell:
 		ActorTypes: light_inf
@@ -354,7 +355,7 @@
 	WithCrumbleOverlay:
 	Demolishable:
 	DamagedByTerrain:
-		Damage: 10
+		Damage: 50
 		DamageInterval: 100
 		Terrain: Rock
 		DamageThreshold: 50
