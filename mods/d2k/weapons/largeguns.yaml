@@ -36,8 +36,6 @@
 		Blockable: false
 	Warhead@1Dam: SpreadDamage
 		Damage: 290
-	Warhead@3Eff: CreateEffect
-		ImpactSounds: EXPLSML4.WAV
 
 80mm_A:
 	Inherits: ^Cannon
