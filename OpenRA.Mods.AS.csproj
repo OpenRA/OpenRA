@@ -67,7 +67,7 @@
       <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\OpenRA.Mods.TS\OpenRA.Mods.TS.csproj">
-      <Project>{5457cbf5-4ce4-421e-a8bf-9fd6c9732e1d}</Project>
+      <Project>{5457CBF5-4CE4-421E-A8BF-9FD6C9732E1D}</Project>
       <Name>OpenRA.Mods.TS</Name>
     </ProjectReference>
   </ItemGroup>
@@ -90,7 +90,6 @@
     <Compile Include="Traits\InfiltrateForProxyActor.cs" />
     <Compile Include="Traits\PeriodicProducer.cs" />
     <Compile Include="Traits\Player\PlayerSilo.cs" />
-    <Compile Include="Traits\RevealOnFire.cs" />
     <Compile Include="Traits\SpawnActorOnOwnerChange.cs" />
     <Compile Include="Traits\SupportPowers\AirstrikePowerAS.cs" />
     <Compile Include="Traits\Multipliers\HealthPercentageFirepowerMultiplier.cs" />
