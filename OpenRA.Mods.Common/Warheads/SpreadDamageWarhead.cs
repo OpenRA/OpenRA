@@ -10,25 +10,27 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Linq;
 using OpenRA.GameRules;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Warheads
 {
-	public class SpreadDamageWarhead : DamageWarhead, IRulesetLoaded<WeaponInfo>
+	public class SpreadDamageWarhead : DamageWarhead, IRulesetLoaded<WeaponInfo>, IRulesetLoaded
 	{
 		[Desc("Range between falloff steps.")]
 		public readonly WDist Spread = new WDist(43);
-
-		[Desc("Extra search radius beyond maximum spread. Required to ensure damage to actors with large health radius.")]
-		public readonly WDist TargetExtraSearchRadius = new WDist(1536);
 
 		[Desc("Damage percentage at each range step")]
 		public readonly int[] Falloff = { 100, 37, 14, 5, 0 };
 
 		[Desc("Ranges at which each Falloff step is defined. Overrides Spread.")]
 		public WDist[] Range = null;
+
+		[Desc("Extra search radius beyond maximum spread. If set to zero (default), it will automatically scale to the largest health shape.",
+			"Custom overrides should not be necessary under normal circumstances.")]
+		public WDist TargetExtraSearchRadius = WDist.Zero;
 
 		public void RulesetLoaded(Ruleset rules, WeaponInfo info)
 		{
@@ -43,6 +45,17 @@ namespace OpenRA.Mods.Common.Warheads
 			}
 			else
 				Range = Exts.MakeArray(Falloff.Length, i => i * Spread);
+		}
+
+		public void RulesetLoaded(Ruleset rules, ActorInfo ai)
+		{
+			var validActors = rules.Actors.Where(a => a.Value.TraitInfos<HealthInfo>().Any()).ToList();
+
+			// TODO: Make this handle multiple Health traits per actor
+			var largestHealthRadius = validActors.Max(a => a.Value.TraitInfo<HealthInfo>().Shape.OuterRadius);
+
+			if (TargetExtraSearchRadius == WDist.Zero)
+				TargetExtraSearchRadius = largestHealthRadius;
 		}
 
 		public override void DoImpact(WPos pos, Actor firedBy, IEnumerable<int> damageModifiers)

@@ -10,13 +10,14 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Linq;
 using OpenRA.Mods.Common.Effects;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Warheads
 {
-	public class CreateEffectWarhead : Warhead
+	public class CreateEffectWarhead : Warhead, IRulesetLoaded
 	{
 		[Desc("List of explosion sequences that can be used.")]
 		[SequenceReference("Image")] public readonly string[] Explosions = new string[0];
@@ -30,9 +31,6 @@ namespace OpenRA.Mods.Common.Warheads
 		[Desc("Remap explosion effect to player color, if art supports it.")]
 		public readonly bool UsePlayerPalette = false;
 
-		[Desc("Search radius around impact for 'direct hit' check.")]
-		public readonly WDist TargetSearchRadius = new WDist(2048);
-
 		[Desc("List of sounds that can be played on impact.")]
 		public readonly string[] ImpactSounds = new string[0];
 
@@ -41,6 +39,21 @@ namespace OpenRA.Mods.Common.Warheads
 
 		[Desc("What impact types should this effect NOT apply to.", "Overrides ValidImpactTypes.")]
 		public readonly ImpactType InvalidImpactTypes = ImpactType.None;
+
+		[Desc("Scan radius for victims around impact. If set to zero (default), it will automatically scale to the largest health shape.",
+			"Custom overrides should not be necessary under normal circumstances.")]
+		public WDist TargetSearchRadius = WDist.Zero;
+
+		public void RulesetLoaded(Ruleset rules, ActorInfo ai)
+		{
+			var validActors = rules.Actors.Where(a => a.Value.TraitInfos<HealthInfo>().Any()).ToList();
+
+			// TODO: Make this handle multiple Health traits per actor
+			var largestHealthRadius = validActors.Max(a => a.Value.TraitInfo<HealthInfo>().Shape.OuterRadius);
+
+			if (TargetSearchRadius == WDist.Zero)
+				TargetSearchRadius = largestHealthRadius;
+		}
 
 		public ImpactType GetImpactType(World world, CPos cell, WPos pos, Actor firedBy)
 		{
