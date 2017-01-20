@@ -23,7 +23,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Projectiles
 {
-	public class MissileInfo : IProjectileInfo
+	public class MissileInfo : IProjectileInfo, IRulesetLoaded
 	{
 		[Desc("Name of the image containing the projectile sequence.")]
 		public readonly string Image = null;
@@ -63,9 +63,6 @@ namespace OpenRA.Mods.Common.Projectiles
 
 		[Desc("Width of projectile (used for finding blocking actors).")]
 		public readonly WDist Width = new WDist(1);
-
-		[Desc("Extra search radius beyond path for blocking actors.")]
-		public readonly WDist TargetExtraSearchRadius = new WDist(1536);
 
 		[Desc("Maximum offset at the maximum range")]
 		public readonly WDist Inaccuracy = WDist.Zero;
@@ -145,7 +142,22 @@ namespace OpenRA.Mods.Common.Projectiles
 			"not trigger fast enough, causing the missile to fly past the target.")]
 		public readonly WDist CloseEnough = new WDist(298);
 
+		[Desc("Scan radius for victims beyond projectile width. If set to zero (default), it will automatically scale to the largest health shape.",
+			"Custom overrides should not be necessary under normal circumstances.")]
+		public WDist TargetExtraSearchRadius = WDist.Zero;
+
 		public IProjectile Create(ProjectileArgs args) { return new Missile(this, args); }
+
+		public void RulesetLoaded(Ruleset rules, ActorInfo ai)
+		{
+			var validActors = rules.Actors.Where(a => a.Value.TraitInfos<HealthInfo>().Any()).ToList();
+
+			// TODO: Make this handle multiple Health traits per actor
+			var largestHealthRadius = validActors.Max(a => a.Value.TraitInfo<HealthInfo>().Shape.OuterRadius);
+
+			if (TargetExtraSearchRadius == WDist.Zero)
+				TargetExtraSearchRadius = largestHealthRadius;
+		}
 	}
 
 	// TODO: double check square roots!!!
