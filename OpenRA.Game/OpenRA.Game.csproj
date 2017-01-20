@@ -246,6 +246,7 @@
     <Compile Include="InstalledMods.cs" />
     <Compile Include="CryptoUtil.cs" />
     <Compile Include="Support\BooleanExpression.cs" />
+    <Compile Include="ExternalMods.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FileSystem\D2kSoundResources.cs" />
