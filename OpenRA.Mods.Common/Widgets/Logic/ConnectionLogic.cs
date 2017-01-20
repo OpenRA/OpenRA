@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using OpenRA.Graphics;
 using OpenRA.Network;
 using OpenRA.Widgets;
 
@@ -30,7 +31,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			else if (om.Connection.ConnectionState == ConnectionState.NotConnected)
 			{
 				CloseWindow();
-				Ui.OpenWindow("CONNECTIONFAILED_PANEL", new WidgetArgs()
+
+				var switchPanel = (om.ServerExternalMod != null || om.ServerMod != null) ?
+					"CONNECTION_SWITCHMOD_PANEL" : "CONNECTIONFAILED_PANEL";
+				Ui.OpenWindow(switchPanel, new WidgetArgs()
 				{
 					{ "orderManager", om },
 					{ "onAbort", onAbort },
@@ -143,6 +147,118 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						passwordOffsetAdjusted = true;
 					}
 				};
+			}
+		}
+	}
+
+	public class ConnectionSwitchModLogic : ChromeLogic
+	{
+		[ObjectCreator.UseCtor]
+		public ConnectionSwitchModLogic(Widget widget, OrderManager orderManager, Action onAbort, Action<string> onRetry)
+		{
+			var panel = widget;
+			var abortButton = panel.Get<ButtonWidget>("ABORT_BUTTON");
+			var switchButton = panel.Get<ButtonWidget>("SWITCH_BUTTON");
+
+			var modTitle = "";
+			var modVersion = "";
+			Sprite modIcon = null;
+			if (orderManager.ServerExternalMod != null)
+			{
+				modTitle = orderManager.ServerExternalMod.Title;
+				modVersion = orderManager.ServerExternalMod.Version;
+				modIcon = orderManager.ServerExternalMod.Icon;
+			}
+			else
+			{
+				modTitle = orderManager.ServerMod.Metadata.Title;
+				modVersion = orderManager.ServerMod.Metadata.Version;
+				modIcon = Game.Mods.Icons[orderManager.ServerMod.Id];
+			}
+
+			switchButton.OnClick = () =>
+			{
+				// Note: Switching mods for directly launched replays is handled by the load screen
+				// and the replay browser prevents loading replays from other mods, so it doesn't look
+				// like this replay case is ever hit.
+				var replay = orderManager.Connection as ReplayConnection;
+				var launchCommand = replay != null ?
+					"Launch.Replay=" + replay.Filename :
+					"Launch.Connect=" + orderManager.Host + ":" + orderManager.Port;
+
+				if (orderManager.ServerExternalMod != null)
+				{
+					Game.SwitchToExternalMod(orderManager.ServerExternalMod, new[] { launchCommand }, () =>
+					{
+						orderManager.ServerError = "Failed to switch mod.";
+						Ui.CloseWindow();
+						Ui.OpenWindow("CONNECTIONFAILED_PANEL", new WidgetArgs()
+						{
+							{ "orderManager", orderManager },
+							{ "onAbort", onAbort },
+							{ "onRetry", onRetry }
+						});
+					});
+				}
+				else
+				{
+					Game.ModData.LoadScreen.Display();
+					Game.InitializeMod(orderManager.ServerMod.Id, new Arguments(launchCommand));
+				}
+			};
+
+			abortButton.Visible = onAbort != null;
+			abortButton.OnClick = () => { Ui.CloseWindow(); onAbort(); };
+
+			var width = 0;
+			var title = panel.GetOrNull<LabelWidget>("MOD_TITLE");
+			if (title != null)
+			{
+				var font = Game.Renderer.Fonts[title.Font];
+				var label = WidgetUtils.TruncateText(modTitle, title.Bounds.Width, font);
+				var labelWidth = font.Measure(label).X;
+				width = Math.Max(width, title.Bounds.X + labelWidth);
+				title.Bounds.Width = labelWidth;
+				title.GetText = () => label;
+			}
+
+			var version = panel.GetOrNull<LabelWidget>("MOD_VERSION");
+			if (version != null)
+			{
+				var font = Game.Renderer.Fonts[version.Font];
+				var label = WidgetUtils.TruncateText(modVersion, version.Bounds.Width, font);
+				var labelWidth = font.Measure(label).X;
+				width = Math.Max(width, version.Bounds.X + labelWidth);
+				version.Bounds.Width = labelWidth;
+				version.GetText = () => label;
+			}
+
+			var logo = panel.GetOrNull<RGBASpriteWidget>("MOD_ICON");
+			if (logo != null && modIcon != null)
+				logo.GetSprite = () => modIcon;
+
+			if (logo != null && modIcon == null)
+			{
+				// Hide the logo and center just the text
+				if (title != null)
+					title.Bounds.Offset(logo.Bounds.Left - title.Bounds.Left, 0);
+
+				if (version != null)
+					version.Bounds.Offset(logo.Bounds.Left - version.Bounds.Left, 0);
+
+				width -= logo.Bounds.Width;
+			}
+			else
+			{
+				// Add an equal logo margin on the right of the text
+				width += logo.Bounds.Width;
+			}
+
+			var container = panel.GetOrNull("MOD_CONTAINER");
+			if (container != null)
+			{
+				container.Bounds.Offset((container.Bounds.Width - width) / 2, 0);
+				container.Bounds.Width = width;
 			}
 		}
 	}

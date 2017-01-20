@@ -140,14 +140,20 @@ namespace OpenRA.Network
 							Game.Mods.TryGetValue(request.Mod, out serverMod) &&
 							serverMod.Metadata.Version == request.Version)
 						{
-							var replay = orderManager.Connection as ReplayConnection;
-							var launchCommand = replay != null ?
-								"Launch.Replay=" + replay.Filename :
-								"Launch.Connect=" + orderManager.Host + ":" + orderManager.Port;
+							// The ConnectionFailedLogic will prompt the user to switch mods
+							orderManager.ServerMod = serverMod;
+							orderManager.Connection.Dispose();
+							break;
+						}
 
-							Game.ModData.LoadScreen.Display();
-							Game.InitializeMod(request.Mod, new Arguments(launchCommand));
-
+						var externalKey = ExternalMod.MakeKey(request.Mod, request.Version);
+						ExternalMod external;
+						if ((request.Mod != mod.Id || request.Version != mod.Metadata.Version)
+							&& Game.ExternalMods.TryGetValue(externalKey, out external))
+						{
+							// The ConnectionFailedLogic will prompt the user to switch mods
+							orderManager.ServerExternalMod = external;
+							orderManager.Connection.Dispose();
 							break;
 						}
 
@@ -187,6 +193,7 @@ namespace OpenRA.Network
 
 				case "AuthenticationError":
 					{
+						// The ConnectionFailedLogic will prompt the user for the password
 						orderManager.ServerError = order.TargetString;
 						orderManager.AuthenticationFailed = true;
 						break;

@@ -91,7 +91,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				Action<string> onRetry = password => ConnectionLogic.Connect(om.Host, om.Port, password, onConnect, onExit);
 
-				Ui.OpenWindow("CONNECTIONFAILED_PANEL", new WidgetArgs()
+				var switchPanel = (om.ServerExternalMod != null || om.ServerMod != null) ?
+					"CONNECTION_SWITCHMOD_PANEL" : "CONNECTIONFAILED_PANEL";
+				Ui.OpenWindow(switchPanel, new WidgetArgs()
 				{
 					{ "orderManager", om },
 					{ "onAbort", onExit },
