@@ -22,7 +22,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Projectiles
 {
-	public class BulletInfo : IProjectileInfo
+	public class BulletInfo : IProjectileInfo, IRulesetLoaded<WeaponInfo>
 	{
 		[Desc("Projectile speed in WDist / tick, two values indicate variable velocity.")]
 		public readonly WDist[] Speed = { new WDist(17) };
@@ -56,9 +56,6 @@ namespace OpenRA.Mods.Common.Projectiles
 
 		[Desc("Width of projectile (used for finding blocking actors).")]
 		public readonly WDist Width = new WDist(1);
-
-		[Desc("Extra search radius beyond path for blocking actors.")]
-		public readonly WDist TargetExtraSearchRadius = new WDist(1536);
 
 		[Desc("Arc in WAngles, two values indicate variable arc.")]
 		public readonly WAngle[] LaunchAngle = { WAngle.Zero };
@@ -95,7 +92,24 @@ namespace OpenRA.Mods.Common.Projectiles
 		public readonly int ContrailDelay = 1;
 		public readonly WDist ContrailWidth = new WDist(64);
 
+		[Desc("Scan radius for actors with projectile-blocking trait. If set to zero (default), it will automatically scale",
+			"to the blocker with the largest health shape. Only set custom values if you know what you're doing.")]
+		public WDist BlockerScanRadius = WDist.Zero;
+
+		[Desc("Extra search radius beyond path for actors with ValidBounceBlockerStances. If set to zero (default), ",
+			"it will automatically scale to the largest health shape. Only set custom values if you know what you're doing.")]
+		public WDist BounceBlockerScanRadius = WDist.Zero;
+
 		public IProjectile Create(ProjectileArgs args) { return new Bullet(this, args); }
+
+		public void RulesetLoaded(Ruleset rules, WeaponInfo wi)
+		{
+			if (BlockerScanRadius == WDist.Zero)
+				BlockerScanRadius = Util.MinimumRequiredBlockerScanRadius(rules);
+
+			if (BounceBlockerScanRadius == WDist.Zero)
+				BounceBlockerScanRadius = Util.MinimumRequiredVictimScanRadius(rules);
+		}
 	}
 
 	public class Bullet : IProjectile, ISync
@@ -196,7 +210,7 @@ namespace OpenRA.Mods.Common.Projectiles
 			var shouldExplode = false;
 			WPos blockedPos;
 			if (info.Blockable && BlocksProjectiles.AnyBlockingActorsBetween(world, lastPos, pos, info.Width,
-				info.TargetExtraSearchRadius, out blockedPos))
+				info.BlockerScanRadius, out blockedPos))
 			{
 				pos = blockedPos;
 				shouldExplode = true;
@@ -219,7 +233,7 @@ namespace OpenRA.Mods.Common.Projectiles
 
 			if (flightLengthReached && shouldBounce)
 			{
-				shouldExplode |= AnyValidTargetsInRadius(world, pos, info.Width + info.TargetExtraSearchRadius, args.SourceActor, true);
+				shouldExplode |= AnyValidTargetsInRadius(world, pos, info.Width + info.BounceBlockerScanRadius, args.SourceActor, true);
 				target += (pos - source) * info.BounceRangeModifier / 100;
 				var dat = world.Map.DistanceAboveTerrain(target);
 				target += new WVec(0, 0, -dat.Length);
@@ -237,7 +251,7 @@ namespace OpenRA.Mods.Common.Projectiles
 
 			// After first bounce, check for targets each tick
 			if (remainingBounces < info.BounceCount)
-				shouldExplode |= AnyValidTargetsInRadius(world, pos, info.Width + info.TargetExtraSearchRadius, args.SourceActor, true);
+				shouldExplode |= AnyValidTargetsInRadius(world, pos, info.Width + info.BounceBlockerScanRadius, args.SourceActor, true);
 
 			if (shouldExplode)
 				Explode(world);

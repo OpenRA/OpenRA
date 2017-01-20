@@ -18,8 +18,8 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Projectiles
 {
-	[Desc("Simple invisible direct on target projectile.")]
-	public class InstantHitInfo : IProjectileInfo
+	[Desc("Simple, invisible, usually direct-on-target projectile.")]
+	public class InstantHitInfo : IProjectileInfo, IRulesetLoaded<WeaponInfo>
 	{
 		[Desc("Maximum offset at the maximum range.")]
 		public readonly WDist Inaccuracy = WDist.Zero;
@@ -30,10 +30,17 @@ namespace OpenRA.Mods.Common.Projectiles
 		[Desc("The width of the projectile.")]
 		public readonly WDist Width = new WDist(1);
 
-		[Desc("Extra search radius beyond projectile width. Required to ensure affecting actors with large health radius.")]
-		public readonly WDist TargetExtraSearchRadius = new WDist(1536);
+		[Desc("Scan radius for actors with projectile-blocking trait. If set to zero (default), it will automatically scale",
+			"to the blocker with the largest health shape. Only set custom values if you know what you're doing.")]
+		public WDist BlockerScanRadius = WDist.Zero;
 
 		public IProjectile Create(ProjectileArgs args) { return new InstantHit(this, args); }
+
+		public void RulesetLoaded(Ruleset rules, WeaponInfo wi)
+		{
+			if (BlockerScanRadius == WDist.Zero)
+				BlockerScanRadius = Util.MinimumRequiredBlockerScanRadius(rules);
+		}
 	}
 
 	public class InstantHit : IProjectile
@@ -65,7 +72,7 @@ namespace OpenRA.Mods.Common.Projectiles
 			// Check for blocking actors
 			WPos blockedPos;
 			if (info.Blockable && BlocksProjectiles.AnyBlockingActorsBetween(world, source, target.CenterPosition,
-				info.Width, info.TargetExtraSearchRadius, out blockedPos))
+				info.Width, info.BlockerScanRadius, out blockedPos))
 			{
 				target = Target.FromPos(blockedPos);
 			}
