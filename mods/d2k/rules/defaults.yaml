@@ -291,6 +291,8 @@
 			Rough: 80
 	Voiced:
 		VoiceSet: InfantryVoice
+	DetectCloaked:
+		Range: 1c0
 
 ^Plane:
 	Inherits@1: ^ExistsInWorld
