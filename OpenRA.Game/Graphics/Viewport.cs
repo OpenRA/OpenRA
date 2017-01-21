@@ -310,5 +310,10 @@ namespace OpenRA.Graphics
 				return allCells;
 			}
 		}
+
+		public Rectangle Bounds
+		{
+			get { return new Rectangle(TopLeft.X, TopLeft.Y, viewportSize.X, viewportSize.Y); }
+		}
 	}
 }

@@ -88,7 +88,13 @@ namespace OpenRA.Mods.RA.Graphics
 			cache.Do(c => c.Render(wr));
 		}
 
-		public Rectangle ScreenBounds(WorldRenderer wr) { return Rectangle.Empty; }
+		public Rectangle ScreenBounds(WorldRenderer wr)
+		{
+			var start = wr.ScreenPosition(pos);
+			var end = wr.ScreenPosition(pos + length);
+			var size = end - start;
+			return new Rectangle((int)start.X, (int)start.Y, (int)size.X, (int)size.Y);
+		}
 
 		public IEnumerable<IFinalizedRenderable> GenerateRenderables(WorldRenderer wr)
 		{
