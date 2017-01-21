@@ -58,26 +58,35 @@ namespace OpenRA.Graphics
 						throw new InvalidOperationException();
 		}
 
-		public void DrawText(string text, float2 location, Color c)
+		public void DrawText(string text, float2 location, Color color)
 		{
 			location.Y += size;	// baseline vs top
 
 			var p = location;
-			foreach (var s in text)
+			var lastChar = ' ';
+
+			foreach (var currentChar in text)
 			{
-				if (s == '\n')
+				if (currentChar == '\n')
 				{
 					location.Y += size;
 					p = location;
 					continue;
 				}
 
-				var g = glyphs[Pair.New(s, c)];
-				Game.Renderer.RgbaSpriteRenderer.DrawSprite(g.Sprite,
-					new float2(
-						(int)Math.Round(p.X + g.Offset.X, 0),
-						p.Y + g.Offset.Y));
+				if (lastChar != ' ' && face != null && face.HasKerning)
+				{
+					var kerning = face.GetKerning(face.GetCharIndex(lastChar), face.GetCharIndex(currentChar), KerningMode.Default);
+					p.X += (float)kerning.X;
+				}
+
+				var g = glyphs[Pair.New(currentChar, color)];
+				var x = (int)Math.Round(p.X + g.Offset.X, 0);
+				var y = p.Y + g.Offset.Y;
+				Game.Renderer.RgbaSpriteRenderer.DrawSprite(g.Sprite, new float2(x, y));
 				p.X += g.Advance;
+
+				lastChar = currentChar;
 			}
 		}
 

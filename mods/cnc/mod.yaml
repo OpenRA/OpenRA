@@ -155,28 +155,28 @@ ChromeMetrics:
 
 Fonts:
 	Small:
-		Font: common|FreeSans.ttf
+		Font: common|FreeSans.otf
 		Size:12
 	Regular:
-		Font: common|FreeSans.ttf
+		Font: common|FreeSans.otf
 		Size:14
 	Bold:
-		Font: common|FreeSansBold.ttf
+		Font: common|FreeSansBold.otf
 		Size:14
 	Title:
-		Font: common|FreeSansBold.ttf
+		Font: common|FreeSansBold.otf
 		Size:32
 	MediumBold:
-		Font: common|FreeSansBold.ttf
+		Font: common|FreeSansBold.otf
 		Size:18
 	BigBold:
-		Font: common|FreeSansBold.ttf
+		Font: common|FreeSansBold.otf
 		Size:24
 	Tiny:
-		Font: common|FreeSans.ttf
+		Font: common|FreeSans.otf
 		Size:10
 	TinyBold:
-		Font: common|FreeSansBold.ttf
+		Font: common|FreeSansBold.otf
 		Size:10
 
 Missions:

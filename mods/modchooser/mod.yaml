@@ -36,22 +36,22 @@ ChromeMetrics:
 
 Fonts:
 	Regular:
-		Font: common|FreeSans.ttf
+		Font: common|FreeSans.otf
 		Size:14
 	Bold:
-		Font: common|FreeSansBold.ttf
+		Font: common|FreeSansBold.otf
 		Size:14
 	BigBold:
-		Font: common|FreeSansBold.ttf
+		Font: common|FreeSansBold.otf
 		Size:24
 	MediumBold:
-		Font: common|FreeSansBold.ttf
+		Font: common|FreeSansBold.otf
 		Size:18
 	Tiny:
-		Font: common|FreeSans.ttf
+		Font: common|FreeSans.otf
 		Size:10
 	TinyBold:
-		Font: common|FreeSansBold.ttf
+		Font: common|FreeSansBold.otf
 		Size:10
 
 SoundFormats:

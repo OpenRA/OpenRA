@@ -132,7 +132,7 @@ Weapons:
 	ra|weapons/other.yaml
 	ra|weapons/smallcaliber.yaml
 	ra|weapons/superweapons.yaml
-	
+
 Voices:
 	ra|audio/voices.yaml
 
@@ -161,28 +161,28 @@ ChromeMetrics:
 
 Fonts:
 	Regular:
-		Font: common|FreeSans.ttf
+		Font: common|FreeSans.otf
 		Size:14
 	Bold:
-		Font: common|FreeSansBold.ttf
+		Font: common|FreeSansBold.otf
 		Size:14
 	Title:
 		Font: ra|ZoodRangmah.ttf
 		Size:48
 	MediumBold:
-		Font: common|FreeSansBold.ttf
+		Font: common|FreeSansBold.otf
 		Size:18
 	BigBold:
-		Font: common|FreeSansBold.ttf
+		Font: common|FreeSansBold.otf
 		Size:24
 	Small:
-		Font: common|FreeSans.ttf
+		Font: common|FreeSans.otf
 		Size:12
 	Tiny:
-		Font: common|FreeSans.ttf
+		Font: common|FreeSans.otf
 		Size:10
 	TinyBold:
-		Font: common|FreeSansBold.ttf
+		Font: common|FreeSansBold.otf
 		Size:10
 
 Missions:
