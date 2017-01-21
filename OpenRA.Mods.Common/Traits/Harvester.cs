@@ -166,7 +166,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			// Find all refineries and their occupancy count:
 			var refs = self.World.ActorsWithTrait<IAcceptResources>()
-				.Where(r => r.Actor != ignore && r.Actor.Owner == self.Owner && IsAcceptableProcType(r.Actor))
+				.Where(r => r.Actor != ignore && r.Actor.Owner == self.Owner && r.Trait.AllowDocking && IsAcceptableProcType(r.Actor))
 				.Select(r => new {
 					Location = r.Actor.Location + r.Trait.DeliveryOffset,
 					Actor = r.Actor,
@@ -184,8 +184,8 @@ namespace OpenRA.Mods.Common.Traits
 
 					var occupancy = refs[loc].Occupancy;
 
-					// 4 harvesters clogs up the refinery's delivery location:
-					if (occupancy >= 3)
+					// 3 harvesters clogs up the refinery's delivery location:
+					if (occupancy >= 2)
 						return Constants.InvalidNode;
 
 					// Prefer refineries with less occupancy (multiplier is to offset distance cost):
