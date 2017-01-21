@@ -273,6 +273,7 @@ NARADR:
 		PowerupSpeech: EnablePower
 		PowerdownSpeech: DisablePower
 	ProvidesRadar:
+		RequiresCondition: !disabled
 	InfiltrateForExploration:
 	DetectCloaked:
 		Range: 10c0
@@ -290,6 +291,8 @@ NARADR:
 	ProvidesPrerequisite@buildingname:
 	SelectionDecorations:
 		VisualBounds: 96, 72, 0, -12
+	GrantConditionOnDisabled@IDISABLE:
+		Condition: disabled
 
 NATECH:
 	Inherits: ^Building

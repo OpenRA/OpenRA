@@ -746,6 +746,36 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				if (engineVersion < 20170121)
+				{
+					if (node.Key.StartsWith("ProvidesRadar", StringComparison.Ordinal))
+					{
+						if (node.Value.Nodes.Any(n => n.Key == "RequiresCondition"))
+							Console.WriteLine("You must manually add the `disabled` condition to the ProvidesRadar RequiresCondition expression");
+						else
+							node.Value.Nodes.Add(new MiniYamlNode("RequiresCondition", "!disabled"));
+
+						if (!parent.Value.Nodes.Any(n => n.Key == "GrantConditionOnDisabled@IDISABLE"))
+							addNodes.Add(new MiniYamlNode("GrantConditionOnDisabled@IDISABLE", new MiniYaml("",
+								new List<MiniYamlNode>() { new MiniYamlNode("Condition", "disabled") })));
+					}
+
+					if (node.Key.StartsWith("JamsRadar", StringComparison.Ordinal))
+					{
+						Console.WriteLine("JamsRadar has been replaced with trait conditions.");
+						Console.WriteLine("You must manually add the `jammed` condition to the ProvidesRadar traits that you want to be affected.");
+						Console.WriteLine("You must manually add a WithRangeCircle trait to render the radar jamming range.");
+						RenameNodeKey(node, "ProximityExternalCondition@JAMMER");
+						var stances = node.Value.Nodes.FirstOrDefault(n => n.Key == "Stances");
+						if (stances != null)
+							stances.Key = "ValidStances";
+						else
+							node.Value.Nodes.Add(new MiniYamlNode("ValidStances", "Enemy, Neutral"));
+
+						node.Value.Nodes.Add(new MiniYamlNode("Condition", "jammed"));
+					}
+				}
+
 				UpgradeActorRules(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 

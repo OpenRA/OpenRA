@@ -540,8 +540,14 @@ MRJ:
 	WithIdleOverlay@SPINNER:
 		Sequence: spinner
 		Offset: -256,0,256
-	JamsRadar:
+	ProximityExternalCondition@JAMMER:
 		Range: 15c0
+		ValidStances: Enemy, Neutral
+		Condition: jammed
+	WithRangeCircle@JAMMER:
+		Type: jammer
+		Range: 15c0
+		Color: 0000FF80
 	JamsMissiles:
 		Range: 4c0
 		DeflectionStances: Neutral, Enemy

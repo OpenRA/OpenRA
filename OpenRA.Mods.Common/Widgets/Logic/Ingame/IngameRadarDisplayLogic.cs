@@ -32,7 +32,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var ticker = widget.Get<LogicTickerWidget>("RADAR_TICKER");
 			ticker.OnTick = () =>
 			{
-				radarEnabled = devMode.DisableShroud || world.ActorsHavingTrait<ProvidesRadar>(r => r.IsActive)
+				radarEnabled = devMode.DisableShroud || world.ActorsHavingTrait<ProvidesRadar>(r => !r.IsTraitDisabled)
 					.Any(a => a.Owner == world.LocalPlayer);
 
 				if (radarEnabled != cachedRadarEnabled)

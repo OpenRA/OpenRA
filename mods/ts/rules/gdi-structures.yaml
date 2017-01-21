@@ -314,6 +314,7 @@ GARADR:
 		PowerupSpeech: EnablePower
 		PowerdownSpeech: DisablePower
 	ProvidesRadar:
+		RequiresCondition: !disabled
 	InfiltrateForExploration:
 	DetectCloaked:
 		Range: 10c0
@@ -331,6 +332,8 @@ GARADR:
 	ProvidesPrerequisite@buildingname:
 	SelectionDecorations:
 		VisualBounds: 96, 118, 0, -38
+	GrantConditionOnDisabled@IDISABLE:
+		Condition: disabled
 
 GATECH:
 	Inherits: ^Building
