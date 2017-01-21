@@ -218,7 +218,7 @@ ARTY:
 		TurnSpeed: 2
 		Speed: 85
 	RevealsShroud:
-		Range: 5c0
+		Range: 3c0
 	Armament:
 		Weapon: 155mm
 		LocalOffset: 624,0,208
