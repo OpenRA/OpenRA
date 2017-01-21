@@ -43,6 +43,8 @@ namespace OpenRA
 		IShader CreateShader(string name);
 
 		Size WindowSize { get; }
+		float WindowScale { get; }
+		event Action<float, float> OnWindowScaleChanged;
 
 		void Clear();
 		void Present();

@@ -39,6 +39,8 @@ namespace OpenRA.Primitives
 		public bool ContainsKey(T key) { return cache.ContainsKey(key); }
 		public bool TryGetValue(T key, out U value) { return cache.TryGetValue(key, out value); }
 		public int Count { get { return cache.Count; } }
+		public void Clear() { cache.Clear(); }
+
 		public ICollection<T> Keys { get { return cache.Keys; } }
 		public ICollection<U> Values { get { return cache.Values; } }
 		public IEnumerator<KeyValuePair<T, U>> GetEnumerator() { return cache.GetEnumerator(); }
