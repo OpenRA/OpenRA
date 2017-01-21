@@ -35,32 +35,32 @@ namespace OpenRA.Mods.TS.Activities
 			{
 				spriteOverlay.Visible = true;
 				spriteOverlay.WithOffset.Animation.PlayThen(spriteOverlay.Info.Sequence, () => {
-					dockingState = State.Loop;
+					dockingState = DockingState.Loop;
 					spriteOverlay.Visible = false;
 				});
 			}
 			else
-				dockingState = State.Loop;
+				dockingState = DockingState.Loop;
 
 			return this;
 		}
 
 		public override Activity OnStateUndock(Actor self)
 		{
-			dockingState = State.Wait;
+			dockingState = DockingState.Wait;
 
 			if (spriteOverlay != null && !spriteOverlay.Visible)
 			{
 				spriteOverlay.Visible = true;
 				spriteOverlay.WithOffset.Animation.PlayBackwardsThen(spriteOverlay.Info.Sequence, () => {
-					dockingState = State.Complete;
+					dockingState = DockingState.Complete;
 					body.Docked = false;
 					spriteOverlay.Visible = false;
 				});
 			}
 			else
 			{
-				dockingState = State.Complete;
+				dockingState = DockingState.Complete;
 				body.Docked = false;
 			}
 
