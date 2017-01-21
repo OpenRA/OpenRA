@@ -252,11 +252,7 @@ MCV:
 	Buildable:
 		Prerequisites: ~disabled
 
-MNLY.AP:
-	Buildable:
-		Prerequisites: ~disabled
-
-MNLY.AT:
+MNLY:
 	Buildable:
 		Prerequisites: ~disabled
 

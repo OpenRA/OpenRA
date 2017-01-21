@@ -72,7 +72,7 @@ V2RL:
 	Inherits: ^Tank
 	Buildable:
 		Queue: Vehicle
-		BuildPaletteOrder: 120
+		BuildPaletteOrder: 110
 		Prerequisites: fix, ~vehicles.allies, ~techlevel.medium
 		Description: Allied Main Battle Tank.\n  Strong vs Vehicles\n  Weak vs Infantry, Aircraft
 	Valued:
@@ -111,7 +111,7 @@ V2RL:
 	Inherits: ^Tank
 	Buildable:
 		Queue: Vehicle
-		BuildPaletteOrder: 130
+		BuildPaletteOrder: 120
 		Prerequisites: fix, ~vehicles.soviet, ~techlevel.medium
 		Description: Soviet Main Battle Tank, with dual cannons\n  Strong vs Vehicles\n  Weak vs Infantry, Aircraft
 	Valued:
@@ -150,7 +150,7 @@ V2RL:
 	Inherits: ^Tank
 	Buildable:
 		Queue: Vehicle
-		BuildPaletteOrder: 190
+		BuildPaletteOrder: 180
 		Prerequisites: fix, stek, ~vehicles.soviet, ~techlevel.high
 		BuildDuration: 2500
 		BuildDurationModifier: 40
@@ -395,47 +395,12 @@ APC:
 	ProducibleWithLevel:
 		Prerequisites: vehicles.upgraded
 
-MNLY.AP:
-	Inherits: ^Tank
-	Buildable:
-		Queue: Vehicle
-		BuildPaletteOrder: 110
-		Prerequisites: fix, ~vehicles.soviet, ~techlevel.medium
-		Description: Lays mines to destroy\nunwary enemy units.\nCan detect mines.\n  Unarmed
-	Valued:
-		Cost: 800
-	Tooltip:
-		Name: Minelayer
-	Health:
-		HP: 150
-	Armor:
-		Type: Heavy
-	Mobile:
-		Speed: 128
-		Crushes: wall, mine, crate, infantry
-	RevealsShroud:
-		Range: 5c0
-	Minelayer:
-		Mine: MINP
-	MineImmune:
-	AmmoPool:
-		Ammo: 5
-		RearmSound: minelay1.aud
-	DetectCloaked:
-		Range: 5c0
-		CloakTypes: Mine
-	RenderDetectionCircle:
-	Explodes:
-		Weapon: APMine
-	RenderSprites:
-		Image: MNLY
-
-MNLY.AT:
+MNLY:
 	Inherits: ^Tank
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 100
-		Prerequisites: fix, ~vehicles.allies, ~techlevel.medium
+		Prerequisites: fix, ~techlevel.medium
 		Description: Lays mines to destroy\nunwary enemy units.\nCan detect mines.\n  Unarmed
 	Valued:
 		Cost: 800
@@ -494,7 +459,7 @@ MGG:
 	Inherits: ^Vehicle
 	Buildable:
 		Queue: Vehicle
-		BuildPaletteOrder: 160
+		BuildPaletteOrder: 150
 		Prerequisites: atek, ~vehicles.france, ~techlevel.high
 		Description: Regenerates the shroud nearby, \nobscuring the area.\n  Unarmed
 	Valued:
@@ -526,7 +491,7 @@ MRJ:
 		Name: Mobile Radar Jammer
 	Buildable:
 		Queue: Vehicle
-		BuildPaletteOrder: 150
+		BuildPaletteOrder: 140
 		Prerequisites: atek, ~vehicles.allies, ~techlevel.high
 		Description: Jams nearby enemy radar domes\nand deflects incoming missiles.\nCan detect cloaked units.\n  Unarmed
 	Health:
@@ -553,7 +518,7 @@ TTNK:
 	Inherits: ^Tank
 	Buildable:
 		Queue: Vehicle
-		BuildPaletteOrder: 180
+		BuildPaletteOrder: 170
 		Prerequisites: tsla, stek, ~vehicles.russia, ~techlevel.high
 		Description: Tank with mounted tesla coil.\n  Strong vs Infantry, Vehicles, Buildings\n  Weak vs Aircraft
 	Valued:
@@ -628,7 +593,7 @@ DTRK:
 	Inherits: ^Vehicle
 	Buildable:
 		Queue: Vehicle
-		BuildPaletteOrder: 170
+		BuildPaletteOrder: 160
 		Prerequisites: stek, ~vehicles.ukraine, ~techlevel.high
 		Description: Demolition Truck, actively armed with\nnuclear explosives. Has very weak armor.
 	Valued:
@@ -657,7 +622,7 @@ CTNK:
 	Inherits: ^Vehicle
 	Buildable:
 		Queue: Vehicle
-		BuildPaletteOrder: 210
+		BuildPaletteOrder: 200
 		Prerequisites: atek, ~vehicles.germany, ~techlevel.high
 		Description: Chrono Tank, teleports to areas within range.\n  Strong vs Vehicles, Buildings\n  Weak vs Infantry, Aircraft\n  Special ability: Can teleport
 	Valued:
@@ -694,7 +659,7 @@ QTNK:
 	Inherits: ^Tank
 	Buildable:
 		Queue: Vehicle
-		BuildPaletteOrder: 200
+		BuildPaletteOrder: 190
 		Prerequisites: fix, stek, ~vehicles.soviet, ~techlevel.high
 		Description: Deals seismic damage to nearby vehicles\nand structures.\n  Strong vs Vehicles, Buildings\n  Weak vs Infantry, Aircraft
 	Valued:
@@ -721,7 +686,7 @@ STNK:
 	Inherits: ^Vehicle
 	Buildable:
 		Queue: Vehicle
-		BuildPaletteOrder: 140
+		BuildPaletteOrder: 130
 		Prerequisites: atek, ~vehicles.england, ~techlevel.high
 		Description: Lightly armored infantry transport\nwhich can cloak. Can detect cloaked units.\n  Strong vs Light armor\n  Weak vs Infantry, Tanks, Aircraft
 	Valued:
