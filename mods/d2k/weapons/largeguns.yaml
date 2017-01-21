@@ -1,35 +1,4 @@
-110mm_Gun:
-	ReloadDelay: 35
-	Range: 5c0
-	Report: TURRET1.WAV
-	Projectile: Bullet
-		Speed: 875
-		Blockable: false
-		Shadow: no
-		Inaccuracy: 380
-		Image: 120mm
-	Warhead@1Dam: SpreadDamage
-		Spread: 256
-		Falloff: 100, 50, 25, 0
-		Damage: 290
-		Versus:
-			none: 20
-			wall: 50
-			building: 50
-			wood: 60
-			heavy: 75
-			invulnerable: 0
-			cy: 20
-			harvester: 50
-		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
-	Warhead@2Smu: LeaveSmudge
-		SmudgeType: SandCrater, RockCrater
-		InvalidTargets: Vehicle, Structure
-	Warhead@3Eff: CreateEffect
-		Explosions: small_napalm
-		ImpactSounds: EXPLSML4.WAV
-
-80mm_A:
+^Cannon:
 	ReloadDelay: 50
 	Range: 4c0
 	Report: MEDTANK1.WAV
@@ -57,41 +26,55 @@
 	Warhead@3Eff: CreateEffect
 		Explosions: small_napalm
 
+110mm_Gun:
+	Inherits: ^Cannon
+	ReloadDelay: 35
+	Range: 5c0
+	Report: TURRET1.WAV
+	Projectile: Bullet
+		Speed: 875
+		Blockable: false
+	Warhead@1Dam: SpreadDamage
+		Damage: 290
+
+80mm_A:
+	Inherits: ^Cannon
+
 80mm_H:
-	Inherits: 80mm_A
+	Inherits: ^Cannon
 	ReloadDelay: 55
 
 80mm_O:
-	Inherits: 80mm_A
+	Inherits: ^Cannon
 	ReloadDelay: 45
 
 DevBullet:
+	Inherits: ^Cannon
 	ReloadDelay: 75
-	Range: 4c0
 	Report: TANKHVY1.WAV
 	Projectile: Bullet
 		Speed: 281
 		Blockable: true
+		Inaccuracy: 0
 		Image: doubleblastbullet
 	Warhead@1Dam: SpreadDamage
 		Spread: 384
-		Falloff: 100, 50, 25, 0
 		Damage: 650
 		Versus:
 			none: 50
+			wall: 100
 			building: 75
 			wood: 60
+			heavy: 100
 			invulnerable: 0
 			cy: 40
-		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
-	Warhead@2Smu: LeaveSmudge
-		SmudgeType: SandCrater, RockCrater
-		InvalidTargets: Vehicle, Structure
+			harvester: 100
 	Warhead@3Eff: CreateEffect
 		Explosions: shockwave
 		ImpactSounds: EXPLMD1.WAV
 
 155mm:
+	Inherits: ^Cannon
 	ReloadDelay: 80
 	Range: 5c512
 	Report: MORTAR1.WAV
@@ -109,6 +92,8 @@ DevBullet:
 		Damage: 450
 		Versus:
 			none: 125
+			wall: 100
+			building: 100
 			wood: 70
 			light: 30
 			heavy: 20
@@ -116,9 +101,6 @@ DevBullet:
 			cy: 20
 			harvester: 25
 		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
-	Warhead@2Smu: LeaveSmudge
-		SmudgeType: SandCrater, RockCrater
-		InvalidTargets: Vehicle, Structure
 	Warhead@3Eff: CreateEffect
 		Explosions: med_explosion
 		ImpactSounds: EXPLMD2.WAV

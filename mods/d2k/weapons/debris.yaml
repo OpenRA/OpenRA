@@ -31,20 +31,13 @@ Debris:
 		ImpactSounds: EXPLLG5.WAV
 
 Debris2:
-	ReloadDelay: 60
-	Range: 2c768
+	Inherits: Debris
 	Projectile: Bullet
-		Speed: 32, 96
-		Blockable: false
-		LaunchAngle: 30, 90
-		Inaccuracy: 1c256
 		Image: shrapnel2
 		TrailImage: bazooka_trail
 		TrailPalette: effect75alpha
 		TrailInterval: 2
 	Warhead@1Dam: SpreadDamage
-		Spread: 320
-		Falloff: 100, 60, 30, 15, 0
 		Damage: 250
 		Versus:
 			none: 90
@@ -58,79 +51,24 @@ Debris2:
 			cy: 20
 			harvester: 25
 		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
-	Warhead@2Smu: LeaveSmudge
-		SmudgeType: SandCrater
-		InvalidTargets: Vehicle, Structure
 	Warhead@3Eff: CreateEffect
 		Explosions: med_explosion
 		ImpactSounds: EXPLLG5.WAV
 
 Debris3:
-	ReloadDelay: 60
-	Range: 2c768
+	Inherits: Debris2
 	Projectile: Bullet
-		Speed: 32, 96
-		Blockable: false
-		LaunchAngle: 30, 90
-		Inaccuracy: 1c256
 		Image: shrapnel3
 		TrailImage: large_trail
-		TrailPalette: effect75alpha
 		TrailInterval: 1
 	Warhead@1Dam: SpreadDamage
-		Spread: 320
-		Falloff: 100, 60, 30, 15, 0
 		Damage: 150
-		Versus:
-			none: 90
-			wall: 5
-			building: 65
-			wood: 50
-			light: 40
-			heavy: 30
-			concrete: 100
-			invulnerable: 0
-			cy: 20
-			harvester: 25
-		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
-	Warhead@2Smu: LeaveSmudge
-		SmudgeType: SandCrater
-		InvalidTargets: Vehicle, Structure
-	Warhead@3Eff: CreateEffect
-		Explosions: med_explosion
-		ImpactSounds: EXPLLG5.WAV
 
 Debris4:
-	ReloadDelay: 60
-	Range: 2c768
+	Inherits: Debris2
 	Projectile: Bullet
-		Speed: 32, 96
-		Blockable: false
-		LaunchAngle: 30, 90
-		Inaccuracy: 1c256
 		Image: shrapnel4
 		TrailImage: large_trail
-		TrailPalette: effect75alpha
 		TrailInterval: 1
-	Warhead@1Dam: SpreadDamage
-		Spread: 320
-		Falloff: 100, 60, 30, 15, 0
-		Damage: 250
-		Versus:
-			none: 90
-			wall: 5
-			building: 65
-			wood: 50
-			light: 40
-			heavy: 30
-			concrete: 100
-			invulnerable: 0
-			cy: 20
-			harvester: 25
-		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
-	Warhead@2Smu: LeaveSmudge
-		SmudgeType: SandCrater
-		InvalidTargets: Vehicle, Structure
 	Warhead@3Eff: CreateEffect
 		Explosions: large_explosion
-		ImpactSounds: EXPLLG5.WAV
