@@ -472,6 +472,7 @@ HQ:
 		Range: 10c0
 	Bib:
 	ProvidesRadar:
+		RequiresCondition: !disabled
 	RenderDetectionCircle:
 	DetectCloaked:
 		Range: 5c0
@@ -496,6 +497,8 @@ HQ:
 	SupportPowerChargeBar:
 	Power:
 		Amount: -50
+	GrantConditionOnDisabled@IDISABLE:
+		Condition: disabled
 
 FIX:
 	Inherits: ^BaseBuilding
@@ -564,6 +567,7 @@ EYE:
 		Range: 10c0
 	Bib:
 	ProvidesRadar:
+		RequiresCondition: !disabled
 	RenderDetectionCircle:
 	DetectCloaked:
 		Range: 5c0
@@ -585,6 +589,8 @@ EYE:
 	Power:
 		Amount: -200
 	ProvidesPrerequisite@buildingname:
+	GrantConditionOnDisabled@IDISABLE:
+		Condition: disabled
 
 TMPL:
 	Inherits: ^BaseBuilding

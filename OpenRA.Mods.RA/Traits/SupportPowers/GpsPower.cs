@@ -100,7 +100,7 @@ namespace OpenRA.Mods.RA.Traits
 			owner.GpsAdd(self);
 		}
 
-		bool NoActiveRadar { get { return !self.World.ActorsHavingTrait<ProvidesRadar>(r => r.IsActive).Any(a => a.Owner == self.Owner); } }
+		bool NoActiveRadar { get { return !self.World.ActorsHavingTrait<ProvidesRadar>(r => !r.IsTraitDisabled).Any(a => a.Owner == self.Owner); } }
 		bool wasDisabled;
 
 		void ITick.Tick(Actor self)

@@ -752,7 +752,6 @@
     <Compile Include="Traits\Radar\AppearsOnRadar.cs" />
     <Compile Include="Traits\Radar\ProvidesRadar.cs" />
     <Compile Include="Traits\Radar\RadarColorFromTerrain.cs" />
-    <Compile Include="Traits\Radar\JamsRadar.cs" />
     <Compile Include="AI\DummyAI.cs" />
     <Compile Include="UtilityCommands\ListInstallShieldContentsCommand.cs" />
     <Compile Include="Widgets\Logic\Installation\ModContentLogic.cs" />
@@ -792,6 +791,7 @@
     <Compile Include="UtilityCommands\OutputResolvedSequencesCommand.cs" />
     <Compile Include="UtilityCommands\OutputResolvedWeaponsCommand.cs" />
     <Compile Include="Traits\RevealOnFire.cs" />
+    <Compile Include="Traits\Conditions\GrantConditionOnDisabled.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="AfterBuild">

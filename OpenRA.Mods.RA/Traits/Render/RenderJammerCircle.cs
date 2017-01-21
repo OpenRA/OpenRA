@@ -35,17 +35,6 @@ namespace OpenRA.Mods.RA.Traits
 					Color.FromArgb(96, Color.Black));
 			}
 
-			var jamsRadar = ai.TraitInfoOrDefault<JamsRadarInfo>();
-			if (jamsRadar != null)
-			{
-				yield return new RangeCircleRenderable(
-					centerPosition,
-					jamsRadar.Range,
-					0,
-					Color.FromArgb(128, Color.Blue),
-					Color.FromArgb(96, Color.Black));
-			}
-
 			foreach (var a in w.ActorsWithTrait<RenderJammerCircle>())
 				if (a.Actor.Owner.IsAlliedWith(w.RenderPlayer))
 					foreach (var r in a.Trait.RenderAboveShroud(a.Actor, wr))
@@ -68,17 +57,6 @@ namespace OpenRA.Mods.RA.Traits
 					jamsMissiles.Range,
 					0,
 					Color.FromArgb(128, Color.Red),
-					Color.FromArgb(96, Color.Black));
-			}
-
-			var jamsRadar = self.Info.TraitInfoOrDefault<JamsRadarInfo>();
-			if (jamsRadar != null)
-			{
-				yield return new RangeCircleRenderable(
-					self.CenterPosition,
-					jamsRadar.Range,
-					0,
-					Color.FromArgb(128, Color.Blue),
 					Color.FromArgb(96, Color.Black));
 			}
 		}

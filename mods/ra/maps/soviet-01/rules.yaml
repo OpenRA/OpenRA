@@ -18,8 +18,10 @@ V01:
 
 JEEP:
 	Explodes:
-	JamsRadar:
+	ProximityExternalCondition@JAMMER:
 		Range: 10c0
+		ValidStances: Enemy, Neutral
+		Condition: jammed
 
 YAK:
 	Buildable:

@@ -515,6 +515,7 @@ outpost:
 	RevealsShroud:
 		Range: 4c768
 	ProvidesRadar:
+		RequiresCondition: !disabled
 	RenderSprites:
 		Image: outpost.harkonnen
 		FactionImages:
@@ -528,6 +529,8 @@ outpost:
 	Power:
 		Amount: -125
 	ProvidesPrerequisite@buildingname:
+	GrantConditionOnDisabled@IDISABLE:
+		Condition: disabled
 
 starport:
 	Inherits: ^Building
