@@ -496,7 +496,7 @@ SHOK:
 	Tooltip:
 		Name: Shock Trooper
 	Health:
-		HP: 60
+		HP: 50
 	Mobile:
 		Voice: Move
 	RevealsShroud:
@@ -504,9 +504,11 @@ SHOK:
 	Armament@PRIMARY:
 		Weapon: PortaTesla
 		LocalOffset: 427,0,341
+		FireDelay: 12
 	Armament@GARRISONED:
 		Name: garrisoned
 		Weapon: PortaTesla
+		FireDelay: 12
 	AttackFrontal:
 		Voice: Attack
 	AttackMove:
