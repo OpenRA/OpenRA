@@ -118,6 +118,7 @@ fi
 if [ ! -f SmarIrc4net.dll ]; then
 	echo "Fetching SmartIrc4net from NuGet."
 	get SmartIrc4net 0.4.5.1
+	rm ./SmartIrc4net/lib/net40/SmarIrc4net.XML
 	cp ./SmartIrc4net/lib/net40/SmarIrc4net* .
 	rm -rf SmartIrc4net
 fi

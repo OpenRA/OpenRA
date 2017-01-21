@@ -158,6 +158,7 @@ if (!(Test-Path "SmarIrc4net.dll"))
 {
 	echo "Fetching SmartIrc4net from NuGet."
 	./nuget.exe install SmartIrc4net -Version 0.4.5.1 -ExcludeVersion
+	rm SmartIrc4net/lib/net40/SmarIrc4net.XML
 	cp SmartIrc4net/lib/net40/SmarIrc4net.* .
 	rmdir SmartIrc4net -Recurse
 }
