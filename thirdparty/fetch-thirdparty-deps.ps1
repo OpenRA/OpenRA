@@ -60,8 +60,8 @@ if (!(Test-Path "SharpFont.dll"))
 if (!(Test-Path "nunit.framework.dll"))
 {
 	echo "Fetching NUnit from NuGet."
-	./nuget.exe install NUnit -Version 3.0.1 -ExcludeVersion
-	cp NUnit/lib/net40/nunit.framework* .
+	./nuget.exe install NUnit -Version 3.4.1 -ExcludeVersion
+	cp NUnit/lib/net45/nunit.framework* .
 	rmdir NUnit -Recurse
 }
 
