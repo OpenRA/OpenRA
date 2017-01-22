@@ -26,10 +26,11 @@ FireballLauncher:
 Bomb:
 	ReloadDelay: 60
 	Burst: 5
-	BurstDelay: 5
-	Range: 2c0
+	BurstDelay: 6
+	Range: 2c512
 	Projectile: GravityBomb
-		Speed: 170
+		Velocity: 72, 0, -90
+		Acceleration: 0, 0, -8
 		Image: 120mm
 		Shadow: true
 		Palette: ra
