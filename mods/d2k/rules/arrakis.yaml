@@ -22,7 +22,8 @@ spicebloom.spawnpoint:
 		EmptyWeapon: BloomSpawn
 	Health:
 		HP: 9999
-		Radius: 1
+		Shape: Circle
+			Radius: 1
 	Immobile:
 		OccupiesSpace: false
 
@@ -49,7 +50,8 @@ spicebloom:
 	Immobile:
 	Health:
 		HP: 1
-		Radius: 512
+		Shape: Circle
+			Radius: 512
 	Targetable:
 		TargetTypes: Ground
 		RequiresForceFire: true
