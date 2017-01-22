@@ -12,9 +12,11 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using OpenRA.FileSystem;
+using OpenRA.Graphics;
 using OpenRA.Primitives;
 
 namespace OpenRA
@@ -22,9 +24,15 @@ namespace OpenRA
 	public class InstalledMods : IReadOnlyDictionary<string, Manifest>
 	{
 		readonly Dictionary<string, Manifest> mods;
+		readonly SheetBuilder sheetBuilder;
+
+		readonly Dictionary<string, Sprite> icons = new Dictionary<string, Sprite>();
+		public readonly IReadOnlyDictionary<string, Sprite> Icons;
 
 		public InstalledMods(string customModPath)
 		{
+			sheetBuilder = new SheetBuilder(SheetType.BGRA, 256);
+			Icons = new ReadOnlyDictionary<string, Sprite>(icons);
 			mods = GetInstalledMods(customModPath);
 		}
 
@@ -53,7 +61,7 @@ namespace OpenRA
 			return mods;
 		}
 
-		static Manifest LoadMod(string id, string path)
+		Manifest LoadMod(string id, string path)
 		{
 			IReadOnlyPackage package = null;
 			try
@@ -76,6 +84,11 @@ namespace OpenRA
 				if (!package.Contains("mod.yaml"))
 					throw new InvalidDataException(path + " is not a valid mod package");
 
+				using (var stream = package.GetStream("icon.png"))
+					if (stream != null)
+						using (var bitmap = new Bitmap(stream))
+							icons[id] = sheetBuilder.Add(bitmap);
+
 				// Mods in the support directory and oramod packages (which are listed later
 				// in the CandidateMods list) override mods in the main install.
 				return new Manifest(id, package);
@@ -89,7 +102,7 @@ namespace OpenRA
 			}
 		}
 
-		static Dictionary<string, Manifest> GetInstalledMods(string customModPath)
+		Dictionary<string, Manifest> GetInstalledMods(string customModPath)
 		{
 			var ret = new Dictionary<string, Manifest>();
 			var candidates = GetCandidateMods();
