@@ -1,82 +1,11 @@
-Minigun:
-	ReloadDelay: 21
-	Range: 4c0
-	Report: infgun3.aud, gostgun1.aud, slvkgun1.aud
-	Projectile: Bullet
-		Speed: 1c682
-	Warhead@1Dam: SpreadDamage
-		Spread: 128
-		Damage: 8
-		Versus:
-			Wood: 60
-			Light: 40
-			Heavy: 25
-			Concrete: 10
-		DamageTypes: Prone70Percent, TriggerProne, BulletDeath
-	Warhead@2Eff: CreateEffect
-		Explosions: piffs
-		InvalidImpactTypes: Water
-	Warhead@3EffWater: CreateEffect
-		Explosions: water_piffs
-		ExplosionPalette: ra
-		ValidImpactTypes: Water
-
-M1Carbine:
+^MG:
 	ReloadDelay: 20
 	Range: 4c0
-	Report: infgun3.aud
-	Projectile: Bullet
-		Speed: 1c682
+	Projectile: InstantHit
 	Warhead@1Dam: SpreadDamage
-		Spread: 128
+		Spread: 108
+		Falloff: 100, 50, 25, 12, 6, 3, 0
 		Damage: 15
-		Versus:
-			Wood: 60
-			Light: 40
-			Heavy: 25
-			Concrete: 10
-		DamageTypes: Prone70Percent, TriggerProne, BulletDeath
-	Warhead@2Eff: CreateEffect
-		Explosions: piffs
-		InvalidImpactTypes: Water
-	Warhead@3EffWater: CreateEffect
-		Explosions: water_piffs
-		ExplosionPalette: ra
-		ValidImpactTypes: Water
-
-Vulcan:
-	ReloadDelay: 60
-	Range: 4c0
-	Report: chaingn1.aud
-	Projectile: Bullet
-		Speed: 1c682
-	Warhead@1Dam: SpreadDamage
-		Spread: 128
-		Damage: 20
-		Versus:
-			Wood: 60
-			Light: 40
-			Heavy: 25
-			Concrete: 10
-		DamageTypes: Prone70Percent, TriggerProne, BulletDeath
-	Warhead@2Eff: CreateEffect
-		Explosions: piffs
-		InvalidImpactTypes: Water
-	Warhead@3EffWater: CreateEffect
-		Explosions: water_piffs
-		ExplosionPalette: ra
-		ValidImpactTypes: Water
-
-Vulcan2:
-	ReloadDelay: 50
-	Burst: 3
-	Range: 6c0
-	Report: tsgun4.aud
-	Projectile: Bullet
-		Speed: 1c682
-	Warhead@1Dam: SpreadDamage
-		Spread: 128
-		Damage: 50
 		Versus:
 			None: 100
 			Wood: 60
@@ -92,186 +21,109 @@ Vulcan2:
 		ExplosionPalette: ra
 		ValidImpactTypes: Water
 
+Minigun:
+	Inherits: ^MG
+	ReloadDelay: 21
+	Report: infgun3.aud, gostgun1.aud, slvkgun1.aud
+	Warhead@1Dam: SpreadDamage
+		Damage: 8
+
+M1Carbine:
+	Inherits: ^MG
+	Report: infgun3.aud
+
+Vulcan:
+	Inherits: ^MG
+	Report: chaingn1.aud
+	Warhead@1Dam: SpreadDamage
+		Damage: 20
+
+Vulcan2:
+	Inherits: ^MG
+	ReloadDelay: 50
+	Burst: 3
+	Range: 6c0
+	Report: tsgun4.aud
+	Warhead@1Dam: SpreadDamage
+		Damage: 50
+
 Vulcan3:
+	Inherits: ^MG
 	ReloadDelay: 30
 	Burst: 3
-	Range: 4c0
 	Report: cygun1.aud
-	Projectile: Bullet
-		Speed: 1c682
 	Warhead@1Dam: SpreadDamage
-		Spread: 128
 		Damage: 10
-		Versus:
-			Wood: 60
-			Light: 40
-			Heavy: 25
-			Concrete: 10
-		DamageTypes: Prone70Percent, TriggerProne, BulletDeath
-	Warhead@2Eff: CreateEffect
-		Explosions: piffs
-		InvalidImpactTypes: Water
-	Warhead@3EffWater: CreateEffect
-		Explosions: water_piffs
-		ExplosionPalette: ra
-		ValidImpactTypes: Water
 
 VulcanTower:
+	Inherits: ^MG
 	ReloadDelay: 26
 	Range: 6c0
 	Report: chaingn1.aud
-	Projectile: Bullet
-		Speed: 1c682
 	Warhead@1Dam: SpreadDamage
-		Spread: 128
 		Damage: 18
-		Versus:
-			Wood: 60
-			Light: 40
-			Heavy: 25
-			Concrete: 10
-		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
-	Warhead@2Eff: CreateEffect
-		Explosions: piffs
-		InvalidImpactTypes: Water
-	Warhead@3EffWater: CreateEffect
-		Explosions: water_piffs
-		ExplosionPalette: ra
-		ValidImpactTypes: Water
 
 JumpCannon:
+	Inherits: ^MG
 	ReloadDelay: 40
 	Burst: 2
 	Range: 5c0
 	Report: jumpjet1.aud
-	Projectile: Bullet
-		Speed: 1c682
 	Warhead@1Dam: SpreadDamage
-		Spread: 128
 		Damage: 15
-		Versus:
-			Wood: 60
-			Light: 40
-			Heavy: 25
-			Concrete: 10
-		DamageTypes: Prone70Percent, TriggerProne, BulletDeath
-	Warhead@2Eff: CreateEffect
-		Explosions: piffs
-		InvalidImpactTypes: Water
-	Warhead@3EffWater: CreateEffect
-		Explosions: water_piffs
-		ExplosionPalette: ra
-		ValidImpactTypes: Water
 
 AssaultCannon:
+	Inherits: ^MG
 	ReloadDelay: 50
 	Range: 5c0
 	Report: tsgun4.aud
-	Projectile: Bullet
-		Speed: 1c682
 	Warhead@1Dam: SpreadDamage
-		Spread: 128
 		Damage: 40
-		Versus:
-			Wood: 60
-			Light: 40
-			Heavy: 25
-			Concrete: 10
-		DamageTypes: Prone70Percent, TriggerProne, BulletDeath
-	Warhead@2Eff: CreateEffect
-		Explosions: piffs
-		InvalidImpactTypes: Water
-	Warhead@3EffWater: CreateEffect
-		Explosions: water_piffs
-		ExplosionPalette: ra
-		ValidImpactTypes: Water
 
 RaiderCannon:
+	Inherits: ^MG
 	ReloadDelay: 55
 	Range: 4c0
 	Burst: 2 # this + BurstDelay just makes the buggy alternate between barrels (for muzzle flash), no actual difference to original TS
 	BurstDelay: 55
 	Report: chaingn1.aud
-	Projectile: Bullet
-		Speed: 1c682
 	Warhead@1Dam: SpreadDamage
-		Spread: 128
 		Damage: 40
-		Versus:
-			Wood: 60
-			Light: 40
-			Heavy: 25
-			Concrete: 10
-		DamageTypes: Prone70Percent, TriggerProne, BulletDeath
-	Warhead@2Eff: CreateEffect
-		Explosions: piffs
-		InvalidImpactTypes: Water
-	Warhead@3EffWater: CreateEffect
-		Explosions: water_piffs
-		ExplosionPalette: ra
-		ValidImpactTypes: Water
 
 HarpyClaw:
+	Inherits: ^MG
 	ReloadDelay: 36
 	Range: 5c0
 	Report: cygun1.aud
-	Projectile: Bullet
-		Speed: 1c682
-	ValidTargets: Ground, Air
 	Warhead@1Dam: SpreadDamage
-		Spread: 128
 		Damage: 60
-		ValidTargets: Ground, Air
-		Versus:
-			Wood: 60
-			Light: 40
-			Heavy: 25
-			Concrete: 10
-		DamageTypes: Prone70Percent, TriggerProne, BulletDeath
-	Warhead@2Eff: CreateEffect
-		Explosions: piffs
-		InvalidImpactTypes: Water
-	Warhead@3EffWater: CreateEffect
-		Explosions: water_piffs
-		ExplosionPalette: ra
-		ValidImpactTypes: Water
 
 Pistola:
-	ReloadDelay: 20
+	Inherits: ^MG
 	Range: 3c0
 	Report: gun18.aud
-	Projectile: Bullet
-		Speed: 1c682
 	Warhead@1Dam: SpreadDamage
-		Spread: 128
 		Damage: 2
-		Versus:
-			Wood: 60
-			Light: 40
-			Heavy: 25
-			Concrete: 10
-		DamageTypes: Prone70Percent, TriggerProne, BulletDeath
 	Warhead@2Eff: CreateEffect
 		Explosions: piff
-		InvalidImpactTypes: Water
 	Warhead@3EffWater: CreateEffect
 		Explosions: water_piff
-		ExplosionPalette: ra
-		ValidImpactTypes: Water
 
 Sniper:
+	Inherits: ^MG
 	ReloadDelay: 60
 	Range: 6c768
 	Report: silencer.aud
-	Projectile: Bullet
-		Speed: 1c682
 	Warhead@1Dam: SpreadDamage
-		Spread: 42
+		Spread: 36
 		Damage: 150
 		Versus:
-			None: 100
 			Wood: 5
 			Light: 5
 			Heavy: 5
 			Concrete: 5
 		DamageTypes: Prone100Percent, TriggerProne, BulletDeath
+	Warhead@2Eff: CreateEffect
+		Explosions: piff
+	Warhead@3EffWater: CreateEffect
+		Explosions: water_piff
