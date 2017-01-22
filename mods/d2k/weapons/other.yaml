@@ -55,8 +55,8 @@ OrniBomb:
 	Range: 2c0
 	Projectile: GravityBomb
 		Image: BOMBS
-		Speed: 64
-		Acceleration: 0
+		Velocity: 0, 0, -64
+		Acceleration: 0, 0, 0
 		Shadow: true
 	Warhead@1Dam: SpreadDamage
 		Spread: 320
