@@ -76,6 +76,7 @@ RPGTower:
 			Light: 90
 			Heavy: 100
 			Concrete: 70
+		DamageTypes: Prone100Percent, TriggerProne, SmallExplosionDeath
 	Warhead@2Eff: CreateEffect
 		Explosions: large_clsn
 
