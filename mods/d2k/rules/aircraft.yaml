@@ -13,7 +13,7 @@ carryall.reinforce:
 		InitialFacing: 0
 		Speed: 144 # 112 * ~1.3 for balance reasons
 		TurnSpeed: 4
-		LandableTerrainTypes: Sand, Rock, Transition, Spice, SpiceSand, Dune
+		LandableTerrainTypes: Sand, Rock, Transition, Spice, SpiceSand, Dune, Concrete
 		Repulsable: False
 		LandWhenIdle: False
 		AirborneCondition: airborne
