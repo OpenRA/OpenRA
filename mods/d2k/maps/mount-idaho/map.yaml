@@ -39,28 +39,28 @@ Players:
 		Enemies: Multi0, Multi1
 
 Actors:
-	Actor0: spicebloom
+	Actor0: spicebloom.spawnpoint
 		Location: 48,12
 		Owner: Neutral
-	Actor1: spicebloom
+	Actor1: spicebloom.spawnpoint
 		Location: 44,26
 		Owner: Neutral
-	Actor2: spicebloom
+	Actor2: spicebloom.spawnpoint
 		Location: 63,26
 		Owner: Neutral
-	Actor3: spicebloom
+	Actor3: spicebloom.spawnpoint
 		Location: 14,36
 		Owner: Neutral
-	Actor4: spicebloom
+	Actor4: spicebloom.spawnpoint
 		Location: 68,31
 		Owner: Neutral
-	Actor5: spicebloom
+	Actor5: spicebloom.spawnpoint
 		Location: 33,53
 		Owner: Neutral
-	Actor6: spicebloom
+	Actor6: spicebloom.spawnpoint
 		Location: 35,60
 		Owner: Neutral
-	Actor7: spicebloom
+	Actor7: spicebloom.spawnpoint
 		Location: 45,40
 		Owner: Neutral
 	Actor8: mpspawn

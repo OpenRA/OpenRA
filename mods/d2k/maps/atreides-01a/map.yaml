@@ -83,7 +83,7 @@ Actors:
 	Actor12: light_inf
 		Location: 19,20
 		Owner: Harkonnen
-	Actor13: spicebloom
+	Actor13: spicebloom.spawnpoint
 		Location: 24,20
 		Owner: Neutral
 	Actor14: wormspawner

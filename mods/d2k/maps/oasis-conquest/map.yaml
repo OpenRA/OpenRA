@@ -62,13 +62,13 @@ Actors:
 	Actor0: mpspawn
 		Location: 60,37
 		Owner: Neutral
-	Actor1: spicebloom
+	Actor1: spicebloom.spawnpoint
 		Location: 34,98
 		Owner: Neutral
-	Actor3: spicebloom
+	Actor3: spicebloom.spawnpoint
 		Location: 19,73
 		Owner: Neutral
-	Actor2: spicebloom
+	Actor2: spicebloom.spawnpoint
 		Location: 48,109
 		Owner: Neutral
 	Actor4: mpspawn
@@ -77,40 +77,40 @@ Actors:
 	Actor5: mpspawn
 		Location: 88,67
 		Owner: Neutral
-	Actor14: spicebloom
+	Actor14: spicebloom.spawnpoint
 		Location: 56,62
 		Owner: Neutral
-	Actor10: spicebloom
+	Actor10: spicebloom.spawnpoint
 		Location: 86,24
 		Owner: Neutral
-	Actor11: spicebloom
+	Actor11: spicebloom.spawnpoint
 		Location: 100,104
 		Owner: Neutral
-	Actor6: spicebloom
+	Actor6: spicebloom.spawnpoint
 		Location: 28,35
 		Owner: Neutral
-	Actor7: spicebloom
+	Actor7: spicebloom.spawnpoint
 		Location: 40,26
 		Owner: Neutral
-	Actor8: spicebloom
+	Actor8: spicebloom.spawnpoint
 		Location: 59,22
 		Owner: Neutral
-	Actor12: spicebloom
+	Actor12: spicebloom.spawnpoint
 		Location: 103,51
 		Owner: Neutral
-	Actor13: spicebloom
+	Actor13: spicebloom.spawnpoint
 		Location: 106,70
 		Owner: Neutral
-	Actor9: spicebloom
+	Actor9: spicebloom.spawnpoint
 		Location: 105,84
 		Owner: Neutral
-	Actor15: spicebloom
+	Actor15: spicebloom.spawnpoint
 		Location: 63,57
 		Owner: Neutral
-	Actor16: spicebloom
+	Actor16: spicebloom.spawnpoint
 		Location: 64,68
 		Owner: Neutral
-	Actor17: spicebloom
+	Actor17: spicebloom.spawnpoint
 		Location: 27,87
 		Owner: Neutral
 	Actor18: mpspawn
