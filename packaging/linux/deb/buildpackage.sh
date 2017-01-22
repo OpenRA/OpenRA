@@ -52,6 +52,10 @@ echo -e "\n -- Paul Chote <paul@chote.net>  ${DATE}" >> "${DEB_BUILD_ROOT}/${DOC
 gzip -9 "${DEB_BUILD_ROOT}/${DOCDIR}/changelog"
 rm "${DEB_BUILD_ROOT}/${LIBDIR}/COPYING"
 
+# Nothing should have group writable permissions
+# (These might occur due to difference in umask values.)
+chmod -R g-w "${DEB_BUILD_ROOT}"
+
 # Create the control file
 PACKAGE_SIZE=`du --apparent-size -c "${DEB_BUILD_ROOT}/usr" | grep "total" | awk '{print $1}'`
 sed "s/{VERSION}/$VERSION/" DEBIAN/control | sed "s/{SIZE}/$PACKAGE_SIZE/" > "${DEB_BUILD_ROOT}/DEBIAN/control"
