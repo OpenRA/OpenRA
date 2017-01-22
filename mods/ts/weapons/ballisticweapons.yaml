@@ -58,6 +58,27 @@
 	Warhead@1Dam: SpreadDamage
 		Damage: 50
 
+RPGTower:
+	Inherits: ^Cannon
+	ReloadDelay: 80
+	Range: 8c0
+	Report: glnch4.aud
+	Projectile: Bullet
+		Speed: 384
+		Blockable: false
+		Image: canister
+		Palette: player
+	Warhead@1Dam: SpreadDamage
+		Damage: 110
+		Versus:
+			None: 30
+			Wood: 75
+			Light: 90
+			Heavy: 100
+			Concrete: 70
+	Warhead@2Eff: CreateEffect
+		Explosions: large_clsn
+
 ^ArtilleryWeapon:
 	Inherits: ^Cannon
 	Projectile: Bullet
@@ -108,24 +129,3 @@ Grenade:
 	Warhead@2Eff: CreateEffect
 		Explosions: large_grey_explosion
 		ImpactSounds: expnew13.aud
-
-RPGTower:
-	Inherits: ^Cannon
-	ReloadDelay: 80
-	Range: 8c0
-	Report: glnch4.aud
-	Projectile: Bullet
-		Speed: 384
-		Blockable: false
-		Image: canister
-		Palette: player
-	Warhead@1Dam: SpreadDamage
-		Damage: 110
-		Versus:
-			None: 30
-			Wood: 75
-			Light: 90
-			Heavy: 100
-			Concrete: 70
-	Warhead@2Eff: CreateEffect
-		Explosions: large_clsn
