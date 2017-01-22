@@ -44,7 +44,7 @@ Players:
 		Enemies: Atreides, Creeps
 
 Actors:
-	Actor0: spicebloom
+	Actor0: spicebloom.spawnpoint
 		Location: 42,4
 		Owner: Neutral
 	Actor1: trike
@@ -86,7 +86,7 @@ Actors:
 	Actor14: light_inf
 		Location: 34,21
 		Owner: Harkonnen
-	Actor15: spicebloom
+	Actor15: spicebloom.spawnpoint
 		Location: 25,23
 		Owner: Neutral
 	Actor16: light_inf
@@ -110,7 +110,7 @@ Actors:
 	Actor22: light_inf
 		Location: 25,38
 		Owner: Harkonnen
-	Actor23: spicebloom
+	Actor23: spicebloom.spawnpoint
 		Location: 11,40
 		Owner: Neutral
 	Actor24: trike
@@ -131,7 +131,7 @@ Actors:
 	Actor31: light_inf
 		Location: 28,46
 		Owner: Harkonnen
-	Actor32: spicebloom
+	Actor32: spicebloom.spawnpoint
 		Location: 42,46
 		Owner: Neutral
 	HConyard: construction_yard

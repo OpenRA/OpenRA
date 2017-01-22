@@ -19,7 +19,7 @@ World:
 
 ^ExistsInWorld:
 	-GivesExperience:
-        
+
 ^Building:
 	DamageMultiplier@UNKILLABLE:
 		Modifier: 0
@@ -108,7 +108,7 @@ light_factory:
 	ProvidesPrerequisite@trikes:
 		Prerequisite: light.regulartrikes
 		Factions: atreides, harkonnen, corrino
-        
+
 heavy_factory:
 	ProvidesPrerequisite@harkonnen:
 		Prerequisite: heavy.harkonnen
