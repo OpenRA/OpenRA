@@ -1,4 +1,4 @@
-90mm:
+^Cannon:
 	ReloadDelay: 50
 	Range: 6c768
 	Report: 120mmf.aud
@@ -9,7 +9,8 @@
 		LaunchAngle: 75
 		Palette: ra
 	Warhead@1Dam: SpreadDamage
-		Spread: 128
+		Spread: 108
+		Falloff: 100, 50, 25, 12, 6, 3, 0
 		Damage: 36
 		Versus:
 			None: 25
@@ -19,7 +20,8 @@
 			Concrete: 60
 		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
 	Warhead@2Eff: CreateEffect
-		Explosions: small_clsn
+		Explosions: medium_clsn
+		ExplosionPalette: effectalpha75
 		ImpactSounds: expnew14.aud
 		InvalidImpactTypes: Water
 	Warhead@3EffWater: CreateEffect
@@ -27,89 +29,41 @@
 		ExplosionPalette: player
 		ImpactSounds: ssplash3.aud
 		ValidImpactTypes: Water
+	Warhead@4Smu: LeaveSmudge
+		SmudgeType: MediumCrater
+		InvalidTargets: Vehicle, Building, Wall
+
+90mm:
+	Inherits: ^Cannon
+	Warhead@2Eff: CreateEffect
+		Explosions: small_clsn
 	Warhead@4Smu: LeaveSmudge
 		SmudgeType: SmallCrater
-		InvalidTargets: Vehicle, Building, Wall
 
 120mm:
+	Inherits: ^Cannon
 	ReloadDelay: 80
-	Range: 6c768
-	Report: 120mmf.aud
 	Projectile: Bullet
 		Speed: 1c512
+		Blockable: false
+		LaunchAngle: 0
 	Warhead@1Dam: SpreadDamage
-		Spread: 128
 		Damage: 70
-		Versus:
-			None: 25
-			Wood: 65
-			Light: 75
-			Heavy: 100
-			Concrete: 60
-		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
-	Warhead@2Eff: CreateEffect
-		Explosions: medium_clsn
-		ImpactSounds: expnew14.aud
-		InvalidImpactTypes: Water
-	Warhead@3EffWater: CreateEffect
-		Explosions: small_watersplash
-		ExplosionPalette: player
-		ImpactSounds: ssplash3.aud
-		ValidImpactTypes: Water
-	Warhead@4Smu: LeaveSmudge
-		SmudgeType: MediumCrater
-		InvalidTargets: Vehicle, Building, Wall
 
 120mmx:
+	Inherits: ^Cannon
 	ReloadDelay: 80
-	Range: 6c768
-	Report: 120mmf.aud
 	Burst: 2
 	BurstDelay: 5
-	Projectile: Bullet
-		Speed: 682
-		Image: 120mm
-		Shadow: true
-		LaunchAngle: 62
-		Palette: ra
 	Warhead@1Dam: SpreadDamage
-		Spread: 128
 		Damage: 50
-		Versus:
-			None: 25
-			Wood: 65
-			Light: 75
-			Heavy: 100
-			Concrete: 60
-		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
-	Warhead@2Eff: CreateEffect
-		Explosions: medium_clsn
-		ImpactSounds: expnew14.aud
-		InvalidImpactTypes: Water
-	Warhead@3EffWater: CreateEffect
-		Explosions: small_watersplash
-		ExplosionPalette: player
-		ImpactSounds: ssplash3.aud
-		ValidImpactTypes: Water
-	Warhead@4Smu: LeaveSmudge
-		SmudgeType: MediumCrater
-		InvalidTargets: Vehicle, Building, Wall
 
-155mm:
-	ReloadDelay: 110
-	Range: 18c0
-	Report: 120mmf.aud
+^ArtilleryWeapon:
+	Inherits: ^Cannon
 	Projectile: Bullet
-		Speed: 170
-		Image: 120mm
-		LaunchAngle: 165
-		Shadow: true
 		Blockable: false
-		Palette: ra
-	MinRange: 5c0
 	Warhead@1Dam: SpreadDamage
-		Spread: 298
-		Damage: 150
+		Spread: 216
 		Versus:
 			None: 100
 			Wood: 85
@@ -117,21 +71,23 @@
 			Heavy: 35
 			Concrete: 35
 		DamageTypes: Prone100Percent, TriggerProne, ExplosionDeath
+
+155mm:
+	Inherits: ^ArtilleryWeapon
+	ReloadDelay: 110
+	Range: 18c0
+	Projectile: Bullet
+		Speed: 384
+		LaunchAngle: 165
+	MinRange: 5c0
+	Warhead@1Dam: SpreadDamage
+		Damage: 150
 	Warhead@2Eff: CreateEffect
 		Explosions: large_explosion
-		ExplosionPalette: effectalpha75
 		ImpactSounds: expnew06.aud
-		InvalidImpactTypes: Water
-	Warhead@3EffWater: CreateEffect
-		Explosions: small_watersplash
-		ExplosionPalette: player
-		ImpactSounds: ssplash2.aud
-		ValidImpactTypes: Water
-	Warhead@4Smu: LeaveSmudge
-		SmudgeType: MediumCrater
-		InvalidTargets: Vehicle, Building, Wall
 
 Grenade:
+	Inherits: ^ArtilleryWeapon
 	ReloadDelay: 60
 	Range: 4c512
 	Projectile: Bullet
@@ -143,41 +99,27 @@ Grenade:
 		Image: DISCUS
 		BounceCount: 2
 	Warhead@1Dam: SpreadDamage
-		Spread: 192
+		Spread: 154
 		Damage: 40
 		Versus:
-			None: 100
-			Wood: 85
 			Light: 70
-			Heavy: 35
 			Concrete: 28
 		DamageTypes: Prone70Percent, TriggerProne, ExplosionDeath
 	Warhead@2Eff: CreateEffect
 		Explosions: large_grey_explosion
 		ImpactSounds: expnew13.aud
-		InvalidImpactTypes: Water
-	Warhead@3EffWater: CreateEffect
-		Explosions: small_watersplash
-		ExplosionPalette: player
-		ImpactSounds: ssplash3.aud
-		ValidImpactTypes: Water
-	Warhead@4Smu: LeaveSmudge
-		SmudgeType: MediumCrater
-		InvalidTargets: Vehicle, Building, Wall
 
 RPGTower:
+	Inherits: ^Cannon
 	ReloadDelay: 80
 	Range: 8c0
 	Report: glnch4.aud
 	Projectile: Bullet
 		Speed: 384
 		Blockable: false
-		Shadow: true
-		LaunchAngle: 62
 		Image: canister
 		Palette: player
 	Warhead@1Dam: SpreadDamage
-		Spread: 128
 		Damage: 110
 		Versus:
 			None: 30
@@ -185,16 +127,5 @@ RPGTower:
 			Light: 90
 			Heavy: 100
 			Concrete: 70
-		DamageTypes: Prone70Percent, TriggerProne, SmallExplosionDeath
 	Warhead@2Eff: CreateEffect
 		Explosions: large_clsn
-		ImpactSounds: expnew14.aud
-		InvalidImpactTypes: Water
-	Warhead@3EffWater: CreateEffect
-		Explosions: small_watersplash
-		ExplosionPalette: player
-		ImpactSounds: ssplash2.aud
-		ValidImpactTypes: Water
-	Warhead@4Smu: LeaveSmudge
-		SmudgeType: MediumCrater
-		InvalidTargets: Vehicle, Building, Wall
