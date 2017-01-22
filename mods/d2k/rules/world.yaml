@@ -72,7 +72,7 @@ World:
 		Maximum: 2
 		SpawnInterval: 1500
 		WaterChance: 0
-		ValidGround: Sand, Dune, Rock, SpiceSand
+		ValidGround: Sand, Rock, Transition, Spice, SpiceSand, Dune, Concrete
 		InitialSpawnDelay: 1500
 	DomainIndex:
 	WarheadDebugOverlay:
