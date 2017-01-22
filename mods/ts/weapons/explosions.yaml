@@ -1,8 +1,8 @@
-UnitExplode:
+^DamagingExplosion:
 	Warhead@1Dam: SpreadDamage
-		Spread: 426
+		Spread: 192
+		Falloff: 100, 50, 25, 12, 6, 3, 0
 		Damage: 50
-		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		Versus:
 			None: 90
 			Wood: 75
@@ -17,16 +17,13 @@ UnitExplode:
 		SmudgeType: MediumCrater
 		InvalidTargets: Building, Wall
 
+UnitExplode:
+	Inherits: ^DamagingExplosion
+
 UnitExplodeSmall:
+	Inherits: ^DamagingExplosion
 	Warhead@1Dam: SpreadDamage
-		Spread: 426
 		Damage: 40
-		Versus:
-			None: 90
-			Wood: 75
-			Light: 60
-			Heavy: 25
-		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
 	Warhead@2Eff: CreateEffect
 		Explosions: medium_brnl
 		ImpactSounds: expnew13.aud
@@ -47,27 +44,21 @@ CyborgExplode:
 		ImpactSounds: expnew10.aud
 
 TiberiumExplosion:
+	Inherits: ^DamagingExplosion
 	Warhead@1Dam: SpreadDamage
 		Spread: 9
 		Damage: 10
-		Versus:
-			None: 90
-			Wood: 75
-			Light: 60
-			Heavy: 25
 		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
-	Warhead@2Res: CreateResource
+	Warhead@Res: CreateResource
 		AddsResourceType: Tiberium
 		Size: 1,1
-	Warhead@3Eff: CreateEffect
+	Warhead@2Eff: CreateEffect
 		Explosions: large_explosion
-		ExplosionPalette: effectalpha75
-		ImpactSounds: expnew09.aud
+	-Warhead@4Smu: LeaveSmudge
 
 SmallDebris:
 	ReloadDelay: 60
 	Range: 4c0
-	Report:
 	Projectile: Bullet
 		Speed: 50, 125
 		LaunchAngle: 45, 135
@@ -76,15 +67,9 @@ SmallDebris:
 		Shadow: true
 
 LargeDebris:
-	ReloadDelay: 60
-	Range: 4c0
-	Report:
+	Inherits: SmallDebris
 	Projectile: Bullet
-		Speed: 50, 125
-		LaunchAngle: 45, 135
 		Image: dbrislg
-		Sequences: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
-		Shadow: true
 
 Demolish:
 	Warhead@1Dam: SpreadDamage
