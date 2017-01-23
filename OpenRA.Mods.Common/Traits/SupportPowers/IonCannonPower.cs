@@ -10,8 +10,8 @@
 #endregion
 
 using OpenRA.GameRules;
-using OpenRA.Mods.Common.Projectiles;
 using OpenRA.Mods.Common.Activities;
+using OpenRA.Mods.Common.Projectiles;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 

@@ -793,6 +793,18 @@
     <Compile Include="UtilityCommands\OutputResolvedWeaponsCommand.cs" />
     <Compile Include="Traits\RevealOnFire.cs" />
     <Compile Include="Traits\Conditions\GrantConditionOnDisabled.cs" />
+    <Compile Include="LoadScreens\CncLoadScreen.cs" />
+    <Compile Include="Traits\Attack\AttackPopupTurreted.cs" />
+    <Compile Include="Traits\Buildings\ProductionAirdrop.cs" />
+    <Compile Include="Traits\Render\WithGunboatBody.cs" />
+    <Compile Include="Traits\Render\WithCargo.cs" />
+    <Compile Include="Traits\Render\WithDeliveryAnimation.cs" />
+    <Compile Include="Traits\Render\WithReloadingSpriteTurret.cs" />
+    <Compile Include="Traits\Render\WithRoof.cs" />
+    <Compile Include="Traits\SupportPowers\IonCannonPower.cs" />
+    <Compile Include="Widgets\Logic\ProductionTabsLogic.cs" />
+    <Compile Include="UtilityCommands\ImportTiberianDawnLegacyMapCommand.cs" />
+    <Compile Include="Projectiles\IonCannon.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="AfterBuild">

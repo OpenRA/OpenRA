@@ -130,7 +130,7 @@ function Check-Command {
 		echo "Checking for explicit interface violations..."
 		./OpenRA.Utility.exe all --check-explicit-interfaces
 		echo "Checking for code style violations in OpenRA.Platforms.Default..."
-		./OpenRA.Utility.exe cnc --check-code-style OpenRA.Platforms.Default
+		./OpenRA.Utility.exe ra --check-code-style OpenRA.Platforms.Default
 		echo "Checking for code style violations in OpenRA.GameMonitor..."
 		./OpenRA.Utility.exe ra --check-code-style OpenRA.GameMonitor
 		echo "Checking for code style violations in OpenRA.Game..."
@@ -139,16 +139,14 @@ function Check-Command {
 		./OpenRA.Utility.exe ra --check-code-style OpenRA.Mods.Common
 		echo "Checking for code style violations in OpenRA.Mods.RA..."
 		./OpenRA.Utility.exe ra --check-code-style OpenRA.Mods.RA
-		echo "Checking for code style violations in OpenRA.Mods.Cnc..."
-		./OpenRA.Utility.exe cnc --check-code-style OpenRA.Mods.Cnc
 		echo "Checking for code style violations in OpenRA.Mods.D2k..."
-		./OpenRA.Utility.exe cnc --check-code-style OpenRA.Mods.D2k
+		./OpenRA.Utility.exe ra --check-code-style OpenRA.Mods.D2k
 		echo "Checking for code style violations in OpenRA.Mods.TS..."
-		./OpenRA.Utility.exe cnc --check-code-style OpenRA.Mods.TS
+		./OpenRA.Utility.exe ra --check-code-style OpenRA.Mods.TS
 		echo "Checking for code style violations in OpenRA.Utility..."
-		./OpenRA.Utility.exe cnc --check-code-style OpenRA.Utility
+		./OpenRA.Utility.exe ra --check-code-style OpenRA.Utility
 		echo "Checking for code style violations in OpenRA.Test..."
-		./OpenRA.Utility.exe cnc --check-code-style OpenRA.Test
+		./OpenRA.Utility.exe ra --check-code-style OpenRA.Test
 	}
 	else
 	{
