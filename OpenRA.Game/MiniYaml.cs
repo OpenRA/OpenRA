@@ -302,7 +302,7 @@ namespace OpenRA
 
 			foreach (var n in node.Nodes)
 			{
-				if (n.Key == "Inherits" || n.Key.StartsWith("Inherits@"))
+				if (n.Key == "Inherits" || n.Key.StartsWith("Inherits@", StringComparison.Ordinal))
 				{
 					MiniYaml parent;
 					if (!tree.TryGetValue(n.Value.Value, out parent))
@@ -317,7 +317,7 @@ namespace OpenRA
 					foreach (var r in ResolveInherits(n.Key, parent, tree, inherited))
 						MergeIntoResolved(r, resolved, tree, inherited);
 				}
-				else if (n.Key.StartsWith("-"))
+				else if (n.Key.StartsWith("-", StringComparison.Ordinal))
 				{
 					var removed = n.Key.Substring(1);
 					if (resolved.RemoveAll(r => r.Key == removed) == 0)
