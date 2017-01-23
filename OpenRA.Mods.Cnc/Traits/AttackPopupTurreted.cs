@@ -10,11 +10,10 @@
 #endregion
 
 using System.Linq;
-using OpenRA.Mods.Common.Traits;
 using OpenRA.Mods.Common.Traits.Render;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.Cnc.Traits
+namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Actor's turret rises from the ground before attacking.")]
 	class AttackPopupTurretedInfo : AttackTurretedInfo, Requires<BuildingInfo>, Requires<WithTurretedSpriteBodyInfo>

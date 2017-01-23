@@ -10,13 +10,12 @@
 #endregion
 
 using OpenRA.GameRules;
-using OpenRA.Mods.Cnc.Effects;
+using OpenRA.Mods.Common.Projectiles;
 using OpenRA.Mods.Common.Activities;
-using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.Cnc.Traits
+namespace OpenRA.Mods.Common.Traits
 {
 	class IonCannonPowerInfo : SupportPowerInfo, IRulesetLoaded
 	{

@@ -14,10 +14,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using OpenRA.Mods.Common.FileFormats;
-using OpenRA.Mods.Common.UtilityCommands;
 using OpenRA.Primitives;
 
-namespace OpenRA.Mods.Cnc.UtilityCommands
+namespace OpenRA.Mods.Common.UtilityCommands
 {
 	class ImportTiberianDawnLegacyMapCommand : ImportLegacyMapCommand, IUtilityCommand
 	{

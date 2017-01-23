@@ -9,11 +9,9 @@
  */
 #endregion
 
-using OpenRA.Mods.Common.Traits;
-using OpenRA.Mods.Common.Traits.Render;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.Cnc.Traits.Render
+namespace OpenRA.Mods.Common.Traits.Render
 {
 	[Desc("Building animation to play when ProductionAirdrop is used to deliver units.")]
 	public class WithDeliveryAnimationInfo : ITraitInfo, Requires<WithSpriteBodyInfo>

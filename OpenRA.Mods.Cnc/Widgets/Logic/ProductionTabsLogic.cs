@@ -10,10 +10,9 @@
 #endregion
 
 using System;
-using OpenRA.Mods.Common.Widgets;
 using OpenRA.Widgets;
 
-namespace OpenRA.Mods.Cnc.Widgets.Logic
+namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public class ProductionTabsLogic : ChromeLogic
 	{
