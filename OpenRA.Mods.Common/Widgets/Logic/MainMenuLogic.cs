@@ -37,7 +37,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		static bool fetchedNews;
 
 		// Increment the version number when adding new stats
-		const int SystemInformationVersion = 1;
+		const int SystemInformationVersion = 2;
 		Dictionary<string, Pair<string, string>> GetSystemInformation()
 		{
 			var lang = System.Globalization.CultureInfo.InstalledUICulture.TwoLetterISOLanguageName;
@@ -46,6 +46,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{ "id", Pair.New("Anonymous ID", Game.Settings.Debug.UUID) },
 				{ "platform", Pair.New("OS Type", Platform.CurrentPlatform.ToString()) },
 				{ "os", Pair.New("OS Version", Environment.OSVersion.ToString()) },
+				{ "x64", Pair.New("64bit OS", Environment.Is64BitOperatingSystem.ToString()) },
 				{ "runtime", Pair.New(".NET Runtime", Platform.RuntimeVersion) },
 				{ "gl", Pair.New("OpenGL Version", Game.Renderer.GLVersion) },
 				{ "lang", Pair.New("System Language", lang) }
