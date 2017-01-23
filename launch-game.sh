@@ -1,6 +1,6 @@
 #!/bin/sh
-# launch script (executed by Desura)
-mono OpenRA.Game.exe "$@"
+# Note: this relies on the non-standard -f flag implemented by gnu readlink
+mono OpenRA.Game.exe Engine.LaunchPath="$(readlink -f $0)" "$@"
 if [ $? != 0 -a $? != 1 ]
 then
 	ZENITY=`which zenity` || echo "OpenRA needs zenity installed to display a graphical error dialog. See ~/.openra. for log files."
