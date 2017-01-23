@@ -1,23 +1,3 @@
-Colt45:
-	ReloadDelay: 5
-	Range: 7c0
-	Report: gun5.aud
-	ValidTargets: Ground, Infantry
-	InvalidTargets: Vehicle, Tank, Water, Structure, Wall, Husk
-	Projectile: Bullet
-		Speed: 1c682
-	Warhead@1Dam: SpreadDamage
-		Spread: 42
-		Damage: 50
-		ValidTargets: Barrel, Infantry
-		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
-	Warhead@2Eff: CreateEffect
-		Explosions: piff
-		InvalidImpactTypes: Water
-	Warhead@3EffWater: CreateEffect
-		Explosions: water_piff
-		ValidImpactTypes: Water
-
 ZSU-23:
 	Burst: 2
 	BurstDelay: 5
@@ -40,6 +20,55 @@ ZSU-23:
 		DamageTypes: Prone50Percent, TriggerProne, DefaultDeath
 	Warhead@2Eff: CreateEffect
 		Explosions: small_explosion_air
+
+FLAK-23-AA:
+	ReloadDelay: 10
+	Range: 8c0
+	Report: aacanon3.aud
+	ValidTargets: Air
+	Projectile: Bullet
+		Speed: 1c682
+		Blockable: false
+	Warhead@1Dam: SpreadDamage
+		Spread: 213
+		Damage: 20
+		ValidTargets: Air, Ground, Water
+		Versus:
+			None: 40
+			Wood: 10
+			Light: 60
+			Heavy: 10
+			Concrete: 20
+		DamageTypes: Prone50Percent, TriggerProne, DefaultDeath
+	Warhead@2EffAir: CreateEffect
+		Explosions: small_explosion_air
+		ValidImpactTypes: Air, AirHit
+
+FLAK-23-AG:
+	ReloadDelay: 10
+	Range: 6c0
+	Report: aacanon3.aud
+	ValidTargets: Ground, Water
+	Projectile: Bullet
+		Speed: 1c682
+		Blockable: false
+	Warhead@1Dam: SpreadDamage
+		Spread: 213
+		Damage: 20
+		ValidTargets: Air, Ground, Water
+		Versus:
+			None: 40
+			Wood: 10
+			Light: 60
+			Heavy: 10
+			Concrete: 20
+		DamageTypes: Prone50Percent, TriggerProne, DefaultDeath
+	Warhead@2Eff: CreateEffect
+		Explosions: small_explosion_air
+		InvalidImpactTypes: Air, AirHit
+	Warhead@3EffWater: CreateEffect
+		Explosions: small_splash
+		ValidImpactTypes: Water
 
 Vulcan:
 	ReloadDelay: 30
@@ -295,53 +324,24 @@ SilencedPPK:
 		Explosions: water_piffs
 		ValidImpactTypes: Water
 
-FLAK-23-AA:
-	ReloadDelay: 10
-	Range: 8c0
-	Report: aacanon3.aud
-	ValidTargets: Air
+Colt45:
+	ReloadDelay: 5
+	Range: 7c0
+	Report: gun5.aud
+	ValidTargets: Ground, Infantry
+	InvalidTargets: Vehicle, Tank, Water, Structure, Wall, Husk
 	Projectile: Bullet
 		Speed: 1c682
-		Blockable: false
 	Warhead@1Dam: SpreadDamage
-		Spread: 213
-		Damage: 20
-		ValidTargets: Air, Ground, Water
-		Versus:
-			None: 40
-			Wood: 10
-			Light: 60
-			Heavy: 10
-			Concrete: 20
-		DamageTypes: Prone50Percent, TriggerProne, DefaultDeath
-	Warhead@2EffAir: CreateEffect
-		Explosions: small_explosion_air
-		ValidImpactTypes: Air, AirHit
-
-FLAK-23-AG:
-	ReloadDelay: 10
-	Range: 6c0
-	Report: aacanon3.aud
-	ValidTargets: Ground, Water
-	Projectile: Bullet
-		Speed: 1c682
-		Blockable: false
-	Warhead@1Dam: SpreadDamage
-		Spread: 213
-		Damage: 20
-		ValidTargets: Air, Ground, Water
-		Versus:
-			None: 40
-			Wood: 10
-			Light: 60
-			Heavy: 10
-			Concrete: 20
-		DamageTypes: Prone50Percent, TriggerProne, DefaultDeath
+		Spread: 42
+		Damage: 50
+		ValidTargets: Barrel, Infantry
+		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
 	Warhead@2Eff: CreateEffect
-		Explosions: small_explosion_air
-		InvalidImpactTypes: Air, AirHit
+		Explosions: piff
+		InvalidImpactTypes: Water
 	Warhead@3EffWater: CreateEffect
-		Explosions: small_splash
+		Explosions: water_piff
 		ValidImpactTypes: Water
 
 Sniper:
