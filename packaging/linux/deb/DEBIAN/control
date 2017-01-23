@@ -7,12 +7,12 @@ Depends: libopenal1, mono-runtime (>= 3.2), libmono-system-core4.0-cil, libmono-
 Section: games
 Priority: extra
 Homepage: http://www.openra.net/
-Description: A multiplayer re-envisioning of early RTS games by Westwood Studios
- .
+Description: Multiplayer re-envisioning of early RTS games by Westwood Studios
  OpenRA is a Libre/Free Real Time Strategy game engine supporting early
  Westwood games like Command & Conquer and Command & Conquer: Red Alert.
  The engine is designed from the ground up to be extremely moddable and
  natively supports user-created maps and mods.
+ .
  Support can be obtained from our IRC channel (#openra on irc.freenode.net),
  our forum (http://www.sleipnirstuff.com/forum/viewforum.php?f=80), and our
  bug tracker (http://bugs.openra.net).

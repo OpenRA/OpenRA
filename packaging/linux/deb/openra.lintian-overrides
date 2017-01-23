@@ -1,0 +1,4 @@
+# We don't want to have need to add an extra dependency and create symlinks to
+# be able to access the FreeSans font.
+openra: duplicate-font-file usr/lib/openra/mods/common/FreeSans.ttf also in fonts-freefont-ttf
+openra: duplicate-font-file usr/lib/openra/mods/common/FreeSansBold.ttf also in fonts-freefont-ttf
