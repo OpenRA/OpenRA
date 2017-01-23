@@ -4,7 +4,7 @@ crate:
 		Name: Crate
 	Crate:
 		Lifetime: 120
-		TerrainTypes: Sand, Dune, Rock, SpiceSand
+		TerrainTypes: Sand, Rock, Transition, Spice, SpiceSand, Dune, Concrete
 	GiveCashCrateAction@1:
 		Amount: 750
 		SelectionShares: 25
