@@ -100,6 +100,7 @@ flags: buttons.png
 	smuggler: 111,114,23,21
 	fremen: 133,114,23,21
 	worm: 156,114,23,21
+	mercenary: 178,114,22,21
 
 # Used for the menu
 dialog: dialog.png
