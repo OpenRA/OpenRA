@@ -7,6 +7,8 @@ Debris:
 		LaunchAngle: 30, 90
 		Inaccuracy: 1c256
 		Image: shrapnel
+		BounceCount: 2
+		BounceRangeModifier: 10
 	Warhead@1Dam: SpreadDamage
 		Spread: 320
 		Falloff: 100, 60, 30, 15, 0
