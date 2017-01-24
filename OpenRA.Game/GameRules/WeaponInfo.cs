@@ -68,6 +68,9 @@ namespace OpenRA.GameRules
 
 		public WeaponInfo(string name, MiniYaml content)
 		{
+			// Resolve any weapon-level yaml inheritance or removals
+			// HACK: The "Defaults" sequence syntax prevents us from doing this generally during yaml parsing
+			content.Nodes = MiniYaml.Merge(new[] { content.Nodes });
 			FieldLoader.Load(this, content);
 		}
 
