@@ -74,7 +74,6 @@ frigate:
 
 ornithopter:
 	Inherits: ^Plane
-		TargetTypes: Air
 	AttackBomber:
 	Armament:
 		Weapon: OrniBomb
