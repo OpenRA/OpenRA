@@ -97,9 +97,9 @@ flags: buttons.png
 	Random: 67,114,23,21
 	spectator: 67,114,23,21
 	corrino: 90,114,22,21
-	smuggler: 111,114,23,21
-	fremen: 133,114,23,21
-	worm: 156,114,23,21
+	smuggler: 112,114,22,21
+	fremen: 134,114,22,21
+	worm: 156,114,22,21
 	mercenary: 178,114,22,21
 
 # Used for the menu
