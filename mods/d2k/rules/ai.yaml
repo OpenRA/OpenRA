@@ -14,33 +14,33 @@ Player:
 		UnitsCommonNames:
 			Mcv: mcv
 		BuildingLimits:
-			refinery: 4
 			barracks: 1
-			light_factory: 1
-			heavy_factory: 1
-			research_centre: 1
-			repair_pad: 1
+			refinery: 4
 			outpost: 1
 			high_tech_factory: 1
-			palace: 1
+			light_factory: 1
+			heavy_factory: 1
+			starport: 1
+			repair_pad: 1
+			research_centre: 1
 			upgrade.conyard: 1
 			upgrade.barracks: 1
 			upgrade.light: 1
 			upgrade.heavy: 1
 			upgrade.hightech: 1
 		BuildingFractions:
-			refinery: 20.1%
+			wind_trap: 10%
 			barracks: 0.1%
-			light_factory: 0.1%
-			heavy_factory: 0.1%
+			refinery: 20.1%
+			medium_gun_turret: 8%
 			outpost: 0.1%
 			high_tech_factory: 0.1%
-			starport: 0.1%
-			research_centre: 0.1%
-			repair_pad: 0.1%
-			medium_gun_turret: 8%
 			large_gun_turret: 6%
-			wind_trap: 10%
+			light_factory: 0.1%
+			heavy_factory: 0.1%
+			starport: 0.1%
+			repair_pad: 0.1%
+			research_centre: 0.1%
 			upgrade.conyard: 0.1%
 			upgrade.barracks: 0.1%
 			upgrade.light: 0.1%
@@ -128,14 +128,15 @@ Player:
 		UnitsCommonNames:
 			Mcv: mcv
 		BuildingLimits:
-			refinery: 4
 			barracks: 1
-			light_factory: 1
-			heavy_factory: 1
-			research_centre: 1
-			repair_pad: 1
+			refinery: 4
 			outpost: 1
 			high_tech_factory: 1
+			light_factory: 1
+			heavy_factory: 1
+			starport: 1
+			repair_pad: 1
+			research_centre: 1
 			palace: 1
 			upgrade.conyard: 1
 			upgrade.barracks: 1
@@ -143,18 +144,19 @@ Player:
 			upgrade.heavy: 1
 			upgrade.hightech: 1
 		BuildingFractions:
-			refinery: 20.1%
+			wind_trap: 12%
 			barracks: 0.1%
-			light_factory: 0.1%
-			heavy_factory: 0.1%
+			refinery: 20.1%
+			medium_gun_turret: 5%
 			outpost: 0.1%
 			high_tech_factory: 0.1%
-			repair_pad: 0.1%
-			starport: 0.1%
-			palace: 0.1%
-			medium_gun_turret: 5%
 			large_gun_turret: 10%
-			wind_trap: 12%
+			light_factory: 0.1%
+			heavy_factory: 0.1%
+			starport: 0.1%
+			repair_pad: 0.1%
+			research_centre: 0.1%
+			palace: 0.1%
 			upgrade.conyard: 0.1%
 			upgrade.barracks: 0.1%
 			upgrade.light: 0.1%
@@ -242,14 +244,15 @@ Player:
 		UnitsCommonNames:
 			Mcv: mcv
 		BuildingLimits:
-			refinery: 4
 			barracks: 1
-			light_factory: 1
-			heavy_factory: 1
-			research_centre: 1
-			repair_pad: 1
+			refinery: 4
 			outpost: 1
 			high_tech_factory: 1
+			light_factory: 1
+			heavy_factory: 1
+			starport: 1
+			repair_pad: 1
+			research_centre: 1
 			palace: 1
 			upgrade.conyard: 1
 			upgrade.barracks: 1
@@ -257,18 +260,18 @@ Player:
 			upgrade.heavy: 1
 			upgrade.hightech: 1
 		BuildingFractions:
-			refinery: 20.1%
+			wind_trap: 10%
 			barracks: 0.1%
+			refinery: 20.1%
+			medium_gun_turret: 4%
+			outpost: 0.1%
+			high_tech_factory: 0.1%
+			large_gun_turret: 12%
 			light_factory: 0.1%
 			heavy_factory: 0.1%
 			repair_pad: 0.1%
-			outpost: 0.1%
-			high_tech_factory: 0.1%
 			research_centre: 0.1%
 			palace: 0.1%
-			medium_gun_turret: 4%
-			large_gun_turret: 12%
-			wind_trap: 10%
 			upgrade.conyard: 0.1%
 			upgrade.barracks: 0.1%
 			upgrade.light: 0.1%
