@@ -52,7 +52,6 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class AutoTarget : ConditionalTrait<AutoTargetInfo>, INotifyIdle, INotifyDamage, ITick, IResolveOrder, ISync
 	{
-		readonly AttackBase[] attackBases;
 		readonly IEnumerable<AttackBase> activeAttackBases;
 		readonly AttackFollow[] attackFollows;
 		[Sync] int nextScanTime = 0;
@@ -68,8 +67,7 @@ namespace OpenRA.Mods.Common.Traits
 			: base(info)
 		{
 			var self = init.Self;
-			attackBases = self.TraitsImplementing<AttackBase>().ToArray();
-			activeAttackBases = attackBases.Where(Exts.IsTraitEnabled);
+			activeAttackBases = self.TraitsImplementing<AttackBase>().ToArray().Where(Exts.IsTraitEnabled);
 
 			if (init.Contains<StanceInit>())
 				Stance = init.Get<StanceInit, UnitStance>();
@@ -107,7 +105,8 @@ namespace OpenRA.Mods.Common.Traits
 			}
 
 			// not a lot we can do about things we can't hurt... although maybe we should automatically run away?
-			if (attackBases.All(a => a.IsTraitDisabled || !a.HasAnyValidWeapons(Target.FromActor(attacker))))
+			var attackerAsTarget = Target.FromActor(attacker);
+			if (!activeAttackBases.Any(a => a.HasAnyValidWeapons(attackerAsTarget)))
 				return;
 
 			// don't retaliate against own units force-firing on us. It's usually not what the player wanted.
