@@ -48,7 +48,7 @@ namespace OpenRA.Mods.Common.Traits
 		bool AcceptsCondition(Actor a)
 		{
 			var cm = a.TraitOrDefault<ConditionManager>();
-			return cm != null && cm.AcceptsExternalCondition(a, info.Condition);
+			return cm != null && cm.AcceptsExternalCondition(a, info.Condition, info.Duration > 0);
 		}
 
 		public override int GetSelectionShares(Actor collector)

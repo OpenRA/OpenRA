@@ -39,7 +39,7 @@ namespace OpenRA.Mods.Common.Warheads
 				var cm = a.TraitOrDefault<ConditionManager>();
 
 				// Condition token is ignored because we never revoke this condition.
-				if (cm != null && cm.AcceptsExternalCondition(a, Condition))
+				if (cm != null && cm.AcceptsExternalCondition(a, Condition, Duration > 0))
 					cm.GrantCondition(a, Condition, true, Duration);
 			}
 		}

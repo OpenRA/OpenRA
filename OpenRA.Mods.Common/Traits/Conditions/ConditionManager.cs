@@ -211,13 +211,17 @@ namespace OpenRA.Mods.Common.Traits
 		}
 
 		/// <summary>Returns true if the given external condition will have an effect on this actor.</summary>
-		public bool AcceptsExternalCondition(Actor self, string condition)
+		public bool AcceptsExternalCondition(Actor self, string condition, bool timed = false)
 		{
 			if (state == null)
 				throw new InvalidOperationException("AcceptsExternalCondition cannot be queried before the actor has been fully created.");
 
 			if (!externalConditions.Contains(condition))
 				return false;
+
+			// A timed condition can always replace an existing timed condition (resetting its duration)
+			if (timed && timers.ContainsKey(condition))
+				return true;
 
 			string[] sc;
 			if (stackedConditions.TryGetValue(condition, out sc))

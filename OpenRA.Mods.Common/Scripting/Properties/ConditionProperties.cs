@@ -36,7 +36,7 @@ namespace OpenRA.Mods.Common.Scripting
 			"If duration > 0 the condition will be automatically revoked after the defined number of ticks")]
 		public int GrantCondition(string condition, int duration = 0)
 		{
-			if (!conditionManager.AcceptsExternalCondition(Self, condition))
+			if (!conditionManager.AcceptsExternalCondition(Self, condition, duration > 0))
 				throw new InvalidDataException("Condition `{0}` has not been listed on an ExternalConditions trait".F(condition));
 
 			return conditionManager.GrantCondition(Self, condition, true, duration);
@@ -49,9 +49,9 @@ namespace OpenRA.Mods.Common.Scripting
 		}
 
 		[Desc("Check whether this actor accepts a specific external condition.")]
-		public bool AcceptsCondition(string condition)
+		public bool AcceptsCondition(string condition, bool timed = false)
 		{
-			return conditionManager.AcceptsExternalCondition(Self, condition);
+			return conditionManager.AcceptsExternalCondition(Self, condition, timed);
 		}
 
 		[Desc("Grant an upgrade to this actor. DEPRECATED! Will be removed.")]
