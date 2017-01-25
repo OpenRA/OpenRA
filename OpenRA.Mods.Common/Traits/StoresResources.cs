@@ -15,57 +15,61 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	[Desc("Used for silos.")]
+	[Desc("Adds capacity to a player's harvested resource limit.")]
 	class StoresResourcesInfo : ITraitInfo
 	{
 		[FieldLoader.Require]
+		public readonly int Capacity = 0;
+
+		[FieldLoader.Require]
 		[Desc("Number of little squares used to display how filled unit is.")]
 		public readonly int PipCount = 0;
+
 		public readonly PipType PipColor = PipType.Yellow;
-		[FieldLoader.Require]
-		public readonly int Capacity = 0;
+
 		public object Create(ActorInitializer init) { return new StoresResources(init.Self, this); }
 	}
 
 	class StoresResources : IPips, INotifyOwnerChanged, INotifyCapture, IExplodeModifier, IStoreResources, ISync, INotifyKilled
 	{
 		readonly StoresResourcesInfo info;
+		PlayerResources player;
 
 		[Sync] public int Stored { get { return player.ResourceCapacity == 0 ? 0 : (int)((long)info.Capacity * player.Resources / player.ResourceCapacity); } }
 
-		PlayerResources player;
 		public StoresResources(Actor self, StoresResourcesInfo info)
 		{
-			player = self.Owner.PlayerActor.Trait<PlayerResources>();
 			this.info = info;
+			player = self.Owner.PlayerActor.Trait<PlayerResources>();
 		}
 
-		public int Capacity { get { return info.Capacity; } }
+		int IStoreResources.Capacity { get { return info.Capacity; } }
 
-		public void OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
+		void INotifyOwnerChanged.OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
 		{
 			player = newOwner.PlayerActor.Trait<PlayerResources>();
 		}
 
-		public void OnCapture(Actor self, Actor captor, Player oldOwner, Player newOwner)
+		void INotifyCapture.OnCapture(Actor self, Actor captor, Player oldOwner, Player newOwner)
 		{
 			var resources = Stored;
 			oldOwner.PlayerActor.Trait<PlayerResources>().TakeResources(resources);
 			newOwner.PlayerActor.Trait<PlayerResources>().GiveResources(resources);
 		}
 
-		public void Killed(Actor self, AttackInfo e)
+		void INotifyKilled.Killed(Actor self, AttackInfo e)
 		{
-			player.TakeResources(Stored); // lose the stored resources
+			// Lose the stored resources
+			player.TakeResources(Stored);
 		}
 
-		public IEnumerable<PipType> GetPips(Actor self)
+		IEnumerable<PipType> IPips.GetPips(Actor self)
 		{
 			return Enumerable.Range(0, info.PipCount).Select(i =>
 				player.Resources * info.PipCount > i * player.ResourceCapacity
 				? info.PipColor : PipType.Transparent);
 		}
 
-		public bool ShouldExplode(Actor self) { return Stored > 0; }
+		bool IExplodeModifier.ShouldExplode(Actor self) { return Stored > 0; }
 	}
 }
