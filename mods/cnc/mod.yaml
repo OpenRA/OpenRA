@@ -74,7 +74,7 @@ TileSets:
 
 Weapons:
 	cnc|weapons/explosions.yaml
-	cnc|weapons/largecaliber.yaml
+	cnc|weapons/ballistics.yaml
 	cnc|weapons/missiles.yaml
 	cnc|weapons/other.yaml
 	cnc|weapons/smallcaliber.yaml
