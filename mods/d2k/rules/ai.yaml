@@ -113,6 +113,10 @@ Player:
 				Attractiveness: -10
 				TargetMetric: Value
 				CheckRadius: 7c0
+		SupportPowerDecision@Fremen:
+			OrderName: ProduceActorPower.Fremen
+			Consideration@1:
+				Against: Ally
 	HackyAI@Vidius:
 		Name: Vidious
 		MinimumExcessPower: 60
@@ -227,6 +231,10 @@ Player:
 				Attractiveness: -10
 				TargetMetric: Value
 				CheckRadius: 7c0
+		SupportPowerDecision@Fremen:
+			OrderName: ProduceActorPower.Fremen
+			Consideration@1:
+				Against: Ally
 	HackyAI@Gladius:
 		Name: Gladius
 		MinimumExcessPower: 60
@@ -341,3 +349,8 @@ Player:
 				Attractiveness: -10
 				TargetMetric: Value
 				CheckRadius: 7c0
+		SupportPowerDecision@Fremen:
+			OrderName: ProduceActorPower.Fremen
+			Consideration@1:
+				Against: Ally
+
