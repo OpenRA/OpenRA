@@ -27,7 +27,7 @@ namespace OpenRA.Mods.Common.Traits
 		public object Create(ActorInitializer init) { return new StoresResources(init.Self, this); }
 	}
 
-	class StoresResources : IPips, INotifyOwnerChanged, INotifyCapture, IExplodeModifier, IStoreResources, ISync, INotifyActorDisposing
+	class StoresResources : IPips, INotifyOwnerChanged, INotifyCapture, IExplodeModifier, IStoreResources, ISync, INotifyKilled
 	{
 		readonly StoresResourcesInfo info;
 
@@ -54,14 +54,9 @@ namespace OpenRA.Mods.Common.Traits
 			newOwner.PlayerActor.Trait<PlayerResources>().GiveResources(resources);
 		}
 
-		bool disposed;
-		public void Disposing(Actor self)
+		public void Killed(Actor self, AttackInfo e)
 		{
-			if (disposed)
-				return;
-
 			player.TakeResources(Stored); // lose the stored resources
-			disposed = true;
 		}
 
 		public IEnumerable<PipType> GetPips(Actor self)
