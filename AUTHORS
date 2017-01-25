@@ -13,8 +13,14 @@ The plugin is maintained by
  * lucasss
    > (Gives)ProximityBounty basic implementation
 
- * Pavel Penev
+ * Matthias Mailänder (Mailaender)
+   > WithExitOverlay
+
+ * Pavel Penev (penev92)
    > PaletteFromJasc32File - base JASC palette parser
+
+ * Sean Hunt (coppro)
+   > Chrono Miner implementaion (ChronoResourceDelivery)
 
  Authors of documents used in this plugin:
   * Apollo
