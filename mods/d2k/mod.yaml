@@ -34,12 +34,12 @@ Rules:
 	d2k|rules/world.yaml
 	d2k|rules/palettes.yaml
 	d2k|rules/defaults.yaml
+	d2k|rules/infantry.yaml
 	d2k|rules/vehicles.yaml
+	d2k|rules/aircraft.yaml
+	d2k|rules/structures.yaml
 	d2k|rules/starport.yaml
 	d2k|rules/husks.yaml
-	d2k|rules/structures.yaml
-	d2k|rules/aircraft.yaml
-	d2k|rules/infantry.yaml
 	d2k|rules/arrakis.yaml
 
 Sequences:
