@@ -3,11 +3,6 @@
 		Offset: 0, 0, 24
 		Length: *
 		BlendMode: Additive
-	veins: veinatac
-		Length: 12
-		UseTilesetExtension: true
-		ZOffset: 1023
-		Offset: 0, -12, 24
 
 mcv.gdi:
 	Inherits: ^VehicleOverlays
