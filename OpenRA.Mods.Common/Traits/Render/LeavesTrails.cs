@@ -49,7 +49,8 @@ namespace OpenRA.Mods.Common.Traits.Render
 		[Desc("Delay between trail updates when moving.")]
 		public readonly int MovingInterval = 0;
 
-		[Desc("Delay before first trail.")]
+		[Desc("Delay before first trail.",
+			"Use negative values for falling back to the *Interval values.")]
 		public readonly int StartDelay = 0;
 
 		[Desc("Trail spawn positions relative to actor position. (forward, right, up) triples")]
@@ -100,7 +101,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			if ((isMoving && !Info.TrailWhileMoving) || (!isMoving && !Info.TrailWhileStationary))
 				return;
 
-			if (isMoving == wasStationary)
+			if (isMoving == wasStationary && (Info.StartDelay > -1))
 			{
 				cachedInterval = Info.StartDelay;
 				ticks = 0;
