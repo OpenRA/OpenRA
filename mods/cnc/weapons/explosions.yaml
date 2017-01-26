@@ -99,3 +99,17 @@ Napalm.Crate:
 		ImpactSounds: flamer2.aud
 	Warhead@3Smu: LeaveSmudge
 		SmudgeType: Scorch
+
+TiberiumExplosion:
+	Inherits: ^DamagingExplosionHE
+	Warhead@1Dam: SpreadDamage
+		Spread: 9
+		Damage: 10
+		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
+	Warhead@2Eff: CreateEffect
+		Explosions: chemball
+		ImpactSounds: xplosml2.aud
+	-Warhead@3Smu: LeaveSmudge
+	Warhead@4Res: CreateResource
+		AddsResourceType: Tiberium
+		Size: 1,1

@@ -44,51 +44,22 @@ BigFlamer:
 		Explosions: med_napalm
 
 Chemspray:
+	Inherits: ^FlameWeapon
 	ReloadDelay: 65
 	Range: 3c0
-	Report: flamer2.aud
-	Projectile: Bullet
-		Speed: 1c682
+	InvalidTargets:
 	Warhead@1Dam: SpreadDamage
 		Spread: 256
 		Damage: 80
+		InvalidTargets:
 		Versus:
 			None: 70
 			Wood: 35
 			Light: 75
 			Heavy: 75
 		DamageTypes: Prone50Percent, TriggerProne, TiberiumDeath
-	Warhead@2Smu: LeaveSmudge
-		SmudgeType: Scorch
-		InvalidTargets: Vehicle, Structure, Wall, Husk, Trees, Creep
 	Warhead@3Eff: CreateEffect
 		Explosions: chemball
-		ImpactSounds: xplos.aud
-
-Grenade:
-	ReloadDelay: 50
-	Range: 4c0
-	Report: toss1.aud
-	Projectile: Bullet
-		Speed: 140
-		Blockable: false
-		LaunchAngle: 62
-		Inaccuracy: 813
-		Image: BOMB
-	Warhead@1Dam: SpreadDamage
-		Spread: 341
-		Damage: 50
-		Versus:
-			None: 100
-			Wood: 50
-			Light: 80
-			Heavy: 35
-		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
-	Warhead@2Smu: LeaveSmudge
-		SmudgeType: Crater
-		InvalidTargets: Vehicle, Structure, Wall, Husk, Trees, Creep
-	Warhead@3Eff: CreateEffect
-		Explosions: small_poof
 		ImpactSounds: xplos.aud
 
 Napalm:
@@ -125,23 +96,6 @@ Laser:
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Scorch
 		InvalidTargets: Vehicle, Structure, Wall, Husk, Trees, Creep
-
-TiberiumExplosion:
-	Warhead@1Dam: SpreadDamage
-		Spread: 9
-		Damage: 10
-		Versus:
-			None: 90
-			Wood: 75
-			Light: 60
-			Heavy: 25
-		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
-	Warhead@2Res: CreateResource
-		AddsResourceType: Tiberium
-		Size: 1,1
-	Warhead@3Eff: CreateEffect
-		Explosions: chemball
-		ImpactSounds: xplosml2.aud
 
 ^DinoWeapon:
 	ReloadDelay: 30
