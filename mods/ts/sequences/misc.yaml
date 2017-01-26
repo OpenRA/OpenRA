@@ -357,6 +357,13 @@ resources:
 		Tick: 180
 		Offset: 0, -12, 2.5
 
+veins:
+	idle: veinatac
+		Length: 12
+		UseTilesetExtension: true
+		ZOffset: 1023
+		Offset: 0, -12, 24
+
 shroud:
 	Defaults:
 		Offset: 0, -1

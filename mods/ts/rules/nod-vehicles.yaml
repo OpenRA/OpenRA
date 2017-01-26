@@ -31,8 +31,7 @@ BGGY:
 	AutoTarget:
 	WithMuzzleOverlay:
 	-DamagedByTerrain@VEINS:
-	-GrantConditionOnTerrain@VEINS:
-	-WithIdleOverlay@VEINS:
+	-LeavesTrails@VEINS:
 
 BIKE:
 	Inherits: ^Vehicle
@@ -268,8 +267,7 @@ WEED:
 	-WithVoxelBody:
 	WithVoxelUnloadBody:
 	-DamagedByTerrain@VEINS:
-	-GrantConditionOnTerrain@VEINS:
-	-WithIdleOverlay@VEINS:
+	-LeavesTrails@VEINS:
 
 SAPC:
 	Inherits: ^Tank

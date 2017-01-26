@@ -101,8 +101,7 @@ HARV:
 			gdi: harv.gdi
 			nod: harv.nod
 	-DamagedByTerrain@VEINS:
-	-GrantConditionOnTerrain@VEINS:
-	-WithIdleOverlay@VEINS:
+	-LeavesTrails@VEINS:
 
 LPST:
 	Inherits: ^Tank
