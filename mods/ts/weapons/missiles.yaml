@@ -22,7 +22,8 @@
 		CruiseAltitude: 1c512
 		AllowSnapping: true
 	Warhead@1Dam: SpreadDamage
-		Spread: 128
+		Spread: 108
+		Falloff: 100, 50, 25, 12, 6, 3, 0
 		Damage: 25
 		ValidTargets: Ground, Air
 		Versus:
@@ -70,7 +71,7 @@ MammothTusk:
 		HorizontalRateOfTurn: 10
 		RangeLimit: 9c0
 	Warhead@1Dam: SpreadDamage
-		Spread: 171
+		Spread: 144
 		Damage: 40
 		ValidTargets: Air
 		Versus:
@@ -92,7 +93,7 @@ MammothTusk:
 
 BikeMissile:
 	Inherits: ^DefaultMissile
-	Burst: 2 # to make bike alternate between left and right launcher, change in dmg/s compared to original TS
+	Burst: 2 # to make bike alternate between left and right launcher, no change in dmg/s compared to original TS
 	BurstDelay: 60
 	Range: 5c0
 	Report: misl1.aud
@@ -118,7 +119,7 @@ Hellfire:
 	Burst: 2
 	ValidTargets: Ground
 	Warhead@1Dam: SpreadDamage
-		Spread: 85
+		Spread: 72
 		Damage: 30
 		ValidTargets: Ground, Air
 		Versus:
