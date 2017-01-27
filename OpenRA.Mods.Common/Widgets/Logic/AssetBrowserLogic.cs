@@ -322,7 +322,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (!modData.DefaultFileSystem.Exists(filename))
 				return false;
 
-			errorLabelWidget.Visible = false;
+			if (errorLabelWidget != null)
+				errorLabelWidget.Visible = false;
 
 			try
 			{
