@@ -109,12 +109,23 @@ namespace OpenRA.Mods.Common.LoadScreens
 			GC.SuppressFinalize(this);
 		}
 
-		public bool RequiredContentIsInstalled()
+		public bool BeforeLoad()
 		{
+			// If a ModContent section is defined then we need to make sure that the
+			// required content is installed or switch to the defined content installer.
+			if (!modData.Manifest.Contains<ModContent>())
+				return true;
+
 			var content = modData.Manifest.Get<ModContent>();
-			return content.Packages
+			var contentInstalled = content.Packages
 				.Where(p => p.Value.Required)
 				.All(p => p.Value.TestFiles.All(f => File.Exists(Platform.ResolvePath(f))));
+
+			if (contentInstalled)
+				return true;
+
+			Game.InitializeMod(content.ContentInstallerMod, new Arguments());
+			return false;
 		}
 	}
 }

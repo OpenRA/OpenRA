@@ -379,15 +379,11 @@ namespace OpenRA
 			ModData = new ModData(Mods[mod], Mods, true);
 			ExternalMods.Register(ModData.Manifest);
 
+			if (!ModData.LoadScreen.BeforeLoad())
+				return;
+
 			using (new PerfTimer("LoadMaps"))
 				ModData.MapCache.LoadMaps();
-
-			// Mod assets are missing!
-			if (!ModData.LoadScreen.RequiredContentIsInstalled())
-			{
-				InitializeMod("modchooser", new Arguments());
-				return;
-			}
 
 			ModData.InitializeLoaders(ModData.DefaultFileSystem);
 			Renderer.InitializeFonts(ModData);
