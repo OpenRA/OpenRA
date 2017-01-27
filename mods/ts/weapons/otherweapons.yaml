@@ -106,3 +106,18 @@ Veins:
 	Warhead@Effect: CreateEffect
 		Explosions: veins
 		ExplosionPalette: player
+
+SmallDebris:
+	ReloadDelay: 60
+	Range: 4c0
+	Projectile: Bullet
+		Speed: 50, 125
+		LaunchAngle: 45, 135
+		Image: dbrissm
+		Sequences: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
+		Shadow: true
+
+LargeDebris:
+	Inherits: SmallDebris
+	Projectile: Bullet
+		Image: dbrislg
