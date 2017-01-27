@@ -368,8 +368,8 @@ namespace OpenRA
 			ModData = null;
 
 			// Fall back to default if the mod doesn't exist or has missing prerequisites.
-			if (!IsModInstalled(mod))
-				mod = new GameSettings().Mod;
+			if (mod == null || !IsModInstalled(mod))
+				mod = args.GetValue("Engine.DefaultMod", "modchooser");
 
 			Console.WriteLine("Loading mod: {0}", mod);
 			Settings.Game.Mod = mod;
