@@ -91,7 +91,7 @@ namespace OpenRA.Mods.Common.Traits
 					return false;
 
 				var cm = a.TraitOrDefault<ConditionManager>();
-				return cm != null && cm.AcceptsExternalCondition(a, info.Condition);
+				return cm != null && cm.AcceptsExternalCondition(a, info.Condition, info.Duration > 0);
 			});
 		}
 
