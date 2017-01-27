@@ -1,0 +1,250 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProjectGuid>{6DEEE499-98E5-4977-AAAE-CEAE165F17CF}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>OpenRA.Mods.AS</RootNamespace>
+    <AssemblyName>OpenRA.Mods.AS</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CustomCommands>
+      <CustomCommands>
+        <Command type="AfterBuild" command="cp ${TargetFile} ../mods/as" workingdir="${ProjectDir}" />
+        <Command type="AfterBuild" command="cp ${TargetFile}.mdb ../mods/as" workingdir="${ProjectDir}" />
+      </CustomCommands>
+    </CustomCommands>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <DebugType>full</DebugType>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <WarningLevel>4</WarningLevel>
+    <Optimize>false</Optimize>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <Optimize>true</Optimize>
+    <CustomCommands>
+      <CustomCommands>
+        <Command type="AfterBuild" command="cp ${TargetFile} ../mods/as" workingdir="${ProjectDir}" />
+        <Command type="AfterBuild" command="cp ${TargetFile}.mdb ../mods/as" workingdir="${ProjectDir}" />
+      </CustomCommands>
+    </CustomCommands>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="Eluant">
+      <HintPath>..\thirdparty\download\Eluant.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <ProjectReference Include="..\OpenRA.Game\OpenRA.Game.csproj">
+      <Project>{0DFB103F-2962-400F-8C6D-E2C28CCBA633}</Project>
+      <Name>OpenRA.Game</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\OpenRA.Mods.Common\OpenRA.Mods.Common.csproj">
+      <Project>{FE6C8CC0-2F07-442A-B29F-17617B3B7FC6}</Project>
+      <Name>OpenRA.Mods.Common</Name>
+      <Private>False</Private>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Activities\FallDown.cs" />
+    <Compile Include="Duplicates\Projectiles\MissileAS.cs" />
+    <Compile Include="Duplicates\Traits\EjectOnDeathAS.cs" />
+    <Compile Include="Duplicates\Traits\Render\WithIdleOverlayAS.cs" />
+    <Compile Include="Duplicates\Traits\Sound\AnnounceOnBuildAS.cs" />
+    <Compile Include="Duplicates\Traits\Sound\AnnounceOnKillAS.cs" />
+    <Compile Include="Lint\CheckSpawnActorWarheads.cs" />
+    <Compile Include="Lint\CheckTargetHealthRadiusAS.cs" />
+    <Compile Include="Projectiles\AthenaProjectile.cs" />
+    <Compile Include="Projectiles\InstantExplode.cs" />
+    <Compile Include="Traits\Crate\GiveRandomActorCrateAction.cs" />
+    <Compile Include="Traits\DeployToTimedUpgrade.cs" />
+    <Compile Include="Traits\EligibleForRandomActorCrate.cs" />
+    <Compile Include="Traits\ExplodeWeapon.cs" />
+    <Compile Include="Traits\PeriodicProducer.cs" />
+    <Compile Include="Traits\Player\PlayerSilo.cs" />
+    <Compile Include="Traits\TransformOnUpgrade.cs" />
+    <Compile Include="Traits\UpgradeCrusher.cs" />
+    <Compile Include="Traits\Multipliers\HealthPercentageFirepowerMultiplier.cs" />
+    <Compile Include="Traits\SupportPowers\DetonateWeaponPower.cs" />
+    <Compile Include="Traits\SupportPowers\FireArmamentPower.cs" />
+    <Compile Include="Traits\Warheads\FireClusterWarhead.cs" />
+    <Compile Include="Traits\Warheads\FireShrapnelWarhead.cs" />
+    <Compile Include="Traits\Warheads\SpawnActorWarhead.cs" />
+    <Compile Include="Traits\Warheads\WarheadAS.cs" />
+    <Compile Include="Traits\World\PaletteFromJasc32File.cs" />
+    <Compile Include="Traits\ReloadAmmoWhenEnabled.cs" />
+    <Compile Include="Traits\GivesProximityBounty.cs" />
+    <Compile Include="Traits\ProximityBounty.cs" />
+    <Compile Include="Traits\ActorTag.cs" />
+    <Compile Include="Scripting\Global\ActorTagGlobal.cs" />
+    <Compile Include="Traits\World\WeaponStorm.cs" />
+    <Compile Include="UtilityCommands\ImportASMapCommand.cs" />
+    <Compile Include="Traits\Warheads\PromotionWarhead.cs" />
+    <Compile Include="Traits\GrantPeriodicUpgrades.cs" />
+    <Compile Include="Traits\Render\WithVoxelHelicopterBody.cs" />
+    <Compile Include="Traits\SmokeParticleEmitter.cs" />
+    <Compile Include="Effects\SmokeParticle.cs" />
+    <Compile Include="Traits\HordeBonus.cs" />
+    <Compile Include="Traits\GrantHordeBonus.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <PropertyGroup>
+    <PostBuildEvent>mkdir "$(SolutionDir)mods/as/"
+copy "$(TargetPath)" "$(SolutionDir)mods/as/"
+cd "$(SolutionDir)"</PostBuildEvent>
+  </PropertyGroup>
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProjectGuid>{6DEEE499-98E5-4977-AAAE-CEAE165F17CF}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>OpenRA.Mods.AS</RootNamespace>
+    <AssemblyName>OpenRA.Mods.AS</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CustomCommands>
+      <CustomCommands>
+        <Command type="AfterBuild" command="cp ${TargetFile} ../mods/as" workingdir="${ProjectDir}" />
+        <Command type="AfterBuild" command="cp ${TargetFile}.mdb ../mods/as" workingdir="${ProjectDir}" />
+      </CustomCommands>
+    </CustomCommands>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <DebugType>full</DebugType>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <WarningLevel>4</WarningLevel>
+    <Optimize>false</Optimize>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <Optimize>true</Optimize>
+    <CustomCommands>
+      <CustomCommands>
+        <Command type="AfterBuild" command="cp ${TargetFile} ../mods/as" workingdir="${ProjectDir}" />
+        <Command type="AfterBuild" command="cp ${TargetFile}.mdb ../mods/as" workingdir="${ProjectDir}" />
+      </CustomCommands>
+    </CustomCommands>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="Eluant">
+      <HintPath>..\thirdparty\download\Eluant.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <ProjectReference Include="..\OpenRA.Game\OpenRA.Game.csproj">
+      <Project>{0DFB103F-2962-400F-8C6D-E2C28CCBA633}</Project>
+      <Name>OpenRA.Game</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\OpenRA.Mods.Common\OpenRA.Mods.Common.csproj">
+      <Project>{FE6C8CC0-2F07-442A-B29F-17617B3B7FC6}</Project>
+      <Name>OpenRA.Mods.Common</Name>
+      <Private>False</Private>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Activities\FallDown.cs" />
+    <Compile Include="Duplicates\Projectiles\MissileAS.cs" />
+    <Compile Include="Duplicates\Traits\EjectOnDeathAS.cs" />
+    <Compile Include="Duplicates\Traits\Render\WithIdleOverlayAS.cs" />
+    <Compile Include="Duplicates\Traits\Sound\AnnounceOnBuildAS.cs" />
+    <Compile Include="Duplicates\Traits\Sound\AnnounceOnKillAS.cs" />
+    <Compile Include="Lint\CheckSpawnActorWarheads.cs" />
+    <Compile Include="Lint\CheckTargetHealthRadiusAS.cs" />
+    <Compile Include="Projectiles\AthenaProjectile.cs" />
+    <Compile Include="Projectiles\InstantExplode.cs" />
+    <Compile Include="Traits\Aircraft\FlyAwayOnBurstComplete.cs" />
+    <Compile Include="Traits\Crate\GiveRandomActorCrateAction.cs" />
+    <Compile Include="Traits\DeployToTimedUpgrade.cs" />
+    <Compile Include="Traits\EligibleForRandomActorCrate.cs" />
+    <Compile Include="Traits\ExplodeWeapon.cs" />
+    <Compile Include="Traits\PeriodicProducer.cs" />
+    <Compile Include="Traits\Player\PlayerSilo.cs" />
+    <Compile Include="Traits\TransformOnUpgrade.cs" />
+    <Compile Include="Traits\UpgradeCrusher.cs" />
+    <Compile Include="Traits\Multipliers\HealthPercentageFirepowerMultiplier.cs" />
+    <Compile Include="Traits\SupportPowers\DetonateWeaponPower.cs" />
+    <Compile Include="Traits\SupportPowers\FireArmamentPower.cs" />
+    <Compile Include="Traits\Warheads\FireClusterWarhead.cs" />
+    <Compile Include="Traits\Warheads\FireShrapnelWarhead.cs" />
+    <Compile Include="Traits\Warheads\SpawnActorWarhead.cs" />
+    <Compile Include="Traits\Warheads\WarheadAS.cs" />
+    <Compile Include="Traits\World\PaletteFromJasc32File.cs" />
+    <Compile Include="Traits\ReloadAmmoWhenEnabled.cs" />
+    <Compile Include="Traits\GivesProximityBounty.cs" />
+    <Compile Include="Traits\ProximityBounty.cs" />
+    <Compile Include="Traits\ActorTag.cs" />
+    <Compile Include="Scripting\Global\ActorTagGlobal.cs" />
+    <Compile Include="Traits\World\WeaponStorm.cs" />
+    <Compile Include="UtilityCommands\ImportASMapCommand.cs" />
+    <Compile Include="Traits\Warheads\PromotionWarhead.cs" />
+    <Compile Include="Traits\GrantPeriodicUpgrades.cs" />
+    <Compile Include="Traits\Render\WithVoxelHelicopterBody.cs" />
+    <Compile Include="Traits\SmokeParticleEmitter.cs" />
+    <Compile Include="Effects\SmokeParticle.cs" />
+    <Compile Include="Traits\HordeBonus.cs" />
+    <Compile Include="Traits\GrantHordeBonus.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <PropertyGroup>
+    <PostBuildEvent>mkdir "$(SolutionDir)mods/as/"
+copy "$(TargetPath)" "$(SolutionDir)mods/as/"
+cd "$(SolutionDir)"</PostBuildEvent>
+  </PropertyGroup>
+</Project>

@@ -80,7 +80,7 @@ namespace OpenRA.Mods.AS.Projectiles
 
 		[Desc("Altitude where this bullet should explode when reached.",
 			"Negative values allow this bullet to pass cliffs and terrain bumps.")]
-		public readonly WDist ExplodeUnderThisAltitude = WDist.Zero;
+		public readonly WDist ExplodeUnderThisAltitude = new WDist(-1536);
 
 		[Desc("Interval in ticks between each spawned Trail animation.")]
 		public readonly int TrailInterval = 2;
