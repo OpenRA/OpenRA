@@ -29,34 +29,35 @@ namespace OpenRA
 		readonly Dictionary<string, Sprite> icons = new Dictionary<string, Sprite>();
 		public readonly IReadOnlyDictionary<string, Sprite> Icons;
 
-		public InstalledMods(string customModPath)
+		/// <summary>Initializes the collection of locally installed mods.</summary>
+		/// <param name="searchPaths">Filesystem paths to search for mod packages.</param>
+		/// <param name="explicitPaths">Filesystem paths to additional mod packages.</param>
+		public InstalledMods(IEnumerable<string> searchPaths, IEnumerable<string> explicitPaths)
 		{
 			sheetBuilder = new SheetBuilder(SheetType.BGRA, 256);
 			Icons = new ReadOnlyDictionary<string, Sprite>(icons);
-			mods = GetInstalledMods(customModPath);
+			mods = GetInstalledMods(searchPaths, explicitPaths);
 		}
 
-		static IEnumerable<Pair<string, string>> GetCandidateMods()
+		static IEnumerable<Pair<string, string>> GetCandidateMods(IEnumerable<string> searchPaths)
 		{
-			// Get mods that are in the game folder.
-			var basePath = Platform.ResolvePath(Path.Combine(".", "mods"));
-			var mods = Directory.GetDirectories(basePath)
-				.Select(x => Pair.New(x.Substring(basePath.Length + 1), x))
-				.ToList();
+			var mods = new List<Pair<string, string>>();
+			foreach (var path in searchPaths)
+			{
+				try
+				{
+					var directory = new DirectoryInfo(Platform.ResolvePath(path));
+					foreach (var subdir in directory.EnumerateDirectories())
+						mods.Add(Pair.New(subdir.Name, subdir.FullName));
 
-			foreach (var m in Directory.GetFiles(basePath, "*.oramod"))
-				mods.Add(Pair.New(Path.GetFileNameWithoutExtension(m), m));
-
-			// Get mods that are in the support folder.
-			var supportPath = Platform.ResolvePath(Path.Combine("^", "mods"));
-			if (!Directory.Exists(supportPath))
-				return mods;
-
-			foreach (var pair in Directory.GetDirectories(supportPath).ToDictionary(x => x.Substring(supportPath.Length + 1)))
-				mods.Add(Pair.New(pair.Key, pair.Value));
-
-			foreach (var m in Directory.GetFiles(supportPath, "*.oramod"))
-				mods.Add(Pair.New(Path.GetFileNameWithoutExtension(m), m));
+					foreach (var file in directory.EnumerateFiles("*.oramod"))
+						mods.Add(Pair.New(Path.GetFileNameWithoutExtension(file.Name), file.FullName));
+				}
+				catch (Exception e)
+				{
+					Console.WriteLine("Failed to enumerate mod search path {0}: {1}", path, e.Message);
+				}
+			}
 
 			return mods;
 		}
@@ -102,12 +103,11 @@ namespace OpenRA
 			}
 		}
 
-		Dictionary<string, Manifest> GetInstalledMods(string customModPath)
+		Dictionary<string, Manifest> GetInstalledMods(IEnumerable<string> searchPaths, IEnumerable<string> explicitPaths)
 		{
 			var ret = new Dictionary<string, Manifest>();
-			var candidates = GetCandidateMods();
-			if (customModPath != null)
-				candidates = candidates.Append(Pair.New(Path.GetFileNameWithoutExtension(customModPath), customModPath));
+			var candidates = GetCandidateMods(searchPaths)
+				.Concat(explicitPaths.Select(p => Pair.New(Path.GetFileNameWithoutExtension(p), p)));
 
 			foreach (var pair in candidates)
 			{

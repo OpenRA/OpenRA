@@ -30,10 +30,10 @@ namespace OpenRA.Server
 			// Special case handling of Game.Mod argument: if it matches a real filesystem path
 			// then we use this to override the mod search path, and replace it with the mod id
 			var modArgument = arguments.GetValue("Game.Mod", null);
-			string customModPath = null;
+			var explicitModPaths = new string[0];
 			if (modArgument != null && (File.Exists(modArgument) || Directory.Exists(modArgument)))
 			{
-				customModPath = modArgument;
+				explicitModPaths = new[] { modArgument };
 				arguments.ReplaceValue("Game.Mod", Path.GetFileNameWithoutExtension(modArgument));
 			}
 
@@ -43,7 +43,8 @@ namespace OpenRA.Server
 			var settings = Game.Settings.Server;
 
 			var mod = Game.Settings.Game.Mod;
-			var mods = new InstalledMods(customModPath);
+			var modSearchPaths = new[] { Path.Combine(".", "mods"), Path.Combine("^", "mods") };
+			var mods = new InstalledMods(modSearchPaths, explicitModPaths);
 
 			// HACK: The engine code *still* assumes that Game.ModData is set
 			var modData = Game.ModData = new ModData(mods[mod], mods);
