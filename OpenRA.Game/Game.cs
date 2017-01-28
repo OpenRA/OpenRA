@@ -314,7 +314,11 @@ namespace OpenRA
 
 			GlobalChat = new GlobalChat();
 
-			var modSearchPaths = new[] { Path.Combine(".", "mods"), Path.Combine("^", "mods") };
+			var modSearchArg = args.GetValue("Engine.ModSearchPaths", null);
+			var modSearchPaths = modSearchArg != null ?
+				FieldLoader.GetValue<string[]>("Engine.ModsPath", modSearchArg) :
+				new[] { Path.Combine(".", "mods"), Path.Combine("^", "mods") };
+
 			Mods = new InstalledMods(modSearchPaths, explicitModPaths);
 			Console.WriteLine("Internal mods:");
 			foreach (var mod in Mods)
