@@ -87,6 +87,7 @@
     <Compile Include="Projectiles\InstantExplode.cs" />
     <Compile Include="Traits\ChronoResourceDelivery.cs" />
     <Compile Include="Traits\Conditions\GrantConditionAboveAltitude.cs" />
+    <Compile Include="Traits\Conditions\GrantPeriodicConditionOnEvent.cs" />
     <Compile Include="Traits\Crate\GiveRandomActorCrateAction.cs" />
     <Compile Include="Traits\EligibleForRandomActorCrate.cs" />
     <Compile Include="Traits\ExplodeWeapon.cs" />
