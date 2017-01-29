@@ -1544,7 +1544,7 @@ starport.smuggler:
 heavy.mercenary:
 	idle: DATA.R8
 		Start: 3249
-		Offset: -48,64
+		Offset: -48,80
 	make: DATA.R8
 		Start: 4592
 		Length: 9
@@ -1556,14 +1556,14 @@ heavy.mercenary:
 		Tick: 100
 	damaged-idle: DATA.R8
 		Start: 3249
-		Offset: -48,64
+		Offset: -48,80
 	idle-top: DATA.R8
 		Start: 3250
-		Offset: -48,64
+		Offset: -48,80
 		ZOffset: 1023
 	damaged-idle-top: DATA.R8
 		Start: 3251
-		Offset: -48,64
+		Offset: -48,80
 		ZOffset: 1023
 	production-welding: DATA.R8
 		Start: 4938
