@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Drawing;
 using System.Linq;
 using OpenRA.Traits;
 
@@ -58,7 +59,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void OnPlayerLost(Player player)
 		{
-			Game.Debug("{0} is defeated.", player.PlayerName);
+			Game.AddChatLine(Color.White, "Battlefield Control", player.PlayerName + " is defeated.");
 
 			foreach (var a in player.World.Actors.Where(a => a.Owner == player))
 				a.Kill(a);
@@ -72,7 +73,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void OnPlayerWon(Player player)
 		{
-			Game.Debug("{0} is victorious.", player.PlayerName);
+			Game.AddChatLine(Color.White, "Battlefield Control", player.PlayerName + " is victorious.");
 
 			Game.RunAfterDelay(info.NotificationDelay, () =>
 			{
