@@ -35,6 +35,18 @@ namespace OpenRA.Mods.Common.Traits
 
 		public readonly int BaleLoadDelay = 4;
 
+		[Desc("How many Harvesters can wait at blocked refineries.")]
+		public readonly int MaxOccupancy = 2;
+
+		[Desc("Color of targetline when harvesters move back to refineries.")]
+		public readonly Color DeliveringColor = Color.Green;
+
+		[Desc("Color of targetline when harvesters move out to harvest.")]
+		public readonly Color HarvestingColor = Color.Red;
+
+		[Desc("Prefer less occupancy, this multiplier is to offset distance cost (Occupancy * OccupancyCostModifier)")]
+		public readonly int OccupancyCostModifier = 12;
+
 		[Desc("How fast it can dump it's carryage.")]
 		public readonly int BaleUnloadDelay = 4;
 
@@ -162,15 +174,25 @@ namespace OpenRA.Mods.Common.Traits
 				Info.DeliveryBuildings.Contains(proc.Info.Name);
 		}
 
+		bool ProcHasSpace(int occupancy)
+		{
+			return occupancy <= Info.MaxOccupancy;
+		}
+
+		int GetOccupancy(Actor self, Actor proc)
+		{
+			return self.World.ActorsHavingTrait<Harvester>(h => h.LinkedProc == proc).Count();
+		}
+
 		public Actor ClosestProc(Actor self, Actor ignore)
 		{
 			// Find all refineries and their occupancy count:
 			var refs = self.World.ActorsWithTrait<IAcceptResources>()
-				.Where(r => r.Actor != ignore && r.Actor.Owner == self.Owner && IsAcceptableProcType(r.Actor))
-				.Select(r => new {
+				.Where(r => r.Actor != ignore && r.Actor.Owner == self.Owner &&	r.Trait.AllowDocking && IsAcceptableProcType(r.Actor) &&
+					ProcHasSpace(GetOccupancy(self, r.Actor) - 1)).Select(r => new {
 					Location = r.Actor.Location + r.Trait.DeliveryOffset,
 					Actor = r.Actor,
-					Occupancy = self.World.ActorsHavingTrait<Harvester>(h => h.LinkedProc == r.Actor).Count() })
+					Occupancy = GetOccupancy(self, r.Actor) })
 				.ToDictionary(r => r.Location);
 
 			// Start a search from each refinery's delivery location:
@@ -183,13 +205,10 @@ namespace OpenRA.Mods.Common.Traits
 						return 0;
 
 					var occupancy = refs[loc].Occupancy;
-
-					// 4 harvesters clogs up the refinery's delivery location:
-					if (occupancy >= 3)
+					if (!ProcHasSpace(occupancy))
 						return Constants.InvalidNode;
 
-					// Prefer refineries with less occupancy (multiplier is to offset distance cost):
-					return occupancy * 12;
+					return occupancy * Info.OccupancyCostModifier;
 				}))
 				path = self.World.WorldActor.Trait<IPathFinder>().FindPath(search);
 
@@ -372,7 +391,7 @@ namespace OpenRA.Mods.Common.Traits
 
 				var findResources = new FindResources(self);
 				self.QueueActivity(findResources);
-				self.SetTargetLine(Target.FromCell(self.World, loc.Value), Color.Red);
+				self.SetTargetLine(Target.FromCell(self.World, loc.Value), Info.HarvestingColor);
 
 				var notify = self.TraitsImplementing<INotifyHarvesterAction>();
 				foreach (var n in notify)
@@ -394,8 +413,7 @@ namespace OpenRA.Mods.Common.Traits
 					LinkProc(self, OwnerLinkedProc = order.TargetActor);
 
 				idleSmart = true;
-
-				self.SetTargetLine(Target.FromOrder(self.World, order), Color.Green);
+				self.SetTargetLine(Target.FromOrder(self.World, order), Info.DeliveringColor);
 
 				self.CancelActivity();
 
