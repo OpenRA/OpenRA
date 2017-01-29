@@ -119,7 +119,7 @@ wind_trap:
 		BuildPaletteOrder: 20
 		BuildDuration: 180
 		BuildDurationModifier: 40
-		Description: Provides power for other structures
+		Description: Provides power for other structures.
 	Selectable:
 		Bounds: 64,64
 	Valued:
@@ -158,7 +158,7 @@ barracks:
 		BuildPaletteOrder: 50
 		BuildDuration: 231
 		BuildDurationModifier: 40
-		Description: Trains infantry
+		Description: Trains infantry.
 	Selectable:
 		Bounds: 64,64
 	Valued:
@@ -232,7 +232,7 @@ refinery:
 		BuildPaletteOrder: 30
 		BuildDuration: 540
 		BuildDurationModifier: 40
-		Description: Harvesters unload Spice here for processing
+		Description: Harvesters unload Spice here for processing.
 	Selectable:
 		Bounds: 96,64
 	Valued:
@@ -287,7 +287,7 @@ silo:
 		BuildPaletteOrder: 120
 		BuildDuration: 135
 		BuildDurationModifier: 40
-		Description: Stores excess harvested Spice
+		Description: Stores excess harvested Spice.
 	Selectable:
 		Bounds: 32,32
 	Valued:
@@ -334,7 +334,7 @@ light_factory:
 		BuildPaletteOrder: 60
 		BuildDuration: 277
 		BuildDurationModifier: 40
-		Description: Produces light vehicles
+		Description: Produces light vehicles.
 	Selectable:
 		Bounds: 96,64
 	Valued:
@@ -412,7 +412,7 @@ heavy_factory:
 		BuildPaletteOrder: 90
 		BuildDuration: 648
 		BuildDurationModifier: 40
-		Description: Produces heavy vehicles
+		Description: Produces heavy vehicles.
 	Selectable:
 		Bounds: 96,68,0,12
 	Valued:
@@ -497,7 +497,7 @@ outpost:
 		BuildPaletteOrder: 80
 		BuildDuration: 270
 		BuildDurationModifier: 40
-		Description: Provides a radar map of the battlefield\n  Requires power to operate
+		Description: Provides a radar map of the battlefield.\n  Requires power to operate.
 	Selectable:
 		Bounds: 96,72,0,-8
 	Valued:
@@ -542,7 +542,7 @@ starport:
 		BuildPaletteOrder: 70
 		BuildDuration: 540
 		BuildDurationModifier: 40
-		Description: Dropzone for quick reinforcements, at a price.\n  Requires power to operate
+		Description: Dropzone for quick reinforcements, at a price.
 	Valued:
 		Cost: 1500
 	Building:
@@ -661,7 +661,7 @@ medium_gun_turret:
 		BuildPaletteOrder: 100
 		BuildDuration: 231
 		BuildDurationModifier: 40
-		Description: Defensive structure\n  Strong vs Tanks\n  Weak vs Infantry, Aircraft
+		Description: Defensive structure.\n  Strong vs Tanks\n  Weak vs Infantry, Aircraft
 	Valued:
 		Cost: 550
 	Tooltip:
@@ -703,7 +703,7 @@ large_gun_turret:
 		BuildPaletteOrder: 110
 		BuildDuration: 270
 		BuildDurationModifier: 40
-		Description: Defensive structure\n  Strong vs Infantry, Aircraft\n  Weak vs Tanks\n\n  Requires power to operate
+		Description: Defensive structure.\n  Strong vs Infantry, Aircraft\n  Weak vs Tanks\n\n  Requires power to operate.
 	Valued:
 		Cost: 750
 	Tooltip:
@@ -748,7 +748,7 @@ repair_pad:
 		BuildPaletteOrder: 150
 		BuildDuration: 324
 		BuildDurationModifier: 40
-		Description: Repairs vehicles\n Allows construction of MCVs
+		Description: Repairs vehicles.\n Allows construction of MCVs
 	Valued:
 		Cost: 800
 	Tooltip:
@@ -795,7 +795,7 @@ high_tech_factory:
 		BuildPaletteOrder: 140
 		BuildDuration: 405
 		BuildDurationModifier: 40
-		Description: Unlocks advanced technology
+		Description: Unlocks advanced technology.
 	Selectable:
 		Bounds: 96,68,0,12
 	Valued:
@@ -863,7 +863,7 @@ research_centre:
 		BuildPaletteOrder: 160
 		BuildDuration: 270
 		BuildDurationModifier: 40
-		Description: Unlocks experimental tanks
+		Description: Unlocks advanced tanks.
 	Selectable:
 		Bounds: 96,64,0,16
 	Valued:
@@ -903,7 +903,7 @@ palace:
 		BuildPaletteOrder: 170
 		BuildDuration: 810
 		BuildDurationModifier: 40
-		Description: Unlocks elite infantry
+		Description: Unlocks elite infantry and weapons.
 	Selectable:
 		Bounds: 96,96
 	Valued:
@@ -958,7 +958,7 @@ palace:
 		ActivationSequence:
 	ProduceActorPower@fremen:
 		Description: Recruit Fremen
-		LongDesc: Elite sniper infantry unit                       \n  Strong vs Infantry\n  Weak vs Vehicles\n  Special Ability: Invisibility
+		LongDesc: Elite infantry unit armed with assault rifles and rockets\n  Strong vs Infantry, Vehicles\n  Weak vs Artillery\n  Special Ability: Invisibility
 		Icon: fremen
 		Prerequisites: ~techlevel.superweapons, ~palace.fremen
 		Actors: fremen, fremen
@@ -969,7 +969,7 @@ palace:
 		OrderName: ProduceActorPower.Fremen
 	ProduceActorPower@saboteur:
 		Description: Recruit Saboteur
-		LongDesc: Sneaky infantry, armed with explosives           \n  Strong vs Buildings\n  Weak vs Everything\n  Special Ability: destroy buildings
+		LongDesc: Sneaky infantry, armed with explosives\n  Strong vs Buildings\n  Weak vs Everything\n  Special Ability: destroy buildings
 		Icon: saboteur
 		Prerequisites: ~techlevel.superweapons, ~palace.saboteur
 		Actors: saboteur

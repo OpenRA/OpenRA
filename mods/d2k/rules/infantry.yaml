@@ -57,7 +57,7 @@ trooper:
 		Prerequisites: upgrade.barracks, ~techlevel.medium
 		BuildDuration: 73
 		BuildDurationModifier: 40
-		Description: Anti-tank/Anti-aircraft infantry\n  Strong vs Tanks, Aircraft\n  Weak vs Infantry, Artillery
+		Description: Anti-tank infantry\n  Strong vs Tanks\n  Weak vs Infantry, Artillery
 	Valued:
 		Cost: 90
 	Tooltip:
@@ -84,7 +84,7 @@ thumper:
 		Prerequisites: upgrade.barracks, ~techlevel.high
 		BuildDuration: 108
 		BuildDurationModifier: 40
-		Description: Attracts nearby worms\n  Unarmed
+		Description: Attracts nearby worms when deployed\n  Unarmed
 	Valued:
 		Cost: 200
 	Tooltip:
@@ -129,7 +129,7 @@ fremen:
 		Queue: Infantry
 		BuildPaletteOrder: 100
 		Prerequisites: ~disabled
-		Description: Elite sniper infantry unit\n  Strong vs Infantry\n  Weak vs Vehicles\n  Special Ability: Invisibility
+		Description: Elite infantry unit armed with assault rifles and rockets\n  Strong vs Infantry, Vehicles\n  Weak vs Artillery\n  Special Ability: Invisibility
 	Mobile:
 		Speed: 43
 	Valued:
@@ -257,7 +257,7 @@ nsfremen:
 	Buildable:
 		BuildPaletteOrder: 105
 		Prerequisites: ~disabled
-		Description: Elite sniper infantry unit\n  Strong vs Infantry\n  Weak vs Vehicles
+		Description: Elite infantry unit armed with assault rifles and rockets\n  Strong vs Infantry, Vehicles\n  Weak vs Artillery
 	RenderSprites:
 		Image: fremen
 	-Cloak:

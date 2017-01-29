@@ -39,7 +39,7 @@ carryall.reinforce:
 	Buildable:
 		BuildDuration: 648
 		BuildDurationModifier: 40
-		Description: Large winged, planet-bound ship\n  Automatically lifts harvesters.
+		Description: Large winged, planet-bound ship\n  Automatically lifts harvesters from and to Spice.\n  Lifts vehicles to Repair Pads when ordered.
 
 carryall:
 	Inherits: carryall.reinforce
@@ -69,8 +69,6 @@ frigate:
 		PipCount: 10
 	FlyAwayOnIdle:
 	RejectsOrders:
-	Buildable:
-		Description: Supply spacecraft
 
 ornithopter:
 	Inherits: ^Plane

@@ -104,7 +104,7 @@ trike:
 		Prerequisites: ~light.regulartrikes
 		BuildDuration: 194
 		BuildDurationModifier: 40
-		Description: Fast scout\n Strong vs Infantry\n Weak vs Tanks, Aircraft
+		Description: Fast scout\n  Strong vs Infantry\n  Weak vs Tanks
 	Valued:
 		Cost: 300
 	Tooltip:
@@ -144,7 +144,7 @@ quad:
 		BuildPaletteOrder: 20
 		BuildDuration: 277
 		BuildDurationModifier: 40
-		Description: Missile Scout\n Strong vs Vehicles\n  Weak vs Infantry
+		Description: Missile Scout\n  Strong vs Vehicles\n  Weak vs Infantry
 	Valued:
 		Cost: 400
 	Tooltip:
@@ -179,7 +179,7 @@ siege_tank:
 		BuildPaletteOrder: 50
 		BuildDuration: 324
 		BuildDurationModifier: 40
-		Description: Siege Artillery\n  Strong vs Infantry, Buildings\n  Weak vs Tanks, Aircraft
+		Description: Siege Artillery\n  Strong vs Infantry, Buildings\n  Weak vs Tanks
 	Valued:
 		Cost: 700
 	Tooltip:
@@ -263,7 +263,7 @@ sonic_tank:
 		Prerequisites: ~heavy.atreides, research_centre, ~techlevel.high
 		BuildDuration: 486
 		BuildDurationModifier: 40
-		Description: Fires sonic shocks\n  Strong vs Infantry, Vehicles\n  Weak vs Artillery, Aircraft
+		Description: Fires sonic shocks\n  Strong vs Infantry, Vehicles\n  Weak vs Artillery
 	Valued:
 		Cost: 1000
 	Tooltip:
@@ -300,7 +300,7 @@ devastator:
 		Prerequisites: ~heavy.harkonnen, research_centre, ~techlevel.high
 		BuildDuration: 540
 		BuildDurationModifier: 40
-		Description: Super Heavy Tank\n  Strong vs Tanks\n  Weak vs Artillery, Aircraft
+		Description: Super Heavy Tank\n  Strong vs Tanks\n  Weak vs Artillery
 	Valued:
 		Cost: 1050
 	Tooltip:
@@ -345,7 +345,7 @@ raider:
 		Prerequisites: ~light.ordos
 		BuildDuration: 194
 		BuildDurationModifier: 40
-		Description: Improved Scout\n Strong vs Infantry, Light Vehicles
+		Description: Improved Scout\n  Strong vs Infantry, Light Vehicles\n  Weak vs Tanks
 	Valued:
 		Cost: 350
 	Tooltip:
@@ -382,7 +382,7 @@ stealth_raider:
 		BuildPaletteOrder: 30
 		BuildDuration: 194	## Copied from Raider, not included in conversion. Both have same "BuildSpeed" in TibEd
 		BuildDurationModifier: 40
-		Description: Invisible Raider Trike\n Strong vs Infantry, Light Vehicles
+		Description: Invisible Raider Trike\n  Strong vs Infantry, Light Vehicles\n  Weak vs Tanks
 	Valued:
 		Cost: 400
 	Tooltip:
@@ -442,7 +442,7 @@ deviator:
 		BuildPaletteOrder: 40
 		BuildDuration: 373
 		BuildDurationModifier: 40
-		Description: Main Battle Tank\n  Strong vs Tanks\n  Weak vs Infantry, Aircraft\n \n  Atreides:      +Range\n  Harkonnen:  +Health\n  Ordos:          +Speed
+		Description: Main Battle Tank\n  Strong vs Tanks\n  Weak vs Infantry
 	Valued:
 		Cost: 700
 	Tooltip:
