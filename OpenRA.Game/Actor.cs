@@ -203,13 +203,13 @@ namespace OpenRA
 			if (CurrentActivity == null)
 				CurrentActivity = nextActivity;
 			else
-				CurrentActivity.Queue(nextActivity);
+				CurrentActivity.RootActivity.Queue(nextActivity);
 		}
 
 		public bool CancelActivity()
 		{
 			if (CurrentActivity != null)
-				return CurrentActivity.Cancel(this);
+				return CurrentActivity.RootActivity.Cancel(this);
 
 			return true;
 		}

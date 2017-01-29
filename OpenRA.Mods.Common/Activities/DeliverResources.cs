@@ -35,8 +35,8 @@ namespace OpenRA.Mods.Common.Activities
 
 		public override Activity Tick(Actor self)
 		{
-			if (NextActivity != null)
-				return NextActivity;
+			if (NextInQueue != null)
+				return NextInQueue;
 
 			// Find the nearest best refinery if not explicitly ordered to a specific refinery:
 			if (harv.OwnerLinkedProc == null || !harv.OwnerLinkedProc.IsInWorld)

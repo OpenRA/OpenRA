@@ -34,7 +34,7 @@ namespace OpenRA.Traits
 			while (act != null)
 			{
 				var prev = act;
-				act = act.Tick(self);
+				act = act.TickOuter(self);
 				var current = Stopwatch.GetTimestamp();
 				if (current - start > longTickThresholdInStopwatchTicks)
 				{
@@ -44,7 +44,7 @@ namespace OpenRA.Traits
 				else
 					start = current;
 
-				if (prev == act)
+				if (act == prev || act == prev.ParentActivity)
 					break;
 			}
 
