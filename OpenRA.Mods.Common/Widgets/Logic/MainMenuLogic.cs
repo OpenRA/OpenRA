@@ -49,6 +49,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{ "x64", Pair.New("64bit OS", Environment.Is64BitOperatingSystem.ToString()) },
 				{ "runtime", Pair.New(".NET Runtime", Platform.RuntimeVersion) },
 				{ "gl", Pair.New("OpenGL Version", Game.Renderer.GLVersion) },
+				{ "windowsize", Pair.New("Window Size", "{0}x{1}".F(Game.Renderer.Resolution.Width, Game.Renderer.Resolution.Height)) },
 				{ "lang", Pair.New("System Language", lang) }
 			};
 		}
