@@ -64,6 +64,12 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Duration to wait before becoming idle again.")]
 		public readonly int WaitDuration = 25;
 
+		[Desc("Find a new refinery to unload at if more than this many harvesters are already waiting.")]
+		public readonly int MaxUnloadQueue = 3;
+
+		[Desc("The pathfinding cost penalty applied for each harvester waiting to unload at a refinery.")]
+		public readonly int UnloadQueueCostModifier = 12;
+
 		[VoiceReference] public readonly string HarvestVoice = "Action";
 		[VoiceReference] public readonly string DeliverVoice = "Action";
 
@@ -184,12 +190,12 @@ namespace OpenRA.Mods.Common.Traits
 
 					var occupancy = refs[loc].Occupancy;
 
-					// 4 harvesters clogs up the refinery's delivery location:
-					if (occupancy >= 3)
+					// Too many harvesters clogs up the refinery's delivery location:
+					if (occupancy >= Info.MaxUnloadQueue)
 						return Constants.InvalidNode;
 
 					// Prefer refineries with less occupancy (multiplier is to offset distance cost):
-					return occupancy * 12;
+					return occupancy * Info.UnloadQueueCostModifier;
 				}))
 				path = self.World.WorldActor.Trait<IPathFinder>().FindPath(search);
 
