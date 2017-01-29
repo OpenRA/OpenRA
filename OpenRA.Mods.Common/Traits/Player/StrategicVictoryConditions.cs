@@ -38,6 +38,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Description of the objective")]
 		[Translate] public readonly string Objective = "Hold all the strategic positions!";
 
+		[Desc("Disable the win/loss messages and audio notifications?")]
+		public readonly bool SuppressNotifications = false;
+
 		public object Create(ActorInitializer init) { return new StrategicVictoryConditions(init.Self, this); }
 	}
 
@@ -104,11 +107,13 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void OnPlayerLost(Player player)
 		{
-			Game.AddChatLine(Color.White, "Battlefield Control", player.PlayerName + " is defeated.");
-
 			foreach (var a in player.World.Actors.Where(a => a.Owner == player))
 				a.Kill(a);
 
+			if (info.SuppressNotifications)
+				return;
+
+			Game.AddChatLine(Color.White, "Battlefield Control", player.PlayerName + " is defeated.");
 			Game.RunAfterDelay(info.NotificationDelay, () =>
 			{
 				if (Game.IsCurrentWorld(player.World) && player == player.World.LocalPlayer)
@@ -118,8 +123,10 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void OnPlayerWon(Player player)
 		{
-			Game.AddChatLine(Color.White, "Battlefield Control", player.PlayerName + " is victorious.");
+			if (info.SuppressNotifications)
+				return;
 
+			Game.AddChatLine(Color.White, "Battlefield Control", player.PlayerName + " is victorious.");
 			Game.RunAfterDelay(info.NotificationDelay, () =>
 			{
 				if (Game.IsCurrentWorld(player.World) && player == player.World.LocalPlayer)
