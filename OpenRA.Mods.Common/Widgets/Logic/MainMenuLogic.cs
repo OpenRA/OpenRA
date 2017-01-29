@@ -291,7 +291,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 						// Append system profile data if the player has opted in
 						if (Game.Settings.Debug.SendSystemInformation)
-							newsURL += "&" + GetSystemInformation()
+							newsURL += "&sysinfoversion={0}&".F(SystemInformationVersion)
+								+ GetSystemInformation()
 								.Select(kv => kv.Key + "=" + Uri.EscapeUriString(kv.Value.Second))
 								.JoinWith("&");
 
