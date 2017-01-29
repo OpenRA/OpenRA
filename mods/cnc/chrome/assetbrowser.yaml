@@ -111,7 +111,7 @@ Container@ASSETBROWSER_PANEL:
 							Height: 325
 							Align: Center
 							Visible: false
-							Text: Error displaying {filename} check assetbrowser.log
+							Text: Error displaying file. See assetbrowser.log for details.
 				Container@FRAME_SELECTOR:
 					X: 190
 					Y: 395
