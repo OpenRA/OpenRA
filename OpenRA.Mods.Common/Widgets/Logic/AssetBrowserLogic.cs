@@ -47,9 +47,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		bool isVideoLoaded = false;
 		int currentFrame;
 
-		LabelWidget errorLabelWidget;
+		LabelWidget errorLabel;
+		LabelWidget errorLabelFilename;
 		SpriteFont errorFont;
-		bool IsErrorLabelVisible { get { return errorLabelWidget != null && errorLabelWidget.Visible; } }
+		bool IsErrorLabelVisible { get { return errorLabel != null && errorLabel.Visible; } }
 
 		[ObjectCreator.UseCtor]
 		public AssetBrowserLogic(Widget widget, Action onExit, ModData modData, World world, Dictionary<string, MiniYaml> logicArgs)
@@ -95,9 +96,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (playerWidget != null)
 				playerWidget.IsVisible = () => isVideoLoaded && !IsErrorLabelVisible;
 
-			errorLabelWidget = panel.GetOrNull<LabelWidget>("ERROR");
-			if (errorLabelWidget != null)
-				errorFont = Game.Renderer.Fonts[errorLabelWidget.Font];
+			errorLabel = panel.GetOrNull<LabelWidget>("ERROR");
+			if (errorLabel != null)
+			{
+				errorFont = Game.Renderer.Fonts[errorLabel.Font];
+				errorLabelFilename = errorLabel.GetOrNull<LabelWidget>("ERROR_FILENAME");
+			}
 
 			var paletteDropDown = panel.GetOrNull<DropDownButtonWidget>("PALETTE_SELECTOR");
 			if (paletteDropDown != null)
@@ -322,7 +326,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (!modData.DefaultFileSystem.Exists(filename))
 				return false;
 
-			errorLabelWidget.Visible = false;
+			if (errorLabel != null)
+				errorLabel.Visible = false;
+
+			if (errorLabelFilename != null)
+				errorLabelFilename.Visible = false;
 
 			try
 			{
@@ -346,13 +354,16 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 			catch (Exception ex)
 			{
-				if (errorLabelWidget != null)
+				if (errorLabel != null)
 				{
-					errorLabelWidget.Text = WidgetUtils.TruncateText(errorLabelWidget.Text.Replace("{filename}", filename),
-						errorLabelWidget.Bounds.Width, errorFont);
-
 					currentSprites = new Sprite[0];
-					errorLabelWidget.Visible = true;
+					errorLabel.Visible = true;
+
+					if (errorLabelFilename != null)
+					{
+						errorLabelFilename.GetText = () => WidgetUtils.TruncateText(filename, errorLabel.Bounds.Width, errorFont);
+						errorLabelFilename.Visible = true;
+					}
 				}
 
 				Log.AddChannel("assetbrowser", "assetbrowser.log");
