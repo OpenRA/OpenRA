@@ -22,9 +22,11 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string Condition = null;
 
 		[FieldLoader.Require]
+		[FieldLoader.AllowEmptyEntries]
 		[GrantedConditionReference]
 		[Desc("Conditions to grant when the monitored condition is granted multiple times.",
-			"The first entry is activated at 2x grants, second entry at 3x grants, and so on.")]
+			"The first entry is activated at 2x grants, second entry at 3x grants, and so on.",
+			"Use empty entries to skip levels.")]
 		public readonly string[] StackedConditions = { };
 	}
 

@@ -153,10 +153,18 @@ namespace OpenRA.Mods.Common.Traits
 				var target = (conditionState.Tokens.Count - 1).Clamp(0, sc.Length);
 				var st = stackedTokens[condition];
 				for (var i = st.Count; i < target; i++)
-					st.Push(GrantCondition(self, sc[i]));
+				{
+					// Empty strings are used to skip unwanted levels
+					var t = !string.IsNullOrEmpty(sc[i]) ? GrantCondition(self, sc[i]) : InvalidConditionToken;
+					st.Push(t);
+				}
 
 				for (var i = st.Count; i > target; i--)
-					RevokeCondition(self, st.Pop());
+				{
+					var t = st.Pop();
+					if (t != InvalidConditionToken)
+						RevokeCondition(self, t);
+				}
 			}
 		}
 
