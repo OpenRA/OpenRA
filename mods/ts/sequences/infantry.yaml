@@ -359,10 +359,18 @@ jumpjet:
 	prone-stand:
 		Facings: 8
 		ShadowStart: 451
+	flying:
+		Facings: 8
+		Length: 6
+		Start: 292
+		ShadowStart: 743
 	die-twirling: # TODO: animation for falling from sky starts at 436
 		Start: 445
 		Length: 6
 		ShadowStart: 896
+	die-falling:
+		Start: 436
+		Length: 9
 	die-flying: # TODO: animation for falling from sky starts at 436
 		Start: 445
 		Length: 6
@@ -379,6 +387,11 @@ jumpjet:
 		Length: 6
 		Facings: 8
 		ShadowStart: 615
+	flying-attack:
+		Start: 388
+		Facings: 8
+		Length: 6
+		ShadowStart: 839
 	prone-attack:
 		Start: 212
 		Length: 6

@@ -616,7 +616,9 @@ tracks16:
 		Offset: 0, -13, 42
 		ZRamp: 1
 		UseTilesetExtension: true
-		ShadowStart: 1
+		# Disabled to avoid glitches until shadow rendering is fixed
+		# Appears to be unused in the original game too
+		# ShadowStart: 1
 
 tuntop01:
 	Inherits: ^tuntop
@@ -629,3 +631,9 @@ tuntop03:
 
 tuntop04:
 	Inherits: ^tuntop
+
+dig:
+	idle:
+		Length: *
+		ZOffset: 511
+		Offset: 0, 0, 24

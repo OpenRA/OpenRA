@@ -12,6 +12,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.Mods.Common.Traits;
 using OpenRA.Support;
 using OpenRA.Traits;
 
@@ -85,7 +86,13 @@ namespace OpenRA.Mods.Common
 
 		public static WPos BetweenCells(World w, CPos from, CPos to)
 		{
-			return WPos.Lerp(w.Map.CenterOfCell(from), w.Map.CenterOfCell(to), 1, 2);
+			var fromPos = from.Layer == 0 ? w.Map.CenterOfCell(from) :
+				w.GetCustomMovementLayers()[from.Layer].CenterOfCell(from);
+
+			var toPos = to.Layer == 0 ? w.Map.CenterOfCell(to) :
+				w.GetCustomMovementLayers()[to.Layer].CenterOfCell(to);
+
+			return WPos.Lerp(fromPos, toPos, 1, 2);
 		}
 
 		public static IEnumerable<T> Shuffle<T>(this IEnumerable<T> ts, MersenneTwister random)

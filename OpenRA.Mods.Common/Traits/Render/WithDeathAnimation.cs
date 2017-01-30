@@ -18,7 +18,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits.Render
 {
 	[Desc("This actor has a death animation.")]
-	public class WithDeathAnimationInfo : ITraitInfo, Requires<RenderSpritesInfo>
+	public class WithDeathAnimationInfo : ConditionalTraitInfo, Requires<RenderSpritesInfo>
 	{
 		[Desc("Sequence prefix to play when this actor is killed by a warhead.")]
 		[SequenceReference(null, true)] public readonly string DeathSequence = "die";
@@ -58,25 +58,24 @@ namespace OpenRA.Mods.Common.Traits.Render
 				: new Dictionary<string, string[]>();
 		}
 
-		public object Create(ActorInitializer init) { return new WithDeathAnimation(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new WithDeathAnimation(init.Self, this); }
 	}
 
-	public class WithDeathAnimation : INotifyKilled, INotifyCrushed
+	public class WithDeathAnimation : ConditionalTrait<WithDeathAnimationInfo>, INotifyKilled, INotifyCrushed
 	{
-		public readonly WithDeathAnimationInfo Info;
 		readonly RenderSprites rs;
 		bool crushed;
 
 		public WithDeathAnimation(Actor self, WithDeathAnimationInfo info)
+			: base(info)
 		{
-			Info = info;
 			rs = self.Trait<RenderSprites>();
 		}
 
 		public void Killed(Actor self, AttackInfo e)
 		{
 			// Actors with Crushable trait will spawn CrushedSequence.
-			if (crushed)
+			if (crushed || IsTraitDisabled)
 				return;
 
 			var palette = Info.DeathSequencePalette;

@@ -72,6 +72,12 @@ Terrain:
 		Type: Rock
 		TargetTypes: Ground
 		Color: 44443C
+	TerrainType@Subterranean:
+		Type: Subterranean
+		Color: 745537
+	TerrainType@Jumpjet:
+		Type: Jumpjet
+		Color: 745537
 
 # Automatically generated. DO NOT EDIT!
 Templates:
@@ -7580,7 +7586,7 @@ Templates:
 	Template@296:
 		Category: Bridges
 		Id: 296
-		Images: ovrps01.tem, ovrps01a.tem
+		Images: ovrps01.tem
 		Size: 3, 5
 		Tiles:
 			0: Cliff
@@ -7669,7 +7675,7 @@ Templates:
 	Template@297:
 		Category: Bridges
 		Id: 297
-		Images: ovrps02.tem, ovrps02a.tem
+		Images: ovrps02.tem
 		Size: 3, 5
 		Tiles:
 			0: Cliff
@@ -7758,7 +7764,7 @@ Templates:
 	Template@298:
 		Category: Bridges
 		Id: 298
-		Images: ovrps03.tem, ovrps03a.tem
+		Images: ovrps03.tem
 		Size: 2, 5
 		Tiles:
 			0: Cliff
@@ -7822,7 +7828,7 @@ Templates:
 	Template@299:
 		Category: Bridges
 		Id: 299
-		Images: ovrps04.tem, ovrps04a.tem
+		Images: ovrps04.tem
 		Size: 5, 3
 		Tiles:
 			0: Cliff
@@ -7911,7 +7917,7 @@ Templates:
 	Template@300:
 		Category: Bridges
 		Id: 300
-		Images: ovrps05.tem, ovrps05a.tem
+		Images: ovrps05.tem
 		Size: 5, 3
 		Tiles:
 			0: Cliff
@@ -8000,7 +8006,7 @@ Templates:
 	Template@301:
 		Category: Bridges
 		Id: 301
-		Images: ovrps06.tem, ovrps06a.tem
+		Images: ovrps06.tem
 		Size: 5, 2
 		Tiles:
 			0: Cliff
@@ -13365,7 +13371,7 @@ Templates:
 	Template@566:
 		Category: TrainBridges
 		Id: 566
-		Images: tovrps01.tem, tovrps01a.tem
+		Images: tovrps01.tem
 		Size: 3, 5
 		Tiles:
 			0: Cliff
@@ -13454,7 +13460,7 @@ Templates:
 	Template@567:
 		Category: TrainBridges
 		Id: 567
-		Images: tovrps02.tem, tovrps02a.tem
+		Images: tovrps02.tem
 		Size: 3, 5
 		Tiles:
 			0: Cliff
@@ -13543,7 +13549,7 @@ Templates:
 	Template@568:
 		Category: TrainBridges
 		Id: 568
-		Images: tovrps03.tem, tovrps03a.tem
+		Images: tovrps03.tem
 		Size: 2, 5
 		Tiles:
 			0: Cliff
@@ -13607,7 +13613,7 @@ Templates:
 	Template@569:
 		Category: TrainBridges
 		Id: 569
-		Images: tovrps04.tem, tovrps04a.tem
+		Images: tovrps04.tem
 		Size: 5, 3
 		Tiles:
 			0: Cliff
@@ -13696,7 +13702,7 @@ Templates:
 	Template@570:
 		Category: TrainBridges
 		Id: 570
-		Images: tovrps05.tem, tovrps05a.tem
+		Images: tovrps05.tem
 		Size: 5, 3
 		Tiles:
 			0: Cliff
@@ -13785,7 +13791,7 @@ Templates:
 	Template@571:
 		Category: TrainBridges
 		Id: 571
-		Images: tovrps06.tem, tovrps06a.tem
+		Images: tovrps06.tem
 		Size: 5, 2
 		Tiles:
 			0: Cliff

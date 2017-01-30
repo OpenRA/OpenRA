@@ -279,6 +279,7 @@
 	Valued:
 		Cost: 10
 	RevealsShroud:
+		RequiresCondition: !inside-tunnel
 		Range: 2c0
 		MaxHeightDelta: 3
 	Mobile:
@@ -298,6 +299,7 @@
 			BlueTiberium: 90
 				PathingCost: 90
 			Veins: 50
+		TunnelCondition: inside-tunnel
 	WithTextControlGroupDecoration:
 	SelectionDecorations:
 		Palette: pips
@@ -306,6 +308,7 @@
 	Voiced:
 		VoiceSet: Infantry
 	Targetable:
+		RequiresCondition: !inside-tunnel
 		TargetTypes: Ground, Infantry
 	QuantizeFacingsFromSequence:
 		Sequence: stand
@@ -471,6 +474,7 @@
 		TurnSpeed: 5
 		Voice: Move
 		RequiresCondition: !empdisable
+		TunnelCondition: inside-tunnel
 	Selectable:
 		Bounds: 40,24
 	WithTextControlGroupDecoration:
@@ -479,6 +483,7 @@
 	Voiced:
 		VoiceSet: Vehicle
 	Targetable:
+		RequiresCondition: !inside-tunnel
 		TargetTypes: Ground, Vehicle, Repair
 	Repairable:
 		RepairBuildings: gadept
@@ -521,6 +526,7 @@
 		RequiresCondition: criticalspeed
 		Modifier: 60
 	Carryable:
+		RequiresCondition: !inside-tunnel
 	RevealOnFire:
 
 ^Tank:
@@ -770,6 +776,7 @@
 		Voice: Move
 		Speed: 113
 		RequiresCondition: !empdisable
+		TunnelCondition: inside-tunnel
 	Cargo:
 		Types: Infantry
 		UnloadVoice: Unload
@@ -780,6 +787,7 @@
 	RevealsShroud:
 		Range: 5c0
 		MaxHeightDelta: 3
+		RequiresCondition: !inside-tunnel
 	Selectable:
 		Bounds: 40,24
 	WithTextControlGroupDecoration:

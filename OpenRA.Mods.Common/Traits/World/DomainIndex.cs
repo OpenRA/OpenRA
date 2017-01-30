@@ -37,8 +37,17 @@ namespace OpenRA.Mods.Common.Traits
 				domainIndexes[mc] = new MovementClassDomainIndex(world, mc);
 		}
 
-		public bool IsPassable(CPos p1, CPos p2, uint movementClass)
+		public bool IsPassable(CPos p1, CPos p2, MobileInfo mi, uint movementClass)
 		{
+			// HACK: Work around units in other movement layers from being blocked
+			// when the point in the main layer is not pathable
+			if (p1.Layer != 0 || p2.Layer != 0)
+				return true;
+
+			// HACK: Workaround until we can generalize movement classes
+			if (mi.Subterranean || mi.Jumpjet)
+				return true;
+
 			return domainIndexes[movementClass].IsPassable(p1, p2);
 		}
 
@@ -48,6 +57,12 @@ namespace OpenRA.Mods.Common.Traits
 			var dirty = cells.ToHashSet();
 			foreach (var index in domainIndexes)
 				index.Value.UpdateCells(world, dirty);
+		}
+
+		public void AddFixedConnection(IEnumerable<CPos> cells)
+		{
+			foreach (var index in domainIndexes)
+				index.Value.AddFixedConnection(cells);
 		}
 	}
 
@@ -116,6 +131,19 @@ namespace OpenRA.Mods.Common.Traits
 
 			foreach (var c1 in neighborDomains)
 				foreach (var c2 in neighborDomains)
+					CreateConnection(c1, c2);
+		}
+
+		public void AddFixedConnection(IEnumerable<CPos> cells)
+		{
+			// HACK: this is a temporary workaround to add a permanent connection between the domains of the listed cells.
+			// This is sufficient for fixed point-to-point tunnels, but not for dynamically updating custom layers
+			// such as destroyable elevated bridges.
+			// To support those the domain index will need to learn about custom movement layers, but that then requires
+			// a complete refactor of the domain code to deal with MobileInfo or better a shared pathfinder class type.
+			var cellDomains = cells.Select(c => domains[c]).ToHashSet();
+			foreach (var c1 in cellDomains)
+				foreach (var c2 in cellDomains.Where(c => c != c1))
 					CreateConnection(c1, c2);
 		}
 

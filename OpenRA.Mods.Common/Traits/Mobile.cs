@@ -15,6 +15,7 @@ using System.Drawing;
 using System.Linq;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Activities;
+using OpenRA.Mods.Common.Effects;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
@@ -36,6 +37,14 @@ namespace OpenRA.Mods.Common.Traits
 			// PERF: Enum.HasFlag is slower and requires allocations.
 			return (c & cellCondition) == cellCondition;
 		}
+	}
+
+	public static class CustomMovementLayerType
+	{
+		public const byte Tunnel = 1;
+		public const byte Subterranean = 2;
+		public const byte Jumpjet = 3;
+		public const byte ElevatedBridge = 4;
 	}
 
 	[Desc("Unit is able to move.")]
@@ -72,6 +81,57 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string BlockedCursor = "move-blocked";
 
 		[VoiceReference] public readonly string Voice = "Action";
+
+		[GrantedConditionReference]
+		[Desc("The condition to grant to self while inside a tunnel.")]
+		public readonly string TunnelCondition = null;
+
+		[Desc("Can this unit move underground?")]
+		public readonly bool Subterranean = false;
+
+		[GrantedConditionReference]
+		[Desc("The condition to grant to self while underground.")]
+		public readonly string SubterraneanCondition = null;
+
+		[Desc("Pathfinding cost for submerging or reemerging.")]
+		public readonly int SubterraneanTransitionCost = 0;
+
+		[Desc("The terrain types that this actor can transition on. Leave empty to allow any.")]
+		public readonly HashSet<string> SubterraneanTransitionTerrainTypes = new HashSet<string>();
+
+		[Desc("Can this actor transition on slopes?")]
+		public readonly bool SubterraneanTransitionOnRamps = false;
+
+		[Desc("Depth at which the subterranian condition is applied.")]
+		public readonly WDist SubterraneanTransitionDepth = new WDist(-1024);
+
+		[Desc("Dig animation image to play when transitioning.")]
+		public readonly string SubterraneanTransitionImage = null;
+
+		[SequenceReference("SubterraneanTransitionImage")]
+		[Desc("Dig animation image to play when transitioning.")]
+		public readonly string SubterraneanTransitionSequence = null;
+
+		[PaletteReference]
+		public readonly string SubterraneanTransitionPalette = "effect";
+
+		public readonly string SubterraneanTransitionSound = null;
+
+		[Desc("Can this unit fly over obsticals?")]
+		public readonly bool Jumpjet = false;
+
+		[GrantedConditionReference]
+		[Desc("The condition to grant to self while flying.")]
+		public readonly string JumpjetCondition = null;
+
+		[Desc("Pathfinding cost for taking off or landing.")]
+		public readonly int JumpjetTransitionCost = 0;
+
+		[Desc("The terrain types that this actor can transition on. Leave empty to allow any.")]
+		public readonly HashSet<string> JumpjetTransitionTerrainTypes = new HashSet<string>();
+
+		[Desc("Can this actor transition on slopes?")]
+		public readonly bool JumpjetTransitionOnRamps = true;
 
 		public override object Create(ActorInitializer init) { return new Mobile(init, this); }
 
@@ -151,15 +211,17 @@ namespace OpenRA.Mods.Common.Traits
 
 		public int MovementCostForCell(World world, CPos cell)
 		{
-			return MovementCostForCell(world.Map, TilesetTerrainInfo[world.Map.Rules.TileSet], cell);
+			return MovementCostForCell(world, TilesetTerrainInfo[world.Map.Rules.TileSet], cell);
 		}
 
-		int MovementCostForCell(Map map, TerrainInfo[] terrainInfos, CPos cell)
+		int MovementCostForCell(World world, TerrainInfo[] terrainInfos, CPos cell)
 		{
-			if (!map.Contains(cell))
+			if (!world.Map.Contains(cell))
 				return int.MaxValue;
 
-			var index = map.GetTerrainIndex(cell);
+			var index = cell.Layer == 0 ? world.Map.GetTerrainIndex(cell) :
+				world.GetCustomMovementLayers()[cell.Layer].GetTerrainIndex(cell);
+
 			if (index == byte.MaxValue)
 				return int.MaxValue;
 
@@ -279,7 +341,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public int MovementCostToEnterCell(WorldMovementInfo worldMovementInfo, Actor self, CPos cell, Actor ignoreActor = null, CellConditions check = CellConditions.All)
 		{
-			var cost = MovementCostForCell(worldMovementInfo.World.Map, worldMovementInfo.TerrainInfos, cell);
+			var cost = MovementCostForCell(worldMovementInfo.World, worldMovementInfo.TerrainInfos, cell);
 			if (cost == int.MaxValue || !CanMoveFreelyInto(worldMovementInfo.World, self, cell, ignoreActor, check))
 				return int.MaxValue;
 			return cost;
@@ -317,8 +379,8 @@ namespace OpenRA.Mods.Common.Traits
 		bool IOccupySpaceInfo.SharesCell { get { return SharesCell; } }
 	}
 
-	public class Mobile : ConditionalTrait<MobileInfo>, IIssueOrder, IResolveOrder, IOrderVoice, IPositionable, IMove, IFacing, ISync,
-		IDeathActorInitModifier, INotifyAddedToWorld, INotifyRemovedFromWorld, INotifyBlockingMove, IActorPreviewInitModifier
+	public class Mobile : ConditionalTrait<MobileInfo>, INotifyCreated, IIssueOrder, IResolveOrder, IOrderVoice, IPositionable, IMove,
+		IFacing, ISync, IDeathActorInitModifier, INotifyAddedToWorld, INotifyRemovedFromWorld, INotifyBlockingMove, IActorPreviewInitModifier
 	{
 		const int AverageTicksBeforePathing = 5;
 		const int SpreadTicksBeforePathing = 5;
@@ -332,6 +394,10 @@ namespace OpenRA.Mods.Common.Traits
 		int facing;
 		CPos fromCell, toCell;
 		public SubCell FromSubCell, ToSubCell;
+		int tunnelToken = ConditionManager.InvalidConditionToken;
+		int subterraneanToken = ConditionManager.InvalidConditionToken;
+		int jumpjetToken = ConditionManager.InvalidConditionToken;
+		ConditionManager conditionManager;
 
 		[Sync] public int Facing
 		{
@@ -359,6 +425,30 @@ namespace OpenRA.Mods.Common.Traits
 			FromSubCell = fromSub;
 			ToSubCell = toSub;
 			AddInfluence();
+
+			// Tunnel condition is added/removed when starting the transition between layers
+			if (toCell.Layer == CustomMovementLayerType.Tunnel && conditionManager != null &&
+					!string.IsNullOrEmpty(Info.TunnelCondition) && tunnelToken == ConditionManager.InvalidConditionToken)
+				tunnelToken = conditionManager.GrantCondition(self, Info.TunnelCondition);
+			else if (toCell.Layer != CustomMovementLayerType.Tunnel && tunnelToken != ConditionManager.InvalidConditionToken)
+				tunnelToken = conditionManager.RevokeCondition(self, tunnelToken);
+
+			// Play submerging animation as soon as it starts to submerge (before applying the condition)
+			if (toCell.Layer == CustomMovementLayerType.Subterranean && fromCell.Layer != CustomMovementLayerType.Subterranean)
+			{
+				if (!string.IsNullOrEmpty(Info.SubterraneanTransitionSequence))
+					self.World.AddFrameEndTask(w => w.Add(new SpriteEffect(self.World.Map.CenterOfCell(fromCell), self.World, Info.SubterraneanTransitionImage,
+						Info.SubterraneanTransitionSequence, Info.SubterraneanTransitionPalette)));
+
+				if (!string.IsNullOrEmpty(Info.SubterraneanTransitionSound))
+					Game.Sound.Play(SoundType.World, Info.SubterraneanTransitionSound);
+			}
+
+			// Grant the jumpjet condition as soon as the actor starts leaving the ground layer
+			// The condition is revoked from FinishedMoving
+			if (toCell.Layer == CustomMovementLayerType.Jumpjet && conditionManager != null &&
+					!string.IsNullOrEmpty(Info.JumpjetCondition) && jumpjetToken == ConditionManager.InvalidConditionToken)
+				jumpjetToken = conditionManager.GrantCondition(self, Info.JumpjetCondition);
 		}
 
 		public Mobile(ActorInitializer init, MobileInfo info)
@@ -384,6 +474,11 @@ namespace OpenRA.Mods.Common.Traits
 			// Use LocationInit if you want to insert the actor into the ActorMap!
 			if (init.Contains<CenterPositionInit>())
 				SetVisualPosition(self, init.Get<CenterPositionInit, WPos>());
+		}
+
+		void INotifyCreated.Created(Actor self)
+		{
+			conditionManager = self.TraitOrDefault<ConditionManager>();
 		}
 
 		// Returns a valid sub-cell
@@ -413,7 +508,12 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			subCell = GetValidSubCell(subCell);
 			SetLocation(cell, subCell, cell, subCell);
-			SetVisualPosition(self, self.World.Map.CenterOfSubCell(cell, subCell));
+
+			var position = cell.Layer == 0 ? self.World.Map.CenterOfCell(cell) :
+				self.World.GetCustomMovementLayers()[cell.Layer].CenterOfCell(cell);
+
+			var subcellOffset = self.World.Map.Grid.OffsetOfSubCell(subCell);
+			SetVisualPosition(self, position + subcellOffset);
 			FinishedMoving(self);
 		}
 
@@ -431,6 +531,32 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			CenterPosition = pos;
 			self.World.UpdateMaps(self, this);
+
+			// HACK: The submerging conditions must be applied part way through a move, and this is the only method that gets called
+			// at the right times to detect this
+			if (toCell.Layer == CustomMovementLayerType.Subterranean)
+			{
+				var depth = self.World.Map.DistanceAboveTerrain(self.CenterPosition);
+				if (subterraneanToken == ConditionManager.InvalidConditionToken && depth < Info.SubterraneanTransitionDepth && conditionManager != null
+						&& !string.IsNullOrEmpty(Info.SubterraneanCondition))
+					subterraneanToken = conditionManager.GrantCondition(self, Info.SubterraneanCondition);
+			}
+			else if (subterraneanToken != ConditionManager.InvalidConditionToken)
+			{
+				var depth = self.World.Map.DistanceAboveTerrain(self.CenterPosition);
+				if (depth > Info.SubterraneanTransitionDepth)
+				{
+					subterraneanToken = conditionManager.RevokeCondition(self, subterraneanToken);
+
+					// HACK: the submerging animation and sound won't play if a condition isn't defined
+					if (!string.IsNullOrEmpty(Info.SubterraneanTransitionSound))
+						Game.Sound.Play(SoundType.World, Info.SubterraneanTransitionSound);
+
+					if (!string.IsNullOrEmpty(Info.SubterraneanTransitionSequence))
+						self.World.AddFrameEndTask(w => w.Add(new SpriteEffect(self.World.Map.CenterOfCell(fromCell), self.World, Info.SubterraneanTransitionImage,
+							Info.SubterraneanTransitionSequence, Info.SubterraneanTransitionPalette)));
+				}
+			}
 		}
 
 		public void AddedToWorld(Actor self)
@@ -598,6 +724,11 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void FinishedMoving(Actor self)
 		{
+			// Need to check both fromCell and toCell because FinishedMoving is called multiple times during the move
+			// and that condition guarantees that this only runs when the unit has finished landing.
+			if (fromCell.Layer != CustomMovementLayerType.Jumpjet && toCell.Layer != CustomMovementLayerType.Jumpjet && jumpjetToken != ConditionManager.InvalidConditionToken)
+				jumpjetToken = conditionManager.RevokeCondition(self, jumpjetToken);
+
 			// Only make actor crush if it is on the ground
 			if (!self.IsAtGroundLevel())
 				return;
@@ -626,7 +757,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		public int MovementSpeedForCell(Actor self, CPos cell)
 		{
-			var index = self.World.Map.GetTerrainIndex(cell);
+			var index = cell.Layer == 0 ? self.World.Map.GetTerrainIndex(cell) :
+				self.World.GetCustomMovementLayers()[cell.Layer].GetTerrainIndex(cell);
+
 			if (index == byte.MaxValue)
 				return 0;
 
@@ -714,6 +847,21 @@ namespace OpenRA.Mods.Common.Traits
 						self.ActorID, self.Location);
 				}
 			}
+		}
+
+		public bool CanInteractWithGroundLayer(Actor self)
+		{
+			// TODO: Think about extending this to support arbitrary layer-layer checks
+			// in a way that is compatible with the other IMove types.
+			// This would then allow us to e.g. have units attack other units inside tunnels.
+			if (ToCell.Layer == 0)
+				return true;
+
+			ICustomMovementLayer layer;
+			if (self.World.GetCustomMovementLayers().TryGetValue(ToCell.Layer, out layer))
+				return layer.InteractsWithDefaultLayer;
+
+			return true;
 		}
 
 		void IActorPreviewInitModifier.ModifyActorPreviewInit(Actor self, TypeDictionary inits)

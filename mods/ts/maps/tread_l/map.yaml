@@ -14,7 +14,7 @@ Bounds: 2,4,161,224
 
 Visibility: Lobby
 
-Categories: Conquest, Original TS Map
+Categories: Conquest, Original TS Map, Playable
 
 Players:
 	PlayerReference@Neutral:
@@ -184,73 +184,8 @@ Actors:
 		Owner: Neutral
 		Health: 100
 		Facing: 96
-	Actor23: cabhut
-		Location: 112,15
-		Owner: Neutral
-		Health: 100
-		Facing: 96
-	Actor24: cabhut
-		Location: 116,-9
-		Owner: Neutral
-		Health: 100
-		Facing: 96
-	Actor25: cabhut
-		Location: 96,34
-		Owner: Neutral
-		Health: 100
-		Facing: 96
-	Actor26: cabhut
-		Location: 121,44
-		Owner: Neutral
-		Health: 100
-		Facing: 96
-	Actor27: cabhut
-		Location: 126,30
-		Owner: Neutral
-		Health: 100
-		Facing: 96
-	Actor28: cabhut
-		Location: 85,11
-		Owner: Neutral
-		Health: 100
-		Facing: 96
-	Actor29: cabhut
-		Location: 130,-13
-		Owner: Neutral
-		Health: 100
-		Facing: 96
-	Actor30: cabhut
-		Location: 146,-9
-		Owner: Neutral
-		Health: 100
-		Facing: 96
-	Actor31: cabhut
-		Location: 151,-25
-		Owner: Neutral
-		Health: 100
-		Facing: 96
-	Actor32: cabhut
-		Location: 155,-42
-		Owner: Neutral
-		Health: 100
-		Facing: 96
 	Actor33: cabhut
 		Location: 145,-66
-		Owner: Neutral
-		Health: 100
-		Facing: 96
-	Actor34: cabhut
-		Location: 159,-69
-		Owner: Neutral
-		Health: 100
-		Facing: 96
-	Actor35: cabhut
-		Location: 173,-66
-		Owner: Neutral
-		Health: 100
-		Facing: 96
-	Actor36: cabhut
-		Location: 181,-34
 		Owner: Neutral
 		Health: 100
 		Facing: 96
@@ -1209,41 +1144,633 @@ Actors:
 	Actor341: lobrdg_r_ne
 		Location: 160,-137
 		Owner: Neutral
-	Actor345: lobrdg_a
+	Actor342: lobrdg_a
 		Location: 160,-136
 		Owner: Neutral
-	Actor346: lobrdg_a
+	Actor343: lobrdg_a
 		Location: 160,-135
 		Owner: Neutral
-	Actor351: lobrdg_a
+	Actor344: lobrdg_a
 		Location: 160,-134
 		Owner: Neutral
-	Actor352: lobrdg_a
+	Actor345: lobrdg_a
 		Location: 160,-133
 		Owner: Neutral
-	Actor357: lobrdg_a
+	Actor346: lobrdg_a
 		Location: 160,-132
 		Owner: Neutral
-	Actor358: lobrdg_a
+	Actor347: lobrdg_a
 		Location: 160,-131
 		Owner: Neutral
-	Actor363: lobrdg_a
+	Actor348: lobrdg_a
 		Location: 160,-130
 		Owner: Neutral
-	Actor364: lobrdg_a
+	Actor349: lobrdg_a
 		Location: 160,-129
 		Owner: Neutral
-	Actor369: lobrdg_r_sw
+	Actor350: lobrdg_r_sw
 		Location: 160,-128
+		Owner: Neutral
+	Actor351: bridge1
+		Location: 129,-64
+		Owner: Neutral
+	Actor352: bridge1
+		Location: 130,-64
+		Owner: Neutral
+	Actor353: bridge1
+		Location: 131,-64
+		Owner: Neutral
+	Actor354: bridge1
+		Location: 132,-64
+		Owner: Neutral
+	Actor355: bridge2
+		Location: 161,-90
+		Owner: Neutral
+	Actor356: bridge2
+		Location: 161,-89
+		Owner: Neutral
+	Actor357: bridge2
+		Location: 161,-88
+		Owner: Neutral
+	Actor358: bridge2
+		Location: 161,-87
+		Owner: Neutral
+	Actor359: bridge2
+		Location: 161,-86
+		Owner: Neutral
+	Actor360: bridge1
+		Location: 63,13
+		Owner: Neutral
+	Actor361: bridge1
+		Location: 140,-64
+		Owner: Neutral
+	Actor362: bridge1
+		Location: 141,-64
+		Owner: Neutral
+	Actor363: bridge1
+		Location: 142,-64
+		Owner: Neutral
+	Actor364: bridge2
+		Location: 161,-75
+		Owner: Neutral
+	Actor365: bridge2
+		Location: 161,-74
+		Owner: Neutral
+	Actor366: bridge2
+		Location: 161,-73
+		Owner: Neutral
+	Actor367: bridge2
+		Location: 161,-72
+		Owner: Neutral
+	Actor368: bridge1
+		Location: 80,13
+		Owner: Neutral
+	Actor369: bridge1
+		Location: 81,13
+		Owner: Neutral
+	Actor370: bridge1
+		Location: 82,13
 		Owner: Neutral
 	Actor371: crat03
 		Location: 158,-61
 		Owner: Neutral
-	Actor372: crat01
+	Actor372: bridge2
+		Location: 114,-6
+		Owner: Neutral
+	Actor373: bridge1
+		Location: 176,-68
+		Owner: Neutral
+	Actor374: bridge2
+		Location: 114,-5
+		Owner: Neutral
+	Actor375: bridge1
+		Location: 177,-68
+		Owner: Neutral
+	Actor376: bridge2
+		Location: 114,-4
+		Owner: Neutral
+	Actor377: bridge1
+		Location: 178,-68
+		Owner: Neutral
+	Actor378: bridge2
+		Location: 114,-3
+		Owner: Neutral
+	Actor379: bridge2
+		Location: 114,-2
+		Owner: Neutral
+	Actor380: bridge2
+		Location: 114,-1
+		Owner: Neutral
+	Actor381: bridge2
+		Location: 114,0
+		Owner: Neutral
+	Actor382: bridge2
+		Location: 153,-39
+		Owner: Neutral
+	Actor383: bridge2
+		Location: 114,1
+		Owner: Neutral
+	Actor384: bridge2
+		Location: 153,-38
+		Owner: Neutral
+	Actor385: bridge1
+		Location: 183,-68
+		Owner: Neutral
+	Actor386: bridge2
+		Location: 114,2
+		Owner: Neutral
+	Actor387: bridge2
+		Location: 153,-37
+		Owner: Neutral
+	Actor388: bridge1
+		Location: 184,-68
+		Owner: Neutral
+	Actor389: bridge2
+		Location: 153,-36
+		Owner: Neutral
+	Actor390: bridge2
+		Location: 114,4
+		Owner: Neutral
+	Actor391: bridge2
+		Location: 153,-35
+		Owner: Neutral
+	Actor392: bridge2
+		Location: 114,5
+		Owner: Neutral
+	Actor393: bridge2
+		Location: 153,-34
+		Owner: Neutral
+	Actor394: bridge2
+		Location: 114,6
+		Owner: Neutral
+	Actor395: bridge2
+		Location: 153,-33
+		Owner: Neutral
+	Actor396: bridge2
+		Location: 114,7
+		Owner: Neutral
+	Actor397: bridge2
+		Location: 153,-32
+		Owner: Neutral
+	Actor398: bridge2
+		Location: 114,8
+		Owner: Neutral
+	Actor399: bridge1
+		Location: 133,-11
+		Owner: Neutral
+	Actor400: bridge2
+		Location: 153,-31
+		Owner: Neutral
+	Actor401: bridge2
+		Location: 114,9
+		Owner: Neutral
+	Actor402: bridge1
+		Location: 134,-11
+		Owner: Neutral
+	Actor403: bridge2
+		Location: 153,-30
+		Owner: Neutral
+	Actor404: bridge2
+		Location: 114,10
+		Owner: Neutral
+	Actor405: bridge1
+		Location: 135,-11
+		Owner: Neutral
+	Actor406: bridge2
+		Location: 153,-29
+		Owner: Neutral
+	Actor407: bridge2
+		Location: 114,11
+		Owner: Neutral
+	Actor408: bridge1
+		Location: 136,-11
+		Owner: Neutral
+	Actor409: bridge2
+		Location: 153,-28
+		Owner: Neutral
+	Actor410: bridge2
+		Location: 114,12
+		Owner: Neutral
+	Actor411: bridge1
+		Location: 137,-11
+		Owner: Neutral
+	Actor412: bridge1
+		Location: 138,-11
+		Owner: Neutral
+	Actor413: bridge1
+		Location: 139,-11
+		Owner: Neutral
+	Actor414: bridge1
+		Location: 140,-11
+		Owner: Neutral
+	Actor415: bridge1
+		Location: 141,-11
+		Owner: Neutral
+	Actor416: bridge2
+		Location: 94,37
+		Owner: Neutral
+	Actor417: bridge1
+		Location: 142,-11
+		Owner: Neutral
+	Actor418: bridge2
+		Location: 94,38
+		Owner: Neutral
+	Actor419: bridge1
+		Location: 143,-11
+		Owner: Neutral
+	Actor420: bridge2
+		Location: 94,39
+		Owner: Neutral
+	Actor421: bridge2
+		Location: 94,40
+		Owner: Neutral
+	Actor422: bridge2
+		Location: 94,41
+		Owner: Neutral
+	Actor423: bridge2
+		Location: 94,42
+		Owner: Neutral
+	Actor424: crat01
 		Location: 123,20
 		Owner: Neutral
+	Actor425: bridge2
+		Location: 94,54
+		Owner: Neutral
+	Actor426: bridge2
+		Location: 94,55
+		Owner: Neutral
+	Actor427: bridge2
+		Location: 94,56
+		Owner: Neutral
+	Actor428: bridge2
+		Location: 94,57
+		Owner: Neutral
+	Actor429: bridge1
+		Location: 184,-32
+		Owner: Neutral
+	Actor430: bridge1
+		Location: 185,-32
+		Owner: Neutral
+	Actor431: bridge1
+		Location: 186,-32
+		Owner: Neutral
+	Actor432: bridge1
+		Location: 187,-32
+		Owner: Neutral
+	Actor433: bridge1
+		Location: 129,28
+		Owner: Neutral
+	Actor434: bridge1
+		Location: 130,28
+		Owner: Neutral
+	Actor435: bridge1
+		Location: 131,28
+		Owner: Neutral
+	Actor436: bridge1
+		Location: 132,28
+		Owner: Neutral
+	Actor437: bridge1
+		Location: 133,28
+		Owner: Neutral
+	Actor438: bridge1
+		Location: 193,-32
+		Owner: Neutral
+	Actor439: bridge1
+		Location: 134,28
+		Owner: Neutral
+	Actor440: bridge1
+		Location: 194,-32
+		Owner: Neutral
+	Actor441: bridge1
+		Location: 135,28
+		Owner: Neutral
+	Actor442: bridge1
+		Location: 195,-32
+		Owner: Neutral
+	Actor443: bridge1
+		Location: 196,-32
+		Owner: Neutral
+	Actor444: bridge1
+		Location: 197,-32
+		Owner: Neutral
+	Actor445: bridge2
+		Location: 123,47
+		Owner: Neutral
+	Actor446: bridge2
+		Location: 123,48
+		Owner: Neutral
+	Actor447: bridge2
+		Location: 123,49
+		Owner: Neutral
+	Actor448: bridge2
+		Location: 123,50
+		Owner: Neutral
+	Actor449: bridge1
+		Location: 145,28
+		Owner: Neutral
+	Actor450: bridge2
+		Location: 123,51
+		Owner: Neutral
+	Actor451: bridge1
+		Location: 146,28
+		Owner: Neutral
+	Actor452: bridge1
+		Location: 147,28
+		Owner: Neutral
+	Actor453: bridge1
+		Location: 148,28
+		Owner: Neutral
+	Actor454: bridge2
+		Location: 123,61
+		Owner: Neutral
+	Actor455: bridge2
+		Location: 123,62
+		Owner: Neutral
+	Actor456: bridge2
+		Location: 123,63
+		Owner: Neutral
+	Actor457: bridge2
+		Location: 123,64
+		Owner: Neutral
+	Actor458: bridge2
+		Location: 123,65
+		Owner: Neutral
+	Actor459: bridge2
+		Location: 123,66
+		Owner: Neutral
+	Actor460: bridge2
+		Location: 123,67
+		Owner: Neutral
+	Actor461: bridge1
+		Owner: Neutral
+		Location: 74,13
+	Actor462: bridge1
+		Owner: Neutral
+		Location: 75,13
+	Actor463: bridge1
+		Owner: Neutral
+		Location: 76,13
+	Actor464: bridge1
+		Owner: Neutral
+		Location: 77,13
+	Actor465: bridge1
+		Owner: Neutral
+		Location: 78,13
+	Actor466: bridge1
+		Owner: Neutral
+		Location: 79,13
+	Actor467: bridge1
+		Owner: Neutral
+		Location: 64,13
+	Actor468: bridge1
+		Owner: Neutral
+		Location: 65,13
+	Actor469: bridge1
+		Owner: Neutral
+		Location: 66,13
+	Actor470: bridge1
+		Owner: Neutral
+		Location: 67,13
+	Actor471: bridge1
+		Owner: Neutral
+		Location: 68,13
+	Actor472: bridge1
+		Owner: Neutral
+		Location: 69,13
+	Actor473: bridge1
+		Owner: Neutral
+		Location: 70,13
+	Actor474: bridge1
+		Owner: Neutral
+		Location: 71,13
+	Actor475: bridge1
+		Owner: Neutral
+		Location: 72,13
+	Actor476: bridge2
+		Owner: Neutral
+		Location: 94,43
+	Actor477: bridge2
+		Owner: Neutral
+		Location: 94,44
+	Actor478: bridge2
+		Owner: Neutral
+		Location: 94,45
+	Actor479: bridge2
+		Owner: Neutral
+		Location: 94,46
+	Actor480: bridge2
+		Owner: Neutral
+		Location: 94,48
+	Actor481: bridge2
+		Owner: Neutral
+		Location: 94,49
+	Actor482: bridge2
+		Owner: Neutral
+		Location: 94,50
+	Actor483: bridge2
+		Owner: Neutral
+		Location: 94,51
+	Actor484: bridge2
+		Owner: Neutral
+		Location: 94,52
+	Actor485: bridge2
+		Owner: Neutral
+		Location: 94,53
+	Actor486: bridge2
+		Owner: Neutral
+		Location: 123,52
+	Actor487: bridge2
+		Owner: Neutral
+		Location: 123,53
+	Actor488: bridge2
+		Owner: Neutral
+		Location: 123,54
+	Actor489: bridge2
+		Owner: Neutral
+		Location: 123,55
+	Actor490: bridge2
+		Owner: Neutral
+		Location: 123,56
+	Actor491: bridge2
+		Owner: Neutral
+		Location: 123,57
+	Actor492: bridge2
+		Owner: Neutral
+		Location: 123,58
+	Actor493: bridge2
+		Owner: Neutral
+		Location: 123,59
+	Actor494: bridge2
+		Owner: Neutral
+		Location: 123,60
+	Actor495: bridge1
+		Owner: Neutral
+		Location: 136,28
+	Actor496: bridge1
+		Owner: Neutral
+		Location: 137,28
+	Actor497: bridge1
+		Owner: Neutral
+		Location: 139,28
+	Actor498: bridge1
+		Owner: Neutral
+		Location: 140,28
+	Actor499: bridge1
+		Owner: Neutral
+		Location: 141,28
+	Actor500: bridge1
+		Owner: Neutral
+		Location: 142,28
+	Actor501: bridge1
+		Owner: Neutral
+		Location: 143,28
+	Actor502: bridge1
+		Owner: Neutral
+		Location: 144,28
+	Actor503: bridge1
+		Owner: Neutral
+		Location: 188,-32
+	Actor504: bridge1
+		Owner: Neutral
+		Location: 189,-32
+	Actor505: bridge1
+		Owner: Neutral
+		Location: 190,-32
+	Actor506: bridge1
+		Owner: Neutral
+		Location: 191,-32
+	Actor507: bridge1
+		Owner: Neutral
+		Location: 192,-32
+	Actor508: bridge2
+		Owner: Neutral
+		Location: 161,-85
+	Actor509: bridge2
+		Owner: Neutral
+		Location: 161,-84
+	Actor510: bridge2
+		Owner: Neutral
+		Location: 161,-83
+	Actor511: bridge2
+		Owner: Neutral
+		Location: 161,-82
+	Actor512: bridge2
+		Owner: Neutral
+		Location: 161,-81
+	Actor513: bridge2
+		Owner: Neutral
+		Location: 161,-80
+	Actor514: bridge2
+		Owner: Neutral
+		Location: 161,-79
+	Actor515: bridge2
+		Owner: Neutral
+		Location: 161,-78
+	Actor516: bridge2
+		Owner: Neutral
+		Location: 161,-77
+	Actor517: bridge2
+		Owner: Neutral
+		Location: 161,-76
+	Actor518: bridge1
+		Owner: Neutral
+		Location: 133,-64
+	Actor519: bridge1
+		Owner: Neutral
+		Location: 134,-64
+	Actor520: bridge1
+		Owner: Neutral
+		Location: 135,-64
+	Actor521: bridge1
+		Owner: Neutral
+		Location: 136,-64
+	Actor522: bridge1
+		Owner: Neutral
+		Location: 137,-64
+	Actor523: bridge1
+		Owner: Neutral
+		Location: 137,-64
+	Actor524: bridge1
+		Owner: Neutral
+		Location: 138,-64
+	Actor525: bridge1
+		Owner: Neutral
+		Location: 139,-64
+	Actor526: bridge1
+		Owner: Neutral
+		Location: 179,-68
+	Actor527: bridge1
+		Owner: Neutral
+		Location: 180,-68
+	Actor528: bridge1
+		Owner: Neutral
+		Location: 181,-68
+	Actor529: bridge1
+		Owner: Neutral
+		Location: 182,-68
 
 Rules:
 	World:
 		GlobalLightingPaletteEffect:
 			Ambient: 0.75
+		ElevatedBridgeLayer:
+		ElevatedBridgePlaceholder@a:
+			Location: 62, 12
+			Height: 6
+			Orientation: X
+			Length: 23
+		ElevatedBridgePlaceholder@b:
+			Location: 93, 36
+			Height: 6
+			Orientation: Y
+			Length: 24
+		ElevatedBridgePlaceholder@c:
+			Location: 122, 46
+			Height: 6
+			Orientation: Y
+			Length: 23
+		ElevatedBridgePlaceholder@d:
+			Location: 128, 27
+			Height: 6
+			Orientation: X
+			Length: 21
+		ElevatedBridgePlaceholder@e:
+			Location: 113, -7
+			Height: 6
+			Orientation: Y
+			Length: 20
+		ElevatedBridgePlaceholder@f:
+			Location: 132, -12
+			Height: 6
+			Orientation: X
+			Length: 12
+		ElevatedBridgePlaceholder@g:
+			Location: 152, -40
+			Height: 6
+			Orientation: Y
+			Length: 13
+		ElevatedBridgePlaceholder@h:
+			Location: 142, -40
+			Height: 6
+			Orientation: Y
+			Length: 13
+		ElevatedBridgePlaceholder@i:
+			Location: 128, -63
+			Height: 6
+			Orientation: X
+			Length: 15
+		ElevatedBridgePlaceholder@j:
+			Location: 160, -91
+			Height: 6
+			Orientation: Y
+			Length: 21
+		ElevatedBridgePlaceholder@k:
+			Location: 175, -69
+			Height: 6
+			Orientation: X
+			Length: 10
+		ElevatedBridgePlaceholder@l:
+			Location: 183, -33
+			Height: 6
+			Orientation: X
+			Length: 15

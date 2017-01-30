@@ -57,7 +57,7 @@ namespace OpenRA.Mods.Common.Traits
 
 				if (mobileInfo != null)
 					location = self.World.Map.ChooseClosestMatchingEdgeCell(self.Location,
-						c => mobileInfo.CanEnterCell(self.World, null, c) && domainIndex.IsPassable(c, destination, passable));
+						c => mobileInfo.CanEnterCell(self.World, null, c) && domainIndex.IsPassable(c, destination, mobileInfo, passable));
 			}
 
 			// No suitable spawn location could be found, so production has failed.

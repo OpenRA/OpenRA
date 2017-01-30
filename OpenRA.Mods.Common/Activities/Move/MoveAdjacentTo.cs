@@ -23,7 +23,7 @@ namespace OpenRA.Mods.Common.Activities
 	{
 		static readonly List<CPos> NoPath = new List<CPos>();
 
-		readonly Mobile mobile;
+		protected readonly Mobile Mobile;
 		readonly IPathFinder pathFinder;
 		readonly DomainIndex domainIndex;
 		readonly uint movementClass;
@@ -53,10 +53,10 @@ namespace OpenRA.Mods.Common.Activities
 		{
 			Target = target;
 
-			mobile = self.Trait<Mobile>();
+			Mobile = self.Trait<Mobile>();
 			pathFinder = self.World.WorldActor.Trait<IPathFinder>();
 			domainIndex = self.World.WorldActor.Trait<DomainIndex>();
-			movementClass = (uint)mobile.Info.GetMovementClass(self.World.Map.Rules.TileSet);
+			movementClass = (uint)Mobile.Info.GetMovementClass(self.World.Map.Rules.TileSet);
 
 			if (target.IsValidFor(self))
 				targetPosition = self.World.Map.CellContaining(target.CenterPosition);
@@ -91,7 +91,7 @@ namespace OpenRA.Mods.Common.Activities
 					inner.Cancel(self);
 
 				self.SetTargetLine(Target.FromCell(self.World, targetPosition), Color.Green);
-				return ActivityUtils.RunActivity(self, new AttackMoveActivity(self, mobile.MoveTo(targetPosition, 0)));
+				return ActivityUtils.RunActivity(self, new AttackMoveActivity(self, Mobile.MoveTo(targetPosition, 0)));
 			}
 
 			// Inner move order has completed.
@@ -103,7 +103,7 @@ namespace OpenRA.Mods.Common.Activities
 					return NextActivity;
 
 				// Target has moved, and MoveAdjacentTo is still valid.
-				inner = mobile.MoveTo(() => CalculatePathToTarget(self));
+				inner = Mobile.MoveTo(() => CalculatePathToTarget(self));
 				repath = false;
 			}
 
@@ -142,14 +142,14 @@ namespace OpenRA.Mods.Common.Activities
 			var loc = self.Location;
 
 			foreach (var cell in targetCells)
-				if (domainIndex.IsPassable(loc, cell, movementClass) && mobile.CanEnterCell(cell))
+				if (domainIndex.IsPassable(loc, cell, Mobile.Info, movementClass) && Mobile.CanEnterCell(cell))
 					searchCells.Add(cell);
 
 			if (!searchCells.Any())
 				return NoPath;
 
-			using (var fromSrc = PathSearch.FromPoints(self.World, mobile.Info, self, searchCells, loc, true))
-			using (var fromDest = PathSearch.FromPoint(self.World, mobile.Info, self, loc, targetPosition, true).Reverse())
+			using (var fromSrc = PathSearch.FromPoints(self.World, Mobile.Info, self, searchCells, loc, true))
+			using (var fromDest = PathSearch.FromPoint(self.World, Mobile.Info, self, loc, targetPosition, true).Reverse())
 				return pathFinder.FindBidiPath(fromSrc, fromDest);
 		}
 

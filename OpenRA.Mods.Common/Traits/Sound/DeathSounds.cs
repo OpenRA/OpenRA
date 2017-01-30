@@ -16,7 +16,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits.Sound
 {
 	[Desc("Sounds to play when killed.")]
-	public class DeathSoundsInfo : ITraitInfo
+	public class DeathSoundsInfo : ConditionalTraitInfo
 	{
 		[Desc("Death notification voice.")]
 		[VoiceReference] public readonly string Voice = "Die";
@@ -28,19 +28,21 @@ namespace OpenRA.Mods.Common.Traits.Sound
 			"If empty, this will be used as the default sound for all death types.")]
 		public readonly HashSet<string> DeathTypes = new HashSet<string>();
 
-		public object Create(ActorInitializer init) { return new DeathSounds(this); }
+		public override object Create(ActorInitializer init) { return new DeathSounds(this); }
 	}
 
-	public class DeathSounds : INotifyKilled
+	public class DeathSounds : ConditionalTrait<DeathSoundsInfo>, INotifyKilled
 	{
-		readonly DeathSoundsInfo info;
-
-		public DeathSounds(DeathSoundsInfo info) { this.info = info; }
+		public DeathSounds(DeathSoundsInfo info)
+			: base(info) { }
 
 		public void Killed(Actor self, AttackInfo e)
 		{
-			if (info.DeathTypes.Count == 0 || e.Damage.DamageTypes.Overlaps(info.DeathTypes))
-				self.PlayVoiceLocal(info.Voice, info.VolumeMultiplier);
+			if (IsTraitDisabled)
+				return;
+
+			if (Info.DeathTypes.Count == 0 || e.Damage.DamageTypes.Overlaps(Info.DeathTypes))
+				self.PlayVoiceLocal(Info.Voice, Info.VolumeMultiplier);
 		}
 	}
 }

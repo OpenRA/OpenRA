@@ -69,7 +69,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (domainIndex != null)
 			{
 				var passable = mi.GetMovementClass(world.Map.Rules.TileSet);
-				if (!domainIndex.IsPassable(source, target, (uint)passable))
+				if (!domainIndex.IsPassable(source, target, mi, (uint)passable))
 					return EmptyPath;
 			}
 
@@ -103,7 +103,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (domainIndex != null)
 			{
 				var passable = mi.GetMovementClass(world.Map.Rules.TileSet);
-				tilesInRange = new List<CPos>(tilesInRange.Where(t => domainIndex.IsPassable(source, t, (uint)passable)));
+				tilesInRange = new List<CPos>(tilesInRange.Where(t => domainIndex.IsPassable(source, t, mi, (uint)passable)));
 				if (!tilesInRange.Any())
 					return EmptyPath;
 			}

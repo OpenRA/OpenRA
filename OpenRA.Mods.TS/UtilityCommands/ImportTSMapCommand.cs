@@ -31,10 +31,8 @@ namespace OpenRA.Mods.TS.UtilityCommands
 		{
 			{ 0x01, "gasand" },
 			{ 0x03, "gawall" },
-			/*
 			{ 0x18, "bridge1" },
 			{ 0x19, "bridge2" },
-			*/
 			{ 0x1A, "nawall" },
 			{ 0x27, "tracks01" },
 			{ 0x28, "tracks02" },
@@ -56,10 +54,8 @@ namespace OpenRA.Mods.TS.UtilityCommands
 			{ 0x38, "tracktunnel02" },
 			{ 0x39, "tracktunnel03" },
 			{ 0x3A, "tracktunnel04" },
-			/*
 			{ 0x3B, "railbrdg1" },
 			{ 0x3C, "railbrdg2" },
-			*/
 			{ 0x3D, "crat01" },
 			{ 0x3E, "crat02" },
 			{ 0x3F, "crat03" },

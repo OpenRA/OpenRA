@@ -771,7 +771,7 @@ namespace OpenRA.Mods.Common.AI
 
 			var path = pathfinder.FindPath(
 				PathSearch.Search(World, mobileInfo, harvester, true,
-					loc => domainIndex.IsPassable(harvester.Location, loc, passable) && harvester.CanHarvestAt(loc, resLayer, harvInfo, territory))
+					loc => domainIndex.IsPassable(harvester.Location, loc, mobileInfo, passable) && harvester.CanHarvestAt(loc, resLayer, harvInfo, territory))
 					.WithCustomCost(loc => World.FindActorsInCircle(World.Map.CenterOfCell(loc), Info.HarvesterEnemyAvoidanceRadius)
 						.Where(u => !u.IsDead && harvester.Owner.Stances[u.Owner] == Stance.Enemy)
 						.Sum(u => Math.Max(WDist.Zero.Length, Info.HarvesterEnemyAvoidanceRadius.Length - (World.Map.CenterOfCell(loc) - u.CenterPosition).Length)))

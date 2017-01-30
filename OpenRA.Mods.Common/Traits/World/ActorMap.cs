@@ -14,11 +14,10 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using OpenRA.Traits;
 
-namespace OpenRA.Traits
+namespace OpenRA.Mods.Common.Traits
 {
-	public enum SubCell { Invalid = int.MinValue, Any = int.MinValue / 2, FullCell = 0, First = 1 }
-
 	public class ActorMapInfo : ITraitInfo
 	{
 		[Desc("Size of partition bins (cells)")]
@@ -27,7 +26,7 @@ namespace OpenRA.Traits
 		public object Create(ActorInitializer init) { return new ActorMap(init.World, this); }
 	}
 
-	public class ActorMap : ITick
+	public class ActorMap : IActorMap, ITick, INotifyCreated
 	{
 		class InfluenceNode
 		{
@@ -166,6 +165,8 @@ namespace OpenRA.Traits
 		int nextTriggerId;
 
 		readonly CellLayer<InfluenceNode> influence;
+		readonly Dictionary<int, CellLayer<InfluenceNode>> customInfluence = new Dictionary<int, CellLayer<InfluenceNode>>();
+		public readonly Dictionary<int, ICustomMovementLayer> CustomMovementLayers = new Dictionary<int, ICustomMovementLayer>();
 
 		readonly Bin[] bins;
 		readonly int rows, cols;
@@ -191,6 +192,15 @@ namespace OpenRA.Traits
 
 			// PERF: Cache this delegate so it does not have to be allocated repeatedly.
 			actorShouldBeRemoved = removeActorPosition.Contains;
+		}
+
+		void INotifyCreated.Created(Actor self)
+		{
+			foreach (var cml in self.TraitsImplementing<ICustomMovementLayer>())
+			{
+				CustomMovementLayers[cml.Index] = cml;
+				customInfluence.Add(cml.Index, new CellLayer<InfluenceNode>(self.World.Map));
+			}
 		}
 
 		sealed class ActorsAtEnumerator : IEnumerator<Actor>
@@ -229,7 +239,9 @@ namespace OpenRA.Traits
 			var uv = a.ToMPos(map);
 			if (!influence.Contains(uv))
 				return Enumerable.Empty<Actor>();
-			return new ActorsAtEnumerable(influence[uv]);
+
+			var layer = a.Layer == 0 ? influence : customInfluence[a.Layer];
+			return new ActorsAtEnumerable(layer[uv]);
 		}
 
 		public IEnumerable<Actor> GetActorsAt(CPos a, SubCell sub)
@@ -238,7 +250,8 @@ namespace OpenRA.Traits
 			if (!influence.Contains(uv))
 				yield break;
 
-			for (var i = influence[uv]; i != null; i = i.Next)
+			var layer = a.Layer == 0 ? influence : customInfluence[a.Layer];
+			for (var i = layer[uv]; i != null; i = i.Next)
 				if (!i.Actor.Disposed && (i.SubCell == sub || i.SubCell == SubCell.FullCell))
 					yield return i.Actor;
 		}
@@ -284,7 +297,8 @@ namespace OpenRA.Traits
 			if (!influence.Contains(uv))
 				return false;
 
-			return influence[uv] != null;
+			var layer = a.Layer == 0 ? influence : customInfluence[a.Layer];
+			return layer[uv] != null;
 		}
 
 		// NOTE: can not check aircraft
@@ -295,7 +309,8 @@ namespace OpenRA.Traits
 				return false;
 
 			var always = sub == SubCell.FullCell || sub == SubCell.Any;
-			for (var i = influence[uv]; i != null; i = i.Next)
+			var layer = a.Layer == 0 ? influence : customInfluence[a.Layer];
+			for (var i = layer[uv]; i != null; i = i.Next)
 			{
 				if (always || i.SubCell == sub || i.SubCell == SubCell.FullCell)
 				{
@@ -319,7 +334,8 @@ namespace OpenRA.Traits
 				return false;
 
 			var always = sub == SubCell.FullCell || sub == SubCell.Any;
-			for (var i = influence[uv]; i != null; i = i.Next)
+			var layer = a.Layer == 0 ? influence : customInfluence[a.Layer];
+			for (var i = layer[uv]; i != null; i = i.Next)
 				if ((always || i.SubCell == sub || i.SubCell == SubCell.FullCell) && !i.Actor.Disposed && withCondition(i.Actor))
 					return true;
 
@@ -334,7 +350,8 @@ namespace OpenRA.Traits
 				if (!influence.Contains(uv))
 					continue;
 
-				influence[uv] = new InfluenceNode { Next = influence[uv], SubCell = c.Second, Actor = self };
+				var layer = c.First.Layer == 0 ? influence : customInfluence[c.First.Layer];
+				layer[uv] = new InfluenceNode { Next = layer[uv], SubCell = c.Second, Actor = self };
 
 				List<CellTrigger> triggers;
 				if (cellTriggerInfluence.TryGetValue(c.First, out triggers))
@@ -351,9 +368,10 @@ namespace OpenRA.Traits
 				if (!influence.Contains(uv))
 					continue;
 
-				var temp = influence[uv];
+				var layer = c.First.Layer == 0 ? influence : customInfluence[c.First.Layer];
+				var temp = layer[uv];
 				RemoveInfluenceInner(ref temp, self);
-				influence[uv] = temp;
+				layer[uv] = temp;
 
 				List<CellTrigger> triggers;
 				if (cellTriggerInfluence.TryGetValue(c.First, out triggers))
@@ -566,6 +584,14 @@ namespace OpenRA.Traits
 					}
 				}
 			}
+		}
+	}
+
+	public static class ActorMapWorldExts
+	{
+		public static Dictionary<int, ICustomMovementLayer> GetCustomMovementLayers(this World world)
+		{
+			return ((ActorMap)world.ActorMap).CustomMovementLayers;
 		}
 	}
 }

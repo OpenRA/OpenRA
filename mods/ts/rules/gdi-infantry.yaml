@@ -77,6 +77,11 @@ JUMPJET:
 		VoiceSet: JumpJet
 	Mobile:
 		Speed: 56
+		Jumpjet: True
+		JumpjetTransitionCost: 100
+		JumpjetCondition: airborne
+		TerrainSpeeds:
+			Jumpjet: 110
 	Health:
 		HP: 120
 	Armor:
@@ -91,10 +96,71 @@ JUMPJET:
 	AttackFrontal:
 		Voice: Attack
 	WithInfantryBody:
+		RequiresCondition: !airborne
 		DefaultAttackSequence: attack
+	WithInfantryBody@flying:
+		RequiresCondition: airborne
+		DefaultAttackSequence: flying-attack
+		StandSequences: flying
+		MoveSequence: flying
 	-TakeCover:
+	Hovers:
+		RequiresCondition: airborne
 	ProducibleWithLevel:
 		Prerequisites: barracks.upgraded
+	Targetable:
+		RequiresCondition: !airborne && !inside-tunnel
+	Targetable@AIRBORNE:
+		TargetTypes: Air
+		RequiresCondition: airborne
+	SpawnActorOnDeath@airborne:
+		Actor: JUMPJET.Husk
+		RequiresCondition: airborne
+	DeathSounds@airborne:
+		RequiresCondition: airborne
+	WithDeathAnimation@normal:
+		RequiresCondition: !airborne
+	WithDeathAnimation@explosion:
+		RequiresCondition: !airborne
+	WithDeathAnimation@energy:
+		RequiresCondition: !airborne
+	WithDeathAnimation:
+		RequiresCondition: !airborne
+	DeathSounds@NORMAL:
+		RequiresCondition: !airborne
+	DeathSounds@EXPLOSION:
+		RequiresCondition: !airborne
+	DeathSounds@BURNED:
+		RequiresCondition: !airborne
+	DeathSounds@ZAPPED:
+		RequiresCondition: !airborne
+	SpawnActorOnDeath:
+		RequiresCondition: !airborne
+	SpawnActorOnDeath@FLAMEGUY:
+		RequiresCondition: !airborne
+
+JUMPJET.Husk:
+	RenderSprites:
+	BodyOrientation:
+		QuantizedFacings: 1
+	Aircraft:
+	HiddenUnderFog:
+		Type: GroundPosition
+	AutoTargetIgnore:
+	ScriptTriggers:
+	Tooltip:
+		Name: Jumpjet Infantry
+	FallsToEarth:
+		Velocity: 86
+		Explosion:
+	Aircraft:
+		Speed: 186
+		CanHover: True
+	RenderSprites:
+		Image: jumpjet
+	AutoSelectionSize:
+	WithSpriteBody:
+		Sequence: die-falling
 
 GHOST:
 	Inherits: ^Soldier

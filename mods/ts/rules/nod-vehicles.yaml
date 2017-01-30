@@ -19,6 +19,7 @@ BGGY:
 	Armor:
 		Type: Light
 	RevealsShroud:
+		RequiresCondition: !inside-tunnel
 		Range: 6c0
 		MaxHeightDelta: 3
 	Armament:
@@ -54,6 +55,7 @@ BIKE:
 	Armor:
 		Type: Wood
 	RevealsShroud:
+		RequiresCondition: !inside-tunnel
 		Range: 5c0
 		MaxHeightDelta: 3
 	Armament@PRIMARY:
@@ -107,6 +109,7 @@ TTNK:
 		MuzzleSequence: muzzle
 	WithMuzzleOverlay:
 	RevealsShroud:
+		RequiresCondition: !inside-tunnel
 		Range: 5c0
 		MaxHeightDelta: 3
 	RenderSprites:
@@ -188,6 +191,7 @@ ART2:
 		Speed: 71
 		TurnSpeed: 2
 	RevealsShroud:
+		RequiresCondition: !inside-tunnel
 		Range: 9c0
 		MaxHeightDelta: 3
 	RenderVoxels:
@@ -217,6 +221,7 @@ REPAIR:
 		Speed: 85
 		TurnSpeed: 5
 	RevealsShroud:
+		RequiresCondition: !inside-tunnel
 		Range: 5c0
 		MaxHeightDelta: 3
 	Armament:
@@ -262,6 +267,7 @@ WEED:
 	Armor:
 		Type: Heavy
 	RevealsShroud:
+		RequiresCondition: !inside-tunnel
 		Range: 4c0
 		MaxHeightDelta: 3
 	-WithVoxelBody:
@@ -285,11 +291,21 @@ SAPC:
 		TurnSpeed: 5
 		Speed: 71
 		RequiresCondition: !empdisable && !loading
+		Subterranean: true
+		SubterraneanCondition: submerged
+		SubterraneanTransitionTerrainTypes: Clear, Rough
+		SubterraneanTransitionCost: 120
+		SubterraneanTransitionSound: subdril1.aud
+		SubterraneanTransitionImage: dig
+		SubterraneanTransitionSequence: idle
+		TerrainSpeeds:
+			Subterranean: 120
 	Health:
 		HP: 175
 	Armor:
 		Type: Heavy
 	RevealsShroud:
+		RequiresCondition: !inside-tunnel && !submerged
 		Range: 5c0
 		MaxHeightDelta: 3
 	Cargo:
@@ -299,6 +315,10 @@ SAPC:
 		UnloadVoice: Unload
 		LoadingCondition: loading
 		EjectOnDeath: true
+	WithVoxelBody:
+		RequiresCondition: !submerged
+	Targetable:
+		RequiresCondition: !inside-tunnel && !submerged
 
 SUBTANK:
 	Inherits: ^Tank
@@ -317,11 +337,21 @@ SUBTANK:
 		TurnSpeed: 6
 		Speed: 71
 		Crushes: wall, crate, infantry
+		Subterranean: true
+		SubterraneanCondition: submerged
+		SubterraneanTransitionTerrainTypes: Clear, Rough
+		SubterraneanTransitionCost: 120
+		SubterraneanTransitionSound: subdril1.aud
+		SubterraneanTransitionImage: dig
+		SubterraneanTransitionSequence: idle
+		TerrainSpeeds:
+			Subterranean: 120
 	Health:
 		HP: 300
 	Armor:
 		Type: Light
 	RevealsShroud:
+		RequiresCondition: !inside-tunnel && !submerged
 		Range: 5c0
 		MaxHeightDelta: 3
 	Armament:
@@ -329,6 +359,10 @@ SUBTANK:
 	AttackFrontal:
 		Voice: Attack
 	AutoTarget:
+	WithVoxelBody:
+		RequiresCondition: !submerged
+	Targetable:
+		RequiresCondition: !inside-tunnel && !submerged
 
 STNK:
 	Inherits: ^Tank
@@ -352,6 +386,7 @@ STNK:
 	Armor:
 		Type: Light
 	RevealsShroud:
+		RequiresCondition: !inside-tunnel
 		Range: 5c0
 		MaxHeightDelta: 3
 	Cloak:

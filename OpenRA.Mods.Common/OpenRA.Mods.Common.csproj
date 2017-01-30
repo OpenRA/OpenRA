@@ -793,6 +793,13 @@
     <Compile Include="UtilityCommands\OutputResolvedWeaponsCommand.cs" />
     <Compile Include="Traits\RevealOnFire.cs" />
     <Compile Include="Traits\Conditions\GrantConditionOnDisabled.cs" />
+    <Compile Include="Traits\World\ActorMap.cs" />
+    <Compile Include="Traits\World\TerrainTunnelLayer.cs" />
+    <Compile Include="Traits\World\TerrainTunnel.cs" />
+    <Compile Include="Traits\World\SubterraneanActorLayer.cs" />
+    <Compile Include="Traits\World\JumpjetActorLayer.cs" />
+    <Compile Include="Traits\World\ElevatedBridgeLayer.cs" />
+    <Compile Include="Traits\World\ElevatedBridgePlaceholder.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="AfterBuild">

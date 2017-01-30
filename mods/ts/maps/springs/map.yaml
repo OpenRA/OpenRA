@@ -14,7 +14,7 @@ Bounds: 2,8,77,126
 
 Visibility: Lobby
 
-Categories: Conquest, Original TS Map
+Categories: Conquest, Original FS Map, Playable
 
 Players:
 	PlayerReference@Neutral:
@@ -816,44 +816,93 @@ Actors:
 	Actor222: tuntop03
 		Owner: Neutral
 		Location: 109,4
-	Actor223: tuntop02
-		Owner: Neutral
-		Location: 106,-16
 	Actor224: tuntop04
 		Owner: Neutral
 		Location: 87,28
 	Actor225: tuntop03
 		Owner: Neutral
 		Location: 73,34
-	Actor226: tuntop02
-		Owner: Neutral
-		Location: 86,13
 	Actor227: tuntop01
 		Owner: Neutral
 		Location: 60,34
 	Actor228: tuntop04
 		Owner: Neutral
 		Location: 42,13
-	Actor229: tuntop02
-		Owner: Neutral
-		Location: 40,-2
-	Actor230: tuntop01
-		Owner: Neutral
-		Location: 51,-6
-	Actor231: tuntop02
-		Owner: Neutral
-		Location: 72,-28
-	Actor232: tuntop01
-		Owner: Neutral
-		Location: 77,-38
 	Actor233: tuntop03
 		Owner: Neutral
 		Location: 93,-37
-	Actor234: tuntop01
+	Actor237: tuntop02
 		Owner: Neutral
-		Location: 95,3
+		Location: 107,-16
+	Actor238: tuntop01
+		Owner: Neutral
+		Location: 77,-37
+	Actor239: tuntop01
+		Owner: Neutral
+		Location: 95,4
+	Actor240: tuntop02
+		Owner: Neutral
+		Location: 73,-28
+	Actor234: tuntop02
+		Owner: Neutral
+		Location: 42,-2
+	Actor236: tuntop01
+		Owner: Neutral
+		Location: 51,-5
+	Actor235: tuntop02
+		Owner: Neutral
+		Location: 88,13
 
 Rules:
 	World:
 		GlobalLightingPaletteEffect:
 			Ambient: 0.62
+		TerrainTunnelLayer:
+		TerrainTunnel@a:
+			Location: 60, 35
+			Dimensions: 14, 3
+			Footprint: o____________o o____________o o____________o
+			Height: 2
+			TerrainType: Clear
+		TerrainTunnel@b:
+			Location: 43, -2
+			Dimensions: 3, 16
+			Footprint: ooo ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ooo
+			Height: 2
+			TerrainType: Clear
+		TerrainTunnel@c:
+			Location: 88, 13
+			Dimensions: 4, 16
+			Footprint: xooo x___ x___ x___ x___ x___ x___ x___ x___ x___ x___ x___ x___ x___ x___ ooox
+			Height: 2
+			TerrainType: Clear
+		TerrainTunnel@d:
+			Location: 51, -4
+			Dimensions: 18, 3
+			Footprint: o________________o o________________o o________________o
+			Height: 2
+			TerrainType: Clear
+		TerrainTunnel@e:
+			Location: 95, 5
+			Dimensions: 15, 3
+			Footprint: o_____________o o_____________o o_____________o
+			Height: 2
+			TerrainType: Clear
+		TerrainTunnel@f:
+			Location: 74, -28
+			Dimensions: 3, 17
+			Footprint: ooo ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ooo
+			Height: 2
+			TerrainType: Clear
+		TerrainTunnel@g:
+			Location: 108, -16
+			Dimensions: 3, 10
+			Footprint: ooo ___ ___ ___ ___ ___ ___ ___ ___ ooo
+			Height: 2
+			TerrainType: Clear
+		TerrainTunnel@h:
+			Location: 77, -36
+			Dimensions: 17, 3
+			Footprint: o_______________o o_______________o o_______________o
+			Height: 2
+			TerrainType: Clear

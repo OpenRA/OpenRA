@@ -14,7 +14,6 @@ using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Effects;
 using OpenRA.FileFormats;
-using OpenRA.GameRules;
 using OpenRA.Graphics;
 using OpenRA.Network;
 using OpenRA.Orders;
@@ -107,7 +106,7 @@ namespace OpenRA
 
 		public readonly Map Map;
 
-		public readonly ActorMap ActorMap;
+		public readonly IActorMap ActorMap;
 		public readonly ScreenMap ScreenMap;
 		public readonly WorldType Type;
 
@@ -159,7 +158,7 @@ namespace OpenRA
 
 			var worldActorType = type == WorldType.Editor ? "EditorWorld" : "World";
 			WorldActor = CreateActor(worldActorType, new TypeDictionary());
-			ActorMap = WorldActor.Trait<ActorMap>();
+			ActorMap = WorldActor.Trait<IActorMap>();
 			ScreenMap = WorldActor.Trait<ScreenMap>();
 
 			// Add players

@@ -11,6 +11,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Activities
@@ -31,12 +32,13 @@ namespace OpenRA.Mods.Common.Activities
 		{
 			// We are now in range. Don't move any further!
 			// HACK: This works around the pathfinder not returning the shortest path
-			return AtCorrectRange(self.CenterPosition);
+			return AtCorrectRange(self.CenterPosition) && Mobile.CanInteractWithGroundLayer(self);
 		}
 
 		protected override bool ShouldRepath(Actor self, CPos oldTargetPosition)
 		{
-			return targetPosition != oldTargetPosition && !AtCorrectRange(self.CenterPosition);
+			return targetPosition != oldTargetPosition && (!AtCorrectRange(self.CenterPosition)
+				|| !Mobile.CanInteractWithGroundLayer(self));
 		}
 
 		protected override IEnumerable<CPos> CandidateMovementCells(Actor self)

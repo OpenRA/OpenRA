@@ -62,3 +62,36 @@ lobrdg_r_sw:
 	idle: lobrdg25
 	damaged-idle: lobrdg26
 
+bridge1:
+	idle: bridge
+		# Disabled to avoid glitches until shadow rendering is fixed
+		# ShadowStart: 18
+		UseTilesetExtension: true
+		ZRamp: 1
+		Offset: 0, -13, 3.5
+
+bridge2:
+	idle: bridge
+		Start: 9
+		# Disabled to avoid glitches until shadow rendering is fixed
+		# ShadowStart: 27
+		UseTilesetExtension: true
+		ZRamp: 1
+		Offset: 0, -25, 3.5
+
+railbrdg1:
+	idle: railbrdg
+		# Disabled to avoid glitches until shadow rendering is fixed
+		# ShadowStart: 18
+		UseTilesetExtension: true
+		ZRamp: 1
+		Offset: 0, -13, 3.5
+
+railbrdg2:
+	idle: railbrdg
+		Start: 9
+		# Disabled to avoid glitches until shadow rendering is fixed
+		# ShadowStart: 27
+		UseTilesetExtension: true
+		ZRamp: 1
+		Offset: 0, -25, 3.5
