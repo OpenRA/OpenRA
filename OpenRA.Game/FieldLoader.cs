@@ -455,7 +455,9 @@ namespace OpenRA
 				if (value == null)
 					return Array.CreateInstance(fieldType.GetElementType(), 0);
 
-				var parts = value.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+				var options = field != null && field.HasAttribute<AllowEmptyEntriesAttribute>() ?
+					StringSplitOptions.None : StringSplitOptions.RemoveEmptyEntries;
+				var parts = value.Split(new char[] { ',' }, options);
 
 				var ret = Array.CreateInstance(fieldType.GetElementType(), parts.Length);
 				for (var i = 0; i < parts.Length; i++)
@@ -680,6 +682,13 @@ namespace OpenRA
 		}
 
 		[AttributeUsage(AttributeTargets.Field)]
+		public sealed class AllowEmptyEntriesAttribute : SerializeAttribute
+		{
+			public AllowEmptyEntriesAttribute()
+				: base(allowEmptyEntries: true) { }
+		}
+
+		[AttributeUsage(AttributeTargets.Field)]
 		public sealed class LoadUsingAttribute : SerializeAttribute
 		{
 			public LoadUsingAttribute(string loader, bool required = false)
@@ -702,11 +711,13 @@ namespace OpenRA
 			public bool FromYamlKey;
 			public bool DictionaryFromYamlKey;
 			public bool Required;
+			public bool AllowEmptyEntries;
 
-			public SerializeAttribute(bool serialize = true, bool required = false)
+			public SerializeAttribute(bool serialize = true, bool required = false, bool allowEmptyEntries = false)
 			{
 				Serialize = serialize;
 				Required = required;
+				AllowEmptyEntries = allowEmptyEntries;
 			}
 
 			internal Func<MiniYaml, object> GetLoader(Type type)
