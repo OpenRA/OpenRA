@@ -1,7 +1,0 @@
-D:\OpenRA-AS-dev\OpenRA.Mods.AS\bin\Debug\OpenRA.Mods.AS.dll
-D:\OpenRA-AS-dev\OpenRA.Mods.AS\bin\Debug\OpenRA.Mods.AS.pdb
-D:\OpenRA-AS-dev\OpenRA.Mods.AS\bin\Debug\OpenRA.Mods.TS.dll
-D:\OpenRA-AS-dev\OpenRA.Mods.AS\bin\Debug\OpenRA.Mods.TS.pdb
-D:\OpenRA-AS-dev\OpenRA.Mods.AS\obj\x86\Debug\OpenRA.Mods.AS.csprojResolveAssemblyReference.cache
-D:\OpenRA-AS-dev\OpenRA.Mods.AS\obj\x86\Debug\OpenRA.Mods.AS.dll
-D:\OpenRA-AS-dev\OpenRA.Mods.AS\obj\x86\Debug\OpenRA.Mods.AS.pdb
