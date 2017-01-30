@@ -155,15 +155,6 @@ mod_ra_LIBS = $(COMMON_LIBS) $(STD_MOD_LIBS) $(mod_common_TARGET)
 PROGRAMS += mod_ra
 mod_ra: $(mod_ra_TARGET)
 
-# Command and Conquer
-mod_cnc_SRCS := $(shell find OpenRA.Mods.Cnc/ -iname '*.cs')
-mod_cnc_TARGET = mods/cnc/OpenRA.Mods.Cnc.dll
-mod_cnc_KIND = library
-mod_cnc_DEPS = $(STD_MOD_DEPS) $(mod_common_TARGET)
-mod_cnc_LIBS = $(COMMON_LIBS) $(STD_MOD_LIBS) $(mod_common_TARGET)
-PROGRAMS += mod_cnc
-mod_cnc: $(mod_cnc_TARGET)
-
 # Dune 2000
 mod_d2k_SRCS := $(shell find OpenRA.Mods.D2k/ -iname '*.cs')
 mod_d2k_TARGET = mods/d2k/OpenRA.Mods.D2k.dll
@@ -207,9 +198,6 @@ check: utility mods
 	@echo
 	@echo "Checking for code style violations in OpenRA.Mods.RA..."
 	@mono --debug OpenRA.Utility.exe ra --check-code-style OpenRA.Mods.RA
-	@echo
-	@echo "Checking for code style violations in OpenRA.Mods.Cnc..."
-	@mono --debug OpenRA.Utility.exe ra --check-code-style OpenRA.Mods.Cnc
 	@echo
 	@echo "Checking for code style violations in OpenRA.Mods.D2k..."
 	@mono --debug OpenRA.Utility.exe ra --check-code-style OpenRA.Mods.D2k
@@ -325,7 +313,7 @@ tools: gamemonitor
 
 package: all-dependencies core tools docs version
 
-mods: mod_common mod_ra mod_cnc mod_d2k mod_ts
+mods: mod_common mod_ra mod_d2k mod_ts
 
 all: dependencies core tools
 
@@ -388,8 +376,6 @@ install-core: default
 	@$(INSTALL_DIR) "$(DATA_INSTALL_DIR)/mods"
 	@$(CP_R) mods/common "$(DATA_INSTALL_DIR)/mods/"
 	@$(INSTALL_PROGRAM) $(mod_common_TARGET) "$(DATA_INSTALL_DIR)/mods/common"
-	@$(CP_R) mods/cnc "$(DATA_INSTALL_DIR)/mods/"
-	@$(INSTALL_PROGRAM) $(mod_cnc_TARGET) "$(DATA_INSTALL_DIR)/mods/cnc"
 	@$(CP_R) mods/ra "$(DATA_INSTALL_DIR)/mods/"
 	@$(INSTALL_PROGRAM) $(mod_ra_TARGET) "$(DATA_INSTALL_DIR)/mods/ra"
 	@$(CP_R) mods/d2k "$(DATA_INSTALL_DIR)/mods/"

@@ -15,7 +15,6 @@ Packages:
 	.
 	$d2k: d2k
 	$ra: ra
-	$cnc: cnc
 	./mods/common: common
 
 	~SOUND.RS
@@ -64,7 +63,6 @@ Chrome:
 
 Assemblies:
 	common|OpenRA.Mods.Common.dll
-	cnc|OpenRA.Mods.Cnc.dll
 	d2k|OpenRA.Mods.D2k.dll
 
 ChromeLayout:

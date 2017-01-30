@@ -16,7 +16,7 @@ using OpenRA.GameRules;
 using OpenRA.Graphics;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.Cnc.Effects
+namespace OpenRA.Mods.Common.Projectiles
 {
 	public class IonCannon : IProjectile
 	{
