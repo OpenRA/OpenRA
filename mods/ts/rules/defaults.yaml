@@ -326,6 +326,7 @@
 		Damage: 2
 		DamageInterval: 16
 		DamageTypes: ExplosionDeath, TriggerVisceroid
+		RequiresCondition: !inside-tunnel
 	Guard:
 		Voice: Move
 	Guardable:
@@ -895,6 +896,7 @@
 		DamageInterval: 16
 		DamageTypes: BulletDeath
 		Terrain: Veins
+		RequiresCondition: !inside-tunnel
 	LeavesTrails@VEINS:
 		Image: veins
 		Palette: player
