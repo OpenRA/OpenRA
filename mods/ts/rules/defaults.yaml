@@ -907,3 +907,4 @@
 		MovingInterval: 16
 		StartDelay: -1
 		SpawnAtLastPosition: false
+		RequiresCondition: !inside-tunnel
