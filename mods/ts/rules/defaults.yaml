@@ -889,6 +889,7 @@
 		Damage: -2
 		DamageInterval: 16
 		Terrain: Tiberium, BlueTiberium
+		RequiresCondition: !inside-tunnel
 
 ^DamagedByVeins:
 	DamagedByTerrain@VEINS:
