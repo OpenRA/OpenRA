@@ -106,6 +106,8 @@ JUMPJET:
 	-TakeCover:
 	Hovers:
 		RequiresCondition: airborne
+	DamagedByTerrain:
+		RequiresCondition: !inside-tunnel && !airborne
 	ProducibleWithLevel:
 		Prerequisites: barracks.upgraded
 	Targetable:
