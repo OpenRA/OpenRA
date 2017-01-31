@@ -661,6 +661,7 @@
 			Tiberium: 100
 			BlueTiberium: 100
 			Veins: 100
+		TunnelCondition: inside-tunnel
 	WithTextControlGroupDecoration:
 	SelectionDecorations:
 		Palette: pips
