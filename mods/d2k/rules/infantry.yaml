@@ -114,8 +114,6 @@ thumper:
 		Intensity: 1000
 		Falloff: 0, 0, 0, 100, 100, 100, 25, 11, 6, 4, 3, 2, 1, 0
 		RequiresCondition: deployed
-	Voiced:
-		VoiceSet: EngineerVoice
 
 fremen:
 	Inherits: ^Infantry
