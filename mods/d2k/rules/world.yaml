@@ -30,7 +30,7 @@
 	Faction@Ordos:
 		Name: Ordos
 		InternalName: ordos
-        Description: House Ordos\nThe insidious Ordos of the icy planet Sigma Draconis IV\nare known for their wealth, greed and treachery.\nRelying heavily on mercenaries they often resort\nto sabotage and forbidden Ixian technologies.\n\nFaction Variations: \n    - Trikes are replaced by Raider Trikes\n    - Combat Tanks are faster but less durable\n\nSpecial Units:\n    - Raider Trike\n    - Stealth Raider Trike\n    - Saboteur\n    - Deviator
+		Description: House Ordos\nThe insidious Ordos of the icy planet Sigma Draconis IV\nare known for their wealth, greed and treachery.\nRelying heavily on mercenaries they often resort\nto sabotage and forbidden Ixian technologies.\n\nFaction Variations: \n    - Trikes are replaced by Raider Trikes\n    - Combat Tanks are faster but less durable\n\nSpecial Units:\n    - Raider Trike\n    - Stealth Raider Trike\n    - Saboteur\n    - Deviator
 	Faction@Corrino:
 		Name: Corrino
 		InternalName: corrino
