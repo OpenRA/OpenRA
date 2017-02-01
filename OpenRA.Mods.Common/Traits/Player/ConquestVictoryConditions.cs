@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Drawing;
 using System.Linq;
 using OpenRA.Traits;
 
@@ -21,6 +22,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		[Desc("Description of the objective.")]
 		[Translate] public readonly string Objective = "Destroy all opposition!";
+
+		[Desc("Disable the win/loss messages and audio notifications?")]
+		public readonly bool SuppressNotifications = false;
 
 		public object Create(ActorInitializer init) { return new ConquestVictoryConditions(init.Self, this); }
 	}
@@ -58,11 +62,13 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void OnPlayerLost(Player player)
 		{
-			Game.Debug("{0} is defeated.", player.PlayerName);
-
 			foreach (var a in player.World.Actors.Where(a => a.Owner == player))
 				a.Kill(a);
 
+			if (info.SuppressNotifications)
+				return;
+
+			Game.AddChatLine(Color.White, "Battlefield Control", player.PlayerName + " is defeated.");
 			Game.RunAfterDelay(info.NotificationDelay, () =>
 			{
 				if (Game.IsCurrentWorld(player.World) && player == player.World.LocalPlayer)
@@ -72,8 +78,10 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void OnPlayerWon(Player player)
 		{
-			Game.Debug("{0} is victorious.", player.PlayerName);
+			if (info.SuppressNotifications)
+				return;
 
+			Game.AddChatLine(Color.White, "Battlefield Control", player.PlayerName + " is victorious.");
 			Game.RunAfterDelay(info.NotificationDelay, () =>
 			{
 				if (Game.IsCurrentWorld(player.World) && player == player.World.LocalPlayer)
