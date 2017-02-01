@@ -116,7 +116,7 @@
 		ZOffset: 256
 
 ^IronCurtainable:
-	UpgradeOverlay@IRONCURTAIN:
+	WithColoredOverlay@IRONCURTAIN:
 		RequiresCondition: invulnerability
 	DamageMultiplier@IRONCURTAIN:
 		RequiresCondition: invulnerability
