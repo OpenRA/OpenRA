@@ -175,6 +175,20 @@ namespace OpenRA
 			return GetValue(fieldName, fieldType, new MiniYaml(value), field);
 		}
 
+		static object ParseArray(string fieldName, Type fieldType, MiniYaml yaml, MemberInfo field, string value)
+		{
+				if (value == null)
+					return Array.CreateInstance(fieldType.GetElementType(), 0);
+
+				var parts = value.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+
+				var ret = Array.CreateInstance(fieldType.GetElementType(), parts.Length);
+				for (var i = 0; i < parts.Length; i++)
+					ret.SetValue(GetValue(fieldName, fieldType.GetElementType(), parts[i].Trim(), field), i);
+
+				return ret;
+		}
+
 		public static object GetValue(string fieldName, Type fieldType, MiniYaml yaml, MemberInfo field)
 		{
 			var value = yaml.Value;
@@ -450,17 +464,66 @@ namespace OpenRA
 			}
 			else if (fieldType == typeof(bool))
 				return ParseYesNo(value, fieldType, fieldName);
+			else if (fieldType == typeof(int[]))
+			{
+				if (value != null)
+				{
+					value = value.Trim().Replace(" ", "");
+					var newValues = new List<string>();
+
+					var arrayItems = value.Split(',');
+					foreach (var itemStr in arrayItems)
+					{
+						var isRange = itemStr.StartsWith("[") && itemStr.EndsWith("]") && itemStr.Contains("..");
+						if (!isRange)
+						{
+							newValues.Add(itemStr);
+							continue;
+						}
+
+						if (itemStr == "[..]")
+							throw new YamlException("[..] is an invalid range!");
+
+						var subItemStr = itemStr.Substring(1).Substring(0, itemStr.Length - 2);
+						var split = subItemStr.Split(new[] { ".." }, StringSplitOptions.RemoveEmptyEntries);
+
+						if (split.Length != 2)
+							throw new YamlException("Ranges must have only 2 values specified.");
+
+						var strStart = split[0];
+						var strEnd = split[1];
+
+						int start;
+						if (!int.TryParse(strStart, out start))
+							return InvalidValueAction(strStart, typeof(int), fieldName);
+
+						int end;
+						if (!int.TryParse(strEnd, out end))
+							return InvalidValueAction(strEnd, typeof(int), fieldName);
+
+						var diff = end - start;
+						int[] arr;
+
+						if (diff < 0)
+						{
+							arr = Enumerable.Range(end, -diff).ToArray();
+							Array.Reverse(arr);
+						}
+						else
+							arr = Enumerable.Range(start, diff).ToArray();
+
+						newValues.Add(string.Join(",", arr));
+					}
+
+					value = string.Join(",", newValues).Trim().Replace(" ", "");
+					return ParseArray(fieldName, fieldType, yaml, field, value);
+				}
+
+				return InvalidValueAction(value, fieldType, fieldName);
+			}
 			else if (fieldType.IsArray && fieldType.GetArrayRank() == 1)
 			{
-				if (value == null)
-					return Array.CreateInstance(fieldType.GetElementType(), 0);
-
-				var parts = value.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-
-				var ret = Array.CreateInstance(fieldType.GetElementType(), parts.Length);
-				for (var i = 0; i < parts.Length; i++)
-					ret.SetValue(GetValue(fieldName, fieldType.GetElementType(), parts[i].Trim(), field), i);
-				return ret;
+				return ParseArray(fieldName, fieldType, yaml, field, value);
 			}
 			else if (fieldType.IsGenericType && fieldType.GetGenericTypeDefinition() == typeof(HashSet<>))
 			{
