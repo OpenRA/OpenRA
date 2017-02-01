@@ -16,11 +16,11 @@ namespace OpenRA.Primitives
 {
 	public interface IObservableCollection
 	{
-		event Action<object> OnAdd;
-		event Action<object> OnRemove;
-		event Action<int> OnRemoveAt;
-		event Action<object, object> OnSet;
-		event Action OnRefresh;
+		event Action<IObservableCollection, object> OnAdd;
+		event Action<IObservableCollection, object> OnRemove;
+		event Action<IObservableCollection, int> OnRemoveAt;
+		event Action<IObservableCollection, object, object> OnSet;
+		event Action<IObservableCollection> OnRefresh;
 		IEnumerable ObservedItems { get; }
 	}
 }

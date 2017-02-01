@@ -19,19 +19,19 @@ namespace OpenRA.Primitives
 	{
 		protected IList<T> innerList;
 
-		public event Action<object> OnAdd = k => { };
-		public event Action<object> OnRemove = k => { };
+		public event Action<IObservableCollection, object> OnAdd = (x, k) => { };
+		public event Action<IObservableCollection, object> OnRemove = (x, k) => { };
 
 		// TODO Workaround for https://github.com/OpenRA/OpenRA/issues/6101
 		#pragma warning disable 67
-		public event Action<int> OnRemoveAt = i => { };
-		public event Action<object, object> OnSet = (o, n) => { };
+		public event Action<IObservableCollection, int> OnRemoveAt = (x, i) => { };
+		public event Action<IObservableCollection, object, object> OnSet = (x, o, n) => { };
 		#pragma warning restore
-		public event Action OnRefresh = () => { };
+		public event Action<IObservableCollection> OnRefresh = x => { };
 
 		protected void FireOnRefresh()
 		{
-			OnRefresh();
+			OnRefresh(this);
 		}
 
 		public ObservableList()
@@ -42,14 +42,14 @@ namespace OpenRA.Primitives
 		public virtual void Add(T item)
 		{
 			innerList.Add(item);
-			OnAdd(item);
+			OnAdd(this, item);
 		}
 
 		public bool Remove(T item)
 		{
 			var found = innerList.Remove(item);
 			if (found)
-				OnRemove(item);
+				OnRemove(this, item);
 
 			return found;
 		}
@@ -57,13 +57,13 @@ namespace OpenRA.Primitives
 		public void Clear()
 		{
 			innerList.Clear();
-			OnRefresh();
+			OnRefresh(this);
 		}
 
 		public void Insert(int index, T item)
 		{
 			innerList.Insert(index, item);
-			OnRefresh();
+			OnRefresh(this);
 		}
 
 		public int Count { get { return innerList.Count; } }
@@ -73,7 +73,7 @@ namespace OpenRA.Primitives
 		public void RemoveAt(int index)
 		{
 			innerList.RemoveAt(index);
-			OnRemoveAt(index);
+			OnRemoveAt(this, index);
 		}
 
 		public T this[int index]
@@ -87,7 +87,7 @@ namespace OpenRA.Primitives
 			{
 				var oldValue = innerList[index];
 				innerList[index] = value;
-				OnSet(oldValue, value);
+				OnSet(this, oldValue, value);
 			}
 		}
 
