@@ -612,6 +612,7 @@
     <Compile Include="Widgets\Logic\Ingame\ObserverStatsLogic.cs" />
     <Compile Include="Widgets\Logic\Ingame\OrderButtonsChromeLogic.cs" />
     <Compile Include="Widgets\Logic\Ingame\ProductionTooltipLogic.cs" />
+    <Compile Include="Widgets\Logic\Ingame\ProductionTabsLogic.cs" />
     <Compile Include="Widgets\Logic\Ingame\ReplayControlBarLogic.cs" />
     <Compile Include="Widgets\Logic\Ingame\SupportPowerBinLogic.cs" />
     <Compile Include="Widgets\Logic\Ingame\SupportPowerTooltipLogic.cs" />
