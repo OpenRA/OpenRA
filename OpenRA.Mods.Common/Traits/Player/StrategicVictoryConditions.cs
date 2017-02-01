@@ -10,6 +10,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using OpenRA.Traits;
 
@@ -36,6 +37,30 @@ namespace OpenRA.Mods.Common.Traits
 
 		[Desc("Description of the objective")]
 		[Translate] public readonly string Objective = "Hold all the strategic positions!";
+
+		[Desc("Name of the message's announcer.")]
+		public readonly string PlayerVictoriousAnnouncer = "Battlefield Control";
+
+		[Desc("Message to display in front of the victorious player's name.")]
+		public readonly string PlayerVictoriousPrefix = "";
+
+		[Desc("Message to display after the victorious player's name.")]
+		public readonly string PlayerVictoriousSuffix = " is victorious.";
+
+		[Desc("Color of the announcer's name.")]
+		public readonly Color PlayerVictoriousColor = Color.White;
+
+		[Desc("Name of the message's announcer.")]
+		public readonly string PlayerDefeatedAnnouncer = "Battlefield Control";
+
+		[Desc("Message to display in front of the defeated player's name.")]
+		public readonly string PlayerDefeatedPrefix = "";
+
+		[Desc("Message to display after the defeated player's name.")]
+		public readonly string PlayerDefeatedSuffix = " is defeated.";
+
+		[Desc("Color of the announcer's name.")]
+		public readonly Color PlayerDefeatedColor = Color.White;
 
 		public object Create(ActorInitializer init) { return new StrategicVictoryConditions(init.Self, this); }
 	}
@@ -103,7 +128,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void OnPlayerLost(Player player)
 		{
-			Game.Debug("{0} is defeated.", player.PlayerName);
+			Game.AddChatLine(info.PlayerDefeatedColor, info.PlayerDefeatedAnnouncer,
+				info.PlayerDefeatedPrefix + player.PlayerName + info.PlayerDefeatedSuffix);
 
 			foreach (var a in player.World.Actors.Where(a => a.Owner == player))
 				a.Kill(a);
@@ -117,7 +143,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void OnPlayerWon(Player player)
 		{
-			Game.Debug("{0} is victorious.", player.PlayerName);
+			Game.AddChatLine(info.PlayerVictoriousColor, info.PlayerVictoriousAnnouncer,
+				info.PlayerVictoriousPrefix + player.PlayerName + info.PlayerVictoriousSuffix);
 
 			Game.RunAfterDelay(info.NotificationDelay, () =>
 			{
