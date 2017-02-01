@@ -101,6 +101,7 @@
     <Compile Include="Traits\SupportPowers\DetonateWeaponPower.cs" />
     <Compile Include="Traits\SupportPowers\FireArmamentPower.cs" />
     <Compile Include="Traits\Warheads\FireClusterWarhead.cs" />
+    <Compile Include="Traits\Warheads\FireFragmentWarhead.cs" />
     <Compile Include="Traits\Warheads\FireShrapnelWarhead.cs" />
     <Compile Include="Traits\Warheads\SpawnActorWarhead.cs" />
     <Compile Include="Traits\Warheads\WarheadAS.cs" />
