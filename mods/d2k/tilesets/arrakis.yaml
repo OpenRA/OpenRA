@@ -1993,10 +1993,10 @@ Templates:
 		Size: 2,2
 		Category: Rotten-Base
 		Tiles:
-			0: Cliff
+			0: Rough
 			1: Cliff
-			2: Cliff
-			3: Cliff
+			2: Rough
+			3: Rough
 	Template@252:
 		Id: 252
 		Images: BLOXBASE.R8
@@ -2475,10 +2475,10 @@ Templates:
 		Size: 2,2
 		Category: Rotten-Base
 		Tiles:
-			0: Cliff
+			0: Rough
 			1: Cliff
-			2: Cliff
-			3: Cliff
+			2: Rough
+			3: Rough
 	Template@307:
 		Id: 307
 		Images: BLOXBAT.R8
@@ -3776,9 +3776,9 @@ Templates:
 		Size: 3,1
 		Category: Sand-Detail
 		Tiles:
-			0: Rough
+			0: Cliff
 			1: Rough
-			2: Rough
+			2: Cliff
 	Template@436:
 		Id: 436
 		Images: BLOXTREE.R8
@@ -4631,7 +4631,7 @@ Templates:
 			0: Cliff
 			1: Cliff
 			2: Cliff
-			3: Transition
+			3: Cliff
 	Template@619:
 		Id: 619
 		Images: t619.tmp
