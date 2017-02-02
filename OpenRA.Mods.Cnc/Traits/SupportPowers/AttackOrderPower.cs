@@ -17,7 +17,7 @@ using OpenRA.Mods.Common.Graphics;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.TS.Traits
+namespace OpenRA.Mods.Cnc.Traits
 {
 	class AttackOrderPowerInfo : SupportPowerInfo, Requires<AttackBaseInfo>
 	{

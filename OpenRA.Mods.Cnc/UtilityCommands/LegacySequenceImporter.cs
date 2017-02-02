@@ -15,7 +15,7 @@ using System.IO;
 using System.Linq;
 using OpenRA.Mods.Common.FileFormats;
 
-namespace OpenRA.Mods.TS.UtilityCommands
+namespace OpenRA.Mods.Cnc.UtilityCommands
 {
 	class ImportLegacySequenceCommand : IUtilityCommand
 	{

@@ -10,10 +10,10 @@
 #endregion
 
 using OpenRA.Activities;
+using OpenRA.Mods.Cnc.Traits.Render;
 using OpenRA.Mods.Common.Activities;
-using OpenRA.Mods.TS.Traits.Render;
 
-namespace OpenRA.Mods.TS.Activities
+namespace OpenRA.Mods.Cnc.Activities
 {
 	public class VoxelHarvesterDockSequence : HarvesterDockSequence
 	{

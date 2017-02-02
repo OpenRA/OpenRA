@@ -16,7 +16,7 @@ using OpenRA.Effects;
 using OpenRA.Graphics;
 using OpenRA.Scripting;
 
-namespace OpenRA.Mods.TS.Effects
+namespace OpenRA.Mods.Cnc.Effects
 {
 	public class AnimatedBeacon : IEffect, IEffectAboveShroud
 	{

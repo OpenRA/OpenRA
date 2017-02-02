@@ -10,10 +10,10 @@
 #endregion
 
 using OpenRA.Activities;
+using OpenRA.Mods.Cnc.Activities;
 using OpenRA.Mods.Common.Traits;
-using OpenRA.Mods.TS.Activities;
 
-namespace OpenRA.Mods.TS.Traits
+namespace OpenRA.Mods.Cnc.Traits
 {
 	public class TiberianSunRefineryInfo : RefineryInfo
 	{

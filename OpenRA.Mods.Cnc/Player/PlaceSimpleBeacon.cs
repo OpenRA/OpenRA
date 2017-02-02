@@ -9,11 +9,11 @@
  */
 #endregion
 
+using OpenRA.Mods.Cnc.Effects;
 using OpenRA.Mods.Common.Traits;
-using OpenRA.Mods.TS.Effects;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.TS.Traits
+namespace OpenRA.Mods.Cnc.Traits
 {
 	[Desc("A beacon that consists of a single sprite that can be animated.")]
 	public class PlaceSimpleBeaconInfo : ITraitInfo

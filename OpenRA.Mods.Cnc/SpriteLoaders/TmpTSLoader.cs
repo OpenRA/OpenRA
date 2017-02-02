@@ -13,7 +13,7 @@ using System.Drawing;
 using System.IO;
 using OpenRA.Graphics;
 
-namespace OpenRA.Mods.TS.SpriteLoaders
+namespace OpenRA.Mods.Cnc.SpriteLoaders
 {
 	public class TmpTSLoader : ISpriteLoader
 	{

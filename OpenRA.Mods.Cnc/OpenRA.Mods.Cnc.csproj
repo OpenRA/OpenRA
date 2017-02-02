@@ -74,6 +74,22 @@
     <Compile Include="Traits\SupportPowers\IonCannonPower.cs" />
     <Compile Include="ImportTiberianDawnLegacyMapCommand.cs" />
     <Compile Include="Projectiles\IonCannon.cs" />
+    <Compile Include="Activities\VoxelHarvesterDockSequence.cs" />
+    <Compile Include="SpriteLoaders\TmpTSLoader.cs" />
+    <Compile Include="Traits\Buildings\TiberianSunRefinery.cs" />
+    <Compile Include="Traits\Render\WithDockingOverlay.cs" />
+    <Compile Include="Traits\Render\WithPermanentInjury.cs" />
+    <Compile Include="Traits\Render\WithVoxelWalkerBody.cs" />
+    <Compile Include="Traits\Render\WithVoxelUnloadBody.cs" />
+    <Compile Include="Traits\SupportPowers\AttackOrderPower.cs" />
+    <Compile Include="UtilityCommands\LegacyTilesetImporter.cs" />
+    <Compile Include="Traits\World\TSShroudPalette.cs" />
+    <Compile Include="UtilityCommands\ImportTSMapCommand.cs" />
+    <Compile Include="Player\PlaceSimpleBeacon.cs" />
+    <Compile Include="Effects\AnimatedBeacon.cs" />
+    <Compile Include="UtilityCommands\LegacyRulesImporter.cs" />
+    <Compile Include="UtilityCommands\LegacySequenceImporter.cs" />
+    <Compile Include="Widgets\Logic\PreReleaseWarningPrompt.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.Game\OpenRA.Game.csproj">

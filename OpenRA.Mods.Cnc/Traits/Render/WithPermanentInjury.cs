@@ -12,7 +12,7 @@
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.TS.Traits.Render
+namespace OpenRA.Mods.Cnc.Traits.Render
 {
 	[Desc("Change the sprite after a certain amount of damage is taken, even when the hitpoints are regenerated.")]
 	public class WithPermanentInjuryInfo : ITraitInfo
