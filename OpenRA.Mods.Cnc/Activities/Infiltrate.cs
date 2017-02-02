@@ -9,6 +9,8 @@
  */
 #endregion
 
+using OpenRA.Activities;
+using OpenRA.Mods.Cnc.Traits;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
@@ -18,18 +20,14 @@ namespace OpenRA.Mods.Cnc.Activities
 	class Infiltrate : Enter
 	{
 		readonly Actor target;
-		readonly Stance validStances;
+		readonly Infiltrates infiltrates;
 		readonly Cloak cloak;
-		readonly string notification;
-		readonly int experience;
 
-		public Infiltrate(Actor self, Actor target, EnterBehaviour enterBehaviour, Stance validStances, string notification, int experience)
-			: base(self, target, enterBehaviour)
+		public Infiltrate(Actor self, Actor target, Infiltrates infiltrate)
+			: base(self, target, infiltrate.Info.EnterBehaviour)
 		{
 			this.target = target;
-			this.validStances = validStances;
-			this.notification = notification;
-			this.experience = experience;
+			infiltrates  = infiltrate;
 			cloak = self.TraitOrDefault<Cloak>();
 		}
 
@@ -39,7 +37,7 @@ namespace OpenRA.Mods.Cnc.Activities
 				return;
 
 			var stance = self.Owner.Stances[target.Owner];
-			if (!validStances.HasStance(stance))
+			if (!infiltrates.Info.ValidStances.HasStance(stance))
 				return;
 
 			if (cloak != null && cloak.Info.UncloakOn.HasFlag(UncloakType.Infiltrate))
@@ -50,11 +48,19 @@ namespace OpenRA.Mods.Cnc.Activities
 
 			var exp = self.Owner.PlayerActor.TraitOrDefault<PlayerExperience>();
 			if (exp != null)
-				exp.GiveExperience(experience);
+				exp.GiveExperience(infiltrates.Info.PlayerExperience);
 
-			if (!string.IsNullOrEmpty(notification))
+			if (!string.IsNullOrEmpty(infiltrates.Info.Notification))
 				Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech",
-					notification, self.Owner.Faction.InternalName);
+					infiltrates.Info.Notification, self.Owner.Faction.InternalName);
+		}
+
+		public override Activity Tick(Actor self)
+		{
+			if (infiltrates.IsTraitDisabled)
+				Cancel(self);
+
+			return base.Tick(self);
 		}
 	}
 }

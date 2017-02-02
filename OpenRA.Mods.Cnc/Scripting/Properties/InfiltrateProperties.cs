@@ -9,6 +9,9 @@
  */
 #endregion
 
+using System.Collections.Generic;
+using System.Linq;
+using Eluant;
 using OpenRA.Mods.Cnc.Activities;
 using OpenRA.Mods.Cnc.Traits;
 using OpenRA.Scripting;
@@ -19,18 +22,23 @@ namespace OpenRA.Mods.Cnc.Scripting
 	[ScriptPropertyGroup("Ability")]
 	public class InfiltrateProperties : ScriptActorProperties, Requires<InfiltratesInfo>
 	{
-		readonly InfiltratesInfo info;
+		readonly Infiltrates[] infiltratesTraits;
 
 		public InfiltrateProperties(ScriptContext context, Actor self)
 			: base(context, self)
 		{
-			info = Self.Info.TraitInfo<InfiltratesInfo>();
+			infiltratesTraits = Self.TraitsImplementing<Infiltrates>().ToArray();
 		}
 
 		[Desc("Infiltrate the target actor.")]
 		public void Infiltrate(Actor target)
 		{
-			Self.QueueActivity(new Infiltrate(Self, target, info.EnterBehaviour, info.ValidStances, info.Notification, info.PlayerExperience));
+			var infiltrates = infiltratesTraits.FirstOrDefault(x => !x.IsTraitDisabled && x.Info.Types.Overlaps(target.GetEnabledTargetTypes()));
+
+			if (infiltrates == null)
+				throw new LuaException("{0} tried to infiltrate invalid target {1}!".F(Self, target));
+
+			Self.QueueActivity(new Infiltrate(Self, target, infiltrates));
 		}
 	}
 }
