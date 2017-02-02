@@ -44,9 +44,6 @@ namespace OpenRA.Mods.TS.Effects
 				beacon = new Animation(owner.World, beaconImage);
 				beacon.PlayRepeating(beaconSequence);
 			}
-
-			if (duration > 0)
-				owner.World.Add(new DelayedAction(duration, () => owner.World.Remove(this)));
 		}
 
 		void IEffect.Tick(World world)
