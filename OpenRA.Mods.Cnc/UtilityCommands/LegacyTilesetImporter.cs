@@ -16,7 +16,7 @@ using System.Linq;
 using System.Text;
 using OpenRA.Mods.Common.FileFormats;
 
-namespace OpenRA.Mods.TS.UtilityCommands
+namespace OpenRA.Mods.Cnc.UtilityCommands
 {
 	class ImportLegacyTilesetCommand : IUtilityCommand
 	{

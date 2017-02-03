@@ -16,7 +16,7 @@ using OpenRA.Effects;
 using OpenRA.Graphics;
 using OpenRA.Scripting;
 
-namespace OpenRA.Mods.TS.Effects
+namespace OpenRA.Mods.Cnc.Effects
 {
 	public class AnimatedBeacon : IEffect, IEffectAboveShroud
 	{
@@ -44,9 +44,6 @@ namespace OpenRA.Mods.TS.Effects
 				beacon = new Animation(owner.World, beaconImage);
 				beacon.PlayRepeating(beaconSequence);
 			}
-
-			if (duration > 0)
-				owner.World.Add(new DelayedAction(duration, () => owner.World.Remove(this)));
 		}
 
 		void IEffect.Tick(World world)

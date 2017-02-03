@@ -14,7 +14,7 @@ using OpenRA.Mods.Common.Traits;
 using OpenRA.Mods.Common.Traits.Render;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.TS.Traits.Render
+namespace OpenRA.Mods.Cnc.Traits.Render
 {
 	[Desc("Rendered on the refinery when a voxel harvester is docking and undocking.")]
 	public class WithDockingOverlayInfo : ITraitInfo, Requires<RenderSpritesInfo>, Requires<BodyOrientationInfo>

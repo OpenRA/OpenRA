@@ -16,7 +16,7 @@ using System.Linq;
 using OpenRA.Mods.Common.FileFormats;
 using OpenRA.Mods.Common.Traits;
 
-namespace OpenRA.Mods.TS.UtilityCommands
+namespace OpenRA.Mods.Cnc.UtilityCommands
 {
 	class LegacyRulesImporter : IUtilityCommand
 	{

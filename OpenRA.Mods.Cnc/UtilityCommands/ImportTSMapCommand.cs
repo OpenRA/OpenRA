@@ -20,7 +20,7 @@ using OpenRA.Mods.Common.FileFormats;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.TS.UtilityCommands
+namespace OpenRA.Mods.Cnc.UtilityCommands
 {
 	class ImportTSMapCommand : IUtilityCommand
 	{

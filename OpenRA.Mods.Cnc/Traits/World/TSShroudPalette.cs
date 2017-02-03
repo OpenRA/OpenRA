@@ -16,7 +16,7 @@ using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.TS.Traits
+namespace OpenRA.Mods.Cnc.Traits
 {
 	[Desc("Adds the hard-coded shroud palette to the game")]
 	class TSShroudPaletteInfo : ITraitInfo
