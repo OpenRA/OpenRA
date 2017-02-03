@@ -117,7 +117,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public readonly string SubterraneanTransitionSound = null;
 
-		[Desc("Can this unit fly over obsticals?")]
+		[Desc("Can this unit fly over obstacles?")]
 		public readonly bool Jumpjet = false;
 
 		[GrantedConditionReference]
