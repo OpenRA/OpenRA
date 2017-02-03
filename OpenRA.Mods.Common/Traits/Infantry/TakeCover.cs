@@ -32,7 +32,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Damage modifiers for each damage type (defined on the warheads) while the unit is prone.")]
 		public readonly Dictionary<string, int> DamageModifiers = new Dictionary<string, int>();
 
-		public readonly WVec ProneOffset = new WVec(85, 0, -171);
+		public readonly WVec ProneOffset = new WVec(500, 0, 0);
 
 		[SequenceReference(null, true)] public readonly string ProneSequencePrefix = "prone-";
 

@@ -261,6 +261,7 @@
 		DamageModifiers:
 			Prone50Percent: 50
 		DamageTriggers: TriggerProne
+		ProneOffset: 300,0,0
 	WithDeathAnimation:
 		DeathTypes:
 			ExplosionDeath: 1

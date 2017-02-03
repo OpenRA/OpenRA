@@ -419,6 +419,7 @@
 			Prone100Percent: 100
 			Prone350Percent: 350
 		DamageTriggers: TriggerProne
+		ProneOffset: 300,0,0
 	WithInfantryBody:
 		IdleSequences: idle1,idle2
 

@@ -96,6 +96,8 @@ E2:
 		Name: garrisoned
 		Weapon: Grenade
 		FireDelay: 15
+	TakeCover:
+		ProneOffset: 256,64,-331
 	AttackFrontal:
 	WithInfantryBody:
 		DefaultAttackSequence: throw
@@ -129,6 +131,8 @@ E3:
 	Armament@GARRISONED:
 		Name: garrisoned
 		Weapon: Dragon
+	TakeCover:
+		ProneOffset: 384,0,-395
 	AttackFrontal:
 	WithInfantryBody:
 		DefaultAttackSequence: shoot
@@ -153,11 +157,13 @@ E4:
 		HP: 40
 	Armament@PRIMARY:
 		Weapon: Flamer
-		LocalOffset: 427,0,341
+		LocalOffset: 700,0,500
 		FireDelay: 8
 	Armament@GARRISONED:
 		Name: garrisoned
 		Weapon: Flamer
+	TakeCover:
+		ProneOffset: 160,0,-288
 	AttackFrontal:
 	WithInfantryBody:
 		DefaultAttackSequence: shoot
@@ -507,6 +513,8 @@ SHOK:
 	Armament@GARRISONED:
 		Name: garrisoned
 		Weapon: PortaTesla
+	TakeCover:
+		ProneOffset: 227,0,-245
 	AttackFrontal:
 		Voice: Attack
 	AttackMove:
