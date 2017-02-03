@@ -79,7 +79,7 @@
 		Conditions: crate-firepower, crate-damage, crate-speed
 
 ^EmpDisable:
-	UpgradeOverlay@EMPDISABLE:
+	WithColoredOverlay@EMPDISABLE:
 		RequiresCondition: empdisable
 		Palette: disabled
 	DisableOnCondition@EMPDISABLE:

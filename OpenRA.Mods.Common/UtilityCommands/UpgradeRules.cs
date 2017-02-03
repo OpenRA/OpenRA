@@ -776,6 +776,11 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				// Rename UpgradeOverlay to WithColoredOverlay
+				if (engineVersion < 20170201)
+					if (node.Key.StartsWith("UpgradeOverlay", StringComparison.Ordinal))
+						RenameNodeKey(node, "WithColoredOverlay" + node.Key.Substring(14));
+
 				UpgradeActorRules(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 

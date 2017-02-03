@@ -15,18 +15,18 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	[Desc("Display a colored overlay when a timed upgrade is active.")]
-	public class UpgradeOverlayInfo : ConditionalTraitInfo
+	[Desc("Display a colored overlay when a timed condition is active.")]
+	public class WithColoredOverlayInfo : ConditionalTraitInfo
 	{
 		[Desc("Palette to use when rendering the overlay")]
 		[PaletteReference] public readonly string Palette = "invuln";
 
-		public override object Create(ActorInitializer init) { return new UpgradeOverlay(this); }
+		public override object Create(ActorInitializer init) { return new WithColoredOverlay(this); }
 	}
 
-	public class UpgradeOverlay : ConditionalTrait<UpgradeOverlayInfo>, IRenderModifier
+	public class WithColoredOverlay : ConditionalTrait<WithColoredOverlayInfo>, IRenderModifier
 	{
-		public UpgradeOverlay(UpgradeOverlayInfo info)
+		public WithColoredOverlay(WithColoredOverlayInfo info)
 			: base(info) { }
 
 		public IEnumerable<IRenderable> ModifyRender(Actor self, WorldRenderer wr, IEnumerable<IRenderable> r)
