@@ -423,21 +423,22 @@ weedguy:
 		Facings: 8
 		ShadowStart: 258
 	prone-attack:
-		Start: 56
+		Start: 64
 		Facings: 8
-		ShadowStart: 258
+		Stride: 6
+		ShadowStart: 288
 	standup:
 		Start: 112
 		Length: 2
 		Facings: 8
 		ShadowStart: 314
 	prone-run:
-		Start: 86
+		Start: 64
 		Length: 6
 		Facings: 8
 		ShadowStart: 288
 	prone-stand:
-		Start: 86
+		Start: 64
 		Facings: 8
 		Stride: 6
 		ShadowStart: 288
