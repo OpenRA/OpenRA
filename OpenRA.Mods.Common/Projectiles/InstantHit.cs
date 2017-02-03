@@ -10,6 +10,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Linq;
 using OpenRA.GameRules;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
@@ -40,46 +41,42 @@ namespace OpenRA.Mods.Common.Projectiles
 		readonly ProjectileArgs args;
 		readonly InstantHitInfo info;
 
-		bool doneDamage;
-		WPos target;
+		Target target;
 		WPos source;
 
 		public InstantHit(InstantHitInfo info, ProjectileArgs args)
 		{
 			this.args = args;
 			this.info = info;
-			target = args.PassiveTarget;
 			source = args.Source;
+
+			if (info.Inaccuracy.Length > 0)
+			{
+				var inaccuracy = Util.ApplyPercentageModifiers(info.Inaccuracy.Length, args.InaccuracyModifiers);
+				var maxOffset = inaccuracy * (args.PassiveTarget - source).Length / args.Weapon.Range.Length;
+				target = Target.FromPos(args.PassiveTarget + WVec.FromPDF(args.SourceActor.World.SharedRandom, 2) * maxOffset / 1024);
+			}
+			else
+				target = args.GuidedTarget;
 		}
 
 		public void Tick(World world)
 		{
 			// Check for blocking actors
 			WPos blockedPos;
-			if (info.Blockable && BlocksProjectiles.AnyBlockingActorsBetween(world, source, target,
+			if (info.Blockable && BlocksProjectiles.AnyBlockingActorsBetween(world, source, target.CenterPosition,
 				info.Width, info.TargetExtraSearchRadius, out blockedPos))
 			{
-				target = blockedPos;
+				target = Target.FromPos(blockedPos);
 			}
 
-			if (info.Inaccuracy.Length > 0)
-			{
-				var inaccuracy = OpenRA.Mods.Common.Util.ApplyPercentageModifiers(info.Inaccuracy.Length, args.InaccuracyModifiers);
-				var maxOffset = inaccuracy * (target - source).Length / args.Weapon.Range.Length;
-				target += WVec.FromPDF(args.SourceActor.World.SharedRandom, 2) * maxOffset / 1024;
-			}
-
-			if (!doneDamage)
-			{
-				args.Weapon.Impact(Target.FromPos(target), args.SourceActor, args.DamageModifiers);
-				doneDamage = true;
-				world.AddFrameEndTask(w => w.Remove(this));
-			}
+			args.Weapon.Impact(target, args.SourceActor, args.DamageModifiers);
+			world.AddFrameEndTask(w => w.Remove(this));
 		}
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)
 		{
-			yield break;
+			return Enumerable.Empty<IRenderable>();
 		}
 	}
 }

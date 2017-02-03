@@ -1,25 +1,21 @@
-Heal:
+^HealWeapon:
 	ReloadDelay: 80
 	Range: 2c849
 	Report: healer1.aud
 	ValidTargets: Infantry
-	Projectile: Bullet
-		Speed: 1c682
-	Warhead@1Dam: SpreadDamage
+	Projectile: InstantHit
+	Warhead@1Dam: TargetDamage
 		DebugOverlayColor: 00FF00
-		Spread: 213
 		Damage: -50
 		ValidTargets: Infantry
 
+Heal:
+	Inherits: ^HealWeapon
+
 Repair:
-	ReloadDelay: 80
+	Inherits: ^HealWeapon
 	Range: 1c819
 	Report: repair11.aud
 	ValidTargets: Repair
-	Projectile: Bullet
-		Speed: 1c682
-	Warhead@1Dam: SpreadDamage
-		DebugOverlayColor: 00FF00
-		Spread: 213
-		Damage: -50
+	Warhead@1Dam: TargetDamage
 		ValidTargets: Repair

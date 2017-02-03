@@ -60,10 +60,8 @@ WormJaw:
 	ReloadDelay: 10
 	InvalidTargets: Structure, Infantry
 	Range: 1c512
-	Warhead@1Dam: SpreadDamage # HACK: The warhead is needed for targeting
+	Warhead@1Dam: TargetDamage # HACK: The warhead is needed for targeting
 		InvalidTargets: Structure, Infantry
-		Spread: 0
-		Falloff: 0,0
 
 OrniBomb:
 	ReloadDelay: 25
