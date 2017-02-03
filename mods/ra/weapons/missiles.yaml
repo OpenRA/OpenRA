@@ -16,6 +16,7 @@ Maverick:
 		HorizontalRateOfTurn: 5
 		CruiseAltitude: 2c0
 		RangeLimit: 14c410
+		Shadow: True
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 70
@@ -53,6 +54,7 @@ Dragon:
 		Image: DRAGON
 		HorizontalRateOfTurn: 5
 		RangeLimit: 6c0
+		Shadow: True
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 50
@@ -92,6 +94,7 @@ HellfireAG:
 		Image: DRAGON
 		HorizontalRateOfTurn: 10
 		RangeLimit: 8c512
+		Shadow: True
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 60
@@ -130,6 +133,7 @@ HellfireAA:
 		Image: DRAGON
 		HorizontalRateOfTurn: 10
 		RangeLimit: 7c0
+		Shadow: True
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 40
@@ -164,6 +168,7 @@ MammothTusk:
 		Image: DRAGON
 		HorizontalRateOfTurn: 15
 		RangeLimit: 9c614
+		Shadow: True
 	Warhead@1Dam: SpreadDamage
 		Spread: 256
 		Damage: 50
@@ -203,6 +208,7 @@ Nike:
 		HorizontalRateOfTurn: 25
 		RangeLimit: 9c0
 		Speed: 341
+		Shadow: True
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 50
@@ -230,6 +236,7 @@ RedEye:
 		HorizontalRateOfTurn: 20
 		RangeLimit: 9c0
 		Speed: 298
+		Shadow: True
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 40
@@ -260,6 +267,7 @@ Stinger:
 		RangeLimit: 10c819
 		Speed: 170
 		CloseEnough: 149
+		Shadow: True
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 30
@@ -301,6 +309,7 @@ StingerAA:
 		HorizontalRateOfTurn: 20
 		RangeLimit: 10c819
 		Speed: 255
+		Shadow: True
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 30
@@ -339,6 +348,7 @@ APTusk:
 		Image: DRAGON
 		HorizontalRateOfTurn: 10
 		RangeLimit: 7c204
+		Shadow: True
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 30
@@ -413,6 +423,7 @@ SubMissile:
 		Image: MISSILE
 		TrailImage: smokey
 		ContrailLength: 30
+		Shadow: True
 	Warhead@1Dam: SpreadDamage
 		Spread: 426
 		Damage: 25
@@ -443,6 +454,7 @@ SubMissileAA:
 		Inaccuracy: 0c614
 		HorizontalRateOfTurn: 15
 		RangeLimit: 9c0
+		Shadow: True
 	Warhead@1Dam: SpreadDamage
 		Damage: 15
 		ValidTargets: Air, Ground, Water
@@ -455,12 +467,12 @@ SCUD:
 	Projectile: Bullet
 		Speed: 170
 		Blockable: false
-		Shadow: false
 		TrailImage: smokey
 		TrailDelay: 5
 		Inaccuracy: 213
 		Image: V2
 		LaunchAngle: 62
+		Shadow: True
 	Warhead@1Dam: SpreadDamage
 		Spread: 341
 		Damage: 45
