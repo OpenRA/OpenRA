@@ -4,8 +4,9 @@ spicebloom.spawnpoint:
 	AlwaysVisible:
 	RenderSpritesEditorOnly:
 		Image: spicebloom
+		Palette: effect50alpha
 	WithSpriteBody:
-		Sequence: grow1
+		Sequence: grow3
 	BodyOrientation:
 		QuantizedFacings: 1
 	ConditionManager:
