@@ -405,5 +405,10 @@ namespace OpenRA.Platforms.Default
 				return state == AL10.AL_PLAYING;
 			}
 		}
+
+		public void SetPosition(WPos pos)
+		{
+			AL10.alSource3f(Source, AL10.AL_POSITION, pos.X, pos.Y, pos.Z);
+		}
 	}
 }

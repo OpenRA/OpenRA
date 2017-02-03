@@ -133,8 +133,8 @@ namespace OpenRA
 		public ISound Play(SoundType type, string name, WPos pos, float volumeModifier) { return Play(type, null, name, false, pos, volumeModifier); }
 		public ISound PlayToPlayer(SoundType type, Player player, string name) { return Play(type, player, name, true, WPos.Zero, 1f); }
 		public ISound PlayToPlayer(SoundType type, Player player, string name, WPos pos) { return Play(type, player, name, false, pos, 1f); }
-		public ISound PlayLooped(SoundType type, string name) { return PlayLooped(type, name, WPos.Zero); }
-		public ISound PlayLooped(SoundType type, string name, WPos pos) { return Play(type, null, name, true, pos, 1f, true); }
+		public ISound PlayLooped(SoundType type, string name) { return Play(type, null, name, true, WPos.Zero, 1f, true); }
+		public ISound PlayLooped(SoundType type, string name, WPos pos) { return Play(type, null, name, false, pos, 1f, true); }
 
 		public void PlayVideo(byte[] raw, int channels, int sampleBits, int sampleRate)
 		{

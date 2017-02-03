@@ -46,5 +46,6 @@ namespace OpenRA
 		float Volume { get; set; }
 		float SeekPosition { get; }
 		bool Playing { get; }
+		void SetPosition(WPos pos);
 	}
 }
