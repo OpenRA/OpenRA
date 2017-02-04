@@ -11,6 +11,10 @@ ABAN01:
 		HP: 600
 	EditorTilesetFilter:
 		ExcludeTilesets: TEMPERATE
+	ThrowsShrapnel@SMALL:
+		Pieces: 5, 9
+	ThrowsShrapnel@LARGE:
+		Pieces: 2, 4
 
 ABAN02:
 	Inherits: ^CivBuilding
@@ -25,6 +29,10 @@ ABAN02:
 		HP: 600
 	EditorTilesetFilter:
 		ExcludeTilesets: TEMPERATE
+	ThrowsShrapnel@SMALL:
+		Pieces: 5, 9
+	ThrowsShrapnel@LARGE:
+		Pieces: 2, 4
 
 ABAN03:
 	Inherits: ^CivBuilding
@@ -39,6 +47,10 @@ ABAN03:
 		HP: 500
 	EditorTilesetFilter:
 		ExcludeTilesets: TEMPERATE
+	ThrowsShrapnel@SMALL:
+		Pieces: 5, 9
+	ThrowsShrapnel@LARGE:
+		Pieces: 2, 4
 
 ABAN04:
 	Inherits: ^CivBuilding
@@ -53,6 +65,10 @@ ABAN04:
 		HP: 400
 	EditorTilesetFilter:
 		ExcludeTilesets: TEMPERATE
+	ThrowsShrapnel@SMALL:
+		Pieces: 4, 7
+	ThrowsShrapnel@LARGE:
+		Pieces: 2, 3
 
 ABAN05:
 	Inherits: ^CivBuilding
@@ -373,6 +389,10 @@ CA0001:
 		Type: heavy
 	Health:
 		HP: 400
+	ThrowsShrapnel@SMALL:
+		Pieces: 5, 9
+	ThrowsShrapnel@LARGE:
+		Pieces: 2, 4
 
 CA0002:
 	Inherits: ^CivBuilding
@@ -385,6 +405,10 @@ CA0002:
 		Type: heavy
 	Health:
 		HP: 400
+	ThrowsShrapnel@SMALL:
+		Pieces: 5, 9
+	ThrowsShrapnel@LARGE:
+		Pieces: 2, 4
 
 CA0003:
 	Inherits: ^CivBuilding
@@ -627,6 +651,10 @@ CAARAY:
 		HP: 400
 	RenderSprites:
 		Palette: player
+	ThrowsShrapnel@SMALL:
+		Pieces: 5, 7
+	ThrowsShrapnel@LARGE:
+		Pieces: 2, 4
 
 CAARMR:
 	Inherits: ^CivBuilding
@@ -644,6 +672,10 @@ CAARMR:
 	ProvidesPrerequisite:
 		Prerequisite: barracks.upgraded
 	Capturable:
+	ThrowsShrapnel@SMALL:
+		Pieces: 6, 9
+	ThrowsShrapnel@LARGE:
+		Pieces: 3, 4
 
 CACRSH01:
 	Inherits: ^Decoration
@@ -684,6 +716,10 @@ CAHOSP:
 	ProvidesPrerequisite@BuildingName:
 	Buildable:
 		Description: Gives friendly units a medkit to heal themselves.
+	ThrowsShrapnel@SMALL:
+		Pieces: 5, 9
+	ThrowsShrapnel@LARGE:
+		Pieces: 2, 4
 
 CAPYR01:
 	Inherits: ^CivBuilding
@@ -712,6 +748,10 @@ CAPYR02:
 		HP: 400
 	EditorTilesetFilter:
 		ExcludeTilesets: SNOW
+	ThrowsShrapnel@SMALL:
+		Pieces: 6, 9
+	ThrowsShrapnel@LARGE:
+		Pieces: 3, 4
 
 CAPYR03:
 	Inherits: ^CivBuilding
@@ -726,6 +766,10 @@ CAPYR03:
 		HP: 400
 	EditorTilesetFilter:
 		ExcludeTilesets: SNOW
+	ThrowsShrapnel@SMALL:
+		Pieces: 6, 9
+	ThrowsShrapnel@LARGE:
+		Pieces: 3, 4
 
 CITY01:
 	Inherits: ^CivBuilding
@@ -740,6 +784,10 @@ CITY01:
 		HP: 400
 	EditorTilesetFilter:
 		RequireTilesets: TEMPERATE
+	ThrowsShrapnel@SMALL:
+		Pieces: 5, 9
+	ThrowsShrapnel@LARGE:
+		Pieces: 2, 4
 
 CITY02:
 	Inherits: ^CivBuilding
@@ -754,6 +802,10 @@ CITY02:
 		HP: 700
 	EditorTilesetFilter:
 		RequireTilesets: TEMPERATE
+	ThrowsShrapnel@SMALL:
+		Pieces: 5, 9
+	ThrowsShrapnel@LARGE:
+		Pieces: 2, 4
 
 CITY03:
 	Inherits: ^CivBuilding
@@ -768,6 +820,10 @@ CITY03:
 		HP: 500
 	EditorTilesetFilter:
 		RequireTilesets: TEMPERATE
+	ThrowsShrapnel@SMALL:
+		Pieces: 5, 9
+	ThrowsShrapnel@LARGE:
+		Pieces: 2, 4
 
 CITY04:
 	Inherits: ^CivBuilding
@@ -782,6 +838,10 @@ CITY04:
 		HP: 600
 	EditorTilesetFilter:
 		RequireTilesets: TEMPERATE
+	ThrowsShrapnel@SMALL:
+		Pieces: 5, 9
+	ThrowsShrapnel@LARGE:
+		Pieces: 2, 4
 
 CITY05:
 	Inherits: ^CivBuilding
@@ -796,6 +856,10 @@ CITY05:
 		HP: 600
 	EditorTilesetFilter:
 		RequireTilesets: TEMPERATE
+	ThrowsShrapnel@SMALL:
+		Pieces: 5, 9
+	ThrowsShrapnel@LARGE:
+		Pieces: 2, 4
 
 CITY06:
 	Inherits: ^CivBuilding
@@ -810,6 +874,10 @@ CITY06:
 		HP: 500
 	EditorTilesetFilter:
 		RequireTilesets: TEMPERATE
+	ThrowsShrapnel@SMALL:
+		Pieces: 7, 9
+	ThrowsShrapnel@LARGE:
+		Pieces: 3, 4
 
 CITY07:
 	Inherits: ^CivBuilding
@@ -824,6 +892,10 @@ CITY07:
 		HP: 400
 	EditorTilesetFilter:
 		RequireTilesets: TEMPERATE
+	ThrowsShrapnel@SMALL:
+		Pieces: 7, 9
+	ThrowsShrapnel@LARGE:
+		Pieces: 3, 4
 
 CITY08:
 	Inherits: ^CivBuilding
@@ -936,6 +1008,10 @@ CITY15:
 		HP: 500
 	EditorTilesetFilter:
 		RequireTilesets: TEMPERATE
+	ThrowsShrapnel@SMALL:
+		Pieces: 7, 9
+	ThrowsShrapnel@LARGE:
+		Pieces: 3, 4
 
 CITY16:
 	Inherits: ^CivBuilding
@@ -950,6 +1026,10 @@ CITY16:
 		HP: 500
 	EditorTilesetFilter:
 		RequireTilesets: TEMPERATE
+	ThrowsShrapnel@SMALL:
+		Pieces: 7, 9
+	ThrowsShrapnel@LARGE:
+		Pieces: 3, 4
 
 CITY17:
 	Inherits: ^CivBuilding
@@ -964,6 +1044,10 @@ CITY17:
 		HP: 300
 	EditorTilesetFilter:
 		RequireTilesets: TEMPERATE
+	ThrowsShrapnel@SMALL:
+		Pieces: 7, 9
+	ThrowsShrapnel@LARGE:
+		Pieces: 3, 4
 
 CITY18:
 	Inherits: ^CivBuilding
@@ -978,6 +1062,10 @@ CITY18:
 		HP: 600
 	EditorTilesetFilter:
 		RequireTilesets: TEMPERATE
+	ThrowsShrapnel@SMALL:
+		Pieces: 8, 12
+	ThrowsShrapnel@LARGE:
+		Pieces: 5, 7
 
 CITY19:
 	Inherits: ^CivBuilding
@@ -1059,6 +1147,10 @@ CTDAM:
 		Sequence: idle-water
 	Buildable:
 		Description: Provides power for other structures
+	ThrowsShrapnel@SMALL:
+		Pieces: 5, 9
+	ThrowsShrapnel@LARGE:
+		Pieces: 2, 4
 
 CTVEGA:
 	Inherits: ^CivBuilding
@@ -1073,6 +1165,10 @@ CTVEGA:
 		HP: 100
 	EditorTilesetFilter:
 		ExcludeTilesets: SNOW
+	ThrowsShrapnel@SMALL:
+		Pieces: 7, 9
+	ThrowsShrapnel@LARGE:
+		Pieces: 3, 4
 
 GAKODK:
 	Inherits: ^CivBuilding
@@ -1330,6 +1426,10 @@ NTPYRA:
 		Palette: player
 	WithIdleOverlay@LIGHTS:
 		Sequence: idle-lights
+	ThrowsShrapnel@SMALL:
+		Pieces: 7, 9
+	ThrowsShrapnel@LARGE:
+		Pieces: 3, 5
 
 UFO:
 	Inherits: ^CivBuilding
@@ -1350,3 +1450,7 @@ UFO:
 		RequireTilesets: TEMPERATE
 	SelectionDecorations:
 		VisualBounds: 144, 72, 0, 0
+	ThrowsShrapnel@SMALL:
+		Pieces: 9, 12
+	ThrowsShrapnel@LARGE:
+		Pieces: 6, 8
