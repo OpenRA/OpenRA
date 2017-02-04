@@ -408,7 +408,6 @@ agun:
 	muzzle: gunfire2
 		Start: 1
 		Length: 4
-		Offset: 0,-13
 	bib: mbAGUN
 		Length: *
 		UseTilesetExtension: true

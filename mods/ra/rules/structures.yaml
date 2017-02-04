@@ -473,7 +473,7 @@ AGUN:
 	WithTurretedSpriteBody:
 	Armament:
 		Weapon: ZSU-23
-		LocalOffset: 432,150,-30, 432,-150,-30
+		LocalOffset: 520,100,450, 520,-150,450
 		MuzzleSequence: muzzle
 	AttackTurreted:
 	WithMuzzleOverlay:
