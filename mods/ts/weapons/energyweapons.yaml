@@ -1,4 +1,4 @@
-LtRail:
+^Railgun:
 	ReloadDelay: 60
 	Range: 6c0
 	Report: bigggun1.aud
@@ -14,9 +14,7 @@ LtRail:
 		Range: 0, 32
 		Falloff: 100, 100
 		Damage: 150
-		InfDeath: 6
 		AffectsParent: false
-		ValidStances: Neutral, Enemy
 		Versus:
 			None: 100
 			Wood: 130
@@ -24,6 +22,11 @@ LtRail:
 			Heavy: 110
 			Concrete: 5
 		DamageTypes: Prone100Percent, TriggerProne, ExplosionDeath
+
+LtRail:
+	Inherits: ^Railgun
+	Warhead@1Dam: SpreadDamage
+		ValidStances: Neutral, Enemy
 	Warhead@2Dam: SpreadDamage
 		Range: 0, 32
 		Falloff: 50, 50 # Only does half damage to friendly units
@@ -40,21 +43,14 @@ LtRail:
 		DamageTypes: Prone100Percent, TriggerProne, ExplosionDeath
 
 MechRailgun:
-	ReloadDelay: 60
+	Inherits: ^Railgun
 	Range: 8c0
 	Burst: 2 # for alternating muzzle offsets, dmg/s identical to original
 	BurstDelay: 60
 	Report: railuse5.aud
 	Projectile: AreaBeam
-		Speed: 20c0
-		Duration: 3
-		DamageInterval: 2
-		Width: 80
-		BeyondTargetRange: 0c64
-		Blockable: true
 		Color: 00FFFFC8
 	Warhead@1Dam: SpreadDamage
-		Spread: 42
 		Damage: 200
 		Versus:
 			None: 200
@@ -62,7 +58,6 @@ MechRailgun:
 			Light: 160
 			Heavy: 100
 			Concrete: 25
-		DamageTypes: Prone100Percent, TriggerProne, ExplosionDeath
 
 SonicZap:
 	ReloadDelay: 180
@@ -101,30 +96,13 @@ SonicZap:
 			Concrete: 60
 		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
 
-CyCannon:
+^EnergyBlast:
 	ReloadDelay: 50
 	Range: 7c0
 	Report: scrin5b.aud
 	ValidTargets: Ground
-	Projectile: Missile
-		MaximumLaunchSpeed: 192
-		Blockable: false
-		HorizontalRateOfTurn: 2
-		Shadow: true
-		Image: TORPEDO
-		MinimumLaunchSpeed: 75
-		Speed: 384
 	Warhead@1Dam: SpreadDamage
-		Spread: 43
-		Damage: 120
 		ValidTargets: Ground
-		Versus:
-			None: 350
-			Wood: 260
-			Light: 205
-			Heavy: 150
-			Concrete: 80
-		DamageTypes: Prone350Percent, TriggerProne, EnergyDeath
 	Warhead@2Eff: CreateEffect
 		Explosions: large_explosion
 		ExplosionPalette: effectalpha75
@@ -139,24 +117,42 @@ CyCannon:
 		SmudgeType: SmallScorch
 		InvalidTargets: Vehicle, Building, Wall
 
+CyCannon:
+	Inherits: ^EnergyBlast
+	Projectile: Missile
+		MaximumLaunchSpeed: 192
+		Blockable: false
+		HorizontalRateOfTurn: 2
+		Shadow: true
+		Image: TORPEDO
+		MinimumLaunchSpeed: 75
+		Speed: 384
+		RangeLimit: 8c0
+	Warhead@1Dam: SpreadDamage
+		Spread: 43
+		Damage: 120
+		Versus:
+			None: 350
+			Wood: 260
+			Light: 205
+			Heavy: 150
+			Concrete: 80
+		DamageTypes: Prone350Percent, TriggerProne, EnergyDeath
+
 Proton:
-	ReloadDelay: 50
+	Inherits: ^EnergyBlast
 	Range: 5c0
-	Report: scrin5b.aud
 	Burst: 5
 	BurstDelay: 3
-	ValidTargets: Ground
 	Projectile: Bullet
 		Speed: 341
 		Blockable: false
 		Shadow: true
 		Inaccuracy: 128
 		Image: TORPEDO
-		RangeLimit: 35
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 20
-		ValidTargets: Ground
 		Versus:
 			None: 25
 			Wood: 65
@@ -166,21 +162,8 @@ Proton:
 		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
 	Warhead@2Eff: CreateEffect
 		Explosions: small_bang
-		ImpactSounds: expnew12.aud
-		InvalidImpactTypes: Water
-	Warhead@3EffWater: CreateEffect
-		Explosions: small_watersplash
-		ExplosionPalette: player
-		ImpactSounds: ssplash3.aud
-		ValidImpactTypes: Water
-	Warhead@4Smu: LeaveSmudge
-		SmudgeType: MediumScorch
-		InvalidTargets: Vehicle, Building, Wall
 
-ObeliskLaserFire:
-	ReloadDelay: 1
-	Range: 10c512
-	Report: obelray1.aud
+^Laser:
 	Projectile: LaserZap
 		Width: 72
 		Duration: 15
@@ -195,20 +178,23 @@ ObeliskLaserFire:
 		Damage: 250
 		DamageTypes: Prone60Percent, TriggerProne, EnergyDeath
 
+ObeliskLaserFire:
+	Inherits: ^Laser
+	ReloadDelay: 1
+	Range: 10c512
+	Report: obelray1.aud
+	Warhead@1Dam: SpreadDamage
+		Damage: 250
+
 TurretLaserFire:
+	Inherits: ^Laser
 	ReloadDelay: 40
 	Range: 5c512
 	Report: lastur1.aud
 	Projectile: LaserZap
 		Width: 36
 		Duration: 8
-		ZOffset: 2047
-		Color: FF000080
-		SecondaryBeam: true
 		SecondaryBeamWidth: 144
-		SecondaryBeamZOffset: 2047
 		SecondaryBeamColor: FF000030
 	Warhead@1Dam: SpreadDamage
-		Spread: 42
 		Damage: 30
-		DamageTypes: Prone60Percent, TriggerProne, EnergyDeath
