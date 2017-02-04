@@ -779,7 +779,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				// Rename UpgradeOverlay to WithColoredOverlay
 				if (engineVersion < 20170201)
 					if (node.Key.StartsWith("UpgradeOverlay", StringComparison.Ordinal))
-						RenameNodeKey(node, "WithColoredOverlay" + node.Key.Substring(14));
+						RenameNodeKey(node, "WithColoredOverlay");
 
 				// Remove SpiceBloom.RespawnDelay to get rid of DelayedAction, and rename GrowthDelay to Lifetime
 				if (engineVersion < 20170203)
