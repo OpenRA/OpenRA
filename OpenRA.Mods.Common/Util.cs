@@ -164,5 +164,16 @@ namespace OpenRA.Mods.Common
 				yield return p;
 			}
 		}
+
+		public static int RandomDelay(World world, int[] range)
+		{
+			if (range.Length == 0)
+				return 0;
+
+			if (range.Length == 1)
+				return range[0];
+
+			return world.SharedRandom.Next(range[0], range[1]);
+		}
 	}
 }

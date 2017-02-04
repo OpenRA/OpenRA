@@ -18,13 +18,21 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Remove the actor from the world (and destroy it) instead of killing it.")]
 		public readonly bool RemoveInstead = false;
 
-		public override object Create(ActorInitializer init) { return new KillsSelf(this); }
+		[Desc("The amount of time (in ticks) before the actor dies. Two values indicate a range between which a random value is chosen.")]
+		public readonly int[] Delay = { 250 };
+
+		public override object Create(ActorInitializer init) { return new KillsSelf(init.Self, this); }
 	}
 
-	class KillsSelf : ConditionalTrait<KillsSelfInfo>, INotifyAddedToWorld
+	class KillsSelf : ConditionalTrait<KillsSelfInfo>, INotifyAddedToWorld, ITick
 	{
-		public KillsSelf(KillsSelfInfo info)
-			: base(info) { }
+		int lifetime;
+
+		public KillsSelf(Actor self, KillsSelfInfo info)
+			: base(info)
+		{
+			lifetime = Util.RandomDelay(self.World, info.Delay);
+		}
 
 		public void AddedToWorld(Actor self)
 		{
@@ -37,10 +45,30 @@ namespace OpenRA.Mods.Common.Traits
 			if (self.IsDead)
 				return;
 
+			if (lifetime > 0)
+				return;
+
 			if (Info.RemoveInstead || !self.Info.HasTraitInfo<HealthInfo>())
 				self.Dispose();
 			else
 				self.Kill(self);
+		}
+
+		void ITick.Tick(Actor self)
+		{
+			if (self.IsDead || IsTraitDisabled)
+				return;
+
+			if (!self.World.Map.Contains(self.Location))
+				return;
+
+			if (lifetime-- == 0)
+			{
+				if (Info.RemoveInstead || !self.Info.HasTraitInfo<HealthInfo>())
+					self.Dispose();
+				else
+					self.Kill(self);
+			}
 		}
 	}
 }
