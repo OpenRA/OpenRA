@@ -10,12 +10,14 @@
 #endregion
 
 using OpenRA.Graphics;
+using OpenRA.Mods.Common.Traits;
+using OpenRA.Mods.Common.Traits.Render;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.Common.Traits.Render
+namespace OpenRA.Mods.Cnc.Traits.Render
 {
 	[Desc("Rendered together with AttackCharge.")]
-	public class WithChargeOverlayInfo : ITraitInfo, Requires<RenderSpritesInfo>
+	public class WithTeslaChargeOverlayInfo : ITraitInfo, Requires<RenderSpritesInfo>
 	{
 		[Desc("Sequence name to use")]
 		[SequenceReference] public readonly string Sequence = "active";
@@ -26,18 +28,18 @@ namespace OpenRA.Mods.Common.Traits.Render
 		[Desc("Custom palette is a player palette BaseName")]
 		public readonly bool IsPlayerPalette = false;
 
-		public object Create(ActorInitializer init) { return new WithChargeOverlay(init, this); }
+		public object Create(ActorInitializer init) { return new WithTeslaChargeOverlay(init, this); }
 	}
 
-	public class WithChargeOverlay : INotifyCharging, INotifyDamageStateChanged, INotifySold
+	public class WithTeslaChargeOverlay : INotifyTeslaCharging, INotifyDamageStateChanged, INotifySold
 	{
 		readonly Animation overlay;
 		readonly RenderSprites renderSprites;
-		readonly WithChargeOverlayInfo info;
+		readonly WithTeslaChargeOverlayInfo info;
 
 		bool charging;
 
-		public WithChargeOverlay(ActorInitializer init, WithChargeOverlayInfo info)
+		public WithTeslaChargeOverlay(ActorInitializer init, WithTeslaChargeOverlayInfo info)
 		{
 			this.info = info;
 
@@ -49,7 +51,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 				info.Palette, info.IsPlayerPalette);
 		}
 
-		void INotifyCharging.Charging(Actor self, Target target)
+		void INotifyTeslaCharging.Charging(Actor self, Target target)
 		{
 			charging = true;
 			overlay.PlayThen(RenderSprites.NormalizeSequence(overlay, self.GetDamageState(), info.Sequence), () => charging = false);

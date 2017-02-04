@@ -818,6 +818,18 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				if (engineVersion < 20170210)
+				{
+					if (node.Key.StartsWith("AttackCharge", StringComparison.Ordinal))
+						RenameNodeKey(node, "AttackTesla");
+
+					if (node.Key.StartsWith("WithChargeOverlay", StringComparison.Ordinal))
+						RenameNodeKey(node, "WithTeslaChargeOverlay");
+
+					if (node.Key.StartsWith("WithChargeAnimation", StringComparison.Ordinal))
+						RenameNodeKey(node, "WithTeslaChargeAnimation");
+				}
+
 				UpgradeActorRules(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 

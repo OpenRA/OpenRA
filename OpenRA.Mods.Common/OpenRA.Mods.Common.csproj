@@ -262,7 +262,6 @@
     <Compile Include="Traits\Armor.cs" />
     <Compile Include="Traits\AttackMove.cs" />
     <Compile Include="Traits\Attack\AttackBase.cs" />
-    <Compile Include="Traits\Attack\AttackCharge.cs" />
     <Compile Include="Traits\Attack\AttackFollow.cs" />
     <Compile Include="Traits\Attack\AttackFrontal.cs" />
     <Compile Include="Traits\Attack\AttackGarrisoned.cs" />
@@ -431,8 +430,6 @@
     <Compile Include="Traits\Render\WithSiloAnimation.cs" />
     <Compile Include="Traits\Render\WithBuildingPlacedAnimation.cs" />
     <Compile Include="Traits\Render\WithMakeAnimation.cs" />
-    <Compile Include="Traits\Render\WithChargeAnimation.cs" />
-    <Compile Include="Traits\Render\WithChargeOverlay.cs" />
     <Compile Include="Traits\Render\WithCrateBody.cs" />
     <Compile Include="Traits\Render\WithDamageOverlay.cs" />
     <Compile Include="Traits\Render\WithDeathAnimation.cs" />

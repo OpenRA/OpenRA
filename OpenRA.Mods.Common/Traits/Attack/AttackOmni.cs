@@ -14,12 +14,12 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	class AttackOmniInfo : AttackBaseInfo
+	public class AttackOmniInfo : AttackBaseInfo
 	{
 		public override object Create(ActorInitializer init) { return new AttackOmni(init.Self, this); }
 	}
 
-	class AttackOmni : AttackBase
+	public class AttackOmni : AttackBase
 	{
 		public AttackOmni(Actor self, AttackOmniInfo info)
 			: base(self, info) { }

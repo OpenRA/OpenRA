@@ -11,12 +11,13 @@
 
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Activities;
+using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.Common.Traits
+namespace OpenRA.Mods.Cnc.Traits
 {
-	[Desc("Charges up before being able to attack.")]
-	class AttackChargeInfo : AttackOmniInfo
+	[Desc("Implements the charge-then-burst attack logic specific to the RA tesla coil.")]
+	class AttackTeslaInfo : AttackOmniInfo
 	{
 		[Desc("How many charges this actor has to attack with, once charged.")]
 		public readonly int MaxCharges = 1;
@@ -33,17 +34,17 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Sound to play when actor charges.")]
 		public readonly string ChargeAudio = null;
 
-		public override object Create(ActorInitializer init) { return new AttackCharge(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new AttackTesla(init.Self, this); }
 	}
 
-	class AttackCharge : AttackOmni, ITick, INotifyAttack
+	class AttackTesla : AttackOmni, ITick, INotifyAttack
 	{
-		readonly AttackChargeInfo info;
+		readonly AttackTeslaInfo info;
 
 		[Sync] int charges;
 		[Sync] int timeToRecharge;
 
-		public AttackCharge(Actor self, AttackChargeInfo info)
+		public AttackTesla(Actor self, AttackTeslaInfo info)
 			: base(self, info)
 		{
 			this.info = info;
@@ -79,10 +80,10 @@ namespace OpenRA.Mods.Common.Traits
 
 		class ChargeAttack : Activity
 		{
-			readonly AttackCharge attack;
+			readonly AttackTesla attack;
 			readonly Target target;
 
-			public ChargeAttack(AttackCharge attack, Target target)
+			public ChargeAttack(AttackTesla attack, Target target)
 			{
 				this.attack = attack;
 				this.target = target;
@@ -96,7 +97,7 @@ namespace OpenRA.Mods.Common.Traits
 				if (attack.charges == 0)
 					return this;
 
-				foreach (var notify in self.TraitsImplementing<INotifyCharging>())
+				foreach (var notify in self.TraitsImplementing<INotifyTeslaCharging>())
 					notify.Charging(self, target);
 
 				if (!string.IsNullOrEmpty(attack.info.ChargeAudio))
@@ -108,10 +109,10 @@ namespace OpenRA.Mods.Common.Traits
 
 		class ChargeFire : Activity
 		{
-			readonly AttackCharge attack;
+			readonly AttackTesla attack;
 			readonly Target target;
 
-			public ChargeFire(AttackCharge attack, Target target)
+			public ChargeFire(AttackTesla attack, Target target)
 			{
 				this.attack = attack;
 				this.target = target;

@@ -758,12 +758,12 @@ OBLI:
 		Range: 8c0
 	Bib:
 		HasMinibib: Yes
-	WithChargeAnimation:
+	WithTeslaChargeAnimation:
 	Armament:
 		Weapon: Laser
 		LocalOffset: 0,-85,1280
 		FireDelay: 0
-	AttackCharge:
+	AttackTesla:
 		ChargeAudio: obelpowr.aud
 		ReloadDelay: 40
 		InitialChargeDelay: 50

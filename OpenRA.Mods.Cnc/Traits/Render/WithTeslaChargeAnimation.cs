@@ -9,31 +9,32 @@
  */
 #endregion
 
+using OpenRA.Mods.Common.Traits.Render;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.Common.Traits.Render
+namespace OpenRA.Mods.Cnc.Traits.Render
 {
 	[Desc("This actor displays a charge-up animation before firing.")]
-	public class WithChargeAnimationInfo : ITraitInfo, Requires<WithSpriteBodyInfo>, Requires<RenderSpritesInfo>
+	public class WithTeslaChargeAnimationInfo : ITraitInfo, Requires<WithSpriteBodyInfo>, Requires<RenderSpritesInfo>
 	{
 		[Desc("Sequence to use for charge animation.")]
 		[SequenceReference] public readonly string ChargeSequence = "active";
 
-		public object Create(ActorInitializer init) { return new WithChargeAnimation(init, this); }
+		public object Create(ActorInitializer init) { return new WithTeslaChargeAnimation(init, this); }
 	}
 
-	public class WithChargeAnimation : INotifyCharging
+	public class WithTeslaChargeAnimation : INotifyTeslaCharging
 	{
-		readonly WithChargeAnimationInfo info;
+		readonly WithTeslaChargeAnimationInfo info;
 		readonly WithSpriteBody wsb;
 
-		public WithChargeAnimation(ActorInitializer init, WithChargeAnimationInfo info)
+		public WithTeslaChargeAnimation(ActorInitializer init, WithTeslaChargeAnimationInfo info)
 		{
 			this.info = info;
 			wsb = init.Self.Trait<WithSpriteBody>();
 		}
 
-		public void Charging(Actor self, Target target)
+		void INotifyTeslaCharging.Charging(Actor self, Target target)
 		{
 			wsb.PlayCustomAnimation(self, info.ChargeSequence, () => wsb.CancelCustomAnimation(self));
 		}

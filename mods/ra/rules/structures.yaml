@@ -436,11 +436,11 @@ TSLA:
 		Range: 6c0
 	Bib:
 		HasMinibib: Yes
-	WithChargeAnimation:
+	WithTeslaChargeAnimation:
 	Armament:
 		Weapon: TeslaZap
 		LocalOffset: 0,0,896
-	AttackCharge:
+	AttackTesla:
 		ChargeAudio: tslachg2.aud
 		MaxCharges: 3
 		ReloadDelay: 120
