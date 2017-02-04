@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits.Sound
@@ -33,7 +34,7 @@ namespace OpenRA.Mods.Common.Traits.Sound
 	class AmbientSound : ConditionalTrait<AmbientSoundInfo>, ITick, INotifyRemovedFromWorld
 	{
 		readonly bool loop;
-		ISound currentSound;
+		HashSet<ISound> currentSounds = new HashSet<ISound>();
 		WPos cachedPosition;
 		int delay;
 
@@ -49,10 +50,14 @@ namespace OpenRA.Mods.Common.Traits.Sound
 			if (IsTraitDisabled)
 				return;
 
+			currentSounds.RemoveWhere(s => s == null || !s.Playing);
+
 			var pos = self.CenterPosition;
-			if (currentSound != null && pos != cachedPosition)
+			if (pos != cachedPosition)
 			{
-				currentSound.SetPosition(pos);
+				foreach (var s in currentSounds)
+					s.SetPosition(pos);
+
 				cachedPosition = pos;
 			}
 
@@ -69,24 +74,26 @@ namespace OpenRA.Mods.Common.Traits.Sound
 
 		void StartSound(Actor self)
 		{
+			ISound s;
 			if (self.OccupiesSpace != null)
 			{
 				cachedPosition = self.CenterPosition;
-				currentSound = loop ? Game.Sound.PlayLooped(SoundType.World, Info.SoundFile, cachedPosition) :
+				s = loop ? Game.Sound.PlayLooped(SoundType.World, Info.SoundFile, cachedPosition) :
 					Game.Sound.Play(SoundType.World, Info.SoundFile, self.CenterPosition);
 			}
 			else
-				currentSound = loop ? Game.Sound.PlayLooped(SoundType.World, Info.SoundFile) :
+				s = loop ? Game.Sound.PlayLooped(SoundType.World, Info.SoundFile) :
 					Game.Sound.Play(SoundType.World, Info.SoundFile);
+
+			currentSounds.Add(s);
 		}
 
 		void StopSound()
 		{
-			if (currentSound == null)
-				return;
+			foreach (var s in currentSounds)
+				Game.Sound.StopSound(s);
 
-			Game.Sound.StopSound(currentSound);
-			currentSound = null;
+			currentSounds.Clear();
 		}
 
 		protected override void TraitEnabled(Actor self) { delay = Util.RandomDelay(self.World, Info.Delay); }
