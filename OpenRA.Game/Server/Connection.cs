@@ -104,8 +104,10 @@ namespace OpenRA.Server
 
 						case ReceiveState.Data:
 							{
+								if (MostRecentFrame < Frame)
+									MostRecentFrame = Frame;
+
 								server.DispatchOrders(this, Frame, bytes);
-								MostRecentFrame = Frame;
 								ExpectLength = 8;
 								State = ReceiveState.Header;
 							} break;
