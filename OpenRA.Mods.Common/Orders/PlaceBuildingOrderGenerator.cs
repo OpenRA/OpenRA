@@ -245,7 +245,8 @@ namespace OpenRA.Mods.Common.Orders
 
 				yield return new Order("Move", blocker.Actor, false)
 				{
-					TargetLocation = blocker.Actor.ClosestCell(availableCells)
+					TargetLocation = blocker.Actor.ClosestCell(availableCells),
+					SuppressVisualFeedback = true
 				};
 			}
 		}
