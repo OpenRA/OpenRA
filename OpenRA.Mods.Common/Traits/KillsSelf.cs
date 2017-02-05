@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly bool RemoveInstead = false;
 
 		[Desc("The amount of time (in ticks) before the actor dies. Two values indicate a range between which a random value is chosen.")]
-		public readonly int[] Delay = { 250 };
+		public readonly int[] Delay = { 0 };
 
 		public override object Create(ActorInitializer init) { return new KillsSelf(init.Self, this); }
 	}
