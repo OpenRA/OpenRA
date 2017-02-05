@@ -47,11 +47,6 @@ explosion:
 		BlendMode: Alpha
 		Offset: 12, -10
 		Tick: 120
-	bloomspawn: DATA.R8
-		Start: 4233
-		Length: 8
-		Tick: 120
-		Offset: 0, -16
 	corpse: DATA.R8
 		ZOffset: -511
 		Start: 430
@@ -415,6 +410,13 @@ spicebloom:
 		Length: 1
 		ZOffset: -1023
 		Offset: -16,-16
+	spurt: DATA.R8
+		Start: 4233
+		Length: 8
+		Tick: 80
+		BlendMode: Additive
+		ZOffset: 511
+		Offset: 0, -16
 
 moveflsh:
 	idle: DATA.R8
