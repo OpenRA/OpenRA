@@ -106,3 +106,60 @@ Veins:
 	Warhead@Effect: CreateEffect
 		Explosions: veins
 		ExplosionPalette: player
+
+^Debris:
+	Range: 5c0
+	Projectile: Bullet
+		Speed: 64, 128
+		LaunchAngle: 80, 192
+		Image: dbrissm
+		Sequences: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
+		Shadow: true
+		Blockable: false
+	Warhead@1Dam: SpreadDamage
+		Spread: 200
+		Falloff: 100, 100, 0
+		Damage: 10
+		Versus:
+			None: 100
+			Wood: 85
+			Light: 70
+			Heavy: 35
+			Concrete: 28
+		DamageTypes: Prone100Percent, TriggerProne, ExplosionDeath
+	Warhead@2Eff: CreateEffect
+		Explosions: tiny_twlt
+		ExplosionPalette: effectalpha75
+		InvalidImpactTypes: Water
+	Warhead@3EffWater: CreateEffect
+		Explosions: small_watersplash
+		ExplosionPalette: player
+		ImpactSounds: ssplash3.aud
+		ValidImpactTypes: Water
+	Warhead@4Smu: LeaveSmudge
+		SmudgeType: SmallScorch
+		InvalidTargets: Vehicle, Building, Wall
+
+SmallDebris:
+	Inherits: ^Debris
+
+LargeDebris:
+	Inherits: ^Debris
+	Projectile: Bullet
+		Image: dbrislg
+		Sequences: 2, 3, 4, 6, 7, 9, 10
+	Warhead@1Dam: SpreadDamage
+		Spread: 320
+		Damage: 20
+	Warhead@2Eff: CreateEffect
+		Explosions: small_twlt
+		ImpactSounds: expnew06.aud
+	Warhead@4Smu: LeaveSmudge
+		SmudgeType: MediumCrater
+
+LargeDebrisWithTrail:
+	Inherits: LargeDebris
+	Projectile: Bullet
+		Sequences: 1, 5, 8
+		TrailImage: small_smoke_trail
+		TrailInterval: 1

@@ -144,6 +144,14 @@
 	Guardable:
 		Range: 3c0
 	Demolishable:
+	ThrowsShrapnel@SMALL:
+		Weapons: SmallDebris
+		Pieces: 2, 4
+		Range: 2c0, 5c0
+	ThrowsShrapnel@LARGE:
+		Weapons: LargeDebris, LargeDebrisWithTrail
+		Pieces: 1, 2
+		Range: 2c0, 5c0
 
 ^Building:
 	Inherits@1: ^BasicBuilding
@@ -168,10 +176,10 @@
 	Sellable:
 		SellSounds: cashturn.aud
 	WithMakeAnimation:
-	ThrowsShrapnel:
-		Weapons: LargeDebris
-		Pieces: 3, 7
-		Range: 2c0, 5c0
+	ThrowsShrapnel@SMALL:
+		Pieces: 3, 5
+	ThrowsShrapnel@LARGE:
+		Pieces: 2, 3
 
 ^CivBuilding:
 	Inherits: ^BasicBuilding
@@ -200,6 +208,10 @@
 		HP: 400
 	EditorTilesetFilter:
 		RequireTilesets: TEMPERATE
+	ThrowsShrapnel@SMALL:
+		Pieces: 1, 3
+	ThrowsShrapnel@LARGE:
+		Pieces: 1, 1
 
 ^Crate:
 	HiddenUnderFog:
