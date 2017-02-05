@@ -61,14 +61,14 @@
       <Name>OpenRA.Game</Name>
       <Private>False</Private>
     </ProjectReference>
+    <ProjectReference Include="..\OpenRA.Mods.Cnc\OpenRA.Mods.Cnc.csproj">
+      <Project>{2881135d-4d62-493e-8f83-5eee92ccc6be}</Project>
+      <Name>OpenRA.Mods.Cnc</Name>
+    </ProjectReference>
     <ProjectReference Include="..\OpenRA.Mods.Common\OpenRA.Mods.Common.csproj">
       <Project>{FE6C8CC0-2F07-442A-B29F-17617B3B7FC6}</Project>
       <Name>OpenRA.Mods.Common</Name>
       <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\OpenRA.Mods.TS\OpenRA.Mods.TS.csproj">
-      <Project>{5457CBF5-4CE4-421E-A8BF-9FD6C9732E1D}</Project>
-      <Name>OpenRA.Mods.TS</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
