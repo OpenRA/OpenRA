@@ -27,6 +27,9 @@ World:
 		ShortGameLocked: True
 		ShortGameEnabled: False
 
+E7:
+	-Crushable:
+
 E7.noautotarget:
 	Inherits: E7
 	-AutoTarget:
