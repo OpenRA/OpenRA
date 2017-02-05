@@ -107,8 +107,6 @@ Section "Game" GAME
 	File "${SRCDIR}\OpenAL-CS.dll"
 	File "${SRCDIR}\global mix database.dat"
 	File "${SRCDIR}\MaxMind.Db.dll"
-	File "${SRCDIR}\MaxMind.GeoIP2.dll"
-	File "${SRCDIR}\Newtonsoft.Json.dll"
 	File "${SRCDIR}\GeoLite2-Country.mmdb.gz"
 	File "${SRCDIR}\eluant.dll"
 	File "${SRCDIR}\SmarIrc4net.dll"
@@ -202,8 +200,6 @@ Function ${UN}Clean
 	Delete $INSTDIR\OpenRA.ico
 	Delete "$INSTDIR\global mix database.dat"
 	Delete $INSTDIR\MaxMind.Db.dll
-	Delete $INSTDIR\MaxMind.GeoIP2.dll
-	Delete $INSTDIR\Newtonsoft.Json.dll
 	Delete $INSTDIR\GeoLite2-Country.mmdb.gz
 	Delete $INSTDIR\KopiLua.dll
 	Delete $INSTDIR\soft_oal.dll
@@ -215,15 +211,15 @@ Function ${UN}Clean
 	Delete $INSTDIR\OpenAL-CS.dll
 	Delete $INSTDIR\SmarIrc4net.dll
 	RMDir /r $INSTDIR\Support
-	
+
 	DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\OpenRA"
 	DeleteRegKey HKLM "Software\Classes\.orarep"
 	DeleteRegKey HKLM "Software\Classes\OpenRA_replay"
 	DeleteRegKey HKLM "Software\Classes\openra"
-	
+
 	Delete $INSTDIR\uninstaller.exe
 	RMDir $INSTDIR
-	
+
 	!insertmacro MUI_STARTMENU_GETFOLDER Application $StartMenuFolder
 	RMDir /r "$SMPROGRAMS\$StartMenuFolder"
 	Delete $DESKTOP\OpenRA.lnk

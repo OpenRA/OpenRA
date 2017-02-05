@@ -74,10 +74,6 @@
       <HintPath>..\thirdparty\download\ICSharpCode.SharpZipLib.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="MaxMind.GeoIP2">
-      <HintPath>..\thirdparty\download\MaxMind.GeoIP2.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="MaxMind.Db">
       <HintPath>..\thirdparty\download\MaxMind.Db.dll</HintPath>
       <Private>False</Private>
