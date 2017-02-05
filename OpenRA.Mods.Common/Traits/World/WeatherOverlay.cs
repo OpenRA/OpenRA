@@ -263,15 +263,20 @@ namespace OpenRA.Mods.Common.Traits
 
 		void UpdateWeatherOverlay(WorldRenderer wr)
 		{
-			ParticlesCountLogic(wr);
+			if (!world.Paused)
+				ParticlesCountLogic(wr);
 
 			for (var i = 0; i < particleList.Count; i++)
 			{
 				Particle tempParticle = particleList[i];
 
-				XAxisSwing(ref tempParticle);
-				WindLogic(ref tempParticle);
-				Movement(ref tempParticle);
+				if (!world.Paused)
+				{
+					XAxisSwing(ref tempParticle);
+					WindLogic(ref tempParticle);
+					Movement(ref tempParticle);
+				}
+
 				AntiScroll(ref tempParticle, wr);
 				EdgeCheckReplace(ref tempParticle, wr);
 
@@ -300,8 +305,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void IRenderAboveWorld.RenderAboveWorld(Actor self, WorldRenderer wr)
 		{
-			if (!world.Paused)
-				UpdateWeatherOverlay(wr);
+			UpdateWeatherOverlay(wr);
 
 			DrawWeatherOverlay(wr);
 		}
