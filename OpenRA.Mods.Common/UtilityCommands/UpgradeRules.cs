@@ -801,6 +801,23 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				if (engineVersion < 20170205)
+				{
+					if (node.Key.StartsWith("SpiceBloom", StringComparison.Ordinal))
+					{
+						var spawnActor = node.Value.Nodes.FirstOrDefault(n => n.Key == "SpawnActor");
+						if (spawnActor != null)
+						{
+							node.Value.Nodes.Remove(spawnActor);
+							spawnActor.Key = "Actor";
+						}
+						else
+							spawnActor = new MiniYamlNode("Actor", new MiniYaml("spicebloom.spawnpoint"));
+
+						addNodes.Add(new MiniYamlNode("SpawnActorOnDeath", new MiniYaml("", new List<MiniYamlNode>() { spawnActor })));
+					}
+				}
+
 				UpgradeActorRules(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 
