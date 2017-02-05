@@ -100,6 +100,14 @@ hhusk2:
 	muzzle: gunfire2
 		Length: 5
 	icon: 2tnkicon
+	1pass-turret: 3tnk
+		Start: 32
+		Facings: 32
+		UseClassicFacingFudge: True
+	2pass-turret: 4tnk
+		Start: 32
+		Facings: 32
+		UseClassicFacingFudge: True
 
 2tnk.destroyed:
 	idle: 2tnk

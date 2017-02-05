@@ -39,25 +39,30 @@ namespace OpenRA.Mods.Cnc.Traits
 		public override object Create(ActorInitializer init) { return new AttackPopupTurreted(init, this); }
 	}
 
-	class AttackPopupTurreted : AttackTurreted, INotifyBuildComplete, INotifyIdle, IDamageModifier
+	class AttackPopupTurreted : AttackTurreted, INotifyBuildComplete, INotifyIdle, IDamageModifier, INotifyCreated
 	{
 		enum PopupState { Open, Rotating, Transitioning, Closed }
 
 		readonly AttackPopupTurretedInfo info;
 		readonly WithSpriteBody wsb;
-		readonly Turreted turret;
 
 		int idleTicks = 0;
 		PopupState state = PopupState.Open;
 		bool skippedMakeAnimation;
+		Turreted turret;
 
 		public AttackPopupTurreted(ActorInitializer init, AttackPopupTurretedInfo info)
 			: base(init.Self, info)
 		{
 			this.info = info;
-			turret = turrets.FirstOrDefault();
 			wsb = init.Self.Trait<WithSpriteBody>();
 			skippedMakeAnimation = init.Contains<SkipMakeAnimsInit>();
+		}
+
+		void INotifyCreated.Created(Actor self)
+		{
+			SetupTurrets(self);
+			turret = turrets.Single();
 		}
 
 		protected override bool CanAttack(Actor self, Target target)

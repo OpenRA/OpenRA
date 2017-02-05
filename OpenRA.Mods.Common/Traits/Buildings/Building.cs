@@ -184,7 +184,7 @@ namespace OpenRA.Mods.Common.Traits
 		void INotifyCreated.Created(Actor self)
 		{
 			if (SkipMakeAnimation || !self.Info.HasTraitInfo<WithMakeAnimationInfo>())
-				NotifyBuildingComplete(self);
+				self.World.AddFrameEndTask(w => NotifyBuildingComplete(self));
 		}
 
 		public virtual void AddedToWorld(Actor self)

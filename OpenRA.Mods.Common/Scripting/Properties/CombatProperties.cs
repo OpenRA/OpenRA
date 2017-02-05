@@ -78,12 +78,12 @@ namespace OpenRA.Mods.Common.Scripting
 	[ScriptPropertyGroup("Combat")]
 	public class GeneralCombatProperties : ScriptActorProperties, Requires<AttackBaseInfo>
 	{
-		readonly AttackBase attackBase;
+		readonly AttackBase[] attackBase;
 
 		public GeneralCombatProperties(ScriptContext context, Actor self)
 			: base(context, self)
 		{
-			attackBase = self.Trait<AttackBase>();
+			attackBase = self.TraitsImplementing<AttackBase>().ToArray();
 		}
 
 		[Desc("Attack the target actor. The target actor needs to be visible.")]
@@ -96,7 +96,12 @@ namespace OpenRA.Mods.Common.Scripting
 			if (!targetActor.Info.HasTraitInfo<FrozenUnderFogInfo>() && !Self.Owner.CanTargetActor(targetActor))
 				Log.Write("lua", "{1} is not revealed for player {0}!", Self.Owner, targetActor);
 
-			attackBase.AttackTarget(target, true, allowMove, forceAttack);
+			var attack = attackBase.Where(x => !x.IsTraitDisabled && x.HasAnyValidWeapons(target));
+			if (!attack.Any())
+				Log.Write("lua", "Actor {0} was ordered to attack {1} but has no valid Attack* trait to do so!.".F(Self, targetActor));
+
+			foreach (var a in attack)
+				a.AttackTarget(target, true, allowMove, forceAttack);
 		}
 
 		[Desc("Checks if the targeted actor is a valid target for this actor.")]
