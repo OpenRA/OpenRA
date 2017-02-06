@@ -26,9 +26,6 @@ namespace OpenRA.Mods.D2k.Traits
 	[Desc("Seeds resources by explosive eruptions after accumulation times.")]
 	public class SpiceBloomInfo : ITraitInfo, IRenderActorPreviewSpritesInfo, Requires<RenderSpritesInfo>
 	{
-		[ActorReference]
-		public readonly string SpawnActor = "spicebloom.spawnpoint";
-
 		[SequenceReference]
 		public readonly string[] GrowthSequences = { "grow1", "grow2", "grow3" };
 
@@ -157,18 +154,6 @@ namespace OpenRA.Mods.D2k.Traits
 		{
 			if (!string.IsNullOrEmpty(info.Weapon))
 				SeedResources(self);
-
-			var td = new TypeDictionary
-			{
-				new ParentActorInit(self),
-				new LocationInit(self.Location),
-				new CenterPositionInit(self.CenterPosition),
-				new OwnerInit(self.Owner),
-				new FactionInit(self.Owner.Faction.InternalName),
-				new SkipMakeAnimsInit()
-			};
-
-			self.World.AddFrameEndTask(w => w.CreateActor(info.SpawnActor, td));
 		}
 	}
 }

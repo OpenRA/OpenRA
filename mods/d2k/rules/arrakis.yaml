@@ -58,6 +58,8 @@ spicebloom:
 		RequiresForceFire: true
 	Armor:
 		Type: none
+	SpawnActorOnDeath:
+		Actor: spicebloom.spawnpoint
 
 sandworm:
 	Inherits@1: ^SpriteActor
