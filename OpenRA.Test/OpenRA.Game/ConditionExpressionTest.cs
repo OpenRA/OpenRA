@@ -37,9 +37,25 @@ namespace OpenRA.Test
 			Assert.True(new ConditionExpression(expression).Evaluate(testValues) > 0, expression);
 		}
 
+		void AssertValue(string expression, int value)
+		{
+			Assert.AreEqual(value, new ConditionExpression(expression).Evaluate(testValues), expression);
+		}
+
 		void AssertParseFailure(string expression)
 		{
 			Assert.Throws(typeof(InvalidDataException), () => new ConditionExpression(expression).Evaluate(testValues), expression);
+		}
+
+		[TestCase(TestName = "Numbers")]
+		public void TestNumbers()
+		{
+			AssertParseFailure("1a");
+			AssertValue("0", 0);
+			AssertValue("1", 1);
+			AssertValue("12", 12);
+			AssertValue("-1", -1);
+			AssertValue("-12", -12);
 		}
 
 		[TestCase(TestName = "AND operation")]
@@ -49,6 +65,10 @@ namespace OpenRA.Test
 			AssertFalse("false && false");
 			AssertFalse("true && false");
 			AssertFalse("false && true");
+			AssertValue("2 && false", 0);
+			AssertValue("false && 2", 0);
+			AssertValue("3 && 2", 2);
+			AssertValue("2 && 3", 3);
 		}
 
 		[TestCase(TestName = "OR operation")]
@@ -58,6 +78,10 @@ namespace OpenRA.Test
 			AssertFalse("false || false");
 			AssertTrue("true || false");
 			AssertTrue("false || true");
+			AssertValue("2 || false", 2);
+			AssertValue("false || 2", 2);
+			AssertValue("3 || 2", 3);
+			AssertValue("2 || 3", 2);
 		}
 
 		[TestCase(TestName = "Equals operation")]
@@ -67,6 +91,15 @@ namespace OpenRA.Test
 			AssertTrue("false == false");
 			AssertFalse("true == false");
 			AssertFalse("false == true");
+			AssertTrue("1 == 1");
+			AssertTrue("0 == 0");
+			AssertFalse("1 == 0");
+			AssertTrue("1 == true");
+			AssertFalse("1 == false");
+			AssertTrue("0 == false");
+			AssertFalse("0 == true");
+			AssertValue("12 == 12", 1);
+			AssertValue("1 == 12", 0);
 		}
 
 		[TestCase(TestName = "Not-equals operation")]
@@ -76,15 +109,26 @@ namespace OpenRA.Test
 			AssertFalse("false != false");
 			AssertTrue("true != false");
 			AssertTrue("false != true");
+			AssertValue("1 != 2", 1);
+			AssertValue("1 != 1", 0);
+			AssertFalse("1 != true");
+			AssertFalse("0 != false");
+			AssertTrue("1 != false");
+			AssertTrue("0 != true");
 		}
 
 		[TestCase(TestName = "NOT operation")]
 		public void TestNOT()
 		{
-			AssertFalse("!true");
-			AssertTrue("!false");
-			AssertTrue("!!true");
-			AssertFalse("!!false");
+			AssertValue("!true", 0);
+			AssertValue("!false", 1);
+			AssertValue("!!true", 1);
+			AssertValue("!!false", 0);
+			AssertValue("!0", 1);
+			AssertValue("!1", 0);
+			AssertValue("!5", 0);
+			AssertValue("!!5", 1);
+			AssertValue("!-5", 1);
 		}
 
 		[TestCase(TestName = "Precedence")]
@@ -134,7 +178,7 @@ namespace OpenRA.Test
 			AssertParseFailure("true false");
 			AssertParseFailure("true & false");
 			AssertParseFailure("true | false");
-			AssertParseFailure("true / false");
+			AssertParseFailure("true : false");
 			AssertParseFailure("true & false && !");
 			AssertParseFailure("(true && !)");
 			AssertParseFailure("&& false");

@@ -61,6 +61,13 @@ namespace OpenRA.Support
 				: base(symbol, index, Associativity.Left, 0) { }
 		}
 
+		class NumberToken : Token
+		{
+			public readonly int Value;
+			public NumberToken(int index, string symbol)
+				: base(symbol, index, Associativity.Left, 0) { Value = int.Parse(symbol); }
+		}
+
 		class AndToken : BinaryOperationToken { public AndToken(int index) : base("&&", index) { } }
 		class OrToken : BinaryOperationToken { public OrToken(int index) : base("||", index) { } }
 		class EqualsToken : BinaryOperationToken { public EqualsToken(int index) : base("==", index) { } }
@@ -120,17 +127,17 @@ namespace OpenRA.Support
 
 			for (var i = 0; i < tokens.Count - 1; i++)
 			{
-				// Unary tokens must be followed by a variable, another unary token, or an opening parenthesis
-				if (tokens[i] is UnaryOperationToken && !(tokens[i + 1] is VariableToken || tokens[i + 1] is UnaryOperationToken
-						|| tokens[i + 1] is OpenParenToken))
+				// Unary tokens must be followed by a variable, number, another unary token, or an opening parenthesis
+				if (tokens[i] is UnaryOperationToken && !(tokens[i + 1] is VariableToken || tokens[i + 1] is NumberToken
+				        || tokens[i + 1] is UnaryOperationToken || tokens[i + 1] is OpenParenToken))
 					throw new InvalidDataException("Unexpected token `{0}` at index {1}".F(tokens[i].Symbol, tokens[i].Index));
 
 				// Disallow empty parentheses
 				if (tokens[i] is OpenParenToken && tokens[i + 1] is CloseParenToken)
 					throw new InvalidDataException("Empty parenthesis at index {0}".F(tokens[i].Index));
 
-				// A variable must be followed by a binary operation or by a closing parenthesis
-				if (tokens[i] is VariableToken && !(tokens[i + 1] is BinaryOperationToken || tokens[i + 1] is CloseParenToken))
+				// A variable or number must be followed by a binary operation or by a closing parenthesis
+				if ((tokens[i] is VariableToken || tokens[i] is NumberToken) && !(tokens[i + 1] is BinaryOperationToken || tokens[i + 1] is CloseParenToken))
 					throw new InvalidDataException("Missing binary operation at index {0}".F(tokens[i + 1].Index));
 			}
 
@@ -147,8 +154,8 @@ namespace OpenRA.Support
 			for (var i = 1; i < tokens.Count - 1; i++)
 			{
 				if (tokens[i] is BinaryOperationToken && (
-					!(tokens[i - 1] is CloseParenToken || tokens[i - 1] is VariableToken) ||
-					!(tokens[i + 1] is OpenParenToken || tokens[i + 1] is VariableToken || tokens[i + 1] is UnaryOperationToken)))
+					!(tokens[i - 1] is CloseParenToken || tokens[i - 1] is VariableToken || tokens[i - 1] is NumberToken) ||
+					!(tokens[i + 1] is OpenParenToken || tokens[i + 1] is VariableToken || tokens[i + 1] is NumberToken || tokens[i + 1] is UnaryOperationToken)))
 					throw new InvalidDataException("Unexpected token `{0}` at index `{1}`".F(tokens[i].Symbol, tokens[i].Index));
 			}
 
@@ -206,6 +213,27 @@ namespace OpenRA.Support
 				throw new InvalidDataException("Unexpected character '|' at index {0}".F(start));
 			}
 
+			// Scan forwards until we find an non-digit character
+			if (c == '-' || char.IsDigit(expression[i]))
+			{
+				i++;
+				for (; i < expression.Length; i++)
+				{
+					c = expression[i];
+					if (!char.IsDigit(c))
+					{
+						if (!char.IsWhiteSpace(c) && c != '(' && c != ')' && c != '!' && c != '&' && c != '|' && c != '=' && c != '+')
+							throw new InvalidDataException("Number and variable merged at index {0}".F(start));
+
+						// Put the bad character back for the next parse attempt
+						i--;
+						return new NumberToken(start, expression.Substring(start, i - start + 1));
+					}
+				}
+
+				return new NumberToken(start, expression.Substring(start));
+			}
+
 			// Scan forwards until we find an invalid name character
 			for (; i < expression.Length; i++)
 			{
@@ -255,7 +283,7 @@ namespace OpenRA.Support
 					while (!((temp = s.Pop()) is OpenParenToken))
 						yield return temp;
 				}
-				else if (t is VariableToken)
+				else if (t is VariableToken || t is NumberToken)
 					yield return t;
 				else
 				{
@@ -286,6 +314,8 @@ namespace OpenRA.Support
 					ApplyBinaryOperation(s, (x, y) => (y == x) ? 1 : 0);
 				else if (t is NotToken)
 					ApplyUnaryOperation(s, x => (x > 0) ? 0 : 1);
+				else if (t is NumberToken)
+					s.Push(((NumberToken)t).Value);
 				else if (t is VariableToken)
 					s.Push(ParseSymbol((VariableToken)t, symbols));
 			}

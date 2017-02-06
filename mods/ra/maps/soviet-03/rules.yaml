@@ -59,14 +59,11 @@ V05:
 DOG:
 	# HACK: Disable experience without killing the linter
 	-GainsExperience:
-	ExternalCondition@RANK-VETERAN-1:
-		Condition: rank-veteran-1
-	ExternalCondition@RANK-VETERAN-2:
-		Condition: rank-veteran-2
-	ExternalCondition@RANK-VETERAN-3:
-		Condition: rank-veteran-3
+	ExternalCondition@RANK-VETERAN:
+		Condition: rank-veteran
 	ExternalCondition@RANK-ELITE:
 		Condition: rank-elite
+	-GrantCondition@RANK-ELITE:
 
 SPY:
 	Mobile:
