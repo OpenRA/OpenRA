@@ -98,6 +98,10 @@ MIG:
 	RevealsShroud:
 		Range: 12c0
 		Type: GroundPosition
+		RevealGeneratedShroud: False
+	RevealsShroud@GAPGEN:
+		Range: 10c0
+		Type: GroundPosition
 	Armament:
 		Weapon: Maverick
 		LocalOffset: 0,-640,0, 0,640,0
@@ -152,6 +156,10 @@ YAK:
 		Type: Light
 	RevealsShroud:
 		Range: 10c0
+		Type: GroundPosition
+		RevealGeneratedShroud: False
+	RevealsShroud@GAPGEN:
+		Range: 8c0
 		Type: GroundPosition
 	Armament@PRIMARY:
 		Weapon: ChainGun.Yak
@@ -212,6 +220,10 @@ TRAN:
 	RevealsShroud:
 		Range: 10c0
 		Type: GroundPosition
+		RevealGeneratedShroud: False
+	RevealsShroud@GAPGEN:
+		Range: 8c0
+		Type: GroundPosition
 	Aircraft:
 		InitialFacing: 224
 		TurnSpeed: 5
@@ -261,6 +273,10 @@ HELI:
 		Type: Light
 	RevealsShroud:
 		Range: 12c0
+		Type: GroundPosition
+		RevealGeneratedShroud: False
+	RevealsShroud@GAPGEN:
+		Range: 10c0
 		Type: GroundPosition
 	Armament@PRIMARY:
 		Weapon: HellfireAA
@@ -315,6 +331,10 @@ HIND:
 		Type: Light
 	RevealsShroud:
 		Range: 10c0
+		Type: GroundPosition
+		RevealGeneratedShroud: False
+	RevealsShroud@GAPGEN:
+		Range: 8c0
 		Type: GroundPosition
 	Armament@PRIMARY:
 		Weapon: ChainGun

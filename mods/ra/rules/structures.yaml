@@ -75,6 +75,9 @@ GAP:
 		Type: Wood
 	RevealsShroud:
 		Range: 6c0
+		RevealGeneratedShroud: False
+	RevealsShroud@GAPGEN:
+		Range: 5c0
 	Bib:
 		HasMinibib: Yes
 	CreatesShroud:
@@ -304,6 +307,9 @@ IRON:
 		Type: Wood
 	RevealsShroud:
 		Range: 10c0
+		RevealGeneratedShroud: False
+	RevealsShroud@GAPGEN:
+		Range: 6c0
 	Bib:
 		HasMinibib: Yes
 	GrantExternalConditionPower@IRONCURTAIN:
@@ -351,6 +357,9 @@ PDOX:
 		Type: Wood
 	RevealsShroud:
 		Range: 10c0
+		RevealGeneratedShroud: False
+	RevealsShroud@GAPGEN:
+		Range: 6c0
 	Bib:
 		HasMinibib: Yes
 	ProvidesPrerequisite@germany:
@@ -422,6 +431,9 @@ TSLA:
 		Type: Heavy
 	RevealsShroud:
 		Range: 8c0
+		RevealGeneratedShroud: False
+	RevealsShroud@GAPGEN:
+		Range: 6c0
 	Bib:
 		HasMinibib: Yes
 	WithChargeAnimation:
@@ -464,6 +476,9 @@ AGUN:
 		Type: Heavy
 	RevealsShroud:
 		Range: 6c0
+		RevealGeneratedShroud: False
+	RevealsShroud@GAPGEN:
+		Range: 5c0
 	Bib:
 		HasMinibib: Yes
 	Turreted:
@@ -513,6 +528,9 @@ DOME:
 		Type: Wood
 	RevealsShroud:
 		Range: 10c0
+		RevealGeneratedShroud: False
+	RevealsShroud@GAPGEN:
+		Range: 6c0
 	Bib:
 	ProvidesRadar:
 		RequiresCondition: !jammed && !disabled
@@ -548,6 +566,9 @@ PBOX:
 		Type: Heavy
 	RevealsShroud:
 		Range: 6c0
+		RevealGeneratedShroud: False
+	RevealsShroud@GAPGEN:
+		Range: 5c0
 	Bib:
 		HasMinibib: Yes
 	Turreted:
@@ -593,6 +614,9 @@ HBOX:
 		Type: Heavy
 	RevealsShroud:
 		Range: 6c0
+		RevealGeneratedShroud: False
+	RevealsShroud@GAPGEN:
+		Range: 5c0
 	Cloak:
 		InitialDelay: 125
 		CloakDelay: 60
@@ -639,6 +663,9 @@ GUN:
 		Type: Heavy
 	RevealsShroud:
 		Range: 7c0
+		RevealGeneratedShroud: False
+	RevealsShroud@GAPGEN:
+		Range: 5c0
 	Bib:
 		HasMinibib: Yes
 	Turreted:
@@ -677,6 +704,9 @@ FTUR:
 		Type: Heavy
 	RevealsShroud:
 		Range: 6c0
+		RevealGeneratedShroud: False
+	RevealsShroud@GAPGEN:
+		Range: 5c0
 	Bib:
 		HasMinibib: Yes
 	Turreted:
@@ -764,6 +794,9 @@ ATEK:
 		Type: Wood
 	RevealsShroud:
 		Range: 10c0
+		RevealGeneratedShroud: False
+	RevealsShroud@GAPGEN:
+		Range: 6c0
 	Bib:
 	GpsPower:
 		Icon: gps
@@ -925,6 +958,9 @@ FACT:
 		Type: Wood
 	RevealsShroud:
 		Range: 5c0
+		RevealGeneratedShroud: False
+	RevealsShroud@GAPGEN:
+		Range: 4c0
 	Bib:
 	Production:
 		Produces: Building,Defense
@@ -982,6 +1018,9 @@ PROC:
 		Type: Wood
 	RevealsShroud:
 		Range: 6c0
+		RevealGeneratedShroud: False
+	RevealsShroud@GAPGEN:
+		Range: 4c0
 	Bib:
 	Refinery:
 		DockAngle: 64
@@ -1060,6 +1099,9 @@ HPAD:
 		Type: Wood
 	RevealsShroud:
 		Range: 5c0
+		RevealGeneratedShroud: False
+	RevealsShroud@GAPGEN:
+		Range: 4c0
 	Bib:
 	Exit@1:
 		SpawnOffset: 0,-256,0
@@ -1139,6 +1181,9 @@ AFLD:
 		Type: Wood
 	RevealsShroud:
 		Range: 7c0
+		RevealGeneratedShroud: False
+	RevealsShroud@GAPGEN:
+		Range: 4c0
 	Exit@1:
 		ExitCell: 1,1
 		Facing: 192
@@ -1357,6 +1402,9 @@ BARR:
 		Type: Wood
 	RevealsShroud:
 		Range: 5c0
+		RevealGeneratedShroud: False
+	RevealsShroud@GAPGEN:
+		Range: 4c0
 	Bib:
 	RallyPoint:
 	Exit@1:
@@ -1477,6 +1525,9 @@ TENT:
 		Type: Wood
 	RevealsShroud:
 		Range: 5c0
+		RevealGeneratedShroud: False
+	RevealsShroud@GAPGEN:
+		Range: 4c0
 	Bib:
 	RallyPoint:
 	Exit@1:
@@ -1561,6 +1612,9 @@ FIX:
 		Type: Wood
 	RevealsShroud:
 		Range: 5c0
+		RevealGeneratedShroud: False
+	RevealsShroud@GAPGEN:
+		Range: 4c0
 	Bib:
 		HasMinibib: Yes
 	Reservable:

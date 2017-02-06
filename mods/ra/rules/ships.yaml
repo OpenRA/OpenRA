@@ -19,6 +19,9 @@ SS:
 		Speed: 71
 	RevealsShroud:
 		Range: 6c0
+		RevealGeneratedShroud: False
+	RevealsShroud@GAPGEN:
+		Range: 5c0
 	Targetable:
 		TargetTypes: Ground, Water, Repair
 		RequiresCondition: !underwater
@@ -73,6 +76,9 @@ MSUB:
 		Speed: 42
 	RevealsShroud:
 		Range: 6c0
+		RevealGeneratedShroud: False
+	RevealsShroud@GAPGEN:
+		Range: 5c0
 	Targetable:
 		TargetTypes: Ground, Water, Repair
 		RequiresCondition: !underwater
@@ -131,6 +137,9 @@ DD:
 		Speed: 85
 	RevealsShroud:
 		Range: 6c0
+		RevealGeneratedShroud: False
+	RevealsShroud@GAPGEN:
+		Range: 5c0
 	Turreted:
 		TurnSpeed: 7
 		Offset: 341,0,128
@@ -177,6 +186,9 @@ CA:
 		Speed: 42
 	RevealsShroud:
 		Range: 7c0
+		RevealGeneratedShroud: False
+	RevealsShroud@GAPGEN:
+		Range: 5c0
 	Turreted@PRIMARY:
 		Turret: primary
 		Offset: -864,0,128
@@ -233,6 +245,9 @@ LST:
 		RequiresCondition: !notmobile
 	RevealsShroud:
 		Range: 6c0
+		RevealGeneratedShroud: False
+	RevealsShroud@GAPGEN:
+		Range: 5c0
 	SelectionDecorations:
 		VisualBounds: 36,36
 	WithLandingCraftAnimation:
@@ -266,6 +281,9 @@ PT:
 		Speed: 128
 	RevealsShroud:
 		Range: 7c0
+		RevealGeneratedShroud: False
+	RevealsShroud@GAPGEN:
+		Range: 5c0
 	Turreted:
 		TurnSpeed: 7
 		Offset: 512,0,0
