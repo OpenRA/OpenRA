@@ -46,6 +46,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Which resources it can harvest.")]
 		public readonly HashSet<string> Resources = new HashSet<string>();
 
+		[Desc("Teleports harvested ore? \"Chrono harvester\"?")]
+		public readonly bool OreTeleporter = false;
+
 		[Desc("Percentage of maximum speed when fully loaded.")]
 		public readonly int FullyLoadedSpeed = 85;
 
