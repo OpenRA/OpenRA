@@ -19,7 +19,7 @@ using OpenRA.Support;
 namespace OpenRA.Test
 {
 	[TestFixture]
-	public class BooleanExpressionTest
+	public class ConditionExpressionTest
 	{
 		IReadOnlyDictionary<string, bool> testValues = new ReadOnlyDictionary<string, bool>(new Dictionary<string, bool>()
 		{
@@ -29,17 +29,17 @@ namespace OpenRA.Test
 
 		void AssertFalse(string expression)
 		{
-			Assert.False(new BooleanExpression(expression).Evaluate(testValues), expression);
+			Assert.False(new ConditionExpression(expression).Evaluate(testValues), expression);
 		}
 
 		void AssertTrue(string expression)
 		{
-			Assert.True(new BooleanExpression(expression).Evaluate(testValues), expression);
+			Assert.True(new ConditionExpression(expression).Evaluate(testValues), expression);
 		}
 
 		void AssertParseFailure(string expression)
 		{
-			Assert.Throws(typeof(InvalidDataException), () => new BooleanExpression(expression).Evaluate(testValues), expression);
+			Assert.Throws(typeof(InvalidDataException), () => new ConditionExpression(expression).Evaluate(testValues), expression);
 		}
 
 		[TestCase(TestName = "AND operation")]

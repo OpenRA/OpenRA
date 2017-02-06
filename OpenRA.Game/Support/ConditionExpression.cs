@@ -16,7 +16,7 @@ using System.Linq;
 
 namespace OpenRA.Support
 {
-	public class BooleanExpression
+	public class ConditionExpression
 	{
 		public readonly string Expression;
 		readonly HashSet<string> variables = new HashSet<string>();
@@ -67,7 +67,7 @@ namespace OpenRA.Support
 		class NotEqualsToken : BinaryOperationToken { public NotEqualsToken(int index) : base("!=", index) { } }
 		class NotToken : UnaryOperationToken { public NotToken(int index) : base("!", index) { } }
 
-		public BooleanExpression(string expression)
+		public ConditionExpression(string expression)
 		{
 			Expression = expression;
 			var openParens = 0;

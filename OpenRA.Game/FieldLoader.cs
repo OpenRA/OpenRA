@@ -398,13 +398,13 @@ namespace OpenRA
 
 				return InvalidValueAction(value, fieldType, fieldName);
 			}
-			else if (fieldType == typeof(BooleanExpression))
+			else if (fieldType == typeof(ConditionExpression))
 			{
 				if (value != null)
 				{
 					try
 					{
-						return new BooleanExpression(value);
+						return new ConditionExpression(value);
 					}
 					catch (InvalidDataException e)
 					{

@@ -23,7 +23,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		[ConsumedConditionReference]
 		[Desc("Boolean expression defining the condition to enable this trait.")]
-		public readonly BooleanExpression RequiresCondition = null;
+		public readonly ConditionExpression RequiresCondition = null;
 
 		public abstract object Create(ActorInitializer init);
 
