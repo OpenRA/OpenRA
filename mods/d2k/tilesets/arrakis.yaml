@@ -687,7 +687,7 @@ Templates:
 		Size: 1,1
 		Category: Sand-Detail
 		Tiles:
-			0: Cliff
+			0: Rough
 	Template@59:
 		Id: 59
 		Images: BLOXBASE.R8
@@ -3067,8 +3067,8 @@ Templates:
 		Size: 2,1
 		Category: Ice-Detail
 		Tiles:
-			0: Cliff
-			1: Cliff
+			0: Sand
+			1: Sand
 	Template@366:
 		Id: 366
 		Images: BLOXICE.R8
@@ -3076,21 +3076,21 @@ Templates:
 		Size: 4,4
 		Category: Ice-Detail
 		Tiles:
-			0: Sand
+			0: Cliff
 			1: Cliff
 			2: Cliff
 			3: Sand
 			4: Cliff
 			5: Cliff
 			6: Cliff
-			7: Sand
-			8: Sand
+			7: Cliff
+			8: Cliff
 			9: Cliff
-			10: Sand
-			11: Sand
+			10: Cliff
+			11: Cliff
 			12: Sand
-			13: Sand
-			14: Sand
+			13: Cliff
+			14: Cliff
 			15: Sand
 	Template@367:
 		Id: 367
@@ -3107,7 +3107,7 @@ Templates:
 		Size: 1,1
 		Category: Ice-Detail
 		Tiles:
-			0: Cliff
+			0: Rough
 	Template@369:
 		Id: 369
 		Images: BLOXICE.R8
