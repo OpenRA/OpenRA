@@ -1,3 +1,30 @@
+HARV.FullHusk:
+	Inherits: ^Husk
+	Tooltip:
+		Name: Husk (Ore Truck)
+	TransformOnCapture:
+		IntoActor: harv
+	RenderSprites:
+		Image: hhusk
+
+HARV.EmptyHusk:
+	Inherits: ^Husk
+	Tooltip:
+		Name: Husk (Ore Truck)
+	TransformOnCapture:
+		IntoActor: harv
+	RenderSprites:
+		Image: hhusk2
+
+MCV.Husk:
+	Inherits: ^Husk
+	Tooltip:
+		Name: Husk (Mobile Construction Vehicle)
+	TransformOnCapture:
+		IntoActor: mcv
+	RenderSprites:
+		Image: mcvhusk
+
 1TNK.Husk:
 	Inherits: ^Husk
 	Tooltip:
@@ -42,33 +69,6 @@
 	RenderSprites:
 		Image: 4tnk.destroyed
 
-HARV.FullHusk:
-	Inherits: ^Husk
-	Tooltip:
-		Name: Husk (Ore Truck)
-	TransformOnCapture:
-		IntoActor: harv
-	RenderSprites:
-		Image: hhusk
-
-HARV.EmptyHusk:
-	Inherits: ^Husk
-	Tooltip:
-		Name: Husk (Ore Truck)
-	TransformOnCapture:
-		IntoActor: harv
-	RenderSprites:
-		Image: hhusk2
-
-MCV.Husk:
-	Inherits: ^Husk
-	Tooltip:
-		Name: Husk (Mobile Construction Vehicle)
-	TransformOnCapture:
-		IntoActor: mcv
-	RenderSprites:
-		Image: mcvhusk
-
 MGG.Husk:
 	Inherits: ^Husk
 	Tooltip:
@@ -80,6 +80,82 @@ MGG.Husk:
 		IntoActor: mgg
 	RenderSprites:
 		Image: mgg.destroyed
+
+U2.Husk:
+	Inherits: ^PlaneHusk
+	Tooltip:
+		Name: Husk (Spy Plane)
+	Aircraft:
+		TurnSpeed: 7
+		Speed: 373
+	Contrail@1:
+		Offset: -725,683,0
+	Contrail@2:
+		Offset: -725,-683,0
+	SmokeTrailWhenDamaged:
+		Offset: -1c43,0,0
+		Interval: 2
+		MinDamage: Undamaged
+	RenderSprites:
+		Image: u2
+
+BADR.Husk:
+	Inherits: ^PlaneHusk
+	Tooltip:
+		Name: Badger
+	Aircraft:
+		TurnSpeed: 5
+		Speed: 149
+	SmokeTrailWhenDamaged@0:
+		Offset: -432,560,0
+		Interval: 2
+		MinDamage: Undamaged
+	SmokeTrailWhenDamaged@1:
+		Offset: -432,-560,0
+		Interval: 2
+		MinDamage: Undamaged
+	RenderSprites:
+		Image: badr
+
+YAK.Husk:
+	Inherits: ^PlaneHusk
+	Tooltip:
+		Name: Yak Attack Plane
+	Contrail:
+		Offset: -853,0,0
+	Aircraft:
+		TurnSpeed: 5
+		Speed: 149
+	SmokeTrailWhenDamaged:
+		Offset: -853,0,0
+		Interval: 2
+		MinDamage: Undamaged
+	RevealsShroud:
+		Range: 10c0
+		Type: GroundPosition
+	RenderSprites:
+		Image: yak
+
+MIG.Husk:
+	Inherits: ^PlaneHusk
+	Tooltip:
+		Name: Mig Attack Plane
+	Contrail@1:
+		Offset: -598,-683,0
+	Contrail@2:
+		Offset: -598,683,0
+	Aircraft:
+		TurnSpeed: 5
+		Speed: 186
+	SmokeTrailWhenDamaged:
+		Offset: -853,0,171
+		Interval: 2
+		MinDamage: Undamaged
+	RevealsShroud:
+		Range: 12c0
+		Type: GroundPosition
+	RenderSprites:
+		Image: mig
 
 TRAN.Husk:
 	Inherits: ^HelicopterHusk
@@ -114,63 +190,23 @@ TRAN.Husk2:
 	RenderSprites:
 		Image: tran2husk
 
-BADR.Husk:
-	Inherits: ^PlaneHusk
+HIND.Husk:
+	Inherits: ^HelicopterHusk
 	Tooltip:
-		Name: Badger
+		Name: Hind
 	Aircraft:
-		TurnSpeed: 5
-		Speed: 149
-	SmokeTrailWhenDamaged@0:
-		Offset: -432,560,0
-		Interval: 2
-		MinDamage: Undamaged
-	SmokeTrailWhenDamaged@1:
-		Offset: -432,-560,0
-		Interval: 2
-		MinDamage: Undamaged
-	RenderSprites:
-		Image: badr
-
-MIG.Husk:
-	Inherits: ^PlaneHusk
-	Tooltip:
-		Name: Mig Attack Plane
-	Contrail@1:
-		Offset: -598,-683,0
-	Contrail@2:
-		Offset: -598,683,0
-	Aircraft:
-		TurnSpeed: 5
-		Speed: 186
+		TurnSpeed: 4
+		Speed: 112
+	WithIdleOverlay:
+		Sequence: rotor
 	SmokeTrailWhenDamaged:
-		Offset: -853,0,171
-		Interval: 2
-		MinDamage: Undamaged
-	RevealsShroud:
-		Range: 12c0
-		Type: GroundPosition
-	RenderSprites:
-		Image: mig
-
-YAK.Husk:
-	Inherits: ^PlaneHusk
-	Tooltip:
-		Name: Yak Attack Plane
-	Contrail:
-		Offset: -853,0,0
-	Aircraft:
-		TurnSpeed: 5
-		Speed: 149
-	SmokeTrailWhenDamaged:
-		Offset: -853,0,0
-		Interval: 2
+		Offset: -427,0,0
 		MinDamage: Undamaged
 	RevealsShroud:
 		Range: 10c0
 		Type: GroundPosition
 	RenderSprites:
-		Image: yak
+		Image: hind
 
 HELI.Husk:
 	Inherits: ^HelicopterHusk
@@ -190,42 +226,6 @@ HELI.Husk:
 		Type: GroundPosition
 	RenderSprites:
 		Image: heli
-
-HIND.Husk:
-	Inherits: ^HelicopterHusk
-	Tooltip:
-		Name: Hind
-	Aircraft:
-		TurnSpeed: 4
-		Speed: 112
-	WithIdleOverlay:
-		Sequence: rotor
-	SmokeTrailWhenDamaged:
-		Offset: -427,0,0
-		MinDamage: Undamaged
-	RevealsShroud:
-		Range: 10c0
-		Type: GroundPosition
-	RenderSprites:
-		Image: hind
-
-U2.Husk:
-	Inherits: ^PlaneHusk
-	Tooltip:
-		Name: Husk (Spy Plane)
-	Aircraft:
-		TurnSpeed: 7
-		Speed: 373
-	Contrail@1:
-		Offset: -725,683,0
-	Contrail@2:
-		Offset: -725,-683,0
-	SmokeTrailWhenDamaged:
-		Offset: -1c43,0,0
-		Interval: 2
-		MinDamage: Undamaged
-	RenderSprites:
-		Image: u2
 
 T01.Husk:
 	Inherits: ^TreeHusk
