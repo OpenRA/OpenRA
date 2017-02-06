@@ -72,15 +72,15 @@ namespace OpenRA.Mods.Common.Traits
 		int nextToken = 1;
 
 		/// <summary>Cache of condition -> enabled state for quick evaluation of boolean conditions.</summary>
-		readonly Dictionary<string, bool> conditionCache = new Dictionary<string, bool>();
+		readonly Dictionary<string, int> conditionCache = new Dictionary<string, int>();
 
 		/// <summary>Read-only version of conditionCache that is passed to IConditionConsumers.</summary>
-		IReadOnlyDictionary<string, bool> readOnlyConditionCache;
+		IReadOnlyDictionary<string, int> readOnlyConditionCache;
 
 		void INotifyCreated.Created(Actor self)
 		{
 			state = new Dictionary<string, ConditionState>();
-			readOnlyConditionCache = new ReadOnlyDictionary<string, bool>(conditionCache);
+			readOnlyConditionCache = new ReadOnlyDictionary<string, int>(conditionCache);
 
 			var allConsumers = new HashSet<IConditionConsumer>();
 			var allWatchers = self.TraitsImplementing<IConditionTimerWatcher>().ToList();
@@ -96,7 +96,7 @@ namespace OpenRA.Mods.Common.Traits
 						if (w.Condition == condition)
 							cs.Watchers.Add(w);
 
-					conditionCache[condition] = false;
+					conditionCache[condition] = 0;
 				}
 			}
 
@@ -108,7 +108,7 @@ namespace OpenRA.Mods.Common.Traits
 					continue;
 
 				conditionState.Tokens.Add(kv.Key);
-				conditionCache[kv.Value] = conditionState.Tokens.Count > 0;
+				conditionCache[kv.Value] = conditionState.Tokens.Count;
 			}
 
 			foreach (var sc in self.Info.TraitInfos<StackedConditionInfo>())
@@ -133,7 +133,7 @@ namespace OpenRA.Mods.Common.Traits
 			else
 				conditionState.Tokens.Add(token);
 
-			conditionCache[condition] = conditionState.Tokens.Count > 0;
+			conditionCache[condition] = conditionState.Tokens.Count;
 
 			foreach (var t in conditionState.Consumers)
 				t.ConditionsChanged(self, readOnlyConditionCache);

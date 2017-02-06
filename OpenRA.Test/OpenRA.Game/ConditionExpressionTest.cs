@@ -21,20 +21,20 @@ namespace OpenRA.Test
 	[TestFixture]
 	public class ConditionExpressionTest
 	{
-		IReadOnlyDictionary<string, bool> testValues = new ReadOnlyDictionary<string, bool>(new Dictionary<string, bool>()
+		IReadOnlyDictionary<string, int> testValues = new ReadOnlyDictionary<string, int>(new Dictionary<string, int>()
 		{
-			{ "true", true },
-			{ "false", false }
+			{ "true", 1 },
+			{ "false", 0 }
 		});
 
 		void AssertFalse(string expression)
 		{
-			Assert.False(new ConditionExpression(expression).Evaluate(testValues), expression);
+			Assert.False(new ConditionExpression(expression).Evaluate(testValues) > 0, expression);
 		}
 
 		void AssertTrue(string expression)
 		{
-			Assert.True(new ConditionExpression(expression).Evaluate(testValues), expression);
+			Assert.True(new ConditionExpression(expression).Evaluate(testValues) > 0, expression);
 		}
 
 		void AssertParseFailure(string expression)
@@ -69,7 +69,7 @@ namespace OpenRA.Test
 			AssertFalse("false == true");
 		}
 
-		[TestCase(TestName = "Not-equals (XOR) operation")]
+		[TestCase(TestName = "Not-equals operation")]
 		public void TestNotEquals()
 		{
 			AssertFalse("true != true");
@@ -141,7 +141,7 @@ namespace OpenRA.Test
 			AssertParseFailure("false ||");
 		}
 
-		[TestCase(TestName = "Undefined symbols are treated as `false` values")]
+		[TestCase(TestName = "Undefined symbols are treated as `false` (0) values")]
 		public void TestUndefinedSymbols()
 		{
 			AssertFalse("undef1 || undef2");

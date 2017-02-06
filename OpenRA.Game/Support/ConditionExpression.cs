@@ -222,21 +222,21 @@ namespace OpenRA.Support
 			return new VariableToken(start, expression.Substring(start));
 		}
 
-		static bool ParseSymbol(VariableToken t, IReadOnlyDictionary<string, bool> symbols)
+		static int ParseSymbol(VariableToken t, IReadOnlyDictionary<string, int> symbols)
 		{
-			bool value;
+			int value;
 			symbols.TryGetValue(t.Symbol, out value);
 			return value;
 		}
 
-		static void ApplyBinaryOperation(Stack<bool> s, Func<bool, bool, bool> f)
+		static void ApplyBinaryOperation(Stack<int> s, Func<int, int, int> f)
 		{
 			var x = s.Pop();
 			var y = s.Pop();
 			s.Push(f(x, y));
 		}
 
-		static void ApplyUnaryOperation(Stack<bool> s, Func<bool, bool> f)
+		static void ApplyUnaryOperation(Stack<int> s, Func<int, int> f)
 		{
 			var x = s.Pop();
 			s.Push(f(x));
@@ -271,21 +271,21 @@ namespace OpenRA.Support
 				yield return s.Pop();
 		}
 
-		public bool Evaluate(IReadOnlyDictionary<string, bool> symbols)
+		public int Evaluate(IReadOnlyDictionary<string, int> symbols)
 		{
-			var s = new Stack<bool>();
+			var s = new Stack<int>();
 			foreach (var t in postfix)
 			{
 				if (t is AndToken)
-					ApplyBinaryOperation(s, (x, y) => y & x);
+					ApplyBinaryOperation(s, (x, y) => y > 0 ? x : y);
 				else if (t is NotEqualsToken)
-					ApplyBinaryOperation(s, (x, y) => y ^ x);
+					ApplyBinaryOperation(s, (x, y) => (y != x) ? 1 : 0);
 				else if (t is OrToken)
-					ApplyBinaryOperation(s, (x, y) => y | x);
+					ApplyBinaryOperation(s, (x, y) => y > 0 ? y : x);
 				else if (t is EqualsToken)
-					ApplyBinaryOperation(s, (x, y) => y == x);
+					ApplyBinaryOperation(s, (x, y) => (y == x) ? 1 : 0);
 				else if (t is NotToken)
-					ApplyUnaryOperation(s, x => !x);
+					ApplyUnaryOperation(s, x => (x > 0) ? 0 : 1);
 				else if (t is VariableToken)
 					s.Push(ParseSymbol((VariableToken)t, symbols));
 			}
