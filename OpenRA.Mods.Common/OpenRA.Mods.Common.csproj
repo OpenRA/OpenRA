@@ -778,7 +778,6 @@
     <Compile Include="Traits\World\CliffBackImpassabilityLayer.cs" />
     <Compile Include="Traits\Conditions\GrantCondition.cs" />
     <Compile Include="Traits\Conditions\ExternalCondition.cs" />
-    <Compile Include="Traits\Conditions\StackedCondition.cs" />
     <Compile Include="Traits\Buildings\BridgeHut.cs" />
     <Compile Include="Traits\Buildings\BridgePlaceholder.cs" />
     <Compile Include="Traits\Buildings\GroundLevelBridge.cs" />

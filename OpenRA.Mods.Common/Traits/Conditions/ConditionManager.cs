@@ -63,15 +63,9 @@ namespace OpenRA.Mods.Common.Traits
 		/// <summary>Each granted condition receives a unique token that is used when revoking.</summary>
 		Dictionary<int, string> tokens = new Dictionary<int, string>();
 
-		/// <summary>Set of conditions that are monitored for stacked bonuses, and the bonus conditions that they grant.</summary>
-		readonly Dictionary<string, string[]> stackedConditions = new Dictionary<string, string[]>();
-
-		/// <summary>Tokens granted by the stacked condition bonuses defined in stackedConditions.</summary>
-		readonly Dictionary<string, Stack<int>> stackedTokens = new Dictionary<string, Stack<int>>();
-
 		int nextToken = 1;
 
-		/// <summary>Cache of condition -> enabled state for quick evaluation of boolean conditions.</summary>
+		/// <summary>Cache of condition -> enabled state for quick evaluation of token counter conditions.</summary>
 		readonly Dictionary<string, int> conditionCache = new Dictionary<string, int>();
 
 		/// <summary>Read-only version of conditionCache that is passed to IConditionConsumers.</summary>
@@ -111,12 +105,6 @@ namespace OpenRA.Mods.Common.Traits
 				conditionCache[kv.Value] = conditionState.Tokens.Count;
 			}
 
-			foreach (var sc in self.Info.TraitInfos<StackedConditionInfo>())
-			{
-				stackedConditions[sc.Condition] = sc.StackedConditions;
-				stackedTokens[sc.Condition] = new Stack<int>();
-			}
-
 			// Update all traits with their initial condition state
 			foreach (var consumer in allConsumers)
 				consumer.ConditionsChanged(self, readOnlyConditionCache);
@@ -137,26 +125,6 @@ namespace OpenRA.Mods.Common.Traits
 
 			foreach (var t in conditionState.Consumers)
 				t.ConditionsChanged(self, readOnlyConditionCache);
-
-			string[] sc;
-			if (stackedConditions.TryGetValue(condition, out sc))
-			{
-				var target = (conditionState.Tokens.Count - 1).Clamp(0, sc.Length);
-				var st = stackedTokens[condition];
-				for (var i = st.Count; i < target; i++)
-				{
-					// Empty strings are used to skip unwanted levels
-					var t = !string.IsNullOrEmpty(sc[i]) ? GrantCondition(self, sc[i]) : InvalidConditionToken;
-					st.Push(t);
-				}
-
-				for (var i = st.Count; i > target; i--)
-				{
-					var t = st.Pop();
-					if (t != InvalidConditionToken)
-						RevokeCondition(self, t);
-				}
-			}
 		}
 
 		/// <summary>Grants a specified condition.</summary>
