@@ -561,6 +561,7 @@ palet04:
 	idle:
 		UseTilesetExtension: true
 		ZOffset: -1c0
+		Offset: 0, 0, 1
 		ZRamp: 1
 
 tracks01:
@@ -592,12 +593,16 @@ tracks09:
 
 tracks10:
 	Inherits: ^tracks
+	idle:
+		Offset: 0, 0, 2
 
 tracks11:
 	Inherits: ^tracks
 
 tracks12:
 	Inherits: ^tracks
+	idle:
+		Offset: 0, 0, 2
 
 tracks13:
 	Inherits: ^tracks
@@ -607,9 +612,13 @@ tracks14:
 
 tracks15:
 	Inherits: ^tracks
+	idle:
+		Offset: 0, 0, 4
 
 tracks16:
 	Inherits: ^tracks
+	idle:
+		Offset: 0, 0, 4
 
 ^tuntop:
 	idle:
