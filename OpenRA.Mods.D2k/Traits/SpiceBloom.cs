@@ -29,6 +29,9 @@ namespace OpenRA.Mods.D2k.Traits
 		[SequenceReference]
 		public readonly string[] GrowthSequences = { "grow1", "grow2", "grow3" };
 
+		[SequenceReference]
+		public readonly string SpurtSequence = "spurt";
+
 		[Desc("The range of time (in ticks) that the spicebloom will take to grow until it blows up.")]
 		public readonly int[] Lifetime = { 1000, 3000 };
 
@@ -47,7 +50,7 @@ namespace OpenRA.Mods.D2k.Traits
 		[Desc("The maximum distance in cells that spice may be expelled.")]
 		public readonly int Range = 5;
 
-		public object Create(ActorInitializer init) { return new SpiceBloom(init, this); }
+		public object Create(ActorInitializer init) { return new SpiceBloom(init.Self, this); }
 
 		public IEnumerable<IActorPreview> RenderPreviewSprites(ActorPreviewInitializer init, RenderSpritesInfo rs, string image, int facings, PaletteReference p)
 		{
@@ -60,29 +63,34 @@ namespace OpenRA.Mods.D2k.Traits
 
 	public class SpiceBloom : ITick, INotifyKilled
 	{
-		readonly Actor self;
 		readonly SpiceBloomInfo info;
 		readonly ResourceType resType;
 		readonly ResourceLayer resLayer;
-		readonly AnimationWithOffset anim;
-
+		readonly Animation body;
+		readonly Animation spurt;
 		readonly int growTicks;
-		int ticks;
 
-		public SpiceBloom(ActorInitializer init, SpiceBloomInfo info)
+		int ticks;
+		int bodyFrame = 0;
+		bool showSpurt = true;
+
+		public SpiceBloom(Actor self, SpiceBloomInfo info)
 		{
 			this.info = info;
-			self = init.Self;
 
 			resLayer = self.World.WorldActor.Trait<ResourceLayer>();
 			resType = self.World.WorldActor.TraitsImplementing<ResourceType>().First(t => t.Info.Type == info.ResourceType);
 
-			var render = self.Trait<RenderSprites>();
-			anim = new AnimationWithOffset(new Animation(init.Self.World, render.GetImage(self)), null, () => self.IsDead);
-			render.Add(anim);
+			var rs = self.Trait<RenderSprites>();
+			body = new Animation(self.World, rs.GetImage(self));
+			rs.Add(new AnimationWithOffset(body, null, () => self.IsDead));
 
 			growTicks = self.World.SharedRandom.Next(info.Lifetime[0], info.Lifetime[1]);
-			anim.Animation.Play(info.GrowthSequences[0]);
+			body.Play(info.GrowthSequences[0]);
+
+			spurt = new Animation(self.World, rs.GetImage(self));
+			rs.Add(new AnimationWithOffset(spurt, null, () => !showSpurt));
+			spurt.PlayThen(info.SpurtSequence, () => showSpurt = false);
 		}
 
 		void ITick.Tick(Actor self)
@@ -99,8 +107,15 @@ namespace OpenRA.Mods.D2k.Traits
 				self.Kill(self);
 			else
 			{
-				var index = info.GrowthSequences.Length * ticks / growTicks;
-				anim.Animation.Play(info.GrowthSequences[index]);
+				var newBodyFrame = info.GrowthSequences.Length * ticks / growTicks;
+				if (newBodyFrame != bodyFrame)
+				{
+					bodyFrame = newBodyFrame;
+					body.Play(info.GrowthSequences[bodyFrame]);
+
+					showSpurt = true;
+					spurt.PlayThen(info.SpurtSequence, () => showSpurt = false);
+				}
 			}
 		}
 

@@ -18,9 +18,6 @@ spicebloom.spawnpoint:
 		Delay: 1750, 3250
 	SpawnActorOnDeath:
 		Actor: spicebloom
-	Explodes:
-		Weapon: BloomSpawn
-		EmptyWeapon: BloomSpawn
 	Health:
 		HP: 9999
 		Shape: Circle
