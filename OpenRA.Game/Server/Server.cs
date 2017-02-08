@@ -543,11 +543,6 @@ namespace OpenRA.Server
 
 		public void DropClient(Connection toDrop)
 		{
-			DropClient(toDrop, toDrop.MostRecentFrame);
-		}
-
-		public void DropClient(Connection toDrop, int frame)
-		{
 			if (!PreConns.Remove(toDrop))
 			{
 				Conns.Remove(toDrop);
@@ -584,7 +579,7 @@ namespace OpenRA.Server
 					}
 				}
 
-				DispatchOrders(toDrop, frame, new byte[] { 0xbf });
+				DispatchOrders(toDrop, toDrop.MostRecentFrame, new byte[] { 0xbf });
 
 				// All clients have left: clean up
 				if (!Conns.Any())

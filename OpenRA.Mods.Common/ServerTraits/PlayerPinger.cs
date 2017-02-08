@@ -49,7 +49,7 @@ namespace OpenRA.Mods.Common.Server
 						var client = server.GetClient(c);
 						if (client == null)
 						{
-							server.DropClient(c, -1);
+							server.DropClient(c);
 							server.SendMessage("A player has been dropped after timing out.");
 							continue;
 						}
@@ -66,7 +66,7 @@ namespace OpenRA.Mods.Common.Server
 						else
 						{
 							server.SendMessage(client.Name + " has been dropped after timing out.");
-							server.DropClient(c, -1);
+							server.DropClient(c);
 						}
 					}
 
