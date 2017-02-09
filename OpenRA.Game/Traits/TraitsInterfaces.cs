@@ -265,7 +265,7 @@ namespace OpenRA.Traits
 	[RequireExplicitImplementation]
 	public interface ISelectionBar { float GetValue(); Color GetColor(); bool DisplayWhenEmpty { get; } }
 
-	public interface IPositionableInfo : ITraitInfoInterface
+	public interface IPositionableInfo : IOccupySpaceInfo
 	{
 		bool CanEnterCell(World world, Actor self, CPos cell, Actor ignoreActor = null, bool checkTransientActors = true);
 	}

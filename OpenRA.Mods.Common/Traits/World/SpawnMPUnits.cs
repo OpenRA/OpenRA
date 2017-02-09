@@ -96,8 +96,7 @@ namespace OpenRA.Mods.Common.Traits
 				}
 
 				var cell = validCells.Random(w.SharedRandom);
-				var ios = actorRules.TraitInfo<IOccupySpaceInfo>();
-				var subCell = ios.SharesCell ? w.ActorMap.FreeSubCell(cell) : 0;
+				var subCell = ip.SharesCell ? w.ActorMap.FreeSubCell(cell) : 0;
 
 				w.CreateActor(s.ToLowerInvariant(), new TypeDictionary
 				{

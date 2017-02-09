@@ -48,7 +48,7 @@ namespace OpenRA.Mods.Common.Traits
 	}
 
 	[Desc("Unit is able to move.")]
-	public class MobileInfo : ConditionalTraitInfo, IMoveInfo, IPositionableInfo, IOccupySpaceInfo, IFacingInfo,
+	public class MobileInfo : ConditionalTraitInfo, IMoveInfo, IPositionableInfo, IFacingInfo,
 		UsesInit<FacingInit>, UsesInit<LocationInit>, UsesInit<SubCellInit>
 	{
 		[FieldLoader.LoadUsing("LoadSpeeds", true)]
@@ -381,7 +381,7 @@ namespace OpenRA.Mods.Common.Traits
 	}
 
 	public class Mobile : ConditionalTrait<MobileInfo>, INotifyCreated, IIssueOrder, IResolveOrder, IOrderVoice, IPositionable, IMove,
-		IFacing, ISync, IDeathActorInitModifier, INotifyAddedToWorld, INotifyRemovedFromWorld, INotifyBlockingMove, IActorPreviewInitModifier
+		IFacing, IDeathActorInitModifier, INotifyAddedToWorld, INotifyRemovedFromWorld, INotifyBlockingMove, IActorPreviewInitModifier
 	{
 		const int AverageTicksBeforePathing = 5;
 		const int SpreadTicksBeforePathing = 5;
