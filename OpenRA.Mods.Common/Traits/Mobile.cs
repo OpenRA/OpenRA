@@ -263,11 +263,12 @@ namespace OpenRA.Mods.Common.Traits
 				(current, terrainInfo) => unchecked(current * 31 + terrainInfo.Cost));
 		}
 
-		public bool CanEnterCell(World world, Actor self, CPos cell, Actor ignoreActor = null, CellConditions check = CellConditions.All)
+		public bool CanEnterCell(World world, Actor self, CPos cell, Actor ignoreActor = null, bool checkTransientActors = true)
 		{
 			if (MovementCostForCell(world, cell) == int.MaxValue)
 				return false;
 
+			var check = checkTransientActors ? CellConditions.All : CellConditions.BlockedByMovers;
 			return CanMoveFreelyInto(world, self, cell, ignoreActor, check);
 		}
 
@@ -699,7 +700,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public bool CanEnterCell(CPos cell, Actor ignoreActor = null, bool checkTransientActors = true)
 		{
-			return Info.CanEnterCell(self.World, self, cell, ignoreActor, checkTransientActors ? CellConditions.All : CellConditions.BlockedByMovers);
+			return Info.CanEnterCell(self.World, self, cell, ignoreActor, checkTransientActors);
 		}
 
 		public bool CanMoveFreelyInto(CPos cell, Actor ignoreActor = null, bool checkTransientActors = true)
