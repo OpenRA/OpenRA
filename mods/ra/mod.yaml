@@ -127,7 +127,7 @@ ChromeLayout:
 
 Weapons:
 	ra|weapons/explosions.yaml
-	ra|weapons/largecaliber.yaml
+	ra|weapons/ballistics.yaml
 	ra|weapons/missiles.yaml
 	ra|weapons/other.yaml
 	ra|weapons/smallcaliber.yaml
