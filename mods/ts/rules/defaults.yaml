@@ -205,6 +205,8 @@
 		HP: 400
 	RenderSprites:
 		Palette: player
+	-Cloak@EXTERNALCLOAK:
+	-ExternalConditions@EXTERNALCLOAK:
 
 ^CivBillboard:
 	Inherits: ^CivBuilding
