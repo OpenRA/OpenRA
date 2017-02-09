@@ -191,11 +191,8 @@
 	RevealsShroud:
 		Range: 4c0
 		MaxHeightDelta: 3
-	Tooltip:
 	RenderSprites:
 		Palette: terraindecoration
-	Buildable:
-		Description: Civilian Building
 
 ^CivBillboard:
 	Inherits: ^CivBuilding

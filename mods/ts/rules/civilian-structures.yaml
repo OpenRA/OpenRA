@@ -1306,6 +1306,7 @@ GASPOT:
 	Buildable:
 		Queue: Defense
 		Prerequisites: ~disabled
+		Description: Civilian Building
 	Valued:
 		Cost: 300
 	Tooltip:
@@ -1357,6 +1358,7 @@ GALITE:
 	Buildable:
 		Queue: Defense
 		Prerequisites: ~disabled
+		Description: Civilian Building
 	SelectionDecorations:
 		VisualBounds: 25, 35, 0, -12
 	-Cloak@EXTERNALCLOAK:
