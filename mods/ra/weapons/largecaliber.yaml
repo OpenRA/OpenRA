@@ -5,6 +5,7 @@
 	Projectile: Bullet
 		Speed: 853
 		Image: 50CAL
+		Shadow: True
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 16
@@ -28,6 +29,7 @@
 	Projectile: Bullet
 		Speed: 682
 		Image: 120MM
+		Shadow: True
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 40
@@ -58,6 +60,7 @@
 	Projectile: Bullet
 		Speed: 682
 		Image: 120MM
+		Shadow: True
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 40
@@ -88,6 +91,7 @@
 	Projectile: Bullet
 		Speed: 682
 		Image: 120MM
+		Shadow: True
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 60
@@ -117,6 +121,7 @@ TurretGun:
 	Projectile: Bullet
 		Speed: 682
 		Image: 120MM
+		Shadow: True
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 60
@@ -150,6 +155,7 @@ TurretGun:
 		Inaccuracy: 1c682
 		Image: 120MM
 		ContrailLength: 30
+		Shadow: True
 	Warhead@1Dam: SpreadDamage
 		Spread: 426
 		Damage: 220
@@ -184,6 +190,7 @@ TurretGun:
 		Inaccuracy: 2c938
 		Image: 120MM
 		ContrailLength: 30
+		Shadow: True
 	Warhead@1Dam: SpreadDamage
 		Spread: 213
 		Damage: 25
@@ -213,6 +220,7 @@ TurretGun:
 	Projectile: Bullet
 		Speed: 426
 		Image: 120MM
+		Shadow: True
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 25
@@ -244,6 +252,7 @@ Grenade:
 		LaunchAngle: 62
 		Inaccuracy: 554
 		Image: BOMB
+		Shadow: True
 	Warhead@1Dam: SpreadDamage
 		Spread: 256
 		Damage: 60
@@ -276,6 +285,7 @@ DepthCharge:
 		LaunchAngle: 62
 		Blockable: false
 		Inaccuracy: 128
+		Shadow: True
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 80
