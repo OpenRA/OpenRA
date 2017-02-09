@@ -1191,88 +1191,34 @@ GAKODK:
 		Sequence: small-lights
 
 GAOLDCC1:
-	Inherits: ^CivBuilding
+	Inherits: ^OldBase
 	Tooltip:
 		Name: Old Construction Yard
-	Building:
-		Footprint: xx xx
-		Dimensions: 2, 2
-	Armor:
-		Type: heavy
-	Health:
-		HP: 400
-	RenderSprites:
-		Palette: player
 
 GAOLDCC2:
-	Inherits: ^CivBuilding
+	Inherits: ^OldBase
 	Tooltip:
 		Name: Old Temple
-	Building:
-		Footprint: xx xx
-		Dimensions: 2, 2
-	Armor:
-		Type: heavy
-	Health:
-		HP: 400
-	RenderSprites:
-		Palette: player
 
 GAOLDCC3:
-	Inherits: ^CivBuilding
+	Inherits: ^OldBase
 	Tooltip:
 		Name: Old Weapons Factory
-	Building:
-		Footprint: xx xx
-		Dimensions: 2, 2
-	Armor:
-		Type: heavy
-	Health:
-		HP: 400
-	RenderSprites:
-		Palette: player
 
 GAOLDCC4:
-	Inherits: ^CivBuilding
+	Inherits: ^OldBase
 	Tooltip:
 		Name: Old Refinery
-	Building:
-		Footprint: xx xx
-		Dimensions: 2, 2
-	Armor:
-		Type: heavy
-	Health:
-		HP: 400
-	RenderSprites:
-		Palette: player
 
 GAOLDCC5:
-	Inherits: ^CivBuilding
+	Inherits: ^OldBase
 	Tooltip:
 		Name: Old Advanced Power Plant
-	Building:
-		Footprint: xx xx
-		Dimensions: 2, 2
-	Armor:
-		Type: heavy
-	Health:
-		HP: 400
-	RenderSprites:
-		Palette: player
 
 GAOLDCC6:
-	Inherits: ^CivBuilding
+	Inherits: ^OldBase
 	Tooltip:
 		Name: Old Silos
-	Building:
-		Footprint: xx xx
-		Dimensions: 2, 2
-	Armor:
-		Type: heavy
-	Health:
-		HP: 400
-	RenderSprites:
-		Palette: player
 
 GASAND:
 	Inherits: ^Wall

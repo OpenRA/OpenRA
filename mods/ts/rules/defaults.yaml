@@ -194,6 +194,18 @@
 	RenderSprites:
 		Palette: terraindecoration
 
+^OldBase:
+	Inherits: ^CivBuilding
+	Building:
+		Footprint: xx xx
+		Dimensions: 2, 2
+	Armor:
+		Type: heavy
+	Health:
+		HP: 400
+	RenderSprites:
+		Palette: player
+
 ^CivBillboard:
 	Inherits: ^CivBuilding
 	Building:
