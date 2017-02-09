@@ -108,11 +108,14 @@ NAOBEL:
 	Armament:
 		Weapon: ObeliskLaserFire
 		LocalOffset: 1400,210,800
-	AttackTesla:
-		ChargeAudio: obelpowr.aud
-		InitialChargeDelay: 65
-	WithTeslaChargeOverlay:
-		Sequence: active
+	AttackCharges:
+		ChargeLevel: 65
+		ChargingCondition: charging
+	AmbientSound:
+		RequiresCondition: charging
+		SoundFile: obelpowr.aud
+		Interval: 30, 40
+	WithChargeOverlay:
 		Palette: player
 		IsPlayerPalette: true
 	WithIdleOverlay@LIGHTS:

@@ -180,7 +180,7 @@ Proton:
 
 ObeliskLaserFire:
 	Inherits: ^Laser
-	ReloadDelay: 1
+	ReloadDelay: 120
 	Range: 10c512
 	Report: obelray1.aud
 	Warhead@1Dam: SpreadDamage

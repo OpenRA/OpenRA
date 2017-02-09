@@ -29,7 +29,7 @@ namespace OpenRA.Mods.Common.Traits
 			return new SetTarget(this, newTarget);
 		}
 
-		class SetTarget : Activity
+		protected class SetTarget : Activity
 		{
 			readonly Target target;
 			readonly AttackOmni attack;
