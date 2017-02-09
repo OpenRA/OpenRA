@@ -2,7 +2,7 @@ MapFormat: 11
 
 RequiresMod: ts
 
-Title: Sunstroke [2]
+Title: Sunstroke
 
 Author: Aurora196
 
@@ -2539,10 +2539,6 @@ Actors:
 		Location: 125,41
 		Owner: Neutral
 
-Rules:
-	World:
-		GlobalLightingPaletteEffect:
-			Red: 1.6
-			Blue: 0.9
-			Green: 1.2
-			Ambient: 0.3
+Rules: rules.yaml
+
+Sequences: sequences.yaml
