@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly bool RemoveInstead = false;
 
 		[Desc("The amount of time (in ticks) before the actor dies. Two values indicate a range between which a random value is chosen.")]
-		public readonly int[] Delay = { 250 };
+		public readonly int[] Delay = { 0 };
 
 		public override object Create(ActorInitializer init) { return new KillsSelf(init.Self, this); }
 	}
@@ -34,41 +34,41 @@ namespace OpenRA.Mods.Common.Traits
 			lifetime = Util.RandomDelay(self.World, info.Delay);
 		}
 
-		public void AddedToWorld(Actor self)
+		protected override void TraitEnabled(Actor self)
+		{
+			// Actors can be created without being added to the world
+			// We want to make sure that this only triggers once they are inserted into the world
+			if (lifetime == 0 && self.IsInWorld)
+				Kill(self);
+		}
+
+		void INotifyAddedToWorld.AddedToWorld(Actor self)
 		{
 			if (!IsTraitDisabled)
 				TraitEnabled(self);
 		}
 
-		protected override void TraitEnabled(Actor self)
+		void ITick.Tick(Actor self)
 		{
-			if (self.IsDead)
+			if (!self.IsInWorld || self.IsDead || IsTraitDisabled)
 				return;
 
-			if (lifetime > 0)
+			if (!self.World.Map.Contains(self.Location))
+				return;
+
+			if (lifetime-- <= 0)
+				Kill(self);
+		}
+
+		void Kill(Actor self)
+		{
+			if (self.IsDead)
 				return;
 
 			if (Info.RemoveInstead || !self.Info.HasTraitInfo<HealthInfo>())
 				self.Dispose();
 			else
 				self.Kill(self);
-		}
-
-		void ITick.Tick(Actor self)
-		{
-			if (self.IsDead || IsTraitDisabled)
-				return;
-
-			if (!self.World.Map.Contains(self.Location))
-				return;
-
-			if (lifetime-- == 0)
-			{
-				if (Info.RemoveInstead || !self.Info.HasTraitInfo<HealthInfo>())
-					self.Dispose();
-				else
-					self.Kill(self);
-			}
 		}
 	}
 }
