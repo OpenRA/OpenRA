@@ -123,10 +123,10 @@ trike:
 	WithMuzzleOverlay:
 	Armament@damage:
 		Weapon: HMG
-		LocalOffset: -416,0,0
+		LocalOffset: 180,0,110
 	Armament@muzzle:
 		Weapon: HMG_muzzle
-		LocalOffset: -416,0,0
+		LocalOffset: -544,0,0
 		MuzzleSequence: muzzle
 	AttackFrontal:
 	AutoTarget:

@@ -636,6 +636,7 @@ wall:
 	Crushable:
 		CrushClasses: wall
 	BlocksProjectiles:
+		Height: 512
 	LineBuild:
 		Range: 5
 		NodeTypes: wall, turret
