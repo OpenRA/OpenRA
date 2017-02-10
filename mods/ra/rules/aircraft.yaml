@@ -96,7 +96,7 @@ MIG:
 	Armor:
 		Type: Light
 	RevealsShroud:
-		Range: 12c0
+		Range: 13c0
 		Type: GroundPosition
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
@@ -155,7 +155,7 @@ YAK:
 	Armor:
 		Type: Light
 	RevealsShroud:
-		Range: 10c0
+		Range: 11c0
 		Type: GroundPosition
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:

@@ -306,7 +306,7 @@ MCV:
 		Queue: Vehicle
 		BuildPaletteOrder: 90
 		Prerequisites: fix, ~techlevel.medium
-		BuildDuration: 2000
+		BuildDuration: 2500
 		BuildDurationModifier: 40
 		Description: Deploys into another Construction Yard.\n  Unarmed
 	Valued:
@@ -488,6 +488,8 @@ MGG:
 		Queue: Vehicle
 		BuildPaletteOrder: 150
 		Prerequisites: atek, ~vehicles.france, ~techlevel.high
+		BuildDuration: 1500
+		BuildDurationModifier: 40
 		Description: Regenerates the shroud nearby, \nobscuring the area.\n  Unarmed
 	Valued:
 		Cost: 1200
@@ -516,13 +518,15 @@ MGG:
 MRJ:
 	Inherits: ^Vehicle
 	Valued:
-		Cost: 800
+		Cost: 1100
 	Tooltip:
 		Name: Mobile Radar Jammer
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 140
 		Prerequisites: atek, ~vehicles.allies, ~techlevel.high
+		BuildDuration: 1370
+		BuildDurationModifier: 40
 		Description: Jams nearby enemy radar domes\nand deflects incoming missiles.\nCan detect cloaked units.\n  Unarmed
 	Health:
 		HP: 220
@@ -531,24 +535,24 @@ MRJ:
 	Mobile:
 		Speed: 85
 	RevealsShroud:
-		Range: 6c0
+		Range: 7c0
 	WithIdleOverlay@SPINNER:
 		Sequence: spinner
 		Offset: -256,0,256
 	ProximityExternalCondition@JAMMER:
-		Range: 15c0
+		Range: 18c0
 		ValidStances: Enemy, Neutral
 		Condition: jammed
 	WithRangeCircle@JAMMER:
 		Type: jammer
-		Range: 15c0
+		Range: 18c0
 		Color: 0000FF80
 	JamsMissiles:
-		Range: 4c0
+		Range: 5c0
 		DeflectionStances: Neutral, Enemy
 	RenderJammerCircle:
 	DetectCloaked:
-		Range: 6c0
+		Range: 7c0
 
 TTNK:
 	Inherits: ^Tank

@@ -172,14 +172,14 @@ RedEye:
 Stinger:
 	Inherits: ^AntiGroundMissile
 	ReloadDelay: 60
-	Range: 9c0
+	Range: 7c512
 	Burst: 2
 	BurstDelay: 0
 	Projectile: Missile
 		Arm: 3
 		Inaccuracy: 0
 		HorizontalRateOfTurn: 20
-		RangeLimit: 10c819
+		RangeLimit: 9c512
 		Speed: 170
 		CloseEnough: 149
 	Warhead@1Dam: SpreadDamage
