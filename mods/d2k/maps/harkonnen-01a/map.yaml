@@ -1,0 +1,109 @@
+MapFormat: 11
+
+RequiresMod: d2k
+
+Title: Harkonnen 01a
+
+Author: Westwood Studios
+
+Tileset: ARRAKIS
+
+MapSize: 32,28
+
+Bounds: 2,2,28,24
+
+Visibility: MissionSelector
+
+Categories: Campaign
+
+LockPreview: True
+
+Players:
+	PlayerReference@Neutral:
+		Name: Neutral
+		OwnsWorld: True
+		NonCombatant: True
+		Faction: Random
+	PlayerReference@Creeps:
+		Name: Creeps
+		NonCombatant: True
+		Faction: Random
+	PlayerReference@Harkonnen:
+		Name: Harkonnen
+		Playable: True
+		LockFaction: True
+		Faction: harkonnen
+		LockColor: True
+		Color: FE0000
+		Enemies: Atreides, Creeps
+	PlayerReference@Atreides:
+		Name: Atreides
+		LockFaction: True
+		Faction: atreides
+		LockColor: True
+		Color: 9191FF
+		Enemies: Harkonnen
+
+Actors:
+	Actor0: light_inf
+		Location: 7,2
+		Owner: Atreides
+	Actor1: light_inf
+		Location: 14,3
+		Owner: Atreides
+	Actor2: light_inf
+		Location: 21,3
+		Owner: Atreides
+	Actor3: wormspawner
+		Location: 18,4
+		Owner: Creeps
+	Actor4: light_inf
+		Location: 21,6
+		Owner: Atreides
+	Actor5: light_inf
+		Location: 5,10
+		Owner: Harkonnen
+	Actor6: light_inf
+		Location: 8,12
+		Owner: Harkonnen
+	HarkonnenConyard: construction_yard
+		Location: 7,14
+		Owner: Harkonnen
+	Actor8: light_inf
+		Location: 13,14
+		Owner: Harkonnen
+	Actor9: trike
+		Location: 4,16
+		Owner: Harkonnen
+	Actor10: light_inf
+		Location: 12,17
+		Owner: Harkonnen
+	Actor11: light_inf
+		Location: 7,18
+		Owner: Harkonnen
+	Actor12: trike
+		Location: 11,19
+		Owner: Harkonnen
+	Actor13: light_inf
+		Location: 28,19
+		Owner: Atreides
+	HarkonnenRally: waypoint
+		Owner: Neutral
+		Location: 12,12
+	HarkonnenWaypoint: waypoint
+		Owner: Neutral
+		Location: 2,12
+	AtreidesWaypoint1: waypoint
+		Owner: Neutral
+		Location: 20,2
+	AtreidesWaypoint2: waypoint
+		Owner: Neutral
+		Location: 18,25
+	AtreidesWaypoint3: waypoint
+		Owner: Neutral
+		Location: 29,21
+	AtreidesWaypoint4: waypoint
+		Owner: Neutral
+		Location: 29,7
+
+Rules: d2k|rules/campaign-rules.yaml, rules.yaml
