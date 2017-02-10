@@ -22,10 +22,12 @@ namespace OpenRA.Graphics
 			: base(message) { }
 	}
 
+	// The enum values indicate the number of channels used by the type
+	// They are not arbitrary IDs!
 	public enum SheetType
 	{
 		Indexed = 1,
-		BGRA = 2,
+		BGRA = 4,
 	}
 
 	public sealed class SheetBuilder : IDisposable

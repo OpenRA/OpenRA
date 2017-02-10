@@ -185,7 +185,8 @@ namespace OpenRA.Graphics
 				.Concat(aboveShroudSelected)
 				.Concat(aboveShroudEffects)
 				.Concat(aboveShroudOrderGenerator)
-				.Select(r => r.PrepareRender(this));
+				.Select(r => r.PrepareRender(this))
+				.ToList();
 			Game.Renderer.WorldVoxelRenderer.EndFrame();
 
 			// HACK: Keep old grouping behaviour
