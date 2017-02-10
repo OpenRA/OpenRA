@@ -104,16 +104,16 @@ Actors:
 		Owner: Neutral
 		Health: 38
 		Facing: 160
-	Actor13: cabhut
-		Location: 138,-12
-		Owner: Neutral
-		Health: 100
-		Facing: 160
-	Actor14: cabhut
-		Location: 63,-16
-		Owner: Neutral
-		Health: 100
-		Facing: 160
+#	Actor13: cabhut
+#		Location: 138,-12
+#		Owner: Neutral
+#		Health: 100
+#		Facing: 160
+#	Actor14: cabhut
+#		Location: 63,-16
+#		Owner: Neutral
+#		Health: 100
+#		Facing: 160
 	Actor15: ca0011
 		Location: 110,26
 		Owner: Neutral
@@ -2367,23 +2367,23 @@ Actors:
 	Actor679: srock05
 		Location: 144,-8
 		Owner: Neutral
-	Actor680: lobrdg_r_nw
-		Location: 152,-16
-		Owner: Neutral
+#	Actor680: lobrdg_r_nw
+#		Location: 152,-16
+#		Owner: Neutral
 	Actor681: bridge2
 		Location: 140,-3
 		Owner: Neutral
-	Actor682: lobrdg_b
-		Location: 153,-16
-		Owner: Neutral
-		Health: 50
+#	Actor682: lobrdg_b
+#		Location: 153,-16
+#		Owner: Neutral
+#		Health: 50
 	Actor683: srock04
 		Location: 145,-7
 		Owner: Neutral
-	Actor684: lobrdg_b
-		Location: 154,-16
-		Owner: Neutral
-		Health: 25
+#	Actor684: lobrdg_b
+#		Location: 154,-16
+#		Owner: Neutral
+#		Health: 25
 	Actor685: crat01
 		Location: 115,24
 		Owner: Neutral
@@ -2477,10 +2477,10 @@ Actors:
 	Actor715: crat03
 		Location: 105,50
 		Owner: Neutral
-	Actor716: lobrdg_r_se
-		Location: 171,-16
-		Owner: Neutral
-		Health: 50
+#	Actor716: lobrdg_r_se
+#		Location: 171,-16
+#		Owner: Neutral
+#		Health: 50
 	Actor717: trock05
 		Location: 189,-34
 		Owner: Neutral
