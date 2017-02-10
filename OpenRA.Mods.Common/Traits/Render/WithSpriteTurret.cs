@@ -79,7 +79,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		{
 			rs = self.Trait<RenderSprites>();
 			body = self.Trait<BodyOrientation>();
-			Attack = self.TraitOrDefault<AttackBase>();
+			Attack = self.TraitOrDefault<AttackTurreted>();
 			t = self.TraitsImplementing<Turreted>()
 				.First(tt => tt.Name == info.Turret);
 			arms = self.TraitsImplementing<Armament>()
