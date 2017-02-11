@@ -70,7 +70,7 @@ namespace OpenRA.Mods.RA.Traits
 			if (--ReturnTicks == 0)
 			{
 				self.CancelActivity();
-				self.QueueActivity(new Teleport(chronosphere, Origin, null, killCargo, true, info.ChronoshiftSound));
+				self.QueueActivity(new Teleport(chronosphere, Origin, null, killCargo, true, info.ChronoshiftSound, true));
 			}
 		}
 

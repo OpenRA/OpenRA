@@ -28,9 +28,10 @@ namespace OpenRA.Mods.RA.Activities
 		CPos destination;
 		bool killCargo;
 		bool screenFlash;
+		bool force;
 		string sound;
 
-		public Teleport(Actor teleporter, CPos destination, int? maximumDistance, bool killCargo, bool screenFlash, string sound)
+		public Teleport(Actor teleporter, CPos destination, int? maximumDistance, bool killCargo, bool screenFlash, string sound, bool force = false)
 		{
 			var max = teleporter.World.Map.Grid.MaximumTileSearchRange;
 			if (maximumDistance > max)
@@ -41,6 +42,7 @@ namespace OpenRA.Mods.RA.Activities
 			this.maximumDistance = maximumDistance;
 			this.killCargo = killCargo;
 			this.screenFlash = screenFlash;
+			this.force = force;
 			this.sound = sound;
 		}
 
@@ -54,16 +56,73 @@ namespace OpenRA.Mods.RA.Activities
 				if (condition.PreventsTeleport(self))
 					return NextActivity;
 
-			var bestCell = ChooseBestDestinationCell(self, destination);
-			if (bestCell == null)
-				return NextActivity;
+			if (!force)
+			{
+				var bestCell = ChooseBestDestinationCell(self, destination);
+				if (bestCell == null)
+					return NextActivity;
 
-			destination = bestCell.Value;
+				destination = bestCell.Value;
+			}
 
 			Game.Sound.Play(SoundType.World, sound, self.CenterPosition);
 			Game.Sound.Play(SoundType.World, sound, self.World.Map.CenterOfCell(destination));
 
-			self.Trait<IPositionable>().SetPosition(self, destination);
+			var pos = self.Trait<IPositionable>();
+			if (pos.CanEnterCell(destination))
+				force = false;
+
+			pos.SetPosition(self, destination);
+			if (force)
+			{
+				var subcell = pos.OccupiedCells().First(p => p.First == destination).Second;
+				var health = self.TraitOrDefault<Health>();
+				var givenDamage = health != null ? (health.HP + health.MaxHP) / 2 : 0;
+
+				foreach (var other in self.World.ActorMap.GetActorsAt(destination))
+				{
+					if (other == self)
+						continue;
+
+					var otherOccupation = other.TraitOrDefault<IOccupySpace>();
+					if (otherOccupation == null || !otherOccupation.OccupiedCells().Any(p => p.First == destination))
+						continue;
+
+					if (subcell != SubCell.FullCell)
+					{
+						var otherSubcell = otherOccupation.OccupiedCells().First(p => p.First == destination).Second;
+						if (otherSubcell != SubCell.FullCell && otherSubcell != subcell)
+							continue;
+					}
+
+					var otherHealth = other.TraitOrDefault<Health>();
+					if (otherHealth == null)
+						continue;
+
+					if (health != null)
+					{
+						var maxHealthRadius = health.Info.Radius;
+						if (otherHealth.Info.Radius > maxHealthRadius)
+							maxHealthRadius = otherHealth.Info.Radius;
+
+						if ((other.CenterPosition - self.CenterPosition).LengthSquared > maxHealthRadius.LengthSquared)
+							continue;
+
+						var otherGivenDamage = (otherHealth.HP + otherHealth.MaxHP) / 2;
+						otherHealth.InflictDamage(other, self, givenDamage, null, true);
+						health.InflictDamage(self, other, otherGivenDamage, null, true);
+					}
+					else
+					{
+						var healthRadius = otherHealth.Info.Radius;
+						if ((other.CenterPosition - self.CenterPosition).LengthSquared > healthRadius.LengthSquared)
+							continue;
+
+						otherHealth.InflictDamage(other, self, otherHealth.HP, null, true);
+					}
+				}
+			}
+
 			self.Generation++;
 
 			if (killCargo)
