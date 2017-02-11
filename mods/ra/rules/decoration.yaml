@@ -385,6 +385,7 @@ TANKTRAP1:
 		Name: Tank Trap
 	EditorTilesetFilter:
 		ExcludeTilesets: DESERT
+		RequireTilesets: TEMPERAT, SNOW, INTERIOR
 
 TANKTRAP2:
 	Inherits: ^Rock
@@ -395,3 +396,4 @@ TANKTRAP2:
 		Name: Tank Trap
 	EditorTilesetFilter:
 		ExcludeTilesets: DESERT
+		RequireTilesets: TEMPERAT, SNOW, INTERIOR
