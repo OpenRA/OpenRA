@@ -44,9 +44,9 @@
 			Concrete: 30
 	-Warhead@2Smu: LeaveSmudge
 	Warhead@3Eff: CreateEffect
-		ImpactSounds:
+		-ImpactSounds:
 	Warhead@4EffWater: CreateEffect
-		ImpactSounds:
+		-ImpactSounds:
 
 90mm:
 	Inherits: ^Cannon
@@ -169,6 +169,7 @@ Grenade:
 
 DepthCharge:
 	Inherits: ^Artillery
+	-Report:
 	ReloadDelay: 60
 	Range: 5c0
 	ValidTargets: Underwater
