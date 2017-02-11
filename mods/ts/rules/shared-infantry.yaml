@@ -91,6 +91,7 @@ FLAMEGUY:
 		Step: -10
 		HealIfBelow: 101
 	ScaredyCat:
+		PanicSequencePrefix:
 	WithDeathAnimation:
 		FallbackSequence: die
 		UseDeathTypeSuffix: false

@@ -172,7 +172,7 @@ TRATOS:
 		Range: 4c0
 	-AutoTarget:
 	WithInfantryBody:
-		DefaultAttackSequence: attack
+		DefaultAttackSequence:
 
 OXANNA:
 	Inherits: ^Soldier
