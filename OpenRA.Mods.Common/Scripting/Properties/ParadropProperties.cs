@@ -14,7 +14,7 @@ using OpenRA.Mods.Common.Traits;
 using OpenRA.Scripting;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.Scripting
+namespace OpenRA.Mods.Common.Scripting
 {
 	[ScriptPropertyGroup("Transports")]
 	public class ParadropProperties : ScriptActorProperties, Requires<CargoInfo>, Requires<ParaDropInfo>

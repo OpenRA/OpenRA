@@ -10,11 +10,11 @@
 #endregion
 
 using System.Linq;
-using OpenRA.Mods.RA.Traits;
+using OpenRA.Mods.Common.Traits;
 using OpenRA.Scripting;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.RA.Scripting
+namespace OpenRA.Mods.Common.Scripting
 {
 	[ScriptPropertyGroup("Support Powers")]
 	public class ParatroopersProperties : ScriptActorProperties, Requires<ParatroopersPowerInfo>

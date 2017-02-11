@@ -98,10 +98,7 @@
     <Compile Include="Traits\SupportPowers\ChronoshiftPower.cs" />
     <Compile Include="Traits\SupportPowers\GpsPower.cs" />
     <Compile Include="Traits\GpsWatcher.cs" />
-    <Compile Include="Traits\SupportPowers\ParatroopersPower.cs" />
     <Compile Include="Scripting\Properties\ChronosphereProperties.cs" />
-    <Compile Include="Scripting\Properties\ParadropProperties.cs" />
-    <Compile Include="Scripting\Properties\ParatroopersProperties.cs" />
     <Compile Include="Traits\Render\WithDisguisingInfantryBody.cs" />
     <Compile Include="ImportRedAlertLegacyMapCommand.cs" />
     <Compile Include="Traits\Infiltration\InfiltrateForDecoration.cs" />
