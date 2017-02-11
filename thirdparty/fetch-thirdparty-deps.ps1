@@ -8,7 +8,7 @@ if (!(Test-Path "nuget.exe"))
 	# Work around PowerShell's Invoke-WebRequest not being available on some versions of PowerShell by using the BCL.
 	# To do that we need to work around further and use absolute paths because DownloadFile is not aware of PowerShell's current directory.
 	$target = Join-Path $pwd.ToString() "nuget.exe"
-	(New-Object System.Net.WebClient).DownloadFile("http://nuget.org/nuget.exe", $target)
+	(New-Object System.Net.WebClient).DownloadFile("https://dist.nuget.org/win-x86-commandline/v3.4.4/NuGet.exe", $target)
 }
 
 if (!(Test-Path "StyleCopPlus.dll"))
@@ -38,7 +38,7 @@ if (!(Test-Path "ICSharpCode.SharpZipLib.dll"))
 if (!(Test-Path "MaxMind.GeoIP2.dll"))
 {
 	echo "Fetching MaxMind.GeoIP2 from NuGet."
-	./nuget.exe install MaxMind.GeoIP2 -Version 2.6.0 -ExcludeVersion
+	./nuget.exe install MaxMind.GeoIP2 -Version 2.7.1 -ExcludeVersion
 	cp MaxMind.Db/lib/net45/MaxMind.Db.* .
 	rmdir MaxMind.Db -Recurse
 	cp MaxMind.GeoIP2/lib/net45/MaxMind.GeoIP2* .
