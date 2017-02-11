@@ -3,7 +3,7 @@ General:
 	Id: ARRAKIS
 	SheetSize: 1024
 	Palette: PALETTE.BIN
-	EditorTemplateOrder: Basic, Dune, Sand-Detail, Brick, Sand-Cliff, Sand-Smooth, Cliff-Type-Changer, Rock-Sand-Smooth, Rock-Detail, Rock-Cliff, Rock-Cliff-Rock, Rotten-Base, Dead-Worm, Ice, Ice-Detail, Rock-Cliff-Sand, Sand-Platform, Unidentified
+	EditorTemplateOrder: Basic, Dune, Sand-Detail, Brick, Sand-Cliff, Sand-Smooth, Cliff-Type-Changer, Rock-Sand-Smooth, Rock-Detail, Rock-Cliff, Rock-Cliff-Rock, Rotten-Base, Dead-Worm, Ice, Ice-Detail, Rock-Cliff-Sand, Sand-Platform, Unidentified, DO_NOT_USE-Duplicates
 	IgnoreTileSpriteOffsets: True
 	HeightDebugColors: 880000
 
@@ -2465,7 +2465,7 @@ Templates:
 		Images: BLOXBAT.R8
 		Frames: 551
 		Size: 1,1
-		Category: Rotten-Base
+		Category: DO_NOT_USE-Duplicates
 		Tiles:
 			0: Cliff
 	Template@306:
@@ -2473,7 +2473,7 @@ Templates:
 		Images: BLOXBAT.R8
 		Frames: 607, 608, 627, 628
 		Size: 2,2
-		Category: Rotten-Base
+		Category: DO_NOT_USE-Duplicates
 		Tiles:
 			0: Rough
 			1: Cliff
@@ -2609,7 +2609,7 @@ Templates:
 		Images: BLOXBAT.R8
 		Frames: 701, 702
 		Size: 2,1
-		Category: Sand-Detail
+		Category: DO_NOT_USE-Duplicates
 		Tiles:
 			0: Sand
 			1: Sand
@@ -2694,7 +2694,7 @@ Templates:
 		Images: BLOXBAT.R8
 		Frames: 538, 539, 558, 559
 		Size: 2,2
-		Category: Rock-Detail
+		Category: DO_NOT_USE-Duplicates
 		Tiles:
 			0: Rough
 			1: Rough
@@ -2951,7 +2951,7 @@ Templates:
 		Images: BLOXBGBS.R8
 		Frames: 700
 		Size: 1,1
-		Category: Sand-Detail
+		Category: DO_NOT_USE-Duplicates
 		Tiles:
 			0: Sand
 	Template@353:
@@ -3025,7 +3025,7 @@ Templates:
 		Images: BLOXBGBS.R8
 		Frames: 718, 719, 738, 739
 		Size: 2,2
-		Category: Sand-Detail
+		Category: DO_NOT_USE-Duplicates
 		Tiles:
 			0: Rough
 			1: Sand
@@ -3273,7 +3273,7 @@ Templates:
 		Images: BLOXICE.R8
 		Frames: 607, 608, 627, 628
 		Size: 2,2
-		Category: Sand-Detail
+		Category: DO_NOT_USE-Duplicates
 		Tiles:
 			0: Rough
 			1: Rough
@@ -3284,7 +3284,7 @@ Templates:
 		Images: BLOXICE.R8
 		Frames: 609, 610, 629, 630
 		Size: 2,2
-		Category: Sand-Detail
+		Category: DO_NOT_USE-Duplicates
 		Tiles:
 			0: Rough
 			1: Sand
@@ -3757,7 +3757,7 @@ Templates:
 		Images: BLOXTREE.R8
 		Frames: 729
 		Size: 1,1
-		Category: Sand-Detail
+		Category: DO_NOT_USE-Duplicates
 		Tiles:
 			0: Cliff
 	Template@434:
@@ -4096,7 +4096,7 @@ Templates:
 		Images: BLOXWAST.R8
 		Frames: 4
 		Size: 1,1
-		Category: Sand-Detail
+		Category: DO_NOT_USE-Duplicates
 		Tiles:
 			0: Cliff
 	Template@469:
@@ -4104,7 +4104,7 @@ Templates:
 		Images: BLOXWAST.R8
 		Frames: 5
 		Size: 1,1
-		Category: Sand-Detail
+		Category: DO_NOT_USE-Duplicates
 		Tiles:
 			0: Cliff
 	Template@470:
@@ -5592,3 +5592,556 @@ Templates:
 		Category: Sand-Detail
 		Tiles:
 			0: Rough
+	Template@1022:
+		Id: 1022
+		Images: BLOXBGBS.R8
+		Frames: 660
+		Size: 1,1
+		Category: Sand-Detail
+		Tiles:
+			0: Rough
+	Template@1023:
+		Id: 1023
+		Images: BLOXBGBS.R8
+		Frames: 681
+		Size: 1,1
+		Category: Sand-Detail
+		Tiles:
+			0: Rough
+	Template@1024:
+		Id: 1024
+		Images: BLOXBGBS.R8
+		Frames: 680
+		Size: 1,1
+		Category: Sand-Detail
+		Tiles:
+			0: Rough
+	Template@1025:
+		Id: 1025
+		Images: BLOXBGBS.R8
+		Frames: 661
+		Size: 1,1
+		Category: Sand-Detail
+		Tiles:
+			0: Rough
+	Template@1026:
+		Id: 1026
+		Images: BLOXBGBS.R8
+		Frames: 713,733
+		Size: 1,2
+		Category: Rock-Detail
+		Tiles:
+			0: Rough
+			1: Rough
+	Template@1027:
+		Id: 1027
+		Images: BLOXBGBS.R8
+		Frames: 712
+		Size: 1,1
+		Category: Rock-Detail
+		Tiles:
+			0: Rough
+	Template@1028:
+		Id: 1028
+		Images: BLOXBGBS.R8
+		Frames: 728
+		Size: 1,1
+		Category: Rock-Detail
+		Tiles:
+			0: Rough
+	Template@1029:
+		Id: 1029
+		Images: BLOXBGBS.R8
+		Frames: 707,708
+		Size: 2,1
+		Category: Rock-Detail
+		Tiles:
+			0: Rough
+			1: Rough
+	Template@1030:
+		Id: 1030
+		Images: BLOXBGBS.R8
+		Frames: 731,732
+		Size: 2,1
+		Category: Rock-Detail
+		Tiles:
+			0: Rough
+			1: Rough
+	Template@1031:
+		Id: 1031
+		Images: BLOXBGBS.R8
+		Frames: 710,711,730,630
+		Size: 2,2
+		Category: Rock-Detail
+		Tiles:
+			0: Rough
+			1: Rough
+			2: Rough
+	Template@1032:
+		Id: 1032
+		Images: BLOXBGBS.R8
+		Frames: 709,729
+		Size: 1,2
+		Category: Rock-Detail
+		Tiles:
+			0: Rough
+			1: Rough
+	Template@1033:
+		Id: 1033
+		Images: BLOXBGBS.R8
+		Frames: 714,715
+		Size: 2,1
+		Category: Rock-Detail
+		Tiles:
+			0: Rough
+			1: Rough
+	Template@1034:
+		Id: 1034
+		Images: BLOXBGBS.R8
+		Frames: 611, 612, 613, 631, 632, 633
+		Size: 3,2
+		Category: Rock-Detail
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Rock
+			3: Rock
+			4: Rock
+			5: Rock
+	Template@1035:
+		Id: 1035
+		Images: BLOXBGBS.R8
+		Frames: 614, 615, 616, 634, 635, 636, 654, 655, 656
+		Size: 3,3
+		Category: Rock-Detail
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Rock
+			3: Rock
+			4: Rock
+			5: Rock
+			6: Rock
+			7: Rock
+			8: Rock
+	Template@1036:
+		Id: 1036
+		Images: BLOXBGBS.R8
+		Frames: 684, 685, 704, 705
+		Size: 2,2
+		Category: DO_NOT_USE-Duplicates
+		Tiles:
+			0: Rough
+			1: Rough
+			2: Rough
+			3: Rough
+	Template@1037:
+		Id: 1037
+		Images: BLOXBGBS.R8
+		Frames: 662, 630, 682, 683
+		Size: 2,2
+		Category: Rock-Detail
+		Tiles:
+			0: Rough
+			2: Rough
+			3: Rough
+	Template@1038:
+		Id: 1038
+		Images: BLOXBGBS.R8
+		Frames: 355
+		Size: 1,1
+		Category: DO_NOT_USE-Duplicates
+		Tiles:
+			0: Rough
+	Template@1039:
+		Id: 1039
+		Images: BLOXBGBS.R8
+		Frames: 375
+		Size: 1,1
+		Category: DO_NOT_USE-Duplicates
+		Tiles:
+			0: Rough
+	Template@1040:
+		Id: 1040
+		Images: BLOXICE.R8
+		Frames: 359
+		Size: 1,1
+		Category: Rock-Detail
+		Tiles:
+			0: Cliff
+	Template@1041:
+		Id: 1041
+		Images: BLOXICE.R8
+		Frames: 339
+		Size: 1,1
+		Category: Rock-Detail
+		Tiles:
+			0: Cliff
+	Template@1042:
+		Id: 1042
+		Images: BLOXICE.R8
+		Frames: 319
+		Size: 1,1
+		Category: Rock-Detail
+		Tiles:
+			0: Cliff
+	Template@1043:
+		Id: 1043
+		Images: BLOXICE.R8
+		Frames: 538
+		Size: 1,1
+		Category: Sand-Detail
+		Tiles:
+			0: Sand
+	Template@1044:
+		Id: 1044
+		Images: BLOXTREE.R8
+		Frames: 683, 684, 685, 706, 703, 704, 705, 726, 723, 724, 725, 746, 743, 744, 745, 747
+		Size: 4,4
+		Category: DO_NOT_USE-Duplicates
+		Tiles:
+			0: Sand
+			1: Cliff
+			2: Cliff
+			3: Sand
+			4: Cliff
+			5: Cliff
+			6: Cliff
+			7: Sand
+			8: Rough
+			9: Cliff
+			10: Cliff
+			11: Rough
+			12: Sand
+			13: Sand
+			14: Cliff
+			15: Rough
+	Template@1045:
+		Id: 1045
+		Images: BLOXTREE.R8
+		Frames: 369, 370, 389, 390
+		Size: 2, 2
+		Category: DO_NOT_USE-Duplicates
+		Tiles:
+			0: Rough
+			1: Rough
+			2: Rough
+			3: Rough
+	Template@1046:
+		Id: 1046
+		Images: BLOXTREE.R8
+		Frames: 700
+		Size: 1,1
+		Category: DO_NOT_USE-Duplicates
+		Tiles:
+			0: Rough
+	Template@1047:
+		Id: 1047
+		Images: BLOXTREE.R8
+		Frames: 373
+		Size: 1,1
+		Category: Sand-Detail
+		Tiles:
+			0: Rough
+	Template@1048:
+		Id: 1048
+		Images: BLOXTREE.R8
+		Frames: 372
+		Size: 1,1
+		Category: Sand-Detail
+		Tiles:
+			0: Rough
+	Template@1049:
+		Id: 1049
+		Images: BLOXTREE.R8
+		Frames: 367, 368, 387, 388
+		Size: 2, 2
+		Category: Sand-Detail
+		Tiles:
+			0: Rough
+			1: Rough
+			2: Rough
+			3: Rough
+	Template@1050:
+		Id: 1050
+		Images: BLOXTREE.R8
+		Frames: 392
+		Size: 1,1
+		Category: Sand-Detail
+		Tiles:
+			0: Rough
+	Template@1051:
+		Id: 1051
+		Images: BLOXTREE.R8
+		Frames: 393
+		Size: 1,1
+		Category: Sand-Detail
+		Tiles:
+			0: Rough
+	Template@1052:
+		Id: 1052
+		Images: BLOXTREE.R8
+		Frames: 346, 366
+		Size: 1,2
+		Category: Sand-Detail
+		Tiles:
+			0: Rough
+			1: Rough
+	Template@1053:
+		Id: 1053
+		Images: BLOXTREE.R8
+		Frames: 365
+		Size: 1,1
+		Category: Sand-Detail
+		Tiles:
+			0: Rough
+	Template@1054:
+		Id: 1054
+		Images: BLOXTREE.R8
+		Frames: 386
+		Size: 1,1
+		Category: Sand-Detail
+		Tiles:
+			0: Rough
+	Template@1055:
+		Id: 1055
+		Images: BLOXTREE.R8
+		Frames: 639
+		Size: 1,1
+		Category: Rock-Detail
+		Tiles:
+			0: Rock
+	Template@1056:
+		Id: 1056
+		Images: BLOXTREE.R8
+		Frames: 661, 662, 681, 682
+		Size: 2,2
+		Category: DO_NOT_USE-Duplicates
+		Tiles:
+			0: Rough
+			1: Cliff
+			2: Rough
+			3: Rough
+	Template@1057:
+		Id: 1057
+		Images: BLOXTREE.R8
+		Frames: 382
+		Size: 1,1
+		Category: Rock-Detail
+		Tiles:
+			0: Cliff
+	Template@1058:
+		Id: 1058
+		Images: BLOXWAST.R8
+		Frames: 393, 394, 470, 395
+		Size: 2,2
+		Category: Rock-Detail
+		Tiles:
+			0: Rough
+			1: Rough
+			3: Rough
+	Template@1059:
+		Id: 1059
+		Images: BLOXWAST.R8
+		Frames: 353, 354
+		Size: 1,2
+		Category: Rock-Detail
+		Tiles:
+			0: Rough
+			1: Rough
+	Template@1060:
+		Id: 1060
+		Images: BLOXWAST.R8
+		Frames: 164, 165, 184, 185
+		Size: 2,2
+		Category: Dead-Worm
+		Tiles:
+			0: Sand
+			1: Sand
+			2: Sand
+			3: Sand
+	Template@1061:
+		Id: 1061
+		Images: BLOXWAST.R8
+		Frames: 382
+		Size: 1,1
+		Category: Sand-Detail
+		Tiles:
+			0: Rough
+	Template@1062:
+		Id: 1062
+		Images: BLOXWAST.R8
+		Frames: 368
+		Size: 1,1
+		Category: Sand-Detail
+		Tiles:
+			0: Rough
+	Template@1063:
+		Id: 1063
+		Images: BLOXWAST.R8
+		Frames: 380
+		Size: 1,1
+		Category: DO_NOT_USE-Duplicates
+		Tiles:
+			0: Rough
+	Template@1064:
+		Id: 1064
+		Images: BLOXWAST.R8
+		Frames: 290
+		Size: 1,1
+		Category: Sand-Detail
+		Tiles:
+			0: Rough
+	Template@1065:
+		Id: 1065
+		Images: BLOXWAST.R8
+		Frames: 608
+		Size: 1,1
+		Category: DO_NOT_USE-Duplicates
+		Tiles:
+			0: Cliff
+	Template@1066:
+		Id: 1066
+		Images: BLOXWAST.R8
+		Frames: 597
+		Size: 1,1
+		Category: DO_NOT_USE-Duplicates
+		Tiles:
+			0: Rough
+	Template@1067:
+		Id: 1067
+		Images: BLOXWAST.R8
+		Frames: 719
+		Size: 1,1
+		Category: DO_NOT_USE-Duplicates
+		Tiles:
+			0: Sand
+	Template@1068:
+		Id: 1068
+		Images: BLOXWAST.R8
+		Frames: 367
+		Size: 1,1
+		Category: Sand-Detail
+		Tiles:
+			0: Sand
+	Template@1069:
+		Id: 1069
+		Images: BLOXWAST.R8
+		Frames: 381
+		Size: 1,1
+		Category: DO_NOT_USE-Duplicates
+		Tiles:
+			0: Rough
+	Template@1070:
+		Id: 1070
+		Images: BLOXWAST.R8
+		Frames: 343
+		Size: 1,1
+		Category: DO_NOT_USE-Duplicates
+		Tiles:
+			0: Rough
+	Template@1071:
+		Id: 1071
+		Images: BLOXWAST.R8
+		Frames: 340, 341, 360, 361
+		Size: 2,2
+		Category: DO_NOT_USE-Duplicates
+		Tiles:
+			0: Cliff
+			1: Cliff
+			2: Cliff
+			3: Cliff
+	Template@1072:
+		Id: 1072
+		Images: BLOXWAST.R8
+		Frames: 660, 661, 662, 680, 681, 682
+		Size: 3,2
+		Category: DO_NOT_USE-Duplicates
+		Tiles:
+			0: Rock
+			1: Cliff
+			2: Cliff
+			3: Cliff
+			4: Cliff
+			5: Cliff
+	Template@1073:
+		Id: 1073
+		Images: BLOXWAST.R8
+		Frames: 598, 599
+		Size: 2,1
+		Category: DO_NOT_USE-Duplicates
+		Tiles:
+			0: Cliff
+			1: Cliff
+	Template@1074:
+		Id: 1074
+		Images: BLOXWAST.R8
+		Frames: 289
+		Size: 1,1
+		Category: Sand-Detail
+		Tiles:
+			0: Sand
+	Template@1075:
+		Id: 1075
+		Images: BLOXWAST.R8
+		Frames: 344
+		Size: 1,1
+		Category: Sand-Detail
+		Tiles:
+			0: Sand
+	Template@1076:
+		Id: 1076
+		Images: BLOXWAST.R8
+		Frames: 362, 363, 364
+		Size: 3,1
+		Category: DO_NOT_USE-Duplicates
+		Tiles:
+			0: Cliff
+			1: Rough
+			2: Cliff
+	Template@1077:
+		Id: 1077
+		Images: BLOXWAST.R8
+		Frames: 607
+		Size: 1,1
+		Category: Sand-Detail
+		Tiles:
+			0: Sand
+	Template@1078:
+		Id: 1078
+		Images: BLOXBAT.R8
+		Frames: 311,312
+		Size: 2,1
+		Category: Sand-Detail
+		Tiles:
+			0: Cliff
+			1: Cliff
+	Template@1079:
+		Id: 1079
+		Images: BLOXBAT.R8
+		Frames: 185
+		Size: 1,1
+		Category: Sand-Detail
+		Tiles:
+			0: Rough
+	Template@1080:
+		Id: 1080
+		Images: BLOXWAST.R8
+		Frames: 627, 628
+		Size: 2,1
+		Category: DO_NOT_USE-Duplicates
+		Tiles:
+			0: Rough
+			1: Rough
+	Template@1081:
+		Id: 1081
+		Images: BLOXWAST.R8
+		Frames: 609, 610, 629, 630
+		Size: 2,2
+		Category: DO_NOT_USE-Duplicates
+		Tiles:
+			0: Rough
+			1: Cliff
+			2: Rough			
+			3: Rough			
+			
