@@ -714,8 +714,6 @@ CAHOSP:
 	Capturable:
 	CaptureNotification:
 	ProvidesPrerequisite@BuildingName:
-	Buildable:
-		Description: Gives friendly units a medkit to heal themselves.
 	ThrowsShrapnel@SMALL:
 		Pieces: 5, 9
 	ThrowsShrapnel@LARGE:
@@ -1145,8 +1143,6 @@ CTDAM:
 		Sequence: idle-lights
 	WithIdleOverlay@WATER:
 		Sequence: idle-water
-	Buildable:
-		Description: Provides power for other structures
 	ThrowsShrapnel@SMALL:
 		Pieces: 5, 9
 	ThrowsShrapnel@LARGE:
@@ -1249,10 +1245,6 @@ GASAND:
 
 GASPOT:
 	Inherits: ^Building
-	Buildable:
-		Queue: Defense
-		Prerequisites: ~disabled
-		Description: Civilian Building
 	Valued:
 		Cost: 300
 	Tooltip:
@@ -1301,10 +1293,6 @@ GALITE:
 		Palette: alpha
 	Selectable:
 		Bounds: 24, 24, 0, -4
-	Buildable:
-		Queue: Defense
-		Prerequisites: ~disabled
-		Description: Civilian Building
 	SelectionDecorations:
 		VisualBounds: 25, 35, 0, -12
 	-Cloak@EXTERNALCLOAK:
@@ -1315,8 +1303,6 @@ TSTLAMP:
 	RenderSprites:
 		Image: galite
 	Tooltip:
-	Buildable:
-		Description: light post with alpha blending
 
 GAICBM:
 	Inherits: ^Building
