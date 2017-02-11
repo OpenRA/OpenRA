@@ -482,7 +482,7 @@ grenadier:
 		Start: 2606
 		Facings: -8
 		Transpose: true
-	idle: DATA.R8
+	idle1: DATA.R8
 		Frames: 2700, 2707, 2714, 2721, 2728, 2735, 2742, 2749
 		Length: 8
 	idle2: DATA.R8
