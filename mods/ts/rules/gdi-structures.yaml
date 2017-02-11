@@ -444,6 +444,9 @@ GAPLUG:
 		Conditions:
 			plug.ioncannon: plug.ioncannona
 			plug.hunterseeker: plug.hunterseekera
+		Requirements:
+			plug.ioncannon: !plug.ioncannonb && !plug.ioncannona && !plug.hunterseekera
+			plug.hunterseeker: !plug.hunterseekerb && !plug.ioncannona && !plug.hunterseekera
 	WithIdleOverlay@ioncannona:
 		RequiresCondition: plug.ioncannona
 		Sequence: idle-ioncannona
@@ -455,6 +458,9 @@ GAPLUG:
 		Conditions:
 			plug.ioncannon: plug.ioncannonb
 			plug.hunterseeker: plug.hunterseekerb
+		Requirements:
+			plug.ioncannon: !plug.ioncannona && !plug.ioncannonb && !plug.hunterseekerb
+			plug.hunterseeker: !plug.hunterseekera && !plug.ioncannonb && !plug.hunterseekerb
 	WithIdleOverlay@ioncannonb:
 		RequiresCondition: plug.ioncannonb
 		Sequence: idle-ioncannonb
