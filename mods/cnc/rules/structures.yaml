@@ -762,11 +762,13 @@ OBLI:
 	Armament:
 		Weapon: Laser
 		LocalOffset: 0,-85,1280
-		FireDelay: 0
-	AttackCharge:
-		ChargeAudio: obelpowr.aud
-		ReloadDelay: 40
-		InitialChargeDelay: 50
+	AttackCharges:
+		ChargeLevel: 50
+		ChargingCondition: charging
+	AmbientSound:
+		RequiresCondition: charging
+		SoundFile: obelpowr.aud
+		Interval: 30, 40
 	-EmitInfantryOnSell:
 	DetectCloaked:
 		Range: 5c0

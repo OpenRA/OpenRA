@@ -90,6 +90,10 @@
     <Compile Include="UtilityCommands\LegacyRulesImporter.cs" />
     <Compile Include="UtilityCommands\LegacySequenceImporter.cs" />
     <Compile Include="Widgets\Logic\PreReleaseWarningPrompt.cs" />
+    <Compile Include="Traits\Attack\AttackTesla.cs" />
+    <Compile Include="Traits\Render\WithTeslaChargeAnimation.cs" />
+    <Compile Include="Traits\Render\WithTeslaChargeOverlay.cs" />
+    <Compile Include="TraitsInterfaces.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.Game\OpenRA.Game.csproj">

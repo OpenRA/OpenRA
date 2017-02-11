@@ -108,11 +108,14 @@ NAOBEL:
 	Armament:
 		Weapon: ObeliskLaserFire
 		LocalOffset: 1400,210,800
-	AttackCharge:
-		ChargeAudio: obelpowr.aud
-		InitialChargeDelay: 65
+	AttackCharges:
+		ChargeLevel: 65
+		ChargingCondition: charging
+	AmbientSound:
+		RequiresCondition: charging
+		SoundFile: obelpowr.aud
+		Interval: 30, 40
 	WithChargeOverlay:
-		Sequence: active
 		Palette: player
 		IsPlayerPalette: true
 	WithIdleOverlay@LIGHTS:

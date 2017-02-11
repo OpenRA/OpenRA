@@ -13,29 +13,34 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits.Render
 {
-	[Desc("This actor displays a charge-up animation before firing.")]
-	public class WithChargeAnimationInfo : ITraitInfo, Requires<WithSpriteBodyInfo>, Requires<RenderSpritesInfo>
+	[Desc("Render trait that varies the animation frame based on the AttackCharges trait's charge level.")]
+	class WithChargeAnimationInfo : ITraitInfo, Requires<WithSpriteBodyInfo>, Requires<AttackChargesInfo>
 	{
-		[Desc("Sequence to use for charge animation.")]
-		[SequenceReference] public readonly string ChargeSequence = "active";
+		[SequenceReference]
+		[Desc("Sequence to use for the charge levels.")]
+		public readonly string Sequence = "active";
 
-		public object Create(ActorInitializer init) { return new WithChargeAnimation(init, this); }
+		public object Create(ActorInitializer init) { return new WithChargeAnimation(init.Self, this); }
 	}
 
-	public class WithChargeAnimation : INotifyCharging
+	class WithChargeAnimation : INotifyBuildComplete
 	{
 		readonly WithChargeAnimationInfo info;
 		readonly WithSpriteBody wsb;
+		readonly AttackCharges attackCharges;
 
-		public WithChargeAnimation(ActorInitializer init, WithChargeAnimationInfo info)
+		public WithChargeAnimation(Actor self, WithChargeAnimationInfo info)
 		{
 			this.info = info;
-			wsb = init.Self.Trait<WithSpriteBody>();
+			wsb = self.Trait<WithSpriteBody>();
+			attackCharges = self.Trait<AttackCharges>();
 		}
 
-		public void Charging(Actor self, Target target)
+		void INotifyBuildComplete.BuildingComplete(Actor self)
 		{
-			wsb.PlayCustomAnimation(self, info.ChargeSequence, () => wsb.CancelCustomAnimation(self));
+			var attackChargesInfo = (AttackChargesInfo)attackCharges.Info;
+			wsb.DefaultAnimation.PlayFetchIndex(wsb.NormalizeSequence(self, info.Sequence),
+				() => int2.Lerp(0, wsb.DefaultAnimation.CurrentSequence.Length, attackCharges.ChargeLevel, attackChargesInfo.ChargeLevel + 1));
 		}
 	}
 }

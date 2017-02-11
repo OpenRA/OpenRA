@@ -779,7 +779,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				// Rename UpgradeOverlay to WithColoredOverlay
 				if (engineVersion < 20170201)
 					if (node.Key.StartsWith("UpgradeOverlay", StringComparison.Ordinal))
-						RenameNodeKey(node, "WithColoredOverlay" + node.Key.Substring(14));
+						RenameNodeKey(node, "WithColoredOverlay");
 
 				// Remove SpiceBloom.RespawnDelay to get rid of DelayedAction, and rename GrowthDelay to Lifetime
 				if (engineVersion < 20170203)
@@ -816,6 +816,18 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 						addNodes.Add(new MiniYamlNode("SpawnActorOnDeath", new MiniYaml("", new List<MiniYamlNode>() { spawnActor })));
 					}
+				}
+
+				if (engineVersion < 20170210)
+				{
+					if (node.Key.StartsWith("AttackCharge", StringComparison.Ordinal))
+						RenameNodeKey(node, "AttackTesla");
+
+					if (node.Key.StartsWith("WithChargeOverlay", StringComparison.Ordinal))
+						RenameNodeKey(node, "WithTeslaChargeOverlay");
+
+					if (node.Key.StartsWith("WithChargeAnimation", StringComparison.Ordinal))
+						RenameNodeKey(node, "WithTeslaChargeAnimation");
 				}
 
 				UpgradeActorRules(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);

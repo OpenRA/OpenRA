@@ -80,7 +80,7 @@ Napalm:
 		Explosions: med_napalm
 
 Laser:
-	ReloadDelay: 1
+	ReloadDelay: 40
 	Range: 7c512
 	Report: obelray1.aud
 	Projectile: LaserZap
