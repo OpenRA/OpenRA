@@ -5592,3 +5592,82 @@ Templates:
 		Category: Sand-Detail
 		Tiles:
 			0: Rough
+	Template@1022:
+		Id: 1022
+		Images: BLOXWAST.R8
+		Frames: 393, 394, 470, 395
+		Size: 2,2
+		Category: Rock-Detail
+		Tiles:
+			0: Rough
+			1: Rough
+			3: Rough
+	Template@1023:
+		Id: 1023
+		Images: BLOXWAST.R8
+		Frames: 353, 354
+		Size: 1,2
+		Category: Rock-Detail
+		Tiles:
+			0: Rough
+			1: Rough
+	Template@1024:
+		Id: 1024
+		Images: BLOXTREE.R8
+		Frames: 373
+		Size: 1,1
+		Category: Sand-Detail
+		Tiles:
+			0: Rough
+	Template@1025:
+		Id: 1025
+		Images: BLOXTREE.R8
+		Frames: 367, 368, 387, 388
+		Size: 2, 2
+		Category: Sand-Detail
+		Tiles:
+			0: Rough
+			1: Rough
+			2: Rough
+			3: Rough
+	Template@1026:
+		Id: 1026
+		Images: BLOXTREE.R8
+		Frames: 371
+		Size: 1, 1
+		Category: Sand-Detail
+		Tiles:
+			0: Rough
+	Template@1027:
+		Id: 1027
+		Images: BLOXTREE.R8
+		Frames: 383, 384
+		Size: 2, 1
+		Category: Sand-Detail
+		Tiles:
+			0: Rough
+			1: Rough
+	Template@1028:
+		Id: 1028
+		Images: BLOXTREE.R8
+		Frames: 391
+		Size: 1, 1
+		Category: Sand-Detail
+		Tiles:
+			0: Rough
+	Template@1029:
+		Id: 1029
+		Images: BLOXTREE.R8
+		Frames: 372
+		Size: 1, 1
+		Category: Sand-Detail
+		Tiles:
+			0: Rough
+	Template@1030:
+		Id: 1030
+		Images: BLOXTREE.R8
+		Frames: 385
+		Size: 1, 1
+		Category: Sand-Detail
+		Tiles:
+			0: Rough
