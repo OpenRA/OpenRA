@@ -46,7 +46,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{ "id", Pair.New("Anonymous ID", Game.Settings.Debug.UUID) },
 				{ "platform", Pair.New("OS Type", Platform.CurrentPlatform.ToString()) },
 				{ "os", Pair.New("OS Version", Environment.OSVersion.ToString()) },
-				{ "x64", Pair.New("64bit OS", Environment.Is64BitOperatingSystem.ToString()) },
+				{ "x64", Pair.New("OS is 64 bit", Environment.Is64BitOperatingSystem.ToString()) },
 				{ "runtime", Pair.New(".NET Runtime", Platform.RuntimeVersion) },
 				{ "gl", Pair.New("OpenGL Version", Game.Renderer.GLVersion) },
 				{ "windowsize", Pair.New("Window Size", "{0}x{1}".F(Game.Renderer.Resolution.Width, Game.Renderer.Resolution.Height)) },
