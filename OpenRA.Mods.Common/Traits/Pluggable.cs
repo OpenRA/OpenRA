@@ -81,14 +81,11 @@ namespace OpenRA.Mods.Common.Traits
 
 		public bool AcceptsPlug(Actor self, string type)
 		{
-			if (active != null)
-				return false;
-
 			if (!Info.Conditions.ContainsKey(type))
 				return false;
 
 			if (!Info.Requirements.ContainsKey(type))
-			    return true;
+				return active == null;
 
 			return plugTypesAvailability[type];
 		}
@@ -98,6 +95,9 @@ namespace OpenRA.Mods.Common.Traits
 			string condition;
 			if (!Info.Conditions.TryGetValue(type, out condition))
 				return;
+
+			if (conditionToken != ConditionManager.InvalidConditionToken)
+				conditionManager.RevokeCondition(self, conditionToken);
 
 			conditionToken = conditionManager.GrantCondition(self, condition);
 			active = type;
