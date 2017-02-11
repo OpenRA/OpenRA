@@ -688,12 +688,12 @@ CTNK:
 	AutoTarget:
 	Armament@PRIMARY:
 		Weapon: APTusk
-		LocalOffset: 0,-171,0
-		LocalYaw: 100
+		LocalOffset: -160,-276,232
+		LocalYaw: 60
 	Armament@SECONDARY:
 		Weapon: APTusk
-		LocalOffset: 0,171,0
-		LocalYaw: -100
+		LocalOffset: -160,276,232
+		LocalYaw: -60
 	AttackFrontal:
 	PortableChrono:
 		ChargeDelay: 300
@@ -759,7 +759,7 @@ STNK:
 		InitialStanceAI: ReturnFire
 	Armament:
 		Weapon: APTusk
-		LocalOffset: 400,0,0
+		LocalOffset: 192,0,176
 	Turreted:
 		TurnSpeed: 5
 	AttackTurreted:

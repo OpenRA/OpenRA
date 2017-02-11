@@ -10,6 +10,7 @@
 		ContrailLength: 10
 		Inaccuracy: 128
 		Image: DRAGON
+		Shadow: True
 		HorizontalRateOfTurn: 5
 		RangeLimit: 6c0
 	Warhead@1Dam: SpreadDamage
@@ -301,6 +302,7 @@ SubMissile:
 		LaunchAngle: 120
 		Inaccuracy: 2c938
 		Image: MISSILE
+		Shadow: True
 		TrailImage: smokey
 		ContrailLength: 30
 
@@ -320,11 +322,11 @@ SCUD:
 	Projectile: Bullet
 		Speed: 170
 		Blockable: false
-		Shadow: false
 		TrailImage: smokey
 		TrailDelay: 5
 		Inaccuracy: 213
 		Image: V2
+		Shadow: True
 		LaunchAngle: 62
 	Warhead@1Dam: SpreadDamage
 		Spread: 341

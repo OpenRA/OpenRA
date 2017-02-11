@@ -5,6 +5,7 @@
 	Projectile: Bullet
 		Speed: 682
 		Image: 120MM
+		Shadow: True
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 40
