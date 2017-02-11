@@ -65,8 +65,6 @@ cp thirdparty/download/Eluant* packaging/built
 
 # GeoIP database access
 cp thirdparty/download/MaxMind.Db.dll packaging/built
-cp thirdparty/download/MaxMind.GeoIP2.dll packaging/built
-cp thirdparty/download/Newtonsoft.Json.dll packaging/built
 
 # global chat
 cp thirdparty/download/SmarIrc4net.dll packaging/built

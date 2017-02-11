@@ -54,10 +54,6 @@
     <Reference Include="StyleCop">
       <HintPath>..\thirdparty\download\StyleCop.dll</HintPath>
     </Reference>
-    <Reference Include="MaxMind.GeoIP2">
-      <HintPath>..\thirdparty\download\MaxMind.GeoIP2.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="ICSharpCode.SharpZipLib">
       <HintPath>..\thirdparty\download\ICSharpCode.SharpZipLib.dll</HintPath>
       <Private>False</Private>
