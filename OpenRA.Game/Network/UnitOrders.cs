@@ -135,17 +135,6 @@ namespace OpenRA.Network
 						var mod = Game.ModData.Manifest;
 						var request = HandshakeRequest.Deserialize(order.TargetString);
 
-						Manifest serverMod;
-						if (request.Mod != mod.Id &&
-							Game.Mods.TryGetValue(request.Mod, out serverMod) &&
-							serverMod.Metadata.Version == request.Version)
-						{
-							// The ConnectionFailedLogic will prompt the user to switch mods
-							orderManager.ServerMod = serverMod;
-							orderManager.Connection.Dispose();
-							break;
-						}
-
 						var externalKey = ExternalMod.MakeKey(request.Mod, request.Version);
 						ExternalMod external;
 						if ((request.Mod != mod.Id || request.Version != mod.Metadata.Version)

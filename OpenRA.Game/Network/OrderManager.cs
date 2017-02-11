@@ -34,7 +34,6 @@ namespace OpenRA.Network
 
 		public string ServerError = "Server is not responding";
 		public bool AuthenticationFailed = false;
-		public Manifest ServerMod = null;
 		public ExternalMod ServerExternalMod = null;
 
 		public int NetFrameNumber { get; private set; }
