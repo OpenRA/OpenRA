@@ -14,6 +14,7 @@ AttackDelays =
 }
 
 AtreidesInfantryTypes = { "light_inf" }
+AtreidesVehicleTypes = { "trike" }
 
 AttackOnGoing = false
 HoldProduction = false
@@ -116,7 +117,30 @@ ProduceInfantry = function()
 	end)
 end
 
+ProduceVehicles = function()
+	if ALightFactory.IsDead then
+		return
+	end
+
+	if HoldProduction then
+		Trigger.AfterDelay(DateTime.Minutes(1), ProduceVehicles)
+		return
+	end
+
+	local delay = Utils.RandomInteger(AttackDelays[Map.LobbyOption("difficulty")][1], AttackDelays[Map.LobbyOption("difficulty")][2] + 1)
+	local toBuild = { Utils.Random(AtreidesVehicleTypes) }
+	atreides.Build(toBuild, function(unit)
+		IdlingUnits[#IdlingUnits + 1] = unit[1]
+		Trigger.AfterDelay(delay, ProduceVehicles)
+
+		if #IdlingUnits >= (AttackGroupSize[Map.LobbyOption("difficulty")] * 2.5) then
+			SendAttack()
+		end
+	end)
+end
+
 ActivateAI = function()
 	InitAIUnits()
 	ProduceInfantry()
+	ProduceVehicles()
 end

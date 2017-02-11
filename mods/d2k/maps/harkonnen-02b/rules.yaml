@@ -1,0 +1,48 @@
+Player:
+	PlayerResources:
+		DefaultCash: 5000
+
+World:
+	LuaScript:
+		Scripts: harkonnen02b.lua, harkonnen02b-AI.lua
+	MissionData:
+		Briefing: Strengthen your forces at our mining camp in the Imperial Basin. We must punish the Atreides for their insolence. Teach them the consequences of opposing House Harkonnen.\n\nOur radar will help you find your targets.\n
+		BriefingVideo: H_BR02_E.VQA
+	MapOptions:
+		TechLevel: low
+	ScriptLobbyDropdown@difficulty:
+		ID: difficulty
+		Label: Difficulty
+		Values:
+			easy: Easy
+			normal: Normal
+			hard: Hard
+		Default: easy
+
+carryall.reinforce:
+	Cargo:
+		MaxWeight: 10
+
+construction_yard:
+	Production:
+		Produces: Building
+
+concreteb:
+	Buildable:
+		Prerequisites: ~disabled
+
+heavy_factory:
+	Buildable:
+		Prerequisites: ~disabled
+
+medium_gun_turret:
+	Buildable:
+		Prerequisites: ~disabled
+
+wall:
+	Buildable:
+		Prerequisites: ~disabled
+
+outpost:
+	Buildable:
+		Prerequisites: barracks
