@@ -14,7 +14,6 @@ Packages:
 	~^Content/d2k/v2/Music
 	.
 	$d2k: d2k
-	$ra: ra
 	$cnc: cnc
 	./mods/common: common
 
