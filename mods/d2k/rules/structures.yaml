@@ -610,9 +610,6 @@ wall:
 		BuildDuration: 54
 		BuildDurationModifier: 40
 		Description: Stop units and blocks enemy fire.
-	SoundOnDamageTransition:
-		DamagedSounds:
-		DestroyedSounds: EXPLSML4.WAV
 	Valued:
 		Cost: 20
 	CustomSellValue:
@@ -649,6 +646,9 @@ wall:
 	Sellable:
 		SellSounds: CHUNG.WAV
 	Guardable:
+	Explodes:
+		Weapon: WallExplode
+		EmptyWeapon: WallExplode
 	ThrowsShrapnel:
 		Weapons: Debris, Debris3
 		Pieces: 2, 2

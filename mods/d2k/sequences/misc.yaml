@@ -52,6 +52,11 @@ explosion:
 		Start: 430
 		Length: 12
 		Tick: 1600
+	wall_explosion: DATA.R8
+		Start: 4130
+		Length: 8
+		Tick: 120
+		BlendMode: Alpha
 
 large_trail:
 	idle: DATA.R8

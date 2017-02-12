@@ -160,6 +160,11 @@ BuildingExplode:
 	Warhead@1Eff: CreateEffect
 		Explosions: building, self_destruct, large_explosion
 
+WallExplode:
+	Warhead@1Eff: CreateEffect
+		Explosions: wall_explosion
+		ImpactSounds: EXPLHG1.WAV
+
 grenade:
 	ReloadDelay: 50
 	Range: 4c0
