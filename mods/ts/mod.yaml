@@ -15,7 +15,6 @@ Packages:
 	./mods/common: common
 	$ra: ra
 	$cnc: cnc
-	$d2k: d2k
 
 # Tiberian Sun
 	~scores.mix
@@ -140,7 +139,7 @@ ChromeLayout:
 	ra|chrome/ingame-infobriefing.yaml
 	ra|chrome/ingame-infoobjectives.yaml
 	ra|chrome/ingame-infostats.yaml
-	d2k|chrome/ingame-observer.yaml
+	ts|chrome/ingame-observer.yaml
 	ts|chrome/ingame-observerstats.yaml
 	ts|chrome/ingame-player.yaml
 	ra|chrome/ingame-perf.yaml
