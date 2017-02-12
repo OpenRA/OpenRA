@@ -394,6 +394,10 @@ stealth_raider:
 		CloakSound: STEALTH1.WAV
 		UncloakSound: STEALTH2.WAV
 		IsPlayerPalette: true
+		RequiresCondition: !uncloak
+	GrantConditionOnDamageState@UNCLOAK:
+		Condition: uncloak
+		ValidDamageStates: Critical
 	AutoTarget:
 		InitialStance: HoldFire
 		InitialStanceAI: ReturnFire

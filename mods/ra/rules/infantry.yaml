@@ -508,6 +508,10 @@ HIJACKER:
 		UncloakOn: Attack, Unload, Infiltrate, Demolish, Move
 		CloakTypes: Cloak, Hijacker
 		IsPlayerPalette: true
+		RequiresCondition: !uncloak
+	GrantConditionOnDamageState@UNCLOAK:
+		Condition: uncloak
+		ValidDamageStates: Critical
 	Mobile:
 		Speed: 85
 
@@ -589,6 +593,10 @@ SNIPER:
 		UncloakSound:
 		UncloakOn: Attack, Unload, Infiltrate, Demolish, Move
 		IsPlayerPalette: true
+		RequiresCondition: !uncloak
+	GrantConditionOnDamageState@UNCLOAK:
+		Condition: uncloak
+		ValidDamageStates: Critical
 	DetectCloaked:
 		CloakTypes: Cloak, Hijacker
 		Range: 6c0

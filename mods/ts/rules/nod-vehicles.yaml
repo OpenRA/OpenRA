@@ -396,6 +396,10 @@ STNK:
 		UncloakSound: cloak5.aud
 		IsPlayerPalette: true
 		UncloakOn: Attack, Unload, Infiltrate, Demolish, Damage
+		RequiresCondition: !uncloak
+	GrantConditionOnDamageState@UNCLOAK:
+		Condition: uncloak
+		ValidDamageStates: Critical
 	Armament:
 		Weapon: Dragon
 		LocalOffset: 213,43,298, 213,-43,298

@@ -547,6 +547,10 @@ STNK:
 		CloakDelay: 90
 		CloakSound: trans1.aud
 		UncloakSound: trans1.aud
+		RequiresCondition: !uncloak
+	GrantConditionOnDamageState@UNCLOAK:
+		Condition: uncloak
+		ValidDamageStates: Critical
 	Armament:
 		Weapon: 227mm.stnk
 		LocalOffset: 213,43,128, 213,-43,128

@@ -626,6 +626,10 @@ HBOX:
 		InitialDelay: 125
 		CloakDelay: 60
 		IsPlayerPalette: true
+		RequiresCondition: !uncloak
+	GrantConditionOnDamageState@UNCLOAK:
+		Condition: uncloak
+		ValidDamageStates: Critical
 	Turreted:
 		TurnSpeed: 255
 	-QuantizeFacingsFromSequence:
