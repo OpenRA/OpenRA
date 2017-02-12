@@ -29,7 +29,6 @@ Fremen_S:
 	Report: FREMODD1.WAV
 	Warhead@2Eff: CreateEffect
 		Explosions: small_explosion
-		ImpactSounds: EXPLSML2.WAV
 
 M_LMG:
 	Inherits: ^MG
