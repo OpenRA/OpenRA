@@ -2,8 +2,7 @@
 	ReloadDelay: 30
 	Range: 2c512
 	Report: MGUN2.WAV
-	Projectile: Bullet
-		Speed: 1c256
+	Projectile: InstantHit
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Falloff: 100, 50, 25, 0
