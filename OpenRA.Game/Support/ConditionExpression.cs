@@ -103,7 +103,7 @@ namespace OpenRA.Support
 					default:
 					{
 						// Ignore whitespace
-						if (char.IsWhiteSpace(expression[i]))
+						if (CharClassOf(expression[i]) == CharClass.Whitespace)
 							break;
 
 						var token = ParseSymbol(expression, ref i);
@@ -163,6 +163,69 @@ namespace OpenRA.Support
 			postfix = ToPostfix(tokens).ToArray();
 		}
 
+		enum CharClass { Whitespace, Operator, Mixed, Id, Digit }
+
+		static CharClass CharClassOf(char c)
+		{
+			switch (c)
+			{
+				case '~':
+				case '!':
+				case '%':
+				case '^':
+				case '&':
+				case '*':
+				case '(':
+				case ')':
+				case '+':
+				case '=':
+				case '[':
+				case ']':
+				case '{':
+				case '}':
+				case '|':
+				case ':':
+				case ';':
+				case '\'':
+				case '"':
+				case '<':
+				case '>':
+				case '?':
+				case ',':
+				case '/':
+					return CharClass.Operator;
+
+				case '.':
+				case '$':
+				case '-':
+				case '@':
+					return CharClass.Mixed;
+
+				case '0':
+				case '1':
+				case '2':
+				case '3':
+				case '4':
+				case '5':
+				case '6':
+				case '7':
+				case '8':
+				case '9':
+					return CharClass.Digit;
+
+				// Fast-track normal whitespace
+				case ' ':
+				case '\t':
+				case '\n':
+				case '\r':
+					return CharClass.Whitespace;
+
+				// Should other whitespace be tested?
+				default:
+					return char.IsWhiteSpace(c) ? CharClass.Whitespace : CharClass.Id;
+			}
+		}
+
 		static Token ParseSymbol(string expression, ref int i)
 		{
 			var start = i;
@@ -215,18 +278,18 @@ namespace OpenRA.Support
 				}
 			}
 
-			var c = expression[start];
+			var cc = CharClassOf(expression[start]);
 
 			// Scan forwards until we find an non-digit character
-			if (c == '-' || char.IsDigit(expression[i]))
+			if (expression[start] == '-' || cc == CharClass.Digit)
 			{
 				i++;
 				for (; i < expression.Length; i++)
 				{
-					c = expression[i];
-					if (!char.IsDigit(c))
+					cc = CharClassOf(expression[i]);
+					if (cc != CharClass.Digit)
 					{
-						if (!char.IsWhiteSpace(c) && c != '(' && c != ')' && c != '!' && c != '&' && c != '|' && c != '=' && c != '+')
+						if (cc != CharClass.Whitespace && cc != CharClass.Operator)
 							throw new InvalidDataException("Number and variable merged at index {0}".F(start));
 
 						// Put the bad character back for the next parse attempt
@@ -238,11 +301,14 @@ namespace OpenRA.Support
 				return new NumberToken(start, expression.Substring(start));
 			}
 
+			if (cc != CharClass.Id)
+				throw new InvalidDataException("Invalid character at index {0}".F(start));
+
 			// Scan forwards until we find an invalid name character
 			for (; i < expression.Length; i++)
 			{
-				c = expression[i];
-				if (char.IsWhiteSpace(c) || c == '(' || c == ')' || c == '!' || c == '&' || c == '|' || c == '=')
+				cc = CharClassOf(expression[i]);
+				if (cc == CharClass.Whitespace || cc == CharClass.Operator)
 				{
 					// Put the bad character back for the next parse attempt
 					i--;
