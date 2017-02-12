@@ -69,6 +69,8 @@ trooper:
 	Armament:
 		Weapon: Bazooka
 		LocalOffset: 128,0,256
+	TakeCover:
+		ProneOffset: 324,0,-204
 	AttackFrontal:
 	WithInfantryBody:
 		DefaultAttackSequence: shoot
@@ -175,6 +177,8 @@ grenadier:
 		Weapon: grenade
 		LocalOffset: 192,0,224
 		FireDelay: 3
+	TakeCover:
+		ProneOffset: 96,100,-64
 	AttackFrontal:
 	WithInfantryBody:
 		DefaultAttackSequence: throw

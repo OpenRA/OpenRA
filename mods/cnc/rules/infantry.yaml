@@ -40,6 +40,8 @@ E2:
 		Weapon: Grenade
 		LocalOffset: 0,0,427
 		FireDelay: 15
+	TakeCover:
+		ProneOffset: 300,0,-227
 	AttackFrontal:
 	WithInfantryBody:
 		DefaultAttackSequence: throw
@@ -69,6 +71,8 @@ E3:
 		Weapon: Rockets
 		LocalOffset: 256,43,341
 		FireDelay: 5
+	TakeCover:
+		ProneOffset: 180,0,-200
 	AttackFrontal:
 	WithInfantryBody:
 		DefaultAttackSequence: shoot
@@ -94,6 +98,8 @@ E4:
 		LocalOffset: 341,0,256
 		FireDelay: 3
 		MuzzleSequence: muzzle
+	TakeCover:
+		ProneOffset: 190,0,-198
 	AttackFrontal:
 	WithMuzzleOverlay:
 	WithInfantryBody:
@@ -125,6 +131,8 @@ E5:
 		LocalOffset: 341,0,256
 		FireDelay: 3
 		MuzzleSequence: muzzle
+	TakeCover:
+		ProneOffset: 190,0,-190
 	AttackFrontal:
 	WithMuzzleOverlay:
 	-DamagedByTerrain:

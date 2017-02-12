@@ -18,6 +18,8 @@ E2:
 		Weapon: Grenade
 		LocalOffset: 0,0,555
 		FireDelay: 5
+	TakeCover:
+		ProneOffset: 160,128,-555
 	AttackFrontal:
 		Voice: Attack
 	WithInfantryBody:
@@ -192,6 +194,8 @@ GHOST:
 	Armament:
 		Weapon: LtRail
 		LocalOffset: 85,0,384
+	TakeCover:
+		ProneOffset: 256,32,-384
 	Crushable:
 		CrushSound: squishy2.aud
 	AttackFrontal:

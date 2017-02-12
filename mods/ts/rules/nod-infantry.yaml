@@ -19,6 +19,8 @@ E3:
 	Armament@PRIMARY:
 		Weapon: Bazooka
 		LocalOffset: 252,0,684
+	TakeCover:
+		ProneOffset: 52,64,-652
 	AttackFrontal:
 		Voice: Attack
 	WithInfantryBody:
