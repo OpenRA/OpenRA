@@ -46,9 +46,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{ "id", Pair.New("Anonymous ID", Game.Settings.Debug.UUID) },
 				{ "platform", Pair.New("OS Type", Platform.CurrentPlatform.ToString()) },
 				{ "os", Pair.New("OS Version", Environment.OSVersion.ToString()) },
-				{ "x64", Pair.New("64bit OS", Environment.Is64BitOperatingSystem.ToString()) },
+				{ "x64", Pair.New("OS is 64 bit", Environment.Is64BitOperatingSystem.ToString()) },
 				{ "runtime", Pair.New(".NET Runtime", Platform.RuntimeVersion) },
 				{ "gl", Pair.New("OpenGL Version", Game.Renderer.GLVersion) },
+				{ "windowsize", Pair.New("Window Size", "{0}x{1}".F(Game.Renderer.Resolution.Width, Game.Renderer.Resolution.Height)) },
+				{ "windowscale", Pair.New("Window Scale", Game.Renderer.WindowScale.ToString("F2")) },
 				{ "lang", Pair.New("System Language", lang) }
 			};
 		}
@@ -290,7 +292,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 						// Append system profile data if the player has opted in
 						if (Game.Settings.Debug.SendSystemInformation)
-							newsURL += "&" + GetSystemInformation()
+							newsURL += "&sysinfoversion={0}&".F(SystemInformationVersion)
+								+ GetSystemInformation()
 								.Select(kv => kv.Key + "=" + Uri.EscapeUriString(kv.Value.Second))
 								.JoinWith("&");
 

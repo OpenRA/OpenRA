@@ -184,6 +184,7 @@ namespace OpenRA
 		}
 
 		public Size Resolution { get { return Device.WindowSize; } }
+		public float WindowScale { get { return Device.WindowScale; } }
 
 		public interface IBatchRenderer { void Flush(); }
 
