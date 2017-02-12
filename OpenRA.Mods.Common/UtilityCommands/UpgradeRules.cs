@@ -18,7 +18,6 @@ using System.Linq;
 using System.Text;
 using OpenRA.FileSystem;
 using OpenRA.Graphics;
-using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.UtilityCommands
 {
@@ -828,6 +827,27 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 					if (node.Key.StartsWith("WithChargeAnimation", StringComparison.Ordinal))
 						RenameNodeKey(node, "WithTeslaChargeAnimation");
+				}
+
+				// Default values for ArrowSequence, CircleSequence and ClockSequence were changed (to null)
+				if (engineVersion < 20170212)
+				{
+					var supportPowerNodes = new[] { "AirstrikePower", "ParatroopersPower", "NukePower" };
+
+					if (supportPowerNodes.Any(s => node.Key.StartsWith(s, StringComparison.Ordinal)))
+					{
+						var arrow = node.Value.Nodes.FirstOrDefault(n => n.Key == "ArrowSequence");
+						if (arrow == null)
+							node.Value.Nodes.Add(new MiniYamlNode("ArrowSequence", "arrow"));
+
+						var circle = node.Value.Nodes.FirstOrDefault(n => n.Key == "CircleSequence");
+						if (circle == null)
+							node.Value.Nodes.Add(new MiniYamlNode("CircleSequence", "circles"));
+
+						var clock = node.Value.Nodes.FirstOrDefault(n => n.Key == "ClockSequence");
+						if (clock == null)
+							node.Value.Nodes.Add(new MiniYamlNode("ClockSequence", "clock"));
+					}
 				}
 
 				UpgradeActorRules(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);
