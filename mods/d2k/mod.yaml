@@ -68,46 +68,46 @@ Assemblies:
 	d2k|OpenRA.Mods.D2k.dll
 
 ChromeLayout:
-	ra|chrome/ingame.yaml
-	ra|chrome/ingame-chat.yaml
-	ra|chrome/ingame-fmvplayer.yaml
+	common|chrome/ingame.yaml
+	common|chrome/ingame-chat.yaml
+	common|chrome/ingame-fmvplayer.yaml
 	d2k|chrome/ingame-menu.yaml
-	ra|chrome/ingame-info.yaml
-	ra|chrome/ingame-infoscripterror.yaml
-	ra|chrome/ingame-infobriefing.yaml
-	ra|chrome/ingame-infoobjectives.yaml
+	common|chrome/ingame-info.yaml
+	common|chrome/ingame-infoscripterror.yaml
+	common|chrome/ingame-infobriefing.yaml
+	common|chrome/ingame-infoobjectives.yaml
 	d2k|chrome/ingame-infostats.yaml
 	d2k|chrome/ingame-observer.yaml
-	ra|chrome/ingame-observerstats.yaml
+	common|chrome/ingame-observerstats.yaml
 	d2k|chrome/ingame-player.yaml
-	ra|chrome/ingame-perf.yaml
-	ra|chrome/ingame-debug.yaml
+	common|chrome/ingame-perf.yaml
+	common|chrome/ingame-debug.yaml
 	d2k|chrome/mainmenu.yaml
-	ra|chrome/settings.yaml
-	ra|chrome/credits.yaml
-	ra|chrome/lobby.yaml
-	ra|chrome/lobby-mappreview.yaml
+	common|chrome/settings.yaml
+	common|chrome/credits.yaml
+	common|chrome/lobby.yaml
+	common|chrome/lobby-mappreview.yaml
 	d2k|chrome/lobby-players.yaml
 	d2k|chrome/lobby-options.yaml
-	ra|chrome/lobby-music.yaml
-	ra|chrome/lobby-kickdialogs.yaml
-	ra|chrome/lobby-globalchat.yaml
-	ra|chrome/color-picker.yaml
-	ra|chrome/map-chooser.yaml
-	ra|chrome/multiplayer.yaml
-	ra|chrome/multiplayer-browser.yaml
-	ra|chrome/multiplayer-createserver.yaml
-	ra|chrome/multiplayer-directconnect.yaml
-	ra|chrome/multiplayer-globalchat.yaml
-	ra|chrome/connection.yaml
+	common|chrome/lobby-music.yaml
+	common|chrome/lobby-kickdialogs.yaml
+	common|chrome/lobby-globalchat.yaml
+	common|chrome/color-picker.yaml
+	common|chrome/map-chooser.yaml
+	common|chrome/multiplayer.yaml
+	common|chrome/multiplayer-browser.yaml
+	common|chrome/multiplayer-createserver.yaml
+	common|chrome/multiplayer-directconnect.yaml
+	common|chrome/multiplayer-globalchat.yaml
+	common|chrome/connection.yaml
 	d2k|chrome/dropdowns.yaml
-	ra|chrome/musicplayer.yaml
+	common|chrome/musicplayer.yaml
 	d2k|chrome/tooltips.yaml
-	ra|chrome/assetbrowser.yaml
+	common|chrome/assetbrowser.yaml
 	d2k|chrome/missionbrowser.yaml
-	ra|chrome/confirmation-dialogs.yaml
-	ra|chrome/editor.yaml
-	ra|chrome/replaybrowser.yaml
+	common|chrome/confirmation-dialogs.yaml
+	common|chrome/editor.yaml
+	common|chrome/replaybrowser.yaml
 
 Weapons:
 	d2k|weapons/debris.yaml
