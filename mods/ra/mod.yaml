@@ -80,7 +80,6 @@ Chrome:
 
 Assemblies:
 	common|OpenRA.Mods.Common.dll
-	ra|OpenRA.Mods.RA.dll
 	cnc|OpenRA.Mods.Cnc.dll
 
 ChromeLayout:

@@ -146,15 +146,6 @@ test_dll: $(test_dll_TARGET)
 STD_MOD_LIBS	= $(game_TARGET)
 STD_MOD_DEPS	= $(STD_MOD_LIBS)
 
-# Red Alert
-mod_ra_SRCS := $(shell find OpenRA.Mods.RA/ -iname '*.cs')
-mod_ra_TARGET = mods/ra/OpenRA.Mods.RA.dll
-mod_ra_KIND = library
-mod_ra_DEPS = $(STD_MOD_DEPS) $(mod_common_TARGET)
-mod_ra_LIBS = $(COMMON_LIBS) $(STD_MOD_LIBS) $(mod_common_TARGET)
-PROGRAMS += mod_ra
-mod_ra: $(mod_ra_TARGET)
-
 # Command and Conquer
 mod_cnc_SRCS := $(shell find OpenRA.Mods.Cnc/ -iname '*.cs')
 mod_cnc_TARGET = mods/cnc/OpenRA.Mods.Cnc.dll
@@ -195,9 +186,6 @@ check: utility mods
 	@echo
 	@echo "Checking for code style violations in OpenRA.Mods.Common..."
 	@mono --debug OpenRA.Utility.exe ra --check-code-style OpenRA.Mods.Common
-	@echo
-	@echo "Checking for code style violations in OpenRA.Mods.RA..."
-	@mono --debug OpenRA.Utility.exe ra --check-code-style OpenRA.Mods.RA
 	@echo
 	@echo "Checking for code style violations in OpenRA.Mods.Cnc..."
 	@mono --debug OpenRA.Utility.exe ra --check-code-style OpenRA.Mods.Cnc
@@ -313,7 +301,7 @@ tools: gamemonitor
 
 package: all-dependencies core tools docs version
 
-mods: mod_common mod_ra mod_cnc mod_d2k
+mods: mod_common mod_cnc mod_d2k
 
 all: dependencies core tools
 
@@ -378,8 +366,6 @@ install-core: default
 	@$(INSTALL_PROGRAM) $(mod_common_TARGET) "$(DATA_INSTALL_DIR)/mods/common"
 	@$(CP_R) mods/cnc "$(DATA_INSTALL_DIR)/mods/"
 	@$(INSTALL_PROGRAM) $(mod_cnc_TARGET) "$(DATA_INSTALL_DIR)/mods/cnc"
-	@$(CP_R) mods/ra "$(DATA_INSTALL_DIR)/mods/"
-	@$(INSTALL_PROGRAM) $(mod_ra_TARGET) "$(DATA_INSTALL_DIR)/mods/ra"
 	@$(CP_R) mods/d2k "$(DATA_INSTALL_DIR)/mods/"
 	@$(INSTALL_PROGRAM) $(mod_d2k_TARGET) "$(DATA_INSTALL_DIR)/mods/d2k"
 	@$(CP_R) mods/modchooser "$(DATA_INSTALL_DIR)/mods/"
