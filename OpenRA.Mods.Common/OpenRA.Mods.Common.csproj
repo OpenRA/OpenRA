@@ -245,6 +245,8 @@
     <Compile Include="Scripting\Properties\TransformProperties.cs" />
     <Compile Include="Scripting\Properties\TransportProperties.cs" />
     <Compile Include="Scripting\Properties\ConditionProperties.cs" />
+    <Compile Include="Scripting\Properties\ParadropProperties.cs" />
+    <Compile Include="Scripting\Properties\ParatroopersProperties.cs" />
     <Compile Include="TraitsInterfaces.cs" />
     <Compile Include="Traits\AcceptsSupplies.cs" />
     <Compile Include="Traits\Air\Aircraft.cs" />
@@ -480,6 +482,7 @@
     <Compile Include="Traits\SupportPowers\AirstrikePower.cs" />
     <Compile Include="Traits\SupportPowers\GrantExternalConditionPower.cs" />
     <Compile Include="Traits\SupportPowers\NukePower.cs" />
+    <Compile Include="Traits\SupportPowers\ParatroopersPower.cs" />
     <Compile Include="Traits\SupportPowers\SupportPower.cs" />
     <Compile Include="Traits\SupportPowers\SupportPowerManager.cs" />
     <Compile Include="Traits\SupportPowers\SpawnActorPower.cs" />
