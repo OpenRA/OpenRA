@@ -101,6 +101,12 @@ namespace OpenRA.Mods.Common.Scripting
 			return Context.World.Map.CenterOfCell(cell);
 		}
 
+		[Desc("Returns the type of the terrain at the target cell.")]
+		public string TerrainType(CPos cell)
+		{
+			return Context.World.Map.GetTerrainInfo(cell).Type;
+		}
+
 		[Desc("Returns true if there is only one human player.")]
 		public bool IsSinglePlayer { get { return Context.World.LobbyInfo.IsSinglePlayer; } }
 
