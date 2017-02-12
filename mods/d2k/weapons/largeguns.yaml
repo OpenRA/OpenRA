@@ -54,7 +54,6 @@ DevBullet:
 	Report: TANKHVY1.WAV
 	Projectile: Bullet
 		Speed: 281
-		Blockable: true
 		Inaccuracy: 0
 		Image: doubleblastbullet
 	Warhead@1Dam: SpreadDamage
