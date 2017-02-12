@@ -13,8 +13,6 @@ Packages:
 	.
 	$ts: ts
 	./mods/common: common
-	$ra: ra
-	$cnc: cnc
 
 # Tiberian Sun
 	~scores.mix
@@ -126,7 +124,7 @@ Chrome:
 
 Assemblies:
 	common|OpenRA.Mods.Common.dll
-	cnc|OpenRA.Mods.Cnc.dll
+	common|OpenRA.Mods.Cnc.dll
 
 ChromeLayout:
 	common|chrome/ingame.yaml

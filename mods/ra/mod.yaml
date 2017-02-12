@@ -14,7 +14,6 @@ Packages:
 	~^Content/ra/v2/movies
 	.
 	$ra: ra
-	$cnc: cnc
 	./mods/common: common
 	~main.mix
 	~conquer.mix
@@ -80,7 +79,7 @@ Chrome:
 
 Assemblies:
 	common|OpenRA.Mods.Common.dll
-	cnc|OpenRA.Mods.Cnc.dll
+	common|OpenRA.Mods.Cnc.dll
 
 ChromeLayout:
 	common|chrome/ingame.yaml

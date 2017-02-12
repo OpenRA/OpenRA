@@ -165,21 +165,21 @@
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Target Name="AfterBuild">
-    <MakeDir Directories="$(SolutionDir)mods/cnc/"/>
+    <MakeDir Directories="$(SolutionDir)mods/common/"/>
     <Copy
       SourceFiles="$(TargetPath)"
-      DestinationFolder="$(SolutionDir)mods/cnc/"/>
+      DestinationFolder="$(SolutionDir)mods/common/"/>
     <!--
         We need to copy OpenRA.Mods.Cnc.pdb (not `.dll.pdb`). This is only necessary on Windows.
         Mono outputs a `.dll.mdb` so we can just append `.mdb` directly.
     -->
     <Copy
       SourceFiles="$(TargetDir)$(TargetName).pdb"
-      DestinationFolder="$(SolutionDir)mods/cnc/"
+      DestinationFolder="$(SolutionDir)mods/common/"
       Condition="'$(OS)' == 'Windows_NT'"/>
     <Copy
       SourceFiles="$(TargetPath).mdb"
-      DestinationFolder="$(SolutionDir)mods/cnc/"
+      DestinationFolder="$(SolutionDir)mods/common/"
       Condition="'$(OS)' == 'Unix'"/>
     <!-- Uncomment these lines when debugging or adding to this target
     <Message Text="DEBUG OS:                     $(OS)"/>
