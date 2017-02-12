@@ -277,10 +277,7 @@ SpiceExplosion:
 BloomExplosion:
 	Report: EXPLMD1.WAV
 	Range: 0c8
-	Projectile: Bullet
-		Speed: 1c0
-		Blockable: false
-		Image: null
+	Projectile: InstantHit
 	Warhead@1Dam: SpreadDamage
 		Spread: 320
 		Falloff: 100, 60, 30, 15, 0
