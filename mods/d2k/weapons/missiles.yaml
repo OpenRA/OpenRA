@@ -30,7 +30,6 @@
 		InvalidTargets: Vehicle, Structure
 	Warhead@3Eff: CreateEffect
 		Explosions: tiny_explosion
-		ImpactSounds: EXPLSML1.WAV
 
 ^Missile:
 	Inherits: ^Rocket
@@ -63,6 +62,7 @@
 			harvester: 50
 	Warhead@3Eff: CreateEffect
 		Explosions: small_explosion
+		ImpactSounds: EXPLSML1.WAV
 
 Bazooka:
 	Inherits: ^Rocket
@@ -146,6 +146,7 @@ DeviatorMissile:
 		Explosions: deviator
 		ExplosionPalette: deviatorgas
 		UsePlayerPalette: true
+		-ImpactSounds:
 	Warhead@4OwnerChange: ChangeOwner
 		Range: 512
 		Duration: 375
