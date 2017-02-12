@@ -171,18 +171,6 @@ namespace OpenRA.Support
 			}
 		}
 
-		class BinaryOperationToken : Token
-		{
-			public BinaryOperationToken(TokenType type, int index) : base(type, index) { }
-		}
-
-		class UnaryOperationToken : Token
-		{
-			public UnaryOperationToken(TokenType type, int index) : base(type, index) { }
-		}
-
-		class OpenParenToken : Token { public OpenParenToken(int index) : base(TokenType.OpenParen, index) { } }
-		class CloseParenToken : Token { public CloseParenToken(int index) : base(TokenType.CloseParen, index) { } }
 		class VariableToken : Token
 		{
 			public readonly string Name;
@@ -207,12 +195,6 @@ namespace OpenRA.Support
 			}
 		}
 
-		class AndToken : BinaryOperationToken { public AndToken(int index) : base(TokenType.And, index) { } }
-		class OrToken : BinaryOperationToken { public OrToken(int index) : base(TokenType.Or, index) { } }
-		class EqualsToken : BinaryOperationToken { public EqualsToken(int index) : base(TokenType.Equals, index) { } }
-		class NotEqualsToken : BinaryOperationToken { public NotEqualsToken(int index) : base(TokenType.NotEquals, index) { } }
-		class NotToken : UnaryOperationToken { public NotToken(int index) : base(TokenType.Not, index) { } }
-
 		public ConditionExpression(string expression)
 		{
 			Expression = expression;
@@ -225,14 +207,14 @@ namespace OpenRA.Support
 				{
 					case '(':
 					{
-						tokens.Add(new OpenParenToken(i));
+						tokens.Add(new Token(TokenType.OpenParen, i));
 						openParens++;
 						break;
 					}
 
 					case ')':
 					{
-						tokens.Add(new CloseParenToken(i));
+						tokens.Add(new Token(TokenType.CloseParen, i));
 						if (++closeParens > openParens)
 							throw new InvalidDataException("Unmatched closing parenthesis at index {0}".F(i));
 
@@ -248,9 +230,8 @@ namespace OpenRA.Support
 						var token = ParseSymbol(expression, ref i);
 						tokens.Add(token);
 
-						var variable = token as VariableToken;
-						if (variable != null)
-							variables.Add(variable.Symbol);
+						if (token.Type == TokenType.Variable)
+							variables.Add(token.Symbol);
 
 						break;
 					}
@@ -264,39 +245,31 @@ namespace OpenRA.Support
 			if (closeParens != openParens)
 				throw new InvalidDataException("Mismatched opening and closing parentheses");
 
+			// Expressions can't start with a binary or unary postfix operation or closer
+			if (tokens[0].LeftOperand)
+				throw new InvalidDataException("Missing value or sub-expression at beginning for `{0}` operator".F(tokens[0].Symbol));
+
 			for (var i = 0; i < tokens.Count - 1; i++)
 			{
-				// Unary tokens must be followed by a variable, number, another unary token, or an opening parenthesis
-				if (tokens[i] is UnaryOperationToken && !(tokens[i + 1] is VariableToken || tokens[i + 1] is NumberToken
-				        || tokens[i + 1] is UnaryOperationToken || tokens[i + 1] is OpenParenToken))
-					throw new InvalidDataException("Unexpected token `{0}` at index {1}".F(tokens[i].Symbol, tokens[i].Index));
-
 				// Disallow empty parentheses
-				if (tokens[i] is OpenParenToken && tokens[i + 1] is CloseParenToken)
+				if (tokens[i].Opens != Grouping.None && tokens[i + 1].Closes != Grouping.None)
 					throw new InvalidDataException("Empty parenthesis at index {0}".F(tokens[i].Index));
 
-				// A variable or number must be followed by a binary operation or by a closing parenthesis
-				if ((tokens[i] is VariableToken || tokens[i] is NumberToken) && !(tokens[i + 1] is BinaryOperationToken || tokens[i + 1] is CloseParenToken))
-					throw new InvalidDataException("Missing binary operation at index {0}".F(tokens[i + 1].Index));
+				// Exactly one of two consective tokens must take the other's sub-expression evaluation as an operand
+				if (tokens[i].RightOperand == tokens[i + 1].LeftOperand)
+				{
+					if (tokens[i].RightOperand)
+						throw new InvalidDataException(
+							"Missing value or sub-expression or there is an extra operator `{0}` at index {1} or `{2}` at index {3}".F(
+								tokens[i].Symbol, tokens[i].Index, tokens[i + 1].Symbol, tokens[i + 1].Index));
+					throw new InvalidDataException("Missing binary operation before `{0}` at index {1}".F(
+						tokens[i + 1].Symbol, tokens[i + 1].Index));
+				}
 			}
 
-			// Expressions can't start with an operation
-			if (tokens[0] is BinaryOperationToken)
-				throw new InvalidDataException("Unexpected token `{0}` at index `{1}`".F(tokens[0].Symbol, tokens[0].Index));
-
-			// Expressions can't end with a binary or unary operation
-			if (tokens[tokens.Count - 1] is BinaryOperationToken || tokens[tokens.Count - 1] is UnaryOperationToken)
-				throw new InvalidDataException("Unexpected token `{0}` at index `{1}`".F(tokens[tokens.Count - 1].Symbol, tokens[tokens.Count - 1].Index));
-
-			// Binary operations must be preceeded by a closing paren or a variable
-			// Binary operations must be followed by an opening paren, a variable, or a unary operation
-			for (var i = 1; i < tokens.Count - 1; i++)
-			{
-				if (tokens[i] is BinaryOperationToken && (
-					!(tokens[i - 1] is CloseParenToken || tokens[i - 1] is VariableToken || tokens[i - 1] is NumberToken) ||
-					!(tokens[i + 1] is OpenParenToken || tokens[i + 1] is VariableToken || tokens[i + 1] is NumberToken || tokens[i + 1] is UnaryOperationToken)))
-					throw new InvalidDataException("Unexpected token `{0}` at index `{1}`".F(tokens[i].Symbol, tokens[i].Index));
-			}
+			// Expressions can't end with a binary or unary prefix operation
+			if (tokens[tokens.Count - 1].RightOperand)
+				throw new InvalidDataException("Missing value or sub-expression at end for `{0}` operator".F(tokens[tokens.Count - 1].Symbol));
 
 			// Convert to postfix (discarding parentheses) ready for evaluation
 			postfix = ToPostfix(tokens).ToArray();
@@ -377,10 +350,10 @@ namespace OpenRA.Support
 					if (i < expression.Length - 1 && expression[start + 1] == '=')
 					{
 						i++;
-						return new NotEqualsToken(start);
+						return new Token(TokenType.NotEquals, start);
 					}
 
-					return new NotToken(start);
+					return new Token(TokenType.Not, start);
 				}
 
 				case '=':
@@ -388,10 +361,10 @@ namespace OpenRA.Support
 					if (i < expression.Length - 1 && expression[start + 1] == '=')
 					{
 						i++;
-						return new EqualsToken(start);
+						return new Token(TokenType.Equals, start);
 					}
 
-					throw new InvalidDataException("Unexpected character '=' at index {0}".F(start));
+					throw new InvalidDataException("Unexpected character '=' at index {0} - should it be `==`?".F(start));
 				}
 
 				case '&':
@@ -399,10 +372,10 @@ namespace OpenRA.Support
 					if (i < expression.Length - 1 && expression[start + 1] == '&')
 					{
 						i++;
-						return new AndToken(start);
+						return new Token(TokenType.And, start);
 					}
 
-					throw new InvalidDataException("Unexpected character '&' at index {0}".F(start));
+					throw new InvalidDataException("Unexpected character '&' at index {0} - should it be `&&`?".F(start));
 				}
 
 				case '|':
@@ -410,10 +383,10 @@ namespace OpenRA.Support
 					if (i < expression.Length - 1 && expression[start + 1] == '|')
 					{
 						i++;
-						return new OrToken(start);
+						return new Token(TokenType.Or, start);
 					}
 
-					throw new InvalidDataException("Unexpected character '|' at index {0}".F(start));
+					throw new InvalidDataException("Unexpected character '|' at index {0} - should it be `||`?".F(start));
 				}
 			}
 
@@ -429,7 +402,8 @@ namespace OpenRA.Support
 					if (cc != CharClass.Digit)
 					{
 						if (cc != CharClass.Whitespace && cc != CharClass.Operator)
-							throw new InvalidDataException("Number and variable merged at index {0}".F(start));
+							throw new InvalidDataException("Number {0} and variable merged at index {1}".F(
+								int.Parse(expression.Substring(start, i - start)), start));
 
 						// Put the bad character back for the next parse attempt
 						i--;
@@ -441,7 +415,7 @@ namespace OpenRA.Support
 			}
 
 			if (cc != CharClass.Id)
-				throw new InvalidDataException("Invalid character at index {0}".F(start));
+				throw new InvalidDataException("Invalid character '{0}' at index {1}".F(expression[i], start));
 
 			// Scan forwards until we find an invalid name character
 			for (; i < expression.Length; i++)
@@ -484,15 +458,15 @@ namespace OpenRA.Support
 			var s = new Stack<Token>();
 			foreach (var t in tokens)
 			{
-				if (t is OpenParenToken)
+				if (t.Opens != Grouping.None)
 					s.Push(t);
-				else if (t is CloseParenToken)
+				else if (t.Closes != Grouping.None)
 				{
 					Token temp;
-					while (!((temp = s.Pop()) is OpenParenToken))
+					while (!((temp = s.Pop()).Opens != Grouping.None))
 						yield return temp;
 				}
-				else if (t is VariableToken || t is NumberToken)
+				else if (t.OperandSides == OperandSides.None)
 					yield return t;
 				else
 				{
@@ -513,20 +487,33 @@ namespace OpenRA.Support
 			var s = new Stack<int>();
 			foreach (var t in postfix)
 			{
-				if (t is AndToken)
-					ApplyBinaryOperation(s, (x, y) => y > 0 ? x : y);
-				else if (t is NotEqualsToken)
-					ApplyBinaryOperation(s, (x, y) => (y != x) ? 1 : 0);
-				else if (t is OrToken)
-					ApplyBinaryOperation(s, (x, y) => y > 0 ? y : x);
-				else if (t is EqualsToken)
-					ApplyBinaryOperation(s, (x, y) => (y == x) ? 1 : 0);
-				else if (t is NotToken)
-					ApplyUnaryOperation(s, x => (x > 0) ? 0 : 1);
-				else if (t is NumberToken)
-					s.Push(((NumberToken)t).Value);
-				else if (t is VariableToken)
-					s.Push(ParseSymbol((VariableToken)t, symbols));
+				switch (t.Type)
+				{
+					case TokenType.And:
+						ApplyBinaryOperation(s, (x, y) => y > 0 ? x : y);
+						continue;
+					case TokenType.NotEquals:
+						ApplyBinaryOperation(s, (x, y) => (y != x) ? 1 : 0);
+						continue;
+					case TokenType.Or:
+						ApplyBinaryOperation(s, (x, y) => y > 0 ? y : x);
+						continue;
+					case TokenType.Equals:
+						ApplyBinaryOperation(s, (x, y) => (y == x) ? 1 : 0);
+						continue;
+					case TokenType.Not:
+						ApplyUnaryOperation(s, x => (x > 0) ? 0 : 1);
+						continue;
+					case TokenType.Number:
+						s.Push(((NumberToken)t).Value);
+						continue;
+					case TokenType.Variable:
+						s.Push(ParseSymbol((VariableToken)t, symbols));
+						continue;
+					default:
+						throw new InvalidProgramException("Evaluate is missing an evaluator for TokenType.{0}".F(
+							Enum<TokenType>.GetValues()[(int)t.Type]));
+				}
 			}
 
 			return s.Pop();

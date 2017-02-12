@@ -47,10 +47,18 @@ namespace OpenRA.Test
 			Assert.Throws(typeof(InvalidDataException), () => new ConditionExpression(expression).Evaluate(testValues), expression);
 		}
 
+		void AssertParseFailure(string expression, string errorMessage)
+		{
+			var actualErrorMessage = Assert.Throws(typeof(InvalidDataException),
+			                                       () => new ConditionExpression(expression).Evaluate(testValues),
+			                                       expression).Message;
+			Assert.AreEqual(errorMessage, actualErrorMessage, expression + "   ===>   " + actualErrorMessage);
+		}
+
 		[TestCase(TestName = "Numbers")]
 		public void TestNumbers()
 		{
-			AssertParseFailure("1a");
+			AssertParseFailure("1a", "Number 1 and variable merged at index 0");
 			AssertValue("0", 0);
 			AssertValue("1", 1);
 			AssertValue("12", 12);
@@ -168,21 +176,21 @@ namespace OpenRA.Test
 		[TestCase(TestName = "Test parser errors")]
 		public void TestParseErrors()
 		{
-			AssertParseFailure("()");
-			AssertParseFailure("! && true");
-			AssertParseFailure("(true");
-			AssertParseFailure(")true");
-			AssertParseFailure("false)");
-			AssertParseFailure("false(");
-			AssertParseFailure("false!");
-			AssertParseFailure("true false");
-			AssertParseFailure("true & false");
-			AssertParseFailure("true | false");
-			AssertParseFailure("true : false");
-			AssertParseFailure("true & false && !");
-			AssertParseFailure("(true && !)");
-			AssertParseFailure("&& false");
-			AssertParseFailure("false ||");
+			AssertParseFailure("()", "Empty parenthesis at index 0");
+			AssertParseFailure("! && true", "Missing value or sub-expression or there is an extra operator `!` at index 0 or `&&` at index 2");
+			AssertParseFailure("(true", "Mismatched opening and closing parentheses");
+			AssertParseFailure(")true", "Unmatched closing parenthesis at index 0");
+			AssertParseFailure("false)", "Unmatched closing parenthesis at index 5");
+			AssertParseFailure("false(", "Mismatched opening and closing parentheses");
+			AssertParseFailure("false!", "Missing binary operation before `!` at index 5");
+			AssertParseFailure("true false", "Missing binary operation before `false` at index 5");
+			AssertParseFailure("true & false", "Unexpected character '&' at index 5 - should it be `&&`?");
+			AssertParseFailure("true | false", "Unexpected character '|' at index 5 - should it be `||`?");
+			AssertParseFailure("true : false", "Invalid character ':' at index 5");
+			AssertParseFailure("true & false && !", "Unexpected character '&' at index 5 - should it be `&&`?");
+			AssertParseFailure("(true && !)", "Missing value or sub-expression or there is an extra operator `!` at index 9 or `)` at index 10");
+			AssertParseFailure("&& false", "Missing value or sub-expression at beginning for `&&` operator");
+			AssertParseFailure("false ||", "Missing value or sub-expression at end for `||` operator");
 		}
 
 		[TestCase(TestName = "Undefined symbols are treated as `false` (0) values")]
