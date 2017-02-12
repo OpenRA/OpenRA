@@ -148,7 +148,7 @@ STD_MOD_DEPS	= $(STD_MOD_LIBS)
 
 # Command and Conquer
 mod_cnc_SRCS := $(shell find OpenRA.Mods.Cnc/ -iname '*.cs')
-mod_cnc_TARGET = mods/cnc/OpenRA.Mods.Cnc.dll
+mod_cnc_TARGET = mods/common/OpenRA.Mods.Cnc.dll
 mod_cnc_KIND = library
 mod_cnc_DEPS = $(STD_MOD_DEPS) $(mod_common_TARGET)
 mod_cnc_LIBS = $(COMMON_LIBS) $(STD_MOD_LIBS) $(mod_common_TARGET)
