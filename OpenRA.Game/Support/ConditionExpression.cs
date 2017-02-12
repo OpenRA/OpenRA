@@ -25,54 +25,193 @@ namespace OpenRA.Support
 		readonly Token[] postfix;
 
 		enum Associativity { Left, Right }
-		class Token
+
+		[Flags]
+		enum OperandSides
+		{
+			// Value type
+			None = 0,
+
+			// Postfix unary operator and/or group closer
+			Left = 1,
+
+			// Prefix unary operator and/or group opener
+			Right = 2,
+
+			// Binary+ operator
+			Both = Left | Right
+		}
+
+		enum Grouping { None, Parens }
+
+		enum TokenType
+		{
+			Number,
+			Variable,
+			OpenParen,
+			CloseParen,
+			Not,
+			And,
+			Or,
+			Equals,
+			NotEquals,
+			Invalid
+		}
+
+		enum Precedence
+		{
+			Invalid = ~0,
+			Parens = -1,
+			Value = 0,
+			Unary = 1,
+			Binary = 0
+		}
+
+		struct TokenTypeInfo
 		{
 			public readonly string Symbol;
-			public readonly int Index;
-			public readonly int Precedence;
+			public readonly Precedence Precedence;
+			public readonly OperandSides OperandSides;
 			public readonly Associativity Associativity;
+			public readonly Grouping Opens;
+			public readonly Grouping Closes;
 
-			public Token(string symbol, int index, Associativity associativity, int precedence)
+			public TokenTypeInfo(string symbol, Precedence precedence, OperandSides operandSides = OperandSides.None,
+			                     Associativity associativity = Associativity.Left,
+			                     Grouping opens = Grouping.None, Grouping closes = Grouping.None)
 			{
 				Symbol = symbol;
-				Index = index;
-				Associativity = associativity;
 				Precedence = precedence;
+				OperandSides = operandSides;
+				Associativity = associativity;
+				Opens = opens;
+				Closes = closes;
+			}
+
+			public TokenTypeInfo(string symbol, Precedence precedence, Grouping opens, Grouping closes = Grouping.None,
+			                     Associativity associativity = Associativity.Left)
+			{
+				Symbol = symbol;
+				Precedence = precedence;
+				OperandSides = opens == Grouping.None ?
+				                                (closes == Grouping.None ? OperandSides.None : OperandSides.Left)
+				                                :
+				                                (closes == Grouping.None ? OperandSides.Right : OperandSides.Both);
+				Associativity = associativity;
+				Opens = opens;
+				Closes = closes;
+			}
+		}
+
+		static IEnumerable<TokenTypeInfo> CreateTokenTypeInfoEnumeration()
+		{
+			for (var i = 0; i <= (int)TokenType.Invalid; i++)
+			{
+				switch ((TokenType)i)
+				{
+					case TokenType.Invalid:
+						yield return new TokenTypeInfo("(<INVALID>)", Precedence.Invalid);
+						continue;
+					case TokenType.Number:
+						yield return new TokenTypeInfo("(<number>)", Precedence.Value);
+						continue;
+					case TokenType.Variable:
+						yield return new TokenTypeInfo("(<variable>)", Precedence.Value);
+						continue;
+					case TokenType.OpenParen:
+						yield return new TokenTypeInfo("(", Precedence.Parens, Grouping.Parens);
+						continue;
+					case TokenType.CloseParen:
+						yield return new TokenTypeInfo(")", Precedence.Parens, Grouping.None, Grouping.Parens);
+						continue;
+					case TokenType.Not:
+						yield return new TokenTypeInfo("!", Precedence.Unary, OperandSides.Right, Associativity.Right);
+						continue;
+					case TokenType.And:
+						yield return new TokenTypeInfo("&&", Precedence.Binary, OperandSides.Both);
+						continue;
+					case TokenType.Or:
+						yield return new TokenTypeInfo("||", Precedence.Binary, OperandSides.Both);
+						continue;
+					case TokenType.Equals:
+						yield return new TokenTypeInfo("==", Precedence.Binary, OperandSides.Both);
+						continue;
+					case TokenType.NotEquals:
+						yield return new TokenTypeInfo("!=", Precedence.Binary, OperandSides.Both);
+						continue;
+				}
+
+				throw new InvalidProgramException("CreateTokenTypeInfoEnumeration is missing a TokenTypeInfo entry for TokenType.{0}".F(
+					Enum<TokenType>.GetValues()[i]));
+			}
+		}
+
+		static readonly TokenTypeInfo[] TokenTypeInfos = CreateTokenTypeInfoEnumeration().ToArray();
+
+		class Token
+		{
+			public readonly TokenType Type;
+			public readonly int Index;
+
+			public virtual string Symbol { get { return TokenTypeInfos[(int)Type].Symbol; } }
+
+			public int Precedence { get { return (int)TokenTypeInfos[(int)Type].Precedence; } }
+			public OperandSides OperandSides { get { return TokenTypeInfos[(int)Type].OperandSides; } }
+			public Associativity Associativity { get { return TokenTypeInfos[(int)Type].Associativity; } }
+			public bool LeftOperand { get { return ((int)TokenTypeInfos[(int)Type].OperandSides & (int)OperandSides.Left) != 0; } }
+			public bool RightOperand { get { return ((int)TokenTypeInfos[(int)Type].OperandSides & (int)OperandSides.Right) != 0; } }
+
+			public Grouping Opens { get { return TokenTypeInfos[(int)Type].Opens; } }
+			public Grouping Closes { get { return TokenTypeInfos[(int)Type].Closes; } }
+
+			public Token(TokenType type, int index)
+			{
+				Type = type;
+				Index = index;
 			}
 		}
 
 		class BinaryOperationToken : Token
 		{
-			public BinaryOperationToken(string symbol, int index, Associativity associativity = Associativity.Left, int precedence = 0)
-				: base(symbol, index, associativity, precedence) { }
+			public BinaryOperationToken(TokenType type, int index) : base(type, index) { }
 		}
 
 		class UnaryOperationToken : Token
 		{
-			public UnaryOperationToken(string symbol, int index, Associativity associativity = Associativity.Right, int precedence = 1)
-				: base(symbol, index, associativity, precedence) { }
+			public UnaryOperationToken(TokenType type, int index) : base(type, index) { }
 		}
 
-		class OpenParenToken : Token { public OpenParenToken(int index) : base("(", index, Associativity.Left, -1) { } }
-		class CloseParenToken : Token { public CloseParenToken(int index) : base(")", index, Associativity.Left, -1) { } }
+		class OpenParenToken : Token { public OpenParenToken(int index) : base(TokenType.OpenParen, index) { } }
+		class CloseParenToken : Token { public CloseParenToken(int index) : base(TokenType.CloseParen, index) { } }
 		class VariableToken : Token
 		{
-			public VariableToken(int index, string symbol)
-				: base(symbol, index, Associativity.Left, 0) { }
+			public readonly string Name;
+
+			public override string Symbol { get { return Name; } }
+
+			public VariableToken(int index, string symbol) : base(TokenType.Variable, index) { Name = symbol; }
 		}
 
 		class NumberToken : Token
 		{
 			public readonly int Value;
+			readonly string symbol;
+
+			public override string Symbol { get { return symbol; } }
+
 			public NumberToken(int index, string symbol)
-				: base(symbol, index, Associativity.Left, 0) { Value = int.Parse(symbol); }
+				: base(TokenType.Number, index)
+			{
+				Value = int.Parse(symbol);
+				this.symbol = symbol;
+			}
 		}
 
-		class AndToken : BinaryOperationToken { public AndToken(int index) : base("&&", index) { } }
-		class OrToken : BinaryOperationToken { public OrToken(int index) : base("||", index) { } }
-		class EqualsToken : BinaryOperationToken { public EqualsToken(int index) : base("==", index) { } }
-		class NotEqualsToken : BinaryOperationToken { public NotEqualsToken(int index) : base("!=", index) { } }
-		class NotToken : UnaryOperationToken { public NotToken(int index) : base("!", index) { } }
+		class AndToken : BinaryOperationToken { public AndToken(int index) : base(TokenType.And, index) { } }
+		class OrToken : BinaryOperationToken { public OrToken(int index) : base(TokenType.Or, index) { } }
+		class EqualsToken : BinaryOperationToken { public EqualsToken(int index) : base(TokenType.Equals, index) { } }
+		class NotEqualsToken : BinaryOperationToken { public NotEqualsToken(int index) : base(TokenType.NotEquals, index) { } }
+		class NotToken : UnaryOperationToken { public NotToken(int index) : base(TokenType.Not, index) { } }
 
 		public ConditionExpression(string expression)
 		{
