@@ -166,52 +166,56 @@ namespace OpenRA.Support
 		static Token ParseSymbol(string expression, ref int i)
 		{
 			var start = i;
-			var c = expression[start];
 
 			// Parse operators
-			if (c == '!')
+			switch (expression[start])
 			{
-				if (i < expression.Length - 1 && expression[start + 1] == '=')
+				case '!':
 				{
-					i++;
-					return new NotEqualsToken(start);
+					if (i < expression.Length - 1 && expression[start + 1] == '=')
+					{
+						i++;
+						return new NotEqualsToken(start);
+					}
+
+					return new NotToken(start);
 				}
 
-				return new NotToken(start);
-			}
-
-			if (c == '=')
-			{
-				if (i < expression.Length - 1 && expression[start + 1] == '=')
+				case '=':
 				{
-					i++;
-					return new EqualsToken(start);
+					if (i < expression.Length - 1 && expression[start + 1] == '=')
+					{
+						i++;
+						return new EqualsToken(start);
+					}
+
+					throw new InvalidDataException("Unexpected character '=' at index {0}".F(start));
 				}
 
-				throw new InvalidDataException("Unexpected character '=' at index {0}".F(start));
-			}
-
-			if (c == '&')
-			{
-				if (i < expression.Length - 1 && expression[start + 1] == '&')
+				case '&':
 				{
-					i++;
-					return new AndToken(start);
+					if (i < expression.Length - 1 && expression[start + 1] == '&')
+					{
+						i++;
+						return new AndToken(start);
+					}
+
+					throw new InvalidDataException("Unexpected character '&' at index {0}".F(start));
 				}
 
-				throw new InvalidDataException("Unexpected character '&' at index {0}".F(start));
-			}
-
-			if (c == '|')
-			{
-				if (i < expression.Length - 1 && expression[start + 1] == '|')
+				case '|':
 				{
-					i++;
-					return new OrToken(start);
-				}
+					if (i < expression.Length - 1 && expression[start + 1] == '|')
+					{
+						i++;
+						return new OrToken(start);
+					}
 
-				throw new InvalidDataException("Unexpected character '|' at index {0}".F(start));
+					throw new InvalidDataException("Unexpected character '|' at index {0}".F(start));
+				}
 			}
+
+			var c = expression[start];
 
 			// Scan forwards until we find an non-digit character
 			if (c == '-' || char.IsDigit(expression[i]))
