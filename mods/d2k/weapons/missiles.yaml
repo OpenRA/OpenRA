@@ -46,7 +46,7 @@
 		VerticalRateOfTurn: 10
 		Image: MISSILE2
 		TrailImage: large_trail
-		Speed: 320
+		Speed: 288
 	Warhead@1Dam: SpreadDamage
 		Spread: 256
 		Damage: 480
@@ -110,7 +110,6 @@ mtank_pri:
 	Range: 6c0
 	ValidTargets: Ground, Air
 	Projectile: Missile
-		Speed: 281
 		Inaccuracy: 96
 		RangeLimit: 7c204
 	Warhead@1Dam: SpreadDamage
@@ -123,7 +122,6 @@ DeviatorMissile:
 	Range: 5c0
 	Report: MISSLE1.WAV
 	Projectile: Missile
-		Speed: 281
 		RangeLimit: 6c0
 		Image: MISSILE
 		TrailImage: deviator_trail
