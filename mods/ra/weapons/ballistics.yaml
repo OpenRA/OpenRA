@@ -45,9 +45,9 @@
 			Concrete: 30
 	-Warhead@2Smu: LeaveSmudge
 	Warhead@3Eff: CreateEffect
-		ImpactSounds:
+		-ImpactSounds:
 	Warhead@4EffWater: CreateEffect
-		ImpactSounds:
+		-ImpactSounds:
 
 90mm:
 	Inherits: ^Cannon
@@ -170,6 +170,7 @@ Grenade:
 
 DepthCharge:
 	Inherits: ^Artillery
+	-Report:
 	ReloadDelay: 60
 	Range: 5c0
 	ValidTargets: Underwater
@@ -191,6 +192,7 @@ DepthCharge:
 	Warhead@4EffWater: CreateEffect
 		Explosions: large_splash
 		ImpactSounds: h2obomb2.aud
+		ValidImpactTypes: Water, WaterHit
 	Warhead@3Eff: CreateEffect
 		Explosions: small_explosion
 		ImpactSounds: kaboom15.aud
