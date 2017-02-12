@@ -42,20 +42,6 @@ Sound:
 			harvester: 50
 		DamageTypes: Prone50Percent, TriggerProne, SoundDeath
 
-Heal:
-	ReloadDelay: 160
-	Range: 4c0
-	Report:
-	ValidTargets: Infantry
-	Projectile: Bullet
-		Speed: 1c256
-	Warhead@1Dam: SpreadDamage
-		Spread: 160
-		Falloff: 100, 100, 0
-		Damage: -200
-		ValidTargets: Infantry
-		DebugOverlayColor: 00FF00
-
 WormJaw:
 	ReloadDelay: 10
 	InvalidTargets: Structure, Infantry
@@ -277,10 +263,7 @@ SpiceExplosion:
 BloomExplosion:
 	Report: EXPLMD1.WAV
 	Range: 0c8
-	Projectile: Bullet
-		Speed: 1c0
-		Blockable: false
-		Image: null
+	Projectile: InstantHit
 	Warhead@1Dam: SpreadDamage
 		Spread: 320
 		Falloff: 100, 60, 30, 15, 0
