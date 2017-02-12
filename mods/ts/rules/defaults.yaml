@@ -191,11 +191,22 @@
 	RevealsShroud:
 		Range: 4c0
 		MaxHeightDelta: 3
-	Tooltip:
 	RenderSprites:
 		Palette: terraindecoration
-	Buildable:
-		Description: Civilian Building
+
+^OldBase:
+	Inherits: ^CivBuilding
+	Building:
+		Footprint: xx xx
+		Dimensions: 2, 2
+	Armor:
+		Type: heavy
+	Health:
+		HP: 400
+	RenderSprites:
+		Palette: player
+	-Cloak@EXTERNALCLOAK:
+	-ExternalConditions@EXTERNALCLOAK:
 
 ^CivBillboard:
 	Inherits: ^CivBuilding

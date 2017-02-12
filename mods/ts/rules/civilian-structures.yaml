@@ -714,8 +714,6 @@ CAHOSP:
 	Capturable:
 	CaptureNotification:
 	ProvidesPrerequisite@BuildingName:
-	Buildable:
-		Description: Gives friendly units a medkit to heal themselves.
 	ThrowsShrapnel@SMALL:
 		Pieces: 5, 9
 	ThrowsShrapnel@LARGE:
@@ -1145,8 +1143,6 @@ CTDAM:
 		Sequence: idle-lights
 	WithIdleOverlay@WATER:
 		Sequence: idle-water
-	Buildable:
-		Description: Provides power for other structures
 	ThrowsShrapnel@SMALL:
 		Pieces: 5, 9
 	ThrowsShrapnel@LARGE:
@@ -1191,88 +1187,34 @@ GAKODK:
 		Sequence: small-lights
 
 GAOLDCC1:
-	Inherits: ^CivBuilding
+	Inherits: ^OldBase
 	Tooltip:
 		Name: Old Construction Yard
-	Building:
-		Footprint: xx xx
-		Dimensions: 2, 2
-	Armor:
-		Type: heavy
-	Health:
-		HP: 400
-	RenderSprites:
-		Palette: player
 
 GAOLDCC2:
-	Inherits: ^CivBuilding
+	Inherits: ^OldBase
 	Tooltip:
 		Name: Old Temple
-	Building:
-		Footprint: xx xx
-		Dimensions: 2, 2
-	Armor:
-		Type: heavy
-	Health:
-		HP: 400
-	RenderSprites:
-		Palette: player
 
 GAOLDCC3:
-	Inherits: ^CivBuilding
+	Inherits: ^OldBase
 	Tooltip:
 		Name: Old Weapons Factory
-	Building:
-		Footprint: xx xx
-		Dimensions: 2, 2
-	Armor:
-		Type: heavy
-	Health:
-		HP: 400
-	RenderSprites:
-		Palette: player
 
 GAOLDCC4:
-	Inherits: ^CivBuilding
+	Inherits: ^OldBase
 	Tooltip:
 		Name: Old Refinery
-	Building:
-		Footprint: xx xx
-		Dimensions: 2, 2
-	Armor:
-		Type: heavy
-	Health:
-		HP: 400
-	RenderSprites:
-		Palette: player
 
 GAOLDCC5:
-	Inherits: ^CivBuilding
+	Inherits: ^OldBase
 	Tooltip:
 		Name: Old Advanced Power Plant
-	Building:
-		Footprint: xx xx
-		Dimensions: 2, 2
-	Armor:
-		Type: heavy
-	Health:
-		HP: 400
-	RenderSprites:
-		Palette: player
 
 GAOLDCC6:
-	Inherits: ^CivBuilding
+	Inherits: ^OldBase
 	Tooltip:
 		Name: Old Silos
-	Building:
-		Footprint: xx xx
-		Dimensions: 2, 2
-	Armor:
-		Type: heavy
-	Health:
-		HP: 400
-	RenderSprites:
-		Palette: player
 
 GASAND:
 	Inherits: ^Wall
@@ -1303,9 +1245,6 @@ GASAND:
 
 GASPOT:
 	Inherits: ^Building
-	Buildable:
-		Queue: Defense
-		Prerequisites: ~disabled
 	Valued:
 		Cost: 300
 	Tooltip:
@@ -1354,9 +1293,6 @@ GALITE:
 		Palette: alpha
 	Selectable:
 		Bounds: 24, 24, 0, -4
-	Buildable:
-		Queue: Defense
-		Prerequisites: ~disabled
 	SelectionDecorations:
 		VisualBounds: 25, 35, 0, -12
 	-Cloak@EXTERNALCLOAK:
@@ -1367,8 +1303,6 @@ TSTLAMP:
 	RenderSprites:
 		Image: galite
 	Tooltip:
-	Buildable:
-		Description: light post with alpha blending
 
 GAICBM:
 	Inherits: ^Building
