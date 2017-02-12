@@ -29,19 +29,19 @@
 
 25mm:
 	Inherits: ^Cannon
-	ReloadDelay: 13
+	ReloadDelay: 22
 	Range: 4c0
 	Report: cannon2.aud
 	Projectile: Bullet
 		Speed: 853
 		Image: 50CAL
 	Warhead@1Dam: SpreadDamage
-		Damage: 16
+		Damage: 27
 		Versus:
 			None: 30
 			Wood: 40
-			Light: 100
-			Heavy: 40
+			Light: 110
+			Heavy: 45
 			Concrete: 30
 	-Warhead@2Smu: LeaveSmudge
 	Warhead@3Eff: CreateEffect

@@ -789,7 +789,7 @@ ATEK:
 		Footprint: xx xx
 		Dimensions: 2,2
 	Health:
-		HP: 400
+		HP: 600
 	Armor:
 		Type: Wood
 	RevealsShroud:
@@ -1238,7 +1238,7 @@ AFLD:
 		ChargeTime: 360
 		Description: Paratroopers
 		LongDesc: A Badger drops a squad of infantry\nanywhere on the map.
-		DropItems: E1,E1,E1,E3,E3
+		DropItems: E1R1,E1R1,E1R1,E3R1,E3R1
 		SelectTargetSpeechNotification: SelectTarget
 		AllowImpassableCells: false
 		QuantizedFacings: 8
@@ -1397,7 +1397,7 @@ BARR:
 		Footprint: xx xx
 		Dimensions: 2,2
 	Health:
-		HP: 800
+		HP: 600
 	Armor:
 		Type: Wood
 	RevealsShroud:
@@ -1520,7 +1520,7 @@ TENT:
 		Footprint: xx xx
 		Dimensions: 2,2
 	Health:
-		HP: 800
+		HP: 600
 	Armor:
 		Type: Wood
 	RevealsShroud:

@@ -54,6 +54,8 @@ E1:
 		BuildPaletteOrder: 10
 		Prerequisites: ~barracks, ~techlevel.infonly
 		Description: General-purpose infantry.\n  Strong vs Infantry\n  Weak vs Vehicles, Aircraft
+	Selectable:
+		Class: E1
 	Valued:
 		Cost: 100
 	Tooltip:
@@ -71,6 +73,15 @@ E1:
 		DefaultAttackSequence: shoot
 	ProducibleWithLevel:
 		Prerequisites: barracks.upgraded
+
+E1R1:
+	Inherits: E1
+	RenderSprites:
+		Image: E1
+	ProducibleWithLevel:
+		Prerequisites: techlevel.infonly
+		InitialLevels: 1
+	-Buildable:
 
 E2:
 	Inherits: ^Soldier
@@ -115,6 +126,8 @@ E3:
 		BuildPaletteOrder: 30
 		Prerequisites: ~barracks, ~techlevel.infonly
 		Description: Anti-tank/Anti-aircraft infantry.\n  Strong vs Vehicles, Aircraft\n  Weak vs Infantry
+	Selectable:
+		Class: E3
 	Valued:
 		Cost: 300
 	Tooltip:
@@ -140,6 +153,15 @@ E3:
 		Prerequisites: barracks.upgraded
 	AutoTarget:
 		ScanRadius: 5
+
+E3R1:
+	Inherits: E3
+	RenderSprites:
+		Image: E3
+	ProducibleWithLevel:
+		Prerequisites: techlevel.infonly
+		InitialLevels: 1
+	-Buildable:
 
 E4:
 	Inherits: ^Soldier
