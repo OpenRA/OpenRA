@@ -48,7 +48,7 @@ namespace OpenRA.Mods.Common.Traits
 	}
 
 	[Desc("Unit is able to move.")]
-	public class MobileInfo : ConditionalTraitInfo, IMoveInfo, IPositionableInfo, IOccupySpaceInfo, IFacingInfo,
+	public class MobileInfo : ConditionalTraitInfo, IMoveInfo, IPositionableInfo, IFacingInfo,
 		UsesInit<FacingInit>, UsesInit<LocationInit>, UsesInit<SubCellInit>
 	{
 		[FieldLoader.LoadUsing("LoadSpeeds", true)]
@@ -263,11 +263,12 @@ namespace OpenRA.Mods.Common.Traits
 				(current, terrainInfo) => unchecked(current * 31 + terrainInfo.Cost));
 		}
 
-		public bool CanEnterCell(World world, Actor self, CPos cell, Actor ignoreActor = null, CellConditions check = CellConditions.All)
+		public bool CanEnterCell(World world, Actor self, CPos cell, Actor ignoreActor = null, bool checkTransientActors = true)
 		{
 			if (MovementCostForCell(world, cell) == int.MaxValue)
 				return false;
 
+			var check = checkTransientActors ? CellConditions.All : CellConditions.BlockedByMovers;
 			return CanMoveFreelyInto(world, self, cell, ignoreActor, check);
 		}
 
@@ -380,7 +381,7 @@ namespace OpenRA.Mods.Common.Traits
 	}
 
 	public class Mobile : ConditionalTrait<MobileInfo>, INotifyCreated, IIssueOrder, IResolveOrder, IOrderVoice, IPositionable, IMove,
-		IFacing, ISync, IDeathActorInitModifier, INotifyAddedToWorld, INotifyRemovedFromWorld, INotifyBlockingMove, IActorPreviewInitModifier
+		IFacing, IDeathActorInitModifier, INotifyAddedToWorld, INotifyRemovedFromWorld, INotifyBlockingMove, IActorPreviewInitModifier
 	{
 		const int AverageTicksBeforePathing = 5;
 		const int SpreadTicksBeforePathing = 5;
@@ -699,7 +700,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public bool CanEnterCell(CPos cell, Actor ignoreActor = null, bool checkTransientActors = true)
 		{
-			return Info.CanEnterCell(self.World, self, cell, ignoreActor, checkTransientActors ? CellConditions.All : CellConditions.BlockedByMovers);
+			return Info.CanEnterCell(self.World, self, cell, ignoreActor, checkTransientActors);
 		}
 
 		public bool CanMoveFreelyInto(CPos cell, Actor ignoreActor = null, bool checkTransientActors = true)

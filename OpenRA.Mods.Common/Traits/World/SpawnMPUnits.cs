@@ -86,8 +86,9 @@ namespace OpenRA.Mods.Common.Traits
 
 			foreach (var s in unitGroup.SupportActors)
 			{
-				var mi = w.Map.Rules.Actors[s.ToLowerInvariant()].TraitInfo<MobileInfo>();
-				var validCells = supportSpawnCells.Where(c => mi.CanEnterCell(w, null, c));
+				var actorRules = w.Map.Rules.Actors[s.ToLowerInvariant()];
+				var ip = actorRules.TraitInfo<IPositionableInfo>();
+				var validCells = supportSpawnCells.Where(c => ip.CanEnterCell(w, null, c));
 				if (!validCells.Any())
 				{
 					Log.Write("debug", "No cells available to spawn starting unit {0} for player {1}".F(s, p));
@@ -95,7 +96,7 @@ namespace OpenRA.Mods.Common.Traits
 				}
 
 				var cell = validCells.Random(w.SharedRandom);
-				var subCell = mi.SharesCell ? w.ActorMap.FreeSubCell(cell) : 0;
+				var subCell = ip.SharesCell ? w.ActorMap.FreeSubCell(cell) : 0;
 
 				w.CreateActor(s.ToLowerInvariant(), new TypeDictionary
 				{

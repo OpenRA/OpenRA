@@ -21,7 +21,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class AircraftInfo : ITraitInfo, IPositionableInfo, IFacingInfo, IOccupySpaceInfo, IMoveInfo, ICruiseAltitudeInfo,
+	public class AircraftInfo : ITraitInfo, IPositionableInfo, IFacingInfo, IMoveInfo, ICruiseAltitudeInfo,
 		UsesInit<LocationInit>, UsesInit<FacingInit>
 	{
 		public readonly WDist CruiseAltitude = new WDist(1280);
@@ -94,6 +94,25 @@ namespace OpenRA.Mods.Common.Traits
 
 		public IReadOnlyDictionary<CPos, SubCell> OccupiedCells(ActorInfo info, CPos location, SubCell subCell = SubCell.Any) { return new ReadOnlyDictionary<CPos, SubCell>(); }
 		bool IOccupySpaceInfo.SharesCell { get { return false; } }
+
+		// Used to determine if an aircraft can spawn landed
+		public bool CanEnterCell(World world, Actor self, CPos cell, Actor ignoreActor = null, bool checkTransientActors = true)
+		{
+			if (!world.Map.Contains(cell))
+				return false;
+
+			var type = world.Map.GetTerrainInfo(cell).Type;
+			if (!LandableTerrainTypes.Contains(type))
+				return false;
+
+			if (world.WorldActor.Trait<BuildingInfluence>().GetBuildingAt(cell) != null)
+				return false;
+
+			if (!checkTransientActors)
+				return true;
+
+			return !world.ActorMap.GetActorsAt(cell).Any(x => x != ignoreActor);
+		}
 	}
 
 	public class Aircraft : ITick, ISync, IFacing, IPositionable, IMove, IIssueOrder, IResolveOrder, IOrderVoice, IDeathActorInitModifier,

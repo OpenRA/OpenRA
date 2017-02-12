@@ -17,7 +17,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	class CrateInfo : ITraitInfo, IPositionableInfo, IOccupySpaceInfo, Requires<RenderSpritesInfo>
+	class CrateInfo : ITraitInfo, IPositionableInfo, Requires<RenderSpritesInfo>
 	{
 		[Desc("Length of time (in seconds) until the crate gets removed automatically. " +
 			"A value of zero disables auto-removal.")]
@@ -38,6 +38,30 @@ namespace OpenRA.Mods.Common.Traits
 		}
 
 		bool IOccupySpaceInfo.SharesCell { get { return false; } }
+
+		public bool CanEnterCell(World world, Actor self, CPos cell, Actor ignoreActor = null, bool checkTransientActors = true)
+		{
+			return GetAvailableSubCell(world, cell, ignoreActor, checkTransientActors) != SubCell.Invalid;
+		}
+
+		public SubCell GetAvailableSubCell(World world, CPos cell, Actor ignoreActor = null, bool checkTransientActors = true)
+		{
+			if (!world.Map.Contains(cell))
+				return SubCell.Invalid;
+
+			var type = world.Map.GetTerrainInfo(cell).Type;
+			if (!TerrainTypes.Contains(type))
+				return SubCell.Invalid;
+
+			if (world.WorldActor.Trait<BuildingInfluence>().GetBuildingAt(cell) != null)
+				return SubCell.Invalid;
+
+			if (!checkTransientActors)
+				return SubCell.FullCell;
+
+			return !world.ActorMap.GetActorsAt(cell).Any(x => x != ignoreActor)
+				? SubCell.FullCell : SubCell.Invalid;
+		}
 	}
 
 	class Crate : ITick, IPositionable, ICrushable, ISync,
@@ -174,22 +198,7 @@ namespace OpenRA.Mods.Common.Traits
 		public SubCell GetValidSubCell(SubCell preferred = SubCell.Any) { return SubCell.FullCell; }
 		public SubCell GetAvailableSubCell(CPos cell, SubCell preferredSubCell = SubCell.Any, Actor ignoreActor = null, bool checkTransientActors = true)
 		{
-			if (!self.World.Map.Contains(cell))
-				return SubCell.Invalid;
-
-			var type = self.World.Map.GetTerrainInfo(cell).Type;
-			if (!info.TerrainTypes.Contains(type))
-				return SubCell.Invalid;
-
-			if (self.World.WorldActor.Trait<BuildingInfluence>().GetBuildingAt(cell) != null)
-				return SubCell.Invalid;
-
-			if (!checkTransientActors)
-				return SubCell.FullCell;
-
-			return !self.World.ActorMap.GetActorsAt(cell)
-				.Any(x => x != ignoreActor)
-				? SubCell.FullCell : SubCell.Invalid;
+			return info.GetAvailableSubCell(self.World, cell, ignoreActor, checkTransientActors);
 		}
 
 		public bool CanEnterCell(CPos a, Actor ignoreActor = null, bool checkTransientActors = true)
