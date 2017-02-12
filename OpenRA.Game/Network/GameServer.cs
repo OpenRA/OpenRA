@@ -39,16 +39,29 @@ namespace OpenRA.Network
 			FieldLoader.Load(this, yaml);
 
 			Manifest mod;
+			ExternalMod external;
 			var modVersion = Mods.Split('@');
-			if (modVersion.Length == 2 && Game.Mods.TryGetValue(modVersion[0], out mod))
+
+			ModLabel = "Unknown mod: {0}".F(Mods);
+			if (modVersion.Length == 2)
 			{
 				ModId = modVersion[0];
 				ModVersion = modVersion[1];
-				ModLabel = "{0} ({1})".F(mod.Metadata.Title, modVersion[1]);
-				IsCompatible = Game.Settings.Debug.IgnoreVersionMismatch || ModVersion == mod.Metadata.Version;
+
+				if (Game.Mods.TryGetValue(modVersion[0], out mod))
+				{
+					ModLabel = "{0} ({1})".F(mod.Metadata.Title, modVersion[1]);
+					IsCompatible = Game.Settings.Debug.IgnoreVersionMismatch || ModVersion == mod.Metadata.Version;
+				}
+
+				var externalKey = ExternalMod.MakeKey(modVersion[0], modVersion[1]);
+				if (!IsCompatible && Game.ExternalMods.TryGetValue(externalKey, out external)
+					&& external.Version == modVersion[1])
+				{
+					ModLabel = "{0} ({1})".F(external.Title, external.Version);
+					IsCompatible = true;
+				}
 			}
-			else
-				ModLabel = "Unknown mod: {0}".F(Mods);
 
 			var mapAvailable = Game.Settings.Game.AllowDownloading || Game.ModData.MapCache[Map].Status == MapStatus.Available;
 			IsJoinable = IsCompatible && State == 1 && mapAvailable;

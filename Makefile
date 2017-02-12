@@ -439,10 +439,11 @@ install-man-page: man-page
 install-linux-scripts:
 	@echo "#!/bin/sh" > openra
 	@echo 'cd "$(gameinstalldir)"' >> openra
+# Note: this relies on the non-standard -f flag implemented by gnu readlink
 ifeq ($(DEBUG), $(filter $(DEBUG),false no n off 0))
-	@echo 'mono OpenRA.Game.exe "$$@"' >> openra
+	@echo 'mono OpenRA.Game.exe Engine.LaunchPath="$(readlink -f $0)" "$$@"' >> openra
 else
-	@echo 'mono --debug OpenRA.Game.exe "$$@"' >> openra
+	@echo 'mono --debug OpenRA.Game.exe Engine.LaunchPath="$(readlink -f $0)" "$$@"' >> openra
 endif
 	@echo 'if [ $$? != 0 -a $$? != 1 ]' >> openra
 	@echo 'then' >> openra

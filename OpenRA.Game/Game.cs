@@ -37,6 +37,7 @@ namespace OpenRA
 		public const int TimestepJankThreshold = 250; // Don't catch up for delays larger than 250ms
 
 		public static InstalledMods Mods { get; private set; }
+		public static ExternalMods ExternalMods { get; private set; }
 
 		public static ModData ModData;
 		public static Settings Settings;
@@ -314,9 +315,15 @@ namespace OpenRA
 			GlobalChat = new GlobalChat();
 
 			Mods = new InstalledMods(customModPath);
-			Console.WriteLine("Available mods:");
+			Console.WriteLine("Internal mods:");
 			foreach (var mod in Mods)
 				Console.WriteLine("\t{0}: {1} ({2})", mod.Key, mod.Value.Metadata.Title, mod.Value.Metadata.Version);
+
+			var launchPath = args.GetValue("Engine.LaunchPath", Assembly.GetEntryAssembly().Location);
+			ExternalMods = new ExternalMods(launchPath);
+			Console.WriteLine("External mods:");
+			foreach (var mod in ExternalMods)
+				Console.WriteLine("\t{0}: {1} ({2})", mod.Key, mod.Value.Title, mod.Value.Version);
 
 			InitializeMod(Settings.Game.Mod, args);
 		}
@@ -370,6 +377,7 @@ namespace OpenRA
 			Sound.StopVideo();
 
 			ModData = new ModData(Mods[mod], Mods, true);
+			ExternalMods.Register(ModData.Manifest);
 
 			using (new PerfTimer("LoadMaps"))
 				ModData.MapCache.LoadMaps();
@@ -455,6 +463,28 @@ namespace OpenRA
 				throw new InvalidDataException("No valid shellmaps available");
 
 			return shellmaps.Random(CosmeticRandom);
+		}
+
+		public static void SwitchToExternalMod(ExternalMod mod, string[] launchArguments = null, Action onFailed = null)
+		{
+			try
+			{
+				var argsString = mod.LaunchArgs.Append(launchArguments)
+					.Select(a => "\"" + a + "\"").JoinWith(" ");
+
+				var p = Process.Start(mod.LaunchPath, argsString);
+				if (p == null || p.HasExited)
+					onFailed();
+				else
+				{
+					p.Close();
+					Exit();
+				}
+			}
+			catch
+			{
+				onFailed();
+			}
 		}
 
 		static RunStatus state = RunStatus.Running;

@@ -27,12 +27,17 @@ namespace OpenRA
 		[STAThread]
 		static void Main(string[] args)
 		{
-			var executableDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-			var processName = Path.Combine(executableDirectory, "OpenRA.Game.exe");
+			var launcherPath = Assembly.GetExecutingAssembly().Location;
+			var directory = Path.GetDirectoryName(launcherPath);
+			var enginePath = Path.Combine(directory, "OpenRA.Game.exe");
 
-			Directory.SetCurrentDirectory(executableDirectory);
+			Directory.SetCurrentDirectory(directory);
 
-			var psi = new ProcessStartInfo(processName, string.Join(" ", args.Select(arg => "\"" + arg + "\"")));
+			var engineArgs = args
+				.Append("Engine.LaunchPath=" + launcherPath)
+				.Select(arg => "\"" + arg + "\"");
+
+			var psi = new ProcessStartInfo(enginePath, string.Join(" ", engineArgs));
 
 			try
 			{
