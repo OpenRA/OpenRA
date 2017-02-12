@@ -72,7 +72,7 @@ Rocket:
 	ReloadDelay: 30
 	Range: 3c512
 	Projectile: Bullet
-		Speed: 343
+		Speed: 352
 	Warhead@1Dam: SpreadDamage
 		Spread: 160
 		Damage: 250
