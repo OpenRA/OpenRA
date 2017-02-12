@@ -191,6 +191,7 @@ DepthCharge:
 	Warhead@4EffWater: CreateEffect
 		Explosions: large_splash
 		ImpactSounds: h2obomb2.aud
+		ValidImpactTypes: Water, WaterHit
 	Warhead@3Eff: CreateEffect
 		Explosions: small_explosion
 		ImpactSounds: kaboom15.aud
