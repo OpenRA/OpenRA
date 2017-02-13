@@ -98,6 +98,7 @@ WorldLoaded = function()
 	end)
 
 	SendHarkonnen()
+	Trigger.AfterDelay(0, ActivateAI)
 end
 
 InitObjectives = function()

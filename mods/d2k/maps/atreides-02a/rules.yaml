@@ -4,7 +4,7 @@ Player:
 
 World:
 	LuaScript:
-		Scripts: atreides02a.lua
+		Scripts: atreides02a.lua, atreides02a-AI.lua
 	MissionData:
 		Briefing: Infiltrate the Imperial Basin and build up our forces until they are strong enough to eradicate the local Harkonnen presence.\n\nThe Harkonnen are reinforcing their troops by air, so be on your guard. Use the Outpost's radar to detect attacks from unexpected quarters.\n\nBe careful when mining the Spice. Spice mounds grow out of the sand. While a vital source of Spice, Spice mounds can damage or destroy any unit that blunders into them.\n\nGood luck.\n
 		BriefingVideo: A_BR02_E.VQA
