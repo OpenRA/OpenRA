@@ -48,7 +48,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			get
 			{
-				yield return new EnterAlliedActorTargeter<BuildingInfo>("Repair", 5, CanRepairAt, _ => CanRepair() || CanRearm());
+				yield return new EnterActorTargeter<BuildingInfo>("Repair", 5, CanRepairAt, (_, __) => CanRepair() || CanRearm());
 			}
 		}
 
@@ -60,7 +60,7 @@ namespace OpenRA.Mods.Common.Traits
 			return null;
 		}
 
-		bool CanRepairAt(Actor target)
+		bool CanRepairAt(Actor self, Actor target)
 		{
 			return info.RepairBuildings.Contains(target.Info.Name);
 		}
@@ -89,7 +89,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			if (order.OrderString == "Repair")
 			{
-				if (!CanRepairAt(order.TargetActor) || (!CanRepair() && !CanRearm()))
+				if (!CanRepairAt(self, order.TargetActor) || (!CanRepair() && !CanRearm()))
 					return;
 
 				var target = Target.FromOrder(self.World, order);

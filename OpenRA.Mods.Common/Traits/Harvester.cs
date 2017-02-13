@@ -313,9 +313,9 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			get
 			{
-				yield return new EnterAlliedActorTargeter<IAcceptResourcesInfo>("Deliver", 5,
-					proc => IsAcceptableProcType(proc),
-					proc => proc.Trait<IAcceptResources>().AllowDocking);
+				yield return new EnterActorTargeter<IAcceptResourcesInfo>("Deliver", 5,
+					(self, proc) => IsAcceptableProcType(proc),
+					(self, proc) => proc.Trait<IAcceptResources>().AllowDocking);
 				yield return new HarvestOrderTargeter();
 			}
 		}

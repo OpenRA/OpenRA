@@ -38,6 +38,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Range from self for looking for an alternate transport (default: 5.5 cells).")]
 		public readonly WDist AlternateTransportScanRange = WDist.FromCells(11) / 2;
 
+		[Desc("What have stance of target(Ally, Neutral, Enemy). (default: Ally)")]
+		public readonly Stance TargetStances = Stance.Ally;
+
 		[VoiceReference] public readonly string Voice = "Action";
 
 		public object Create(ActorInitializer init) { return new Passenger(this); }
@@ -49,9 +52,9 @@ namespace OpenRA.Mods.Common.Traits
 		public Passenger(PassengerInfo info)
 		{
 			Info = info;
-			Func<Actor, bool> canTarget = IsCorrectCargoType;
-			Func<Actor, bool> useEnterCursor = CanEnter;
-			Orders = new EnterAlliedActorTargeter<CargoInfo>[]
+			Func<Actor, Actor, bool> canTarget = IsCorrectCargoType;
+			Func<Actor, Actor, bool> useEnterCursor = CanEnter;
+			Orders = new EnterActorTargeter<CargoInfo>[]
 			{
 				new EnterTransportTargeter("EnterTransport", 5, canTarget, useEnterCursor, Info.AlternateTransportsMode),
 				new EnterTransportsTargeter("EnterTransports", 5, canTarget, useEnterCursor, Info.AlternateTransportsMode)
@@ -71,10 +74,11 @@ namespace OpenRA.Mods.Common.Traits
 			return null;
 		}
 
-		bool IsCorrectCargoType(Actor target)
+		bool IsCorrectCargoType(Actor self, Actor target)
 		{
 			var ci = target.Info.TraitInfo<CargoInfo>();
-			return ci.Types.Contains(Info.CargoType);
+			return ci.Types.Contains(Info.CargoType)
+			       && Info.TargetStances.HasStance(self.Owner.Stances[target.Owner]);
 		}
 
 		bool CanEnter(Cargo cargo)
@@ -82,7 +86,7 @@ namespace OpenRA.Mods.Common.Traits
 			return cargo != null && cargo.HasSpace(Info.Weight);
 		}
 
-		bool CanEnter(Actor target)
+		bool CanEnter(Actor self, Actor target)
 		{
 			return CanEnter(target.TraitOrDefault<Cargo>());
 		}
@@ -90,7 +94,7 @@ namespace OpenRA.Mods.Common.Traits
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
 			if ((order.OrderString != "EnterTransport" && order.OrderString != "EnterTransports") ||
-				!CanEnter(order.TargetActor)) return null;
+				!CanEnter(self, order.TargetActor)) return null;
 			return Info.Voice;
 		}
 
@@ -99,8 +103,8 @@ namespace OpenRA.Mods.Common.Traits
 			if (order.OrderString == "EnterTransport" || order.OrderString == "EnterTransports")
 			{
 				if (order.TargetActor == null) return;
-				if (!CanEnter(order.TargetActor)) return;
-				if (!IsCorrectCargoType(order.TargetActor)) return;
+				if (!CanEnter(self, order.TargetActor)) return;
+				if (!IsCorrectCargoType(self, order.TargetActor)) return;
 
 				var target = Target.FromOrder(self.World, order);
 				self.SetTargetLine(target, Color.Green);

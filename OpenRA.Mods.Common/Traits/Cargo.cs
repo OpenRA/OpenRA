@@ -144,7 +144,12 @@ namespace OpenRA.Mods.Common.Traits
 			conditionManager = self.Trait<ConditionManager>();
 		}
 
-		static int GetWeight(Actor a) { return a.Info.TraitInfo<PassengerInfo>().Weight; }
+		public int GetWeight(Actor a) { return GetPassengerTrait(a).Info.Weight; }
+
+		public Passenger GetPassengerTrait(Actor a)
+		{
+			return a.TraitsImplementing<Passenger>().Single(pa => Info.Types.Contains(pa.Info.CargoType));
+		}
 
 		public IEnumerable<IOrderTargeter> Orders
 		{
@@ -261,8 +266,7 @@ namespace OpenRA.Mods.Common.Traits
 			foreach (var npe in self.TraitsImplementing<INotifyPassengerExited>())
 				npe.OnPassengerExited(self, a);
 
-			var p = a.Trait<Passenger>();
-			p.Transport = null;
+			GetPassengerTrait(a).Transport = null;
 
 			Stack<int> passengerToken;
 			if (passengerTokens.TryGetValue(a.Info.Name, out passengerToken) && passengerToken.Any())
@@ -301,11 +305,10 @@ namespace OpenRA.Mods.Common.Traits
 
 			foreach (var c in cargo)
 			{
-				var pi = c.Info.TraitInfo<PassengerInfo>();
+				var pi = GetPassengerTrait(c).Info;
 				if (n < pi.Weight)
 					return pi.PipType;
-				else
-					n -= pi.Weight;
+				n -= pi.Weight;
 			}
 
 			return PipType.Transparent;
@@ -330,8 +333,7 @@ namespace OpenRA.Mods.Common.Traits
 				foreach (var npe in self.TraitsImplementing<INotifyPassengerEntered>())
 					npe.OnPassengerEntered(self, a);
 
-			var p = a.Trait<Passenger>();
-			p.Transport = self;
+			GetPassengerTrait(a).Transport = self;
 
 			string passengerCondition;
 			if (conditionManager != null && Info.PassengerConditions.TryGetValue(a.Info.Name, out passengerCondition))
@@ -422,7 +424,7 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				foreach (var c in cargo)
 				{
-					c.Trait<Passenger>().Transport = self;
+					GetPassengerTrait(c).Transport = self;
 
 					foreach (var npe in self.TraitsImplementing<INotifyPassengerEntered>())
 						npe.OnPassengerEntered(self, c);

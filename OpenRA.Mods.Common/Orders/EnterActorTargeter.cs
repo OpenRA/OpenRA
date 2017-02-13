@@ -14,13 +14,13 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Orders
 {
-	public class EnterAlliedActorTargeter<T> : UnitOrderTargeter where T : ITraitInfo
+	public class EnterActorTargeter<T> : UnitOrderTargeter where T : ITraitInfo
 	{
-		readonly Func<Actor, bool> canTarget;
-		readonly Func<Actor, bool> useEnterCursor;
+		readonly Func<Actor, Actor, bool> canTarget;
+		readonly Func<Actor, Actor, bool> useEnterCursor;
 
-		public EnterAlliedActorTargeter(string order, int priority,
-			Func<Actor, bool> canTarget, Func<Actor, bool> useEnterCursor)
+		public EnterActorTargeter(string order, int priority,
+			Func<Actor, Actor, bool> canTarget, Func<Actor, Actor, bool> useEnterCursor)
 			: base(order, priority, "enter", false, true)
 		{
 			this.canTarget = canTarget;
@@ -29,10 +29,10 @@ namespace OpenRA.Mods.Common.Orders
 
 		public override bool CanTargetActor(Actor self, Actor target, TargetModifiers modifiers, ref string cursor)
 		{
-			if (!self.Owner.IsAlliedWith(target.Owner) || !target.Info.HasTraitInfo<T>() || !canTarget(target))
+			if (!target.Info.HasTraitInfo<T>() || !canTarget(self, target))
 				return false;
 
-			cursor = useEnterCursor(target) ? "enter" : "enter-blocked";
+			cursor = useEnterCursor(self, target) ? "enter" : "enter-blocked";
 			return true;
 		}
 
