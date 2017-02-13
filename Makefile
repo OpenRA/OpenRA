@@ -295,7 +295,7 @@ $(foreach prog,$(PROGRAMS),$(eval $(call BUILD_ASSEMBLY,$(prog))))
 #
 default: core
 
-core: game platforms mods utility server
+core: dependencies game platforms mods utility server
 
 tools: gamemonitor
 
