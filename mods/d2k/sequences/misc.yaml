@@ -71,6 +71,7 @@ small_trail:
 		Start: 3988
 		Length: 4
 		Tick: 80
+		BlendMode: Additive
 		ZOffset: 1023
 
 small_trail2:
@@ -78,6 +79,7 @@ small_trail2:
 		Start: 3793
 		Length: 4
 		Tick: 80
+		BlendMode: Additive
 		ZOffset: 1023
 
 bazooka_trail:
