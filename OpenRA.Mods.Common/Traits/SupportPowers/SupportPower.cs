@@ -59,10 +59,9 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string BeaconImage = "beacon";
 		[SequenceReference("BeaconImage")] public readonly string BeaconPoster = null;
 		[PaletteReference] public readonly string BeaconPosterPalette = "chrome";
-		[SequenceReference("BeaconImage")] public readonly string ClockSequence = "clock";
-
-		[SequenceReference("BeaconImage")] public readonly string ArrowSequence = "arrow";
-		[SequenceReference("BeaconImage")] public readonly string CircleSequence = "circles";
+		[SequenceReference("BeaconImage")] public readonly string ClockSequence = null;
+		[SequenceReference("BeaconImage")] public readonly string ArrowSequence = null;
+		[SequenceReference("BeaconImage")] public readonly string CircleSequence = null;
 
 		[Desc("Delay after launch, measured in ticks.")]
 		public readonly int BeaconDelay = 0;

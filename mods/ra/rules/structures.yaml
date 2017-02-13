@@ -38,6 +38,9 @@ MSLO:
 		BeaconPoster: atomicon
 		FlashType: Nuke
 		CameraRange: 10c0
+		ArrowSequence: arrow
+		ClockSequence: clock
+		CircleSequence: circles
 	CanPowerDown:
 		PowerupSound: EnablePower
 		PowerdownSound: DisablePower
@@ -1231,6 +1234,9 @@ AFLD:
 		QuantizedFacings: 8
 		DisplayBeacon: true
 		BeaconPoster: camicon
+		ArrowSequence: arrow
+		ClockSequence: clock
+		CircleSequence: circles
 	ParatroopersPower@paratroopers:
 		OrderName: SovietParatroopers
 		Prerequisites: aircraft.soviet
@@ -1245,6 +1251,9 @@ AFLD:
 		CameraActor: camera.paradrop
 		DisplayBeacon: true
 		BeaconPoster: pinficon
+		ArrowSequence: arrow
+		ClockSequence: clock
+		CircleSequence: circles
 	AirstrikePower@parabombs:
 		OrderName: UkraineParabombs
 		Prerequisites: aircraft.ukraine
@@ -1261,6 +1270,9 @@ AFLD:
 		BeaconPoster: pbmbicon
 		SquadSize: 3
 		SquadOffset: 1792,1792,0
+		ArrowSequence: arrow
+		ClockSequence: clock
+		CircleSequence: circles
 	ProductionBar:
 	SupportPowerChargeBar:
 	PrimaryBuilding:

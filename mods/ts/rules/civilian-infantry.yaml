@@ -174,7 +174,7 @@ TRATOS:
 		Range: 4c0
 	-AutoTarget:
 	WithInfantryBody:
-		DefaultAttackSequence: attack
+		DefaultAttackSequence:
 
 OXANNA:
 	Inherits: ^Soldier
@@ -262,8 +262,6 @@ VISC_SML:
 		MaxMoveDelay: 60
 	RenderSprites:
 		Image: vissml
-	Buildable:
-		Description: infantry transmorgifies into this
 
 VISC_LRG:
 	Inherits: ^Visceroid
@@ -293,8 +291,6 @@ VISC_LRG:
 		Crushes: crate, infantry
 	RenderSprites:
 		Image: vislrg
-	Buildable:
-		Description: 2 small visceroids combine into this
 
 CIV1:
 	Inherits: ^CivilianInfantry

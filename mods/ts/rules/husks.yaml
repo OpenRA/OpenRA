@@ -5,8 +5,7 @@ DSHP.Husk:
 	Aircraft:
 		TurnSpeed: 5
 		Speed: 168
-	RenderSprites:
-		Image: dshp
+	-RenderSprites:
 	RenderVoxels:
 		Image: dshp
 
