@@ -146,8 +146,67 @@ namespace OpenRA.Test
 			AssertValue("!-5", 1);
 		}
 
-		[TestCase(TestName = "Precedence")]
-		public void TestPrecedence()
+		[TestCase(TestName = "Relation operations")]
+		public void TestRelations()
+		{
+			AssertValue("2 < 5", 1);
+			AssertValue("0 < 5", 1);
+			AssertValue("5 < 2", 0);
+			AssertValue("5 < 5", 0);
+			AssertValue("-5 < 0", 1);
+			AssertValue("-2 < -5", 0);
+			AssertValue("-5 < -2", 1);
+			AssertValue("-5 < -5", 0);
+			AssertValue("-7 < 5", 1);
+			AssertValue("0 <= 5", 1);
+			AssertValue("2 <= 5", 1);
+			AssertValue("5 <= 2", 0);
+			AssertValue("5 <= 5", 1);
+			AssertValue("5 <= 0", 0);
+			AssertValue("-2 <= -5", 0);
+			AssertValue("-5 <= -2", 1);
+			AssertValue("-5 <= -5", 1);
+			AssertValue("-7 <= 5", 1);
+			AssertValue("0 <= -5", 0);
+			AssertValue("-5 <= 0", 1);
+			AssertValue("5 > 2", 1);
+			AssertValue("0 > 5", 0);
+			AssertValue("2 > 5", 0);
+			AssertValue("5 > 5", 0);
+			AssertValue("5 > 0", 1);
+			AssertValue("-2 > -5", 1);
+			AssertValue("-7 > -5", 0);
+			AssertValue("-5 > -5", 0);
+			AssertValue("-4 > -5", 1);
+			AssertValue("5 >= 0", 1);
+			AssertValue("0 >= 5", 0);
+			AssertValue("5 >= 2", 1);
+			AssertValue("2 >= 5", 0);
+			AssertValue("5 >= 5", 1);
+			AssertValue("-5 >= 0", 0);
+			AssertValue("0 >= -5", 1);
+			AssertValue("-7 >= 5", 0);
+			AssertValue("-5 >= -5", 1);
+			AssertValue("-4 >= -5", 1);
+		}
+
+		[TestCase(TestName = "Relation Mixed Precedence")]
+		public void TestRelationMixedPrecedence()
+		{
+			AssertValue("5 <= 5 && 2 > 1", 1);
+			AssertValue("5 > 5 || 2 > 1", 1);
+			AssertValue("5 > 5 || 1 > 1", 0);
+			AssertValue("5 <= 5 == 2 > 1", 1);
+			AssertValue("5 > 5 == 2 > 1", 0);
+			AssertValue("5 > 5 == 1 > 1", 1);
+			AssertValue("5 <= 5 != 2 > 1", 0);
+			AssertValue("5 > 5 != 2 > 1", 1);
+			AssertValue("5 > 5 != 1 > 1", 0);
+			AssertValue("5 > 5 != 1 >= 1", 1);
+		}
+
+		[TestCase(TestName = "AND-OR Precedence")]
+		public void TestAndOrPrecedence()
 		{
 			AssertTrue("true && false || true");
 			AssertFalse("false || false && true");

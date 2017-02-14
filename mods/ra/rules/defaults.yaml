@@ -21,7 +21,7 @@
 			800: rank-veteran
 			1600: rank-veteran
 	GrantCondition@RANK-ELITE:
-		RequiresCondition: rank-veteran == 4
+		RequiresCondition: rank-veteran >= 4
 		Condition: rank-elite
 	DamageMultiplier@RANK-1:
 		RequiresCondition: rank-veteran == 1

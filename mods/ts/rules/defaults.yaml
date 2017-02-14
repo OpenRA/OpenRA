@@ -24,7 +24,7 @@
 		RequiresCondition: rank == 1
 		Condition: rank-veteran
 	GrantCondition@RANK-ELITE:
-		RequiresCondition: rank == 2
+		RequiresCondition: rank >= 2
 		Condition: rank-elite
 	FirepowerMultiplier@VETERAN:
 		RequiresCondition: rank-veteran

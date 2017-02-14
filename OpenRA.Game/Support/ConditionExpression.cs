@@ -123,6 +123,10 @@ namespace OpenRA.Support
 			Or,
 			Equals,
 			NotEquals,
+			LessThan,
+			LessThanOrEqual,
+			GreaterThan,
+			GreaterThanOrEqual,
 
 			Invalid
 		}
@@ -130,6 +134,7 @@ namespace OpenRA.Support
 		enum Precedence
 		{
 			Unary = 16,
+			Relation = 9,
 			Equality = 8,
 			And = 4,
 			Or = 3,
@@ -211,6 +216,18 @@ namespace OpenRA.Support
 					case TokenType.NotEquals:
 						yield return new TokenTypeInfo("!=", Precedence.Equality, OperandSides.Both);
 						continue;
+					case TokenType.LessThan:
+						yield return new TokenTypeInfo("<", Precedence.Relation, OperandSides.Both);
+						continue;
+					case TokenType.LessThanOrEqual:
+						yield return new TokenTypeInfo("<=", Precedence.Relation, OperandSides.Both);
+						continue;
+					case TokenType.GreaterThan:
+						yield return new TokenTypeInfo(">", Precedence.Relation, OperandSides.Both);
+						continue;
+					case TokenType.GreaterThanOrEqual:
+						yield return new TokenTypeInfo(">=", Precedence.Relation, OperandSides.Both);
+						continue;
 				}
 
 				throw new InvalidProgramException("CreateTokenTypeInfoEnumeration is missing a TokenTypeInfo entry for TokenType.{0}".F(
@@ -257,6 +274,26 @@ namespace OpenRA.Support
 						}
 
 						return TokenType.Not;
+
+					case '<':
+						i++;
+						if (i < expression.Length && expression[i] == '=')
+						{
+							i++;
+							return TokenType.LessThanOrEqual;
+						}
+
+						return TokenType.LessThan;
+
+					case '>':
+						i++;
+						if (i < expression.Length && expression[i] == '=')
+						{
+							i++;
+							return TokenType.GreaterThanOrEqual;
+						}
+
+						return TokenType.GreaterThan;
 
 					case '=':
 						i++;
@@ -622,6 +659,38 @@ namespace OpenRA.Support
 								ast.Push(Expressions.Expression.Not(ast.Pop(ExpressionType.Bool)));
 							else
 								ast.Push(AsNegBool(ast.Pop(ExpressionType.Int)));
+							continue;
+						}
+
+						case TokenType.LessThan:
+						{
+							var y = ast.Pop(ExpressionType.Int);
+							var x = ast.Pop(ExpressionType.Int);
+							ast.Push(Expressions.Expression.LessThan(x, y));
+							continue;
+						}
+
+						case TokenType.LessThanOrEqual:
+						{
+							var y = ast.Pop(ExpressionType.Int);
+							var x = ast.Pop(ExpressionType.Int);
+							ast.Push(Expressions.Expression.LessThanOrEqual(x, y));
+							continue;
+						}
+
+						case TokenType.GreaterThan:
+						{
+							var y = ast.Pop(ExpressionType.Int);
+							var x = ast.Pop(ExpressionType.Int);
+							ast.Push(Expressions.Expression.GreaterThan(x, y));
+							continue;
+						}
+
+						case TokenType.GreaterThanOrEqual:
+						{
+							var y = ast.Pop(ExpressionType.Int);
+							var x = ast.Pop(ExpressionType.Int);
+							ast.Push(Expressions.Expression.GreaterThanOrEqual(x, y));
 							continue;
 						}
 
