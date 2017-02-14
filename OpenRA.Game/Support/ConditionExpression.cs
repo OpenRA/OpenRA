@@ -109,8 +109,11 @@ namespace OpenRA.Support
 
 		enum TokenType
 		{
+			// varying values
 			Number,
 			Variable,
+
+			// operators
 			OpenParen,
 			CloseParen,
 			Not,
@@ -118,6 +121,7 @@ namespace OpenRA.Support
 			Or,
 			Equals,
 			NotEquals,
+
 			Invalid
 		}
 
@@ -232,6 +236,126 @@ namespace OpenRA.Support
 				Type = type;
 				Index = index;
 			}
+
+			public static TokenType GetNextType(string expression, ref int i)
+			{
+				var start = i;
+
+				switch (expression[i])
+				{
+					case '!':
+						i++;
+						if (i < expression.Length && expression[i] == '=')
+						{
+							i++;
+							return TokenType.NotEquals;
+						}
+
+						return TokenType.Not;
+
+					case '=':
+						i++;
+						if (i < expression.Length && expression[i] == '=')
+						{
+							i++;
+							return TokenType.Equals;
+						}
+
+						throw new InvalidDataException("Unexpected character '=' at index {0} - should it be `==`?".F(start));
+
+					case '&':
+						i++;
+						if (i < expression.Length && expression[i] == '&')
+						{
+							i++;
+							return TokenType.And;
+						}
+
+						throw new InvalidDataException("Unexpected character '&' at index {0} - should it be `&&`?".F(start));
+
+					case '|':
+						i++;
+						if (i < expression.Length && expression[i] == '|')
+						{
+							i++;
+							return TokenType.Or;
+						}
+
+						throw new InvalidDataException("Unexpected character '|' at index {0} - should it be `||`?".F(start));
+
+					case '(':
+						i++;
+						return TokenType.OpenParen;
+
+					case ')':
+						i++;
+						return TokenType.CloseParen;
+				}
+
+				var cc = CharClassOf(expression[start]);
+
+				// Scan forwards until we find an non-digit character
+				if (expression[start] == '-' || cc == CharClass.Digit)
+				{
+					i++;
+					for (; i < expression.Length; i++)
+					{
+						cc = CharClassOf(expression[i]);
+						if (cc != CharClass.Digit)
+						{
+							if (cc != CharClass.Whitespace && cc != CharClass.Operator)
+								throw new InvalidDataException("Number {0} and variable merged at index {1}".F(
+									int.Parse(expression.Substring(start, i - start)), start));
+
+							return TokenType.Number;
+						}
+					}
+
+					return TokenType.Number;
+				}
+
+				if (cc != CharClass.Id)
+					throw new InvalidDataException("Invalid character '{0}' at index {1}".F(expression[i], start));
+
+				// Scan forwards until we find an invalid name character
+				for (; i < expression.Length; i++)
+				{
+					cc = CharClassOf(expression[i]);
+					if (cc == CharClass.Whitespace || cc == CharClass.Operator)
+						return TokenType.Variable;
+				}
+
+				// Take the rest of the string
+				return TokenType.Variable;
+			}
+
+			public static Token GetNext(string expression, ref int i)
+			{
+				if (i == expression.Length)
+					return null;
+
+				// Ignore whitespace
+				while (CharClassOf(expression[i]) == CharClass.Whitespace)
+				{
+					if (++i == expression.Length)
+						return null;
+				}
+
+				var start = i;
+
+				var type = GetNextType(expression, ref i);
+				switch (type)
+				{
+					case TokenType.Number:
+						return new NumberToken(start, expression.Substring(start, i - start));
+
+					case TokenType.Variable:
+						return new VariableToken(start, expression.Substring(start, i - start));
+
+					default:
+						return new Token(type, start);
+				}
+			}
 		}
 
 		class VariableToken : Token
@@ -264,16 +388,12 @@ namespace OpenRA.Support
 			var openParens = 0;
 			var closeParens = 0;
 			var tokens = new List<Token>();
-			for (var i = 0; i < expression.Length;)
+			for (var i = 0;;)
 			{
-				// Ignore whitespace
-				if (CharClassOf(expression[i]) == CharClass.Whitespace)
-				{
-					i++;
-					continue;
-				}
+				var token = Token.GetNext(expression, ref i);
+				if (token == null)
+					break;
 
-				var token = ParseSymbol(expression, ref i);
 				switch (token.Type)
 				{
 					case TokenType.OpenParen:
@@ -329,111 +449,6 @@ namespace OpenRA.Support
 
 			// Convert to postfix (discarding parentheses) ready for evaluation
 			postfix = ToPostfix(tokens).ToArray();
-		}
-
-		static Token ParseSymbol(string expression, ref int i)
-		{
-			var start = i;
-
-			// Parse operators
-			switch (expression[start])
-			{
-				case '!':
-				{
-					i++;
-					if (i < expression.Length && expression[start + 1] == '=')
-					{
-						i++;
-						return new Token(TokenType.NotEquals, start);
-					}
-
-					return new Token(TokenType.Not, start);
-				}
-
-				case '=':
-				{
-					i++;
-					if (i < expression.Length && expression[start + 1] == '=')
-					{
-						i++;
-						return new Token(TokenType.Equals, start);
-					}
-
-					throw new InvalidDataException("Unexpected character '=' at index {0} - should it be `==`?".F(start));
-				}
-
-				case '&':
-				{
-					i++;
-					if (i < expression.Length && expression[start + 1] == '&')
-					{
-						i++;
-						return new Token(TokenType.And, start);
-					}
-
-					throw new InvalidDataException("Unexpected character '&' at index {0} - should it be `&&`?".F(start));
-				}
-
-				case '|':
-				{
-					i++;
-					if (i < expression.Length && expression[start + 1] == '|')
-					{
-						i++;
-						return new Token(TokenType.Or, start);
-					}
-
-					throw new InvalidDataException("Unexpected character '|' at index {0} - should it be `||`?".F(start));
-				}
-
-				case '(':
-				{
-					i++;
-					return new Token(TokenType.OpenParen, start);
-				}
-
-				case ')':
-				{
-					i++;
-					return new Token(TokenType.CloseParen, start);
-				}
-			}
-
-			var cc = CharClassOf(expression[start]);
-
-			// Scan forwards until we find an non-digit character
-			if (expression[start] == '-' || cc == CharClass.Digit)
-			{
-				i++;
-				for (; i < expression.Length; i++)
-				{
-					cc = CharClassOf(expression[i]);
-					if (cc != CharClass.Digit)
-					{
-						if (cc != CharClass.Whitespace && cc != CharClass.Operator)
-							throw new InvalidDataException("Number {0} and variable merged at index {1}".F(
-								int.Parse(expression.Substring(start, i - start)), start));
-
-						return new NumberToken(start, expression.Substring(start, i - start));
-					}
-				}
-
-				return new NumberToken(start, expression.Substring(start));
-			}
-
-			if (cc != CharClass.Id)
-				throw new InvalidDataException("Invalid character '{0}' at index {1}".F(expression[i], start));
-
-			// Scan forwards until we find an invalid name character
-			for (; i < expression.Length; i++)
-			{
-				cc = CharClassOf(expression[i]);
-				if (cc == CharClass.Whitespace || cc == CharClass.Operator)
-					return new VariableToken(start, expression.Substring(start, i - start));
-			}
-
-			// Take the rest of the string
-			return new VariableToken(start, expression.Substring(start));
 		}
 
 		static int ParseSymbol(VariableToken t, IReadOnlyDictionary<string, int> symbols)
