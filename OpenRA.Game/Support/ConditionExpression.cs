@@ -24,6 +24,69 @@ namespace OpenRA.Support
 
 		readonly Token[] postfix;
 
+		enum CharClass { Whitespace, Operator, Mixed, Id, Digit }
+
+		static CharClass CharClassOf(char c)
+		{
+			switch (c)
+			{
+				case '~':
+				case '!':
+				case '%':
+				case '^':
+				case '&':
+				case '*':
+				case '(':
+				case ')':
+				case '+':
+				case '=':
+				case '[':
+				case ']':
+				case '{':
+				case '}':
+				case '|':
+				case ':':
+				case ';':
+				case '\'':
+				case '"':
+				case '<':
+				case '>':
+				case '?':
+				case ',':
+				case '/':
+					return CharClass.Operator;
+
+				case '.':
+				case '$':
+				case '-':
+				case '@':
+					return CharClass.Mixed;
+
+				case '0':
+				case '1':
+				case '2':
+				case '3':
+				case '4':
+				case '5':
+				case '6':
+				case '7':
+				case '8':
+				case '9':
+					return CharClass.Digit;
+
+					// Fast-track normal whitespace
+				case ' ':
+				case '\t':
+				case '\n':
+				case '\r':
+					return CharClass.Whitespace;
+
+					// Should other whitespace be tested?
+				default:
+					return char.IsWhiteSpace(c) ? CharClass.Whitespace : CharClass.Id;
+			}
+		}
+
 		enum Associativity { Left, Right }
 
 		[Flags]
@@ -201,41 +264,34 @@ namespace OpenRA.Support
 			var openParens = 0;
 			var closeParens = 0;
 			var tokens = new List<Token>();
-			for (var i = 0; i < expression.Length; i++)
+			for (var i = 0; i < expression.Length;)
 			{
-				switch (expression[i])
+				// Ignore whitespace
+				if (CharClassOf(expression[i]) == CharClass.Whitespace)
 				{
-					case '(':
-					{
-						tokens.Add(new Token(TokenType.OpenParen, i));
+					i++;
+					continue;
+				}
+
+				var token = ParseSymbol(expression, ref i);
+				switch (token.Type)
+				{
+					case TokenType.OpenParen:
 						openParens++;
 						break;
-					}
 
-					case ')':
-					{
-						tokens.Add(new Token(TokenType.CloseParen, i));
+					case TokenType.CloseParen:
 						if (++closeParens > openParens)
-							throw new InvalidDataException("Unmatched closing parenthesis at index {0}".F(i));
+							throw new InvalidDataException("Unmatched closing parenthesis at index {0}".F(i - 1));
 
 						break;
-					}
 
-					default:
-					{
-						// Ignore whitespace
-						if (CharClassOf(expression[i]) == CharClass.Whitespace)
-							break;
-
-						var token = ParseSymbol(expression, ref i);
-						tokens.Add(token);
-
-						if (token.Type == TokenType.Variable)
-							variables.Add(token.Symbol);
-
+					case TokenType.Variable:
+						variables.Add(token.Symbol);
 						break;
-					}
 				}
+
+				tokens.Add(token);
 			}
 
 			// Sanity check parsed tree
@@ -275,69 +331,6 @@ namespace OpenRA.Support
 			postfix = ToPostfix(tokens).ToArray();
 		}
 
-		enum CharClass { Whitespace, Operator, Mixed, Id, Digit }
-
-		static CharClass CharClassOf(char c)
-		{
-			switch (c)
-			{
-				case '~':
-				case '!':
-				case '%':
-				case '^':
-				case '&':
-				case '*':
-				case '(':
-				case ')':
-				case '+':
-				case '=':
-				case '[':
-				case ']':
-				case '{':
-				case '}':
-				case '|':
-				case ':':
-				case ';':
-				case '\'':
-				case '"':
-				case '<':
-				case '>':
-				case '?':
-				case ',':
-				case '/':
-					return CharClass.Operator;
-
-				case '.':
-				case '$':
-				case '-':
-				case '@':
-					return CharClass.Mixed;
-
-				case '0':
-				case '1':
-				case '2':
-				case '3':
-				case '4':
-				case '5':
-				case '6':
-				case '7':
-				case '8':
-				case '9':
-					return CharClass.Digit;
-
-				// Fast-track normal whitespace
-				case ' ':
-				case '\t':
-				case '\n':
-				case '\r':
-					return CharClass.Whitespace;
-
-				// Should other whitespace be tested?
-				default:
-					return char.IsWhiteSpace(c) ? CharClass.Whitespace : CharClass.Id;
-			}
-		}
-
 		static Token ParseSymbol(string expression, ref int i)
 		{
 			var start = i;
@@ -347,7 +340,8 @@ namespace OpenRA.Support
 			{
 				case '!':
 				{
-					if (i < expression.Length - 1 && expression[start + 1] == '=')
+					i++;
+					if (i < expression.Length && expression[start + 1] == '=')
 					{
 						i++;
 						return new Token(TokenType.NotEquals, start);
@@ -358,7 +352,8 @@ namespace OpenRA.Support
 
 				case '=':
 				{
-					if (i < expression.Length - 1 && expression[start + 1] == '=')
+					i++;
+					if (i < expression.Length && expression[start + 1] == '=')
 					{
 						i++;
 						return new Token(TokenType.Equals, start);
@@ -369,7 +364,8 @@ namespace OpenRA.Support
 
 				case '&':
 				{
-					if (i < expression.Length - 1 && expression[start + 1] == '&')
+					i++;
+					if (i < expression.Length && expression[start + 1] == '&')
 					{
 						i++;
 						return new Token(TokenType.And, start);
@@ -380,13 +376,26 @@ namespace OpenRA.Support
 
 				case '|':
 				{
-					if (i < expression.Length - 1 && expression[start + 1] == '|')
+					i++;
+					if (i < expression.Length && expression[start + 1] == '|')
 					{
 						i++;
 						return new Token(TokenType.Or, start);
 					}
 
 					throw new InvalidDataException("Unexpected character '|' at index {0} - should it be `||`?".F(start));
+				}
+
+				case '(':
+				{
+					i++;
+					return new Token(TokenType.OpenParen, start);
+				}
+
+				case ')':
+				{
+					i++;
+					return new Token(TokenType.CloseParen, start);
 				}
 			}
 
@@ -405,9 +414,7 @@ namespace OpenRA.Support
 							throw new InvalidDataException("Number {0} and variable merged at index {1}".F(
 								int.Parse(expression.Substring(start, i - start)), start));
 
-						// Put the bad character back for the next parse attempt
-						i--;
-						return new NumberToken(start, expression.Substring(start, i - start + 1));
+						return new NumberToken(start, expression.Substring(start, i - start));
 					}
 				}
 
@@ -422,11 +429,7 @@ namespace OpenRA.Support
 			{
 				cc = CharClassOf(expression[i]);
 				if (cc == CharClass.Whitespace || cc == CharClass.Operator)
-				{
-					// Put the bad character back for the next parse attempt
-					i--;
-					return new VariableToken(start, expression.Substring(start, i - start + 1));
-				}
+					return new VariableToken(start, expression.Substring(start, i - start));
 			}
 
 			// Take the rest of the string
