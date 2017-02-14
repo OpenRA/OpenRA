@@ -58,6 +58,8 @@ namespace OpenRA.Mods.Common.Traits
 		int currentDisplayTick = 0;
 		int currentDisplayValue = 0;
 
+		List<Actor> virtuallyDockedHarvs;
+
 		[Sync] public int Ore = 0;
 		[Sync] Actor dockedHarv = null;
 		[Sync] bool preventDock = false;
@@ -76,6 +78,7 @@ namespace OpenRA.Mods.Common.Traits
 			playerResources = self.Owner.PlayerActor.Trait<PlayerResources>();
 			currentDisplayTick = info.TickRate;
 			wsb = self.Trait<WithSpriteBody>();
+			virtuallyDockedHarvs = new List<Actor>();
 		}
 
 		public virtual Activity DockSequence(Actor harv, Actor self)
@@ -107,15 +110,31 @@ namespace OpenRA.Mods.Common.Traits
 			// Cancel the dock sequence
 			if (dockedHarv != null && !dockedHarv.IsDead)
 				dockedHarv.CancelActivity();
+
+			foreach (var harv in virtuallyDockedHarvs)
+			{
+				if (!harv.IsDead)
+					harv.CancelActivity();
+			}
 		}
 
 		public void Tick(Actor self)
 		{
+			var rms = new List<Actor>();
+			foreach (var harv in virtuallyDockedHarvs)
+				if (harv.IsDead)
+					rms.Add(harv);
+			foreach (var rm in rms)
+				// Well, the list shouldn't be too long.
+				virtuallyDockedHarvs.Remove(rm);
 			// Harvester was killed while unloading
 			if (dockedHarv != null && dockedHarv.IsDead)
 			{
-				wsb.CancelCustomAnimation(self);
 				dockedHarv = null;
+
+				if (virtuallyDockedHarvs.Count == 0)
+					// when nothing docked and virtually docked harv has nothing too...
+					wsb.CancelCustomAnimation(self);
 			}
 
 			if (info.ShowTicks && currentDisplayValue > 0 && --currentDisplayTick <= 0)
@@ -139,9 +158,18 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			if (!preventDock)
 			{
-				harv.QueueActivity(new CallFunc(() => dockedHarv = harv, false));
-				harv.QueueActivity(DockSequence(harv, self));
-				harv.QueueActivity(new CallFunc(() => dockedHarv = null, false));
+				if (harv.Info.TraitInfo<HarvesterInfo>().OreTeleporter)
+				{
+					harv.QueueActivity(new CallFunc(() => virtuallyDockedHarvs.Add(harv), false));
+					harv.QueueActivity(DockSequence(harv, self));
+					harv.QueueActivity(new CallFunc(() => virtuallyDockedHarvs.Remove(harv), false)); // list, but shouldn't be too long.
+				}
+				else
+				{
+					harv.QueueActivity(new CallFunc(() => dockedHarv = harv, false));
+					harv.QueueActivity(DockSequence(harv, self));
+					harv.QueueActivity(new CallFunc(() => dockedHarv = null, false));
+				}
 			}
 
 			harv.QueueActivity(new CallFunc(() => harv.Trait<Harvester>().ContinueHarvesting(harv)));
