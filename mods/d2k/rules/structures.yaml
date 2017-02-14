@@ -627,7 +627,7 @@ wall:
 			TopLeft: -512, -512
 			BottomRight: 512, 512
 	Armor:
-		Type: none
+		Type: wall
 	RevealsShroud:
 		Range: 2c768
 	Crushable:
