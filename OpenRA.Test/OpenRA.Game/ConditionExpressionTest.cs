@@ -178,10 +178,12 @@ namespace OpenRA.Test
 		{
 			AssertParseFailure("()", "Empty parenthesis at index 0");
 			AssertParseFailure("! && true", "Missing value or sub-expression or there is an extra operator `!` at index 0 or `&&` at index 2");
-			AssertParseFailure("(true", "Mismatched opening and closing parentheses");
+			AssertParseFailure("(true", "Unclosed opening parenthesis at index 0");
 			AssertParseFailure(")true", "Unmatched closing parenthesis at index 0");
 			AssertParseFailure("false)", "Unmatched closing parenthesis at index 5");
-			AssertParseFailure("false(", "Mismatched opening and closing parentheses");
+			AssertParseFailure("false(", "Missing binary operation before `(` at index 5");
+			AssertParseFailure("(", "Missing value or sub-expression at end for `(` operator");
+			AssertParseFailure(")", "Unmatched closing parenthesis at index 0");
 			AssertParseFailure("false!", "Missing binary operation before `!` at index 5");
 			AssertParseFailure("true false", "Missing binary operation before `false` at index 5");
 			AssertParseFailure("true & false", "Unexpected character '&' at index 5 - should it be `&&`?");

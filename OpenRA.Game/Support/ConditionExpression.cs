@@ -325,7 +325,6 @@ namespace OpenRA.Support
 						return TokenType.Variable;
 				}
 
-				// Take the rest of the string
 				return TokenType.Variable;
 			}
 
@@ -385,67 +384,68 @@ namespace OpenRA.Support
 		public ConditionExpression(string expression)
 		{
 			Expression = expression;
-			var openParens = 0;
-			var closeParens = 0;
 			var tokens = new List<Token>();
+			var currentOpeners = new Stack<Token>();
+			Token lastToken = null;
 			for (var i = 0;;)
 			{
 				var token = Token.GetNext(expression, ref i);
 				if (token == null)
-					break;
-
-				switch (token.Type)
 				{
-					case TokenType.OpenParen:
-						openParens++;
-						break;
+					// Sanity check parsed tree
+					if (lastToken == null)
+						throw new InvalidDataException("Empty expression");
 
-					case TokenType.CloseParen:
-						if (++closeParens > openParens)
-							throw new InvalidDataException("Unmatched closing parenthesis at index {0}".F(i - 1));
+					// Expressions can't end with a binary or unary prefix operation
+					if (lastToken.RightOperand)
+						throw new InvalidDataException("Missing value or sub-expression at end for `{0}` operator".F(lastToken.Symbol));
 
-						break;
-
-					case TokenType.Variable:
-						variables.Add(token.Symbol);
-						break;
+					break;
 				}
+
+				if (token.Closes != Grouping.None)
+				{
+					if (currentOpeners.Count == 0)
+						throw new InvalidDataException("Unmatched closing parenthesis at index {0}".F(token.Index));
+
+					currentOpeners.Pop();
+				}
+
+				if (token.Opens != Grouping.None)
+					currentOpeners.Push(token);
+
+				if (lastToken == null)
+				{
+					// Expressions can't start with a binary or unary postfix operation or closer
+					if (token.LeftOperand)
+						throw new InvalidDataException("Missing value or sub-expression at beginning for `{0}` operator".F(token.Symbol));
+				}
+				else
+				{
+					// Disallow empty parentheses
+					if (lastToken.Opens != Grouping.None && token.Closes != Grouping.None)
+						throw new InvalidDataException("Empty parenthesis at index {0}".F(lastToken.Index));
+
+					// Exactly one of two consective tokens must take the other's sub-expression evaluation as an operand
+					if (lastToken.RightOperand == token.LeftOperand)
+					{
+						if (lastToken.RightOperand)
+							throw new InvalidDataException(
+								"Missing value or sub-expression or there is an extra operator `{0}` at index {1} or `{2}` at index {3}".F(
+									lastToken.Symbol, lastToken.Index, token.Symbol, token.Index));
+						throw new InvalidDataException("Missing binary operation before `{0}` at index {1}".F(token.Symbol, token.Index));
+					}
+				}
+
+				if (token.Type == TokenType.Variable)
+					variables.Add(token.Symbol);
 
 				tokens.Add(token);
+				lastToken = token;
 			}
 
-			// Sanity check parsed tree
-			if (!tokens.Any())
-				throw new InvalidDataException("Empty expression");
-
-			if (closeParens != openParens)
-				throw new InvalidDataException("Mismatched opening and closing parentheses");
-
-			// Expressions can't start with a binary or unary postfix operation or closer
-			if (tokens[0].LeftOperand)
-				throw new InvalidDataException("Missing value or sub-expression at beginning for `{0}` operator".F(tokens[0].Symbol));
-
-			for (var i = 0; i < tokens.Count - 1; i++)
-			{
-				// Disallow empty parentheses
-				if (tokens[i].Opens != Grouping.None && tokens[i + 1].Closes != Grouping.None)
-					throw new InvalidDataException("Empty parenthesis at index {0}".F(tokens[i].Index));
-
-				// Exactly one of two consective tokens must take the other's sub-expression evaluation as an operand
-				if (tokens[i].RightOperand == tokens[i + 1].LeftOperand)
-				{
-					if (tokens[i].RightOperand)
-						throw new InvalidDataException(
-							"Missing value or sub-expression or there is an extra operator `{0}` at index {1} or `{2}` at index {3}".F(
-								tokens[i].Symbol, tokens[i].Index, tokens[i + 1].Symbol, tokens[i + 1].Index));
-					throw new InvalidDataException("Missing binary operation before `{0}` at index {1}".F(
-						tokens[i + 1].Symbol, tokens[i + 1].Index));
-				}
-			}
-
-			// Expressions can't end with a binary or unary prefix operation
-			if (tokens[tokens.Count - 1].RightOperand)
-				throw new InvalidDataException("Missing value or sub-expression at end for `{0}` operator".F(tokens[tokens.Count - 1].Symbol));
+			if (currentOpeners.Count > 0)
+				throw new InvalidDataException("Unclosed opening parenthesis at index {0}".F(currentOpeners.Peek().Index));
 
 			// Convert to postfix (discarding parentheses) ready for evaluation
 			postfix = ToPostfix(tokens).ToArray();
