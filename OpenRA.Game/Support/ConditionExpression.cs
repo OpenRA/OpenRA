@@ -129,11 +129,14 @@ namespace OpenRA.Support
 
 		enum Precedence
 		{
-			Invalid = ~0,
-			Parens = -1,
+			Unary = 16,
+			Equality = 8,
+			And = 4,
+			Or = 3,
+			Binary = 0,
 			Value = 0,
-			Unary = 1,
-			Binary = 0
+			Parens = -1,
+			Invalid = ~0
 		}
 
 		struct TokenTypeInfo
@@ -197,16 +200,16 @@ namespace OpenRA.Support
 						yield return new TokenTypeInfo("!", Precedence.Unary, OperandSides.Right, Associativity.Right);
 						continue;
 					case TokenType.And:
-						yield return new TokenTypeInfo("&&", Precedence.Binary, OperandSides.Both);
+						yield return new TokenTypeInfo("&&", Precedence.And, OperandSides.Both);
 						continue;
 					case TokenType.Or:
-						yield return new TokenTypeInfo("||", Precedence.Binary, OperandSides.Both);
+						yield return new TokenTypeInfo("||", Precedence.Or, OperandSides.Both);
 						continue;
 					case TokenType.Equals:
-						yield return new TokenTypeInfo("==", Precedence.Binary, OperandSides.Both);
+						yield return new TokenTypeInfo("==", Precedence.Equality, OperandSides.Both);
 						continue;
 					case TokenType.NotEquals:
-						yield return new TokenTypeInfo("!=", Precedence.Binary, OperandSides.Both);
+						yield return new TokenTypeInfo("!=", Precedence.Equality, OperandSides.Both);
 						continue;
 				}
 
