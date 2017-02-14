@@ -650,9 +650,9 @@ wall:
 		Weapon: WallExplode
 		EmptyWeapon: WallExplode
 	ThrowsShrapnel:
-		Weapons: Debris, Debris3
-		Pieces: 2, 2
-		Range: 2c0, 4c0
+		Weapons: Debris2, Debris3
+		Pieces: 1, 1
+		Range: 1c512, 2c768
 
 medium_gun_turret:
 	Inherits: ^Defense
