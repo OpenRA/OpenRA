@@ -66,6 +66,13 @@ namespace OpenRA.Test
 			AssertValue("-12", -12);
 		}
 
+		[TestCase(TestName = "Booleans")]
+		public void TestBooleans()
+		{
+			AssertValue("false", 0);
+			AssertValue("true", 1);
+		}
+
 		[TestCase(TestName = "AND operation")]
 		public void TestAnd()
 		{
@@ -75,8 +82,8 @@ namespace OpenRA.Test
 			AssertFalse("false && true");
 			AssertValue("2 && false", 0);
 			AssertValue("false && 2", 0);
-			AssertValue("3 && 2", 2);
-			AssertValue("2 && 3", 3);
+			AssertValue("3 && 2", 1);
+			AssertValue("2 && 3", 1);
 		}
 
 		[TestCase(TestName = "OR operation")]
@@ -86,10 +93,10 @@ namespace OpenRA.Test
 			AssertFalse("false || false");
 			AssertTrue("true || false");
 			AssertTrue("false || true");
-			AssertValue("2 || false", 2);
-			AssertValue("false || 2", 2);
-			AssertValue("3 || 2", 3);
-			AssertValue("2 || 3", 2);
+			AssertValue("2 || false", 1);
+			AssertValue("false || 2", 1);
+			AssertValue("3 || 2", 1);
+			AssertValue("2 || 3", 1);
 		}
 
 		[TestCase(TestName = "Equals operation")]

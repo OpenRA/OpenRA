@@ -13,6 +13,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Linq.Expressions;
+using Expressions = System.Linq.Expressions;
 
 namespace OpenRA.Support
 {
@@ -22,7 +24,7 @@ namespace OpenRA.Support
 		readonly HashSet<string> variables = new HashSet<string>();
 		public IEnumerable<string> Variables { get { return variables; } }
 
-		readonly Token[] postfix;
+		readonly Func<IReadOnlyDictionary<string, int>, int> asFunction;
 
 		enum CharClass { Whitespace, Operator, Mixed, Id, Digit }
 
@@ -447,28 +449,14 @@ namespace OpenRA.Support
 			if (currentOpeners.Count > 0)
 				throw new InvalidDataException("Unclosed opening parenthesis at index {0}".F(currentOpeners.Peek().Index));
 
-			// Convert to postfix (discarding parentheses) ready for evaluation
-			postfix = ToPostfix(tokens).ToArray();
+			asFunction = new Compiler().Compile(ToPostfix(tokens).ToArray());
 		}
 
-		static int ParseSymbol(VariableToken t, IReadOnlyDictionary<string, int> symbols)
+		static int ParseSymbol(string symbol, IReadOnlyDictionary<string, int> symbols)
 		{
 			int value;
-			symbols.TryGetValue(t.Symbol, out value);
+			symbols.TryGetValue(symbol, out value);
 			return value;
-		}
-
-		static void ApplyBinaryOperation(Stack<int> s, Func<int, int, int> f)
-		{
-			var x = s.Pop();
-			var y = s.Pop();
-			s.Push(f(x, y));
-		}
-
-		static void ApplyUnaryOperation(Stack<int> s, Func<int, int> f)
-		{
-			var x = s.Pop();
-			s.Push(f(x));
 		}
 
 		static IEnumerable<Token> ToPostfix(IEnumerable<Token> tokens)
@@ -500,41 +488,169 @@ namespace OpenRA.Support
 				yield return s.Pop();
 		}
 
-		public int Evaluate(IReadOnlyDictionary<string, int> symbols)
+		enum ExpressionType { Int, Bool }
+
+		static readonly ParameterExpression SymbolsParam =
+			Expressions.Expression.Parameter(typeof(IReadOnlyDictionary<string, int>), "symbols");
+		static readonly ConstantExpression Zero = Expressions.Expression.Constant(0);
+		static readonly ConstantExpression One = Expressions.Expression.Constant(1);
+		static readonly ConstantExpression False = Expressions.Expression.Constant(false);
+		static readonly ConstantExpression True = Expressions.Expression.Constant(true);
+
+		static Expression AsBool(Expression expression)
 		{
-			var s = new Stack<int>();
-			foreach (var t in postfix)
+			return Expressions.Expression.GreaterThan(expression, Zero);
+		}
+
+		static Expression AsNegBool(Expression expression)
+		{
+			return Expressions.Expression.LessThanOrEqual(expression, Zero);
+		}
+
+		static Expression IfThenElse(Expression test, Expression ifTrue, Expression ifFalse)
+		{
+			return Expressions.Expression.Condition(test, ifTrue, ifFalse);
+		}
+
+		class AstStack
+		{
+			readonly List<Expression> expressions = new List<Expression>();
+			readonly List<ExpressionType> types = new List<ExpressionType>();
+
+			public ExpressionType PeekType() { return types[types.Count - 1]; }
+
+			public Expression Peek(ExpressionType toType)
 			{
-				switch (t.Type)
+				var fromType = types[types.Count - 1];
+				var expression = expressions[expressions.Count - 1];
+				if (toType == fromType)
+					return expression;
+
+				switch (toType)
 				{
-					case TokenType.And:
-						ApplyBinaryOperation(s, (x, y) => y > 0 ? x : y);
-						continue;
-					case TokenType.NotEquals:
-						ApplyBinaryOperation(s, (x, y) => (y != x) ? 1 : 0);
-						continue;
-					case TokenType.Or:
-						ApplyBinaryOperation(s, (x, y) => y > 0 ? y : x);
-						continue;
-					case TokenType.Equals:
-						ApplyBinaryOperation(s, (x, y) => (y == x) ? 1 : 0);
-						continue;
-					case TokenType.Not:
-						ApplyUnaryOperation(s, x => (x > 0) ? 0 : 1);
-						continue;
-					case TokenType.Number:
-						s.Push(((NumberToken)t).Value);
-						continue;
-					case TokenType.Variable:
-						s.Push(ParseSymbol((VariableToken)t, symbols));
-						continue;
-					default:
-						throw new InvalidProgramException("Evaluate is missing an evaluator for TokenType.{0}".F(
-							Enum<TokenType>.GetValues()[(int)t.Type]));
+					case ExpressionType.Bool:
+						return IfThenElse(AsBool(expression), True, False);
+					case ExpressionType.Int:
+						return IfThenElse(expression, One, Zero);
 				}
+
+				throw new InvalidProgramException("Unable to convert ExpressionType.{0} to ExpressionType.{1}".F(
+					Enum<ExpressionType>.GetValues()[(int)fromType], Enum<ExpressionType>.GetValues()[(int)toType]));
 			}
 
-			return s.Pop();
+			public Expression Pop(ExpressionType type)
+			{
+				var expression = Peek(type);
+				expressions.RemoveAt(expressions.Count - 1);
+				types.RemoveAt(types.Count - 1);
+				return expression;
+			}
+
+			public void Push(Expression expression, ExpressionType type)
+			{
+				expressions.Add(expression);
+				if (type == ExpressionType.Int)
+					if (expression.Type != typeof(int))
+						throw new InvalidOperationException("Expected System.Int type instead of {0} for {1}".F(expression.Type, expression));
+
+				if (type == ExpressionType.Bool)
+					if (expression.Type != typeof(bool))
+						throw new InvalidOperationException("Expected System.Boolean type instead of {0} for {1}".F(expression.Type, expression));
+				types.Add(type);
+			}
+
+			public void Push(Expression expression)
+			{
+				expressions.Add(expression);
+				if (expression.Type == typeof(int))
+					types.Add(ExpressionType.Int);
+				else if (expression.Type == typeof(bool))
+					types.Add(ExpressionType.Bool);
+				else
+					throw new InvalidOperationException("Unhandled result type {0} for {1}".F(expression.Type, expression));
+			}
+		}
+
+		class Compiler
+		{
+			readonly AstStack ast = new AstStack();
+
+			public Func<IReadOnlyDictionary<string, int>, int> Compile(Token[] postfix)
+			{
+				foreach (var t in postfix)
+				{
+					switch (t.Type)
+					{
+						case TokenType.And:
+						{
+							var y = ast.Pop(ExpressionType.Bool);
+							var x = ast.Pop(ExpressionType.Bool);
+							ast.Push(Expressions.Expression.And(x, y));
+							continue;
+						}
+
+						case TokenType.Or:
+						{
+							var y = ast.Pop(ExpressionType.Bool);
+							var x = ast.Pop(ExpressionType.Bool);
+							ast.Push(Expressions.Expression.Or(x, y));
+							continue;
+						}
+
+						case TokenType.NotEquals:
+						{
+							var y = ast.Pop(ExpressionType.Int);
+							var x = ast.Pop(ExpressionType.Int);
+							ast.Push(Expressions.Expression.NotEqual(x, y));
+							continue;
+						}
+
+						case TokenType.Equals:
+						{
+							var y = ast.Pop(ExpressionType.Int);
+							var x = ast.Pop(ExpressionType.Int);
+							ast.Push(Expressions.Expression.Equal(x, y));
+							continue;
+						}
+
+						case TokenType.Not:
+						{
+							if (ast.PeekType() == ExpressionType.Bool)
+								ast.Push(Expressions.Expression.Not(ast.Pop(ExpressionType.Bool)));
+							else
+								ast.Push(AsNegBool(ast.Pop(ExpressionType.Int)));
+							continue;
+						}
+
+						case TokenType.Number:
+						{
+							ast.Push(Expressions.Expression.Constant(((NumberToken)t).Value));
+							continue;
+						}
+
+						case TokenType.Variable:
+						{
+							var symbol = Expressions.Expression.Constant(((VariableToken)t).Symbol);
+							Func<string, IReadOnlyDictionary<string, int>, int> parseSymbol = ParseSymbol;
+							ast.Push(Expressions.Expression.Call(parseSymbol.Method, symbol, SymbolsParam));
+							continue;
+						}
+
+						default:
+							throw new InvalidProgramException(
+								"ConditionExpression.Compiler.Compile() is missing an expression builder for TokenType.{0}".F(
+									Enum<TokenType>.GetValues()[(int)t.Type]));
+					}
+				}
+
+				return Expressions.Expression.Lambda<Func<IReadOnlyDictionary<string, int>, int>>(
+					ast.Pop(ExpressionType.Int), SymbolsParam).Compile();
+			}
+		}
+
+		public int Evaluate(IReadOnlyDictionary<string, int> symbols)
+		{
+			return asFunction(symbols);
 		}
 	}
 }
