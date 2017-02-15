@@ -119,6 +119,8 @@ namespace OpenRA.Support
 			OpenParen,
 			CloseParen,
 			Not,
+			Negate,
+			OnesComplement,
 			And,
 			Or,
 			Equals,
@@ -127,6 +129,11 @@ namespace OpenRA.Support
 			LessThanOrEqual,
 			GreaterThan,
 			GreaterThanOrEqual,
+			Add,
+			Subtract,
+			Multiply,
+			Divide,
+			Modulo,
 
 			Invalid
 		}
@@ -134,6 +141,8 @@ namespace OpenRA.Support
 		enum Precedence
 		{
 			Unary = 16,
+			Multiplication = 12,
+			Addition = 11,
 			Relation = 9,
 			Equality = 8,
 			And = 4,
@@ -204,6 +213,12 @@ namespace OpenRA.Support
 					case TokenType.Not:
 						yield return new TokenTypeInfo("!", Precedence.Unary, OperandSides.Right, Associativity.Right);
 						continue;
+					case TokenType.OnesComplement:
+						yield return new TokenTypeInfo("~", Precedence.Unary, OperandSides.Right, Associativity.Right);
+						continue;
+					case TokenType.Negate:
+						yield return new TokenTypeInfo("-", Precedence.Unary, OperandSides.Right, Associativity.Right);
+						continue;
 					case TokenType.And:
 						yield return new TokenTypeInfo("&&", Precedence.And, OperandSides.Both);
 						continue;
@@ -228,6 +243,21 @@ namespace OpenRA.Support
 					case TokenType.GreaterThanOrEqual:
 						yield return new TokenTypeInfo(">=", Precedence.Relation, OperandSides.Both);
 						continue;
+					case TokenType.Add:
+						yield return new TokenTypeInfo("+", Precedence.Addition, OperandSides.Both);
+						continue;
+					case TokenType.Subtract:
+						yield return new TokenTypeInfo("-", Precedence.Addition, OperandSides.Both);
+						continue;
+					case TokenType.Multiply:
+						yield return new TokenTypeInfo("*", Precedence.Multiplication, OperandSides.Both);
+						continue;
+					case TokenType.Divide:
+						yield return new TokenTypeInfo("/", Precedence.Multiplication, OperandSides.Both);
+						continue;
+					case TokenType.Modulo:
+						yield return new TokenTypeInfo("%", Precedence.Multiplication, OperandSides.Both);
+						continue;
 				}
 
 				throw new InvalidProgramException("CreateTokenTypeInfoEnumeration is missing a TokenTypeInfo entry for TokenType.{0}".F(
@@ -236,6 +266,16 @@ namespace OpenRA.Support
 		}
 
 		static readonly TokenTypeInfo[] TokenTypeInfos = CreateTokenTypeInfoEnumeration().ToArray();
+
+		static bool HasRightOperand(TokenType type)
+		{
+			return ((int)TokenTypeInfos[(int)type].OperandSides & (int)OperandSides.Right) != 0;
+		}
+
+		static bool IsLeftOperandOrNone(TokenType type)
+		{
+			return type == TokenType.Invalid || HasRightOperand(type);
+		}
 
 		class Token
 		{
@@ -259,7 +299,34 @@ namespace OpenRA.Support
 				Index = index;
 			}
 
-			public static TokenType GetNextType(string expression, ref int i)
+			static bool ScanIsNumber(string expression, int start, ref int i)
+			{
+				var cc = CharClassOf(expression[i]);
+
+				// Scan forwards until we find an non-digit character
+				if (cc == CharClass.Digit)
+				{
+					i++;
+					for (; i < expression.Length; i++)
+					{
+						cc = CharClassOf(expression[i]);
+						if (cc != CharClass.Digit)
+						{
+							if (cc != CharClass.Whitespace && cc != CharClass.Operator)
+								throw new InvalidDataException("Number {0} and variable merged at index {1}".F(
+									int.Parse(expression.Substring(start, i - start)), start));
+
+							return true;
+						}
+					}
+
+					return true;
+				}
+
+				return false;
+			}
+
+			public static TokenType GetNextType(string expression, ref int i, TokenType lastType = TokenType.Invalid)
 			{
 				var start = i;
 
@@ -332,29 +399,40 @@ namespace OpenRA.Support
 					case ')':
 						i++;
 						return TokenType.CloseParen;
+
+					case '~':
+						i++;
+						return TokenType.OnesComplement;
+					case '+':
+						i++;
+						return TokenType.Add;
+
+					case '-':
+						if (++i < expression.Length && ScanIsNumber(expression, start, ref i))
+							return TokenType.Number;
+
+						i = start + 1;
+						if (IsLeftOperandOrNone(lastType))
+							return TokenType.Negate;
+						return TokenType.Subtract;
+
+					case '*':
+						i++;
+						return TokenType.Multiply;
+
+					case '/':
+						i++;
+						return TokenType.Divide;
+
+					case '%':
+						i++;
+						return TokenType.Modulo;
 				}
+
+				if (ScanIsNumber(expression, start, ref i))
+					return TokenType.Number;
 
 				var cc = CharClassOf(expression[start]);
-
-				// Scan forwards until we find an non-digit character
-				if (expression[start] == '-' || cc == CharClass.Digit)
-				{
-					i++;
-					for (; i < expression.Length; i++)
-					{
-						cc = CharClassOf(expression[i]);
-						if (cc != CharClass.Digit)
-						{
-							if (cc != CharClass.Whitespace && cc != CharClass.Operator)
-								throw new InvalidDataException("Number {0} and variable merged at index {1}".F(
-									int.Parse(expression.Substring(start, i - start)), start));
-
-							return TokenType.Number;
-						}
-					}
-
-					return TokenType.Number;
-				}
 
 				if (cc != CharClass.Id)
 					throw new InvalidDataException("Invalid character '{0}' at index {1}".F(expression[i], start));
@@ -370,7 +448,7 @@ namespace OpenRA.Support
 				return TokenType.Variable;
 			}
 
-			public static Token GetNext(string expression, ref int i)
+			public static Token GetNext(string expression, ref int i, TokenType lastType = TokenType.Invalid)
 			{
 				if (i == expression.Length)
 					return null;
@@ -384,7 +462,7 @@ namespace OpenRA.Support
 
 				var start = i;
 
-				var type = GetNextType(expression, ref i);
+				var type = GetNextType(expression, ref i, lastType);
 				switch (type)
 				{
 					case TokenType.Number:
@@ -431,7 +509,7 @@ namespace OpenRA.Support
 			Token lastToken = null;
 			for (var i = 0;;)
 			{
-				var token = Token.GetNext(expression, ref i);
+				var token = Token.GetNext(expression, ref i, lastToken != null ? lastToken.Type : TokenType.Invalid);
 				if (token == null)
 				{
 					// Sanity check parsed tree
@@ -662,6 +740,18 @@ namespace OpenRA.Support
 							continue;
 						}
 
+						case TokenType.Negate:
+						{
+							ast.Push(Expressions.Expression.Negate(ast.Pop(ExpressionType.Int)));
+							continue;
+						}
+
+						case TokenType.OnesComplement:
+						{
+							ast.Push(Expressions.Expression.OnesComplement(ast.Pop(ExpressionType.Int)));
+							continue;
+						}
+
 						case TokenType.LessThan:
 						{
 							var y = ast.Pop(ExpressionType.Int);
@@ -691,6 +781,50 @@ namespace OpenRA.Support
 							var y = ast.Pop(ExpressionType.Int);
 							var x = ast.Pop(ExpressionType.Int);
 							ast.Push(Expressions.Expression.GreaterThanOrEqual(x, y));
+							continue;
+						}
+
+						case TokenType.Add:
+						{
+							var y = ast.Pop(ExpressionType.Int);
+							var x = ast.Pop(ExpressionType.Int);
+							ast.Push(Expressions.Expression.Add(x, y));
+							continue;
+						}
+
+						case TokenType.Subtract:
+						{
+							var y = ast.Pop(ExpressionType.Int);
+							var x = ast.Pop(ExpressionType.Int);
+							ast.Push(Expressions.Expression.Subtract(x, y));
+							continue;
+						}
+
+						case TokenType.Multiply:
+						{
+							var y = ast.Pop(ExpressionType.Int);
+							var x = ast.Pop(ExpressionType.Int);
+							ast.Push(Expressions.Expression.Multiply(x, y));
+							continue;
+						}
+
+						case TokenType.Divide:
+						{
+							var y = ast.Pop(ExpressionType.Int);
+							var x = ast.Pop(ExpressionType.Int);
+							var isNotZero = Expressions.Expression.NotEqual(y, Zero);
+							var divide = Expressions.Expression.Divide(x, y);
+							ast.Push(IfThenElse(isNotZero, divide, Zero));
+							continue;
+						}
+
+						case TokenType.Modulo:
+						{
+							var y = ast.Pop(ExpressionType.Int);
+							var x = ast.Pop(ExpressionType.Int);
+							var isNotZero = Expressions.Expression.NotEqual(y, Zero);
+							var modulo = Expressions.Expression.Modulo(x, y);
+							ast.Push(IfThenElse(isNotZero, modulo, Zero));
 							continue;
 						}
 

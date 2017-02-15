@@ -223,6 +223,58 @@ namespace OpenRA.Test
 			AssertFalse("((false))");
 		}
 
+		[TestCase(TestName = "Arithmetic")]
+		public void TestArithmetic()
+		{
+			AssertValue("~0", ~0);
+			AssertValue("-0", 0);
+			AssertValue("-a", 0);
+			AssertValue("-true", -1);
+			AssertValue("~-0", -1);
+			AssertValue("2 + 3", 5);
+			AssertValue("2 + 0", 2);
+			AssertValue("2 + 3", 5);
+			AssertValue("5 - 3", 2);
+			AssertValue("5 - -3", 8);
+			AssertValue("5 - 0", 5);
+			AssertValue("2 * 3", 6);
+			AssertValue("2 * 0", 0);
+			AssertValue("2 * -3", -6);
+			AssertValue("-2 * 3", -6);
+			AssertValue("-2 * -3", 6);
+			AssertValue("6 / 3", 2);
+			AssertValue("7 / 3", 2);
+			AssertValue("-6 / 3", -2);
+			AssertValue("6 / -3", -2);
+			AssertValue("-6 / -3", 2);
+			AssertValue("8 / 3", 2);
+			AssertValue("6 % 3", 0);
+			AssertValue("7 % 3", 1);
+			AssertValue("8 % 3", 2);
+			AssertValue("7 % 0", 0);
+			AssertValue("-7 % 3", -1);
+			AssertValue("7 % -3", 1);
+			AssertValue("-7 % -3", -1);
+			AssertValue("8 / 0", 0);
+		}
+
+		[TestCase(TestName = "Arithmetic Mixed")]
+		public void TestArithmeticMixed()
+		{
+			AssertValue("~~0", 0);
+			AssertValue("-~0", 1);
+			AssertValue("~- 0", -1);
+			AssertValue("2 * 3 + 4", 10);
+			AssertValue("2 * 3 - 4", 2);
+			AssertValue("2 + 3 * 4", 14);
+			AssertValue("2 + 3 % 4", 5);
+			AssertValue("2 + 3 / 4", 2);
+			AssertValue("2 * 3 / 4", 1);
+			AssertValue("8 / 2 == 4", 1);
+			AssertValue("~2 + ~3", -7);
+			AssertValue("~(~2 + ~3)", 6);
+		}
+
 		[TestCase(TestName = "Parenthesis and mixed operations")]
 		public void TestMixedParens()
 		{
@@ -259,6 +311,9 @@ namespace OpenRA.Test
 			AssertParseFailure("(true && !)", "Missing value or sub-expression or there is an extra operator `!` at index 9 or `)` at index 10");
 			AssertParseFailure("&& false", "Missing value or sub-expression at beginning for `&&` operator");
 			AssertParseFailure("false ||", "Missing value or sub-expression at end for `||` operator");
+			AssertParseFailure("1 <", "Missing value or sub-expression at end for `<` operator");
+			AssertParseFailure("-1a", "Number -1 and variable merged at index 0");
+			AssertParseFailure("-", "Missing value or sub-expression at end for `-` operator");
 		}
 
 		[TestCase(TestName = "Undefined symbols are treated as `false` (0) values")]
