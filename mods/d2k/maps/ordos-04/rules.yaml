@@ -1,0 +1,68 @@
+Player:
+	PlayerResources:
+		DefaultCash: 5000
+
+World:
+	LuaScript:
+		Scripts: ordos04.lua, ordos04-AI.lua
+	MissionData:
+		Briefing: The Smugglers at Sietch Tabr must be neutralized. Capture the Outpost where their families have taken shelter as insurance. The children's lives will assure the loyalties of their fathers. Use an Engineer to enter and capture the building.\n\nThe Smugglers' new partners, the Harkonnen, may attempt to protect them. Harkonnen firepower is great, but we have recently acquired tanks that may counter this.\n\nEnsure our investment is used wisely.\n
+		BriefingVideo: O_BR04_E.VQA
+	MapOptions:
+		TechLevel: low
+	ScriptLobbyDropdown@difficulty:
+		ID: difficulty
+		Label: Difficulty
+		Values:
+			easy: Easy
+			normal: Normal
+			hard: Hard
+		Default: easy
+
+carryall.reinforce:
+	Cargo:
+		MaxWeight: 10
+
+concreteb:
+	Buildable:
+		Prerequisites: ~disabled
+
+medium_gun_turret:
+	Buildable:
+		Prerequisites: ~disabled
+
+outpost:
+	Buildable:
+		Prerequisites: barracks
+
+quad:
+	Buildable:
+		Prerequisites: upgrade.light
+
+trooper:
+	Buildable:
+		Prerequisites: upgrade.barracks
+
+engineer:
+	Buildable:
+		Prerequisites: upgrade.barracks
+
+light_factory:
+	ProvidesPrerequisite@ordos:
+		Factions: ordos, smuggler
+
+heavy_factory:
+	ProvidesPrerequisite@ordos:
+		Factions: ordos, smuggler
+
+repair_pad:
+	Buildable:
+		Prerequisites: heavy_factory, upgrade.heavy
+
+mcv:
+	Buildable:
+		Prerequisites: repair_pad, upgrade.heavy
+
+upgrade.conyard:
+	Buildable:
+		Prerequisites: ~disabled
