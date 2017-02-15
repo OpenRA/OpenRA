@@ -23,8 +23,8 @@ namespace OpenRA.Test
 	{
 		IReadOnlyDictionary<string, int> testValues = new ReadOnlyDictionary<string, int>(new Dictionary<string, int>()
 		{
-			{ "true", 1 },
-			{ "false", 0 }
+			{ "one", 1 },
+			{ "five", 5 }
 		});
 
 		void AssertFalse(string expression)
@@ -64,6 +64,26 @@ namespace OpenRA.Test
 			AssertValue("12", 12);
 			AssertValue("-1", -1);
 			AssertValue("-12", -12);
+		}
+
+		[TestCase(TestName = "Variables")]
+		public void TestVariables()
+		{
+			AssertValue("one", 1);
+			AssertValue("five", 5);
+		}
+
+		[TestCase(TestName = "Boolean Constants")]
+		public void TestBoolConsts()
+		{
+			AssertValue(" true", 1);
+			AssertValue(" true ", 1);
+			AssertValue("true", 1);
+			AssertValue("false", 0);
+			AssertValue("tru", 0);
+			AssertValue("fals", 0);
+			AssertValue("tr", 0);
+			AssertValue("fal", 0);
 		}
 
 		[TestCase(TestName = "Booleans")]
@@ -320,6 +340,8 @@ namespace OpenRA.Test
 		public void TestUndefinedSymbols()
 		{
 			AssertFalse("undef1 || undef2");
+			AssertValue("undef1", 0);
+			AssertValue("undef1 + undef2", 0);
 		}
 	}
 }

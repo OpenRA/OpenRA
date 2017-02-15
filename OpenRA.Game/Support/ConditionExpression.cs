@@ -111,6 +111,10 @@ namespace OpenRA.Support
 
 		enum TokenType
 		{
+			// fixed values
+			False,
+			True,
+
 			// varying values
 			Number,
 			Variable,
@@ -197,6 +201,12 @@ namespace OpenRA.Support
 				{
 					case TokenType.Invalid:
 						yield return new TokenTypeInfo("(<INVALID>)", Precedence.Invalid);
+						continue;
+					case TokenType.False:
+						yield return new TokenTypeInfo("false", Precedence.Value);
+						continue;
+					case TokenType.True:
+						yield return new TokenTypeInfo("true", Precedence.Value);
 						continue;
 					case TokenType.Number:
 						yield return new TokenTypeInfo("(<number>)", Precedence.Value);
@@ -326,6 +336,20 @@ namespace OpenRA.Support
 				return false;
 			}
 
+			static TokenType VariableOrKeyword(string expression, int start, int length)
+			{
+				var i = start;
+				if (length == 4 && expression[i++] == 't' && expression[i++] == 'r' && expression[i++] == 'u'
+						&& expression[i] == 'e')
+					return TokenType.True;
+
+				if (length == 5 && expression[i++] == 'f' && expression[i++] == 'a' && expression[i++] == 'l'
+						&& expression[i++] == 's' && expression[i] == 'e')
+					return TokenType.False;
+
+				return TokenType.Variable;
+			}
+
 			public static TokenType GetNextType(string expression, ref int i, TokenType lastType = TokenType.Invalid)
 			{
 				var start = i;
@@ -438,14 +462,14 @@ namespace OpenRA.Support
 					throw new InvalidDataException("Invalid character '{0}' at index {1}".F(expression[i], start));
 
 				// Scan forwards until we find an invalid name character
-				for (; i < expression.Length; i++)
+				for (i = start; i < expression.Length; i++)
 				{
 					cc = CharClassOf(expression[i]);
 					if (cc == CharClass.Whitespace || cc == CharClass.Operator)
-						return TokenType.Variable;
+						return VariableOrKeyword(expression, start, i - start);
 				}
 
-				return TokenType.Variable;
+				return VariableOrKeyword(expression, start, i - start);
 			}
 
 			public static Token GetNext(string expression, ref int i, TokenType lastType = TokenType.Invalid)
@@ -825,6 +849,18 @@ namespace OpenRA.Support
 							var isNotZero = Expressions.Expression.NotEqual(y, Zero);
 							var modulo = Expressions.Expression.Modulo(x, y);
 							ast.Push(IfThenElse(isNotZero, modulo, Zero));
+							continue;
+						}
+
+						case TokenType.False:
+						{
+							ast.Push(False);
+							continue;
+						}
+
+						case TokenType.True:
+						{
+							ast.Push(True);
 							continue;
 						}
 
