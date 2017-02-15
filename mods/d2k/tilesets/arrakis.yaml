@@ -989,7 +989,7 @@ Templates:
 		Size: 1,1
 		Category: Rock-Detail
 		Tiles:
-			0: Rock
+			0: Rough
 	Template@100:
 		Id: 100
 		Images: BLOXBASE.R8
@@ -997,7 +997,7 @@ Templates:
 		Size: 1,1
 		Category: Rock-Detail
 		Tiles:
-			0: Rock
+			0: Rough
 	Template@101:
 		Id: 101
 		Images: BLOXBASE.R8
