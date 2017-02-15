@@ -1461,7 +1461,7 @@ Templates:
 		Size: 2,2
 		Category: Rock-Cliff
 		Tiles:
-			0: Transition
+			0: Cliff
 			1: Cliff
 			2: Cliff
 			3: Cliff
