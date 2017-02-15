@@ -46,4 +46,6 @@ airstrike.proxy:
 		BeaconPoster: airstrike
 		DisplayRadarPing: True
 		CameraActor: camera
-
+		ArrowSequence: arrow
+		ClockSequence: clock
+		CircleSequence: circles
