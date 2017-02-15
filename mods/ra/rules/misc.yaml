@@ -290,6 +290,9 @@ powerproxy.parabombs:
 		DisplayBeacon: True
 		BeaconPoster: pbmbicon
 		CameraActor: camera
+		ArrowSequence: arrow
+		ClockSequence: clock
+		CircleSequence: circles
 
 powerproxy.sonarpulse:
 	AlwaysVisible:
@@ -319,6 +322,9 @@ powerproxy.paratroopers:
 		CameraActor: camera.paradrop
 		DisplayBeacon: true
 		BeaconPoster: pinficon
+		ArrowSequence: arrow
+		ClockSequence: clock
+		CircleSequence: circles
 
 barracks.upgraded:
 	AlwaysVisible:

@@ -202,11 +202,11 @@ Camera.SAM:
 		Range: 2c0
 
 powerproxy.paras1:
-	AlwaysVisible:
+	Inherits: powerproxy.paratroopers
 	ParatroopersPower:
 		DropItems: E1,E1,E1,E2,3TNK
 
 powerproxy.paras2:
-	AlwaysVisible:
+	Inherits: powerproxy.paratroopers
 	ParatroopersPower:
 		DropItems: E1,E1,E1,E2,E2
