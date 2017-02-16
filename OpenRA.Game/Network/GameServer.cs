@@ -48,18 +48,18 @@ namespace OpenRA.Network
 				ModId = modVersion[0];
 				ModVersion = modVersion[1];
 
-				if (Game.Mods.TryGetValue(modVersion[0], out mod))
-				{
-					ModLabel = "{0} ({1})".F(mod.Metadata.Title, modVersion[1]);
-					IsCompatible = Game.Settings.Debug.IgnoreVersionMismatch || ModVersion == mod.Metadata.Version;
-				}
-
 				var externalKey = ExternalMod.MakeKey(modVersion[0], modVersion[1]);
-				if (!IsCompatible && Game.ExternalMods.TryGetValue(externalKey, out external)
+				if (Game.ExternalMods.TryGetValue(externalKey, out external)
 					&& external.Version == modVersion[1])
 				{
 					ModLabel = "{0} ({1})".F(external.Title, external.Version);
 					IsCompatible = true;
+				}
+				else if (Game.Mods.TryGetValue(modVersion[0], out mod))
+				{
+					// Use internal mod data to populate the section header, but
+					// on-connect switching must use the external mod plumbing.
+					ModLabel = "{0} ({1})".F(mod.Metadata.Title, modVersion[1]);
 				}
 			}
 

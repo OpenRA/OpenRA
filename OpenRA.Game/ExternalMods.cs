@@ -111,6 +111,38 @@ namespace OpenRA
 			Directory.CreateDirectory(supportPath);
 
 			File.WriteAllLines(Path.Combine(supportPath, key + ".yaml"), yaml.ToLines(false).ToArray());
+
+			// Clean up stale mod registrations:
+			//  - LaunchPath no longer exists (uninstalled)
+			//  - LaunchPath and mod match the current mod, but version differs (newer version installed on top)
+			List<string> toRemove = null;
+			foreach (var kv in mods)
+			{
+				var k = kv.Key;
+				var m = kv.Value;
+				if (!File.Exists(m.LaunchPath) || (m.LaunchPath == launchPath && m.Id == mod.Id && k != key))
+				{
+					Log.Write("debug", "Removing stale mod metadata entry '{0}'", k);
+					if (toRemove == null)
+						toRemove = new List<string>();
+
+					toRemove.Add(k);
+					var path = Path.Combine(supportPath, k + ".yaml");
+					try
+					{
+						File.Delete(path);
+					}
+					catch (Exception e)
+					{
+						Log.Write("debug", "Failed to remove mod metadata file '{0}'", path);
+						Log.Write("debug", e.ToString());
+					}
+				}
+			}
+
+			if (toRemove != null)
+				foreach (var r in toRemove)
+					mods.Remove(r);
 		}
 
 		public ExternalMod this[string key] { get { return mods[key]; } }
