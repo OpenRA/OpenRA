@@ -69,6 +69,8 @@ GAP:
 		VisualBounds: 24,48,0,-12
 	RequiresPower:
 	CanPowerDown:
+		PowerupSound: EnablePower
+		PowerdownSound: DisablePower
 	DisabledOverlay:
 	WithSpriteBody:
 		PauseAnimationWhenDisabled: true
@@ -747,6 +749,8 @@ SAM:
 		Dimensions: 2,1
 	RequiresPower:
 	CanPowerDown:
+		PowerupSound: EnablePower
+		PowerdownSound: DisablePower
 	DisabledOverlay:
 	Health:
 		HP: 400
