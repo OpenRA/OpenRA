@@ -121,7 +121,11 @@ namespace OpenRA.FileSystem
 					modPackages.Add(package);
 				}
 				else
+				{
 					package = OpenPackage(name);
+					if (package == null)
+						throw new InvalidOperationException("Could not open package '{0}', file not found or its format is not supported.".F(name));
+				}
 
 				Mount(package, explicitName);
 			}
