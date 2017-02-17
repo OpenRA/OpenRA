@@ -153,8 +153,8 @@ namespace OpenRA
 
 	public class GameSettings
 	{
-		[Desc("Load a specific mod on startup. Shipped ones include: ra, cnc and d2k")]
-		public string Mod = "modchooser";
+		[Desc("Load a specific mod on startup.")]
+		public string Mod = null;
 		public string PreviousMod = "ra";
 
 		public string Platform = "Default";

@@ -222,9 +222,19 @@ namespace OpenRA
 
 	public interface ILoadScreen : IDisposable
 	{
+		/// <summary>Initializes the loadscreen with yaml data from the LoadScreen block in mod.yaml.</summary>
 		void Init(ModData m, Dictionary<string, string> info);
+
+		/// <summary>Called at arbitrary times during mod load to rerender the loadscreen.</summary>
 		void Display();
-		bool RequiredContentIsInstalled();
+
+		/// <summary>
+		/// Called before loading the mod assets.
+		/// Returns false if mod loading should be aborted (e.g. switching to another mod instead).
+		/// </summary>
+		bool BeforeLoad();
+
+		/// <summary>Called when the engine expects to connect to a server/replay or load the shellmap.</summary>
 		void StartGame(Arguments args);
 	}
 }

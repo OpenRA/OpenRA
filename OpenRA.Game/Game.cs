@@ -249,10 +249,10 @@ namespace OpenRA
 			// Special case handling of Game.Mod argument: if it matches a real filesystem path
 			// then we use this to override the mod search path, and replace it with the mod id
 			var modArgument = args.GetValue("Game.Mod", null);
-			string customModPath = null;
+			var explicitModPaths = new string[0];
 			if (modArgument != null && (File.Exists(modArgument) || Directory.Exists(modArgument)))
 			{
-				customModPath = modArgument;
+				explicitModPaths = new[] { modArgument };
 				args.ReplaceValue("Game.Mod", Path.GetFileNameWithoutExtension(modArgument));
 			}
 
@@ -314,7 +314,12 @@ namespace OpenRA
 
 			GlobalChat = new GlobalChat();
 
-			Mods = new InstalledMods(customModPath);
+			var modSearchArg = args.GetValue("Engine.ModSearchPaths", null);
+			var modSearchPaths = modSearchArg != null ?
+				FieldLoader.GetValue<string[]>("Engine.ModsPath", modSearchArg) :
+				new[] { Path.Combine(".", "mods"), Path.Combine("^", "mods") };
+
+			Mods = new InstalledMods(modSearchPaths, explicitModPaths);
 			Console.WriteLine("Internal mods:");
 			foreach (var mod in Mods)
 				Console.WriteLine("\t{0}: {1} ({2})", mod.Key, mod.Value.Metadata.Title, mod.Value.Metadata.Version);
@@ -368,8 +373,8 @@ namespace OpenRA
 			ModData = null;
 
 			// Fall back to default if the mod doesn't exist or has missing prerequisites.
-			if (!IsModInstalled(mod))
-				mod = new GameSettings().Mod;
+			if (mod == null || !IsModInstalled(mod))
+				mod = args.GetValue("Engine.DefaultMod", "modchooser");
 
 			Console.WriteLine("Loading mod: {0}", mod);
 			Settings.Game.Mod = mod;
@@ -379,15 +384,11 @@ namespace OpenRA
 			ModData = new ModData(Mods[mod], Mods, true);
 			ExternalMods.Register(ModData.Manifest);
 
+			if (!ModData.LoadScreen.BeforeLoad())
+				return;
+
 			using (new PerfTimer("LoadMaps"))
 				ModData.MapCache.LoadMaps();
-
-			// Mod assets are missing!
-			if (!ModData.LoadScreen.RequiredContentIsInstalled())
-			{
-				InitializeMod("modchooser", new Arguments());
-				return;
-			}
 
 			ModData.InitializeLoaders(ModData.DefaultFileSystem);
 			Renderer.InitializeFonts(ModData);

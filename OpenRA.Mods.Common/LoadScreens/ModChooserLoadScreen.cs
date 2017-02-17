@@ -58,7 +58,7 @@ namespace OpenRA.Mods.Common.LoadScreens
 				sprite.Sheet.Dispose();
 		}
 
-		public bool RequiredContentIsInstalled()
+		public bool BeforeLoad()
 		{
 			return true;
 		}

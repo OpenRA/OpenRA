@@ -47,19 +47,20 @@ namespace OpenRA
 
 			if (args.Length == 0)
 			{
-				PrintUsage(new InstalledMods(null), null);
+				PrintUsage(new InstalledMods(new string[0], new string[0]), null);
 				return;
 			}
 
 			var modId = args[0];
-			string customModPath = null;
+			var explicitModPaths = new string[0];
 			if (File.Exists(modId) || Directory.Exists(modId))
 			{
-				customModPath = modId;
+				explicitModPaths = new[] { modId };
 				modId = Path.GetFileNameWithoutExtension(modId);
 			}
 
-			var mods = new InstalledMods(customModPath);
+			var modSearchPaths = new[] { Path.Combine(".", "mods"), Path.Combine("^", "mods") };
+			var mods = new InstalledMods(modSearchPaths, explicitModPaths);
 			if (!mods.Keys.Contains(modId))
 			{
 				PrintUsage(mods, null);
