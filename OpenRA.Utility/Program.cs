@@ -45,9 +45,10 @@ namespace OpenRA
 
 			Game.InitializeSettings(Arguments.Empty);
 
+			var modSearchPaths = new[] { Path.Combine(".", "mods"), Path.Combine("^", "mods") };
 			if (args.Length == 0)
 			{
-				PrintUsage(new InstalledMods(new string[0], new string[0]), null);
+				PrintUsage(new InstalledMods(modSearchPaths, new string[0]), null);
 				return;
 			}
 
@@ -59,7 +60,6 @@ namespace OpenRA
 				modId = Path.GetFileNameWithoutExtension(modId);
 			}
 
-			var modSearchPaths = new[] { Path.Combine(".", "mods"), Path.Combine("^", "mods") };
 			var mods = new InstalledMods(modSearchPaths, explicitModPaths);
 			if (!mods.Keys.Contains(modId))
 			{
