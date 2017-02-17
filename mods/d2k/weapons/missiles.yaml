@@ -30,7 +30,6 @@
 		InvalidTargets: Vehicle, Structure
 	Warhead@3Eff: CreateEffect
 		Explosions: tiny_explosion
-		ImpactSounds: EXPLSML1.WAV
 
 ^Missile:
 	Inherits: ^Rocket
@@ -47,7 +46,7 @@
 		VerticalRateOfTurn: 10
 		Image: MISSILE2
 		TrailImage: large_trail
-		Speed: 320
+		Speed: 288
 	Warhead@1Dam: SpreadDamage
 		Spread: 256
 		Damage: 480
@@ -63,6 +62,7 @@
 			harvester: 50
 	Warhead@3Eff: CreateEffect
 		Explosions: small_explosion
+		ImpactSounds: EXPLSML1.WAV
 
 Bazooka:
 	Inherits: ^Rocket
@@ -72,7 +72,7 @@ Rocket:
 	ReloadDelay: 30
 	Range: 3c512
 	Projectile: Bullet
-		Speed: 343
+		Speed: 352
 	Warhead@1Dam: SpreadDamage
 		Spread: 160
 		Damage: 250
@@ -110,7 +110,6 @@ mtank_pri:
 	Range: 6c0
 	ValidTargets: Ground, Air
 	Projectile: Missile
-		Speed: 281
 		Inaccuracy: 96
 		RangeLimit: 7c204
 	Warhead@1Dam: SpreadDamage
@@ -123,7 +122,6 @@ DeviatorMissile:
 	Range: 5c0
 	Report: MISSLE1.WAV
 	Projectile: Missile
-		Speed: 281
 		RangeLimit: 6c0
 		Image: MISSILE
 		TrailImage: deviator_trail
@@ -146,6 +144,7 @@ DeviatorMissile:
 		Explosions: deviator
 		ExplosionPalette: deviatorgas
 		UsePlayerPalette: true
+		-ImpactSounds:
 	Warhead@4OwnerChange: ChangeOwner
 		Range: 512
 		Duration: 375

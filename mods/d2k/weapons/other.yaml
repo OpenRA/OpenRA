@@ -160,13 +160,18 @@ BuildingExplode:
 	Warhead@1Eff: CreateEffect
 		Explosions: building, self_destruct, large_explosion
 
+WallExplode:
+	Warhead@1Eff: CreateEffect
+		Explosions: wall_explosion
+		ImpactSounds: EXPLHG1.WAV
+
 grenade:
 	ReloadDelay: 50
 	Range: 4c0
 	Projectile: Bullet
-		Speed: 256
+		Speed: 160
 		Blockable: false
-		LaunchAngle: 75
+		LaunchAngle: 128
 		Inaccuracy: 416
 		Image: grenade
 		Shadow: true
@@ -188,7 +193,7 @@ grenade:
 		InvalidTargets: Vehicle, Structure
 	Warhead@3Eff: CreateEffect
 		Explosions: med_explosion
-		ImpactSounds: EXPLLG5.WAV
+		ImpactSounds: EXPLMD2.WAV
 
 GrenDeath:
 	Warhead@1Dam: SpreadDamage

@@ -52,6 +52,11 @@ explosion:
 		Start: 430
 		Length: 12
 		Tick: 1600
+	wall_explosion: DATA.R8
+		Start: 4130
+		Length: 8
+		Tick: 120
+		BlendMode: Alpha
 
 large_trail:
 	idle: DATA.R8
@@ -66,6 +71,7 @@ small_trail:
 		Start: 3988
 		Length: 4
 		Tick: 80
+		BlendMode: Additive
 		ZOffset: 1023
 
 small_trail2:
@@ -73,6 +79,7 @@ small_trail2:
 		Start: 3793
 		Length: 4
 		Tick: 80
+		BlendMode: Additive
 		ZOffset: 1023
 
 bazooka_trail:
