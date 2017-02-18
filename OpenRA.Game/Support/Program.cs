@@ -22,7 +22,6 @@ namespace OpenRA
 	{
 		Error = -1,
 		Success = 0,
-		Restart = 1,
 		Running = int.MaxValue
 	}
 
@@ -131,11 +130,7 @@ namespace OpenRA
 		{
 			Game.Initialize(new Arguments(args));
 			GC.Collect();
-			var status = Game.Run();
-			if (status == RunStatus.Restart)
-				using (var p = Process.GetCurrentProcess())
-					Process.Start(Assembly.GetEntryAssembly().Location, p.StartInfo.Arguments);
-			return status;
+			return Game.Run();
 		}
 	}
 }

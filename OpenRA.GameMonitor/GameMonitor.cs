@@ -116,7 +116,7 @@ namespace OpenRA
 
 		static void GameProcessExited(object sender, EventArgs e)
 		{
-			if (!(gameProcess.ExitCode == (int)RunStatus.Success || gameProcess.ExitCode == (int)RunStatus.Restart))
+			if (gameProcess.ExitCode != (int)RunStatus.Success)
 				ShowErrorDialog();
 
 			Exit();

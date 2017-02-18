@@ -803,11 +803,6 @@ namespace OpenRA
 			state = RunStatus.Success;
 		}
 
-		public static void Restart()
-		{
-			state = RunStatus.Restart;
-		}
-
 		public static void AddChatLine(Color color, string name, string text)
 		{
 			OrderManager.AddChatLine(color, name, text);
