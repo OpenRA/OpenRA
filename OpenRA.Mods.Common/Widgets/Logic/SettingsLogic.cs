@@ -74,13 +74,21 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					OriginalGraphicsWindowedSize != current.Graphics.WindowedSize ||
 					OriginalGraphicsFullscreenSize != current.Graphics.FullscreenSize ||
 					OriginalServerDiscoverNatDevices != current.Server.DiscoverNatDevices)
+				{
+					Action restart = () =>
+					{
+						var external = Game.ExternalMods[ExternalMod.MakeKey(Game.ModData.Manifest)];
+						Game.SwitchToExternalMod(external, null, closeAndExit);
+					};
+
 					ConfirmationDialogs.ButtonPrompt(
 						title: "Restart Now?",
 						text: "Some changes will not be applied until\nthe game is restarted. Restart now?",
-						onConfirm: Game.Restart,
+						onConfirm: restart,
 						onCancel: closeAndExit,
 						confirmText: "Restart Now",
 						cancelText: "Restart Later");
+				}
 				else
 					closeAndExit();
 			};
