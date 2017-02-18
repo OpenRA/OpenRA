@@ -20,15 +20,16 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Scripting
 {
 	[ScriptPropertyGroup("General")]
-	public class ConditionProperties : ScriptActorProperties, Requires<ConditionManagerInfo>
+	public class ConditionProperties : ScriptActorProperties, Requires<ExternalConditionInfo>
 	{
-		readonly ConditionManager conditionManager;
+		readonly ExternalCondition[] externalConditions;
+
 		readonly Dictionary<string, Stack<int>> legacyShim = new Dictionary<string, Stack<int>>();
 
 		public ConditionProperties(ScriptContext context, Actor self)
 			: base(context, self)
 		{
-			conditionManager = self.Trait<ConditionManager>();
+			externalConditions = self.TraitsImplementing<ExternalCondition>().ToArray();
 		}
 
 		[Desc("Grant an external condition on this actor and return the revocation token.",
@@ -36,22 +37,27 @@ namespace OpenRA.Mods.Common.Scripting
 			"If duration > 0 the condition will be automatically revoked after the defined number of ticks")]
 		public int GrantCondition(string condition, int duration = 0)
 		{
-			if (!conditionManager.AcceptsExternalCondition(Self, condition, duration > 0))
-				throw new InvalidDataException("Condition `{0}` has not been listed on an ExternalConditions trait".F(condition));
+			var external = externalConditions
+				.FirstOrDefault(t => t.Info.Condition == condition && t.CanGrantCondition(Self, this));
 
-			return conditionManager.GrantCondition(Self, condition, true, duration);
+			if (external == null)
+				throw new InvalidDataException("Condition `{0}` has not been listed on an enabled ExternalCondition trait".F(condition));
+
+			return external.GrantCondition(Self, this, duration);
 		}
 
 		[Desc("Revoke a condition using the token returned by GrantCondition.")]
 		public void RevokeCondition(int token)
 		{
-			conditionManager.RevokeCondition(Self, token);
+			foreach (var external in externalConditions)
+				external.TryRevokeCondition(Self, this, token);
 		}
 
 		[Desc("Check whether this actor accepts a specific external condition.")]
-		public bool AcceptsCondition(string condition, bool timed = false)
+		public bool AcceptsCondition(string condition)
 		{
-			return conditionManager.AcceptsExternalCondition(Self, condition, timed);
+			return externalConditions
+				.Any(t => t.Info.Condition == condition && t.CanGrantCondition(Self, this));
 		}
 
 		[Desc("Grant an upgrade to this actor. DEPRECATED! Will be removed.")]

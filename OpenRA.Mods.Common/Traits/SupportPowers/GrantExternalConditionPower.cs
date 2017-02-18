@@ -69,11 +69,11 @@ namespace OpenRA.Mods.Common.Traits
 
 			foreach (var a in UnitsInRange(order.TargetLocation))
 			{
-				var cm = a.TraitOrDefault<ConditionManager>();
+				var external = a.TraitsImplementing<ExternalCondition>()
+					.FirstOrDefault(t => t.Info.Condition == info.Condition && t.CanGrantCondition(a, self));
 
-				// Condition token is ignored because we never revoke this condition.
-				if (cm != null)
-					cm.GrantCondition(a, info.Condition, true, info.Duration);
+				if (external != null)
+					external.GrantCondition(a, self, info.Duration);
 			}
 		}
 
@@ -90,8 +90,8 @@ namespace OpenRA.Mods.Common.Traits
 				if (!a.Owner.IsAlliedWith(Self.Owner))
 					return false;
 
-				var cm = a.TraitOrDefault<ConditionManager>();
-				return cm != null && cm.AcceptsExternalCondition(a, info.Condition, info.Duration > 0);
+				return a.TraitsImplementing<ExternalCondition>()
+					.Any(t => t.Info.Condition == info.Condition && t.CanGrantCondition(a, Self));
 			});
 		}
 

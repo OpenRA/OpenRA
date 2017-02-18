@@ -1296,7 +1296,8 @@ GALITE:
 	SelectionDecorations:
 		VisualBounds: 25, 35, 0, -12
 	-Cloak@EXTERNALCLOAK:
-	-ExternalConditions@EXTERNALCLOAK:
+	-ExternalCondition@CLOAKGENERATOR:
+	-ExternalCondition@CRATE-CLOAK:
 
 TSTLAMP:
 	Inherits: GALITE

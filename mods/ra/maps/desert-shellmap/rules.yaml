@@ -22,8 +22,8 @@ World:
 	DamageMultiplier@UNKILLABLE:
 		RequiresCondition: unkillable
 		Modifier: 0
-	ExternalConditions:
-		Conditions: unkillable
+	ExternalCondition@UNKILLABLE:
+		Condition: unkillable
 
 ^Tank:
 	GivesBounty:
@@ -33,8 +33,8 @@ World:
 	DamageMultiplier@UNKILLABLE:
 		RequiresCondition: unkillable
 		Modifier: 0
-	ExternalConditions:
-		Conditions: unkillable
+	ExternalCondition@UNKILLABLE:
+		Condition: unkillable
 
 ^Infantry:
 	GivesBounty:
@@ -50,8 +50,8 @@ World:
 	DamageMultiplier@UNKILLABLE:
 		RequiresCondition: unkillable
 		Modifier: 0
-	ExternalConditions:
-		Conditions: unkillable
+	ExternalCondition@UNKILLABLE:
+		Condition: unkillable
 
 ^Ship:
 	GivesBounty:
@@ -61,8 +61,8 @@ World:
 	DamageMultiplier@UNKILLABLE:
 		RequiresCondition: unkillable
 		Modifier: 0
-	ExternalConditions:
-		Conditions: unkillable
+	ExternalCondition@UNKILLABLE:
+		Condition: unkillable
 
 ^Plane:
 	GivesBounty:
@@ -70,8 +70,8 @@ World:
 	DamageMultiplier@UNKILLABLE:
 		RequiresCondition: unkillable
 		Modifier: 0
-	ExternalConditions:
-		Conditions: unkillable
+	ExternalCondition@UNKILLABLE:
+		Condition: unkillable
 
 ^Building:
 	GivesBounty:
@@ -79,8 +79,8 @@ World:
 	DamageMultiplier@UNKILLABLE:
 		RequiresCondition: unkillable
 		Modifier: 0
-	ExternalConditions:
-		Conditions: unkillable
+	ExternalCondition@UNKILLABLE:
+		Condition: unkillable
 
 OILB:
 	CashTrickler:

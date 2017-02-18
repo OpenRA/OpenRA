@@ -123,8 +123,8 @@
 		CloakSound: trans1.aud
 		UncloakSound: trans1.aud
 		RequiresCondition: cloak
-	ExternalConditions@CLOAK:
-		Conditions: cloak
+	ExternalCondition@CLOAK:
+		Condition: cloak
 
 ^Vehicle:
 	Inherits@1: ^ExistsInWorld

@@ -123,8 +123,8 @@
 		Modifier: 0
 	TimedConditionBar:
 		Condition: invulnerability
-	ExternalConditions@INVULNERABILITY:
-		Conditions: invulnerability
+	ExternalCondition@INVULNERABILITY:
+		Condition: invulnerability
 
 ^Vehicle:
 	Inherits@1: ^ExistsInWorld

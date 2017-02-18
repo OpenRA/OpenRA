@@ -35,20 +35,20 @@ HACKE6:
 	WithInfantryBody:
 	Targetable:
 		RequiresCondition: !jail
-	ExternalConditions@JAIL:
-		Conditions: jail
 	Targetable@PRISONER:
 		TargetTypes: Prisoner
 	RenderSprites:
 		Image: E6
+	ExternalCondition@JAIL:
+		Condition: jail
 
 MEDI:
 	Targetable:
 		RequiresCondition: !jail
-	ExternalConditions@JAIL:
-		Conditions: jail
 	Targetable@PRISONER:
 		TargetTypes: Prisoner
+	ExternalCondition@JAIL:
+		Condition: jail
 
 PRISON:
 	HiddenUnderShroud:

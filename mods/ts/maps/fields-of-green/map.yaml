@@ -1448,17 +1448,17 @@ Rules:
 		DamageMultiplier@UNKILLABLE:
 			RequiresCondition: unkillable
 			Modifier: 0
-		ExternalConditions:
-			Conditions: unkillable
+		ExternalCondition@UNKILLABLE:
+			Condition: unkillable
 	NAOBEL:
 		DamageMultiplier@UNKILLABLE:
 			RequiresCondition: unkillable
 			Modifier: 0
-		ExternalConditions:
-			Conditions: unkillable
+		ExternalCondition@UNKILLABLE:
+			Condition: unkillable
 	NALASR:
 		DamageMultiplier@UNKILLABLE:
 			RequiresCondition: unkillable
 			Modifier: 0
-		ExternalConditions:
-			Conditions: unkillable
+		ExternalCondition@UNKILLABLE:
+			Condition: unkillable
