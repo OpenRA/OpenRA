@@ -17,7 +17,7 @@ cd "${download_dir}"
 if [ ! $TRAVIS ] && which nuget >/dev/null 2>&1; then
 	get()
 	{
-		nuget install "$1" -Version "$2" -ExcludeVersion
+		nuget install "$1" -Version "$2" -ExcludeVersion -Verbosity quiet
 	}
 else
 	get()

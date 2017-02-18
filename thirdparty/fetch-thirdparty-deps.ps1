@@ -14,7 +14,7 @@ if (!(Test-Path "nuget.exe"))
 if (!(Test-Path "StyleCopPlus.dll"))
 {
 	echo "Fetching StyleCopPlus from NuGet."
-	./nuget.exe install StyleCopPlus.MSBuild -Version 4.7.49.5 -ExcludeVersion
+	./nuget.exe install StyleCopPlus.MSBuild -Version 4.7.49.5 -ExcludeVersion -Verbosity quiet
 	cp StyleCopPlus.MSBuild/tools/StyleCopPlus.dll .
 	rmdir StyleCopPlus.MSBuild -Recurse
 }
@@ -22,7 +22,7 @@ if (!(Test-Path "StyleCopPlus.dll"))
 if (!(Test-Path "StyleCop.dll"))
 {
 	echo "Fetching StyleCop files from NuGet."
-	./nuget.exe install StyleCop.MSBuild -Version 4.7.49.0 -ExcludeVersion
+	./nuget.exe install StyleCop.MSBuild -Version 4.7.49.0 -ExcludeVersion -Verbosity quiet
 	cp StyleCop.MSBuild/tools/StyleCop*.dll .
 	rmdir StyleCop.MSBuild -Recurse
 }
@@ -30,7 +30,7 @@ if (!(Test-Path "StyleCop.dll"))
 if (!(Test-Path "ICSharpCode.SharpZipLib.dll"))
 {
 	echo "Fetching ICSharpCode.SharpZipLib from NuGet."
-	./nuget.exe install SharpZipLib -Version 0.86.0 -ExcludeVersion
+	./nuget.exe install SharpZipLib -Version 0.86.0 -ExcludeVersion -Verbosity quiet
 	cp SharpZipLib/lib/20/ICSharpCode.SharpZipLib.dll .
 	rmdir SharpZipLib -Recurse
 }
@@ -38,7 +38,7 @@ if (!(Test-Path "ICSharpCode.SharpZipLib.dll"))
 if (!(Test-Path "MaxMind.Db.dll"))
 {
 	echo "Fetching MaxMind.Db from NuGet."
-	./nuget.exe install MaxMind.Db -Version 2.0.0 -ExcludeVersion
+	./nuget.exe install MaxMind.Db -Version 2.0.0 -ExcludeVersion -Verbosity quiet
 	cp MaxMind.Db/lib/net45/MaxMind.Db.* .
 	rmdir MaxMind.Db -Recurse
 }
@@ -46,7 +46,7 @@ if (!(Test-Path "MaxMind.Db.dll"))
 if (!(Test-Path "SharpFont.dll"))
 {
 	echo "Fetching SharpFont from NuGet."
-	./nuget.exe install SharpFont -Version 4.0.1 -ExcludeVersion
+	./nuget.exe install SharpFont -Version 4.0.1 -ExcludeVersion -Verbosity quiet
 	cp SharpFont/lib/net45/SharpFont* .
 	cp SharpFont/config/SharpFont.dll.config .
 	rmdir SharpFont -Recurse
@@ -56,7 +56,7 @@ if (!(Test-Path "SharpFont.dll"))
 if (!(Test-Path "nunit.framework.dll"))
 {
 	echo "Fetching NUnit from NuGet."
-	./nuget.exe install NUnit -Version 3.0.1 -ExcludeVersion
+	./nuget.exe install NUnit -Version 3.0.1 -ExcludeVersion -Verbosity quiet
 	cp NUnit/lib/net40/nunit.framework* .
 	rmdir NUnit -Recurse
 }
@@ -85,7 +85,7 @@ if (!(Test-Path "windows/SDL2.dll"))
 if (!(Test-Path "Open.Nat.dll"))
 {
 	echo "Fetching Open.Nat from NuGet."
-	./nuget.exe install Open.Nat -Version 2.1.0 -ExcludeVersion
+	./nuget.exe install Open.Nat -Version 2.1.0 -ExcludeVersion -Verbosity quiet
 	cp Open.Nat/lib/net45/Open.Nat.dll .
 	rmdir Open.Nat -Recurse
 }
@@ -93,7 +93,7 @@ if (!(Test-Path "Open.Nat.dll"))
 if (!(Test-Path "windows/lua51.dll"))
 {
 	echo "Fetching Lua 5.1 from NuGet."
-	./nuget.exe install lua.binaries -Version 5.1.5 -ExcludeVersion
+	./nuget.exe install lua.binaries -Version 5.1.5 -ExcludeVersion -Verbosity quiet
 	cp lua.binaries/bin/win32/dll8/lua5.1.dll ./windows/lua51.dll
 	rmdir lua.binaries -Recurse
 }
@@ -101,7 +101,7 @@ if (!(Test-Path "windows/lua51.dll"))
 if (!(Test-Path "windows/freetype6.dll"))
 {
 	echo "Fetching FreeType2 from NuGet."
-	./nuget.exe install SharpFont.Dependencies -Version 2.6.0 -ExcludeVersion
+	./nuget.exe install SharpFont.Dependencies -Version 2.6.0 -ExcludeVersion -Verbosity quiet
 	cp SharpFont.Dependencies/bin/msvc9/x86/freetype6.dll ./windows/freetype6.dll
 	rmdir SharpFont.Dependencies -Recurse
 }
@@ -109,7 +109,7 @@ if (!(Test-Path "windows/freetype6.dll"))
 if (!(Test-Path "windows/soft_oal.dll"))
 {
 	echo "Fetching OpenAL Soft from NuGet."
-	./nuget.exe install OpenAL-Soft -Version 1.16.0 -ExcludeVersion
+	./nuget.exe install OpenAL-Soft -Version 1.16.0 -ExcludeVersion -Verbosity quiet
 	cp OpenAL-Soft/bin/Win32/soft_oal.dll windows/soft_oal.dll
 	rmdir OpenAL-Soft -Recurse
 }
@@ -117,7 +117,7 @@ if (!(Test-Path "windows/soft_oal.dll"))
 if (!(Test-Path "FuzzyLogicLibrary.dll"))
 {
 	echo "Fetching FuzzyLogicLibrary from NuGet."
-	./nuget.exe install FuzzyLogicLibrary -Version 1.2.0 -ExcludeVersion
+	./nuget.exe install FuzzyLogicLibrary -Version 1.2.0 -ExcludeVersion -Verbosity quiet
 	cp FuzzyLogicLibrary/bin/Release/FuzzyLogicLibrary.dll .
 	rmdir FuzzyLogicLibrary -Recurse
 }
@@ -153,7 +153,7 @@ if (!(Test-Path "GeoLite2-Country.mmdb.gz") -Or (((get-date) - (get-item "GeoLit
 if (!(Test-Path "SmarIrc4net.dll"))
 {
 	echo "Fetching SmartIrc4net from NuGet."
-	./nuget.exe install SmartIrc4net -Version 0.4.5.1 -ExcludeVersion
+	./nuget.exe install SmartIrc4net -Version 0.4.5.1 -ExcludeVersion -Verbosity quiet
 	cp SmartIrc4net/lib/net40/SmarIrc4net.* .
 	rmdir SmartIrc4net -Recurse
 }
