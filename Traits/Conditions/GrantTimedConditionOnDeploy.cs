@@ -22,6 +22,10 @@ namespace OpenRA.Mods.AS.Traits
 {
 	public class GrantTimedConditionOnDeployInfo : ITraitInfo
 	{
+		[GrantedConditionReference]
+		[Desc("The condition granted during deploying.")]
+		public readonly string DeployingCondition = null;
+
 		[GrantedConditionReference, FieldLoader.Require]
 		[Desc("The condition granted after deploying.")]
 		public readonly string DeployedCondition = null;
@@ -70,6 +74,7 @@ namespace OpenRA.Mods.AS.Traits
 		readonly bool canTurn;
 		readonly Lazy<WithSpriteBody> body;
 		int deployedToken = ConditionManager.InvalidConditionToken;
+		int deployingToken = ConditionManager.InvalidConditionToken;
 
 		ConditionManager manager;
 		[Sync] int ticks;
@@ -154,13 +159,20 @@ namespace OpenRA.Mods.AS.Traits
 			if (string.IsNullOrEmpty(info.DeployAnimation) || body.Value == null)
 				OnDeployCompleted();
 			else
+			{
+				if (manager != null && !string.IsNullOrEmpty(info.DeployingCondition) && deployingToken == ConditionManager.InvalidConditionToken)
+					deployingToken = manager.GrantCondition(self, info.DeployingCondition);
 				body.Value.PlayCustomAnimation(self, info.DeployAnimation, OnDeployCompleted);
+			}
 		}
 
 		void OnDeployCompleted()
 		{
 			if (manager != null && !string.IsNullOrEmpty(info.DeployedCondition) && deployedToken == ConditionManager.InvalidConditionToken)
 				deployedToken = manager.GrantCondition(self, info.DeployedCondition);
+
+			if (deployingToken != ConditionManager.InvalidConditionToken)
+				deployingToken = manager.RevokeCondition(self, deployingToken);
 
 			deployState = TimedDeployState.Active;
 		}
@@ -172,18 +184,23 @@ namespace OpenRA.Mods.AS.Traits
 			if (!string.IsNullOrEmpty(info.UndeploySound))
 				Game.Sound.Play(SoundType.World, info.UndeploySound, self.CenterPosition);
 
-			// If there is no animation to play just grant the upgrades that are used while undeployed.
-			// Alternatively, play the undeploy animation and then grant the upgrades.
 			if (string.IsNullOrEmpty(info.DeployAnimation) || body.Value == null)
 				OnUndeployCompleted();
 			else
+			{
+				if (manager != null && !string.IsNullOrEmpty(info.DeployingCondition) && deployingToken == ConditionManager.InvalidConditionToken)
+					deployingToken = manager.GrantCondition(self, info.DeployingCondition);
 				body.Value.PlayCustomAnimationBackwards(self, info.DeployAnimation, OnUndeployCompleted);
+			}
 		}
 
 		void OnUndeployCompleted()
 		{
 			if (deployedToken != ConditionManager.InvalidConditionToken)
 				deployedToken = manager.RevokeCondition(self, deployedToken);
+
+			if (deployingToken != ConditionManager.InvalidConditionToken)
+				deployingToken = manager.RevokeCondition(self, deployingToken);
 
 			deployState = TimedDeployState.Charging;
 			ticks = info.CooldownTicks;
