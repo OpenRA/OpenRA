@@ -80,7 +80,6 @@
     <Compile Include="Duplicates\Traits\Render\WithIdleOverlayAS.cs" />
     <Compile Include="Duplicates\Traits\Sound\AnnounceOnBuildAS.cs" />
     <Compile Include="Duplicates\Traits\Sound\AnnounceOnKillAS.cs" />
-    <Compile Include="Duplicates\Warheads\GrantExternalConditionASWarhead.cs" />
     <Compile Include="Effects\AirstrikePowerASEffect.cs" />
     <Compile Include="Lint\CheckSpawnActorWarheads.cs" />
     <Compile Include="Lint\CheckTargetHealthRadiusAS.cs" />
@@ -89,7 +88,6 @@
     <Compile Include="Traits\ChronoResourceDelivery.cs" />
     <Compile Include="Traits\Conditions\GrantConditionAboveAltitude.cs" />
     <Compile Include="Traits\Conditions\GrantPeriodicConditionOnEvent.cs" />
-    <Compile Include="Traits\Conditions\ExternalConditionStackManager.cs" />
     <Compile Include="Traits\Crate\GiveRandomActorCrateAction.cs" />
     <Compile Include="Traits\EligibleForRandomActorCrate.cs" />
     <Compile Include="Traits\ExplodeWeapon.cs" />

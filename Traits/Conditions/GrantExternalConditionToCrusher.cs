@@ -9,6 +9,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Linq;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
@@ -17,7 +18,7 @@ namespace OpenRA.Mods.AS.Traits
 	[Desc("Grant a condition to the crushing actor.")]
 	public class GrantExternalConditionToCrusherInfo : ITraitInfo
 	{
-		[Desc("The condition to apply. Must be included in the target actor's ExternalConditions list.")]
+		[Desc("The condition to apply. Must be included among the target actor's ExternalCondition traits.")]
 		public readonly string Condition = null;
 
 		[Desc("Duration of the condition (in ticks). Set to 0 for a permanent upgrade.")]
@@ -37,11 +38,11 @@ namespace OpenRA.Mods.AS.Traits
 
 		void INotifyCrushed.OnCrush(Actor self, Actor crusher, HashSet<string> crushClasses)
 		{
-			var um = crusher.TraitOrDefault<ConditionManager>();
-			if (um == null)
-				return;
+			var external = crusher.TraitsImplementing<ExternalCondition>()
+				.FirstOrDefault(t => t.Info.Condition == Info.Condition && t.CanGrantCondition(crusher, self));
 
-			um.GrantCondition(self, Info.Condition, true, Info.Duration);
+			if (external != null)
+				external.GrantCondition(crusher, self);
 		}
 
 		void INotifyCrushed.WarnCrush(Actor self, Actor crusher, HashSet<string> crushClasses) { }
