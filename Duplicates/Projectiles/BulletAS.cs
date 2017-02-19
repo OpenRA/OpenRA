@@ -36,8 +36,10 @@ namespace OpenRA.Mods.AS.Projectiles
 		public readonly string[] Sequences = { "idle" };
 
 		[Desc("The palette used to draw this projectile.")]
-		[PaletteReference]
+		[PaletteReference("IsPlayerPalette")]
 		public readonly string Palette = "effect";
+
+		public readonly bool IsPlayerPalette = false;
 
 		[Desc("Does this projectile have a shadow?")]
 		public readonly bool Shadow = false;
@@ -117,6 +119,7 @@ namespace OpenRA.Mods.AS.Projectiles
 
 		ContrailRenderable contrail;
 		string trailPalette;
+		string palette;
 
 		[Sync]
 		WPos pos, target, source;
@@ -136,6 +139,10 @@ namespace OpenRA.Mods.AS.Projectiles
 			source = args.Source;
 
 			var world = args.SourceActor.World;
+
+			palette = info.Palette;
+			if (info.IsPlayerPalette)
+				palette += args.SourceActor.Owner.InternalName;
 
 			if (info.LaunchAngle.Length > 1)
 				angle = new WAngle(world.SharedRandom.Next(info.LaunchAngle[0].Angle, info.LaunchAngle[1].Angle));
@@ -275,8 +282,7 @@ namespace OpenRA.Mods.AS.Projectiles
 						yield return r;
 				}
 
-				var palette = wr.Palette(info.Palette);
-				foreach (var r in anim.Render(pos, palette))
+				foreach (var r in anim.Render(pos, wr.Palette(palette)))
 					yield return r;
 			}
 		}
