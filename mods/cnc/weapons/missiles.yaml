@@ -266,7 +266,7 @@ Patriot:
 	Report: rocket2.aud
 	ValidTargets: Air
 	Projectile: Missile
-		Image: patriot
+		Image: MISSILE
 		HorizontalRateOfTurn: 20
 		Speed: 300
 		RangeLimit: 10c819
