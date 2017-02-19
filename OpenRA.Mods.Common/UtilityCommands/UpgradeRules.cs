@@ -850,6 +850,24 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				if (engineVersion < 20170218)
+				{
+					var externalConditions = node.Value.Nodes.Where(n => n.Key.StartsWith("ExternalConditions", StringComparison.Ordinal));
+					foreach (var ec in externalConditions.ToList())
+					{
+						var conditionsNode = ec.Value.Nodes.FirstOrDefault(n => n.Key == "Conditions");
+						if (conditionsNode != null)
+						{
+							var conditions = FieldLoader.GetValue<string[]>("", conditionsNode.Value.Value);
+							foreach (var c in conditions)
+								node.Value.Nodes.Add(new MiniYamlNode("ExternalCondition@" + c.ToUpperInvariant(),
+									new MiniYaml("", new List<MiniYamlNode>() { new MiniYamlNode("Condition", c) })));
+
+							node.Value.Nodes.Remove(ec);
+						}
+					}
+				}
+
 				UpgradeActorRules(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 

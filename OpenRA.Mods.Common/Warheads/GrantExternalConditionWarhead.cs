@@ -10,6 +10,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Linq;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
@@ -36,11 +37,11 @@ namespace OpenRA.Mods.Common.Warheads
 				if (!IsValidAgainst(a, firedBy))
 					continue;
 
-				var cm = a.TraitOrDefault<ConditionManager>();
+				var external = a.TraitsImplementing<ExternalCondition>()
+					.FirstOrDefault(t => t.Info.Condition == Condition && t.CanGrantCondition(a, firedBy));
 
-				// Condition token is ignored because we never revoke this condition.
-				if (cm != null && cm.AcceptsExternalCondition(a, Condition, Duration > 0))
-					cm.GrantCondition(a, Condition, true, Duration);
+				if (external != null)
+					external.GrantCondition(a, firedBy, Duration);
 			}
 		}
 	}

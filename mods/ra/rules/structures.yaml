@@ -539,8 +539,6 @@ DOME:
 	Bib:
 	ProvidesRadar:
 		RequiresCondition: !jammed && !disabled
-	ExternalConditions@JAMMED:
-		Conditions: jammed
 	InfiltrateForExploration:
 	DetectCloaked:
 		Range: 10c0
@@ -550,6 +548,8 @@ DOME:
 	ProvidesPrerequisite@buildingname:
 	GrantConditionOnDisabled@IDISABLE:
 		Condition: disabled
+	ExternalCondition@JAMMED:
+		Condition: jammed
 
 PBOX:
 	Inherits: ^Defense

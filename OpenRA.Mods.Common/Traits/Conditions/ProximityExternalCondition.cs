@@ -10,6 +10,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Linq;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -104,13 +105,18 @@ namespace OpenRA.Mods.Common.Traits
 			if (a == self && !info.AffectsParent)
 				return;
 
+			if (tokens.ContainsKey(a))
+				return;
+
 			var stance = self.Owner.Stances[a.Owner];
 			if (!info.ValidStances.HasStance(stance))
 				return;
 
-			var cm = a.TraitOrDefault<ConditionManager>();
-			if (cm != null && !tokens.ContainsKey(a) && cm.AcceptsExternalCondition(a, info.Condition))
-				tokens[a] = cm.GrantCondition(a, info.Condition, true);
+			var external = a.TraitsImplementing<ExternalCondition>()
+				.FirstOrDefault(t => t.Info.Condition == info.Condition && t.CanGrantCondition(a, self));
+
+			if (external != null)
+				tokens[a] = external.GrantCondition(a, self);
 		}
 
 		public void UnitProducedByOther(Actor self, Actor producer, Actor produced)
@@ -130,9 +136,11 @@ namespace OpenRA.Mods.Common.Traits
 				if (!info.ValidStances.HasStance(stance))
 					return;
 
-				var cm = produced.TraitOrDefault<ConditionManager>();
-				if (cm != null && cm.AcceptsExternalCondition(produced, info.Condition))
-					tokens[produced] = cm.GrantCondition(produced, info.Condition, true);
+				var external = produced.TraitsImplementing<ExternalCondition>()
+					.FirstOrDefault(t => t.Info.Condition == info.Condition && t.CanGrantCondition(produced, self));
+
+				if (external != null)
+					tokens[produced] = external.GrantCondition(produced, self);
 			}
 		}
 
@@ -146,9 +154,8 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			tokens.Remove(a);
-			var cm = a.TraitOrDefault<ConditionManager>();
-			if (cm != null)
-				cm.RevokeCondition(a, token);
+			foreach (var external in a.TraitsImplementing<ExternalCondition>())
+				external.TryRevokeCondition(a, self, token);
 		}
 	}
 }

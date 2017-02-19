@@ -63,9 +63,6 @@ namespace OpenRA.Mods.Common.Traits
 		/// <summary>Each granted condition receives a unique token that is used when revoking.</summary>
 		Dictionary<int, string> tokens = new Dictionary<int, string>();
 
-		/// <summary>Set of whitelisted externally grantable conditions cached from ExternalConditions traits.</summary>
-		string[] externalConditions = { };
-
 		/// <summary>Set of conditions that are monitored for stacked bonuses, and the bonus conditions that they grant.</summary>
 		readonly Dictionary<string, string[]> stackedConditions = new Dictionary<string, string[]>();
 
@@ -113,12 +110,6 @@ namespace OpenRA.Mods.Common.Traits
 				conditionState.Tokens.Add(kv.Key);
 				conditionCache[kv.Value] = conditionState.Tokens.Count > 0;
 			}
-
-			// Build external condition whitelist
-			externalConditions = self.Info.TraitInfos<ExternalConditionsInfo>()
-				.SelectMany(t => t.Conditions)
-				.Distinct()
-				.ToArray();
 
 			foreach (var sc in self.Info.TraitInfos<StackedConditionInfo>())
 			{
@@ -172,11 +163,8 @@ namespace OpenRA.Mods.Common.Traits
 		/// <returns>The token that is used to revoke this condition.</returns>
 		/// <param name="external">Validate against the external condition whitelist.</param>
 		/// <param name="duration">Automatically revoke condition after this delay if non-zero.</param>
-		public int GrantCondition(Actor self, string condition, bool external = false, int duration = 0)
+		public int GrantCondition(Actor self, string condition, int duration = 0)
 		{
-			if (external && !externalConditions.Contains(condition))
-				return InvalidConditionToken;
-
 			var token = nextToken++;
 			tokens.Add(token, condition);
 
@@ -216,26 +204,6 @@ namespace OpenRA.Mods.Common.Traits
 				UpdateConditionState(self, condition, token, true);
 
 			return InvalidConditionToken;
-		}
-
-		/// <summary>Returns true if the given external condition will have an effect on this actor.</summary>
-		public bool AcceptsExternalCondition(Actor self, string condition, bool timed = false)
-		{
-			if (state == null)
-				throw new InvalidOperationException("AcceptsExternalCondition cannot be queried before the actor has been fully created.");
-
-			if (!externalConditions.Contains(condition))
-				return false;
-
-			// A timed condition can always replace an existing timed condition (resetting its duration)
-			if (timed && timers.ContainsKey(condition))
-				return true;
-
-			string[] sc;
-			if (stackedConditions.TryGetValue(condition, out sc))
-				return stackedTokens[condition].Count < sc.Length;
-
-			return !conditionCache[condition];
 		}
 
 		/// <summary>Returns whether the specified token is valid for RevokeCondition</summary>
