@@ -139,24 +139,8 @@ A10.IN:
 		Weapon: Napalm.in
 
 airstrike.proxy:
-	AlwaysVisible:
 	AirstrikePower:
-		Icon: airstrike
-		StartFullyCharged: True
-		ChargeTime: 120
-		SquadSize: 3
-		QuantizedFacings: 8
-		Description: Air Strike
-		LongDesc: Deploy an aerial napalm strike.\nBurns buildings and infantry along a line.
-		EndChargeSound: airredy1.aud
-		SelectTargetSound: select1.aud
-		InsufficientPowerSound: nopower1.aud
-		IncomingSound: enemya.aud
 		UnitType: a10.in
-		DisplayBeacon: True
-		BeaconPoster: airstrike
-		DisplayRadarPing: True
-		CameraActor: camera
 
 FACT.IN:
 	Inherits: FACT

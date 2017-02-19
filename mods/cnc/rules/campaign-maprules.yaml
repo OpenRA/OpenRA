@@ -26,3 +26,26 @@ Player:
 	PlayerResources:
 		DefaultCashLocked: True
 		DefaultCash: 5000
+
+airstrike.proxy:
+	AlwaysVisible:
+	AirstrikePower:
+		Icon: airstrike
+		StartFullyCharged: True
+		ChargeTime: 120
+		SquadSize: 3
+		QuantizedFacings: 8
+		Description: Air Strike
+		LongDesc: Deploy an aerial napalm strike.\nBurns buildings and infantry along a line.
+		EndChargeSpeechNotification: AirstrikeReady
+		SelectTargetSpeechNotification: SelectTarget
+		InsufficientPowerSpeechNotification: InsufficientPower
+		IncomingSpeechNotification: EnemyPlanesApproaching
+		UnitType: a10
+		DisplayBeacon: True
+		BeaconPoster: airstrike
+		DisplayRadarPing: True
+		CameraActor: camera
+		ArrowSequence: arrow
+		ClockSequence: clock
+		CircleSequence: circles

@@ -9,17 +9,15 @@ World:
 		Briefing: INCOMING REPORT:\n\nCommander! The Soviets have rendered us useless...\nReports indicate Soviet reinforcements are coming to finish us off... The situation looks bleak...\n
 
 SovietSquad:
-	AlwaysVisible:
+	Inherits: powerproxy.paratroopers
 	ParatroopersPower:
 		DropItems: E1,E1,E2,E4,E4
-		QuantizedFacings: 8
 		DisplayBeacon: false
 
 SovietPlatoonUnits:
-	AlwaysVisible:
+	Inherits: powerproxy.paratroopers
 	ParatroopersPower:
 		DropItems: E1,E1,E2,E4,E4,E1,E1,E2,E4,E4
-		QuantizedFacings: 8
 		DisplayBeacon: false
 
 MINV:
