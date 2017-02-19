@@ -43,6 +43,10 @@
 		Name: Smugglers
 		InternalName: smuggler
 		Selectable: false
+	Faction@Fremen:
+		Name: Fremen
+		InternalName: fremen
+		Selectable: false
 	ResourceType@Spice:
 		Type: Spice
 		Name: Spice
