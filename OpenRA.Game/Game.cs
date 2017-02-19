@@ -470,10 +470,8 @@ namespace OpenRA
 		{
 			try
 			{
-				var argsString = mod.LaunchArgs.Append(launchArguments)
-					.Select(a => "\"" + a + "\"").JoinWith(" ");
-
-				var p = Process.Start(mod.LaunchPath, argsString);
+				var args = launchArguments != null ? mod.LaunchArgs.Append(launchArguments) : mod.LaunchArgs;
+				var p = Process.Start(mod.LaunchPath, args.Select(a => "\"" + a + "\"").JoinWith(" "));
 				if (p == null || p.HasExited)
 					onFailed();
 				else
@@ -482,8 +480,10 @@ namespace OpenRA
 					Exit();
 				}
 			}
-			catch
+			catch (Exception e)
 			{
+				Log.Write("debug", "Failed to switch to external mod.");
+				Log.Write("debug", "Error was: " + e.Message);
 				onFailed();
 			}
 		}
@@ -801,11 +801,6 @@ namespace OpenRA
 		public static void Exit()
 		{
 			state = RunStatus.Success;
-		}
-
-		public static void Restart()
-		{
-			state = RunStatus.Restart;
 		}
 
 		public static void AddChatLine(Color color, string name, string text)
