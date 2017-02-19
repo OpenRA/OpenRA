@@ -140,7 +140,7 @@ namespace OpenRA.Mods.AS.Traits
 
 		string IOrderVoice.VoicePhraseForOrder(Actor self, Order order)
 		{
-			return order.OrderString == "GrantConditionOnDeploy" && deployState != TimedDeployState.Ready ? info.Voice : null;
+			return order.OrderString == "GrantConditionOnDeploy" && deployState == TimedDeployState.Ready ? info.Voice : null;
 		}
 
 		void Deploy()
