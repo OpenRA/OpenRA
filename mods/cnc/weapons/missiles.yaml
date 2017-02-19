@@ -41,17 +41,9 @@ Dragon:
 	BurstDelay: 5
 	Projectile: Missile
 		Speed: 426
-		Arm: 0
-		Blockable: false
-		TrailImage: smokey
-		ContrailLength: 8
-		Inaccuracy: 128
-		Image: DRAGON
 		HorizontalRateOfTurn: 20
 		RangeLimit: 15c0
 	Warhead@1Dam: SpreadDamage
-		Spread: 128
-		Damage: 35
 		ValidTargets: Air
 		Versus:
 			None: 100
@@ -60,7 +52,6 @@ Dragon:
 			Heavy: 75
 	Warhead@3Eff: CreateEffect
 		Explosions: small_building
-		ImpactSounds: xplos.aud
 
 Rockets:
 	Inherits: ^MissileWeapon
@@ -73,7 +64,6 @@ BikeRockets:
 		HorizontalRateOfTurn: 10
 		Speed: 213
 	Warhead@1Dam: SpreadDamage
-		Spread: 128
 		Damage: 31
 		Versus:
 			None: 25
@@ -155,7 +145,6 @@ MammothMissiles:
 		Shadow: true
 		Inaccuracy: 853
 		LaunchAngle: 62
-		Image: DRAGON
 		ContrailLength: 10
 		Speed: 341
 	Warhead@1Dam: SpreadDamage
@@ -200,7 +189,6 @@ BoatMissile:
 	Report: rocket2.aud
 	Projectile: Missile
 		Inaccuracy: 426
-		Image: DRAGON
 		HorizontalRateOfTurn: 5
 		Speed: 170
 		RangeLimit: 9c614
