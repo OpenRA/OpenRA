@@ -71,16 +71,4 @@ namespace OpenRA.Mods.Common.Scripting
 		[Desc("Create a new WDist by cell distance.")]
 		public WDist FromCells(int numCells) { return WDist.FromCells(numCells); }
 	}
-
-	[ScriptGlobal("WRange")]
-	public class WRangeGlobal : ScriptGlobal
-	{
-		public WRangeGlobal(ScriptContext context) : base(context) { }
-
-		[Desc("Create a new WRange. DEPRECATED! Will be removed.")]
-		public WDist New(int r) { Game.Debug("WRange is deprecated. Use WDist instead."); return new WDist(r); }
-
-		[Desc("Create a new WRange by cell distance. DEPRECATED! Will be removed.")]
-		public WDist FromCells(int numCells) { Game.Debug("WRange is deprecated. Use WDist instead."); return WDist.FromCells(numCells); }
-	}
 }
