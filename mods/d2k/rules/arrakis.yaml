@@ -115,8 +115,6 @@ sandworm:
 		MovingInterval: 3
 		RequiresCondition: !attacking
 	ConditionManager:
-	Buildable:
-		Description: Attracted by vibrations in the sand.\nWill eat units whole and has a large appetite.
 
 sietch:
 	Inherits: ^Building
