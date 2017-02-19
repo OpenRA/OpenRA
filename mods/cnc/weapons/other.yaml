@@ -70,6 +70,7 @@ Napalm:
 	BurstDelay: 2
 	Projectile: GravityBomb
 		Image: BOMBLET
+		Shadow: true
 	Warhead@1Dam: SpreadDamage
 		Spread: 341
 		Damage: 30

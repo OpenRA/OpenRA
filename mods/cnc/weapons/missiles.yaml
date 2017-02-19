@@ -9,6 +9,7 @@
 		Blockable: false
 		Inaccuracy: 128
 		Image: DRAGON
+		Shadow: true
 		HorizontalRateOfTurn: 15
 		TrailImage: smokey
 		ContrailLength: 8
@@ -142,7 +143,6 @@ MammothMissiles:
 	Report: rocket1.aud
 	ValidTargets: Ground
 	Projectile: Bullet
-		Shadow: true
 		Inaccuracy: 853
 		LaunchAngle: 62
 		ContrailLength: 10
