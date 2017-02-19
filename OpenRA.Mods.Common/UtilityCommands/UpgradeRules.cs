@@ -61,7 +61,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				// Resource type properties were renamed, and support for tooltips added
 				if (engineVersion < 20161020)
 				{
-					if (node.Key.StartsWith("ResourceType"))
+					if (node.Key.StartsWith("ResourceType", StringComparison.Ordinal))
 					{
 						var image = node.Value.Nodes.FirstOrDefault(n => n.Key == "Sequence");
 						if (image != null)
@@ -388,7 +388,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				// Replaced NukePower CameraActor with CameraRange (effect-based reveal)
 				if (engineVersion < 20161227)
 				{
-					var nukePower = node.Value.Nodes.FirstOrDefault(n => n.Key.StartsWith("NukePower"));
+					var nukePower = node.Value.Nodes.FirstOrDefault(n => n.Key.StartsWith("NukePower", StringComparison.Ordinal));
 					if (nukePower != null)
 					{
 						var cameraActor = nukePower.Value.Nodes.FirstOrDefault(n => n.Key == "CameraActor");
