@@ -33,16 +33,6 @@ namespace OpenRA.Mods.Common.Scripting
 		[Desc("The player's color.")]
 		public HSLColor Color { get { return Player.Color; } }
 
-		[Desc("The player's race. (DEPRECATED! Use the `Faction` property.)")]
-		public string Race
-		{
-			get
-			{
-				Game.Debug("The property `PlayerProperties.Race` is deprecated! Use `PlayerProperties.Faction` instead!");
-				return Player.Faction.InternalName;
-			}
-		}
-
 		[Desc("The player's faction.")]
 		public string Faction { get { return Player.Faction.InternalName; } }
 
