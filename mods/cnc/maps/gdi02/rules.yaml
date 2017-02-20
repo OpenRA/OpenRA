@@ -11,6 +11,8 @@ World:
 
 SBAG:
 	-Crushable:
+	Buildable:
+		Prerequisites: ~disabled
 
 HARV:
 	Harvester:
