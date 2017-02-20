@@ -137,7 +137,19 @@ GUN:
 	Buildable:
 		Prerequisites: ~disabled
 
+GTWR:
+	Buildable:
+		Prerequisites: ~disabled
+
 ATWR:
+	Buildable:
+		Prerequisites: ~disabled
+
+SBAG:
+	Buildable:
+		Prerequisites: ~disabled
+
+BRIK:
 	Buildable:
 		Prerequisites: ~disabled
 
