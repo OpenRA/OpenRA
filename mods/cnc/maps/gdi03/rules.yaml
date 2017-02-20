@@ -12,6 +12,13 @@ World:
 
 SBAG:
 	-Crushable:
+	Buildable:
+		Prerequisites: ~disabled
+
+CYCL:
+	-Crushable:
+	Buildable:
+		Prerequisites: ~disabled
 
 WEAP:
 	Buildable:
@@ -37,7 +44,15 @@ GUN:
 	Buildable:
 		Prerequisites: ~disabled
 
+GTWR:
+	Buildable:
+		Prerequisites: ~disabled
+
 ATWR:
+	Buildable:
+		Prerequisites: ~disabled
+
+BRIK:
 	Buildable:
 		Prerequisites: ~disabled
 
