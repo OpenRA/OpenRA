@@ -53,7 +53,7 @@ OrniBomb:
 	ReloadDelay: 25
 	Burst: 5
 	BurstDelay: 3
-	Range: 3c0
+	Range: 1c512
 	Projectile: GravityBomb
 		Image: BOMBS
 	Warhead@1Dam: SpreadDamage
