@@ -27,9 +27,14 @@ rm OpenRA.app/Contents/Resources/OpenRA.ico
 # Remove WinForms applications
 rm OpenRA.app/Contents/Resources/OpenRA.exe
 
+modify_plist() {
+    sed "s/$1/$2/" OpenRA.app/Contents/Info.plist > OpenRA.app/Contents/Info.plist.tmp && mv OpenRA.app/Contents/Info.plist.tmp OpenRA.app/Contents/Info.plist
+}
+
 # Set version string
-sed "s/{DEV_VERSION}/${1}/" OpenRA.app/Contents/Info.plist > OpenRA.app/Contents/Info.plist.tmp
-mv OpenRA.app/Contents/Info.plist.tmp OpenRA.app/Contents/Info.plist
+modify_plist "{DEV_VERSION}" "${1}"
+
+modify_plist "{BUNDLE_DISPLAY_NAME}" OpenRA
 
 # Package app bundle into a zip and clean up
 zip OpenRA-$1 -r -9 OpenRA.app --quiet --symlinks
