@@ -21,6 +21,10 @@ HQ:
 	Tooltip:
 		Description: Provides an overview of the battlefield.\nRequires power to operate.
 
+CYCL:
+	Buildable:
+		Prerequisites: ~disabled
+
 NUK2:
 	Buildable:
 		Prerequisites: ~disabled
@@ -54,6 +58,10 @@ OBLI:
 		Prerequisites: ~disabled
 
 GTWR:
+	Buildable:
+		Prerequisites: ~disabled
+
+SBAG:
 	Buildable:
 		Prerequisites: ~disabled
 
