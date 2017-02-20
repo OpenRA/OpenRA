@@ -68,8 +68,10 @@ Napalm:
 	Range: 2c0
 	Burst: 2
 	BurstDelay: 2
+	-Projectile:
 	Projectile: GravityBomb
 		Image: BOMBLET
+		Shadow: true
 	Warhead@1Dam: SpreadDamage
 		Spread: 341
 		Damage: 30
