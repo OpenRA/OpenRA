@@ -11,9 +11,11 @@ World:
 		LossVideo: gameover.vqa
 
 SBAG:
-	-Crushable:
 	Buildable:
 		Prerequisites: ~disabled
+
+SBAG:
+	-Crushable:
 
 WEAP:
 	Buildable:
