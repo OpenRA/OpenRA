@@ -18,6 +18,7 @@ namespace OpenRA.Mods.Cnc.Traits
 	{
 		[Desc("The speech notification on enter first passenger on cargo.")]
 		public readonly string EnterNotification = null;
+
 		[Desc("The speech notification on exit last passenger on cargo")]
 		public readonly string ExitNotification = null;
 
@@ -40,8 +41,9 @@ namespace OpenRA.Mods.Cnc.Traits
 		void INotifyPassengerEntered.OnPassengerEntered(Actor self, Actor passenger)
 		{
 			var newOwner = passenger.Owner;
-			if (self.Owner == newOwner)
+			if (self.Owner != originalOwner || self.Owner == newOwner)
 				return;
+
 			NeedChangeOwner(self, passenger, newOwner);
 
 			Game.Sound.PlayNotification(self.World.Map.Rules, passenger.Owner, "Speech", info.EnterNotification, newOwner.Faction.InternalName);

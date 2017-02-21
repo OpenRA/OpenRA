@@ -12,6 +12,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Orders;
 using OpenRA.Traits;
@@ -131,6 +132,11 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 			ReservedCargo.UnreserveSpace(self);
 			ReservedCargo = null;
+		}
+
+		public static Passenger GetPassengerByType(Actor a, HashSet<string> types)
+		{
+			return a.TraitsImplementing<Passenger>().Single(pa => types.Contains(pa.Info.CargoType));
 		}
 	}
 }
