@@ -226,15 +226,15 @@ starport.atreides:
 		ZOffset: -1c511
 		Offset: -48,48
 	active: DATA.R8
-		Start: 4987
-		Length: 23
+		Start: 4986
+		Length: 7
 		ZOffset: -1c511
 		Offset: -48,48
 		BlendMode: Additive
 		Tick: 200
 	damaged-active: DATA.R8
-		Start: 4987
-		Length: 23
+		Start: 4986
+		Length: 7
 		ZOffset: -1c511
 		Offset: -48,48
 		BlendMode: Additive
@@ -443,10 +443,18 @@ hightech.atreides:
 		Offset: -48,80
 	production-welding: DATA.R8
 		Start: 4878
-		Length: 30
+		Length: 10
 		Offset: -48,80
-		Tick: 500
+		Tick: 200
 		BlendMode: Additive
+		ZOffset: 1024
+	damaged-production-welding: DATA.R8
+		Frames: 4878, 4879, 4880, 4881, 4882, 4884, 4885, 4886, 4887
+		Length: 9
+		Offset: -48,80
+		Tick: 200
+		BlendMode: Additive
+		ZOffset: 1024
 	bib: BLOXBASE.R8
 		Frames: 611, 612, 613, 631, 632, 633
 		Length: 6
@@ -605,17 +613,25 @@ light.atreides:
 	idle-top: DATA.R8
 		Start: 2922
 		Offset: -48,64
-		ZOffset: 1023
+		ZOffset: 896
 	damaged-idle-top: DATA.R8
 		Start: 2923
 		Offset: -48,64
+		ZOffset: 896
 	production-welding: DATA.R8
 		Start: 4908
-		Length: 30
+		Length: 10
 		Offset: -48,64
 		Tick: 200
 		BlendMode: Additive
-		ZOffset: 1023
+		ZOffset: 1024
+	damaged-production-welding: DATA.R8
+		Frames: 4908, 4909, 4910, 4912, 4914, 4917
+		Length: 6
+		Offset: -48,64
+		Tick: 200
+		BlendMode: Additive
+		ZOffset: 1024
 	bib: BLOXBASE.R8
 		Frames: 611, 612, 613, 631, 632, 633
 		Length: 6
@@ -647,18 +663,18 @@ heavy.atreides:
 	idle-top: DATA.R8
 		Start: 2767
 		Offset: -48,80
-		ZOffset: 1023
+		ZOffset: 896
 	damaged-idle-top: DATA.R8
 		Start: 2768
 		Offset: -48,80
-		ZOffset: 1023
+		ZOffset: 896
 	production-welding: DATA.R8
 		Start: 4938
-		Length: 47
+		Length: 10
 		Offset: -48,80
 		Tick: 200
 		BlendMode: Additive
-		ZOffset: 511
+		ZOffset: 1024
 	bib: BLOXBASE.R8
 		Frames: 611, 612, 613, 631, 632, 633
 		Length: 6
@@ -721,15 +737,15 @@ starport.harkonnen:
 		Offset: -48,48
 		ZOffset: -1c511
 	active: DATA.R8
-		Start: 4987
-		Length: 23
+		Start: 4993
+		Length: 7
 		ZOffset: -1c511
 		Offset: -48,48
 		BlendMode: Additive
 		Tick: 200
 	damaged-active: DATA.R8
-		Start: 4987
-		Length: 23
+		Start: 4993
+		Length: 7
 		ZOffset: -1c511
 		Offset: -48,48
 		BlendMode: Additive
@@ -937,11 +953,12 @@ hightech.harkonnen:
 		Start: 2973
 		Offset: -48,80
 	production-welding: DATA.R8
-		Start: 4878
-		Length: 30
+		Start: 4888
+		Length: 10
 		Offset: -48,80
-		Tick: 500
+		Tick: 200
 		BlendMode: Additive
+		ZOffset: 1024
 	bib: BLOXBASE.R8
 		Frames: 611, 612, 613, 631, 632, 633
 		Length: 6
@@ -1009,17 +1026,18 @@ light.harkonnen:
 	idle-top: DATA.R8
 		Start: 3082
 		Offset: -48,64
-		ZOffset: 1023
+		ZOffset: 896
 	damaged-idle-top: DATA.R8
 		Start: 3083
 		Offset: -48,64
+		ZOffset: 896
 	production-welding: DATA.R8
-		Start: 4908
-		Length: 30
+		Start: 4918
+		Length: 10
 		Offset: -48,64
 		Tick: 200
 		BlendMode: Additive
-		ZOffset: 1023
+		ZOffset: 1024
 	bib: BLOXBASE.R8
 		Frames: 611, 612, 613, 631, 632, 633
 		Length: 6
@@ -1051,18 +1069,18 @@ heavy.harkonnen:
 	idle-top: DATA.R8
 		Start: 2927
 		Offset: -48,80
-		ZOffset: 1023
+		ZOffset: 896
 	damaged-idle-top: DATA.R8
 		Start: 2928
 		Offset: -48,80
-		ZOffset: 1023
+		ZOffset: 896
 	production-welding: DATA.R8
-		Start: 4938
-		Length: 47
+		Start: 4948
+		Length: 10
 		Offset: -48,80
 		Tick: 200
 		BlendMode: Additive
-		ZOffset: 511
+		ZOffset: 1024
 	bib: BLOXBASE.R8
 		Frames: 611, 612, 613, 631, 632, 633
 		Length: 6
@@ -1125,15 +1143,15 @@ starport.ordos:
 		Offset: -48,48
 		ZOffset: -1c511
 	active: DATA.R8
-		Start: 4987
-		Length: 23
+		Start: 5001
+		Length: 7
 		ZOffset: -1c511
 		Offset: -48,48
 		BlendMode: Additive
 		Tick: 200
 	damaged-active: DATA.R8
-		Start: 4987
-		Length: 23
+		Start: 5001
+		Length: 7
 		ZOffset: -1c511
 		Offset: -48,48
 		BlendMode: Additive
@@ -1341,11 +1359,12 @@ hightech.ordos:
 		Start: 3133
 		Offset: -48,80
 	production-welding: DATA.R8
-		Start: 4878
-		Length: 30
+		Start: 4898
+		Length: 10
 		Offset: -48,80
-		Tick: 500
+		Tick: 200
 		BlendMode: Additive
+		ZOffset: 1024
 	bib: BLOXBASE.R8
 		Frames: 611, 612, 613, 631, 632, 633
 		Length: 6
@@ -1405,17 +1424,18 @@ light.ordos:
 	idle-top: DATA.R8
 		Start: 3242
 		Offset: -48,64
-		ZOffset: 1023
+		ZOffset: 896
 	damaged-idle-top: DATA.R8
 		Start: 3243
 		Offset: -48,64
+		ZOffset: 896
 	production-welding: DATA.R8
-		Start: 4908
-		Length: 30
+		Start: 4928
+		Length: 10
 		Offset: -48,64
 		Tick: 200
 		BlendMode: Additive
-		ZOffset: 1023
+		ZOffset: 1024
 	bib: BLOXBASE.R8
 		Frames: 611, 612, 613, 631, 632, 633
 		Length: 6
@@ -1447,18 +1467,18 @@ heavy.ordos:
 	idle-top: DATA.R8
 		Start: 3087
 		Offset: -48,80
-		ZOffset: 1023
+		ZOffset: 896
 	damaged-idle-top: DATA.R8
 		Start: 3088
 		Offset: -48,80
-		ZOffset: 1023
+		ZOffset: 896
 	production-welding: DATA.R8
-		Start: 4938
-		Length: 47
+		Start: 4958
+		Length: 10
 		Offset: -48,80
 		Tick: 200
 		BlendMode: Additive
-		ZOffset: 511
+		ZOffset: 1024
 	bib: BLOXBASE.R8
 		Frames: 611, 612, 613, 631, 632, 633
 		Length: 6
@@ -1507,15 +1527,15 @@ starport.smuggler:
 		Offset: -48,48
 		ZOffset: -1c511
 	active: DATA.R8
-		Start: 4987
-		Length: 23
+		Start: 5002
+		Length: 7
 		ZOffset: -1c511
 		Offset: -48,48
 		BlendMode: Additive
 		Tick: 200
 	damaged-active: DATA.R8
-		Start: 4987
-		Length: 23
+		Start: 5002
+		Length: 7
 		ZOffset: -1c511
 		Offset: -48,48
 		BlendMode: Additive
@@ -1560,17 +1580,18 @@ heavy.mercenary:
 	idle-top: DATA.R8
 		Start: 3250
 		Offset: -48,80
-		ZOffset: 1023
+		ZOffset: 896
 	damaged-idle-top: DATA.R8
 		Start: 3251
 		Offset: -48,80
-		ZOffset: 1023
+		ZOffset: 896
 	production-welding: DATA.R8
-		Start: 4938
-		Length: 47
+		Start: 4968
+		Length: 8
 		Offset: -48,80
 		Tick: 200
 		BlendMode: Additive
+		ZOffset: 1024
 	bib: BLOXBASE.R8
 		Frames: 611, 612, 613, 631, 632, 633
 		Length: 6
