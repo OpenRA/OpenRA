@@ -641,12 +641,7 @@ namespace OpenRA.Support
 
 		static Expression AsBool(Expression expression)
 		{
-			return Expressions.Expression.GreaterThan(expression, Zero);
-		}
-
-		static Expression AsNegBool(Expression expression)
-		{
-			return Expressions.Expression.LessThanOrEqual(expression, Zero);
+			return Expressions.Expression.NotEqual(expression, Zero);
 		}
 
 		static Expression IfThenElse(Expression test, Expression ifTrue, Expression ifFalse)
@@ -757,10 +752,7 @@ namespace OpenRA.Support
 
 						case TokenType.Not:
 						{
-							if (ast.PeekType() == ExpressionType.Bool)
-								ast.Push(Expressions.Expression.Not(ast.Pop(ExpressionType.Bool)));
-							else
-								ast.Push(AsNegBool(ast.Pop(ExpressionType.Int)));
+							ast.Push(Expressions.Expression.Not(ast.Pop(ExpressionType.Bool)));
 							continue;
 						}
 
