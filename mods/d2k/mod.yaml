@@ -173,7 +173,7 @@ SupportsMapsFrom: d2k
 
 SoundFormats: Aud, Wav
 
-SpriteFormats: R8, ShpTD, TmpRA
+SpriteFormats: R8, ShpTD, TmpRA, TmpTD, ShpTS
 
 SpriteSequenceFormat: DefaultSpriteSequence
 
