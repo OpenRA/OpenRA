@@ -63,24 +63,18 @@ namespace OpenRA.Mods.Common.Traits
 		/// <summary>Each granted condition receives a unique token that is used when revoking.</summary>
 		Dictionary<int, string> tokens = new Dictionary<int, string>();
 
-		/// <summary>Set of conditions that are monitored for stacked bonuses, and the bonus conditions that they grant.</summary>
-		readonly Dictionary<string, string[]> stackedConditions = new Dictionary<string, string[]>();
-
-		/// <summary>Tokens granted by the stacked condition bonuses defined in stackedConditions.</summary>
-		readonly Dictionary<string, Stack<int>> stackedTokens = new Dictionary<string, Stack<int>>();
-
 		int nextToken = 1;
 
-		/// <summary>Cache of condition -> enabled state for quick evaluation of boolean conditions.</summary>
-		readonly Dictionary<string, bool> conditionCache = new Dictionary<string, bool>();
+		/// <summary>Cache of condition -> enabled state for quick evaluation of token counter conditions.</summary>
+		readonly Dictionary<string, int> conditionCache = new Dictionary<string, int>();
 
 		/// <summary>Read-only version of conditionCache that is passed to IConditionConsumers.</summary>
-		IReadOnlyDictionary<string, bool> readOnlyConditionCache;
+		IReadOnlyDictionary<string, int> readOnlyConditionCache;
 
 		void INotifyCreated.Created(Actor self)
 		{
 			state = new Dictionary<string, ConditionState>();
-			readOnlyConditionCache = new ReadOnlyDictionary<string, bool>(conditionCache);
+			readOnlyConditionCache = new ReadOnlyDictionary<string, int>(conditionCache);
 
 			var allConsumers = new HashSet<IConditionConsumer>();
 			var allWatchers = self.TraitsImplementing<IConditionTimerWatcher>().ToList();
@@ -96,7 +90,7 @@ namespace OpenRA.Mods.Common.Traits
 						if (w.Condition == condition)
 							cs.Watchers.Add(w);
 
-					conditionCache[condition] = false;
+					conditionCache[condition] = 0;
 				}
 			}
 
@@ -108,13 +102,7 @@ namespace OpenRA.Mods.Common.Traits
 					continue;
 
 				conditionState.Tokens.Add(kv.Key);
-				conditionCache[kv.Value] = conditionState.Tokens.Count > 0;
-			}
-
-			foreach (var sc in self.Info.TraitInfos<StackedConditionInfo>())
-			{
-				stackedConditions[sc.Condition] = sc.StackedConditions;
-				stackedTokens[sc.Condition] = new Stack<int>();
+				conditionCache[kv.Value] = conditionState.Tokens.Count;
 			}
 
 			// Update all traits with their initial condition state
@@ -133,30 +121,10 @@ namespace OpenRA.Mods.Common.Traits
 			else
 				conditionState.Tokens.Add(token);
 
-			conditionCache[condition] = conditionState.Tokens.Count > 0;
+			conditionCache[condition] = conditionState.Tokens.Count;
 
 			foreach (var t in conditionState.Consumers)
 				t.ConditionsChanged(self, readOnlyConditionCache);
-
-			string[] sc;
-			if (stackedConditions.TryGetValue(condition, out sc))
-			{
-				var target = (conditionState.Tokens.Count - 1).Clamp(0, sc.Length);
-				var st = stackedTokens[condition];
-				for (var i = st.Count; i < target; i++)
-				{
-					// Empty strings are used to skip unwanted levels
-					var t = !string.IsNullOrEmpty(sc[i]) ? GrantCondition(self, sc[i]) : InvalidConditionToken;
-					st.Push(t);
-				}
-
-				for (var i = st.Count; i > target; i--)
-				{
-					var t = st.Pop();
-					if (t != InvalidConditionToken)
-						RevokeCondition(self, t);
-				}
-			}
 		}
 
 		/// <summary>Grants a specified condition.</summary>

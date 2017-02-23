@@ -110,7 +110,7 @@ namespace OpenRA.Mods.Common.Traits
 	public interface IConditionConsumer
 	{
 		IEnumerable<string> Conditions { get; }
-		void ConditionsChanged(Actor self, IReadOnlyDictionary<string, bool> conditions);
+		void ConditionsChanged(Actor self, IReadOnlyDictionary<string, int> conditions);
 	}
 
 	public interface INotifyHarvesterAction

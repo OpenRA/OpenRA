@@ -16,66 +16,69 @@
 ^GainsExperience:
 	GainsExperience:
 		Conditions:
-			200: rank-veteran-1
-			400: rank-veteran-2
-			800: rank-veteran-3
-			1600: rank-elite
+			200: rank-veteran
+			400: rank-veteran
+			800: rank-veteran
+			1600: rank-veteran
+	GrantCondition@RANK-ELITE:
+		RequiresCondition: rank-veteran >= 4
+		Condition: rank-elite
 	DamageMultiplier@RANK-1:
-		RequiresCondition: rank-veteran-1 && !rank-veteran-2
+		RequiresCondition: rank-veteran == 1
 		Modifier: 95
 	DamageMultiplier@RANK-2:
-		RequiresCondition: rank-veteran-2 && !rank-veteran-3
+		RequiresCondition: rank-veteran == 2
 		Modifier: 90
 	DamageMultiplier@RANK-3:
-		RequiresCondition: rank-veteran-3 && !rank-elite
+		RequiresCondition: rank-veteran == 3
 		Modifier: 85
 	DamageMultiplier@RANK-ELITE:
 		RequiresCondition: rank-elite
 		Modifier: 75
 	FirepowerMultiplier@RANK-1:
-		RequiresCondition: rank-veteran-1 && !rank-veteran-2
+		RequiresCondition: rank-veteran == 1
 		Modifier: 105
 	FirepowerMultiplier@RANK-2:
-		RequiresCondition: rank-veteran-2 && !rank-veteran-3
+		RequiresCondition: rank-veteran == 2
 		Modifier: 110
 	FirepowerMultiplier@RANK-3:
-		RequiresCondition: rank-veteran-3 && !rank-elite
+		RequiresCondition: rank-veteran == 3
 		Modifier: 120
 	FirepowerMultiplier@RANK-ELITE:
 		RequiresCondition: rank-elite
 		Modifier: 130
 	SpeedMultiplier@RANK-1:
-		RequiresCondition: rank-veteran-1 && !rank-veteran-2
+		RequiresCondition: rank-veteran == 1
 		Modifier: 105
 	SpeedMultiplier@RANK-2:
-		RequiresCondition: rank-veteran-2 && !rank-veteran-3
+		RequiresCondition: rank-veteran == 2
 		Modifier: 110
 	SpeedMultiplier@RANK-3:
-		RequiresCondition: rank-veteran-3 && !rank-elite
+		RequiresCondition: rank-veteran == 3
 		Modifier: 120
 	SpeedMultiplier@RANK-ELITE:
 		RequiresCondition: rank-elite
 		Modifier: 140
 	ReloadDelayMultiplier@RANK-1:
-		RequiresCondition: rank-veteran-1 && !rank-veteran-2
+		RequiresCondition: rank-veteran == 1
 		Modifier: 95
 	ReloadDelayMultiplier@RANK-2:
-		RequiresCondition: rank-veteran-2 && !rank-veteran-3
+		RequiresCondition: rank-veteran == 2
 		Modifier: 90
 	ReloadDelayMultiplier@RANK-3:
-		RequiresCondition: rank-veteran-3 && !rank-elite
+		RequiresCondition: rank-veteran == 3
 		Modifier: 85
 	ReloadDelayMultiplier@RANK-ELITE:
 		RequiresCondition: rank-elite
 		Modifier: 75
 	InaccuracyMultiplier@RANK-1:
-		RequiresCondition: rank-veteran-1 && !rank-veteran-2
+		RequiresCondition: rank-veteran == 1
 		Modifier: 90
 	InaccuracyMultiplier@RANK-2:
-		RequiresCondition: rank-veteran-2 && !rank-veteran-3
+		RequiresCondition: rank-veteran == 2
 		Modifier: 80
 	InaccuracyMultiplier@RANK-3:
-		RequiresCondition: rank-veteran-3 && !rank-elite
+		RequiresCondition: rank-veteran == 3
 		Modifier: 70
 	InaccuracyMultiplier@RANK-ELITE:
 		RequiresCondition: rank-elite
@@ -91,21 +94,21 @@
 		Sequence: rank-veteran-1
 		Palette: effect
 		ReferencePoint: Bottom, Right
-		RequiresCondition: rank-veteran-1 && !rank-veteran-2
+		RequiresCondition: rank-veteran == 1
 		ZOffset: 256
 	WithDecoration@RANK-2:
 		Image: rank
 		Sequence: rank-veteran-2
 		Palette: effect
 		ReferencePoint: Bottom, Right
-		RequiresCondition: rank-veteran-2 && !rank-veteran-3
+		RequiresCondition: rank-veteran == 2
 		ZOffset: 256
 	WithDecoration@RANK-3:
 		Image: rank
 		Sequence: rank-veteran-3
 		Palette: effect
 		ReferencePoint: Bottom, Right
-		RequiresCondition: rank-veteran-3 && !rank-elite
+		RequiresCondition: rank-veteran == 3
 		ZOffset: 256
 	WithDecoration@RANK-ELITE:
 		Image: rank

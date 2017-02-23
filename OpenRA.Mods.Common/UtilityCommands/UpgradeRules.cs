@@ -149,14 +149,31 @@ namespace OpenRA.Mods.Common.UtilityCommands
 							upgradeMaxAcceptedLevel = FieldLoader.GetValue<int>("", maxAcceptedNode.Value.Value);
 
 						var processed = false;
-						if (upgradeTypes.Length == 1 && upgradeMinEnabledLevel == 0 && upgradeMaxEnabledLevel == 0 && upgradeMaxAcceptedLevel == 1)
+						if (upgradeMinEnabledLevel == 0 && upgradeMaxEnabledLevel == 0 && upgradeMaxAcceptedLevel == 1)
 						{
-							node.Value.Nodes.Add(new MiniYamlNode("RequiresCondition", "!" + upgradeTypes.First()));
+							node.Value.Nodes.Add(new MiniYamlNode("RequiresCondition", upgradeTypes.Select(u => "!" + u).JoinWith(" && ")));
 							processed = true;
 						}
-						else if (upgradeTypes.Length == 1 && upgradeMinEnabledLevel == 1 && upgradeMaxEnabledLevel == int.MaxValue && upgradeMaxAcceptedLevel == 1)
+						else if (upgradeMinEnabledLevel == 1 && upgradeMaxEnabledLevel == int.MaxValue && upgradeMaxAcceptedLevel == 1)
 						{
-							node.Value.Nodes.Add(new MiniYamlNode("RequiresCondition", upgradeTypes.First()));
+							node.Value.Nodes.Add(new MiniYamlNode("RequiresCondition", upgradeTypes.JoinWith(" || ")));
+							processed = true;
+						}
+						else if (upgradeMinEnabledLevel == 0 && upgradeMaxEnabledLevel < int.MaxValue)
+						{
+							node.Value.Nodes.Add(new MiniYamlNode("RequiresCondition", upgradeTypes.JoinWith(" + ") + " <= " + upgradeMaxEnabledLevel));
+							processed = true;
+						}
+						else if (upgradeMaxEnabledLevel == int.MaxValue && upgradeMinEnabledLevel > 1)
+						{
+							node.Value.Nodes.Add(new MiniYamlNode("RequiresCondition", upgradeTypes.JoinWith(" + ") + " >= " + upgradeMinEnabledLevel));
+							processed = true;
+						}
+						else if (upgradeMaxEnabledLevel < int.MaxValue && upgradeMinEnabledLevel > 0)
+						{
+							var lowerBound = upgradeMinEnabledLevel + " <= " + upgradeTypes.JoinWith(" + ");
+							var upperBound = upgradeTypes.JoinWith(" + ") + " <= " + upgradeMaxEnabledLevel;
+							node.Value.Nodes.Add(new MiniYamlNode("RequiresCondition", lowerBound + " && " + upperBound));
 							processed = true;
 						}
 

@@ -18,28 +18,34 @@
 ^GainsExperience:
 	GainsExperience:
 		Conditions:
-			500: rank-veteran
-			1000: rank-elite
+			500: rank
+			1000: rank
+	GrantCondition@RANK-VETERAN:
+		RequiresCondition: rank == 1
+		Condition: rank-veteran
+	GrantCondition@RANK-ELITE:
+		RequiresCondition: rank >= 2
+		Condition: rank-elite
 	FirepowerMultiplier@VETERAN:
-		RequiresCondition: rank-veteran && !rank-elite
+		RequiresCondition: rank-veteran
 		Modifier: 110
 	FirepowerMultiplier@ELITE:
 		RequiresCondition: rank-elite
 		Modifier: 130
 	DamageMultiplier@VETERAN:
-		RequiresCondition: rank-veteran && !rank-elite
+		RequiresCondition: rank-veteran
 		Modifier: 90
 	DamageMultiplier@ELITE:
 		RequiresCondition: rank-elite
 		Modifier: 75
 	SpeedMultiplier@VETERAN:
-		RequiresCondition: rank-veteran && !rank-elite
+		RequiresCondition: rank-veteran
 		Modifier: 120
 	SpeedMultiplier@ELITE:
 		RequiresCondition: rank-elite
 		Modifier: 140
 	ReloadDelayMultiplier@VETERAN:
-		RequiresCondition: rank-veteran && !rank-elite
+		RequiresCondition: rank-veteran
 		Modifier: 90
 	ReloadDelayMultiplier@ELITE:
 		RequiresCondition: rank-elite
@@ -55,7 +61,7 @@
 		Sequence: veteran
 		Palette: ra
 		ReferencePoint: Bottom, Right
-		RequiresCondition: rank-veteran && !rank-elite
+		RequiresCondition: rank-veteran
 		ZOffset: 256
 	WithDecoration@ELITE:
 		Image: rank
