@@ -174,7 +174,7 @@ PROC:
 	Selectable:
 		Bounds: 72,56,0,12
 	CustomSellValue:
-		Value: 0
+		Value: 500
 	FreeActor:
 		Actor: HARV
 		SpawnOffset: 1,2
