@@ -46,7 +46,7 @@ HELI:
 	Buildable:
 		Prerequisites: ~disabled
 
-HIND:
+HUEY:
 	Buildable:
 		Prerequisites: ~disabled
 
