@@ -26,10 +26,10 @@ huey:
 	idle:
 		Facings: 32
 		UseClassicFacingFudge: True
-	rotor: lrotor
-		Length: 4
-	slow-rotor: lrotor
-		Start: 4
+	rotor: lrotorlg2blade
+		Length: 8
+	slow-rotor: lrotorlg2blade
+		Start: 8
 		Length: 8
 	muzzle: minigun
 		Length: 6
