@@ -107,6 +107,13 @@ ProduceVehicles = function()
 end
 
 ProduceNaval = function()
+	if not shouldProduce and #Utils.Where(Map.ActorsInWorld, function(self) return self.Owner == player and self.Type == "syrd" end) < 1 then
+		Trigger.AfterDelay(DateTime.Minutes(1), ProduceNaval)
+		return
+	end
+
+	shouldProduce = true
+
 	if SubPen.IsDead or SubPen.Owner ~= ussr then
 		return
 	end
