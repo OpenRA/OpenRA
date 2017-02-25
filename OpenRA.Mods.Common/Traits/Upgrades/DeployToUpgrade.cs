@@ -189,6 +189,12 @@ namespace OpenRA.Mods.Common.Traits
 			return ramp == 0;
 		}
 
+		// Interface for AI Deploy Helper.
+		public void AIDeploy()
+		{
+			Deploy();
+		}
+
 		/// <summary>Play deploy sound and animation.</summary>
 		void Deploy() { Deploy(false); }
 		void Deploy(bool init)
@@ -213,6 +219,12 @@ namespace OpenRA.Mods.Common.Traits
 				OnDeployCompleted();
 			else
 				body.Value.PlayCustomAnimation(self, info.DeployAnimation, OnDeployCompleted);
+		}
+
+		// Interface for AI Deploy Helper
+		public void AIUndeploy()
+		{
+			Undeploy();
 		}
 
 		/// <summary>Play undeploy sound and animation and after that revoke the upgrades.</summary>
