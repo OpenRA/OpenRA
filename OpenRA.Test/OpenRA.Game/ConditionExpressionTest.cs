@@ -163,7 +163,7 @@ namespace OpenRA.Test
 			AssertValue("!1", 0);
 			AssertValue("!5", 0);
 			AssertValue("!!5", 1);
-			AssertValue("!-5", 1);
+			AssertValue("!-5", 0);
 		}
 
 		[TestCase(TestName = "Relation operations")]
