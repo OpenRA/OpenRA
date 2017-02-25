@@ -125,11 +125,11 @@
 		CloakDelay: 90
 		CloakSound: trans1.aud
 		UncloakSound: trans1.aud
-		RequiresCondition: cloak && !uncloak
+		RequiresCondition: cloak-crate-collected && !cloak-force-disabled
 	ExternalCondition@CLOAK:
-		Condition: cloak
+		Condition: cloak-crate-collected
 	GrantConditionOnDamageState@UNCLOAK:
-		Condition: uncloak
+		Condition: cloak-force-disabled
 		ValidDamageStates: Critical
 
 ^Vehicle:

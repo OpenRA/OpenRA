@@ -19,7 +19,7 @@ CRATE:
 	GrantExternalConditionCrateAction@cloak:
 		SelectionShares: 5
 		Effect: cloak
-		Condition: cloak
+		Condition: cloak-crate-collected
 	GiveMcvCrateAction:
 		SelectionShares: 0
 		NoBaseSelectionShares: 120

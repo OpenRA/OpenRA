@@ -396,9 +396,9 @@ STNK:
 		UncloakSound: cloak5.aud
 		IsPlayerPalette: true
 		UncloakOn: Attack, Unload, Infiltrate, Demolish, Damage
-		RequiresCondition: !uncloak
+		RequiresCondition: !cloak-force-disabled
 	GrantConditionOnDamageState@UNCLOAK:
-		Condition: uncloak
+		Condition: cloak-force-disabled
 		ValidDamageStates: Critical
 	Armament:
 		Weapon: Dragon

@@ -779,9 +779,9 @@ STNK:
 		CloakSound: appear1.aud
 		UncloakSound: appear1.aud
 		IsPlayerPalette: true
-		RequiresCondition: !uncloak
+		RequiresCondition: !cloak-force-disabled
 	GrantConditionOnDamageState@UNCLOAK:
-		Condition: uncloak
+		Condition: cloak-force-disabled
 		ValidDamageStates: Critical
 	DetectCloaked:
 		Range: 7c0

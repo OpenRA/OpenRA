@@ -152,9 +152,9 @@ fremen:
 		CloakSound: STEALTH1.WAV
 		UncloakSound: STEALTH2.WAV
 		IsPlayerPalette: true
-		RequiresCondition: !uncloak
+		RequiresCondition: !cloak-force-disabled
 	GrantConditionOnDamageState@UNCLOAK:
-		Condition: uncloak
+		Condition: cloak-force-disabled
 		ValidDamageStates: Critical
 	-MustBeDestroyed:
 	Voiced:
@@ -250,9 +250,9 @@ saboteur:
 		UncloakSound: STEALTH2.WAV
 		UncloakOn: Attack, Unload, Infiltrate, Demolish, Move, Damage
 		IsPlayerPalette: true
-		RequiresCondition: !uncloak
+		RequiresCondition: !cloak-force-disabled
 	GrantConditionOnDamageState@UNCLOAK:
-		Condition: uncloak
+		Condition: cloak-force-disabled
 		ValidDamageStates: Critical
 	Voiced:
 		VoiceSet: SaboteurVoice
