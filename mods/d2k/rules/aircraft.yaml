@@ -93,6 +93,7 @@ ornithopter:
 	SpawnActorOnDeath:
 		Actor: ornithopter.husk
 	RejectsOrders:
+	RevealOnFire:
 
 ornithopter.husk:
 	Inherits: ^AircraftHusk

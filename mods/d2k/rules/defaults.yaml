@@ -169,6 +169,7 @@
 		Sequence: pickup-indicator
 		Offset: -12, -12
 		RequiresCondition: carryall-reserved
+	RevealOnFire:
 
 ^Tank:
 	Inherits: ^Vehicle
@@ -295,6 +296,7 @@
 			Rough: 80
 	Voiced:
 		VoiceSet: InfantryVoice
+	RevealOnFire:
 
 ^Plane:
 	Inherits@1: ^ExistsInWorld
@@ -389,3 +391,4 @@
 		Range: 2c0, 4c0
 	MustBeDestroyed:
 		RequiredForShortGame: false
+	RevealOnFire:

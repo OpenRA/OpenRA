@@ -45,6 +45,7 @@ mcv:
 		Step: 5
 		Delay: 3
 		HealIfBelow: 50
+	-RevealOnFire:
 
 harvester:
 	Inherits: ^Vehicle
@@ -95,6 +96,7 @@ harvester:
 		Step: 5
 		Delay: 3
 		HealIfBelow: 50
+	-RevealOnFire:
 
 trike:
 	Inherits: ^Vehicle
