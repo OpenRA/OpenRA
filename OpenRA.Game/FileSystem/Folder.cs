@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -47,7 +48,7 @@ namespace OpenRA.FileSystem
 		public bool Contains(string filename)
 		{
 			var combined = Path.Combine(path, filename);
-			return combined.StartsWith(path) && File.Exists(combined);
+			return combined.StartsWith(path, StringComparison.Ordinal) && File.Exists(combined);
 		}
 
 		public void Update(string filename, byte[] contents)

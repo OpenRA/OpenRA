@@ -267,9 +267,15 @@ namespace OpenRA.FileSystem
 			if (s != null)
 				return true;
 
+			// The file should be in an explicit package (but we couldn't find it)
+			// Thus don't try to find it using the filename (which contains the invalid '|' char)
+			// This can be removed once the TODO below is resolved
+			if (explicitSplit > 0)
+				return false;
+
 			// Ask each package individually
 			// TODO: This fallback can be removed once the filesystem cleanups are complete
-			var	package = mountedPackages.Keys.LastOrDefault(x => x.Contains(filename));
+			var package = mountedPackages.Keys.LastOrDefault(x => x.Contains(filename));
 			if (package != null)
 			{
 				s = package.GetStream(filename);
