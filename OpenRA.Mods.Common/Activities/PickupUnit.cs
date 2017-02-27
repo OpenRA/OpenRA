@@ -60,7 +60,7 @@ namespace OpenRA.Mods.Common.Activities
 			if (cargo != carryall.Carryable)
 				return NextActivity;
 
-			if (cargo.IsDead || IsCanceled || carryable.IsTraitDisabled)
+			if (cargo.IsDead || IsCanceled || carryable.IsTraitDisabled || !cargo.AppearsFriendlyTo(self))
 			{
 				carryall.UnreserveCarryable(self);
 				return NextActivity;
