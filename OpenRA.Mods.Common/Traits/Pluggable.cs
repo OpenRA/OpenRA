@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using OpenRA.Support;
 using OpenRA.Traits;
 
@@ -26,16 +27,23 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly Dictionary<string, string> Conditions = null;
 
 		[ProvidedConditionReference]
-		[Desc("Condition variable for checking plug.")]
+		[Desc("Condition variable for checking plug.",
+			"(this-name).(condition-name) condition expression returns a boolean for whether this plug is granting a specified condition.")]
 		public readonly string ConditionVariable = null;
 
 		[GrantedConditionReference]
 		public IEnumerable<string> LinterConditions { get { return Conditions.Values; } }
 
+		[ConsumedConditionReference]
+		public IEnumerable<string> LinterSelfConditions
+		{
+			get { return string.IsNullOrEmpty(ConditionVariable) ? Enumerable.Empty<string>() : Conditions.Values; }
+		}
+
 		public object Create(ActorInitializer init) { return new Pluggable(init, this); }
 	}
 
-	public class Pluggable : INotifyCreated, INotifyingConditionVariableProvider, INotifyingConditionVariable
+	public class Pluggable : INotifyCreated, INotifyingConditionVariableProvider, INotifyingConditionVariable, IConditionContext
 	{
 		public readonly PluggableInfo Info;
 
@@ -44,6 +52,7 @@ namespace OpenRA.Mods.Common.Traits
 		int conditionToken = ConditionManager.InvalidConditionToken;
 
 		string active;
+		string condition;
 
 		/// <summary>Traits that have registered to be notified when this condition changes.</summary>
 		public readonly List<IConditionConsumer> Consumers = new List<IConditionConsumer>();
@@ -81,10 +90,11 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void EnablePlug(Actor self, string type)
 		{
-			string condition;
-			if (!Info.Conditions.TryGetValue(type, out condition))
+			string newCondition;
+			if (!Info.Conditions.TryGetValue(type, out newCondition))
 				return;
 
+			condition = newCondition;
 			conditionToken = conditionManager.GrantCondition(self, condition);
 			active = type;
 			foreach (var consumer in Consumers)
@@ -100,17 +110,24 @@ namespace OpenRA.Mods.Common.Traits
 				conditionToken = conditionManager.RevokeCondition(self, conditionToken);
 
 			active = null;
+			condition = null;
 			foreach (var consumer in Consumers)
 				consumer.ConditionsChanged(self, conditionManager);
 		}
 
 		bool IConditionVariable.AsBool() { return active != null; }
 		int IConditionVariable.AsInt() { return active != null ? 1 : 0; }
+		IConditionContext IConditionVariable.AsContext() { return this; }
 		void INotifyingConditionVariable.Add(Actor self, IConditionConsumer consumer)
 		{
 			Consumers.Add(consumer);
-			if (active != null)
+			if (condition != null)
 				consumer.ConditionsChanged(self, conditionManager);
+		}
+
+		IConditionVariable IConditionContext.Get(string name)
+		{
+			return condition == name ? BoolConditionVariable.True : BoolConditionVariable.False;
 		}
 	}
 

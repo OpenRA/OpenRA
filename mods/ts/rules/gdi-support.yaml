@@ -128,9 +128,9 @@ GACTWR:
 	Pluggable:
 		ConditionVariable: tower
 		Conditions:
-			tower.vulcan: tower.vulcan
-			tower.rocket: tower.rocket
-			tower.sam: tower.sam
+			tower.vulcan: vulcan
+			tower.rocket: rocket
+			tower.sam: sam
 	ProvidesPrerequisite@buildingname:
 	SelectionDecorations:
 		VisualBounds: 48, 48, 0, -12

@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Support;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Lint
@@ -31,6 +32,7 @@ namespace OpenRA.Mods.Common.Lint
 				var consumed = new HashSet<string>();
 				var given = new HashSet<string>();
 				var multipleProviders = new HashSet<string>();
+				var invalid = new HashSet<string>();
 
 				foreach (var trait in actorInfo.Value.TraitInfos<ITraitInfo>())
 				{
@@ -79,20 +81,27 @@ namespace OpenRA.Mods.Common.Lint
 						}
 				}
 
+				foreach (var condition in granted.Concat(provided).Concat(consumed))
+					if (!ConditionExpression.IsValidVariableName(condition))
+						invalid.Add(condition);
+
 				var onlyGranted = granted.Except(consumed);
 				if (onlyGranted.Any())
 					emitWarning("Actor type `{0}` grants conditions that are not consumed: {1}".F(actorInfo.Key, onlyGranted.JoinWith(", ")));
 
-				var onlyProvided = granted.Except(consumed);
+				var onlyProvided = provided.Except(consumed);
 				if (onlyProvided.Any())
 					emitWarning("Actor type `{0}` provides condition variables that are not consumed: {1}".F(actorInfo.Key, onlyProvided.JoinWith(", ")));
 
-				var ungiven = consumed.Except(given);
-				if (ungiven.Any())
-					emitError("Actor type `{0}` consumes conditions that are neither granted nor provided: {1}".F(actorInfo.Key, ungiven.JoinWith(", ")));
+				var onlyConsumed = consumed.Except(given);
+				if (onlyConsumed.Any())
+					emitError("Actor type `{0}` consumes conditions that are neither granted nor provided: {1}".F(actorInfo.Key, onlyConsumed.JoinWith(", ")));
 
 				if (multipleProviders.Any())
 					emitError("Actor type `{0}` has multiple traits providing these condition variables: {1}".F(actorInfo.Key, multipleProviders.JoinWith(", ")));
+
+				if (invalid.Any())
+					emitError("Actor type `{0}` has conditions with invalid names: {1}".F(actorInfo.Key, invalid.JoinWith(", ")));
 
 				if ((consumed.Any() || given.Any()) && actorInfo.Value.TraitInfoOrDefault<ConditionManagerInfo>() == null)
 					emitError("Actor type `{0}` defines conditions but does not include a ConditionManager".F(actorInfo.Key));

@@ -59,6 +59,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			int IConditionVariable.AsInt() { return Tokens.Count; }
 			bool IConditionVariable.AsBool() { return Tokens.Count > 0; }
+			IConditionContext IConditionVariable.AsContext() { return EmptyConditionContext.Instance; }
 
 			void INotifyingConditionVariable.Add(Actor self, IConditionConsumer consumer) { Consumers.Add(consumer); }
 		}
