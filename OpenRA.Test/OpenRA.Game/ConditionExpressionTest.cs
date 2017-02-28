@@ -27,7 +27,21 @@ namespace OpenRA.Test
 			{ "False", new BoolConditionVariable(false) },
 			{ "zero", new NumberConditionVariable(0) },
 			{ "one", new NumberConditionVariable(1) },
-			{ "five", new NumberConditionVariable(5) }
+			{ "five", new NumberConditionVariable(5) },
+			{ "emptyContext", new ConditionContext() },
+			{ "context", new ConditionContext
+				{
+					{ "false", new BoolConditionVariable(false) },
+					{ "zero", new NumberConditionVariable(0) },
+					{ "six", new NumberConditionVariable(6) },
+					{ "subContext", new ConditionContext
+						{
+							{ "False", new BoolConditionVariable(false) },
+							{ "True", new BoolConditionVariable(true) }
+						}
+					}
+				}
+			}
 		};
 
 		void AssertFalse(string expression)
@@ -77,6 +91,13 @@ namespace OpenRA.Test
 			AssertValue("zero", 0);
 			AssertValue("one", 1);
 			AssertValue("five", 5);
+			AssertValue("emptyContext", 0);
+			AssertValue("context", 4);
+			AssertValue("!context.zero", 1);
+			AssertValue("context.six", 6);
+			AssertValue("context.seven", 0);
+			AssertValue("!context.subContext.False", 1);
+			AssertValue("!context.subContext.True", 0);
 		}
 
 		[TestCase(TestName = "Boolean Constants")]
@@ -340,6 +361,9 @@ namespace OpenRA.Test
 			AssertParseFailure("1 <", "Missing value or sub-expression at end for `<` operator");
 			AssertParseFailure("-1a", "Number -1 and variable merged at index 0");
 			AssertParseFailure("-", "Missing value or sub-expression at end for `-` operator");
+			AssertParseFailure("context.false", "`.` operator at index 7 requires a property name as its right operand.");
+			AssertParseFailure("false.true", "`.` operator at index 5 requires a property name as its right operand.");
+			AssertParseFailure("false.six", "`.` operator at index 5 requires a variable as its left operand.");
 		}
 
 		[TestCase(TestName = "Undefined symbols are treated as `false` (0) values")]

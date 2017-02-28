@@ -37,24 +37,26 @@ GAPOWR:
 	ScalePowerWithHealth:
 	DisabledOverlay:
 	Pluggable@pluga:
+		ConditionVariable: pluga
 		Offset: 0,1
 		Conditions:
-			powrup: powrup.a
+			powrup: powrup
 	Power@pluga:
-		RequiresCondition: powrup.a
+		RequiresCondition: pluga.powrup
 		Amount: 50
 	WithIdleOverlay@pluga:
-		RequiresCondition: powrup.a
+		RequiresCondition: pluga.powrup
 		Sequence: idle-powrupa
 	Pluggable@plugb:
+		ConditionVariable: plugb
 		Offset: 1,1
 		Conditions:
-			powrup: powrup.b
+			powrup: powrup
 	WithIdleOverlay@plugb:
-		RequiresCondition: powrup.b
+		RequiresCondition: plugb.powrup
 		Sequence: idle-powrupb
 	Power@plugb:
-		RequiresCondition: powrup.b
+		RequiresCondition: plugb.powrup
 		Amount: 50
 	ProvidesPrerequisite@buildingname:
 	SelectionDecorations:
@@ -405,7 +407,7 @@ GAPLUG:
 		MaxHeightDelta: 3
 	IonCannonPower:
 		Cursor: ioncannon
-		RequiresCondition: pluga.ioncannon || plugb.ioncannon
+		RequiresCondition: ioncannon
 		Icon: ioncannon
 		Effect: explosion
 		EffectSequence: ionring
@@ -419,7 +421,7 @@ GAPLUG:
 		DisplayRadarPing: True
 		CameraActor: camera
 	ProduceActorPower:
-		RequiresCondition: pluga.hunterseeker || plugb.hunterseeker
+		RequiresCondition: hunterseeker
 		Description: Hunter Seeker
 		LongDesc: Releases a drone that will acquire and destroy an enemy target.
 		Icon: hunterseeker
@@ -434,33 +436,33 @@ GAPLUG:
 	Power:
 		Amount: -150
 	Power@ioncannon:
-		RequiresCondition: pluga.ioncannon || plugb.ioncannon
+		RequiresCondition: ioncannon
 		Amount: -100
 	Power@hunterseeker:
-		RequiresCondition: pluga.hunterseeker || plugb.hunterseeker
+		RequiresCondition: hunterseeker
 		Amount: -50
 	Pluggable@pluga:
 		ConditionVariable: pluga
 		Offset: 0,2
 		Conditions:
-			plug.ioncannon: pluga.ioncannon
-			plug.hunterseeker: pluga.hunterseeker
-	WithIdleOverlay@ioncannona:
+			plug.ioncannon: ioncannon
+			plug.hunterseeker: hunterseeker
+	WithIdleOverlay@pluga.ioncannon:
 		RequiresCondition: pluga.ioncannon
 		Sequence: idle-ioncannona
-	WithIdleOverlay@hunterseekera:
+	WithIdleOverlay@pluga.hunterseeker:
 		RequiresCondition: pluga.hunterseeker
 		Sequence: idle-hunterseekera
 	Pluggable@plugb:
 		ConditionVariable: plugb
 		Offset: 1,2
 		Conditions:
-			plug.ioncannon: plugb.ioncannon
-			plug.hunterseeker: plugb.hunterseeker
-	WithIdleOverlay@ioncannonb:
+			plug.ioncannon: ioncannon
+			plug.hunterseeker: hunterseeker
+	WithIdleOverlay@plugb.ioncannon:
 		RequiresCondition: plugb.ioncannon
 		Sequence: idle-ioncannonb
-	WithIdleOverlay@hunterseekerb:
+	WithIdleOverlay@plugb.hunterseeker:
 		RequiresCondition: plugb.hunterseeker
 		Sequence: idle-hunterseekerb
 	ProvidesPrerequisite@buildingname:

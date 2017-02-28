@@ -22,6 +22,7 @@ namespace OpenRA.Support
 	{
 		bool AsBool();
 		int AsInt();
+		IConditionContext AsContext();
 	}
 
 	public interface IConditionContext { IConditionVariable Get(string name); }
@@ -33,18 +34,25 @@ namespace OpenRA.Support
 
 		bool IConditionVariable.AsBool() { return false; }
 		int IConditionVariable.AsInt() { return 0; }
+		IConditionContext IConditionVariable.AsContext() { return EmptyConditionContext.Instance; }
 	}
 
-	public class EmptyConditionContext : IConditionContext
+	public class EmptyConditionContext : IConditionContext, IConditionVariable
 	{
 		public static readonly EmptyConditionContext Instance = new EmptyConditionContext();
 		EmptyConditionContext() { }
 
 		IConditionVariable IConditionContext.Get(string name) { return EmptyConditionVariable.Instance; }
+		bool IConditionVariable.AsBool() { return false; }
+		int IConditionVariable.AsInt() { return 0; }
+		IConditionContext IConditionVariable.AsContext() { return this; }
 	}
 
-	public class ConditionContext : Dictionary<string, IConditionVariable>, IConditionContext
+	public class ConditionContext : Dictionary<string, IConditionVariable>, IConditionContext, IConditionVariable
 	{
+		bool IConditionVariable.AsBool() { return Count > 0; }
+		int IConditionVariable.AsInt() { return Count; }
+		IConditionContext IConditionVariable.AsContext() { return this; }
 		public IConditionVariable Get(string name)
 		{
 			IConditionVariable variable;
@@ -61,15 +69,19 @@ namespace OpenRA.Support
 
 		int IConditionVariable.AsInt() { return Value; }
 		bool IConditionVariable.AsBool() { return Value != 0; }
+		IConditionContext IConditionVariable.AsContext() { return EmptyConditionContext.Instance; }
 	}
 
 	public struct BoolConditionVariable : IConditionVariable
 	{
 		public bool Value;
 		public BoolConditionVariable(bool value = false) { Value = value; }
+		public static readonly BoolConditionVariable False = new BoolConditionVariable(false);
+		public static readonly BoolConditionVariable True = new BoolConditionVariable(true);
 
 		int IConditionVariable.AsInt() { return Value ? 1 : 0; }
 		bool IConditionVariable.AsBool() { return Value; }
+		IConditionContext IConditionVariable.AsContext() { return EmptyConditionContext.Instance; }
 	}
 
 	public class ConditionExpression
@@ -110,9 +122,9 @@ namespace OpenRA.Support
 				case '?':
 				case ',':
 				case '/':
+				case '.':
 					return CharClass.Operator;
 
-				case '.':
 				case '$':
 				case '-':
 				case '@':
@@ -172,6 +184,7 @@ namespace OpenRA.Support
 			// varying values
 			Number,
 			Variable,
+			Property,
 
 			// operators
 			OpenParen,
@@ -192,12 +205,14 @@ namespace OpenRA.Support
 			Multiply,
 			Divide,
 			Modulo,
+			Dot,
 
 			Invalid
 		}
 
 		enum Precedence
 		{
+			Dot = 24,
 			Unary = 16,
 			Multiplication = 12,
 			Addition = 11,
@@ -268,6 +283,9 @@ namespace OpenRA.Support
 					case TokenType.Variable:
 						yield return new TokenTypeInfo("(<variable>)", Precedence.Value);
 						continue;
+					case TokenType.Property:
+						yield return new TokenTypeInfo("(<property>)", Precedence.Value);
+						continue;
 					case TokenType.OpenParen:
 						yield return new TokenTypeInfo("(", Precedence.Parens, Grouping.Parens);
 						continue;
@@ -321,6 +339,9 @@ namespace OpenRA.Support
 						continue;
 					case TokenType.Modulo:
 						yield return new TokenTypeInfo("%", Precedence.Multiplication, OperandSides.Both);
+						continue;
+					case TokenType.Dot:
+						yield return new TokenTypeInfo(".", Precedence.Dot, OperandSides.Both);
 						continue;
 				}
 
@@ -390,7 +411,7 @@ namespace OpenRA.Support
 				return false;
 			}
 
-			static TokenType VariableOrKeyword(string expression, int start, int length)
+			static TokenType VariableOrKeyword(string expression, int start, int length, TokenType lastType = TokenType.Invalid)
 			{
 				var i = start;
 				if (length == 4 && expression[i++] == 't' && expression[i++] == 'r' && expression[i++] == 'u'
@@ -401,7 +422,7 @@ namespace OpenRA.Support
 						&& expression[i++] == 's' && expression[i] == 'e')
 					return TokenType.False;
 
-				return TokenType.Variable;
+				return lastType == TokenType.Dot ? TokenType.Property : TokenType.Variable;
 			}
 
 			public static TokenType GetNextType(string expression, ref int i, TokenType lastType = TokenType.Invalid)
@@ -505,6 +526,10 @@ namespace OpenRA.Support
 					case '%':
 						i++;
 						return TokenType.Modulo;
+
+					case '.':
+						i++;
+						return TokenType.Dot;
 				}
 
 				if (ScanIsNumber(expression, start, ref i))
@@ -520,10 +545,10 @@ namespace OpenRA.Support
 				{
 					cc = CharClassOf(expression[i]);
 					if (cc == CharClass.Whitespace || cc == CharClass.Operator)
-						return VariableOrKeyword(expression, start, i - start);
+						return VariableOrKeyword(expression, start, i - start, lastType);
 				}
 
-				return VariableOrKeyword(expression, start, i - start);
+				return VariableOrKeyword(expression, start, i - start, lastType);
 			}
 
 			public static Token GetNext(string expression, ref int i, TokenType lastType = TokenType.Invalid)
@@ -549,10 +574,19 @@ namespace OpenRA.Support
 					case TokenType.Variable:
 						return new VariableToken(start, expression.Substring(start, i - start));
 
+					case TokenType.Property:
+						return new PropertyToken(start, expression.Substring(start, i - start));
+
 					default:
 						return new Token(type, start);
 				}
 			}
+		}
+
+		public static bool IsValidVariableName(string name)
+		{
+			int i = 0;
+			return Token.GetNextType(name, ref i) == TokenType.Variable && i == name.Length;
 		}
 
 		class VariableToken : Token
@@ -562,6 +596,15 @@ namespace OpenRA.Support
 			public override string Symbol { get { return Name; } }
 
 			public VariableToken(int index, string symbol) : base(TokenType.Variable, index) { Name = symbol; }
+		}
+
+		class PropertyToken : Token
+		{
+			public readonly string Name;
+
+			public override string Symbol { get { return Name; } }
+
+			public PropertyToken(int index, string symbol) : base(TokenType.Property, index) { Name = symbol; }
 		}
 
 		class NumberToken : Token
@@ -677,9 +720,10 @@ namespace OpenRA.Support
 				yield return s.Pop();
 		}
 
-		enum ExpressionType { Int, Bool, Variable }
+		enum ExpressionType { Int, Bool, Variable, Property }
 
 		static readonly Func<IConditionContext, string, IConditionVariable> VariableFromContext = (context, name) => context.Get(name);
+		static readonly Func<IConditionVariable, string, IConditionVariable> VariableFromVariable = (variable, name) => variable.AsContext().Get(name);
 		static readonly Func<IConditionVariable, int> VariableAsInt = variable => variable.AsInt();
 		static readonly Func<IConditionVariable, bool> VariableAsBool = variable => variable.AsBool();
 		static readonly ParameterExpression ContextParam = Expressions.Expression.Parameter(typeof(IConditionContext), "context");
@@ -906,6 +950,21 @@ namespace OpenRA.Support
 							continue;
 						}
 
+						case TokenType.Dot:
+						{
+							if (ast.PeekType() != ExpressionType.Property)
+								throw new InvalidDataException("`.` operator at index {0} requires a property name as its right operand.".F(t.Index));
+
+							var property = ast.Pop(ExpressionType.Property);
+
+							if (ast.PeekType() != ExpressionType.Variable)
+								throw new InvalidDataException("`.` operator at index {0} requires a variable as its left operand.".F(t.Index));
+
+							var variable = ast.Pop(ExpressionType.Variable);
+							ast.Push(Expressions.Expression.Call(VariableFromVariable.Method, variable, property), ExpressionType.Variable);
+							continue;
+						}
+
 						case TokenType.False:
 						{
 							ast.Push(False);
@@ -928,6 +987,12 @@ namespace OpenRA.Support
 						{
 							var name = Expressions.Expression.Constant(((VariableToken)t).Symbol);
 							ast.Push(Expressions.Expression.Call(VariableFromContext.Method, ContextParam, name), ExpressionType.Variable);
+							continue;
+						}
+
+						case TokenType.Property:
+						{
+							ast.Push(Expressions.Expression.Constant(((PropertyToken)t).Symbol), ExpressionType.Property);
 							continue;
 						}
 

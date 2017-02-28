@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using OpenRA.Support;
 using OpenRA.Traits;
 
@@ -26,16 +27,23 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly Dictionary<string, string> Conditions = null;
 
 		[ProvidedConditionReference]
-		[Desc("Condition variable for checking plug.")]
+		[Desc("Condition variable for checking plug.",
+			"(this-name).(condition-name) condition expression returns a boolean for whether this plug is granting a specified condition.")]
 		public readonly string ConditionVariable = null;
 
 		[GrantedConditionReference]
 		public IEnumerable<string> LinterConditions { get { return Conditions.Values; } }
 
+		[ConsumedConditionReference]
+		public IEnumerable<string> LinterSelfConditions
+		{
+			get { return string.IsNullOrEmpty(ConditionVariable) ? Enumerable.Empty<string>() : Conditions.Values; }
+		}
+
 		public object Create(ActorInitializer init) { return new Pluggable(init, this); }
 	}
 
-	public class Pluggable : INotifyCreated, INotifyingConditionVariableProvider, INotifyingConditionVariable
+	public class Pluggable : INotifyCreated, INotifyingConditionVariableProvider, INotifyingConditionVariable, IConditionContext
 	{
 		public readonly PluggableInfo Info;
 
@@ -106,11 +114,17 @@ namespace OpenRA.Mods.Common.Traits
 
 		bool IConditionVariable.AsBool() { return active != null; }
 		int IConditionVariable.AsInt() { return active != null ? 1 : 0; }
+		IConditionContext IConditionVariable.AsContext() { return this; }
 		void INotifyingConditionVariable.Add(Actor self, IConditionConsumer consumer)
 		{
 			Consumers.Add(consumer);
 			if (active != null)
 				consumer.ConditionsChanged(self, conditionManager);
+		}
+
+		IConditionVariable IConditionContext.Get(string name)
+		{
+			return active == name ? BoolConditionVariable.True : BoolConditionVariable.False;
 		}
 	}
 
