@@ -18,13 +18,67 @@ using Expressions = System.Linq.Expressions;
 
 namespace OpenRA.Support
 {
+	public interface IConditionVariable
+	{
+		bool AsBool();
+		int AsInt();
+	}
+
+	public interface IConditionContext { IConditionVariable Get(string name); }
+
+	public class EmptyConditionVariable : IConditionVariable
+	{
+		public static readonly EmptyConditionVariable Instance = new EmptyConditionVariable();
+		EmptyConditionVariable() { }
+
+		bool IConditionVariable.AsBool() { return false; }
+		int IConditionVariable.AsInt() { return 0; }
+	}
+
+	public class EmptyConditionContext : IConditionContext
+	{
+		public static readonly EmptyConditionContext Instance = new EmptyConditionContext();
+		EmptyConditionContext() { }
+
+		IConditionVariable IConditionContext.Get(string name) { return EmptyConditionVariable.Instance; }
+	}
+
+	public class ConditionContext : Dictionary<string, IConditionVariable>, IConditionContext
+	{
+		public IConditionVariable Get(string name)
+		{
+			IConditionVariable variable;
+			if (TryGetValue(name, out variable))
+				return variable;
+			return EmptyConditionVariable.Instance;
+		}
+	}
+
+	public struct NumberConditionVariable : IConditionVariable
+	{
+		public int Value;
+		public NumberConditionVariable(int value = 0) { Value = value; }
+
+		int IConditionVariable.AsInt() { return Value; }
+		bool IConditionVariable.AsBool() { return Value != 0; }
+	}
+
+	public struct BoolConditionVariable : IConditionVariable
+	{
+		public bool Value;
+		public BoolConditionVariable(bool value = false) { Value = value; }
+
+		int IConditionVariable.AsInt() { return Value ? 1 : 0; }
+		bool IConditionVariable.AsBool() { return Value; }
+	}
+
 	public class ConditionExpression
 	{
 		public readonly string Expression;
 		readonly HashSet<string> variables = new HashSet<string>();
 		public IEnumerable<string> Variables { get { return variables; } }
 
-		readonly Func<IReadOnlyDictionary<string, int>, int> asFunction;
+		readonly Func<IConditionContext, int> asFunction;
 
 		enum CharClass { Whitespace, Operator, Mixed, Id, Digit }
 
@@ -594,13 +648,6 @@ namespace OpenRA.Support
 			asFunction = new Compiler().Compile(ToPostfix(tokens).ToArray());
 		}
 
-		static int ParseSymbol(string symbol, IReadOnlyDictionary<string, int> symbols)
-		{
-			int value;
-			symbols.TryGetValue(symbol, out value);
-			return value;
-		}
-
 		static IEnumerable<Token> ToPostfix(IEnumerable<Token> tokens)
 		{
 			var s = new Stack<Token>();
@@ -630,10 +677,12 @@ namespace OpenRA.Support
 				yield return s.Pop();
 		}
 
-		enum ExpressionType { Int, Bool }
+		enum ExpressionType { Int, Bool, Variable }
 
-		static readonly ParameterExpression SymbolsParam =
-			Expressions.Expression.Parameter(typeof(IReadOnlyDictionary<string, int>), "symbols");
+		static readonly Func<IConditionContext, string, IConditionVariable> VariableFromContext = (context, name) => context.Get(name);
+		static readonly Func<IConditionVariable, int> VariableAsInt = variable => variable.AsInt();
+		static readonly Func<IConditionVariable, bool> VariableAsBool = variable => variable.AsBool();
+		static readonly ParameterExpression ContextParam = Expressions.Expression.Parameter(typeof(IConditionContext), "context");
 		static readonly ConstantExpression Zero = Expressions.Expression.Constant(0);
 		static readonly ConstantExpression One = Expressions.Expression.Constant(1);
 		static readonly ConstantExpression False = Expressions.Expression.Constant(false);
@@ -663,12 +712,25 @@ namespace OpenRA.Support
 				if (toType == fromType)
 					return expression;
 
-				switch (toType)
+				if (fromType == ExpressionType.Variable)
 				{
-					case ExpressionType.Bool:
-						return IfThenElse(AsBool(expression), True, False);
-					case ExpressionType.Int:
-						return IfThenElse(expression, One, Zero);
+					switch (toType)
+					{
+						case ExpressionType.Bool:
+							return Expressions.Expression.Call(VariableAsBool.Method, expression);
+						case ExpressionType.Int:
+							return Expressions.Expression.Call(VariableAsInt.Method, expression);
+					}
+				}
+				else
+				{
+					switch (toType)
+					{
+						case ExpressionType.Bool:
+							return AsBool(expression);
+						case ExpressionType.Int:
+							return IfThenElse(expression, One, Zero);
+					}
 				}
 
 				throw new InvalidProgramException("Unable to convert ExpressionType.{0} to ExpressionType.{1}".F(
@@ -712,7 +774,7 @@ namespace OpenRA.Support
 		{
 			readonly AstStack ast = new AstStack();
 
-			public Func<IReadOnlyDictionary<string, int>, int> Compile(Token[] postfix)
+			public Func<IConditionContext, int> Compile(Token[] postfix)
 			{
 				foreach (var t in postfix)
 				{
@@ -864,9 +926,8 @@ namespace OpenRA.Support
 
 						case TokenType.Variable:
 						{
-							var symbol = Expressions.Expression.Constant(((VariableToken)t).Symbol);
-							Func<string, IReadOnlyDictionary<string, int>, int> parseSymbol = ParseSymbol;
-							ast.Push(Expressions.Expression.Call(parseSymbol.Method, symbol, SymbolsParam));
+							var name = Expressions.Expression.Constant(((VariableToken)t).Symbol);
+							ast.Push(Expressions.Expression.Call(VariableFromContext.Method, ContextParam, name), ExpressionType.Variable);
 							continue;
 						}
 
@@ -877,12 +938,11 @@ namespace OpenRA.Support
 					}
 				}
 
-				return Expressions.Expression.Lambda<Func<IReadOnlyDictionary<string, int>, int>>(
-					ast.Pop(ExpressionType.Int), SymbolsParam).Compile();
+				return Expressions.Expression.Lambda<Func<IConditionContext, int>>(ast.Pop(ExpressionType.Int), ContextParam).Compile();
 			}
 		}
 
-		public int Evaluate(IReadOnlyDictionary<string, int> symbols)
+		public int Evaluate(IConditionContext symbols)
 		{
 			return asFunction(symbols);
 		}

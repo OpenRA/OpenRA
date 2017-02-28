@@ -21,11 +21,14 @@ namespace OpenRA.Test
 	[TestFixture]
 	public class ConditionExpressionTest
 	{
-		IReadOnlyDictionary<string, int> testValues = new ReadOnlyDictionary<string, int>(new Dictionary<string, int>()
+		ConditionContext testValues = new ConditionContext
 		{
-			{ "one", 1 },
-			{ "five", 5 }
-		});
+			{ "True", new BoolConditionVariable(true) },
+			{ "False", new BoolConditionVariable(false) },
+			{ "zero", new NumberConditionVariable(0) },
+			{ "one", new NumberConditionVariable(1) },
+			{ "five", new NumberConditionVariable(5) }
+		};
 
 		void AssertFalse(string expression)
 		{
@@ -69,6 +72,9 @@ namespace OpenRA.Test
 		[TestCase(TestName = "Variables")]
 		public void TestVariables()
 		{
+			AssertValue("True", 1);
+			AssertValue("False", 0);
+			AssertValue("zero", 0);
 			AssertValue("one", 1);
 			AssertValue("five", 5);
 		}

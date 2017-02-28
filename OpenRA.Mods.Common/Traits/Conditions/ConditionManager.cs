@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Primitives;
+using OpenRA.Support;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -45,7 +46,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		class ConditionState
+		class ConditionState : IConditionVariable
 		{
 			/// <summary>Traits that have registered to be notified when this condition changes.</summary>
 			public readonly List<IConditionConsumer> Consumers = new List<IConditionConsumer>();
@@ -55,6 +56,9 @@ namespace OpenRA.Mods.Common.Traits
 
 			/// <summary>External callbacks that are to be executed when a timed condition changes.</summary>
 			public readonly List<IConditionTimerWatcher> Watchers = new List<IConditionTimerWatcher>();
+
+			int IConditionVariable.AsInt() { return Tokens.Count; }
+			bool IConditionVariable.AsBool() { return Tokens.Count > 0; }
 		}
 
 		Dictionary<string, ConditionState> state;
@@ -65,16 +69,12 @@ namespace OpenRA.Mods.Common.Traits
 
 		int nextToken = 1;
 
-		/// <summary>Cache of condition -> enabled state for quick evaluation of token counter conditions.</summary>
-		readonly Dictionary<string, int> conditionCache = new Dictionary<string, int>();
-
-		/// <summary>Read-only version of conditionCache that is passed to IConditionConsumers.</summary>
-		IReadOnlyDictionary<string, int> readOnlyConditionCache;
+		/// <summary>Cache of conditions that is passed to IConditionConsumers.</summary>
+		ConditionContext conditionContext = new ConditionContext();
 
 		void INotifyCreated.Created(Actor self)
 		{
 			state = new Dictionary<string, ConditionState>();
-			readOnlyConditionCache = new ReadOnlyDictionary<string, int>(conditionCache);
 
 			var allConsumers = new HashSet<IConditionConsumer>();
 			var allWatchers = self.TraitsImplementing<IConditionTimerWatcher>().ToList();
@@ -90,7 +90,7 @@ namespace OpenRA.Mods.Common.Traits
 						if (w.Condition == condition)
 							cs.Watchers.Add(w);
 
-					conditionCache[condition] = 0;
+					conditionContext[condition] = cs;
 				}
 			}
 
@@ -102,12 +102,11 @@ namespace OpenRA.Mods.Common.Traits
 					continue;
 
 				conditionState.Tokens.Add(kv.Key);
-				conditionCache[kv.Value] = conditionState.Tokens.Count;
 			}
 
 			// Update all traits with their initial condition state
 			foreach (var consumer in allConsumers)
-				consumer.ConditionsChanged(self, readOnlyConditionCache);
+				consumer.ConditionsChanged(self, conditionContext);
 		}
 
 		void UpdateConditionState(Actor self, string condition, int token, bool isRevoke)
@@ -121,15 +120,12 @@ namespace OpenRA.Mods.Common.Traits
 			else
 				conditionState.Tokens.Add(token);
 
-			conditionCache[condition] = conditionState.Tokens.Count;
-
 			foreach (var t in conditionState.Consumers)
-				t.ConditionsChanged(self, readOnlyConditionCache);
+				t.ConditionsChanged(self, conditionContext);
 		}
 
 		/// <summary>Grants a specified condition.</summary>
 		/// <returns>The token that is used to revoke this condition.</returns>
-		/// <param name="external">Validate against the external condition whitelist.</param>
 		/// <param name="duration">Automatically revoke condition after this delay if non-zero.</param>
 		public int GrantCondition(Actor self, string condition, int duration = 0)
 		{
