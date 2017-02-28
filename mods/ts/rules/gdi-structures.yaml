@@ -405,7 +405,7 @@ GAPLUG:
 		MaxHeightDelta: 3
 	IonCannonPower:
 		Cursor: ioncannon
-		RequiresCondition: plug.ioncannona || plug.ioncannonb
+		RequiresCondition: pluga.ioncannon || plugb.ioncannon
 		Icon: ioncannon
 		Effect: explosion
 		EffectSequence: ionring
@@ -419,7 +419,7 @@ GAPLUG:
 		DisplayRadarPing: True
 		CameraActor: camera
 	ProduceActorPower:
-		RequiresCondition: plug.hunterseekera || plug.hunterseekerb
+		RequiresCondition: pluga.hunterseeker || plugb.hunterseeker
 		Description: Hunter Seeker
 		LongDesc: Releases a drone that will acquire and destroy an enemy target.
 		Icon: hunterseeker
@@ -434,32 +434,34 @@ GAPLUG:
 	Power:
 		Amount: -150
 	Power@ioncannon:
-		RequiresCondition: plug.ioncannona || plug.ioncannonb
+		RequiresCondition: pluga.ioncannon || plugb.ioncannon
 		Amount: -100
 	Power@hunterseeker:
-		RequiresCondition: plug.hunterseekera || plug.hunterseekerb
+		RequiresCondition: pluga.hunterseeker || plugb.hunterseeker
 		Amount: -50
 	Pluggable@pluga:
+		ConditionVariable: pluga
 		Offset: 0,2
 		Conditions:
-			plug.ioncannon: plug.ioncannona
-			plug.hunterseeker: plug.hunterseekera
+			plug.ioncannon: pluga.ioncannon
+			plug.hunterseeker: pluga.hunterseeker
 	WithIdleOverlay@ioncannona:
-		RequiresCondition: plug.ioncannona
+		RequiresCondition: pluga.ioncannon
 		Sequence: idle-ioncannona
 	WithIdleOverlay@hunterseekera:
-		RequiresCondition: plug.hunterseekera
+		RequiresCondition: pluga.hunterseeker
 		Sequence: idle-hunterseekera
 	Pluggable@plugb:
+		ConditionVariable: plugb
 		Offset: 1,2
 		Conditions:
-			plug.ioncannon: plug.ioncannonb
-			plug.hunterseeker: plug.hunterseekerb
+			plug.ioncannon: plugb.ioncannon
+			plug.hunterseeker: plugb.hunterseeker
 	WithIdleOverlay@ioncannonb:
-		RequiresCondition: plug.ioncannonb
+		RequiresCondition: plugb.ioncannon
 		Sequence: idle-ioncannonb
 	WithIdleOverlay@hunterseekerb:
-		RequiresCondition: plug.hunterseekerb
+		RequiresCondition: plugb.hunterseeker
 		Sequence: idle-hunterseekerb
 	ProvidesPrerequisite@buildingname:
 	SelectionDecorations:

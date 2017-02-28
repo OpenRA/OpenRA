@@ -50,6 +50,9 @@ namespace OpenRA.Traits
 	public sealed class GrantedConditionReferenceAttribute : Attribute { }
 
 	[AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
+	public sealed class ProvidedConditionReferenceAttribute : Attribute { }
+
+	[AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
 	public sealed class ConsumedConditionReferenceAttribute : Attribute { }
 
 	[AttributeUsage(AttributeTargets.Field)]
