@@ -113,6 +113,13 @@ namespace OpenRA.Mods.Common.Traits
 		void ConditionsChanged(Actor self, Support.IConditionContext conditions);
 	}
 
+	public interface INotifyingConditionVariable : Support.IConditionVariable { void Add(Actor self, IConditionConsumer consumer); }
+
+	public interface INotifyingConditionVariableProvider
+	{
+		IEnumerable<KeyValuePair<string, INotifyingConditionVariable>> Provided { get; }
+	}
+
 	public interface INotifyHarvesterAction
 	{
 		void MovingToResources(Actor self, CPos targetCell, Activity next);
