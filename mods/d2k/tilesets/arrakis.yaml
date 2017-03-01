@@ -4357,7 +4357,7 @@ Templates:
 			1: Rock
 			2: Rock
 			3: Cliff
-			4: Rough
+			4: Transition
 			5: Cliff
 			6: Cliff
 			7: Rough
@@ -4373,7 +4373,7 @@ Templates:
 			1: Rough
 			2: Cliff
 			3: Cliff
-			4: Rough
+			4: Transition
 			5: Cliff
 			6: Rock
 			7: Rock
@@ -4386,8 +4386,8 @@ Templates:
 		Category: Bridge
 		Tiles:
 			0: Cliff
-			1: Sand
-			2: Sand
+			1: Cliff
+			2: Cliff
 			3: Cliff
 			4: Transition
 			5: Transition
