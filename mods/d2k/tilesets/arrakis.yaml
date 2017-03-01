@@ -4278,7 +4278,7 @@ Templates:
 		Images: BLOXXMAS.R8
 		Frames: 316
 		Size: 1,1
-		Category: Sand-Detail
+		Category: Bridge
 		Tiles:
 			0: Cliff
 	Template@506:
@@ -4286,7 +4286,7 @@ Templates:
 		Images: BLOXXMAS.R8
 		Frames: 297
 		Size: 1,1
-		Category: Sand-Detail
+		Category: Bridge
 		Tiles:
 			0: Cliff
 	Template@507:
@@ -4338,7 +4338,7 @@ Templates:
 		Images: BLOXXMAS.R8
 		Frames: 353, 354, 373, 374, 393, 394
 		Size: 2,3
-		Category: Sand-Detail
+		Category: Bridge
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -4351,7 +4351,7 @@ Templates:
 		Images: BLOXXMAS.R8
 		Frames: 350, 351, 352, 370, 371, 372, 390, 391, 392
 		Size: 3,3
-		Category: Rock-Detail
+		Category: Bridge
 		Tiles:
 			0: Rock
 			1: Rock
@@ -4367,7 +4367,7 @@ Templates:
 		Images: BLOXXMAS.R8
 		Frames: 347, 348, 349, 367, 368, 369, 387, 388, 389
 		Size: 3,3
-		Category: Rock-Detail
+		Category: Bridge
 		Tiles:
 			0: Sand
 			1: Rough
@@ -4383,7 +4383,7 @@ Templates:
 		Images: BLOXXMAS.R8
 		Frames: 340, 341, 342, 343, 360, 361, 362, 363, 380, 381, 382, 383
 		Size: 4,3
-		Category: Rock-Detail
+		Category: Bridge
 		Tiles:
 			0: Cliff
 			1: Sand
