@@ -3,7 +3,7 @@ General:
 	Id: ARRAKIS
 	SheetSize: 1024
 	Palette: PALETTE.BIN
-	EditorTemplateOrder: Basic, Dune, Sand-Detail, Brick, Sand-Cliff, Sand-Smooth, Cliff-Type-Changer, Rock-Sand-Smooth, Rock-Detail, Rock-Cliff, Rock-Cliff-Rock, Rotten-Base, Dead-Worm, Ice, Ice-Detail, Rock-Cliff-Sand, Sand-Platform, Bridge, Unidentified
+	EditorTemplateOrder: Basic, Dune, Sand-Detail, Sand-Cliff, Sand-Smooth, Cliff-Type-Changer, Rock-Sand-Smooth, Rock-Detail, Rock-Cliff, Rock-Cliff-Rock, Rotten-Base, Dead-Worm, Ice, Ice-Detail, Rock-Cliff-Sand, Sand-Platform, Bridge, Unidentified
 	IgnoreTileSpriteOffsets: True
 	HeightDebugColors: 880000
 
@@ -939,7 +939,7 @@ Templates:
 		Frames: 657, 658, 659, 691
 		Size: 1,1
 		PickAny: True
-		Category: Brick
+		Category: Basic
 		Tiles:
 			0: Concrete
 			1: Concrete
