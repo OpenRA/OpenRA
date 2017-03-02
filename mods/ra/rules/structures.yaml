@@ -829,7 +829,7 @@ WEAP:
 		Prerequisites: proc, ~techlevel.low
 		Description: Produces vehicles.
 	Valued:
-		Cost: 2000
+		Cost: 1650 
 	Tooltip:
 		Name: War Factory
 	Building:
