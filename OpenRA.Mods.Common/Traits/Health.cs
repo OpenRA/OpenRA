@@ -66,52 +66,8 @@ namespace OpenRA.Mods.Common.Traits
 		public virtual object Create(ActorInitializer init) { return new Health(init, this); }
 	}
 
-	class HealthCondition : NotifyingCondition
-	{
-		NumberCondition hpVariable;
-		NumberCondition maxHpVariable;
-
-		public int Value { get { return hpVariable.Value; } }
-
-		public void Set(Actor self, int hp)
-		{
-				if (hpVariable.Value == hp)
-					return;
-				hpVariable.Value = hp;
-				NotifyConditionChanged(self);
-		}
-
-		public HealthCondition(int hp, int max)
-		{
-			hpVariable = new NumberCondition(hp);
-			maxHpVariable = new NumberCondition(max);
-		}
-
-		public override bool AsBool() { return hpVariable.Value > 0; }
-		public override int AsInt() { return hpVariable.Value; }
-		public override ICondition Get(string name)
-		{
-			switch (name)
-			{
-				case "current":	return hpVariable;
-				case "max":	return maxHpVariable;
-				case "isDead":
-					return hpVariable.Value <= 0 ? BoolCondition.True : BoolCondition.False;
-				case "alive":
-					return hpVariable.Value > 0  ? BoolCondition.False : BoolCondition.True;
-				default:	return EmptyCondition.Instance;
-			}
-		}
-	}
-
 	class DamageStateCondition : NotifyingCondition
 	{
-		static NumberCondition undamaged = new NumberCondition((int)DamageState.Undamaged);
-		static NumberCondition light = new NumberCondition((int)DamageState.Light);
-		static NumberCondition medium = new NumberCondition((int)DamageState.Medium);
-		static NumberCondition heavy = new NumberCondition((int)DamageState.Heavy);
-		static NumberCondition critical = new NumberCondition((int)DamageState.Critical);
-		static NumberCondition dead = new NumberCondition((int)DamageState.Dead);
 		DamageState state;
 
 		public DamageState Value { get { return state; } }
@@ -153,36 +109,49 @@ namespace OpenRA.Mods.Common.Traits
 
 		public override bool AsBool() { return state != DamageState.Undamaged; }
 		public override int AsInt() { return (int)state; }
-		public override ICondition Get(string name)
+		public override int GetAsInt(string name) { return GetAsInt(name, true); }
+		public override bool GetAsBool(string name) { return GetAsBool(name, true); }
+
+		int GetAsInt(string name, bool resultType)
+		{
+			switch (name)
+			{
+				case "undamaged":	return (int)DamageState.Undamaged;
+				case "light":	return (int)DamageState.Light;
+				case "medium":	return (int)DamageState.Medium;
+				case "heavy":	return (int)DamageState.Heavy;
+				case "critical":	return (int)DamageState.Critical;
+				case "dead":	return (int)DamageState.Dead;
+				default:
+					return resultType && GetAsBool(name, false) ? 1 : 0;
+			}
+		}
+
+		bool GetAsBool(string name, bool resultType)
 		{
 			switch (name)
 			{
 				case "noDamage":
-					return state == DamageState.Undamaged ? BoolCondition.True : BoolCondition.False;
+					return state == DamageState.Undamaged;
 				case "isLight":
-					return state == DamageState.Light ? BoolCondition.True : BoolCondition.False;
+					return state == DamageState.Light;
 				case "isMedium":
-					return state == DamageState.Medium ? BoolCondition.True : BoolCondition.False;
+					return state == DamageState.Medium;
 				case "isHeavy":
-					return state == DamageState.Heavy ? BoolCondition.True : BoolCondition.False;
+					return state == DamageState.Heavy;
 				case "isCritical":
-					return state == DamageState.Critical ? BoolCondition.True : BoolCondition.False;
+					return state == DamageState.Critical;
 				case "isDead":
-					return state == DamageState.Dead ? BoolCondition.True : BoolCondition.False;
+					return state == DamageState.Dead;
 				case "alive":
-					return state == DamageState.Dead ? BoolCondition.False : BoolCondition.True;
-				case "undamaged":	return undamaged;
-				case "light":	return light;
-				case "medium":	return medium;
-				case "heavy":	return heavy;
-				case "critical":	return critical;
-				case "dead":	return dead;
-				default:	return EmptyCondition.Instance;
+					return state != DamageState.Dead;
+				default:
+					return resultType && GetAsInt(name, false) != 0;
 			}
 		}
 	}
 
-	public class Health : IHealth, ISync, ITick, INotifyingConditionProvider
+	public class Health : NotifyingCondition, IHealth, ISync, ITick, INotifyingConditionProvider
 	{
 		public readonly HealthInfo Info;
 
@@ -196,7 +165,6 @@ namespace OpenRA.Mods.Common.Traits
 			MaxHP = info.HP > 0 ? info.HP : 1;
 
 			hp = init.Contains<HealthInit>() ? init.Get<HealthInit, int>() * MaxHP / 100 : MaxHP;
-			hpCondition = new HealthCondition(hp, MaxHP);
 			damageCondition = new DamageStateCondition(hp, MaxHP);
 
 			DisplayHP = hp;
@@ -204,7 +172,6 @@ namespace OpenRA.Mods.Common.Traits
 
 		public int HP { get { return hp; } }
 		public int MaxHP { get; private set; }
-		HealthCondition hpCondition;
 		DamageStateCondition damageCondition;
 
 		public bool IsDead { get { return hp <= 0; } }
@@ -217,7 +184,7 @@ namespace OpenRA.Mods.Common.Traits
 			get
 			{
 				if (!string.IsNullOrEmpty(Info.HealthCondition))
-					yield return new KeyValuePair<string, INotifyingCondition>(Info.HealthCondition, hpCondition);
+					yield return new KeyValuePair<string, INotifyingCondition>(Info.HealthCondition, this);
 				if (!string.IsNullOrEmpty(Info.DamageStateCondition))
 					yield return new KeyValuePair<string, INotifyingCondition>(Info.DamageStateCondition, damageCondition);
 			}
@@ -229,7 +196,7 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			hp = MaxHP;
-			hpCondition.Set(self, hp);
+			NotifyConditionChanged(self);
 			damageCondition.Set(self, hp, MaxHP);
 
 			var ai = new AttackInfo
@@ -272,7 +239,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 
 			hp = (hp - damage.Value).Clamp(0, MaxHP);
-			hpCondition.Set(self, hp);
+			NotifyConditionChanged(self);
 			damageCondition.Set(self, hp, MaxHP);
 
 			var ai = new AttackInfo
@@ -324,6 +291,30 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (DisplayHP > hp)
 				DisplayHP = (2 * DisplayHP + hp) / 3;
+		}
+
+		public override bool AsBool() { return hp > 0; }
+		public override int AsInt() { return hp; }
+		public override int GetAsInt(string name) { return GetAsInt(name, true); }
+		public override bool GetAsBool(string name) { return GetAsBool(name, true); }
+		int GetAsInt(string name, bool resultType)
+		{
+			switch (name)
+			{
+				case "current":	return hp;
+				case "max":	return MaxHP;
+				default:	return resultType && GetAsBool(name, false) ? 1 : 0;
+			}
+		}
+
+		bool GetAsBool(string name, bool resultType)
+		{
+			switch (name)
+			{
+				case "isDead":	return hp <= 0;
+				case "alive":	return hp > 0;
+				default:	return resultType && GetAsInt(name, false) != 0;
+			}
 		}
 	}
 

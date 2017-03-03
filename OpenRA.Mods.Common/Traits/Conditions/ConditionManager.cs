@@ -33,6 +33,8 @@ namespace OpenRA.Mods.Common.Traits
 		public virtual bool AsBool() { return true; }
 		public virtual int AsInt() { return 1; }
 		public virtual ICondition Get(string name) { return EmptyCondition.Instance; }
+		public virtual bool GetAsBool(string name) { return Get(name).AsBool(); }
+		public virtual int GetAsInt(string name) { return Get(name).AsInt(); }
 
 		protected NotifyingCondition() { }
 		protected void NotifyConditionChanged(Actor self)
@@ -84,6 +86,8 @@ namespace OpenRA.Mods.Common.Traits
 			int ICondition.AsInt() { return Tokens.Count; }
 			bool ICondition.AsBool() { return Tokens.Count > 0; }
 			ICondition ICondition.Get(string name) { return EmptyCondition.Instance; }
+			bool ICondition.GetAsBool(string name) { return false; }
+			int ICondition.GetAsInt(string name) { return 0; }
 
 			void INotifyingCondition.Add(Actor self, IConditionConsumer consumer, ConditionManager manager) { Consumers.Add(consumer); }
 		}
@@ -252,7 +256,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		bool ICondition.AsBool() { return true; }
 		int ICondition.AsInt() { return conditionContext.Count; }
-		ICondition ICondition.Get(string name) { return Get(name); }
+		public bool GetAsBool(string name) { return Get(name).AsBool(); }
+		public int GetAsInt(string name) { return Get(name).AsInt(); }
 		public ICondition Get(string name)
 		{
 			INotifyingCondition variable;

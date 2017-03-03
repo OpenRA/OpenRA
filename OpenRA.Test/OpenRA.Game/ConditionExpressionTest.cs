@@ -96,8 +96,11 @@ namespace OpenRA.Test
 			AssertValue("!context.zero", 1);
 			AssertValue("context.six", 6);
 			AssertValue("context.seven", 0);
+			AssertValue("context.subContext.True", 1);
 			AssertValue("!context.subContext.False", 1);
 			AssertValue("!context.subContext.True", 0);
+			AssertValue("context.subContext.True + context.six", 7);
+			AssertValue("context.subContext.True + context.five", 1);
 		}
 
 		[TestCase(TestName = "Boolean Constants")]
@@ -363,7 +366,7 @@ namespace OpenRA.Test
 			AssertParseFailure("-", "Missing value or sub-expression at end for `-` operator");
 			AssertParseFailure("context.false", "`.` operator at index 7 requires a property name as its right operand.");
 			AssertParseFailure("false.true", "`.` operator at index 5 requires a property name as its right operand.");
-			AssertParseFailure("false.six", "`.` operator at index 5 requires a variable as its left operand.");
+			AssertParseFailure("false.six", "`.` operator at index 5 requires a variable as its left operand: Unable to convert ExpressionType.Bool to ExpressionType.Variable.");
 		}
 
 		[TestCase(TestName = "Undefined symbols are treated as `false` (0) values")]

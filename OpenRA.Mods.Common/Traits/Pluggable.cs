@@ -116,6 +116,16 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			return condition == name ? BoolCondition.True : BoolCondition.False;
 		}
+
+		public override bool GetAsBool(string name)
+		{
+			return condition == name;
+		}
+
+		public override int GetAsInt(string name)
+		{
+			return condition == name ? 1 : 0;
+		}
 	}
 
 	public class PlugsInit : IActorInit<Dictionary<CVec, string>>
