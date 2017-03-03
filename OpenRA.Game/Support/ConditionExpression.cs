@@ -19,70 +19,56 @@ using Expressions = System.Linq.Expressions;
 
 namespace OpenRA.Support
 {
-	public interface IConditionVariable
+	public interface ICondition
 	{
 		bool AsBool();
 		int AsInt();
-		IConditionContext AsContext();
+		ICondition Get(string name);
 	}
 
-	public interface IConditionContext { IConditionVariable Get(string name); }
-
-	public class EmptyConditionVariable : IConditionVariable
+	public class EmptyCondition : ICondition
 	{
-		public static readonly EmptyConditionVariable Instance = new EmptyConditionVariable();
-		EmptyConditionVariable() { }
+		public static readonly EmptyCondition Instance = new EmptyCondition();
+		EmptyCondition() { }
 
-		bool IConditionVariable.AsBool() { return false; }
-		int IConditionVariable.AsInt() { return 0; }
-		IConditionContext IConditionVariable.AsContext() { return EmptyConditionContext.Instance; }
+		bool ICondition.AsBool() { return false; }
+		int ICondition.AsInt() { return 0; }
+		ICondition ICondition.Get(string name) { return Instance; }
 	}
 
-	public class EmptyConditionContext : IConditionContext, IConditionVariable
+	public class ConditionContext : Dictionary<string, ICondition>, ICondition
 	{
-		public static readonly EmptyConditionContext Instance = new EmptyConditionContext();
-		EmptyConditionContext() { }
-
-		IConditionVariable IConditionContext.Get(string name) { return EmptyConditionVariable.Instance; }
-		bool IConditionVariable.AsBool() { return false; }
-		int IConditionVariable.AsInt() { return 0; }
-		IConditionContext IConditionVariable.AsContext() { return this; }
-	}
-
-	public class ConditionContext : Dictionary<string, IConditionVariable>, IConditionContext, IConditionVariable
-	{
-		bool IConditionVariable.AsBool() { return Count > 0; }
-		int IConditionVariable.AsInt() { return Count; }
-		IConditionContext IConditionVariable.AsContext() { return this; }
-		public IConditionVariable Get(string name)
+		bool ICondition.AsBool() { return Count > 0; }
+		int ICondition.AsInt() { return Count; }
+		public ICondition Get(string name)
 		{
-			IConditionVariable variable;
+			ICondition variable;
 			if (TryGetValue(name, out variable))
 				return variable;
-			return EmptyConditionVariable.Instance;
+			return EmptyCondition.Instance;
 		}
 	}
 
-	public struct NumberConditionVariable : IConditionVariable
+	public struct NumberCondition : ICondition
 	{
 		public int Value;
-		public NumberConditionVariable(int value = 0) { Value = value; }
+		public NumberCondition(int value = 0) { Value = value; }
 
-		int IConditionVariable.AsInt() { return Value; }
-		bool IConditionVariable.AsBool() { return Value != 0; }
-		IConditionContext IConditionVariable.AsContext() { return EmptyConditionContext.Instance; }
+		int ICondition.AsInt() { return Value; }
+		bool ICondition.AsBool() { return Value != 0; }
+		ICondition ICondition.Get(string name) { return EmptyCondition.Instance; }
 	}
 
-	public struct BoolConditionVariable : IConditionVariable
+	public struct BoolCondition : ICondition
 	{
 		public bool Value;
-		public BoolConditionVariable(bool value = false) { Value = value; }
-		public static readonly BoolConditionVariable False = new BoolConditionVariable(false);
-		public static readonly BoolConditionVariable True = new BoolConditionVariable(true);
+		public BoolCondition(bool value = false) { Value = value; }
+		public static readonly BoolCondition False = new BoolCondition(false);
+		public static readonly BoolCondition True = new BoolCondition(true);
 
-		int IConditionVariable.AsInt() { return Value ? 1 : 0; }
-		bool IConditionVariable.AsBool() { return Value; }
-		IConditionContext IConditionVariable.AsContext() { return EmptyConditionContext.Instance; }
+		int ICondition.AsInt() { return Value ? 1 : 0; }
+		bool ICondition.AsBool() { return Value; }
+		ICondition ICondition.Get(string name) { return EmptyCondition.Instance; }
 	}
 
 	public class ConditionExpression
@@ -91,7 +77,7 @@ namespace OpenRA.Support
 		readonly HashSet<string> variables = new HashSet<string>();
 		public IEnumerable<string> Variables { get { return variables; } }
 
-		readonly Func<IConditionContext, int> asFunction;
+		readonly Func<ICondition, int> asFunction;
 
 		enum CharClass { Whitespace, Operator, Mixed, Id, Digit }
 
@@ -723,11 +709,10 @@ namespace OpenRA.Support
 
 		enum ExpressionType { Int, Bool, Variable, Property }
 
-		static readonly MethodInfo VariableFromContext = typeof(IConditionContext).GetMethod("Get");
-		static readonly MethodInfo VariableAsInt = typeof(IConditionVariable).GetMethod("AsInt");
-		static readonly MethodInfo VariableAsBool = typeof(IConditionVariable).GetMethod("AsBool");
-		static readonly MethodInfo VariableAsContext = typeof(IConditionVariable).GetMethod("AsContext");
-		static readonly ParameterExpression ContextParam = Expressions.Expression.Parameter(typeof(IConditionContext), "context");
+		static readonly MethodInfo VariableInVariable = typeof(ICondition).GetMethod("Get");
+		static readonly MethodInfo VariableAsInt = typeof(ICondition).GetMethod("AsInt");
+		static readonly MethodInfo VariableAsBool = typeof(ICondition).GetMethod("AsBool");
+		static readonly ParameterExpression ContextParam = Expressions.Expression.Parameter(typeof(ICondition), "context");
 		static readonly ConstantExpression Zero = Expressions.Expression.Constant(0);
 		static readonly ConstantExpression One = Expressions.Expression.Constant(1);
 		static readonly ConstantExpression False = Expressions.Expression.Constant(false);
@@ -819,7 +804,7 @@ namespace OpenRA.Support
 		{
 			readonly AstStack ast = new AstStack();
 
-			public Func<IConditionContext, int> Compile(Token[] postfix)
+			public Func<ICondition, int> Compile(Token[] postfix)
 			{
 				foreach (var t in postfix)
 				{
@@ -962,8 +947,7 @@ namespace OpenRA.Support
 								throw new InvalidDataException("`.` operator at index {0} requires a variable as its left operand.".F(t.Index));
 
 							var variable = ast.Pop(ExpressionType.Variable);
-							var context = Expressions.Expression.Call(variable, VariableAsContext);
-							ast.Push(Expressions.Expression.Call(context, VariableFromContext, property), ExpressionType.Variable);
+							ast.Push(Expressions.Expression.Call(variable, VariableInVariable, property), ExpressionType.Variable);
 							continue;
 						}
 
@@ -988,7 +972,7 @@ namespace OpenRA.Support
 						case TokenType.Variable:
 						{
 							var name = Expressions.Expression.Constant(((VariableToken)t).Symbol);
-							ast.Push(Expressions.Expression.Call(ContextParam, VariableFromContext, name), ExpressionType.Variable);
+							ast.Push(Expressions.Expression.Call(ContextParam, VariableInVariable, name), ExpressionType.Variable);
 							continue;
 						}
 
@@ -1005,11 +989,11 @@ namespace OpenRA.Support
 					}
 				}
 
-				return Expressions.Expression.Lambda<Func<IConditionContext, int>>(ast.Pop(ExpressionType.Int), ContextParam).Compile();
+				return Expressions.Expression.Lambda<Func<ICondition, int>>(ast.Pop(ExpressionType.Int), ContextParam).Compile();
 			}
 		}
 
-		public int Evaluate(IConditionContext symbols)
+		public int Evaluate(ICondition symbols)
 		{
 			return asFunction(symbols);
 		}

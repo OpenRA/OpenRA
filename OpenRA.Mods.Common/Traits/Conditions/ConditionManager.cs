@@ -25,10 +25,34 @@ namespace OpenRA.Mods.Common.Traits
 		void Update(int duration, int remaining);
 	}
 
+	public abstract class NotifyingCondition : INotifyingCondition
+	{
+		protected ConditionManager conditionManager = null;
+		readonly List<IConditionConsumer> consumers = new List<IConditionConsumer>();
+
+		public virtual bool AsBool() { return true; }
+		public virtual int AsInt() { return 1; }
+		public virtual ICondition Get(string name) { return EmptyCondition.Instance; }
+
+		protected NotifyingCondition() { }
+		protected void NotifyConditionChanged(Actor self)
+		{
+			foreach (var consumer in consumers)
+					consumer.ConditionsChanged(self, conditionManager);
+		}
+
+		void INotifyingCondition.Add(Actor self, IConditionConsumer consumer, ConditionManager manager)
+		{
+			consumers.Add(consumer);
+			if (conditionManager == null)
+				conditionManager = manager;
+		}
+	}
+
 	[Desc("Attach this to a unit to enable dynamic conditions by warheads, experience, crates, support powers, etc.")]
 	public class ConditionManagerInfo : TraitInfo<ConditionManager>, Requires<IConditionConsumerInfo> { }
 
-	public class ConditionManager : INotifyCreated, ITick, IConditionContext
+	public class ConditionManager : INotifyCreated, ITick, ICondition
 	{
 		/// <summary>Value used to represent an invalid token.</summary>
 		public static readonly int InvalidConditionToken = -1;
@@ -46,7 +70,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		class ConditionState : INotifyingConditionVariable
+		class ConditionState : INotifyingCondition
 		{
 			/// <summary>Traits that have registered to be notified when this condition changes.</summary>
 			public readonly List<IConditionConsumer> Consumers = new List<IConditionConsumer>();
@@ -57,11 +81,11 @@ namespace OpenRA.Mods.Common.Traits
 			/// <summary>External callbacks that are to be executed when a timed condition changes.</summary>
 			public readonly List<IConditionTimerWatcher> Watchers = new List<IConditionTimerWatcher>();
 
-			int IConditionVariable.AsInt() { return Tokens.Count; }
-			bool IConditionVariable.AsBool() { return Tokens.Count > 0; }
-			IConditionContext IConditionVariable.AsContext() { return EmptyConditionContext.Instance; }
+			int ICondition.AsInt() { return Tokens.Count; }
+			bool ICondition.AsBool() { return Tokens.Count > 0; }
+			ICondition ICondition.Get(string name) { return EmptyCondition.Instance; }
 
-			void INotifyingConditionVariable.Add(Actor self, IConditionConsumer consumer) { Consumers.Add(consumer); }
+			void INotifyingCondition.Add(Actor self, IConditionConsumer consumer, ConditionManager manager) { Consumers.Add(consumer); }
 		}
 
 		Dictionary<string, ConditionState> state;
@@ -73,13 +97,13 @@ namespace OpenRA.Mods.Common.Traits
 		int nextToken = 1;
 
 		/// <summary>Cache of conditions that is passed to IConditionConsumers.</summary>
-		readonly Dictionary<string, INotifyingConditionVariable> conditionContext = new Dictionary<string, INotifyingConditionVariable>();
+		readonly Dictionary<string, INotifyingCondition> conditionContext = new Dictionary<string, INotifyingCondition>();
 
 		void INotifyCreated.Created(Actor self)
 		{
 			state = new Dictionary<string, ConditionState>();
 
-			foreach (var provider in self.TraitsImplementing<INotifyingConditionVariableProvider>())
+			foreach (var provider in self.TraitsImplementing<INotifyingConditionProvider>())
 				foreach (var variable in provider.Provided)
 					conditionContext.Add(variable.Key, variable.Value);
 
@@ -91,7 +115,7 @@ namespace OpenRA.Mods.Common.Traits
 				allConsumers.Add(consumer);
 				foreach (var condition in consumer.Conditions)
 				{
-					INotifyingConditionVariable variable;
+					INotifyingCondition variable;
 					ConditionState conditionState;
 					conditionContext.TryGetValue(condition, out variable);
 					state.TryGetValue(condition, out conditionState);
@@ -103,7 +127,7 @@ namespace OpenRA.Mods.Common.Traits
 						conditionContext.Add(condition, conditionState);
 					}
 
-					variable.Add(self, consumer);
+					variable.Add(self, consumer, this);
 					if (conditionState != null)
 						foreach (var w in allWatchers)
 							if (w.Condition == condition)
@@ -226,13 +250,16 @@ namespace OpenRA.Mods.Common.Traits
 			timersToRemove.Clear();
 		}
 
-		public IConditionVariable Get(string name)
+		bool ICondition.AsBool() { return true; }
+		int ICondition.AsInt() { return conditionContext.Count; }
+		ICondition ICondition.Get(string name) { return Get(name); }
+		public ICondition Get(string name)
 		{
-			INotifyingConditionVariable variable;
+			INotifyingCondition variable;
 			if (conditionContext.TryGetValue(name, out variable))
 				return variable;
 
-			return EmptyConditionVariable.Instance;
+			return EmptyCondition.Instance;
 		}
 	}
 }

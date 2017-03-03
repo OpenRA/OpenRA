@@ -126,7 +126,7 @@ GACTWR:
 		RequiresCondition: tower.sam
 		Amount: -10
 	Pluggable:
-		ConditionVariable: tower
+		Condition: tower
 		Conditions:
 			tower.vulcan: vulcan
 			tower.rocket: rocket

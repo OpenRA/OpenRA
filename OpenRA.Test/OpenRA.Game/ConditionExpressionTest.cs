@@ -23,21 +23,21 @@ namespace OpenRA.Test
 	{
 		ConditionContext testValues = new ConditionContext
 		{
-			{ "True", new BoolConditionVariable(true) },
-			{ "False", new BoolConditionVariable(false) },
-			{ "zero", new NumberConditionVariable(0) },
-			{ "one", new NumberConditionVariable(1) },
-			{ "five", new NumberConditionVariable(5) },
+			{ "True", new BoolCondition(true) },
+			{ "False", new BoolCondition(false) },
+			{ "zero", new NumberCondition(0) },
+			{ "one", new NumberCondition(1) },
+			{ "five", new NumberCondition(5) },
 			{ "emptyContext", new ConditionContext() },
 			{ "context", new ConditionContext
 				{
-					{ "false", new BoolConditionVariable(false) },
-					{ "zero", new NumberConditionVariable(0) },
-					{ "six", new NumberConditionVariable(6) },
+					{ "false", new BoolCondition(false) },
+					{ "zero", new NumberCondition(0) },
+					{ "six", new NumberCondition(6) },
 					{ "subContext", new ConditionContext
 						{
-							{ "False", new BoolConditionVariable(false) },
-							{ "True", new BoolConditionVariable(true) }
+							{ "False", new BoolCondition(false) },
+							{ "True", new BoolCondition(true) }
 						}
 					}
 				}

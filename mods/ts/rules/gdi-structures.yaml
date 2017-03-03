@@ -37,7 +37,7 @@ GAPOWR:
 	ScalePowerWithHealth:
 	DisabledOverlay:
 	Pluggable@pluga:
-		ConditionVariable: pluga
+		Condition: pluga
 		Offset: 0,1
 		Conditions:
 			powrup: powrup
@@ -48,7 +48,7 @@ GAPOWR:
 		RequiresCondition: pluga.powrup
 		Sequence: idle-powrupa
 	Pluggable@plugb:
-		ConditionVariable: plugb
+		Condition: plugb
 		Offset: 1,1
 		Conditions:
 			powrup: powrup
@@ -442,7 +442,7 @@ GAPLUG:
 		RequiresCondition: hunterseeker
 		Amount: -50
 	Pluggable@pluga:
-		ConditionVariable: pluga
+		Condition: pluga
 		Offset: 0,2
 		Conditions:
 			plug.ioncannon: ioncannon
@@ -454,7 +454,7 @@ GAPLUG:
 		RequiresCondition: pluga.hunterseeker
 		Sequence: idle-hunterseekera
 	Pluggable@plugb:
-		ConditionVariable: plugb
+		Condition: plugb
 		Offset: 1,2
 		Conditions:
 			plug.ioncannon: ioncannon

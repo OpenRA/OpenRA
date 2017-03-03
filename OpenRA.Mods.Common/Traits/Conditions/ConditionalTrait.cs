@@ -32,7 +32,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public virtual void RulesetLoaded(Ruleset rules, ActorInfo ai)
 		{
-			EnabledByDefault = RequiresCondition == null || RequiresCondition.Evaluate(EmptyConditionContext.Instance) > 0;
+			EnabledByDefault = RequiresCondition == null || RequiresCondition.Evaluate(EmptyCondition.Instance) > 0;
 		}
 	}
 
@@ -44,6 +44,7 @@ namespace OpenRA.Mods.Common.Traits
 	public abstract class ConditionalTrait<InfoType> : IConditionConsumer, IDisabledTrait, INotifyCreated, ISync where InfoType : ConditionalTraitInfo
 	{
 		public readonly InfoType Info;
+		protected bool permanent = false;
 
 		IEnumerable<string> IConditionConsumer.Conditions
 		{
@@ -75,12 +76,15 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyCreated.Created(Actor self) { Created(self); }
 
-		void IConditionConsumer.ConditionsChanged(Actor self, IConditionContext conditions)
+		void IConditionConsumer.ConditionsChanged(Actor self, ICondition conditions)
 		{
 			if (Info.RequiresCondition == null)
 				return;
 
 			var wasDisabled = IsTraitDisabled;
+			if (!wasDisabled && permanent)
+				return;
+
 			IsTraitDisabled = Info.RequiresCondition.Evaluate(conditions) <= 0;
 
 			if (IsTraitDisabled != wasDisabled)

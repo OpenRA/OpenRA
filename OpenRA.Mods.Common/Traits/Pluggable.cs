@@ -27,9 +27,9 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly Dictionary<string, string> Conditions = null;
 
 		[ProvidedConditionReference]
-		[Desc("Condition variable for checking plug.",
-			"(this-name).(condition-name) condition expression returns a boolean for whether this plug is granting a specified condition.")]
-		public readonly string ConditionVariable = null;
+		[Desc("Name of condition for checking plug.",
+			"(this-name).(condition-name) expression returns a boolean for whether this plug is granting a specified condition.")]
+		public readonly string Condition = null;
 
 		[GrantedConditionReference]
 		public IEnumerable<string> LinterConditions { get { return Conditions.Values; } }
@@ -37,32 +37,28 @@ namespace OpenRA.Mods.Common.Traits
 		[ConsumedConditionReference]
 		public IEnumerable<string> LinterSelfConditions
 		{
-			get { return string.IsNullOrEmpty(ConditionVariable) ? Enumerable.Empty<string>() : Conditions.Values; }
+			get { return string.IsNullOrEmpty(Condition) ? Enumerable.Empty<string>() : Conditions.Values; }
 		}
 
 		public object Create(ActorInitializer init) { return new Pluggable(init, this); }
 	}
 
-	public class Pluggable : INotifyCreated, INotifyingConditionVariableProvider, INotifyingConditionVariable, IConditionContext
+	public class Pluggable : NotifyingCondition, INotifyCreated, INotifyingConditionProvider
 	{
 		public readonly PluggableInfo Info;
 
 		readonly string initialPlug;
-		ConditionManager conditionManager;
 		int conditionToken = ConditionManager.InvalidConditionToken;
 
 		string active;
 		string condition;
 
-		/// <summary>Traits that have registered to be notified when this condition changes.</summary>
-		public readonly List<IConditionConsumer> Consumers = new List<IConditionConsumer>();
-
-		IEnumerable<KeyValuePair<string, INotifyingConditionVariable>> INotifyingConditionVariableProvider.Provided
+		IEnumerable<KeyValuePair<string, INotifyingCondition>> INotifyingConditionProvider.Provided
 		{
 			get
 			{
-				if (!string.IsNullOrEmpty(Info.ConditionVariable))
-					yield return new KeyValuePair<string, INotifyingConditionVariable>(Info.ConditionVariable, this);
+				if (!string.IsNullOrEmpty(Info.Condition))
+					yield return new KeyValuePair<string, INotifyingCondition>(Info.Condition, this);
 			}
 		}
 
@@ -97,8 +93,8 @@ namespace OpenRA.Mods.Common.Traits
 			condition = newCondition;
 			conditionToken = conditionManager.GrantCondition(self, condition);
 			active = type;
-			foreach (var consumer in Consumers)
-				consumer.ConditionsChanged(self, conditionManager);
+			condition = newCondition;
+			NotifyConditionChanged(self);
 		}
 
 		public void DisablePlug(Actor self, string type)
@@ -111,23 +107,14 @@ namespace OpenRA.Mods.Common.Traits
 
 			active = null;
 			condition = null;
-			foreach (var consumer in Consumers)
-				consumer.ConditionsChanged(self, conditionManager);
+			NotifyConditionChanged(self);
 		}
 
-		bool IConditionVariable.AsBool() { return active != null; }
-		int IConditionVariable.AsInt() { return active != null ? 1 : 0; }
-		IConditionContext IConditionVariable.AsContext() { return this; }
-		void INotifyingConditionVariable.Add(Actor self, IConditionConsumer consumer)
+		public override bool AsBool() { return condition != null; }
+		public override int AsInt() { return condition != null ? 1 : 0; }
+		public override ICondition Get(string name)
 		{
-			Consumers.Add(consumer);
-			if (condition != null)
-				consumer.ConditionsChanged(self, conditionManager);
-		}
-
-		IConditionVariable IConditionContext.Get(string name)
-		{
-			return condition == name ? BoolConditionVariable.True : BoolConditionVariable.False;
+			return condition == name ? BoolCondition.True : BoolCondition.False;
 		}
 	}
 
