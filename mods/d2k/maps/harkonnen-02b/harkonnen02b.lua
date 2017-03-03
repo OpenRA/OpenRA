@@ -1,5 +1,5 @@
 
-AtreidesBase = { AConyard, APower1, APower2, ABarracks, AOutpost }
+AtreidesBase = { AConyard, APower1, APower2, ABarracks, ALightFactory }
 
 AtreidesReinforcements = { }
 AtreidesReinforcements["easy"] =
