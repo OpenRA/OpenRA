@@ -182,6 +182,13 @@ Container@LOBBY_PLAYER_BIN:
 							Width: 165
 							Height: 25
 							Text: Name
+						Button@PROMOTE:
+							X: 125
+							Y: 2
+							Width: 25
+							Height: 23
+							Text: P
+							Font: Bold
 						Button@KICK:
 							X: 155
 							Y: 2
@@ -338,6 +345,13 @@ Container@LOBBY_PLAYER_BIN:
 							X: 20
 							Y: 0-1
 							Text: Name
+						Button@PROMOTE:
+							X: 125
+							Y: 2
+							Width: 25
+							Height: 23
+							Text: P
+							Font: Bold
 						Button@KICK:
 							X: 155
 							Y: 2

@@ -330,6 +330,20 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				slot.IsVisible = () => false;
 		}
 
+		public static void SetupPromoteWidget(Widget parent, Session.Slot s, Session.Client c, OrderManager orderManager, Widget lobby)
+		{
+			try
+			{
+				var button = parent.Get<ButtonWidget>("PROMOTE");
+				button.IsVisible = () => Game.IsAdmin && !Game.IsHost && c.Index != orderManager.LocalClient.Index;
+				button.OnClick = () => { orderManager.IssueOrder(Order.Command("promote {0}".F(c.Index))); };
+			}
+			catch (InvalidOperationException)
+			{
+				Log.Write("debug", "PROMOTE button widget not found.");
+			}
+		}
+
 		public static void SetupKickWidget(Widget parent, Session.Slot s, Session.Client c, OrderManager orderManager, Widget lobby, Action before, Action after)
 		{
 			var button = parent.Get<ButtonWidget>("KICK");

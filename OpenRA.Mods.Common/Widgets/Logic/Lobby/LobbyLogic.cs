@@ -719,6 +719,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 					LobbyUtils.SetupClientWidget(template, client, orderManager, client.Bot == null);
 					LobbyUtils.SetupNameWidget(template, slot, client);
+					LobbyUtils.SetupPromoteWidget(template, slot, client, orderManager, lobby);
 					LobbyUtils.SetupKickWidget(template, slot, client, orderManager, lobby,
 						() => panel = PanelType.Kick, () => panel = PanelType.Players);
 					LobbyUtils.SetupColorWidget(template, slot, client);
@@ -766,6 +767,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						template = nonEditableSpectatorTemplate.Clone();
 
 					LobbyUtils.SetupNameWidget(template, null, client);
+					LobbyUtils.SetupPromoteWidget(template, null, client, orderManager, lobby);
 					LobbyUtils.SetupKickWidget(template, null, client, orderManager, lobby,
 						() => panel = PanelType.Kick, () => panel = PanelType.Players);
 
