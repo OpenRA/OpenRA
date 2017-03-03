@@ -223,13 +223,27 @@ namespace OpenRA
 			om = JoinServer(IPAddress.Loopback.ToString(), CreateLocalServer(mapUID), "");
 		}
 
-		public static bool IsHost
+		public static bool IsAdmin
 		{
 			get
 			{
 				var id = OrderManager.Connection.LocalClientId;
 				var client = OrderManager.LobbyInfo.ClientWithIndex(id);
 				return client != null && client.IsAdmin;
+			}
+		}
+
+		public static bool IsHost
+		{
+			get
+			{
+				// todo: implement better detection to determine if we are hosting or connected to dedicated server
+				if (server == null)
+				{
+					return false;
+				}
+
+				return server.State != Server.ServerState.ShuttingDown;
 			}
 		}
 
