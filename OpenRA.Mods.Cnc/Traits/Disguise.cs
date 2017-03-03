@@ -20,19 +20,19 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Cnc.Traits
 {
-	[Desc("Overrides the default ToolTip when this actor is disguised (aids in deceiving enemy players).")]
-	class DisguiseToolTipInfo : TooltipInfo, Requires<DisguiseInfo>
+	[Desc("Overrides the default Tooltip when this actor is disguised (aids in deceiving enemy players).")]
+	class DisguiseTooltipInfo : TooltipInfo, Requires<DisguiseInfo>
 	{
-		public override object Create(ActorInitializer init) { return new DisguiseToolTip(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new DisguiseTooltip(init.Self, this); }
 	}
 
-	class DisguiseToolTip : ITooltip
+	class DisguiseTooltip : ITooltip
 	{
 		readonly Actor self;
 		readonly Disguise disguise;
 		TooltipInfo info;
 
-		public DisguiseToolTip(Actor self, TooltipInfo info)
+		public DisguiseTooltip(Actor self, TooltipInfo info)
 		{
 			this.self = self;
 			this.info = info;

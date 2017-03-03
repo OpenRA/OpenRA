@@ -55,7 +55,7 @@ CHAMSPY:
 	Inherits: ^Soldier
 	Valued:
 		Cost: 700
-	DisguiseToolTip:
+	DisguiseTooltip:
 		Name: Chameleon Spy
 	Voiced:
 		VoiceSet: Spy

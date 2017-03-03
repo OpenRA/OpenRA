@@ -228,7 +228,7 @@ SPY:
 	Valued:
 		Cost: 500
 	-Tooltip:
-	DisguiseToolTip:
+	DisguiseTooltip:
 		Name: Spy
 		GenericName: Soldier
 	-Guard:
@@ -278,7 +278,7 @@ SPY.England:
 		Cost: 250
 	GivesExperience:
 		Experience: 500
-	DisguiseToolTip:
+	DisguiseTooltip:
 		Name: British Spy
 	RenderSprites:
 		Image: spy

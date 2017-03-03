@@ -76,5 +76,5 @@ FLARE:
 		ShowOwnerRow: false
 
 SPY:
-	DisguiseToolTip:
+	DisguiseTooltip:
 		ShowOwnerRow: false

@@ -568,6 +568,11 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				// Renamed DisguiseToolTip to DisguiseTooltip in Disguise.
+				if (engineVersion < 20170303)
+					if (node.Key.StartsWith("DisguiseToolTip", StringComparison.Ordinal))
+						RenameNodeKey(node, "DisguiseTooltip");
+
 				UpgradeActorRules(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 
