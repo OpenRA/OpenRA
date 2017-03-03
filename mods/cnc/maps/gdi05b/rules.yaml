@@ -115,6 +115,18 @@ MSAM:
 	Buildable:
 		Prerequisites: ~disabled
 
+ARTY:
+	Buildable:
+		Prerequisites: ~disabled
+
+MLRS:
+	Buildable:
+		Prerequisites: ~disabled
+
+STNK:
+	Buildable:
+		Prerequisites: ~disabled
+
 MCV:
 	Buildable:
 		Prerequisites: ~disabled
