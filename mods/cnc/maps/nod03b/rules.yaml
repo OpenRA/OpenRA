@@ -57,6 +57,10 @@ GTWR:
 	Buildable:
 		Prerequisites: ~disabled
 
+SBAG:
+	Buildable:
+		Prerequisites: ~disabled
+
 BRIK:
 	Buildable:
 		Prerequisites: ~disabled

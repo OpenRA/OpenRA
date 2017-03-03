@@ -11,6 +11,10 @@ World:
 		LossVideo: gameover.vqa
 
 SBAG:
+	Buildable:
+		Prerequisites: ~disabled
+
+SBAG:
 	-Crushable:
 
 WEAP:
@@ -37,7 +41,15 @@ GUN:
 	Buildable:
 		Prerequisites: ~disabled
 
+GTWR:
+	Buildable:
+		Prerequisites: ~disabled
+
 ATWR:
+	Buildable:
+		Prerequisites: ~disabled
+
+BRIK:
 	Buildable:
 		Prerequisites: ~disabled
 
