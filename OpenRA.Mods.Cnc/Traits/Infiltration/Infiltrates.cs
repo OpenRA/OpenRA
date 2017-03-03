@@ -21,7 +21,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Cnc.Traits
 {
-	class InfiltratesInfo : ITraitInfo
+	public class InfiltratesInfo : ConditionalTraitInfo
 	{
 		public readonly HashSet<string> Types = new HashSet<string>();
 
@@ -40,21 +40,23 @@ namespace OpenRA.Mods.Cnc.Traits
 		[Desc("Experience to grant to the infiltrating player.")]
 		public readonly int PlayerExperience = 0;
 
-		public object Create(ActorInitializer init) { return new Infiltrates(this); }
+		public override object Create(ActorInitializer init) { return new Infiltrates(this); }
 	}
 
-	class Infiltrates : IIssueOrder, IResolveOrder, IOrderVoice
+	public class Infiltrates : ConditionalTrait<InfiltratesInfo>, IIssueOrder, IResolveOrder, IOrderVoice
 	{
-		readonly InfiltratesInfo info;
-
 		public Infiltrates(InfiltratesInfo info)
-		{
-			this.info = info;
-		}
+			: base(info) { }
 
 		public IEnumerable<IOrderTargeter> Orders
 		{
-			get { yield return new InfiltrationOrderTargeter(info); }
+			get
+			{
+				if (IsTraitDisabled)
+					yield break;
+
+				yield return new InfiltrationOrderTargeter(Info);
+			}
 		}
 
 		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
@@ -70,6 +72,9 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		bool IsValidOrder(Actor self, Order order)
 		{
+			if (IsTraitDisabled)
+				return false;
+
 			// Not targeting an actor
 			if (order.ExtraData == 0 && order.TargetActor == null)
 				return false;
@@ -92,30 +97,30 @@ namespace OpenRA.Mods.Cnc.Traits
 			else
 				targetTypes = order.TargetActor.GetEnabledTargetTypes();
 
-			return info.Types.Overlaps(targetTypes);
+			return Info.Types.Overlaps(targetTypes);
 		}
 
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
 			return order.OrderString == "Infiltrate" && IsValidOrder(self, order)
-				? info.Voice : null;
+				? Info.Voice : null;
 		}
 
 		public void ResolveOrder(Actor self, Order order)
 		{
-			if (order.OrderString != "Infiltrate" || !IsValidOrder(self, order))
+			if (order.OrderString != "Infiltrate" || !IsValidOrder(self, order) || IsTraitDisabled)
 				return;
 
 			var target = self.ResolveFrozenActorOrder(order, Color.Red);
 			if (target.Type != TargetType.Actor
-				|| !info.Types.Overlaps(target.Actor.GetAllTargetTypes()))
+				|| !Info.Types.Overlaps(target.Actor.GetAllTargetTypes()))
 				return;
 
 			if (!order.Queued)
 				self.CancelActivity();
 
 			self.SetTargetLine(target, Color.Red);
-			self.QueueActivity(new Infiltrate(self, target.Actor, info.EnterBehaviour, info.ValidStances, info.Notification, info.PlayerExperience));
+			self.QueueActivity(new Infiltrate(self, target.Actor, this));
 		}
 	}
 
