@@ -526,6 +526,10 @@ outpost:
 	WithIdleOverlay@DISH:
 		Sequence: idle-dish
 		PauseOnLowPower: true
+		RequiresCondition: !severe-damaged
+	GrantConditionOnDamageState@STOPDISH:
+		Condition: severe-damaged
+		ValidDamageState: Medium, Heavy, Critical
 	Power:
 		Amount: -125
 	ProvidesPrerequisite@buildingname:
