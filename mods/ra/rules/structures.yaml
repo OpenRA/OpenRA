@@ -615,6 +615,7 @@ HBOX:
 		Value: 600
 	Health:
 		HP: 450
+		DamageStateCondition: damage
 	Armor:
 		Type: Heavy
 	RevealsShroud:
@@ -627,9 +628,9 @@ HBOX:
 		CloakDelay: 60
 		IsPlayerPalette: true
 		RequiresCondition: !cloak-force-disabled
-	GrantConditionOnDamageState@UNCLOAK:
+	GrantCondition@UNCLOAK:
+		RequiresCondition: damage.isCritical
 		Condition: cloak-force-disabled
-		ValidDamageStates: Critical
 	Turreted:
 		TurnSpeed: 255
 	-QuantizeFacingsFromSequence:

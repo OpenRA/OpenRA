@@ -12,6 +12,7 @@ SS:
 		Name: Submarine
 	Health:
 		HP: 250
+		DamageStateCondition: damage
 	Armor:
 		Type: Light
 	Mobile:
@@ -37,9 +38,9 @@ SS:
 		CloakedCondition: underwater
 		Palette: submerged
 		RequiresCondition: !cloak-force-disabled
-	GrantConditionOnDamageState@UNCLOAK:
+	GrantCondition@UNCLOAK:
+		RequiresCondition: damage.isCritical
 		Condition: cloak-force-disabled
-		ValidDamageStates: Critical
 	Armament:
 		Weapon: TorpTube
 		LocalOffset: 0,-171,0, 0,171,0
@@ -73,6 +74,7 @@ MSUB:
 		Name: Missile Submarine
 	Health:
 		HP: 400
+		DamageStateCondition: damage
 	Armor:
 		Type: Light
 	Mobile:
@@ -98,9 +100,9 @@ MSUB:
 		CloakedCondition: underwater
 		Palette: submerged
 		RequiresCondition: !cloak-force-disabled
-	GrantConditionOnDamageState@UNCLOAK:
+	GrantCondition@UNCLOAK:
+		RequiresCondition: damage.isCritical
 		Condition: cloak-force-disabled
-		ValidDamageStates: Critical
 	Armament@PRIMARY:
 		Weapon: SubMissile
 		LocalOffset: 0,-171,0, 0,171,0

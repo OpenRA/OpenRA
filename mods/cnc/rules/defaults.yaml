@@ -120,6 +120,8 @@
 		ZOffset: 256
 
 ^AcceptsCloakCrate:
+	Health:
+		DamageStateCondition: damage
 	Cloak:
 		InitialDelay: 15
 		CloakDelay: 90
@@ -128,9 +130,9 @@
 		RequiresCondition: cloak-crate-collected && !cloak-force-disabled
 	ExternalCondition@CLOAK:
 		Condition: cloak-crate-collected
-	GrantConditionOnDamageState@UNCLOAK:
+	GrantCondition@UNCLOAK:
+		RequiresCondition: damage.isCritical
 		Condition: cloak-force-disabled
-		ValidDamageStates: Critical
 
 ^Vehicle:
 	Inherits@1: ^ExistsInWorld

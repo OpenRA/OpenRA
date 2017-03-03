@@ -747,6 +747,7 @@ STNK:
 		Name: Phase Transport
 	Health:
 		HP: 300
+		DamageStateCondition: damage
 	Armor:
 		Type: Light
 	Mobile:
@@ -780,9 +781,9 @@ STNK:
 		UncloakSound: appear1.aud
 		IsPlayerPalette: true
 		RequiresCondition: !cloak-force-disabled
-	GrantConditionOnDamageState@UNCLOAK:
+	GrantCondition@UNCLOAK:
+		RequiresCondition: damage.isCritical
 		Condition: cloak-force-disabled
-		ValidDamageStates: Critical
 	DetectCloaked:
 		Range: 7c0
 	-MustBeDestroyed:

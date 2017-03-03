@@ -44,6 +44,25 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			}
 		}
 
+		static string DamageStateToCondition(string state)
+		{
+			switch (state.ToLowerInvariant())
+			{
+				case "undamaged":	return "damage.noDdamaged";
+				case "light":	return "damage.isLight";
+				case "medium":	return "damage.isMedium";
+				case "heavy":	return "damage.isHeavy";
+				case "critical":	return "damage.isCritical";
+				case "dead":	return "damage.isDead";
+				default:	return "(<unknown-damage-state>)";
+			}
+		}
+
+		static string DamageStatesToCondition(string states)
+		{
+			return states.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(DamageStateToCondition).JoinWith(" || ");
+		}
+
 		internal static void UpgradeActorRules(ModData modData, int engineVersion, ref List<MiniYamlNode> nodes, MiniYamlNode parent, int depth)
 		{
 			var addNodes = new List<MiniYamlNode>();
@@ -318,8 +337,14 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 					if (node.Key.StartsWith("UpgradeOnDamageState", StringComparison.Ordinal))
 					{
-						RenameNodeKey(node, "GrantConditionOnDamageState");
+						RenameNodeKey(node, "GrantConditionWithSound");
 						ConvertUpgradesToCondition(parent, node, "Upgrades", "Condition");
+						var validDamageStates = node.Value.Nodes.FirstOrDefault(n => n.Key == "ValidDamageStates");
+						if (validDamageStates != null)
+						{
+							validDamageStates.Key = "RequiresCondition";
+							validDamageStates.Value.Value = DamageStatesToCondition(validDamageStates.Value.Value);
+						}
 					}
 
 					if (node.Key.StartsWith("UpgradeOnMovement", StringComparison.Ordinal))

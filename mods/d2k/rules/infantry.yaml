@@ -134,6 +134,7 @@ fremen:
 		Cost: 200	## actually 0, but spawns from support power at Palace
 	Health:
 		HP: 700
+		DamageStateCondition: damage
 	RevealsShroud:
 		Range: 4c768
 	AutoTarget:
@@ -155,9 +156,9 @@ fremen:
 		UncloakSound: STEALTH2.WAV
 		IsPlayerPalette: true
 		RequiresCondition: !cloak-force-disabled
-	GrantConditionOnDamageState@UNCLOAK:
+	GrantCondition@UNCLOAK:
+		RequiresCondition: damage.isCritical
 		Condition: cloak-force-disabled
-		ValidDamageStates: Critical
 	-MustBeDestroyed:
 	Voiced:
 		VoiceSet: FremenVoice
@@ -238,6 +239,7 @@ saboteur:
 		Name: Saboteur
 	Health:
 		HP: 400
+		DamageStateCondition: damage
 	Mobile:
 		Speed: 43
 	Demolition:
@@ -254,9 +256,9 @@ saboteur:
 		UncloakOn: Attack, Unload, Infiltrate, Demolish, Move, Damage
 		IsPlayerPalette: true
 		RequiresCondition: !cloak-force-disabled
-	GrantConditionOnDamageState@UNCLOAK:
+	GrantCondition@UNCLOAK:
+		RequiresCondition: damage.isCritical
 		Condition: cloak-force-disabled
-		ValidDamageStates: Critical
 	Voiced:
 		VoiceSet: SaboteurVoice
 
@@ -269,5 +271,7 @@ nsfremen:
 		Description: Elite infantry unit armed with assault rifles and rockets\n  Strong vs Infantry, Vehicles\n  Weak vs Artillery
 	RenderSprites:
 		Image: fremen
+	Health:
+		-DamageStateCondition:
 	-Cloak:
-	-GrantConditionOnDamageState@UNCLOAK:
+	-GrantCondition@UNCLOAK:

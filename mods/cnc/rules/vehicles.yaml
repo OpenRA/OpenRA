@@ -538,6 +538,7 @@ STNK:
 		Crushes: crate, infantry
 	Health:
 		HP: 150
+		DamageStateCondition: damage
 	Armor:
 		Type: Light
 	RevealsShroud:
@@ -548,9 +549,9 @@ STNK:
 		CloakSound: trans1.aud
 		UncloakSound: trans1.aud
 		RequiresCondition: !cloak-force-disabled
-	GrantConditionOnDamageState@UNCLOAK:
+	GrantCondition@UNCLOAK:
+		RequiresCondition: damage.isCritical
 		Condition: cloak-force-disabled
-		ValidDamageStates: Critical
 	Armament:
 		Weapon: 227mm.stnk
 		LocalOffset: 213,43,128, 213,-43,128

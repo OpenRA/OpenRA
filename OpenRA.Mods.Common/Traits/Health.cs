@@ -9,8 +9,11 @@
  */
 #endregion
 
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Mods.Common.HitShapes;
+using OpenRA.Support;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -21,6 +24,14 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int HP = 0;
 		[Desc("Trigger interfaces such as AnnounceOnKill?")]
 		public readonly bool NotifyAppliedDamage = true;
+
+		[ProvidedConditionReference]
+		[Desc("Name of condition for checking health.")]
+		public readonly string HealthCondition = null;
+
+		[ProvidedConditionReference]
+		[Desc("Name of condition for checking damage state.")]
+		public readonly string DamageStateCondition = null;
 
 		[FieldLoader.LoadUsing("LoadShape")]
 		public readonly IHitShape Shape;
@@ -55,7 +66,123 @@ namespace OpenRA.Mods.Common.Traits
 		public virtual object Create(ActorInitializer init) { return new Health(init, this); }
 	}
 
-	public class Health : IHealth, ISync, ITick
+	class HealthCondition : NotifyingCondition
+	{
+		NumberCondition hpVariable;
+		NumberCondition maxHpVariable;
+
+		public int Value { get { return hpVariable.Value; } }
+
+		public void Set(Actor self, int hp)
+		{
+				if (hpVariable.Value == hp)
+					return;
+				hpVariable.Value = hp;
+				NotifyConditionChanged(self);
+		}
+
+		public HealthCondition(int hp, int max)
+		{
+			hpVariable = new NumberCondition(hp);
+			maxHpVariable = new NumberCondition(max);
+		}
+
+		public override bool AsBool() { return hpVariable.Value > 0; }
+		public override int AsInt() { return hpVariable.Value; }
+		public override ICondition Get(string name)
+		{
+			switch (name)
+			{
+				case "current":	return hpVariable;
+				case "max":	return maxHpVariable;
+				case "isDead":
+					return hpVariable.Value <= 0 ? BoolCondition.True : BoolCondition.False;
+				case "alive":
+					return hpVariable.Value > 0  ? BoolCondition.False : BoolCondition.True;
+				default:	return EmptyCondition.Instance;
+			}
+		}
+	}
+
+	class DamageStateCondition : NotifyingCondition
+	{
+		static NumberCondition undamaged = new NumberCondition((int)DamageState.Undamaged);
+		static NumberCondition light = new NumberCondition((int)DamageState.Light);
+		static NumberCondition medium = new NumberCondition((int)DamageState.Medium);
+		static NumberCondition heavy = new NumberCondition((int)DamageState.Heavy);
+		static NumberCondition critical = new NumberCondition((int)DamageState.Critical);
+		static NumberCondition dead = new NumberCondition((int)DamageState.Dead);
+		DamageState state;
+
+		public DamageState Value { get { return state; } }
+
+		public DamageStateCondition(int hp, int max)
+		{
+			state = CalculateState(hp, max);
+		}
+
+		public void Set(Actor self, int hp, int max)
+		{
+			var current = CalculateState(hp, max);
+			if (state == current)
+				return;
+
+			state = current;
+			NotifyConditionChanged(self);
+		}
+
+		static DamageState CalculateState(int hp, int max)
+		{
+			if (hp <= 0)
+				return DamageState.Dead;
+
+			if (hp < max * 0.25f)
+				return DamageState.Critical;
+
+			if (hp < max * 0.5f)
+				return DamageState.Heavy;
+
+			if (hp < max * 0.75f)
+				return DamageState.Medium;
+
+			if (hp == max)
+				return DamageState.Undamaged;
+
+			return DamageState.Light;
+		}
+
+		public override bool AsBool() { return state != DamageState.Undamaged; }
+		public override int AsInt() { return (int)state; }
+		public override ICondition Get(string name)
+		{
+			switch (name)
+			{
+				case "noDamage":
+					return state == DamageState.Undamaged ? BoolCondition.True : BoolCondition.False;
+				case "isLight":
+					return state == DamageState.Light ? BoolCondition.True : BoolCondition.False;
+				case "isMedium":
+					return state == DamageState.Medium ? BoolCondition.True : BoolCondition.False;
+				case "isHeavy":
+					return state == DamageState.Heavy ? BoolCondition.True : BoolCondition.False;
+				case "isCritical":
+					return state == DamageState.Critical ? BoolCondition.True : BoolCondition.False;
+				case "isDead":
+					return state == DamageState.Dead ? BoolCondition.True : BoolCondition.False;
+				case "alive":
+					return state == DamageState.Dead ? BoolCondition.False : BoolCondition.True;
+				case "undamaged":	return undamaged;
+				case "light":	return light;
+				case "medium":	return medium;
+				case "heavy":	return heavy;
+				case "critical":	return critical;
+				case "dead":	return dead;
+				default:	return EmptyCondition.Instance;
+			}
+		}
+	}
+
+	public class Health : IHealth, ISync, ITick, INotifyingConditionProvider
 	{
 		public readonly HealthInfo Info;
 
@@ -69,36 +196,30 @@ namespace OpenRA.Mods.Common.Traits
 			MaxHP = info.HP > 0 ? info.HP : 1;
 
 			hp = init.Contains<HealthInit>() ? init.Get<HealthInit, int>() * MaxHP / 100 : MaxHP;
+			hpCondition = new HealthCondition(hp, MaxHP);
+			damageCondition = new DamageStateCondition(hp, MaxHP);
 
 			DisplayHP = hp;
 		}
 
 		public int HP { get { return hp; } }
 		public int MaxHP { get; private set; }
+		HealthCondition hpCondition;
+		DamageStateCondition damageCondition;
 
 		public bool IsDead { get { return hp <= 0; } }
 		public bool RemoveOnDeath = true;
 
-		public DamageState DamageState
+		public DamageState DamageState { get { return damageCondition.Value; } }
+
+		IEnumerable<KeyValuePair<string, INotifyingCondition>> INotifyingConditionProvider.Provided
 		{
 			get
 			{
-				if (hp <= 0)
-					return DamageState.Dead;
-
-				if (hp < MaxHP * 0.25f)
-					return DamageState.Critical;
-
-				if (hp < MaxHP * 0.5f)
-					return DamageState.Heavy;
-
-				if (hp < MaxHP * 0.75f)
-					return DamageState.Medium;
-
-				if (hp == MaxHP)
-					return DamageState.Undamaged;
-
-				return DamageState.Light;
+				if (!string.IsNullOrEmpty(Info.HealthCondition))
+					yield return new KeyValuePair<string, INotifyingCondition>(Info.HealthCondition, hpCondition);
+				if (!string.IsNullOrEmpty(Info.DamageStateCondition))
+					yield return new KeyValuePair<string, INotifyingCondition>(Info.DamageStateCondition, damageCondition);
 			}
 		}
 
@@ -108,6 +229,8 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			hp = MaxHP;
+			hpCondition.Set(self, hp);
+			damageCondition.Set(self, hp, MaxHP);
 
 			var ai = new AttackInfo
 			{
@@ -149,6 +272,8 @@ namespace OpenRA.Mods.Common.Traits
 			}
 
 			hp = (hp - damage.Value).Clamp(0, MaxHP);
+			hpCondition.Set(self, hp);
+			damageCondition.Set(self, hp, MaxHP);
 
 			var ai = new AttackInfo
 			{

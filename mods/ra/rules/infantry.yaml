@@ -486,6 +486,7 @@ HIJACKER:
 		Name: Hijacker
 	Health:
 		HP: 50
+		DamageStateCondition: damage
 	RevealsShroud:
 		Range: 5c0
 	Passenger:
@@ -509,9 +510,9 @@ HIJACKER:
 		CloakTypes: Cloak, Hijacker
 		IsPlayerPalette: true
 		RequiresCondition: !cloak-force-disabled
-	GrantConditionOnDamageState@UNCLOAK:
+	GrantCondition@UNCLOAK:
+		RequiresCondition: damage.isCritical
 		Condition: cloak-force-disabled
-		ValidDamageStates: Critical
 	Mobile:
 		Speed: 85
 
@@ -570,6 +571,7 @@ SNIPER:
 		Description: Elite sniper infantry unit.\nCan detect cloaked units.\n  Strong vs Infantry\n  Weak vs Vehicles, Aircraft
 	Health:
 		HP: 80
+		DamageStateCondition: damage
 	Passenger:
 		PipType: Red
 	RevealsShroud:
@@ -594,9 +596,9 @@ SNIPER:
 		UncloakOn: Attack, Unload, Infiltrate, Demolish, Move
 		IsPlayerPalette: true
 		RequiresCondition: !cloak-force-disabled
-	GrantConditionOnDamageState@UNCLOAK:
+	GrantCondition@UNCLOAK:
+		RequiresCondition: damage.isCritical
 		Condition: cloak-force-disabled
-		ValidDamageStates: Critical
 	DetectCloaked:
 		CloakTypes: Cloak, Hijacker
 		Range: 6c0
