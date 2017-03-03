@@ -64,7 +64,6 @@ namespace OpenRA.Mods.Common.Traits
 	INotifyAttack, ITick, IVisibilityModifier, IRadarColorModifier, INotifyCreated, INotifyHarvesterAction
 	{
 		[Sync] int remainingTime;
-		[Sync] bool damageDisabled;
 		bool isDocking;
 		ConditionManager conditionManager;
 
@@ -102,8 +101,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyDamage.Damaged(Actor self, AttackInfo e)
 		{
-			damageDisabled = e.DamageState >= DamageState.Critical;
-			if (damageDisabled || Info.UncloakOn.HasFlag(UncloakType.Damage))
+			if (Info.UncloakOn.HasFlag(UncloakType.Damage))
 				Uncloak();
 		}
 
@@ -128,7 +126,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			if (!IsTraitDisabled)
 			{
-				if (remainingTime > 0 && !damageDisabled && !isDocking)
+				if (remainingTime > 0 && !isDocking)
 					remainingTime--;
 
 				if (self.IsDisabled())

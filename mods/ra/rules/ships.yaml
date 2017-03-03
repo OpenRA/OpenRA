@@ -36,6 +36,10 @@ SS:
 		UncloakSound: subshow1.aud
 		CloakedCondition: underwater
 		Palette: submerged
+		RequiresCondition: !cloak-force-disabled
+	GrantConditionOnDamageState@UNCLOAK:
+		Condition: cloak-force-disabled
+		ValidDamageStates: Critical
 	Armament:
 		Weapon: TorpTube
 		LocalOffset: 0,-171,0, 0,171,0
@@ -93,6 +97,10 @@ MSUB:
 		UncloakSound: subshow1.aud
 		CloakedCondition: underwater
 		Palette: submerged
+		RequiresCondition: !cloak-force-disabled
+	GrantConditionOnDamageState@UNCLOAK:
+		Condition: cloak-force-disabled
+		ValidDamageStates: Critical
 	Armament@PRIMARY:
 		Weapon: SubMissile
 		LocalOffset: 0,-171,0, 0,171,0
