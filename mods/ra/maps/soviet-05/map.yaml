@@ -219,7 +219,7 @@ Actors:
 		Location: 69,49
 		Owner: Greece
 		Facing: 32
-	Radar: dome.ignore
+	Radar: dome
 		Location: 70,45
 		Owner: Greece
 	Actor57: fact

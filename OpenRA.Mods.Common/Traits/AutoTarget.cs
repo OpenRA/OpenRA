@@ -259,12 +259,19 @@ namespace OpenRA.Mods.Common.Traits
 	}
 
 	[Desc("Will not get automatically targeted by enemy (like walls)")]
-	class AutoTargetIgnoreInfo : TraitInfo<AutoTargetIgnore> { }
-	class AutoTargetIgnore : IPreventsAutoTarget
+	class AutoTargetIgnoreInfo : ConditionalTraitInfo
 	{
+		public override object Create(ActorInitializer init) { return new AutoTargetIgnore(this); }
+	}
+
+	class AutoTargetIgnore : ConditionalTrait<AutoTargetIgnoreInfo>, IPreventsAutoTarget
+	{
+		public AutoTargetIgnore(AutoTargetIgnoreInfo info)
+			: base(info) { }
+
 		public bool PreventsAutoTarget(Actor self, Actor attacker)
 		{
-			return true;
+			return !IsTraitDisabled;
 		}
 	}
 

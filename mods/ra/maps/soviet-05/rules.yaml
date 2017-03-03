@@ -82,13 +82,11 @@ APC:
 	Buildable:
 		Prerequisites: ~disabled
 
-DOME.IGNORE:
-	Inherits: DOME
-	RenderSprites:
-		Image: DOME
+DOME:
+	ExternalCondition@lua:
+		Condition: captured
 	AutoTargetIgnore:
-	Buildable:
-		Prerequisites: ~disabled
+		RequiresCondition: !captured
 
 powerproxy.paratroopers:
 	ParatroopersPower:
