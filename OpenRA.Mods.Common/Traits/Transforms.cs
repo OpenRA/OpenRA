@@ -138,6 +138,12 @@ namespace OpenRA.Mods.Common.Traits
 					Faction = faction
 				};
 
+				// Try and stop the actor from doing anything between the sanity checks above
+				// and the actual transform, which we're about to queue.
+				// TODO: The proper way to do this is to write all the transform code as a nested activity.
+				if (self.CurrentActivity.NextInQueue != null)
+					self.CurrentActivity.NextInQueue.Cancel(self);
+
 				var makeAnimation = self.TraitOrDefault<WithMakeAnimation>();
 				if (makeAnimation != null)
 					makeAnimation.Reverse(self, transform);
