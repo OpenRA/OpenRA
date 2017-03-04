@@ -16,6 +16,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using OpenRA.Graphics;
+using OpenRA.Primitives;
 
 namespace OpenRA
 {
@@ -35,7 +36,7 @@ namespace OpenRA
 
 	public class ExternalMods : IReadOnlyDictionary<string, ExternalMod>
 	{
-		readonly Dictionary<string, ExternalMod> mods;
+		readonly Dictionary<string, ExternalMod> mods = new Dictionary<string, ExternalMod>();
 		readonly SheetBuilder sheetBuilder;
 		readonly string launchPath;
 
@@ -47,31 +48,18 @@ namespace OpenRA
 
 			this.launchPath = launchPath;
 			sheetBuilder = new SheetBuilder(SheetType.BGRA, 256);
-			mods = LoadMods();
-		}
 
-		Dictionary<string, ExternalMod> LoadMods()
-		{
-			var ret = new Dictionary<string, ExternalMod>();
+			// Load registered mods
 			var supportPath = Platform.ResolvePath(Path.Combine("^", "ModMetadata"));
 			if (!Directory.Exists(supportPath))
-				return ret;
+				return;
 
 			foreach (var path in Directory.GetFiles(supportPath, "*.yaml"))
 			{
 				try
 				{
 					var yaml = MiniYaml.FromStream(File.OpenRead(path), path).First().Value;
-					var mod = FieldLoader.Load<ExternalMod>(yaml);
-					var iconNode = yaml.Nodes.FirstOrDefault(n => n.Key == "Icon");
-					if (iconNode != null && !string.IsNullOrEmpty(iconNode.Value.Value))
-					{
-						using (var stream = new MemoryStream(Convert.FromBase64String(iconNode.Value.Value)))
-						using (var bitmap = new Bitmap(stream))
-							mod.Icon = sheetBuilder.Add(bitmap);
-					}
-
-					ret.Add(ExternalMod.MakeKey(mod), mod);
+					LoadMod(yaml);
 				}
 				catch (Exception e)
 				{
@@ -79,8 +67,20 @@ namespace OpenRA
 					Log.Write("debug", e.ToString());
 				}
 			}
+		}
 
-			return ret;
+		void LoadMod(MiniYaml yaml)
+		{
+			var mod = FieldLoader.Load<ExternalMod>(yaml);
+			var iconNode = yaml.Nodes.FirstOrDefault(n => n.Key == "Icon");
+			if (iconNode != null && !string.IsNullOrEmpty(iconNode.Value.Value))
+			{
+				using (var stream = new MemoryStream(Convert.FromBase64String(iconNode.Value.Value)))
+				using (var bitmap = new Bitmap(stream))
+					mod.Icon = sheetBuilder.Add(bitmap);
+			}
+
+			mods.Add(ExternalMod.MakeKey(mod), mod);
 		}
 
 		internal void Register(Manifest mod)
@@ -108,9 +108,20 @@ namespace OpenRA
 			};
 
 			var supportPath = Platform.ResolvePath(Path.Combine("^", "ModMetadata"));
-			Directory.CreateDirectory(supportPath);
 
-			File.WriteAllLines(Path.Combine(supportPath, key + ".yaml"), yaml.ToLines(false).ToArray());
+			try
+			{
+				// Make sure the mod is available for this session, even if saving it fails
+				LoadMod(yaml.First().Value);
+
+				Directory.CreateDirectory(supportPath);
+				File.WriteAllLines(Path.Combine(supportPath, key + ".yaml"), yaml.ToLines(false).ToArray());
+			}
+			catch (Exception e)
+			{
+				Log.Write("debug", "Failed to register currrent mod metadata");
+				Log.Write("debug", e.ToString());
+			}
 
 			// Clean up stale mod registrations:
 			//  - LaunchPath no longer exists (uninstalled)
