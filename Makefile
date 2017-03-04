@@ -364,8 +364,9 @@ install-core: default
 	@$(INSTALL_DIR) "$(DATA_INSTALL_DIR)/mods"
 	@$(CP_R) mods/common "$(DATA_INSTALL_DIR)/mods/"
 	@$(INSTALL_PROGRAM) $(mod_common_TARGET) "$(DATA_INSTALL_DIR)/mods/common"
+	@$(INSTALL_PROGRAM) $(mod_cnc_TARGET) "$(DATA_INSTALL_DIR)/mods/common"
 	@$(CP_R) mods/cnc "$(DATA_INSTALL_DIR)/mods/"
-	@$(INSTALL_PROGRAM) $(mod_cnc_TARGET) "$(DATA_INSTALL_DIR)/mods/cnc"
+	@$(CP_R) mods/ra "$(DATA_INSTALL_DIR)/mods/"
 	@$(CP_R) mods/d2k "$(DATA_INSTALL_DIR)/mods/"
 	@$(INSTALL_PROGRAM) $(mod_d2k_TARGET) "$(DATA_INSTALL_DIR)/mods/d2k"
 	@$(CP_R) mods/modchooser "$(DATA_INSTALL_DIR)/mods/"
@@ -427,9 +428,9 @@ install-linux-scripts:
 	@echo 'cd "$(gameinstalldir)"' >> openra
 # Note: this relies on the non-standard -f flag implemented by gnu readlink
 ifeq ($(DEBUG), $(filter $(DEBUG),false no n off 0))
-	@echo 'mono OpenRA.Game.exe Engine.LaunchPath="$(readlink -f $0)" "$$@"' >> openra
+	@echo 'mono OpenRA.Game.exe Engine.LaunchPath="$$(readlink -f $$0)" "$$@"' >> openra
 else
-	@echo 'mono --debug OpenRA.Game.exe Engine.LaunchPath="$(readlink -f $0)" "$$@"' >> openra
+	@echo 'mono --debug OpenRA.Game.exe Engine.LaunchPath="$$(readlink -f $$0)" "$$@"' >> openra
 endif
 	@echo 'if [ $$? != 0 -a $$? != 1 ]' >> openra
 	@echo 'then' >> openra
