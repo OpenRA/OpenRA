@@ -55,14 +55,11 @@ namespace OpenRA
 				Assembly assembly;
 				if (!ResolvedAssemblies.TryGetValue(hash, out assembly))
 				{
-					using (Stream stream = modFiles.Open(path))
-					{
-						if (stream.GetType() == typeof(FileStream))
-							assembly = Assembly.LoadFile(((FileStream)stream).Name);
-						else
-							assembly = Assembly.Load(data);
-					}
-
+					Stream debugStream = null;
+					if (modFiles.TryOpen(path + ".mdb", out debugStream))
+						assembly = Assembly.Load(data, debugStream.ReadAllBytes());
+					else
+						assembly = Assembly.Load(data);
 					ResolvedAssemblies.Add(hash, assembly);
 				}
 
