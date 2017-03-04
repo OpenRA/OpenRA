@@ -58,6 +58,8 @@ namespace OpenRA
 					Stream debugStream = null;
 					if (modFiles.TryOpen(path + ".mdb", out debugStream))
 						assembly = Assembly.Load(data, debugStream.ReadAllBytes());
+					else if (modFiles.TryOpen(path + ".pdb", out debugStream))
+						assembly = Assembly.Load(data, debugStream.ReadAllBytes());
 					else
 						assembly = Assembly.Load(data);
 					ResolvedAssemblies.Add(hash, assembly);
