@@ -270,3 +270,4 @@ nsfremen:
 	RenderSprites:
 		Image: fremen
 	-Cloak:
+	-GrantConditionOnDamageState@UNCLOAK:
