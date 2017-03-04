@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using OpenRA.Primitives;
@@ -54,7 +55,14 @@ namespace OpenRA
 				Assembly assembly;
 				if (!ResolvedAssemblies.TryGetValue(hash, out assembly))
 				{
-					assembly = Assembly.Load(data);
+					using (Stream stream = modFiles.Open(path))
+					{
+						if (stream.GetType() == typeof(FileStream))
+							assembly = Assembly.LoadFile(((FileStream)stream).Name);
+						else
+							assembly = Assembly.Load(data);
+					}
+
 					ResolvedAssemblies.Add(hash, assembly);
 				}
 
