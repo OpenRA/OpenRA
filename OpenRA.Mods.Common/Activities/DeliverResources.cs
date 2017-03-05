@@ -22,12 +22,16 @@ namespace OpenRA.Mods.Common.Activities
 
 		readonly IMove movement;
 		readonly Harvester harv;
+		readonly Actor self;
 
 		bool isDocking;
 		int chosenTicks;
 
+		bool bug_fix_sequence_once_ran = false;
+
 		public DeliverResources(Actor self)
 		{
+			this.self = self;
 			movement = self.Trait<IMove>();
 			harv = self.Trait<Harvester>();
 			IsInterruptible = false;
@@ -63,21 +67,44 @@ namespace OpenRA.Mods.Common.Activities
 			var iao = proc.Trait<IAcceptResources>();
 
 			self.SetTargetLine(Target.FromActor(proc), Color.Green, false);
-			if (self.Location != proc.Location + iao.DeliveryOffset)
+			var dest = proc.Location + iao.DeliveryOffset;
+			if (harv.Info.OreTeleporter)
 			{
 				var notify = self.TraitsImplementing<INotifyHarvesterAction>();
 				foreach (var n in notify)
-					n.MovingToRefinery(self, proc.Location + iao.DeliveryOffset, this);
+					n.MovingToRefinery(self, self.Location, this);
+				// Well, this is for carryals. Doesn't really matter to RA modding.
+				// Why would a chrono harvester notify any carryals?
+				// I'm putting the code here for it anyway, in case someone might come up with a fun idea.
 
-				return ActivityUtils.SequenceActivities(movement.MoveTo(proc.Location + iao.DeliveryOffset, 0), this);
+				// I'm not sure why, but for some reason, I need to queue return SequenceActivities once.
+				// Any action is fine so I'm sequencint wait activity.
+				if (!bug_fix_sequence_once_ran)
+				{
+					bug_fix_sequence_once_ran = true;
+					return ActivityUtils.SequenceActivities(new Wait(2), this);
+				}
+			}
+			else
+			{
+				if (self.Location != dest)
+				{
+					var notify = self.TraitsImplementing<INotifyHarvesterAction>();
+					foreach (var n in notify)
+						n.MovingToRefinery(self, dest, this);
+
+					// Move to the target proc then came back to this activity for re-eval, I think.
+					return ActivityUtils.SequenceActivities(movement.MoveTo(dest, 0), this);
+				}
 			}
 
 			if (!isDocking)
 			{
 				isDocking = true;
-				iao.OnDock(self, this);
+				iao.OnDock(self, this); // refinery.cs:OnDock()
 			}
 
+			// Re-eval after 10 ticks?
 			return ActivityUtils.SequenceActivities(new Wait(10), this);
 		}
 	}

@@ -182,6 +182,8 @@ namespace OpenRA.Mods.Common.AI
 		[FieldLoader.LoadUsing("LoadBuildingCategories", true)]
 		public readonly BuildingCategories BuildingCommonNames;
 
+		public readonly Dictionary<string, string> CoreDefinitions = null;
+
 		[Desc("What buildings should the AI have a maximum limit to build.")]
 		public readonly Dictionary<string, int> BuildingLimits = null;
 
@@ -325,6 +327,7 @@ namespace OpenRA.Mods.Common.AI
 		public static void BotDebug(string s, params object[] args)
 		{
 			if (Game.Settings.Debug.BotDebug)
+			// Just show me, for now. I see no UI for enabling bot debug.
 				Game.Debug(s, args);
 		}
 

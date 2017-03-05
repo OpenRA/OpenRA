@@ -23,7 +23,7 @@ namespace OpenRA.Mods.Common.Activities
 		readonly bool abortOnResupply;
 		Actor dest;
 
-		public HeliReturnToBase(Actor self, bool abortOnResupply, Actor dest = null, bool alwaysLand = true)
+		public HeliReturnToBase(Actor self, bool abortOnResupply, bool alwaysLand = true)
 		{
 			heli = self.Trait<Aircraft>();
 			this.alwaysLand = alwaysLand;

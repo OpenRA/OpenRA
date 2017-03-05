@@ -21,19 +21,19 @@ namespace OpenRA.Mods.Common.Activities
 	public abstract class Enter : Activity
 	{
 		public enum ReserveStatus { None, TooFar, Pending, Ready }
-		enum EnterState { ApproachingOrEntering, Inside, Exiting, Done }
+		protected enum State { ApproachingOrEntering, Inside, Exiting, Done }
 
-		readonly IMove move;
+		protected readonly IMove move;
 		readonly int maxTries = 0;
-		readonly EnterBehaviour enterBehaviour;
-		readonly bool targetCenter;
+		protected readonly EnterBehaviour enterBehaviour;
+		protected readonly bool targetCenter;
 
 		public Target Target { get { return target; } }
-		Target target;
-		EnterState nextState = EnterState.ApproachingOrEntering; // Hint/starting point for next state
-		bool isEnteringOrInside = false; // Used to know if exiting should be used
-		WPos savedPos; // Position just before entering
-		Activity inner;
+		protected Target target;
+		protected State nextState = State.ApproachingOrEntering; // Hint/starting point for next state
+		protected bool isEnteringOrInside = false; // Used to know if exiting should be used
+		protected WPos savedPos; // Position just before entering
+		protected Activity inner;
 		bool firstApproach = true;
 
 		protected Enter(Actor self, Actor target, EnterBehaviour enterBehaviour, int maxTries = 1, bool targetCenter = false)
@@ -123,7 +123,7 @@ namespace OpenRA.Mods.Common.Activities
 			return true;
 		}
 
-		ReserveStatus TryReserveElseTryAlternateReserve(Actor self)
+		protected ReserveStatus TryReserveElseTryAlternateReserve(Actor self)
 		{
 			for (var tries = 0;;)
 				switch (Reserve(self))
@@ -156,7 +156,7 @@ namespace OpenRA.Mods.Common.Activities
 				}
 		}
 
-		EnterState FindAndTransitionToNextState(Actor self)
+		protected virtual State FindAndTransitionToNextState(Actor self)
 		{
 			switch (nextState)
 			{

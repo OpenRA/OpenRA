@@ -293,7 +293,15 @@ namespace OpenRA.Mods.Common.AI
 
 				// Can we build this structure?
 				if (!buildableThings.Any(b => b.Name == name))
-					continue;
+				{
+					// Well, check one more time. Check if it is defined in the core and buildable.
+					if (!ai.Info.CoreDefinitions.ContainsKey(name))
+						// Not even indirectly buildable with a "core".
+						continue;
+					if (!buildableThings.Any(b => b.Name == ai.Info.CoreDefinitions[name]))
+						// Indirectly buildable, but that core is not currently buildable.
+						continue;
+				}
 
 				// Do we want to build this structure?
 				var count = playerBuildings.Count(a => a.Info.Name == name);
@@ -329,7 +337,12 @@ namespace OpenRA.Mods.Common.AI
 				// Lets build this
 				HackyAI.BotDebug("{0} decided to build {1}: Desired is {2} ({3} / {4}); current is {5} / {4}",
 					queue.Actor.Owner, name, frac.Value, frac.Value * playerBuildings.Length, playerBuildings.Length, count);
-				return actor;
+
+				// If a core actor, return the core instead.
+				if (ai.Info.CoreDefinitions.ContainsKey(name))
+					return world.Map.Rules.Actors[ai.Info.CoreDefinitions[name]];
+				else
+					return actor;
 			}
 
 			// Too spammy to keep enabled all the time, but very useful when debugging specific issues.

@@ -246,4 +246,7 @@ namespace OpenRA.Mods.Common.Traits
 		byte GetTerrainIndex(CPos cell);
 		WPos CenterOfCell(CPos cell);
 	}
+
+	[RequireExplicitImplementation]
+	public interface INotifyRearm { void Rearming(Actor host, Actor other); }
 }

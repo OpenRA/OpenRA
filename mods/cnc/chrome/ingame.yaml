@@ -53,6 +53,9 @@ Container@INGAME_ROOT:
 							Align: Center
 							Font: Bold
 							Contrast: true
+				WorldCommand:
+					Width: WINDOW_RIGHT
+					Height: WINDOW_BOTTOM
 				Container@PLAYER_ROOT:
 		Container@MENU_ROOT:
 		TooltipContainer@TOOLTIP_CONTAINER:
