@@ -19,14 +19,12 @@ namespace OpenRA.Mods.Common.Activities
 	{
 		readonly Target target;
 		readonly Aircraft plane;
-		readonly AircraftInfo planeInfo;
 		readonly WDist landHeight;
 
 		public Land(Actor self, Target t)
 		{
 			target = t;
 			plane = self.Trait<Aircraft>();
-			planeInfo = self.Info.TraitInfo<AircraftInfo>();
 
 			// Well, we could be landing into an airborne carrier!
 			var target_info = t.Actor.Info.TraitInfoOrDefault<AircraftInfo>();
