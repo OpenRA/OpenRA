@@ -23,7 +23,7 @@ namespace OpenRA.Mods.Common.Activities
 		readonly IMove movement;
 		readonly Harvester harv;
 
-		bool isDocking;
+		bool isDocking = false;
 		int chosenTicks;
 
 		public DeliverResources(Actor self)
@@ -33,6 +33,7 @@ namespace OpenRA.Mods.Common.Activities
 			IsInterruptible = false;
 		}
 
+		bool teleporter_bug_fix_ran_once = false;
 		public override Activity Tick(Actor self)
 		{
 			if (NextInQueue != null)
@@ -66,28 +67,22 @@ namespace OpenRA.Mods.Common.Activities
 			var dest = proc.Location + iao.DeliveryOffset;
 			if (harv.Info.OreTeleporter)
 			{
+				// do nothing and continue below.
+				// Force issue dock order.
+				if (!teleporter_bug_fix_ran_once)
+				{
+					teleporter_bug_fix_ran_once = true;
+					return ActivityUtils.SequenceActivities(new Wait(10), this);
+				}
+			}
+			else if (self.Location != dest)
+			{
 				var notify = self.TraitsImplementing<INotifyHarvesterAction>();
 				foreach (var n in notify)
-					n.MovingToRefinery(self, self.Location, this);
-				// Well, this is for carryals. Doesn't really matter to RA modding.
-				// Why would a chrono harvester notify any carryals?
-				// I'm putting the code here for it anyway, in case someone might come up with a fun idea.
+					n.MovingToRefinery(self, dest, this);
 
-				// I'm not sure why, but for some reason, I need to queue return SequenceActivities once.
-				// Any action is fine so I'm sequencint wait activity.
-				return ActivityUtils.SequenceActivities(new Wait(2), this);
-			}
-			else
-			{
-				if (self.Location != dest)
-				{
-					var notify = self.TraitsImplementing<INotifyHarvesterAction>();
-					foreach (var n in notify)
-						n.MovingToRefinery(self, dest, this);
-
-					// Move to the target proc then came back to this activity for re-eval, I think.
-					return ActivityUtils.SequenceActivities(movement.MoveTo(dest, 0), this);
-				}
+				// Move to the target proc then came back to this activity for re-eval, I think.
+				return ActivityUtils.SequenceActivities(movement.MoveTo(dest, 0), this);
 			}
 
 			if (!isDocking)
