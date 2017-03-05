@@ -21,7 +21,7 @@ namespace OpenRA.Mods.Common.Activities
 	public abstract class Enter : Activity
 	{
 		public enum ReserveStatus { None, TooFar, Pending, Ready }
-		enum EnterState { ApproachingOrEntering, Inside, Exiting, Done }
+		protected enum EnterState { ApproachingOrEntering, Inside, Exiting, Done }
 
 		protected readonly IMove move;
 		readonly int maxTries = 0;
@@ -29,7 +29,7 @@ namespace OpenRA.Mods.Common.Activities
 		protected readonly bool targetCenter;
 
 		public Target Target { get { return target; } }
-		protected Target target;
+		Target target;
 		protected EnterState nextState = EnterState.ApproachingOrEntering; // Hint/starting point for next state
 		protected bool isEnteringOrInside = false; // Used to know if exiting should be used
 		protected WPos savedPos; // Position just before entering
