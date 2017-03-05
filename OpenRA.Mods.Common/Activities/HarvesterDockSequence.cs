@@ -81,7 +81,7 @@ namespace OpenRA.Mods.Common.Activities
 			throw new InvalidOperationException("Invalid harvester dock state");
 		}
 
-		public override bool Cancel(Actor self)
+		public override bool Cancel(Actor self, bool keepQueue = false)
 		{
 			dockingState = DockingState.Undock;
 			return base.Cancel(self);

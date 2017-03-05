@@ -112,7 +112,7 @@ namespace OpenRA.Mods.Common.Activities
 				inner.Cancel(self);
 		}
 
-		public override bool Cancel(Actor self)
+		public override bool Cancel(Actor self, bool keepQueue = false)
 		{
 			AbortOrExit(self);
 			if (nextState < EnterState.Exiting)
