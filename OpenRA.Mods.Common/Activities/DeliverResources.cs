@@ -22,16 +22,12 @@ namespace OpenRA.Mods.Common.Activities
 
 		readonly IMove movement;
 		readonly Harvester harv;
-		readonly Actor self;
 
 		bool isDocking;
 		int chosenTicks;
 
-		bool bug_fix_sequence_once_ran = false;
-
 		public DeliverResources(Actor self)
 		{
-			this.self = self;
 			movement = self.Trait<IMove>();
 			harv = self.Trait<Harvester>();
 			IsInterruptible = false;
@@ -101,10 +97,9 @@ namespace OpenRA.Mods.Common.Activities
 			if (!isDocking)
 			{
 				isDocking = true;
-				iao.OnDock(self, this); // refinery.cs:OnDock()
+				iao.OnDock(self, this);
 			}
 
-			// Re-eval after 10 ticks?
 			return ActivityUtils.SequenceActivities(new Wait(10), this);
 		}
 	}

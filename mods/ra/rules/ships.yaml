@@ -109,10 +109,6 @@ MSUB:
 		Weapon: SubMissileAA
 		LocalOffset: 0,-171,0, 0,171,0
 		FireDelay: 2
-	Armament@SECONDARY:
-		Weapon: SubMissileAA
-		LocalOffset: 0,-171,0, 0,171,0
-		FireDelay: 2
 	AttackFrontal:
 	SelectionDecorations:
 		VisualBounds: 44,44

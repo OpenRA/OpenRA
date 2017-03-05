@@ -1171,7 +1171,6 @@ HPAD:
 		ZOffset: 256
 		RequiresCondition: primary
 	WithRearmAnimation:
-	WithRearmAnimation:
 
 AFLD:
 	Inherits: ^Building

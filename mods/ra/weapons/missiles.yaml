@@ -169,19 +169,6 @@ RedEye:
 			Light: 60
 			Heavy: 25
 
-SubMissileAA:
-	Inherits: SubMissile
-	Range: 8c0
-	ValidTargets: Air
-	Projectile: Missile
-		Speed: 234
-		Inaccuracy: 0c614
-		HorizontalRateOfTurn: 15
-		RangeLimit: 9c0
-	Warhead@1Dam: SpreadDamage
-		Damage: 15
-		ValidTargets: Air, Ground, Water
-
 Stinger:
 	Inherits: ^AntiGroundMissile
 	ReloadDelay: 60

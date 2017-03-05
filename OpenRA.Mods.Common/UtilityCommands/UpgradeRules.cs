@@ -573,10 +573,6 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					if (node.Key.StartsWith("DisguiseToolTip", StringComparison.Ordinal))
 						RenameNodeKey(node, "DisguiseTooltip");
 
-						foreach (var host in node.Value.Value.Split(','))
-							Console.WriteLine("Actor type `{0}` is denoted as a RearmBuilding. Consider adding the `WithRearmAnimation` trait to it.".F(host));
-				}
-
 				UpgradeActorRules(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 
