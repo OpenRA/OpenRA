@@ -46,7 +46,11 @@ namespace OpenRA
 			{
 				try
 				{
-					var directory = new DirectoryInfo(Platform.ResolvePath(path));
+					var resolved = Platform.ResolvePath(path);
+					if (!Directory.Exists(resolved))
+						continue;
+
+					var directory = new DirectoryInfo(resolved);
 					foreach (var subdir in directory.EnumerateDirectories())
 						mods.Add(Pair.New(subdir.Name, subdir.FullName));
 
