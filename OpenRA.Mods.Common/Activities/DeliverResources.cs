@@ -75,11 +75,7 @@ namespace OpenRA.Mods.Common.Activities
 
 				// I'm not sure why, but for some reason, I need to queue return SequenceActivities once.
 				// Any action is fine so I'm sequencint wait activity.
-				if (!bug_fix_sequence_once_ran)
-				{
-					bug_fix_sequence_once_ran = true;
-					return ActivityUtils.SequenceActivities(new Wait(2), this);
-				}
+				return ActivityUtils.SequenceActivities(new Wait(2), this);
 			}
 			else
 			{
