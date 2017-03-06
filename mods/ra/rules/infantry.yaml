@@ -249,7 +249,7 @@ SPY:
 		ScanRadius: 5
 	-WithInfantryBody:
 	WithDisguisingInfantryBody:
-		AttackSequence: shoot
+		DefaultAttackSequence: shoot
 		IdleSequences: idle1,idle2
 		StandSequences: stand,stand2
 	WithDecoration@disguise:
