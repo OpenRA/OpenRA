@@ -146,6 +146,7 @@ GASILO:
 	WithIdleOverlay@LIGHTS:
 		Sequence: idle-lights
 	StoresResources:
+		PipColor: Green
 		PipCount: 5
 		Capacity: 1500
 	Power:
