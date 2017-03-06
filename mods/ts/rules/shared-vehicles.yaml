@@ -59,7 +59,9 @@ HARV:
 		DeliveryBuildings: proc
 		Capacity: 28
 		Resources: Tiberium, BlueTiberium
-		BaleUnloadDelay: 1
+		BaleLoadDelay: 15
+		BaleUnloadDelay: 15
+		FullyLoadedSpeed: 100
 		SearchFromProcRadius: 36
 		SearchFromOrderRadius: 18
 		HarvestVoice: Attack
