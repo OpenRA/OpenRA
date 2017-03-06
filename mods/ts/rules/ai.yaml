@@ -14,6 +14,7 @@ Player:
 			Mcv: mcv
 		BuildingLimits:
 			proc: 4
+			gasilo: 2
 			gapowr: 8
 			napowr: 8
 			gapile: 1
