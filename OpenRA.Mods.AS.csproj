@@ -64,6 +64,7 @@
     <ProjectReference Include="..\OpenRA.Mods.Cnc\OpenRA.Mods.Cnc.csproj">
       <Project>{2881135d-4d62-493e-8f83-5eee92ccc6be}</Project>
       <Name>OpenRA.Mods.Cnc</Name>
+      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\OpenRA.Mods.Common\OpenRA.Mods.Common.csproj">
       <Project>{FE6C8CC0-2F07-442A-B29F-17617B3B7FC6}</Project>
@@ -89,6 +90,7 @@
     <Compile Include="Traits\Conditions\GrantConditionAboveAltitude.cs" />
     <Compile Include="Traits\Conditions\GrantPeriodicConditionOnEvent.cs" />
     <Compile Include="Traits\Crate\GiveRandomActorCrateAction.cs" />
+    <Compile Include="Traits\Doctrine.cs" />
     <Compile Include="Traits\EligibleForRandomActorCrate.cs" />
     <Compile Include="Traits\ExplodeWeapon.cs" />
     <Compile Include="Traits\InfiltrateForProxyActor.cs" />
