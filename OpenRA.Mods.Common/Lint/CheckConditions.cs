@@ -29,6 +29,7 @@ namespace OpenRA.Mods.Common.Lint
 
 				var granted = new HashSet<string>();
 				var provided = new HashSet<string>();
+				var providedAndGranted = new HashSet<string>();
 				var consumed = new HashSet<string>();
 				var given = new HashSet<string>();
 				var multipleProviders = new HashSet<string>();
@@ -64,19 +65,21 @@ namespace OpenRA.Mods.Common.Lint
 						if (!string.IsNullOrEmpty(c))
 							consumed.Add(c);
 
-					foreach (var g in fieldGranted.Concat(propertyGranted))
-						if (!string.IsNullOrEmpty(g))
-						{
-							granted.Add(g);
-							given.Add(g);
-						}
-
 					foreach (var g in fieldProvided.Concat(propertyProvided))
 						if (!string.IsNullOrEmpty(g))
 						{
 							if (provided.Contains(g))
 								multipleProviders.Add(g);
 							provided.Add(g);
+							given.Add(g);
+						}
+
+					foreach (var g in fieldGranted.Concat(propertyGranted))
+						if (!string.IsNullOrEmpty(g))
+						{
+							if (provided.Contains(g))
+								providedAndGranted.Add(g);
+							granted.Add(g);
 							given.Add(g);
 						}
 				}
@@ -99,6 +102,9 @@ namespace OpenRA.Mods.Common.Lint
 
 				if (multipleProviders.Any())
 					emitError("Actor type `{0}` has multiple traits providing these condition variables: {1}".F(actorInfo.Key, multipleProviders.JoinWith(", ")));
+
+				if (providedAndGranted.Any())
+					emitError("Actor type `{0}` has traits granting and providing these condition variables: {1}".F(actorInfo.Key, providedAndGranted.JoinWith(", ")));
 
 				if (invalid.Any())
 					emitError("Actor type `{0}` has conditions with invalid names: {1}".F(actorInfo.Key, invalid.JoinWith(", ")));
