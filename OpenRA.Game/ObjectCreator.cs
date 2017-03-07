@@ -56,9 +56,9 @@ namespace OpenRA
 				if (!ResolvedAssemblies.TryGetValue(hash, out assembly))
 				{
 					Stream debugStream = null;
-					if (modFiles.TryOpen(path + ".mdb", out debugStream))
+					if (Type.GetType("Mono.Runtime") != null && modFiles.TryOpen(path + ".mdb", out debugStream))
 						assembly = Assembly.Load(data, debugStream.ReadAllBytes());
-					else if (modFiles.TryOpen(path + ".pdb", out debugStream))
+					else if (modFiles.TryOpen(path.Substring(0, path.Length - 4) + ".pdb", out debugStream))
 						assembly = Assembly.Load(data, debugStream.ReadAllBytes());
 					else
 						assembly = Assembly.Load(data);
