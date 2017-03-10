@@ -27,6 +27,16 @@ Players:
 		NonCombatant: True
 		Faction: Random
 		Enemies: Multi0, Multi1
+	PlayerReference@CreepsNodBase:
+		Name: CreepsNodBase
+		Color: FE1100
+		NonCombatant: True
+		Faction: Random
+	PlayerReference@CreepsGDIBase:
+		Name: CreepsGDIBase
+		Color: EEEE66
+		NonCombatant: True
+		Faction: Random
 	PlayerReference@Multi0:
 		Name: Multi0
 		Playable: True
@@ -366,12 +376,12 @@ Actors:
 		Facing: 160
 	Actor65: gaoldcc3
 		Location: 74,-6
-		Owner: Neutral
+		Owner: CreepsGDIBase
 		Health: 21
 		Facing: 160
 	Actor66: gaoldcc1
 		Location: 72,-3
-		Owner: Neutral
+		Owner: CreepsGDIBase
 		Health: 39
 		Facing: 160
 	Actor67: tstlamp
@@ -446,7 +456,7 @@ Actors:
 		Facing: 160
 	Actor81: gaoldcc2
 		Location: 122,-40
-		Owner: Neutral
+		Owner: CreepsNodBase
 		Health: 100
 		Facing: 160
 	Actor82: tstlamp
@@ -726,7 +736,7 @@ Actors:
 		Facing: 32
 	Actor137: 4tnk
 		Location: 74,-4
-		Owner: Neutral
+		Owner: CreepsGDIBase
 		Health: 27
 		Facing: 0
 	Actor138: pick
