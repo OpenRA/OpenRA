@@ -2,6 +2,7 @@ General:
 	Name: Temperate
 	Id: TEMPERAT
 	Palette: temperat.pal
+	SheetSize: 1024
 	EditorTemplateOrder: Terrain, Debris, Road, Cliffs, Water Cliffs, Beach, River, Bridge
 	HeightDebugColors: AA0000
 
@@ -3621,3 +3622,67 @@ Templates:
 			9: Rough
 			10: Rough
 			11: Clear
+	Template@401:
+		Id: 401
+		Images: cliffsl1.tem
+		Size: 1,2
+		Category: Cliffs
+		Tiles:
+			0: Rock
+			1: Rock
+	Template@402:
+		Id: 402
+		Images: cliffsl2.tem
+		Size: 1,2
+		Category: Cliffs
+		Tiles:
+			0: Rock
+			1: Rock
+	Template@403:
+		Id: 403
+		Images: cliffsl3.tem
+		Size: 2,1
+		Category: Cliffs
+		Tiles:
+			0: Rock
+			1: Rock
+	Template@404:
+		Id: 404
+		Images: cliffsl4.tem
+		Size: 2,1
+		Category: Cliffs
+		Tiles:
+			0: Rock
+			1: Rock
+	Template@405:
+		Id: 405
+		Images: cliffsw1.tem
+		Size: 1,2
+		Category: Water Cliffs
+		Tiles:
+			0: Rock
+			1: Rock
+	Template@406:
+		Id: 406
+		Images: cliffsw2.tem
+		Size: 1,2
+		Category: Water Cliffs
+		Tiles:
+			0: Rock
+			1: Rock
+	Template@407:
+		Id: 407
+		Images: cliffsw3.tem
+		Size: 2,1
+		Category: Water Cliffs
+		Tiles:
+			0: Rock
+			1: Rock
+	Template@408:
+		Id: 408
+		Images: cliffsw4.tem
+		Size: 2,1
+		Category: Water Cliffs
+		Tiles:
+			0: Rock
+			1: Rock
