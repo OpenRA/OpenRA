@@ -2153,3 +2153,35 @@ Templates:
 			3: Clear
 			4: Clear
 			5: Clear
+	Template@222:
+		Id: 222
+		Images: cliffsl1.des
+		Size: 1,2
+		Category: Cliffs
+		Tiles:
+			0: Rock
+			1: Rock
+	Template@223:
+		Id: 223
+		Images: cliffsl2.des
+		Size: 1,2
+		Category: Cliffs
+		Tiles:
+			0: Rock
+			1: Rock
+	Template@224:
+		Id: 224
+		Images: cliffsl3.des
+		Size: 2,1
+		Category: Cliffs
+		Tiles:
+			0: Rock
+			1: Rock
+	Template@225:
+		Id: 225
+		Images: cliffsl4.des
+		Size: 2,1
+		Category: Cliffs
+		Tiles:
+			0: Rock
+			1: Rock
