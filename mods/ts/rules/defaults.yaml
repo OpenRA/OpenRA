@@ -216,7 +216,7 @@
 	Health:
 		HP: 400
 	RenderSprites:
-		Palette: player
+		-Palette:
 	-Cloak@EXTERNALCLOAK:
 	-ExternalCondition@CLOAKGENERATOR:
 	-ExternalCondition@CRATE-CLOAK:
