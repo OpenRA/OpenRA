@@ -1787,3 +1787,35 @@ Templates:
 			6: Water
 			7: Clear
 			8: Clear
+	Template@188:
+		Id: 189
+		Images: cliffsl1.win
+		Size: 1,2
+		Category: Cliffs
+		Tiles:
+			0: Rock
+			1: Rock
+	Template@189:
+		Id: 190
+		Images: cliffsl2.win
+		Size: 1,2
+		Category: Cliffs
+		Tiles:
+			0: Rock
+			1: Rock
+	Template@190:
+		Id: 191
+		Images: cliffsl3.win
+		Size: 2,1
+		Category: Cliffs
+		Tiles:
+			0: Rock
+			1: Rock
+	Template@191:
+		Id: 192
+		Images: cliffsl4.win
+		Size: 2,1
+		Category: Cliffs
+		Tiles:
+			0: Rock
+			1: Rock
