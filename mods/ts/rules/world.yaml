@@ -54,7 +54,7 @@
 		Sequences: veins
 		MaxDensity: 1
 		ValuePerUnit: 0
-		AllowedTerrainTypes: Clear
+		AllowedTerrainTypes: Clear, Rough, DirtRoad
 		AllowUnderActors: true
 		TerrainType: Veins
 	TerrainGeometryOverlay:
