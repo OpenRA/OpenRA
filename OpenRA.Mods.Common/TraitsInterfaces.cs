@@ -107,10 +107,10 @@ namespace OpenRA.Mods.Common.Traits
 	[RequireExplicitImplementation]
 	public interface IConditionConsumerInfo : ITraitInfo { }
 
-	public interface IConditionConsumer
+	public delegate void ConditionConsumer(Actor self, IReadOnlyDictionary<string, int> conditions);
+	public interface IConditionConsumerProvider
 	{
-		IEnumerable<string> Conditions { get; }
-		void ConditionsChanged(Actor self, IReadOnlyDictionary<string, int> conditions);
+		IEnumerable<Pair<ConditionConsumer, IEnumerable<string>>> GetConsumersWithTheirConditions();
 	}
 
 	public interface INotifyHarvesterAction

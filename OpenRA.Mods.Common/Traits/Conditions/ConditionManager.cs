@@ -48,7 +48,7 @@ namespace OpenRA.Mods.Common.Traits
 		class ConditionState
 		{
 			/// <summary>Traits that have registered to be notified when this condition changes.</summary>
-			public readonly List<IConditionConsumer> Consumers = new List<IConditionConsumer>();
+			public readonly List<ConditionConsumer> Consumers = new List<ConditionConsumer>();
 
 			/// <summary>Unique integers identifying granted instances of the condition.</summary>
 			public readonly HashSet<int> Tokens = new HashSet<int>();
@@ -76,21 +76,24 @@ namespace OpenRA.Mods.Common.Traits
 			state = new Dictionary<string, ConditionState>();
 			readOnlyConditionCache = new ReadOnlyDictionary<string, int>(conditionCache);
 
-			var allConsumers = new HashSet<IConditionConsumer>();
+			var allConsumers = new HashSet<ConditionConsumer>();
 			var allWatchers = self.TraitsImplementing<IConditionTimerWatcher>().ToList();
 
-			foreach (var consumer in self.TraitsImplementing<IConditionConsumer>())
+			foreach (var consumerProvider in self.TraitsImplementing<IConditionConsumerProvider>())
 			{
-				allConsumers.Add(consumer);
-				foreach (var condition in consumer.Conditions)
+				foreach (var consumerWithConditions in consumerProvider.GetConsumersWithTheirConditions())
 				{
-					var cs = state.GetOrAdd(condition);
-					cs.Consumers.Add(consumer);
-					foreach (var w in allWatchers)
-						if (w.Condition == condition)
-							cs.Watchers.Add(w);
+					allConsumers.Add(consumerWithConditions.First);
+					foreach (var condition in consumerWithConditions.Second)
+					{
+						var cs = state.GetOrAdd(condition);
+						cs.Consumers.Add(consumerWithConditions.First);
+						foreach (var w in allWatchers)
+							if (w.Condition == condition)
+								cs.Watchers.Add(w);
 
-					conditionCache[condition] = 0;
+						conditionCache[condition] = 0;
+					}
 				}
 			}
 
@@ -107,7 +110,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			// Update all traits with their initial condition state
 			foreach (var consumer in allConsumers)
-				consumer.ConditionsChanged(self, readOnlyConditionCache);
+				consumer(self, readOnlyConditionCache);
 		}
 
 		void UpdateConditionState(Actor self, string condition, int token, bool isRevoke)
@@ -124,7 +127,7 @@ namespace OpenRA.Mods.Common.Traits
 			conditionCache[condition] = conditionState.Tokens.Count;
 
 			foreach (var t in conditionState.Consumers)
-				t.ConditionsChanged(self, readOnlyConditionCache);
+				t(self, readOnlyConditionCache);
 		}
 
 		/// <summary>Grants a specified condition.</summary>
