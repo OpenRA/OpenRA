@@ -45,7 +45,12 @@ namespace OpenRA
 
 			Game.InitializeSettings(Arguments.Empty);
 
-			var modSearchPaths = new[] { Path.Combine(".", "mods"), Path.Combine("^", "mods") };
+			var envModSearchPaths = Environment.GetEnvironmentVariable("MOD_SEARCH_PATHS");
+			var modSearchPaths = (!string.IsNullOrWhiteSpace(envModSearchPaths) ? envModSearchPaths.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+				: new[] { Path.Combine(".", "mods"), Path.Combine("^", "mods") })
+				.Select(path => path.Trim())
+				.ToArray();
+
 			if (args.Length == 0)
 			{
 				PrintUsage(new InstalledMods(modSearchPaths, new string[0]), null);
