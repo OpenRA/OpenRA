@@ -51,7 +51,7 @@ namespace OpenRA.Scripting
 				return groupCtor.Invoke(args);
 			});
 
-			Bind(objects);
+			Bind(objects, Context is AIScriptContext ? BindAIOnly : BindMissionOnly);
 		}
 
 		public void OnActorDestroyed()

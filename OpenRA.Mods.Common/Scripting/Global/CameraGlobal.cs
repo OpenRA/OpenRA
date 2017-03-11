@@ -19,6 +19,7 @@ namespace OpenRA.Mods.Common.Scripting
 		public CameraGlobal(ScriptContext context)
 			: base(context) { }
 
+		[ScriptContext(ScriptContextType.Mission)]
 		[Desc("The center of the visible viewport.")]
 		public WPos Position
 		{

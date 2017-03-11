@@ -266,6 +266,9 @@ namespace OpenRA.Mods.Common.Scripting
 
 		BuildableInfo GetBuildableInfo(string actorType)
 		{
+			if (!Player.World.Map.Rules.Actors.ContainsKey(actorType))
+				throw new LuaException("Actor of type {0} is invalid".F(actorType));
+
 			var ri = Player.World.Map.Rules.Actors[actorType];
 			var bi = ri.TraitInfoOrDefault<BuildableInfo>();
 

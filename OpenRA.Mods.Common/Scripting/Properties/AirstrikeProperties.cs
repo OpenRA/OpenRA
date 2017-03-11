@@ -27,12 +27,14 @@ namespace OpenRA.Mods.Common.Scripting
 			ap = self.TraitsImplementing<AirstrikePower>().First();
 		}
 
+		[ScriptContext(ScriptContextType.Mission)]
 		[Desc("Activate the actor's Airstrike Power.")]
 		public void SendAirstrike(WPos target, bool randomize = true, int facing = 0)
 		{
 			ap.SendAirstrike(Self, target, randomize, facing);
 		}
 
+		[ScriptContext(ScriptContextType.Mission)]
 		[Desc("Activate the actor's Airstrike Power.")]
 		public void SendAirstrikeFrom(CPos from, CPos to)
 		{

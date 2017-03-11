@@ -26,12 +26,14 @@ namespace OpenRA.Mods.Cnc.Scripting
 			disguise = Self.Trait<Disguise>();
 		}
 
+		[ScriptContextAttribute(ScriptContextType.Mission)]
 		[Desc("Disguises as the target actor.")]
 		public void DisguiseAs(Actor target)
 		{
 			disguise.DisguiseAs(target);
 		}
 
+		[ScriptContext(ScriptContextType.Mission)]
 		[Desc("Disguises as the target type with the specified owner.")]
 		public void DisguiseAsType(string actorType, Player newOwner)
 		{

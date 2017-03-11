@@ -161,6 +161,7 @@ namespace OpenRA.Mods.Common.Scripting
 			GetScriptTriggers(player.PlayerActor).RegisterCallback(Trigger.OnPlayerLost, func, Context);
 		}
 
+		[ScriptContext(ScriptContextType.Mission)]
 		[Desc("Call a function when this player is assigned a new objective. " +
 			"The callback function will be called as func(Player player, int objectiveID).")]
 		public void OnObjectiveAdded(Player player, LuaFunction func)
@@ -168,6 +169,7 @@ namespace OpenRA.Mods.Common.Scripting
 			GetScriptTriggers(player.PlayerActor).RegisterCallback(Trigger.OnObjectiveAdded, func, Context);
 		}
 
+		[ScriptContext(ScriptContextType.Mission)]
 		[Desc("Call a function when this player completes an objective. " +
 			"The callback function will be called as func(Player player, int objectiveID).")]
 		public void OnObjectiveCompleted(Player player, LuaFunction func)
@@ -175,6 +177,7 @@ namespace OpenRA.Mods.Common.Scripting
 			GetScriptTriggers(player.PlayerActor).RegisterCallback(Trigger.OnObjectiveCompleted, func, Context);
 		}
 
+		[ScriptContext(ScriptContextType.Mission)]
 		[Desc("Call a function when this player fails an objective. " +
 			"The callback function will be called as func(Player player, int objectiveID).")]
 		public void OnObjectiveFailed(Player player, LuaFunction func)
@@ -291,6 +294,7 @@ namespace OpenRA.Mods.Common.Scripting
 			}
 		}
 
+		[ScriptContext(ScriptContextType.Mission)]
 		[Desc("Call a function when a ground-based actor enters this cell footprint. " +
 			"Returns the trigger id for later removal using RemoveFootprintTrigger(int id). " +
 			"The callback function will be called as func(Actor a, int id).")]
@@ -318,6 +322,7 @@ namespace OpenRA.Mods.Common.Scripting
 			return triggerId;
 		}
 
+		[ScriptContext(ScriptContextType.Mission)]
 		[Desc("Call a function when a ground-based actor leaves this cell footprint. " +
 			"Returns the trigger id for later removal using RemoveFootprintTrigger(int id). " +
 			"The callback function will be called as func(Actor a, int id).")]
@@ -345,6 +350,7 @@ namespace OpenRA.Mods.Common.Scripting
 			return triggerId;
 		}
 
+		[ScriptContext(ScriptContextType.Mission)]
 		[Desc("Removes a previously created footprint trigger.")]
 		public void RemoveFootprintTrigger(int id)
 		{

@@ -50,6 +50,7 @@ namespace OpenRA.Mods.Common.Scripting
 			return pool.Info.Ammo;
 		}
 
+		[ScriptContext(ScriptContextType.Mission)]
 		[Desc("Adds the specified amount of ammo to the specified ammopool.",
 			"(Use a negative amount to remove ammo.)")]
 		public void Reload(string poolName = "primary", int amount = 1)
