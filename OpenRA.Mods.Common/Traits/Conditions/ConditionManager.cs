@@ -12,7 +12,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -25,7 +24,7 @@ namespace OpenRA.Mods.Common.Traits
 	}
 
 	[Desc("Attach this to a unit to enable dynamic conditions by warheads, experience, crates, support powers, etc.")]
-	public class ConditionManagerInfo : TraitInfo<ConditionManager>, Requires<IConditionConsumerInfo> { }
+	public class ConditionManagerInfo : TraitInfo<ConditionManager>, Requires<IObservesVariablesInfo> { }
 
 	public class ConditionManager : INotifyCreated, ITick
 	{
@@ -47,8 +46,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		class ConditionState
 		{
-			/// <summary>Traits that have registered to be notified when this condition changes.</summary>
-			public readonly List<IConditionConsumer> Consumers = new List<IConditionConsumer>();
+			/// <summary>Delegates that have registered to be notified when this condition changes.</summary>
+			public readonly List<VariableObserverNotifier> Notifiers = new List<VariableObserverNotifier>();
 
 			/// <summary>Unique integers identifying granted instances of the condition.</summary>
 			public readonly HashSet<int> Tokens = new HashSet<int>();
@@ -76,21 +75,24 @@ namespace OpenRA.Mods.Common.Traits
 			state = new Dictionary<string, ConditionState>();
 			readOnlyConditionCache = new ReadOnlyDictionary<string, int>(conditionCache);
 
-			var allConsumers = new HashSet<IConditionConsumer>();
+			var allObservers = new HashSet<VariableObserverNotifier>();
 			var allWatchers = self.TraitsImplementing<IConditionTimerWatcher>().ToList();
 
-			foreach (var consumer in self.TraitsImplementing<IConditionConsumer>())
+			foreach (var provider in self.TraitsImplementing<IObservesVariables>())
 			{
-				allConsumers.Add(consumer);
-				foreach (var condition in consumer.Conditions)
+				foreach (var variableUser in provider.GetVariableObservers())
 				{
-					var cs = state.GetOrAdd(condition);
-					cs.Consumers.Add(consumer);
-					foreach (var w in allWatchers)
-						if (w.Condition == condition)
-							cs.Watchers.Add(w);
+					allObservers.Add(variableUser.Notifier);
+					foreach (var variable in variableUser.Variables)
+					{
+						var cs = state.GetOrAdd(variable);
+						cs.Notifiers.Add(variableUser.Notifier);
+						foreach (var w in allWatchers)
+							if (w.Condition == variable)
+								cs.Watchers.Add(w);
 
-					conditionCache[condition] = 0;
+						conditionCache[variable] = 0;
+					}
 				}
 			}
 
@@ -106,8 +108,8 @@ namespace OpenRA.Mods.Common.Traits
 			}
 
 			// Update all traits with their initial condition state
-			foreach (var consumer in allConsumers)
-				consumer.ConditionsChanged(self, readOnlyConditionCache);
+			foreach (var consumer in allObservers)
+				consumer(self, readOnlyConditionCache);
 		}
 
 		void UpdateConditionState(Actor self, string condition, int token, bool isRevoke)
@@ -123,8 +125,8 @@ namespace OpenRA.Mods.Common.Traits
 
 			conditionCache[condition] = conditionState.Tokens.Count;
 
-			foreach (var t in conditionState.Consumers)
-				t.ConditionsChanged(self, readOnlyConditionCache);
+			foreach (var notify in conditionState.Notifiers)
+				notify(self, readOnlyConditionCache);
 		}
 
 		/// <summary>Grants a specified condition.</summary>
