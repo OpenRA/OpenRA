@@ -100,7 +100,7 @@ MIG:
 		Type: GroundPosition
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
-		Range: 10c0
+		Range: 11c0
 		Type: GroundPosition
 	Armament:
 		Weapon: Maverick
@@ -159,7 +159,7 @@ YAK:
 		Type: GroundPosition
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
-		Range: 8c0
+		Range: 9c0
 		Type: GroundPosition
 	Armament@PRIMARY:
 		Weapon: ChainGun.Yak
