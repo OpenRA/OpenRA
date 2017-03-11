@@ -1,5 +1,6 @@
 NAPULS:
 	Inherits: ^Defense
+	Inherits@IDISABLE: ^DisabledOverlay
 	Valued:
 		Cost: 1000
 	Tooltip:
@@ -15,7 +16,6 @@ NAPULS:
 	Selectable:
 		Bounds: 78, 54, 0, -12
 	RequiresPower:
-	DisabledOverlay:
 	Health:
 		HP: 500
 	Armor:

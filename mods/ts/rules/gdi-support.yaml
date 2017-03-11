@@ -43,6 +43,7 @@ GAGATE_B:
 
 GACTWR:
 	Inherits: ^Defense
+	Inherits@IDISABLE: ^DisabledOverlay
 	-WithSpriteBody:
 	WithWallSpriteBody:
 		Type: wall
@@ -58,7 +59,6 @@ GACTWR:
 	Building:
 	Selectable:
 		Bounds: 48, 36, 0, -6
-	DisabledOverlay:
 	Health:
 		HP: 500
 	Armor:

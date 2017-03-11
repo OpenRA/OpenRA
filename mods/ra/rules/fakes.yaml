@@ -120,6 +120,7 @@ WEAF:
 
 DOMF:
 	Inherits: ^FakeBuilding
+	Inherits@IDISABLE: ^DisabledOverlay
 	Inherits@infiltrate: ^InfiltratableFake
 	Tooltip:
 		Name: Fake Radar Dome
@@ -145,7 +146,6 @@ DOMF:
 	Armor:
 		Type: Wood
 	RequiresPower:
-	DisabledOverlay:
 
 FIXF:
 	Inherits: ^FakeBuilding
@@ -207,6 +207,7 @@ FAPW:
 
 ATEF:
 	Inherits: ^FakeBuilding
+	Inherits@IDISABLE: ^DisabledOverlay
 	Tooltip:
 		Name: Fake Allied Tech Center
 		GenericName: Allied Tech Center
@@ -231,10 +232,10 @@ ATEF:
 	Armor:
 		Type: Wood
 	RequiresPower:
-	DisabledOverlay:
 
 PDOF:
 	Inherits: ^FakeBuilding
+	Inherits@IDISABLE: ^DisabledOverlay
 	Tooltip:
 		Name: Fake Chronosphere
 		GenericName: Chronosphere
@@ -263,10 +264,10 @@ PDOF:
 	Explodes:
 		DamageThreshold: 50
 	RequiresPower:
-	DisabledOverlay:
 
 MSLF:
 	Inherits: ^FakeBuilding
+	Inherits@IDISABLE: ^DisabledOverlay
 	Tooltip:
 		Name: Fake Missile Silo
 		GenericName: Missile Silo
@@ -293,7 +294,6 @@ MSLF:
 	Explodes:
 		DamageThreshold: 50
 	RequiresPower:
-	DisabledOverlay:
 
 FACF:
 	Inherits: ^FakeBuilding

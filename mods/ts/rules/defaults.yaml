@@ -947,3 +947,10 @@
 		StartDelay: -1
 		SpawnAtLastPosition: false
 		RequiresCondition: !inside-tunnel
+
+^DisabledOverlay:
+	WithColoredOverlay@IDISABLE:
+		RequiresCondition: disabled
+		Palette: disabled
+	GrantConditionOnDisabled@IDISABLE:
+		Condition: disabled

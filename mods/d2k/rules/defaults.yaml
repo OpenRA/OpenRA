@@ -199,7 +199,8 @@
 	Targetable:
 		TargetTypes: Ground, Vehicle
 		RequiresForceFire: true
-	DisabledOverlay:
+	WithColoredOverlay@IDISABLE:
+		Palette: disabled
 	Explodes:
 		Weapon: UnitExplodeMed
 		EmptyWeapon: UnitExplodeMed
@@ -394,3 +395,10 @@
 	MustBeDestroyed:
 		RequiredForShortGame: false
 	RevealOnFire:
+
+^DisabledOverlay:
+	WithColoredOverlay@IDISABLE:
+		RequiresCondition: disabled
+		Palette: disabled
+	GrantConditionOnDisabled@IDISABLE:
+		Condition: disabled

@@ -1,5 +1,6 @@
 MSLO:
 	Inherits: ^ScienceBuilding
+	Inherits@IDISABLE: ^DisabledOverlay
 	Valued:
 		Cost: 2500
 	Tooltip:
@@ -45,7 +46,6 @@ MSLO:
 		PowerupSound: EnablePower
 		PowerdownSound: DisablePower
 	RequiresPower:
-	DisabledOverlay:
 	SupportPowerChargeBar:
 	Power:
 		Amount: -150
@@ -54,6 +54,7 @@ MSLO:
 
 GAP:
 	Inherits: ^ScienceBuilding
+	Inherits@IDISABLE: ^DisabledOverlay
 	Valued:
 		Cost: 800
 	Tooltip:
@@ -71,7 +72,6 @@ GAP:
 	CanPowerDown:
 		PowerupSound: EnablePower
 		PowerdownSound: DisablePower
-	DisabledOverlay:
 	WithSpriteBody:
 		PauseAnimationWhenDisabled: true
 	Health:
@@ -284,6 +284,7 @@ SYRD:
 
 IRON:
 	Inherits: ^ScienceBuilding
+	Inherits@IDISABLE: ^DisabledOverlay
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 130
@@ -301,7 +302,6 @@ IRON:
 	CanPowerDown:
 		PowerupSound: EnablePower
 		PowerdownSound: DisablePower
-	DisabledOverlay:
 	Selectable:
 		Bounds: 48,28,0,2
 	SelectionDecorations:
@@ -338,6 +338,7 @@ IRON:
 
 PDOX:
 	Inherits: ^ScienceBuilding
+	Inherits@IDISABLE: ^DisabledOverlay
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 120
@@ -355,7 +356,6 @@ PDOX:
 	CanPowerDown:
 		PowerupSound: EnablePower
 		PowerdownSound: DisablePower
-	DisabledOverlay:
 	Health:
 		HP: 1000
 	Armor:
@@ -412,6 +412,7 @@ PDOX:
 
 TSLA:
 	Inherits: ^Defense
+	Inherits@IDISABLE: ^DisabledOverlay
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 80
@@ -429,7 +430,6 @@ TSLA:
 	CanPowerDown:
 		PowerupSound: EnablePower
 		PowerdownSound: DisablePower
-	DisabledOverlay:
 	Health:
 		HP: 400
 	Armor:
@@ -457,6 +457,7 @@ TSLA:
 
 AGUN:
 	Inherits: ^Defense
+	Inherits@IDISABLE: ^DisabledOverlay
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 90
@@ -474,7 +475,6 @@ AGUN:
 	CanPowerDown:
 		PowerupSound: EnablePower
 		PowerdownSound: DisablePower
-	DisabledOverlay:
 	Health:
 		HP: 400
 	Armor:
@@ -508,6 +508,7 @@ AGUN:
 
 DOME:
 	Inherits: ^Building
+	Inherits@IDISABLE: ^DisabledOverlay
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 90
@@ -526,7 +527,6 @@ DOME:
 	CanPowerDown:
 		PowerupSound: EnablePower
 		PowerdownSound: DisablePower
-	DisabledOverlay:
 	Health:
 		HP: 1000
 	Armor:
@@ -739,6 +739,7 @@ FTUR:
 
 SAM:
 	Inherits: ^Defense
+	Inherits@IDISABLE: ^DisabledOverlay
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 100
@@ -755,7 +756,6 @@ SAM:
 	CanPowerDown:
 		PowerupSound: EnablePower
 		PowerdownSound: DisablePower
-	DisabledOverlay:
 	Health:
 		HP: 400
 	Armor:
@@ -785,6 +785,7 @@ SAM:
 
 ATEK:
 	Inherits: ^ScienceBuilding
+	Inherits@IDISABLE: ^DisabledOverlay
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 140
@@ -820,7 +821,6 @@ ATEK:
 		DisplayTimerStances: Ally, Neutral, Enemy
 	SupportPowerChargeBar:
 	RequiresPower:
-	DisabledOverlay:
 	Power:
 		Amount: -200
 	ProvidesPrerequisite@buildingname:
@@ -1303,6 +1303,7 @@ AFLD:
 
 POWR:
 	Inherits: ^Building
+	Inherits@IDISABLE: ^DisabledOverlay
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 10
@@ -1331,13 +1332,13 @@ POWR:
 	Targetable:
 		TargetTypes: Ground, Structure, C4, DetonateAttack, SpyInfiltrate
 	ScalePowerWithHealth:
-	DisabledOverlay:
 	WithDeathAnimation:
 		DeathSequence: dead
 		UseDeathTypeSuffix: false
 
 APWR:
 	Inherits: ^Building
+	Inherits@IDISABLE: ^DisabledOverlay
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 110
@@ -1370,7 +1371,6 @@ APWR:
 	Targetable:
 		TargetTypes: Ground, Structure, C4, DetonateAttack, SpyInfiltrate
 	ScalePowerWithHealth:
-	DisabledOverlay:
 	WithDeathAnimation:
 		DeathSequence: dead
 		UseDeathTypeSuffix: false

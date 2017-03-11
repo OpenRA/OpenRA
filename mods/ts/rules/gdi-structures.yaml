@@ -1,5 +1,6 @@
 GAPOWR:
 	Inherits: ^Building
+	Inherits@IDISABLE: ^DisabledOverlay
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 10
@@ -35,7 +36,6 @@ GAPOWR:
 	Targetable:
 		TargetTypes: Ground, C4, DetonateAttack, SpyInfiltrate
 	ScalePowerWithHealth:
-	DisabledOverlay:
 	Pluggable@pluga:
 		Offset: 0,1
 		Conditions:
@@ -370,6 +370,7 @@ GATECH:
 
 GAPLUG:
 	Inherits: ^Building
+	Inherits@IDISABLE: ^DisabledOverlay
 	Valued:
 		Cost: 1000
 	Tooltip:
@@ -389,7 +390,6 @@ GAPLUG:
 		IndicatorPalette: mouse
 		PowerupSpeech: EnablePower
 		PowerdownSpeech: DisablePower
-	DisabledOverlay:
 	WithIdleOverlay@DISH:
 		Sequence: idle-dish
 	WithIdleOverlay@LIGHTS:
