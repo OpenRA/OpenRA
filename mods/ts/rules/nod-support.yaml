@@ -301,7 +301,10 @@ NASTLH:
 		PowerupSpeech: EnablePower
 		PowerdownSpeech: DisablePower
 		IndicatorPalette: mouse
+	GrantConditionOnDisabled:
+		Condition: disabled
 	ProximityExternalCondition:
+		RequiresCondition: !disabled
 		Condition: cloakgenerator
 		Range: 12c0
 		EnableSound: cloak5.aud
