@@ -222,6 +222,7 @@ NAHPAD:
 		PrimaryCondition: primary
 	Reservable:
 	RepairsUnits:
+		PauseOnCondition: empdisable
 		PlayerExperience: 15
 	ProductionBar:
 	WithIdleOverlay@PLATFORM:

@@ -211,6 +211,7 @@ GAHPAD:
 		PrimaryCondition: primary
 	Reservable:
 	RepairsUnits:
+		PauseOnCondition: empdisable
 		PlayerExperience: 15
 	ProductionBar:
 	WithIdleOverlay@PLATFORM:
@@ -258,6 +259,7 @@ GADEPT:
 		MaxHeightDelta: 3
 	Reservable:
 	RepairsUnits:
+		PauseOnCondition: empdisable
 		PlayerExperience: 15
 	RallyPoint:
 		Palette: mouse
