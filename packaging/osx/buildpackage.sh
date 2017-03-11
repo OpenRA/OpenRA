@@ -34,7 +34,7 @@ modify_plist() {
 # Set version string
 modify_plist "{DEV_VERSION}" "${1}"
 
-modify_plist "{BUNDLE_DISPLAY_NAME}" OpenRA
+modify_plist "{DISPLAY_NAME}" OpenRA
 
 # Package app bundle into a zip and clean up
 zip OpenRA-$1 -r -9 OpenRA.app --quiet --symlinks
