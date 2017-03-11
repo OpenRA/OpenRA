@@ -17,7 +17,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Cnc.Traits
 {
 	[Desc("Implements the charge-then-burst attack logic specific to the RA tesla coil.")]
-	class AttackTeslaInfo : AttackOmniInfo
+	class AttackTeslaInfo : AttackBaseInfo
 	{
 		[Desc("How many charges this actor has to attack with, once charged.")]
 		public readonly int MaxCharges = 1;
@@ -37,7 +37,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		public override object Create(ActorInitializer init) { return new AttackTesla(init.Self, this); }
 	}
 
-	class AttackTesla : AttackOmni, ITick, INotifyAttack
+	class AttackTesla : AttackBase, ITick, INotifyAttack
 	{
 		readonly AttackTeslaInfo info;
 
