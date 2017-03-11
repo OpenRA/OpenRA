@@ -214,17 +214,17 @@ namespace OpenRA
 
 		#region Scripting interface
 
-		Lazy<ScriptPlayerInterface> luaInterface;
+		readonly Dictionary<LuaRuntime, Lazy<ScriptPlayerInterface>> luaInterfaces = new Dictionary<LuaRuntime, Lazy<ScriptPlayerInterface>>();
 		public void OnScriptBind(ScriptContext context)
 		{
-			if (luaInterface == null)
-				luaInterface = Exts.Lazy(() => new ScriptPlayerInterface(context, this));
+			if (!luaInterfaces.ContainsKey(context.Runtime))
+				luaInterfaces.Add(context.Runtime, Exts.Lazy(() => new ScriptPlayerInterface(context, this)));
 		}
 
 		public LuaValue this[LuaRuntime runtime, LuaValue keyValue]
 		{
-			get { return luaInterface.Value[runtime, keyValue]; }
-			set { luaInterface.Value[runtime, keyValue] = value; }
+			get { return luaInterfaces[runtime].Value[runtime, keyValue]; }
+			set { luaInterfaces[runtime].Value[runtime, keyValue] = value; }
 		}
 
 		public LuaValue Equals(LuaRuntime runtime, LuaValue left, LuaValue right)

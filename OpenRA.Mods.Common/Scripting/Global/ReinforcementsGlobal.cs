@@ -28,6 +28,7 @@ namespace OpenRA.Mods.Common.Scripting
 	{
 		public ReinforcementsGlobal(ScriptContext context) : base(context) { }
 
+		[ScriptContext(ScriptContextType.Mission)]
 		Actor CreateActor(Player owner, string actorType, bool addToWorld, CPos? entryLocation = null, CPos? nextLocation = null)
 		{
 			ActorInfo ai;
@@ -62,6 +63,7 @@ namespace OpenRA.Mods.Common.Scripting
 			actor.QueueActivity(move.MoveTo(dest, 2));
 		}
 
+		[ScriptContext(ScriptContextType.Mission)]
 		[Desc("Send reinforcements consisting of multiple units. Supports ground-based, naval and air units. " +
 			"The first member of the entryPath array will be the units' spawnpoint, " +
 			"while the last one will be their destination. If actionFunc is given, " +
@@ -100,6 +102,7 @@ namespace OpenRA.Mods.Common.Scripting
 			return actors.ToArray();
 		}
 
+		[ScriptContext(ScriptContextType.Mission)]
 		[Desc("Send reinforcements in a transport. A transport can be a ground unit (APC etc.), ships and aircraft. " +
 			"The first member of the entryPath array will be the spawnpoint for the transport, " +
 			"while the last one will be its destination. The last member of the exitPath array " +

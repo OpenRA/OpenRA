@@ -48,6 +48,7 @@ namespace OpenRA.Mods.Common.Scripting
 		}
 
 		[Desc("Triggers low power for the chosen amount of ticks.")]
+		[ScriptContext(ScriptContextType.Mission)]
 		public void TriggerPowerOutage(int ticks)
 		{
 			pm.TriggerPowerOutage(ticks);

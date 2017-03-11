@@ -17,6 +17,7 @@ using OpenRA.Activities;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Pathfinder;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Scripting;
 using OpenRA.Support;
 using OpenRA.Traits;
 
@@ -59,10 +60,18 @@ namespace OpenRA.Mods.Common.AI
 			public readonly HashSet<string> NavalProduction = new HashSet<string>();
 			public readonly HashSet<string> Silo = new HashSet<string>();
 			public readonly HashSet<string> StaticAntiAir = new HashSet<string>();
+			public readonly HashSet<string> Fragile = new HashSet<string>();
+			public readonly HashSet<string> Defense = new HashSet<string>();
 		}
 
 		[Desc("Ingame name this bot uses.")]
 		public readonly string Name = "Unnamed Bot";
+
+		[Desc("The Script AI will read and execute")]
+		public readonly string LuaScript;
+
+		[Desc("Build units according to Lua script? (false = old hacky AI behavior).")]
+		public readonly bool EnableLuaUnitProduction = false;
 
 		[Desc("Minimum number of units AI must have before attacking.")]
 		public readonly int SquadSize = 8;
@@ -141,6 +150,9 @@ namespace OpenRA.Mods.Common.AI
 
 		[Desc("Minimum distance in cells from center of the base when checking for building placement.")]
 		public readonly int MinBaseRadius = 2;
+
+		[Desc("Same as MinBaseRadius but for fragile structures to push them further away.")]
+		public readonly int MinFragilePlacementRadius = 8;
 
 		[Desc("Radius in cells around the center of the base to expand.")]
 		public readonly int MaxBaseRadius = 20;
@@ -241,7 +253,7 @@ namespace OpenRA.Mods.Common.AI
 		public object Create(ActorInitializer init) { return new HackyAI(this, init); }
 	}
 
-	public enum BuildingType { Building, Defense, Refinery }
+	public enum BuildingPlacementType { Building, Defense, Refinery, Fragile }
 
 	public sealed class HackyAI : ITick, IBot, INotifyDamage
 	{
@@ -268,7 +280,6 @@ namespace OpenRA.Mods.Common.AI
 		readonly IPathFinder pathfinder;
 
 		readonly Func<Actor, bool> isEnemyUnit;
-		readonly Predicate<Actor> unitCannotBeOrdered;
 		Dictionary<SupportPowerInstance, int> waitingPowers = new Dictionary<SupportPowerInstance, int>();
 		Dictionary<string, SupportPowerDecision> powerDecisions = new Dictionary<string, SupportPowerDecision>();
 
@@ -302,6 +313,9 @@ namespace OpenRA.Mods.Common.AI
 
 		readonly Queue<Order> orders = new Queue<Order>();
 
+		readonly HashSet<Actor> luaOccupiedActors = new HashSet<Actor>();
+		readonly Dictionary<Player, AIScriptContext> luaContexts = new Dictionary<Player, AIScriptContext>();
+
 		public HackyAI(HackyAIInfo info, ActorInitializer init)
 		{
 			Info = info;
@@ -320,13 +334,34 @@ namespace OpenRA.Mods.Common.AI
 					&& !unit.Info.HasTraitInfo<HuskInfo>()
 					&& unit.Info.HasTraitInfo<ITargetableInfo>();
 
-			unitCannotBeOrdered = a => a.Owner != Player || a.IsDead || !a.IsInWorld ||
-				(a.TraitOrDefault<AmmoPool>() != null && !a.Trait<AmmoPool>().HasAmmo());
 
 			foreach (var decision in info.PowerDecisions)
 				powerDecisions.Add(decision.OrderName, decision);
 
 			maximumCaptureTargetOptions = Math.Max(1, Info.MaximumCaptureTargetOptions);
+		}
+
+		public void SetLuaOccupied(Actor a, bool occupied)
+		{
+			if (occupied)
+				luaOccupiedActors.Add(a);
+			else
+				luaOccupiedActors.Remove(a);
+		}
+
+		public bool IsLuaOccupied(Actor a)
+		{
+			return luaOccupiedActors.Contains(a);
+		}
+
+		bool UnitCannotBeOrdered(Actor a)
+		{
+			if (a.Owner != Player || a.IsDead || !a.IsInWorld)
+				return true;
+
+			// Actors in luaOccupiedActors are under control of scripted actions and
+			// shouldn't be ordered by the default hacky controller.
+			return IsLuaOccupied(a);
 		}
 
 		public static void BotDebug(string s, params object[] args)
@@ -344,10 +379,25 @@ namespace OpenRA.Mods.Common.AI
 			supportPowerMngr = p.PlayerActor.Trait<SupportPowerManager>();
 			playerResource = p.PlayerActor.Trait<PlayerResources>();
 
+			if (luaContexts.ContainsKey(p))
+			{
+				luaContexts[p].Dispose();
+				luaContexts.Remove(p);
+			}
+
+			AIScriptContext context = null;
+			if (Info.LuaScript != null)
+			{
+				// when no script given, Hacky AI behavior is still in effect and will continue to work as before.
+				string[] scripts = { Info.LuaScript };
+				context = new AIScriptContext(World, scripts); // Create context (not yet activated)
+				luaContexts.Add(p, context);
+			}
+
 			foreach (var building in Info.BuildingQueues)
-				builders.Add(new BaseBuilder(this, building, p, playerPower, playerResource));
+				builders.Add(new BaseBuilder(this, building, p, playerPower, playerResource, context));
 			foreach (var defense in Info.DefenseQueues)
-				builders.Add(new BaseBuilder(this, defense, p, playerPower, playerResource));
+				builders.Add(new BaseBuilder(this, defense, p, playerPower, playerResource, context));
 
 			Random = new MersenneTwister(Game.CosmeticRandom.Next());
 
@@ -519,52 +569,102 @@ namespace OpenRA.Mods.Common.AI
 			return true;
 		}
 
+		// Given base center position and front vector (front vector starts from center and moves in front direction),
+		// find a buildable cell in front semi-circle (or semi-annulus)
+		// This function is currently used for placing structure in rear area.
+		// (if you invert front vector you get rear)
+		CPos? FindPosFront(CPos center, CVec front, int minRange, int maxRange,
+			string actorType, BuildingInfo bi, bool distanceToBaseIsImportant)
+		{
+			// zero vector case. we can't define front or rear.
+			if (front == CVec.Zero)
+				return FindPos(center, center, minRange, maxRange, actorType, bi, distanceToBaseIsImportant);
+
+			var cells = Map.FindTilesInAnnulus(center, minRange, maxRange).Shuffle(Random);
+			foreach (var cell in cells)
+			{
+				var v = cell - center;
+				if (!World.CanPlaceBuilding(actorType, bi, cell, null))
+					continue;
+
+				if (CVec.Dot(front, v) > 0)
+					return cell;
+			}
+
+			// Front is so full of buildings that we can't place anything.
+			return null;
+		}
+
+		// Find the buildable cell that is closest to pos and centered around center
+		CPos? FindPos(CPos center, CPos target, int minRange, int maxRange,
+			string actorType, BuildingInfo bi, bool distanceToBaseIsImportant)
+		{
+			var cells = Map.FindTilesInAnnulus(center, minRange, maxRange);
+
+			// Sort by distance to target if we have one
+			if (center != target)
+				cells = cells.OrderBy(c => (c - target).LengthSquared);
+			else
+				cells = cells.Shuffle(Random);
+
+			foreach (var cell in cells)
+			{
+				if (!World.CanPlaceBuilding(actorType, bi, cell, null))
+					continue;
+
+				if (distanceToBaseIsImportant && !bi.IsCloseEnoughToBase(World, Player, actorType, cell))
+					continue;
+
+				return cell;
+			}
+
+			return null;
+		}
+
 		CPos defenseCenter;
-		public CPos? ChooseBuildLocation(string actorType, bool distanceToBaseIsImportant, BuildingType type)
+		public CPos? ChooseBuildLocation(string actorType, bool distanceToBaseIsImportant, BuildingPlacementType type)
 		{
 			var bi = Map.Rules.Actors[actorType].TraitInfoOrDefault<BuildingInfo>();
 			if (bi == null)
 				return null;
 
-			// Find the buildable cell that is closest to pos and centered around center
-			Func<CPos, CPos, int, int, CPos?> findPos = (center, target, minRange, maxRange) =>
-			{
-				var cells = Map.FindTilesInAnnulus(center, minRange, maxRange);
-
-				// Sort by distance to target if we have one
-				if (center != target)
-					cells = cells.OrderBy(c => (c - target).LengthSquared);
-				else
-					cells = cells.Shuffle(Random);
-
-				foreach (var cell in cells)
-				{
-					if (!World.CanPlaceBuilding(actorType, bi, cell, null))
-						continue;
-
-					if (distanceToBaseIsImportant && !bi.IsCloseEnoughToBase(World, Player, actorType, cell))
-						continue;
-
-					return cell;
-				}
-
-				return null;
-			};
-
 			var baseCenter = GetRandomBaseCenter();
 
 			switch (type)
 			{
-				case BuildingType.Defense:
+				case BuildingPlacementType.Defense:
+					{
+						// Build near the closest enemy structure
+						var closestEnemy = World.ActorsHavingTrait<Building>().Where(a => !a.Disposed && Player.Stances[a.Owner] == Stance.Enemy)
+							.ClosestTo(World.Map.CenterOfCell(defenseCenter));
 
-					// Build near the closest enemy structure
-					var closestEnemy = World.ActorsHavingTrait<Building>().Where(a => !a.Disposed && Player.Stances[a.Owner] == Stance.Enemy)
-						.ClosestTo(World.Map.CenterOfCell(defenseCenter));
+						var targetCell = closestEnemy != null ? closestEnemy.Location : baseCenter;
+						return FindPos(defenseCenter, targetCell, Info.MinimumDefenseRadius, Info.MaximumDefenseRadius,
+							actorType, bi, distanceToBaseIsImportant);
+					}
 
-					var targetCell = closestEnemy != null ? closestEnemy.Location : baseCenter;
-					return findPos(defenseCenter, targetCell, Info.MinimumDefenseRadius, Info.MaximumDefenseRadius);
+				case BuildingPlacementType.Fragile:
+					{
+						// Build far from the closest enemy structure
+						var closestEnemy = World.ActorsHavingTrait<Building>().Where(a => !a.Disposed && Player.Stances[a.Owner] == Stance.Enemy)
+							.ClosestTo(World.Map.CenterOfCell(defenseCenter));
 
-				case BuildingType.Refinery:
+						CVec direction = CVec.Zero;
+						if (closestEnemy != null)
+							direction = baseCenter - closestEnemy.Location;
+
+						// MinFragilePlacementRadius introduced to push fragile buildings away from base center.
+						// Resilient to nuke.
+						var pos = FindPosFront(baseCenter, direction, Info.MinFragilePlacementRadius, Info.MaxBaseRadius,
+							actorType, bi, distanceToBaseIsImportant);
+						if (pos == null) // rear placement failed but we can still try placing anywhere.
+							pos = FindPos(baseCenter, baseCenter, Info.MinBaseRadius,
+								distanceToBaseIsImportant ? Info.MaxBaseRadius : Map.Grid.MaximumTileSearchRange,
+								actorType, bi, distanceToBaseIsImportant);
+						return pos;
+					}
+
+				case BuildingPlacementType.Refinery:
 
 					// Try and place the refinery near a resource field
 					var nearbyResources = Map.FindTilesInAnnulus(baseCenter, Info.MinBaseRadius, Info.MaxBaseRadius)
@@ -573,16 +673,20 @@ namespace OpenRA.Mods.Common.AI
 
 					foreach (var r in nearbyResources)
 					{
-						var found = findPos(baseCenter, r, Info.MinBaseRadius, Info.MaxBaseRadius);
+						var found = FindPos(baseCenter, r, Info.MinBaseRadius, Info.MaxBaseRadius,
+							actorType, bi, distanceToBaseIsImportant);
 						if (found != null)
 							return found;
 					}
 
 					// Try and find a free spot somewhere else in the base
-					return findPos(baseCenter, baseCenter, Info.MinBaseRadius, Info.MaxBaseRadius);
+					return FindPos(baseCenter, baseCenter, Info.MinBaseRadius, Info.MaxBaseRadius,
+						actorType, bi, distanceToBaseIsImportant);
 
-				case BuildingType.Building:
-					return findPos(baseCenter, baseCenter, Info.MinBaseRadius, distanceToBaseIsImportant ? Info.MaxBaseRadius : Map.Grid.MaximumTileSearchRange);
+				case BuildingPlacementType.Building:
+					return FindPos(baseCenter, baseCenter, Info.MinBaseRadius,
+						distanceToBaseIsImportant ? Info.MaxBaseRadius : Map.Grid.MaximumTileSearchRange,
+						actorType, bi, distanceToBaseIsImportant);
 			}
 
 			// Can't find a build location
@@ -597,9 +701,23 @@ namespace OpenRA.Mods.Common.AI
 			ticks++;
 
 			if (ticks == 1)
+			{
 				InitializeBase(self);
 
-			if (ticks % FeedbackTime == 0)
+				// Activating here. Some variables aren't available in Lua at tick 0.
+				foreach (var kv in luaContexts)
+					kv.Value.ActivateAI(Player.Faction.Name, Player.InternalName);
+			}
+			else
+			{
+				// Don't tick at ticks 0 and 1.
+				if (Info.EnableLuaUnitProduction) // tick each lua AI context only when told so.
+					foreach (var kv in luaContexts)
+						kv.Value.Tick(self);
+			}
+
+			// Fall back to hacky random production when lua production not set.
+			if (!Info.EnableLuaUnitProduction && ticks % FeedbackTime == 0)
 				ProductionUnits(self);
 
 			AssignRolesToIdleUnits(self);
@@ -634,7 +752,7 @@ namespace OpenRA.Mods.Common.AI
 		{
 			Squads.RemoveAll(s => !s.IsValid);
 			foreach (var s in Squads)
-				s.Units.RemoveAll(unitCannotBeOrdered);
+				s.Units.RemoveAll(UnitCannotBeOrdered);
 		}
 
 		// Use of this function requires that one squad of this type. Hence it is a piece of shit
@@ -654,8 +772,8 @@ namespace OpenRA.Mods.Common.AI
 		{
 			CleanSquads();
 
-			activeUnits.RemoveAll(unitCannotBeOrdered);
-			unitsHangingAroundTheBase.RemoveAll(unitCannotBeOrdered);
+			activeUnits.RemoveAll(UnitCannotBeOrdered);
+			unitsHangingAroundTheBase.RemoveAll(UnitCannotBeOrdered);
 
 			if (--rushTicks <= 0)
 			{
@@ -903,7 +1021,9 @@ namespace OpenRA.Mods.Common.AI
 
 				if (AttackOrFleeFuzzy.Rush.CanAttack(ownUnits, enemies))
 				{
-					var target = enemies.Any() ? enemies.Random(Random) : b;
+					Actor target = enemies.Any() ? enemies.Random(Random) : b;
+					//// TODO: make on target selected Lua call
+
 					var rush = GetSquadOfType(SquadType.Rush);
 					if (rush == null)
 						rush = RegisterNewSquad(SquadType.Rush, target);
@@ -1007,7 +1127,7 @@ namespace OpenRA.Mods.Common.AI
 					Info.RestrictMCVDeploymentFallbackToBase &&
 					CountBuildingByCommonName(Info.BuildingCommonNames.ConstructionYard, Player) > 0;
 				var factType = mcv.Info.TraitInfo<TransformsInfo>().IntoActor;
-				var desiredLocation = ChooseBuildLocation(factType, restrictToBase, BuildingType.Building);
+				var desiredLocation = ChooseBuildLocation(factType, restrictToBase, BuildingPlacementType.Building);
 				if (desiredLocation == null)
 					continue;
 

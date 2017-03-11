@@ -11,11 +11,12 @@ local PrintStackTrace = function(msg)
 	return stp.stacktrace("", 2) .. "\nError message\n===============\n" .. msg .. "\n==============="
 end
 
-local TryRunSandboxed = function(fn)
-	local success, err = xpcall(function() sandbox.run(fn, {env = environment, quota = MaxUserScriptInstructions}) end, PrintStackTrace)
+local TryRunSandboxed = function(fn, ...)
+	local success, err = xpcall(function() return sandbox.run(fn, {env = environment, quota = MaxUserScriptInstructions}, arg) end, PrintStackTrace)
 	if not success then
 		FatalError(err)
 	end
+    return err -- Actually, the correct result on success.
 end
 
 WorldLoaded = function()
@@ -24,9 +25,21 @@ WorldLoaded = function()
 	end
 end
 
+ActivateAI = function(faction_name, internal_name)
+	if environment.ActivateAI ~= nil then
+		TryRunSandboxed(environment.ActivateAI, faction_name, internal_name)
+	end
+end
+
 Tick = function()
 	if environment.Tick ~= nil then
 		TryRunSandboxed(environment.Tick)
+	end
+end
+
+BB_choose_building_to_build = function(params)
+	if environment.BB_choose_building_to_build ~= nil then
+		return TryRunSandboxed(environment.BB_choose_building_to_build, params)
 	end
 end
 

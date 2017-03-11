@@ -42,6 +42,16 @@ namespace OpenRA.Scripting
 	// For property groups that are safe to initialize invoke on destroyed actors
 	public sealed class ExposedForDestroyedActors : Attribute { }
 
+	// Defines availability of the Lua interface.
+	// Mission only, AI only, or both.
+	[Flags]
+	public enum ScriptContextType { Mission, AI }
+	public sealed class ScriptContextAttribute : Attribute
+	{
+		public readonly ScriptContextType Type;
+		public ScriptContextAttribute(ScriptContextType type) { Type = type; }
+	}
+
 	public sealed class ScriptActorPropertyActivityAttribute : Attribute { }
 
 	public abstract class ScriptActorProperties
@@ -95,7 +105,7 @@ namespace OpenRA.Scripting
 				throw new InvalidOperationException("[ScriptGlobal] attribute not found for global table '{0}'".F(type));
 
 			Name = names.First().Name;
-			Bind(new[] { this });
+			Bind(new[] { this }, Context is AIScriptContext ? BindAIOnly : BindMissionOnly);
 		}
 
 		protected IEnumerable<T> FilteredObjects<T>(IEnumerable<T> objects, LuaFunction filter)
@@ -121,12 +131,12 @@ namespace OpenRA.Scripting
 		public ScriptGlobalAttribute(string name) { Name = name; }
 	}
 
-	public sealed class ScriptContext : IDisposable
+	public class ScriptContext : IDisposable
 	{
 		public World World { get; private set; }
 		public WorldRenderer WorldRenderer { get; private set; }
 
-		readonly MemoryConstrainedLuaRuntime runtime;
+		internal readonly MemoryConstrainedLuaRuntime Runtime;
 		readonly LuaFunction tick;
 
 		// Restrict user scripts (excluding system libraries) to 50 MB of memory use
@@ -144,7 +154,7 @@ namespace OpenRA.Scripting
 		public ScriptContext(World world, WorldRenderer worldRenderer,
 			IEnumerable<string> scripts)
 		{
-			runtime = new MemoryConstrainedLuaRuntime();
+			Runtime = new MemoryConstrainedLuaRuntime();
 
 			Log.AddChannel("lua", "lua.log");
 
@@ -161,19 +171,19 @@ namespace OpenRA.Scripting
 				.ToArray();
 			PlayerCommands = FilterCommands(world.Map.Rules.Actors["player"], knownPlayerCommands);
 
-			runtime.Globals["GameDir"] = Platform.GameDir;
-			runtime.DoBuffer(File.Open(Platform.ResolvePath(".", "lua", "scriptwrapper.lua"), FileMode.Open, FileAccess.Read).ReadAllText(), "scriptwrapper.lua").Dispose();
-			tick = (LuaFunction)runtime.Globals["Tick"];
+			Runtime.Globals["GameDir"] = Platform.GameDir;
+			Runtime.DoBuffer(File.Open(Platform.ResolvePath(".", "lua", "scriptwrapper.lua"), FileMode.Open, FileAccess.Read).ReadAllText(), "scriptwrapper.lua").Dispose();
+			tick = (LuaFunction)Runtime.Globals["Tick"];
 
 			// Register globals
-			using (var fn = runtime.CreateFunctionFromDelegate((Action<string>)FatalError))
-				runtime.Globals["FatalError"] = fn;
+			using (var fn = Runtime.CreateFunctionFromDelegate((Action<string>)FatalError))
+				Runtime.Globals["FatalError"] = fn;
 
-			runtime.Globals["MaxUserScriptInstructions"] = MaxUserScriptInstructions;
+			Runtime.Globals["MaxUserScriptInstructions"] = MaxUserScriptInstructions;
 
-			using (var registerGlobal = (LuaFunction)runtime.Globals["RegisterSandboxedGlobal"])
+			using (var registerGlobal = (LuaFunction)Runtime.Globals["RegisterSandboxedGlobal"])
 			{
-				using (var fn = runtime.CreateFunctionFromDelegate((Action<string>)LogDebugMessage))
+				using (var fn = Runtime.CreateFunctionFromDelegate((Action<string>)LogDebugMessage))
 					registerGlobal.Call("print", fn).Dispose();
 
 				// Register global tables
@@ -196,9 +206,9 @@ namespace OpenRA.Scripting
 			}
 
 			// System functions do not count towards the memory limit
-			runtime.MaxMemoryUse = runtime.MemoryUse + MaxUserScriptMemory;
+			Runtime.MaxMemoryUse = Runtime.MemoryUse + MaxUserScriptMemory;
 
-			using (var loadScript = (LuaFunction)runtime.Globals["ExecuteSandboxedScript"])
+			using (var loadScript = (LuaFunction)Runtime.Globals["ExecuteSandboxedScript"])
 			{
 				foreach (var s in scripts)
 					loadScript.Call(s, world.Map.Open(s).ReadAllText()).Dispose();
@@ -233,9 +243,9 @@ namespace OpenRA.Scripting
 
 		public void RegisterMapActor(string name, Actor a)
 		{
-			using (var registerGlobal = (LuaFunction)runtime.Globals["RegisterSandboxedGlobal"])
+			using (var registerGlobal = (LuaFunction)Runtime.Globals["RegisterSandboxedGlobal"])
 			{
-				if (runtime.Globals.ContainsKey(name))
+				if (Runtime.Globals.ContainsKey(name))
 					throw new LuaException("The global name '{0}' is reserved, and may not be used by a map actor".F(name));
 
 				using (var obj = a.ToLuaValue(this))
@@ -248,7 +258,7 @@ namespace OpenRA.Scripting
 			if (FatalErrorOccurred)
 				return;
 
-			using (var worldLoaded = (LuaFunction)runtime.Globals["WorldLoaded"])
+			using (var worldLoaded = (LuaFunction)Runtime.Globals["WorldLoaded"])
 				worldLoaded.Call().Dispose();
 		}
 
@@ -267,8 +277,8 @@ namespace OpenRA.Scripting
 				return;
 
 			disposed = true;
-			if (runtime != null)
-				runtime.Dispose();
+			if (Runtime != null)
+				Runtime.Dispose();
 		}
 
 		static IEnumerable<Type> ExtractRequiredTypes(Type t)
@@ -294,6 +304,6 @@ namespace OpenRA.Scripting
 				.ToArray();
 		}
 
-		public LuaTable CreateTable() { return runtime.CreateTable(); }
+		public LuaTable CreateTable() { return Runtime.CreateTable(); }
 	}
 }

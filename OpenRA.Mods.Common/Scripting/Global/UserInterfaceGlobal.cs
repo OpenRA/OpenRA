@@ -23,6 +23,7 @@ namespace OpenRA.Mods.Common.Scripting.Global
 		public UserInterfaceGlobal(ScriptContext context)
 			: base(context) { }
 
+		[ScriptContext(ScriptContextType.Mission)]
 		[Desc("Displays a text message at the top center of the screen.")]
 		public void SetMissionText(string text, HSLColor? color = null)
 		{

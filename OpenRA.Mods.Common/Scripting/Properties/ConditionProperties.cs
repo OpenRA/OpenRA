@@ -32,6 +32,7 @@ namespace OpenRA.Mods.Common.Scripting
 			externalConditions = self.TraitsImplementing<ExternalCondition>().ToArray();
 		}
 
+		[ScriptContext(ScriptContextType.Mission)]
 		[Desc("Grant an external condition on this actor and return the revocation token.",
 			"Conditions must be defined on an ExternalConditions trait on the actor.",
 			"If duration > 0 the condition will be automatically revoked after the defined number of ticks")]
@@ -46,6 +47,7 @@ namespace OpenRA.Mods.Common.Scripting
 			return external.GrantCondition(Self, this, duration);
 		}
 
+		[ScriptContext(ScriptContextType.Mission)]
 		[Desc("Revoke a condition using the token returned by GrantCondition.")]
 		public void RevokeCondition(int token)
 		{
@@ -60,6 +62,7 @@ namespace OpenRA.Mods.Common.Scripting
 				.Any(t => t.Info.Condition == condition && t.CanGrantCondition(Self, this));
 		}
 
+		[ScriptContext(ScriptContextType.Mission)]
 		[Desc("Grant an upgrade to this actor. DEPRECATED! Will be removed.")]
 		public void GrantUpgrade(string upgrade)
 		{
@@ -67,6 +70,7 @@ namespace OpenRA.Mods.Common.Scripting
 			legacyShim.GetOrAdd(upgrade).Push(GrantCondition(upgrade));
 		}
 
+		[ScriptContext(ScriptContextType.Mission)]
 		[Desc("Revoke an upgrade that was previously granted using GrantUpgrade. DEPRECATED! Will be removed.")]
 		public void RevokeUpgrade(string upgrade)
 		{
@@ -78,6 +82,7 @@ namespace OpenRA.Mods.Common.Scripting
 			RevokeCondition(tokens.Pop());
 		}
 
+		[ScriptContext(ScriptContextType.Mission)]
 		[Desc("Grant a limited-time upgrade to this actor. DEPRECATED! Will be removed.")]
 		public void GrantTimedUpgrade(string upgrade, int duration)
 		{

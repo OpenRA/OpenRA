@@ -191,6 +191,7 @@
     <Compile Include="LoadScreens\ModChooserLoadScreen.cs" />
     <Compile Include="ActorInitializer.cs" />
     <Compile Include="Scripting\Properties\AmmoPoolProperties.cs" />
+    <Compile Include="Scripting\Properties\HackyAIProperties.cs" />
     <Compile Include="ShroudExts.cs" />
     <Compile Include="Orders\BeaconOrderGenerator.cs" />
     <Compile Include="Orders\DeployOrderTargeter.cs" />

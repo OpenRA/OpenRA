@@ -30,6 +30,7 @@ namespace OpenRA.Mods.Cnc.Scripting
 			infiltratesTraits = Self.TraitsImplementing<Infiltrates>().ToArray();
 		}
 
+		[ScriptContextAttribute(ScriptContextType.Mission)]
 		[Desc("Infiltrate the target actor.")]
 		public void Infiltrate(Actor target)
 		{
