@@ -562,7 +562,7 @@ namespace OpenRA.Mods.Common.AI
 
 					foreach (var r in nearbyResources)
 					{
-						var found = findPos(r, baseCenter, Info.MinBaseRadius, Info.MaxBaseRadius);
+						var found = findPos(baseCenter, r, Info.MinBaseRadius, Info.MaxBaseRadius);
 						if (found != null)
 							return found;
 					}
