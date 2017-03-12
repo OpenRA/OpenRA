@@ -24,7 +24,7 @@ namespace OpenRA.Mods.AS.Warheads
 		public readonly string Weapon = null;
 
 		[Desc("Amount of shrapnels thrown.")]
-		public readonly int Amount = 1;
+		public readonly int[] Amount = { 1 };
 
 		[Desc("The percentage of aiming this shrapnel to a suitable target actor.")]
 		public readonly int AimChance = 0;
@@ -64,7 +64,11 @@ namespace OpenRA.Mods.AS.Warheads
 
 			var targetActor = availableTargetActors.GetEnumerator();
 
-			for (var i = 0; i < Amount; i++)
+			var amount = Amount.Length == 2
+					? world.SharedRandom.Next(Amount[0], Amount[1])
+					: Amount[0];
+
+			for (var i = 0; i < amount; i++)
 			{
 				Target shrapnelTarget = Target.Invalid;
 
