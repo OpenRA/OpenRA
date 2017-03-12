@@ -3,9 +3,6 @@
 # to compile, run:
 #   make [DEBUG=false]
 #
-# to compile with development tools, run:
-#   make all [DEBUG=false]
-#
 # to check unit tests (requires NUnit version >= 2.6), run:
 #  make nunit [NUNIT_CONSOLE=<path-to/nunit[2]-console>] [NUNIT_LIBS_PATH=<path-to-libs-dir>] [NUNIT_LIBS=<nunit-libs>]
 #      Use NUNIT_CONSOLE if nunit[3|2]-console was not downloaded by `make dependencies` nor is it in bin search paths
@@ -22,9 +19,6 @@
 #
 # to install, run:
 #   make [prefix=/foo] [bindir=/bar/bin] install
-#
-# to install with development tools, run:
-#   make [prefix=/foo] [bindir=/bar/bin] install-all
 #
 # to install Linux startup scripts, desktop files and icons:
 #   make install-linux-shortcuts [DEBUG=false]
@@ -88,7 +82,6 @@ INSTALL_DATA = $(INSTALL) -m644
 
 # program targets
 CORE = pdefault game utility server
-TOOLS = gamemonitor
 VERSION     = $(shell git name-rev --name-only --tags --no-undefined HEAD 2>/dev/null || echo git-`git rev-parse --short HEAD`)
 
 # dependencies
@@ -297,13 +290,11 @@ default: core
 
 core: dependencies game platforms mods utility server
 
-tools: gamemonitor
-
-package: all-dependencies core tools docs version
+package: all-dependencies core gamemonitor docs version
 
 mods: mod_common mod_cnc mod_d2k
 
-all: dependencies core tools
+all: dependencies core
 
 clean:
 	@-$(RM_F) *.exe *.dll *.dylib *.dll.config ./OpenRA*/*.dll ./OpenRA*/*.mdb *.mdb mods/**/*.dll mods/**/*.mdb *.resources
@@ -353,8 +344,6 @@ man-page: utility mods
 
 install: install-core
 
-install-all: install-core install-tools
-
 install-linux-shortcuts: install-linux-scripts install-linux-icons install-linux-desktop
 
 install-core: default
@@ -392,11 +381,6 @@ install-core: default
 ifneq ($(UNAME_S),Darwin)
 	@$(CP) *.sh "$(DATA_INSTALL_DIR)"
 endif
-
-install-tools: tools
-	@-echo "Installing OpenRA tools to $(DATA_INSTALL_DIR)"
-	@$(INSTALL_DIR) "$(DATA_INSTALL_DIR)"
-	@$(INSTALL_PROGRAM) $(foreach prog,$(TOOLS),$($(prog)_TARGET)) "$(DATA_INSTALL_DIR)"
 
 install-linux-icons:
 	@$(INSTALL_DIR) "$(DESTDIR)$(datadir)/icons/"
@@ -476,9 +460,6 @@ help:
 	@echo 'to compile, run:'
 	@echo '  make [DEBUG=false]'
 	@echo
-	@echo 'to compile with development tools, run:'
-	@echo '  make all [DEBUG=false]'
-	@echo
 	@echo 'to check unit tests (requires NUnit version >= 2.6), run:'
 	@echo '  make nunit [NUNIT_CONSOLE=<path-to/nunit[3|2]-console>] [NUNIT_LIBS_PATH=<path-to-libs-dir>] [NUNIT_LIBS=<nunit-libs>]'
 	@echo '     Use NUNIT_CONSOLE if nunit[3|2]-console was not downloaded by `make dependencies` nor is it in bin search paths'
@@ -493,9 +474,6 @@ help:
 	@echo
 	@echo 'to install, run:'
 	@echo '  make [prefix=/foo] [bindir=/bar/bin] install'
-	@echo
-	@echo 'to install with development tools, run:'
-	@echo '  make [prefix=/foo] [bindir=/bar/bin] install-all'
 	@echo
 	@echo 'to install Linux startup scripts, desktop files and icons'
 	@echo '  make install-linux-shortcuts [DEBUG=false]'
@@ -515,4 +493,4 @@ help:
 
 .SUFFIXES:
 
-.PHONY: core tools package all mods clean distclean dependencies version $(PROGRAMS) nunit
+.PHONY: core package all mods clean distclean dependencies version $(PROGRAMS) nunit
