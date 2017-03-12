@@ -173,7 +173,7 @@ namespace OpenRA.Mods.AS.Traits
 
 		float ISelectionBar.GetValue()
 		{
-			if (!info.ShowSelectionBar)
+			if (!info.ShowSelectionBar || IsTraitDisabled)
 				return 0f;
 
 			return isEnabled
