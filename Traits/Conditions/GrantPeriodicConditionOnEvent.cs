@@ -21,7 +21,8 @@ namespace OpenRA.Mods.AS.Traits
 		None = 0,
 		Attack = 1,
 		Move = 2,
-		Damage = 4
+		Damage = 4,
+		Heal = 8
 	}
 
 	[Desc("Grants a condition when a selected event occurs.")]
@@ -187,7 +188,10 @@ namespace OpenRA.Mods.AS.Traits
 		void INotifyDamage.Damaged(Actor self, AttackInfo e)
 		{
 			var alive = e.DamageState >= DamageState.Critical;
-			if (alive || Info.Triggers.HasFlag(PeriodicConditionTrigger.Damage))
+			if (alive && Info.Triggers.HasFlag(PeriodicConditionTrigger.Damage) && e.Damage.Value > 0)
+				TryEnableCondition();
+
+			if (alive && Info.Triggers.HasFlag(PeriodicConditionTrigger.Heal) && e.Damage.Value < 0)
 				TryEnableCondition();
 		}
 
