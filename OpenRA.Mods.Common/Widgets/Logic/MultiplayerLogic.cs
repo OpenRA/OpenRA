@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -56,7 +57,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			switch (searchStatus)
 			{
-				case SearchStatus.Failed: return "Failed to contact master server.";
+				case SearchStatus.Failed: return "Failed to query server list.";
 				case SearchStatus.NoGames: return "No games found. Try changing filters.";
 				default: return "";
 			}
@@ -300,17 +301,23 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				currentQuery = null;
 
-				if (i.Error != null)
+				List<GameServer> games = null;
+				if (i.Error == null)
 				{
-					RefreshServerListInner(null);
-					return;
+					try
+					{
+						var data = Encoding.UTF8.GetString(i.Result);
+						var yaml = MiniYaml.FromString(data);
+
+						games = yaml.Select(a => new GameServer(a.Value))
+							.Where(gs => gs.Address != null)
+							.ToList();
+					}
+					catch
+					{
+						searchStatus = SearchStatus.Failed;
+					}
 				}
-
-				var data = Encoding.UTF8.GetString(i.Result);
-				var yaml = MiniYaml.FromString(data);
-
-				var games = yaml.Select(a => new GameServer(a.Value))
-					.Where(gs => gs.Address != null);
 
 				Game.RunAfterTick(() => RefreshServerListInner(games));
 			};
@@ -343,7 +350,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			currentMap = server != null ? modData.MapCache[server.Map] : null;
 		}
 
-		void RefreshServerListInner(IEnumerable<GameServer> games)
+		void RefreshServerListInner(List<GameServer> games)
 		{
 			if (games == null)
 				return;
