@@ -3160,3 +3160,67 @@ Templates:
 		Tiles:
 			0: Rock
 			1: Rock
+	Template@401:
+		Id: 401
+		Images: cliffsl1.sno
+		Size: 1,2
+		Category: Cliffs
+		Tiles:
+			0: Rock
+			1: Rock
+	Template@402:
+		Id: 402
+		Images: cliffsl2.sno
+		Size: 1,2
+		Category: Cliffs
+		Tiles:
+			0: Rock
+			1: Rock
+	Template@403:
+		Id: 403
+		Images: cliffsl3.sno
+		Size: 2,1
+		Category: Cliffs
+		Tiles:
+			0: Rock
+			1: Rock
+	Template@404:
+		Id: 404
+		Images: cliffsl4.sno
+		Size: 2,1
+		Category: Cliffs
+		Tiles:
+			0: Rock
+			1: Rock
+	Template@405:
+		Id: 405
+		Images: cliffsw1.sno
+		Size: 1,2
+		Category: Water Cliffs
+		Tiles:
+			0: Rock
+			1: Rock
+	Template@406:
+		Id: 406
+		Images: cliffsw2.sno
+		Size: 1,2
+		Category: Water Cliffs
+		Tiles:
+			0: Rock
+			1: Rock
+	Template@407:
+		Id: 407
+		Images: cliffsw3.sno
+		Size: 2,1
+		Category: Water Cliffs
+		Tiles:
+			0: Rock
+			1: Rock
+	Template@408:
+		Id: 408
+		Images: cliffsw4.sno
+		Size: 2,1
+		Category: Water Cliffs
+		Tiles:
+			0: Rock
+			1: Rock

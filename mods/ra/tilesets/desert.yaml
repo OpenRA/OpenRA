@@ -3123,3 +3123,67 @@ Templates:
 			12: Rock
 			13: Rock
 			14: Rock
+	Template@382:
+		Id: 382
+		Images: cliffsl1.des
+		Size: 1,2
+		Category: Cliffs
+		Tiles:
+			0: Rock
+			1: Rock
+	Template@383:
+		Id: 383
+		Images: cliffsl2.des
+		Size: 1,2
+		Category: Cliffs
+		Tiles:
+			0: Rock
+			1: Rock
+	Template@384:
+		Id: 384
+		Images: cliffsl3.des
+		Size: 2,1
+		Category: Cliffs
+		Tiles:
+			0: Rock
+			1: Rock
+	Template@385:
+		Id: 385
+		Images: cliffsl4.des
+		Size: 2,1
+		Category: Cliffs
+		Tiles:
+			0: Rock
+			1: Rock
+	Template@386:
+		Id: 386
+		Images: cliffsw1.des
+		Size: 1,2
+		Category: Water Cliffs
+		Tiles:
+			0: Rock
+			1: Rock
+	Template@387:
+		Id: 387
+		Images: cliffsw2.des
+		Size: 1,2
+		Category: Water Cliffs
+		Tiles:
+			0: Rock
+			1: Rock
+	Template@388:
+		Id: 388
+		Images: cliffsw3.des
+		Size: 2,1
+		Category: Water Cliffs
+		Tiles:
+			0: Rock
+			1: Rock
+	Template@389:
+		Id: 389
+		Images: cliffsw4.des
+		Size: 2,1
+		Category: Water Cliffs
+		Tiles:
+			0: Rock
+			1: Rock
