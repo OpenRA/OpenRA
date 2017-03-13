@@ -27,6 +27,7 @@ namespace OpenRA
 
 		// Constants to be replaced by the wrapper / compilation script
 		const string DisplayName = "DISPLAY_NAME";
+		const string FaqUrl = "FAQ_URL";
 
 		[STAThread]
 		static void Main(string[] args)
@@ -158,7 +159,7 @@ namespace OpenRA
 		{
 			try
 			{
-				Process.Start("http://wiki.openra.net/FAQ");
+				Process.Start(FaqUrl);
 			}
 			catch { }
 		}
