@@ -173,9 +173,6 @@ check: utility mods
 	@echo "Checking for code style violations in OpenRA.Platforms.Default..."
 	@mono --debug OpenRA.Utility.exe ra --check-code-style OpenRA.Platforms.Default
 	@echo
-	@echo "Checking for code style violations in OpenRA.GameMonitor..."
-	@mono --debug OpenRA.Utility.exe ra --check-code-style OpenRA.GameMonitor
-	@echo
 	@echo "Checking for code style violations in OpenRA.Mods.Common..."
 	@mono --debug OpenRA.Utility.exe ra --check-code-style OpenRA.Mods.Common
 	@echo
@@ -230,16 +227,6 @@ test: utility mods
 
 ##### Launchers / Utilities #####
 
-gamemonitor_SRCS := $(shell find OpenRA.GameMonitor/ -iname '*.cs')
-gamemonitor_TARGET = OpenRA.exe
-gamemonitor_KIND = winexe
-gamemonitor_DEPS = $(game_TARGET)
-gamemonitor_LIBS = $(COMMON_LIBS) $(gamemonitor_DEPS) System.Windows.Forms.dll
-gamemonitor_FLAGS = -win32icon:OpenRA.Game/OpenRA.ico
-PROGRAMS += gamemonitor
-gamemonitor: $(gamemonitor_TARGET)
-
-# Backend for the launcher apps - queries game/mod info and applies actions to an install
 utility_SRCS := $(shell find OpenRA.Utility/ -iname '*.cs')
 utility_TARGET = OpenRA.Utility.exe
 utility_KIND = exe
@@ -289,7 +276,7 @@ default: core
 
 core: dependencies game platforms mods utility server
 
-package: all-dependencies core gamemonitor docs version
+package: all-dependencies core docs version
 
 mods: mod_common mod_cnc mod_d2k
 

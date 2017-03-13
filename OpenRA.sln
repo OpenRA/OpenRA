@@ -129,8 +129,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "System Lua scripts", "Syste
 		lua\stacktraceplus.lua = lua\stacktraceplus.lua
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenRA.GameMonitor", "OpenRA.GameMonitor\OpenRA.GameMonitor.csproj", "{68295755-7902-4602-AC2C-9A8AC36D5EF7}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenRA.Test", "OpenRA.Test\OpenRA.Test.csproj", "{6CB8E1B7-6B36-4D93-8633-7C573E194AC4}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tiberian Sun Lua scripts", "Tiberian Sun Lua scripts", "{85159569-F5BD-458E-B5C0-EB16690C432B}"

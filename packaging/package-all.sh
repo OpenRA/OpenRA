@@ -70,10 +70,7 @@ cp thirdparty/download/MaxMind.Db.dll packaging/built
 cp thirdparty/download/SmarIrc4net.dll packaging/built
 
 # Copy game icon for windows package
-cp OpenRA.Game/OpenRA.ico packaging/built
-
-# Copy the Windows crash monitor
-cp OpenRA.exe packaging/built
+cp packaging/windows/OpenRA.ico packaging/built
 
 cd packaging
 echo "Creating packages..."

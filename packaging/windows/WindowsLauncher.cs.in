@@ -16,11 +16,12 @@ using System.IO;
 using System.Linq;
 using System.Media;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
 namespace OpenRA
 {
-	class GameMonitor
+	class WindowsLauncher
 	{
 		static Process gameProcess;
 
@@ -128,8 +129,7 @@ namespace OpenRA
 			{
 				Process.Start(Platform.ResolvePath("^", "Logs"));
 			}
-			catch
-			{ }
+			catch { }
 		}
 
 		static void ViewFaqClicked(object sender, EventArgs e)
@@ -138,8 +138,7 @@ namespace OpenRA
 			{
 				Process.Start("http://wiki.openra.net/FAQ");
 			}
-			catch
-			{ }
+			catch { }
 		}
 
 		static void FormClosed(object sender, EventArgs e)
