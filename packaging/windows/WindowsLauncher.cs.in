@@ -25,6 +25,9 @@ namespace OpenRA
 	{
 		static Process gameProcess;
 
+		// Constants to be replaced by the wrapper / compilation script
+		const string DisplayName = "DISPLAY_NAME";
+
 		[STAThread]
 		static void Main(string[] args)
 		{
@@ -60,9 +63,35 @@ namespace OpenRA
 
 		static void ShowErrorDialog()
 		{
+			var headerLabel = new Label
+			{
+				Location = new Point(0, 10),
+				Height = 15,
+				Text = DisplayName + " has encountered a fatal error and must close.",
+				TextAlign = ContentAlignment.TopCenter
+			};
+
+			var docsLabel = new Label
+			{
+				Location = new Point(0, 25),
+				Height = 15,
+				Text = "Refer to the crash logs and FAQ for more information.",
+				TextAlign = ContentAlignment.TopCenter
+			};
+
+			int formWidth;
+			using (var g = headerLabel.CreateGraphics())
+			{
+				var headerWidth = (int)g.MeasureString(headerLabel.Text, headerLabel.Font).Width + 60;
+				var docsWidth = (int)g.MeasureString(docsLabel.Text, docsLabel.Font).Width + 60;
+				formWidth = Math.Max(headerWidth, docsWidth);
+				headerLabel.Width = formWidth;
+				docsLabel.Width = formWidth;
+			}
+
 			var form = new Form
 			{
-				Size = new Size(315, 140),
+				Size = new Size(formWidth, 110),
 				Text = "Fatal Error",
 				MinimizeBox = false,
 				MaximizeBox = false,
@@ -72,37 +101,30 @@ namespace OpenRA
 				Icon = Icon.ExtractAssociatedIcon(Assembly.GetExecutingAssembly().Location)
 			};
 
-			var notice = new Label
-			{
-				Location = new Point(10, 10),
-				AutoSize = true,
-				Text = "OpenRA has encountered a fatal error and must close.{0}Refer to the crash logs and FAQ for more information.".F(Environment.NewLine),
-				TextAlign = ContentAlignment.TopCenter
-			};
-
 			var viewLogs = new Button
 			{
-				Location = new Point(10, 80),
+				Location = new Point(10, 50),
 				Size = new Size(75, 23),
 				Text = "View Logs"
 			};
 
 			var viewFaq = new Button
 			{
-				Location = new Point(90, 80),
+				Location = new Point(90, 50),
 				Size = new Size(75, 23),
 				Text = "View FAQ"
 			};
 
 			var quit = new Button
 			{
-				Location = new Point(225, 80),
+				Location = new Point(formWidth - 90, 50),
 				Size = new Size(75, 23),
 				Text = "Quit",
 				DialogResult = DialogResult.Cancel
 			};
 
-			form.Controls.Add(notice);
+			form.Controls.Add(headerLabel);
+			form.Controls.Add(docsLabel);
 			form.Controls.Add(viewLogs);
 			form.Controls.Add(viewFaq);
 			form.Controls.Add(quit);
