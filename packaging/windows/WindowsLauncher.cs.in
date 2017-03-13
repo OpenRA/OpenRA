@@ -26,6 +26,7 @@ namespace OpenRA
 		static Process gameProcess;
 
 		// Constants to be replaced by the wrapper / compilation script
+		const string ModID = "MOD_ID";
 		const string DisplayName = "DISPLAY_NAME";
 		const string FaqUrl = "FAQ_URL";
 
@@ -37,6 +38,9 @@ namespace OpenRA
 			var enginePath = Path.Combine(directory, "OpenRA.Game.exe");
 
 			Directory.SetCurrentDirectory(directory);
+
+			if (!string.IsNullOrEmpty(ModID))
+				args = args.Append("Game.Mod=" + ModID).ToArray();
 
 			var engineArgs = args
 				.Append("Engine.LaunchPath=" + launcherPath)
