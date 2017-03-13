@@ -108,7 +108,10 @@ namespace OpenRA.Mods.AS.Traits
 
 		void ITick.Tick(Actor self)
 		{
-			if (!IsTraitDisabled && state != PeriodicConditionState.Ready && --ticks < 0)
+			if (IsTraitDisabled)
+				return;
+
+			if (state != PeriodicConditionState.Ready && --ticks < 0)
 			{
 				if (isEnabled)
 				{
@@ -129,9 +132,11 @@ namespace OpenRA.Mods.AS.Traits
 				}
 			}
 
-			if (state == PeriodicConditionState.Ready && Info.Triggers.HasFlag(PeriodicConditionTrigger.Move) && (lastPos == null || lastPos.Value != self.CenterPosition))
+			if (Info.Triggers.HasFlag(PeriodicConditionTrigger.Move))
 			{
-				TryEnableCondition();
+				if (state == PeriodicConditionState.Ready && (lastPos == null || lastPos.Value != self.CenterPosition))
+					TryEnableCondition();
+
 				lastPos = self.CenterPosition;
 			}
 		}
@@ -158,6 +163,9 @@ namespace OpenRA.Mods.AS.Traits
 
 		void TryEnableCondition()
 		{
+			if (IsTraitDisabled)
+				return;
+
 			if (state == PeriodicConditionState.Ready && token == ConditionManager.InvalidConditionToken)
 			{
 				token = manager.GrantCondition(self, info.Condition);
@@ -176,22 +184,21 @@ namespace OpenRA.Mods.AS.Traits
 			if (!info.ShowSelectionBar || IsTraitDisabled)
 				return 0f;
 
-			return isEnabled
-				? (float)(active - ticks) / active
-					: (float)ticks / cooldown;
+			return state != PeriodicConditionState.Charging
+				? (float)ticks / active
+					: (float)(cooldown - ticks) / cooldown;
 		}
 
-		bool ISelectionBar.DisplayWhenEmpty { get { return info.ShowSelectionBar; } }
+		bool ISelectionBar.DisplayWhenEmpty { get { return info.ShowSelectionBar && !IsTraitDisabled; } }
 
-		Color ISelectionBar.GetColor() { return isEnabled ? info.ActiveColor : info.CooldownColor; }
+		Color ISelectionBar.GetColor() { return state == PeriodicConditionState.Charging ? info.CooldownColor : info.ActiveColor; }
 
 		void INotifyDamage.Damaged(Actor self, AttackInfo e)
 		{
-			var alive = e.DamageState >= DamageState.Critical;
-			if (alive && Info.Triggers.HasFlag(PeriodicConditionTrigger.Damage) && e.Damage.Value > 0)
+			if (Info.Triggers.HasFlag(PeriodicConditionTrigger.Damage) && e.Damage.Value > 0)
 				TryEnableCondition();
 
-			if (alive && Info.Triggers.HasFlag(PeriodicConditionTrigger.Heal) && e.Damage.Value < 0)
+			if (Info.Triggers.HasFlag(PeriodicConditionTrigger.Heal) && e.Damage.Value < 0)
 				TryEnableCondition();
 		}
 
