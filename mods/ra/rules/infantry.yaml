@@ -114,6 +114,7 @@ E2:
 		DefaultAttackSequence: throw
 	Explodes:
 		Weapon: UnitExplodeSmall
+		EmptyWeapon: UnitExplodeSmall
 		Chance: 50
 	ProducibleWithLevel:
 		Prerequisites: barracks.upgraded
