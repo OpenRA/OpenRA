@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Traits;
@@ -24,7 +25,7 @@ namespace OpenRA.Mods.Common.Traits
 		public object Create(ActorInitializer init) { return new PowerManager(init.Self, this); }
 	}
 
-	public class PowerManager : ITick, ISync
+	public class PowerManager : ITick, ISync, IResolveOrder
 	{
 		readonly Actor self;
 		readonly PowerManagerInfo info;
@@ -145,6 +146,12 @@ namespace OpenRA.Mods.Common.Traits
 
 			foreach (var a in actors)
 				UpdateActor(a);
+		}
+
+		void IResolveOrder.ResolveOrder(Actor self, Order order)
+		{
+			if (devMode.Enabled && order.OrderString == "PowerOutage")
+				TriggerPowerOutage((int)order.ExtraData);
 		}
 	}
 }
