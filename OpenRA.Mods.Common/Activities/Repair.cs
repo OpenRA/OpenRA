@@ -84,7 +84,7 @@ namespace OpenRA.Mods.Common.Activities
 					return this;
 				}
 
-				self.InflictDamage(self, new Damage(-hpToRepair));
+				self.InflictDamage(host.Actor, new Damage(-hpToRepair));
 
 				foreach (var depot in host.Actor.TraitsImplementing<INotifyRepair>())
 					depot.Repairing(host.Actor, self);
