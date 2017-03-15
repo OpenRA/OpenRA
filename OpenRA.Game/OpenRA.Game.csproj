@@ -42,6 +42,8 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <PlatformTarget>x86</PlatformTarget>
     <UseVSHostingProcess>false</UseVSHostingProcess>
+    <StartArguments>Game.Mod=ra</StartArguments>
+    <Commandlineparameters>Game.Mod=ra</Commandlineparameters>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
     <DebugSymbols>true</DebugSymbols>
@@ -53,6 +55,24 @@
     <UseVSHostingProcess>false</UseVSHostingProcess>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <Optimize>true</Optimize>
+    <StartArguments>Game.Mod=ra</StartArguments>
+    <Commandlineparameters>Game.Mod=ra</Commandlineparameters>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(RunConfiguration)' == 'Default' ">
+    <StartAction>Project</StartAction>
+    <StartArguments>Game.Mod=ra</StartArguments>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(RunConfiguration)' == 'Dune 2000' ">
+    <StartAction>Project</StartAction>
+    <StartArguments>Game.Mod=d2k</StartArguments>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(RunConfiguration)' == 'Tiberian Dawn' ">
+    <StartAction>Project</StartAction>
+    <StartArguments>Game.Mod=cnc</StartArguments>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(RunConfiguration)' == 'Tiberian Sun' ">
+    <StartAction>Project</StartAction>
+    <StartArguments>Game.Mod=ts</StartArguments>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
