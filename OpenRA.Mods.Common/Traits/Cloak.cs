@@ -29,7 +29,8 @@ namespace OpenRA.Mods.Common.Traits
 		Infiltrate = 8,
 		Demolish = 16,
 		Damage = 32,
-		Dock = 64
+		Heal = 64,
+		Dock = 128
 	}
 
 	[Desc("This unit can cloak and uncloak in specific situations.")]
@@ -101,7 +102,10 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyDamage.Damaged(Actor self, AttackInfo e)
 		{
-			if (Info.UncloakOn.HasFlag(UncloakType.Damage))
+			if (e.Damage.Value == 0)
+				return;
+
+			if (Info.UncloakOn.HasFlag(e.Damage.Value > 0 ? UncloakType.Damage : UncloakType.Heal))
 				Uncloak();
 		}
 
