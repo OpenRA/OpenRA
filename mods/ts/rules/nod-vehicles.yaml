@@ -395,7 +395,7 @@ STNK:
 		CloakSound: cloak5.aud
 		UncloakSound: cloak5.aud
 		IsPlayerPalette: true
-		UncloakOn: Attack, Unload, Infiltrate, Demolish, Damage
+		UncloakOn: Attack, Unload, Infiltrate, Demolish, Damage, Heal
 		RequiresCondition: !cloak-force-disabled
 	GrantConditionOnDamageState@UNCLOAK:
 		Condition: cloak-force-disabled
