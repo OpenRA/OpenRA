@@ -1657,7 +1657,7 @@ SBAG:
 		Prerequisites: fact, ~structures.allies, ~techlevel.low
 		Description: Stops infantry and light vehicles.\nCan be crushed by tanks.
 	Valued:
-		Cost: 25
+		Cost: 50
 	CustomSellValue:
 		Value: 0
 	Tooltip:
@@ -1682,7 +1682,7 @@ FENC:
 		Prerequisites: fact, ~structures.soviet, ~techlevel.low
 		Description: Stops infantry and light vehicles.\nCan be crushed by tanks.
 	Valued:
-		Cost: 25
+		Cost: 50
 	CustomSellValue:
 		Value: 0
 	Tooltip:
@@ -1707,7 +1707,7 @@ BRIK:
 		Prerequisites: fact, ~techlevel.medium
 		Description: Stop units and blocks enemy fire.
 	Valued:
-		Cost: 100
+		Cost: 200
 	CustomSellValue:
 		Value: 0
 	Tooltip:
