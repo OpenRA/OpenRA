@@ -30,7 +30,8 @@ namespace OpenRA.Mods.Common.Traits
 		Demolish = 16,
 		Damage = 32,
 		Heal = 64,
-		Dock = 128
+		SelfHeal = 128,
+		Dock = 256
 	}
 
 	[Desc("This unit can cloak and uncloak in specific situations.")]
@@ -42,7 +43,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Measured in game ticks.")]
 		public readonly int CloakDelay = 30;
 
-		[Desc("Events leading to the actor getting uncloaked. Possible values are: Attack, Move, Unload, Infiltrate, Demolish, Dock and Damage")]
+		[Desc("Events leading to the actor getting uncloaked. Possible values are: Attack, Move, Unload, Infiltrate, Demolish, Dock, Damage, Heal and SelfHeal.")]
 		public readonly UncloakType UncloakOn = UncloakType.Attack
 			| UncloakType.Unload | UncloakType.Infiltrate | UncloakType.Demolish | UncloakType.Dock;
 
@@ -105,7 +106,10 @@ namespace OpenRA.Mods.Common.Traits
 			if (e.Damage.Value == 0)
 				return;
 
-			if (Info.UncloakOn.HasFlag(e.Damage.Value > 0 ? UncloakType.Damage : UncloakType.Heal))
+			var type = e.Damage.Value < 0
+				? (e.Attacker == self ? UncloakType.SelfHeal : UncloakType.Heal)
+				: UncloakType.Damage;
+			if (Info.UncloakOn.HasFlag(type))
 				Uncloak();
 		}
 
