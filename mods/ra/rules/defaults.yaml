@@ -907,6 +907,7 @@
 		CrushClasses: mine
 		DetonateClasses: mine
 		AvoidFriendly: false
+		BlockFriendly: false
 	Health:
 		HP: 100
 		NotifyAppliedDamage: false
