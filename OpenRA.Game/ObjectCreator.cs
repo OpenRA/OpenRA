@@ -63,8 +63,8 @@ namespace OpenRA
 					if (isMonoRuntime)
 						hasSymbols = modFiles.TryOpen(path + ".mdb", out symbolStream);
 
-					// .NET and newer mono versions can load portable .pdb files.
-					if (!hasSymbols)
+					// .NET uses .pdb files.
+					else
 						hasSymbols = modFiles.TryOpen(path.Substring(0, path.Length - 4) + ".pdb", out symbolStream);
 
 					assembly = hasSymbols ? Assembly.Load(data, symbolStream.ReadAllBytes()) : Assembly.Load(data);
