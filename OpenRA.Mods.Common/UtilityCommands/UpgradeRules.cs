@@ -601,6 +601,34 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					if (node.Key == "SoundFile" && parent.Key.StartsWith("AmbientSound", StringComparison.Ordinal))
 						RenameNodeKey(node, "SoundFiles");
 
+				// PauseOnLowPower property has been replaced with PauseOnCondition/RequiresCondition
+				if (engineVersion < 20170501)
+				{
+					if (node.Key.StartsWith("WithRearmAnimation", StringComparison.Ordinal) || node.Key.StartsWith("WithRepairAnimation", StringComparison.Ordinal)
+						|| node.Key.StartsWith("WithIdleAnimation", StringComparison.Ordinal))
+					{
+						var pauseOnLowPowerNode = node.Value.Nodes.FirstOrDefault(n => n.Key == "PauseOnLowPower");
+						if (pauseOnLowPowerNode != null)
+						{
+							node.Value.Nodes.Remove(pauseOnLowPowerNode);
+							Console.WriteLine("PauseOnLowPower has been removed from {0}; use RequiresCondition instead.".F(node.Key));
+						}
+					}
+					else if (node.Key.StartsWith("WithIdleOverlay", StringComparison.Ordinal) || node.Key.StartsWith("WithRepairOverlay", StringComparison.Ordinal))
+					{
+						var pauseOnLowPowerNode = node.Value.Nodes.FirstOrDefault(n => n.Key == "PauseOnLowPower");
+						if (pauseOnLowPowerNode != null)
+						{
+							node.Value.Nodes.Remove(pauseOnLowPowerNode);
+							Console.WriteLine("PauseOnLowPower has been removed from {0}; use PauseOnCondition or RequiresCondition instead.".F(node.Key));
+						}
+					}
+					else if (node.Key.StartsWith("AffectedByPowerOutage", StringComparison.Ordinal))
+					{
+						Console.WriteLine("Actor {0} has AffectedByPowerOutage; use the Condition property to apply its effects.".F(node.Key));
+					}
+				}
+
 				UpgradeActorRules(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 
