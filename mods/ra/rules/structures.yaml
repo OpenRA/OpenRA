@@ -1304,6 +1304,7 @@ AFLD:
 POWR:
 	Inherits: ^Building
 	Inherits@IDISABLE: ^DisabledOverlay
+	Inherits@POWER_OUTAGE: ^DisabledByPowerOutage
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 10
@@ -1327,8 +1328,6 @@ POWR:
 	Bib:
 	Power:
 		Amount: 100
-	InfiltrateForPowerOutage:
-	AffectedByPowerOutage:
 	Targetable:
 		TargetTypes: Ground, Structure, C4, DetonateAttack, SpyInfiltrate
 	ScalePowerWithHealth:
@@ -1339,6 +1338,7 @@ POWR:
 APWR:
 	Inherits: ^Building
 	Inherits@IDISABLE: ^DisabledOverlay
+	Inherits@POWER_OUTAGE: ^DisabledByPowerOutage
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 110
@@ -1366,8 +1366,6 @@ APWR:
 	Bib:
 	Power:
 		Amount: 200
-	InfiltrateForPowerOutage:
-	AffectedByPowerOutage:
 	Targetable:
 		TargetTypes: Ground, Structure, C4, DetonateAttack, SpyInfiltrate
 	ScalePowerWithHealth:

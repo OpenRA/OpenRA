@@ -141,11 +141,11 @@ namespace OpenRA.Mods.Common.Traits
 
 		void UpdatePowerOutageActors()
 		{
-			var actors = self.World.ActorsHavingTrait<AffectedByPowerOutage>()
-				.Where(a => !a.IsDead && a.IsInWorld && a.Owner == self.Owner);
+			var traitPairs = self.World.ActorsWithTrait<AffectedByPowerOutage>()
+				.Where(p => !p.Actor.IsDead && p.Actor.IsInWorld && p.Actor.Owner == self.Owner);
 
-			foreach (var a in actors)
-				UpdateActor(a);
+			foreach (var p in traitPairs)
+				p.Trait.UpdateStatus(p.Actor);
 		}
 
 		void IResolveOrder.ResolveOrder(Actor self, Order order)

@@ -1,6 +1,7 @@
 GAPOWR:
 	Inherits: ^Building
 	Inherits@IDISABLE: ^DisabledOverlay
+	Inherits@POWER_OUTAGE: ^DisabledByPowerOutage
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 10
@@ -32,8 +33,6 @@ GAPOWR:
 		Bounds: 90, 48, 0, -6
 	Power:
 		Amount: 100
-	InfiltrateForPowerOutage:
-	AffectedByPowerOutage:
 	PowerTooltip:
 	Targetable:
 		TargetTypes: Ground, C4, DetonateAttack, SpyInfiltrate
@@ -43,7 +42,7 @@ GAPOWR:
 		Conditions:
 			powrup: powrup.a
 	Power@pluga:
-		RequiresCondition: powrup.a
+		RequiresCondition: powrup.a && !power-outage
 		Amount: 50
 	WithIdleOverlay@pluga:
 		RequiresCondition: powrup.a
@@ -58,7 +57,7 @@ GAPOWR:
 		PauseOnCondition: disabled
 		Sequence: idle-powrupb
 	Power@plugb:
-		RequiresCondition: powrup.b
+		RequiresCondition: powrup.b && !power-outage
 		Amount: 50
 	ProvidesPrerequisite@buildingname:
 	SelectionDecorations:
