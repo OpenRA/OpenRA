@@ -271,8 +271,10 @@ GADEPT:
 	WithIdleOverlay@CIRCUITS:
 		Sequence: circuits
 	WithRepairOverlay@CRANE:
+		PauseOnCondition: empdisable
 		Sequence: crane
 	WithRepairOverlay@PLATFORM:
+		RequiresCondition: !empdisable
 		Sequence: platform
 	WithDeathAnimation@BIB:
 		DeathSequence: dead-ground
