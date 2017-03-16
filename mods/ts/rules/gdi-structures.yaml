@@ -23,8 +23,10 @@ GAPOWR:
 		Range: 4c0
 		MaxHeightDelta: 3
 	WithIdleOverlay@LIGHTS:
+		RequiresCondition: !disabled
 		Sequence: idle-lights
 	WithIdleOverlay@PLUG:
+		PauseOnCondition: disabled
 		Sequence: idle-plug
 	Selectable:
 		Bounds: 90, 48, 0, -6
@@ -45,6 +47,7 @@ GAPOWR:
 		Amount: 50
 	WithIdleOverlay@pluga:
 		RequiresCondition: powrup.a
+		PauseOnCondition: disabled
 		Sequence: idle-powrupa
 	Pluggable@plugb:
 		Offset: 1,1
@@ -52,6 +55,7 @@ GAPOWR:
 			powrup: powrup.b
 	WithIdleOverlay@plugb:
 		RequiresCondition: powrup.b
+		PauseOnCondition: disabled
 		Sequence: idle-powrupb
 	Power@plugb:
 		RequiresCondition: powrup.b
@@ -292,6 +296,7 @@ GADEPT:
 
 GARADR:
 	Inherits: ^Building
+	Inherits@IDISABLED: ^DisabledOverlay
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 80
@@ -336,11 +341,10 @@ GARADR:
 	ProvidesPrerequisite@buildingname:
 	SelectionDecorations:
 		VisualBounds: 96, 118, 0, -38
-	GrantConditionOnDisabled@IDISABLE:
-		Condition: disabled
 
 GATECH:
 	Inherits: ^Building
+	Inherits@IDISABLE: ^DisabledOverlay
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 150
@@ -365,9 +369,11 @@ GATECH:
 		Range: 4c0
 		MaxHeightDelta: 3
 	WithIdleOverlay@LIGHTS:
+		RequiresCondition: !disabled
 		Sequence: idle-lights
 	Power:
 		Amount: -150
+	RequiresPower:
 	ProvidesPrerequisite@buildingname:
 	SelectionDecorations:
 		VisualBounds: 110, 60, 3, -4
@@ -395,10 +401,13 @@ GAPLUG:
 		PowerupSpeech: EnablePower
 		PowerdownSpeech: DisablePower
 	WithIdleOverlay@DISH:
+		PauseOnCondition: disabled
 		Sequence: idle-dish
 	WithIdleOverlay@LIGHTS:
+		RequiresCondition: !disabled
 		Sequence: idle-lights
 	WithIdleOverlay@STRIP:
+		RequiresCondition: !disabled
 		Sequence: idle-strip
 	Health:
 		HP: 1000
@@ -453,9 +462,11 @@ GAPLUG:
 			plug.hunterseeker: !plug.hunterseekerb && !plug.ioncannona && !plug.hunterseekera
 	WithIdleOverlay@ioncannona:
 		RequiresCondition: plug.ioncannona
+		PauseOnCondition: disabled
 		Sequence: idle-ioncannona
 	WithIdleOverlay@hunterseekera:
 		RequiresCondition: plug.hunterseekera
+		PauseOnCondition: disabled
 		Sequence: idle-hunterseekera
 	Pluggable@plugb:
 		Offset: 1,2
@@ -467,9 +478,11 @@ GAPLUG:
 			plug.hunterseeker: !plug.hunterseekera && !plug.ioncannonb && !plug.hunterseekerb
 	WithIdleOverlay@ioncannonb:
 		RequiresCondition: plug.ioncannonb
+		PauseOnCondition: disabled
 		Sequence: idle-ioncannonb
 	WithIdleOverlay@hunterseekerb:
 		RequiresCondition: plug.hunterseekerb
+		PauseOnCondition: disabled
 		Sequence: idle-hunterseekerb
 	ProvidesPrerequisite@buildingname:
 	SelectionDecorations:

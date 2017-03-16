@@ -43,6 +43,7 @@ NAGATE_B:
 
 NAPOST:
 	Inherits: ^Building
+	Inherits@IDISABLED: ^DisabledOverlay
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 150
@@ -82,8 +83,6 @@ NAPOST:
 		PowerupSpeech: EnablePower
 		PowerdownSpeech: DisablePower
 	RequiresPower:
-	GrantConditionOnDisabled:
-		Condition: disabled
 	LineBuildSegmentExternalCondition:
 		RequiresCondition: !disabled && !make-animation-playing
 		Condition: active-posts
@@ -224,6 +223,7 @@ NAOBEL:
 		Palette: player
 		IsPlayerPalette: true
 	WithIdleOverlay@LIGHTS:
+		RequiresCondition: !disabled
 		Sequence: idle-lights
 	Power:
 		Amount: -150
@@ -269,6 +269,7 @@ NASAM:
 
 NASTLH:
 	Inherits: ^Building
+	Inherits@IDISABLED: ^DisabledOverlay
 	Valued:
 		Cost: 2500
 	Tooltip:
@@ -290,7 +291,7 @@ NASTLH:
 		MaxHeightDelta: 3
 	WithIdleOverlay@pulse:
 		Sequence: pulse
-		PauseOnLowPower: true
+		RequiresCondition: !disabled
 	WithRangeCircle:
 		Range: 12c0
 		Type: cloakgenerator
@@ -301,8 +302,6 @@ NASTLH:
 		PowerupSpeech: EnablePower
 		PowerdownSpeech: DisablePower
 		IndicatorPalette: mouse
-	GrantConditionOnDisabled:
-		Condition: disabled
 	ProximityExternalCondition:
 		RequiresCondition: !disabled
 		Condition: cloakgenerator
@@ -342,6 +341,7 @@ NAMISL:
 	RevealsShroud:
 		Range: 4c0
 	WithIdleOverlay@LIGHTS:
+		RequiresCondition: !disabled
 		Sequence: idle-lights
 	Power:
 		Amount: -50

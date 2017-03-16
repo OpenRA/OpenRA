@@ -25,6 +25,7 @@ NAPOWR:
 		Range: 4c0
 		MaxHeightDelta: 3
 	WithIdleOverlay@LIGHTS:
+		RequiresCondition: !disabled
 		Sequence: idle-lights
 	Power:
 		Amount: 100
@@ -64,6 +65,7 @@ NAAPWR:
 		Range: 4c0
 		MaxHeightDelta: 3
 	WithIdleOverlay@LIGHTS:
+		RequiresCondition: !disabled
 		Sequence: idle-lights
 	Power:
 		Amount: 200
@@ -249,6 +251,7 @@ NAHPAD:
 
 NARADR:
 	Inherits: ^Building
+	Inherits@IDISABLED: ^DisabledOverlay
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 90
@@ -293,11 +296,10 @@ NARADR:
 	ProvidesPrerequisite@buildingname:
 	SelectionDecorations:
 		VisualBounds: 96, 72, 0, -12
-	GrantConditionOnDisabled@IDISABLE:
-		Condition: disabled
 
 NATECH:
 	Inherits: ^Building
+	Inherits@IDISABLED: ^DisabledOverlay
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 160
@@ -322,15 +324,18 @@ NATECH:
 		Range: 4c0
 		MaxHeightDelta: 3
 	WithIdleOverlay@LIGHTS:
+		RequiresCondition: !disabled
 		Sequence: idle-lights
 	Power:
 		Amount: -150
+	RequiresPower:
 	ProvidesPrerequisite@buildingname:
 	SelectionDecorations:
 		VisualBounds: 86, 58, 0, -4
 
 NATMPL:
 	Inherits: ^Building
+	Inherits@IDISABLED: ^DisabledOverlay
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 180
@@ -356,7 +361,9 @@ NATMPL:
 		MaxHeightDelta: 3
 	Power:
 		Amount: -200
+	RequiresPower:
 	WithIdleOverlay@LIGHTS:
+		RequiresCondition: !disabled
 		Sequence: idle-lights
 	ProduceActorPower:
 		Description: Hunter Seeker
