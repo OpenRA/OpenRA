@@ -326,7 +326,7 @@ GARADR:
 		MaxHeightDelta: 3
 	WithIdleOverlay@DISH:
 		Sequence: idle-dish
-		PauseOnLowPower: yes
+		PauseOnCondition: disabled
 	Targetable:
 		TargetTypes: Ground, C4, SpyInfiltrate
 	Power:

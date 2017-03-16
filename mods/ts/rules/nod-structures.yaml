@@ -285,7 +285,7 @@ NARADR:
 		MaxHeightDelta: 3
 	WithIdleOverlay@DISH:
 		Sequence: idle-dish
-		PauseOnLowPower: true
+		PauseOnCondition: disabled
 	Targetable:
 		TargetTypes: Ground, C4, SpyInfiltrate
 	Power:

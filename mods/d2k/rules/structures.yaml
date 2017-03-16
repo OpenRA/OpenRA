@@ -525,7 +525,7 @@ outpost:
 			mercenary: outpost.ordos
 	WithIdleOverlay@DISH:
 		Sequence: idle-dish
-		PauseOnLowPower: true
+		PauseOnCondition: disabled
 		RequiresCondition: !severe-damaged
 	GrantConditionOnDamageState@STOPDISH:
 		Condition: severe-damaged
