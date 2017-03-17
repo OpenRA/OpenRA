@@ -40,6 +40,8 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class PrimaryBuilding : INotifyCreated, IIssueOrder, IResolveOrder
 	{
+		const string OrderID = "PrimaryProducer";
+
 		readonly PrimaryBuildingInfo info;
 		ConditionManager conditionManager;
 		int primaryToken = ConditionManager.InvalidConditionToken;
@@ -58,12 +60,12 @@ namespace OpenRA.Mods.Common.Traits
 
 		IEnumerable<IOrderTargeter> IIssueOrder.Orders
 		{
-			get { yield return new DeployOrderTargeter("PrimaryProducer", 1); }
+			get { yield return new DeployOrderTargeter(OrderID, 1); }
 		}
 
 		Order IIssueOrder.IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
 		{
-			if (order.OrderID == "PrimaryProducer")
+			if (order.OrderID == OrderID)
 				return new Order(order.OrderID, self, false);
 
 			return null;
@@ -71,8 +73,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		void IResolveOrder.ResolveOrder(Actor self, Order order)
 		{
-			if (order.OrderString == "PrimaryProducer")
-				SetPrimaryProducer(self, !IsPrimary);
+			var forceRallyPoint = RallyPoint.IsForceSet(order);
+			if (order.OrderString == OrderID || forceRallyPoint)
+				SetPrimaryProducer(self, !IsPrimary || forceRallyPoint);
 		}
 
 		public void SetPrimaryProducer(Actor self, bool isPrimary)
