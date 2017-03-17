@@ -21,6 +21,7 @@ MSLO:
 	RevealsShroud:
 		Range: 5c0
 	NukePower:
+		PauseOnCondition: disabled
 		Cursor: nuke
 		Icon: abomb
 		ChargeTime: 540
@@ -318,6 +319,7 @@ IRON:
 	Bib:
 		HasMinibib: Yes
 	GrantExternalConditionPower@IRONCURTAIN:
+		PauseOnCondition: disabled
 		Icon: invuln
 		ChargeTime: 120
 		Description: Invulnerability
@@ -375,6 +377,7 @@ PDOX:
 		Prerequisite: pdox.germany
 	ChronoshiftPower@chronoshift:
 		OrderName: Chronoshift
+		PauseOnCondition: disabled
 		Prerequisites: !pdox.germany
 		Icon: chrono
 		ChargeTime: 120
@@ -389,6 +392,7 @@ PDOX:
 		DisplayRadarPing: True
 	ChronoshiftPower@advancedchronoshift:
 		OrderName: AdvancedChronoshift
+		PauseOnCondition: disabled
 		Prerequisites: pdox.germany
 		Icon: chrono
 		ChargeTime: 120
@@ -811,6 +815,7 @@ ATEK:
 		Range: 6c0
 	Bib:
 	GpsPower:
+		PauseOnCondition: disabled
 		Icon: gps
 		OneShot: yes
 		ChargeTime: 480

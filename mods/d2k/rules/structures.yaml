@@ -950,6 +950,7 @@ palace:
 	NukePower:
 		Cursor: nuke
 		Icon: deathhand
+		PauseOnCondition: disabled
 		Prerequisites: ~techlevel.superweapons, ~palace.nuke
 		ChargeTime: 300
 		Description: Death Hand
@@ -969,6 +970,7 @@ palace:
 		Description: Recruit Fremen
 		LongDesc: Elite infantry unit armed with assault rifles and rockets\n  Strong vs Infantry, Vehicles\n  Weak vs Artillery\n  Special Ability: Invisibility
 		Icon: fremen
+		PauseOnCondition: disabled
 		Prerequisites: ~techlevel.superweapons, ~palace.fremen
 		Actors: fremen, fremen
 		Type: Palace
@@ -980,6 +982,7 @@ palace:
 		Description: Recruit Saboteur
 		LongDesc: Sneaky infantry, armed with explosives\n  Strong vs Buildings\n  Weak vs Everything\n  Special Ability: destroy buildings
 		Icon: saboteur
+		PauseOnCondition: disabled
 		Prerequisites: ~techlevel.superweapons, ~palace.saboteur
 		Actors: saboteur
 		Type: Palace

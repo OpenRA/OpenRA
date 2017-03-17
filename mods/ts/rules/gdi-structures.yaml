@@ -417,6 +417,7 @@ GAPLUG:
 		MaxHeightDelta: 3
 	IonCannonPower:
 		Cursor: ioncannon
+		PauseOnCondition: disabled || empdisable
 		RequiresCondition: plug.ioncannona || plug.ioncannonb
 		Icon: ioncannon
 		Effect: explosion
@@ -431,6 +432,7 @@ GAPLUG:
 		DisplayRadarPing: True
 		CameraActor: camera
 	ProduceActorPower:
+		PauseOnCondition: disabled || empdisable
 		RequiresCondition: plug.hunterseekera || plug.hunterseekerb
 		Description: Hunter Seeker
 		LongDesc: Releases a drone that will acquire and destroy an enemy target.

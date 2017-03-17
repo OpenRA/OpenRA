@@ -477,6 +477,7 @@ HQ:
 	DetectCloaked:
 		Range: 5c0
 	AirstrikePower:
+		PauseOnCondition: disabled
 		Prerequisites: ~techlevel.superweapons
 		Icon: airstrike
 		ChargeTime: 240
@@ -573,6 +574,7 @@ EYE:
 	DetectCloaked:
 		Range: 5c0
 	IonCannonPower:
+		PauseOnCondition: disabled
 		Prerequisites: ~techlevel.superweapons
 		Icon: ioncannon
 		Cursor: ioncannon
@@ -625,6 +627,7 @@ TMPL:
 	DetectCloaked:
 		Range: 5c0
 	NukePower:
+		PauseOnCondition: disabled
 		Prerequisites: ~techlevel.superweapons
 		Icon: abomb
 		Cursor: nuke

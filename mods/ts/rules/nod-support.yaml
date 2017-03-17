@@ -353,6 +353,7 @@ NAMISL:
 	ProvidesPrerequisite@buildingname:
 	SupportPowerChargeBar:
 	NukePower:
+		PauseOnCondition: disabled
 		Cursor: nuke
 		Icon: clustermissile
 		ChargeTime: 540

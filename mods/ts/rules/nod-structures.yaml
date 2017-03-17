@@ -364,6 +364,7 @@ NATMPL:
 		RequiresCondition: !disabled
 		Sequence: idle-lights
 	ProduceActorPower:
+		PauseOnCondition: empdisable
 		Description: Hunter Seeker
 		LongDesc: Releases a drone that will acquire and destroy an enemy target.
 		Prerequisites: ~techlevel.superweapons
