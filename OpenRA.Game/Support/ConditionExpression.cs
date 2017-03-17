@@ -14,17 +14,80 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
 using Expressions = System.Linq.Expressions;
 
 namespace OpenRA.Support
 {
+	public interface ICondition
+	{
+		bool AsBool();
+		int AsInt();
+		ICondition Get(string name);
+		bool GetAsBool(string name);
+		int GetAsInt(string name);
+	}
+
+	public class EmptyCondition : ICondition
+	{
+		public static readonly EmptyCondition Instance = new EmptyCondition();
+		EmptyCondition() { }
+
+		bool ICondition.AsBool() { return false; }
+		int ICondition.AsInt() { return 0; }
+		ICondition ICondition.Get(string name) { return Instance; }
+		bool ICondition.GetAsBool(string name) { return false; }
+		int ICondition.GetAsInt(string name) { return 0; }
+	}
+
+	public class ConditionContext : Dictionary<string, ICondition>, ICondition
+	{
+		bool ICondition.AsBool() { return Count > 0; }
+		int ICondition.AsInt() { return Count; }
+		bool ICondition.GetAsBool(string name) { return Get(name).AsBool(); }
+		int ICondition.GetAsInt(string name) { return Get(name).AsInt(); }
+		public ICondition Get(string name)
+		{
+			ICondition variable;
+			if (TryGetValue(name, out variable))
+				return variable;
+			return EmptyCondition.Instance;
+		}
+	}
+
+	public struct NumberCondition : ICondition
+	{
+		public int Value;
+		public NumberCondition(int value = 0) { Value = value; }
+
+		int ICondition.AsInt() { return Value; }
+		bool ICondition.AsBool() { return Value != 0; }
+		ICondition ICondition.Get(string name) { return EmptyCondition.Instance; }
+		bool ICondition.GetAsBool(string name) { return false; }
+		int ICondition.GetAsInt(string name) { return 0; }
+	}
+
+	public struct BoolCondition : ICondition
+	{
+		public bool Value;
+		public BoolCondition(bool value = false) { Value = value; }
+		public static readonly BoolCondition False = new BoolCondition(false);
+		public static readonly BoolCondition True = new BoolCondition(true);
+
+		int ICondition.AsInt() { return Value ? 1 : 0; }
+		bool ICondition.AsBool() { return Value; }
+		ICondition ICondition.Get(string name) { return EmptyCondition.Instance; }
+		bool ICondition.GetAsBool(string name) { return false; }
+		int ICondition.GetAsInt(string name) { return 0; }
+	}
+
 	public class ConditionExpression
 	{
 		public readonly string Expression;
 		readonly HashSet<string> variables = new HashSet<string>();
 		public IEnumerable<string> Variables { get { return variables; } }
 
-		readonly Func<IReadOnlyDictionary<string, int>, int> asFunction;
+		readonly Func<ICondition, int> asFunction;
 
 		enum CharClass { Whitespace, Operator, Mixed, Id, Digit }
 
@@ -56,9 +119,9 @@ namespace OpenRA.Support
 				case '?':
 				case ',':
 				case '/':
+				case '.':
 					return CharClass.Operator;
 
-				case '.':
 				case '$':
 				case '-':
 				case '@':
@@ -118,6 +181,7 @@ namespace OpenRA.Support
 			// varying values
 			Number,
 			Variable,
+			Property, // Not collected for subscription
 
 			// operators
 			OpenParen,
@@ -138,12 +202,14 @@ namespace OpenRA.Support
 			Multiply,
 			Divide,
 			Modulo,
+			Dot,
 
 			Invalid
 		}
 
 		enum Precedence
 		{
+			Dot = 24,
 			Unary = 16,
 			Multiplication = 12,
 			Addition = 11,
@@ -214,6 +280,9 @@ namespace OpenRA.Support
 					case TokenType.Variable:
 						yield return new TokenTypeInfo("(<variable>)", Precedence.Value);
 						continue;
+					case TokenType.Property:
+						yield return new TokenTypeInfo("(<property>)", Precedence.Value);
+						continue;
 					case TokenType.OpenParen:
 						yield return new TokenTypeInfo("(", Precedence.Parens, Grouping.Parens);
 						continue;
@@ -267,6 +336,9 @@ namespace OpenRA.Support
 						continue;
 					case TokenType.Modulo:
 						yield return new TokenTypeInfo("%", Precedence.Multiplication, OperandSides.Both);
+						continue;
+					case TokenType.Dot:
+						yield return new TokenTypeInfo(".", Precedence.Dot, OperandSides.Both);
 						continue;
 				}
 
@@ -336,7 +408,7 @@ namespace OpenRA.Support
 				return false;
 			}
 
-			static TokenType VariableOrKeyword(string expression, int start, int length)
+			static TokenType VariableOrKeyword(string expression, int start, int length, TokenType lastType = TokenType.Invalid)
 			{
 				var i = start;
 				if (length == 4 && expression[i++] == 't' && expression[i++] == 'r' && expression[i++] == 'u'
@@ -347,7 +419,7 @@ namespace OpenRA.Support
 						&& expression[i++] == 's' && expression[i] == 'e')
 					return TokenType.False;
 
-				return TokenType.Variable;
+				return lastType == TokenType.Dot ? TokenType.Property : TokenType.Variable;
 			}
 
 			public static TokenType GetNextType(string expression, ref int i, TokenType lastType = TokenType.Invalid)
@@ -427,6 +499,7 @@ namespace OpenRA.Support
 					case '~':
 						i++;
 						return TokenType.OnesComplement;
+
 					case '+':
 						i++;
 						return TokenType.Add;
@@ -438,6 +511,7 @@ namespace OpenRA.Support
 						i = start + 1;
 						if (IsLeftOperandOrNone(lastType))
 							return TokenType.Negate;
+
 						return TokenType.Subtract;
 
 					case '*':
@@ -451,6 +525,10 @@ namespace OpenRA.Support
 					case '%':
 						i++;
 						return TokenType.Modulo;
+
+					case '.':
+						i++;
+						return TokenType.Dot;
 				}
 
 				if (ScanIsNumber(expression, start, ref i))
@@ -466,10 +544,10 @@ namespace OpenRA.Support
 				{
 					cc = CharClassOf(expression[i]);
 					if (cc == CharClass.Whitespace || cc == CharClass.Operator)
-						return VariableOrKeyword(expression, start, i - start);
+						return VariableOrKeyword(expression, start, i - start, lastType);
 				}
 
-				return VariableOrKeyword(expression, start, i - start);
+				return VariableOrKeyword(expression, start, i - start, lastType);
 			}
 
 			public static Token GetNext(string expression, ref int i, TokenType lastType = TokenType.Invalid)
@@ -495,10 +573,19 @@ namespace OpenRA.Support
 					case TokenType.Variable:
 						return new VariableToken(start, expression.Substring(start, i - start));
 
+					case TokenType.Property:
+						return new PropertyToken(start, expression.Substring(start, i - start));
+
 					default:
 						return new Token(type, start);
 				}
 			}
+		}
+
+		public static bool IsValidVariableName(string name)
+		{
+			int i = 0;
+			return Token.GetNextType(name, ref i) == TokenType.Variable && i == name.Length;
 		}
 
 		class VariableToken : Token
@@ -508,6 +595,15 @@ namespace OpenRA.Support
 			public override string Symbol { get { return Name; } }
 
 			public VariableToken(int index, string symbol) : base(TokenType.Variable, index) { Name = symbol; }
+		}
+
+		class PropertyToken : Token
+		{
+			public readonly string Name;
+
+			public override string Symbol { get { return Name; } }
+
+			public PropertyToken(int index, string symbol) : base(TokenType.Property, index) { Name = symbol; }
 		}
 
 		class NumberToken : Token
@@ -594,13 +690,6 @@ namespace OpenRA.Support
 			asFunction = new Compiler().Compile(ToPostfix(tokens).ToArray());
 		}
 
-		static int ParseSymbol(string symbol, IReadOnlyDictionary<string, int> symbols)
-		{
-			int value;
-			symbols.TryGetValue(symbol, out value);
-			return value;
-		}
-
 		static IEnumerable<Token> ToPostfix(IEnumerable<Token> tokens)
 		{
 			var s = new Stack<Token>();
@@ -630,10 +719,12 @@ namespace OpenRA.Support
 				yield return s.Pop();
 		}
 
-		enum ExpressionType { Int, Bool }
+		enum ExpressionType { Int, Bool, Variable, Property, DotLookup }
 
-		static readonly ParameterExpression SymbolsParam =
-			Expressions.Expression.Parameter(typeof(IReadOnlyDictionary<string, int>), "symbols");
+		static readonly MethodInfo VariableInVariable = typeof(ICondition).GetMethod("Get");
+		static readonly MethodInfo IntInVariable = typeof(ICondition).GetMethod("GetAsInt");
+		static readonly MethodInfo BoolInVariable = typeof(ICondition).GetMethod("GetAsBool");
+		static readonly ParameterExpression ContextParam = Expressions.Expression.Parameter(typeof(ICondition), "context");
 		static readonly ConstantExpression Zero = Expressions.Expression.Constant(0);
 		static readonly ConstantExpression One = Expressions.Expression.Constant(1);
 		static readonly ConstantExpression False = Expressions.Expression.Constant(false);
@@ -652,38 +743,108 @@ namespace OpenRA.Support
 		class AstStack
 		{
 			readonly List<Expression> expressions = new List<Expression>();
+			readonly List<Token> tokens = new List<Token>();
 			readonly List<ExpressionType> types = new List<ExpressionType>();
 
 			public ExpressionType PeekType() { return types[types.Count - 1]; }
 
-			public Expression Peek(ExpressionType toType)
+			public Token PeekToken() { return tokens[tokens.Count - 1]; }
+			Expression PeekExpression() { return expressions[expressions.Count - 1]; }
+
+			void RemoveTop()
 			{
-				var fromType = types[types.Count - 1];
-				var expression = expressions[expressions.Count - 1];
+				types.RemoveAt(types.Count - 1);
+				expressions.RemoveAt(expressions.Count - 1);
+				tokens.RemoveAt(tokens.Count - 1);
+			}
+
+			Expression PopExpression()
+			{
+				var top = PeekExpression();
+				RemoveTop();
+				return top;
+			}
+
+			Token PopToken()
+			{
+				var top = PeekToken();
+				RemoveTop();
+				return top;
+			}
+
+			Expression Convert(Expression expression, ExpressionType fromType, ExpressionType toType)
+			{
 				if (toType == fromType)
 					return expression;
 
-				switch (toType)
+				if (fromType == ExpressionType.Property)
 				{
-					case ExpressionType.Bool:
-						return IfThenElse(AsBool(expression), True, False);
-					case ExpressionType.Int:
-						return IfThenElse(expression, One, Zero);
+					switch (toType)
+					{
+						case ExpressionType.Bool:
+							return Expressions.Expression.Call(ContextParam, BoolInVariable, expression);
+						case ExpressionType.Int:
+							return Expressions.Expression.Call(ContextParam, IntInVariable, expression);
+						case ExpressionType.Variable:
+							return Expressions.Expression.Call(ContextParam, VariableInVariable, expression);
+					}
+				}
+				else
+				{
+					switch (toType)
+					{
+						case ExpressionType.Bool:
+							return AsBool(expression);
+						case ExpressionType.Int:
+							return IfThenElse(expression, One, Zero);
+					}
 				}
 
-				throw new InvalidProgramException("Unable to convert ExpressionType.{0} to ExpressionType.{1}".F(
+				throw new InvalidProgramException("Unable to convert ExpressionType.{0} to ExpressionType.{1}.".F(
 					Enum<ExpressionType>.GetValues()[(int)fromType], Enum<ExpressionType>.GetValues()[(int)toType]));
 			}
 
-			public Expression Pop(ExpressionType type)
+			public Expression Pop(ExpressionType toType)
 			{
-				var expression = Peek(type);
-				expressions.RemoveAt(expressions.Count - 1);
-				types.RemoveAt(types.Count - 1);
-				return expression;
+				var fromType = PeekType();
+
+				if (PeekExpression() != null)
+					return Convert(PopExpression(), fromType, toType);
+
+				var token = PopToken();
+				if (fromType == ExpressionType.DotLookup)
+				{
+					if (PeekType() != ExpressionType.Property)
+						throw new InvalidDataException("`.` operator at index {0} requires a property name as its right operand.".F(token.Index));
+
+					var property = Pop(ExpressionType.Property);
+
+					try {
+						var variable = Pop(ExpressionType.Variable);
+
+						switch (toType)
+						{
+							case ExpressionType.Bool:
+								return Expressions.Expression.Call(variable, BoolInVariable, property);
+
+							case ExpressionType.Int:
+								return Expressions.Expression.Call(variable, IntInVariable, property);
+
+							case ExpressionType.Variable:
+								return Expressions.Expression.Call(variable, VariableInVariable, property);
+						}
+					}
+					catch (InvalidProgramException ex)
+					{
+						throw new InvalidDataException("`.` operator at index {0} requires a variable as its left operand: {1}".F(token.Index, ex.Message));
+					}
+				}
+
+				throw new InvalidProgramException("Unable to convert ExpressionType.{0} to ExpressionType.{1} for `{2}` operator at index {3}.".F(
+					Enum<ExpressionType>.GetValues()[(int)fromType], Enum<ExpressionType>.GetValues()[(int)toType], token.Symbol, token.Index));
 			}
 
-			public void Push(Expression expression, ExpressionType type)
+			public void Push(Expression expression, ExpressionType type, Token token)
 			{
 				expressions.Add(expression);
 				if (type == ExpressionType.Int)
@@ -693,12 +854,15 @@ namespace OpenRA.Support
 				if (type == ExpressionType.Bool)
 					if (expression.Type != typeof(bool))
 						throw new InvalidOperationException("Expected System.Boolean type instead of {0} for {1}".F(expression.Type, expression));
+
+				tokens.Add(token);
 				types.Add(type);
 			}
 
-			public void Push(Expression expression)
+			public void Push(Expression expression, Token token)
 			{
 				expressions.Add(expression);
+				tokens.Add(token);
 				if (expression.Type == typeof(int))
 					types.Add(ExpressionType.Int);
 				else if (expression.Type == typeof(bool))
@@ -706,23 +870,30 @@ namespace OpenRA.Support
 				else
 					throw new InvalidOperationException("Unhandled result type {0} for {1}".F(expression.Type, expression));
 			}
+
+			public void Push(Token token, ExpressionType type)
+			{
+				expressions.Add(null);
+				tokens.Add(token);
+				types.Add(type);
+			}
 		}
 
 		class Compiler
 		{
 			readonly AstStack ast = new AstStack();
 
-			public Func<IReadOnlyDictionary<string, int>, int> Compile(Token[] postfix)
+			public Func<ICondition, int> Compile(Token[] postfix)
 			{
-				foreach (var t in postfix)
+				foreach (var token in postfix)
 				{
-					switch (t.Type)
+					switch (token.Type)
 					{
 						case TokenType.And:
 						{
 							var y = ast.Pop(ExpressionType.Bool);
 							var x = ast.Pop(ExpressionType.Bool);
-							ast.Push(Expressions.Expression.And(x, y));
+							ast.Push(Expressions.Expression.And(x, y), token);
 							continue;
 						}
 
@@ -730,7 +901,7 @@ namespace OpenRA.Support
 						{
 							var y = ast.Pop(ExpressionType.Bool);
 							var x = ast.Pop(ExpressionType.Bool);
-							ast.Push(Expressions.Expression.Or(x, y));
+							ast.Push(Expressions.Expression.Or(x, y), token);
 							continue;
 						}
 
@@ -738,7 +909,7 @@ namespace OpenRA.Support
 						{
 							var y = ast.Pop(ExpressionType.Int);
 							var x = ast.Pop(ExpressionType.Int);
-							ast.Push(Expressions.Expression.NotEqual(x, y));
+							ast.Push(Expressions.Expression.NotEqual(x, y), token);
 							continue;
 						}
 
@@ -746,25 +917,25 @@ namespace OpenRA.Support
 						{
 							var y = ast.Pop(ExpressionType.Int);
 							var x = ast.Pop(ExpressionType.Int);
-							ast.Push(Expressions.Expression.Equal(x, y));
+							ast.Push(Expressions.Expression.Equal(x, y), token);
 							continue;
 						}
 
 						case TokenType.Not:
 						{
-							ast.Push(Expressions.Expression.Not(ast.Pop(ExpressionType.Bool)));
+							ast.Push(Expressions.Expression.Not(ast.Pop(ExpressionType.Bool)), token);
 							continue;
 						}
 
 						case TokenType.Negate:
 						{
-							ast.Push(Expressions.Expression.Negate(ast.Pop(ExpressionType.Int)));
+							ast.Push(Expressions.Expression.Negate(ast.Pop(ExpressionType.Int)), token);
 							continue;
 						}
 
 						case TokenType.OnesComplement:
 						{
-							ast.Push(Expressions.Expression.OnesComplement(ast.Pop(ExpressionType.Int)));
+							ast.Push(Expressions.Expression.OnesComplement(ast.Pop(ExpressionType.Int)), token);
 							continue;
 						}
 
@@ -772,7 +943,7 @@ namespace OpenRA.Support
 						{
 							var y = ast.Pop(ExpressionType.Int);
 							var x = ast.Pop(ExpressionType.Int);
-							ast.Push(Expressions.Expression.LessThan(x, y));
+							ast.Push(Expressions.Expression.LessThan(x, y), token);
 							continue;
 						}
 
@@ -780,7 +951,7 @@ namespace OpenRA.Support
 						{
 							var y = ast.Pop(ExpressionType.Int);
 							var x = ast.Pop(ExpressionType.Int);
-							ast.Push(Expressions.Expression.LessThanOrEqual(x, y));
+							ast.Push(Expressions.Expression.LessThanOrEqual(x, y), token);
 							continue;
 						}
 
@@ -788,7 +959,7 @@ namespace OpenRA.Support
 						{
 							var y = ast.Pop(ExpressionType.Int);
 							var x = ast.Pop(ExpressionType.Int);
-							ast.Push(Expressions.Expression.GreaterThan(x, y));
+							ast.Push(Expressions.Expression.GreaterThan(x, y), token);
 							continue;
 						}
 
@@ -796,7 +967,7 @@ namespace OpenRA.Support
 						{
 							var y = ast.Pop(ExpressionType.Int);
 							var x = ast.Pop(ExpressionType.Int);
-							ast.Push(Expressions.Expression.GreaterThanOrEqual(x, y));
+							ast.Push(Expressions.Expression.GreaterThanOrEqual(x, y), token);
 							continue;
 						}
 
@@ -804,7 +975,7 @@ namespace OpenRA.Support
 						{
 							var y = ast.Pop(ExpressionType.Int);
 							var x = ast.Pop(ExpressionType.Int);
-							ast.Push(Expressions.Expression.Add(x, y));
+							ast.Push(Expressions.Expression.Add(x, y), token);
 							continue;
 						}
 
@@ -812,7 +983,7 @@ namespace OpenRA.Support
 						{
 							var y = ast.Pop(ExpressionType.Int);
 							var x = ast.Pop(ExpressionType.Int);
-							ast.Push(Expressions.Expression.Subtract(x, y));
+							ast.Push(Expressions.Expression.Subtract(x, y), token);
 							continue;
 						}
 
@@ -820,7 +991,7 @@ namespace OpenRA.Support
 						{
 							var y = ast.Pop(ExpressionType.Int);
 							var x = ast.Pop(ExpressionType.Int);
-							ast.Push(Expressions.Expression.Multiply(x, y));
+							ast.Push(Expressions.Expression.Multiply(x, y), token);
 							continue;
 						}
 
@@ -830,7 +1001,7 @@ namespace OpenRA.Support
 							var x = ast.Pop(ExpressionType.Int);
 							var isNotZero = Expressions.Expression.NotEqual(y, Zero);
 							var divide = Expressions.Expression.Divide(x, y);
-							ast.Push(IfThenElse(isNotZero, divide, Zero));
+							ast.Push(IfThenElse(isNotZero, divide, Zero), token);
 							continue;
 						}
 
@@ -840,49 +1011,53 @@ namespace OpenRA.Support
 							var x = ast.Pop(ExpressionType.Int);
 							var isNotZero = Expressions.Expression.NotEqual(y, Zero);
 							var modulo = Expressions.Expression.Modulo(x, y);
-							ast.Push(IfThenElse(isNotZero, modulo, Zero));
+							ast.Push(IfThenElse(isNotZero, modulo, Zero), token);
+							continue;
+						}
+
+						case TokenType.Dot:
+						{
+							ast.Push(token, ExpressionType.DotLookup);
 							continue;
 						}
 
 						case TokenType.False:
 						{
-							ast.Push(False);
+							ast.Push(False, token);
 							continue;
 						}
 
 						case TokenType.True:
 						{
-							ast.Push(True);
+							ast.Push(True, token);
 							continue;
 						}
 
 						case TokenType.Number:
 						{
-							ast.Push(Expressions.Expression.Constant(((NumberToken)t).Value));
+							ast.Push(Expressions.Expression.Constant(((NumberToken)token).Value), token);
 							continue;
 						}
 
 						case TokenType.Variable:
+						case TokenType.Property:
 						{
-							var symbol = Expressions.Expression.Constant(((VariableToken)t).Symbol);
-							Func<string, IReadOnlyDictionary<string, int>, int> parseSymbol = ParseSymbol;
-							ast.Push(Expressions.Expression.Call(parseSymbol.Method, symbol, SymbolsParam));
+							ast.Push(Expressions.Expression.Constant(token.Symbol), ExpressionType.Property, token);
 							continue;
 						}
 
 						default:
 							throw new InvalidProgramException(
 								"ConditionExpression.Compiler.Compile() is missing an expression builder for TokenType.{0}".F(
-									Enum<TokenType>.GetValues()[(int)t.Type]));
+									Enum<TokenType>.GetValues()[(int)token.Type]));
 					}
 				}
 
-				return Expressions.Expression.Lambda<Func<IReadOnlyDictionary<string, int>, int>>(
-					ast.Pop(ExpressionType.Int), SymbolsParam).Compile();
+				return Expressions.Expression.Lambda<Func<ICondition, int>>(ast.Pop(ExpressionType.Int), ContextParam).Compile();
 			}
 		}
 
-		public int Evaluate(IReadOnlyDictionary<string, int> symbols)
+		public int Evaluate(ICondition symbols)
 		{
 			return asFunction(symbols);
 		}

@@ -387,6 +387,8 @@ stealth_raider:
 		Description: Invisible Raider Trike\n  Strong vs Infantry, Light Vehicles\n  Weak vs Tanks
 	Valued:
 		Cost: 400
+	Health:
+		DamageStateCondition: damage
 	Tooltip:
 		Name: Stealth Raider Trike
 	Cloak:
@@ -397,9 +399,9 @@ stealth_raider:
 		UncloakSound: STEALTH2.WAV
 		IsPlayerPalette: true
 		RequiresCondition: !cloak-force-disabled
-	GrantConditionOnDamageState@UNCLOAK:
+	GrantCondition@UNCLOAK:
+		RequiresCondition: damage.isCritical
 		Condition: cloak-force-disabled
-		ValidDamageStates: Critical
 	AutoTarget:
 		InitialStance: HoldFire
 		InitialStanceAI: ReturnFire

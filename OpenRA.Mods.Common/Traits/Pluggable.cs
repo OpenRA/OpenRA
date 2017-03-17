@@ -9,7 +9,10 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using OpenRA.Support;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -23,21 +26,41 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Conditions to grant for each accepted plug type.")]
 		public readonly Dictionary<string, string> Conditions = null;
 
+		[ProvidedConditionReference]
+		[Desc("Name of condition for checking plug.",
+			"(this-name).(condition-name) expression returns a boolean for whether this plug is granting a specified condition.")]
+		public readonly string Condition = null;
+
 		[GrantedConditionReference]
 		public IEnumerable<string> LinterConditions { get { return Conditions.Values; } }
+
+		[ConsumedConditionReference]
+		public IEnumerable<string> LinterSelfConditions
+		{
+			get { return string.IsNullOrEmpty(Condition) ? Enumerable.Empty<string>() : Conditions.Values; }
+		}
 
 		public object Create(ActorInitializer init) { return new Pluggable(init, this); }
 	}
 
-	public class Pluggable : INotifyCreated
+	public class Pluggable : NotifyingCondition, INotifyCreated, INotifyingConditionProvider
 	{
 		public readonly PluggableInfo Info;
 
 		readonly string initialPlug;
-		ConditionManager conditionManager;
 		int conditionToken = ConditionManager.InvalidConditionToken;
 
 		string active;
+		string condition;
+
+		IEnumerable<KeyValuePair<string, INotifyingCondition>> INotifyingConditionProvider.Provided
+		{
+			get
+			{
+				if (!string.IsNullOrEmpty(Info.Condition))
+					yield return new KeyValuePair<string, INotifyingCondition>(Info.Condition, this);
+			}
+		}
 
 		public Pluggable(ActorInitializer init, PluggableInfo info)
 		{
@@ -63,12 +86,15 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void EnablePlug(Actor self, string type)
 		{
-			string condition;
-			if (!Info.Conditions.TryGetValue(type, out condition))
+			string newCondition;
+			if (!Info.Conditions.TryGetValue(type, out newCondition))
 				return;
 
+			condition = newCondition;
 			conditionToken = conditionManager.GrantCondition(self, condition);
 			active = type;
+			condition = newCondition;
+			NotifyConditionChanged(self);
 		}
 
 		public void DisablePlug(Actor self, string type)
@@ -80,6 +106,25 @@ namespace OpenRA.Mods.Common.Traits
 				conditionToken = conditionManager.RevokeCondition(self, conditionToken);
 
 			active = null;
+			condition = null;
+			NotifyConditionChanged(self);
+		}
+
+		public override bool AsBool() { return condition != null; }
+		public override int AsInt() { return condition != null ? 1 : 0; }
+		public override ICondition Get(string name)
+		{
+			return condition == name ? BoolCondition.True : BoolCondition.False;
+		}
+
+		public override bool GetAsBool(string name)
+		{
+			return condition == name;
+		}
+
+		public override int GetAsInt(string name)
+		{
+			return condition == name ? 1 : 0;
 		}
 	}
 

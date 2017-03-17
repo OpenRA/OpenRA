@@ -451,6 +451,8 @@
 	Inherits@1: ^Infantry
 	Inherits@2: ^EmpDisable
 	Inherits@3: ^HealsOnTiberium
+	Health:
+		DamageStateCondition: damage
 	ExplosionOnDamageTransition:
 		Weapon: CyborgExplode
 		DamageState: Critical
@@ -466,9 +468,9 @@
 	WithInfantryBody:
 		DefaultAttackSequence: attack
 		IdleSequences: idle1,idle2
-	GrantConditionOnDamageState@CRITICAL:
+	GrantCondition@CRITICAL:
+		RequiresCondition: damage.isCritical
 		Condition: criticalspeed
-		ValidDamageStates: Critical
 		GrantPermanently: true
 	SpeedMultiplier@CRITICAL:
 		RequiresCondition: criticalspeed
@@ -494,6 +496,8 @@
 	Inherits@4: ^Cloakable
 	Inherits@5: ^DamagedByVeins
 	Inherits@CRATESTATS: ^CrateStatModifiers
+	Health:
+		DamageStateCondition: damage
 	Huntable:
 	DrawLineToTarget:
 	Mobile:
@@ -551,12 +555,12 @@
 		Weapons: SmallDebris
 		Pieces: 3, 7
 		Range: 2c0, 5c0
-	GrantConditionOnDamageState@DAMAGED:
+	GrantCondition@DAMAGED:
+		RequiresCondition: damage.isHeavy
 		Condition: damagedspeed
-		ValidDamageStates: Heavy
-	GrantConditionOnDamageState@CRITICAL:
+	GrantCondition@CRITICAL:
+		RequiresCondition: damage.isCritical
 		Condition: criticalspeed
-		ValidDamageStates: Critical
 	SpeedMultiplier@DAMAGED:
 		RequiresCondition: damagedspeed
 		Modifier: 80

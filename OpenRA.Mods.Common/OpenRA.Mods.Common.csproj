@@ -497,7 +497,7 @@
     <Compile Include="Traits\Conditions\DisableOnCondition.cs" />
     <Compile Include="Traits\Conditions\ConditionalTrait.cs" />
     <Compile Include="Traits\Conditions\ProximityExternalCondition.cs" />
-    <Compile Include="Traits\Conditions\GrantConditionOnDamageState.cs" />
+    <Compile Include="Traits\Conditions\GrantConditionWithSound.cs" />
     <Compile Include="Traits\Conditions\GrantConditionOnTerrain.cs" />
     <Compile Include="Traits\Conditions\GrantConditionOnMovement.cs" />
     <Compile Include="Traits\Conditions\ConditionManager.cs" />

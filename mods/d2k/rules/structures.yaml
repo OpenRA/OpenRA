@@ -510,6 +510,7 @@ outpost:
 	Bib:
 	Health:
 		HP: 3500
+		DamageStateCondition: damage
 	Armor:
 		Type: light
 	RevealsShroud:
@@ -527,9 +528,9 @@ outpost:
 		Sequence: idle-dish
 		PauseOnLowPower: true
 		RequiresCondition: !severe-damaged
-	GrantConditionOnDamageState@STOPDISH:
+	GrantCondition@STOPDISH:
+		RequiresCondition: damage >= damage.medium
 		Condition: severe-damaged
-		ValidDamageState: Medium, Heavy, Critical
 	Power:
 		Amount: -125
 	ProvidesPrerequisite@buildingname:

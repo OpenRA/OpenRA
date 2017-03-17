@@ -397,9 +397,9 @@ STNK:
 		IsPlayerPalette: true
 		UncloakOn: Attack, Unload, Infiltrate, Demolish, Damage, Heal
 		RequiresCondition: !cloak-force-disabled
-	GrantConditionOnDamageState@UNCLOAK:
+	GrantCondition@UNCLOAK:
+		RequiresCondition: damage.isCritical
 		Condition: cloak-force-disabled
-		ValidDamageStates: Critical
 	Armament:
 		Weapon: Dragon
 		LocalOffset: 213,43,298, 213,-43,298
