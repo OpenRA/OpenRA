@@ -573,6 +573,11 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					if (node.Key.StartsWith("DisguiseToolTip", StringComparison.Ordinal))
 						RenameNodeKey(node, "DisguiseTooltip");
 
+				// Split UncloakOn: Damage => Damage, Heal, SelfHeal
+				if (engineVersion < 20170315)
+					if (node.Key.StartsWith("UncloakOn", StringComparison.Ordinal))
+						node.Value.Value = node.Value.Value.Replace("Damage", "Damage, Heal, SelfHeal");
+
 				UpgradeActorRules(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 

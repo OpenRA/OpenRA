@@ -117,7 +117,7 @@
 		IsPlayerPalette: true
 		CloakSound: cloak5.aud
 		UncloakSound: cloak5.aud
-		UncloakOn: Attack, Unload, Infiltrate, Demolish, Damage
+		UncloakOn: Attack, Unload, Infiltrate, Demolish, Damage, Heal
 	ExternalCondition@CLOAKGENERATOR:
 		Condition: cloakgenerator
 	ExternalCondition@CRATE-CLOAK:
