@@ -10,6 +10,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Linq;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -20,7 +21,8 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Explicit list of rejected orders. Leave empty to reject all minus those listed under Except.")]
 		public readonly HashSet<string> Reject = new HashSet<string>();
 
-		[Desc("List of orders that should *not* be rejected.")]
+		[Desc("List of orders that should *not* be rejected.",
+			"Also overrides other instances of this trait's Reject fields.")]
 		public readonly HashSet<string> Except = new HashSet<string>();
 
 		public override object Create(ActorInitializer init) { return new RejectsOrders(this); }
@@ -39,8 +41,8 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		public static bool AcceptsOrder(this Actor self, string orderString)
 		{
-			var r = self.TraitOrDefault<RejectsOrders>();
-			return r == null || r.IsTraitDisabled || (r.Reject.Count > 0 && !r.Reject.Contains(orderString)) || r.Except.Contains(orderString);
+			var r = self.TraitsImplementing<RejectsOrders>().Where(Exts.IsTraitEnabled).ToList();
+			return !r.Any() || r.Any(t => t.Reject.Any() && !t.Reject.Contains(orderString)) || r.Any(t => t.Except.Contains(orderString));
 		}
 	}
 }
