@@ -9,7 +9,7 @@ BGGY:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 40
-		Prerequisites: ~naweap
+		Prerequisites: ~naweap, ~techlevel.low
 		Description: Fast scout and anti-infantry vehicle.\n  Strong vs Infantry, Light armor\n  Weak vs Vehicles, Aircraft
 	Mobile:
 		TurnSpeed: 8
@@ -45,7 +45,7 @@ BIKE:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 30
-		Prerequisites: ~naweap
+		Prerequisites: ~naweap, ~techlevel.low
 		Description: Fast scout vehicle, armed with\nrockets.\n  Strong vs Vehicles\n  Weak vs Infantry, Aircraft
 	Mobile:
 		TurnSpeed: 8
@@ -85,7 +85,7 @@ TTNK:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 60
-		Prerequisites: ~naweap
+		Prerequisites: ~naweap, ~techlevel.medium
 		Description: Nod's main battle tank.\nCan deploy to gain extra protection.\n  Strong vs Vehicles\n  Weak vs Infantry, Aircraft
 	Mobile:
 		TurnSpeed: 5
@@ -181,7 +181,7 @@ ART2:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 100
-		Prerequisites: ~naweap, naradr
+		Prerequisites: ~naweap, naradr, ~techlevel.high
 		Description: Mobile Artillery.\nNeeds to deploy in order to shoot.\n  Strong vs Ground units\n  Weak vs Aircraft
 	Health:
 		HP: 300
@@ -209,7 +209,7 @@ REPAIR:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 70
-		Prerequisites: ~naweap
+		Prerequisites: ~naweap, ~techlevel.medium
 		Description: Repairs nearby vehicles.\n  Unarmed
 	Valued:
 		Cost: 1000
@@ -243,7 +243,7 @@ WEED:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 100
-		Prerequisites: ~naweap, nawast
+		Prerequisites: ~naweap, nawast, ~techlevel.superweapons
 		Description: Collects veins for processing.\n  Unarmed
 	Harvester:
 		DeliveryBuildings: nawast
@@ -285,7 +285,7 @@ SAPC:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 30
-		Prerequisites: ~naweap, natech
+		Prerequisites: ~naweap, natech, ~techlevel.medium
 		Description: Troop transport that can move\nunderground to avoid detection.\n  Unarmed
 	Mobile:
 		TurnSpeed: 5
@@ -331,7 +331,7 @@ SUBTANK:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 40
-		Prerequisites: ~naweap, natech
+		Prerequisites: ~naweap, natech, ~techlevel.high
 		Description: Subterranean Flame Tank.\nIs able to move underground.\n  Strong vs Infantry, Buildings\n  Weak vs Tanks, Aircraft
 	Mobile:
 		TurnSpeed: 6
@@ -374,7 +374,7 @@ STNK:
 		Name: Stealth Tank
 	Buildable:
 		BuildPaletteOrder: 90
-		Prerequisites: ~naweap, natech
+		Prerequisites: ~naweap, natech, ~techlevel.high
 		Queue: Vehicle
 		Description: Lightly armoured tank equipped with a personal\nstealth generator. Armed with missiles.\nCan be spotted by infantry at close range.\n  Strong vs Vehicles, Aircraft\n  Weak vs Infantry
 	Mobile:

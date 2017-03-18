@@ -4,7 +4,7 @@ E2:
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 20
-		Prerequisites: ~gapile
+		Prerequisites: ~gapile, ~techlevel.low
 		Description: Infantry armed with special explosive discs.\n  Strong vs Buildings, Infantry\n  Weak vs Vehicles, Aircraft
 	Valued:
 		Cost: 200
@@ -37,7 +37,7 @@ MEDIC:
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 70
-		Prerequisites: ~gapile
+		Prerequisites: ~gapile, ~techlevel.low
 		Description: Heals nearby infantry.\n  Unarmed
 	Voiced:
 		VoiceSet: Medic
@@ -73,7 +73,7 @@ JUMPJET:
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 40
-		Prerequisites: ~gapile, garadr
+		Prerequisites: ~gapile, garadr, ~techlevel.medium
 		Description: Airborne soldier.\n  Strong vs Infantry, Aircraft\n  Weak vs Vehicles
 	Voiced:
 		VoiceSet: JumpJet
@@ -177,7 +177,7 @@ GHOST:
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 50
-		Prerequisites: ~gapile, gatech
+		Prerequisites: ~gapile, gatech, ~techlevel.high
 		BuildLimit: 1
 		Description: Elite commando infantry, armed with\na railgun and C4.\n  Strong vs Infantry, Buildings\n  Weak vs Vehicles, Aircraft\n  Special Ability: Destroy Building with C4\nMaximum 1 can be trained.
 	Voiced:

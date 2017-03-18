@@ -4,7 +4,7 @@ MCV:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 110
-		Prerequisites: ~factory, tech
+		Prerequisites: ~factory, tech, ~techlevel.medium
 		Description: Deploys into another Construction Yard.\n  Unarmed
 	Valued:
 		Cost: 2000
@@ -50,7 +50,7 @@ HARV:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 10
-		Prerequisites: ~factory, proc
+		Prerequisites: ~factory, proc, ~techlevel.low
 		Description: Collects Tiberium for processing.\n  Unarmed
 	Selectable:
 		Priority: 7
@@ -114,7 +114,7 @@ LPST:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 100
-		Prerequisites: ~factory, radar
+		Prerequisites: ~factory, radar, ~techlevel.medium
 		Description: Can detect cloaked and subterranean\nunits when deployed.\n  Unarmed
 	Valued:
 		Cost: 950

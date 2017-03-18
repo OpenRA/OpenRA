@@ -3,7 +3,7 @@ NAWALL:
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 1001
-		Prerequisites: ~structures.nod
+		Prerequisites: ~structures.nod, ~techlevel.low
 		Description: Stops infantry and blocks enemy fire.\nCan NOT be crushed by tanks.
 	-SoundOnDamageTransition:
 	Valued:
@@ -28,7 +28,7 @@ NAGATE_A:
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 100
-		Prerequisites: nahand, ~structures.nod
+		Prerequisites: nahand, ~structures.nod, ~techlevel.low
 	Tooltip:
 		Name: Nod Gate
 
@@ -37,7 +37,7 @@ NAGATE_B:
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 100
-		Prerequisites: nahand, ~structures.nod
+		Prerequisites: nahand, ~structures.nod, ~techlevel.low
 	Tooltip:
 		Name: Nod Gate
 
@@ -49,7 +49,7 @@ NALASR:
 		Name: Laser Turret
 	Buildable:
 		Queue: Defense
-		Prerequisites: nahand, ~structures.nod
+		Prerequisites: nahand, ~structures.nod, ~techlevel.low
 		BuildPaletteOrder: 50
 		Description: Basic base defense.\nRequires power to operate.\n  Strong vs Ground units\n  Weak vs Aircraft
 	Building:
@@ -90,7 +90,7 @@ NAOBEL:
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 90
-		Prerequisites: natech, ~structures.nod
+		Prerequisites: natech, ~structures.nod, ~techlevel.high
 		Description: Advanced base defense.\nRequires power to operate.\n  Strong vs Ground units\n  Weak vs Aircraft
 	Building:
 		Footprint: xx xx
@@ -133,7 +133,7 @@ NASAM:
 		Name: S.A.M. Site
 	Buildable:
 		Queue: Defense
-		Prerequisites: naradr, ~structures.nod
+		Prerequisites: naradr, ~structures.nod, ~techlevel.medium
 		BuildPaletteOrder: 60
 		Description: Nod Anti-Air base defense.\nRequires power to operate.\n  Strong vs Aircraft\n  Weak vs Ground units
 	Selectable:
@@ -228,7 +228,7 @@ NAMISL:
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 100
-		Prerequisites: natech, ~structures.nod
+		Prerequisites: natech, ~structures.nod, ~techlevel.superweapons
 		BuildLimit: 1
 		Description: Launches a devastating missile\nat a target location.\nRequires power to operate.\nMaximum 1 can be built.
 	Valued:
