@@ -8,7 +8,7 @@ APC:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 30
-		Prerequisites: ~gaweap, gapile
+		Prerequisites: ~gaweap, gapile, ~techlevel.medium
 		Description: Armored infantry transport.\nCan move on water.\n  Unarmed
 	Mobile:
 		TurnSpeed: 5
@@ -60,7 +60,7 @@ HVR:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 50
-		Prerequisites: ~gaweap, garadr
+		Prerequisites: ~gaweap, garadr, ~techlevel.high
 		Description: Hovering vehicle armed with\nlong range missiles.\n  Strong vs Vehicles, Aircraft\n  Weak vs Infantry
 	Mobile:
 		Speed: 99
@@ -115,7 +115,7 @@ SMECH:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 10
-		Prerequisites: ~gaweap
+		Prerequisites: ~gaweap, ~techlevel.low
 		Description: Anti-personnel walker.\n  Strong vs Infantry, Light armor\n  Weak vs Vehicles, Aircraft
 	Mobile:
 		TurnSpeed: 5
@@ -158,7 +158,7 @@ MMCH:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 30
-		Prerequisites: ~gaweap
+		Prerequisites: ~gaweap, ~techlevel.medium
 		Description: General purpose mechanized walker.\n  Strong vs Vehicles\n  Weak vs Infantry, Aircraft
 	Mobile:
 		TurnSpeed: 5
@@ -209,7 +209,7 @@ HMEC:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 80
-		Prerequisites: ~gaweap, gatech
+		Prerequisites: ~gaweap, gatech, ~techlevel.high
 		BuildLimit: 1
 		Description: Slow heavy walker.\nArmed with dual railguns and rocket launchers.\n  Strong vs Infantry, Vehicles, Aircraft and Buildings\n  Weak vs Nothing\nMaximum 1 can be built.
 	Mobile:
@@ -253,7 +253,7 @@ SONIC:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 70
-		Prerequisites: ~gaweap, gatech
+		Prerequisites: ~gaweap, gatech, ~techlevel.high
 		Description: Armored high-tech vehicle with\nlong range and sonic armament.\n  Strong vs Infantry, Vehicles, Buildings\n  Weak vs Aircraft
 	Targetable:
 		TargetTypes: Ground, Vehicle, Repair, Disruptor

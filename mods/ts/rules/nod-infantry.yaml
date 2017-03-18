@@ -4,7 +4,7 @@ E3:
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 20
-		Prerequisites: ~nahand
+		Prerequisites: ~nahand, ~techlevel.low
 		Description: Anti-tank infantry.\n  Strong vs Vehicles, Aircraft, Buildings\n  Weak vs Infantry
 	Valued:
 		Cost: 250
@@ -40,7 +40,7 @@ CYBORG:
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 40
-		Prerequisites: ~nahand
+		Prerequisites: ~nahand, ~techlevel.medium
 		Description: Cybernetic infantry unit.\n  Strong vs Infantry, Light armor\n  Weak vs Vehicles, Aircraft
 	Selectable:
 		Bounds: 16,31,0,-10
@@ -74,7 +74,7 @@ CYC2:
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 50
-		Prerequisites: ~nahand, natmpl
+		Prerequisites: ~nahand, natmpl, ~techlevel.high
 		BuildLimit: 1
 		Description: Elite cybernetic infantry unit.\n  Strong vs Infantry, Vehicles, Buildings\n  Weak vs Aircraft\nMaximum 1 can be trained.
 	Selectable:
@@ -104,7 +104,7 @@ MHIJACK:
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 60
-		Prerequisites: ~nahand, natmpl
+		Prerequisites: ~nahand, natmpl, ~techlevel.high
 		Description: Hijacks enemy vehicles.\n  Unarmed
 	Valued:
 		Cost: 1850

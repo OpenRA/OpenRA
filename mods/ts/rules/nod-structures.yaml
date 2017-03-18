@@ -3,7 +3,7 @@ NAPOWR:
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 0
-		Prerequisites: ~structures.nod
+		Prerequisites: ~structures.nod, ~techlevel.low
 		Description: Provides power for other structures.
 	Valued:
 		Cost: 300
@@ -42,7 +42,7 @@ NAAPWR:
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 5
-		Prerequisites: factory, ~structures.nod
+		Prerequisites: factory, ~structures.nod, ~techlevel.medium
 		Description: Provides twice as much power as\nthe normal Power Plant.
 	Valued:
 		Cost: 500
@@ -81,7 +81,7 @@ NAHAND:
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 30
-		Prerequisites: anypower, ~structures.nod
+		Prerequisites: anypower, ~structures.nod, ~techlevel.low
 		Description: Produces infantry.
 	Valued:
 		Cost: 300
@@ -142,7 +142,7 @@ NAWEAP:
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 50
-		Prerequisites: proc, ~structures.nod
+		Prerequisites: proc, ~structures.nod, ~techlevel.low
 		Description: Produces vehicles.
 	Building:
 		Footprint: xxx= xxx= xxx=
@@ -199,7 +199,7 @@ NAHPAD:
 	Buildable:
 		BuildPaletteOrder: 60
 		Queue: Building
-		Prerequisites: naradr, ~structures.nod
+		Prerequisites: naradr, ~structures.nod, ~techlevel.medium
 		Description: Produces, rearms and\nrepairs helicopters.
 	Building:
 		Footprint: xx xx
@@ -250,7 +250,7 @@ NARADR:
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 90
-		Prerequisites: proc, ~structures.nod
+		Prerequisites: proc, ~structures.nod, ~techlevel.low
 		Description: Provides an overview of the battlefield.\nCan detect cloaked units.\nRequires power to operate.
 	Valued:
 		Cost: 1000
@@ -299,7 +299,7 @@ NATECH:
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 100
-		Prerequisites: naweap, naradr, ~structures.nod
+		Prerequisites: naweap, naradr, ~structures.nod, ~techlevel.medium
 		Description: Provides access to advanced Nod technologies.
 	Valued:
 		Cost: 1500
@@ -332,7 +332,7 @@ NATMPL:
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 200
-		Prerequisites: natech, ~structures.nod
+		Prerequisites: natech, ~structures.nod, ~techlevel.high
 		Description: Provides access to advanced Nod technologies.
 	ProvidesPrerequisite@buildingname:
 	Valued:
@@ -359,6 +359,7 @@ NATMPL:
 	ProduceActorPower:
 		Description: Hunter Seeker
 		LongDesc: Releases a drone that will acquire and destroy an enemy target.
+		Prerequisites: ~techlevel.superweapons
 		Icon: hunterseeker
 		Actors: hunter
 		Type: HunterSeeker
@@ -376,7 +377,7 @@ NASTLH:
 		Name: Stealth Generator
 	Buildable:
 		BuildPaletteOrder: 80
-		Prerequisites: proc, natech, ~structures.nod
+		Prerequisites: proc, natech, ~structures.nod, ~techlevel.high
 		Queue: Building
 		Description: Generates a cloaking field\nto hide your forces from the enemy.
 	Building:
@@ -421,7 +422,7 @@ NAWAST:
 		Name: Waste Refinery
 	Buildable:
 		BuildPaletteOrder: 110
-		Prerequisites: namisl, ~structures.nod
+		Prerequisites: namisl, ~structures.nod, ~techlevel.superweapons
 		Queue: Building
 		BuildLimit: 1
 		Description: Processes Veins\ninto useable resources.\nMaximum 1 can be built.

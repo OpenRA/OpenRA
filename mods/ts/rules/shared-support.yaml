@@ -7,7 +7,7 @@ NAPULS:
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 90
-		Prerequisites: radar
+		Prerequisites: radar, ~techlevel.superweapons
 		Description: Disables mechanical units in an area.\nRequires power to operate.
 	Building:
 		Footprint: xx xx

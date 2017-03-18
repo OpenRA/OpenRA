@@ -3,7 +3,7 @@ GAPOWR:
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 0
-		Prerequisites: ~structures.gdi
+		Prerequisites: ~structures.gdi, ~techlevel.low
 		Description: Provides power for other structures.
 	Valued:
 		Cost: 300
@@ -65,7 +65,7 @@ GAPILE:
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 30
-		Prerequisites: anypower, ~structures.gdi
+		Prerequisites: anypower, ~structures.gdi, ~techlevel.low
 		Description: Produces infantry.
 	Valued:
 		Cost: 300
@@ -128,7 +128,7 @@ GAWEAP:
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 50
-		Prerequisites: proc, ~structures.gdi
+		Prerequisites: proc, ~structures.gdi, ~techlevel.low
 		Description: Produces vehicles.
 	Building:
 		Footprint: xxx= xxx= xxx=
@@ -189,7 +189,7 @@ GAHPAD:
 	Buildable:
 		BuildPaletteOrder: 60
 		Queue: Building
-		Prerequisites: garadr, ~structures.gdi
+		Prerequisites: garadr, ~structures.gdi, ~techlevel.medium
 		Description: Produces, rearms and\nrepairs helicopters.
 	Building:
 		Footprint: xx xx
@@ -243,7 +243,7 @@ GADEPT:
 		Name: Service Depot
 	Buildable:
 		BuildPaletteOrder: 80
-		Prerequisites: factory, ~structures.gdi
+		Prerequisites: factory, ~structures.gdi, ~techlevel.medium
 		Queue: Building
 		Description: Repairs vehicles.
 	Building:
@@ -291,7 +291,7 @@ GARADR:
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 90
-		Prerequisites: proc, ~structures.gdi
+		Prerequisites: proc, ~structures.gdi, ~techlevel.low
 		Description: Provides an overview of the battlefield.\nCan detect cloaked units.\nRequires power to operate.
 	Valued:
 		Cost: 1000
@@ -340,7 +340,7 @@ GATECH:
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 100
-		Prerequisites: gaweap, garadr, ~structures.gdi
+		Prerequisites: gaweap, garadr, ~structures.gdi, ~techlevel.medium
 		Description: Provides access to advanced GDI technologies.
 	Valued:
 		Cost: 1500
@@ -378,7 +378,7 @@ GAPLUG:
 		Bounds: 115,72,0,-12
 	Buildable:
 		BuildPaletteOrder: 100
-		Prerequisites: proc, gatech, ~structures.gdi
+		Prerequisites: proc, gatech, ~structures.gdi, ~techlevel.superweapons
 		Queue: Building
 		Description: Can be upgraded for additional technology.
 	Building:

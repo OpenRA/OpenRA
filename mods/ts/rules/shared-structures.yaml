@@ -63,7 +63,7 @@ PROC:
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 20
-		Prerequisites: anypower
+		Prerequisites: anypower, ~techlevel.low
 		Description: Processes raw Tiberium\ninto useable resources.
 	Building:
 		Footprint: xxx= xx== xxx=
@@ -115,7 +115,7 @@ GASILO:
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 70
-		Prerequisites: proc
+		Prerequisites: proc, ~techlevel.low
 		Description: Stores excess Tiberium.
 	Valued:
 		Cost: 150

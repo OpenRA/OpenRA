@@ -4,7 +4,7 @@ E1:
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 10
-		Prerequisites: ~barracks
+		Prerequisites: ~barracks, ~techlevel.low
 		Description: General-purpose infantry.\n  Strong vs Infantry\n  Weak vs Vehicles, Aircraft
 	Valued:
 		Cost: 120
@@ -41,7 +41,7 @@ ENGINEER:
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 30
-		Prerequisites: ~barracks
+		Prerequisites: ~barracks, ~techlevel.low
 		Description: Infiltrates and captures enemy structures.\n  Unarmed
 	Voiced:
 		VoiceSet: Engineer

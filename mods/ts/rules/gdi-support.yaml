@@ -3,7 +3,7 @@ GAWALL:
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 20
-		Prerequisites: ~structures.gdi
+		Prerequisites: ~structures.gdi, ~techlevel.low
 		Description: Stops infantry and blocks enemy fire.\nCan NOT be crushed by tanks.
 	-SoundOnDamageTransition:
 	Valued:
@@ -28,7 +28,7 @@ GAGATE_A:
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 100
-		Prerequisites: gapile, ~structures.gdi
+		Prerequisites: gapile, ~structures.gdi, ~techlevel.low
 	Tooltip:
 		Name: GDI Gate
 
@@ -37,7 +37,7 @@ GAGATE_B:
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 100
-		Prerequisites: gapile, ~structures.gdi
+		Prerequisites: gapile, ~structures.gdi, ~techlevel.low
 	Tooltip:
 		Name: GDI Gate
 
@@ -53,7 +53,7 @@ GACTWR:
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 30
-		Prerequisites: gapile, ~structures.gdi
+		Prerequisites: gapile, ~structures.gdi, ~techlevel.low
 		Description: Modular tower for base defenses.
 	Building:
 	Selectable:
@@ -143,7 +143,7 @@ GAVULC:
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 40
-		Prerequisites: gactwr, gapile, ~structures.gdi
+		Prerequisites: gactwr, gapile, ~structures.gdi, ~techlevel.low
 		Description: Basic base defense.\nDoes not require power to operate.\n  Strong vs Infantry, Light armor\n  Weak vs Aircraft
 	Plug:
 		Type: tower.vulcan
@@ -159,7 +159,7 @@ GAROCK:
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 40
-		Prerequisites: gactwr, gapile, ~structures.gdi
+		Prerequisites: gactwr, gapile, ~structures.gdi, ~techlevel.high
 		Description: GDI Advanced base defense.\nDoes not require power to operate.\n  Strong vs Armored ground units\n  Weak vs Aircraft
 	Plug:
 		Type: tower.rocket
@@ -175,7 +175,7 @@ GACSAM:
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 40
-		Prerequisites: gactwr, garadr, ~structures.gdi
+		Prerequisites: gactwr, garadr, ~structures.gdi, ~techlevel.medium
 		Description: GDI Anti-Air base defense.\nDoes not require power to operate.\n  Strong vs Aircraft\n  Weak vs Ground units
 	Plug:
 		Type: tower.sam
@@ -191,7 +191,7 @@ GAPOWRUP:
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 10
-		Prerequisites: gapowr, ~structures.gdi
+		Prerequisites: gapowr, ~structures.gdi, ~techlevel.medium
 		Description: Provides extra power generation.
 	Plug:
 		Type: powrup
@@ -207,7 +207,7 @@ GAPLUG2:
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 1000
-		Prerequisites: gaplug, gatech, gaweap, ~structures.gdi
+		Prerequisites: gaplug, gatech, gaweap, ~structures.gdi, ~techlevel.superweapons
 		Description: Enables use of the hunter-seeker droid.
 	Plug:
 		Type: plug.hunterseeker
@@ -223,7 +223,7 @@ GAPLUG3:
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 1000
-		Prerequisites: gaplug, gatech, ~structures.gdi
+		Prerequisites: gaplug, gatech, ~structures.gdi, ~techlevel.superweapons
 		Description: Enables use of the Ion Cannon.
 	Plug:
 		Type: plug.ioncannon
