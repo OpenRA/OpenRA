@@ -19,8 +19,6 @@ namespace OpenRA.Mods.Common.Traits
 	/// <summary>Use as base class for *Info to subclass of UpgradableTrait. (See UpgradableTrait.)</summary>
 	public abstract class ConditionalTraitInfo : IConditionConsumerInfo, IRulesetLoaded
 	{
-		static readonly IReadOnlyDictionary<string, int> NoConditions = new ReadOnlyDictionary<string, int>(new Dictionary<string, int>());
-
 		[ConsumedConditionReference]
 		[Desc("Boolean expression defining the condition to enable this trait.")]
 		public readonly ConditionExpression RequiresCondition = null;
@@ -34,7 +32,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public virtual void RulesetLoaded(Ruleset rules, ActorInfo ai)
 		{
-			EnabledByDefault = RequiresCondition != null ? RequiresCondition.Evaluate(NoConditions) > 0 : true;
+			EnabledByDefault = RequiresCondition == null || RequiresCondition.Evaluate(EmptyConditionContext.Instance) > 0;
 		}
 	}
 
@@ -77,7 +75,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyCreated.Created(Actor self) { Created(self); }
 
-		void IConditionConsumer.ConditionsChanged(Actor self, IReadOnlyDictionary<string, int> conditions)
+		void IConditionConsumer.ConditionsChanged(Actor self, IConditionContext conditions)
 		{
 			if (Info.RequiresCondition == null)
 				return;

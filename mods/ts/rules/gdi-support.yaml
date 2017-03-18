@@ -68,12 +68,12 @@ GACTWR:
 	BodyOrientation:
 		QuantizedFacings: 32
 	DetectCloaked:
-		RequiresCondition: tower.vulcan || tower.rocket || tower.sam
+		RequiresCondition: tower
 	Turreted:
 		TurnSpeed: 10
 		InitialFacing: 224
 	AttackTurreted:
-		RequiresCondition: tower.vulcan || tower.rocket || tower.sam
+		RequiresCondition: tower
 	CanPowerDown:
 		IndicatorPalette: mouse
 		PowerupSpeech: EnablePower
@@ -120,16 +120,17 @@ GACTWR:
 	Power@base:
 		Amount: -10
 	Power@turrets:
-		RequiresCondition: tower.vulcan || tower.rocket || tower.sam
+		RequiresCondition: tower
 		Amount: -20
 	Power@samextra:
 		RequiresCondition: tower.sam
 		Amount: -10
 	Pluggable:
+		ConditionVariable: tower
 		Conditions:
-			tower.vulcan: tower.vulcan
-			tower.rocket: tower.rocket
-			tower.sam: tower.sam
+			tower.vulcan: vulcan
+			tower.rocket: rocket
+			tower.sam: sam
 	ProvidesPrerequisite@buildingname:
 	SelectionDecorations:
 		VisualBounds: 48, 48, 0, -12

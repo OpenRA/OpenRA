@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Support;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Lint
@@ -27,7 +28,11 @@ namespace OpenRA.Mods.Common.Lint
 					continue;
 
 				var granted = new HashSet<string>();
+				var provided = new HashSet<string>();
 				var consumed = new HashSet<string>();
+				var given = new HashSet<string>();
+				var multipleProviders = new HashSet<string>();
+				var invalid = new HashSet<string>();
 
 				foreach (var trait in actorInfo.Value.TraitInfos<ITraitInfo>())
 				{
@@ -47,24 +52,58 @@ namespace OpenRA.Mods.Common.Lint
                         .Where(x => x.HasAttribute<GrantedConditionReferenceAttribute>())
 	  					.SelectMany(f => LintExts.GetPropertyValues(trait, f, emitError));
 
+					var fieldProvided = trait.GetType().GetFields()
+                        .Where(x => x.HasAttribute<ProvidedConditionReferenceAttribute>())
+                        .SelectMany(f => LintExts.GetFieldValues(trait, f, emitError));
+
+					var propertyProvided = trait.GetType().GetProperties()
+                        .Where(x => x.HasAttribute<ProvidedConditionReferenceAttribute>())
+	  					.SelectMany(f => LintExts.GetPropertyValues(trait, f, emitError));
+
 					foreach (var c in fieldConsumed.Concat(propertyConsumed))
 						if (!string.IsNullOrEmpty(c))
 							consumed.Add(c);
 
 					foreach (var g in fieldGranted.Concat(propertyGranted))
 						if (!string.IsNullOrEmpty(g))
+						{
 							granted.Add(g);
+							given.Add(g);
+						}
+
+					foreach (var g in fieldProvided.Concat(propertyProvided))
+						if (!string.IsNullOrEmpty(g))
+						{
+							if (provided.Contains(g))
+								multipleProviders.Add(g);
+							provided.Add(g);
+							given.Add(g);
+						}
 				}
 
-				var unconsumed = granted.Except(consumed);
-				if (unconsumed.Any())
-					emitWarning("Actor type `{0}` grants conditions that are not consumed: {1}".F(actorInfo.Key, unconsumed.JoinWith(", ")));
+				foreach (var condition in granted.Concat(provided).Concat(consumed))
+					if (!ConditionExpression.IsValidVariableName(condition))
+						invalid.Add(condition);
 
-				var ungranted = consumed.Except(granted);
-				if (ungranted.Any())
-					emitError("Actor type `{0}` consumes conditions that are not granted: {1}".F(actorInfo.Key, ungranted.JoinWith(", ")));
+				var onlyGranted = granted.Except(consumed);
+				if (onlyGranted.Any())
+					emitWarning("Actor type `{0}` grants conditions that are not consumed: {1}".F(actorInfo.Key, onlyGranted.JoinWith(", ")));
 
-				if ((consumed.Any() || granted.Any()) && actorInfo.Value.TraitInfoOrDefault<ConditionManagerInfo>() == null)
+				var onlyProvided = provided.Except(consumed);
+				if (onlyProvided.Any())
+					emitWarning("Actor type `{0}` provides condition variables that are not consumed: {1}".F(actorInfo.Key, onlyProvided.JoinWith(", ")));
+
+				var onlyConsumed = consumed.Except(given);
+				if (onlyConsumed.Any())
+					emitError("Actor type `{0}` consumes conditions that are neither granted nor provided: {1}".F(actorInfo.Key, onlyConsumed.JoinWith(", ")));
+
+				if (multipleProviders.Any())
+					emitError("Actor type `{0}` has multiple traits providing these condition variables: {1}".F(actorInfo.Key, multipleProviders.JoinWith(", ")));
+
+				if (invalid.Any())
+					emitError("Actor type `{0}` has conditions with invalid names: {1}".F(actorInfo.Key, invalid.JoinWith(", ")));
+
+				if ((consumed.Any() || given.Any()) && actorInfo.Value.TraitInfoOrDefault<ConditionManagerInfo>() == null)
 					emitError("Actor type `{0}` defines conditions but does not include a ConditionManager".F(actorInfo.Key));
 			}
 		}
