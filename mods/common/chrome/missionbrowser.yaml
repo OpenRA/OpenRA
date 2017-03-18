@@ -78,11 +78,11 @@ Background@MISSIONBROWSER_PANEL:
 				DropDownButton@DIFFICULTY_DROPDOWNBUTTON:
 					X: 61
 					Y: 352
-					Width: 120
+					Width: 135
 					Height: 25
 					Font: Regular
 				Label@GAMESPEED_DESC:
-					X: PARENT_RIGHT - WIDTH - 125
+					X: PARENT_RIGHT - WIDTH - 115
 					Y: 352
 					Width: 120
 					Height: 25
@@ -91,7 +91,7 @@ Background@MISSIONBROWSER_PANEL:
 				DropDownButton@GAMESPEED_DROPDOWNBUTTON:
 					X: PARENT_RIGHT - WIDTH
 					Y: 352
-					Width: 120
+					Width: 110
 					Height: 25
 					Font: Regular
 		Button@START_BRIEFING_VIDEO_BUTTON:
