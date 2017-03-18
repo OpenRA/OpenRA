@@ -157,9 +157,9 @@ namespace OpenRA.Network
 							Name = Game.Settings.Player.Name,
 							PreferredColor = Game.Settings.Player.Color,
 							Color = Game.Settings.Player.Color,
-							Faction = "Random",
+							Faction = Game.Settings.Lobby.Faction,
 							SpawnPoint = 0,
-							Team = 0,
+							Team = Game.Settings.Lobby.Team,
 							State = Session.ClientState.Invalid
 						};
 

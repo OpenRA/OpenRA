@@ -333,6 +333,16 @@ namespace OpenRA
 			InitializeMod(modID, args);
 		}
 
+		private static void ValidateModSettings()
+		{
+			var factions = ModData.DefaultRules.Actors.Count > 0 ? ModData.DefaultRules.Actors["world"].TraitInfos<Traits.FactionInfo>() : null;
+			if (factions == null) return;
+			var faction = Settings.Lobby.Faction;
+
+			if (faction != "Random" && !factions.Where(f => f.Selectable).Any(f => f.InternalName == faction))
+				Settings.Lobby.Faction = "Random";
+		}
+
 		public static void InitializeMod(string mod, Arguments args)
 		{
 			// Clear static state if we have switched mods
@@ -409,6 +419,9 @@ namespace OpenRA
 			PerfHistory.Items["batches"].HasNormalTick = false;
 			PerfHistory.Items["render_widgets"].HasNormalTick = false;
 			PerfHistory.Items["render_flip"].HasNormalTick = false;
+
+			Settings.LoadModSettings(mod, Platform.ResolvePath(Path.Combine("^", "settings.{0}.yaml".F(mod))), args);
+			ValidateModSettings();
 
 			JoinLocal();
 
