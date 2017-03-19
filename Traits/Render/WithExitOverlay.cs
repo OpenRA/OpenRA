@@ -8,7 +8,6 @@
  */
 #endregion
 
-using System;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
@@ -37,14 +36,12 @@ namespace OpenRA.Mods.AS.Traits
 
 	public class WithExitOverlay : INotifyDamageStateChanged, INotifyBuildComplete, INotifySold, INotifyProduction, ITick
 	{
-		readonly Actor self;
 		readonly Animation overlay;
 		bool buildComplete, enable;
 		CPos exit;
 
 		public WithExitOverlay(Actor self, WithExitOverlayInfo info)
 		{
-			this.self = self;
 			var rs = self.Trait<RenderSprites>();
 			var body = self.Trait<BodyOrientation>();
 
