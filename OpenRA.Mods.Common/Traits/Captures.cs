@@ -41,14 +41,14 @@ namespace OpenRA.Mods.Common.Traits
 
 		[VoiceReference] public readonly string Voice = "Action";
 
-		public object Create(ActorInitializer init) { return new Captures(init.Self, this); }
+		public object Create(ActorInitializer init) { return new Captures(this); }
 	}
 
 	public class Captures : IIssueOrder, IResolveOrder, IOrderVoice
 	{
 		public readonly CapturesInfo Info;
 
-		public Captures(Actor self, CapturesInfo info)
+		public Captures(CapturesInfo info)
 		{
 			Info = info;
 		}
@@ -57,7 +57,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			get
 			{
-				yield return new CaptureOrderTargeter(Info.Sabotage);
+				yield return new CaptureOrderTargeter(Info);
 			}
 		}
 
@@ -95,17 +95,16 @@ namespace OpenRA.Mods.Common.Traits
 
 		class CaptureOrderTargeter : UnitOrderTargeter
 		{
-			readonly bool sabotage;
+			readonly CapturesInfo capturesInfo;
 
-			public CaptureOrderTargeter(bool sabotage)
-				: base("CaptureActor", 6, "enter", true, true)
+			public CaptureOrderTargeter(CapturesInfo info)
+				: base("CaptureActor", 6, info.EnterCursor, true, true)
 			{
-				this.sabotage = sabotage;
+				capturesInfo = info;
 			}
 
 			public override bool CanTargetActor(Actor self, Actor target, TargetModifiers modifiers, ref string cursor)
 			{
-				var capturesInfo = self.Trait<Captures>().Info;
 				var c = target.Info.TraitInfoOrDefault<CapturableInfo>();
 				if (c == null || !c.CanBeTargetedBy(self, target.Owner))
 				{
@@ -116,14 +115,13 @@ namespace OpenRA.Mods.Common.Traits
 				var health = target.Trait<Health>();
 				var lowEnoughHealth = health.HP <= c.CaptureThreshold * health.MaxHP / 100;
 
-				cursor = !sabotage || lowEnoughHealth || target.Owner.NonCombatant
+				cursor = !capturesInfo.Sabotage || lowEnoughHealth || target.Owner.NonCombatant
 					? capturesInfo.EnterCursor : capturesInfo.SabotageCursor;
 				return true;
 			}
 
 			public override bool CanTargetFrozenActor(Actor self, FrozenActor target, TargetModifiers modifiers, ref string cursor)
 			{
-				var capturesInfo = self.Trait<Captures>().Info;
 				var c = target.Info.TraitInfoOrDefault<CapturableInfo>();
 				if (c == null || !c.CanBeTargetedBy(self, target.Owner))
 				{
@@ -134,7 +132,7 @@ namespace OpenRA.Mods.Common.Traits
 				var health = target.Info.TraitInfoOrDefault<HealthInfo>();
 				var lowEnoughHealth = target.HP <= c.CaptureThreshold * health.HP / 100;
 
-				cursor = !sabotage || lowEnoughHealth || target.Owner.NonCombatant
+				cursor = !capturesInfo.Sabotage || lowEnoughHealth || target.Owner.NonCombatant
 					? capturesInfo.EnterCursor : capturesInfo.SabotageCursor;
 
 				return true;
