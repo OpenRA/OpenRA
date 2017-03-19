@@ -18,6 +18,8 @@ namespace OpenRA.Network
 {
 	static class UnitOrders
 	{
+		const string ServerChatName = "Battlefield Control";
+
 		static Player FindPlayerByClient(this World world, Session.Client c)
 		{
 			/* TODO: this is still a hack.
@@ -57,7 +59,7 @@ namespace OpenRA.Network
 					}
 
 				case "Message": // Server message
-					Game.AddChatLine(Color.White, "Server", order.TargetString);
+					Game.AddChatLine(Color.White, ServerChatName, order.TargetString);
 					break;
 
 				case "Disconnected": /* reports that the target player disconnected */
@@ -105,7 +107,7 @@ namespace OpenRA.Network
 							break;
 						}
 
-						Game.AddChatLine(Color.White, "Server", "The game has started.");
+						Game.AddChatLine(Color.White, ServerChatName, "The game has started.");
 						Game.StartGame(orderManager.LobbyInfo.GlobalSettings.Map, WorldType.Regular);
 						break;
 					}
@@ -119,7 +121,7 @@ namespace OpenRA.Network
 							if (orderManager.World.Paused != pause && world != null && !world.LobbyInfo.IsSinglePlayer)
 							{
 								var pausetext = "The game is {0} by {1}".F(pause ? "paused" : "un-paused", client.Name);
-								Game.AddChatLine(Color.White, "", pausetext);
+								Game.AddChatLine(Color.White, ServerChatName, pausetext);
 							}
 
 							orderManager.World.Paused = pause;
