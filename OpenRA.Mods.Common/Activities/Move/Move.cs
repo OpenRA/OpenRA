@@ -264,7 +264,15 @@ namespace OpenRA.Mods.Common.Activities
 				mobile.AddInfluence();
 
 				if (newPath.Count != 0)
+				{
 					path = newPath;
+
+					// wait again in case we have to find a new path again.
+					hasWaited = false;
+
+					// notify again
+					hasNotifiedBlocker = false;
+				}
 
 				return null;
 			}

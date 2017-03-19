@@ -1,0 +1,17 @@
+HARV:
+	-Harvester:
+	Harvester@nogem:
+		Capacity: 20
+		Resources: Ore
+		BaleUnloadDelay: 1
+		SearchFromProcRadius: 30
+		SearchFromOrderRadius: 15
+
+MINE:
+	SeedsResource:
+		Interval: 2
+
+SILO:
+	StoresResources:
+		PipCount: 5
+		Capacity: 15000

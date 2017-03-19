@@ -141,7 +141,9 @@ namespace OpenRA.Mods.Common
 					return false;
 			}
 
-			return true;
+			if (self.Location == pos)
+				return true;
+			return self.Trait<Mobile>().CanEnterCell(pos);
 		}
 
 		public static CPos ClosestCell(this Actor self, IEnumerable<CPos> cells)
