@@ -333,7 +333,6 @@
     <Compile Include="Traits\GivesCashOnCapture.cs" />
     <Compile Include="Traits\GivesBounty.cs" />
     <Compile Include="Traits\GivesExperience.cs" />
-    <Compile Include="Traits\GrantConditionOnPrerequisite.cs" />
     <Compile Include="Traits\Guard.cs" />
     <Compile Include="Traits\Guardable.cs" />
     <Compile Include="Traits\Harvester.cs" />
@@ -499,6 +498,7 @@
     <Compile Include="Traits\Conditions\GrantConditionOnDamageState.cs" />
     <Compile Include="Traits\Conditions\GrantConditionOnTerrain.cs" />
     <Compile Include="Traits\Conditions\GrantConditionOnMovement.cs" />
+    <Compile Include="Traits\Conditions\GrantConditionOnPrerequisite.cs" />
     <Compile Include="Traits\Conditions\ConditionManager.cs" />
     <Compile Include="Traits\Valued.cs" />
     <Compile Include="Traits\Voiced.cs" />
