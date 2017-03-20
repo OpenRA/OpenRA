@@ -666,6 +666,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (orderManager.LocalClient == null)
 				return;
 
+			var isHost = Game.IsHost;
 			var idx = 0;
 			foreach (var kv in orderManager.LobbyInfo.Slots)
 			{
@@ -684,7 +685,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					if (template == null || template.Id != emptySlotTemplate.Id)
 						template = emptySlotTemplate.Clone();
 
-					if (Game.IsHost)
+					if (isHost)
 						LobbyUtils.SetupEditableSlotWidget(this, template, slot, client, orderManager);
 					else
 						LobbyUtils.SetupSlotWidget(template, slot, client);
@@ -695,7 +696,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					join.OnClick = () => orderManager.IssueOrder(Order.Command("slot " + key));
 				}
 				else if ((client.Index == orderManager.LocalClient.Index) ||
-						 (client.Bot != null && Game.IsHost))
+						 (client.Bot != null && isHost))
 				{
 					// Editable player in slot
 					if (template == null || template.Id != editablePlayerTemplate.Id)
@@ -726,8 +727,17 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						() => panel = PanelType.Kick, () => panel = PanelType.Players);
 					LobbyUtils.SetupColorWidget(template, slot, client);
 					LobbyUtils.SetupFactionWidget(template, slot, client, factions);
-					LobbyUtils.SetupTeamWidget(template, slot, client);
-					LobbyUtils.SetupSpawnWidget(template, slot, client);
+					if (isHost)
+					{
+						LobbyUtils.SetupEditableTeamWidget(template, slot, client, orderManager, Map);
+						LobbyUtils.SetupEditableSpawnWidget(template, slot, client, orderManager, Map);
+					}
+					else
+					{
+						LobbyUtils.SetupTeamWidget(template, slot, client);
+						LobbyUtils.SetupSpawnWidget(template, slot, client);
+					}
+
 					LobbyUtils.SetupReadyWidget(template, slot, client);
 				}
 

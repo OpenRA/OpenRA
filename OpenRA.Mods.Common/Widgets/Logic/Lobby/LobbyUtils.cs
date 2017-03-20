@@ -313,9 +313,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			slot.OnMouseDown = _ => ShowSlotDropDown(logic, slot, s, c, orderManager);
 
 			// Ensure Name selector (if present) is hidden
-			var name = parent.GetOrNull("NAME");
-			if (name != null)
-				name.IsVisible = () => false;
+			HideChildWidget(parent, "NAME");
 		}
 
 		public static void SetupSlotWidget(Widget parent, Session.Slot s, Session.Client c)
@@ -325,9 +323,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			name.GetText = () => c != null ? c.Name : s.Closed ? "Closed" : "Open";
 
 			// Ensure Slot selector (if present) is hidden
-			var slot = parent.GetOrNull("SLOT_OPTIONS");
-			if (slot != null)
-				slot.IsVisible = () => false;
+			HideChildWidget(parent, "SLOT_OPTIONS");
 		}
 
 		public static void SetupKickWidget(Widget parent, Session.Slot s, Session.Client c, OrderManager orderManager, Widget lobby, Action before, Action after)
@@ -427,20 +423,25 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		public static void SetupEditableTeamWidget(Widget parent, Session.Slot s, Session.Client c, OrderManager orderManager, MapPreview map)
 		{
-			var dropdown = parent.Get<DropDownButtonWidget>("TEAM");
+			var dropdown = parent.Get<DropDownButtonWidget>("TEAM_DROPDOWN");
+			dropdown.IsVisible = () => true;
 			dropdown.IsDisabled = () => s.LockTeam || orderManager.LocalClient.IsReady;
 			dropdown.OnMouseDown = _ => ShowTeamDropDown(dropdown, c, orderManager, map.PlayerCount);
 			dropdown.GetText = () => (c.Team == 0) ? "-" : c.Team.ToString();
+
+			HideChildWidget(parent, "TEAM");
 		}
 
 		public static void SetupTeamWidget(Widget parent, Session.Slot s, Session.Client c)
 		{
 			parent.Get<LabelWidget>("TEAM").GetText = () => (c.Team == 0) ? "-" : c.Team.ToString();
+			HideChildWidget(parent, "TEAM_DROPDOWN");
 		}
 
 		public static void SetupEditableSpawnWidget(Widget parent, Session.Slot s, Session.Client c, OrderManager orderManager, MapPreview map)
 		{
-			var dropdown = parent.Get<DropDownButtonWidget>("SPAWN");
+			var dropdown = parent.Get<DropDownButtonWidget>("SPAWN_DROPDOWN");
+			dropdown.IsVisible = () => true;
 			dropdown.IsDisabled = () => s.LockSpawn || orderManager.LocalClient.IsReady;
 			dropdown.OnMouseDown = _ =>
 			{
@@ -450,11 +451,21 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				ShowSpawnDropDown(dropdown, c, orderManager, spawnPoints);
 			};
 			dropdown.GetText = () => (c.SpawnPoint == 0) ? "-" : Convert.ToChar('A' - 1 + c.SpawnPoint).ToString();
+
+			HideChildWidget(parent, "SPAWN");
+		}
+
+		static void HideChildWidget(Widget parent, string widgetId)
+		{
+			var widget = parent.GetOrNull(widgetId);
+			if (widget != null)
+				widget.IsVisible = () => false;
 		}
 
 		public static void SetupSpawnWidget(Widget parent, Session.Slot s, Session.Client c)
 		{
 			parent.Get<LabelWidget>("SPAWN").GetText = () => (c.SpawnPoint == 0) ? "-" : Convert.ToChar('A' - 1 + c.SpawnPoint).ToString();
+			HideChildWidget(parent, "SPAWN_DROPDOWN");
 		}
 
 		public static void SetupEditableReadyWidget(Widget parent, Session.Slot s, Session.Client c, OrderManager orderManager, MapPreview map)
