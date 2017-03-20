@@ -582,6 +582,20 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				if (engineVersion < 20170318)
 					node.Value.Nodes.RemoveAll(n => n.Key == "ActorGroupProxy");
 
+				// Refactor SupplyTruck/AcceptsSupplies traits to DeliversCash/AcceptsDeliveredCash
+				if (engineVersion < 20170415)
+				{
+					if (node.Key == "SupplyTruck")
+						RenameNodeKey(node, "DeliversCash");
+					if (node.Key == "-SupplyTruck")
+						RenameNodeKey(node, "-DeliversCash");
+
+					if (node.Key == "AcceptsSupplies")
+						RenameNodeKey(node, "AcceptsDeliveredCash");
+					if (node.Key == "-AcceptsSupplies")
+						RenameNodeKey(node, "-AcceptsDeliveredCash");
+				}
+
 				UpgradeActorRules(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 

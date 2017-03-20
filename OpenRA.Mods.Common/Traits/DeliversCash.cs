@@ -17,8 +17,8 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	[Desc("Donate money to actors with the `AcceptSupplies` trait.")]
-	class SupplyTruckInfo : ITraitInfo
+	[Desc("Donate money to actors with the `AcceptsDeliveredCash` trait.")]
+	class DeliversCashInfo : ITraitInfo
 	{
 		[Desc("The amount of cash the owner receives.")]
 		public readonly int Payload = 500;
@@ -26,28 +26,31 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("The amount of experience the donating player receives.")]
 		public readonly int PlayerExperience = 0;
 
+		[Desc("Identifier checked against AcceptsDeliveredCash.ValidTypes. Only needed if the latter is not empty.")]
+		public readonly string Type = null;
+
 		[VoiceReference] public readonly string Voice = "Action";
 
-		public object Create(ActorInitializer init) { return new SupplyTruck(this); }
+		public object Create(ActorInitializer init) { return new DeliversCash(this); }
 	}
 
-	class SupplyTruck : IIssueOrder, IResolveOrder, IOrderVoice
+	class DeliversCash : IIssueOrder, IResolveOrder, IOrderVoice
 	{
-		readonly SupplyTruckInfo info;
+		readonly DeliversCashInfo info;
 
-		public SupplyTruck(SupplyTruckInfo info)
+		public DeliversCash(DeliversCashInfo info)
 		{
 			this.info = info;
 		}
 
 		public IEnumerable<IOrderTargeter> Orders
 		{
-			get { yield return new SupplyTruckOrderTargeter(); }
+			get { yield return new DeliversCashOrderTargeter(); }
 		}
 
 		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
 		{
-			if (order.OrderID != "DeliverSupplies")
+			if (order.OrderID != "DeliverCash")
 				return null;
 
 			if (target.Type == TargetType.FrozenActor)
@@ -63,7 +66,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void ResolveOrder(Actor self, Order order)
 		{
-			if (order.OrderString != "DeliverSupplies")
+			if (order.OrderString != "DeliverCash")
 				return;
 
 			var target = self.ResolveFrozenActorOrder(order, Color.Yellow);
@@ -77,21 +80,29 @@ namespace OpenRA.Mods.Common.Traits
 			self.QueueActivity(new DonateSupplies(self, target.Actor, info.Payload, info.PlayerExperience));
 		}
 
-		class SupplyTruckOrderTargeter : UnitOrderTargeter
+		public class DeliversCashOrderTargeter : UnitOrderTargeter
 		{
-			public SupplyTruckOrderTargeter()
-				: base("DeliverSupplies", 5, "enter", false, true)
-			{
-			}
+			public DeliversCashOrderTargeter()
+				: base("DeliverCash", 5, "enter", false, true) { }
 
 			public override bool CanTargetActor(Actor self, Actor target, TargetModifiers modifiers, ref string cursor)
 			{
-				return target.Info.HasTraitInfo<AcceptsSuppliesInfo>();
+				var type = self.Info.TraitInfo<DeliversCashInfo>().Type;
+				var targetInfo = target.Info.TraitInfoOrDefault<AcceptsDeliveredCashInfo>();
+				return targetInfo != null
+					&& targetInfo.ValidStances.HasStance(target.Owner.Stances[self.Owner])
+					&& (targetInfo.ValidTypes.Count == 0
+						|| (!string.IsNullOrEmpty(type) && targetInfo.ValidTypes.Contains(type)));
 			}
 
 			public override bool CanTargetFrozenActor(Actor self, FrozenActor target, TargetModifiers modifiers, ref string cursor)
 			{
-				return target.Info.HasTraitInfo<AcceptsSuppliesInfo>();
+				var type = self.Info.TraitInfo<DeliversCashInfo>().Type;
+				var targetInfo = target.Info.TraitInfoOrDefault<AcceptsDeliveredCashInfo>();
+				return targetInfo != null
+					&& targetInfo.ValidStances.HasStance(target.Owner.Stances[self.Owner])
+					&& (targetInfo.ValidTypes.Count == 0
+						|| (!string.IsNullOrEmpty(type) && targetInfo.ValidTypes.Contains(type)));
 			}
 		}
 	}
