@@ -152,7 +152,6 @@
 		Type: Footprint
 	EngineerRepairable:
 	ShakeOnDeath:
-	AcceptsSupplies:
 	Guardable:
 		Range: 3c0
 	Demolishable:

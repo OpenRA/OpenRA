@@ -476,7 +476,7 @@ TRUK:
 		Speed: 128
 	RevealsShroud:
 		Range: 4c0
-	SupplyTruck:
+	DeliversCash:
 		Payload: 500
 		PlayerExperience: 50
 	SpawnActorOnDeath:

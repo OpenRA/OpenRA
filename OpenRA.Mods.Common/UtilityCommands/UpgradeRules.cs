@@ -573,6 +573,20 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					if (node.Key.StartsWith("DisguiseToolTip", StringComparison.Ordinal))
 						RenameNodeKey(node, "DisguiseTooltip");
 
+				// Refactor SupplyTruck/AcceptsSupplies traits to DeliversCash/AcceptsDeliveredCash
+				if (engineVersion < 20170415)
+				{
+					if (node.Key == "SupplyTruck")
+						RenameNodeKey(node, "DeliversCash");
+					if (node.Key == "-SupplyTruck")
+						RenameNodeKey(node, "-DeliversCash");
+
+					if (node.Key == "AcceptsSupplies")
+						RenameNodeKey(node, "AcceptsDeliveredCash");
+					if (node.Key == "-AcceptsSupplies")
+						RenameNodeKey(node, "-AcceptsDeliveredCash");
+				}
+
 				UpgradeActorRules(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 
