@@ -116,18 +116,25 @@ Background@MAPCHOOSER_PANEL:
 			Text: Random Map
 			Font: Bold
 		Button@DELETE_MAP_BUTTON:
-			X: 160
+			X: 150
 			Y: PARENT_BOTTOM - 45
 			Width: 120
 			Height: 25
 			Text: Delete Map
 			Font: Bold
 		Button@DELETE_ALL_MAPS_BUTTON:
-			X: 300
+			X: 280
 			Y: PARENT_BOTTOM - 45
 			Width: 120
 			Height: 25
 			Text: Delete All Maps
+			Font: Bold
+		Button@REFRESHMAPS_BUTTON:
+			X: 410
+			Y: PARENT_BOTTOM - 45
+			Width: 100
+			Height: 25
+			Text: Refresh
 			Font: Bold
 		Button@BUTTON_OK:
 			X: PARENT_RIGHT - 270
