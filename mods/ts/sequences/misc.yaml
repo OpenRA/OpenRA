@@ -370,8 +370,10 @@ shroud:
 		ZRamp: 1
 	shroud:
 		Length: *
+		Offset: 0, -1
 	fog: fog
 		Length: *
+		Offset: 0, -1
 
 smallscorches:
 	Defaults:
