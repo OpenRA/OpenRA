@@ -18,7 +18,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("This actor can capture other actors which have the Capturable: trait.")]
-	public class CapturesInfo : ITraitInfo
+	public class CapturesInfo : ConditionalTraitInfo
 	{
 		[Desc("Types of actors that it can capture, as long as the type also exists in the Capturable Type: trait.")]
 		public readonly HashSet<string> CaptureTypes = new HashSet<string> { "building" };
@@ -41,22 +41,21 @@ namespace OpenRA.Mods.Common.Traits
 
 		[VoiceReference] public readonly string Voice = "Action";
 
-		public object Create(ActorInitializer init) { return new Captures(this); }
+		public override object Create(ActorInitializer init) { return new Captures(this); }
 	}
 
-	public class Captures : IIssueOrder, IResolveOrder, IOrderVoice
+	public class Captures : ConditionalTrait<CapturesInfo>, IIssueOrder, IResolveOrder, IOrderVoice
 	{
-		public readonly CapturesInfo Info;
-
 		public Captures(CapturesInfo info)
-		{
-			Info = info;
-		}
+			: base(info) { }
 
 		public IEnumerable<IOrderTargeter> Orders
 		{
 			get
 			{
+				if (IsTraitDisabled)
+					yield break;
+
 				yield return new CaptureOrderTargeter(Info);
 			}
 		}
@@ -79,7 +78,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void ResolveOrder(Actor self, Order order)
 		{
-			if (order.OrderString != "CaptureActor")
+			if (order.OrderString != "CaptureActor" || IsTraitDisabled)
 				return;
 
 			var target = self.ResolveFrozenActorOrder(order, Color.Red);
