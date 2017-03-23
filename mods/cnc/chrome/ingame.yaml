@@ -35,22 +35,20 @@ Container@INGAME_ROOT:
 				Container@GAME_TIMER_BLOCK:
 					Logic: GameTimerLogic
 					X: WINDOW_RIGHT/2 - WIDTH
-					Width: 100
-					Height: 55
+                    Width: 70
+					Height: 15
 					Children:
 						LabelWithTooltip@GAME_TIMER:
-							Width: PARENT_RIGHT
-							Height: 30
+							Y: 6
+							Height: 10
 							Align: Center
 							Font: Title
 							Contrast: true
 							TooltipContainer: TOOLTIP_CONTAINER
 							TooltipTemplate: SIMPLE_TOOLTIP
 						Label@GAME_TIMER_STATUS:
-							Y: 35
-							Width: PARENT_RIGHT
-							Height: 15
-							Align: Center
+							X: PARENT_RIGHT
+							Y: 15
 							Font: Bold
 							Contrast: true
 				Container@PLAYER_ROOT:

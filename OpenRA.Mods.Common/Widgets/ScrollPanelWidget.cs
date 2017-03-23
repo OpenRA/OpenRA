@@ -137,11 +137,17 @@ namespace OpenRA.Mods.Common.Widgets
 			if (thumbHeight == scrollbarHeight)
 				thumbHeight = 0;
 
-			backgroundRect = new Rectangle(rb.X, rb.Y, rb.Width - ScrollbarWidth + 1, rb.Height);
-			upButtonRect = new Rectangle(rb.Right - ScrollbarWidth, rb.Y, ScrollbarWidth, ScrollbarWidth);
-			downButtonRect = new Rectangle(rb.Right - ScrollbarWidth, rb.Bottom - ScrollbarWidth, ScrollbarWidth, ScrollbarWidth);
-			scrollbarRect = new Rectangle(rb.Right - ScrollbarWidth, rb.Y + ScrollbarWidth - 1, ScrollbarWidth, scrollbarHeight + 2);
-			thumbRect = new Rectangle(rb.Right - ScrollbarWidth, thumbOrigin, ScrollbarWidth, thumbHeight);
+			backgroundRect = new Rectangle(rb.X, rb.Y, ScrollbarWidth > 0 ? rb.Width - ScrollbarWidth + 1 : rb.Width, rb.Height);
+
+			if (ScrollbarWidth > 0)
+			{
+				upButtonRect = new Rectangle(rb.Right - ScrollbarWidth, rb.Y, ScrollbarWidth, ScrollbarWidth);
+				downButtonRect = new Rectangle(rb.Right - ScrollbarWidth, rb.Bottom - ScrollbarWidth, ScrollbarWidth, ScrollbarWidth);
+				scrollbarRect = new Rectangle(rb.Right - ScrollbarWidth, rb.Y + ScrollbarWidth - 1, ScrollbarWidth, scrollbarHeight + 2);
+			}
+
+			if (ScrollbarWidth > 0)
+				thumbRect = new Rectangle(rb.Right - ScrollbarWidth, thumbOrigin, ScrollbarWidth, thumbHeight);
 
 			var upHover = Ui.MouseOverWidget == this && upButtonRect.Contains(Viewport.LastMousePos);
 			upDisabled = thumbHeight == 0 || currentListOffset >= 0;
@@ -151,22 +157,28 @@ namespace OpenRA.Mods.Common.Widgets
 
 			var thumbHover = Ui.MouseOverWidget == this && thumbRect.Contains(Viewport.LastMousePos);
 			WidgetUtils.DrawPanel(Background, backgroundRect);
-			WidgetUtils.DrawPanel(Background, scrollbarRect);
-			ButtonWidget.DrawBackground(Button, upButtonRect, upDisabled, upPressed, upHover, false);
-			ButtonWidget.DrawBackground(Button, downButtonRect, downDisabled, downPressed, downHover, false);
+			if (ScrollbarWidth > 0)
+			{
+				WidgetUtils.DrawPanel(Background, scrollbarRect);
+				ButtonWidget.DrawBackground(Button, upButtonRect, upDisabled, upPressed, upHover, false);
+				ButtonWidget.DrawBackground(Button, downButtonRect, downDisabled, downPressed, downHover, false);
+			}
 
 			if (thumbHeight > 0)
 				ButtonWidget.DrawBackground(Button, thumbRect, false, HasMouseFocus && thumbHover, thumbHover, false);
 
-			var upOffset = !upPressed || upDisabled ? 4 : 4 + ButtonDepth;
-			var downOffset = !downPressed || downDisabled ? 4 : 4 + ButtonDepth;
+			if (ScrollbarWidth > 0)
+			{
+				var upOffset = !upPressed || upDisabled ? 4 : 4 + ButtonDepth;
+				var downOffset = !downPressed || downDisabled ? 4 : 4 + ButtonDepth;
 
-			WidgetUtils.DrawRGBA(ChromeProvider.GetImage("scrollbar", upPressed || upDisabled ? "up_pressed" : "up_arrow"),
-				new float2(upButtonRect.Left + upOffset, upButtonRect.Top + upOffset));
-			WidgetUtils.DrawRGBA(ChromeProvider.GetImage("scrollbar", downPressed || downDisabled ? "down_pressed" : "down_arrow"),
-				new float2(downButtonRect.Left + downOffset, downButtonRect.Top + downOffset));
+				WidgetUtils.DrawRGBA(ChromeProvider.GetImage("scrollbar", upPressed || upDisabled ? "up_pressed" : "up_arrow"),
+					new float2(upButtonRect.Left + upOffset, upButtonRect.Top + upOffset));
+				WidgetUtils.DrawRGBA(ChromeProvider.GetImage("scrollbar", downPressed || downDisabled ? "down_pressed" : "down_arrow"),
+					new float2(downButtonRect.Left + downOffset, downButtonRect.Top + downOffset));
+			}
 
-			var drawBounds = backgroundRect.InflateBy(-BorderWidth, -BorderWidth, -BorderWidth, -BorderWidth);
+			var drawBounds = BorderWidth > 0 ? backgroundRect.InflateBy(-BorderWidth, -BorderWidth, -BorderWidth, -BorderWidth) : backgroundRect;
 			Game.Renderer.EnableScissor(drawBounds);
 
 			drawBounds.Offset((-ChildOrigin).ToPoint());

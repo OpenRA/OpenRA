@@ -29,7 +29,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public int IconWidth = 32;
 		public int IconHeight = 24;
-		public int IconSpacing = 8;
+		public int IconSpacing = 5;
 
 		public string ClockAnimation = "clock";
 		public string ClockSequence = "idle";
@@ -91,20 +91,20 @@ namespace OpenRA.Mods.Common.Widgets
 					continue;
 
 				icon.Play(item.Info.Icon);
-				var location = new float2(RenderBounds.Location) + new float2(power.i * (IconWidth + IconSpacing), 0);
-				WidgetUtils.DrawSHPCentered(icon.Image, location + 0.5f * iconSize, worldRenderer.Palette(item.Info.IconPalette), 0.5f);
+				var location = new float2(RenderBounds.Location) + new float2(power.i * (IconWidth * 2 + IconSpacing), 3);
+				WidgetUtils.DrawSHPCentered(icon.Image, location + iconSize, worldRenderer.Palette(item.Info.IconPalette), 1f);
 
 				var clock = clocks[power.a.Key];
 				clock.PlayFetchIndex(ClockSequence,
 					() => item.TotalTime == 0 ? 0 : ((item.TotalTime - item.RemainingTime)
 						* (clock.CurrentSequence.Length - 1) / item.TotalTime));
 				clock.Tick();
-				WidgetUtils.DrawSHPCentered(clock.Image, location + 0.5f * iconSize, worldRenderer.Palette(ClockPalette), 0.5f);
+				WidgetUtils.DrawSHPCentered(clock.Image, location + iconSize, worldRenderer.Palette(ClockPalette), 1f);
 
 				var tiny = Game.Renderer.Fonts["Tiny"];
 				var text = GetOverlayForItem(item, timestep);
 				tiny.DrawTextWithContrast(text,
-					location + new float2(16, 16) - new float2(tiny.Measure(text).X / 2, 0),
+					location + iconSize - new float2(tiny.Measure(text).X / 2, 3),
 					Color.White, Color.Black, 1);
 			}
 		}

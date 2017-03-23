@@ -162,7 +162,7 @@ Container@INGAME_OBSERVERSTATS_BG:
 						Container@PRODUCTION_STATS_HEADERS:
 							X: 0
 							Y: 0
-							Width: 758
+							Width: 807
 							Height: PARENT_BOTTOM
 							Children:
 								Label@PLAYER_HEADER:
@@ -173,16 +173,16 @@ Container@INGAME_OBSERVERSTATS_BG:
 									Font: Bold
 									Text: Player
 								Label@PRODUCTION_HEADER:
-									X: 200
+									X: 180
 									Y: 0
-									Width: 340
+									Width: 478
 									Height: 25
 									Font: Bold
 									Text: Production
 								Label@SUPPORT_POWERS_HEADER:
-									X: 548
+									X: 666
 									Y: 0
-									Width: 202
+									Width: 133
 									Height: 25
 									Font: Bold
 									Text: Support Powers
@@ -415,7 +415,7 @@ Container@INGAME_OBSERVERSTATS_BG:
 						ScrollItem@PRODUCTION_PLAYER_TEMPLATE:
 							X: 0
 							Y: 0
-							Width: 758
+							Width: 807
 							Height: 54
 							Children:
 								Image@FLAG:
@@ -433,17 +433,15 @@ Container@INGAME_OBSERVERSTATS_BG:
 									Font: Bold
 									Shadow: True
 								ObserverProductionIcons@PRODUCTION_ICONS:
-									X: 200
+									X: 180
 									Y: 0
-									Width: 340
+									Width: 478
 									Height: PARENT_BOTTOM
-                                    ClockPalette: iconclock
 								ObserverSupportPowerIcons@SUPPORT_POWER_ICONS:
-									X: 548
+									X: 666
 									Y: 0
-									Width: 202
+									Width: 133
 									Height: PARENT_BOTTOM
-                                    ClockPalette: iconclock
 						ScrollItem@COMBAT_PLAYER_TEMPLATE:
 							X: 0
 							Y: 0
