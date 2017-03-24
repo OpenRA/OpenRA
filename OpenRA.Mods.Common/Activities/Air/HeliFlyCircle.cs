@@ -22,6 +22,7 @@ namespace OpenRA.Mods.Common.Activities
 		public HeliFlyCircle(Actor self)
 		{
 			helicopter = self.Trait<Aircraft>();
+			IsIdle = true;
 		}
 
 		public override Activity Tick(Actor self)

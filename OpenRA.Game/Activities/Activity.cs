@@ -152,6 +152,7 @@ namespace OpenRA.Activities
 			set { NextActivity = value; }
 		}
 
+		public bool IsIdle { get; protected set; }
 		public bool IsInterruptible { get; protected set; }
 		public bool IsCanceled { get { return State == ActivityState.Canceled; } }
 
