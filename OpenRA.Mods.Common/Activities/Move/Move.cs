@@ -429,7 +429,11 @@ namespace OpenRA.Mods.Common.Activities
 				var nextCell = parent.PopPath(self);
 				if (nextCell != null)
 				{
-					if (IsTurn(mobile, nextCell.Value.First))
+					// HACK: small U-turns currently look crap, because the actor will just shift on the edge between cells.
+					// Therefore we disable smooth turning for them until we have a better turning logic.
+					var distanceFromNext = (self.World.Map.CenterOfCell(nextCell.Value.First) - self.World.Map.CenterOfCell(mobile.FromCell)).Length;
+					var smallUTurn = distanceFromNext == 2048;
+					if (IsTurn(mobile, nextCell.Value.First) && !smallUTurn)
 					{
 						var nextSubcellOffset = map.Grid.OffsetOfSubCell(nextCell.Value.Second);
 						var ret = new MoveFirstHalf(
