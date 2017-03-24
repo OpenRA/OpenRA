@@ -24,71 +24,71 @@ Players:
 		Faction: gdi
 	PlayerReference@Multi0:
 		Name: Multi0
-		Playable: True
 		AllowBots: False
+		Playable: True
 		LockFaction: True
 		Faction: nod
 		Enemies: Creeps
 	PlayerReference@Multi1:
 		Name: Multi1
-		Playable: True
 		AllowBots: False
+		Playable: True
 		LockFaction: True
 		Faction: nod
 		Enemies: Creeps
 	PlayerReference@Multi2:
 		Name: Multi2
-		Playable: True
 		AllowBots: False
+		Playable: True
 		LockFaction: True
 		Faction: nod
 		Enemies: Creeps
 	PlayerReference@Multi3:
 		Name: Multi3
-		Playable: True
 		AllowBots: False
+		Playable: True
 		LockFaction: True
 		Faction: nod
 		Enemies: Creeps
 	PlayerReference@Multi4:
 		Name: Multi4
-		Playable: True
 		AllowBots: False
+		Playable: True
 		LockFaction: True
 		Faction: nod
 		Enemies: Creeps
 	PlayerReference@Multi5:
 		Name: Multi5
-		Playable: True
 		AllowBots: False
+		Playable: True
 		LockFaction: True
 		Faction: nod
 		Enemies: Creeps
 	PlayerReference@Multi6:
 		Name: Multi6
-		Playable: True
 		AllowBots: False
+		Playable: True
 		LockFaction: True
 		Faction: nod
 		Enemies: Creeps
 	PlayerReference@Multi7:
 		Name: Multi7
-		Playable: True
 		AllowBots: False
+		Playable: True
 		LockFaction: True
 		Faction: nod
 		Enemies: Creeps
 	PlayerReference@Multi8:
 		Name: Multi8
-		Playable: True
 		AllowBots: False
+		Playable: True
 		LockFaction: True
 		Faction: nod
 		Enemies: Creeps
 	PlayerReference@Multi9:
 		Name: Multi9
-		Playable: True
 		AllowBots: False
+		Playable: True
 		LockFaction: True
 		Faction: nod
 		Enemies: Creeps
@@ -141,9 +141,6 @@ Actors:
 	Actor13: v35
 		Location: 29,39
 		Owner: Neutral
-	Actor14: v36
-		Location: 38,35
-		Owner: Neutral
 	Actor15: v23
 		Location: 46,39
 		Owner: Neutral
@@ -192,5 +189,11 @@ Actors:
 	Actor30: mpspawn
 		Location: 46,22
 		Owner: Neutral
+	Actor36: v35
+		Owner: Neutral
+		Location: 39,35
+	Actor37: v24
+		Owner: Neutral
+		Location: 39,36
 
 Rules: rules.yaml
