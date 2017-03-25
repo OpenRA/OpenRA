@@ -74,21 +74,34 @@ namespace OpenRA.Mods.Common.Traits
 
 				if (os == "LineBuild")
 				{
-					var playSounds = true;
+					// Build the parent actor first
+					var placed = w.CreateActor(order.TargetString, new TypeDictionary
+					{
+						new LocationInit(order.TargetLocation),
+						new OwnerInit(order.Player),
+						new FactionInit(faction),
+					});
+
+					foreach (var s in buildingInfo.BuildSounds)
+						Game.Sound.PlayToPlayer(SoundType.World, order.Player, s, placed.CenterPosition);
+
+					// Build the connection segments
+					var segmentType = unit.TraitInfo<LineBuildInfo>().SegmentType;
+					if (string.IsNullOrEmpty(segmentType))
+						segmentType = order.TargetString;
+
 					foreach (var t in BuildingUtils.GetLineBuildCells(w, order.TargetLocation, order.TargetString, buildingInfo))
 					{
-						var building = w.CreateActor(order.TargetString, new TypeDictionary
+						if (t.First == order.TargetLocation)
+							continue;
+
+						w.CreateActor(t.First == order.TargetLocation ? order.TargetString : segmentType, new TypeDictionary
 						{
-							new LocationInit(t),
+							new LocationInit(t.First),
 							new OwnerInit(order.Player),
-							new FactionInit(faction)
+							new FactionInit(faction),
+							new LineBuildParentInit(new[] { t.Second, placed })
 						});
-
-						if (playSounds)
-							foreach (var s in buildingInfo.BuildSounds)
-								Game.Sound.PlayToPlayer(SoundType.World, order.Player, s, building.CenterPosition);
-
-						playSounds = false;
 					}
 				}
 				else if (os == "PlacePlug")

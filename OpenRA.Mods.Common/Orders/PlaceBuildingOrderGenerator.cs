@@ -178,7 +178,7 @@ namespace OpenRA.Mods.Common.Orders
 
 				if (!Game.GetModifierKeys().HasModifier(Modifiers.Shift))
 					foreach (var t in BuildingUtils.GetLineBuildCells(world, topLeft, building, buildingInfo))
-						cells.Add(t, buildingInfo.IsCloseEnoughToBase(world, world.LocalPlayer, building, t));
+						cells.Add(t.First, buildingInfo.IsCloseEnoughToBase(world, world.LocalPlayer, building, t.First));
 				else
 					cells.Add(topLeft, buildingInfo.IsCloseEnoughToBase(world, world.LocalPlayer, building, topLeft));
 			}
