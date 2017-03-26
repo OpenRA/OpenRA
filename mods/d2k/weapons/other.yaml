@@ -30,7 +30,6 @@ Sound:
 		Range: 0, 32
 		Falloff: 50, 50 # Only does half damage to friendly units
 		Damage: 150
-		InvalidTargets: Sonictank # Does not affect friendly sonic tanks at all
 		AffectsParent: false
 		ValidStances: Ally
 		Versus:
