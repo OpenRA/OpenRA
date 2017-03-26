@@ -291,8 +291,6 @@ sonic_tank:
 		Actor: sonic_tank.husk
 	AttractsWorms:
 		Intensity: 600
-	Targetable:
-		TargetTypes: Ground, Vehicle, C4, Sonictank
 
 devastator:
 	Inherits: ^Tank
