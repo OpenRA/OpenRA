@@ -21,6 +21,7 @@ poweroff:
 		Length: *
 		Tick: 160
 		ZOffset: 2047
+		Offset: 0, -12
 
 allyrepair:
 	repair: wrench
