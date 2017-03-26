@@ -22,6 +22,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Palette to use for rendering the placement sprite.")]
 		[PaletteReference] public readonly string Palette = TileSet.TerrainPaletteInternalName;
 
+		[Desc("Palette to use for rendering the placement sprite for line build segments.")]
+		[PaletteReference] public readonly string LineBuildSegmentPalette = TileSet.TerrainPaletteInternalName;
+
 		[Desc("Play NewOptionsNotification this many ticks after building placement.")]
 		public readonly int NewOptionsNotificationDelay = 10;
 
