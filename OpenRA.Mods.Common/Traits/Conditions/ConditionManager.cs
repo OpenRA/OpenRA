@@ -129,7 +129,6 @@ namespace OpenRA.Mods.Common.Traits
 
 		/// <summary>Grants a specified condition.</summary>
 		/// <returns>The token that is used to revoke this condition.</returns>
-		/// <param name="external">Validate against the external condition whitelist.</param>
 		/// <param name="duration">Automatically revoke condition after this delay if non-zero.</param>
 		public int GrantCondition(Actor self, string condition, int duration = 0)
 		{
