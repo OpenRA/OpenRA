@@ -115,6 +115,11 @@ namespace OpenRA.Mods.Common.Traits
 
 		void UpdateConditionState(Actor self, string condition, int token, bool isRevoke)
 		{
+			// Conditions may be granted before the state is initialized.
+			// These conditions will be processed in INotifyCreated.Created.
+			if (state == null)
+				return;
+
 			ConditionState conditionState;
 			if (!state.TryGetValue(condition, out conditionState))
 				return;
@@ -141,10 +146,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (duration > 0)
 				timers.GetOrAdd(condition).Add(new ConditionTimer(token, duration));
 
-			// Conditions may be granted before the state is initialized.
-			// These conditions will be processed in INotifyCreated.Created.
-			if (state != null)
-				UpdateConditionState(self, condition, token, false);
+			UpdateConditionState(self, condition, token, false);
 
 			return token;
 		}
@@ -169,9 +171,7 @@ namespace OpenRA.Mods.Common.Traits
 					timers.Remove(condition);
 			}
 
-			// Conditions may be granted and revoked before the state is initialized.
-			if (state != null)
-				UpdateConditionState(self, condition, token, true);
+			UpdateConditionState(self, condition, token, true);
 
 			return InvalidConditionToken;
 		}
