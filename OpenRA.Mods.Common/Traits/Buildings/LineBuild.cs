@@ -15,6 +15,15 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
+	public enum LineBuildDirection { Unset, X, Y }
+	public class LineBuildDirectionInit : IActorInit<LineBuildDirection>
+	{
+		[FieldFromYamlKey] readonly LineBuildDirection value = LineBuildDirection.Unset;
+		public LineBuildDirectionInit() { }
+		public LineBuildDirectionInit(LineBuildDirection init) { value = init; }
+		public LineBuildDirection Value(World world) { return value; }
+	}
+
 	public class LineBuildParentInit : IActorInit<Actor[]>
 	{
 		[FieldFromYamlKey] public readonly string[] ParentNames = new string[0];

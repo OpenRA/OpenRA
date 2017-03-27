@@ -103,6 +103,7 @@ namespace OpenRA.Mods.Common.Traits
 							new LocationInit(t.First),
 							new OwnerInit(order.Player),
 							new FactionInit(faction),
+							new LineBuildDirectionInit(t.First.X == order.TargetLocation.X ? LineBuildDirection.Y : LineBuildDirection.X),
 							new LineBuildParentInit(new[] { t.Second, placed })
 						});
 					}
