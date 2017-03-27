@@ -51,16 +51,21 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Actor type for line-built segments (defaults to same actor).")]
 		public readonly string SegmentType = null;
 
+		[Desc("Delete generated segments when destroyed or sold.")]
+		public readonly bool SegmentsRequireNode = false;
+
 		public object Create(ActorInitializer init) { return new LineBuild(init, this); }
 	}
 
-	public class LineBuild : INotifyAddedToWorld, INotifyRemovedFromWorld, INotifyLineBuildSegmentsChanged
+	public class LineBuild : INotifyKilled, INotifyAddedToWorld, INotifyRemovedFromWorld, INotifyLineBuildSegmentsChanged
 	{
+		readonly LineBuildInfo info;
 		readonly Actor[] parentNodes = new Actor[0];
 		HashSet<Actor> segments;
 
 		public LineBuild(ActorInitializer init, LineBuildInfo info)
 		{
+			this.info = info;
 			if (init.Contains<LineBuildParentInit>())
 				parentNodes = init.Get<LineBuildParentInit>().Value(init.World);
 		}
@@ -95,6 +100,17 @@ namespace OpenRA.Mods.Common.Traits
 				if (!parent.Disposed)
 					foreach (var n in parent.TraitsImplementing<INotifyLineBuildSegmentsChanged>())
 						n.SegmentRemoved(parent, self);
+
+			if (info.SegmentsRequireNode && segments != null)
+				foreach (var s in segments)
+					s.Dispose();
+		}
+
+		void INotifyKilled.Killed(Actor self, AttackInfo e)
+		{
+			if (info.SegmentsRequireNode && segments != null)
+				foreach (var s in segments)
+					s.Kill(e.Attacker);
 		}
 	}
 }
