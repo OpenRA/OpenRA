@@ -57,15 +57,29 @@ namespace OpenRA.Mods.Common.Traits
 			public readonly List<IConditionTimerWatcher> Watchers = new List<IConditionTimerWatcher>();
 		}
 
+		class TokenState
+		{
+			public readonly string Condition;
+			public int Value;
+
+			public TokenState(string condition, int value)
+			{
+				Condition = condition;
+				Value = value;
+			}
+		}
+
+		enum UpdateType { Grant, Change, Revoke }
+
 		Dictionary<string, ConditionState> state;
 		readonly Dictionary<string, List<ConditionTimer>> timers = new Dictionary<string, List<ConditionTimer>>();
 
-		/// <summary>Each granted condition receives a unique token that is used when revoking.</summary>
-		Dictionary<int, string> tokens = new Dictionary<int, string>();
+		/// <summary>Each granted condition receives a unique token that is used when revoking and has an integer value.</summary>
+		Dictionary<int, TokenState> tokens = new Dictionary<int, TokenState>();
 
 		int nextToken = 1;
 
-		/// <summary>Cache of condition -> enabled state for quick evaluation of token counter conditions.</summary>
+		/// <summary>Cache of condition -> enabled state for quick evaluation of token value sum conditions.</summary>
 		readonly Dictionary<string, int> conditionCache = new Dictionary<string, int>();
 
 		/// <summary>Read-only version of conditionCache that is passed to IConditionConsumers.</summary>
@@ -100,12 +114,15 @@ namespace OpenRA.Mods.Common.Traits
 			// Enable any conditions granted during trait setup
 			foreach (var kv in tokens)
 			{
-				ConditionState conditionState;
-				if (!state.TryGetValue(kv.Value, out conditionState))
+				ConditionState cs;
+				if (!state.TryGetValue(kv.Value.Condition, out cs))
 					continue;
 
-				conditionState.Tokens.Add(kv.Key);
-				conditionCache[kv.Value] = conditionState.Tokens.Count;
+				cs.Tokens.Add(kv.Key);
+				if (conditionCache.ContainsKey(kv.Value.Condition))
+					conditionCache[kv.Value.Condition] += kv.Value.Value;
+				else
+					conditionCache.Add(kv.Value.Condition, kv.Value.Value);
 			}
 
 			// Update all traits with their initial condition state
@@ -113,65 +130,99 @@ namespace OpenRA.Mods.Common.Traits
 				consumer(self, readOnlyConditionCache);
 		}
 
-		void UpdateConditionState(Actor self, string condition, int token, bool isRevoke)
+		void UpdateConditionState(Actor self, string condition, int token, UpdateType type, int delta)
 		{
 			// Conditions may be granted before the state is initialized.
 			// These conditions will be processed in INotifyCreated.Created.
 			if (state == null)
 				return;
 
-			ConditionState conditionState;
-			if (!state.TryGetValue(condition, out conditionState))
+			ConditionState cs;
+			if (!state.TryGetValue(condition, out cs))
 				return;
 
-			if (isRevoke)
-				conditionState.Tokens.Remove(token);
-			else
-				conditionState.Tokens.Add(token);
+			switch (type)
+			{
+				case UpdateType.Grant:
+					cs.Tokens.Add(token);
+					break;
 
-			conditionCache[condition] = conditionState.Tokens.Count;
+				case UpdateType.Revoke:
+					cs.Tokens.Remove(token);
+					break;
+			}
 
-			foreach (var t in conditionState.Consumers)
+			if (delta == 0)
+				return;
+
+			conditionCache[condition] += delta;
+
+			foreach (var t in cs.Consumers)
 				t(self, readOnlyConditionCache);
 		}
 
-		/// <summary>Grants a specified condition.</summary>
+		/// <summary>Grants a specified condition token.</summary>
 		/// <returns>The token that is used to revoke this condition.</returns>
-		/// <param name="duration">Automatically revoke condition after this delay if non-zero.</param>
-		public int GrantCondition(Actor self, string condition, int duration = 0)
+		/// <param name="value">Integer value for condition token condition.</param>
+		public int GrantCondition(Actor self, string condition, int value = 1)
 		{
 			var token = nextToken++;
-			tokens.Add(token, condition);
+			tokens.Add(token, new TokenState(condition, value));
 
-			if (duration > 0)
-				timers.GetOrAdd(condition).Add(new ConditionTimer(token, duration));
-
-			UpdateConditionState(self, condition, token, false);
+			UpdateConditionState(self, condition, token, UpdateType.Grant, value);
 
 			return token;
 		}
 
-		/// <summary>Revokes a previously granted condition.</summary>
+		/// <summary>Grants a timed token for a specified condition.</summary>
+		/// <returns>The token that is used to revoke this condition.</returns>
+		/// <param name="duration">Automatically revoke condition after this delay if non-zero.</param>
+		/// <param name="value">Integer value for condition token condition.</param>
+		public int GrantTimedCondition(Actor self, string condition, int duration, int value = 1)
+		{
+			var token = GrantCondition(self, condition, value);
+			if (duration > 0)
+				timers.GetOrAdd(condition).Add(new ConditionTimer(token, duration));
+
+			return token;
+		}
+
+		/// <summary>Re-values a specified condition token.</summary>
+		/// <returns>The token that is used to revoke this condition.</returns>
+		/// <param name="value">Integer value for condition token condition.</param>
+		public int UpdateConditionValue(Actor self, int token, int value)
+		{
+			TokenState tokenState;
+			if (!tokens.TryGetValue(token, out tokenState))
+				throw new InvalidOperationException("Attempting to re-value condition with invalid token {0} for {1}.".F(token, self));
+
+			UpdateConditionState(self, tokenState.Condition, token, UpdateType.Change, value - tokenState.Value);
+			tokenState.Value = value;
+
+			return token;
+		}
+
+		/// <summary>Revokes a previously granted condition token.</summary>
 		/// <returns>The invalid token ID.</returns>
 		/// <param name="token">The token ID returned by GrantCondition.</param>
 		public int RevokeCondition(Actor self, int token)
 		{
-			string condition;
-			if (!tokens.TryGetValue(token, out condition))
+			TokenState tokenState;
+			if (!tokens.TryGetValue(token, out tokenState))
 				throw new InvalidOperationException("Attempting to revoke condition with invalid token {0} for {1}.".F(token, self));
 
 			tokens.Remove(token);
 
 			// Clean up timers
 			List<ConditionTimer> ct;
-			if (timers.TryGetValue(condition, out ct))
+			if (timers.TryGetValue(tokenState.Condition, out ct))
 			{
 				ct.RemoveAll(t => t.Token == token);
 				if (!ct.Any())
-					timers.Remove(condition);
+					timers.Remove(tokenState.Condition);
 			}
 
-			UpdateConditionState(self, condition, token, true);
+			UpdateConditionState(self, tokenState.Condition, token, UpdateType.Revoke, -tokenState.Value);
 
 			return InvalidConditionToken;
 		}

@@ -67,12 +67,12 @@ namespace OpenRA.Mods.Common.Traits
 			return true;
 		}
 
-		public int GrantCondition(Actor self, object source, int duration = 0)
+		public int GrantCondition(Actor self, object source, int duration = 0, int value = 1)
 		{
 			if (conditionManager == null || source == null || !CanGrantCondition(self, source))
 				return ConditionManager.InvalidConditionToken;
 
-			var token = conditionManager.GrantCondition(self, Info.Condition, duration);
+			var token = conditionManager.GrantTimedCondition(self, Info.Condition, duration, value);
 			var permanent = permanentTokens.GetOrAdd(source);
 
 			if (duration > 0)

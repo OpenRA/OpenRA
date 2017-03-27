@@ -21,6 +21,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Condition to grant.")]
 		public readonly string Condition = null;
 
+		[Desc("Value added to condition; the value of the condition is the sum of granted values.")]
+		public int Value = 1;
+
 		public override object Create(ActorInitializer init) { return new GrantCondition(this); }
 	}
 
@@ -42,7 +45,7 @@ namespace OpenRA.Mods.Common.Traits
 		protected override void TraitEnabled(Actor self)
 		{
 			if (conditionToken == ConditionManager.InvalidConditionToken)
-				conditionToken = conditionManager.GrantCondition(self, Info.Condition);
+				conditionToken = conditionManager.GrantCondition(self, Info.Condition, Info.Value);
 		}
 
 		protected override void TraitDisabled(Actor self)
