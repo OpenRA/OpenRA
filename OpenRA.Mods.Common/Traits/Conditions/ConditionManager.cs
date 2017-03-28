@@ -10,9 +10,9 @@
 #endregion
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -34,14 +34,93 @@ namespace OpenRA.Mods.Common.Traits
 
 		class ConditionTimer
 		{
-			public readonly int Token;
-			public readonly int Duration;
-			public int Remaining;
-
-			public ConditionTimer(int token, int duration)
+			class TokenTimer
 			{
-				Token = token;
-				Duration = Remaining = duration;
+				public static readonly TokenTimer Zero = new TokenTimer(InvalidConditionToken, 0);
+
+				public readonly int Token;
+				public readonly int Duration;
+				public int Remaining;
+
+				public TokenTimer(int token, int duration)
+				{
+					Token = token;
+					Duration = Remaining = duration;
+				}
+			}
+
+			/// <summary>External callbacks that are to be executed when a timed condition changes.</summary>
+			readonly List<IConditionTimerWatcher> watchers = new List<IConditionTimerWatcher>();
+
+			readonly List<TokenTimer> timers = new List<TokenTimer>();
+			TokenTimer longestTimer = TokenTimer.Zero;
+			public int Count { get { return timers.Count; } }
+
+			public void Remove(int token, Actor self, ConditionManager manager)
+			{
+				if (!RemoveByIndex(timers.FindIndex(t => t.Token == token), self, manager))
+					return;
+
+				NewLongestTimer();
+				if (timers.Count == 0)
+					manager.timers.Remove(this);
+			}
+
+			public void Add(IConditionTimerWatcher watcher) { watchers.Add(watcher); }
+			public void Add(int token, int duration, ConditionManager manager)
+			{
+				timers.Add(new TokenTimer(token, duration));
+				NewLongestTimer();
+				if (timers.Count == 1)
+					manager.timers.Add(this);
+			}
+
+			public void Tick(Actor self, ConditionManager manager)
+			{
+				if (timers.Count == 0)
+					return;
+
+				var expiredTimerIndexes = new BitArray(timers.Count);
+				for (var i = 0; i < timers.Count; i++)
+					if (--timers[i].Remaining <= 0)
+						expiredTimerIndexes.Set(i, true);
+
+				for (var i = timers.Count - 1; i >= 0; i--)
+					if (expiredTimerIndexes.Get(i))
+						RemoveByIndex(i, self, manager);
+
+				NewLongestTimer();
+				foreach (var w in watchers)
+					w.Update(longestTimer.Duration, longestTimer.Remaining);
+			}
+
+			bool RemoveByIndex(int index, Actor self, ConditionManager manager)
+			{
+				if (index < 0)
+					return false;
+
+				TokenTimer removedTimer = timers[index];
+				timers.RemoveAt(index);
+				manager.RevokeCondition(self, removedTimer.Token);
+				if (longestTimer != removedTimer)
+					return false;
+
+				longestTimer = TokenTimer.Zero;
+				return true;
+			}
+
+			bool NewLongestTimer()
+			{
+				var newLongestTimer = longestTimer;
+				foreach (var timer in timers)
+					if (timer.Remaining > newLongestTimer.Remaining)
+						newLongestTimer = timer;
+
+				if (newLongestTimer == longestTimer)
+					return false;
+
+				longestTimer = newLongestTimer;
+				return true;
 			}
 		}
 
@@ -50,11 +129,31 @@ namespace OpenRA.Mods.Common.Traits
 			/// <summary>Traits that have registered to be notified when this condition changes.</summary>
 			public readonly List<ConditionConsumer> Consumers = new List<ConditionConsumer>();
 
-			/// <summary>Unique integers identifying granted instances of the condition.</summary>
-			public readonly HashSet<int> Tokens = new HashSet<int>();
+			public ConditionTimer Timers = null;
 
-			/// <summary>External callbacks that are to be executed when a timed condition changes.</summary>
-			public readonly List<IConditionTimerWatcher> Watchers = new List<IConditionTimerWatcher>();
+			/// <summary>Unique integers identifying granted instances of the condition.</summary>
+			readonly HashSet<int> tokens = new HashSet<int>();
+
+			public void Add(int token) { tokens.Add(token); }
+			public ConditionTimer GetTimer(Actor self, ConditionManager manager, string condition)
+			{
+				if (Timers != null)
+					return Timers;
+
+				Timers = new ConditionTimer();
+				return Timers;
+			}
+
+			public void Add(int token, int duration, Actor self, ConditionManager manager, string condition)
+			{
+				GetTimer(self, manager, condition).Add(token, duration, manager);
+			}
+
+			public void Remove(int token, Actor self, ConditionManager manager)
+			{
+				if (tokens.Remove(token) && Timers != null)
+					Timers.Remove(token, self, manager);
+			}
 		}
 
 		class TokenState
@@ -71,8 +170,10 @@ namespace OpenRA.Mods.Common.Traits
 
 		enum UpdateType { Grant, Change, Revoke }
 
+		public readonly ConditionManagerInfo Info;
 		Dictionary<string, ConditionState> state;
-		readonly Dictionary<string, List<ConditionTimer>> timers = new Dictionary<string, List<ConditionTimer>>();
+		readonly HashSet<ConditionTimer> timers = new HashSet<ConditionTimer>();
+		readonly Dictionary<string, ConditionTimer> pendingTimers = new Dictionary<string, ConditionTimer>();
 
 		/// <summary>Each granted condition receives a unique token that is used when revoking and has an integer value.</summary>
 		Dictionary<int, TokenState> tokens = new Dictionary<int, TokenState>();
@@ -93,6 +194,9 @@ namespace OpenRA.Mods.Common.Traits
 			var allConsumers = new HashSet<ConditionConsumer>();
 			var allWatchers = self.TraitsImplementing<IConditionTimerWatcher>().ToList();
 
+			foreach (var conditionTimersPair in pendingTimers)
+				state.GetOrAdd(conditionTimersPair.Key).Timers = conditionTimersPair.Value;
+
 			foreach (var consumerProvider in self.TraitsImplementing<IConditionConsumerProvider>())
 			{
 				foreach (var consumerWithConditions in consumerProvider.GetConsumersWithTheirConditions())
@@ -102,9 +206,13 @@ namespace OpenRA.Mods.Common.Traits
 					{
 						var cs = state.GetOrAdd(condition);
 						cs.Consumers.Add(consumerWithConditions.First);
-						foreach (var w in allWatchers)
-							if (w.Condition == condition)
-								cs.Watchers.Add(w);
+						if (allWatchers.Count > 0)
+						{
+							var ts = cs.GetTimer(self, this, condition);
+							foreach (var w in allWatchers)
+								if (w.Condition == condition)
+									ts.Add(w);
+						}
 
 						conditionCache[condition] = 0;
 					}
@@ -118,7 +226,7 @@ namespace OpenRA.Mods.Common.Traits
 				if (!state.TryGetValue(kv.Value.Condition, out cs))
 					continue;
 
-				cs.Tokens.Add(kv.Key);
+				cs.Add(kv.Key);
 				if (conditionCache.ContainsKey(kv.Value.Condition))
 					conditionCache[kv.Value.Condition] += kv.Value.Value;
 				else
@@ -144,11 +252,11 @@ namespace OpenRA.Mods.Common.Traits
 			switch (type)
 			{
 				case UpdateType.Grant:
-					cs.Tokens.Add(token);
+					cs.Add(token);
 					break;
 
 				case UpdateType.Revoke:
-					cs.Tokens.Remove(token);
+					cs.Remove(token, self, this);
 					break;
 			}
 
@@ -168,9 +276,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			var token = nextToken++;
 			tokens.Add(token, new TokenState(condition, value));
-
 			UpdateConditionState(self, condition, token, UpdateType.Grant, value);
-
 			return token;
 		}
 
@@ -182,7 +288,12 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			var token = GrantCondition(self, condition, value);
 			if (duration > 0)
-				timers.GetOrAdd(condition).Add(new ConditionTimer(token, duration));
+			{
+				if (state == null)
+					pendingTimers.GetOrAdd(condition).Add(token, duration, this);
+				else
+					state[condition].Add(token, duration, self, this, condition);
+			}
 
 			return token;
 		}
@@ -196,9 +307,11 @@ namespace OpenRA.Mods.Common.Traits
 			if (!tokens.TryGetValue(token, out tokenState))
 				throw new InvalidOperationException("Attempting to re-value condition with invalid token {0} for {1}.".F(token, self));
 
+			if (value == tokenState.Value)
+				return token;
+
 			UpdateConditionState(self, tokenState.Condition, token, UpdateType.Change, value - tokenState.Value);
 			tokenState.Value = value;
-
 			return token;
 		}
 
@@ -212,18 +325,7 @@ namespace OpenRA.Mods.Common.Traits
 				throw new InvalidOperationException("Attempting to revoke condition with invalid token {0} for {1}.".F(token, self));
 
 			tokens.Remove(token);
-
-			// Clean up timers
-			List<ConditionTimer> ct;
-			if (timers.TryGetValue(tokenState.Condition, out ct))
-			{
-				ct.RemoveAll(t => t.Token == token);
-				if (!ct.Any())
-					timers.Remove(tokenState.Condition);
-			}
-
 			UpdateConditionState(self, tokenState.Condition, token, UpdateType.Revoke, -tokenState.Value);
-
 			return InvalidConditionToken;
 		}
 
@@ -233,37 +335,13 @@ namespace OpenRA.Mods.Common.Traits
 			return tokens.ContainsKey(token);
 		}
 
-		readonly HashSet<int> timersToRemove = new HashSet<int>();
 		void ITick.Tick(Actor self)
 		{
 			// Watchers will be receiving notifications while the condition is enabled.
 			// They will also be provided with the number of ticks before the condition is disabled,
 			// as well as the duration of the longest active instance.
-			foreach (var kv in timers)
-			{
-				var duration = 0;
-				var remaining = 0;
-				foreach (var t in kv.Value)
-				{
-					if (--t.Remaining <= 0)
-						timersToRemove.Add(t.Token);
-
-					// Track the duration and remaining time for the longest remaining timer
-					if (t.Remaining > remaining)
-					{
-						duration = t.Duration;
-						remaining = t.Remaining;
-					}
-				}
-
-				foreach (var w in state[kv.Key].Watchers)
-					w.Update(duration, remaining);
-			}
-
-			foreach (var t in timersToRemove)
-				RevokeCondition(self, t);
-
-			timersToRemove.Clear();
+			foreach (var timer in timers)
+				timer.Tick(self, this);
 		}
 	}
 }
