@@ -39,6 +39,14 @@ namespace OpenRA.Mods.Common.Lint
 				.F(ruleInfo.GetType().Name, fieldInfo.Name));
 		}
 
+		public static IEnumerable<string> WithParentCondition(string condition)
+		{
+			yield return condition;
+			condition = condition.SubstringBefore('.');
+			if (condition.Length > 0)
+				yield return condition;
+		}
+
 		public static IEnumerable<string> GetPropertyValues(object ruleInfo, PropertyInfo propertyInfo, Action<string> emitError)
 		{
 			var type = propertyInfo.PropertyType;

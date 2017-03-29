@@ -24,8 +24,36 @@ namespace OpenRA.Mods.Common.Traits
 		void Update(int duration, int remaining);
 	}
 
+	[Flags] public enum ConditionProgressProperties { Duration = 1, Remaining = 2, Progress = 4 }
+
 	[Desc("Attach this to a unit to enable dynamic conditions by warheads, experience, crates, support powers, etc.")]
-	public class ConditionManagerInfo : TraitInfo<ConditionManager>, Requires<IConditionConsumerInfo> { }
+	public class ConditionManagerInfo : ITraitInfo, Requires<IConditionConsumerInfo>
+	{
+		[Desc("The key is the timer condition name and the value is one or more of the following property names: duration, remaining, or progress.")]
+		public readonly Dictionary<string, ConditionProgressProperties> Timers = new Dictionary<string, ConditionProgressProperties>();
+
+		[ConsumedConditionReference]
+		public IEnumerable<string> ConsumedTimerConditions { get { return Timers.Keys; } }
+
+		[GrantedConditionReference]
+		public IEnumerable<string> GrantedTimerConditionProperties
+		{
+			get
+			{
+				foreach (var timer in Timers)
+				{
+					if (timer.Value.HasFlag(ConditionProgressProperties.Duration))
+						yield return timer.Key + ".duration";
+					if (timer.Value.HasFlag(ConditionProgressProperties.Remaining))
+						yield return timer.Key + ".remaining";
+					if (timer.Value.HasFlag(ConditionProgressProperties.Progress))
+						yield return timer.Key + ".progress";
+				}
+			}
+		}
+
+		public object Create(ActorInitializer init) { return new ConditionManager(this); }
+	}
 
 	public class ConditionManager : INotifyCreated, ITick
 	{
@@ -52,25 +80,42 @@ namespace OpenRA.Mods.Common.Traits
 			/// <summary>External callbacks that are to be executed when a timed condition changes.</summary>
 			readonly List<IConditionTimerWatcher> watchers = new List<IConditionTimerWatcher>();
 
+			readonly int durationToken = InvalidConditionToken;
+			readonly int remainingToken = InvalidConditionToken;
+			readonly int progressToken = InvalidConditionToken;
 			readonly List<TokenTimer> timers = new List<TokenTimer>();
 			TokenTimer longestTimer = TokenTimer.Zero;
 			public int Count { get { return timers.Count; } }
+
+			public ConditionTimer(Actor self, ConditionManager manager, string condition)
+			{
+				ConditionProgressProperties properties;
+				manager.Info.Timers.TryGetValue(condition, out properties);
+				if (properties.HasFlag(ConditionProgressProperties.Duration))
+					durationToken = manager.GrantCondition(self, condition + ".duration", 0);
+
+				if (properties.HasFlag(ConditionProgressProperties.Remaining))
+					remainingToken = manager.GrantCondition(self, condition + ".remaining", 0);
+
+				if (properties.HasFlag(ConditionProgressProperties.Progress))
+					progressToken = manager.GrantCondition(self, condition + ".progress", 0);
+			}
 
 			public void Remove(int token, Actor self, ConditionManager manager)
 			{
 				if (!RemoveByIndex(timers.FindIndex(t => t.Token == token), self, manager))
 					return;
 
-				NewLongestTimer();
+				NewLongestTimer(self, manager);
 				if (timers.Count == 0)
 					manager.timers.Remove(this);
 			}
 
 			public void Add(IConditionTimerWatcher watcher) { watchers.Add(watcher); }
-			public void Add(int token, int duration, ConditionManager manager)
+			public void Add(int token, int duration, Actor self, ConditionManager manager)
 			{
 				timers.Add(new TokenTimer(token, duration));
-				NewLongestTimer();
+				NewLongestTimer(self, manager);
 				if (timers.Count == 1)
 					manager.timers.Add(this);
 			}
@@ -89,7 +134,15 @@ namespace OpenRA.Mods.Common.Traits
 					if (expiredTimerIndexes.Get(i))
 						RemoveByIndex(i, self, manager);
 
-				NewLongestTimer();
+				if (!NewLongestTimer(self, manager))
+				{
+					if (remainingToken != InvalidConditionToken)
+						manager.UpdateConditionValue(self, remainingToken, longestTimer.Remaining);
+
+					if (progressToken != InvalidConditionToken)
+						manager.UpdateConditionValue(self, progressToken, longestTimer.Duration - longestTimer.Remaining);
+				}
+
 				foreach (var w in watchers)
 					w.Update(longestTimer.Duration, longestTimer.Remaining);
 			}
@@ -109,7 +162,7 @@ namespace OpenRA.Mods.Common.Traits
 				return true;
 			}
 
-			bool NewLongestTimer()
+			bool NewLongestTimer(Actor self, ConditionManager manager)
 			{
 				var newLongestTimer = longestTimer;
 				foreach (var timer in timers)
@@ -120,6 +173,15 @@ namespace OpenRA.Mods.Common.Traits
 					return false;
 
 				longestTimer = newLongestTimer;
+				if (durationToken != InvalidConditionToken)
+					manager.UpdateConditionValue(self, durationToken, longestTimer.Duration);
+
+				if (remainingToken != InvalidConditionToken)
+					manager.UpdateConditionValue(self, remainingToken, longestTimer.Remaining);
+
+				if (progressToken != InvalidConditionToken)
+					manager.UpdateConditionValue(self, progressToken, longestTimer.Duration - longestTimer.Remaining);
+
 				return true;
 			}
 		}
@@ -140,13 +202,13 @@ namespace OpenRA.Mods.Common.Traits
 				if (Timers != null)
 					return Timers;
 
-				Timers = new ConditionTimer();
+				Timers = new ConditionTimer(self, manager, condition);
 				return Timers;
 			}
 
 			public void Add(int token, int duration, Actor self, ConditionManager manager, string condition)
 			{
-				GetTimer(self, manager, condition).Add(token, duration, manager);
+				GetTimer(self, manager, condition).Add(token, duration, self, manager);
 			}
 
 			public void Remove(int token, Actor self, ConditionManager manager)
@@ -185,6 +247,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		/// <summary>Read-only version of conditionCache that is passed to IConditionConsumers.</summary>
 		IReadOnlyDictionary<string, int> readOnlyConditionCache;
+
+		public ConditionManager(ConditionManagerInfo info) { Info = info; }
 
 		void INotifyCreated.Created(Actor self)
 		{
@@ -290,7 +354,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (duration > 0)
 			{
 				if (state == null)
-					pendingTimers.GetOrAdd(condition).Add(token, duration, this);
+					pendingTimers.GetOrAdd(condition, c => new ConditionTimer(self, this, condition)).Add(token, duration, self, this);
 				else
 					state[condition].Add(token, duration, self, this, condition);
 			}

@@ -119,13 +119,17 @@
 		ZOffset: 256
 
 ^IronCurtainable:
+	ConditionManager:
+		Timers:
+			invulnerability: remaining, duration
 	WithColoredOverlay@IRONCURTAIN:
 		RequiresCondition: invulnerability
 	DamageMultiplier@IRONCURTAIN:
 		RequiresCondition: invulnerability
 		Modifier: 0
-	TimedConditionBar:
-		Condition: invulnerability
+	ConditionBar@INVULNERABILITY:
+		Value: invulnerability.remaining
+		MaxValue: invulnerability.duration
 	ExternalCondition@INVULNERABILITY:
 		Condition: invulnerability
 

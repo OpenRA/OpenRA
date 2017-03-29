@@ -89,13 +89,17 @@
 		Condition: crate-speed
 
 ^EmpDisable:
+	ConditionManager:
+		Timers:
+			empdisable: remaining, duration
 	WithColoredOverlay@EMPDISABLE:
 		RequiresCondition: empdisable
 		Palette: disabled
 	DisableOnCondition@EMPDISABLE:
 		RequiresCondition: empdisable
-	TimedConditionBar@EMPDISABLE:
-		Condition: empdisable
+	ConditionBar@EMPDISABLE:
+		Value: empdisable.remaining
+		MaxValue: empdisable.duration
 		Color: FFFFFF
 	WithIdleOverlay@EMPDISABLE:
 		Sequence: emp-overlay
