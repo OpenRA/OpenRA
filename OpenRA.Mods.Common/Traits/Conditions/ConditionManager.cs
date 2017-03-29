@@ -12,18 +12,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	[RequireExplicitImplementation]
-	public interface IConditionTimerWatcher
-	{
-		string Condition { get; }
-		void Update(int duration, int remaining);
-	}
-
 	[Flags] public enum ConditionProgressProperties { Duration = 1, Remaining = 2, Progress = 4 }
 
 	[Desc("Attach this to a unit to enable dynamic conditions by warheads, experience, crates, support powers, etc.")]
@@ -77,9 +69,6 @@ namespace OpenRA.Mods.Common.Traits
 				}
 			}
 
-			/// <summary>External callbacks that are to be executed when a timed condition changes.</summary>
-			readonly List<IConditionTimerWatcher> watchers = new List<IConditionTimerWatcher>();
-
 			readonly int durationToken = InvalidConditionToken;
 			readonly int remainingToken = InvalidConditionToken;
 			readonly int progressToken = InvalidConditionToken;
@@ -111,7 +100,6 @@ namespace OpenRA.Mods.Common.Traits
 					manager.timers.Remove(this);
 			}
 
-			public void Add(IConditionTimerWatcher watcher) { watchers.Add(watcher); }
 			public void Add(int token, int duration, Actor self, ConditionManager manager)
 			{
 				timers.Add(new TokenTimer(token, duration));
@@ -142,9 +130,6 @@ namespace OpenRA.Mods.Common.Traits
 					if (progressToken != InvalidConditionToken)
 						manager.UpdateConditionValue(self, progressToken, longestTimer.Duration - longestTimer.Remaining);
 				}
-
-				foreach (var w in watchers)
-					w.Update(longestTimer.Duration, longestTimer.Remaining);
 			}
 
 			bool RemoveByIndex(int index, Actor self, ConditionManager manager)
@@ -188,15 +173,16 @@ namespace OpenRA.Mods.Common.Traits
 
 		class ConditionState
 		{
-			/// <summary>Traits that have registered to be notified when this condition changes.</summary>
-			public readonly List<ConditionConsumer> Consumers = new List<ConditionConsumer>();
-
 			public ConditionTimer Timers = null;
+
+			/// <summary>Traits that have registered to be notified when this condition changes.</summary>
+			readonly List<ConditionConsumer> consumers = new List<ConditionConsumer>();
 
 			/// <summary>Unique integers identifying granted instances of the condition.</summary>
 			readonly HashSet<int> tokens = new HashSet<int>();
 
 			public void Add(int token) { tokens.Add(token); }
+			public void Add(ConditionConsumer consumer) { consumers.Add(consumer); }
 			public ConditionTimer GetTimer(Actor self, ConditionManager manager, string condition)
 			{
 				if (Timers != null)
@@ -215,6 +201,12 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				if (tokens.Remove(token) && Timers != null)
 					Timers.Remove(token, self, manager);
+			}
+
+			public void NotifyConsumers(Actor self, IReadOnlyDictionary<string, int> conditions)
+			{
+				foreach (var t in consumers)
+					t(self, conditions);
 			}
 		}
 
@@ -256,7 +248,6 @@ namespace OpenRA.Mods.Common.Traits
 			readOnlyConditionCache = new ReadOnlyDictionary<string, int>(conditionCache);
 
 			var allConsumers = new HashSet<ConditionConsumer>();
-			var allWatchers = self.TraitsImplementing<IConditionTimerWatcher>().ToList();
 
 			foreach (var conditionTimersPair in pendingTimers)
 				state.GetOrAdd(conditionTimersPair.Key).Timers = conditionTimersPair.Value;
@@ -268,16 +259,7 @@ namespace OpenRA.Mods.Common.Traits
 					allConsumers.Add(consumerWithConditions.First);
 					foreach (var condition in consumerWithConditions.Second)
 					{
-						var cs = state.GetOrAdd(condition);
-						cs.Consumers.Add(consumerWithConditions.First);
-						if (allWatchers.Count > 0)
-						{
-							var ts = cs.GetTimer(self, this, condition);
-							foreach (var w in allWatchers)
-								if (w.Condition == condition)
-									ts.Add(w);
-						}
-
+						state.GetOrAdd(condition).Add(consumerWithConditions.First);
 						conditionCache[condition] = 0;
 					}
 				}
@@ -328,9 +310,7 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			conditionCache[condition] += delta;
-
-			foreach (var t in cs.Consumers)
-				t(self, readOnlyConditionCache);
+			cs.NotifyConsumers(self, readOnlyConditionCache);
 		}
 
 		/// <summary>Grants a specified condition token.</summary>
@@ -401,9 +381,6 @@ namespace OpenRA.Mods.Common.Traits
 
 		void ITick.Tick(Actor self)
 		{
-			// Watchers will be receiving notifications while the condition is enabled.
-			// They will also be provided with the number of ticks before the condition is disabled,
-			// as well as the duration of the longest active instance.
 			foreach (var timer in timers)
 				timer.Tick(self, this);
 		}

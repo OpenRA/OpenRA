@@ -418,7 +418,6 @@
     <Compile Include="Traits\Render\RenderVoxels.cs" />
     <Compile Include="Traits\Render\ProductionBar.cs" />
     <Compile Include="Traits\Render\SupportPowerChargeBar.cs" />
-    <Compile Include="Traits\Render\TimedConditionBar.cs" />
     <Compile Include="Traits\Render\ConditionBar.cs" />
     <Compile Include="Traits\Render\WithSpriteBarrel.cs" />
     <Compile Include="Traits\Render\WithAttackAnimation.cs" />
