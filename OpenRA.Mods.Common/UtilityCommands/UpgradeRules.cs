@@ -582,6 +582,43 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				if (engineVersion < 20170318)
 					node.Value.Nodes.RemoveAll(n => n.Key == "ActorGroupProxy");
 
+				// Replaced TimedConditionBar with ConditionBar trait & condition timer properties.
+				if (engineVersion < 20170401 && node.Value.Nodes.Any(n => n.Key == "TimedConditionBar" || n.Key.StartsWith("TimedConditionBar@", StringComparison.Ordinal)))
+				{
+					var conditions = new HashSet<string>();
+					foreach (var trait in node.Value.Nodes.Where(n => n.Key == "TimedConditionBar" || n.Key.StartsWith("TimedConditionBar@", StringComparison.Ordinal)))
+					{
+						trait.Key = trait.Key.Substring(5);
+						var conditionNodeIndex = trait.Value.Nodes.FindIndex(n => n.Key == "Condition");
+						if (conditionNodeIndex < 0)
+							continue;
+
+						var condition = trait.Value.Nodes[conditionNodeIndex].Value.Value;
+						trait.Value.Nodes.RemoveAt(conditionNodeIndex);
+						trait.Value.Nodes.Insert(conditionNodeIndex, new MiniYamlNode("Value", condition + ".remaining"));
+						trait.Value.Nodes.Insert(conditionNodeIndex + 1, new MiniYamlNode("MaxValue", condition + ".duration"));
+						conditions.Add(condition);
+					}
+
+					var conditionManagerNode = node.Value.Nodes.Find(n => n.Key == "ConditionManager");
+					if (conditionManagerNode == null)
+					{
+						conditionManagerNode = new MiniYamlNode("ConditionManager", null as string);
+						node.Value.Nodes.Add(conditionManagerNode);
+					}
+
+					var timersNode = conditionManagerNode.Value.Nodes.Find(n => n.Key == "Timers");
+					if (timersNode == null)
+					{
+						timersNode = new MiniYamlNode("Timers", null as string);
+						conditionManagerNode.Value.Nodes.Add(timersNode);
+					}
+
+					foreach (var condition in conditions)
+						if (!timersNode.Value.Nodes.Any(n => n.Key == condition))
+							timersNode.Value.Nodes.Add(new MiniYamlNode(condition, "remaining, duration"));
+				}
+
 				UpgradeActorRules(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 
