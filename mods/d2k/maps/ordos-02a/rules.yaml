@@ -1,0 +1,48 @@
+Player:
+	PlayerResources:
+		DefaultCash: 5000
+
+World:
+	LuaScript:
+		Scripts: ordos02a.lua, ordos02a-AI.lua
+	MissionData:
+		Briefing: Harkonnen forces are weakened in the Imperial Basin. Use the sensors in our Outpost to find them. Strike hard and destroy everything.\n
+		BriefingVideo: O_BR02_E.VQA
+	MapOptions:
+		TechLevel: low
+	ScriptLobbyDropdown@difficulty:
+		ID: difficulty
+		Label: Difficulty
+		Values:
+			easy: Easy
+			normal: Normal
+			hard: Hard
+		Default: easy
+
+carryall.reinforce:
+	Cargo:
+		MaxWeight: 10
+
+construction_yard:
+	Production:
+		Produces: Building
+
+concreteb:
+	Buildable:
+		Prerequisites: ~disabled
+
+heavy_factory:
+	Buildable:
+		Prerequisites: ~disabled
+
+medium_gun_turret:
+	Buildable:
+		Prerequisites: ~disabled
+
+wall:
+	Buildable:
+		Prerequisites: ~disabled
+
+outpost:
+	Buildable:
+		Prerequisites: barracks
