@@ -74,8 +74,8 @@ namespace OpenRA.Mods.Common.Projectiles
 
 		public void Tick(World world)
 		{
-			velocity += acceleration;
 			pos += velocity;
+			velocity += acceleration;
 
 			if (pos.Z <= args.PassiveTarget.Z)
 			{
