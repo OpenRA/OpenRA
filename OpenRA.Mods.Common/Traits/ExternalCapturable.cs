@@ -27,6 +27,10 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Whether to prevent autotargeting this actor while it is being captured by an ally.")]
 		public readonly bool PreventsAutoTarget = true;
 
+		[Desc("Condition to grant while being captured.")]
+		[GrantedConditionReference]
+		public readonly string Condition;
+
 		public bool CanBeTargetedBy(Actor captor, Player owner)
 		{
 			var c = captor.Info.TraitInfoOrDefault<ExternalCapturesInfo>();
@@ -52,18 +56,25 @@ namespace OpenRA.Mods.Common.Traits
 		public object Create(ActorInitializer init) { return new ExternalCapturable(init.Self, this); }
 	}
 
-	public class ExternalCapturable : ITick, ISync, IPreventsAutoTarget
+	public class ExternalCapturable : ITick, ISync, IPreventsAutoTarget, INotifyCreated
 	{
 		[Sync] public int CaptureProgressTime = 0;
 		[Sync] public Actor Captor;
-		private Actor self;
 		public ExternalCapturableInfo Info;
 		public bool CaptureInProgress { get { return Captor != null; } }
+		Actor self;
+		ConditionManager conditionManager;
+		int conditionToken = ConditionManager.InvalidConditionToken;
 
 		public ExternalCapturable(Actor self, ExternalCapturableInfo info)
 		{
 			this.self = self;
 			Info = info;
+		}
+
+		void INotifyCreated.Created(Actor self)
+		{
+			conditionManager = self.TraitOrDefault<ConditionManager>();
 		}
 
 		public void BeginCapture(Actor captor)
@@ -73,6 +84,11 @@ namespace OpenRA.Mods.Common.Traits
 				building.Lock();
 
 			Captor = captor;
+			if (conditionManager == null)
+				return;
+
+			if (conditionToken == ConditionManager.InvalidConditionToken)
+				conditionToken = conditionManager.GrantCondition(self, Info.Condition);
 		}
 
 		public void EndCapture()
@@ -82,6 +98,11 @@ namespace OpenRA.Mods.Common.Traits
 				building.Unlock();
 
 			Captor = null;
+			if (conditionManager == null)
+				return;
+
+			if (conditionToken != ConditionManager.InvalidConditionToken)
+				conditionToken = conditionManager.RevokeCondition(self, conditionToken);
 		}
 
 		public void Tick(Actor self)
