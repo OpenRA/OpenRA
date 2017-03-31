@@ -117,10 +117,10 @@ TTNK:
 		MaxHeightDelta: 3
 	RenderSprites:
 		Image: ttnk
+	WithMakeAnimation:
 	GrantConditionOnDeploy:
 		DeployedCondition: deployed
 		UndeployedCondition: undeployed
-		DeployAnimation: make
 		Facing: 160
 		AllowedTerrainTypes: Clear, Road, DirtRoad, Rough
 		DeploySound: place2.aud
@@ -211,10 +211,10 @@ ART2:
 		LightAmbientColor: 0.4, 0.4, 0.4
 	RenderSprites:
 		Image: art2
+	WithMakeAnimation:
 	GrantConditionOnDeploy:
 		DeployedCondition: deployed
 		UndeployedCondition: undeployed
-		DeployAnimation: make
 		Facing: 96
 		AllowedTerrainTypes: Clear, Road, DirtRoad, Rough
 		DeploySound: place2.aud

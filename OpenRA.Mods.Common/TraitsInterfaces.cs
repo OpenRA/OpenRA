@@ -165,7 +165,24 @@ namespace OpenRA.Mods.Common.Traits
 		bool IsOverlayActive(ActorInfo ai);
 	}
 
-	public interface INotifyTransform { void BeforeTransform(Actor self); void OnTransform(Actor self); void AfterTransform(Actor toActor); }
+	public interface INotifyTransform
+	{
+		void BeforeTransform(Actor self);
+		void OnTransform(Actor self);
+		void AfterTransform(Actor toActor);
+	}
+
+	public interface INotifyDeployComplete
+	{
+		void FinishedDeploy(Actor self);
+		void FinishedUndeploy(Actor self);
+	}
+
+	public interface INotifyDeployTriggered
+	{
+		void Deploy(Actor self);
+		void Undeploy(Actor self);
+	}
 
 	public interface IAcceptResourcesInfo : ITraitInfo { }
 	public interface IAcceptResources
