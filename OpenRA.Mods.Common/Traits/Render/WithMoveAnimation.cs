@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Linq;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits.Render
@@ -18,6 +19,9 @@ namespace OpenRA.Mods.Common.Traits.Render
 		[Desc("Displayed while moving.")]
 		[SequenceReference] public readonly string MoveSequence = "move";
 
+		[Desc("Which sprite body to modify.")]
+		public readonly string[] BodyNames = { "body" };
+
 		public object Create(ActorInitializer init) { return new WithMoveAnimation(init, this); }
 	}
 
@@ -25,22 +29,29 @@ namespace OpenRA.Mods.Common.Traits.Render
 	{
 		readonly WithMoveAnimationInfo info;
 		readonly IMove movement;
-		readonly WithSpriteBody wsb;
+		readonly WithSpriteBody[] wsbs;
 
 		public WithMoveAnimation(ActorInitializer init, WithMoveAnimationInfo info)
 		{
 			this.info = info;
 			movement = init.Self.Trait<IMove>();
-			wsb = init.Self.Trait<WithSpriteBody>();
+			wsbs = init.Self.TraitsImplementing<WithSpriteBody>().Where(w => info.BodyNames.Contains(w.Info.Name)).ToArray();
 		}
 
-		public void Tick(Actor self)
+		void ITick.Tick(Actor self)
 		{
 			var isMoving = movement.IsMoving && !self.IsDead;
-			if (isMoving ^ (wsb.DefaultAnimation.CurrentSequence.Name != info.MoveSequence))
-				return;
 
-			wsb.DefaultAnimation.ReplaceAnim(isMoving ? info.MoveSequence : wsb.Info.Sequence);
+			foreach (var wsb in wsbs)
+			{
+				if (wsb.IsTraitDisabled)
+					continue;
+
+				if (isMoving ^ (wsb.DefaultAnimation.CurrentSequence.Name != info.MoveSequence))
+					continue;
+
+				wsb.DefaultAnimation.ReplaceAnim(isMoving ? info.MoveSequence : wsb.Info.Sequence);
+			}
 		}
 	}
 }
