@@ -85,6 +85,37 @@ namespace OpenRA.Mods.Common.Traits
 		}
 	}
 
+	public struct ConditionWithProgressState
+	{
+		int conditionToken;
+		ConditionProgressState progress;
+
+		public ConditionWithProgressState(ConditionProgressProperties flags)
+		{
+			conditionToken = ConditionManager.InvalidConditionToken;
+			progress = new ConditionProgressState(flags);
+		}
+
+		public void Init(Actor self, ConditionManager manager, string condition, int duration = 0, int remaining = 0)
+		{
+			conditionToken = manager.UpdateOrGrantConditionValue(self, condition, conditionToken, remaining > 0 ? 1 : 0);
+			progress.Init(self, manager, condition, duration, remaining);
+		}
+
+		public void Update(Actor self, ConditionManager manager, int duration, int remaining, bool reset = false)
+		{
+			progress.Update(self, manager, duration, remaining, reset);
+			if (remaining == 0 || reset)
+				manager.UpdateConditionValue(self, conditionToken, remaining == 0 ? 0 : 1);
+		}
+
+		public void Revoke(Actor self, ConditionManager manager)
+		{
+			progress.Revoke(self, manager);
+			manager.RevokeCondition(self, conditionToken);
+		}
+	}
+
 	[Desc("Attach this to a unit to enable dynamic conditions by warheads, experience, crates, support powers, etc.")]
 	public class ConditionManagerInfo : ITraitInfo, Requires<IConditionConsumerInfo>
 	{

@@ -327,7 +327,6 @@
     <Compile Include="Traits\Explodes.cs" />
     <Compile Include="Traits\ExplosionOnDamageTransition.cs" />
     <Compile Include="Traits\ExternalCapturable.cs" />
-    <Compile Include="Traits\ExternalCapturableBar.cs" />
     <Compile Include="Traits\ExternalCaptures.cs" />
     <Compile Include="Traits\GainsExperience.cs" />
     <Compile Include="Traits\GivesCashOnCapture.cs" />

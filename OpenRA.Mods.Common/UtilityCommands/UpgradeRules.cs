@@ -619,6 +619,37 @@ namespace OpenRA.Mods.Common.UtilityCommands
 							timersNode.Value.Nodes.Add(new MiniYamlNode(condition, "remaining, duration"));
 				}
 
+				// Replaced TimedConditionBar with ConditionBar trait & condition timer properties.
+				if (engineVersion < 20170401)
+				{
+					if (node.Key == "ExternalCapturable" || node.Key.StartsWith("ExternalCapturable@", StringComparison.Ordinal))
+					{
+						if (!node.Value.Nodes.Any(n => n.Key == "Condition"))
+							node.Value.Nodes.Add(new MiniYamlNode("Condition", "capture" + node.Key.Remove(0, "ExternalCapturable".Length)));
+
+						if (!node.Value.Nodes.Any(n => n.Key == "ConditionProperties"))
+							node.Value.Nodes.Add(new MiniYamlNode("ConditionProperties", "progress, duration"));
+					}
+
+					if (node.Key == "ExternalCapturableBar" || node.Key.StartsWith("ExternalCapturableBar@", StringComparison.Ordinal))
+					{
+						var suffix = node.Key.Remove(0, "ExternalCapturableBar".Length);
+						node.Key = "ConditionBar@EXTERNAL_CAPTURE" + suffix;
+
+						if (!node.Value.Nodes.Any(n => n.Key == "Value"))
+							node.Value.Nodes.Add(new MiniYamlNode("Value", "capture" + suffix + ".progress"));
+
+						if (!node.Value.Nodes.Any(n => n.Key == "MaxValue"))
+							node.Value.Nodes.Add(new MiniYamlNode("MaxValue", "capture" + suffix + ".duration"));
+
+						if (!node.Value.Nodes.Any(n => n.Key == "DisplayStances"))
+							node.Value.Nodes.Add(new MiniYamlNode("DisplayStances", "Neutral, Enemy"));
+
+						if (!node.Value.Nodes.Any(n => n.Key == "Color"))
+							node.Value.Nodes.Add(new MiniYamlNode("Color", "FFA500"));
+					}
+				}
+
 				UpgradeActorRules(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 

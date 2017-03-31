@@ -534,7 +534,13 @@
 	AcceptsSupplies:
 	WithMakeAnimation:
 	ExternalCapturable:
-	ExternalCapturableBar:
+		Condition: capture
+		ConditionProperties: progress, duration
+	ConditionBar@EXTERNAL_CAPTURE:
+		Value: capture.progress
+		MaxValue: capture.duration
+		DisplayStances: Neutral, Enemy
+		Color: FFA500
 	EmitInfantryOnSell:
 		ActorTypes: e1,e1,e1,tecn,tecn
 	MustBeDestroyed:

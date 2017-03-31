@@ -9,7 +9,6 @@
  */
 #endregion
 
-using System;
 using System.Collections.Generic;
 using System.Drawing;
 using OpenRA.Primitives;
@@ -30,6 +29,9 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public readonly ConditionExpression MaxValue = null;
 
 		public readonly Color Color = Color.Red;
+
+		[Desc("Which diplomatic stances allow the player to see this bar.")]
+		public readonly Stance DisplayStances = Stance.Ally;
 
 		public object Create(ActorInitializer init) { return new ConditionBar(this); }
 	}
@@ -63,7 +65,9 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		void UpdateFill(Actor self)
 		{
-			fill = self.Owner.IsAlliedWith(self.World.RenderPlayer) && max > 0 ? value * 1f / max : 0;
+			var viewer = self.World.RenderPlayer ?? self.World.LocalPlayer;
+			var visible = viewer != null && info.DisplayStances.HasStance(self.Owner.Stances[viewer]);
+			fill = visible && max > 0 ? value * 1f / max : 0;
 		}
 
 		float ISelectionBar.GetValue() { return fill; }
