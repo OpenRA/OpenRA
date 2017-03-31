@@ -139,6 +139,7 @@ TTNK:
 		Turret: deployed
 		InitialFacing: 160
 		Offset: -20, -130, 180
+		RealignDelay: -1
 	WithVoxelBarrel:
 		Armament: deployed
 		LocalOffset: 128, 0, 256
@@ -227,6 +228,7 @@ ART2:
 		TurnSpeed: 5
 		InitialFacing: 96
 		Offset: 0,0,256
+		RealignDelay: -1
 	WithVoxelBarrel:
 		Armament: deployed
 		LocalOffset: 0,0,-256
