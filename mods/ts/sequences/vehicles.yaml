@@ -171,6 +171,37 @@ mmch:
 		Offset: 0, 0, 12
 	icon: mmchicon
 
+jugg:
+	Inherits: ^VehicleOverlays
+	icon: juggicon
+	stand: jugger
+		Facings: -8
+		Stride: 15
+		ShadowStart: 120
+		Offset: 0, 0, 12
+	run: jugger
+		Length: 15
+		Facings: -8
+		ShadowStart: 120
+		Offset: 0, 0, 12
+	turret: djugg_a
+		Facings: 32
+		Offset: -4, 0, 12
+	idle: djugg
+		ShadowStart: 3
+		Offset: 0, -12, 12
+	damaged-idle: djugg
+		Start: 1
+		ShadowStart: 4
+		Offset: 0, -12, 12
+	make: djuggmk
+		Length: 18
+		ShadowStart: 18
+		Offset: 0, -12, 12
+	muzzle: gunfire
+		Length: *
+		Offset: 0, 0, 24
+
 gghunt:
 	Inherits: ^VehicleOverlays
 	idle:
