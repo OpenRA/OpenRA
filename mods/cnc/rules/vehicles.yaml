@@ -149,7 +149,7 @@ ARTY:
 	Armor:
 		Type: Light
 	RevealsShroud:
-		Range: 8c0
+		Range: 5c0
 	Armament:
 		Weapon: ArtilleryShell
 		LocalOffset: 624,0,208
@@ -459,7 +459,7 @@ MSAM:
 	Armor:
 		Type: Light
 	RevealsShroud:
-		Range: 8c0
+		Range: 5c0
 	Turreted:
 		TurnSpeed: 255
 		Offset: -256,0,128
