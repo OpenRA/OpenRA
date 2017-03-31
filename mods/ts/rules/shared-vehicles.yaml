@@ -140,6 +140,7 @@ LPST:
 		RequiresCondition: !undeployed
 		Range: 8c0
 		MaxHeightDelta: 3
+	WithMakeAnimation:
 	GrantCondition@PREVIEWWORKAROUND:
 		Condition: real-actor
 	RenderSprites:
@@ -150,7 +151,6 @@ LPST:
 	GrantConditionOnDeploy:
 		DeployedCondition: deployed
 		UndeployedCondition: undeployed
-		DeployAnimation: make
 		Facing: 160
 		AllowedTerrainTypes: Clear, Road, DirtRoad, Rough
 		DeploySound: place2.aud
