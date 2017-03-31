@@ -247,6 +247,9 @@ namespace OpenRA.Mods.Common.Traits
 					if (args.Weapon.Report != null && args.Weapon.Report.Any())
 						Game.Sound.Play(SoundType.World, args.Weapon.Report.Random(self.World.SharedRandom), self.CenterPosition);
 
+					if (Burst == args.Weapon.Burst && args.Weapon.StartBurstReport != null && args.Weapon.StartBurstReport.Any())
+						Game.Sound.Play(SoundType.World, args.Weapon.StartBurstReport.Random(self.World.SharedRandom), self.CenterPosition);
+
 					foreach (var na in self.TraitsImplementing<INotifyAttack>())
 						na.Attacking(self, target, this, barrel);
 

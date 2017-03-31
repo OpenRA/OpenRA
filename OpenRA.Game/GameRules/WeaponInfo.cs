@@ -39,8 +39,11 @@ namespace OpenRA.GameRules
 		[Desc("The maximum range the weapon can fire.")]
 		public readonly WDist Range = WDist.Zero;
 
-		[Desc("The sound played when the weapon is fired.")]
+		[Desc("The sound played each time the weapon is fired.")]
 		public readonly string[] Report = null;
+
+		[Desc("Sound played only on first burst in a salvo.")]
+		public readonly string[] StartBurstReport = null;
 
 		[Desc("The sound played when the weapon is reloaded.")]
 		public readonly string[] AfterFireSound = null;
