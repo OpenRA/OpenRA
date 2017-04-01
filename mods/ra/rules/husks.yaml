@@ -97,6 +97,10 @@ TRAN.Husk:
 	RevealsShroud:
 		Range: 10c0
 		Type: GroundPosition
+		RevealGeneratedShroud: False
+	RevealsShroud@GAPGEN:
+		Range: 8c0
+		Type: GroundPosition
 	RenderSprites:
 		Image: tran
 
@@ -148,7 +152,11 @@ MIG.Husk:
 		Interval: 2
 		MinDamage: Undamaged
 	RevealsShroud:
-		Range: 12c0
+		Range: 13c0
+		Type: GroundPosition
+		RevealGeneratedShroud: False
+	RevealsShroud@GAPGEN:
+		Range: 11c0
 		Type: GroundPosition
 	RenderSprites:
 		Image: mig
@@ -167,7 +175,11 @@ YAK.Husk:
 		Interval: 2
 		MinDamage: Undamaged
 	RevealsShroud:
-		Range: 10c0
+		Range: 11c0
+		Type: GroundPosition
+		RevealGeneratedShroud: False
+	RevealsShroud@GAPGEN:
+		Range: 9c0
 		Type: GroundPosition
 	RenderSprites:
 		Image: yak
@@ -188,6 +200,10 @@ HELI.Husk:
 	RevealsShroud:
 		Range: 12c0
 		Type: GroundPosition
+		RevealGeneratedShroud: False
+	RevealsShroud@GAPGEN:
+		Range: 10c0
+		Type: GroundPosition
 	RenderSprites:
 		Image: heli
 
@@ -205,6 +221,10 @@ HIND.Husk:
 		MinDamage: Undamaged
 	RevealsShroud:
 		Range: 10c0
+		Type: GroundPosition
+		RevealGeneratedShroud: False
+	RevealsShroud@GAPGEN:
+		Range: 8c0
 		Type: GroundPosition
 	RenderSprites:
 		Image: hind
