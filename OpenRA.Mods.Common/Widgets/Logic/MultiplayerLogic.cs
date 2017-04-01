@@ -391,64 +391,67 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					return 3;
 				};
 
-				foreach (var loop in modGames.OrderBy(listOrder).ThenByDescending(g => g.Players))
+				foreach (var modGamesByState in modGames.GroupBy(listOrder).OrderBy(g => g.Key))
 				{
-					var game = loop;
-					if (game == null || Filtered(game))
-						continue;
-
-					var canJoin = game.IsJoinable;
-					var item = ScrollItemWidget.Setup(serverTemplate, () => currentServer == game, () => SelectServer(game), () => Join(game));
-					var title = item.GetOrNull<LabelWidget>("TITLE");
-					if (title != null)
+					// Sort 'Playing' games by Started, others by number of players
+					foreach (var game in modGamesByState.Key == 2 ? modGamesByState.OrderByDescending(g => g.Started) : modGamesByState.OrderByDescending(g => g.Players))
 					{
-						var font = Game.Renderer.Fonts[title.Font];
-						var label = WidgetUtils.TruncateText(game.Name, title.Bounds.Width, font);
-						title.GetText = () => label;
-						title.GetColor = () => canJoin ? title.TextColor : incompatibleGameColor;
+						if (Filtered(game))
+							continue;
+
+						var canJoin = game.IsJoinable;
+						var item = ScrollItemWidget.Setup(serverTemplate, () => currentServer == game, () => SelectServer(game), () => Join(game));
+						var title = item.GetOrNull<LabelWidget>("TITLE");
+						if (title != null)
+						{
+							var font = Game.Renderer.Fonts[title.Font];
+							var label = WidgetUtils.TruncateText(game.Name, title.Bounds.Width, font);
+							title.GetText = () => label;
+							title.GetColor = () => canJoin ? title.TextColor : incompatibleGameColor;
+						}
+
+						var password = item.GetOrNull<ImageWidget>("PASSWORD_PROTECTED");
+						if (password != null)
+						{
+							password.IsVisible = () => game.Protected;
+							password.GetImageName = () => canJoin ? "protected" : "protected-disabled";
+						}
+
+						var players = item.GetOrNull<LabelWidget>("PLAYERS");
+						if (players != null)
+						{
+							players.GetText = () => "{0} / {1}".F(game.Players, game.MaxPlayers)
+								+ (game.Spectators > 0 ? " + {0}".F(game.Spectators) : "");
+
+							players.GetColor = () => canJoin ? players.TextColor : incompatibleGameColor;
+						}
+
+						var state = item.GetOrNull<LabelWidget>("STATUS");
+						if (state != null)
+						{
+							var label = game.State >= (int)ServerState.GameStarted ?
+								"Playing" : "Waiting";
+							state.GetText = () => label;
+
+							var color = GetStateColor(game, state, !canJoin);
+							state.GetColor = () => color;
+						}
+
+						var location = item.GetOrNull<LabelWidget>("LOCATION");
+						if (location != null)
+						{
+							var font = Game.Renderer.Fonts[location.Font];
+							var cachedServerLocation = GeoIP.LookupCountry(game.Address.Split(':')[0]);
+							var label = WidgetUtils.TruncateText(cachedServerLocation, location.Bounds.Width, font);
+							location.GetText = () => label;
+							location.GetColor = () => canJoin ? location.TextColor : incompatibleGameColor;
+						}
+
+						if (currentServer != null && game.Address == currentServer.Address)
+							nextServerRow = item;
+
+						rows.Add(item);
 					}
-
-					var password = item.GetOrNull<ImageWidget>("PASSWORD_PROTECTED");
-					if (password != null)
-					{
-						password.IsVisible = () => game.Protected;
-						password.GetImageName = () => canJoin ? "protected" : "protected-disabled";
-					}
-
-					var players = item.GetOrNull<LabelWidget>("PLAYERS");
-					if (players != null)
-					{
-						players.GetText = () => "{0} / {1}".F(game.Players, game.MaxPlayers)
-							+ (game.Spectators > 0 ? " + {0}".F(game.Spectators) : "");
-
-						players.GetColor = () => canJoin ? players.TextColor : incompatibleGameColor;
-					}
-
-					var state = item.GetOrNull<LabelWidget>("STATUS");
-					if (state != null)
-					{
-						var label = game.State >= (int)ServerState.GameStarted ?
-							"Playing" : "Waiting";
-						state.GetText = () => label;
-
-						var color = GetStateColor(game, state, !canJoin);
-						state.GetColor = () => color;
-					}
-
-					var location = item.GetOrNull<LabelWidget>("LOCATION");
-					if (location != null)
-					{
-						var font = Game.Renderer.Fonts[location.Font];
-						var cachedServerLocation = GeoIP.LookupCountry(game.Address.Split(':')[0]);
-						var label = WidgetUtils.TruncateText(cachedServerLocation, location.Bounds.Width, font);
-						location.GetText = () => label;
-						location.GetColor = () => canJoin ? location.TextColor : incompatibleGameColor;
-					}
-
-					if (currentServer != null && game.Address == currentServer.Address)
-						nextServerRow = item;
-
-					rows.Add(item);
 				}
 			}
 
