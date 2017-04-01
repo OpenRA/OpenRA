@@ -116,8 +116,8 @@ NAHAND:
 	ProductionBar:
 	WithIdleOverlay@LIGHTS:
 		Sequence: idle-lights
-	WithProductionOverlay@LIGHT:
-		Sequence: production-light
+	WithIdleOverlay@LIGHT:
+		Sequence: idle-light
 	Power:
 		Amount: -20
 	ProvidesPrerequisite@buildingname:
@@ -173,8 +173,8 @@ NAWEAP:
 	WithIdleOverlay@ROOF:
 		Sequence: idle-roof
 	WithProductionDoorOverlay@DOOR:
-	WithProductionOverlay@LIGHTS:
-		Sequence: production-lights
+	WithIdleOverlay@LIGHTS:
+		Sequence: idle-lights
 	WithIdleOverlay@BIB:
 		Sequence: bib
 	Power:

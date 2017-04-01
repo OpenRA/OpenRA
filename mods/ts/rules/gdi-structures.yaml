@@ -98,8 +98,8 @@ GAPILE:
 	PrimaryBuilding:
 		PrimaryCondition: primary
 	ProductionBar:
-	WithProductionOverlay@LIGHTS:
-		Sequence: production-lights
+	WithIdleOverlay@LIGHTS:
+		Sequence: idle-lights
 	WithIdleOverlay@LIGHT:
 		Sequence: idle-light
 	WithIdleOverlay@FLAG:
@@ -159,10 +159,10 @@ GAWEAP:
 	WithIdleOverlay@ROOF:
 		Sequence: idle-roof
 	WithProductionDoorOverlay@DOOR:
-	WithProductionOverlay@WHITELIGHTS:
-		Sequence: production-lights-white
-	WithProductionOverlay@REDLIGHTS:
-		Sequence: production-lights-red
+	WithIdleOverlay@WHITELIGHTS:
+		Sequence: idle-lights-white
+	WithIdleOverlay@REDLIGHTS:
+		Sequence: idle-lights-red
 	WithIdleOverlay@TURBINES:
 		Sequence: idle-turbines
 	WithIdleOverlay@BIB:
