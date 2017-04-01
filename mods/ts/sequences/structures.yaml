@@ -1249,14 +1249,14 @@ gahpad:
 		ZRamp: 1
 	idle-lights: gthpad_a
 		Length: 8
-		Tick: 200
+		Tick: 100
 		Offset: 0, -36
 		ZOffset: -1c511
 		ZRamp: 1
 	damaged-idle-lights: gthpad_a
 		Start: 8
 		Length: 8
-		Tick: 200
+		Tick: 100
 		Offset: 0, -36
 		ZOffset: -1c511
 		ZRamp: 1
@@ -1318,12 +1318,12 @@ nahpad:
 	idle-lights: nthpad_a
 		Length: 46
 		ZOffset: -1c511
-		Tick: 120
+		Tick: 100
 		ZRamp: 1
 	damaged-idle-lights: nthpad_a
 		Start: 46
 		Length: 46
-		Tick: 120
+		Tick: 100
 		ZOffset: -1c511
 		ZRamp: 1
 	make: nthpadmk
