@@ -180,18 +180,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		void LoadMod(Manifest mod)
 		{
 			var modId = mod.Id;
-			if (!Game.IsModInstalled(modId))
-			{
-				var widgetArgs = new WidgetArgs
-				{
-					{ "mod", selectedMod },
-					{ "content", content[selectedMod] },
-				};
-
-				Ui.OpenWindow("INSTALL_MOD_PANEL", widgetArgs);
-				return;
-			}
-
 			if (!IsModInstalled(mod))
 			{
 				var widgetArgs = new WidgetArgs

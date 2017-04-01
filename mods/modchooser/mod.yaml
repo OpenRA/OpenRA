@@ -4,8 +4,6 @@ Metadata:
 	Author: The OpenRA Developers
 	Hidden: true
 
-RequiresMods:
-
 Packages:
 	.
 	./mods/modchooser: modchooser

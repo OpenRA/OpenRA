@@ -333,18 +333,6 @@ namespace OpenRA
 			InitializeMod(Settings.Game.Mod, args);
 		}
 
-		public static bool IsModInstalled(string modId)
-		{
-			return Mods.ContainsKey(modId) && Mods[modId].RequiresMods.All(IsModInstalled);
-		}
-
-		public static bool IsModInstalled(KeyValuePair<string, string> mod)
-		{
-			return Mods.ContainsKey(mod.Key)
-				&& Mods[mod.Key].Metadata.Version == mod.Value
-				&& IsModInstalled(mod.Key);
-		}
-
 		public static void InitializeMod(string mod, Arguments args)
 		{
 			// Clear static state if we have switched mods
@@ -372,8 +360,8 @@ namespace OpenRA
 
 			ModData = null;
 
-			// Fall back to default if the mod doesn't exist or has missing prerequisites.
-			if (mod == null || !IsModInstalled(mod))
+			// Fall back to default if the mod doesn't exist
+			if (mod == null)
 				mod = args.GetValue("Engine.DefaultMod", "modchooser");
 
 			Console.WriteLine("Loading mod: {0}", mod);
