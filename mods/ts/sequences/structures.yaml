@@ -27,11 +27,11 @@ gacnst:
 		ZOffset: 1023
 	idle-top: gtcnst_c
 		Length: 15
-		Tick: 200
+		Tick: 80
 	damaged-idle-top: gtcnst_c
 		Start: 15
 		Length: 15
-		Tick: 200
+		Tick: 80
 	idle-side: gtcnst_a
 		Length: 10
 	damaged-idle-side: gtcnst_a
