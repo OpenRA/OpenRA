@@ -136,7 +136,7 @@ ChromeLayout:
 	common|chrome/ingame-infobriefing.yaml
 	common|chrome/ingame-infoobjectives.yaml
 	common|chrome/ingame-infostats.yaml
-	common|chrome/ingame-observer.yaml
+	ts|chrome/ingame-observer.yaml
 	ts|chrome/ingame-observerstats.yaml
 	ts|chrome/ingame-player.yaml
 	common|chrome/ingame-perf.yaml
