@@ -18,6 +18,73 @@ namespace OpenRA.Mods.Common.Traits
 {
 	[Flags] public enum ConditionProgressProperties { Duration = 1, Remaining = 2, Progress = 4 }
 
+	public struct ConditionProgressState
+	{
+		ConditionProgressProperties flags;
+		int durationToken;
+		int remainingToken;
+		int progressToken;
+
+		public ConditionProgressState(ConditionProgressProperties flags)
+		{
+			this.flags = flags;
+			durationToken = ConditionManager.InvalidConditionToken;
+			remainingToken = ConditionManager.InvalidConditionToken;
+			progressToken = ConditionManager.InvalidConditionToken;
+		}
+
+		public static IEnumerable<string> EnumerateProperties(string condition, ConditionProgressProperties properties)
+		{
+			if (condition == null)
+				yield break;
+
+			if (properties.HasFlag(ConditionProgressProperties.Duration))
+				yield return condition + ".duration";
+
+			if (properties.HasFlag(ConditionProgressProperties.Remaining))
+				yield return condition + ".remaining";
+
+			if (properties.HasFlag(ConditionProgressProperties.Progress))
+				yield return condition + ".progress";
+		}
+
+		public void Init(Actor self, ConditionManager manager, string condition, int duration = 0, int remaining = 0)
+		{
+			if (flags.HasFlag(ConditionProgressProperties.Remaining))
+				remainingToken = manager.UpdateOrGrantConditionValue(self, condition, remainingToken, remaining, ".remaining");
+
+			if (flags.HasFlag(ConditionProgressProperties.Progress))
+				progressToken = manager.UpdateOrGrantConditionValue(self, condition, progressToken, duration - remaining, ".progress");
+
+			if (flags.HasFlag(ConditionProgressProperties.Duration))
+				durationToken = manager.UpdateOrGrantConditionValue(self, condition, durationToken, duration, ".duration");
+		}
+
+		public void Update(Actor self, ConditionManager manager, int duration, int remaining, bool newDuration = false)
+		{
+			if (remainingToken != ConditionManager.InvalidConditionToken)
+				manager.UpdateConditionValue(self, remainingToken, remaining);
+
+			if (progressToken != ConditionManager.InvalidConditionToken)
+				manager.UpdateConditionValue(self, progressToken, duration - remaining);
+
+			if (newDuration && durationToken != ConditionManager.InvalidConditionToken)
+				manager.UpdateConditionValue(self, durationToken, duration);
+		}
+
+		public void Revoke(Actor self, ConditionManager manager)
+		{
+			if (remainingToken != ConditionManager.InvalidConditionToken)
+				remainingToken = manager.RevokeCondition(self, remainingToken);
+
+			if (progressToken != ConditionManager.InvalidConditionToken)
+				progressToken = manager.RevokeCondition(self, progressToken);
+
+			if (durationToken != ConditionManager.InvalidConditionToken)
+				durationToken = manager.RevokeCondition(self, durationToken);
+		}
+	}
+
 	[Desc("Attach this to a unit to enable dynamic conditions by warheads, experience, crates, support powers, etc.")]
 	public class ConditionManagerInfo : ITraitInfo, Requires<IConditionConsumerInfo>
 	{
@@ -33,14 +100,8 @@ namespace OpenRA.Mods.Common.Traits
 			get
 			{
 				foreach (var timer in Timers)
-				{
-					if (timer.Value.HasFlag(ConditionProgressProperties.Duration))
-						yield return timer.Key + ".duration";
-					if (timer.Value.HasFlag(ConditionProgressProperties.Remaining))
-						yield return timer.Key + ".remaining";
-					if (timer.Value.HasFlag(ConditionProgressProperties.Progress))
-						yield return timer.Key + ".progress";
-				}
+					foreach (var property in ConditionProgressState.EnumerateProperties(timer.Key, timer.Value))
+						yield return property;
 			}
 		}
 
@@ -69,9 +130,7 @@ namespace OpenRA.Mods.Common.Traits
 				}
 			}
 
-			readonly int durationToken = InvalidConditionToken;
-			readonly int remainingToken = InvalidConditionToken;
-			readonly int progressToken = InvalidConditionToken;
+			readonly ConditionProgressState progress;
 			readonly List<TokenTimer> timers = new List<TokenTimer>();
 			TokenTimer longestTimer = TokenTimer.Zero;
 			public int Count { get { return timers.Count; } }
@@ -80,14 +139,8 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				ConditionProgressProperties properties;
 				manager.Info.Timers.TryGetValue(condition, out properties);
-				if (properties.HasFlag(ConditionProgressProperties.Duration))
-					durationToken = manager.GrantCondition(self, condition + ".duration", 0);
-
-				if (properties.HasFlag(ConditionProgressProperties.Remaining))
-					remainingToken = manager.GrantCondition(self, condition + ".remaining", 0);
-
-				if (properties.HasFlag(ConditionProgressProperties.Progress))
-					progressToken = manager.GrantCondition(self, condition + ".progress", 0);
+				progress = new ConditionProgressState(properties);
+				progress.Init(self, manager, condition);
 			}
 
 			public void Remove(int token, Actor self, ConditionManager manager)
@@ -123,13 +176,7 @@ namespace OpenRA.Mods.Common.Traits
 						RemoveByIndex(i, self, manager);
 
 				if (!NewLongestTimer(self, manager))
-				{
-					if (remainingToken != InvalidConditionToken)
-						manager.UpdateConditionValue(self, remainingToken, longestTimer.Remaining);
-
-					if (progressToken != InvalidConditionToken)
-						manager.UpdateConditionValue(self, progressToken, longestTimer.Duration - longestTimer.Remaining);
-				}
+					progress.Update(self, manager, longestTimer.Duration, longestTimer.Remaining);
 			}
 
 			bool RemoveByIndex(int index, Actor self, ConditionManager manager)
@@ -158,15 +205,7 @@ namespace OpenRA.Mods.Common.Traits
 					return false;
 
 				longestTimer = newLongestTimer;
-				if (durationToken != InvalidConditionToken)
-					manager.UpdateConditionValue(self, durationToken, longestTimer.Duration);
-
-				if (remainingToken != InvalidConditionToken)
-					manager.UpdateConditionValue(self, remainingToken, longestTimer.Remaining);
-
-				if (progressToken != InvalidConditionToken)
-					manager.UpdateConditionValue(self, progressToken, longestTimer.Duration - longestTimer.Remaining);
-
+				progress.Update(self, manager, longestTimer.Duration, longestTimer.Remaining, true);
 				return true;
 			}
 		}
@@ -357,6 +396,13 @@ namespace OpenRA.Mods.Common.Traits
 			UpdateConditionState(self, tokenState.Condition, token, UpdateType.Change, value - tokenState.Value);
 			tokenState.Value = value;
 			return token;
+		}
+
+		public int UpdateOrGrantConditionValue(Actor self, string condition, int token, int value, string suffix = null)
+		{
+			return token != InvalidConditionToken
+				? UpdateConditionValue(self, token, value)
+				: GrantCondition(self, suffix != null ? condition + suffix : condition, value);
 		}
 
 		/// <summary>Revokes a previously granted condition token.</summary>
