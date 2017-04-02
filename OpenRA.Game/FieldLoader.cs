@@ -70,6 +70,8 @@ namespace OpenRA
 			new ConcurrentCache<Type, FieldLoadInfo[]>(BuildTypeLoadInfo);
 		static readonly ConcurrentCache<MemberInfo, bool> MemberHasTranslateAttribute =
 			new ConcurrentCache<MemberInfo, bool>(member => member.HasAttribute<TranslateAttribute>());
+		static readonly ConcurrentCache<MemberInfo, bool> MemberHasTraitsActorReferenceAttribute =
+			new ConcurrentCache<MemberInfo, bool>(member => member.HasAttribute<Traits.ActorReferenceAttribute>());
 
 		static readonly object TranslationsLock = new object();
 		static Dictionary<string, string> translations;
@@ -218,8 +220,11 @@ namespace OpenRA
 			}
 			else if (fieldType == typeof(string))
 			{
-				if (field != null && MemberHasTranslateAttribute[field] && value != null)
-					return Regex.Replace(value, "@[^@]+@", m => Translate(m.Value.Substring(1, m.Value.Length - 2)), RegexOptions.Compiled);
+				if (field != null && value != null)
+					if (MemberHasTranslateAttribute[field])
+						return Regex.Replace(value, "@[^@]+@", m => Translate(m.Value.Substring(1, m.Value.Length - 2)), RegexOptions.Compiled);
+					else if (MemberHasTraitsActorReferenceAttribute[field])
+						return value.ToLowerInvariant();
 				return value;
 			}
 			else if (fieldType == typeof(Color))
