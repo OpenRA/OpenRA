@@ -701,6 +701,12 @@ CTNK:
 	AttackFrontal:
 	PortableChrono:
 		ChargeDelay: 300
+		ChargingCondition: portable-chrono-charge
+		ConditionProperties: progress, duration
+	ConditionBar@PORTABLE_CHRONO:
+		Value: portable-chrono-charge.progress
+		MaxValue: portable-chrono-charge.duration
+		Color: FF00FF
 	ProducibleWithLevel:
 		Prerequisites: vehicles.upgraded
 

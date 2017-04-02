@@ -619,7 +619,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 							timersNode.Value.Nodes.Add(new MiniYamlNode(condition, "remaining, duration"));
 				}
 
-				// Replaced TimedConditionBar with ConditionBar trait & condition timer properties.
+				// Replaced ExternalCapturableBar with ConditionBar
 				if (engineVersion < 20170401)
 				{
 					if (node.Key == "ExternalCapturable" || node.Key.StartsWith("ExternalCapturable@", StringComparison.Ordinal))
@@ -648,6 +648,27 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						if (!node.Value.Nodes.Any(n => n.Key == "Color"))
 							node.Value.Nodes.Add(new MiniYamlNode("Color", "FFA500"));
 					}
+				}
+
+				// Replace PortableChrono ISelectionBar with separate ConditionBar trait
+				if (engineVersion < 20170401)
+				{
+					var bars = new List<KeyValuePair<int, MiniYamlNode>>();
+					foreach (var trait in node.Value.Nodes.Where(n => n.Key == "PortableChrono" || n.Key.StartsWith("PortableChrono@", StringComparison.Ordinal)))
+					{
+						var suffix = trait.Key.Substring("PortableChrono".Length).Replace('@', '-');
+						trait.Value.Nodes.Add(new MiniYamlNode("ChargingCondition", "portable-chrono-charge" + suffix));
+						trait.Value.Nodes.Add(new MiniYamlNode("ConditionProperties", "progress, duration"));
+
+						var bar = new MiniYamlNode("ConditionBar@PORTABLE_CHRONO" + suffix, null as string);
+						bar.Value.Nodes.Add(new MiniYamlNode("Value", "portable-chrono-charge" + suffix + ".progress"));
+						bar.Value.Nodes.Add(new MiniYamlNode("MaxValue", "portable-chrono-charge" + suffix + ".duration"));
+						bar.Value.Nodes.Add(new MiniYamlNode("Color", "FF00FF"));
+						bars.Add(new KeyValuePair<int, MiniYamlNode>(node.Value.Nodes.FindIndex(n => ReferenceEquals(n, trait)) + 1, bar));
+					}
+
+					for (var i = bars.Count; --i >= 0;)
+						node.Value.Nodes.Insert(bars[i].Key, bars[i].Value);
 				}
 
 				UpgradeActorRules(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);

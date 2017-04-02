@@ -84,7 +84,7 @@ namespace OpenRA.Mods.Cnc.Activities
 
 			// Consume teleport charges if this wasn't triggered via chronosphere
 			if (teleporter == self && pc != null)
-				pc.ResetChargeTime();
+				pc.ResetChargeTime(self);
 
 			// Trigger screen desaturate effect
 			if (screenFlash)
