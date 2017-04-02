@@ -112,6 +112,7 @@ Grenade:
 	Inherits: ^ArtilleryWeapon
 	ReloadDelay: 60
 	Range: 4c512
+	-Report:
 	Projectile: Bullet
 		Speed: 160
 		Blockable: true
@@ -119,6 +120,7 @@ Grenade:
 		LaunchAngle: 60
 		Inaccuracy: 0
 		Image: DISCUS
+		Palette: effect
 		BounceCount: 2
 	Warhead@1Dam: SpreadDamage
 		Spread: 154
