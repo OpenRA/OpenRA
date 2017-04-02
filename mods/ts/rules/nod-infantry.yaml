@@ -3,7 +3,7 @@ E3:
 	Inherits@EXPERIENCE: ^GainsExperience
 	Buildable:
 		Queue: Infantry
-		BuildPaletteOrder: 20
+		BuildPaletteOrder: 30
 		Prerequisites: ~nahand, ~techlevel.low
 		Description: Anti-tank infantry.\n  Strong vs Vehicles, Aircraft, Buildings\n  Weak vs Infantry
 	Valued:
@@ -39,7 +39,7 @@ CYBORG:
 		Name: Cyborg Infantry
 	Buildable:
 		Queue: Infantry
-		BuildPaletteOrder: 40
+		BuildPaletteOrder: 60
 		Prerequisites: ~nahand, ~techlevel.medium
 		Description: Cybernetic infantry unit.\n  Strong vs Infantry, Light armor\n  Weak vs Vehicles, Aircraft
 	Selectable:
@@ -73,7 +73,7 @@ CYC2:
 		Name: Cyborg Commando
 	Buildable:
 		Queue: Infantry
-		BuildPaletteOrder: 50
+		BuildPaletteOrder: 100
 		Prerequisites: ~nahand, natmpl, ~techlevel.high
 		BuildLimit: 1
 		Description: Elite cybernetic infantry unit.\n  Strong vs Infantry, Vehicles, Buildings\n  Weak vs Aircraft\nMaximum 1 can be trained.
@@ -103,7 +103,7 @@ MHIJACK:
 	Inherits@2: ^HealsOnTiberium
 	Buildable:
 		Queue: Infantry
-		BuildPaletteOrder: 60
+		BuildPaletteOrder: 80
 		Prerequisites: ~nahand, natmpl, ~techlevel.high
 		Description: Hijacks enemy vehicles.\n  Unarmed
 	Valued:

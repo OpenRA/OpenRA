@@ -36,7 +36,7 @@ MEDIC:
 		Name: Medic
 	Buildable:
 		Queue: Infantry
-		BuildPaletteOrder: 70
+		BuildPaletteOrder: 50
 		Prerequisites: ~gapile, ~techlevel.low
 		Description: Heals nearby infantry.\n  Unarmed
 	Voiced:
@@ -72,7 +72,7 @@ JUMPJET:
 		Name: Jumpjet Infantry
 	Buildable:
 		Queue: Infantry
-		BuildPaletteOrder: 40
+		BuildPaletteOrder: 70
 		Prerequisites: ~gapile, garadr, ~techlevel.medium
 		Description: Airborne soldier.\n  Strong vs Infantry, Aircraft\n  Weak vs Vehicles
 	Voiced:
@@ -176,7 +176,7 @@ GHOST:
 		Name: Ghost Stalker
 	Buildable:
 		Queue: Infantry
-		BuildPaletteOrder: 50
+		BuildPaletteOrder: 90
 		Prerequisites: ~gapile, gatech, ~techlevel.high
 		BuildLimit: 1
 		Description: Elite commando infantry, armed with\na railgun and C4.\n  Strong vs Infantry, Buildings\n  Weak vs Vehicles, Aircraft\n  Special Ability: Destroy Building with C4\nMaximum 1 can be trained.

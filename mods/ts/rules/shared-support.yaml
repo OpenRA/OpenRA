@@ -6,7 +6,7 @@ NAPULS:
 		Name: E.M. Pulse Cannon
 	Buildable:
 		Queue: Defense
-		BuildPaletteOrder: 90
+		BuildPaletteOrder: 110
 		Prerequisites: radar, ~techlevel.superweapons
 		Description: Disables mechanical units in an area.\nRequires power to operate.
 	Building:

@@ -7,7 +7,7 @@ APC:
 		Name: Amphibious APC
 	Buildable:
 		Queue: Vehicle
-		BuildPaletteOrder: 30
+		BuildPaletteOrder: 80
 		Prerequisites: ~gaweap, gapile, ~techlevel.medium
 		Description: Armored infantry transport.\nCan move on water.\n  Unarmed
 	Mobile:
@@ -59,7 +59,7 @@ HVR:
 		Name: Hover MLRS
 	Buildable:
 		Queue: Vehicle
-		BuildPaletteOrder: 50
+		BuildPaletteOrder: 80
 		Prerequisites: ~gaweap, garadr, ~techlevel.high
 		Description: Hovering vehicle armed with\nlong range missiles.\n  Strong vs Vehicles, Aircraft\n  Weak vs Infantry
 	Mobile:
@@ -114,7 +114,7 @@ SMECH:
 		Name: Wolverine
 	Buildable:
 		Queue: Vehicle
-		BuildPaletteOrder: 10
+		BuildPaletteOrder: 20
 		Prerequisites: ~gaweap, ~techlevel.low
 		Description: Anti-personnel walker.\n  Strong vs Infantry, Light armor\n  Weak vs Vehicles, Aircraft
 	Mobile:
@@ -157,7 +157,7 @@ MMCH:
 		Name: Titan
 	Buildable:
 		Queue: Vehicle
-		BuildPaletteOrder: 30
+		BuildPaletteOrder: 50
 		Prerequisites: ~gaweap, ~techlevel.medium
 		Description: General purpose mechanized walker.\n  Strong vs Vehicles\n  Weak vs Infantry, Aircraft
 	Mobile:
@@ -208,7 +208,7 @@ HMEC:
 		Name: Mammoth Mk. II
 	Buildable:
 		Queue: Vehicle
-		BuildPaletteOrder: 80
+		BuildPaletteOrder: 140
 		Prerequisites: ~gaweap, gatech, ~techlevel.high
 		BuildLimit: 1
 		Description: Slow heavy walker.\nArmed with dual railguns and rocket launchers.\n  Strong vs Infantry, Vehicles, Aircraft and Buildings\n  Weak vs Nothing\nMaximum 1 can be built.
@@ -252,7 +252,7 @@ SONIC:
 		Name: Disruptor
 	Buildable:
 		Queue: Vehicle
-		BuildPaletteOrder: 70
+		BuildPaletteOrder: 120
 		Prerequisites: ~gaweap, gatech, ~techlevel.high
 		Description: Armored high-tech vehicle with\nlong range and sonic armament.\n  Strong vs Infantry, Vehicles, Buildings\n  Weak vs Aircraft
 	Targetable:

@@ -8,7 +8,7 @@ BGGY:
 		Name: Attack Buggy
 	Buildable:
 		Queue: Vehicle
-		BuildPaletteOrder: 40
+		BuildPaletteOrder: 30
 		Prerequisites: ~naweap, ~techlevel.low
 		Description: Fast scout and anti-infantry vehicle.\n  Strong vs Infantry, Light armor\n  Weak vs Vehicles, Aircraft
 	Mobile:
@@ -44,7 +44,7 @@ BIKE:
 		Name: Attack Cycle
 	Buildable:
 		Queue: Vehicle
-		BuildPaletteOrder: 30
+		BuildPaletteOrder: 40
 		Prerequisites: ~naweap, ~techlevel.low
 		Description: Fast scout vehicle, armed with\nrockets.\n  Strong vs Vehicles\n  Weak vs Infantry, Aircraft
 	Mobile:
@@ -242,7 +242,7 @@ WEED:
 		Name: Weed Eater
 	Buildable:
 		Queue: Vehicle
-		BuildPaletteOrder: 100
+		BuildPaletteOrder: 170
 		Prerequisites: ~naweap, nawast, ~techlevel.superweapons
 		Description: Collects veins for processing.\n  Unarmed
 	Harvester:
@@ -284,7 +284,7 @@ SAPC:
 		Name: Subterranean APC
 	Buildable:
 		Queue: Vehicle
-		BuildPaletteOrder: 30
+		BuildPaletteOrder: 110
 		Prerequisites: ~naweap, natech, ~techlevel.medium
 		Description: Troop transport that can move\nunderground to avoid detection.\n  Unarmed
 	Mobile:
@@ -330,7 +330,7 @@ SUBTANK:
 		Name: Devil's Tongue
 	Buildable:
 		Queue: Vehicle
-		BuildPaletteOrder: 40
+		BuildPaletteOrder: 130
 		Prerequisites: ~naweap, natech, ~techlevel.high
 		Description: Subterranean Flame Tank.\nIs able to move underground.\n  Strong vs Infantry, Buildings\n  Weak vs Tanks, Aircraft
 	Mobile:
@@ -373,7 +373,7 @@ STNK:
 	Tooltip:
 		Name: Stealth Tank
 	Buildable:
-		BuildPaletteOrder: 90
+		BuildPaletteOrder: 150
 		Prerequisites: ~naweap, natech, ~techlevel.high
 		Queue: Vehicle
 		Description: Lightly armoured tank equipped with a personal\nstealth generator. Armed with missiles.\nCan be spotted by infantry at close range.\n  Strong vs Vehicles, Aircraft\n  Weak vs Infantry

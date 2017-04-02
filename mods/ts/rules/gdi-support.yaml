@@ -2,7 +2,7 @@ GAWALL:
 	Inherits: ^Wall
 	Buildable:
 		Queue: Defense
-		BuildPaletteOrder: 20
+		BuildPaletteOrder: 10
 		Prerequisites: ~structures.gdi, ~techlevel.low
 		Description: Stops infantry and blocks enemy fire.\nCan NOT be crushed by tanks.
 	-SoundOnDamageTransition:
@@ -27,7 +27,7 @@ GAGATE_A:
 	Inherits: ^Gate_A
 	Buildable:
 		Queue: Defense
-		BuildPaletteOrder: 100
+		BuildPaletteOrder: 30
 		Prerequisites: gapile, ~structures.gdi, ~techlevel.low
 	Tooltip:
 		Name: GDI Gate
@@ -36,7 +36,7 @@ GAGATE_B:
 	Inherits: ^Gate_B
 	Buildable:
 		Queue: Defense
-		BuildPaletteOrder: 100
+		BuildPaletteOrder: 50
 		Prerequisites: gapile, ~structures.gdi, ~techlevel.low
 	Tooltip:
 		Name: GDI Gate
@@ -52,7 +52,7 @@ GACTWR:
 		Name: Component Tower
 	Buildable:
 		Queue: Defense
-		BuildPaletteOrder: 30
+		BuildPaletteOrder: 70
 		Prerequisites: gapile, ~structures.gdi, ~techlevel.low
 		Description: Modular tower for base defenses.
 	Building:
@@ -142,7 +142,7 @@ GAVULC:
 		Name: Vulcan Tower
 	Buildable:
 		Queue: Defense
-		BuildPaletteOrder: 40
+		BuildPaletteOrder: 120
 		Prerequisites: gactwr, gapile, ~structures.gdi, ~techlevel.low
 		Description: Basic base defense.\nDoes not require power to operate.\n  Strong vs Infantry, Light armor\n  Weak vs Aircraft
 	Plug:
@@ -158,7 +158,7 @@ GAROCK:
 		Name: RPG Upgrade
 	Buildable:
 		Queue: Defense
-		BuildPaletteOrder: 40
+		BuildPaletteOrder: 130
 		Prerequisites: gactwr, gapile, ~structures.gdi, ~techlevel.high
 		Description: GDI Advanced base defense.\nDoes not require power to operate.\n  Strong vs Armored ground units\n  Weak vs Aircraft
 	Plug:
@@ -174,7 +174,7 @@ GACSAM:
 		Name: SAM Upgrade
 	Buildable:
 		Queue: Defense
-		BuildPaletteOrder: 40
+		BuildPaletteOrder: 140
 		Prerequisites: gactwr, garadr, ~structures.gdi, ~techlevel.medium
 		Description: GDI Anti-Air base defense.\nDoes not require power to operate.\n  Strong vs Aircraft\n  Weak vs Ground units
 	Plug:
@@ -190,7 +190,7 @@ GAPOWRUP:
 		Name: Power Turbine
 	Buildable:
 		Queue: Defense
-		BuildPaletteOrder: 10
+		BuildPaletteOrder: 80
 		Prerequisites: gapowr, ~structures.gdi, ~techlevel.medium
 		Description: Provides extra power generation.
 	Plug:
@@ -206,7 +206,7 @@ GAPLUG2:
 		Name: Seeker Control
 	Buildable:
 		Queue: Defense
-		BuildPaletteOrder: 1000
+		BuildPaletteOrder: 170
 		Prerequisites: gaplug, gatech, gaweap, ~structures.gdi, ~techlevel.superweapons
 		Description: Enables use of the hunter-seeker droid.
 	Plug:
@@ -222,7 +222,7 @@ GAPLUG3:
 		Name: Ion Cannon Uplink
 	Buildable:
 		Queue: Defense
-		BuildPaletteOrder: 1000
+		BuildPaletteOrder: 180
 		Prerequisites: gaplug, gatech, ~structures.gdi, ~techlevel.superweapons
 		Description: Enables use of the Ion Cannon.
 	Plug:

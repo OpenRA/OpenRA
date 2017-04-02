@@ -71,7 +71,7 @@ ORCA:
 		Name: Orca Fighter
 	Buildable:
 		Queue: Air
-		BuildPaletteOrder: 20
+		BuildPaletteOrder: 10
 		Prerequisites: ~gahpad
 		Description: Fast assault gunship with\ndual missile launchers.\n  Strong vs Buildings, Vehicles\n  Weak vs Infantry, Aircraft
 	Selectable:
@@ -113,7 +113,7 @@ ORCAB:
 		Name: Orca Bomber
 	Buildable:
 		Queue: Air
-		BuildPaletteOrder: 20
+		BuildPaletteOrder: 30
 		Prerequisites: ~gahpad, gatech
 		Description: Heavy bomber.\n  Strong vs Buildings, Vehicles\n  Weak vs Infantry, Aircraft
 	Selectable:
@@ -162,7 +162,7 @@ ORCATRAN:
 		Name: Orca Transport
 	Buildable:
 		Queue: Air
-		BuildPaletteOrder: 10
+		BuildPaletteOrder: 50
 		Prerequisites: ~disabled
 	RenderSprites:
 	Aircraft:
@@ -198,7 +198,7 @@ TRNSPORT:
 		Name: Carryall
 	Buildable:
 		Queue: Air
-		BuildPaletteOrder: 10
+		BuildPaletteOrder: 60
 		Prerequisites: ~gahpad, gadept
 		Description: VTOL aircraft capable of lifting\nand transporting vehicles.\n  Unarmed
 	Aircraft:
@@ -236,7 +236,7 @@ SCRIN:
 		Name: Banshee Fighter
 	Buildable:
 		Queue: Air
-		BuildPaletteOrder: 20
+		BuildPaletteOrder: 40
 		Prerequisites: ~nahpad, natech
 		Description: Advanced fighter-bomber craft\nwith twin plasma cannons.\n  Strong vs Buildings, Vehicles\n  Weak vs Infantry, Aircraft
 	Selectable:

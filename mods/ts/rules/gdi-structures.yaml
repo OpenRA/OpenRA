@@ -2,7 +2,7 @@ GAPOWR:
 	Inherits: ^Building
 	Buildable:
 		Queue: Building
-		BuildPaletteOrder: 0
+		BuildPaletteOrder: 10
 		Prerequisites: ~structures.gdi, ~techlevel.low
 		Description: Provides power for other structures.
 	Valued:
@@ -127,7 +127,7 @@ GAWEAP:
 		Prerequisite: factory
 	Buildable:
 		Queue: Building
-		BuildPaletteOrder: 50
+		BuildPaletteOrder: 60
 		Prerequisites: proc, ~structures.gdi, ~techlevel.low
 		Description: Produces vehicles.
 	Building:
@@ -187,7 +187,7 @@ GAHPAD:
 	Tooltip:
 		Name: Helipad
 	Buildable:
-		BuildPaletteOrder: 60
+		BuildPaletteOrder: 130
 		Queue: Building
 		Prerequisites: garadr, ~structures.gdi, ~techlevel.medium
 		Description: Produces, rearms and\nrepairs helicopters.
@@ -242,7 +242,7 @@ GADEPT:
 	Tooltip:
 		Name: Service Depot
 	Buildable:
-		BuildPaletteOrder: 80
+		BuildPaletteOrder: 110
 		Prerequisites: factory, ~structures.gdi, ~techlevel.medium
 		Queue: Building
 		Description: Repairs vehicles.
@@ -290,7 +290,7 @@ GARADR:
 	Inherits: ^Building
 	Buildable:
 		Queue: Building
-		BuildPaletteOrder: 90
+		BuildPaletteOrder: 80
 		Prerequisites: proc, ~structures.gdi, ~techlevel.low
 		Description: Provides an overview of the battlefield.\nCan detect cloaked units.\nRequires power to operate.
 	Valued:
@@ -339,7 +339,7 @@ GATECH:
 	Inherits: ^Building
 	Buildable:
 		Queue: Building
-		BuildPaletteOrder: 100
+		BuildPaletteOrder: 150
 		Prerequisites: gaweap, garadr, ~structures.gdi, ~techlevel.medium
 		Description: Provides access to advanced GDI technologies.
 	Valued:
@@ -377,7 +377,7 @@ GAPLUG:
 	Selectable:
 		Bounds: 115,72,0,-12
 	Buildable:
-		BuildPaletteOrder: 100
+		BuildPaletteOrder: 170
 		Prerequisites: proc, gatech, ~structures.gdi, ~techlevel.superweapons
 		Queue: Building
 		Description: Can be upgraded for additional technology.
