@@ -189,7 +189,7 @@ RMBO:
 	RevealsShroud:
 		Range: 6c0
 	AutoTarget:
-		ScanRadius: 6
+		ScanRadius: 8
 	Demolition:
 		DetonationDelay: 45
 		Voice: Demolish
