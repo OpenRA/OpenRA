@@ -34,12 +34,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				preview.OnMouseDown = mi => LobbyUtils.SelectSpawnPoint(orderManager, preview, lobby.Map, mi);
 				preview.SpawnOccupants = () => LobbyUtils.GetSpawnOccupants(orderManager.LobbyInfo, lobby.Map);
 
-				var titleLabel = available.GetOrNull<LabelWidget>("MAP_TITLE");
+				var titleLabel = available.GetOrNull<LabelWithTooltipWidget>("MAP_TITLE");
 				if (titleLabel != null)
 				{
 					var font = Game.Renderer.Fonts[titleLabel.Font];
 					var title = new CachedTransform<MapPreview, string>(m => WidgetUtils.TruncateText(m.Title, titleLabel.Bounds.Width, font));
 					titleLabel.GetText = () => title.Update(lobby.Map);
+					titleLabel.GetTooltipText = () => lobby.Map.Title;
 				}
 
 				var typeLabel = available.GetOrNull<LabelWidget>("MAP_TYPE");
