@@ -75,9 +75,10 @@ namespace OpenRA.Mods.Common.Traits
 				if (os == "LineBuild")
 				{
 					var playSounds = true;
+					Actor building = null;
 					foreach (var t in BuildingUtils.GetLineBuildCells(w, order.TargetLocation, order.TargetString, buildingInfo))
 					{
-						var building = w.CreateActor(order.TargetString, new TypeDictionary
+						building = w.CreateActor(order.TargetString, new TypeDictionary
 						{
 							new LocationInit(t),
 							new OwnerInit(order.Player),
@@ -90,6 +91,9 @@ namespace OpenRA.Mods.Common.Traits
 
 						playSounds = false;
 					}
+
+					if (building == null)
+						return;
 				}
 				else if (os == "PlacePlug")
 				{
