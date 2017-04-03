@@ -458,6 +458,7 @@ Background@INGAME_OBSERVERSTATS_BG:
 									Width: 320
 									Height: PARENT_BOTTOM
 									ClockPalette: iconclock
+									TooltipContainer: TOOLTIP_CONTAINER
 								ObserverSupportPowerIcons@SUPPORT_POWER_ICONS:
 									X: 535
 									Y: 0
