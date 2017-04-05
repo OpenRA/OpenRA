@@ -1,0 +1,146 @@
+MapFormat: 11
+
+RequiresMod: d2k
+
+Title: Ordos 03a
+
+Author: Westwood Studios
+
+Tileset: ARRAKIS
+
+MapSize: 68,68
+
+Bounds: 2,2,64,64
+
+Visibility: MissionSelector
+
+Categories: Campaign
+
+LockPreview: True
+
+Players:
+	PlayerReference@Neutral:
+		Name: Neutral
+		OwnsWorld: True
+		NonCombatant: True
+		Faction: Random
+	PlayerReference@Creeps:
+		Name: Creeps
+		NonCombatant: True
+		Faction: Random
+		Enemies: Ordos, Harkonnen
+	PlayerReference@Ordos:
+		Name: Ordos
+		Playable: True
+		LockFaction: True
+		Faction: ordos
+		LockColor: True
+		Color: B3EAA5
+		Enemies: Harkonnen, Creeps
+	PlayerReference@Harkonnen:
+		Name: Harkonnen
+		LockFaction: True
+		Faction: harkonnen
+		LockColor: True
+		Color: FE0000
+		Enemies: Ordos
+
+Actors:
+	Actor0: light_inf
+		Location: 45,38
+		Owner: Ordos
+	Actor1: trooper
+		Location: 50,38
+		Owner: Ordos
+	Actor2: raider
+		Location: 44,41
+		Owner: Ordos
+	OConyard: construction_yard
+		Location: 48,41
+		Owner: Ordos
+	Actor4: light_inf
+		Location: 51,42
+		Owner: Ordos
+	Actor5: quad
+		Location: 46,44
+		Owner: Ordos
+	Actor6: wormspawner
+		Location: 26,46
+		Owner: Creeps
+	Actor7: trike
+		Location: 11,48
+		Owner: Harkonnen
+	Actor8: quad
+		Location: 3,49
+		Owner: Harkonnen
+	HRefinery: refinery
+		Location: 6,50
+		Owner: Harkonnen
+	HWindTrap1: wind_trap
+		Location: 10,53
+		Owner: Harkonnen
+	HLightFactory: light_factory
+		Location: 3,54
+		Owner: Harkonnen
+	HBarracks: barracks
+		Location: 7,56
+		Owner: Harkonnen
+	HSilo2: silo
+		Location: 3,59
+		Owner: Harkonnen
+	HOutpost: outpost
+		Location: 8,59
+		Owner: Harkonnen
+	OrdosRally: waypoint
+		Owner: Neutral
+		Location: 51,39
+	OrdosEntry: waypoint
+		Owner: Neutral
+		Location: 65,39
+	HarkonnenRally1: waypoint
+		Owner: Neutral
+		Location: 41,47
+	HarkonnenEntry1: waypoint
+		Owner: Neutral
+		Location: 41,65
+	HarkonnenRally2: waypoint
+		Owner: Neutral
+		Location: 40,53
+	HarkonnenEntry2: waypoint
+		Owner: Neutral
+		Location: 65,53
+	HarkonnenRally3: waypoint
+		Owner: Neutral
+		Location: 11,20
+	HarkonnenEntry3: waypoint
+		Owner: Neutral
+		Location: 2,20
+	HarkonnenRally4: waypoint
+		Owner: Neutral
+		Location: 7,54
+	HarkonnenEntry4: waypoint
+		Owner: Neutral
+		Location: 2,54
+	HarkonnenRally5: waypoint
+		Owner: Neutral
+		Location: 12,61
+	HarkonnenEntry5: waypoint
+		Owner: Neutral
+		Location: 12,65
+	HSilo1: silo
+		Owner: Harkonnen
+		Location: 4,59
+	HWindTrap2: wind_trap
+		Owner: Harkonnen
+		Location: 6,59
+	HConyard: construction_yard
+		Owner: Harkonnen
+		Location: 3,62
+	HSilo3: silo
+		Owner: Harkonnen
+		Location: 3,60
+	HSilo4: silo
+		Owner: Harkonnen
+		Location: 4,60
+
+Rules: d2k|rules/campaign-rules.yaml, rules.yaml
