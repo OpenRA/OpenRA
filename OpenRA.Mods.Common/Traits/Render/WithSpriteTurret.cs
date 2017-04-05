@@ -139,6 +139,21 @@ namespace OpenRA.Mods.Common.Traits.Render
 			Tick(self);
 		}
 
+		public void PlayCustomAnimation(Actor self, string name, Action after = null)
+		{
+			DefaultAnimation.PlayThen(NormalizeSequence(self, name), () =>
+			{
+				DefaultAnimation.Play(NormalizeSequence(self, Info.Sequence));
+				if (after != null)
+					after();
+			});
+		}
+
+		public void CancelCustomAnimation(Actor self)
+		{
+			DefaultAnimation.PlayRepeating(NormalizeSequence(self, Info.Sequence));
+		}
+
 		void INotifyBuildComplete.BuildingComplete(Actor self) { buildComplete = true; }
 		void INotifySold.Selling(Actor self) { buildComplete = false; }
 		void INotifySold.Sold(Actor self) { }
