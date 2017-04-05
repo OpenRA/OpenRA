@@ -142,6 +142,7 @@ namespace OpenRA
 
 		public bool CashTicks = true;
 		public bool Mute = false;
+		public bool DisplayAltTexts = true;
 	}
 
 	public class PlayerSettings

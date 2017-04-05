@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using OpenRA.FileSystem;
 using OpenRA.GameRules;
@@ -314,7 +315,7 @@ namespace OpenRA
 			if (ruleset == null)
 				throw new ArgumentNullException("ruleset");
 
-			if (definition == null || (DisableWorldSounds && soundType == SoundType.World))
+			if (definition == null || (DisableWorldSounds && soundType == SoundType.World) || (p != null && p != p.World.LocalPlayer))
 				return false;
 
 			if (ruleset.Voices == null || ruleset.Notifications == null)
@@ -329,21 +330,23 @@ namespace OpenRA
 			string clip;
 			var suffix = rules.DefaultVariant;
 			var prefix = rules.DefaultPrefix;
+			SoundPool soundPool = null;
 
 			if (voicedActor != null)
 			{
-				if (!rules.VoicePools.Value.ContainsKey(definition))
+				if (!rules.VoicePools.Value.TryGetValue(definition, out soundPool))
 					throw new InvalidOperationException("Can't find {0} in voice pool.".F(definition));
-
-				clip = rules.VoicePools.Value[definition].GetNext();
 			}
 			else
 			{
-				if (!rules.NotificationsPools.Value.ContainsKey(definition))
+				if (!rules.NotificationsPools.Value.TryGetValue(definition, out soundPool))
 					throw new InvalidOperationException("Can't find {0} in notification pool.".F(definition));
-
-				clip = rules.NotificationsPools.Value[definition].GetNext();
 			}
+
+			clip = soundPool.GetNext();
+
+			if (Game.Settings.Sound.DisplayAltTexts && !string.IsNullOrEmpty(soundPool.AltText))
+				Game.AddChatLine(Color.White, Game.NotificationsChatName, soundPool.AltText);
 
 			if (string.IsNullOrEmpty(clip))
 				return false;
@@ -358,7 +361,7 @@ namespace OpenRA
 
 			var name = prefix + clip + suffix;
 
-			if (!string.IsNullOrEmpty(name) && (p == null || p == p.World.LocalPlayer))
+			if (!string.IsNullOrEmpty(name))
 			{
 				var sound = soundEngine.Play2D(sounds[name],
 					false, relative, pos,

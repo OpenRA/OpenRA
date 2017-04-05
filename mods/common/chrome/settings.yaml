@@ -277,6 +277,13 @@ Background@SETTINGS_PANEL:
 					Height: 20
 					Font: Regular
 					Text: Mute Sound
+				Checkbox@DISPLAY_ALT_TEXT:
+					X: 15
+					Y: 100
+					Width: 200
+					Height: 20
+					Font: Regular
+					Text: Text notifications in chat
 				Label@MUSIC_LABEL:
 					X: PARENT_RIGHT - WIDTH - 270
 					Y: 67

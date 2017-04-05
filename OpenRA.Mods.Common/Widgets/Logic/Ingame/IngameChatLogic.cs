@@ -220,7 +220,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (scrolledToBottom)
 				chatScrollPanel.ScrollToBottom(smooth: true);
 
-			if (!replayCache)
+			if (!replayCache && from != Game.NotificationsChatName)
 				Game.Sound.PlayNotification(modRules, null, "Sounds", "ChatLine", null);
 		}
 	}
