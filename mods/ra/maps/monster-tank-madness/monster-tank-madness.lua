@@ -278,7 +278,6 @@ InitPlayers = function()
 	turkey = Player.GetPlayer("Turkey")
 	friendlyMadTanks = Player.GetPlayer("FriendlyMadTanks")
 
-	player.Cash = 0
 	ussr.Cash = 2000
 	Trigger.AfterDelay(0, function() badguy.Resources = badguy.ResourceCapacity * 0.75 end)
 	Trigger.OnCapture(USSROutpostSilo, function() -- getting money through capturing doesn't work
