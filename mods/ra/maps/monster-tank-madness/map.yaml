@@ -1807,9 +1807,6 @@ Actors:
 	Actor583: barl
 		Location: 88,54
 		Owner: Ukraine
-	Actor584: brl3
-		Location: 89,53
-		Owner: Ukraine
 	Actor588: v2rl
 		Location: 91,75
 		Owner: USSR
