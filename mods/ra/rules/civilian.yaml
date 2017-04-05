@@ -231,6 +231,9 @@ V19:
 		ExcludeTilesets: DESERT
 	Tooltip:
 		Name: Oil Pump
+	-SpawnActorOnDeath@1:
+	-SpawnActorOnDeath@2:
+	-SpawnActorOnDeath@3:
 	SpawnActorOnDeath:
 		Actor: V19.Husk
 	AutoTargetIgnore:
