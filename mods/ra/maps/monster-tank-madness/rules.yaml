@@ -12,7 +12,66 @@ World:
 ^Building:
 	AnnounceOnSeen:
 
-^CivBuilding:
+^ExplodingCivBuilding:
+	Inherits: ^CivBuilding
+	Explodes:
+		Weapon: BarrelExplode
+		EmptyWeapon: BarrelExplode
+	-SpawnActorOnDeath@1:
+	-SpawnActorOnDeath@2:
+	-SpawnActorOnDeath@3:
+
+V01.exploding:
+	Inherits: ^ExplodingCivBuilding
+	RenderSprites:
+		Image: V01
+
+V02.exploding:
+	Inherits: ^ExplodingCivBuilding
+	RenderSprites:
+		Image: V02
+
+V03.exploding:
+	Inherits: ^ExplodingCivBuilding
+	RenderSprites:
+		Image: V03
+
+V04.exploding:
+	Inherits: ^ExplodingCivBuilding
+	RenderSprites:
+		Image: V04
+
+V05.exploding:
+	Inherits: ^ExplodingCivBuilding
+	RenderSprites:
+		Image: V05
+
+V06.exploding:
+	Inherits: ^ExplodingCivBuilding
+	RenderSprites:
+		Image: V06
+
+V07.exploding:
+	Inherits: ^ExplodingCivBuilding
+	RenderSprites:
+		Image: V07
+
+V08.exploding:
+	Inherits: ^ExplodingCivBuilding
+	RenderSprites:
+		Image: V08
+
+V09.exploding:
+	Inherits: ^ExplodingCivBuilding
+	RenderSprites:
+		Image: V09
+
+V11.exploding:
+	Inherits: ^ExplodingCivBuilding
+	RenderSprites:
+		Image: V11
+
+V19:
 	Explodes:
 		Weapon: BarrelExplode
 		EmptyWeapon: BarrelExplode
