@@ -67,12 +67,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			hueSlider.Value = initialColor.H / 255f;
 			onChange(mixer.Color);
             
-            
             // Setup the mod team preset colors
             int maxCustomColors = 10;
 
             var clearCustomPaletteButton = widget.GetOrNull<ButtonWidget>("CLEAR_CUSTOM_BUTTON");
-            if (clearCustomPaletteButton != null)
+		    if (clearCustomPaletteButton != null)
+            {
                 clearCustomPaletteButton.OnClick = () =>
                 {
                     var blankCustomColors = Enumerable.Repeat("FFFFFF", maxCustomColors).ToArray();
@@ -89,9 +89,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
                         swatch.GetColor = () => Color.White;
                     }
                 };
-
-
-
+            }
+            
             var defaultColorPresets = new Color[]
             {
                 // RA1 colors
@@ -121,11 +120,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
             {
                 presetColors = defaultColorPresets.ToList();
             }
-
-
+            
             // Build the color swatch controls
-
-
             var addSwatchesAction = new Action<List<Color>, int, int, string, bool>((colorList, x, y, prefix, isEditable) =>
             {
                 int maxX = 216;
@@ -189,18 +185,16 @@ namespace OpenRA.Mods.Common.Widgets.Logic
                             var newColor = newSwatch.GetColor();
                             mixer.Set(new HSLColor(newColor));
                         }
-
                     };
+
                     widget.AddChild(newSwatch);
-
-
+                    
                     x += width + pad;
                     if (x > maxX)
                     {
                         x = 5;
                         y += width + pad;
                     }
-
                 }
             });
 
@@ -208,16 +202,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
             int startY = 158;
 
             addSwatchesAction(presetColors, startX, startY, "COLORPRESET", false);
-
-
-
-            var defaultCustomColors = new Color[]
-            {
-                /*
-		        Color.FromArgb(255,0,0),
-                */
-		    };
-            defaultCustomColors = Enumerable.Repeat(Color.White, maxCustomColors).ToArray();
+            
+            var defaultCustomColors = Enumerable.Repeat(Color.White, maxCustomColors).ToArray();
 
             // Parse each hex color
             var customColors = defaultCustomColors.ToList();
@@ -236,15 +222,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
                     i++;
                 }
             }
-
-
+            
             startY = 202;
             addSwatchesAction(customColors, startX, startY, "COLORCUSTOM", true);
-
         }
 
         public static void ShowColorDropDown(DropDownButtonWidget color, ColorPreviewManagerWidget preview, World world)
-
         {
             Action onExit = () =>
 			{
