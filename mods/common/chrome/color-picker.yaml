@@ -2,7 +2,7 @@ Background@COLOR_CHOOSER:
 	Logic: ColorPickerLogic
 	Background: dialog2
 	Width: 326
-	Height: 140
+	Height: 230
 	Children:
 		Button@RANDOM_BUTTON:
 			Key: tab
@@ -42,3 +42,23 @@ Background@COLOR_CHOOSER:
 			Y: 21
 			Width: 80
 			Height: 73
+		Label@PRESETCOLORSLABEL:
+			X: 5
+			Y: 146
+			Text: Preset Colors
+			Align: Left
+			Width: PARENT_RIGHT
+		Label@CUSTOMCOLORSLABEL:
+			X: 5
+			Y: 190
+			Text: Custom Colors (Ctrl+click to set)
+			Align: Left
+			Width: PARENT_RIGHT
+		Button@CLEAR_CUSTOM_BUTTON:
+			Key: tab
+			X: 250
+			Y: 200
+			Width: 70
+			Height: 25
+			Text: Clear
+			Font: Bold
