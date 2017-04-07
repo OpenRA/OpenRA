@@ -38,6 +38,7 @@ namespace OpenRA.Graphics
 			this.isDecoration = isDecoration;
 		}
 
+		public Sprite Sprite { get { return sprite; } }
 		public WPos Pos { get { return pos + offset; } }
 		public WVec Offset { get { return offset; } }
 		public PaletteReference Palette { get { return palette; } }

@@ -61,7 +61,20 @@ namespace OpenRA.Graphics
 			this.allocateSheet = allocateSheet;
 		}
 
-		public Sprite Add(ISpriteFrame frame) { return Add(frame.Data, frame.Size, 0, frame.Offset); }
+		public Sprite Add(ISpriteFrame frame)
+		{
+			var sprite = Add(frame.Data, frame.Size, 0, frame.Offset);
+			var spriteFrame = frame as ISpecificSpriteFrame;
+
+			if (spriteFrame != null)
+			{
+				sprite = (Sprite) Activator.CreateInstance(spriteFrame.SpriteType, sprite);
+				sprite.Set(spriteFrame);
+			}
+
+			return sprite;
+		}
+
 		public Sprite Add(byte[] src, Size size) { return Add(src, size, 0, float3.Zero); }
 		public Sprite Add(byte[] src, Size size, float zRamp, float3 spriteOffset)
 		{

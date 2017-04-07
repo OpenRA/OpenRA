@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
@@ -39,6 +40,11 @@ namespace OpenRA.Graphics
 		float2 Offset { get; }
 		byte[] Data { get; }
 		bool DisableExportPadding { get; }
+	}
+
+	public interface ISpecificSpriteFrame : ISpriteFrame
+	{
+		Type SpriteType { get; }
 	}
 
 	public class SpriteCache
