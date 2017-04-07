@@ -61,12 +61,13 @@ namespace OpenRA
 
 		public readonly string[] SoundFormats = { };
 		public readonly string[] SpriteFormats = { };
+        public readonly string[] TeamColorPresets = { };
 
-		readonly string[] reservedModuleNames = { "Metadata", "Folders", "MapFolders", "Packages", "Rules",
+        readonly string[] reservedModuleNames = { "Metadata", "Folders", "MapFolders", "Packages", "Rules",
 			"Sequences", "VoxelSequences", "Cursors", "Chrome", "Assemblies", "ChromeLayout", "Weapons",
 			"Voices", "Notifications", "Music", "Translations", "TileSets", "ChromeMetrics", "Missions",
 			"ServerTraits", "LoadScreen", "Fonts", "SupportsMapsFrom", "SoundFormats", "SpriteFormats",
-			"RequiresMods" };
+			"RequiresMods", "TeamColorPresets" };
 
 		readonly TypeDictionary modules = new TypeDictionary();
 		readonly Dictionary<string, MiniYaml> yaml;
@@ -130,7 +131,10 @@ namespace OpenRA
 
 			if (yaml.ContainsKey("SpriteFormats"))
 				SpriteFormats = FieldLoader.GetValue<string[]>("SpriteFormats", yaml["SpriteFormats"].Value);
-		}
+
+            if (yaml.ContainsKey("TeamColorPresets"))
+                TeamColorPresets = FieldLoader.GetValue<string[]>("TeamColorPresets", yaml["TeamColorPresets"].Value);
+        }
 
 		public void LoadCustomData(ObjectCreator oc)
 		{

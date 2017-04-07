@@ -196,6 +196,8 @@ SoundFormats: Aud, Wav
 
 SpriteFormats: ShpD2, ShpTD, TmpRA, TmpTD, ShpTS
 
+TeamColorPresets: C4B060, 4494E4, EC0000, 00C400, FC8800, 707070, 44907C, 702C24
+
 SpriteSequenceFormat: TilesetSpecificSpriteSequence
 	TilesetExtensions:
 		TEMPERAT: .tem
