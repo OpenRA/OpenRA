@@ -68,7 +68,7 @@ namespace OpenRA.Graphics
 
 			if (spriteFrame != null)
 			{
-				sprite = (Sprite) Activator.CreateInstance(spriteFrame.SpriteType, sprite);
+				sprite = (Sprite)Activator.CreateInstance(spriteFrame.SpriteType, sprite);
 				sprite.Set(spriteFrame);
 			}
 
