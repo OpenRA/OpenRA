@@ -601,7 +601,15 @@ namespace OpenRA.Mods.Common.Traits
 				if (!order.Queued)
 					UnReserve();
 
-				if (Reservable.IsReserved(order.TargetActor))
+				var targetReserved = Reservable.IsReserved(order.TargetActor);
+
+				// If the target for repair is reserved then drop the order
+				if (targetReserved && Info.RepairBuildings.Contains(order.TargetActor.Info.Name))
+					return;
+
+				// If the target for reloading is reserved then automatically redirect to a different valid reload actor
+				// HACK: Repair and reload behaviour is inconsistent and one should be changed
+				if (targetReserved)
 				{
 					if (IsPlane)
 						self.QueueActivity(new ReturnToBase(self, Info.AbortOnResupply));
