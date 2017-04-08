@@ -39,22 +39,22 @@ GAPOWR:
 	Pluggable@pluga:
 		Offset: 0,1
 		Conditions:
-			powrup: powrup.a
+			powrup: powrup@pluga
 	Power@pluga:
-		RequiresCondition: powrup.a
+		RequiresCondition: powrup@pluga
 		Amount: 50
 	WithIdleOverlay@pluga:
-		RequiresCondition: powrup.a
+		RequiresCondition: powrup@pluga
 		Sequence: idle-powrupa
 	Pluggable@plugb:
 		Offset: 1,1
 		Conditions:
-			powrup: powrup.b
+			powrup: powrup@plugb
 	WithIdleOverlay@plugb:
-		RequiresCondition: powrup.b
+		RequiresCondition: powrup@plugb
 		Sequence: idle-powrupb
 	Power@plugb:
-		RequiresCondition: powrup.b
+		RequiresCondition: powrup@plugb
 		Amount: 50
 	ProvidesPrerequisite@buildingname:
 	SelectionDecorations:
@@ -405,7 +405,7 @@ GAPLUG:
 		MaxHeightDelta: 3
 	IonCannonPower:
 		Cursor: ioncannon
-		RequiresCondition: plug.ioncannona || plug.ioncannonb
+		RequiresCondition: ioncannon@pluga || ioncannon@plugb
 		Icon: ioncannon
 		Effect: explosion
 		EffectSequence: ionring
@@ -419,7 +419,7 @@ GAPLUG:
 		DisplayRadarPing: True
 		CameraActor: camera
 	ProduceActorPower:
-		RequiresCondition: plug.hunterseekera || plug.hunterseekerb
+		RequiresCondition: hunterseeker@pluga || hunterseeker@plugb
 		Description: Hunter Seeker
 		LongDesc: Releases a drone that will acquire and destroy an enemy target.
 		Icon: hunterseeker
@@ -434,38 +434,38 @@ GAPLUG:
 	Power:
 		Amount: -150
 	Power@ioncannon:
-		RequiresCondition: plug.ioncannona || plug.ioncannonb
+		RequiresCondition: ioncannon@pluga || ioncannon@plugb
 		Amount: -100
 	Power@hunterseeker:
-		RequiresCondition: plug.hunterseekera || plug.hunterseekerb
+		RequiresCondition: hunterseeker@pluga || hunterseeker@plugb
 		Amount: -50
 	Pluggable@pluga:
 		Offset: 0,2
 		Conditions:
-			plug.ioncannon: plug.ioncannona
-			plug.hunterseeker: plug.hunterseekera
+			plug.ioncannon: ioncannon@pluga
+			plug.hunterseeker: hunterseeker@pluga
 		Requirements:
-			plug.ioncannon: !plug.ioncannonb && !plug.ioncannona && !plug.hunterseekera
-			plug.hunterseeker: !plug.hunterseekerb && !plug.ioncannona && !plug.hunterseekera
+			plug.ioncannon: !ioncannon@plugb && !ioncannon@pluga && !hunterseeker@pluga
+			plug.hunterseeker: !hunterseeker@plugb && !ioncannon@pluga && !hunterseeker@pluga
 	WithIdleOverlay@ioncannona:
-		RequiresCondition: plug.ioncannona
+		RequiresCondition: ioncannon@pluga
 		Sequence: idle-ioncannona
 	WithIdleOverlay@hunterseekera:
-		RequiresCondition: plug.hunterseekera
+		RequiresCondition: hunterseeker@pluga
 		Sequence: idle-hunterseekera
 	Pluggable@plugb:
 		Offset: 1,2
 		Conditions:
-			plug.ioncannon: plug.ioncannonb
-			plug.hunterseeker: plug.hunterseekerb
+			plug.ioncannon: ioncannon@plugb
+			plug.hunterseeker: hunterseeker@plugb
 		Requirements:
-			plug.ioncannon: !plug.ioncannona && !plug.ioncannonb && !plug.hunterseekerb
-			plug.hunterseeker: !plug.hunterseekera && !plug.ioncannonb && !plug.hunterseekerb
+			plug.ioncannon: !ioncannon@pluga && !ioncannon@plugb && !hunterseeker@plugb
+			plug.hunterseeker: !hunterseeker@pluga && !ioncannon@plugb && !hunterseeker@plugb
 	WithIdleOverlay@ioncannonb:
-		RequiresCondition: plug.ioncannonb
+		RequiresCondition: ioncannon@plugb
 		Sequence: idle-ioncannonb
 	WithIdleOverlay@hunterseekerb:
-		RequiresCondition: plug.hunterseekerb
+		RequiresCondition: hunterseeker@plugb
 		Sequence: idle-hunterseekerb
 	ProvidesPrerequisite@buildingname:
 	SelectionDecorations:

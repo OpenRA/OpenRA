@@ -582,6 +582,95 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				if (engineVersion < 20170318)
 					node.Value.Nodes.RemoveAll(n => n.Key == "ActorGroupProxy");
 
+				// Replaced TimedConditionBar with ConditionBar trait & condition timer properties.
+				if (engineVersion < 20170401 && node.Value.Nodes.Any(n => n.Key == "TimedConditionBar" || n.Key.StartsWith("TimedConditionBar@", StringComparison.Ordinal)))
+				{
+					var conditions = new HashSet<string>();
+					foreach (var trait in node.Value.Nodes.Where(n => n.Key == "TimedConditionBar" || n.Key.StartsWith("TimedConditionBar@", StringComparison.Ordinal)))
+					{
+						trait.Key = trait.Key.Substring(5);
+						var conditionNodeIndex = trait.Value.Nodes.FindIndex(n => n.Key == "Condition");
+						if (conditionNodeIndex < 0)
+							continue;
+
+						var condition = trait.Value.Nodes[conditionNodeIndex].Value.Value;
+						trait.Value.Nodes.RemoveAt(conditionNodeIndex);
+						trait.Value.Nodes.Insert(conditionNodeIndex, new MiniYamlNode("Value", condition + ".remaining"));
+						trait.Value.Nodes.Insert(conditionNodeIndex + 1, new MiniYamlNode("MaxValue", condition + ".duration"));
+						conditions.Add(condition);
+					}
+
+					var conditionManagerNode = node.Value.Nodes.Find(n => n.Key == "ConditionManager");
+					if (conditionManagerNode == null)
+					{
+						conditionManagerNode = new MiniYamlNode("ConditionManager", null as string);
+						node.Value.Nodes.Add(conditionManagerNode);
+					}
+
+					var timersNode = conditionManagerNode.Value.Nodes.Find(n => n.Key == "Timers");
+					if (timersNode == null)
+					{
+						timersNode = new MiniYamlNode("Timers", null as string);
+						conditionManagerNode.Value.Nodes.Add(timersNode);
+					}
+
+					foreach (var condition in conditions)
+						if (!timersNode.Value.Nodes.Any(n => n.Key == condition))
+							timersNode.Value.Nodes.Add(new MiniYamlNode(condition, "remaining, duration"));
+				}
+
+				// Replaced ExternalCapturableBar with ConditionBar
+				if (engineVersion < 20170401)
+				{
+					if (node.Key == "ExternalCapturable" || node.Key.StartsWith("ExternalCapturable@", StringComparison.Ordinal))
+					{
+						if (!node.Value.Nodes.Any(n => n.Key == "Condition"))
+							node.Value.Nodes.Add(new MiniYamlNode("Condition", "capture" + node.Key.Remove(0, "ExternalCapturable".Length)));
+
+						if (!node.Value.Nodes.Any(n => n.Key == "ConditionProperties"))
+							node.Value.Nodes.Add(new MiniYamlNode("ConditionProperties", "progress, duration"));
+					}
+
+					if (node.Key == "ExternalCapturableBar" || node.Key.StartsWith("ExternalCapturableBar@", StringComparison.Ordinal))
+					{
+						var suffix = node.Key.Remove(0, "ExternalCapturableBar".Length);
+						node.Key = "ConditionBar@EXTERNAL_CAPTURE" + suffix;
+
+						if (!node.Value.Nodes.Any(n => n.Key == "Value"))
+							node.Value.Nodes.Add(new MiniYamlNode("Value", "capture" + suffix + ".progress"));
+
+						if (!node.Value.Nodes.Any(n => n.Key == "MaxValue"))
+							node.Value.Nodes.Add(new MiniYamlNode("MaxValue", "capture" + suffix + ".duration"));
+
+						if (!node.Value.Nodes.Any(n => n.Key == "DisplayStances"))
+							node.Value.Nodes.Add(new MiniYamlNode("DisplayStances", "Neutral, Enemy"));
+
+						if (!node.Value.Nodes.Any(n => n.Key == "Color"))
+							node.Value.Nodes.Add(new MiniYamlNode("Color", "FFA500"));
+					}
+				}
+
+				// Replace PortableChrono ISelectionBar with separate ConditionBar trait
+				if (engineVersion < 20170401)
+				{
+					var bars = new List<KeyValuePair<int, MiniYamlNode>>();
+					foreach (var trait in node.Value.Nodes.Where(n => n.Key == "PortableChrono" || n.Key.StartsWith("PortableChrono@", StringComparison.Ordinal)))
+					{
+						var suffix = trait.Key.Substring("PortableChrono".Length).Replace('@', '-');
+						trait.Value.Nodes.Add(new MiniYamlNode("ChargingCondition", "portable-chrono-charge" + suffix));
+						trait.Value.Nodes.Add(new MiniYamlNode("ConditionProperties", "progress, duration"));
+
+						var bar = new MiniYamlNode("ConditionBar@PORTABLE_CHRONO" + suffix, null as string);
+						bar.Value.Nodes.Add(new MiniYamlNode("Value", "portable-chrono-charge" + suffix + ".progress"));
+						bar.Value.Nodes.Add(new MiniYamlNode("MaxValue", "portable-chrono-charge" + suffix + ".duration"));
+						bar.Value.Nodes.Add(new MiniYamlNode("Color", "FF00FF"));
+						bars.Add(new KeyValuePair<int, MiniYamlNode>(node.Value.Nodes.FindIndex(n => ReferenceEquals(n, trait)) + 1, bar));
+					}
+
+					for (var i = bars.Count; --i >= 0;)
+						node.Value.Nodes.Insert(bars[i].Key, bars[i].Value);
+				}
+
 				UpgradeActorRules(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 

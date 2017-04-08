@@ -15,6 +15,7 @@ using OpenRA.Graphics;
 using OpenRA.Mods.Cnc.Activities;
 using OpenRA.Mods.Common.Graphics;
 using OpenRA.Mods.Common.Orders;
+using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Cnc.Traits
@@ -47,23 +48,48 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		[VoiceReference] public readonly string Voice = "Action";
 
+ 		[GrantedConditionReference]
+		[Desc("Condition granted while charging.")]
+ 		public readonly string ChargingCondition;
+
+		[Desc("Properties to attach to ChargingCondition: duration, remaining, and/or progress.")]
+		public readonly ConditionProgressProperties ConditionProperties;
+
+		[GrantedConditionReference]
+		public IEnumerable<string> GrantedConditionProperties
+		{
+			get { return ConditionProgressState.EnumerateProperties(ChargingCondition, ConditionProperties); }
+		}
+
 		public object Create(ActorInitializer init) { return new PortableChrono(this); }
 	}
 
-	class PortableChrono : IIssueOrder, IResolveOrder, ITick, ISelectionBar, IOrderVoice, ISync
+	class PortableChrono : IIssueOrder, IResolveOrder, ITick, INotifyCreated, IOrderVoice, ISync
 	{
 		[Sync] int chargeTick = 0;
 		public readonly PortableChronoInfo Info;
+ 		ConditionManager conditionManager;
+		ConditionWithProgressState progress;
 
 		public PortableChrono(PortableChronoInfo info)
 		{
 			Info = info;
+			progress = new ConditionWithProgressState(info.ConditionProperties);
 		}
+
+ 		void INotifyCreated.Created(Actor self)
+ 		{
+			if (Info.ChargingCondition != null)
+				conditionManager = self.TraitOrDefault<ConditionManager>();
+
+			if (conditionManager != null)
+				progress.Init(self, conditionManager, Info.ChargingCondition, Info.ChargeDelay, chargeTick);
+ 		}
 
 		public void Tick(Actor self)
 		{
 			if (chargeTick > 0)
-				chargeTick--;
+				progress.Update(self, conditionManager, Info.ChargeDelay, --chargeTick);
 		}
 
 		public IEnumerable<IOrderTargeter> Orders
@@ -102,23 +128,17 @@ namespace OpenRA.Mods.Cnc.Traits
 			return order.OrderString == "PortableChronoTeleport" && CanTeleport ? Info.Voice : null;
 		}
 
-		public void ResetChargeTime()
+		public void ResetChargeTime(Actor self)
 		{
 			chargeTick = Info.ChargeDelay;
+			if (conditionManager != null)
+				progress.Init(self, conditionManager, Info.ChargingCondition, Info.ChargeDelay, chargeTick);
 		}
 
 		public bool CanTeleport
 		{
 			get { return chargeTick <= 0; }
 		}
-
-		float ISelectionBar.GetValue()
-		{
-			return (float)(Info.ChargeDelay - chargeTick) / Info.ChargeDelay;
-		}
-
-		Color ISelectionBar.GetColor() { return Color.Magenta; }
-		bool ISelectionBar.DisplayWhenEmpty { get { return false; } }
 	}
 
 	class PortableChronoOrderTargeter : IOrderTargeter

@@ -95,7 +95,13 @@ HOSP:
 	Health:
 		HP: 1000
 	ExternalCapturable:
-	ExternalCapturableBar:
+		Condition: capture
+		ConditionProperties: progress, duration
+	ConditionBar@EXTERNAL_CAPTURE:
+		Value: capture.progress
+		MaxValue: capture.duration
+		DisplayStances: Neutral, Enemy
+		Color: FFA500
 	EngineerRepairable:
 	Tooltip:
 		Name: Hospital
@@ -341,7 +347,13 @@ BIO:
 	RevealsShroud:
 		Range: 3c0
 	ExternalCapturable:
-	ExternalCapturableBar:
+		Condition: capture
+		ConditionProperties: progress, duration
+	ConditionBar@EXTERNAL_CAPTURE:
+		Value: capture.progress
+		MaxValue: capture.duration
+		DisplayStances: Neutral, Enemy
+		Color: FFA500
 	EngineerRepairable:
 	Tooltip:
 		Name: Biological Lab
@@ -364,7 +376,13 @@ OILB:
 	RevealsShroud:
 		Range: 3c0
 	ExternalCapturable:
-	ExternalCapturableBar:
+		Condition: capture
+		ConditionProperties: progress, duration
+	ConditionBar@EXTERNAL_CAPTURE:
+		Value: capture.progress
+		MaxValue: capture.duration
+		DisplayStances: Neutral, Enemy
+		Color: FFA500
 	EngineerRepairable:
 	CashTrickler:
 		Interval: 375

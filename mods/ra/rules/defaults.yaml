@@ -119,13 +119,17 @@
 		ZOffset: 256
 
 ^IronCurtainable:
+	ConditionManager:
+		Timers:
+			invulnerability: remaining, duration
 	WithColoredOverlay@IRONCURTAIN:
 		RequiresCondition: invulnerability
 	DamageMultiplier@IRONCURTAIN:
 		RequiresCondition: invulnerability
 		Modifier: 0
-	TimedConditionBar:
-		Condition: invulnerability
+	ConditionBar@INVULNERABILITY:
+		Value: invulnerability.remaining
+		MaxValue: invulnerability.duration
 	ExternalCondition@INVULNERABILITY:
 		Condition: invulnerability
 
@@ -530,7 +534,13 @@
 	AcceptsSupplies:
 	WithMakeAnimation:
 	ExternalCapturable:
-	ExternalCapturableBar:
+		Condition: capture
+		ConditionProperties: progress, duration
+	ConditionBar@EXTERNAL_CAPTURE:
+		Value: capture.progress
+		MaxValue: capture.duration
+		DisplayStances: Neutral, Enemy
+		Color: FFA500
 	EmitInfantryOnSell:
 		ActorTypes: e1,e1,e1,tecn,tecn
 	MustBeDestroyed:

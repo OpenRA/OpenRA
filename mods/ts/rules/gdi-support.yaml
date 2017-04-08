@@ -68,51 +68,51 @@ GACTWR:
 	BodyOrientation:
 		QuantizedFacings: 32
 	DetectCloaked:
-		RequiresCondition: tower.vulcan || tower.rocket || tower.sam
+		RequiresCondition: vulcan@tower || rocket@tower || sam@tower
 	Turreted:
 		TurnSpeed: 10
 		InitialFacing: 224
 	AttackTurreted:
-		RequiresCondition: tower.vulcan || tower.rocket || tower.sam
+		RequiresCondition: vulcan@tower || rocket@tower || sam@tower
 	CanPowerDown:
 		IndicatorPalette: mouse
 		PowerupSpeech: EnablePower
 		PowerdownSpeech: DisablePower
 	WithSpriteTurret@VULC:
-		RequiresCondition: tower.vulcan
+		RequiresCondition: vulcan@tower
 		Recoils: false
 		Sequence: turret-vulcan
 	WithSpriteTurret@ROCKET:
-		RequiresCondition: tower.rocket
+		RequiresCondition: rocket@tower
 		Recoils: false
 		Sequence: turret-rocket
 	WithSpriteTurret@SAM:
-		RequiresCondition: tower.sam
+		RequiresCondition: sam@tower
 		Recoils: false
 		Sequence: turret-sam
 	Armament@VULCPRIMARY:
-		RequiresCondition: tower.vulcan
+		RequiresCondition: vulcan@tower
 		Weapon: VulcanTower
 		LocalOffset: 416,85,960
 		MuzzleSequence: muzzle
 		MuzzleSplitFacings: 8
 	Armament@VULCSECONDARY:
-		RequiresCondition: tower.vulcan
+		RequiresCondition: vulcan@tower
 		Name: secondary
 		Weapon: VulcanTower
 		LocalOffset: 416,-85,960
 		MuzzleSequence: muzzle
 		MuzzleSplitFacings: 8
 	Armament@ROCKET:
-		RequiresCondition: tower.rocket
+		RequiresCondition: rocket@tower
 		Weapon: RPGTower
 		LocalOffset: 192,-65,1056
 	Armament@SAM:
-		RequiresCondition: tower.sam
+		RequiresCondition: sam@tower
 		Weapon: RedEye2
 		LocalOffset: 384,0,1200
 	WithMuzzleOverlay:
-		RequiresCondition: tower.vulcan
+		RequiresCondition: vulcan@tower
 	WithIdleOverlay@LIGHTS:
 		Sequence: idle-lights
 	LineBuildNode:
@@ -120,16 +120,16 @@ GACTWR:
 	Power@base:
 		Amount: -10
 	Power@turrets:
-		RequiresCondition: tower.vulcan || tower.rocket || tower.sam
+		RequiresCondition: vulcan@tower || rocket@tower || sam@tower
 		Amount: -20
 	Power@samextra:
-		RequiresCondition: tower.sam
+		RequiresCondition: sam@tower
 		Amount: -10
 	Pluggable:
 		Conditions:
-			tower.vulcan: tower.vulcan
-			tower.rocket: tower.rocket
-			tower.sam: tower.sam
+			tower.vulcan: vulcan@tower
+			tower.rocket: rocket@tower
+			tower.sam: sam@tower
 	ProvidesPrerequisite@buildingname:
 	SelectionDecorations:
 		VisualBounds: 48, 48, 0, -12

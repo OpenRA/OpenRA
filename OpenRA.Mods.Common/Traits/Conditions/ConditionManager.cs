@@ -10,22 +10,134 @@
 #endregion
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	[RequireExplicitImplementation]
-	public interface IConditionTimerWatcher
+	[Flags] public enum ConditionProgressProperties { Duration = 1, Remaining = 2, Progress = 4 }
+
+	public struct ConditionProgressState
 	{
-		string Condition { get; }
-		void Update(int duration, int remaining);
+		ConditionProgressProperties flags;
+		int durationToken;
+		int remainingToken;
+		int progressToken;
+
+		public ConditionProgressState(ConditionProgressProperties flags)
+		{
+			this.flags = flags;
+			durationToken = ConditionManager.InvalidConditionToken;
+			remainingToken = ConditionManager.InvalidConditionToken;
+			progressToken = ConditionManager.InvalidConditionToken;
+		}
+
+		public static IEnumerable<string> EnumerateProperties(string condition, ConditionProgressProperties properties)
+		{
+			if (condition == null)
+				yield break;
+
+			if (properties.HasFlag(ConditionProgressProperties.Duration))
+				yield return condition + ".duration";
+
+			if (properties.HasFlag(ConditionProgressProperties.Remaining))
+				yield return condition + ".remaining";
+
+			if (properties.HasFlag(ConditionProgressProperties.Progress))
+				yield return condition + ".progress";
+		}
+
+		public void Init(Actor self, ConditionManager manager, string condition, int duration = 0, int remaining = 0)
+		{
+			if (flags.HasFlag(ConditionProgressProperties.Remaining))
+				remainingToken = manager.UpdateOrGrantConditionValue(self, condition, remainingToken, remaining, ".remaining");
+
+			if (flags.HasFlag(ConditionProgressProperties.Progress))
+				progressToken = manager.UpdateOrGrantConditionValue(self, condition, progressToken, duration - remaining, ".progress");
+
+			if (flags.HasFlag(ConditionProgressProperties.Duration))
+				durationToken = manager.UpdateOrGrantConditionValue(self, condition, durationToken, duration, ".duration");
+		}
+
+		public void Update(Actor self, ConditionManager manager, int duration, int remaining, bool newDuration = false)
+		{
+			if (remainingToken != ConditionManager.InvalidConditionToken)
+				manager.UpdateConditionValue(self, remainingToken, remaining);
+
+			if (progressToken != ConditionManager.InvalidConditionToken)
+				manager.UpdateConditionValue(self, progressToken, duration - remaining);
+
+			if (newDuration && durationToken != ConditionManager.InvalidConditionToken)
+				manager.UpdateConditionValue(self, durationToken, duration);
+		}
+
+		public void Revoke(Actor self, ConditionManager manager)
+		{
+			if (remainingToken != ConditionManager.InvalidConditionToken)
+				remainingToken = manager.RevokeCondition(self, remainingToken);
+
+			if (progressToken != ConditionManager.InvalidConditionToken)
+				progressToken = manager.RevokeCondition(self, progressToken);
+
+			if (durationToken != ConditionManager.InvalidConditionToken)
+				durationToken = manager.RevokeCondition(self, durationToken);
+		}
+	}
+
+	public struct ConditionWithProgressState
+	{
+		int conditionToken;
+		ConditionProgressState progress;
+
+		public ConditionWithProgressState(ConditionProgressProperties flags)
+		{
+			conditionToken = ConditionManager.InvalidConditionToken;
+			progress = new ConditionProgressState(flags);
+		}
+
+		public void Init(Actor self, ConditionManager manager, string condition, int duration = 0, int remaining = 0)
+		{
+			conditionToken = manager.UpdateOrGrantConditionValue(self, condition, conditionToken, remaining > 0 ? 1 : 0);
+			progress.Init(self, manager, condition, duration, remaining);
+		}
+
+		public void Update(Actor self, ConditionManager manager, int duration, int remaining, bool reset = false)
+		{
+			progress.Update(self, manager, duration, remaining, reset);
+			if (remaining == 0 || reset)
+				manager.UpdateConditionValue(self, conditionToken, remaining == 0 ? 0 : 1);
+		}
+
+		public void Revoke(Actor self, ConditionManager manager)
+		{
+			progress.Revoke(self, manager);
+			manager.RevokeCondition(self, conditionToken);
+		}
 	}
 
 	[Desc("Attach this to a unit to enable dynamic conditions by warheads, experience, crates, support powers, etc.")]
-	public class ConditionManagerInfo : TraitInfo<ConditionManager>, Requires<IConditionConsumerInfo> { }
+	public class ConditionManagerInfo : ITraitInfo, Requires<IConditionConsumerInfo>
+	{
+		[Desc("The key is the timer condition name and the value is one or more of the following property names: duration, remaining, or progress.")]
+		public readonly Dictionary<string, ConditionProgressProperties> Timers = new Dictionary<string, ConditionProgressProperties>();
+
+		[ConsumedConditionReference]
+		public IEnumerable<string> ConsumedTimerConditions { get { return Timers.Keys; } }
+
+		[GrantedConditionReference]
+		public IEnumerable<string> GrantedTimerConditionProperties
+		{
+			get
+			{
+				foreach (var timer in Timers)
+					foreach (var property in ConditionProgressState.EnumerateProperties(timer.Key, timer.Value))
+						yield return property;
+			}
+		}
+
+		public object Create(ActorInitializer init) { return new ConditionManager(this); }
+	}
 
 	public class ConditionManager : INotifyCreated, ITick
 	{
@@ -34,143 +146,307 @@ namespace OpenRA.Mods.Common.Traits
 
 		class ConditionTimer
 		{
-			public readonly int Token;
-			public readonly int Duration;
-			public int Remaining;
-
-			public ConditionTimer(int token, int duration)
+			class TokenTimer
 			{
-				Token = token;
-				Duration = Remaining = duration;
+				public static readonly TokenTimer Zero = new TokenTimer(InvalidConditionToken, 0);
+
+				public readonly int Token;
+				public readonly int Duration;
+				public int Remaining;
+
+				public TokenTimer(int token, int duration)
+				{
+					Token = token;
+					Duration = Remaining = duration;
+				}
+			}
+
+			readonly ConditionProgressState progress;
+			readonly List<TokenTimer> timers = new List<TokenTimer>();
+			TokenTimer longestTimer = TokenTimer.Zero;
+			public int Count { get { return timers.Count; } }
+
+			public ConditionTimer(Actor self, ConditionManager manager, string condition)
+			{
+				ConditionProgressProperties properties;
+				manager.Info.Timers.TryGetValue(condition, out properties);
+				progress = new ConditionProgressState(properties);
+				progress.Init(self, manager, condition);
+			}
+
+			public void Remove(int token, Actor self, ConditionManager manager)
+			{
+				if (!RemoveByIndex(timers.FindIndex(t => t.Token == token), self, manager))
+					return;
+
+				NewLongestTimer(self, manager);
+				if (timers.Count == 0)
+					manager.timers.Remove(this);
+			}
+
+			public void Add(int token, int duration, Actor self, ConditionManager manager)
+			{
+				timers.Add(new TokenTimer(token, duration));
+				NewLongestTimer(self, manager);
+				if (timers.Count == 1)
+					manager.timers.Add(this);
+			}
+
+			public void Tick(Actor self, ConditionManager manager)
+			{
+				if (timers.Count == 0)
+					return;
+
+				var expiredTimerIndexes = new BitArray(timers.Count);
+				for (var i = 0; i < timers.Count; i++)
+					if (--timers[i].Remaining <= 0)
+						expiredTimerIndexes.Set(i, true);
+
+				for (var i = timers.Count - 1; i >= 0; i--)
+					if (expiredTimerIndexes.Get(i))
+						RemoveByIndex(i, self, manager);
+
+				if (!NewLongestTimer(self, manager))
+					progress.Update(self, manager, longestTimer.Duration, longestTimer.Remaining);
+			}
+
+			bool RemoveByIndex(int index, Actor self, ConditionManager manager)
+			{
+				if (index < 0)
+					return false;
+
+				TokenTimer removedTimer = timers[index];
+				timers.RemoveAt(index);
+				manager.RevokeCondition(self, removedTimer.Token);
+				if (longestTimer != removedTimer)
+					return false;
+
+				longestTimer = TokenTimer.Zero;
+				return true;
+			}
+
+			bool NewLongestTimer(Actor self, ConditionManager manager)
+			{
+				var newLongestTimer = longestTimer;
+				foreach (var timer in timers)
+					if (timer.Remaining > newLongestTimer.Remaining)
+						newLongestTimer = timer;
+
+				if (newLongestTimer == longestTimer)
+					return false;
+
+				longestTimer = newLongestTimer;
+				progress.Update(self, manager, longestTimer.Duration, longestTimer.Remaining, true);
+				return true;
 			}
 		}
 
 		class ConditionState
 		{
+			public ConditionTimer Timers = null;
+
 			/// <summary>Traits that have registered to be notified when this condition changes.</summary>
-			public readonly List<IConditionConsumer> Consumers = new List<IConditionConsumer>();
+			readonly List<ConditionConsumer> consumers = new List<ConditionConsumer>();
 
 			/// <summary>Unique integers identifying granted instances of the condition.</summary>
-			public readonly HashSet<int> Tokens = new HashSet<int>();
+			readonly HashSet<int> tokens = new HashSet<int>();
 
-			/// <summary>External callbacks that are to be executed when a timed condition changes.</summary>
-			public readonly List<IConditionTimerWatcher> Watchers = new List<IConditionTimerWatcher>();
+			public void Add(int token) { tokens.Add(token); }
+			public void Add(ConditionConsumer consumer) { consumers.Add(consumer); }
+			public ConditionTimer GetTimer(Actor self, ConditionManager manager, string condition)
+			{
+				if (Timers != null)
+					return Timers;
+
+				Timers = new ConditionTimer(self, manager, condition);
+				return Timers;
+			}
+
+			public void Add(int token, int duration, Actor self, ConditionManager manager, string condition)
+			{
+				GetTimer(self, manager, condition).Add(token, duration, self, manager);
+			}
+
+			public void Remove(int token, Actor self, ConditionManager manager)
+			{
+				if (tokens.Remove(token) && Timers != null)
+					Timers.Remove(token, self, manager);
+			}
+
+			public void NotifyConsumers(Actor self, IReadOnlyDictionary<string, int> conditions)
+			{
+				foreach (var t in consumers)
+					t(self, conditions);
+			}
 		}
 
-		Dictionary<string, ConditionState> state;
-		readonly Dictionary<string, List<ConditionTimer>> timers = new Dictionary<string, List<ConditionTimer>>();
+		class TokenState
+		{
+			public readonly string Condition;
+			public int Value;
 
-		/// <summary>Each granted condition receives a unique token that is used when revoking.</summary>
-		Dictionary<int, string> tokens = new Dictionary<int, string>();
+			public TokenState(string condition, int value)
+			{
+				Condition = condition;
+				Value = value;
+			}
+		}
+
+		enum UpdateType { Grant, Change, Revoke }
+
+		public readonly ConditionManagerInfo Info;
+		Dictionary<string, ConditionState> state;
+		readonly HashSet<ConditionTimer> timers = new HashSet<ConditionTimer>();
+		readonly Dictionary<string, ConditionTimer> pendingTimers = new Dictionary<string, ConditionTimer>();
+
+		/// <summary>Each granted condition receives a unique token that is used when revoking and has an integer value.</summary>
+		Dictionary<int, TokenState> tokens = new Dictionary<int, TokenState>();
 
 		int nextToken = 1;
 
-		/// <summary>Cache of condition -> enabled state for quick evaluation of token counter conditions.</summary>
+		/// <summary>Cache of condition -> enabled state for quick evaluation of token value sum conditions.</summary>
 		readonly Dictionary<string, int> conditionCache = new Dictionary<string, int>();
 
 		/// <summary>Read-only version of conditionCache that is passed to IConditionConsumers.</summary>
 		IReadOnlyDictionary<string, int> readOnlyConditionCache;
+
+		public ConditionManager(ConditionManagerInfo info) { Info = info; }
 
 		void INotifyCreated.Created(Actor self)
 		{
 			state = new Dictionary<string, ConditionState>();
 			readOnlyConditionCache = new ReadOnlyDictionary<string, int>(conditionCache);
 
-			var allConsumers = new HashSet<IConditionConsumer>();
-			var allWatchers = self.TraitsImplementing<IConditionTimerWatcher>().ToList();
+			var allConsumers = new HashSet<ConditionConsumer>();
 
-			foreach (var consumer in self.TraitsImplementing<IConditionConsumer>())
+			foreach (var conditionTimersPair in pendingTimers)
+				state.GetOrAdd(conditionTimersPair.Key).Timers = conditionTimersPair.Value;
+
+			foreach (var consumerProvider in self.TraitsImplementing<IConditionConsumerProvider>())
 			{
-				allConsumers.Add(consumer);
-				foreach (var condition in consumer.Conditions)
+				foreach (var consumerWithConditions in consumerProvider.GetConsumersWithTheirConditions())
 				{
-					var cs = state.GetOrAdd(condition);
-					cs.Consumers.Add(consumer);
-					foreach (var w in allWatchers)
-						if (w.Condition == condition)
-							cs.Watchers.Add(w);
-
-					conditionCache[condition] = 0;
+					allConsumers.Add(consumerWithConditions.First);
+					foreach (var condition in consumerWithConditions.Second)
+					{
+						state.GetOrAdd(condition).Add(consumerWithConditions.First);
+						conditionCache[condition] = 0;
+					}
 				}
 			}
 
 			// Enable any conditions granted during trait setup
 			foreach (var kv in tokens)
 			{
-				ConditionState conditionState;
-				if (!state.TryGetValue(kv.Value, out conditionState))
+				ConditionState cs;
+				if (!state.TryGetValue(kv.Value.Condition, out cs))
 					continue;
 
-				conditionState.Tokens.Add(kv.Key);
-				conditionCache[kv.Value] = conditionState.Tokens.Count;
+				cs.Add(kv.Key);
+				if (conditionCache.ContainsKey(kv.Value.Condition))
+					conditionCache[kv.Value.Condition] += kv.Value.Value;
+				else
+					conditionCache.Add(kv.Value.Condition, kv.Value.Value);
 			}
 
 			// Update all traits with their initial condition state
 			foreach (var consumer in allConsumers)
-				consumer.ConditionsChanged(self, readOnlyConditionCache);
+				consumer(self, readOnlyConditionCache);
 		}
 
-		void UpdateConditionState(Actor self, string condition, int token, bool isRevoke)
+		void UpdateConditionState(Actor self, string condition, int token, UpdateType type, int delta)
 		{
-			ConditionState conditionState;
-			if (!state.TryGetValue(condition, out conditionState))
-				return;
-
-			if (isRevoke)
-				conditionState.Tokens.Remove(token);
-			else
-				conditionState.Tokens.Add(token);
-
-			conditionCache[condition] = conditionState.Tokens.Count;
-
-			foreach (var t in conditionState.Consumers)
-				t.ConditionsChanged(self, readOnlyConditionCache);
-		}
-
-		/// <summary>Grants a specified condition.</summary>
-		/// <returns>The token that is used to revoke this condition.</returns>
-		/// <param name="external">Validate against the external condition whitelist.</param>
-		/// <param name="duration">Automatically revoke condition after this delay if non-zero.</param>
-		public int GrantCondition(Actor self, string condition, int duration = 0)
-		{
-			var token = nextToken++;
-			tokens.Add(token, condition);
-
-			if (duration > 0)
-				timers.GetOrAdd(condition).Add(new ConditionTimer(token, duration));
-
 			// Conditions may be granted before the state is initialized.
 			// These conditions will be processed in INotifyCreated.Created.
-			if (state != null)
-				UpdateConditionState(self, condition, token, false);
+			if (state == null)
+				return;
+
+			ConditionState cs;
+			if (!state.TryGetValue(condition, out cs))
+				return;
+
+			switch (type)
+			{
+				case UpdateType.Grant:
+					cs.Add(token);
+					break;
+
+				case UpdateType.Revoke:
+					cs.Remove(token, self, this);
+					break;
+			}
+
+			if (delta == 0)
+				return;
+
+			conditionCache[condition] += delta;
+			cs.NotifyConsumers(self, readOnlyConditionCache);
+		}
+
+		/// <summary>Grants a specified condition token.</summary>
+		/// <returns>The token that is used to revoke this condition.</returns>
+		/// <param name="value">Integer value for condition token condition.</param>
+		public int GrantCondition(Actor self, string condition, int value = 1)
+		{
+			var token = nextToken++;
+			tokens.Add(token, new TokenState(condition, value));
+			UpdateConditionState(self, condition, token, UpdateType.Grant, value);
+			return token;
+		}
+
+		/// <summary>Grants a timed token for a specified condition.</summary>
+		/// <returns>The token that is used to revoke this condition.</returns>
+		/// <param name="duration">Automatically revoke condition after this delay if non-zero.</param>
+		/// <param name="value">Integer value for condition token condition.</param>
+		public int GrantTimedCondition(Actor self, string condition, int duration, int value = 1)
+		{
+			var token = GrantCondition(self, condition, value);
+			if (duration > 0)
+			{
+				if (state == null)
+					pendingTimers.GetOrAdd(condition, c => new ConditionTimer(self, this, condition)).Add(token, duration, self, this);
+				else
+					state[condition].Add(token, duration, self, this, condition);
+			}
 
 			return token;
 		}
 
-		/// <summary>Revokes a previously granted condition.</summary>
+		/// <summary>Re-values a specified condition token.</summary>
+		/// <returns>The token that is used to revoke this condition.</returns>
+		/// <param name="value">Integer value for condition token condition.</param>
+		public int UpdateConditionValue(Actor self, int token, int value)
+		{
+			TokenState tokenState;
+			if (!tokens.TryGetValue(token, out tokenState))
+				throw new InvalidOperationException("Attempting to re-value condition with invalid token {0} for {1}.".F(token, self));
+
+			if (value == tokenState.Value)
+				return token;
+
+			UpdateConditionState(self, tokenState.Condition, token, UpdateType.Change, value - tokenState.Value);
+			tokenState.Value = value;
+			return token;
+		}
+
+		public int UpdateOrGrantConditionValue(Actor self, string condition, int token, int value, string suffix = null)
+		{
+			return token != InvalidConditionToken
+				? UpdateConditionValue(self, token, value)
+				: GrantCondition(self, suffix != null ? condition + suffix : condition, value);
+		}
+
+		/// <summary>Revokes a previously granted condition token.</summary>
 		/// <returns>The invalid token ID.</returns>
 		/// <param name="token">The token ID returned by GrantCondition.</param>
 		public int RevokeCondition(Actor self, int token)
 		{
-			string condition;
-			if (!tokens.TryGetValue(token, out condition))
+			TokenState tokenState;
+			if (!tokens.TryGetValue(token, out tokenState))
 				throw new InvalidOperationException("Attempting to revoke condition with invalid token {0} for {1}.".F(token, self));
 
 			tokens.Remove(token);
-
-			// Clean up timers
-			List<ConditionTimer> ct;
-			if (timers.TryGetValue(condition, out ct))
-			{
-				ct.RemoveAll(t => t.Token == token);
-				if (!ct.Any())
-					timers.Remove(condition);
-			}
-
-			// Conditions may be granted and revoked before the state is initialized.
-			if (state != null)
-				UpdateConditionState(self, condition, token, true);
-
+			UpdateConditionState(self, tokenState.Condition, token, UpdateType.Revoke, -tokenState.Value);
 			return InvalidConditionToken;
 		}
 
@@ -180,37 +456,10 @@ namespace OpenRA.Mods.Common.Traits
 			return tokens.ContainsKey(token);
 		}
 
-		readonly HashSet<int> timersToRemove = new HashSet<int>();
 		void ITick.Tick(Actor self)
 		{
-			// Watchers will be receiving notifications while the condition is enabled.
-			// They will also be provided with the number of ticks before the condition is disabled,
-			// as well as the duration of the longest active instance.
-			foreach (var kv in timers)
-			{
-				var duration = 0;
-				var remaining = 0;
-				foreach (var t in kv.Value)
-				{
-					if (--t.Remaining <= 0)
-						timersToRemove.Add(t.Token);
-
-					// Track the duration and remaining time for the longest remaining timer
-					if (t.Remaining > remaining)
-					{
-						duration = t.Duration;
-						remaining = t.Remaining;
-					}
-				}
-
-				foreach (var w in state[kv.Key].Watchers)
-					w.Update(duration, remaining);
-			}
-
-			foreach (var t in timersToRemove)
-				RevokeCondition(self, t);
-
-			timersToRemove.Clear();
+			foreach (var timer in timers)
+				timer.Tick(self, this);
 		}
 	}
 }

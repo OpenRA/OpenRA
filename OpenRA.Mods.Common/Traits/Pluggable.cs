@@ -11,6 +11,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.Primitives;
 using OpenRA.Support;
 using OpenRA.Traits;
 
@@ -44,7 +45,7 @@ namespace OpenRA.Mods.Common.Traits
 		public object Create(ActorInitializer init) { return new Pluggable(init, this); }
 	}
 
-	public class Pluggable : IConditionConsumer, INotifyCreated
+	public class Pluggable : IConditionConsumerProvider, INotifyCreated
 	{
 		public readonly PluggableInfo Info;
 
@@ -114,12 +115,12 @@ namespace OpenRA.Mods.Common.Traits
 			active = null;
 		}
 
-		IEnumerable<string> IConditionConsumer.Conditions { get { return Info.ConsumedConditions; } }
-
-		void IConditionConsumer.ConditionsChanged(Actor self, IReadOnlyDictionary<string, int> conditions)
+		IEnumerable<Pair<ConditionConsumer, IEnumerable<string>>> IConditionConsumerProvider.GetConsumersWithTheirConditions()
 		{
 			foreach (var req in Info.Requirements)
-				plugTypesAvailability[req.Key] = req.Value.Evaluate(conditions) != 0;
+				yield return new Pair<ConditionConsumer, IEnumerable<string>>(
+					(self, conditions) => plugTypesAvailability[req.Key] = req.Value.Evaluate(conditions) != 0,
+					req.Value.Variables);
 		}
 	}
 

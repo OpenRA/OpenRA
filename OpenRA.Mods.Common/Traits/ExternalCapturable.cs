@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -21,11 +22,24 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly bool AllowAllies = false;
 		public readonly bool AllowNeutral = true;
 		public readonly bool AllowEnemies = true;
-		[Desc("Seconds it takes to change the owner.", "You might want to add a ExternalCapturableBar: trait, too.")]
+		[Desc("Seconds it takes to change the owner.", "You might want to add a ConditionBar: trait, too.")]
 		public readonly int CaptureCompleteTime = 15;
 
 		[Desc("Whether to prevent autotargeting this actor while it is being captured by an ally.")]
 		public readonly bool PreventsAutoTarget = true;
+
+		[Desc("Condition to grant while being captured.")]
+		[GrantedConditionReference]
+		public readonly string Condition;
+
+		[Desc("Properties to attach to condition: duration, remaining, and/or progress.")]
+		public readonly ConditionProgressProperties ConditionProperties;
+
+		[GrantedConditionReference]
+		public IEnumerable<string> GrantedConditionProperties
+		{
+			get { return ConditionProgressState.EnumerateProperties(Condition, ConditionProperties); }
+		}
 
 		public bool CanBeTargetedBy(Actor captor, Player owner)
 		{
@@ -52,18 +66,28 @@ namespace OpenRA.Mods.Common.Traits
 		public object Create(ActorInitializer init) { return new ExternalCapturable(init.Self, this); }
 	}
 
-	public class ExternalCapturable : ITick, ISync, IPreventsAutoTarget
+	public class ExternalCapturable : ITick, ISync, IPreventsAutoTarget, INotifyCreated
 	{
 		[Sync] public int CaptureProgressTime = 0;
-		[Sync] public Actor Captor;
-		private Actor self;
+		[Sync] Actor captor;
 		public ExternalCapturableInfo Info;
-		public bool CaptureInProgress { get { return Captor != null; } }
+		public bool CaptureInProgress { get { return captor != null; } }
+		public Actor Captor { get { return captor; } }
+		Actor self;
+		ConditionManager conditionManager;
+		ConditionWithProgressState progress;
 
 		public ExternalCapturable(Actor self, ExternalCapturableInfo info)
 		{
 			this.self = self;
 			Info = info;
+			progress = new ConditionWithProgressState(Info.ConditionProperties);
+		}
+
+		void INotifyCreated.Created(Actor self)
+		{
+			if (Info.Condition != null)
+				conditionManager = self.TraitOrDefault<ConditionManager>();
 		}
 
 		public void BeginCapture(Actor captor)
@@ -72,7 +96,12 @@ namespace OpenRA.Mods.Common.Traits
 			if (building != null)
 				building.Lock();
 
-			Captor = captor;
+			this.captor = captor;
+			if (conditionManager == null)
+				return;
+
+			var duration = Info.CaptureCompleteTime * 25;
+			progress.Init(self, conditionManager, Info.Condition, duration, duration - CaptureProgressTime);
 		}
 
 		public void EndCapture()
@@ -81,23 +110,29 @@ namespace OpenRA.Mods.Common.Traits
 			if (building != null)
 				building.Unlock();
 
-			Captor = null;
+			captor = null;
+			CaptureProgressTime = 0;
+			if (conditionManager != null)
+				progress.Revoke(self, conditionManager);
 		}
 
 		public void Tick(Actor self)
 		{
-			if (Captor != null && (!Captor.IsInWorld || Captor.IsDead))
+			if (captor != null && (!captor.IsInWorld || captor.IsDead))
 				EndCapture();
 
-			if (!CaptureInProgress)
-				CaptureProgressTime = 0;
-			else
+			var duration = Info.CaptureCompleteTime * 25;
+			if (CaptureInProgress && CaptureProgressTime < duration)
+			{
 				CaptureProgressTime++;
+				if (conditionManager != null)
+					progress.Update(self, conditionManager, duration, duration - CaptureProgressTime);
+			}
 		}
 
 		public bool PreventsAutoTarget(Actor self, Actor attacker)
 		{
-			return Info.PreventsAutoTarget && Captor != null && attacker.AppearsFriendlyTo(Captor);
+			return Info.PreventsAutoTarget && captor != null && attacker.AppearsFriendlyTo(captor);
 		}
 	}
 }

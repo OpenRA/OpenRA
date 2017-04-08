@@ -327,7 +327,6 @@
     <Compile Include="Traits\Explodes.cs" />
     <Compile Include="Traits\ExplosionOnDamageTransition.cs" />
     <Compile Include="Traits\ExternalCapturable.cs" />
-    <Compile Include="Traits\ExternalCapturableBar.cs" />
     <Compile Include="Traits\ExternalCaptures.cs" />
     <Compile Include="Traits\GainsExperience.cs" />
     <Compile Include="Traits\GivesCashOnCapture.cs" />
@@ -418,7 +417,7 @@
     <Compile Include="Traits\Render\RenderVoxels.cs" />
     <Compile Include="Traits\Render\ProductionBar.cs" />
     <Compile Include="Traits\Render\SupportPowerChargeBar.cs" />
-    <Compile Include="Traits\Render\TimedConditionBar.cs" />
+    <Compile Include="Traits\Render\ConditionBar.cs" />
     <Compile Include="Traits\Render\WithSpriteBarrel.cs" />
     <Compile Include="Traits\Render\WithAttackAnimation.cs" />
     <Compile Include="Traits\Render\WithAttackOverlay.cs" />
