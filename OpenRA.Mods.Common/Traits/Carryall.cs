@@ -42,7 +42,7 @@ namespace OpenRA.Mods.Common.Traits
 		public virtual object Create(ActorInitializer init) { return new Carryall(init.Self, this); }
 	}
 
-	public class Carryall : INotifyKilled, ISync, IRender, INotifyActorDisposing, IIssueOrder, IResolveOrder, IOrderVoice
+	public class Carryall : INotifyKilled, ISync, ITick, IRender, INotifyActorDisposing, IIssueOrder, IResolveOrder, IOrderVoice
 	{
 		public enum CarryallState
 		{
@@ -68,7 +68,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public Carryall(Actor self, CarryallInfo info)
 		{
-			this.Info = info;
+			Info = info;
 
 			Carryable = null;
 			State = CarryallState.Idle;
@@ -77,6 +77,13 @@ namespace OpenRA.Mods.Common.Traits
 			body = self.Trait<BodyOrientation>();
 			move = self.Trait<IMove>();
 			facing = self.Trait<IFacing>();
+		}
+
+		void ITick.Tick(Actor self)
+		{
+			// Cargo may be killed in the same tick as, but after they are attached
+			if (Carryable != null && Carryable.IsDead)
+				DetachCarryable(self);
 		}
 
 		void INotifyActorDisposing.Disposing(Actor self)
@@ -156,7 +163,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		IEnumerable<IRenderable> IRender.Render(Actor self, WorldRenderer wr)
 		{
-			if (State == CarryallState.Carrying)
+			if (State == CarryallState.Carrying && !Carryable.IsDead)
 			{
 				if (carryablePreview == null)
 				{
