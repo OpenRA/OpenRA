@@ -95,6 +95,7 @@ GACTWR:
 		Weapon: VulcanTower
 		LocalOffset: 416,85,960
 		MuzzleSequence: muzzle
+		MuzzlePalette: effect-ignore-lighting
 		MuzzleSplitFacings: 8
 	Armament@VULCSECONDARY:
 		RequiresCondition: tower.vulcan
@@ -102,6 +103,7 @@ GACTWR:
 		Weapon: VulcanTower
 		LocalOffset: 416,-85,960
 		MuzzleSequence: muzzle
+		MuzzlePalette: effect-ignore-lighting
 		MuzzleSplitFacings: 8
 	Armament@ROCKET:
 		RequiresCondition: tower.rocket

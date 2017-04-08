@@ -11,7 +11,7 @@
 		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
 	Warhead@2Eff: CreateEffect
 		Explosions: large_twlt
-		ExplosionPalette: effectalpha75
+		ExplosionPalette: effect-ignore-lighting-alpha75
 		ImpactSounds: expnew09.aud
 	Warhead@4Smu: LeaveSmudge
 		SmudgeType: MediumCrater
@@ -34,7 +34,7 @@ UnitExplodeSmall:
 BuildingExplosions:
 	Warhead@1Eff: CreateEffect
 		Explosions: building, large_bang, large_brnl, verylarge_clsn, large_tumu
-		ExplosionPalette: effectalpha75
+		ExplosionPalette: effect-ignore-lighting-alpha75
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: MediumCrater
 
@@ -61,5 +61,5 @@ Demolish:
 		DamageTypes: DefaultDeath
 	Warhead@2Eff: CreateEffect
 		Explosions: large_twlt
-		ExplosionPalette: effectalpha75
+		ExplosionPalette: effect-ignore-lighting-alpha75
 		ImpactSounds: expnew09.aud
