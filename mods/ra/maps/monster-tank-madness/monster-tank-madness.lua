@@ -132,6 +132,7 @@ SuperTankDomeInfiltrated = function()
 	Utils.Do(SuperTanks, function(tnk)
 		tnk.Owner = friendlyMadTanks
 		if not tnk.IsDead then
+			tnk.GrantCondition("friendly")
 			Trigger.ClearAll(tnk)
 			tnk.Stop()
 			if tnk.Location.Y > 61 then
