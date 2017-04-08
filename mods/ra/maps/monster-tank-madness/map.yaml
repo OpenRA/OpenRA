@@ -1654,28 +1654,28 @@ Actors:
 	Actor530: v09
 		Location: 46,49
 		Owner: Neutral
-	Actor531: v01
+	Actor531: v01.exploding
 		Location: 76,52
 		Owner: Ukraine
-	Actor532: v02
+	Actor532: v02.exploding
 		Location: 76,58
 		Owner: Ukraine
-	Actor533: v03
+	Actor533: v03.exploding
 		Location: 89,53
 		Owner: Ukraine
-	Actor534: v04
+	Actor534: v04.exploding
 		Location: 91,59
 		Owner: Ukraine
-	Actor536: v06
+	Actor536: v06.exploding
 		Location: 82,54
 		Owner: Ukraine
-	Actor537: v07
+	Actor537: v07.exploding
 		Location: 78,60
 		Owner: Ukraine
-	Actor538: v08
+	Actor538: v08.exploding
 		Location: 96,53
 		Owner: Ukraine
-	Actor539: v09
+	Actor539: v09.exploding
 		Location: 97,52
 		Owner: Ukraine
 	Actor540: v19
@@ -1806,9 +1806,6 @@ Actors:
 		Owner: Ukraine
 	Actor583: barl
 		Location: 88,54
-		Owner: Ukraine
-	Actor584: brl3
-		Location: 89,53
 		Owner: Ukraine
 	Actor588: v2rl
 		Location: 91,75
@@ -1966,7 +1963,7 @@ Actors:
 		Owner: BadGuy
 		Facing: 224
 		SubCell: 2
-	Actor507: v11
+	Actor507: v11.exploding
 		Location: 97,56
 		Owner: Ukraine
 	Actor513: brl3
@@ -1981,7 +1978,7 @@ Actors:
 	UkraineBarrel: brl3
 		Location: 81,52
 		Owner: Ukraine
-	UkraineBuilding: v05
+	UkraineBuilding: v05.exploding
 		Location: 82,51
 		Owner: Ukraine
 	SuperTankDome: dome.NoInfiltrate
@@ -2023,12 +2020,15 @@ Actors:
 	stnk1: 5tnk
 		Location: 89,59
 		Owner: Turkey
+		TurretFacing: 192
 	stnk2: 5tnk
 		Location: 77,57
 		Owner: Turkey
+		TurretFacing: 92
 	stnk3: 5tnk
 		Location: 94,53
 		Owner: Turkey
+		TurretFacing: 192
 	DemitriLZ: waypoint
 		Location: 30,21
 		Owner: Neutral

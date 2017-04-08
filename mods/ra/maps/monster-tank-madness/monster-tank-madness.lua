@@ -15,7 +15,7 @@ SuperTankHuntWaypoints = { SuperTankHuntWaypoint1, SuperTankHuntWaypoint2, Super
 SuperTankHunt = 1
 SuperTankHuntCounter = 1
 ExtractionHeli = "tran"
-ExtractionWaypoint = CPos.New(DemitriLZ.Location.X, 0)
+ExtractionWaypoint = CPos.New(DemitriLZ.Location.X, 19)
 ExtractionLZ = DemitriLZ.Location
 BeachTrigger = { CPos.New(19, 44), CPos.New(20, 44), CPos.New(21, 44), CPos.New(22, 44), CPos.New(22, 45), CPos.New(23, 45), CPos.New(22, 44), CPos.New(24, 45), CPos.New(24, 46), CPos.New(24, 47), CPos.New(25, 47), CPos.New(25, 48) }
 DemitriAreaTrigger = { CPos.New(32, 98), CPos.New(32, 99), CPos.New(33, 99), CPos.New(33, 100), CPos.New(33, 101), CPos.New(33, 102), CPos.New(32, 102), CPos.New(32, 103) }
@@ -132,6 +132,7 @@ SuperTankDomeInfiltrated = function()
 	Utils.Do(SuperTanks, function(tnk)
 		tnk.Owner = friendlyMadTanks
 		if not tnk.IsDead then
+			tnk.GrantCondition("friendly")
 			Trigger.ClearAll(tnk)
 			tnk.Stop()
 			if tnk.Location.Y > 61 then
@@ -278,7 +279,6 @@ InitPlayers = function()
 	turkey = Player.GetPlayer("Turkey")
 	friendlyMadTanks = Player.GetPlayer("FriendlyMadTanks")
 
-	player.Cash = 0
 	ussr.Cash = 2000
 	Trigger.AfterDelay(0, function() badguy.Resources = badguy.ResourceCapacity * 0.75 end)
 	Trigger.OnCapture(USSROutpostSilo, function() -- getting money through capturing doesn't work
