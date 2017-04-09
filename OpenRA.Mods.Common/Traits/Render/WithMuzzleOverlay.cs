@@ -39,16 +39,12 @@ namespace OpenRA.Mods.Common.Traits.Render
 			var render = self.Trait<RenderSprites>();
 			var facing = self.TraitOrDefault<IFacing>();
 
-			armaments = self.TraitsImplementing<Armament>().ToArray();
+			armaments = self.TraitsImplementing<Armament>()
+				.Where(arm => arm.Info.MuzzleSequence != null)
+				.ToArray();
 
 			foreach (var arm in armaments)
 			{
-				var armClosure = arm;	// closure hazard in AnimationWithOffset
-
-				// Skip armaments that don't define muzzles
-				if (arm.Info.MuzzleSequence == null)
-					continue;
-
 				foreach (var b in arm.Barrels)
 				{
 					var barrel = b;
@@ -68,7 +64,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 					visible.Add(barrel, false);
 					anims.Add(barrel,
 						new AnimationWithOffset(muzzleFlash,
-							() => info.IgnoreOffset ? WVec.Zero : armClosure.MuzzleOffset(self, barrel),
+							() => info.IgnoreOffset ? WVec.Zero : arm.MuzzleOffset(self, barrel),
 							() => IsTraitDisabled || !visible[barrel],
 							p => RenderUtils.ZOffsetFromCenter(self, p, 2)));
 				}
@@ -77,18 +73,12 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		void INotifyAttack.Attacking(Actor self, Target target, Armament a, Barrel barrel)
 		{
-			if (a == null)
+			if (a == null || barrel == null || !armaments.Contains(a))
 				return;
 
 			var sequence = a.Info.MuzzleSequence;
-			if (sequence == null)
-				return;
-
 			if (a.Info.MuzzleSplitFacings > 0)
 				sequence += Util.QuantizeFacing(getFacing(), a.Info.MuzzleSplitFacings).ToString();
-
-			if (barrel == null)
-				return;
 
 			visible[barrel] = true;
 			anims[barrel].Animation.PlayThen(sequence, () => visible[barrel] = false);
@@ -101,15 +91,13 @@ namespace OpenRA.Mods.Common.Traits.Render
 			foreach (var arm in armaments)
 			{
 				var palette = wr.Palette(arm.Info.MuzzlePalette);
-				foreach (var kv in anims)
+				foreach (var b in arm.Barrels)
 				{
-					if (!visible[kv.Key])
+					var anim = anims[b];
+					if (anim.DisableFunc != null && anim.DisableFunc())
 						continue;
 
-					if (kv.Value.DisableFunc != null && kv.Value.DisableFunc())
-						continue;
-
-					foreach (var r in kv.Value.Render(self, wr, palette, 1f))
+					foreach (var r in anim.Render(self, wr, palette, 1f))
 						yield return r;
 				}
 			}
