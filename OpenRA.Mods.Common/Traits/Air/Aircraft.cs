@@ -453,7 +453,7 @@ namespace OpenRA.Mods.Common.Traits
 			return new HeliFly(self, Target.FromCell(self.World, cell));
 		}
 
-		public Activity MoveTo(CPos cell, Actor ignoredActor)
+		public Activity MoveTo(CPos cell, Actor ignoreActor)
 		{
 			if (IsPlane)
 				return new FlyAndContinueWithCirclesWhenIdle(self, Target.FromCell(self.World, cell));

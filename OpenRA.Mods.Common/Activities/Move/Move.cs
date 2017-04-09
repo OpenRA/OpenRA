@@ -28,7 +28,7 @@ namespace OpenRA.Mods.Common.Activities
 		readonly Mobile mobile;
 		readonly WDist nearEnough;
 		readonly Func<List<CPos>> getPath;
-		readonly Actor ignoredActor;
+		readonly Actor ignoreActor;
 
 		List<CPos> path;
 		CPos? destination;
@@ -57,14 +57,15 @@ namespace OpenRA.Mods.Common.Activities
 			nearEnough = WDist.Zero;
 		}
 
-		public Move(Actor self, CPos destination, WDist nearEnough)
+		public Move(Actor self, CPos destination, WDist nearEnough, Actor ignoreActor = null)
 		{
 			mobile = self.Trait<Mobile>();
 
 			getPath = () => self.World.WorldActor.Trait<IPathFinder>()
-				.FindUnitPath(mobile.ToCell, destination, self);
+				.FindUnitPath(mobile.ToCell, destination, self, ignoreActor);
 			this.destination = destination;
 			this.nearEnough = nearEnough;
+			this.ignoreActor = ignoreActor;
 		}
 
 		public Move(Actor self, CPos destination, SubCell subCell, WDist nearEnough)
@@ -75,25 +76,6 @@ namespace OpenRA.Mods.Common.Activities
 				.FindUnitPathToRange(mobile.FromCell, subCell, self.World.Map.CenterOfSubCell(destination, subCell), nearEnough, self);
 			this.destination = destination;
 			this.nearEnough = nearEnough;
-		}
-
-		public Move(Actor self, CPos destination, Actor ignoredActor)
-		{
-			mobile = self.Trait<Mobile>();
-
-			getPath = () =>
-			{
-				List<CPos> path;
-				using (var search =
-					PathSearch.FromPoint(self.World, mobile.Info, self, mobile.ToCell, destination, false)
-					.WithIgnoredActor(ignoredActor))
-					path = self.World.WorldActor.Trait<IPathFinder>().FindPath(search);
-				return path;
-			};
-
-			this.destination = destination;
-			nearEnough = WDist.Zero;
-			this.ignoredActor = ignoredActor;
 		}
 
 		public Move(Actor self, Target target, WDist range)
@@ -227,7 +209,7 @@ namespace OpenRA.Mods.Common.Activities
 			var containsTemporaryBlocker = WorldUtils.ContainsTemporaryBlocker(self.World, nextCell, self);
 
 			// Next cell in the move is blocked by another actor
-			if (containsTemporaryBlocker || !mobile.CanEnterCell(nextCell, ignoredActor, true))
+			if (containsTemporaryBlocker || !mobile.CanEnterCell(nextCell, ignoreActor, true))
 			{
 				// Are we close enough?
 				var cellRange = nearEnough.Length / 1024;
@@ -275,7 +257,7 @@ namespace OpenRA.Mods.Common.Activities
 			hasWaited = false;
 			path.RemoveAt(path.Count - 1);
 
-			var subCell = mobile.GetAvailableSubCell(nextCell, SubCell.Any, ignoredActor);
+			var subCell = mobile.GetAvailableSubCell(nextCell, SubCell.Any, ignoreActor);
 			return Pair.New(nextCell, subCell);
 		}
 
