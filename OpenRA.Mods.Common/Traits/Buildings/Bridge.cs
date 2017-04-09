@@ -57,7 +57,7 @@ namespace OpenRA.Mods.Common.Traits
 					yield return Pair.New(Template, 100);
 
 				if (DamagedTemplate != 0)
-					yield return Pair.New(DamagedTemplate, 50);
+					yield return Pair.New(DamagedTemplate, 49);
 
 				if (DestroyedTemplate != 0)
 					yield return Pair.New(DestroyedTemplate, 0);
