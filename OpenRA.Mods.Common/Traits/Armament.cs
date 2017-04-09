@@ -109,8 +109,8 @@ namespace OpenRA.Mods.Common.Traits
 		List<Pair<int, Action>> delayedActions = new List<Pair<int, Action>>();
 
 		public WDist Recoil;
-		public int FireDelay { get; protected set; }
-		public int Burst { get; protected set; }
+		public int SalvoDelay { get; protected set; }
+		public int SalvoCount { get; protected set; }
 
 		public Armament(Actor self, ArmamentInfo info)
 			: base(info)
@@ -118,7 +118,7 @@ namespace OpenRA.Mods.Common.Traits
 			this.self = self;
 
 			Weapon = info.WeaponInfo;
-			Burst = Weapon.Burst;
+			SalvoCount = Weapon.SalvoCount;
 
 			var barrels = new List<Barrel>();
 			for (var i = 0; i < info.LocalOffset.Length; i++)
@@ -156,8 +156,8 @@ namespace OpenRA.Mods.Common.Traits
 			if (IsTraitDisabled)
 				return;
 
-			if (FireDelay > 0)
-				--FireDelay;
+			if (SalvoDelay > 0)
+				--SalvoDelay;
 
 			Recoil = new WDist(Math.Max(0, Recoil.Length - Info.RecoilRecovery.Length));
 
@@ -208,7 +208,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!Weapon.IsValidAgainst(target, self.World, self))
 				return null;
 
-			var barrel = Barrels[Burst % Barrels.Length];
+			var barrel = Barrels[SalvoCount % Barrels.Length];
 			Func<WPos> muzzlePosition = () => self.CenterPosition + MuzzleOffset(self, barrel);
 			var legacyFacing = MuzzleOrientation(self, barrel).Yaw.Angle / 4;
 
@@ -254,14 +254,14 @@ namespace OpenRA.Mods.Common.Traits
 				}
 			});
 
-			if (--Burst > 0)
-				FireDelay = Weapon.BurstDelay;
+			if (--SalvoCount > 0)
+				SalvoDelay = Weapon.SalvoDelay;
 			else
 			{
 				var modifiers = self.TraitsImplementing<IReloadModifier>()
 					.Select(m => m.GetReloadModifier());
-				FireDelay = Util.ApplyPercentageModifiers(Weapon.ReloadDelay, modifiers);
-				Burst = Weapon.Burst;
+				SalvoDelay = Util.ApplyPercentageModifiers(Weapon.ReloadDelay, modifiers);
+				SalvoCount = Weapon.SalvoCount;
 
 				foreach (var nbc in self.TraitsImplementing<INotifyBurstComplete>())
 					nbc.FiredBurst(self, target, this);
@@ -271,7 +271,7 @@ namespace OpenRA.Mods.Common.Traits
 		}
 
 		public virtual bool OutOfAmmo { get { return ammoPool != null && !ammoPool.Info.SelfReloads && !ammoPool.HasAmmo(); } }
-		public virtual bool IsReloading { get { return FireDelay > 0 || IsTraitDisabled; } }
+		public virtual bool IsReloading { get { return SalvoDelay > 0 || IsTraitDisabled; } }
 		public virtual bool AllowExplode { get { return !IsReloading; } }
 		bool IExplodeModifier.ShouldExplode(Actor self) { return AllowExplode; }
 

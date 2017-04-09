@@ -53,8 +53,8 @@
 120mmx:
 	Inherits: ^Cannon
 	ReloadDelay: 80
-	Burst: 2
-	BurstDelay: 5
+	SalvoCount: 2
+	SalvoDelay: 5
 	Warhead@1Dam: SpreadDamage
 		Damage: 50
 

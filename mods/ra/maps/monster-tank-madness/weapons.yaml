@@ -10,7 +10,7 @@ SuperTankPrimary:
 	ROF: 70
 	Range: 4c768
 	Report: turret1.aud
-	Burst: 2
+	SalvoCount: 2
 	InvalidTargets: Air, Infantry
 	Projectile: Bullet
 		Speed: 682

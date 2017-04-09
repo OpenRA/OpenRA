@@ -46,8 +46,8 @@ Maverick:
 	Range: 9c0
 	MinRange: 3c0
 	Report: missile7.aud
-	Burst: 2
-	BurstDelay: 7
+	SalvoCount: 2
+	SalvoDelay: 7
 	Projectile: Missile
 		Speed: 256
 		Inaccuracy: 512
@@ -70,8 +70,8 @@ HellfireAG:
 	Inherits: ^AntiGroundMissile
 	ReloadDelay: 60
 	MinRange: 1c256
-	Burst: 4
-	BurstDelay: 14
+	SalvoCount: 4
+	SalvoDelay: 14
 	Projectile: Missile
 		Speed: 256
 		HorizontalRateOfTurn: 10
@@ -88,8 +88,8 @@ HellfireAA:
 	Inherits: ^AntiAirMissile
 	ReloadDelay: 60
 	MinRange: 1c256
-	Burst: 2
-	BurstDelay: 10
+	SalvoCount: 2
+	SalvoDelay: 10
 	Projectile: Missile
 		Speed: 384
 		Inaccuracy: 128
@@ -107,7 +107,7 @@ MammothTusk:
 	Inherits: ^AntiGroundMissile
 	ReloadDelay: 60
 	Range: 8c0
-	Burst: 2
+	SalvoCount: 2
 	ValidTargets: Air, Infantry
 	Projectile: Missile
 		Speed: 341
@@ -173,8 +173,8 @@ Stinger:
 	Inherits: ^AntiGroundMissile
 	ReloadDelay: 60
 	Range: 7c512
-	Burst: 2
-	BurstDelay: 0
+	SalvoCount: 2
+	SalvoDelay: 0
 	Projectile: Missile
 		Arm: 3
 		Inaccuracy: 0
@@ -223,8 +223,8 @@ TorpTube:
 	Range: 9c0
 	Report: torpedo1.aud
 	ValidTargets: Water, Underwater, Bridge
-	Burst: 2
-	BurstDelay: 20
+	SalvoCount: 2
+	SalvoDelay: 20
 	Projectile: Missile
 		Image: torpedo
 		Arm: 3
@@ -262,7 +262,7 @@ TorpTube:
 	Inherits: ^AntiGroundMissile
 	ReloadDelay: 300
 	Range: 8c0
-	Burst: 2
+	SalvoCount: 2
 	Projectile: Missile
 		Speed: 234
 		Inaccuracy: 0c614

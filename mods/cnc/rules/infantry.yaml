@@ -39,7 +39,7 @@ E2:
 	Armament:
 		Weapon: Grenade
 		LocalOffset: 0,0,427
-		FireDelay: 15
+		SalvoDelay: 15
 	TakeCover:
 		ProneOffset: 300,0,-227
 	AttackFrontal:
@@ -70,7 +70,7 @@ E3:
 	Armament:
 		Weapon: Rockets
 		LocalOffset: 256,43,341
-		FireDelay: 5
+		SalvoDelay: 5
 	TakeCover:
 		ProneOffset: 180,0,-200
 	AttackFrontal:
@@ -96,7 +96,7 @@ E4:
 	Armament:
 		Weapon: Flamethrower
 		LocalOffset: 341,0,256
-		FireDelay: 3
+		SalvoDelay: 3
 		MuzzleSequence: muzzle
 	TakeCover:
 		ProneOffset: 190,0,-198
@@ -129,7 +129,7 @@ E5:
 	Armament:
 		Weapon: Chemspray
 		LocalOffset: 341,0,256
-		FireDelay: 3
+		SalvoDelay: 3
 		MuzzleSequence: muzzle
 	TakeCover:
 		ProneOffset: 190,0,-190

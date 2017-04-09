@@ -46,7 +46,7 @@ namespace OpenRA.GameRules
 		public readonly int ReloadDelay = 1;
 
 		[Desc("Number of shots in a single ammo magazine.")]
-		public readonly int Burst = 1;
+		public readonly int SalvoCount = 1;
 
 		[Desc("What types of targets are affected.")]
 		public readonly HashSet<string> ValidTargets = new HashSet<string> { "Ground", "Water" };
@@ -55,7 +55,7 @@ namespace OpenRA.GameRules
 		public readonly HashSet<string> InvalidTargets = new HashSet<string>();
 
 		[Desc("Delay in ticks between firing shots from the same ammo magazine.")]
-		public readonly int BurstDelay = 5;
+		public readonly int SalvoDelay = 5;
 
 		[Desc("The minimum range the weapon can fire.")]
 		public readonly WDist MinRange = WDist.Zero;

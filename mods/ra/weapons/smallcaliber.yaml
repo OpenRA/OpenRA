@@ -22,8 +22,8 @@
 
 ZSU-23:
 	Inherits: ^AACannon
-	Burst: 2
-	BurstDelay: 5
+	SalvoCount: 2
+	SalvoDelay: 5
 	ReloadDelay: 0
 	Range: 10c0
 	Projectile: Bullet
@@ -236,7 +236,7 @@ M60mg:
 	ReloadDelay: 30
 	Range: 4c0
 	Report: pillbox1.aud
-	Burst: 5
+	SalvoCount: 5
 
 ^SnipeWeapon:
 	ReloadDelay: 80

@@ -102,11 +102,11 @@ E2:
 	Armament@PRIMARY:
 		Weapon: Grenade
 		LocalOffset: 0,0,555
-		FireDelay: 15
+		SalvoDelay: 15
 	Armament@GARRISONED:
 		Name: garrisoned
 		Weapon: Grenade
-		FireDelay: 15
+		SalvoDelay: 15
 	TakeCover:
 		ProneOffset: 256,64,-331
 	AttackFrontal:
@@ -180,7 +180,7 @@ E4:
 	Armament@PRIMARY:
 		Weapon: Flamer
 		LocalOffset: 700,0,500
-		FireDelay: 8
+		SalvoDelay: 8
 	Armament@GARRISONED:
 		Name: garrisoned
 		Weapon: Flamer

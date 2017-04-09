@@ -42,8 +42,8 @@
 
 120mmDual:
 	Inherits: ^BallisticWeapon
-	Burst: 2
-	BurstDelay: 8
+	SalvoCount: 2
+	SalvoDelay: 8
 
 TurretGun:
 	Inherits: ^BallisticWeapon

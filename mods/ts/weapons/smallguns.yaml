@@ -41,7 +41,7 @@ Vulcan:
 Vulcan2:
 	Inherits: ^MG
 	ReloadDelay: 50
-	Burst: 3
+	SalvoCount: 3
 	Range: 6c0
 	Report: tsgun4.aud
 	Warhead@1Dam: SpreadDamage
@@ -50,7 +50,7 @@ Vulcan2:
 Vulcan3:
 	Inherits: ^MG
 	ReloadDelay: 30
-	Burst: 3
+	SalvoCount: 3
 	Report: cygun1.aud
 	Warhead@1Dam: SpreadDamage
 		Damage: 10
@@ -66,7 +66,7 @@ VulcanTower:
 JumpCannon:
 	Inherits: ^MG
 	ReloadDelay: 40
-	Burst: 2
+	SalvoCount: 2
 	Range: 5c0
 	Report: jumpjet1.aud
 	Warhead@1Dam: SpreadDamage
@@ -84,8 +84,8 @@ RaiderCannon:
 	Inherits: ^MG
 	ReloadDelay: 55
 	Range: 4c0
-	Burst: 2 # this + BurstDelay just makes the buggy alternate between barrels (for muzzle flash), no actual difference to original TS
-	BurstDelay: 55
+	SalvoCount: 2 # this + SalvoDelay just makes the buggy alternate between barrels (for muzzle flash), no actual difference to original TS
+	SalvoDelay: 55
 	Report: chaingn1.aud
 	Warhead@1Dam: SpreadDamage
 		Damage: 40

@@ -6,8 +6,8 @@ FireballLauncher:
 		Speed: 64
 		Image: FLAMEALL
 		Inaccuracy: 384
-	Burst: 5
-	BurstDelay: 5
+	SalvoCount: 5
+	SalvoDelay: 5
 	Warhead@1Dam: SpreadDamage
 		Spread: 288
 		Falloff: 100, 50, 25, 12, 6, 3, 0
@@ -25,8 +25,8 @@ FireballLauncher:
 
 Bomb:
 	ReloadDelay: 60
-	Burst: 5
-	BurstDelay: 5
+	SalvoCount: 5
+	SalvoDelay: 5
 	Range: 2c0
 	Projectile: GravityBomb
 		Speed: 170
@@ -62,7 +62,7 @@ Bomb:
 
 FiendShard:
 	ReloadDelay: 30
-	Burst: 3
+	SalvoCount: 3
 	Range: 5c0
 	Report: fiend2.aud
 	Projectile: Bullet

@@ -1,7 +1,7 @@
 8Inch:
 	ReloadDelay: 200
 	Range: 32c0
-	Burst: 4
+	SalvoCount: 4
 	Report: turret1.aud
 	Projectile: Bullet
 		Speed: 546
@@ -33,7 +33,7 @@
 SubMissile:
 	ReloadDelay: 250
 	Range: 32c0
-	Burst: 4
+	SalvoCount: 4
 	Report: missile6.aud
 	Projectile: Bullet
 		Speed: 409

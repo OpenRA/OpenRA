@@ -38,8 +38,8 @@ Dragon:
 	Range: 12c0
 	Report: rocket2.aud
 	ValidTargets: Air
-	Burst: 2
-	BurstDelay: 5
+	SalvoCount: 2
+	SalvoDelay: 5
 	Projectile: Missile
 		Speed: 426
 		HorizontalRateOfTurn: 20
@@ -59,8 +59,8 @@ Rockets:
 
 BikeRockets:
 	Inherits: ^MissileWeapon
-	Burst: 2
-	BurstDelay: 10
+	SalvoCount: 2
+	SalvoDelay: 10
 	Projectile: Missile
 		HorizontalRateOfTurn: 10
 		Speed: 213
@@ -73,8 +73,8 @@ BikeRockets:
 OrcaAGMissiles:
 	Inherits: ^MissileWeapon
 	ReloadDelay: 12
-	Burst: 2
-	BurstDelay: 12
+	SalvoCount: 2
+	SalvoDelay: 12
 	Range: 5c0
 	MinRange: 1c256
 	ValidTargets: Ground
@@ -110,8 +110,8 @@ MammothMissiles:
 	ReloadDelay: 45
 	Range: 5c0
 	Report: rocket1.aud
-	Burst: 2
-	BurstDelay: 15
+	SalvoCount: 2
+	SalvoDelay: 15
 	Projectile: Missile
 		HorizontalRateOfTurn: 20
 		Speed: 341
@@ -138,8 +138,8 @@ MammothMissiles:
 	ReloadDelay: 100
 	Range: 11c0
 	MinRange: 3c0
-	Burst: 4
-	BurstDelay: 4
+	SalvoCount: 4
+	SalvoDelay: 4
 	Report: rocket1.aud
 	ValidTargets: Ground
 	Projectile: Bullet
@@ -165,8 +165,8 @@ MammothMissiles:
 	ReloadDelay: 70
 	Range: 7c0
 	Report: rocket1.aud
-	Burst: 2
-	BurstDelay: 10
+	SalvoCount: 2
+	SalvoDelay: 10
 	Projectile: Missile
 		Inaccuracy: 213
 		HorizontalRateOfTurn: 10
@@ -184,8 +184,8 @@ BoatMissile:
 	Inherits: ^MissileWeapon
 	ReloadDelay: 35
 	Range: 8c0
-	Burst: 2
-	BurstDelay: 10
+	SalvoCount: 2
+	SalvoDelay: 10
 	Report: rocket2.aud
 	Projectile: Missile
 		Inaccuracy: 426
