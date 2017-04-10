@@ -27,18 +27,11 @@ namespace OpenRA.Mods.Common.Server
 			var defaults = new Session.Global();
 			LobbyCommands.LoadMapSettings(server, defaults, server.Map.Rules);
 
-			var options = server.Map.Rules.Actors["player"].TraitInfos<ILobbyOptions>()
-				.Concat(server.Map.Rules.Actors["world"].TraitInfos<ILobbyOptions>())
-				.SelectMany(t => t.LobbyOptions(server.Map.Rules))
-				.ToDictionary(o => o.Id, o => o);
-
 			foreach (var kv in server.LobbyInfo.GlobalSettings.LobbyOptions)
 			{
 				Session.LobbyOptionState def;
-				LobbyOption option;
-				if (!defaults.LobbyOptions.TryGetValue(kv.Key, out def) || kv.Value.Value != def.Value)
-					if (options.TryGetValue(kv.Key, out option))
-						server.SendOrderTo(conn, "Message", option.Name + ": " + kv.Value.Value);
+				if (defaults.LobbyOptions.TryGetValue(kv.Key, out def) && kv.Value.Value != def.Value)
+					server.SendOrderTo(conn, "Message", kv.Key + ": " + def.Value);
 			}
 		}
 	}
