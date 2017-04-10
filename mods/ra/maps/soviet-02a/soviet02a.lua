@@ -1,3 +1,11 @@
+--[[
+   Copyright 2007-2017 The OpenRA Developers (see AUTHORS)
+   This file is part of OpenRA, which is free software. It is made
+   available to you under the terms of the GNU General Public License
+   as published by the Free Software Foundation, either version 3 of
+   the License, or (at your option) any later version. For more
+   information, see COPYING.
+]]
 CameraTriggerArea = { CPos.New(42, 45), CPos.New(43, 45), CPos.New(44, 45), CPos.New(45, 45), CPos.New(46, 45), CPos.New(47, 45), CPos.New(48, 45), CPos.New(48, 56), CPos.New(48, 57), CPos.New(48, 58), CPos.New(48, 59), CPos.New(40, 63), CPos.New(41, 63), CPos.New(42, 63), CPos.New(43, 63), CPos.New(44, 63), CPos.New(45, 63), CPos.New(46, 63), CPos.New(47, 63) }
 PassingBridgeLocation = { CPos.New(59, 56), CPos.New(60, 56) }
 
