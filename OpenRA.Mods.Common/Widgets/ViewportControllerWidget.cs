@@ -141,7 +141,7 @@ namespace OpenRA.Mods.Common.Widgets
 				var scroll = (joystickScrollEnd.Value - joystickScrollStart.Value).ToFloat2() * rate;
 				worldRenderer.Viewport.Scroll(scroll, false);
 			}
-			else
+			else if (!isStandardScrolling)
 			{
 				edgeDirections = ScrollDirection.None;
 				if (Game.Settings.Game.ViewportEdgeScroll && Game.HasInputFocus)
