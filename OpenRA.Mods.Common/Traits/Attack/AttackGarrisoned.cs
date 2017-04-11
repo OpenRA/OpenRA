@@ -157,7 +157,7 @@ namespace OpenRA.Mods.Common.Traits
 
 				var barrel = a.CheckFire(a.Actor, facing.Value, target);
 				if (barrel == null)
-					return;
+					continue;
 
 				if (a.Info.MuzzleSequence != null)
 				{
