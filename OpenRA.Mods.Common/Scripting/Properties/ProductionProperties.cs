@@ -140,8 +140,14 @@ namespace OpenRA.Mods.Common.Scripting
 				triggers.OnProducedInternal += productionHandler;
 			}
 
+			var techTree = Self.Owner.PlayerActor.Trait<TechTree>();
 			foreach (var actorType in actorTypes)
-				queue.ResolveOrder(Self, Order.StartProduction(Self, actorType, 1));
+			{
+				if (techTree.HasPrerequisites(GetBuildableInfo(actorType).Prerequisites))
+					queue.ResolveOrder(Self, Order.StartProduction(Self, actorType, 1));
+				else
+					Log.Write("lua", "Player {0} is missing the prerequisites to build {1}!".F(Self.Owner.PlayerName, actorType));
+			}
 
 			return true;
 		}
@@ -174,6 +180,7 @@ namespace OpenRA.Mods.Common.Scripting
 	{
 		readonly Dictionary<string, Action<Actor, Actor>> productionHandlers;
 		readonly Dictionary<string, ClassicProductionQueue> queues;
+		readonly TechTree techTree;
 
 		public ClassicProductionQueueProperties(ScriptContext context, Player player)
 			: base(context, player)
@@ -197,6 +204,8 @@ namespace OpenRA.Mods.Common.Scripting
 
 			var triggers = TriggerGlobal.GetScriptTriggers(player.PlayerActor);
 			triggers.OnOtherProducedInternal += globalProductionHandler;
+
+			techTree = player.PlayerActor.Trait<TechTree>();
 		}
 
 		[Desc("Build the specified set of actors using classic (RA-style) production queues. " +
@@ -246,7 +255,10 @@ namespace OpenRA.Mods.Common.Scripting
 			foreach (var actorType in actorTypes)
 			{
 				var queue = queues[typeToQueueMap[actorType]];
-				queue.ResolveOrder(queue.Actor, Order.StartProduction(queue.Actor, actorType, 1));
+				if (techTree.HasPrerequisites(GetBuildableInfo(actorType).Prerequisites))
+					queue.ResolveOrder(queue.Actor, Order.StartProduction(queue.Actor, actorType, 1));
+				else
+					Log.Write("lua", "Player {0} is missing the prerequisites to build {1}!".F(Player.PlayerName, actorType));
 			}
 
 			return true;
