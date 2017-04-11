@@ -398,13 +398,29 @@ namespace OpenRA
 
 				return InvalidValueAction(value, fieldType, fieldName);
 			}
-			else if (fieldType == typeof(VariableExpression))
+			else if (fieldType == typeof(BooleanExpression))
 			{
 				if (value != null)
 				{
 					try
 					{
-						return new VariableExpression(value);
+						return new BooleanExpression(value);
+					}
+					catch (InvalidDataException e)
+					{
+						throw new YamlException(e.Message);
+					}
+				}
+
+				return InvalidValueAction(value, fieldType, fieldName);
+			}
+			else if (fieldType == typeof(IntegerExpression))
+			{
+				if (value != null)
+				{
+					try
+					{
+						return new IntegerExpression(value);
 					}
 					catch (InvalidDataException e)
 					{

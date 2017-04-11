@@ -29,28 +29,28 @@ namespace OpenRA.Test
 
 		void AssertFalse(string expression)
 		{
-			Assert.False(new VariableExpression(expression).Evaluate(testValues) > 0, expression);
+			Assert.False(new BooleanExpression(expression).Evaluate(testValues), expression);
 		}
 
 		void AssertTrue(string expression)
 		{
-			Assert.True(new VariableExpression(expression).Evaluate(testValues) > 0, expression);
+			Assert.True(new BooleanExpression(expression).Evaluate(testValues), expression);
 		}
 
 		void AssertValue(string expression, int value)
 		{
-			Assert.AreEqual(value, new VariableExpression(expression).Evaluate(testValues), expression);
+			Assert.AreEqual(value, new IntegerExpression(expression).Evaluate(testValues), expression);
 		}
 
 		void AssertParseFailure(string expression)
 		{
-			Assert.Throws(typeof(InvalidDataException), () => new VariableExpression(expression).Evaluate(testValues), expression);
+			Assert.Throws(typeof(InvalidDataException), () => new IntegerExpression(expression).Evaluate(testValues), expression);
 		}
 
 		void AssertParseFailure(string expression, string errorMessage)
 		{
 			var actualErrorMessage = Assert.Throws(typeof(InvalidDataException),
-			                                       () => new VariableExpression(expression).Evaluate(testValues),
+			                                       () => new IntegerExpression(expression).Evaluate(testValues),
 			                                       expression).Message;
 			Assert.AreEqual(errorMessage, actualErrorMessage, expression + "   ===>   " + actualErrorMessage);
 		}

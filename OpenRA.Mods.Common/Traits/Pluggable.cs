@@ -30,7 +30,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Requirements for accepting a plug type.",
 			"Key is the plug type that the requirements applies to.",
 			"Value is the condition expression defining the requirements to place the plug.")]
-		public readonly Dictionary<string, VariableExpression> Requirements = new Dictionary<string, VariableExpression>();
+		public readonly Dictionary<string, BooleanExpression> Requirements = new Dictionary<string, BooleanExpression>();
 
 		[GrantedConditionReference]
 		public IEnumerable<string> LinterConditions { get { return Conditions.Values; } }
@@ -119,7 +119,7 @@ namespace OpenRA.Mods.Common.Traits
 		void IConditionConsumer.ConditionsChanged(Actor self, IReadOnlyDictionary<string, int> conditions)
 		{
 			foreach (var req in Info.Requirements)
-				plugTypesAvailability[req.Key] = req.Value.Evaluate(conditions) != 0;
+				plugTypesAvailability[req.Key] = req.Value.Evaluate(conditions);
 		}
 	}
 
