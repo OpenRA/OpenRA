@@ -182,7 +182,7 @@ grenadier:
 	Armament:
 		Weapon: grenade
 		LocalOffset: 192,0,224
-		FireDelay: 3
+		SalvoDelay: 3
 	TakeCover:
 		ProneOffset: 96,100,-64
 	AttackFrontal:

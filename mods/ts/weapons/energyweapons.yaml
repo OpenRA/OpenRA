@@ -45,8 +45,8 @@ LtRail:
 MechRailgun:
 	Inherits: ^Railgun
 	Range: 8c0
-	Burst: 2 # for alternating muzzle offsets, dmg/s identical to original
-	BurstDelay: 60
+	SalvoCount: 2 # for alternating muzzle offsets, dmg/s identical to original
+	SalvoDelay: 60
 	Report: railuse5.aud
 	Projectile: AreaBeam
 		Color: 00FFFFC8
@@ -142,8 +142,8 @@ CyCannon:
 Proton:
 	Inherits: ^EnergyBlast
 	Range: 5c0
-	Burst: 5
-	BurstDelay: 3
+	SalvoCount: 5
+	SalvoDelay: 3
 	Projectile: Bullet
 		Speed: 341
 		Blockable: false

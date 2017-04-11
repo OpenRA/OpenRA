@@ -48,8 +48,8 @@ Vulcan:
 HeliAGGun:
 	Inherits: ^HeavyMG
 	ReloadDelay: 20
-	Burst: 2
-	BurstDelay: 0
+	SalvoCount: 2
+	SalvoDelay: 0
 	Range: 4c0
 	MinRange: 0c768
 	Report: gun5.aud
@@ -104,7 +104,7 @@ M16:
 
 MachineGun:
 	Inherits: ^LightMG
-	Burst: 5
+	SalvoCount: 5
 	Report: mgun11.aud
 	Warhead@1Dam: SpreadDamage
 		Versus:

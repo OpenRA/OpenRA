@@ -276,7 +276,7 @@ VISC_LRG:
 		Range: 4c0
 	Armament:
 		Weapon: SlimeAttack
-		FireDelay: 10
+		SalvoDelay: 10
 	AutoTarget:
 		ScanRadius: 5
 	AttackFrontal:

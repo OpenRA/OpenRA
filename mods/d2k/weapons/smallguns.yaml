@@ -78,8 +78,8 @@ HMGo:
 HMG_muzzle:
 	ReloadDelay: 16
 	Range: 3c0
-	Burst: 3
-	BurstDelay: 2
+	SalvoCount: 3
+	SalvoDelay: 2
 	Projectile: InstantHit
 	Warhead@TargetValidation: SpreadDamage
 

@@ -53,7 +53,7 @@ Bazooka:
 HoverMissile:
 	Inherits: ^DefaultMissile
 	ReloadDelay: 68
-	Burst: 2
+	SalvoCount: 2
 	Range: 8c0
 	Report: hovrmis1.aud
 	Projectile: Missile
@@ -66,7 +66,7 @@ MammothTusk:
 	ReloadDelay: 80
 	Report: misl1.aud
 	ValidTargets: Air
-	Burst: 2
+	SalvoCount: 2
 	Projectile: Missile
 		HorizontalRateOfTurn: 10
 		RangeLimit: 9c0
@@ -93,8 +93,8 @@ MammothTusk:
 
 BikeMissile:
 	Inherits: ^DefaultMissile
-	Burst: 2 # to make bike alternate between left and right launcher, no change in dmg/s compared to original TS
-	BurstDelay: 60
+	SalvoCount: 2 # to make bike alternate between left and right launcher, no change in dmg/s compared to original TS
+	SalvoDelay: 60
 	Range: 5c0
 	Report: misl1.aud
 	ValidTargets: Ground
@@ -107,7 +107,7 @@ BikeMissile:
 Dragon:
 	Inherits: ^DefaultMissile
 	ReloadDelay: 50
-	Burst: 2
+	SalvoCount: 2
 	Report: misl1.aud
 	Warhead@1Dam: SpreadDamage
 		Damage: 30
@@ -116,7 +116,7 @@ Hellfire:
 	Inherits: ^DefaultMissile
 	ReloadDelay: 50
 	Report: orcamis1.aud
-	Burst: 2
+	SalvoCount: 2
 	ValidTargets: Ground
 	Warhead@1Dam: SpreadDamage
 		Spread: 72

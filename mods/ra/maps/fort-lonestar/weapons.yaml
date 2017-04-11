@@ -1,7 +1,7 @@
 120mm:
 	ReloadDelay: 150
 	Range: 10c0
-	Burst: 6
+	SalvoCount: 6
 	Projectile: Bullet
 		Speed: 204
 		Blockable: false
@@ -47,8 +47,8 @@ TankNapalm:
 	Range: 8c0
 	Report: aacanon3.aud
 	ValidTargets: Ground
-	Burst: 6
-	BurstDelay: 1
+	SalvoCount: 6
+	SalvoDelay: 1
 	Projectile: Bullet
 		Speed: 426
 		Image: 120MM
@@ -95,7 +95,7 @@ ParaBomb:
 155mm:
 	ReloadDelay: 10
 	Range: 7c5
-	Burst: 20
+	SalvoCount: 20
 	-Report:
 	Projectile: Bullet
 		Speed: 170

@@ -33,8 +33,8 @@ BigFlamer:
 	Range: 3c512
 	Projectile: Bullet
 		Speed: 341
-	Burst: 2
-	BurstDelay: 25
+	SalvoCount: 2
+	SalvoDelay: 25
 	Warhead@1Dam: SpreadDamage
 		Spread: 400
 		Damage: 75
@@ -66,8 +66,8 @@ Napalm:
 	Inherits: ^FlameWeapon
 	ReloadDelay: 4
 	Range: 2c0
-	Burst: 2
-	BurstDelay: 2
+	SalvoCount: 2
+	SalvoDelay: 2
 	-Projectile:
 	Projectile: GravityBomb
 		Image: BOMBLET

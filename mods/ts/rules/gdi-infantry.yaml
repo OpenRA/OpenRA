@@ -17,7 +17,7 @@ E2:
 	Armament:
 		Weapon: Grenade
 		LocalOffset: 0,0,555
-		FireDelay: 5
+		SalvoDelay: 5
 	TakeCover:
 		ProneOffset: 160,128,-555
 	AttackFrontal:

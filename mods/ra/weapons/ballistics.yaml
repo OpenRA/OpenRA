@@ -55,13 +55,13 @@
 105mm:
 	Inherits: ^Cannon
 	ReloadDelay: 70
-	Burst: 2
-	BurstDelay: 4
+	SalvoCount: 2
+	SalvoDelay: 4
 
 120mm:
 	Inherits: ^Cannon
 	ReloadDelay: 90
-	Burst: 2
+	SalvoCount: 2
 	InvalidTargets: Air, Infantry
 	Warhead@1Dam: SpreadDamage
 		Damage: 60
@@ -114,7 +114,7 @@ TurretGun:
 	MinRange: 3c0
 	ReloadDelay: 250
 	Range: 16c0
-	Burst: 2
+	SalvoCount: 2
 	Report: turret1.aud
 	Projectile: Bullet
 		Inaccuracy: 2c938
