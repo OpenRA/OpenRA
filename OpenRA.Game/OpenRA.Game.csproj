@@ -260,7 +260,7 @@
     <Compile Include="Primitives\float3.cs" />
     <Compile Include="InstalledMods.cs" />
     <Compile Include="CryptoUtil.cs" />
-    <Compile Include="Support\ConditionExpression.cs" />
+    <Compile Include="Support\VariableExpression.cs" />
     <Compile Include="ExternalMods.cs" />
   </ItemGroup>
   <ItemGroup>

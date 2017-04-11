@@ -18,7 +18,7 @@ using Expressions = System.Linq.Expressions;
 
 namespace OpenRA.Support
 {
-	public class ConditionExpression
+	public class VariableExpression
 	{
 		public readonly string Expression;
 		readonly HashSet<string> variables = new HashSet<string>();
@@ -525,7 +525,7 @@ namespace OpenRA.Support
 			}
 		}
 
-		public ConditionExpression(string expression)
+		public VariableExpression(string expression)
 		{
 			Expression = expression;
 			var tokens = new List<Token>();

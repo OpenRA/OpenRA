@@ -29,9 +29,9 @@ namespace OpenRA.Mods.Common.Lint
 			if (typeof(IEnumerable<string>).IsAssignableFrom(type))
 				return fieldInfo.GetValue(ruleInfo) as IEnumerable<string>;
 
-			if (type == typeof(ConditionExpression))
+			if (type == typeof(VariableExpression))
 			{
-				var expr = (ConditionExpression)fieldInfo.GetValue(ruleInfo);
+				var expr = (VariableExpression)fieldInfo.GetValue(ruleInfo);
 				return expr != null ? expr.Variables : Enumerable.Empty<string>();
 			}
 
@@ -48,9 +48,9 @@ namespace OpenRA.Mods.Common.Lint
 			if (typeof(IEnumerable).IsAssignableFrom(type))
 				return (IEnumerable<string>)propertyInfo.GetValue(ruleInfo);
 
-			if (type == typeof(ConditionExpression))
+			if (type == typeof(VariableExpression))
 			{
-				var expr = (ConditionExpression)propertyInfo.GetValue(ruleInfo);
+				var expr = (VariableExpression)propertyInfo.GetValue(ruleInfo);
 				return expr != null ? expr.Variables : Enumerable.Empty<string>();
 			}
 

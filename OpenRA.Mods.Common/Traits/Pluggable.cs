@@ -30,7 +30,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Requirements for accepting a plug type.",
 			"Key is the plug type that the requirements applies to.",
 			"Value is the condition expression defining the requirements to place the plug.")]
-		public readonly Dictionary<string, ConditionExpression> Requirements = new Dictionary<string, ConditionExpression>();
+		public readonly Dictionary<string, VariableExpression> Requirements = new Dictionary<string, VariableExpression>();
 
 		[GrantedConditionReference]
 		public IEnumerable<string> LinterConditions { get { return Conditions.Values; } }
