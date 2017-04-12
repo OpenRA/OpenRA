@@ -2,7 +2,7 @@ NAPOWR:
 	Inherits: ^Building
 	Buildable:
 		Queue: Building
-		BuildPaletteOrder: 0
+		BuildPaletteOrder: 20
 		Prerequisites: ~structures.nod, ~techlevel.low
 		Description: Provides power for other structures.
 	Valued:
@@ -41,7 +41,7 @@ NAAPWR:
 	Inherits: ^Building
 	Buildable:
 		Queue: Building
-		BuildPaletteOrder: 5
+		BuildPaletteOrder: 120
 		Prerequisites: factory, ~structures.nod, ~techlevel.medium
 		Description: Provides twice as much power as\nthe normal Power Plant.
 	Valued:
@@ -80,7 +80,7 @@ NAHAND:
 	Inherits: ^Building
 	Buildable:
 		Queue: Building
-		BuildPaletteOrder: 30
+		BuildPaletteOrder: 40
 		Prerequisites: anypower, ~structures.nod, ~techlevel.low
 		Description: Produces infantry.
 	Valued:
@@ -141,7 +141,7 @@ NAWEAP:
 		Prerequisite: factory
 	Buildable:
 		Queue: Building
-		BuildPaletteOrder: 50
+		BuildPaletteOrder: 70
 		Prerequisites: proc, ~structures.nod, ~techlevel.low
 		Description: Produces vehicles.
 	Building:
@@ -197,7 +197,7 @@ NAHPAD:
 	Tooltip:
 		Name: Helipad
 	Buildable:
-		BuildPaletteOrder: 60
+		BuildPaletteOrder: 140
 		Queue: Building
 		Prerequisites: naradr, ~structures.nod, ~techlevel.medium
 		Description: Produces, rearms and\nrepairs helicopters.
@@ -298,7 +298,7 @@ NATECH:
 	Inherits: ^Building
 	Buildable:
 		Queue: Building
-		BuildPaletteOrder: 100
+		BuildPaletteOrder: 160
 		Prerequisites: naweap, naradr, ~structures.nod, ~techlevel.medium
 		Description: Provides access to advanced Nod technologies.
 	Valued:
@@ -331,7 +331,7 @@ NATMPL:
 	Inherits: ^Building
 	Buildable:
 		Queue: Building
-		BuildPaletteOrder: 200
+		BuildPaletteOrder: 180
 		Prerequisites: natech, ~structures.nod, ~techlevel.high
 		Description: Provides access to advanced Nod technologies.
 	ProvidesPrerequisite@buildingname:
@@ -368,94 +368,3 @@ NATMPL:
 		Produces: HunterSeeker
 	Exit@1:
 	ExitsDebugOverlay:
-
-NASTLH:
-	Inherits: ^Building
-	Valued:
-		Cost: 2500
-	Tooltip:
-		Name: Stealth Generator
-	Buildable:
-		BuildPaletteOrder: 80
-		Prerequisites: proc, natech, ~structures.nod, ~techlevel.high
-		Queue: Building
-		Description: Generates a cloaking field\nto hide your forces from the enemy.
-	Building:
-		Footprint: xxx xxx
-		Dimensions: 3,2
-	Health:
-		HP: 600
-	Armor:
-		Type: Wood
-	RevealsShroud:
-		Range: 6c0
-		MaxHeightDelta: 3
-	WithIdleOverlay@pulse:
-		Sequence: pulse
-		PauseOnLowPower: true
-	WithRangeCircle:
-		Range: 12c0
-		Type: cloakgenerator
-	Power:
-		Amount: -350
-	RequiresPower:
-	CanPowerDown:
-		PowerupSpeech: EnablePower
-		PowerdownSpeech: DisablePower
-		IndicatorPalette: mouse
-	ProximityExternalCondition:
-		Condition: cloakgenerator
-		Range: 12c0
-		EnableSound: cloak5.aud
-		DisableSound: cloak5.aud
-		AffectsParent: true
-	Selectable:
-		Bounds: 106, 48, 8, -6
-	SelectionDecorations:
-		VisualBounds: 106, 60, 8, -15
-
-NAWAST:
-	Inherits: ^Building
-	Valued:
-		Cost: 1600
-	Tooltip:
-		Name: Waste Refinery
-	Buildable:
-		BuildPaletteOrder: 110
-		Prerequisites: namisl, ~structures.nod, ~techlevel.superweapons
-		Queue: Building
-		BuildLimit: 1
-		Description: Processes Veins\ninto useable resources.\nMaximum 1 can be built.
-	Building:
-		Footprint: =x= xx= =x=
-		Dimensions: 3,3
-	Selectable:
-		Bounds: 100, 60, 5, -5
-	Health:
-		HP: 400
-	RevealsShroud:
-		Range: 6c0
-		MaxHeightDelta: 3
-	TiberianSunRefinery:
-		DockAngle: 160
-		DockOffset: 2,1
-	StoresResources:
-		PipColor: Red
-		PipCount: 15
-		Capacity: 56
-	Power:
-		Amount: -40
-	FreeActor:
-		Actor: WEED
-		SpawnOffset: 3,1
-		Facing: 160
-	WithIdleOverlay@GLOW:
-		Sequence: idle-glow
-	WithIdleOverlay@LIGHTS:
-		Sequence: idle-lights
-	WithIdleOverlay@BIB:
-		Sequence: bib
-	ProvidesPrerequisite@buildingname:
-	SelectionDecorations:
-		VisualBounds: 100, 60, 5, -5
-	RenderSprites:

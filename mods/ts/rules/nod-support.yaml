@@ -2,7 +2,7 @@ NAWALL:
 	Inherits: ^Wall
 	Buildable:
 		Queue: Defense
-		BuildPaletteOrder: 1001
+		BuildPaletteOrder: 20
 		Prerequisites: ~structures.nod, ~techlevel.low
 		Description: Stops infantry and blocks enemy fire.\nCan NOT be crushed by tanks.
 	-SoundOnDamageTransition:
@@ -27,7 +27,7 @@ NAGATE_A:
 	Inherits: ^Gate_A
 	Buildable:
 		Queue: Defense
-		BuildPaletteOrder: 100
+		BuildPaletteOrder: 40
 		Prerequisites: nahand, ~structures.nod, ~techlevel.low
 	Tooltip:
 		Name: Nod Gate
@@ -36,7 +36,7 @@ NAGATE_B:
 	Inherits: ^Gate_B
 	Buildable:
 		Queue: Defense
-		BuildPaletteOrder: 100
+		BuildPaletteOrder: 60
 		Prerequisites: nahand, ~structures.nod, ~techlevel.low
 	Tooltip:
 		Name: Nod Gate
@@ -50,7 +50,7 @@ NALASR:
 	Buildable:
 		Queue: Defense
 		Prerequisites: nahand, ~structures.nod, ~techlevel.low
-		BuildPaletteOrder: 50
+		BuildPaletteOrder: 90
 		Description: Basic base defense.\nRequires power to operate.\n  Strong vs Ground units\n  Weak vs Aircraft
 	Building:
 	Selectable:
@@ -89,7 +89,7 @@ NAOBEL:
 		Name: Obelisk of Light
 	Buildable:
 		Queue: Defense
-		BuildPaletteOrder: 90
+		BuildPaletteOrder: 150
 		Prerequisites: natech, ~structures.nod, ~techlevel.high
 		Description: Advanced base defense.\nRequires power to operate.\n  Strong vs Ground units\n  Weak vs Aircraft
 	Building:
@@ -134,7 +134,7 @@ NASAM:
 	Buildable:
 		Queue: Defense
 		Prerequisites: naradr, ~structures.nod, ~techlevel.medium
-		BuildPaletteOrder: 60
+		BuildPaletteOrder: 100
 		Description: Nod Anti-Air base defense.\nRequires power to operate.\n  Strong vs Aircraft\n  Weak vs Ground units
 	Selectable:
 		Bounds: 40, 30, -3, -8
@@ -223,11 +223,56 @@ GAARTY:
 	WithMuzzleOverlay:
 	RevealOnFire:
 
+NASTLH:
+	Inherits: ^Building
+	Valued:
+		Cost: 2500
+	Tooltip:
+		Name: Stealth Generator
+	Buildable:
+		Queue: Defense
+		BuildPaletteOrder: 160
+		Prerequisites: proc, natech, ~structures.nod, ~techlevel.high
+		Description: Generates a cloaking field\nto hide your forces from the enemy.
+	Building:
+		Footprint: xxx xxx
+		Dimensions: 3,2
+	Health:
+		HP: 600
+	Armor:
+		Type: Wood
+	RevealsShroud:
+		Range: 6c0
+		MaxHeightDelta: 3
+	WithIdleOverlay@pulse:
+		Sequence: pulse
+		PauseOnLowPower: true
+	WithRangeCircle:
+		Range: 12c0
+		Type: cloakgenerator
+	Power:
+		Amount: -350
+	RequiresPower:
+	CanPowerDown:
+		PowerupSpeech: EnablePower
+		PowerdownSpeech: DisablePower
+		IndicatorPalette: mouse
+	ProximityExternalCondition:
+		Condition: cloakgenerator
+		Range: 12c0
+		EnableSound: cloak5.aud
+		DisableSound: cloak5.aud
+		AffectsParent: true
+	Selectable:
+		Bounds: 106, 48, 8, -6
+	SelectionDecorations:
+		VisualBounds: 106, 60, 8, -15
+
 NAMISL:
 	Inherits: ^Building
 	Buildable:
 		Queue: Defense
-		BuildPaletteOrder: 100
+		BuildPaletteOrder: 190
 		Prerequisites: natech, ~structures.nod, ~techlevel.superweapons
 		BuildLimit: 1
 		Description: Launches a devastating missile\nat a target location.\nRequires power to operate.\nMaximum 1 can be built.
@@ -279,3 +324,49 @@ NAMISL:
 		CameraRange: 10c0
 	SelectionDecorations:
 		VisualBounds: 75,48
+
+NAWAST:
+	Inherits: ^Building
+	Valued:
+		Cost: 1600
+	Tooltip:
+		Name: Waste Refinery
+	Buildable:
+		Queue: Defense
+		BuildPaletteOrder: 200
+		Prerequisites: namisl, ~structures.nod, ~techlevel.superweapons
+		BuildLimit: 1
+		Description: Processes Veins\ninto useable resources.\nMaximum 1 can be built.
+	Building:
+		Footprint: =x= xx= =x=
+		Dimensions: 3,3
+	Selectable:
+		Bounds: 100, 60, 5, -5
+	Health:
+		HP: 400
+	RevealsShroud:
+		Range: 6c0
+		MaxHeightDelta: 3
+	TiberianSunRefinery:
+		DockAngle: 160
+		DockOffset: 2,1
+	StoresResources:
+		PipColor: Red
+		PipCount: 15
+		Capacity: 56
+	Power:
+		Amount: -40
+	FreeActor:
+		Actor: WEED
+		SpawnOffset: 3,1
+		Facing: 160
+	WithIdleOverlay@GLOW:
+		Sequence: idle-glow
+	WithIdleOverlay@LIGHTS:
+		Sequence: idle-lights
+	WithIdleOverlay@BIB:
+		Sequence: bib
+	ProvidesPrerequisite@buildingname:
+	SelectionDecorations:
+		VisualBounds: 100, 60, 5, -5
+	RenderSprites:

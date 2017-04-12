@@ -40,7 +40,7 @@ ENGINEER:
 		Name: Engineer
 	Buildable:
 		Queue: Infantry
-		BuildPaletteOrder: 30
+		BuildPaletteOrder: 40
 		Prerequisites: ~barracks, ~techlevel.low
 		Description: Infiltrates and captures enemy structures.\n  Unarmed
 	Voiced:

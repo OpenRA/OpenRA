@@ -62,7 +62,7 @@ PROC:
 		Name: Tiberium Refinery
 	Buildable:
 		Queue: Building
-		BuildPaletteOrder: 20
+		BuildPaletteOrder: 50
 		Prerequisites: anypower, ~techlevel.low
 		Description: Processes raw Tiberium\ninto useable resources.
 	Building:
@@ -114,7 +114,7 @@ GASILO:
 	Inherits: ^Building
 	Buildable:
 		Queue: Building
-		BuildPaletteOrder: 70
+		BuildPaletteOrder: 100
 		Prerequisites: proc, ~techlevel.low
 		Description: Stores excess Tiberium.
 	Valued:

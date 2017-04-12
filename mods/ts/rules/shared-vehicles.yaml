@@ -3,7 +3,7 @@ MCV:
 	Inherits@VOXELS: ^VoxelActor
 	Buildable:
 		Queue: Vehicle
-		BuildPaletteOrder: 110
+		BuildPaletteOrder: 160
 		Prerequisites: ~factory, tech, ~techlevel.medium
 		Description: Deploys into another Construction Yard.\n  Unarmed
 	Valued:
@@ -113,7 +113,7 @@ LPST:
 	-AppearsOnRadar:
 	Buildable:
 		Queue: Vehicle
-		BuildPaletteOrder: 100
+		BuildPaletteOrder: 90
 		Prerequisites: ~factory, radar, ~techlevel.medium
 		Description: Can detect cloaked and subterranean\nunits when deployed.\n  Unarmed
 	Valued:
