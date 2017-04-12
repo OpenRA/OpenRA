@@ -42,6 +42,9 @@ function Clean-Command
 		rm mods/*/*.dll
 		rm *.pdb
 		rm mods/*/*.pdb
+		rm *.exe
+		rm ./*/bin -r
+		rm ./*/obj -r
 		if (Test-Path thirdparty/download/)
 		{
 			rmdir thirdparty/download -Recurse -Force
