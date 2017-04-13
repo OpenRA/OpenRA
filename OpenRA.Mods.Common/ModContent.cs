@@ -85,7 +85,7 @@ namespace OpenRA
 		public readonly string InstallPromptMessage;
 		public readonly string QuickDownload;
 		public readonly string HeaderMessage;
-		public readonly string ContentInstallerMod = "modchooser";
+		public readonly string ContentInstallerMod = "modcontent";
 
 		[FieldLoader.LoadUsing("LoadPackages")]
 		public readonly Dictionary<string, ModPackage> Packages = new Dictionary<string, ModPackage>();

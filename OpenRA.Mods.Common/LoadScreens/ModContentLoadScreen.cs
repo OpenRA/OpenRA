@@ -56,7 +56,7 @@ namespace OpenRA.Mods.Common.LoadScreens
 
 			var content = selectedMod.Get<ModContent>(Game.ModData.ObjectCreator);
 
-			Ui.LoadWidget("MODCHOOSER_BACKGROUND", Ui.Root, new WidgetArgs());
+			Ui.LoadWidget("MODCONTENT_BACKGROUND", Ui.Root, new WidgetArgs());
 
 			if (!IsModInstalled(content))
 			{

@@ -56,7 +56,7 @@ Background@CONTENT_PANEL:
 							Y: 1
 							Width: 20
 							Height: 20
-							ImageCollection: modchooser
+							ImageCollection: modcontent
 							ImageName: cdicon
 							TooltipContainer: TOOLTIP_CONTAINER
 							TooltipTemplate: DISC_TOOLTIP
@@ -341,7 +341,7 @@ Background@CONTENT_PROMPT_PANEL:
 			Font: Bold
 			Key: escape
 
-Background@MODCHOOSER_BACKGROUND:
+Background@MODCONTENT_BACKGROUND:
 	Background: background
 	Width: WINDOW_RIGHT
 	Height: WINDOW_BOTTOM

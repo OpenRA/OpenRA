@@ -6,30 +6,30 @@ Metadata:
 
 Packages:
 	.
-	./mods/modchooser: modchooser
+	./mods/modcontent: modcontent
 	./mods/common: common
 
 Cursors:
-	modchooser|cursors.yaml
+	modcontent|cursors.yaml
 
 Chrome:
-	modchooser|chrome.yaml
+	modcontent|chrome.yaml
 
 Assemblies:
 	common|OpenRA.Mods.Common.dll
 
 ChromeLayout:
-	modchooser|content.yaml
+	modcontent|content.yaml
 
 Notifications:
-	modchooser|notifications.yaml
+	modcontent|notifications.yaml
 
 LoadScreen: ModContentLoadScreen
-	Image: ./mods/modchooser/chrome.png
+	Image: ./mods/modcontent/chrome.png
 
 ChromeMetrics:
 	common|metrics.yaml
-	modchooser|metrics.yaml
+	modcontent|metrics.yaml
 
 Fonts:
 	Regular:
