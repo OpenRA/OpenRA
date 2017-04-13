@@ -164,9 +164,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 					Game.RunAfterTick(() => { Ui.CloseWindow(); onSuccess(); });
 				}
-				catch (Exception)
+				catch (Exception e)
 				{
-					Log.Write("install", "Extraction failed");
+					Log.Write("install", "Archive extraction failed: " + e.ToString());
 
 					foreach (var f in extracted)
 					{
@@ -174,7 +174,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						File.Delete(f);
 					}
 
-					onError("Invalid archive");
+					onError("Archive extraction failed");
 				}
 				finally
 				{
