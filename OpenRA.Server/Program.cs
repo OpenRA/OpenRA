@@ -11,6 +11,7 @@
 
 using System;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Threading;
 using OpenRA.Support;
@@ -42,8 +43,12 @@ namespace OpenRA.Server
 			Game.InitializeSettings(arguments);
 			var settings = Game.Settings.Server;
 
+			var envModSearchPaths = Environment.GetEnvironmentVariable("MOD_SEARCH_PATHS");
+			var modSearchPaths = !string.IsNullOrWhiteSpace(envModSearchPaths) ?
+				FieldLoader.GetValue<string[]>("MOD_SEARCH_PATHS", envModSearchPaths) :
+				new[] { Path.Combine(".", "mods"), Path.Combine("^", "mods") };
+
 			var mod = Game.Settings.Game.Mod;
-			var modSearchPaths = new[] { Path.Combine(".", "mods"), Path.Combine("^", "mods") };
 			var mods = new InstalledMods(modSearchPaths, explicitModPaths);
 
 			// HACK: The engine code *still* assumes that Game.ModData is set
