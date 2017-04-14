@@ -1,3 +1,11 @@
+--[[
+   Copyright 2007-2017 The OpenRA Developers (see AUTHORS)
+   This file is part of OpenRA, which is free software. It is made
+   available to you under the terms of the GNU General Public License
+   as published by the Free Software Foundation, either version 3 of
+   the License, or (at your option) any later version. For more
+   information, see COPYING.
+]]
 GDI1 = { teamType = "atk", units = { ['e2'] = 3 }, waypoints = { waypoint0, waypoint1, waypoint2, waypoint14 }, delay = 40 }
 GDI2 = { teamType = "atk", units = { ['mtnk'] = 2 }, waypoints = { waypoint0, waypoint1, waypoint2, waypoint3, waypoint4, waypoint9 }, delay = 30 }
 GDI3 = { teamType = "atk", units = { ['e2'] = 4 }, waypoints = { waypoint0, waypoint4, waypoint5, waypoint6, waypoint7, waypoint8 }, delay = 40 }

@@ -1,3 +1,11 @@
+--[[
+   Copyright 2007-2017 The OpenRA Developers (see AUTHORS)
+   This file is part of OpenRA, which is free software. It is made
+   available to you under the terms of the GNU General Public License
+   as published by the Free Software Foundation, either version 3 of
+   the License, or (at your option) any later version. For more
+   information, see COPYING.
+]]
 WaypointGroup1 = { waypoint0, waypoint15 }
 WaypointGroup2 = { waypoint0, waypoint1, waypoint2, waypoint3, waypoint4, waypoint5, waypoint8 }
 WaypointGroup3 = { waypoint0, waypoint1, waypoint2, waypoint3, waypoint9, waypoint10, waypoint11, waypoint6, waypoint7 }

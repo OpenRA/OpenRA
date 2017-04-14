@@ -1,3 +1,11 @@
+--[[
+   Copyright 2007-2017 The OpenRA Developers (see AUTHORS)
+   This file is part of OpenRA, which is free software. It is made
+   available to you under the terms of the GNU General Public License
+   as published by the Free Software Foundation, either version 3 of
+   the License, or (at your option) any later version. For more
+   information, see COPYING.
+]]
 AutoTrigger = { CPos.New(51, 47), CPos.New(52, 47), CPos.New(53, 47), CPos.New(54, 47) }
 GDIHeliTrigger = { CPos.New(27, 55), CPos.New(27, 56), CPos.New(28, 56), CPos.New(28, 57), CPos.New(28, 58), CPos.New(28, 59)}
 

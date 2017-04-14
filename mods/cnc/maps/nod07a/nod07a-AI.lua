@@ -1,3 +1,11 @@
+--[[
+   Copyright 2007-2017 The OpenRA Developers (see AUTHORS)
+   This file is part of OpenRA, which is free software. It is made
+   available to you under the terms of the GNU General Public License
+   as published by the Free Software Foundation, either version 3 of
+   the License, or (at your option) any later version. For more
+   information, see COPYING.
+]]
 AttackPaths = { { AttackPath1 }, { AttackPath2 } }
 GDIBase = { GDICYard, GDIPyle, GDIWeap, GDIHQ, GDIProc, GDINuke1, GDINuke2, GDINuke3, GDIBuilding1, GDIBuilding2, GDIBuilding3, GDIBuilding4, GDIBuilding5, GDIBuilding6, GDIBuilding7, GDIBuilding8 }
 InfantryAttackGroup = { }
