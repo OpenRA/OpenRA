@@ -74,6 +74,9 @@ namespace OpenRA.Mods.Common.Widgets
 
 				if (key == ks.GuardKey)
 					return PerformGuard();
+
+				if (key == ks.ReloadKey)
+					return PerformReload();
 			}
 
 			return false;
@@ -95,8 +98,13 @@ namespace OpenRA.Mods.Common.Widgets
 
 		void PerformKeyboardOrderOnSelection(Func<Actor, Order> f)
 		{
+			PerformKeyboardOrderOnSelection(f, a => a.Owner == world.LocalPlayer && !a.Disposed);
+		}
+
+		void PerformKeyboardOrderOnSelection(Func<Actor, Order> f, Func<Actor, bool> where)
+		{
 			var orders = world.Selection.Actors
-				.Where(a => a.Owner == world.LocalPlayer && !a.Disposed)
+				.Where(where)
 				.Select(f)
 				.ToArray();
 
@@ -126,6 +134,14 @@ namespace OpenRA.Mods.Common.Widgets
 			PerformKeyboardOrderOnSelection(a => new Order("Unload", a, false));
 			PerformKeyboardOrderOnSelection(a => new Order("Detonate", a, false));
 			PerformKeyboardOrderOnSelection(a => new Order("GrantConditionOnDeploy", a, false));
+			return true;
+		}
+
+		bool PerformReload()
+		{
+			// ReturnToBase ExtraData = 1: return to base only if reload needed
+			PerformKeyboardOrderOnSelection(a => new Order("ReturnToBase", a, false) { ExtraData = 1 },
+				a => a.Owner == world.LocalPlayer && !a.Disposed && a.Info.HasTraitInfo<AircraftInfo>());
 			return true;
 		}
 

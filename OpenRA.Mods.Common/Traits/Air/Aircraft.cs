@@ -118,6 +118,7 @@ namespace OpenRA.Mods.Common.Traits
 	public class Aircraft : ITick, ISync, IFacing, IPositionable, IMove, IIssueOrder, IResolveOrder, IOrderVoice, IDeathActorInitModifier,
 		INotifyCreated, INotifyAddedToWorld, INotifyRemovedFromWorld, INotifyActorDisposing, IActorPreviewInitModifier
 	{
+		const uint Reload = 1;
 		static readonly Pair<CPos, SubCell>[] NoCells = { };
 
 		public readonly bool IsPlane;
@@ -660,6 +661,10 @@ namespace OpenRA.Mods.Common.Traits
 			}
 			else if (order.OrderString == "ReturnToBase")
 			{
+				if (order.ExtraData == Reload && self.TraitsImplementing<AmmoPool>()
+					.All(p => p.Info.SelfReloads || p.FullAmmo()))
+					return;
+
 				UnReserve();
 				self.CancelActivity();
 				if (IsPlane)

@@ -229,6 +229,7 @@ namespace OpenRA
 		public Hotkey DeployKey = new Hotkey(Keycode.F, Modifiers.None);
 		public Hotkey StanceCycleKey = new Hotkey(Keycode.Z, Modifiers.Ctrl);
 		public Hotkey GuardKey = new Hotkey(Keycode.D, Modifiers.None);
+		public Hotkey ReloadKey = new Hotkey(Keycode.G, Modifiers.None);
 
 		public Hotkey ObserverCombinedView = new Hotkey(Keycode.MINUS, Modifiers.None);
 		public Hotkey ObserverWorldView = new Hotkey(Keycode.EQUALS, Modifiers.None);

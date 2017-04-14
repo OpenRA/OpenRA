@@ -475,12 +475,12 @@ Background@SETTINGS_PANEL:
 							Children:
 								Label@FUNCTION:
 									Y: 0-1
-									Width: PARENT_RIGHT - 84
+									Width: PARENT_RIGHT - 79
 									Height: 25
 									Align: Right
 								HotkeyEntry@HOTKEY:
 									X: PARENT_RIGHT-WIDTH+1
-									Width: 80
+									Width: 75
 									Height: 25
 						Container@PRODUCTION_TEMPLATE:
 							Width: 173
