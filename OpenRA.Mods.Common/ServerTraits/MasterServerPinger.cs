@@ -67,7 +67,7 @@ namespace OpenRA.Mods.Common.Server
 			{
 				try
 				{
-					var url = "ping?port={0}&name={1}&state={2}&players={3}&bots={4}&mods={5}&map={6}&maxplayers={7}&spectators={8}&protected={9}&clients={10}";
+					var url = "ping?port={0}&name={1}&state={2}&players={3}&bots={4}&mods={5}&map={6}&maxplayers={7}&spectators={8}&protected={9}&clients={10}&ipv4={11}&ipv6={12}";
 					if (isInitialPing) url += "&new=1";
 
 					using (var wc = new WebClient())
@@ -84,7 +84,8 @@ namespace OpenRA.Mods.Common.Server
 							numSlots,
 							numSpectators,
 							passwordProtected,
-							string.Join(",", clients)));
+							string.Join(",", clients),
+							GetIpV4(wc), Uri.EscapeUriString(GetIpV6(wc))));
 
 						if (isInitialPing)
 						{
@@ -114,6 +115,16 @@ namespace OpenRA.Mods.Common.Server
 			};
 
 			a.BeginInvoke(null, null);
+		}
+
+		private String GetIpV4(WebClient wc)
+		{
+			return wc.DownloadString("http://v4.ipv6-test.com/api/myip.php");
+		}
+
+		private string GetIpV6(WebClient wc)
+		{
+			return wc.DownloadString("http://v6.ipv6-test.com/api/myip.php");
 		}
 	}
 }
