@@ -33,7 +33,7 @@ cp OpenRA.ico RedAlert.ico TiberianDawn.ico Dune2000.ico ${BUILTDIR}
 
 if [ -x /usr/bin/makensis ]; then
     echo "Building Windows setup.exe"
-    makensis -V2 -DSRCDIR="$BUILTDIR" -DDEPSDIR="${SRCDIR}/thirdparty/download/windows" -DTAG="${TAG}" OpenRA.nsi
+    makensis -V2 -DSRCDIR="$BUILTDIR" -DDEPSDIR="${SRCDIR}/thirdparty/download/windows" -DTAG="${TAG}" -DSUFFIX="${SUFFIX}" OpenRA.nsi
     if [ $? -eq 0 ]; then
         mv OpenRA.Setup.exe "$OUTPUTDIR"/OpenRA-$TAG.exe
     else

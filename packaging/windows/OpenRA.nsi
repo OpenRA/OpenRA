@@ -22,8 +22,8 @@
 Name "OpenRA"
 OutFile "OpenRA.Setup.exe"
 
-InstallDir $PROGRAMFILES\OpenRA
-InstallDirRegKey HKLM "Software\OpenRA" "InstallDir"
+InstallDir "$PROGRAMFILES\OpenRA${SUFFIX}"
+InstallDirRegKey HKLM "Software\OpenRA${SUFFIX}" "InstallDir"
 
 SetCompressor lzma
 
@@ -32,7 +32,7 @@ SetCompressor lzma
 !insertmacro MUI_PAGE_DIRECTORY
 
 !define MUI_STARTMENUPAGE_REGISTRY_ROOT "HKLM"
-!define MUI_STARTMENUPAGE_REGISTRY_KEY "Software\OpenRA"
+!define MUI_STARTMENUPAGE_REGISTRY_KEY "Software\OpenRA${SUFFIX}"
 !define MUI_STARTMENUPAGE_REGISTRY_VALUENAME "Start Menu Folder"
 !define MUI_STARTMENUPAGE_DEFAULTFOLDER "OpenRA"
 
@@ -54,7 +54,7 @@ Var StartMenuFolder
 Section "-Reg" Reg
 
 	; Installation directory
-	WriteRegStr HKLM "Software\OpenRA" "InstallDir" $INSTDIR
+	WriteRegStr HKLM "Software\OpenRA${SUFFIX}" "InstallDir" $INSTDIR
 
 	; Join server URL Scheme
 	WriteRegStr HKLM "Software\Classes\openra-ra-${TAG}" "" "URL:Join OpenRA server"
@@ -129,13 +129,13 @@ Section "Game" GAME
 
 	!insertmacro MUI_STARTMENU_WRITE_BEGIN Application
 		CreateDirectory "$SMPROGRAMS\$StartMenuFolder"
-		CreateShortCut "$SMPROGRAMS\$StartMenuFolder\Red Alert.lnk" $OUTDIR\RedAlert.exe "" \
+		CreateShortCut "$SMPROGRAMS\$StartMenuFolder\Red Alert${SUFFIX}.lnk" $OUTDIR\RedAlert.exe "" \
 			"$OUTDIR\RedAlert.exe" "" "" "" ""
-		CreateShortCut "$SMPROGRAMS\$StartMenuFolder\Tiberian Dawn.lnk" $OUTDIR\TiberianDawn.exe "" \
+		CreateShortCut "$SMPROGRAMS\$StartMenuFolder\Tiberian Dawn${SUFFIX}.lnk" $OUTDIR\TiberianDawn.exe "" \
 			"$OUTDIR\TiberianDawn.exe" "" "" "" ""
-		CreateShortCut "$SMPROGRAMS\$StartMenuFolder\Dune 2000.lnk" $OUTDIR\Dune2000.exe "" \
+		CreateShortCut "$SMPROGRAMS\$StartMenuFolder\Dune 2000${SUFFIX}.lnk" $OUTDIR\Dune2000.exe "" \
 			"$OUTDIR\Dune2000.exe" "" "" "" ""
-		CreateShortCut "$SMPROGRAMS\$StartMenuFolder\README.lnk" $OUTDIR\README.html "" \
+		CreateShortCut "$SMPROGRAMS\$StartMenuFolder\README${SUFFIX}.lnk" $OUTDIR\README.html "" \
 			"$OUTDIR\README.html" "" "" "" ""
 	!insertmacro MUI_STARTMENU_WRITE_END
 
@@ -149,11 +149,11 @@ SectionEnd
 
 Section "Desktop Shortcut" DESKTOPSHORTCUT
 	SetOutPath "$INSTDIR"
-	CreateShortCut "$DESKTOP\OpenRA - Red Alert.lnk" $INSTDIR\RedAlert.exe "" \
+	CreateShortCut "$DESKTOP\OpenRA - Red Alert${SUFFIX}.lnk" $INSTDIR\RedAlert.exe "" \
 		"$INSTDIR\RedAlert.exe" "" "" "" ""
-	CreateShortCut "$DESKTOP\OpenRA - Tiberian Dawn.lnk" $INSTDIR\TiberianDawn.exe "" \
+	CreateShortCut "$DESKTOP\OpenRA - Tiberian Dawn${SUFFIX}.lnk" $INSTDIR\TiberianDawn.exe "" \
 		"$INSTDIR\TiberianDawn.exe" "" "" "" ""
-	CreateShortCut "$DESKTOP\OpenRA - Dune 2000.lnk" $INSTDIR\Dune2000.exe "" \
+	CreateShortCut "$DESKTOP\OpenRA - Dune 2000${SUFFIX}.lnk" $INSTDIR\Dune2000.exe "" \
 		"$INSTDIR\Dune2000.exe" "" "" "" ""
 SectionEnd
 
@@ -180,18 +180,18 @@ SectionEnd
 ;***************************
 Section "-Uninstaller"
 	WriteUninstaller $INSTDIR\uninstaller.exe
-	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\OpenRA" "DisplayName" "OpenRA"
-	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\OpenRA" "UninstallString" "$INSTDIR\uninstaller.exe"
-	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\OpenRA" "InstallLocation" "$INSTDIR"
-	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\OpenRA" "DisplayIcon" "$INSTDIR\OpenRA.ico"
-	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\OpenRA" "Publisher" "OpenRA developers"
-	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\OpenRA" "URLInfoAbout" "http://openra.net"
-	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\OpenRA" "NoModify" "1"
-	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\OpenRA" "NoRepair" "1"
+	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\OpenRA${SUFFIX}" "DisplayName" "OpenRA${SUFFIX}"
+	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\OpenRA${SUFFIX}" "UninstallString" "$INSTDIR\uninstaller.exe"
+	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\OpenRA${SUFFIX}" "InstallLocation" "$INSTDIR"
+	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\OpenRA${SUFFIX}" "DisplayIcon" "$INSTDIR\OpenRA.ico"
+	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\OpenRA${SUFFIX}" "Publisher" "OpenRA developers"
+	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\OpenRA${SUFFIX}" "URLInfoAbout" "http://openra.net"
+	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\OpenRA${SUFFIX}" "NoModify" "1"
+	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\OpenRA${SUFFIX}" "NoRepair" "1"
 
 	!insertmacro MUI_STARTMENU_WRITE_BEGIN Application
-		CreateShortCut "$SMPROGRAMS\$StartMenuFolder\Uninstall.lnk" "$INSTDIR\uninstaller.exe" "" \
-			"" "" "" "" "Uninstall OpenRA"
+		CreateShortCut "$SMPROGRAMS\$StartMenuFolder\Uninstall${SUFFIX}.lnk" "$INSTDIR\uninstaller.exe" "" \
+			"" "" "" "" "Uninstall OpenRA${SUFFIX}"
 	!insertmacro MUI_STARTMENU_WRITE_END
 SectionEnd
 
@@ -237,7 +237,7 @@ Function ${UN}Clean
 	Delete $INSTDIR\SmarIrc4net.dll
 	RMDir /r $INSTDIR\Support
 
-	DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\OpenRA"
+	DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\OpenRA${SUFFIX}"
 	DeleteRegKey HKLM "Software\Classes\openra-ra-${TAG}"
 	DeleteRegKey HKLM "Software\Classes\openra-cnc-${TAG}"
 	DeleteRegKey HKLM "Software\Classes\openra-d2k-${TAG}"
@@ -246,11 +246,20 @@ Function ${UN}Clean
 	RMDir $INSTDIR
 
 	!insertmacro MUI_STARTMENU_GETFOLDER Application $StartMenuFolder
-	RMDir /r "$SMPROGRAMS\$StartMenuFolder"
-	Delete $DESKTOP\OpenRA - Red Alert.lnk
-	Delete $DESKTOP\OpenRA - Tiberian Dawn.lnk
-	Delete $DESKTOP\OpenRA - Dune 2000.lnk
-	DeleteRegKey HKLM "Software\OpenRA"
+
+	; Clean up start menu: Delete all our icons, and the OpenRA folder
+	; *only* if we were the only installed version
+	Delete "$SMPROGRAMS\$StartMenuFolder\Red Alert${SUFFIX}.lnk"
+	Delete "$SMPROGRAMS\$StartMenuFolder\Tiberian Dawn${SUFFIX}.lnk"
+	Delete "$SMPROGRAMS\$StartMenuFolder\Dune 2000${SUFFIX}.lnk"
+	Delete "$SMPROGRAMS\$StartMenuFolder\README${SUFFIX}.lnk"
+	Delete "$SMPROGRAMS\$StartMenuFolder\Uninstall${SUFFIX}.lnk"
+	RMDir "$SMPROGRAMS\$StartMenuFolder"
+
+	Delete "$DESKTOP\OpenRA - Red Alert${SUFFIX}.lnk"
+	Delete "$DESKTOP\OpenRA - Tiberian Dawn${SUFFIX}.lnk"
+	Delete "$DESKTOP\OpenRA - Dune 2000${SUFFIX}.lnk"
+	DeleteRegKey HKLM "Software\OpenRA${SUFFIX}"
 FunctionEnd
 !macroend
 
