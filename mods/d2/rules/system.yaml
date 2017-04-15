@@ -1,0 +1,18 @@
+World:
+# TODO: ShadowIndex
+	PaletteFromFile@bene:
+		Name: bene
+		Filename: BENE.PAL
+	PaletteFromFile@ibm:
+		Name: ibm
+		Filename: IBM.PAL
+	PaletteFromFile@intro:
+		Name: intro
+		Filename: INTRO.PAL
+	PaletteFromFile@westwood:
+		Name: westwood
+		Filename: WESTWOOD.PAL
+	PaletteFromFile@colorpicker: # TODO: needs ColorPickerRemapIndices in metrics.yaml
+		Name: colorpicker
+		Filename: IBM.PAL
+		AllowModifiers: true

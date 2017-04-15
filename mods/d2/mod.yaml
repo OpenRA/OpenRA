@@ -1,0 +1,184 @@
+Metadata:
+	Title: Dune II
+	Description: Quick test
+	Version: {DEV_VERSION}
+	Author: The OpenRA Developers
+
+Folders:
+	.
+# Dune II:
+	~^/Content/d2
+	./mods/d2/uibits
+# Dune 2000:
+	./mods/d2k
+	./mods/d2k/bits
+	./mods/d2k/bits/tex
+	./mods/d2k/bits/xmas
+	./mods/d2k/uibits
+	./mods/ra/uibits
+	~^/Content/d2k
+	~^/Content/d2k/GAMESFX
+	~^/Content/d2k/Music
+
+MapFolders:
+	./mods/d2k/maps
+	~^/maps/d2k
+
+SupportsMapsFrom: d2k
+
+Packages:
+# Dune 2000:
+	SOUND.RS
+# Dune II:
+	ATRE.PAK
+	DUNE.PAK
+	ENGLISH.PAK
+	FINALE.PAK
+	~FRENCH.PAK
+	~GERMAN.PAK
+	HARK.PAK
+	INTRO.PAK
+	INTROVOC.PAK
+	MENTAT.PAK
+	MERC.PAK
+	ORDOS.PAK
+	SCENARIO.PAK
+	SOUND.PAK
+	VOC.PAK
+
+Rules:
+	mods/d2/rules/system.yaml
+# Dune 2000:
+	mods/d2k/rules/system-actors.yaml
+	mods/d2k/rules/system-ai.yaml
+	mods/d2k/rules/system-player.yaml
+	mods/d2k/rules/system-world.yaml
+	mods/d2k/rules/defaults.yaml
+	mods/d2k/rules/vehicles.yaml
+	mods/d2k/rules/structures.yaml
+	mods/d2k/rules/aircraft.yaml
+	mods/d2k/rules/infantry.yaml
+	mods/d2k/rules/atreides.yaml
+	mods/d2k/rules/harkonnen.yaml
+	mods/d2k/rules/ordos.yaml
+
+Sequences:
+	mods/d2k/sequences/aircraft.yaml
+	mods/d2k/sequences/vehicles.yaml
+	mods/d2k/sequences/infantry.yaml
+	mods/d2k/sequences/structures.yaml
+	mods/d2k/sequences/misc.yaml
+
+Cursors:
+	mods/d2k/cursors.yaml
+
+Chrome:
+	mods/d2/chrome.yaml
+
+Assemblies:
+	mods/ra/OpenRA.Mods.RA.dll
+	mods/cnc/OpenRA.Mods.Cnc.dll
+	mods/d2k/OpenRA.Mods.D2k.dll
+
+ChromeLayout:
+	mods/d2k/chrome/gameinit.yaml
+	mods/d2k/chrome/ingame.yaml
+	mods/ra/chrome/ingame-chat.yaml
+	mods/ra/chrome/ingame-diplomacy.yaml
+	mods/ra/chrome/ingame-fmvplayer.yaml
+	mods/ra/chrome/ingame-menu.yaml
+	mods/ra/chrome/ingame-observerstats.yaml
+	mods/d2k/chrome/mainmenu.yaml
+	mods/ra/chrome/settings.yaml
+	mods/ra/chrome/credits.yaml
+	mods/ra/chrome/lobby.yaml
+	mods/d2k/chrome/lobby-playerbin.yaml
+	mods/ra/chrome/lobby-dialogs.yaml
+	mods/d2k/chrome/color-picker.yaml
+	mods/ra/chrome/map-chooser.yaml
+	mods/ra/chrome/create-server.yaml
+	mods/ra/chrome/serverbrowser.yaml
+	mods/ra/chrome/connection.yaml
+	mods/ra/chrome/directconnect.yaml
+	mods/ra/chrome/replaybrowser.yaml
+	mods/ra/chrome/dropdowns.yaml
+	mods/ra/chrome/modchooser.yaml
+	mods/ra/chrome/cheats.yaml
+	mods/ra/chrome/musicplayer.yaml
+	mods/d2k/chrome/tooltips.yaml
+	mods/ra/chrome/assetbrowser.yaml
+	mods/ra/chrome/irc.yaml
+
+Weapons:
+	mods/d2k/weapons.yaml
+
+Voices:
+	mods/d2k/voices.yaml
+
+Notifications:
+	mods/d2k/notifications.yaml
+
+TileSets:
+	mods/d2k/tilesets/arrakis.yaml
+
+TileSize: 32,32
+
+Music:
+	mods/d2k/music.yaml
+
+Movies:
+
+Translations:
+	mods/d2k/languages/english.yaml
+
+LoadScreen: DefaultLoadScreen
+	Image: mods/d2k/uibits/loadscreen.png
+	InstallerMenuWidget: INSTALL_PANEL
+	TestFiles: DUNE.PAK
+	PackageURL: http://open-ra.org/get-dependency.php?file=d2-packages
+	Text: Filling Crates..., Breeding Sandworms...
+
+ServerTraits:
+	LobbyCommands
+	PlayerPinger
+	MasterServerPinger
+
+LobbyDefaults:
+	AllowCheats: false
+	Crates: true
+	StartingUnitsClass: none
+	FragileAlliances: false
+	Shroud: false
+	Fog: true
+
+ChromeMetrics:
+	mods/d2k/metrics.yaml
+
+Fonts:
+	Regular:
+		Font:FreeSans.ttf
+		Size:14
+	Bold:
+		Font:FreeSansBold.ttf
+		Size:14
+	Title:
+		Font:mods/d2k/Dune2k.ttf
+		Size:32
+	BigBold:
+		Font:FreeSansBold.ttf
+		Size:24
+	Tiny:
+		Font:FreeSans.ttf
+		Size:10
+	TinyBold:
+		Font:FreeSansBold.ttf
+		Size:10
+
+LuaScripts:
+	mods/ra/lua/utils.lua
+	mods/ra/lua/openra.lua
+	mods/ra/lua/map.lua
+	mods/ra/lua/actor.lua
+	mods/ra/lua/team.lua
+	mods/ra/lua/media.lua
+	mods/ra/lua/mission.lua
