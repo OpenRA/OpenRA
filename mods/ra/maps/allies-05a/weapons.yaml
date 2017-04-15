@@ -15,6 +15,7 @@ MissionColt:
 			Heavy: 0
 			Concrete: 0
 		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
+		AffectsParent: true
 	Warhead@2Eff: CreateEffect
 		Explosions: piffs
 		InvalidImpactTypes: Water

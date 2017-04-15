@@ -171,13 +171,12 @@ MissInfiltrated = function()
 			Media.PlaySoundNotification(greece, sound)
 		end)
 	end
-	TanyasColt = Actor.Create("Colt", true, { Owner = greece, Location = Prison.Location + CVec.New(1, 6) })
+	Prison.Attack(Prison)
 
 	Trigger.AfterDelay(DateTime.Seconds(6), FreeTanya)
 end
 
 FreeTanya = function()
-	TanyasColt.Destroy()
 	Tanya = Actor.Create(TanyaType, true, { Owner = greece, Location = Prison.Location + CVec.New(1, 1) })
 	Tanya.Demolish(Prison)
 	Tanya.Move(Tanya.Location + CVec.New(Utils.RandomInteger(-1, 2), 1))
