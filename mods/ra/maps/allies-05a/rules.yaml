@@ -19,13 +19,10 @@ World:
 			tough: Real tough guy
 		Default: easy
 
-Camera.Truk:
-	AlwaysVisible:
-	Mobile:
-		TerrainSpeeds:
+Camera.Small:
+	Inherits: CAMERA
 	RevealsShroud:
 		Range: 4c0
-	ScriptTriggers:
 
 FTUR:
 	DetectCloaked:
@@ -76,6 +73,12 @@ TRUK.mission:
 	WithFacingSpriteBody:
 	-SpawnActorOnDeath:
 	-EjectOnDeath:
+	RevealsShroud:
+		Range: 4c0
+		ValidStances: Ally, Enemy
+		RequiresCondition: hijacked
+	ExternalCondition@hijacked:
+		Condition: hijacked
 	RenderSprites:
 		Image: TRUK
 

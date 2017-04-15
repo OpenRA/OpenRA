@@ -84,7 +84,6 @@ end
 
 Tick = function()
 	if FollowTruk then
-		TrukCamera.Teleport(Truk.Location)
 		Camera.Position = Truk.CenterPosition
 	end
 
@@ -150,7 +149,7 @@ end
 
 WarfactoryInfiltrated = function()
 	FollowTruk = true
-	TrukCamera = Actor.Create("camera.truk", true, { Owner = greece, Location = Truk.Location })
+	Truk.GrantCondition("hijacked")
 
 	Truk.Wait(DateTime.Seconds(1))
 	Utils.Do(TrukPath, function(waypoint)
@@ -256,12 +255,11 @@ InitTriggers = function()
 			Media.PlaySoundNotification(greece, SpyVoice)
 
 			FollowTruk = false
-			TrukCamera.Destroy()
 
 			if SpecialCameras then
 				PrisonCamera = Actor.Create("camera", true, { Owner = greece, Location = TrukWaypoint5.Location })
 			else
-				PrisonCamera = Actor.Create("camera.truk", true, { Owner = greece, Location = Prison.Location + CVec.New(1, 1) })
+				PrisonCamera = Actor.Create("camera.small", true, { Owner = greece, Location = Prison.Location + CVec.New(1, 1) })
 			end
 
 			Trigger.OnKilled(Spy, function() ussr.MarkCompletedObjective(ussrObj) end)
