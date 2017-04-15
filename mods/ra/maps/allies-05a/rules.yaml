@@ -96,34 +96,9 @@ MISS:
 		Name: Prison
 	Targetable:
 		TargetTypes: Ground, C4, DetonateAttack, Structure, Mission Objectives
-
-Colt:
-	Inherits: ^Defense
-	AutoTargetIgnore:
-	Valued:
-		Cost: 800
-	Building:
-		Footprint: _ x
-		Dimensions: 1,2
-	Health:
-		HP: 400
-	Armor:
-		Type: Heavy
-	RevealsShroud:
-		Range: 0c0
-	Turreted:
-		TurnSpeed: 15
-		InitialFacing: 224
-	RenderSprites:
-		Image: AGUN
+	AttackOmni:
 	Armament:
 		Weapon: MissionColt
-		LocalOffset: 432,150,-30, 432,-150,-30
-	AttackTurreted:
-	AutoTarget:
-	-Selectable:
-	-SelectionDecorations:
-	-Huntable:
 
 E1.Autotarget:
 	Inherits: E1
