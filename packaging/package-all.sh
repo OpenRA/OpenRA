@@ -69,9 +69,6 @@ cp thirdparty/download/MaxMind.Db.dll packaging/built
 # global chat
 cp thirdparty/download/SmarIrc4net.dll packaging/built
 
-# Copy game icon for windows package
-cp packaging/windows/OpenRA.ico packaging/built
-
 cd packaging
 echo "Creating packages..."
 
