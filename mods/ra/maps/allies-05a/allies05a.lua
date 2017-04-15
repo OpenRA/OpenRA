@@ -177,6 +177,7 @@ MissInfiltrated = function()
 end
 
 FreeTanya = function()
+	Prison.Stop()
 	Tanya = Actor.Create(TanyaType, true, { Owner = greece, Location = Prison.Location + CVec.New(1, 1) })
 	Tanya.Demolish(Prison)
 	Tanya.Move(Tanya.Location + CVec.New(Utils.RandomInteger(-1, 2), 1))
