@@ -77,7 +77,153 @@ FCOM:
 	Armor:
 		Type: Wood
 	Tooltip:
-		Name: Forward Command
+		Name: Soviet Forward Command
+	RevealsShroud:
+		Range: 10
+	Bib:
+
+ACOM:
+	Inherits: ^TechBuilding
+	Building:
+		Power: -200
+		Footprint: xx xx
+		Dimensions: 2,2
+	Valued:
+		Cost: 2000
+	Health:
+		HP: 400
+	Armor:
+		Type: Wood
+	Tooltip:
+		Name: Allied Command Center
+	RevealsShroud:
+		Range: 10
+	Bib:
+
+TANKFACT:
+	Inherits: ^TechBuilding
+	Valued:
+		Cost: 2000
+	Tooltip:
+		Name: Tank Factory
+	Building:
+		Power: -30
+		Footprint: xxx xxx
+		Dimensions: 3,2
+	Health:
+		HP: 1500
+	Armor:
+		Type: Wood
+	RevealsShroud:
+		Range: 4
+	Bib:
+	-RenderBuilding:
+	RenderBuildingWarFactory:
+	RallyPoint:
+	Exit@1:
+		SpawnOffset: 5,-3
+		ExitCell: 1,2
+	Production:
+		Produces: Vehicle
+	PrimaryBuilding:
+	ProductionBar:
+
+MASSFACT:
+	Inherits: ^TechBuilding
+	Valued:
+		Cost: 2000
+	Tooltip:
+		Name: Industrial Factory
+	Building:
+		Power: -30
+		Footprint: ___ xxx xxx xxx
+		Dimensions: 4,3
+	Health:
+		HP: 1500
+	Armor:
+		Type: Wood
+	RevealsShroud:
+		Range: 4
+	Bib:
+	-RenderBuilding:
+	RenderBuildingWarFactory:
+	RallyPoint:
+	Exit@1:
+		SpawnOffset: 5,-3
+		ExitCell: 1,2
+	Production:
+		Produces: Vehicle
+	PrimaryBuilding:
+	ProductionBar:
+
+FIXDEPOT:
+	Inherits: ^TechBuilding
+	Building:
+		Power: -30
+		Footprint: xxx xxx xxx
+		Dimensions: 3,3
+	Valued:
+		Cost: 1200
+	Health:
+		HP: 800
+	Armor:
+		Type: Wood
+	Tooltip:
+		Name: Repair Depot
+	RevealsShroud:
+		Range: 10
+	Bib:
+
+AEROTECH:
+	Inherits: ^TechBuilding
+	Building:
+		Power: -30
+		Footprint: xxx xxx xxx
+		Dimensions: 3,3
+	Valued:
+		Cost: 2000
+	Health:
+		HP: 400
+	Armor:
+		Type: Wood
+	Tooltip:
+		Name: Center of Aerospace
+	RevealsShroud:
+		Range: 10
+	Bib:
+
+OREFACT:
+	Inherits: ^TechBuilding
+	Building:
+		Power: -30
+		Footprint: xxx xxx xxx
+		Dimensions: 3,3
+	Valued:
+		Cost: 2000
+	Health:
+		HP: 600
+	Armor:
+		Type: Wood
+	Tooltip:
+		Name: Ore Purifier
+	RevealsShroud:
+		Range: 10
+	Bib:
+
+CHSSFACT:
+	Inherits: ^TechBuilding
+	Building:
+		Power: -30
+		Footprint: xxx xxx xxx
+		Dimensions: 3,3
+	Valued:
+		Cost: 2000
+	Health:
+		HP: 600
+	Armor:
+		Type: Wood
+	Tooltip:
+		Name: Chassis Factory
 	RevealsShroud:
 		Range: 10c0
 	Bib:

@@ -10,6 +10,15 @@ fcom:
 		TilesetOverrides:
 			INTERIOR: TEMPERAT
 
+acom:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+	make: # TODO: missing
+		Start: 0
+		Length: *
+
 hosp:
 	idle:
 		Length: 4
@@ -257,6 +266,84 @@ weap:
 			INTERIOR: TEMPERAT
 	icon: weapicon
 	fake-icon: weaficon
+
+tankfact:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+	make: tankfactmake
+		Start: 0
+		Length: *
+	build-top: tankfactdoor
+		Start: 0
+		Length: 4
+		Tick: 150
+	damaged-build-top: tankfactdoor
+		Start: 0
+		Length: 4
+		Tick: 150
+	idle-top: tankfactdoor
+		Start: 0
+	damaged-idle-top: tankfactdoor
+		Start: 0
+
+massfact:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+	make: massfactmake
+		Start: 0
+		Length: *
+	build-top: massfactdoor
+		Start: 0
+		Length: 4
+		Tick: 150
+	damaged-build-top: massfactdoor
+		Start: 4
+		Length: 4
+		Tick: 150
+	idle-top: massfactdoor
+		Start: 0
+	damaged-idle-top: massfactdoor
+		Start: 4
+
+fixdepot:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+	make: fixdepotmake
+		Start: 0
+		Length: *
+
+aerotech:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+	make: aerotechmake
+		Start: 0
+		Length: *
+
+orefact:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+	make: orefactmake
+		Start: 0
+		Length: *
+
+chssfact:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+	make: chssfactmake
+		Start: 0
+		Length: *
 
 hpad:
 	idle:
