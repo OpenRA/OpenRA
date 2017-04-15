@@ -23,6 +23,8 @@ namespace OpenRA.Test
 	{
 		IReadOnlyDictionary<string, int> testValues = new ReadOnlyDictionary<string, int>(new Dictionary<string, int>()
 		{
+			{ "t", 5 },
+			{ "t-1", 7 },
 			{ "one", 1 },
 			{ "five", 5 }
 		});
@@ -295,6 +297,16 @@ namespace OpenRA.Test
 			AssertValue("~(~2 + ~3)", 6);
 		}
 
+		[TestCase(TestName = "Hyphen")]
+		public void TestHyphen()
+		{
+			AssertValue("t-1", 7);
+			AssertValue("-t-1", -7);
+			AssertValue("t - 1", 4);
+			AssertValue("-1", -1);
+			AssertValue("6- 3", 3);
+		}
+
 		[TestCase(TestName = "Parenthesis and mixed operations")]
 		public void TestMixedParens()
 		{
@@ -333,7 +345,17 @@ namespace OpenRA.Test
 			AssertParseFailure("false ||", "Missing value or sub-expression at end for `||` operator");
 			AssertParseFailure("1 <", "Missing value or sub-expression at end for `<` operator");
 			AssertParseFailure("-1a", "Number -1 and variable merged at index 0");
+		}
+
+		[TestCase(TestName = "Test hyphen parser errors")]
+		public void TestParseHyphenErrors()
+		{
 			AssertParseFailure("-", "Missing value or sub-expression at end for `-` operator");
+			AssertParseFailure("t- 1", "Missing binary operation before `1` at index 3");
+			AssertParseFailure("t -1", "Missing binary operation before `-1` at index 2");
+			AssertParseFailure("-1-1", "Missing binary operation before `-1` at index 2");
+			AssertParseFailure("5-1", "Missing binary operation before `-1` at index 1");
+			AssertParseFailure("6 -3", "Missing binary operation before `-3` at index 2");
 		}
 
 		[TestCase(TestName = "Undefined symbols are treated as `false` (0) values")]

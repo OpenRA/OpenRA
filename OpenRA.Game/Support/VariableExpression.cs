@@ -320,7 +320,7 @@ namespace OpenRA.Support
 						cc = CharClassOf(expression[i]);
 						if (cc != CharClass.Digit)
 						{
-							if (cc != CharClass.Whitespace && cc != CharClass.Operator)
+							if (cc != CharClass.Whitespace && cc != CharClass.Operator && cc != CharClass.Mixed)
 								throw new InvalidDataException("Number {0} and variable merged at index {1}".F(
 									int.Parse(expression.Substring(start, i - start)), start));
 
