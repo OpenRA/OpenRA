@@ -27,6 +27,11 @@ namespace OpenRA.Server
 
 		public static ServerOrder Deserialize(BinaryReader r)
 		{
+			if (r.BaseStream.Position == r.BaseStream.Length)
+			{
+				return null;
+			}
+
 			byte b;
 			switch (b = r.ReadByte())
 			{
@@ -49,13 +54,14 @@ namespace OpenRA.Server
 
 		public byte[] Serialize()
 		{
-			var ms = new MemoryStream();
-			var bw = new BinaryWriter(ms);
-
-			bw.Write((byte)0xfe);
-			bw.Write(Name);
-			bw.Write(Data);
-			return ms.ToArray();
+			using (var ms = new MemoryStream())
+			using (var bw = new BinaryWriter(ms))
+			{
+				bw.Write((byte)0xfe);
+				bw.Write(Name);
+				bw.Write(Data);
+				return ms.ToArray();
+			}
 		}
 	}
 }

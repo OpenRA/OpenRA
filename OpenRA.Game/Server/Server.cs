@@ -446,9 +446,8 @@ namespace OpenRA.Server
 
 		void InterpretServerOrders(Connection conn, byte[] data)
 		{
-			var ms = new MemoryStream(data);
-			var br = new BinaryReader(ms);
-
+			using (var ms = new MemoryStream(data))
+			using (var br = new BinaryReader(ms))
 			try
 			{
 				while (ms.Position < ms.Length)
@@ -458,7 +457,6 @@ namespace OpenRA.Server
 					InterpretServerOrder(conn, so);
 				}
 			}
-			catch (EndOfStreamException) { }
 			catch (NotImplementedException) { }
 		}
 
