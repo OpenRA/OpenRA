@@ -1,0 +1,77 @@
+Player:
+	PlayerResources:
+		DefaultCash: 5000
+
+World:
+	LuaScript:
+		Scripts: harkonnen04.lua, harkonnen04-AI.lua
+	MissionData:
+		Briefing: The native Fremen must be dealt with. Assemble a strike force to lead a sweep through the mountains. Seek out the Fremen hold, and destroy it. If any House responds, destroy it.\n\nTanks have been deployed to grind the Fremen beneath their treads. Demonstrate the power of House Harkonnen.
+		BriefingVideo: H_BR04_E.VQA
+	MapOptions:
+		TechLevel: low
+	ScriptLobbyDropdown@difficulty:
+		ID: difficulty
+		Label: Difficulty
+		Values:
+			easy: Easy
+			normal: Normal
+			hard: Hard
+		Default: easy
+
+carryall.reinforce:
+	Cargo:
+		MaxWeight: 10
+
+sietch:
+	Exit:
+		ExitCell: 0,2
+	Production:
+		Produces: Infantry
+
+nsfremen:
+	Buildable:
+		Prerequisites: ~sietch
+	AutoTarget:
+		InitialStanceAI: AttackAnything
+
+concreteb:
+	Buildable:
+		Prerequisites: ~disabled
+
+medium_gun_turret:
+	Buildable:
+		Prerequisites: ~disabled
+
+outpost:
+	Buildable:
+		Prerequisites: barracks
+
+quad:
+	Buildable:
+		Prerequisites: upgrade.light
+
+trooper:
+	Buildable:
+		Prerequisites: upgrade.barracks
+
+engineer:
+	Buildable:
+		Prerequisites: upgrade.barracks
+
+repair_pad:
+	Buildable:
+		Prerequisites: heavy_factory, upgrade.heavy
+
+mcv:
+	Buildable:
+		Prerequisites: repair_pad, upgrade.heavy
+
+upgrade.conyard:
+	Buildable:
+		Prerequisites: ~disabled
+
+fremen:
+	AutoTarget:
+		InitialStanceAI: AttackAnything
+	MustBeDestroyed:
