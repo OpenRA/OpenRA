@@ -21,7 +21,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		[ObjectCreator.UseCtor]
 		public WorldTooltipLogic(Widget widget, World world, TooltipContainerWidget tooltipContainer, ViewportControllerWidget viewport)
 		{
-			widget.IsVisible = () => viewport.TooltipType != WorldTooltipType.None;
+			widget.IsVisible = () => viewport.TooltipType != WorldTooltipType.None && !world.Paused;
 			var label = widget.Get<LabelWidget>("LABEL");
 			var flag = widget.Get<ImageWidget>("FLAG");
 			var owner = widget.Get<LabelWidget>("OWNER");
