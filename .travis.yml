@@ -23,6 +23,18 @@ addons:
 # Environment variables
 env:
   secure: "C0+Hlfa0YGErxUuWV00Tj6p45otC/D3YwYFuLpi2mj1rDFn/4dgh5WRngjvdDBVbXJ3duaZ78jPHWm1jr7vn2jqj9yETsCIK9psWd38ep/FEBM0SDr6MUD89OuXk/YyvxJAE+UXF6bXg7giey09g/CwBigjMW7ynET3wNAWPHPs="
+  global:
+   - secure: "VRSP4PUJFfBt/5goL87B7BjCbq9Bw5GwCAHaVUdLzjGeeWAuziXeQLDd9etV2920fnSFW6vAfv96BOChgtZgYdb5vurmsl+QfrsvDBCAj9g2dT7TPJRewolBKHF9yopUFXIgDIs20WiLIcx9lIIC7cGkwwyRQCrQxVunx60kCJw="
+
+addons:
+  coverity_scan:
+    project:
+      name: "OpenRA/OpenRA"
+      description: "An open-source implementation of the Command & Conquer: Red Alert engine using .NET/Mono and OpenGL."
+    notification_email: coverity@openra.net
+    build_command_prepend: "make dependencies"
+    build_command:   "make all"
+    branch_pattern: bleed
 
 # Fetch dependencies
 # Run the build script
