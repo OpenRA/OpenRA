@@ -1,0 +1,177 @@
+amcv:
+	icon: mcvicon
+		Start: 0
+
+cmin:
+	icon: ahrvicon
+		Start: 0
+		
+smcv:
+	icon: mcvicon
+		Start: 0
+
+apc:
+	icon: apcicon
+		Start: 0
+
+harv:
+	icon: harvicon
+		Start: 0
+
+hvr:
+	icon: hovricon
+		Start: 0
+
+4tnk:
+	muzzle: gunfire
+		Start: 0
+		Length: *
+	icon: xxicon
+		Start: 0
+
+truckb:
+	icon: xxicon
+		Start: 0
+
+lpst:
+	icon: lpsticon
+		Start: 0
+
+icbm:
+	icon: xxicon
+		Start: 0
+
+repair:
+	icon: rboticon
+		Start: 0
+
+art2:
+	icon: artyicon
+		Start: 0
+
+weed:
+	icon: weedicon
+		Start: 0
+
+bus:
+	icon: xxicon
+		Start: 0
+
+pick:
+	icon: xxicon
+		Start: 0
+
+car:
+	icon: xxicon
+		Start: 0
+
+wini:
+	icon: xxicon
+		Start: 0
+
+hmec:
+	icon: hmecicon
+		Start: 0
+
+bike:
+	icon: cyclicon
+		Start: 0
+
+bggy:
+	muzzle0: mgun-n
+		Start: 0
+		Length: *
+	muzzle1: mgun-nw
+		Start: 0
+		Length: *
+	muzzle2: mgun-w
+		Start: 0
+		Length: *
+	muzzle3: mgun-sw
+		Start: 0
+		Length: *
+	muzzle4: mgun-s
+		Start: 0
+		Length: *
+	muzzle5: mgun-se
+		Start: 0
+		Length: *
+	muzzle6: mgun-e
+		Start: 0
+		Length: *
+	muzzle7: mgun-ne
+		Start: 0
+		Length: *
+	icon: bggyicon
+		Start: 0
+
+sapc:
+	icon: sapcicon
+		Start: 0
+
+subtank:
+	icon: subticon
+		Start: 0
+
+sonic:
+	icon: soniicon
+		Start: 0
+
+ttnk:
+	muzzle: gunfire
+		Start: 0
+		Length: *
+	icon: tickicon
+		Start: 0
+
+stnk:
+	icon: stnkicon
+		Start: 0
+
+mmch:
+	stand:
+		Start: 0
+		Facings: -8
+		Stride: 15
+		ShadowStart: 152
+	run:
+		Start: 0
+		Length: 15
+		Facings: -8
+		ShadowStart: 152
+	turret:
+		Start: 120
+		Facings: -32
+	muzzle: gunfire
+		Start: 0
+		Length: *
+	icon: mmchicon
+		Start: 0
+
+gghunt:
+	idle:
+		Start: 0
+		Facings: 1
+		Length: 8
+		ShadowStart: 8
+	icon: seekicon
+		Start: 0
+
+smech:
+	stand:
+		Start: 96
+		Facings: -8
+		ShadowStart: 232
+	run:
+		Start: 0
+		Facings: -8
+		Length: 12
+		ShadowStart: 136
+	shoot:
+		Start: 104
+		Length: 4
+		Facings: -8
+		ShadowStart: 240
+		Tick: 100
+	icon: smchicon
+		Start: 0

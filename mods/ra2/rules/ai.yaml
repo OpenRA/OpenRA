@@ -1,0 +1,33 @@
+Player:
+	HackyAI@TestAI:
+		Name: Test AI
+		BuildingCommonNames:
+			ConstructionYard: gacnst
+			Refinery: garefn
+			Power: gapowr, napowr, naapwr
+			Barracks: gapile, nahand
+			VehiclesFactory: gaweap, naweap
+			Production: gapile, nahand, gaweap, naweap
+		UnitsCommonNames:
+			Mcv: mcv
+		BuildingLimits:
+			proc: 4
+			gapowr: 8
+			napowr: 8
+		BuildingFractions:
+			proc: 30%
+			gapowr: 35%
+			napowr: 35%
+			gapile: 1%
+			nahand: 1%
+			gaweap: 1%
+			naweap: 1%
+			garadr: 1%
+			naradr: 1%
+			gatech: 1%
+			natech: 1%
+			nastlh: 1%
+		UnitsToBuild:
+			e1: 80%
+		SquadSize: 20
+

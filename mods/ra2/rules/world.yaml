@@ -1,0 +1,129 @@
+World:
+	ChatCommands:
+	DevCommands:
+	PlayerCommands:
+	HelpCommand:
+	ScreenMap:
+	ActorMap:
+	LoadWidgetAtGameStart:
+		Widget: INGAME_ROOT
+	MenuPaletteEffect:
+	BuildingInfluence:
+	ChooseBuildTabOnSelect:
+	PaletteFromFile@player:
+		Name: player
+		Filename: unittem.pal
+		ShadowIndex: 1
+	PaletteFromFile@terrain:
+		Name: terrain
+		Filename: isotem.pal
+	PaletteFromFile@chrome:
+		Name: chrome
+		Filename: cameo.pal
+		AllowModifiers: false
+		ShadowIndex: 242
+	PaletteFromFile@pips:
+		Name: pips
+		Filename: palette.pal
+		AllowModifiers: false
+		ShadowIndex: 4
+	PaletteFromFile@ra:
+		Name: ra
+		Filename: palette.pal
+		ShadowIndex: 4
+	PaletteFromFile@effect:
+		Name: effect
+		Filename: anim.pal
+	PaletteFromFile@colorpicker:
+		Name: colorpicker
+		Filename: unittem.pal
+		AllowModifiers: false
+	PaletteFromFile@ore:
+		Name: ore
+		Filename: temperat.pal
+		ShadowIndex: 1
+	PaletteFromRGBA@shadow:
+		Name: shadow
+		R: 0
+		G: 0
+		B: 0
+		A: 140
+	PaletteFromRGBA@cloak:
+		Name: cloak
+		R: 0
+		G: 0
+		B: 0
+		A: 140
+	PaletteFromRGBA@highlight:
+		Name: highlight
+		R: 255
+		G: 255
+		B: 255
+		A: 128
+	PaletteFromRGBA@moveflash:
+		Name: moveflash
+		R: 255
+		G: 255
+		B: 255
+		A: 64
+	PaletteFromRGBA@disabled:
+		Name: disabled
+		R: 0
+		G: 0
+		B: 0
+		A: 180
+	TSShroudPalette@shroud:
+		Type: Shroud
+	ShroudRenderer:
+		Index: 255, 16, 32, 48, 64, 80, 96, 112, 128, 144, 160, 176, 192, 208, 224, 240, 20, 40, 56, 65, 97, 130, 148, 194, 24, 33, 66, 132, 28, 41, 67, 134, 1, 2, 4, 8, 3, 6, 12, 9, 7, 14, 13, 11, 5, 10, 15, 255
+		UseExtendedIndex: true
+		ShroudPalette: shroud
+		FogPalette: shroud
+	VoxelNormalsPalette@normals:
+		Name: normals
+		Type: RedAlert2
+	Country@0:
+		Name: Allies
+		Race: allies
+	Country@1:
+		Name: Soviets
+		Race: soviets
+	DomainIndex:
+	ResourceLayer:
+	ResourceClaimLayer:
+	ResourceType@Tiberium:
+		ResourceType: 1
+		Palette: ore
+		EditorSprite: waypoint # TODO: editor can't handle the real ones
+		Variants: tib01, tib02, tib03, tib04, tib05, tib06, tib07, tib08, tib09, tib10, tib11, tib12, tib13, tib14, tib15, tib16, tib17, tib18, tib19, tib20
+		MaxDensity: 12
+		ValuePerUnit: 50
+		Name: Tiberium
+		PipColor: Yellow
+		AllowedTerrainTypes: Clear
+		AllowUnderActors: false
+		TerrainType: Tiberium
+	SmudgeLayer@SCORCH:
+		Type: Scorch
+		Sequence: scorches
+		SmokePercentage: 50
+	SmudgeLayer@CRATER:
+		Type: Crater
+		Sequence: craters
+	PathfinderDebugOverlay:
+	SpawnMapActors:
+	CreateMPPlayers:
+	MPStartUnits@AMCV:
+		Races: allies
+		BaseActor: amcv
+	MPStartUnits@SMCV:
+		Races: soviets
+		BaseActor: smcv
+	MPStartLocations:
+	SpawnMPUnits:
+	PathFinder:
+	ValidateOrder:
+	DebugPauseState:
+	ScreenShaker:
+	RadarPings:
+	StartGameNotification:

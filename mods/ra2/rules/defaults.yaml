@@ -1,0 +1,266 @@
+^Building:
+	AppearsOnRadar:
+	SelectionDecorations:
+		Palette: pips
+	Selectable:
+		Priority: 3
+	TargetableBuilding:
+		TargetTypes: Ground, C4
+	Building:
+		Dimensions: 1,1
+		Footprint: x
+		BuildSounds: place2.aud
+		Adjacent: 2
+		TerrainTypes: Clear, Road
+	GivesBuildableArea:
+	Capturable:
+	SoundOnDamageTransition:
+		DamagedSound: expnew01.aud
+		DestroyedSound: crmble2.aud
+	RenderBuilding:
+	WithBuildingExplosion:
+	RepairableBuilding:
+	EngineerRepairable:
+	MustBeDestroyed:
+	GivesExperience:
+	CaptureNotification:
+	EditorAppearance:
+		RelativeToTopLeft: yes
+	ShakeOnDeath:
+	ProximityCaptor:
+		Types: Building
+	Sellable:
+	AcceptsSupplies:
+	GivesBounty:
+	UpdatesPlayerStatistics:
+	CombatDebugOverlay:
+	Guardable:
+		Range: 3
+	BodyOrientation:
+	Huntable:
+	Demolishable:
+	ScriptTriggers:
+	WithMakeAnimation:
+	# Exception of type `System.InvalidOperationException`: Palette `invuln` does not exist
+	# UpgradeOverlay@IRONCURTAIN:
+	# 	RequiresUpgrade: invulnerability
+	# InvulnerabilityUpgrade@IRONCURTAIN:
+	# 	RequiresUpgrade: invulnerability
+	# TimedUpgradeBar:
+	# 	Upgrade: invulnerability
+	UpgradeManager:
+
+^Wall:
+	AppearsOnRadar:
+	Building:
+		Dimensions: 1,1
+		Footprint: x
+		BuildSounds: place2.aud
+		Adjacent: 8
+		TerrainTypes: Clear, Road
+	SoundOnDamageTransition:
+		DamagedSound: expnew01.aud
+		DestroyedSound: crmble2.aud
+	Crushable:
+		CrushClasses: wall
+	LineBuild:
+		Range: 6
+		NodeTypes: wall
+	LineBuildNode:
+		Types: wall
+	TargetableBuilding:
+		TargetTypes: Ground
+	RenderBuildingWall:
+	EditorAppearance:
+		RelativeToTopLeft: yes
+		UseTerrainPalette: yes
+	AutoTargetIgnore:
+	ProximityCaptor:
+		Types: Wall
+	Sellable:
+	UpdatesPlayerStatistics:
+	BodyOrientation:
+	Demolishable:
+	ScriptTriggers:
+	BlocksBullets:
+
+^Infantry:
+	AppearsOnRadar:
+	Health:
+		Radius: 128
+	Armor:
+		Type: None
+	RevealsShroud:
+		Range: 4c0
+	Mobile:
+		Crushes: crate
+		SharesCell: yes
+		TerrainSpeeds:
+			Clear: 100
+			Rough: 100
+			Road: 100
+			Beach: 100
+	SelectionDecorations:
+		Palette: pips
+	Selectable:
+		Voice: Infantry
+	TargetableUnit:
+		TargetTypes: Ground
+	RenderInfantry:
+	AutoTarget:
+	AttackMove:
+	Passenger:
+		CargoType: Infantry
+	HiddenUnderFog:
+	GainsExperience:
+		ChevronPalette: ra
+		CostThreshold: 5, 10
+		FirepowerModifier: 1.2, 1.5
+		ArmorModifier: 1.2, 1.5
+		SpeedModifier: 1.2, 1.5
+	GivesExperience:
+	DrawLineToTarget:
+	ActorLostNotification:
+	ProximityCaptor:
+		Types: Infantry
+	GivesBounty:
+	Crushable:
+		CrushSound: squish6.aud
+	SpawnViceroid:
+		ViceroidActor: vissml
+	UpdatesPlayerStatistics:
+	CombatDebugOverlay:
+	Guard:
+	Guardable:
+	BodyOrientation:
+	Huntable:
+	ScriptTriggers:
+	DeathSounds@NORMAL:
+		DeathTypes: 1, 2, 3
+	DeathSounds@BURNED:
+		DeathSound: Burned
+		DeathTypes: 5
+	DeathSounds@ZAPPED:
+		DeathSound: Zapped
+		DeathTypes: 6
+	GainsStatUpgrades:
+	WithDeathAnimation:
+	UpgradeManager:
+
+^CivilianInfantry:
+	Inherits: ^Infantry
+	Selectable:
+		Voice: Civilian
+		Bounds: 12,17,0,-9
+	Valued:
+		Cost: 10
+	Tooltip:
+		Name: Civilian
+	Buildable:
+		Queue: Infantry
+		BuildPaletteOrder: 1000
+		Owner: allies, soviets
+	Health:
+		HP: 50
+	Mobile:
+		Speed: 71
+	RevealsShroud:
+		Range: 2c0
+	Armament:
+		Weapon: Pistola
+	AttackFrontal:
+	ProximityCaptor:
+		Types: CivilianInfantry
+	RenderInfantry:
+	ScaredyCat:
+	WithDeathAnimation:
+
+^Vehicle:
+	AppearsOnRadar:
+	Mobile:
+		Crushes: crate
+		TerrainSpeeds:
+			Clear: 100
+			Rough: 100
+			Road: 100
+			Beach: 100
+		ROT: 5
+	SelectionDecorations:
+		Palette: pips
+	Selectable:
+		Bounds: 32,32
+		Voice: Vehicle
+	TargetableUnit:
+		TargetTypes: Ground
+	Repairable:
+		RepairBuildings: gadept
+	Passenger:
+		CargoType: Vehicle
+	AttackMove:
+	HiddenUnderFog:
+	GainsExperience:
+		ChevronPalette: ra
+		CostThreshold: 5, 10
+		FirepowerModifier: 1.2, 1.5
+		ArmorModifier: 1.2, 1.5
+		SpeedModifier: 1.2, 1.5
+	GivesExperience:
+	DrawLineToTarget:
+	ActorLostNotification:
+	ProximityCaptor:
+		Types: Vehicle
+	GivesBounty:
+	UpdatesPlayerStatistics:
+	CombatDebugOverlay:
+	Guard:
+	Guardable:
+	BodyOrientation:
+		QuantizedFacings: 32
+		CameraPitch: 90
+	Huntable:
+	ScriptTriggers:
+	Explodes:
+		Weapon: UnitExplodeSmall
+		EmptyWeapon: UnitExplodeSmall
+	RenderVoxels:
+		LightPitch: 170
+		LightYaw: -150
+		LightAmbientColor: 0,0,0,0,0,0
+		LightDiffuseColor: 1,1,1
+	GainsStatUpgrades:
+	UpgradeManager:
+
+^Aircraft:
+	AppearsOnRadar:
+		UseLocation: yes
+	TargetableAircraft:
+		TargetTypes: Air
+		GroundedTargetTypes: Ground
+	SelectionDecorations:
+		Palette: pips
+	Selectable:
+		Voice: Heli
+	Helicopter:
+		RepairBuildings:
+		RearmBuildings:
+		LandWhenIdle: no
+	Buildable:
+		Queue: Aircraft
+	HiddenUnderFog:
+	AttackMove:
+	GainsExperience:
+		ChevronPalette: ra
+		CostThreshold: 5, 10
+		FirepowerModifier: 1.2, 1.5
+		ArmorModifier: 1.2, 1.5
+		SpeedModifier: 1.2, 1.5
+	GivesExperience:
+	DrawLineToTarget:
+	ActorLostNotification:
+	CombatDebugOverlay:
+	BodyOrientation:
+		CameraPitch: 90
+	Huntable:
+	ScriptTriggers:
+	GainsStatUpgrades:
+	UpgradeManager:

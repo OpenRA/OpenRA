@@ -1,0 +1,85 @@
+MapFormat: 7
+
+RequiresMod: ra2
+
+Title: Blank
+
+Description: Placeholder
+
+Author: Matthias Mailänder
+
+Tileset: TEMPERAT
+
+MapSize: 128,128
+
+Bounds: 16,16,96,96
+
+Visibility: Lobby
+
+Type: Conquest
+
+Videos:
+
+Options:
+
+Players:
+	PlayerReference@Neutral:
+		Name: Neutral
+		OwnsWorld: True
+		NonCombatant: True
+		Race: allies
+	PlayerReference@Multi0:
+		Name: Multi0
+		Playable: True
+		Race: Random
+		Enemies: Creeps
+	PlayerReference@Multi1:
+		Name: Multi1
+		Playable: True
+		Race: Random
+		Enemies: Creeps
+	PlayerReference@Multi2:
+		Name: Multi2
+		Playable: True
+		Race: Random
+		Enemies: Creeps
+	PlayerReference@Multi3:
+		Name: Multi3
+		Playable: True
+		Race: Random
+		Enemies: Creeps
+	PlayerReference@Creeps:
+		Name: Creeps
+		NonCombatant: True
+		Race: allies
+		Enemies: Multi0, Multi1, Multi2, Multi3
+
+Actors:
+	Actor0: mpspawn
+		Location: 50,-24
+		Owner: Neutral
+	Actor1: mpspawn
+		Location: 126,-24
+		Owner: Neutral
+	Actor2: mpspawn
+		Location: 88,14
+		Owner: Neutral
+	Actor3: mpspawn
+		Location: 88,-62
+		Owner: Neutral
+
+Smudges:
+
+Rules:
+
+Sequences:
+
+VoxelSequences:
+
+Weapons:
+
+Voices:
+
+Notifications:
+
+Translations:

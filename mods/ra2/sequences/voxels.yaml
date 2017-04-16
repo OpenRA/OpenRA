@@ -1,0 +1,173 @@
+amcv:
+	idle: mcv
+
+cmin:
+	idle:
+	unload: cmon
+
+smcv:
+	idle: mcv
+
+harv:
+	idle:
+	unload: horv
+
+apc: # TODO apcw in water
+	idle:
+
+art2:
+	idle:
+
+gaarty:
+	turret: art2tur
+	barrel: art2barl
+
+subtank:
+	idle:
+
+bggy:
+	idle:
+
+nalasr:
+	turret: laser
+
+sapc:
+	idle:
+
+bike:
+	idle:
+
+ttnk:
+	idle:
+
+gatick:
+	turret: ttnktur
+	barrel: ttnkbarl
+
+mmch:
+	barrel: mmchbarl
+
+hmec:
+	idle:
+
+hvr:
+	idle:
+	turret: hvrtur
+
+stnk:
+	idle:
+
+orca:
+	idle:
+
+orcab:
+	idle:
+
+orcatran:
+	idle:
+
+trnsport:
+	idle:
+
+scrin:
+	idle:
+
+apache:
+	idle:
+
+dshp:
+	idle:
+
+4tnk:
+	idle:
+	turret: 4tnktur
+	barrel: 4tnkbarl
+
+trucka:
+	idle:
+
+truckb:
+	idle:
+
+lpst:
+	idle:
+
+icbm:
+	idle:
+
+repair:
+	idle:
+
+weed:
+	idle:
+
+bus:
+	idle:
+
+pick:
+	idle:
+
+car:
+	idle:
+
+wini:
+	idle:
+
+sonic:
+	idle:
+	turret: sonictur
+
+#truk: # TODO: unused
+#	idle:
+
+#truck2: # TODO: unused
+#	idle:
+
+#utnk: # TODO: unused alternative version of Devil's Tongue
+#	idle:
+
+#mrj: # TODO: unused
+#	idle:
+#	turret: mrjtur
+
+#m113: # TODO: unused
+#	idle:
+#	turret: m113tur
+
+#mlrs: # TODO: unused
+#	idle:
+#	turret: mlrstur
+
+#arty: # TODO: unused
+#	idle:
+#	barrel: artybarl
+
+#1tnk: # TODO: unused
+#	idle:
+#	turret: 1tnktur
+#	barrel: 1tnkbarl
+
+#2tnk: # TODO: unused
+#	idle:
+#	turret: 2tnktur
+#	barrel: 2tnkbarl
+
+#3tnk: # TODO: unused
+#	idle:
+#	turret: 3tnktur
+#	barrel: 3tnkbarl
+
+#ftnk: # TODO: unused
+#	idle:
+
+#tire: # TODO: unused debris
+#	idle:
+
+#probe: # TODO: unused
+#	idle:
+
+#piece: # TODO: unused debris
+#	idle:
+
+dpod:
+	idle:

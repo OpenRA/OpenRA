@@ -1,0 +1,111 @@
+E1:
+	Inherits: ^Infantry
+	Buildable:
+		Queue: Infantry
+		BuildPaletteOrder: 10
+		Prerequisites: ~techlevel.infonly, gapile
+		Hotkey: i
+	Valued:
+		Cost: 120
+	Tooltip:
+		Name: Allied Grunt
+		Description: General-purpose infantry.\n  Strong vs Infantry\n  Weak vs Vehicles
+	Selectable:
+		Bounds: 12,17,0,-9
+	Health:
+		HP: 125
+	Mobile:
+		Speed: 71
+	Armament:
+		Weapon: Minigun
+	AttackFrontal:
+	TakeCover:
+	RenderInfantry:
+		IdleAnimations: idle1,idle2
+	WithDeathAnimation:
+
+E2:
+	Inherits: ^Infantry
+	Buildable:
+		Queue: Infantry
+		BuildPaletteOrder: 10
+		Prerequisites: ~techlevel.infonly, nahand
+		Hotkey: d
+	Valued:
+		Cost: 200
+	Tooltip:
+		Name: Conscript
+		Description: Soviet Grunt
+	Selectable:
+		Bounds: 12,17,0,-9
+	Health:
+		HP: 150
+	Mobile:
+		Speed: 56
+	Armament:
+		Weapon: Minigun
+	AttackFrontal:
+	TakeCover:
+	RenderInfantry:
+		IdleAnimations: idle1,idle2
+		Image: CONS
+	WithDeathAnimation:
+
+E3:
+	Inherits: ^Infantry
+	Buildable:
+		Queue: Infantry
+		BuildPaletteOrder: 20
+		Hotkey: r
+	Valued:
+		Cost: 250
+	Tooltip:
+		Name: Rocket Infantry
+		Description: Anti-tank infantry.\n  Strong vs Tanks\n  Weak vs Infantry
+	Selectable:
+		Bounds: 12,17,0,-9
+		Voice: Rocket
+	Health:
+		HP: 100
+	Mobile:
+		Speed: 42
+	Armament@PRIMARY:
+		Weapon: Bazooka
+		LocalOffset: 128,0,640
+	AttackFrontal:
+	TakeCover:
+	RenderInfantry:
+		IdleAnimations: idle1,idle2
+	WithDeathAnimation:
+
+ENGINEER:
+	Inherits: ^Infantry
+	Valued:
+		Cost: 500
+	Tooltip:
+		Name: Engineer
+		Description: Infiltrates and captures enemy structures.\n  Strong vs Nothing\n  Weak vs Everything
+	Buildable:
+		Queue: Infantry
+		BuildPaletteOrder: 30
+		Hotkey: e
+	Selectable:
+		Bounds: 12,17,0,-6
+		Voice: Engineer
+	Mobile:
+		Speed: 56
+	Health:
+		HP: 500
+	Passenger:
+		PipType: Yellow
+	EngineerRepair:
+	RepairsBridges:
+	Captures:
+		CaptureTypes: building
+	-AutoTarget:
+	RenderInfantry:
+		IdleAnimations: idle1,idle2
+	TakeCover:
+	-GainsExperience:
+	WithDeathAnimation:
+

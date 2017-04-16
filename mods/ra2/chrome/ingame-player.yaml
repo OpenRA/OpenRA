@@ -1,0 +1,123 @@
+Container@PLAYER_WIDGETS:
+	Children:
+		LogicKeyListener@CONTROLGROUP_KEYHANDLER:
+			Logic: ControlGroupLogic
+		LogicTicker@SIDEBAR_TICKER:
+		MenuButton@OPTIONS_BUTTON:
+			Logic: OrderButtonsChromeLogic
+			MenuContainer: INGAME_MENU
+			X: 0
+			Y: 0
+			Width: 160
+			Height: 25
+			Text: Options (Esc)
+			Font: Bold
+			Key: escape
+		MenuButton@DIPLOMACY_BUTTON:
+			Logic: OrderButtonsChromeLogic
+			MenuContainer: INGAME_DIPLOMACY_BG
+			HideIngameUI: False
+			X: 162
+			Y: 0
+			Width: 160
+			Height: 25
+			Text: Diplomacy (P)
+			Font: Bold
+			Key: p
+		MenuButton@DEBUG_BUTTON:
+			Logic: OrderButtonsChromeLogic
+			MenuContainer: INGAME_MENU
+			X: 324
+			Y: 0
+			Width: 160
+			Height: 25
+			Text: Debug (Shift + Esc)
+			Visible: false
+			Font: Bold
+			Key: escape Shift
+		SlidingContainer@INGAME_RADAR_BIN:
+			Logic: SlidingRadarBinLogic
+			X: WINDOW_RIGHT-215
+			Y: 0
+			OpenOffset: 0,29
+			ClosedOffset: 0,-166
+			AnimationLength: 15
+			Children:
+				LogicTicker@RADAR_TICKER:
+				Image@RADAR_BIN_BG:
+					ImageName: radar
+				Radar@RADAR_MINIMAP:
+					WorldInteractionController: INTERACTION_CONTROLLER
+					X: 9
+					Width: 192
+					Height: 192
+				ResourceBar@POWERBAR:
+					Logic: IngamePowerBarLogic
+					X: 42
+					Y: 205
+					Width: 138
+					Height: 5
+					TooltipContainer: TOOLTIP_CONTAINER
+					TooltipTemplate: SIMPLE_TOOLTIP
+					IndicatorImage: power-indicator
+					Orientation: Horizontal
+					Style: Bevelled
+		MoneyBin@INGAME_MONEY_BIN:
+			Logic: OrderButtonsChromeLogic
+			X: WINDOW_RIGHT - WIDTH
+			Width: 320
+			Height: 32
+			Children:
+				Button@BEACON_BUTTON:
+					X: 3-36
+					Width: 34
+					Height: 28
+					TooltipText: Place Beacon
+					TooltipContainer: TOOLTIP_CONTAINER
+					VisualHeight: 0
+					Children:
+						Image@ICON:
+							ImageCollection: order-icons
+				Button@SELL_BUTTON:
+					X: 3
+					Width: 34
+					Height: 28
+					TooltipText: Sell
+					TooltipContainer: TOOLTIP_CONTAINER
+					VisualHeight: 0
+					Children:
+						Image@ICON:
+							ImageCollection: order-icons
+				Button@POWER_BUTTON:
+					X: 39
+					Width: 34
+					Height: 28
+					TooltipText: Power Down
+					TooltipContainer: TOOLTIP_CONTAINER
+					VisualHeight: 0
+					Children:
+						Image@ICON:
+							ImageCollection: order-icons
+				Button@REPAIR_BUTTON:
+					X: 75
+					Width: 34
+					Height: 28
+					TooltipText: Repair
+					TooltipContainer: TOOLTIP_CONTAINER
+					VisualHeight: 0
+					Children:
+						Image@ICON:
+							ImageCollection: order-icons
+		SupportPowerBin@INGAME_POWERS_BIN:
+			X: 0
+			Y: 25
+			ReadyText: READY
+			HoldText: ON HOLD
+		BuildPalette@INGAME_BUILD_PALETTE:
+			X: WINDOW_RIGHT - 250
+			Y: 280
+			Width: 250
+			Height: 500
+			ReadyText: READY
+			HoldText: ON HOLD
+			RequiresText: Requires {0}

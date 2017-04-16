@@ -1,0 +1,26 @@
+# General dumping-ground for UI element sizes, etc.
+
+Metrics:
+	ButtonDepth: 1
+	ButtonFont: Regular
+	ButtonTextColor: 255,255,255
+	ButtonTextColorDisabled: 128,128,128
+	ButtonTextContrast: false
+	ButtonTextContrastColor: 0,0,0
+	CheckboxPressedState: false
+	HotkeyFont: Regular
+	HotkeyColor: 255,255,255
+	HotkeyColorDisabled: 128,128,128
+	TextfieldFont: Regular
+	TextfieldColor: 255,255,255
+	TextfieldColorDisabled: 128,128,128
+	TextfieldColorInvalid: 255,192,192
+	TextFont: Regular
+	TextColor: 255,255,255
+	TextContrast: false
+	TextContrastColor: 0,0,0
+	ColorPickerRemapIndices: 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31
+	SpawnFont: TinyBold
+	SpawnColor: 255,255,255
+	SpawnContrastColor: 0,0,0
+	SpawnLabelOffset: 0,1

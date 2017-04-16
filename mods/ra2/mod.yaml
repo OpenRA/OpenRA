@@ -1,0 +1,201 @@
+Metadata:
+	Title: Red Alert 2
+	Description: The Soviet Union is back!\nThis time to conquer the United States...
+	Version: {DEV_VERSION}
+	Author: Phrohdoh
+
+Folders:
+	.
+# Red Alert 2
+	./mods/ra2
+	./mods/ra2/bits
+	./mods/ra2/bits/cameos
+	./mods/ra2/bits/vehicles
+	./mods/ra2/bits/structures
+	./mods/ra2/bits/temperate
+	./mods/ra2/bits/themes
+	./mods/ra2/bits/animations
+	./mods/ra2/uibits
+	~^Content/ra2
+
+MapFolders:
+	./mods/ra2/maps: System
+	~^maps/ra2: User
+
+Packages:
+# Red Alert 2
+	# audio.mix:CRC32
+	cache.mix:CRC32
+	# cameo.mix:CRC32
+	conquer.mix:CRC32
+	generic.mix:CRC32
+	isogen.mix:CRC32
+	isosnow.mix:CRC32
+	isotemp.mix:CRC32
+	isourb.mix:CRC32
+	load.mix:CRC32
+	local.mix:CRC32
+	neutral.mix:CRC32
+	sidec01.mix:CRC32
+	sidec02.mix:CRC32
+	sidenc01.mix:CRC32
+	sidenc02.mix:CRC32
+	sno.mix:CRC32
+	snow.mix:CRC32
+	tem.mix:CRC32
+	temperat.mix:CRC32
+	# theme.mix:CRC32
+	urb.mix:CRC32
+	urban.mix:CRC32
+
+PackageContents:
+
+Rules:
+	./mods/ra2/rules/misc.yaml
+	./mods/ra2/rules/ai.yaml
+	./mods/ra2/rules/player.yaml
+	./mods/ra2/rules/world.yaml
+	./mods/ra2/rules/aircraft.yaml
+	./mods/ra2/rules/defaults.yaml
+	./mods/ra2/rules/infantry.yaml
+	./mods/ra2/rules/structures.yaml
+	./mods/ra2/rules/vehicles.yaml
+
+Sequences:
+	./mods/ra2/sequences/aircraft.yaml
+	./mods/ra2/sequences/infantry.yaml
+	./mods/ra2/sequences/misc.yaml
+	./mods/ra2/sequences/structures.yaml
+	./mods/ra2/sequences/vehicles.yaml
+
+VoxelSequences:
+	./mods/ra2/sequences/voxels.yaml
+
+Cursors:
+	./mods/ra2/cursors.yaml
+
+Chrome:
+	./mods/ra2/chrome.yaml
+
+Assemblies:
+	./mods/common/OpenRA.Mods.Common.dll
+	./mods/ra/OpenRA.Mods.RA.dll
+	./mods/d2k/OpenRA.Mods.D2k.dll
+	./mods/cnc/OpenRA.Mods.Cnc.dll
+	./mods/ts/OpenRA.Mods.TS.dll
+
+ChromeLayout:
+	./mods/ra/chrome/ingame-chat.yaml
+	./mods/ra/chrome/ingame-diplomacy.yaml
+	./mods/ra/chrome/ingame-fmvplayer.yaml
+	./mods/ra/chrome/ingame-menu.yaml
+	./mods/ra/chrome/ingame-info.yaml
+	./mods/ra/chrome/ingame-infoscripterror.yaml
+	./mods/ra/chrome/ingame-infobriefing.yaml
+	./mods/ra/chrome/ingame-infoobjectives.yaml
+	./mods/ra/chrome/ingame-infostats.yaml
+	./mods/ra/chrome/ingame-observerstats.yaml
+	./mods/ra/chrome/ingame-debug.yaml
+	./mods/ra/chrome/ingame-leavemap.yaml
+	./mods/ra/chrome/mainmenu.yaml
+	./mods/ra/chrome/settings.yaml
+	./mods/ra/chrome/credits.yaml
+	./mods/ra/chrome/lobby.yaml
+	./mods/ra/chrome/lobby-mappreview.yaml
+	./mods/ra/chrome/lobby-playerbin.yaml
+	./mods/ra/chrome/lobby-dialogs.yaml
+	./mods/ra/chrome/map-chooser.yaml
+	./mods/ra/chrome/create-server.yaml
+	./mods/ra/chrome/serverbrowser.yaml
+	./mods/ra/chrome/connection.yaml
+	./mods/ra/chrome/directconnect.yaml
+	./mods/ra/chrome/replaybrowser.yaml
+	./mods/ra/chrome/musicplayer.yaml
+	./mods/ra/chrome/tooltips.yaml
+	./mods/ra/chrome/assetbrowser.yaml
+	./mods/ra/chrome/missionbrowser.yaml
+	./mods/ra/chrome/confirmation-dialogs.yaml
+
+	./mods/ra2/chrome/ingame.yaml
+	./mods/ra2/chrome/ingame-player.yaml
+	./mods/ra2/chrome/ingame-observer.yaml
+	./mods/ra2/chrome/color-picker.yaml
+	./mods/ra2/chrome/install.yaml
+	./mods/ra2/chrome/dropdowns.yaml
+
+
+Weapons:
+	./mods/ra2/weapons.yaml
+
+Voices:
+	./mods/ra2/voices.yaml
+
+Notifications:
+	./mods/ra2/notifications.yaml
+
+TileSets:
+	./mods/ra2/tilesets/temperat.yaml
+
+TileSize: 60,30
+TileShape: Diamond
+SubCells:
+	Offsets: 0,0,0, -256,128,0, 0,-128,0, 256,128,0
+	DefaultIndex: 2
+
+Music:
+	./mods/ra2/music.yaml
+
+Movies:
+
+Translations:
+	./mods/ra2/languages/english.yaml
+
+LoadScreen: LogoStripeLoadScreen
+	Image: ./mods/ra2/uibits/loadscreen.png
+	Text: Loading...
+
+ContentInstaller:
+
+ServerTraits:
+	LobbyCommands
+	PlayerPinger
+	MasterServerPinger
+
+LobbyDefaults:
+	AllowCheats: true
+	Crates: true
+	StartingUnitsClass: none
+	FragileAlliances: false
+	Shroud: false
+	Fog: false
+	ShortGame: false
+
+ChromeMetrics:
+	./mods/ra2/metrics.yaml
+
+Fonts:
+	Regular:
+		Font:./mods/common/FreeSans.ttf
+		Size:14
+	Bold:
+		Font:./mods/common/FreeSansBold.ttf
+		Size:14
+	Title:
+		Font:./mods/common/FreeSansBold.ttf
+		Size:32
+	BigBold:
+		Font:./mods/common/FreeSansBold.ttf
+		Size:24
+	Small:
+		Font:./mods/common/FreeSans.ttf
+		Size:12
+	Tiny:
+		Font:./mods/common/FreeSans.ttf
+		Size:10
+	TinyBold:
+		Font:./mods/common/FreeSansBold.ttf
+		Size:10
+
+SupportsMapsFrom: ra2
+
+SpriteFormats: ShpTS, TmpTS, ShpTD

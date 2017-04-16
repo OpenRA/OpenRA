@@ -1,0 +1,199 @@
+#
+#	ALLIED VEHICLES
+#
+
+AMCV:
+	Inherits: ^Vehicle
+	Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 110
+		Prerequisites: ~vehicles.allies
+		Hotkey: b
+	Valued:
+		Cost: 3000
+	Tooltip:
+		Name: Allied Mobile Construction Vehicle
+		Description: Deploys into an Allied Construction Yard.
+	Selectable:
+		Priority: 3
+	Health:
+		HP: 1000
+	Armor:
+		Type: Heavy
+	SelfHealing:
+		Step: 5
+		Ticks: 10
+		HealIfBelow: 100%
+	Mobile:
+		Speed: 80
+		ROT: 5
+		Crushes: wall, crate, infantry
+	RevealsShroud:
+		Range: 4c0
+	MustBeDestroyed:
+	BaseBuilding:
+	Transforms:
+		IntoActor: gacnst
+		Offset: -1,-1
+		Facing: 96
+		TransformSounds: facbld1.aud
+		NoTransformSounds:
+	RenderSprites:
+	RenderVoxels:
+	WithVoxelBody:
+
+CMIN:
+	Inherits: ^Vehicle
+	Valued:
+		Cost: 1400
+	Tooltip:
+		Name: Chrono Miner
+		Description: Collects ore for processing.
+	Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 10
+		Hotkey: h
+	Selectable:
+		Priority: 7
+	Harvester:
+		Capacity: 20
+		Resources: Tiberium
+		UnloadTicksPerBale: 1
+		SearchFromProcRadius: 24
+		SearchFromOrderRadius: 12
+	Mobile:
+		Speed: 80
+		ROT: 5
+		Crushes: wall, crate, infantry
+	Health:
+		HP: 1000
+	Armor:
+		Type: Medium
+	SelfHealing:
+		Step: 5
+		Ticks: 10
+		HealIfBelow: 100%
+	RevealsShroud:
+		Range: 4c0
+	-GainsExperience:
+	RenderSprites:
+	RenderVoxels:
+	WithVoxelUnloadBody:
+
+#
+#	SOVIET VEHICLES
+#
+
+SMCV:
+	Inherits: ^Vehicle
+	Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 110
+		Hotkey: b
+	Valued:
+		Cost: 3000
+	Tooltip:
+		Name: Soviet Mobile Construction Vehicle
+		Description: Deploys into a Soviet Construction Yard.
+	Selectable:
+		Priority: 3
+		Bounds: 64,58
+	Health:
+		HP: 1000
+	Armor:
+		Type: Heavy
+	Mobile:
+		Speed: 85
+		ROT: 8
+		WaitAverage: 0
+		Crushes: wall, crate, infantry
+	RevealsShroud:
+		Range: 4c0
+	MustBeDestroyed:
+	BaseBuilding:
+	Transforms:
+		IntoActor: nacnst
+		Offset: -1,-1
+		Facing: 96
+		TransformSounds: facbld1.aud
+		NoTransformSounds:
+	RenderSprites:
+	RenderVoxels:
+	WithVoxelBody:
+
+TRUCKB:
+	Inherits: ^Vehicle
+	Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 120
+		Hotkey: t
+	Valued:
+		Cost: 500
+	Tooltip:
+		Name: Truck
+		Description: Transports cash to other players.\n  Unarmed
+	Health:
+		HP: 2000
+	Armor:
+		Type: Light
+	Mobile:
+		Speed: 56
+	RevealsShroud:
+		Range: 5c0
+	SupplyTruck:
+		Payload: 500
+	RenderSprites:
+	RenderVoxels:
+	WithVoxelBody:
+
+BUS:
+	Inherits: ^Vehicle
+	Valued:
+		Cost: 800
+	Tooltip:
+		Name: School Bus
+	Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 300
+	Mobile:
+		ROT: 5
+		Speed: 113
+	Health:
+		HP: 100
+	Armor:
+		Type: Light
+	RevealsShroud:
+		Range: 5c0
+	Cargo:
+		Types: Infantry
+		MaxWeight: 20
+		PipCount: 5
+	RenderSprites:
+	RenderVoxels:
+	WithVoxelBody:
+
+PICK:
+	Inherits: ^Vehicle
+	Valued:
+		Cost: 800
+	Tooltip:
+		Name: Pickup
+	Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 300
+	Mobile:
+		ROT: 5
+		Speed: 113
+	Health:
+		HP: 100
+	Armor:
+		Type: Light
+	RevealsShroud:
+		Range: 5c0
+	Cargo:
+		Types: Infantry
+		MaxWeight: 2
+		PipCount: 5
+	RenderSprites:
+	RenderVoxels:
+	WithVoxelBody:

@@ -1,0 +1,159 @@
+Background@INSTALL_PANEL:
+	Logic: InstallLogic
+	X: (WINDOW_RIGHT - WIDTH)/2
+	Y: (WINDOW_BOTTOM - HEIGHT)/2
+	Width: 500
+	Height: 160
+	Children:
+		Label@TITLE:
+			X: 0
+			Y: 20
+			Width: PARENT_RIGHT
+			Height: 25
+			Text: Install Required
+			Align: Center
+			Font: Bold
+		Label@DESC1:
+			X: 0
+			Y: 50
+			Width: PARENT_RIGHT
+			Height: 25
+			Text: OpenRA requires the original Red Alert 2 game content.
+			Align: Center
+		Label@DESC2:
+			X: 0
+			Y: 70
+			Width: PARENT_RIGHT
+			Height: 25
+			Text: Content can be downloaded, or copied from the install CD.
+			Align: Center
+		Button@DOWNLOAD_BUTTON:
+			X: 20
+			Y: PARENT_BOTTOM - 45
+			Width: 110
+			Height: 25
+			Text: Download
+			Font: Bold
+		Button@INSTALL_BUTTON:
+			X: 140
+			Y: PARENT_BOTTOM - 45
+			Width: 110
+			Height: 25
+			Text: Use CD
+			Font: Bold
+		Button@BACK_BUTTON:
+			X: PARENT_RIGHT - 130
+			Y: PARENT_BOTTOM - 45
+			Width: 110
+			Height: 25
+			Text: Back
+			Font: Bold
+
+Background@INSTALL_DOWNLOAD_PANEL:
+	Logic: DownloadPackagesLogic
+	X: (WINDOW_RIGHT - WIDTH)/2
+	Y: (WINDOW_BOTTOM - HEIGHT)/2
+	Width: 500
+	Height: 160
+	Children:
+		Label@TITLE:
+			X: 0
+			Y: 20
+			Width: PARENT_RIGHT
+			Height: 25
+			Text: Downloading Red Alert 2 Content
+			Align: Center
+			Font: Bold
+		ProgressBar@PROGRESS_BAR:
+			X: 50
+			Y: 55
+			Width: PARENT_RIGHT - 100
+			Height: 25
+		Label@STATUS_LABEL:
+			X: 50
+			Y: 80
+			Width: PARENT_RIGHT - 100
+			Height: 25
+			Align: Left
+		Button@RETRY_BUTTON:
+			X: PARENT_RIGHT - 280
+			Y: PARENT_BOTTOM - 45
+			Width: 120
+			Height: 25
+			Visible: false
+			Text: Retry
+			Font: Bold
+			Key: return
+		Button@CANCEL_BUTTON:
+			X: PARENT_RIGHT - 140
+			Y: PARENT_BOTTOM - 45
+			Width: 120
+			Height: 25
+			Text: Cancel
+			Font: Bold
+			Key: escape
+
+Background@INSTALL_FROMCD_PANEL:
+	Logic: InstallFromCDLogic
+	X: (WINDOW_RIGHT - WIDTH)/2
+	Y: (WINDOW_BOTTOM - HEIGHT)/2
+	Width: 500
+	Height: 160
+	Children:
+		Label@TITLE:
+			X: 0
+			Y: 20
+			Width: PARENT_RIGHT
+			Height: 25
+			Text: Installing from CD
+			Align: Center
+			Font: Bold
+		Container@INSTALLING:
+			Width: PARENT_RIGHT
+			Height: PARENT_BOTTOM
+			Visible: false
+			Children:
+				ProgressBar@PROGRESS_BAR:
+					X: 50
+					Y: 55
+					Width: PARENT_RIGHT - 100
+					Height: 25
+				Label@STATUS_LABEL:
+					X: 50
+					Y: 80
+					Width: PARENT_RIGHT - 100
+					Height: 25
+					Align: Left
+		Container@INSERT_DISK:
+			Width: PARENT_RIGHT
+			Height: PARENT_BOTTOM
+			Visible: false
+			Children:
+				Label@INFO:
+					Y: 50
+					Width: PARENT_RIGHT
+					Height: 25
+					Text: Disk not found.
+					Align: Center
+				Label@INFO2:
+					Y: 70
+					Width: PARENT_RIGHT
+					Height: 25
+					Text: Please insert one of the Red Alert 2 install CDs then click Retry.
+					Align: Center
+		Button@RETRY_BUTTON:
+			X: PARENT_RIGHT - 280
+			Y: PARENT_BOTTOM - 45
+			Width: 120
+			Height: 25
+			Text: Retry
+			Font: Bold
+			Key: return
+		Button@BACK_BUTTON:
+			X: PARENT_RIGHT - 140
+			Y: PARENT_BOTTOM - 45
+			Width: 120
+			Height: 25
+			Text: Cancel
+			Font: Bold
+			Key: escape

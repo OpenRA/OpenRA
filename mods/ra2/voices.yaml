@@ -1,0 +1,121 @@
+Infantry:
+	Voices:
+		Select: 15-I000, 15-I004, 15-I012, 15-I048
+		Move: 15-I018, 15-I024, 15-I044
+		Attack: 15-I044, 15-I050, 15-I044, 15-I046
+#		Feedback: 15-I058, 15-I064 # TODO
+		Die: DEDMAN1, DEDMAN3, DEDMAN4, DEDMAN5, DEDMAN6
+		Burned: DEDMAN2
+		Zapped: ELECTRO1
+
+Rocket:
+	Voices:
+		Select: 15-I000, 15-I032, 15-I048
+		Move: 15-I008, 15-I014, 15-I026
+		Attack: 15-I008, 15-I014, 15-I026, 15-I050, 15-I060
+#		Feedback: 15-I058, 15-I064 #TODO
+		Die: DEDMAN1, DEDMAN3, DEDMAN4, DEDMAN5, DEDMAN6
+		Burned: DEDMAN2
+		Zapped: ELECTRO1
+
+Medic:
+	Voices:
+		Select: 20-I000, 20-I004, 20-I006
+		Move: 20-I008, 20-I010, 20-I012
+		Attack: 20-I016, 20-I018, 20-I020
+		Die: DEDMAN1, DEDMAN3, DEDMAN4, DEDMAN5, DEDMAN6
+		Burned: DEDMAN2
+		Zapped: ELECTRO1
+
+Engineer:
+	Voices:
+		Select: 19-I000, 19-I002, 19-I006
+		Move: 19-I010, 19-I016
+		Attack: 19-I018, 19-I016
+		Die: DEDMAN1, DEDMAN3, DEDMAN4, DEDMAN5, DEDMAN6
+		Burned: DEDMAN2
+		Zapped: ELECTRO1
+
+JumpJet:
+	Voices:
+		Select: 15-I000, 15-I004, 15-I012, 15-I048
+		Move: 15-I018, 15-I024, 15-I044
+		Attack: 15-I044, 15-I050, 15-I044, 15-I046
+#		Feedback: 15-I058, 15-I064
+		Die: DEDMAN1, DEDMAN3, DEDMAN4, DEDMAN5, DEDMAN6
+		Burned: DEDMAN2
+		Zapped: ELECTRO1
+
+Weed:
+	Voices:
+		Select: 15-I000, 15-I006, 15-I040, 15-I042
+		Move: 15-I024, 15-I044
+		Attack: 15-I006, 15-I046
+#		Feedback: 15-I058, 15-I064 # TODO
+		Die: DEDMAN1, DEDMAN3, DEDMAN4, DEDMAN5, DEDMAN6
+		Burned: DEDMAN2
+		Zapped: ELECTRO1
+
+Spy:
+	Voices:
+		Select: 21-I000, 21-I002, 21-I004
+		Move: 21-I010, 21-I012, 21-I016
+		Attack: 21-I010, 21-I012, 21-I022
+#		Feedback: 21-I000, 21-I002 # TODO
+		Die: DEDMAN1, DEDMAN3, DEDMAN4, DEDMAN5, DEDMAN6
+		Burned: DEDMAN2
+		Zapped: ELECTRO1
+
+Hijacker:
+	Voices:
+		Select: 24-I000, 24-I002, 24-I004, 24-I006
+		Move: 24-I008, 24-I010, 24-I012, 24-I014
+		Attack: 24-I016, 24-I018, 24-I020, 24-I022, 24-I024
+		Die: DEDMAN1, DEDMAN3, DEDMAN4, DEDMAN5, DEDMAN6
+		Burned: DEDMAN2
+		Zapped: ELECTRO1
+
+Fiend:
+	Voices:
+		Select:
+		Move:
+		Attack:
+		Die: FIEND1
+		Burned: FIEND1
+		Zapped: FIEND1
+
+Vehicle:
+	Voices:
+		Select: 25-I000, 25-I002, 25-I004, 25-I006
+		Move: 25-I012, 25-I014, 25-I016, 25-I018, 25-I022
+		Attack: 25-I014, 25-I022, 25-I024, 25-I026
+
+Mech:
+	Voices:
+		Select: 15-I000, 15-I006, 15-I040, 15-I042
+		Move: 15-I024, 15-I044
+		Attack: 15-I006, 15-I046
+
+Heli:
+	Voices:
+		Select: 30-I000, 30-I002, 30-I004, 30-I006
+		Move: 30-I014, 30-I016, 30-I018, 30-I022
+		Attack: 30-I022, 30-I030, 30-I034, 30-I036
+
+Civilian:
+	Voices:
+		Select:
+		Move:
+		Attack:
+		Die: DEDMAN1, DEDMAN3, DEDMAN4, DEDMAN5, DEDMAN6
+		Burned: DEDMAN2
+		Zapped: ELECTRO1
+
+CivilianFemale: #can be used for female mutant as well
+	Voices:
+		Select:
+		Move:
+		Attack:
+		Die: DEDGIRL1, DEDGIRL2, DEDGIRL4
+		Burned: DEDGIRL3
+		Zapped: ELECTRO1

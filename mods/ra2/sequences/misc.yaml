@@ -1,0 +1,498 @@
+overlay:
+	build-valid-temperat: place
+		Start: 0
+		Offset: 0,-15,0
+	build-invalid: place
+		Start: 1
+		Offset: 0,-15,0
+	target-select: place
+		Start: 1
+		Offset: 0,-15,0
+	target-valid-temperat: place
+		Start: 1
+		Offset: 0,-15,0
+	target-invalid: place
+		Start: 1
+		Offset: 0,-15,0
+
+poweroff:
+	offline: poweroff
+		Start: 0
+		Length: *
+		Tick: 160
+
+allyrepair:
+	repair: wrench
+		Start: 0
+		Length: 7
+		Tick: 160
+
+# TODO: fix/replace them, just placeholders
+rallypoint:
+	flag: smokland
+		Start: 40
+		Length: 50
+		Offset: 5,-3
+		BlendMode: Additive
+	circles: ring
+		Start: 0
+		Length: 12
+		BlendMode: Additive
+
+beacon:
+	arrow: mouse
+		Start: 6
+		Offset: 1,-12
+	circles: ring
+		Start: 0
+		Length: 12
+		BlendMode: Additive
+
+#crate-effects:
+#	dollar: money
+#		Start: 0
+#		Length: *
+#	reveal-map: reveal
+#		Start: 0
+#		Length: *
+#	hide-map: shroudx
+#		Start: 0
+#		Length: *
+#	fpower: firepowr
+#		Start: 0
+#		Length: *
+#	armor: armor
+#		Start: 0
+#		Length: *
+#	stealth: cloak
+#		Start: 0
+#		Length: *
+#	heal: healall
+#		Start: 0
+#		Length: *
+#	nuke: mltimisl
+#		Start: 0
+#		Length: *
+#	levelup: veteran
+#		Start: 0
+#		Length: *
+
+rank:
+	rank: pips
+		Start: 7
+		Length: 2
+
+mpspawn: # TODO: backfall to RA asset
+	idle:
+		Start: 0
+		Length: *
+
+waypoint: # TODO: backfall to RA asset
+	idle:
+		Start: 0
+		Length: *
+
+clock:
+	idle: pips #gclock2
+		Start: 7#0
+		Length: 2#*
+
+pips:
+	medic:
+		Start: 6
+	groups: pipsra #TODO: backfall to RA asset
+		Start: 8
+		Length: 10
+	tag-primary: pipsra #TODO: backfall to RA asset
+		Start: 2
+	pip-empty: pips2
+		Start: 0
+	pip-green: pips2
+		Start: 1
+	pip-yellow: pips2
+		Start: 2
+	pip-gray: pips2
+		Start: 3
+	pip-red: pips2
+		Start: 4
+	pip-blue: pips2
+		Start: 5
+	pip-ammo: ammopips
+		Start: 0
+	pip-ammoempty: ammopips
+		Start: 1
+# TODO:
+	pip-empty-building:
+		Start: 0
+	pip-green-building:
+		Start: 1
+	pip-yellow-building:
+		Start: 2
+	pip-gray-building:
+		Start: 3
+	pip-red-building:
+		Start: 4
+	pip-blue-building:
+		Start: 5
+
+explosion:
+	building: twlt070
+		Start: 0
+		Length: *
+	ionring: ring1
+		Start: 0
+		Length: *
+		Tick: 160
+	pulse_explosion: pulsefx2
+		Start: 0
+		Length: *
+		Tick: 160
+		BlendMode: Additive
+	small_watersplash: h2o_exp2
+		Start: 0
+		Length: *
+	large_watersplash: h2o_exp1
+		Start: 0
+		Length: *
+	piff: piff
+		Start: 0
+		Length: *
+	piffpiff: piffpiff
+		Start: 0
+		Length: *
+	small_explosion: explosml
+		Start: 0
+		Length: *
+	medium_explosion: explomed
+		Start: 0
+		Length: *
+	large_explosion: explolrg
+		Start: 0
+		Length: *
+	tiny_bang: s_bang16
+		Start: 0
+		Length: *
+	small_bang: s_bang24
+		Start: 0
+		Length: *
+	medium_bang: s_bang34
+		Start: 0
+		Length: *
+	large_bang: s_bang48
+		Start: 0
+		Length: *
+	tiny_brnl: s_brnl20
+		Start: 0
+		Length: *
+	small_brnl: s_brnl30
+		Start: 0
+		Length: *
+	medium_brnl: s_brnl40
+		Start: 0
+		Length: *
+	large_brnl: s_brnl58
+		Start: 0
+		Length: *
+	tiny_tumu: s_tumu22
+		Start: 0
+		Length: *
+	small_tumu: s_tumu30
+		Start: 0
+		Length: *
+	medium_tumu: s_tumu42
+		Start: 0
+		Length: *
+	large_tumu: s_tumu60
+		Start: 0
+		Length: *
+	tiny_clsn: s_clsn16
+		Start: 0
+		Length: *
+	small_clsn: s_clsn22
+		Start: 0
+		Length: *
+	medium_clsn: s_clsn30
+		Start: 0
+		Length: *
+	large_clsn: s_clsn42
+		Start: 0
+		Length: *
+	verylarge_clsn: s_clsn58
+		Start: 0
+		Length: *
+	tiny_twlt: twlt026
+		Start: 0
+		Length: *
+	small_twlt: twlt036
+		Start: 0
+		Length: *
+	medium_twlt: twlt050
+		Start: 0
+		Length: *
+	large_twlt: twlt070
+		Start: 0
+		Length: *
+	verylarge_twlt: twlt100
+		Start: 0
+		Length: *
+	tiny_grey_explosion: xgrysml1
+		Start: 0
+		Length: *
+	small_grey_explosion: xgrysml2
+		Start: 0
+		Length: *
+	medium_grey_explosion: xgrymed1
+		Start: 0
+		Length: *
+	large_grey_explosion: xgrymed2
+		Start: 0
+		Length: *
+
+discus:
+	idle:
+		Start: 0
+		Length: *
+
+canister:
+	idle:
+		Start: 0
+		Length: *
+
+dragon:
+	idle:
+		Start: 0
+		Facings: 32
+
+crystal4:
+	idle:
+		Start: 0
+		Length: 15
+		ShadowStart: 15
+
+120mm:
+	idle:
+		Start: 0
+
+torpedo:
+	idle:
+		Start: 0
+		Length: *
+
+flameall:
+	idle:
+		Start: 0
+		Length: 19
+		Facings: -8
+		Tick: 160
+
+#TODO: placeholder to fix crashes related to smoke
+smoke_m:
+	idle: fire3
+		Start: 0
+		Length: *
+
+moveflsh:
+	idle: ring
+		Start: 0
+		Length: *
+		Tick: 30
+
+resources:
+	tib01: tib01
+		Start: 0
+		Length: 12
+		ShadowStart: 12
+		Offset: 0,-15,0
+	tib02: tib02
+		Start: 0
+		Length: 12
+		ShadowStart: 12
+		Offset: 0,-15,0
+	tib03: tib03
+		Start: 0
+		Length: 12
+		ShadowStart: 12
+		Offset: 0,-15,0
+	tib04: tib04
+		Start: 0
+		Length: 12
+		ShadowStart: 12
+		Offset: 0,-15,0
+	tib05: tib05
+		Start: 0
+		Length: 12
+		ShadowStart: 12
+		Offset: 0,-15,0
+	tib06: tib06
+		Start: 0
+		Length: 12
+		ShadowStart: 12
+		Offset: 0,-15,0
+	tib07: tib07
+		Start: 0
+		Length: 12
+		ShadowStart: 12
+		Offset: 0,-15,0
+	tib08: tib08
+		Start: 0
+		Length: 12
+		ShadowStart: 12
+		Offset: 0,-15,0
+	tib09: tib09
+		Start: 0
+		Length: 12
+		ShadowStart: 12
+		Offset: 0,-15,0
+	tib10: tib10
+		Start: 0
+		Length: 12
+		ShadowStart: 12
+		Offset: 0,-15,0
+	tib11: tib11
+		Start: 0
+		Length: 12
+		ShadowStart: 12
+		Offset: 0,-15,0
+	tib12: tib12
+		Start: 0
+		Length: 12
+		ShadowStart: 12
+		Offset: 0,-15,0
+	tib13: tib13
+		Start: 0
+		Length: 12
+		ShadowStart: 12
+		Offset: 0,-15,0
+	tib14: tib14
+		Start: 0
+		Length: 12
+		ShadowStart: 12
+		Offset: 0,-15,0
+	tib15: tib15
+		Start: 0
+		Length: 12
+		ShadowStart: 12
+		Offset: 0,-15,0
+	tib16: tib16
+		Start: 0
+		Length: 12
+		ShadowStart: 12
+		Offset: 0,-15,0
+	tib17: tib17
+		Start: 0
+		Length: 12
+		ShadowStart: 12
+		Offset: 0,-15,0
+	tib18: tib18
+		Start: 0
+		Length: 12
+		ShadowStart: 12
+		Offset: 0,-15,0
+	tib19: tib19
+		Start: 0
+		Length: 12
+		ShadowStart: 12
+		Offset: 0,-15,0
+	tib20: tib20
+		Start: 0
+		Length: 12
+		ShadowStart: 12
+		Offset: 0,-15,0
+	gem01: gem01
+		Start: 0
+		Length: 5
+		ShadowStart: 0
+		Offset: 0,-15,0
+	gem02: gem02
+		Start: 0
+		Length: 5
+		ShadowStart: 0
+		Offset: 0,-15,0
+	gem03: gem03
+		Start: 0
+		Length: 5
+		ShadowStart: 0
+		Offset: 0,-15,0
+	gem04: gem04
+		Start: 0
+		Length: 5
+		ShadowStart: 0
+		Offset: 0,-15,0
+	gem05: gem05
+		Start: 0
+		Length: 5
+		ShadowStart: 0
+		Offset: 0,-15,0
+	gem06: gem06
+		Start: 0
+		Length: 5
+		ShadowStart: 0
+		Offset: 0,-15,0
+	gem07: gem07
+		Start: 0
+		Length: 5
+		ShadowStart: 0
+		Offset: 0,-15,0
+	gem08: gem08
+		Start: 0
+		Length: 5
+		ShadowStart: 0
+		Offset: 0,-15,0
+	gem09: gem09
+		Start: 0
+		Length: 5
+		ShadowStart: 0
+		Offset: 0,-15,0
+	gem10: gem10
+		Start: 0
+		Length: 5
+		ShadowStart: 0
+		Offset: 0,-15,0
+	gem11: gem11
+		Start: 0
+		Length: 5
+		ShadowStart: 0
+		Offset: 0,-15,0
+	gem12: gem12
+		Start: 0
+		Length: 5
+		ShadowStart: 0
+		Offset: 0,-15,0
+
+shroud:
+	shroud: shroud
+		Length: *
+	fog: fog
+		Length: *
+
+scorches: #TODO: make use of 07-12 as well
+	sc1: burnt01
+		Length: *
+	sc2: burnt02
+		Length: *
+	sc3: burnt03
+		Length: *
+	sc4: burnt04
+		Length: *
+	sc5: burnt05
+		Length: *
+	sc6: burnt06
+		Length: *
+
+craters: #TODO: make use of 07-12 as well
+	cr1: crater01
+		Length: *
+	cr2: crater02
+		Length: *
+	cr3: crater03
+		Length: *
+	cr4: crater04
+		Length: *
+	cr5: crater05
+		Length: *
+	cr6: crater06
+		Length: *
+
+icon:
+	gps: asaticon
+		Start: 0

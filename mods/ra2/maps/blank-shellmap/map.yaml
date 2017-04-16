@@ -1,0 +1,56 @@
+MapFormat: 7
+
+RequiresMod: ra2
+
+Title: Blank
+
+Description: Placeholder
+
+Author: Matthias Mailänder
+
+Tileset: TEMPERAT
+
+MapSize: 128,128
+
+Bounds: 16,16,96,96
+
+Visibility: Shellmap
+
+Type: Shellmap
+
+Videos:
+
+Options:
+
+Players:
+	PlayerReference@Neutral:
+		Name: Neutral
+		OwnsWorld: True
+		NonCombatant: True
+	PlayerReference@Creeps:
+		Name: Creeps
+		NonCombatant: True
+
+Actors:
+
+Smudges:
+
+Rules:
+	World:
+		-StartGameNotification:
+		-SpawnMPUnits:
+		-MPStartLocations:
+		LoadWidgetAtGameStart:
+			Widget: MAINMENU
+
+Sequences:
+
+VoxelSequences:
+
+Weapons:
+
+Voices:
+
+Notifications:
+
+Translations:

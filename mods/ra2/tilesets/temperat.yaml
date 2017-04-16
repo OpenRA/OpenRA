@@ -1,0 +1,32 @@
+General:
+	Name: Temperate
+	Id: TEMPERAT
+	Extensions: .tem, .shp
+	Palette: isotem.pal
+	MaxGroundHeight: 16
+	HeightDebugColors: 128,0,0,0, 128,0,0,68, 128,0,0,136, 128,0,0,204, 128,0,0,255, 128,68,0,204, 128,136,0,136, 128,204,0,68, 128,255,17,0, 128,255,85,0, 128,255,153,0, 128,255,221,0, 128,221,255,0, 128,153,255,0, 128,85,255,0, 128,17,255,0
+	EditorTemplateOrder: Blank
+	SheetSize: 2048
+
+Terrain:
+	TerrainType@Clear:
+		Type: Clear
+		AcceptsSmudgeType:
+		Color: 22, 101, 16
+		TargetTypes: Ground
+	TerrainType@Tiberium:
+		Type: Tiberium
+		AcceptsSmudgeType: SmallCrater, MediumCrater, LargeCrater, SmallScorch, MediumScorch, LargeScorch
+		Color: 161, 226, 28
+		TargetTypes: Ground
+
+Templates:
+	Template@255:
+		Category: Blank
+		Id: 255
+		Image: blank01
+		Size: 1, 1
+		Tiles:
+			0: Clear
+				MinimapLeftColor: 40,40,40
+				MinimapRightColor: 40,40,40
