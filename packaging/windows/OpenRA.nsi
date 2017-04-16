@@ -151,6 +151,24 @@ Section "-DotNet" DotNet
 	done:
 SectionEnd
 
+Section "-MSVC100" MSVC100
+	ClearErrors
+	ReadRegDWORD $0 HKLM "Software\Microsoft\DevDiv\vc\Servicing\10.0\RuntimeMinimum" "Install"
+	IfErrors error 0
+	IntCmp $0 1 0 error 0
+	error:
+		MessageBox MB_YESNO "Visual C++ Redistributable 2010 or later is required to run OpenRA. $\n \
+		Do you wish for the installer to launch your web browser in order to download and install it?" \
+		IDYES download IDNO error2
+	download:
+		ExecShell "open" "http://www.microsoft.com/en-us/download/details.aspx?id=5555"
+		Goto done
+	error2:
+		MessageBox MB_OK "Installation will continue, but be aware that OpenRA will not run unless MSVC100.DLL \
+		from the Visual C++ Redistributable 2010 or later is installed."
+	done:
+SectionEnd
+
 ;***************************
 ;Uninstaller Sections
 ;***************************
@@ -161,7 +179,7 @@ Section "-Uninstaller"
 	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\OpenRA" "InstallLocation" "$INSTDIR"
 	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\OpenRA" "DisplayIcon" "$INSTDIR\OpenRA.ico"
 	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\OpenRA" "Publisher" "OpenRA developers"
-	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\OpenRA" "URLInfoAbout" "http://openra.net"
+	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\OpenRA" "URLInfoAbout" "http://www.openra.net"
 	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\OpenRA" "NoModify" "1"
 	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\OpenRA" "NoRepair" "1"
 
