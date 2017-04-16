@@ -115,6 +115,9 @@ namespace OpenRA
 
 		public void QueryRemoteMapDetails(IEnumerable<string> uids, Action<MapPreview> mapDetailsReceived = null, Action queryFailed = null)
 		{
+			if (!uids.Any())
+				return;
+
 			var maps = uids.Distinct()
 				.Select(uid => previews[uid])
 				.Where(p => p.Status == MapStatus.Unavailable)
