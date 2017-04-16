@@ -1,0 +1,4 @@
+#!/bin/sh
+cd "{GAME_INSTALL_DIR}"
+
+mono {DEBUG} OpenRA.Server.exe Game.Mod={MOD} "$$@"

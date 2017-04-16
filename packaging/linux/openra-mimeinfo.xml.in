@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<mime-info xmlns='http://www.freedesktop.org/standards/shared-mime-info'>
+
+  <mime-type type="x-scheme-handler/openra-ra-{TAG}">
+    <icon name="openra-ra" />
+    <generic-icon name="applications-games"/>
+    <comment>OpenRA connect to server scheme</comment>
+    <glob weight="60" pattern="openra-ra-{TAG}://*"/>
+  </mime-type>
+  <mime-type type="x-scheme-handler/openra-cnc-{TAG}">
+    <icon name="openra-cnc" />
+    <generic-icon name="applications-games"/>
+    <comment>OpenRA connect to server scheme</comment>
+    <glob weight="60" pattern="openra-cnc-{TAG}://*"/>
+  </mime-type>
+  <mime-type type="x-scheme-handler/openra-d2k-{TAG}">
+    <icon name="openra-d2k" />
+    <generic-icon name="applications-games"/>
+    <comment>OpenRA connect to server scheme</comment>
+    <glob weight="60" pattern="openra-d2k-{TAG}://*"/>
+  </mime-type>
+
+</mime-info>

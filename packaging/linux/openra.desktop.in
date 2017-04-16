@@ -1,12 +1,11 @@
 [Desktop Entry]
 Type=Application
 Version=1.0
-Name=OpenRA
+Name=OpenRA - {MODNAME}
 GenericName=Real Time Strategy Game
+GenericName[de]=Echtzeit-Strategiespiel
 Comment=Reimagining of early Westwood Games
-Icon=openra
-Exec=openra Launch.URI=%U
+Icon=openra-{MOD}
+Exec=openra-{MOD}
 Terminal=false
-NoDisplay=true
 Categories=Game;StrategyGame;
-MimeType=x-scheme-handler/openra;
