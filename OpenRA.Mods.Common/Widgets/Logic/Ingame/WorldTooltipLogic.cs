@@ -95,12 +95,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					}
 				}
 
-				var textWidth = Math.Max(font.Measure(labelText).X, font.Measure(extraText).X);
-
-				if (textWidth != cachedWidth)
+				if (!string.IsNullOrEmpty(labelText) && !string.IsNullOrEmpty(extraText))
 				{
-					label.Bounds.Width = textWidth;
-					widget.Bounds.Width = 2 * label.Bounds.X + textWidth;
+					var textWidth = Math.Max(font.Measure(labelText).X, font.Measure(extraText).X);
+					if (textWidth != cachedWidth)
+					{
+						label.Bounds.Width = textWidth;
+						widget.Bounds.Width = 2 * label.Bounds.X + textWidth;
+					}
 				}
 
 				if (showOwner)
