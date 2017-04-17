@@ -185,6 +185,7 @@ MMCH:
 	Armament:
 		Weapon: 120mm
 		MuzzleSequence: muzzle
+		MuzzlePalette: effect-ignore-lighting
 		Recoil: 128
 		RecoilRecovery: 32
 		LocalOffset: 640, 192, 832

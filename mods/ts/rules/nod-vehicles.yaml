@@ -26,6 +26,7 @@ BGGY:
 		Weapon: RaiderCannon
 		LocalOffset: 0,-43,384, 0,43,384
 		MuzzleSequence: muzzle
+		MuzzlePalette: effect-ignore-lighting
 		MuzzleSplitFacings: 8
 	AttackFrontal:
 		Voice: Attack
@@ -102,11 +103,13 @@ TTNK:
 		LocalOffset: 288,0,256
 		RequiresCondition: !rank-elite
 		MuzzleSequence: muzzle
+		MuzzlePalette: effect-ignore-lighting
 	Armament@ELITE:
 		Weapon: 120mmx
 		LocalOffset: 288,0,256
 		RequiresCondition: rank-elite
 		MuzzleSequence: muzzle
+		MuzzlePalette: effect-ignore-lighting
 	WithMuzzleOverlay:
 	RevealsShroud:
 		RequiresCondition: !inside-tunnel
@@ -154,6 +157,7 @@ TTNK:
 		LocalOffset: 384,0,256
 		RequiresCondition: !rank-elite
 		MuzzleSequence: muzzle
+		MuzzlePalette: effect-ignore-lighting
 	Armament@deployedElite:
 		Name: deployed
 		Turret: deployed
@@ -161,6 +165,7 @@ TTNK:
 		LocalOffset: 384,0,256
 		RequiresCondition: rank-elite
 		MuzzleSequence: muzzle
+		MuzzlePalette: effect-ignore-lighting
 	Armor@deployed:
 		Type: Concrete
 		RequiresCondition: deployed
