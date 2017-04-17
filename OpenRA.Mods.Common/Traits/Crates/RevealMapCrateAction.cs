@@ -15,7 +15,7 @@ namespace OpenRA.Mods.Common.Traits
 	class RevealMapCrateActionInfo : CrateActionInfo
 	{
 		[Desc("Should the map also be revealed for the allies of the collector's owner?")]
-		public readonly bool IncludeAllies = false;
+		public readonly bool IncludeAllies = true;
 
 		public override object Create(ActorInitializer init) { return new RevealMapCrateAction(init.Self, this); }
 	}
