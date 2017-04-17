@@ -1,5 +1,7 @@
 # OpenRA Contributing Guidelines
 
+### Please stay calm and polite when submitting or commenting on a bug or patch.
+
 ## Bug reports
 
 * Have you read the [FAQ](https://github.com/OpenRA/OpenRA/wiki/FAQ)?
