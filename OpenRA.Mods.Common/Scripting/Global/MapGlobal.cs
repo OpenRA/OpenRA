@@ -154,6 +154,9 @@ namespace OpenRA.Mods.Common.Scripting
 			return ret;
 		}
 
+		[Desc("Returns the world actor for this map.")]
+		public Actor WorldActor { get { return Context.World.WorldActor; } }
+
 		[Desc("Returns true if actor was originally specified in the map file.")]
 		public bool IsNamedActor(Actor actor)
 		{
