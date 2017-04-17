@@ -43,12 +43,12 @@ namespace OpenRA.Mods.Common.Activities
 			if (IsCanceled)
 				return NextActivity;
 
-			if (dest == null || Reservable.IsReserved(dest))
+			if (dest == null || dest.IsDead || Reservable.IsReserved(dest))
 				dest = ChooseHelipad(self);
 
 			var initialFacing = heli.Info.InitialFacing;
 
-			if (dest == null)
+			if (dest == null || dest.IsDead)
 			{
 				var rearmBuildings = heli.Info.RearmBuildings;
 				var nearestHpad = self.World.ActorsHavingTrait<Reservable>()
