@@ -1,0 +1,89 @@
+Container@INGAME_MENU:
+	Width: WINDOW_RIGHT
+	Height: WINDOW_BOTTOM
+	Logic: IngameMenuLogic
+	Children:
+		Background@BORDER:
+			X: 0 - 15
+			Y: 0 - 15
+			Width: WINDOW_RIGHT + 30
+			Height: WINDOW_BOTTOM + 30
+			Background: mainmenu-border
+		Image@LOGO:
+			X: WINDOW_RIGHT - 296
+			Y: 30
+			ImageCollection: logos
+			ImageName: logo
+		Label@VERSION_LABEL:
+			X: WINDOW_RIGHT - 296
+			Y: 296 - 20
+			Width: 296 - 20
+			Height: 25
+			Align: Center
+			Font: Regular
+			Contrast: True
+		Container@PANEL_ROOT:
+		Background@MENU_BUTTONS:
+			X: 13 + (WINDOW_RIGHT - 522) / 4 - WIDTH / 2
+			Y: (WINDOW_BOTTOM - HEIGHT)/2
+			Width: 200
+			Height: 295
+			Children:
+				Label@LABEL_TITLE:
+					X: (PARENT_RIGHT - WIDTH)/2
+					Y: 20
+					Width: 200
+					Height: 30
+					Text: Options
+					Align: Center
+					Font: Bold
+				Button@RESUME:
+					X: (PARENT_RIGHT - WIDTH)/2
+					Y: 60
+					Width: 140
+					Height: 30
+					Text: Resume
+					Font: Bold
+					Key: escape
+				Button@SETTINGS:
+					X: (PARENT_RIGHT - WIDTH)/2
+					Y: 100
+					Width: 140
+					Height: 30
+					Text: Settings
+					Font: Bold
+				Button@MUSIC:
+					X: (PARENT_RIGHT - WIDTH)/2
+					Y: 140
+					Width: 140
+					Height: 30
+					Text: Music
+					Font: Bold
+				Button@SURRENDER:
+					X: (PARENT_RIGHT - WIDTH)/2
+					Y: 180
+					Width: 140
+					Height: 30
+					Text: Surrender
+					Font: Bold
+				Button@SAVE_MAP:
+					X: (PARENT_RIGHT - WIDTH)/2
+					Y: 180
+					Width: 140
+					Height: 30
+					Text: Save Map
+					Font: Bold
+				Button@ABORT_MISSION:
+					X: (PARENT_RIGHT - WIDTH)/2
+					Y: 220
+					Width: 140
+					Height: 30
+					Text: Abort Mission
+					Font: Bold
+				Button@EXIT_EDITOR:
+					X: (PARENT_RIGHT - WIDTH)/2
+					Y: 220
+					Width: 140
+					Height: 30
+					Text: Exit Map Editor
+					Font: Bold

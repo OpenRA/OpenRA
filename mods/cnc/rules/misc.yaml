@@ -1,0 +1,115 @@
+CRATE.plain:
+	Inherits: ^Crate
+	ScriptTriggers:
+
+CRATE:
+	Inherits: ^Crate
+	Crate:
+		Lifetime: 240
+	GiveCashCrateAction:
+		Amount: 1000
+		SelectionShares: 20
+		UseCashTick: yes
+	RevealMapCrateAction:
+		SelectionShares: 1
+		Effect: reveal-map
+	ExplodeCrateAction@fire:
+		Weapon: Napalm.Crate
+		SelectionShares: 5
+	GrantExternalConditionCrateAction@cloak:
+		SelectionShares: 5
+		Effect: cloak
+		Condition: cloak-crate-collected
+	GiveMcvCrateAction:
+		SelectionShares: 0
+		NoBaseSelectionShares: 120
+		Units: mcv
+
+WCRATE:
+	Inherits: ^Crate
+	Tooltip:
+		Name: Wooden Crate
+
+SCRATE:
+	Inherits: ^Crate
+	Tooltip:
+		Name: Steel Crate
+
+mpspawn:
+	EditorOnlyTooltip:
+		Name: (multiplayer player starting point)
+	AlwaysVisible:
+	Immobile:
+		OccupiesSpace: false
+	WithSpriteBody:
+	RenderSpritesEditorOnly:
+	BodyOrientation:
+		QuantizedFacings: 1
+
+waypoint:
+	EditorOnlyTooltip:
+		Name: (waypoint for scripted behavior)
+	AlwaysVisible:
+	Immobile:
+		OccupiesSpace: false
+	WithSpriteBody:
+	RenderSpritesEditorOnly:
+	BodyOrientation:
+		QuantizedFacings: 1
+
+^fact.colorpicker:
+	Inherits: FACT
+	RenderSprites:
+		Image: fact
+		Palette: colorpicker
+
+CAMERA:
+	EditorOnlyTooltip:
+		Name: (reveals area to owner)
+	AlwaysVisible:
+	WithSpriteBody:
+	RenderSpritesEditorOnly:
+	BodyOrientation:
+		QuantizedFacings: 1
+	Immobile:
+		OccupiesSpace: false
+	RevealsShroud:
+		Range: 10c0
+		Type: CenterPosition
+
+CAMERA.small:
+	EditorOnlyTooltip:
+		Name: (reveals small area to owner)
+	AlwaysVisible:
+	WithSpriteBody:
+	RenderSpritesEditorOnly:
+		Image: camera
+	BodyOrientation:
+		QuantizedFacings: 1
+	Immobile:
+		OccupiesSpace: false
+	Health:
+		HP: 1000
+	RevealsShroud:
+		Range: 6c0
+		Type: CenterPosition
+
+FLARE:
+	Immobile:
+		OccupiesSpace: false
+	RevealsShroud:
+		Range: 3c0
+		Type: CenterPosition
+	RenderSprites:
+		Image: smokland
+		Palette: terrain
+	WithSpriteBody:
+		StartSequence: open
+	HiddenUnderFog:
+		Type: CenterPosition
+	Tooltip:
+		Name: Flare
+		ShowOwnerRow: false
+	BodyOrientation:
+		QuantizedFacings: 1
+	AutoSelectionSize:

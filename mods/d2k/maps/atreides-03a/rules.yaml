@@ -1,0 +1,56 @@
+Player:
+	PlayerResources:
+		DefaultCash: 3000
+
+World:
+	LuaScript:
+		Scripts: atreides03a.lua, atreides03a-AI.lua
+	MissionData:
+		Briefing: Bring the Atreides forces up to combat strength - quickly. Guard against surprise attacks and ensure Spice production.\n\nThe Ordos forces are light but numerous. To combat the Ordos, you have been granted license to produce Quads, which have a greater anti-vehicle capability than Trikes. Upgrade your Light Factories to allow production of these units.\n\nMeet any agression with overwhelming force.\n\nGood luck.\n
+		BriefingVideo: A_BR03_E.VQA
+	MapOptions:
+		TechLevel: low
+	ScriptLobbyDropdown@difficulty:
+		ID: difficulty
+		Label: Difficulty
+		Values:
+			easy: Easy
+			normal: Normal
+			hard: Hard
+		Default: easy
+
+carryall.reinforce:
+	Cargo:
+		MaxWeight: 10
+
+concreteb:
+	Buildable:
+		Prerequisites: ~disabled
+
+heavy_factory:
+	Buildable:
+		Prerequisites: ~disabled
+
+medium_gun_turret:
+	Buildable:
+		Prerequisites: ~disabled
+
+outpost:
+	Buildable:
+		Prerequisites: barracks
+
+quad:
+	Buildable:
+		Prerequisites: upgrade.light
+
+trooper:
+	Buildable:
+		Prerequisites: upgrade.barracks
+
+upgrade.conyard:
+	Buildable:
+		Prerequisites: ~disabled
+
+upgrade.heavy:
+	Buildable:
+		Prerequisites: ~disabled

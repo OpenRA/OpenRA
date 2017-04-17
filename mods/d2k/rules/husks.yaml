@@ -1,0 +1,66 @@
+mcv.husk:
+	Inherits: ^VehicleHusk
+	Health:
+		HP: 175
+	Tooltip:
+		Name: Destroyed Mobile Construction Vehicle
+
+harvester.husk:
+	Inherits: ^VehicleHusk
+	Health:
+		HP: 150
+	Tooltip:
+		Name: Destroyed Spice Harvester
+	TransformOnCapture:
+		IntoActor: harvester
+
+siege_tank.husk:
+	Inherits: ^VehicleHusk
+	ThrowsParticle@turret:
+		Anim: turret
+	TransformOnCapture:
+		IntoActor: siege_tank
+
+missile_tank.husk:
+	Inherits: ^VehicleHusk
+	TransformOnCapture:
+		IntoActor: missile_tank
+
+sonic_tank.husk:
+	Inherits: ^VehicleHusk
+	TransformOnCapture:
+		IntoActor: sonic_tank
+
+devastator.husk:
+	Inherits: ^VehicleHusk
+	Health:
+		HP: 125
+	TransformOnCapture:
+		IntoActor: devastator
+
+deviator.husk:
+	Inherits: ^VehicleHusk
+	TransformOnCapture:
+		IntoActor: deviator
+
+^combat_tank.husk:
+	Inherits: ^VehicleHusk
+	Health:
+		HP: 100
+	ThrowsParticle@turret:
+		Anim: turret
+
+combat_tank_a.husk:
+	Inherits: ^combat_tank.husk
+	TransformOnCapture:
+		IntoActor: combat_tank_a
+
+combat_tank_h.husk:
+	Inherits: ^combat_tank.husk
+	TransformOnCapture:
+		IntoActor: combat_tank_h
+
+combat_tank_o.husk:
+	Inherits: ^combat_tank.husk
+	TransformOnCapture:
+		IntoActor: combat_tank_o

@@ -1,0 +1,126 @@
+E3:
+	Inherits: ^Soldier
+	Inherits@EXPERIENCE: ^GainsExperience
+	Buildable:
+		Queue: Infantry
+		BuildPaletteOrder: 30
+		Prerequisites: ~nahand, ~techlevel.low
+		Description: Anti-tank infantry.\n  Strong vs Vehicles, Aircraft, Buildings\n  Weak vs Infantry
+	Valued:
+		Cost: 250
+	Tooltip:
+		Name: Rocket Infantry
+	Voiced:
+		VoiceSet: Rocket
+	Health:
+		HP: 100
+	Mobile:
+		Speed: 42
+	Armament@PRIMARY:
+		Weapon: Bazooka
+		LocalOffset: 252,0,684
+	TakeCover:
+		ProneOffset: 52,64,-652
+	AttackFrontal:
+		Voice: Attack
+	WithInfantryBody:
+		DefaultAttackSequence: attack
+	ProducibleWithLevel:
+		Prerequisites: barracks.upgraded
+
+CYBORG:
+	Inherits: ^Cyborg
+	Inherits@EXPERIENCE: ^GainsExperience
+	Armor:
+		Type: Light
+	Valued:
+		Cost: 650
+	Tooltip:
+		Name: Cyborg Infantry
+	Buildable:
+		Queue: Infantry
+		BuildPaletteOrder: 60
+		Prerequisites: ~nahand, ~techlevel.medium
+		Description: Cybernetic infantry unit.\n  Strong vs Infantry, Light armor\n  Weak vs Vehicles, Aircraft
+	Selectable:
+		Bounds: 16,31,0,-10
+	Voiced:
+		VoiceSet: Cyborg
+	Mobile:
+		Speed: 56
+	Health:
+		HP: 300
+	Passenger:
+	RevealsShroud:
+		Range: 5c0
+	Armament:
+		Weapon: Vulcan3
+	AttackFrontal:
+		Voice: Attack
+	SelectionDecorations:
+		VisualBounds: 16,31,0,-10
+	ProducibleWithLevel:
+		Prerequisites: barracks.upgraded
+
+CYC2:
+	Inherits: ^Cyborg
+	Inherits@EXPERIENCE: ^GainsExperience
+	Armor:
+		Type: Heavy
+	Valued:
+		Cost: 2000
+	Tooltip:
+		Name: Cyborg Commando
+	Buildable:
+		Queue: Infantry
+		BuildPaletteOrder: 100
+		Prerequisites: ~nahand, natmpl, ~techlevel.high
+		BuildLimit: 1
+		Description: Elite cybernetic infantry unit.\n  Strong vs Infantry, Vehicles, Buildings\n  Weak vs Aircraft\nMaximum 1 can be trained.
+	Selectable:
+		Bounds: 16,32,-1,-12
+	Voiced:
+		VoiceSet: CyborgCommando
+	Mobile:
+		Speed: 56
+	Health:
+		HP: 500
+	Passenger:
+	RevealsShroud:
+		Range: 7c0
+	Armament:
+		Weapon: CyCannon
+		LocalOffset: 170,85,683
+	AttackFrontal:
+		Voice: Attack
+	SelectionDecorations:
+		VisualBounds: 16,32,-1,-12
+	ProducibleWithLevel:
+		Prerequisites: barracks.upgraded
+
+MHIJACK:
+	Inherits: ^Soldier
+	Inherits@2: ^HealsOnTiberium
+	Buildable:
+		Queue: Infantry
+		BuildPaletteOrder: 80
+		Prerequisites: ~nahand, natmpl, ~techlevel.high
+		Description: Hijacks enemy vehicles.\n  Unarmed
+	Valued:
+		Cost: 1850
+	Tooltip:
+		Name: Mutant Hijacker
+		BuildLimit: 1
+	Voiced:
+		VoiceSet: Hijacker
+	Health:
+		HP: 300
+	Mobile:
+		Speed: 99
+	-Crushable:
+	Captures:
+		CaptureTypes: Vehicle
+		PlayerExperience: 50
+	RevealsShroud:
+		Range: 6c0
+	-AutoTarget:

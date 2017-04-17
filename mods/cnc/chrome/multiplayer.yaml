@@ -1,0 +1,111 @@
+Container@MULTIPLAYER_PANEL:
+	Logic: MultiplayerLogic
+	X: (WINDOW_RIGHT - WIDTH)/2
+	Y: (WINDOW_BOTTOM - 560)/2
+	Width: 800
+	Height: 575
+	Children:
+		Label@TITLE:
+			Text: Multiplayer
+			Width: PARENT_RIGHT
+			Y: 0-25
+			Font: BigBold
+			Contrast: true
+			Align: Center
+		Background@bg:
+			Width: PARENT_RIGHT
+			Height: PARENT_BOTTOM - 35
+			Background: panel-black
+			Children:
+				DropDownButton@FILTERS_DROPDOWNBUTTON:
+					X: 15
+					Y: 284
+					Width: 147
+					Height: 25
+					Text: Filter Games
+				Button@REFRESH_BUTTON:
+					X: 167
+					Y: 284
+					Width: 100
+					Height: 25
+					Text: Refresh
+				Button@BROWSER_TAB:
+					X: 272
+					Y: 278
+					Width: 105
+					Height: 31
+					Text: Browse
+				Button@DIRECTCONNECT_TAB:
+					X: 382
+					Y: 278
+					Width: 105
+					Height: 31
+					Text: Direct IP
+				Button@CREATE_TAB:
+					X: 492
+					Y: 278
+					Width: 105
+					Height: 31
+					Text: Create
+				Container@TOP_PANELS_ROOT:
+					X: 15
+					Width: PARENT_RIGHT - 30
+					Height: PARENT_BOTTOM
+				Container@GLOBALCHAT_ROOT:
+					X: 15
+					Y: 315
+					Width: PARENT_RIGHT - 30
+					Height: PARENT_BOTTOM - 330
+		TooltipContainer@TOOLTIP_CONTAINER:
+		Button@BACK_BUTTON:
+			Key: escape
+			X: 0
+			Y: PARENT_BOTTOM - 36
+			Width: 140
+			Height: 35
+			Text: Back
+
+ScrollPanel@MULTIPLAYER_FILTER_PANEL:
+	Width: 147
+	Height: 130
+	Background: panel-black
+	Children:
+		Checkbox@WAITING_FOR_PLAYERS:
+			X: 5
+			Y: 5
+			Width: PARENT_RIGHT-29
+			Height: 20
+			Text: Waiting
+			TextColor: 32CD32
+			Font: Regular
+		Checkbox@EMPTY:
+			X: 5
+			Y: 30
+			Width: PARENT_RIGHT-29
+			Height: 20
+			Text: Empty
+			Font: Regular
+		Checkbox@PASSWORD_PROTECTED:
+			X: 5
+			Y: 55
+			Width: PARENT_RIGHT-29
+			Height: 20
+			Text: Protected
+			TextColor: FF0000
+			Font: Regular
+		Checkbox@ALREADY_STARTED:
+			X: 5
+			Y: 80
+			Width: PARENT_RIGHT-29
+			Height: 20
+			Text: Started
+			TextColor: FFA500
+			Font: Regular
+		Checkbox@INCOMPATIBLE_VERSION:
+			X: 5
+			Y: 105
+			Width: PARENT_RIGHT-29
+			Height: 20
+			Text: Incompatible
+			TextColor: BEBEBE
+			Font: Regular

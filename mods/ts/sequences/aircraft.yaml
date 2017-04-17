@@ -1,0 +1,26 @@
+orca:
+	icon: orcaicon
+
+orcab:
+	icon: obmbicon
+
+trnsport:
+	icon: otrnicon
+
+scrin:
+	icon: proicon
+
+apache:
+	icon: apchicon
+	rotor: lrotor
+		Length: 4
+		Offset: 0, 0, 16
+		ZRamp: 1
+	slow-rotor: lrotor
+		Start: 4
+		Length: 8
+		Offset: 0, 0, 16
+		ZRamp: 1
+
+orcatran:
+	icon: crryicon

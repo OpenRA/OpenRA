@@ -1,0 +1,139 @@
+Container@SERVER_LOBBY:
+	Logic: LobbyLogic
+	X: (WINDOW_RIGHT - WIDTH)/2
+	Y: (WINDOW_BOTTOM - 560)/2
+	Width: 800
+	Height: 575
+	Children:
+		ColorPreviewManager@COLOR_MANAGER:
+		Label@SERVER_NAME:
+			Width: PARENT_RIGHT
+			Y: 0-25
+			Font: BigBold
+			Contrast: true
+			Align: Center
+		Background@bg:
+			Width: PARENT_RIGHT
+			Height: PARENT_BOTTOM - 35
+			Background: panel-black
+			Children:
+				Container@MAP_PREVIEW_ROOT:
+					X: PARENT_RIGHT-15-WIDTH
+					Y: 30
+					Width: 174
+					Height: 250
+				DropDownButton@SLOTS_DROPDOWNBUTTON:
+					X: 15
+					Y: 254
+					Width: 162
+					Height: 25
+					Text: Slot Admin
+				Button@PLAYERS_TAB:
+					X: 182
+					Y: 248
+					Width: 135
+					Height: 31
+					Text: Players
+				Button@OPTIONS_TAB:
+					X: 322
+					Y: 248
+					Width: 135
+					Height: 31
+					Text: Options
+				Button@MUSIC_TAB:
+					X: 462
+					Y: 248
+					Width: 135
+					Height: 31
+					Text: Music
+				Button@CHANGEMAP_BUTTON:
+					X: PARENT_RIGHT - WIDTH - 15
+					Y: 254
+					Width: 174
+					Height: 25
+					Text: Change Map
+				Container@TOP_PANELS_ROOT:
+					X: 15
+					Y: 30
+					Width: 582
+					Height: 219
+				Button@LOBBYCHAT_TAB:
+					X: 15
+					Y: PARENT_BOTTOM - 46
+					Width: 95
+					Height: 31
+					Text: Game
+				Button@GLOBALCHAT_TAB:
+					X: 115
+					Y: PARENT_BOTTOM - 46
+					Width: 95
+					Height: 31
+					Text: Global
+				Container@LOBBYCHAT:
+					X: 15
+					Y: 285
+					Width: PARENT_RIGHT - 30
+					Height: PARENT_BOTTOM - 300
+					Children:
+						ScrollPanel@CHAT_DISPLAY:
+							Width: PARENT_RIGHT
+							Height: PARENT_BOTTOM - 30
+							TopBottomSpacing: 2
+							ItemSpacing: 2
+							Children:
+								Container@CHAT_TEMPLATE:
+									Width: PARENT_RIGHT-27
+									Height: 16
+									X: 2
+									Y: 0
+									Children:
+										Label@TIME:
+											X: 3
+											Width: 50
+											Height: 15
+											VAlign: Top
+											Shadow: True
+										Label@NAME:
+											X: 45
+											Width: 50
+											Height: 15
+											VAlign: Top
+											Shadow: True
+										Label@TEXT:
+											X: 55
+											Width: PARENT_RIGHT - 60
+											Height: 15
+											WordWrap: true
+											VAlign: Top
+											Shadow: True
+						TextField@CHAT_TEXTFIELD:
+							X: 200
+							Y: PARENT_BOTTOM - HEIGHT
+							Width: PARENT_RIGHT - 200
+							Height: 25
+							LeftMargin: 50
+							Children:
+								Label@LABEL_CHATTYPE:
+									Y: 0-1
+									Width: 45
+									Height: 25
+									Align: Right
+									Text: Chat:
+				Container@GLOBALCHAT_ROOT:
+					X: 15
+					Y: 285
+					Width: PARENT_RIGHT - 30
+					Height: PARENT_BOTTOM - 330
+		Button@DISCONNECT_BUTTON:
+			Y: PARENT_BOTTOM - 36
+			Width: 140
+			Height: 35
+			Text: Leave Game
+		Button@START_GAME_BUTTON:
+			X: PARENT_RIGHT - WIDTH
+			Y: PARENT_BOTTOM - 36
+			Width: 140
+			Height: 35
+			Text: Start Game
+		Container@FACTION_DROPDOWN_PANEL_ROOT:
+		TooltipContainer@TOOLTIP_CONTAINER:

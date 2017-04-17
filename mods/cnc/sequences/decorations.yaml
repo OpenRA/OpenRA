@@ -1,0 +1,1052 @@
+split2:
+	Defaults:
+		Offset: 11, -15
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+	make:
+		Length: 30
+	active:
+		Start: 30
+		Length: 24
+	idle:
+		Start: 54
+
+split3:
+	Defaults:
+		Offset: 7, -13
+		UseTilesetExtension: true
+	make:
+		Length: 30
+	active:
+		Start: 30
+		Length: 24
+	idle:
+		Start: 54
+
+rock1:
+	idle: rock1.des
+		AddExtension: false
+
+rock2:
+	idle: rock2.des
+		AddExtension: false
+
+rock3:
+	idle: rock3.des
+		AddExtension: false
+
+rock4:
+	idle: rock4.des
+		AddExtension: false
+
+rock5:
+	idle: rock5.des
+		AddExtension: false
+
+rock6:
+	idle: rock6.des
+		AddExtension: false
+
+rock7:
+	idle: rock7.des
+		AddExtension: false
+
+tc04:
+	Defaults:
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+	idle:
+	damaged-idle:
+		Start: 1
+
+tc04.husk:
+	Defaults: tc04
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+	idle:
+		Start: 2
+	dead:
+		Start: 2
+		Length: 8
+		Tick: 80
+
+tc05:
+	Defaults:
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+	idle:
+	damaged-idle:
+		Start: 1
+
+tc05.husk:
+	Defaults: tc05
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+	idle:
+		Start: 2
+	dead:
+		Start: 2
+		Length: 8
+		Tick: 80
+
+tc03:
+	Defaults:
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+	idle:
+
+tc03.husk:
+	Defaults: tc03
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+	idle:
+		Start: 1
+	dead:
+		Start: 2
+		Length: 8
+		Tick: 80
+
+tc02:
+	Defaults:
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+	idle:
+
+tc02.husk:
+	Defaults: tc02
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+	idle:
+		Start: 1
+	dead:
+		Start: 2
+		Length: 8
+		Tick: 80
+
+tc01:
+	Defaults:
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+	idle:
+
+tc01.husk:
+	Defaults: tc01
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+	idle:
+		Start: 1
+	dead:
+		Start: 2
+		Length: 8
+		Tick: 80
+
+t18:
+	Defaults:
+		AddExtension: false
+	idle: t18.des
+
+t18.husk:
+	Defaults: t18
+		AddExtension: false
+	idle: t18.des
+		Start: 1
+	dead: t18.des
+		Start: 2
+		Length: 8
+		Tick: 80
+
+t17:
+	Defaults:
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+	idle:
+
+t17.husk:
+	Defaults: t17
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+	idle:
+		Start: 1
+	dead:
+		Start: 2
+		Length: 8
+		Tick: 80
+
+t16:
+	Defaults:
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+	idle:
+
+t16.husk:
+	Defaults: t16
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+	idle:
+		Start: 1
+	dead:
+		Start: 2
+		Length: 8
+		Tick: 80
+
+t15:
+	Defaults:
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+	idle:
+
+t15.husk:
+	Defaults: t15
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+	idle:
+		Start: 1
+	dead:
+		Start: 2
+		Length: 8
+		Tick: 80
+
+t14:
+	Defaults:
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+	idle:
+
+t14.husk:
+	Defaults: t14
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+	idle:
+		Start: 1
+	dead:
+		Start: 2
+		Length: 8
+		Tick: 80
+
+t13:
+	Defaults:
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+	idle:
+
+t13.husk:
+	Defaults: t13
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+	idle:
+		Start: 1
+	dead:
+		Start: 2
+		Length: 8
+		Tick: 80
+
+t12:
+	Defaults:
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+	idle:
+
+t12.husk:
+	Defaults: t12
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+	idle:
+		Start: 1
+	dead:
+		Start: 2
+		Length: 8
+		Tick: 80
+
+t11:
+	Defaults:
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+	idle:
+
+t11.husk:
+	Defaults: t11
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+	idle:
+		Start: 1
+	dead:
+		Start: 2
+		Length: 8
+		Tick: 80
+
+t10:
+	Defaults:
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+	idle:
+
+t10.husk:
+	Defaults: t10
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+	idle:
+		Start: 1
+	dead:
+		Start: 2
+		Length: 8
+		Tick: 80
+
+t09:
+	Defaults:
+		AddExtension: false
+	idle: t09.des
+
+t09.husk:
+	Defaults: t09
+		AddExtension: false
+	idle: t09.des
+		Start: 1
+	dead: t09.des
+		Start: 2
+		Length: 8
+		Tick: 80
+
+t08:
+	Defaults:
+		UseTilesetExtension: true
+	idle:
+
+t08.husk:
+	Defaults: t08
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+	idle:
+		Start: 1
+	dead:
+		Start: 2
+		Length: 8
+		Tick: 80
+
+t07:
+	Defaults:
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+	idle:
+
+t07.husk:
+	Defaults: t07
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+	idle:
+		Start: 1
+	dead:
+		Start: 2
+		Length: 8
+		Tick: 80
+
+t06:
+	Defaults:
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+	idle:
+
+t06.husk:
+	Defaults: t06
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+	idle:
+		Start: 1
+	dead:
+		Start: 2
+		Length: 8
+		Tick: 80
+
+t05:
+	Defaults:
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+	idle:
+
+t05.husk:
+	Defaults: t05
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+	idle:
+		Start: 1
+	dead:
+		Start: 2
+		Length: 8
+		Tick: 80
+
+t04:
+	Defaults:
+		AddExtension: false
+	idle: t04.des
+
+t04.husk:
+	Defaults: t04
+		AddExtension: false
+	idle: t04.des
+		Start: 1
+	dead: t04.des
+		Start: 2
+		Length: 8
+		Tick: 80
+
+t03:
+	Defaults:
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+	idle:
+
+t03.husk:
+	Defaults: t03
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+	idle:
+		Start: 1
+	dead:
+		Start: 2
+		Length: 8
+		Tick: 80
+
+t02:
+	Defaults:
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+	idle:
+
+t02.husk:
+	Defaults: t02
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+	idle:
+		Start: 1
+	dead:
+		Start: 2
+		Length: 8
+		Tick: 80
+
+t01:
+	Defaults:
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+	idle:
+
+t01.husk:
+	Defaults: t01
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+	idle:
+		Start: 1
+	dead:
+		Start: 2
+		Length: 8
+		Tick: 80
+
+v01:
+	Defaults:
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+	idle:
+	damaged-idle:
+		Start: 1
+
+v01.husk:
+	idle: v01
+		Start: 2
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+
+v02:
+	Defaults:
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+	idle:
+	damaged-idle:
+		Start: 1
+
+v02.husk:
+	idle: v02
+		Start: 2
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+
+v03:
+	Defaults:
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+	idle:
+	damaged-idle:
+		Start: 1
+
+v03.husk:
+	idle: v03
+		Start: 2
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+
+v04:
+	Defaults:
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+	idle:
+	damaged-idle:
+		Start: 1
+
+v04.husk:
+	idle: v04
+		Start: 2
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+
+v05:
+	Defaults:
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+	idle:
+	damaged-idle:
+		Start: 1
+
+v05.husk:
+	idle: v05
+		Start: 2
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+
+v06:
+	Defaults:
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+	idle:
+	damaged-idle:
+		Start: 1
+
+v06.husk:
+	idle: v06
+		Start: 2
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+
+v07:
+	Defaults:
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+	idle:
+	damaged-idle:
+		Start: 2
+
+v07.husk:
+	idle: v07
+		Start: 2
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+
+v08:
+	Defaults:
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+	idle:
+	damaged-idle:
+		Start: 1
+
+v08.husk:
+	idle: v08
+		Start: 2
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+
+v09:
+	Defaults:
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+	idle:
+	damaged-idle:
+		Start: 1
+
+v09.husk:
+	idle: v09
+		Start: 2
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+
+v10:
+	Defaults:
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+	idle:
+	damaged-idle:
+		Start: 1
+
+v10.husk:
+	idle: v10
+		Start: 2
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+
+v11:
+	Defaults:
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+	idle:
+	damaged-idle:
+		Start: 1
+
+v11.husk:
+	idle: v11
+		Start: 2
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+
+v12:
+	Defaults:
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+	idle:
+		ZOffset: -512
+	damaged-idle:
+		Start: 1
+		ZOffset: -512
+
+v12.husk:
+	idle: v12
+		Start: 2
+		ZOffset: -512
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+
+v13:
+	Defaults:
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+	idle:
+		ZOffset: -512
+	damaged-idle:
+		Start: 1
+		ZOffset: -512
+
+v13.husk:
+	idle: v13
+		Start: 2
+		ZOffset: -512
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+
+v14:
+	Defaults:
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+	idle:
+		ZOffset: -512
+	damaged-idle:
+		Start: 1
+		ZOffset: -512
+
+v14.husk:
+	idle: v14
+		Start: 2
+		ZOffset: -512
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+
+v15:
+	Defaults:
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+	idle:
+		ZOffset: -512
+	damaged-idle:
+		Start: 1
+		ZOffset: -512
+
+v15.husk:
+	idle: v15
+		Start: 2
+		ZOffset: -512
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+
+v16:
+	Defaults:
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+	idle:
+		ZOffset: -512
+	damaged-idle:
+		Start: 1
+		ZOffset: -512
+
+v16.husk:
+	idle: v16
+		Start: 2
+		ZOffset: -512
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+
+v17:
+	Defaults:
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+	idle:
+		ZOffset: -512
+	damaged-idle:
+		Start: 1
+		ZOffset: -512
+
+v17.husk:
+	idle: v17
+		Start: 2
+		ZOffset: -512
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+
+v18:
+	Defaults:
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+	idle:
+		ZOffset: -512
+	damaged-idle:
+		Start: 1
+		ZOffset: -512
+
+v18.husk:
+	idle: v18
+		Start: 2
+		ZOffset: -512
+		UseTilesetExtension: true
+		TilesetOverrides:
+			DESERT: TEMPERAT
+
+v19:
+	idle:
+		Length: 14
+		Tick: 120
+	damaged-idle:
+		Start: 14
+		Length: 14
+		Tick: 120
+
+v19.husk:
+	idle: v19
+		Start: 28
+	fire-start: flmspt
+		Length: *
+		Offset: 7,-15
+		ZOffset: 1
+	fire-loop: flmspt
+		Start: 50
+		Length: *
+		Offset: 7,-15
+		ZOffset: 1
+
+v20:
+	Defaults:
+		AddExtension: false
+	idle: v20.des
+		Length: 3
+		Tick: 120
+	damaged-idle: v20.des
+		Start: 3
+		Length: 3
+		Tick: 120
+
+v20.husk:
+	idle: v20.des
+		Start: 6
+		AddExtension: false
+
+v21:
+	Defaults:
+		AddExtension: false
+	idle: v21.des
+		Length: 3
+		Tick: 120
+	damaged-idle: v21.des
+		Start: 3
+		Length: 3
+		Tick: 120
+
+v21.husk:
+	idle: v21.des
+		Start: 6
+		AddExtension: false
+
+v22:
+	Defaults:
+		AddExtension: false
+	idle: v22.des
+		Length: 3
+		Tick: 120
+	damaged-idle: v22.des
+		Start: 3
+		Length: 3
+		Tick: 120
+
+v22.husk:
+	idle: v22.des
+		Start: 6
+		AddExtension: false
+
+v23:
+	Defaults:
+		AddExtension: false
+	idle: v23.des
+		Length: 3
+		Tick: 120
+	damaged-idle: v23.des
+		Start: 3
+		Length: 3
+		Tick: 120
+
+v23.husk:
+	idle: v23.des
+		Start: 6
+		AddExtension: false
+
+v24:
+	Defaults:
+		AddExtension: false
+	idle: v24.des
+	damaged-idle: v24.des
+		Start: 1
+
+v24.husk:
+	idle: v24.des
+		Start: 2
+		AddExtension: false
+
+v25:
+	Defaults:
+		AddExtension: false
+	idle: v25.des
+	damaged-idle: v25.des
+		Start: 1
+
+v25.husk:
+	idle: v25.des
+		Start: 2
+		AddExtension: false
+
+v26:
+	Defaults:
+		AddExtension: false
+	idle: v26.des
+	damaged-idle: v26.des
+		Start: 1
+
+v26.husk:
+	idle: v26.des
+		Start: 2
+		AddExtension: false
+
+v27:
+	Defaults:
+		AddExtension: false
+	idle: v27.des
+	damaged-idle: v27.des
+		Start: 1
+
+v27.husk:
+	idle: v27.des
+		Start: 2
+		AddExtension: false
+
+v28:
+	Defaults:
+		AddExtension: false
+	idle: v28.des
+	damaged-idle: v28.des
+		Start: 1
+
+v28.husk:
+	idle: v28.des
+		Start: 2
+		AddExtension: false
+
+v29:
+	Defaults:
+		AddExtension: false
+	idle: v29.des
+	damaged-idle: v29.des
+		Start: 1
+
+v29.husk:
+	idle: v29.des
+		Start: 2
+		AddExtension: false
+
+v30:
+	Defaults:
+		AddExtension: false
+	idle: v30.des
+	damaged-idle: v30.des
+		Start: 2
+
+v30.husk:
+	idle: v30.des
+		Start: 2
+		AddExtension: false
+
+v31:
+	Defaults:
+		AddExtension: false
+	idle: v31.des
+	damaged-idle: v31.des
+		Start: 1
+
+v31.husk:
+	idle: v31.des
+		Start: 2
+		AddExtension: false
+
+v32:
+	Defaults:
+		AddExtension: false
+	idle: v32.des
+	damaged-idle: v32.des
+		Start: 1
+
+v32.husk:
+	idle: v32.des
+		Start: 2
+		AddExtension: false
+
+v33:
+	Defaults:
+		AddExtension: false
+	idle: v33.des
+	damaged-idle: v33.des
+		Start: 1
+
+v33.husk:
+	idle: v33.des
+		Start: 2
+		AddExtension: false
+
+v34:
+	Defaults:
+		AddExtension: false
+	idle: v34.des
+	damaged-idle: v34.des
+		Start: 1
+
+v34.husk:
+	idle: v34.des
+		Start: 2
+		AddExtension: false
+
+v35:
+	Defaults:
+		AddExtension: false
+	idle: v35.des
+	damaged-idle: v35.des
+		Start: 1
+
+v35.husk:
+	idle: v35.des
+		Start: 2
+		AddExtension: false
+
+v36:
+	Defaults:
+		AddExtension: false
+	idle: v36.des
+	damaged-idle: v36.des
+		Start: 1
+
+v36.husk:
+	idle: v36.des
+		Start: 2
+		AddExtension: false
+
+v37:
+	Defaults:
+		AddExtension: false
+	idle: v37.des
+	damaged-idle: v37.des
+		Start: 1
+
+v37.husk:
+	idle: v37.des
+		Start: 2
+		AddExtension: false
+
+arco:
+	idle:
+	damaged-idle:
+		Start: 1
+
+arco.husk:
+	idle: arco
+		Start: 1

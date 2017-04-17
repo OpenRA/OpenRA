@@ -1,0 +1,224 @@
+4TNK:
+	Inherits: ^Tank
+	Inherits@VOXELS: ^VoxelActor
+	Inherits@EXPERIENCE: ^GainsExperience
+	Valued:
+		Cost: 1700
+	Tooltip:
+		Name: Mammoth Tank
+	Mobile:
+		Speed: 56
+		TurnSpeed: 5
+		Crushes: wall, crate, infantry
+	Health:
+		HP: 600
+	Armor:
+		Type: Heavy
+	RevealsShroud:
+		Range: 6c0
+		MaxHeightDelta: 3
+		RequiresCondition: !inside-tunnel
+	Turreted:
+		TurnSpeed: 3
+	Armament@PRIMARY:
+		Weapon: 120mmx
+		LocalOffset: 500,60,360, 500,-85,360
+		MuzzleSequence: muzzle
+	Armament@SECONDARY:
+		Weapon: MammothTusk
+		LocalOffset: 0,200,410, 0,-200,410
+	AttackTurreted:
+		Voice: Attack
+	AutoTarget:
+	SelfHealing:
+		Delay: 10
+		HealIfBelow: 50
+		DamageCooldown: 200
+	WithVoxelTurret:
+	WithVoxelBarrel:
+	WithMuzzleOverlay:
+
+^TRUCK:
+	Inherits: ^CivilianVoxelVehicle
+	Valued:
+		Cost: 500
+	Tooltip:
+		Name: Truck
+	Health:
+		HP: 200
+	Armor:
+		Type: Light
+	Mobile:
+		Speed: 56
+	RevealsShroud:
+		RequiresCondition: !inside-tunnel
+		Range: 5c0
+		MaxHeightDelta: 3
+
+TRUCKA:
+	Inherits: ^TRUCK
+
+TRUCKB:
+	Inherits: ^TRUCK
+
+ICBM:
+	Inherits: ^CivilianVoxelCrusher
+	Valued:
+		Cost: 1400
+	Tooltip:
+		Name: Ballistic Missile Launcher
+	Health:
+		HP: 500
+	Armor:
+		Type: Light
+	Mobile:
+		Speed: 85
+		TurnSpeed: 5
+	RevealsShroud:
+		RequiresCondition: !inside-tunnel
+		Range: 7c0
+		MaxHeightDelta: 3
+	Transforms:
+		IntoActor: gaicbm
+		Offset: -1,-1
+		Facing: 96
+		TransformSounds:
+		NoTransformSounds:
+		Voice: Move
+
+BUS:
+	Inherits: ^CivilianVoxelCrusher
+	Valued:
+		Cost: 800
+	Tooltip:
+		Name: School Bus
+	Mobile:
+		TurnSpeed: 5
+		Speed: 113
+		RequiresCondition: !empdisable && !loading
+	Health:
+		HP: 100
+	Armor:
+		Type: Light
+	RevealsShroud:
+		RequiresCondition: !inside-tunnel
+		Range: 5c0
+		MaxHeightDelta: 3
+	Cargo:
+		Types: Infantry
+		MaxWeight: 20
+		PipCount: 5
+		UnloadVoice: Unload
+		LoadingCondition: loading
+		EjectOnDeath: true
+
+PICK:
+	Inherits: ^CivilianVoxelVehicle
+	Valued:
+		Cost: 800
+	Tooltip:
+		Name: Pickup
+	Mobile:
+		TurnSpeed: 5
+		Speed: 113
+		RequiresCondition: !empdisable && !loading
+	Health:
+		HP: 100
+	Armor:
+		Type: Light
+	RevealsShroud:
+		RequiresCondition: !inside-tunnel
+		Range: 5c0
+		MaxHeightDelta: 3
+	Cargo:
+		Types: Infantry
+		MaxWeight: 2
+		PipCount: 5
+		UnloadVoice: Unload
+		LoadingCondition: loading
+		EjectOnDeath: true
+
+CAR:
+	Inherits: ^CivilianVoxelVehicle
+	Valued:
+		Cost: 800
+	Tooltip:
+		Name: Automobile
+	Mobile:
+		TurnSpeed: 5
+		Speed: 113
+		RequiresCondition: !empdisable && !loading
+	Health:
+		HP: 100
+	Armor:
+		Type: Light
+	RevealsShroud:
+		RequiresCondition: !inside-tunnel
+		Range: 5c0
+		MaxHeightDelta: 3
+	Cargo:
+		Types: Infantry
+		MaxWeight: 4
+		PipCount: 5
+		UnloadVoice: Unload
+		LoadingCondition: loading
+		EjectOnDeath: true
+
+WINI:
+	Inherits: ^CivilianVoxelVehicle
+	Valued:
+		Cost: 800
+	Tooltip:
+		Name: Recreational Vehicle
+	Mobile:
+		TurnSpeed: 5
+		Speed: 113
+		RequiresCondition: !empdisable && !loading
+	Health:
+		HP: 200
+	Armor:
+		Type: Light
+	RevealsShroud:
+		RequiresCondition: !inside-tunnel
+		Range: 5c0
+		MaxHeightDelta: 3
+	Cargo:
+		Types: Infantry
+		MaxWeight: 5
+		PipCount: 5
+		UnloadVoice: Unload
+		LoadingCondition: loading
+		EjectOnDeath: true
+
+LOCOMOTIVE:
+	Inherits: ^Train
+	Valued:
+		Cost: 800
+	Tooltip:
+		Name: Train Locomotive
+	Cargo:
+		MaxWeight: 2
+		PipCount: 2
+		EjectOnDeath: true
+
+TRAINCAR:
+	Inherits: ^Train
+	Valued:
+		Cost: 800
+	Tooltip:
+		Name: Passenger Car
+	Cargo:
+		MaxWeight: 10
+		PipCount: 5
+		EjectOnDeath: true
+
+CARGOCAR:
+	Inherits: ^Train
+	Valued:
+		Cost: 800
+	Tooltip:
+		Name: Cargo Car
+	Cargo:
+		MaxWeight: 10
+		PipCount: 5
+		EjectOnDeath: true

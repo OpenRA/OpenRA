@@ -1,0 +1,7 @@
+oldlst:
+	idle: lst
+		Start: 0
+		Facings: 1
+		ZOffset: -1024
+	icon: lsticnh.tem
+		AddExtension: False

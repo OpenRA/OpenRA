@@ -1,0 +1,192 @@
+GACNST:
+	Inherits: ^Building
+	Building:
+		Footprint: xxx xxx xxx
+		BuildSounds: facbld1.aud
+		Dimensions: 3,3
+	Buildable:
+		Queue: Building
+		BuildPaletteOrder: 1000
+		Prerequisites: ~disabled
+		Description: Builds base structures.
+	Health:
+		HP: 1500
+	Armor:
+		Type: Wood
+	RevealsShroud:
+		Range: 5c0
+		MaxHeightDelta: 3
+	Production:
+		Produces: Building,Defense
+	Valued:
+		Cost: 2500
+	Tooltip:
+		Name: Construction Yard
+	CustomSellValue:
+		Value: 2500
+	BaseBuilding:
+	Transforms:
+		IntoActor: mcv
+		Offset: 1,1
+		Facing: 96
+		DeployCursor: undeploy
+	ProductionBar@Building:
+		ProductionType: Building
+	ProductionBar@Defense:
+		ProductionType: Defense
+	WithIdleOverlay@TOP:
+		Sequence: idle-top
+	WithIdleOverlay@SIDE:
+		Sequence: idle-side
+	WithIdleOverlay@FRONT:
+		Sequence: idle-front
+	WithBuildingPlacedOverlay:
+	Power:
+		Amount: 0
+	Selectable:
+		Bounds: 144, 60, 0, -6
+	ProvidesPrerequisite@gdi:
+		Factions: gdi
+		Prerequisite: structures.gdi
+	ProvidesPrerequisite@nod:
+		Factions: nod
+		Prerequisite: structures.nod
+	SelectionDecorations:
+		VisualBounds: 144, 80, 0, -12
+
+PROC:
+	Inherits: ^Building
+	Valued:
+		Cost: 2000
+	Tooltip:
+		Name: Tiberium Refinery
+	Buildable:
+		Queue: Building
+		BuildPaletteOrder: 50
+		Prerequisites: anypower, ~techlevel.low
+		Description: Processes raw Tiberium\ninto useable resources.
+	Building:
+		Footprint: xxx= xx== xxx=
+		Dimensions: 4,3
+	Selectable:
+		Bounds: 134, 96, 0, -12
+	Health:
+		HP: 900
+	RevealsShroud:
+		Range: 6c0
+		MaxHeightDelta: 3
+	TiberianSunRefinery:
+		DockAngle: 160
+		DockOffset: 2,1
+		DiscardExcessResources: true
+	StoresResources:
+		PipColor: Green
+		PipCount: 10
+		Capacity: 2000
+	CustomSellValue:
+		Value: 600
+	FreeActor:
+		Actor: HARV
+		SpawnOffset: 2,1
+		Facing: 160
+	WithIdleOverlay@REDLIGHTS:
+		Sequence: idle-redlights
+	WithIdleOverlay@BIB:
+		Sequence: bib
+	WithDockedOverlay@FLAME:
+		Sequence: flame
+		Palette: effect
+	WithDockingOverlay@UNLOAD:
+	Power:
+		Amount: -30
+	ProvidesPrerequisite@buildingname:
+	SelectionDecorations:
+		VisualBounds: 134, 122, 0, -18
+	RenderSprites:
+		Image: proc.gdi
+		FactionImages:
+			gdi: proc.gdi
+			nod: proc.nod
+	Explodes:
+		Weapon: TiberiumExplosion
+
+GASILO:
+	Inherits: ^Building
+	Buildable:
+		Queue: Building
+		BuildPaletteOrder: 100
+		Prerequisites: proc, ~techlevel.low
+		Description: Stores excess Tiberium.
+	Valued:
+		Cost: 150
+	Tooltip:
+		Name: Silo
+	Building:
+		Footprint: xx xx
+		Dimensions: 2, 2
+	Selectable:
+		Bounds: 80, 48, -5, 0
+	-GivesBuildableArea:
+	Health:
+		HP: 300
+	Armor:
+		Type: Wood
+	RevealsShroud:
+		Range: 4c0
+		MaxHeightDelta: 3
+	RenderSprites:
+		Image: gasilo.gdi
+		FactionImages:
+			gdi: gasilo.gdi
+			nod: gasilo.nod
+	WithSpriteBody:
+	WithSiloAnimation:
+	WithIdleOverlay@UNDERLAY:
+		Sequence: idle-underlay
+	WithIdleOverlay@LIGHTS:
+		Sequence: idle-lights
+	StoresResources:
+		PipColor: Green
+		PipCount: 5
+		Capacity: 1500
+	Power:
+		Amount: -10
+	SelectionDecorations:
+		VisualBounds: 80, 48, -5, 0
+	Explodes:
+		Weapon: TiberiumExplosion
+
+ANYPOWER:
+	AlwaysVisible:
+	Tooltip:
+		Name: Power Plant
+	Buildable:
+		Description: Power Plant
+
+BARRACKS:
+	AlwaysVisible:
+	Tooltip:
+		Name: Infantry Production
+	Buildable:
+		Description: Infantry Production
+
+FACTORY:
+	AlwaysVisible:
+	Tooltip:
+		Name: Vehicle Production
+	Buildable:
+		Description: Vehicle Production
+
+RADAR:
+	AlwaysVisible:
+	Tooltip:
+		Name: Radar
+	Buildable:
+		Description: Radar
+
+TECH:
+	AlwaysVisible:
+	Tooltip:
+		Name: Tech Center
+	Buildable:
+		Description: Tech Center

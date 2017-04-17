@@ -1,0 +1,14 @@
+# General dumping-ground for UI element sizes, etc.
+
+Metrics:
+	ColorPickerActorType: ^fact.colorpicker
+	ColorPickerRemapIndices: 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95
+	FactionSuffix-allies: allies
+	FactionSuffix-england: allies
+	FactionSuffix-france: allies
+	FactionSuffix-germany: allies
+	FactionSuffix-russia: soviet
+	FactionSuffix-soviet: soviet
+	FactionSuffix-ukraine: soviet
+	IncompatibleProtectedGameColor: B22222
+	IncompatibleVersionColor: D3D3D3

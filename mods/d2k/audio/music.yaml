@@ -1,0 +1,37 @@
+# requires Dune 2000/DATA/Music copied to OpenRA/Content/d2k/Music
+ARAKATAK: Attack on Arrakis
+	Extension: AUD
+ENTORDOS: Enter the Ordos
+	Extension: AUD
+FIGHTPWR: Fight for Power
+	Extension: AUD
+HARK_BAT: Harkonnen Battle
+	Extension: AUD
+LANDSAND: Land of Sand
+	Extension: AUD
+OPTIONS: Options
+	Extension: AUD
+	Hidden: true
+PLOTTING: Plotting
+	Extension: AUD
+RISEHARK: Rise of Harkonnen
+	Extension: AUD
+ROBOTIX: Robotix
+	Extension: AUD
+SCORE: Score
+	Extension: AUD
+	Hidden: true
+SPICESCT: Spice Scouting
+	Extension: AUD
+AMBUSH: The Ambush
+	Extension: AUD
+ATREGAIN: The Atreides Gain
+	Extension: AUD
+FREMEN: The Fremen
+	Extension: AUD
+SOLDAPPR: The Soldiers Approach
+	Extension: AUD
+WAITGAME: The Waiting Game
+	Extension: AUD
+UNDERCON: Under Construction
+	Extension: AUD

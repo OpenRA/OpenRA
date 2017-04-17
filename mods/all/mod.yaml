@@ -1,0 +1,36 @@
+Metadata:
+	Title: All mods
+	Version: {DEV_VERSION}
+	Author: The OpenRA Developers
+	Hidden: true
+	Description: Depending on all DLLs.
+
+RequiresMods:
+
+Packages:
+	.
+
+Cursors:
+
+Chrome:
+
+Assemblies:
+	./mods/common/OpenRA.Mods.Common.dll
+	./mods/common/OpenRA.Mods.Cnc.dll
+	./mods/d2k/OpenRA.Mods.D2k.dll
+
+ChromeLayout:
+
+Notifications:
+
+LoadScreen: BlankLoadScreen
+
+ChromeMetrics:
+
+Fonts:
+
+SoundFormats:
+
+SpriteFormats:
+
+SpriteSequenceFormat: DefaultSpriteSequence

@@ -1,0 +1,146 @@
+^BaseWorld:
+	AlwaysVisible:
+	Inherits: ^Palettes
+	ScreenMap:
+	ActorMap:
+	MusicPlaylist:
+		VictoryMusic: win1
+		DefeatMusic: nod_map1
+	TerrainGeometryOverlay:
+	ShroudRenderer:
+		ShroudVariants: typea, typeb, typec, typed
+		FogVariants: typea, typeb, typec, typed
+		OverrideFullShroud: full
+		OverrideFullFog: full
+	Faction@Random:
+		Name: Any
+		InternalName: Random
+		RandomFactionMembers: gdi, nod
+		Description: Select a random faction.
+	Faction@gdi:
+		Name: GDI
+		InternalName: gdi
+		Description: Global Defense Initiative\nThe GDI is an international military branch of the United Nations tasked\nwith keeping world peace. Commanding the combined forces of the world's\nmost powerful nations, they possess an unmatched arsenal of high-tech weaponry.
+	Faction@nod:
+		Name: Nod
+		InternalName: nod
+		Description: Brotherhood of Nod\nThe Brotherhood is a religious cult centered around their leader Kane\nand the alien substance Tiberium. They utilize stealth technology\nand guerilla tactics to defeat those who oppose them.
+	ResourceType@green-tib:
+		Type: Tiberium
+		Name: Tiberium
+		PipColor: Green
+		ResourceType: 1
+		Palette: staticterrain
+		TerrainType: Tiberium
+		Sequences: ti1,ti2,ti3,ti4,ti5,ti6,ti7,ti8,ti9,ti10,ti11,ti12
+		MaxDensity: 12
+		ValuePerUnit: 35
+		AllowedTerrainTypes: Clear,Road
+		AllowUnderActors: true
+	ResourceType@blue-tib:
+		Type: BlueTiberium
+		Name: Tiberium
+		PipColor: Blue
+		ResourceType: 2
+		Palette: bluetiberium
+		TerrainType: BlueTiberium
+		Sequences: bti1,bti2,bti3,bti4,bti5,bti6,bti7,bti8,bti9,bti10,bti11,bti12
+		MaxDensity: 12
+		ValuePerUnit: 60
+		AllowedTerrainTypes: Clear,Road
+		AllowUnderActors: true
+
+World:
+	Inherits: ^BaseWorld
+	ChatCommands:
+	DevCommands:
+	PlayerCommands:
+	HelpCommand:
+	ScreenShaker:
+	BuildingInfluence:
+	LegacyBridgeLayer:
+		Bridges: bridge1, bridge2, bridge3, bridge4
+	ProductionQueueFromSelection:
+		ProductionTabsWidget: PRODUCTION_TABS
+	DomainIndex:
+	SmudgeLayer@SCORCH:
+		Type: Scorch
+		Sequence: scorches
+		SmokePercentage: 50
+	SmudgeLayer@CRATER:
+		Type: Crater
+		Sequence: craters
+	ResourceLayer:
+	ResourceClaimLayer:
+	WarheadDebugOverlay:
+	CustomTerrainDebugOverlay:
+	MapCreeps:
+	SpawnMapActors:
+	MapBuildRadius:
+	MapOptions:
+	MPStartLocations:
+	CreateMPPlayers:
+	MPStartUnits@mcvonly:
+		Class: none
+		ClassName: MCV Only
+		Factions: gdi, nod
+		BaseActor: mcv
+	MPStartUnits@defaultgdia:
+		Class: light
+		ClassName: Light Support
+		Factions: gdi
+		BaseActor: mcv
+		SupportActors: e1,e1,e1,e1,e1,e3,e3,jeep
+	MPStartUnits@defaultnoda:
+		Class: light
+		ClassName: Light Support
+		Factions: nod
+		BaseActor: mcv
+		SupportActors: e1,e1,e1,e1,e1,e1,e3,e3,bggy
+	MPStartUnits@heavynoda:
+		Class: heavy
+		ClassName: Heavy Support
+		Factions: nod
+		BaseActor: mcv
+		SupportActors: e1,e1,e1,e1,e3,e3,ltnk,ltnk,ftnk
+	MPStartUnits@heavynodb:
+		Class: heavy
+		ClassName: Heavy Support
+		Factions: nod
+		BaseActor: mcv
+		SupportActors: e1,e1,e1,e1,e1,e3,e3,e3,ftnk,ftnk
+	MPStartUnits@heavygdia:
+		Class: heavy
+		ClassName: Heavy Support
+		Factions: gdi
+		BaseActor: mcv
+		SupportActors: e1,e1,e1,e1,e3,e3,jeep,mtnk,mtnk
+	MPStartUnits@heavygdib:
+		Class: heavy
+		ClassName: Heavy Support
+		Factions: gdi
+		BaseActor: mcv
+		SupportActors: e1,e1,e1,e1,e1,e2,e2,e2,e3,e3,apc,mtnk
+	SpawnMPUnits:
+		StartingUnitsClass: light
+	CrateSpawner:
+		Minimum: 1
+		Maximum: 6
+		SpawnInterval: 3000
+		WaterChance: 0
+		InitialSpawnDelay: 1500
+	PathFinder:
+	ValidateOrder:
+	DebugPauseState:
+	ObjectivesPanel:
+		PanelName: SKIRMISH_STATS
+	RadarPings:
+	LoadWidgetAtGameStart:
+		ShellmapRoot: MENU_BACKGROUND
+
+EditorWorld:
+	Inherits: ^BaseWorld
+	EditorActorLayer:
+	EditorResourceLayer:
+	EditorSelectionLayer:
+	LoadWidgetAtGameStart:

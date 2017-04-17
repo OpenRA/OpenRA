@@ -1,0 +1,39 @@
+lst:
+	idle: lstnew
+		UseClassicFacingFudge: True
+		Facings: 32
+	roof: lstnew2
+		UseClassicFacingFudge: True
+		Facings: 32
+	icon: lsticnh.tem
+		AddExtension: False
+
+boat:
+	left:
+		Facings: 32
+	damaged-left:
+		Start: 32
+		Facings: 32
+	critical-left:
+		Start: 64
+		Facings: 32
+	wake-left: wake
+		Start: 6
+		Length: 6
+		Offset: 1,2
+		Tick: 120
+	right:
+		Start: 96
+		Facings: 32
+	damaged-right:
+		Start: 128
+		Facings: 32
+	critical-right:
+		Start: 160
+		Facings: 32
+	wake-right: wake
+		Length: 6
+		Offset: -1,2
+		Tick: 120
+	icon: boaticnh.tem
+		AddExtension: False

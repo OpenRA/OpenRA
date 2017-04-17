@@ -1,0 +1,147 @@
+Sniper:
+	Report: ramgun2.aud
+	ValidTargets: Ground, Infantry
+	InvalidTargets: Vehicle, Water, Structure, Wall, Husk
+	ReloadDelay: 40
+	Range: 8c0
+	Projectile: Bullet
+		Speed: 5c682
+	Warhead@1Dam: SpreadDamage
+		Spread: 42
+		Damage: 100
+		ValidTargets: Infantry
+		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
+
+^HeavyMG:
+	ReloadDelay: 25
+	Range: 6c0
+	Report: gun8.aud
+	Projectile: Bullet
+		Speed: 1c682
+	Warhead@1Dam: SpreadDamage
+		Spread: 683
+		Damage: 30
+		Versus:
+			None: 100
+			Wood: 50
+			Light: 70
+			Heavy: 30
+		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
+	Warhead@2Eff: CreateEffect
+		Explosions: piffs
+
+HighV:
+	Inherits: ^HeavyMG
+
+Vulcan:
+	Inherits: ^HeavyMG
+	ReloadDelay: 2
+	Report: gun5.aud
+	Warhead@1Dam: SpreadDamage
+		Spread: 426
+		Damage: 100
+		Versus:
+			Wood: 25
+			Light: 100
+			Heavy: 35
+
+HeliAGGun:
+	Inherits: ^HeavyMG
+	ReloadDelay: 20
+	Burst: 2
+	BurstDelay: 0
+	Range: 4c0
+	MinRange: 0c768
+	Report: gun5.aud
+	Projectile: Bullet
+		Blockable: false
+	Warhead@1Dam: SpreadDamage
+		Spread: 256
+		Damage: 20
+		Versus:
+			None: 100
+			Wood: 50
+			Light: 75
+			Heavy: 25
+
+HeliAAGun:
+	Inherits: HeliAGGun
+	ValidTargets: Air
+	Warhead@1Dam: SpreadDamage
+		Spread: 128
+		ValidTargets: Air
+		Versus:
+			Light: 50
+
+Pistol:
+	Inherits: ^LightMG
+	ReloadDelay: 7
+	Range: 3c0
+	Report: gun18.aud
+	Warhead@1Dam: SpreadDamage
+		Damage: 1
+
+^LightMG:
+	Inherits: ^HeavyMG
+	ReloadDelay: 20
+	Range: 4c0
+	InvalidTargets: Wall
+	Report: mgun2.aud
+	Warhead@1Dam: SpreadDamage
+		Spread: 128
+		Damage: 15
+		InvalidTargets: Wall
+		Versus:
+			None: 100
+			Wood: 25
+			Light: 30
+			Heavy: 10
+	Warhead@2Eff: CreateEffect
+		Explosions: piff
+
+M16:
+	Inherits: ^LightMG
+
+MachineGun:
+	Inherits: ^LightMG
+	Burst: 5
+	Report: mgun11.aud
+	Warhead@1Dam: SpreadDamage
+		Versus:
+			Wood: 10
+			Light: 50
+	Warhead@2Eff: CreateEffect
+		Explosions: piffs
+
+APCGun:
+	ReloadDelay: 18
+	Range: 5c0
+	Report: gun20.aud
+	Projectile: Bullet
+		Speed: 1c682
+	Warhead@1Dam: SpreadDamage
+		Spread: 128
+		Damage: 15
+		Versus:
+			None: 50
+			Wood: 50
+			Light: 100
+			Heavy: 50
+		DamageTypes: Prone50Percent, TriggerProne, DefaultDeath
+	Warhead@2Eff: CreateEffect
+		Explosions: small_poof
+
+APCGun.AA:
+	Inherits: APCGun
+	Range: 7c0
+	ValidTargets: Air
+	Projectile: Bullet
+		Speed: 2c0
+		Blockable: false
+	Warhead@1Dam: SpreadDamage
+		Damage: 25
+		ValidTargets: Air
+		Versus:
+			Light: 100
+	Warhead@2Eff: CreateEffect
+		Explosions: small_frag

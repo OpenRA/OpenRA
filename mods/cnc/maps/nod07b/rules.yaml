@@ -1,0 +1,127 @@
+World:
+	LuaScript:
+		Scripts: nod07b.lua, nod07b-AI.lua
+	MusicPlaylist:
+		StartingMusic: justdoit
+		VictoryMusic: nod_win1
+	MissionData:
+		Briefing: The Brotherhood has located a huge field of Tiberium in the area.\n\nThe nearby village has laid claim to the field.\n\nEliminate the villagers, as to prevent any infection of our own workers.\n\nGDI forces are reported to be minimal, so elimination of them is of secondary importance.
+		BriefingVideo: nod7a.vqa
+		StartVideo: tankgo.vqa
+		LossVideo: visor.vqa
+	SmudgeLayer@CRATER:
+		InitialSmudges:
+			9,12: cr1,0
+
+Player:
+	PlayerResources:
+		DefaultCash: 4000
+
+^Bridge:
+	DamageMultiplier@INVULNERABLE:
+		Modifier: 0
+
+CYCL:
+	Buildable:
+		Prerequisites: ~disabled
+
+NUK2:
+	Buildable:
+		Prerequisites: ~disabled
+
+HPAD:
+	Buildable:
+		Prerequisites: ~disabled
+
+BRIK:
+	Buildable:
+		Prerequisites: ~disabled
+
+EYE:
+	Buildable:
+		Prerequisites: ~disabled
+
+GUN:
+	Buildable:
+		Prerequisites: ~disabled
+
+OBLI:
+	Buildable:
+		Prerequisites: ~disabled
+
+TMPL:
+	Buildable:
+		Prerequisites: ~disabled
+
+E2:
+	Buildable:
+		Prerequisites: ~pyle
+
+E5:
+	Buildable:
+		Prerequisites: ~disabled
+
+HARV:
+	Harvester:
+		SearchFromOrderRadius: 45
+
+MTNK:
+	Buildable:
+		Prerequisites: ~weap
+
+HTNK:
+	Buildable:
+		Prerequisites: ~disabled
+
+RMBO:
+	Buildable:
+		Prerequisites: ~disabled
+
+MCV:
+	Buildable:
+		Prerequisites: ~disabled
+
+FTNK:
+	Buildable:
+		Prerequisites: ~disabled
+
+MLRS:
+	Buildable:
+		Prerequisites: ~disabled
+
+MSAM:
+	Buildable:
+		Prerequisites: ~disabled
+
+ATWR:
+	Buildable:
+		Prerequisites: ~disabled
+
+HELI:
+	Buildable:
+		Prerequisites: ~disabled
+
+STNK:
+	Buildable:
+		Prerequisites: ~disabled
+
+ARTY:
+	Buildable:
+		Prerequisites: ~disabled
+
+FIX:
+	Buildable:
+		Prerequisites: ~disabled
+
+SBAG:
+	Buildable:
+		Queue: Defence.GDI, Defence.Nod
+
+GTWR:
+	Buildable:
+		Queue: Defence.GDI
+
+HQ:
+	AirstrikePower:
+		Prerequisites: gdi
+		SquadSize: 1

@@ -1,0 +1,7 @@
+PortaTesla:
+	ReloadDelay: 20
+	Range: 10c0
+	Warhead: SpreadDamage
+		Spread: 42
+		Damage: 80
+		DamageTypes: Prone50Percent, TriggerProne, FireDeath

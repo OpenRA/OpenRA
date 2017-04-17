@@ -1,0 +1,114 @@
+MapFormat: 11
+
+RequiresMod: d2k
+
+Title: Atreides 01a
+
+Author: Westwood Studios
+
+Tileset: ARRAKIS
+
+MapSize: 32,28
+
+Bounds: 2,2,28,24
+
+Visibility: MissionSelector
+
+Categories: Campaign
+
+LockPreview: True
+
+Players:
+	PlayerReference@Neutral:
+		Name: Neutral
+		OwnsWorld: True
+		NonCombatant: True
+		Faction: Random
+	PlayerReference@Creeps:
+		Name: Creeps
+		NonCombatant: True
+		Faction: Random
+		Enemies: Atreides, Harkonnen
+	PlayerReference@Atreides:
+		Name: Atreides
+		Playable: true
+		Faction: atreides
+		LockFaction: true
+		Color: 9191FF
+		LockColor: true
+		Enemies: Harkonnen, Creeps
+	PlayerReference@Harkonnen:
+		Name: Harkonnen
+		Faction: harkonnen
+		LockFaction: true
+		Color: FE0000
+		LockColor: true
+		Enemies: Atreides, Creeps
+
+Actors:
+	Actor0: trike
+		Location: 15,8
+		Owner: Atreides
+	Actor1: light_inf
+		Location: 13,9
+		Owner: Atreides
+	Actor2: light_inf
+		Location: 25,9
+		Owner: Harkonnen
+	Actor3: light_inf
+		Location: 16,10
+		Owner: Atreides
+	Actor4: trike
+		Location: 9,11
+		Owner: Atreides
+	Actor6: light_inf
+		Location: 15,11
+		Owner: Atreides
+	Actor7: trike
+		Location: 9,13
+		Owner: Atreides
+	Actor8: light_inf
+		Location: 15,13
+		Owner: Atreides
+	Actor9: light_inf
+		Location: 14,14
+		Owner: Atreides
+		Facing: 128
+	Actor10: light_inf
+		Location: 12,19
+		Owner: Harkonnen
+	Actor11: light_inf
+		Location: 29,19
+		Owner: Harkonnen
+	Actor12: light_inf
+		Location: 19,20
+		Owner: Harkonnen
+	Actor13: spicebloom.spawnpoint
+		Location: 24,20
+		Owner: Neutral
+	Actor14: wormspawner
+		Location: 7,23
+		Owner: Creeps
+	AtreidesConyard: construction_yard
+		Location: 11,11
+		Owner: Atreides
+	HarkonnenWaypoint1: waypoint
+		Location: 20,2
+		Owner: Neutral
+	HarkonnenWaypoint2: waypoint
+		Location: 29,10
+		Owner: Neutral
+	HarkonnenWaypoint3: waypoint
+		Location: 24,25
+		Owner: Neutral
+	HarkonnenWaypoint4: waypoint
+		Location: 2,20
+		Owner: Neutral
+	AtreidesWaypoint: waypoint
+		Location: 2,8
+		Owner: Neutral
+	AtreidesRally: waypoint
+		Location: 13,13
+		Owner: Neutral
+
+Rules: d2k|rules/campaign-rules.yaml, rules.yaml

@@ -1,0 +1,144 @@
+spicebloom.spawnpoint:
+	EditorOnlyTooltip:
+		Name: Spice Bloom spawnpoint
+	AlwaysVisible:
+	RenderSpritesEditorOnly:
+		Image: spicebloom
+		Palette: effect50alpha
+	WithSpriteBody:
+		Sequence: grow3
+	BodyOrientation:
+		QuantizedFacings: 1
+	ConditionManager:
+	GrantConditionOnTerrain:
+		Condition: clearsand
+		TerrainTypes: SpiceSand
+	KillsSelf:
+		RequiresCondition: clearsand
+		Delay: 1750, 3250
+	SpawnActorOnDeath:
+		Actor: spicebloom
+	Health:
+		HP: 9999
+		Shape: Circle
+			Radius: 1
+	Immobile:
+		OccupiesSpace: false
+
+spicebloom:
+	HiddenUnderShroud:
+	BodyOrientation:
+		QuantizedFacings: 1
+	AutoSelectionSize:
+	RenderSprites:
+	AppearsOnRadar:
+		UseLocation: true
+	Tooltip:
+		Name: Spice Bloom
+	SpiceBloom:
+		Weapon: SpiceExplosion
+	Explodes:
+		Weapon: BloomExplosion
+		EmptyWeapon: BloomExplosion
+	Crushable:
+		CrushClasses: spicebloom
+		CrushedByFriendlies: true
+	RadarColorFromTerrain:
+		Terrain: Spice
+	Immobile:
+	Health:
+		HP: 1
+		Shape: Circle
+			Radius: 512
+	Targetable:
+		TargetTypes: Ground
+		RequiresForceFire: true
+	Armor:
+		Type: none
+	SpawnActorOnDeath:
+		Actor: spicebloom.spawnpoint
+
+sandworm:
+	Inherits@1: ^SpriteActor
+	Tooltip:
+		Name: Sandworm
+	Health:
+		HP: 9990
+		Radius: 256
+	Armor:
+		Type: heavy
+	Mobile:
+		Speed: 42
+		TerrainSpeeds:
+			Sand: 100
+			Dune: 100
+			SpiceSand: 100
+			Spice: 100
+	Targetable:
+		TargetTypes: Ground
+	WithSpriteBody:
+	WithIdleAnimation:
+		Interval: 160
+		Sequences: lightninga, lightningb, lightningc, lightningd, lightninge, lightningf
+		RequiresCondition: !attacking
+	AmbientSound:
+		SoundFile: WRMSIGN1.WAV
+		Interval: 160
+		RequiresCondition: !attacking
+	WithAttackOverlay@mouth:
+		Sequence: mouth
+	WithAttackOverlay@sand:
+		Sequence: sand
+	HiddenUnderFog:
+	AppearsOnRadar:
+		UseLocation: true
+	AttackSwallow:
+		AttackRequiresEnteringCell: true
+		IgnoresVisibility: true
+		AttackingCondition: attacking
+	Armament:
+		Weapon: WormJaw
+	Sandworm:
+		WanderMoveRadius: 5
+	IgnoresCloak:
+	AnnounceOnSeen:
+		Notification: WormSign
+		PingRadar: True
+	RevealsShroud:
+		Range: 5c0
+	LeavesTrails:
+		Image: sandtrail
+		Sequences: traila, trailb, trailc
+		Palette: effect
+		Type: CenterPosition
+		TerrainTypes: Sand, Dune, SpiceSand, Spice
+		MovingInterval: 3
+		RequiresCondition: !attacking
+	ConditionManager:
+	RevealOnFire:
+		Duration: 50
+		Radius: 2c512
+
+sietch:
+	Inherits: ^Building
+	Tooltip:
+		Name: Fremen Sietch
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
+		TerrainTypes: Cliff
+	Health:
+		HP: 6000
+	Armor:
+		Type: wood
+	RevealsShroud:
+		Range: 10c0
+	-DamagedByTerrain:
+	-GivesBuildableArea:
+	-Sellable:
+	-Capturable:
+	Power:
+		Amount: 0
+	ProvidesPrerequisite@buildingname:
+	-WithMakeAnimation:
+	-WithCrumbleOverlay:

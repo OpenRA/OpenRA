@@ -1,0 +1,35 @@
+FireballLauncher:
+	Projectile:
+		Blockable: false
+
+TurretGun:
+	Projectile:
+		Blockable: false
+
+SuperTankPrimary:
+	ROF: 70
+	Range: 4c768
+	Report: turret1.aud
+	Burst: 2
+	InvalidTargets: Air, Infantry
+	Projectile: Bullet
+		Speed: 682
+		Image: 120MM
+	Warhead@1Dam: SpreadDamage
+		Spread: 128
+		Damage: 50
+		InvalidTargets: Air, Infantry
+		Versus:
+			None: 20
+			Wood: 75
+			Light: 75
+			Concrete: 50
+		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
+	Warhead@2Smu: LeaveSmudge
+		SmudgeType: Crater
+	Warhead@3EffGround: CreateEffect
+		Explosions: small_explosion
+		InvalidImpactTypes: Water
+	Warhead@4EffWater: CreateEffect
+		Explosions: small_splash
+		ValidImpactTypes: Water

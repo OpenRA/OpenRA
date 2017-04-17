@@ -1,0 +1,80 @@
+BOAT:
+	Inherits: ^Ship
+	Inherits@EXPERIENCE: ^GainsExperience
+	Valued:
+		Cost: 300
+	Tooltip:
+		Name: Gunboat
+	Health:
+		HP: 700
+	Armor:
+		Type: Heavy
+	Mobile:
+		InitialFacing: 64
+		TurnSpeed: 32
+		Speed: 28
+		OnRails: true
+	RevealsShroud:
+		Range: 7c0
+	Turreted:
+		TurnSpeed: 5
+		Offset: 0,896,171
+	Armament:
+		Weapon: BoatMissile
+		LocalOffset: 85,-85,0, 85,85,0
+	AttackTurreted:
+	-QuantizeFacingsFromSequence:
+	BodyOrientation:
+		QuantizedFacings: 2
+	WithGunboatBody:
+		Sequence: left # Just a work-around to avoid crash
+	Selectable:
+		Bounds: 42,24
+	AutoTarget:
+		AllowMovement: false
+	RejectsOrders:
+	SelectionDecorations:
+		VisualBounds: 42,24
+
+LST:
+	Inherits: ^Ship
+	Valued:
+		Cost: 300
+	Tooltip:
+		Name: Landing Craft
+	Buildable:
+		Queue: Vehicle.GDI
+		BuildPaletteOrder: 1000
+		Prerequisites: ~disabled
+	Mobile:
+		Crushes: crate
+		TerrainSpeeds:
+			Clear: 100
+			Rough: 100
+			Road: 100
+			Water: 100
+			Tiberium: 100
+			BlueTiberium: 100
+			Beach: 100
+			River: 100
+		InitialFacing: 0
+		TurnSpeed: 4
+		Speed: 142
+		RequiresCondition: !notmobile
+	Health:
+		HP: 400
+	Armor:
+		Type: Heavy
+	RevealsShroud:
+		Range: 7c0
+	WithFacingSpriteBody:
+	WithRoof:
+	WithCargo:
+		DisplayTypes: Infantry, Vehicle
+		LocalOffset: 390,-256,0, 390,256,0, 0,0,0, -390,-256,0, -390,256,0
+	Cargo:
+		Types: Infantry, Vehicle
+		MaxWeight: 5
+		PipCount: 5
+		PassengerFacing: 0
+		LoadingCondition: notmobile

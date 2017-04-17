@@ -1,0 +1,129 @@
+c1:
+	stand:
+		Facings: 8
+	panic-stand:
+		Start: 8
+		Length: 6
+		Facings: 8
+	panic-run:
+		Start: 8
+		Length: 6
+		Facings: 8
+	run:
+		Start: 56
+		Length: 6
+		Facings: 8
+	shoot:
+		Start: 205
+		Length: 4
+		Facings: 8
+	cheer:
+		Start: 200
+		Length: 3
+		Facings: 8
+		Tick: 120
+	die1:
+		Start: 329
+		Length: 8
+		Tick: 80
+	die2:
+		Start: 337
+		Length: 8
+		Tick: 80
+	die3:
+		Start: 337
+		Length: 8
+		Tick: 80
+	die4:
+		Start: 345
+		Length: 12
+		Tick: 80
+	die5:
+		Start: 357
+		Length: 18
+		Tick: 80
+	die6:
+		Start: 182
+		Length: 4
+		Tick: 80
+	die-crushed: e1rot
+		Start: 16
+		Length: 4
+		Tick: 1600
+
+c2:
+	Inherits: c1
+
+c3:
+	Inherits: c1
+
+c4:
+	Inherits: c1
+
+c5:
+	Inherits: c1
+
+c6:
+	Inherits: c1
+
+c7:
+	Inherits: c1
+
+c8:
+	Inherits: c1
+
+c9:
+	Inherits: c1
+
+c10:
+	Inherits: c1
+
+delphi:
+	Inherits: c1
+
+moebius:
+	Defaults:
+		Tick: 80
+	stand:
+		Facings: 8
+	panic-stand:
+		Start: 8
+		Length: 1
+		Stride: 6
+		Facings: 8
+	panic-run:
+		Start: 8
+		Length: 6
+		Facings: 8
+	run:
+		Start: 56
+		Length: 6
+		Facings: 8
+	idle1:
+		Start: 104
+		Length: 15
+	die1:
+		Start: 212
+		Length: 8
+	die2:
+		Start: 220
+		Length: 8
+	die3:
+		Start: 220
+		Length: 8
+	die4:
+		Start: 228
+		Length: 12
+	die5:
+		Start: 240
+		Length: 17
+	die6:
+		Start: 214
+		Length: 3
+	die-crushed: e1rot
+		Start: 16
+		Length: 4
+		Tick: 1600
+
+chan:
+	Inherits: moebius

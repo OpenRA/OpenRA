@@ -1,0 +1,526 @@
+V01:
+	Inherits: ^CivBuilding
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
+	Tooltip:
+		Name: Church
+	SpawnActorOnDeath:
+		Actor: V01.Husk
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
+
+V01.Husk:
+	Inherits: ^CivBuildingHusk
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
+	Tooltip:
+		Name: Church (Destroyed)
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
+
+V02:
+	Inherits: ^CivBuilding
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
+	SpawnActorOnDeath:
+		Actor: V02.Husk
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
+	Tooltip:
+		Name: Han's and Gretel's
+
+V02.Husk:
+	Inherits: ^CivBuildingHusk
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
+	Tooltip:
+		Name: Han's and Gretel's (Destroyed)
+
+V03:
+	Inherits: ^CivBuilding
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
+	SpawnActorOnDeath:
+		Actor: V03.Husk
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
+	Tooltip:
+		Name: Hewitt's House
+
+V03.Husk:
+	Inherits: ^CivBuildingHusk
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
+	Tooltip:
+		Name: Hewitt's House (Destroyed)
+
+V04:
+	Inherits: ^CivBuilding
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
+	SpawnActorOnDeath:
+		Actor: V04.Husk
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
+	Tooltip:
+		Name: Ricktor's House
+
+V04.Husk:
+	Inherits: ^CivBuildingHusk
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
+	Tooltip:
+		Name: Ricktor's House (Destroyed)
+
+V05:
+	Inherits: ^CivBuilding
+	Building:
+		Footprint: xx
+		Dimensions: 2,1
+	SpawnActorOnDeath:
+		Actor: V05.Husk
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
+	Tooltip:
+		Name: Gretchkin's house
+
+V05.Husk:
+	Inherits: ^CivBuildingHusk
+	Building:
+		Footprint: xx
+		Dimensions: 2,1
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
+	Tooltip:
+		Name: Gretchkin's house (Destroyed)
+
+V06:
+	Inherits: ^CivBuilding
+	Building:
+		Footprint: xx
+		Dimensions: 2,1
+	SpawnActorOnDeath:
+		Actor: V06.Husk
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
+	Tooltip:
+		Name: The Barn
+
+V06.Husk:
+	Inherits: ^CivBuildingHusk
+	Building:
+		Footprint: xx
+		Dimensions: 2,1
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
+	Tooltip:
+		Name: The Barn (Destroyed)
+
+V07:
+	Inherits: ^CivBuilding
+	Building:
+		Footprint: xx
+		Dimensions: 2,1
+	SpawnActorOnDeath:
+		Actor: V07.Husk
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
+	Tooltip:
+		Name: Damon's Pub
+
+V07.Husk:
+	Inherits: ^CivBuildingHusk
+	Building:
+		Footprint: xx
+		Dimensions: 2,1
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
+	Tooltip:
+		Name: Damon's Pub (Destroyed)
+
+V08:
+	Inherits: ^CivBuilding
+	SpawnActorOnDeath:
+		Actor: V08.Husk
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
+	Tooltip:
+		Name: Fran's House
+
+V08.Husk:
+	Inherits: ^CivBuildingHusk
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
+	Tooltip:
+		Name: Fran's House (Destroyed)
+
+V09:
+	Inherits: ^CivBuilding
+	SpawnActorOnDeath:
+		Actor: V09.Husk
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
+	Tooltip:
+		Name: Music Factory
+
+V09.Husk:
+	Inherits: ^CivBuildingHusk
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
+	Tooltip:
+		Name: Music Factory (Destroyed)
+
+V10:
+	Inherits: ^CivBuilding
+	SpawnActorOnDeath:
+		Actor: V10.Husk
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
+	Tooltip:
+		Name: Toymaker's
+
+V10.Husk:
+	Inherits: ^CivBuildingHusk
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
+	Tooltip:
+		Name: Toymaker's (Destroyed)
+
+V11:
+	Inherits: ^CivBuilding
+	SpawnActorOnDeath:
+		Actor: V11.Husk
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
+	Tooltip:
+		Name: Ludwig's House
+
+V11.Husk:
+	Inherits: ^CivBuildingHusk
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
+	Tooltip:
+		Name: Ludwig's House (Destroyed)
+
+V12:
+	Inherits: ^CivField
+	SpawnActorOnDeath:
+		Actor: V12.Husk
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
+	Tooltip:
+		Name: Haystacks
+
+V12.Husk:
+	Inherits: ^CivBuildingHusk
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
+	Tooltip:
+		Name: Haystacks (Destroyed)
+
+V13:
+	Inherits: ^CivField
+	SpawnActorOnDeath:
+		Actor: V13.Husk
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
+	Tooltip:
+		Name: Haystacks
+
+V13.Husk:
+	Inherits: ^CivBuildingHusk
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
+	Tooltip:
+		Name: Haystacks (Destroyed)
+
+V14:
+	Inherits: ^CivField
+	SpawnActorOnDeath:
+		Actor: V14.Husk
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
+	Tooltip:
+		Name: Wheat Field
+
+V14.Husk:
+	Inherits: ^CivFieldHusk
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
+	Tooltip:
+		Name: Wheat Field (Destroyed)
+
+V15:
+	Inherits: ^CivField
+	SpawnActorOnDeath:
+		Actor: V15.Husk
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
+	Tooltip:
+		Name: Fallow Field
+
+V15.Husk:
+	Inherits: ^CivFieldHusk
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
+	Tooltip:
+		Name: Fallow Field (Destroyed)
+
+V16:
+	Inherits: ^CivField
+	SpawnActorOnDeath:
+		Actor: V16.Husk
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
+	Tooltip:
+		Name: Corn Field
+
+V16.Husk:
+	Inherits: ^CivFieldHusk
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
+	Tooltip:
+		Name: Corn Field (Destroyed)
+
+V17:
+	Inherits: ^CivField
+	SpawnActorOnDeath:
+		Actor: V17.Husk
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
+	Tooltip:
+		Name: Celery Field
+
+V17.Husk:
+	Inherits: ^CivFieldHusk
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
+	Tooltip:
+		Name: Celery Field (Destroyed)
+
+V18:
+	Inherits: ^CivField
+	SpawnActorOnDeath:
+		Actor: V18.Husk
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
+	Tooltip:
+		Name: Potato Field
+
+V18.Husk:
+	Inherits: ^CivFieldHusk
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
+	Tooltip:
+		Name: Potato Field (Destroyed)
+
+ARCO:
+	Inherits: ^CivBuilding
+	Building:
+		Footprint: xx
+		Dimensions: 2,1
+	SpawnActorOnDeath:
+		Actor: ARCO.Husk
+	Tooltip:
+		Name: Oil Pump
+		ShowOwnerRow: True
+
+ARCO.Husk:
+	Inherits: ^CivBuildingHusk
+	Building:
+		Footprint: xx
+		Dimensions: 2,1
+	Tooltip:
+		Name: Oil Pump (Destroyed)
+
+BARB:
+	Inherits: ^Wall
+	Armor:
+		Type: Light
+	Tooltip:
+		Name: Barbwire Fence
+	LineBuild:
+		NodeTypes: barbwire
+	LineBuildNode:
+		Types: barbwire
+	WithWallSpriteBody:
+		Type: barbwire
+
+WOOD:
+	Inherits: ^Wall
+	Armor:
+		Type: Wood
+	Tooltip:
+		Name: Wooden Fence
+	LineBuild:
+		NodeTypes: woodfence
+	LineBuildNode:
+		Types: woodfence
+	WithWallSpriteBody:
+		Type: woodfence
+
+BRIDGE1:
+	Inherits: ^Bridge
+	Bridge:
+		Template: 165
+		DestroyedTemplate: 166
+	Building:
+		Footprint: ____ ____ ____ ____
+		Dimensions: 4,4
+	CustomSelectionSize:
+		CustomBounds: 96,96
+	FreeActor@north:
+		Actor: bridgehut
+		SpawnOffset: 2,0
+	FreeActor@south:
+		Actor: bridgehut
+		SpawnOffset: 0,2
+
+BRIDGE2:
+	Inherits: ^Bridge
+	Bridge:
+		Template: 167
+		DestroyedTemplate: 168
+	Building:
+		Footprint: _____ _____ _____ _____ _____
+		Dimensions: 5,5
+	CustomSelectionSize:
+		CustomBounds: 120,120
+	FreeActor@north:
+		Actor: bridgehut
+		SpawnOffset: 0,0
+	FreeActor@south:
+		Actor: bridgehut
+		SpawnOffset: 2,2
+
+BRIDGE3:
+	Inherits: ^Bridge
+	Bridge:
+		Template: 169
+		DestroyedTemplate: 170
+	Building:
+		Footprint: ______ ______ ______ ______ ______
+		Dimensions: 6,5
+	CustomSelectionSize:
+		CustomBounds: 144,120
+	FreeActor@north:
+		Actor: bridgehut
+		SpawnOffset: 3,0
+	FreeActor@south:
+		Actor: bridgehut
+		SpawnOffset: 1,2
+
+BRIDGE4:
+	Inherits: ^Bridge
+	Bridge:
+		Template: 171
+		DestroyedTemplate: 172
+	Building:
+		Footprint: ______ ______ ______ ______
+		Dimensions: 6,4
+	CustomSelectionSize:
+		CustomBounds: 144,96
+	FreeActor@north:
+		Actor: bridgehut
+		SpawnOffset: 1,0
+	FreeActor@south:
+		Actor: bridgehut
+		SpawnOffset: 3,2
+
+BRIDGEHUT:
+	AlwaysVisible:
+	Building:
+		Footprint: __ __
+		Dimensions: 2,2
+	CustomSelectionSize:
+		CustomBounds: 48,48
+	LegacyBridgeHut:
+	Targetable:
+		TargetTypes: BridgeHut, C4
+
+C1:
+	Inherits: ^CivInfantry
+	Inherits@armed: ^ArmedCivilian
+
+C2:
+	Inherits: ^CivInfantry
+	Inherits@armed: ^ArmedCivilian
+
+C3:
+	Inherits: ^CivInfantry
+	Inherits@armed: ^ArmedCivilian
+	Voiced:
+		VoiceSet: CivilianFemaleVoice
+
+C4:
+	Inherits: ^CivInfantry
+	Inherits@armed: ^ArmedCivilian
+	Voiced:
+		VoiceSet: CivilianFemaleVoice
+
+C5:
+	Inherits: ^CivInfantry
+	Inherits@armed: ^ArmedCivilian
+	Voiced:
+		VoiceSet: CivilianFemaleVoice
+
+C6:
+	Inherits: ^CivInfantry
+	Inherits@armed: ^ArmedCivilian
+
+C7:
+	Inherits: ^CivInfantry
+	Inherits@armed: ^ArmedCivilian
+
+C8:
+	Inherits: ^CivInfantry
+	Inherits@armed: ^ArmedCivilian
+
+C9:
+	Inherits: ^CivInfantry
+	Inherits@armed: ^ArmedCivilian
+
+C10:
+	Inherits: ^CivInfantry
+	Inherits@armed: ^ArmedCivilian
+
+DELPHI:
+	Inherits: ^CivInfantry
+	Inherits@armed: ^ArmedCivilian
+	-Wanders:
+	Tooltip:
+		Name: Agent Delphi
+
+CHAN:
+	Inherits: ^CivInfantry
+	Tooltip:
+		Name: Dr. Chan
+
+MOEBIUS:
+	Inherits: ^CivInfantry
+	-Wanders:
+	Voiced:
+		VoiceSet: MoebiusVoice
+	Tooltip:
+		Name: Dr. Moebius
+
+VICE:
+	Inherits: ^Viceroid
+	AttackWander:
+		WanderMoveRadius: 2
+		MinMoveDelayInTicks: 25
+		MaxMoveDelayInTicks: 45

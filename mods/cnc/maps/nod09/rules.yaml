@@ -1,0 +1,198 @@
+World:
+	LuaScript:
+		Scripts: nod09.lua, nod09-AI.lua
+	MusicPlaylist:
+		StartingMusic: march
+		VictoryMusic: nod_win1
+	MissionData:
+		Briefing: GDI is attempting to retake Egypt.\n\nUse every available resource in your efforts to stop them.\n\nThe populace has once again swayed in support of GDI forces, so show no mercy in dealing with the villagers.
+		LossVideo: banner.vqa
+		BriefingVideo: nod9.vqa
+	SmudgeLayer@SCORCH:
+		InitialSmudges:
+			20,55: sc2,0
+			16,55: sc1,0
+			14,55: sc5,0
+			9,55: sc6,0
+			20,54: sc5,0
+			16,54: sc4,0
+			22,53: sc3,0
+			8,53: sc4,0
+			8,52: sc3,0
+			12,51: sc2,0
+	SmudgeLayer@CRATER:
+		InitialSmudges:
+			21,55: cr1,0
+			15,55: cr1,0
+			8,55: cr1,0
+			8,54: cr1,0
+			7,54: cr1,0
+	ScriptLobbyDropdown@difficulty:
+		ID: difficulty
+		Label: Difficulty
+		Values:
+			easy: Easy
+			normal: Normal
+			hard: Hard
+		Default: easy
+
+Player:
+	PlayerResources:
+		DefaultCash: 0
+
+^Bridge:
+	DamageMultiplier@INVULNERABLE:
+		Modifier: 0
+
+BRIDGEHUT:
+	-Targetable:
+
+NUK2:
+	Buildable:
+		Prerequisites: ~disabled
+
+HPAD:
+	Buildable:
+		Prerequisites: ~disabled
+
+BRIK:
+	Buildable:
+		Prerequisites: ~disabled
+
+EYE:
+	Buildable:
+		Prerequisites: ~disabled
+
+GUN:
+	Buildable:
+		Queue: Defence.Nod
+
+OBLI:
+	Buildable:
+		Prerequisites: ~disabled
+
+TMPL:
+	Buildable:
+		Prerequisites: ~disabled
+
+E2:
+	Buildable:
+		Prerequisites: ~pyle
+
+E5:
+	Buildable:
+		Prerequisites: ~disabled
+
+HARV:
+	Harvester:
+		SearchFromOrderRadius: 45
+
+HTNK:
+	Buildable:
+		Prerequisites: ~disabled
+
+RMBO:
+	Buildable:
+		Prerequisites: ~disabled
+
+MCV:
+	Buildable:
+		Prerequisites: ~disabled
+
+MLRS:
+	Buildable:
+		Prerequisites: ~disabled
+
+MTNK:
+	Buildable:
+		Prerequisites: ~weap
+
+MSAM:
+	Buildable:
+		Prerequisites: ~weap
+
+HELI:
+	Buildable:
+		Prerequisites: ~disabled
+
+STNK:
+	Buildable:
+		Prerequisites: ~disabled
+
+GTWR:
+	Buildable:
+		Queue: Defence.GDI
+
+SBAG:
+	Buildable:
+		Queue: Defence.GDI, Defence.Nod
+
+HQ:
+	AirstrikePower:
+		Prerequisites: gdi
+		SquadSize: 2
+
+BOAT:
+	Health:
+		HP: 1500
+	AutoTarget:
+		InitialStance: AttackAnything
+	RejectsOrders:
+		Except: Attack
+
+TRAN.IN:
+	Inherits: TRAN
+	RejectsOrders:
+	-Selectable:
+	RenderSprites:
+		Image: TRAN
+	Buildable:
+		Prerequisites: ~disabled
+
+Camera.Boat:
+	AlwaysVisible:
+	Mobile:
+		TerrainSpeeds:
+	RevealsShroud:
+		Range: 4c0
+	ScriptTriggers:
+
+NUKEOUT.IN:
+	Inherits: NUKE
+	RenderSprites:
+		Image: nuke
+	Buildable:
+		Prerequisites: ~disabled
+	ProvidesPrerequisite:
+		Prerequisite: anypower
+	Capturable:
+		CaptureThreshold: 100
+
+PROCOUT.IN:
+	Inherits: PROC
+	RenderSprites:
+		Image: proc
+	Buildable:
+		Prerequisites: ~disabled
+	ProvidesPrerequisite:
+		Prerequisite: proc
+	Capturable:
+		CaptureThreshold: 100
+
+RMBO.easy:
+	Inherits: RMBO
+	Health:
+		HP: 300
+	SelfHealing:
+		Delay: 10
+		HealIfBelow: 50
+		DamageCooldown: 200
+	RenderSprites:
+		Image: RMBO
+
+RMBO.hard:
+	Inherits: RMBO
+	-AutoTarget:
+	-AttackMove:
+	RenderSprites:
+		Image: RMBO

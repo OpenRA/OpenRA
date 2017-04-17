@@ -1,0 +1,61 @@
+Metadata:
+	Title: Mod Chooser
+	Version: {DEV_VERSION}
+	Author: The OpenRA Developers
+	Hidden: true
+
+RequiresMods:
+
+Packages:
+	.
+	./mods/modchooser: modchooser
+	./mods/common: common
+
+Cursors:
+	modchooser|cursors.yaml
+
+Chrome:
+	modchooser|chrome.yaml
+
+Assemblies:
+	common|OpenRA.Mods.Common.dll
+
+ChromeLayout:
+	modchooser|modchooser.yaml
+	modchooser|content.yaml
+
+Notifications:
+	modchooser|notifications.yaml
+
+LoadScreen: ModChooserLoadScreen
+	Image: ./mods/modchooser/chrome.png
+
+ChromeMetrics:
+	common|metrics.yaml
+	modchooser|metrics.yaml
+
+Fonts:
+	Regular:
+		Font: common|FreeSans.ttf
+		Size:14
+	Bold:
+		Font: common|FreeSansBold.ttf
+		Size:14
+	BigBold:
+		Font: common|FreeSansBold.ttf
+		Size:24
+	MediumBold:
+		Font: common|FreeSansBold.ttf
+		Size:18
+	Tiny:
+		Font: common|FreeSans.ttf
+		Size:10
+	TinyBold:
+		Font: common|FreeSansBold.ttf
+		Size:10
+
+SoundFormats:
+
+SpriteFormats: ShpTD
+
+SpriteSequenceFormat: DefaultSpriteSequence

@@ -1,0 +1,74 @@
+# requires Dune 2000/DATA/GAMESFX copied to $PlatformSupportDir/Content/d2k
+
+Speech:
+	DefaultVariant: .AUD
+	Prefixes:
+		atreides: AI_
+		ordos: OI_
+		harkonnen: HI_
+	Notifications:
+		BaseAttack: ATACK
+		Building: BUILD
+		BuildingCannotPlaceAudio: PLACE
+		BuildingCaptured: CAPT
+		BuildingLost: BLOST
+		BuildingReady: BDRDY
+		Cancelled: CANCL
+		CannotDeploy: DPLOY
+		DeathHandMissilePrepping: PREP
+		DeathHandMissileReady: DHRDY
+		EnemyUnitsApproaching: ENEMY
+		EnemyUnitsDetected: ENEMY_DETECTED
+		GameLoaded: GLOAD
+		GameSaved: GSAVE
+		Guarding: GUARD
+		HarvesterAttack: HATTK
+		InsufficientFunds: MONEY
+		Leave: ABORT
+		Lose: MFAIL
+		LowPower: POWER
+		MissileLaunchDetected: LAUNC
+		NewOptions: NEWOP
+		NoRoom: NROOM
+		OnHold: HOLD
+		OrderPlaced: ORDER
+		PrimaryBuildingSelected: PRMRY
+		Reinforce: REINF
+		Repairing: MEND
+		Retreating: RUN
+		SilosNeeded: SILOS
+		StarportActions: SPORT
+		StartGame:
+		StructureSold: SELL
+		TMinusFive: 5MIN
+		TMinusFour: 4MIN
+		TMinusOne: 1MIN
+		TMinusThree: 3MIN
+		TMinusTwo: 2MIN
+		Training: TRAIN
+		UnitLost: ULOST
+		UnitReady: UNRDY
+		UnitRepaired: GANEW
+		UpgradeOptions: UPGOP
+		Upgrading: UPGRD
+		Win: MWIN
+		WormAttack: WATTK
+		WormSign: WSIGN
+
+Sounds:
+	DefaultVariant: .WAV
+	Notifications:
+		RadarUp: MULTI1
+		RadarDown:
+		DisablePower: POWRUP1
+		EnablePower: POWRDN1
+		CashTickUp: CASHTIK1
+		CashTickDown: CASHTIK1
+		LevelUp: SCORTIK1
+		ChatLine: CHAT1
+		BuildPaletteOpen: BUTTON1
+		BuildPaletteClose: BUTTON1
+		TabClick: SIDEBAR1
+		ClickSound: BUTTON1
+		ClickDisabledSound: ENDLIST1
+		Beacon: CHAT1

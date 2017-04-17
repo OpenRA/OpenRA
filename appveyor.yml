@@ -1,0 +1,70 @@
+version: 1.0.{build}
+
+environment:
+  CoverityProjectToken:
+    secure: BYP5qnptMazSCwTwgiFHlfqZd7BM3bwTRq2Cbs++ofg=
+  CoverityNotificationEmail:
+    secure: 0kyu0t8QwQYUQzqguVJP3N+VpEDfET2ArP+JNnOsUELJQvH8qbeQzPTM0ga0ek5G
+
+install:
+
+cache:
+  - thirdparty\download -> thirdparty\fetch-thirdparty-deps.ps1
+
+before_build:
+- make dependencies
+
+build:
+  project: OpenRA.sln
+  verbosity: minimal
+
+after_build:
+- ps: |
+    if ($env:APPVEYOR_SCHEDULED_BUILD -eq "True")
+    {
+        cov-build.exe --dir cov-int make all
+        nuget.exe install PublishCoverity -ExcludeVersion
+        PublishCoverity\tools\PublishCoverity.exe compress -o coverity.zip -i cov-int
+        $version = Get-Date -format s
+        PublishCoverity\tools\PublishCoverity.exe publish `
+          -t "$env:CoverityProjectToken" `
+          -e "$env:CoverityNotificationEmail" `
+          -r "$env:APPVEYOR_REPO_NAME" `
+          -z coverity.zip `
+          -d "AppVeyor scheduled build ($env:APPVEYOR_BUILD_VERSION)." `
+          --codeVersion "$version"
+    }
+
+before_test:
+- ps: |
+    if ($env:APPVEYOR_SCHEDULED_BUILD -eq "True")
+    {
+         choco install resharper-clt -y
+         dupFinder /output=dupReport.xml /show-text OpenRA.sln
+         choco install xmlstarlet -y
+         xml transform dupFinder.xslt dupReport.xml > dupReport.html
+         choco install pandoc -y
+    }
+
+test_script:
+  - nunit3-console OpenRA.Test.dll --result=myresults.xml;format=AppVeyor
+
+after_test:
+  - appveyor DownloadFile "https://raw.githubusercontent.com/wiki/OpenRA/OpenRA/Changelog.md" -FileName Changelog.md
+  - make docs
+  - ps: dir *.md | % {gc $_ -Raw | .\ConvertFrom-Markdown.ps1 | Out-File -FilePath "$($_.Name.TrimEnd(".md")).html"}
+  - ps: (Get-Content "${env:APPVEYOR_BUILD_FOLDER}\packaging\windows\WindowsLauncher.cs.in").replace('DISPLAY_NAME', 'OpenRA').replace('MOD_ID', '').replace('FAQ_URL', 'http://wiki.openra.net/FAQ') | Set-Content "${env:APPVEYOR_BUILD_FOLDER}\packaging\windows\WindowsLauncher.cs"
+  - ps: csc.exe /noconfig /platform:x86 /reference:System.dll /reference:System.Core.dll /reference:System.Drawing.dll /reference:System.Windows.Forms.dll /reference:"${env:APPVEYOR_BUILD_FOLDER}\OpenRA.Game.exe" /out:"${env:APPVEYOR_BUILD_FOLDER}\OpenRA.exe" /win32icon:"${env:APPVEYOR_BUILD_FOLDER}\packaging\windows\OpenRA.ico" /target:winexe ${env:APPVEYOR_BUILD_FOLDER}\packaging\windows\WindowsLauncher.cs
+  - ps: cp packaging\windows\OpenRA.ico .
+  - '"C:\Program Files (x86)\NSIS\makensis.exe" /DSRCDIR="%APPVEYOR_BUILD_FOLDER%" /DDEPSDIR="%APPVEYOR_BUILD_FOLDER%\thirdparty\download\windows" /V3 packaging/windows/OpenRA.nsi'
+  - if defined APPVEYOR_REPO_TAG_NAME set VERSION=%APPVEYOR_REPO_TAG_NAME%
+  - if not defined APPVEYOR_REPO_TAG_NAME set VERSION=%APPVEYOR_REPO_COMMIT:~0,7%
+  - move /Y %APPVEYOR_BUILD_FOLDER%\packaging\windows\OpenRA.Setup.exe %APPVEYOR_BUILD_FOLDER%\OpenRA-%VERSION%.exe
+
+artifacts:
+  - path: OpenRA-$(VERSION).exe
+    name: Installer
+  - path: coverity.zip
+    name: Coverity Build
+  - path: dupReport.html
+    name: dupFinder Report

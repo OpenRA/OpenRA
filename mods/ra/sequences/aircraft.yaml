@@ -1,0 +1,72 @@
+mig:
+	idle:
+		Facings: 16
+	icon: migicon
+
+yak:
+	idle:
+		Facings: 16
+	muzzle: minigun
+		Length: 6
+		Facings: 8
+	icon: yakicon
+
+heli:
+	idle:
+		Facings: 32
+		UseClassicFacingFudge: True
+	rotor: lrotor
+		Length: 4
+	slow-rotor: lrotor
+		Start: 4
+		Length: 8
+	icon: heliicon
+
+hind:
+	idle:
+		Facings: 32
+		UseClassicFacingFudge: True
+	rotor: lrotorlg
+		Length: 4
+	slow-rotor: lrotorlg
+		Start: 4
+		Length: 8
+	muzzle: minigun
+		Length: 6
+		Facings: 8
+	icon: hindicon
+
+tran:
+	idle: tran2
+		Facings: 32
+		UseClassicFacingFudge: True
+	rotor: lrotor
+		Length: 4
+	rotor2: rrotor
+		Length: 4
+	slow-rotor: lrotor
+		Start: 4
+		Length: 8
+	slow-rotor2: rrotor
+		Start: 4
+		Length: 8
+	open: tran2
+		Start: 32
+		Length: 4
+	unload: tran2
+		Start: 35
+	icon: tranicon
+
+tran1husk:
+	idle:
+
+tran2husk:
+	idle:
+
+u2:
+	idle:
+		Facings: 16
+
+badr:
+	idle:
+		Facings: 16

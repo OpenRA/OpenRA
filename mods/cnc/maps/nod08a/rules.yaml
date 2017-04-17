@@ -1,0 +1,198 @@
+World:
+	LuaScript:
+		Scripts: nod08a.lua, nod08a-AI.lua
+	MusicPlaylist:
+		StartingMusic: linefire
+		VictoryMusic: nod_win1
+	MissionData:
+		Briefing: Since we are low on troops, you will have to make use of all available resources.\n\n Locate the abandoned GDI base in the area and restore it to operational status. Once that is done, use GDI's own weapons against them.\n\nBe sure that no GDI forces remain alive.
+		BackgroundVideo: tiberfx.vqa
+		BriefingVideo: nod8.vqa
+		LossVideo: nodlose.vqa
+	SmudgeLayer@SCORCH:
+		InitialSmudges:
+			40,59: sc1,0
+			39,59: sc3,0
+			55,53: sc5,0
+			23,53: sc2,0
+			23,52: sc2,0
+			59,51: sc3,0
+			58,51: sc5,0
+			23,51: sc2,0
+			23,50: sc5,0
+			23,49: sc3,0
+	SmudgeLayer@CRATER:
+		InitialSmudges:
+			47,58: cr1,0
+			56,54: cr1,0
+			55,54: cr1,0
+
+Player:
+	PlayerResources:
+		DefaultCash: 0
+
+CYCL:
+	Buildable:
+		Prerequisites: ~disabled
+
+NUK2:
+	Buildable:
+		Prerequisites: ~disabled
+
+HPAD:
+	Buildable:
+		Prerequisites: ~disabled
+
+BRIK:
+	Buildable:
+		Prerequisites: ~disabled
+
+EYE:
+	Buildable:
+		Prerequisites: ~disabled
+
+GUN:
+	Buildable:
+		Prerequisites: ~disabled
+
+OBLI:
+	Buildable:
+		Prerequisites: ~disabled
+
+TMPL:
+	Buildable:
+		Prerequisites: ~disabled
+
+E2:
+	Buildable:
+		Prerequisites: ~pyle
+
+E4:
+	Buildable:
+		Prerequisites: ~hand
+
+E5:
+	Buildable:
+		Prerequisites: ~disabled
+
+E6:
+	-RepairsBridges:
+
+HARV:
+	Harvester:
+		SearchFromOrderRadius: 30
+
+MTNK:
+	Buildable:
+		Prerequisites: ~weap
+
+HTNK:
+	Buildable:
+		Prerequisites: ~disabled
+
+HQ:
+	AirstrikePower:
+		Prerequisites: gdi
+		SquadSize: 1
+
+RMBO:
+	Buildable:
+		Prerequisites: ~disabled
+
+MCV:
+	Buildable:
+		Prerequisites: ~disabled
+
+FTNK:
+	Buildable:
+		Prerequisites: ~disabled
+
+MLRS:
+	Buildable:
+		Prerequisites: ~disabled
+
+MSAM:
+	Buildable:
+		Prerequisites: ~disabled
+
+ATWR:
+	Buildable:
+		Prerequisites: ~disabled
+
+HELI:
+	Buildable:
+		Prerequisites: ~disabled
+
+SBAG:
+	Buildable:
+		Queue: Defence.GDI, Defence.Nod
+
+GTWR:
+	Buildable:
+		Queue: Defence.GDI
+
+A10.IN:
+	Inherits: A10
+	RenderSprites:
+		Image: A10
+	Armament@BOMBS:
+		Weapon: Napalm.in
+
+airstrike.proxy:
+	AirstrikePower:
+		UnitType: a10.in
+
+FACT.IN:
+	Inherits: FACT
+	RenderSprites:
+		Image: FACT
+	ProvidesPrerequisite:
+		Prerequisite: fact
+	CustomSellValue:
+		Value: 13515
+
+FACTOUT.IN:
+	Inherits: FACT
+	RenderSprites:
+		Image: fact
+	ProvidesPrerequisite:
+		Prerequisite: fact
+	Capturable:
+		CaptureThreshold: 100
+
+MoneyCrate:
+	Inherits: ^Crate
+	GiveCashCrateAction:
+		Amount: 2000
+		UseCashTick: yes
+
+NUKEOUT.IN:
+	Inherits: NUKE
+	RenderSprites:
+		Image: nuke
+	Buildable:
+		Prerequisites: ~disabled
+	ProvidesPrerequisite:
+		Prerequisite: anypower
+	Capturable:
+		CaptureThreshold: 100
+
+PROCOUT.IN:
+	Inherits: PROC
+	RenderSprites:
+		Image: proc
+	Buildable:
+		Prerequisites: ~disabled
+	ProvidesPrerequisite:
+		Prerequisite: proc
+	Capturable:
+		CaptureThreshold: 100
+
+TRAN.IN:
+	Inherits: TRAN
+	RejectsOrders:
+	-Selectable:
+	RenderSprites:
+		Image: TRAN
+	Buildable:
+		Prerequisites: ~disabled

@@ -1,0 +1,87 @@
+^Palettes:
+	PaletteFromFile@player:
+		Name: player
+		Filename: temperat.pal
+		ShadowIndex: 4
+	PaletteFromCurrentTileset:
+		Name: terrain
+		ShadowIndex: 3,4
+	PaletteFromFile@chrome:
+		Name: chrome
+		Filename: temperat.pal
+		ShadowIndex: 3
+		AllowModifiers: false
+	PaletteFromFile@effect:
+		Name: effect
+		Filename: temperat.pal
+		ShadowIndex: 4
+	PaletteFromFile@colorpicker:
+		Name: colorpicker
+		Filename: temperat.pal
+		ShadowIndex: 4
+		AllowModifiers: false
+	PaletteFromRGBA@shadow:
+		Name: shadow
+		R: 0
+		G: 0
+		B: 0
+		A: 140
+	PaletteFromRGBA@submerged:
+		Name: submerged
+		R: 0
+		G: 0
+		B: 0
+		A: 140
+	PaletteFromRGBA@highlight:
+		Name: highlight
+		R: 255
+		G: 255
+		B: 255
+		A: 128
+	PaletteFromRGBA@moveflash:
+		Name: moveflash
+		R: 255
+		G: 255
+		B: 255
+		A: 64
+	PaletteFromRGBA@invuln:
+		Name: invuln
+		R: 128
+		G: 0
+		B: 0
+		A: 128
+	PaletteFromRGBA@disabled:
+		Name: disabled
+		R: 0
+		G: 0
+		B: 0
+		A: 180
+	ShroudPalette@shroud:
+		Name: shroud
+		Type: Shroud
+	ShroudPalette@fog:
+		Name: fog
+		Fog: true
+	PlayerColorPalette:
+		BasePalette: player
+		RemapIndex: 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95
+	PaletteFromPlayerPaletteWithAlpha@cloak:
+		BaseName: cloak
+		BasePalette: player
+		Alpha: 0.55
+	PlayerHighlightPalette:
+	MenuPaletteEffect:
+	RotationPaletteEffect@defaultwater:
+		Palettes: terrain
+		ExcludeTilesets: DESERT
+	RotationPaletteEffect@actorswater:
+		Palettes: player, effect
+	RotationPaletteEffect@desertwater:
+		Palettes: terrain
+		Tilesets: DESERT
+		RotationBase: 32
+	LightPaletteRotator:
+		ExcludePalettes: terrain, effect
+	ChronoshiftPaletteEffect:
+	FlashPaletteEffect@NUKE:
+		Type: Nuke

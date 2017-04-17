@@ -1,0 +1,99 @@
+World:
+	LuaScript:
+		Scripts: gdi03.lua
+	MusicPlaylist:
+		StartingMusic: crep226m
+	MissionData:
+		Briefing: Build up forces to destroy Nod base.\n\nOnce all Nod SAM sites are neutralized then air support will be provided to combat obstacles such as turrets.\n\nDestroy all units and structures to complete the mission objective.
+		BriefingVideo: gdi3.vqa
+		StartVideo: samdie.vqa
+		WinVideo: bombaway.vqa
+		LossVideo: gameover.vqa
+
+SBAG:
+	-Crushable:
+	Buildable:
+		Prerequisites: ~disabled
+
+CYCL:
+	-Crushable:
+	Buildable:
+		Prerequisites: ~disabled
+
+WEAP:
+	Buildable:
+		Prerequisites: ~disabled
+
+NUK2:
+	Buildable:
+		Prerequisites: ~disabled
+
+FIX:
+	Buildable:
+		Prerequisites: ~disabled
+
+HPAD:
+	Buildable:
+		Prerequisites: ~disabled
+
+EYE:
+	Buildable:
+		Prerequisites: ~disabled
+
+GUN:
+	Buildable:
+		Prerequisites: ~disabled
+
+GTWR:
+	Buildable:
+		Prerequisites: ~disabled
+
+ATWR:
+	Buildable:
+		Prerequisites: ~disabled
+
+BRIK:
+	Buildable:
+		Prerequisites: ~disabled
+
+E3:
+	Buildable:
+		Prerequisites: ~disabled
+
+E4:
+	Buildable:
+		Prerequisites: ~disabled
+
+E5:
+	Buildable:
+		Prerequisites: ~disabled
+
+RMBO:
+	Buildable:
+		Prerequisites: ~disabled
+
+AFLD:
+	Buildable:
+		Prerequisites: ~disabled
+
+TMPL:
+	Buildable:
+		Prerequisites: ~disabled
+
+OBLI:
+	Buildable:
+		Prerequisites: ~disabled
+
+SAM:
+	Buildable:
+		Prerequisites: ~disabled
+	Building:
+	Power:
+		Amount: -10
+	-Capturable:
+
+HQ:
+	Tooltip:
+	-AirstrikePower:
+	Buildable:
+		Description: Provides an overview of the battlefield.\n  Requires power to operate.

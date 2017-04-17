@@ -1,0 +1,8 @@
+lst:
+	muzzle: minigun
+		Start: 0
+		Length: 6
+		Facings: 8
+	turret: mgun
+		Start: 0
+		Facings: 32

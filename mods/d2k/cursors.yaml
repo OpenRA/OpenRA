@@ -1,0 +1,307 @@
+ShadowIndex: 1
+
+Palettes:
+	mouse: PALETTE.BIN
+
+Cursors:
+	MOUSE.R8: mouse
+		scroll-t:
+			Start: 112
+			X: 24
+			Y: 24
+		scroll-tr:
+			Start: 120
+			X: 24
+			Y: 24
+		scroll-r:
+			Start: 128
+			X: 24
+			Y: 24
+		scroll-br:
+			Start: 136
+			X: 24
+			Y: 24
+		scroll-b:
+			Start: 148
+			X: 24
+			Y: 24
+		scroll-bl:
+			Start: 156
+			X: 24
+			Y: 24
+		scroll-l:
+			Start: 164
+			X: 24
+			Y: 24
+		scroll-tl:
+			Start: 172
+			X: 24
+			Y: 24
+		scroll-t-blocked:
+			Start: 180
+			X: 24
+			Y: 24
+		scroll-tr-blocked:
+			Start: 188
+			X: 24
+			Y: 24
+		scroll-r-blocked:
+			Start: 196
+			X: 24
+			Y: 24
+		scroll-br-blocked:
+			Start: 204
+			X: 24
+			Y: 24
+		scroll-b-blocked:
+			Start: 212
+			X: 24
+			Y: 24
+		scroll-bl-blocked:
+			Start: 220
+			X: 24
+			Y: 24
+		scroll-l-blocked:
+			Start: 228
+			X: 24
+			Y: 24
+		scroll-tl-blocked:
+			Start: 236
+			X: 24
+			Y: 24
+		select:
+			Start: 40
+			Length: 8
+			X: 24
+			Y: 24
+		default:
+			Start: 0
+			X: 24
+			Y: 24
+		default-minimap:
+			Start: 0
+			X: 24
+			Y: 24
+		generic-blocked:
+			Start: 24
+			X: 24
+			Y: 24
+		generic-blocked-minimap:
+			Start: 24
+			X: 24
+			Y: 24
+		move:
+			Start: 8
+			Length: 8
+			X: 24
+			Y: 24
+		move-minimap:
+			Start: 48
+			Length: 8
+			X: 24
+			Y: 24
+		move-blocked:
+			Start: 24
+			X: 24
+			Y: 24
+		move-blocked-minimap:
+			Start: 24
+			X: 24
+			Y: 24
+		attack:
+			Start: 16
+			Length: 8
+			X: 24
+			Y: 24
+		attack-minimap:
+			Start: 16
+			Length: 8
+			X: 24
+			Y: 24
+		attackoutsiderange:
+			Start: 16
+			Length: 8
+			X: 24
+			Y: 24
+		attackoutsiderange-minimap:
+			Start: 16
+			Length: 8
+			X: 24
+			Y: 24
+		attackmove:
+			Start: 16
+			Length: 8
+			X: 24
+			Y: 24
+		attackmove-minimap:
+			Start: 16
+			Length: 8
+			X: 24
+			Y: 24
+		harvest:
+			Start: 16
+			Length: 8
+			X: 24
+			Y: 24
+		harvest-minimap:
+			Start: 203
+			Length: 8
+			X: 24
+			Y: 24
+		enter:
+			Start: 32
+			Length: 8
+			X: 24
+			Y: 24
+		enter-minimap:
+			Start: 32
+			Length: 8
+			X: 24
+			Y: 24
+		enter-blocked:
+			Start: 104
+			Length: 1
+			X: 24
+			Y: 24
+		enter-blocked-minimap:
+			Start: 104
+			X: 24
+			Y: 24
+		c4:
+			Start: 248
+			Length: 8
+			X: 24
+			Y: 24
+		c4-minimap:
+			Start: 248
+			Length: 8
+			X: 24
+			Y: 24
+		guard:
+			Start: 72
+			Length: 8
+			X: 24
+			Y: 24
+		guard-minimap:
+			Start: 72
+			Length: 8
+			X: 24
+			Y: 24
+		capture:
+			Start: 32
+			Length: 8
+			X: 24
+			Y: 24
+		capture-minimap:
+			Start: 32
+			Length: 8
+			X: 24
+			Y: 24
+		ability:
+			Start: 72
+			Length: 8
+			X: 24
+			Y: 24
+		ability-minimap:
+			Start: 72
+			Length: 8
+			X: 24
+			Y: 24
+		joystick-all:
+			Start: 0
+			X: 24
+			Y: 24
+		joystick-t-blocked:
+			Start: 180
+			X: 24
+			Y: 24
+		joystick-tr-blocked:
+			Start: 188
+			X: 24
+			Y: 24
+		joystick-r-blocked:
+			Start: 196
+			X: 24
+			Y: 24
+		joystick-br-blocked:
+			Start: 204
+			X: 24
+			Y: 24
+		joystick-b-blocked:
+			Start: 212
+			X: 24
+			Y: 24
+		joystick-bl-blocked:
+			Start: 220
+			X: 24
+			Y: 24
+		joystick-l-blocked:
+			Start: 228
+			X: 24
+			Y: 24
+		joystick-tl-blocked:
+			Start: 236
+			X: 24
+			Y: 24
+# Cursors that need minimap variants
+		deploy:
+			Start: 96
+			Length: 8
+			X: 24
+			Y: 24
+		deploy-blocked:
+			Start: 104
+			Length: 1
+			X: 24
+			Y: 24
+		nuke:
+			Start: 240
+			Length: 8
+			X: 24
+			Y: 24
+		sell:
+			Start: 80
+			Length: 8
+			X: 24
+			Y: 24
+		sell-blocked:
+			Start: 56
+			Length: 1
+			X: 24
+			Y: 24
+		repair:
+			Start: 88
+			Length: 8
+			X: 24
+			Y: 24
+		repair-blocked:
+			Start: 64
+			Length: 1
+			X: 24
+			Y: 24
+		goldwrench:
+			Start: 88
+			Length: 8
+			X: 24
+			Y: 24
+		goldwrench-blocked:
+			Start: 64
+			Length: 1
+			X: 24
+			Y: 24
+		move-rough:
+			Start: 256
+			Length: 8
+			X: 24
+			Y: 24
+	nopower.shp: mouse
+		powerdown-blocked:
+			Start: 0
+			Length: 1
+			X: 12
+			Y: 12
+		powerdown:
+			Start: 1
+			Length: 3
+			X: 12
+			Y: 12

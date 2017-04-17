@@ -1,0 +1,71 @@
+Debris:
+	ReloadDelay: 60
+	Range: 2c768
+	Projectile: Bullet
+		Speed: 32, 64
+		Blockable: false
+		LaunchAngle: 128, 192
+		Inaccuracy: 1c256
+		Image: shrapnel
+		Shadow: true
+		BounceCount: 3
+		BounceRangeModifier: 20
+	Warhead@1Dam: SpreadDamage
+		Spread: 320
+		Falloff: 100, 60, 30, 15, 0
+		Damage: 150
+		Versus:
+			none: 20
+			wall: 50
+			building: 50
+			wood: 60
+			light: 100
+			heavy: 75
+			concrete: 100
+			invulnerable: 0
+			cy: 20
+			harvester: 50
+		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
+	Warhead@2Smu: LeaveSmudge
+		SmudgeType: SandCrater
+		InvalidTargets: Vehicle, Structure
+	Warhead@3Eff: CreateEffect
+		Explosions: tiny_explosion
+
+Debris2:
+	Inherits: Debris
+	Projectile: Bullet
+		Image: shrapnel2
+		TrailImage: small_trail
+		TrailPalette: effect75alpha
+		TrailInterval: 1
+	Warhead@1Dam: SpreadDamage
+		Damage: 250
+		Versus:
+			none: 90
+			wall: 5
+			building: 65
+			wood: 50
+			light: 40
+			heavy: 30
+			concrete: 100
+			invulnerable: 0
+			cy: 20
+			harvester: 25
+		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
+	Warhead@3Eff: CreateEffect
+		Explosions: small_napalm
+
+Debris3:
+	Inherits: Debris2
+	Projectile: Bullet
+		Image: shrapnel3
+		TrailImage: small_trail2
+	Warhead@1Dam: SpreadDamage
+		Damage: 150
+
+Debris4:
+	Inherits: Debris2
+	Projectile: Bullet
+		Image: shrapnel4
+		TrailImage: large_trail

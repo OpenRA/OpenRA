@@ -1,0 +1,37 @@
+World:
+	LuaScript:
+		Scripts: nod01.lua
+	MusicPlaylist:
+		StartingMusic: nomercy
+		VictoryMusic: nod_win1
+	MissionData:
+		Briefing: In order for the Brotherhood to gain a foothold, we must begin by eliminating certain elements.\n\nNikoomba, the nearby village's leader, is one such element.\n\nHis views and ours do not coincide.\n\nHe and his whole group must be eliminated.
+		BackgroundVideo: intro2.vqa
+		BriefingVideo: nod1.vqa
+		LossVideo: nodlose.vqa
+
+^Palettes:
+	IndexedPlayerPalette:
+		PlayerIndex:
+			Villagers: 192, 164, 132, 155, 133, 197, 112, 12, 163, 132, 155, 133, 134, 197, 154, 198
+	IndexedPlayerPalette@units:
+		PlayerIndex:
+			Villagers: 192, 164, 132, 155, 133, 197, 112, 12, 163, 132, 155, 133, 134, 197, 154, 198
+
+Player:
+	PlayerResources:
+		DefaultCash: 0
+
+C10:
+	Tooltip:
+		Name: Nikoomba
+
+^Bridge:
+	DamageMultiplier@INVULNERABLE:
+		Modifier: 0
+
+^CivBuilding:
+	MustBeDestroyed:
+
+^CivInfantry:
+	MustBeDestroyed:

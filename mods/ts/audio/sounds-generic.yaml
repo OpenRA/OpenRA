@@ -1,0 +1,37 @@
+Sounds:
+	Notifications:
+		Bargraph: bargraph
+		Beacon: message1
+		Bestbox: bestbox
+		Blip: blip
+		BuildPaletteClose: emblem
+		BuildPaletteOpen: emblem
+		Button: button
+		CantPushButtonSound: scold8
+		CashTickDown: creddwn1
+		CashTickUp: credup1
+		ChatLine: message1
+		ClickDisabledSound: wrong1
+		ClickSound: clicky1
+		GameForming: gamefrm1
+		Gdiclose: gdiclose
+		Gdiopen: gdiopen
+		GenericBeep: bleep1
+		Klaxon: klax1
+		LevelUp:
+		MenuChoice: choice1
+		Notification: notify
+		Nsweep: nsweep
+		Options: options
+		RadarDown: radardn1
+		RadarUp: commup1
+		Scoldsfx: scoldsfx
+		SellSound: cashturn
+		StubSoundForTriggers: boop
+		TabClick:
+		Text1: text1
+		Text2: text2
+		Text3: text3
+		Type: type
+		Usertype: usertype
+		Wipe: wipe

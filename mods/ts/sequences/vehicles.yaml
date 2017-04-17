@@ -1,0 +1,209 @@
+^VehicleOverlays:
+	emp-overlay: emp_fx01
+		Offset: 0, 0, 24
+		Length: *
+		BlendMode: Additive
+
+mcv.gdi:
+	Inherits: ^VehicleOverlays
+	icon: sidebar-gdi|mcvicon
+
+mcv.nod:
+	Inherits: ^VehicleOverlays
+	icon: sidebar-nod|mcvicon
+
+apc:
+	Inherits: ^VehicleOverlays
+	icon: apcicon
+
+harv.gdi:
+	Inherits: ^VehicleOverlays
+	harvest: harvestr
+		Length: *
+		ZRamp: 1
+	icon: sidebar-gdi|harvicon
+
+harv.nod:
+	Inherits: ^VehicleOverlays
+	harvest: harvestr
+		Length: *
+		ZRamp: 1
+	icon: sidebar-nod|harvicon
+
+hvr:
+	Inherits: ^VehicleOverlays
+	icon: hovricon
+
+4tnk:
+	Inherits: ^VehicleOverlays
+	muzzle: gunfire
+		Length: *
+
+lpst.gdi:
+	Inherits: ^VehicleOverlays
+	idle: gadpsa
+		DepthSprite: isodepth.shp
+		DepthSpriteOffset: -6, -6
+		Offset: 0, -12, 12
+		UseTilesetCode: true
+		ShadowStart: 3
+	make: gadpsamk
+		DepthSprite: isodepth.shp
+		DepthSpriteOffset: -6, -6
+		Offset: 0, -12, 12
+		UseTilesetCode: true
+		Length: 36
+		ShadowStart: 36
+	icon: sidebar-gdi|lpsticon
+
+lpst.nod:
+	Inherits: lpst.gdi
+	icon: sidebar-nod|lpsticon
+
+repair:
+	Inherits: ^VehicleOverlays
+	icon: rboticon
+
+art2:
+	Inherits: ^VehicleOverlays
+	icon: artyicon
+
+weed:
+	Inherits: ^VehicleOverlays
+	icon: weedicon
+
+hmec:
+	Inherits: ^VehicleOverlays
+	icon: hmecicon
+
+bike:
+	Inherits: ^VehicleOverlays
+	icon: cyclicon
+
+bggy:
+	Inherits: ^VehicleOverlays
+	Defaults:
+		Length: *
+		Offset: 0, 0, 24
+	muzzle0: mgun-n
+	muzzle1: mgun-nw
+	muzzle2: mgun-w
+	muzzle3: mgun-sw
+	muzzle4: mgun-s
+	muzzle5: mgun-se
+	muzzle6: mgun-e
+	muzzle7: mgun-ne
+	icon: bggyicon
+		Offset: 0, 0
+
+sapc:
+	Inherits: ^VehicleOverlays
+	icon: sapcicon
+
+subtank:
+	Inherits: ^VehicleOverlays
+	icon: subticon
+
+sonic:
+	Inherits: ^VehicleOverlays
+	icon: soniicon
+
+ttnk:
+	Inherits: ^VehicleOverlays
+	idle: gatick
+		ShadowStart: 3
+		Offset: 0, -12, 12
+	damaged-idle: gatick
+		Start: 1
+		ShadowStart: 4
+		Offset: 0, -12, 12
+	make: gatickmk
+		Length: 24
+		ShadowStart: 24
+		Offset: 0, -12, 12
+	muzzle: gunfire
+		Length: *
+		Offset: 0, 0, 24
+	icon: tickicon
+
+stnk:
+	Inherits: ^VehicleOverlays
+	icon: stnkicon
+
+mmch:
+	Inherits: ^VehicleOverlays
+	stand:
+		Facings: -8
+		Stride: 15
+		ShadowStart: 152
+		Offset: 0, 0, 12
+	run:
+		Length: 15
+		Facings: -8
+		ShadowStart: 152
+		Offset: 0, 0, 12
+	turret:
+		Start: 120
+		Facings: -32
+		Offset: 0, 0, 12
+	muzzle: gunfire
+		Length: *
+		Offset: 0, 0, 12
+	icon: mmchicon
+
+gghunt:
+	Inherits: ^VehicleOverlays
+	idle:
+		Facings: 1
+		Length: 8
+		ShadowStart: 8
+
+smech:
+	Inherits: ^VehicleOverlays
+	Defaults:
+		Offset: 0,0,8
+	stand:
+		Start: 96
+		Facings: -8
+		ShadowStart: 232
+	run:
+		Facings: -8
+		Length: 12
+		ShadowStart: 136
+	shoot:
+		Start: 104
+		Length: 4
+		Facings: -8
+		ShadowStart: 240
+		Tick: 100
+	icon: smchicon
+
+trucka:
+	Inherits: ^VehicleOverlays
+
+truckb:
+	Inherits: ^VehicleOverlays
+
+icbm:
+	Inherits: ^VehicleOverlays
+
+bus:
+	Inherits: ^VehicleOverlays
+
+pick:
+	Inherits: ^VehicleOverlays
+
+car:
+	Inherits: ^VehicleOverlays
+
+wini:
+	Inherits: ^VehicleOverlays
+
+locomotive:
+	Inherits: ^VehicleOverlays
+
+traincar:
+	Inherits: ^VehicleOverlays
+
+cargocar:
+	Inherits: ^VehicleOverlays

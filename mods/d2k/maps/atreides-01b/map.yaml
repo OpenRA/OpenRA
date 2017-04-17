@@ -1,0 +1,113 @@
+MapFormat: 11
+
+RequiresMod: d2k
+
+Title: Atreides 01b
+
+Author: Westwood Studios
+
+Tileset: ARRAKIS
+
+MapSize: 32,28
+
+Bounds: 2,2,28,24
+
+Visibility: MissionSelector
+
+Categories: Campaign
+
+LockPreview: True
+
+Players:
+	PlayerReference@Neutral:
+		Name: Neutral
+		OwnsWorld: True
+		NonCombatant: True
+		Faction: Random
+	PlayerReference@Creeps:
+		Name: Creeps
+		NonCombatant: True
+		Faction: Random
+		Enemies: Atreides, Harkonnen
+	PlayerReference@Atreides:
+		Name: Atreides
+		Playable: true
+		Faction: atreides
+		LockFaction: true
+		Color: 9191FF
+		LockColor: true
+		Enemies: Harkonnen, Creeps
+	PlayerReference@Harkonnen:
+		Name: Harkonnen
+		Faction: harkonnen
+		LockFaction: true
+		Color: FE0000
+		LockColor: true
+		Enemies: Atreides, Creeps
+
+Actors:
+	Actor0: light_inf
+		Location: 2,2
+		Owner: Harkonnen
+	Actor1: light_inf
+		Location: 21,2
+		Owner: Harkonnen
+	Actor2: wormspawner
+		Location: 4,3
+		Owner: Creeps
+	Actor3: light_inf
+		Location: 2,6
+		Owner: Harkonnen
+	Actor4: light_inf
+		Location: 11,7
+		Owner: Atreides
+	Actor5: light_inf
+		Location: 14,8
+		Owner: Atreides
+	Actor6: trike
+		Location: 29,8
+		Owner: Harkonnen
+	Actor7: trike
+		Location: 8,9
+		Owner: Atreides
+	Actor9: light_inf
+		Location: 14,10
+		Owner: Atreides
+	Actor10: trike
+		Location: 14,12
+		Owner: Atreides
+	Actor11: light_inf
+		Location: 7,13
+		Owner: Atreides
+	Actor12: light_inf
+		Location: 12,15
+		Owner: Atreides
+	Actor13: light_inf
+		Location: 28,20
+		Owner: Harkonnen
+	AtreidesConyard: construction_yard
+		Location: 10,10
+		Owner: Atreides
+	HarkonnenWaypoint1: waypoint
+		Location: 20,2
+		Owner: Neutral
+	HarkonnenWaypoint2: waypoint
+		Location: 29,10
+		Owner: Neutral
+	HarkonnenWaypoint3: waypoint
+		Location: 24,25
+		Owner: Neutral
+	HarkonnenWaypoint4: waypoint
+		Location: 2,20
+		Owner: Neutral
+	AtreidesWaypoint: waypoint
+		Location: 14,2
+		Owner: Neutral
+	AtreidesRally: waypoint
+		Location: 12,12
+		Owner: Neutral
+	WormWaypoint: waypoint
+		Location: 22,20
+		Owner: Neutral
+
+Rules: d2k|rules/campaign-rules.yaml, rules.yaml

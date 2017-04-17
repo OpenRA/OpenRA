@@ -1,0 +1,151 @@
+^DefaultMissile:
+	ReloadDelay: 60
+	Range: 6c0
+	MinRange: 0c512
+	ValidTargets: Ground, Air
+	Projectile: Missile
+		MaximumLaunchSpeed: 96
+		Blockable: false
+		Shadow: true
+		Inaccuracy: 128
+		Image: DRAGON
+		TrailImage: small_smoke_trail
+		HorizontalRateOfTurn: 8
+		RangeLimit: 8c0
+		Palette: ra
+		MinimumLaunchSpeed: 75
+		Speed: 216
+		Acceleration: 6
+		MinimumLaunchAngle: 128
+		MaximumLaunchAngle: 192
+		VerticalRateOfTurn: 16
+		CruiseAltitude: 1c512
+		AllowSnapping: true
+	Warhead@1Dam: SpreadDamage
+		Spread: 108
+		Falloff: 100, 50, 25, 12, 6, 3, 0
+		Damage: 25
+		ValidTargets: Ground, Air
+		Versus:
+			None: 25
+			Wood: 65
+			Light: 75
+			Heavy: 100
+			Concrete: 60
+		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
+	Warhead@2Eff: CreateEffect
+		Explosions: small_clsn
+		ImpactSounds: expnew12.aud
+		InvalidImpactTypes: Water
+	Warhead@3EffWater: CreateEffect
+		Explosions: small_watersplash
+		ExplosionPalette: player
+		ImpactSounds: ssplash3.aud
+		ValidImpactTypes: Water
+	Warhead@Smu: LeaveSmudge
+		SmudgeType: SmallCrater
+		InvalidTargets: Vehicle, Building, Wall
+
+Bazooka:
+	Inherits: ^DefaultMissile
+	Report: rketinf1.aud
+
+HoverMissile:
+	Inherits: ^DefaultMissile
+	ReloadDelay: 68
+	Burst: 2
+	Range: 8c0
+	Report: hovrmis1.aud
+	Projectile: Missile
+		RangeLimit: 11c0
+	Warhead@1Dam: SpreadDamage
+		Damage: 30
+
+MammothTusk:
+	Inherits: ^DefaultMissile
+	ReloadDelay: 80
+	Report: misl1.aud
+	ValidTargets: Air
+	Burst: 2
+	Projectile: Missile
+		HorizontalRateOfTurn: 10
+		RangeLimit: 9c0
+	Warhead@1Dam: SpreadDamage
+		Spread: 144
+		Damage: 40
+		ValidTargets: Air
+		Versus:
+			None: 100
+			Wood: 85
+			Light: 70
+			Heavy: 35
+			Concrete: 28
+		DamageTypes: Explosion
+	Warhead@2Eff: CreateEffect
+		Explosions: medium_twlt
+		ImpactSounds: expnew07.aud
+		InvalidImpactTypes: Water
+	Warhead@3EffWater: CreateEffect
+		Explosions: small_watersplash
+		ExplosionPalette: player
+		ImpactSounds: ssplash3.aud
+		ValidImpactTypes: Water
+
+BikeMissile:
+	Inherits: ^DefaultMissile
+	Burst: 2 # to make bike alternate between left and right launcher, no change in dmg/s compared to original TS
+	BurstDelay: 60
+	Range: 5c0
+	Report: misl1.aud
+	ValidTargets: Ground
+	Projectile: Missile
+		RangeLimit: 7c0
+	Warhead@1Dam: SpreadDamage
+		Damage: 40
+		ValidTargets: Ground, Air
+
+Dragon:
+	Inherits: ^DefaultMissile
+	ReloadDelay: 50
+	Burst: 2
+	Report: misl1.aud
+	Warhead@1Dam: SpreadDamage
+		Damage: 30
+
+Hellfire:
+	Inherits: ^DefaultMissile
+	ReloadDelay: 50
+	Report: orcamis1.aud
+	Burst: 2
+	ValidTargets: Ground
+	Warhead@1Dam: SpreadDamage
+		Spread: 72
+		Damage: 30
+		ValidTargets: Ground, Air
+		Versus:
+			None: 30
+			Wood: 65
+			Light: 150
+			Heavy: 100
+			Concrete: 30
+
+RedEye2:
+	Inherits: ^DefaultMissile
+	ReloadDelay: 55
+	Range: 15c0
+	Report: samshot1.aud
+	ValidTargets: Air
+	Projectile: Missile
+		MaximumLaunchSpeed: 144
+		Arm: 1
+		HorizontalRateOfTurn: 5
+		RangeLimit: 25c0
+		Speed: 288
+	Warhead@1Dam: SpreadDamage
+		Spread: 128
+		Damage: 33
+		ValidTargets: Air, Ground
+		DamageTypes: SmallExplosionDeath
+	Warhead@2Eff: CreateEffect
+		Explosions: large_grey_explosion
+		ImpactSounds: expnew13.aud

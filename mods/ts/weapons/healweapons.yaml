@@ -1,0 +1,21 @@
+^HealWeapon:
+	ReloadDelay: 80
+	Range: 2c849
+	Report: healer1.aud
+	ValidTargets: Infantry
+	Projectile: InstantHit
+	Warhead@1Dam: TargetDamage
+		DebugOverlayColor: 00FF00
+		Damage: -50
+		ValidTargets: Infantry
+
+Heal:
+	Inherits: ^HealWeapon
+
+Repair:
+	Inherits: ^HealWeapon
+	Range: 1c819
+	Report: repair11.aud
+	ValidTargets: Repair
+	Warhead@1Dam: TargetDamage
+		ValidTargets: Repair

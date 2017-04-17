@@ -1,0 +1,78 @@
+Player:
+	PlayerResources:
+		DefaultCash: 7000
+
+World:
+	LuaScript:
+		Scripts: atreides05.lua, atreides05-AI.lua
+	MissionData:
+		Briefing: According to our spies, the Fremen are being held at the far Northwest corner of Sietch Tabr. Push your way through the Harkonnen ranks to rescue the hostages.\n\nScout the terrain before you launch the main assault. Our Engineers must reach the Barracks and capture it intact. The rest of the base can be razed to the ground.\n\nAdditionally, there are rumors of an illegal Smuggling operation in the area. A large shipment of contraband is expected at the Smuggler's Starport. If you can the Starport before the contraband arrives, you will be able to confiscate it for the Atreides war effort.\n\nBe warned, the Smugglers have Mercenary allies who may assist them if you interfere.\n\nGood luck.\n
+		BriefingVideo: A_BR05_E.VQA
+	MapOptions:
+		TechLevel: medium
+	ScriptLobbyDropdown@difficulty:
+		ID: difficulty
+		Label: Difficulty
+		Values:
+			easy: Easy
+			normal: Normal
+			hard: Hard
+		Default: easy
+
+carryall.reinforce:
+	Cargo:
+		MaxWeight: 10
+
+frigate:
+	Aircraft:
+		LandableTerrainTypes: Sand, Rock, Transition, Spice, SpiceSand, Dune, Concrete
+		CanHover: true # The frigate would teleport to land otherwise
+
+barracks.harkonnen:
+	Inherits: barracks
+	Buildable:
+		Prerequisites: ~disabled
+	-MustBeDestroyed:
+	AutoTargetIgnore:
+
+starport:
+	ExternalCondition@lua:
+		Condition: captured
+	AutoTargetIgnore:
+		RequiresCondition: !captured
+
+concreteb:
+	Buildable:
+		Prerequisites: ~disabled
+
+upgrade.conyard:
+	Buildable:
+		Prerequisites: ~disabled
+
+grenadier:
+	Buildable:
+		Prerequisites: ~disabled
+
+sardaukar:
+	Buildable:
+		Prerequisites: ~disabled
+
+large_gun_turret:
+	Buildable:
+		Prerequisites: ~disabled
+
+research_centre:
+	Buildable:
+		Prerequisites: outpost, heavy_factory, upgrade.heavy
+
+siege_tank:
+	Buildable:
+		Prerequisites: ~disabled
+
+missile_tank:
+	Buildable:
+		Prerequisites: upgrade.heavy, research_centre
+
+combat_tank_o.starport:
+	Buildable:
+		Prerequisites: starport

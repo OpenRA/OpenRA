@@ -1,0 +1,112 @@
+Container@SKIRMISH_STATS:
+	Height: PARENT_BOTTOM
+	Width: PARENT_RIGHT
+	Logic: GameInfoStatsLogic
+	Children:
+		Container@OBJECTIVE:
+			Height: 75
+			Children:
+				Label@MISSION:
+					X: 15
+					Y: 10
+					Width: 85
+					Height: 25
+					Font: MediumBold
+					Text: Mission:
+				Label@STATS_STATUS:
+					X: 100
+					Y: 10
+					Width: PARENT_RIGHT - 10
+					Height: 25
+					Font: MediumBold
+				Checkbox@STATS_CHECKBOX:
+					X: 15
+					Y: 45
+					Width: 482
+					Height: 20
+					Font: Bold
+					Text: Destroy all opposition!
+					Disabled: yes
+					TextColorDisabled: FFFFFF
+		Container@STATS_HEADERS:
+			X: 17
+			Y: 80
+			Width: 393
+			Children:
+				Label@NAME:
+					X: 10
+					Width: 210
+					Height: 25
+					Text: Player
+					Font: Bold
+				Label@FACTION:
+					X: 230
+					Width: 120
+					Height: 25
+					Text: Faction
+					Font: Bold
+				Label@SCORE:
+					X: 360
+					Width: 75
+					Height: 25
+					Text: Score
+					Font: Bold
+					Align: Right
+		ScrollPanel@PLAYER_LIST:
+			X: 15
+			Y: 105
+			Width: 482
+			Height: 255
+			ItemSpacing: 5
+			Children:
+				ScrollItem@TEAM_TEMPLATE:
+					Width: PARENT_RIGHT - 27
+					Height: 20
+					X: 2
+					Visible: false
+					Children:
+						Label@TEAM:
+							X: 6
+							Y: 0-2
+							Width: 160
+							Height: 20
+							Font: Bold
+						Label@TEAM_SCORE:
+							X: 360
+							Y: 0-2
+							Width: 75
+							Height: 20
+							Font: Bold
+							Align: Right
+				Container@PLAYER_TEMPLATE:
+					Width: PARENT_RIGHT-27
+					Height: 25
+					X: 2
+					Children:
+						Label@NAME:
+							X: 10
+							Width: 210
+							Height: 25
+							Shadow: True
+						ClientTooltipRegion@CLIENT_REGION:
+							TooltipContainer: TOOLTIP_CONTAINER
+							Template: INGAME_CLIENT_TOOLTIP
+							X: 10
+							Width: 210
+							Height: 25
+						Image@FACTIONFLAG:
+							X: 230
+							Y: 6
+							Width: 32
+							Height: 16
+						Label@FACTION:
+							X: 264
+							Width: 86
+							Height: 25
+							Shadow: True
+						Label@SCORE:
+							X: 360
+							Width: 75
+							Height: 25
+							Align: Right
+							Shadow: True

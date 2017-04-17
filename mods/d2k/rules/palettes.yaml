@@ -1,0 +1,82 @@
+^Palettes:
+	PaletteFromCurrentTileset:
+		Name: terrain
+	PaletteFromFile@d2k:
+		Name: d2k
+		Filename: PALETTE.BIN
+		ShadowIndex: 1
+	PaletteFromFile@chrome:
+		Name: chrome
+		Filename: PALETTE.BIN
+		ShadowIndex: 3
+		AllowModifiers: false
+	PaletteFromFile@effect:
+		Name: effect
+		Filename: PALETTE.BIN
+		ShadowIndex: 1
+		AllowModifiers: false
+	PaletteFromFile@colorpicker:
+		Name: colorpicker
+		Filename: PALETTE.BIN
+		ShadowIndex: 4
+		AllowModifiers: false
+	PaletteFromRGBA@shadow:
+		Name: shadow
+		R: 0
+		G: 0
+		B: 0
+		A: 140
+	PaletteFromRGBA@highlight:
+		Name: highlight
+		R: 255
+		G: 255
+		B: 255
+		A: 128
+	PaletteFromR8@moveflash:
+		Name: moveflash
+		Filename: DATA.R8
+		Offset: 2652107
+		InvertColor: true
+		AllowModifiers: false
+	PaletteFromRGBA@disabled:
+		Name: disabled
+		R: 0
+		G: 0
+		B: 0
+		A: 180
+	PaletteFromPaletteWithAlpha@effect75alpha:
+		Name: effect75alpha
+		BasePalette: effect
+		Alpha: 0.75
+	PaletteFromPaletteWithAlpha@effect50alpha:
+		Name: effect50alpha
+		BasePalette: effect
+		Alpha: 0.5
+	PaletteFromScaledPalette@starportlights:
+		Name: starportlights
+		BasePalette: d2k
+		AllowModifiers: false
+		Offset: -64
+	PaletteFromR8@shroud:
+		Name: shroud
+		Filename: DATA.R8
+		Offset: 12007
+	FogPaletteFromR8@fog:
+		Name: fog
+		Filename: DATA.R8
+		Offset: 12007
+		InvertColor: true
+	PlayerColorPalette:
+		BasePalette: d2k
+		RemapIndex: 255, 254, 253, 252, 251, 250, 249, 248, 247, 246, 245, 244, 243, 242, 241, 240
+	PaletteFromPlayerPaletteWithAlpha@deviatorgas:
+		BaseName: deviatorgas
+		BasePalette: player
+		Alpha: 0.68
+		Premultiply: false
+	PlayerHighlightPalette:
+	FlashPaletteEffect:
+	PaletteFromPlayerPaletteWithAlpha@cloak:
+		BaseName: cloak
+		BasePalette: player
+		Alpha: 0.55

@@ -1,0 +1,73 @@
+World:
+	LuaScript:
+		Scripts: scj01ea.lua
+	MusicPlaylist:
+		StartingMusic: j1
+	MissionData:
+		Briefing: There have been some reports of strange animals in this area. \n\nTake your units to investigate, and report back your findings.
+		BriefingVideo: generic.vqa
+		StartVideo: dino.vqa
+	MapOptions:
+		ShortGameLocked: True
+		ShortGameEnabled: False
+	ScriptLobbyDropdown@difficulty:
+		ID: difficulty
+		Label: Difficulty
+		Values:
+			easy: Easy
+			normal: Normal
+		Default: easy
+
+Player:
+	EnemyWatcher:
+	PlayerResources:
+		DefaultCash: 0
+
+^Palettes:
+	IndexedPlayerPalette:
+		PlayerIndex:
+			Dinosaur: 192, 164, 132, 155, 133, 197, 112, 12, 163, 132, 155, 133, 134, 197, 154, 198
+	IndexedPlayerPalette@units:
+		PlayerIndex:
+			Dinosaur: 192, 164, 132, 155, 133, 197, 112, 12, 163, 132, 155, 133, 134, 197, 154, 198
+
+^CivInfantry:
+	-ActorLostNotification:
+
+^CivBuilding:
+	AnnounceOnSeen:
+
+OLDLST:
+	Inherits: LST
+	-WithRoof:
+	-Selectable:
+	SelectionDecorations:
+		RenderSelectionBars: False
+	RejectsOrders:
+	Cargo:
+		Types: disabled
+
+TREX:
+	Health:
+		HP: 750
+	Mobile:
+		Speed: 34
+	AutoTarget:
+		ScanRadius: 5
+
+TRIC:
+	Health:
+		HP: 700
+	Mobile:
+		Speed: 18
+	AutoTarget:
+		ScanRadius: 5
+
+STEG:
+	Health:
+		HP: 600
+	Mobile:
+		Speed: 32
+
+^DINO:
+	MustBeDestroyed:

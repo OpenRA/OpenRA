@@ -1,0 +1,16 @@
+; Top-most http://editorconfig.org/ file
+root = true
+
+; Unix-style newlines
+[*]
+end_of_line = LF
+
+; 4-column tab indentation
+[*.cs]
+indent_style = tab
+indent_size = 4
+
+; 4-column tab indentation
+[*.yaml]
+indent_style = tab
+indent_size = 4

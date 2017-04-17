@@ -1,0 +1,296 @@
+ScrollPanel@LABEL_DROPDOWN_TEMPLATE:
+	Width: DROPDOWN_WIDTH
+	Background: panel-black
+	Children:
+		ScrollItem@HEADER:
+			Width: PARENT_RIGHT-27
+			Height: 13
+			X: 2
+			Y: 0
+			Visible: false
+			Children:
+				Label@LABEL:
+					Font: TinyBold
+					Width: PARENT_RIGHT
+					Height: 10
+					Align: Center
+		ScrollItem@TEMPLATE:
+			Width: PARENT_RIGHT-27
+			Height: 25
+			X: 2
+			Y: 0
+			Visible: false
+			Children:
+				Label@LABEL:
+					X: 10
+					Width: PARENT_RIGHT-20
+					Height: 25
+
+ScrollPanel@FACTION_DROPDOWN_TEMPLATE:
+	Width: DROPDOWN_WIDTH
+	Background: panel-black
+	Children:
+		ScrollItem@HEADER:
+			BaseName: scrollheader
+			Width: PARENT_RIGHT-27
+			Height: 13
+			X: 2
+			Y: 0
+			Visible: false
+			Children:
+				Label@LABEL:
+					Font: TinyBold
+					Width: PARENT_RIGHT
+					Height: 10
+					Align: Center
+		ScrollItem@TEMPLATE:
+			Width: PARENT_RIGHT-27
+			Height: 25
+			X: 2
+			Y: 0
+			Visible: false
+			TooltipContainer: TOOLTIP_CONTAINER
+			TooltipTemplate: FACTION_DESCRIPTION_TOOLTIP
+			Children:
+				Image@FLAG:
+					X: 4
+					Y: 4
+					Width: 32
+					Height: 16
+				Label@LABEL:
+					X: 40
+					Width: 60
+					Height: 25
+
+ScrollPanel@TEAM_DROPDOWN_TEMPLATE:
+	Width: DROPDOWN_WIDTH
+	Background: panel-black
+	Children:
+		ScrollItem@TEMPLATE:
+			Width: PARENT_RIGHT-27
+			Height: 25
+			X: 2
+			Y: 0
+			Visible: false
+			Children:
+				Label@LABEL:
+					X: 0
+					Width: PARENT_RIGHT
+					Height: 25
+					Align: Center
+
+ScrollPanel@SPAWN_DROPDOWN_TEMPLATE:
+	Width: DROPDOWN_WIDTH
+	Background: panel-black
+	Children:
+		ScrollItem@TEMPLATE:
+			Width: PARENT_RIGHT-27
+			Height: 25
+			X: 2
+			Y: 0
+			Visible: false
+			Children:
+				Label@LABEL:
+					X: 0
+					Width: PARENT_RIGHT
+					Height: 25
+					Align: Center
+
+ScrollPanel@SPECTATOR_DROPDOWN_TEMPLATE:
+	Width: DROPDOWN_WIDTH
+	Background: panel-black
+	Children:
+		ScrollItem@HEADER:
+			Width: PARENT_RIGHT-27
+			Height: 13
+			X: 2
+			Y: 0
+			Visible: false
+			Children:
+				Label@LABEL:
+					Font: TinyBold
+					Width: PARENT_RIGHT
+					Height: 10
+					Align: Center
+		ScrollItem@TEMPLATE:
+			Width: PARENT_RIGHT-27
+			Height: 25
+			X: 2
+			Y: 0
+			Visible: false
+			Children:
+				Image@FLAG:
+					X: 4
+					Y: 4
+					Width: 32
+					Height: 16
+				Label@LABEL:
+					X: 40
+					Width: 60
+					Height: 25
+					Shadow: True
+				Label@NOFLAG_LABEL:
+					X: 5
+					Width: PARENT_RIGHT
+					Height: 25
+					Shadow: True
+
+Background@THREEBUTTON_PROMPT:
+	X: (WINDOW_RIGHT - WIDTH)/2
+	Y: (WINDOW_BOTTOM - 90)/2
+	Width: 500
+	Height: 41
+	Background: panel-black
+	Children:
+		Label@PROMPT_TITLE:
+			Width: PARENT_RIGHT
+			Y: 0-25
+			Font: BigBold
+			Contrast: true
+			Align: Center
+		Label@PROMPT_TEXT:
+			Y: 20
+			Width: PARENT_RIGHT
+			Height: 20
+			Font: Bold
+			Align: Center
+		Button@CONFIRM_BUTTON:
+			Key: return
+			X: 360
+			Y: 40
+			Width: 140
+			Height: 35
+			Text: Confirm
+			Visible: false
+		Button@OTHER_BUTTON:
+			Key: r
+			X: 210
+			Y: 40
+			Width: 140
+			Height: 35
+			Text: Restart
+			Visible: false
+		Button@CANCEL_BUTTON:
+			Key: escape
+			Y: 40
+			Width: 140
+			Height: 35
+			Text: Cancel
+			Visible: false
+
+Background@TWOBUTTON_PROMPT:
+	X: (WINDOW_RIGHT - WIDTH)/2
+	Y: (WINDOW_BOTTOM - 90)/2
+	Width: 370
+	Height: 31
+	Background: panel-black
+	Children:
+		Label@PROMPT_TITLE:
+			Width: PARENT_RIGHT
+			Y: 0-25
+			Font: BigBold
+			Contrast: true
+			Align: Center
+		Label@PROMPT_TEXT:
+			Y: 15
+			Width: PARENT_RIGHT
+			Height: 20
+			Font: Bold
+			Align: Center
+		Button@CANCEL_BUTTON:
+			Key: escape
+			Y: 30
+			Width: 140
+			Height: 35
+			Text: Cancel
+			Visible: false
+		Button@CONFIRM_BUTTON:
+			Key: return
+			X: 230
+			Y: 30
+			Width: 140
+			Height: 35
+			Text: Confirm
+			Visible: false
+
+Container@TEXT_INPUT_PROMPT:
+	X: (WINDOW_RIGHT - WIDTH)/2
+	Y: (WINDOW_BOTTOM - HEIGHT)/2
+	Width: 370
+	Height: 80
+	Children:
+		Label@PROMPT_TITLE:
+			Width: PARENT_RIGHT
+			Y: 0-25
+			Font: BigBold
+			Contrast: true
+			Align: Center
+		Background@bg:
+			Width: PARENT_RIGHT
+			Height: 80
+			Background: panel-black
+			Children:
+				Label@PROMPT_TEXT:
+					X: 20
+					Y: 10
+					Width: PARENT_RIGHT - 40
+					Height: 25
+					Font: Bold
+					Align: Center
+				TextField@INPUT_TEXT:
+					X: 20
+					Y: 40
+					Width: PARENT_RIGHT - 40
+					Height: 25
+		Button@ACCEPT_BUTTON:
+			X: PARENT_RIGHT - 160
+			Y: PARENT_BOTTOM - 1
+			Width: 160
+			Height: 30
+			Text: OK
+			Font: Bold
+			Key: return
+		Button@CANCEL_BUTTON:
+			X: 0
+			Y: PARENT_BOTTOM - 1
+			Width: 160
+			Height: 30
+			Text: Cancel
+			Font: Bold
+			Key: escape
+
+ScrollPanel@NEWS_PANEL:
+	Width: 400
+	Height: 265
+	Background: panel-black
+	TopBottomSpacing: 5
+	ItemSpacing: 5
+	Children:
+		Container@NEWS_ITEM_TEMPLATE:
+			X: 10
+			Y: 5
+			Width: PARENT_RIGHT - 40
+			Height: 45
+			Children:
+				Label@TITLE:
+					Width: PARENT_RIGHT
+					Height: 25
+					Align: Center
+					Font: Bold
+				Label@AUTHOR_DATETIME:
+					Y: 25
+					Width: PARENT_RIGHT
+					Height: 15
+					Align: Center
+					Text: by {0} at {1}
+					Font: TinyBold
+				Label@CONTENT:
+					Y: 45
+					Width: PARENT_RIGHT
+		Label@NEWS_STATUS:
+			X: 80
+			Y: 0
+			Width: PARENT_RIGHT - 80 - 80 - 24
+			Height: PARENT_BOTTOM
+			Align: Center
+			VAlign: Middle

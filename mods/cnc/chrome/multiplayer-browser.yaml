@@ -1,0 +1,140 @@
+Container@MULTIPLAYER_BROWSER_PANEL:
+	Width: PARENT_RIGHT
+	Height: PARENT_BOTTOM
+	Children:
+		Container@LABEL_CONTAINER:
+			Y: 5
+			Width: PARENT_RIGHT
+			Height: PARENT_BOTTOM
+			Children:
+				Label@NAME:
+					X: 5
+					Width: 255
+					Height: 25
+					Text: Server
+					Align: Center
+					Font: Bold
+				Label@PLAYERS:
+					X: 290
+					Width: 85
+					Height: 25
+					Text: Players
+					Font: Bold
+				Label@LOCATION:
+					X: 380
+					Width: 110
+					Height: 25
+					Text: Country
+					Font: Bold
+				Label@STATUS:
+					X: 495
+					Width: 50
+					Height: 25
+					Text: Status
+					Font: Bold
+		ScrollPanel@SERVER_LIST:
+			Y: 30
+			Width: 582
+			Height: 249
+			TopBottomSpacing: 2
+			Children:
+				ScrollItem@HEADER_TEMPLATE:
+					Width: PARENT_RIGHT-27
+					Height: 20
+					X: 2
+					Visible: false
+					Children:
+						Label@LABEL:
+							Y: 0-1
+							Font: TinyBold
+							Width: PARENT_RIGHT
+							Height: 20
+							Align: Center
+				ScrollItem@SERVER_TEMPLATE:
+					Width: PARENT_RIGHT-27
+					Height: 25
+					X: 2
+					Children:
+						Label@TITLE:
+							X: 5
+							Width: 255
+							Height: 25
+						Image@PASSWORD_PROTECTED:
+							X: 272
+							Y: 6
+							Width: 8
+							Height: 10
+							ImageCollection: lobby-bits
+						Label@PLAYERS:
+							X: 290
+							Width: 85
+							Height: 25
+						Label@LOCATION:
+							X: 380
+							Width: 110
+							Height: 25
+						Label@STATUS:
+							X: 495
+							Width: 50
+							Height: 25
+		Label@PROGRESS_LABEL:
+			Y: 30 + (249 - HEIGHT) / 2
+			Width: 582
+			Height: 25
+			Font: Bold
+			Align: Center
+			Visible: false
+		Container@SELECTED_SERVER:
+			X: PARENT_RIGHT-WIDTH
+			Y: 30
+			Width: 174
+			Height: 280
+			Children:
+				Background@MAP_BG:
+					Width: PARENT_RIGHT
+					Height: 174
+					Background: panel-gray
+					Children:
+						MapPreview@SELECTED_MAP_PREVIEW:
+							X: 1
+							Y: 1
+							Width: PARENT_RIGHT-2
+							Height: PARENT_BOTTOM-2
+							TooltipContainer: TOOLTIP_CONTAINER
+				Label@SELECTED_MAP:
+					Y: 172
+					Width: PARENT_RIGHT
+					Height: 25
+					Font: Bold
+					Align: Center
+				Label@SELECTED_IP:
+					Y: 187
+					Width: PARENT_RIGHT
+					Height: 25
+					Font: Tiny
+					Align: Center
+				Label@SELECTED_STATUS:
+					Y: 203
+					Width: PARENT_RIGHT
+					Height: 25
+					Font: TinyBold
+					Align: Center
+				Label@SELECTED_MOD_VERSION:
+					Y: 216
+					Width: PARENT_RIGHT
+					Height: 25
+					Font: Tiny
+					Align: Center
+				Label@SELECTED_PLAYERS:
+					Y: 229
+					Width: PARENT_RIGHT
+					Height: 25
+					Font: TinyBold
+					Align: Center
+		Button@JOIN_BUTTON:
+			Key: return
+			X: PARENT_RIGHT - WIDTH
+			Y: 284
+			Width: 174
+			Height: 25
+			Text: Join

@@ -1,0 +1,396 @@
+^ExistsInWorld:
+	AppearsOnRadar:
+	UpdatesPlayerStatistics:
+	CombatDebugOverlay:
+	GivesExperience:
+		PlayerExperienceModifier: 1
+	ScriptTriggers:
+	ConditionManager:
+	RenderDebugState:
+
+^SpriteActor:
+	BodyOrientation:
+	QuantizeFacingsFromSequence:
+	AutoSelectionSize:
+	RenderSprites:
+
+^GainsExperience:
+	GainsExperience:
+		Conditions:
+			200: rank-veteran
+			400: rank-veteran
+			800: rank-veteran
+			1600: rank-veteran
+	GrantCondition@RANK-ELITE:
+		RequiresCondition: rank-veteran >= 4
+		Condition: rank-elite
+	DamageMultiplier@RANK-1:
+		RequiresCondition: rank-veteran == 1
+		Modifier: 96
+	DamageMultiplier@RANK-2:
+		RequiresCondition: rank-veteran == 2
+		Modifier: 92
+	DamageMultiplier@RANK-3:
+		RequiresCondition: rank-veteran == 3
+		Modifier: 88
+	DamageMultiplier@RANK-ELITE:
+		RequiresCondition: rank-elite
+		Modifier: 80
+	FirepowerMultiplier@RANK-1:
+		RequiresCondition: rank-veteran == 1
+		Modifier: 105
+	FirepowerMultiplier@RANK-2:
+		RequiresCondition: rank-veteran == 2
+		Modifier: 110
+	FirepowerMultiplier@RANK-3:
+		RequiresCondition: rank-veteran == 3
+		Modifier: 115
+	FirepowerMultiplier@RANK-ELITE:
+		RequiresCondition: rank-elite
+		Modifier: 125
+	SpeedMultiplier@RANK-1:
+		RequiresCondition: rank-veteran == 1
+		Modifier: 105
+	SpeedMultiplier@RANK-2:
+		RequiresCondition: rank-veteran == 2
+		Modifier: 110
+	SpeedMultiplier@RANK-3:
+		RequiresCondition: rank-veteran == 3
+		Modifier: 115
+	SpeedMultiplier@RANK-ELITE:
+		RequiresCondition: rank-elite
+		Modifier: 125
+	ReloadDelayMultiplier@RANK-1:
+		RequiresCondition: rank-veteran == 1
+		Modifier: 96
+	ReloadDelayMultiplier@RANK-2:
+		RequiresCondition: rank-veteran == 2
+		Modifier: 92
+	ReloadDelayMultiplier@RANK-3:
+		RequiresCondition: rank-veteran == 3
+		Modifier: 88
+	ReloadDelayMultiplier@RANK-ELITE:
+		RequiresCondition: rank-elite
+		Modifier: 80
+	InaccuracyMultiplier@RANK-1:
+		RequiresCondition: rank-veteran == 1
+		Modifier: 90
+	InaccuracyMultiplier@RANK-2:
+		RequiresCondition: rank-veteran == 2
+		Modifier: 80
+	InaccuracyMultiplier@RANK-3:
+		RequiresCondition: rank-veteran == 3
+		Modifier: 70
+	InaccuracyMultiplier@RANK-ELITE:
+		RequiresCondition: rank-elite
+		Modifier: 50
+	SelfHealing@ELITE:
+		Step: 0
+		PercentageStep: 4
+		Delay: 125
+		HealIfBelow: 100
+		DamageCooldown: 125
+		RequiresCondition: rank-elite
+	WithDecoration@RANK-1:
+		Image: rank
+		Sequence: rank-veteran-1
+		Palette: effect
+		ReferencePoint: Bottom, Right
+		RequiresCondition: rank-veteran == 1
+		ZOffset: 256
+	WithDecoration@RANK-2:
+		Image: rank
+		Sequence: rank-veteran-2
+		Palette: effect
+		ReferencePoint: Bottom, Right
+		RequiresCondition: rank-veteran == 2
+		ZOffset: 256
+	WithDecoration@RANK-3:
+		Image: rank
+		Sequence: rank-veteran-3
+		Palette: effect
+		ReferencePoint: Bottom, Right
+		RequiresCondition: rank-veteran == 3
+		ZOffset: 256
+	WithDecoration@RANK-ELITE:
+		Image: rank
+		Sequence: rank-elite
+		Palette: effect
+		ReferencePoint: Bottom, Right
+		RequiresCondition: rank-elite
+		ZOffset: 256
+
+^Vehicle:
+	Inherits@1: ^ExistsInWorld
+	Inherits@2: ^GainsExperience
+	Inherits@3: ^SpriteActor
+	Huntable:
+	Mobile:
+		Crushes: crate, spicebloom
+		TerrainSpeeds:
+			Sand: 100
+			Rock: 100
+			Transition: 100
+			Concrete: 100
+			SpiceSand: 100
+			Spice: 100
+			SpiceBlobs: 100
+			Dune: 50
+		TurnSpeed: 5
+		RequiresCondition: !notmobile
+	SelectionDecorations:
+	WithSpriteControlGroupDecoration:
+	Selectable:
+		Bounds: 32,32
+	Targetable:
+		TargetTypes: Ground, Vehicle, C4
+	Passenger:
+		CargoType: Vehicle
+	AttackMove:
+	DrawLineToTarget:
+	HiddenUnderFog:
+	ActorLostNotification:
+	Repairable:
+		RepairBuildings: repair_pad
+	Guard:
+		Voice: Guard
+	Guardable:
+	WithFacingSpriteBody:
+	Demolishable:
+	TemporaryOwnerManager:
+	MustBeDestroyed:
+	Voiced:
+		VoiceSet: VehicleVoice
+	AutoCarryable:
+		CarriedCondition: notmobile
+		ReservedCondition: carryall-reserved
+	WithDecoration@CARRYALL:
+		Image: pips
+		Sequence: pickup-indicator
+		Offset: -12, -12
+		RequiresCondition: carryall-reserved
+	RevealOnFire:
+
+^Tank:
+	Inherits: ^Vehicle
+	Mobile:
+		Crushes: crate, infantry, spicebloom
+
+^Husk:
+	Inherits@1: ^SpriteActor
+	Health:
+		HP: 75
+	Armor:
+		Type: light
+	HiddenUnderFog:
+		Type: CenterPosition
+	Tooltip:
+		Name: Wreck
+	AutoTargetIgnore:
+	ScriptTriggers:
+	WithFacingSpriteBody:
+
+^VehicleHusk:
+	Inherits: ^Husk
+	Husk:
+		AllowedTerrain: Sand, Rock, Transition, Concrete, Spice, SpiceSand, SpiceBlobs, Dune
+	Burns:
+		Interval: 4
+	Targetable:
+		TargetTypes: Ground, Vehicle
+		RequiresForceFire: true
+	DisabledOverlay:
+	Explodes:
+		Weapon: UnitExplodeMed
+		EmptyWeapon: UnitExplodeMed
+
+^AircraftHusk:
+	Inherits: ^Husk
+	WithShadow:
+	FallsToEarth:
+		Spins: False
+		Moves: True
+		Explosion: UnitExplodeLarge
+
+^TowerHusk:
+	Health:
+		HP: 125
+	Armor:
+		Type: concrete
+	Husk:
+	AppearsOnRadar:
+	HiddenUnderFog:
+	Burns:
+		Interval: 2
+	Tooltip:
+		Name: Destroyed Tower
+	ScriptTriggers:
+
+^Infantry:
+	Inherits@1: ^ExistsInWorld
+	Inherits@2: ^GainsExperience
+	Inherits@3: ^SpriteActor
+	Huntable:
+	Health:
+		Shape: Circle
+			Radius: 96
+	Armor:
+		Type: none
+	RevealsShroud:
+		Range: 3c768
+	Mobile:
+		Crushes: crate, spicebloom
+		SharesCell: true
+		TerrainSpeeds:
+			Sand: 100
+			Rock: 100
+			Transition: 100
+			Concrete: 100
+			SpiceSand: 100
+			Spice: 100
+			SpiceBlobs: 100
+			Dune: 80
+			Rough: 80
+	SelectionDecorations:
+	WithSpriteControlGroupDecoration:
+	Selectable:
+		Bounds: 12,20,0,-4
+	Targetable:
+		TargetTypes: Ground, Infantry
+	QuantizeFacingsFromSequence:
+		Sequence: stand
+	WithInfantryBody:
+		IdleSequences: idle1, idle2
+	TakeCover:
+		DamageModifiers:
+			Prone50Percent: 50
+		DamageTriggers: TriggerProne
+		ProneOffset: 300,0,0
+	WithDeathAnimation:
+		DeathTypes:
+			ExplosionDeath: 1
+			SoundDeath: 2
+			SmallExplosionDeath: 3
+			BulletDeath: 4
+		CrushedSequence: die-crushed
+	AutoTarget:
+	AttackMove:
+	DrawLineToTarget:
+	Passenger:
+		CargoType: Infantry
+		PipType: Green
+	HiddenUnderFog:
+	ActorLostNotification:
+	Crushable:
+		CrushSound: CRUSH1.WAV
+	Guard:
+		Voice: Guard
+	Guardable:
+	DetectCloaked:
+		Range: 1c768
+	DeathSounds:
+		DeathTypes: ExplosionDeath, SoundDeath, SmallExplosionDeath, BulletDeath
+	MustBeDestroyed:
+	TerrainModifiesDamage:
+		TerrainModifier:
+			Rough: 80
+	Voiced:
+		VoiceSet: InfantryVoice
+	RevealOnFire:
+
+^Plane:
+	Inherits@1: ^ExistsInWorld
+	Inherits@2: ^SpriteActor
+	Huntable:
+	AppearsOnRadar:
+		UseLocation: true
+	HiddenUnderFog:
+		Type: GroundPosition
+		AlwaysVisibleStances: None
+	ActorLostNotification:
+	AttackMove:
+	DrawLineToTarget:
+	WithFacingSpriteBody:
+	WithShadow:
+
+^Building:
+	Inherits@1: ^ExistsInWorld
+	Inherits@2: ^SpriteActor
+	Huntable:
+	SelectionDecorations:
+	WithSpriteControlGroupDecoration:
+	Selectable:
+		Priority: 2
+	RevealsShroud:
+		VisibilityType: CenterPosition
+	Targetable:
+		TargetTypes: Ground, C4, Structure
+	Building:
+		Dimensions: 1,1
+		Footprint: x
+		TerrainTypes: Rock, Concrete
+		BuildSounds: BUILD1.WAV
+		Adjacent: 3
+	GivesBuildableArea:
+	Capturable:
+		CaptureThreshold: 100
+	SoundOnDamageTransition:
+		DamagedSounds: EXPLSML1.WAV
+		DestroyedSounds: EXPLHG1.WAV
+	WithSpriteBody:
+	Explodes:
+		Type: Footprint
+		Weapon: BuildingExplode
+		EmptyWeapon: BuildingExplode
+	RepairableBuilding:
+		RepairStep: 50
+		PlayerExperience: 25
+	EmitInfantryOnSell:
+		ActorTypes: light_inf
+	MustBeDestroyed:
+		RequiredForShortGame: true
+	FrozenUnderFog:
+	CaptureNotification:
+	ActorLostNotification:
+		Notification: BuildingLost
+	ShakeOnDeath:
+	Sellable:
+		SellSounds: BUILD1.WAV
+	Guardable:
+		Range: 3c0
+	WithCrumbleOverlay:
+	Demolishable:
+	DamagedByTerrain:
+		Damage: 50
+		DamageInterval: 100
+		Terrain: Rock
+		DamageThreshold: 50
+		StartOnThreshold: true
+	ThrowsShrapnel:
+		Weapons: Debris, Debris2, Debris3, Debris4
+		Pieces: 2, 5
+		Range: 1c512, 4c0
+	WithMakeAnimation:
+
+^Defense:
+	Inherits: ^Building
+	WithSpriteTurret:
+	AttackTurreted:
+	AutoTarget:
+	RenderRangeCircle:
+	DetectCloaked:
+		Range: 1c768
+	-GivesBuildableArea:
+	-WithMakeAnimation:
+	-Capturable:
+	-WithSpriteBody:
+	WithWallSpriteBody:
+	LineBuildNode:
+		Types: turret
+	ThrowsShrapnel:
+		Weapons: Debris, Debris3
+		Pieces: 2, 2
+		Range: 2c0, 4c0
+	MustBeDestroyed:
+		RequiredForShortGame: false
+	RevealOnFire:

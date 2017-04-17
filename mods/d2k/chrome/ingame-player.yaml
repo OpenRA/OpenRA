@@ -1,0 +1,381 @@
+Container@PLAYER_WIDGETS:
+	Children:
+		LogicKeyListener@CONTROLGROUP_KEYHANDLER:
+			Logic: ControlGroupLogic
+		LogicTicker@SIDEBAR_TICKER:
+		UnitCommand:
+			Width: WINDOW_RIGHT
+			Height: WINDOW_BOTTOM
+		Container@SUPPORT_POWERS:
+			Logic: SupportPowerBinLogic
+			X: 10
+			Y: 10
+			Children:
+				SupportPowers@SUPPORT_PALETTE:
+					IconSize: 60, 48
+					IconSpriteOffset: -1, -1
+					TooltipContainer: TOOLTIP_CONTAINER
+					ReadyText: READY
+					HoldText: ON HOLD
+				Container@PALETTE_FOREGROUND:
+					Children:
+						Image@ICON_TEMPLATE:
+							X: 0-2
+							Y: 0-2
+							Width: 60
+							Height: 48
+							IgnoreMouseOver: true
+							ImageCollection: sidebar
+							ImageName: background-supportoverlay
+		Image@SIDEBAR_BACKGROUND_TOP:
+			X: WINDOW_RIGHT - 226
+			Y: 0
+			Width: 226
+			Height: 295
+			ImageCollection: sidebar
+			ImageName: background-top
+			ClickThrough: false
+			Children:
+				Container@TOP_BUTTONS:
+					Logic: MenuButtonsChromeLogic
+					X: 16
+					Y: 236
+					Children:
+						MenuButton@DEBUG_BUTTON:
+							Key: escape Shift
+							X: 4
+							Width: 34
+							Height: 35
+							Background:
+							TooltipText: Debug Menu
+							TooltipContainer: TOOLTIP_CONTAINER
+							DisableWorldSounds: true
+							VisualHeight: 0
+							Children:
+								Image@ICON:
+									X: 0
+									Y: 0
+									ImageCollection: order-icons
+									ImageName: debug
+						Button@REPAIR_BUTTON:
+							Logic: RepairOrderButtonLogic
+							X: 29
+							Width: 34
+							Height: 35
+							Background:
+							TooltipText: Repair
+							TooltipContainer: TOOLTIP_CONTAINER
+							VisualHeight: 0
+							Children:
+								Image@ICON:
+									X: 0
+									Y: 0
+									ImageCollection: order-icons
+						Button@SELL_BUTTON:
+							Logic: SellOrderButtonLogic
+							X: 54
+							Width: 34
+							Height: 35
+							Background:
+							TooltipText: Sell
+							TooltipContainer: TOOLTIP_CONTAINER
+							VisualHeight: 0
+							Children:
+								Image@ICON:
+									X: 0
+									Y: 0
+									ImageCollection: order-icons
+						Button@BEACON_BUTTON:
+							Logic: BeaconOrderButtonLogic
+							X: 108
+							Width: 36
+							Height: 35
+							Background:
+							TooltipText: Place Beacon
+							TooltipContainer: TOOLTIP_CONTAINER
+							VisualHeight: 0
+							Children:
+								Image@ICON:
+									X: 0
+									Y: 0
+									ImageCollection: order-icons
+						Button@POWER_BUTTON:
+							Logic: PowerdownOrderButtonLogic
+							X: 133
+							Width: 36
+							Height: 35
+							Background:
+							TooltipText: Power Down
+							TooltipContainer: TOOLTIP_CONTAINER
+							VisualHeight: 0
+							Children:
+								Image@ICON:
+									X: 0
+									Y: 0
+									ImageCollection: order-icons
+						MenuButton@OPTIONS_BUTTON:
+							Key: escape
+							X: 78
+							Y: 1
+							Width: 40
+							Height: 38
+							Background:
+							TooltipText: Options
+							TooltipContainer: TOOLTIP_CONTAINER
+							DisableWorldSounds: true
+							VisualHeight: 0
+							Children:
+								Image@ICON:
+									X: 0
+									Y: 0
+									ImageCollection: order-icons
+									ImageName: options
+				Container@RADAR:
+					Logic: IngameRadarDisplayLogic
+					Children:
+						LogicTicker@RADAR_TICKER:
+						Image@INSIGNIA:
+							Logic: AddFactionSuffixLogic
+							X: 60
+							Y: 75
+							ImageCollection: radar
+							ImageName: insignia
+						ColorBlock@RADAR_FADETOBLACK:
+							X: 12
+							Y: 34
+							Width: 202
+							Height: 202
+						Radar@RADAR_MINIMAP:
+							WorldInteractionController: INTERACTION_CONTROLLER
+							X: 12
+							Y: 34
+							Width: 202
+							Height: 202
+							Children:
+						VqaPlayer@PLAYER:
+							X: 12
+							Y: 32
+							Width: 202
+							Height: 202
+							Skippable: false
+						Image@MINIMAP:
+							X: 12
+							Y: 34
+							ImageName: overlapping-elements
+							ImageCollection: minimap
+				Label@GAME_TIMER:
+					Logic: GameTimerLogic
+					X: 10
+					Y: 2
+					Width: PARENT_RIGHT
+					Height: 22
+					Align: Center
+					Font: TinyBold
+				LabelWithTooltip@CASH:
+					Logic: IngameCashCounterLogic
+					X: 29
+					Y: 2
+					Width: 50
+					Height: 22
+					Font: Bold
+					Text: {0}
+					TooltipContainer: TOOLTIP_CONTAINER
+					TooltipTemplate: SIMPLE_TOOLTIP
+				LabelWithTooltip@POWER:
+					Logic: IngamePowerCounterLogic
+					X: PARENT_RIGHT - WIDTH - 30
+					Y: 2
+					Width: 50
+					Height: 22
+					Align: Right
+					Font: Bold
+					Text: {0}
+					TooltipContainer: TOOLTIP_CONTAINER
+					TooltipTemplate: SIMPLE_TOOLTIP
+					Children:
+						Image@POWER_ICON:
+							X: PARENT_RIGHT + 0
+							Y: 5
+							ImageCollection: power-icons
+							ImageName: power-normal
+		Container@SIDEBAR_PRODUCTION:
+			Logic: ClassicProductionLogic
+			X: WINDOW_RIGHT - 226
+			Y: 279
+			Width: 226
+			Height: 250
+			Children:
+				Container@PALETTE_BACKGROUND:
+					Children:
+						Image@ROW_TEMPLATE:
+							Width: 226
+							Height: 48
+							ClickThrough: false
+							ImageCollection: sidebar
+							ImageName: background-iconrow
+						Image@BOTTOM_CAP:
+							Width: 250
+							Height: 13
+							ClickThrough: false
+							ImageCollection: sidebar
+							ImageName: background-bottom
+				LogicTicker@PRODUCTION_TICKER:
+				ProductionPalette@PRODUCTION_PALETTE:
+					X: 39
+					Y: 1
+					TooltipContainer: TOOLTIP_CONTAINER
+					ReadyText: READY
+					HoldText: ON HOLD
+					IconSize: 58, 48
+					IconMargin: 2, 0
+					IconSpriteOffset: 0, 0
+					MinimumRows: 5
+					MaximumRows: 6
+				Container@PALETTE_FOREGROUND:
+					X: 64
+					Y: 0
+					Children:
+						Image@ROW_TEMPLATE:
+							Width: 226
+							Height: 48
+							IgnoreMouseOver: true
+							ImageCollection: sidebar-bits
+							ImageName: production-iconoverlay
+				Container@PRODUCTION_TYPES:
+					X: 6
+					Y: 2
+					Width: 25
+					Height: 274
+					Children:
+						ProductionTypeButton@BUILDING:
+							Width: 25
+							Height: 25
+							VisualHeight: 0
+							Background: sidebar-button
+							TooltipText: Buildings
+							TooltipContainer: TOOLTIP_CONTAINER
+							ProductionGroup: Building
+							HotkeyName: ProductionTypeBuildingKey
+							Children:
+								Image@ICON:
+									X: 5
+									Y: 5
+									ImageCollection: production-icons
+						ProductionTypeButton@UPGRADE:
+							Y: 31
+							Width: 25
+							Height: 25
+							VisualHeight: 0
+							Background: sidebar-button
+							TooltipText: Upgrades
+							TooltipContainer: TOOLTIP_CONTAINER
+							ProductionGroup: Upgrade
+							HotkeyName: ProductionTypeUpgradeKey
+							Children:
+								Image@ICON:
+									X: 5
+									Y: 5
+									ImageCollection: production-icons
+						ProductionTypeButton@INFANTRY:
+							Y: 62
+							Width: 25
+							Height: 25
+							VisualHeight: 0
+							Background: sidebar-button
+							TooltipText: Infantry
+							TooltipContainer: TOOLTIP_CONTAINER
+							ProductionGroup: Infantry
+							HotkeyName: ProductionTypeInfantryKey
+							Children:
+								Image@ICON:
+									X: 5
+									Y: 5
+									ImageCollection: production-icons
+						ProductionTypeButton@VEHICLE:
+							Y: 93
+							Width: 25
+							Height: 25
+							VisualHeight: 0
+							Background: sidebar-button
+							TooltipText: Light Vehicles
+							TooltipContainer: TOOLTIP_CONTAINER
+							ProductionGroup: Vehicle
+							HotkeyName: ProductionTypeVehicleKey
+							Children:
+								Image@ICON:
+									X: 5
+									Y: 5
+									ImageCollection: production-icons
+						ProductionTypeButton@TANKS:
+							Y: 124
+							Width: 25
+							Height: 25
+							VisualHeight: 0
+							Background: sidebar-button
+							TooltipText: Heavy Vehicles
+							TooltipContainer: TOOLTIP_CONTAINER
+							ProductionGroup: Armor
+							HotkeyName: ProductionTypeTankKey
+							Children:
+								Image@ICON:
+									X: 5
+									Y: 5
+									ImageCollection: production-icons
+						ProductionTypeButton@AIRCRAFT:
+							Y: 155
+							Width: 25
+							Height: 25
+							VisualHeight: 0
+							Background: sidebar-button
+							TooltipText: Aircraft
+							TooltipContainer: TOOLTIP_CONTAINER
+							ProductionGroup: Aircraft
+							HotkeyName: ProductionTypeAircraftKey
+							Children:
+								Image@ICON:
+									X: 5
+									Y: 5
+									ImageCollection: production-icons
+						ProductionTypeButton@STARPORT:
+							Y: 186
+							Width: 25
+							Height: 25
+							VisualHeight: 0
+							Background: sidebar-button
+							TooltipText: Starport
+							TooltipContainer: TOOLTIP_CONTAINER
+							ProductionGroup: Starport
+							HotkeyName: ProductionTypeMerchantKey
+							Children:
+								Image@ICON:
+									X: 5
+									Y: 5
+									ImageCollection: production-icons
+						Button@SCROLL_UP_BUTTON:
+							Y: 217
+							Width: 25
+							Height: 25
+							VisualHeight: 0
+							Background: sidebar-button
+							TooltipText: Scroll up
+							TooltipContainer: TOOLTIP_CONTAINER
+							Children:
+								Image@ICON:
+									X: 5
+									Y: 5
+									ImageCollection: scrollbar
+									ImageName: up_arrow
+						Button@SCROLL_DOWN_BUTTON:
+							Y: 248
+							Width: 25
+							Height: 25
+							VisualHeight: 0
+							Background: sidebar-button
+							TooltipText: Scroll down
+							TooltipContainer: TOOLTIP_CONTAINER
+							Children:
+								Image@ICON:
+									X: 5
+									Y: 5
+									ImageCollection: scrollbar
+									ImageName: down_arrow

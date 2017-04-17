@@ -1,0 +1,135 @@
+MapFormat: 11
+
+RequiresMod: d2k
+
+Title: Atreides 03b
+
+Author: Westwood Studios
+
+Tileset: ARRAKIS
+
+MapSize: 68,68
+
+Bounds: 2,2,64,64
+
+Visibility: MissionSelector
+
+Categories: Campaign
+
+LockPreview: True
+
+Players:
+	PlayerReference@Neutral:
+		Name: Neutral
+		OwnsWorld: True
+		NonCombatant: True
+	PlayerReference@Creeps:
+		Name: Creeps
+		NonCombatant: True
+		Enemies: Atreides, Ordos
+	PlayerReference@Atreides:
+		Name: Atreides
+		Playable: True
+		LockFaction: True
+		Faction: atreides
+		LockColor: True
+		Color: 9191FF
+		Enemies: Ordos, Creeps
+	PlayerReference@Ordos:
+		Name: Ordos
+		LockFaction: True
+		Faction: ordos
+		LockColor: True
+		Color: B3EAA5
+		Enemies: Atreides, Creeps
+
+Actors:
+	Actor3: wormspawner
+		Location: 27,14
+		Owner: Creeps
+	Actor8: light_inf
+		Location: 48,24
+		Owner: Ordos
+	Actor9: light_inf
+		Location: 19,34
+		Owner: Ordos
+	Actor10: light_inf
+		Location: 35,34
+		Owner: Ordos
+	Actor11: trooper
+		Location: 18,35
+		Owner: Ordos
+	Actor12: light_inf
+		Location: 18,37
+		Owner: Ordos
+	Actor13: trooper
+		Location: 19,39
+		Owner: Ordos
+	Actor14: light_inf
+		Location: 34,50
+		Owner: Ordos
+	Actor20: light_inf
+		Location: 34,54
+		Owner: Ordos
+	Actor15: light_inf
+		Location: 50,50
+		Owner: Atreides
+	Actor16: quad
+		Location: 47,51
+		Owner: Atreides
+	Actor18: trike
+		Location: 46,53
+		Owner: Atreides
+	Actor19: quad
+		Location: 53,53
+		Owner: Atreides
+	Actor21: trooper
+		Location: 50,55
+		Owner: Atreides
+	Actor22: trike
+		Location: 52,55
+		Owner: Atreides
+	OWindTrap1: wind_trap
+		Location: 12,9
+		Owner: Ordos
+	OWindTrap2: wind_trap
+		Location: 18,9
+		Owner: Ordos
+	OConyard: construction_yard
+		Location: 15,12
+		Owner: Ordos
+	OBarracks: barracks
+		Location: 13,15
+		Owner: Ordos
+	ORefinery: refinery
+		Location: 14,18
+		Owner: Ordos
+	OSilo: silo
+		Location: 18,20
+		Owner: Ordos
+	OOutpost: outpost
+		Location: 18,23
+		Owner: Ordos
+	AConyard: construction_yard
+		Location: 49,52
+		Owner: Atreides
+	AtreidesEntry: waypoint
+		Owner: Neutral
+		Location: 65,53
+	AtreidesRally: waypoint
+		Owner: Neutral
+		Location: 45,55
+	OrdosEntry1: waypoint
+		Owner: Neutral
+		Location: 41,65
+	OrdosRally1: waypoint
+		Owner: Neutral
+		Location: 46,62
+	OrdosEntry2: waypoint
+		Owner: Neutral
+		Location: 6,2
+	OrdosRally2: waypoint
+		Owner: Neutral
+		Location: 15,34
+
+Rules: d2k|rules/campaign-rules.yaml, rules.yaml

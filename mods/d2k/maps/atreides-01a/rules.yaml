@@ -1,0 +1,48 @@
+Player:
+	PlayerResources:
+		DefaultCash: 2300
+
+World:
+	LuaScript:
+		Scripts: atreides01a.lua
+	MissionData:
+		Briefing: Harvest Spice from the Imperial Basin. Construct a Spice Refinery and defend it against the Harkonnen troops scattered throughout the basin. You have been assigned only limited offensive forces - use them wisely.\n\nYou will have to learn the subtleties of mining as you go, but remember to build Silos to store the Spice. When you run out of storage space you can not gather more Spice. Also, any building without adequate concrete foundation will need immediate repair and be vulnerable to erosive damage from the harsh environment. Your greatest adversary may be the elements.\n\nGood luck.\n
+		BriefingVideo: A_BR01_E.VQA
+	MapOptions:
+		TechLevel: low
+	ScriptLobbyDropdown@difficulty:
+		ID: difficulty
+		Label: Difficulty
+		Values:
+			easy: Easy
+			normal: Normal
+			hard: Hard
+		Default: easy
+
+construction_yard:
+	Production:
+		Produces: Building
+
+concreteb:
+	Buildable:
+		Prerequisites: ~disabled
+
+barracks:
+	Buildable:
+		Prerequisites: ~disabled
+
+light_factory:
+	Buildable:
+		Prerequisites: ~disabled
+
+heavy_factory:
+	Buildable:
+		Prerequisites: ~disabled
+
+medium_gun_turret:
+	Buildable:
+		Prerequisites: ~disabled
+
+wall:
+	Buildable:
+		Prerequisites: ~disabled

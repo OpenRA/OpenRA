@@ -1,0 +1,232 @@
+#region Copyright & License Information
+/*
+ * Copyright 2007-2017 The OpenRA Developers (see AUTHORS)
+ * This file is part of OpenRA, which is free software. It is made
+ * available to you under the terms of the GNU General Public License
+ * as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version. For more
+ * information, see COPYING.
+ */
+#endregion
+
+using System;
+using System.Diagnostics;
+using System.Drawing;
+using System.IO;
+using System.Linq;
+using System.Media;
+using System.Reflection;
+using System.Runtime.InteropServices;
+using System.Windows.Forms;
+
+namespace OpenRA
+{
+	class WindowsLauncher
+	{
+		[DllImport("user32.dll")]
+		static extern int SendMessage(IntPtr hwnd, uint message, uint wParam, IntPtr lParam);
+
+		[DllImport("shell32.dll")]
+		static extern IntPtr SHGetFileInfo(string pszPath, uint dwFileAttributes, ref SHFILEINFO psfi, uint cbSizeFileInfo, uint uFlags);
+
+		[DllImport("user32.dll")]
+		public extern static bool DestroyIcon(IntPtr handle);
+
+		struct SHFILEINFO
+		{
+			// Native type: HICON
+			public IntPtr hIcon;
+
+			public int iIcon;
+			public uint dwAttributes;
+
+			// Native type: TCHAR[MAX_PATH]
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 260)]
+
+			public string szDisplayName;
+
+			// Native type: TCHAR[80]
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 80)]
+
+			public string szTypeName;
+		}
+
+		static Process gameProcess;
+
+		// Constants to be replaced by the wrapper / compilation script
+		const string ModID = "MOD_ID";
+		const string DisplayName = "DISPLAY_NAME";
+		const string FaqUrl = "FAQ_URL";
+
+		// References to the OpenRA.Game.exe icons for later cleanup
+		static IntPtr[] iconHandle = { IntPtr.Zero, IntPtr.Zero };
+
+		[STAThread]
+		static void Main(string[] args)
+		{
+			var launcherPath = Assembly.GetExecutingAssembly().Location;
+			var directory = Path.GetDirectoryName(launcherPath);
+			var enginePath = Path.Combine(directory, "OpenRA.Game.exe");
+
+			Directory.SetCurrentDirectory(directory);
+
+			if (!string.IsNullOrEmpty(ModID))
+				args = args.Append("Game.Mod=" + ModID).ToArray();
+
+			var engineArgs = args
+				.Append("Engine.LaunchPath=" + launcherPath)
+				.Select(arg => "\"" + arg + "\"");
+
+			var psi = new ProcessStartInfo(enginePath, string.Join(" ", engineArgs));
+
+			try
+			{
+				gameProcess = Process.Start(psi);
+			}
+			catch
+			{
+				return;
+			}
+
+			if (gameProcess == null)
+				return;
+
+			if (Platform.CurrentPlatform == PlatformType.Windows)
+			{
+				// Set the OpenRA.Game.exe icon to match the mod
+				// Icon.ExtractAssociatedIcon sets only the 32px icon,
+				// so we use native functions to set both 16 and 32px versions.
+				gameProcess.WaitForInputIdle();
+				SHFILEINFO sfi = new SHFILEINFO();
+				for (var i = 0; i < 2; i++)
+				{
+					SHGetFileInfo(Assembly.GetExecutingAssembly().Location, 0, ref sfi, (uint)Marshal.SizeOf(sfi), (uint)(0x100 + i));
+					iconHandle[i] = sfi.hIcon;
+					SendMessage(gameProcess.MainWindowHandle, 0x80, (uint)(1 - i), sfi.hIcon);
+				}
+			}
+
+			gameProcess.EnableRaisingEvents = true;
+			gameProcess.Exited += GameProcessExited;
+
+			Application.Run();
+		}
+
+		static void ShowErrorDialog()
+		{
+			var headerLabel = new Label
+			{
+				Location = new Point(0, 10),
+				Height = 15,
+				Text = DisplayName + " has encountered a fatal error and must close.",
+				TextAlign = ContentAlignment.TopCenter
+			};
+
+			var docsLabel = new Label
+			{
+				Location = new Point(0, 25),
+				Height = 15,
+				Text = "Refer to the crash logs and FAQ for more information.",
+				TextAlign = ContentAlignment.TopCenter
+			};
+
+			int formWidth;
+			using (var g = headerLabel.CreateGraphics())
+			{
+				var headerWidth = (int)g.MeasureString(headerLabel.Text, headerLabel.Font).Width + 60;
+				var docsWidth = (int)g.MeasureString(docsLabel.Text, docsLabel.Font).Width + 60;
+				formWidth = Math.Max(headerWidth, docsWidth);
+				headerLabel.Width = formWidth;
+				docsLabel.Width = formWidth;
+			}
+
+			var form = new Form
+			{
+				Size = new Size(formWidth, 110),
+				Text = "Fatal Error",
+				MinimizeBox = false,
+				MaximizeBox = false,
+				FormBorderStyle = FormBorderStyle.FixedDialog,
+				StartPosition = FormStartPosition.CenterScreen,
+				TopLevel = true,
+				Icon = Icon.ExtractAssociatedIcon(Assembly.GetExecutingAssembly().Location)
+			};
+
+			var viewLogs = new Button
+			{
+				Location = new Point(10, 50),
+				Size = new Size(75, 23),
+				Text = "View Logs"
+			};
+
+			var viewFaq = new Button
+			{
+				Location = new Point(90, 50),
+				Size = new Size(75, 23),
+				Text = "View FAQ"
+			};
+
+			var quit = new Button
+			{
+				Location = new Point(formWidth - 90, 50),
+				Size = new Size(75, 23),
+				Text = "Quit",
+				DialogResult = DialogResult.Cancel
+			};
+
+			form.Controls.Add(headerLabel);
+			form.Controls.Add(docsLabel);
+			form.Controls.Add(viewLogs);
+			form.Controls.Add(viewFaq);
+			form.Controls.Add(quit);
+
+			viewLogs.Click += ViewLogsClicked;
+			viewFaq.Click += ViewFaqClicked;
+			form.FormClosed += FormClosed;
+
+			SystemSounds.Exclamation.Play();
+			form.ShowDialog();
+		}
+
+		static void GameProcessExited(object sender, EventArgs e)
+		{
+			if (gameProcess.ExitCode != (int)RunStatus.Success)
+				ShowErrorDialog();
+
+			if (Platform.CurrentPlatform == PlatformType.Windows)
+				foreach (var handle in iconHandle)
+					if (handle != IntPtr.Zero)
+						DestroyIcon(handle);
+
+			Exit();
+		}
+
+		static void ViewLogsClicked(object sender, EventArgs e)
+		{
+			try
+			{
+				Process.Start(Platform.ResolvePath("^", "Logs"));
+			}
+			catch { }
+		}
+
+		static void ViewFaqClicked(object sender, EventArgs e)
+		{
+			try
+			{
+				Process.Start(FaqUrl);
+			}
+			catch { }
+		}
+
+		static void FormClosed(object sender, EventArgs e)
+		{
+			Exit();
+		}
+
+		static void Exit()
+		{
+			Environment.Exit(0);
+		}
+	}
+}

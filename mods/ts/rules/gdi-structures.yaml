@@ -1,0 +1,472 @@
+GAPOWR:
+	Inherits: ^Building
+	Buildable:
+		Queue: Building
+		BuildPaletteOrder: 10
+		Prerequisites: ~structures.gdi, ~techlevel.low
+		Description: Provides power for other structures.
+	Valued:
+		Cost: 300
+	Tooltip:
+		Name: GDI Power Plant
+	ProvidesPrerequisite:
+		Prerequisite: anypower
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
+	Health:
+		HP: 750
+	Armor:
+		Type: Wood
+	RevealsShroud:
+		Range: 4c0
+		MaxHeightDelta: 3
+	WithIdleOverlay@LIGHTS:
+		Sequence: idle-lights
+	WithIdleOverlay@PLUG:
+		Sequence: idle-plug
+	Selectable:
+		Bounds: 90, 48, 0, -6
+	Power:
+		Amount: 100
+	InfiltrateForPowerOutage:
+	AffectedByPowerOutage:
+	PowerTooltip:
+	Targetable:
+		TargetTypes: Ground, C4, DetonateAttack, SpyInfiltrate
+	ScalePowerWithHealth:
+	DisabledOverlay:
+	Pluggable@pluga:
+		Offset: 0,1
+		Conditions:
+			powrup: powrup.a
+	Power@pluga:
+		RequiresCondition: powrup.a
+		Amount: 50
+	WithIdleOverlay@pluga:
+		RequiresCondition: powrup.a
+		Sequence: idle-powrupa
+	Pluggable@plugb:
+		Offset: 1,1
+		Conditions:
+			powrup: powrup.b
+	WithIdleOverlay@plugb:
+		RequiresCondition: powrup.b
+		Sequence: idle-powrupb
+	Power@plugb:
+		RequiresCondition: powrup.b
+		Amount: 50
+	ProvidesPrerequisite@buildingname:
+	SelectionDecorations:
+		VisualBounds: 90, 84, 0, -12
+
+GAPILE:
+	Inherits: ^Building
+	Buildable:
+		Queue: Building
+		BuildPaletteOrder: 30
+		Prerequisites: anypower, ~structures.gdi, ~techlevel.low
+		Description: Produces infantry.
+	Valued:
+		Cost: 300
+	Tooltip:
+		Name: GDI Barracks
+	ProvidesPrerequisite:
+		Prerequisite: barracks
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
+	Selectable:
+		Bounds: 88, 48, 0, -8
+	Health:
+		HP: 800
+	Armor:
+		Type: Wood
+	RevealsShroud:
+		Range: 5c0
+		MaxHeightDelta: 3
+	RallyPoint:
+		Offset: 2,3
+		Palette: mouse
+		IsPlayerPalette: false
+	Exit@1:
+		SpawnOffset: -256,1024,0
+		ExitCell: 2,2
+	ExitsDebugOverlay:
+	Production:
+		Produces: Infantry
+	PrimaryBuilding:
+		PrimaryCondition: primary
+	ProductionBar:
+	WithIdleOverlay@LIGHTS:
+		Sequence: idle-lights
+	WithIdleOverlay@LIGHT:
+		Sequence: idle-light
+	WithIdleOverlay@FLAG:
+		Sequence: idle-flag
+	Power:
+		Amount: -20
+	ProvidesPrerequisite@buildingname:
+	SelectionDecorations:
+		VisualBounds: 88, 56, 0, -8
+	WithTextDecoration@primary:
+		RequiresSelection: true
+		Text: PRIMARY
+		ReferencePoint: Top
+		Color: E0D048
+		ZOffset: 256
+		RequiresCondition: primary
+
+GAWEAP:
+	Inherits: ^Building
+	Valued:
+		Cost: 2000
+	Tooltip:
+		Name: GDI War Factory
+	ProvidesPrerequisite:
+		Prerequisite: factory
+	Buildable:
+		Queue: Building
+		BuildPaletteOrder: 60
+		Prerequisites: proc, ~structures.gdi, ~techlevel.low
+		Description: Produces vehicles.
+	Building:
+		Footprint: xxx= xxx= xxx=
+		Dimensions: 4,3
+	Selectable:
+		Bounds: 154, 96, -2, -12
+	Health:
+		HP: 1000
+	RevealsShroud:
+		Range: 4c0
+		MaxHeightDelta: 3
+	Armor:
+		Type: Heavy
+	RallyPoint:
+		Offset: 4,1
+		Palette: mouse
+		IsPlayerPalette: false
+	Exit@1:
+		SpawnOffset: -384,-384,0
+		ExitCell: 3,1
+		ExitDelay: 5
+	ExitsDebugOverlay:
+	Production:
+		Produces: Vehicle
+	PrimaryBuilding:
+		PrimaryCondition: primary
+	ProductionBar:
+	WithIdleOverlay@ROOF:
+		Sequence: idle-roof
+	WithProductionDoorOverlay@DOOR:
+	WithIdleOverlay@WHITELIGHTS:
+		Sequence: idle-lights-white
+	WithIdleOverlay@REDLIGHTS:
+		Sequence: idle-lights-red
+	WithIdleOverlay@TURBINES:
+		Sequence: idle-turbines
+	WithIdleOverlay@BIB:
+		Sequence: bib
+	Power:
+		Amount: -30
+	ProvidesPrerequisite@buildingname:
+	SelectionDecorations:
+		VisualBounds: 154, 100, -2, -12
+	WithTextDecoration@primary:
+		RequiresSelection: true
+		Text: PRIMARY
+		ReferencePoint: Top
+		Color: E0D048
+		ZOffset: 256
+		RequiresCondition: primary
+
+GAHPAD:
+	Inherits: ^Building
+	Valued:
+		Cost: 500
+	Tooltip:
+		Name: Helipad
+	Buildable:
+		BuildPaletteOrder: 130
+		Queue: Building
+		Prerequisites: garadr, ~structures.gdi, ~techlevel.medium
+		Description: Produces, rearms and\nrepairs helicopters.
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
+	Health:
+		HP: 600
+	RevealsShroud:
+		Range: 5c0
+		MaxHeightDelta: 3
+	Exit@1:
+		SpawnOffset: 0,-256,0
+	ExitsDebugOverlay:
+	RallyPoint:
+		Palette: mouse
+		IsPlayerPalette: false
+	Production:
+		Produces: Air
+	PrimaryBuilding:
+		PrimaryCondition: primary
+	Reservable:
+	RepairsUnits:
+		PlayerExperience: 15
+	ProductionBar:
+	WithIdleOverlay@PLATFORM:
+		Sequence: idle-platform
+	WithIdleOverlay@LIGHTS:
+		Sequence: idle-lights
+	WithDeathAnimation@BIB:
+		DeathSequence: dead-platform
+		UseDeathTypeSuffix: false
+	Power:
+		Amount: -10
+	Selectable:
+		Bounds: 88, 66, 0, -5
+	ProvidesPrerequisite@buildingname:
+	SelectionDecorations:
+		VisualBounds: 88, 66, 0, -5
+	WithTextDecoration@primary:
+		RequiresSelection: true
+		Text: PRIMARY
+		ReferencePoint: Top
+		Color: E0D048
+		ZOffset: 256
+		RequiresCondition: primary
+
+GADEPT:
+	Inherits: ^Building
+	Valued:
+		Cost: 1200
+	Tooltip:
+		Name: Service Depot
+	Buildable:
+		BuildPaletteOrder: 110
+		Prerequisites: factory, ~structures.gdi, ~techlevel.medium
+		Queue: Building
+		Description: Repairs vehicles.
+	Building:
+		Footprint: =x= xxx =x=
+		Dimensions: 3,3
+	Selectable:
+		Bounds: 96, 64, -6, -6
+	Health:
+		HP: 1100
+	RevealsShroud:
+		Range: 5c0
+		MaxHeightDelta: 3
+	Reservable:
+	RepairsUnits:
+		PlayerExperience: 15
+	RallyPoint:
+		Palette: mouse
+		IsPlayerPalette: false
+	WithIdleOverlay@LIGHT:
+		Sequence: idle-light
+	WithIdleOverlay@GROUND:
+		Sequence: ground
+	WithIdleOverlay@CIRCUITS:
+		Sequence: circuits
+	WithRepairOverlay@CRANE:
+		Sequence: crane
+	WithRepairOverlay@PLATFORM:
+		Sequence: platform
+	WithDeathAnimation@BIB:
+		DeathSequence: dead-ground
+		UseDeathTypeSuffix: false
+	Power:
+		Amount: -30
+	ProvidesPrerequisite@buildingname:
+	SelectionDecorations:
+		VisualBounds: 98, 68, -6, -6
+	RenderSprites:
+		Image: gadept.gdi
+		FactionImages:
+			gdi: gadept.gdi
+			nod: gadept.nod
+
+GARADR:
+	Inherits: ^Building
+	Buildable:
+		Queue: Building
+		BuildPaletteOrder: 80
+		Prerequisites: proc, ~structures.gdi, ~techlevel.low
+		Description: Provides an overview of the battlefield.\nCan detect cloaked units.\nRequires power to operate.
+	Valued:
+		Cost: 1000
+	Tooltip:
+		Name: GDI Radar
+	ProvidesPrerequisite:
+		Prerequisite: radar
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
+	Selectable:
+		Bounds: 96, 48, 0, -6
+	Health:
+		HP: 1000
+	Armor:
+		Type: Wood
+	RequiresPower:
+	CanPowerDown:
+		IndicatorPalette: mouse
+		PowerupSpeech: EnablePower
+		PowerdownSpeech: DisablePower
+	ProvidesRadar:
+		RequiresCondition: !disabled
+	InfiltrateForExploration:
+	DetectCloaked:
+		Range: 10c0
+	RenderDetectionCircle:
+	RevealsShroud:
+		Range: 10c0
+		MaxHeightDelta: 3
+	WithIdleOverlay@DISH:
+		Sequence: idle-dish
+		PauseOnLowPower: yes
+	Targetable:
+		TargetTypes: Ground, C4, SpyInfiltrate
+	Power:
+		Amount: -50
+	ProvidesPrerequisite@buildingname:
+	SelectionDecorations:
+		VisualBounds: 96, 118, 0, -38
+	GrantConditionOnDisabled@IDISABLE:
+		Condition: disabled
+
+GATECH:
+	Inherits: ^Building
+	Buildable:
+		Queue: Building
+		BuildPaletteOrder: 150
+		Prerequisites: gaweap, garadr, ~structures.gdi, ~techlevel.medium
+		Description: Provides access to advanced GDI technologies.
+	Valued:
+		Cost: 1500
+	Tooltip:
+		Name: GDI Tech Center
+	ProvidesPrerequisite:
+		Prerequisite: tech
+	Building:
+		Footprint: xxx xxx
+		Dimensions: 3,2
+	Selectable:
+		Bounds: 110, 60, 3, -4
+	Health:
+		HP: 500
+	Armor:
+		Type: Wood
+	RevealsShroud:
+		Range: 4c0
+		MaxHeightDelta: 3
+	WithIdleOverlay@LIGHTS:
+		Sequence: idle-lights
+	Power:
+		Amount: -150
+	ProvidesPrerequisite@buildingname:
+	SelectionDecorations:
+		VisualBounds: 110, 60, 3, -4
+
+GAPLUG:
+	Inherits: ^Building
+	Valued:
+		Cost: 1000
+	Tooltip:
+		Name: GDI Upgrade Center
+	Selectable:
+		Bounds: 115,72,0,-12
+	Buildable:
+		BuildPaletteOrder: 170
+		Prerequisites: proc, gatech, ~structures.gdi, ~techlevel.superweapons
+		Queue: Building
+		Description: Can be upgraded for additional technology.
+	Building:
+		Footprint: xxx xxx
+		Dimensions: 2,3
+	RequiresPower:
+	CanPowerDown:
+		IndicatorPalette: mouse
+		PowerupSpeech: EnablePower
+		PowerdownSpeech: DisablePower
+	DisabledOverlay:
+	WithIdleOverlay@DISH:
+		Sequence: idle-dish
+	WithIdleOverlay@LIGHTS:
+		Sequence: idle-lights
+	WithIdleOverlay@STRIP:
+		Sequence: idle-strip
+	Health:
+		HP: 1000
+	Armor:
+		Type: Wood
+	RevealsShroud:
+		Range: 6c0
+		MaxHeightDelta: 3
+	IonCannonPower:
+		Cursor: ioncannon
+		RequiresCondition: plug.ioncannona || plug.ioncannonb
+		Icon: ioncannon
+		Effect: explosion
+		EffectSequence: ionring
+		EffectPalette: effectalpha75
+		WeaponDelay: 0
+		ChargeTime: 510
+		Description: Ion Cannon
+		LongDesc: Initiate an Ion Cannon strike.\nApplies instant damage to a small area.
+		EndChargeSpeechNotification: IonCannonReady
+		SelectTargetSpeechNotification: SelectTarget
+		DisplayRadarPing: True
+		CameraActor: camera
+	ProduceActorPower:
+		RequiresCondition: plug.hunterseekera || plug.hunterseekerb
+		Description: Hunter Seeker
+		LongDesc: Releases a drone that will acquire and destroy an enemy target.
+		Icon: hunterseeker
+		Actors: hunter
+		Type: HunterSeeker
+		ChargeTime: 720
+	Production:
+		Produces: HunterSeeker
+	Exit@1:
+	ExitsDebugOverlay:
+	SupportPowerChargeBar:
+	Power:
+		Amount: -150
+	Power@ioncannon:
+		RequiresCondition: plug.ioncannona || plug.ioncannonb
+		Amount: -100
+	Power@hunterseeker:
+		RequiresCondition: plug.hunterseekera || plug.hunterseekerb
+		Amount: -50
+	Pluggable@pluga:
+		Offset: 0,2
+		Conditions:
+			plug.ioncannon: plug.ioncannona
+			plug.hunterseeker: plug.hunterseekera
+		Requirements:
+			plug.ioncannon: !plug.ioncannonb && !plug.ioncannona && !plug.hunterseekera
+			plug.hunterseeker: !plug.hunterseekerb && !plug.ioncannona && !plug.hunterseekera
+	WithIdleOverlay@ioncannona:
+		RequiresCondition: plug.ioncannona
+		Sequence: idle-ioncannona
+	WithIdleOverlay@hunterseekera:
+		RequiresCondition: plug.hunterseekera
+		Sequence: idle-hunterseekera
+	Pluggable@plugb:
+		Offset: 1,2
+		Conditions:
+			plug.ioncannon: plug.ioncannonb
+			plug.hunterseeker: plug.hunterseekerb
+		Requirements:
+			plug.ioncannon: !plug.ioncannona && !plug.ioncannonb && !plug.hunterseekerb
+			plug.hunterseeker: !plug.hunterseekera && !plug.ioncannonb && !plug.hunterseekerb
+	WithIdleOverlay@ioncannonb:
+		RequiresCondition: plug.ioncannonb
+		Sequence: idle-ioncannonb
+	WithIdleOverlay@hunterseekerb:
+		RequiresCondition: plug.hunterseekerb
+		Sequence: idle-hunterseekerb
+	ProvidesPrerequisite@buildingname:
+	SelectionDecorations:
+		VisualBounds: 115,104,0,-24

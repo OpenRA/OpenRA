@@ -1,0 +1,151 @@
+^Rocket:
+	ReloadDelay: 40
+	Range: 3c0
+	Report: ROCKET1.WAV
+	Projectile: Bullet
+		Blockable: false
+		Speed: 281
+		Inaccuracy: 256
+		Image: RPG
+		TrailImage: bazooka_trail2
+		TrailPalette: effect75alpha
+		TrailInterval: 1
+	Warhead@1Dam: SpreadDamage
+		Spread: 192
+		Falloff: 100, 50, 25, 0
+		Damage: 300
+		Versus:
+			none: 8
+			wall: 75
+			building: 40
+			wood: 45
+			light: 70
+			heavy: 100
+			invulnerable: 0
+			cy: 20
+			harvester: 50
+		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
+	Warhead@2Smu: LeaveSmudge
+		SmudgeType: SandCrater, RockCrater
+		InvalidTargets: Vehicle, Structure
+	Warhead@3Eff: CreateEffect
+		Explosions: tiny_explosion
+
+^Missile:
+	Inherits: ^Rocket
+	ReloadDelay: 60
+	Range: 5c512
+	MinRange: 0c512
+	Projectile: Missile
+		Shadow: true
+		HorizontalRateOfTurn: 3
+		RangeLimit: 6c614
+		Inaccuracy: 384
+		CruiseAltitude: 1c0
+		MinimumLaunchAngle: 64
+		VerticalRateOfTurn: 10
+		Image: MISSILE2
+		TrailImage: large_trail
+		Speed: 288
+	Warhead@1Dam: SpreadDamage
+		Spread: 256
+		Damage: 480
+		Versus:
+			none: 15
+			wall: 75
+			building: 60
+			wood: 65
+			light: 90
+			heavy: 100
+			invulnerable: 0
+			cy: 30
+			harvester: 50
+	Warhead@3Eff: CreateEffect
+		Explosions: small_explosion
+		ImpactSounds: EXPLSML1.WAV
+
+Bazooka:
+	Inherits: ^Rocket
+
+Rocket:
+	Inherits: ^Rocket
+	ReloadDelay: 30
+	Range: 3c512
+	Projectile: Bullet
+		Speed: 352
+	Warhead@1Dam: SpreadDamage
+		Spread: 160
+		Damage: 250
+		Versus:
+			none: 25
+			wall: 100
+			building: 50
+			wood: 65
+			light: 100
+			heavy: 50
+			invulnerable: 0
+			cy: 20
+			harvester: 50
+	Warhead@3Eff: CreateEffect
+		Explosions: rocket_explosion
+		ExplosionPalette: effect75alpha
+
+TowerMissile:
+	Inherits: ^Missile
+	ReloadDelay: 60
+	Burst: 2
+	BurstDelay: 60
+	ValidTargets: Ground, Air
+	Projectile: Missile
+		HorizontalRateOfTurn: 1
+	Warhead@1Dam: SpreadDamage
+		ValidTargets: Ground, Air
+		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
+
+mtank_pri:
+	Inherits: ^Missile
+	ReloadDelay: 115
+	Burst: 2
+	BurstDelay: 115
+	Range: 6c0
+	ValidTargets: Ground, Air
+	Projectile: Missile
+		Inaccuracy: 96
+		RangeLimit: 7c204
+	Warhead@1Dam: SpreadDamage
+		Damage: 600
+		ValidTargets: Ground, Air
+
+DeviatorMissile:
+	Inherits: ^Missile
+	ReloadDelay: 160
+	Range: 5c0
+	Report: MISSLE1.WAV
+	Projectile: Missile
+		RangeLimit: 6c0
+		Image: MISSILE
+		TrailImage: deviator_trail
+		TrailPalette: deviatorgas
+		TrailUsePlayerPalette: true
+	Warhead@1Dam: SpreadDamage
+		Damage: 500
+		Versus:
+			none: 20
+			wall: 20
+			building: 20
+			wood: 20
+			light: 20
+			heavy: 20
+			invulnerable: 0
+			cy: 10
+			harvester: 20
+	-Warhead@2Smu: LeaveSmudge
+	Warhead@3Eff: CreateEffect
+		Explosions: deviator
+		ExplosionPalette: deviatorgas
+		UsePlayerPalette: true
+		-ImpactSounds:
+	Warhead@4OwnerChange: ChangeOwner
+		Range: 512
+		Duration: 375
+		InvalidTargets: Infantry, Structure

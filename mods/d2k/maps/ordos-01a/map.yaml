@@ -1,0 +1,104 @@
+MapFormat: 11
+
+RequiresMod: d2k
+
+Title: Ordos 01a
+
+Author: Westwood Studios
+
+Tileset: ARRAKIS
+
+MapSize: 32,28
+
+Bounds: 2,2,28,24
+
+Visibility: MissionSelector
+
+Categories: Campaign
+
+LockPreview: True
+
+Players:
+	PlayerReference@Neutral:
+		Name: Neutral
+		OwnsWorld: True
+		NonCombatant: True
+		Faction: Random
+	PlayerReference@Creeps:
+		Name: Creeps
+		NonCombatant: True
+		Faction: Random
+		Enemies: Ordos, Harkonnen
+	PlayerReference@Ordos:
+		Name: Ordos
+		Playable: True
+		LockFaction: True
+		Faction: ordos
+		LockColor: True
+		Color: B3EAA5
+		Enemies: Harkonnen, Creeps
+	PlayerReference@Harkonnen:
+		Name: Harkonnen
+		LockFaction: True
+		Faction: harkonnen
+		LockColor: True
+		Color: FE0000
+		Enemies: Ordos
+
+Actors:
+	Actor0: light_inf
+		Location: 2,2
+		Owner: Harkonnen
+	Actor1: light_inf
+		Location: 14,3
+		Owner: Harkonnen
+	Actor2: wormspawner
+		Location: 21,4
+		Owner: Creeps
+	Actor3: light_inf
+		Location: 18,5
+		Owner: Harkonnen
+	Actor4: light_inf
+		Location: 21,7
+		Owner: Harkonnen
+	Actor5: light_inf
+		Location: 7,10
+		Owner: Ordos
+	Actor6: light_inf
+		Location: 12,11
+		Owner: Ordos
+	Actor7: raider
+		Location: 5,12
+		Owner: Ordos
+	Actor8: raider
+		Location: 10,12
+		Owner: Ordos
+	OrdosConyard: construction_yard
+		Location: 9,13
+		Owner: Ordos
+	Actor10: light_inf
+		Location: 6,15
+		Owner: Ordos
+	Actor11: light_inf
+		Location: 12,15
+		Owner: Ordos
+	Actor12: light_inf
+		Location: 26,17
+		Owner: Harkonnen
+	OrdosRally: waypoint
+		Owner: Neutral
+		Location: 13,14
+	OrdosWaypoint: waypoint
+		Owner: Neutral
+		Location: 2,14
+	HarkonnenWaypoint1: waypoint
+		Owner: Neutral
+		Location: 2,2
+	HarkonnenWaypoint2: waypoint
+		Owner: Neutral
+		Location: 20,2
+	HarkonnenWaypoint3: waypoint
+		Owner: Neutral
+		Location: 29,15
+
+Rules: d2k|rules/campaign-rules.yaml, rules.yaml

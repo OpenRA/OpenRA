@@ -1,0 +1,168 @@
+^BaseWorld:
+	Inherits: ^Palettes
+	AlwaysVisible:
+	ScreenMap:
+	ActorMap:
+	MusicPlaylist:
+		VictoryMusic: score
+		DefeatMusic: score
+	TerrainGeometryOverlay:
+	ShroudRenderer:
+		ShroudVariants: shrouda, shroudb, shroudc, shroudd
+		FogVariants: foga, fogb, fogc, fogd
+		Index: 11, 3, 7, 9, 6, 13, 12, 14, 4, 8, 2, 1, 5, 10
+		OverrideFullShroud: shroudfull
+		OverrideFullFog: fogfull
+		ShroudBlend: Multiply
+	Faction@Random:
+		Name: Any
+		InternalName: Random
+		RandomFactionMembers: atreides, harkonnen, ordos
+		Description: Select a random House.
+	Faction@Atreides:
+		Name: Atreides
+		InternalName: atreides
+		Description: House Atreides\nThe noble Atreides, from the water world of Caladan,\nrely on their ornithopters to ensure air superiority.\nThey have allied themselves with the Fremen, the fearsome\nnative warriors of Dune that can move undetected in battle.\n\nFaction Variations:\n    - Combat tanks are balanced in terms of speed and durability\n\nSpecial Units:\n    - Grenadier\n    - Fremen\n    - Sonic Tank\n\nSuperweapon:\n    - Airstrike
+	Faction@Harkonnen:
+		Name: Harkonnen
+		InternalName: harkonnen
+		Description: House Harkonnen\nThe evil Harkonnen will stop at nothing to gain control of the spice.\nThey rely on brute force and atomic weapons to achieve their goals:\nwealth, and the destruction of House Atreides.\n\nFaction Variations:\n    - Combat Tanks are more durable but slower \n\nSpecial Units:\n    - Sardaukar\n    - Devastator\n\nSuperweapon: \n    - Death Hand Missile
+	Faction@Ordos:
+		Name: Ordos
+		InternalName: ordos
+		Description: House Ordos\nThe insidious Ordos of the icy planet Sigma Draconis IV\nare known for their wealth, greed and treachery.\nRelying heavily on mercenaries they often resort\nto sabotage and forbidden Ixian technologies.\n\nFaction Variations: \n    - Trikes are replaced by Raider Trikes\n    - Combat Tanks are faster but less durable\n\nSpecial Units:\n    - Raider Trike\n    - Stealth Raider Trike\n    - Saboteur\n    - Deviator
+	Faction@Corrino:
+		Name: Corrino
+		InternalName: corrino
+		Selectable: false
+	Faction@Mercenaries:
+		Name: Mercenaries
+		InternalName: mercenary
+		Selectable: false
+	Faction@Smugglers:
+		Name: Smugglers
+		InternalName: smuggler
+		Selectable: false
+	Faction@Fremen:
+		Name: Fremen
+		InternalName: fremen
+		Selectable: false
+	ResourceType@Spice:
+		Type: Spice
+		Name: Spice
+		PipColor: green
+		ResourceType: 1
+		Palette: d2k
+		TerrainType: Spice
+		Sequences: spice
+		MaxDensity: 20
+		ValuePerUnit: 25
+		AllowedTerrainTypes: SpiceSand
+		AllowUnderActors: true
+
+World:
+	Inherits: ^BaseWorld
+	ChatCommands:
+	DevCommands:
+	PlayerCommands:
+	HelpCommand:
+	ScreenShaker:
+	BuildingInfluence:
+	ProductionQueueFromSelection:
+		ProductionPaletteWidget: PRODUCTION_PALETTE
+	WormManager:
+	CrateSpawner:
+		Minimum: 0
+		Maximum: 2
+		SpawnInterval: 1500
+		WaterChance: 0
+		ValidGround: Sand, Rock, Transition, Spice, SpiceSand, Dune, Concrete
+		InitialSpawnDelay: 1500
+	DomainIndex:
+	WarheadDebugOverlay:
+	BuildableTerrainLayer:
+	D2kResourceLayer:
+	ResourceClaimLayer:
+	CustomTerrainDebugOverlay:
+	SmudgeLayer@Rock:
+		Type: RockCrater
+		Sequence: rockcraters
+		SmokePercentage: 0
+	SmudgeLayer@Sand:
+		Type: SandCrater
+		Sequence: sandcraters
+		SmokePercentage: 0
+	MapCreeps:
+	SpawnMapActors:
+	MapBuildRadius:
+	MapOptions:
+	CreateMPPlayers:
+	MPStartLocations:
+	MPStartUnits@mcv:
+		Class: none
+		ClassName: MCV Only
+		BaseActor: mcv
+		Factions: atreides, ordos, harkonnen
+	MPStartUnits@lightatreides:
+		Class: light
+		ClassName: Light Support
+		Factions: atreides
+		BaseActor: mcv
+		SupportActors: light_inf, light_inf, light_inf, trooper, grenadier, trike, quad
+		InnerSupportRadius: 3
+		OuterSupportRadius: 5
+	MPStartUnits@lightharkonnen:
+		Class: light
+		ClassName: Light Support
+		Factions: harkonnen
+		BaseActor: mcv
+		SupportActors: light_inf, light_inf, light_inf, trooper, trooper, trike, quad
+		InnerSupportRadius: 3
+		OuterSupportRadius: 5
+	MPStartUnits@lightordos:
+		Class: light
+		ClassName: Light Support
+		Factions: ordos
+		BaseActor: mcv
+		SupportActors: light_inf, light_inf, light_inf, trooper, engineer, raider, quad
+		InnerSupportRadius: 3
+		OuterSupportRadius: 5
+	MPStartUnits@heavyatreides:
+		Class: heavy
+		ClassName: Heavy Support
+		Factions: atreides
+		BaseActor: mcv
+		SupportActors: light_inf, light_inf, light_inf, trooper, grenadier, trike, combat_tank_a, missile_tank
+		InnerSupportRadius: 3
+		OuterSupportRadius: 5
+	MPStartUnits@heavyharkonnen:
+		Class: heavy
+		ClassName: Heavy Support
+		Factions: harkonnen
+		BaseActor: mcv
+		SupportActors: light_inf, light_inf, light_inf, trooper, engineer, quad, combat_tank_h, siege_tank
+		InnerSupportRadius: 3
+		OuterSupportRadius: 5
+	MPStartUnits@heavyordos:
+		Class: heavy
+		ClassName: Heavy Support
+		Factions: ordos
+		BaseActor: mcv
+		SupportActors: light_inf, light_inf, light_inf, trooper, engineer, raider, combat_tank_o, missile_tank
+		InnerSupportRadius: 3
+		OuterSupportRadius: 5
+	SpawnMPUnits:
+	PathFinder:
+	ValidateOrder:
+	DebugPauseState:
+	RadarPings:
+	ObjectivesPanel:
+		PanelName: SKIRMISH_STATS
+	LoadWidgetAtGameStart:
+
+EditorWorld:
+	Inherits: ^BaseWorld
+	EditorActorLayer:
+	D2kEditorResourceLayer:
+	EditorSelectionLayer:
+	LoadWidgetAtGameStart:

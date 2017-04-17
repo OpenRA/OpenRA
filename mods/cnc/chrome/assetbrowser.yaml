@@ -1,0 +1,196 @@
+Container@ASSETBROWSER_PANEL:
+	Logic: AssetBrowserLogic
+		SupportedFormats: .shp, .tem, .des, .sno, .jun, .vqa
+	X: (WINDOW_RIGHT - WIDTH)/2
+	Y: (WINDOW_BOTTOM - HEIGHT)/2
+	Width: 695
+	Height: 435
+	Children:
+		LogicTicker@ANIMATION_TICKER:
+		ColorPreviewManager@COLOR_MANAGER:
+		Label@ASSETBROWSER_TITLE:
+			Width: PARENT_RIGHT
+			Y: 0-25
+			Font: BigBold
+			Contrast: true
+			Align: Center
+			Text: Asset Browser
+		Background@bg:
+			Width: PARENT_RIGHT
+			Height: 435
+			Background: panel-black
+			Children:
+				Label@SOURCE_SELECTOR_DESC:
+					X: 15
+					Y: 5
+					Width: 160
+					Height: 25
+					Font: TinyBold
+					Align: Center
+					Text: Select asset source
+				DropDownButton@SOURCE_SELECTOR:
+					X: 15
+					Y: 35
+					Width: 160
+					Height: 25
+					Font: Bold
+					Text: Folders
+				ScrollPanel@ASSET_LIST:
+					X: 15
+					Y: 65
+					Width: 160
+					Height: 275
+					CollapseHiddenChildren: True
+					Children:
+						ScrollItem@ASSET_TEMPLATE:
+							Width: PARENT_RIGHT-27
+							Height: 25
+							X: 2
+							Y: 0
+							Visible: false
+							Children:
+								Label@TITLE:
+									X: 10
+									Width: PARENT_RIGHT-15
+									Height: 25
+				Label@FILENAME_DESC:
+					X: 15
+					Y: 340
+					Width: 160
+					Height: 25
+					Font: TinyBold
+					Align: Center
+					Text: Filter by name
+				TextField@FILENAME_INPUT:
+					X: 15
+					Y: 365
+					Width: 160
+					Height: 25
+				Label@PALETTE_DESC:
+					X: PARENT_RIGHT-WIDTH-270
+					Y: 30
+					Width: 150
+					Height: 25
+					Font: Bold
+					Align: Right
+					Text: Palette:
+				DropDownButton@PALETTE_SELECTOR:
+					X: PARENT_RIGHT-WIDTH-110
+					Y: 30
+					Width: 150
+					Height: 25
+					Font: Bold
+				DropDownButton@COLOR:
+					X: PARENT_RIGHT-WIDTH-15
+					Y: 30
+					Width: 80
+					Height: 25
+					Children:
+						ColorBlock@COLORBLOCK:
+							X: 5
+							Y: 6
+							Width: PARENT_RIGHT-35
+							Height: PARENT_BOTTOM-12
+				Background@SPRITE_BG:
+					X: 190
+					Y: 65
+					Width: 490
+					Height: 325
+					Background: scrollpanel-bg
+					Children:
+						Sprite@SPRITE:
+							Width: PARENT_RIGHT
+							Height: PARENT_BOTTOM
+						VqaPlayer@PLAYER:
+							Width: PARENT_RIGHT
+							Height: PARENT_BOTTOM
+							AspectRatio: 1
+						Label@ERROR:
+							X: 5
+							Width: 490 - 10
+							Height: 325
+							Align: Center
+							Visible: false
+							Text: Error displaying file. See assetbrowser.log for details.
+				Container@FRAME_SELECTOR:
+					X: 190
+					Y: 395
+					Children:
+						Button@BUTTON_PREV:
+							Width: 26
+							Height: 26
+							Children:
+								Image@IMAGE_PREV:
+									X: 5
+									Y: 5
+									Width: 16
+									Height: 16
+									ImageCollection: music
+									ImageName: prev
+						Button@BUTTON_PLAY:
+							X: 35
+							Width: 26
+							Height: 26
+							Children:
+								Image@IMAGE_PLAY:
+									X: 5
+									Y: 5
+									Width: 16
+									Height: 16
+									ImageCollection: music
+									ImageName: play
+						Button@BUTTON_PAUSE:
+							Visible: false
+							X: 35
+							Width: 26
+							Height: 26
+							Children:
+								Image@IMAGE_PAUSE:
+									X: 5
+									Y: 5
+									Width: 16
+									Height: 16
+									ImageCollection: music
+									ImageName: pause
+						Button@BUTTON_STOP:
+							X: 70
+							Width: 26
+							Height: 26
+							Children:
+								Image@IMAGE_STOP:
+									X: 5
+									Y: 5
+									Width: 16
+									Height: 16
+									ImageCollection: music
+									ImageName: stop
+						Button@BUTTON_NEXT:
+							X: 105
+							Width: 26
+							Height: 26
+							Children:
+								Image@IMAGE_NEXT:
+									X: 5
+									Y: 5
+									Width: 16
+									Height: 16
+									ImageCollection: music
+									ImageName: next
+						Slider@FRAME_SLIDER:
+							X: 140
+							Y: 3
+							Width: 300
+							Height: 20
+							MinimumValue: 0
+						Label@FRAME_COUNT:
+							X: 445
+							Width: 40
+							Height: 25
+							Font: TinyBold
+							Align: Left
+		Button@CLOSE_BUTTON:
+			Key: escape
+			Y: 434
+			Width: 140
+			Height: 35
+			Text: Back

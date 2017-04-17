@@ -1,0 +1,691 @@
+ammocrat:
+	idle: ammo01
+		DepthSprite: isodepth.shp
+		ShadowStart: 2
+		Offset: 0, -12, 12
+
+^abanbase:
+	Defaults:
+		DepthSprite: isodepth.shp
+	idle:
+		ShadowStart: 2
+	critical-idle:
+		Start: 1
+		ShadowStart: 3
+
+^aban1x1:
+	Inherits: ^abanbase
+	Defaults:
+		Offset: 0, -12, 12
+
+^aban2x2:
+	Inherits: ^abanbase
+	Defaults:
+		Offset: 0, -24, 24
+
+^aban2x5:
+	Inherits: ^abanbase
+	Defaults:
+		Offset: 36, -42, 42
+		DepthSpriteOffset: 24, 0
+
+^aban2x6:
+	Inherits: ^abanbase
+	Defaults:
+		Offset: 48, -48, 48
+		DepthSpriteOffset: 36, 0
+
+^aban3x2:
+	Inherits: ^abanbase
+	Defaults:
+		Offset: -12, -30, 30
+		DepthSpriteOffset: -12, 0
+
+^aban4x2:
+	Inherits: ^abanbase
+	Defaults:
+		Offset: -24, -36, 36
+		DepthSpriteOffset: -24, 0
+
+^aban5x3:
+	Inherits: ^abanbase
+	Defaults:
+		Offset: -24, -48, 48
+		DepthSpriteOffset: -24, 0
+
+aban01:
+	Inherits: ^aban2x6
+
+aban02:
+	Inherits: ^aban5x3
+
+aban03:
+	Inherits: ^aban2x5
+
+aban04:
+	Inherits: ^aban4x2
+
+aban05:
+	Inherits: ^aban3x2
+
+aban06:
+	Inherits: ^aban2x2
+
+aban07:
+	Inherits: ^aban2x2
+
+aban08:
+	Inherits: ^aban2x2
+
+aban09:
+	Inherits: ^aban2x2
+
+aban10:
+	Inherits: ^aban2x2
+
+aban11:
+	Inherits: ^aban2x2
+
+aban12:
+	Inherits: ^aban2x2
+
+aban13:
+	Inherits: ^aban1x1
+
+aban14:
+	Inherits: ^aban1x1
+
+aban15:
+	Inherits: ^aban1x1
+
+aban16:
+	Inherits: ^aban2x2
+
+aban17:
+	Inherits: ^aban1x1
+
+aban18:
+	Inherits: ^aban1x1
+
+^bboard1x1:
+	Defaults:
+		Offset: 0, -12, 6
+	idle:
+		ShadowStart: 2
+	damaged-idle:
+		Start: 1
+		ShadowStart: 3
+
+^bboard1x2:
+	Defaults:
+		Offset: 12, -18
+	idle:
+		ShadowStart: 2
+	damaged-idle:
+		Start: 1
+		ShadowStart: 3
+
+^bboard2x1:
+	Defaults:
+		Offset: -12, -18
+	idle:
+		ShadowStart: 2
+	damaged-idle:
+		Start: 1
+		ShadowStart: 3
+
+bboard01:
+	Inherits: ^bboard1x1
+
+bboard02:
+	Inherits: ^bboard1x1
+
+bboard03:
+	Inherits: ^bboard1x1
+
+bboard04:
+	Inherits: ^bboard1x1
+
+bboard05:
+	Inherits: ^bboard1x1
+
+bboard06:
+	Inherits: ^bboard1x2
+
+bboard07:
+	Inherits: ^bboard1x2
+
+bboard08:
+	Inherits: ^bboard1x2
+
+bboard09:
+	Inherits: ^bboard1x1
+
+bboard10:
+	Inherits: ^bboard1x1
+
+bboard11:
+	Inherits: ^bboard1x1
+
+bboard12:
+	Inherits: ^bboard1x1
+
+bboard13:
+	Inherits: ^bboard1x1
+
+bboard14:
+	Inherits: ^bboard2x1
+
+bboard15:
+	Inherits: ^bboard2x1
+
+bboard16:
+	Inherits: ^bboard2x1
+
+^cabase:
+	Defaults:
+		DepthSprite: isodepth.shp
+	idle:
+		ShadowStart: 2
+	damaged-idle:
+		Start: 1
+		ShadowStart: 3
+
+^ca1x1:
+	Inherits: ^cabase
+	Defaults:
+		Offset: 0, -12, 12
+		UseTilesetCode: true
+
+^ca1x2:
+	Inherits: ^cabase
+	Defaults:
+		Offset: 12, -18, 18
+		DepthSpriteOffset: 12, 0
+		UseTilesetCode: true
+
+^ca2x1:
+	Inherits: ^cabase
+	Defaults:
+		Offset: -12, -18, 18
+		DepthSpriteOffset: -12, 0
+		UseTilesetCode: true
+
+^ca2x3:
+	Inherits: ^cabase
+	Defaults:
+		Offset: 12, -30, 30
+		DepthSpriteOffset: 12, 0
+		UseTilesetCode: true
+
+^ca3x3:
+	Inherits: ^cabase
+	Defaults:
+		Offset: 0, -36, 36
+		UseTilesetCode: true
+
+^ca2x2:
+	Inherits: ^cabase
+	Defaults:
+		Offset: 0, -24, 24
+		UseTilesetCode: true
+
+ca0001:
+	Inherits: ^ca3x3
+
+ca0002:
+	Inherits: ^ca3x3
+
+ca0003:
+	Inherits: ^ca2x2
+
+ca0004:
+	Inherits: ^ca2x2
+
+ca0005:
+	Inherits: ^ca1x2
+
+ca0006:
+	Inherits: ^ca1x2
+
+ca0007:
+	Inherits: ^ca1x2
+
+ca0008:
+	Inherits: ^ca2x3
+
+ca0009:
+	Inherits: ^ca2x3
+
+ca0010:
+	Inherits: ^ca2x2
+
+ca0011:
+	Inherits: ^ca1x2
+
+ca0012:
+	Inherits: ^ca1x2
+
+ca0013:
+	Inherits: ^ca2x1
+
+ca0014:
+	Inherits: ^ca1x1
+
+ca0015:
+	Inherits: ^ca1x1
+
+ca0016:
+	Inherits: ^ca1x1
+
+ca0017:
+	Inherits: ^ca1x1
+
+ca0018:
+	Inherits: ^ca1x2
+
+ca0019:
+	Inherits: ^ca1x2
+
+ca0020:
+	Inherits: ^ca1x2
+
+ca0021:
+	Inherits: ^ca1x2
+
+caarmr:
+	Defaults:
+		DepthSprite: isodepth.shp
+		Offset: 0, -48, 48
+	idle: ctarmr
+		ShadowStart: 3
+	damaged-idle: ctarmr
+		Start: 1
+		ShadowStart: 4
+	critical-idle: ctarmr
+		Start: 2
+		ShadowStart: 5
+
+caaray:
+	Defaults:
+		DepthSprite: isodepth.shp
+		Offset: 0, -24, 24
+	idle: ctaray
+		ShadowStart: 3
+	damaged-idle: ctaray
+		Start: 1
+		ShadowStart: 4
+	critical-idle: ctaray
+		Start: 2
+		ShadowStart: 5
+
+cabhut:
+	idle:
+		DepthSprite: isodepth.shp
+		UseTilesetCode: true
+		Offset: 0, -12, 12
+		ShadowStart: 1
+
+^cacrsh:
+	idle:
+		UseTilesetCode: true
+		Offset: 0, -12, 12
+
+cacrsh01:
+	Inherits: ^cacrsh
+
+cacrsh02:
+	Inherits: ^cacrsh
+
+cacrsh03:
+	Inherits: ^cacrsh
+
+cacrsh04:
+	Inherits: ^cacrsh
+
+cacrsh05:
+	Inherits: ^cacrsh
+
+cahosp:
+	Defaults:
+		DepthSprite: isodepth.shp
+		DepthSpriteOffset: 12, 0
+		UseTilesetCode: true
+		Offset: 12, -42, 42
+	idle:
+		ShadowStart: 3
+	damaged-idle:
+		Start: 1
+		ShadowStart: 4
+	critical-idle:
+		Start: 2
+		ShadowStart: 5
+
+capyr01:
+	idle: ctpyr01
+		DepthSprite: isodepth.shp
+		ShadowStart: 1
+		Offset: 0, -24, 24
+
+capyr02:
+	idle: ctpyr02
+		DepthSprite: isodepth.shp
+		ShadowStart: 1
+		Offset: 0, -48, 48
+
+capyr03:
+	idle: ctpyr03
+		DepthSprite: isodepth.shp
+		ShadowStart: 1
+		Offset: 0, -48, 48
+
+^city1x1:
+	Inherits: ^cabase
+	Defaults:
+		Offset: 0, -12, 12
+
+^city2x2:
+	Inherits: ^cabase
+	Defaults:
+		Offset: 0, -24, 24
+
+^city2x3:
+	Inherits: ^cabase
+	Defaults:
+		Offset: 12, -30, 30
+		DepthSpriteOffset: 12, 0
+
+^city3x2:
+	Inherits: ^cabase
+	Defaults:
+		Offset: -12, -30, 30
+		DepthSpriteOffset: -12, 0
+
+^city3x5:
+	Inherits: ^cabase
+	Defaults:
+		Offset: 24, -48, 48
+		DepthSpriteOffset: 24, 0
+
+^city4x2:
+	Inherits: ^cabase
+	Defaults:
+		Offset: -24, -36, 36
+		DepthSpriteOffset: -24, 48
+
+^city4x3:
+	Inherits: ^cabase
+	Defaults:
+		Offset: -12, -42, 42
+		DepthSpriteOffset: -12, 0
+
+city01:
+	Inherits: ^city4x2
+	Defaults:
+		Offset: -12, -30, 36
+
+city02:
+	Inherits: ^city2x3
+
+city03:
+	Inherits: ^city3x2
+
+city04:
+	Inherits: ^city3x2
+
+city05:
+	Inherits: ^city3x2
+
+city06:
+	Inherits: ^city4x2
+
+city07:
+	Inherits: ^city4x2
+	Defaults:
+		Offset: -12, -30, 36
+
+city08:
+	Inherits: ^city2x2
+
+city09:
+	Inherits: ^city2x2
+
+city10:
+	Inherits: ^city2x2
+
+city11:
+	Inherits: ^city2x2
+
+city12:
+	Inherits: ^city2x2
+
+city13:
+	Inherits: ^city2x2
+
+city14:
+	Inherits: ^city1x1
+
+city15:
+	Inherits: ^city4x2
+
+city16:
+	Inherits: ^city4x2
+	Defaults:
+		Offset: -24, -30, 36
+
+city17:
+	Inherits: ^city4x3
+
+city18:
+	Inherits: ^city3x5
+
+city19:
+	Inherits: ^city2x2
+
+city20:
+	Inherits: ^city1x1
+
+city21:
+	Inherits: ^city1x1
+
+city22:
+	Inherits: ^city2x2
+
+ctdam:
+	Defaults:
+		Offset: 36,-42
+	idle:
+	damaged-idle:
+		Start: 1
+	idle-lights: ctdam_a
+		Length: 8
+		Tick: 200
+	damaged-idle-lights: ctdam_a
+		Start: 8
+		Length: 8
+		Tick: 200
+	idle-water: ctdam_b
+		Length: 8
+		Tick: 200
+	damaged-idle-water: ctdam_b
+		Start: 8
+		Length: 8
+		Tick: 200
+
+ctvega:
+	Defaults:
+		DepthSprite: isodepth.shp
+		Offset: 0, -48, 48
+	idle:
+		ShadowStart: 3
+	damaged-idle:
+		Start: 1
+		ShadowStart: 4
+	critical-idle:
+		Start: 2
+		ShadowStart: 5
+
+^gaoldcc:
+	idle:
+		ShadowStart: 2
+		DepthSprite: isodepth.shp
+		UseTilesetCode: true
+		Offset: 0, -24, 24
+
+gaoldcc1:
+	Inherits: ^gaoldcc
+
+gaoldcc2:
+	Inherits: ^gaoldcc
+
+gaoldcc3:
+	Inherits: ^gaoldcc
+
+gaoldcc4:
+	Inherits: ^gaoldcc
+
+gaoldcc5:
+	Inherits: ^gaoldcc
+
+gaoldcc6:
+	Inherits: ^gaoldcc
+
+gakodk:
+	Defaults:
+		DepthSprite: isodepth.shp
+		DepthSpriteOffset: -24, 0
+		UseTilesetCode: true
+		Offset: -24, -36, 36
+	idle:
+		ShadowStart: 3
+	damaged-idle:
+		Start: 1
+		ShadowStart: 4
+	critical-idle:
+		Start: 2
+		ShadowStart: 5
+	large-lights: gakodk_a
+		Length: 12
+		Tick: 200
+	damaged-large-lights: gakodk_a
+		Start: 12
+		Length: 12
+		Tick: 200
+	small-light: gakodk_b
+		Length: 22
+		Tick: 200
+	small-lights: gakodk_c
+		Length: 12
+		Tick: 200
+	damaged-small-lights: gakodk_c
+		Start: 12
+		Length: 12
+		Tick: 200
+
+gaspot:
+	Defaults:
+		DepthSprite: isodepth.shp
+		Offset: 0, -12, 12
+		UseTilesetCode: true
+	idle:
+		ShadowStart: 3
+	damaged-idle:
+		Start: 1
+		ShadowStart: 4
+	dead:
+		Start: 2
+		ShadowStart: 5
+		Tick: 400
+	idle-lights: gaspot_a
+		Length: 8
+		Tick: 200
+	damaged-idle-lights: gaspot_a
+		Start: 8
+		Length: 8
+		Tick: 200
+	make: gaspotmk
+		Length: 14
+		ShadowStart: 14
+	emp-overlay: emp_fx01
+		Length: *
+		Offset: 0, 0
+		-DepthSprite:
+		UseTilesetCode: false
+		ZOffset: 512
+		BlendMode: Additive
+	icon: spoticon
+		Offset: 0, 0
+		UseTilesetCode: false
+		-DepthSprite:
+
+galite:
+	Defaults:
+		DepthSprite: isodepth.shp
+		Offset: 0, -12, 12
+		UseTilesetCode: true
+	idle: gtlite
+		ShadowStart: 2
+	damaged-idle: gtlite
+		Start: 1
+		ShadowStart: 3
+	lighting: alphatst
+		BlendMode: DoubleMultiplicative
+		UseTilesetCode: false
+		-DepthSprite:
+		Offset: 0, 0, 0.5
+		ZRamp: 1
+	emp-overlay: emp_fx01
+		Length: *
+		Offset: 0, 0
+		-DepthSprite:
+		UseTilesetCode: false
+		ZOffset: 512
+		BlendMode: Additive
+	icon: liteicon
+		Offset: 0, 0
+		-DepthSprite:
+		UseTilesetCode: false
+
+namntk:
+	Defaults:
+		DepthSprite: isodepth.shp
+		DepthSpriteOffset: 24, 0
+		UseTilesetCode: true
+		Offset: 24, -24, 24
+	idle:
+		ShadowStart: 3
+	damaged-idle:
+		Start: 1
+		ShadowStart: 4
+	critical-idle:
+		Start: 2
+		ShadowStart: 5
+	idle-lights: namntk_a
+		Length: 8
+		Tick: 200
+
+ntpyra:
+	Defaults:
+		DepthSprite: isodepth.shp
+		Offset: 0, -48, 48
+	idle:
+		ShadowStart: 3
+	damaged-idle:
+		Start: 1
+		ShadowStart: 4
+	critical-idle:
+		Start: 2
+		ShadowStart: 5
+	idle-lights: ntpyra_a
+		Length: 16
+		Tick: 200
+	damaged-idle-lights: ntpyra_a
+		Start: 16
+		Length: 16
+		Tick: 200
+
+ufo:
+	idle: ufo.tem
+		DepthSprite: isodepth.shp
+		Offset: -24, -60, 60
+		AddExtension: false

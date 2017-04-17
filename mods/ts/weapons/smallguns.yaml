@@ -1,0 +1,129 @@
+^MG:
+	ReloadDelay: 20
+	Range: 4c0
+	Projectile: InstantHit
+	Warhead@1Dam: SpreadDamage
+		Spread: 108
+		Falloff: 100, 50, 25, 12, 6, 3, 0
+		Damage: 15
+		Versus:
+			None: 100
+			Wood: 60
+			Light: 40
+			Heavy: 25
+			Concrete: 10
+		DamageTypes: Prone70Percent, TriggerProne, BulletDeath
+	Warhead@2Eff: CreateEffect
+		Explosions: piffs
+		InvalidImpactTypes: Water
+	Warhead@3EffWater: CreateEffect
+		Explosions: water_piffs
+		ExplosionPalette: ra
+		ValidImpactTypes: Water
+
+Minigun:
+	Inherits: ^MG
+	ReloadDelay: 21
+	Report: infgun3.aud, gostgun1.aud, slvkgun1.aud
+	Warhead@1Dam: SpreadDamage
+		Damage: 8
+
+M1Carbine:
+	Inherits: ^MG
+	Report: infgun3.aud
+
+Vulcan:
+	Inherits: ^MG
+	Report: chaingn1.aud
+	Warhead@1Dam: SpreadDamage
+		Damage: 20
+
+Vulcan2:
+	Inherits: ^MG
+	ReloadDelay: 50
+	Burst: 3
+	Range: 6c0
+	Report: tsgun4.aud
+	Warhead@1Dam: SpreadDamage
+		Damage: 50
+
+Vulcan3:
+	Inherits: ^MG
+	ReloadDelay: 30
+	Burst: 3
+	Report: cygun1.aud
+	Warhead@1Dam: SpreadDamage
+		Damage: 10
+
+VulcanTower:
+	Inherits: ^MG
+	ReloadDelay: 26
+	Range: 6c0
+	Report: chaingn1.aud
+	Warhead@1Dam: SpreadDamage
+		Damage: 18
+
+JumpCannon:
+	Inherits: ^MG
+	ReloadDelay: 40
+	Burst: 2
+	Range: 5c0
+	Report: jumpjet1.aud
+	Warhead@1Dam: SpreadDamage
+		Damage: 15
+
+AssaultCannon:
+	Inherits: ^MG
+	ReloadDelay: 50
+	Range: 5c0
+	Report: tsgun4.aud
+	Warhead@1Dam: SpreadDamage
+		Damage: 40
+
+RaiderCannon:
+	Inherits: ^MG
+	ReloadDelay: 55
+	Range: 4c0
+	Burst: 2 # this + BurstDelay just makes the buggy alternate between barrels (for muzzle flash), no actual difference to original TS
+	BurstDelay: 55
+	Report: chaingn1.aud
+	Warhead@1Dam: SpreadDamage
+		Damage: 40
+
+HarpyClaw:
+	Inherits: ^MG
+	ReloadDelay: 36
+	Range: 5c0
+	Report: cygun1.aud
+	Warhead@1Dam: SpreadDamage
+		Damage: 60
+
+Pistola:
+	Inherits: ^MG
+	Range: 3c0
+	Report: gun18.aud
+	Warhead@1Dam: SpreadDamage
+		Damage: 2
+	Warhead@2Eff: CreateEffect
+		Explosions: piff
+	Warhead@3EffWater: CreateEffect
+		Explosions: water_piff
+
+Sniper:
+	Inherits: ^MG
+	ReloadDelay: 60
+	Range: 6c768
+	Report: silencer.aud
+	Warhead@1Dam: SpreadDamage
+		Spread: 36
+		Damage: 150
+		Versus:
+			Wood: 5
+			Light: 5
+			Heavy: 5
+			Concrete: 5
+		DamageTypes: Prone100Percent, TriggerProne, BulletDeath
+	Warhead@2Eff: CreateEffect
+		Explosions: piff
+	Warhead@3EffWater: CreateEffect
+		Explosions: water_piff

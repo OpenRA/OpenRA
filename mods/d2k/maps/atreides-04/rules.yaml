@@ -1,0 +1,90 @@
+Player:
+	PlayerResources:
+		DefaultCash: 6000
+
+World:
+	LuaScript:
+		Scripts: atreides04.lua, atreides04-AI.lua
+	MissionData:
+		Briefing: Our scouts have discovered the hidden Fremen base. The Harkonnen blockade of the Fremen must be broken.\n\nPowerful Harkonnen forces to the South are massing for an assault on the Fremen. Heavy forces have been allocated to you to smash through the Harkonnen fortifications and come to the aid of the Fremen.\n\nGood luck.\n
+		BriefingVideo: A_BR04_E.VQA
+	MapOptions:
+		TechLevel: low
+	ScriptLobbyDropdown@difficulty:
+		ID: difficulty
+		Label: Difficulty
+		Values:
+			easy: Easy
+			normal: Normal
+			hard: Hard
+		Default: easy
+
+carryall.reinforce:
+	Cargo:
+		MaxWeight: 10
+
+sietch:
+	Exit:
+		ExitCell: 0,2
+	Production:
+		Produces: Infantry
+
+nsfremen:
+	Buildable:
+		Prerequisites: ~sietch
+	AutoTarget:
+		InitialStanceAI: AttackAnything
+
+concreteb:
+	Buildable:
+		Prerequisites: ~disabled
+
+medium_gun_turret:
+	Buildable:
+		Prerequisites: ~disabled
+
+outpost:
+	Buildable:
+		Prerequisites: barracks
+
+quad:
+	Buildable:
+		Prerequisites: upgrade.light
+
+trooper:
+	Buildable:
+		Prerequisites: upgrade.barracks
+
+engineer:
+	Buildable:
+		Prerequisites: upgrade.barracks
+
+repair_pad:
+	Buildable:
+		Prerequisites: heavy_factory, upgrade.heavy
+
+mcv:
+	Buildable:
+		Prerequisites: repair_pad, upgrade.heavy
+
+upgrade.conyard:
+	Buildable:
+		Prerequisites: ~disabled
+
+# HACK: AI units can't attack the sietch if it was on a real rock
+tile475:
+	AlwaysVisible:
+	Immobile:
+		OccupiesSpace: false
+	RenderSprites:
+		Palette: d2k
+	WithIdleOverlay@2:
+		Sequence: idle2
+	WithIdleOverlay@3:
+		Sequence: idle3
+	WithIdleOverlay@4:
+		Sequence: idle4
+	WithSpriteBody:
+	BodyOrientation:
+		QuantizedFacings: 1
+	AutoSelectionSize:

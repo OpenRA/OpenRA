@@ -1,0 +1,129 @@
+^Palettes:
+	PaletteFromFile@mouse:
+		Name: mouse
+		Filename: mousepal.pal
+	PaletteFromFile@playersno:
+		Name: player
+		Tileset: SNOW
+		Filename: unitsno.pal
+		ShadowIndex: 1
+	PaletteFromFile@playertem:
+		Name: player
+		Tileset: TEMPERATE
+		Filename: unittem.pal
+		ShadowIndex: 1
+	PaletteFromFile@depth:
+		Name: depth
+		Filename: depth.pal
+	PaletteFromCurrentTileset:
+		Name: terrain
+	PaletteFromCurrentTileset@decoration:
+		Name: terraindecoration
+		ShadowIndex: 1
+	PaletteFromFile@chrome:
+		Name: chrome
+		Filename: cameo.pal
+		AllowModifiers: false
+	PaletteFromFile@chromewithshadow:
+		Name: chromewithshadow
+		Filename: cameo.pal
+		AllowModifiers: false
+		ShadowIndex: 242
+	PaletteFromFile@pips:
+		Name: pips
+		Filename: palette.pal
+		AllowModifiers: false
+		ShadowIndex: 4
+	PaletteFromFile@ra:
+		Name: ra
+		Filename: palette.pal
+		ShadowIndex: 4
+	PaletteFromFile@effect:
+		Name: effect
+		Filename: anim.pal
+	PaletteFromPaletteWithAlpha@effectalpha25:
+		Name: effectalpha25
+		Alpha: 0.25
+		BasePalette: effect
+	PaletteFromPaletteWithAlpha@effectalpha50:
+		Name: effectalpha50
+		Alpha: 0.5
+		BasePalette: effect
+	PaletteFromPaletteWithAlpha@effectalpha75:
+		Name: effectalpha75
+		Alpha: 0.75
+		BasePalette: effect
+	PaletteFromFile@sidebar:
+		Name: sidebar
+		Filename: sidebar-nod|sidebar.pal
+	PaletteFromPaletteWithAlpha@clock:
+		Name: iconclock
+		BasePalette: sidebar
+		Alpha: 0.5
+		AllowModifiers: false
+	PaletteFromFile@colorpicker:
+		Name: colorpicker
+		Filename: unittem.pal
+		AllowModifiers: false
+		ShadowIndex: 1
+	PaletteFromFile@alpha:
+		Name: alpha
+		Filename: alpha.pal
+		AllowModifiers: false
+	PaletteFromRGBA@shadow:
+		Name: shadow
+		R: 0
+		G: 0
+		B: 0
+		A: 140
+	PaletteFromRGBA@highlight:
+		Name: highlight
+		R: 255
+		G: 255
+		B: 255
+		A: 128
+	PaletteFromRGBA@moveflash:
+		Name: moveflash
+		R: 255
+		G: 255
+		B: 255
+		A: 64
+	PaletteFromRGBA@disabled:
+		Name: disabled
+		R: 0
+		G: 0
+		B: 0
+		A: 180
+	PaletteFromPaletteWithAlpha@placebuilding:
+		Name: placebuilding
+		BasePalette: ra
+		Alpha: 0.75
+	TSShroudPalette@shroud:
+		Name: shroud
+		Type: Shroud
+	VoxelNormalsPalette@normals:
+		Name: normals
+		Type: TiberianSun
+	FixedColorPalette@GreenTiberium:
+		Base: player
+		Name: greentiberium
+		Color: 7EFF01
+		RemapIndex: 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31
+	FixedColorPalette@BlueTiberium:
+		Base: player
+		Name: bluetiberium
+		Color: 5980FF
+		RemapIndex: 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31
+	PlayerColorPalette:
+		BasePalette: player
+		RemapIndex: 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31
+	PaletteFromPlayerPaletteWithAlpha@cloak:
+		BaseName: cloak
+		BasePalette: player
+		Alpha: 0.55
+	PaletteFromPaletteWithAlpha@terrainalpha:
+		BasePalette: terraindecoration
+		Name: terrainalpha
+		Alpha: 0.55
+	PlayerHighlightPalette:
+	MenuPaletteEffect:

@@ -1,0 +1,176 @@
+OpenRA wouldn't be where it is today without the
+hard work of many contributors.
+
+The OpenRA developers are:
+    * Chris Forbes (chrisf)
+    * Igor Popov (ihptru)
+    * Lukas Franke (abcdefg30)
+    * Oliver Brakmann (obrakmann)
+    * Paul Chote (pchote)
+    * Reaperrr
+    * Tom Roostan (RoosterDragon)
+
+Previous developers included:
+    * Alli Witheford (alzeih)
+    * Caleb Anderson (RobotCaleb)
+    * Curtis Shmyr (hamb)
+    * Daniel Hernandez (Mancano)
+    * Matthias Mailänder (Mailaender)
+    * Megan Bowra-Dean (beedee)
+    * Mike Bundy (kehaar)
+    * Pavel Penev (penev92)
+    * Robert Pepperell (ytinasni)
+    * ScottNZ
+
+Also thanks to:
+    * Adam Valy (Tschokky)
+    * Akseli Virtanen (RAGEQUIT)
+    * Alexander Fast (mizipzor)
+    * Alexis Hunt (alercah)
+    * Allen262
+    * Andrew Aldridge (i80and)
+    * Andrew Perkins
+    * Andrew Riedi
+    * Andreas Beck (baxtor)
+    * Ang Soon Li (asl97)
+    * Arik Lirette (Angusm3)
+    * Barnaby Smith (mvi)
+    * Bellator
+    * Biofreak
+    * Braxton Williams (Buddytex)
+    * Bryan Wilbur
+    * Bugra Cuhadaroglu (BugraC)
+    * Christer Ulfsparre (Holloweye)
+    * Chris Grant (Unit158)
+    * clem
+    * Cody Brittain (Generalcamo)
+    * D2k Sardaukar
+    * D'Arcy Rush (r34ch)
+    * Daniel Derejvanik (Harisson)
+    * Danny Keary (Dan9550)
+    * David Jiménez (Rydra)
+    * David Russell (DavidARussell)
+    * DeadlySurprise
+    * Dmitri Suvorov (suvjunmd)
+    * Erasmus Schroder (rasco)
+    * Eric Bajumpaa (SteelPhase)
+    * Evgeniy Sergeev (evgeniysergeev)
+    * Fahrradkette
+    * Florian Wiesbauer (FiveAces)
+    * Frank Razenberg (zzattack)
+    * Gareth Needham (Ripley`)
+    * Glen Anderson (GlenLife)
+    * Glenn Martin Jensen (Baxxster)
+    * Gordon Martin (Happy0)
+    * Guido Lipke (LipkeGu)
+    * Gyula Zimmermann (Graion Dilach)
+    * Hervé Matysiak (Herve-M)
+    * Huw Pascoe
+    * Ian T. Jacobsen (Smilex)
+    * Imago
+    * Iran
+    * Jacob Dufault (jacobdufault)
+    * James Dunne (jsd)
+    * James Gilbert (DSUK)
+    * Jan-Willem Buurlage (jwbuurlage)
+    * Jason (atlimit8)
+    * Jeff Harris (jeff_1amstudios)
+    * Jes
+    * Joakim Lindberg (booom3)
+    * John Turner (whinis)
+    * Jonas A. Lind (SoScared)
+    * Joppy Furr
+    * Kanar
+    * Kenny Hoxworth (hoxworth)
+    * Kevin Azzam (ChaoticMind)
+    * Krishnakanth Mallik
+    * Kyrre Soerensen (zypres)
+    * Lawrence Wang
+    * Lesueur Benjamin (Valkirie)
+    * Maarten Meuris (Nyerguds)
+    * Mark Olson (markolson)
+    * Matija Hustic (matija-hustic)
+    * Matthew Gatland (mgatland)
+    * Matthew Uzzell (MUzzell)
+    * Matthijs Benschop (Nerdie)
+    * Max621
+    * Max Ugrumov (katzsmile)
+    * Michael Rätzel
+    * Michael Sztolcman (s1w_)
+    * Mustafa Alperen Seki (MustaphaTR)
+    * Neil Shivkar (havok13888)
+    * Nooze
+    * Nukem
+    * Okunev Yu Dmitry (xaionaro)
+    * Olaf van der Spek
+    * Paolo Chiodi (paolochiodi)
+    * Paul Dovydaitis (pdovy)
+    * Pavlos Touboulidis (pav)
+    * Pedro Ferreira Ramos (bateramos)
+    * Pizzaoverhead
+    * Piët Delport (pjdelport)
+    * Psydev
+    * Raphael Vogt (TheRaffy, Yellow)
+    * Raymond Bedrossian (Squiggles211)
+    * Raymond Martineau (mart0258)
+    * Riderr3
+    * riiga
+    * Rikhardur Bjarni Einarsson (WolfGaming)
+    * Sascha Biedermann (bidifx)
+    * Sean Hunt (coppro)
+    * Sebastien Kerguen (xanax)
+    * Shawn Collins (UberWaffe)
+    * Simon Verbeke (Saticmotion)
+    * Taryn Hill (Phrohdoh)
+    * Teemu Nieminen (Temeez)
+    * Tim Mylemans (gecko)
+    * Tirili
+    * Tristan Keating (Kilkakon)
+    * Tristan Mühlbacher (MicroBit)
+    * UnknownProgrammer
+    * Vladimir Komarov (VrKomarov)
+    * Wuschel
+
+Using GNU FreeFont distributed under the GNU GPL
+terms.
+
+Using Simple DirectMedia Layer distributed under
+the terms of the zlib license.
+
+Using FreeType distributed under the terms of the
+FreeType License.
+
+Using OpenAL Soft distributed under the GNU LGPL.
+
+Using MaxMind GeoIP2 .NET API distributed under
+the Apache 2.0 license.
+
+Using GeoLite2 data created by MaxMind and
+distributed under the CC BY-SA 3.0 license.
+
+Using SharpFont created by Robert Rouhani and
+distributed under the MIT license.
+
+Using SDL2-CS and OpenAL-CS created by Ethan
+Lee and released under the zlib license.
+
+Using Eluant created by Chris Howie and released
+under the MIT license.
+
+Using FuzzyLogicLibrary (fuzzynet) by Dmitry
+Kaluzhny and released under the GNU GPL terms.
+
+Using Open.Nat by Lucas Ontivero, based on the work
+of Alan McGovern and Ben Motmans and distributed
+under the MIT license.
+
+Using ICSharpCode.SharpZipLib initially by Mike
+Krueger and distributed under the GNU GPL terms.
+
+Using SmartIrc4Net developed by Mirco Bauer
+distributed under the LGPL version 2.1 or later.
+
+
+Finally, special thanks goes to the original teams
+at Westwood Studios and EA for creating the classic
+games which OpenRA aims to reimagine.

@@ -1,0 +1,80 @@
+World:
+	CrateSpawner:
+		Maximum: 3
+		SpawnInterval: 125
+		WaterChance: 100
+		CrateActors: unitcrate
+		InitialSpawnDelay: 0
+	-SpawnMPUnits:
+	-MPStartLocations:
+	MapBuildRadius:
+		AllyBuildRadiusLocked: True
+		AllyBuildRadiusEnabled: False
+	MapOptions:
+		TechLevelLocked: True
+		TechLevel: unrestricted
+
+UNITCRATE:
+	Inherits: ^Crate
+	GiveUnitCrateAction@pt:
+		SelectionShares: 7
+		Units: pt
+	GiveUnitCrateAction@dd:
+		SelectionShares: 6
+		Units: dd
+	GiveUnitCrateAction@ca:
+		SelectionShares: 4
+		Units: ca
+	GiveUnitCrateAction@ss:
+		SelectionShares: 6
+		Units: ss
+	GiveUnitCrateAction@msub:
+		SelectionShares: 4
+		Units: msub
+	Crate:
+		TerrainTypes: Water
+
+LST:
+	Tooltip:
+		Name: Naval Mobile HQ
+	Health:
+		HP: 1000
+	Mobile:
+		Speed: 170
+	Armament@PRIMARY:
+		Weapon: M60mg
+	Armament@SECONDARY:
+		Name: secondary
+		Weapon: M60mg
+	AttackFrontal:
+	WithMuzzleOverlay@PRIMARY:
+	WithMuzzleOverlay@SECONDARY:
+		Armament: secondary
+	MustBeDestroyed:
+		RequiredForShortGame: true
+	-GivesBounty:
+
+PT:
+	-GivesBounty:
+
+DD:
+	-GivesBounty:
+
+CA:
+	-GivesBounty:
+
+SS:
+	-GivesBounty:
+
+MSUB:
+	-GivesBounty:
+
+Player:
+	Shroud:
+		FogLocked: True
+		FogEnabled: False
+		ExploredMapLocked: True
+		ExploredMapEnabled: True
+	PlayerResources:
+		DefaultCashLocked: True
+		DefaultCash: 5000

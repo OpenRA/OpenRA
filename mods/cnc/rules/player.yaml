@@ -1,0 +1,36 @@
+Player:
+	AlwaysVisible:
+	PlaceBuilding:
+	TechTree:
+	SupportPowerManager:
+	ScriptTriggers:
+	MissionObjectives:
+	ConquestVictoryConditions:
+	PowerManager:
+	AllyRepair:
+	PlayerResources:
+	DeveloperMode:
+	BaseAttackNotifier:
+	Shroud:
+	PlayerStatistics:
+	FrozenActorLayer:
+	PlaceBeacon:
+	ProvidesTechPrerequisite@low:
+		Name: Low
+		Prerequisites: techlevel.low
+		Id: low
+	ProvidesTechPrerequisite@medium:
+		Name: Medium
+		Prerequisites: techlevel.low, techlevel.medium
+		Id: medium
+	ProvidesTechPrerequisite@nosuper:
+		Name: No Powers
+		Prerequisites: techlevel.low, techlevel.medium, techlevel.high
+		Id: nopowers
+	ProvidesTechPrerequisite@all:
+		Name: Unrestricted
+		Prerequisites: techlevel.low, techlevel.medium, techlevel.high, techlevel.superweapons
+		Id: unrestricted
+	GrantConditionOnPrerequisiteManager:
+	ResourceStorageWarning:
+	PlayerExperience:

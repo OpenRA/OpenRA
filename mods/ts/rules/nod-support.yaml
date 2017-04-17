@@ -1,0 +1,372 @@
+NAWALL:
+	Inherits: ^Wall
+	Buildable:
+		Queue: Defense
+		BuildPaletteOrder: 20
+		Prerequisites: ~structures.nod, ~techlevel.low
+		Description: Stops infantry and blocks enemy fire.\nCan NOT be crushed by tanks.
+	-SoundOnDamageTransition:
+	Valued:
+		Cost: 50
+	CustomSellValue:
+		Value: 0
+	Tooltip:
+		Name: Concrete Wall
+	Health:
+		HP: 225
+	Armor:
+		Type: Concrete
+	BlocksProjectiles:
+		Height: 640
+	Crushable:
+		CrushClasses: heavywall
+	LineBuild:
+		NodeTypes: wall, turret
+
+NAGATE_A:
+	Inherits: ^Gate_A
+	Buildable:
+		Queue: Defense
+		BuildPaletteOrder: 40
+		Prerequisites: nahand, ~structures.nod, ~techlevel.low
+	Tooltip:
+		Name: Nod Gate
+
+NAGATE_B:
+	Inherits: ^Gate_B
+	Buildable:
+		Queue: Defense
+		BuildPaletteOrder: 60
+		Prerequisites: nahand, ~structures.nod, ~techlevel.low
+	Tooltip:
+		Name: Nod Gate
+
+NALASR:
+	Inherits: ^Defense
+	Valued:
+		Cost: 300
+	Tooltip:
+		Name: Laser Turret
+	Buildable:
+		Queue: Defense
+		Prerequisites: nahand, ~structures.nod, ~techlevel.low
+		BuildPaletteOrder: 90
+		Description: Basic base defense.\nRequires power to operate.\n  Strong vs Ground units\n  Weak vs Aircraft
+	Building:
+	Selectable:
+		Bounds: 40, 30, -8, -6
+	DisabledOverlay:
+	Health:
+		HP: 500
+	Armor:
+		Type: Wood
+	RevealsShroud:
+		Range: 7c0
+	DetectCloaked:
+		Range: 3c0
+	Turreted:
+		TurnSpeed: 10
+		InitialFacing: 224
+		Offset: 298,-171,288
+	AttackTurreted:
+	Armament:
+		Weapon: TurretLaserFire
+		LocalOffset: 352, 0, 224
+	RenderVoxels:
+	WithVoxelTurret:
+	Power:
+		Amount: -40
+	SelectionDecorations:
+		VisualBounds: 40, 36, -8, -8
+	BodyOrientation:
+		QuantizedFacings: 0
+
+NAOBEL:
+	Inherits: ^Defense
+	Valued:
+		Cost: 1500
+	Tooltip:
+		Name: Obelisk of Light
+	Buildable:
+		Queue: Defense
+		BuildPaletteOrder: 150
+		Prerequisites: natech, ~structures.nod, ~techlevel.high
+		Description: Advanced base defense.\nRequires power to operate.\n  Strong vs Ground units\n  Weak vs Aircraft
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
+	Selectable:
+		Bounds: 88, 42, 0, -6
+	RequiresPower:
+	DisabledOverlay:
+	Health:
+		HP: 725
+	Armor:
+		Type: Wood
+	RevealsShroud:
+		Range: 8c0
+	Armament:
+		Weapon: ObeliskLaserFire
+		LocalOffset: 1400,210,800
+	AttackCharges:
+		ChargeLevel: 65
+		ChargingCondition: charging
+	AmbientSound:
+		RequiresCondition: charging
+		SoundFile: obelpowr.aud
+		Interval: 30, 40
+	WithChargeOverlay:
+		Palette: player
+		IsPlayerPalette: true
+	WithIdleOverlay@LIGHTS:
+		Sequence: idle-lights
+	Power:
+		Amount: -150
+	SelectionDecorations:
+		VisualBounds: 88, 72, 0, -12
+
+NASAM:
+	Inherits: ^Defense
+	Valued:
+		Cost: 500
+	Tooltip:
+		Name: S.A.M. Site
+	Buildable:
+		Queue: Defense
+		Prerequisites: naradr, ~structures.nod, ~techlevel.medium
+		BuildPaletteOrder: 100
+		Description: Nod Anti-Air base defense.\nRequires power to operate.\n  Strong vs Aircraft\n  Weak vs Ground units
+	Selectable:
+		Bounds: 40, 30, -3, -8
+	RequiresPower:
+	DisabledOverlay:
+	Health:
+		HP: 600
+	Armor:
+		Type: Wood
+	BodyOrientation:
+		QuantizedFacings: 32
+	RenderRangeCircle:
+		RangeCircleType: aa
+	Turreted:
+		TurnSpeed: 10
+		InitialFacing: 224
+	AttackTurreted:
+	WithSpriteTurret:
+		Recoils: false
+	Armament:
+		Weapon: RedEye2
+		LocalOffset: 384,0,576
+	Power:
+		Amount: -30
+	SelectionDecorations:
+		VisualBounds: 40, 36, -3, -8
+
+GAARTY:
+	Inherits@1: ^GainsExperience
+	Inherits@2: ^ExistsInWorld
+	Inherits@3: ^SpriteActor
+	Huntable:
+	Voiced:
+		VoiceSet: Vehicle
+	AttackTurreted:
+		Voice: Attack
+	AutoTarget:
+	RenderRangeCircle:
+	DrawLineToTarget:
+	Building:
+		Dimensions: 1,1
+		Footprint: x
+		TerrainTypes: Clear, Road, DirtRoad, Rough
+	WithSpriteBody:
+	WithMakeAnimation:
+	WithTextControlGroupDecoration:
+	SelectionDecorations:
+		Palette: pips
+	Selectable:
+	Targetable:
+		TargetTypes: Ground, Building, Repair
+	Guardable:
+	HiddenUnderFog:
+	ActorLostNotification:
+	Valued:
+		Cost: 975
+	Tooltip:
+		Name: Deployed Artillery
+	Health:
+		HP: 300
+	Armor:
+		Type: Light
+	RevealsShroud:
+		Range: 9c0
+	Turreted:
+		TurnSpeed: 5
+		InitialFacing: 96
+		Offset: 0,0,256
+	Armament:
+		Weapon: 155mm
+		LocalOffset: 811,0,0
+		MuzzleSequence: muzzle
+	BodyOrientation:
+		QuantizedFacings: 32
+	RenderVoxels:
+		LightAmbientColor: 0.4, 0.4, 0.4
+	WithVoxelBarrel:
+		LocalOffset: 0,0,-256
+	WithVoxelTurret:
+	Transforms:
+		IntoActor: art2
+		Facing: 96
+		TransformSounds: place2.aud
+		NoTransformSounds:
+		Voice: Move
+	WithMuzzleOverlay:
+	RevealOnFire:
+
+NASTLH:
+	Inherits: ^Building
+	Valued:
+		Cost: 2500
+	Tooltip:
+		Name: Stealth Generator
+	Buildable:
+		Queue: Defense
+		BuildPaletteOrder: 160
+		Prerequisites: proc, natech, ~structures.nod, ~techlevel.high
+		Description: Generates a cloaking field\nto hide your forces from the enemy.
+	Building:
+		Footprint: xxx xxx
+		Dimensions: 3,2
+	Health:
+		HP: 600
+	Armor:
+		Type: Wood
+	RevealsShroud:
+		Range: 6c0
+		MaxHeightDelta: 3
+	WithIdleOverlay@pulse:
+		Sequence: pulse
+		PauseOnLowPower: true
+	WithRangeCircle:
+		Range: 12c0
+		Type: cloakgenerator
+	Power:
+		Amount: -350
+	RequiresPower:
+	CanPowerDown:
+		PowerupSpeech: EnablePower
+		PowerdownSpeech: DisablePower
+		IndicatorPalette: mouse
+	ProximityExternalCondition:
+		Condition: cloakgenerator
+		Range: 12c0
+		EnableSound: cloak5.aud
+		DisableSound: cloak5.aud
+		AffectsParent: true
+	Selectable:
+		Bounds: 106, 48, 8, -6
+	SelectionDecorations:
+		VisualBounds: 106, 60, 8, -15
+
+NAMISL:
+	Inherits: ^Building
+	Buildable:
+		Queue: Defense
+		BuildPaletteOrder: 190
+		Prerequisites: natech, ~structures.nod, ~techlevel.superweapons
+		BuildLimit: 1
+		Description: Launches a devastating missile\nat a target location.\nRequires power to operate.\nMaximum 1 can be built.
+	Valued:
+		Cost: 1300
+	Tooltip:
+		Name: Nod Missile Silo
+	ProvidesPrerequisite:
+		Prerequisite: tech
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
+	Selectable:
+		Bounds: 75,48
+	Health:
+		HP: 1000
+	Armor:
+		Type: Wood
+	RevealsShroud:
+		Range: 4c0
+	WithIdleOverlay@LIGHTS:
+		Sequence: idle-lights
+	Power:
+		Amount: -50
+	CanPowerDown:
+		IndicatorPalette: mouse
+		PowerupSpeech: EnablePower
+		PowerdownSpeech: DisablePower
+	RequiresPower:
+	DisabledOverlay:
+	ProvidesPrerequisite@buildingname:
+	SupportPowerChargeBar:
+	NukePower:
+		Cursor: nuke
+		Icon: clustermissile
+		ChargeTime: 540
+		Description: Cluster Missile
+		LongDesc: Launches a conventional warhead\nat a target location.
+		EndChargeSpeechNotification: ClusterMissileReady
+		SelectTargetSpeechNotification: SelectTarget
+		IncomingSpeechNotification: MissileLaunchDetected
+		LaunchSound: icbm1.aud
+		MissileWeapon: ClusterMissile
+		SpawnOffset: 0,427,0
+		DisplayTimerStances: None
+		DisplayBeacon: False
+		DisplayRadarPing: True
+		BeaconPoster:
+		CameraRange: 10c0
+	SelectionDecorations:
+		VisualBounds: 75,48
+
+NAWAST:
+	Inherits: ^Building
+	Valued:
+		Cost: 1600
+	Tooltip:
+		Name: Waste Refinery
+	Buildable:
+		Queue: Defense
+		BuildPaletteOrder: 200
+		Prerequisites: namisl, ~structures.nod, ~techlevel.superweapons
+		BuildLimit: 1
+		Description: Processes Veins\ninto useable resources.\nMaximum 1 can be built.
+	Building:
+		Footprint: =x= xx= =x=
+		Dimensions: 3,3
+	Selectable:
+		Bounds: 100, 60, 5, -5
+	Health:
+		HP: 400
+	RevealsShroud:
+		Range: 6c0
+		MaxHeightDelta: 3
+	TiberianSunRefinery:
+		DockAngle: 160
+		DockOffset: 2,1
+	StoresResources:
+		PipColor: Red
+		PipCount: 15
+		Capacity: 56
+	Power:
+		Amount: -40
+	FreeActor:
+		Actor: WEED
+		SpawnOffset: 3,1
+		Facing: 160
+	WithIdleOverlay@GLOW:
+		Sequence: idle-glow
+	WithIdleOverlay@LIGHTS:
+		Sequence: idle-lights
+	WithIdleOverlay@BIB:
+		Sequence: bib
+	ProvidesPrerequisite@buildingname:
+	SelectionDecorations:
+		VisualBounds: 100, 60, 5, -5
+	RenderSprites:

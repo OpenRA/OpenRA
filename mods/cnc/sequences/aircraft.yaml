@@ -1,0 +1,62 @@
+c17:
+	idle:
+		Facings: 32
+		UseClassicFacingFudge: True
+	icon: c17icnh
+
+tran:
+	idle:
+		Facings: 32
+		UseClassicFacingFudge: True
+	rotor: lrotor
+		Length: 4
+	rotor2: rrotor
+		Length: 4
+	slow-rotor: lrotor
+		Start: 4
+		Length: 8
+	slow-rotor2: rrotor
+		Start: 4
+		Length: 8
+	open:
+		Start: 32
+		Length: 4
+	unload:
+		Start: 35
+	icon: tranicnh.tem
+		AddExtension: False
+
+heli:
+	idle:
+		Facings: 32
+		UseClassicFacingFudge: True
+	rotor: lrotor
+		Length: 4
+	slow-rotor: lrotor
+		Start: 4
+		Length: 8
+	muzzle: minigun
+		Length: 6
+		Facings: 8
+	icon: heliicnh.tem
+		AddExtension: False
+
+orca:
+	idle:
+		Facings: 32
+		UseClassicFacingFudge: True
+	move:
+		Start: 32
+		Facings: 32
+	icon: orcaicnh.tem
+		AddExtension: False
+
+a10:
+	idle:
+		Facings: 32
+		UseClassicFacingFudge: True
+	muzzle: minigun
+		Length: 6
+		Facings: 8
+	icon: a10icnh.tem
+		AddExtension: False

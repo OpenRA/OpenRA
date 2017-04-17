@@ -1,0 +1,117 @@
+carryall.reinforce:
+	Inherits: ^Plane
+	Valued:
+		Cost: 1100
+	Tooltip:
+		Name: Carryall
+	Health:
+		HP: 4800
+	Armor:
+		Type: light
+	Aircraft:
+		CruiseAltitude: 2160
+		InitialFacing: 0
+		Speed: 144 # 112 * ~1.3 for balance reasons
+		TurnSpeed: 4
+		LandableTerrainTypes: Sand, Rock, Transition, Spice, SpiceSand, Dune, Concrete
+		Repulsable: False
+		LandWhenIdle: False
+		AirborneCondition: airborne
+		CanHover: True
+	Targetable@GROUND:
+		TargetTypes: Ground, Vehicle
+		RequiresCondition: !airborne
+	Targetable@AIRBORNE:
+		TargetTypes: Air
+		RequiresCondition: airborne
+	SpawnActorOnDeath:
+		Actor: carryall.husk
+	Carryall:
+		LoadingDelay: 10
+		UnloadingDelay: 15
+		LocalOffset: 0, 0, -128
+	RenderSprites:
+		Image: carryall
+	SelfHealing:
+		Step: 5
+		Delay: 3
+		HealIfBelow: 50
+	Buildable:
+		BuildDuration: 648
+		BuildDurationModifier: 40
+		Description: Large winged, planet-bound ship\n  Automatically lifts harvesters from and to Spice.\n  Lifts vehicles to Repair Pads when ordered.
+
+carryall:
+	Inherits: carryall.reinforce
+	-Carryall:
+	AutoCarryall:
+		LoadingDelay: 10
+		UnloadingDelay: 15
+		LocalOffset: 0, 0, -128
+	Buildable:
+		Queue: Aircraft
+		BuildPaletteOrder: 120
+
+frigate:
+	Inherits: ^Plane
+	ParaDrop:
+		DropRange: 1c0
+	Tooltip:
+		Name: Frigate
+	Aircraft:
+		Speed: 189 # 126 * ~1.5 for balance reasons
+		TurnSpeed: 1
+		Repulsable: False
+		MaximumPitch: 20
+		CruiseAltitude: 2048
+	-AppearsOnRadar:
+	Cargo:
+		MaxWeight: 20
+		PipCount: 10
+	FlyAwayOnIdle:
+	RejectsOrders:
+
+ornithopter:
+	Inherits: ^Plane
+	AttackBomber:
+	Armament:
+		Weapon: OrniBomb
+	Health:
+		HP: 900
+	Armor:
+		Type: light
+	Aircraft:
+		Speed: 224 # 189 * ~1.2 for balance reasons
+		TurnSpeed: 2
+		Repulsable: False
+		CanHover: True
+		CruiseAltitude: 1920
+	AmmoPool:
+		Ammo: 5
+	Tooltip:
+		Name: Ornithopter
+	SpawnActorOnDeath:
+		Actor: ornithopter.husk
+	RejectsOrders:
+	RevealOnFire:
+
+ornithopter.husk:
+	Inherits: ^AircraftHusk
+	Tooltip:
+		Name: Ornithopter
+	Aircraft:
+		TurnSpeed: 5
+		Speed: 224
+	RenderSprites:
+		Image: ornithopter
+
+carryall.husk:
+	Inherits: ^AircraftHusk
+	Tooltip:
+		Name: Carryall
+	Aircraft:
+		TurnSpeed: 4
+		Speed: 144
+		CanHover: True
+	RenderSprites:
+		Image: carryall

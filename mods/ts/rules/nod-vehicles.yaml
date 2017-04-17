@@ -1,0 +1,411 @@
+BGGY:
+	Inherits: ^Vehicle
+	Inherits@VOXELS: ^VoxelActor
+	Inherits@EXPERIENCE: ^GainsExperience
+	Valued:
+		Cost: 500
+	Tooltip:
+		Name: Attack Buggy
+	Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 30
+		Prerequisites: ~naweap, ~techlevel.low
+		Description: Fast scout and anti-infantry vehicle.\n  Strong vs Infantry, Light armor\n  Weak vs Vehicles, Aircraft
+	Mobile:
+		TurnSpeed: 8
+		Speed: 142
+	Health:
+		HP: 220
+	Armor:
+		Type: Light
+	RevealsShroud:
+		RequiresCondition: !inside-tunnel
+		Range: 6c0
+		MaxHeightDelta: 3
+	Armament:
+		Weapon: RaiderCannon
+		LocalOffset: 0,-43,384, 0,43,384
+		MuzzleSequence: muzzle
+		MuzzleSplitFacings: 8
+	AttackFrontal:
+		Voice: Attack
+	AutoTarget:
+	WithMuzzleOverlay:
+	-DamagedByTerrain@VEINS:
+	-LeavesTrails@VEINS:
+
+BIKE:
+	Inherits: ^Vehicle
+	Inherits@VOXELS: ^VoxelActor
+	Inherits@EXPERIENCE: ^GainsExperience
+	Valued:
+		Cost: 600
+	Tooltip:
+		Name: Attack Cycle
+	Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 40
+		Prerequisites: ~naweap, ~techlevel.low
+		Description: Fast scout vehicle, armed with\nrockets.\n  Strong vs Vehicles\n  Weak vs Infantry, Aircraft
+	Mobile:
+		TurnSpeed: 8
+		Speed: 170
+	Health:
+		HP: 150
+	Armor:
+		Type: Wood
+	RevealsShroud:
+		RequiresCondition: !inside-tunnel
+		Range: 5c0
+		MaxHeightDelta: 3
+	Armament@PRIMARY:
+		Weapon: BikeMissile
+		RequiresCondition: !rank-elite
+		LocalOffset: -108,-144,360, -108,144,360
+	Armament@ELITE:
+		Weapon: HoverMissile
+		RequiresCondition: rank-elite
+		LocalOffset: -108,-144,360, -108,144,360
+	AttackFrontal:
+		Voice: Attack
+	AutoTarget:
+
+TTNK:
+	Inherits: ^Tank
+	Inherits@VOXELS: ^VoxelActor
+	Inherits@EXPERIENCE: ^GainsExperience
+	Valued:
+		Cost: 800
+	Tooltip:
+		Name: Tick Tank
+		RequiresCondition: !deployed
+	Tooltip@DEPLOYED:
+		Name: Tick Tank (deployed)
+		RequiresCondition: deployed
+	Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 60
+		Prerequisites: ~naweap, ~techlevel.medium
+		Description: Nod's main battle tank.\nCan deploy to gain extra protection.\n  Strong vs Vehicles\n  Weak vs Infantry, Aircraft
+	Mobile:
+		TurnSpeed: 5
+		Speed: 85
+		Crushes: wall, crate, infantry
+		RequiresCondition: !empdisable && undeployed
+	Health:
+		HP: 350
+	Armor:
+		Type: Light
+		RequiresCondition: undeployed
+	Armament@PRIMARY:
+		Weapon: 90mm
+		LocalOffset: 288,0,256
+		RequiresCondition: !rank-elite
+		MuzzleSequence: muzzle
+	Armament@ELITE:
+		Weapon: 120mmx
+		LocalOffset: 288,0,256
+		RequiresCondition: rank-elite
+		MuzzleSequence: muzzle
+	WithMuzzleOverlay:
+	RevealsShroud:
+		RequiresCondition: !inside-tunnel
+		Range: 5c0
+		MaxHeightDelta: 3
+	RenderSprites:
+		Image: ttnk
+	GrantConditionOnDeploy:
+		DeployedCondition: deployed
+		UndeployedCondition: undeployed
+		DeployAnimation: make
+		Facing: 160
+		AllowedTerrainTypes: Clear, Road, DirtRoad, Rough
+		DeploySound: place2.aud
+		UndeploySound: clicky1.aud
+	GrantCondition@PREVIEWWORKAROUND:
+		Condition: real-actor
+	WithVoxelBody:
+		RequiresCondition: undeployed
+	WithSpriteBody@deployed:
+		RequiresCondition: !undeployed && real-actor
+	AttackFrontal:
+		Voice: Attack
+		RequiresCondition: undeployed
+	Turreted:
+		TurnSpeed: 6
+		Turret: deployed
+		InitialFacing: 160
+		Offset: -20, -130, 180
+	WithVoxelBarrel:
+		Armament: deployed
+		LocalOffset: 128, 0, 256
+		RequiresCondition: deployed
+	WithVoxelTurret@deployed:
+		Turret: deployed
+		RequiresCondition: deployed
+	AttackTurreted@deployed:
+		Voice: Attack
+		Armaments: deployed
+		RequiresCondition: deployed
+	Armament@deployed:
+		Name: deployed
+		Turret: deployed
+		Weapon: 90mm
+		LocalOffset: 384,0,256
+		RequiresCondition: !rank-elite
+		MuzzleSequence: muzzle
+	Armament@deployedElite:
+		Name: deployed
+		Turret: deployed
+		Weapon: 120mmx
+		LocalOffset: 384,0,256
+		RequiresCondition: rank-elite
+		MuzzleSequence: muzzle
+	Armor@deployed:
+		Type: Concrete
+		RequiresCondition: deployed
+	AutoTarget:
+	Carryable:
+		RequiresCondition: undeployed
+	RevealOnFire:
+		ArmamentNames: primary, deployed
+
+ART2:
+	Inherits: ^Tank
+	Inherits@VOXELS: ^VoxelActor
+	Inherits@EXPERIENCE: ^GainsExperience
+	Valued:
+		Cost: 975
+	Tooltip:
+		Name: Artillery
+	Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 100
+		Prerequisites: ~naweap, naradr, ~techlevel.high
+		Description: Mobile Artillery.\nNeeds to deploy in order to shoot.\n  Strong vs Ground units\n  Weak vs Aircraft
+	Health:
+		HP: 300
+	Armor:
+		Type: Light
+	Mobile:
+		Speed: 71
+		TurnSpeed: 2
+	RevealsShroud:
+		RequiresCondition: !inside-tunnel
+		Range: 9c0
+		MaxHeightDelta: 3
+	RenderVoxels:
+		LightAmbientColor: 0.4, 0.4, 0.4
+	Transforms:
+		IntoActor: gaarty
+		Facing: 96
+		TransformSounds:
+		NoTransformSounds:
+		Voice: Move
+
+REPAIR:
+	Inherits: ^Tank
+	Inherits@VOXELS: ^VoxelActor
+	Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 70
+		Prerequisites: ~naweap, ~techlevel.medium
+		Description: Repairs nearby vehicles.\n  Unarmed
+	Valued:
+		Cost: 1000
+	Tooltip:
+		Name: Mobile Repair Vehicle
+	Health:
+		HP: 200
+	Mobile:
+		Speed: 85
+		TurnSpeed: 5
+	RevealsShroud:
+		RequiresCondition: !inside-tunnel
+		Range: 5c0
+		MaxHeightDelta: 3
+	Armament:
+		Weapon: Repair
+		Cursor: repair
+		OutsideRangeCursor: repair
+		TargetStances: Ally
+		ForceTargetStances: None
+	AttackFrontal:
+		Voice: Attack
+
+WEED:
+	Inherits: ^Tank
+	Inherits@VOXELS: ^VoxelActor
+	Valued:
+		Cost: 1400
+	Tooltip:
+		Name: Weed Eater
+	Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 170
+		Prerequisites: ~naweap, nawast, ~techlevel.superweapons
+		Description: Collects veins for processing.\n  Unarmed
+	Harvester:
+		DeliveryBuildings: nawast
+		Capacity: 7
+		Resources: Veins
+		BaleUnloadDelay: 20
+		BaleLoadDelay: 40
+		SearchFromProcRadius: 72
+		SearchFromOrderRadius: 36
+		HarvestVoice: Attack
+		DeliverVoice: Move
+	Mobile:
+		Speed: 71
+		TurnSpeed: 5
+	Health:
+		HP: 600
+	SelfHealing:
+		Delay: 10
+		HealIfBelow: 50
+		DamageCooldown: 200
+	Armor:
+		Type: Heavy
+	RevealsShroud:
+		RequiresCondition: !inside-tunnel
+		Range: 4c0
+		MaxHeightDelta: 3
+	-WithVoxelBody:
+	WithVoxelUnloadBody:
+	-DamagedByTerrain@VEINS:
+	-LeavesTrails@VEINS:
+
+SAPC:
+	Inherits: ^Tank
+	Inherits@VOXELS: ^VoxelActor
+	Valued:
+		Cost: 800
+	Tooltip:
+		Name: Subterranean APC
+	Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 110
+		Prerequisites: ~naweap, natech, ~techlevel.medium
+		Description: Troop transport that can move\nunderground to avoid detection.\n  Unarmed
+	Mobile:
+		TurnSpeed: 5
+		Speed: 71
+		RequiresCondition: !empdisable && !loading
+		Subterranean: true
+		SubterraneanCondition: submerged
+		SubterraneanTransitionTerrainTypes: Clear, Rough
+		SubterraneanTransitionCost: 120
+		SubterraneanTransitionSound: subdril1.aud
+		SubterraneanTransitionImage: dig
+		SubterraneanTransitionSequence: idle
+		TerrainSpeeds:
+			Subterranean: 120
+	Health:
+		HP: 175
+	Armor:
+		Type: Heavy
+	RevealsShroud:
+		RequiresCondition: !inside-tunnel && !submerged
+		Range: 5c0
+		MaxHeightDelta: 3
+	Cargo:
+		Types: Infantry
+		MaxWeight: 5
+		PipCount: 5
+		UnloadVoice: Unload
+		LoadingCondition: loading
+		EjectOnDeath: true
+	WithVoxelBody:
+		RequiresCondition: !submerged
+	Targetable:
+		RequiresCondition: !inside-tunnel && !submerged
+
+SUBTANK:
+	Inherits: ^Tank
+	Inherits@VOXELS: ^VoxelActor
+	Inherits@EXPERIENCE: ^GainsExperience
+	Valued:
+		Cost: 750
+	Tooltip:
+		Name: Devil's Tongue
+	Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 130
+		Prerequisites: ~naweap, natech, ~techlevel.high
+		Description: Subterranean Flame Tank.\nIs able to move underground.\n  Strong vs Infantry, Buildings\n  Weak vs Tanks, Aircraft
+	Mobile:
+		TurnSpeed: 6
+		Speed: 71
+		Crushes: wall, crate, infantry
+		Subterranean: true
+		SubterraneanCondition: submerged
+		SubterraneanTransitionTerrainTypes: Clear, Rough
+		SubterraneanTransitionCost: 120
+		SubterraneanTransitionSound: subdril1.aud
+		SubterraneanTransitionImage: dig
+		SubterraneanTransitionSequence: idle
+		TerrainSpeeds:
+			Subterranean: 120
+	Health:
+		HP: 300
+	Armor:
+		Type: Light
+	RevealsShroud:
+		RequiresCondition: !inside-tunnel && !submerged
+		Range: 5c0
+		MaxHeightDelta: 3
+	Armament:
+		Weapon: FireballLauncher
+	AttackFrontal:
+		Voice: Attack
+	AutoTarget:
+	WithVoxelBody:
+		RequiresCondition: !submerged
+	Targetable:
+		RequiresCondition: !inside-tunnel && !submerged
+
+STNK:
+	Inherits: ^Tank
+	Inherits@VOXELS: ^VoxelActor
+	Inherits@EXPERIENCE: ^GainsExperience
+	Valued:
+		Cost: 1100
+	Tooltip:
+		Name: Stealth Tank
+	Buildable:
+		BuildPaletteOrder: 150
+		Prerequisites: ~naweap, natech, ~techlevel.high
+		Queue: Vehicle
+		Description: Lightly armoured tank equipped with a personal\nstealth generator. Armed with missiles.\nCan be spotted by infantry at close range.\n  Strong vs Vehicles, Aircraft\n  Weak vs Infantry
+	Mobile:
+		TurnSpeed: 5
+		Speed: 85
+		Crushes: wall, crate, infantry
+	Health:
+		HP: 180
+	Armor:
+		Type: Light
+	RevealsShroud:
+		RequiresCondition: !inside-tunnel
+		Range: 5c0
+		MaxHeightDelta: 3
+	Cloak:
+		InitialDelay: 90
+		CloakDelay: 90
+		CloakSound: cloak5.aud
+		UncloakSound: cloak5.aud
+		IsPlayerPalette: true
+		UncloakOn: Attack, Unload, Infiltrate, Demolish, Damage, Heal
+		RequiresCondition: !cloak-force-disabled
+	GrantConditionOnDamageState@UNCLOAK:
+		Condition: cloak-force-disabled
+		ValidDamageStates: Critical
+	Armament:
+		Weapon: Dragon
+		LocalOffset: 213,43,298, 213,-43,298
+	AttackFrontal:
+		Voice: Attack
+	AutoTarget:
+		InitialStance: HoldFire
+		InitialStanceAI: ReturnFire
+	-MustBeDestroyed:

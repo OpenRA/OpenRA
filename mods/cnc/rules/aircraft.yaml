@@ -1,0 +1,282 @@
+TRAN:
+	Inherits: ^Helicopter
+	Valued:
+		Cost: 750
+	Tooltip:
+		Name: Chinook Transport
+	Buildable:
+		BuildPaletteOrder: 10
+		Prerequisites: hpad
+		Queue: Aircraft.GDI, Aircraft.Nod
+		Description: Fast Infantry Transport Helicopter.\n  Unarmed
+	Aircraft:
+		LandWhenIdle: true
+		TurnSpeed: 5
+		Speed: 150
+		InitialFacing: 224
+		LandableTerrainTypes: Clear,Rough,Road,Ore,Beach,Tiberium,BlueTiberium
+		AltitudeVelocity: 0c100
+	Health:
+		HP: 90
+	Armor:
+		Type: Light
+	RevealsShroud:
+		Range: 10c0
+		Type: GroundPosition
+	WithIdleOverlay@ROTOR1AIR:
+		Offset: 597,0,85
+		Sequence: rotor
+		RequiresCondition: airborne
+	WithIdleOverlay@ROTOR1GROUND:
+		Offset: 597,0,85
+		Sequence: slow-rotor
+		RequiresCondition: !airborne
+	WithIdleOverlay@ROTOR2AIR:
+		Offset: -597,0,171
+		Sequence: rotor2
+		RequiresCondition: airborne
+	WithIdleOverlay@ROTOR2GROUND:
+		Offset: -597,0,171
+		Sequence: slow-rotor2
+		RequiresCondition: !airborne
+	Cargo:
+		Types: Infantry
+		MaxWeight: 10
+		PipCount: 10
+	SpawnActorOnDeath:
+		Actor: TRAN.Husk
+	Explodes:
+		Weapon: HeliExplode
+		EmptyWeapon: HeliExplode
+	SelectionDecorations:
+		VisualBounds: 41,41
+
+HELI:
+	Inherits: ^Helicopter
+	Inherits@EXPERIENCE: ^GainsExperience
+	Valued:
+		Cost: 1200
+	Tooltip:
+		Name: Apache Longbow
+	Buildable:
+		BuildPaletteOrder: 20
+		Prerequisites: hpad, anyhq, ~techlevel.medium
+		Queue: Aircraft.Nod
+		Description: Helicopter Gunship with Chainguns.\n  Strong vs Infantry, Light Vehicles and\n  Aircraft\n  Weak vs Tanks
+	Aircraft:
+		RearmBuildings: hpad
+		InitialFacing: 224
+		TurnSpeed: 7
+		Speed: 180
+	Health:
+		HP: 125
+	Armor:
+		Type: Light
+	RevealsShroud:
+		Range: 10c0
+		Type: GroundPosition
+	Armament@PRIMARY:
+		Weapon: HeliAGGun
+		LocalOffset: 128,-213,-85, 128,213,-85
+		MuzzleSequence: muzzle
+	Armament@SECONDARY:
+		Name: secondary
+		Weapon: HeliAAGun
+		LocalOffset: 128,-213,-85, 128,213,-85
+		MuzzleSequence: muzzle
+	AttackHeli:
+		FacingTolerance: 20
+	AmmoPool:
+		Ammo: 10
+		PipCount: 5
+		SelfReloads: true
+		ReloadCount: 10
+		SelfReloadDelay: 200
+	WithIdleOverlay@ROTORAIR:
+		Offset: 0,0,85
+		Sequence: rotor
+		RequiresCondition: airborne
+	WithIdleOverlay@ROTORGROUND:
+		Offset: 0,0,85
+		Sequence: slow-rotor
+		RequiresCondition: !airborne
+	WithMuzzleOverlay:
+	SpawnActorOnDeath:
+		Actor: HELI.Husk
+	AutoTarget:
+	Explodes:
+		Weapon: HeliExplode
+		EmptyWeapon: HeliExplode
+	SelectionDecorations:
+		VisualBounds: 30,24
+
+ORCA:
+	Inherits: ^Helicopter
+	Inherits@EXPERIENCE: ^GainsExperience
+	Valued:
+		Cost: 1200
+	Tooltip:
+		Name: Orca
+	Buildable:
+		BuildPaletteOrder: 20
+		Prerequisites: hpad, anyhq, ~techlevel.medium
+		Queue: Aircraft.GDI
+		Description: Helicopter Gunship with AG Missiles.\n  Strong vs Buildings, Tanks\n  Weak vs Infantry
+	Aircraft:
+		RearmBuildings: hpad
+		InitialFacing: 224
+		TurnSpeed: 7
+		Speed: 186
+	Health:
+		HP: 90
+	Armor:
+		Type: Light
+	RevealsShroud:
+		Range: 10c0
+		Type: GroundPosition
+	Armament@PRIMARY:
+		Weapon: OrcaAGMissiles
+		LocalOffset: 427,-171,-213, 427,171,-213
+	Armament@SECONDARY:
+		Weapon: OrcaAAMissiles
+		LocalOffset: 427,-171,-213, 427,171,-213
+	AttackHeli:
+		FacingTolerance: 20
+	AmmoPool:
+		Ammo: 6
+		PipCount: 6
+		SelfReloads: true
+		ReloadCount: 2
+		SelfReloadDelay: 100
+	SpawnActorOnDeath:
+		Actor: ORCA.Husk
+	AutoTarget:
+	Explodes:
+		Weapon: HeliExplode
+		EmptyWeapon: HeliExplode
+	WithMoveAnimation:
+		MoveSequence: move
+	SelectionDecorations:
+		VisualBounds: 30,24
+
+C17:
+	Inherits: ^Plane
+	Tooltip:
+		Name: Supply Aircraft
+	Valued:
+		Cost: 2000
+	Aircraft:
+		TurnSpeed: 5
+		Speed: 326
+		Repulsable: False
+		MaximumPitch: 36
+	Health:
+		HP: 25
+	Armor:
+		Type: Heavy
+	HiddenUnderFog:
+		AlwaysVisibleStances: None
+		Type: CenterPosition
+	Cargo:
+		MaxWeight: 10
+		PipCount: 10
+	DamageMultiplier@INVULNERABLE:
+		Modifier: 0
+	Contrail@1:
+		Offset: -261,-650,0
+		TrailLength: 15
+	Contrail@2:
+		Offset: -85,-384,0
+		TrailLength: 16
+	Contrail@3:
+		Offset: -85,384,0
+		TrailLength: 16
+	Contrail@4:
+		Offset: -261,650,0
+		TrailLength: 15
+	Buildable:
+		Description: Drops vehicle reinforcements on Airstrips
+
+A10:
+	Inherits: ^Plane
+	Tooltip:
+		Name: A10 Bomber
+	Valued:
+		Cost: 2000
+	Aircraft:
+		TurnSpeed: 4
+		Speed: 373
+		Repulsable: False
+	Health:
+		HP: 150
+	Armor:
+		Type: Heavy
+	AttackBomber:
+		Armaments: gun, bombs
+		Guns: gun
+		Bombs: bombs
+	Armament@GUNS:
+		Name: gun
+		Weapon: Vulcan
+		LocalOffset: 1024,0,-85
+	WithMuzzleOverlay:
+	Armament@BOMBS:
+		Name: bombs
+		Weapon: Napalm
+		LocalOffset: 0,-256,-43, 0,256,-43
+	Contrail@1:
+		Offset: -640,171,0
+		TrailLength: 15
+	Contrail@2:
+		Offset: -640,-171,0
+		TrailLength: 15
+	Buildable:
+		Description: Used to deliver air strikes.
+
+TRAN.Husk:
+	Inherits: ^HelicopterHusk
+	Tooltip:
+		Name: Chinook Transport
+	Aircraft:
+		TurnSpeed: 5
+		Speed: 140
+	RevealsShroud:
+		Range: 10c0
+		Type: GroundPosition
+	WithIdleOverlay@ROTOR1:
+		Offset: 597,0,85
+		Sequence: rotor
+	WithIdleOverlay@ROTOR2:
+		Offset: -597,0,171
+		Sequence: rotor2
+	RenderSprites:
+		Image: tran
+
+HELI.Husk:
+	Inherits: ^HelicopterHusk
+	Tooltip:
+		Name: Apache Longbow
+	Aircraft:
+		TurnSpeed: 4
+		Speed: 186
+	RevealsShroud:
+		Range: 10c0
+		Type: GroundPosition
+	WithIdleOverlay:
+		Offset: 0,0,85
+		Sequence: rotor
+	RenderSprites:
+		Image: heli
+
+ORCA.Husk:
+	Inherits: ^HelicopterHusk
+	Tooltip:
+		Name: Orca
+	Aircraft:
+		TurnSpeed: 4
+		Speed: 186
+	RevealsShroud:
+		Range: 10c0
+		Type: GroundPosition
+	RenderSprites:
+		Image: orca

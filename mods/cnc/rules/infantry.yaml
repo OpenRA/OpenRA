@@ -1,0 +1,264 @@
+E1:
+	Inherits: ^Soldier
+	Inherits@EXPERIENCE: ^GainsExperience
+	Valued:
+		Cost: 100
+	Tooltip:
+		Name: Minigunner
+	Buildable:
+		BuildPaletteOrder: 10
+		Queue: Infantry.GDI, Infantry.Nod
+		Description: General-purpose infantry.\n  Strong vs Infantry\n  Weak vs Vehicles
+	Mobile:
+		Speed: 56
+	Health:
+		HP: 50
+	Armament:
+		Weapon: M16
+	AttackFrontal:
+	WithInfantryBody:
+		IdleSequences: idle1,idle2,idle3,idle4
+		DefaultAttackSequence: shoot
+
+E2:
+	Inherits: ^Soldier
+	Inherits@EXPERIENCE: ^GainsExperience
+	Valued:
+		Cost: 160
+	Tooltip:
+		Name: Grenadier
+	Buildable:
+		BuildPaletteOrder: 40
+		Prerequisites: anyhq, ~techlevel.medium
+		Queue: Infantry.GDI
+		Description: Fast infantry armed with grenades. \n  Strong vs Buildings, slow-moving targets
+	Mobile:
+		Speed: 71
+	Health:
+		HP: 50
+	Armament:
+		Weapon: Grenade
+		LocalOffset: 0,0,427
+		FireDelay: 15
+	TakeCover:
+		ProneOffset: 300,0,-227
+	AttackFrontal:
+	WithInfantryBody:
+		DefaultAttackSequence: throw
+	Explodes:
+		Weapon: GrenadierExplode
+		EmptyWeapon: GrenadierExplode
+		Chance: 50
+
+E3:
+	Inherits: ^Soldier
+	Inherits@EXPERIENCE: ^GainsExperience
+	Valued:
+		Cost: 300
+	Tooltip:
+		Name: Rocket Soldier
+	Buildable:
+		BuildPaletteOrder: 20
+		Queue: Infantry.GDI, Infantry.Nod
+		Description: Anti-tank/Anti-aircraft infantry. \n  Strong vs Tanks, Aircraft\n  Weak vs Infantry
+	Mobile:
+		Speed: 42
+	Health:
+		HP: 45
+	AutoTarget:
+		ScanRadius: 6
+	Armament:
+		Weapon: Rockets
+		LocalOffset: 256,43,341
+		FireDelay: 5
+	TakeCover:
+		ProneOffset: 180,0,-200
+	AttackFrontal:
+	WithInfantryBody:
+		DefaultAttackSequence: shoot
+
+E4:
+	Inherits: ^Soldier
+	Inherits@EXPERIENCE: ^GainsExperience
+	Valued:
+		Cost: 200
+	Tooltip:
+		Name: Flamethrower
+	Buildable:
+		BuildPaletteOrder: 40
+		Prerequisites: anyhq, ~techlevel.medium
+		Queue: Infantry.Nod
+		Description: Advanced Anti-infantry unit.\n  Strong vs Infantry, Buildings\n  Weak vs Tanks
+	Mobile:
+		Speed: 56
+	Health:
+		HP: 90
+	Armament:
+		Weapon: Flamethrower
+		LocalOffset: 341,0,256
+		FireDelay: 3
+		MuzzleSequence: muzzle
+	TakeCover:
+		ProneOffset: 190,0,-198
+	AttackFrontal:
+	WithMuzzleOverlay:
+	WithInfantryBody:
+		DefaultAttackSequence: shoot
+
+E5:
+	Inherits: ^Soldier
+	Inherits@EXPERIENCE: ^GainsExperience
+	Valued:
+		Cost: 300
+	Tooltip:
+		Name: Chemical Warrior
+	Buildable:
+		BuildPaletteOrder: 50
+		Prerequisites: tmpl, ~techlevel.high
+		Queue: Infantry.Nod
+		Description: Advanced general-purpose infantry.\n  Strong vs all Ground units
+	Mobile:
+		Speed: 56
+		TerrainSpeeds:
+			Tiberium: 90
+				PathingCost: 90
+			BlueTiberium: 90
+				PathingCost: 90
+	Health:
+		HP: 90
+	Armament:
+		Weapon: Chemspray
+		LocalOffset: 341,0,256
+		FireDelay: 3
+		MuzzleSequence: muzzle
+	TakeCover:
+		ProneOffset: 190,0,-190
+	AttackFrontal:
+	WithMuzzleOverlay:
+	-DamagedByTerrain:
+	WithInfantryBody:
+		DefaultAttackSequence: shoot
+
+E6:
+	Inherits: ^Soldier
+	Valued:
+		Cost: 500
+	Tooltip:
+		Name: Engineer
+	Buildable:
+		BuildPaletteOrder: 30
+		Queue: Infantry.GDI, Infantry.Nod
+		Description: Damages and captures enemy structures.\n  Unarmed
+	Mobile:
+		Speed: 56
+	Health:
+		HP: 30
+	Passenger:
+		PipType: Yellow
+	EngineerRepair:
+	RepairsBridges:
+	Captures:
+		CaptureTypes: building, husk
+		PlayerExperience: 50
+	-AutoTarget:
+
+RMBO:
+	Inherits: ^Soldier
+	Inherits@EXPERIENCE: ^GainsExperience
+	Valued:
+		Cost: 2000
+	Tooltip:
+		Name: Commando
+	Buildable:
+		BuildPaletteOrder: 50
+		Prerequisites: eye, ~techlevel.high
+		Queue: Infantry.GDI
+		BuildDuration: 2000
+		BuildDurationModifier: 40
+		Description: Elite sniper infantry unit.\n  Strong vs Infantry, Buildings\n  Weak vs Vehicles
+	Mobile:
+		Speed: 71
+		Voice: Move
+	Guard:
+		Voice: Move
+	Health:
+		HP: 150
+	Passenger:
+		PipType: Red
+		Voice: Move
+	RevealsShroud:
+		Range: 6c0
+	AutoTarget:
+		ScanRadius: 8
+	Demolition:
+		DetonationDelay: 45
+		Voice: Demolish
+	Armament:
+		Weapon: Sniper
+	AttackFrontal:
+		Voice: Attack
+	AttackMove:
+		Voice: Attack
+	WithInfantryBody:
+		DefaultAttackSequence: shoot
+		IdleSequences: idle1,idle2,idle3
+	AnnounceOnBuild:
+	AnnounceOnKill:
+	Voiced:
+		VoiceSet: CommandoVoice
+
+PVICE:
+	Inherits: ^Viceroid
+	Mobile:
+		Crushes: crate
+	Buildable:
+		Queue: Biolab
+		BuildPaletteOrder: 40
+		Description: Mutated abomination that spits liquid Tiberium.\n  Strong vs Infantry, Buildings\n  Weak vs Aircraft
+	Tooltip:
+	ActorLostNotification:
+
+STEG:
+	Inherits: ^DINO
+	Tooltip:
+		Name: Stegosaurus
+	Armament:
+		Weapon: tail
+	WithDeathAnimation:
+		DeathSequencePalette: terrain
+		DeathPaletteIsPlayerPalette: false
+	Buildable:
+		Description: A large, heavily built, herbivorous quadruped
+
+TREX:
+	Inherits: ^DINO
+	Tooltip:
+		Name: Tyrannosaurus rex
+	Armament:
+		Weapon: teeth
+	Selectable:
+		Bounds: 48,36,2,1
+	SelectionDecorations:
+		VisualBounds: 52,38
+	Buildable:
+		Description: Bipedal carnivore with a massive skull
+
+TRIC:
+	Inherits: ^DINO
+	Tooltip:
+		Name: Triceratops
+	Armament:
+		Weapon: horn
+	SelectionDecorations:
+		VisualBounds: 34,24,0,2
+	Buildable:
+		Description: Quadruped with large bony frill and three horns
+
+RAPT:
+	Inherits: ^DINO
+	Tooltip:
+		Name: Velociraptor
+	Armament:
+		Weapon: claw
+	Buildable:
+		Description: Bipedal with enlarged sickle-shaped claw on each hindfoot

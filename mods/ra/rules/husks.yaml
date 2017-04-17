@@ -1,0 +1,419 @@
+1TNK.Husk:
+	Inherits: ^Husk
+	Tooltip:
+		Name: Husk (Light Tank)
+	ThrowsParticle@turret:
+		Anim: turret
+	TransformOnCapture:
+		IntoActor: 1tnk
+	RenderSprites:
+		Image: 1tnk.destroyed
+
+2TNK.Husk:
+	Inherits: ^Husk
+	Tooltip:
+		Name: Husk (Medium Tank)
+	ThrowsParticle@turret:
+		Anim: turret
+	TransformOnCapture:
+		IntoActor: 2tnk
+	RenderSprites:
+		Image: 2tnk.destroyed
+
+3TNK.Husk:
+	Inherits: ^Husk
+	Tooltip:
+		Name: Husk (Heavy Tank)
+	ThrowsParticle@turret:
+		Anim: turret
+	TransformOnCapture:
+		IntoActor: 3tnk
+	RenderSprites:
+		Image: 3tnk.destroyed
+
+4TNK.Husk:
+	Inherits: ^Husk
+	Tooltip:
+		Name: Husk (Mammoth Tank)
+	ThrowsParticle@turret:
+		Anim: turret
+	TransformOnCapture:
+		IntoActor: 4tnk
+	RenderSprites:
+		Image: 4tnk.destroyed
+
+HARV.FullHusk:
+	Inherits: ^Husk
+	Tooltip:
+		Name: Husk (Ore Truck)
+	TransformOnCapture:
+		IntoActor: harv
+	RenderSprites:
+		Image: hhusk
+
+HARV.EmptyHusk:
+	Inherits: ^Husk
+	Tooltip:
+		Name: Husk (Ore Truck)
+	TransformOnCapture:
+		IntoActor: harv
+	RenderSprites:
+		Image: hhusk2
+
+MCV.Husk:
+	Inherits: ^Husk
+	Tooltip:
+		Name: Husk (Mobile Construction Vehicle)
+	TransformOnCapture:
+		IntoActor: mcv
+	RenderSprites:
+		Image: mcvhusk
+
+MGG.Husk:
+	Inherits: ^Husk
+	Tooltip:
+		Name: Husk (Mobile Gap Generator)
+	ThrowsParticle@spinner:
+		Anim: spinner-idle
+		Offset: -299,0,171
+	TransformOnCapture:
+		IntoActor: mgg
+	RenderSprites:
+		Image: mgg.destroyed
+
+TRAN.Husk:
+	Inherits: ^HelicopterHusk
+	Tooltip:
+		Name: Transport Helicopter
+	Aircraft:
+		TurnSpeed: 4
+		Speed: 149
+	WithIdleOverlay@PRIMARY:
+		Offset: -597,0,341
+		Sequence: rotor
+	WithIdleOverlay@SECONDARY:
+		Offset: 597,0,213
+		Sequence: rotor2
+	RevealsShroud:
+		Range: 10c0
+		Type: GroundPosition
+		RevealGeneratedShroud: False
+	RevealsShroud@GAPGEN:
+		Range: 8c0
+		Type: GroundPosition
+	RenderSprites:
+		Image: tran
+
+TRAN.Husk1:
+	Inherits: ^Husk
+	Tooltip:
+		Name: Husk (Transport Helicopter)
+	RenderSprites:
+		Image: tran1husk
+
+TRAN.Husk2:
+	Inherits: ^Husk
+	Tooltip:
+		Name: Husk (Transport Helicopter)
+	RenderSprites:
+		Image: tran2husk
+
+BADR.Husk:
+	Inherits: ^PlaneHusk
+	Tooltip:
+		Name: Badger
+	Aircraft:
+		TurnSpeed: 5
+		Speed: 149
+	SmokeTrailWhenDamaged@0:
+		Offset: -432,560,0
+		Interval: 2
+		MinDamage: Undamaged
+	SmokeTrailWhenDamaged@1:
+		Offset: -432,-560,0
+		Interval: 2
+		MinDamage: Undamaged
+	RenderSprites:
+		Image: badr
+
+MIG.Husk:
+	Inherits: ^PlaneHusk
+	Tooltip:
+		Name: Mig Attack Plane
+	Contrail@1:
+		Offset: -598,-683,0
+	Contrail@2:
+		Offset: -598,683,0
+	Aircraft:
+		TurnSpeed: 5
+		Speed: 186
+	SmokeTrailWhenDamaged:
+		Offset: -853,0,171
+		Interval: 2
+		MinDamage: Undamaged
+	RevealsShroud:
+		Range: 13c0
+		Type: GroundPosition
+		RevealGeneratedShroud: False
+	RevealsShroud@GAPGEN:
+		Range: 11c0
+		Type: GroundPosition
+	RenderSprites:
+		Image: mig
+
+YAK.Husk:
+	Inherits: ^PlaneHusk
+	Tooltip:
+		Name: Yak Attack Plane
+	Contrail:
+		Offset: -853,0,0
+	Aircraft:
+		TurnSpeed: 5
+		Speed: 149
+	SmokeTrailWhenDamaged:
+		Offset: -853,0,0
+		Interval: 2
+		MinDamage: Undamaged
+	RevealsShroud:
+		Range: 11c0
+		Type: GroundPosition
+		RevealGeneratedShroud: False
+	RevealsShroud@GAPGEN:
+		Range: 9c0
+		Type: GroundPosition
+	RenderSprites:
+		Image: yak
+
+HELI.Husk:
+	Inherits: ^HelicopterHusk
+	Tooltip:
+		Name: Longbow
+	Aircraft:
+		TurnSpeed: 4
+		Speed: 149
+	WithIdleOverlay:
+		Offset: 0,0,85
+		Sequence: rotor
+	SmokeTrailWhenDamaged:
+		Offset: -427,0,0
+		MinDamage: Undamaged
+	RevealsShroud:
+		Range: 12c0
+		Type: GroundPosition
+		RevealGeneratedShroud: False
+	RevealsShroud@GAPGEN:
+		Range: 10c0
+		Type: GroundPosition
+	RenderSprites:
+		Image: heli
+
+HIND.Husk:
+	Inherits: ^HelicopterHusk
+	Tooltip:
+		Name: Hind
+	Aircraft:
+		TurnSpeed: 4
+		Speed: 112
+	WithIdleOverlay:
+		Sequence: rotor
+	SmokeTrailWhenDamaged:
+		Offset: -427,0,0
+		MinDamage: Undamaged
+	RevealsShroud:
+		Range: 10c0
+		Type: GroundPosition
+		RevealGeneratedShroud: False
+	RevealsShroud@GAPGEN:
+		Range: 8c0
+		Type: GroundPosition
+	RenderSprites:
+		Image: hind
+
+U2.Husk:
+	Inherits: ^PlaneHusk
+	Tooltip:
+		Name: Husk (Spy Plane)
+	Aircraft:
+		TurnSpeed: 7
+		Speed: 373
+	Contrail@1:
+		Offset: -725,683,0
+	Contrail@2:
+		Offset: -725,-683,0
+	SmokeTrailWhenDamaged:
+		Offset: -1c43,0,0
+		Interval: 2
+		MinDamage: Undamaged
+	RenderSprites:
+		Image: u2
+
+T01.Husk:
+	Inherits: ^TreeHusk
+	Building:
+		Footprint: __ x_
+		Dimensions: 2,2
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT, INTERIOR
+
+T02.Husk:
+	Inherits: ^TreeHusk
+	Building:
+		Footprint: __ x_
+		Dimensions: 2,2
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT, INTERIOR
+
+T03.Husk:
+	Inherits: ^TreeHusk
+	Building:
+		Footprint: __ x_
+		Dimensions: 2,2
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT, INTERIOR
+
+T04.Husk:
+	Inherits: ^TreeHusk
+	Building:
+		Footprint: __ x_
+		Dimensions: 2,2
+	EditorTilesetFilter:
+		ExcludeTilesets: TEMPERAT, SNOW, INTERIOR
+
+T05.Husk:
+	Inherits: ^TreeHusk
+	Building:
+		Footprint: __ x_
+		Dimensions: 2,2
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT, INTERIOR
+
+T06.Husk:
+	Inherits: ^TreeHusk
+	Building:
+		Footprint: __ x_
+		Dimensions: 2,2
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT, INTERIOR
+
+T07.Husk:
+	Inherits: ^TreeHusk
+	Building:
+		Footprint: __ x_
+		Dimensions: 2,2
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT, INTERIOR
+
+T08.Husk:
+	Inherits: ^TreeHusk
+	Building:
+		Footprint: x_
+		Dimensions: 2,1
+
+T09.Husk:
+	Inherits: ^TreeHusk
+	EditorTilesetFilter:
+		ExcludeTilesets: TEMPERAT, SNOW, INTERIOR
+
+T10.Husk:
+	Inherits: ^TreeHusk
+	Building:
+		Footprint: __ xx
+		Dimensions: 2,2
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT, INTERIOR
+
+T11.Husk:
+	Inherits: ^TreeHusk
+	Building:
+		Footprint: __ xx
+		Dimensions: 2,2
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT, INTERIOR
+
+T12.Husk:
+	Inherits: ^TreeHusk
+	Building:
+		Footprint: __ x_
+		Dimensions: 2,2
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT, INTERIOR
+
+T13.Husk:
+	Inherits: ^TreeHusk
+	Building:
+		Footprint: __ x_
+		Dimensions: 2,2
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT, INTERIOR
+
+T14.Husk:
+	Inherits: ^TreeHusk
+	Building:
+		Footprint: ___ xx_
+		Dimensions: 3,2
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT, INTERIOR
+
+T15.Husk:
+	Inherits: ^TreeHusk
+	Building:
+		Footprint: ___ xx_
+		Dimensions: 3,2
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT, INTERIOR
+
+T16.Husk:
+	Inherits: ^TreeHusk
+	Building:
+		Footprint: __ x_
+		Dimensions: 2,2
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT, INTERIOR
+
+T17.Husk:
+	Inherits: ^TreeHusk
+	Building:
+		Footprint: __ x_
+		Dimensions: 2,2
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT, INTERIOR
+
+TC01.Husk:
+	Inherits: ^TreeHusk
+	Building:
+		Footprint: ___ xx_
+		Dimensions: 3,2
+	EditorTilesetFilter:
+		ExcludeTilesets: INTERIOR
+
+TC02.Husk:
+	Inherits: ^TreeHusk
+	Building:
+		Footprint: _x_ xx_
+		Dimensions: 3,2
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT, INTERIOR
+
+TC03.Husk:
+	Inherits: ^TreeHusk
+	Building:
+		Footprint: xx_ xx_
+		Dimensions: 3,2
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT, INTERIOR
+
+TC04.Husk:
+	Inherits: ^TreeHusk
+	Building:
+		Footprint: ____ xxx_ x___
+		Dimensions: 4,3
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT, INTERIOR
+
+TC05.Husk:
+	Inherits: ^TreeHusk
+	Building:
+		Footprint: __x_ xxx_ _xx_
+		Dimensions: 4,3
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT, INTERIOR

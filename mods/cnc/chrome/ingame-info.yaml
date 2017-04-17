@@ -1,0 +1,56 @@
+Container@GAME_INFO_PANEL:
+	X: (WINDOW_RIGHT - WIDTH) / 2
+	Y: (WINDOW_BOTTOM - HEIGHT) / 2
+	Width: 512
+	Height: 405
+	Logic: GameInfoLogic
+	Visible: False
+	Children:
+		Label@TITLE:
+			Width: PARENT_RIGHT
+			Y: 0 - 20
+			Text: Game Information
+			Align: Center
+			Font: BigBold
+			Contrast: true
+		Label@TITLE_NO_TABS:
+			Width: PARENT_RIGHT
+			Y: 15
+			Text: Game Information
+			Align: Center
+			Font: BigBold
+			Contrast: true
+		Container@TAB_CONTAINER:
+			Children:
+				Button@BUTTON1:
+					Y: 5
+					Width: 140
+					Height: 35
+					Visible: False
+				Button@BUTTON2:
+					X: 150
+					Y: 5
+					Width: 140
+					Height: 35
+					Visible: False
+				Button@BUTTON3:
+					X: 300
+					Y: 5
+					Width: 140
+					Height: 35
+					Visible: False
+		Background@BACKGROUND:
+			Y: 39
+			Width: PARENT_RIGHT
+			Height: PARENT_BOTTOM
+			Background: panel-black
+			Children:
+				Container@STATS_PANEL:
+				Container@MAP_PANEL:
+					Width: PARENT_RIGHT
+					Height: PARENT_BOTTOM
+				Container@OBJECTIVES_PANEL:
+					Width: PARENT_RIGHT
+				Container@DEBUG_PANEL:
+					Width: PARENT_RIGHT
+					Height: PARENT_BOTTOM

@@ -1,0 +1,36 @@
+GDI Campaign:
+	./mods/cnc/maps/gdi01
+	./mods/cnc/maps/gdi02
+	./mods/cnc/maps/gdi03
+	./mods/cnc/maps/gdi04a
+	./mods/cnc/maps/gdi04b
+	./mods/cnc/maps/gdi04c
+	./mods/cnc/maps/gdi05a
+	./mods/cnc/maps/gdi05b
+	./mods/cnc/maps/gdi06
+	./mods/cnc/maps/gdi07
+
+Nod Campaign:
+	./mods/cnc/maps/nod01
+	./mods/cnc/maps/nod02a
+	./mods/cnc/maps/nod02b
+	./mods/cnc/maps/nod03a
+	./mods/cnc/maps/nod03b
+	./mods/cnc/maps/nod04a
+	./mods/cnc/maps/nod04b
+	./mods/cnc/maps/nod05
+	./mods/cnc/maps/nod06a
+	./mods/cnc/maps/nod06b
+	./mods/cnc/maps/nod06c
+	./mods/cnc/maps/nod07a
+	./mods/cnc/maps/nod07b
+	./mods/cnc/maps/nod07c
+	./mods/cnc/maps/nod08a
+	./mods/cnc/maps/nod08b
+	./mods/cnc/maps/nod09
+
+Funpark Campaign:
+	./mods/cnc/maps/funpark01
+
+Bonus Missions:
+	./mods/cnc/maps/cnc64gdi01

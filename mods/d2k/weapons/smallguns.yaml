@@ -1,0 +1,88 @@
+^MG:
+	ReloadDelay: 30
+	Range: 2c512
+	Report: MGUN2.WAV
+	Projectile: InstantHit
+	Warhead@1Dam: SpreadDamage
+		Spread: 128
+		Falloff: 100, 50, 25, 0
+		Damage: 125
+		Versus:
+			wall: 10
+			building: 25
+			wood: 75
+			light: 40
+			heavy: 20
+			invulnerable: 0
+			cy: 20
+			harvester: 25
+		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
+	Warhead@2Eff: CreateEffect
+		Explosions: piffs
+
+LMG:
+	Inherits: ^MG
+
+Fremen_S:
+	Inherits: ^MG
+	ReloadDelay: 40
+	Report: FREMODD1.WAV
+	Warhead@2Eff: CreateEffect
+		Explosions: small_explosion
+
+M_LMG:
+	Inherits: ^MG
+	ReloadDelay: 40
+
+M_HMG:
+	Inherits: ^MG
+	ReloadDelay: 40
+	Range: 3c512
+	Report: 20MMGUN1.WAV
+	Warhead@1Dam: SpreadDamage
+		Spread: 192
+		Damage: 250
+		Versus:
+			none: 25
+			wall: 100
+			building: 50
+			wood: 65
+			light: 100
+			heavy: 50
+			invulnerable: 0
+			cy: 20
+			harvester: 50
+
+Fremen_L:
+	Inherits: M_HMG
+	Report: BAZOOK2.WAV
+	Warhead@1Dam: SpreadDamage
+		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
+	Warhead@2Eff: CreateEffect
+		Explosions: small_explosion
+
+HMG:
+	Inherits: ^MG
+	ReloadDelay: 20
+	Range: 3c0
+	Report: 20MMGUN1.WAV
+	Warhead@1Dam: SpreadDamage
+		Spread: 160
+		Falloff: 100, 60, 30, 0
+		Damage: 180
+
+HMGo:
+	Inherits: HMG
+	ReloadDelay: 18
+
+HMG_muzzle:
+	ReloadDelay: 16
+	Range: 3c0
+	Burst: 3
+	BurstDelay: 2
+	Projectile: InstantHit
+	Warhead@TargetValidation: SpreadDamage
+
+HMGo_muzzle:
+	Inherits: HMG_muzzle
+	ReloadDelay: 14

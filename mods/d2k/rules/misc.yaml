@@ -1,0 +1,303 @@
+crate:
+	HiddenUnderFog:
+	Tooltip:
+		Name: Crate
+	Crate:
+		Lifetime: 120
+		TerrainTypes: Sand, Rock, Transition, Spice, SpiceSand, Dune, Concrete
+	GiveCashCrateAction@1:
+		Amount: 750
+		SelectionShares: 25
+		UseCashTick: true
+	GiveCashCrateAction@2:
+		Amount: 1000
+		SelectionShares: 50
+		UseCashTick: true
+	GiveCashCrateAction@3:
+		Amount: 1500
+		SelectionShares: 25
+		UseCashTick: true
+	ExplodeCrateAction@1:
+		Weapon: CrateExplosion
+		SelectionShares: 5
+	HideMapCrateAction:
+		SelectionShares: 5
+		Effect: hide-map
+	LevelUpCrateAction:
+		SelectionShares: 40
+	RevealMapCrateAction:
+		SelectionShares: 2
+		Effect: reveal-map
+	GiveUnitCrateAction@LightInfantry:
+		SelectionShares: 15
+		Units: light_inf, light_inf, light_inf, light_inf, light_inf
+		Prerequisites: techlevel.low, barracks
+	GiveUnitCrateAction@Trooper:
+		SelectionShares: 10
+		Units: trooper, trooper, trooper, trooper
+		Prerequisites: techlevel.low, barracks, upgrade.barracks
+	GiveUnitCrateAction@Engineer:
+		SelectionShares: 10
+		Units: engineer
+		Prerequisites: techlevel.low, barracks, upgrade.barracks
+	GiveUnitCrateAction@Thumper:
+		SelectionShares: 4
+		Units: thumper
+		Prerequisites: techlevel.high, barracks, upgrade.barracks
+	GiveUnitCrateAction@Grenadier:
+		SelectionShares: 8
+		Units: grenadier, grenadier
+		ValidFactions: atreides
+		Prerequisites: techlevel.medium, barracks, upgrade.barracks, high_tech_factory
+	GiveUnitCrateAction@Sardaukar:
+		SelectionShares: 8
+		Units: sardaukar, sardaukar
+		ValidFactions: harkonnen
+		Prerequisites: techlevel.medium, barracks, upgrade.barracks, high_tech_factory
+	GiveUnitCrateAction@Trike:
+		SelectionShares: 25
+		Units: trike
+		ValidFactions: atreides, harkonnen
+		Prerequisites: techlevel.low, light_factory
+	GiveUnitCrateAction@Raider:
+		SelectionShares: 25
+		Units: raider
+		ValidFactions: ordos
+		Prerequisites: techlevel.low, light_factory
+	GiveUnitCrateAction@Quad:
+		SelectionShares: 20
+		Units: quad
+		Prerequisites: techlevel.medium, light_factory, upgrade.light
+	GiveUnitCrateAction@StealthRaider:
+		SelectionShares: 8
+		Units: stealth_raider
+		ValidFactions: ordos
+		Prerequisites: techlevel.medium, light_factory, upgrade.light, high_tech_factory
+	GiveUnitCrateAction@Harvester:
+		SelectionShares: 10
+		Units: harvester
+		Prerequisites: techlevel.low, heavy_factory, refinery
+	GiveUnitCrateAction@CombatA:
+		SelectionShares: 15
+		Units: combat_tank_a
+		ValidFactions: atreides
+		Prerequisites: techlevel.low, heavy_factory
+	GiveUnitCrateAction@CombatH:
+		SelectionShares: 15
+		Units: combat_tank_h
+		ValidFactions: harkonnen
+		Prerequisites: techlevel.low, heavy_factory
+	GiveUnitCrateAction@CombatO:
+		SelectionShares: 15
+		Units: combat_tank_o
+		ValidFactions: ordos
+		Prerequisites: techlevel.low, heavy_factory
+	GiveUnitCrateAction@SiegeTank:
+		SelectionShares: 12
+		Units: siege_tank
+		Prerequisites: techlevel.medium, heavy_factory, upgrade.heavy
+	GiveUnitCrateAction@MissileTank:
+		SelectionShares: 10
+		Units: missile_tank
+		Prerequisites: techlevel.high, heavy_factory, research_centre
+	GiveUnitCrateAction@Fremen:
+		SelectionShares: 5
+		Units: fremen, fremen
+		ValidFactions: atreides
+		Prerequisites: techlevel.high, palace
+	GiveUnitCrateAction@Saboteur:
+		SelectionShares: 5
+		Units: saboteur
+		ValidFactions: ordos
+		Prerequisites: techlevel.high, palace
+	GiveUnitCrateAction@SonicTank:
+		SelectionShares: 5
+		Units: sonic_tank
+		ValidFactions: atreides
+		Prerequisites: techlevel.high, heavy_factory, research_centre
+	GiveUnitCrateAction@Devastator:
+		SelectionShares: 5
+		Units: devastator
+		ValidFactions: harkonnen
+		Prerequisites: techlevel.high, heavy_factory, research_centre
+	GiveUnitCrateAction@Deviator:
+		SelectionShares: 5
+		Units: deviator
+		ValidFactions: ordos
+		Prerequisites: techlevel.high, heavy_factory, research_centre
+	GiveMcvCrateAction:
+		SelectionShares: 0
+		NoBaseSelectionShares: 9001
+		Units: mcv
+	QuantizeFacingsFromSequence:
+	RenderSprites:
+		Palette: effect
+	WithCrateBody:
+	Passenger:
+	CustomSelectionSize:
+		CustomBounds: 20,20
+
+mpspawn:
+	EditorOnlyTooltip:
+		Name: (multiplayer player starting point)
+	AlwaysVisible:
+	Immobile:
+		OccupiesSpace: false
+	RenderSpritesEditorOnly:
+	WithSpriteBody:
+	BodyOrientation:
+		QuantizedFacings: 1
+
+waypoint:
+	EditorOnlyTooltip:
+		Name: (waypoint for scripted behavior)
+	AlwaysVisible:
+	Immobile:
+		OccupiesSpace: false
+	RenderSpritesEditorOnly:
+	WithSpriteBody:
+	BodyOrientation:
+		QuantizedFacings: 1
+
+^carryall.colorpicker:
+	Inherits: carryall
+	Aircraft:
+		InitialFacing: 104
+	RenderSprites:
+		Image: carryall
+		Palette: colorpicker
+
+camera:
+	EditorOnlyTooltip:
+		Name: (reveals area to owner)
+	AlwaysVisible:
+	RenderSpritesEditorOnly:
+	WithSpriteBody:
+	BodyOrientation:
+		QuantizedFacings: 1
+	Immobile:
+		OccupiesSpace: false
+	RevealsShroud:
+		Range: 6c768
+		Type: CenterPosition
+
+wormspawner:
+	EditorOnlyTooltip:
+		Name: (worm spawning location)
+	AlwaysVisible:
+	Immobile:
+		OccupiesSpace: false
+	RenderSpritesEditorOnly:
+	WithSpriteBody:
+	BodyOrientation:
+		QuantizedFacings: 1
+	WormSpawner:
+
+upgrade.conyard:
+	AlwaysVisible:
+	Tooltip:
+		Name: Construction Yard Upgrade
+	Buildable:
+		BuildPaletteOrder: 50
+		Prerequisites: construction_yard
+		Queue: Upgrade
+		BuildLimit: 1
+		BuildDuration: 590
+		BuildDurationModifier: 40
+		Description: Unlocks additional construction options \n(Large Concrete Slab, Rocket Turret)
+	Valued:
+		Cost: 1000
+	RenderSprites:
+		Image: conyard.harkonnen
+		FactionImages:
+			atreides: conyard.atreides
+			ordos: conyard.ordos
+			corrino: conyard.corrino
+	ProvidesPrerequisite@upgradename:
+
+upgrade.barracks:
+	AlwaysVisible:
+	Tooltip:
+		Name: Barracks Upgrade
+	Buildable:
+		BuildPaletteOrder: 50
+		Prerequisites: barracks
+		Queue: Upgrade
+		BuildLimit: 1
+		BuildDuration: 290
+		BuildDurationModifier: 40
+		Description: Unlocks additional infantry \n(Trooper, Engineer, Thumper Infantry)    \n\nRequired to unlock faction specific infantry \n(Atreides: Grenadier, Harkonnen: Sardaukar)
+	Valued:
+		Cost: 500
+	RenderSprites:
+		Image: barracks.harkonnen
+		FactionImages:
+			atreides: barracks.atreides
+			ordos: barracks.ordos
+			mercenary: barracks.ordos
+			smuggler: barracks.ordos
+	ProvidesPrerequisite@upgradename:
+
+upgrade.light:
+	AlwaysVisible:
+	Tooltip:
+		Name: Light Factory Upgrade
+	Buildable:
+		BuildPaletteOrder: 50
+		Prerequisites: light_factory
+		Queue: Upgrade
+		BuildLimit: 1
+		BuildDuration: 215
+		BuildDurationModifier: 40
+		Description: Unlocks additional light unit \n(Missile Quad) \n\nRequired to unlock faction specific light unit \n(Ordos: Stealth Raider Trike)
+	Valued:
+		Cost: 400
+	RenderSprites:
+		Image: light.harkonnen
+		FactionImages:
+			atreides: light.atreides
+			ordos: light.ordos
+			mercenary: light.ordos
+			smuggler: light.ordos
+	ProvidesPrerequisite@upgradename:
+
+upgrade.heavy:
+	AlwaysVisible:
+	Tooltip:
+		Name: Heavy Factory Upgrade
+	Buildable:
+		BuildPaletteOrder: 50
+		Prerequisites: heavy_factory
+		Queue: Upgrade
+		BuildLimit: 1
+		BuildDuration: 380
+		BuildDurationModifier: 40
+		Description: Unlocks additional construction options    \n(Repair Pad, IX Research Center) \n\nUnlocks additional heavy units \n(Siege Tank, Missile Tank, MCV)
+	Valued:
+		Cost: 800
+	RenderSprites:
+		Image: heavy.harkonnen
+		FactionImages:
+			atreides: heavy.atreides
+			ordos: heavy.ordos
+			mercenary: heavy.mercenary
+			smuggler: heavy.ordos
+	ProvidesPrerequisite@upgradename:
+
+upgrade.hightech:
+	AlwaysVisible:
+	Tooltip:
+		Name: High Tech Factory Upgrade
+	Buildable:
+		BuildPaletteOrder: 50
+		Prerequisites: ~hightech.atreides, ~techlevel.superweapons
+		Queue: Upgrade
+		BuildLimit: 1
+		BuildDuration: 720
+		BuildDurationModifier: 40
+		Description: Unlocks the Atreides Air Strike superweapon
+	Valued:
+		Cost: 1500
+	RenderSprites:
+		Image: hightech.atreides
+	ProvidesPrerequisite@upgradename:

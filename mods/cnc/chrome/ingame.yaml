@@ -1,0 +1,493 @@
+Container@INGAME_ROOT:
+	Logic: LoadIngamePlayerOrObserverUILogic
+	Children:
+		Container@MUSICBUTTONS:
+			Logic: MusicControllerLogic
+			Children:
+				LogicKeyListener@MUSICCONTROLLER_KEYHANDLER:
+		Container@WORLD_ROOT:
+			Logic: LoadIngamePerfLogic
+			Children:
+				LogicTicker@DISCONNECT_WATCHER:
+					Logic: DisconnectWatcherLogic
+				Label@MISSION_TEXT:
+					X: WINDOW_RIGHT/2 - 256
+					Y: 22
+					Width: 512
+					Height: 25
+					Font: Bold
+					Align: Center
+					Contrast: true
+				StrategicProgress@STRATEGIC_PROGRESS:
+					X: WINDOW_RIGHT/2
+					Y: 40
+				Container@PERF_ROOT:
+				WorldInteractionController@INTERACTION_CONTROLLER:
+					Width: WINDOW_RIGHT
+					Height: WINDOW_BOTTOM
+				ViewportController:
+					Width: WINDOW_RIGHT
+					Height: WINDOW_BOTTOM
+					TooltipContainer: TOOLTIP_CONTAINER
+				WorldCommand:
+					Width: WINDOW_RIGHT
+					Height: WINDOW_BOTTOM
+				Container@GAME_TIMER_BLOCK:
+					Logic: GameTimerLogic
+					X: WINDOW_RIGHT/2 - WIDTH
+					Width: 100
+					Height: 55
+					Children:
+						LabelWithTooltip@GAME_TIMER:
+							Width: PARENT_RIGHT
+							Height: 30
+							Align: Center
+							Font: Title
+							Contrast: true
+							TooltipContainer: TOOLTIP_CONTAINER
+							TooltipTemplate: SIMPLE_TOOLTIP
+						Label@GAME_TIMER_STATUS:
+							Y: 35
+							Width: PARENT_RIGHT
+							Height: 15
+							Align: Center
+							Font: Bold
+							Contrast: true
+				Container@PLAYER_ROOT:
+		Container@MENU_ROOT:
+		TooltipContainer@TOOLTIP_CONTAINER:
+
+Container@PERF_WIDGETS:
+	Logic: PerfDebugLogic
+	Children:
+		Label@PERF_TEXT:
+			X: WINDOW_RIGHT - 200
+			Y: WINDOW_BOTTOM - 70
+			Width: 170
+			Height: 40
+			Contrast: true
+			VAlign: Top
+		Background@GRAPH_BG:
+			X: 10
+			Y: WINDOW_BOTTOM-HEIGHT-10
+			Width: 220
+			Height: 220
+			Background: panel-black
+			Children:
+				PerfGraph@GRAPH:
+					X: 10
+					Y: 10
+					Width: 200
+					Height: 200
+
+Container@OBSERVER_WIDGETS:
+	Logic: MenuButtonsChromeLogic
+	Children:
+		MenuButton@OPTIONS_BUTTON:
+			Key: escape
+			X: WINDOW_RIGHT-260-WIDTH
+			Y: 5
+			Width: 30
+			Height: 25
+			TooltipText: Menu
+			TooltipContainer: TOOLTIP_CONTAINER
+			DisableWorldSounds: true
+			Children:
+				Image:
+					X: 7
+					Y: 5
+					ImageCollection: order-icons
+					ImageName: options
+		MenuButton@OBSERVER_STATS_BUTTON:
+			Key: F1
+			X: WINDOW_RIGHT-260-WIDTH
+			Y: 35
+			Width: 30
+			Height: 25
+			TooltipText: Statistics
+			TooltipContainer: TOOLTIP_CONTAINER
+			MenuContainer: INGAME_OBSERVERSTATS_BG
+			HideIngameUI: false
+			Pause: false
+			Children:
+				Image@ICON:
+					X: 7
+					Y: 5
+					ImageCollection: order-icons
+					ImageName: stats
+		Background@RADAR:
+			X: WINDOW_RIGHT-WIDTH-5
+			Y: 5
+			Width: 256
+			Height: 256
+			Background: panel-gray
+			Children:
+				Radar:
+					X: 1
+					Y: 1
+					Width: PARENT_RIGHT-2
+					Height: PARENT_BOTTOM-2
+		Background@REPLAY_PLAYER:
+			Logic: ReplayControlBarLogic
+			X: WINDOW_RIGHT-WIDTH-5
+			Y: 283
+			Width: 256
+			Height: 46
+			Background: panel-black
+			Visible: false
+			Children:
+				Button@BUTTON_PAUSE:
+					X: 16
+					Y: 10
+					Width: 26
+					Height: 26
+					IgnoreChildMouseOver: true
+					Children:
+						Image@IMAGE_PAUSE:
+							X: 5
+							Y: 5
+							Width: 16
+							Height: 16
+							ImageCollection: music
+							ImageName: pause
+				Button@BUTTON_PLAY:
+					X: 16
+					Y: 10
+					Width: 26
+					Height: 26
+					IgnoreChildMouseOver: true
+					Children:
+						Image@IMAGE_PLAY:
+							X: 5
+							Y: 5
+							Width: 16
+							Height: 16
+							ImageCollection: music
+							ImageName: play
+				Button@BUTTON_SLOW:
+					X: 57
+					Y: 13
+					Width: 36
+					Height: 20
+					BaseLine: 1
+					TooltipText: Slow speed
+					TooltipContainer: TOOLTIP_CONTAINER
+					VisualHeight: 0
+					Text: 50%
+					Font: TinyBold
+				Button@BUTTON_REGULAR:
+					X: 57 + 48
+					Y: 13
+					Width: 38
+					Height: 20
+					BaseLine: 1
+					TooltipText: Regular speed
+					TooltipContainer: TOOLTIP_CONTAINER
+					VisualHeight: 0
+					Text: 100%
+					Font: TinyBold
+				Button@BUTTON_FAST:
+					X: 57 + 48*2
+					Y: 13
+					Width: 38
+					Height: 20
+					BaseLine: 1
+					TooltipText: Fast speed
+					TooltipContainer: TOOLTIP_CONTAINER
+					VisualHeight: 0
+					Text: 200%
+					Font: TinyBold
+				Button@BUTTON_MAXIMUM:
+					X: 57 + 48*3
+					Y: 13
+					Width: 38
+					Height: 20
+					BaseLine: 1
+					TooltipText: Maximum speed
+					TooltipContainer: TOOLTIP_CONTAINER
+					VisualHeight: 0
+					Text: MAX
+					Font: TinyBold
+		DropDownButton@SHROUD_SELECTOR:
+			Logic: ObserverShroudSelectorLogic
+			X: WINDOW_RIGHT-WIDTH-5
+			Y: 260
+			Width: 256
+			Height: 25
+			Font: Bold
+			Children:
+				LogicKeyListener@SHROUD_KEYHANDLER:
+				Image@FLAG:
+					X: 4
+					Y: 4
+					Width: 32
+					Height: 16
+				Label@LABEL:
+					X: 40
+					Width: 60
+					Height: 25
+					Shadow: True
+				Label@NOFLAG_LABEL:
+					X: 5
+					Width: PARENT_RIGHT
+					Height: 25
+					Shadow: True
+
+Container@PLAYER_WIDGETS:
+	Children:
+		LogicKeyListener@CONTROLGROUP_KEYHANDLER:
+			Logic: ControlGroupLogic
+		LogicTicker@SIDEBAR_TICKER:
+		UnitCommand:
+			Width: WINDOW_RIGHT
+			Height: WINDOW_BOTTOM
+		Container@SUPPORT_POWERS:
+			Logic: SupportPowerBinLogic
+			X: 10
+			Y: 10
+			Children:
+				Container@PALETTE_BACKGROUND:
+					Children:
+						Background@ICON_TEMPLATE:
+							Width: 66
+							Height: 50
+							ClickThrough: false
+							Background: panel-black
+				SupportPowers@SUPPORT_PALETTE:
+					X: 1
+					Y: 1
+					TooltipContainer: TOOLTIP_CONTAINER
+					ReadyText: Ready
+					HoldText: On Hold
+		Background@SIDEBAR_BACKGROUND:
+			Logic: MenuButtonsChromeLogic
+			X: WINDOW_RIGHT - 204
+			Y: 30
+			Width: 194
+			Height: 240
+			Background: panel-black
+			Children:
+				MenuButton@OPTIONS_BUTTON:
+					Key: escape
+					X: 22
+					Y: 0-24
+					Width: 30
+					Height: 25
+					Font: Bold
+					TooltipText: Menu
+					TooltipContainer: TOOLTIP_CONTAINER
+					DisableWorldSounds: true
+					Children:
+						Image@ICON:
+							X: 7
+							Y: 5
+							ImageCollection: order-icons
+							ImageName: options
+				Button@BEACON_BUTTON:
+					Logic: BeaconOrderButtonLogic
+					X: 62
+					Y: 0-24
+					Width: 30
+					Height: 25
+					Font: Bold
+					TooltipText: Place Beacon
+					TooltipContainer: TOOLTIP_CONTAINER
+					Children:
+						Image@ICON:
+							X: 7
+							Y: 5
+							ImageCollection: order-icons
+				Button@SELL_BUTTON:
+					Logic: SellOrderButtonLogic
+					X: 102
+					Y: 0-24
+					Width: 30
+					Height: 25
+					Font: Bold
+					TooltipText: Sell
+					TooltipContainer: TOOLTIP_CONTAINER
+					Children:
+						Image@ICON:
+							X: 7
+							Y: 5
+							ImageCollection: order-icons
+				Button@REPAIR_BUTTON:
+					Logic: RepairOrderButtonLogic
+					X: 142
+					Y: 0-24
+					Width: 30
+					Height: 25
+					Font: Bold
+					TooltipText: Repair
+					TooltipContainer: TOOLTIP_CONTAINER
+					Children:
+						Image@ICON:
+							X: 7
+							Y: 5
+							ImageCollection: order-icons
+				Background@RADAR:
+					X: 13
+					Y: 5
+					Width: 168
+					Height: 168
+					Background: panel-gray
+					Children:
+						Radar@RADAR_MINIMAP:
+							Logic: IngameRadarDisplayLogic
+							X: 1
+							Y: 1
+							Width: PARENT_RIGHT-2
+							Height: PARENT_BOTTOM-2
+							WorldInteractionController: INTERACTION_CONTROLLER
+							Children:
+								LogicTicker@RADAR_TICKER:
+						VqaPlayer@PLAYER:
+							X: 1
+							Y: 1
+							Width: PARENT_RIGHT-2
+							Height: PARENT_BOTTOM-2
+							Skippable: false
+				Background@POWERBAR_PANEL:
+					Logic: IngamePowerBarLogic
+					X: 4
+					Y: 5
+					Width: 10
+					Height: 168
+					Background: panel-black
+					Children:
+						ResourceBar@POWERBAR:
+							X: 1
+							Y: 1
+							Width: PARENT_RIGHT-2
+							Height: PARENT_BOTTOM-2
+							TooltipContainer: TOOLTIP_CONTAINER
+							TooltipTemplate: SIMPLE_TOOLTIP
+							IndicatorImage: indicator-left
+				Background@SILOBAR_PANEL:
+					Logic: IngameSiloBarLogic
+					X: 180
+					Y: 5
+					Width: 10
+					Height: 168
+					Background: panel-black
+					Children:
+						ResourceBar@SILOBAR:
+							X: 1
+							Y: 1
+							Width: PARENT_RIGHT-2
+							Height: PARENT_BOTTOM-2
+							TooltipContainer: TOOLTIP_CONTAINER
+							TooltipTemplate: SIMPLE_TOOLTIP
+							IndicatorImage: indicator-right
+				LabelWithTooltip@CASH:
+					Logic: IngameCashCounterLogic
+					Y: 170
+					Width: PARENT_RIGHT
+					Height: 25
+					Align: Center
+					Font: Bold
+					Text: ${0}
+				Container@PRODUCTION_TYPES:
+					X: 12
+					Y: 197
+					Width: 170
+					Height: 30
+					Children:
+						ProductionTypeButton@BUILDING:
+							Width: 30
+							Height: 30
+							TooltipText: Buildings
+							TooltipContainer: TOOLTIP_CONTAINER
+							ProductionGroup: Building
+							HotkeyName: ProductionTypeBuildingKey
+							Children:
+								Image@ICON:
+									X: 7
+									Y: 7
+									ImageCollection: production-icons
+						ProductionTypeButton@DEFENCE:
+							X: 35
+							Width: 30
+							Height: 30
+							TooltipText: Support
+							TooltipContainer: TOOLTIP_CONTAINER
+							ProductionGroup: Defence
+							HotkeyName: ProductionTypeDefenseKey
+							Children:
+								Image@ICON:
+									X: 7
+									Y: 7
+									ImageCollection: production-icons
+						ProductionTypeButton@INFANTRY:
+							X: 70
+							Width: 30
+							Height: 30
+							TooltipText: Infantry
+							TooltipContainer: TOOLTIP_CONTAINER
+							ProductionGroup: Infantry
+							HotkeyName: ProductionTypeInfantryKey
+							Children:
+								Image@ICON:
+									X: 7
+									Y: 7
+									ImageCollection: production-icons
+						ProductionTypeButton@VEHICLE:
+							X: 105
+							Width: 30
+							Height: 30
+							TooltipText: Vehicles
+							TooltipContainer: TOOLTIP_CONTAINER
+							ProductionGroup: Vehicle
+							HotkeyName: ProductionTypeVehicleKey
+							Children:
+								Image@ICON:
+									X: 7
+									Y: 7
+									ImageCollection: production-icons
+						ProductionTypeButton@AIRCRAFT:
+							X: 140
+							Width: 30
+							Height: 30
+							TooltipText: Aircraft
+							TooltipContainer: TOOLTIP_CONTAINER
+							ProductionGroup: Aircraft
+							HotkeyName: ProductionTypeAircraftKey
+							Children:
+								Image@ICON:
+									X: 7
+									Y: 7
+									ImageCollection: production-icons
+		Container@PRODUCTION_BACKGROUND:
+			X: WINDOW_RIGHT - 204
+			Y: 287
+			Children:
+				Background@ICON_TEMPLATE:
+					Width: 66
+					Height: 50
+					Background: panel-black
+		ProductionPalette@PRODUCTION_PALETTE:
+			X: WINDOW_RIGHT - 203
+			Y: 288
+			TooltipContainer: TOOLTIP_CONTAINER
+			ReadyText: Ready
+			HoldText: On Hold
+		ProductionTabs@PRODUCTION_TABS:
+			Logic: ProductionTabsLogic
+			PaletteWidget: PRODUCTION_PALETTE
+			TypesContainer: PRODUCTION_TYPES
+			BackgroundContainer: PRODUCTION_BACKGROUND
+			X: WINDOW_RIGHT - 204
+			Y: 268
+			Width: 194
+			Height: 20
+
+Background@FMVPLAYER:
+	Width: WINDOW_RIGHT
+	Height: WINDOW_BOTTOM
+	Background: panel-allblack
+	Children:
+		VqaPlayer@PLAYER:
+			X: 0
+			Y: 0
+			Width: WINDOW_RIGHT
+			Height: WINDOW_BOTTOM

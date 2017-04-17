@@ -1,0 +1,1391 @@
+ABAN01:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: WS Logging Company
+	Building:
+		Footprint: xx xx xx xx xx xx
+		Dimensions: 2, 6
+	Armor:
+		Type: wood
+	Health:
+		HP: 600
+	EditorTilesetFilter:
+		ExcludeTilesets: TEMPERATE
+	ThrowsShrapnel@SMALL:
+		Pieces: 5, 9
+	ThrowsShrapnel@LARGE:
+		Pieces: 2, 4
+
+ABAN02:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Panullo Hacienda
+	Building:
+		Footprint: xxxxx xxxxx xxxxx
+		Dimensions: 5, 3
+	Armor:
+		Type: heavy
+	Health:
+		HP: 600
+	EditorTilesetFilter:
+		ExcludeTilesets: TEMPERATE
+	ThrowsShrapnel@SMALL:
+		Pieces: 5, 9
+	ThrowsShrapnel@LARGE:
+		Pieces: 2, 4
+
+ABAN03:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Abandoned Factory
+	Building:
+		Footprint: xx xx xx xx xx
+		Dimensions: 2, 5
+	Armor:
+		Type: wood
+	Health:
+		HP: 500
+	EditorTilesetFilter:
+		ExcludeTilesets: TEMPERATE
+	ThrowsShrapnel@SMALL:
+		Pieces: 5, 9
+	ThrowsShrapnel@LARGE:
+		Pieces: 2, 4
+
+ABAN04:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: City Hall
+	Building:
+		Footprint: xxxx xxxx
+		Dimensions: 4, 2
+	Armor:
+		Type: heavy
+	Health:
+		HP: 400
+	EditorTilesetFilter:
+		ExcludeTilesets: TEMPERATE
+	ThrowsShrapnel@SMALL:
+		Pieces: 4, 7
+	ThrowsShrapnel@LARGE:
+		Pieces: 2, 3
+
+ABAN05:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Hunting Lodge
+	Building:
+		Footprint: xxx xxx
+		Dimensions: 3, 2
+	Armor:
+		Type: wood
+	Health:
+		HP: 500
+	EditorTilesetFilter:
+		ExcludeTilesets: TEMPERATE
+
+ABAN06:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Local Inn & Lodging
+	Building:
+		Footprint: xx xx
+		Dimensions: 2, 2
+	Armor:
+		Type: wood
+	Health:
+		HP: 500
+	EditorTilesetFilter:
+		ExcludeTilesets: TEMPERATE
+
+ABAN07:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Church
+	Building:
+		Footprint: xx xx
+		Dimensions: 2, 2
+	Armor:
+		Type: heavy
+	Health:
+		HP: 350
+	EditorTilesetFilter:
+		ExcludeTilesets: TEMPERATE
+
+ABAN08:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Abandoned Warehouse
+	Building:
+		Footprint: xx xx
+		Dimensions: 2, 2
+	Armor:
+		Type: heavy
+	Health:
+		HP: 500
+	EditorTilesetFilter:
+		ExcludeTilesets: TEMPERATE
+
+ABAN09:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Tall's Residence
+	Building:
+		Footprint: xx xx
+		Dimensions: 2, 2
+	Armor:
+		Type: heavy
+	Health:
+		HP: 350
+	EditorTilesetFilter:
+		ExcludeTilesets: TEMPERATE
+
+ABAN10:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Denzil's Last Chance Motel
+	Building:
+		Footprint: xx xx
+		Dimensions: 2, 2
+	Armor:
+		Type: wood
+	Health:
+		HP: 500
+	EditorTilesetFilter:
+		ExcludeTilesets: TEMPERATE
+
+ABAN11:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Miele Manor
+	Building:
+		Footprint: xx xx
+		Dimensions: 2, 2
+	Armor:
+		Type: wood
+	Health:
+		HP: 400
+	EditorTilesetFilter:
+		ExcludeTilesets: TEMPERATE
+
+ABAN12:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Kettler's Place
+	Building:
+		Footprint: xx xx
+		Dimensions: 2, 2
+	Armor:
+		Type: wood
+	Health:
+		HP: 400
+	EditorTilesetFilter:
+		ExcludeTilesets: TEMPERATE
+
+ABAN13:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Long's Home
+	Building:
+		Footprint: x
+		Dimensions: 1, 1
+	Armor:
+		Type: wood
+	Health:
+		HP: 400
+	EditorTilesetFilter:
+		ExcludeTilesets: TEMPERATE
+
+ABAN14:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Local Store
+	Building:
+		Footprint: x
+		Dimensions: 1, 1
+	Armor:
+		Type: heavy
+	Health:
+		HP: 300
+	EditorTilesetFilter:
+		ExcludeTilesets: TEMPERATE
+
+ABAN15:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Adam's House
+	Building:
+		Footprint: x
+		Dimensions: 1, 1
+	Armor:
+		Type: heavy
+	Health:
+		HP: 400
+	EditorTilesetFilter:
+		ExcludeTilesets: TEMPERATE
+
+ABAN16:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Gas Station
+	Building:
+		Footprint: xx xx
+		Dimensions: 2, 2
+	Armor:
+		Type: wood
+	Health:
+		HP: 400
+	EditorTilesetFilter:
+		ExcludeTilesets: TEMPERATE
+
+ABAN17:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Gas Pumps
+	Building:
+		Footprint: x
+		Dimensions: 1, 1
+	Armor:
+		Type: wood
+	Health:
+		HP: 400
+	EditorTilesetFilter:
+		ExcludeTilesets: TEMPERATE
+
+ABAN18:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Gas Station Sign
+	Building:
+		Footprint: x
+		Dimensions: 1, 1
+	Armor:
+		Type: wood
+	Health:
+		HP: 400
+	EditorTilesetFilter:
+		ExcludeTilesets: TEMPERATE
+
+AMMOCRAT:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Ammo Crates
+	Building:
+		Footprint: x
+		Dimensions: 1, 1
+	Armor:
+		Type: none
+	Health:
+		HP: 1
+	RenderSprites:
+		Palette: player
+
+BBOARD01:
+	Inherits: ^CivBillboard
+	Tooltip:
+		Name: Eat at Rade's Roadhouse
+
+BBOARD02:
+	Inherits: ^CivBillboard
+	Tooltip:
+		Name: Drink YEO-CA Cola!
+
+BBOARD03:
+	Inherits: ^CivBillboard
+	Tooltip:
+		Name: Hamburgers $.99
+
+BBOARD04:
+	Inherits: ^CivBillboard
+	Tooltip:
+		Name: Visit Scenic Las Vegas
+
+BBOARD05:
+	Inherits: ^CivBillboard
+	Tooltip:
+		Name: Rooms $29 a nite
+
+BBOARD06:
+	Inherits: ^CivBillboard
+	Tooltip:
+		Name: Kaspm's Tiberium Warhouse
+	Building:
+		Footprint: x x
+		Dimensions: 1, 2
+
+BBOARD07:
+	Inherits: ^CivBillboard
+	Tooltip:
+		Name: Alkaline's Battery Superstore
+	Building:
+		Footprint: x x
+		Dimensions: 1, 2
+
+BBOARD08:
+	Inherits: ^CivBillboard
+	Tooltip:
+		Name: Alex-gators petshop just ahead!
+	Building:
+		Footprint: x x
+		Dimensions: 1, 2
+
+BBOARD09:
+	Inherits: ^CivBillboard
+	Tooltip:
+		Name: TacticX games rock!
+
+BBOARD10:
+	Inherits: ^CivBillboard
+	Tooltip:
+		Name: WW Surf and Turf hits the spot!
+
+BBOARD11:
+	Inherits: ^CivBillboard
+	Tooltip:
+		Name: Only 11 miles to Zydeko's cafe!
+
+BBOARD12:
+	Inherits: ^CivBillboard
+	Tooltip:
+		Name: No escape from Archer's Asylum!
+
+BBOARD13:
+	Inherits: ^CivBillboard
+	Tooltip:
+		Name: Stop in at Hewitt's hair salon
+
+BBOARD14:
+	Inherits: ^CivBillboard
+	Tooltip:
+		Name: Billy Bob's Harvester school
+	Building:
+		Footprint: xx
+		Dimensions: 2, 1
+
+BBOARD15:
+	Inherits: ^CivBillboard
+	Tooltip:
+		Name: Pannullo's hacienda es bueno
+	Building:
+		Footprint: xx
+		Dimensions: 2, 1
+
+BBOARD16:
+	Inherits: ^CivBillboard
+	Tooltip:
+		Name: Join GDI: We save lives.
+	Building:
+		Footprint: xx
+		Dimensions: 2, 1
+
+CA0001:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Rade's Roadhouse
+	Building:
+		Footprint: xxx xxx xxx
+		Dimensions: 3, 3
+	Armor:
+		Type: heavy
+	Health:
+		HP: 400
+	ThrowsShrapnel@SMALL:
+		Pieces: 5, 9
+	ThrowsShrapnel@LARGE:
+		Pieces: 2, 4
+
+CA0002:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Sandberg and Son's
+	Building:
+		Footprint: xxx xxx xxx
+		Dimensions: 3, 3
+	Armor:
+		Type: heavy
+	Health:
+		HP: 400
+	ThrowsShrapnel@SMALL:
+		Pieces: 5, 9
+	ThrowsShrapnel@LARGE:
+		Pieces: 2, 4
+
+CA0003:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Temp Housing
+	Building:
+		Footprint: xx xx
+		Dimensions: 2, 2
+	Armor:
+		Type: light
+	Health:
+		HP: 300
+
+CA0004:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Waystation
+	Building:
+		Footprint: xx xx
+		Dimensions: 2, 2
+	Armor:
+		Type: light
+	Health:
+		HP: 300
+
+CA0005:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Ferbie's 4 Sale
+	Building:
+		Footprint: x x
+		Dimensions: 1, 2
+	Armor:
+		Type: light
+	Health:
+		HP: 300
+
+CA0006:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Deluxe Accomodations
+	Building:
+		Footprint: x x
+		Dimensions: 1, 2
+	Armor:
+		Type: heavy
+	Health:
+		HP: 300
+
+CA0007:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Field Generator
+	Building:
+		Footprint: x x
+		Dimensions: 1, 2
+	Armor:
+		Type: light
+	Health:
+		HP: 400
+
+CA0008:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Subterranean Dwelling
+	Building:
+		Footprint: xx xx xx
+		Dimensions: 2, 3
+	Armor:
+		Type: heavy
+	Health:
+		HP: 400
+
+CA0009:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Subterranean Dwelling
+	Building:
+		Footprint: xx xx xx
+		Dimensions: 2, 3
+	Armor:
+		Type: heavy
+	Health:
+		HP: 400
+
+CA0010:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Leary Traveller Inn
+	Building:
+		Footprint: xx xx
+		Dimensions: 2, 2
+	Armor:
+		Type: heavy
+	Health:
+		HP: 300
+
+CA0011:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Water Tank
+	Building:
+		Footprint: x x
+		Dimensions: 1, 2
+	Armor:
+		Type: heavy
+	Health:
+		HP: 200
+
+CA0012:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Greenhouse
+	Building:
+		Footprint: x x
+		Dimensions: 1, 2
+	Armor:
+		Type: light
+	Health:
+		HP: 100
+
+CA0013:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Water Purifier
+	Building:
+		Footprint: xx
+		Dimensions: 2, 1
+	Armor:
+		Type: heavy
+	Health:
+		HP: 300
+
+CA0014:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Observation Tower
+	Building:
+		Footprint: x
+		Dimensions: 1, 1
+	Armor:
+		Type: heavy
+	Health:
+		HP: 300
+
+CA0015:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Port-A-Shack
+	Building:
+		Footprint: x
+		Dimensions: 1, 1
+	Armor:
+		Type: light
+	Health:
+		HP: 300
+
+CA0016:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Port-A-Shack Deluxe
+	Building:
+		Footprint: x
+		Dimensions: 1, 1
+	Armor:
+		Type: light
+	Health:
+		HP: 300
+
+CA0017:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Energy Transformer
+	Building:
+		Footprint: x
+		Dimensions: 1, 1
+	Armor:
+		Type: heavy
+	Health:
+		HP: 300
+
+CA0018:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Solar Panel
+	Building:
+		Footprint: x x
+		Dimensions: 1, 2
+	Armor:
+		Type: light
+	Health:
+		HP: 200
+
+CA0019:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Solar Panel
+	Building:
+		Footprint: x x
+		Dimensions: 1, 2
+	Armor:
+		Type: light
+	Health:
+		HP: 200
+
+CA0020:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Solar Panel
+	Building:
+		Footprint: x x
+		Dimensions: 1, 2
+	Armor:
+		Type: light
+	Health:
+		HP: 200
+
+CA0021:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Solar Panel
+	Building:
+		Footprint: x x
+		Dimensions: 1, 2
+	Armor:
+		Type: light
+	Health:
+		HP: 200
+
+CAARAY:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Civilian Array
+	Building:
+		Footprint: xx xx
+		Dimensions: 2, 2
+	Armor:
+		Type: concrete
+	Health:
+		HP: 400
+	RenderSprites:
+		Palette: player
+	ThrowsShrapnel@SMALL:
+		Pieces: 5, 7
+	ThrowsShrapnel@LARGE:
+		Pieces: 2, 4
+
+CAARMR:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Civilian Armory
+	Building:
+		Footprint: xxxx xxxx xxxx xxxx
+		Dimensions: 4, 4
+	Armor:
+		Type: concrete
+	Health:
+		HP: 800
+	RenderSprites:
+		Palette: player
+	ProvidesPrerequisite:
+		Prerequisite: barracks.upgraded
+	Capturable:
+	ThrowsShrapnel@SMALL:
+		Pieces: 6, 9
+	ThrowsShrapnel@LARGE:
+		Pieces: 3, 4
+
+CACRSH01:
+	Inherits: ^Decoration
+	Tooltip:
+		Name: Crash Site
+	Armor:
+		Type: concrete
+	Health:
+		HP: 400
+
+CACRSH02:
+	Inherits: CACRSH01
+
+CACRSH03:
+	Inherits: CACRSH01
+
+CACRSH04:
+	Inherits: CACRSH01
+
+CACRSH05:
+	Inherits: CACRSH01
+
+CAHOSP:
+	Inherits: ^BasicBuilding
+	Tooltip:
+		Name: Civilian Hospital
+	Building:
+		Footprint: xxx xxx xxx xxx
+		Dimensions: 3, 4
+	Armor:
+		Type: concrete
+	Health:
+		HP: 800
+	RenderSprites:
+		Palette: player
+	Capturable:
+	CaptureNotification:
+	ProvidesPrerequisite@BuildingName:
+	ThrowsShrapnel@SMALL:
+		Pieces: 5, 9
+	ThrowsShrapnel@LARGE:
+		Pieces: 2, 4
+
+CAPYR01:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Pyramid
+	Building:
+		Footprint: xx xx
+		Dimensions: 2, 2
+	Armor:
+		Type: concrete
+	Health:
+		HP: 400
+	EditorTilesetFilter:
+		ExcludeTilesets: SNOW
+
+CAPYR02:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Pyramid
+	Building:
+		Footprint: xxxx xxxx xxxx xxxx
+		Dimensions: 4, 4
+	Armor:
+		Type: concrete
+	Health:
+		HP: 400
+	EditorTilesetFilter:
+		ExcludeTilesets: SNOW
+	ThrowsShrapnel@SMALL:
+		Pieces: 6, 9
+	ThrowsShrapnel@LARGE:
+		Pieces: 3, 4
+
+CAPYR03:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Pyramid
+	Building:
+		Footprint: xxxx xxxx xxxx xxxx
+		Dimensions: 4, 4
+	Armor:
+		Type: concrete
+	Health:
+		HP: 400
+	EditorTilesetFilter:
+		ExcludeTilesets: SNOW
+	ThrowsShrapnel@SMALL:
+		Pieces: 6, 9
+	ThrowsShrapnel@LARGE:
+		Pieces: 3, 4
+
+CITY01:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Connelly Court Apts.
+	Building:
+		Footprint: xxxx xxxx
+		Dimensions: 4, 2
+	Armor:
+		Type: wood
+	Health:
+		HP: 400
+	EditorTilesetFilter:
+		RequireTilesets: TEMPERATE
+	ThrowsShrapnel@SMALL:
+		Pieces: 5, 9
+	ThrowsShrapnel@LARGE:
+		Pieces: 2, 4
+
+CITY02:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Lightner's Luxury Suites
+	Building:
+		Footprint: xx xx xx
+		Dimensions: 2, 3
+	Armor:
+		Type: heavy
+	Health:
+		HP: 700
+	EditorTilesetFilter:
+		RequireTilesets: TEMPERATE
+	ThrowsShrapnel@SMALL:
+		Pieces: 5, 9
+	ThrowsShrapnel@LARGE:
+		Pieces: 2, 4
+
+CITY03:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Office Building
+	Building:
+		Footprint: xxx xxx
+		Dimensions: 3, 2
+	Armor:
+		Type: heavy
+	Health:
+		HP: 500
+	EditorTilesetFilter:
+		RequireTilesets: TEMPERATE
+	ThrowsShrapnel@SMALL:
+		Pieces: 5, 9
+	ThrowsShrapnel@LARGE:
+		Pieces: 2, 4
+
+CITY04:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Westwood Stock Exchange
+	Building:
+		Footprint: xxx xxx
+		Dimensions: 3, 2
+	Armor:
+		Type: heavy
+	Health:
+		HP: 600
+	EditorTilesetFilter:
+		RequireTilesets: TEMPERATE
+	ThrowsShrapnel@SMALL:
+		Pieces: 5, 9
+	ThrowsShrapnel@LARGE:
+		Pieces: 2, 4
+
+CITY05:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Daily Sun Times
+	Building:
+		Footprint: xxx xxx
+		Dimensions: 3, 2
+	Armor:
+		Type: heavy
+	Health:
+		HP: 600
+	EditorTilesetFilter:
+		RequireTilesets: TEMPERATE
+	ThrowsShrapnel@SMALL:
+		Pieces: 5, 9
+	ThrowsShrapnel@LARGE:
+		Pieces: 2, 4
+
+CITY06:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: YEO-CA Cola Corp.
+	Building:
+		Footprint: xxxx xxxx
+		Dimensions: 4, 2
+	Armor:
+		Type: concrete
+	Health:
+		HP: 500
+	EditorTilesetFilter:
+		RequireTilesets: TEMPERATE
+	ThrowsShrapnel@SMALL:
+		Pieces: 7, 9
+	ThrowsShrapnel@LARGE:
+		Pieces: 3, 4
+
+CITY07:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Urban Housing
+	Building:
+		Footprint: xxxx xxxx
+		Dimensions: 4, 2
+	Armor:
+		Type: wood
+	Health:
+		HP: 400
+	EditorTilesetFilter:
+		RequireTilesets: TEMPERATE
+	ThrowsShrapnel@SMALL:
+		Pieces: 7, 9
+	ThrowsShrapnel@LARGE:
+		Pieces: 3, 4
+
+CITY08:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Yee's Discount Liquor
+	Building:
+		Footprint: xx xx
+		Dimensions: 2, 2
+	Armor:
+		Type: heavy
+	Health:
+		HP: 300
+	EditorTilesetFilter:
+		RequireTilesets: TEMPERATE
+
+CITY09:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Abandoned Warehouse
+	Building:
+		Footprint: xx xx
+		Dimensions: 2, 2
+	Armor:
+		Type: wood
+	Health:
+		HP: 400
+	EditorTilesetFilter:
+		RequireTilesets: TEMPERATE
+
+CITY10:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Urban Storefront
+	Building:
+		Footprint: xx xx
+		Dimensions: 2, 2
+	Armor:
+		Type: heavy
+	Health:
+		HP: 300
+	EditorTilesetFilter:
+		RequireTilesets: TEMPERATE
+
+CITY11:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Ambrose Lounge
+	Building:
+		Footprint: xx xx
+		Dimensions: 2, 2
+	Armor:
+		Type: heavy
+	Health:
+		HP: 500
+	EditorTilesetFilter:
+		RequireTilesets: TEMPERATE
+
+CITY12:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Bostic Tower
+	Building:
+		Footprint: xx xx
+		Dimensions: 2, 2
+	Armor:
+		Type: concrete
+	Health:
+		HP: 600
+	EditorTilesetFilter:
+		RequireTilesets: TEMPERATE
+
+CITY13:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Hewitt Hair Salon
+	Building:
+		Footprint: xx xx
+		Dimensions: 2, 2
+	Armor:
+		Type: wood
+	Health:
+		HP: 500
+	EditorTilesetFilter:
+		RequireTilesets: TEMPERATE
+
+CITY14:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Business Offices
+	Building:
+		Footprint: x
+		Dimensions: 1, 1
+	Armor:
+		Type: heavy
+	Health:
+		HP: 600
+	EditorTilesetFilter:
+		RequireTilesets: TEMPERATE
+
+CITY15:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: 2nd National Bank
+	Building:
+		Footprint: xxxx xxxx
+		Dimensions: 4, 2
+	Armor:
+		Type: heavy
+	Health:
+		HP: 500
+	EditorTilesetFilter:
+		RequireTilesets: TEMPERATE
+	ThrowsShrapnel@SMALL:
+		Pieces: 7, 9
+	ThrowsShrapnel@LARGE:
+		Pieces: 3, 4
+
+CITY16:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Highrise Hotel
+	Building:
+		Footprint: xxxx xxxx
+		Dimensions: 4, 2
+	Armor:
+		Type: wood
+	Health:
+		HP: 500
+	EditorTilesetFilter:
+		RequireTilesets: TEMPERATE
+	ThrowsShrapnel@SMALL:
+		Pieces: 7, 9
+	ThrowsShrapnel@LARGE:
+		Pieces: 3, 4
+
+CITY17:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: The Projects
+	Building:
+		Footprint: xxxx xxxx xxxx
+		Dimensions: 4, 3
+	Armor:
+		Type: wood
+	Health:
+		HP: 300
+	EditorTilesetFilter:
+		RequireTilesets: TEMPERATE
+	ThrowsShrapnel@SMALL:
+		Pieces: 7, 9
+	ThrowsShrapnel@LARGE:
+		Pieces: 3, 4
+
+CITY18:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Archer Asylum
+	Building:
+		Footprint: xxx xxx xxx xxx xxx
+		Dimensions: 3, 5
+	Armor:
+		Type: concrete
+	Health:
+		HP: 600
+	EditorTilesetFilter:
+		RequireTilesets: TEMPERATE
+	ThrowsShrapnel@SMALL:
+		Pieces: 8, 12
+	ThrowsShrapnel@LARGE:
+		Pieces: 5, 7
+
+CITY19:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Fill'er Up-Pump'N'Go
+	Building:
+		Footprint: xx xx
+		Dimensions: 2, 2
+	Armor:
+		Type: wood
+	Health:
+		HP: 500
+	EditorTilesetFilter:
+		RequireTilesets: TEMPERATE
+
+CITY20:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Gas Pump
+	Building:
+		Footprint: x
+		Dimensions: 1, 1
+	Armor:
+		Type: wood
+	Health:
+		HP: 250
+	EditorTilesetFilter:
+		RequireTilesets: TEMPERATE
+
+CITY21:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Gas Station Sign
+	Building:
+		Footprint: x
+		Dimensions: 1, 1
+	Armor:
+		Type: none
+	Health:
+		HP: 100
+	EditorTilesetFilter:
+		RequireTilesets: TEMPERATE
+
+CITY22:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Church
+	Building:
+		Footprint: xx xx
+		Dimensions: 2, 2
+	Armor:
+		Type: none
+	Health:
+		HP: 100
+	EditorTilesetFilter:
+		RequireTilesets: TEMPERATE
+
+CTDAM:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Hydroelectric Dam
+	Building:
+		Footprint: xx xx xx xx xx
+		Dimensions: 2, 5
+	Power:
+		Amount: 200
+	PowerTooltip:
+	Armor:
+		Type: heavy
+	Health:
+		HP: 1000
+	ProvidesPrerequisite:
+		Prerequisite: anypower
+	EditorTilesetFilter:
+		ExcludeTilesets: SNOW
+	WithIdleOverlay@LIGHTS:
+		Sequence: idle-lights
+	WithIdleOverlay@WATER:
+		Sequence: idle-water
+	ThrowsShrapnel@SMALL:
+		Pieces: 5, 9
+	ThrowsShrapnel@LARGE:
+		Pieces: 2, 4
+
+CTVEGA:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Vega's Pyramid
+	Building:
+		Footprint: xxxx xxxx xxxx xxxx
+		Dimensions: 4, 4
+	Armor:
+		Type: none
+	Health:
+		HP: 100
+	EditorTilesetFilter:
+		ExcludeTilesets: SNOW
+	ThrowsShrapnel@SMALL:
+		Pieces: 7, 9
+	ThrowsShrapnel@LARGE:
+		Pieces: 3, 4
+
+GAKODK:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: GDI Kodiak
+	Building:
+		Footprint: xxxx xxxx
+		Dimensions: 4, 2
+	Armor:
+		Type: heavy
+	Health:
+		HP: 1500
+	RenderSprites:
+		Palette: player
+	WithIdleOverlay@LARGELIGHTS:
+		Sequence: large-lights
+	WithIdleOverlay@SMALLLIGHT:
+		Sequence: small-light
+	WithIdleOverlay@SMALLLIGHTS:
+		Sequence: small-lights
+
+GAOLDCC1:
+	Inherits: ^OldBase
+	Tooltip:
+		Name: Old Construction Yard
+
+GAOLDCC2:
+	Inherits: ^OldBase
+	Tooltip:
+		Name: Old Temple
+
+GAOLDCC3:
+	Inherits: ^OldBase
+	Tooltip:
+		Name: Old Weapons Factory
+
+GAOLDCC4:
+	Inherits: ^OldBase
+	Tooltip:
+		Name: Old Refinery
+
+GAOLDCC5:
+	Inherits: ^OldBase
+	Tooltip:
+		Name: Old Advanced Power Plant
+
+GAOLDCC6:
+	Inherits: ^OldBase
+	Tooltip:
+		Name: Old Silos
+
+GASAND:
+	Inherits: ^Wall
+	Buildable:
+		Queue: Defense
+		BuildPaletteOrder: 1000
+		Prerequisites: ~disabled
+		Description: Stops infantry and light vehicles.\nCan be crushed by tanks.
+	SoundOnDamageTransition:
+		DamagedSounds: sandbag1.aud
+		DestroyedSounds: sandbag1.aud
+	Valued:
+		Cost: 25
+	CustomSellValue:
+		Value: 0
+	Tooltip:
+		Name: Sandbags
+	Health:
+		HP: 250
+	Armor:
+		Type: Light
+	LineBuild:
+		NodeTypes: sandbags
+	LineBuildNode:
+		Types: sandbags
+	WithWallSpriteBody:
+		Type: sandbags
+
+GASPOT:
+	Inherits: ^Building
+	Valued:
+		Cost: 300
+	Tooltip:
+		Name: Light Tower
+	Building:
+		Footprint: x
+		Dimensions: 1, 1
+	Selectable:
+		Bounds: 48, 30, 0, -4
+	Power:
+		Amount: -10
+	Armor:
+		Type: wood
+	Health:
+		HP: 400
+	RevealsShroud:
+		Range: 6c0
+		MaxHeightDelta: 3
+	WithIdleOverlay@LIGHTS:
+		Sequence: idle-lights
+	SelectionDecorations:
+		VisualBounds: 48, 82, 0, -25
+
+GALITE:
+	Inherits: ^Building
+	Valued:
+		Cost: 200
+	Tooltip:
+		Name: Light Post
+	RenderSprites:
+		Palette: terraindecoration
+	-WithMakeAnimation:
+	-WithDeathAnimation:
+	Health:
+		HP: 600
+	Armor:
+		Type: Wood
+	RevealsShroud:
+		Range: 2c0
+		MaxHeightDelta: 3
+	Power:
+		Amount: 0
+# TODO: should use terrain lighting instead, depends on https://github.com/OpenRA/OpenRA/issues/3605
+	WithIdleOverlay@LIGHTING:
+		Sequence: lighting
+		Palette: alpha
+	Selectable:
+		Bounds: 24, 24, 0, -4
+	SelectionDecorations:
+		VisualBounds: 25, 35, 0, -12
+	-Cloak@EXTERNALCLOAK:
+	-ExternalCondition@CLOAKGENERATOR:
+	-ExternalCondition@CRATE-CLOAK:
+
+TSTLAMP:
+	Inherits: GALITE
+	RenderSprites:
+		Image: galite
+	Tooltip:
+
+GAICBM:
+	Inherits: ^Building
+	Valued:
+		Cost: 800
+	-AcceptsSupplies:
+	Tooltip:
+		Name: Deployed ICBM
+	-GivesBuildableArea:
+	Health:
+		HP: 400
+	Armor:
+		Type: Wood
+	RevealsShroud:
+		Range: 5c0
+		MaxHeightDelta: 3
+	Transforms:
+		IntoActor: icbm
+		Offset: 1,1
+		Facing: 96
+		TransformSounds: place2.aud
+		NoTransformSounds:
+	-WithDeathAnimation:
+
+NAMNTK:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: NOD Montauk
+	Building:
+		Footprint: x x x
+		Dimensions: 1, 3
+	Armor:
+		Type: heavy
+	Health:
+		HP: 1500
+	RenderSprites:
+		Palette: player
+	WithIdleOverlay@LIGHTS:
+		Sequence: idle-lights
+
+NTPYRA:
+	Inherits: ^CivBuilding
+	Tooltip:
+		Name: Nod Pyramid
+	Building:
+		Footprint: xxxx xxxx xxxx xxxx
+		Dimensions: 4, 4
+	Power:
+		Amount: -40
+	Armor:
+		Type: heavy
+	Health:
+		HP: 1500
+	RenderSprites:
+		Palette: player
+	WithIdleOverlay@LIGHTS:
+		Sequence: idle-lights
+	ThrowsShrapnel@SMALL:
+		Pieces: 7, 9
+	ThrowsShrapnel@LARGE:
+		Pieces: 3, 5
+
+UFO:
+	Inherits: ^CivBuilding
+	Building:
+		Dimensions: 6, 4
+		Footprint: xxxxxx xxxxxx xxxxxx xxxxxx
+	RenderSprites:
+		Palette: terraindecoration
+	Selectable:
+		Bounds: 144, 72, 0, 0
+	Tooltip:
+		Name: Scrin Ship
+	Health:
+		HP: 1000
+	Armor:
+		Type: Heavy
+	EditorTilesetFilter:
+		RequireTilesets: TEMPERATE
+	SelectionDecorations:
+		VisualBounds: 144, 72, 0, 0
+	ThrowsShrapnel@SMALL:
+		Pieces: 9, 12
+	ThrowsShrapnel@LARGE:
+		Pieces: 6, 8

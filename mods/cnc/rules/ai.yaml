@@ -1,0 +1,366 @@
+Player:
+	HackyAI@Cabal:
+		Name: Cabal
+		MinimumExcessPower: 60
+		BuildingCommonNames:
+			ConstructionYard: fact
+			Refinery: proc
+			Power: nuke,nuk2
+			Barracks: pyle,hand
+			VehiclesFactory: weap,afld
+			Production: pyle,hand,weap,afld,hpad
+			Silo: silo
+		UnitsCommonNames:
+			Mcv: mcv
+		BuildingQueues: Building.Nod, Building.GDI
+		DefenseQueues: Defence.Nod, Defence.GDI
+		UnitQueues: Vehicle.Nod, Vehicle.GDI, Infantry.Nod, Infantry.GDI, Aircraft.Nod, Aircraft.GDI
+		BuildingLimits:
+			proc: 4
+			pyle: 3
+			hand: 3
+			hq: 1
+			weap: 3
+			afld: 3
+			hpad: 0
+			eye: 1
+			tmpl: 1
+			fix: 1
+			silo: 1
+		BuildingFractions:
+			proc: 20%
+			nuke: 9%
+			pyle: 5%
+			hand: 5%
+			hq: 4%
+			nuk2: 9%
+			weap: 9%
+			afld: 9%
+			gtwr: 5%
+			gun: 5%
+			atwr: 9%
+			obli: 7%
+			sam: 7%
+			eye: 1%
+			tmpl: 1%
+			silo: 0%
+			fix: 1%
+			hpad: 2%
+		UnitsToBuild:
+			e1: 65%
+			e2: 25%
+			e3: 40%
+			e4: 15%
+			e5: 15%
+			harv: 10%
+			bggy: 5%
+			bike: 40%
+			ltnk: 25%
+			ftnk: 10%
+			arty: 60%
+			stnk: 40%
+			jeep: 5%
+			mtnk: 20%
+			msam: 40%
+			htnk: 50%
+			heli: 5%
+			orca: 5%
+		UnitLimits:
+			harv: 8
+		SquadSize: 15
+		SupportPowerDecision@Airstrike:
+			OrderName: AirstrikePowerInfoOrder
+			MinimumAttractiveness: 2000
+			Consideration@1:
+				Against: Enemy
+				Types: Vehicle, Infantry
+				Attractiveness: 1
+				TargetMetric: Value
+				CheckRadius: 2c0
+			Consideration@2:
+				Against: Ally
+				Types: Ground, Water
+				Attractiveness: -10
+				TargetMetric: Value
+				CheckRadius: 2c0
+		SupportPowerDecision@IonCannonPower:
+			OrderName: IonCannonPowerInfoOrder
+			MinimumAttractiveness: 1000
+			FineScanRadius: 2
+			Consideration@1:
+				Against: Enemy
+				Types: Air, Tank, Vehicle, Infantry, Water
+				Attractiveness: 2
+				TargetMetric: Value
+				CheckRadius: 2c0
+			Consideration@2:
+				Against: Enemy
+				Types: Structure
+				Attractiveness: 1
+				TargetMetric: Value
+				CheckRadius: 2c0
+			Consideration@3:
+				Against: Ally
+				Types: Ground, Water
+				Attractiveness: -10
+				TargetMetric: Value
+				CheckRadius: 3c0
+		SupportPowerDecision@NukePower:
+			OrderName: NukePowerInfoOrder
+			MinimumAttractiveness: 3000
+			Consideration@1:
+				Against: Enemy
+				Types: Structure
+				Attractiveness: 1
+				TargetMetric: Value
+				CheckRadius: 5c0
+			Consideration@2:
+				Against: Ally
+				Types: Air, Ground, Water
+				Attractiveness: -10
+				TargetMetric: Value
+				CheckRadius: 7c0
+	HackyAI@Watson:
+		Name: Watson
+		MinimumExcessPower: 60
+		BuildingCommonNames:
+			ConstructionYard: fact
+			Refinery: proc
+			Power: nuke,nuk2
+			Barracks: pyle,hand
+			VehiclesFactory: weap,afld
+			Production: pyle,hand,weap,afld,hpad
+			Silo: silo
+		UnitsCommonNames:
+			Mcv: mcv
+		BuildingQueues: Building.Nod, Building.GDI
+		DefenseQueues: Defence.Nod, Defence.GDI
+		UnitQueues: Vehicle.Nod, Vehicle.GDI, Infantry.Nod, Infantry.GDI, Aircraft.Nod, Aircraft.GDI
+		BuildingLimits:
+			proc: 4
+			pyle: 3
+			hand: 3
+			hq: 1
+			weap: 3
+			afld: 3
+			hpad: 2
+			eye: 1
+			tmpl: 1
+			fix: 1
+			silo: 1
+		BuildingFractions:
+			proc: 17%
+			nuke: 1%
+			pyle: 2%
+			hand: 2%
+			hq: 1%
+			nuk2: 18%
+			weap: 5%
+			afld: 5%
+			hpad: 4%
+			gtwr: 5%
+			gun: 5%
+			atwr: 9%
+			obli: 7%
+			eye: 1%
+			tmpl: 1%
+			sam: 7%
+			silo: 0%
+			fix: 1%
+		UnitsToBuild:
+			e1: 65%
+			e2: 30%
+			e3: 40%
+			e4: 30%
+			e5: 30%
+			harv: 10%
+			bggy: 10%
+			ftnk: 10%
+			arty: 40%
+			bike: 10%
+			heli: 10%
+			ltnk: 40%
+			stnk: 40%
+			orca: 10%
+			msam: 50%
+			htnk: 50%
+			jeep: 20%
+			mtnk: 50%
+		UnitLimits:
+			harv: 8
+		SquadSize: 15
+		SupportPowerDecision@Airstrike:
+			OrderName: AirstrikePowerInfoOrder
+			MinimumAttractiveness: 2000
+			Consideration@1:
+				Against: Enemy
+				Types: Vehicle, Infantry
+				Attractiveness: 1
+				TargetMetric: Value
+				CheckRadius: 2c0
+			Consideration@2:
+				Against: Ally
+				Types: Ground, Water
+				Attractiveness: -10
+				TargetMetric: Value
+				CheckRadius: 2c0
+		SupportPowerDecision@IonCannonPower:
+			OrderName: IonCannonPowerInfoOrder
+			MinimumAttractiveness: 1000
+			FineScanRadius: 2
+			Consideration@1:
+				Against: Enemy
+				Types: Air, Tank, Vehicle, Infantry, Water
+				Attractiveness: 2
+				TargetMetric: Value
+				CheckRadius: 2c0
+			Consideration@2:
+				Against: Enemy
+				Types: Structure
+				Attractiveness: 1
+				TargetMetric: Value
+				CheckRadius: 2c0
+			Consideration@3:
+				Against: Ally
+				Types: Ground, Water
+				Attractiveness: -10
+				TargetMetric: Value
+				CheckRadius: 3c0
+		SupportPowerDecision@NukePower:
+			OrderName: NukePowerInfoOrder
+			MinimumAttractiveness: 3000
+			Consideration@1:
+				Against: Enemy
+				Types: Structure
+				Attractiveness: 1
+				TargetMetric: Value
+				CheckRadius: 5c0
+			Consideration@2:
+				Against: Ally
+				Types: Air, Ground, Water
+				Attractiveness: -10
+				TargetMetric: Value
+				CheckRadius: 7c0
+	HackyAI@HAL9001:
+		Name: HAL 9001
+		MinimumExcessPower: 60
+		BuildingCommonNames:
+			ConstructionYard: fact
+			Refinery: proc
+			Power: nuke,nuk2
+			Barracks: pyle,hand
+			VehiclesFactory: weap,afld
+			Production: pyle,hand,weap,afld,hpad
+			Silo: silo
+		UnitsCommonNames:
+			Mcv: mcv
+		BuildingQueues: Building.Nod, Building.GDI
+		DefenseQueues: Defence.Nod, Defence.GDI
+		UnitQueues: Vehicle.Nod, Vehicle.GDI, Infantry.Nod, Infantry.GDI, Aircraft.Nod, Aircraft.GDI
+		BuildingLimits:
+			proc: 4
+			pyle: 4
+			hand: 4
+			hq: 1
+			weap: 4
+			afld: 4
+			hpad: 2
+			eye: 1
+			tmpl: 1
+			fix: 1
+			silo: 1
+		BuildingFractions:
+			proc: 17%
+			nuke: 10%
+			pyle: 7%
+			hand: 9%
+			hq: 1%
+			nuk2: 18%
+			weap: 8%
+			afld: 6%
+			hpad: 4%
+			gtwr: 5%
+			gun: 5%
+			atwr: 9%
+			obli: 7%
+			eye: 1%
+			tmpl: 1%
+			sam: 7%
+			silo: 0%
+			fix: 1%
+		UnitsToBuild:
+			e1: 65%
+			e2: 30%
+			e3: 40%
+			e4: 50%
+			e5: 50%
+			harv: 16%
+			bggy: 10%
+			bike: 10%
+			ltnk: 40%
+			arty: 20%
+			ftnk: 5%
+			stnk: 40%
+			mlrs: 5%
+			heli: 10%
+			jeep: 20%
+			apc: 10%
+			mtnk: 50%
+			msam: 50%
+			htnk: 50%
+			orca: 10%
+		UnitLimits:
+			harv: 8
+		SquadSize: 8
+		SupportPowerDecision@Airstrike:
+			OrderName: AirstrikePowerInfoOrder
+			MinimumAttractiveness: 2000
+			Consideration@1:
+				Against: Enemy
+				Types: Vehicle, Infantry
+				Attractiveness: 1
+				TargetMetric: Value
+				CheckRadius: 2c0
+			Consideration@2:
+				Against: Ally
+				Types: Ground, Water
+				Attractiveness: -10
+				TargetMetric: Value
+				CheckRadius: 2c0
+		SupportPowerDecision@IonCannonPower:
+			OrderName: IonCannonPowerInfoOrder
+			MinimumAttractiveness: 1000
+			FineScanRadius: 2
+			Consideration@1:
+				Against: Enemy
+				Types: Air, Tank, Vehicle, Infantry, Water
+				Attractiveness: 2
+				TargetMetric: Value
+				CheckRadius: 2c0
+			Consideration@2:
+				Against: Enemy
+				Types: Structure
+				Attractiveness: 1
+				TargetMetric: Value
+				CheckRadius: 2c0
+			Consideration@3:
+				Against: Ally
+				Types: Ground, Water
+				Attractiveness: -10
+				TargetMetric: Value
+				CheckRadius: 3c0
+		SupportPowerDecision@NukePower:
+			OrderName: NukePowerInfoOrder
+			MinimumAttractiveness: 3000
+			Consideration@1:
+				Against: Enemy
+				Types: Structure
+				Attractiveness: 1
+				TargetMetric: Value
+				CheckRadius: 5c0
+			Consideration@2:
+				Against: Ally
+				Types: Air, Ground, Water
+				Attractiveness: -10
+				TargetMetric: Value
+				CheckRadius: 7c0

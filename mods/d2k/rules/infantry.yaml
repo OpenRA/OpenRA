@@ -1,0 +1,273 @@
+light_inf:
+	Inherits: ^Infantry
+	Buildable:
+		Queue: Infantry
+		BuildPaletteOrder: 10
+		BuildDuration: 54
+		BuildDurationModifier: 40
+		Description: General-purpose infantry\n  Strong vs Infantry\n  Weak vs Vehicles, Artillery
+	Valued:
+		Cost: 50
+	Tooltip:
+		Name: Light Infantry
+	Health:
+		HP: 600
+	Mobile:
+		Speed: 43
+	Armament:
+		Weapon: LMG
+	AttackFrontal:
+	WithInfantryBody:
+		DefaultAttackSequence: shoot
+
+engineer:
+	Inherits: ^Infantry
+	Buildable:
+		Queue: Infantry
+		BuildPaletteOrder: 50
+		Prerequisites: upgrade.barracks, ~techlevel.medium
+		BuildDuration: 108
+		BuildDurationModifier: 40
+		Description: Infiltrates and captures enemy structures\n  Strong vs Buildings\n  Weak vs Everything
+	Valued:
+		Cost: 400
+	Tooltip:
+		Name: Engineer
+	Health:
+		HP: 500
+	RevealsShroud:
+		Range: 2c768
+	Mobile:
+		Speed: 31
+	EngineerRepair:
+	Captures:
+		CaptureTypes: building, husk
+		PlayerExperience: 50
+	-AutoTarget:
+	-RevealOnFire:
+	Voiced:
+		VoiceSet: EngineerVoice
+
+trooper:
+	Inherits: ^Infantry
+	Buildable:
+		Queue: Infantry
+		BuildPaletteOrder: 20
+		Prerequisites: upgrade.barracks, ~techlevel.medium
+		BuildDuration: 73
+		BuildDurationModifier: 40
+		Description: Anti-tank infantry\n  Strong vs Tanks\n  Weak vs Infantry, Artillery
+	Valued:
+		Cost: 90
+	Tooltip:
+		Name: Trooper
+	Health:
+		HP: 700
+	RevealsShroud:
+		Range: 4c768
+	Mobile:
+		Speed: 31
+	Armament:
+		Weapon: Bazooka
+		LocalOffset: 128,0,256
+	TakeCover:
+		ProneOffset: 324,0,-204
+	AttackFrontal:
+	WithInfantryBody:
+		DefaultAttackSequence: shoot
+
+thumper:
+	Inherits: ^Infantry
+	-AutoTarget:
+	-RevealOnFire:
+	Buildable:
+		Queue: Infantry
+		BuildPaletteOrder: 60
+		Prerequisites: upgrade.barracks, ~techlevel.high
+		BuildDuration: 108
+		BuildDurationModifier: 40
+		Description: Attracts nearby worms when deployed\n  Unarmed
+	Valued:
+		Cost: 200
+	Tooltip:
+		Name: Thumper Infantry
+	Health:
+		HP: 375
+	RevealsShroud:
+		Range: 2c768
+	Mobile:
+		Speed: 43
+		RequiresCondition: !deployed
+	GrantConditionOnDeploy:
+		DeployedCondition: deployed
+		Facing: 128
+		AllowedTerrainTypes: Sand, Spice, Dune, SpiceSand
+	WithInfantryBody:
+		RequiresCondition: !deployed
+	WithSpriteBody@DEPLOYED:
+		Sequence: thump
+		RequiresCondition: deployed
+	WithIdleOverlay@DEPLOYED:
+		Sequence: thump-sand
+		RequiresCondition: deployed
+	AmbientSound:
+		SoundFile: THUMPER1.WAV
+		Interval: 60
+		RequiresCondition: deployed
+	AttractsWorms:
+		Intensity: 1000
+		Falloff: 0, 0, 0, 100, 100, 100, 25, 11, 6, 4, 3, 2, 1, 0
+		RequiresCondition: deployed
+
+fremen:
+	Inherits: ^Infantry
+	Tooltip:
+		Name: Fremen
+	Buildable:
+		Queue: Infantry
+		BuildPaletteOrder: 100
+		Prerequisites: ~disabled
+		Description: Elite infantry unit armed with assault rifles and rockets\n  Strong vs Infantry, Vehicles\n  Weak vs Artillery\n  Special Ability: Invisibility
+	Mobile:
+		Speed: 43
+	Valued:
+		Cost: 200	## actually 0, but spawns from support power at Palace
+	Health:
+		HP: 700
+	RevealsShroud:
+		Range: 4c768
+	AutoTarget:
+		ScanRadius: 7
+		InitialStance: HoldFire
+		InitialStanceAI: ReturnFire
+	Armament@PRIMARY:
+		Weapon: Fremen_S
+	Armament@SECONDARY:
+		Weapon: Fremen_L
+	AttackFrontal:
+	WithInfantryBody:
+		DefaultAttackSequence: shoot
+	Cloak:
+		InitialDelay: 85
+		CloakDelay: 85
+		UncloakOn: Attack, Unload, Infiltrate, Demolish, Dock, Damage, Heal
+		CloakSound: STEALTH1.WAV
+		UncloakSound: STEALTH2.WAV
+		IsPlayerPalette: true
+		RequiresCondition: !cloak-force-disabled
+	GrantConditionOnDamageState@UNCLOAK:
+		Condition: cloak-force-disabled
+		ValidDamageStates: Critical
+	-MustBeDestroyed:
+	Voiced:
+		VoiceSet: FremenVoice
+
+grenadier:
+	Inherits: ^Infantry
+	Buildable:
+		Queue: Infantry
+		BuildPaletteOrder: 80
+		Prerequisites: ~barracks.atreides, upgrade.barracks, high_tech_factory, ~techlevel.medium
+		BuildDuration: 81	## Wasn't converted, copied from Sardauker who has same value in TibEd.
+		BuildDurationModifier: 40
+		Description: Infantry armed with grenades. \n  Strong vs Buildings, Infantry\n  Weak vs Vehicles
+	Valued:
+		Cost: 80
+	Tooltip:
+		Name: Grenadier
+	Health:
+		HP: 600
+	Mobile:
+		Speed: 43
+	Armament:
+		Weapon: grenade
+		LocalOffset: 192,0,224
+		FireDelay: 3
+	TakeCover:
+		ProneOffset: 96,100,-64
+	AttackFrontal:
+	WithInfantryBody:
+		DefaultAttackSequence: throw
+	Explodes:
+		Weapon: GrenDeath
+		EmptyWeapon: GrenDeath
+
+sardaukar:
+	Inherits: ^Infantry
+	Buildable:
+		Queue: Infantry
+		BuildPaletteOrder: 80
+		Prerequisites: ~barracks.harkonnen, upgrade.barracks, high_tech_factory, ~techlevel.medium
+		BuildDuration: 81
+		BuildDurationModifier: 40
+		Description: Elite assault infantry\n  Strong vs Infantry, Vehicles\n  Weak vs Artillery
+	Valued:
+		Cost: 200
+	Tooltip:
+		Name: Sardaukar
+	Health:
+		HP: 1000
+	Mobile:
+		Speed: 31
+	RevealsShroud:
+		Range: 4c768
+	WithInfantryBody:
+		DefaultAttackSequence: shoot
+	Armament@PRIMARY:
+		Weapon: M_LMG
+	Armament@SECONDARY:
+		Weapon: M_HMG
+	AttackFrontal:
+	Voiced:
+		VoiceSet: GenericVoice
+	Explodes:
+		Weapon: SardDeath
+		EmptyWeapon: SardDeath
+		Chance: 100
+
+saboteur:
+	Inherits: ^Infantry
+	Buildable:
+		Queue: Infantry
+		BuildPaletteOrder: 100
+		Prerequisites: ~disabled
+		Description: Sneaky infantry, armed with explosives\n  Strong vs Buildings\n  Weak vs Everything\n  Special Ability: destroy buildings
+	Valued:
+		Cost: 300	## actually 0, but spawns from support power at Palace
+	Tooltip:
+		Name: Saboteur
+	Health:
+		HP: 400
+	Mobile:
+		Speed: 43
+	Demolition:
+		DetonationDelay: 0
+		Flashes: 0
+		EnterBehaviour: Suicide
+	-AutoTarget:
+	-RevealOnFire:
+	Cloak:
+		InitialDelay: 85
+		CloakDelay: 85
+		CloakSound: STEALTH1.WAV
+		UncloakSound: STEALTH2.WAV
+		UncloakOn: Attack, Unload, Infiltrate, Demolish, Move, Damage, Heal
+		IsPlayerPalette: true
+		RequiresCondition: !cloak-force-disabled
+	GrantConditionOnDamageState@UNCLOAK:
+		Condition: cloak-force-disabled
+		ValidDamageStates: Critical
+	Voiced:
+		VoiceSet: SaboteurVoice
+
+nsfremen:
+	Inherits: fremen
+	Tooltip:
+	Buildable:
+		BuildPaletteOrder: 105
+		Prerequisites: ~disabled
+		Description: Elite infantry unit armed with assault rifles and rockets\n  Strong vs Infantry, Vehicles\n  Weak vs Artillery
+	RenderSprites:
+		Image: fremen
+	-Cloak:
+	-GrantConditionOnDamageState@UNCLOAK:

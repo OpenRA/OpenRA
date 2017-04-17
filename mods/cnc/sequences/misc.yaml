@@ -1,0 +1,435 @@
+fb4:
+	idle:
+		Length: 4
+		ZOffset: 1023
+
+fire:
+	1: fire1
+		Length: *
+		Offset: 0,-3
+		ZOffset: 1023
+	2: fire2
+		Length: *
+		Offset: 0,-3
+		ZOffset: 1023
+
+burn-l:
+	idle:
+		Length: *
+		ZOffset: 512
+	loop:
+		Start: 16
+		Length: 44
+		ZOffset: 512
+	end:
+		Start: 60
+		Length: 6
+		ZOffset: 512
+
+burn-m:
+	idle:
+		Length: *
+		ZOffset: 512
+	loop:
+		Start: 16
+		Length: 44
+		ZOffset: 512
+	end:
+		Start: 60
+		Length: 6
+		ZOffset: 512
+
+burn-s:
+	idle:
+		Length: *
+		ZOffset: 512
+	loop:
+		Start: 12
+		Length: 46
+		ZOffset: 512
+	end:
+		Start: 59
+		Length: 5
+		ZOffset: 512
+
+120mm:
+	idle:
+		ZOffset: 1023
+
+smoke_m:
+	idle:
+		Length: *
+		Offset: 2, -5
+		ZOffset: 512
+	loop:
+		Start: 49
+		Length: 42
+		Offset: 2, -5
+		ZOffset: 512
+	end:
+		Start: 26
+		Length: -26
+		Offset: 2, -5
+		ZOffset: 512
+
+laserfire:
+	idle: veh-hit3
+		Length: *
+		ZOffset: 511
+
+dragon:
+	idle:
+		Facings: 32
+		ZOffset: 1023
+
+smokey:
+	idle:
+		Length: *
+		ZOffset: 1023
+
+bomb:
+	idle:
+		Length: *
+		ZOffset: 1023
+
+missile:
+	idle:
+		Facings: 32
+		ZOffset: 1023
+
+patriot:
+	idle:
+		Facings: 32
+		ZOffset: 1023
+
+explosion:
+	Defaults:
+		Length: *
+		ZOffset: 511
+	nuke_explosion: atomsfx
+	piff: piff
+	piffs: piffpiff
+	chemball: chemball # Same size as small_napalm, but bright green.
+	small_napalm: napalm1 # Not used by much. Currently used for flamethrower.
+	med_napalm: napalm2 # Explosion for bomblets
+	big_napalm: napalm3 # Huge; not used. (SSM used this explosion in C&C Gold?)
+	small_frag: veh-hit3 # The most common weapon-hit explosion. For rockets, tank shells, etc.
+	med_frag: frag1 # Fragmentation-style; quite large. (MLRS used this explosion in C&C Gold?)
+	big_frag: frag3 # Same as med_frag, except fire hangs around longer.
+	small_poof: veh-hit2 # For Grenades, tower missiles, boat missiles and APC AA gun.
+	poof: art-exp1 # For UnitExplode (artillery), artillery shell hit, building explosion and GrenadierExplode
+	small_building: veh-hit1 # Used for heli-explosion in C&C Gold?
+	building: fball1
+	building_napalm: napalm2
+		FlipX: true
+
+rank:
+	rank-veteran-1:
+	rank-veteran-2:
+		Start: 1
+	rank-veteran-3:
+		Start: 2
+	rank-elite:
+		Start: 3
+
+rallypoint:
+	flag: flagfly
+		Length: *
+		Offset: 10,-5
+		ZOffset: 2535
+	circles: fpls
+		Length: *
+		ZOffset: 2047
+
+beacon:
+	Defaults:
+		ZOffset: 2535
+	arrow: mouse2
+		Start: 5
+		Offset: 1,-12
+	circles: fpls
+		Length: *
+		ZOffset: 2047
+	airstrike: bombicon
+		Offset: 0,-42
+	atomic: atomicon
+		Offset: 0,-42
+	clock: beaconclock
+		Length: *
+		Offset: 0,-42
+
+select:
+	repair:
+		Start: 2
+
+allyrepair:
+	repair:
+		Length: *
+		Tick: 160
+		ZOffset: 2047
+
+crate:
+	idle:
+		ZOffset: -511
+
+xcratea:
+	idle: xcrate
+		ZOffset: -511
+
+xcrateb:
+	idle: xcrate
+		Start: 1
+		ZOffset: -511
+
+xcratec:
+	idle: xcrate
+		Start: 2
+		ZOffset: -511
+
+xcrated:
+	idle: xcrate
+		Start: 3
+		ZOffset: -511
+
+crate-effects:
+	Defaults:
+		Length: *
+		ZOffset: 2047
+	airstrike: deviator
+	nuke: missile2
+	dollar: dollar
+	reveal-map: radarcrate
+	hide-map: empulse
+	heal: healcrate
+	mine: mine
+	redskull: rapid
+	cloak: cloakcrate
+	levelup: levelup
+		Tick: 200
+	firepowerup: firepowercrate
+	armorup: armorcrate
+	speedup: speedcrate
+
+atomic:
+	Defaults:
+		Length: *
+		ZOffset: 1023
+	up: atomicup
+	down: atomicdn
+
+ionsfx:
+	idle:
+		Length: *
+		Offset: 0, -78
+		ZOffset: 1023
+
+bomblet:
+	idle:
+		Length: *
+		ZOffset: 1023
+
+mpspawn:
+	idle:
+		Length: *
+
+waypoint:
+	idle:
+		Length: *
+
+camera:
+	idle:
+		Length: *
+
+clock:
+	idle: hclock
+		Length: *
+
+pips:
+	pip-empty:
+	pip-green:
+		Start: 1
+	pip-yellow:
+		Start: 2
+	pip-gray:
+		Start: 3
+	pip-red:
+		Start: 4
+	pip-blue:
+		Start: 5
+	pip-heal: pip-heal
+		Length: *
+	groups: pdigits
+		Length: *
+		Offset: 9, 5
+	pip-hazmat: pip-hazmat
+		Length: *
+
+overlay:
+	build-valid-desert:
+	build-valid-snow:
+		Start: 2
+	build-valid-temperat:
+	build-valid-winter:
+	build-valid-jungle:
+	build-invalid:
+		Start: 1
+	target-select:
+		Start: 3
+	target-valid-desert:
+	target-valid-snow:
+		Start: 2
+	target-valid-temperat:
+	target-valid-winter:
+	target-valid-jungle:
+	target-invalid:
+		Start: 1
+
+editor-overlay:
+	copy: overlay
+		Start: 0
+	paste: overlay
+		Start: 1
+
+poweroff:
+	offline:
+		Length: *
+		Tick: 160
+		ZOffset: 2047
+
+icon:
+	Defaults:
+		AddExtension: False
+	airstrike: bombicnh.tem
+	ioncannon: ionicnh.tem
+	abomb: atomicnh.tem
+
+moveflsh:
+	idle:
+		Length: *
+		Tick: 80
+		ZOffset: 2047
+
+resources:
+	Defaults:
+		UseTilesetExtension: true
+		Length: *
+	ti1: ti1
+	ti2: ti2
+	ti3: ti3
+	ti4: ti4
+	ti5: ti5
+	ti6: ti6
+	ti7: ti7
+	ti8: ti8
+	ti9: ti9
+	ti10: ti10
+	ti11: ti11
+	ti12: ti12
+	bti1: rtib1
+		TilesetOverrides:
+			WINTER: TEMPERAT
+			JUNGLE: TEMPERAT
+			SNOW: TEMPERAT
+	bti2: rtib2
+		TilesetOverrides:
+			WINTER: TEMPERAT
+			JUNGLE: TEMPERAT
+			SNOW: TEMPERAT
+	bti3: rtib3
+		TilesetOverrides:
+			WINTER: TEMPERAT
+			JUNGLE: TEMPERAT
+			SNOW: TEMPERAT
+	bti4: rtib4
+		TilesetOverrides:
+			WINTER: TEMPERAT
+			JUNGLE: TEMPERAT
+			SNOW: TEMPERAT
+	bti5: rtib5
+		TilesetOverrides:
+			WINTER: TEMPERAT
+			JUNGLE: TEMPERAT
+			SNOW: TEMPERAT
+	bti6: rtib6
+		TilesetOverrides:
+			WINTER: TEMPERAT
+			JUNGLE: TEMPERAT
+			SNOW: TEMPERAT
+	bti7: rtib7
+		TilesetOverrides:
+			WINTER: TEMPERAT
+			JUNGLE: TEMPERAT
+			SNOW: TEMPERAT
+	bti8: rtib8
+		TilesetOverrides:
+			WINTER: TEMPERAT
+			JUNGLE: TEMPERAT
+			SNOW: TEMPERAT
+	bti9: rtib9
+		TilesetOverrides:
+			WINTER: TEMPERAT
+			JUNGLE: TEMPERAT
+			SNOW: TEMPERAT
+	bti10: rtib10
+		TilesetOverrides:
+			WINTER: TEMPERAT
+			JUNGLE: TEMPERAT
+			SNOW: TEMPERAT
+	bti11: rtib11
+		TilesetOverrides:
+			WINTER: TEMPERAT
+			JUNGLE: TEMPERAT
+			SNOW: TEMPERAT
+	bti12: rtib12
+		TilesetOverrides:
+			WINTER: TEMPERAT
+			JUNGLE: TEMPERAT
+			SNOW: TEMPERAT
+
+shroud:
+	Defaults:
+		Length: 12
+	typea: shadow
+	typeb: shadow
+		Start: 12
+	typec: shadow
+		Start: 24
+	typed: shadow
+		Start: 36
+	full: fullshroud
+		Length: 1
+
+# Note: The order of smudges and craters determines
+# the index that is mapped to them in maps
+scorches:
+	Defaults:
+		UseTilesetExtension: true
+		Length: *
+	sc1: sc1
+	sc2: sc2
+	sc3: sc3
+	sc4: sc4
+	sc5: sc5
+	sc6: sc6
+
+craters:
+	Defaults:
+		UseTilesetExtension: true
+		Length: *
+	cr1: cr1
+	cr2: cr2
+	cr3: cr3
+	cr4: cr4
+	cr5: cr5
+	cr6: cr6
+
+smokland:
+	open:
+		Length: 60
+		Tick: 120
+		ZOffset: 1023
+	idle:
+		Start: 60
+		Length: 32
+		Tick: 120
+		ZOffset: 1023

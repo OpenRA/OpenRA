@@ -1,0 +1,209 @@
+E2:
+	Inherits: ^Soldier
+	Inherits@EXPERIENCE: ^GainsExperience
+	Buildable:
+		Queue: Infantry
+		BuildPaletteOrder: 20
+		Prerequisites: ~gapile, ~techlevel.low
+		Description: Infantry armed with special explosive discs.\n  Strong vs Buildings, Infantry\n  Weak vs Vehicles, Aircraft
+	Valued:
+		Cost: 200
+	Tooltip:
+		Name: Disc Thrower
+	Health:
+		HP: 150
+	Mobile:
+		Speed: 56
+	Armament:
+		Weapon: Grenade
+		LocalOffset: 0,0,555
+		FireDelay: 5
+	TakeCover:
+		ProneOffset: 160,128,-555
+	AttackFrontal:
+		Voice: Attack
+	WithInfantryBody:
+		DefaultAttackSequence: attack
+	ProducibleWithLevel:
+		Prerequisites: barracks.upgraded
+
+MEDIC:
+	Inherits: ^Soldier
+	Inherits@EXPERIENCE: ^GainsExperience
+	Valued:
+		Cost: 600
+	Tooltip:
+		Name: Medic
+	Buildable:
+		Queue: Infantry
+		BuildPaletteOrder: 50
+		Prerequisites: ~gapile, ~techlevel.low
+		Description: Heals nearby infantry.\n  Unarmed
+	Voiced:
+		VoiceSet: Medic
+	RevealsShroud:
+		Range: 6c0
+	Mobile:
+		Speed: 56
+	Health:
+		HP: 125
+	Crushable:
+		CrushSound: squishy2.aud
+	Armament:
+		Weapon: Heal
+		TargetStances: Ally
+		ForceTargetStances: None
+		Cursor: heal
+		OutsideRangeCursor: heal
+	AttackFrontal:
+	WithInfantryBody:
+		DefaultAttackSequence: heal
+	SelfHealing:
+		Delay: 60
+	Passenger:
+		PipType: Red
+
+JUMPJET:
+	Inherits: ^Soldier
+	Inherits@EXPERIENCE: ^GainsExperience
+	Valued:
+		Cost: 600
+	Tooltip:
+		Name: Jumpjet Infantry
+	Buildable:
+		Queue: Infantry
+		BuildPaletteOrder: 70
+		Prerequisites: ~gapile, garadr, ~techlevel.medium
+		Description: Airborne soldier.\n  Strong vs Infantry, Aircraft\n  Weak vs Vehicles
+	Voiced:
+		VoiceSet: JumpJet
+	Mobile:
+		Speed: 56
+		Jumpjet: True
+		JumpjetTransitionCost: 100
+		JumpjetCondition: airborne
+		TerrainSpeeds:
+			Jumpjet: 110
+	Health:
+		HP: 120
+	Armor:
+		Type: Light
+	Passenger:
+		PipType: Green
+	RevealsShroud:
+		Range: 6c0
+	Armament:
+		Weapon: JumpCannon
+	-Crushable:
+	AttackFrontal:
+		Voice: Attack
+	WithInfantryBody:
+		RequiresCondition: !airborne
+		DefaultAttackSequence: attack
+	WithInfantryBody@flying:
+		RequiresCondition: airborne
+		DefaultAttackSequence: flying-attack
+		StandSequences: flying
+		MoveSequence: flying
+	-TakeCover:
+	Hovers:
+		RequiresCondition: airborne
+	DamagedByTerrain:
+		RequiresCondition: !inside-tunnel && !airborne
+	ProducibleWithLevel:
+		Prerequisites: barracks.upgraded
+	Targetable:
+		RequiresCondition: !airborne && !inside-tunnel
+	Targetable@AIRBORNE:
+		TargetTypes: Air
+		RequiresCondition: airborne
+	SpawnActorOnDeath@airborne:
+		Actor: JUMPJET.Husk
+		RequiresCondition: airborne
+	DeathSounds@airborne:
+		RequiresCondition: airborne
+	WithDeathAnimation@normal:
+		RequiresCondition: !airborne
+	WithDeathAnimation@explosion:
+		RequiresCondition: !airborne
+	WithDeathAnimation@energy:
+		RequiresCondition: !airborne
+	WithDeathAnimation:
+		RequiresCondition: !airborne
+	DeathSounds@NORMAL:
+		RequiresCondition: !airborne
+	DeathSounds@EXPLOSION:
+		RequiresCondition: !airborne
+	DeathSounds@BURNED:
+		RequiresCondition: !airborne
+	DeathSounds@ZAPPED:
+		RequiresCondition: !airborne
+	SpawnActorOnDeath:
+		RequiresCondition: !airborne
+	SpawnActorOnDeath@FLAMEGUY:
+		RequiresCondition: !airborne
+
+JUMPJET.Husk:
+	RenderSprites:
+	BodyOrientation:
+		QuantizedFacings: 1
+	Aircraft:
+	HiddenUnderFog:
+		Type: GroundPosition
+	AutoTargetIgnore:
+	ScriptTriggers:
+	Tooltip:
+		Name: Jumpjet Infantry
+	FallsToEarth:
+		Velocity: 86
+		Explosion:
+	Aircraft:
+		Speed: 186
+		CanHover: True
+	RenderSprites:
+		Image: jumpjet
+	AutoSelectionSize:
+	WithSpriteBody:
+		Sequence: die-falling
+
+GHOST:
+	Inherits: ^Soldier
+	Inherits@EXPERIENCE: ^GainsExperience
+	Inherits@2: ^HealsOnTiberium
+	Valued:
+		Cost: 1750
+	Tooltip:
+		Name: Ghost Stalker
+	Buildable:
+		Queue: Infantry
+		BuildPaletteOrder: 90
+		Prerequisites: ~gapile, gatech, ~techlevel.high
+		BuildLimit: 1
+		Description: Elite commando infantry, armed with\na railgun and C4.\n  Strong vs Infantry, Buildings\n  Weak vs Vehicles, Aircraft\n  Special Ability: Destroy Building with C4\nMaximum 1 can be trained.
+	Voiced:
+		VoiceSet: Ghost
+	Armor:
+		Type: Light
+	Mobile:
+		Speed: 56
+	Health:
+		HP: 200
+	Passenger:
+	RevealsShroud:
+		Range: 6c0
+	Armament:
+		Weapon: LtRail
+		LocalOffset: 85,0,384
+	TakeCover:
+		ProneOffset: 256,32,-384
+	Crushable:
+		CrushSound: squishy2.aud
+	AttackFrontal:
+		Voice: Attack
+	Demolition:
+		DetonationDelay: 45
+		Voice: Attack
+	WithInfantryBody:
+		DefaultAttackSequence: attack
+	ProducibleWithLevel:
+		Prerequisites: barracks.upgraded

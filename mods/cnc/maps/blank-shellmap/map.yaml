@@ -1,0 +1,35 @@
+MapFormat: 11
+
+RequiresMod: cnc
+
+Title: Blank Shellmap
+
+Author: Paul Chote
+
+Tileset: DESERT
+
+MapSize: 5,5
+
+Bounds: 1,1,1,1
+
+Visibility: Shellmap
+
+Categories: Shellmap
+
+Players:
+	PlayerReference@Neutral:
+		Name: Neutral
+		OwnsWorld: True
+		NonCombatant: True
+		Faction: Random
+
+Actors:
+
+Rules:
+	World:
+		-SpawnMPUnits:
+		-MPStartLocations:
+		-CrateSpawner:
+		MusicPlaylist:
+			BackgroundMusic: map1
+			DisableWorldSounds: true

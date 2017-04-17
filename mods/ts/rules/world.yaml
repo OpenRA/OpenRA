@@ -1,0 +1,192 @@
+^BaseWorld:
+	Inherits: ^Palettes
+	AlwaysVisible:
+	ScreenMap:
+	ActorMap:
+	MusicPlaylist:
+		VictoryMusic: score
+		DefeatMusic: maps
+	ShroudRenderer:
+		Index: 255, 16, 32, 48, 64, 80, 96, 112, 128, 144, 160, 176, 192, 208, 224, 240, 20, 40, 56, 65, 97, 130, 148, 194, 24, 33, 66, 132, 28, 41, 67, 134, 1, 2, 4, 8, 3, 6, 12, 9, 7, 14, 13, 11, 5, 10, 15, 255
+		UseExtendedIndex: true
+		ShroudPalette: shroud
+		FogPalette: shroud
+	Faction@Random:
+		Name: Any
+		InternalName: Random
+		RandomFactionMembers: gdi, nod
+	Faction@0:
+		Name: GDI
+		InternalName: gdi
+	Faction@1:
+		Name: Nod
+		InternalName: nod
+	ResourceType@Tiberium:
+		Type: Tiberium
+		Name: Tiberium
+		PipColor: Green
+		ResourceType: 1
+		Palette: greentiberium
+		Sequences: tib01, tib02, tib03, tib04, tib05, tib06, tib07, tib08, tib09, tib10, tib11, tib12
+		MaxDensity: 12
+		ValuePerUnit: 25
+		AllowedTerrainTypes: Clear, Rough, DirtRoad
+		AllowUnderActors: true
+		TerrainType: Tiberium
+	ResourceType@BlueTiberium:
+		Type: BlueTiberium
+		Name: Tiberium
+		PipColor: Blue
+		ResourceType: 2
+		Palette: bluetiberium
+		Sequences: tib01, tib02, tib03, tib04, tib05, tib06, tib07, tib08, tib09, tib10, tib11, tib12
+		MaxDensity: 12
+		ValuePerUnit: 40
+		AllowedTerrainTypes: Clear, Rough, DirtRoad
+		AllowUnderActors: true
+		TerrainType: BlueTiberium
+	ResourceType@Veins:
+		Type: Veins
+		Name: Veins
+		PipColor: Red
+		ResourceType: 3
+		Palette: player
+		Sequences: veins
+		MaxDensity: 1
+		ValuePerUnit: 0
+		AllowedTerrainTypes: Clear, Rough, DirtRoad
+		AllowUnderActors: true
+		TerrainType: Veins
+	TerrainGeometryOverlay:
+	ExitsDebugOverlayManager:
+	CliffBackImpassabilityLayer:
+	SubterraneanActorLayer:
+	JumpjetActorLayer:
+
+World:
+	Inherits: ^BaseWorld
+	ChatCommands:
+	DevCommands:
+	PlayerCommands:
+	HelpCommand:
+	BuildingInfluence:
+	ProductionQueueFromSelection:
+		ProductionPaletteWidget: PRODUCTION_PALETTE
+	DomainIndex:
+	SmudgeLayer@SMALLSCORCH:
+		Type: SmallScorch
+		Sequence: smallscorches
+		SmokeType: smallfire
+		SmokePercentage: 50
+	SmudgeLayer@MEDIUMSCORCH:
+		Type: MediumScorch
+		Sequence: mediumscorches
+		SmokeType: mediumfire
+		SmokePercentage: 75
+	SmudgeLayer@LARGESCORCH:
+		Type: LargeScorch
+		Sequence: largescorches
+		SmokeType: largefire
+		SmokePercentage: 100
+	SmudgeLayer@SMALLCRATER:
+		Type: SmallCrater
+		SmokeType: smallsmoke
+		Sequence: smallcraters
+	SmudgeLayer@MEDIUMCRATER:
+		Type: MediumCrater
+		SmokeType: smallsmoke
+		Sequence: mediumcraters
+	SmudgeLayer@LARGECRATER:
+		Type: LargeCrater
+		SmokeType: largesmoke
+		Sequence: largecraters
+	ResourceLayer:
+	BridgeLayer:
+	CustomTerrainDebugOverlay:
+	ResourceClaimLayer:
+	WarheadDebugOverlay:
+	MapCreeps:
+	SpawnMapActors:
+	MapBuildRadius:
+	MapOptions:
+	CreateMPPlayers:
+	MPStartUnits@MCV:
+		Class: none
+		ClassName: MCV Only
+		Factions: gdi, nod
+		BaseActor: mcv
+	MPStartUnits@light.gdi:
+		Class: light
+		ClassName: Light
+		Factions: gdi
+		BaseActor: mcv
+		SupportActors: e1,e1,e1,smech
+		InnerSupportRadius: 3
+		OuterSupportRadius: 5
+	MPStartUnits@light.nod:
+		Class: light
+		ClassName: Light
+		Factions: nod
+		BaseActor: mcv
+		SupportActors: e1,e1,e1,bggy
+		InnerSupportRadius: 3
+		OuterSupportRadius: 5
+	MPStartUnits@med.gdi:
+		Class: medium
+		ClassName: Medium
+		Factions: gdi
+		BaseActor: mcv
+		SupportActors: e1,e1,e2,e2,jumpjet,smech
+		InnerSupportRadius: 3
+		OuterSupportRadius: 5
+	MPStartUnits@med.nod:
+		Class: medium
+		ClassName: Medium
+		Factions: nod
+		BaseActor: mcv
+		SupportActors: e1,e1,e3,e3,cyborg,bggy
+		InnerSupportRadius: 3
+		OuterSupportRadius: 5
+	MPStartUnits@heavy.gdi:
+		Class: heavy
+		ClassName: Heavy
+		Factions: gdi
+		BaseActor: mcv
+		SupportActors: e1,e1,e2,e2,jumpjet,smech,smech,mmch
+		InnerSupportRadius: 3
+		OuterSupportRadius: 5
+	MPStartUnits@heavy.nod:
+		Class: heavy
+		ClassName: Heavy
+		Factions: nod
+		BaseActor: mcv
+		SupportActors: e1,e1,e3,e3,cyborg,bggy,bike,ttnk
+		InnerSupportRadius: 3
+		OuterSupportRadius: 5
+	MPStartLocations:
+	SpawnMPUnits:
+	CrateSpawner:
+		Minimum: 1
+		Maximum: 6
+		SpawnInterval: 3000
+		WaterChance: 0
+		ValidGround: Clear, Rough, Road, DirtRoad, Tiberium, BlueTiberium
+		InitialSpawnDelay: 1500
+	PathFinder:
+	ValidateOrder:
+	DebugPauseState:
+	ScreenShaker:
+	RadarPings:
+	StartGameNotification:
+	ObjectivesPanel:
+		PanelName: SKIRMISH_STATS
+	LoadWidgetAtGameStart:
+		ShellmapRoot: MAINMENU_PRERELEASE_NOTIFICATION
+
+EditorWorld:
+	Inherits: ^BaseWorld
+	EditorActorLayer:
+	EditorResourceLayer:
+	EditorSelectionLayer:
+		Palette: placebuilding
+	LoadWidgetAtGameStart:

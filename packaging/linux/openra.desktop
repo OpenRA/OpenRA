@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+Version=1.0
+Name=OpenRA
+GenericName=Real Time Strategy Game
+GenericName[de]=Echtzeit-Strategiespiel
+Comment=Reimagining of early Westwood Games
+Icon=openra
+Exec=openra
+Terminal=false
+Categories=Game;StrategyGame;

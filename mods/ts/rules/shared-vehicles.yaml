@@ -1,0 +1,165 @@
+MCV:
+	Inherits: ^Tank
+	Inherits@VOXELS: ^VoxelActor
+	Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 160
+		Prerequisites: ~factory, tech, ~techlevel.medium
+		Description: Deploys into another Construction Yard.\n  Unarmed
+	Valued:
+		Cost: 2000
+	Tooltip:
+		Name: Mobile Construction Vehicle
+	Selectable:
+		Priority: 3
+	Health:
+		HP: 600
+	Armor:
+		Type: Light
+	Mobile:
+		Speed: 85
+	RevealsShroud:
+		RequiresCondition: !inside-tunnel
+		Range: 4c0
+		MaxHeightDelta: 3
+	MustBeDestroyed:
+		RequiredForShortGame: true
+	BaseBuilding:
+	Transforms:
+		IntoActor: gacnst
+		Offset: -1,-1
+		Facing: 96
+		TransformSounds: place2.aud
+		NoTransformSounds:
+		Voice: Move
+	SelectionDecorations:
+		VisualBounds: 42,42
+	RenderSprites:
+		Image: mcv.gdi
+		FactionImages:
+			gdi: mcv.gdi
+			nod: mcv.nod
+
+HARV:
+	Inherits: ^Tank
+	Inherits@VOXELS: ^VoxelActor
+	Valued:
+		Cost: 1400
+	Tooltip:
+		Name: Harvester
+	Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 10
+		Prerequisites: ~factory, proc, ~techlevel.low
+		Description: Collects Tiberium for processing.\n  Unarmed
+	Selectable:
+		Priority: 7
+		Bounds: 36,36
+	Harvester:
+		DeliveryBuildings: proc
+		Capacity: 28
+		Resources: Tiberium, BlueTiberium
+		BaleLoadDelay: 15
+		BaleUnloadDelay: 15
+		FullyLoadedSpeed: 100
+		SearchFromProcRadius: 36
+		SearchFromOrderRadius: 18
+		HarvestVoice: Attack
+		DeliverVoice: Move
+	Mobile:
+		Speed: 71
+		Crushes: wall, crate
+		TerrainSpeeds:
+			Clear: 90
+			Rough: 70
+			Road: 100
+			Bridge: 100
+			Beach: 70
+			Tiberium: 80
+			BlueTiberium: 80
+			Veins: 80
+	Health:
+		HP: 1000
+	SelfHealing:
+		Delay: 10
+		HealIfBelow: 50
+		DamageCooldown: 200
+	Armor:
+		Type: Heavy
+	RevealsShroud:
+		RequiresCondition: !inside-tunnel
+		Range: 4c0
+		MaxHeightDelta: 3
+	-WithVoxelBody:
+	WithVoxelUnloadBody:
+	Explodes:
+		Weapon: TiberiumExplosion
+	WithHarvestOverlay:
+		Offset: 384,0,0
+		Palette: effect
+	SelectionDecorations:
+		VisualBounds: 36,36
+	RenderSprites:
+		Image: harv.gdi
+		FactionImages:
+			gdi: harv.gdi
+			nod: harv.nod
+	-DamagedByTerrain@VEINS:
+	-LeavesTrails@VEINS:
+
+LPST:
+	Inherits: ^Tank
+	Inherits@VOXELS: ^VoxelActor
+	-AppearsOnRadar:
+	Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 90
+		Prerequisites: ~factory, radar, ~techlevel.medium
+		Description: Can detect cloaked and subterranean\nunits when deployed.\n  Unarmed
+	Valued:
+		Cost: 950
+	Tooltip:
+		Name: Mobile Sensor Array
+		RequiresCondition: !deployed
+	Tooltip@DEPLOYED:
+		Name: Mobile Sensor Array (deployed)
+		RequiresCondition: deployed
+	Health:
+		HP: 600
+	Armor:
+		Type: Wood
+	Mobile:
+		Speed: 85
+		TurnSpeed: 5
+		RequiresCondition: !empdisable && undeployed
+	RevealsShroud:
+		RequiresCondition: !inside-tunnel
+		Range: 7c0
+		MaxHeightDelta: 3
+	GrantCondition@PREVIEWWORKAROUND:
+		Condition: real-actor
+	RenderSprites:
+		Image: lpst.gdi
+		FactionImages:
+			gdi: lpst.gdi
+			nod: lpst.nod
+	GrantConditionOnDeploy:
+		DeployedCondition: deployed
+		UndeployedCondition: undeployed
+		DeployAnimation: make
+		Facing: 160
+		AllowedTerrainTypes: Clear, Road, DirtRoad, Rough
+		DeploySound: place2.aud
+		UndeploySound: clicky1.aud
+	WithVoxelBody:
+		Image: lpst
+		RequiresCondition: undeployed
+	WithSpriteBody@deployed:
+		RequiresCondition: !undeployed && real-actor
+	DetectCloaked:
+		RequiresCondition: deployed
+		Range: 18c0
+	RenderDetectionCircle:
+		TrailCount: 3
+	Carryable:
+		RequiresCondition: undeployed

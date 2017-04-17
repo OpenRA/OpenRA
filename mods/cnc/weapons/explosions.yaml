@@ -1,0 +1,115 @@
+^DamagingExplosion:
+	Warhead@1Dam: SpreadDamage
+		Spread: 426
+		Damage: 40
+		Versus:
+			None: 100
+			Wood: 100
+			Light: 100
+			Heavy: 100
+		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
+	Warhead@2Eff: CreateEffect
+		Explosions: poof
+		ImpactSounds: xplos.aud
+	Warhead@3Smu: LeaveSmudge
+		SmudgeType: Crater
+		InvalidTargets: Vehicle, Structure, Wall, Husk, Trees, Creep
+
+^DamagingExplosionHE:
+	Inherits: ^DamagingExplosion
+	Warhead@1Dam: SpreadDamage
+		Versus:
+			None: 90
+			Wood: 75
+			Light: 60
+			Heavy: 25
+
+FlametankExplode:
+	Inherits: ^DamagingExplosion
+	Warhead@1Dam: SpreadDamage
+		Spread: 1c0
+		Damage: 115
+		DamageTypes: Prone50Percent, TriggerProne, FireDeath
+	Warhead@2Eff: CreateEffect
+		Explosions: big_napalm
+		ImpactSounds: xplobig6.aud
+	Warhead@3Smu: LeaveSmudge
+		SmudgeType: Scorch
+
+HeliCrash:
+	Inherits: ^DamagingExplosion
+
+HeliExplode:
+	Warhead@1Dam: SpreadDamage
+		DamageTypes: ExplosionDeath
+	Warhead@2Eff: CreateEffect
+		Explosions: small_building
+		ImpactSounds: xplos.aud
+
+UnitExplode:
+	Inherits: ^DamagingExplosionHE
+	Warhead@1Dam: SpreadDamage
+		Damage: 50
+	Warhead@2Eff: CreateEffect
+		ImpactSounds: xplobig6.aud
+
+UnitExplodeShip:
+	Inherits: ^DamagingExplosionHE
+	Warhead@1Dam: SpreadDamage
+		Damage: 50
+	Warhead@2Eff: CreateEffect
+		Explosions: building
+		ImpactSounds: xplobig6.aud
+
+UnitExplodeSmall:
+	Inherits: ^DamagingExplosionHE
+	Warhead@2Eff: CreateEffect
+		Explosions: big_frag
+		ImpactSounds: xplobig4.aud
+
+GrenadierExplode:
+	Inherits: ^DamagingExplosionHE
+	Warhead@1Dam: SpreadDamage
+		Spread: 256
+		Damage: 10
+		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
+	Warhead@2Eff: CreateEffect
+		ImpactSounds: xplosml2.aud
+
+BuildingExplode:
+	Warhead@1Eff: CreateEffect
+		Explosions: building, building_napalm, med_frag, poof, small_building
+		Delay: 1
+	Warhead@2Smu: LeaveSmudge
+		SmudgeType: Crater
+		Delay: 1
+
+Napalm.Crate:
+	Inherits: ^DamagingExplosionHE
+	Warhead@1Dam: SpreadDamage
+		Spread: 170
+		Damage: 50
+		Falloff: 1000, 368, 135, 50, 18, 7, 0
+		Versus:
+			Wood: 100
+		AffectsParent: true
+		DamageTypes: Prone50Percent, TriggerProne, FireDeath
+	Warhead@2Eff: CreateEffect
+		Explosions: med_napalm
+		ImpactSounds: flamer2.aud
+	Warhead@3Smu: LeaveSmudge
+		SmudgeType: Scorch
+
+TiberiumExplosion:
+	Inherits: ^DamagingExplosionHE
+	Warhead@1Dam: SpreadDamage
+		Spread: 9
+		Damage: 10
+		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
+	Warhead@2Eff: CreateEffect
+		Explosions: chemball
+		ImpactSounds: xplosml2.aud
+	-Warhead@3Smu: LeaveSmudge
+	Warhead@4Res: CreateResource
+		AddsResourceType: Tiberium
+		Size: 1,1

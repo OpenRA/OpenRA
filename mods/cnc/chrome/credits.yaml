@@ -1,0 +1,36 @@
+Container@CREDITS_PANEL:
+	Logic: CreditsLogic
+	X: (WINDOW_RIGHT - WIDTH)/2
+	Y: (WINDOW_BOTTOM - 400)/2
+	Width: 410
+	Height: 435
+	Children:
+		Label@CREDITS_TITLE:
+			Width: PARENT_RIGHT
+			Y: 0-25
+			Font: BigBold
+			Contrast: true
+			Align: Center
+			Text: Credits
+		Background@bg:
+			Width: PARENT_RIGHT
+			Height: 400
+			Background: panel-black
+			Children:
+				ScrollPanel@CREDITS_DISPLAY:
+					X: 15
+					Y: 15
+					Width: PARENT_RIGHT - 30
+					Height: PARENT_BOTTOM - 30
+					TopBottomSpacing: 18
+					Children:
+						Label@CREDITS_TEMPLATE:
+							X: 8
+							Height: 16
+							VAlign: Top
+		Button@BACK_BUTTON:
+			Y: 399
+			Width: 140
+			Height: 35
+			Text: Back
+			Key: escape

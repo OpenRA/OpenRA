@@ -1,0 +1,166 @@
+Background@MISSIONBROWSER_PANEL:
+	Logic: MissionBrowserLogic
+	X: (WINDOW_RIGHT - WIDTH)/2
+	Y: (WINDOW_BOTTOM - HEIGHT)/2
+	Width: 880
+	Height: 591
+	Children:
+		Label@MISSIONBROWSER_TITLE:
+			Y: 20
+			Width: PARENT_RIGHT
+			Height: 25
+			Text: Missions
+			Align: Center
+			Font: Bold
+		ScrollPanel@MISSION_LIST:
+			X: 20
+			Y: 50
+			Width: 190
+			Height: 405
+			Children:
+				ScrollItem@HEADER:
+					BaseName: scrollheader
+					Width: PARENT_RIGHT-27
+					Height: 13
+					X: 2
+					Visible: false
+					Children:
+						Label@LABEL:
+							Font: TinyBold
+							Width: PARENT_RIGHT
+							Height: 10
+							Align: Center
+				ScrollItem@TEMPLATE:
+					Width: PARENT_RIGHT-27
+					Height: 25
+					X: 2
+					Children:
+						Label@TITLE:
+							X: 10
+							Width: PARENT_RIGHT-20
+							Height: 25
+		Label@DIFFICULTY_DESC:
+			X: 210 - WIDTH - 125
+			Y: 468
+			Width: 56
+			Height: 25
+			Text: Difficulty:
+			Align: Right
+		DropDownButton@DIFFICULTY_DROPDOWNBUTTON:
+			X: 210 - WIDTH
+			Y: 468
+			Width: 120
+			Height: 25
+			Font: Regular
+		Label@GAMESPEED_DESC:
+			X: 210 - WIDTH - 125
+			Y: 508
+			Width: 120
+			Height: 25
+			Text: Speed:
+			Align: Right
+		DropDownButton@GAMESPEED_DROPDOWNBUTTON:
+			X: 210 - WIDTH
+			Y: 508
+			Width: 120
+			Height: 25
+			Font: Regular
+		Container@MISSION_INFO:
+			X: 220
+			Y: 50
+			Width: 642
+			Height: 800
+			Children:
+				Background@MISSION_BG:
+					Width: PARENT_RIGHT
+					Height: 327
+					Background: dialog3
+					Children:
+						MapPreview@MISSION_PREVIEW:
+							X: 1
+							Y: 1
+							Width: PARENT_RIGHT-2
+							Height: PARENT_BOTTOM-2
+							IgnoreMouseOver: True
+							IgnoreMouseInput: True
+							ShowSpawnPoints: False
+				ScrollPanel@MISSION_DESCRIPTION_PANEL:
+					Y: 337
+					Width: PARENT_RIGHT
+					Height: 146
+					Children:
+						Label@MISSION_DESCRIPTION:
+							X: 4
+							Y: 1
+							Width: PARENT_RIGHT - 32
+							VAlign: Top
+							Font: Small
+		Button@START_BRIEFING_VIDEO_BUTTON:
+			X: 220
+			Y: PARENT_BOTTOM - 45
+			Width: 130
+			Height: 25
+			Text: Watch Briefing
+			Font: Bold
+		Button@STOP_BRIEFING_VIDEO_BUTTON:
+			X: 220
+			Y: PARENT_BOTTOM - 45
+			Width: 130
+			Height: 25
+			Text: Stop Briefing
+			Font: Bold
+		Button@START_INFO_VIDEO_BUTTON:
+			X: 360
+			Y: PARENT_BOTTOM - 45
+			Width: 130
+			Height: 25
+			Text: Watch Info Video
+			Font: Bold
+		Button@STOP_INFO_VIDEO_BUTTON:
+			X: 360
+			Y: PARENT_BOTTOM - 45
+			Width: 130
+			Height: 25
+			Text: Stop Info Video
+			Font: Bold
+		Button@STARTGAME_BUTTON:
+			X: PARENT_RIGHT - 140 - 130
+			Y: PARENT_BOTTOM - 45
+			Width: 120
+			Height: 25
+			Text: Play
+			Font: Bold
+		Button@BACK_BUTTON:
+			X: PARENT_RIGHT - 140
+			Y: PARENT_BOTTOM - 45
+			Width: 120
+			Height: 25
+			Text: Back
+			Font: Bold
+			Key: escape
+		Background@MISSION_BIN:
+			X: 220
+			Y: 50
+			Width: 642
+			Height: 483
+			Background: dialog3
+			Children:
+				VqaPlayer@MISSION_VIDEO:
+					X: 1
+					Y: 1
+					Width: 640
+					Height: 480
+					AspectRatio: 1.2
+					DrawOverlay: False
+
+Background@FULLSCREEN_PLAYER:
+	Width: WINDOW_RIGHT
+	Height: WINDOW_BOTTOM
+	Background: dialog5
+	Visible: False
+	Children:
+		VqaPlayer@PLAYER:
+			X: 0
+			Y: 0
+			Width: WINDOW_RIGHT
+			Height: WINDOW_BOTTOM

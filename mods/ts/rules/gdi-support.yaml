@@ -1,0 +1,231 @@
+GAWALL:
+	Inherits: ^Wall
+	Buildable:
+		Queue: Defense
+		BuildPaletteOrder: 10
+		Prerequisites: ~structures.gdi, ~techlevel.low
+		Description: Stops infantry and blocks enemy fire.\nCan NOT be crushed by tanks.
+	-SoundOnDamageTransition:
+	Valued:
+		Cost: 50
+	CustomSellValue:
+		Value: 0
+	Tooltip:
+		Name: Concrete Wall
+	Health:
+		HP: 225
+	Armor:
+		Type: Concrete
+	BlocksProjectiles:
+		Height: 640
+	Crushable:
+		CrushClasses: heavywall
+	LineBuild:
+		NodeTypes: wall, turret
+
+GAGATE_A:
+	Inherits: ^Gate_A
+	Buildable:
+		Queue: Defense
+		BuildPaletteOrder: 30
+		Prerequisites: gapile, ~structures.gdi, ~techlevel.low
+	Tooltip:
+		Name: GDI Gate
+
+GAGATE_B:
+	Inherits: ^Gate_B
+	Buildable:
+		Queue: Defense
+		BuildPaletteOrder: 50
+		Prerequisites: gapile, ~structures.gdi, ~techlevel.low
+	Tooltip:
+		Name: GDI Gate
+
+GACTWR:
+	Inherits: ^Defense
+	-WithSpriteBody:
+	WithWallSpriteBody:
+		Type: wall
+	Valued:
+		Cost: 200
+	Tooltip:
+		Name: Component Tower
+	Buildable:
+		Queue: Defense
+		BuildPaletteOrder: 70
+		Prerequisites: gapile, ~structures.gdi, ~techlevel.low
+		Description: Modular tower for base defenses.
+	Building:
+	Selectable:
+		Bounds: 48, 36, 0, -6
+	DisabledOverlay:
+	Health:
+		HP: 500
+	Armor:
+		Type: Light
+	BlocksProjectiles:
+		Height: 768
+	BodyOrientation:
+		QuantizedFacings: 32
+	DetectCloaked:
+		RequiresCondition: tower.vulcan || tower.rocket || tower.sam
+	Turreted:
+		TurnSpeed: 10
+		InitialFacing: 224
+	AttackTurreted:
+		RequiresCondition: tower.vulcan || tower.rocket || tower.sam
+	CanPowerDown:
+		IndicatorPalette: mouse
+		PowerupSpeech: EnablePower
+		PowerdownSpeech: DisablePower
+	WithSpriteTurret@VULC:
+		RequiresCondition: tower.vulcan
+		Recoils: false
+		Sequence: turret-vulcan
+	WithSpriteTurret@ROCKET:
+		RequiresCondition: tower.rocket
+		Recoils: false
+		Sequence: turret-rocket
+	WithSpriteTurret@SAM:
+		RequiresCondition: tower.sam
+		Recoils: false
+		Sequence: turret-sam
+	Armament@VULCPRIMARY:
+		RequiresCondition: tower.vulcan
+		Weapon: VulcanTower
+		LocalOffset: 416,85,960
+		MuzzleSequence: muzzle
+		MuzzleSplitFacings: 8
+	Armament@VULCSECONDARY:
+		RequiresCondition: tower.vulcan
+		Name: secondary
+		Weapon: VulcanTower
+		LocalOffset: 416,-85,960
+		MuzzleSequence: muzzle
+		MuzzleSplitFacings: 8
+	Armament@ROCKET:
+		RequiresCondition: tower.rocket
+		Weapon: RPGTower
+		LocalOffset: 192,-65,1056
+	Armament@SAM:
+		RequiresCondition: tower.sam
+		Weapon: RedEye2
+		LocalOffset: 384,0,1200
+	WithMuzzleOverlay:
+		RequiresCondition: tower.vulcan
+	WithIdleOverlay@LIGHTS:
+		Sequence: idle-lights
+	LineBuildNode:
+		Types: turret
+	Power@base:
+		Amount: -10
+	Power@turrets:
+		RequiresCondition: tower.vulcan || tower.rocket || tower.sam
+		Amount: -20
+	Power@samextra:
+		RequiresCondition: tower.sam
+		Amount: -10
+	Pluggable:
+		Conditions:
+			tower.vulcan: tower.vulcan
+			tower.rocket: tower.rocket
+			tower.sam: tower.sam
+	ProvidesPrerequisite@buildingname:
+	SelectionDecorations:
+		VisualBounds: 48, 48, 0, -12
+
+GAVULC:
+	Inherits: ^BuildingPlug
+	Valued:
+		Cost: 150
+	Tooltip:
+		Name: Vulcan Tower
+	Buildable:
+		Queue: Defense
+		BuildPaletteOrder: 120
+		Prerequisites: gactwr, gapile, ~structures.gdi, ~techlevel.low
+		Description: Basic base defense.\nDoes not require power to operate.\n  Strong vs Infantry, Light armor\n  Weak vs Aircraft
+	Plug:
+		Type: tower.vulcan
+	Power:
+		Amount: -20
+
+GAROCK:
+	Inherits: ^BuildingPlug
+	Valued:
+		Cost: 600
+	Tooltip:
+		Name: RPG Upgrade
+	Buildable:
+		Queue: Defense
+		BuildPaletteOrder: 130
+		Prerequisites: gactwr, gapile, ~structures.gdi, ~techlevel.high
+		Description: GDI Advanced base defense.\nDoes not require power to operate.\n  Strong vs Armored ground units\n  Weak vs Aircraft
+	Plug:
+		Type: tower.rocket
+	Power:
+		Amount: -20
+
+GACSAM:
+	Inherits: ^BuildingPlug
+	Valued:
+		Cost: 300
+	Tooltip:
+		Name: SAM Upgrade
+	Buildable:
+		Queue: Defense
+		BuildPaletteOrder: 140
+		Prerequisites: gactwr, garadr, ~structures.gdi, ~techlevel.medium
+		Description: GDI Anti-Air base defense.\nDoes not require power to operate.\n  Strong vs Aircraft\n  Weak vs Ground units
+	Plug:
+		Type: tower.sam
+	Power:
+		Amount: -30
+
+GAPOWRUP:
+	Inherits: ^BuildingPlug
+	Valued:
+		Cost: 150
+	Tooltip:
+		Name: Power Turbine
+	Buildable:
+		Queue: Defense
+		BuildPaletteOrder: 80
+		Prerequisites: gapowr, ~structures.gdi, ~techlevel.medium
+		Description: Provides extra power generation.
+	Plug:
+		Type: powrup
+	Power:
+		Amount: 50
+
+GAPLUG2:
+	Inherits: ^BuildingPlug
+	Valued:
+		Cost: 1000
+	Tooltip:
+		Name: Seeker Control
+	Buildable:
+		Queue: Defense
+		BuildPaletteOrder: 170
+		Prerequisites: gaplug, gatech, gaweap, ~structures.gdi, ~techlevel.superweapons
+		Description: Enables use of the hunter-seeker droid.
+	Plug:
+		Type: plug.hunterseeker
+	Power:
+		Amount: -50
+
+GAPLUG3:
+	Inherits: ^BuildingPlug
+	Valued:
+		Cost: 1500
+	Tooltip:
+		Name: Ion Cannon Uplink
+	Buildable:
+		Queue: Defense
+		BuildPaletteOrder: 180
+		Prerequisites: gaplug, gatech, ~structures.gdi, ~techlevel.superweapons
+		Description: Enables use of the Ion Cannon.
+	Plug:
+		Type: plug.ioncannon
+	Power:
+		Amount: -100

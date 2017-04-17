@@ -1,0 +1,76 @@
+Player:
+	HackyAI@TestAI:
+		Name: Test AI
+		MinimumExcessPower: 60
+		BuildingCommonNames:
+			ConstructionYard: gacnst
+			Refinery: proc
+			Power: gapowr, napowr, naapwr
+			Barracks: gapile, nahand
+			VehiclesFactory: gaweap, naweap
+			Production: gapile, nahand, gaweap, naweap
+			Silo: gasilo
+		UnitsCommonNames:
+			Mcv: mcv
+		BuildingLimits:
+			proc: 4
+			gasilo: 2
+			gapowr: 8
+			napowr: 8
+			gapile: 1
+			nahand: 1
+			gaweap: 1
+			naweap: 1
+			garadr: 1
+			naradr: 1
+			gatech: 1
+			natech: 1
+			nastlh: 1
+			gavulc: 8
+			garock: 2
+			gacsam: 4
+			naobel: 2
+			nalasr: 8
+			nasam: 4
+		BuildingFractions:
+			proc: 30%
+			gapowr: 35%
+			napowr: 35%
+			gapile: 1%
+			nahand: 1%
+			gaweap: 1%
+			naweap: 1%
+			garadr: 1%
+			naradr: 1%
+			gatech: 1%
+			natech: 1%
+			nastlh: 1%
+			nalasr: 10%
+			gavulc: 10%
+			garock: 3%
+			gacsam: 6%
+			nasam: 6%
+			naobel: 3%
+		UnitsToBuild:
+			e1: 80%
+			e2: 25%
+			e3: 25%
+			cyborg: 15%
+			jumpjet: 15%
+			repair: 2%
+			medic: 2%
+			harv: 10%
+			mmch: 15%
+			ttnk: 15%
+			smech: 25%
+			bggy: 25%
+			hvr: 20%
+			bike: 20%
+			subtank: 10%
+			sonic: 10%
+			stnk: 8%
+		UnitLimits:
+			harv: 12
+			medic: 3
+			repair: 3
+		SquadSize: 20

@@ -1,0 +1,85 @@
+DSHP.Husk:
+	Inherits: ^AircraftHusk
+	Tooltip:
+		Name: Dropship
+	Aircraft:
+		TurnSpeed: 5
+		Speed: 168
+	-RenderSprites:
+	RenderVoxels:
+		Image: dshp
+
+ORCA.Husk:
+	Inherits: ^AircraftHusk
+	Tooltip:
+		Name: Orca Fighter
+	Aircraft:
+		TurnSpeed: 5
+		Speed: 186
+	RenderSprites:
+		Image: orca
+	RenderVoxels:
+		Image: orca
+
+ORCAB.Husk:
+	Inherits: ^AircraftHusk
+	Tooltip:
+		Name: Orca Bomber
+	Aircraft:
+		TurnSpeed: 5
+		Speed: 96
+	RenderSprites:
+		Image: orcab
+	RenderVoxels:
+		Image: orcab
+
+ORCATRAN.Husk:
+	Inherits: ^AircraftHusk
+	Tooltip:
+		Name: Orca Transport
+	Aircraft:
+		TurnSpeed: 5
+		Speed: 84
+	RenderSprites:
+		Image: orcatran
+	RenderVoxels:
+		Image: orcatran
+
+TRNSPORT.Husk:
+	Inherits: ^AircraftHusk
+	Tooltip:
+		Name: Carryall
+	Aircraft:
+		TurnSpeed: 5
+		Speed: 149
+	RenderSprites:
+		Image: trnsport
+	RenderVoxels:
+		Image: trnsport
+
+SCRIN.Husk:
+	Inherits: ^AircraftHusk
+	Tooltip:
+		Name: Banshee Fighter
+	Aircraft:
+		TurnSpeed: 5
+		Speed: 168
+	RenderSprites:
+		Image: scrin
+	RenderVoxels:
+		Image: scrin
+
+APACHE.Husk:
+	Inherits: ^AircraftHusk
+	Tooltip:
+		Name: Harpy
+	Aircraft:
+		TurnSpeed: 5
+		Speed: 130
+	WithIdleOverlay:
+		Offset: 85,0,384
+		Sequence: rotor
+	RenderSprites:
+		Image: apache
+	RenderVoxels:
+		Image: apache

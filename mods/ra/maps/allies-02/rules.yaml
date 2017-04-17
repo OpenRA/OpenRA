@@ -1,0 +1,133 @@
+Player:
+	PlayerResources:
+		DefaultCash: 5700
+
+World:
+	LuaScript:
+		Scripts: allies02.lua
+	MissionData:
+		Briefing: A critical supply convoy is due through this area in 10 minutes, but Soviet forces have blocked the road in several places.\n\nUnless you can clear them out, those supplies will never make it to the front.\n\nThe convoy will come from the northwest, and time is short so work quickly.
+		BriefingVideo: ally2.vqa
+		StartVideo: mcv.vqa
+		WinVideo: montpass.vqa
+		LossVideo: frozen.vqa
+	SmudgeLayer@CRATER:
+		InitialSmudges:
+			60,79: cr1,0
+	ScriptLobbyDropdown@difficulty:
+		ID: difficulty
+		Label: Difficulty
+		Values:
+			easy: Easy
+			normal: Normal
+			hard: Hard
+			tough: Real tough guy
+		Default: easy
+
+HARV:
+	Buildable:
+		Prerequisites: weap
+
+APWR:
+	Buildable:
+		Prerequisites: ~disabled
+
+FIX:
+	Buildable:
+		Prerequisites: ~disabled
+
+SYRD:
+	Buildable:
+		Prerequisites: ~disabled
+
+WEAP:
+	Buildable:
+		Prerequisites: ~disabled
+
+DOME:
+	Buildable:
+		Prerequisites: ~disabled
+
+HPAD:
+	Buildable:
+		Prerequisites: ~disabled
+
+ATEK:
+	Buildable:
+		Prerequisites: ~disabled
+
+BRIK:
+	Buildable:
+		Prerequisites: ~disabled
+
+HBOX:
+	Buildable:
+		Prerequisites: ~disabled
+
+PBOX:
+	Buildable:
+		Prerequisites: ~disabled
+
+GUN:
+	Buildable:
+		Prerequisites: ~disabled
+
+AGUN:
+	Buildable:
+		Prerequisites: ~disabled
+
+GAP:
+	Buildable:
+		Prerequisites: ~disabled
+
+PDOX:
+	Buildable:
+		Prerequisites: ~disabled
+
+MSLO:
+	Buildable:
+		Prerequisites: ~disabled
+
+E6:
+	Buildable:
+		Prerequisites: ~disabled
+
+SPY:
+	Buildable:
+		Prerequisites: ~disabled
+
+MECH:
+	Buildable:
+		Prerequisites: ~disabled
+
+E7:
+	Buildable:
+		Prerequisites: ~disabled
+
+FACF:
+	Buildable:
+		Prerequisites: ~disabled
+
+WEAF:
+	Buildable:
+		Prerequisites: ~disabled
+
+SYRF:
+	Buildable:
+		Prerequisites: ~disabled
+
+DOMF:
+	Buildable:
+		Prerequisites: ~disabled
+
+ATEF:
+	Buildable:
+		Prerequisites: ~disabled
+
+MSLF:
+	Buildable:
+		Prerequisites: ~disabled
+
+PDOF:
+	Buildable:
+		Prerequisites: ~disabled

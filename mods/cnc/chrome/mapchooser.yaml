@@ -1,0 +1,145 @@
+Container@MAPCHOOSER_PANEL:
+	Logic: MapChooserLogic
+	X: (WINDOW_RIGHT - WIDTH)/2
+	Y: (WINDOW_BOTTOM - 560)/2
+	Width: 800
+	Height: 575
+	Children:
+		Label@TITLE:
+			Width: PARENT_RIGHT
+			Y: 0-25
+			Font: BigBold
+			Contrast: true
+			Align: Center
+			Text: Select Map
+		Background@bg:
+			Width: PARENT_RIGHT
+			Height: 540
+			Background: panel-black
+			Children:
+				Label@FILTER_DESC:
+					X: PARENT_RIGHT - WIDTH - 401
+					Y: 15
+					Width: 60
+					Height: 25
+					Font: Bold
+					Align: Right
+					Text: Filter:
+				TextField@MAPFILTER_INPUT:
+					X: PARENT_RIGHT - WIDTH - 245
+					Y: 15
+					Width: 150
+					Height: 25
+				Label@FILTER_DESC_JOINER:
+					X: PARENT_RIGHT - WIDTH - 215
+					Y: 15
+					Width: 30
+					Height: 25
+					Font: Bold
+					Align: Center
+					Text: in
+				DropDownButton@GAMEMODE_FILTER:
+					X: PARENT_RIGHT - WIDTH - 15
+					Y: 15
+					Width: 200
+					Height: 25
+				Button@SYSTEM_MAPS_TAB_BUTTON:
+					X: 15
+					Y: 15
+					Height: 31
+					Width: 135
+					Text: Official Maps
+				Button@USER_MAPS_TAB_BUTTON:
+					X: 155
+					Y: 15
+					Height: 31
+					Width: 135
+					Text: Custom Maps
+				Container@SYSTEM_MAPS_TAB:
+					X: 15
+					Y: 45
+					Width: PARENT_RIGHT - 30
+					Height: PARENT_BOTTOM - 60
+					Children:
+						ScrollPanel@MAP_LIST:
+							Width: PARENT_RIGHT
+							Height: PARENT_BOTTOM
+							Children:
+				Container@USER_MAPS_TAB:
+					X: 15
+					Y: 45
+					Width: PARENT_RIGHT - 30
+					Height: PARENT_BOTTOM - 60
+					Children:
+						ScrollPanel@MAP_LIST:
+							Width: PARENT_RIGHT
+							Height: PARENT_BOTTOM
+							Children:
+				ScrollItem@MAP_TEMPLATE:
+					Width: 183
+					Height: 232
+					X: 2
+					Visible: false
+					Children:
+						MapPreview@PREVIEW:
+							X: (PARENT_RIGHT - WIDTH)/2
+							Y: 4
+							Width: 173
+							Height: 173
+							IgnoreMouseOver: true
+							IgnoreMouseInput: true
+						Label@TITLE:
+							X: 4
+							Y: PARENT_BOTTOM-48
+							Width: PARENT_RIGHT-8
+							Align: Center
+						Label@DETAILS:
+							Width: PARENT_RIGHT-8
+							X: 4
+							Y: PARENT_BOTTOM-34
+							Align: Center
+							Font: Tiny
+						Label@AUTHOR:
+							Width: PARENT_RIGHT-8
+							X: 4
+							Y: PARENT_BOTTOM-22
+							Align: Center
+							Font: Tiny
+						Label@SIZE:
+							Width: PARENT_RIGHT-8
+							X: 4
+							Y: PARENT_BOTTOM-10
+							Align: Center
+							Font: Tiny
+				Button@BUTTON_CANCEL:
+					Key: escape
+					Y: 539
+					Width: 140
+					Height: 35
+					Text: Cancel
+				Button@RANDOMMAP_BUTTON:
+					Key: space
+					X: PARENT_RIGHT - 150 - WIDTH
+					Y: 539
+					Width: 140
+					Height: 35
+					Text: Random
+				Button@DELETE_MAP_BUTTON:
+					X: PARENT_RIGHT - 300 - WIDTH
+					Y: 539
+					Width: 140
+					Height: 35
+					Text: Delete Map
+				Button@DELETE_ALL_MAPS_BUTTON:
+					X: PARENT_RIGHT - 450 - WIDTH
+					Y: 539
+					Width: 140
+					Height: 35
+					Text: Delete All Maps
+				Button@BUTTON_OK:
+					Key: return
+					X: PARENT_RIGHT - WIDTH
+					Y: 539
+					Width: 140
+					Height: 35
+					Text: Ok

@@ -1,0 +1,7 @@
+Rockets:
+	Range: 5c0
+	Warhead: SpreadDamage
+		Versus:
+			None: 10
+			Light: 66
+			Heavy: 66

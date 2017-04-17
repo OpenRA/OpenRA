@@ -1,0 +1,155 @@
+World:
+	LuaScript:
+		Scripts: nod07c.lua
+	MusicPlaylist:
+		StartingMusic: justdoit
+		VictoryMusic: nod_win1
+	MissionData:
+		Briefing: GDI has left themselves open to the deadliest weapon of all, information.\n\nOur spies tell us the GDI base in your area contains an advanced attack helicopter, the Orca.\n\nSteal this weapon, then fly to the nearby village and destroy it.\n\nThe attack will be blamed on GDI.
+		BriefingVideo: nod7b.vqa
+		StartVideo: bcanyon.vqa
+		LossVideo: flag.vqa
+	SmudgeLayer@CRATER:
+		InitialSmudges:
+			40,22: cr1,2
+
+Player:
+	EnemyWatcher:
+	PlayerResources:
+		DefaultCash: 0
+
+^CivBuilding:
+	ScriptTags:
+
+^CivInfantry:
+	ScriptTags:
+
+^BaseBuilding:
+	AnnounceOnSeen:
+	ScriptTags:
+
+CYCL:
+	Buildable:
+		Prerequisites: ~disabled
+
+NUK2:
+	Buildable:
+		Prerequisites: ~disabled
+
+BRIK:
+	Buildable:
+		Prerequisites: ~disabled
+
+EYE:
+	Buildable:
+		Prerequisites: ~disabled
+
+GUN:
+	Buildable:
+		Prerequisites: ~disabled
+
+ORCA:
+	Buildable:
+		Prerequisites: ~disabled
+
+OBLI:
+	Buildable:
+		Prerequisites: ~disabled
+
+TMPL:
+	Buildable:
+		Prerequisites: ~disabled
+
+E2:
+	Buildable:
+		Prerequisites: ~pyle
+
+E5:
+	Buildable:
+		Prerequisites: ~disabled
+
+HARV:
+	Harvester:
+		SearchFromOrderRadius: 30
+
+HTNK:
+	Buildable:
+		Prerequisites: ~disabled
+
+RMBO:
+	Buildable:
+		Prerequisites: ~disabled
+
+MCV:
+	Buildable:
+		Prerequisites: ~disabled
+
+FTNK:
+	Buildable:
+		Prerequisites: ~disabled
+
+MLRS:
+	Buildable:
+		Prerequisites: ~disabled
+
+MSAM:
+	Buildable:
+		Prerequisites: ~disabled
+
+ATWR:
+	Buildable:
+		Prerequisites: ~disabled
+
+HELI:
+	Buildable:
+		Prerequisites: ~disabled
+
+TRAN:
+	Buildable:
+		Prerequisites: ~disabled
+
+HQ:
+	AirstrikePower:
+		Prerequisites: gdi
+
+BOAT:
+	Health:
+		HP: 1500
+
+TRAN.IN:
+	Inherits: TRAN
+	RejectsOrders:
+	-Selectable:
+	RenderSprites:
+		Image: TRAN
+	Buildable:
+		Prerequisites: ~disabled
+
+Camera.Boat:
+	AlwaysVisible:
+	Mobile:
+		TerrainSpeeds:
+	RevealsShroud:
+		Range: 4c0
+	ScriptTriggers:
+
+HPAD.IN:
+	Inherits: HPAD
+	RenderSprites:
+		Image: hpad
+	Buildable:
+		Prerequisites: ~disabled
+	ProvidesPrerequisite:
+		Prerequisite: hpad
+	Capturable:
+		CaptureThreshold: 100
+	Building:
+		Footprint: x_ xx
+	-Sellable:
+	-Power:
+
+ORCA.IN:
+	Inherits: ORCA
+	RenderSprites:
+		Image: ORCA
+	-AutoTarget:

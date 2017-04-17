@@ -1,0 +1,197 @@
+MapFormat: 11
+
+RequiresMod: cnc
+
+Title: 02a: Invasion of Egypt
+
+Author: Westwood Studios
+
+Tileset: DESERT
+
+MapSize: 64,64
+
+Bounds: 27,34,36,26
+
+Visibility: MissionSelector
+
+Categories: Campaign
+
+LockPreview: True
+
+Players:
+	PlayerReference@GDI:
+		Name: GDI
+		Faction: gdi
+		Color: F5D378
+		Enemies: Nod
+	PlayerReference@Nod:
+		Name: Nod
+		Playable: True
+		AllowBots: False
+		Required: True
+		LockFaction: True
+		Faction: nod
+		LockColor: True
+		Color: FE1100
+		LockSpawn: True
+		LockTeam: True
+		Enemies: GDI
+	PlayerReference@Neutral:
+		Name: Neutral
+		OwnsWorld: True
+		NonCombatant: True
+		Faction: gdi
+
+Actors:
+	Actor0: t08
+		Location: 30,52
+		Owner: Neutral
+	Actor1: t18
+		Location: 34,52
+		Owner: Neutral
+	Actor2: t08
+		Location: 57,47
+		Owner: Neutral
+	Actor3: t08
+		Location: 38,59
+		Owner: Neutral
+	Actor4: silo
+		Location: 33,40
+		Owner: GDI
+	Actor9: silo
+		Location: 32,42
+		Owner: GDI
+	Actor10: jeep
+		Location: 30,46
+		Owner: GDI
+		Facing: 128
+	Actor11: jeep
+		Location: 31,35
+		Owner: GDI
+		Facing: 64
+	Actor17: e1
+		Location: 34,56
+		Owner: GDI
+		SubCell: 3
+	Actor18: e1
+		Location: 43,35
+		Owner: GDI
+		SubCell: 3
+	Actor19: e1
+		Location: 43,36
+		Owner: GDI
+		SubCell: 3
+	Actor31: e1
+		Location: 47,53
+		Owner: GDI
+		SubCell: 4
+	Actor32: e1
+		Location: 49,54
+		Owner: GDI
+		Facing: 224
+		SubCell: 1
+	Actor35: e1
+		Location: 34,57
+		Owner: GDI
+		Facing: 64
+		SubCell: 1
+	waypoint27: waypoint
+		Location: 27,51
+		Owner: Neutral
+	waypoint26: waypoint
+		Location: 49,35
+		Owner: Neutral
+	waypoint10: waypoint
+		Location: 30,44
+		Owner: Neutral
+	waypoint9: waypoint
+		Location: 55,40
+		Owner: Neutral
+	waypoint8: waypoint
+		Location: 48,41
+		Owner: Neutral
+	waypoint7: waypoint
+		Location: 60,58
+		Owner: Neutral
+	waypoint6: waypoint
+		Location: 61,47
+		Owner: Neutral
+	waypoint5: waypoint
+		Location: 48,55
+		Owner: Neutral
+	waypoint4: waypoint
+		Location: 41,51
+		Owner: Neutral
+	waypoint3: waypoint
+		Location: 28,36
+		Owner: Neutral
+	waypoint2: waypoint
+		Location: 28,51
+		Owner: Neutral
+	waypoint1: waypoint
+		Location: 40,43
+		Owner: Neutral
+	waypoint0: waypoint
+		Location: 40,35
+		Owner: Neutral
+	Refinery: proc
+		Location: 30,38
+		Owner: GDI
+	Barracks: pyle
+		Location: 34,43
+		Owner: GDI
+	Powerplant: nuke
+		Location: 35,40
+		Owner: GDI
+	Yard: fact
+		Location: 33,37
+		Owner: GDI
+	Guard1: e1
+		Location: 42,39
+		Owner: GDI
+		Facing: 64
+		SubCell: 0
+	Guard2: e1
+		Location: 38,38
+		Owner: GDI
+		Facing: 64
+		SubCell: 2
+	Guard3: e1
+		Location: 35,49
+		Owner: GDI
+		Facing: 96
+		SubCell: 0
+	Guard4: e1
+		Location: 34,48
+		Owner: GDI
+		Facing: 96
+		SubCell: 3
+	Guard5: e1
+		Location: 39,40
+		Owner: GDI
+		Facing: 64
+		SubCell: 1
+	Guard6: e1
+		Location: 40,56
+		Owner: GDI
+		Facing: 96
+		SubCell: 4
+	Guard7: e1
+		Location: 38,54
+		Owner: GDI
+		Facing: 32
+		SubCell: 3
+	McvEntry: waypoint
+		Location: 62,43
+		Owner: Neutral
+	McvRally: waypoint
+		Location: 57,41
+		Owner: Neutral
+	UnitsEntry: waypoint
+		Location: 62,38
+		Owner: Neutral
+	UnitsRally: waypoint
+		Location: 56,38
+		Owner: Neutral
+
+Rules: cnc|rules/campaign-maprules.yaml, cnc|rules/campaign-tooltips.yaml, cnc|rules/campaign-palettes.yaml, rules.yaml

@@ -1,0 +1,176 @@
+World:
+	LuaScript:
+		Scripts: gdi05a.lua
+	MusicPlaylist:
+		StartingMusic: rain
+	MissionData:
+		Briefing: A GDI field base is under attack. They have fended off one attack but will not survive another.\n\nMove to the base, repair the structures and then launch a strike force to destroy the Nod base in the area.\n\nDestroy all Nod units and structures.
+		BackgroundVideo: podium.vqa
+		BriefingVideo: gdi5.vqa
+		StartVideo: seige.vqa
+		WinVideo: nodlose.vqa
+		LossVideo: gdilose.vqa
+	MapOptions:
+		ShortGameLocked: True
+		ShortGameEnabled: False
+	SmudgeLayer@SCORCH:
+		InitialSmudges:
+			41,55: sc4,0
+			48,51: sc5,0
+			53,50: sc2,0
+			51,50: sc3,0
+			45,50: sc4,0
+			49,48: sc6,0
+	SmudgeLayer@CRATER:
+		InitialSmudges:
+			41,54: cr1,0
+			13,52: cr1,0
+			11,51: cr1,0
+	ScriptLobbyDropdown@difficulty:
+		ID: difficulty
+		Label: Difficulty
+		Values:
+			easy: Easy
+			normal: Normal
+			hard: Hard
+		Default: easy
+
+Player:
+	EnemyWatcher:
+	PlayerResources:
+		DefaultCash: 2000
+
+^Palettes:
+	IndexedPlayerPalette:
+		PlayerIndex:
+			AbandonedBase: 176, 177, 178, 179, 180, 181, 182, 183, 184, 185, 186, 187, 188, 189, 190, 191
+	IndexedPlayerPalette@units:
+		PlayerIndex:
+			AbandonedBase: 176, 177, 178, 179, 180, 181, 182, 183, 184, 185, 186, 187, 188, 189, 190, 191
+
+^Building:
+	AnnounceOnSeen:
+
+E2:
+	Buildable:
+		Prerequisites: ~pyle
+
+E3:
+	Buildable:
+		Queue: Infantry.Nod
+
+E4:
+	Buildable:
+		Prerequisites: ~disabled
+
+E5:
+	Buildable:
+		Prerequisites: ~disabled
+
+RMBO:
+	Buildable:
+		Prerequisites: ~disabled
+
+HARV:
+	Harvester:
+		SearchFromOrderRadius: 24
+	Buildable:
+		Prerequisites: ~disabled
+
+LTNK:
+	Buildable:
+		Prerequisites: ~afld
+
+MCV:
+	Buildable:
+		Prerequisites: ~disabled
+
+MTNK:
+	Buildable:
+		Prerequisites: ~disabled
+
+HTNK:
+	Buildable:
+		Prerequisites: ~disabled
+
+MSAM:
+	Buildable:
+		Prerequisites: ~disabled
+
+ARTY:
+	Buildable:
+		Prerequisites: ~disabled
+
+MLRS:
+	Buildable:
+		Prerequisites: ~disabled
+
+FTNK:
+	Buildable:
+		Prerequisites: ~disabled
+
+STNK:
+	Buildable:
+		Prerequisites: ~disabled
+
+WEAP:
+	Buildable:
+		Prerequisites: ~disabled
+
+NUK2:
+	Buildable:
+		Prerequisites: ~disabled
+
+FIX:
+	Buildable:
+		Prerequisites: ~disabled
+
+HPAD:
+	Buildable:
+		Prerequisites: ~disabled
+
+EYE:
+	Buildable:
+		Prerequisites: ~disabled
+
+GUN:
+	Buildable:
+		Prerequisites: ~disabled
+
+GTWR:
+	Buildable:
+		Prerequisites: ~disabled
+
+ATWR:
+	Buildable:
+		Prerequisites: ~disabled
+
+SBAG:
+	Buildable:
+		Prerequisites: ~disabled
+
+CYCL:
+	Buildable:
+		Prerequisites: ~disabled
+
+BRIK:
+	Buildable:
+		Prerequisites: ~disabled
+
+TMPL:
+	Buildable:
+		Prerequisites: ~disabled
+
+OBLI:
+	Buildable:
+		Prerequisites: ~disabled
+
+MoneyCrate:
+	Inherits: ^Crate
+	GiveCashCrateAction:
+		Amount: 500
+		UseCashTick: yes
+
+airstrike.proxy:
+	AirstrikePower:
+		SquadSize: 1

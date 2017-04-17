@@ -1,0 +1,224 @@
+mpspawn:
+	EditorOnlyTooltip:
+		Name: (multiplayer player starting point)
+	AlwaysVisible:
+	Immobile:
+		OccupiesSpace: false
+	RenderSpritesEditorOnly:
+	WithSpriteBody:
+	BodyOrientation:
+		QuantizedFacings: 1
+
+waypoint:
+	EditorOnlyTooltip:
+		Name: (waypoint for scripted behavior)
+	AlwaysVisible:
+	Immobile:
+		OccupiesSpace: false
+	RenderSpritesEditorOnly:
+	WithSpriteBody:
+	BodyOrientation:
+		QuantizedFacings: 1
+
+^mmch.colorpicker:
+	Inherits: MMCH
+	Mobile:
+		InitialFacing: 160
+	Turreted:
+		InitialFacing: 160
+	WithInfantryBody:
+		StandSequences: run
+	RenderVoxels:
+		Image: mmch
+		Palette: colorpicker
+	RenderSprites:
+		Image: mmch
+		Palette: colorpicker
+
+CAMERA:
+	EditorOnlyTooltip:
+		Name: (reveals area to owner)
+	AlwaysVisible:
+	RenderSpritesEditorOnly:
+	WithSpriteBody:
+	BodyOrientation:
+		QuantizedFacings: 1
+	Immobile:
+		OccupiesSpace: false
+	RevealsShroud:
+		Range: 10c0
+		Type: CenterPosition
+	DetectCloaked:
+		Range: 10c0
+
+CRATE:
+	Inherits: ^Crate
+	GiveCashCrateAction:
+		Amount: 1000
+		SelectionShares: 50
+		Effect: dollar
+		UseCashTick: true
+	LevelUpCrateAction:
+		SelectionShares: 40
+		Effect: levelup
+	HideMapCrateAction:
+		SelectionShares: 5
+		Effect: hide-map
+	HealUnitsCrateAction:
+		SelectionShares: 2
+		Effect: heal
+	RevealMapCrateAction:
+		SelectionShares: 1
+		Effect: reveal-map
+	GiveMcvCrateAction:
+		SelectionShares: 0
+		NoBaseSelectionShares: 100
+		Units: mcv
+	GrantExternalConditionCrateAction@cloak:
+		SelectionShares: 5
+		Effect: stealth
+		Condition: crate-cloak
+		Notification: cloak5.aud
+	GrantExternalConditionCrateAction@firepower:
+		SelectionShares: 5
+		Effect: firepower
+		Condition: crate-firepower
+		Notification: 00-i070.aud
+	GrantExternalConditionCrateAction@armor:
+		SelectionShares: 5
+		Effect: armor
+		Condition: crate-damage
+		Notification: 00-i068.aud
+	GrantExternalConditionCrateAction@speed:
+		SelectionShares: 5
+		Condition: crate-speed
+		Notification: 00-i080.aud
+
+SROCK01:
+	Inherits: ^Rock
+
+SROCK02:
+	Inherits: ^Rock
+
+SROCK03:
+	Inherits: ^Rock
+
+SROCK04:
+	Inherits: ^Rock
+
+SROCK05:
+	Inherits: ^Rock
+
+TROCK01:
+	Inherits: ^Rock
+
+TROCK02:
+	Inherits: ^Rock
+
+TROCK03:
+	Inherits: ^Rock
+
+TROCK04:
+	Inherits: ^Rock
+
+TROCK05:
+	Inherits: ^Rock
+
+CRAT01:
+	Inherits: ^Box
+
+CRAT02:
+	Inherits: ^Box
+
+CRAT03:
+	Inherits: ^Box
+
+CRAT04:
+	Inherits: ^Box
+
+CRAT0A:
+	Inherits: ^Box
+
+CRAT0B:
+	Inherits: ^Box
+
+CRAT0C:
+	Inherits: ^Box
+
+DRUM01:
+	Inherits: ^Drum
+
+DRUM02:
+	Inherits: ^Drum
+
+PALET01:
+	Inherits: ^Palette
+
+PALET02:
+	Inherits: ^Palette
+
+PALET03:
+	Inherits: ^Palette
+
+PALET04:
+	Inherits: ^Palette
+
+TRACKS01:
+	Inherits: ^Railway
+
+TRACKS02:
+	Inherits: ^Railway
+
+TRACKS03:
+	Inherits: ^Railway
+
+TRACKS04:
+	Inherits: ^Railway
+
+TRACKS05:
+	Inherits: ^Railway
+
+TRACKS06:
+	Inherits: ^Railway
+
+TRACKS07:
+	Inherits: ^Railway
+
+TRACKS08:
+	Inherits: ^Railway
+
+TRACKS09:
+	Inherits: ^Railway
+
+TRACKS10:
+	Inherits: ^Railway
+
+TRACKS11:
+	Inherits: ^Railway
+
+TRACKS12:
+	Inherits: ^Railway
+
+TRACKS13:
+	Inherits: ^Railway
+
+TRACKS14:
+	Inherits: ^Railway
+
+TRACKS15:
+	Inherits: ^Railway
+
+TRACKS16:
+	Inherits: ^Railway
+
+TUNTOP01:
+	Inherits: ^Tunnel
+
+TUNTOP02:
+	Inherits: ^Tunnel
+
+TUNTOP03:
+	Inherits: ^Tunnel
+
+TUNTOP04:
+	Inherits: ^Tunnel

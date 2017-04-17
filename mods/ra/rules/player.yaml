@@ -1,0 +1,77 @@
+Player:
+	AlwaysVisible:
+	TechTree:
+	ClassicProductionQueue@Building:
+		Type: Building
+		LowPowerSlowdown: 3
+		QueuedAudio: Building
+		ReadyAudio: ConstructionComplete
+		SpeedUp: True
+	ClassicProductionQueue@Defense:
+		Type: Defense
+		LowPowerSlowdown: 3
+		QueuedAudio: Building
+		ReadyAudio: ConstructionComplete
+		SpeedUp: True
+	ClassicProductionQueue@Vehicle:
+		Type: Vehicle
+		LowPowerSlowdown: 3
+		QueuedAudio: Building
+		SpeedUp: True
+	ClassicProductionQueue@Infantry:
+		Type: Infantry
+		LowPowerSlowdown: 3
+		SpeedUp: True
+	ClassicProductionQueue@Ship:
+		Type: Ship
+		LowPowerSlowdown: 3
+		QueuedAudio: Building
+		SpeedUp: True
+	ClassicProductionQueue@Aircraft:
+		Type: Aircraft
+		LowPowerSlowdown: 3
+		QueuedAudio: Building
+		SpeedUp: True
+	PlaceBuilding:
+	SupportPowerManager:
+	ScriptTriggers:
+	MissionObjectives:
+	ConquestVictoryConditions:
+	PowerManager:
+	AllyRepair:
+	PlayerResources:
+		InsufficientFundsNotification: InsufficientFunds
+	DeveloperMode:
+	GpsWatcher:
+	Shroud:
+	FrozenActorLayer:
+	BaseAttackNotifier:
+	PlayerStatistics:
+	PlaceBeacon:
+	ProvidesTechPrerequisite@infonly:
+		Name: Infantry Only
+		Prerequisites: techlevel.infonly
+		Id: infantryonly
+	ProvidesTechPrerequisite@low:
+		Name: Low
+		Prerequisites: techlevel.infonly, techlevel.low
+		Id: low
+	ProvidesTechPrerequisite@medium:
+		Name: Medium
+		Prerequisites: techlevel.infonly, techlevel.low, techlevel.medium
+		Id: medium
+	ProvidesTechPrerequisite@high:
+		Name: No Superweapons
+		Prerequisites: techlevel.infonly, techlevel.low, techlevel.medium, techlevel.high
+		Id: nosuperweapons
+	ProvidesTechPrerequisite@unrestricted:
+		Name: Unrestricted
+		Prerequisites: techlevel.infonly, techlevel.low, techlevel.medium, techlevel.high, techlevel.unrestricted
+		Id: unrestricted
+	GrantConditionOnPrerequisiteManager:
+	EnemyWatcher:
+	VeteranProductionIconOverlay:
+		Image: iconchevrons
+		Sequence: veteran
+	ResourceStorageWarning:
+	PlayerExperience:

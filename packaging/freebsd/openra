@@ -1,0 +1,102 @@
+#!/bin/sh
+#
+# PROVIDE: openra
+# REQUIRE: LOGIN DAEMON NETWORKING mountcritlocal
+# KEYWORD: shutdown
+#
+# Add the following lines to /etc/rc.conf.local to enable the openra server:
+#
+# openra_enable="YES"
+# openra_user="<run server as this user>" (default: openra)
+# openra_chdir="<home directory of openra_user>"
+#    (default: /usr/home/${openra_user})
+# openra_path="<path to OpenRA.Game.exe>"
+#    (default: ${openra_chdir}/OpenRA/OpenRA.Game.exe)
+# openra_ServerName="<ServerName>" (default: "Dedicated Server")
+# openra_Mod="<Mod>" (default: ra)
+# openra_ListenPort="<number>" (default: 1234)
+# openra_ExternalPort="<number>" (default: 1234)
+# openra_AdvertiseOnline="<True|False>" (default: True)
+# openra_extraflags="<set as needed>"
+#
+
+. /etc/rc.subr
+
+name=openra
+rcvar=openra_enable
+
+load_rc_config ${name}
+
+command=/usr/local/bin/screen
+pidfile=/var/run/openra.pid
+
+start_cmd="${name}_start"
+stop_cmd="${name}_stop"
+status_cmd="${name}_status"
+
+: ${openra_enable="NO"}
+: ${openra_session="openra-session"}
+: ${openra_user="openra"}
+: ${openra_chdir="/usr/home/${openra_user}"}
+: ${openra_path="${openra_chdir}/OpenRA/OpenRA.Game.exe"}
+
+: ${openra_ServerName="Dedicated Server"}
+: ${openra_Mod="ra"}
+: ${openra_ListenPort="1234"}
+: ${openra_ExternalPort="1234"}
+: ${openra_AdvertiseOnline="True"}
+
+openra_Dedicated="True"
+openra_DedicatedLoop="True"
+
+: ${openra_runflags="Game.Mod=${openra_Mod} \
+                   Server.Dedicated=${openra_Dedicated} \
+                   Server.DedicatedLoop=${openra_DedicatedLoop} \
+                   Server.Name=\"${openra_ServerName}\" \
+                   Server.ListenPort=${openra_ListenPort} \
+                   Server.ExternalPort=${openra_ExternalPort} \
+                   Server.AdvertiseOnline=${openra_AdvertiseOnline}\
+                   ${openra_extraflags}"}
+
+: ${openra_args="/usr/local/bin/mono --debug \
+                   ${openra_path} ${openra_runflags}"}
+
+openra_start() {
+    unset "${rc_arg}_cmd"
+    openra_flags="-d -m -S ${openra_session} ${openra_args}"
+    if openra_running; then
+        echo "openra already running?"
+    else
+        HOME=${openra_chdir} su -m openra -c "${command} ${openra_flags}"
+    fi
+}
+
+openra_stop() {
+    local cmd
+    cmd="${command} -p 0 -S ${openra_session} -X eval 'stuff stop\003'"
+    if openra_running; then
+        echo "Stopping openra."
+        su -m ${openra_user} -c "${cmd}"
+    fi
+}
+
+openra_status() {
+    if openra_running; then
+        echo "openra is running."
+    else
+        echo "openra is not running."
+    fi
+}
+
+openra_running() {
+    local check ses
+    ses="${openra_session}"
+    check=`su -m ${openra_user} -c "${command} -list | grep ${ses}"`
+    if [ "$check" ]; then
+        return 0
+    else
+        return 1
+    fi
+}
+
+run_rc_command "$1"

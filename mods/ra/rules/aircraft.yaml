@@ -1,0 +1,407 @@
+BADR:
+	Inherits: ^NeutralPlane
+	ParaDrop:
+		DropRange: 4c0
+	Health:
+		HP: 300
+	Armor:
+		Type: Light
+	Aircraft:
+		CruiseAltitude: 2560
+		TurnSpeed: 5
+		Speed: 149
+		Repulsable: False
+		MaximumPitch: 56
+	Cargo:
+		MaxWeight: 10
+	-Selectable:
+	SelectionDecorations:
+		RenderSelectionBars: False
+	-Voiced:
+	Tooltip:
+		Name: Badger
+	Contrail@1:
+		Offset: -432,560,0
+	Contrail@2:
+		Offset: -432,-560,0
+	SpawnActorOnDeath:
+		Actor: BADR.Husk
+	SmokeTrailWhenDamaged@0:
+		Offset: -432,560,0
+		Interval: 2
+	SmokeTrailWhenDamaged@1:
+		Offset: -432,-560,0
+		Interval: 2
+	-EjectOnDeath:
+	RejectsOrders:
+	GivesExperience:
+		Experience: 1000
+
+BADR.Bomber:
+	Inherits: ^NeutralPlane
+	AttackBomber:
+	Armament:
+		Weapon: ParaBomb
+	Health:
+		HP: 300
+	Armor:
+		Type: Light
+	Aircraft:
+		CruiseAltitude: 2560
+		TurnSpeed: 5
+		Speed: 149
+		Repulsable: False
+		MaximumPitch: 56
+	AmmoPool:
+		Ammo: 7
+	-Selectable:
+	SelectionDecorations:
+		RenderSelectionBars: False
+	-Voiced:
+	Tooltip:
+		Name: Badger
+	Contrail@1:
+		Offset: -432,560,0
+	Contrail@2:
+		Offset: -432,-560,0
+	SpawnActorOnDeath:
+		Actor: BADR.Husk
+	SmokeTrailWhenDamaged@0:
+		Offset: -432,560,0
+		Interval: 2
+	SmokeTrailWhenDamaged@1:
+		Offset: -432,-560,0
+		Interval: 2
+	-EjectOnDeath:
+	RejectsOrders:
+	RenderSprites:
+		Image: badr
+	GivesExperience:
+		Experience: 1000
+
+MIG:
+	Inherits: ^Plane
+	Buildable:
+		Queue: Aircraft
+		BuildAtProductionType: Plane
+		BuildPaletteOrder: 50
+		Prerequisites: ~afld, stek, ~techlevel.high
+		Description: Fast Ground-Attack Plane.\n  Strong vs Buildings, Tanks\n  Weak vs Infantry, Light armor, Aircraft
+	Valued:
+		Cost: 2000
+	Tooltip:
+		Name: Mig Attack Plane
+	Health:
+		HP: 70
+	Armor:
+		Type: Light
+	RevealsShroud:
+		Range: 13c0
+		Type: GroundPosition
+		RevealGeneratedShroud: False
+	RevealsShroud@GAPGEN:
+		Range: 11c0
+		Type: GroundPosition
+	Armament:
+		Weapon: Maverick
+		LocalOffset: 0,-640,0, 0,640,0
+		LocalYaw: -40, 24
+	AttackPlane:
+		FacingTolerance: 20
+	Aircraft:
+		CruiseAltitude: 2560
+		InitialFacing: 192
+		TurnSpeed: 4
+		Speed: 223
+		RepulsionSpeed: 40
+		MaximumPitch: 56
+	AutoTarget:
+		TargetWhenIdle: false
+		TargetWhenDamaged: false
+		EnableStances: false
+	AmmoPool:
+		Ammo: 8
+	ReturnOnIdle:
+	Selectable:
+		Bounds: 36,28,0,2
+	SelectionDecorations:
+		VisualBounds: 40,29,0,1
+	Contrail@1:
+		Offset: -598,-683,0
+	Contrail@2:
+		Offset: -598,683,0
+	SpawnActorOnDeath:
+		Actor: MIG.Husk
+	SmokeTrailWhenDamaged:
+		Offset: -853,0,171
+		Interval: 2
+	ProducibleWithLevel:
+		Prerequisites: aircraft.upgraded
+
+YAK:
+	Inherits: ^Plane
+	Buildable:
+		Queue: Aircraft
+		BuildAtProductionType: Plane
+		BuildPaletteOrder: 30
+		Prerequisites: ~afld, ~techlevel.medium
+		Description: Anti-Tanks & Anti-Infantry Plane.\n  Strong vs Infantry, Vehicles\n  Weak vs Aircraft
+	Valued:
+		Cost: 1350
+	Tooltip:
+		Name: Yak Attack Plane
+	Health:
+		HP: 60
+	Armor:
+		Type: Light
+	RevealsShroud:
+		Range: 11c0
+		Type: GroundPosition
+		RevealGeneratedShroud: False
+	RevealsShroud@GAPGEN:
+		Range: 9c0
+		Type: GroundPosition
+	Armament@PRIMARY:
+		Weapon: ChainGun.Yak
+		LocalOffset: 256,-213,0
+		MuzzleSequence: muzzle
+	Armament@SECONDARY:
+		Name: secondary
+		Weapon: ChainGun.Yak
+		LocalOffset: 256,213,0
+		MuzzleSequence: muzzle
+	AttackPlane:
+		FacingTolerance: 20
+	Aircraft:
+		CruiseAltitude: 2560
+		InitialFacing: 192
+		TurnSpeed: 4
+		Speed: 178
+		RepulsionSpeed: 40
+		MaximumPitch: 56
+	AutoTarget:
+		TargetWhenIdle: false
+		TargetWhenDamaged: false
+		EnableStances: false
+	AmmoPool:
+		Ammo: 18
+		PipCount: 6
+		ReloadDelay: 11
+	ReturnOnIdle:
+	SelectionDecorations:
+		VisualBounds: 30,28,0,2
+	WithMuzzleOverlay:
+	Contrail:
+		Offset: -853,0,0
+	SpawnActorOnDeath:
+		Actor: YAK.Husk
+	SmokeTrailWhenDamaged:
+		Offset: -853,0,0
+		Interval: 2
+	ProducibleWithLevel:
+		Prerequisites: aircraft.upgraded
+
+TRAN:
+	Inherits: ^Helicopter
+	Buildable:
+		Queue: Aircraft
+		BuildAtProductionType: Helicopter
+		BuildPaletteOrder: 10
+		Prerequisites: ~hpad, ~techlevel.medium
+		Description: Fast Infantry Transport Helicopter.\n  Unarmed
+	Valued:
+		Cost: 900
+	Tooltip:
+		Name: Chinook
+	Health:
+		HP: 120
+	Armor:
+		Type: Light
+	RevealsShroud:
+		Range: 10c0
+		Type: GroundPosition
+		RevealGeneratedShroud: False
+	RevealsShroud@GAPGEN:
+		Range: 8c0
+		Type: GroundPosition
+	Aircraft:
+		InitialFacing: 224
+		TurnSpeed: 5
+		Speed: 112
+		LandableTerrainTypes: Clear,Rough,Road,Ore,Beach,Gems
+		AltitudeVelocity: 0c100
+	WithIdleOverlay@ROTOR1AIR:
+		Offset: 597,0,213
+		Sequence: rotor
+		RequiresCondition: airborne
+	WithIdleOverlay@ROTOR1GROUND:
+		Offset: 597,0,213
+		Sequence: slow-rotor
+		RequiresCondition: !airborne
+	WithIdleOverlay@ROTOR2AIR:
+		Offset: -597,0,341
+		Sequence: rotor2
+		RequiresCondition: airborne
+	WithIdleOverlay@ROTOR2GROUND:
+		Offset: -597,0,341
+		Sequence: slow-rotor2
+		RequiresCondition: !airborne
+	Cargo:
+		Types: Infantry
+		MaxWeight: 8
+		PipCount: 8
+	SpawnActorOnDeath:
+		Actor: TRAN.Husk
+	SelectionDecorations:
+		VisualBounds: 40,36
+
+HELI:
+	Inherits: ^Helicopter
+	Buildable:
+		Queue: Aircraft
+		BuildAtProductionType: Helicopter
+		BuildPaletteOrder: 40
+		Prerequisites: ~hpad, atek, ~techlevel.high
+		Description: Helicopter gunship armed\nwith multi-purpose missiles.\n  Strong vs Tanks, Aircraft\n  Weak vs Infantry
+	Valued:
+		Cost: 2000
+	Tooltip:
+		Name: Longbow
+	Health:
+		HP: 120
+	Armor:
+		Type: Light
+	RevealsShroud:
+		Range: 12c0
+		Type: GroundPosition
+		RevealGeneratedShroud: False
+	RevealsShroud@GAPGEN:
+		Range: 10c0
+		Type: GroundPosition
+	Armament@PRIMARY:
+		Weapon: HellfireAA
+		LocalOffset: 0,-213,-85
+	Armament@SECONDARY:
+		Weapon: HellfireAG
+		LocalOffset: 0,213,-85
+	AttackHeli:
+		FacingTolerance: 20
+	Aircraft:
+		LandWhenIdle: false
+		InitialFacing: 224
+		TurnSpeed: 4
+		Speed: 149
+	AutoTarget:
+		InitialStance: HoldFire
+		InitialStanceAI: HoldFire
+	WithIdleOverlay@ROTORAIR:
+		Offset: 0,0,85
+		Sequence: rotor
+		RequiresCondition: airborne
+	WithIdleOverlay@ROTORGROUND:
+		Offset: 0,0,85
+		Sequence: slow-rotor
+		RequiresCondition: !airborne
+	AmmoPool:
+		Ammo: 8
+	SelectionDecorations:
+		VisualBounds: 36,28
+	SpawnActorOnDeath:
+		Actor: HELI.Husk
+	SmokeTrailWhenDamaged:
+		Offset: -427,0,0
+	ProducibleWithLevel:
+		Prerequisites: aircraft.upgraded
+
+HIND:
+	Inherits: ^Helicopter
+	Buildable:
+		Queue: Aircraft
+		BuildAtProductionType: Helicopter
+		BuildPaletteOrder: 20
+		Prerequisites: ~hpad, ~techlevel.medium
+		Description: Helicopter gunship armed\nwith dual chainguns.\n  Strong vs Infantry, Light armor.\n  Weak vs Tanks, Aircraft
+	Valued:
+		Cost: 1350
+	Tooltip:
+		Name: Hind
+	Health:
+		HP: 100
+	Armor:
+		Type: Light
+	RevealsShroud:
+		Range: 10c0
+		Type: GroundPosition
+		RevealGeneratedShroud: False
+	RevealsShroud@GAPGEN:
+		Range: 8c0
+		Type: GroundPosition
+	Armament@PRIMARY:
+		Weapon: ChainGun
+		LocalOffset: 85,-213,-85
+		MuzzleSequence: muzzle
+	Armament@SECONDARY:
+		Name: secondary
+		Weapon: ChainGun
+		LocalOffset: 85,213,-85
+		MuzzleSequence: muzzle
+	AttackHeli:
+		FacingTolerance: 20
+	Aircraft:
+		LandWhenIdle: false
+		InitialFacing: 224
+		TurnSpeed: 4
+		Speed: 112
+	AutoTarget:
+		InitialStance: HoldFire
+		InitialStanceAI: HoldFire
+	WithIdleOverlay@ROTORAIR:
+		Sequence: rotor
+		RequiresCondition: airborne
+	WithIdleOverlay@ROTORGROUND:
+		Sequence: slow-rotor
+		RequiresCondition: !airborne
+	AmmoPool:
+		Ammo: 24
+		PipCount: 6
+		ReloadDelay: 8
+	SelectionDecorations:
+		VisualBounds: 38,32
+	WithMuzzleOverlay:
+	SpawnActorOnDeath:
+		Actor: HIND.Husk
+	SmokeTrailWhenDamaged:
+		Offset: -427,0,0
+	ProducibleWithLevel:
+		Prerequisites: aircraft.upgraded
+
+U2:
+	Inherits: ^NeutralPlane
+	Health:
+		HP: 2000
+	Tooltip:
+		Name: Spy Plane
+	Armor:
+		Type: Heavy
+	Aircraft:
+		CruiseAltitude: 2560
+		TurnSpeed: 7
+		Speed: 373
+		Repulsable: False
+		MaximumPitch: 56
+	AttackBomber:
+	-Selectable:
+	SelectionDecorations:
+		RenderSelectionBars: False
+	-Voiced:
+	-Targetable@AIRBORNE:
+	Contrail@1:
+		Offset: -725,683,0
+	Contrail@2:
+		Offset: -725,-683,0
+	SpawnActorOnDeath:
+		Actor: U2.Husk
+	SmokeTrailWhenDamaged:
+		Offset: -1c43,0,0
+		Interval: 2
+	RejectsOrders:

@@ -1,0 +1,84 @@
+# Visual Studio
+Release
+bin
+obj
+*.ncb
+*.vcproj*
+*.suo
+*.user
+*.sln.cache
+*.manifest
+*.CodeAnalysisLog.xml
+*.lastcodeanalysissucceeded
+_ReSharper.*/
+
+# movies
+*.vqa
+
+# archives
+*.mix
+
+# binaries
+mods/*/*.dll
+mods/*/*.mdb
+mods/*/*.pdb
+/*.dll
+/*.dll.config
+/*.so
+/*.dylib
+/*.pdb
+/*.mdb
+/*.exe
+thirdparty/download/*
+*.mmdb.gz
+
+# backup files by various editors
+*~
+*.orig
+\#*
+.*.sw?
+
+# Monodevelop
+*.pidb
+*.userprefs
+
+# Mac OS X
+.DS_Store
+
+# XCode
+packaging/osx/launcher/build/
+packaging/osx/launcher/OpenRA.xcodeproj/*.pbxuser
+packaging/osx/launcher/OpenRA.xcodeproj/*.perspectivev3
+packaging/osx/launcher/OpenRA.xcodeproj/*.mode1v3
+temp.c
+temp.o
+temp.s
+OpenRA.Launcher.Mac/build/
+OpenRA.Launcher.Mac/OpenRA.xcodeproj/*.pbxuser
+OpenRA.Launcher.Mac/OpenRA.xcodeproj/*.perspectivev3
+OpenRA.Launcher.Mac/OpenRA.xcodeproj/*.mode1v3
+*.resources
+
+# auto-generated documentation
+DOCUMENTATION.md
+Lua-API.md
+*.html
+openra.6
+
+# StyleCop
+*.Cache
+StyleCopViolations.xml
+
+# SublimeText
+*.sublime-project
+*.sublime-workspace
+
+# NUnit
+/TestResult.xml
+/lib/
+
+# Support directory
+/Support
+
+#Attacque Supérior
+/mods/as/

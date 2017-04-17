@@ -1,0 +1,14 @@
+tile475:
+	Defaults: BLOXWAST.R8
+	idle:
+		Start: 706
+		Offset: -16,-16
+	idle2:
+		Start: 707
+		Offset: 16,-16
+	idle3:
+		Start: 726
+		Offset: -16,16
+	idle4:
+		Start: 727
+		Offset: 16,16

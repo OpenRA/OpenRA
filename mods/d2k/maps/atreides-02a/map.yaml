@@ -1,0 +1,171 @@
+MapFormat: 11
+
+RequiresMod: d2k
+
+Title: Atreides 02a
+
+Author: Westwood Studios
+
+Tileset: ARRAKIS
+
+MapSize: 52,52
+
+Bounds: 2,2,48,48
+
+Visibility: MissionSelector
+
+Categories: Campaign
+
+LockPreview: True
+
+Players:
+	PlayerReference@Neutral:
+		Name: Neutral
+		OwnsWorld: True
+		NonCombatant: True
+	PlayerReference@Creeps:
+		Name: Creeps
+		NonCombatant: True
+		Enemies: Atreides, Harkonnen
+	PlayerReference@Atreides:
+		Name: Atreides
+		Playable: True
+		LockFaction: True
+		Faction: atreides
+		LockColor: True
+		Color: 9191FF
+		Enemies: Harkonnen, Creeps
+	PlayerReference@Harkonnen:
+		Name: Harkonnen
+		LockFaction: True
+		Faction: harkonnen
+		LockColor: True
+		Color: FE0000
+		Enemies: Atreides, Creeps
+
+Actors:
+	Actor0: spicebloom.spawnpoint
+		Location: 42,4
+		Owner: Neutral
+	Actor1: trike
+		Location: 26,6
+		Owner: Atreides
+	Actor2: trike
+		Location: 11,8
+		Owner: Harkonnen
+	Actor3: trike
+		Location: 20,8
+		Owner: Atreides
+	Actor4: trike
+		Location: 23,8
+		Owner: Atreides
+	Actor6: light_inf
+		Location: 19,11
+		Owner: Atreides
+	Actor7: trike
+		Location: 25,11
+		Owner: Atreides
+	Actor8: light_inf
+		Location: 25,12
+		Owner: Atreides
+	Actor9: trike
+		Location: 45,12
+		Owner: Harkonnen
+	Actor10: light_inf
+		Location: 19,13
+		Owner: Atreides
+	Actor11: trike
+		Location: 23,13
+		Owner: Atreides
+	Actor12: light_inf
+		Location: 15,19
+		Owner: Harkonnen
+	Actor13: light_inf
+		Location: 7,20
+		Owner: Harkonnen
+	Actor14: light_inf
+		Location: 34,21
+		Owner: Harkonnen
+	Actor15: spicebloom.spawnpoint
+		Location: 25,23
+		Owner: Neutral
+	Actor16: light_inf
+		Location: 23,27
+		Owner: Harkonnen
+	Actor17: light_inf
+		Location: 48,31
+		Owner: Harkonnen
+	Actor18: wormspawner
+		Location: 43,35
+		Owner: Creeps
+	Actor19: light_inf
+		Location: 7,36
+		Owner: Harkonnen
+	Actor20: trike
+		Location: 40,37
+		Owner: Harkonnen
+	Actor21: trike
+		Location: 23,38
+		Owner: Harkonnen
+	Actor22: light_inf
+		Location: 25,38
+		Owner: Harkonnen
+	Actor23: spicebloom.spawnpoint
+		Location: 11,40
+		Owner: Neutral
+	Actor24: trike
+		Location: 22,40
+		Owner: Harkonnen
+	Actor26: trike
+		Location: 21,41
+		Owner: Harkonnen
+	Actor27: trike
+		Location: 23,41
+		Owner: Harkonnen
+	Actor28: light_inf
+		Location: 21,44
+		Owner: Harkonnen
+	Actor30: light_inf
+		Location: 22,46
+		Owner: Harkonnen
+	Actor31: light_inf
+		Location: 28,46
+		Owner: Harkonnen
+	Actor32: spicebloom.spawnpoint
+		Location: 42,46
+		Owner: Neutral
+	HConyard: construction_yard
+		Location: 24,44
+		Owner: Harkonnen
+	HPower1: wind_trap
+		Location: 22,47
+		Owner: Harkonnen
+	HPower2: wind_trap
+		Location: 25,47
+		Owner: Harkonnen
+	HBarracks: barracks
+		Location: 25,40
+		Owner: Harkonnen
+	AConyard: construction_yard
+		Location: 21,10
+		Owner: Atreides
+	HarkonnenEntry1: waypoint
+		Owner: Neutral
+		Location: 2,22
+	HarkonnenEntry2: waypoint
+		Owner: Neutral
+		Location: 49,33
+	HarkonnenRally1: waypoint
+		Owner: Neutral
+		Location: 12,7
+	HarkonnenRally2: waypoint
+		Owner: Neutral
+		Location: 36,15
+	HarkonnenRally3: waypoint
+		Owner: Neutral
+		Location: 21,18
+	HarkonnenRally4: waypoint
+		Owner: Neutral
+		Location: 30,28
+
+Rules: d2k|rules/campaign-rules.yaml, rules.yaml

@@ -1,0 +1,105 @@
+World:
+	LuaScript:
+		Scripts: gdi06.lua
+	MusicPlaylist:
+		BackgroundMusic: rain-ambient
+		StartingMusic: rain
+	WeatherOverlay:
+		ChangingWindLevel: true
+		WindLevels: -5, -3, -2, 0, 2, 3, 5
+		WindTick: 150, 550
+		InstantWindChanges: false
+		UseSquares: false
+		ScatterDirection: 0, 0
+		Gravity: 8.00, 12.00
+		SwingOffset: 0, 0
+		SwingSpeed: 0, 0
+		SwingAmplitude: 0, 0
+		ParticleColors: 304074, 28386C, 202C60, 182C54
+		LineTailAlphaValue: 150
+		ParticleSize: 1, 1
+	GlobalLightingPaletteEffect:
+		Red: 0.75
+		Green: 0.85
+		Blue: 1.5
+		Ambient: 0.45
+	MissionData:
+		Briefing: Use a GDI Commando to infiltrate the Nod base. **** ** destroy the ******** so that the base is incapacitated. Get in, hit it, and get the **** out.
+		BriefingVideo: gdi6.vqa
+		StartVideo: nitejump.vqa
+		WinVideo: sabotage.vqa
+		LossVideo: gdilose.vqa
+	MapOptions:
+		ShortGameLocked: True
+		ShortGameEnabled: True
+	ScriptLobbyDropdown@difficulty:
+		ID: difficulty
+		Label: Difficulty
+		Values:
+			easy: Easy
+			normal: Normal
+			hard: Hard
+		Default: easy
+
+Player:
+	PlayerResources:
+		DefaultCash: 0
+
+^Bridge:
+	DamageMultiplier@INVULNERABLE:
+		Modifier: 0
+
+BRIDGEHUT:
+	-Targetable:
+
+FLARE:
+	RevealsShroud:
+		Range: 5c0
+
+OLDLST:
+	Inherits: LST
+	-WithRoof:
+	-Selectable:
+	SelectionDecorations:
+		RenderSelectionBars: False
+	RejectsOrders:
+	Cargo:
+		Types: disabled
+
+SAM:
+	SpawnActorOnDeath:
+		Actor: e1
+
+RMBO:
+	MustBeDestroyed:
+		RequiredForShortGame: true
+	AutoTarget:
+		TargetWhenIdle: false
+		TargetWhenDamaged: true
+	Health:
+		HP: 150
+
+RMBO.easy:
+	Inherits: RMBO
+	Health:
+		HP: 300
+	SelfHealing:
+		Delay: 10
+		HealIfBelow: 50
+		DamageCooldown: 200
+	RenderSprites:
+		Image: RMBO
+
+RMBO.hard:
+	Inherits: RMBO
+	-AutoTarget:
+	-AttackMove:
+	RenderSprites:
+		Image: RMBO
+
+E3.sticky:
+	Inherits: E3
+	AutoTarget:
+		AllowMovement: false
+	RenderSprites:
+		Image: E3

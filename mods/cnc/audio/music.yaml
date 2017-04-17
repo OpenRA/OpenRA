@@ -1,0 +1,72 @@
+aoi: Act On Instinct
+airstrik: Air Strike
+ccthang: C&C Thang
+ind2: Canyon Chase (Industrial 2)
+heavyg: Demolition (Heavy Gear)
+fwp: Fight Win Prevail
+warfare: Full Stop (Warfare)
+win1: Great Shot!
+	Hidden: true
+win2: Great Shot! (SFX)
+	Filename: win1
+	Extension: var
+	Hidden: true
+iam: I Am - Times (Credits)
+ind: Industrial
+linefire: In The Line Of Fire
+trouble: In Trouble
+justdoit: Just Do It Up
+justdoit2: Just Do It Up (SFX)
+	Filename: justdoit
+	Extension: var
+jdi_v2: Just Do It Up 2 (Take 'Em out)
+map1: Map Theme
+	Hidden: true
+march: March To Doom
+nod_map1: Nod Map Theme
+	Hidden: true
+nod_win1: Nod Win Theme
+	Hidden: true
+nomercy: No Mercy
+nomercy2: No Mercy (SFX)
+	Filename: nomercy
+	Extension: var
+otp: On The Prowl
+outtakes: Outtakes (Censored)
+	Hidden: true
+prp: Prepare For Battle
+radio: Radio
+rain: Rain In The Night
+target: Target (Mechanical Man)
+j1: Untamed Land (Jungle)
+valkyrie: Ride Of The Valkyries
+	Hidden: true
+stopthem: We Will Stop Them (Deception)
+deception: We Will Stop Them (SFX)
+	Filename: stopthem
+	Extension: var
+
+# Covert Operations tracks
+aoi2: Act On Instinct (SFX)
+	Filename: aoi
+	Extension: var
+befeared: To Be Feared
+befeared2: To Be Feared (SFX)
+	Filename: befeared
+	Extension: var
+80mx226m: C&C 80's Mix
+crep226m: Creeping Upon
+chrg226m: Depth Charge
+die: Die
+dril225m: Drill
+dron226m: Drone
+fist226m: Iron Fist
+heart: Heartbreak
+	Extension: var
+trouble2: In Trouble (SFX)
+	Filename: trouble
+	Extension: var
+rout: Reaching Out
+	Extension: var
+recn226m: Recon
+voic226m: Voice Rhythm

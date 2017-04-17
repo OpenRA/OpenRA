@@ -1,0 +1,315 @@
+WEEDGUY:
+	Inherits: ^Soldier
+	Valued:
+		Cost: 300
+	Tooltip:
+		Name: Chem Spray Infantry
+	Voiced:
+		VoiceSet: Weed
+	Mobile:
+		Speed: 42
+	Health:
+		HP: 130
+	Crushable:
+		CrushSound: squishy2.aud
+	Armament:
+		Weapon: FireballLauncher
+		LocalOffset: 224,0,320
+	TakeCover:
+		ProneOffset: 128,0,-320
+	AttackFrontal:
+		Voice: Attack
+	-SpawnActorOnDeath@FLAMEGUY:
+	WithDeathAnimation@fire:
+		DeathSequence: die-
+		DeathTypes:
+			FireDeath: burning
+
+UMAGON:
+	Inherits: ^Soldier
+	Inherits@2: ^HealsOnTiberium
+	Inherits@EXPERIENCE: ^GainsExperience
+	Valued:
+		Cost: 400
+	Tooltip:
+		Name: Umagon
+	Voiced:
+		VoiceSet: Umagon
+	Mobile:
+		Speed: 71
+	Health:
+		HP: 150
+	Passenger:
+	RevealsShroud:
+		Range: 7c0
+	Armament:
+		Weapon: Sniper
+	AttackFrontal:
+		Voice: Attack
+	WithInfantryBody:
+		DefaultAttackSequence: attack
+	ProducibleWithLevel:
+		Prerequisites: barracks.upgraded
+
+CHAMSPY:
+	Inherits: ^Soldier
+	Valued:
+		Cost: 700
+	DisguiseTooltip:
+		Name: Chameleon Spy
+	Voiced:
+		VoiceSet: Spy
+	Health:
+		HP: 120
+	Mobile:
+		Speed: 85
+	RevealsShroud:
+		Range: 9c0
+	Passenger:
+	Disguise:
+		DisguisedCondition: disguise
+	WithDecoration@disguise:
+		Image: pips
+		Sequence: pip-disguise
+		Palette: pips
+		ReferencePoint: Top, Right
+		ZOffset: 256
+		RequiresCondition: disguise
+	Infiltrates:
+		Types: SpyInfiltrate
+	-AutoTarget:
+	-WithInfantryBody:
+	WithDisguisingInfantryBody:
+		IdleSequences: idle1,idle2
+
+MUTANT:
+	Inherits: ^Soldier
+	Inherits@2: ^HealsOnTiberium
+	Inherits@EXPERIENCE: ^GainsExperience
+	Valued:
+		Cost: 100
+	Tooltip:
+		Name: Mutant
+	Voiced:
+		VoiceSet: Mutant
+	Health:
+		HP: 50
+	Mobile:
+		Speed: 56
+	RevealsShroud:
+		Range: 4c0
+	Armament:
+		Weapon: Vulcan
+	AttackFrontal:
+		Voice: Attack
+	WithInfantryBody:
+		DefaultAttackSequence: attack
+	ProducibleWithLevel:
+		Prerequisites: barracks.upgraded
+
+MWMN:
+	Inherits: ^Soldier
+	Inherits@2: ^HealsOnTiberium
+	Inherits@EXPERIENCE: ^GainsExperience
+	Valued:
+		Cost: 100
+	Tooltip:
+		Name: Mutant Soldier
+	Voiced:
+		VoiceSet: CivilianFemale
+	Health:
+		HP: 50
+	Mobile:
+		Speed: 56
+	RevealsShroud:
+		Range: 4c0
+	Armament:
+		Weapon: Vulcan
+	AttackFrontal:
+		Voice: Attack
+	WithInfantryBody:
+		DefaultAttackSequence: attack
+	ProducibleWithLevel:
+		Prerequisites: barracks.upgraded
+
+MUTANT3:
+	Inherits: ^Soldier
+	Inherits@2: ^HealsOnTiberium
+	Inherits@EXPERIENCE: ^GainsExperience
+	Valued:
+		Cost: 100
+	Tooltip:
+		Name: Mutant Sergeant
+	Voiced:
+		VoiceSet: Mutant
+	Health:
+		HP: 50
+	Mobile:
+		Speed: 56
+	RevealsShroud:
+		Range: 4c0
+	Armament:
+		Weapon: Vulcan
+	AttackFrontal:
+		Voice: Attack
+	WithInfantryBody:
+		DefaultAttackSequence: attack
+	ProducibleWithLevel:
+		Prerequisites: barracks.upgraded
+
+TRATOS:
+	Inherits: ^Soldier
+	Inherits@2: ^HealsOnTiberium
+	Valued:
+		Cost: 100
+	Tooltip:
+		Name: Tratos
+	Voiced:
+		VoiceSet: Tratos
+	Health:
+		HP: 200
+	Mobile:
+		Speed: 71
+	RevealsShroud:
+		Range: 4c0
+	-AutoTarget:
+	WithInfantryBody:
+		DefaultAttackSequence:
+
+OXANNA:
+	Inherits: ^Soldier
+	Valued:
+		Cost: 100
+	Tooltip:
+		Name: Oxanna
+	Voiced:
+		VoiceSet: Oxanna
+	Health:
+		HP: 50
+	Mobile:
+		Speed: 56
+	RevealsShroud:
+		Range: 4c0
+	-AutoTarget:
+	WithInfantryBody:
+		DefaultAttackSequence: attack
+
+SLAV:
+	Inherits: ^Soldier
+	Valued:
+		Cost: 100
+	Tooltip:
+		Name: Slavick
+	Voiced:
+		VoiceSet: Slavick
+	Health:
+		HP: 300
+	Mobile:
+		Speed: 56
+	RevealsShroud:
+		Range: 4c0
+	-AutoTarget:
+	WithInfantryBody:
+		DefaultAttackSequence: attack
+
+DOGGIE:
+	Inherits@1: ^Infantry
+	Inherits@2: ^RegularInfantryDeath
+	Inherits@3: ^HealsOnTiberium
+	Tooltip:
+		Name: Tiberian Fiend
+	Health:
+		HP: 250
+		Shape: Circle
+			Radius: 213
+	Selectable:
+		Bounds: 24,24
+	Valued:
+		Cost: 100
+	Armor:
+		Type: Light
+	RevealsShroud:
+		Range: 4c0
+	Mobile:
+		Speed: 113
+	Voiced:
+		VoiceSet: Fiend
+	Targetable:
+		TargetTypes: Ground
+	Armament:
+		Weapon: FiendShard
+	AttackFrontal:
+		Voice: Attack
+	AttackWander:
+		WanderMoveRadius: 2
+		MinMoveDelay: 200
+		MaxMoveDelay: 600
+	-SpawnActorOnDeath@FLAMEGUY:
+	WithDeathAnimation@fire:
+		DeathSequence: die-
+		DeathTypes:
+			FireDeath: burning
+
+VISC_SML:
+	Inherits: ^Visceroid
+	Tooltip:
+		Name: Baby Visceroid
+	Health:
+		HP: 200
+	AttackWander:
+		WanderMoveRadius: 2
+		MinMoveDelay: 30
+		MaxMoveDelay: 60
+	RenderSprites:
+		Image: vissml
+
+VISC_LRG:
+	Inherits: ^Visceroid
+	Inherits@CRATESTATS: ^CrateStatModifiers
+	Tooltip:
+		Name: Adult Visceroid
+	Health:
+		HP: 500
+	Armor:
+		Type: Heavy
+	RevealsShroud:
+		Range: 4c0
+	Armament:
+		Weapon: SlimeAttack
+		FireDelay: 10
+	AutoTarget:
+		ScanRadius: 5
+	AttackFrontal:
+		Voice: Attack
+	AttackWander:
+		WanderMoveRadius: 2
+		MinMoveDelay: 25
+		MaxMoveDelay: 50
+	WithAttackAnimation:
+		AttackSequence: attack
+	Mobile:
+		Crushes: crate, infantry
+	RenderSprites:
+		Image: vislrg
+
+CIV1:
+	Inherits: ^CivilianInfantry
+	WithInfantryBody:
+		DefaultAttackSequence: attack
+	Armament:
+		Weapon: Pistola
+	AttackFrontal:
+		Voice: Attack
+
+CIV2:
+	Inherits: ^CivilianInfantry
+	-AutoTarget:
+
+CIV3:
+	Inherits: ^CivilianInfantry
+	WithInfantryBody:
+		DefaultAttackSequence: attack
+	Armament:
+		Weapon: Pistola
+	AttackFrontal:
+		Voice: Attack

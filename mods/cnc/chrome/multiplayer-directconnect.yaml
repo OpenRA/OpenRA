@@ -1,0 +1,95 @@
+Container@MULTIPLAYER_DIRECTCONNECT_PANEL:
+	Width: PARENT_RIGHT
+	Height: PARENT_BOTTOM
+	Children:
+		Label@TITLE:
+			Y: 5
+			Width: 582
+			Height: 25
+			Text: Connect to Server
+			Align: Center
+			Font: Bold
+		ScrollPanel:
+			Y: 30
+			Width: 582
+			Height: 249
+			Children:
+				Container:
+					X: 185
+					Y: 60
+					Children:
+						Label@ADDRESS_LABEL:
+							Y: 14
+							Width: 95
+							Height: 25
+							Align: Right
+							Text: Address:
+						TextField@IP:
+							X: 100
+							Y: 15
+							Width: 215
+							Height: 25
+						Label@PORT_LABEL:
+							Y: 49
+							Width: 95
+							Height: 25
+							Align: Right
+							Text: Port:
+						TextField@PORT:
+							X: 100
+							Y: 50
+							Width: 50
+							Height: 25
+							MaxLength: 5
+		Container@SIDEBAR:
+			X: PARENT_RIGHT-WIDTH
+			Y: 30
+			Width: 174
+			Height: 280
+			Children:
+				Background@MAP_BG:
+					Width: PARENT_RIGHT
+					Height: 174
+					Background: panel-gray
+				Label@TITLE:
+					Y: 172
+					Width: PARENT_RIGHT
+					Height: 25
+					Font: Bold
+					Align: Center
+					Text: Direct Connect
+				Label@DESCA:
+					Y: 190
+					Width: PARENT_RIGHT
+					Height: 25
+					Font: Tiny
+					Align: Center
+					Text: Enter the server IP and port in the
+				Label@DESCB:
+					Y: 203
+					Width: PARENT_RIGHT
+					Height: 25
+					Font: Tiny
+					Align: Center
+					Text: fields to the left, and then press Join.
+				Label@DESCC:
+					Y: 216
+					Width: PARENT_RIGHT
+					Height: 25
+					Font: Tiny
+					Align: Center
+					Text: The mod and game version will be
+				Label@DESCD:
+					Y: 229
+					Width: PARENT_RIGHT
+					Height: 25
+					Font: Tiny
+					Align: Center
+					Text: verified when connecting.
+		Button@JOIN_BUTTON:
+			Key: return
+			X: PARENT_RIGHT - WIDTH
+			Y: 284
+			Width: 174
+			Height: 25
+			Text: Join

@@ -1,0 +1,231 @@
+Metadata:
+	Title: Dune 2000
+	Description: Three great houses fight for the precious spice, melange.\nHe who controls the spice controls the universe!\n\nTry to establish a foothold on the desert planet Arrakis\nwith its harsh environmental conditions and protect your\nharvesting operations from giant sandworms as well as\nruthless enemy factions.
+	Version: {DEV_VERSION}
+	Author: the OpenRA Developers
+
+RequiresMods:
+	modchooser: {DEV_VERSION}
+
+Packages:
+	~^Content/d2k/v2/
+	~^Content/d2k/v2/GAMESFX
+	~^Content/d2k/v2/Movies
+	~^Content/d2k/v2/Music
+	.
+	$d2k: d2k
+	./mods/common: common
+
+	~SOUND.RS
+	d2k|bits
+	d2k|bits/tex
+	d2k|uibits
+
+MapFolders:
+	d2k|maps: System
+	~^maps/d2k/{DEV_VERSION}: User
+
+Rules:
+	d2k|rules/misc.yaml
+	d2k|rules/ai.yaml
+	d2k|rules/player.yaml
+	d2k|rules/world.yaml
+	d2k|rules/palettes.yaml
+	d2k|rules/defaults.yaml
+	d2k|rules/infantry.yaml
+	d2k|rules/vehicles.yaml
+	d2k|rules/aircraft.yaml
+	d2k|rules/structures.yaml
+	d2k|rules/starport.yaml
+	d2k|rules/husks.yaml
+	d2k|rules/arrakis.yaml
+
+Sequences:
+	d2k|sequences/aircraft.yaml
+	d2k|sequences/vehicles.yaml
+	d2k|sequences/infantry.yaml
+	d2k|sequences/structures.yaml
+	d2k|sequences/misc.yaml
+
+TileSets:
+	d2k|tilesets/arrakis.yaml
+
+MapGrid:
+	TileSize: 32,32
+	Type: Rectangular
+
+Cursors:
+	d2k|cursors.yaml
+
+Chrome:
+	d2k|chrome.yaml
+
+Assemblies:
+	common|OpenRA.Mods.Common.dll
+	common|OpenRA.Mods.Cnc.dll
+	d2k|OpenRA.Mods.D2k.dll
+
+ChromeLayout:
+	common|chrome/ingame.yaml
+	common|chrome/ingame-chat.yaml
+	common|chrome/ingame-fmvplayer.yaml
+	d2k|chrome/ingame-menu.yaml
+	common|chrome/ingame-info.yaml
+	common|chrome/ingame-infoscripterror.yaml
+	common|chrome/ingame-infobriefing.yaml
+	common|chrome/ingame-infoobjectives.yaml
+	d2k|chrome/ingame-infostats.yaml
+	common|chrome/ingame-observer.yaml
+	common|chrome/ingame-observerstats.yaml
+	d2k|chrome/ingame-player.yaml
+	common|chrome/ingame-perf.yaml
+	common|chrome/ingame-debug.yaml
+	d2k|chrome/mainmenu.yaml
+	common|chrome/settings.yaml
+	common|chrome/credits.yaml
+	common|chrome/lobby.yaml
+	common|chrome/lobby-mappreview.yaml
+	d2k|chrome/lobby-players.yaml
+	d2k|chrome/lobby-options.yaml
+	common|chrome/lobby-music.yaml
+	common|chrome/lobby-kickdialogs.yaml
+	common|chrome/lobby-globalchat.yaml
+	common|chrome/color-picker.yaml
+	common|chrome/map-chooser.yaml
+	common|chrome/multiplayer.yaml
+	common|chrome/multiplayer-browser.yaml
+	common|chrome/multiplayer-createserver.yaml
+	common|chrome/multiplayer-directconnect.yaml
+	common|chrome/multiplayer-globalchat.yaml
+	common|chrome/connection.yaml
+	d2k|chrome/dropdowns.yaml
+	common|chrome/musicplayer.yaml
+	d2k|chrome/tooltips.yaml
+	common|chrome/assetbrowser.yaml
+	d2k|chrome/missionbrowser.yaml
+	common|chrome/confirmation-dialogs.yaml
+	common|chrome/editor.yaml
+	common|chrome/replaybrowser.yaml
+
+Weapons:
+	d2k|weapons/debris.yaml
+	d2k|weapons/smallguns.yaml
+	d2k|weapons/largeguns.yaml
+	d2k|weapons/missiles.yaml
+	d2k|weapons/other.yaml
+
+Voices:
+	d2k|audio/voices.yaml
+
+Notifications:
+	d2k|audio/notifications.yaml
+
+Music:
+	d2k|audio/music.yaml
+
+Translations:
+	d2k|languages/english.yaml
+
+LoadScreen: LogoStripeLoadScreen
+	Image: d2k|uibits/loadscreen.png
+	Text: Filling Crates..., Breeding Sandworms..., Fuelling carryalls..., Deploying harvesters..., Preparing thopters..., Summoning mentats...
+
+ServerTraits:
+	LobbyCommands
+	PlayerPinger
+	MasterServerPinger
+	LobbySettingsNotification
+
+ChromeMetrics:
+	common|metrics.yaml
+	d2k|metrics.yaml
+
+Fonts:
+	Regular:
+		Font: common|FreeSans.ttf
+		Size:14
+	Bold:
+		Font: common|FreeSansBold.ttf
+		Size:14
+	Title:
+		Font: d2k|Dune2k.ttf
+		Size:32
+	MediumBold:
+		Font: common|FreeSansBold.ttf
+		Size:18
+	BigBold:
+		Font: common|FreeSansBold.ttf
+		Size:24
+	Small:
+		Font: common|FreeSans.ttf
+		Size:12
+	Tiny:
+		Font: common|FreeSans.ttf
+		Size:10
+	TinyBold:
+		Font: common|FreeSansBold.ttf
+		Size:10
+
+Missions:
+	d2k|missions.yaml
+
+SupportsMapsFrom: d2k
+
+SoundFormats: Aud, Wav
+
+SpriteFormats: R8, ShpTD, TmpRA
+
+SpriteSequenceFormat: DefaultSpriteSequence
+
+GameSpeeds:
+	slower:
+		Name: Slower
+		Timestep: 50
+		OrderLatency: 3
+	default:
+		Name: Normal
+		Timestep: 40
+		OrderLatency: 3
+	fast:
+		Name: Fast
+		Timestep: 35
+		OrderLatency: 4
+	faster:
+		Name: Faster
+		Timestep: 30
+		OrderLatency: 4
+	fastest:
+		Name: Fastest
+		Timestep: 20
+		OrderLatency: 6
+
+ColorValidator:
+
+ModContent:
+	InstallPromptMessage: Dune 2000 requires artwork and audio from the original game.\n\nQuick Install will automatically download this content (without\nmusic or videos) from an online mirror of the game files.\n\nAdvanced Install includes options for copying the music, videos,\nand other content from an original game disc.
+	HeaderMessage: The original game content may be copied from an original game disc,\nor downloaded from an online mirror of the game files.
+	QuickDownload: quickinstall
+	Packages:
+		base: Base Game Files
+			TestFiles: ^Content/d2k/v2/BLOXBASE.R8, ^Content/d2k/v2/BLOXBAT.R8, ^Content/d2k/v2/BLOXBGBS.R8, ^Content/d2k/v2/BLOXICE.R8, ^Content/d2k/v2/BLOXTREE.R8, ^Content/d2k/v2/BLOXWAST.R8, ^Content/d2k/v2/SOUND.RS, ^Content/d2k/v2/PALETTE.BIN, ^Content/d2k/v2/FONT.BIN,  ^Content/d2k/v2/FONTCOL.FNT,  ^Content/d2k/v2/FONTCOL.FPL
+			Sources: d2k-a, d2k-a-linux, d2k-b, d2k-b-linux, gruntmods
+			Required: true
+			Download: basefiles
+		patch: 1.06 Patch Content
+			TestFiles: ^Content/d2k/v2/DATA.R8, ^Content/d2k/v2/BLOXXMAS.R8
+			Sources: gruntmods
+			Required: true
+			Download: patch106
+		music: Game Music
+			TestFiles: ^Content/d2k/v2/Music/AMBUSH.AUD
+			Sources: d2k-a, d2k-a-linux, d2k-b, d2k-b-linux, gruntmods
+		movies: Campaign Briefings
+			TestFiles: ^Content/d2k/v2/Movies/A_BR01_E.VQA
+			Sources: d2k-a, d2k-a-linux, d2k-b, d2k-b-linux
+	Downloads:
+		d2k|installer/downloads.yaml
+	Sources:
+		d2k|installer/d2ka.yaml
+		d2k|installer/d2kb.yaml
+		d2k|installer/downloads.yaml
+		d2k|installer/gruntmods.yaml
