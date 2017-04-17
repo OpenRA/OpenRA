@@ -49,7 +49,7 @@ namespace OpenRA.Mods.Common.Activities
 
 		void Calculate(Actor self)
 		{
-			if (dest == null || Reservable.IsReserved(dest))
+			if (dest == null || dest.IsDead || Reservable.IsReserved(dest))
 				dest = ChooseAirfield(self, true);
 
 			if (dest == null)
@@ -116,7 +116,7 @@ namespace OpenRA.Mods.Common.Activities
 			if (!isCalculated)
 				Calculate(self);
 
-			if (dest == null)
+			if (dest == null || dest.IsDead)
 			{
 				var nearestAfld = ChooseAirfield(self, false);
 
