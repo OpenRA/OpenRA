@@ -73,7 +73,10 @@ namespace OpenRA.Mods.Common.Traits
 			if (!inDropRange || cargo.IsEmpty(self))
 				return;
 
-			if (droppedAt.Contains(self.Location) || (checkForSuitableCell && !IsSuitableCell(cargo.Peek(self), self.Location)))
+			if (droppedAt.Contains(self.Location))
+				return;
+
+			if (checkForSuitableCell && !IsSuitableCell(cargo.Peek(self), self.Location))
 				return;
 
 			if (!self.World.Map.Contains(self.Location))
