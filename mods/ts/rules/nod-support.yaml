@@ -45,7 +45,7 @@ NAPOST:
 	Inherits: ^Building
 	Buildable:
 		Queue: Defense
-		BuildPaletteOrder: 1001
+		BuildPaletteOrder: 150
 		Prerequisites: naapwr, ~structures.nod
 		Description: Stops infantry and blocks enemy fire.\nCan NOT be crushed by tanks.
 	Valued:
@@ -194,7 +194,7 @@ NAOBEL:
 		Name: Obelisk of Light
 	Buildable:
 		Queue: Defense
-		BuildPaletteOrder: 150
+		BuildPaletteOrder: 160
 		Prerequisites: natech, ~structures.nod, ~techlevel.high
 		Description: Advanced base defense.\nRequires power to operate.\n  Strong vs Ground units\n  Weak vs Aircraft
 	Building:
@@ -275,7 +275,7 @@ NASTLH:
 		Name: Stealth Generator
 	Buildable:
 		Queue: Defense
-		BuildPaletteOrder: 160
+		BuildPaletteOrder: 170
 		Prerequisites: proc, natech, ~structures.nod, ~techlevel.high
 		Description: Generates a cloaking field\nto hide your forces from the enemy.
 	Building:
@@ -316,7 +316,7 @@ NAMISL:
 	Inherits: ^Building
 	Buildable:
 		Queue: Defense
-		BuildPaletteOrder: 190
+		BuildPaletteOrder: 180
 		Prerequisites: natech, ~structures.nod, ~techlevel.superweapons
 		BuildLimit: 1
 		Description: Launches a devastating missile\nat a target location.\nRequires power to operate.\nMaximum 1 can be built.
@@ -377,7 +377,7 @@ NAWAST:
 		Name: Waste Refinery
 	Buildable:
 		Queue: Defense
-		BuildPaletteOrder: 200
+		BuildPaletteOrder: 190
 		Prerequisites: namisl, ~structures.nod, ~techlevel.superweapons
 		BuildLimit: 1
 		Description: Processes Veins\ninto useable resources.\nMaximum 1 can be built.
