@@ -20,6 +20,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Which voice set to use.")]
 		[VoiceSetReference] public readonly string VoiceSet = null;
 
+		[Desc("Which faction voice to use.")]
+		[FactionReference] public readonly string Faction = null;
+
 		[Desc("Multiply volume with this factor.")]
 		public readonly float Volume = 1f;
 
@@ -36,6 +39,8 @@ namespace OpenRA.Mods.Common.Traits
 		}
 
 		public string VoiceSet { get { return Info.VoiceSet; } }
+
+		public string Faction { get { return Info.Faction; } }
 
 		public bool PlayVoice(Actor self, string phrase, string variant)
 		{

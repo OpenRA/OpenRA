@@ -146,6 +146,7 @@ namespace OpenRA.Traits
 	public interface IVoiced
 	{
 		string VoiceSet { get; }
+		string Faction { get; }
 		bool PlayVoice(Actor self, string phrase, string variant);
 		bool PlayVoiceLocal(Actor self, string phrase, string variant, float volume);
 		bool HasVoice(Actor self, string voice);
