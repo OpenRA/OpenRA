@@ -2,7 +2,7 @@
 	PaletteFromFile@player:
 		Name: player
 		Filename: temperat.pal
-		ShadowIndex: 4
+		ShadowIndex: 3,4
 	PaletteFromCurrentTileset:
 		Name: terrain
 		ShadowIndex: 3,4
