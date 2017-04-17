@@ -18,13 +18,11 @@ using Expressions = System.Linq.Expressions;
 
 namespace OpenRA.Support
 {
-	public class ConditionExpression
+	public abstract class VariableExpression
 	{
 		public readonly string Expression;
 		readonly HashSet<string> variables = new HashSet<string>();
 		public IEnumerable<string> Variables { get { return variables; } }
-
-		readonly Func<IReadOnlyDictionary<string, int>, int> asFunction;
 
 		enum CharClass { Whitespace, Operator, Mixed, Id, Digit }
 
@@ -525,15 +523,19 @@ namespace OpenRA.Support
 			}
 		}
 
-		public ConditionExpression(string expression)
+		public VariableExpression(string expression)
 		{
 			Expression = expression;
+		}
+
+		Expression Build(ExpressionType resultType)
+		{
 			var tokens = new List<Token>();
 			var currentOpeners = new Stack<Token>();
 			Token lastToken = null;
 			for (var i = 0;;)
 			{
-				var token = Token.GetNext(expression, ref i, lastToken != null ? lastToken.Type : TokenType.Invalid);
+				var token = Token.GetNext(Expression, ref i, lastToken != null ? lastToken.Type : TokenType.Invalid);
 				if (token == null)
 				{
 					// Sanity check parsed tree
@@ -591,7 +593,20 @@ namespace OpenRA.Support
 			if (currentOpeners.Count > 0)
 				throw new InvalidDataException("Unclosed opening parenthesis at index {0}".F(currentOpeners.Peek().Index));
 
-			asFunction = new Compiler().Compile(ToPostfix(tokens).ToArray());
+			return new Compiler().Build(ToPostfix(tokens).ToArray(), resultType);
+		}
+
+		protected Func<IReadOnlyDictionary<string, int>, T> Compile<T>()
+		{
+			ExpressionType resultType;
+			if (typeof(T) == typeof(int))
+				resultType = ExpressionType.Int;
+			else if (typeof(T) == typeof(bool))
+				resultType = ExpressionType.Bool;
+			else
+				throw new InvalidCastException("Variable expressions can only be int or bool.");
+
+			return Expressions.Expression.Lambda<Func<IReadOnlyDictionary<string, int>, T>>(Build(resultType), SymbolsParam).Compile();
 		}
 
 		static int ParseSymbol(string symbol, IReadOnlyDictionary<string, int> symbols)
@@ -712,7 +727,7 @@ namespace OpenRA.Support
 		{
 			readonly AstStack ast = new AstStack();
 
-			public Func<IReadOnlyDictionary<string, int>, int> Compile(Token[] postfix)
+			public Expression Build(Token[] postfix, ExpressionType resultType)
 			{
 				foreach (var t in postfix)
 				{
@@ -877,9 +892,33 @@ namespace OpenRA.Support
 					}
 				}
 
-				return Expressions.Expression.Lambda<Func<IReadOnlyDictionary<string, int>, int>>(
-					ast.Pop(ExpressionType.Int), SymbolsParam).Compile();
+				return ast.Pop(resultType);
 			}
+		}
+	}
+
+	public class BooleanExpression : VariableExpression
+	{
+		readonly Func<IReadOnlyDictionary<string, int>, bool> asFunction;
+
+		public BooleanExpression(string expression) : base(expression)
+		{
+			asFunction = Compile<bool>();
+		}
+
+		public bool Evaluate(IReadOnlyDictionary<string, int> symbols)
+		{
+			return asFunction(symbols);
+		}
+	}
+
+	public class IntegerExpression : VariableExpression
+	{
+		readonly Func<IReadOnlyDictionary<string, int>, int> asFunction;
+
+		public IntegerExpression(string expression) : base(expression)
+		{
+			asFunction = Compile<int>();
 		}
 
 		public int Evaluate(IReadOnlyDictionary<string, int> symbols)

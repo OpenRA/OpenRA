@@ -23,7 +23,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		[ConsumedConditionReference]
 		[Desc("Boolean expression defining the condition to enable this trait.")]
-		public readonly ConditionExpression RequiresCondition = null;
+		public readonly BooleanExpression RequiresCondition = null;
 
 		public abstract object Create(ActorInitializer init);
 
@@ -34,7 +34,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public virtual void RulesetLoaded(Ruleset rules, ActorInfo ai)
 		{
-			EnabledByDefault = RequiresCondition != null ? RequiresCondition.Evaluate(NoConditions) > 0 : true;
+			EnabledByDefault = RequiresCondition == null || RequiresCondition.Evaluate(NoConditions);
 		}
 	}
 
@@ -83,7 +83,7 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			var wasDisabled = IsTraitDisabled;
-			IsTraitDisabled = Info.RequiresCondition.Evaluate(conditions) <= 0;
+			IsTraitDisabled = !Info.RequiresCondition.Evaluate(conditions);
 
 			if (IsTraitDisabled != wasDisabled)
 			{
