@@ -55,16 +55,21 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					playerFaction = occupant.Faction;
 					playerTeam = occupant.Team;
 					widget.Bounds.Height = playerTeam > 0 ? doubleHeight : singleHeight;
-					teamWidth = teamFont.Measure(team.GetText()).X;
+					var teamText = team.GetText();
+					if (!string.IsNullOrEmpty(teamText))
+						teamWidth = teamFont.Measure(teamText).X;
 				}
 
 				label.Bounds.X = playerFaction != null ? flag.Bounds.Right + labelMargin : labelMargin;
 
-				var textWidth = ownerFont.Measure(labelText).X;
-				if (textWidth != cachedWidth)
+				if (!string.IsNullOrEmpty(labelText))
 				{
-					label.Bounds.Width = textWidth;
-					widget.Bounds.Width = 2 * label.Bounds.X + textWidth;
+					var textWidth = ownerFont.Measure(labelText).X;
+					if (textWidth != cachedWidth)
+					{
+						label.Bounds.Width = textWidth;
+						widget.Bounds.Width = 2 * label.Bounds.X + textWidth;
+					}
 				}
 
 				widget.Bounds.Width = Math.Max(teamWidth + 2 * labelMargin, label.Bounds.Right + labelMargin);
