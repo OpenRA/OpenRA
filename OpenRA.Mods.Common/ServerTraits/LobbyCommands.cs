@@ -420,7 +420,8 @@ namespace OpenRA.Mods.Common.Server
 						else if (server.Settings.QueryMapRepository)
 						{
 							server.SendOrderTo(conn, "Message", "Searching for map on the Resource Center...");
-							server.ModData.MapCache.QueryRemoteMapDetails(new[] { s }, selectMap, queryFailed);
+							var mapRepository = server.ModData.Manifest.Get<WebServices>().MapRepository;
+							server.ModData.MapCache.QueryRemoteMapDetails(mapRepository, new[] { s }, selectMap, queryFailed);
 						}
 						else
 							queryFailed();

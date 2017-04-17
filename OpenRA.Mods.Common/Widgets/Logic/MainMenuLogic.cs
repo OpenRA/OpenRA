@@ -235,6 +235,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			Game.OnRemoteDirectConnect += OnRemoteDirectConnect;
 
+			var newsURL = modData.Manifest.Get<WebServices>().GameNews;
+
 			// System information opt-out prompt
 			var sysInfoPrompt = widget.Get("SYSTEM_INFO_PROMPT");
 			sysInfoPrompt.IsVisible = () => menuType == MenuType.SystemInfoPrompt;
@@ -263,14 +265,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					Game.Settings.Debug.SystemInformationVersionPrompt = SystemInformationVersion;
 					Game.Settings.Save();
 					SwitchMenu(MenuType.Main);
-					LoadAndDisplayNews(newsBG);
+					LoadAndDisplayNews(newsURL, newsBG);
 				};
 			}
 			else
-				LoadAndDisplayNews(newsBG);
+				LoadAndDisplayNews(newsURL, newsBG);
 		}
 
-		void LoadAndDisplayNews(Widget newsBG)
+		void LoadAndDisplayNews(string newsURL, Widget newsBG)
 		{
 			if (newsBG != null)
 			{
@@ -285,7 +287,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					if (!fetchedNews)
 					{
 						// Send the mod and engine version to support version-filtered news (update prompts)
-						var newsURL = Game.Settings.Game.NewsUrl + "?version={0}&mod={1}&modversion={2}".F(
+						newsURL += "?version={0}&mod={1}&modversion={2}".F(
 							Uri.EscapeUriString(Game.Mods["modchooser"].Metadata.Version),
 							Uri.EscapeUriString(Game.ModData.Manifest.Id),
 							Uri.EscapeUriString(Game.ModData.Manifest.Metadata.Version));

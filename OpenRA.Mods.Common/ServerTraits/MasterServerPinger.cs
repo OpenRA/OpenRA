@@ -70,11 +70,12 @@ namespace OpenRA.Mods.Common.Server
 					var url = "ping?port={0}&name={1}&state={2}&players={3}&bots={4}&mods={5}&map={6}&maxplayers={7}&spectators={8}&protected={9}&clients={10}";
 					if (isInitialPing) url += "&new=1";
 
+					var serverList = server.ModData.Manifest.Get<WebServices>().ServerList;
 					using (var wc = new WebClient())
 					{
 						wc.Proxy = null;
 						var masterResponse = wc.DownloadData(
-							server.Settings.MasterServer + url.F(
+							serverList + url.F(
 							server.Settings.ExternalPort, Uri.EscapeUriString(server.Settings.Name),
 							(int)server.State,
 							numPlayers,

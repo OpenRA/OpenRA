@@ -24,6 +24,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		[ObjectCreator.UseCtor]
 		internal LobbyMapPreviewLogic(Widget widget, ModData modData, OrderManager orderManager, LobbyLogic lobby)
 		{
+			var mapRepository = modData.Manifest.Get<WebServices>().MapRepository;
+
 			var available = widget.GetOrNull("MAP_AVAILABLE");
 			if (available != null)
 			{
@@ -109,11 +111,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var install = download.GetOrNull<ButtonWidget>("MAP_INSTALL");
 				if (install != null)
 				{
-					install.OnClick = () => lobby.Map.Install(() =>
+					install.OnClick = () => lobby.Map.Install(mapRepository, () =>
 					{
 						lobby.Map.PreloadRules();
 						Game.RunAfterTick(() => orderManager.IssueOrder(Order.Command("state {0}".F(Session.ClientState.NotReady))));
 					});
+
 					install.IsHighlighted = () => installHighlighted;
 				}
 			}
@@ -178,9 +181,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					retry.OnClick = () =>
 					{
 						if (lobby.Map.Status == MapStatus.DownloadError)
-							lobby.Map.Install(() => orderManager.IssueOrder(Order.Command("state {0}".F(Session.ClientState.NotReady))));
+							lobby.Map.Install(mapRepository, () => orderManager.IssueOrder(Order.Command("state {0}".F(Session.ClientState.NotReady))));
 						else if (lobby.Map.Status == MapStatus.Unavailable)
-							modData.MapCache.QueryRemoteMapDetails(new[] { lobby.Map.Uid });
+							modData.MapCache.QueryRemoteMapDetails(mapRepository, new[] { lobby.Map.Uid });
 					};
 
 					retry.GetText = () => lobby.Map.Status == MapStatus.DownloadError ? "Retry Install" : "Retry Search";

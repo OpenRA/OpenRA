@@ -38,6 +38,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly Color gameStartedColor;
 		readonly Color incompatibleGameColor;
 		readonly ModData modData;
+		readonly WebServices services;
 
 		GameServer currentServer;
 		MapPreview currentMap;
@@ -69,6 +70,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			this.modData = modData;
 			this.onStart = onStart;
 			this.onExit = onExit;
+
+			services = modData.Manifest.Get<WebServices>();
 
 			incompatibleVersionColor = ChromeMetrics.Get<Color>("IncompatibleVersionColor");
 			incompatibleGameColor = ChromeMetrics.Get<Color>("IncompatibleGameColor");
@@ -322,7 +325,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				Game.RunAfterTick(() => RefreshServerListInner(games));
 			};
 
-			var queryURL = Game.Settings.Server.MasterServer + "games?version={0}&mod={1}&modversion={2}".F(
+			var queryURL = services.ServerList + "games?version={0}&mod={1}&modversion={2}".F(
 				Uri.EscapeUriString(Game.Mods["modchooser"].Metadata.Version),
 				Uri.EscapeUriString(Game.ModData.Manifest.Id),
 				Uri.EscapeUriString(Game.ModData.Manifest.Metadata.Version));
@@ -476,7 +479,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				// Search for any unknown maps
 				if (Game.Settings.Game.AllowDownloading)
-					modData.MapCache.QueryRemoteMapDetails(games.Where(g => !Filtered(g)).Select(g => g.Map));
+					modData.MapCache.QueryRemoteMapDetails(services.MapRepository, games.Where(g => !Filtered(g)).Select(g => g.Map));
 
 				foreach (var row in rows)
 					serverList.AddChild(row);
