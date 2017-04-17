@@ -799,6 +799,7 @@
     <Compile Include="Traits\Attack\AttackCharges.cs" />
     <Compile Include="Traits\Render\WithChargeAnimation.cs" />
     <Compile Include="Traits\Render\WithChargeOverlay.cs" />
+    <Compile Include="WebServices.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="AfterBuild">

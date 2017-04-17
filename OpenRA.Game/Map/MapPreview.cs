@@ -123,8 +123,8 @@ namespace OpenRA
 		}
 
 		static readonly CPos[] NoSpawns = new CPos[] { };
-		MapCache cache;
-		ModData modData;
+		readonly MapCache cache;
+		readonly ModData modData;
 
 		public readonly string Uid;
 		public IReadOnlyPackage Package { get; private set; }
@@ -416,7 +416,7 @@ namespace OpenRA
 			innerData = newData;
 		}
 
-		public void Install(Action onSuccess)
+		public void Install(string mapRepositoryUrl, Action onSuccess)
 		{
 			if (Status != MapStatus.DownloadAvailable || !Game.Settings.Game.AllowDownloading)
 				return;
@@ -431,12 +431,11 @@ namespace OpenRA
 			}
 
 			var mapInstallPackage = installLocation.Key as IReadWritePackage;
-			var modData = Game.ModData;
 			new Thread(() =>
 			{
 				// Request the filename from the server
 				// Run in a worker thread to avoid network delays
-				var mapUrl = Game.Settings.Game.MapRepository + Uid;
+				var mapUrl = mapRepositoryUrl + Uid;
 				var mapFilename = string.Empty;
 				try
 				{

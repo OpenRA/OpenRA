@@ -51,8 +51,6 @@ namespace OpenRA
 		[Desc("Locks the game with a password.")]
 		public string Password = "";
 
-		public string MasterServer = "http://master.openra.net/";
-
 		[Desc("Allow users to enable NAT discovery for external IP detection and automatic port forwarding.")]
 		public bool DiscoverNatDevices = false;
 
@@ -175,13 +173,11 @@ namespace OpenRA
 		public bool DrawTargetLine = true;
 
 		public bool AllowDownloading = true;
-		public string MapRepository = "http://resource.openra.net/map/";
 
 		public bool AllowZoom = true;
 		public Modifiers ZoomModifier = Modifiers.Ctrl;
 
 		public bool FetchNews = true;
-		public string NewsUrl = "http://master.openra.net/gamenews";
 
 		public MPGameFilters MPGameFilters = MPGameFilters.Waiting | MPGameFilters.Empty | MPGameFilters.Protected | MPGameFilters.Started;
 	}
