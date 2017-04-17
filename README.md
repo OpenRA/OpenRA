@@ -1,3 +1,17 @@
+
+# This repository is a customized soft-fork of OpenRA aimed towards Attacque Supérior.
+
+This repository was made under the guidance of the recent OpenRA soft-fork approving policy and intends to maintain bleed-compatibility as much as possible with upstream OpenRA. All code alterations are under the GPLv3 license and probably will be evaluated by StyleCop to maintain OpenRA coding quality.
+
+This repository's aim is to be used by other OpenRA modders for their advancements as well.
+
+* Websites: [http://attsup.swr-productions.com](http://attsup.swr-productions.com) and [http://www.moddb.com/mods/attacque-suprior](http://www.moddb.com/mods/attacque-suprior)
+* Discord: [https://discord.gg/7aM7Hm2](https://discord.gg/7aM7Hm2)
+
+Below you can find the original OpenRA readme unedited.
+
+***
+
 # OpenRA
 
 A Libre/Free Real Time Strategy game engine supporting early Westwood classics.
