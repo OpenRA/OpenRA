@@ -39,13 +39,14 @@ namespace OpenRA.Mods.Common.Traits
 
 		public static bool CanPlaceBuilding(this World world, string name, BuildingInfo building, CPos topLeft, Actor toIgnore)
 		{
+			var footprint = FootprintUtils.Tiles(world.Map.Rules, name, building, topLeft);
 			if (building.AllowInvalidPlacement)
-				return true;
+				return footprint.Any(world.Map.AllCells.Contains);
 
 			var res = world.WorldActor.Trait<ResourceLayer>();
-			return FootprintUtils.Tiles(world.Map.Rules, name, building, topLeft).All(
-				t => world.Map.Contains(t) && res.GetResource(t) == null &&
-					world.IsCellBuildable(t, building, toIgnore));
+			return footprint.All(t => world.Map.Contains(t)
+				&& res.GetResource(t) == null
+				&& world.IsCellBuildable(t, building, toIgnore));
 		}
 
 		public static IEnumerable<CPos> GetLineBuildCells(World world, CPos location, string name, BuildingInfo bi)
