@@ -1061,7 +1061,7 @@ PROC:
 SILO:
 	Inherits: ^Building
 	Buildable:
-		Queue: Defense
+		Queue: Building
 		BuildPaletteOrder: 35
 		Prerequisites: proc, ~techlevel.infonly
 		Description: Stores excess refined\nOre and Gems.
