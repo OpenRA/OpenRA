@@ -71,18 +71,18 @@ namespace OpenRA.Widgets
 			return WindowList.Count > 0 ? WindowList.Peek() : null;
 		}
 
-		public static T LoadWidget<T>(string id, Widget parent, WidgetArgs args) where T : Widget
+		public static T LoadWidget<T>(string id, Widget parent, WidgetArgs args, bool instantiateLogicObjects = true) where T : Widget
 		{
-			var widget = LoadWidget(id, parent, args) as T;
+			var widget = LoadWidget(id, parent, args, instantiateLogicObjects) as T;
 			if (widget == null)
 				throw new InvalidOperationException(
 					"Widget {0} is not of type {1}".F(id, typeof(T).Name));
 			return widget;
 		}
 
-		public static Widget LoadWidget(string id, Widget parent, WidgetArgs args)
+		public static Widget LoadWidget(string id, Widget parent, WidgetArgs args, bool instantiateLogicObjects = true)
 		{
-			return Game.ModData.WidgetLoader.LoadWidget(args, parent, id);
+			return Game.ModData.WidgetLoader.LoadWidget(args, parent, id, instantiateLogicObjects);
 		}
 
 		public static void Tick() { Root.TickOuter(); }
@@ -264,15 +264,16 @@ namespace OpenRA.Widgets
 								   height);
 		}
 
-		public void PostInit(WidgetArgs args)
+		public void PostInit(WidgetArgs args, bool instantiateLogicObjects = true)
 		{
 			if (!Logic.Any())
 				return;
 
 			args["widget"] = this;
 
-			LogicObjects = Logic.Select(l => Game.ModData.ObjectCreator.CreateObject<ChromeLogic>(l, args))
-				.ToArray();
+			if (instantiateLogicObjects)
+				LogicObjects = Logic.Select(l => Game.ModData.ObjectCreator.CreateObject<ChromeLogic>(l, args))
+					.ToArray();
 
 			args.Remove("widget");
 		}

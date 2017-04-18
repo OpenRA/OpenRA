@@ -35,16 +35,16 @@ namespace OpenRA
 				}
 		}
 
-		public Widget LoadWidget(WidgetArgs args, Widget parent, string w)
+		public Widget LoadWidget(WidgetArgs args, Widget parent, string w, bool instantiateLogicObjects = true)
 		{
 			MiniYamlNode ret;
 			if (!widgets.TryGetValue(w, out ret))
 				throw new InvalidDataException("Cannot find widget with Id `{0}`".F(w));
 
-			return LoadWidget(args, parent, ret);
+			return LoadWidget(args, parent, ret, instantiateLogicObjects);
 		}
 
-		public Widget LoadWidget(WidgetArgs args, Widget parent, MiniYamlNode node)
+		public Widget LoadWidget(WidgetArgs args, Widget parent, MiniYamlNode node, bool instantiateLogicObjects = true)
 		{
 			if (!args.ContainsKey("modData"))
 				args = new WidgetArgs(args) { { "modData", modData } };
