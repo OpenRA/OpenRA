@@ -139,6 +139,20 @@ namespace OpenRA.Mods.Common.Scripting
 		[Desc("Returns a table of all the actors that were specified in the map file.")]
 		public Actor[] NamedActors { get { return sma.Actors.Values.ToArray(); } }
 
+		[Desc("Returns a table of key,value pairs which are name,Actor (where 'Actor' is an actor instance).")]
+		public LuaTable NameToActorKeyValues
+		{
+			get
+			{
+				var ret = Context.CreateTable();
+				foreach (var k in sma.Actors.Keys)
+					using (LuaValue v = sma.Actors[k].ToLuaValue(Context))
+						ret.Add(k, v);
+
+				return ret;
+			}
+		}
+
 		[Desc("Returns the actor that was specified with a given name in " +
 			"the map file (or nil, if the actor is dead or not found).")]
 		public Actor NamedActor(string actorName)
