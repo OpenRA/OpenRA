@@ -97,6 +97,7 @@
     <Compile Include="Traits\PeriodicProducer.cs" />
     <Compile Include="Traits\Player\PlayerSilo.cs" />
     <Compile Include="Traits\Render\WithVoxelAnimatedBody.cs" />
+    <Compile Include="Traits\ResourcePurifier.cs" />
     <Compile Include="Traits\SpawnActorOnOwnerChange.cs" />
     <Compile Include="Traits\SupportPowers\AirstrikePowerAS.cs" />
     <Compile Include="Traits\Multipliers\HealthPercentageFirepowerMultiplier.cs" />
