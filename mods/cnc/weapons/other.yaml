@@ -7,7 +7,7 @@
 	Projectile: Bullet
 		Speed: 1c682
 	Warhead@1Dam: SpreadDamage
-		Spread: 341
+		Spread: 468
 		Damage: 40
 		ValidTargets: Ground, Water, Trees
 		InvalidTargets: Wall
