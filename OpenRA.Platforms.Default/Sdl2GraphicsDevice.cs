@@ -40,7 +40,7 @@ namespace OpenRA.Platforms.Default
 			WindowSize = windowSize;
 
 			// Disable legacy scaling on Windows
-			if (Platform.CurrentPlatform == PlatformType.Windows)
+			if (Platform.CurrentPlatform == PlatformType.Windows && !Game.Settings.Graphics.DisableWindowsDPIScaling)
 				SetProcessDPIAware();
 
 			SDL.SDL_Init(SDL.SDL_INIT_NOPARACHUTE | SDL.SDL_INIT_VIDEO);
@@ -82,7 +82,7 @@ namespace OpenRA.Platforms.Default
 			else if (Platform.CurrentPlatform == PlatformType.Windows)
 			{
 				float ddpi, hdpi, vdpi;
-				if (SDL.SDL_GetDisplayDPI(0, out ddpi, out hdpi, out vdpi) == 0)
+				if (!Game.Settings.Graphics.DisableWindowsDPIScaling && SDL.SDL_GetDisplayDPI(0, out ddpi, out hdpi, out vdpi) == 0)
 				{
 					WindowScale = ddpi / 96;
 					WindowSize = new Size((int)(SurfaceSize.Width / WindowScale), (int)(SurfaceSize.Height / WindowScale));

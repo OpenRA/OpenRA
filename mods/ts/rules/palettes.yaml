@@ -41,6 +41,9 @@
 	PaletteFromFile@effect:
 		Name: effect
 		Filename: anim.pal
+	PaletteFromFile@effect-nolite:
+		Name: effect-ignore-lighting
+		Filename: anim.pal
 	PaletteFromPaletteWithAlpha@effectalpha25:
 		Name: effectalpha25
 		Alpha: 0.25
@@ -53,6 +56,18 @@
 		Name: effectalpha75
 		Alpha: 0.75
 		BasePalette: effect
+	PaletteFromPaletteWithAlpha@effect-nolite-alpha25:
+		Name: effect-ignore-lighting-alpha25
+		Alpha: 0.25
+		BasePalette: effect-ignore-lighting
+	PaletteFromPaletteWithAlpha@effect-nolite-alpha50:
+		Name: effect-ignore-lighting-alpha50
+		Alpha: 0.5
+		BasePalette: effect-ignore-lighting
+	PaletteFromPaletteWithAlpha@effect-nolite-alpha75:
+		Name: effect-ignore-lighting-alpha75
+		Alpha: 0.75
+		BasePalette: effect-ignore-lighting
 	PaletteFromFile@sidebar:
 		Name: sidebar
 		Filename: sidebar-nod|sidebar.pal
@@ -127,3 +142,5 @@
 		Alpha: 0.55
 	PlayerHighlightPalette:
 	MenuPaletteEffect:
+	GlobalLightingPaletteEffect:
+		ExcludePalettes: cursor, chrome, colorpicker, fog, shroud, alpha, effect-ignore-lighting, effect-ignore-lighting-alpha25, effect-ignore-lighting-alpha50, effect-ignore-lighting-alpha75

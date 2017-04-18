@@ -118,6 +118,9 @@ namespace OpenRA
 		[Desc("At which frames per second to cap the framerate.")]
 		public int MaxFramerate = 60;
 
+		[Desc("Disable high resolution DPI scaling on Windows operating systems.")]
+		public bool DisableWindowsDPIScaling = false;
+
 		public int BatchSize = 8192;
 		public int SheetSize = 2048;
 
