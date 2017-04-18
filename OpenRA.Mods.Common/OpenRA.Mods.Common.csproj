@@ -88,7 +88,7 @@
     <Compile Include="Activities\CaptureActor.cs" />
     <Compile Include="Activities\DeliverResources.cs" />
     <Compile Include="Activities\Demolish.cs" />
-    <Compile Include="Activities\DonateSupplies.cs" />
+    <Compile Include="Activities\DonateCash.cs" />
     <Compile Include="Activities\Enter.cs" />
     <Compile Include="Activities\EnterTransport.cs" />
     <Compile Include="Activities\ExternalCaptureActor.cs" />
@@ -248,7 +248,7 @@
     <Compile Include="Scripting\Properties\ParadropProperties.cs" />
     <Compile Include="Scripting\Properties\ParatroopersProperties.cs" />
     <Compile Include="TraitsInterfaces.cs" />
-    <Compile Include="Traits\AcceptsSupplies.cs" />
+    <Compile Include="Traits\AcceptsDeliveredCash.cs" />
     <Compile Include="Traits\Air\Aircraft.cs" />
     <Compile Include="Traits\Air\AttackBomber.cs" />
     <Compile Include="Traits\Air\AttackHeli.cs" />
@@ -478,7 +478,7 @@
     <Compile Include="Traits\Sound\DeathSounds.cs" />
     <Compile Include="Traits\Sound\SoundOnDamageTransition.cs" />
     <Compile Include="Traits\Sound\AttackSounds.cs" />
-    <Compile Include="Traits\SupplyTruck.cs" />
+    <Compile Include="Traits\DeliversCash.cs" />
     <Compile Include="Traits\SupportPowers\AirstrikePower.cs" />
     <Compile Include="Traits\SupportPowers\GrantExternalConditionPower.cs" />
     <Compile Include="Traits\SupportPowers\NukePower.cs" />
