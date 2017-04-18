@@ -77,7 +77,7 @@ namespace OpenRA.Mods.Common.Traits
 				self.CancelActivity();
 
 			self.SetTargetLine(target, Color.Yellow);
-			self.QueueActivity(new DonateSupplies(self, target.Actor, info.Payload, info.PlayerExperience));
+			self.QueueActivity(new DonateCash(self, target.Actor, info.Payload, info.PlayerExperience));
 		}
 
 		public class DeliversCashOrderTargeter : UnitOrderTargeter
