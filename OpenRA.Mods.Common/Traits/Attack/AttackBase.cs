@@ -80,6 +80,10 @@ namespace OpenRA.Mods.Common.Traits
 			if (!HasAnyValidWeapons(target))
 				return false;
 
+			var mobile = self.TraitOrDefault<Mobile>();
+			if (mobile != null && !mobile.CanInteractWithGroundLayer(self))
+				return false;
+
 			// Building is under construction or is being sold
 			if (building.Value != null && !building.Value.BuildComplete)
 				return false;
