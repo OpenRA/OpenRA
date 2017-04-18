@@ -37,6 +37,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("In how many steps to perform the dragging?")]
 		public readonly int DragLength = 0;
 
+		[Desc("Store resources in silos. Adds cash directly without storing if set to false.")]
+		public readonly bool UseStorage = true;
+
 		[Desc("Discard resources once silo capacity has been reached.")]
 		public readonly bool DiscardExcessResources = false;
 
@@ -89,13 +92,20 @@ namespace OpenRA.Mods.Common.Traits
 				.Where(a => a.Trait.LinkedProc == self);
 		}
 
-		public bool CanGiveResource(int amount) { return info.DiscardExcessResources || playerResources.CanGiveResources(amount); }
+		public bool CanGiveResource(int amount) { return !info.UseStorage || info.DiscardExcessResources || playerResources.CanGiveResources(amount); }
 
 		public void GiveResource(int amount)
 		{
-			if (info.DiscardExcessResources)
-				amount = Math.Min(amount, playerResources.ResourceCapacity - playerResources.Resources);
-			playerResources.GiveResources(amount);
+			if (info.UseStorage)
+			{
+				if (info.DiscardExcessResources)
+					amount = Math.Min(amount, playerResources.ResourceCapacity - playerResources.Resources);
+
+				playerResources.GiveResources(amount);
+			}
+			else
+				playerResources.GiveCash(amount);
+
 			if (info.ShowTicks)
 				currentDisplayValue += amount;
 		}
