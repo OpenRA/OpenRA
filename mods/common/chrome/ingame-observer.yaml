@@ -4,6 +4,7 @@ Container@OBSERVER_WIDGETS:
 		MenuButton@OPTIONS_BUTTON:
 			Width: 160
 			Height: 25
+			X: WINDOW_RIGHT-420
 			Text: Options (Esc)
 			Font: Bold
 			Key: escape
@@ -12,7 +13,7 @@ Container@OBSERVER_WIDGETS:
 			MenuContainer: INGAME_OBSERVERSTATS_BG
 			HideIngameUI: False
 			Pause: False
-			X: 162
+			X: WINDOW_RIGHT-585
 			Y: 0
 			Width: 160
 			Height: 25
@@ -21,23 +22,21 @@ Container@OBSERVER_WIDGETS:
 			Key: f1
 		Container@GAME_TIMER_BLOCK:
 			Logic: GameTimerLogic
-			X: (WINDOW_RIGHT - WIDTH) / 2
-			Width: 100
-			Height: 55
+			X: WINDOW_RIGHT/2 - WIDTH
+			Width: 70
+			Height: 15
 			Children:
 				LabelWithTooltip@GAME_TIMER:
-					Width: PARENT_RIGHT
-					Height: 30
+					Y: 6
+					Height: 10
 					Align: Center
 					Font: Title
 					Contrast: true
 					TooltipContainer: TOOLTIP_CONTAINER
 					TooltipTemplate: SIMPLE_TOOLTIP
 				Label@GAME_TIMER_STATUS:
-					Y: 32
-					Width: PARENT_RIGHT
-					Height: 15
-					Align: Center
+					X: PARENT_RIGHT
+					Y: 15
 					Font: Bold
 					Contrast: true
 		Background@RADAR_BG:

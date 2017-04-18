@@ -24,6 +24,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly Widget menuRoot;
 		bool disableSystemButtons;
 		Widget currentWidget;
+		Widget statistics;
 
 		[ObjectCreator.UseCtor]
 		public MenuButtonsChromeLogic(Widget widget, World world)
@@ -84,8 +85,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var stats = widget.GetOrNull<MenuButtonWidget>("OBSERVER_STATS_BUTTON");
 			if (stats != null)
 			{
-				stats.IsDisabled = () => disableSystemButtons || world.Map.Visibility.HasFlag(MapVisibility.MissionSelector);
-				stats.OnClick = () => OpenMenuPanel(stats);
+				stats.IsDisabled = () => world.Map.Visibility.HasFlag(MapVisibility.MissionSelector);
+				stats.OnClick = () =>
+				{
+					if (statistics == null)
+						statistics = Game.LoadWidget(world, stats.MenuContainer, menuRoot, new WidgetArgs());
+					else
+						statistics.Visible = !statistics.Visible;
+				};
 			}
 		}
 

@@ -249,6 +249,18 @@ scrollitem-selected: chrome.png
 	corner-tr: 126,192,2,2
 	corner-bl: 64,254,2,2
 	corner-br: 126,254,2,2
+	
+# Used for Observer Statistics
+dialogTransparentNoBorder: dialog.png
+	background: 517,392,54,54
+	border-t: 517,387,54,0
+	border-b: 517,446,54,0
+	border-l: 512,392,0,54
+	border-r: 571,392,0,54
+	corner-tl: 512,387,0,0
+	corner-tr: 571,387,0,0
+	corner-bl: 512,446,0,0
+	corner-br: 571,446,0,0	
 
 slider: chrome.png
 	tick: 64,64,1,4

@@ -232,6 +232,11 @@ namespace OpenRA
 
 		public Hotkey ObserverCombinedView = new Hotkey(Keycode.MINUS, Modifiers.None);
 		public Hotkey ObserverWorldView = new Hotkey(Keycode.EQUALS, Modifiers.None);
+		public Hotkey StatisticsBasic = new Hotkey(Keycode.Z, Modifiers.None);
+		public Hotkey StatisticsEconomy = new Hotkey(Keycode.X, Modifiers.None);
+		public Hotkey StatisticsProduction = new Hotkey(Keycode.C, Modifiers.None);
+		public Hotkey StatisticsCombat = new Hotkey(Keycode.V, Modifiers.None);
+		public Hotkey StatisticsEarnGraph = new Hotkey(Keycode.B, Modifiers.None);
 
 		public Hotkey CycleStatusBarsKey = new Hotkey(Keycode.COMMA, Modifiers.None);
 		public Hotkey TogglePixelDoubleKey = new Hotkey(Keycode.PERIOD, Modifiers.None);
