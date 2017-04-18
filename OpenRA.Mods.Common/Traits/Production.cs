@@ -147,7 +147,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		static bool CanUseExit(Actor self, ActorInfo producee, ExitInfo s)
 		{
-			var mobileInfo = producee.TraitInfoOrDefault<MobileInfo>();
+			var mobileInfo = producee.TraitInfos<MobileInfo>().FirstOrDefault(Exts.IsTraitEnabled);
 
 			self.NotifyBlocker(self.Location + s.ExitCell);
 
