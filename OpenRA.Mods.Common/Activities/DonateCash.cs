@@ -15,13 +15,13 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Activities
 {
-	class DonateSupplies : Enter
+	class DonateCash : Enter
 	{
 		readonly Actor target;
 		readonly int payload;
 		readonly int experience;
 
-		public DonateSupplies(Actor self, Actor target, int payload, int playerExperience)
+		public DonateCash(Actor self, Actor target, int payload, int playerExperience)
 			: base(self, target, EnterBehaviour.Dispose)
 		{
 			this.target = target;
