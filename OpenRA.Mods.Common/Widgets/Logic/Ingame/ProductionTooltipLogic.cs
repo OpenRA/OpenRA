@@ -22,13 +22,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	public class ProductionTooltipLogic : ChromeLogic
 	{
 		[ObjectCreator.UseCtor]
-		public ProductionTooltipLogic(Widget widget, TooltipContainerWidget tooltipContainer, ProductionPaletteWidget palette, World world)
+		public ProductionTooltipLogic(Widget widget, TooltipContainerWidget tooltipContainer, Player player, Func<ProductionIcon> getTooltipIcon)
 		{
-			var mapRules = palette.World.Map.Rules;
-			var pm = palette.World.LocalPlayer.PlayerActor.Trait<PowerManager>();
-			var pr = palette.World.LocalPlayer.PlayerActor.Trait<PlayerResources>();
+			var world = player.World;
+			var mapRules = world.Map.Rules;
+			var pm = player.PlayerActor.Trait<PowerManager>();
+			var pr = player.PlayerActor.Trait<PlayerResources>();
 
-			widget.IsVisible = () => palette.TooltipIcon != null;
+			widget.IsVisible = () => getTooltipIcon() != null && getTooltipIcon().Actor != null;
 			var nameLabel = widget.Get<LabelWidget>("NAME");
 			var hotkeyLabel = widget.Get<LabelWidget>("HOTKEY");
 			var requiresLabel = widget.Get<LabelWidget>("REQUIRES");
@@ -49,10 +50,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			tooltipContainer.BeforeRender = () =>
 			{
-				if (palette.TooltipIcon == null)
+				var tooltipIcon = getTooltipIcon();
+				if (tooltipIcon == null)
 					return;
 
-				var actor = palette.TooltipIcon.Actor;
+				var actor = tooltipIcon.Actor;
 				if (actor == null || actor == lastActor)
 					return;
 
@@ -63,7 +65,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				nameLabel.GetText = () => name;
 
-				var hotkey = palette.TooltipIcon.Hotkey;
+				var hotkey = tooltipIcon.Hotkey;
 				var nameWidth = font.Measure(name).X;
 				var hotkeyText = "({0})".F(hotkey.DisplayString());
 				var hotkeyWidth = hotkey.IsValid() ? font.Measure(hotkeyText).X + 2 * nameLabel.Bounds.X : 0;
@@ -84,8 +86,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				powerIcon.IsVisible = () => power != 0;
 
 				var lowpower = pm.PowerState != PowerState.Normal;
-				var time = palette.CurrentQueue == null ? 0 : palette.CurrentQueue.GetBuildTime(actor, buildable)
-					* (lowpower ? palette.CurrentQueue.Info.LowPowerSlowdown : 1);
+				var time = tooltipIcon.ProductionQueue == null ? 0 : tooltipIcon.ProductionQueue.GetBuildTime(actor, buildable)
+					* (lowpower ? tooltipIcon.ProductionQueue.Info.LowPowerSlowdown : 1);
 				var timeString = WidgetUtils.FormatTime(time, world.Timestep);
 				timeLabel.GetText = () => timeString;
 				timeLabel.GetColor = () => lowpower ? Color.Red : Color.White;
