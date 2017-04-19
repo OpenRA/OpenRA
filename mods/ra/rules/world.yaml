@@ -95,6 +95,7 @@ World:
 	DevCommands:
 	PlayerCommands:
 	HelpCommand:
+	StatsCommand:
 	ScreenShaker:
 	BuildingInfluence:
 	ProductionQueueFromSelection:

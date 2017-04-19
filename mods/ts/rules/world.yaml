@@ -69,6 +69,7 @@ World:
 	DevCommands:
 	PlayerCommands:
 	HelpCommand:
+	StatsCommand:
 	BuildingInfluence:
 	ProductionQueueFromSelection:
 		ProductionPaletteWidget: PRODUCTION_PALETTE
