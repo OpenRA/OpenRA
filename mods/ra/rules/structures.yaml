@@ -1300,6 +1300,7 @@ AFLD:
 		ZOffset: 256
 		RequiresCondition: primary
 	WithRearmAnimation:
+	WithRearmAnimation:
 
 POWR:
 	Inherits: ^Building
