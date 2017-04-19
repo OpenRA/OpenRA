@@ -22,7 +22,8 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Cnc.Traits.Render
 {
-	public class WithVoxelWalkerBodyInfo : ITraitInfo, IRenderActorPreviewVoxelsInfo,  Requires<RenderVoxelsInfo>, Requires<IMoveInfo>, Requires<IFacingInfo>
+	public class WithVoxelWalkerBodyInfo : ITraitInfo, IRenderActorPreviewVoxelsInfo,  Requires<RenderVoxelsInfo>, Requires<IMoveInfo>, Requires<IFacingInfo>,
+		IAutoSelectionSizeInfo
 	{
 		public readonly string Sequence = "idle";
 

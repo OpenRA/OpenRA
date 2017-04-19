@@ -20,7 +20,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Cnc.Traits.Render
 {
-	public class WithVoxelUnloadBodyInfo : ITraitInfo, IRenderActorPreviewVoxelsInfo, Requires<RenderVoxelsInfo>
+	public class WithVoxelUnloadBodyInfo : ITraitInfo, IRenderActorPreviewVoxelsInfo, Requires<RenderVoxelsInfo>, IAutoSelectionSizeInfo
 	{
 		[Desc("Voxel sequence name to use when docked to a refinery.")]
 		public readonly string UnloadSequence = "unload";
