@@ -14,7 +14,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Special case trait for actors that need to define targetable area and screen map bounds manually.")]
-	public class CustomSelectionSizeInfo : ITraitInfo
+	public class CustomSelectionSizeInfo : ITraitInfo, IAutoSelectionSizeInfo
 	{
 		[FieldLoader.Require]
 		public readonly int[] CustomBounds = null;
