@@ -41,6 +41,10 @@
       <HintPath>..\thirdparty\download\FuzzyLogicLibrary.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="rix0rrr.BeaconLib, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\thirdparty\download\rix0rrr.BeaconLib.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
