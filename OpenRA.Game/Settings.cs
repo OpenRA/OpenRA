@@ -158,6 +158,8 @@ namespace OpenRA
 		public string Mod = null;
 		public string PreviousMod = "ra";
 
+		public Dictionary<string, string> LastFaction = new Dictionary<string, string>();
+
 		public string Platform = "Default";
 
 		public bool ViewportEdgeScroll = true;
