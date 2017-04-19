@@ -28,19 +28,9 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		// TODO: [SequenceReference] isn't smart enough to use Dictionaries.
 		[Desc("Attack sequence to use for each armament.")]
-		[FieldLoader.LoadUsing("LoadWeaponSequences")]
 		public readonly Dictionary<string, string> AttackSequences = new Dictionary<string, string>();
 		[SequenceReference] public readonly string[] IdleSequences = { };
 		[SequenceReference] public readonly string[] StandSequences = { "stand" };
-
-		public static object LoadWeaponSequences(MiniYaml yaml)
-		{
-			var md = yaml.ToDictionary();
-
-			return md.ContainsKey("AttackSequences")
-				? md["AttackSequences"].ToDictionary(my => FieldLoader.GetValue<string>("(value)", my.Value))
-				: new Dictionary<string, string>();
-		}
 
 		public override object Create(ActorInitializer init) { return new WithInfantryBody(init, this); }
 
