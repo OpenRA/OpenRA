@@ -115,3 +115,10 @@ if [ ! -f SmarIrc4net.dll ]; then
 	cp ./SmartIrc4net/lib/net40/SmarIrc4net* .
 	rm -rf SmartIrc4net
 fi
+
+if [ ! -f rix0rrr.BeaconLib.dll ]; then
+	echo "Fetching rix0rrr.BeaconLib from NuGet."
+	get rix0rrr.BeaconLib 1.0.0
+	cp ./rix0rrr.BeaconLib/lib/net40/rix0rrr.BeaconLib.dll .
+	rm -rf rix0rrr.BeaconLib
+fi

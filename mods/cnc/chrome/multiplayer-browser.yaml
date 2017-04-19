@@ -24,7 +24,7 @@ Container@MULTIPLAYER_BROWSER_PANEL:
 					X: 380
 					Width: 110
 					Height: 25
-					Text: Country
+					Text: Location
 					Font: Bold
 				Label@STATUS:
 					X: 495

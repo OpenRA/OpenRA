@@ -22,6 +22,7 @@ namespace OpenRA
 	public static class Platform
 	{
 		public static PlatformType CurrentPlatform { get { return currentPlatform.Value; } }
+		public static readonly Guid SessionGUID = Guid.NewGuid();
 
 		static Lazy<PlatformType> currentPlatform = Exts.Lazy(GetCurrentPlatform);
 
