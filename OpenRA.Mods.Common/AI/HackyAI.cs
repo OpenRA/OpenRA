@@ -613,10 +613,12 @@ namespace OpenRA.Mods.Common.AI
 			return World.FindActorsInCircle(pos, radius).Where(isEnemyUnit).ClosestTo(pos);
 		}
 
-		List<Actor> FindEnemyConstructionYards()
+		internal void FindEnemyBuildings(HashSet<string> category, ref List<Actor> targets, Stance stance = Stance.Enemy)
 		{
-			return World.Actors.Where(a => Player.Stances[a.Owner] == Stance.Enemy && !a.IsDead &&
-				Info.BuildingCommonNames.ConstructionYard.Contains(a.Info.Name)).ToList();
+			targets.AddRange(World.Actors.Where(a => Player.Stances[a.Owner] == stance &&
+				!a.IsDead && category.Contains(a.Info.Name)).ToList());
+
+			targets.Shuffle(Random);
 		}
 
 		void CleanSquads()
@@ -855,15 +857,23 @@ namespace OpenRA.Mods.Common.AI
 
 		void TryToRushAttack()
 		{
-			var allEnemyBaseBuilder = FindEnemyConstructionYards();
+			var allEnemyBuildings = new List<Actor>();
+
+			FindEnemyBuildings(Info.BuildingCommonNames.ConstructionYard, ref allEnemyBuildings);
+			FindEnemyBuildings(Info.BuildingCommonNames.Barracks, ref allEnemyBuildings);
+			FindEnemyBuildings(Info.BuildingCommonNames.Production, ref allEnemyBuildings);
+			FindEnemyBuildings(Info.BuildingCommonNames.Power, ref allEnemyBuildings);
+			FindEnemyBuildings(Info.BuildingCommonNames.Refinery, ref allEnemyBuildings);
+
+			allEnemyBuildings.Shuffle(Random);
 			var ownUnits = activeUnits
 				.Where(unit => unit.IsIdle && unit.Info.HasTraitInfo<AttackBaseInfo>()
 					&& !unit.Info.HasTraitInfo<AircraftInfo>() && !unit.Info.HasTraitInfo<HarvesterInfo>()).ToList();
 
-			if (!allEnemyBaseBuilder.Any() || (ownUnits.Count < Info.SquadSize))
+			if (!allEnemyBuildings.Any() || (ownUnits.Count < Info.SquadSize))
 				return;
 
-			foreach (var b in allEnemyBaseBuilder)
+			foreach (var b in allEnemyBuildings)
 			{
 				var enemies = World.FindActorsInCircle(b.CenterPosition, WDist.FromCells(Info.RushAttackScanRadius))
 					.Where(unit => Player.Stances[unit.Owner] == Stance.Enemy && unit.Info.HasTraitInfo<AttackBaseInfo>()).ToList();
