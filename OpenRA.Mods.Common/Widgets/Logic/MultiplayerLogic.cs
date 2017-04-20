@@ -548,7 +548,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				DateTime startTime;
 				if (DateTime.TryParse(game.Started, out startTime))
 				{
-					var totalMinutes = Math.Ceiling((DateTime.UtcNow - startTime).TotalMinutes);
+					var totalMinutes = Math.Max(0, Math.Ceiling((DateTime.UtcNow - startTime).TotalMinutes));
 					label += " for {0} minute{1}".F(totalMinutes, totalMinutes > 1 ? "s" : "");
 				}
 
