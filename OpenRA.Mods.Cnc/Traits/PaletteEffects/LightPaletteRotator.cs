@@ -18,6 +18,7 @@ namespace OpenRA.Mods.Cnc.Traits
 	[Desc("Palette effect used for blinking \"animations\" on actors.")]
 	class LightPaletteRotatorInfo : ITraitInfo
 	{
+		[Desc("Palettes this effect should not apply to.")]
 		public readonly HashSet<string> ExcludePalettes = new HashSet<string>();
 
 		public object Create(ActorInitializer init) { return new LightPaletteRotator(this); }
@@ -33,12 +34,12 @@ namespace OpenRA.Mods.Cnc.Traits
 			this.info = info;
 		}
 
-		public void Tick(Actor self)
+		void ITick.Tick(Actor self)
 		{
 			t += .5f;
 		}
 
-		public void AdjustPalette(IReadOnlyDictionary<string, MutablePalette> palettes)
+		void IPaletteModifier.AdjustPalette(IReadOnlyDictionary<string, MutablePalette> palettes)
 		{
 			foreach (var pal in palettes)
 			{
