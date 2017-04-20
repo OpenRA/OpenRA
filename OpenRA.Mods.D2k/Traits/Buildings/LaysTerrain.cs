@@ -22,10 +22,11 @@ namespace OpenRA.Mods.D2k.Traits
 		public readonly ushort Template = 0;
 
 		[FieldLoader.Require]
-		[Desc("The terrain types that this template will be placed on")]
+		[Desc("The terrain types that this template will be placed on.")]
 		public readonly HashSet<string> TerrainTypes = new HashSet<string>();
 
-		[Desc("Offset relative to the actor TopLeft. Not used if the template is PickAny")]
+		[Desc("Offset relative to the actor TopLeft. Not used if the template is PickAny.",
+			"Tiles being offset out of the actor's footprint will not be placed.")]
 		public readonly CVec Offset = CVec.Zero;
 
 		public object Create(ActorInitializer init) { return new LaysTerrain(init.Self, this); }
