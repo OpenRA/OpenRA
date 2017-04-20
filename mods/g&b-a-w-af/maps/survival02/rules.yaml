@@ -1,0 +1,123 @@
+Player:
+	PlayerResources:
+		DefaultCash: 5000
+
+World:
+	LuaScript:
+		Scripts: survival02.lua
+	MissionData:
+		Briefing: INCOMING REPORT:\n\nCommander! The Soviets have rendered us useless...\nReports indicate Soviet reinforcements are coming to finish us off... The situation looks bleak...\n
+
+SovietSquad:
+	AlwaysVisible:
+	ParatroopersPower:
+		DropItems: E1,E1,E2,E4,E4
+		QuantizedFacings: 8
+		DisplayBeacon: false
+
+SovietPlatoonUnits:
+	AlwaysVisible:
+	ParatroopersPower:
+		DropItems: E1,E1,E2,E4,E4,E1,E1,E2,E4,E4
+		QuantizedFacings: 8
+		DisplayBeacon: false
+
+MINV:
+	Mine:
+		AvoidFriendly: yes
+
+CAMERA:
+	RevealsShroud:
+		Range: 7c0
+
+ARTY:
+	Valued:
+		Cost: 1000
+
+GUN:
+	Valued:
+		Cost: 1000
+
+E7:
+	Buildable:
+		Prerequisites: ~disabled
+
+SHOK:
+	Buildable:
+		Prerequisites: ~disabled
+
+HELI:
+	Buildable:
+		Prerequisites: ~disabled
+
+MSLO:
+	Buildable:
+		Prerequisites: ~disabled
+
+GAP:
+	Buildable:
+		Prerequisites: ~disabled
+
+SYRD:
+	Buildable:
+		Prerequisites: ~disabled
+
+PDOX:
+	Buildable:
+		Prerequisites: ~disabled
+
+AGUN:
+	Buildable:
+		Prerequisites: ~disabled
+
+ATEK:
+	Buildable:
+		Prerequisites: ~disabled
+
+4TNK:
+	Buildable:
+		Prerequisites: ~disabled
+
+MCV:
+	Buildable:
+		Prerequisites: ~disabled
+
+MNLY.AP:
+	Buildable:
+		Prerequisites: ~disabled
+
+MNLY.AT:
+	Buildable:
+		Prerequisites: ~disabled
+
+TTNK:
+	Buildable:
+		Prerequisites: ~disabled
+
+CTNK:
+	Buildable:
+		Prerequisites: ~disabled
+
+BRIK:
+	Buildable:
+		Prerequisites: ~disabled
+
+MRJ:
+	Buildable:
+		Prerequisites: ~disabled
+
+MGG:
+	Buildable:
+		Prerequisites: ~disabled
+
+STNK:
+	Buildable:
+		Prerequisites: ~disabled
+
+QTNK:
+	Buildable:
+		Prerequisites: ~disabled
+
+DTRK:
+	Buildable:
+		Prerequisites: ~disabled

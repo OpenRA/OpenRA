@@ -1,0 +1,970 @@
+sidebar-allies: chrome.png
+	background-top: 0,167,238,290
+	background-iconrow: 0,457,238,47
+	background-bottom: 0,504,238,8
+	background-supportoverlay: 184,118,64,48
+
+sidebar-button-allies: chrome.png
+	background: 59,31,22,22
+	border-r: 81,31,3,22
+	border-l: 56,31,3,22
+	border-b: 59,53,22,3
+	border-t: 59,28,22,3
+	corner-tl: 56,28,3,3
+	corner-tr: 81,28,3,3
+	corner-bl: 56,53,3,3
+	corner-br: 81,53,3,3
+sidebar-button-allies-hover: chrome.png
+	background: 59,3,22,22
+	border-r: 81,3,3,22
+	border-l: 56,3,3,22
+	border-b: 59,25,22,3
+	border-t: 59,0,22,3
+	corner-tl: 56,0,3,3
+	corner-tr: 81,0,3,3
+	corner-bl: 56,25,3,3
+	corner-br: 81,25,3,3
+sidebar-button-allies-pressed: chrome.png
+	background: 59,31,22,22
+	border-r: 81,31,3,22
+	border-l: 56,31,3,22
+	border-b: 59,53,22,3
+	border-t: 59,28,22,3
+	corner-tl: 56,28,3,3
+	corner-tr: 81,28,3,3
+	corner-bl: 56,53,3,3
+	corner-br: 81,53,3,3
+sidebar-button-allies-highlighted: chrome.png
+	background: 87,31,22,22
+	border-r: 109,31,3,22
+	border-l: 84,31,3,22
+	border-b: 87,53,22,3
+	border-t: 87,28,22,3
+	corner-tl: 84,28,3,3
+	corner-tr: 109,28,3,3
+	corner-bl: 84,53,3,3
+	corner-br: 109,53,3,3
+sidebar-button-allies-highlighted-hover: chrome.png
+	background: 87,3,22,22
+	border-r: 109,3,3,22
+	border-l: 84,3,3,22
+	border-b: 87,25,22,3
+	border-t: 87,0,22,3
+	corner-tl: 84,0,3,3
+	corner-tr: 109,0,3,3
+	corner-bl: 84,25,3,3
+	corner-br: 109,25,3,3
+sidebar-button-allies-highlighted-pressed: chrome.png
+	background: 87,31,22,22
+	border-r: 109,31,3,22
+	border-l: 84,31,3,22
+	border-b: 87,53,22,3
+	border-t: 87,28,22,3
+	corner-tl: 84,28,3,3
+	corner-tr: 109,28,3,3
+	corner-bl: 84,53,3,3
+	corner-br: 109,53,3,3
+sidebar-button-allies-disabled: chrome.png
+	background: 171,3,22,22
+	border-r: 193,3,3,22
+	border-l: 168,3,3,22
+	border-b: 171,25,22,3
+	border-t: 171,0,22,3
+	corner-tl: 168,0,3,3
+	corner-tr: 193,0,3,3
+	corner-bl: 168,25,3,3
+	corner-br: 193,25,3,3
+sidebar-button-allies-highlighted-disabled: chrome.png
+	background: 171,3,22,22
+	border-r: 193,3,3,22
+	border-l: 168,3,3,22
+	border-b: 171,25,22,3
+	border-t: 171,0,22,3
+	corner-tl: 168,0,3,3
+	corner-tr: 193,0,3,3
+	corner-bl: 168,25,3,3
+	corner-br: 193,25,3,3
+
+sidebar-soviet: chrome.png
+	background-top: 274,167,238,290
+	background-iconrow: 274,457,238,47
+	background-bottom: 274,504,238,8
+	background-supportoverlay: 249,118,64,48
+
+sidebar-button-soviet: chrome.png
+	background: 3,31,22,22
+	border-r: 25,31,3,22
+	border-l: 0,31,3,22
+	border-b: 3,53,22,3
+	border-t: 3,28,22,3
+	corner-tl: 0,28,3,3
+	corner-tr: 25,28,3,3
+	corner-bl: 0,53,3,3
+	corner-br: 25,53,3,3
+sidebar-button-soviet-hover: chrome.png
+	background: 3,3,22,22
+	border-r: 25,3,3,22
+	border-l: 0,3,3,22
+	border-b: 3,25,22,3
+	border-t: 3,0,22,3
+	corner-tl: 0,0,3,3
+	corner-tr: 25,0,3,3
+	corner-bl: 0,25,3,3
+	corner-br: 25,25,3,3
+sidebar-button-soviet-pressed: chrome.png
+	background: 3,31,22,22
+	border-r: 25,31,3,22
+	border-l: 0,31,3,22
+	border-b: 3,53,22,3
+	border-t: 3,28,22,3
+	corner-tl: 0,28,3,3
+	corner-tr: 25,28,3,3
+	corner-bl: 0,53,3,3
+	corner-br: 25,53,3,3
+sidebar-button-soviet-highlighted: chrome.png
+	background: 31,31,22,22
+	border-r: 53,31,3,22
+	border-l: 28,31,3,22
+	border-b: 31,53,22,3
+	border-t: 31,28,22,3
+	corner-tl: 28,28,3,3
+	corner-tr: 53,28,3,3
+	corner-bl: 28,53,3,3
+	corner-br: 53,53,3,3
+sidebar-button-soviet-highlighted-hover: chrome.png
+	background: 31,3,22,22
+	border-r: 53,3,3,22
+	border-l: 28,3,3,22
+	border-b: 31,25,22,3
+	border-t: 31,0,22,3
+	corner-tl: 28,0,3,3
+	corner-tr: 53,0,3,3
+	corner-bl: 28,25,3,3
+	corner-br: 53,25,3,3
+sidebar-button-soviet-highlighted-pressed: chrome.png
+	background: 31,31,22,22
+	border-r: 53,31,3,22
+	border-l: 28,31,3,22
+	border-b: 31,53,22,3
+	border-t: 31,28,22,3
+	corner-tl: 28,28,3,3
+	corner-tr: 53,28,3,3
+	corner-bl: 28,53,3,3
+	corner-br: 53,53,3,3
+sidebar-button-soviet-disabled: chrome.png
+	background: 171,3,22,22
+	border-r: 193,3,3,22
+	border-l: 168,3,3,22
+	border-b: 171,25,22,3
+	border-t: 171,0,22,3
+	corner-tl: 168,0,3,3
+	corner-tr: 193,0,3,3
+	corner-bl: 168,25,3,3
+	corner-br: 193,25,3,3
+sidebar-button-soviet-highlighted-disabled: chrome.png
+	background: 171,3,22,22
+	border-r: 193,3,3,22
+	border-l: 168,3,3,22
+	border-b: 171,25,22,3
+	border-t: 171,0,22,3
+	corner-tl: 168,0,3,3
+	corner-tr: 193,0,3,3
+	corner-bl: 168,25,3,3
+	corner-br: 193,25,3,3
+
+sidebar-bits: chrome.png
+	production-tooltip-time: 416, 80, 16, 16
+	production-tooltip-power: 432, 80, 16, 16
+	production-tooltip-cost: 448, 80, 16, 16
+	production-iconoverlay: 314,118,238,48
+
+power-icons: chrome.png
+	power-normal: 350,0,12,18
+	power-critical: 363,0,12,18
+
+production-icons: chrome.png
+	building: 384,0,16,16
+	building-disabled: 384,16,16,16
+	building-alert: 384,32,16,16
+	defense: 400,0,16,16
+	defense-disabled: 400,16,16,16
+	defense-alert: 400,32,16,16
+	infantry: 416,0,16,16
+	infantry-disabled: 416,16,16,16
+	infantry-alert: 416,32,16,16
+	vehicle: 432,0,16,16
+	vehicle-disabled: 432,16,16,16
+	vehicle-alert: 432,32,16,16
+	aircraft: 448,0,16,16
+	aircraft-disabled: 448,16,16,16
+	aircraft-alert: 448,32,16,16
+	ship: 496,48,16,16
+	ship-disabled: 496,64,16,16
+	ship-alert: 496,80,16,16
+
+order-icons: chrome.png
+	options: 480,0,16,16
+	options-disabled: 480,16,16,16
+	options-active: 480,32,16,16
+	debug: 351,48,16,16
+	debug-disabled: 351,64,16,16
+	debug-active: 351,80,16,16
+	diplomacy: 464,48,16,16
+	diplomacy-disabled: 464,64,16,16
+	diplomacy-active: 464,80,16,16
+	sell: 496,0,16,16
+	sell-disabled: 496,16,16,16
+	sell-active: 496,32,16,16
+	repair: 384,48,16,16
+	repair-disabled: 384,64,16,16
+	repair-active: 384,80,16,16
+	beacon: 400,48,16,16
+	beacon-disabled: 400,64,16,16
+	beacon-active: 400,80,16,16
+	power: 480,48,16,16
+	power-disabled: 480,64,16,16
+	power-active: 480,80,16,16
+	stats: 368,48,16,16
+	stats-disabled: 368,64,16,16
+	stats-active: 368,80,16,16
+
+sidebar-observer: chrome.png
+	background: 512,167,238,287
+	replay-bottom: 512,454,238,40
+	observer-bottom: 512,495,238,8
+
+sidebar-button-observershroud: chrome.png
+sidebar-button-observershroud-pressed: chrome.png
+sidebar-button-observershroud-hover: chrome.png
+
+sidebar-button-observer: chrome.png
+	background: 117,33,18,18
+	border-r: 135,33,5,18
+	border-l: 112,33,5,18
+	border-b: 117,51,18,5
+	border-t: 117,28,18,5
+	corner-tl: 112,28,5,5
+	corner-tr: 135,28,5,5
+	corner-bl: 112,51,5,5
+	corner-br: 135,51,5,5
+sidebar-button-observer-hover: chrome.png
+	background: 117,5,18,18
+	border-r: 135,5,5,18
+	border-l: 112,5,5,18
+	border-b: 117,23,18,5
+	border-t: 117,0,18,5
+	corner-tl: 112,0,5,5
+	corner-tr: 135,0,5,5
+	corner-bl: 112,23,5,5
+	corner-br: 135,23,5,5
+sidebar-button-observer-pressed: chrome.png
+	background: 117,33,18,18
+	border-r: 135,33,5,18
+	border-l: 112,33,5,18
+	border-b: 117,51,18,5
+	border-t: 117,28,18,5
+	corner-tl: 112,28,5,5
+	corner-tr: 135,28,5,5
+	corner-bl: 112,51,5,5
+	corner-br: 135,51,5,5
+sidebar-button-observer-highlighted: chrome.png
+	background: 145,33,18,18
+	border-r: 163,33,5,18
+	border-l: 140,33,5,18
+	border-b: 145,51,18,5
+	border-t: 145,28,18,5
+	corner-tl: 140,28,5,5
+	corner-tr: 163,28,5,5
+	corner-bl: 140,51,5,5
+	corner-br: 163,51,5,5
+sidebar-button-observer-highlighted-hover: chrome.png
+	background: 145,5,18,18
+	border-r: 163,5,5,18
+	border-l: 140,5,5,18
+	border-b: 145,23,18,5
+	border-t: 145,0,18,5
+	corner-tl: 140,0,5,5
+	corner-tr: 163,0,5,5
+	corner-bl: 140,23,5,5
+	corner-br: 163,23,5,5
+sidebar-button-observer-highlighted-pressed: chrome.png
+	background: 33,33,18,18
+	border-r: 51,33,5,18
+	border-l: 28,33,5,18
+	border-b: 33,51,18,5
+	border-t: 33,28,18,5
+	corner-tl: 28,28,5,5
+	corner-tr: 51,28,5,5
+	corner-bl: 28,51,5,5
+	corner-br: 51,51,5,5
+sidebar-button-observer-disabled: chrome.png
+	background: 173,5,18,18
+	border-r: 191,5,5,18
+	border-l: 168,5,5,18
+	border-b: 173,23,18,5
+	border-t: 173,0,18,5
+	corner-tl: 168,0,5,5
+	corner-tr: 191,0,5,5
+	corner-bl: 168,23,5,5
+	corner-br: 191,23,5,5
+sidebar-button-observer-highlighted-disabled: chrome.png
+	background: 173,5,18,18
+	border-r: 191,5,5,18
+	border-l: 168,5,5,18
+	border-b: 173,23,18,5
+	border-t: 173,0,18,5
+	corner-tl: 168,0,5,5
+	corner-tr: 191,0,5,5
+	corner-bl: 168,23,5,5
+	corner-br: 191,23,5,5
+
+observer-scrollpanel-button: dialog.png
+	background: 769,257,126,126
+	border-r: 895,257,1,126
+	border-l: 768,257,1,126
+	border-b: 769,383,126,1
+	border-t: 769,256,126,1
+	corner-tl: 768,256,1,1
+	corner-tr: 895,256,1,1
+	corner-bl: 768,383,1,1
+	corner-br: 895,383,1,1
+
+observer-scrollpanel-button-hover: dialog.png
+	background: 769,257,126,126
+	border-r: 895,257,1,126
+	border-l: 768,257,1,126
+	border-b: 769,383,126,1
+	border-t: 769,256,126,1
+	corner-tl: 768,256,1,1
+	corner-tr: 895,256,1,1
+	corner-bl: 768,383,1,1
+	corner-br: 895,383,1,1
+
+observer-scrollpanel-button-pressed: dialog.png
+	background: 897,257,126,126
+	border-r: 1023,257,1,126
+	border-l: 896,257,1,126
+	border-b: 897,383,126,1
+	border-t: 897,256,126,1
+	corner-tl: 896,256,1,1
+	corner-tr: 1023,256,1,1
+	corner-bl: 896,383,1,1
+	corner-br: 1023,383,1,1
+
+observer-scrollpanel-button-disabled: dialog.png
+	background: 769,385,126,126
+	border-r: 895,385,1,126
+	border-l: 768,385,1,126
+	border-b: 769,511,126,1
+	border-t: 769,384,126,1
+	corner-tl: 768,384,1,1
+	corner-tr: 895,384,1,1
+	corner-bl: 768,511,1,1
+	corner-br: 895,511,1,1
+
+observer-scrollheader-selected: dialog.png
+	background: 769,385,126,126
+	border-r: 895,385,1,126
+	border-l: 768,385,1,126
+	border-b: 769,511,126,1
+	border-t: 769,384,126,1
+	corner-tl: 768,384,1,1
+	corner-tr: 895,384,1,1
+	corner-bl: 768,511,1,1
+	corner-br: 895,511,1,1
+
+observer-scrollitem-selected: dialog.png
+	background: 897,257,126,126
+	border-r: 1023,257,1,126
+	border-l: 896,257,1,126
+	border-b: 897,383,126,1
+	border-t: 897,256,126,1
+	corner-tl: 896,256,1,1
+	corner-tr: 1023,256,1,1
+	corner-bl: 896,383,1,1
+	corner-br: 1023,383,1,1
+
+observer-scrollitem-hover: dialog.png
+	background: 769,257,126,126
+	border-r: 895,257,1,126
+	border-l: 768,257,1,126
+	border-b: 769,383,126,1
+	border-t: 769,256,126,1
+	corner-tl: 768,256,1,1
+	corner-tr: 895,256,1,1
+	corner-bl: 768,383,1,1
+	corner-br: 895,383,1,1
+
+# Used for the main menu frame
+dialog: dialog.png
+	background: 0,0,480,480
+	border-r: 489,0,9,192
+	border-l: 480,0,9,192
+	border-b: 0,489,191,9
+	border-t: 0,480,191,9
+	corner-tl: 191,480,9,9
+	corner-tr: 200,480,9,9
+	corner-bl: 191,489,9,9
+	corner-br: 200,489,9,9
+
+# Used for Music and Map selection (normal button)
+dialog2: dialog.png
+	background: 513,1,126,126
+	border-r: 639,1,1,126
+	border-l: 512,1,1,126
+	border-b: 513,127,126,1
+	border-t: 513,0,126,1
+	corner-tl: 512,0,1,1
+	corner-tr: 639,0,1,1
+	corner-bl: 512,127,1,1
+	corner-br: 639,127,1,1
+
+# It's a Container, used in various places, like Hotkeys, ColorPicker, Asset Browser frames (looks like a pressed button)
+dialog3: dialog.png
+	background: 641,1,126,126
+	border-r: 767,1,1,126
+	border-l: 640,1,1,126
+	border-b: 641,127,126,1
+	border-t: 641,0,126,1
+	corner-tl: 640,0,1,1
+	corner-tr: 767,0,1,1
+	corner-bl: 640,127,1,1
+	corner-br: 767,127,1,1
+
+# Used for tooltips and the video player
+dialog4: dialog.png
+	background: 517,392,54,54
+	border-t: 517,387,54,6
+	border-b: 517,446,54,6
+	border-l: 512,392,6,54
+	border-r: 571,392,6,54
+	corner-tl: 512,387,6,6
+	corner-tr: 571,387,6,6
+	corner-bl: 512,446,6,6
+	corner-br: 571,446,6,6
+
+# completely black tile
+dialog5: dialog.png
+	background: 579,387,64,64
+	border-t: 579,387,64,1
+	border-b: 579,451,64,1
+	border-l: 579,387,1,64
+	border-r: 643,387,1,64
+	corner-tl: 579,387,1,1
+	corner-tr: 643,387,1,1
+	corner-bl: 579,446,1,1
+	corner-br: 643,446,1,1
+
+lobby-bits: buttons.png
+	spawn-unclaimed: 159,5,23,22
+	spawn-claimed: 127,5,23,22
+	admin: 187,5,7,5
+	colorpicker: 127,5,23,22
+	huepicker: 194,0,7,15
+	protected: 202,0,10,13
+	protected-disabled: 213,0,10,13
+
+strategic: buttons.png
+	unowned: 127,5,23,22
+	critical_unowned: 127,27,23,22
+	enemy_owned: 159,27,23,22
+	player_owned: 159,49,23,22
+
+flags: buttons.png
+	soviet: 0,112,30,15
+	allies: 30,112,30,15
+	Random: 60,112,30,15
+	RandomAllies: 30,172,30,15
+	RandomSoviet: 0,172,30,15
+	spectator: 60,112,30,15
+	
+	russia: 0,127,30,15
+	ukraine: 30,127,30,15
+	england: 60,127,30,15
+	
+	germany: 0,142,30,15
+	spain: 30,142,30,15
+	france: 60,142,30,15
+	
+	turkey: 0,157,30,15
+	greece: 30,157,30,15
+
+music: buttons.png
+	pause: 0,193,25,25
+	stop: 25,193,25,25
+	play: 55,193,25,25
+	next: 82,193,25,25
+	prev: 110,193,25,25
+	fastforward: 131,193,25,25
+	slowmo: 159,193,25,25
+
+scrollbar: buttons.png
+	down_arrow: 116,140,16,16
+	down_pressed: 116,140,16,16
+	up_arrow: 132,140,16,16
+	up_pressed: 132,140,16,16
+
+# A copy of dialog3 (pressed button)
+progressbar-bg: dialog.png
+	background: 641,1,126,126
+	border-r: 767,1,1,126
+	border-l: 640,1,1,126
+	border-b: 641,127,126,1
+	border-t: 641,0,126,1
+	corner-tl: 640,0,1,1
+	corner-tr: 767,0,1,1
+	corner-bl: 640,127,1,1
+	corner-br: 767,127,1,1
+
+# A copy of dialog2 (normal button)
+progressbar-thumb: dialog.png
+	background: 513,1,126,126
+	border-r: 639,1,1,126
+	border-l: 512,1,1,126
+	border-b: 513,127,126,1
+	border-t: 513,0,126,1
+	corner-tl: 512,0,1,1
+	corner-tr: 639,0,1,1
+	corner-bl: 512,127,1,1
+	corner-br: 639,127,1,1
+
+# A copy of dialog2 (normal button)
+button: dialog.png
+	background: 513,1,126,126
+	border-r: 639,1,1,126
+	border-l: 512,1,1,126
+	border-b: 513,127,126,1
+	border-t: 513,0,126,1
+	corner-tl: 512,0,1,1
+	corner-tr: 639,0,1,1
+	corner-bl: 512,127,1,1
+	corner-br: 639,127,1,1
+
+# 5% lighter than a normal button (mouseover)
+button-hover: dialog.png
+	background: 513,129,126,126
+	border-r: 639,129,1,126
+	border-l: 512,129,1,126
+	border-b: 513,255,126,1
+	border-t: 513,128,126,1
+	corner-tl: 512,128,1,1
+	corner-tr: 639,128,1,1
+	corner-bl: 512,255,1,1
+	corner-br: 639,255,1,1
+	
+# A copy of dialog3 (pressed button)
+button-pressed: dialog.png
+	background: 641,1,126,126
+	border-r: 767,1,1,126
+	border-l: 640,1,1,126
+	border-b: 641,127,126,1
+	border-t: 641,0,126,1
+	corner-tl: 640,0,1,1
+	corner-tr: 767,0,1,1
+	corner-bl: 640,127,1,1
+	corner-br: 767,127,1,1
+
+# 50% grey (disabled button)
+button-disabled: dialog.png
+	background: 513,257,126,126
+	border-r: 639,257,1,126
+	border-l: 512,257,1,126
+	border-b: 513,383,126,1
+	border-t: 513,256,126,1
+	corner-tl: 512,256,1,1
+	corner-tr: 639,256,1,1
+	corner-bl: 512,383,1,1
+	corner-br: 639,383,1,1  
+    
+# 10% darker than a normal button - Used in Settings when you select Display Audio Input or Advanced
+button-highlighted: dialog.png
+	background: 769,129,126,126
+	border-r: 895,129,1,126
+	border-l: 768,129,1,126
+	border-b: 769,255,126,1
+	border-t: 769,128,126,1
+	corner-tl: 768,128,1,1
+	corner-tr: 895,128,1,1
+	corner-bl: 768,255,1,1
+	corner-br: 895,255,1,1
+
+# A copy of button-highlighted - Used in Settings when you select Display Audio Input or Advanced
+button-highlighted-hover: dialog.png
+	background: 769,129,126,126
+	border-r: 895,129,1,126
+	border-l: 768,129,1,126
+	border-b: 769,255,126,1
+	border-t: 769,128,126,1
+	corner-tl: 768,128,1,1
+	corner-tr: 895,128,1,1
+	corner-bl: 768,255,1,1
+	corner-br: 895,255,1,1
+
+#  Used in Settings when you select Display Audio Input or Advanced
+button-highlighted-pressed: dialog.png
+	background: 897,129,126,126
+	border-r: 1023,129,1,126
+	border-l: 896,129,1,126
+	border-b: 897,255,126,1
+	border-t: 897,128,126,1
+	corner-tl: 896,128,1,1
+	corner-tr: 1023,128,1,1
+	corner-bl: 896,255,1,1
+	corner-br: 1023,255,1,1
+
+# A copy of button-highlighted - Used in Settings when you select Display Audio Input or Advanced
+button-highlighted-disabled: dialog.png
+	background: 769,129,126,126
+	border-r: 895,129,1,126
+	border-l: 768,129,1,126
+	border-b: 769,255,126,1
+	border-t: 769,128,126,1
+	corner-tl: 768,128,1,1
+	corner-tr: 895,128,1,1
+	corner-bl: 768,255,1,1
+	corner-br: 895,255,1,1
+	
+# vivid red - Used for the Battlefields News button
+newsbutton: dialog.png
+	background: 513,1,126,126
+	border-r: 639,1,1,126
+	border-l: 512,1,1,126
+	border-b: 513,127,126,1
+	border-t: 513,0,126,1
+	corner-tl: 512,0,1,1
+	corner-tr: 639,0,1,1
+	corner-bl: 512,127,1,1
+	corner-br: 639,127,1,1
+
+newsbutton-hover: dialog.png
+	background: 513,1,126,126
+	border-r: 639,1,1,126
+	border-l: 512,1,1,126
+	border-b: 513,127,126,1
+	border-t: 513,0,126,1
+	corner-tl: 512,0,1,1
+	corner-tr: 639,0,1,1
+	corner-bl: 512,127,1,1
+	corner-br: 639,127,1,1
+	
+newsbutton-highlighted: dialog.png
+	background: 769,1,126,126
+	border-r: 895,1,1,126
+	border-l: 768,1,1,126
+	border-b: 769,127,126,1
+	border-t: 769,0,126,1
+	corner-tl: 768,0,1,1
+	corner-tr: 895,0,1,1
+	corner-bl: 768,127,1,1
+	corner-br: 895,127,1,1
+    
+newsbutton-highlighted-hover: dialog.png
+	background: 769,1,126,126
+	border-r: 895,1,1,126
+	border-l: 768,1,1,126
+	border-b: 769,127,126,1
+	border-t: 769,0,126,1
+	corner-tl: 768,0,1,1
+	corner-tr: 895,0,1,1
+	corner-bl: 768,127,1,1
+	corner-br: 895,127,1,1
+	
+newsbutton-highlighted-pressed: dialog.png
+	background: 641,1,126,126
+	border-r: 767,1,1,126
+	border-l: 640,1,1,126
+	border-b: 641,127,126,1
+	border-t: 641,0,126,1
+	corner-tl: 640,0,1,1
+	corner-tr: 767,0,1,1
+	corner-bl: 640,127,1,1
+	corner-br: 767,127,1,1
+
+newsbutton-pressed: dialog.png
+	background: 641,1,126,126
+	border-r: 767,1,1,126
+	border-l: 640,1,1,126
+	border-b: 641,127,126,1
+	border-t: 641,0,126,1
+	corner-tl: 640,0,1,1
+	corner-tr: 767,0,1,1
+	corner-bl: 640,127,1,1
+	corner-br: 767,127,1,1
+
+# A copy of dialog3 (pressed button)
+textfield: dialog.png
+	background: 641,1,126,126
+	border-r: 767,1,1,126
+	border-l: 640,1,1,126
+	border-b: 641,127,126,1
+	border-t: 641,0,126,1
+	corner-tl: 640,0,1,1
+	corner-tr: 767,0,1,1
+	corner-bl: 640,127,1,1
+	corner-br: 767,127,1,1
+
+# A copy of checkbox-hover
+textfield-hover: dialog.png
+	background: 641,129,126,126
+	border-r: 767,129,1,126
+	border-l: 640,129,1,126
+	border-b: 641,255,126,1
+	border-t: 641,128,126,1
+	corner-tl: 640,128,1,1
+	corner-tr: 767,128,1,1
+	corner-bl: 640,255,1,1
+	corner-br: 767,255,1,1
+
+# Same as button-disabled-pressed
+textfield-disabled: dialog.png
+	background: 641,257,126,126
+	border-r: 767,257,1,126
+	border-l: 640,257,1,126
+	border-b: 641,383,126,1
+	border-t: 641,256,126,1
+	corner-tl: 640,256,1,1
+	corner-tr: 767,256,1,1
+	corner-bl: 640,383,1,1
+	corner-br: 767,383,1,1
+
+# A copy of dialog3 (pressed button)
+textfield-focused: dialog.png
+	background: 641,1,126,126
+	border-r: 767,1,1,126
+	border-l: 640,1,1,126
+	border-b: 641,127,126,1
+	border-t: 641,0,126,1
+	corner-tl: 640,0,1,1
+	corner-tr: 767,0,1,1
+	corner-bl: 640,127,1,1
+	corner-br: 767,127,1,1
+
+# A copy of dialog3 (pressed button)
+scrollpanel-bg: dialog.png
+	background: 641,1,126,126
+	border-r: 767,1,1,126
+	border-l: 640,1,1,126
+	border-b: 641,127,126,1
+	border-t: 641,0,126,1
+	corner-tl: 640,0,1,1
+	corner-tr: 767,0,1,1
+	corner-bl: 640,127,1,1
+	corner-br: 767,127,1,1
+
+
+# A copy of dialog2 (normal button)
+scrollpanel-button: dialog.png
+	background: 513,1,126,126
+	border-r: 639,1,1,126
+	border-l: 512,1,1,126
+	border-b: 513,127,126,1
+	border-t: 513,0,126,1
+	corner-tl: 512,0,1,1
+	corner-tr: 639,0,1,1
+	corner-bl: 512,127,1,1
+	corner-br: 639,127,1,1
+
+# A copy of button-hover
+scrollpanel-button-hover: dialog.png
+	background: 513,129,126,126
+	border-r: 639,129,1,126
+	border-l: 512,129,1,126
+	border-b: 513,255,126,1
+	border-t: 513,128,126,1
+	corner-tl: 512,128,1,1
+	corner-tr: 639,128,1,1
+	corner-bl: 512,255,1,1
+	corner-br: 639,255,1,1
+
+# A copy of dialog3 (pressed button)
+scrollpanel-button-pressed: dialog.png
+	background: 641,1,126,126
+	border-r: 767,1,1,126
+	border-l: 640,1,1,126
+	border-b: 641,127,126,1
+	border-t: 641,0,126,1
+	corner-tl: 640,0,1,1
+	corner-tr: 767,0,1,1
+	corner-bl: 640,127,1,1
+	corner-br: 767,127,1,1
+
+# A copy of dialog2 (normal button)
+scrollpanel-button-disabled: dialog.png
+	background: 513,1,126,126
+	border-r: 639,1,1,126
+	border-l: 512,1,1,126
+	border-b: 513,127,126,1
+	border-t: 513,0,126,1
+	corner-tl: 512,0,1,1
+	corner-tr: 639,0,1,1
+	corner-bl: 512,127,1,1
+	corner-br: 639,127,1,1
+
+slider: dialog.png
+	tick: 512,1,2,4
+
+# A copy of dialog3 (pressed button)
+slider-track: dialog.png
+	background: 513,1,126,126
+	border-r: 639,1,1,126
+	border-l: 512,1,1,126
+	border-b: 513,127,126,1
+	border-t: 513,0,126,1
+	corner-tl: 512,0,1,1
+	corner-tr: 639,0,1,1
+	corner-bl: 512,127,1,1
+	corner-br: 639,127,1,1
+	
+# A copy of dialog2 (normal button)
+slider-thumb: dialog.png
+	background: 513,1,126,126
+	border-r: 639,1,1,126
+	border-l: 512,1,1,126
+	border-b: 513,127,126,1
+	border-t: 513,0,126,1
+	corner-tl: 512,0,1,1
+	corner-tr: 639,0,1,1
+	corner-bl: 512,127,1,1
+	corner-br: 639,127,1,1
+
+# A copy of button-hover
+slider-thumb-hover: dialog.png
+	background: 513,129,126,126
+	border-r: 639,129,1,126
+	border-l: 512,129,1,126
+	border-b: 513,255,126,1
+	border-t: 513,128,126,1
+	corner-tl: 512,128,1,1
+	corner-tr: 639,128,1,1
+	corner-bl: 512,255,1,1
+	corner-br: 639,255,1,1
+
+# A copy of dialog3 (pressed button)
+slider-thumb-pressed: dialog.png
+	background: 641,1,126,126
+	border-r: 767,1,1,126
+	border-l: 640,1,1,126
+	border-b: 641,127,126,1
+	border-t: 641,0,126,1
+	corner-tl: 640,0,1,1
+	corner-tr: 767,0,1,1
+	corner-bl: 640,127,1,1
+	corner-br: 767,127,1,1
+
+# A copy of dialog2 (normal button)
+slider-thumb-disabled: dialog.png
+	background: 513,1,126,126
+	border-r: 639,1,1,126
+	border-l: 512,1,1,126
+	border-b: 513,127,126,1
+	border-t: 513,0,126,1
+	corner-tl: 512,0,1,1
+	corner-tr: 639,0,1,1
+	corner-bl: 512,127,1,1
+	corner-br: 639,127,1,1
+
+# A copy of dialog3 (pressed button)
+checkbox: dialog.png
+	background: 641,1,126,126
+	border-r: 767,1,1,126
+	border-l: 640,1,1,126
+	border-b: 641,127,126,1
+	border-t: 641,0,126,1
+	corner-tl: 640,0,1,1
+	corner-tr: 767,0,1,1
+	corner-bl: 640,127,1,1
+	corner-br: 767,127,1,1
+
+checkbox-bits: buttons.png
+	checked: 100,157,16,16
+	checked-disabled: 100,173,16,16
+	crossed: 116,157,16,16
+	crossed-disabled: 116,173,16,16
+
+checkbox-hover: dialog.png
+	background: 641,129,126,126
+	border-r: 767,129,1,126
+	border-l: 640,129,1,126
+	border-b: 641,255,126,1
+	border-t: 641,128,126,1
+	corner-tl: 640,128,1,1
+	corner-tr: 767,128,1,1
+	corner-bl: 640,255,1,1
+	corner-br: 767,255,1,1
+
+# Same as button-disabled-pressed
+checkbox-disabled: dialog.png
+	background: 641,257,126,126
+	border-r: 767,257,1,126
+	border-l: 640,257,1,126
+	border-b: 641,383,126,1
+	border-t: 641,256,126,1
+	corner-tl: 640,256,1,1
+	corner-tr: 767,256,1,1
+	corner-bl: 640,383,1,1
+	corner-br: 767,383,1,1
+
+# Same as button-highlighted-pressed
+checkbox-highlighted: dialog.png
+	background: 897,1,126,126
+	border-r: 1023,1,1,126
+	border-l: 896,1,1,126
+	border-b: 897,127,126,1
+	border-t: 897,0,126,1
+	corner-tl: 896,0,1,1
+	corner-tr: 1023,0,1,1
+	corner-bl: 896,127,1,1
+	corner-br: 1023,127,1,1
+
+# A copy of dialog3 (pressed button)
+scrollitem-selected: dialog.png
+	background: 641,1,126,126
+	border-r: 767,1,1,126
+	border-l: 640,1,1,126
+	border-b: 641,127,126,1
+	border-t: 641,0,126,1
+	corner-tl: 640,0,1,1
+	corner-tr: 767,0,1,1
+	corner-bl: 640,127,1,1
+	corner-br: 767,127,1,1
+
+# A copy of dialog2 (normal button)
+scrollitem-hover: dialog.png
+	background: 513,1,126,126
+	border-r: 639,1,1,126
+	border-l: 512,1,1,126
+	border-b: 513,127,126,1
+	border-t: 513,0,126,1
+	corner-tl: 512,0,1,1
+	corner-tr: 639,0,1,1
+	corner-bl: 512,127,1,1
+	corner-br: 639,127,1,1
+
+# A copy of dialog2 (normal button)
+scrollheader-selected: dialog.png
+	background: 513,1,126,126
+	border-r: 639,1,1,126
+	border-l: 512,1,1,126
+	border-b: 513,127,126,1
+	border-t: 513,0,126,1
+	corner-tl: 512,0,1,1
+	corner-tr: 639,0,1,1
+	corner-bl: 512,127,1,1
+	corner-br: 639,127,1,1
+
+logos: loadscreen.png
+	logo: 0,0,256,256
+
+mainmenu-border: dialog.png
+	border-r: 728,427,40,40
+	border-l: 648,427,40,40
+	border-b: 688,467,40,40
+	border-t: 688,387,40,40
+	corner-tl: 648,387,40,40
+	corner-tr: 728,387,40,40
+	corner-bl: 648,467,40,40
+	corner-br: 728,467,40,40
+
+dropdown: dialog.png
+    separator: 512,1,1,19
+    observer-separator: 768,256,1,19

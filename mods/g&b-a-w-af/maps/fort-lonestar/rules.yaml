@@ -1,0 +1,406 @@
+World:
+	CrateSpawner:
+		InitialSpawnDelay: 0
+		Maximum: 4
+		SpawnInterval: 1000
+		CrateActors: fortcrate
+	MPStartUnits@mcvonly:
+		BaseActor: tent
+	WeatherOverlay:
+		WindTick: 150, 550
+		UseSquares: false
+		ScatterDirection: 0, 0
+		Gravity: 8.00, 12.00
+		SwingOffset: 0, 0
+		SwingSpeed: 0, 0
+		SwingAmplitude: 0, 0
+		ParticleColors: 304074, 28386C, 202C60, 182C54
+		LineTailAlphaValue: 150
+		ParticleSize: 1, 1
+	GlobalLightingPaletteEffect:
+		Red: 0.75
+		Green: 0.85
+		Blue: 1.5
+		Ambient: 0.45
+	MusicPlaylist:
+		BackgroundMusic: rain
+	FlashPaletteEffect@LIGHTNINGSTRIKE:
+		Type: LightningStrike
+	LuaScript:
+		Scripts: fort-lonestar.lua, fort-lonestar-AI.lua
+	ScriptUpgradesCache:
+		Upgrades: invulnerability
+	MapBuildRadius:
+		AllyBuildRadiusLocked: True
+		AllyBuildRadiusEnabled: True
+	SpawnMPUnits:
+		Locked: True
+	MapOptions:
+		TechLevelLocked: True
+		TechLevel: unrestricted
+		ShortGameLocked: True
+		ShortGameEnabled: False
+	ScriptLobbyDropdown@difficulty:
+		ID: difficulty
+		Label: Difficulty
+		Values:
+			hard: Hard (4P)
+			normal: Normal (3P)
+			easy: Easy (2P)
+			veryeasy: Very Easy (1P)
+			tough: Real tough guy
+			endless: Endless mode
+		Default: hard
+
+FORTCRATE:
+	Inherits: ^Crate
+	SupportPowerCrateAction@parabombs:
+		SelectionShares: 30
+		Proxy: powerproxy.parabombs
+		Effect: parabombs
+	HealUnitsCrateAction:
+		SelectionShares: 30
+		Notification: heal2.aud
+		Effect: heal
+	GiveCashCrateAction:
+		Amount: 400
+		UseCashTick: true
+		SelectionShares: 30
+	GiveUnitCrateAction@e7:
+		Units: e7
+		SelectionShares: 10
+	GrantUpgradeCrateAction@ironcurtain:
+		SelectionShares: 10
+		Effect: invuln
+		Notification: ironcur9.aud
+		Upgrades: invulnerability
+		Duration: 1200
+	ExplodeCrateAction@bigboom:
+		Weapon: SCUD
+		SelectionShares: 5
+	GiveMcvCrateAction:
+		SelectionShares: 0
+		NoBaseSelectionShares: 1000
+		Units: mobiletent
+		ValidFactions: allies
+
+Player:
+	ClassicProductionQueue@Infantry:
+		BuildSpeed: 100
+	-EnemyWatcher:
+	Shroud:
+		FogLocked: True
+		FogEnabled: True
+		ExploredMapLocked: True
+		ExploredMapEnabled: False
+	PlayerResources:
+		DefaultCashLocked: True
+		DefaultCash: 50
+	-HackyAI@RushAI:
+	-HackyAI@NormalAI:
+	-HackyAI@NavalAI:
+	-HackyAI@TurtleAI:
+	DummyAI@LonestarAI:
+		Name: Lonestar AI
+
+^Infantry:
+	Inherits@IC: ^IronCurtainable
+
+^Husk:
+	TransformOnCapture:
+		ForceHealthPercentage: 80
+
+OILB:
+	Health:
+		HP: 3000
+	Armor:
+		Type: Wood
+	Bib:
+	RevealsShroud:
+		Range: 3c0
+	CashTrickler:
+		Period: 250
+		Amount: 50
+
+MOBILETENT:
+	Inherits: ^Vehicle
+	Valued:
+		Cost: 2000
+	Tooltip:
+		Name: Mobile Tent
+	Selectable:
+		Priority: 4
+	SelectionDecorations:
+		VisualBounds: 21,21
+	Health:
+		HP: 600
+	Armor:
+		Type: Light
+	Mobile:
+		Speed: 85
+		Crushes: wall, mine, crate, infantry
+	RevealsShroud:
+		Range: 4c0
+	MustBeDestroyed:
+		RequiredForShortGame: true
+	BaseBuilding:
+	Transforms:
+		IntoActor: tent
+		Offset: 0,0
+		Facing: 96
+		TransformSounds: placbldg.aud, build5.aud
+		NoTransformNotification: BuildingCannotPlaceAudio
+	RenderSprites:
+		Image: TRUK
+
+TENT:
+	Health:
+		HP: 1000
+	Production:
+		Produces: Infantry, Soldier, Dog, Defense
+	-Sellable:
+	BaseProvider:
+		Range: 12c0
+	Power:
+		Amount: 0
+	ProductionBar@Defense:
+		ProductionType: Defense
+		Color: 8A8A8A
+	BaseBuilding:
+
+FTUR:
+	Buildable:
+		Prerequisites: barracks
+	Valued:
+		Cost: 400
+	Power:
+		Amount: 0
+	GivesBuildableArea:
+
+PBOX:
+	Buildable:
+		Prerequisites: barracks
+	Valued:
+		Cost: 400
+	Health:
+		HP: 200
+	Armor:
+		Type: Heavy
+	Power:
+		Amount: 0
+	GivesBuildableArea:
+
+DOG:
+	Buildable:
+		Prerequisites: barracks
+	Valued:
+		Cost: 20
+
+E1:
+	Buildable:
+		Prerequisites: barracks
+	Valued:
+		Cost: 20
+
+E2:
+	Buildable:
+		Prerequisites: barracks
+	Valued:
+		Cost: 40
+	Explodes:
+		Chance: 20
+
+E3:
+	Buildable:
+		Prerequisites: barracks
+	Valued:
+		Cost: 60
+
+E4:
+	Buildable:
+		Prerequisites: barracks
+	Valued:
+		Cost: 100
+
+E6:
+	Buildable:
+		Prerequisites: barracks
+	Valued:
+		Cost: 100
+
+E7:
+	Buildable:
+		Prerequisites: barracks
+	Valued:
+		Cost: 750
+
+3TNK:
+	Inherits: ^Tank
+	Armament:
+		Weapon: TankNapalm
+		Recoil: 200
+		RecoilRecovery: 38
+
+MEDI:
+	Buildable:
+		Prerequisites: barracks
+	Valued:
+		Cost: 100
+
+SHOK:
+	Buildable:
+		Prerequisites: barracks
+	Valued:
+		Cost: 150
+
+SNIPER:
+	Valued:
+		Cost: 200
+	Buildable:
+		Prerequisites: barracks
+	Health:
+		HP: 200
+
+SNIPER.soviets:
+	Inherits: SNIPER
+	Buildable:
+		Prerequisites: ~disabled
+	MustBeDestroyed:
+	Targetable:
+		TargetTypes: Disguise
+	AutoTarget:
+		InitialStanceAI: AttackAnything
+	RenderSprites:
+		Image: SNIPER
+
+SPY:
+	Buildable:
+		BuildPaletteOrder: 60
+		Prerequisites: barracks
+	Valued:
+		Cost: 300
+	-MustBeDestroyed:
+
+FTRK:
+	-Armament@AA:
+	-Armament@AG:
+	Armament:
+		Weapon: FLAK-23
+		Recoil: 85
+		LocalOffset: 512,0,192
+		MuzzleSequence: muzzle
+
+ARTY:
+	Inherits: ^Tank
+	Valued:
+		Cost: 600
+	Health:
+		HP: 75
+	RevealsShroud:
+		Range: 7c0
+
+V2RL:
+	Health:
+		HP: 100
+
+4TNK:
+	Health:
+		HP: 2500
+	Mobile:
+		Speed: 56
+	RevealsShroud:
+		Range: 14c0
+	Turreted:
+		TurnSpeed: 1
+	Armament@PRIMARY:
+		Recoil: 8
+		RecoilRecovery: 0c7
+	Armament@SECONDARY:
+		Recoil: 2
+	Explodes:
+		Weapon: napalm
+		EmptyWeapon: napalm
+	SelfHealing:
+		Step: 2
+		Delay: 1
+		HealIfBelow: 40
+
+BADR.Bomber:
+	Health:
+		HP: 60
+	Aircraft:
+		Speed: 280
+	AmmoPool:
+		Ammo: 30
+	Tooltip:
+		Name: Mig Bomber
+	SpawnActorOnDeath:
+		Actor: MIG.Husk
+	RenderSprites:
+		Image: mig
+
+MECH:
+	Buildable:
+		Prerequisites: barracks
+	Valued:
+		Cost: 1500
+
+powerproxy.paratroopers:
+	ParatroopersPower:
+		DropItems: E1,E1,E1,E1,E2,E2
+
+SILO:
+	Buildable:
+		Prerequisites: ~disabled
+
+BRIK:
+	Buildable:
+		Prerequisites: ~disabled
+
+HBOX:
+	Buildable:
+		Prerequisites: ~disabled
+
+GUN:
+	Buildable:
+		Prerequisites: ~disabled
+
+SAM:
+	Buildable:
+		Prerequisites: ~disabled
+
+SBAG:
+	Buildable:
+		Prerequisites: ~disabled
+
+FENC:
+	Buildable:
+		Prerequisites: ~disabled
+
+MSLO:
+	Buildable:
+		Prerequisites: ~disabled
+
+GAP:
+	Buildable:
+		Prerequisites: ~disabled
+
+IRON:
+	Buildable:
+		Prerequisites: ~disabled
+
+PDOX:
+	Buildable:
+		Prerequisites: ~disabled
+
+AGUN:
+	Buildable:
+		Prerequisites: ~disabled
+
+TSLA:
+	Buildable:
+		Prerequisites: ~disabled
+
+HIJACKER:
+	Buildable:
+		Prerequisites: ~disabled

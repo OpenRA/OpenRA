@@ -1,0 +1,267 @@
+MapFormat: 11
+
+RequiresMod: ra
+
+Title: Drop Zone - Battle of Tikiaki
+
+Author: Knivesron
+
+Tileset: TEMPERAT
+
+MapSize: 64,64
+
+Bounds: 16,16,32,32
+
+Visibility: Lobby
+
+Categories: Drop Zone
+
+Players:
+	PlayerReference@Neutral:
+		Name: Neutral
+		OwnsWorld: True
+		NonCombatant: True
+		Faction: allies
+	PlayerReference@Multi0:
+		Name: Multi0
+		Playable: True
+		AllowBots: False
+		LockFaction: True
+		Faction: soviet
+	PlayerReference@Multi1:
+		Name: Multi1
+		Playable: True
+		AllowBots: False
+		LockFaction: True
+		Faction: soviet
+	PlayerReference@Multi2:
+		Name: Multi2
+		Playable: True
+		AllowBots: False
+		LockFaction: True
+		Faction: soviet
+	PlayerReference@Multi3:
+		Name: Multi3
+		Playable: True
+		AllowBots: False
+		LockFaction: True
+		Faction: soviet
+	PlayerReference@Multi4:
+		Name: Multi4
+		Playable: True
+		AllowBots: False
+		LockFaction: True
+		Faction: soviet
+	PlayerReference@Multi5:
+		Name: Multi5
+		Playable: True
+		AllowBots: False
+		LockFaction: True
+		Faction: soviet
+	PlayerReference@Multi6:
+		Name: Multi6
+		Playable: True
+		AllowBots: False
+		LockFaction: True
+		Faction: soviet
+	PlayerReference@Multi7:
+		Name: Multi7
+		Playable: True
+		AllowBots: False
+		LockFaction: True
+		Faction: soviet
+
+Actors:
+	Actor0: apc
+		Location: 28,28
+		Owner: Multi0
+	Actor1: apc
+		Location: 30,28
+		Owner: Multi1
+	Actor2: apc
+		Location: 32,28
+		Owner: Multi2
+	Actor3: apc
+		Location: 32,30
+		Owner: Multi3
+	Actor4: apc
+		Location: 32,32
+		Owner: Multi4
+	Actor5: apc
+		Location: 30,32
+		Owner: Multi5
+	Actor6: apc
+		Location: 28,32
+		Owner: Multi6
+	Actor7: apc
+		Location: 28,30
+		Owner: Multi7
+	Actor10: v08
+		Location: 42,40
+		Owner: Neutral
+	Actor17: v17
+		Location: 37,41
+		Owner: Neutral
+	Actor13: v14
+		Location: 37,39
+		Owner: Neutral
+	Actor14: v15
+		Location: 38,39
+		Owner: Neutral
+	Actor15: v17
+		Location: 37,40
+		Owner: Neutral
+	Actor16: v17
+		Location: 38,40
+		Owner: Neutral
+	Actor19: brl3
+		Location: 43,45
+		Owner: Neutral
+	Actor12: v07
+		Location: 37,38
+		Owner: Neutral
+	Actor9: v08
+		Location: 44,40
+		Owner: Neutral
+	Actor11: v03
+		Location: 43,43
+		Owner: Neutral
+	Actor18: brl3
+		Location: 42,38
+		Owner: Neutral
+	Actor20: brl3
+		Location: 37,44
+		Owner: Neutral
+	Actor8: mpspawn
+		Location: 29,29
+		Owner: Neutral
+	Actor21: mpspawn
+		Location: 29,30
+		Owner: Neutral
+	Actor22: mpspawn
+		Location: 29,31
+		Owner: Neutral
+	Actor23: mpspawn
+		Location: 30,31
+		Owner: Neutral
+	Actor24: mpspawn
+		Location: 31,31
+		Owner: Neutral
+	Actor25: mpspawn
+		Location: 31,30
+		Owner: Neutral
+	Actor26: mpspawn
+		Location: 31,29
+		Owner: Neutral
+	Actor27: mpspawn
+		Location: 30,29
+		Owner: Neutral
+	Actor28: barl
+		Location: 37,43
+		Owner: Neutral
+	Actor29: barl
+		Location: 44,38
+		Owner: Neutral
+	Actor30: barl
+		Location: 43,38
+		Owner: Neutral
+	Actor31: t15
+		Location: 43,41
+		Owner: Neutral
+	Actor32: t15
+		Location: 34,17
+		Owner: Neutral
+	Actor33: t12
+		Location: 37,17
+		Owner: Neutral
+	Actor34: t10
+		Location: 40,17
+		Owner: Neutral
+	Actor35: t10
+		Location: 42,17
+		Owner: Neutral
+	Actor36: t10
+		Location: 43,17
+		Owner: Neutral
+	Actor37: t16
+		Location: 44,18
+		Owner: Neutral
+	Actor38: t16
+		Location: 43,18
+		Owner: Neutral
+	Actor39: t08
+		Location: 43,19
+		Owner: Neutral
+	Actor40: t08
+		Location: 35,18
+		Owner: Neutral
+	Actor41: t08
+		Location: 37,18
+		Owner: Neutral
+	Actor42: t08
+		Location: 36,18
+		Owner: Neutral
+	Actor43: syrf
+		Location: 47,24
+		Owner: Neutral
+	Actor44: syrf
+		Location: 14,25
+		Owner: Neutral
+	Actor45: spef
+		Location: 28,15
+		Owner: Neutral
+	Actor46: spef
+		Location: 23,47
+		Owner: Neutral
+	Actor47: sbag
+		Location: 38,35
+		Owner: Neutral
+	Actor48: sbag
+		Location: 37,35
+		Owner: Neutral
+	Actor49: sbag
+		Location: 36,35
+		Owner: Neutral
+	Actor50: sbag
+		Location: 35,35
+		Owner: Neutral
+	Actor51: sbag
+		Location: 34,35
+		Owner: Neutral
+	Actor52: sbag
+		Location: 40,35
+		Owner: Neutral
+	Actor53: sbag
+		Location: 40,34
+		Owner: Neutral
+	Actor54: sbag
+		Location: 40,33
+		Owner: Neutral
+	Actor55: sbag
+		Location: 41,33
+		Owner: Neutral
+	Actor56: sbag
+		Location: 34,43
+		Owner: Neutral
+	Actor57: sbag
+		Location: 34,44
+		Owner: Neutral
+	Actor58: sbag
+		Location: 34,45
+		Owner: Neutral
+	Actor59: sbag
+		Location: 34,41
+		Owner: Neutral
+	Actor60: sbag
+		Location: 34,40
+		Owner: Neutral
+	Actor62: t05
+		Location: 20,18
+		Owner: Neutral
+	Actor61: t05
+		Location: 41,17
+		Owner: Neutral
+
+Rules: rules.yaml
+
+Weapons: weapons.yaml

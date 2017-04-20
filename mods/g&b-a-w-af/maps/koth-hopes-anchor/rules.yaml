@@ -1,0 +1,22 @@
+MISS:
+	ProximityCapturable:
+		MustBeClear: true
+		Range: 9c0
+		CaptorTypes: Ship,Vehicle,Tank,Infantry
+	StrategicPoint:
+		Critical: false
+	Tooltip:
+		Name: Strategic Point
+	RevealsShroud:
+		Range: 20c0
+	DamageMultiplier@INVULNERABLE:
+		Modifier: 0
+	-Selectable:
+	-Targetable:
+
+Player:
+	StrategicVictoryConditions:
+		HoldDuration: 3000
+		ResetOnHoldLost: true
+		RatioRequired: 65
+	-ConquestVictoryConditions:

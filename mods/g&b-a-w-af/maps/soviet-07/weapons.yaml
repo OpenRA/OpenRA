@@ -1,0 +1,68 @@
+M1CarbineInterior:
+	ReloadDelay: 20
+	Range: 3c0
+	Report: gun11.aud
+	Projectile: Bullet
+		Speed: 1c682
+	Warhead@1Dam: SpreadDamage
+		Spread: 128
+		Damage: 15
+		Versus:
+			Wood: 25
+			Light: 30
+			Heavy: 10
+			Concrete: 10
+		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
+	Warhead@2Eff: CreateEffect
+		Explosions: piffs
+		InvalidImpactTypes: Water
+	Warhead@3EffWater: CreateEffect
+		Explosions: water_piffs
+		ValidImpactTypes: Water
+
+FireballLauncherInterior:
+	ReloadDelay: 65
+	Range: 3c0
+	Burst: 2
+	BurstDelay: 20
+	Projectile: Bullet
+		Speed: 204
+		TrailImage: fb2
+		Image: FB1
+	Warhead@1Dam: SpreadDamage
+		Spread: 213
+		Damage: 150
+		Versus:
+			None: 90
+			Wood: 50
+			Light: 60
+			Heavy: 25
+			Concrete: 50
+		DamageTypes: Prone50Percent, TriggerProne, FireDeath
+	Warhead@2Smu: LeaveSmudge
+		SmudgeType: Scorch
+	Warhead@3Eff: CreateEffect
+		Explosions: napalm
+		ImpactSounds: firebl3.aud
+
+MissionBarrelExplodeInterior:
+	Warhead@1Dam: SpreadDamage
+		Spread: 350
+		Damage: 250
+		Falloff: 1000, 368, 135, 50, 18, 7, 0
+		Delay: 5
+		Versus:
+			None: 120
+			Wood: 200
+			Light: 50
+			Heavy: 25
+			Concrete: 10
+		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
+	Warhead@2Smu: LeaveSmudge
+		SmudgeType: Scorch
+		Size: 2,1
+		Delay: 5
+	Warhead@3Eff: CreateEffect
+		Explosions: napalm
+		ImpactSounds: firebl3.aud
+		Delay: 5

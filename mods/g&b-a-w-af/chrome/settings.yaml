@@ -1,0 +1,595 @@
+Background@SETTINGS_PANEL:
+	Logic: SettingsLogic
+	X: (WINDOW_RIGHT - WIDTH)/2
+	Y: (WINDOW_BOTTOM- HEIGHT)/2
+	Width: 600
+	Height: 450
+	Children:
+		Label@SETTINGS_LABEL_TITLE:
+			Y: 20
+			Width: PARENT_RIGHT
+			Height: 25
+			Text: Settings
+			Align: Center
+			Font: Bold
+		Button@RESET_BUTTON:
+			X: 20
+			Y: PARENT_BOTTOM - 45
+			Width: 160
+			Height: 25
+			Text: Reset
+			Font: Bold
+		Button@BACK_BUTTON:
+			Key: escape
+			X: PARENT_RIGHT - 180
+			Y: PARENT_BOTTOM - 45
+			Width: 160
+			Height: 25
+			Text: Back
+			Font: Bold
+		Container@TAB_CONTAINER:
+			Y: 50
+			Width: PARENT_RIGHT
+			Height: 25
+			Children:
+				Button@DISPLAY_TAB:
+					X: 115
+					Width: 90
+					Height: 25
+					Text: Display
+					Font: Bold
+				Button@AUDIO_TAB:
+					X: 205
+					Width: 90
+					Height: 25
+					Text: Audio
+					Font: Bold
+				Button@INPUT_TAB:
+					X: 295
+					Width: 90
+					Height: 25
+					Text: Input
+					Font: Bold
+				Button@ADVANCED_TAB:
+					X: 385
+					Width: 90
+					Height: 25
+					Text: Advanced
+					Font: Bold
+		Container@DISPLAY_PANEL:
+			X: 5
+			Y: 50
+			Width: PARENT_RIGHT - 10
+			Height: PARENT_BOTTOM
+			Children:
+				Label@MODE_LABEL:
+					X: 110
+					Y: 39
+					Width: 45
+					Height: 25
+					Align: Right
+					Text: Mode:
+				DropDownButton@MODE_DROPDOWN:
+					X: 160
+					Y: 40
+					Width: 170
+					Height: 25
+					Font: Regular
+					Text: Windowed
+				Container@WINDOW_RESOLUTION:
+					X: 330
+					Y: 40
+					Children:
+						Label@At:
+							Text: @
+							Font: Bold
+							Y: 0-1
+							Height: 25
+							Width: 25
+							Align: Center
+						TextField@WINDOW_WIDTH:
+							X: 25
+							Width: 45
+							Height: 25
+							MaxLength: 5
+						Label@X:
+							Text: x
+							Font: Bold
+							X: 70
+							Y: 0-1
+							Height: 25
+							Width: 15
+							Align: Center
+						TextField@WINDOW_HEIGHT:
+							X: 85
+							Width: 45
+							Height: 25
+							MaxLength: 5
+				Checkbox@HARDWARECURSORS_CHECKBOX:
+					X: 310
+					Y: 75
+					Width: 200
+					Height: 20
+					Font: Regular
+					Text: Use Hardware Cursors
+				Label@VIDEO_DESC:
+					Y: 93
+					Width: PARENT_RIGHT
+					Height: 25
+					Font: Tiny
+					Align: Center
+					Text: Mode, resolution, and cursor changes will be applied after the game is restarted
+				Checkbox@FRAME_LIMIT_CHECKBOX:
+					X: 15
+					Y: 125
+					Width: 200
+					Height: 20
+					Font: Regular
+					Text: Enable Frame Limiter
+				Checkbox@PIXELDOUBLE_CHECKBOX:
+					X: 310
+					Y: 125
+					Width: 200
+					Height: 20
+					Font: Regular
+					Text: Enable Pixel Doubling
+				Checkbox@CURSORDOUBLE_CHECKBOX:
+					X: 340
+					Y: 160
+					Width: 200
+					Height: 20
+					Font: Regular
+					Text: Also Double Cursor
+				Label@FRAME_LIMIT_DESC_A:
+					X: 45
+					Y: 157
+					Width: 50
+					Height: 25
+					Text: Limit to
+					Align: Right
+				TextField@FRAME_LIMIT_TEXTFIELD:
+					X: 100
+					Y: 158
+					Width: 45
+					Height: 25
+					MaxLength: 3
+				Label@FRAME_LIMIT_DESC_B:
+					X: 150
+					Y: 157
+					Height: 25
+					Text: FPS
+				Checkbox@PLAYER_STANCE_COLORS_CHECKBOX:
+					X: 310
+					Y: 195
+					Width: 200
+					Height: 20
+					Font: Regular
+					Text: Player Stance Colors
+				Checkbox@SHOW_SHELLMAP:
+					X: 15
+					Y: 195
+					Width: 200
+					Height: 20
+					Font: Regular
+					Text: Show Shellmap
+				Label@PLAYER:
+					Text: Player:
+					X: 15
+					Y: 240
+				TextField@PLAYERNAME:
+					Text: Name
+					X: 65
+					Y: 230
+					Width: 145
+					Height: 25
+					MaxLength: 16
+				ColorPreviewManager@COLOR_MANAGER:
+				DropDownButton@PLAYERCOLOR:
+					X: 215
+					Y: 230
+					Width: 70
+					Height: 25
+					IgnoreChildMouseOver: true
+					Children:
+						ColorBlock@COLORBLOCK:
+							X: 5
+							Y: 6
+							Width: PARENT_RIGHT-35
+							Height: PARENT_BOTTOM-12
+				Label@STATUS_BARS:
+					X: 310
+					Y: 275
+					Text: Status Bars:
+				DropDownButton@STATUS_BAR_DROPDOWN:
+					X: 400
+					Y: 265
+					Width: 170
+					Height: 25
+					Font: Regular
+					Text: Standard
+				Checkbox@DISPLAY_TARGET_LINES_CHECKBOX:
+					X: 310
+					Y: 230
+					Width: 200
+					Height: 20
+					Font: Regular
+					Text: Display Target Lines
+				Label@LOCALIZATION_TITLE:
+					Y: 270
+					Width: PARENT_RIGHT
+					Font: Bold
+					Text: Localization
+					Align: Center
+					Visible: false
+				Label@LANGUAGE_LABEL:
+					X: 230 - WIDTH - 5
+					Y: 289
+					Width: 75
+					Height: 25
+					Align: Right
+					Text: Language:
+					Visible: false
+				DropDownButton@LANGUAGE_DROPDOWNBUTTON:
+					X: 230
+					Y: 290
+					Width: 200
+					Height: 25
+					Visible: false
+				Label@LANGUAGE_DESC_A:
+					Y: 310
+					Width: PARENT_RIGHT
+					Height: 25
+					Font: Tiny
+					Align: Center
+					Text: Language changes will be applied after the game is restarted
+					Visible: false
+				Label@LANGUAGE_DESC_B:
+					Y: 325
+					Width: PARENT_RIGHT
+					Height: 25
+					Font: Tiny
+					Align: Center
+					Text: Translations apply to text strings only; Speech and build icons will remain in English
+					Visible: false
+		Container@AUDIO_PANEL:
+			X: 5
+			Y: 50
+			Width: PARENT_RIGHT - 10
+			Height: PARENT_BOTTOM
+			Children:
+				Label@SOUND_LABEL:
+					X: PARENT_RIGHT - WIDTH - 270
+					Y: 37
+					Width: 95
+					Height: 25
+					Align: Right
+					Text: Sound Volume:
+				Slider@SOUND_VOLUME:
+					X: PARENT_RIGHT - WIDTH - 15
+					Y: 43
+					Width: 250
+					Height: 20
+					Ticks: 5
+				Checkbox@CASH_TICKS:
+					X: 15
+					Y: 40
+					Width: 200
+					Height: 20
+					Font: Regular
+					Text: Cash Ticks
+				Checkbox@MUTE_SOUND:
+					X: 15
+					Y: 70
+					Width: 200
+					Height: 20
+					Font: Regular
+					Text: Mute Sound
+				Label@MUSIC_LABEL:
+					X: PARENT_RIGHT - WIDTH - 270
+					Y: 67
+					Width: 95
+					Height: 25
+					Align: Right
+					Text: Music Volume:
+				Slider@MUSIC_VOLUME:
+					X: PARENT_RIGHT - WIDTH - 15
+					Y: 73
+					Width: 250
+					Height: 20
+					Ticks: 5
+				Label@VIDEO_LABEL:
+					X: PARENT_RIGHT - WIDTH - 270
+					Y: 97
+					Width: 95
+					Height: 25
+					Align: Right
+					Text: Video Volume:
+				Slider@VIDEO_VOLUME:
+					X: PARENT_RIGHT - WIDTH - 15
+					Y: 103
+					Width: 250
+					Height: 20
+					Ticks: 5
+				Label@AUDIO_DEVICE_LABEL:
+					X: 190 - WIDTH - 5
+					Y: 244
+					Width: 75
+					Height: 25
+					Align: Right
+					Text: Audio Device:
+				DropDownButton@AUDIO_DEVICE:
+					X: 190
+					Y: 245
+					Width: 300
+					Height: 25
+				Label@AUDIO_DEVICE_DESC:
+					Y: 265
+					Width: PARENT_RIGHT
+					Height: 25
+					Font: Tiny
+					Align: Center
+					Text: Device changes will be applied after the game is restarted
+		Container@INPUT_PANEL:
+			X: 5
+			Y: 50
+			Width: PARENT_RIGHT - 10
+			Height: PARENT_BOTTOM
+			Children:
+				Checkbox@CLASSICORDERS_CHECKBOX:
+					X: 15
+					Y: 40
+					Width: 250
+					Height: 20
+					Font: Regular
+					Text: Left-click Orders
+				Label@MIDDLE_MOUSE_SCROLL_LABEL:
+					X: PARENT_RIGHT - WIDTH - 120
+					Y: 39
+					Width: 160
+					Height: 20
+					Font: Regular
+					Text: Middle-mouse Scrolling:
+					Align: Right
+				DropDownButton@MIDDLE_MOUSE_SCROLL:
+					X: PARENT_RIGHT - WIDTH - 15
+					Y: 38
+					Width: 100
+					Height: 25
+					Font: Regular
+				Label@MIDDLE_MOUSE_SCROLL_LABEL:
+					X: PARENT_RIGHT - WIDTH - 120
+					Y: 69
+					Width: 160
+					Height: 20
+					Font: Regular
+					Text: Right-mouse Scrolling:
+					Align: Right
+				DropDownButton@RIGHT_MOUSE_SCROLL:
+					X: PARENT_RIGHT - WIDTH - 15
+					Y: 68
+					Width: 100
+					Height: 25
+					Font: Regular
+				Label@ZOOM_MODIFIER_LABEL:
+					X: PARENT_RIGHT - WIDTH - 120
+					Y: 98
+					Width: 160
+					Height: 20
+					Font: Regular
+					Text: Scroll-zoom Modifier:
+					Align: Right
+				DropDownButton@ZOOM_MODIFIER:
+					X: PARENT_RIGHT - WIDTH - 15
+					Y: 98
+					Width: 100
+					Height: 25
+					Font: Regular
+					Text: Alt
+				Checkbox@EDGESCROLL_CHECKBOX:
+					X: 15
+					Y: 70
+					Width: 130
+					Height: 20
+					Font: Regular
+					Text: Edge Scrolling
+				Checkbox@ALLOW_ZOOM_CHECKBOX:
+					X: 15
+					Y: 100
+					Width: 130
+					Height: 20
+					Font: Regular
+					Text: Scroll Zooming
+				Checkbox@LOCKMOUSE_CHECKBOX:
+					X: 15
+					Y: 130
+					Width: 130
+					Height: 20
+					Font: Regular
+					Text: Lock mouse to window
+				Label@SCROLL_SPEED_LABEL:
+					X: PARENT_RIGHT - WIDTH - 270
+					Y: 127
+					Width: 95
+					Height: 25
+					Text: Scroll Speed:
+					Align: Right
+				Slider@SCROLLSPEED_SLIDER:
+					X: PARENT_RIGHT - WIDTH - 170
+					Y: 133
+					Width: 100
+					Height: 20
+					Ticks: 5
+					MinimumValue: 10
+					MaximumValue: 50
+				Label@UI_SCROLL_SPEED_LABEL:
+					X: PARENT_RIGHT - WIDTH - 106
+					Y: 127
+					Width: 95
+					Height: 25
+					Text: UI Scroll:
+					Align: Right
+				Slider@UI_SCROLLSPEED_SLIDER:
+					X: PARENT_RIGHT - WIDTH - 6
+					Y: 133
+					Width: 100
+					Height: 20
+					Ticks: 5
+					MinimumValue: 1
+					MaximumValue: 100
+				Label@HOTKEYS_TITLE:
+					Y: 165
+					Width: PARENT_RIGHT
+					Font: Bold
+					Text: Hotkeys
+					Align: Center
+				ScrollPanel@HOTKEY_LIST:
+					X: 15
+					Y: 185
+					Width: 560
+					TopBottomSpacing: 4
+					ItemSpacing: 4
+					Height: 160
+					Children:
+						ScrollItem@HEADER:
+							BaseName: scrollheader
+							Width: 528
+							Height: 13
+							Visible: false
+							Children:
+								Label@LABEL:
+									Font: TinyBold
+									Width: PARENT_RIGHT
+									Height: 10
+									Align: Center
+						Container@GLOBAL_TEMPLATE:
+							Width: 262
+							Height: 25
+							Visible: false
+							Children:
+								Label@FUNCTION:
+									Y: 0-1
+									Width: PARENT_RIGHT - 85
+									Height: 25
+									Align: Right
+								HotkeyEntry@HOTKEY:
+									X: PARENT_RIGHT-WIDTH
+									Width: 80
+									Height: 25
+						Container@UNIT_TEMPLATE:
+							Width: 173
+							Height: 25
+							Visible: false
+							Children:
+								Label@FUNCTION:
+									Y: 0-1
+									Width: PARENT_RIGHT - 84
+									Height: 25
+									Align: Right
+								HotkeyEntry@HOTKEY:
+									X: PARENT_RIGHT-WIDTH+1
+									Width: 80
+									Height: 25
+						Container@PRODUCTION_TEMPLATE:
+							Width: 173
+							Height: 25
+							Visible: false
+							Children:
+								Label@FUNCTION:
+									Y: 0-1
+									Width: PARENT_RIGHT - 84
+									Height: 25
+									Align: Right
+								HotkeyEntry@HOTKEY:
+									X: PARENT_RIGHT-WIDTH+1
+									Width: 80
+									Height: 25
+						Container@DEVELOPER_TEMPLATE:
+							Width: 262
+							Height: 25
+							Visible: false
+							Children:
+								Label@FUNCTION:
+									Y: 0-1
+									Width: PARENT_RIGHT - 115
+									Height: 25
+									Align: Right
+								HotkeyEntry@HOTKEY:
+									X: PARENT_RIGHT-WIDTH
+									Width: 110
+									Height: 25
+		Container@ADVANCED_PANEL:
+			X: 5
+			Y: 50
+			Width: PARENT_RIGHT - 10
+			Height: PARENT_BOTTOM
+			Children:
+				Checkbox@NAT_DISCOVERY:
+					X: 15
+					Y: 40
+					Width: 200
+					Height: 20
+					Font: Regular
+					Text: Enable Network Discovery (UPnP)
+				Checkbox@PERFTEXT_CHECKBOX:
+					X: 15
+					Y: 70
+					Width: 300
+					Height: 20
+					Font: Regular
+					Text: Show Performance Text
+				Checkbox@PERFGRAPH_CHECKBOX:
+					X: 15
+					Y: 100
+					Width: 300
+					Height: 20
+					Font: Regular
+					Text: Show Performance Graph
+				Checkbox@FETCH_NEWS_CHECKBOX:
+					X: 310
+					Y: 40
+					Width: 300
+					Height: 20
+					Font: Regular
+					Text: Fetch Community News
+				Checkbox@SENDSYSINFO_CHECKBOX:
+					X: 310
+					Y: 70
+					Width: 300
+					Height: 20
+					Font: Regular
+					Text: Send System Information
+				Label@SENDSYSINFO_DESC:
+					X: 310
+					Y: 85
+					Width: 250
+					Height: 30
+					Font: Tiny
+					WordWrap: True
+					Text: Your Operating System, OpenGL and .NET runtime versions, and language settings will be sent along with an anonymous ID to help prioritize future development.
+				Label@DEBUG_TITLE:
+					Y: 170
+					Width: PARENT_RIGHT
+					Font: Bold
+					Text: Debug
+					Align: Center
+				Checkbox@BOTDEBUG_CHECKBOX:
+					X: 15
+					Y: 190
+					Width: 300
+					Height: 20
+					Font: Regular
+					Text: Show Bot Debug Messages
+				Checkbox@CHECKUNSYNCED_CHECKBOX:
+					X: 15
+					Y: 220
+					Width: 300
+					Height: 20
+					Font: Regular
+					Text: Check Sync around Unsynced Code
+				Checkbox@LUADEBUG_CHECKBOX:
+					X: 310
+					Y: 190
+					Width: 300
+					Height: 20
+					Font: Regular
+					Text: Show Map Debug Messages

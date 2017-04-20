@@ -1,0 +1,38 @@
+Player:
+	-ConquestVictoryConditions:
+	MissionObjectives:
+		EarlyGameOver: true
+	Shroud:
+		FogLocked: True
+		FogEnabled: True
+		ExploredMapLocked: True
+		ExploredMapEnabled: False
+	PlayerResources:
+		DefaultCashLocked: True
+		DefaultCash: 0
+
+World:
+	-CrateSpawner:
+	-SpawnMPUnits:
+	-MPStartLocations:
+	ObjectivesPanel:
+		PanelName: MISSION_OBJECTIVES
+	MapBuildRadius:
+		AllyBuildRadiusLocked: True
+		AllyBuildRadiusEnabled: False
+	MapOptions:
+		TechLevelLocked: True
+		ShortGameLocked: True
+		ShortGameEnabled: False
+
+E7.noautotarget:
+	Inherits: E7
+	AutoTarget:
+		EnableStances: false
+	-AttackMove:
+	RenderSprites:
+		Image: E7
+
+^Vehicle:
+	Demolishable:
+

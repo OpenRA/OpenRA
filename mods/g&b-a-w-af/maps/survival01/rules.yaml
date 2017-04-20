@@ -1,0 +1,182 @@
+Player:
+	PlayerResources:
+		DefaultCash: 5000
+
+World:
+	LuaScript:
+		Scripts: survival01.lua
+	MissionData:
+		Briefing: LANDCOM 66 HQS.\nTOP SECRET.\nTO: FIELD COMMANDER A34\n\nTHE SOVIETS STARTED HEAVY ATTACKS AT OUR POSITION.\n SURVIVE AND HOLD THE BASE UNTIL OUR FRENCH ALLIES ARRIVE.\n\nCONFIRMATION CODE 5593.\n\nTRANSMISSION ENDS.
+	ScriptLobbyDropdown@difficulty:
+		ID: difficulty
+		Label: Difficulty
+		Values:
+			easy: Easy
+			medium: Medium
+			hard: Hard
+		Default: easy
+
+powerproxy.paratroopers:
+	ParatroopersPower:
+		DropItems: E1,E1,E1,E2,E2
+
+powerproxy.allied:
+	Inherits: powerproxy.paratroopers
+	ParatroopersPower:
+		DropItems: ARTY,ARTY,ARTY
+
+CAMERA.sam:
+	Inherits: CAMERA
+	RevealsShroud:
+		Range: 4c0
+
+CAMERA.Large:
+	Inherits: CAMERA
+	RevealsShroud:
+		Range: 1000
+
+AFLD.mission:
+	Inherits: AFLD
+	-AirstrikePower@spyplane:
+	-ParatroopersPower@paratroopers:
+	-AirstrikePower@parabombs:
+	-SupportPowerChargeBar:
+	RenderSprites:
+		Image: AFLD
+
+ATEK.mission:
+	Inherits: ATEK
+	GpsPower:
+		ChargeTime: 0
+	Power:
+		Amount: 0
+	-Selectable:
+	-Targetable:
+	-GivesBuildableArea:
+	-Huntable:
+	RenderSprites:
+		Image: ATEK
+
+GUN:
+	Valued:
+		Cost: 1000
+
+E7:
+	Buildable:
+		Prerequisites: ~disabled
+
+SHOK:
+	Buildable:
+		Prerequisites: ~disabled
+
+MIG:
+	Buildable:
+		Prerequisites: ~disabled
+
+HELI:
+	Buildable:
+		Prerequisites: ~disabled
+
+MSLO:
+	Buildable:
+		Prerequisites: ~disabled
+
+GAP:
+	Buildable:
+		Prerequisites: ~disabled
+
+SYRD:
+	Buildable:
+		Prerequisites: ~disabled
+
+PDOX:
+	Buildable:
+		Prerequisites: ~disabled
+
+AGUN:
+	Buildable:
+		Prerequisites: ~disabled
+
+ATEK:
+	Buildable:
+		Prerequisites: ~disabled
+
+4TNK:
+	Buildable:
+		Prerequisites: ~disabled
+
+MCV:
+	Buildable:
+		Prerequisites: ~disabled
+
+MNLY.AP:
+	Buildable:
+		Prerequisites: ~disabled
+
+MNLY.AT:
+	Buildable:
+		Prerequisites: ~disabled
+
+TTNK:
+	Buildable:
+		Prerequisites: ~disabled
+
+CTNK:
+	Buildable:
+		Prerequisites: ~disabled
+
+DOME:
+	Buildable:
+		Prerequisites: ~disabled
+
+BRIK:
+	Buildable:
+		Prerequisites: ~disabled
+
+MRJ:
+	Buildable:
+		Prerequisites: ~disabled
+
+MGG:
+	Buildable:
+		Prerequisites: ~disabled
+
+STNK:
+	Buildable:
+		Prerequisites: ~disabled
+
+QTNK:
+	Buildable:
+		Prerequisites: ~disabled
+
+DTRK:
+	Buildable:
+		Prerequisites: ~disabled
+
+FACF:
+	Buildable:
+		Prerequisites: ~disabled
+
+WEAF:
+	Buildable:
+		Prerequisites: ~disabled
+
+SYRF:
+	Buildable:
+		Prerequisites: ~disabled
+
+DOMF:
+	Buildable:
+		Prerequisites: ~disabled
+
+ATEF:
+	Buildable:
+		Prerequisites: ~disabled
+
+MSLF:
+	Buildable:
+		Prerequisites: ~disabled
+
+PDOF:
+	Buildable:
+		Prerequisites: ~disabled

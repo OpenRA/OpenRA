@@ -1,0 +1,63 @@
+8Inch:
+	ReloadDelay: 200
+	Range: 32c0
+	Burst: 4
+	Report: turret1.aud
+	Projectile: Bullet
+		Speed: 546
+		High: true
+		Angle: 62
+		Inaccuracy: 3c341
+		Image: 120MM
+		ContrailLength: 30
+	Warhead: SpreadDamage
+		Spread: 128
+		Versus:
+			None: 60
+			Wood: 75
+			Light: 60
+			Heavy: 25
+		Damage: 250
+		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
+	Warhead@1Eff: CreateEffect
+		Explosions: large_explosion
+		ImpactSounds: kaboom12.aud
+		ValidImpactTypes: Ground
+	Warhead@2Eff: CreateEffect
+		Explosions: large_splash
+		ImpactSounds: splash9.aud
+		ValidImpactTypes: Water
+	Warhead@3Smu: LeaveSmudge
+		SmudgeType: Crater
+
+SubMissile:
+	ReloadDelay: 250
+	Range: 32c0
+	Burst: 4
+	Report: missile6.aud
+	Projectile: Bullet
+		Speed: 409
+		High: true
+		Angle: 62
+		Inaccuracy: 2c938
+		Image: MISSILE
+		TrailImage: smokey
+		ContrailLength: 30
+	Warhead: SpreadDamage
+		Spread: 426
+		Versus:
+			None: 40
+			Light: 30
+			Heavy: 30
+		Damage: 400
+		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
+	Warhead@1Eff: CreateEffect
+		Explosions: large_explosion
+		ImpactSounds: kaboom12.aud
+		ValidImpactTypes: Ground
+	Warhead@2Eff: CreateEffect
+		Explosions: large_splash
+		ImpactSounds: splash9.aud
+		ValidImpactTypes: Water
+	Warhead@3Smu: LeaveSmudge
+		SmudgeType: Crater

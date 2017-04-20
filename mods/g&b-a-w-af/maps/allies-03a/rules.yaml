@@ -1,0 +1,217 @@
+World:
+	LuaScript:
+		Scripts: allies03a.lua
+	MissionData:
+		Briefing: LANDCOM 16 HQS.\nTOP SECRET.\nTO: FIELD COMMANDER A9\n\nINTELLIGENCE RECON SHOWS HEAVY\nSOVIET MOVEMENT IN YOUR AREA.\nNEARBY BRIDGES ARE KEY TO SOVIET\nADVANCEMENT. DESTROY ALL BRIDGES\nASAP. TANYA WILL ASSIST. KEEP HER\nALIVE AT ALL COSTS.\n\nCONFIRMATION CODE 1612.\n\nTRANSMISSION ENDS.\n
+		StartVideo: brdgtilt.vqa
+		WinVideo: toofar.vqa
+		LossVideo: sovtstar.vqa
+	ScriptLobbyDropdown@difficulty:
+		ID: difficulty
+		Label: Difficulty
+		Values:
+			easy: Easy
+			normal: Normal
+		Default: easy
+
+^Building:
+	Capturable:
+		CaptureThreshold: 25
+
+^TechBuilding:
+	Capturable:
+		Type: ~disabled
+
+powerproxy.paratroopers:
+	ParatroopersPower:
+		DropItems: E1,E1,E1,E2,E2
+
+HACKE6:
+	Inherits: E6
+	-RepairsBridges:
+	-ExternalCaptures:
+	Captures:
+		CaptureTypes: building
+	Targetable:
+		UpgradeTypes: jail
+		UpgradeMaxEnabledLevel: 0
+	Targetable@PRISONER:
+		TargetTypes: Prisoner
+	RenderSprites:
+		Image: E6
+
+MEDI:
+	Targetable:
+		UpgradeTypes: jail
+		UpgradeMaxEnabledLevel: 0
+	Targetable@PRISONER:
+		TargetTypes: Prisoner
+
+PRISON:
+	HiddenUnderShroud:
+		Type: CenterPosition
+	Immobile:
+		OccupiesSpace: false
+	UpgradeActorsNear:
+		Upgrades: jail
+		Range: 1c0
+
+CAMERA:
+	RevealsShroud:
+		Range: 8c7
+
+CAMERA.VeryLarge:
+	Inherits: CAMERA
+	RevealsShroud:
+		Range: 40c0
+
+MONEYCRATE:
+	Tooltip:
+		Name: Crate
+	WithCrateBody:
+	RenderSprites:
+		Image: scrate
+
+E1.Autotarget:
+	Inherits: E1
+	Buildable:
+		Prerequisites: ~disabled
+	RevealsShroud:
+		Range: 8c0
+	AutoTarget:
+		ScanRadius: 7
+	RenderSprites:
+		Image: E1
+
+E2.Autotarget:
+	Inherits: E2
+	Buildable:
+		Prerequisites: ~disabled
+	RevealsShroud:
+		Range: 8c0
+	AutoTarget:
+		ScanRadius: 7
+	RenderSprites:
+		Image: E2
+
+DOG:
+	RevealsShroud:
+		Range: 9c0
+	AutoTarget:
+		ScanRadius: 8
+
+DOME:
+	Buildable:
+		Prerequisites: ~disabled
+
+WEAP:
+	Buildable:
+		Prerequisites: ~disabled
+
+FIX:
+	Buildable:
+		Prerequisites: ~disabled
+
+APC:
+	Buildable:
+		Prerequisites: ~disabled
+
+V2RL:
+	Buildable:
+		Prerequisites: ~disabled
+
+2TNK:
+	Buildable:
+		Prerequisites: ~disabled
+
+3TNK:
+	Buildable:
+		Prerequisites: ~disabled
+
+4TNK:
+	Buildable:
+		Prerequisites: ~disabled
+
+MCV:
+	Buildable:
+		Prerequisites: ~disabled
+
+MNLY.AP:
+	Buildable:
+		Prerequisites: ~disabled
+
+TTNK:
+	Buildable:
+		Prerequisites: ~disabled
+
+FTRK:
+	Buildable:
+		Prerequisites: ~disabled
+
+DTRK:
+	Buildable:
+		Prerequisites: ~disabled
+
+QTNK:
+	Buildable:
+		Prerequisites: ~disabled
+
+MSLO:
+	Buildable:
+		Prerequisites: ~disabled
+
+SPEN:
+	Buildable:
+		Prerequisites: ~disabled
+
+IRON:
+	Buildable:
+		Prerequisites: ~disabled
+
+TSLA:
+	Buildable:
+		Prerequisites: ~disabled
+
+SAM:
+	Buildable:
+		Prerequisites: ~disabled
+
+AFLD:
+	Buildable:
+		Prerequisites: ~disabled
+
+APWR:
+	Buildable:
+		Prerequisites: ~disabled
+
+STEK:
+	Buildable:
+		Prerequisites: ~disabled
+
+KENN:
+	Buildable:
+		Prerequisites: ~disabled
+
+E3:
+	Buildable:
+		Prerequisites: ~disabled
+
+E4:
+	Buildable:
+		Prerequisites: ~disabled
+
+E6:
+	Buildable:
+		Prerequisites: ~disabled
+
+SNIPER:
+	Buildable:
+		Prerequisites: ~disabled
+
+HIJACKER:
+	Buildable:
+		Prerequisites: ~disabled
+
+SHOK:
+	Buildable:
+		Prerequisites: ~disabled

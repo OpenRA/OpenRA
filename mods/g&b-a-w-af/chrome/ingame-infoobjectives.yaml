@@ -1,0 +1,43 @@
+Container@MISSION_OBJECTIVES:
+	Height: PARENT_BOTTOM
+	Width: PARENT_RIGHT
+	Logic: GameInfoObjectivesLogic
+	Children:
+		Label@MISSION:
+			X: 20
+			Y: 20
+			Width: 80
+			Height: 25
+			Font: MediumBold
+			Text: Mission:
+		Label@MISSION_STATUS:
+			X: 100
+			Y: 20
+			Width: PARENT_RIGHT - 120
+			Height: 25
+			Font: MediumBold
+		ScrollPanel@OBJECTIVES_PANEL:
+			X: 20
+			Y: 60
+			Width: 482
+			Height: 310
+			TopBottomSpacing: 15
+			ItemSpacing: 15
+			Children:
+				Container@OBJECTIVE_TEMPLATE:
+					Width: PARENT_RIGHT
+					Height: 20
+					Children:
+						Label@OBJECTIVE_TYPE:
+							X: 10
+							Y: 0
+							Width: 70
+							Height: PARENT_BOTTOM
+							Align: Center
+						Checkbox@OBJECTIVE_STATUS:
+							X: 90
+							Y: 0
+							Width: PARENT_RIGHT - 100
+							Height: PARENT_BOTTOM
+							Disabled: True
+							TextColorDisabled: FFFFFF

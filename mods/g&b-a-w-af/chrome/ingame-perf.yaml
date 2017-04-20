@@ -1,0 +1,22 @@
+Container@PERF_WIDGETS:
+	Logic: PerfDebugLogic
+	Children:
+		Label@PERF_TEXT:
+			X: WINDOW_RIGHT - 200
+			Y: WINDOW_BOTTOM - 70
+			Width: 170
+			Height: 40
+			Contrast: true
+		Background@GRAPH_BG:
+			ClickThrough: true
+			Background: dialog4
+			X: 30
+			Y: WINDOW_BOTTOM - 240
+			Width: 210
+			Height: 210
+			Children:
+				PerfGraph@GRAPH:
+					X: 5
+					Y: 5
+					Width: 200
+					Height: 200

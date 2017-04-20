@@ -1,0 +1,140 @@
+Player:
+	PlayerResources:
+		DefaultCash: 5000
+
+World:
+	LuaScript:
+		Scripts: soviet02b.lua
+	MissionData:
+		Briefing: Tomorrow, the attack on Germany begins, but today, we must protect our facility from Allied attacks.\n\nKeep the Command Center intact at all costs, and destroy any Allied fortification you might find.
+		BriefingVideo: soviet2.vqa
+		StartVideo: spotter.vqa
+		WinVideo: sovtstar.vqa
+		LossVideo: sovcemet.vqa
+
+SPEN:
+	Buildable:
+		Prerequisites: ~disabled
+
+DOME:
+	Buildable:
+		Prerequisites: ~disabled
+
+WEAP:
+	Buildable:
+		Prerequisites: ~disabled
+
+FIX:
+	Buildable:
+		Prerequisites: ~disabled
+
+APWR:
+	Buildable:
+		Prerequisites: ~disabled
+
+STEK:
+	Buildable:
+		Prerequisites: ~disabled
+
+BRIK:
+	Buildable:
+		Prerequisites: ~disabled
+
+TSLA:
+	Buildable:
+		Prerequisites: ~disabled
+
+SAM:
+	Buildable:
+		Prerequisites: ~disabled
+
+IRON:
+	Buildable:
+		Prerequisites: ~disabled
+
+MSLO:
+	Buildable:
+		Prerequisites: ~disabled
+
+E3:
+	Buildable:
+		Prerequisites: ~disabled
+
+E4:
+	Buildable:
+		Prerequisites: ~disabled
+
+E6:
+	Buildable:
+		Prerequisites: ~disabled
+
+SHOK:
+	Buildable:
+		Prerequisites: ~disabled
+
+SNIPER:
+	Buildable:
+		Prerequisites: ~disabled
+
+HIJACKER:
+	Buildable:
+		Prerequisites: ~disabled
+
+MIG:
+	Buildable:
+		Prerequisites: ~disabled
+
+GUN:
+	-RepairableBuilding:
+
+FCOM:
+	RepairableBuilding:
+
+AFLD:
+	Buildable:
+		Prerequisites: ~disabled
+	AirstrikePower@spyplane:
+		Prerequisites: ~disabled
+	ParatroopersPower@paratroopers:
+		Prerequisites: ~disabled
+
+DOG:
+	Health:
+		HP: 25
+	AutoTarget:
+		ScanRadius: 5
+
+HARV:
+	Harvester:
+		SearchFromProcRadius: 50
+		SearchFromOrderRadius: 50
+
+BARL:
+	Health:
+		HP: 1
+	Explodes:
+		Weapon: MissionBarrelExplode
+
+BRL3:
+	Health:
+		HP: 1
+	Explodes:
+		Weapon: MissionBarrelExplode
+
+MONEYCRATE:
+	GiveCashCrateAction:
+		Amount: 2000
+
+powerproxy.paratroopers:
+	ParatroopersPower:
+		DropItems: E1,E1,E2,E2,E2
+
+powerproxy.paratroopers2:
+	Inherits: powerproxy.paratroopers
+	ParatroopersPower:
+		DropItems: E2,E2,E2,E2,E2
+
+powerproxy.paratroopers3:
+	Inherits: powerproxy.paratroopers
+	ParatroopersPower:
+		DropItems: E1,E1,E1,E1,E1

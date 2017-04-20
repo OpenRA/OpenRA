@@ -1,0 +1,134 @@
+ScrollPanel@LABEL_DROPDOWN_TEMPLATE:
+	Width: DROPDOWN_WIDTH
+	Children:
+		ScrollItem@HEADER:
+			BaseName: scrollheader
+			Width: PARENT_RIGHT-27
+			Height: 13
+			X: 2
+			Y: 0
+			Visible: false
+			Children:
+				Label@LABEL:
+					Font: TinyBold
+					Width: PARENT_RIGHT
+					Height: 10
+					Align: Center
+		ScrollItem@TEMPLATE:
+			Width: PARENT_RIGHT-27
+			Height: 25
+			X: 2
+			Y: 0
+			Visible: false
+			Children:
+				Label@LABEL:
+					X: 10
+					Width: PARENT_RIGHT-20
+					Height: 25
+
+ScrollPanel@TEAM_DROPDOWN_TEMPLATE:
+	Width: DROPDOWN_WIDTH
+	Children:
+		ScrollItem@TEMPLATE:
+			Width: PARENT_RIGHT-27
+			Height: 25
+			X: 2
+			Y: 0
+			Visible: false
+			Children:
+				Label@LABEL:
+					X: 0
+					Width: PARENT_RIGHT
+					Height: 25
+					Align: Center
+
+ScrollPanel@SPAWN_DROPDOWN_TEMPLATE:
+	Width: DROPDOWN_WIDTH
+	Children:
+		ScrollItem@TEMPLATE:
+			Width: PARENT_RIGHT-27
+			Height: 25
+			X: 2
+			Y: 0
+			Visible: false
+			Children:
+				Label@LABEL:
+					X: 0
+					Width: PARENT_RIGHT
+					Height: 25
+					Align: Center
+
+ScrollPanel@SPECTATOR_DROPDOWN_TEMPLATE:
+	Width: DROPDOWN_WIDTH
+	Background: observer-scrollpanel-button-pressed
+	Button: observer-scrollpanel-button
+	Children:
+		ScrollItem@HEADER:
+			BaseName: observer-scrollheader
+			Width: PARENT_RIGHT-27
+			Height: 13
+			X: 2
+			Y: 0
+			Visible: false
+			Children:
+				Label@LABEL:
+					Font: TinyBold
+					Width: PARENT_RIGHT
+					Height: 10
+					Align: Center
+		ScrollItem@TEMPLATE:
+			BaseName: observer-scrollitem
+			Width: PARENT_RIGHT-27
+			Height: 25
+			X: 2
+			Y: 0
+			Visible: false
+			Children:
+				Image@FLAG:
+					X: 4
+					Y: 6
+					Width: 32
+					Height: 16
+				Label@LABEL:
+					X: 40
+					Width: 60
+					Height: 25
+				Label@NOFLAG_LABEL:
+					X: 5
+					Width: PARENT_RIGHT
+					Height: 25
+
+ScrollPanel@NEWS_PANEL:
+	Width: 400
+	Height: 265
+	TopBottomSpacing: 5
+	ItemSpacing: 5
+	Children:
+		Container@NEWS_ITEM_TEMPLATE:
+			X: 10
+			Y: 5
+			Width: PARENT_RIGHT - 40
+			Height: 45
+			Children:
+				Label@TITLE:
+					Width: PARENT_RIGHT
+					Height: 25
+					Align: Center
+					Font: Bold
+				Label@AUTHOR_DATETIME:
+					Y: 25
+					Width: PARENT_RIGHT
+					Height: 15
+					Align: Center
+					Text: by {0} at {1}
+					Font: TinyBold
+				Label@CONTENT:
+					Y: 45
+					Width: PARENT_RIGHT
+		Label@NEWS_STATUS:
+			X: 80
+			Y: 0
+			Width: PARENT_RIGHT - 80 - 80 - 24
+			Height: PARENT_BOTTOM
+			Align: Center
+			VAlign: Middle

@@ -1,0 +1,53 @@
+World:
+	LuaScript:
+		Scripts: soviet07.lua
+	MissionData:
+		Briefing: The Allies have infiltrated one of our nuclear reactors! They have tampered with the core so that a meltdown is imminent within 30 minutes. They must not succeed!\n\nEnter the base and find any remaining technicians. Guide them to the 4 coolant stations so they can activate them, then activate the main computer. The security systems have been armed so beware.\n\nKill any Allies you find.
+		BriefingVideo: soviet7.vqa
+		StartVideo: countdwn.vqa
+		WinVideo: averted.vqa
+		LossVideo: nukestok.vqa
+	ScriptLobbyDropdown@difficulty:
+		ID: difficulty
+		Label: Difficulty
+		Values:
+			easy: Easy
+			normal: Normal
+			hard: Hard
+		Default: easy
+
+^Infantry:
+	-GivesBounty:
+
+BARL:
+	Health:
+		HP: 1
+	Explodes:
+		Weapon: MissionBarrelExplodeInterior
+
+BRL3:
+	Health:
+		HP: 1
+	Explodes:
+		Weapon: MissionBarrelExplodeInterior
+
+CAMERA:
+	RevealsShroud:
+		Range: 6c0
+
+E1:
+	Armament@PRIMARY:
+		Weapon: M1CarbineInterior
+
+FTUR:
+	Armament:
+		Weapon: FireballLauncherInterior
+		LocalOffset: 512,0,0
+	Valued:
+		Cost: 0
+	Power:
+		Amount: 0
+	-Sellable:
+
+PBOX:
+	-AutoTarget:

@@ -1,0 +1,13 @@
+OILB.Strong:
+	Inherits: OILB
+	Health:
+		HP: 6000
+	RenderSprites:
+		Image: OILB
+
+OILB.Weak:
+	Inherits: OILB
+	Health:
+		HP: 900
+	RenderSprites:
+		Image: OILB

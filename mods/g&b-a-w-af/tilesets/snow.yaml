@@ -1,0 +1,3162 @@
+General:
+	Name: Snow
+	Id: SNOW
+	Palette: snow.pal
+	EditorTemplateOrder: Terrain, Debris, Road, Cliffs, Water Cliffs, Beach, River, Bridge
+	HeightDebugColors: 880000
+
+Terrain:
+	TerrainType@Beach:
+		Type: Beach
+		TargetTypes: Ground
+		Color: B09C78
+	TerrainType@Bridge:
+		Type: Bridge
+		TargetTypes: Ground, Bridge
+		AcceptsSmudgeType: Crater, Scorch
+		Color: 606060
+	TerrainType@Clear:
+		Type: Clear
+		TargetTypes: Ground
+		AcceptsSmudgeType: Crater, Scorch
+		Color: C4C4C4
+		RestrictPlayerColor: true
+	TerrainType@Gems:
+		Type: Gems
+		TargetTypes: Ground
+		AcceptsSmudgeType: Crater, Scorch
+		Color: 8470FF
+		RestrictPlayerColor: true
+	TerrainType@Ore:
+		Type: Ore
+		TargetTypes: Ground
+		AcceptsSmudgeType: Crater, Scorch
+		Color: 948060
+		RestrictPlayerColor: true
+	TerrainType@River:
+		Type: River
+		TargetTypes: Ground
+		Color: 5C8CB4
+	TerrainType@Road:
+		Type: Road
+		TargetTypes: Ground
+		AcceptsSmudgeType: Crater, Scorch
+		Color: 587474
+	TerrainType@Rock:
+		Type: Rock
+		TargetTypes: Ground
+		Color: 44443C
+	TerrainType@Rough:
+		Type: Rough
+		TargetTypes: Ground
+		AcceptsSmudgeType: Crater, Scorch
+		Color: 44443C
+	TerrainType@Tree:
+		Type: Tree
+		TargetTypes: Ground
+		Color: 1C2024
+	TerrainType@Wall:
+		Type: Wall
+		TargetTypes: Ground
+		AcceptsSmudgeType: Crater, Scorch
+		Color: D0C0A0
+	TerrainType@Water:
+		Type: Water
+		TargetTypes: Water
+		IsWater: True
+		Color: 5C74A4
+		RestrictPlayerColor: true
+
+Templates:
+	Template@255:
+		Id: 255
+		Images: clear1.sno
+		Size: 1,1
+		PickAny: True
+		Category: Terrain
+		Tiles:
+			0: Clear
+			1: Clear
+			2: Clear
+			3: Clear
+			4: Clear
+			5: Clear
+			6: Clear
+			7: Clear
+			8: Clear
+			9: Clear
+			10: Clear
+			11: Clear
+			12: Clear
+			13: Clear
+			14: Clear
+			15: Clear
+			16: Clear
+			17: Clear
+			18: Clear
+			19: Clear
+	Template@65535:
+		Id: 65535
+		Images: clear1.sno
+		Size: 1,1
+		PickAny: True
+		Category: Terrain
+		Tiles:
+			0: Clear
+			1: Clear
+			2: Clear
+			3: Clear
+			4: Clear
+			5: Clear
+			6: Clear
+			7: Clear
+			8: Clear
+			9: Clear
+			10: Clear
+			11: Clear
+			12: Clear
+			13: Clear
+			14: Clear
+			15: Clear
+			16: Clear
+			17: Clear
+			18: Clear
+			19: Clear
+	Template@1:
+		Id: 1
+		Images: w1.sno
+		Size: 1,1
+		Category: Terrain
+		Tiles:
+			0: Water
+	Template@2:
+		Id: 2
+		Images: w2.sno
+		Size: 2,2
+		Category: Terrain
+		Tiles:
+			0: Water
+			1: Water
+			2: Water
+			3: Water
+	Template@3:
+		Id: 3
+		Images: sh01.sno
+		Size: 4,5
+		Category: Beach
+		Tiles:
+			3: Rock
+			5: Clear
+			6: Clear
+			7: Beach
+			8: Beach
+			9: Water
+			10: Water
+			11: River
+			12: Water
+			13: Water
+			16: Water
+	Template@4:
+		Id: 4
+		Images: sh02.sno
+		Size: 5,5
+		Category: Beach
+		Tiles:
+			4: Clear
+			8: Beach
+			9: Beach
+			10: Beach
+			11: Clear
+			12: Beach
+			13: Beach
+			14: Beach
+			15: Beach
+			16: Rough
+			17: Rough
+			18: River
+			20: Water
+			21: Water
+			22: Rock
+	Template@5:
+		Id: 5
+		Images: sh03.sno
+		Size: 3,5
+		Category: Beach
+		Tiles:
+			2: Clear
+			4: Beach
+			5: Beach
+			6: Beach
+			7: Beach
+			8: Beach
+			9: Water
+			10: Water
+			12: Water
+	Template@6:
+		Id: 6
+		Images: sh04.sno
+		Size: 3,3
+		Category: Beach
+		Tiles:
+			0: Beach
+			1: Beach
+			2: Beach
+			3: Beach
+			4: Beach
+			5: Beach
+			6: Water
+			7: Water
+			8: Water
+	Template@7:
+		Id: 7
+		Images: sh05.sno
+		Size: 3,3
+		Category: Beach
+		Tiles:
+			0: Beach
+			1: Rock
+			2: Beach
+			3: Beach
+			4: Rock
+			5: Rock
+			6: Rock
+			7: River
+			8: River
+	Template@8:
+		Id: 8
+		Images: sh06.sno
+		Size: 3,3
+		Category: Beach
+		Tiles:
+			0: Beach
+			1: Beach
+			2: Beach
+			3: Beach
+			4: Beach
+			5: Beach
+			6: Water
+			7: Water
+			8: Water
+	Template@9:
+		Id: 9
+		Images: sh07.sno
+		Size: 3,3
+		Category: Beach
+		Tiles:
+			0: Beach
+			1: Beach
+			2: Beach
+			3: Beach
+			4: Beach
+			5: Beach
+			6: Water
+			7: Water
+			8: Water
+	Template@10:
+		Id: 10
+		Images: sh08.sno
+		Size: 1,2
+		Category: Beach
+		Tiles:
+			0: Beach
+			1: Beach
+	Template@11:
+		Id: 11
+		Images: sh09.sno
+		Size: 3,3
+		Category: Beach
+		Tiles:
+			0: Clear
+			1: River
+			2: Rock
+			3: Clear
+			4: River
+			5: Beach
+			6: Water
+			7: Water
+			8: Water
+	Template@12:
+		Id: 12
+		Images: sh10.sno
+		Size: 5,6
+		Category: Beach
+		Tiles:
+			0: Clear
+			5: Beach
+			6: Clear
+			10: Water
+			11: Beach
+			12: Beach
+			13: Water
+			17: Water
+			18: Beach
+			19: Beach
+			22: Rock
+			23: Rock
+			24: Rock
+			28: Water
+			29: Water
+	Template@13:
+		Id: 13
+		Images: sh11.sno
+		Size: 4,5
+		Category: Beach
+		Tiles:
+			0: Beach
+			1: Clear
+			4: Beach
+			5: Water
+			6: Beach
+			8: Water
+			9: Water
+			10: Beach
+			11: Beach
+			14: Beach
+			15: Beach
+			18: Water
+			19: Beach
+	Template@14:
+		Id: 14
+		Images: sh12.sno
+		Size: 3,5
+		Category: Beach
+		Tiles:
+			0: Beach
+			1: Clear
+			3: Beach
+			4: Beach
+			5: Beach
+			6: Water
+			7: Beach
+			8: Beach
+			10: Water
+			11: Beach
+			14: Water
+	Template@15:
+		Id: 15
+		Images: sh13.sno
+		Size: 6,5
+		Category: Beach
+		Tiles:
+			0: Water
+			1: Rock
+			2: Beach
+			7: Beach
+			8: Beach
+			9: Beach
+			13: Water
+			14: Beach
+			15: Beach
+			16: Clear
+			19: Water
+			20: Water
+			21: Rough
+			22: Beach
+			23: Clear
+			27: Beach
+			28: Beach
+			29: Beach
+	Template@16:
+		Id: 16
+		Images: sh14.sno
+		Size: 4,4
+		Category: Beach
+		Tiles:
+			0: Beach
+			1: Beach
+			2: Clear
+			4: River
+			5: Beach
+			6: Beach
+			8: Rough
+			9: Beach
+			10: Beach
+			13: Water
+			14: Beach
+			15: Beach
+	Template@17:
+		Id: 17
+		Images: sh15.sno
+		Size: 5,3
+		Category: Beach
+		Tiles:
+			0: Water
+			1: Water
+			2: Beach
+			3: Clear
+			6: Water
+			7: Beach
+			8: Beach
+			12: Water
+			13: Beach
+			14: Beach
+	Template@18:
+		Id: 18
+		Images: sh16.sno
+		Size: 3,3
+		Category: Beach
+		Tiles:
+			0: Water
+			1: Beach
+			2: Clear
+			3: Water
+			4: Beach
+			5: Clear
+			6: Water
+			7: Beach
+			8: Clear
+	Template@19:
+		Id: 19
+		Images: sh17.sno
+		Size: 2,1
+		Category: Beach
+		Tiles:
+			0: Beach
+			1: Clear
+	Template@20:
+		Id: 20
+		Images: sh18.sno
+		Size: 3,3
+		Category: Beach
+		Tiles:
+			0: Water
+			1: Water
+			2: Rough
+			3: Water
+			4: River
+			5: River
+			6: Water
+			7: Beach
+			8: Rough
+	Template@21:
+		Id: 21
+		Images: sh19.sno
+		Size: 4,5
+		Category: Beach
+		Tiles:
+			1: Water
+			2: Beach
+			3: Clear
+			5: Beach
+			6: Beach
+			7: Clear
+			8: Water
+			9: Beach
+			10: Beach
+			12: Water
+			13: Beach
+			14: Beach
+			16: Water
+			17: Beach
+			18: Clear
+	Template@22:
+		Id: 22
+		Images: sh20.sno
+		Size: 5,4
+		Category: Beach
+		Tiles:
+			2: Water
+			3: Beach
+			4: Beach
+			5: Water
+			6: Beach
+			7: Beach
+			8: Beach
+			10: Water
+			11: Beach
+			12: Beach
+			15: Water
+			16: Beach
+			17: Beach
+	Template@23:
+		Id: 23
+		Images: sh21.sno
+		Size: 5,3
+		Category: Beach
+		Tiles:
+			1: Water
+			2: Beach
+			3: Beach
+			4: Clear
+			5: Water
+			6: Beach
+			7: Beach
+			8: Clear
+			10: Water
+			11: Beach
+			12: Beach
+	Template@24:
+		Id: 24
+		Images: sh22.sno
+		Size: 6,5
+		Category: Beach
+		Tiles:
+			0: Water
+			6: Water
+			7: Water
+			12: Beach
+			13: Beach
+			14: Water
+			15: Water
+			16: Water
+			17: Water
+			19: Clear
+			20: Beach
+			21: Beach
+			22: Water
+			23: Beach
+			27: Beach
+			28: Beach
+			29: Beach
+	Template@25:
+		Id: 25
+		Images: sh23.sno
+		Size: 5,5
+		Category: Beach
+		Tiles:
+			0: Beach
+			1: Water
+			2: Water
+			5: Beach
+			6: Beach
+			7: Water
+			8: Water
+			9: Water
+			11: Clear
+			12: Beach
+			13: River
+			14: Water
+			17: Clear
+			18: Beach
+			19: Beach
+			22: Beach
+			23: Beach
+			24: Beach
+	Template@26:
+		Id: 26
+		Images: sh24.sno
+		Size: 3,4
+		Category: Beach
+		Tiles:
+			0: Beach
+			1: Water
+			3: Beach
+			4: Water
+			5: Water
+			7: Clear
+			8: Beach
+			11: Clear
+	Template@27:
+		Id: 27
+		Images: sh25.sno
+		Size: 3,3
+		Category: Beach
+		Tiles:
+			0: Water
+			1: Water
+			2: Water
+			3: Rock
+			4: Rock
+			5: Beach
+			6: Rock
+			7: Rock
+			8: Beach
+	Template@28:
+		Id: 28
+		Images: sh26.sno
+		Size: 3,3
+		Category: Beach
+		Tiles:
+			0: Water
+			1: Water
+			2: Water
+			3: Beach
+			4: Beach
+			5: Rough
+			6: Beach
+			7: Beach
+			8: Beach
+	Template@29:
+		Id: 29
+		Images: sh27.sno
+		Size: 3,3
+		Category: Beach
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Rock
+			3: Beach
+			4: Beach
+			5: Beach
+			6: Beach
+			7: Beach
+			8: Rough
+	Template@30:
+		Id: 30
+		Images: sh28.sno
+		Size: 3,3
+		Category: Beach
+		Tiles:
+			1: Rock
+			2: Rock
+			3: Beach
+			4: Rock
+			5: Rock
+			6: Beach
+			7: Rough
+			8: Rough
+	Template@31:
+		Id: 31
+		Images: sh29.sno
+		Size: 1,2
+		Category: Beach
+		Tiles:
+			0: Beach
+			1: Clear
+	Template@32:
+		Id: 32
+		Images: sh30.sno
+		Size: 3,2
+		Category: Beach
+		Tiles:
+			0: Beach
+			1: River
+			2: River
+			3: Clear
+			4: River
+			5: Rough
+	Template@33:
+		Id: 33
+		Images: sh31.sno
+		Size: 6,5
+		Category: Beach
+		Tiles:
+			3: Water
+			4: Water
+			5: Beach
+			8: Water
+			9: Water
+			10: Beach
+			11: Beach
+			12: Water
+			13: Water
+			14: Water
+			15: Beach
+			16: Clear
+			18: Beach
+			19: Beach
+			20: Water
+			21: Beach
+			22: Clear
+			24: Clear
+			25: Clear
+			26: Beach
+			27: Beach
+			28: Clear
+	Template@34:
+		Id: 34
+		Images: sh32.sno
+		Size: 4,4
+		Category: Beach
+		Tiles:
+			2: Water
+			3: Water
+			4: Water
+			5: Water
+			6: Beach
+			7: Beach
+			8: Beach
+			9: Beach
+			10: Beach
+			12: Clear
+			13: Clear
+	Template@35:
+		Id: 35
+		Images: sh33.sno
+		Size: 3,4
+		Category: Beach
+		Tiles:
+			1: Water
+			2: Beach
+			3: Water
+			4: Beach
+			5: Clear
+			6: Beach
+			7: Rough
+			9: Beach
+			10: Beach
+	Template@36:
+		Id: 36
+		Images: sh34.sno
+		Size: 6,5
+		Category: Beach
+		Tiles:
+			3: Clear
+			4: Beach
+			5: Water
+			7: Beach
+			8: Beach
+			9: Beach
+			10: Beach
+			13: Beach
+			14: Beach
+			15: Water
+			19: Beach
+			20: Beach
+			21: Water
+			24: Beach
+			25: Beach
+			26: Water
+	Template@37:
+		Id: 37
+		Images: sh35.sno
+		Size: 4,4
+		Category: Beach
+		Tiles:
+			2: Beach
+			3: Water
+			5: Clear
+			6: Beach
+			7: Rough
+			9: Beach
+			10: Beach
+			11: Water
+			12: Clear
+			13: Beach
+			14: Water
+	Template@38:
+		Id: 38
+		Images: sh36.sno
+		Size: 4,3
+		Category: Beach
+		Tiles:
+			1: Beach
+			2: Beach
+			3: Water
+			4: Beach
+			5: Beach
+			6: Water
+			8: Beach
+			9: Water
+			10: Water
+	Template@39:
+		Id: 39
+		Images: sh37.sno
+		Size: 3,3
+		Category: Beach
+		Tiles:
+			1: Beach
+			2: Water
+			3: Clear
+			4: Beach
+			5: Water
+			6: Rough
+			7: Beach
+			8: Water
+	Template@40:
+		Id: 40
+		Images: sh38.sno
+		Size: 2,1
+		Category: Beach
+		Tiles:
+			0: Clear
+			1: Beach
+	Template@41:
+		Id: 41
+		Images: sh39.sno
+		Size: 3,3
+		Category: Beach
+		Tiles:
+			0: Rock
+			1: Beach
+			2: Water
+			3: River
+			4: River
+			5: Water
+			6: Clear
+			7: Beach
+			8: Water
+	Template@42:
+		Id: 42
+		Images: sh40.sno
+		Size: 5,5
+		Category: Beach
+		Tiles:
+			0: Clear
+			1: Beach
+			2: Water
+			6: Beach
+			7: Water
+			11: Beach
+			12: Water
+			13: Water
+			16: Clear
+			17: Beach
+			18: Beach
+			19: Water
+			22: Beach
+			23: Beach
+			24: Water
+	Template@43:
+		Id: 43
+		Images: sh41.sno
+		Size: 4,4
+		Category: Beach
+		Tiles:
+			0: Beach
+			1: Water
+			4: Beach
+			5: Beach
+			6: Water
+			8: Beach
+			9: Beach
+			10: Water
+			11: Water
+			13: Clear
+			14: Beach
+			15: Water
+	Template@44:
+		Id: 44
+		Images: sh42.sno
+		Size: 4,3
+		Category: Beach
+		Tiles:
+			0: Beach
+			1: Beach
+			2: Water
+			5: Beach
+			6: Beach
+			7: River
+			9: Clear
+			10: Beach
+			11: Water
+	Template@45:
+		Id: 45
+		Images: sh43.sno
+		Size: 3,3
+		Category: Beach
+		Tiles:
+			0: Beach
+			1: Beach
+			2: Beach
+			3: Beach
+			4: Beach
+			5: Beach
+			6: Beach
+			7: Water
+			8: Water
+	Template@46:
+		Id: 46
+		Images: sh44.sno
+		Size: 2,2
+		Category: Beach
+		Tiles:
+			0: Water
+			1: Beach
+			2: River
+			3: Water
+	Template@47:
+		Id: 47
+		Images: sh45.sno
+		Size: 3,3
+		Category: Beach
+		Tiles:
+			0: Water
+			1: Beach
+			2: Water
+			3: Water
+			4: Rough
+			5: Beach
+			6: Water
+			7: River
+			8: Beach
+	Template@48:
+		Id: 48
+		Images: sh46.sno
+		Size: 2,2
+		Category: Beach
+		Tiles:
+			0: Water
+			1: River
+			2: River
+			3: Beach
+	Template@49:
+		Id: 49
+		Images: sh47.sno
+		Size: 3,3
+		Category: Beach
+		Tiles:
+			0: Water
+			3: Beach
+			4: Water
+			6: Beach
+			7: Beach
+			8: Water
+	Template@50:
+		Id: 50
+		Images: sh48.sno
+		Size: 2,2
+		Category: Beach
+		Tiles:
+			0: Water
+			1: Water
+			2: Clear
+			3: Beach
+	Template@51:
+		Id: 51
+		Images: sh49.sno
+		Size: 3,3
+		Category: Beach
+		Tiles:
+			0: Beach
+			1: Water
+			2: Water
+			3: Rock
+			4: Rock
+			5: River
+			6: River
+			7: Rock
+			8: Rock
+	Template@52:
+		Id: 52
+		Images: sh50.sno
+		Size: 2,2
+		Category: Beach
+		Tiles:
+			0: Beach
+			1: Beach
+			2: Beach
+			3: Water
+	Template@53:
+		Id: 53
+		Images: sh51.sno
+		Size: 3,3
+		Category: Beach
+		Tiles:
+			0: Clear
+			1: Beach
+			2: Beach
+			4: Beach
+			5: Beach
+			7: Rough
+			8: Clear
+	Template@54:
+		Id: 54
+		Images: sh52.sno
+		Size: 3,3
+		Category: Beach
+		Tiles:
+			1: Clear
+			2: Clear
+			3: Clear
+			4: Beach
+			5: Beach
+			7: Beach
+			8: Water
+	Template@55:
+		Id: 55
+		Images: sh53.sno
+		Size: 3,3
+		Category: Beach
+		Tiles:
+			0: Beach
+			1: Clear
+			3: Beach
+			4: Beach
+			5: Clear
+			6: Water
+			7: Beach
+			8: Clear
+	Template@56:
+		Id: 56
+		Images: sh54.sno
+		Size: 3,3
+		Category: Beach
+		Tiles:
+			0: Water
+			1: Beach
+			2: Clear
+			3: Beach
+			4: Beach
+			6: Clear
+	Template@57:
+		Id: 57
+		Images: sh55.sno
+		Size: 1,1
+		Category: Debris
+		Tiles:
+			0: Rock
+	Template@58:
+		Id: 58
+		Images: sh56.sno
+		Size: 2,1
+		Category: Debris
+		Tiles:
+			0: Rock
+			1: Rock
+	Template@135:
+		Id: 135
+		Images: s01.sno
+		Size: 2,2
+		Category: Cliffs
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Rock
+			3: Rock
+	Template@136:
+		Id: 136
+		Images: s02.sno
+		Size: 2,3
+		Category: Cliffs
+		Tiles:
+			0: Rock
+			1: Rough
+			2: Rock
+			3: Rock
+			4: Rock
+			5: Rock
+	Template@137:
+		Id: 137
+		Images: s03.sno
+		Size: 2,2
+		Category: Cliffs
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Rock
+			3: Rock
+	Template@138:
+		Id: 138
+		Images: s04.sno
+		Size: 2,2
+		Category: Cliffs
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Rock
+			3: Rock
+	Template@139:
+		Id: 139
+		Images: s05.sno
+		Size: 2,2
+		Category: Cliffs
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Rock
+			3: Rock
+	Template@140:
+		Id: 140
+		Images: s06.sno
+		Size: 2,3
+		Category: Cliffs
+		Tiles:
+			0: Rough
+			1: Rock
+			2: Rock
+			3: Rock
+			4: Rock
+	Template@141:
+		Id: 141
+		Images: s07.sno
+		Size: 2,2
+		Category: Cliffs
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Rock
+			3: Rock
+	Template@142:
+		Id: 142
+		Images: s08.sno
+		Size: 2,2
+		Category: Cliffs
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Rock
+			3: Rock
+	Template@143:
+		Id: 143
+		Images: s09.sno
+		Size: 3,2
+		Category: Cliffs
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Rock
+			3: Rock
+			4: Rock
+			5: Rock
+	Template@144:
+		Id: 144
+		Images: s10.sno
+		Size: 2,2
+		Category: Cliffs
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Rock
+			3: Rock
+	Template@145:
+		Id: 145
+		Images: s11.sno
+		Size: 2,2
+		Category: Cliffs
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Rock
+			3: Rock
+	Template@146:
+		Id: 146
+		Images: s12.sno
+		Size: 2,2
+		Category: Cliffs
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Rock
+			3: Rock
+	Template@147:
+		Id: 147
+		Images: s13.sno
+		Size: 3,2
+		Category: Cliffs
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Rough
+			3: Rock
+			4: Rock
+			5: Rough
+	Template@148:
+		Id: 148
+		Images: s14.sno
+		Size: 2,2
+		Category: Cliffs
+		Tiles:
+			0: Rock
+			1: Rough
+			2: Rock
+	Template@149:
+		Id: 149
+		Images: s15.sno
+		Size: 2,2
+		Category: Cliffs
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Rock
+			3: Rock
+	Template@150:
+		Id: 150
+		Images: s16.sno
+		Size: 2,3
+		Category: Cliffs
+		Tiles:
+			0: Rough
+			2: Rock
+			3: Rock
+			5: Rock
+	Template@151:
+		Id: 151
+		Images: s17.sno
+		Size: 2,2
+		Category: Cliffs
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Rock
+			3: Rock
+	Template@152:
+		Id: 152
+		Images: s18.sno
+		Size: 2,2
+		Category: Cliffs
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Rock
+			3: Rock
+	Template@153:
+		Id: 153
+		Images: s19.sno
+		Size: 2,2
+		Category: Cliffs
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Rock
+			3: Rock
+	Template@154:
+		Id: 154
+		Images: s20.sno
+		Size: 2,3
+		Category: Cliffs
+		Tiles:
+			1: Rock
+			2: Rock
+			3: Rock
+			4: Rock
+			5: Rough
+	Template@155:
+		Id: 155
+		Images: s21.sno
+		Size: 1,2
+		Category: Cliffs
+		Tiles:
+			0: Rock
+			1: Rock
+	Template@156:
+		Id: 156
+		Images: s22.sno
+		Size: 2,1
+		Category: Cliffs
+		Tiles:
+			0: Rock
+			1: Rock
+	Template@157:
+		Id: 157
+		Images: s23.sno
+		Size: 3,2
+		Category: Cliffs
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Rock
+			3: Rock
+			4: Rock
+			5: Rough
+	Template@158:
+		Id: 158
+		Images: s24.sno
+		Size: 2,2
+		Category: Cliffs
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Rock
+			3: Rock
+	Template@159:
+		Id: 159
+		Images: s25.sno
+		Size: 2,2
+		Category: Cliffs
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Rock
+			3: Rock
+	Template@160:
+		Id: 160
+		Images: s26.sno
+		Size: 2,2
+		Category: Cliffs
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Rock
+			3: Rock
+	Template@161:
+		Id: 161
+		Images: s27.sno
+		Size: 3,2
+		Category: Cliffs
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Rough
+			3: Rough
+			4: Rock
+			5: Rock
+	Template@162:
+		Id: 162
+		Images: s28.sno
+		Size: 2,2
+		Category: Cliffs
+		Tiles:
+			0: Rock
+			1: Rock
+			3: Rock
+	Template@163:
+		Id: 163
+		Images: s29.sno
+		Size: 2,2
+		Category: Cliffs
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Rock
+			3: Rock
+	Template@164:
+		Id: 164
+		Images: s30.sno
+		Size: 2,2
+		Category: Cliffs
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Rock
+			3: Rock
+	Template@165:
+		Id: 165
+		Images: s31.sno
+		Size: 2,2
+		Category: Cliffs
+		Tiles:
+			0: Rock
+			1: Rough
+			2: Rock
+			3: Rock
+	Template@166:
+		Id: 166
+		Images: s32.sno
+		Size: 2,2
+		Category: Cliffs
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Rough
+	Template@167:
+		Id: 167
+		Images: s33.sno
+		Size: 2,2
+		Category: Cliffs
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Rock
+			3: Rock
+	Template@168:
+		Id: 168
+		Images: s34.sno
+		Size: 2,2
+		Category: Cliffs
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Rock
+			3: Rock
+	Template@169:
+		Id: 169
+		Images: s35.sno
+		Size: 2,2
+		Category: Cliffs
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Rock
+			3: Rock
+	Template@170:
+		Id: 170
+		Images: s36.sno
+		Size: 2,2
+		Category: Cliffs
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Rock
+			3: Rock
+	Template@171:
+		Id: 171
+		Images: s37.sno
+		Size: 2,2
+		Category: Cliffs
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Rock
+			3: Rock
+	Template@172:
+		Id: 172
+		Images: s38.sno
+		Size: 2,2
+		Category: Cliffs
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Rock
+			3: Rock
+	Template@59:
+		Id: 59
+		Images: wc01.sno
+		Size: 2,2
+		Category: Water Cliffs
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Rock
+			3: Rock
+	Template@60:
+		Id: 60
+		Images: wc02.sno
+		Size: 2,3
+		Category: Water Cliffs
+		Tiles:
+			0: Rock
+			1: Rough
+			2: Rock
+			3: Rock
+			4: Rock
+			5: Rock
+	Template@61:
+		Id: 61
+		Images: wc03.sno
+		Size: 2,2
+		Category: Water Cliffs
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Rock
+			3: Rock
+	Template@62:
+		Id: 62
+		Images: wc04.sno
+		Size: 2,2
+		Category: Water Cliffs
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Rock
+			3: Rock
+	Template@63:
+		Id: 63
+		Images: wc05.sno
+		Size: 2,2
+		Category: Water Cliffs
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Rock
+			3: Rock
+	Template@64:
+		Id: 64
+		Images: wc06.sno
+		Size: 2,3
+		Category: Water Cliffs
+		Tiles:
+			0: Rough
+			1: Rock
+			2: Rock
+			3: Rock
+			4: Rock
+	Template@65:
+		Id: 65
+		Images: wc07.sno
+		Size: 2,2
+		Category: Water Cliffs
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Rock
+			3: Rock
+	Template@66:
+		Id: 66
+		Images: wc08.sno
+		Size: 2,2
+		Category: Water Cliffs
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Rock
+			3: Rock
+	Template@67:
+		Id: 67
+		Images: wc09.sno
+		Size: 3,2
+		Category: Water Cliffs
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Rock
+			3: River
+			4: Rock
+			5: Rock
+	Template@68:
+		Id: 68
+		Images: wc10.sno
+		Size: 2,2
+		Category: Water Cliffs
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Rock
+			3: Rock
+	Template@69:
+		Id: 69
+		Images: wc11.sno
+		Size: 2,2
+		Category: Water Cliffs
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Rock
+			3: Rock
+	Template@70:
+		Id: 70
+		Images: wc12.sno
+		Size: 2,2
+		Category: Water Cliffs
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Rock
+			3: Rock
+	Template@71:
+		Id: 71
+		Images: wc13.sno
+		Size: 3,2
+		Category: Water Cliffs
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Rough
+			3: Rock
+			4: Rock
+			5: Clear
+	Template@72:
+		Id: 72
+		Images: wc14.sno
+		Size: 2,2
+		Category: Water Cliffs
+		Tiles:
+			0: Rock
+			1: Beach
+			2: Beach
+			3: Beach
+	Template@73:
+		Id: 73
+		Images: wc15.sno
+		Size: 2,2
+		Category: Water Cliffs
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Rock
+			3: Rock
+	Template@74:
+		Id: 74
+		Images: wc16.sno
+		Size: 2,3
+		Category: Water Cliffs
+		Tiles:
+			0: Water
+			2: Rock
+			3: Rock
+			5: Rock
+	Template@75:
+		Id: 75
+		Images: wc17.sno
+		Size: 2,2
+		Category: Water Cliffs
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Rock
+			3: Rock
+	Template@76:
+		Id: 76
+		Images: wc18.sno
+		Size: 2,2
+		Category: Water Cliffs
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Rock
+			3: Rock
+	Template@77:
+		Id: 77
+		Images: wc19.sno
+		Size: 2,2
+		Category: Water Cliffs
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Rock
+			3: Rock
+	Template@78:
+		Id: 78
+		Images: wc20.sno
+		Size: 2,3
+		Category: Water Cliffs
+		Tiles:
+			1: River
+			2: Rock
+			3: Rock
+			4: Rock
+			5: Rough
+	Template@79:
+		Id: 79
+		Images: wc21.sno
+		Size: 1,2
+		Category: Water Cliffs
+		Tiles:
+			0: Rock
+			1: Rock
+	Template@80:
+		Id: 80
+		Images: wc22.sno
+		Size: 2,2
+		Category: Water Cliffs
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Rock
+			3: Rock
+	Template@81:
+		Id: 81
+		Images: wc23.sno
+		Size: 3,2
+		Category: Water Cliffs
+		Tiles:
+			0: Rock
+			1: Rock
+			2: River
+			3: Rock
+			4: Rock
+			5: Water
+	Template@82:
+		Id: 82
+		Images: wc24.sno
+		Size: 2,2
+		Category: Water Cliffs
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Rock
+			3: Rock
+	Template@83:
+		Id: 83
+		Images: wc25.sno
+		Size: 2,2
+		Category: Water Cliffs
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Rock
+			3: Rock
+	Template@84:
+		Id: 84
+		Images: wc26.sno
+		Size: 2,2
+		Category: Water Cliffs
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Rock
+			3: Rock
+	Template@85:
+		Id: 85
+		Images: wc27.sno
+		Size: 3,2
+		Category: Water Cliffs
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Water
+			3: Clear
+			4: Rock
+			5: Rock
+	Template@86:
+		Id: 86
+		Images: wc28.sno
+		Size: 2,2
+		Category: Water Cliffs
+		Tiles:
+			0: Rock
+			1: Rock
+			3: Rock
+	Template@87:
+		Id: 87
+		Images: wc29.sno
+		Size: 2,2
+		Category: Water Cliffs
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Rock
+			3: Rock
+	Template@88:
+		Id: 88
+		Images: wc30.sno
+		Size: 2,2
+		Category: Water Cliffs
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Rock
+			3: Rock
+	Template@89:
+		Id: 89
+		Images: wc31.sno
+		Size: 2,2
+		Category: Water Cliffs
+		Tiles:
+			0: Rock
+			1: River
+			2: Rock
+			3: Rock
+	Template@90:
+		Id: 90
+		Images: wc32.sno
+		Size: 2,2
+		Category: Water Cliffs
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Water
+	Template@91:
+		Id: 91
+		Images: wc33.sno
+		Size: 2,2
+		Category: Water Cliffs
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Rock
+			3: Rock
+	Template@92:
+		Id: 92
+		Images: wc34.sno
+		Size: 2,2
+		Category: Water Cliffs
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Rock
+			3: Rock
+	Template@93:
+		Id: 93
+		Images: wc35.sno
+		Size: 2,2
+		Category: Water Cliffs
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Rock
+			3: Rock
+	Template@94:
+		Id: 94
+		Images: wc36.sno
+		Size: 2,2
+		Category: Water Cliffs
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Rock
+			3: Rock
+	Template@95:
+		Id: 95
+		Images: wc37.sno
+		Size: 2,2
+		Category: Water Cliffs
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Rock
+			3: Rock
+	Template@96:
+		Id: 96
+		Images: wc38.sno
+		Size: 2,2
+		Category: Water Cliffs
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Rock
+			3: Rock
+	Template@173:
+		Id: 173
+		Images: d01.sno
+		Size: 2,2
+		Category: Road
+		Tiles:
+			1: Road
+			2: Clear
+			3: Clear
+	Template@174:
+		Id: 174
+		Images: d02.sno
+		Size: 2,2
+		Category: Road
+		Tiles:
+			0: Clear
+			1: Road
+			2: Clear
+			3: Clear
+	Template@175:
+		Id: 175
+		Images: d03.sno
+		Size: 1,2
+		Category: Road
+		Tiles:
+			0: Clear
+			1: Road
+	Template@176:
+		Id: 176
+		Images: d04.sno
+		Size: 2,2
+		Category: Road
+		Tiles:
+			1: Clear
+			2: Road
+			3: Clear
+	Template@177:
+		Id: 177
+		Images: d05.sno
+		Size: 3,4
+		Category: Road
+		Tiles:
+			1: Road
+			2: Clear
+			3: Road
+			4: Road
+			6: Road
+			7: Road
+			9: Road
+			10: Road
+	Template@178:
+		Id: 178
+		Images: d06.sno
+		Size: 2,3
+		Category: Road
+		Tiles:
+			0: Road
+			2: Road
+			3: Road
+			4: Road
+			5: Clear
+	Template@179:
+		Id: 179
+		Images: d07.sno
+		Size: 3,2
+		Category: Road
+		Tiles:
+			0: Clear
+			1: Road
+			2: Clear
+			4: Road
+			5: Clear
+	Template@180:
+		Id: 180
+		Images: d08.sno
+		Size: 3,2
+		Category: Road
+		Tiles:
+			1: Road
+			3: Clear
+			4: Road
+			5: Clear
+	Template@181:
+		Id: 181
+		Images: d09.sno
+		Size: 4,3
+		Category: Road
+		Tiles:
+			0: Clear
+			1: Clear
+			2: Clear
+			3: Clear
+			4: Road
+			5: Road
+			6: Road
+			7: Road
+			10: Clear
+			11: Clear
+	Template@182:
+		Id: 182
+		Images: d10.sno
+		Size: 4,2
+		Category: Road
+		Tiles:
+			0: Clear
+			1: Rock
+			4: Road
+			5: Road
+			6: Road
+			7: Road
+	Template@183:
+		Id: 183
+		Images: d11.sno
+		Size: 2,3
+		Category: Road
+		Tiles:
+			1: Clear
+			2: Road
+			3: Road
+			4: Clear
+	Template@184:
+		Id: 184
+		Images: d12.sno
+		Size: 2,2
+		Category: Road
+		Tiles:
+			0: Clear
+			2: Road
+			3: Road
+	Template@185:
+		Id: 185
+		Images: d13.sno
+		Size: 4,3
+		Category: Road
+		Tiles:
+			0: Road
+			1: Road
+			2: Clear
+			4: Clear
+			5: Road
+			6: Road
+			7: Rock
+			10: Rock
+			11: Road
+	Template@186:
+		Id: 186
+		Images: d14.sno
+		Size: 3,3
+		Category: Road
+		Tiles:
+			1: Clear
+			2: Road
+			3: Clear
+			4: Rock
+			5: Road
+			6: Road
+			7: Road
+			8: Road
+	Template@187:
+		Id: 187
+		Images: d15.sno
+		Size: 3,3
+		Category: Road
+		Tiles:
+			0: Road
+			1: Road
+			2: Road
+			3: Road
+			4: Road
+			5: Clear
+			6: Road
+			7: Clear
+	Template@188:
+		Id: 188
+		Images: d16.sno
+		Size: 3,3
+		Category: Road
+		Tiles:
+			0: Clear
+			1: Road
+			2: Road
+			3: Road
+			4: Road
+			5: Road
+			6: Road
+			7: Road
+			8: Rock
+	Template@189:
+		Id: 189
+		Images: d17.sno
+		Size: 3,2
+		Category: Road
+		Tiles:
+			0: Road
+			1: Road
+			2: Road
+			3: Clear
+			4: Road
+			5: Clear
+	Template@190:
+		Id: 190
+		Images: d18.sno
+		Size: 3,3
+		Category: Road
+		Tiles:
+			0: Clear
+			1: Road
+			2: Clear
+			3: Road
+			4: Road
+			5: Clear
+			6: Clear
+			7: Road
+			8: Rock
+	Template@191:
+		Id: 191
+		Images: d19.sno
+		Size: 3,3
+		Category: Road
+		Tiles:
+			0: Clear
+			1: Road
+			2: Clear
+			3: Road
+			4: Road
+			5: Road
+			6: Clear
+			7: Road
+			8: Clear
+	Template@192:
+		Id: 192
+		Images: d20.sno
+		Size: 3,3
+		Category: Road
+		Tiles:
+			0: Road
+			1: Clear
+			3: Road
+			4: Road
+			5: Clear
+			6: Clear
+			7: Road
+			8: Road
+	Template@193:
+		Id: 193
+		Images: d21.sno
+		Size: 3,2
+		Category: Road
+		Tiles:
+			0: Rock
+			1: Road
+			2: Road
+			3: Clear
+			4: Road
+			5: Rough
+	Template@194:
+		Id: 194
+		Images: d22.sno
+		Size: 3,3
+		Category: Road
+		Tiles:
+			1: Clear
+			3: Road
+			4: Road
+			5: Clear
+			6: Clear
+			7: Road
+			8: Clear
+	Template@195:
+		Id: 195
+		Images: d23.sno
+		Size: 3,3
+		Category: Road
+		Tiles:
+			1: Road
+			2: Clear
+			3: Clear
+			4: Road
+			5: Clear
+			6: Road
+			7: Road
+	Template@196:
+		Id: 196
+		Images: d24.sno
+		Size: 3,3
+		Category: Road
+		Tiles:
+			0: Road
+			1: Road
+			3: Road
+			4: Road
+			5: Road
+			7: Road
+			8: Road
+	Template@197:
+		Id: 197
+		Images: d25.sno
+		Size: 3,3
+		Category: Road
+		Tiles:
+			0: Road
+			1: Road
+			3: Road
+			4: Road
+			5: Road
+			7: Road
+			8: Road
+	Template@198:
+		Id: 198
+		Images: d26.sno
+		Size: 2,2
+		Category: Road
+		Tiles:
+			1: Road
+			2: Road
+	Template@199:
+		Id: 199
+		Images: d27.sno
+		Size: 2,2
+		Category: Road
+		Tiles:
+			1: Road
+			2: Road
+	Template@200:
+		Id: 200
+		Images: d28.sno
+		Size: 2,2
+		Category: Road
+		Tiles:
+			0: Road
+			1: Road
+			2: Rough
+	Template@201:
+		Id: 201
+		Images: d29.sno
+		Size: 2,2
+		Category: Road
+		Tiles:
+			0: Road
+			1: Road
+			2: Road
+	Template@202:
+		Id: 202
+		Images: d30.sno
+		Size: 2,2
+		Category: Road
+		Tiles:
+			0: Road
+			1: Road
+			2: Road
+	Template@203:
+		Id: 203
+		Images: d31.sno
+		Size: 2,2
+		Category: Road
+		Tiles:
+			1: Road
+			2: Road
+			3: Road
+	Template@204:
+		Id: 204
+		Images: d32.sno
+		Size: 2,2
+		Category: Road
+		Tiles:
+			1: Clear
+			2: Road
+			3: Clear
+	Template@205:
+		Id: 205
+		Images: d33.sno
+		Size: 2,2
+		Category: Road
+		Tiles:
+			1: Road
+			2: Road
+			3: Road
+	Template@206:
+		Id: 206
+		Images: d34.sno
+		Size: 3,3
+		Category: Road
+		Tiles:
+			1: Road
+			2: Road
+			3: Road
+			4: Road
+			5: Road
+			6: Road
+			7: Road
+	Template@207:
+		Id: 207
+		Images: d35.sno
+		Size: 3,3
+		Category: Road
+		Tiles:
+			1: Road
+			2: Road
+			3: Road
+			4: Road
+			5: Road
+			6: Road
+			7: Road
+	Template@208:
+		Id: 208
+		Images: d36.sno
+		Size: 2,2
+		Category: Road
+		Tiles:
+			0: Road
+			3: Road
+	Template@209:
+		Id: 209
+		Images: d37.sno
+		Size: 2,2
+		Category: Road
+		Tiles:
+			0: Road
+			3: Road
+	Template@210:
+		Id: 210
+		Images: d38.sno
+		Size: 2,2
+		Category: Road
+		Tiles:
+			0: Road
+			1: Road
+			3: Road
+	Template@211:
+		Id: 211
+		Images: d39.sno
+		Size: 2,2
+		Category: Road
+		Tiles:
+			0: Road
+			1: Road
+			3: Road
+	Template@212:
+		Id: 212
+		Images: d40.sno
+		Size: 2,2
+		Category: Road
+		Tiles:
+			0: Road
+			1: Road
+			3: Road
+	Template@213:
+		Id: 213
+		Images: d41.sno
+		Size: 2,2
+		Category: Road
+		Tiles:
+			0: Rock
+			2: Road
+			3: Road
+	Template@214:
+		Id: 214
+		Images: d42.sno
+		Size: 2,2
+		Category: Road
+		Tiles:
+			0: Road
+			2: Road
+			3: Road
+	Template@215:
+		Id: 215
+		Images: d43.sno
+		Size: 2,2
+		Category: Road
+		Tiles:
+			0: Clear
+			2: Road
+			3: Road
+	Template@227:
+		Id: 227
+		Images: d44.sno
+		Size: 1,1
+		Category: Road
+		Tiles:
+			0: Road
+	Template@228:
+		Id: 228
+		Images: d45.sno
+		Size: 1,1
+		Category: Road
+		Tiles:
+			0: Road
+	Template@231:
+		Id: 231
+		Images: rc01.sno
+		Size: 2,2
+		Category: River
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Rock
+			3: Rock
+	Template@232:
+		Id: 232
+		Images: rc02.sno
+		Size: 2,2
+		Category: River
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Rock
+			3: Rock
+	Template@233:
+		Id: 233
+		Images: rc03.sno
+		Size: 2,2
+		Category: River
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Rock
+			3: Rock
+	Template@234:
+		Id: 234
+		Images: rc04.sno
+		Size: 2,2
+		Category: River
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Rock
+			3: Rock
+	Template@112:
+		Id: 112
+		Images: rv01.sno
+		Size: 5,4
+		Category: River
+		Tiles:
+			0: Rock
+			1: Rock
+			5: Rock
+			6: River
+			7: River
+			8: River
+			9: River
+			10: Rock
+			11: Rock
+			12: Rock
+			13: Rock
+			14: Rock
+			16: Rock
+			17: Rough
+	Template@113:
+		Id: 113
+		Images: rv02.sno
+		Size: 5,3
+		Category: River
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Rock
+			3: Rough
+			4: Rough
+			5: River
+			6: River
+			7: River
+			8: River
+			9: River
+			10: Rock
+			11: Rock
+			12: Rock
+	Template@114:
+		Id: 114
+		Images: rv03.sno
+		Size: 4,4
+		Category: River
+		Tiles:
+			0: Rock
+			1: Rough
+			4: Rock
+			5: Rock
+			6: Rock
+			7: Clear
+			8: Rock
+			9: Rock
+			10: River
+			11: River
+			13: Clear
+			14: Clear
+			15: Rock
+	Template@115:
+		Id: 115
+		Images: rv04.sno
+		Size: 4,4
+		Category: River
+		Tiles:
+			2: Rock
+			3: Rough
+			5: Rough
+			6: Rock
+			7: River
+			8: River
+			9: River
+			10: River
+			11: River
+			12: Rock
+			13: Rock
+			14: Rock
+	Template@116:
+		Id: 116
+		Images: rv05.sno
+		Size: 3,3
+		Category: River
+		Tiles:
+			0: Clear
+			1: River
+			2: Rock
+			3: Rock
+			4: River
+			5: Rock
+			6: Rock
+			7: River
+			8: Rock
+	Template@117:
+		Id: 117
+		Images: rv06.sno
+		Size: 3,2
+		Category: River
+		Tiles:
+			0: Rock
+			1: River
+			2: Rock
+			3: Rock
+			4: River
+			5: Rock
+	Template@118:
+		Id: 118
+		Images: rv07.sno
+		Size: 3,2
+		Category: River
+		Tiles:
+			0: Rock
+			1: Rock
+			2: River
+			3: Rock
+			4: Rock
+			5: River
+	Template@119:
+		Id: 119
+		Images: rv08.sno
+		Size: 2,2
+		Category: River
+		Tiles:
+			0: Rock
+			1: River
+			2: River
+			3: River
+	Template@120:
+		Id: 120
+		Images: rv09.sno
+		Size: 2,2
+		Category: River
+		Tiles:
+			0: Clear
+			1: Clear
+			2: River
+			3: River
+	Template@121:
+		Id: 121
+		Images: rv10.sno
+		Size: 2,2
+		Category: River
+		Tiles:
+			0: River
+			1: River
+			2: Rock
+			3: River
+	Template@122:
+		Id: 122
+		Images: rv11.sno
+		Size: 2,2
+		Category: River
+		Tiles:
+			0: River
+			1: River
+			2: River
+			3: Rock
+	Template@123:
+		Id: 123
+		Images: rv12.sno
+		Size: 3,4
+		Category: River
+		Tiles:
+			0: Clear
+			1: River
+			2: Rock
+			3: Rock
+			4: River
+			5: Rock
+			6: River
+			7: River
+			8: Rock
+			9: Rough
+			10: River
+			11: Rock
+	Template@124:
+		Id: 124
+		Images: rv13.sno
+		Size: 4,4
+		Category: River
+		Tiles:
+			2: Clear
+			3: Rough
+			4: River
+			5: River
+			6: River
+			7: River
+			8: Rough
+			9: Rock
+			10: River
+			11: Rock
+			12: Clear
+			13: Rock
+			14: River
+			15: Rough
+	Template@229:
+		Id: 229
+		Images: rv14.sno
+		Size: 1,2
+		Category: River
+		Tiles:
+			0: Rock
+			1: River
+	Template@230:
+		Id: 230
+		Images: rv15.sno
+		Size: 2,1
+		Category: River
+		Tiles:
+			0: Rock
+			1: River
+	Template@235:
+		Id: 235
+		Images: br1a.sno
+		Size: 4,3
+		Category: Bridge
+		Tiles:
+			1: Rock
+			2: Bridge
+			4: Rock
+			5: Bridge
+			6: Bridge
+			7: Rock
+			9: Bridge
+			10: Rock
+			11: Rock
+	Template@236:
+		Id: 236
+		Images: br1b.sno
+		Size: 4,3
+		Category: Bridge
+		Tiles:
+			1: Rock
+			2: Rough
+			4: Rock
+			5: Rough
+			6: Rough
+			7: Rock
+			9: Rough
+			10: Rock
+			11: Rock
+	Template@237:
+		Id: 237
+		Images: br1c.sno
+		Size: 4,3
+		Category: Bridge
+		Tiles:
+			1: Rock
+			2: Rock
+			4: Rock
+			5: Rock
+			6: Rock
+			7: Rock
+			9: Rock
+			10: Rock
+			11: Rock
+	Template@238:
+		Id: 238
+		Images: br2a.sno
+		Size: 5,3
+		Category: Bridge
+		Tiles:
+			1: Rock
+			2: Bridge
+			5: Rock
+			6: Bridge
+			7: Bridge
+			8: Rock
+			9: Rock
+			11: Bridge
+			12: Rock
+			13: Rock
+	Template@239:
+		Id: 239
+		Images: br2b.sno
+		Size: 5,3
+		Category: Bridge
+		Tiles:
+			1: Rock
+			2: Rough
+			5: Rock
+			6: Rough
+			7: Rough
+			8: Rock
+			9: Rock
+			11: Rough
+			12: Rock
+			13: Rock
+	Template@240:
+		Id: 240
+		Images: br2c.sno
+		Size: 5,3
+		Category: Bridge
+		Tiles:
+			1: Water
+			2: Water
+			5: Rock
+			6: Rock
+			7: Rock
+			8: Rock
+			9: Rock
+			11: Rock
+			12: Rock
+			13: Rock
+	Template@241:
+		Id: 241
+		Images: br3a.sno
+		Size: 4,2
+		Category: Bridge
+		Tiles:
+			0: Rock
+			1: Bridge
+			5: Bridge
+			6: Rock
+			7: Rock
+	Template@242:
+		Id: 242
+		Images: br3b.sno
+		Size: 4,2
+		Category: Bridge
+		Tiles:
+			0: Rock
+			1: Bridge
+			5: Bridge
+			6: Rock
+			7: Rock
+	Template@243:
+		Id: 243
+		Images: br3c.sno
+		Size: 4,2
+		Category: Bridge
+		Tiles:
+			0: Rock
+			1: Rock
+			5: Rock
+			6: Rock
+			7: Rock
+	Template@244:
+		Id: 244
+		Images: br3d.sno
+		Size: 4,2
+		Category: Bridge
+		Tiles:
+			0: River
+			1: Rock
+			5: River
+			6: River
+			7: River
+	Template@245:
+		Id: 245
+		Images: br3e.sno
+		Size: 4,2
+		Category: Bridge
+		Tiles:
+			0: Water
+			1: Water
+			5: Rock
+			6: Water
+			7: Water
+	Template@246:
+		Id: 246
+		Images: br3f.sno
+		Size: 4,2
+		Category: Bridge
+		Tiles:
+			0: Water
+			1: Water
+			5: Water
+			6: Water
+			7: Water
+	Template@380:
+		Id: 380
+		Images: br1x.sno
+		Size: 5,3
+		Category: Bridge
+		Tiles:
+			0: Rock
+			3: Road
+			4: Clear
+			9: Rock
+			14: Water
+	Template@381:
+		Id: 381
+		Images: br2x.sno
+		Size: 5,1
+		Category: Bridge
+		Tiles:
+			0: Road
+			4: Beach
+	Template@131:
+		Id: 131
+		Images: bridge1.sno
+		Size: 5,3
+		Category: Bridge
+		Tiles:
+			1: Rock
+			2: Bridge
+			3: Bridge
+			4: Rock
+			5: Rock
+			6: Bridge
+			7: Bridge
+			8: Rock
+			9: Rock
+			12: Rock
+	Template@132:
+		Id: 132
+		Images: bridge1d.sno
+		Size: 5,3
+		Category: Bridge
+		Tiles:
+			1: Rock
+			2: Rock
+			3: Rock
+			4: Rock
+			5: Rock
+			6: Rock
+			7: Rock
+			8: Rock
+			9: Rock
+			12: Rock
+	Template@378:
+		Id: 378
+		Images: bridge1h.sno
+		Size: 5,3
+		Category: Bridge
+		Tiles:
+			1: Rock
+			2: Rough
+			3: Rough
+			4: Rock
+			5: Rock
+			6: Rough
+			7: Rough
+			8: Rock
+			9: Rock
+			12: Rough
+	Template@382:
+		Id: 382
+		Images: bridge1x.sno
+		Size: 5,4
+		Category: Bridge
+		Tiles:
+			2: Clear
+			3: Road
+			4: Road
+			5: Rock
+			15: Road
+			16: Road
+			18: Rock
+			19: Rock
+	Template@133:
+		Id: 133
+		Images: bridge2.sno
+		Size: 5,2
+		Category: Bridge
+		Tiles:
+			0: Rock
+			1: Bridge
+			2: Bridge
+			3: Rock
+			5: Rock
+			6: Rock
+			7: Bridge
+			8: Bridge
+			9: Rock
+	Template@134:
+		Id: 134
+		Images: bridge2d.sno
+		Size: 5,2
+		Category: Bridge
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Rock
+			3: Rock
+			5: Rock
+			6: Rock
+			7: Rock
+			8: Rock
+			9: Rock
+	Template@379:
+		Id: 379
+		Images: bridge2h.sno
+		Size: 5,2
+		Category: Bridge
+		Tiles:
+			0: Rock
+			1: Rough
+			2: Rough
+			3: Rock
+			5: Rock
+			6: Rock
+			7: Rough
+			8: Rough
+			9: Rock
+	Template@383:
+		Id: 383
+		Images: bridge2x.sno
+		Size: 5,5
+		Category: Bridge
+		Tiles:
+			0: Road
+			1: Road
+			2: Rough
+			3: Clear
+			4: Rough
+			9: River
+			15: Rock
+			16: Rock
+			17: Rough
+			18: Road
+			19: Road
+			23: Road
+			24: Road
+	Template@247:
+		Id: 247
+		Images: f01.sno
+		Size: 3,3
+		Category: Bridge
+		Tiles:
+			0: Rough
+			1: Road
+			2: Road
+			3: Beach
+			4: Beach
+			5: Beach
+			6: Beach
+			7: Beach
+			8: Beach
+	Template@248:
+		Id: 248
+		Images: f02.sno
+		Size: 3,3
+		Category: Bridge
+		Tiles:
+			0: Beach
+			1: Beach
+			2: Beach
+			3: Beach
+			4: Beach
+			5: Beach
+			6: Beach
+			7: Beach
+			8: Beach
+	Template@249:
+		Id: 249
+		Images: f03.sno
+		Size: 3,3
+		Category: Bridge
+		Tiles:
+			0: Beach
+			1: Beach
+			2: Beach
+			3: Beach
+			4: Beach
+			5: Beach
+			6: Clear
+			7: Road
+			8: Clear
+	Template@250:
+		Id: 250
+		Images: f04.sno
+		Size: 3,3
+		Category: Bridge
+		Tiles:
+			0: Clear
+			1: Beach
+			2: Beach
+			3: Road
+			4: Beach
+			5: Beach
+			6: Clear
+			7: Beach
+			8: Beach
+	Template@251:
+		Id: 251
+		Images: f05.sno
+		Size: 3,3
+		Category: Bridge
+		Tiles:
+			0: Beach
+			1: Beach
+			2: Beach
+			3: Beach
+			4: Beach
+			5: Beach
+			6: Beach
+			7: Beach
+			8: Beach
+	Template@252:
+		Id: 252
+		Images: f06.sno
+		Size: 3,3
+		Category: Bridge
+		Tiles:
+			0: Beach
+			1: Beach
+			2: Clear
+			3: Beach
+			4: Beach
+			5: Road
+			6: Beach
+			7: Beach
+			8: Clear
+	Template@129:
+		Id: 129
+		Images: ford1.sno
+		Size: 3,3
+		Category: Bridge
+		Tiles:
+			0: Rough
+			1: River
+			2: Rough
+			3: Road
+			4: Rough
+			5: Road
+			6: Clear
+			7: Rough
+			8: Rough
+	Template@130:
+		Id: 130
+		Images: ford2.sno
+		Size: 3,3
+		Category: Bridge
+		Tiles:
+			0: Rough
+			1: Rough
+			2: Rough
+			3: Rock
+			4: Rough
+			5: Rough
+			6: Clear
+			7: Road
+			8: Clear
+	Template@125:
+		Id: 125
+		Images: falls1.sno
+		Size: 3,3
+		Category: River
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Rock
+			3: River
+			4: Rock
+			5: Rock
+			6: Rough
+			7: Rock
+			8: Rock
+	Template@126:
+		Id: 126
+		Images: falls1a.sno
+		Size: 3,3
+		Category: Water Cliffs
+		Tiles:
+			0: Water
+			1: River
+			2: Rock
+			3: Water
+			4: Rock
+			5: Rock
+			6: Water
+			7: River
+			8: Rock
+	Template@127:
+		Id: 127
+		Images: falls2.sno
+		Size: 3,2
+		Category: River
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Rock
+			3: River
+			4: Rock
+			5: Rock
+	Template@128:
+		Id: 128
+		Images: falls2a.sno
+		Size: 3,2
+		Category: Water Cliffs
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Rock
+			3: River
+			4: River
+			5: River
+	Template@97:
+		Id: 97
+		Images: b1.sno
+		Size: 1,1
+		Category: Debris
+		Tiles:
+			0: Rock
+	Template@98:
+		Id: 98
+		Images: b2.sno
+		Size: 2,1
+		Category: Debris
+		Tiles:
+			0: Rock
+			1: Rock
+	Template@99:
+		Id: 99
+		Images: b3.sno
+		Size: 3,1
+		Category: Debris
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Rock
+	Template@216:
+		Id: 216
+		Images: rf01.sno
+		Size: 1,1
+		Category: Debris
+		Tiles:
+			0: Rock
+	Template@217:
+		Id: 217
+		Images: rf02.sno
+		Size: 1,1
+		Category: Debris
+		Tiles:
+			0: Rock
+	Template@218:
+		Id: 218
+		Images: rf03.sno
+		Size: 1,1
+		Category: Debris
+		Tiles:
+			0: Rock
+	Template@219:
+		Id: 219
+		Images: rf04.sno
+		Size: 1,1
+		Category: Debris
+		Tiles:
+			0: Rock
+	Template@220:
+		Id: 220
+		Images: rf05.sno
+		Size: 1,1
+		Category: Debris
+		Tiles:
+			0: Rock
+	Template@221:
+		Id: 221
+		Images: rf06.sno
+		Size: 1,1
+		Category: Debris
+		Tiles:
+			0: Rock
+	Template@222:
+		Id: 222
+		Images: rf07.sno
+		Size: 1,1
+		Category: Debris
+		Tiles:
+			0: Rock
+	Template@223:
+		Id: 223
+		Images: rf08.sno
+		Size: 1,2
+		Category: Debris
+		Tiles:
+			0: Rock
+			1: Rock
+	Template@224:
+		Id: 224
+		Images: rf09.sno
+		Size: 1,2
+		Category: Debris
+		Tiles:
+			0: Rock
+			1: Rock
+	Template@225:
+		Id: 225
+		Images: rf10.sno
+		Size: 2,1
+		Category: Debris
+		Tiles:
+			0: Rough
+			1: Rough
+	Template@226:
+		Id: 226
+		Images: rf11.sno
+		Size: 2,1
+		Category: Debris
+		Tiles:
+			0: Rock
+			1: Rock
+	Template@103:
+		Id: 103
+		Images: p01.sno
+		Size: 1,1
+		Category: Debris
+		Tiles:
+			0: Rock
+	Template@104:
+		Id: 104
+		Images: p02.sno
+		Size: 1,1
+		Category: Debris
+		Tiles:
+			0: Rock
+	Template@105:
+		Id: 105
+		Images: p03.sno
+		Size: 1,1
+		Category: Debris
+		Tiles:
+			0: Rock
+	Template@106:
+		Id: 106
+		Images: p04.sno
+		Size: 1,1
+		Category: Debris
+		Tiles:
+			0: Rock
+	Template@107:
+		Id: 107
+		Images: p07.sno
+		Size: 4,2
+		Category: Debris
+		Tiles:
+			0: Rough
+			1: Clear
+			2: Clear
+			3: Clear
+			4: Clear
+			5: Clear
+			6: Clear
+			7: Clear
+	Template@108:
+		Id: 108
+		Images: p08.sno
+		Size: 3,2
+		Category: Debris
+		Tiles:
+			0: Clear
+			1: Clear
+			2: Clear
+			3: Clear
+			4: Clear
+			5: Clear
+	Template@109:
+		Id: 109
+		Images: p13.sno
+		Size: 3,2
+		Category: Debris
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Rock
+			3: Rock
+			4: Rock
+			5: Rock
+	Template@110:
+		Id: 110
+		Images: p14.sno
+		Size: 2,1
+		Category: Debris
+		Tiles:
+			0: Rock
+			1: Rock

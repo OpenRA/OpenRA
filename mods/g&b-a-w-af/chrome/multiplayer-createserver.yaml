@@ -1,0 +1,131 @@
+Container@MULTIPLAYER_CREATESERVER_PANEL:
+	Logic: ServerCreationLogic
+	Width: PARENT_RIGHT
+	Height: PARENT_BOTTOM
+	Children:
+		Label@TITLE:
+			Y: 5
+			Width: 582
+			Height: 25
+			Text: Create Server
+			Align: Center
+			Font: Bold
+		ScrollPanel:
+			Y: 30
+			Width: 583
+			Height: 249
+			Children:
+				Container:
+					X: 185
+					Y: 25
+					Children:
+						Label@SERVER_NAME_LABEL:
+							Y: 14
+							Width: 95
+							Height: 25
+							Align: Right
+							Text: Server Name:
+						TextField@SERVER_NAME:
+							X: 100
+							Y: 15
+							Width: 215
+							MaxLength: 50
+							Height: 25
+							Text: My OpenRA Server
+						Label@PASSWORD_LABEL:
+							Y: 49
+							Width: 95
+							Height: 25
+							Align: Right
+							Text: Password:
+						PasswordField@PASSWORD:
+							X: 100
+							Y: 50
+							Width: 145
+							MaxLength: 20
+							Height: 25
+						Label@AFTER_PASSWORD_LABEL:
+							X: 255
+							Y: 49
+							Width: 95
+							Height: 25
+							Align: Left
+							Text: (optional)
+						Label@LISTEN_PORT_LABEL:
+							Y: 84
+							Width: 95
+							Height: 25
+							Align: Right
+							Text: Port:
+						TextField@LISTEN_PORT:
+							X: 100
+							Y: 85
+							Width: 50
+							Height: 25
+							MaxLength: 5
+							Text: 1234
+						Label@EXTERNAL_PORT_LABEL:
+							X: 170
+							Y: 84
+							Width: 90
+							Height: 25
+							Align: Right
+							Text: External Port:
+						TextField@EXTERNAL_PORT:
+							X: 265
+							Y: 85
+							Width: 50
+							MaxLength: 5
+							Height: 25
+							Text: 1234
+						Checkbox@ADVERTISE_CHECKBOX:
+							X: 100
+							Y: 135
+							Width: 150
+							Height: 20
+							Font: Regular
+							Text: Advertise Online
+						Checkbox@UPNP_CHECKBOX:
+							X: 100
+							Y: 165
+							Width: 300
+							Height: 20
+							Font: Regular
+							Text: Automatic port forwarding
+		Container@SIDEBAR:
+			X: PARENT_RIGHT-WIDTH
+			Y: 30
+			Width: 174
+			Height: 280
+			Children:
+				Background@MAP_BG:
+					Width: PARENT_RIGHT
+					Height: 174
+					Background: dialog3
+					Children:
+						MapPreview@MAP_PREVIEW:
+							X: 1
+							Y: 1
+							Width: PARENT_RIGHT - 2
+							Height: PARENT_RIGHT - 2
+				Label@MAP_NAME:
+					Y: 172
+					Width: PARENT_RIGHT
+					Height: 25
+					Font: Bold
+					Align: Center
+		Button@MAP_BUTTON:
+			X: PARENT_RIGHT - WIDTH
+			Y: 284-30
+			Width: 174
+			Height: 25
+			Text: Choose Map
+			Font: Bold
+		Button@CREATE_BUTTON:
+			Key: return
+			X: PARENT_RIGHT - WIDTH
+			Y: 284
+			Width: 174
+			Height: 25
+			Text: Create
+			Font: Bold

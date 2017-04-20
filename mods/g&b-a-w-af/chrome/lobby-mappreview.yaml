@@ -1,0 +1,180 @@
+Container@LOBBY_MAP_PREVIEW:
+	Logic: LobbyMapPreviewLogic
+	Width: PARENT_RIGHT
+	Height: PARENT_BOTTOM
+	Children:
+		Container@MAP_AVAILABLE:
+			Width: PARENT_RIGHT
+			Height: PARENT_BOTTOM
+			Children:
+				Background@MAP_BG:
+					Width: PARENT_RIGHT
+					Height: 174
+					Background: dialog3
+					Children:
+						MapPreview@MAP_PREVIEW:
+							X: 1
+							Y: 1
+							Width: PARENT_RIGHT-2
+							Height: PARENT_BOTTOM-2
+							TooltipContainer: TOOLTIP_CONTAINER
+				Label@MAP_TITLE:
+					Y: 172
+					Width: PARENT_RIGHT
+					Height: 25
+					Font: Bold
+					Align: Center
+				Label@MAP_TYPE:
+					Y: 187
+					Width: PARENT_RIGHT
+					Height: 25
+					Font: TinyBold
+					Align: Center
+				Label@MAP_AUTHOR:
+					Y: 200
+					Width: PARENT_RIGHT
+					Height: 25
+					Font: Tiny
+					Align: Center
+		Container@MAP_INVALID:
+			Width: PARENT_RIGHT
+			Height: PARENT_BOTTOM
+			Children:
+				Background@MAP_BG:
+					Width: PARENT_RIGHT
+					Height: 174
+					Background: dialog3
+					Children:
+						MapPreview@MAP_PREVIEW:
+							X: 1
+							Y: 1
+							Width: PARENT_RIGHT-2
+							Height: PARENT_BOTTOM-2
+							TooltipContainer: TOOLTIP_CONTAINER
+				Label@MAP_TITLE:
+					Y: 172
+					Width: PARENT_RIGHT
+					Height: 25
+					Font: Bold
+					Align: Center
+				Label@MAP_STATUS_A:
+					Y: 187
+					Width: PARENT_RIGHT
+					Height: 25
+					Font: Tiny
+					Align: Center
+					Text: This map is not compatible
+				Label@MAP_STATUS_B:
+					Y: 200
+					Width: PARENT_RIGHT
+					Height: 25
+					Font: Tiny
+					Align: Center
+					Text: with this version of OpenRA
+		Container@MAP_DOWNLOADABLE:
+			Width: PARENT_RIGHT
+			Height: PARENT_BOTTOM
+			Children:
+				Background@MAP_BG:
+					Width: PARENT_RIGHT
+					Height: 142
+					Background: dialog3
+					Children:
+						MapPreview@MAP_PREVIEW:
+							X: 1
+							Y: 1
+							Width: PARENT_RIGHT-2
+							Height: PARENT_BOTTOM-2
+							TooltipContainer: TOOLTIP_CONTAINER
+				Label@MAP_TITLE:
+					Y: 142
+					Width: PARENT_RIGHT
+					Height: 25
+					Font: Bold
+					Align: Center
+				Label@MAP_TYPE:
+					Y: 157
+					Width: PARENT_RIGHT
+					Height: 25
+					Font: TinyBold
+					Align: Center
+				Label@MAP_AUTHOR:
+					Y: 170
+					Width: PARENT_RIGHT
+					Height: 25
+					Font: Tiny
+					Align: Center
+				Button@MAP_INSTALL:
+					Y: 194
+					Width: PARENT_RIGHT
+					Height: 25
+					Font: Bold
+					Text: Install Map
+		Container@MAP_PROGRESS:
+			Width: PARENT_RIGHT
+			Height: PARENT_BOTTOM
+			Children:
+				Background@MAP_BG:
+					Width: PARENT_RIGHT
+					Height: 142
+					Background: dialog3
+					Children:
+						MapPreview@MAP_PREVIEW:
+							X: 1
+							Y: 1
+							Width: PARENT_RIGHT-2
+							Height: PARENT_BOTTOM-2
+							TooltipContainer: TOOLTIP_CONTAINER
+				Label@MAP_TITLE:
+					Y: 142
+					Width: PARENT_RIGHT
+					Height: 25
+					Font: Bold
+					Align: Center
+				Label@MAP_STATUS_SEARCHING:
+					Y: 157
+					Width: PARENT_RIGHT
+					Height: 25
+					Font: Tiny
+					Align: Center
+					Text: Searching OpenRA Resource Center...
+				Container@MAP_STATUS_UNAVAILABLE:
+					Width: PARENT_RIGHT
+					Children:
+						Label@a:
+							Y: 157
+							Width: PARENT_RIGHT
+							Height: 25
+							Font: Tiny
+							Align: Center
+							Text: This map was not found on the
+						Label@b:
+							Y: 170
+							Width: PARENT_RIGHT
+							Height: 25
+							Font: Tiny
+							Align: Center
+							Text: OpenRA Resource Center
+				Label@MAP_STATUS_ERROR:
+					Y: 157
+					Width: PARENT_RIGHT
+					Height: 25
+					Font: Tiny
+					Align: Center
+					Text: An error occurred during installation
+				Label@MAP_STATUS_DOWNLOADING:
+					Y: 157
+					Width: PARENT_RIGHT
+					Height: 25
+					Font: Tiny
+					Align: Center
+				ProgressBar@MAP_PROGRESSBAR:
+					Y: 194
+					Width: PARENT_RIGHT
+					Height: 25
+					Indeterminate: True
+				Button@MAP_RETRY:
+					Y: 194
+					Width: PARENT_RIGHT
+					Height: 25
+					Font: Bold

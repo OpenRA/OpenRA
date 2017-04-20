@@ -1,0 +1,196 @@
+Player:
+	PlayerResources:
+		DefaultCash: 2000
+
+World:
+	LuaScript:
+		Scripts: intervention.lua
+	MissionData:
+		Briefing: The Soviet Air Force is flying air raids against a civilian village.\n\nWe have to do everything in our power to stop them!\n\nYour job is to establish a base on the mainland ASAP. We can prevent the village's destruction by capturing the enemy's Air Force Headquarters building. The enemy base is heavily guarded, though.  You will not have enough time to build a force big enough to overpower the Soviet defences. You will have to find a way to sneak in!\n\nGood luck, Commander!\n
+	ScriptLobbyDropdown@difficulty:
+		ID: difficulty
+		Label: Difficulty
+		Values:
+			medium: Medium
+			hard: Hard
+		Default: medium
+
+CAMERA:
+	RevealsShroud:
+		Range: 18c0
+
+MISS:
+	Tooltip:
+		Name: Soviet Air Force HQ
+	Capturable:
+		Type: building
+		AllowAllies: False
+		AllowNeutral: False
+		AllowEnemies: True
+		CaptureThreshold: 100
+
+E6.MOD:
+	Inherits: E6
+	Buildable:
+		Prerequisites: ~barracks
+	Captures:
+		CaptureTypes: building
+		Sabotage: False
+	RenderSprites:
+		Image: e6
+
+E6:
+	Buildable:
+		Prerequisites: ~disabled
+
+TENT:
+	Buildable:
+		Prerequisites: anypower, ~structures.allies, ~techlevel.infonly, mainland
+
+DOME:
+	Buildable:
+		Prerequisites: proc, ~techlevel.medium, mainland
+
+WEAP:
+	Buildable:
+		Prerequisites: proc, ~techlevel.low, mainland
+	ProvidesPrerequisite:
+		Prerequisite: givefix
+
+MAINLAND:
+	AlwaysVisible:
+	Tooltip:
+		Name: Reach the mainland
+	ProvidesPrerequisite:
+		Prerequisite: mainland
+
+HPAD:
+	ProvidesPrerequisite:
+		Prerequisite: givefix
+
+FIX:
+	Buildable:
+		Prerequisites: givefix
+
+GIVEFIX:
+	AlwaysVisible:
+	Tooltip:
+		Name: Weapons Factory or Helipad
+
+MIG:
+	Buildable:
+		Prerequisites: ~afld
+	AmmoPool:
+		Ammo: 2
+
+HELI:
+	Buildable:
+		Prerequisites: ~hpad
+	Valued:
+		Cost: 1500
+
+SAM:
+	RevealsShroud:
+		Range: 7c0
+	Power:
+		Amount: -5
+
+TSLA:
+	Power:
+		Amount: -50
+
+ATEK:
+	Buildable:
+		Prerequisites: ~disabled
+
+STEK:
+	Buildable:
+		Prerequisites: ~disabled
+
+GAP:
+	Buildable:
+		Prerequisites: ~disabled
+
+MSLO:
+	Buildable:
+		Prerequisites: ~disabled
+
+PDOX:
+	Buildable:
+		Prerequisites: ~disabled
+
+E4:
+	Buildable:
+		Prerequisites: ~disabled
+
+E7:
+	Buildable:
+		Prerequisites: ~disabled
+
+THF:
+	Buildable:
+		Prerequisites: ~disabled
+
+HIJACKER:
+	Buildable:
+		Prerequisites: ~disabled
+
+SHOK:
+	Buildable:
+		Prerequisites: ~disabled
+
+SNIPER:
+	Buildable:
+		Prerequisites: ~disabled
+
+2TNK:
+	Buildable:
+		Prerequisites: ~disabled
+
+ARTY:
+	Buildable:
+		Prerequisites: ~disabled
+
+CTNK:
+	Buildable:
+		Prerequisites: ~disabled
+
+MGG:
+	Buildable:
+		Prerequisites: ~disabled
+
+MNLY.AT:
+	Buildable:
+		Prerequisites: ~disabled
+
+MNLY.AP:
+	Buildable:
+		Prerequisites: ~disabled
+
+MRJ:
+	Buildable:
+		Prerequisites: ~disabled
+
+TRUK:
+	Buildable:
+		Prerequisites: ~disabled
+
+HIND:
+	Buildable:
+		Prerequisites: ~disabled
+
+YAK:
+	Buildable:
+		Prerequisites: ~disabled
+
+CA:
+	Buildable:
+		Prerequisites: ~disabled
+
+DD:
+	Buildable:
+		Prerequisites: ~disabled
+
+STNK:
+	Buildable:
+		Prerequisites: ~disabled

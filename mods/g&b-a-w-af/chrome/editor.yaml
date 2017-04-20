@@ -1,0 +1,387 @@
+Background@NEW_MAP_BG:
+	Logic: NewMapLogic
+	X: (WINDOW_RIGHT - WIDTH)/2
+	Y: (WINDOW_BOTTOM - HEIGHT)/2
+	Width: 300
+	Height: 185
+	Children:
+		Container@MUSICBUTTONS:
+			Logic: MusicControllerLogic
+			Children:
+				LogicKeyListener@MUSICCONTROLLER_KEYHANDLER:
+		Label@LABEL_TITLE:
+			X: 0
+			Y: 20
+			Width: 300
+			Height: 25
+			Text: New Map
+			Align: Center
+			Font: Bold
+		Label@TILESET_LABEL:
+			X: 20
+			Y: 59
+			Width: 95
+			Height: 25
+			Align: Right
+			Text: Tileset:
+		DropDownButton@TILESET:
+			X: 120
+			Y: 60
+			Width: 160
+			Height: 25
+		Label@WIDTH_LABEL:
+			X: 20
+			Y: 94
+			Width: 95
+			Height: 25
+			Align: Right
+			Text: Width:
+		TextField@WIDTH:
+			X: 120
+			Y: 95
+			Width: 50
+			MaxLength: 3
+			Height: 25
+			Text: 128
+		Label@HEIGHT_LABEL:
+			X: 130
+			Y: 94
+			Width: 95
+			Height: 25
+			Align: Right
+			Text: Height:
+		TextField@HEIGHT:
+			X: 230
+			Y: 95
+			Width: 50
+			MaxLength: 3
+			Height: 25
+			Text: 128
+		Button@CREATE_BUTTON:
+			X: 30
+			Y: PARENT_BOTTOM - 45
+			Width: 120
+			Height: 25
+			Text: Create
+			Font: Bold
+			Key: return
+		Button@CANCEL_BUTTON:
+			X: 160
+			Y: PARENT_BOTTOM - 45
+			Width: 120
+			Height: 25
+			Text: Cancel
+			Font: Bold
+			Key: escape
+
+Background@SAVE_MAP_PANEL:
+	Logic: SaveMapLogic
+	X: (WINDOW_RIGHT - WIDTH)/2
+	Y: (WINDOW_BOTTOM - HEIGHT)/2
+	Width: 350
+	Height: 300
+	Children:
+		Label@LABEL_TITLE:
+			X: (PARENT_RIGHT - WIDTH)/2
+			Y: 20
+			Width: 250
+			Height: 25
+			Text: Save Map
+			Align: Center
+			Font: Bold
+		Label@TITLE_LABEL:
+			X: 10
+			Y: 59
+			Width: 95
+			Height: 25
+			Align: Right
+			Text: Title:
+		TextField@TITLE:
+			X: 110
+			Y: 60
+			Width: 220
+			MaxLength: 50
+			Height: 25
+		Label@AUTHOR_LABEL:
+			X: 10
+			Y: 94
+			Width: 95
+			Height: 25
+			Align: Right
+			Text: Author:
+		TextField@AUTHOR:
+			X: 110
+			Y: 95
+			Width: 220
+			MaxLength: 50
+			Height: 25
+		Label@VISIBILITY_LABEL:
+			X: 10
+			Y: 129
+			Width: 95
+			Height: 25
+			Align: Right
+			Text: Visibility:
+		DropDownButton@VISIBILITY_DROPDOWN:
+			X: 110
+			Y: 130
+			Width: 220
+			Height: 25
+		Label@DIRECTORY_LABEL:
+			X: 10
+			Y: 164
+			Width: 95
+			Height: 25
+			Align: Right
+			Text: Directory:
+		DropDownButton@DIRECTORY_DROPDOWN:
+			X: 110
+			Y: 165
+			Width: 220
+			Height: 25
+		Label@FILENAME_LABEL:
+			X: 10
+			Y: 199
+			Width: 95
+			Height: 25
+			Align: Right
+			Text: Filename:
+		TextField@FILENAME:
+			X: 110
+			Y: 200
+			Width: 105
+			Height: 25
+		DropDownButton@TYPE_DROPDOWN:
+			X: 220
+			Y: 200
+			Width: 110
+			Height: 25
+		Button@SAVE_BUTTON:
+			X: 80
+			Y: PARENT_BOTTOM - 45
+			Width: 120
+			Height: 25
+			Text: Save
+			Font: Bold
+		Button@BACK_BUTTON:
+			X: 210
+			Y: PARENT_BOTTOM - 45
+			Width: 120
+			Height: 25
+			Text: Cancel
+			Font: Bold
+			Key: escape
+
+Container@EDITOR_ROOT:
+	Logic: LoadMapEditorLogic
+	Children:
+		Container@WORLD_ROOT:
+		Container@MENU_ROOT:
+		TooltipContainer@TOOLTIP_CONTAINER:
+
+Container@EDITOR_WORLD_ROOT:
+	Logic: LoadIngamePerfLogic, MapEditorLogic
+	Children:
+		Container@PERF_ROOT:
+		ViewportController:
+			X: 0
+			Y: 0
+			Width: WINDOW_RIGHT
+			Height: WINDOW_BOTTOM
+			TooltipContainer: TOOLTIP_CONTAINER
+		EditorViewportController@MAP_EDITOR:
+			Width: WINDOW_RIGHT
+			Height: WINDOW_BOTTOM
+			TooltipContainer: TOOLTIP_CONTAINER
+			TooltipTemplate: SIMPLE_TOOLTIP
+			Children:
+				ActorPreview@DRAG_ACTOR_PREVIEW:
+					Visible: false
+				TerrainTemplatePreview@DRAG_TILE_PREVIEW:
+					Visible: false
+				Sprite@DRAG_LAYER_PREVIEW:
+					Visible: false
+		Background@RADAR_BG:
+			X: WINDOW_RIGHT-255
+			Y: 5
+			Width: 250
+			Height: 250
+			Children:
+				Radar@INGAME_RADAR:
+					X: 10
+					Y: 10
+					Width: PARENT_RIGHT-19
+					Height: PARENT_BOTTOM-19
+		Container@TILE_WIDGETS:
+			Logic: TileSelectorLogic
+			Children:
+				Background@TILES_BG:
+					X: WINDOW_RIGHT-250
+					Y: 290
+					Width: 240
+					Height: WINDOW_BOTTOM-382
+					Children:
+						DropDownButton@TILE_CATEGORY:
+							X: 10
+							Y: 10
+							Width: 220
+							Height: 25
+							Font: Bold
+						ScrollPanel@TILETEMPLATE_LIST:
+							X: 10
+							Y: 35
+							Width: PARENT_RIGHT-20
+							Height: PARENT_BOTTOM-45
+							TopBottomSpacing: 4
+							ItemSpacing: 4
+							Children:
+								ScrollItem@TILEPREVIEW_TEMPLATE:
+									Visible: false
+									Width: PARENT_RIGHT - 35
+									TooltipContainer: TOOLTIP_CONTAINER
+									Children:
+										TerrainTemplatePreview@TILE_PREVIEW:
+											X: 4
+											Y: 4
+		Container@LAYER_WIDGETS:
+			Visible: false
+			Logic: LayerSelectorLogic
+			Children:
+				Background@LAYERS_BG:
+					X: WINDOW_RIGHT-250
+					Y: 290
+					Width: 240
+					Height: WINDOW_BOTTOM-382
+					Children:
+						ScrollPanel@LAYERTEMPLATE_LIST:
+							X: 10
+							Y: 10
+							Width: PARENT_RIGHT-20
+							Height: PARENT_BOTTOM-20
+							TopBottomSpacing: 4
+							ItemSpacing: 4
+							Children:
+								ScrollItem@LAYERPREVIEW_TEMPLATE:
+									Visible: false
+									IgnoreChildMouseOver: true
+									TooltipContainer: TOOLTIP_CONTAINER
+									Children:
+										Sprite@LAYER_PREVIEW:
+											X: 4
+											Y: 4
+											Visible: false
+		Container@ACTOR_WIDGETS:
+			Visible: false
+			Logic: ActorSelectorLogic
+			Children:
+				Background@ACTORS_BG:
+					X: WINDOW_RIGHT-250
+					Y: 290
+					Width: 240
+					Height: WINDOW_BOTTOM-382
+					Children:
+						DropDownButton@OWNERS_DROPDOWN:
+							X: 10
+							Y: 10
+							Width: 220
+							Height: 25
+							Font: Bold
+						ScrollPanel@ACTORTEMPLATE_LIST:
+							X: 10
+							Y: 35
+							Width: PARENT_RIGHT-20
+							Height: PARENT_BOTTOM-45
+							TopBottomSpacing: 4
+							ItemSpacing: 4
+							Children:
+								ScrollItem@ACTORPREVIEW_TEMPLATE:
+									Visible: false
+									Width: PARENT_RIGHT - 35
+									TooltipContainer: TOOLTIP_CONTAINER
+									TooltipTemplate: SIMPLE_TOOLTIP
+									IgnoreChildMouseOver: true
+									Children:
+										ActorPreview@ACTOR_PREVIEW:
+											X: 4
+											Y: 4
+											Visible: true
+		Container@MAP_EDITOR_TAB_CONTAINER:
+			Logic: MapEditorTabsLogic
+			X: WINDOW_RIGHT-245
+			Y: 260
+			Width: 240
+			Height: 25
+			Children:
+				Button@TILES_TAB:
+					X: 0
+					Width: 70
+					Height: 25
+					Text: Tiles
+					Font: Bold
+				Button@OVERLAYS_TAB:
+					X: 70
+					Width: 90
+					Height: 25
+					Text: Overlays
+					Font: Bold
+				Button@ACTORS_TAB:
+					X: 160
+					Width: 70
+					Height: 25
+					Text: Actors
+					Font: Bold
+		MenuButton@OPTIONS_BUTTON:
+			Logic: MenuButtonsChromeLogic
+			MenuContainer: INGAME_MENU
+			HideIngameUI: true
+			Pause: true
+			Width: 160
+			Height: 25
+			Text: Menu
+			TooltipText: Menu
+			TooltipContainer: TOOLTIP_CONTAINER
+			Font: Bold
+			Key: escape
+		Button@COPYPASTE_BUTTON:
+			X: 170
+			Width: 90
+			Height: 25
+			Text: Copy/Paste
+			Font: Bold
+		Button@GRID_BUTTON:
+			X: 270
+			Width: 70
+			Height: 25
+			Text: Grid
+			TooltipTemplate: BUTTON_TOOLTIP
+			TooltipText: Toggle the terrain grid
+			TooltipContainer: TOOLTIP_CONTAINER
+			Font: Bold
+			Key: f1
+		Label@ZOOM_LABEL:
+			X: 345
+			Width: 50
+			Height: 25
+			Text: Zoom:
+			Align: Right
+			Font: Bold
+			Contrast: true
+		DropDownButton@ZOOM_BUTTON:
+			X: 400
+			Width: 70
+			Height: 25
+			Font: Bold
+		Label@COORDINATE_LABEL:
+			X: 485
+			Width: 50
+			Height: 25
+			Align: Left
+			Font: Bold
+			Contrast: true
+		Label@CASH_LABEL:
+			X: 570
+			Width: 50
+			Height: 25
+			Align: Left
+			Font: Bold
+			Contrast: true

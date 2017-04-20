@@ -1,0 +1,619 @@
+DOG:
+	Inherits: ^Soldier
+	Buildable:
+		Queue: Infantry
+		BuildAtProductionType: Dog
+		BuildPaletteOrder: 50
+		Prerequisites: ~kenn, ~techlevel.infonly
+	Valued:
+		Cost: 200
+	Tooltip:
+		Name: Attack Dog
+		Description: Anti-infantry unit.\nCan detect cloaked units and spies.\n  Strong vs Infantry\n  Weak vs Vehicles, Aircraft
+		GenericName: Dog
+	Selectable:
+		Bounds: 12,17,-1,-4
+	SelectionDecorations:
+		VisualBounds: 12,17,-1,-4
+	Health:
+		HP: 12
+	Mobile:
+		Speed: 99
+		Voice: Move
+	Guard:
+		Voice: Move
+	Passenger:
+		Voice: Move
+	RevealsShroud:
+		Range: 5c0
+	Armament:
+		Weapon: DogJaw
+	AttackLeap:
+		Voice: Attack
+	AttackMove:
+		Voice: Move
+	AutoTarget:
+		InitialStance: AttackAnything
+	Targetable:
+		TargetTypes: Ground, Infantry
+	WithInfantryBody:
+		AttackSequence: shoot
+		StandSequences: stand
+	IgnoresDisguise:
+	DetectCloaked:
+		CloakTypes: Cloak, Hijacker
+	Voiced:
+		VoiceSet: DogVoice
+	-TakeCover:
+
+E1:
+	Inherits: ^Soldier
+	Buildable:
+		Queue: Infantry
+		BuildAtProductionType: Soldier
+		BuildPaletteOrder: 10
+		Prerequisites: ~barracks, ~techlevel.infonly
+	Valued:
+		Cost: 100
+	Tooltip:
+		Name: Rifle Infantry
+		Description: General-purpose infantry.\n  Strong vs Infantry\n  Weak vs Vehicles, Aircraft
+	Health:
+		HP: 50
+	Armament@PRIMARY:
+		Weapon: M1Carbine
+	Armament@GARRISONED:
+		Name: garrisoned
+		Weapon: Vulcan
+		MuzzleSequence: garrison-muzzle
+	AttackFrontal:
+	WithInfantryBody:
+		AttackSequence: shoot
+	ProducibleWithLevel:
+		Prerequisites: barracks.upgraded
+
+E2:
+	Inherits: ^Soldier
+	Buildable:
+		Queue: Infantry
+		BuildAtProductionType: Soldier
+		BuildPaletteOrder: 40
+		Prerequisites: ~barr, ~techlevel.infonly
+	Valued:
+		Cost: 160
+	Tooltip:
+		Name: Grenadier
+		Description: Infantry armed with grenades.\n  Strong vs Buildings, Infantry\n  Weak vs Vehicles, Aircraft
+	Health:
+		HP: 50
+	Mobile:
+		Speed: 71
+	Armament@PRIMARY:
+		Weapon: Grenade
+		LocalOffset: 0,0,555
+		FireDelay: 15
+	Armament@GARRISONED:
+		Name: garrisoned
+		Weapon: Grenade
+		FireDelay: 15
+	AttackFrontal:
+	WithInfantryBody:
+		AttackSequence: throw
+	Explodes:
+		Weapon: UnitExplodeSmall
+		Chance: 50
+	ProducibleWithLevel:
+		Prerequisites: barracks.upgraded
+
+E3:
+	Inherits: ^Soldier
+	Buildable:
+		Queue: Infantry
+		BuildAtProductionType: Soldier
+		BuildPaletteOrder: 30
+		Prerequisites: ~barracks, ~techlevel.infonly
+	Valued:
+		Cost: 300
+	Tooltip:
+		Name: Rocket Soldier
+		Description: Anti-tank/Anti-aircraft infantry.\n  Strong vs Vehicles, Aircraft\n  Weak vs Infantry
+	Health:
+		HP: 45
+	Armament@PRIMARY:
+		Weapon: RedEye
+		LocalOffset: 0,0,555
+	Armament@SECONDARY:
+		Weapon: Dragon
+		LocalOffset: 0,0,555
+	Armament@GARRISONED:
+		Name: garrisoned
+		Weapon: Dragon
+	AttackFrontal:
+	WithInfantryBody:
+		AttackSequence: shoot
+	ProducibleWithLevel:
+		Prerequisites: barracks.upgraded
+
+E4:
+	Inherits: ^Soldier
+	Buildable:
+		Queue: Infantry
+		BuildAtProductionType: Soldier
+		BuildPaletteOrder: 70
+		Prerequisites: ~barr, ftur, ~techlevel.low
+	Valued:
+		Cost: 300
+	Tooltip:
+		Name: Flamethrower
+		Description: Advanced anti-structure unit.\n  Strong vs Infantry, Buildings\n  Weak vs Vehicles, Aircraft
+	Health:
+		HP: 40
+	Armament@PRIMARY:
+		Weapon: Flamer
+		LocalOffset: 427,0,341
+		FireDelay: 8
+	Armament@GARRISONED:
+		Name: garrisoned
+		Weapon: Flamer
+	AttackFrontal:
+	WithInfantryBody:
+		AttackSequence: shoot
+	ProducibleWithLevel:
+		Prerequisites: barracks.upgraded
+
+E6:
+	Inherits: ^Soldier
+	Buildable:
+		Queue: Infantry
+		BuildAtProductionType: Soldier
+		BuildPaletteOrder: 60
+		Prerequisites: ~barracks, ~techlevel.infonly
+	Valued:
+		Cost: 500
+	Tooltip:
+		Name: Engineer
+		Description: Infiltrates and captures\nenemy structures.\n  Unarmed
+	Passenger:
+		PipType: Yellow
+	EngineerRepair:
+	RepairsBridges:
+	ExternalCaptures:
+		Type: building
+	-AutoTarget:
+	Voiced:
+		VoiceSet: EngineerVoice
+	Selectable:
+		Priority: 5
+
+SPY:
+	Inherits: ^Soldier
+	Buildable:
+		Queue: Infantry
+		BuildAtProductionType: Soldier
+		BuildPaletteOrder: 90
+		Prerequisites: ~!infantry.england, dome, ~tent, ~techlevel.medium
+	Valued:
+		Cost: 500
+	-Tooltip:
+	DisguiseToolTip:
+		Name: Spy
+		GenericName: Soldier
+		Description: Infiltrates enemy structures for intel or\nsabotage. Exact effect depends on the\nbuilding infiltrated.\nLoses disguise when attacking.\nCan detect cloaked units and spies.\n  Strong vs Infantry\n  Weak vs Vehicles, Aircraft\n  Special Ability: Disguised
+	-Guard:
+	RevealsShroud:
+		Range: 5c0
+	Passenger:
+		PipType: Yellow
+		Voice: Move
+	Disguise:
+		Voice: Move
+	Infiltrates:
+		Types: SpyInfiltrate
+	-AutoTarget:
+	-WithInfantryBody:
+	WithDisguisingInfantryBody:
+		AttackSequence: shoot
+		IdleSequences: idle1,idle2
+		StandSequences: stand,stand2
+	WithDecoration@disguise:
+		Image: pips
+		Sequence: pip-disguise
+		Palette: effect
+		ReferencePoint: Top, Right
+		ZOffset: 256
+		UpgradeTypes: disguise
+		UpgradeMinEnabledLevel: 1
+	IgnoresDisguise:
+	DetectCloaked:
+		CloakTypes: Cloak, Hijacker
+	Armament:
+		Weapon: SilencedPPK
+	AttackFrontal:
+	AttackMove:
+		Voice: Move
+	Voiced:
+		VoiceSet: SpyVoice
+
+SPY.England:
+	Inherits: SPY
+	Buildable:
+		Prerequisites: ~infantry.england, dome, ~tent, ~techlevel.medium
+	Valued:
+		Cost: 250
+	DisguiseToolTip:
+		Name: British Spy
+	RenderSprites:
+		Image: spy
+
+E7:
+	Inherits: ^Soldier
+	Buildable:
+		Queue: Infantry
+		BuildAtProductionType: Soldier
+		BuildPaletteOrder: 120
+		Prerequisites: ~tent, atek, ~techlevel.high
+		BuildLimit: 1
+	Valued:
+		Cost: 1200
+	Tooltip:
+		Name: Tanya
+		Description: Elite commando infantry. Armed with\ndual pistols and C4.\n  Strong vs Infantry, Buildings\n  Weak vs Vehicles, Aircraft\n  Special Ability: Destroy Building with C4\nMaximum 1 can be trained.
+	Health:
+		HP: 100
+	Mobile:
+		Speed: 71
+		Voice: Move
+	Guard:
+		Voice: Move
+	RevealsShroud:
+		Range: 6c0
+	Demolition:
+		DetonationDelay: 45
+		Voice: Demolish
+	Passenger:
+		PipType: Red
+		Voice: Move
+	Armament@PRIMARY:
+		Weapon: Colt45
+	Armament@SECONDARY:
+		Weapon: Colt45
+	Armament@GARRISONED:
+		Name: garrisoned
+		Weapon: Colt45
+		MuzzleSequence: garrison-muzzle
+	AttackFrontal:
+	WithInfantryBody:
+		AttackSequence: shoot
+		StandSequences: stand
+	AnnounceOnBuild:
+	AnnounceOnKill:
+	Voiced:
+		VoiceSet: TanyaVoice
+	ProducibleWithLevel:
+		Prerequisites: barracks.upgraded
+
+MEDI:
+	Inherits: ^Soldier
+	Buildable:
+		Queue: Infantry
+		BuildAtProductionType: Soldier
+		BuildPaletteOrder: 40
+		Prerequisites: ~tent, ~techlevel.infonly
+	Valued:
+		Cost: 200
+	Tooltip:
+		Name: Medic
+		Description: Heals nearby infantry.\n  Unarmed
+	Health:
+		HP: 80
+	RevealsShroud:
+		Range: 3c0
+	Passenger:
+		PipType: Yellow
+	Armament:
+		Weapon: Heal
+		Cursor: heal
+		OutsideRangeCursor: heal
+		TargetStances: Ally
+		ForceTargetStances: None
+	AttackFrontal:
+	WithInfantryBody:
+		StandSequences: stand
+		AttackSequence: heal
+	Voiced:
+		VoiceSet: MedicVoice
+
+MECH:
+	Inherits: ^Soldier
+	Buildable:
+		Queue: Infantry
+		BuildAtProductionType: Soldier
+		BuildPaletteOrder: 100
+		Prerequisites: ~tent, fix, ~techlevel.medium
+	Valued:
+		Cost: 500
+	Tooltip:
+		Name: Mechanic
+		Description: Repairs nearby vehicles and restores\nhusks to working condition by capturing them.\n  Unarmed
+	Health:
+		HP: 80
+	Mobile:
+		Voice: Move
+	RevealsShroud:
+		Range: 3c0
+	Passenger:
+		PipType: Yellow
+		Voice: Move
+	Armament:
+		Weapon: Repair
+		Cursor: repair
+		OutsideRangeCursor: repair
+		TargetStances: Ally
+		ForceTargetStances: None
+	AttackFrontal:
+		Voice: Move
+	Captures:
+		CaptureTypes: husk
+	WithInfantryBody:
+		AttackSequence: repair
+		StandSequences: stand
+	Voiced:
+		VoiceSet: MechanicVoice
+
+EINSTEIN:
+	Inherits: ^CivInfantry
+	-Wanders:
+	Tooltip:
+		Name: Prof. Einstein
+	Mobile:
+		Speed: 71
+	Voiced:
+		VoiceSet: EinsteinVoice
+
+DELPHI:
+	Inherits: ^CivInfantry
+	-Wanders:
+	Tooltip:
+		Name: Agent Delphi
+	Mobile:
+		Speed: 71
+
+CHAN:
+	Inherits: ^CivInfantry
+	Valued:
+		Cost: 500
+	Selectable:
+		Class: CHAN
+	Tooltip:
+		Name: Scientist
+
+GNRL:
+	Inherits@1: ^CivInfantry
+	Inherits@2: ^ArmedCivilian
+	-Wanders:
+	Tooltip:
+		Name: General
+	Selectable:
+		Class: GNRL
+	Mobile:
+		Voice: Move
+	AttackFrontal:
+		Voice: Attack
+	AttackMove:
+		Voice: Move
+	Passenger:
+		Voice: Move
+	Guard:
+		Voice: Move
+	Voiced:
+		VoiceSet: StavrosVoice
+	-ScaredyCat:
+	WithInfantryBody:
+		IdleSequences: idle1
+
+THF:
+	Inherits: ^Soldier
+	Valued:
+		Cost: 400
+	Tooltip:
+		Name: Thief
+		Description: Steals enemy credits.\n  Unarmed
+	RevealsShroud:
+		Range: 5c0
+	Passenger:
+		PipType: Yellow
+	Infiltrates:
+		InfiltrateTypes: Cash
+	-AutoTarget:
+	Voiced:
+		VoiceSet: ThiefVoice
+	WithInfantryBody:
+		-IdleSequences:
+		StandSequences: stand
+
+HIJACKER:
+	Inherits: ^Soldier
+	Buildable:
+		Queue: Infantry
+		BuildAtProductionType: Soldier
+		BuildPaletteOrder: 110
+		Prerequisites: ~barr, fix, ~techlevel.medium
+	Valued:
+		Cost: 500
+	Tooltip:
+		Name: Hijacker
+		Description: Hijacks enemy vehicles.\n  Unarmed
+	Health:
+		HP: 50
+	RevealsShroud:
+		Range: 5c0
+	Passenger:
+		PipType: Yellow
+	Captures:
+		CaptureTypes: vehicle
+	-AutoTarget:
+	Voiced:
+		VoiceSet: ThiefVoice
+	-TakeCover:
+	WithInfantryBody:
+		-IdleSequences:
+		StandSequences: stand
+	Crushable:
+		WarnProbability: 95
+	Cloak:
+		InitialDelay: 250
+		CloakDelay: 120
+		UncloakOn: Attack, Unload, Infiltrate, Demolish, Move
+		CloakTypes: Cloak, Hijacker
+		IsPlayerPalette: true
+	Mobile:
+		Speed: 85
+
+SHOK:
+	Inherits: ^Soldier
+	Buildable:
+		Queue: Infantry
+		BuildAtProductionType: Soldier
+		BuildPaletteOrder: 130
+		Prerequisites: ~barr, stek, tsla, ~infantry.russia, ~techlevel.high
+	Valued:
+		Cost: 400
+	Tooltip:
+		Name: Shock Trooper
+		Description: Elite infantry with portable tesla coils.\n  Strong vs Infantry, Vehicles\n  Weak vs Aircraft
+	Health:
+		HP: 60
+	Mobile:
+		Voice: Move
+	RevealsShroud:
+		Range: 5c0
+	Armament@PRIMARY:
+		Weapon: PortaTesla
+		LocalOffset: 427,0,341
+	Armament@GARRISONED:
+		Name: garrisoned
+		Weapon: PortaTesla
+	AttackFrontal:
+		Voice: Attack
+	AttackMove:
+		Voice: Move
+	Passenger:
+		Voice: Move
+	Guard:
+		Voice: Move
+	WithInfantryBody:
+		AttackSequence: shoot
+	Voiced:
+		VoiceSet: ShokVoice
+	ProducibleWithLevel:
+		Prerequisites: barracks.upgraded
+
+SNIPER:
+	Inherits: ^Soldier
+	Valued:
+		Cost: 700
+	Tooltip:
+		Name: Sniper
+		Description: Elite sniper infantry unit.\nCan detect cloaked units.\n  Strong vs Infantry\n  Weak vs Vehicles, Aircraft
+	Buildable:
+		Queue: Infantry
+		BuildAtProductionType: Soldier
+		BuildPaletteOrder: 80
+		Prerequisites: ~disabled
+	Health:
+		HP: 80
+	Passenger:
+		PipType: Red
+	RevealsShroud:
+		Range: 6c0
+	AutoTarget:
+		InitialStance: HoldFire
+		InitialStanceAI: ReturnFire
+	Armament@PRIMARY:
+		Weapon: Sniper
+	Armament@GARRISONED:
+		Name: garrisoned
+		Weapon: Sniper
+		MuzzleSequence: garrison-muzzle
+	AttackFrontal:
+	WithInfantryBody:
+		AttackSequence: shoot
+	Cloak:
+		InitialDelay: 250
+		CloakDelay: 120
+		CloakSound:
+		UncloakSound:
+		UncloakOn: Attack, Unload, Infiltrate, Demolish, Move
+		IsPlayerPalette: true
+	DetectCloaked:
+		CloakTypes: Cloak, Hijacker
+		Range: 6c0
+	-MustBeDestroyed:
+	ProducibleWithLevel:
+		Prerequisites: barracks.upgraded
+
+Zombie:
+	Inherits: ^Soldier
+	Valued:
+		Cost: 100
+	Tooltip:
+		Name: Zombie
+		Description: Slow undead. Attacks in close combat.
+	Buildable:
+		Queue: Infantry
+		BuildPaletteOrder: 200
+		Prerequisites: ~bio
+	Health:
+		HP: 250
+	Mobile:
+		Speed: 42
+	AutoTarget:
+		ScanRadius: 5
+	AttackFrontal:
+	WithInfantryBody:
+		AttackSequence: bite
+		IdleSequences: idle1
+	Armament:
+		Weapon: claw
+	Voiced:
+		VoiceSet: AntVoice
+	-TakeCover:
+
+Ant:
+	Inherits: ^Infantry
+	Valued:
+		Cost: 300
+	Tooltip:
+		Name: Giant Ant
+		Description: Irradiated insect that grew oversize.
+		GenericName: Ant
+	Buildable:
+		Queue: Infantry
+		BuildPaletteOrder: 1954
+		Prerequisites: ~bio
+	Selectable:
+		Bounds: 24,24,0,-5
+	SelectionDecorations:
+		VisualBounds: 30,30,0,-2
+	Health:
+		HP: 750
+		Shape: Circle
+			Radius: 469
+	Mobile:
+		Speed: 99
+		TurnSpeed: 12
+		SharesCell: no
+	-Crushable:
+	AutoTarget:
+		ScanRadius: 5
+	AttackFrontal:
+	WithInfantryBody:
+		AttackSequence: bite
+	Armament:
+		Weapon: mandible
+	Targetable:
+		TargetTypes: Ground, Infantry
+	WithDeathAnimation:
+		UseDeathTypeSuffix: false
+	Voiced:
+		VoiceSet: AntVoice

@@ -1,0 +1,221 @@
+Player:
+	MissionObjectives:
+		Cooperative: True
+	PlayerResources:
+		DefaultCash: 5000
+	DeveloperMode:
+		Locked: True
+
+World:
+	MissionData:
+		Briefing: One of our outposts is under heavy attack by a nearby Soviet base. Einstein, Tanya and many of our forces have been evacuated via helicopters, but those were shot down on the other side of the river. Fortunately they survived the crash, but are now in enemy territory. Tanya and the rest of the surviving forces need to fight their way out of there. The air defenses must be eliminated before another Search & Rescue helicopter can arrive.\n\nMeanwhile, the forces remaining at the base need to fend off the Soviet attacks.\n
+	LuaScript:
+		Scripts: evacuation.lua
+	MapOptions:
+		TechLevelLocked: True
+	ScriptLobbyDropdown@difficulty:
+		ID: difficulty
+		Label: Difficulty
+		Values:
+			easy: Easy
+			normal: Normal
+		Default: normal
+
+^Tanks:
+	Demolishable:
+
+^Vehicles:
+	Demolishable:
+
+E1:
+	ScriptTags:
+
+E2:
+	ScriptTags:
+
+DOG:
+	ScriptTags:
+
+3TNK:
+	ScriptTags:
+
+TRAN.Husk1:
+	Burns:
+		Damage: 0
+
+TRAN.Husk2:
+	Burns:
+		Damage: 0
+
+E7:
+	Passenger:
+		Weight: 0
+	Buildable:
+		Prerequisites: ~disabled
+
+EINSTEIN:
+	Passenger:
+		Weight: 0
+
+V01:
+	SpawnActorOnDeath:
+		Actor: healcrate
+
+TRAN:
+	-Selectable:
+	Buildable:
+		Prerequisites: ~disabled
+	RevealsShroud:
+		Range: 0c0
+
+2TNK:
+	Buildable:
+		Prerequisites: ~vehicles.allies
+
+MECH:
+	Buildable:
+		Prerequisites: ~disabled
+
+SPEN:
+	Buildable:
+		Prerequisites: ~disabled
+
+SYRD:
+	Buildable:
+		Prerequisites: ~disabled
+
+TSLA:
+	Buildable:
+		Prerequisites: ~disabled
+
+AGUN:
+	Buildable:
+		Prerequisites: ~disabled
+
+SAM:
+	Buildable:
+		Prerequisites: ~disabled
+
+ATEK:
+	Buildable:
+		Prerequisites: ~disabled
+
+HPAD:
+	Buildable:
+		Prerequisites: ~disabled
+
+AFLD:
+	Buildable:
+		Prerequisites: ~disabled
+
+STEK:
+	Buildable:
+		Prerequisites: ~disabled
+
+GAP:
+	Buildable:
+		Prerequisites: ~disabled
+
+PDOX:
+	Buildable:
+		Prerequisites: ~disabled
+
+IRON:
+	Buildable:
+		Prerequisites: ~disabled
+
+MSLO:
+	Buildable:
+		Prerequisites: ~disabled
+
+MIG:
+	Buildable:
+		Prerequisites: ~disabled
+
+HELI:
+	Buildable:
+		Prerequisites: ~disabled
+
+4TNK:
+	Buildable:
+		Prerequisites: ~disabled
+
+MCV:
+	Buildable:
+		Prerequisites: ~disabled
+
+ARTY:
+	Buildable:
+		Prerequisites: ~disabled
+
+APC:
+	Buildable:
+		Prerequisites: ~disabled
+
+MNLY.AP:
+	Buildable:
+		Prerequisites: ~disabled
+
+MNLY.AT:
+	Buildable:
+		Prerequisites: ~disabled
+
+TRUK:
+	Buildable:
+		Prerequisites: ~disabled
+
+FTRK:
+	Buildable:
+		Prerequisites: ~disabled
+
+MRJ:
+	Buildable:
+		Prerequisites: ~disabled
+
+MGG:
+	Buildable:
+		Prerequisites: ~disabled
+
+TTNK:
+	Buildable:
+		Prerequisites: ~disabled
+
+QTNK:
+	Buildable:
+		Prerequisites: ~disabled
+
+DTRK:
+	Buildable:
+		Prerequisites: ~disabled
+
+CTNK:
+	Buildable:
+		Prerequisites: ~disabled
+
+STNK:
+	Buildable:
+		Prerequisites: ~disabled
+
+MSUB:
+	Buildable:
+		Prerequisites: ~disabled
+
+CAMERA.Large:
+	Inherits: CAMERA
+	RevealsShroud:
+		Range: 1000c0
+
+Camera.SAM:
+	Inherits: CAMERA
+	RevealsShroud:
+		Range: 2c0
+
+powerproxy.paras1:
+	AlwaysVisible:
+	ParatroopersPower:
+		DropItems: E1,E1,E1,E2,3TNK
+
+powerproxy.paras2:
+	AlwaysVisible:
+	ParatroopersPower:
+		DropItems: E1,E1,E1,E2,E2

@@ -1,0 +1,204 @@
+Container@OBSERVER_WIDGETS:
+	Children:
+		SupportPowerTimer@SUPPORT_POWER_TIMER:
+			X: 10
+			Y: 10
+			Order: Descending
+		Image@SIDEBAR_BACKGROUND_TOP:
+			X: WINDOW_RIGHT - 250
+			Y: 10
+			Width: 238
+			Height: 287
+			ImageCollection: sidebar-observer
+			ImageName: background
+			ClickThrough: false
+			Children:
+				Background@GAME_TIMER_BLOCK:
+					Logic: GameTimerLogic
+					X: 26
+					Y: 10
+					Width: 120
+					Height: 22
+					Background: sidebar-button-observer
+					Children:
+						Label@GAME_TIMER:
+							Y: 0-1
+							Width: PARENT_RIGHT - 30
+							Height: PARENT_BOTTOM
+							Align: Center
+							Font: TinyBold
+						Label@GAME_TIMER_PERCENTAGE:
+							X: PARENT_RIGHT - 40
+							Y: 0-1
+							Width: 30
+							Height: PARENT_BOTTOM
+							Align: Right
+							Font: TinyBold
+				Container@TOP_BUTTONS:
+					Logic: MenuButtonsChromeLogic
+					X: 9
+					Y: 7
+					Children:
+						MenuButton@OBSERVER_STATS_BUTTON:
+							MenuContainer: INGAME_OBSERVERSTATS_BG
+							HideIngameUI: false
+							Pause: false
+							Key: F1
+							X: 160
+							Width: 28
+							Height: 28
+							Background: sidebar-button-observer
+							TooltipText: Statistics
+							TooltipContainer: TOOLTIP_CONTAINER
+							VisualHeight: 0
+							Children:
+								Image@ICON:
+									X: 6
+									Y: 6
+									ImageCollection: order-icons
+									ImageName: stats
+						MenuButton@OPTIONS_BUTTON:
+							Key: escape
+							X: 192
+							Width: 28
+							Height: 28
+							Background: sidebar-button-observer
+							TooltipText: Options
+							TooltipContainer: TOOLTIP_CONTAINER
+							VisualHeight: 0
+							Children:
+								Image@ICON:
+									X: 6
+									Y: 6
+									ImageCollection: order-icons
+									ImageName: options
+				Container@RADAR:
+					Children:
+						Radar@INGAME_RADAR:
+							WorldInteractionController: INTERACTION_CONTROLLER
+							X: 9
+							Y: 41
+							Width: 220
+							Height: 220
+				DropDownButton@SHROUD_SELECTOR:
+					Logic: ObserverShroudSelectorLogic
+					X: 6
+					Y: 262
+					Width: 226
+					Height: 25
+					Font: Bold
+					VisualHeight: 0
+					Background: sidebar-button-observershroud
+					SeparatorImage: observer-separator
+					Children:
+						LogicKeyListener@SHROUD_KEYHANDLER:
+						Image@FLAG:
+							X: 4
+							Y: 6
+							Width: 32
+							Height: 16
+						Label@LABEL:
+							X: 40
+							Width: 60
+							Height: 25
+						Label@NOFLAG_LABEL:
+							X: 5
+							Width: PARENT_RIGHT
+							Height: 25
+		Image@SIDEBAR_BACKGROUND_BOTTOM:
+			X: WINDOW_RIGHT - 250
+			Y: 297
+			Width: 238
+			Height: 8
+			ImageCollection: sidebar-observer
+			ImageName: observer-bottom
+		Image@REPLAY_PLAYER:
+			Logic: ReplayControlBarLogic
+			X: WINDOW_RIGHT - 250
+			Y: 297
+			Width: 238
+			Height: 40
+			Visible: false
+			ImageCollection: sidebar-observer
+			ImageName: replay-bottom
+			ClickThrough: false
+			Visible: false
+			Children:
+				Button@BUTTON_PAUSE:
+					X: 9
+					Y: 5
+					Width: 28
+					Height: 28
+					Background: sidebar-button-observer
+					TooltipText: Pause
+					TooltipContainer: TOOLTIP_CONTAINER
+					VisualHeight: 0
+					Children:
+						Image@IMAGE_PAUSE:
+							X: 2
+							Y: 2
+							ImageCollection: music
+							ImageName: pause
+				Button@BUTTON_PLAY:
+					X: 9
+					Y: 5
+					Width: 28
+					Height: 28
+					Background: sidebar-button-observer
+					TooltipText: Play
+					TooltipContainer: TOOLTIP_CONTAINER
+					VisualHeight: 0
+					Children:
+						Image@IMAGE_PLAY:
+							X: 2
+							Y: 1
+							ImageCollection: music
+							ImageName: play
+				Button@BUTTON_SLOW:
+					X: 49
+					Y: 8
+					Width: 42
+					Height: 22
+					BaseLine: 1
+					Background: sidebar-button-observer
+					TooltipText: Slow speed
+					TooltipContainer: TOOLTIP_CONTAINER
+					VisualHeight: 0
+					Text: 50%
+					Font: TinyBold
+				Button@BUTTON_REGULAR:
+					X: 95
+					Y: 8
+					Width: 42
+					Height: 22
+					BaseLine: 1
+					Background: sidebar-button-observer
+					TooltipText: Regular speed
+					TooltipContainer: TOOLTIP_CONTAINER
+					VisualHeight: 0
+					Text: 100%
+					Font: TinyBold
+				Button@BUTTON_FAST:
+					X: 141
+					Y: 8
+					Width: 42
+					Height: 22
+					BaseLine: 1
+					Background: sidebar-button-observer
+					TooltipText: Fast speed
+					TooltipContainer: TOOLTIP_CONTAINER
+					VisualHeight: 0
+					Text: 200%
+					Font: TinyBold
+				Button@BUTTON_MAXIMUM:
+					X: 187
+					Y: 8
+					Width: 42
+					Height: 22
+					BaseLine: 1
+					Background: sidebar-button-observer
+					TooltipText: Maximum speed
+					TooltipContainer: TOOLTIP_CONTAINER
+					VisualHeight: 0
+					Text: MAX
+					Font: TinyBold
