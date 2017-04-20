@@ -1552,16 +1552,16 @@ Actors:
 		Owner: Neutral
 	Actor620: tuntop04
 		Owner: Neutral
-		Location: 145,5
+		Location: 146,5
 	Actor621: tuntop04
 		Owner: Neutral
-		Location: 116,9
+		Location: 117,9
 	Actor622: tuntop02
 		Owner: Neutral
-		Location: 144,-19
+		Location: 146,-19
 	Actor623: tuntop02
 		Owner: Neutral
-		Location: 115,-15
+		Location: 117,-15
 	Actor494: bridge1
 		Owner: Neutral
 		Location: 232,0

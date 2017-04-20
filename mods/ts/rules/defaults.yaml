@@ -870,9 +870,19 @@
 		TerrainType: Rail
 
 ^Tunnel:
-	Inherits: ^TerrainOverlay
+	RenderSprites:
+		Palette: terraindecoration
+	WithSpriteBody:
+	BodyOrientation:
+		UseClassicPerspectiveFudge: False
+		QuantizedFacings: 1
+	Building:
+		Dimensions: 3, 3
+		Footprint: ___ ___ ___
 	CustomSelectionSize:
-		CustomBounds: 220,220
+		CustomBounds: 144, 144
+	Targetable:
+	AlwaysVisible:
 
 ^Gate:
 	Inherits: ^Building
