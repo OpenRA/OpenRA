@@ -56,6 +56,8 @@ namespace OpenRA.Mods.Common.Projectiles
 				var maxOffset = inaccuracy * (args.PassiveTarget - source).Length / args.Weapon.Range.Length;
 				target = Target.FromPos(args.PassiveTarget + WVec.FromPDF(args.SourceActor.World.SharedRandom, 2) * maxOffset / 1024);
 			}
+			else if (args.TrackClosestGuidedTargetPosition)
+				target = Target.FromPos(args.GuidedTarget.Positions.PositionClosestTo(source));
 			else
 				target = args.GuidedTarget;
 		}
