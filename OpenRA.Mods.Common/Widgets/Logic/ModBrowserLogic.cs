@@ -115,9 +115,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				catch (Exception) { }
 			}
 
-			Manifest initialMod;
-			Game.Mods.TryGetValue(Game.Settings.Game.PreviousMod, out initialMod);
-			SelectMod(initialMod != null && initialMod.Id != "modchooser" ? initialMod : Game.Mods["ra"]);
+			SelectMod(Game.Mods["ra"]);
 
 			RebuildModList();
 		}

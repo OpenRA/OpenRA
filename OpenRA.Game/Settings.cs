@@ -154,10 +154,6 @@ namespace OpenRA
 
 	public class GameSettings
 	{
-		[Desc("Load a specific mod on startup.")]
-		public string Mod = null;
-		public string PreviousMod = "ra";
-
 		public string Platform = "Default";
 
 		public bool ViewportEdgeScroll = true;

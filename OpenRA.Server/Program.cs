@@ -30,13 +30,16 @@ namespace OpenRA.Server
 
 			// Special case handling of Game.Mod argument: if it matches a real filesystem path
 			// then we use this to override the mod search path, and replace it with the mod id
-			var modArgument = arguments.GetValue("Game.Mod", null);
+			var modID = arguments.GetValue("Game.Mod", null);
 			var explicitModPaths = new string[0];
-			if (modArgument != null && (File.Exists(modArgument) || Directory.Exists(modArgument)))
+			if (modID != null && (File.Exists(modID) || Directory.Exists(modID)))
 			{
-				explicitModPaths = new[] { modArgument };
-				arguments.ReplaceValue("Game.Mod", Path.GetFileNameWithoutExtension(modArgument));
+				explicitModPaths = new[] { modID };
+				modID = Path.GetFileNameWithoutExtension(modID);
 			}
+
+			if (modID == null)
+				throw new InvalidOperationException("Game.Mod argument missing or mod could not be found.");
 
 			// HACK: The engine code assumes that Game.Settings is set.
 			// This isn't nearly as bad as ModData, but is still not very nice.
@@ -48,16 +51,15 @@ namespace OpenRA.Server
 				FieldLoader.GetValue<string[]>("MOD_SEARCH_PATHS", envModSearchPaths) :
 				new[] { Path.Combine(".", "mods") };
 
-			var mod = Game.Settings.Game.Mod;
 			var mods = new InstalledMods(modSearchPaths, explicitModPaths);
 
 			// HACK: The engine code *still* assumes that Game.ModData is set
-			var modData = Game.ModData = new ModData(mods[mod], mods);
+			var modData = Game.ModData = new ModData(mods[modID], mods);
 			modData.MapCache.LoadMaps();
 
 			settings.Map = modData.MapCache.ChooseInitialMap(settings.Map, new MersenneTwister());
 
-			Console.WriteLine("[{0}] Starting dedicated server for mod: {1}", DateTime.Now.ToString(settings.TimestampFormat), mod);
+			Console.WriteLine("[{0}] Starting dedicated server for mod: {1}", DateTime.Now.ToString(settings.TimestampFormat), modID);
 			while (true)
 			{
 				var server = new Server(new IPEndPoint(IPAddress.Any, settings.ListenPort), settings, modData, true);

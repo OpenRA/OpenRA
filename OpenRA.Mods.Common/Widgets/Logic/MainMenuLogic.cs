@@ -93,7 +93,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				// so we can't do this inside the input handler.
 				Game.RunAfterTick(() =>
 				{
-					Game.Settings.Game.PreviousMod = modData.Manifest.Id;
 					Game.InitializeMod("modchooser", null);
 				});
 			};
