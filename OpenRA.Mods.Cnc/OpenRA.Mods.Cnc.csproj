@@ -72,7 +72,7 @@
     <Compile Include="Traits\Render\WithReloadingSpriteTurret.cs" />
     <Compile Include="Traits\Render\WithRoof.cs" />
     <Compile Include="Traits\SupportPowers\IonCannonPower.cs" />
-    <Compile Include="ImportTiberianDawnLegacyMapCommand.cs" />
+    <Compile Include="UtilityCommands\ImportTiberianDawnLegacyMapCommand.cs" />
     <Compile Include="Projectiles\IonCannon.cs" />
     <Compile Include="Activities\VoxelHarvesterDockSequence.cs" />
     <Compile Include="SpriteLoaders\TmpTSLoader.cs" />
@@ -130,7 +130,7 @@
     <Compile Include="Traits\GpsWatcher.cs" />
     <Compile Include="Scripting\Properties\ChronosphereProperties.cs" />
     <Compile Include="Traits\Render\WithDisguisingInfantryBody.cs" />
-    <Compile Include="ImportRedAlertLegacyMapCommand.cs" />
+    <Compile Include="UtilityCommands\ImportRedAlertLegacyMapCommand.cs" />
     <Compile Include="Traits\Infiltration\InfiltrateForDecoration.cs" />
     <Compile Include="TraitsInterfaces.cs" />
   </ItemGroup>
