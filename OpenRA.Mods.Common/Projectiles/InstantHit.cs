@@ -21,6 +21,9 @@ namespace OpenRA.Mods.Common.Projectiles
 	[Desc("Simple, invisible, usually direct-on-target projectile.")]
 	public class InstantHitInfo : IProjectileInfo, IRulesetLoaded<WeaponInfo>
 	{
+		[Desc("Apply warheads directly to center of target actor.")]
+		public readonly bool TargetCenterPosition = false;
+
 		[Desc("Maximum offset at the maximum range.")]
 		public readonly WDist Inaccuracy = WDist.Zero;
 
@@ -57,14 +60,16 @@ namespace OpenRA.Mods.Common.Projectiles
 			this.info = info;
 			source = args.Source;
 
-			if (info.Inaccuracy.Length > 0)
+			if (info.TargetCenterPosition)
+				target = args.GuidedTarget;
+			else if (!info.TargetCenterPosition && info.Inaccuracy.Length > 0)
 			{
 				var inaccuracy = Util.ApplyPercentageModifiers(info.Inaccuracy.Length, args.InaccuracyModifiers);
 				var maxOffset = inaccuracy * (args.PassiveTarget - source).Length / args.Weapon.Range.Length;
 				target = Target.FromPos(args.PassiveTarget + WVec.FromPDF(args.SourceActor.World.SharedRandom, 2) * maxOffset / 1024);
 			}
 			else
-				target = args.GuidedTarget;
+				target = Target.FromPos(args.PassiveTarget);
 		}
 
 		public void Tick(World world)

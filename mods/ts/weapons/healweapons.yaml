@@ -4,6 +4,7 @@
 	Report: healer1.aud
 	ValidTargets: Infantry
 	Projectile: InstantHit
+		TargetCenterPosition: true
 	Warhead@1Dam: TargetDamage
 		DebugOverlayColor: 00FF00
 		Damage: -50

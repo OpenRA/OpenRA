@@ -157,7 +157,7 @@ namespace OpenRA.Mods.Common.Projectiles
 
 			if (args.GuidedTarget.IsValidFor(args.SourceActor))
 			{
-				var guidedTargetPos = args.GuidedTarget.CenterPosition;
+				var guidedTargetPos = args.GuidedTarget.Positions.PositionClosestTo(args.Source);
 				var targetDistance = new WDist((guidedTargetPos - args.Source).Length);
 
 				// Only continue tracking target if it's within weapon range +
