@@ -64,6 +64,7 @@ Rules:
 	ts|rules/aircraft.yaml
 	ts|rules/husks.yaml
 	ts|rules/civilian-infantry.yaml
+	ts|rules/critters.yaml
 	ts|rules/civilian-structures.yaml
 	ts|rules/civilian-vehicles.yaml
 	ts|rules/gdi-infantry.yaml
