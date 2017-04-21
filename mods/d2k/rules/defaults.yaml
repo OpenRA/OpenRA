@@ -325,6 +325,11 @@
 		VisibilityType: CenterPosition
 	Targetable:
 		TargetTypes: Ground, C4, Structure
+	Health:
+		Shape: Rectangle
+			ApplyToAllTargetablePositions: true
+			TopLeft: -512, -512
+			BottomRight: 512, 512
 	Building:
 		Dimensions: 1,1
 		Footprint: x
