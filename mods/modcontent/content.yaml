@@ -56,7 +56,7 @@ Background@CONTENT_PANEL:
 							Y: 1
 							Width: 20
 							Height: 20
-							ImageCollection: modchooser
+							ImageCollection: modcontent
 							ImageName: cdicon
 							TooltipContainer: TOOLTIP_CONTAINER
 							TooltipTemplate: DISC_TOOLTIP
@@ -331,60 +331,31 @@ Background@CONTENT_PROMPT_PANEL:
 			Height: 32
 			Text: Quick Install
 			Font: Bold
-		Button@BACK_BUTTON:
+		Button@QUIT_BUTTON:
 			X: PARENT_RIGHT - WIDTH - 30
 			Y: PARENT_BOTTOM - 52
 			Background: button-highlighted
 			Width: 110
 			Height: 32
-			Text: Back
+			Text: Quit
 			Font: Bold
 			Key: escape
 
-Container@INSTALL_MOD_PANEL:
-	Logic: InstallModLogic
-	X: (WINDOW_RIGHT - WIDTH)/2
-	Y: (WINDOW_BOTTOM - HEIGHT)/2
-	Width: 500
-	Height: 177
+Background@MODCONTENT_BACKGROUND:
+	Background: background
+	Width: WINDOW_RIGHT
+	Height: WINDOW_BOTTOM
+
+Background@BUTTON_TOOLTIP:
+	Logic: ButtonTooltipLogic
+	Background: panel-thinborder
+	Height: 25
 	Children:
-		Background:
-			Width: PARENT_RIGHT
-			Height: PARENT_BOTTOM
-			Background: panel-bg
-		Background@RULE:
-			X: 30
-			Y: 50
-			Width: 440
-			Height: 150
-			Background: panel-rule
-		Label@TITLE:
-			X: 0
-			Y: 12
-			Width: PARENT_RIGHT
-			Height: 25
-			Text: Missing dependencies
-			Align: Center
-			Font: MediumBold
-		Label@DESC:
-			X: 0
-			Y: 65
-			Width: PARENT_RIGHT
-			Height: 25
-			Align: Center
-			Text: Please fully install the following mods then try again:
-		Label@MOD_LIST:
-			X: 0
-			Y: 85
-			Width: PARENT_RIGHT
-			Height: 25
-			Align: Center
-		Button@BACK_BUTTON:
-			X: PARENT_RIGHT - 130
-			Y: PARENT_BOTTOM - 52
-			Background: button-highlighted
-			Width: 110
-			Height: 32
-			Text: Back
+		Label@LABEL:
+			X: 5
+			Height: 23
 			Font: Bold
-			Key: escape
+		Label@HOTKEY:
+			TextColor: FFFF00
+			Height: 23
+			Font: Bold

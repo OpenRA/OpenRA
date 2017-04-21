@@ -53,9 +53,6 @@ namespace OpenRA
 					var directory = new DirectoryInfo(resolved);
 					foreach (var subdir in directory.EnumerateDirectories())
 						mods.Add(Pair.New(subdir.Name, subdir.FullName));
-
-					foreach (var file in directory.EnumerateFiles("*.oramod"))
-						mods.Add(Pair.New(Path.GetFileNameWithoutExtension(file.Name), file.FullName));
 				}
 				catch (Exception e)
 				{
@@ -94,8 +91,6 @@ namespace OpenRA
 						using (var bitmap = new Bitmap(stream))
 							icons[id] = sheetBuilder.Add(bitmap);
 
-				// Mods in the support directory and oramod packages (which are listed later
-				// in the CandidateMods list) override mods in the main install.
 				return new Manifest(id, package);
 			}
 			catch (Exception)

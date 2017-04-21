@@ -87,14 +87,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				});
 			};
 
-			mainMenu.Get<ButtonWidget>("MODS_BUTTON").OnClick = () =>
+			mainMenu.Get<ButtonWidget>("CONTENT_BUTTON").OnClick = () =>
 			{
 				// Switching mods changes the world state (by disposing it),
 				// so we can't do this inside the input handler.
 				Game.RunAfterTick(() =>
 				{
-					Game.Settings.Game.PreviousMod = modData.Manifest.Id;
-					Game.InitializeMod("modchooser", null);
+					Game.InitializeMod("modcontent", new Arguments(new[] { "Content.Mod=" + modData.Manifest.Id }));
 				});
 			};
 
@@ -288,7 +287,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					{
 						// Send the mod and engine version to support version-filtered news (update prompts)
 						newsURL += "?version={0}&mod={1}&modversion={2}".F(
-							Uri.EscapeUriString(Game.Mods["modchooser"].Metadata.Version),
+							Uri.EscapeUriString(Game.Mods["modcontent"].Metadata.Version),
 							Uri.EscapeUriString(Game.ModData.Manifest.Id),
 							Uri.EscapeUriString(Game.ModData.Manifest.Metadata.Version));
 

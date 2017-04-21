@@ -74,14 +74,10 @@ function Version-Command
 	
 	if ($version -ne $null)
 	{
-		$mods = @("mods/ra/mod.yaml", "mods/cnc/mod.yaml", "mods/d2k/mod.yaml", "mods/ts/mod.yaml", "mods/modchooser/mod.yaml", "mods/all/mod.yaml")
+		$mods = @("mods/ra/mod.yaml", "mods/cnc/mod.yaml", "mods/d2k/mod.yaml", "mods/ts/mod.yaml", "mods/modcontent/mod.yaml", "mods/all/mod.yaml")
 		foreach ($mod in $mods)
 		{
 			$replacement = (gc $mod) -Replace "Version:.*", ("Version: {0}" -f $version)
-			sc $mod $replacement
-
-			# The tab is a workaround for not replacing inside of "Packages:"
-			$replacement = (gc $mod) -Replace "	modchooser:.*", ("	modchooser: {0}" -f $version)
 			sc $mod $replacement
 
 			$prefix = $(gc $mod) | Where { $_.ToString().EndsWith(": User") }

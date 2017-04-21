@@ -50,8 +50,6 @@ namespace OpenRA.FileSystem
 				return new ZipFile(this, filename);
 			if (filename.EndsWith(".oramap", StringComparison.InvariantCultureIgnoreCase))
 				return new ZipFile(this, filename);
-			if (filename.EndsWith(".oramod", StringComparison.InvariantCultureIgnoreCase))
-				return new ZipFile(this, filename);
 			if (filename.EndsWith(".RS", StringComparison.InvariantCultureIgnoreCase))
 				return new D2kSoundResources(this, filename);
 			if (filename.EndsWith(".Z", StringComparison.InvariantCultureIgnoreCase))

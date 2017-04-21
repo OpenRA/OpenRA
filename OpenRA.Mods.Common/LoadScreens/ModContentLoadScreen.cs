@@ -9,14 +9,17 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
+using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.LoadScreens
 {
-	public sealed class ModChooserLoadScreen : ILoadScreen
+	public sealed class ModContentLoadScreen : ILoadScreen
 	{
 		Sprite sprite;
 		Rectangle bounds;
@@ -46,10 +49,46 @@ namespace OpenRA.Mods.Common.LoadScreens
 
 		public void StartGame(Arguments args)
 		{
-			var widgetArgs = new WidgetArgs();
+			var modId = args.GetValue("Content.Mod", null);
+			Manifest selectedMod;
+			if (modId == null || !Game.Mods.TryGetValue(modId, out selectedMod))
+				throw new InvalidOperationException("Invalid or missing Content.Mod argument.");
 
-			Ui.LoadWidget("MODCHOOSER_BACKGROUND", Ui.Root, widgetArgs);
-			Ui.OpenWindow("MODCHOOSER_DIALOG", widgetArgs);
+			var content = selectedMod.Get<ModContent>(Game.ModData.ObjectCreator);
+
+			Ui.LoadWidget("MODCONTENT_BACKGROUND", Ui.Root, new WidgetArgs());
+
+			if (!IsModInstalled(content))
+			{
+				var widgetArgs = new WidgetArgs
+				{
+					{ "continueLoading", () =>
+						Game.RunAfterTick(() => Game.InitializeMod(modId, new Arguments())) },
+					{ "mod", selectedMod },
+					{ "content", content },
+				};
+
+				Ui.OpenWindow("CONTENT_PROMPT_PANEL", widgetArgs);
+			}
+			else
+			{
+				var widgetArgs = new WidgetArgs
+				{
+					{ "mod", selectedMod },
+					{ "content", content },
+					{ "onCancel", () =>
+						Game.RunAfterTick(() => Game.InitializeMod(modId, new Arguments())) }
+				};
+
+				Ui.OpenWindow("CONTENT_PANEL", widgetArgs);
+			}
+		}
+
+		bool IsModInstalled(ModContent content)
+		{
+			return content.Packages
+				.Where(p => p.Value.Required)
+				.All(p => p.Value.TestFiles.All(f => File.Exists(Platform.ResolvePath(f))));
 		}
 
 		public void Dispose()

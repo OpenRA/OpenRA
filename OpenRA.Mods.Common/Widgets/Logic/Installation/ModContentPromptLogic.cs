@@ -46,7 +46,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{
 					{ "mod", mod },
 					{ "content", content },
-					{ "onCancel", Ui.CloseWindow }
+					{ "onCancel", () => { } }
 				});
 			};
 
@@ -71,9 +71,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				});
 			};
 
-			var backButton = panel.Get<ButtonWidget>("BACK_BUTTON");
-			backButton.Bounds.Y += headerHeight;
-			backButton.OnClick = Ui.CloseWindow;
+			var quitButton = panel.Get<ButtonWidget>("QUIT_BUTTON");
+			quitButton.Bounds.Y += headerHeight;
+			quitButton.OnClick = Game.Exit;
 			Game.RunAfterTick(Ui.ResetTooltips);
 		}
 	}

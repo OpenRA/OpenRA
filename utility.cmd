@@ -7,12 +7,6 @@ call OpenRA.Utility.exe
 echo Enter --exit to exit
 set /P mod=Please enter a modname: OpenRA.Utility.exe 
 if /I "%mod%" EQU "--exit" (exit)
-if /I "%mod%" EQU "modchooser" (
-echo.
-echo Sorry, this mod isn't available at the moment!
-echo.
-goto choosemod
-)
 if /I "%mod%" EQU "ra" (goto help)
 if /I "%mod%" EQU "cnc" (goto help)
 if /I "%mod%" EQU "ts" (goto help)
