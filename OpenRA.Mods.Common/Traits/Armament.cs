@@ -229,7 +229,7 @@ namespace OpenRA.Mods.Common.Traits
 				Source = muzzlePosition(),
 				CurrentSource = muzzlePosition,
 				SourceActor = self,
-				PassiveTarget = target.CenterPosition,
+				PassiveTarget = target.Positions.PositionClosestTo(muzzlePosition()),
 				GuidedTarget = target
 			};
 
