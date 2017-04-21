@@ -331,12 +331,31 @@ Background@CONTENT_PROMPT_PANEL:
 			Height: 32
 			Text: Quick Install
 			Font: Bold
-		Button@BACK_BUTTON:
+		Button@QUIT_BUTTON:
 			X: PARENT_RIGHT - WIDTH - 30
 			Y: PARENT_BOTTOM - 52
 			Background: button-highlighted
 			Width: 110
 			Height: 32
-			Text: Back
+			Text: Quit
 			Font: Bold
 			Key: escape
+
+Background@MODCHOOSER_BACKGROUND:
+	Background: background
+	Width: WINDOW_RIGHT
+	Height: WINDOW_BOTTOM
+
+Background@BUTTON_TOOLTIP:
+	Logic: ButtonTooltipLogic
+	Background: panel-thinborder
+	Height: 25
+	Children:
+		Label@LABEL:
+			X: 5
+			Height: 23
+			Font: Bold
+		Label@HOTKEY:
+			TextColor: FFFF00
+			Height: 23
+			Font: Bold

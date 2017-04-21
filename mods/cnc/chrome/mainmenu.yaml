@@ -78,12 +78,12 @@ Container@MENU_BACKGROUND:
 							Width: 140
 							Height: 35
 							Text: Extras
-						Button@MODS_BUTTON:
+						Button@CONTENT_BUTTON:
 							X: 600
 							Y: 0
 							Width: 140
 							Height: 35
-							Text: Mods
+							Text: Manage Content
 						Button@QUIT_BUTTON:
 							X: 750
 							Y: 0

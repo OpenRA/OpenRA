@@ -184,7 +184,7 @@
     <Compile Include="Lint\CheckTargetHealthRadius.cs" />
     <Compile Include="Lint\LintBuildablePrerequisites.cs" />
     <Compile Include="Lint\LintExts.cs" />
-    <Compile Include="LoadScreens\ModChooserLoadScreen.cs" />
+    <Compile Include="LoadScreens\ModContentLoadScreen.cs" />
     <Compile Include="ActorInitializer.cs" />
     <Compile Include="Scripting\Properties\AmmoPoolProperties.cs" />
     <Compile Include="ShroudExts.cs" />
@@ -632,7 +632,6 @@
     <Compile Include="Widgets\Logic\Editor\TileSelectorLogic.cs" />
     <Compile Include="Widgets\Logic\MapChooserLogic.cs" />
     <Compile Include="Widgets\Logic\MissionBrowserLogic.cs" />
-    <Compile Include="Widgets\Logic\ModBrowserLogic.cs" />
     <Compile Include="Widgets\Logic\MusicPlayerLogic.cs" />
     <Compile Include="Widgets\Logic\PerfDebugLogic.cs" />
     <Compile Include="Widgets\Logic\ReplayBrowserLogic.cs" />

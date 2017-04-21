@@ -1,5 +1,5 @@
 Metadata:
-	Title: Mod Chooser
+	Title: Mod Content Manager
 	Version: {DEV_VERSION}
 	Author: The OpenRA Developers
 	Hidden: true
@@ -19,13 +19,12 @@ Assemblies:
 	common|OpenRA.Mods.Common.dll
 
 ChromeLayout:
-	modchooser|modchooser.yaml
 	modchooser|content.yaml
 
 Notifications:
 	modchooser|notifications.yaml
 
-LoadScreen: ModChooserLoadScreen
+LoadScreen: ModContentLoadScreen
 	Image: ./mods/modchooser/chrome.png
 
 ChromeMetrics:

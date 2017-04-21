@@ -87,13 +87,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				});
 			};
 
-			mainMenu.Get<ButtonWidget>("MODS_BUTTON").OnClick = () =>
+			mainMenu.Get<ButtonWidget>("CONTENT_BUTTON").OnClick = () =>
 			{
 				// Switching mods changes the world state (by disposing it),
 				// so we can't do this inside the input handler.
 				Game.RunAfterTick(() =>
 				{
-					Game.InitializeMod("modchooser", null);
+					Game.InitializeMod("modchooser", new Arguments(new[] { "Content.Mod=" + modData.Manifest.Id }));
 				});
 			};
 
