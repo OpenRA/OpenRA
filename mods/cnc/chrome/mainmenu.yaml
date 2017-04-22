@@ -173,7 +173,7 @@ Container@MENU_BACKGROUND:
 							Width: 140
 							Height: 35
 							Text: Back
-				Background@MAP_EDITOR_MENU:
+				Container@MAP_EDITOR_MENU:
 					Width: PARENT_RIGHT
 					Visible: False
 					Children:
