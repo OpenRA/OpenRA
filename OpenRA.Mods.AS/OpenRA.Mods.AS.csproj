@@ -82,10 +82,12 @@
     <Compile Include="Duplicates\Traits\Sound\AnnounceOnBuildAS.cs" />
     <Compile Include="Duplicates\Traits\Sound\AnnounceOnKillAS.cs" />
     <Compile Include="Effects\AirstrikePowerASEffect.cs" />
+    <Compile Include="Graphics\RadBeamRenderable.cs" />
     <Compile Include="Lint\CheckSpawnActorWarheads.cs" />
     <Compile Include="Lint\CheckTargetHealthRadiusAS.cs" />
     <Compile Include="Projectiles\AthenaProjectile.cs" />
     <Compile Include="Projectiles\InstantExplode.cs" />
+    <Compile Include="Projectiles\RadBeam.cs" />
     <Compile Include="Traits\ChronoResourceDelivery.cs" />
     <Compile Include="Traits\Conditions\GrantConditionAboveAltitude.cs" />
     <Compile Include="Traits\Conditions\GrantPeriodicConditionOnEvent.cs" />

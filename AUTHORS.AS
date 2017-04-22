@@ -7,6 +7,9 @@ The plugin is maintained by
  * Gyula Zimmermann (Graion Dilach)
    > everything unless listed
 
+ * Boolbada/forcecore
+   > RadBeam implementation
+
  * Holloweye
    > SmokeParticle(Emitter) basic implementation
 
