@@ -23,6 +23,8 @@ namespace OpenRA.Test
 	{
 		IReadOnlyDictionary<string, int> testValues = new ReadOnlyDictionary<string, int>(new Dictionary<string, int>()
 		{
+			{ "t", 5 },
+			{ "t-1", 7 },
 			{ "one", 1 },
 			{ "five", 5 }
 		});
@@ -295,6 +297,15 @@ namespace OpenRA.Test
 			AssertValue("~(~2 + ~3)", 6);
 		}
 
+		[TestCase(TestName = "Hyphen")]
+		public void TestHyphen()
+		{
+			AssertValue("t-1", 7);
+			AssertValue("-t-1", -7);
+			AssertValue("t - 1", 4);
+			AssertValue("-1", -1);
+		}
+
 		[TestCase(TestName = "Parenthesis and mixed operations")]
 		public void TestMixedParens()
 		{
@@ -333,7 +344,121 @@ namespace OpenRA.Test
 			AssertParseFailure("false ||", "Missing value or sub-expression at end for `||` operator");
 			AssertParseFailure("1 <", "Missing value or sub-expression at end for `<` operator");
 			AssertParseFailure("-1a", "Number -1 and variable merged at index 0");
+		}
+
+		[TestCase(TestName = "Test hyphen parser errors")]
+		public void TestParseHyphenErrors()
+		{
 			AssertParseFailure("-", "Missing value or sub-expression at end for `-` operator");
+			AssertParseFailure("-1-1", "Missing binary operation before `-1` at index 2");
+			AssertParseFailure("5-1", "Missing binary operation before `-1` at index 1");
+			AssertParseFailure("6 -1", "Missing binary operation before `-1` at index 2");
+			AssertParseFailure("t -1", "Missing binary operation before `-1` at index 2");
+		}
+
+		[TestCase(TestName = "Test mixed charaters at end of identifier parser errors")]
+		public void TestParseMixedEndErrors()
+		{
+			AssertParseFailure("t- 1", "Invalid identifier end character at index 1 for `t-`");
+			AssertParseFailure("t-", "Invalid identifier end character at index 1 for `t-`");
+			AssertParseFailure("t. 1", "Invalid identifier end character at index 1 for `t.`");
+			AssertParseFailure("t.", "Invalid identifier end character at index 1 for `t.`");
+			AssertParseFailure("t@ 1", "Invalid identifier end character at index 1 for `t@`");
+			AssertParseFailure("t@", "Invalid identifier end character at index 1 for `t@`");
+			AssertParseFailure("t$ 1", "Invalid identifier end character at index 1 for `t$`");
+			AssertParseFailure("t$", "Invalid identifier end character at index 1 for `t$`");
+		}
+
+		[TestCase(TestName = "Test binary operator whitespace parser errors")]
+		public void TestParseSpacedBinaryOperatorErrors()
+		{
+			// `t-1` is valid variable name and `t- 1` starts with an invalid variable name.
+			// `6 -1`, `6-1`, `t -1` contain `-1` and are missing a binary operator.
+			AssertParseFailure("6- 1", "Missing whitespace at index 2, before `-` operator.");
+
+			AssertParseFailure("6+ 1", "Missing whitespace at index 2, before `+` operator.");
+			AssertParseFailure("t+ 1", "Missing whitespace at index 2, before `+` operator.");
+			AssertParseFailure("6 +1", "Missing whitespace at index 3, after `+` operator.");
+			AssertParseFailure("t +1", "Missing whitespace at index 3, after `+` operator.");
+			AssertParseFailure("6+1", "Missing whitespace at index 2, before `+` operator.");
+			AssertParseFailure("t+1", "Missing whitespace at index 2, before `+` operator.");
+
+			AssertParseFailure("6* 1", "Missing whitespace at index 2, before `*` operator.");
+			AssertParseFailure("t* 1", "Missing whitespace at index 2, before `*` operator.");
+			AssertParseFailure("6 *1", "Missing whitespace at index 3, after `*` operator.");
+			AssertParseFailure("t *1", "Missing whitespace at index 3, after `*` operator.");
+			AssertParseFailure("6*1", "Missing whitespace at index 2, before `*` operator.");
+			AssertParseFailure("t*1", "Missing whitespace at index 2, before `*` operator.");
+
+			AssertParseFailure("6/ 1", "Missing whitespace at index 2, before `/` operator.");
+			AssertParseFailure("t/ 1", "Missing whitespace at index 2, before `/` operator.");
+			AssertParseFailure("6 /1", "Missing whitespace at index 3, after `/` operator.");
+			AssertParseFailure("t /1", "Missing whitespace at index 3, after `/` operator.");
+			AssertParseFailure("6/1", "Missing whitespace at index 2, before `/` operator.");
+			AssertParseFailure("t/1", "Missing whitespace at index 2, before `/` operator.");
+
+			AssertParseFailure("6% 1", "Missing whitespace at index 2, before `%` operator.");
+			AssertParseFailure("t% 1", "Missing whitespace at index 2, before `%` operator.");
+			AssertParseFailure("6 %1", "Missing whitespace at index 3, after `%` operator.");
+			AssertParseFailure("t %1", "Missing whitespace at index 3, after `%` operator.");
+			AssertParseFailure("6%1", "Missing whitespace at index 2, before `%` operator.");
+			AssertParseFailure("t%1", "Missing whitespace at index 2, before `%` operator.");
+
+			AssertParseFailure("6< 1", "Missing whitespace at index 2, before `<` operator.");
+			AssertParseFailure("t< 1", "Missing whitespace at index 2, before `<` operator.");
+			AssertParseFailure("6 <1", "Missing whitespace at index 3, after `<` operator.");
+			AssertParseFailure("t <1", "Missing whitespace at index 3, after `<` operator.");
+			AssertParseFailure("6<1", "Missing whitespace at index 2, before `<` operator.");
+			AssertParseFailure("t<1", "Missing whitespace at index 2, before `<` operator.");
+
+			AssertParseFailure("6> 1", "Missing whitespace at index 2, before `>` operator.");
+			AssertParseFailure("t> 1", "Missing whitespace at index 2, before `>` operator.");
+			AssertParseFailure("6 >1", "Missing whitespace at index 3, after `>` operator.");
+			AssertParseFailure("t >1", "Missing whitespace at index 3, after `>` operator.");
+			AssertParseFailure("6>1", "Missing whitespace at index 2, before `>` operator.");
+			AssertParseFailure("t>1", "Missing whitespace at index 2, before `>` operator.");
+
+			AssertParseFailure("6&& 1", "Missing whitespace at index 3, before `&&` operator.");
+			AssertParseFailure("t&& 1", "Missing whitespace at index 3, before `&&` operator.");
+			AssertParseFailure("6 &&1", "Missing whitespace at index 4, after `&&` operator.");
+			AssertParseFailure("t &&1", "Missing whitespace at index 4, after `&&` operator.");
+			AssertParseFailure("6&&1", "Missing whitespace at index 3, before `&&` operator.");
+			AssertParseFailure("t&&1", "Missing whitespace at index 3, before `&&` operator.");
+
+			AssertParseFailure("6|| 1", "Missing whitespace at index 3, before `||` operator.");
+			AssertParseFailure("t|| 1", "Missing whitespace at index 3, before `||` operator.");
+			AssertParseFailure("6 ||1", "Missing whitespace at index 4, after `||` operator.");
+			AssertParseFailure("t ||1", "Missing whitespace at index 4, after `||` operator.");
+			AssertParseFailure("6||1", "Missing whitespace at index 3, before `||` operator.");
+			AssertParseFailure("t||1", "Missing whitespace at index 3, before `||` operator.");
+
+			AssertParseFailure("6== 1", "Missing whitespace at index 3, before `==` operator.");
+			AssertParseFailure("t== 1", "Missing whitespace at index 3, before `==` operator.");
+			AssertParseFailure("6 ==1", "Missing whitespace at index 4, after `==` operator.");
+			AssertParseFailure("t ==1", "Missing whitespace at index 4, after `==` operator.");
+			AssertParseFailure("6==1", "Missing whitespace at index 3, before `==` operator.");
+			AssertParseFailure("t==1", "Missing whitespace at index 3, before `==` operator.");
+
+			AssertParseFailure("6!= 1", "Missing whitespace at index 3, before `!=` operator.");
+			AssertParseFailure("t!= 1", "Missing whitespace at index 3, before `!=` operator.");
+			AssertParseFailure("6 !=1", "Missing whitespace at index 4, after `!=` operator.");
+			AssertParseFailure("t !=1", "Missing whitespace at index 4, after `!=` operator.");
+			AssertParseFailure("6!=1", "Missing whitespace at index 3, before `!=` operator.");
+			AssertParseFailure("t!=1", "Missing whitespace at index 3, before `!=` operator.");
+
+			AssertParseFailure("6<= 1", "Missing whitespace at index 3, before `<=` operator.");
+			AssertParseFailure("t<= 1", "Missing whitespace at index 3, before `<=` operator.");
+			AssertParseFailure("6 <=1", "Missing whitespace at index 4, after `<=` operator.");
+			AssertParseFailure("t <=1", "Missing whitespace at index 4, after `<=` operator.");
+			AssertParseFailure("6<=1", "Missing whitespace at index 3, before `<=` operator.");
+			AssertParseFailure("t<=1", "Missing whitespace at index 3, before `<=` operator.");
+
+			AssertParseFailure("6>= 1", "Missing whitespace at index 3, before `>=` operator.");
+			AssertParseFailure("t>= 1", "Missing whitespace at index 3, before `>=` operator.");
+			AssertParseFailure("6 >=1", "Missing whitespace at index 4, after `>=` operator.");
+			AssertParseFailure("t >=1", "Missing whitespace at index 4, after `>=` operator.");
+			AssertParseFailure("6>=1", "Missing whitespace at index 3, before `>=` operator.");
+			AssertParseFailure("t>=1", "Missing whitespace at index 3, before `>=` operator.");
 		}
 
 		[TestCase(TestName = "Undefined symbols are treated as `false` (0) values")]

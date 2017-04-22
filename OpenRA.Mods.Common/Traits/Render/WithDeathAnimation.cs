@@ -41,22 +41,12 @@ namespace OpenRA.Mods.Common.Traits.Render
 		[Desc("Custom crushed animation palette is a player palette BaseName")]
 		public readonly bool CrushedPaletteIsPlayerPalette = false;
 
-		[FieldLoader.LoadUsing("LoadDeathTypes")]
 		[Desc("Death animations to use for each damage type (defined on the warheads).",
 			"Is only used if UseDeathTypeSuffix is `True`.")]
 		public readonly Dictionary<string, string[]> DeathTypes = new Dictionary<string, string[]>();
 
 		[Desc("Sequence to use when the actor is killed by some non-standard means (e.g. suicide).")]
 		[SequenceReference] public readonly string FallbackSequence = null;
-
-		public static object LoadDeathTypes(MiniYaml yaml)
-		{
-			var md = yaml.ToDictionary();
-
-			return md.ContainsKey("DeathTypes")
-				? md["DeathTypes"].ToDictionary(my => FieldLoader.GetValue<string[]>("(value)", my.Value))
-				: new Dictionary<string, string[]>();
-		}
 
 		public override object Create(ActorInitializer init) { return new WithDeathAnimation(init.Self, this); }
 	}

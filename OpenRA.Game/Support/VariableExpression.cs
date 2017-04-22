@@ -90,7 +90,7 @@ namespace OpenRA.Support
 		enum Associativity { Left, Right }
 
 		[Flags]
-		enum OperandSides
+		enum Sides
 		{
 			// Value type
 			None = 0,
@@ -159,18 +159,34 @@ namespace OpenRA.Support
 		{
 			public readonly string Symbol;
 			public readonly Precedence Precedence;
-			public readonly OperandSides OperandSides;
+			public readonly Sides OperandSides;
+			public readonly Sides WhitespaceSides;
 			public readonly Associativity Associativity;
 			public readonly Grouping Opens;
 			public readonly Grouping Closes;
 
-			public TokenTypeInfo(string symbol, Precedence precedence, OperandSides operandSides = OperandSides.None,
+			public TokenTypeInfo(string symbol, Precedence precedence, Sides operandSides = Sides.None,
 			                     Associativity associativity = Associativity.Left,
 			                     Grouping opens = Grouping.None, Grouping closes = Grouping.None)
 			{
 				Symbol = symbol;
 				Precedence = precedence;
 				OperandSides = operandSides;
+				WhitespaceSides = Sides.None;
+				Associativity = associativity;
+				Opens = opens;
+				Closes = closes;
+			}
+
+			public TokenTypeInfo(string symbol, Precedence precedence, Sides operandSides,
+			                     Sides whitespaceSides,
+			                     Associativity associativity = Associativity.Left,
+			                     Grouping opens = Grouping.None, Grouping closes = Grouping.None)
+			{
+				Symbol = symbol;
+				Precedence = precedence;
+				OperandSides = operandSides;
+				WhitespaceSides = whitespaceSides;
 				Associativity = associativity;
 				Opens = opens;
 				Closes = closes;
@@ -181,10 +197,11 @@ namespace OpenRA.Support
 			{
 				Symbol = symbol;
 				Precedence = precedence;
+				WhitespaceSides = Sides.None;
 				OperandSides = opens == Grouping.None ?
-				                                (closes == Grouping.None ? OperandSides.None : OperandSides.Left)
+				                                (closes == Grouping.None ? Sides.None : Sides.Left)
 				                                :
-				                                (closes == Grouping.None ? OperandSides.Right : OperandSides.Both);
+				                                (closes == Grouping.None ? Sides.Right : Sides.Both);
 				Associativity = associativity;
 				Opens = opens;
 				Closes = closes;
@@ -219,52 +236,52 @@ namespace OpenRA.Support
 						yield return new TokenTypeInfo(")", Precedence.Parens, Grouping.None, Grouping.Parens);
 						continue;
 					case TokenType.Not:
-						yield return new TokenTypeInfo("!", Precedence.Unary, OperandSides.Right, Associativity.Right);
+						yield return new TokenTypeInfo("!", Precedence.Unary, Sides.Right, Associativity.Right);
 						continue;
 					case TokenType.OnesComplement:
-						yield return new TokenTypeInfo("~", Precedence.Unary, OperandSides.Right, Associativity.Right);
+						yield return new TokenTypeInfo("~", Precedence.Unary, Sides.Right, Associativity.Right);
 						continue;
 					case TokenType.Negate:
-						yield return new TokenTypeInfo("-", Precedence.Unary, OperandSides.Right, Associativity.Right);
+						yield return new TokenTypeInfo("-", Precedence.Unary, Sides.Right, Associativity.Right);
 						continue;
 					case TokenType.And:
-						yield return new TokenTypeInfo("&&", Precedence.And, OperandSides.Both);
+						yield return new TokenTypeInfo("&&", Precedence.And, Sides.Both, Sides.Both);
 						continue;
 					case TokenType.Or:
-						yield return new TokenTypeInfo("||", Precedence.Or, OperandSides.Both);
+						yield return new TokenTypeInfo("||", Precedence.Or, Sides.Both, Sides.Both);
 						continue;
 					case TokenType.Equals:
-						yield return new TokenTypeInfo("==", Precedence.Equality, OperandSides.Both);
+						yield return new TokenTypeInfo("==", Precedence.Equality, Sides.Both, Sides.Both);
 						continue;
 					case TokenType.NotEquals:
-						yield return new TokenTypeInfo("!=", Precedence.Equality, OperandSides.Both);
+						yield return new TokenTypeInfo("!=", Precedence.Equality, Sides.Both, Sides.Both);
 						continue;
 					case TokenType.LessThan:
-						yield return new TokenTypeInfo("<", Precedence.Relation, OperandSides.Both);
+						yield return new TokenTypeInfo("<", Precedence.Relation, Sides.Both, Sides.Both);
 						continue;
 					case TokenType.LessThanOrEqual:
-						yield return new TokenTypeInfo("<=", Precedence.Relation, OperandSides.Both);
+						yield return new TokenTypeInfo("<=", Precedence.Relation, Sides.Both, Sides.Both);
 						continue;
 					case TokenType.GreaterThan:
-						yield return new TokenTypeInfo(">", Precedence.Relation, OperandSides.Both);
+						yield return new TokenTypeInfo(">", Precedence.Relation, Sides.Both, Sides.Both);
 						continue;
 					case TokenType.GreaterThanOrEqual:
-						yield return new TokenTypeInfo(">=", Precedence.Relation, OperandSides.Both);
+						yield return new TokenTypeInfo(">=", Precedence.Relation, Sides.Both, Sides.Both);
 						continue;
 					case TokenType.Add:
-						yield return new TokenTypeInfo("+", Precedence.Addition, OperandSides.Both);
+						yield return new TokenTypeInfo("+", Precedence.Addition, Sides.Both, Sides.Both);
 						continue;
 					case TokenType.Subtract:
-						yield return new TokenTypeInfo("-", Precedence.Addition, OperandSides.Both);
+						yield return new TokenTypeInfo("-", Precedence.Addition, Sides.Both, Sides.Both);
 						continue;
 					case TokenType.Multiply:
-						yield return new TokenTypeInfo("*", Precedence.Multiplication, OperandSides.Both);
+						yield return new TokenTypeInfo("*", Precedence.Multiplication, Sides.Both, Sides.Both);
 						continue;
 					case TokenType.Divide:
-						yield return new TokenTypeInfo("/", Precedence.Multiplication, OperandSides.Both);
+						yield return new TokenTypeInfo("/", Precedence.Multiplication, Sides.Both, Sides.Both);
 						continue;
 					case TokenType.Modulo:
-						yield return new TokenTypeInfo("%", Precedence.Multiplication, OperandSides.Both);
+						yield return new TokenTypeInfo("%", Precedence.Multiplication, Sides.Both, Sides.Both);
 						continue;
 				}
 
@@ -277,12 +294,27 @@ namespace OpenRA.Support
 
 		static bool HasRightOperand(TokenType type)
 		{
-			return ((int)TokenTypeInfos[(int)type].OperandSides & (int)OperandSides.Right) != 0;
+			return ((int)TokenTypeInfos[(int)type].OperandSides & (int)Sides.Right) != 0;
 		}
 
 		static bool IsLeftOperandOrNone(TokenType type)
 		{
 			return type == TokenType.Invalid || HasRightOperand(type);
+		}
+
+		static bool RequiresWhitespaceAfter(TokenType type)
+		{
+			return ((int)TokenTypeInfos[(int)type].WhitespaceSides & (int)Sides.Right) != 0;
+		}
+
+		static bool RequiresWhitespaceBefore(TokenType type)
+		{
+			return ((int)TokenTypeInfos[(int)type].WhitespaceSides & (int)Sides.Left) != 0;
+		}
+
+		static string GetTokenSymbol(TokenType type)
+		{
+			return TokenTypeInfos[(int)type].Symbol;
 		}
 
 		class Token
@@ -293,10 +325,10 @@ namespace OpenRA.Support
 			public virtual string Symbol { get { return TokenTypeInfos[(int)Type].Symbol; } }
 
 			public int Precedence { get { return (int)TokenTypeInfos[(int)Type].Precedence; } }
-			public OperandSides OperandSides { get { return TokenTypeInfos[(int)Type].OperandSides; } }
+			public Sides OperandSides { get { return TokenTypeInfos[(int)Type].OperandSides; } }
 			public Associativity Associativity { get { return TokenTypeInfos[(int)Type].Associativity; } }
-			public bool LeftOperand { get { return ((int)TokenTypeInfos[(int)Type].OperandSides & (int)OperandSides.Left) != 0; } }
-			public bool RightOperand { get { return ((int)TokenTypeInfos[(int)Type].OperandSides & (int)OperandSides.Right) != 0; } }
+			public bool LeftOperand { get { return ((int)TokenTypeInfos[(int)Type].OperandSides & (int)Sides.Left) != 0; } }
+			public bool RightOperand { get { return ((int)TokenTypeInfos[(int)Type].OperandSides & (int)Sides.Right) != 0; } }
 
 			public Grouping Opens { get { return TokenTypeInfos[(int)Type].Opens; } }
 			public Grouping Closes { get { return TokenTypeInfos[(int)Type].Closes; } }
@@ -320,7 +352,7 @@ namespace OpenRA.Support
 						cc = CharClassOf(expression[i]);
 						if (cc != CharClass.Digit)
 						{
-							if (cc != CharClass.Whitespace && cc != CharClass.Operator)
+							if (cc != CharClass.Whitespace && cc != CharClass.Operator && cc != CharClass.Mixed)
 								throw new InvalidDataException("Number {0} and variable merged at index {1}".F(
 									int.Parse(expression.Substring(start, i - start)), start));
 
@@ -332,6 +364,15 @@ namespace OpenRA.Support
 				}
 
 				return false;
+			}
+
+			static TokenType VariableOrKeyword(string expression, int start, ref int i)
+			{
+				if (CharClassOf(expression[i - 1]) == CharClass.Mixed)
+					throw new InvalidDataException("Invalid identifier end character at index {0} for `{1}`".F(
+						i - 1, expression.Substring(start, i - start)));
+
+				return VariableOrKeyword(expression, start, i - start);
 			}
 
 			static TokenType VariableOrKeyword(string expression, int start, int length)
@@ -464,10 +505,10 @@ namespace OpenRA.Support
 				{
 					cc = CharClassOf(expression[i]);
 					if (cc == CharClass.Whitespace || cc == CharClass.Operator)
-						return VariableOrKeyword(expression, start, i - start);
+						return VariableOrKeyword(expression, start, ref i);
 				}
 
-				return VariableOrKeyword(expression, start, i - start);
+				return VariableOrKeyword(expression, start, ref i);
 			}
 
 			public static Token GetNext(string expression, ref int i, TokenType lastType = TokenType.Invalid)
@@ -475,16 +516,30 @@ namespace OpenRA.Support
 				if (i == expression.Length)
 					return null;
 
-				// Ignore whitespace
-				while (CharClassOf(expression[i]) == CharClass.Whitespace)
+				// Check and eat whitespace
+				var whitespaceBefore = false;
+				if (CharClassOf(expression[i]) == CharClass.Whitespace)
 				{
-					if (++i == expression.Length)
-						return null;
+					whitespaceBefore = true;
+					while (CharClassOf(expression[i]) == CharClass.Whitespace)
+					{
+						if (++i == expression.Length)
+							return null;
+					}
 				}
+				else if (lastType == TokenType.Invalid)
+					whitespaceBefore = true;
+				else if (RequiresWhitespaceAfter(lastType))
+					throw new InvalidDataException("Missing whitespace at index {0}, after `{1}` operator."
+						.F(i, GetTokenSymbol(lastType)));
 
 				var start = i;
 
 				var type = GetNextType(expression, ref i, lastType);
+				if (!whitespaceBefore && RequiresWhitespaceBefore(type))
+					throw new InvalidDataException("Missing whitespace at index {0}, before `{1}` operator."
+						.F(i, GetTokenSymbol(type)));
+
 				switch (type)
 				{
 					case TokenType.Number:
@@ -629,7 +684,7 @@ namespace OpenRA.Support
 					while (!((temp = s.Pop()).Opens != Grouping.None))
 						yield return temp;
 				}
-				else if (t.OperandSides == OperandSides.None)
+				else if (t.OperandSides == Sides.None)
 					yield return t;
 				else
 				{

@@ -77,7 +77,7 @@ Container@NEW_MAP_BG:
 			Font: Bold
 			Key: return
 
-Background@SAVE_MAP_PANEL:
+Container@SAVE_MAP_PANEL:
 	Logic: SaveMapLogic
 	X: (WINDOW_RIGHT - WIDTH)/2
 	Y: (WINDOW_BOTTOM - HEIGHT)/2

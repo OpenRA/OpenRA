@@ -18,18 +18,21 @@ Container@LOBBY_MAP_PREVIEW:
 							Width: PARENT_RIGHT-2
 							Height: PARENT_BOTTOM-2
 							TooltipContainer: TOOLTIP_CONTAINER
-				Label@MAP_TITLE:
+				LabelWithTooltip@MAP_TITLE:
 					Y: 172
 					Width: PARENT_RIGHT
 					Height: 25
 					Font: Bold
 					Align: Center
+					TooltipContainer: TOOLTIP_CONTAINER
+					TooltipTemplate: SIMPLE_TOOLTIP
 				Label@MAP_TYPE:
 					Y: 187
 					Width: PARENT_RIGHT
 					Height: 25
 					Font: TinyBold
 					Align: Center
+					IgnoreMouseOver: true
 				Label@MAP_AUTHOR:
 					Y: 200
 					Width: PARENT_RIGHT

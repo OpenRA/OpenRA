@@ -902,31 +902,6 @@ gaicbm:
 		Length: 30
 		ShadowStart: 30
 
-gaarty:
-	Defaults:
-		Offset: 0, -12, 12
-		UseTilesetCode: true
-		DepthSprite: isodepth.shp
-	idle:
-		ShadowStart: 3
-	damaged-idle:
-		Start: 1
-		ShadowStart: 4
-	muzzle: gunfire
-		Length: *
-		Offset: 0, 0
-		UseTilesetCode: false
-	emp-overlay: emp_fx01
-		Length: *
-		Offset: 0, 0, 13
-		UseTilesetCode: false
-		ZOffset: 512
-		BlendMode: Additive
-		-DepthSprite:
-	make: gaartymk
-		Length: 16
-		ShadowStart: 16
-
 naobel:
 	Defaults:
 		Offset: 0, -24, 24
