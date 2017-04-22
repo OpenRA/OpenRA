@@ -139,6 +139,7 @@ TTNK:
 		Turret: deployed
 		InitialFacing: 160
 		Offset: -20, -130, 180
+		RealignDelay: -1
 	WithVoxelBarrel:
 		Armament: deployed
 		LocalOffset: 128, 0, 256
@@ -183,6 +184,10 @@ ART2:
 		Cost: 975
 	Tooltip:
 		Name: Artillery
+		RequiresCondition: !deployed
+	Tooltip@DEPLOYED:
+		Name: Artillery (deployed)
+		RequiresCondition: deployed
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 100
@@ -195,18 +200,60 @@ ART2:
 	Mobile:
 		Speed: 71
 		TurnSpeed: 2
+		RequiresCondition: !empdisable && undeployed
 	RevealsShroud:
 		RequiresCondition: !inside-tunnel
 		Range: 9c0
 		MaxHeightDelta: 3
 	RenderVoxels:
 		LightAmbientColor: 0.4, 0.4, 0.4
-	Transforms:
-		IntoActor: gaarty
+	RenderSprites:
+		Image: art2
+	GrantConditionOnDeploy:
+		DeployedCondition: deployed
+		UndeployedCondition: undeployed
+		DeployAnimation: make
 		Facing: 96
-		TransformSounds:
-		NoTransformSounds:
-		Voice: Move
+		AllowedTerrainTypes: Clear, Road, DirtRoad, Rough
+		DeploySound: place2.aud
+		UndeploySound: clicky1.aud
+	GrantCondition@PREVIEWWORKAROUND:
+		Condition: real-actor
+	WithVoxelBody:
+		RequiresCondition: undeployed
+	WithSpriteBody@deployed:
+		RequiresCondition: !undeployed && real-actor
+	Turreted:
+		Turret: deployed
+		TurnSpeed: 5
+		InitialFacing: 96
+		Offset: 0,0,256
+		RealignDelay: -1
+	WithVoxelBarrel:
+		Armament: deployed
+		LocalOffset: 0,0,-256
+		RequiresCondition: deployed
+	WithVoxelTurret@deployed:
+		Turret: deployed
+		RequiresCondition: deployed
+	AttackTurreted@deployed:
+		Voice: Attack
+		Armaments: deployed
+		RequiresCondition: deployed
+	Armament@deployed:
+		Name: deployed
+		Turret: deployed
+		Weapon: 155mm
+		LocalOffset: 811,0,0
+		RequiresCondition: deployed
+		MuzzleSequence: muzzle
+		MuzzlePalette: effect-ignore-lighting
+	WithMuzzleOverlay:
+	AutoTarget:
+	Carryable:
+		RequiresCondition: undeployed
+	RevealOnFire:
+		ArmamentNames: deployed
 
 REPAIR:
 	Inherits: ^Tank
