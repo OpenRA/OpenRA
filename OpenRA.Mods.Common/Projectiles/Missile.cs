@@ -414,6 +414,23 @@ namespace OpenRA.Mods.Common.Projectiles
 			return tp.Actor.World.SharedRandom.Next(100 / tp.Trait.Chance) == 0;
 		}
 
+		bool ShotBy(TraitPair<ShootsMissiles> tp)
+		{
+			if ((tp.Actor.CenterPosition - pos).HorizontalLengthSquared > tp.Trait.Range.LengthSquared)
+				return false;
+
+			if (!tp.Trait.DeflectionStances.HasStance(tp.Actor.Owner.Stances[args.SourceActor.Owner]))
+				return false;
+
+			if (tp.Trait.Armament.IsReloading)
+				return false;
+
+			args.SourceActor.World.AddFrameEndTask(w =>
+					tp.Trait.Armament.CheckFire(tp.Actor, null, Target.FromPos(pos))
+			);
+			return true;
+		}
+
 		void ChangeSpeed(int sign = 1)
 		{
 			speed = (speed + sign * info.Acceleration.Length).Clamp(0, maxSpeed);
@@ -829,6 +846,10 @@ namespace OpenRA.Mods.Common.Projectiles
 				info.TargetExtraSearchRadius, out blockedPos))
 			{
 				pos = blockedPos;
+				shouldExplode = true;
+			}
+			else if (world.ActorsWithTrait<ShootsMissiles>().Any(ShotBy))
+			{
 				shouldExplode = true;
 			}
 
