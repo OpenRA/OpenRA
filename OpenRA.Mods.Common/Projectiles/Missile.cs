@@ -133,6 +133,9 @@ namespace OpenRA.Mods.Common.Projectiles
 		[Desc("Range of facings by which jammed missiles can stray from current path.")]
 		public readonly int JammedDiversionRange = 20;
 
+		[Desc("Missile shootable by point defense laser?")]
+		public readonly bool LaserShootable = true;
+
 		[Desc("Explodes when leaving the following terrain type, e.g., Water for torpedoes.")]
 		public readonly string BoundToTerrainType = "";
 
@@ -848,7 +851,7 @@ namespace OpenRA.Mods.Common.Projectiles
 				pos = blockedPos;
 				shouldExplode = true;
 			}
-			else if (world.ActorsWithTrait<ShootsMissiles>().Any(ShotBy))
+			else if (info.LaserShootable && world.ActorsWithTrait<ShootsMissiles>().Any(ShotBy))
 			{
 				shouldExplode = true;
 			}
