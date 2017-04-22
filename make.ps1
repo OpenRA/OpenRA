@@ -130,8 +130,6 @@ function Check-Command {
 		./OpenRA.Utility.exe all --check-explicit-interfaces
 		echo "Checking for code style violations in OpenRA.Platforms.Default..."
 		./OpenRA.Utility.exe cnc --check-code-style OpenRA.Platforms.Default
-		echo "Checking for code style violations in OpenRA.GameMonitor..."
-		./OpenRA.Utility.exe ra --check-code-style OpenRA.GameMonitor
 		echo "Checking for code style violations in OpenRA.Game..."
 		./OpenRA.Utility.exe ra --check-code-style OpenRA.Game
 		echo "Checking for code style violations in OpenRA.Mods.Common..."
