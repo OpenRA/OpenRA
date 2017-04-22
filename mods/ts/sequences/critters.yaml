@@ -77,3 +77,16 @@ vislrg:
 		Tick: 80
 		Offset: 0, 0, 16
 #		ShadowStart: 40 # TODO: enable shadow frames
+
+floater:
+	idle:
+		Length: 16
+		ShadowStart: 32
+		Tick: 100
+		Offset: 0, 0, 16
+	attack:
+		Length: 16
+		Start: 16
+		ShadowStart: 48
+		Tick: 100
+		Offset: 0, 0, 16

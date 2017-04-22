@@ -77,3 +77,45 @@ VISC_LRG:
 		Crushes: crate, infantry
 	RenderSprites:
 		Image: vislrg
+
+JFISH:
+	Inherits: ^Visceroid
+	Inherits@CRATESTATS: ^CrateStatModifiers
+	Tooltip:
+		Name: Tiberium Floater
+	Health:
+		HP: 500
+		Shape: Circle
+			Radius: 363
+			VerticalTopOffset: 768
+	RevealsShroud:
+		Range: 5c0
+	Mobile:
+		Speed: 72
+		Crushes: crate
+		TerrainSpeeds:
+			Clear: 100
+			Rail: 100
+			DirtRoad: 100
+			Rough: 100
+			Water: 100
+	Armament:
+		Weapon: Tentacle
+		FireDelay: 10
+	AutoTarget:
+		ScanRadius: 5
+	AttackFrontal:
+	AttackWander:
+		WanderMoveRadius: 6
+		MinMoveDelay: 250
+		MaxMoveDelay: 600
+	WithAttackAnimation:
+		AttackSequence: attack
+	RenderSprites:
+		Image: floater
+	Selectable:
+		Bounds: 32,32,0,-5
+	AmbientSound:
+		SoundFiles: floatmov.aud, flotmov2.aud, flotmov3.aud, flotmov4.aud
+		Delay: 150, 450
+		Interval: 300, 800
