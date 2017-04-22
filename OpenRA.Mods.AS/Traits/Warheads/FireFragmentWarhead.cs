@@ -17,7 +17,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.AS.Warheads
 {
-	//TODO: add rotation support based on initiator
+	// TODO: add rotation support based on initiator
 	[Desc("Allows to fire a a weapon to a directly specified target position relative to the warhead explosion.")]
 	public class FireFragmentWarhead : WarheadAS, IRulesetLoaded<WeaponInfo>
 	{

@@ -21,7 +21,7 @@ namespace OpenRA.Mods.AS.Traits
 
 		public object Create(ActorInitializer init) { return new Doctrine(init.Self, this); }
 	}
-	
+
 	public class Doctrine : INotifyCreated
 	{
 		public readonly string Type;

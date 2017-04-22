@@ -50,7 +50,7 @@ namespace OpenRA.Mods.AS.Traits
 		bool isSuspended;
 		int token = ConditionManager.InvalidConditionToken;
 
-		bool isEnabled { get { return token != ConditionManager.InvalidConditionToken; } }
+		bool IsEnabled { get { return token != ConditionManager.InvalidConditionToken; } }
 
 		public GrantPeriodicCondition(ActorInitializer init, GrantPeriodicConditionInfo info)
 			: base(info)
@@ -67,7 +67,7 @@ namespace OpenRA.Mods.AS.Traits
 					? self.World.SharedRandom.Next(info.ActiveDuration[0], info.ActiveDuration[1])
 					: info.ActiveDuration[0];
 				active = ticks;
-				if (info.StartsGranted != isEnabled)
+				if (info.StartsGranted != IsEnabled)
 					EnableCondition();
 			}
 			else
@@ -76,7 +76,7 @@ namespace OpenRA.Mods.AS.Traits
 					? self.World.SharedRandom.Next(info.CooldownDuration[0], info.CooldownDuration[1])
 					: info.CooldownDuration[0];
 				cooldown = ticks;
-				if (info.StartsGranted != isEnabled)
+				if (info.StartsGranted != IsEnabled)
 					DisableCondition();
 			}
 		}
@@ -93,7 +93,7 @@ namespace OpenRA.Mods.AS.Traits
 		{
 			if (!IsTraitDisabled && --ticks < 0)
 			{
-				if (isEnabled)
+				if (IsEnabled)
 				{
 					ticks = info.CooldownDuration.Length == 2
 						? self.World.SharedRandom.Next(info.CooldownDuration[0], info.CooldownDuration[1])
@@ -124,7 +124,7 @@ namespace OpenRA.Mods.AS.Traits
 
 		protected override void TraitDisabled(Actor self)
 		{
-			if (isEnabled)
+			if (IsEnabled)
 			{
 				DisableCondition();
 				isSuspended = true;
@@ -148,13 +148,13 @@ namespace OpenRA.Mods.AS.Traits
 			if (!info.ShowSelectionBar)
 				return 0f;
 
-			return isEnabled
+			return IsEnabled
 				? (float)(active - ticks) / active
 					: (float)ticks / cooldown;
 		}
 
 		bool ISelectionBar.DisplayWhenEmpty { get { return info.ShowSelectionBar; } }
 
-		Color ISelectionBar.GetColor() { return isEnabled ? info.ActiveColor : info.CooldownColor; }
+		Color ISelectionBar.GetColor() { return IsEnabled ? info.ActiveColor : info.CooldownColor; }
 	}
 }

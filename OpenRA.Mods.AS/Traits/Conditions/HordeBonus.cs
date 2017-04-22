@@ -63,7 +63,7 @@ namespace OpenRA.Mods.AS.Traits
 
 		int token = ConditionManager.InvalidConditionToken;
 
-		bool isEnabled { get { return token != ConditionManager.InvalidConditionToken; } }
+		bool IsEnabled { get { return token != ConditionManager.InvalidConditionToken; } }
 
 		public HordeBonus(Actor self, HordeBonusInfo info)
 		{
@@ -157,7 +157,7 @@ namespace OpenRA.Mods.AS.Traits
 		{
 			if (sources.Count() > info.Minimum && sources.Count() < info.Maximum)
 			{
-				if (!isEnabled)
+				if (!IsEnabled)
 				{
 					token = manager.GrantCondition(self, info.Condition);
 					Game.Sound.Play(SoundType.World, info.EnableSound, self.CenterPosition);
@@ -165,7 +165,7 @@ namespace OpenRA.Mods.AS.Traits
 			}
 			else
 			{
-				if (isEnabled)
+				if (IsEnabled)
 				{
 					token = manager.RevokeCondition(self, token);
 					Game.Sound.Play(SoundType.World, info.DisableSound, self.CenterPosition);

@@ -65,7 +65,7 @@ namespace OpenRA.Mods.AS.Traits
 		int token = ConditionManager.InvalidConditionToken;
 		WPos? lastPos;
 
-		bool isEnabled { get { return token != ConditionManager.InvalidConditionToken; } }
+		bool IsEnabled { get { return token != ConditionManager.InvalidConditionToken; } }
 
 		PeriodicConditionState state;
 
@@ -93,7 +93,7 @@ namespace OpenRA.Mods.AS.Traits
 					: info.CooldownDuration[0];
 				cooldown = ticks;
 				state = PeriodicConditionState.Charging;
-				if (isEnabled)
+				if (IsEnabled)
 					DisableCondition();
 			}
 		}
@@ -113,7 +113,7 @@ namespace OpenRA.Mods.AS.Traits
 
 			if (state != PeriodicConditionState.Ready && --ticks < 0)
 			{
-				if (isEnabled)
+				if (IsEnabled)
 				{
 					ticks = info.CooldownDuration.Length == 2
 						? self.World.SharedRandom.Next(info.CooldownDuration[0], info.CooldownDuration[1])
@@ -153,7 +153,7 @@ namespace OpenRA.Mods.AS.Traits
 
 		protected override void TraitDisabled(Actor self)
 		{
-			if (isEnabled)
+			if (IsEnabled)
 			{
 				DisableCondition();
 				isSuspended = true;
