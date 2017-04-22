@@ -23,7 +23,7 @@ namespace OpenRA.Mods.Common.Widgets
 		public Func<string> GetTooltipText = () => "";
 
 		[ObjectCreator.UseCtor]
-		public LabelWithTooltipWidget(World world)
+		public LabelWithTooltipWidget()
 			: base()
 		{
 			tooltipContainer = Exts.Lazy(() =>
