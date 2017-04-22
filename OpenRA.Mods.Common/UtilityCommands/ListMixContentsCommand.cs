@@ -37,7 +37,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			fs.LoadFromManifest(utility.ModData.Manifest);
 
 			fs.Mount(path, "parent");
-			var package = new MixFile(fs, "parent|" + filename);
+			var package = new MixFileLoader.MixFile(fs, "parent|" + filename);
 
 			foreach (var kv in package.Index.OrderBy(kv => kv.Value.Offset))
 			{

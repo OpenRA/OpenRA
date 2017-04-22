@@ -28,6 +28,8 @@ namespace OpenRA.FileSystem
 	public class FileSystem : IReadOnlyFileSystem
 	{
 		public IEnumerable<IReadOnlyPackage> MountedPackages { get { return mountedPackages.Keys; } }
+		private IPackageLoader[] PackageLoaders;
+
 		readonly Dictionary<IReadOnlyPackage, int> mountedPackages = new Dictionary<IReadOnlyPackage, int>();
 		readonly Dictionary<string, IReadOnlyPackage> explicitMounts = new Dictionary<string, IReadOnlyPackage>();
 
@@ -42,24 +44,22 @@ namespace OpenRA.FileSystem
 			this.installedMods = installedMods;
 		}
 
+		public void Init(ModData modData)
+		{
+			PackageLoaders = modData.PackageLoaders;
+		}
+
 		public IReadOnlyPackage OpenPackage(string filename)
 		{
-			if (filename.EndsWith(".mix", StringComparison.InvariantCultureIgnoreCase))
-				return new MixFile(this, filename);
-			if (filename.EndsWith(".zip", StringComparison.InvariantCultureIgnoreCase))
-				return new ZipFile(this, filename);
-			if (filename.EndsWith(".oramap", StringComparison.InvariantCultureIgnoreCase))
-				return new ZipFile(this, filename);
-			if (filename.EndsWith(".RS", StringComparison.InvariantCultureIgnoreCase))
-				return new D2kSoundResources(this, filename);
-			if (filename.EndsWith(".Z", StringComparison.InvariantCultureIgnoreCase))
-				return new InstallShieldPackage(this, filename);
-			if (filename.EndsWith(".PAK", StringComparison.InvariantCultureIgnoreCase))
-				return new PakFile(this, filename);
-			if (filename.EndsWith(".big", StringComparison.InvariantCultureIgnoreCase))
-				return new BigFile(this, filename);
-			if (filename.EndsWith(".bag", StringComparison.InvariantCultureIgnoreCase))
-				return new BagFile(this, filename);
+			if (PackageLoaders != null)
+			{
+				IReadOnlyPackage package;
+				foreach (var packageLoader in PackageLoaders)
+				{
+					if (packageLoader.TryParsePackage(this, filename, out package))
+						return package;
+				}
+			}
 
 			IReadOnlyPackage parent;
 			string subPath = null;
@@ -76,11 +76,11 @@ namespace OpenRA.FileSystem
 				filename.EndsWith(".oramap", StringComparison.InvariantCultureIgnoreCase))
 			{
 				using (var s = parent.GetStream(filename))
-					return new ZipFile(s, filename, parent);
+					return new ZipFileLoader.ZipFile(s, filename, parent);
 			}
 
-			if (parent is ZipFile)
-				return new ZipFolder(this, (ZipFile)parent, filename, filename);
+			if (parent is ZipFileLoader.ZipFile)
+				return new ZipFolder(this, (ZipFileLoader.ZipFile)parent, filename, filename);
 
 			if (parent is ZipFolder)
 			{

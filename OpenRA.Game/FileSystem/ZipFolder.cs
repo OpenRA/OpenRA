@@ -22,7 +22,7 @@ namespace OpenRA.FileSystem
 	public sealed class ZipFolder : IReadOnlyPackage
 	{
 		public string Name { get; private set; }
-		public ZipFile Parent { get; private set; }
+		public ZipFileLoader.ZipFile Parent { get; private set; }
 		readonly string path;
 
 		static ZipFolder()
@@ -30,7 +30,7 @@ namespace OpenRA.FileSystem
 			ZipConstants.DefaultCodePage = Encoding.UTF8.CodePage;
 		}
 
-		public ZipFolder(FileSystem context, ZipFile parent, string path, string filename)
+		public ZipFolder(FileSystem context, ZipFileLoader.ZipFile parent, string path, string filename)
 		{
 			if (filename.EndsWith("/"))
 				filename = filename.Substring(0, filename.Length - 1);
