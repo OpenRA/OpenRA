@@ -105,12 +105,23 @@ namespace OpenRA.Mods.Common.Traits
 	public interface INotifyPassengerExited { void OnPassengerExited(Actor self, Actor passenger); }
 
 	[RequireExplicitImplementation]
-	public interface IConditionConsumerInfo : ITraitInfo { }
+	public interface IObservesVariablesInfo : ITraitInfo { }
 
-	public interface IConditionConsumer
+	public delegate void VariableObserverNotifier(Actor self, IReadOnlyDictionary<string, int> variables);
+	public struct VariableObserver
 	{
-		IEnumerable<string> Conditions { get; }
-		void ConditionsChanged(Actor self, IReadOnlyDictionary<string, int> conditions);
+		public VariableObserverNotifier Notifier;
+		public IEnumerable<string> Variables;
+		public VariableObserver(VariableObserverNotifier notifier, IEnumerable<string> variables)
+		{
+			Notifier = notifier;
+			Variables = variables;
+		}
+	}
+
+	public interface IObservesVariables
+	{
+		IEnumerable<VariableObserver> GetVariableObservers();
 	}
 
 	public interface INotifyHarvesterAction
