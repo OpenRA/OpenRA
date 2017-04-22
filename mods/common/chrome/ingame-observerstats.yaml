@@ -457,6 +457,7 @@ Background@INGAME_OBSERVERSTATS_BG:
 									Y: 0
 									Width: 320
 									Height: PARENT_BOTTOM
+									TooltipContainer: TOOLTIP_CONTAINER
 								ObserverSupportPowerIcons@SUPPORT_POWER_ICONS:
 									X: 535
 									Y: 0

@@ -155,7 +155,7 @@ panel-rule: chrome.png
 background: chrome.png
 	background:0,0,1024,480
 
-modchooser: chrome.png
+modcontent: chrome.png
 	logo: 0,576,280,128
 	leftarrow:384,512,20,64
 	rightarrow:404,512,20,64

@@ -248,12 +248,12 @@ namespace OpenRA
 
 			// Special case handling of Game.Mod argument: if it matches a real filesystem path
 			// then we use this to override the mod search path, and replace it with the mod id
-			var modArgument = args.GetValue("Game.Mod", null);
+			var modID = args.GetValue("Game.Mod", null);
 			var explicitModPaths = new string[0];
-			if (modArgument != null && (File.Exists(modArgument) || Directory.Exists(modArgument)))
+			if (modID != null && (File.Exists(modID) || Directory.Exists(modID)))
 			{
-				explicitModPaths = new[] { modArgument };
-				args.ReplaceValue("Game.Mod", Path.GetFileNameWithoutExtension(modArgument));
+				explicitModPaths = new[] { modID };
+				modID = Path.GetFileNameWithoutExtension(modID);
 			}
 
 			InitializeSettings(args);
@@ -317,7 +317,7 @@ namespace OpenRA
 			var modSearchArg = args.GetValue("Engine.ModSearchPaths", null);
 			var modSearchPaths = modSearchArg != null ?
 				FieldLoader.GetValue<string[]>("Engine.ModsPath", modSearchArg) :
-				new[] { Path.Combine(".", "mods"), Path.Combine("^", "mods") };
+				new[] { Path.Combine(".", "mods") };
 
 			Mods = new InstalledMods(modSearchPaths, explicitModPaths);
 			Console.WriteLine("Internal mods:");
@@ -330,19 +330,7 @@ namespace OpenRA
 			foreach (var mod in ExternalMods)
 				Console.WriteLine("\t{0}: {1} ({2})", mod.Key, mod.Value.Title, mod.Value.Version);
 
-			InitializeMod(Settings.Game.Mod, args);
-		}
-
-		public static bool IsModInstalled(string modId)
-		{
-			return Mods.ContainsKey(modId) && Mods[modId].RequiresMods.All(IsModInstalled);
-		}
-
-		public static bool IsModInstalled(KeyValuePair<string, string> mod)
-		{
-			return Mods.ContainsKey(mod.Key)
-				&& Mods[mod.Key].Metadata.Version == mod.Value
-				&& IsModInstalled(mod.Key);
+			InitializeMod(modID, args);
 		}
 
 		public static void InitializeMod(string mod, Arguments args)
@@ -372,12 +360,10 @@ namespace OpenRA
 
 			ModData = null;
 
-			// Fall back to default if the mod doesn't exist or has missing prerequisites.
-			if (mod == null || !IsModInstalled(mod))
-				mod = args.GetValue("Engine.DefaultMod", "modchooser");
+			if (mod == null)
+				throw new InvalidOperationException("Game.Mod argument missing or mod could not be found.");
 
 			Console.WriteLine("Loading mod: {0}", mod);
-			Settings.Game.Mod = mod;
 
 			Sound.StopVideo();
 

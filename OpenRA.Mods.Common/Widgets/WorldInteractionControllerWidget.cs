@@ -241,7 +241,8 @@ namespace OpenRA.Mods.Common.Widgets
 			{
 				var key = Hotkey.FromKeyInput(e);
 
-				if (key == Game.Settings.Keys.PauseKey && World.LocalPlayer != null) // Disable pausing for spectators
+				if (key == Game.Settings.Keys.PauseKey
+					&& (Game.IsHost || (World.LocalPlayer != null && World.LocalPlayer.WinState != WinState.Lost))) // Disable pausing for spectators and defeated players
 					World.SetPauseState(!World.Paused);
 				else if (key == Game.Settings.Keys.SelectAllUnitsKey && !World.IsGameOver)
 				{

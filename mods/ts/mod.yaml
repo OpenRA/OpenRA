@@ -4,9 +4,6 @@ Metadata:
 	Version: {DEV_VERSION}
 	Author: the OpenRA Developers
 
-RequiresMods:
-	modchooser: {DEV_VERSION}
-
 Packages:
 	~^Content/ts
 	~^Content/ts/firestorm

@@ -124,7 +124,7 @@ namespace OpenRA.Mods.Common.LoadScreens
 			if (contentInstalled)
 				return true;
 
-			Game.InitializeMod(content.ContentInstallerMod, new Arguments());
+			Game.InitializeMod(content.ContentInstallerMod, new Arguments(new[] { "Content.Mod=" + modData.Manifest.Id }));
 			return false;
 		}
 	}

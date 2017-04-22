@@ -45,6 +45,11 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Should an actor only be spawned when the 'Creeps' setting is true?")]
 		public readonly bool RequiresLobbyCreeps = false;
 
+		[Desc("Offset of the spawned actor relative to the dying actor's position.",
+			"Warning: Spawning an actor outside the parent actor's footprint/influence might",
+			"lead to unexpected behaviour.")]
+		public readonly CVec Offset = CVec.Zero;
+
 		public object Create(ActorInitializer init) { return new SpawnActorOnDeath(init, this); }
 	}
 
@@ -84,7 +89,7 @@ namespace OpenRA.Mods.Common.Traits
 				var td = new TypeDictionary
 				{
 					new ParentActorInit(self),
-					new LocationInit(self.Location),
+					new LocationInit(self.Location + info.Offset),
 					new CenterPositionInit(self.CenterPosition),
 					new FactionInit(faction)
 				};

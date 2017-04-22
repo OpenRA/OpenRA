@@ -18,7 +18,7 @@ rm -rf $ROOTDIR
 cd ../..
 
 # Copy files for OpenRA.Game.exe and OpenRA.Editor.exe as well as all dependencies.
-make install-all prefix="/usr" DESTDIR="$PWD/packaging/linux/$ROOTDIR"
+make install prefix="/usr" DESTDIR="$PWD/packaging/linux/$ROOTDIR"
 
 # Install startup scripts, desktop files and icons
 make install-linux-shortcuts prefix="/usr" DESTDIR="$PWD/packaging/linux/$ROOTDIR"

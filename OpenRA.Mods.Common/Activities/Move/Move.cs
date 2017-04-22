@@ -142,7 +142,9 @@ namespace OpenRA.Mods.Common.Activities
 
 		public override Activity Tick(Actor self)
 		{
-			if (IsCanceled)
+			// If the actor is inside a tunnel then we must let them move
+			// all the way through before moving to the next activity
+			if (IsCanceled && self.Location.Layer != CustomMovementLayerType.Tunnel)
 				return NextActivity;
 
 			if (mobile.IsTraitDisabled)
@@ -275,12 +277,6 @@ namespace OpenRA.Mods.Common.Activities
 
 			var subCell = mobile.GetAvailableSubCell(nextCell, SubCell.Any, ignoredActor);
 			return Pair.New(nextCell, subCell);
-		}
-
-		public override bool Cancel(Actor self)
-		{
-			path = NoPath;
-			return base.Cancel(self);
 		}
 
 		public override IEnumerable<Target> GetTargets(Actor self)
@@ -426,26 +422,29 @@ namespace OpenRA.Mods.Common.Activities
 				var fromSubcellOffset = map.Grid.OffsetOfSubCell(mobile.FromSubCell);
 				var toSubcellOffset = map.Grid.OffsetOfSubCell(mobile.ToSubCell);
 
-				var nextCell = parent.PopPath(self);
-				if (nextCell != null)
+				if (!IsCanceled || self.Location.Layer == CustomMovementLayerType.Tunnel)
 				{
-					if (IsTurn(mobile, nextCell.Value.First))
+					var nextCell = parent.PopPath(self);
+					if (nextCell != null)
 					{
-						var nextSubcellOffset = map.Grid.OffsetOfSubCell(nextCell.Value.Second);
-						var ret = new MoveFirstHalf(
-							Move,
-							Util.BetweenCells(self.World, mobile.FromCell, mobile.ToCell) + (fromSubcellOffset + toSubcellOffset) / 2,
-							Util.BetweenCells(self.World, mobile.ToCell, nextCell.Value.First) + (toSubcellOffset + nextSubcellOffset) / 2,
-							mobile.Facing,
-							Util.GetNearestFacing(mobile.Facing, map.FacingBetween(mobile.ToCell, nextCell.Value.First, mobile.Facing)),
-							moveFraction - MoveFractionTotal);
+						if (IsTurn(mobile, nextCell.Value.First))
+						{
+							var nextSubcellOffset = map.Grid.OffsetOfSubCell(nextCell.Value.Second);
+							var ret = new MoveFirstHalf(
+								Move,
+								Util.BetweenCells(self.World, mobile.FromCell, mobile.ToCell) + (fromSubcellOffset + toSubcellOffset) / 2,
+								Util.BetweenCells(self.World, mobile.ToCell, nextCell.Value.First) + (toSubcellOffset + nextSubcellOffset) / 2,
+								mobile.Facing,
+								Util.GetNearestFacing(mobile.Facing, map.FacingBetween(mobile.ToCell, nextCell.Value.First, mobile.Facing)),
+								moveFraction - MoveFractionTotal);
 
-						mobile.FinishedMoving(self);
-						mobile.SetLocation(mobile.ToCell, mobile.ToSubCell, nextCell.Value.First, nextCell.Value.Second);
-						return ret;
+							mobile.FinishedMoving(self);
+							mobile.SetLocation(mobile.ToCell, mobile.ToSubCell, nextCell.Value.First, nextCell.Value.Second);
+							return ret;
+						}
+
+						parent.path.Add(nextCell.Value.First);
 					}
-
-					parent.path.Add(nextCell.Value.First);
 				}
 
 				var toPos = mobile.ToCell.Layer == 0 ? map.CenterOfCell(mobile.ToCell) :

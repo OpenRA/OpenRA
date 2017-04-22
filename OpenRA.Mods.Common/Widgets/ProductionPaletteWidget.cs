@@ -33,6 +33,7 @@ namespace OpenRA.Mods.Common.Widgets
 		public PaletteReference IconDarkenPalette;
 		public float2 Pos;
 		public List<ProductionItem> Queued;
+		public ProductionQueue ProductionQueue;
 	}
 
 	public class ProductionPaletteWidget : Widget
@@ -66,6 +67,7 @@ namespace OpenRA.Mods.Common.Widgets
 		public event Action<int, int> OnIconCountChanged = (a, b) => { };
 
 		public ProductionIcon TooltipIcon { get; private set; }
+		public Func<ProductionIcon> GetTooltipIcon;
 		public readonly World World;
 		readonly OrderManager orderManager;
 
@@ -98,6 +100,7 @@ namespace OpenRA.Mods.Common.Widgets
 			this.orderManager = orderManager;
 			World = world;
 			this.worldRenderer = worldRenderer;
+			GetTooltipIcon = () => TooltipIcon;
 			tooltipContainer = Exts.Lazy(() =>
 				Ui.Root.Get<TooltipContainerWidget>(TooltipContainer));
 
@@ -164,7 +167,7 @@ namespace OpenRA.Mods.Common.Widgets
 		{
 			if (TooltipContainer != null)
 				tooltipContainer.Value.SetTooltip(TooltipTemplate,
-					new WidgetArgs() { { "world", World }, { "palette", this } });
+					new WidgetArgs() { { "player", World.LocalPlayer }, { "getTooltipIcon", GetTooltipIcon } });
 		}
 
 		public override void MouseExited()
@@ -351,7 +354,8 @@ namespace OpenRA.Mods.Common.Widgets
 					IconClockPalette = worldRenderer.Palette(ClockPalette),
 					IconDarkenPalette = worldRenderer.Palette(NotBuildablePalette),
 					Pos = new float2(rect.Location),
-					Queued = CurrentQueue.AllQueued().Where(a => a.Item == item.Name).ToList()
+					Queued = currentQueue.AllQueued().Where(a => a.Item == item.Name).ToList(),
+					ProductionQueue = currentQueue
 				};
 
 				icons.Add(rect, pi);

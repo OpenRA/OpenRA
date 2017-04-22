@@ -125,6 +125,10 @@ namespace OpenRA.Mods.Common
 		public static bool CanHarvestAt(this Actor self, CPos pos, ResourceLayer resLayer, HarvesterInfo harvInfo,
 			ResourceClaimLayer territory)
 		{
+			// Resources only exist in the ground layer
+			if (pos.Layer != 0)
+				return false;
+
 			var resType = resLayer.GetResource(pos);
 			if (resType == null)
 				return false;

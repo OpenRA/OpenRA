@@ -88,7 +88,7 @@
     <Compile Include="Activities\CaptureActor.cs" />
     <Compile Include="Activities\DeliverResources.cs" />
     <Compile Include="Activities\Demolish.cs" />
-    <Compile Include="Activities\DonateSupplies.cs" />
+    <Compile Include="Activities\DonateCash.cs" />
     <Compile Include="Activities\Enter.cs" />
     <Compile Include="Activities\EnterTransport.cs" />
     <Compile Include="Activities\ExternalCaptureActor.cs" />
@@ -184,7 +184,7 @@
     <Compile Include="Lint\CheckTargetHealthRadius.cs" />
     <Compile Include="Lint\LintBuildablePrerequisites.cs" />
     <Compile Include="Lint\LintExts.cs" />
-    <Compile Include="LoadScreens\ModChooserLoadScreen.cs" />
+    <Compile Include="LoadScreens\ModContentLoadScreen.cs" />
     <Compile Include="ActorInitializer.cs" />
     <Compile Include="Scripting\Properties\AmmoPoolProperties.cs" />
     <Compile Include="ShroudExts.cs" />
@@ -249,7 +249,7 @@
     <Compile Include="Scripting\Properties\ParatroopersProperties.cs" />
     <Compile Include="TraitsInterfaces.cs" />
     <Compile Include="TraitsInterfacesExternal.cs" />
-    <Compile Include="Traits\AcceptsSupplies.cs" />
+    <Compile Include="Traits\AcceptsDeliveredCash.cs" />
     <Compile Include="Traits\Air\Aircraft.cs" />
     <Compile Include="Traits\Air\AttackBomber.cs" />
     <Compile Include="Traits\Air\AttackHeli.cs" />
@@ -479,7 +479,7 @@
     <Compile Include="Traits\Sound\DeathSounds.cs" />
     <Compile Include="Traits\Sound\SoundOnDamageTransition.cs" />
     <Compile Include="Traits\Sound\AttackSounds.cs" />
-    <Compile Include="Traits\SupplyTruck.cs" />
+    <Compile Include="Traits\DeliversCash.cs" />
     <Compile Include="Traits\SupportPowers\AirstrikePower.cs" />
     <Compile Include="Traits\SupportPowers\GrantExternalConditionPower.cs" />
     <Compile Include="Traits\SupportPowers\NukePower.cs" />
@@ -616,7 +616,6 @@
     <Compile Include="Widgets\Logic\Ingame\SupportPowerBinLogic.cs" />
     <Compile Include="Widgets\Logic\Ingame\SupportPowerTooltipLogic.cs" />
     <Compile Include="Widgets\Logic\Ingame\WorldTooltipLogic.cs" />
-    <Compile Include="Widgets\Logic\Installation\InstallModLogic.cs" />
     <Compile Include="Widgets\Logic\Lobby\ClientTooltipLogic.cs" />
     <Compile Include="Widgets\Logic\Lobby\KickClientLogic.cs" />
     <Compile Include="Widgets\Logic\Lobby\KickSpectatorsLogic.cs" />
@@ -634,7 +633,6 @@
     <Compile Include="Widgets\Logic\Editor\TileSelectorLogic.cs" />
     <Compile Include="Widgets\Logic\MapChooserLogic.cs" />
     <Compile Include="Widgets\Logic\MissionBrowserLogic.cs" />
-    <Compile Include="Widgets\Logic\ModBrowserLogic.cs" />
     <Compile Include="Widgets\Logic\MusicPlayerLogic.cs" />
     <Compile Include="Widgets\Logic\PerfDebugLogic.cs" />
     <Compile Include="Widgets\Logic\ReplayBrowserLogic.cs" />

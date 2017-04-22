@@ -325,12 +325,11 @@ dependencies: $(os-dependencies)
 
 all-dependencies: cli-dependencies windows-dependencies osx-dependencies
 
-version: mods/ra/mod.yaml mods/cnc/mod.yaml mods/d2k/mod.yaml mods/ts/mod.yaml mods/modchooser/mod.yaml mods/all/mod.yaml
+version: mods/ra/mod.yaml mods/cnc/mod.yaml mods/d2k/mod.yaml mods/ts/mod.yaml mods/modcontent/mod.yaml mods/all/mod.yaml
 	@for i in $? ; do \
 		awk '{sub("Version:.*$$","Version: $(VERSION)"); print $0}' $${i} > $${i}.tmp && \
-		awk '{sub("\tmodchooser:.*$$","\tmodchooser: $(VERSION)"); print $0}' $${i}.tmp > $${i}.tmp2 && \
-		awk '{sub("/[^/]*: User$$", "/$(VERSION): User"); print $0}' $${i}.tmp2 > $${i} && \
-		rm $${i}.tmp $${i}.tmp2; \
+		awk '{sub("/[^/]*: User$$", "/$(VERSION): User"); print $0}' $${i}.tmp > $${i} && \
+		rm $${i}.tmp; \
 	done
 
 docs: utility mods version
@@ -356,7 +355,7 @@ install-core: default
 	@$(CP_R) mods/ra "$(DATA_INSTALL_DIR)/mods/"
 	@$(CP_R) mods/d2k "$(DATA_INSTALL_DIR)/mods/"
 	@$(INSTALL_PROGRAM) $(mod_d2k_TARGET) "$(DATA_INSTALL_DIR)/mods/d2k"
-	@$(CP_R) mods/modchooser "$(DATA_INSTALL_DIR)/mods/"
+	@$(CP_R) mods/modcontent "$(DATA_INSTALL_DIR)/mods/"
 
 	@$(INSTALL_DATA) "global mix database.dat" "$(DATA_INSTALL_DIR)/global mix database.dat"
 	@$(INSTALL_DATA) "GeoLite2-Country.mmdb.gz" "$(DATA_INSTALL_DIR)/GeoLite2-Country.mmdb.gz"
@@ -394,8 +393,6 @@ install-linux-mime:
 
 	@$(INSTALL_DIR) "$(DESTDIR)$(datadir)/applications"
 	@$(INSTALL_DATA) packaging/linux/openra-join-servers.desktop "$(DESTDIR)$(datadir)/applications"
-	@$(INSTALL_DATA) packaging/linux/openra-replays.desktop "$(DESTDIR)$(datadir)/applications"
-	@$(INSTALL_DATA) packaging/linux/openra-launch-mod.desktop "$(DESTDIR)$(datadir)/applications"
 
 install-linux-appdata:
 	@$(INSTALL_DIR) "$(DESTDIR)$(datadir)/appdata/"

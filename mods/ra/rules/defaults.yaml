@@ -527,7 +527,7 @@
 	RepairableBuilding:
 		PlayerExperience: 25
 	EngineerRepairable:
-	AcceptsSupplies:
+	AcceptsDeliveredCash:
 	WithMakeAnimation:
 	ExternalCapturable:
 	ExternalCapturableBar:
@@ -553,7 +553,7 @@
 		RequiredForShortGame: false
 	AutoTarget:
 	-GivesBuildableArea:
-	-AcceptsSupplies:
+	-AcceptsDeliveredCash:
 	DrawLineToTarget:
 	RenderRangeCircle:
 	Explodes:
