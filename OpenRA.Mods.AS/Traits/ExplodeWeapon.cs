@@ -78,6 +78,9 @@ namespace OpenRA.Mods.AS.Traits
 				weapon.Impact(Target.FromPos(self.CenterPosition + localoffset), self,
 					self.TraitsImplementing<IFirepowerModifier>().Select(a => a.GetFirepowerModifier()).ToArray());
 
+				if (weapon.Report != null && weapon.Report.Any())
+					Game.Sound.Play(SoundType.World, weapon.Report.Random(self.World.SharedRandom), self.CenterPosition);
+
 				if (--burst > 0)
 					fireDelay = weapon.BurstDelay;
 				else
