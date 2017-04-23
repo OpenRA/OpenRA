@@ -106,8 +106,6 @@ namespace OpenRA.Chat
 			client.OnDevoice += (_, e) => SetUserVoiced(e.Whom, false);
 			client.OnPart += OnPart;
 			client.OnQuit += OnQuit;
-
-			TrySetNickname(Game.Settings.Player.Name);
 		}
 
 		void SetUserOp(string whom, bool isOp)
