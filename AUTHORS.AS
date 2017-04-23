@@ -9,6 +9,8 @@ The plugin is maintained by
 
  * Boolbada/forcecore
    > RadBeam implementation
+   > ProvidesAIPrerequisite
+   > initial AIDeployHelper
 
  * Holloweye
    > SmokeParticle(Emitter) basic implementation
