@@ -97,7 +97,10 @@ namespace OpenRA.Mods.Common.Server
 								if (masterResponseText.Contains("[001]"))  // Server does not respond code
 								{
 									Log.Write("server", masterResponseText);
-									masterServerMessages.Enqueue("Warning: Server ports are not forwarded.");
+
+									if (!server.Settings.AllowPortForward)
+										masterServerMessages.Enqueue("Warning: Server ports are not forwarded.");
+
 									masterServerMessages.Enqueue("Game has not been advertised online.");
 								}
 							}
