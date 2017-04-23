@@ -1,8 +1,6 @@
 Metadata:
 	Title: Dune 2000
-	Description: Three great houses fight for the precious spice, melange.\nHe who controls the spice controls the universe!\n\nTry to establish a foothold on the desert planet Arrakis\nwith its harsh environmental conditions and protect your\nharvesting operations from giant sandworms as well as\nruthless enemy factions.
 	Version: {DEV_VERSION}
-	Author: the OpenRA Developers
 
 Packages:
 	~^Content/d2k/v2/

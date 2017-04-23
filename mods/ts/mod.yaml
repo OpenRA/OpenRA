@@ -1,8 +1,6 @@
 Metadata:
 	Title: Tiberian Sun
-	Description: Developer stub, not yet ready for release!
 	Version: {DEV_VERSION}
-	Author: the OpenRA Developers
 
 Packages:
 	~^Content/ts

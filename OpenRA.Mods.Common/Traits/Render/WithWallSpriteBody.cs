@@ -159,6 +159,8 @@ namespace OpenRA.Mods.Common.Traits.Render
 		{
 			UpdateNeighbours(self);
 		}
+
+		protected override void TraitEnabled(Actor self) { dirty = true; }
 	}
 
 	public class RuntimeNeighbourInit : IActorInit<Dictionary<CPos, string[]>>, ISuppressInitExport

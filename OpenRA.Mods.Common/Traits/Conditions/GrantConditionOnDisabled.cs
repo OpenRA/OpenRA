@@ -15,7 +15,7 @@ namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Applies a condition to the actor when it is disabled.",
 		"This is a temporary shim to help migration away from the legacy IDisable code")]
-	public class GrantConditionOnDisabledInfo : ITraitInfo, Requires<HealthInfo>
+	public class GrantConditionOnDisabledInfo : ITraitInfo
 	{
 		[FieldLoader.Require]
 		[GrantedConditionReference]

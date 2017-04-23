@@ -22,6 +22,9 @@ namespace OpenRA.Mods.Common.Orders
 {
 	public class PlaceBuildingOrderGenerator : IOrderGenerator
 	{
+		[Flags]
+		enum CellType { Valid = 0, Invalid = 1, LineBuild = 2 }
+
 		readonly ProductionQueue queue;
 		readonly string building;
 		readonly BuildingInfo buildingInfo;
@@ -60,6 +63,15 @@ namespace OpenRA.Mods.Common.Orders
 			buildBlocked = map.Rules.Sequences.GetSequence("overlay", "build-invalid").GetSprite(0);
 
 			buildingInfluence = world.WorldActor.Trait<BuildingInfluence>();
+		}
+
+		CellType MakeCellType(bool valid, bool lineBuild = false)
+		{
+			var cell = valid ? CellType.Valid : CellType.Invalid;
+			if (lineBuild)
+				cell |= CellType.LineBuild;
+
+			return cell;
 		}
 
 		public IEnumerable<Order> Order(World world, CPos cell, int2 worldPixel, MouseInput mi)
@@ -160,7 +172,7 @@ namespace OpenRA.Mods.Common.Orders
 				foreach (var r in dec.Render(wr, world, actorInfo, offset))
 					yield return r;
 
-			var cells = new Dictionary<CPos, bool>();
+			var cells = new Dictionary<CPos, CellType>();
 
 			var plugInfo = rules.Actors[building].TraitInfoOrDefault<PlugInfo>();
 			if (plugInfo != null)
@@ -168,7 +180,7 @@ namespace OpenRA.Mods.Common.Orders
 				if (buildingInfo.Dimensions.X != 1 || buildingInfo.Dimensions.Y != 1)
 					throw new InvalidOperationException("Plug requires a 1x1 sized Building");
 
-				cells.Add(topLeft, AcceptsPlug(topLeft, plugInfo));
+				cells.Add(topLeft, MakeCellType(AcceptsPlug(topLeft, plugInfo)));
 			}
 			else if (rules.Actors[building].HasTraitInfo<LineBuildInfo>())
 			{
@@ -178,9 +190,9 @@ namespace OpenRA.Mods.Common.Orders
 
 				if (!Game.GetModifierKeys().HasModifier(Modifiers.Shift))
 					foreach (var t in BuildingUtils.GetLineBuildCells(world, topLeft, building, buildingInfo))
-						cells.Add(t, buildingInfo.IsCloseEnoughToBase(world, world.LocalPlayer, building, t));
-				else
-					cells.Add(topLeft, buildingInfo.IsCloseEnoughToBase(world, world.LocalPlayer, building, topLeft));
+						cells.Add(t.First, MakeCellType(buildingInfo.IsCloseEnoughToBase(world, world.LocalPlayer, building, t.First), true));
+
+				cells[topLeft] = MakeCellType(buildingInfo.IsCloseEnoughToBase(world, world.LocalPlayer, building, topLeft));
 			}
 			else
 			{
@@ -211,14 +223,16 @@ namespace OpenRA.Mods.Common.Orders
 				var res = world.WorldActor.Trait<ResourceLayer>();
 				var isCloseEnough = buildingInfo.IsCloseEnoughToBase(world, world.LocalPlayer, building, topLeft);
 				foreach (var t in FootprintUtils.Tiles(rules, building, buildingInfo, topLeft))
-					cells.Add(t, isCloseEnough && world.IsCellBuildable(t, buildingInfo) && res.GetResource(t) == null);
+					cells.Add(t, MakeCellType(isCloseEnough && world.IsCellBuildable(t, buildingInfo) && res.GetResource(t) == null));
 			}
 
-			var pal = wr.Palette(placeBuildingInfo.Palette);
+			var cellPalette = wr.Palette(placeBuildingInfo.Palette);
+			var linePalette = wr.Palette(placeBuildingInfo.LineBuildSegmentPalette);
 			var topLeftPos = world.Map.CenterOfCell(topLeft);
 			foreach (var c in cells)
 			{
-				var tile = c.Value ? buildOk : buildBlocked;
+				var tile = !c.Value.HasFlag(CellType.Invalid) ? buildOk : buildBlocked;
+				var pal = c.Value.HasFlag(CellType.LineBuild) ? linePalette : cellPalette;
 				var pos = world.Map.CenterOfCell(c.Key);
 				yield return new SpriteRenderable(tile, pos, new WVec(0, 0, topLeftPos.Z - pos.Z),
 					-511, pal, 1f, true);

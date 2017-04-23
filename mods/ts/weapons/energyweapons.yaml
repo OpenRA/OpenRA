@@ -198,3 +198,10 @@ TurretLaserFire:
 		SecondaryBeamColor: FF000030
 	Warhead@1Dam: SpreadDamage
 		Damage: 30
+
+LaserFence:
+	Projectile: InstantHit
+	Warhead@1Dam: TargetDamage
+		DebugOverlayColor: FF0000
+		Damage: 99999
+		DamageTypes: FireDeath
