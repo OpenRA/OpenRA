@@ -88,6 +88,7 @@
     <Compile Include="Projectiles\AthenaProjectile.cs" />
     <Compile Include="Projectiles\InstantExplode.cs" />
     <Compile Include="Projectiles\RadBeam.cs" />
+    <Compile Include="Traits\AIDeployHelper.cs" />
     <Compile Include="Traits\ChronoResourceDelivery.cs" />
     <Compile Include="Traits\Conditions\GrantConditionAboveAltitude.cs" />
     <Compile Include="Traits\Conditions\GrantPeriodicConditionOnEvent.cs" />
