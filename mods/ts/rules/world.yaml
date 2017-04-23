@@ -189,4 +189,5 @@ EditorWorld:
 	EditorResourceLayer:
 	EditorSelectionLayer:
 		Palette: placebuilding
+		LineBuildSegmentPalette: placelinesegment
 	LoadWidgetAtGameStart:

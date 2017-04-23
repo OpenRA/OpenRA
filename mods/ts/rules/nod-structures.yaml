@@ -75,6 +75,7 @@ NAAPWR:
 	PowerTooltip:
 	SelectionDecorations:
 		VisualBounds: 100, 74, 0, -12
+	ProvidesPrerequisite@buildingname:
 
 NAHAND:
 	Inherits: ^Building

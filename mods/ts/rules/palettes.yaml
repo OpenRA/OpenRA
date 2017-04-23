@@ -113,6 +113,10 @@
 		Name: placebuilding
 		BasePalette: ra
 		Alpha: 0.75
+	PaletteFromPaletteWithAlpha@placelinesegment:
+		Name: placelinesegment
+		BasePalette: ra
+		Alpha: 0.4
 	TSShroudPalette@shroud:
 		Name: shroud
 		Type: Shroud

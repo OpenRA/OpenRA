@@ -33,6 +33,7 @@ Player:
 		SpeedUp: True
 	PlaceBuilding:
 		Palette: placebuilding
+		LineBuildSegmentPalette: placelinesegment
 	SupportPowerManager:
 	ScriptTriggers:
 	MissionObjectives:

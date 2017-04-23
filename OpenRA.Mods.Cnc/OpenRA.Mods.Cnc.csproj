@@ -109,6 +109,7 @@
     <Compile Include="Traits\Chronoshiftable.cs" />
     <Compile Include="Traits\Cloneable.cs" />
     <Compile Include="Traits\Disguise.cs" />
+    <Compile Include="Traits\EnergyWall.cs" />
     <Compile Include="Traits\FrozenUnderFogUpdatedByGps.cs" />
     <Compile Include="Traits\HarvesterHuskModifier.cs" />
     <Compile Include="Traits\Infiltration\InfiltrateForCash.cs" />
