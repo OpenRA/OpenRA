@@ -18,7 +18,7 @@ using OpenRA.Primitives;
 
 namespace OpenRA
 {
-	public class ObjectCreator
+	public sealed class ObjectCreator : IDisposable
 	{
 		// .NET does not support unloading assemblies, so mod libraries will leak across mod changes.
 		// This tracks the assemblies that have been loaded since game start so that we don't load multiple copies
@@ -76,7 +76,6 @@ namespace OpenRA
 
 			AppDomain.CurrentDomain.AssemblyResolve += ResolveAssembly;
 			assemblies = assemblyList.SelectMany(asm => asm.GetNamespaces().Select(ns => Pair.New(asm, ns))).ToArray();
-			AppDomain.CurrentDomain.AssemblyResolve -= ResolveAssembly;
 		}
 
 		Assembly ResolveAssembly(object sender, ResolveEventArgs e)
@@ -84,6 +83,9 @@ namespace OpenRA
 			foreach (var a in AppDomain.CurrentDomain.GetAssemblies())
 				if (a.FullName == e.Name)
 					return a;
+
+			if (assemblies == null)
+				return null;
 
 			return assemblies.Select(a => a.First).FirstOrDefault(a => a.FullName == e.Name);
 		}
@@ -157,6 +159,23 @@ namespace OpenRA
 		{
 			return assemblies.Select(ma => ma.First).Distinct()
 				.SelectMany(ma => ma.GetTypes());
+		}
+
+		~ObjectCreator()
+		{
+			Dispose(false);
+		}
+
+		public void Dispose()
+		{
+			Dispose(true);
+			GC.SuppressFinalize(this);
+		}
+
+		void Dispose(bool disposing)
+		{
+			if (disposing)
+				AppDomain.CurrentDomain.AssemblyResolve -= ResolveAssembly;
 		}
 
 		[AttributeUsage(AttributeTargets.Constructor)]
