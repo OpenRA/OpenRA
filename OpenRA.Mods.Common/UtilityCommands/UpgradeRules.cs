@@ -596,6 +596,11 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						RenameNodeKey(node, "-AcceptsDeliveredCash");
 				}
 
+				// Add random sound support to AmbientSound
+				if (engineVersion < 20170422)
+					if (node.Key == "SoundFile" && parent.Key.StartsWith("AmbientSound", StringComparison.Ordinal))
+						RenameNodeKey(node, "SoundFiles");
+
 				UpgradeActorRules(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 

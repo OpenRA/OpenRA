@@ -18,7 +18,7 @@ namespace OpenRA.Mods.Common.Traits.Sound
 	class AmbientSoundInfo : ConditionalTraitInfo
 	{
 		[FieldLoader.Require]
-		public readonly string SoundFile = null;
+		public readonly string[] SoundFiles = null;
 
 		[Desc("Initial delay (in ticks) before playing the sound for the first time.",
 			"Two values indicate a random delay range.")]
@@ -74,16 +74,18 @@ namespace OpenRA.Mods.Common.Traits.Sound
 
 		void StartSound(Actor self)
 		{
+			var sound = Info.SoundFiles.RandomOrDefault(Game.CosmeticRandom);
+
 			ISound s;
 			if (self.OccupiesSpace != null)
 			{
 				cachedPosition = self.CenterPosition;
-				s = loop ? Game.Sound.PlayLooped(SoundType.World, Info.SoundFile, cachedPosition) :
-					Game.Sound.Play(SoundType.World, Info.SoundFile, self.CenterPosition);
+				s = loop ? Game.Sound.PlayLooped(SoundType.World, sound, cachedPosition) :
+					Game.Sound.Play(SoundType.World, sound, self.CenterPosition);
 			}
 			else
-				s = loop ? Game.Sound.PlayLooped(SoundType.World, Info.SoundFile) :
-					Game.Sound.Play(SoundType.World, Info.SoundFile);
+				s = loop ? Game.Sound.PlayLooped(SoundType.World, sound) :
+					Game.Sound.Play(SoundType.World, sound);
 
 			currentSounds.Add(s);
 		}

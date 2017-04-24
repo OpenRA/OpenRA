@@ -218,7 +218,7 @@ NAOBEL:
 		ChargingCondition: charging
 	AmbientSound:
 		RequiresCondition: charging
-		SoundFile: obelpowr.aud
+		SoundFiles: obelpowr.aud
 		Interval: 30, 40
 	WithChargeOverlay:
 		Palette: player
