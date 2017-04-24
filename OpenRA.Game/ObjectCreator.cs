@@ -29,13 +29,6 @@ namespace OpenRA
 		readonly Pair<Assembly, string>[] assemblies;
 		readonly bool isMonoRuntime = Type.GetType("Mono.Runtime") != null;
 
-		public ObjectCreator(Assembly a)
-		{
-			typeCache = new Cache<string, Type>(FindType);
-			ctorCache = new Cache<Type, ConstructorInfo>(GetCtor);
-			assemblies = a.GetNamespaces().Select(ns => Pair.New(a, ns)).ToArray();
-		}
-
 		public ObjectCreator(Manifest manifest, FileSystem.FileSystem modFiles)
 		{
 			typeCache = new Cache<string, Type>(FindType);
