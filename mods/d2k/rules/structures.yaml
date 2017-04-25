@@ -767,7 +767,7 @@ repair_pad:
 	Tooltip:
 		Name: Repair Pad
 	Building:
-		Footprint: =x= =x= ===
+		Footprint: =x= xxx =x=
 		Dimensions: 3,3
 	Health:
 		HP: 3000
