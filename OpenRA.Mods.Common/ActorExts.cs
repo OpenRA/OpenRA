@@ -47,7 +47,7 @@ namespace OpenRA.Mods.Common
 			if (self.EffectiveOwner != null && self.EffectiveOwner.Disguised && !toActor.Info.HasTraitInfo<IgnoresDisguiseInfo>())
 				return toActor.Owner.Stances[self.EffectiveOwner.Owner] == Stance.Ally;
 
-			return stance == Stance.Ally;
+			return false;
 		}
 
 		public static bool AppearsHostileTo(this Actor self, Actor toActor)
