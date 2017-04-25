@@ -450,6 +450,7 @@
     <Compile Include="Traits\Render\WithSpriteTurret.cs" />
     <Compile Include="Traits\Render\WithFacingSpriteBody.cs" />
     <Compile Include="Traits\Render\WithBuildingPlacedOverlay.cs" />
+    <Compile Include="Traits\Render\WithExitOverlay.cs" />
     <Compile Include="Traits\Render\WithProductionDoorOverlay.cs" />
     <Compile Include="Traits\Render\WithProductionOverlay.cs" />
     <Compile Include="Traits\Render\WithVoxelBarrel.cs" />
