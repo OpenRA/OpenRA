@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Linq;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -19,6 +20,9 @@ namespace OpenRA.Mods.Common.Traits
 		[FieldLoader.Require]
 		[Desc("Which voice set to use.")]
 		[VoiceSetReference] public readonly string VoiceSet = null;
+
+		[Desc("Which faction voice to use.")]
+		public readonly string[] Factions = null;
 
 		[Desc("Multiply volume with this factor.")]
 		public readonly float Volume = 1f;
@@ -45,6 +49,9 @@ namespace OpenRA.Mods.Common.Traits
 			if (string.IsNullOrEmpty(Info.VoiceSet))
 				return false;
 
+			if (Info.Factions != null && !Info.Factions.Contains(self.Owner.Faction.InternalName))
+				return false;
+
 			var type = Info.VoiceSet.ToLowerInvariant();
 			var volume = Info.Volume;
 			return Game.Sound.PlayPredefined(SoundType.World, self.World.Map.Rules, null, self, type, phrase, variant, true, WPos.Zero, volume, true);
@@ -56,6 +63,9 @@ namespace OpenRA.Mods.Common.Traits
 				return false;
 
 			if (string.IsNullOrEmpty(Info.VoiceSet))
+				return false;
+
+			if (Info.Factions != null && !Info.Factions.Contains(self.Owner.Faction.InternalName))
 				return false;
 
 			var type = Info.VoiceSet.ToLowerInvariant();
