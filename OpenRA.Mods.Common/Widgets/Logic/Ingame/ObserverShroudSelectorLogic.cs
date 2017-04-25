@@ -133,7 +133,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		public bool HandleKeyPress(KeyInput e)
 		{
-			if (e.Event == KeyInputEvent.Down)
+			if (e.Event == KeyInputEvent.Up)
 			{
 				var h = Hotkey.FromKeyInput(e);
 				if (h == Game.Settings.Keys.ObserverCombinedView && !limitViews)
