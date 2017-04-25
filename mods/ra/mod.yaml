@@ -3,6 +3,8 @@ Metadata:
 	Description: In a world where Hitler was assassinated and the Third Reich never\nexisted, the Soviet Union seeks power over all of Europe.  Allied\nagainst this Evil Empire, the free world faces a Cold War turned hot.\n\nRed Alert fuses the quick and fun gameplay of the original\nC&C: Red Alert, with balance improvements and new gameplay\nfeatures inspired by modern RTS games.
 	Version: {DEV_VERSION}
 	Author: the OpenRA Developers
+	
+PackageFormats: MixFile
 
 Packages:
 	~^Content/ra/v2/

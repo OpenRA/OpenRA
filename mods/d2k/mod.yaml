@@ -4,6 +4,8 @@ Metadata:
 	Version: {DEV_VERSION}
 	Author: the OpenRA Developers
 
+PackageFormats: D2kSoundFile
+
 Packages:
 	~^Content/d2k/v2/
 	~^Content/d2k/v2/GAMESFX
