@@ -49,17 +49,27 @@ namespace OpenRA.Mods.Common.Orders
 			if (underCursor.Owner != world.LocalPlayer)
 				yield break;
 
+			Actor repairBuilding = null;
+			var orderId = "Repair";
+
 			// Test for generic Repairable (used on units).
 			var repairable = underCursor.TraitOrDefault<Repairable>();
-			if (repairable == null)
-				yield break;
+			if (repairable != null)
+				repairBuilding = repairable.FindRepairBuilding(underCursor);
+			else
+			{
+				var repairableNear = underCursor.TraitOrDefault<RepairableNear>();
+				if (repairableNear != null)
+				{
+					orderId = "RepairNear";
+					repairBuilding = repairableNear.FindRepairBuilding(underCursor);
+				}
+			}
 
-			// Find a building to repair at.
-			var repairBuilding = repairable.FindRepairBuilding(underCursor);
 			if (repairBuilding == null)
 				yield break;
 
-			yield return new Order("Repair", underCursor, false) { TargetActor = repairBuilding };
+			yield return new Order(orderId, underCursor, false) { TargetActor = repairBuilding };
 		}
 
 		public void Tick(World world)

@@ -191,19 +191,25 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					}
 
 					map.Save(package);
+
+					// Update the map cache so it can be loaded without restarting the game
+					modData.MapCache[map.Uid].UpdateFromMap(map.Package, selectedDirectory.Folder, selectedDirectory.Classification, null, map.Grid.Type);
+
+					Console.WriteLine("Saved current map at {0}", combinedPath);
+					Ui.CloseWindow();
+
+					onSave(map.Uid);
 				}
-				catch
+				catch (Exception e)
 				{
-					Console.WriteLine("Failed to save map at {0}", combinedPath);
+					Log.Write("debug", "Failed to save map at {0}: {1}", combinedPath, e.Message);
+
+					ConfirmationDialogs.ButtonPrompt(
+						title: "Failed to save map",
+						text: "See debug.log for details.",
+						onConfirm: () => { },
+						confirmText: "Ok");
 				}
-
-				// Update the map cache so it can be loaded without restarting the game
-				modData.MapCache[map.Uid].UpdateFromMap(map.Package, selectedDirectory.Folder, selectedDirectory.Classification, null, map.Grid.Type);
-
-				Console.WriteLine("Saved current map at {0}", combinedPath);
-				Ui.CloseWindow();
-
-				onSave(map.Uid);
 			};
 		}
 	}

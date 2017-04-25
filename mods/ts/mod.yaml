@@ -1,8 +1,6 @@
 Metadata:
 	Title: Tiberian Sun
-	Description: Developer stub, not yet ready for release!
 	Version: {DEV_VERSION}
-	Author: the OpenRA Developers
 
 PackageFormats: MixFile
 
@@ -63,6 +61,7 @@ Rules:
 	ts|rules/aircraft.yaml
 	ts|rules/husks.yaml
 	ts|rules/civilian-infantry.yaml
+	ts|rules/critters.yaml
 	ts|rules/civilian-structures.yaml
 	ts|rules/civilian-vehicles.yaml
 	ts|rules/gdi-infantry.yaml
@@ -99,6 +98,7 @@ Sequences:
 	ts|sequences/vehicles.yaml
 	ts|sequences/trees.yaml
 	ts|sequences/bridges.yaml
+	ts|sequences/critters.yaml
 
 VoxelSequences:
 	ts|sequences/voxels.yaml

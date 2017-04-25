@@ -41,6 +41,111 @@ NAGATE_B:
 	Tooltip:
 		Name: Nod Gate
 
+NAPOST:
+	Inherits: ^Building
+	Buildable:
+		Queue: Defense
+		BuildPaletteOrder: 150
+		Prerequisites: naapwr, ~structures.nod
+		Description: Stops infantry and blocks enemy fire.\nCan NOT be crushed by tanks.
+	Valued:
+		Cost: 200
+	Tooltip:
+		Name: Laser Fence
+	Health:
+		HP: 300
+	Armor:
+		Type: Concrete
+	LineBuild:
+		Range: 10
+		NodeTypes: laserfencenode
+		SegmentType: nafnce
+		SegmentsRequireNode: true
+	WithMakeAnimation:
+		Condition: make-animation-playing
+	Selectable:
+		Bounds: 42, 44, 0, -12
+	LineBuildNode:
+		Types: laserfencenode
+	Power:
+		Amount: -25
+	RevealsShroud:
+		Range: 4c0
+	WithIdleOverlay@LIGHTS:
+		RequiresCondition: !disabled
+		Sequence: lights
+	WithIdleOverlay@CHAINOFLIGHTS:
+		RequiresCondition: !disabled
+		Sequence: chainoflights
+	CanPowerDown:
+		IndicatorPalette: mouse
+		PowerupSpeech: EnablePower
+		PowerdownSpeech: DisablePower
+	RequiresPower:
+	GrantConditionOnDisabled:
+		Condition: disabled
+	LineBuildSegmentExternalCondition:
+		RequiresCondition: !disabled && !make-animation-playing
+		Condition: active-posts
+
+NAFNCE:
+	Inherits: ^Wall
+	Valued:
+		Cost: 50
+	CustomSellValue:
+		Value: 0
+	Tooltip:
+		Name: Laser Fence
+	LineBuild:
+		NodeTypes: laserfence
+	LineBuildNode:
+		Types: laserfence
+	-Crushable:
+	-Sellable:
+	-Targetable:
+	-Building:
+	EnergyWall:
+		ActiveCondition: active-posts == 2
+		Weapon: LaserFence
+	GrantConditionOnLineBuildDirection@X:
+		Direction: X
+		Condition: laserfence-direction-x
+	GrantConditionOnLineBuildDirection@Y:
+		Direction: Y
+		Condition: laserfence-direction-y
+	-WithWallSpriteBody:
+	CustomSelectionSize:
+		CustomBounds: 48, 24
+	ExternalCondition@ACTIVE:
+		Condition: active-posts
+	WithWallSpriteBody@XENABLED:
+		RequiresCondition: laserfence-direction-x && active-posts == 2
+		Type: laserfence
+		Sequence: enabled-x
+	WithWallSpriteBody@YENABLED:
+		RequiresCondition: laserfence-direction-y && active-posts == 2
+		Type: laserfence
+		Sequence: enabled-y
+	WithSpriteBody@XDISABLED:
+		RequiresCondition: laserfence-direction-x && active-posts < 2
+		Sequence: disabled-x
+	WithSpriteBody@YDISABLED:
+		RequiresCondition: laserfence-direction-y && active-posts < 2
+		Sequence: disabled-y
+	BlocksProjectiles:
+		RequiresCondition: active-posts == 2
+		Height: 640
+	DamageMultiplier: # Prevent all normal damage, but still allows direct kills from the post
+		Modifier: 0
+	Explodes:
+		Weapon: BuildingExplosions
+		EmptyWeapon: BuildingExplosions
+		Type: Footprint
+	ThrowsShrapnel@SMALL:
+		Weapons: SmallDebris
+		Pieces: 0, 1
+		Range: 2c0, 5c0
+
 NALASR:
 	Inherits: ^Defense
 	Valued:
@@ -89,7 +194,7 @@ NAOBEL:
 		Name: Obelisk of Light
 	Buildable:
 		Queue: Defense
-		BuildPaletteOrder: 150
+		BuildPaletteOrder: 160
 		Prerequisites: natech, ~structures.nod, ~techlevel.high
 		Description: Advanced base defense.\nRequires power to operate.\n  Strong vs Ground units\n  Weak vs Aircraft
 	Building:
@@ -113,7 +218,7 @@ NAOBEL:
 		ChargingCondition: charging
 	AmbientSound:
 		RequiresCondition: charging
-		SoundFile: obelpowr.aud
+		SoundFiles: obelpowr.aud
 		Interval: 30, 40
 	WithChargeOverlay:
 		Palette: player
@@ -162,68 +267,6 @@ NASAM:
 	SelectionDecorations:
 		VisualBounds: 40, 36, -3, -8
 
-GAARTY:
-	Inherits@1: ^GainsExperience
-	Inherits@2: ^ExistsInWorld
-	Inherits@3: ^SpriteActor
-	Huntable:
-	Voiced:
-		VoiceSet: Vehicle
-	AttackTurreted:
-		Voice: Attack
-	AutoTarget:
-	RenderRangeCircle:
-	DrawLineToTarget:
-	Building:
-		Dimensions: 1,1
-		Footprint: x
-		TerrainTypes: Clear, Road, DirtRoad, Rough
-	WithSpriteBody:
-	WithMakeAnimation:
-	WithTextControlGroupDecoration:
-	SelectionDecorations:
-		Palette: pips
-	Selectable:
-	Targetable:
-		TargetTypes: Ground, Building, Repair
-	Guardable:
-	HiddenUnderFog:
-	ActorLostNotification:
-	Valued:
-		Cost: 975
-	Tooltip:
-		Name: Deployed Artillery
-	Health:
-		HP: 300
-	Armor:
-		Type: Light
-	RevealsShroud:
-		Range: 9c0
-	Turreted:
-		TurnSpeed: 5
-		InitialFacing: 96
-		Offset: 0,0,256
-	Armament:
-		Weapon: 155mm
-		LocalOffset: 811,0,0
-		MuzzleSequence: muzzle
-		MuzzlePalette: effect-ignore-lighting
-	BodyOrientation:
-		QuantizedFacings: 32
-	RenderVoxels:
-		LightAmbientColor: 0.4, 0.4, 0.4
-	WithVoxelBarrel:
-		LocalOffset: 0,0,-256
-	WithVoxelTurret:
-	Transforms:
-		IntoActor: art2
-		Facing: 96
-		TransformSounds: place2.aud
-		NoTransformSounds:
-		Voice: Move
-	WithMuzzleOverlay:
-	RevealOnFire:
-
 NASTLH:
 	Inherits: ^Building
 	Valued:
@@ -232,7 +275,7 @@ NASTLH:
 		Name: Stealth Generator
 	Buildable:
 		Queue: Defense
-		BuildPaletteOrder: 160
+		BuildPaletteOrder: 170
 		Prerequisites: proc, natech, ~structures.nod, ~techlevel.high
 		Description: Generates a cloaking field\nto hide your forces from the enemy.
 	Building:
@@ -273,7 +316,7 @@ NAMISL:
 	Inherits: ^Building
 	Buildable:
 		Queue: Defense
-		BuildPaletteOrder: 190
+		BuildPaletteOrder: 180
 		Prerequisites: natech, ~structures.nod, ~techlevel.superweapons
 		BuildLimit: 1
 		Description: Launches a devastating missile\nat a target location.\nRequires power to operate.\nMaximum 1 can be built.
@@ -334,7 +377,7 @@ NAWAST:
 		Name: Waste Refinery
 	Buildable:
 		Queue: Defense
-		BuildPaletteOrder: 200
+		BuildPaletteOrder: 190
 		Prerequisites: namisl, ~structures.nod, ~techlevel.superweapons
 		BuildLimit: 1
 		Description: Processes Veins\ninto useable resources.\nMaximum 1 can be built.

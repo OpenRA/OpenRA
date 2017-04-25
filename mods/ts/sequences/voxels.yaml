@@ -11,8 +11,6 @@ apc:
 
 art2:
 	idle:
-
-gaarty:
 	turret: art2tur
 	barrel: art2barl
 

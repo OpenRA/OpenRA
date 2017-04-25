@@ -11,6 +11,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.Primitives;
 
 namespace OpenRA.Mods.Common.Traits
 {
@@ -48,18 +49,20 @@ namespace OpenRA.Mods.Common.Traits
 					world.IsCellBuildable(t, building, toIgnore));
 		}
 
-		public static IEnumerable<CPos> GetLineBuildCells(World world, CPos location, string name, BuildingInfo bi)
+		public static IEnumerable<Pair<CPos, Actor>> GetLineBuildCells(World world, CPos location, string name, BuildingInfo bi)
 		{
 			var lbi = world.Map.Rules.Actors[name].TraitInfo<LineBuildInfo>();
 			var topLeft = location;	// 1x1 assumption!
 
 			if (world.IsCellBuildable(topLeft, bi))
-				yield return topLeft;
+				yield return Pair.New<CPos, Actor>(topLeft, null);
 
 			// Start at place location, search outwards
 			// TODO: First make it work, then make it nice
 			var vecs = new[] { new CVec(1, 0), new CVec(0, 1), new CVec(-1, 0), new CVec(0, -1) };
 			int[] dirs = { 0, 0, 0, 0 };
+			Actor[] connectors = { null, null, null, null };
+
 			for (var d = 0; d < 4; d++)
 			{
 				for (var i = 1; i < lbi.Range; i++)
@@ -72,17 +75,17 @@ namespace OpenRA.Mods.Common.Traits
 						continue; // Cell is empty; continue search
 
 					// Cell contains an actor. Is it the type we want?
-					var hasConnector = world.ActorMap.GetActorsAt(cell)
-						.Any(a => a.Info.TraitInfos<LineBuildNodeInfo>()
+					connectors[d] = world.ActorMap.GetActorsAt(cell)
+						.FirstOrDefault(a => a.Info.TraitInfos<LineBuildNodeInfo>()
 							.Any(info => info.Types.Overlaps(lbi.NodeTypes) && info.Connections.Contains(vecs[d])));
 
-					dirs[d] = hasConnector ? i : -1;
+					dirs[d] = connectors[d] != null ? i : -1;
 				}
 
 				// Place intermediate-line sections
 				if (dirs[d] > 0)
 					for (var i = 1; i < dirs[d]; i++)
-						yield return topLeft + i * vecs[d];
+						yield return Pair.New(topLeft + i * vecs[d], connectors[d]);
 			}
 		}
 	}

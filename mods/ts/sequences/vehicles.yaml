@@ -67,6 +67,26 @@ repair:
 art2:
 	Inherits: ^VehicleOverlays
 	icon: artyicon
+	idle: gaarty
+		ShadowStart: 3
+		Offset: 0, -12, 12
+		UseTilesetCode: true
+		DepthSprite: isodepth.shp
+	damaged-idle: gaarty
+		Start: 1
+		ShadowStart: 4
+		Offset: 0, -12, 12
+		UseTilesetCode: true
+		DepthSprite: isodepth.shp
+	make: gaartymk
+		Length: 16
+		ShadowStart: 16
+		Offset: 0, -12, 12
+		UseTilesetCode: true
+		DepthSprite: isodepth.shp
+	muzzle: gunfire
+		Length: *
+		Offset: 0, 0, 24
 
 weed:
 	Inherits: ^VehicleOverlays

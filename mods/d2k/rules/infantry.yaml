@@ -111,7 +111,7 @@ thumper:
 		Sequence: thump-sand
 		RequiresCondition: deployed
 	AmbientSound:
-		SoundFile: THUMPER1.WAV
+		SoundFiles: THUMPER1.WAV
 		Interval: 60
 		RequiresCondition: deployed
 	AttractsWorms:

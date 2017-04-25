@@ -34,7 +34,7 @@ CABHUT:
 ^LowBridge:
 	Inherits: ^LowBridgeRamp
 	Targetable:
-		TargetTypes: Ground, Building
+		TargetTypes: Ground, Building, Bridge
 		RequiresForceFire: true
 	Health:
 		HP: 500

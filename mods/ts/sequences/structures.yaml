@@ -859,6 +859,90 @@ nagate_b:
 		UseTilesetCode: false
 		-DepthSprite:
 
+napost:
+	Defaults:
+		Offset: 0, -12, 13
+		UseTilesetCode: true
+		DepthSprite: isodepth.shp
+	idle:
+		Start: 0
+		ShadowStart: 3
+	damaged-idle:
+		Start: 1
+		ShadowStart: 4
+	lights: napost_b
+		Start: 0
+		Length: 7
+		ShadowStart: 14
+		Tick: 80
+	damaged-lights: napost_b
+		Start: 7
+		Length: 7
+		ShadowStart: 21
+		Tick: 80
+	chainoflights: napost_a
+		Start: 0
+		Length: 12
+		ShadowStart: 24
+		Tick: 80
+	damaged-chainoflights: napost_a
+		Start: 12
+		Length: 12
+		ShadowStart: 36
+		Tick: 80
+	dead:
+		Start: 2
+		Tick: 400
+		ShadowStart: 5
+	make: napostmk
+		Start: 0
+		Length: 12
+		ShadowStart: 12
+	emp-overlay: emp_fx01
+		Length: *
+		Offset: 0, 0, 25
+		UseTilesetCode: false
+		ZOffset: 512
+		BlendMode: Additive
+		-DepthSprite:
+	icon: lasricon
+		Offset: 0, 0
+		UseTilesetCode: false
+		-DepthSprite:
+
+nafnce:
+	Defaults:
+		Offset: 0, -12, 13
+		UseTilesetCode: true
+		DepthSprite: isodepth.shp
+	idle:
+		Length: 1
+	disabled-x:
+		Start: 8
+		Length: 1
+		Offset: 0, -12, 1
+		ZRamp: 1
+		-DepthSprite:
+	disabled-y:
+		Start: 12
+		Length: 1
+		Offset: 0, -12, 1
+		ZRamp: 1
+		-DepthSprite:
+	enabled-x:
+		Frames: 3,3,1,1,3,3,1,1,2,2,0,0,2,2,0,0
+		Length: 16
+	enabled-y:
+		Frames: 7,5,7,5,6,4,6,4,7,5,7,5,6,4,6,4
+		Length: 16
+	emp-overlay: emp_fx01
+		Length: *
+		Offset: 0, 0, 25
+		UseTilesetCode: false
+		ZOffset: 512
+		BlendMode: Additive
+		-DepthSprite:
+
 nawall:
 	Defaults:
 		Offset: 0, -12, 12
@@ -901,31 +985,6 @@ gaicbm:
 	make: gaicbmmk
 		Length: 30
 		ShadowStart: 30
-
-gaarty:
-	Defaults:
-		Offset: 0, -12, 12
-		UseTilesetCode: true
-		DepthSprite: isodepth.shp
-	idle:
-		ShadowStart: 3
-	damaged-idle:
-		Start: 1
-		ShadowStart: 4
-	muzzle: gunfire
-		Length: *
-		Offset: 0, 0
-		UseTilesetCode: false
-	emp-overlay: emp_fx01
-		Length: *
-		Offset: 0, 0, 13
-		UseTilesetCode: false
-		ZOffset: 512
-		BlendMode: Additive
-		-DepthSprite:
-	make: gaartymk
-		Length: 16
-		ShadowStart: 16
 
 naobel:
 	Defaults:

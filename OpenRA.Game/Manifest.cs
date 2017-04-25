@@ -34,9 +34,7 @@ namespace OpenRA
 	public class ModMetadata
 	{
 		public string Title;
-		public string Description;
 		public string Version;
-		public string Author;
 		public bool Hidden;
 	}
 
