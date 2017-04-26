@@ -66,7 +66,6 @@ namespace OpenRA.Mods.AS.Projectiles
 		readonly RadBeamInfo info;
 		readonly Animation hitanim;
 		int ticks = 0;
-		Color color;
 		bool doneDamage;
 		bool animationComplete;
 		WPos target;
@@ -75,7 +74,6 @@ namespace OpenRA.Mods.AS.Projectiles
 		{
 			this.args = args;
 			this.info = info;
-			this.color = color;
 			target = args.PassiveTarget;
 
 			if (!string.IsNullOrEmpty(info.HitAnim))

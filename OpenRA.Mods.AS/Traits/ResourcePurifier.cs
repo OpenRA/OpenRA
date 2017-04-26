@@ -32,7 +32,6 @@ namespace OpenRA.Mods.AS.Traits
 
 	public class ResourcePurifier : ConditionalTrait<ResourcePurifierInfo>, ITick, IResourcePurifier, INotifyOwnerChanged
 	{
-		readonly Actor self;
 		readonly ResourcePurifierInfo info;
 
 		PlayerResources playerResources;
@@ -42,7 +41,6 @@ namespace OpenRA.Mods.AS.Traits
 		public ResourcePurifier(Actor self, ResourcePurifierInfo info)
 			: base(info)
 		{
-			this.self = self;
 			this.info = info;
 
 			playerResources = self.Owner.PlayerActor.Trait<PlayerResources>();
