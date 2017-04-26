@@ -43,7 +43,7 @@ namespace OpenRA
 				connect = Connect;
 
 			if (!string.IsNullOrEmpty(URI))
-				connect = URI.Replace("openra://", "").TrimEnd('/');
+				connect = URI.Substring(URI.IndexOf("://", System.StringComparison.Ordinal) + 3).TrimEnd('/');
 
 			return connect;
 		}
