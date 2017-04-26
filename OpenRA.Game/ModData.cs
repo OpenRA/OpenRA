@@ -217,6 +217,9 @@ namespace OpenRA
 			MapCache.Dispose();
 			if (VoxelLoader != null)
 				VoxelLoader.Dispose();
+
+			if (ObjectCreator != null)
+				ObjectCreator.Dispose();
 		}
 	}
 
