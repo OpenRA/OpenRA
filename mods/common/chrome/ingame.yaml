@@ -11,7 +11,7 @@ Container@INGAME_ROOT:
 				LogicTicker@DISCONNECT_WATCHER:
 					Logic: DisconnectWatcherLogic
 				Label@MISSION_TEXT:
-					X: WINDOW_RIGHT/2 - 256
+					X: WINDOW_RIGHT / 2 - 256
 					Y: 22
 					Width: 512
 					Height: 25
@@ -29,7 +29,7 @@ Container@INGAME_ROOT:
 					Width: WINDOW_RIGHT
 					Height: WINDOW_BOTTOM
 				StrategicProgress@STRATEGIC_PROGRESS:
-					X: WINDOW_RIGHT/2
+					X: WINDOW_RIGHT / 2
 					Y: 40
 				Container@PLAYER_ROOT:
 				Container@PERF_ROOT:

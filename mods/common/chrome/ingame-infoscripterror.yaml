@@ -5,7 +5,7 @@ Container@SCRIPT_ERROR_PANEL:
 		Label@DESCA:
 			X: 15
 			Y: 15
-			Width: PARENT_RIGHT-30
+			Width: PARENT_RIGHT - 30
 			Height: 20
 			Font: Bold
 			Align: Center
@@ -13,7 +13,7 @@ Container@SCRIPT_ERROR_PANEL:
 		Label@DESCB:
 			X: 15
 			Y: 45
-			Width: PARENT_RIGHT-30
+			Width: PARENT_RIGHT - 30
 			Height: 20
 			Font: Regular
 			WordWrap: true
@@ -21,7 +21,7 @@ Container@SCRIPT_ERROR_PANEL:
 		Label@DESCC:
 			X: 15
 			Y: 65
-			Width: PARENT_RIGHT-30
+			Width: PARENT_RIGHT - 30
 			Height: 20
 			Font: Regular
 			Text: Please send this file to the map author so that they can fix this issue.

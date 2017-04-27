@@ -1,13 +1,13 @@
 Container@CREDITS_PANEL:
 	Logic: CreditsLogic
-	X: (WINDOW_RIGHT - WIDTH)/2
-	Y: (WINDOW_BOTTOM - 400)/2
+	X: (WINDOW_RIGHT - WIDTH) / 2
+	Y: (WINDOW_BOTTOM - 400) / 2
 	Width: 410
 	Height: 435
 	Children:
 		Label@CREDITS_TITLE:
 			Width: PARENT_RIGHT
-			Y: 0-25
+			Y: 0 - 25
 			Font: BigBold
 			Contrast: true
 			Align: Center

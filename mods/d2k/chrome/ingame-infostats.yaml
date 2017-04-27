@@ -68,19 +68,19 @@ Container@SKIRMISH_STATS:
 					Children:
 						Label@TEAM:
 							X: 6
-							Y: 0-2
+							Y: 0 - 2
 							Width: 160
 							Height: 20
 							Font: Bold
 						Label@TEAM_SCORE:
 							X: 360
-							Y: 0-2
+							Y: 0 - 2
 							Width: 75
 							Height: 20
 							Font: Bold
 							Align: Right
 				Container@PLAYER_TEMPLATE:
-					Width: PARENT_RIGHT-27
+					Width: PARENT_RIGHT - 27
 					Height: 25
 					X: 2
 					Children:

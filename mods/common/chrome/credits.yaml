@@ -1,7 +1,7 @@
 Background@CREDITS_PANEL:
 	Logic: CreditsLogic
-	X: (WINDOW_RIGHT - WIDTH)/2
-	Y: (WINDOW_BOTTOM - 400)/2
+	X: (WINDOW_RIGHT - WIDTH) / 2
+	Y: (WINDOW_BOTTOM - 400) / 2
 	Width: 410
 	Height: 450
 	Children:

@@ -1,7 +1,7 @@
 Background@SERVER_LOBBY:
 	Logic: LobbyLogic
-	X: (WINDOW_RIGHT - WIDTH)/2
-	Y: (WINDOW_BOTTOM - HEIGHT)/2
+	X: (WINDOW_RIGHT - WIDTH) / 2
+	Y: (WINDOW_BOTTOM - HEIGHT) / 2
 	Width: 808
 	Height: 600
 	Children:
@@ -13,7 +13,7 @@ Background@SERVER_LOBBY:
 			Height: 25
 			Font: Bold
 		Container@MAP_PREVIEW_ROOT:
-			X: PARENT_RIGHT-20-WIDTH
+			X: PARENT_RIGHT - 20 - WIDTH
 			Y: 67
 			Width: 174
 			Height: 250
@@ -85,7 +85,7 @@ Background@SERVER_LOBBY:
 					Children:
 						Container@CHAT_TEMPLATE:
 							X: 2
-							Width: PARENT_RIGHT-27
+							Width: PARENT_RIGHT - 27
 							Height: 16
 							Children:
 								Label@TIME:
@@ -115,7 +115,7 @@ Background@SERVER_LOBBY:
 					LeftMargin: 50
 					Children:
 						Label@LABEL_CHATTYPE:
-							Y: 0-1
+							Y: 0 - 1
 							Width: 45
 							Height: 25
 							Align: Right

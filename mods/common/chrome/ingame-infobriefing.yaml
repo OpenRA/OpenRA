@@ -13,8 +13,8 @@ Container@MAP_PANEL:
 				MapPreview@MAP_PREVIEW:
 					X: 1
 					Y: 1
-					Width: PARENT_RIGHT-2
-					Height: PARENT_BOTTOM-2
+					Width: PARENT_RIGHT - 2
+					Height: PARENT_BOTTOM - 2
 					IgnoreMouseOver: True
 					IgnoreMouseInput: True
 					ShowSpawnPoints: False

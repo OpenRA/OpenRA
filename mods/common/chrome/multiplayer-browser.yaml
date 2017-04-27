@@ -40,20 +40,20 @@ Container@MULTIPLAYER_BROWSER_PANEL:
 			Children:
 				ScrollItem@HEADER_TEMPLATE:
 					X: 2
-					Width: PARENT_RIGHT-27
+					Width: PARENT_RIGHT - 27
 					Height: 20
 					BaseName: scrollheader
 					Visible: false
 					Children:
 						Label@LABEL:
-							Y: 0-1
+							Y: 0 - 1
 							Font: TinyBold
 							Width: PARENT_RIGHT
 							Height: 20
 							Align: Center
 				ScrollItem@SERVER_TEMPLATE:
 					X: 2
-					Width: PARENT_RIGHT-27
+					Width: PARENT_RIGHT - 27
 					Height: 25
 					Children:
 						Label@TITLE:
@@ -86,7 +86,7 @@ Container@MULTIPLAYER_BROWSER_PANEL:
 			Align: Center
 			Visible: false
 		Container@SELECTED_SERVER:
-			X: PARENT_RIGHT-WIDTH
+			X: PARENT_RIGHT - WIDTH
 			Y: 30
 			Width: 174
 			Height: 280
@@ -99,8 +99,8 @@ Container@MULTIPLAYER_BROWSER_PANEL:
 						MapPreview@SELECTED_MAP_PREVIEW:
 							X: 1
 							Y: 1
-							Width: PARENT_RIGHT-2
-							Height: PARENT_BOTTOM-2
+							Width: PARENT_RIGHT - 2
+							Height: PARENT_BOTTOM - 2
 							TooltipContainer: TOOLTIP_CONTAINER
 				Label@SELECTED_MAP:
 					Y: 172

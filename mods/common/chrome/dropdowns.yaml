@@ -3,7 +3,7 @@ ScrollPanel@LABEL_DROPDOWN_TEMPLATE:
 	Children:
 		ScrollItem@HEADER:
 			BaseName: scrollheader
-			Width: PARENT_RIGHT-27
+			Width: PARENT_RIGHT - 27
 			Height: 13
 			X: 2
 			Y: 0
@@ -15,7 +15,7 @@ ScrollPanel@LABEL_DROPDOWN_TEMPLATE:
 					Height: 10
 					Align: Center
 		ScrollItem@TEMPLATE:
-			Width: PARENT_RIGHT-27
+			Width: PARENT_RIGHT - 27
 			Height: 25
 			X: 2
 			Y: 0
@@ -23,14 +23,14 @@ ScrollPanel@LABEL_DROPDOWN_TEMPLATE:
 			Children:
 				Label@LABEL:
 					X: 10
-					Width: PARENT_RIGHT-20
+					Width: PARENT_RIGHT - 20
 					Height: 25
 
 ScrollPanel@TEAM_DROPDOWN_TEMPLATE:
 	Width: DROPDOWN_WIDTH
 	Children:
 		ScrollItem@TEMPLATE:
-			Width: PARENT_RIGHT-27
+			Width: PARENT_RIGHT - 27
 			Height: 25
 			X: 2
 			Y: 0
@@ -46,7 +46,7 @@ ScrollPanel@SPAWN_DROPDOWN_TEMPLATE:
 	Width: DROPDOWN_WIDTH
 	Children:
 		ScrollItem@TEMPLATE:
-			Width: PARENT_RIGHT-27
+			Width: PARENT_RIGHT - 27
 			Height: 25
 			X: 2
 			Y: 0
@@ -65,7 +65,7 @@ ScrollPanel@SPECTATOR_DROPDOWN_TEMPLATE:
 	Children:
 		ScrollItem@HEADER:
 			BaseName: observer-scrollheader
-			Width: PARENT_RIGHT-27
+			Width: PARENT_RIGHT - 27
 			Height: 13
 			X: 2
 			Y: 0
@@ -78,7 +78,7 @@ ScrollPanel@SPECTATOR_DROPDOWN_TEMPLATE:
 					Align: Center
 		ScrollItem@TEMPLATE:
 			BaseName: observer-scrollitem
-			Width: PARENT_RIGHT-27
+			Width: PARENT_RIGHT - 27
 			Height: 25
 			X: 2
 			Y: 0

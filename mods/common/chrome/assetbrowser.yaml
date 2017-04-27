@@ -1,8 +1,8 @@
 Background@ASSETBROWSER_PANEL:
 	Logic: AssetBrowserLogic
 		SupportedFormats: .shp, .r8, .tmp, .tem, .des, .sno, .int, .vqa
-	X: (WINDOW_RIGHT - WIDTH)/2
-	Y: (WINDOW_BOTTOM - HEIGHT)/2
+	X: (WINDOW_RIGHT - WIDTH) / 2
+	Y: (WINDOW_BOTTOM - HEIGHT) / 2
 	Width: 700
 	Height: 500
 	Children:
@@ -38,7 +38,7 @@ Background@ASSETBROWSER_PANEL:
 			CollapseHiddenChildren: True
 			Children:
 				ScrollItem@ASSET_TEMPLATE:
-					Width: PARENT_RIGHT-27
+					Width: PARENT_RIGHT - 27
 					Height: 25
 					X: 2
 					Y: 0
@@ -46,7 +46,7 @@ Background@ASSETBROWSER_PANEL:
 					Children:
 						Label@TITLE:
 							X: 10
-							Width: PARENT_RIGHT-20
+							Width: PARENT_RIGHT - 20
 							Height: 25
 		Label@FILENAME_DESC:
 			X: 20
@@ -62,7 +62,7 @@ Background@ASSETBROWSER_PANEL:
 			Width: 160
 			Height: 25
 		Label@PALETTE_DESC:
-			X: PARENT_RIGHT-WIDTH-270
+			X: PARENT_RIGHT - WIDTH - 270
 			Y: 60
 			Width: 150
 			Height: 25
@@ -70,13 +70,13 @@ Background@ASSETBROWSER_PANEL:
 			Align: Right
 			Text: Palette:
 		DropDownButton@PALETTE_SELECTOR:
-			X: PARENT_RIGHT-WIDTH-110
+			X: PARENT_RIGHT - WIDTH - 110
 			Y: 60
 			Width: 150
 			Height: 25
 			Font: Bold
 		DropDownButton@COLOR:
-			X: PARENT_RIGHT-WIDTH-20
+			X: PARENT_RIGHT - WIDTH - 20
 			Y: 60
 			Width: 80
 			Height: 25
@@ -84,8 +84,8 @@ Background@ASSETBROWSER_PANEL:
 				ColorBlock@COLORBLOCK:
 					X: 5
 					Y: 6
-					Width: PARENT_RIGHT-35
-					Height: PARENT_BOTTOM-12
+					Width: PARENT_RIGHT - 35
+					Height: PARENT_BOTTOM - 12
 		Background@SPRITE_BG:
 			X: 190
 			Y: 90
@@ -191,8 +191,8 @@ Background@ASSETBROWSER_PANEL:
 					Align: Left
 		Button@CLOSE_BUTTON:
 			Key: escape
-			X: PARENT_RIGHT-180
-			Y: PARENT_BOTTOM-45
+			X: PARENT_RIGHT - 180
+			Y: PARENT_BOTTOM - 45
 			Width: 160
 			Height: 25
 			Font: Bold

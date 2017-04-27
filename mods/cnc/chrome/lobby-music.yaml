@@ -5,7 +5,7 @@ Container@LOBBY_MUSIC_BIN:
 	Children:
 		LogicTicker@SONG_WATCHER:
 		Container@LABEL_CONTAINER:
-			Y: 0-25
+			Y: 0 - 25
 			Width: PARENT_RIGHT
 			Children:
 				Label@MUSIC:
@@ -21,7 +21,7 @@ Container@LOBBY_MUSIC_BIN:
 					Text: Track
 					Font: Bold
 				Label@TYPE:
-					X: PARENT_RIGHT-63
+					X: PARENT_RIGHT - 63
 					Height: 25
 					Width: 50
 					Text: Length
@@ -126,7 +126,7 @@ Container@LOBBY_MUSIC_BIN:
 					Font: Regular
 					Text: Shuffle
 				Checkbox@REPEAT:
-					X: PARENT_RIGHT-15-WIDTH
+					X: PARENT_RIGHT - 15 - WIDTH
 					Y: 150
 					Width: 70
 					Height: 20
@@ -146,51 +146,51 @@ Container@LOBBY_MUSIC_BIN:
 					Ticks: 5
 		ScrollPanel@MUSIC_LIST:
 			X: 307
-			Width: PARENT_RIGHT-307
+			Width: PARENT_RIGHT - 307
 			Height: PARENT_BOTTOM
 			Children:
 				ScrollItem@MUSIC_TEMPLATE:
-					Width: PARENT_RIGHT-27
+					Width: PARENT_RIGHT - 27
 					Height: 25
 					X: 2
 					Visible: false
 					Children:
 						Label@TITLE:
 							X: 10
-							Width: PARENT_RIGHT-50
+							Width: PARENT_RIGHT - 50
 							Height: 25
 						Label@LENGTH:
-							X: PARENT_RIGHT-60
+							X: PARENT_RIGHT - 60
 							Width: 50
 							Height: 25
 							Align: Right
 		Container@NO_MUSIC_LABEL:
 			X: 307
-			Width: PARENT_RIGHT-307
+			Width: PARENT_RIGHT - 307
 			Visible: false
 			Children:
 				Label@TITLE:
 					Y: 65
-					Width: PARENT_RIGHT-24
+					Width: PARENT_RIGHT - 24
 					Height: 25
 					Font: Bold
 					Align: Center
 					Text: Music Not Installed
 				Label@DESCA:
 					Y: 85
-					Width: PARENT_RIGHT-24
+					Width: PARENT_RIGHT - 24
 					Height: 25
 					Align: Center
 					Text: The game music can be installed
 				Label@DESCB:
 					Y: 105
-					Width: PARENT_RIGHT-24
+					Width: PARENT_RIGHT - 24
 					Height: 25
 					Align: Center
 					Text: from the "Manage Content" menu
 				Label@DESCC:
 					Y: 125
-					Width: PARENT_RIGHT-24
+					Width: PARENT_RIGHT - 24
 					Height: 25
 					Align: Center
 					Text: in the mod chooser.

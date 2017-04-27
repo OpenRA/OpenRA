@@ -1,7 +1,7 @@
 Background@SETTINGS_PANEL:
 	Logic: SettingsLogic
-	X: (WINDOW_RIGHT - WIDTH)/2
-	Y: (WINDOW_BOTTOM- HEIGHT)/2
+	X: (WINDOW_RIGHT - WIDTH) / 2
+	Y: (WINDOW_BOTTOM -  HEIGHT) / 2
 	Width: 600
 	Height: 450
 	Children:
@@ -83,7 +83,7 @@ Background@SETTINGS_PANEL:
 						Label@At:
 							Text: @
 							Font: Bold
-							Y: 0-1
+							Y: 0 - 1
 							Height: 25
 							Width: 25
 							Align: Center
@@ -96,7 +96,7 @@ Background@SETTINGS_PANEL:
 							Text: x
 							Font: Bold
 							X: 70
-							Y: 0-1
+							Y: 0 - 1
 							Height: 25
 							Width: 15
 							Align: Center
@@ -187,8 +187,8 @@ Background@SETTINGS_PANEL:
 						ColorBlock@COLORBLOCK:
 							X: 5
 							Y: 6
-							Width: PARENT_RIGHT-35
-							Height: PARENT_BOTTOM-12
+							Width: PARENT_RIGHT - 35
+							Height: PARENT_BOTTOM - 12
 				Label@STATUS_BARS:
 					X: 310
 					Y: 275
@@ -460,12 +460,12 @@ Background@SETTINGS_PANEL:
 							Visible: false
 							Children:
 								Label@FUNCTION:
-									Y: 0-1
+									Y: 0 - 1
 									Width: PARENT_RIGHT - 85
 									Height: 25
 									Align: Right
 								HotkeyEntry@HOTKEY:
-									X: PARENT_RIGHT-WIDTH
+									X: PARENT_RIGHT - WIDTH
 									Width: 80
 									Height: 25
 						Container@UNIT_TEMPLATE:
@@ -474,12 +474,12 @@ Background@SETTINGS_PANEL:
 							Visible: false
 							Children:
 								Label@FUNCTION:
-									Y: 0-1
+									Y: 0 - 1
 									Width: PARENT_RIGHT - 84
 									Height: 25
 									Align: Right
 								HotkeyEntry@HOTKEY:
-									X: PARENT_RIGHT-WIDTH+1
+									X: PARENT_RIGHT - WIDTH + 1
 									Width: 80
 									Height: 25
 						Container@PRODUCTION_TEMPLATE:
@@ -488,12 +488,12 @@ Background@SETTINGS_PANEL:
 							Visible: false
 							Children:
 								Label@FUNCTION:
-									Y: 0-1
+									Y: 0 - 1
 									Width: PARENT_RIGHT - 84
 									Height: 25
 									Align: Right
 								HotkeyEntry@HOTKEY:
-									X: PARENT_RIGHT-WIDTH+1
+									X: PARENT_RIGHT - WIDTH + 1
 									Width: 80
 									Height: 25
 						Container@DEVELOPER_TEMPLATE:
@@ -502,12 +502,12 @@ Background@SETTINGS_PANEL:
 							Visible: false
 							Children:
 								Label@FUNCTION:
-									Y: 0-1
+									Y: 0 - 1
 									Width: PARENT_RIGHT - 115
 									Height: 25
 									Align: Right
 								HotkeyEntry@HOTKEY:
-									X: PARENT_RIGHT-WIDTH
+									X: PARENT_RIGHT - WIDTH
 									Width: 110
 									Height: 25
 		Container@ADVANCED_PANEL:
