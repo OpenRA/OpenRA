@@ -24,8 +24,6 @@ APC:
 		RequiresCondition: !inside-tunnel
 		Range: 5c0
 		MaxHeightDelta: 3
-	Turreted:
-		TurnSpeed: 10
 	Cargo:
 		Types: Infantry
 		MaxWeight: 5
