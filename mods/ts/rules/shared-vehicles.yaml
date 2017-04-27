@@ -7,20 +7,20 @@ MCV:
 		Prerequisites: ~factory, tech, ~techlevel.medium
 		Description: Deploys into another Construction Yard.\n  Unarmed
 	Valued:
-		Cost: 2000
+		Cost: 2500
 	Tooltip:
 		Name: Mobile Construction Vehicle
 	Selectable:
 		Priority: 3
 	Health:
-		HP: 600
+		HP: 1000
 	Armor:
-		Type: Light
+		Type: Heavy
 	Mobile:
-		Speed: 85
+		Speed: 42
 	RevealsShroud:
 		RequiresCondition: !inside-tunnel
-		Range: 4c0
+		Range: 6c0
 		MaxHeightDelta: 3
 	MustBeDestroyed:
 		RequiredForShortGame: true
