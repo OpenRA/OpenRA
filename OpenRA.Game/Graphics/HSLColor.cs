@@ -95,7 +95,8 @@ namespace OpenRA.Graphics
 
 		public static bool operator ==(HSLColor me, HSLColor other)
 		{
-			return me.H == other.H && me.S == other.S && me.L == other.L;
+			// Binary floating point numbers (float, double) calculations can yield the same RGB color created by different functions with little different HSL representation
+			return (me.H == other.H && me.S == other.S && me.L == other.L) || me.RGB == other.RGB;
 		}
 
 		public static bool operator !=(HSLColor me, HSLColor other) { return !(me == other); }
