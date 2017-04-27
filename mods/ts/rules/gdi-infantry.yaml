@@ -78,7 +78,7 @@ JUMPJET:
 	Voiced:
 		VoiceSet: JumpJet
 	Mobile:
-		Speed: 56
+		Speed: 71
 		Jumpjet: True
 		JumpjetTransitionCost: 100
 		JumpjetCondition: airborne
