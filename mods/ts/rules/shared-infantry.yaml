@@ -50,7 +50,7 @@ ENGINEER:
 	Mobile:
 		Speed: 56
 	Health:
-		HP: 500
+		HP: 100
 	Passenger:
 		PipType: Yellow
 	EngineerRepair:
