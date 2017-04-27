@@ -133,8 +133,12 @@ LPST:
 		TurnSpeed: 5
 		RequiresCondition: !empdisable && undeployed
 	RevealsShroud:
-		RequiresCondition: !inside-tunnel
-		Range: 7c0
+		RequiresCondition: !inside-tunnel && undeployed
+		Range: 10c0
+		MaxHeightDelta: 3
+	RevealsShroud@DEPLOYED:
+		RequiresCondition: !undeployed
+		Range: 8c0
 		MaxHeightDelta: 3
 	GrantCondition@PREVIEWWORKAROUND:
 		Condition: real-actor
