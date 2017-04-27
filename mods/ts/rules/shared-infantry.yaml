@@ -31,6 +31,8 @@ E1:
 		FactionImages:
 			gdi: e1.gdi
 			nod: e1.nod
+	RevealsShroud:
+		Range: 5c0
 
 ENGINEER:
 	Inherits: ^Soldier

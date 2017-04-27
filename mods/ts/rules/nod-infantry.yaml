@@ -25,6 +25,8 @@ E3:
 		Voice: Attack
 	WithInfantryBody:
 		DefaultAttackSequence: attack
+	RevealsShroud:
+		Range: 7c0
 	ProducibleWithLevel:
 		Prerequisites: barracks.upgraded
 
