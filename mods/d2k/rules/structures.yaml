@@ -180,9 +180,11 @@ barracks:
 	Exit@1:
 		SpawnOffset: 352,576,0
 		ExitCell: 0,2
+		Type: Infantry
 	Exit@2:
 		SpawnOffset: 512,480,0
 		ExitCell: 1,2
+		Type: Infantry
 	Production:
 		Produces: Infantry
 	PrimaryBuilding:
@@ -363,6 +365,7 @@ light_factory:
 	Exit@1:
 		SpawnOffset: 544,-224,0
 		ExitCell: 2,1
+		Type: Vehicle
 	Production:
 		Produces: Vehicle
 	PrimaryBuilding:
@@ -434,6 +437,7 @@ heavy_factory:
 	Exit@1:
 		SpawnOffset: 256,192,0
 		ExitCell: 0,2
+		Type: Armor
 	Production:
 		Produces: Armor
 	PrimaryBuilding:
@@ -565,9 +569,11 @@ starport:
 	Exit@1:
 		SpawnOffset: 0,-480,0
 		ExitCell: 2,2
+		Type: Starport
 	Exit@2:
 		SpawnOffset: 0,-480,0
 		ExitCell: 0,2
+		Type: Starport
 	ProductionAirdrop:
 		Produces: Starport
 		ActorType: frigate
@@ -812,6 +818,7 @@ high_tech_factory:
 	Exit:
 		SpawnOffset: 0,0,728
 		ExitCell: 0,0
+		Type: Aircraft
 	Building:
 		Footprint: _x_ xxx xxx
 		Dimensions: 3,3
@@ -991,12 +998,15 @@ palace:
 	Exit@1:
 		SpawnOffset: -704,768,0
 		ExitCell: -1,2
+		Type: Palace
 	Exit@2:
 		SpawnOffset: -704,768,0
 		ExitCell: -1,3
+		Type: Palace
 	Exit@3:
 		SpawnOffset: -704,768,0
 		ExitCell: 0,3
+		Type: Palace
 	Production:
 		Produces: Palace
 	CanPowerDown:
