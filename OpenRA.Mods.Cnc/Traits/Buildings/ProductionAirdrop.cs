@@ -9,7 +9,6 @@
  */
 #endregion
 
-using System.Linq;
 using OpenRA.Activities;
 using OpenRA.Mods.Common;
 using OpenRA.Mods.Common.Activities;
@@ -38,7 +37,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			this.info = info;
 		}
 
-		public override bool Produce(Actor self, ActorInfo producee, string factionVariant)
+		public override bool Produce(Actor self, ActorInfo producee, string factionVariant, string exitType)
 		{
 			var owner = self.Owner;
 			var aircraftInfo = self.World.Map.Rules.Actors[info.ActorType].TraitInfo<AircraftInfo>();
@@ -51,8 +50,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			var startPos = self.Location + new CVec(owner.World.Map.Bounds.Width, 0);
 			var endPos = new CPos(owner.World.Map.Bounds.Left - 2 * landDistance / 1024, self.Location.Y);
 
-			// Assume a single exit point for simplicity
-			var exit = self.Info.TraitInfos<ExitInfo>().First();
+			var exit = SelectExit(self, producee, exitType);
 
 			foreach (var tower in self.TraitsImplementing<INotifyDelivery>())
 				tower.IncomingDelivery(self);
@@ -79,7 +77,7 @@ namespace OpenRA.Mods.Cnc.Traits
 					foreach (var cargo in self.TraitsImplementing<INotifyDelivery>())
 						cargo.Delivered(self);
 
-					self.World.AddFrameEndTask(ww => DoProduction(self, producee, exit, factionVariant));
+					self.World.AddFrameEndTask(ww => DoProduction(self, producee, exit, factionVariant, exitType));
 					Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", info.ReadyAudio, self.Owner.Faction.InternalName);
 				}));
 
