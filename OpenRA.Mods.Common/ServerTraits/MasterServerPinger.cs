@@ -128,7 +128,13 @@ namespace OpenRA.Mods.Common.Server
 									masterServerMessages.Enqueue("Warning: Server ports are not forwarded.");
 									masterServerMessages.Enqueue("Game has not been advertised online.");
 								}
-							}
+                                if (masterResponseText.Contains("[002]"))  // Server contains blacklisted characters in its name
+                                {
+                                    Log.Write("server", masterResponseText);
+                                    masterServerMessages.Enqueue("Warning: Server contains blacklisted word in server name.");
+                                    masterServerMessages.Enqueue("Game has not been advertised online.");
+                                }
+                            }
 						}
 					}
 				}
