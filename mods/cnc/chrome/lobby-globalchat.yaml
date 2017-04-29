@@ -26,10 +26,30 @@ Container@LOBBY_GLOBALCHAT_PANEL:
 					TopBottomSpacing: 4
 					ItemSpacing: 4
 					Children:
-						Label@HISTORY_TEMPLATE:
-							X: 5
-							Width: 530
-							WordWrap: True
+						Container@CHAT_TEMPLATE:
+							X: 2
+							Width: PARENT_RIGHT-27
+							Height: 16
+							Children:
+								Label@TIME:
+									X: 3
+									Width: 50
+									Height: 15
+									VAlign: Top
+									Shadow: True
+								Label@NAME:
+									X: 45
+									Width: 50
+									Height: 15
+									VAlign: Top
+									Shadow: True
+								Label@TEXT:
+									X: 55
+									Width: PARENT_RIGHT - 60
+									Height: 15
+									WordWrap: true
+									VAlign: Top
+									Shadow: True
 				TextField@CHAT_TEXTFIELD:
 					X: 200
 					Y: PARENT_BOTTOM + 5
