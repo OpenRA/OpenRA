@@ -132,15 +132,15 @@ ttnk:
 	Inherits: ^VehicleOverlays
 	idle: gatick
 		ShadowStart: 3
-		Offset: 0, -12, 12
+		Offset: 0, -14, 14
 	damaged-idle: gatick
 		Start: 1
 		ShadowStart: 4
-		Offset: 0, -12, 12
+		Offset: 0, -14, 14
 	make: gatickmk
 		Length: 24
 		ShadowStart: 24
-		Offset: 0, -12, 12
+		Offset: 0, -14, 14
 	muzzle: gunfire
 		Length: *
 		Offset: 0, 0, 24
