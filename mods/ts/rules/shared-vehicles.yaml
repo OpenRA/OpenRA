@@ -163,3 +163,5 @@ LPST:
 		TrailCount: 3
 	Carryable:
 		RequiresCondition: undeployed
+	RenderVoxels:
+		Scale: 11.5

@@ -38,7 +38,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		[PaletteReference] public readonly string ShadowPalette = "shadow";
 
 		[Desc("Change the image size.")]
-		public readonly float Scale = 10;
+		public readonly float Scale = 12;
 
 		public readonly WAngle LightPitch = WAngle.FromDegrees(50);
 		public readonly WAngle LightYaw = WAngle.FromDegrees(240);
