@@ -239,7 +239,6 @@
     <Compile Include="Support\PerfSample.cs" />
     <Compile Include="Graphics\SpriteRenderable.cs" />
     <Compile Include="Widgets\Widget.cs" />
-    <Compile Include="Widgets\RootWidget.cs" />
     <Compile Include="Widgets\WidgetLoader.cs" />
     <Compile Include="Widgets\ChromeMetrics.cs" />
     <Compile Include="Widgets\WidgetUtils.cs" />
@@ -351,5 +350,5 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />  
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

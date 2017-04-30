@@ -20,7 +20,7 @@ namespace OpenRA.Widgets
 {
 	public static class Ui
 	{
-		public static Widget Root = new RootWidget();
+		public static Widget Root = new ContainerWidget();
 
 		public static long LastTickTime = Game.RunTime;
 
@@ -128,6 +128,29 @@ namespace OpenRA.Widgets
 		/// <param name="e">Key input data</param>
 		public static bool HandleKeyPress(KeyInput e)
 		{
+			if (e.Event == KeyInputEvent.Down)
+			{
+				var hk = Hotkey.FromKeyInput(e);
+
+				if (hk == Game.Settings.Keys.DevReloadChromeKey)
+				{
+					ChromeProvider.Initialize(Game.ModData);
+					return true;
+				}
+
+				if (hk == Game.Settings.Keys.HideUserInterfaceKey)
+				{
+					Root.Visible ^= true;
+					return true;
+				}
+
+				if (hk == Game.Settings.Keys.TakeScreenshotKey)
+				{
+					Game.TakeScreenshot = true;
+					return true;
+				}
+			}
+
 			if (KeyboardFocusWidget != null)
 				return KeyboardFocusWidget.HandleKeyPressOuter(e);
 
