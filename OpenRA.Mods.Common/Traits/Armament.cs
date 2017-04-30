@@ -263,6 +263,14 @@ namespace OpenRA.Mods.Common.Traits
 				FireDelay = Util.ApplyPercentageModifiers(Weapon.ReloadDelay, modifiers);
 				Burst = Weapon.Burst;
 
+				if (args.Weapon.AfterFireSound != null && args.Weapon.AfterFireSound.Any())
+				{
+					ScheduleDelayedAction(Weapon.AfterFireSoundDelay, () =>
+					{
+						Game.Sound.Play(SoundType.World, Weapon.AfterFireSound.Random(self.World.SharedRandom), self.CenterPosition);
+					});
+				}
+
 				foreach (var nbc in self.TraitsImplementing<INotifyBurstComplete>())
 					nbc.FiredBurst(self, target, this);
 			}
