@@ -45,7 +45,7 @@ namespace OpenRA.Mods.AS.Traits
 	{
 		readonly AIDeployHelperInfo info;
 
-		[Sync] int undeployTicks, deployTicks;
+		[Sync] int undeployTicks = -1, deployTicks;
 		bool undeployable;
 
 		public AIDeployHelper(AIDeployHelperInfo info)
@@ -98,10 +98,8 @@ namespace OpenRA.Mods.AS.Traits
 			if (!self.Owner.IsBot)
 				return;
 
-			if (undeployable && --undeployTicks < 0)
-			{
+			if (undeployable && undeployTicks-- == 0)
 				Undeploy(self);
-			}
 
 			if (deployTicks > 0)
 				deployTicks--;
