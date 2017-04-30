@@ -376,6 +376,9 @@
 		Pieces: 2, 5
 		Range: 1c512, 4c0
 	WithMakeAnimation:
+	RevealOnDeath:
+		Duration: 100
+		Radius: 4c768
 
 ^Defense:
 	Inherits: ^Building
