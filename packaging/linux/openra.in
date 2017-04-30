@@ -1,0 +1,16 @@
+#!/bin/sh
+cd "{GAME_INSTALL_DIR}"
+
+mono {DEBUG} OpenRA.Game.exe Game.Mod={MOD} Engine.LaunchPath="{BIN_DIR}/openra-{MOD}" "$@"
+
+# Show a crash dialog if required
+if [ $? != 0 ] && [ $? != 1 ]
+then
+	if which zenity > /dev/null
+	then
+		zenity --question --title "{MODNAME}" --text "{MODNAME} has encountered a fatal error.\nLog Files are available in ~/.openra." --ok-label "Quit" --cancel-label "View FAQ" || xdg-open https://github.com/OpenRA/OpenRA/wiki/FAQ
+	else
+		printf "{MODNAME} has encountered a fatal error.\n  -> Log Files are available in ~/.openra\n  -> FAQ is available at https://github.com/OpenRA/OpenRA/wiki/FAQ\n"
+	fi
+	exit 1
+fi
