@@ -2548,6 +2548,22 @@ Actors:
 	Actor735: trock02
 		Location: 125,41
 		Owner: Neutral
+	Actor736: jfish
+		Owner: Creeps
+		Location: 121,-90
+		Facing: 92
+	Actor739: jfish
+		Owner: Creeps
+		Location: 74,60
+		Facing: 92
+	Actor740: jfish
+		Owner: Creeps
+		Location: 170,-38
+		Facing: 92
+	Actor737: jfish
+		Owner: Creeps
+		Location: 58,23
+		Facing: 92
 
 Rules: rules.yaml
 

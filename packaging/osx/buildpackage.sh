@@ -21,12 +21,6 @@ rm launcher.zip
 # Copy the template to build the game package
 cp -r $2/* "OpenRA.app/Contents/Resources/" || exit 3
 
-# Remove unused icon
-rm OpenRA.app/Contents/Resources/OpenRA.ico
-
-# Remove WinForms applications
-rm OpenRA.app/Contents/Resources/OpenRA.exe
-
 # Set version string
 sed "s/{DEV_VERSION}/${1}/" OpenRA.app/Contents/Info.plist > OpenRA.app/Contents/Info.plist.tmp
 mv OpenRA.app/Contents/Info.plist.tmp OpenRA.app/Contents/Info.plist

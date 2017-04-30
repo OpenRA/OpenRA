@@ -99,6 +99,23 @@ SlimeAttack:
 			Concrete: 20
 		DamageTypes: Prone100Percent, TriggerProne, SmallExplosionDeath
 
+Tentacle:
+	ReloadDelay: 80
+	Range: 1c384
+	Report: floatk1.aud
+	Projectile: InstantHit
+	InvalidTargets: Wall, Bridge
+	Warhead@1Dam: TargetDamage
+		Damage: 160
+		InvalidTargets: Wall, Bridge
+		Versus:
+			None: 60
+			Wood: 45
+			Light: 90
+			Heavy: 55
+			Concrete: 10
+		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
+
 Veins:
 	ReloadDelay: 16
 	Warhead@Damage: TargetDamage

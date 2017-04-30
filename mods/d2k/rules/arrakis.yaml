@@ -82,7 +82,7 @@ sandworm:
 		Sequences: lightninga, lightningb, lightningc, lightningd, lightninge, lightningf
 		RequiresCondition: !attacking
 	AmbientSound:
-		SoundFile: WRMSIGN1.WAV
+		SoundFiles: WRMSIGN1.WAV
 		Interval: 160
 		RequiresCondition: !attacking
 	WithAttackOverlay@mouth:

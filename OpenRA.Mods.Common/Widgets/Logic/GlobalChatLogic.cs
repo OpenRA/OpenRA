@@ -18,7 +18,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	class GlobalChatLogic : ChromeLogic
 	{
 		readonly ScrollPanelWidget historyPanel;
-		readonly LabelWidget historyTemplate;
+		readonly ContainerWidget chatTemplate;
 		readonly ScrollPanelWidget nicknamePanel;
 		readonly Widget nicknameTemplate;
 		readonly TextFieldWidget inputBox;
@@ -27,9 +27,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		public GlobalChatLogic(Widget widget)
 		{
 			historyPanel = widget.Get<ScrollPanelWidget>("HISTORY_PANEL");
-			historyTemplate = historyPanel.Get<LabelWidget>("HISTORY_TEMPLATE");
+			chatTemplate = historyPanel.Get<ContainerWidget>("CHAT_TEMPLATE");
 			nicknamePanel = widget.Get<ScrollPanelWidget>("NICKNAME_PANEL");
 			nicknameTemplate = nicknamePanel.Get("NICKNAME_TEMPLATE");
+
+			var textColor = ChromeMetrics.Get<Color>("GlobalChatTextColor");
+			var textLabel = chatTemplate.Get<LabelWidget>("TEXT");
+			textLabel.GetColor = () => textColor;
 
 			historyPanel.Bind(Game.GlobalChat.History, MakeHistoryWidget, HistoryWidgetEquals, true);
 			nicknamePanel.Bind(Game.GlobalChat.Users, MakeUserWidget, UserWidgetEquals, false);
@@ -80,19 +84,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		Widget MakeHistoryWidget(object o)
 		{
 			var message = (ChatMessage)o;
-			var widget = (LabelWidget)historyTemplate.Clone();
-			var font = Game.Renderer.Fonts[widget.Font];
+			var from = message.Type == ChatMessageType.Notification ? "Battlefield Control" : message.Nick;
+			var color = message.Type == ChatMessageType.Notification ? ChromeMetrics.Get<Color>("GlobalChatNotificationColor")
+				: ChromeMetrics.Get<Color>("GlobalChatPlayerNameColor");
+			var template = (ContainerWidget)chatTemplate.Clone();
+			LobbyUtils.SetupChatLine(template, color, from, message.Message);
 
-			var color = message.Type == ChatMessageType.Notification ?
-				ChromeMetrics.Get<Color>("GlobalChatNotificationColor") :
-				ChromeMetrics.Get<Color>("GlobalChatTextColor");
-
-			var display = WidgetUtils.WrapText(message.ToString(), widget.Bounds.Width, font);
-			widget.Bounds.Height = font.Measure(display).Y;
-			widget.GetText = () => display;
-			widget.GetColor = () => color;
-			widget.Id = message.UID;
-			return widget;
+			template.Id = message.UID;
+			return template;
 		}
 
 		bool HistoryWidgetEquals(Widget widget, object o)

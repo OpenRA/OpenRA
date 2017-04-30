@@ -194,9 +194,10 @@ namespace OpenRA.Mods.Common.Widgets
 
 				if (!flashed && !o.SuppressVisualFeedback)
 				{
-					if (o.TargetActor != null)
+					var visualTargetActor = o.VisualFeedbackTarget ?? o.TargetActor;
+					if (visualTargetActor != null)
 					{
-						world.AddFrameEndTask(w => w.Add(new FlashTarget(o.TargetActor)));
+						world.AddFrameEndTask(w => w.Add(new FlashTarget(visualTargetActor)));
 						flashed = true;
 					}
 					else if (o.TargetLocation != CPos.Zero)

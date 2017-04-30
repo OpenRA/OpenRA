@@ -138,7 +138,7 @@ TTNK:
 		TurnSpeed: 6
 		Turret: deployed
 		InitialFacing: 160
-		Offset: -20, -130, 180
+		Offset: -20, -130, 128
 		RealignDelay: -1
 	WithVoxelBarrel:
 		Armament: deployed
@@ -175,6 +175,8 @@ TTNK:
 		RequiresCondition: undeployed
 	RevealOnFire:
 		ArmamentNames: primary, deployed
+	RenderVoxels:
+		Scale: 11.5
 
 ART2:
 	Inherits: ^Tank

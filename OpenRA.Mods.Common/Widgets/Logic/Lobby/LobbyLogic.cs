@@ -565,33 +565,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			lobbyChatUnreadMessages += 1;
 
-			var template = chatTemplate.Clone();
-			var nameLabel = template.Get<LabelWidget>("NAME");
-			var timeLabel = template.Get<LabelWidget>("TIME");
-			var textLabel = template.Get<LabelWidget>("TEXT");
-
-			var name = from + ":";
-			var font = Game.Renderer.Fonts[nameLabel.Font];
-			var nameSize = font.Measure(from);
-
-			var time = DateTime.Now;
-			timeLabel.GetText = () => "{0:D2}:{1:D2}".F(time.Hour, time.Minute);
-
-			nameLabel.GetColor = () => c;
-			nameLabel.GetText = () => name;
-			nameLabel.Bounds.Width = nameSize.X;
-			textLabel.Bounds.X += nameSize.X;
-			textLabel.Bounds.Width -= nameSize.X;
-
-			// Hack around our hacky wordwrap behavior: need to resize the widget to fit the text
-			text = WidgetUtils.WrapText(text, textLabel.Bounds.Width, font);
-			textLabel.GetText = () => text;
-			var dh = font.Measure(text).Y - textLabel.Bounds.Height;
-			if (dh > 0)
-			{
-				textLabel.Bounds.Height += dh;
-				template.Bounds.Height += dh;
-			}
+			var template = (ContainerWidget)chatTemplate.Clone();
+			LobbyUtils.SetupChatLine(template, c, from, text);
 
 			var scrolledToBottom = lobbyChatPanel.ScrolledToBottom;
 			lobbyChatPanel.AddChild(template);

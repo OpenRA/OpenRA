@@ -46,6 +46,7 @@ namespace OpenRA
 		public uint ExtraData;
 		public bool IsImmediate;
 		public bool SuppressVisualFeedback;
+		public Actor VisualFeedbackTarget;
 
 		public Player Player { get { return Subject != null ? Subject.Owner : null; } }
 
