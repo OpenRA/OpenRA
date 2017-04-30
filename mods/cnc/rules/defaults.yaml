@@ -830,7 +830,8 @@
 		ForceHealthPercentage: 25
 	Tooltip:
 		GenericName: Destroyed Vehicle
-	DisabledOverlay:
+	WithColoredOverlay@IDISABLE:
+		Palette: disabled
 	ScriptTriggers:
 	Explodes:
 		Weapon: UnitExplodeSmall
@@ -892,3 +893,10 @@
 	-GivesBuildableArea:
 	MustBeDestroyed:
 		RequiredForShortGame: false
+
+^DisabledOverlay:
+	WithColoredOverlay@IDISABLE:
+		RequiresCondition: disabled
+		Palette: disabled
+	GrantConditionOnDisabled@IDISABLE:
+		Condition: disabled

@@ -441,6 +441,7 @@ HPAD:
 
 HQ:
 	Inherits: ^BaseBuilding
+	Inherits@IDISABLE: ^DisabledOverlay
 	Valued:
 		Cost: 1000
 	Tooltip:
@@ -463,7 +464,6 @@ HQ:
 	CanPowerDown:
 		PowerupSound: EnablePower
 		PowerdownSound: DisablePower
-	DisabledOverlay:
 	WithSpriteBody:
 		PauseAnimationWhenDisabled: true
 	Health:
@@ -500,8 +500,6 @@ HQ:
 	SupportPowerChargeBar:
 	Power:
 		Amount: -50
-	GrantConditionOnDisabled@IDISABLE:
-		Condition: disabled
 
 FIX:
 	Inherits: ^BaseBuilding
@@ -539,6 +537,7 @@ FIX:
 
 EYE:
 	Inherits: ^BaseBuilding
+	Inherits@IDISABLE: ^DisabledOverlay
 	Valued:
 		Cost: 1800
 	Tooltip:
@@ -561,7 +560,6 @@ EYE:
 	CanPowerDown:
 		PowerupSound: EnablePower
 		PowerdownSound: DisablePower
-	DisabledOverlay:
 	WithSpriteBody:
 		PauseAnimationWhenDisabled: true
 	Health:
@@ -592,11 +590,10 @@ EYE:
 	Power:
 		Amount: -200
 	ProvidesPrerequisite@buildingname:
-	GrantConditionOnDisabled@IDISABLE:
-		Condition: disabled
 
 TMPL:
 	Inherits: ^BaseBuilding
+	Inherits@IDISABLE: ^DisabledOverlay
 	Valued:
 		Cost: 2000
 	Tooltip:
@@ -619,7 +616,6 @@ TMPL:
 	CanPowerDown:
 		PowerupSound: EnablePower
 		PowerdownSound: DisablePower
-	DisabledOverlay:
 	Health:
 		HP: 2100
 	RevealsShroud:
@@ -697,6 +693,7 @@ GUN:
 
 SAM:
 	Inherits: ^Defense
+	Inherits@IDISABLE: ^DisabledOverlay
 	Valued:
 		Cost: 650
 	Tooltip:
@@ -712,7 +709,6 @@ SAM:
 		Footprint: xx
 		Dimensions: 2,1
 	RequiresPower:
-	DisabledOverlay:
 	Health:
 		HP: 400
 	Armor:
@@ -739,6 +735,7 @@ SAM:
 
 OBLI:
 	Inherits: ^Defense
+	Inherits@IDISABLE: ^DisabledOverlay
 	Valued:
 		Cost: 1500
 	Tooltip:
@@ -755,7 +752,6 @@ OBLI:
 	SelectionDecorations:
 		VisualBounds: 22,44,0,-10
 	RequiresPower:
-	DisabledOverlay:
 	Health:
 		HP: 600
 	Armor:
@@ -818,6 +814,7 @@ GTWR:
 
 ATWR:
 	Inherits: ^Defense
+	Inherits@IDISABLE: ^DisabledOverlay
 	Valued:
 		Cost: 1000
 	Tooltip:
@@ -834,7 +831,6 @@ ATWR:
 	SelectionDecorations:
 		VisualBounds: 22,48,0,-12
 	RequiresPower:
-	DisabledOverlay:
 	Health:
 		HP: 550
 	Armor:

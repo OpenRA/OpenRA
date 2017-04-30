@@ -349,7 +349,6 @@
     <Compile Include="Traits\KillsSelf.cs" />
     <Compile Include="Traits\AmmoPool.cs" />
     <Compile Include="Traits\Mobile.cs" />
-    <Compile Include="Traits\Modifiers\DisabledOverlay.cs" />
     <Compile Include="Traits\Modifiers\FrozenUnderFog.cs" />
     <Compile Include="Traits\Modifiers\HiddenUnderFog.cs" />
     <Compile Include="Traits\Modifiers\WithColoredOverlay.cs" />
@@ -496,6 +495,7 @@
     <Compile Include="Traits\Conditions\GrantConditionOnDeploy.cs" />
     <Compile Include="Traits\Conditions\DisableOnCondition.cs" />
     <Compile Include="Traits\Conditions\ConditionalTrait.cs" />
+    <Compile Include="Traits\Conditions\PausableConditionalTrait.cs" />
     <Compile Include="Traits\Conditions\ProximityExternalCondition.cs" />
     <Compile Include="Traits\Conditions\GrantConditionOnDamageState.cs" />
     <Compile Include="Traits\Conditions\GrantConditionOnTerrain.cs" />

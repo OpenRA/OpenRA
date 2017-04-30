@@ -486,11 +486,11 @@ heavy_factory:
 
 outpost:
 	Inherits: ^Building
+	Inherits@IDISABLE: ^DisabledOverlay
 	RequiresPower:
 	CanPowerDown:
 		PowerupSound: EnablePower
 		PowerdownSound: DisablePower
-	DisabledOverlay:
 	Buildable:
 		Prerequisites: barracks, ~techlevel.medium
 		Queue: Building
@@ -533,11 +533,10 @@ outpost:
 	Power:
 		Amount: -125
 	ProvidesPrerequisite@buildingname:
-	GrantConditionOnDisabled@IDISABLE:
-		Condition: disabled
 
 starport:
 	Inherits: ^Building
+	Inherits@IDISABLE: ^DisabledOverlay
 	Tooltip:
 		Name: Starport
 	Buildable:
@@ -583,7 +582,6 @@ starport:
 	ProductionBar:
 	PrimaryBuilding:
 		PrimaryCondition: primary
-	DisabledOverlay:
 	ProvidesPrerequisite@atreides:
 		Prerequisite: starport.atreides
 		Factions: atreides
@@ -702,6 +700,7 @@ medium_gun_turret:
 
 large_gun_turret:
 	Inherits: ^Defense
+	Inherits@IDISABLE: ^DisabledOverlay
 	Buildable:
 		Queue: Building
 		Prerequisites: outpost, upgrade.conyard, ~techlevel.medium
@@ -739,7 +738,6 @@ large_gun_turret:
 	CanPowerDown:
 		PowerupSound: EnablePower
 		PowerdownSound: DisablePower
-	DisabledOverlay:
 	Power:
 		Amount: -60
 	SelectionDecorations:
@@ -905,6 +903,7 @@ research_centre:
 
 palace:
 	Inherits: ^Building
+	Inherits@IDISABLE: ^DisabledOverlay
 	Buildable:
 		Prerequisites: research_centre, ~techlevel.high
 		Queue: Building
@@ -1002,7 +1001,6 @@ palace:
 	CanPowerDown:
 		PowerupSound: EnablePower
 		PowerdownSound: DisablePower
-	DisabledOverlay:
 	RequiresPower:
 	SupportPowerChargeBar:
 	ProvidesPrerequisite@buildingname:

@@ -35,7 +35,7 @@ namespace OpenRA.Mods.Common.Traits
 		bool IOccupySpaceInfo.SharesCell { get { return false; } }
 	}
 
-	public class Husk : IPositionable, IFacing, ISync, INotifyCreated, INotifyAddedToWorld, INotifyRemovedFromWorld, IDisable, IDeathActorInitModifier
+	public class Husk : IPositionable, IFacing, ISync, INotifyCreated, INotifyAddedToWorld, INotifyRemovedFromWorld, IDeathActorInitModifier
 	{
 		readonly HuskInfo info;
 		readonly Actor self;
@@ -118,11 +118,6 @@ namespace OpenRA.Mods.Common.Traits
 		public void RemovedFromWorld(Actor self)
 		{
 			self.World.RemoveFromMaps(self, this);
-		}
-
-		public bool Disabled
-		{
-			get { return true; }
 		}
 
 		public void ModifyDeathActorInit(Actor self, TypeDictionary init)

@@ -15,10 +15,10 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	/// <summary>Use as base class for *Info to subclass of UpgradableTrait. (See UpgradableTrait.)</summary>
+	/// <summary>Use as base class for *Info to subclass of ConditionalTrait. (See ConditionalTrait.)</summary>
 	public abstract class ConditionalTraitInfo : IObservesVariablesInfo, IRulesetLoaded
 	{
-		static readonly IReadOnlyDictionary<string, int> NoConditions = new ReadOnlyDictionary<string, int>(new Dictionary<string, int>());
+		protected static readonly IReadOnlyDictionary<string, int> NoConditions = new ReadOnlyDictionary<string, int>(new Dictionary<string, int>());
 
 		[ConsumedConditionReference]
 		[Desc("Boolean expression defining the condition to enable this trait.")]
@@ -39,7 +39,7 @@ namespace OpenRA.Mods.Common.Traits
 
 	/// <summary>
 	/// Abstract base for enabling and disabling trait using conditions.
-	/// Requires basing *Info on UpgradableTraitInfo and using base(info) constructor.
+	/// Requires basing *Info on ConditionalTraitInfo and using base(info) constructor.
 	/// TraitEnabled will be called at creation if the trait starts enabled or does not use conditions.
 	/// </summary>
 	public abstract class ConditionalTrait<InfoType> : IObservesVariables, IDisabledTrait, INotifyCreated, ISync where InfoType : ConditionalTraitInfo
