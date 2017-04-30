@@ -80,7 +80,7 @@ fi
 popd >/dev/null
 
 pushd osx >/dev/null
-echo "Zipping OS X package"
+echo "Building OS X package"
 ./buildpackage.sh "$TAG" "$BUILTDIR" "$OUTPUTDIR"
 if [ $? -ne 0 ]; then
     echo "OS X package build failed."

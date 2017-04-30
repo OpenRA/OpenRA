@@ -19,6 +19,10 @@ addons:
     - nsis-common
     - dpkg
     - markdown
+    - zlib1g-dev
+    - libbz2-dev
+    - cmake
+    - genisoimage
 
 # Environment variables
 env:
@@ -72,7 +76,7 @@ deploy:
     secure: "g/LU11f+mjqv+lj0sR1UliHwogXL4ofJUwoG5Dbqlvdf5UTLWytw/OWSCv8RGyuh10miyWeaoqHh1cn2C1IFhUEqN1sSeKKKOWOTvJ2FR5mzi9uH3d/MOBzG5icQ7Qh0fZ1YPz5RaJJhYu6bmfvA/1gD49GoaX2kxQL4J5cEBgg="
   file:
     - build/OpenRA-${TRAVIS_TAG}.exe
-    - build/OpenRA-${TRAVIS_TAG}.zip
+    - build/OpenRA-${TRAVIS_TAG}.dmg
     - build/openra_${DOTVERSION}_all.deb
   skip_cleanup: true
   on:
