@@ -663,6 +663,22 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				// Removed GrantConditionOnDeploy.DeployAnimation and made WithMakeAnimation compatible instead
+				if (engineVersion < 20170510)
+				{
+					var grantCondOnDeploy = node.Value.Nodes.FirstOrDefault(n => n.Key == "GrantConditionOnDeploy");
+					if (grantCondOnDeploy != null)
+					{
+						var deployAnimNode = grantCondOnDeploy.Value.Nodes.FirstOrDefault(n => n.Key == "DeployAnimation");
+						if (deployAnimNode != null)
+						{
+							grantCondOnDeploy.Value.Nodes.Remove(deployAnimNode);
+							Console.WriteLine("DeployAnimation was removed from GrantConditionOnDeploy.");
+							Console.WriteLine("Use WithMakeAnimation instead if a deploy animation is needed.");
+						}
+					}
+				}
+
 				UpgradeActorRules(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 
