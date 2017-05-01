@@ -310,3 +310,9 @@ Background@SUPPORT_POWER_TOOLTIP:
 			Y: 22
 			Font: TinyBold
 			VAlign: Top
+		Label@COST:
+			X: 5
+			Y: 8
+			Font: TinyBold
+			VAlign: Top
+			Text: $

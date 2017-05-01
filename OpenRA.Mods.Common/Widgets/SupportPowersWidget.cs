@@ -16,6 +16,7 @@ using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Lint;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Traits;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets
@@ -229,7 +230,8 @@ namespace OpenRA.Mods.Common.Widgets
 				return;
 
 			tooltipContainer.Value.SetTooltip(TooltipTemplate,
-				new WidgetArgs() { { "world", worldRenderer.World }, { "player", spm.Self.Owner }, { "palette", this } });
+				new WidgetArgs() { { "world", worldRenderer.World }, { "player", spm.Self.Owner },
+				{ "palette", this }, { "playerResources", spm.PlayerResources } });
 		}
 
 		public override void MouseExited()

@@ -27,6 +27,7 @@ namespace OpenRA.Mods.Common.AI
 		readonly Player player;
 		readonly FrozenActorLayer frozenLayer;
 		readonly SupportPowerManager supportPowerManager;
+		readonly PlayerResources playerResources;
 		Dictionary<SupportPowerInstance, int> waitingPowers = new Dictionary<SupportPowerInstance, int>();
 		Dictionary<string, SupportPowerDecision> powerDecisions = new Dictionary<string, SupportPowerDecision>();
 
@@ -37,6 +38,7 @@ namespace OpenRA.Mods.Common.AI
 			player = p;
 			frozenLayer = p.PlayerActor.Trait<FrozenActorLayer>();
 			supportPowerManager = p.PlayerActor.TraitOrDefault<SupportPowerManager>();
+			playerResources = p.PlayerActor.TraitOrDefault<PlayerResources>();
 			foreach (var decision in ai.Info.SupportPowerDecisions)
 				powerDecisions.Add(decision.OrderName, decision);
 		}
@@ -66,6 +68,14 @@ namespace OpenRA.Mods.Common.AI
 					if (powerDecision == null)
 					{
 						HackyAI.BotDebug("Bot Bug: FindAttackLocationToSupportPower, couldn't find powerDecision for {0}", sp.Info.OrderName);
+						continue;
+					}
+
+					if (sp.Info.Cost != 0 && playerResources != null && playerResources.Cash + playerResources.Resources < sp.Info.Cost)
+					{
+						HackyAI.BotDebug("AI: {1} can't afford the activation of support power {0}. Delaying rescan.", sp.Info.OrderName, player.PlayerName);
+						waitingPowers[sp] += powerDecision.GetNextScanTime(ai);
+
 						continue;
 					}
 
