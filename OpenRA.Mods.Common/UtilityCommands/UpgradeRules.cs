@@ -627,6 +627,12 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					{
 						Console.WriteLine("Actor {0} has AffectedByPowerOutage; use the Condition property to apply its effects.".F(node.Key));
 					}
+					else if (node.Key.StartsWith("IonCannonPower", StringComparison.Ordinal) || node.Key.StartsWith("ProduceActorPower", StringComparison.Ordinal)
+						|| node.Key.StartsWith("NukePower", StringComparison.Ordinal) || node.Key.StartsWith("AttackOrderPower", StringComparison.Ordinal)
+						|| node.Key.StartsWith("GpsPower", StringComparison.Ordinal))
+					{
+						Console.WriteLine("{0} requires PauseOnCondition for pausing.".F(node.Key));
+					}
 				}
 
 				UpgradeActorRules(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);
