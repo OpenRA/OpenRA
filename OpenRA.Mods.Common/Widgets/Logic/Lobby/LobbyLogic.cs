@@ -155,7 +155,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				factions.Add(f.InternalName, new LobbyFaction { Selectable = f.Selectable, Name = f.Name, Side = f.Side, Description = f.Description });
 
 			var gameStarting = false;
-			Func<bool> configurationDisabled = () => !Game.IsHost || gameStarting ||
+			Func<bool> configurationDisabled = () => !Game.IsAdmin || gameStarting ||
 				panel == PanelType.Kick || panel == PanelType.ForceStart ||
 				!Map.RulesLoaded || Map.InvalidCustomRules ||
 				orderManager.LocalClient == null || orderManager.LocalClient.IsReady;
@@ -183,7 +183,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						{ "initialMap", Map.Uid },
 						{ "initialTab", MapClassification.System },
 						{ "onExit", DoNothing },
-						{ "onSelect", Game.IsHost ? onSelect : null },
+						{ "onSelect", Game.IsAdmin ? onSelect : null },
 						{ "filter", MapVisibility.Lobby },
 					});
 				};
@@ -659,7 +659,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					if (template == null || template.Id != emptySlotTemplate.Id)
 						template = emptySlotTemplate.Clone();
 
-					if (Game.IsHost)
+					if (Game.IsAdmin)
 						LobbyUtils.SetupEditableSlotWidget(this, template, slot, client, orderManager);
 					else
 						LobbyUtils.SetupSlotWidget(template, slot, client);
@@ -670,7 +670,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					join.OnClick = () => orderManager.IssueOrder(Order.Command("slot " + key));
 				}
 				else if ((client.Index == orderManager.LocalClient.Index) ||
-						 (client.Bot != null && Game.IsHost))
+						 (client.Bot != null && Game.IsAdmin))
 				{
 					// Editable player in slot
 					if (template == null || template.Id != editablePlayerTemplate.Id)
@@ -697,6 +697,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 					LobbyUtils.SetupClientWidget(template, client, orderManager, client.Bot == null);
 					LobbyUtils.SetupNameWidget(template, slot, client);
+					LobbyUtils.SetupPromoteWidget(template, slot, client, orderManager, lobby);
 					LobbyUtils.SetupKickWidget(template, slot, client, orderManager, lobby,
 						() => panel = PanelType.Kick, () => panel = PanelType.Players);
 					LobbyUtils.SetupColorWidget(template, slot, client);
@@ -744,6 +745,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						template = nonEditableSpectatorTemplate.Clone();
 
 					LobbyUtils.SetupNameWidget(template, null, client);
+					LobbyUtils.SetupPromoteWidget(template, null, client, orderManager, lobby);
 					LobbyUtils.SetupKickWidget(template, null, client, orderManager, lobby,
 						() => panel = PanelType.Kick, () => panel = PanelType.Players);
 

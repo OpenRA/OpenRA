@@ -186,6 +186,16 @@ Container@LOBBY_PLAYER_BIN:
 							Y: 0-1
 							Width: 180
 							Height: 25
+						Button@PROMOTE:
+							X: 150
+							Width: 25
+							Height: 25
+							Children:
+								Image:
+									ImageCollection: order-icons
+									ImageName: beacon
+									X: 4
+									Y: 4
 						Button@KICK:
 							X: 180
 							Width: 25
@@ -347,6 +357,16 @@ Container@LOBBY_PLAYER_BIN:
 							Y: 0-1
 							Width: 180
 							Height: 25
+						Button@PROMOTE:
+							X: 150
+							Width: 25
+							Height: 25
+							Children:
+								Image:
+									ImageCollection: order-icons
+									ImageName: beacon
+									X: 4
+									Y: 4
 						Button@KICK:
 							X: 180
 							Width: 25

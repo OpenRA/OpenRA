@@ -185,7 +185,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				.Select(a => a.Second + 1)
 				.FirstOrDefault();
 
-			var locals = orderManager.LobbyInfo.Clients.Where(c => c.Index == orderManager.LocalClient.Index || (Game.IsHost && c.Bot != null));
+			var locals = orderManager.LobbyInfo.Clients.Where(c => c.Index == orderManager.LocalClient.Index || (Game.IsAdmin && c.Bot != null));
 			var playerToMove = locals.FirstOrDefault(c => ((selectedSpawn == 0) ^ (c.SpawnPoint == 0) && !c.IsObserver));
 			SetSpawnPoint(orderManager, playerToMove, selectedSpawn);
 		}
@@ -330,10 +330,24 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				slot.IsVisible = () => false;
 		}
 
+		public static void SetupPromoteWidget(Widget parent, Session.Slot s, Session.Client c, OrderManager orderManager, Widget lobby)
+		{
+			try
+			{
+				var button = parent.Get<ButtonWidget>("PROMOTE");
+				button.IsVisible = () => Game.IsAdmin && !Game.IsHost && c.Index != orderManager.LocalClient.Index;
+				button.OnClick = () => { orderManager.IssueOrder(Order.Command("promote {0}".F(c.Index))); };
+			}
+			catch (InvalidOperationException)
+			{
+				Log.Write("debug", "PROMOTE button widget not found.");
+			}
+		}
+
 		public static void SetupKickWidget(Widget parent, Session.Slot s, Session.Client c, OrderManager orderManager, Widget lobby, Action before, Action after)
 		{
 			var button = parent.Get<ButtonWidget>("KICK");
-			button.IsVisible = () => Game.IsHost && c.Index != orderManager.LocalClient.Index;
+			button.IsVisible = () => Game.IsAdmin && c.Index != orderManager.LocalClient.Index;
 			button.IsDisabled = () => orderManager.LocalClient.IsReady;
 			Action<bool> okPressed = tempBan => { orderManager.IssueOrder(Order.Command("kick {0} {1}".F(c.Index, tempBan))); after(); };
 			button.OnClick = () =>

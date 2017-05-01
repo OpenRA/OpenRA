@@ -522,6 +522,46 @@ namespace OpenRA.Mods.Common.Server
 						return true;
 					}
 				},
+				{ "promote",
+					s =>
+					{
+						if (!client.IsAdmin)
+						{
+							server.SendOrderTo(conn, "Message", "Only the host can promote players.");
+							return true;
+						}
+
+						int promoteClientID;
+						try
+						{
+							Exts.TryParseIntegerInvariant(s, out promoteClientID);
+						}
+						catch
+						{
+							server.SendOrderTo(conn, "Message", "Malformed promote command.");
+							return true;
+						}
+
+						var promoteConn = server.Conns.SingleOrDefault(c => server.GetClient(c) != null && server.GetClient(c).Index == promoteClientID);
+						if (promoteConn == null)
+						{
+							server.SendOrderTo(conn, "Message", "No-one in that slot.");
+							return true;
+						}
+
+						var promoteClient = server.GetClient(promoteConn);
+						client.IsAdmin = false;
+						promoteClient.IsAdmin = true;
+
+						Log.Write("server", "Promoting client {0}.", promoteClientID);
+						server.SendMessage("{0} promoted {1}.".F(client.Name, promoteClient.Name));
+						server.SendOrderTo(promoteConn, "Message", "You have been promoted.");
+
+						server.SyncLobbyClients();
+
+						return true;
+					}
+				},
 				{ "kick",
 					s =>
 					{
