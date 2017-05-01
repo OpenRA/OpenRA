@@ -45,12 +45,12 @@ namespace OpenRA.Traits
 
 	public class PlayerResources : ITick, ISync
 	{
-		readonly PlayerResourcesInfo info;
+		public readonly PlayerResourcesInfo Info;
 		readonly Player owner;
 
 		public PlayerResources(Actor self, PlayerResourcesInfo info)
 		{
-			this.info = info;
+			this.Info = info;
 			owner = self.Owner;
 
 			var startingCash = self.World.LobbyInfo.GlobalSettings
@@ -133,11 +133,11 @@ namespace OpenRA.Traits
 		{
 			if (Cash + Resources < num)
 			{
-				if (notifyLowFunds && !string.IsNullOrEmpty(info.InsufficientFundsNotification) &&
-					owner.World.WorldTick - lastNotificationTick >= info.InsufficientFundsNotificationDelay)
+				if (notifyLowFunds && !string.IsNullOrEmpty(Info.InsufficientFundsNotification) &&
+					owner.World.WorldTick - lastNotificationTick >= Info.InsufficientFundsNotificationDelay)
 				{
 					lastNotificationTick = owner.World.WorldTick;
-					Game.Sound.PlayNotification(owner.World.Map.Rules, owner, "Speech", info.InsufficientFundsNotification, owner.Faction.InternalName);
+					Game.Sound.PlayNotification(owner.World.Map.Rules, owner, "Speech", Info.InsufficientFundsNotification, owner.Faction.InternalName);
 				}
 
 				return false;
