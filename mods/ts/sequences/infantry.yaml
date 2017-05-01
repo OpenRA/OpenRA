@@ -375,6 +375,8 @@ jumpjet:
 		Start: 445
 		Length: 6
 		ShadowStart: 896
+	die-splash: h2o_exp2
+		Length: *
 	die-exploding: s_bang34
 		Length: *
 	die-crushed:
