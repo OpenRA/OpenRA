@@ -96,6 +96,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				costLabel.GetText = () => costString;
 				costLabel.GetColor = () => pr.Cash + pr.Resources >= cost
 					? Color.White : Color.Red;
+				costLabel.IsVisible = () => cost != 0;
+				costIcon.IsVisible = () => cost != 0;
+
+				if (cost == 0)
+				{
+					timeIcon.Bounds.Y = costIcon.Bounds.Y;
+					timeLabel.Bounds.Y = costLabel.Bounds.Y;
+				}
 
 				var descString = buildable.Description.Replace("\\n", "\n");
 				descLabel.GetText = () => descString;
