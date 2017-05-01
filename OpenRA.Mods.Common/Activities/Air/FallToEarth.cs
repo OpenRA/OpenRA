@@ -42,7 +42,7 @@ namespace OpenRA.Mods.Common.Activities
 					info.ExplosionWeapon.Impact(Target.FromPos(self.CenterPosition), self, Enumerable.Empty<int>());
 				}
 
-				self.Dispose();
+				self.Kill(self);
 				return null;
 			}
 

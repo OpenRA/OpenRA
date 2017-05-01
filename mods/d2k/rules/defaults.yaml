@@ -170,6 +170,9 @@
 		Offset: -12, -12
 		RequiresCondition: carryall-reserved
 	RevealOnFire:
+	RevealOnDeath:
+		Duration: 100
+		Radius: 2c512
 
 ^Tank:
 	Inherits: ^Vehicle
@@ -298,6 +301,8 @@
 	Voiced:
 		VoiceSet: InfantryVoice
 	RevealOnFire:
+	RevealOnDeath:
+		Duration: 100
 
 ^Plane:
 	Inherits@1: ^ExistsInWorld
@@ -372,6 +377,9 @@
 		Pieces: 2, 5
 		Range: 1c512, 4c0
 	WithMakeAnimation:
+	RevealOnDeath:
+		Duration: 100
+		Radius: 4c768
 
 ^Defense:
 	Inherits: ^Building

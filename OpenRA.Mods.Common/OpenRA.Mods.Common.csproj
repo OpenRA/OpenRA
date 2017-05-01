@@ -787,6 +787,7 @@
     <Compile Include="UtilityCommands\Utilities.cs" />
     <Compile Include="UtilityCommands\OutputResolvedSequencesCommand.cs" />
     <Compile Include="UtilityCommands\OutputResolvedWeaponsCommand.cs" />
+    <Compile Include="Traits\RevealOnDeath.cs" />
     <Compile Include="Traits\RevealOnFire.cs" />
     <Compile Include="Traits\Conditions\GrantConditionOnDisabled.cs" />
     <Compile Include="Traits\World\ActorMap.cs" />
