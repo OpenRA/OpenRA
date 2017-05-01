@@ -233,7 +233,8 @@ ART2:
 		RealignDelay: -1
 	WithVoxelBarrel:
 		Armament: deployed
-		LocalOffset: 0,0,-362
+		LocalOffset: 203,0,0
+		LocalOrientation: 0, 128, 0
 		RequiresCondition: deployed
 	WithVoxelTurret@deployed:
 		Turret: deployed
@@ -246,7 +247,7 @@ ART2:
 		Name: deployed
 		Turret: deployed
 		Weapon: 155mm
-		LocalOffset: 1147,0,0
+		LocalOffset: 820,0,1386
 		RequiresCondition: deployed
 		MuzzleSequence: muzzle
 		MuzzlePalette: effect-ignore-lighting
