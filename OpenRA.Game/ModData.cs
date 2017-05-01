@@ -49,13 +49,13 @@ namespace OpenRA
 		{
 			Languages = new string[0];
 
-			ModFiles = new FS(mods);
 
 			// Take a local copy of the manifest
 			Manifest = new Manifest(mod.Id, mod.Package);
-			ModFiles.LoadFromManifest(Manifest);
+			ObjectCreator = new ObjectCreator(Manifest, mods);
 
-			ObjectCreator = new ObjectCreator(Manifest, ModFiles);
+			ModFiles = new FS(mods);
+			ModFiles.LoadFromManifest(Manifest);
 			Manifest.LoadCustomData(ObjectCreator);
 
 			if (useLoadScreen)

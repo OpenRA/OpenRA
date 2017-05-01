@@ -297,5 +297,40 @@ namespace OpenRA.FileSystem
 
 			return fileIndex.ContainsKey(filename);
 		}
+
+		/// <summary>
+		/// Resolves a filesystem for an assembly, accounting for explicit and mod mounts.
+		/// Assemblies must exist in the native OS file system (not inside an OpenRA-defined package).
+		/// </summary>
+		public static string ResolveAssemblyPath(string path, Manifest manifest, InstalledMods installedMods)
+		{
+			var explicitSplit = path.IndexOf('|');
+			if (explicitSplit > 0)
+			{
+				var parent = path.Substring(0, explicitSplit);
+				var filename = path.Substring(explicitSplit + 1);
+
+				var parentPath = manifest.Packages.FirstOrDefault(kv => kv.Value == parent).Key;
+				if (parentPath == null)
+					return null;
+
+				if (parentPath.StartsWith("$", StringComparison.Ordinal))
+				{
+					Manifest mod;
+					if (!installedMods.TryGetValue(parentPath.Substring(1), out mod))
+						return null;
+
+					if (!(mod.Package is Folder))
+						return null;
+
+					 path = Path.Combine(mod.Package.Name, filename);
+				}
+				else
+					path = Path.Combine(parentPath, filename);
+			}
+
+			var resolvedPath = Platform.ResolvePath(path);
+			return File.Exists(resolvedPath) ? resolvedPath : null;
+		}
 	}
 }

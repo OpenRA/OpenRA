@@ -27,40 +27,31 @@ namespace OpenRA
 		readonly Cache<string, Type> typeCache;
 		readonly Cache<Type, ConstructorInfo> ctorCache;
 		readonly Pair<Assembly, string>[] assemblies;
-		readonly bool isMonoRuntime = Type.GetType("Mono.Runtime") != null;
 
-		public ObjectCreator(Manifest manifest, FileSystem.FileSystem modFiles)
+		public ObjectCreator(Manifest manifest, InstalledMods mods)
 		{
 			typeCache = new Cache<string, Type>(FindType);
 			ctorCache = new Cache<Type, ConstructorInfo>(GetCtor);
 
 			// Allow mods to load types from the core Game assembly, and any additional assemblies they specify.
+			// Assemblies can only be loaded from directories to avoid circular dependencies on package loaders.
 			var assemblyList = new List<Assembly>() { typeof(Game).Assembly };
 			foreach (var path in manifest.Assemblies)
 			{
-				var data = modFiles.Open(path).ReadAllBytes();
+				var resolvedPath = FileSystem.FileSystem.ResolveAssemblyPath(path, manifest, mods);
+				if (resolvedPath == null)
+					throw new FileNotFoundException("Assembly `{0}` not found.".F(path));
 
 				// .NET doesn't provide any way of querying the metadata of an assembly without either:
 				//   (a) loading duplicate data into the application domain, breaking the world.
 				//   (b) crashing if the assembly has already been loaded.
 				// We can't check the internal name of the assembly, so we'll work off the data instead
-				var hash = CryptoUtil.SHA1Hash(data);
+				var hash = CryptoUtil.SHA1Hash(File.ReadAllBytes(resolvedPath));
 
 				Assembly assembly;
 				if (!ResolvedAssemblies.TryGetValue(hash, out assembly))
 				{
-					Stream symbolStream = null;
-					var hasSymbols = false;
-
-					// Mono has its own symbol format.
-					if (isMonoRuntime)
-						hasSymbols = modFiles.TryOpen(path + ".mdb", out symbolStream);
-
-					// .NET uses .pdb files.
-					else
-						hasSymbols = modFiles.TryOpen(path.Substring(0, path.Length - 4) + ".pdb", out symbolStream);
-
-					assembly = hasSymbols ? Assembly.Load(data, symbolStream.ReadAllBytes()) : Assembly.Load(data);
+					assembly = Assembly.LoadFile(resolvedPath);
 					ResolvedAssemblies.Add(hash, assembly);
 				}
 
