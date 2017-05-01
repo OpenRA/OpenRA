@@ -154,6 +154,21 @@ namespace OpenRA
 				.SelectMany(ma => ma.GetTypes());
 		}
 
+		public TLoader[] GetLoaders<TLoader>(IEnumerable<string> formats, string name)
+		{
+			var loaders = new List<TLoader>();
+			foreach (var format in formats)
+			{
+				var loader = FindType(format + "Loader");
+				if (loader == null || !loader.GetInterfaces().Contains(typeof(TLoader)))
+					throw new InvalidOperationException("Unable to find a {0} loader for type '{1}'.".F(name, format));
+
+				loaders.Add((TLoader)CreateBasic(loader));
+			}
+
+			return loaders.ToArray();
+		}
+
 		~ObjectCreator()
 		{
 			Dispose(false);

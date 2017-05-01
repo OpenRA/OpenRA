@@ -68,8 +68,8 @@ namespace OpenRA
 			WidgetLoader = new WidgetLoader(this);
 			MapCache = new MapCache(this);
 
-			SoundLoaders = GetLoaders<ISoundLoader>(Manifest.SoundFormats, "sound");
-			SpriteLoaders = GetLoaders<ISpriteLoader>(Manifest.SpriteFormats, "sprite");
+			SoundLoaders = ObjectCreator.GetLoaders<ISoundLoader>(Manifest.SoundFormats, "sound");
+			SpriteLoaders = ObjectCreator.GetLoaders<ISpriteLoader>(Manifest.SpriteFormats, "sprite");
 
 			var sequenceFormat = Manifest.Get<SpriteSequenceFormat>();
 			var sequenceLoader = ObjectCreator.FindType(sequenceFormat.Type + "Loader");
@@ -127,21 +127,6 @@ namespace OpenRA
 			VoxelLoader = new VoxelLoader(fileSystem);
 
 			CursorProvider = new CursorProvider(this);
-		}
-
-		TLoader[] GetLoaders<TLoader>(IEnumerable<string> formats, string name)
-		{
-			var loaders = new List<TLoader>();
-			foreach (var format in formats)
-			{
-				var loader = ObjectCreator.FindType(format + "Loader");
-				if (loader == null || !loader.GetInterfaces().Contains(typeof(TLoader)))
-					throw new InvalidOperationException("Unable to find a {0} loader for type '{1}'.".F(name, format));
-
-				loaders.Add((TLoader)ObjectCreator.CreateBasic(loader));
-			}
-
-			return loaders.ToArray();
 		}
 
 		public IEnumerable<string> Languages { get; private set; }
