@@ -27,11 +27,15 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class CombatDebugOverlay : IRenderAboveWorld, INotifyDamage, INotifyCreated
 	{
+		static readonly WVec TargetPosHLine = new WVec(0, 128, 0);
+		static readonly WVec TargetPosVLine = new WVec(128, 0, 0);
+
 		readonly DeveloperMode devMode;
 		readonly HealthInfo healthInfo;
 		readonly Lazy<BodyOrientation> coords;
 
 		IBlocksProjectiles[] allBlockers;
+		ITargetablePositions[] targetablePositions;
 
 		public CombatDebugOverlay(Actor self)
 		{
@@ -45,6 +49,7 @@ namespace OpenRA.Mods.Common.Traits
 		void INotifyCreated.Created(Actor self)
 		{
 			allBlockers = self.TraitsImplementing<IBlocksProjectiles>().ToArray();
+			targetablePositions = self.TraitsImplementing<ITargetablePositions>().ToArray();
 		}
 
 		void IRenderAboveWorld.RenderAboveWorld(Actor self, WorldRenderer wr)
@@ -68,6 +73,17 @@ namespace OpenRA.Mods.Common.Traits
 				wcr.DrawLine(ha, hb, iz, hc);
 				TargetLineRenderable.DrawTargetMarker(wr, hc, ha);
 				TargetLineRenderable.DrawTargetMarker(wr, hc, hb);
+			}
+
+			var tc = Color.Lime;
+			var enabledPositions = targetablePositions.Where(Exts.IsTraitEnabled);
+			var positions = enabledPositions.SelectMany(tp => tp.TargetablePositions(self));
+			foreach (var p in positions)
+			{
+				var center = wr.Screen3DPosition(p);
+				TargetLineRenderable.DrawTargetMarker(wr, tc, center);
+				wcr.DrawLine(wr.Screen3DPosition(p - TargetPosHLine), wr.Screen3DPosition(p + TargetPosHLine), iz, tc);
+				wcr.DrawLine(wr.Screen3DPosition(p - TargetPosVLine), wr.Screen3DPosition(p + TargetPosVLine), iz, tc);
 			}
 
 			foreach (var attack in self.TraitsImplementing<AttackBase>().Where(x => !x.IsTraitDisabled))
