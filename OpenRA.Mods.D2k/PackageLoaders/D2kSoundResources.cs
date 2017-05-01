@@ -12,8 +12,9 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using OpenRA.FileSystem;
 
-namespace OpenRA.FileSystem
+namespace OpenRA.Mods.D2k.PackageLoaders
 {
 	public class D2kSoundResourcesLoader : IPackageLoader
 	{
@@ -70,7 +71,7 @@ namespace OpenRA.FileSystem
 				return new MemoryStream(s.ReadBytes((int)e.Length));
 			}
 
-			public IReadOnlyPackage OpenPackage(string filename, FileSystem context)
+			public IReadOnlyPackage OpenPackage(string filename, FileSystem.FileSystem context)
 			{
 				// Not implemented
 				return null;
@@ -87,7 +88,7 @@ namespace OpenRA.FileSystem
 			}
 		}
 
-		bool IPackageLoader.TryParsePackage(Stream s, string filename, FileSystem context, out IReadOnlyPackage package)
+		bool IPackageLoader.TryParsePackage(Stream s, string filename, FileSystem.FileSystem context, out IReadOnlyPackage package)
 		{
 			if (!filename.EndsWith(".rs", StringComparison.InvariantCultureIgnoreCase))
 			{

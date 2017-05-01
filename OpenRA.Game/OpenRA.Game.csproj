@@ -261,7 +261,6 @@
     <Compile Include="ExternalMods.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FileSystem\D2kSoundResources.cs" />
     <Compile Include="FileSystem\Folder.cs" />
     <Compile Include="FileSystem\InstallShieldPackage.cs" />
     <Compile Include="FileSystem\MixFile.cs" />

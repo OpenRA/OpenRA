@@ -87,6 +87,7 @@
     <Compile Include="UtilityCommands\ImportD2kMapCommand.cs" />
     <Compile Include="Traits\World\D2kEditorResourceLayer.cs" />
     <Compile Include="Lint\CheckImportActors.cs" />
+    <Compile Include="PackageLoaders\D2kSoundResources.cs" />
   </ItemGroup>
   <PropertyGroup>
     <PostBuildEvent>mkdir "$(SolutionDir)mods/d2k/"
