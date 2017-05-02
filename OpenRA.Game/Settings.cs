@@ -332,18 +332,23 @@ namespace OpenRA
 
 	public class Settings
 	{
-		string settingsFile;
+		readonly string settingsFile;
 
-		public PlayerSettings Player = new PlayerSettings();
-		public GameSettings Game = new GameSettings();
-		public SoundSettings Sound = new SoundSettings();
-		public GraphicSettings Graphics = new GraphicSettings();
-		public ServerSettings Server = new ServerSettings();
-		public DebugSettings Debug = new DebugSettings();
-		public KeySettings Keys = new KeySettings();
-		public ChatSettings Chat = new ChatSettings();
+		public readonly PlayerSettings Player = new PlayerSettings();
+		public readonly GameSettings Game = new GameSettings();
+		public readonly SoundSettings Sound = new SoundSettings();
+		public readonly GraphicSettings Graphics = new GraphicSettings();
+		public readonly ServerSettings Server = new ServerSettings();
+		public readonly DebugSettings Debug = new DebugSettings();
+		public readonly KeySettings Keys = new KeySettings();
+		public readonly ChatSettings Chat = new ChatSettings();
 
-		public Dictionary<string, object> Sections;
+		public readonly Dictionary<string, object> Sections;
+
+		// A direct clone of the file loaded from disk.
+		// Any changed settings will be merged over this on save,
+		// allowing us to persist any unknown configuration keys
+		readonly List<MiniYamlNode> yamlCache = new List<MiniYamlNode>();
 
 		public Settings(string file, Arguments args)
 		{
@@ -369,11 +374,13 @@ namespace OpenRA
 
 				if (File.Exists(settingsFile))
 				{
-					var yaml = MiniYaml.DictFromFile(settingsFile);
-
-					foreach (var kv in Sections)
-						if (yaml.ContainsKey(kv.Key))
-							LoadSectionYaml(yaml[kv.Key], kv.Value);
+					yamlCache = MiniYaml.FromFile(settingsFile);
+					foreach (var yamlSection in yamlCache)
+					{
+						object settingsSection;
+						if (Sections.TryGetValue(yamlSection.Key, out settingsSection))
+							LoadSectionYaml(yamlSection.Value, settingsSection);
+					}
 				}
 
 				// Override with commandline args
@@ -391,11 +398,39 @@ namespace OpenRA
 
 		public void Save()
 		{
-			var root = new List<MiniYamlNode>();
 			foreach (var kv in Sections)
-				root.Add(new MiniYamlNode(kv.Key, FieldSaver.SaveDifferences(kv.Value, Activator.CreateInstance(kv.Value.GetType()))));
+			{
+				var sectionYaml = yamlCache.FirstOrDefault(x => x.Key == kv.Key);
+				if (sectionYaml == null)
+				{
+					sectionYaml = new MiniYamlNode(kv.Key, new MiniYaml(""));
+					yamlCache.Add(sectionYaml);
+				}
 
-			root.WriteToFile(settingsFile);
+				var defaultValues = Activator.CreateInstance(kv.Value.GetType());
+				var fields = FieldLoader.GetTypeLoadInfo(kv.Value.GetType());
+				foreach (var fli in fields)
+				{
+					var serialized = FieldSaver.FormatValue(kv.Value, fli.Field);
+					var defaultSerialized = FieldSaver.FormatValue(defaultValues, fli.Field);
+
+					// Fields with their default value are not saved in the settings yaml
+					// Make sure that we erase any previously defined custom values
+					if (serialized == defaultSerialized)
+						sectionYaml.Value.Nodes.RemoveAll(n => n.Key == fli.YamlName);
+					else
+					{
+						// Update or add the custom value
+						var fieldYaml = sectionYaml.Value.Nodes.FirstOrDefault(n => n.Key == fli.YamlName);
+						if (fieldYaml != null)
+							fieldYaml.Value.Value = serialized;
+						else
+							sectionYaml.Value.Nodes.Add(new MiniYamlNode(fli.YamlName, new MiniYaml(serialized)));
+					}
+				}
+			}
+
+			yamlCache.WriteToFile(settingsFile);
 		}
 
 		static string SanitizedName(string dirty)
