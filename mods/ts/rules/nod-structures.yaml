@@ -1,5 +1,6 @@
 NAPOWR:
 	Inherits: ^Building
+	Inherits@IDISABLE: ^DisabledOverlay
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 20
@@ -33,12 +34,12 @@ NAPOWR:
 		TargetTypes: Ground, C4, DetonateAttack, SpyInfiltrate
 	ScalePowerWithHealth:
 	PowerTooltip:
-	DisabledOverlay:
 	SelectionDecorations:
 		VisualBounds: 88, 80, 2, -12
 
 NAAPWR:
 	Inherits: ^Building
+	Inherits@IDISABLE: ^DisabledOverlay
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 120
@@ -71,7 +72,6 @@ NAAPWR:
 	Targetable:
 		TargetTypes: Ground, C4, DetonateAttack, SpyInfiltrate
 	ScalePowerWithHealth:
-	DisabledOverlay:
 	PowerTooltip:
 	SelectionDecorations:
 		VisualBounds: 100, 74, 0, -12
@@ -222,6 +222,7 @@ NAHPAD:
 		PrimaryCondition: primary
 	Reservable:
 	RepairsUnits:
+		PauseOnCondition: empdisable
 		PlayerExperience: 15
 	ProductionBar:
 	WithIdleOverlay@PLATFORM:

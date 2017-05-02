@@ -111,6 +111,8 @@ construction_yard:
 		ReferencePoint: Top
 		ZOffset: 256
 		RequiresCondition: primary
+	RevealOnDeath:
+		Radius: 5c768
 
 wind_trap:
 	Inherits: ^Building
@@ -149,6 +151,8 @@ wind_trap:
 		Amount: 200
 	ScalePowerWithHealth:
 	ProvidesPrerequisite@buildingname:
+	RevealOnDeath:
+		Radius: 3c768
 
 barracks:
 	Inherits: ^Building
@@ -223,6 +227,8 @@ barracks:
 		ReferencePoint: Top
 		ZOffset: 256
 		RequiresCondition: primary
+	RevealOnDeath:
+		Radius: 3c768
 
 refinery:
 	Inherits: ^Building
@@ -325,6 +331,8 @@ silo:
 		Weapons: Debris, Debris2, Debris3, Debris4
 		Pieces: 3, 5
 		Range: 2c0, 5c0
+	RevealOnDeath:
+		Radius: 2c768
 
 light_factory:
 	Inherits: ^Building
@@ -486,11 +494,11 @@ heavy_factory:
 
 outpost:
 	Inherits: ^Building
+	Inherits@IDISABLE: ^DisabledOverlay
 	RequiresPower:
 	CanPowerDown:
 		PowerupSound: EnablePower
 		PowerdownSound: DisablePower
-	DisabledOverlay:
 	Buildable:
 		Prerequisites: barracks, ~techlevel.medium
 		Queue: Building
@@ -533,11 +541,10 @@ outpost:
 	Power:
 		Amount: -125
 	ProvidesPrerequisite@buildingname:
-	GrantConditionOnDisabled@IDISABLE:
-		Condition: disabled
 
 starport:
 	Inherits: ^Building
+	Inherits@IDISABLE: ^DisabledOverlay
 	Tooltip:
 		Name: Starport
 	Buildable:
@@ -583,7 +590,6 @@ starport:
 	ProductionBar:
 	PrimaryBuilding:
 		PrimaryCondition: primary
-	DisabledOverlay:
 	ProvidesPrerequisite@atreides:
 		Prerequisite: starport.atreides
 		Factions: atreides
@@ -702,6 +708,7 @@ medium_gun_turret:
 
 large_gun_turret:
 	Inherits: ^Defense
+	Inherits@IDISABLE: ^DisabledOverlay
 	Buildable:
 		Queue: Building
 		Prerequisites: outpost, upgrade.conyard, ~techlevel.medium
@@ -739,11 +746,12 @@ large_gun_turret:
 	CanPowerDown:
 		PowerupSound: EnablePower
 		PowerdownSound: DisablePower
-	DisabledOverlay:
 	Power:
 		Amount: -60
 	SelectionDecorations:
 		VisualBounds: 32,40,0,-8
+	RevealOnDeath:
+		Radius: 5c768
 
 repair_pad:
 	Inherits: ^Building
@@ -905,6 +913,7 @@ research_centre:
 
 palace:
 	Inherits: ^Building
+	Inherits@IDISABLE: ^DisabledOverlay
 	Buildable:
 		Prerequisites: research_centre, ~techlevel.high
 		Queue: Building
@@ -1002,7 +1011,6 @@ palace:
 	CanPowerDown:
 		PowerupSound: EnablePower
 		PowerdownSound: DisablePower
-	DisabledOverlay:
 	RequiresPower:
 	SupportPowerChargeBar:
 	ProvidesPrerequisite@buildingname:

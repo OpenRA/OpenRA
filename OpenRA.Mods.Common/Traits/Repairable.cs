@@ -105,7 +105,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void AfterReachActivities(Actor self, Order order, IMove movement)
 		{
-			if (!order.TargetActor.IsInWorld || order.TargetActor.IsDead || order.TargetActor.IsDisabled())
+			if (!order.TargetActor.IsInWorld || order.TargetActor.IsDead || order.TargetActor.TraitsImplementing<RepairsUnits>().All(r => r.IsTraitDisabled))
 				return;
 
 			// TODO: This is hacky, but almost every single component affected

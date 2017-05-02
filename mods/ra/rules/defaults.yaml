@@ -786,7 +786,8 @@
 		CaptureThreshold: 100
 	TransformOnCapture:
 		ForceHealthPercentage: 25
-	DisabledOverlay:
+	WithColoredOverlay@IDISABLE:
+		Palette: disabled
 	Targetable:
 		TargetTypes: Ground, Husk
 		RequiresForceFire: true
@@ -925,3 +926,10 @@
 		TargetTypes: Ground
 	Immobile:
 		OccupiesSpace: true
+
+^DisabledOverlay:
+	WithColoredOverlay@IDISABLE:
+		RequiresCondition: disabled
+		Palette: disabled
+	GrantConditionOnDisabled@IDISABLE:
+		Condition: disabled

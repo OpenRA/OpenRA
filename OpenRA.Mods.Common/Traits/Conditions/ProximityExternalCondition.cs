@@ -16,7 +16,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Applies a condition to actors within a specified range.")]
-	public class ProximityExternalConditionInfo : ITraitInfo
+	public class ProximityExternalConditionInfo : ConditionalTraitInfo
 	{
 		[FieldLoader.Require]
 		[Desc("The condition to apply. Must be included in the target actor's ExternalConditions list.")]
@@ -38,12 +38,11 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string EnableSound = null;
 		public readonly string DisableSound = null;
 
-		public object Create(ActorInitializer init) { return new ProximityExternalCondition(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new ProximityExternalCondition(init.Self, this); }
 	}
 
-	public class ProximityExternalCondition : ITick, INotifyAddedToWorld, INotifyRemovedFromWorld, INotifyOtherProduction
+	public class ProximityExternalCondition : ConditionalTrait<ProximityExternalConditionInfo>, ITick, INotifyAddedToWorld, INotifyRemovedFromWorld, INotifyOtherProduction
 	{
-		readonly ProximityExternalConditionInfo info;
 		readonly Actor self;
 
 		readonly Dictionary<Actor, int> tokens = new Dictionary<Actor, int>();
@@ -55,14 +54,12 @@ namespace OpenRA.Mods.Common.Traits
 		WDist cachedVRange;
 		WDist desiredVRange;
 
-		bool cachedDisabled = true;
-
 		public ProximityExternalCondition(Actor self, ProximityExternalConditionInfo info)
+			: base(info)
 		{
-			this.info = info;
 			this.self = self;
-			cachedRange = info.Range;
-			cachedVRange = info.MaximumVerticalOffset;
+			cachedRange = WDist.Zero;
+			cachedVRange = WDist.Zero;
 		}
 
 		public void AddedToWorld(Actor self)
@@ -76,18 +73,22 @@ namespace OpenRA.Mods.Common.Traits
 			self.World.ActorMap.RemoveProximityTrigger(proximityTrigger);
 		}
 
+		protected override void TraitEnabled(Actor self)
+		{
+			Game.Sound.Play(SoundType.World, Info.EnableSound, self.CenterPosition);
+			desiredRange = Info.Range;
+			desiredVRange = Info.MaximumVerticalOffset;
+		}
+
+		protected override void TraitDisabled(Actor self)
+		{
+			Game.Sound.Play(SoundType.World, Info.DisableSound, self.CenterPosition);
+			desiredRange = WDist.Zero;
+			desiredVRange = WDist.Zero;
+		}
+
 		public void Tick(Actor self)
 		{
-			var disabled = self.IsDisabled();
-
-			if (cachedDisabled != disabled)
-			{
-				Game.Sound.Play(SoundType.World, disabled ? info.DisableSound : info.EnableSound, self.CenterPosition);
-				desiredRange = disabled ? WDist.Zero : info.Range;
-				desiredVRange = disabled ? WDist.Zero : info.MaximumVerticalOffset;
-				cachedDisabled = disabled;
-			}
-
 			if (self.CenterPosition != cachedPosition || desiredRange != cachedRange || desiredVRange != cachedVRange)
 			{
 				cachedPosition = self.CenterPosition;
@@ -102,18 +103,18 @@ namespace OpenRA.Mods.Common.Traits
 			if (a.Disposed || self.Disposed)
 				return;
 
-			if (a == self && !info.AffectsParent)
+			if (a == self && !Info.AffectsParent)
 				return;
 
 			if (tokens.ContainsKey(a))
 				return;
 
 			var stance = self.Owner.Stances[a.Owner];
-			if (!info.ValidStances.HasStance(stance))
+			if (!Info.ValidStances.HasStance(stance))
 				return;
 
 			var external = a.TraitsImplementing<ExternalCondition>()
-				.FirstOrDefault(t => t.Info.Condition == info.Condition && t.CanGrantCondition(a, self));
+				.FirstOrDefault(t => t.Info.Condition == Info.Condition && t.CanGrantCondition(a, self));
 
 			if (external != null)
 				tokens[a] = external.GrantCondition(a, self);
@@ -126,18 +127,18 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			// We don't grant conditions when disabled
-			if (self.IsDisabled())
+			if (IsTraitDisabled)
 				return;
 
 			// Work around for actors produced within the region not triggering until the second tick
-			if ((produced.CenterPosition - self.CenterPosition).HorizontalLengthSquared <= info.Range.LengthSquared)
+			if ((produced.CenterPosition - self.CenterPosition).HorizontalLengthSquared <= Info.Range.LengthSquared)
 			{
 				var stance = self.Owner.Stances[produced.Owner];
-				if (!info.ValidStances.HasStance(stance))
+				if (!Info.ValidStances.HasStance(stance))
 					return;
 
 				var external = produced.TraitsImplementing<ExternalCondition>()
-					.FirstOrDefault(t => t.Info.Condition == info.Condition && t.CanGrantCondition(produced, self));
+					.FirstOrDefault(t => t.Info.Condition == Info.Condition && t.CanGrantCondition(produced, self));
 
 				if (external != null)
 					tokens[produced] = external.GrantCondition(produced, self);

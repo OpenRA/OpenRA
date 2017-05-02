@@ -148,6 +148,7 @@ NAFNCE:
 
 NALASR:
 	Inherits: ^Defense
+	Inherits@IDISABLE: ^DisabledOverlay
 	Valued:
 		Cost: 300
 	Tooltip:
@@ -160,7 +161,6 @@ NALASR:
 	Building:
 	Selectable:
 		Bounds: 40, 30, -8, -6
-	DisabledOverlay:
 	Health:
 		HP: 500
 	Armor:
@@ -188,6 +188,7 @@ NALASR:
 
 NAOBEL:
 	Inherits: ^Defense
+	Inherits@IDISABLE: ^DisabledOverlay
 	Valued:
 		Cost: 1500
 	Tooltip:
@@ -203,7 +204,6 @@ NAOBEL:
 	Selectable:
 		Bounds: 88, 42, 0, -6
 	RequiresPower:
-	DisabledOverlay:
 	Health:
 		HP: 725
 	Armor:
@@ -232,6 +232,7 @@ NAOBEL:
 
 NASAM:
 	Inherits: ^Defense
+	Inherits@IDISABLE: ^DisabledOverlay
 	Valued:
 		Cost: 500
 	Tooltip:
@@ -244,7 +245,6 @@ NASAM:
 	Selectable:
 		Bounds: 40, 30, -3, -8
 	RequiresPower:
-	DisabledOverlay:
 	Health:
 		HP: 600
 	Armor:
@@ -301,7 +301,10 @@ NASTLH:
 		PowerupSpeech: EnablePower
 		PowerdownSpeech: DisablePower
 		IndicatorPalette: mouse
+	GrantConditionOnDisabled:
+		Condition: disabled
 	ProximityExternalCondition:
+		RequiresCondition: !disabled
 		Condition: cloakgenerator
 		Range: 12c0
 		EnableSound: cloak5.aud
@@ -314,6 +317,7 @@ NASTLH:
 
 NAMISL:
 	Inherits: ^Building
+	Inherits@IDISABLE: ^DisabledOverlay
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 180
@@ -346,7 +350,6 @@ NAMISL:
 		PowerupSpeech: EnablePower
 		PowerdownSpeech: DisablePower
 	RequiresPower:
-	DisabledOverlay:
 	ProvidesPrerequisite@buildingname:
 	SupportPowerChargeBar:
 	NukePower:
