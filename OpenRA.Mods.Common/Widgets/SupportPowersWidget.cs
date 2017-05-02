@@ -15,6 +15,7 @@ using System.Drawing;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Traits;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets
@@ -194,7 +195,8 @@ namespace OpenRA.Mods.Common.Widgets
 				return;
 
 			tooltipContainer.Value.SetTooltip(TooltipTemplate,
-				new WidgetArgs() { { "world", worldRenderer.World }, { "palette", this } });
+				new WidgetArgs() { { "world", worldRenderer.World }, { "palette", this },
+				{ "playerResources", worldRenderer.World.LocalPlayer.PlayerActor.Trait<PlayerResources>() } });
 		}
 
 		public override void MouseExited()

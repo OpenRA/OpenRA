@@ -135,6 +135,12 @@ Background@SUPPORT_POWER_TOOLTIP:
 			Y: 20
 			Font: TinyBold
 			VAlign: Top
+		Label@COST:
+			X: 5
+			Y: 6
+			Font: TinyBold
+			VAlign: Top
+			Text: $
 
 Background@SPAWN_TOOLTIP:
 	Logic: SpawnSelectorTooltipLogic

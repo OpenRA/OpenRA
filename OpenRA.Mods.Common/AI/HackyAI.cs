@@ -1005,6 +1005,14 @@ namespace OpenRA.Mods.Common.AI
 						continue;
 					}
 
+					if (sp.Info.Cost != 0 && playerResource.Cash + playerResource.Resources < sp.Info.Cost)
+					{
+						BotDebug("AI: {1} can't afford the activation of support power {0}. Delaying rescan.", sp.Info.OrderName, Player.PlayerName);
+						waitingPowers[sp] += powerDecision.GetNextScanTime(this);
+
+						continue;
+					}
+
 					var attackLocation = FindCoarseAttackLocationToSupportPower(sp);
 					if (attackLocation == null)
 					{
