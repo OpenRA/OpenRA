@@ -231,11 +231,6 @@ namespace OpenRA
 			return ret;
 		}
 
-		public static Dictionary<string, MiniYaml> DictFromFile(string path)
-		{
-			return FromFile(path).ToDictionary(x => x.Key, x => x.Value);
-		}
-
 		public static Dictionary<string, MiniYaml> DictFromStream(Stream stream, string fileName = "<no filename available>")
 		{
 			return FromStream(stream, fileName).ToDictionary(x => x.Key, x => x.Value);
