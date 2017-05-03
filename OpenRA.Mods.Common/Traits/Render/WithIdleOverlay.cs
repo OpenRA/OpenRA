@@ -20,11 +20,14 @@ namespace OpenRA.Mods.Common.Traits.Render
 	[Desc("Renders a decorative animation on units and buildings.")]
 	public class WithIdleOverlayInfo : ConditionalTraitInfo, IRenderActorPreviewSpritesInfo, Requires<RenderSpritesInfo>, Requires<BodyOrientationInfo>
 	{
+		[Desc("Image name to use, if null, it falls back to default.")]
+		public readonly string Image = null;
+
 		[Desc("Animation to play when the actor is created.")]
-		[SequenceReference] public readonly string StartSequence = null;
+		[SequenceReference("Image")] public readonly string StartSequence = null;
 
 		[Desc("Sequence name to use")]
-		[SequenceReference] public readonly string Sequence = "idle-overlay";
+		[SequenceReference("Image")] public readonly string Sequence = "idle-overlay";
 
 		[Desc("Position relative to body")]
 		public readonly WVec Offset = WVec.Zero;
@@ -47,6 +50,8 @@ namespace OpenRA.Mods.Common.Traits.Render
 			if (Palette != null)
 				p = init.WorldRenderer.Palette(Palette);
 
+			var idleImage = Image != null ? Image : image;
+
 			Func<int> facing;
 			if (init.Contains<DynamicFacingInit>())
 				facing = init.Get<DynamicFacingInit, Func<int>>();
@@ -56,7 +61,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 				facing = () => f;
 			}
 
-			var anim = new Animation(init.World, image, facing);
+			var anim = new Animation(init.World, idleImage, facing);
 			anim.PlayRepeating(RenderSprites.NormalizeSequence(anim, init.GetDamageState(), Sequence));
 
 			var body = init.Actor.TraitInfo<BodyOrientationInfo>();
@@ -83,8 +88,10 @@ namespace OpenRA.Mods.Common.Traits.Render
 			var rs = self.Trait<RenderSprites>();
 			var body = self.Trait<BodyOrientation>();
 
+			var image = info.Image != null ? info.Image : rs.GetImage(self);
+
 			buildComplete = !self.Info.HasTraitInfo<BuildingInfo>(); // always render instantly for units
-			overlay = new Animation(self.World, rs.GetImage(self),
+			overlay = new Animation(self.World, image,
 				() => (info.PauseOnLowPower && self.IsDisabled()) || !buildComplete);
 			if (info.StartSequence != null)
 				overlay.PlayThen(RenderSprites.NormalizeSequence(overlay, self.GetDamageState(), info.StartSequence),
