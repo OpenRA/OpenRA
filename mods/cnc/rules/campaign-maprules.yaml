@@ -49,3 +49,7 @@ airstrike.proxy:
 		ArrowSequence: arrow
 		ClockSequence: clock
 		CircleSequence: circles
+
+TDTRUK:
+	Buildable:
+		Prerequisites: ~disabled

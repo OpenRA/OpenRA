@@ -242,6 +242,7 @@ SILO:
 		RequiredForShortGame: false
 	SelectionDecorations:
 		VisualBounds: 49,30
+	-AcceptsDeliveredCash:
 
 PYLE:
 	Inherits: ^BaseBuilding

@@ -670,6 +670,7 @@
 	EditorTilesetFilter:
 		Categories: Building
 	CommandBarBlacklist:
+	AcceptsDeliveredCash:
 
 ^BaseBuilding:
 	Inherits: ^Building
@@ -1002,6 +1003,7 @@
 	EditorTilesetFilter:
 		Categories: Defense
 	-CommandBarBlacklist:
+	-AcceptsDeliveredCash:
 
 ^DisabledOverlay:
 	WithColoredOverlay@IDISABLE:
