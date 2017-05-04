@@ -125,12 +125,12 @@ Container@LOBBY_PLAYER_BIN:
 									Width: 60
 									Height: 25
 									Text: Faction
-						DropDownButton@TEAM:
+						DropDownButton@TEAM_DROPDOWN:
 							X: 410
 							Width: 48
 							Height: 25
 							Text: Team
-						DropDownButton@SPAWN:
+						DropDownButton@SPAWN_DROPDOWN:
 							X: 468
 							Width: 48
 							Height: 25
@@ -220,6 +220,16 @@ Container@LOBBY_PLAYER_BIN:
 							Width: 23
 							Height: 25
 							Align: Center
+						DropDownButton@TEAM_DROPDOWN:
+							X: 410
+							Width: 48
+							Height: 25
+							Visible: false
+						DropDownButton@SPAWN_DROPDOWN:
+							X: 468
+							Width: 48
+							Height: 25
+							Visible: false
 						Image@STATUS_IMAGE:
 							X: 527
 							Y: 4
