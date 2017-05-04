@@ -728,6 +728,20 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				// Optimal victim scan radii are now calculated automatically
+				if (engineVersion < 20170505)
+				{
+					var targetExtraSearchRadius = node.Value.Nodes.FirstOrDefault(n => n.Key == "TargetSearchRadius" || n.Key == "TargetExtraSearchRadius");
+					if (targetExtraSearchRadius != null)
+					{
+						Console.WriteLine("Warheads and projectiles now calculate the best victim search radius automatically.");
+						Console.WriteLine("If you absolutely need to override that for whatever reason, use the new fields:");
+						Console.WriteLine("VictimScanRadius for warheads, BlockerScanRadius for projectiles,");
+						Console.WriteLine("BounceBlockerScanRadius for bouncing Bullets and AreaVictimScanRadius for AreaBeams.");
+						node.Value.Nodes.Remove(targetExtraSearchRadius);
+					}
+				}
+
 				UpgradeWeaponRules(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}
