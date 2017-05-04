@@ -39,6 +39,15 @@ namespace OpenRA.Mods.Common.Traits
 	}
 
 	[RequireExplicitImplementation]
+	public interface IBlocksProjectiles
+	{
+		WDist BlockingHeight { get; }
+	}
+
+	[RequireExplicitImplementation]
+	public interface IBlocksProjectilesInfo : ITraitInfoInterface { }
+
+	[RequireExplicitImplementation]
 	public interface INotifySold
 	{
 		void Selling(Actor self);
