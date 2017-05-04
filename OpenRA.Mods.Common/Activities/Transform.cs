@@ -12,7 +12,9 @@
 using System.Linq;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Mods.Common.Traits.Render;
 using OpenRA.Primitives;
+using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Activities
 {
@@ -32,11 +34,61 @@ namespace OpenRA.Mods.Common.Activities
 			ToActor = toActor;
 		}
 
+		protected override void OnFirstRun(Actor self)
+		{
+			if (self.Info.HasTraitInfo<IFacingInfo>())
+				QueueChild(new Turn(self, Facing));
+
+			if (self.Info.HasTraitInfo<AircraftInfo>())
+				QueueChild(new HeliLand(self, true));
+		}
+
 		public override Activity Tick(Actor self)
 		{
 			if (IsCanceled)
 				return NextActivity;
 
+			if (ChildActivity != null)
+			{
+				ActivityUtils.RunActivity(self, ChildActivity);
+				return this;
+			}
+
+			// Prevent deployment in bogus locations
+			var transforms = self.TraitOrDefault<Transforms>();
+			var building = self.TraitOrDefault<Building>();
+			if ((transforms != null && !transforms.CanDeploy()) || (building != null && !building.Lock()))
+			{
+				Cancel(self, true);
+				return NextActivity;
+			}
+
+			foreach (var nt in self.TraitsImplementing<INotifyTransform>())
+				nt.BeforeTransform(self);
+
+			var makeAnimation = self.TraitOrDefault<WithMakeAnimation>();
+			if (makeAnimation != null)
+			{
+				// Once the make animation starts the activity must not be stopped anymore.
+				IsInterruptible = false;
+
+				// Wait forever
+				QueueChild(new WaitFor(() => false));
+				makeAnimation.Reverse(self, () => DoTransform(self));
+				return this;
+			}
+
+			return NextActivity;
+		}
+
+		protected override void OnLastRun(Actor self)
+		{
+			if (!IsCanceled)
+				DoTransform(self);
+		}
+
+		void DoTransform(Actor self)
+		{
 			self.World.AddFrameEndTask(w =>
 			{
 				if (self.IsDead)
@@ -84,11 +136,10 @@ namespace OpenRA.Mods.Common.Activities
 
 				if (selected)
 					w.Selection.Add(w, a);
+
 				if (controlgroup.HasValue)
 					w.Selection.AddToControlGroup(a, controlgroup.Value);
 			});
-
-			return this;
 		}
 	}
 }

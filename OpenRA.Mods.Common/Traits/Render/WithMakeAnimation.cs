@@ -51,7 +51,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 				Forward(self, () => building.NotifyBuildingComplete(self));
 		}
 
-		void Forward(Actor self, Action onComplete)
+		public void Forward(Actor self, Action onComplete)
 		{
 			if (conditionManager != null && !string.IsNullOrEmpty(info.Condition) && token == ConditionManager.InvalidConditionToken)
 				token = conditionManager.GrantCondition(self, info.Condition);
@@ -66,7 +66,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			});
 		}
 
-		void Reverse(Actor self, Action onComplete)
+		public void Reverse(Actor self, Action onComplete)
 		{
 			if (conditionManager != null && !string.IsNullOrEmpty(info.Condition) && token == ConditionManager.InvalidConditionToken)
 				token = conditionManager.GrantCondition(self, info.Condition);
