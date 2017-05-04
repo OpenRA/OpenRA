@@ -33,10 +33,9 @@ namespace OpenRA.Mods.Common.HitShapes
 		[Desc("Defines the bottom offset relative to the actor's target point.")]
 		public readonly int VerticalBottomOffset = 0;
 
-		// This is just a temporary work-around until we have a customizable PolygonShape
-		[Desc("Rotates shape by 90 degree relative to actor facing. Mostly required for buildings on isometric terrain.",
+		[Desc("Rotates shape by an angle relative to actor facing. Mostly required for buildings on isometric terrain.",
 			"Mobile actors do NOT need this!")]
-		public readonly bool RotateToIsometry = false;
+		public readonly WAngle LocalYaw = WAngle.Zero;
 
 		// This is just a temporary work-around until we have a customizable PolygonShape
 		[Desc("Applies shape to every TargetablePosition instead of just CenterPosition.")]
@@ -98,8 +97,7 @@ namespace OpenRA.Mods.Common.HitShapes
 		public WDist DistanceFromEdge(WPos pos, Actor actor)
 		{
 			var actorPos = actor.CenterPosition;
-			var orientation = new WRot(actor.Orientation.Roll, actor.Orientation.Pitch,
-				new WAngle(actor.Orientation.Yaw.Angle + (RotateToIsometry ? 128 : 0)));
+			var orientation = actor.Orientation + WRot.FromYaw(LocalYaw);
 
 			var targetablePositions = actor.TraitsImplementing<ITargetablePositions>();
 			if (ApplyToAllTargetablePositions && targetablePositions.Any())
@@ -120,8 +118,7 @@ namespace OpenRA.Mods.Common.HitShapes
 		public void DrawCombatOverlay(WorldRenderer wr, RgbaColorRenderer wcr, Actor actor)
 		{
 			var actorPos = actor.CenterPosition;
-			var orientation = new WRot(actor.Orientation.Roll, actor.Orientation.Pitch,
-				new WAngle(actor.Orientation.Yaw.Angle + (RotateToIsometry ? 128 : 0)));
+			var orientation = actor.Orientation + WRot.FromYaw(LocalYaw);
 
 			var targetablePositions = actor.TraitsImplementing<ITargetablePositions>();
 			if (ApplyToAllTargetablePositions && targetablePositions.Any())

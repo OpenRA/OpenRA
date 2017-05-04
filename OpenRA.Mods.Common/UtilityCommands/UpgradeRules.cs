@@ -651,6 +651,18 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				// Refactor Rectangle shape RotateToIsometry bool into WAngle LocalYaw
+				if (engineVersion < 20170509)
+				{
+					if (node.Key.StartsWith("RotateToIsometry", StringComparison.Ordinal))
+					{
+						var value = FieldLoader.GetValue<bool>("RotateToIsometry", node.Value.Value);
+						node.Value.Value = value ? "128" : "0";
+
+						node.Key = "LocalYaw";
+					}
+				}
+
 				UpgradeActorRules(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 

@@ -284,9 +284,9 @@
 	ConditionManager:
 	Health:
 		Shape: Rectangle
-			RotateToIsometry: true
-			TopLeft: -384, -384
-			BottomRight: 384, 384
+			LocalYaw: 128
+			TopLeft: -512, -512
+			BottomRight: 512, 512
 			VerticalTopOffset: 512
 
 ^BuildingPlug:
@@ -899,6 +899,11 @@
 		Cost: 250
 	Health:
 		HP: 350
+		Shape: Rectangle
+			LocalYaw: 128
+			TopLeft: -512, -512
+			BottomRight: 512, 512
+			VerticalTopOffset: 640
 	Armor:
 		Type: Heavy
 	LineBuildNode:
@@ -923,6 +928,10 @@
 
 ^Gate_A:
 	Inherits: ^Gate
+	Health:
+		Shape: Rectangle
+			TopLeft: -512, -1536
+			BottomRight: 512, 1536
 	Gate:
 		Dimensions: 3,1
 		Footprint: xxx
@@ -933,6 +942,10 @@
 
 ^Gate_B:
 	Inherits: ^Gate
+	Health:
+		Shape: Rectangle
+			TopLeft: -1536, -512
+			BottomRight: 1536, 512
 	Gate:
 		Dimensions: 1,3
 		Footprint: x x x
