@@ -100,8 +100,9 @@ namespace OpenRA.Mods.Common.Activities
 			minRange = armaments.Max(a => a.Weapon.MinRange);
 			maxRange = armaments.Min(a => a.MaxRange());
 
+			var pos = self.CenterPosition;
 			var mobile = move as Mobile;
-			if (!Target.IsInRange(self.CenterPosition, maxRange) || Target.IsInRange(self.CenterPosition, minRange)
+			if (!Target.IsInRange(pos, maxRange) || Target.IsInRange(pos, minRange)
 				|| (mobile != null && !mobile.CanInteractWithGroundLayer(self)))
 			{
 				// Try to move within range, drop the target otherwise
@@ -113,7 +114,8 @@ namespace OpenRA.Mods.Common.Activities
 				return NextActivity;
 			}
 
-			var desiredFacing = (Target.CenterPosition - self.CenterPosition).Yaw.Facing;
+			var targetedPosition = Target.Positions.PositionClosestTo(pos);
+			var desiredFacing = (targetedPosition - pos).Yaw.Facing;
 			if (facing.Facing != desiredFacing)
 			{
 				attackStatus |= AttackStatus.NeedsToTurn;
