@@ -146,7 +146,8 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			var pos = self.CenterPosition;
-			var targetYaw = (target.CenterPosition - self.CenterPosition).Yaw;
+			var targetedPosition = target.Positions.PositionClosestTo(pos);
+			var targetYaw = (targetedPosition - pos).Yaw;
 
 			foreach (var a in Armaments)
 			{
