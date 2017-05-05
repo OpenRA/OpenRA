@@ -806,49 +806,49 @@ Actors:
 		Owner: Neutral
 	Actor219: tuntop03
 		Owner: Neutral
-		Location: 68,-5
+		Location: 68,-4
 	Actor220: tuntop04
 		Owner: Neutral
-		Location: 73,-12
+		Location: 74,-12
 	Actor221: tuntop04
 		Owner: Neutral
-		Location: 107,-7
+		Location: 108,-7
 	Actor222: tuntop03
 		Owner: Neutral
-		Location: 109,4
+		Location: 109,5
 	Actor224: tuntop04
 		Owner: Neutral
-		Location: 87,28
+		Location: 88,28
 	Actor225: tuntop03
 		Owner: Neutral
-		Location: 73,34
+		Location: 73,35
 	Actor227: tuntop01
 		Owner: Neutral
-		Location: 60,34
+		Location: 60,35
 	Actor228: tuntop04
 		Owner: Neutral
-		Location: 42,13
+		Location: 43,13
 	Actor233: tuntop03
 		Owner: Neutral
-		Location: 93,-37
+		Location: 93,-36
 	Actor237: tuntop02
 		Owner: Neutral
-		Location: 107,-16
+		Location: 108,-16
 	Actor238: tuntop01
 		Owner: Neutral
-		Location: 77,-37
+		Location: 77,-36
 	Actor239: tuntop01
 		Owner: Neutral
-		Location: 95,4
+		Location: 95,5
 	Actor240: tuntop02
 		Owner: Neutral
 		Location: 73,-28
 	Actor234: tuntop02
 		Owner: Neutral
-		Location: 42,-2
+		Location: 43,-2
 	Actor236: tuntop01
 		Owner: Neutral
-		Location: 51,-5
+		Location: 51,-4
 	Actor235: tuntop02
 		Owner: Neutral
 		Location: 88,13
