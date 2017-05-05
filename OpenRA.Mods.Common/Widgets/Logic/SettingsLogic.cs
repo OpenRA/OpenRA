@@ -521,7 +521,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					{ "ScatterKey", "Scatter" },
 					{ "StanceCycleKey", "Cycle Stance" },
 					{ "DeployKey", "Deploy" },
-					{ "GuardKey", "Guard" }
+					{ "GuardKey", "Guard" },
+					{ "ReloadKey", "Reload aircraft" }
 				};
 
 				var header = ScrollItemWidget.Setup(hotkeyHeader, returnTrue, doNothing);
