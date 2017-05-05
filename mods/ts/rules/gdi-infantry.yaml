@@ -165,6 +165,17 @@ JUMPJET.Husk:
 	AutoSelectionSize:
 	WithSpriteBody:
 		Sequence: die-falling
+	Health:
+	ConditionManager:
+	GrantConditionOnTerrain:
+		TerrainTypes: Water
+		Condition: water-death
+	WithDeathAnimation:
+		RequiresCondition: !water-death
+		FallbackSequence: die-flying
+	WithDeathAnimation@SPLASH:
+		RequiresCondition: water-death
+		FallbackSequence: die-splash
 
 GHOST:
 	Inherits: ^Soldier
