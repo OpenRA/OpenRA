@@ -59,6 +59,14 @@ namespace OpenRA.Mods.Cnc.Traits
 		}
 	}
 
+	[Flags]
+	public enum RevealDisguiseType
+	{
+		None = 0,
+		Attack = 1,
+		Damaged = 2
+	}
+
 	[Desc("Provides access to the disguise command, which makes the actor appear to be another player's actor.")]
 	class DisguiseInfo : ITraitInfo
 	{
@@ -68,10 +76,13 @@ namespace OpenRA.Mods.Cnc.Traits
 		[Desc("The condition to grant to self while disguised.")]
 		public readonly string DisguisedCondition = null;
 
+		[Desc("Triggers which cause the actor to drop it's disguise. Possible values: None, Attack, Damaged.")]
+		public readonly RevealDisguiseType RevealDisguiseOn = RevealDisguiseType.Attack;
+
 		public object Create(ActorInitializer init) { return new Disguise(init.Self, this); }
 	}
 
-	class Disguise : INotifyCreated, IEffectiveOwner, IIssueOrder, IResolveOrder, IOrderVoice, IRadarColorModifier, INotifyAttack
+	class Disguise : INotifyCreated, IEffectiveOwner, IIssueOrder, IResolveOrder, IOrderVoice, IRadarColorModifier, INotifyAttack, INotifyDamage
 	{
 		public Player AsPlayer { get; private set; }
 		public string AsSprite { get; private set; }
@@ -198,6 +209,16 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		void INotifyAttack.PreparingAttack(Actor self, Target target, Armament a, Barrel barrel) { }
 
-		void INotifyAttack.Attacking(Actor self, Target target, Armament a, Barrel barrel) { DisguiseAs(null); }
+		void INotifyAttack.Attacking(Actor self, Target target, Armament a, Barrel barrel)
+		{
+			if (info.RevealDisguiseOn.HasFlag(RevealDisguiseType.Attack))
+				DisguiseAs(null);
+		}
+
+		void INotifyDamage.Damaged(Actor self, AttackInfo e)
+		{
+			if (info.RevealDisguiseOn.HasFlag(RevealDisguiseType.Damaged) && e.Damage.Value > 0)
+				DisguiseAs(null);
+		}
 	}
 }
