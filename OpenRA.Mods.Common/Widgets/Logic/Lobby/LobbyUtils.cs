@@ -38,8 +38,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 		}
 
-		public static void ShowSlotDropDown(LobbyLogic logic, DropDownButtonWidget dropdown, Session.Slot slot,
-			Session.Client client, OrderManager orderManager)
+		public static void ShowSlotDropDown(DropDownButtonWidget dropdown, Session.Slot slot,
+			Session.Client client, OrderManager orderManager, MapPreview map)
 		{
 			var options = new Dictionary<string, IEnumerable<SlotDropDownOption>>() { { "Slot", new List<SlotDropDownOption>()
 			{
@@ -50,7 +50,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var bots = new List<SlotDropDownOption>();
 			if (slot.AllowBots)
 			{
-				foreach (var b in logic.Map.Rules.Actors["player"].TraitInfos<IBotInfo>().Select(t => t.Name))
+				foreach (var b in map.Rules.Actors["player"].TraitInfos<IBotInfo>().Select(t => t.Name))
 				{
 					var bot = b;
 					var botController = orderManager.LobbyInfo.Clients.FirstOrDefault(c => c.IsAdmin);
@@ -306,13 +306,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			name.GetText = () => label;
 		}
 
-		public static void SetupEditableSlotWidget(LobbyLogic logic, Widget parent, Session.Slot s, Session.Client c, OrderManager orderManager)
+		public static void SetupEditableSlotWidget(Widget parent, Session.Slot s, Session.Client c, OrderManager orderManager, MapPreview map)
 		{
 			var slot = parent.Get<DropDownButtonWidget>("SLOT_OPTIONS");
 			slot.IsVisible = () => true;
 			slot.IsDisabled = () => orderManager.LocalClient.IsReady;
 			slot.GetText = () => c != null ? c.Name : s.Closed ? "Closed" : "Open";
-			slot.OnMouseDown = _ => ShowSlotDropDown(logic, slot, s, c, orderManager);
+			slot.OnMouseDown = _ => ShowSlotDropDown(slot, s, c, orderManager, map);
 
 			// Ensure Name selector (if present) is hidden
 			HideChildWidget(parent, "NAME");

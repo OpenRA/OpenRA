@@ -622,7 +622,7 @@
     <Compile Include="Widgets\Logic\Lobby\KickClientLogic.cs" />
     <Compile Include="Widgets\Logic\Lobby\KickSpectatorsLogic.cs" />
     <Compile Include="Widgets\Logic\Lobby\LobbyLogic.cs" />
-    <Compile Include="Widgets\Logic\Lobby\LobbyMapPreviewLogic.cs" />
+    <Compile Include="Widgets\Logic\Lobby\MapPreviewLogic.cs" />
     <Compile Include="Widgets\Logic\Lobby\LobbyUtils.cs" />
     <Compile Include="Widgets\Logic\Lobby\SpawnSelectorTooltipLogic.cs" />
     <Compile Include="Widgets\Logic\MainMenuLogic.cs" />

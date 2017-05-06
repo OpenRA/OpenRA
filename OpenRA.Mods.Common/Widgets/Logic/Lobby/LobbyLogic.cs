@@ -16,7 +16,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using OpenRA.Chat;
 using OpenRA.Graphics;
-using OpenRA.Mods.Common.Traits;
 using OpenRA.Network;
 using OpenRA.Traits;
 using OpenRA.Widgets;
@@ -26,8 +25,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	public class LobbyLogic : ChromeLogic
 	{
 		static readonly Action DoNothing = () => { };
-
-		public MapPreview Map { get; private set; }
 
 		readonly ModData modData;
 		readonly Action onStart;
@@ -64,10 +61,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly TabCompletionLogic tabCompletion = new TabCompletionLogic();
 
 		readonly LabelWidget chatLabel;
-		bool teamChat;
 
+		MapPreview Map { get; set; }
 		bool addBotOnMapLoad;
-
+		bool teamChat;
 		int lobbyChatUnreadMessages;
 		int globalChatLastReadMessages;
 		int globalChatUnreadMessages;
@@ -130,10 +127,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (name != null)
 				name.GetText = () => orderManager.LobbyInfo.GlobalSettings.ServerName;
 
-			Ui.LoadWidget("LOBBY_MAP_PREVIEW", lobby.Get("MAP_PREVIEW_ROOT"), new WidgetArgs
+			Ui.LoadWidget("MAP_PREVIEW", lobby.Get("MAP_PREVIEW_ROOT"), new WidgetArgs
 			{
 				{ "orderManager", orderManager },
-				{ "lobby", this }
+				{ "getMap", (Func<MapPreview>)(() => Map) },
+				{ "onMouseDown",  (Action<MapPreviewWidget, MapPreview, MouseInput>)((preview, map, mi) => LobbyUtils.SelectSpawnPoint(orderManager, preview, map, mi)) },
+				{ "getSpawnOccupants", (Func<MapPreview, Dictionary<CPos, SpawnOccupant>>)(map => LobbyUtils.GetSpawnOccupants(orderManager.LobbyInfo, map)) },
 			});
 
 			UpdateCurrentMap();
@@ -661,7 +660,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						template = emptySlotTemplate.Clone();
 
 					if (isHost)
-						LobbyUtils.SetupEditableSlotWidget(this, template, slot, client, orderManager);
+						LobbyUtils.SetupEditableSlotWidget(template, slot, client, orderManager, Map);
 					else
 						LobbyUtils.SetupSlotWidget(template, slot, client);
 
@@ -680,7 +679,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					LobbyUtils.SetupClientWidget(template, client, orderManager, client.Bot == null);
 
 					if (client.Bot != null)
-						LobbyUtils.SetupEditableSlotWidget(this, template, slot, client, orderManager);
+						LobbyUtils.SetupEditableSlotWidget(template, slot, client, orderManager, Map);
 					else
 						LobbyUtils.SetupEditableNameWidget(template, slot, client, orderManager);
 
