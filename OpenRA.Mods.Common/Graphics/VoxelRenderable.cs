@@ -107,7 +107,9 @@ namespace OpenRA.Mods.Common.Graphics
 			public void Render(WorldRenderer wr)
 			{
 				var groundPos = voxel.pos - new WVec(0, 0, wr.World.Map.DistanceAboveTerrain(voxel.pos).Length);
-				var groundZ = wr.World.Map.Grid.TileSize.Height * (groundPos.Z - voxel.pos.Z) / 1024f;
+				var tileScale = wr.World.Map.Grid.Type == MapGridType.RectangularIsometric ? 1448f : 1024f;
+
+				var groundZ = wr.World.Map.Grid.TileSize.Height * (groundPos.Z - voxel.pos.Z) / tileScale;
 				var pxOrigin = wr.Screen3DPosition(voxel.pos);
 
 				// HACK: We don't have enough texture channels to pass the depth data to the shader

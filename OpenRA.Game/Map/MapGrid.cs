@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
@@ -91,19 +92,32 @@ namespace OpenRA
 			else if (defaultSubCellIndex < (SubCellOffsets.Length > 1 ? 1 : 0) || defaultSubCellIndex >= SubCellOffsets.Length)
 				throw new InvalidDataException("Subcell default index must be a valid index into the offset triples and must be greater than 0 for mods with subcells");
 
-			var leftDelta = Type == MapGridType.RectangularIsometric ? new WVec(-512, 0, 0) : new WVec(-512, -512, 0);
-			var topDelta = Type == MapGridType.RectangularIsometric ? new WVec(0, -512, 0) : new WVec(512, -512, 0);
-			var rightDelta = Type == MapGridType.RectangularIsometric ? new WVec(512, 0, 0) : new WVec(512, 512, 0);
-			var bottomDelta = Type == MapGridType.RectangularIsometric ? new WVec(0, 512, 0) : new WVec(-512, 512, 0);
-			CellCorners = cellCornerHalfHeights.Select(ramp => new WVec[]
-			{
-				leftDelta + new WVec(0, 0, 512 * ramp[0]),
-				topDelta + new WVec(0, 0, 512 * ramp[1]),
-				rightDelta + new WVec(0, 0, 512 * ramp[2]),
-				bottomDelta + new WVec(0, 0, 512 * ramp[3])
-			}).ToArray();
-
+			var makeCorners = Type == MapGridType.RectangularIsometric ?
+				(Func<int[], WVec[]>)IsometricCellCorners : RectangularCellCorners;
+			CellCorners = cellCornerHalfHeights.Select(makeCorners).ToArray();
 			TilesByDistance = CreateTilesByDistance();
+		}
+
+		static WVec[] IsometricCellCorners(int[] cornerHeight)
+		{
+			return new WVec[]
+			{
+				new WVec(-724, 0, 724 * cornerHeight[0]),
+				new WVec(0, -724, 724 * cornerHeight[1]),
+				new WVec(724, 0, 724 * cornerHeight[2]),
+				new WVec(0, 724, 724 * cornerHeight[3])
+			};
+		}
+
+		static WVec[] RectangularCellCorners(int[] cornerHeight)
+		{
+			return new WVec[]
+			{
+				new WVec(-512, -512, 512 * cornerHeight[0]),
+				new WVec(512, -512, 512 * cornerHeight[1]),
+				new WVec(512, 512, 512 * cornerHeight[2]),
+				new WVec(-512, 512, 512 * cornerHeight[3])
+			};
 		}
 
 		CVec[][] CreateTilesByDistance()
