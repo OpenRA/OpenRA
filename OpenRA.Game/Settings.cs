@@ -325,7 +325,6 @@ namespace OpenRA
 		public string Hostname = "irc.openra.net";
 		public int Port = 6667;
 		public string Channel = "lobby";
-		public string Nickname = "Newbie";
 		public string QuitMessage = "Battle control terminated!";
 		public string TimestampFormat = "HH:mm";
 		public bool ConnectAutomatically = false;
