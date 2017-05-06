@@ -316,7 +316,6 @@
     <Compile Include="Primitives\TypeDictionary.cs" />
     <Compile Include="Map\ActorInitializer.cs" />
     <Compile Include="Map\ActorReference.cs" />
-    <Compile Include="Support\Evaluator.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Graphics\PlayerColorRemap.cs" />
     <Compile Include="Graphics\Palette.cs" />
