@@ -170,7 +170,8 @@ namespace OpenRA.Platforms.Default
 								Key = keyCode,
 								Modifiers = mods,
 								UnicodeChar = (char)e.key.keysym.sym,
-								MultiTapCount = tapCount
+								MultiTapCount = tapCount,
+								IsRepeat = e.key.repeat != 0
 							};
 
 							// Special case workaround for windows users
