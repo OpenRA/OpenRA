@@ -1,7 +1,7 @@
 Background@NEW_MAP_BG:
 	Logic: NewMapLogic
-	X: (WINDOW_RIGHT - WIDTH)/2
-	Y: (WINDOW_BOTTOM - HEIGHT)/2
+	X: (WINDOW_RIGHT - WIDTH) / 2
+	Y: (WINDOW_BOTTOM - HEIGHT) / 2
 	Width: 300
 	Height: 185
 	Children:
@@ -76,13 +76,13 @@ Background@NEW_MAP_BG:
 
 Background@SAVE_MAP_PANEL:
 	Logic: SaveMapLogic
-	X: (WINDOW_RIGHT - WIDTH)/2
-	Y: (WINDOW_BOTTOM - HEIGHT)/2
+	X: (WINDOW_RIGHT - WIDTH) / 2
+	Y: (WINDOW_BOTTOM - HEIGHT) / 2
 	Width: 350
 	Height: 300
 	Children:
 		Label@LABEL_TITLE:
-			X: (PARENT_RIGHT - WIDTH)/2
+			X: (PARENT_RIGHT - WIDTH) / 2
 			Y: 20
 			Width: 250
 			Height: 25
@@ -211,7 +211,7 @@ Container@EDITOR_WORLD_ROOT:
 			Height: WINDOW_BOTTOM
 			IgnoreMouseOver: True
 		Background@RADAR_BG:
-			X: WINDOW_RIGHT-255
+			X: WINDOW_RIGHT - 255
 			Y: 5
 			Width: 250
 			Height: 250
@@ -219,16 +219,16 @@ Container@EDITOR_WORLD_ROOT:
 				Radar@INGAME_RADAR:
 					X: 10
 					Y: 10
-					Width: PARENT_RIGHT-19
-					Height: PARENT_BOTTOM-19
+					Width: PARENT_RIGHT - 19
+					Height: PARENT_BOTTOM - 19
 		Container@TILE_WIDGETS:
 			Logic: TileSelectorLogic
 			Children:
 				Background@TILES_BG:
-					X: WINDOW_RIGHT-250
+					X: WINDOW_RIGHT - 250
 					Y: 290
 					Width: 240
-					Height: WINDOW_BOTTOM-382
+					Height: WINDOW_BOTTOM - 382
 					Children:
 						DropDownButton@TILE_CATEGORY:
 							X: 10
@@ -239,8 +239,8 @@ Container@EDITOR_WORLD_ROOT:
 						ScrollPanel@TILETEMPLATE_LIST:
 							X: 10
 							Y: 35
-							Width: PARENT_RIGHT-20
-							Height: PARENT_BOTTOM-45
+							Width: PARENT_RIGHT - 20
+							Height: PARENT_BOTTOM - 45
 							TopBottomSpacing: 4
 							ItemSpacing: 4
 							Children:
@@ -257,16 +257,16 @@ Container@EDITOR_WORLD_ROOT:
 			Logic: LayerSelectorLogic
 			Children:
 				Background@LAYERS_BG:
-					X: WINDOW_RIGHT-250
+					X: WINDOW_RIGHT - 250
 					Y: 290
 					Width: 240
-					Height: WINDOW_BOTTOM-382
+					Height: WINDOW_BOTTOM - 382
 					Children:
 						ScrollPanel@LAYERTEMPLATE_LIST:
 							X: 10
 							Y: 10
-							Width: PARENT_RIGHT-20
-							Height: PARENT_BOTTOM-20
+							Width: PARENT_RIGHT - 20
+							Height: PARENT_BOTTOM - 20
 							TopBottomSpacing: 4
 							ItemSpacing: 4
 							Children:
@@ -284,10 +284,10 @@ Container@EDITOR_WORLD_ROOT:
 			Logic: ActorSelectorLogic
 			Children:
 				Background@ACTORS_BG:
-					X: WINDOW_RIGHT-250
+					X: WINDOW_RIGHT - 250
 					Y: 290
 					Width: 240
-					Height: WINDOW_BOTTOM-382
+					Height: WINDOW_BOTTOM - 382
 					Children:
 						DropDownButton@OWNERS_DROPDOWN:
 							X: 10
@@ -298,8 +298,8 @@ Container@EDITOR_WORLD_ROOT:
 						ScrollPanel@ACTORTEMPLATE_LIST:
 							X: 10
 							Y: 35
-							Width: PARENT_RIGHT-20
-							Height: PARENT_BOTTOM-45
+							Width: PARENT_RIGHT - 20
+							Height: PARENT_BOTTOM - 45
 							TopBottomSpacing: 4
 							ItemSpacing: 4
 							Children:
@@ -316,7 +316,7 @@ Container@EDITOR_WORLD_ROOT:
 											Visible: true
 		Container@MAP_EDITOR_TAB_CONTAINER:
 			Logic: MapEditorTabsLogic
-			X: WINDOW_RIGHT-245
+			X: WINDOW_RIGHT - 245
 			Y: 260
 			Width: 240
 			Height: 25

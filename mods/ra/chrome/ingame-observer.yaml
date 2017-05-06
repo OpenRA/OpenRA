@@ -22,7 +22,7 @@ Container@OBSERVER_WIDGETS:
 					Background: sidebar-button-observer
 					Children:
 						LabelWithTooltip@GAME_TIMER:
-							Y: 0-1
+							Y: 0 - 1
 							Width: PARENT_RIGHT
 							Height: PARENT_BOTTOM
 							Align: Center

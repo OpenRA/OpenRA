@@ -20,8 +20,8 @@ Container@PLAYER_WIDGETS:
 				Container@PALETTE_FOREGROUND:
 					Children:
 						Image@ICON_TEMPLATE:
-							X: 0-2
-							Y: 0-2
+							X: 0 - 2
+							Y: 0 - 2
 							Width: 60
 							Height: 48
 							IgnoreMouseOver: true

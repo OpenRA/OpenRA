@@ -22,8 +22,8 @@ Container@PLAYER_WIDGETS:
 					Children:
 						Image@ICON_TEMPLATE:
 							Logic: AddFactionSuffixLogic
-							X: 0-2
-							Y: 0-2
+							X: 0 - 2
+							Y: 0 - 2
 							Width: 64
 							Height: 48
 							IgnoreMouseOver: true
@@ -170,7 +170,7 @@ Container@PLAYER_WIDGETS:
 				Label@GAME_TIMER:
 					Logic: GameTimerLogic
 					X: 10
-					Y: 0-1
+					Y: 0 - 1
 					Width: PARENT_RIGHT
 					Height: 22
 					Align: Center
@@ -178,7 +178,7 @@ Container@PLAYER_WIDGETS:
 				LabelWithTooltip@CASH:
 					Logic: IngameCashCounterLogic
 					X: 31
-					Y: 0-2
+					Y: 0 - 2
 					Width: 50
 					Height: 22
 					Font: Bold
@@ -188,14 +188,14 @@ Container@PLAYER_WIDGETS:
 					Children:
 						Image@CASH_ICON:
 							Logic: AddFactionSuffixLogic
-							X: 0-17
+							X: 0 - 17
 							Y: 5
 							ImageCollection: cash-icons
 							ImageName: cash-normal
 				LabelWithTooltip@POWER:
 					Logic: IngamePowerCounterLogic
 					X: PARENT_RIGHT - WIDTH - 30
-					Y: 0-2
+					Y: 0 - 2
 					Width: 50
 					Height: 22
 					Align: Right
@@ -261,7 +261,7 @@ Container@PLAYER_WIDGETS:
 							ImageName: production-iconoverlay
 				Container@PRODUCTION_TYPES:
 					X: 0
-					Y: 0-32
+					Y: 0 - 32
 					Width: 235
 					Height: 311
 					Children:

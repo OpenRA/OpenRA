@@ -1,7 +1,7 @@
 Background@MAINMENU_PRERELEASE_NOTIFICATION:
 	Logic: PreReleaseWarningPrompt
-	X: (WINDOW_RIGHT - WIDTH)/2
-	Y: (WINDOW_BOTTOM - HEIGHT)/2
+	X: (WINDOW_RIGHT - WIDTH) / 2
+	Y: (WINDOW_BOTTOM - HEIGHT) / 2
 	Width: 520
 	Height: 195
 	Children:

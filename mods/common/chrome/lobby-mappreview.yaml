@@ -15,8 +15,8 @@ Container@LOBBY_MAP_PREVIEW:
 						MapPreview@MAP_PREVIEW:
 							X: 1
 							Y: 1
-							Width: PARENT_RIGHT-2
-							Height: PARENT_BOTTOM-2
+							Width: PARENT_RIGHT - 2
+							Height: PARENT_BOTTOM - 2
 							TooltipContainer: TOOLTIP_CONTAINER
 				LabelWithTooltip@MAP_TITLE:
 					Y: 172
@@ -51,8 +51,8 @@ Container@LOBBY_MAP_PREVIEW:
 						MapPreview@MAP_PREVIEW:
 							X: 1
 							Y: 1
-							Width: PARENT_RIGHT-2
-							Height: PARENT_BOTTOM-2
+							Width: PARENT_RIGHT - 2
+							Height: PARENT_BOTTOM - 2
 							TooltipContainer: TOOLTIP_CONTAINER
 				Label@MAP_TITLE:
 					Y: 172
@@ -86,8 +86,8 @@ Container@LOBBY_MAP_PREVIEW:
 						MapPreview@MAP_PREVIEW:
 							X: 1
 							Y: 1
-							Width: PARENT_RIGHT-2
-							Height: PARENT_BOTTOM-2
+							Width: PARENT_RIGHT - 2
+							Height: PARENT_BOTTOM - 2
 							TooltipContainer: TOOLTIP_CONTAINER
 				Label@MAP_TITLE:
 					Y: 142
@@ -125,8 +125,8 @@ Container@LOBBY_MAP_PREVIEW:
 						MapPreview@MAP_PREVIEW:
 							X: 1
 							Y: 1
-							Width: PARENT_RIGHT-2
-							Height: PARENT_BOTTOM-2
+							Width: PARENT_RIGHT - 2
+							Height: PARENT_BOTTOM - 2
 							TooltipContainer: TOOLTIP_CONTAINER
 				Label@MAP_TITLE:
 					Y: 142

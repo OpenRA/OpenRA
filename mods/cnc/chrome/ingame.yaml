@@ -11,7 +11,7 @@ Container@INGAME_ROOT:
 				LogicTicker@DISCONNECT_WATCHER:
 					Logic: DisconnectWatcherLogic
 				Label@MISSION_TEXT:
-					X: WINDOW_RIGHT/2 - 256
+					X: WINDOW_RIGHT / 2 - 256
 					Y: 22
 					Width: 512
 					Height: 25
@@ -19,7 +19,7 @@ Container@INGAME_ROOT:
 					Align: Center
 					Contrast: true
 				StrategicProgress@STRATEGIC_PROGRESS:
-					X: WINDOW_RIGHT/2
+					X: WINDOW_RIGHT / 2
 					Y: 40
 				Container@PERF_ROOT:
 				WorldInteractionController@INTERACTION_CONTROLLER:
@@ -34,7 +34,7 @@ Container@INGAME_ROOT:
 					Height: WINDOW_BOTTOM
 				Container@GAME_TIMER_BLOCK:
 					Logic: GameTimerLogic
-					X: WINDOW_RIGHT/2 - WIDTH
+					X: WINDOW_RIGHT / 2 - WIDTH
 					Width: 100
 					Height: 55
 					Children:
@@ -69,7 +69,7 @@ Container@PERF_WIDGETS:
 			VAlign: Top
 		Background@GRAPH_BG:
 			X: 10
-			Y: WINDOW_BOTTOM-HEIGHT-10
+			Y: WINDOW_BOTTOM - HEIGHT - 10
 			Width: 220
 			Height: 220
 			Background: panel-black
@@ -85,7 +85,7 @@ Container@OBSERVER_WIDGETS:
 	Children:
 		MenuButton@OPTIONS_BUTTON:
 			Key: escape
-			X: WINDOW_RIGHT-260-WIDTH
+			X: WINDOW_RIGHT - 260 - WIDTH
 			Y: 5
 			Width: 30
 			Height: 25
@@ -100,7 +100,7 @@ Container@OBSERVER_WIDGETS:
 					ImageName: options
 		MenuButton@OBSERVER_STATS_BUTTON:
 			Key: F1
-			X: WINDOW_RIGHT-260-WIDTH
+			X: WINDOW_RIGHT - 260 - WIDTH
 			Y: 35
 			Width: 30
 			Height: 25
@@ -116,7 +116,7 @@ Container@OBSERVER_WIDGETS:
 					ImageCollection: order-icons
 					ImageName: stats
 		Background@RADAR:
-			X: WINDOW_RIGHT-WIDTH-5
+			X: WINDOW_RIGHT - WIDTH - 5
 			Y: 5
 			Width: 256
 			Height: 256
@@ -125,11 +125,11 @@ Container@OBSERVER_WIDGETS:
 				Radar:
 					X: 1
 					Y: 1
-					Width: PARENT_RIGHT-2
-					Height: PARENT_BOTTOM-2
+					Width: PARENT_RIGHT - 2
+					Height: PARENT_BOTTOM - 2
 		Background@REPLAY_PLAYER:
 			Logic: ReplayControlBarLogic
-			X: WINDOW_RIGHT-WIDTH-5
+			X: WINDOW_RIGHT - WIDTH - 5
 			Y: 283
 			Width: 256
 			Height: 46
@@ -187,7 +187,7 @@ Container@OBSERVER_WIDGETS:
 					Text: 100%
 					Font: TinyBold
 				Button@BUTTON_FAST:
-					X: 57 + 48*2
+					X: 57 + 48 * 2
 					Y: 13
 					Width: 38
 					Height: 20
@@ -198,7 +198,7 @@ Container@OBSERVER_WIDGETS:
 					Text: 200%
 					Font: TinyBold
 				Button@BUTTON_MAXIMUM:
-					X: 57 + 48*3
+					X: 57 + 48 * 3
 					Y: 13
 					Width: 38
 					Height: 20
@@ -210,7 +210,7 @@ Container@OBSERVER_WIDGETS:
 					Font: TinyBold
 		DropDownButton@SHROUD_SELECTOR:
 			Logic: ObserverShroudSelectorLogic
-			X: WINDOW_RIGHT-WIDTH-5
+			X: WINDOW_RIGHT - WIDTH - 5
 			Y: 260
 			Width: 256
 			Height: 25
@@ -270,7 +270,7 @@ Container@PLAYER_WIDGETS:
 				MenuButton@OPTIONS_BUTTON:
 					Key: escape
 					X: 22
-					Y: 0-24
+					Y: 0 - 24
 					Width: 30
 					Height: 25
 					Font: Bold
@@ -286,7 +286,7 @@ Container@PLAYER_WIDGETS:
 				Button@BEACON_BUTTON:
 					Logic: BeaconOrderButtonLogic
 					X: 62
-					Y: 0-24
+					Y: 0 - 24
 					Width: 30
 					Height: 25
 					Font: Bold
@@ -300,7 +300,7 @@ Container@PLAYER_WIDGETS:
 				Button@SELL_BUTTON:
 					Logic: SellOrderButtonLogic
 					X: 102
-					Y: 0-24
+					Y: 0 - 24
 					Width: 30
 					Height: 25
 					Font: Bold
@@ -314,7 +314,7 @@ Container@PLAYER_WIDGETS:
 				Button@REPAIR_BUTTON:
 					Logic: RepairOrderButtonLogic
 					X: 142
-					Y: 0-24
+					Y: 0 - 24
 					Width: 30
 					Height: 25
 					Font: Bold
@@ -336,16 +336,16 @@ Container@PLAYER_WIDGETS:
 							Logic: IngameRadarDisplayLogic
 							X: 1
 							Y: 1
-							Width: PARENT_RIGHT-2
-							Height: PARENT_BOTTOM-2
+							Width: PARENT_RIGHT - 2
+							Height: PARENT_BOTTOM - 2
 							WorldInteractionController: INTERACTION_CONTROLLER
 							Children:
 								LogicTicker@RADAR_TICKER:
 						VqaPlayer@PLAYER:
 							X: 1
 							Y: 1
-							Width: PARENT_RIGHT-2
-							Height: PARENT_BOTTOM-2
+							Width: PARENT_RIGHT - 2
+							Height: PARENT_BOTTOM - 2
 							Skippable: false
 				Background@POWERBAR_PANEL:
 					Logic: IngamePowerBarLogic
@@ -358,8 +358,8 @@ Container@PLAYER_WIDGETS:
 						ResourceBar@POWERBAR:
 							X: 1
 							Y: 1
-							Width: PARENT_RIGHT-2
-							Height: PARENT_BOTTOM-2
+							Width: PARENT_RIGHT - 2
+							Height: PARENT_BOTTOM - 2
 							TooltipContainer: TOOLTIP_CONTAINER
 							TooltipTemplate: SIMPLE_TOOLTIP
 							IndicatorImage: indicator-left
@@ -374,8 +374,8 @@ Container@PLAYER_WIDGETS:
 						ResourceBar@SILOBAR:
 							X: 1
 							Y: 1
-							Width: PARENT_RIGHT-2
-							Height: PARENT_BOTTOM-2
+							Width: PARENT_RIGHT - 2
+							Height: PARENT_BOTTOM - 2
 							TooltipContainer: TOOLTIP_CONTAINER
 							TooltipTemplate: SIMPLE_TOOLTIP
 							IndicatorImage: indicator-right

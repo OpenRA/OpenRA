@@ -44,7 +44,7 @@ Background@CONTENT_PANEL:
 							Height: 23
 						Label@REQUIRED:
 							X: 185
-							Y: 0-2
+							Y: 0 - 2
 							Width: 90
 							Height: 23
 							Align: Center
@@ -69,7 +69,7 @@ Background@CONTENT_PANEL:
 							Text: Download
 						Label@INSTALLED:
 							X: 304
-							Y: 0-2
+							Y: 0 - 2
 							Width: 100
 							Height: 23
 							Align: Center
@@ -78,7 +78,7 @@ Background@CONTENT_PANEL:
 							Text: Installed
 						Label@REQUIRES_DISC:
 							X: 304
-							Y: 0-2
+							Y: 0 - 2
 							Width: 100
 							Height: 23
 							Align: Center
@@ -182,8 +182,8 @@ Container@PACKAGE_DOWNLOAD_PANEL:
 
 Background@DISC_INSTALL_PANEL:
 	Logic: InstallFromDiscLogic
-	X: (WINDOW_RIGHT - WIDTH)/2
-	Y: (WINDOW_BOTTOM - HEIGHT)/2
+	X: (WINDOW_RIGHT - WIDTH) / 2
+	Y: (WINDOW_BOTTOM - HEIGHT) / 2
 	Width: 500
 	Height: 177
 	Background: panel-bg
@@ -290,8 +290,8 @@ Background@DISC_INSTALL_PANEL:
 
 Background@CONTENT_PROMPT_PANEL:
 	Logic: ModContentPromptLogic
-	X: (WINDOW_RIGHT - WIDTH)/2
-	Y: (WINDOW_BOTTOM - HEIGHT)/2
+	X: (WINDOW_RIGHT - WIDTH) / 2
+	Y: (WINDOW_BOTTOM - HEIGHT) / 2
 	Width: 500
 	Height: 140
 	Background: panel-bg

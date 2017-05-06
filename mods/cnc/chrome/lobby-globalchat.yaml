@@ -14,7 +14,7 @@ Container@LOBBY_GLOBALCHAT_PANEL:
 					Children:
 						Label@CHANNEL_TOPIC:
 							X: 10
-							Y: 0-1
+							Y: 0 - 1
 							Width: PARENT_RIGHT - 20
 							Height: PARENT_BOTTOM
 							Font: TinyBold
@@ -58,7 +58,7 @@ Container@LOBBY_GLOBALCHAT_PANEL:
 					LeftMargin: 60
 					Children:
 						Label@LABEL_CHATTYPE:
-							Y: 0-1
+							Y: 0 - 1
 							Width: 55
 							Height: 25
 							Align: Right
@@ -70,7 +70,7 @@ Container@LOBBY_GLOBALCHAT_PANEL:
 					Children:
 						Container@NICKNAME_TEMPLATE:
 							Height: 20
-							Width: PARENT_RIGHT-25
+							Width: PARENT_RIGHT - 25
 							Children:
 								Image@INDICATOR:
 									ImageCollection: lobby-bits
@@ -79,7 +79,7 @@ Container@LOBBY_GLOBALCHAT_PANEL:
 									Y: 9
 								Label@NICK:
 									X: 15
-									Width: PARENT_RIGHT-15
+									Width: PARENT_RIGHT - 15
 									Height: 20
 				Button@DISCONNECT_BUTTON:
 					X: 596
@@ -131,7 +131,7 @@ Container@LOBBY_GLOBALCHAT_PANEL:
 					Disabled: true
 					Children:
 						Label@LABEL_CHATTYPE:
-							Y: 0-1
+							Y: 0 - 1
 							Width: 55
 							Height: 25
 							Align: Right

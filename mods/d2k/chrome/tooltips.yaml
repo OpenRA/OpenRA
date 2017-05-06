@@ -8,7 +8,7 @@ Background@SIMPLE_TOOLTIP:
 			Height: 19
 		Label@LABEL:
 			X: 5
-			Y: 0-2
+			Y: 0 - 2
 			Height: 23
 			Font: Bold
 

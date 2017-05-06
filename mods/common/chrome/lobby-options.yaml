@@ -14,8 +14,8 @@ Background@LOBBY_OPTIONS_BIN:
 		Container:
 			X: 30
 			Y: 30
-			Width: PARENT_RIGHT-60
-			Height: PARENT_BOTTOM-75
+			Width: PARENT_RIGHT - 60
+			Height: PARENT_BOTTOM - 75
 			Children:
 				Checkbox@EXPLORED_MAP_CHECKBOX:
 					Width: 150
