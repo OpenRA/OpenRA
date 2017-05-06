@@ -69,5 +69,6 @@ namespace OpenRA
 		public Modifiers Modifiers;
 		public int MultiTapCount;
 		public char UnicodeChar;
+		public bool IsRepeat;
 	}
 }
