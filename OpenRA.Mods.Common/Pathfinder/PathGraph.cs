@@ -42,7 +42,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 
 		bool InReverse { get; set; }
 
-		Actor IgnoredActor { get; set; }
+		Actor IgnoreActor { get; set; }
 
 		World World { get; }
 
@@ -81,7 +81,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 		public Func<CPos, int> CustomCost { get; set; }
 		public int LaneBias { get; set; }
 		public bool InReverse { get; set; }
-		public Actor IgnoredActor { get; set; }
+		public Actor IgnoreActor { get; set; }
 
 		readonly CellConditions checkConditions;
 		readonly MobileInfo mobileInfo;
@@ -171,7 +171,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 
 		int GetCostToNode(CPos destNode, CVec direction)
 		{
-			var movementCost = mobileInfo.MovementCostToEnterCell(worldMovementInfo, Actor, destNode, IgnoredActor, checkConditions);
+			var movementCost = mobileInfo.MovementCostToEnterCell(worldMovementInfo, Actor, destNode, IgnoreActor, checkConditions);
 			if (movementCost != int.MaxValue && !(CustomBlock != null && CustomBlock(destNode)))
 				return CalculateCellCost(destNode, direction, movementCost);
 

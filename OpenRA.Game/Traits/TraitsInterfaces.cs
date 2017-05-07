@@ -285,7 +285,7 @@ namespace OpenRA.Traits
 	public interface IMove
 	{
 		Activity MoveTo(CPos cell, int nearEnough);
-		Activity MoveTo(CPos cell, Actor ignoredActor);
+		Activity MoveTo(CPos cell, Actor ignoreActor);
 		Activity MoveWithinRange(Target target, WDist range);
 		Activity MoveWithinRange(Target target, WDist minRange, WDist maxRange);
 		Activity MoveFollow(Actor self, Target target, WDist minRange, WDist maxRange);
