@@ -89,7 +89,7 @@ namespace OpenRA
 
 		public bool IsSpectating
 		{
-			get { return IsReplay || LocalPlayer == null && RenderPlayer == null; }
+			get { return IsReplay || (LocalPlayer == null && RenderPlayer == null); }
 		}
 
 		void SetLocalPlayer(Player localPlayer)
