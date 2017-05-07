@@ -45,6 +45,7 @@ NAPULS:
 	ProvidesPrerequisite@gdi:
 		ResetOnOwnerChange: true
 	AttackOrderPower:
+		PauseOnCondition: empdisable || disabled
 		Cursor: emp
 		Icon: emp
 		ChargeTime: 135

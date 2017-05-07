@@ -1,6 +1,7 @@
 GAPOWR:
 	Inherits: ^Building
 	Inherits@IDISABLE: ^DisabledOverlay
+	Inherits@POWER_OUTAGE: ^DisabledByPowerOutage
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 10
@@ -23,15 +24,15 @@ GAPOWR:
 		Range: 4c0
 		MaxHeightDelta: 3
 	WithIdleOverlay@LIGHTS:
+		RequiresCondition: !disabled
 		Sequence: idle-lights
 	WithIdleOverlay@PLUG:
+		PauseOnCondition: disabled
 		Sequence: idle-plug
 	Selectable:
 		Bounds: 90, 48, 0, -6
 	Power:
 		Amount: 100
-	InfiltrateForPowerOutage:
-	AffectedByPowerOutage:
 	PowerTooltip:
 	Targetable:
 		TargetTypes: Ground, C4, DetonateAttack, SpyInfiltrate
@@ -41,10 +42,11 @@ GAPOWR:
 		Conditions:
 			powrup: powrup.a
 	Power@pluga:
-		RequiresCondition: powrup.a
+		RequiresCondition: powrup.a && !power-outage
 		Amount: 50
 	WithIdleOverlay@pluga:
 		RequiresCondition: powrup.a
+		PauseOnCondition: disabled
 		Sequence: idle-powrupa
 	Pluggable@plugb:
 		Offset: 1,1
@@ -52,9 +54,10 @@ GAPOWR:
 			powrup: powrup.b
 	WithIdleOverlay@plugb:
 		RequiresCondition: powrup.b
+		PauseOnCondition: disabled
 		Sequence: idle-powrupb
 	Power@plugb:
-		RequiresCondition: powrup.b
+		RequiresCondition: powrup.b && !power-outage
 		Amount: 50
 	ProvidesPrerequisite@buildingname:
 	SelectionDecorations:
@@ -271,8 +274,10 @@ GADEPT:
 	WithIdleOverlay@CIRCUITS:
 		Sequence: circuits
 	WithRepairOverlay@CRANE:
+		PauseOnCondition: empdisable
 		Sequence: crane
 	WithRepairOverlay@PLATFORM:
+		RequiresCondition: !empdisable
 		Sequence: platform
 	WithDeathAnimation@BIB:
 		DeathSequence: dead-ground
@@ -290,6 +295,7 @@ GADEPT:
 
 GARADR:
 	Inherits: ^Building
+	Inherits@IDISABLED: ^DisabledOverlay
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 80
@@ -326,7 +332,7 @@ GARADR:
 		MaxHeightDelta: 3
 	WithIdleOverlay@DISH:
 		Sequence: idle-dish
-		PauseOnLowPower: yes
+		PauseOnCondition: disabled
 	Targetable:
 		TargetTypes: Ground, C4, SpyInfiltrate
 	Power:
@@ -334,11 +340,10 @@ GARADR:
 	ProvidesPrerequisite@buildingname:
 	SelectionDecorations:
 		VisualBounds: 96, 118, 0, -38
-	GrantConditionOnDisabled@IDISABLE:
-		Condition: disabled
 
 GATECH:
 	Inherits: ^Building
+	Inherits@IDISABLE: ^DisabledOverlay
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 150
@@ -363,9 +368,11 @@ GATECH:
 		Range: 4c0
 		MaxHeightDelta: 3
 	WithIdleOverlay@LIGHTS:
+		RequiresCondition: !disabled
 		Sequence: idle-lights
 	Power:
 		Amount: -150
+	RequiresPower:
 	ProvidesPrerequisite@buildingname:
 	SelectionDecorations:
 		VisualBounds: 110, 60, 3, -4
@@ -393,10 +400,13 @@ GAPLUG:
 		PowerupSpeech: EnablePower
 		PowerdownSpeech: DisablePower
 	WithIdleOverlay@DISH:
+		PauseOnCondition: disabled
 		Sequence: idle-dish
 	WithIdleOverlay@LIGHTS:
+		RequiresCondition: !disabled
 		Sequence: idle-lights
 	WithIdleOverlay@STRIP:
+		RequiresCondition: !disabled
 		Sequence: idle-strip
 	Health:
 		HP: 1000
@@ -407,6 +417,7 @@ GAPLUG:
 		MaxHeightDelta: 3
 	IonCannonPower:
 		Cursor: ioncannon
+		PauseOnCondition: disabled || empdisable
 		RequiresCondition: plug.ioncannona || plug.ioncannonb
 		Icon: ioncannon
 		Effect: explosion
@@ -421,6 +432,7 @@ GAPLUG:
 		DisplayRadarPing: True
 		CameraActor: camera
 	ProduceActorPower:
+		PauseOnCondition: disabled || empdisable
 		RequiresCondition: plug.hunterseekera || plug.hunterseekerb
 		Description: Hunter Seeker
 		LongDesc: Releases a drone that will acquire and destroy an enemy target.
@@ -451,9 +463,11 @@ GAPLUG:
 			plug.hunterseeker: !plug.hunterseekerb && !plug.ioncannona && !plug.hunterseekera
 	WithIdleOverlay@ioncannona:
 		RequiresCondition: plug.ioncannona
+		PauseOnCondition: disabled
 		Sequence: idle-ioncannona
 	WithIdleOverlay@hunterseekera:
 		RequiresCondition: plug.hunterseekera
+		PauseOnCondition: disabled
 		Sequence: idle-hunterseekera
 	Pluggable@plugb:
 		Offset: 1,2
@@ -465,9 +479,11 @@ GAPLUG:
 			plug.hunterseeker: !plug.hunterseekera && !plug.ioncannonb && !plug.hunterseekerb
 	WithIdleOverlay@ioncannonb:
 		RequiresCondition: plug.ioncannonb
+		PauseOnCondition: disabled
 		Sequence: idle-ioncannonb
 	WithIdleOverlay@hunterseekerb:
 		RequiresCondition: plug.hunterseekerb
+		PauseOnCondition: disabled
 		Sequence: idle-hunterseekerb
 	ProvidesPrerequisite@buildingname:
 	SelectionDecorations:

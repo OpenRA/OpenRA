@@ -972,3 +972,12 @@
 		Palette: disabled
 	GrantConditionOnDisabled@IDISABLE:
 		Condition: disabled
+
+^DisabledByPowerOutage:
+	AffectedByPowerOutage:
+		Condition: power-outage
+	InfiltrateForPowerOutage:
+	DisableOnCondition@POWER_OUTAGE:
+		RequiresCondition: power-outage
+	Power:
+		RequiresCondition: !power-outage

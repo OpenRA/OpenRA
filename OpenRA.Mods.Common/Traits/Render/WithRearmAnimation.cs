@@ -14,32 +14,29 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits.Render
 {
 	[Desc("Replaces the building animation when it rearms a unit.")]
-	public class WithRearmAnimationInfo : ITraitInfo, Requires<WithSpriteBodyInfo>
+	public class WithRearmAnimationInfo : ConditionalTraitInfo, Requires<WithSpriteBodyInfo>
 	{
 		[Desc("Sequence name to use")]
 		[SequenceReference] public readonly string Sequence = "active";
 
-		public readonly bool PauseOnLowPower = false;
-
-		public object Create(ActorInitializer init) { return new WithRearmAnimation(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new WithRearmAnimation(init.Self, this); }
 	}
 
-	public class WithRearmAnimation : INotifyRearm, INotifyBuildComplete, INotifySold
+	public class WithRearmAnimation : ConditionalTrait<WithRearmAnimationInfo>, INotifyRearm, INotifyBuildComplete, INotifySold
 	{
-		readonly WithRearmAnimationInfo info;
 		readonly WithSpriteBody spriteBody;
 		bool buildComplete;
 
 		public WithRearmAnimation(Actor self, WithRearmAnimationInfo info)
+			: base(info)
 		{
-			this.info = info;
 			spriteBody = self.TraitOrDefault<WithSpriteBody>();
 		}
 
 		void INotifyRearm.Rearming(Actor self, Actor target)
 		{
-			if (buildComplete && spriteBody != null && !(info.PauseOnLowPower && self.IsDisabled()))
-				spriteBody.PlayCustomAnimation(self, info.Sequence, () => spriteBody.CancelCustomAnimation(self));
+			if (buildComplete && spriteBody != null && !IsTraitDisabled)
+				spriteBody.PlayCustomAnimation(self, Info.Sequence, () => spriteBody.CancelCustomAnimation(self));
 		}
 
 		void INotifyBuildComplete.BuildingComplete(Actor self)

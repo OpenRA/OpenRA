@@ -1,6 +1,7 @@
 NAPOWR:
 	Inherits: ^Building
 	Inherits@IDISABLE: ^DisabledOverlay
+	Inherits@POWER_OUTAGE: ^DisabledByPowerOutage
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 20
@@ -25,11 +26,10 @@ NAPOWR:
 		Range: 4c0
 		MaxHeightDelta: 3
 	WithIdleOverlay@LIGHTS:
+		RequiresCondition: !disabled
 		Sequence: idle-lights
 	Power:
 		Amount: 100
-	InfiltrateForPowerOutage:
-	AffectedByPowerOutage:
 	Targetable:
 		TargetTypes: Ground, C4, DetonateAttack, SpyInfiltrate
 	ScalePowerWithHealth:
@@ -40,6 +40,7 @@ NAPOWR:
 NAAPWR:
 	Inherits: ^Building
 	Inherits@IDISABLE: ^DisabledOverlay
+	Inherits@POWER_OUTAGE: ^DisabledByPowerOutage
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 120
@@ -64,11 +65,10 @@ NAAPWR:
 		Range: 4c0
 		MaxHeightDelta: 3
 	WithIdleOverlay@LIGHTS:
+		RequiresCondition: !disabled
 		Sequence: idle-lights
 	Power:
 		Amount: 200
-	InfiltrateForPowerOutage:
-	AffectedByPowerOutage:
 	Targetable:
 		TargetTypes: Ground, C4, DetonateAttack, SpyInfiltrate
 	ScalePowerWithHealth:
@@ -249,6 +249,7 @@ NAHPAD:
 
 NARADR:
 	Inherits: ^Building
+	Inherits@IDISABLED: ^DisabledOverlay
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 90
@@ -285,7 +286,7 @@ NARADR:
 		MaxHeightDelta: 3
 	WithIdleOverlay@DISH:
 		Sequence: idle-dish
-		PauseOnLowPower: true
+		PauseOnCondition: disabled
 	Targetable:
 		TargetTypes: Ground, C4, SpyInfiltrate
 	Power:
@@ -293,11 +294,10 @@ NARADR:
 	ProvidesPrerequisite@buildingname:
 	SelectionDecorations:
 		VisualBounds: 96, 72, 0, -12
-	GrantConditionOnDisabled@IDISABLE:
-		Condition: disabled
 
 NATECH:
 	Inherits: ^Building
+	Inherits@IDISABLED: ^DisabledOverlay
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 160
@@ -322,15 +322,18 @@ NATECH:
 		Range: 4c0
 		MaxHeightDelta: 3
 	WithIdleOverlay@LIGHTS:
+		RequiresCondition: !disabled
 		Sequence: idle-lights
 	Power:
 		Amount: -150
+	RequiresPower:
 	ProvidesPrerequisite@buildingname:
 	SelectionDecorations:
 		VisualBounds: 86, 58, 0, -4
 
 NATMPL:
 	Inherits: ^Building
+	Inherits@IDISABLED: ^DisabledOverlay
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 180
@@ -356,9 +359,12 @@ NATMPL:
 		MaxHeightDelta: 3
 	Power:
 		Amount: -200
+	RequiresPower:
 	WithIdleOverlay@LIGHTS:
+		RequiresCondition: !disabled
 		Sequence: idle-lights
 	ProduceActorPower:
+		PauseOnCondition: empdisable
 		Description: Hunter Seeker
 		LongDesc: Releases a drone that will acquire and destroy an enemy target.
 		Prerequisites: ~techlevel.superweapons
