@@ -95,7 +95,7 @@ HARV:
 	Explodes:
 		Weapon: TiberiumExplosion
 	WithHarvestOverlay:
-		LocalOffset: 384,0,0
+		LocalOffset: 543,0,0
 		Palette: effect
 	SelectionDecorations:
 		VisualBounds: 36,36

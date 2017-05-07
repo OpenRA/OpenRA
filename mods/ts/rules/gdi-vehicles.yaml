@@ -85,7 +85,7 @@ HVR:
 		MaxHeightDelta: 3
 	Armament:
 		Weapon: HoverMissile
-		LocalOffset: 0,171,384, 0,-171,384
+		LocalOffset: 0,242,543, 0,-242,543
 	Turreted:
 		TurnSpeed: 7
 		Offset: -128,0,85
@@ -188,16 +188,16 @@ MMCH:
 		MuzzlePalette: effect-ignore-lighting
 		Recoil: 128
 		RecoilRecovery: 32
-		LocalOffset: 640, 192, 832
+		LocalOffset: 905,272,1177
 	WithMuzzleOverlay:
 	RenderVoxels:
 	WithVoxelBarrel:
-		LocalOffset: -64, 64, 256
+		LocalOffset: -91,91,362
 	AutoTarget:
 	Selectable:
 		Bounds: 30, 42, 0, -8
 	Carryable:
-		LocalOffset: 0, 0, 408
+		LocalOffset: 0,0,577
 
 HMEC:
 	Inherits: ^Tank
@@ -231,17 +231,17 @@ HMEC:
 	AutoTarget:
 	Armament@MISSILES:
 		Weapon: MammothTusk
-		LocalOffset: -172,-260,854, -172,260,854
+		LocalOffset: -243,-368,1208, -243,368,1208
 	Armament@RAILGUN:
 		Weapon: MechRailgun
-		LocalOffset: 260,-220,728, 260,220,728
+		LocalOffset: 368,-311,1030, 368,311,1030
 	-WithVoxelBody:
 	WithVoxelWalkerBody:
 		TickRate: 1
 	Selectable:
 		Bounds: 40, 40, 0, -8
 	Carryable:
-		LocalOffset: 0, 0, 360
+		LocalOffset: 0,0,509
 
 SONIC:
 	Inherits: ^Tank
@@ -272,7 +272,7 @@ SONIC:
 		MaxHeightDelta: 3
 	Armament:
 		Weapon: SonicZap
-		LocalOffset: -50,0,410
+		LocalOffset: -71,0,580
 	AttackTurreted:
 		Voice: Attack
 	Turreted:

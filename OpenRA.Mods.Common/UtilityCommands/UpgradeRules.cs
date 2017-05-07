@@ -636,8 +636,20 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				}
 
 				if (engineVersion < 20170507)
+				{
 					if (node.Key == "Offset" && parent.Key.StartsWith("WithHarvestOverlay", StringComparison.Ordinal))
 						RenameNodeKey(node, "LocalOffset");
+
+					if (node.Key == "LocalOffset")
+					{
+						var orig = FieldLoader.GetValue<WVec[]>(node.Key, node.Value.Value);
+						var scaled = orig.Select(o => FieldSaver.FormatValue(new WVec(
+							(int)Math.Round(Math.Sqrt(2) * o.X),
+							(int)Math.Round(Math.Sqrt(2) * o.Y),
+							(int)Math.Round(Math.Sqrt(2) * o.Z))));
+						node.Value.Value = scaled.JoinWith(", ");
+					}
+				}
 
 				UpgradeActorRules(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
