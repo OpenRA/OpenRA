@@ -105,7 +105,14 @@ namespace OpenRA
 			{
 				ClientIndex = client.Index;
 				Color = client.Color;
-				PlayerName = client.Name;
+				if (client.Bot != null)
+				{
+					var botsOfSameType = world.LobbyInfo.Clients.Where(c => c.Bot == client.Bot).ToArray();
+					PlayerName = botsOfSameType.Length == 1 ? client.Bot : "{0} {1}".F(client.Bot, botsOfSameType.IndexOf(client) + 1);
+				}
+				else
+					PlayerName = client.Name;
+
 				botType = client.Bot;
 				Faction = ChooseFaction(world, client.Faction, !pr.LockFaction);
 				DisplayFaction = ChooseDisplayFaction(world, client.Faction);
