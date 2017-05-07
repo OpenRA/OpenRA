@@ -114,7 +114,7 @@ Grenade:
 	Range: 4c512
 	-Report:
 	Projectile: Bullet
-		Speed: 160
+		Speed: 226
 		Blockable: true
 		Shadow: true
 		LaunchAngle: 60
