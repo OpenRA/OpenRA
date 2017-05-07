@@ -120,7 +120,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 
 		public IPathSearch WithIgnoredActor(Actor b)
 		{
-			Graph.IgnoredActor = b;
+			Graph.IgnoreActor = b;
 			return this;
 		}
 

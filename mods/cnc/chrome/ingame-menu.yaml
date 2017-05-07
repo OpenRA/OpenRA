@@ -4,14 +4,14 @@ Container@INGAME_MENU:
 	Logic: IngameMenuLogic
 	Children:
 		Image@EVA:
-			X: WINDOW_RIGHT-128-43
+			X: WINDOW_RIGHT - 128 - 43
 			Y: 43
 			Width: 128
 			Height: 64
 			ImageCollection: logos
 			ImageName: eva
 		Label@VERSION_LABEL:
-			X: WINDOW_RIGHT-128-43
+			X: WINDOW_RIGHT - 128 - 43
 			Y: 115
 			Width: 128
 			Align: Center
@@ -22,8 +22,8 @@ Container@INGAME_MENU:
 			Background: shellmapborder
 		Container@PANEL_ROOT:
 		Container@MENU_BUTTONS:
-			X: (WINDOW_RIGHT-WIDTH)/2
-			Y: WINDOW_BOTTOM-33-HEIGHT-10
+			X: (WINDOW_RIGHT - WIDTH) / 2
+			Y: WINDOW_BOTTOM - 33 - HEIGHT - 10
 			Width: 740
 			Height: 35
 			Children:

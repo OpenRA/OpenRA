@@ -2377,23 +2377,23 @@ Actors:
 	Actor679: srock05
 		Location: 144,-8
 		Owner: Neutral
-#	Actor680: lobrdg_r_nw
-#		Location: 152,-16
-#		Owner: Neutral
+	Actor680: lobrdg_r_nw
+		Location: 152,-17
+		Owner: Neutral
 	Actor681: bridge2
 		Location: 140,-3
 		Owner: Neutral
-#	Actor682: lobrdg_b
-#		Location: 153,-16
-#		Owner: Neutral
-#		Health: 50
+	Actor682: lobrdg_b
+		Location: 153,-17
+		Owner: Neutral
+		Health: 50
 	Actor683: srock04
 		Location: 145,-7
 		Owner: Neutral
-#	Actor684: lobrdg_b
-#		Location: 154,-16
-#		Owner: Neutral
-#		Health: 25
+	Actor684: lobrdg_b
+		Location: 154,-17
+		Owner: Neutral
+		Health: 25
 	Actor685: crat01
 		Location: 115,24
 		Owner: Neutral
@@ -2487,10 +2487,10 @@ Actors:
 	Actor715: crat03
 		Location: 105,50
 		Owner: Neutral
-#	Actor716: lobrdg_r_se
-#		Location: 171,-16
-#		Owner: Neutral
-#		Health: 50
+	Actor716: lobrdg_r_se
+		Location: 171,-17
+		Owner: Neutral
+		Health: 50
 	Actor717: trock05
 		Location: 189,-34
 		Owner: Neutral
@@ -2564,6 +2564,15 @@ Actors:
 		Owner: Creeps
 		Location: 58,23
 		Facing: 92
+	Actor741: tuntop04
+		Owner: Neutral
+		Location: 183,-43
+	Actor742: lobrdg_b_d
+		Owner: Neutral
+		Location: 155,-17
+	Actor743: lobrdg_b_d
+		Owner: Neutral
+		Location: 170,-17
 
 Rules: rules.yaml
 

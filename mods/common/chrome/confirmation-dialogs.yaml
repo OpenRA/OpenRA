@@ -1,6 +1,6 @@
 Background@THREEBUTTON_PROMPT:
-	X: (WINDOW_RIGHT - WIDTH)/2
-	Y: (WINDOW_BOTTOM - 90)/2
+	X: (WINDOW_RIGHT - WIDTH) / 2
+	Y: (WINDOW_BOTTOM - 90) / 2
 	Width: 600
 	Height: 110
 	Children:
@@ -44,8 +44,8 @@ Background@THREEBUTTON_PROMPT:
 			Visible: false
 
 Background@TWOBUTTON_PROMPT:
-	X: (WINDOW_RIGHT - WIDTH)/2
-	Y: (WINDOW_BOTTOM - 90)/2
+	X: (WINDOW_RIGHT - WIDTH) / 2
+	Y: (WINDOW_BOTTOM - 90) / 2
 	Width: 370
 	Height: 110
 	Children:
@@ -81,8 +81,8 @@ Background@TWOBUTTON_PROMPT:
 			Visible: false
 
 Background@TEXT_INPUT_PROMPT:
-	X: (WINDOW_RIGHT - WIDTH)/2
-	Y: (WINDOW_BOTTOM - HEIGHT)/2
+	X: (WINDOW_RIGHT - WIDTH) / 2
+	Y: (WINDOW_BOTTOM - HEIGHT) / 2
 	Width: 370
 	Height: 175
 	Children:

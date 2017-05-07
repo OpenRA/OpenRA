@@ -41,7 +41,7 @@ Container@OBSERVER_WIDGETS:
 					Font: Bold
 					Contrast: true
 		Background@RADAR_BG:
-			X: WINDOW_RIGHT-255
+			X: WINDOW_RIGHT - 255
 			Y: 5
 			Width: 250
 			Height: 250
@@ -49,11 +49,11 @@ Container@OBSERVER_WIDGETS:
 				Radar@INGAME_RADAR:
 					X: 10
 					Y: 10
-					Width: PARENT_RIGHT-19
-					Height: PARENT_BOTTOM-19
+					Width: PARENT_RIGHT - 19
+					Height: PARENT_BOTTOM - 19
 					WorldInteractionController: INTERACTION_CONTROLLER
 		Background@OBSERVER_CONTROL_BG:
-			X: WINDOW_RIGHT-255
+			X: WINDOW_RIGHT - 255
 			Y: 260
 			Width: 250
 			Height: 55
@@ -137,7 +137,7 @@ Container@OBSERVER_WIDGETS:
 							Text: 100%
 							Font: TinyBold
 						Button@BUTTON_FAST:
-							X: 55 + 45*2
+							X: 55 + 45 * 2
 							Y: 13
 							Width: 38
 							Height: 20
@@ -148,7 +148,7 @@ Container@OBSERVER_WIDGETS:
 							Text: 200%
 							Font: TinyBold
 						Button@BUTTON_MAXIMUM:
-							X: 55 + 45*3
+							X: 55 + 45 * 3
 							Y: 13
 							Width: 38
 							Height: 20

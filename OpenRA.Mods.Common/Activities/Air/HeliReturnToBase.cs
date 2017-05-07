@@ -31,11 +31,13 @@ namespace OpenRA.Mods.Common.Activities
 			this.dest = dest;
 		}
 
-		public Actor ChooseHelipad(Actor self)
+		public Actor ChooseHelipad(Actor self, bool unreservedOnly)
 		{
 			var rearmBuildings = heli.Info.RearmBuildings;
-			return self.World.Actors.Where(a => a.Owner == self.Owner).FirstOrDefault(
-				a => rearmBuildings.Contains(a.Info.Name) && !Reservable.IsReserved(a));
+			return self.World.Actors.Where(a => a.Owner == self.Owner
+				&& rearmBuildings.Contains(a.Info.Name)
+				&& (!unreservedOnly || !Reservable.IsReserved(a)))
+				.ClosestTo(self);
 		}
 
 		public override Activity Tick(Actor self)
@@ -44,16 +46,13 @@ namespace OpenRA.Mods.Common.Activities
 				return NextActivity;
 
 			if (dest == null || dest.IsDead || Reservable.IsReserved(dest))
-				dest = ChooseHelipad(self);
+				dest = ChooseHelipad(self, true);
 
 			var initialFacing = heli.Info.InitialFacing;
 
 			if (dest == null || dest.IsDead)
 			{
-				var rearmBuildings = heli.Info.RearmBuildings;
-				var nearestHpad = self.World.ActorsHavingTrait<Reservable>()
-					.Where(a => a.Owner == self.Owner && rearmBuildings.Contains(a.Info.Name))
-					.ClosestTo(self);
+				var nearestHpad = ChooseHelipad(self, false);
 
 				if (nearestHpad == null)
 					return ActivityUtils.SequenceActivities(new Turn(self, initialFacing), new HeliLand(self, true), NextActivity);

@@ -25,21 +25,21 @@ Background@KICK_CLIENT_DIALOG:
 			Align: Center
 			Text: them from joining for the remainder of this game.
 		Checkbox@PREVENT_REJOINING_CHECKBOX:
-			X: (PARENT_RIGHT - WIDTH)/2
+			X: (PARENT_RIGHT - WIDTH) / 2
 			Y: 120
 			Width: 150
 			Height: 20
 			Font: Regular
 			Text: Temporarily Ban
 		Button@OK_BUTTON:
-			X: (PARENT_RIGHT - WIDTH)/2 + 75
+			X: (PARENT_RIGHT - WIDTH) / 2 + 75
 			Y: 155
 			Width: 120
 			Height: 25
 			Text: Kick
 			Font: Bold
 		Button@CANCEL_BUTTON:
-			X: (PARENT_RIGHT - WIDTH)/2 - 75
+			X: (PARENT_RIGHT - WIDTH) / 2 - 75
 			Y: 155
 			Width: 120
 			Height: 25
@@ -66,14 +66,14 @@ Background@KICK_SPECTATORS_DIALOG:
 			Font: Regular
 			Align: Center
 		Button@OK_BUTTON:
-			X: (PARENT_RIGHT - WIDTH)/2 + 75
+			X: (PARENT_RIGHT - WIDTH) / 2 + 75
 			Y: 155
 			Width: 120
 			Height: 25
 			Text: Ok
 			Font: Bold
 		Button@CANCEL_BUTTON:
-			X: (PARENT_RIGHT - WIDTH)/2 - 75
+			X: (PARENT_RIGHT - WIDTH) / 2 - 75
 			Y: 155
 			Width: 120
 			Height: 25
@@ -126,14 +126,14 @@ Background@FORCE_START_DIALOG:
 					Align: Center
 					Text: map, and will be kicked from the server.
 		Button@OK_BUTTON:
-			X: (PARENT_RIGHT - WIDTH)/2 + 75
+			X: (PARENT_RIGHT - WIDTH) / 2 + 75
 			Y: 155
 			Width: 120
 			Height: 25
 			Text: Start
 			Font: Bold
 		Button@CANCEL_BUTTON:
-			X: (PARENT_RIGHT - WIDTH)/2 - 75
+			X: (PARENT_RIGHT - WIDTH) / 2 - 75
 			Y: 155
 			Width: 120
 			Height: 25

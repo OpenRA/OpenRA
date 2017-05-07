@@ -1,13 +1,13 @@
 Container@REPLAYBROWSER_PANEL:
 	Logic: ReplayBrowserLogic
-	X: (WINDOW_RIGHT - WIDTH)/2
-	Y: (WINDOW_BOTTOM - HEIGHT)/2
+	X: (WINDOW_RIGHT - WIDTH) / 2
+	Y: (WINDOW_BOTTOM - HEIGHT) / 2
 	Width: 780
 	Height: 500
 	Children:
 		Label@TITLE:
 			Width: PARENT_RIGHT
-			Y: 0-25
+			Y: 0 - 25
 			Font: BigBold
 			Contrast: true
 			Align: Center
@@ -184,14 +184,14 @@ Container@REPLAYBROWSER_PANEL:
 							CollapseHiddenChildren: True
 							Children:
 								ScrollItem@REPLAY_TEMPLATE:
-									Width: PARENT_RIGHT-27
+									Width: PARENT_RIGHT - 27
 									Height: 25
 									X: 2
 									Visible: false
 									Children:
 										Label@TITLE:
 											X: 10
-											Width: PARENT_RIGHT-20
+											Width: PARENT_RIGHT - 20
 											Height: 25
 				Container@MAP_BG_CONTAINER:
 					X: PARENT_RIGHT - WIDTH - 20
@@ -219,9 +219,9 @@ Container@REPLAYBROWSER_PANEL:
 									TooltipContainer: TOOLTIP_CONTAINER
 				Container@REPLAY_INFO:
 					X: PARENT_RIGHT - WIDTH - 20
-					Y: 20 + 30+194 + 10
+					Y: 20 + 30 + 194 + 10
 					Width: 194
-					Height: PARENT_BOTTOM - 20 - 30-194 - 10 - 20
+					Height: PARENT_BOTTOM - 20 - 30 - 194 - 10 - 20
 					Children:
 						Label@MAP_TITLE:
 							Y: 0
@@ -248,7 +248,7 @@ Container@REPLAYBROWSER_PANEL:
 							IgnoreChildMouseOver: true
 							Children:
 								ScrollItem@HEADER:
-									Width: PARENT_RIGHT-27
+									Width: PARENT_RIGHT - 27
 									Height: 13
 									X: 2
 									Y: 0
@@ -260,7 +260,7 @@ Container@REPLAYBROWSER_PANEL:
 											Height: 10
 											Align: Center
 								ScrollItem@TEMPLATE:
-									Width: PARENT_RIGHT-27
+									Width: PARENT_RIGHT - 27
 									Height: 25
 									X: 2
 									Y: 0
@@ -273,7 +273,7 @@ Container@REPLAYBROWSER_PANEL:
 											Height: 16
 										Label@LABEL:
 											X: 40
-											Width: PARENT_RIGHT-50
+											Width: PARENT_RIGHT - 50
 											Height: 25
 											Shadow: True
 										Label@NOFLAG_LABEL:

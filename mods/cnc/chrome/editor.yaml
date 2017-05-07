@@ -1,7 +1,7 @@
 Container@NEW_MAP_BG:
 	Logic: NewMapLogic
-	X: (WINDOW_RIGHT - WIDTH)/2
-	Y: (WINDOW_BOTTOM - HEIGHT)/2
+	X: (WINDOW_RIGHT - WIDTH) / 2
+	Y: (WINDOW_BOTTOM - HEIGHT) / 2
 	Width: 300
 	Height: 125
 	Children:
@@ -12,7 +12,7 @@ Container@NEW_MAP_BG:
 		Label@TITLE:
 			Text: New Map
 			Width: PARENT_RIGHT
-			Y: 0-25
+			Y: 0 - 25
 			Font: BigBold
 			Contrast: true
 			Align: Center
@@ -79,15 +79,15 @@ Container@NEW_MAP_BG:
 
 Container@SAVE_MAP_PANEL:
 	Logic: SaveMapLogic
-	X: (WINDOW_RIGHT - WIDTH)/2
-	Y: (WINDOW_BOTTOM - HEIGHT)/2
+	X: (WINDOW_RIGHT - WIDTH) / 2
+	Y: (WINDOW_BOTTOM - HEIGHT) / 2
 	Width: 345
 	Height: 229
 	Children:
 		Label@LABEL_TITLE:
 			Text: Save Map
 			Width: PARENT_RIGHT
-			Y: 0-25
+			Y: 0 - 25
 			Font: BigBold
 			Contrast: true
 			Align: Center
@@ -220,7 +220,7 @@ Container@EDITOR_WORLD_ROOT:
 			Height: WINDOW_BOTTOM
 			IgnoreMouseOver: True
 		Background@RADAR_BG:
-			X: WINDOW_RIGHT-255
+			X: WINDOW_RIGHT - 255
 			Y: 5
 			Width: 250
 			Height: 250
@@ -229,12 +229,12 @@ Container@EDITOR_WORLD_ROOT:
 				Radar@INGAME_RADAR:
 					X: 1
 					Y: 1
-					Width: PARENT_RIGHT-2
-					Height: PARENT_BOTTOM-2
+					Width: PARENT_RIGHT - 2
+					Height: PARENT_BOTTOM - 2
 		MenuButton@OPTIONS_BUTTON:
 			Logic: MenuButtonsChromeLogic
 			Key: escape
-			X: WINDOW_RIGHT-254-WIDTH
+			X: WINDOW_RIGHT - 254 - WIDTH
 			Y: 5
 			Width: 30
 			Height: 25
@@ -248,10 +248,10 @@ Container@EDITOR_WORLD_ROOT:
 					ImageName: options
 		Container@TILE_WIDGETS:
 			Logic: TileSelectorLogic
-			X: WINDOW_RIGHT-255
+			X: WINDOW_RIGHT - 255
 			Y: 278
 			Width: 250
-			Height: WINDOW_BOTTOM-370
+			Height: WINDOW_BOTTOM - 370
 			ClickThrough: false
 			Children:
 				Container@TILES_BG:
@@ -279,10 +279,10 @@ Container@EDITOR_WORLD_ROOT:
 											Y: 4
 		Container@LAYER_WIDGETS:
 			Logic: LayerSelectorLogic
-			X: WINDOW_RIGHT-255
+			X: WINDOW_RIGHT - 255
 			Y: 278
 			Width: 250
-			Height: WINDOW_BOTTOM-370
+			Height: WINDOW_BOTTOM - 370
 			ClickThrough: false
 			Children:
 				Container@LAYERS_BG:
@@ -306,10 +306,10 @@ Container@EDITOR_WORLD_ROOT:
 											Visible: false
 		Container@ACTOR_WIDGETS:
 			Logic: ActorSelectorLogic
-			X: WINDOW_RIGHT-255
+			X: WINDOW_RIGHT - 255
 			Y: 278
 			Width: 250
-			Height: WINDOW_BOTTOM-370
+			Height: WINDOW_BOTTOM - 370
 			ClickThrough: false
 			Children:
 				Container@ACTORS_BG:
@@ -340,7 +340,7 @@ Container@EDITOR_WORLD_ROOT:
 											Visible: true
 		Container@MAP_EDITOR_TAB_CONTAINER:
 			Logic: MapEditorTabsLogic
-			X: WINDOW_RIGHT-255
+			X: WINDOW_RIGHT - 255
 			Y: 254
 			Width: 250
 			Height: 25
@@ -390,7 +390,7 @@ Container@EDITOR_WORLD_ROOT:
 			Height: 25
 			Font: Bold
 		Button@COPYPASTE_BUTTON:
-			X: WINDOW_RIGHT-390
+			X: WINDOW_RIGHT - 390
 			Y: 5
 			Width: 96
 			Height: 25

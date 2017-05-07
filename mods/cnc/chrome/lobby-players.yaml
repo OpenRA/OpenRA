@@ -4,7 +4,7 @@ Container@LOBBY_PLAYER_BIN:
 	Children:
 		Container@LABEL_CONTAINER:
 			X: 5
-			Y: 0-25
+			Y: 0 - 25
 			Width: PARENT_RIGHT
 			Height: PARENT_BOTTOM
 			Children:
@@ -76,8 +76,8 @@ Container@LOBBY_PLAYER_BIN:
 								ColorBlock@LATENCY_COLOR:
 									X: 2
 									Y: 2
-									Width: PARENT_RIGHT-4
-									Height: PARENT_BOTTOM-4
+									Width: PARENT_RIGHT - 4
+									Height: PARENT_BOTTOM - 4
 						ClientTooltipRegion@CLIENT_REGION:
 							Width: 11
 							Height: 25
@@ -107,8 +107,8 @@ Container@LOBBY_PLAYER_BIN:
 								ColorBlock@COLORBLOCK:
 									X: 5
 									Y: 6
-									Width: PARENT_RIGHT-35
-									Height: PARENT_BOTTOM-12
+									Width: PARENT_RIGHT - 35
+									Height: PARENT_BOTTOM - 12
 						DropDownButton@FACTION:
 							X: 291
 							Width: 120
@@ -129,12 +129,12 @@ Container@LOBBY_PLAYER_BIN:
 									Width: 60
 									Height: 25
 									Text: Faction
-						DropDownButton@TEAM:
+						DropDownButton@TEAM_DROPDOWN:
 							X: 416
 							Width: 50
 							Height: 25
 							Font: Regular
-						DropDownButton@SPAWN:
+						DropDownButton@SPAWN_DROPDOWN:
 							X: 471
 							Width: 50
 							Height: 25
@@ -174,8 +174,8 @@ Container@LOBBY_PLAYER_BIN:
 								ColorBlock@LATENCY_COLOR:
 									X: 2
 									Y: 2
-									Width: PARENT_RIGHT-4
-									Height: PARENT_BOTTOM-4
+									Width: PARENT_RIGHT - 4
+									Height: PARENT_BOTTOM - 4
 						ClientTooltipRegion@CLIENT_REGION:
 							Width: 11
 							Height: 25
@@ -183,7 +183,7 @@ Container@LOBBY_PLAYER_BIN:
 							Template: CLIENT_TOOLTIP
 						Label@NAME:
 							X: 20
-							Y: 0-1
+							Y: 0 - 1
 							Width: 180
 							Height: 25
 						Button@KICK:
@@ -226,6 +226,18 @@ Container@LOBBY_PLAYER_BIN:
 							Width: 25
 							Height: 25
 							Align: Center
+						DropDownButton@TEAM_DROPDOWN:
+							X: 416
+							Width: 50
+							Height: 25
+							Font: Regular
+							Visible: false
+						DropDownButton@SPAWN_DROPDOWN:
+							X: 471
+							Width: 50
+							Height: 25
+							Font: Regular
+							Visible: false
 						Image@STATUS_IMAGE:
 							X: 527
 							Y: 4
@@ -249,7 +261,7 @@ Container@LOBBY_PLAYER_BIN:
 							Visible: false
 						Label@NAME:
 							X: 20
-							Y: 0-1
+							Y: 0 - 1
 							Width: 195
 							Height: 25
 							Visible: false
@@ -280,8 +292,8 @@ Container@LOBBY_PLAYER_BIN:
 								ColorBlock@LATENCY_COLOR:
 									X: 2
 									Y: 2
-									Width: PARENT_RIGHT-4
-									Height: PARENT_BOTTOM-4
+									Width: PARENT_RIGHT - 4
+									Height: PARENT_BOTTOM - 4
 						ClientTooltipRegion@CLIENT_REGION:
 							Width: 11
 							Height: 25
@@ -335,8 +347,8 @@ Container@LOBBY_PLAYER_BIN:
 								ColorBlock@LATENCY_COLOR:
 									X: 2
 									Y: 2
-									Width: PARENT_RIGHT-4
-									Height: PARENT_BOTTOM-4
+									Width: PARENT_RIGHT - 4
+									Height: PARENT_BOTTOM - 4
 						ClientTooltipRegion@CLIENT_REGION:
 							Width: 11
 							Height: 25
@@ -344,7 +356,7 @@ Container@LOBBY_PLAYER_BIN:
 							Template: CLIENT_TOOLTIP
 						Label@NAME:
 							X: 20
-							Y: 0-1
+							Y: 0 - 1
 							Width: 180
 							Height: 25
 						Button@KICK:

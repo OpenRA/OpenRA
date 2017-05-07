@@ -381,6 +381,8 @@
 		ReferencePoint: Bottom, Right
 		RequiresCondition: hospitalheal
 	RevealOnFire:
+	EntersTunnels:
+		Voice: Move
 
 ^RegularInfantryDeath:
 	WithDeathAnimation@normal:
@@ -565,6 +567,8 @@
 	Carryable:
 		RequiresCondition: !inside-tunnel
 	RevealOnFire:
+	EntersTunnels:
+		Voice: Move
 
 ^Tank:
 	Inherits: ^Vehicle
@@ -710,6 +714,8 @@
 	Guardable:
 	WithFacingSpriteBody:
 	RevealOnFire:
+	EntersTunnels:
+		Voice: Move
 
 ^BlossomTree:
 	Inherits@1: ^SpriteActor
@@ -870,9 +876,21 @@
 		TerrainType: Rail
 
 ^Tunnel:
-	Inherits: ^TerrainOverlay
+	RenderSprites:
+		Palette: terraindecoration
+	WithSpriteBody:
+	BodyOrientation:
+		UseClassicPerspectiveFudge: False
+		QuantizedFacings: 1
+	Building:
+		Dimensions: 3, 3
+		Footprint: ___ ___ ___
 	CustomSelectionSize:
-		CustomBounds: 220,220
+		CustomBounds: 144, 144
+	Targetable:
+	AlwaysVisible:
+	TunnelEntrance:
+		Dimensions: 3, 3
 
 ^Gate:
 	Inherits: ^Building
@@ -954,3 +972,12 @@
 		Palette: disabled
 	GrantConditionOnDisabled@IDISABLE:
 		Condition: disabled
+
+^DisabledByPowerOutage:
+	AffectedByPowerOutage:
+		Condition: power-outage
+	InfiltrateForPowerOutage:
+	DisableOnCondition@POWER_OUTAGE:
+		RequiresCondition: power-outage
+	Power:
+		RequiresCondition: !power-outage

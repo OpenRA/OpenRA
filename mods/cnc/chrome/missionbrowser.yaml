@@ -1,12 +1,12 @@
 Container@MISSIONBROWSER_PANEL:
 	Logic: MissionBrowserLogic
-	X: (WINDOW_RIGHT - WIDTH)/2
-	Y: (WINDOW_BOTTOM - HEIGHT)/2
+	X: (WINDOW_RIGHT - WIDTH) / 2
+	Y: (WINDOW_BOTTOM - HEIGHT) / 2
 	Width: 714
 	Height: 420
 	Children:
 		Label@MISSIONBROWSER_TITLE:
-			Y: 0-25
+			Y: 0 - 25
 			Width: PARENT_RIGHT
 			Text: Missions
 			Align: Center
@@ -24,7 +24,7 @@ Container@MISSIONBROWSER_PANEL:
 					Height: 390
 					Children:
 						ScrollItem@HEADER:
-							Width: PARENT_RIGHT-27
+							Width: PARENT_RIGHT - 27
 							Height: 13
 							X: 2
 							Visible: false
@@ -35,14 +35,14 @@ Container@MISSIONBROWSER_PANEL:
 									Height: 10
 									Align: Center
 						ScrollItem@TEMPLATE:
-							Width: PARENT_RIGHT-27
+							Width: PARENT_RIGHT - 27
 							Height: 25
 							X: 2
 							Visible: False
 							Children:
 								Label@TITLE:
 									X: 10
-									Width: PARENT_RIGHT-20
+									Width: PARENT_RIGHT - 20
 									Height: 25
 				Container@MISSION_INFO:
 					X: 337
@@ -58,8 +58,8 @@ Container@MISSIONBROWSER_PANEL:
 								MapPreview@MISSION_PREVIEW:
 									X: 1
 									Y: 1
-									Width: PARENT_RIGHT-2
-									Height: PARENT_BOTTOM-2
+									Width: PARENT_RIGHT - 2
+									Height: PARENT_BOTTOM - 2
 									IgnoreMouseOver: True
 									IgnoreMouseInput: True
 									ShowSpawnPoints: False

@@ -116,6 +116,7 @@ GACTWR:
 	WithMuzzleOverlay:
 		RequiresCondition: tower.vulcan
 	WithIdleOverlay@LIGHTS:
+		RequiresCondition: !disabled
 		Sequence: idle-lights
 	LineBuildNode:
 		Types: turret

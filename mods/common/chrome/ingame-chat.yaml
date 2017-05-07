@@ -6,8 +6,8 @@ Container@CHAT_PANEL:
 	Logic: IngameChatLogic
 	Children:
 		Container@CHAT_OVERLAY:
-			Width: PARENT_RIGHT-24
-			Height: PARENT_BOTTOM-25
+			Width: PARENT_RIGHT - 24
+			Height: PARENT_BOTTOM - 25
 			Visible: false
 			Children:
 				ChatDisplay@CHAT_DISPLAY:
@@ -48,7 +48,7 @@ Container@CHAT_PANEL:
 					Children:
 						Container@CHAT_TEMPLATE:
 							X: 2
-							Width: PARENT_RIGHT-27
+							Width: PARENT_RIGHT - 27
 							Height: 16
 							Children:
 								Label@NAME:

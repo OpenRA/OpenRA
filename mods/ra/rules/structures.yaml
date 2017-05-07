@@ -21,6 +21,7 @@ MSLO:
 	RevealsShroud:
 		Range: 5c0
 	NukePower:
+		PauseOnCondition: disabled
 		Cursor: nuke
 		Icon: abomb
 		ChargeTime: 540
@@ -318,6 +319,7 @@ IRON:
 	Bib:
 		HasMinibib: Yes
 	GrantExternalConditionPower@IRONCURTAIN:
+		PauseOnCondition: disabled
 		Icon: invuln
 		ChargeTime: 120
 		Description: Invulnerability
@@ -375,6 +377,7 @@ PDOX:
 		Prerequisite: pdox.germany
 	ChronoshiftPower@chronoshift:
 		OrderName: Chronoshift
+		PauseOnCondition: disabled
 		Prerequisites: !pdox.germany
 		Icon: chrono
 		ChargeTime: 120
@@ -389,6 +392,7 @@ PDOX:
 		DisplayRadarPing: True
 	ChronoshiftPower@advancedchronoshift:
 		OrderName: AdvancedChronoshift
+		PauseOnCondition: disabled
 		Prerequisites: pdox.germany
 		Icon: chrono
 		ChargeTime: 120
@@ -811,6 +815,7 @@ ATEK:
 		Range: 6c0
 	Bib:
 	GpsPower:
+		PauseOnCondition: disabled
 		Icon: gps
 		OneShot: yes
 		ChargeTime: 480
@@ -1304,6 +1309,7 @@ AFLD:
 POWR:
 	Inherits: ^Building
 	Inherits@IDISABLE: ^DisabledOverlay
+	Inherits@POWER_OUTAGE: ^DisabledByPowerOutage
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 10
@@ -1327,8 +1333,6 @@ POWR:
 	Bib:
 	Power:
 		Amount: 100
-	InfiltrateForPowerOutage:
-	AffectedByPowerOutage:
 	Targetable:
 		TargetTypes: Ground, Structure, C4, DetonateAttack, SpyInfiltrate
 	ScalePowerWithHealth:
@@ -1339,6 +1343,7 @@ POWR:
 APWR:
 	Inherits: ^Building
 	Inherits@IDISABLE: ^DisabledOverlay
+	Inherits@POWER_OUTAGE: ^DisabledByPowerOutage
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 110
@@ -1366,8 +1371,6 @@ APWR:
 	Bib:
 	Power:
 		Amount: 200
-	InfiltrateForPowerOutage:
-	AffectedByPowerOutage:
 	Targetable:
 		TargetTypes: Ground, Structure, C4, DetonateAttack, SpyInfiltrate
 	ScalePowerWithHealth:

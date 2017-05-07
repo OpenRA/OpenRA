@@ -60,7 +60,7 @@ namespace OpenRA.Mods.AS.Traits.Render
 		}
 	}
 
-	public class WithIdleOverlayAS : ConditionalTrait<WithIdleOverlayASInfo>, INotifyDamageStateChanged, INotifyBuildComplete, INotifySold, INotifyTransform
+	public class WithIdleOverlayAS : PausableConditionalTrait<WithIdleOverlayASInfo>, INotifyDamageStateChanged, INotifyBuildComplete, INotifySold, INotifyTransform
 	{
 		readonly Animation overlay;
 		bool buildComplete;
@@ -74,8 +74,7 @@ namespace OpenRA.Mods.AS.Traits.Render
 			var image = info.Image != null ? info.Image : rs.GetImage(self);
 
 			buildComplete = !self.Info.HasTraitInfo<BuildingInfo>(); // always render instantly for units
-			overlay = new Animation(self.World, image,
-				() => (info.PauseOnLowPower && self.IsDisabled()) || !buildComplete);
+			overlay = new Animation(self.World, image, () => IsTraitPaused || !buildComplete);
 			if (info.StartSequence != null)
 				overlay.PlayThen(RenderSprites.NormalizeSequence(overlay, self.GetDamageState(), info.StartSequence),
 					() => overlay.PlayRepeating(RenderSprites.NormalizeSequence(overlay, self.GetDamageState(), info.Sequence)));

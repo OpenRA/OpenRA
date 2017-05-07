@@ -111,7 +111,7 @@ Container@MULTIPLAYER_CREATESERVER_PANEL:
 							WordWrap: True
 							Text: Your router does not seem to support UPnP. Please consult your router's manual.
 		Container@SIDEBAR:
-			X: PARENT_RIGHT-WIDTH
+			X: PARENT_RIGHT - WIDTH
 			Y: 30
 			Width: 174
 			Height: 280
@@ -134,7 +134,7 @@ Container@MULTIPLAYER_CREATESERVER_PANEL:
 					Align: Center
 		Button@MAP_BUTTON:
 			X: PARENT_RIGHT - WIDTH
-			Y: 284-30
+			Y: 284 - 30
 			Width: 174
 			Height: 25
 			Text: Choose Map
