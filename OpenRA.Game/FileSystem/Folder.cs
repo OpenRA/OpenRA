@@ -60,13 +60,16 @@ namespace OpenRA.FileSystem
 			// Other package types can be loaded normally
 			IReadOnlyPackage package;
 			var s = GetStream(filename);
+			if (s == null)
+				return null;
+
 			if (context.TryParsePackage(s, filename, out package))
 				return package;
 
 			s.Dispose();
 			return null;
 		}
-		
+
 		public void Update(string filename, byte[] contents)
 		{
 			// HACK: ZipFiles can't be loaded as read-write from a stream, so we are

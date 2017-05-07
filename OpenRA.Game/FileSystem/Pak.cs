@@ -9,76 +9,96 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.IO;
 
 namespace OpenRA.FileSystem
 {
-	struct Entry
+	public class PakFileLoader : IPackageLoader
 	{
-		public uint Offset;
-		public uint Length;
-		public string Filename;
-	}
-
-	public sealed class PakFile : IReadOnlyPackage
-	{
-		public string Name { get; private set; }
-		public IEnumerable<string> Contents { get { return index.Keys; } }
-
-		readonly Dictionary<string, Entry> index;
-		readonly Stream stream;
-
-		public PakFile(FileSystem context, string filename)
+		struct Entry
 		{
-			Name = filename;
-			index = new Dictionary<string, Entry>();
+			public uint Offset;
+			public uint Length;
+			public string Filename;
+		}
 
-			stream = context.Open(filename);
-			try
+		sealed class PakFile : IReadOnlyPackage
+		{
+			public string Name { get; private set; }
+			public IEnumerable<string> Contents { get { return index.Keys; } }
+
+			readonly Dictionary<string, Entry> index = new Dictionary<string, Entry>();
+			readonly Stream stream;
+
+			public PakFile(Stream stream, string filename)
 			{
-				index = new Dictionary<string, Entry>();
-				var offset = stream.ReadUInt32();
-				while (offset != 0)
+				Name = filename;
+				this.stream = stream;
+
+				try
 				{
-					var file = stream.ReadASCIIZ();
-					var next = stream.ReadUInt32();
-					var length = (next == 0 ? (uint)stream.Length : next) - offset;
+					var offset = stream.ReadUInt32();
+					while (offset != 0)
+					{
+						var file = stream.ReadASCIIZ();
+						var next = stream.ReadUInt32();
+						var length = (next == 0 ? (uint)stream.Length : next) - offset;
 
-					// Ignore duplicate files
-					if (index.ContainsKey(file))
-						continue;
+						// Ignore duplicate files
+						if (index.ContainsKey(file))
+							continue;
 
-					index.Add(file, new Entry { Offset = offset, Length = length, Filename = file });
-					offset = next;
+						index.Add(file, new Entry { Offset = offset, Length = length, Filename = file });
+						offset = next;
+					}
+				}
+				catch
+				{
+					Dispose();
+					throw;
 				}
 			}
-			catch
+
+			public Stream GetStream(string filename)
 			{
-				Dispose();
-				throw;
+				Entry entry;
+				if (!index.TryGetValue(filename, out entry))
+					return null;
+
+				stream.Seek(entry.Offset, SeekOrigin.Begin);
+				var data = stream.ReadBytes((int)entry.Length);
+				return new MemoryStream(data);
+			}
+
+			public bool Contains(string filename)
+			{
+				return index.ContainsKey(filename);
+			}
+
+			public IReadOnlyPackage OpenPackage(string filename, FileSystem context)
+			{
+				// Not implemented
+				return null;
+			}
+
+			public void Dispose()
+			{
+				stream.Dispose();
 			}
 		}
 
-		public Stream GetStream(string filename)
+		bool IPackageLoader.TryParsePackage(Stream s, string filename, FileSystem context, out IReadOnlyPackage package)
 		{
-			Entry entry;
-			if (!index.TryGetValue(filename, out entry))
-				return null;
+			if (!filename.EndsWith(".pak", StringComparison.InvariantCultureIgnoreCase))
+			{
+				package = null;
+				return false;
+			}
 
-			stream.Seek(entry.Offset, SeekOrigin.Begin);
-			var data = stream.ReadBytes((int)entry.Length);
-			return new MemoryStream(data);
-		}
-
-		public bool Contains(string filename)
-		{
-			return index.ContainsKey(filename);
-		}
-
-		public void Dispose()
-		{
-			stream.Dispose();
+			package = new PakFile(s, filename);
+			return true;
 		}
 	}
 }

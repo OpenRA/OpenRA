@@ -2,6 +2,8 @@ Metadata:
 	Title: Red Alert
 	Version: {DEV_VERSION}
 
+PackageFormats: Mix
+
 Packages:
 	~^Content/ra/v2/
 	~^Content/ra/v2/expand

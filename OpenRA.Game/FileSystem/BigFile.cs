@@ -12,94 +12,117 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 
 namespace OpenRA.FileSystem
 {
-	public sealed class BigFile : IReadOnlyPackage
+	public class BigLoader : IPackageLoader
 	{
-		public string Name { get; private set; }
-		public IEnumerable<string> Contents { get { return index.Keys; } }
-
-		readonly Dictionary<string, Entry> index = new Dictionary<string, Entry>();
-		readonly Stream s;
-
-		public BigFile(FileSystem context, string filename)
+		sealed class BigFile : IReadOnlyPackage
 		{
-			Name = filename;
+			public string Name { get; private set; }
+			public IEnumerable<string> Contents { get { return index.Keys; } }
 
-			s = context.Open(filename);
-			try
-			{
-				if (s.ReadASCII(4) != "BIGF")
-					throw new InvalidDataException("Header is not BIGF");
-
-				// Total archive size.
-				s.ReadUInt32();
-
-				var entryCount = s.ReadUInt32();
-				if (BitConverter.IsLittleEndian)
-					entryCount = int2.Swap(entryCount);
-
-				// First entry offset? This is apparently bogus for EA's .big files
-				// and we don't have to try seeking there since the entries typically start next in EA's .big files.
-				s.ReadUInt32();
-
-				for (var i = 0; i < entryCount; i++)
-				{
-					var entry = new Entry(s);
-					index.Add(entry.Path, entry);
-				}
-			}
-			catch
-			{
-				Dispose();
-				throw;
-			}
-		}
-
-		class Entry
-		{
+			readonly Dictionary<string, Entry> index = new Dictionary<string, Entry>();
 			readonly Stream s;
-			readonly uint offset;
-			readonly uint size;
-			public readonly string Path;
 
-			public Entry(Stream s)
+			public BigFile(Stream s, string filename)
 			{
+				Name = filename;
 				this.s = s;
 
-				offset = s.ReadUInt32();
-				size = s.ReadUInt32();
-				if (BitConverter.IsLittleEndian)
+				try
 				{
-					offset = int2.Swap(offset);
-					size = int2.Swap(size);
+					/* var signature = */ s.ReadASCII(4);
+
+					// Total archive size.
+					s.ReadUInt32();
+
+					var entryCount = s.ReadUInt32();
+					if (BitConverter.IsLittleEndian)
+						entryCount = int2.Swap(entryCount);
+
+					// First entry offset? This is apparently bogus for EA's .big files
+					// and we don't have to try seeking there since the entries typically start next in EA's .big files.
+					s.ReadUInt32();
+
+					for (var i = 0; i < entryCount; i++)
+					{
+						var entry = new Entry(s);
+						index.Add(entry.Path, entry);
+					}
+				}
+				catch
+				{
+					Dispose();
+					throw;
+				}
+			}
+
+			class Entry
+			{
+				readonly Stream s;
+				readonly uint offset;
+				readonly uint size;
+				public readonly string Path;
+
+				public Entry(Stream s)
+				{
+					this.s = s;
+
+					offset = s.ReadUInt32();
+					size = s.ReadUInt32();
+					if (BitConverter.IsLittleEndian)
+					{
+						offset = int2.Swap(offset);
+						size = int2.Swap(size);
+					}
+
+					Path = s.ReadASCIIZ();
 				}
 
-				Path = s.ReadASCIIZ();
+				public Stream GetData()
+				{
+					s.Position = offset;
+					return new MemoryStream(s.ReadBytes((int)size));
+				}
 			}
 
-			public Stream GetData()
+			public Stream GetStream(string filename)
 			{
-				s.Position = offset;
-				return new MemoryStream(s.ReadBytes((int)size));
+				return index[filename].GetData();
+			}
+
+			public bool Contains(string filename)
+			{
+				return index.ContainsKey(filename);
+			}
+
+			public IReadOnlyPackage OpenPackage(string filename, FileSystem context)
+			{
+				// Not implemented
+				return null;
+			}
+
+			public void Dispose()
+			{
+				s.Dispose();
 			}
 		}
 
-		public Stream GetStream(string filename)
+		bool IPackageLoader.TryParsePackage(Stream s, string filename, FileSystem context, out IReadOnlyPackage package)
 		{
-			return index[filename].GetData();
-		}
+			// Take a peek at the file signature
+			var signature = s.ReadASCII(4);
+			s.Position -= 4;
 
-		public bool Contains(string filename)
-		{
-			return index.ContainsKey(filename);
-		}
+			if (signature != "BIGF")
+			{
+				package = null;
+				return false;
+			}
 
-		public void Dispose()
-		{
-			s.Dispose();
+			package = new BigFile(s, filename);
+			return true;
 		}
 	}
 }

@@ -2,6 +2,8 @@ Metadata:
 	Title: Dune 2000
 	Version: {DEV_VERSION}
 
+PackageFormats: D2kSoundResources
+
 Packages:
 	~^Content/d2k/v2/
 	~^Content/d2k/v2/GAMESFX
