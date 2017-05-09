@@ -48,6 +48,7 @@ OLDLST:
 		Types: disabled
 
 TREX:
+	Inherits@AutoTarget: ^AutoTarget
 	Health:
 		HP: 750
 	Mobile:
@@ -56,6 +57,7 @@ TREX:
 		ScanRadius: 5
 
 TRIC:
+	Inherits@AutoTarget: ^AutoTarget
 	Health:
 		HP: 700
 	Mobile:

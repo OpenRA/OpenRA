@@ -93,6 +93,7 @@ RMBO.easy:
 RMBO.hard:
 	Inherits: RMBO
 	-AutoTarget:
+	-WithTextUnitStanceDecoration:
 	-AttackMove:
 	RenderSprites:
 		Image: RMBO

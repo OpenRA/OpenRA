@@ -1,6 +1,7 @@
 BOAT:
 	Inherits: ^Ship
 	Inherits@EXPERIENCE: ^GainsExperience
+	Inherits@AutoTarget: ^AutoTarget
 	Valued:
 		Cost: 300
 	Tooltip:
