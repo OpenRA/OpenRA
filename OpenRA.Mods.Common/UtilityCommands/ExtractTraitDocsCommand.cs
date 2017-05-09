@@ -60,7 +60,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				toc.AppendLine(" * [{0}](#{1})".F(traitName, traitName.ToLowerInvariant()));
 				var traitDescLines = t.GetCustomAttributes<DescAttribute>(false).SelectMany(d => d.Lines);
 				doc.AppendLine();
-				doc.AppendLine("### {0}".F(traitName));
+				doc.AppendLine("\n### {0}".F(traitName));
 				foreach (var line in traitDescLines)
 					doc.AppendLine(line);
 
@@ -83,10 +83,40 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				var forbiddenBaseTypes = new[]
+				{
+					typeof(ITraitInfo),
+					typeof(TraitInfo<>),
+				};
+
+				var upgradableIndicator = "OpenRA.Mods.Common.Traits.UpgradableTraitInfo";
+				var upgradable = HasSuperType(t, upgradableIndicator);
+				doc.AppendFormat("Upgradable: {0}", upgradable ? "Yes" : "No");
+
+				var super = SuperType(t, forbiddenBaseTypes, new[] { upgradableIndicator });
+				if (super != null)
+				{
+					var superName = super.ToString();
+
+					// TODO: No idea why some types have this.
+					var bogus = superName.Contains("`");
+					if (!bogus)
+					{
+						doc.AppendLine();
+						var idx = superName.LastIndexOf(".");
+						superName = superName.Substring(idx + 1);
+
+						if (superName.EndsWith("Info"))
+							superName = superName.Substring(0, superName.Length - 4);
+
+						doc.Append("Subclass of [`{0}`](#{1}).".F(superName, superName.ToLower()));
+					}
+				}
+
 				var infos = FieldLoader.GetTypeLoadInfo(t);
 				if (!infos.Any())
 					continue;
-				doc.AppendLine("<table>");
+				doc.AppendLine("\n<table>");
 				doc.AppendLine("<tr><th>Property</th><th>Default Value</th><th>Type</th><th>Description</th></tr>");
 				var liveTraitInfo = Game.ModData.ObjectCreator.CreateBasic(t);
 				foreach (var info in infos)
@@ -102,11 +132,40 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					doc.AppendLine("</td></tr>");
 				}
 
-				doc.AppendLine("</table>");
+				doc.Append("</table>");
 			}
 
 			Console.Write(toc.ToString());
 			Console.Write(doc.ToString());
+		}
+
+		static Type SuperType(Type current, Type[] exceptTypes, string[] exceptTypeStrings)
+		{
+			if (exceptTypes.Contains(current) ||
+				exceptTypeStrings.Contains(current.ToString()) ||
+				current == typeof(object))
+				return null;
+
+			var super = current.BaseType;
+			if (exceptTypes.Contains(super) ||
+				exceptTypeStrings.Contains(super.ToString()) ||
+				super == typeof(object))
+				return null;
+
+			return super;
+		}
+
+		static bool HasSuperType(Type current, string desiredType)
+		{
+			var super = current.BaseType;
+			while (super.BaseType != null && !super.BaseType.IsInterface)
+			{
+				super = super.BaseType;
+				if (super.ToString() == desiredType)
+					return true;
+			}
+
+			return false;
 		}
 
 		static Type[] RequiredTraitTypes(Type t)
