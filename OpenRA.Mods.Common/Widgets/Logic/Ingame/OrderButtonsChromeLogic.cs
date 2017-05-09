@@ -65,6 +65,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (beacon != null)
 			{
 				beacon.GetKey = _ => Game.Settings.Keys.PlaceBeaconKey;
+				beacon.IsDisabled = () => world.LobbyInfo.IsSinglePlayer;
 				OrderButtonsChromeUtils.BindOrderButton<BeaconOrderGenerator>(world, beacon, "beacon");
 			}
 		}
