@@ -102,7 +102,11 @@ namespace OpenRA.Mods.Common.Traits
 
 		EditorActorPreview Add(string id, ActorReference reference, bool initialSetup = false)
 		{
-			var owner = Players.Players[reference.InitDict.Get<OwnerInit>().PlayerName];
+			var playerReference = reference.InitDict.Get<OwnerInit>().PlayerName;
+			if (!Players.Players.ContainsKey(playerReference))
+				return null;
+
+			var owner = Players.Players[playerReference];
 
 			var preview = new EditorActorPreview(worldRenderer, id, reference, owner);
 			previews.Add(preview);
