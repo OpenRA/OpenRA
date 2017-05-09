@@ -17,7 +17,7 @@ GAWALL:
 	Armor:
 		Type: Concrete
 	BlocksProjectiles:
-		Height: 640
+		Height: 768
 	Crushable:
 		CrushClasses: heavywall
 	LineBuild:
