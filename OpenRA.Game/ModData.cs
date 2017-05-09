@@ -78,7 +78,7 @@ namespace OpenRA
 				throw new InvalidOperationException("Unable to find a sequence loader for type '{0}'.".F(sequenceFormat.Type));
 
 			SpriteSequenceLoader = (ISpriteSequenceLoader)ctor.Invoke(new[] { this });
-			SpriteSequenceLoader.OnMissingSpriteError = s => Log.Write("debug", s);
+			SpriteSequenceLoader.OnMissingSpriteError = s => { throw new YamlException(s); };
 
 			defaultRules = Exts.Lazy(() => Ruleset.LoadDefaults(this));
 			defaultTileSets = Exts.Lazy(() =>
