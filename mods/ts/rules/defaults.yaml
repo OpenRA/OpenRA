@@ -297,10 +297,20 @@
 		RemoveInstead: true
 	RenderSprites:
 
+^AutoTarget:
+	AutoTarget:
+	WithTextUnitStanceDecoration:
+		ReferencePoint: Bottom, Right
+		HoldFireText: h
+		ReturnFireText: r
+		DefendText: d
+		AttackAnythingText: a
+
 ^Infantry:
 	Inherits@2: ^ExistsInWorld
 	Inherits@3: ^SpriteActor
 	Inherits@4: ^Cloakable
+	Inherits@5: ^AutoTarget
 	Inherits@CRATESTATS: ^CrateStatModifiers
 	Huntable:
 	DrawLineToTarget:
@@ -347,7 +357,6 @@
 	QuantizeFacingsFromSequence:
 		Sequence: stand
 	WithInfantryBody:
-	AutoTarget:
 	AttackMove:
 		Voice: Move
 	Passenger:
@@ -792,8 +801,9 @@
 
 ^Defense:
 	Inherits: ^Building
+	Inherits@AutoTarget: ^AutoTarget
 	-GivesBuildableArea:
-	AutoTarget:
+	WithTextUnitStanceDecoration:
 	RenderRangeCircle:
 	RenderDetectionCircle:
 	RevealsShroud:

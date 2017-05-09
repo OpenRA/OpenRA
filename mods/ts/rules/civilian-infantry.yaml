@@ -78,6 +78,7 @@ CHAMSPY:
 	Infiltrates:
 		Types: SpyInfiltrate
 	-AutoTarget:
+	-WithTextUnitStanceDecoration:
 	-WithInfantryBody:
 	WithDisguisingInfantryBody:
 		IdleSequences: idle1,idle2
@@ -173,6 +174,7 @@ TRATOS:
 	RevealsShroud:
 		Range: 4c0
 	-AutoTarget:
+	-WithTextUnitStanceDecoration:
 	WithInfantryBody:
 		DefaultAttackSequence:
 
@@ -191,6 +193,7 @@ OXANNA:
 	RevealsShroud:
 		Range: 4c0
 	-AutoTarget:
+	-WithTextUnitStanceDecoration:
 	WithInfantryBody:
 		DefaultAttackSequence: attack
 
@@ -209,6 +212,7 @@ SLAV:
 	RevealsShroud:
 		Range: 4c0
 	-AutoTarget:
+	-WithTextUnitStanceDecoration:
 	WithInfantryBody:
 		DefaultAttackSequence: attack
 
@@ -224,6 +228,7 @@ CIV1:
 CIV2:
 	Inherits: ^CivilianInfantry
 	-AutoTarget:
+	-WithTextUnitStanceDecoration:
 
 CIV3:
 	Inherits: ^CivilianInfantry

@@ -60,6 +60,7 @@ ENGINEER:
 		CaptureTypes: building
 		PlayerExperience: 50
 	-AutoTarget:
+	-WithTextUnitStanceDecoration:
 	RenderSprites:
 		Image: engineer.gdi
 		FactionImages:

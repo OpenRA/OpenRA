@@ -51,6 +51,7 @@ HVR:
 	Inherits: ^Vehicle
 	Inherits@VOXELS: ^VoxelActor
 	Inherits@EXPERIENCE: ^GainsExperience
+	Inherits@AutoTarget: ^AutoTarget
 	Valued:
 		Cost: 900
 	Tooltip:
@@ -89,7 +90,6 @@ HVR:
 		Offset: -128,0,85
 	AttackTurreted:
 		Voice: Attack
-	AutoTarget:
 	WithVoxelTurret:
 	Hovers:
 	LeavesTrails:
@@ -106,6 +106,7 @@ HVR:
 SMECH:
 	Inherits: ^Vehicle
 	Inherits@EXPERIENCE: ^GainsExperience
+	Inherits@AutoTarget: ^AutoTarget
 	Valued:
 		Cost: 500
 	Tooltip:
@@ -128,7 +129,6 @@ SMECH:
 		MaxHeightDelta: 3
 	AttackFrontal:
 		Voice: Attack
-	AutoTarget:
 	Armament:
 		Weapon: AssaultCannon
 	Voiced:
@@ -149,6 +149,7 @@ SMECH:
 MMCH:
 	Inherits: ^Tank
 	Inherits@EXPERIENCE: ^GainsExperience
+	Inherits@AutoTarget: ^AutoTarget
 	Valued:
 		Cost: 800
 	Tooltip:
@@ -191,7 +192,6 @@ MMCH:
 	RenderVoxels:
 	WithVoxelBarrel:
 		LocalOffset: -91,91,362
-	AutoTarget:
 	Selectable:
 		Bounds: 30, 42, 0, -8
 	Carryable:
@@ -201,6 +201,7 @@ HMEC:
 	Inherits: ^Tank
 	Inherits@VOXELS: ^VoxelActor
 	Inherits@EXPERIENCE: ^GainsExperience
+	Inherits@AutoTarget: ^AutoTarget
 	Valued:
 		Cost: 3000
 	Tooltip:
@@ -226,7 +227,6 @@ HMEC:
 		MaxHeightDelta: 3
 	AttackFrontal:
 		Voice: Attack
-	AutoTarget:
 	Armament@MISSILES:
 		Weapon: MammothTusk
 		LocalOffset: -243,-368,1208, -243,368,1208
@@ -245,6 +245,7 @@ SONIC:
 	Inherits: ^Tank
 	Inherits@VOXELS: ^VoxelActor
 	Inherits@EXPERIENCE: ^GainsExperience
+	Inherits@AutoTarget: ^AutoTarget
 	Valued:
 		Cost: 1300
 	Tooltip:
@@ -276,7 +277,6 @@ SONIC:
 	Turreted:
 		TurnSpeed: 5
 		Offset: -170,0,0
-	AutoTarget:
 	WithVoxelTurret:
 
 JUGG:
