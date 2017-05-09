@@ -32,6 +32,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("A group of units ready to defend or scout.")]
 		public readonly string[] SupportActors = { };
 
+		[Desc("A group of buildings to be placed at start.")]
+		public readonly string[] SupportBuildings = { };
+
 		[Desc("Inner radius for spawning support actors")]
 		public readonly int InnerSupportRadius = 2;
 
