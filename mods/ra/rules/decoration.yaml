@@ -30,6 +30,8 @@ T03:
 
 T04:
 	Inherits: ^Tree
+	Tooltip:
+		Name: Cactus
 	Building:
 		Footprint: __ x_
 		Dimensions: 2,2
