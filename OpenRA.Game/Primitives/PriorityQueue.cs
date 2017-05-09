@@ -87,7 +87,7 @@ namespace OpenRA.Primitives
 		{
 			var ret = Peek();
 			BubbleInto(0, 0, Last());
-			if (--index < 0)
+			if (level > 0 && --index < 0)
 				index = (1 << --level) - 1;
 			return ret;
 		}
