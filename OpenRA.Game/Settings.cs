@@ -223,7 +223,10 @@ namespace OpenRA
 		public Hotkey StopKey = new Hotkey(Keycode.S, Modifiers.None);
 		public Hotkey ScatterKey = new Hotkey(Keycode.X, Modifiers.Ctrl);
 		public Hotkey DeployKey = new Hotkey(Keycode.F, Modifiers.None);
-		public Hotkey StanceCycleKey = new Hotkey(Keycode.Z, Modifiers.Ctrl);
+		public Hotkey StanceHoldFireKey = new Hotkey(Keycode.F, Modifiers.Alt);
+		public Hotkey StanceReturnFireKey = new Hotkey(Keycode.D, Modifiers.Alt);
+		public Hotkey StanceDefendKey = new Hotkey(Keycode.S, Modifiers.Alt);
+		public Hotkey StanceAttackAnythingKey = new Hotkey(Keycode.A, Modifiers.Alt);
 		public Hotkey GuardKey = new Hotkey(Keycode.D, Modifiers.None);
 
 		public Hotkey ObserverCombinedView = new Hotkey(Keycode.MINUS, Modifiers.None);
