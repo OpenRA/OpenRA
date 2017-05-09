@@ -69,6 +69,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			rootMenu = widget;
 			rootMenu.Get<LabelWidget>("VERSION_LABEL").Text = modData.Manifest.Metadata.Version;
 
+			// TODO: This will disapear when navigating into sub menus.
+			Game.LoadWidget(world, "CHAT_PANEL", rootMenu, new WidgetArgs());
+
 			// Menu buttons
 			var mainMenu = widget.Get("MAIN_MENU");
 			mainMenu.IsVisible = () => menuType == MenuType.Main;
