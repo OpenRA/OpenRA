@@ -285,8 +285,8 @@
 	Health:
 		Shape: Rectangle
 			RotateToIsometry: true
-			TopLeft: -384, -384
-			BottomRight: 384, 384
+			TopLeft: -363, -363
+			BottomRight: 363, 363
 			VerticalTopOffset: 512
 
 ^BuildingPlug:
@@ -923,6 +923,12 @@
 
 ^Gate_A:
 	Inherits: ^Gate
+	Health:
+		Shape: Rectangle
+			RotateToIsometry: true
+			TopLeft: -363, -1090
+			BottomRight: 363, 1090
+			VerticalTopOffset: 640
 	Gate:
 		Dimensions: 3,1
 		Footprint: xxx
@@ -933,6 +939,12 @@
 
 ^Gate_B:
 	Inherits: ^Gate
+	Health:
+		Shape: Rectangle
+			RotateToIsometry: true
+			TopLeft: -1090, -363
+			BottomRight: 1090, 363
+			VerticalTopOffset: 640
 	Gate:
 		Dimensions: 1,3
 		Footprint: x x x

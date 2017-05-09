@@ -19,7 +19,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Projectiles
 {
 	[Desc("Simple invisible direct on target projectile.")]
-	public class InstantHitInfo : IProjectileInfo
+	public class InstantHitInfo : IProjectileInfo, IRulesetLoaded
 	{
 		[Desc("Maximum offset at the maximum range.")]
 		public readonly WDist Inaccuracy = WDist.Zero;
@@ -30,10 +30,22 @@ namespace OpenRA.Mods.Common.Projectiles
 		[Desc("The width of the projectile.")]
 		public readonly WDist Width = new WDist(1);
 
-		[Desc("Extra search radius beyond projectile width. Required to ensure affecting actors with large health radius.")]
-		public readonly WDist TargetExtraSearchRadius = new WDist(1536);
+		[Desc("Scan radius for victims beyond projectile width. If set to zero (default), it will automatically scale to the largest health shape.",
+			"Custom overrides should not be necessary under normal circumstances.")]
+		public WDist TargetExtraSearchRadius = WDist.Zero;
 
 		public IProjectile Create(ProjectileArgs args) { return new InstantHit(this, args); }
+
+		public void RulesetLoaded(Ruleset rules, ActorInfo ai)
+		{
+			var validActors = rules.Actors.Where(a => a.Value.TraitInfos<HealthInfo>().Any()).ToList();
+
+			// TODO: Make this handle multiple Health traits per actor
+			var largestHealthRadius = validActors.Max(a => a.Value.TraitInfo<HealthInfo>().Shape.OuterRadius);
+
+			if (TargetExtraSearchRadius == WDist.Zero)
+				TargetExtraSearchRadius = largestHealthRadius;
+		}
 	}
 
 	public class InstantHit : IProjectile

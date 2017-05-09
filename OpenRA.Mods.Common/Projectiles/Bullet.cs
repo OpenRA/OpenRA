@@ -12,6 +12,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using OpenRA.Effects;
 using OpenRA.GameRules;
 using OpenRA.Graphics;
@@ -22,7 +23,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Projectiles
 {
-	public class BulletInfo : IProjectileInfo
+	public class BulletInfo : IProjectileInfo, IRulesetLoaded
 	{
 		[Desc("Projectile speed in WDist / tick, two values indicate variable velocity.")]
 		public readonly WDist[] Speed = { new WDist(17) };
@@ -56,9 +57,6 @@ namespace OpenRA.Mods.Common.Projectiles
 
 		[Desc("Width of projectile (used for finding blocking actors).")]
 		public readonly WDist Width = new WDist(1);
-
-		[Desc("Extra search radius beyond path for blocking actors.")]
-		public readonly WDist TargetExtraSearchRadius = new WDist(1536);
 
 		[Desc("Arc in WAngles, two values indicate variable arc.")]
 		public readonly WAngle[] LaunchAngle = { WAngle.Zero };
@@ -95,7 +93,21 @@ namespace OpenRA.Mods.Common.Projectiles
 		public readonly int ContrailDelay = 1;
 		public readonly WDist ContrailWidth = new WDist(64);
 
+		[Desc("Extra search radius beyond path for blocking actors.")]
+		public WDist TargetExtraSearchRadius = WDist.Zero;
+
 		public IProjectile Create(ProjectileArgs args) { return new Bullet(this, args); }
+
+		public void RulesetLoaded(Ruleset rules, ActorInfo ai)
+		{
+			var validActors = rules.Actors.Where(a => a.Value.TraitInfos<HealthInfo>().Any()).ToList();
+
+			// TODO: Make this handle multiple Health traits per actor
+			var largestHealthRadius = validActors.Max(a => a.Value.TraitInfo<HealthInfo>().Shape.OuterRadius);
+
+			if (TargetExtraSearchRadius == WDist.Zero)
+				TargetExtraSearchRadius = largestHealthRadius;
+		}
 	}
 
 	public class Bullet : IProjectile, ISync

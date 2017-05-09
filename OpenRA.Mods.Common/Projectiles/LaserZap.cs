@@ -11,6 +11,7 @@
 
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using OpenRA.Effects;
 using OpenRA.GameRules;
 using OpenRA.Graphics;
@@ -22,7 +23,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Projectiles
 {
 	[Desc("Not a sprite, but an engine effect.")]
-	public class LaserZapInfo : IProjectileInfo
+	public class LaserZapInfo : IProjectileInfo, IRulesetLoaded
 	{
 		[Desc("The width of the zap.")]
 		public readonly WDist Width = new WDist(86);
@@ -45,9 +46,6 @@ namespace OpenRA.Mods.Common.Projectiles
 
 		[Desc("Maximum offset at the maximum range.")]
 		public readonly WDist Inaccuracy = WDist.Zero;
-
-		[Desc("Extra search radius beyond beam width. Required to ensure affecting actors with large health radius.")]
-		public readonly WDist TargetExtraSearchRadius = new WDist(1536);
 
 		[Desc("Beam can be blocked.")]
 		public readonly bool Blockable = false;
@@ -77,10 +75,25 @@ namespace OpenRA.Mods.Common.Projectiles
 
 		[PaletteReference] public readonly string HitAnimPalette = "effect";
 
+		[Desc("Scan radius for victims beyond beam width. If set to zero (default), it will automatically scale to the largest health shape.",
+			"Custom overrides should not be necessary under normal circumstances.")]
+		public WDist TargetExtraSearchRadius = WDist.Zero;
+
 		public IProjectile Create(ProjectileArgs args)
 		{
 			var c = UsePlayerColor ? args.SourceActor.Owner.Color.RGB : Color;
 			return new LaserZap(this, args, c);
+		}
+
+		public void RulesetLoaded(Ruleset rules, ActorInfo ai)
+		{
+			var validActors = rules.Actors.Where(a => a.Value.TraitInfos<HealthInfo>().Any()).ToList();
+
+			// TODO: Make this handle multiple Health traits per actor
+			var largestHealthRadius = validActors.Max(a => a.Value.TraitInfo<HealthInfo>().Shape.OuterRadius);
+
+			if (TargetExtraSearchRadius == WDist.Zero)
+				TargetExtraSearchRadius = largestHealthRadius;
 		}
 	}
 
