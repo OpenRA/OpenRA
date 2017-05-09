@@ -18,7 +18,7 @@ E3:
 		Speed: 42
 	Armament@PRIMARY:
 		Weapon: Bazooka
-		LocalOffset: 252,0,684
+		LocalOffset: 356,0,967
 	TakeCover:
 		ProneOffset: 52,64,-652
 	AttackFrontal:
@@ -90,7 +90,7 @@ CYC2:
 		Range: 7c0
 	Armament:
 		Weapon: CyCannon
-		LocalOffset: 170,85,683
+		LocalOffset: 240,120,966
 	AttackFrontal:
 		Voice: Attack
 	SelectionDecorations:

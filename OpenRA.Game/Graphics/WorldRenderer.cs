@@ -24,6 +24,7 @@ namespace OpenRA.Graphics
 			r => ZPosition(r.Pos, r.ZOffset);
 
 		public readonly Size TileSize;
+		public readonly int TileScale;
 		public readonly World World;
 		public readonly Theater Theater;
 		public Viewport Viewport { get; private set; }
@@ -41,6 +42,7 @@ namespace OpenRA.Graphics
 		{
 			World = world;
 			TileSize = World.Map.Grid.TileSize;
+			TileScale = World.Map.Grid.Type == MapGridType.RectangularIsometric ? 1448 : 1024;
 			Viewport = new Viewport(this, world.Map);
 
 			createPaletteReference = CreatePaletteReference;
@@ -216,13 +218,13 @@ namespace OpenRA.Graphics
 		// Conversion between world and screen coordinates
 		public float2 ScreenPosition(WPos pos)
 		{
-			return new float2(TileSize.Width * pos.X / 1024f, TileSize.Height * (pos.Y - pos.Z) / 1024f);
+			return new float2((float)TileSize.Width * pos.X / TileScale, (float)TileSize.Height * (pos.Y - pos.Z) / TileScale);
 		}
 
 		public float3 Screen3DPosition(WPos pos)
 		{
-			var z = ZPosition(pos, 0) * TileSize.Height / 1024f;
-			return new float3(TileSize.Width * pos.X / 1024f, TileSize.Height * (pos.Y - pos.Z) / 1024f, z);
+			var z = ZPosition(pos, 0) * (float)TileSize.Height / TileScale;
+			return new float3((float)TileSize.Width * pos.X / TileScale, (float)TileSize.Height * (pos.Y - pos.Z) / TileScale, z);
 		}
 
 		public int2 ScreenPxPosition(WPos pos)
@@ -243,9 +245,9 @@ namespace OpenRA.Graphics
 		public float3 ScreenVectorComponents(WVec vec)
 		{
 			return new float3(
-				TileSize.Width * vec.X / 1024f,
-				TileSize.Height * (vec.Y - vec.Z) / 1024f,
-				TileSize.Height * vec.Z / 1024f);
+				(float)TileSize.Width * vec.X / TileScale,
+				(float)TileSize.Height * (vec.Y - vec.Z) / TileScale,
+				(float)TileSize.Height * vec.Z / TileScale);
 		}
 
 		// For scaling vectors to pixel sizes in the voxel renderer
@@ -264,7 +266,7 @@ namespace OpenRA.Graphics
 
 		public float ScreenZPosition(WPos pos, int offset)
 		{
-			return ZPosition(pos, offset) * TileSize.Height / 1024f;
+			return ZPosition(pos, offset) * (float)TileSize.Height / TileScale;
 		}
 
 		static int ZPosition(WPos pos, int offset)
@@ -278,7 +280,7 @@ namespace OpenRA.Graphics
 		/// </summary>
 		public WPos ProjectedPosition(int2 screenPx)
 		{
-			return new WPos(1024 * screenPx.X / TileSize.Width, 1024 * screenPx.Y / TileSize.Height, 0);
+			return new WPos(TileScale * screenPx.X / TileSize.Width, TileScale * screenPx.Y / TileSize.Height, 0);
 		}
 
 		public void Dispose()

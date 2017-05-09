@@ -18,8 +18,8 @@
 		Acceleration: 6
 		MinimumLaunchAngle: 128
 		MaximumLaunchAngle: 192
-		VerticalRateOfTurn: 16
-		CruiseAltitude: 1c512
+		VerticalRateOfTurn: 11
+		CruiseAltitude: 2c124
 		AllowSnapping: true
 	Warhead@1Dam: SpreadDamage
 		Spread: 108
