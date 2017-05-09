@@ -81,6 +81,7 @@ BADR.Bomber:
 
 MIG:
 	Inherits: ^Plane
+	Inherits@AutoTarget: ^AutoTarget
 	Buildable:
 		Queue: Aircraft
 		BuildAtProductionType: Plane
@@ -140,6 +141,7 @@ MIG:
 
 YAK:
 	Inherits: ^Plane
+	Inherits@AutoTarget: ^AutoTarget
 	Buildable:
 		Queue: Aircraft
 		BuildAtProductionType: Plane
@@ -257,6 +259,7 @@ TRAN:
 
 HELI:
 	Inherits: ^Helicopter
+	Inherits@AutoTarget: ^AutoTarget
 	Buildable:
 		Queue: Aircraft
 		BuildAtProductionType: Helicopter
@@ -315,6 +318,7 @@ HELI:
 
 HIND:
 	Inherits: ^Helicopter
+	Inherits@AutoTarget: ^AutoTarget
 	Buildable:
 		Queue: Aircraft
 		BuildAtProductionType: Helicopter

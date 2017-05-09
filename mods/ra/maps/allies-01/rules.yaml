@@ -42,7 +42,7 @@ EINSTEIN:
 
 C8:
 	Inherits@2: ^ArmedCivilian
-	AutoTarget:
+	Inherits@AutoTarget: ^AutoTarget
 
 JEEP:
 	Cargo:

@@ -33,6 +33,7 @@ E7:
 E7.noautotarget:
 	Inherits: E7
 	-AutoTarget:
+	-WithTextUnitStanceDecoration:
 	RenderSprites:
 		Image: E7
 
