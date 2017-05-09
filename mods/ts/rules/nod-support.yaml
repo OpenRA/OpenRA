@@ -17,7 +17,7 @@ NAWALL:
 	Armor:
 		Type: Concrete
 	BlocksProjectiles:
-		Height: 640
+		Height: 768
 	Crushable:
 		CrushClasses: heavywall
 	LineBuild:
@@ -133,7 +133,7 @@ NAFNCE:
 		Sequence: disabled-y
 	BlocksProjectiles:
 		RequiresCondition: active-posts == 2
-		Height: 640
+		Height: 768
 	DamageMultiplier: # Prevent all normal damage, but still allows direct kills from the post
 		Modifier: 0
 	Explodes:
