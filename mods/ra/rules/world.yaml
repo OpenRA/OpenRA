@@ -4,6 +4,8 @@
 	ActorMap:
 	ScreenMap:
 	MusicPlaylist:
+		StartingMusic: intro
+		LoopStartingMusic: True
 		VictoryMusic: score
 		DefeatMusic: map
 	TerrainGeometryOverlay:
