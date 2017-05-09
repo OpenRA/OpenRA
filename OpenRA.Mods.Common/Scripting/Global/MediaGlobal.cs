@@ -70,6 +70,9 @@ namespace OpenRA.Mods.Common.Scripting
 				var f = (LuaFunction)func.CopyReference();
 				Action onComplete = () =>
 				{
+					if (world.Disposing)
+						return;
+
 					try
 					{
 						using (f)
