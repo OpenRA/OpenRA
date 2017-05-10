@@ -1,5 +1,11 @@
 V20:
 	Inherits: ^CivBuilding
+	HitShape:
+		UseOccupiedCellsOffsets: false
+		TargetableOffsets: -840,-512,0, 0,0,0, -840,512,0
+		Type: Rectangle
+			TopLeft: -1024, -512
+			BottomRight: 1024, 896
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
@@ -22,6 +28,18 @@ V20.Husk:
 
 V21:
 	Inherits: ^CivBuilding
+	HitShape:
+		UseOccupiedCellsOffsets: false
+		TargetableOffsets: 840,-512,0, 420,0,0, 840,512,0
+		Type: Rectangle
+			TopLeft: -1024, -1024
+			BottomRight: 1024, 0
+	HitShape@WELL:
+		UseOccupiedCellsOffsets: false
+		TargetableOffsets: -770,512,0
+		Type: Rectangle
+			TopLeft: 0, 0
+			BottomRight: 1024, 598
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
@@ -44,6 +62,7 @@ V21.Husk:
 
 V22:
 	Inherits: ^CivBuilding
+	Inherits@shape: ^2x1Shape
 	Building:
 		Footprint: xx
 		Dimensions: 2,1
@@ -82,6 +101,12 @@ V23.Husk:
 
 V24:
 	Inherits: ^CivBuilding
+	HitShape:
+		UseOccupiedCellsOffsets: false
+		TargetableOffsets: -630,-512,0, 0,0,0, -630,256,0, 420,-512,0
+		Type: Rectangle
+			TopLeft: -1024, -683
+			BottomRight: 640, 853
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
@@ -104,6 +129,12 @@ V24.Husk:
 
 V25:
 	Inherits: ^CivBuilding
+	HitShape:
+		UseOccupiedCellsOffsets: false
+		TargetableOffsets: 0,-128,0, 420,512,0
+		Type: Rectangle
+			TopLeft: -683, -683
+			BottomRight: 1024, 512
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
@@ -126,6 +157,7 @@ V25.Husk:
 
 V26:
 	Inherits: ^CivBuilding
+	Inherits@shape: ^2x1Shape
 	Building:
 		Footprint: xx
 		Dimensions: 2,1
@@ -196,6 +228,7 @@ V29.Husk:
 
 V30:
 	Inherits: ^CivBuilding
+	Inherits@shape: ^2x1Shape
 	Building:
 		Footprint: xx
 		Dimensions: 2,1
@@ -218,6 +251,7 @@ V30.Husk:
 
 V31:
 	Inherits: ^CivBuilding
+	Inherits@shape: ^2x1Shape
 	Building:
 		Footprint: xx
 		Dimensions: 2,1
@@ -240,6 +274,7 @@ V31.Husk:
 
 V32:
 	Inherits: ^CivBuilding
+	Inherits@shape: ^2x1Shape
 	Building:
 		Footprint: xx
 		Dimensions: 2,1
@@ -262,6 +297,7 @@ V32.Husk:
 
 V33:
 	Inherits: ^CivBuilding
+	Inherits@shape: ^2x1Shape
 	Building:
 		Footprint: xx
 		Dimensions: 2,1
@@ -332,6 +368,12 @@ V36.Husk:
 
 V37:
 	Inherits: ^CivBuilding
+	HitShape:
+		UseOccupiedCellsOffsets: false
+		TargetableOffsets: 0,0,0, 0,1024,0
+		Type: Rectangle
+			TopLeft: -512, -597
+			BottomRight: 1536, 597
 	SpawnActorOnDeath:
 		Actor: V37.Husk
 	Building:
