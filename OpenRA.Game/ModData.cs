@@ -13,7 +13,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using OpenRA.FileSystem;
 using OpenRA.Graphics;
 using OpenRA.Widgets;
@@ -27,6 +26,7 @@ namespace OpenRA
 		public readonly ObjectCreator ObjectCreator;
 		public readonly WidgetLoader WidgetLoader;
 		public readonly MapCache MapCache;
+		public readonly IPackageLoader[] PackageLoaders;
 		public readonly ISoundLoader[] SoundLoaders;
 		public readonly ISpriteLoader[] SpriteLoaders;
 		public readonly ISpriteSequenceLoader SpriteSequenceLoader;
@@ -56,6 +56,11 @@ namespace OpenRA
 			ModFiles.LoadFromManifest(Manifest);
 
 			ObjectCreator = new ObjectCreator(Manifest, ModFiles);
+
+			PackageLoaders = GetLoaders<IPackageLoader>(Manifest.PackageFormats, "package");
+			ModFiles.Init(this);
+			ModFiles.LoadFromManifest(Manifest);
+
 			Manifest.LoadCustomData(ObjectCreator);
 
 			if (useLoadScreen)

@@ -185,7 +185,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					{
 						selectedDirectory.Folder.Delete(combinedPath);
 						if (fileType == MapFileType.OraMap)
-							package = ZipFile.Create(combinedPath, selectedDirectory.Folder);
+							package = ZipFileLoader.ZipFile.Create(combinedPath, selectedDirectory.Folder);
 						else
 							package = new Folder(combinedPath);
 					}

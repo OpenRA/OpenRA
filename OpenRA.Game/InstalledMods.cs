@@ -75,7 +75,7 @@ namespace OpenRA
 					try
 					{
 						using (var fileStream = File.OpenRead(path))
-							package = new ZipFile(fileStream, path);
+							package = new ZipFileLoader.ZipFile(fileStream, path);
 					}
 					catch
 					{

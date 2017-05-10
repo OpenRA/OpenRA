@@ -15,6 +15,11 @@ using System.IO;
 
 namespace OpenRA.FileSystem
 {
+	public interface IPackageLoader
+	{
+		bool TryParsePackage(FileSystem context, string filename, out IReadOnlyPackage package);
+	}
+
 	public interface IReadOnlyPackage : IDisposable
 	{
 		string Name { get; }

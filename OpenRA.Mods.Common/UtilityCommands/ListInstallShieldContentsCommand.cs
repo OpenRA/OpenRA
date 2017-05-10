@@ -32,7 +32,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 			var fs = new FileSystem.FileSystem(utility.Mods);
 			fs.Mount(path, "parent");
-			var package = new InstallShieldPackage(fs, "parent|" + filename);
+			var package = new InstallShieldFileLoader.InstallShieldFile(fs, "parent|" + filename);
 
 			foreach (var kv in package.Index)
 			{

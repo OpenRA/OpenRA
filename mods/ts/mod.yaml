@@ -2,6 +2,8 @@ Metadata:
 	Title: Tiberian Sun
 	Version: {DEV_VERSION}
 
+PackageFormats: MixFile
+
 Packages:
 	~^Content/ts
 	~^Content/ts/firestorm

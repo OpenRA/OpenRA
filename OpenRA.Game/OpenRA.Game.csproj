@@ -262,11 +262,11 @@
     <Compile Include="ExternalMods.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FileSystem\D2kSoundResources.cs" />
+    <Compile Include="FileSystem\D2kSoundFile.cs" />
     <Compile Include="FileSystem\Folder.cs" />
-    <Compile Include="FileSystem\InstallShieldPackage.cs" />
+    <Compile Include="FileSystem\InstallShieldFile.cs" />
     <Compile Include="FileSystem\MixFile.cs" />
-    <Compile Include="FileSystem\Pak.cs" />
+    <Compile Include="FileSystem\PakFile.cs" />
     <Compile Include="FileSystem\ZipFile.cs" />
     <Compile Include="FileSystem\BigFile.cs" />
     <Compile Include="Map\PlayerReference.cs" />
