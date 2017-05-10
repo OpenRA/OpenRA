@@ -167,11 +167,16 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					orderManager.LocalClient == null || orderManager.LocalClient.IsReady;
 				mapButton.OnClick = () =>
 				{
+					orderManager.IssueOrder(Order.Chat(false, "I am browsing maps, please wait..."));
+
 					var onSelect = new Action<string>(uid =>
 					{
 						// Don't select the same map again
 						if (uid == Map.Uid)
+						{
+							orderManager.IssueOrder(Order.Chat(false, "I am back, no map change."));
 							return;
+						}
 
 						orderManager.IssueOrder(Order.Command("map " + uid));
 						Game.Settings.Server.Map = uid;
@@ -182,7 +187,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					{
 						{ "initialMap", Map.Uid },
 						{ "initialTab", MapClassification.System },
-						{ "onExit", DoNothing },
+						{ "onExit", () => orderManager.IssueOrder(Order.Chat(false, "I am back, no map change.")) },
 						{ "onSelect", Game.IsHost ? onSelect : null },
 						{ "filter", MapVisibility.Lobby },
 					});
