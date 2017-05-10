@@ -276,8 +276,6 @@ default: core
 
 core: dependencies game platforms mods utility server
 
-package: all-dependencies core docs version
-
 mods: mod_common mod_cnc mod_d2k
 
 all: dependencies core
@@ -294,24 +292,26 @@ cli-dependencies:
 	@ $(CP_R) thirdparty/download/*.dll .
 	@ $(CP_R) thirdparty/download/*.dll.config .
 
-linux-dependencies: cli-dependencies linux-native-dependencies
+linux-dependencies: cli-dependencies geoip-dependencies linux-native-dependencies
 
 linux-native-dependencies:
 	@./thirdparty/configure-native-deps.sh
 
-windows-dependencies:
+windows-dependencies: cli-dependencies geoip-dependencies
 	@./thirdparty/fetch-thirdparty-deps-windows.sh
 
-osx-dependencies: cli-dependencies
+osx-dependencies: cli-dependencies geoip-dependencies
 	@./thirdparty/fetch-thirdparty-deps-osx.sh
 	@ $(CP_R) thirdparty/download/osx/*.dylib .
 	@ $(CP_R) thirdparty/download/osx/*.dll.config .
 
-dependencies: $(os-dependencies)
+geoip-dependencies:
 	@./thirdparty/fetch-geoip-db.sh
 	@ $(CP) thirdparty/download/GeoLite2-Country.mmdb.gz .
 
-all-dependencies: cli-dependencies windows-dependencies osx-dependencies
+dependencies: $(os-dependencies)
+
+all-dependencies: cli-dependencies windows-dependencies osx-dependencies geoip-dependencies
 
 version: mods/ra/mod.yaml mods/cnc/mod.yaml mods/d2k/mod.yaml mods/ts/mod.yaml mods/modcontent/mod.yaml mods/all/mod.yaml
 	@for i in $? ; do \
@@ -320,18 +320,14 @@ version: mods/ra/mod.yaml mods/cnc/mod.yaml mods/d2k/mod.yaml mods/ts/mod.yaml m
 		rm $${i}.tmp; \
 	done
 
-docs: utility mods version
-	@mono --debug OpenRA.Utility.exe all --docs > DOCUMENTATION.md
-	@mono --debug OpenRA.Utility.exe all --lua-docs > Lua-API.md
-
 man-page: utility mods
 	@mono --debug OpenRA.Utility.exe all --man-page > openra.6
 
-install: install-core
+install: default install-core
 
 install-linux-shortcuts: install-linux-scripts install-linux-icons install-linux-desktop
 
-install-core: default
+install-core:
 	@-echo "Installing OpenRA to $(DATA_INSTALL_DIR)"
 	@$(INSTALL_DIR) "$(DATA_INSTALL_DIR)"
 	@$(INSTALL_PROGRAM) $(foreach prog,$(CORE),$($(prog)_TARGET)) "$(DATA_INSTALL_DIR)"
@@ -362,10 +358,7 @@ install-core: default
 	@$(INSTALL_PROGRAM) Open.Nat.dll "$(DATA_INSTALL_DIR)"
 	@$(INSTALL_PROGRAM) MaxMind.Db.dll "$(DATA_INSTALL_DIR)"
 	@$(INSTALL_PROGRAM) SmarIrc4net.dll "$(DATA_INSTALL_DIR)"
-
-ifneq ($(UNAME_S),Darwin)
 	@$(CP) *.sh "$(DATA_INSTALL_DIR)"
-endif
 
 install-linux-icons:
 	@$(INSTALL_DIR) "$(DESTDIR)$(datadir)/icons/"

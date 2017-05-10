@@ -110,7 +110,6 @@ Section "Game" GAME
 	File "${SRCDIR}\README.html"
 	File "${SRCDIR}\CHANGELOG.html"
 	File "${SRCDIR}\CONTRIBUTING.html"
-	File "${SRCDIR}\DOCUMENTATION.html"
 	File "${SRCDIR}\OpenRA.ico"
 	File "${SRCDIR}\RedAlert.ico"
 	File "${SRCDIR}\TiberianDawn.ico"
@@ -220,7 +219,6 @@ Function ${UN}Clean
 	Delete $INSTDIR\README.html
 	Delete $INSTDIR\CHANGELOG.html
 	Delete $INSTDIR\CONTRIBUTING.html
-	Delete $INSTDIR\DOCUMENTATION.html
 	Delete $INSTDIR\OpenRA.ico
 	Delete $INSTDIR\RedAlert.ico
 	Delete $INSTDIR\TiberianDawn.ico
