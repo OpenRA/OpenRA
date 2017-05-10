@@ -14,6 +14,34 @@
 	AutoSelectionSize:
 	RenderSprites:
 
+^1x1Shape:
+	HitShape:
+		UseOccupiedCellsOffsets: true
+		Type: Rectangle
+			TopLeft: -512, -512
+			BottomRight: 512, 512
+
+^2x1Shape:
+	HitShape:
+		UseOccupiedCellsOffsets: true
+		Type: Rectangle
+			TopLeft: -1024, -512
+			BottomRight: 1024, 512
+
+^2x2Shape:
+	HitShape:
+		UseOccupiedCellsOffsets: true
+		Type: Rectangle
+			TopLeft: -1024, -1024
+			BottomRight: 1024, 1024
+
+^3x2Shape:
+	HitShape:
+		UseOccupiedCellsOffsets: true
+		Type: Rectangle
+			TopLeft: -1536, -1024
+			BottomRight: 1536, 1024
+
 ^GainsExperience:
 	GainsExperience:
 		Conditions:
@@ -576,6 +604,7 @@
 ^Building:
 	Inherits@1: ^ExistsInWorld
 	Inherits@2: ^SpriteActor
+	Inherits@shape: ^1x1Shape
 	Huntable:
 	SelectionDecorations:
 	WithSpriteControlGroupDecoration:
@@ -583,10 +612,10 @@
 		Priority: 3
 	Targetable:
 		TargetTypes: Ground, C4, Structure
-	HitShape:
-		UseOccupiedCellsOffsets: true
 	Armor:
 		Type: Wood
+	Health:
+		HP: 400
 	Building:
 		Dimensions: 1,1
 		Footprint: x
@@ -639,8 +668,6 @@
 ^CivBuilding:
 	Inherits: ^Building
 	-ConditionManager:
-	Health:
-		HP: 400
 	Tooltip:
 		GenericName: Civilian Building
 		GenericStancePrefix: false
@@ -706,6 +733,7 @@
 
 ^Wall:
 	Inherits@1: ^SpriteActor
+	Inherits@shape: ^1x1Shape
 	CombatDebugOverlay:
 	AppearsOnRadar:
 	Building:
@@ -735,10 +763,6 @@
 	ScriptTriggers:
 	Health:
 		HP: 100
-	HitShape:
-		Type: Rectangle
-			TopLeft: -512, -512
-			BottomRight: 512, 512
 
 ^Tree:
 	Inherits@1: ^SpriteActor
@@ -882,6 +906,7 @@
 		UseClassicFacingFudge: True
 
 ^Bridge:
+	Inherits@shape: ^1x1Shape
 	AlwaysVisible:
 	Tooltip:
 		Name: Bridge
@@ -897,7 +922,6 @@
 	ScriptTriggers:
 	BodyOrientation:
 		QuantizedFacings: 1
-	HitShape:
 
 ^Crate:
 	Inherits@1: ^SpriteActor
