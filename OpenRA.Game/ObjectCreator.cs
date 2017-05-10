@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -49,18 +50,31 @@ namespace OpenRA
 				Assembly assembly;
 				if (!ResolvedAssemblies.TryGetValue(hash, out assembly))
 				{
-					Stream symbolStream = null;
-					var hasSymbols = false;
-
-					// Mono has its own symbol format.
-					if (isMonoRuntime)
-						hasSymbols = modFiles.TryOpen(path + ".mdb", out symbolStream);
-
-					// .NET uses .pdb files.
+					// HACK: SharpDevelop crashes when trying to load the .pdb using Assembly.Load
+					if (Process.GetProcessesByName("SharpDevelop").Any())
+					{
+						using (Stream stream = modFiles.Open(path))
+						{
+							var fs = stream as FileStream;
+							assembly = fs != null ? Assembly.LoadFile(fs.Name) : Assembly.Load(data);
+						}
+					}
 					else
-						hasSymbols = modFiles.TryOpen(path.Substring(0, path.Length - 4) + ".pdb", out symbolStream);
+					{
+						Stream symbolStream = null;
+						var hasSymbols = false;
 
-					assembly = hasSymbols ? Assembly.Load(data, symbolStream.ReadAllBytes()) : Assembly.Load(data);
+						// Mono has its own symbol format.
+						if (isMonoRuntime)
+							hasSymbols = modFiles.TryOpen(path + ".mdb", out symbolStream);
+
+						// .NET uses .pdb files.
+						else
+							hasSymbols = modFiles.TryOpen(path.Substring(0, path.Length - 4) + ".pdb", out symbolStream);
+
+						assembly = hasSymbols ? Assembly.Load(data, symbolStream.ReadAllBytes()) : Assembly.Load(data);
+					}
+
 					ResolvedAssemblies.Add(hash, assembly);
 				}
 
