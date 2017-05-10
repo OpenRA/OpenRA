@@ -44,6 +44,7 @@ engineer:
 		CaptureTypes: building, husk
 		PlayerExperience: 50
 	-AutoTarget:
+	-WithTextUnitStanceDecoration:
 	-RevealOnFire:
 	Voiced:
 		VoiceSet: EngineerVoice
@@ -79,6 +80,7 @@ trooper:
 thumper:
 	Inherits: ^Infantry
 	-AutoTarget:
+	-WithTextUnitStanceDecoration:
 	-RevealOnFire:
 	Buildable:
 		Queue: Infantry
@@ -245,6 +247,7 @@ saboteur:
 		Flashes: 0
 		EnterBehaviour: Suicide
 	-AutoTarget:
+	-WithTextUnitStanceDecoration:
 	-RevealOnFire:
 	Cloak:
 		InitialDelay: 85
