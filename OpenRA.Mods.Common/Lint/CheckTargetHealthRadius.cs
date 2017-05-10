@@ -55,8 +55,19 @@ namespace OpenRA.Mods.Common.Lint
 
 					foreach (var warhead in effectWarheads)
 					{
+						// If the TargetSearchRadius is zero, we assume that's intentional and skip testing further.
+						if (warhead.TargetSearchRadius == WDist.Zero)
+							continue;
+
 						// This warhead cannot affect this actor.
 						if (!warhead.ValidTargets.Overlaps(targetable))
+							continue;
+
+						// If ValidImpactTypes contains all base types and InvalidImpactTypes contains None (i.e. matches the respective defaults),
+						// we can assume the warhead will trigger regardless of nearby actors, so we don't need a valid TargetSearchRadius.
+						if (warhead.ValidImpactTypes
+							.HasFlag(ImpactType.Ground | ImpactType.Water | ImpactType.Air | ImpactType.GroundHit | ImpactType.WaterHit | ImpactType.AirHit)
+							&& warhead.InvalidImpactTypes.HasFlag(ImpactType.None))
 							continue;
 
 						if (healthTraits.Where(x => x.Shape.OuterRadius.Length > warhead.TargetSearchRadius.Length).Any())

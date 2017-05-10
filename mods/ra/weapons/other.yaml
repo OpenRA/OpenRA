@@ -46,6 +46,7 @@ Flamer:
 		Versus:
 			Wood: 100
 	Warhead@3Eff: CreateEffect
+		TargetSearchRadius: 0
 		Explosions: small_napalm
 
 Napalm:
