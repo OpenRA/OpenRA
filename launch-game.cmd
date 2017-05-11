@@ -24,7 +24,7 @@ OpenRA.Game.exe %*
 
 :end
 if %errorlevel% neq 0 goto crashdialog
-exit
+exit /b
 :crashdialog
 echo ----------------------------------------
 echo OpenRA has encountered a fatal error.
