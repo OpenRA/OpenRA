@@ -19,6 +19,9 @@ namespace OpenRA.Mods.Common.Traits.Sound
 		[Desc("Voice to use when built/trained.")]
 		[VoiceReference] public readonly string Voice = "Build";
 
+		[Desc("Should the voice be played for the owner alone?")]
+		public readonly bool OnlyToOwner = false;
+
 		public object Create(ActorInitializer init) { return new AnnounceOnBuild(init.Self, this); }
 	}
 
@@ -33,6 +36,9 @@ namespace OpenRA.Mods.Common.Traits.Sound
 
 		void INotifyBuildComplete.BuildingComplete(Actor self)
 		{
+			if (info.OnlyToOwner && self.Owner != self.World.RenderPlayer)
+				return;
+
 			self.PlayVoice(info.Voice);
 		}
 	}

@@ -22,6 +22,9 @@ namespace OpenRA.Mods.Common.Traits.Sound
 		[Desc("Voice to use when killing something.")]
 		[VoiceReference] public readonly string Voice = "Kill";
 
+		[Desc("Should the voice be played for the owner alone?")]
+		public readonly bool OnlyToOwner = false;
+
 		public object Create(ActorInitializer init) { return new AnnounceOnKill(init.Self, this); }
 	}
 
@@ -42,6 +45,9 @@ namespace OpenRA.Mods.Common.Traits.Sound
 			// Don't notify suicides
 			if (e.DamageState == DamageState.Dead && damaged != e.Attacker)
 			{
+				if (info.OnlyToOwner && self.Owner != self.World.RenderPlayer)
+					return;
+
 				if (self.World.WorldTick - lastAnnounce > info.Interval * 25)
 					self.PlayVoice(info.Voice);
 
