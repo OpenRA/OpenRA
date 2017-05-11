@@ -163,8 +163,6 @@ namespace OpenRA.Mods.Common.Widgets
 				return new Order("SetUnitStance", a, false) { ExtraData = (uint)nextStance };
 			});
 
-			Game.AddChatLine(Color.White, "Battlefield Control", "Unit stance set to: {0}".F(nextStance));
-
 			return true;
 		}
 
