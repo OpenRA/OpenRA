@@ -15,6 +15,7 @@ using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Orders;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Mods.Common.Traits.Render;
 using OpenRA.Orders;
 using OpenRA.Primitives;
 using OpenRA.Widgets;
@@ -154,6 +155,10 @@ namespace OpenRA.Mods.Common.Widgets
 				var at = a.TraitOrDefault<AutoTarget>();
 				if (at != null)
 					at.PredictedStance = nextStance;
+
+				var sd = a.TraitOrDefault<WithSpriteUnitStanceDecoration>();
+				if (sd != null)
+					sd.Reset();
 
 				return new Order("SetUnitStance", a, false) { ExtraData = (uint)nextStance };
 			});

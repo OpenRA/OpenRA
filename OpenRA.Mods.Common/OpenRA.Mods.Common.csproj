@@ -467,6 +467,7 @@
     <Compile Include="Traits\Render\SelectionDecorations.cs" />
     <Compile Include="Traits\Render\WithSpriteControlGroupDecoration.cs" />
     <Compile Include="Traits\Render\WithTextControlGroupDecoration.cs" />
+    <Compile Include="Traits\Render\WithSpriteUnitStanceDecoration.cs" />
     <Compile Include="Traits\Render\WithTextUnitStanceDecoration.cs" />
     <Compile Include="Traits\SelfHealing.cs" />
     <Compile Include="Traits\Sellable.cs" />
