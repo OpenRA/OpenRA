@@ -337,13 +337,16 @@
 
 ^AutoTarget:
 	AutoTarget:
-	WithTextUnitStanceDecoration:
+	WithSpriteUnitStanceDecoration:
 		ReferencePoint: Top, Left
-		ScreenOffset: 0, -8
-		HoldFireText: .
-		ReturnFireText: .
-		DefendText: .
-		AttackAnythingText: .
+		HoldFireSequence: pip-blue
+		ReturnFireSequence: pip-yellow
+		DefendSequence: pip-orange
+		AttackAnythingSequence: pip-red
+		HoldFireStartSequence: pip-blue-anim
+		ReturnFireStartSequence: pip-yellow-anim
+		DefendStartSequence: pip-orange-anim
+		AttackAnythingStartSequence: pip-red-anim
 
 ^Soldier:
 	Inherits: ^Infantry

@@ -256,6 +256,8 @@ pips:
 		Start: 4
 	pip-blue:
 		Start: 5
+	pip-orange:
+		Start: 6
 	pip-heal: pip-heal
 		Length: *
 	groups: pdigits
@@ -263,6 +265,24 @@ pips:
 		Offset: 9, 5
 	pip-hazmat: pip-hazmat
 		Length: *
+	pip-green-anim: pipsanim
+		Start: 0
+		Length: 4
+	pip-yellow-anim: pipsanim
+		Start: 4
+		Length: 4
+	pip-gray-anim: pipsanim
+		Start: 8
+		Length: 4
+	pip-red-anim: pipsanim
+		Start: 12
+		Length: 4
+	pip-blue-anim: pipsanim
+		Start: 16
+		Length: 4
+	pip-orange-anim: pipsanim
+		Start: 20
+		Length: 4
 
 overlay:
 	build-valid-desert:

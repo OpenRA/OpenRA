@@ -153,4 +153,4 @@ ORCA.IN:
 	RenderSprites:
 		Image: ORCA
 	-AutoTarget:
-	-WithTextUnitStanceDecoration:
+	-WithSpriteUnitStanceDecoration:
