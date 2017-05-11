@@ -51,4 +51,4 @@ FTUR:
 
 PBOX:
 	-AutoTarget:
-	-WithTextUnitStanceDecoration:
+	-WithSpriteUnitStanceDecoration:
