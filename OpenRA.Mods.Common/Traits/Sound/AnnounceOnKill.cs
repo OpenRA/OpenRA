@@ -22,6 +22,9 @@ namespace OpenRA.Mods.Common.Traits.Sound
 		[Desc("Voice to use when killing something.")]
 		[VoiceReference] public readonly string Voice = "Kill";
 
+		[Desc("Stance of the players that should be able to hear the announcement.")]
+		public readonly Stance ValidStances = Stance.Ally | Stance.Enemy | Stance.Neutral;
+
 		public object Create(ActorInitializer init) { return new AnnounceOnKill(init.Self, this); }
 	}
 
@@ -42,6 +45,10 @@ namespace OpenRA.Mods.Common.Traits.Sound
 			// Don't notify suicides
 			if (e.DamageState == DamageState.Dead && damaged != e.Attacker)
 			{
+				var rp = self.World.RenderPlayer;
+				if (rp != null && !info.ValidStances.HasStance(self.Owner.Stances[rp]))
+					return;
+
 				if (self.World.WorldTick - lastAnnounce > info.Interval * 25)
 					self.PlayVoice(info.Voice);
 

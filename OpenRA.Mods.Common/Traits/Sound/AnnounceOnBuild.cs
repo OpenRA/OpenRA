@@ -19,6 +19,9 @@ namespace OpenRA.Mods.Common.Traits.Sound
 		[Desc("Voice to use when built/trained.")]
 		[VoiceReference] public readonly string Voice = "Build";
 
+		[Desc("Stance of the players that should be able to hear the announcement.")]
+		public readonly Stance ValidStances = Stance.Ally | Stance.Enemy | Stance.Neutral;
+
 		public object Create(ActorInitializer init) { return new AnnounceOnBuild(init.Self, this); }
 	}
 
@@ -33,6 +36,10 @@ namespace OpenRA.Mods.Common.Traits.Sound
 
 		void INotifyBuildComplete.BuildingComplete(Actor self)
 		{
+			var rp = self.World.RenderPlayer;
+			if (rp != null && !info.ValidStances.HasStance(self.Owner.Stances[rp]))
+				return;
+
 			self.PlayVoice(info.Voice);
 		}
 	}
