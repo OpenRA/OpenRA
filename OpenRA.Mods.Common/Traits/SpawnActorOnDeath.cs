@@ -50,6 +50,9 @@ namespace OpenRA.Mods.Common.Traits
 			"lead to unexpected behaviour.")]
 		public readonly CVec Offset = CVec.Zero;
 
+		[Desc("Should an actor spawn after the player has been defeated (e.g. after surrendering)?")]
+		public readonly bool SpawnAfterDefeat = true;
+
 		public override object Create(ActorInitializer init) { return new SpawnActorOnDeath(init, this); }
 	}
 
@@ -87,7 +90,7 @@ namespace OpenRA.Mods.Common.Traits
 		// Don't add the new actor to the world before all RemovedFromWorld callbacks have run
 		void INotifyRemovedFromWorld.RemovedFromWorld(Actor self)
 		{
-			if (attackingPlayer == null)
+			if (attackingPlayer == null || (!info.SpawnAfterDefeat && self.Owner.WinState != WinState.Undefined))
 				return;
 
 			var td = new TypeDictionary
