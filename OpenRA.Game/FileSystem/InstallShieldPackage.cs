@@ -16,122 +16,144 @@ using OpenRA.FileFormats;
 
 namespace OpenRA.FileSystem
 {
-	public sealed class InstallShieldPackage : IReadOnlyPackage
+	public class InstallShieldLoader : IPackageLoader
 	{
-		public struct Entry
+		public sealed class InstallShieldPackage : IReadOnlyPackage
 		{
-			public readonly uint Offset;
-			public readonly uint Length;
-
-			public Entry(uint offset, uint length)
+			public struct Entry
 			{
-				Offset = offset;
-				Length = length;
-			}
-		}
+				public readonly uint Offset;
+				public readonly uint Length;
 
-		public string Name { get; private set; }
-		public IEnumerable<string> Contents { get { return index.Keys; } }
-
-		readonly Dictionary<string, Entry> index = new Dictionary<string, Entry>();
-		readonly Stream s;
-		readonly long dataStart = 255;
-
-		public InstallShieldPackage(FileSystem context, string filename)
-		{
-			Name = filename;
-
-			s = context.Open(filename);
-			try
-			{
-				// Parse package header
-				var signature = s.ReadUInt32();
-				if (signature != 0x8C655D13)
-					throw new InvalidDataException("Not an Installshield package");
-
-				s.Position += 8;
-				/*var FileCount = */s.ReadUInt16();
-				s.Position += 4;
-				/*var ArchiveSize = */s.ReadUInt32();
-				s.Position += 19;
-				var tocAddress = s.ReadInt32();
-				s.Position += 4;
-				var dirCount = s.ReadUInt16();
-
-				// Parse the directory list
-				s.Position = tocAddress;
-
-				// Parse directories
-				var directories = new Dictionary<string, uint>();
-				for (var i = 0; i < dirCount; i++)
+				public Entry(uint offset, uint length)
 				{
-					// Parse directory header
-					var fileCount = s.ReadUInt16();
-					var chunkSize = s.ReadUInt16();
-					var nameLength = s.ReadUInt16();
-					var dirName = s.ReadASCII(nameLength);
-
-					// Skip to the end of the chunk
-					s.ReadBytes(chunkSize - nameLength - 6);
-					directories.Add(dirName, fileCount);
+					Offset = offset;
+					Length = length;
 				}
-
-				// Parse files
-				foreach (var dir in directories)
-					for (var i = 0; i < dir.Value; i++)
-						ParseFile(s, dir.Key);
 			}
-			catch
+
+			public string Name { get; private set; }
+			public IEnumerable<string> Contents { get { return index.Keys; } }
+
+			readonly Dictionary<string, Entry> index = new Dictionary<string, Entry>();
+			readonly Stream s;
+			readonly long dataStart = 255;
+
+			public InstallShieldPackage(Stream s, string filename)
 			{
-				Dispose();
-				throw;
+				Name = filename;
+				this.s = s;
+
+				try
+				{
+					// Parse package header
+					/*var signature = */s.ReadUInt32();
+					s.Position += 8;
+					/*var FileCount = */s.ReadUInt16();
+					s.Position += 4;
+					/*var ArchiveSize = */s.ReadUInt32();
+					s.Position += 19;
+					var tocAddress = s.ReadInt32();
+					s.Position += 4;
+					var dirCount = s.ReadUInt16();
+
+					// Parse the directory list
+					s.Position = tocAddress;
+
+					// Parse directories
+					var directories = new Dictionary<string, uint>();
+					for (var i = 0; i < dirCount; i++)
+					{
+						// Parse directory header
+						var fileCount = s.ReadUInt16();
+						var chunkSize = s.ReadUInt16();
+						var nameLength = s.ReadUInt16();
+						var dirName = s.ReadASCII(nameLength);
+
+						// Skip to the end of the chunk
+						s.ReadBytes(chunkSize - nameLength - 6);
+						directories.Add(dirName, fileCount);
+					}
+
+					// Parse files
+					foreach (var dir in directories)
+						for (var i = 0; i < dir.Value; i++)
+							ParseFile(dir.Key);
+				}
+				catch
+				{
+					Dispose();
+					throw;
+				}
+			}
+
+			uint accumulatedData = 0;
+			void ParseFile(string dirName)
+			{
+				s.Position += 7;
+				var compressedSize = s.ReadUInt32();
+				s.Position += 12;
+				var chunkSize = s.ReadUInt16();
+				s.Position += 4;
+				var nameLength = s.ReadByte();
+				var fileName = dirName + "\\" + s.ReadASCII(nameLength);
+
+				// Use index syntax to overwrite any duplicate entries with the last value
+				index[fileName] = new Entry(accumulatedData, compressedSize);
+				accumulatedData += compressedSize;
+
+				// Skip to the end of the chunk
+				s.Position += chunkSize - nameLength - 30;
+			}
+
+			public Stream GetStream(string filename)
+			{
+				Entry e;
+				if (!index.TryGetValue(filename, out e))
+					return null;
+
+				s.Seek(dataStart + e.Offset, SeekOrigin.Begin);
+
+				var ret = new MemoryStream();
+				Blast.Decompress(s, ret);
+				ret.Seek(0, SeekOrigin.Begin);
+
+				return ret;
+			}
+
+			public IReadOnlyPackage OpenPackage(string filename, FileSystem context)
+			{
+				// Not implemented
+				return null;
+			}
+
+			public bool Contains(string filename)
+			{
+				return index.ContainsKey(filename);
+			}
+
+			public IReadOnlyDictionary<string, Entry> Index { get { return new ReadOnlyDictionary<string, Entry>(index); } }
+
+			public void Dispose()
+			{
+				s.Dispose();
 			}
 		}
 
-		uint accumulatedData = 0;
-		void ParseFile(Stream s, string dirName)
+		bool IPackageLoader.TryParsePackage(Stream s, string filename, FileSystem context, out IReadOnlyPackage package)
 		{
-			s.Position += 7;
-			var compressedSize = s.ReadUInt32();
-			s.Position += 12;
-			var chunkSize = s.ReadUInt16();
-			s.Position += 4;
-			var nameLength = s.ReadByte();
-			var fileName = dirName + "\\" + s.ReadASCII(nameLength);
+			// Take a peek at the file signature
+			var signature = s.ReadUInt32();
+			s.Position -= 4;
 
-			// Use index syntax to overwrite any duplicate entries with the last value
-			index[fileName] = new Entry(accumulatedData, compressedSize);
-			accumulatedData += compressedSize;
+			if (signature != 0x8C655D13)
+			{
+				package = null;
+				return false;
+			}
 
-			// Skip to the end of the chunk
-			s.Position += chunkSize - nameLength - 30;
-		}
-
-		public Stream GetStream(string filename)
-		{
-			Entry e;
-			if (!index.TryGetValue(filename, out e))
-				return null;
-
-			s.Seek(dataStart + e.Offset, SeekOrigin.Begin);
-
-			var ret = new MemoryStream();
-			Blast.Decompress(s, ret);
-			ret.Seek(0, SeekOrigin.Begin);
-
-			return ret;
-		}
-
-		public bool Contains(string filename)
-		{
-			return index.ContainsKey(filename);
-		}
-
-		public IReadOnlyDictionary<string, Entry> Index { get { return new ReadOnlyDictionary<string, Entry>(index); } }
-
-		public void Dispose()
-		{
-			s.Dispose();
+			package = new InstallShieldPackage(s, filename);
+			return true;
 		}
 	}
 }

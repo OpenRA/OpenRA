@@ -10,8 +10,10 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using OpenRA.FileFormats;
 using OpenRA.FileSystem;
 
 namespace OpenRA.Mods.Common.UtilityCommands
@@ -22,23 +24,18 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 		bool IUtilityCommand.ValidateArguments(string[] args)
 		{
-			return args.Length == 2;
+			return args.Length == 3;
 		}
 
-		[Desc("ARCHIVE.MIX", "Lists the content ranges for a mix file")]
+		[Desc("ARCHIVE.MIX", "MIXDATABASE.DAT", "Lists the content ranges for a mix file")]
 		void IUtilityCommand.Run(Utility utility, string[] args)
 		{
-			var filename = Path.GetFileName(args[1]);
-			var path = Path.GetDirectoryName(args[1]);
+			var allPossibleFilenames = new HashSet<string>();
+			using (var db = new XccGlobalDatabase(File.OpenRead(args[2])))
+				foreach (var e in db.Entries)
+					allPossibleFilenames.Add(e);
 
-			var fs = new FileSystem.FileSystem(utility.Mods);
-
-			// Needed to access the global mix database
-			fs.LoadFromManifest(utility.ModData.Manifest);
-
-			fs.Mount(path, "parent");
-			var package = new MixFile(fs, "parent|" + filename);
-
+			var package = new MixLoader.MixFile(File.OpenRead(args[1]), args[1], allPossibleFilenames);
 			foreach (var kv in package.Index.OrderBy(kv => kv.Value.Offset))
 			{
 				Console.WriteLine("{0}:", kv.Key);

@@ -68,21 +68,10 @@ namespace OpenRA
 			IReadOnlyPackage package = null;
 			try
 			{
-				if (Directory.Exists(path))
-					package = new Folder(path);
-				else
-				{
-					try
-					{
-						using (var fileStream = File.OpenRead(path))
-							package = new ZipFile(fileStream, path);
-					}
-					catch
-					{
-						throw new InvalidDataException(path + " is not a valid mod package");
-					}
-				}
+				if (!Directory.Exists(path))
+					throw new InvalidDataException(path + " is not a valid mod package");
 
+				package = new Folder(path);
 				if (!package.Contains("mod.yaml"))
 					throw new InvalidDataException(path + " is not a valid mod package");
 

@@ -13,7 +13,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using OpenRA.FileSystem;
 using OpenRA.Graphics;
 using OpenRA.Widgets;
@@ -27,6 +26,7 @@ namespace OpenRA
 		public readonly ObjectCreator ObjectCreator;
 		public readonly WidgetLoader WidgetLoader;
 		public readonly MapCache MapCache;
+		public readonly IPackageLoader[] PackageLoaders;
 		public readonly ISoundLoader[] SoundLoaders;
 		public readonly ISpriteLoader[] SpriteLoaders;
 		public readonly ISpriteSequenceLoader SpriteSequenceLoader;
@@ -49,13 +49,13 @@ namespace OpenRA
 		{
 			Languages = new string[0];
 
-			ModFiles = new FS(mods);
-
 			// Take a local copy of the manifest
 			Manifest = new Manifest(mod.Id, mod.Package);
-			ModFiles.LoadFromManifest(Manifest);
+			ObjectCreator = new ObjectCreator(Manifest, mods);
+			PackageLoaders = ObjectCreator.GetLoaders<IPackageLoader>(Manifest.PackageFormats, "package");
 
-			ObjectCreator = new ObjectCreator(Manifest, ModFiles);
+			ModFiles = new FS(mods, PackageLoaders);
+			ModFiles.LoadFromManifest(Manifest);
 			Manifest.LoadCustomData(ObjectCreator);
 
 			if (useLoadScreen)
@@ -68,8 +68,8 @@ namespace OpenRA
 			WidgetLoader = new WidgetLoader(this);
 			MapCache = new MapCache(this);
 
-			SoundLoaders = GetLoaders<ISoundLoader>(Manifest.SoundFormats, "sound");
-			SpriteLoaders = GetLoaders<ISpriteLoader>(Manifest.SpriteFormats, "sprite");
+			SoundLoaders = ObjectCreator.GetLoaders<ISoundLoader>(Manifest.SoundFormats, "sound");
+			SpriteLoaders = ObjectCreator.GetLoaders<ISpriteLoader>(Manifest.SpriteFormats, "sprite");
 
 			var sequenceFormat = Manifest.Get<SpriteSequenceFormat>();
 			var sequenceLoader = ObjectCreator.FindType(sequenceFormat.Type + "Loader");
@@ -127,21 +127,6 @@ namespace OpenRA
 			VoxelLoader = new VoxelLoader(fileSystem);
 
 			CursorProvider = new CursorProvider(this);
-		}
-
-		TLoader[] GetLoaders<TLoader>(IEnumerable<string> formats, string name)
-		{
-			var loaders = new List<TLoader>();
-			foreach (var format in formats)
-			{
-				var loader = ObjectCreator.FindType(format + "Loader");
-				if (loader == null || !loader.GetInterfaces().Contains(typeof(TLoader)))
-					throw new InvalidOperationException("Unable to find a {0} loader for type '{1}'.".F(name, format));
-
-				loaders.Add((TLoader)ObjectCreator.CreateBasic(loader));
-			}
-
-			return loaders.ToArray();
 		}
 
 		public IEnumerable<string> Languages { get; private set; }
