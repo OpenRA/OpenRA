@@ -3,7 +3,7 @@ General:
 	Id: ARRAKIS
 	SheetSize: 1024
 	Palette: PALETTE.BIN
-	EditorTemplateOrder: Basic, Dune, Sand-Detail, Brick, Sand-Cliff, Sand-Smooth, Cliff-Type-Changer, Rock-Sand-Smooth, Rock-Detail, Rock-Cliff, Rock-Cliff-Rock, Rotten-Base, Dead-Worm, Ice, Ice-Detail, Rock-Cliff-Sand, Sand-Platform, Bridge, Unidentified
+	EditorTemplateOrder: Basic, Dune, Sand-Detail, Brick, Sand-Cliff, Cliff-Ends, Cliff-Type-Changer, Rock-Sand-Smooth, Rock-Detail, Rock-Cliff, Rock-Cliff-Rock, Rotten-Base, Dead-Worm, Ice, Ice-Detail, Rock-Cliff-Sand, Sand-Platform, Bridge, Unidentified
 	IgnoreTileSpriteOffsets: True
 	HeightDebugColors: 880000
 
@@ -317,7 +317,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 176, 177, 196, 197
 		Size: 2,2
-		Category: Sand-Cliff
+		Category: Cliff-Ends
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -328,7 +328,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 174, 175, 194, 195
 		Size: 2,2
-		Category: Sand-Cliff
+		Category: Cliff-Ends
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -339,7 +339,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 172, 173, 192, 193
 		Size: 2,2
-		Category: Sand-Cliff
+		Category: Cliff-Ends
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -350,7 +350,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 170, 171, 190, 191
 		Size: 2,2
-		Category: Sand-Cliff
+		Category: Cliff-Ends
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -600,7 +600,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 216, 217, 236, 237
 		Size: 2,2
-		Category: Sand-Cliff
+		Category: Cliff-Ends
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -611,7 +611,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 214, 215, 234, 235
 		Size: 2,2
-		Category: Sand-Cliff
+		Category: Cliff-Ends
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -768,7 +768,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 298, 299
 		Size: 2,1
-		Category: Sand-Cliff
+		Category: Cliff-Ends
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -1299,7 +1299,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 562, 563, 582, 583
 		Size: 2,2
-		Category: Rock-Cliff
+		Category: Cliff-Ends
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -1387,7 +1387,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 525, 526, 545, 546
 		Size: 2,2
-		Category: Rock-Cliff
+		Category: Cliff-Ends
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -1398,7 +1398,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 523, 524, 543, 544
 		Size: 2,2
-		Category: Rock-Cliff
+		Category: Cliff-Ends
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -1435,7 +1435,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 440, 441, 460, 461
 		Size: 2,2
-		Category: Sand-Smooth
+		Category: Cliff-Ends
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -1459,7 +1459,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 400, 401, 420, 421
 		Size: 2,2
-		Category: Rock-Cliff
+		Category: Cliff-Ends
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -1494,7 +1494,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 412, 413, 432, 433
 		Size: 2,2
-		Category: Rock-Cliff
+		Category: Cliff-Ends
 		Tiles:
 			0: Cliff
 			1: Transition
@@ -1505,7 +1505,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 452, 453
 		Size: 2,1
-		Category: Rock-Cliff
+		Category: Cliff-Ends
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -1538,7 +1538,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 448, 449, 468, 469
 		Size: 2,2
-		Category: Sand-Smooth
+		Category: Rock-Cliff
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -1759,7 +1759,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 483, 484, 503, 504
 		Size: 2,2
-		Category: Sand-Smooth
+		Category: Cliff-Ends
 		Tiles:
 			0: Cliff
 			1: Transition
@@ -2002,7 +2002,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 254, 255, 274, 275
 		Size: 2,2
-		Category: Sand-Cliff
+		Category: Cliff-Ends
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -4543,7 +4543,7 @@ Templates:
 		Id: 610
 		Images: t610.tmp
 		Size: 2,2
-		Category: Rock-Cliff-Rock
+		Category: Cliff-Ends
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -4553,7 +4553,7 @@ Templates:
 		Id: 611
 		Images: t611.tmp
 		Size: 2,1
-		Category: Rock-Cliff-Rock
+		Category: Cliff-Ends
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -4808,7 +4808,7 @@ Templates:
 		Id: 635
 		Images: t635.tmp
 		Size: 2,2
-		Category: Rock-Cliff-Rock
+		Category: Cliff-Ends
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -4818,7 +4818,7 @@ Templates:
 		Id: 636
 		Images: t636.tmp
 		Size: 2,2
-		Category: Rock-Cliff-Rock
+		Category: Cliff-Ends
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -4828,7 +4828,7 @@ Templates:
 		Id: 637
 		Images: t637.tmp
 		Size: 2,2
-		Category: Rock-Cliff-Rock
+		Category: Cliff-Ends
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -4838,7 +4838,7 @@ Templates:
 		Id: 638
 		Images: t638.tmp
 		Size: 2,2
-		Category: Rock-Cliff-Rock
+		Category: Cliff-Ends
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -4848,7 +4848,7 @@ Templates:
 		Id: 639
 		Images: t639.tmp
 		Size: 2,2
-		Category: Rock-Cliff-Rock
+		Category: Cliff-Ends
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -4858,7 +4858,7 @@ Templates:
 		Id: 640
 		Images: t640.tmp
 		Size: 2,2
-		Category: Rock-Cliff-Rock
+		Category: Cliff-Ends
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -4928,7 +4928,7 @@ Templates:
 		Id: 806
 		Images: t806.tmp
 		Size: 2,2
-		Category: Rock-Cliff-Sand
+		Category: Cliff-Type-Changer
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -4938,7 +4938,7 @@ Templates:
 		Id: 807
 		Images: t807.tmp
 		Size: 2,2
-		Category: Rock-Cliff-Sand
+		Category: Cliff-Type-Changer
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -5167,7 +5167,7 @@ Templates:
 		Id: 830
 		Images: t830.tmp
 		Size: 2,2
-		Category: Rock-Cliff-Rock
+		Category: Cliff-Type-Changer
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -5177,7 +5177,7 @@ Templates:
 		Id: 831
 		Images: t831.tmp
 		Size: 2,2
-		Category: Rock-Cliff-Sand
+		Category: Cliff-Type-Changer
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -5187,7 +5187,7 @@ Templates:
 		Id: 832
 		Images: t832.tmp
 		Size: 2,2
-		Category: Rock-Cliff-Sand
+		Category: Cliff-Type-Changer
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -5197,7 +5197,7 @@ Templates:
 		Id: 833
 		Images: t833.tmp
 		Size: 2,2
-		Category: Rock-Cliff-Sand
+		Category: Cliff-Type-Changer
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -5207,7 +5207,7 @@ Templates:
 		Id: 834
 		Images: t834.tmp
 		Size: 2,2
-		Category: Rock-Cliff-Sand
+		Category: Cliff-Type-Changer
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -5217,7 +5217,7 @@ Templates:
 		Id: 835
 		Images: t835.tmp
 		Size: 2,2
-		Category: Rock-Cliff-Sand
+		Category: Cliff-Type-Changer
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -5227,7 +5227,7 @@ Templates:
 		Id: 836
 		Images: t836.tmp
 		Size: 2,2
-		Category: Rock-Cliff-Rock
+		Category: Cliff-Type-Changer
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -5237,7 +5237,7 @@ Templates:
 		Id: 837
 		Images: t837.tmp
 		Size: 2,2
-		Category: Rock-Cliff-Rock
+		Category: Cliff-Type-Changer
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -5295,7 +5295,7 @@ Templates:
 		Id: 842
 		Images: t842.tmp
 		Size: 2,2
-		Category: Sand-Smooth
+		Category: Cliff-Type-Changer
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -5305,7 +5305,7 @@ Templates:
 		Id: 843
 		Images: t843.tmp
 		Size: 2,2
-		Category: Sand-Smooth
+		Category: Cliff-Type-Changer
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -5315,7 +5315,7 @@ Templates:
 		Id: 844
 		Images: t844.tmp
 		Size: 2,2
-		Category: Rock-Cliff-Sand
+		Category: Cliff-Type-Changer
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -5325,7 +5325,7 @@ Templates:
 		Id: 845
 		Images: t845.tmp
 		Size: 2,2
-		Category: Rock-Cliff-Sand
+		Category: Cliff-Type-Changer
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -5335,7 +5335,7 @@ Templates:
 		Id: 846
 		Images: t846.tmp
 		Size: 2,2
-		Category: Rock-Cliff-Sand
+		Category: Cliff-Type-Changer
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -5345,7 +5345,7 @@ Templates:
 		Id: 847
 		Images: t847.tmp
 		Size: 2,2
-		Category: Rock-Cliff-Sand
+		Category: Cliff-Type-Changer
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -5355,7 +5355,7 @@ Templates:
 		Id: 848
 		Images: t848.tmp
 		Size: 2,2
-		Category: Rock-Cliff-Sand
+		Category: Cliff-Type-Changer
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -5365,7 +5365,7 @@ Templates:
 		Id: 849
 		Images: t849.tmp
 		Size: 2,2
-		Category: Rock-Cliff-Sand
+		Category: Cliff-Type-Changer
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -5375,7 +5375,7 @@ Templates:
 		Id: 850
 		Images: t850.tmp
 		Size: 2,2
-		Category: Rock-Cliff-Sand
+		Category: Cliff-Type-Changer
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -5385,7 +5385,7 @@ Templates:
 		Id: 851
 		Images: t851.tmp
 		Size: 2,2
-		Category: Rock-Cliff-Sand
+		Category: Cliff-Type-Changer
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -5395,7 +5395,7 @@ Templates:
 		Id: 852
 		Images: t852.tmp
 		Size: 2,2
-		Category: Rock-Cliff-Sand
+		Category: Cliff-Type-Changer
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -5405,7 +5405,7 @@ Templates:
 		Id: 853
 		Images: t853.tmp
 		Size: 2,2
-		Category: Rock-Cliff-Sand
+		Category: Cliff-Type-Changer
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -5415,7 +5415,7 @@ Templates:
 		Id: 854
 		Images: t854.tmp
 		Size: 2,2
-		Category: Rock-Cliff-Sand
+		Category: Cliff-Type-Changer
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -5425,7 +5425,7 @@ Templates:
 		Id: 855
 		Images: t855.tmp
 		Size: 2,2
-		Category: Rock-Cliff-Sand
+		Category: Cliff-Type-Changer
 		Tiles:
 			0: Cliff
 			1: Cliff
