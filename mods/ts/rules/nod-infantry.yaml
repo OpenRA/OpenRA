@@ -15,7 +15,7 @@ E3:
 	Health:
 		HP: 100
 	Mobile:
-		Speed: 42
+		Speed: 56
 	Armament@PRIMARY:
 		Weapon: Bazooka
 		LocalOffset: 356,0,967
@@ -25,6 +25,8 @@ E3:
 		Voice: Attack
 	WithInfantryBody:
 		DefaultAttackSequence: attack
+	RevealsShroud:
+		Range: 7c0
 	ProducibleWithLevel:
 		Prerequisites: barracks.upgraded
 

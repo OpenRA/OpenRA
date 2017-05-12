@@ -24,6 +24,8 @@ E2:
 		Voice: Attack
 	WithInfantryBody:
 		DefaultAttackSequence: attack
+	RevealsShroud:
+		Range: 7c0
 	ProducibleWithLevel:
 		Prerequisites: barracks.upgraded
 
@@ -78,7 +80,7 @@ JUMPJET:
 	Voiced:
 		VoiceSet: JumpJet
 	Mobile:
-		Speed: 56
+		Speed: 71
 		Jumpjet: True
 		JumpjetTransitionCost: 100
 		JumpjetCondition: airborne
