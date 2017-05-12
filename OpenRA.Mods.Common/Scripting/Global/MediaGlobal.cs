@@ -189,14 +189,23 @@ namespace OpenRA.Mods.Common.Scripting
 			return true;
 		}
 
-		[Desc("Display a text message to the player.")]
-		public void DisplayMessage(string text, string prefix = "Mission", HSLColor? color = null)
+		[Desc("Display a text message to all players.")]
+		public void DisplayMessage(string text, string prefix = "Mission", HSLColor? color = null, int team = 0)
 		{
 			if (string.IsNullOrEmpty(text))
 				return;
 
 			Color c = color.HasValue ? HSLColor.RGBFromHSL(color.Value.H / 255f, color.Value.S / 255f, color.Value.L / 255f) : Color.White;
-			Game.AddChatLine(c, prefix, text);
+
+			if (team == 0 || (world.LocalPlayer != null && world.LobbyInfo.ClientWithIndex(world.LocalPlayer.ClientIndex).Team == team))
+				Game.AddChatLine(c, prefix, text);
+		}
+
+		[Desc("Display a text message only to one player.")]
+		public void PrivateMessage(Player player, string text, string prefix = "Mission [Private]", HSLColor? color = null)
+		{
+			if (Context.World.LocalPlayer == player)
+				DisplayMessage(text, prefix, color);
 		}
 
 		[Desc("Displays a debug message to the player, if \"Show Map Debug Messages\" is checked in the settings.")]
