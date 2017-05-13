@@ -36,7 +36,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly ModData modData;
 		readonly WebServices services;
 
-		MapPreview Map { get; set; }
+		MapPreview map;
 		ReplayMetadata selectedReplay;
 
 		volatile bool cancelLoadingReplays;
@@ -44,7 +44,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		[ObjectCreator.UseCtor]
 		public ReplayBrowserLogic(Widget widget, ModData modData, Action onExit, Action onStart)
 		{
-			Map = MapCache.UnknownMap;
+			map = MapCache.UnknownMap;
 			panel = widget;
 
 			services = modData.Manifest.Get<WebServices>();
@@ -69,7 +69,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				ThreadPool.QueueUserWorkItem(_ => LoadReplays(dir, template));
 
 			var watch = panel.Get<ButtonWidget>("WATCH_BUTTON");
-			watch.IsDisabled = () => selectedReplay == null || Map.Status != MapStatus.Available;
+			watch.IsDisabled = () => selectedReplay == null || map.Status != MapStatus.Available;
 			watch.OnClick = () => { WatchReplay(); };
 
 			panel.Get("REPLAY_INFO").IsVisible = () => selectedReplay != null;
@@ -77,12 +77,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			Ui.LoadWidget("MAP_PREVIEW", panel.Get("MAP_PREVIEW_ROOT"), new WidgetArgs
 			{
 				{ "orderManager", null },
-				{ "getMap", (Func<MapPreview>)(() => Map) },
+				{ "getMap", (Func<MapPreview>)(() => map) },
 				{ "onMouseDown",  (Action<MapPreviewWidget, MapPreview, MouseInput>)((preview, map, mi) => { }) },
 				{ "getSpawnOccupants", (Func<MapPreview, Dictionary<CPos, SpawnOccupant>>)(map => LobbyUtils.GetSpawnOccupants(selectedReplay.GameInfo.Players, map)) },
 			});
 
-			panel.Get<LabelWidget>("DURATION").GetText = () => WidgetUtils.FormatTimeSeconds((int)selectedReplay.GameInfo.Duration.TotalSeconds);
+			var replayDuration = new CachedTransform<ReplayMetadata, string>(r =>
+				"Duration: {0}".F(WidgetUtils.FormatTimeSeconds((int)selectedReplay.GameInfo.Duration.TotalSeconds)));
+			panel.Get<LabelWidget>("DURATION").GetText = () => replayDuration.Update(selectedReplay);
 
 			SetupFilters();
 			SetupManagement();
@@ -136,6 +138,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						Pair.New(GameType.Singleplayer, "Singleplayer"),
 						Pair.New(GameType.Multiplayer, "Multiplayer")
 					};
+
 					var lookup = options.ToDictionary(kvp => kvp.First, kvp => kvp.Second);
 
 					ddb.GetText = () => lookup[filter.Type];
@@ -170,6 +173,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						Pair.New(DateType.LastFortnight, "Last 14 days"),
 						Pair.New(DateType.LastMonth, "Last 30 days")
 					};
+
 					var lookup = options.ToDictionary(kvp => kvp.First, kvp => kvp.Second);
 
 					ddb.GetText = () => lookup[filter.Date];
@@ -205,6 +209,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						Pair.New(DurationType.Medium, "Medium (30 min)"),
 						Pair.New(DurationType.Long, "Long (60+ min)")
 					};
+
 					var lookup = options.ToDictionary(kvp => kvp.First, kvp => kvp.Second);
 
 					ddb.GetText = () => lookup[filter.Duration];
@@ -239,6 +244,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						Pair.New(WinState.Lost, "Defeat"),
 						Pair.New(WinState.Won, "Victory")
 					};
+
 					var lookup = options.ToDictionary(kvp => kvp.First, kvp => kvp.Second);
 
 					ddb.GetText = () => lookup[filter.Outcome];
@@ -595,19 +601,19 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		void SelectReplay(ReplayMetadata replay)
 		{
 			selectedReplay = replay;
-			Map = (selectedReplay != null) ? selectedReplay.GameInfo.MapPreview : MapCache.UnknownMap;
+			map = selectedReplay != null ? selectedReplay.GameInfo.MapPreview : MapCache.UnknownMap;
 
 			if (replay == null)
 				return;
 
 			try
 			{
-				if (Map.Status != MapStatus.Available)
+				if (map.Status != MapStatus.Available)
 				{
-					if (Map.Status == MapStatus.DownloadAvailable)
-						LoadMapPreviewRules(Map);
+					if (map.Status == MapStatus.DownloadAvailable)
+						LoadMapPreviewRules(map);
 					else if (Game.Settings.Game.AllowDownloading)
-						modData.MapCache.QueryRemoteMapDetails(services.MapRepository, new[] { Map.Uid }, LoadMapPreviewRules);
+						modData.MapCache.QueryRemoteMapDetails(services.MapRepository, new[] { map.Uid }, LoadMapPreviewRules);
 				}
 
 				var players = replay.GameInfo.Players
