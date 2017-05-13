@@ -185,7 +185,8 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 
 				var pos = s.Trait<IPositionable>();
 				var spawn = self.CenterPosition;
-				pos.SetVisualPosition(s, self.CenterPosition + exit.SpawnOffset);
+				var spawn_offset = exit == null ? WVec.Zero : exit.SpawnOffset;
+				pos.SetVisualPosition(s, self.CenterPosition + spawn_offset);
 				s.CancelActivity(); // Reset any activity. May had an activity before entering the spawner.
 				// Or might had been added by above foreach launched loop.
 				if (Info.SlaveIsGroundUnit)
@@ -278,13 +279,14 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 		{
 			if (facing.Value == null)
 				return;
+			var launch_angle = exit != null ? exit.Facing : 0;
 
 			var passengerFacing = spawned.TraitOrDefault<IFacing>();
 			if (passengerFacing != null)
-				passengerFacing.Facing = (facing.Value.Facing + exit.Facing) % 256;
+				passengerFacing.Facing = (facing.Value.Facing + launch_angle) % 256;
 
 			foreach (var t in spawned.TraitsImplementing<Turreted>())
-				t.TurretFacing = (facing.Value.Facing + exit.Facing) % 256;
+				t.TurretFacing = (facing.Value.Facing + launch_angle) % 256;
 		}
 
 		public IEnumerable<PipType> GetPips(Actor self)
