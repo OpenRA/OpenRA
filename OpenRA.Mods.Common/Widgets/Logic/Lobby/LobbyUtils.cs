@@ -294,6 +294,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				name.YieldKeyboardFocus();
 				return true;
 			};
+
+			HideChildWidget(parent, "SLOT_OPTIONS");
 		}
 
 		public static void SetupNameWidget(Widget parent, Session.Slot s, Session.Client c)
@@ -455,13 +457,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			HideChildWidget(parent, "SPAWN");
 		}
 
-		static void HideChildWidget(Widget parent, string widgetId)
-		{
-			var widget = parent.GetOrNull(widgetId);
-			if (widget != null)
-				widget.IsVisible = () => false;
-		}
-
 		public static void SetupSpawnWidget(Widget parent, Session.Slot s, Session.Client c)
 		{
 			parent.Get<LabelWidget>("SPAWN").GetText = () => (c.SpawnPoint == 0) ? "-" : Convert.ToChar('A' - 1 + c.SpawnPoint).ToString();
@@ -557,6 +552,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				textLabel.Bounds.Height += dh;
 				template.Bounds.Height += dh;
 			}
+		}
+
+		static void HideChildWidget(Widget parent, string widgetId)
+		{
+			var widget = parent.GetOrNull(widgetId);
+			if (widget != null)
+				widget.IsVisible = () => false;
 		}
 	}
 }
