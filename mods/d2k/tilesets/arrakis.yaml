@@ -3,7 +3,7 @@ General:
 	Id: ARRAKIS
 	SheetSize: 1024
 	Palette: PALETTE.BIN
-	EditorTemplateOrder: Basic, Dune, Sand-Detail, Brick, Sand-Cliff, Sand-Smooth, Cliff-Type-Changer, Rock-Sand-Smooth, Rock-Detail, Rock-Cliff, Rock-Cliff-Rock, Rotten-Base, Dead-Worm, Ice, Ice-Detail, Rock-Cliff-Sand, Sand-Platform, Bridge, Unidentified
+	EditorTemplateOrder: Basic, Dune, Sand-Detail, Sand-Cliff, Sand-Smooth, Cliff-Type-Changer, Rock-Sand-Smooth, Rock-Detail, Rock-Cliff, Rock-Cliff-Rock, Rotten-Base, Dead-Worm, Ice, Ice-Detail, Rock-Cliff-Sand, Sand-Platform, Bridge, Unidentified
 	IgnoreTileSpriteOffsets: True
 	HeightDebugColors: 880000
 
@@ -939,7 +939,7 @@ Templates:
 		Frames: 657, 658, 659, 691
 		Size: 1,1
 		PickAny: True
-		Category: Brick
+		Category: Basic
 		Tiles:
 			0: Concrete
 			1: Concrete
@@ -3251,7 +3251,7 @@ Templates:
 		Images: BLOXICE.R8
 		Frames: 539, 559
 		Size: 1,2
-		Category: Unidentified
+		Category: Rock-Cliff
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -3730,7 +3730,7 @@ Templates:
 		Images: BLOXTREE.R8
 		Frames: 747
 		Size: 1,1
-		Category: Unidentified
+		Category: Sand-Detail
 		Tiles:
 			0: Rough
 	Template@431:
@@ -4278,7 +4278,7 @@ Templates:
 		Images: BLOXXMAS.R8
 		Frames: 316
 		Size: 1,1
-		Category: Sand-Detail
+		Category: Bridge
 		Tiles:
 			0: Cliff
 	Template@506:
@@ -4286,7 +4286,7 @@ Templates:
 		Images: BLOXXMAS.R8
 		Frames: 297
 		Size: 1,1
-		Category: Sand-Detail
+		Category: Bridge
 		Tiles:
 			0: Cliff
 	Template@507:
@@ -4338,7 +4338,7 @@ Templates:
 		Images: BLOXXMAS.R8
 		Frames: 353, 354, 373, 374, 393, 394
 		Size: 2,3
-		Category: Sand-Detail
+		Category: Bridge
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -4351,13 +4351,13 @@ Templates:
 		Images: BLOXXMAS.R8
 		Frames: 350, 351, 352, 370, 371, 372, 390, 391, 392
 		Size: 3,3
-		Category: Rock-Detail
+		Category: Bridge
 		Tiles:
 			0: Rock
 			1: Rock
 			2: Rock
 			3: Cliff
-			4: Rough
+			4: Transition
 			5: Cliff
 			6: Cliff
 			7: Rough
@@ -4367,13 +4367,13 @@ Templates:
 		Images: BLOXXMAS.R8
 		Frames: 347, 348, 349, 367, 368, 369, 387, 388, 389
 		Size: 3,3
-		Category: Rock-Detail
+		Category: Bridge
 		Tiles:
 			0: Sand
 			1: Rough
 			2: Cliff
 			3: Cliff
-			4: Rough
+			4: Transition
 			5: Cliff
 			6: Rock
 			7: Rock
@@ -4383,11 +4383,11 @@ Templates:
 		Images: BLOXXMAS.R8
 		Frames: 340, 341, 342, 343, 360, 361, 362, 363, 380, 381, 382, 383
 		Size: 4,3
-		Category: Rock-Detail
+		Category: Bridge
 		Tiles:
 			0: Cliff
-			1: Sand
-			2: Sand
+			1: Cliff
+			2: Cliff
 			3: Cliff
 			4: Transition
 			5: Transition
