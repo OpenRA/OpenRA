@@ -69,10 +69,13 @@ namespace OpenRA.Mods.AS.Traits
 
 		void Update(Player owner, string faction)
 		{
-			if (info.Factions.Any())
+			if (!owner.IsBot)
+				enabled = false;
+
+			if (info.Factions.Any() && enabled)
 				enabled = info.Factions.Contains(faction);
 
-			if (info.RequiresPrerequisites.Any() && owner.IsBot && enabled)
+			if (info.RequiresPrerequisites.Any() && enabled)
 				enabled = owner.PlayerActor.Trait<TechTree>().HasPrerequisites(info.RequiresPrerequisites);
 		}
 	}
