@@ -294,6 +294,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				name.YieldKeyboardFocus();
 				return true;
 			};
+
+			HideChildWidget(parent, "SLOT_OPTIONS");
 		}
 
 		public static void SetupNameWidget(Widget parent, Session.Slot s, Session.Client c)
@@ -516,6 +518,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 
 			return address;
+		}
+
+		static void HideChildWidget(Widget parent, string widgetId)
+		{
+			var widget = parent.GetOrNull(widgetId);
+			if (widget != null)
+				widget.IsVisible = () => false;
 		}
 	}
 }
