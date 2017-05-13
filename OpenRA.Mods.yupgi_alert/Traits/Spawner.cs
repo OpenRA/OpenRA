@@ -51,9 +51,6 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 		[Desc("Terrain types that this actor is allowed to eject actors onto. Leave empty for all terrain types.")]
 		public readonly HashSet<string> UnloadTerrainTypes = new HashSet<string>();
 
-		[Desc("Which direction the passenger will face (relative to the spawner) when unloading.")]
-		public readonly int PassengerFacing = 0;
-
 		[Desc("Insta-repair spawners when they return?")]
 		public readonly bool InstaRepair = true;
 
@@ -95,7 +92,7 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 		readonly Dictionary<string, Stack<int>> passengerTokens = new Dictionary<string, Stack<int>>();
 		readonly Lazy<IFacing> facing;
 		readonly bool checkTerrainType;
-
+		readonly ExitInfo[] exits;
 		//Aircraft aircraft;
 		// Carriers don't need to land to spawn stuff!
 		// I want to make this like Protoss Carrier.
@@ -125,6 +122,7 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 			}
 
 			facing = Exts.Lazy(self.TraitOrDefault<IFacing>);
+			exits = self.Info.TraitInfos<ExitInfo>().ToArray();
 		}
 
 		void Replenish(Actor self)
@@ -159,21 +157,23 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 
 		void INotifyAttack.PreparingAttack(Actor self, Target target, Armament a, Barrel barrel) { }
 
+		// The rate of fire of the dummy weapon determines the launch cycle as each shot
+		// invokes Attacking()
 		void INotifyAttack.Attacking(Actor self, Target target, Armament a, Barrel barrel)
 		{
-			// The freshly launched one is in the launched list, too.
-			foreach(var launched in launched)
-			{
-				launched.Trait<Spawned>().AttackTarget(launched, target);
-			}
+			foreach(var spawned in launched)
+				// At this point, freshly launched one is in the launched list, too.
+				spawned.Trait<Spawned>().AttackTarget(spawned, target);
 
-			// The rate of fire of the dummy weapon determines the launch cycle.
 			if (slaves.Count == 0)
 				return;
 
 			var s = Launch(self);
 			if (s == null)
 				return;
+
+			var exit = ChooseExit(self);
+			SetSpawnedFacing(s, self, exit);
 
 			self.World.AddFrameEndTask(w =>
 			{
@@ -185,7 +185,7 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 
 				var pos = s.Trait<IPositionable>();
 				var spawn = self.CenterPosition;
-				pos.SetVisualPosition(s, spawn);
+				pos.SetVisualPosition(s, self.CenterPosition + exit.SpawnOffset);
 				s.CancelActivity(); // Reset any activity. May had an activity before entering the spawner.
 				// Or might had been added by above foreach launched loop.
 				if (Info.SlaveIsGroundUnit)
@@ -193,10 +193,10 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 					// Air unit doesn't require this for some reason :)
 					// Without this, ground unit is immobile.
 					//CPos exit = Target.FromActor(self).Positions.Select(p => w.Map.CellContaining(p)).Distinct().First();
-					CPos exit = Util.AdjacentCells(s.World, Target.FromActor(self)).First();
+					//CPos exit = Util.AdjacentCells(s.World, Target.FromActor(self)).First();
 					//CPos exit = target.Positions.Select(p => w.Map.CellContaining(p)).Distinct().First();
 					var move = s.Trait<IMove>();
-					var mv = move.MoveIntoWorld(s, exit);
+					var mv = move.MoveIntoWorld(s, self.Location);
 					if (mv != null)
 						s.QueueActivity(mv);
 				}
@@ -253,27 +253,38 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 			return null;
 		}
 
+		// Production.cs use random to select an exit.
+		// Here, we choose one by round robin.
+		// Start from -1 so that +1 logic below will make it 0.
+		int exit_round_robin = -1;
+		ExitInfo ChooseExit(Actor self)
+		{
+			if (exits.Length == 0)
+				return null;
+			exit_round_robin = (exit_round_robin + 1) % exits.Length;
+			return exits[exit_round_robin];
+		}
+
 		public Actor Launch(Actor self)
 		{
 			var a = PopLaunchable(self);
 			if (a == null)
 				return null;
-			SetPassengerFacing(a);
 			launched.Add(a);
 			return a;
 		}
 
-		void SetPassengerFacing(Actor passenger)
+		void SetSpawnedFacing(Actor spawned, Actor spawner, ExitInfo exit)
 		{
 			if (facing.Value == null)
 				return;
 
-			var passengerFacing = passenger.TraitOrDefault<IFacing>();
+			var passengerFacing = spawned.TraitOrDefault<IFacing>();
 			if (passengerFacing != null)
-				passengerFacing.Facing = facing.Value.Facing + Info.PassengerFacing;
+				passengerFacing.Facing = (facing.Value.Facing + exit.Facing) % 256;
 
-			foreach (var t in passenger.TraitsImplementing<Turreted>())
-				t.TurretFacing = facing.Value.Facing + Info.PassengerFacing;
+			foreach (var t in spawned.TraitsImplementing<Turreted>())
+				t.TurretFacing = (facing.Value.Facing + exit.Facing) % 256;
 		}
 
 		public IEnumerable<PipType> GetPips(Actor self)
