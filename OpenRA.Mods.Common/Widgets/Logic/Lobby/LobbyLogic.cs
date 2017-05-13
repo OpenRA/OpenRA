@@ -62,7 +62,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		readonly LabelWidget chatLabel;
 
-		MapPreview Map { get; set; }
+		MapPreview map;
 		bool addBotOnMapLoad;
 		bool teamChat;
 		int lobbyChatUnreadMessages;
@@ -103,7 +103,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		internal LobbyLogic(Widget widget, ModData modData, WorldRenderer worldRenderer, OrderManager orderManager,
 			Action onExit, Action onStart, bool skirmishMode)
 		{
-			Map = MapCache.UnknownMap;
+			map = MapCache.UnknownMap;
 			lobby = widget;
 			this.modData = modData;
 			this.orderManager = orderManager;
@@ -130,7 +130,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			Ui.LoadWidget("MAP_PREVIEW", lobby.Get("MAP_PREVIEW_ROOT"), new WidgetArgs
 			{
 				{ "orderManager", orderManager },
-				{ "getMap", (Func<MapPreview>)(() => Map) },
+				{ "getMap", (Func<MapPreview>)(() => map) },
 				{ "onMouseDown",  (Action<MapPreviewWidget, MapPreview, MouseInput>)((preview, map, mi) => LobbyUtils.SelectSpawnPoint(orderManager, preview, map, mi)) },
 				{ "getSpawnOccupants", (Func<MapPreview, Dictionary<CPos, SpawnOccupant>>)(map => LobbyUtils.GetSpawnOccupants(orderManager.LobbyInfo, map)) },
 			});
@@ -156,7 +156,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var gameStarting = false;
 			Func<bool> configurationDisabled = () => !Game.IsHost || gameStarting ||
 				panel == PanelType.Kick || panel == PanelType.ForceStart ||
-				!Map.RulesLoaded || Map.InvalidCustomRules ||
+				!map.RulesLoaded || map.InvalidCustomRules ||
 				orderManager.LocalClient == null || orderManager.LocalClient.IsReady;
 
 			var mapButton = lobby.GetOrNull<ButtonWidget>("CHANGEMAP_BUTTON");
@@ -169,7 +169,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					var onSelect = new Action<string>(uid =>
 					{
 						// Don't select the same map again
-						if (uid == Map.Uid)
+						if (uid == map.Uid)
 							return;
 
 						orderManager.IssueOrder(Order.Command("map " + uid));
@@ -179,7 +179,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 					Ui.OpenWindow("MAPCHOOSER_PANEL", new WidgetArgs()
 					{
-						{ "initialMap", Map.Uid },
+						{ "initialMap", map.Uid },
 						{ "initialTab", MapClassification.System },
 						{ "onExit", DoNothing },
 						{ "onSelect", Game.IsHost ? onSelect : null },
@@ -197,7 +197,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				slotsButton.OnMouseDown = _ =>
 				{
-					var botNames = Map.Rules.Actors["player"].TraitInfos<IBotInfo>().Select(t => t.Name);
+					var botNames = map.Rules.Actors["player"].TraitInfos<IBotInfo>().Select(t => t.Name);
 					var options = new Dictionary<string, IEnumerable<DropDownOption>>();
 
 					var botController = orderManager.LobbyInfo.Clients.FirstOrDefault(c => c.IsAdmin);
@@ -295,7 +295,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var optionsTab = lobby.Get<ButtonWidget>("OPTIONS_TAB");
 			optionsTab.IsHighlighted = () => panel == PanelType.Options;
-			optionsTab.IsDisabled = () => !Map.RulesLoaded || Map.InvalidCustomRules || panel == PanelType.Kick || panel == PanelType.ForceStart;
+			optionsTab.IsDisabled = () => !map.RulesLoaded || map.InvalidCustomRules || panel == PanelType.Kick || panel == PanelType.ForceStart;
 			optionsTab.OnClick = () => panel = PanelType.Options;
 
 			var playersTab = lobby.Get<ButtonWidget>("PLAYERS_TAB");
@@ -318,7 +318,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var startGameButton = lobby.GetOrNull<ButtonWidget>("START_GAME_BUTTON");
 			if (startGameButton != null)
 			{
-				startGameButton.IsDisabled = () => configurationDisabled() || Map.Status != MapStatus.Available ||
+				startGameButton.IsDisabled = () => configurationDisabled() || map.Status != MapStatus.Available ||
 					orderManager.LobbyInfo.Slots.Any(sl => sl.Value.Required && orderManager.LobbyInfo.ClientInSlot(sl.Key) == null) ||
 					(!orderManager.LobbyInfo.GlobalSettings.EnableSingleplayer && orderManager.LobbyInfo.IsSinglePlayer);
 
@@ -399,14 +399,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					var getOptionLabel = new CachedTransform<string, string>(id =>
 					{
 						string value;
-						if (id == null || !option.Update(Map).Values.TryGetValue(id, out value))
+						if (id == null || !option.Update(map).Values.TryGetValue(id, out value))
 							return "Not Available";
 
 						return value;
 					});
 
 					dropdown.GetText = () => getOptionLabel.Update(optionValue.Update(orderManager.LobbyInfo.GlobalSettings).Value);
-					dropdown.IsVisible = () => option.Update(Map) != null;
+					dropdown.IsVisible = () => option.Update(map) != null;
 					dropdown.IsDisabled = () => configurationDisabled() ||
 						optionValue.Update(orderManager.LobbyInfo.GlobalSettings).Locked;
 
@@ -422,13 +422,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 							return item;
 						};
 
-						var options = option.Update(Map).Values;
+						var options = option.Update(map).Values;
 						dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", options.Count() * 30, options, setupItem);
 					};
 
 					var label = optionsBin.GetOrNull(kv.Key + "_DESC");
 					if (label != null)
-						label.IsVisible = () => option.Update(Map) != null;
+						label.IsVisible = () => option.Update(map) != null;
 				}
 			}
 
@@ -594,14 +594,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		void UpdateCurrentMap()
 		{
 			var uid = orderManager.LobbyInfo.GlobalSettings.Map;
-			if (Map.Uid == uid)
+			if (map.Uid == uid)
 				return;
 
-			Map = modData.MapCache[uid];
-			if (Map.Status == MapStatus.Available)
+			map = modData.MapCache[uid];
+			if (map.Status == MapStatus.Available)
 			{
 				// Maps need to be validated and pre-loaded before they can be accessed
-				var currentMap = Map;
+				var currentMap = map;
 				new Task(() =>
 				{
 					// Force map rules to be loaded on this background thread
@@ -609,7 +609,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					Game.RunAfterTick(() =>
 					{
 						// Map may have changed in the meantime
-						if (currentMap != Map)
+						if (currentMap != map)
 							return;
 
 						// Tell the server that we have the map
@@ -629,8 +629,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					});
 				}).Start();
 			}
-			else if (Map.Status == MapStatus.DownloadAvailable)
-				LoadMapPreviewRules(Map);
+			else if (map.Status == MapStatus.DownloadAvailable)
+				LoadMapPreviewRules(map);
 			else if (Game.Settings.Game.AllowDownloading)
 				modData.MapCache.QueryRemoteMapDetails(services.MapRepository, new[] { uid }, LoadMapPreviewRules);
 		}
@@ -660,7 +660,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						template = emptySlotTemplate.Clone();
 
 					if (isHost)
-						LobbyUtils.SetupEditableSlotWidget(template, slot, client, orderManager, Map);
+						LobbyUtils.SetupEditableSlotWidget(template, slot, client, orderManager, map);
 					else
 						LobbyUtils.SetupSlotWidget(template, slot, client);
 
@@ -679,15 +679,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					LobbyUtils.SetupClientWidget(template, client, orderManager, client.Bot == null);
 
 					if (client.Bot != null)
-						LobbyUtils.SetupEditableSlotWidget(template, slot, client, orderManager, Map);
+						LobbyUtils.SetupEditableSlotWidget(template, slot, client, orderManager, map);
 					else
 						LobbyUtils.SetupEditableNameWidget(template, slot, client, orderManager);
 
 					LobbyUtils.SetupEditableColorWidget(template, slot, client, orderManager, shellmapWorld, colorPreview);
 					LobbyUtils.SetupEditableFactionWidget(template, slot, client, orderManager, factions);
-					LobbyUtils.SetupEditableTeamWidget(template, slot, client, orderManager, Map);
-					LobbyUtils.SetupEditableSpawnWidget(template, slot, client, orderManager, Map);
-					LobbyUtils.SetupEditableReadyWidget(template, slot, client, orderManager, Map);
+					LobbyUtils.SetupEditableTeamWidget(template, slot, client, orderManager, map);
+					LobbyUtils.SetupEditableSpawnWidget(template, slot, client, orderManager, map);
+					LobbyUtils.SetupEditableReadyWidget(template, slot, client, orderManager, map);
 				}
 				else
 				{
@@ -703,8 +703,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					LobbyUtils.SetupFactionWidget(template, slot, client, factions);
 					if (isHost)
 					{
-						LobbyUtils.SetupEditableTeamWidget(template, slot, client, orderManager, Map);
-						LobbyUtils.SetupEditableSpawnWidget(template, slot, client, orderManager, Map);
+						LobbyUtils.SetupEditableTeamWidget(template, slot, client, orderManager, map);
+						LobbyUtils.SetupEditableSpawnWidget(template, slot, client, orderManager, map);
 					}
 					else
 					{
@@ -744,7 +744,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					LobbyUtils.SetupEditableNameWidget(template, null, c, orderManager);
 
 					if (client.IsAdmin)
-						LobbyUtils.SetupEditableReadyWidget(template, null, client, orderManager, Map);
+						LobbyUtils.SetupEditableReadyWidget(template, null, client, orderManager, map);
 				}
 				else
 				{

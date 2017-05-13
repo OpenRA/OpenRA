@@ -37,6 +37,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					var map = getMap();
 					return map.Status == MapStatus.Available && (!map.RulesLoaded || !map.InvalidCustomRules);
 				};
+
 				SetupWidgets(available, getMap, onMouseDown, getSpawnOccupants);
 			}
 
@@ -48,6 +49,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					var map = getMap();
 					return map.Status == MapStatus.Available && map.InvalidCustomRules;
 				};
+
 				SetupWidgets(invalid, getMap, onMouseDown, getSpawnOccupants);
 			}
 
@@ -83,6 +85,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					var map = getMap();
 					return map.Status != MapStatus.Available && map.Status != MapStatus.DownloadAvailable;
 				};
+
 				SetupWidgets(progress, getMap, onMouseDown, getSpawnOccupants);
 
 				var statusSearching = progress.GetOrNull("MAP_STATUS_SEARCHING");
@@ -91,11 +94,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				var statusUnavailable = progress.GetOrNull("MAP_STATUS_UNAVAILABLE");
 				if (statusUnavailable != null)
+				{
 					statusUnavailable.IsVisible = () =>
 					{
 						var map = getMap();
 						return map.Status == MapStatus.Unavailable && map != MapCache.UnknownMap;
 					};
+				}
 
 				var statusError = progress.GetOrNull("MAP_STATUS_ERROR");
 				if (statusError != null)
@@ -127,6 +132,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						var map = getMap();
 						return (map.Status == MapStatus.DownloadError || map.Status == MapStatus.Unavailable) && map != MapCache.UnknownMap;
 					};
+
 					retry.OnClick = () =>
 					{
 						var map = getMap();
