@@ -285,6 +285,9 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 		{
 			if (facing.Value == null)
 				return;
+			if (Info.SpawnIsMissile)
+				// Missiles have its own facing code
+				return;
 			var launch_angle = exit != null ? exit.Facing : 0;
 
 			var passengerFacing = spawned.TraitOrDefault<IFacing>();
