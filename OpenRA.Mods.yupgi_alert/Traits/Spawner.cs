@@ -41,15 +41,19 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 		[Desc("Slave rearm delay, in ticks")]
 		public readonly int RearmTicks = 150;
 
+		[GrantedConditionReference]
+		[Desc("The condition to grant to self right after launching slave. (Used by V3 to make immobile.)")]
+		public readonly string LaunchingCondition = null;
+
+		[Desc("After this many ticks, we remove the condition.")]
+		public readonly int LaunchingTicks = 15;
+
 		[Desc("Air units and ground units have different mobile trait so...")]
 		// This can be computed but that requires a few cycles of cpu time XD
 		public readonly bool SlaveIsGroundUnit = false;
 
 		[Desc("Pip color of the slaved unit.")]
 		public readonly PipType PipType = PipType.Yellow;
-
-		[Desc("Terrain types that this actor is allowed to eject actors onto. Leave empty for all terrain types.")]
-		public readonly HashSet<string> UnloadTerrainTypes = new HashSet<string>();
 
 		[Desc("Insta-repair spawners when they return?")]
 		public readonly bool InstaRepair = true;
@@ -91,7 +95,6 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 		readonly HashSet<Actor> launched = new HashSet<Actor>();
 		readonly Dictionary<string, Stack<int>> passengerTokens = new Dictionary<string, Stack<int>>();
 		readonly Lazy<IFacing> facing;
-		readonly bool checkTerrainType;
 		readonly ExitInfo[] exits;
 		//Aircraft aircraft;
 		// Carriers don't need to land to spawn stuff!
@@ -102,18 +105,16 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 
 		CPos currentCell;
 		public IEnumerable<CPos> CurrentAdjacentCells { get; private set; }
-		public bool Unloading { get; internal set; }
 		//public IEnumerable<Actor> Slaves { get { return slaves; } }
 		public int SlaveCount { get { return slaves.Count; } }
 
-		int regen_ticks = -1; // -1: ticking disabled.
+		int regen_ticks = 0;
+		int launchingToken = ConditionManager.InvalidConditionToken;
 
 		public Spawner(ActorInitializer init, SpawnerInfo info)
 		{
 			self = init.Self;
 			Info = info;
-			Unloading = false;
-			checkTerrainType = info.UnloadTerrainTypes.Count > 0;
 
 			// Fill slaves.
 			for (var i = 0; i < info.Count; i++)
@@ -174,6 +175,9 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 
 			var exit = ChooseExit(self);
 			SetSpawnedFacing(s, self, exit);
+
+			// give timed launching condition
+			launchingToken = conditionManager.GrantCondition(self, Info.LaunchingCondition, Info.LaunchingTicks);
 
 			self.World.AddFrameEndTask(w =>
 			{
@@ -408,13 +412,11 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 
 			// Regeneration
 			if (regen_ticks > 0)
-				regen_ticks--;
-			if (regen_ticks == 0)
 			{
-				regen_ticks = -1;
-
-				while (slaves.Count + launched.Count < Info.Count)
-					Replenish(self);
+				regen_ticks--;
+				if (regen_ticks == 0)
+					while (slaves.Count + launched.Count < Info.Count)
+						Replenish(self);
 			}
 
 			// Rearm
