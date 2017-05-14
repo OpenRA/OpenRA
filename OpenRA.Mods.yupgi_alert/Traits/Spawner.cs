@@ -62,16 +62,16 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 		public readonly bool InstaRepair = true;
 
 		[GrantedConditionReference]
-		[Desc("The condition to grant to self while passengers are loaded.",
-			"Condition can stack with multiple passengers.")]
+		[Desc("The condition to grant to self while spawned units are loaded.",
+			"Condition can stack with multiple spawns.")]
 		public readonly string LoadedCondition = null;
 
-		[Desc("Conditions to grant when specified actors are loaded inside the transport.",
+		[Desc("Conditions to grant when specified actors are contained inside the transport.",
 			"A dictionary of [actor id]: [condition].")]
-		public readonly Dictionary<string, string> PassengerConditions = new Dictionary<string, string>();
+		public readonly Dictionary<string, string> SpawnContainConditions = new Dictionary<string, string>();
 
 		[GrantedConditionReference]
-		public IEnumerable<string> LinterPassengerConditions { get { return PassengerConditions.Values; } }
+		public IEnumerable<string> LinterSpawnContainConditions { get { return SpawnContainConditions.Values; } }
 
 		public object Create(ActorInitializer init) { return new Spawner(init, this); }
 	}
@@ -92,7 +92,7 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 		readonly List<SpawnEntry> spawns = new List<SpawnEntry>(); // contained
 		// keep track of launched ones so spawner can call them in or designate another target.
 		readonly HashSet<Actor> launched = new HashSet<Actor>();
-		readonly Dictionary<string, Stack<int>> passengerTokens = new Dictionary<string, Stack<int>>();
+		readonly Dictionary<string, Stack<int>> spawnContainTokens = new Dictionary<string, Stack<int>>();
 		readonly Lazy<IFacing> facing;
 		readonly ExitInfo[] exits;
 		//Aircraft aircraft;
@@ -290,9 +290,9 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 				return;
 			var launch_angle = exit != null ? exit.Facing : 0;
 
-			var passengerFacing = spawned.TraitOrDefault<IFacing>();
-			if (passengerFacing != null)
-				passengerFacing.Facing = (facing.Value.Facing + launch_angle) % 256;
+			var spawnFacing = spawned.TraitOrDefault<IFacing>();
+			if (spawnFacing != null)
+				spawnFacing.Facing = (facing.Value.Facing + launch_angle) % 256;
 
 			foreach (var t in spawned.TraitsImplementing<Turreted>())
 				t.TurretFacing = (facing.Value.Facing + launch_angle) % 256;
@@ -319,9 +319,9 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 			if (launched.Contains(a))
 				launched.Remove(a);
 
-			string passengerCondition;
-			if (conditionManager != null && Info.PassengerConditions.TryGetValue(a.Info.Name, out passengerCondition))
-				passengerTokens.GetOrAdd(a.Info.Name).Push(conditionManager.GrantCondition(self, passengerCondition));
+			string spawnContainCondition;
+			if (conditionManager != null && Info.SpawnContainConditions.TryGetValue(a.Info.Name, out spawnContainCondition))
+				spawnContainTokens.GetOrAdd(a.Info.Name).Push(conditionManager.GrantCondition(self, spawnContainCondition));
 
 			if (conditionManager != null && !string.IsNullOrEmpty(Info.LoadedCondition))
 				loadedTokens.Push(conditionManager.GrantCondition(self, Info.LoadedCondition));
