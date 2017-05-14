@@ -371,6 +371,7 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 			spawns.Clear();
 
 			// Kill launched.
+			// For Shootable Missiles, they are already removed from launched array so it is still fine.
 			foreach (var c in launched)
 				if (!c.IsDead)
 					c.Kill(self);
