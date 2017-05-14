@@ -104,7 +104,6 @@ namespace OpenRA.Mods.Common.Activities
 
 			if (activity == null && !IsCanceled)
 			{
-				self.QueueActivity(new CallFunc(() => self.Kill(self)));
 				activity = NextActivity;
 			}
 
