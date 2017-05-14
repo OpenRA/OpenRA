@@ -66,6 +66,7 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 
 		public readonly ShootableBallisticMissileInfo Info;
 		readonly Actor self;
+		public Target Target { get; set; }
 
 		ConditionManager conditionManager;
 		IEnumerable<int> speedModifiers;

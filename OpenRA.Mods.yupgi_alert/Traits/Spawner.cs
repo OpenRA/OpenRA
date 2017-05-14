@@ -170,9 +170,16 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 				return;
 
 			if (Info.SpawnIsMissile)
+			{
 				// Consider it dead right after launching, if missile so that
 				// regeneration happens right after launching.
 				SlaveKilled(self, s);
+
+				// The problem with AddFrameEndTask is that Target could be dead in next frame!
+				// Not a big deal for ordinary spawns but for missile spawns, it still has to fly somewhere.
+				// The solution is to cache the position
+				s.Trait<ShootableBallisticMissile>().Target = Target.FromPos(target.CenterPosition);
+			}
 
 			var exit = ChooseExit(self);
 			SetSpawnedFacing(s, self, exit);
@@ -199,16 +206,12 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 				{
 					// Air unit doesn't require this for some reason :)
 					// Without this, ground unit is immobile.
-					//CPos exit = Target.FromActor(self).Positions.Select(p => w.Map.CellContaining(p)).Distinct().First();
-					//CPos exit = Util.AdjacentCells(s.World, Target.FromActor(self)).First();
-					//CPos exit = target.Positions.Select(p => w.Map.CellContaining(p)).Distinct().First();
-					var move = s.Trait<IMove>();
-					var mv = move.MoveIntoWorld(s, self.Location);
+					var mv = s.Trait<IMove>().MoveIntoWorld(s, self.Location);
 					if (mv != null)
 						s.QueueActivity(mv);
 				}
+
 				s.Trait<Spawned>().AttackTarget(s, target);
-	
 				w.Add(s);
 			});
 		}

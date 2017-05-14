@@ -55,10 +55,8 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 		void INotifyKilled.Killed(Actor self, AttackInfo e)
 		{
 			// If killed, I tell my master that I'm gone.
-			if (Master == null)
+			if (Master == null || Master.IsDead)
 				// Can happen, when built from build palette (w00t)
-				return;
-			if (Master.IsDead)
 				return;
 			var spawner = Master.Trait<Spawner>();
 			spawner.SlaveKilled(Master, self);
@@ -106,7 +104,7 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 
 		public void EnterSpawner(Actor self)
 		{
-			if (Master == null)
+			if (Master == null || Master.IsDead)
 				self.Kill(self); // No master == death.
 			else
 			{
@@ -139,7 +137,7 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 			}
 			else if (self.TraitOrDefault<ShootableBallisticMissile>() != null)
 			{
-				self.QueueActivity(new ShootableBallisticMissileFly(self, target));
+				self.QueueActivity(new ShootableBallisticMissileFly(self, self.Trait<ShootableBallisticMissile>().Target));
 			}
 			else
 			{
