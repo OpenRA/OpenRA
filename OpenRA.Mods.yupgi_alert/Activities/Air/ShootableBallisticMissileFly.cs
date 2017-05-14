@@ -54,7 +54,8 @@ namespace OpenRA.Mods.yupgi_alert.Activities
 			// The next move would overshoot, so consider it close enough
 			var move = sbm.FlyStep(sbm.Facing);
 			if (d.HorizontalLengthSquared < move.HorizontalLengthSquared)
-				return NextActivity;
+				// Destruct so that Explodes will be called
+				return new CallFunc(() => self.Kill(self));
 
 			FlyToward(self, sbm);
 			ticks++;

@@ -39,7 +39,7 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 		public readonly WAngle LaunchAngle = WAngle.Zero;
 
 		[Desc("Minimum altitude where this missile is considered airborne")]
-		public readonly int MinAirborneAltitude = 128;
+		public readonly int MinAirborneAltitude = 5;
 
 		public virtual object Create(ActorInitializer init) { return new ShootableBallisticMissile(init, this); }
 

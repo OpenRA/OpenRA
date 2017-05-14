@@ -34,9 +34,6 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 		[Desc("Move this close to the spawner, before entering it.")]
 		public readonly WDist LandingDistance = new WDist(5*1024);
 
-		[Desc("Is RA2 style shootable missile?")]
-		public readonly bool IsShootableMissile = false;
-
 		public object Create(ActorInitializer init) { return new Spawned(init, this); }
 	}
 
@@ -137,6 +134,10 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 			{
 				Game.Debug("Warning: AttackHeli's are not ready for spawned slave.");
 				self.QueueActivity(new HeliAttack(self, target)); // not ready for helis...
+			}
+			else if (self.TraitOrDefault<ShootableBallisticMissile>() != null)
+			{
+				self.QueueActivity(new ShootableBallisticMissileFly(self, target));
 			}
 			else
 			{

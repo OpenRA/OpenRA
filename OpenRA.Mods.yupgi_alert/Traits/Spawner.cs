@@ -26,23 +26,26 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.yupgi_alert.Traits
 {
-	[Desc("This actor can transport slave actors.")]
+	[Desc("This actor can spawn actors.")]
 	public class SpawnerInfo : ITraitInfo, Requires<IOccupySpaceInfo>
 	{
-		[Desc("Number of slave units")]
+		[Desc("Number of spawn units")]
 		public readonly int Count = 0;
 
-		[Desc("Slave unit type")]
-		public readonly string SlaveUnit;
+		[Desc("Spawn unit type")]
+		public readonly string SpawnUnit;
 
-		[Desc("Slave regen delay, in ticks")]
-		public readonly int RegenTicks = 150;
+		[Desc("Spawn is a missile that dies and not return.")]
+		public readonly bool SpawnIsMissile = false;
 
-		[Desc("Slave rearm delay, in ticks")]
+		[Desc("Spawn regen delay, in ticks")]
+		public readonly int RespawnTicks = 150;
+
+		[Desc("Spawn rearm delay, in ticks")]
 		public readonly int RearmTicks = 150;
 
 		[GrantedConditionReference]
-		[Desc("The condition to grant to self right after launching slave. (Used by V3 to make immobile.)")]
+		[Desc("The condition to grant to self right after launching a spawned unit. (Used by V3 to make immobile.)")]
 		public readonly string LaunchingCondition = null;
 
 		[Desc("After this many ticks, we remove the condition.")]
@@ -50,17 +53,13 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 
 		[Desc("Air units and ground units have different mobile trait so...")]
 		// This can be computed but that requires a few cycles of cpu time XD
-		public readonly bool SlaveIsGroundUnit = false;
+		public readonly bool SpawnIsGroundUnit = false;
 
-		[Desc("Pip color of the slaved unit.")]
+		[Desc("Pip color for the spawn count.")]
 		public readonly PipType PipType = PipType.Yellow;
 
 		[Desc("Insta-repair spawners when they return?")]
 		public readonly bool InstaRepair = true;
-
-		[GrantedConditionReference]
-		[Desc("The condition to grant to self while waiting for cargo to load.")]
-		public readonly string LoadingCondition = null;
 
 		[GrantedConditionReference]
 		[Desc("The condition to grant to self while passengers are loaded.",
@@ -77,7 +76,7 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 		public object Create(ActorInitializer init) { return new Spawner(init, this); }
 	}
 
-	class SlaveEntry
+	class SpawnEntry
 	{
 		public Actor s;
 		public int RearmTicks;
@@ -90,7 +89,7 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 		public readonly SpawnerInfo Info;
 		readonly Actor self;
 
-		readonly List<SlaveEntry> slaves = new List<SlaveEntry>(); // contained
+		readonly List<SpawnEntry> spawns = new List<SpawnEntry>(); // contained
 		// keep track of launched ones so spawner can call them in or designate another target.
 		readonly HashSet<Actor> launched = new HashSet<Actor>();
 		readonly Dictionary<string, Stack<int>> passengerTokens = new Dictionary<string, Stack<int>>();
@@ -105,8 +104,7 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 
 		CPos currentCell;
 		public IEnumerable<CPos> CurrentAdjacentCells { get; private set; }
-		//public IEnumerable<Actor> Slaves { get { return slaves; } }
-		public int SlaveCount { get { return slaves.Count; } }
+		public int SpawnCount { get { return spawns.Count; } }
 
 		int regen_ticks = 0;
 		int launchingToken = ConditionManager.InvalidConditionToken;
@@ -116,11 +114,9 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 			self = init.Self;
 			Info = info;
 
-			// Fill slaves.
+			// Fill spawnees.
 			for (var i = 0; i < info.Count; i++)
-			{
 				Replenish(self);
-			}
 
 			facing = Exts.Lazy(self.TraitOrDefault<IFacing>);
 			exits = self.Info.TraitInfos<ExitInfo>().ToArray();
@@ -128,15 +124,15 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 
 		void Replenish(Actor self)
 		{
-			var unit = self.World.CreateActor(false, Info.SlaveUnit.ToLowerInvariant(),
+			var unit = self.World.CreateActor(false, Info.SpawnUnit.ToLowerInvariant(),
 				new TypeDictionary { new OwnerInit(self.Owner) });
 			var spawned = unit.Trait<Spawned>();
 			spawned.Master = self; // let the spawned unit return to me for reloading and repair.
 
-			var se = new SlaveEntry();
+			var se = new SpawnEntry();
 			se.s = unit;
 			se.RearmTicks = 0;
-			slaves.Add(se);
+			spawns.Add(se);
 		}
 
 		public void Created(Actor self)
@@ -166,12 +162,17 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 				// At this point, freshly launched one is in the launched list, too.
 				spawned.Trait<Spawned>().AttackTarget(spawned, target);
 
-			if (slaves.Count == 0)
+			if (spawns.Count == 0)
 				return;
 
 			var s = Launch(self);
 			if (s == null)
 				return;
+
+			if (Info.SpawnIsMissile)
+				// Consider it dead right after launching, if missile so that
+				// regeneration happens right after launching.
+				SlaveKilled(self, s);
 
 			var exit = ChooseExit(self);
 			SetSpawnedFacing(s, self, exit);
@@ -194,7 +195,7 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 				pos.SetVisualPosition(s, self.CenterPosition + spawn_offset);
 				s.CancelActivity(); // Reset any activity. May had an activity before entering the spawner.
 				// Or might had been added by above foreach launched loop.
-				if (Info.SlaveIsGroundUnit)
+				if (Info.SpawnIsGroundUnit)
 				{
 					// Air unit doesn't require this for some reason :)
 					// Without this, ground unit is immobile.
@@ -236,13 +237,13 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 			if (launched.Contains(slave))
 				launched.Remove(slave);
 
-			regen_ticks = Info.RegenTicks; // set clock so that regen happens.
+			regen_ticks = Info.RespawnTicks; // set clock so that regen happens.
 		}
 
 		Actor PopLaunchable(Actor self)
 		{
-			SlaveEntry result = null;
-			foreach (var se in slaves)
+			SpawnEntry result = null;
+			foreach (var se in spawns)
 			{
 				if (se.RearmTicks <= 0)
 				{
@@ -253,7 +254,7 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 
 			if (result != null)
 			{
-				slaves.Remove(result);
+				spawns.Remove(result);
 				return result.s;
 			}
 			return null;
@@ -304,7 +305,7 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 
 		PipType GetPipAt(int i)
 		{
-			if (i < slaves.Count)
+			if (i < spawns.Count)
 				return Info.PipType;
 			else
 				return PipType.Transparent;
@@ -323,15 +324,15 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 				loadedTokens.Push(conditionManager.GrantCondition(self, Info.LoadedCondition));
 
 			// Set up rearm.
-			var se = new SlaveEntry();
+			var se = new SpawnEntry();
 			se.s = a;
 			se.RearmTicks = Info.RearmTicks;
-			slaves.Add(se);
+			spawns.Add(se);
 		}
 
 		public void Killed(Actor self, AttackInfo e)
 		{
-			foreach (var c in slaves)
+			foreach (var c in spawns)
 				c.s.Kill(e.Attacker);
 			foreach (var c in launched)
 			{
@@ -339,18 +340,18 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 					c.Kill(e.Attacker);
 			}
 
-			slaves.Clear();
+			spawns.Clear();
 			launched.Clear();
 		}
 
 		public void Disposing(Actor self)
 		{
-			foreach (var se in slaves)
+			foreach (var se in spawns)
 				se.s.Dispose();
 			foreach (var c in launched)
 				c.Dispose();
 
-			slaves.Clear();
+			spawns.Clear();
 			launched.Clear();
 		}
 
@@ -362,9 +363,9 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 			sold = true;
 
 			// Dispose slaved.
-			foreach (var se in slaves)
+			foreach (var se in spawns)
 				se.s.Dispose();
-			slaves.Clear();
+			spawns.Clear();
 
 			// Kill launched.
 			foreach (var c in launched)
@@ -388,7 +389,7 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 		{
 			self.World.AddFrameEndTask(w =>
 			{
-				foreach (var s in slaves)
+				foreach (var s in spawns)
 					s.s.ChangeOwner(newOwner); // Under influence of mind control.
 				foreach (var s in launched) // Kill launched, they are not under influence.
 					s.Kill(self);
@@ -416,12 +417,12 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 			{
 				regen_ticks--;
 				if (regen_ticks == 0)
-					while (slaves.Count + launched.Count < Info.Count)
+					while (spawns.Count + launched.Count < Info.Count)
 						Replenish(self);
 			}
 
 			// Rearm
-			foreach (var se in slaves)
+			foreach (var se in spawns)
 			{
 				if (se.RearmTicks > 0)
 					se.RearmTicks--;
