@@ -385,10 +385,10 @@ Templates:
 		Size: 2,2
 		Category: Rock-Detail
 		Tiles:
-			0: Cliff
-			1: Cliff
-			2: Cliff
-			3: Cliff
+			0: Rough
+			1: Rough
+			2: Rough
+			3: Rough
 	Template@29:
 		Id: 29
 		Images: BLOXBASE.R8
@@ -4240,7 +4240,7 @@ Templates:
 		Size: 1,1
 		Category: Rotten-Base
 		Tiles:
-			0: Cliff
+			0: Rough
 	Template@501:
 		Id: 501
 		Images: BLOXXMAS.R8
@@ -4248,7 +4248,7 @@ Templates:
 		Size: 1,1
 		Category: Rotten-Base
 		Tiles:
-			0: Cliff
+			0: Sand
 	Template@502:
 		Id: 502
 		Images: BLOXXMAS.R8
@@ -4256,7 +4256,7 @@ Templates:
 		Size: 1,1
 		Category: Rotten-Base
 		Tiles:
-			0: Cliff
+			0: Rough
 	Template@503:
 		Id: 503
 		Images: BLOXXMAS.R8
@@ -4264,7 +4264,7 @@ Templates:
 		Size: 1,1
 		Category: Rotten-Base
 		Tiles:
-			0: Cliff
+			0: Rough
 	Template@504:
 		Id: 504
 		Images: BLOXXMAS.R8
@@ -4272,7 +4272,7 @@ Templates:
 		Size: 1,1
 		Category: Rotten-Base
 		Tiles:
-			0: Cliff
+			0: Rough
 	Template@505:
 		Id: 505
 		Images: BLOXXMAS.R8
@@ -4280,7 +4280,7 @@ Templates:
 		Size: 1,1
 		Category: Bridge
 		Tiles:
-			0: Cliff
+			0: Rough
 	Template@506:
 		Id: 506
 		Images: BLOXXMAS.R8
@@ -4288,7 +4288,7 @@ Templates:
 		Size: 1,1
 		Category: Bridge
 		Tiles:
-			0: Cliff
+			0: Rough
 	Template@507:
 		Id: 507
 		Images: BLOXXMAS.R8
@@ -4296,8 +4296,8 @@ Templates:
 		Size: 2,1
 		Category: Rotten-Base
 		Tiles:
-			0: Cliff
-			1: Cliff
+			0: Rough
+			1: Rough
 	Template@508:
 		Id: 508
 		Images: BLOXXMAS.R8
@@ -4305,7 +4305,7 @@ Templates:
 		Size: 1,1
 		Category: Rotten-Base
 		Tiles:
-			0: Cliff
+			0: Rough
 	Template@509:
 		Id: 509
 		Images: BLOXXMAS.R8
@@ -4313,7 +4313,7 @@ Templates:
 		Size: 1,1
 		Category: Rotten-Base
 		Tiles:
-			0: Cliff
+			0: Rough
 	Template@510:
 		Id: 510
 		Images: BLOXXMAS.R8
@@ -4321,7 +4321,7 @@ Templates:
 		Size: 1,1
 		Category: Rotten-Base
 		Tiles:
-			0: Cliff
+			0: Rough
 	Template@511:
 		Id: 511
 		Images: BLOXXMAS.R8
@@ -4329,10 +4329,10 @@ Templates:
 		Size: 2,2
 		Category: Rotten-Base
 		Tiles:
-			0: Cliff
-			1: Cliff
-			2: Cliff
-			3: Cliff
+			0: Rough
+			1: Rough
+			2: Rough
+			3: Rough
 	Template@512:
 		Id: 512
 		Images: BLOXXMAS.R8
@@ -4340,12 +4340,12 @@ Templates:
 		Size: 2,3
 		Category: Bridge
 		Tiles:
-			0: Cliff
-			1: Cliff
-			2: Cliff
-			3: Cliff
-			4: Cliff
-			5: Cliff
+			0: Rough
+			1: Rough
+			2: Rough
+			3: Rough
+			4: Rough
+			5: Rough
 	Template@513:
 		Id: 513
 		Images: BLOXXMAS.R8
@@ -4353,15 +4353,15 @@ Templates:
 		Size: 3,3
 		Category: Bridge
 		Tiles:
-			0: Rock
+			0: Cliff
 			1: Rock
-			2: Rock
+			2: Cliff
 			3: Cliff
-			4: Rough
+			4: Transition
 			5: Cliff
-			6: Cliff
+			6: Rough
 			7: Rough
-			8: Cliff
+			8: Rough
 	Template@514:
 		Id: 514
 		Images: BLOXXMAS.R8
@@ -4369,11 +4369,11 @@ Templates:
 		Size: 3,3
 		Category: Bridge
 		Tiles:
-			0: Sand
+			0: Rough
 			1: Rough
-			2: Cliff
+			2: Rough
 			3: Cliff
-			4: Rough
+			4: Transition
 			5: Cliff
 			6: Rock
 			7: Rock
@@ -4386,8 +4386,8 @@ Templates:
 		Category: Bridge
 		Tiles:
 			0: Cliff
-			1: Sand
-			2: Sand
+			1: Cliff
+			2: Cliff
 			3: Cliff
 			4: Transition
 			5: Transition
@@ -4412,7 +4412,7 @@ Templates:
 		Size: 1,1
 		Category: Rotten-Base
 		Tiles:
-			0: Cliff
+			0: Rough
 	Template@518:
 		Id: 518
 		Images: BLOXXMAS.R8
@@ -4428,10 +4428,10 @@ Templates:
 		Size: 2,2
 		Category: Rotten-Base
 		Tiles:
-			0: Cliff
-			1: Cliff
+			0: Sand
+			1: Sand
 			2: Cliff
-			3: Cliff
+			3: Rough
 	Template@520:
 		Id: 520
 		Images: BLOXXMAS.R8
@@ -4442,7 +4442,7 @@ Templates:
 			0: Cliff
 			1: Cliff
 			2: Cliff
-			3: Cliff
+			3: Sand
 	Template@600:
 		Id: 600
 		Images: t600.tmp
@@ -5996,8 +5996,8 @@ Templates:
 		Size: 2,1
 		Category: Sand-Detail
 		Tiles:
-			0: Cliff
-			1: Cliff
+			0: Rough
+			1: Rough
 	Template@1079:
 		Id: 1079
 		Images: BLOXBAT.R8
@@ -6110,7 +6110,7 @@ Templates:
 		Size: 2,2
 		Category: Bridge
 		Tiles:
-			0: Cliff
+			0: Rock
 			1: Cliff
 			2: Rock
 			3: Transition
@@ -6122,7 +6122,7 @@ Templates:
 		Category: Bridge
 		Tiles:
 			0: Cliff
-			1: Cliff
+			1: Rock
 			2: Transition
 			3: Rock
 	Template@1093:
@@ -6134,7 +6134,7 @@ Templates:
 		Tiles:
 			0: Rock
 			1: Transition
-			2: Cliff
+			2: Rock
 			3: Cliff
 	Template@1094:
 		Id: 1094
@@ -6146,7 +6146,7 @@ Templates:
 			0: Transition
 			1: Rock
 			2: Cliff
-			3: Cliff
+			3: Rock
 	Template@1095:
 		Id: 1095
 		Images: BLOXXMAS.R8
@@ -6178,7 +6178,7 @@ Templates:
 		Tiles:
 			0: Cliff
 			1: Transition
-			2: Cliff
+			2: Rock
 			3: Rock
 	Template@1098:
 		Id: 1098
@@ -6190,7 +6190,7 @@ Templates:
 			0: Transition
 			1: Cliff
 			2: Rock
-			3: Cliff
+			3: Rock
 	Template@1099:
 		Id: 1099
 		Images: BLOXXMAS.R8
@@ -6216,7 +6216,7 @@ Templates:
 		Size: 1,2
 		Category: Bridge
 		Tiles:
-			0: Cliff
+			0: Rough
 			1: Rough
 	Template@1102:
 		Id: 1102
@@ -6225,7 +6225,7 @@ Templates:
 		Size: 1,2
 		Category: Bridge
 		Tiles:
-			0: Cliff
+			0: Rough
 			1: Rough
 	Template@1103:
 		Id: 1103
@@ -6253,7 +6253,7 @@ Templates:
 		Category: Bridge
 		Tiles:
 			0: Rough
-			1: Cliff
+			1: Rough
 	Template@1106:
 		Id: 1106
 		Images: BLOXXMAS.R8
@@ -6262,7 +6262,7 @@ Templates:
 		Category: Bridge
 		Tiles:
 			0: Rough
-			1: Cliff
+			1: Rough
 	Template@1107:
 		Id: 1107
 		Images: BLOXTREE.R8
@@ -6278,10 +6278,10 @@ Templates:
 		Size: 2,2
 		Category: Rotten-Base
 		Tiles:
-			0: Cliff
-			1: Cliff
-			2: Cliff
-			3: Cliff
+			0: Rough
+			1: Rough
+			2: Rough
+			3: Rough
 	Template@1109:
 		Id: 1109
 		Images: BLOXXMAS.R8
@@ -6289,8 +6289,8 @@ Templates:
 		Size: 2,1
 		Category: Bridge
 		Tiles:
-			0: Cliff
-			1: Cliff
+			0: Rough
+			1: Rough
 	Template@1110:
 		Id: 1110
 		Images: BLOXXMAS.R8
@@ -6298,8 +6298,8 @@ Templates:
 		Size: 2,1
 		Category: Bridge
 		Tiles:
-			0: Cliff
-			1: Cliff
+			0: Rough
+			1: Rough
 	Template@1111:
 		Id: 1111
 		Images: BLOXXMAS.R8
@@ -6307,8 +6307,8 @@ Templates:
 		Size: 2,1
 		Category: Bridge
 		Tiles:
-			0: Cliff
-			1: Cliff
+			0: Rough
+			1: Rough
 	Template@1112:
 		Id: 1112
 		Images: BLOXXMAS.R8
@@ -6316,5 +6316,5 @@ Templates:
 		Size: 2,1
 		Category: Bridge
 		Tiles:
-			0: Cliff
-			1: Cliff
+			0: Rough
+			1: Rough
