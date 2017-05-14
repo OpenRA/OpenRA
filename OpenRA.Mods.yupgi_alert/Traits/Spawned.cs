@@ -58,6 +58,8 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 			if (Master == null)
 				// Can happen, when built from build palette (w00t)
 				return;
+			if (Master.IsDead)
+				return;
 			var spawner = Master.Trait<Spawner>();
 			spawner.SlaveKilled(Master, self);
 		}
