@@ -406,6 +406,9 @@ namespace OpenRA.Mods.D2k.UtilityCommands
 				for (var i = 0; i < 4; i++)
 					if (tileIndex == indices[i])
 						return new TerrainTile(251, (byte)i);
+
+				if (tileIndex == 322)
+					return new TerrainTile(215, 0);
 			}
 
 			if (tilesetName.ToLower() == "bloxwast.r8")
