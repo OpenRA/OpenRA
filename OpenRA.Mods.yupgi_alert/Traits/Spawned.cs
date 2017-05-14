@@ -34,6 +34,9 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 		[Desc("Move this close to the spawner, before entering it.")]
 		public readonly WDist LandingDistance = new WDist(5*1024);
 
+		[Desc("Is RA2 style shootable missile?")]
+		public readonly bool IsShootableMissile = false;
+
 		public object Create(ActorInitializer init) { return new Spawned(init, this); }
 	}
 

@@ -177,7 +177,8 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 			SetSpawnedFacing(s, self, exit);
 
 			// give timed launching condition
-			launchingToken = conditionManager.GrantCondition(self, Info.LaunchingCondition, Info.LaunchingTicks);
+			if (Info.LaunchingCondition != null)
+				launchingToken = conditionManager.GrantCondition(self, Info.LaunchingCondition, Info.LaunchingTicks);
 
 			self.World.AddFrameEndTask(w =>
 			{
