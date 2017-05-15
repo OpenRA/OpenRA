@@ -62,7 +62,7 @@ HeliAGGun:
 			None: 100
 			Wood: 50
 			Light: 75
-			Heavy: 25
+			Heavy: 40
 
 HeliAAGun:
 	Inherits: HeliAGGun

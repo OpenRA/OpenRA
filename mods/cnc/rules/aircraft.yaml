@@ -67,7 +67,7 @@ HELI:
 		RearmBuildings: hpad
 		InitialFacing: 224
 		TurnSpeed: 7
-		Speed: 180
+		Speed: 175
 	Health:
 		HP: 125
 	Armor:
@@ -90,8 +90,8 @@ HELI:
 		Ammo: 10
 		PipCount: 5
 		SelfReloads: true
-		ReloadCount: 10
-		SelfReloadDelay: 200
+		ReloadCount: 2
+		SelfReloadDelay: 40
 	WithIdleOverlay@ROTORAIR:
 		Offset: 0,0,85
 		Sequence: rotor
@@ -147,7 +147,7 @@ ORCA:
 		PipCount: 6
 		SelfReloads: true
 		ReloadCount: 2
-		SelfReloadDelay: 100
+		SelfReloadDelay: 60
 	SpawnActorOnDeath:
 		Actor: ORCA.Husk
 	AutoTarget:
