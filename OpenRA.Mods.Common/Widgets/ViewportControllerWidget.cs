@@ -349,11 +349,22 @@ namespace OpenRA.Mods.Common.Widgets
 						return true;
 				}
 
-				if (mi.Event == MouseInputEvent.Move && joystickScrollStart.HasValue)
+				if (mi.Event == MouseInputEvent.Move)
+				{
+					if (!joystickScrollStart.HasValue)
+						joystickScrollStart = mi.Location;
+
 					joystickScrollEnd = mi.Location;
+				}
 			}
 
 			return false;
+		}
+
+		public override bool YieldMouseFocus(MouseInput mi)
+		{
+			joystickScrollStart = joystickScrollEnd = null;
+			return base.YieldMouseFocus(mi);
 		}
 
 		public override bool YieldKeyboardFocus()
