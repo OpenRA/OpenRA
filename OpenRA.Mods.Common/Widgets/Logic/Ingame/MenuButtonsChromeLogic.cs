@@ -102,7 +102,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				worldRoot.IsVisible = () => false;
 			}
 
-			if (button.Pause && world.LobbyInfo.IsSinglePlayer)
+			if (button.Pause && world.LobbyInfo.NonBotClients.Count() == 1)
 				world.SetPauseState(true);
 
 			var cachedDisableWorldSounds = Game.Sound.DisableWorldSounds;
@@ -118,7 +118,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				if (button.DisableWorldSounds)
 					Game.Sound.DisableWorldSounds = cachedDisableWorldSounds;
 
-				if (button.Pause && world.LobbyInfo.IsSinglePlayer)
+				if (button.Pause && world.LobbyInfo.NonBotClients.Count() == 1)
 					world.SetPauseState(cachedPause);
 
 				menuRoot.RemoveChild(currentWidget);

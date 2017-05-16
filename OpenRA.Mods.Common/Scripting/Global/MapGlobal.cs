@@ -108,7 +108,7 @@ namespace OpenRA.Mods.Common.Scripting
 		}
 
 		[Desc("Returns true if there is only one human player.")]
-		public bool IsSinglePlayer { get { return Context.World.LobbyInfo.IsSinglePlayer; } }
+		public bool IsSinglePlayer { get { return Context.World.LobbyInfo.NonBotPlayers.Count() == 1; } }
 
 		[Desc("Returns the difficulty selected by the player before starting the mission.")]
 		public string Difficulty
