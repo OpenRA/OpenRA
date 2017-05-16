@@ -41,10 +41,12 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 	{
 		readonly SpawnedInfo info;
 		public Actor Master = null;
+		readonly AmmoPool[] ammoPools;
 
 		public Spawned(ActorInitializer init, SpawnedInfo info)
 		{
 			this.info = info;
+			ammoPools = init.Self.TraitsImplementing<AmmoPool>().ToArray();
 		}
 
 		public IEnumerable<IOrderTargeter> Orders
@@ -116,11 +118,24 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 			}
 		}
 
+		bool NeedToReload(Actor self)
+		{
+			// The unit may not have ammo but will have unlimited ammunitions.
+			if (ammoPools.Length == 0)
+				return false;
+			return ammoPools.All(x => !x.Info.SelfReloads && !x.HasAmmo());
+		}
+
 		Actor last_target = null;
 		public virtual void AttackTarget(Actor self, Target target)
 		{
 			if (last_target != null && last_target == target.Actor)
 				// Don't have to change target or alter current activity.
+				return;
+
+			// To prevent AI controlled spawned from doing stupid thing, don't do anything when no ammo,
+			// so that spawned will continue to return.
+			if (NeedToReload(self))
 				return;
 
 			self.CancelActivity();
