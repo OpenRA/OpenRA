@@ -131,8 +131,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				{ "orderManager", orderManager },
 				{ "getMap", (Func<MapPreview>)(() => map) },
-				{ "onMouseDown",  (Action<MapPreviewWidget, MapPreview, MouseInput>)((preview, map, mi) => LobbyUtils.SelectSpawnPoint(orderManager, preview, map, mi)) },
-				{ "getSpawnOccupants", (Func<MapPreview, Dictionary<CPos, SpawnOccupant>>)(map => LobbyUtils.GetSpawnOccupants(orderManager.LobbyInfo, map)) },
+				{ "onMouseDown",  (Action<MapPreviewWidget, MapPreview, MouseInput>)((preview, mapPreview, mi) =>
+					LobbyUtils.SelectSpawnPoint(orderManager, preview, mapPreview, mi)) },
+				{ "getSpawnOccupants", (Func<MapPreview, Dictionary<CPos, SpawnOccupant>>)(mapPreview => LobbyUtils.GetSpawnOccupants(orderManager.LobbyInfo, mapPreview)) },
 			});
 
 			UpdateCurrentMap();
@@ -380,9 +381,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			};
 
 			var allOptions = new CachedTransform<MapPreview, LobbyOption[]>(
-				map => map.Rules.Actors["player"].TraitInfos<ILobbyOptions>()
-					.Concat(map.Rules.Actors["world"].TraitInfos<ILobbyOptions>())
-					.SelectMany(t => t.LobbyOptions(map.Rules))
+				mapPreview => mapPreview.Rules.Actors["player"].TraitInfos<ILobbyOptions>()
+					.Concat(mapPreview.Rules.Actors["world"].TraitInfos<ILobbyOptions>())
+					.SelectMany(t => t.LobbyOptions(mapPreview.Rules))
 					.ToArray());
 
 			foreach (var kv in optionDropdowns)
@@ -394,7 +395,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						gs => gs.LobbyOptions[kv.Value]);
 
 					var option = new CachedTransform<MapPreview, LobbyOption>(
-						map => allOptions.Update(map).FirstOrDefault(o => o.Id == kv.Value));
+						mapPreview => allOptions.Update(mapPreview).FirstOrDefault(o => o.Id == kv.Value));
 
 					var getOptionLabel = new CachedTransform<string, string>(id =>
 					{
