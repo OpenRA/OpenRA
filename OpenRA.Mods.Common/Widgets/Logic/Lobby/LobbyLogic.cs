@@ -26,6 +26,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	{
 		static readonly Action DoNothing = () => { };
 
+		public string TeamArrangementInfo { get; private set; }
+
 		readonly ModData modData;
 		readonly Action onStart;
 		readonly Action onExit;
@@ -131,9 +133,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				{ "orderManager", orderManager },
 				{ "getMap", (Func<MapPreview>)(() => map) },
-				{ "onMouseDown",  (Action<MapPreviewWidget, MapPreview, MouseInput>)((preview, mapPreview, mi) =>
-					LobbyUtils.SelectSpawnPoint(orderManager, preview, mapPreview, mi)) },
-				{ "getSpawnOccupants", (Func<MapPreview, Dictionary<CPos, SpawnOccupant>>)(mapPreview => LobbyUtils.GetSpawnOccupants(orderManager.LobbyInfo, mapPreview)) },
+				{ "onMouseDown",  (Action<MapPreviewWidget, MouseInput>)((preview, mi) => LobbyUtils.SelectSpawnPoint(orderManager, preview, map, mi)) },
+				{ "getSpawnOccupants", (Func<Dictionary<CPos, SpawnOccupant>>)(() => LobbyUtils.GetSpawnOccupants(orderManager.LobbyInfo, map)) },
+				{ "getTeamArrangementInfo", (Func<string>)(() => TeamArrangementInfo) },
+				{ "onMapInstall", () => Game.RunAfterTick(() => orderManager.IssueOrder(Order.Command("state {0}".F(Session.ClientState.NotReady)))) }
 			});
 
 			UpdateCurrentMap();
@@ -726,8 +729,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				idx++;
 			}
 
+			var lobbyClients = orderManager.LobbyInfo.Clients.ToList();
+
 			// Add spectators
-			foreach (var client in orderManager.LobbyInfo.Clients.Where(client => client.Slot == null))
+			foreach (var client in lobbyClients.Where(client => client.Slot == null))
 			{
 				Widget template = null;
 				var c = client;
@@ -803,7 +808,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			while (players.Children.Count > idx)
 				players.RemoveChild(players.Children[idx]);
 
-			tabCompletion.Names = orderManager.LobbyInfo.Clients.Select(c => c.Name).Distinct().ToList();
+			tabCompletion.Names = lobbyClients.Select(c => c.Name).Distinct().ToList();
+
+			TeamArrangementInfo = LobbyUtils.GetTeamArrangementInfo(lobbyClients.Where(c => c.Slot != null).Select(c => c.Team));
 		}
 
 		void OnGameStart()
