@@ -89,11 +89,6 @@
     <Compile Include="Lint\CheckImportActors.cs" />
     <Compile Include="PackageLoaders\D2kSoundResources.cs" />
   </ItemGroup>
-  <PropertyGroup>
-    <PostBuildEvent>mkdir "$(SolutionDir)mods/d2k/"
-copy "$(TargetPath)" "$(SolutionDir)mods/d2k/"
-cd "$(SolutionDir)"</PostBuildEvent>
-  </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.Game\OpenRA.Game.csproj">
       <Project>{0DFB103F-2962-400F-8C6D-E2C28CCBA633}</Project>
