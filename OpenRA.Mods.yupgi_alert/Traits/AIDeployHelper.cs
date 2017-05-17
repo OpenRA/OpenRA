@@ -9,6 +9,7 @@
 #endregion
 
 using System;
+using System.Linq;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
@@ -38,6 +39,11 @@ namespace OpenRA.Mods.AS.Traits
 		[Desc("Delay to wait for the actor to undeploy (if capable to) after a successful deploy.")]
 		public readonly int UndeployTicks = 450;
 
+		[Desc("Deploy only when there are more enemies than friendly units nearby?")]
+		public readonly bool DeployOnEnemy = false;
+		[Desc("When counting, scan within this radius")]
+		public readonly int ActorScanRadius = 10;
+
 		public object Create(ActorInitializer init) { return new AIDeployHelper(this); }
 	}
 
@@ -65,6 +71,17 @@ namespace OpenRA.Mods.AS.Traits
 
 			if (self.World.SharedRandom.Next(100) > info.DeployChance)
 				return;
+
+			if (info.DeployOnEnemy)
+			{
+				// don't deploy if there are more friends than enemies
+				var units = self.World.FindActorsInCircle(self.CenterPosition, WDist.FromCells(info.ActorScanRadius));
+				int nfriendly = units.Where(a => self.Owner.Stances[a.Owner] == Stance.Ally).Count();
+				int nenemy = units.Where(a => self.Owner.Stances[a.Owner] == Stance.Enemy).Count();
+				// units.count - nfriendly != nemeny, as even trees are actors!
+				if (nfriendly > nenemy)
+					return;
+			}
 
 			self.World.IssueOrder(new Order("DeployTransform", self, false));
 			self.World.IssueOrder(new Order("Unload", self, false));
@@ -112,8 +129,7 @@ namespace OpenRA.Mods.AS.Traits
 
 			if (e.Damage.Value > 0 && info.DeployTrigger.HasFlag(DeployTriggers.Damage))
 				TryDeploy(self);
-
-			if (e.Damage.Value < 0 && info.DeployTrigger.HasFlag(DeployTriggers.Heal))
+			else if (e.Damage.Value < 0 && info.DeployTrigger.HasFlag(DeployTriggers.Heal))
 				TryDeploy(self);
 		}
 	}
