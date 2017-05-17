@@ -23,7 +23,8 @@ namespace OpenRA.FileSystem
 		{
 			this.path = path;
 			if (!Directory.Exists(path))
-				Directory.CreateDirectory(path);
+				throw new DirectoryNotFoundException(
+					"Could not find a part of the path '{0}'".F(Path.GetFullPath(path)));
 		}
 
 		public string Name { get { return path; } }
