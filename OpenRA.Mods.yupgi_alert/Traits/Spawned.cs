@@ -16,6 +16,7 @@ using System;
 using System.Drawing;
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.Activities;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.yupgi_alert.Activities;
 using OpenRA.Mods.Common.Orders;
@@ -108,7 +109,7 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 		{
 			if (Master == null || Master.IsDead)
 				self.Kill(self); // No master == death.
-			else
+			else if (!(self.CurrentActivity is EnterSpawner))
 			{
 				var tgt = Target.FromActor(Master);
 				self.CancelActivity();
@@ -129,16 +130,33 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 		Actor last_target = null;
 		public virtual void AttackTarget(Actor self, Target target)
 		{
+			// If missile, no need for complex stuff.
+			if (self.TraitOrDefault<ShootableBallisticMissile>() != null)
+			{
+				self.QueueActivity(new ShootableBallisticMissileFly(self, self.Trait<ShootableBallisticMissile>().Target));
+				return;
+			}
+
 			if (last_target != null && last_target == target.Actor)
 				// Don't have to change target or alter current activity.
 				return;
 
+			// The following checks come after cancel activity because
+			// these spawned units return to spawner when idle.
+
 			// To prevent AI controlled spawned from doing stupid thing, don't do anything when no ammo,
 			// so that spawned will continue to return.
 			if (NeedToReload(self))
+			{
+				self.CancelActivity();
 				return;
+			}
 
-			self.CancelActivity();
+			if (!target.IsValidFor(self))
+			{
+				self.CancelActivity();
+				return;
+			}
 
 			// Make the spawned actor attack my target.
 			if (self.TraitOrDefault<AttackPlane>() != null)
@@ -149,10 +167,6 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 			{
 				Game.Debug("Warning: AttackHeli's are not ready for spawned slave.");
 				self.QueueActivity(new HeliAttack(self, target)); // not ready for helis...
-			}
-			else if (self.TraitOrDefault<ShootableBallisticMissile>() != null)
-			{
-				self.QueueActivity(new ShootableBallisticMissileFly(self, self.Trait<ShootableBallisticMissile>().Target));
 			}
 			else
 			{
@@ -175,7 +189,10 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 		{
 			// Return when nothing to attack.
 			// Don't let myself to circle around the player's construction yard.
-			EnterSpawner(self);
+			if (self.TraitOrDefault<ShootableBallisticMissile>() != null)
+				self.QueueActivity(false, new CallFunc(() => self.Kill(self)));
+			else
+				EnterSpawner(self);
 		}
 
 		class SpawnedReturnOrderTargeter : UnitOrderTargeter
