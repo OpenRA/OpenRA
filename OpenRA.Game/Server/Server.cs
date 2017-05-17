@@ -454,7 +454,9 @@ namespace OpenRA.Server
 				while (ms.Position < ms.Length)
 				{
 					var so = ServerOrder.Deserialize(br);
-					if (so == null) return;
+					if (so == null || conn == null || conn.Socket == null)
+						return;
+
 					InterpretServerOrder(conn, so);
 				}
 			}
