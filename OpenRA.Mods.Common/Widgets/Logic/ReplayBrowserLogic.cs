@@ -78,8 +78,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				{ "orderManager", null },
 				{ "getMap", (Func<MapPreview>)(() => map) },
-				{ "onMouseDown",  (Action<MapPreviewWidget, MapPreview, MouseInput>)((preview, map, mi) => { }) },
-				{ "getSpawnOccupants", (Func<MapPreview, Dictionary<CPos, SpawnOccupant>>)(map => LobbyUtils.GetSpawnOccupants(selectedReplay.GameInfo.Players, map)) },
+				{ "onMouseDown",  (Action<MapPreviewWidget, MapPreview, MouseInput>)((preview, mapPreview, mi) => { }) },
+				{ "getSpawnOccupants", (Func<MapPreview, Dictionary<CPos, SpawnOccupant>>)(mapPreview =>
+					LobbyUtils.GetSpawnOccupants(selectedReplay.GameInfo.Players, mapPreview)) },
 			});
 
 			var replayDuration = new CachedTransform<ReplayMetadata, string>(r =>
