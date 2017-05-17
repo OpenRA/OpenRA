@@ -83,7 +83,7 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 	}
 
 	public class Spawner : IPips, INotifyCreated, INotifyKilled,
-		INotifyOwnerChanged, INotifyAddedToWorld, ITick, INotifySold, INotifyActorDisposing,
+		INotifyOwnerChanged, ITick, INotifySold, INotifyActorDisposing,
 		INotifyAttack, INotifyBecomingIdle
 	{
 		public readonly SpawnerInfo Info;
@@ -102,8 +102,6 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 		int loadingToken = ConditionManager.InvalidConditionToken;
 		Stack<int> loadedTokens = new Stack<int>();
 
-		CPos currentCell;
-		public IEnumerable<CPos> CurrentAdjacentCells { get; private set; }
 		public int SpawnCount { get { return spawns.Count; } }
 
 		int regen_ticks = 0;
@@ -159,7 +157,7 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 		void INotifyAttack.Attacking(Actor self, Target target, Armament a, Barrel barrel)
 		{
 			foreach(var spawned in launched)
-				// At this point, freshly launched one is in the launched list, too.
+				// Issue retarget order for already launched ones
 				spawned.Trait<Spawned>().AttackTarget(spawned, target);
 
 			if (spawns.Count == 0)
@@ -168,6 +166,13 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 			var s = Launch(self);
 			if (s == null)
 				return;
+
+			// grant timed launching condition
+			if (Info.LaunchingCondition != null)
+				launchingToken = conditionManager.GrantCondition(self, Info.LaunchingCondition, Info.LaunchingTicks);
+
+			var exit = ChooseExit(self);
+			SetSpawnedFacing(s, self, exit);
 
 			if (Info.SpawnIsMissile)
 			{
@@ -181,31 +186,19 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 				s.Trait<ShootableBallisticMissile>().Target = Target.FromPos(target.CenterPosition);
 			}
 
-			var exit = ChooseExit(self);
-			SetSpawnedFacing(s, self, exit);
-
-			// give timed launching condition
-			if (Info.LaunchingCondition != null)
-				launchingToken = conditionManager.GrantCondition(self, Info.LaunchingCondition, Info.LaunchingTicks);
-
 			self.World.AddFrameEndTask(w =>
 			{
-				if (self.IsDead)
+				if (self.IsDead || self.Disposed)
 					return;
 
-				if (s.Disposed)
-					return;
-
-				var pos = s.Trait<IPositionable>();
-				var spawn = self.CenterPosition;
 				var spawn_offset = exit == null ? WVec.Zero : exit.SpawnOffset;
-				pos.SetVisualPosition(s, self.CenterPosition + spawn_offset);
+				s.Trait<IPositionable>().SetVisualPosition(s, self.CenterPosition + spawn_offset);
+
 				s.CancelActivity(); // Reset any activity. May had an activity before entering the spawner.
-				// Or might had been added by above foreach launched loop.
+
+				// Move into world, if not. Ground units get stuck without this.
 				if (Info.SpawnIsGroundUnit)
 				{
-					// Air unit doesn't require this for some reason :)
-					// Without this, ground unit is immobile.
 					var mv = s.Trait<IMove>().MoveIntoWorld(s, self.Location);
 					if (mv != null)
 						s.QueueActivity(mv);
@@ -403,22 +396,8 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 			});
 		}
 
-		public void AddedToWorld(Actor self)
-		{
-			// Force location update to avoid issues when initial spawn is outside map
-			currentCell = self.Location;
-			CurrentAdjacentCells = GetAdjacentCells();
-		}
-
 		public void Tick(Actor self)
 		{
-			var cell = self.World.Map.CellContaining(self.CenterPosition);
-			if (currentCell != cell)
-			{
-				currentCell = cell;
-				CurrentAdjacentCells = GetAdjacentCells();
-			}
-
 			// Regeneration
 			if (regen_ticks > 0)
 			{
