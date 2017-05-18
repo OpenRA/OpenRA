@@ -133,7 +133,9 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 			// If missile, no need for complex stuff.
 			if (self.TraitOrDefault<ShootableBallisticMissile>() != null)
 			{
-				self.QueueActivity(new ShootableBallisticMissileFly(self, self.Trait<ShootableBallisticMissile>().Target));
+				// SBMs may not change target
+				if (self.CurrentActivity == null)
+					self.QueueActivity(new ShootableBallisticMissileFly(self, self.Trait<ShootableBallisticMissile>().Target));
 				return;
 			}
 
