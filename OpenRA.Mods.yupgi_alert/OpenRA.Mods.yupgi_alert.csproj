@@ -93,6 +93,7 @@
     <Compile Include="Traits\Warheads\CreateRadioactivityWarhead.cs" />
     <Compile Include="Traits\Warheads\FireClusterWarhead.cs" />
     <Compile Include="Traits\Warheads\WarheadAS.cs" />
+    <Compile Include="Traits\Render\WithAcceptDeliveredCashAnimation.cs" />
     <Compile Include="Traits\World\RadioactivityLayer.cs" />
   </ItemGroup>
   <ItemGroup>
