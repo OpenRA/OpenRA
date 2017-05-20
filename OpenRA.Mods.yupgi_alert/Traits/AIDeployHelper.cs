@@ -10,6 +10,7 @@
 
 using System;
 using System.Linq;
+using OpenRA.Mods.Common;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
@@ -51,7 +52,7 @@ namespace OpenRA.Mods.AS.Traits
 	{
 		readonly AIDeployHelperInfo info;
 
-		[Sync] int undeployTicks = -1, deployTicks;
+		[Sync] int undeployTicks, deployTicks;
 		bool undeployable;
 
 		public AIDeployHelper(AIDeployHelperInfo info)
@@ -76,9 +77,10 @@ namespace OpenRA.Mods.AS.Traits
 			{
 				// don't deploy if there are more friends than enemies
 				var units = self.World.FindActorsInCircle(self.CenterPosition, WDist.FromCells(info.ActorScanRadius));
-				int nfriendly = units.Where(a => self.Owner.Stances[a.Owner] == Stance.Ally).Count();
-				int nenemy = units.Where(a => self.Owner.Stances[a.Owner] == Stance.Enemy).Count();
+				int nfriendly = units.Where(a => a.AppearsFriendlyTo(self)).Count();
+				int nenemy = units.Where(a => a.AppearsHostileTo(self)).Count();
 				// units.count - nfriendly != nemeny, as even trees are actors!
+				// Direct owner check is still incorrect, as disguise is involved.
 				if (nfriendly > nenemy)
 					return;
 			}
@@ -115,8 +117,12 @@ namespace OpenRA.Mods.AS.Traits
 			if (!self.Owner.IsBot)
 				return;
 
-			if (undeployable && undeployTicks-- == 0)
-				Undeploy(self);
+			if (undeployable && undeployTicks > 0)
+			{
+				undeployTicks--;
+				if (undeployTicks <= 0)
+					Undeploy(self);
+			}
 
 			if (deployTicks > 0)
 				deployTicks--;
