@@ -429,8 +429,10 @@ namespace OpenRA.Mods.Common.Projectiles
 				return false;
 
 			args.SourceActor.World.AddFrameEndTask(w =>
-					tp.Trait.Armament.CheckFire(tp.Actor, null, Target.FromPos(pos))
-			);
+			{
+				if (!tp.Actor.IsDead)
+					tp.Trait.Armament.CheckFire(tp.Actor, null, Target.FromPos(pos));
+			});
 			return true;
 		}
 
