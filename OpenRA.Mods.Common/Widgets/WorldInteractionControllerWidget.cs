@@ -241,61 +241,98 @@ namespace OpenRA.Mods.Common.Widgets
 			if (e.Event == KeyInputEvent.Down)
 			{
 				var key = Hotkey.FromKeyInput(e);
+				var isFirstPress = !e.IsRepeat;
 
+				// Disable pausing for spectators and defeated players
 				if (key == Game.Settings.Keys.PauseKey
-					&& (Game.IsHost || (World.LocalPlayer != null && World.LocalPlayer.WinState != WinState.Lost))) // Disable pausing for spectators and defeated players
-					World.SetPauseState(!World.Paused);
+					&& (Game.IsHost || (World.LocalPlayer != null && World.LocalPlayer.WinState != WinState.Lost)))
+				{
+					if (isFirstPress)
+						World.SetPauseState(!World.Paused);
+
+					return true;
+				}
 				else if (key == Game.Settings.Keys.SelectAllUnitsKey && !World.IsGameOver)
 				{
-					// Select actors on the screen which belong to the current player
-					var ownUnitsOnScreen = SelectActorsOnScreen(World, worldRenderer, null, player).SubsetWithHighestSelectionPriority().ToList();
-
-					// Check if selecting actors on the screen has selected new units
-					if (ownUnitsOnScreen.Count > World.Selection.Actors.Count())
-						Game.AddChatLine(Color.White, "Battlefield Control", "Selected across screen");
-					else
+					if (isFirstPress)
 					{
-						// Select actors in the world that have highest selection priority
-						ownUnitsOnScreen = SelectActorsInWorld(World, null, player).SubsetWithHighestSelectionPriority().ToList();
-						Game.AddChatLine(Color.White, "Battlefield Control", "Selected across map");
+						// Select actors on the screen which belong to the current player
+						var ownUnitsOnScreen = SelectActorsOnScreen(World, worldRenderer, null, player).SubsetWithHighestSelectionPriority().ToList();
+
+						// Check if selecting actors on the screen has selected new units
+						if (ownUnitsOnScreen.Count > World.Selection.Actors.Count())
+							Game.AddChatLine(Color.White, "Battlefield Control", "Selected across screen");
+						else
+						{
+							// Select actors in the world that have highest selection priority
+							ownUnitsOnScreen = SelectActorsInWorld(World, null, player).SubsetWithHighestSelectionPriority().ToList();
+							Game.AddChatLine(Color.White, "Battlefield Control", "Selected across map");
+						}
+
+						World.Selection.Combine(World, ownUnitsOnScreen, false, false);
 					}
 
-					World.Selection.Combine(World, ownUnitsOnScreen, false, false);
+					return true;
 				}
 				else if (key == Game.Settings.Keys.SelectUnitsByTypeKey && !World.IsGameOver)
 				{
 					if (!World.Selection.Actors.Any())
 						return false;
 
-					// Get all the selected actors' selection classes
-					var selectedClasses = World.Selection.Actors
-						.Where(x => !x.IsDead && x.Owner == player)
-						.Select(a => a.Trait<Selectable>().Class)
-						.ToHashSet();
-
-					// Select actors on the screen that have the same selection class as one of the already selected actors
-					var newSelection = SelectActorsOnScreen(World, worldRenderer, selectedClasses, player).ToList();
-
-					// Check if selecting actors on the screen has selected new units
-					if (newSelection.Count > World.Selection.Actors.Count())
-						Game.AddChatLine(Color.White, "Battlefield Control", "Selected across screen");
-					else
+					if (isFirstPress)
 					{
-						// Select actors in the world that have the same selection class as one of the already selected actors
-						newSelection = SelectActorsInWorld(World, selectedClasses, player).ToList();
-						Game.AddChatLine(Color.White, "Battlefield Control", "Selected across map");
+						// Get all the selected actors' selection classes
+						var selectedClasses = World.Selection.Actors
+							.Where(x => !x.IsDead && x.Owner == player)
+							.Select(a => a.Trait<Selectable>().Class)
+							.ToHashSet();
+
+						// Select actors on the screen that have the same selection class as one of the already selected actors
+						var newSelection = SelectActorsOnScreen(World, worldRenderer, selectedClasses, player).ToList();
+
+						// Check if selecting actors on the screen has selected new units
+						if (newSelection.Count > World.Selection.Actors.Count())
+							Game.AddChatLine(Color.White, "Battlefield Control", "Selected across screen");
+						else
+						{
+							// Select actors in the world that have the same selection class as one of the already selected actors
+							newSelection = SelectActorsInWorld(World, selectedClasses, player).ToList();
+							Game.AddChatLine(Color.White, "Battlefield Control", "Selected across map");
+						}
+
+						World.Selection.Combine(World, newSelection, true, false);
 					}
 
-					World.Selection.Combine(World, newSelection, true, false);
+					return true;
 				}
 				else if (key == Game.Settings.Keys.CycleStatusBarsKey)
-					return CycleStatusBars();
+				{
+					if (isFirstPress)
+						CycleStatusBars();
+
+					return true;
+				}
 				else if (key == Game.Settings.Keys.TogglePixelDoubleKey)
-					return TogglePixelDouble();
+				{
+					if (isFirstPress)
+						TogglePixelDouble();
+
+					return true;
+				}
 				else if (key == Game.Settings.Keys.ToggleMuteKey)
-					return ToggleMute();
+				{
+					if (isFirstPress)
+						ToggleMute();
+
+					return true;
+				}
 				else if (key == Game.Settings.Keys.TogglePlayerStanceColorsKey)
-					return TogglePlayerStanceColors();
+				{
+					if (isFirstPress)
+						TogglePlayerStanceColors();
+
+					return true;
+				}
 			}
 
 			return false;
@@ -336,7 +373,7 @@ namespace OpenRA.Mods.Common.Widgets
 				.SubsetWithHighestSelectionPriority();
 		}
 
-		bool CycleStatusBars()
+		void CycleStatusBars()
 		{
 			if (Game.Settings.Game.StatusBars == StatusBarsType.Standard)
 				Game.Settings.Game.StatusBars = StatusBarsType.DamageShow;
@@ -344,11 +381,9 @@ namespace OpenRA.Mods.Common.Widgets
 				Game.Settings.Game.StatusBars = StatusBarsType.AlwaysShow;
 			else if (Game.Settings.Game.StatusBars == StatusBarsType.AlwaysShow)
 				Game.Settings.Game.StatusBars = StatusBarsType.Standard;
-
-			return true;
 		}
 
-		bool TogglePixelDouble()
+		void TogglePixelDouble()
 		{
 			if (worldRenderer.Viewport.Zoom == 1f)
 				worldRenderer.Viewport.Zoom = 2f;
@@ -360,11 +395,9 @@ namespace OpenRA.Mods.Common.Widgets
 			}
 
 			Game.Settings.Graphics.PixelDouble = worldRenderer.Viewport.Zoom == 2f;
-
-			return true;
 		}
 
-		bool ToggleMute()
+		void ToggleMute()
 		{
 			Game.Settings.Sound.Mute ^= true;
 
@@ -378,15 +411,11 @@ namespace OpenRA.Mods.Common.Widgets
 				Game.Sound.UnmuteAudio();
 				Game.AddChatLine(Color.White, "Battlefield Control", "Audio unmuted");
 			}
-
-			return true;
 		}
 
-		bool TogglePlayerStanceColors()
+		void TogglePlayerStanceColors()
 		{
 			Game.Settings.Game.UsePlayerStanceColors ^= true;
-
-			return true;
 		}
 	}
 }

@@ -133,37 +133,48 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		public bool HandleKeyPress(KeyInput e)
 		{
-			if (e.Event == KeyInputEvent.Down && !e.IsRepeat)
+			if (e.Event == KeyInputEvent.Down)
 			{
 				var h = Hotkey.FromKeyInput(e);
+				var isFirstPress = !e.IsRepeat;
+
 				if (h == Game.Settings.Keys.ObserverCombinedView && !limitViews)
 				{
-					selected = combined;
-					selected.OnClick();
+					if (isFirstPress)
+					{
+						selected = combined;
+						selected.OnClick();
+					}
 
 					return true;
 				}
 
 				if (h == Game.Settings.Keys.ObserverWorldView && !limitViews)
 				{
-					selected = disableShroud;
-					selected.OnClick();
+					if (isFirstPress)
+					{
+						selected = disableShroud;
+						selected.OnClick();
+					}
 
 					return true;
 				}
 
 				if (e.Key >= Keycode.NUMBER_0 && e.Key <= Keycode.NUMBER_9)
 				{
-					var key = (int)e.Key - (int)Keycode.NUMBER_0;
-					var team = teams.Where(t => t.Key == key).SelectMany(s => s);
-					if (!team.Any())
-						return false;
+					if (isFirstPress)
+					{
+						var key = (int)e.Key - (int)Keycode.NUMBER_0;
+						var team = teams.Where(t => t.Key == key).SelectMany(s => s);
+						if (!team.Any())
+							return false;
 
-					if (e.Modifiers == Modifiers.Shift)
-						team = team.Reverse();
+						if (e.Modifiers == Modifiers.Shift)
+							team = team.Reverse();
 
-					selected = team.SkipWhile(t => t.Player != selected.Player).Skip(1).FirstOrDefault() ?? team.FirstOrDefault();
-					selected.OnClick();
+						selected = team.SkipWhile(t => t.Player != selected.Player).Skip(1).FirstOrDefault() ?? team.FirstOrDefault();
+						selected.OnClick();
+					}
 
 					return true;
 				}

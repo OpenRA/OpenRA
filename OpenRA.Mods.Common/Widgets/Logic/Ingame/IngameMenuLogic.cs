@@ -207,6 +207,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (world.IsGameOver)
 				resumeButton.GetText = () => "Return to map";
 
+			resumeButton.OnKeyPress = ki => { if (ki.Event == KeyInputEvent.Down && !ki.IsRepeat) resumeButton.OnClick(); };
 			resumeButton.OnClick = closeMenu;
 
 			var panelRoot = widget.GetOrNull("PANEL_ROOT");
