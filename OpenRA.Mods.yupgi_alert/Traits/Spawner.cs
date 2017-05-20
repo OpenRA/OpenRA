@@ -35,6 +35,9 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 		[Desc("Spawn unit type")]
 		public readonly string SpawnUnit;
 
+		[Desc("The armament which will trigger the spawning. (== \"Name:\" tag of Armament, not @tag!)")]
+		public readonly string SpawnerArmamentName = "primary";
+
 		[Desc("Spawn is a missile that dies and not return.")]
 		public readonly bool SpawnIsMissile = false;
 
@@ -156,6 +159,9 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 		// invokes Attacking()
 		void INotifyAttack.Attacking(Actor self, Target target, Armament a, Barrel barrel)
 		{
+			if (a.Info.Name != Info.SpawnerArmamentName)
+				return;
+
 			foreach(var spawned in launched)
 				// Issue retarget order for already launched ones
 				spawned.Trait<Spawned>().AttackTarget(spawned, target);
