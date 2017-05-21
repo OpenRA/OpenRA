@@ -34,6 +34,7 @@ namespace OpenRA.Mods.Common.Traits
 		readonly HealthInfo healthInfo;
 		readonly Lazy<BodyOrientation> coords;
 
+		HitShape[] shapes;
 		IBlocksProjectiles[] allBlockers;
 		ITargetablePositions[] targetablePositions;
 
@@ -48,6 +49,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyCreated.Created(Actor self)
 		{
+			shapes = self.TraitsImplementing<HitShape>().ToArray();
 			allBlockers = self.TraitsImplementing<IBlocksProjectiles>().ToArray();
 			targetablePositions = self.TraitsImplementing<ITargetablePositions>().ToArray();
 		}
@@ -60,9 +62,6 @@ namespace OpenRA.Mods.Common.Traits
 			var wcr = Game.Renderer.WorldRgbaColorRenderer;
 			var iz = 1 / wr.Viewport.Zoom;
 
-			if (healthInfo != null)
-				healthInfo.Shape.DrawCombatOverlay(wr, wcr, self);
-
 			var blockers = allBlockers.Where(Exts.IsTraitEnabled).ToList();
 			if (blockers.Count > 0)
 			{
@@ -74,6 +73,10 @@ namespace OpenRA.Mods.Common.Traits
 				TargetLineRenderable.DrawTargetMarker(wr, hc, ha);
 				TargetLineRenderable.DrawTargetMarker(wr, hc, hb);
 			}
+
+			var activeShapes = shapes.Where(Exts.IsTraitEnabled);
+			foreach (var s in activeShapes)
+				s.Info.Type.DrawCombatOverlay(wr, wcr, self);
 
 			var tc = Color.Lime;
 			var enabledPositions = targetablePositions.Where(Exts.IsTraitEnabled);
