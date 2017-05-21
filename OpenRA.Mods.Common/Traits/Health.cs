@@ -14,7 +14,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class HealthInfo : ITraitInfo, UsesInit<HealthInit>
+	public class HealthInfo : ITraitInfo, UsesInit<HealthInit>, IRulesetLoaded
 	{
 		[Desc("HitPoints")]
 		public readonly int HP = 0;
@@ -22,6 +22,12 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly bool NotifyAppliedDamage = true;
 
 		public virtual object Create(ActorInitializer init) { return new Health(init, this); }
+
+		public void RulesetLoaded(Ruleset rules, ActorInfo ai)
+		{
+			if (!ai.HasTraitInfo<HitShapeInfo>())
+				throw new YamlException("Actors with Health need at least one HitShape trait!");
+		}
 	}
 
 	public class Health : IHealth, ISync, ITick
