@@ -29,7 +29,7 @@ NAPULS:
 	AttackTurreted:
 	Armament:
 		Weapon: EMPulseCannon
-		LocalOffset: 150,0,1250
+		LocalOffset: 212,0,1768
 		LocalYaw: 0,100
 	WithSpriteTurret:
 		Sequence: turret

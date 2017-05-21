@@ -306,7 +306,7 @@ namespace OpenRA.Server
 					IpAddress = ((IPEndPoint)newConn.Socket.RemoteEndPoint).Address.ToString(),
 					Index = newConn.PlayerIndex,
 					Slot = LobbyInfo.FirstEmptySlot(),
-					PreferredColor = handshake.Client.Color,
+					PreferredColor = handshake.Client.PreferredColor,
 					Color = handshake.Client.Color,
 					Faction = "Random",
 					SpawnPoint = 0,

@@ -24,8 +24,6 @@ APC:
 		RequiresCondition: !inside-tunnel
 		Range: 5c0
 		MaxHeightDelta: 3
-	Turreted:
-		TurnSpeed: 10
 	Cargo:
 		Types: Infantry
 		MaxWeight: 5
@@ -85,7 +83,7 @@ HVR:
 		MaxHeightDelta: 3
 	Armament:
 		Weapon: HoverMissile
-		LocalOffset: 0,171,384, 0,-171,384
+		LocalOffset: 0,242,543, 0,-242,543
 	Turreted:
 		TurnSpeed: 7
 		Offset: -128,0,85
@@ -188,16 +186,16 @@ MMCH:
 		MuzzlePalette: effect-ignore-lighting
 		Recoil: 128
 		RecoilRecovery: 32
-		LocalOffset: 640, 192, 832
+		LocalOffset: 905,272,1177
 	WithMuzzleOverlay:
 	RenderVoxels:
 	WithVoxelBarrel:
-		LocalOffset: -64, 64, 256
+		LocalOffset: -91,91,362
 	AutoTarget:
 	Selectable:
 		Bounds: 30, 42, 0, -8
 	Carryable:
-		LocalOffset: 0, 0, 408
+		LocalOffset: 0,0,577
 
 HMEC:
 	Inherits: ^Tank
@@ -231,17 +229,17 @@ HMEC:
 	AutoTarget:
 	Armament@MISSILES:
 		Weapon: MammothTusk
-		LocalOffset: -172,-260,854, -172,260,854
+		LocalOffset: -243,-368,1208, -243,368,1208
 	Armament@RAILGUN:
 		Weapon: MechRailgun
-		LocalOffset: 260,-220,728, 260,220,728
+		LocalOffset: 368,-311,1030, 368,311,1030
 	-WithVoxelBody:
 	WithVoxelWalkerBody:
 		TickRate: 1
 	Selectable:
 		Bounds: 40, 40, 0, -8
 	Carryable:
-		LocalOffset: 0, 0, 360
+		LocalOffset: 0,0,509
 
 SONIC:
 	Inherits: ^Tank
@@ -272,7 +270,7 @@ SONIC:
 		MaxHeightDelta: 3
 	Armament:
 		Weapon: SonicZap
-		LocalOffset: -50,0,410
+		LocalOffset: -71,0,580
 	AttackTurreted:
 		Voice: Attack
 	Turreted:
@@ -280,3 +278,93 @@ SONIC:
 		Offset: -170,0,0
 	AutoTarget:
 	WithVoxelTurret:
+
+JUGG:
+	Inherits: ^Tank
+	Inherits@SPRITES: ^SpriteActor
+	Inherits@EXPERIENCE: ^GainsExperience
+	Valued:
+		Cost: 950
+	Tooltip:
+		Name: Juggernaut
+		RequiresCondition: !deployed
+	Tooltip@DEPLOYED:
+		Name: Juggernaut (deployed)
+		RequiresCondition: deployed
+	Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 100
+		Prerequisites: ~gaweap, garadr, ~techlevel.high
+		Description: Mobile Artillery Mech.\nNeeds to deploy in order to shoot.\n  Strong vs Ground units\n  Weak vs Aircraft
+	Health:
+		HP: 350
+	Armor:
+		Type: Light
+	Mobile:
+		Speed: 71
+		TurnSpeed: 5
+		RequiresCondition: !empdisable && undeployed
+	RevealsShroud:
+		RequiresCondition: !inside-tunnel
+		Range: 9c0
+		MaxHeightDelta: 3
+	RenderVoxels:
+		LightAmbientColor: 0.4, 0.4, 0.4
+	RenderSprites:
+		Image: jugg
+	WithMakeAnimation:
+		BodyNames: body, deployedbody
+	WithFacingSpriteBody:
+		Sequence: stand
+		RequiresCondition: undeployed
+	WithMoveAnimation:
+		MoveSequence: run
+	GrantConditionOnDeploy:
+		DeployedCondition: deployed
+		UndeployedCondition: undeployed
+		Facing: 96
+		AllowedTerrainTypes: Clear, Road, DirtRoad, Rough
+		DeploySound: place2.aud
+		UndeploySound: clicky1.aud
+	GrantCondition@PREVIEWWORKAROUND:
+		Condition: real-actor
+	QuantizeFacingsFromSequence:
+		Sequence: turret
+	WithSpriteBody@deployed:
+		RequiresCondition: !undeployed && real-actor
+		Name: deployedbody
+	Turreted:
+		Turret: deployed
+		TurnSpeed: 5
+		InitialFacing: 96
+		Offset: -153,-17,633
+		RealignDelay: -1
+	WithVoxelBarrel:
+		Armament: deployed
+		LocalOffset: 512,0,362
+		LocalOrientation: 0, 128, 0
+		RequiresCondition: deployed
+	WithSpriteTurret@deployed:
+		Turret: deployed
+		RequiresCondition: deployed
+		Recoils: false
+	AttackTurreted@deployed:
+		Voice: Attack
+		Armaments: deployed
+		RequiresCondition: deployed
+	Armament@deployed:
+		Name: deployed
+		Turret: deployed
+		Weapon: Jugg90mm
+		LocalOffset: 820,203,1386, 820,0,1386, 820,-203,1386
+		RequiresCondition: deployed
+		MuzzleSequence: muzzle
+		MuzzlePalette: effect-ignore-lighting
+	WithMuzzleOverlay:
+	AutoTarget:
+	Carryable:
+		RequiresCondition: undeployed
+	RevealOnFire:
+		ArmamentNames: deployed
+	SelectionDecorations:
+		VisualBounds: 48,40,0,-8

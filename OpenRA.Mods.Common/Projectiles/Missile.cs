@@ -23,7 +23,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Projectiles
 {
-	public class MissileInfo : IProjectileInfo
+	public class MissileInfo : IProjectileInfo, IRulesetLoaded<WeaponInfo>
 	{
 		[Desc("Name of the image containing the projectile sequence.")]
 		public readonly string Image = null;
@@ -63,9 +63,6 @@ namespace OpenRA.Mods.Common.Projectiles
 
 		[Desc("Width of projectile (used for finding blocking actors).")]
 		public readonly WDist Width = new WDist(1);
-
-		[Desc("Extra search radius beyond path for blocking actors.")]
-		public readonly WDist TargetExtraSearchRadius = new WDist(1536);
 
 		[Desc("Maximum offset at the maximum range")]
 		public readonly WDist Inaccuracy = WDist.Zero;
@@ -145,7 +142,17 @@ namespace OpenRA.Mods.Common.Projectiles
 			"not trigger fast enough, causing the missile to fly past the target.")]
 		public readonly WDist CloseEnough = new WDist(298);
 
+		[Desc("Scan radius for actors with projectile-blocking trait. If set to zero (default), it will automatically scale",
+			"to the blocker with the largest health shape. Only set custom values if you know what you're doing.")]
+		public WDist BlockerScanRadius = WDist.Zero;
+
 		public IProjectile Create(ProjectileArgs args) { return new Missile(this, args); }
+
+		public void RulesetLoaded(Ruleset rules, WeaponInfo wi)
+		{
+			if (BlockerScanRadius == WDist.Zero)
+				BlockerScanRadius = Util.MinimumRequiredBlockerScanRadius(rules);
+		}
 	}
 
 	// TODO: double check square roots!!!
@@ -826,7 +833,7 @@ namespace OpenRA.Mods.Common.Projectiles
 			var shouldExplode = false;
 			WPos blockedPos;
 			if (info.Blockable && BlocksProjectiles.AnyBlockingActorsBetween(world, lastPos, pos, info.Width,
-				info.TargetExtraSearchRadius, out blockedPos))
+				info.BlockerScanRadius, out blockedPos))
 			{
 				pos = blockedPos;
 				shouldExplode = true;

@@ -119,7 +119,7 @@ namespace OpenRA
 		public int MaxFramerate = 60;
 
 		[Desc("Disable high resolution DPI scaling on Windows operating systems.")]
-		public bool DisableWindowsDPIScaling = false;
+		public bool DisableWindowsDPIScaling = true;
 
 		public int BatchSize = 8192;
 		public int SheetSize = 2048;
@@ -325,7 +325,6 @@ namespace OpenRA
 		public string Hostname = "irc.openra.net";
 		public int Port = 6667;
 		public string Channel = "lobby";
-		public string Nickname = "Newbie";
 		public string QuitMessage = "Battle control terminated!";
 		public string TimestampFormat = "HH:mm";
 		public bool ConnectAutomatically = false;

@@ -110,7 +110,6 @@ Section "Game" GAME
 	File "${SRCDIR}\README.html"
 	File "${SRCDIR}\CHANGELOG.html"
 	File "${SRCDIR}\CONTRIBUTING.html"
-	File "${SRCDIR}\DOCUMENTATION.html"
 	File "${SRCDIR}\OpenRA.ico"
 	File "${SRCDIR}\RedAlert.ico"
 	File "${SRCDIR}\TiberianDawn.ico"
@@ -123,6 +122,7 @@ Section "Game" GAME
 	File "${SRCDIR}\GeoLite2-Country.mmdb.gz"
 	File "${SRCDIR}\eluant.dll"
 	File "${SRCDIR}\SmarIrc4net.dll"
+	File "${SRCDIR}\rix0rrr.BeaconLib.dll"
 	File "${DEPSDIR}\soft_oal.dll"
 	File "${DEPSDIR}\SDL2.dll"
 	File "${DEPSDIR}\freetype6.dll"
@@ -220,7 +220,6 @@ Function ${UN}Clean
 	Delete $INSTDIR\README.html
 	Delete $INSTDIR\CHANGELOG.html
 	Delete $INSTDIR\CONTRIBUTING.html
-	Delete $INSTDIR\DOCUMENTATION.html
 	Delete $INSTDIR\OpenRA.ico
 	Delete $INSTDIR\RedAlert.ico
 	Delete $INSTDIR\TiberianDawn.ico
@@ -237,6 +236,7 @@ Function ${UN}Clean
 	Delete $INSTDIR\SDL2-CS.dll
 	Delete $INSTDIR\OpenAL-CS.dll
 	Delete $INSTDIR\SmarIrc4net.dll
+	Delete $INSTDIR\rix0rrr.BeaconLib.dll
 	RMDir /r $INSTDIR\Support
 
 	DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\OpenRA${SUFFIX}"

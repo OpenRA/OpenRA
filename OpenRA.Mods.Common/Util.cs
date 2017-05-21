@@ -12,6 +12,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.GameRules;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Support;
 using OpenRA.Traits;
@@ -174,6 +175,19 @@ namespace OpenRA.Mods.Common
 				return range[0];
 
 			return world.SharedRandom.Next(range[0], range[1]);
+		}
+
+		// TODO: Investigate caching this or moving it to ActorMapInfo
+		public static WDist MinimumRequiredVictimScanRadius(Ruleset rules)
+		{
+			return rules.Actors.SelectMany(a => a.Value.TraitInfos<HealthInfo>()).Max(h => h.Shape.OuterRadius);
+		}
+
+		// TODO: Investigate caching this or moving it to ActorMapInfo
+		public static WDist MinimumRequiredBlockerScanRadius(Ruleset rules)
+		{
+			return rules.Actors.Where(a => a.Value.HasTraitInfo<IBlocksProjectilesInfo>())
+				.SelectMany(a => a.Value.TraitInfos<HealthInfo>()).Max(h => h.Shape.OuterRadius);
 		}
 	}
 }

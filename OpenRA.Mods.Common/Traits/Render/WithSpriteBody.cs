@@ -29,6 +29,9 @@ namespace OpenRA.Mods.Common.Traits.Render
 		[Desc("Pause animation when actor is disabled.")]
 		public readonly bool PauseAnimationWhenDisabled = false;
 
+		[Desc("Identifier used to assign modifying traits to this sprite body.")]
+		public readonly string Name = "body";
+
 		public override object Create(ActorInitializer init) { return new WithSpriteBody(init, this); }
 
 		public virtual IEnumerable<IActorPreview> RenderPreviewSprites(ActorPreviewInitializer init, RenderSpritesInfo rs, string image, int facings, PaletteReference p)

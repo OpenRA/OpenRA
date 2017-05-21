@@ -349,7 +349,7 @@ namespace OpenRA
 					if (parts.Length == 3)
 					{
 						int rr, rp, ry;
-						if (Exts.TryParseIntegerInvariant(value, out rr) && Exts.TryParseIntegerInvariant(value, out rp) && Exts.TryParseIntegerInvariant(value, out ry))
+						if (Exts.TryParseIntegerInvariant(parts[0], out rr) && Exts.TryParseIntegerInvariant(parts[1], out rp) && Exts.TryParseIntegerInvariant(parts[2], out ry))
 							return new WRot(new WAngle(rr), new WAngle(rp), new WAngle(ry));
 					}
 				}

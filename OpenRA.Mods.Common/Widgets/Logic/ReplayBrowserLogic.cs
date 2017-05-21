@@ -34,8 +34,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly Dictionary<ReplayMetadata, ReplayState> replayState = new Dictionary<ReplayMetadata, ReplayState>();
 		readonly Action onStart;
 		readonly ModData modData;
+		readonly WebServices services;
 
-		Dictionary<CPos, SpawnOccupant> selectedSpawns;
+		MapPreview map;
 		ReplayMetadata selectedReplay;
 
 		volatile bool cancelLoadingReplays;
@@ -43,8 +44,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		[ObjectCreator.UseCtor]
 		public ReplayBrowserLogic(Widget widget, ModData modData, Action onExit, Action onStart)
 		{
+			map = MapCache.UnknownMap;
 			panel = widget;
 
+			services = modData.Manifest.Get<WebServices>();
 			this.modData = modData;
 			this.onStart = onStart;
 			Game.BeforeGameStart += OnGameStart;
@@ -66,33 +69,23 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				ThreadPool.QueueUserWorkItem(_ => LoadReplays(dir, template));
 
 			var watch = panel.Get<ButtonWidget>("WATCH_BUTTON");
-			watch.IsDisabled = () => selectedReplay == null || selectedReplay.GameInfo.MapPreview.Status != MapStatus.Available;
+			watch.IsDisabled = () => selectedReplay == null || map.Status != MapStatus.Available;
 			watch.OnClick = () => { WatchReplay(); };
 
 			panel.Get("REPLAY_INFO").IsVisible = () => selectedReplay != null;
 
-			var preview = panel.Get<MapPreviewWidget>("MAP_PREVIEW");
-			preview.SpawnOccupants = () => selectedSpawns;
-			preview.Preview = () => selectedReplay != null ? selectedReplay.GameInfo.MapPreview : null;
-
-			var titleLabel = panel.GetOrNull<LabelWidget>("MAP_TITLE");
-			if (titleLabel != null)
+			Ui.LoadWidget("MAP_PREVIEW", panel.Get("MAP_PREVIEW_ROOT"), new WidgetArgs
 			{
-				titleLabel.IsVisible = () => selectedReplay != null;
+				{ "orderManager", null },
+				{ "getMap", (Func<MapPreview>)(() => map) },
+				{ "onMouseDown",  (Action<MapPreviewWidget, MapPreview, MouseInput>)((preview, mapPreview, mi) => { }) },
+				{ "getSpawnOccupants", (Func<MapPreview, Dictionary<CPos, SpawnOccupant>>)(mapPreview =>
+					LobbyUtils.GetSpawnOccupants(selectedReplay.GameInfo.Players, mapPreview)) },
+			});
 
-				var font = Game.Renderer.Fonts[titleLabel.Font];
-				var title = new CachedTransform<MapPreview, string>(m => WidgetUtils.TruncateText(m.Title, titleLabel.Bounds.Width, font));
-				titleLabel.GetText = () => title.Update(selectedReplay.GameInfo.MapPreview);
-			}
-
-			var type = panel.GetOrNull<LabelWidget>("MAP_TYPE");
-			if (type != null)
-			{
-				var mapType = new CachedTransform<MapPreview, string>(m => m.Categories.FirstOrDefault() ?? "");
-				type.GetText = () => mapType.Update(selectedReplay.GameInfo.MapPreview);
-			}
-
-			panel.Get<LabelWidget>("DURATION").GetText = () => WidgetUtils.FormatTimeSeconds((int)selectedReplay.GameInfo.Duration.TotalSeconds);
+			var replayDuration = new CachedTransform<ReplayMetadata, string>(r =>
+				"Duration: {0}".F(WidgetUtils.FormatTimeSeconds((int)selectedReplay.GameInfo.Duration.TotalSeconds)));
+			panel.Get<LabelWidget>("DURATION").GetText = () => replayDuration.Update(selectedReplay);
 
 			SetupFilters();
 			SetupManagement();
@@ -146,6 +139,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						Pair.New(GameType.Singleplayer, "Singleplayer"),
 						Pair.New(GameType.Multiplayer, "Multiplayer")
 					};
+
 					var lookup = options.ToDictionary(kvp => kvp.First, kvp => kvp.Second);
 
 					ddb.GetText = () => lookup[filter.Type];
@@ -180,6 +174,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						Pair.New(DateType.LastFortnight, "Last 14 days"),
 						Pair.New(DateType.LastMonth, "Last 30 days")
 					};
+
 					var lookup = options.ToDictionary(kvp => kvp.First, kvp => kvp.Second);
 
 					ddb.GetText = () => lookup[filter.Date];
@@ -215,6 +210,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						Pair.New(DurationType.Medium, "Medium (30 min)"),
 						Pair.New(DurationType.Long, "Long (60+ min)")
 					};
+
 					var lookup = options.ToDictionary(kvp => kvp.First, kvp => kvp.Second);
 
 					ddb.GetText = () => lookup[filter.Duration];
@@ -249,6 +245,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						Pair.New(WinState.Lost, "Defeat"),
 						Pair.New(WinState.Won, "Victory")
 					};
+
 					var lookup = options.ToDictionary(kvp => kvp.First, kvp => kvp.Second);
 
 					ddb.GetText = () => lookup[filter.Outcome];
@@ -594,6 +591,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				SelectFirstVisibleReplay();
 
 			replayList.Layout.AdjustChildren();
+			replayList.ScrollToSelectedItem();
 		}
 
 		void SelectFirstVisibleReplay()
@@ -604,15 +602,21 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		void SelectReplay(ReplayMetadata replay)
 		{
 			selectedReplay = replay;
-			selectedSpawns = (selectedReplay != null)
-				? LobbyUtils.GetSpawnOccupants(selectedReplay.GameInfo.Players, selectedReplay.GameInfo.MapPreview)
-				: new Dictionary<CPos, SpawnOccupant>();
+			map = selectedReplay != null ? selectedReplay.GameInfo.MapPreview : MapCache.UnknownMap;
 
 			if (replay == null)
 				return;
 
 			try
 			{
+				if (map.Status != MapStatus.Available)
+				{
+					if (map.Status == MapStatus.DownloadAvailable)
+						LoadMapPreviewRules(map);
+					else if (Game.Settings.Game.AllowDownloading)
+						modData.MapCache.QueryRemoteMapDetails(services.MapRepository, new[] { map.Uid }, LoadMapPreviewRules);
+				}
+
 				var players = replay.GameInfo.Players
 					.GroupBy(p => p.Team)
 					.OrderBy(g => g.Key);
@@ -665,6 +669,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				Log.Write("debug", "Exception while parsing replay: {0}", e);
 				SelectReplay(null);
 			}
+		}
+
+		void LoadMapPreviewRules(MapPreview map)
+		{
+			new Task(() =>
+			{
+				// Force map rules to be loaded on this background thread
+				map.PreloadRules();
+			}).Start();
 		}
 
 		void WatchReplay()

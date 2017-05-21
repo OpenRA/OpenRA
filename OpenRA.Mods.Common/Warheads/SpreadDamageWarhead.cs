@@ -21,17 +21,21 @@ namespace OpenRA.Mods.Common.Warheads
 		[Desc("Range between falloff steps.")]
 		public readonly WDist Spread = new WDist(43);
 
-		[Desc("Extra search radius beyond maximum spread. Required to ensure damage to actors with large health radius.")]
-		public readonly WDist TargetExtraSearchRadius = new WDist(1536);
-
 		[Desc("Damage percentage at each range step")]
 		public readonly int[] Falloff = { 100, 37, 14, 5, 0 };
 
 		[Desc("Ranges at which each Falloff step is defined. Overrides Spread.")]
 		public WDist[] Range = null;
 
+		[Desc("Extra search radius beyond maximum spread. If set to zero (default), it will automatically scale to the largest health shape.",
+			"Custom overrides should not be necessary under normal circumstances.")]
+		public WDist VictimScanRadius = WDist.Zero;
+
 		public void RulesetLoaded(Ruleset rules, WeaponInfo info)
 		{
+			if (VictimScanRadius == WDist.Zero)
+				VictimScanRadius = Util.MinimumRequiredVictimScanRadius(rules);
+
 			if (Range != null)
 			{
 				if (Range.Length != 1 && Range.Length != Falloff.Length)
@@ -58,7 +62,7 @@ namespace OpenRA.Mods.Common.Warheads
 
 			// This only finds actors where the center is within the search radius,
 			// so we need to search beyond the maximum spread to account for actors with large health radius
-			var hitActors = world.FindActorsInCircle(pos, Range[Range.Length - 1] + TargetExtraSearchRadius);
+			var hitActors = world.FindActorsInCircle(pos, Range[Range.Length - 1] + VictimScanRadius);
 
 			foreach (var victim in hitActors)
 			{

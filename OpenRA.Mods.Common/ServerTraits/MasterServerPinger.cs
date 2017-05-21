@@ -14,30 +14,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Text;
+using BeaconLib;
 using OpenRA.Server;
 using S = OpenRA.Server.Server;
 
 namespace OpenRA.Mods.Common.Server
 {
-	public class MasterServerPinger : ServerTrait, ITick, INotifySyncLobbyInfo, IStartGame, IEndGame
+	public class MasterServerPinger : ServerTrait, ITick, INotifyServerStart, INotifySyncLobbyInfo, IStartGame, IEndGame
 	{
 		// 3 minutes. Server has a 5 minute TTL for games, so give ourselves a bit of leeway.
 		const int MasterPingInterval = 60 * 3;
+		static readonly Beacon LanGameBeacon = new Beacon("OpenRALANGame", (ushort)new Random(DateTime.Now.Millisecond).Next(2048, 60000));
+
 		public int TickTimeout { get { return MasterPingInterval * 10000; } }
-
-		public void Tick(S server)
-		{
-			if ((Game.RunTime - lastPing > MasterPingInterval * 1000) || isInitialPing)
-				PingMasterServer(server);
-			else
-				lock (masterServerMessages)
-					while (masterServerMessages.Count > 0)
-						server.SendMessage(masterServerMessages.Dequeue());
-		}
-
-		public void LobbyInfoSynced(S server) { PingMasterServer(server); }
-		public void GameStarted(S server) { PingMasterServer(server); }
-		public void GameEnded(S server) { PingMasterServer(server); }
 
 		long lastPing = 0;
 		bool isInitialPing = true;
@@ -45,13 +34,40 @@ namespace OpenRA.Mods.Common.Server
 		volatile bool isBusy;
 		Queue<string> masterServerMessages = new Queue<string>();
 
-		public void PingMasterServer(S server)
+		public void Tick(S server)
 		{
-			if (isBusy || !server.Settings.AdvertiseOnline) return;
+			if ((Game.RunTime - lastPing > MasterPingInterval * 1000) || isInitialPing)
+				PublishGame(server);
+			else
+				lock (masterServerMessages)
+					while (masterServerMessages.Count > 0)
+						server.SendMessage(masterServerMessages.Dequeue());
+		}
 
-			lastPing = Game.RunTime;
-			isBusy = true;
+		public void ServerStarted(S server)
+		{
+			if (!server.Ip.Equals(IPAddress.Loopback))
+				LanGameBeacon.Start();
+		}
 
+		public void LobbyInfoSynced(S server)
+		{
+			PublishGame(server);
+		}
+
+		public void GameStarted(S server)
+		{
+			PublishGame(server);
+		}
+
+		public void GameEnded(S server)
+		{
+			LanGameBeacon.Stop();
+			PublishGame(server);
+		}
+
+		void PublishGame(S server)
+		{
 			var mod = server.ModData.Manifest;
 
 			// important to grab these on the main server thread, not in the worker we're about to spawn -- they may be modified
@@ -60,8 +76,20 @@ namespace OpenRA.Mods.Common.Server
 			var numBots = server.LobbyInfo.Clients.Where(c1 => c1.Bot != null).Count();
 			var numSpectators = server.LobbyInfo.Clients.Where(c1 => c1.Bot == null && c1.Slot == null).Count();
 			var numSlots = server.LobbyInfo.Slots.Where(s => !s.Value.Closed).Count() - numBots;
-			var passwordProtected = string.IsNullOrEmpty(server.Settings.Password) ? 0 : 1;
+			var passwordProtected = !string.IsNullOrEmpty(server.Settings.Password);
 			var clients = server.LobbyInfo.Clients.Where(c1 => c1.Bot == null).Select(c => Convert.ToBase64String(Encoding.UTF8.GetBytes(c.Name))).ToArray();
+
+			UpdateMasterServer(server, numPlayers, numSlots, numBots, numSpectators, mod, passwordProtected, clients);
+			UpdateLANGameBeacon(server, numPlayers, numSlots, numBots, numSpectators, mod, passwordProtected);
+		}
+
+		void UpdateMasterServer(S server, int numPlayers, int numSlots, int numBots, int numSpectators, Manifest mod, bool passwordProtected, string[] clients)
+		{
+			if (isBusy || !server.Settings.AdvertiseOnline)
+				return;
+
+			lastPing = Game.RunTime;
+			isBusy = true;
 
 			Action a = () =>
 			{
@@ -84,7 +112,7 @@ namespace OpenRA.Mods.Common.Server
 							server.LobbyInfo.GlobalSettings.Map,
 							numSlots,
 							numSpectators,
-							passwordProtected,
+							passwordProtected ? 1 : 0,
 							string.Join(",", clients)));
 
 						if (isInitialPing)
@@ -115,6 +143,29 @@ namespace OpenRA.Mods.Common.Server
 			};
 
 			a.BeginInvoke(null, null);
+		}
+
+		void UpdateLANGameBeacon(S server, int numPlayers, int numSlots, int numBots, int numSpectators, Manifest mod, bool passwordProtected)
+		{
+			var settings = server.Settings;
+
+			// TODO: Serialize and send client names
+			var lanGameYaml =
+@"Game:
+	Id: {0}
+	Name: {1}
+	Address: {2}:{3}
+	State: {4}
+	Players: {5}
+	MaxPlayers: {6}
+	Bots: {7}
+	Spectators: {8}
+	Map: {9}
+	Mods: {10}@{11}
+	Protected: {12}".F(Platform.SessionGUID, settings.Name, server.Ip, settings.ListenPort, (int)server.State, numPlayers, numSlots, numBots, numSpectators,
+				server.Map.Uid, mod.Id, mod.Metadata.Version, passwordProtected);
+
+			LanGameBeacon.BeaconData = lanGameYaml;
 		}
 	}
 }

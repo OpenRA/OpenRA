@@ -10,12 +10,12 @@
 #endregion
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Net;
 using System.Text;
+using BeaconLib;
 using OpenRA.Network;
 using OpenRA.Server;
 using OpenRA.Widgets;
@@ -39,6 +39,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly Color incompatibleGameColor;
 		readonly ModData modData;
 		readonly WebServices services;
+		readonly Probe lanGameProbe;
 
 		GameServer currentServer;
 		MapPreview currentMap;
@@ -53,6 +54,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		SearchStatus searchStatus = SearchStatus.Fetching;
 		Download currentQuery;
 		Widget serverList;
+		IEnumerable<BeaconLocation> lanGameLocations;
 
 		public string ProgressLabelText()
 		{
@@ -108,6 +110,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			widget.Get<ButtonWidget>("BACK_BUTTON").OnClick = () => { Ui.CloseWindow(); onExit(); };
 			Game.LoadWidget(null, "GLOBALCHAT_PANEL", widget.Get("GLOBALCHAT_ROOT"), new WidgetArgs());
+
+			lanGameLocations = new List<BeaconLocation>();
+			lanGameProbe = new Probe("OpenRALANGame");
+			lanGameProbe.BeaconsUpdated += locations => lanGameLocations = locations;
+			lanGameProbe.Start();
 
 			RefreshServerList();
 
@@ -322,7 +329,29 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					}
 				}
 
-				Game.RunAfterTick(() => RefreshServerListInner(games));
+				var lanGames = new List<GameServer>();
+				foreach (var bl in lanGameLocations)
+				{
+					var game = MiniYaml.FromString(bl.Data)[0].Value;
+					var idNode = game.Nodes.FirstOrDefault(n => n.Key == "Id");
+
+					// Skip beacons created by this instance and replace Id by expected int value
+					if (idNode != null && idNode.Value.Value != Platform.SessionGUID.ToString())
+					{
+						idNode.Value.Value = "-1";
+
+						// Rewrite the server address with the correct IP
+						var addressNode = game.Nodes.FirstOrDefault(n => n.Key == "Address");
+						if (addressNode != null)
+							addressNode.Value.Value = bl.Address.ToString().Split(':')[0] + ":" + addressNode.Value.Value.Split(':')[1];
+
+						lanGames.Add(new GameServer(game));
+					}
+				}
+
+				lanGames = lanGames.GroupBy(gs => gs.Address).Select(g => g.Last()).ToList();
+
+				Game.RunAfterTick(() => RefreshServerListInner(games.Concat(lanGames).ToList()));
 			};
 
 			var queryURL = services.ServerList + "games?version={0}&mod={1}&modversion={2}".F(
@@ -444,7 +473,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						if (location != null)
 						{
 							var font = Game.Renderer.Fonts[location.Font];
-							var cachedServerLocation = GeoIP.LookupCountry(game.Address.Split(':')[0]);
+							var cachedServerLocation = game.Id != -1 ? GeoIP.LookupCountry(game.Address.Split(':')[0]) : "Local Network";
 							var label = WidgetUtils.TruncateText(cachedServerLocation, location.Bounds.Width, font);
 							location.GetText = () => label;
 							location.GetColor = () => canJoin ? location.TextColor : incompatibleGameColor;

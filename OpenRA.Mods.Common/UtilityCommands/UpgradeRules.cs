@@ -635,6 +635,50 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				if (engineVersion < 20170507)
+				{
+					if (node.Key == "Offset" && parent.Key.StartsWith("WithHarvestOverlay", StringComparison.Ordinal))
+						RenameNodeKey(node, "LocalOffset");
+
+					if (node.Key == "LocalOffset")
+					{
+						var orig = FieldLoader.GetValue<WVec[]>(node.Key, node.Value.Value);
+						var scaled = orig.Select(o => FieldSaver.FormatValue(new WVec(
+							(int)Math.Round(Math.Sqrt(2) * o.X),
+							(int)Math.Round(Math.Sqrt(2) * o.Y),
+							(int)Math.Round(Math.Sqrt(2) * o.Z))));
+						node.Value.Value = scaled.JoinWith(", ");
+					}
+				}
+
+				// Refactor Rectangle shape RotateToIsometry bool into WAngle LocalYaw
+				if (engineVersion < 20170509)
+				{
+					if (node.Key.StartsWith("RotateToIsometry", StringComparison.Ordinal))
+					{
+						var value = FieldLoader.GetValue<bool>("RotateToIsometry", node.Value.Value);
+						node.Value.Value = value ? "128" : "0";
+
+						node.Key = "LocalYaw";
+					}
+				}
+
+				// Removed GrantConditionOnDeploy.DeployAnimation and made WithMakeAnimation compatible instead
+				if (engineVersion < 20170510)
+				{
+					var grantCondOnDeploy = node.Value.Nodes.FirstOrDefault(n => n.Key == "GrantConditionOnDeploy");
+					if (grantCondOnDeploy != null)
+					{
+						var deployAnimNode = grantCondOnDeploy.Value.Nodes.FirstOrDefault(n => n.Key == "DeployAnimation");
+						if (deployAnimNode != null)
+						{
+							grantCondOnDeploy.Value.Nodes.Remove(deployAnimNode);
+							Console.WriteLine("DeployAnimation was removed from GrantConditionOnDeploy.");
+							Console.WriteLine("Use WithMakeAnimation instead if a deploy animation is needed.");
+						}
+					}
+				}
+
 				UpgradeActorRules(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 
@@ -697,6 +741,20 @@ namespace OpenRA.Mods.Common.UtilityCommands
 							var oldWDistAccel = FieldLoader.GetValue<string>("Acceleration", accelNode.Value.Value);
 							accelNode.Value.Value = "0, 0, -" + oldWDistAccel;
 						}
+					}
+				}
+
+				// Optimal victim scan radii are now calculated automatically
+				if (engineVersion < 20170505)
+				{
+					var targetExtraSearchRadius = node.Value.Nodes.FirstOrDefault(n => n.Key == "TargetSearchRadius" || n.Key == "TargetExtraSearchRadius");
+					if (targetExtraSearchRadius != null)
+					{
+						Console.WriteLine("Warheads and projectiles now calculate the best victim search radius automatically.");
+						Console.WriteLine("If you absolutely need to override that for whatever reason, use the new fields:");
+						Console.WriteLine("VictimScanRadius for warheads, BlockerScanRadius for projectiles,");
+						Console.WriteLine("BounceBlockerScanRadius for bouncing Bullets and AreaVictimScanRadius for AreaBeams.");
+						node.Value.Nodes.Remove(targetExtraSearchRadius);
 					}
 				}
 

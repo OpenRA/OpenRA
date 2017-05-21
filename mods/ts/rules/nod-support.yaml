@@ -17,7 +17,7 @@ NAWALL:
 	Armor:
 		Type: Concrete
 	BlocksProjectiles:
-		Height: 640
+		Height: 768
 	Crushable:
 		CrushClasses: heavywall
 	LineBuild:
@@ -133,7 +133,7 @@ NAFNCE:
 		Sequence: disabled-y
 	BlocksProjectiles:
 		RequiresCondition: active-posts == 2
-		Height: 640
+		Height: 768
 	DamageMultiplier: # Prevent all normal damage, but still allows direct kills from the post
 		Modifier: 0
 	Explodes:
@@ -175,7 +175,7 @@ NALASR:
 	AttackTurreted:
 	Armament:
 		Weapon: TurretLaserFire
-		LocalOffset: 352, 0, 224
+		LocalOffset: 498,0,317
 	RenderVoxels:
 	WithVoxelTurret:
 	Power:
@@ -211,7 +211,7 @@ NAOBEL:
 		Range: 8c0
 	Armament:
 		Weapon: ObeliskLaserFire
-		LocalOffset: 1400,210,800
+		LocalOffset: 1980,297,1131
 	AttackCharges:
 		ChargeLevel: 65
 		ChargingCondition: charging
@@ -261,7 +261,7 @@ NASAM:
 		Recoils: false
 	Armament:
 		Weapon: RedEye2
-		LocalOffset: 384,0,576
+		LocalOffset: 543,0,815
 	Power:
 		Amount: -30
 	SelectionDecorations:

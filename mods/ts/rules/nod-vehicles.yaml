@@ -24,7 +24,7 @@ BGGY:
 		MaxHeightDelta: 3
 	Armament:
 		Weapon: RaiderCannon
-		LocalOffset: 0,-43,384, 0,43,384
+		LocalOffset: 0,-61,543, 0,61,543
 		MuzzleSequence: muzzle
 		MuzzlePalette: effect-ignore-lighting
 		MuzzleSplitFacings: 8
@@ -62,11 +62,11 @@ BIKE:
 	Armament@PRIMARY:
 		Weapon: BikeMissile
 		RequiresCondition: !rank-elite
-		LocalOffset: -108,-144,360, -108,144,360
+		LocalOffset: -153,-204,509, -153,204,509
 	Armament@ELITE:
 		Weapon: HoverMissile
 		RequiresCondition: rank-elite
-		LocalOffset: -108,-144,360, -108,144,360
+		LocalOffset: -153,-204,509, -153,204,509
 	AttackFrontal:
 		Voice: Attack
 	AutoTarget:
@@ -100,13 +100,13 @@ TTNK:
 		RequiresCondition: undeployed
 	Armament@PRIMARY:
 		Weapon: 90mm
-		LocalOffset: 288,0,256
+		LocalOffset: 407,0,362
 		RequiresCondition: !rank-elite
 		MuzzleSequence: muzzle
 		MuzzlePalette: effect-ignore-lighting
 	Armament@ELITE:
 		Weapon: 120mmx
-		LocalOffset: 288,0,256
+		LocalOffset: 407,0,362
 		RequiresCondition: rank-elite
 		MuzzleSequence: muzzle
 		MuzzlePalette: effect-ignore-lighting
@@ -117,10 +117,10 @@ TTNK:
 		MaxHeightDelta: 3
 	RenderSprites:
 		Image: ttnk
+	WithMakeAnimation:
 	GrantConditionOnDeploy:
 		DeployedCondition: deployed
 		UndeployedCondition: undeployed
-		DeployAnimation: make
 		Facing: 160
 		AllowedTerrainTypes: Clear, Road, DirtRoad, Rough
 		DeploySound: place2.aud
@@ -142,7 +142,7 @@ TTNK:
 		RealignDelay: -1
 	WithVoxelBarrel:
 		Armament: deployed
-		LocalOffset: 128, 0, 256
+		LocalOffset: 181,0,362
 		RequiresCondition: deployed
 	WithVoxelTurret@deployed:
 		Turret: deployed
@@ -155,7 +155,7 @@ TTNK:
 		Name: deployed
 		Turret: deployed
 		Weapon: 90mm
-		LocalOffset: 384,0,256
+		LocalOffset: 543,0,362
 		RequiresCondition: !rank-elite
 		MuzzleSequence: muzzle
 		MuzzlePalette: effect-ignore-lighting
@@ -163,7 +163,7 @@ TTNK:
 		Name: deployed
 		Turret: deployed
 		Weapon: 120mmx
-		LocalOffset: 384,0,256
+		LocalOffset: 543,0,362
 		RequiresCondition: rank-elite
 		MuzzleSequence: muzzle
 		MuzzlePalette: effect-ignore-lighting
@@ -211,10 +211,10 @@ ART2:
 		LightAmbientColor: 0.4, 0.4, 0.4
 	RenderSprites:
 		Image: art2
+	WithMakeAnimation:
 	GrantConditionOnDeploy:
 		DeployedCondition: deployed
 		UndeployedCondition: undeployed
-		DeployAnimation: make
 		Facing: 96
 		AllowedTerrainTypes: Clear, Road, DirtRoad, Rough
 		DeploySound: place2.aud
@@ -233,7 +233,8 @@ ART2:
 		RealignDelay: -1
 	WithVoxelBarrel:
 		Armament: deployed
-		LocalOffset: 0,0,-256
+		LocalOffset: 203,0,0
+		LocalOrientation: 0, 128, 0
 		RequiresCondition: deployed
 	WithVoxelTurret@deployed:
 		Turret: deployed
@@ -246,7 +247,7 @@ ART2:
 		Name: deployed
 		Turret: deployed
 		Weapon: 155mm
-		LocalOffset: 811,0,0
+		LocalOffset: 820,0,1386
 		RequiresCondition: deployed
 		MuzzleSequence: muzzle
 		MuzzlePalette: effect-ignore-lighting
@@ -456,7 +457,7 @@ STNK:
 		ValidDamageStates: Critical
 	Armament:
 		Weapon: Dragon
-		LocalOffset: 213,43,298, 213,-43,298
+		LocalOffset: 301,61,421, 301,-61,421
 	AttackFrontal:
 		Voice: Attack
 	AutoTarget:

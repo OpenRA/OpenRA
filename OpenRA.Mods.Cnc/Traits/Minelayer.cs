@@ -103,15 +103,14 @@ namespace OpenRA.Mods.Cnc.Traits
 			var mins = new CPos(Math.Min(start.X, end.X), Math.Min(start.Y, end.Y));
 			var maxs = new CPos(Math.Max(start.X, end.X), Math.Max(start.Y, end.Y));
 
-			/* TODO: proper endcaps, if anyone cares (which won't happen unless depth is large) */
-
+			// TODO: proper endcaps, if anyone cares (which won't happen unless depth is large)
 			var p = end - start;
 			var q = new float2(p.Y, -p.X);
 			q = (start != end) ? (1 / q.Length) * q : new float2(1, 0);
 			var c = -float2.Dot(q, new float2(start.X, start.Y));
 
-			/* return all points such that |ax + by + c| < depth */
-
+			// return all points such that |ax + by + c| < depth
+			// HACK: This will return the wrong results for isometric cells
 			for (var i = mins.X; i <= maxs.X; i++)
 				for (var j = mins.Y; j <= maxs.Y; j++)
 					if (Math.Abs(q.X * i + q.Y * j + c) * 1024 < depth.Length)

@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Orders;
@@ -42,9 +43,6 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Cursor to display when unable to (un)deploy the actor.")]
 		public readonly string DeployBlockedCursor = "deploy-blocked";
 
-		[SequenceReference, Desc("Animation to play for deploying/undeploying.")]
-		public readonly string DeployAnimation = null;
-
 		[Desc("Facing that the actor must face before deploying. Set to -1 to deploy regardless of facing.")]
 		public readonly int Facing = -1;
 
@@ -62,16 +60,16 @@ namespace OpenRA.Mods.Common.Traits
 
 	public enum DeployState { Undeployed, Deploying, Deployed, Undeploying }
 
-	public class GrantConditionOnDeploy : IResolveOrder, IIssueOrder, INotifyCreated
+	public class GrantConditionOnDeploy : IResolveOrder, IIssueOrder, INotifyCreated, INotifyDeployComplete
 	{
 		readonly Actor self;
 		readonly GrantConditionOnDeployInfo info;
 		readonly bool checkTerrainType;
 		readonly bool canTurn;
-		readonly Lazy<WithSpriteBody> body;
 
 		DeployState deployState;
 		ConditionManager conditionManager;
+		INotifyDeployTriggered[] notify;
 		int deployedToken = ConditionManager.InvalidConditionToken;
 		int undeployedToken = ConditionManager.InvalidConditionToken;
 
@@ -81,7 +79,6 @@ namespace OpenRA.Mods.Common.Traits
 			this.info = info;
 			checkTerrainType = info.AllowedTerrainTypes.Count > 0;
 			canTurn = self.Info.HasTraitInfo<IFacingInfo>();
-			body = Exts.Lazy(self.TraitOrDefault<WithSpriteBody>);
 			if (init.Contains<DeployStateInit>())
 				deployState = init.Get<DeployStateInit, DeployState>();
 		}
@@ -89,6 +86,7 @@ namespace OpenRA.Mods.Common.Traits
 		public void Created(Actor self)
 		{
 			conditionManager = self.TraitOrDefault<ConditionManager>();
+			notify = self.TraitsImplementing<INotifyDeployTriggered>().ToArray();
 
 			switch (deployState)
 			{
@@ -192,6 +190,16 @@ namespace OpenRA.Mods.Common.Traits
 			return ramp == 0;
 		}
 
+		void INotifyDeployComplete.FinishedDeploy(Actor self)
+		{
+			OnDeployCompleted();
+		}
+
+		void INotifyDeployComplete.FinishedUndeploy(Actor self)
+		{
+			OnUndeployCompleted();
+		}
+
 		/// <summary>Play deploy sound and animation.</summary>
 		void Deploy() { Deploy(false); }
 		void Deploy(bool init)
@@ -212,10 +220,11 @@ namespace OpenRA.Mods.Common.Traits
 
 			// If there is no animation to play just grant the condition that is used while deployed.
 			// Alternatively, play the deploy animation and then grant the condition.
-			if (string.IsNullOrEmpty(info.DeployAnimation) || body.Value == null)
+			if (!notify.Any())
 				OnDeployCompleted();
 			else
-				body.Value.PlayCustomAnimation(self, info.DeployAnimation, OnDeployCompleted);
+				foreach (var n in notify)
+					n.Deploy(self);
 		}
 
 		/// <summary>Play undeploy sound and animation and after that revoke the condition.</summary>
@@ -234,10 +243,11 @@ namespace OpenRA.Mods.Common.Traits
 
 			// If there is no animation to play just grant the condition that is used while undeployed.
 			// Alternatively, play the undeploy animation and then grant the condition.
-			if (string.IsNullOrEmpty(info.DeployAnimation) || body.Value == null)
+			if (!notify.Any())
 				OnUndeployCompleted();
 			else
-				body.Value.PlayCustomAnimationBackwards(self, info.DeployAnimation, OnUndeployCompleted);
+				foreach (var n in notify)
+					n.Undeploy(self);
 		}
 
 		void OnDeployStarted()

@@ -42,12 +42,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			inputBox.IsDisabled = () => Game.GlobalChat.ConnectionStatus != ChatConnectionStatus.Joined;
 			inputBox.OnEnterKey = EnterPressed;
 
-			// Set a random default nick
-			if (Game.Settings.Chat.Nickname == new ChatSettings().Nickname)
-				Game.Settings.Chat.Nickname += Game.CosmeticRandom.Next(100, 999);
-
+			var nickName = Game.GlobalChat.SanitizedName(Game.Settings.Player.Name);
 			var nicknameBox = widget.Get<TextFieldWidget>("NICKNAME_TEXTFIELD");
-			nicknameBox.Text = Game.GlobalChat.SanitizedName(Game.Settings.Chat.Nickname);
+			nicknameBox.Text = nickName;
 			nicknameBox.OnTextEdited = () =>
 			{
 				nicknameBox.Text = Game.GlobalChat.SanitizedName(nicknameBox.Text);
@@ -65,20 +62,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var connectButton = connectPanel.Get<ButtonWidget>("CONNECT_BUTTON");
 			connectButton.IsDisabled = () => !Game.GlobalChat.IsValidNickname(nicknameBox.Text);
-			connectButton.OnClick = () =>
-			{
-				Game.Settings.Chat.Nickname = nicknameBox.Text;
-				Game.Settings.Save();
-				Game.GlobalChat.Connect();
-			};
+			connectButton.OnClick = () => Game.GlobalChat.Connect(nicknameBox.Text);
 
 			var mainPanel = widget.Get("GLOBALCHAT_MAIN_PANEL");
 			mainPanel.IsVisible = () => Game.GlobalChat.ConnectionStatus != ChatConnectionStatus.Disconnected;
 
 			mainPanel.Get<LabelWidget>("CHANNEL_TOPIC").GetText = () => Game.GlobalChat.Topic;
 
-			if (Game.Settings.Chat.ConnectAutomatically && Game.GlobalChat.IsValidNickname(Game.Settings.Chat.Nickname))
-				Game.GlobalChat.Connect();
+			if (Game.Settings.Chat.ConnectAutomatically)
+				Game.GlobalChat.Connect(nickName);
 		}
 
 		Widget MakeHistoryWidget(object o)

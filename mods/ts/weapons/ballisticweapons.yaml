@@ -108,13 +108,32 @@ RPGTower:
 		Explosions: large_explosion
 		ImpactSounds: expnew06.aud
 
+Jugg90mm:
+	Inherits: ^ArtilleryWeapon
+	ReloadDelay: 150
+	Range: 18c0
+	MinRange: 5c0
+	Burst: 3
+	BurstDelay: 3
+	-Report:
+	StartBurstReport: jugger1.aud
+	Projectile: Bullet
+		Speed: 384
+		LaunchAngle: 165
+		Inaccuracy: 2c0
+	Warhead@1Dam: SpreadDamage
+		Damage: 75
+	Warhead@2Eff: CreateEffect
+		Explosions: small_explosion
+		ImpactSounds: expnew13.aud
+
 Grenade:
 	Inherits: ^ArtilleryWeapon
 	ReloadDelay: 60
 	Range: 4c512
 	-Report:
 	Projectile: Bullet
-		Speed: 160
+		Speed: 226
 		Blockable: true
 		Shadow: true
 		LaunchAngle: 60

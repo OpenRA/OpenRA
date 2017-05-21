@@ -254,7 +254,6 @@
     <Compile Include="Graphics\RgbaColorRenderer.cs" />
     <Compile Include="Traits\Player\IndexedPlayerPalette.cs" />
     <Compile Include="Traits\ActivityUtils.cs" />
-    <Compile Include="FileSystem\ZipFolder.cs" />
     <Compile Include="Primitives\float3.cs" />
     <Compile Include="InstalledMods.cs" />
     <Compile Include="CryptoUtil.cs" />
@@ -262,7 +261,6 @@
     <Compile Include="ExternalMods.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FileSystem\D2kSoundResources.cs" />
     <Compile Include="FileSystem\Folder.cs" />
     <Compile Include="FileSystem\InstallShieldPackage.cs" />
     <Compile Include="FileSystem\MixFile.cs" />
@@ -316,7 +314,6 @@
     <Compile Include="Primitives\TypeDictionary.cs" />
     <Compile Include="Map\ActorInitializer.cs" />
     <Compile Include="Map\ActorReference.cs" />
-    <Compile Include="Support\Evaluator.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Graphics\PlayerColorRemap.cs" />
     <Compile Include="Graphics\Palette.cs" />

@@ -123,7 +123,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					directoryDropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 210, writableDirectories, setupItem);
 			}
 
-			var mapIsUnpacked = map.Package != null && (map.Package is Folder || map.Package is ZipFolder);
+			var mapIsUnpacked = map.Package != null && map.Package is Folder;
 
 			var filename = widget.Get<TextFieldWidget>("FILENAME");
 			filename.Text = map.Package == null ? "" : mapIsUnpacked ? Path.GetFileName(map.Package.Name) : Path.GetFileNameWithoutExtension(map.Package.Name);
@@ -185,7 +185,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					{
 						selectedDirectory.Folder.Delete(combinedPath);
 						if (fileType == MapFileType.OraMap)
-							package = ZipFile.Create(combinedPath, selectedDirectory.Folder);
+							package = ZipFileLoader.Create(combinedPath, selectedDirectory.Folder);
 						else
 							package = new Folder(combinedPath);
 					}

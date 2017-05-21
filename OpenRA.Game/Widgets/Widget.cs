@@ -196,10 +196,10 @@ namespace OpenRA.Widgets
 
 		// Info defined in YAML
 		public string Id = null;
-		public string X = "0";
-		public string Y = "0";
-		public string Width = "0";
-		public string Height = "0";
+		public IntegerExpression X;
+		public IntegerExpression Y;
+		public IntegerExpression Width;
+		public IntegerExpression Height;
 		public string[] Logic = { };
 		public ChromeLogic[] LogicObjects { get; private set; }
 		public bool Visible = true;
@@ -275,16 +275,17 @@ namespace OpenRA.Widgets
 			substitutions.Add("PARENT_LEFT", parentBounds.Left);
 			substitutions.Add("PARENT_TOP", parentBounds.Top);
 			substitutions.Add("PARENT_BOTTOM", parentBounds.Height);
-			var width = Evaluator.Evaluate(Width, substitutions);
-			var height = Evaluator.Evaluate(Height, substitutions);
+
+			var readOnlySubstitutions = new ReadOnlyDictionary<string, int>(substitutions);
+			var width = Width != null ? Width.Evaluate(readOnlySubstitutions) : 0;
+			var height = Height != null ? Height.Evaluate(readOnlySubstitutions) : 0;
 
 			substitutions.Add("WIDTH", width);
 			substitutions.Add("HEIGHT", height);
 
-			Bounds = new Rectangle(Evaluator.Evaluate(X, substitutions),
-								   Evaluator.Evaluate(Y, substitutions),
-								   width,
-								   height);
+			var x = X != null ? X.Evaluate(readOnlySubstitutions) : 0;
+			var y = Y != null ? Y.Evaluate(readOnlySubstitutions) : 0;
+			Bounds = new Rectangle(x, y, width, height);
 		}
 
 		public void PostInit(WidgetArgs args)

@@ -10,13 +10,14 @@
 #endregion
 
 using System.Collections.Generic;
+using OpenRA.GameRules;
 using OpenRA.Mods.Common.Effects;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Warheads
 {
-	public class CreateEffectWarhead : Warhead
+	public class CreateEffectWarhead : Warhead, IRulesetLoaded<WeaponInfo>
 	{
 		[Desc("List of explosion sequences that can be used.")]
 		[SequenceReference("Image")] public readonly string[] Explosions = new string[0];
@@ -30,9 +31,6 @@ namespace OpenRA.Mods.Common.Warheads
 		[Desc("Remap explosion effect to player color, if art supports it.")]
 		public readonly bool UsePlayerPalette = false;
 
-		[Desc("Search radius around impact for 'direct hit' check.")]
-		public readonly WDist TargetSearchRadius = new WDist(2048);
-
 		[Desc("List of sounds that can be played on impact.")]
 		public readonly string[] ImpactSounds = new string[0];
 
@@ -41,6 +39,16 @@ namespace OpenRA.Mods.Common.Warheads
 
 		[Desc("What impact types should this effect NOT apply to.", "Overrides ValidImpactTypes.")]
 		public readonly ImpactType InvalidImpactTypes = ImpactType.None;
+
+		[Desc("Scan radius for victims around impact. If set to zero (default), it will automatically scale to the largest health shape.",
+			"Custom overrides should not be necessary under normal circumstances.")]
+		public WDist VictimScanRadius = WDist.Zero;
+
+		public void RulesetLoaded(Ruleset rules, WeaponInfo wi)
+		{
+			if (VictimScanRadius == WDist.Zero)
+				VictimScanRadius = Util.MinimumRequiredVictimScanRadius(rules);
+		}
 
 		public ImpactType GetImpactType(World world, CPos cell, WPos pos, Actor firedBy)
 		{
@@ -75,7 +83,7 @@ namespace OpenRA.Mods.Common.Warheads
 
 		public bool GetDirectHit(World world, CPos cell, WPos pos, Actor firedBy, bool checkTargetType = false)
 		{
-			foreach (var victim in world.FindActorsInCircle(pos, TargetSearchRadius))
+			foreach (var victim in world.FindActorsInCircle(pos, VictimScanRadius))
 			{
 				if (checkTargetType && !IsValidAgainst(victim, firedBy))
 					continue;

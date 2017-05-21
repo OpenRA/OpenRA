@@ -14,7 +14,7 @@ WEEDGUY:
 		CrushSound: squishy2.aud
 	Armament:
 		Weapon: FireballLauncher
-		LocalOffset: 224,0,320
+		LocalOffset: 317,0,453
 	TakeCover:
 		ProneOffset: 128,0,-320
 	AttackFrontal:

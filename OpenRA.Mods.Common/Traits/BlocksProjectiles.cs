@@ -14,14 +14,8 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	[RequireExplicitImplementation]
-	public interface IBlocksProjectiles
-	{
-		WDist BlockingHeight { get; }
-	}
-
 	[Desc("This actor blocks bullets and missiles with 'Blockable' property.")]
-	public class BlocksProjectilesInfo : ConditionalTraitInfo
+	public class BlocksProjectilesInfo : ConditionalTraitInfo, IBlocksProjectilesInfo
 	{
 		public readonly WDist Height = WDist.FromCells(1);
 
