@@ -633,9 +633,6 @@ wall:
 		TerrainTypes: Rock, Concrete
 	Health:
 		HP: 2000
-		Shape: Rectangle
-			TopLeft: -512, -512
-			BottomRight: 512, 512
 	Armor:
 		Type: wall
 	RevealsShroud:
@@ -663,6 +660,10 @@ wall:
 		Weapons: Debris2, Debris3
 		Pieces: 1, 1
 		Range: 1c512, 2c768
+	HitShape:
+		Type: Rectangle
+			TopLeft: -512, -512
+			BottomRight: 512, 512
 
 medium_gun_turret:
 	Inherits: ^Defense

@@ -90,6 +90,7 @@ CAMERA.small:
 		OccupiesSpace: false
 	Health:
 		HP: 1000
+	HitShape:
 	RevealsShroud:
 		Range: 6c0
 		Type: CenterPosition

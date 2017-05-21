@@ -173,6 +173,7 @@
 		VoiceSet: VehicleVoice
 	BodyOrientation:
 		UseClassicFacingFudge: True
+	HitShape:
 
 ^Tank:
 	Inherits: ^Vehicle
@@ -234,14 +235,13 @@
 		VoiceSet: VehicleVoice
 	BodyOrientation:
 		UseClassicFacingFudge: True
+	HitShape:
 
 ^Infantry:
 	Inherits@1: ^ExistsInWorld
 	Inherits@3: ^SpriteActor
 	Huntable:
 	Health:
-		Shape: Circle
-			Radius: 128
 	Armor:
 		Type: None
 	RevealsShroud:
@@ -334,6 +334,9 @@
 		DeathTypes: TiberiumDeath
 	Voiced:
 		VoiceSet: GenericVoice
+	HitShape:
+		Type: Circle
+			Radius: 128
 
 ^Soldier:
 	Inherits: ^Infantry
@@ -391,8 +394,6 @@
 	Huntable:
 	Health:
 		HP: 1000
-		Shape: Circle
-			Radius: 128
 	Armor:
 		Type: Wood
 	Buildable:
@@ -441,6 +442,9 @@
 	DeathSounds:
 	Voiced:
 		VoiceSet: DinoVoice
+	HitShape:
+		Type: Circle
+			Radius: 128
 
 ^Viceroid:
 	Inherits@1: ^ExistsInWorld
@@ -448,8 +452,6 @@
 	Huntable:
 	Health:
 		HP: 300
-		Shape: Circle
-			Radius: 427
 	Armor:
 		Type: Wood
 	RevealsShroud:
@@ -500,6 +502,9 @@
 		Terrain: Tiberium, BlueTiberium
 	Voiced:
 		VoiceSet: DinoVoice
+	HitShape:
+		Type: Circle
+			Radius: 427
 
 ^Plane:
 	Inherits@1: ^ExistsInWorld
@@ -548,6 +553,7 @@
 		GenericName: Ship
 	Voiced:
 		VoiceSet: VehicleVoice
+	HitShape:
 
 ^Building:
 	Inherits@1: ^ExistsInWorld
@@ -710,7 +716,8 @@
 	ScriptTriggers:
 	Health:
 		HP: 100
-		Shape: Rectangle
+	HitShape:
+		Type: Rectangle
 			TopLeft: -512, -512
 			BottomRight: 512, 512
 
@@ -752,6 +759,7 @@
 	AutoTargetIgnore:
 	HiddenUnderShroud:
 	ScriptTriggers:
+	HitShape:
 
 ^TreeHusk:
 	Inherits@1: ^SpriteActor
@@ -812,6 +820,7 @@
 		Type: CenterPosition
 	AutoTargetIgnore:
 	WithFacingSpriteBody:
+	HitShape:
 
 ^Husk:
 	Inherits: ^CommonHuskDefaults
@@ -869,6 +878,7 @@
 		DamagedSounds: xplos.aud
 		DestroyedSounds: xplobig4.aud
 	ScriptTriggers:
+	HitShape:
 
 ^Crate:
 	Inherits@1: ^SpriteActor
