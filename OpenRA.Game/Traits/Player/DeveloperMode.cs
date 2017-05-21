@@ -47,18 +47,6 @@ namespace OpenRA.Traits
 		[Desc("Enable the path debug overlay by default.")]
 		public bool PathDebug;
 
-		[Desc("Enable the combat geometry overlay by default.")]
-		public bool ShowCombatGeometry;
-
-		[Desc("Enable the debug geometry overlay by default.")]
-		public bool ShowDebugGeometry;
-
-		[Desc("Enable the depth buffer overlay by default.")]
-		public bool ShowDepthPreview;
-
-		[Desc("Enable the actor tags overlay by default.")]
-		public bool ShowActorTags;
-
 		IEnumerable<LobbyOption> ILobbyOptions.LobbyOptions(Ruleset rules)
 		{
 			yield return new LobbyBooleanOption("cheats", "Debug Menu", Enabled, Locked);
@@ -88,12 +76,6 @@ namespace OpenRA.Traits
 		public bool UnlimitedPower { get { return Enabled && unlimitedPower; } }
 		public bool BuildAnywhere { get { return Enabled && buildAnywhere; } }
 
-		// Client side only
-		public bool ShowCombatGeometry;
-		public bool ShowDebugGeometry;
-		public bool ShowDepthPreview;
-		public bool ShowActorTags;
-
 		bool enableAll;
 
 		public DeveloperMode(DeveloperModeInfo info)
@@ -105,11 +87,6 @@ namespace OpenRA.Traits
 			pathDebug = info.PathDebug;
 			unlimitedPower = info.UnlimitedPower;
 			buildAnywhere = info.BuildAnywhere;
-
-			ShowCombatGeometry = info.ShowCombatGeometry;
-			ShowDebugGeometry = info.ShowDebugGeometry;
-			ShowDepthPreview = info.ShowDepthPreview;
-			ShowActorTags = info.ShowActorTags;
 		}
 
 		void INotifyCreated.Created(Actor self)

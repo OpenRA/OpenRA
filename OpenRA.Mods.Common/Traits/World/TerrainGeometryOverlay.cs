@@ -23,7 +23,7 @@ namespace OpenRA.Mods.Common.Traits
 	public class TerrainGeometryOverlay : IRenderAboveWorld, IWorldLoaded, IChatCommand
 	{
 		const string CommandName = "terrainoverlay";
-		const string CommandDesc = "Toggles the terrain geometry overlay";
+		const string CommandDesc = "toggles the terrain geometry overlay.";
 
 		public bool Enabled;
 

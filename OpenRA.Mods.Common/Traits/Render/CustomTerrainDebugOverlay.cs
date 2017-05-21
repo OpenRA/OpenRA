@@ -29,7 +29,7 @@ namespace OpenRA.Mods.Common.Traits
 	class CustomTerrainDebugOverlay : IWorldLoaded, IChatCommand, IRender
 	{
 		const string CommandName = "debugcustomterrain";
-		const string CommandDesc = "Toggles the custom terrain debug overlay.";
+		const string CommandDesc = "toggles the custom terrain debug overlay.";
 
 		public bool Enabled;
 
