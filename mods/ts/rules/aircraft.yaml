@@ -365,3 +365,4 @@ HUNTER:
 	SelectionDecorations:
 		Palette: pips
 	ActorLostNotification:
+	HitShape:

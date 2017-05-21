@@ -20,10 +20,11 @@ spicebloom.spawnpoint:
 		Actor: spicebloom
 	Health:
 		HP: 9999
-		Shape: Circle
-			Radius: 1
 	Immobile:
 		OccupiesSpace: false
+	HitShape:
+		Type: Circle
+			Radius: 1
 
 spicebloom:
 	HiddenUnderShroud:
@@ -48,8 +49,6 @@ spicebloom:
 	Immobile:
 	Health:
 		HP: 1
-		Shape: Circle
-			Radius: 512
 	Targetable:
 		TargetTypes: Ground
 		RequiresForceFire: true
@@ -57,6 +56,9 @@ spicebloom:
 		Type: none
 	SpawnActorOnDeath:
 		Actor: spicebloom.spawnpoint
+	HitShape:
+		Type: Circle
+			Radius: 512
 
 sandworm:
 	Inherits@1: ^SpriteActor
@@ -64,7 +66,9 @@ sandworm:
 		Name: Sandworm
 	Health:
 		HP: 9990
-		Radius: 256
+	HitShape:
+		Type: Circle
+			Radius: 256
 	Armor:
 		Type: heavy
 	Mobile:

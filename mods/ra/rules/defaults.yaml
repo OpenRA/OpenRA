@@ -209,6 +209,7 @@
 		RequiresCondition: parachute
 	BodyOrientation:
 		UseClassicFacingFudge: True
+	HitShape:
 
 ^Tank:
 	Inherits: ^Vehicle
@@ -237,8 +238,6 @@
 	DrawLineToTarget:
 	Health:
 		HP: 25
-		Shape: Circle
-			Radius: 128
 	Armor:
 		Type: None
 	RevealsShroud:
@@ -324,6 +323,9 @@
 		OpeningSequence: open
 		Offset: 0,0,427
 		RequiresCondition: parachute
+	HitShape:
+		Type: Circle
+			Radius: 128
 
 ^Soldier:
 	Inherits: ^Infantry
@@ -412,6 +414,7 @@
 	Voiced:
 		VoiceSet: VehicleVoice
 	WithFacingSpriteBody:
+	HitShape:
 
 ^NeutralPlane:
 	Inherits@1: ^ExistsInWorld
@@ -463,6 +466,7 @@
 	MustBeDestroyed:
 	Voiced:
 		VoiceSet: GenericVoice
+	HitShape:
 
 ^Plane:
 	Inherits: ^NeutralPlane
@@ -592,7 +596,8 @@
 	FrozenUnderFogUpdatedByGps:
 	Health:
 		HP: 100
-		Shape: Rectangle
+	HitShape:
+		Type: Rectangle
 			TopLeft: -512, -512
 			BottomRight: 512, 512
 
@@ -618,6 +623,7 @@
 		OpeningSound: cashturn.aud
 		ClosingSound: cashturn.aud
 		TerrainTypes: Clear, Road
+	HitShape:
 
 ^TechBuilding:
 	Inherits: ^BasicBuilding
@@ -630,6 +636,7 @@
 		Name: Civilian Building
 		GenericVisibility: None
 	FrozenUnderFog:
+	HitShape:
 
 ^FakeBuilding:
 	Inherits: ^Building
@@ -649,6 +656,7 @@
 		ZOffset: 256
 	-EmitInfantryOnSell:
 	-MustBeDestroyed:
+	HitShape:
 
 ^InfiltratableFake:
 	Targetable:
@@ -678,6 +686,7 @@
 		Type: Light
 	Targetable:
 		TargetTypes: Ground, DetonateAttack
+	HitShape:
 
 ^CivBuilding:
 	Inherits: ^TechBuilding
@@ -748,6 +757,7 @@
 	ScriptTriggers:
 	EditorTilesetFilter:
 		ExcludeTilesets: INTERIOR
+	HitShape:
 
 ^TreeHusk:
 	Inherits@1: ^SpriteActor
@@ -773,6 +783,7 @@
 	AutoTargetIgnore:
 	ScriptTriggers:
 	WithFacingSpriteBody:
+	HitShape:
 
 ^Husk:
 	Inherits: ^BasicHusk
@@ -842,6 +853,7 @@
 		Type: Concrete
 	AutoTargetIgnore:
 	ScriptTriggers:
+	HitShape:
 
 ^Rock:
 	Inherits@1: ^SpriteActor
@@ -926,6 +938,7 @@
 		TargetTypes: Ground
 	Immobile:
 		OccupiesSpace: true
+	HitShape:
 
 ^DisabledOverlay:
 	WithColoredOverlay@IDISABLE:

@@ -6,8 +6,6 @@ DOGGIE:
 		Name: Tiberian Fiend
 	Health:
 		HP: 250
-		Shape: Circle
-			Radius: 213
 	Selectable:
 		Bounds: 24,24
 	Valued:
@@ -35,6 +33,9 @@ DOGGIE:
 		DeathSequence: die-
 		DeathTypes:
 			FireDeath: burning
+	HitShape:
+		Type: Circle
+			Radius: 213
 
 VISC_SML:
 	Inherits: ^Visceroid
@@ -85,9 +86,6 @@ JFISH:
 		Name: Tiberium Floater
 	Health:
 		HP: 500
-		Shape: Circle
-			Radius: 363
-			VerticalTopOffset: 768
 	RevealsShroud:
 		Range: 5c0
 	Mobile:
@@ -119,3 +117,7 @@ JFISH:
 		SoundFiles: floatmov.aud, flotmov2.aud, flotmov3.aud, flotmov4.aud
 		Delay: 150, 450
 		Interval: 300, 800
+	HitShape:
+		Type: Circle
+			Radius: 363
+			VerticalTopOffset: 768
