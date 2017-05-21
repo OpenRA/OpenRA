@@ -10,7 +10,6 @@
 #endregion
 
 using System;
-using OpenRA.Graphics;
 using OpenRA.Network;
 using OpenRA.Widgets;
 
@@ -103,6 +102,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				Ui.CloseWindow();
 				onRetry(password);
 			};
+
+			if (abortButton.Visible && !retryButton.Visible)
+				abortButton.Bounds.X = abortButton.Parent.Bounds.Width / 2 - abortButton.Bounds.Width / 2;
 
 			widget.Get<LabelWidget>("CONNECTING_DESC").GetText = () =>
 				"Could not connect to {0}:{1}".F(orderManager.Host, orderManager.Port);
