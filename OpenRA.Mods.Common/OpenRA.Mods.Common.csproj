@@ -296,6 +296,7 @@
     <Compile Include="Traits\Burns.cs" />
     <Compile Include="Traits\ChangesTerrain.cs" />
     <Compile Include="Traits\Health.cs" />
+    <Compile Include="Traits\HitShape.cs" />
     <Compile Include="Traits\PowerTooltip.cs" />
     <Compile Include="Traits\Render\VeteranProductionIconOverlay.cs" />
     <Compile Include="Traits\Capturable.cs" />

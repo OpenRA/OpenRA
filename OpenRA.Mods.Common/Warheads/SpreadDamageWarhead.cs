@@ -10,6 +10,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Linq;
 using OpenRA.GameRules;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
@@ -66,11 +67,17 @@ namespace OpenRA.Mods.Common.Warheads
 
 			foreach (var victim in hitActors)
 			{
+				// Cannot be damaged without a Health trait
 				var healthInfo = victim.Info.TraitInfoOrDefault<HealthInfo>();
 				if (healthInfo == null)
 					continue;
 
-				var distance = healthInfo.Shape.DistanceFromEdge(pos, victim);
+				// Cannot be damaged without an active HitShape
+				var activeShapes = victim.TraitsImplementing<HitShape>().Where(Exts.IsTraitEnabled);
+				if (!activeShapes.Any())
+					continue;
+
+				var distance = activeShapes.Min(t => t.Info.Type.DistanceFromEdge(pos, victim));
 				var localModifiers = damageModifiers.Append(GetDamageFalloff(distance.Length));
 
 				DoImpact(victim, firedBy, localModifiers);

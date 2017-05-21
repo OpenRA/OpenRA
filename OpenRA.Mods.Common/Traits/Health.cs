@@ -10,7 +10,6 @@
 #endregion
 
 using System.Linq;
-using OpenRA.Mods.Common.HitShapes;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -21,36 +20,6 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int HP = 0;
 		[Desc("Trigger interfaces such as AnnounceOnKill?")]
 		public readonly bool NotifyAppliedDamage = true;
-
-		[FieldLoader.LoadUsing("LoadShape")]
-		public readonly IHitShape Shape;
-
-		static object LoadShape(MiniYaml yaml)
-		{
-			IHitShape ret;
-
-			var shapeNode = yaml.Nodes.Find(n => n.Key == "Shape");
-			var shape = shapeNode != null ? shapeNode.Value.Value : string.Empty;
-
-			if (!string.IsNullOrEmpty(shape))
-			{
-				ret = Game.CreateObject<IHitShape>(shape + "Shape");
-
-				try
-				{
-					FieldLoader.Load(ret, shapeNode.Value);
-				}
-				catch (YamlException e)
-				{
-					throw new YamlException("HitShape {0}: {1}".F(shape, e.Message));
-				}
-			}
-			else
-				ret = new CircleShape();
-
-			ret.Initialize();
-			return ret;
-		}
 
 		public virtual object Create(ActorInitializer init) { return new Health(init, this); }
 	}
