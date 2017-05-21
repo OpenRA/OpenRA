@@ -76,6 +76,7 @@
     <Compile Include="Orders\ShootableBallisticMissileMoveOrderTargeter.cs" />
     <Compile Include="Projectiles\RadBeam.cs" />
     <Compile Include="Traits\AIDeployHelper.cs" />
+    <Compile Include="Traits\PaletteEffects\IronCurtainPaletteEffect.cs" />
     <Compile Include="Traits\SpawnedExplodes.cs" />
     <Compile Include="Traits\ShootableBallisticMissile.cs" />
     <Compile Include="Traits\Air\BlimpFallsToEarth.cs" />
@@ -101,7 +102,6 @@
     <Folder Include="Player\" />
     <Folder Include="SpriteLoaders\" />
     <Folder Include="Traits\Buildings\" />
-    <Folder Include="Traits\Render\" />
     <Folder Include="Traits\SupportPowers\" />
     <Folder Include="Traits\Widgets\" />
     <Folder Include="UtilityCommands\" />
