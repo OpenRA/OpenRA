@@ -50,9 +50,20 @@ namespace OpenRA.Mods.Common.Activities
 			return ActivityUtils.SequenceActivities(path, this);
 		}
 
-		// Follow, is as in follow and attack (chase) so it is actually an attack activity.
-		// (What came to my mind first was follow and guard activity)
-		public override Color TargetLineColor { get { return Color.Red; } }
+		public override Color TargetLineColor
+		{
+			get
+			{
+				// Follow-guard case.
+				if (NextActivity == null)
+					return Color.Yellow;
+
+				// By default, return red color for attack.
+				// Attack activities are declared as classes INSIDE another class and
+				// harder to distinguish check with "is" operator.
+				return Color.Red;
+			}
+		}
 
 		public override IEnumerable<Target> GetTargets(Actor self)
 		{
