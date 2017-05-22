@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Text.RegularExpressions;
 using BeaconLib;
 using OpenRA.Server;
 using S = OpenRA.Server.Server;
@@ -25,6 +26,11 @@ namespace OpenRA.Mods.Common.Server
 		// 3 minutes. Server has a 5 minute TTL for games, so give ourselves a bit of leeway.
 		const int MasterPingInterval = 60 * 3;
 		static readonly Beacon LanGameBeacon = new Beacon("OpenRALANGame", (ushort)new Random(DateTime.Now.Millisecond).Next(2048, 60000));
+		static readonly Dictionary<int, string> MasterServerErrors = new Dictionary<int, string>()
+		{
+			{ 1, "Server ports are not forwarded." },
+			{ 2, "Server contains blacklisted word in server name." }
+		};
 
 		public int TickTimeout { get { return MasterPingInterval * 10000; } }
 
@@ -118,23 +124,34 @@ namespace OpenRA.Mods.Common.Server
 						if (isInitialPing)
 						{
 							var masterResponseText = Encoding.UTF8.GetString(masterResponse);
+							Log.Write("server", "Master server: " + masterResponseText);
+
+							var errorCode = 0;
+							var errorMessage = string.Empty;
+
+							if (masterResponseText.Length > 0)
+							{
+								var regex = new Regex(@"^\[(?<code>\d+)\](?<message>.*)");
+								var match = regex.Match(masterResponseText);
+								errorMessage = match.Success && int.TryParse(match.Groups["code"].Value, out errorCode) ?
+									match.Groups["message"].Value.Trim() : "Failed to parse error message";
+							}
+
 							isInitialPing = false;
 							lock (masterServerMessages)
 							{
 								masterServerMessages.Enqueue("Master server communication established.");
-								if (masterResponseText.Contains("[001]"))  // Server does not respond code
+								if (errorCode != 0)
 								{
-									Log.Write("server", masterResponseText);
-									masterServerMessages.Enqueue("Warning: Server ports are not forwarded.");
+									// Hardcoded error messages take precedence over the server-provided messages
+									string message;
+									if (!MasterServerErrors.TryGetValue(errorCode, out message))
+										message = errorMessage;
+
+									masterServerMessages.Enqueue("Warning: " + message);
 									masterServerMessages.Enqueue("Game has not been advertised online.");
 								}
-                                if (masterResponseText.Contains("[002]"))  // Server contains blacklisted characters in its name
-                                {
-                                    Log.Write("server", masterResponseText);
-                                    masterServerMessages.Enqueue("Warning: Server contains blacklisted word in server name.");
-                                    masterServerMessages.Enqueue("Game has not been advertised online.");
-                                }
-                            }
+							}
 						}
 					}
 				}
