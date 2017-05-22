@@ -60,7 +60,7 @@ namespace OpenRA.Activities
 	public abstract class Activity
 	{
 		public ActivityState State { get; private set; }
-		public bool IsCanceled { get; private set; }
+
 		/// <summary>
 		/// Returns the top-most activity *from the point of view of the calling activity*. Note that the root activity
 		/// can and likely will have next activities of its own, which would in turn be the root for their children.

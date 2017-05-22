@@ -55,9 +55,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!(force || Game.Settings.Game.DrawTargetLine))
 				return new IRenderable[0];
 
-			var current_activity = self.GetCurrentActivity();
-
-			if (current_activity == null)
+			if (self.CurrentActivity == null)
 				return new IRenderable[0];
 
 			var validTargets = new List<WPos>();
@@ -65,7 +63,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			Color color = Color.Gray;
 
-			var activityIterator = current_activity;
+			var activityIterator = self.CurrentActivity;
 
 			while (activityIterator != null)
 			{
