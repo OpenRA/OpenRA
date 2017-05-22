@@ -10,11 +10,11 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
-using OpenRA.Traits;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
@@ -28,6 +28,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly Ruleset mapRules;
 		readonly World world;
 		readonly WorldRenderer worldRenderer;
+		readonly Dictionary<string, ScrollItemWidget> scrollItems = new Dictionary<string, ScrollItemWidget>();
 
 		PlayerReference selectedOwner;
 
@@ -76,11 +77,30 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			ownersDropDown.TextColor = selectedOwner.Color.RGB;
 
 			IntializeActorPreviews();
+
+			var searchTextField = widget.GetOrNull<TextFieldWidget>("SEARCH_TEXTFIELD");
+			if (searchTextField != null)
+			{
+				searchTextField.OnEnterKey = () =>
+				{
+					var text = searchTextField.Text.ToLowerInvariant();
+					ScrollItemWidget item;
+					if (scrollItems.TryGetValue(text, out item))
+					{
+							panel.ScrollToItem(item.ItemKey);
+							item.OnClick();
+							return true;
+					}
+
+					return false;
+				};
+			}
 		}
 
 		void IntializeActorPreviews()
 		{
 			panel.RemoveChildren();
+			scrollItems.Clear();
 
 			var actors = mapRules.Actors.Where(a => !a.Value.Name.Contains('^'))
 				.Select(a => a.Value);
@@ -116,6 +136,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						() => { var brush = editor.CurrentBrush as EditorActorBrush; return brush != null && brush.Actor == actor; },
 						() => editor.SetBrush(new EditorActorBrush(editor, actor, selectedOwner, worldRenderer)));
 
+					item.ItemKey = actor.Name;
 					var preview = item.Get<ActorPreviewWidget>("ACTOR_PREVIEW");
 					preview.SetPreview(actor, td);
 
@@ -137,6 +158,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 					item.GetTooltipText = () => (tooltip == null ? "Type: " : tooltip.Name + "\nType: ") + actor.Name;
 
+					scrollItems[actor.Name.ToLowerInvariant()] = item;
 					panel.AddChild(item);
 				}
 				catch

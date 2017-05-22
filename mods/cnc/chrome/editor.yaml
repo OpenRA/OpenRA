@@ -251,7 +251,7 @@ Container@EDITOR_WORLD_ROOT:
 			X: WINDOW_RIGHT - 255
 			Y: 278
 			Width: 250
-			Height: WINDOW_BOTTOM - 370
+			Height: WINDOW_BOTTOM - 345
 			ClickThrough: false
 			Children:
 				Container@TILES_BG:
@@ -262,10 +262,14 @@ Container@EDITOR_WORLD_ROOT:
 							Width: PARENT_RIGHT
 							Height: 25
 							Font: Bold
-						ScrollPanel@TILETEMPLATE_LIST:
-							Y: 24
+						TextField@SEARCH_TEXTFIELD:
+							Y: 25
 							Width: PARENT_RIGHT
-							Height: PARENT_BOTTOM - 24
+							Height: 25
+						ScrollPanel@TILETEMPLATE_LIST:
+							Y: 50
+							Width: PARENT_RIGHT
+							Height: PARENT_BOTTOM - 50
 							TopBottomSpacing: 4
 							ItemSpacing: 4
 							Children:
@@ -282,16 +286,20 @@ Container@EDITOR_WORLD_ROOT:
 			X: WINDOW_RIGHT - 255
 			Y: 278
 			Width: 250
-			Height: WINDOW_BOTTOM - 370
+			Height: WINDOW_BOTTOM - 345
 			ClickThrough: false
 			Children:
 				Container@LAYERS_BG:
 					Width: PARENT_RIGHT
 					Height: PARENT_BOTTOM
 					Children:
-						ScrollPanel@LAYERTEMPLATE_LIST:
+						TextField@SEARCH_TEXTFIELD:
 							Width: PARENT_RIGHT
-							Height: PARENT_BOTTOM
+							Height: 25
+						ScrollPanel@LAYERTEMPLATE_LIST:
+							Y: 25
+							Width: PARENT_RIGHT
+							Height: PARENT_BOTTOM - 25
 							TopBottomSpacing: 4
 							ItemSpacing: 4
 							Children:
@@ -309,7 +317,7 @@ Container@EDITOR_WORLD_ROOT:
 			X: WINDOW_RIGHT - 255
 			Y: 278
 			Width: 250
-			Height: WINDOW_BOTTOM - 370
+			Height: WINDOW_BOTTOM - 345
 			ClickThrough: false
 			Children:
 				Container@ACTORS_BG:
@@ -320,10 +328,14 @@ Container@EDITOR_WORLD_ROOT:
 							Width: PARENT_RIGHT
 							Height: 25
 							Font: Bold
-						ScrollPanel@ACTORTEMPLATE_LIST:
-							Y: 24
+						TextField@SEARCH_TEXTFIELD:
+							Y: 25
 							Width: PARENT_RIGHT
-							Height: PARENT_BOTTOM - 24
+							Height: 25
+						ScrollPanel@ACTORTEMPLATE_LIST:
+							Y: 50
+							Width: PARENT_RIGHT
+							Height: PARENT_BOTTOM - 50
 							TopBottomSpacing: 4
 							ItemSpacing: 4
 							Children:

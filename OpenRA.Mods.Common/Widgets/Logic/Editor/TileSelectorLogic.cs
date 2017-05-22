@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Widgets;
@@ -21,6 +22,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly EditorViewportControllerWidget editor;
 		readonly ScrollPanelWidget panel;
 		readonly ScrollItemWidget itemTemplate;
+		readonly Dictionary<ushort, ScrollItemWidget> scrollItems = new Dictionary<ushort, ScrollItemWidget>();
 
 		[ObjectCreator.UseCtor]
 		public TileSelectorLogic(Widget widget, WorldRenderer worldRenderer)
@@ -50,11 +52,31 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			tileCategorySelector.Text = categories.First();
 			IntializeTilePreview(widget, worldRenderer, tileset, categories.First());
+
+			var searchTextField = widget.GetOrNull<TextFieldWidget>("SEARCH_TEXTFIELD");
+			if (searchTextField != null)
+			{
+				searchTextField.OnEnterKey = () =>
+				{
+					var text = searchTextField.Text;
+					ushort tileId;
+					ScrollItemWidget item;
+					if (ushort.TryParse(text, out tileId) && scrollItems.TryGetValue(tileId, out item))
+					{
+						panel.ScrollToItem(item.ItemKey);
+						item.OnClick();
+						return true;
+					}
+
+					return false;
+				};
+			}
 		}
 
 		void IntializeTilePreview(Widget widget, WorldRenderer worldRenderer, TileSet tileset, string category)
 		{
 			panel.RemoveChildren();
+			scrollItems.Clear();
 
 			var tileIds = tileset.Templates
 				.Where(t => t.Value.Category == category)
@@ -67,6 +89,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					() => { var brush = editor.CurrentBrush as EditorTileBrush; return brush != null && brush.Template == tileId; },
 					() => editor.SetBrush(new EditorTileBrush(editor, tileId, worldRenderer)));
 
+				item.ItemKey = tileId.ToString();
 				var preview = item.Get<TerrainTemplatePreviewWidget>("TILE_PREVIEW");
 				var template = tileset.Templates[tileId];
 				var grid = worldRenderer.World.Map.Grid;
@@ -87,6 +110,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				item.IsVisible = () => true;
 				item.GetTooltipText = () => tileId.ToString();
 
+				scrollItems.Add(tileId, item);
 				panel.AddChild(item);
 			}
 		}
