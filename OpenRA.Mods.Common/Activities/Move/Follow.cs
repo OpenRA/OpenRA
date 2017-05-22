@@ -9,6 +9,8 @@
  */
 #endregion
 
+using System.Collections.Generic;
+using System.Drawing;
 using OpenRA.Activities;
 using OpenRA.Traits;
 
@@ -46,6 +48,15 @@ namespace OpenRA.Mods.Common.Activities
 			}
 
 			return ActivityUtils.SequenceActivities(path, this);
+		}
+
+		// Follow, is as in follow and attack (chase) so it is actually an attack activity.
+		// (What came to my mind first was follow and guard activity)
+		public override Color TargetLineColor { get { return Color.Red; } }
+
+		public override IEnumerable<Target> GetTargets(Actor self)
+		{
+			yield return target;
 		}
 	}
 }

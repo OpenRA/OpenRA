@@ -589,6 +589,8 @@ namespace OpenRA.Mods.Common.Traits
 
 				var target = Target.FromCell(self.World, cell);
 
+				self.ShowTargetLines();
+
 				if (IsPlane)
 					self.QueueActivity(order.Queued, new FlyAndContinueWithCirclesWhenIdle(self, target));
 				else
@@ -608,6 +610,8 @@ namespace OpenRA.Mods.Common.Traits
 				}
 				else
 				{
+					self.ShowTargetLines();
+
 					if (IsPlane)
 					{
 						self.QueueActivity(order.Queued, ActivityUtils.SequenceActivities(

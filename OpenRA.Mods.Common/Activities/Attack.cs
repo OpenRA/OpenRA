@@ -10,6 +10,8 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Traits;
@@ -125,6 +127,13 @@ namespace OpenRA.Mods.Common.Activities
 			attack.DoAttack(self, Target, armaments);
 
 			return this;
+		}
+
+		public override Color TargetLineColor { get { return Color.Red; } }
+
+		public override IEnumerable<Target> GetTargets(Actor self)
+		{
+			yield return Target;
 		}
 	}
 }

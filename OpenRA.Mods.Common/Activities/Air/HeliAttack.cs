@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using OpenRA.Activities;
@@ -61,6 +62,7 @@ namespace OpenRA.Mods.Common.Activities
 				var newTarget = Target.FromCell(self.World, self.World.Map.CellContaining(target.CenterPosition));
 
 				Cancel(self);
+				self.ShowTargetLines();
 				return new HeliFly(self, newTarget);
 			}
 
@@ -96,6 +98,13 @@ namespace OpenRA.Mods.Common.Activities
 			attackHeli.DoAttack(self, target);
 
 			return this;
+		}
+
+		public override Color TargetLineColor { get { return Color.Red; } }
+
+		public override IEnumerable<Target> GetTargets(Actor self)
+		{
+			yield return target;
 		}
 	}
 }

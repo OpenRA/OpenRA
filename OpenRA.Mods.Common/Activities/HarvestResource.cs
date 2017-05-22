@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Drawing;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
@@ -76,5 +77,7 @@ namespace OpenRA.Mods.Common.Activities
 
 			return ActivityUtils.SequenceActivities(new Wait(harvInfo.BaleLoadDelay), this);
 		}
+
+		public override Color TargetLineColor { get { return Color.Red; } }
 	}
 }

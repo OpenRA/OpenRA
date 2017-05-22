@@ -73,7 +73,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			{
 				yield return self.CenterPosition;
 				foreach (var target in activity.GetTargets(self))
-					yield return target.Key.CenterPosition;
+					yield return target.CenterPosition;
 			}
 		}
 

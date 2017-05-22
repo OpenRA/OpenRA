@@ -45,11 +45,14 @@ namespace OpenRA.Mods.Common.Traits
 				var target = Target.FromActor(order.TargetActor);
 
 				GuardTarget(self, target);
+				self.ShowTargetLines();
 			}
 		}
 
 		public void GuardTarget(Actor self, Target target)
 		{
+			self.ShowTargetLines();
+
 			var range = target.Actor.Info.TraitInfo<GuardableInfo>().Range;
 			self.QueueActivity(false, new AttackMoveActivity(self, move.MoveFollow(self, target, WDist.Zero, range)));
 		}

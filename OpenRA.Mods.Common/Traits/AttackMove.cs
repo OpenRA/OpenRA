@@ -66,6 +66,7 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				TargetLocation = move.NearestMoveableCell(order.TargetLocation);
 				Activate(self);
+				self.ShowTargetLines();
 			}
 		}
 	}

@@ -35,7 +35,7 @@ namespace OpenRA.Mods.Common.Traits
 			this.info = info;
 		}
 
-		void INotifySelected.Selected(Actor a)
+		public void ShowTargetLines(Actor a)
 		{
 			if (a.IsIdle)
 				return;
@@ -44,46 +44,62 @@ namespace OpenRA.Mods.Common.Traits
 			lifetime = info.Delay;
 		}
 
+		void INotifySelected.Selected(Actor a)
+		{
+			ShowTargetLines(a);
+		}
+
 		IEnumerable<IRenderable> IRenderAboveShroudWhenSelected.RenderAboveShroud(Actor self, WorldRenderer wr)
 		{
-			var force = Game.GetModifierKeys().HasModifier(Modifiers.Alt);
-			lifetime = 10; ////How do I handle the lifetime now?
+			if (self.Owner != self.World.LocalPlayer)
+				yield break;
+
+			// shift is "force" too, players want to see the lines when in waypoint mode.
+			bool force = Game.GetModifierKeys().HasModifier(Modifiers.Alt)
+			          || Game.GetModifierKeys().HasModifier(Modifiers.Shift);
 
 			if ((lifetime <= 0 || --lifetime <= 0) && !force)
-				return new IRenderable[0];
+				yield break;
 
 			if (!(force || Game.Settings.Game.DrawTargetLine))
-				return new IRenderable[0];
+				yield break;
 
-			if (self.CurrentActivity == null)
-				return new IRenderable[0];
-
-			var validTargets = new List<WPos>();
-			validTargets.Add(self.CenterPosition);
-
-			Color color = Color.Gray;
-
-			var activityIterator = self.CurrentActivity;
-
-			while (activityIterator != null)
+			WPos prev = self.CenterPosition;
+			for (var a = self.CurrentActivity; a != null; a = a.NextActivity)
 			{
-				if (activityIterator is OpenRA.Mods.Common.Activities.Move.MovePart)
-					activityIterator = ((OpenRA.Mods.Common.Activities.Move.MovePart)activityIterator).Move;
+				if (a is OpenRA.Mods.Common.Activities.Move.MovePart)
+					a = ((OpenRA.Mods.Common.Activities.Move.MovePart)a).Move;
 
-				foreach (var pair in activityIterator.GetTargets(self))
+				foreach (var target in a.GetTargets(self))
 				{
-					Target target = pair.Key;
-					if (!activityIterator.IsCanceled && target.Type != TargetType.Invalid)
-					{
-						validTargets.Add(target.CenterPosition);
-						color = pair.Value;
-					}
+					if (a.IsCanceled || target.Type == TargetType.Invalid)
+						continue;
+
+					yield return new TargetLineRenderable(new[] { prev, target.CenterPosition }, a.TargetLineColor);
+					prev = target.CenterPosition;
 				}
 
-				activityIterator = activityIterator.NextActivity;
+				if (a is ResupplyAircraft)
+					break; /// If we don't break, we get infinite loop.
+				if (a is EnterTransport)
+					break;
+				if (a is HarvestResource)
+					break;
 			}
+		}
+	}
 
-			return new[] { (IRenderable)new TargetLineRenderable(validTargets, color) };
+	public static class LineTargetExts
+	{
+		public static void ShowTargetLines(this Actor self)
+		{
+			if (self.Owner != self.World.LocalPlayer)
+				return;
+
+			// Draw after frame end so that all the queueing of activities are done before drawing.
+			var line = self.TraitOrDefault<DrawLineToTarget>();
+			if (line != null)
+				self.World.AddFrameEndTask(w => line.ShowTargetLines(self));
 		}
 	}
 }

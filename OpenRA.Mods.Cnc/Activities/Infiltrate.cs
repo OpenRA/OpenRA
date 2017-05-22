@@ -9,6 +9,8 @@
  */
 #endregion
 
+using System.Collections.Generic;
+using System.Drawing;
 using OpenRA.Activities;
 using OpenRA.Mods.Cnc.Traits;
 using OpenRA.Mods.Common.Activities;
@@ -61,6 +63,13 @@ namespace OpenRA.Mods.Cnc.Activities
 				Cancel(self);
 
 			return base.Tick(self);
+		}
+
+		public override Color TargetLineColor { get { return Color.Yellow; } }
+
+		public override IEnumerable<Target> GetTargets(Actor self)
+		{
+			yield return Target.FromActor(target);
 		}
 	}
 }

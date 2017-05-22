@@ -61,6 +61,7 @@ namespace OpenRA.Mods.Common.Activities
 
 			var proc = harv.LinkedProc;
 			var iao = proc.Trait<IAcceptResources>();
+			self.ShowTargetLines();
 
 			if (self.Location != proc.Location + iao.DeliveryOffset)
 			{

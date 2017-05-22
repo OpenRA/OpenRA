@@ -632,6 +632,8 @@ namespace OpenRA.Mods.Common.Traits
 			TicksBeforePathing = AverageTicksBeforePathing + self.World.SharedRandom.Next(-SpreadTicksBeforePathing, SpreadTicksBeforePathing);
 
 			self.QueueActivity(queued, new Move(self, currentLocation, WDist.FromCells(8)));
+
+			self.ShowTargetLines();
 		}
 
 		protected void PerformMove(Actor self, CPos targetLocation, bool queued)
@@ -811,6 +813,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (moveTo.HasValue)
 			{
 				self.CancelActivity();
+				self.ShowTargetLines();
 				self.QueueActivity(new Move(self, moveTo.Value, WDist.Zero));
 
 				Log.Write("debug", "OnNudge #{0} from {1} to {2}",

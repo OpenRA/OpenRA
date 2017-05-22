@@ -176,6 +176,7 @@ namespace OpenRA.Mods.Cnc.Traits
 				if (!order.Queued)
 					self.CancelActivity();
 
+				self.ShowTargetLines();
 				self.QueueActivity(new MoveAdjacentTo(self, target));
 				self.QueueActivity(new CallFunc(StartDetonationSequence));
 			}

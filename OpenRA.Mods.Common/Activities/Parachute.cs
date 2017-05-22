@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
@@ -84,6 +85,11 @@ namespace OpenRA.Mods.Common.Activities
 		public override void Queue(Activity activity)
 		{
 			NextActivity = activity;
+		}
+
+		public override IEnumerable<Target> GetTargets(Actor self)
+		{
+			yield return Target.FromPos(dropPosition);
 		}
 	}
 }

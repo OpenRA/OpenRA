@@ -86,6 +86,7 @@ namespace OpenRA.Mods.Common.Activities
 
 				actor.CancelActivity();
 				pos.SetVisualPosition(actor, spawn);
+				self.ShowTargetLines();
 				actor.QueueActivity(move.MoveIntoWorld(actor, exitSubCell.Value.First, exitSubCell.Value.Second));
 				w.Add(actor);
 			});

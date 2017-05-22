@@ -77,6 +77,9 @@ namespace OpenRA.Mods.Common
 			if (frozen == null)
 				return Target.Invalid;
 
+			// Flashes the frozen proxy
+			self.ShowTargetLines();
+
 			// Target is still alive - resolve the real order
 			if (frozen.Actor != null && frozen.Actor.IsInWorld)
 				return Target.FromActor(frozen.Actor);

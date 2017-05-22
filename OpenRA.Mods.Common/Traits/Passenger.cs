@@ -104,6 +104,7 @@ namespace OpenRA.Mods.Common.Traits
 
 				self.CancelActivity();
 				var transports = order.OrderString == "EnterTransports";
+				self.ShowTargetLines();
 				self.QueueActivity(new EnterTransport(self, order.TargetActor, transports ? Info.MaxAlternateTransportAttempts : 0, transports));
 			}
 		}

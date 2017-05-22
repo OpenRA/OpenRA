@@ -98,6 +98,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!order.Queued)
 				self.CancelActivity();
 
+			self.ShowTargetLines();
 			self.QueueActivity(new RepairBuilding(self, target.Actor, info.EnterBehaviour, info.ValidStances));
 		}
 

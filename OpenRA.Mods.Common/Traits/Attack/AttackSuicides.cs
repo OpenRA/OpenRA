@@ -73,6 +73,7 @@ namespace OpenRA.Mods.Common.Traits
 					self.CancelActivity();
 
 				self.QueueActivity(move.MoveToTarget(self, target));
+				self.ShowTargetLines();
 
 				self.QueueActivity(new CallFunc(() => self.Kill(self)));
 			}

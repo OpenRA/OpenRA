@@ -237,11 +237,13 @@ namespace OpenRA.Mods.Common.Traits
 
 					var targetLocation = move.NearestMoveableCell(order.TargetLocation);
 					self.QueueActivity(order.Queued, new DeliverUnit(self, targetLocation));
+					self.ShowTargetLines();
 				}
 				else if (order.OrderString == "Unload")
 				{
 					var targetLocation = move.NearestMoveableCell(self.Location);
 					self.QueueActivity(order.Queued, new DeliverUnit(self, targetLocation));
+					self.ShowTargetLines();
 				}
 			}
 			else

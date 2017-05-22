@@ -263,9 +263,11 @@ namespace OpenRA.Activities
 			}
 		}
 
-		public virtual IEnumerable<KeyValuePair<Target, Color>> GetTargets(Actor self)
+		public virtual Color TargetLineColor { get { return Color.Green; } }
+
+		public virtual IEnumerable<Target> GetTargets(Actor self)
 		{
-			return new KeyValuePair<Target, Color>[0];
+			yield break;
 		}
 	}
 

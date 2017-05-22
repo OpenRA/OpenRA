@@ -146,6 +146,7 @@ namespace OpenRA.Mods.Common.Traits
 				if (!target.IsValidFor(self))
 					return;
 
+				self.ShowTargetLines();
 				AttackTarget(target, order.Queued, true, forceAttack);
 			}
 

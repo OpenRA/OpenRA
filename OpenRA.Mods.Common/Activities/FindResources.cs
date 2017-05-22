@@ -97,6 +97,8 @@ namespace OpenRA.Mods.Common.Activities
 				if (!harv.LastOrderLocation.HasValue)
 					harv.LastOrderLocation = closestHarvestablePosition;
 
+				self.ShowTargetLines();
+
 				// TODO: The harvest-deliver-return sequence is a horrible mess of duplicated code and edge-cases
 				var notify = self.TraitsImplementing<INotifyHarvesterAction>();
 				foreach (var n in notify)
@@ -143,9 +145,11 @@ namespace OpenRA.Mods.Common.Activities
 			return null;
 		}
 
-		public override IEnumerable<KeyValuePair<Target, Color>> GetTargets(Actor self)
+		public override Color TargetLineColor { get { return Color.Red; } }
+
+		public override IEnumerable<Target> GetTargets(Actor self)
 		{
-			return new[] { new KeyValuePair<Target, Color>(Target.FromCell(self.World, self.Location), Color.Green) };
+			yield return Target.FromCell(self.World, self.Location);
 		}
 	}
 }

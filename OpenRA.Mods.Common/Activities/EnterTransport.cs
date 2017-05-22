@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Drawing;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
@@ -30,6 +31,8 @@ namespace OpenRA.Mods.Common.Activities
 			cargo = transport.Trait<Cargo>();
 			passenger = self.Trait<Passenger>();
 		}
+
+		public override Color TargetLineColor { get { return Color.Yellow; } }
 
 		protected override void Unreserve(Actor self, bool abort) { passenger.Unreserve(self); }
 		protected override bool CanReserve(Actor self) { return cargo.Unloading || cargo.CanLoad(transport, self); }

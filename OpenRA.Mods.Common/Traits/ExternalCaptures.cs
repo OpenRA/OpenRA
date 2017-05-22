@@ -111,6 +111,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!order.Queued)
 				self.CancelActivity();
 
+			self.ShowTargetLines();
 			self.QueueActivity(new ExternalCaptureActor(self, target));
 		}
 	}

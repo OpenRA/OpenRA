@@ -190,6 +190,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			TargetedActor = targetActor;
 			var target = Target.FromActor(targetActor);
+			self.ShowTargetLines();
 
 			foreach (var ab in activeAttackBases)
 				ab.AttackTarget(target, false, allowMove);

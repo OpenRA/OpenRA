@@ -229,6 +229,7 @@ namespace OpenRA.Mods.Common.Traits
 						n.MovingToResources(self, moveTo, findResources);
 
 					self.QueueActivity(mobile.MoveTo(moveTo, 1));
+					self.ShowTargetLines();
 				}
 			}
 		}
@@ -246,6 +247,7 @@ namespace OpenRA.Mods.Common.Traits
 				var cell = self.Location;
 				var moveTo = mobile.NearestMoveableCell(cell, 2, 5);
 				self.QueueActivity(mobile.MoveTo(moveTo, 0));
+				self.ShowTargetLines();
 
 				// Find more resources but not at this location:
 				self.QueueActivity(new FindResources(self, cell));
