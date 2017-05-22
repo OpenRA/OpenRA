@@ -69,6 +69,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		CPos? lastPos;
 		bool wasCloaked = false;
+		bool firstTick = true;
 		int cloakedToken = ConditionManager.InvalidConditionToken;
 
 		public Cloak(CloakInfo info)
@@ -145,7 +146,8 @@ namespace OpenRA.Mods.Common.Traits
 				if (conditionManager != null && cloakedToken == ConditionManager.InvalidConditionToken && !string.IsNullOrEmpty(Info.CloakedCondition))
 					cloakedToken = conditionManager.GrantCondition(self, Info.CloakedCondition);
 
-				if (!self.TraitsImplementing<Cloak>().Any(a => a != this && a.Cloaked))
+				// Sounds shouldn't play if the actor starts cloaked
+				if (!(firstTick && Info.InitialDelay == 0) && !self.TraitsImplementing<Cloak>().Any(a => a != this && a.Cloaked))
 					Game.Sound.Play(SoundType.World, Info.CloakSound, self.CenterPosition);
 			}
 			else if (!isCloaked && wasCloaked)
@@ -153,11 +155,12 @@ namespace OpenRA.Mods.Common.Traits
 				if (cloakedToken != ConditionManager.InvalidConditionToken)
 					cloakedToken = conditionManager.RevokeCondition(self, cloakedToken);
 
-				if (!self.TraitsImplementing<Cloak>().Any(a => a != this && a.Cloaked))
+				if (!(firstTick && Info.InitialDelay == 0) && !self.TraitsImplementing<Cloak>().Any(a => a != this && a.Cloaked))
 					Game.Sound.Play(SoundType.World, Info.UncloakSound, self.CenterPosition);
 			}
 
 			wasCloaked = isCloaked;
+			firstTick = false;
 		}
 
 		public bool IsVisible(Actor self, Player viewer)
