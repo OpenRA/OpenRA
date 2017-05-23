@@ -67,7 +67,10 @@ namespace OpenRA.Mods.Common.HitShapes
 			quadrantSize = (BottomRight - TopLeft) / 2;
 			center = TopLeft + quadrantSize;
 
-			OuterRadius = new WDist(Math.Max(TopLeft.Length, BottomRight.Length));
+			var topRight = new int2(BottomRight.X, TopLeft.Y);
+			var bottomLeft = new int2(TopLeft.X, BottomRight.Y);
+			var corners = new[] { TopLeft, BottomRight, topRight, bottomLeft };
+			OuterRadius = new WDist(corners.Select(x => x.Length).Max());
 
 			combatOverlayVertsTop = new WVec[]
 			{
