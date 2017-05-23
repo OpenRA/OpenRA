@@ -13,6 +13,7 @@ using System;
 using System.Drawing;
 using System.Linq;
 using OpenRA.Graphics;
+using OpenRA.Mods.Common.Graphics;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.HitShapes
@@ -139,6 +140,8 @@ namespace OpenRA.Mods.Common.HitShapes
 				wcr.DrawPolygon(vertsTop.ToArray(), 1, Color.Yellow);
 				wcr.DrawPolygon(vertsBottom.ToArray(), 1, Color.Yellow);
 			}
+
+			RangeCircleRenderable.DrawRangeCircle(wr, actorPos, OuterRadius, 1, Color.LimeGreen, 0, Color.LimeGreen);
 		}
 	}
 }
