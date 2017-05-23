@@ -699,6 +699,15 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						else
 							node.Value.Nodes.Add(hitShapeNode);
 					}
+
+					// Moved ITargetablePositions from Building to HitShape
+					var building = node.Value.Nodes.FirstOrDefault(n => n.Key == "Building");
+					var hitShape = node.Value.Nodes.FirstOrDefault(n => n.Key == "HitShape");
+					if (building != null && hitShape == null)
+					{
+						hitShapeNode.Value.Nodes.Add(new MiniYamlNode("UseOccupiedCellsOffsets", "true"));
+						node.Value.Nodes.Add(hitShapeNode);
+					}
 				}
 
 				UpgradeActorRules(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);

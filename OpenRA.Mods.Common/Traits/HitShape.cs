@@ -16,9 +16,15 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	[Desc("Shape of actor for damage calculations.")]
-	public class HitShapeInfo : ConditionalTraitInfo
+	[Desc("Shape of actor for targeting and damage calculations.")]
+	public class HitShapeInfo : ConditionalTraitInfo, Requires<BodyOrientationInfo>
 	{
+		[Desc("Create a targetable position for each offset listed here (relative to CenterPosition).")]
+		public readonly WVec[] TargetableOffsets = { WVec.Zero };
+
+		[Desc("Create a targetable position at the center of each occupied cell. Stacks with TargetableOffsets.")]
+		public readonly bool UseOccupiedCellsOffsets = false;
+
 		[FieldLoader.LoadUsing("LoadShape")]
 		public readonly IHitShape Type;
 
@@ -51,9 +57,36 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new HitShape(init.Self, this); }
 	}
 
-	public class HitShape : ConditionalTrait<HitShapeInfo>
+	public class HitShape : ConditionalTrait<HitShapeInfo>, ITargetablePositions
 	{
+		BodyOrientation orientation;
+		IOccupySpace occupy;
+
 		public HitShape(Actor self, HitShapeInfo info)
 			: base(info) { }
+
+		protected override void Created(Actor self)
+		{
+			orientation = self.Trait<BodyOrientation>();
+			occupy = self.TraitOrDefault<IOccupySpace>();
+
+			base.Created(self);
+		}
+
+		public IEnumerable<WPos> TargetablePositions(Actor self)
+		{
+			if (IsTraitDisabled)
+				yield break;
+
+			if (Info.UseOccupiedCellsOffsets && occupy != null)
+				foreach (var c in occupy.OccupiedCells())
+					yield return self.World.Map.CenterOfCell(c.First);
+
+			foreach (var o in Info.TargetableOffsets)
+			{
+				var offset = orientation.LocalToWorld(o.Rotate(orientation.QuantizeOrientation(self, self.Orientation)));
+				yield return self.CenterPosition + offset;
+			}
+		}
 	}
 }

@@ -36,7 +36,6 @@ namespace OpenRA.Mods.Common.Traits
 
 		HitShape[] shapes;
 		IBlocksProjectiles[] allBlockers;
-		ITargetablePositions[] targetablePositions;
 
 		public CombatDebugOverlay(Actor self)
 		{
@@ -51,7 +50,6 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			shapes = self.TraitsImplementing<HitShape>().ToArray();
 			allBlockers = self.TraitsImplementing<IBlocksProjectiles>().ToArray();
-			targetablePositions = self.TraitsImplementing<ITargetablePositions>().ToArray();
 		}
 
 		void IRenderAboveWorld.RenderAboveWorld(Actor self, WorldRenderer wr)
@@ -79,8 +77,7 @@ namespace OpenRA.Mods.Common.Traits
 				s.Info.Type.DrawCombatOverlay(wr, wcr, self);
 
 			var tc = Color.Lime;
-			var enabledPositions = targetablePositions.Where(Exts.IsTraitEnabled);
-			var positions = enabledPositions.SelectMany(tp => tp.TargetablePositions(self));
+			var positions = activeShapes.SelectMany(tp => tp.TargetablePositions(self));
 			foreach (var p in positions)
 			{
 				var center = wr.Screen3DPosition(p);

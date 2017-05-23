@@ -135,13 +135,15 @@ namespace OpenRA.Mods.Common.Traits
 		}
 	}
 
-	public class Building : IOccupySpace, INotifySold, INotifyTransform, ISync, INotifyCreated, INotifyAddedToWorld, INotifyRemovedFromWorld, ITargetablePositions
+	public class Building : IOccupySpace, INotifySold, INotifyTransform, ISync, INotifyCreated, INotifyAddedToWorld, INotifyRemovedFromWorld
 	{
 		public readonly BuildingInfo Info;
 		public bool BuildComplete { get; private set; }
 		[Sync] readonly CPos topLeft;
 		readonly Actor self;
 		public readonly bool SkipMakeAnimation;
+
+		Pair<CPos, SubCell>[] occupiedCells;
 
 		// Shared activity lock: undeploy, sell, capture, etc.
 		[Sync] public bool Locked = true;
@@ -173,13 +175,7 @@ namespace OpenRA.Mods.Common.Traits
 			SkipMakeAnimation = init.Contains<SkipMakeAnimsInit>();
 		}
 
-		Pair<CPos, SubCell>[] occupiedCells;
 		public IEnumerable<Pair<CPos, SubCell>> OccupiedCells() { return occupiedCells; }
-
-		public IEnumerable<WPos> TargetablePositions(Actor self)
-		{
-			return OccupiedCells().Select(c => self.World.Map.CenterOfCell(c.First));
-		}
 
 		void INotifyCreated.Created(Actor self)
 		{
