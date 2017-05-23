@@ -336,6 +336,8 @@
 		VisibilityType: CenterPosition
 	Targetable:
 		TargetTypes: Ground, C4, Structure
+	HitShape:
+		UseOccupiedCellsOffsets: true
 	Building:
 		Dimensions: 1,1
 		Footprint: x

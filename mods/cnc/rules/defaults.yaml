@@ -565,6 +565,8 @@
 		Priority: 3
 	Targetable:
 		TargetTypes: Ground, C4, Structure
+	HitShape:
+		UseOccupiedCellsOffsets: true
 	Armor:
 		Type: Wood
 	Building:
@@ -878,6 +880,7 @@
 		DamagedSounds: xplos.aud
 		DestroyedSounds: xplobig4.aud
 	ScriptTriggers:
+	BodyOrientation:
 	HitShape:
 
 ^Crate:

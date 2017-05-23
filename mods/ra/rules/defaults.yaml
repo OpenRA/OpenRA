@@ -497,6 +497,8 @@
 		Priority: 3
 	Targetable:
 		TargetTypes: Ground, C4, DetonateAttack, Structure
+	HitShape:
+		UseOccupiedCellsOffsets: true
 	Building:
 		Dimensions: 1,1
 		Footprint: x
@@ -853,6 +855,7 @@
 		Type: Concrete
 	AutoTargetIgnore:
 	ScriptTriggers:
+	BodyOrientation:
 	HitShape:
 
 ^Rock:
