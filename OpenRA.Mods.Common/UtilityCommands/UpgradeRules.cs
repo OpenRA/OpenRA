@@ -867,7 +867,17 @@ namespace OpenRA.Mods.Common.UtilityCommands
 		{
 			foreach (var node in nodes)
 			{
-				// Add rules here
+				// Renamed Category to Categories in Template.
+				if (engineVersion < 20170623)
+				{
+					if (node.Key == "Template" || node.Key.StartsWith("Template@", StringComparison.Ordinal))
+					{
+						var category = node.Value.Nodes.FirstOrDefault(n => n.Key == "Category");
+						if (category != null)
+							category.Key = "Categories";
+					}
+				}
+
 				UpgradeTileset(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}
