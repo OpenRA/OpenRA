@@ -12,7 +12,7 @@
 using System;
 using System.Linq;
 
-namespace OpenRA.FileFormats
+namespace OpenRA.Mods.Cnc.FileFormats
 {
 	/* TODO: Convert this direct C port into readable code. */
 

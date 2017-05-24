@@ -11,9 +11,8 @@
 
 using System.Collections.Generic;
 using System.IO;
-using OpenRA.FileSystem;
 
-namespace OpenRA.FileFormats
+namespace OpenRA.Mods.Cnc.FileFormats
 {
 	public class IdxReader
 	{

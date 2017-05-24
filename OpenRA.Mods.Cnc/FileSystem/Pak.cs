@@ -12,8 +12,10 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using OpenRA.FileSystem;
+using FS = OpenRA.FileSystem.FileSystem;
 
-namespace OpenRA.FileSystem
+namespace OpenRA.Mods.Cnc.FileSystem
 {
 	public class PakFileLoader : IPackageLoader
 	{
@@ -77,7 +79,7 @@ namespace OpenRA.FileSystem
 				return index.ContainsKey(filename);
 			}
 
-			public IReadOnlyPackage OpenPackage(string filename, FileSystem context)
+			public IReadOnlyPackage OpenPackage(string filename, FS context)
 			{
 				// Not implemented
 				return null;
@@ -89,7 +91,7 @@ namespace OpenRA.FileSystem
 			}
 		}
 
-		bool IPackageLoader.TryParsePackage(Stream s, string filename, FileSystem context, out IReadOnlyPackage package)
+		bool IPackageLoader.TryParsePackage(Stream s, string filename, FS context, out IReadOnlyPackage package)
 		{
 			if (!filename.EndsWith(".pak", StringComparison.InvariantCultureIgnoreCase))
 			{

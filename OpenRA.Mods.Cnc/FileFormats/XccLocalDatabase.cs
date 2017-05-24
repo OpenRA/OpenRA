@@ -14,7 +14,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace OpenRA.FileFormats
+namespace OpenRA.Mods.Cnc.FileFormats
 {
 	public class XccLocalDatabase
 	{

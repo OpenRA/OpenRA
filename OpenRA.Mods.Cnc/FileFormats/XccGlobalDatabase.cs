@@ -13,7 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace OpenRA.FileFormats
+namespace OpenRA.Mods.Cnc.FileFormats
 {
 	public class XccGlobalDatabase : IDisposable
 	{

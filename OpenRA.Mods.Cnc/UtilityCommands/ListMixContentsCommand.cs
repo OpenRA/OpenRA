@@ -13,10 +13,10 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using OpenRA.FileFormats;
-using OpenRA.FileSystem;
+using OpenRA.Mods.Cnc.FileFormats;
+using OpenRA.Mods.Cnc.FileSystem;
 
-namespace OpenRA.Mods.Common.UtilityCommands
+namespace OpenRA.Mods.Cnc.UtilityCommands
 {
 	class ListMixContents : IUtilityCommand
 	{
