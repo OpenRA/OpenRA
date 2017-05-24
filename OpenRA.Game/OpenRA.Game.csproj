@@ -259,7 +259,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FileSystem\Folder.cs" />
-    <Compile Include="FileSystem\InstallShieldPackage.cs" />
     <Compile Include="FileSystem\ZipFile.cs" />
     <Compile Include="Map\PlayerReference.cs" />
     <Compile Include="Map\TileReference.cs" />
@@ -268,7 +267,6 @@
     <Compile Include="FieldSaver.cs" />
     <Compile Include="Manifest.cs" />
     <Compile Include="Graphics\Vertex.cs" />
-    <Compile Include="FileFormats\Blast.cs" />
     <Compile Include="FileFormats\HvaReader.cs" />
     <Compile Include="FileFormats\PngLoader.cs" />
     <Compile Include="FileFormats\VxlReader.cs" />

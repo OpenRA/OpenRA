@@ -9,12 +9,13 @@
  */
 #endregion
 
-using System;
 using System.Collections.Generic;
 using System.IO;
-using OpenRA.FileFormats;
+using OpenRA.FileSystem;
+using OpenRA.Mods.Common.FileFormats;
+using FS = OpenRA.FileSystem.FileSystem;
 
-namespace OpenRA.FileSystem
+namespace OpenRA.Mods.Common.FileSystem
 {
 	public class InstallShieldLoader : IPackageLoader
 	{
@@ -121,7 +122,7 @@ namespace OpenRA.FileSystem
 				return ret;
 			}
 
-			public IReadOnlyPackage OpenPackage(string filename, FileSystem context)
+			public IReadOnlyPackage OpenPackage(string filename, FS context)
 			{
 				// Not implemented
 				return null;
@@ -140,7 +141,7 @@ namespace OpenRA.FileSystem
 			}
 		}
 
-		bool IPackageLoader.TryParsePackage(Stream s, string filename, FileSystem context, out IReadOnlyPackage package)
+		bool IPackageLoader.TryParsePackage(Stream s, string filename, FS context, out IReadOnlyPackage package)
 		{
 			// Take a peek at the file signature
 			var signature = s.ReadUInt32();
