@@ -140,7 +140,7 @@ SMECH:
 	WithAttackAnimation:
 		AttackSequence: shoot
 	WithMoveAnimation:
-		MoveSequence: run
+		MoveSequence: walk
 	Selectable:
 		Bounds: 20, 32, 0, -8
 	-DamagedByTerrain@VEINS:
@@ -174,7 +174,10 @@ MMCH:
 	BodyOrientation:
 		QuantizedFacings: 32
 		UseClassicPerspectiveFudge: False
-	WithInfantryBody:
+	WithFacingSpriteBody:
+		Sequence: stand
+	WithMoveAnimation:
+		MoveSequence: walk
 	Turreted:
 		TurnSpeed: 5
 	AttackTurreted:
@@ -328,7 +331,7 @@ JUGG:
 		Sequence: stand
 		RequiresCondition: undeployed
 	WithMoveAnimation:
-		MoveSequence: run
+		MoveSequence: walk
 	GrantConditionOnDeploy:
 		DeployedCondition: deployed
 		UndeployedCondition: undeployed
