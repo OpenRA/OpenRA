@@ -378,9 +378,6 @@ namespace OpenRA.Server
 				if (Dedicated || !LobbyInfo.IsSinglePlayer)
 					SendMessage("{0} has joined the game.".F(client.Name));
 
-				// Send initial ping
-				SendOrderTo(newConn, "Ping", Game.RunTime.ToString(CultureInfo.InvariantCulture));
-
 				if (Dedicated)
 				{
 					var motdFile = Platform.ResolvePath("^", "motd.txt");
@@ -510,6 +507,10 @@ namespace OpenRA.Server
 							break;
 						}
 
+						if (pingSent < 0)
+							break;
+
+						var ping = Game.RunTime - pingSent;
 						var client = GetClient(conn);
 						if (client == null)
 							return;
@@ -519,7 +520,7 @@ namespace OpenRA.Server
 							return;
 
 						var history = pingFromClient.LatencyHistory.ToList();
-						history.Add(Game.RunTime - pingSent);
+						history.Add(ping);
 
 						// Cap ping history at 5 values (25 seconds)
 						if (history.Count > 5)
