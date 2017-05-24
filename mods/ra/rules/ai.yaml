@@ -183,7 +183,7 @@ Player:
 			ttnk: 15%
 			stnk: 10%
 			heli: 30%
-			hind: 30%
+			huey: 30%
 			mig: 30%
 			yak: 30%
 			ss: 10%
@@ -314,7 +314,7 @@ Player:
 			ttnk: 20%
 			stnk: 15%
 			heli: 30%
-			hind: 30%
+			huey: 30%
 			mig: 30%
 			yak: 30%
 			ss: 10%
@@ -423,7 +423,7 @@ Player:
 		UnitsToBuild:
 			harv: 1%
 			heli: 30%
-			hind: 30%
+			huey: 30%
 			mig: 30%
 			yak: 30%
 			ss: 10%

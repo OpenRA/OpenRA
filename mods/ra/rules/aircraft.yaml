@@ -313,7 +313,7 @@ HELI:
 	ProducibleWithLevel:
 		Prerequisites: aircraft.upgraded
 
-HIND:
+HUEY:
 	Inherits: ^Helicopter
 	Buildable:
 		Queue: Aircraft
@@ -324,7 +324,7 @@ HIND:
 	Valued:
 		Cost: 1350
 	Tooltip:
-		Name: Hind
+		Name: Gunship
 	Health:
 		HP: 100
 	Armor:
@@ -369,7 +369,7 @@ HIND:
 		VisualBounds: 38,32
 	WithMuzzleOverlay:
 	SpawnActorOnDeath:
-		Actor: HIND.Husk
+		Actor: HUEY.Husk
 	SmokeTrailWhenDamaged:
 		Offset: -427,0,0
 	ProducibleWithLevel:

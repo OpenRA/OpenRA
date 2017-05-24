@@ -207,10 +207,10 @@ HELI.Husk:
 	RenderSprites:
 		Image: heli
 
-HIND.Husk:
+HUEY.Husk:
 	Inherits: ^HelicopterHusk
 	Tooltip:
-		Name: Hind
+		Name: Gunship
 	Aircraft:
 		TurnSpeed: 4
 		Speed: 112
@@ -227,7 +227,7 @@ HIND.Husk:
 		Range: 8c0
 		Type: GroundPosition
 	RenderSprites:
-		Image: hind
+		Image: huey
 
 U2.Husk:
 	Inherits: ^PlaneHusk

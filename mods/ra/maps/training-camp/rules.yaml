@@ -103,13 +103,13 @@ TRAN:
 	Valued:
 		Cost: 150
 
-HIND:
+HELI:
 	Buildable:
 		Prerequisites: hpad
 	Valued:
 		Cost: 200
 
-HELI:
+HUEY:
 	Buildable:
 		Prerequisites: hpad
 	Valued:
