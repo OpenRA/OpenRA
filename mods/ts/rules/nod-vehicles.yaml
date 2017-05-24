@@ -70,6 +70,10 @@ BIKE:
 		LocalOffset: -153,-204,509, -153,204,509
 	AttackFrontal:
 		Voice: Attack
+	DamagedByTerrain@VEINS:
+		RequiresCondition: !inside-tunnel && !rank-elite
+	LeavesTrails@VEINS:
+		RequiresCondition: !inside-tunnel && !rank-elite
 
 TTNK:
 	Inherits: ^Tank
@@ -171,6 +175,10 @@ TTNK:
 	Armor@deployed:
 		Type: Concrete
 		RequiresCondition: deployed
+	DetectCloaked:
+		Range: 1c768
+		RequiresCondition: rank-elite
+	RenderDetectionCircle:
 	Carryable:
 		RequiresCondition: undeployed
 	RevealOnFire:
