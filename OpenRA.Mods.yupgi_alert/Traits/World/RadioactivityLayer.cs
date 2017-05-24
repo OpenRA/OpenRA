@@ -20,6 +20,7 @@ using System.Collections.Generic;
 using OpenRA.Graphics;
 using System.Drawing;
 using OpenRA.Traits;
+using OpenRA.Mods.yupgi_alert.Graphics;
 
 namespace OpenRA.Mods.yupgi_alert.Traits
 {
@@ -51,28 +52,16 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 		[Desc("Delay of half life, in ticks")]
 		public readonly int Halflife = 150; // in ticks.
 
+		public readonly int ZOffset = -10;
+
 		// Damage dealing is handled by "DamagedByRadioactivity" trait attached at each actor.
 		public object Create(ActorInitializer init) { return new RadioactivityLayer(init.Self, this); }
 	}
 
-	class Radioactivity
-	{
-		public int ticks = 0;
-		public int level = 0;
-
-		public Radioactivity Clone()
-		{
-			Radioactivity result = new Radioactivity();
-			result.ticks = ticks;
-			result.level = level;
-			return result;
-		}
-	}
-
-	public class RadioactivityLayer : IRenderOverlay, IWorldLoaded, ITickRender, INotifyActorDisposing, ITick
+	public class RadioactivityLayer : IWorldLoaded, INotifyActorDisposing, ITick, ITickRender
 	{
 		readonly World world;
-		readonly RadioactivityLayerInfo info;
+		public readonly RadioactivityLayerInfo Info;
 
 		// In the following, I think dictionary is better than array, as radioactivity has similar affecting area as smudges.
 
@@ -85,13 +74,13 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 		readonly HashSet<CPos> dirty = new HashSet<CPos>(); // dirty, as in cache dirty bits.
 
 		readonly int k1000; // half life constant, to be computed at init.
-		public int slope100;
-		public int y_intercept100;
+		public readonly int Slope100;
+		public readonly int Y_intercept100;
 
 		public RadioactivityLayer(Actor self, RadioactivityLayerInfo info)
 		{
 			world = self.World;
-			this.info = info;
+			Info = info;
 			//k = info.UpdateDelay * ((float) Math.Log(2)) / info.Halflife;
 			k1000 = info.UpdateDelay * 693 / info.Halflife; // (693 is 1000*ln(2) so we must divide by 1000 later on.)
 			//Debug.Assert(k > 0);
@@ -99,38 +88,10 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 			// d/dt will be in ticks, ofcourse.
 
 			// rad level visualization constants...
-			slope100 = 100 * (info.Brightest - info.Darkest) / (info.MaxLevel - 1);
-			y_intercept100 = 100*info.Brightest - (info.MaxLevel * slope100);
+			Slope100 = 100 * (info.Brightest - info.Darkest) / (info.MaxLevel - 1);
+			Y_intercept100 = 100*info.Brightest - (info.MaxLevel * Slope100);
 		}
-
-		public void Render(WorldRenderer wr)
-		{
-			//foreach (var kv in spriteLayers.Values)
-			//kv.Draw(wr.Viewport);
-			foreach (var tile in rendered_tiles)
-			{
-				var ra = tile.Value;
-				var center = wr.World.Map.CenterOfCell(tile.Key);
-				var tl = wr.Screen3DPosition(center - new WVec(512, 512, 0)); // cos 512 is half a cell.
-				var br = wr.Screen3DPosition(center + new WVec(512, 512, 0));
-
-				int level = ra.level > info.MaxLevel ? info.MaxLevel : ra.level;
-				if (level == 0)
-					continue; // don't visualize 0 cells. They might show up before cells getting removed.
-
-				int alpha = (y_intercept100 + slope100 * level)/100; // Linear interpolation
-				alpha = alpha > 255 ? 255 : alpha; // just to be safe.
-
-				Color color = Color.FromArgb(alpha, info.Color);
-				Game.Renderer.WorldRgbaColorRenderer.FillRect(tl, br, color);
-
-				// mix in yellow so that the radion shines brightly, after certain threshold.
-				// It is different than tinting the info.color itself and provides nicer look.
-				if (alpha > info.MixThreshold)
-					Game.Renderer.WorldRgbaColorRenderer.FillRect(tl, br, Color.FromArgb(16, info.Color2));
-			}
-		}
-
+	
 		public void Tick(Actor self)
 		{
 			var remove = new List<CPos>();
@@ -148,7 +109,7 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 				//ra.level /= 2; // simple is best haha...
 				// Looks unnatural and induces "flickers"
 
-				ra.ticks = info.UpdateDelay; // reset ticks
+				ra.ticks = Info.UpdateDelay; // reset ticks
 				int dlevel = k1000 * ra.level / 1000;
 				if (dlevel < 1)
 					dlevel = 1; // must decrease by at least 1 so that the contamination disappears eventually.
@@ -168,10 +129,7 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 				tiles.Remove(r);
 		}
 
-		public void WorldLoaded(World w, WorldRenderer wr)
-		{
-			// hmm dunno what to do, at the moment.
-		}
+		public void WorldLoaded(World w, WorldRenderer wr) { }
 
 		// tick render, regardless of pause state.
 		public void TickRender(WorldRenderer wr, Actor self)
@@ -181,11 +139,18 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 			{
 				if (!self.World.FogObscures(c))
 				{
+					if (rendered_tiles.ContainsKey(c))
+					{
+						world.Remove(rendered_tiles[c]);
+						rendered_tiles.Remove(c);
+					}
+
 					// synchronize observations with true value.
 					if (tiles.ContainsKey(c))
-						rendered_tiles[c] = tiles[c].Clone();
-					else
-						rendered_tiles.Remove(c);
+					{
+						rendered_tiles[c] = new Radioactivity(tiles[c]);
+						world.Add(rendered_tiles[c]);
+					}
 					remove.Add(c);
 				}
 			}
@@ -202,8 +167,8 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 				return 0;
 
 			var level = tiles[cell].level;
-			if (level > info.MaxLevel)
-				return info.MaxLevel;
+			if (level > Info.MaxLevel)
+				return Info.MaxLevel;
 			else
 				return level;
 		}
@@ -212,7 +177,7 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 		{
 			// Initialize, on fresh impact.
 			if (!tiles.ContainsKey(cell))
-				tiles[cell] = new Radioactivity();
+				tiles[cell] = new Radioactivity(this, world.Map.CenterOfCell(cell));
 
 			var ra = tiles[cell];
 			var new_level = level + ra.level;
@@ -226,7 +191,7 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 			// apply new level.
 			ra.level = new_level;
 
-			ra.ticks = info.UpdateDelay;
+			ra.ticks = Info.UpdateDelay;
 			//ra.ticks = info.Halflife;
 
 			dirty.Add(cell);
@@ -248,7 +213,6 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 				return;
 
 			// dispose all stuff
-
 			disposed = true;
 		}
 	}

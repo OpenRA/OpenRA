@@ -104,8 +104,9 @@ namespace OpenRA.Mods.yupgi_alert.Warheads
 		void IncreaseRALevel(CPos pos, int foff, RadioactivityLayer ra_layer)
 		{
 			// increase RA level of the cell by this amount.
-			int level = this.Level * foff / 100;
-			ra_layer.IncreaseLevel(pos, level, MaxLevel);
+			// Apply fall off to MaxLevel, because if we keep desolator there for very long,
+			// all cells get saturated and doesn't look good.
+			ra_layer.IncreaseLevel(pos, Level * foff / 100, MaxLevel * foff / 100);
 		}
 	}
 }
