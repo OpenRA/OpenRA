@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Common.Server
 	{
 		// 3 minutes. Server has a 5 minute TTL for games, so give ourselves a bit of leeway.
 		const int MasterPingInterval = 60 * 3;
-		static readonly Beacon LanGameBeacon = new Beacon("OpenRALANGame", (ushort)new Random(DateTime.Now.Millisecond).Next(2048, 60000));
+		static readonly Beacon LanGameBeacon;
 		static readonly Dictionary<int, string> MasterServerErrors = new Dictionary<int, string>()
 		{
 			{ 1, "Server port is not accessible from the internet." },
@@ -40,6 +40,18 @@ namespace OpenRA.Mods.Common.Server
 		volatile bool isBusy;
 		Queue<string> masterServerMessages = new Queue<string>();
 
+		static MasterServerPinger()
+		{
+			try
+			{
+				LanGameBeacon = new Beacon("OpenRALANGame", (ushort)new Random(DateTime.Now.Millisecond).Next(2048, 60000));
+			}
+			catch (Exception ex)
+			{
+				Log.Write("server", "BeaconLib.Beacon: " + ex.Message);
+			}
+		}
+
 		public void Tick(S server)
 		{
 			if ((Game.RunTime - lastPing > MasterPingInterval * 1000) || isInitialPing)
@@ -52,7 +64,7 @@ namespace OpenRA.Mods.Common.Server
 
 		public void ServerStarted(S server)
 		{
-			if (!server.Ip.Equals(IPAddress.Loopback))
+			if (!server.Ip.Equals(IPAddress.Loopback) && LanGameBeacon != null)
 				LanGameBeacon.Start();
 		}
 
@@ -68,7 +80,9 @@ namespace OpenRA.Mods.Common.Server
 
 		public void GameEnded(S server)
 		{
-			LanGameBeacon.Stop();
+			if (LanGameBeacon != null)
+				LanGameBeacon.Stop();
+
 			PublishGame(server);
 		}
 
@@ -86,7 +100,8 @@ namespace OpenRA.Mods.Common.Server
 			var clients = server.LobbyInfo.Clients.Where(c1 => c1.Bot == null).Select(c => Convert.ToBase64String(Encoding.UTF8.GetBytes(c.Name))).ToArray();
 
 			UpdateMasterServer(server, numPlayers, numSlots, numBots, numSpectators, mod, passwordProtected, clients);
-			UpdateLANGameBeacon(server, numPlayers, numSlots, numBots, numSpectators, mod, passwordProtected);
+			if (LanGameBeacon != null)
+				UpdateLANGameBeacon(server, numPlayers, numSlots, numBots, numSpectators, mod, passwordProtected);
 		}
 
 		void UpdateMasterServer(S server, int numPlayers, int numSlots, int numBots, int numSpectators, Manifest mod, bool passwordProtected, string[] clients)

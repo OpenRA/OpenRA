@@ -112,9 +112,16 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			Game.LoadWidget(null, "GLOBALCHAT_PANEL", widget.Get("GLOBALCHAT_ROOT"), new WidgetArgs());
 
 			lanGameLocations = new List<BeaconLocation>();
-			lanGameProbe = new Probe("OpenRALANGame");
-			lanGameProbe.BeaconsUpdated += locations => lanGameLocations = locations;
-			lanGameProbe.Start();
+			try
+			{
+				lanGameProbe = new Probe("OpenRALANGame");
+				lanGameProbe.BeaconsUpdated += locations => lanGameLocations = locations;
+				lanGameProbe.Start();
+			}
+			catch (Exception ex)
+			{
+				Log.Write("debug", "BeaconLib.Probe: " + ex.Message);
+			}
 
 			RefreshServerList();
 
