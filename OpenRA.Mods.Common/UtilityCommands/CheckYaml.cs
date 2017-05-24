@@ -12,6 +12,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.FileSystem;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.UtilityCommands
@@ -82,7 +83,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						.Select(m => new Map(modData, m.Package)));
 				}
 				else
-					maps.Add(new Map(modData, new FileSystem.Folder(".").OpenPackage(args[1], modData.ModFiles)));
+					maps.Add(new Map(modData, new Folder(".").OpenPackage(args[1], modData.ModFiles)));
 
 				foreach (var testMap in maps)
 				{
