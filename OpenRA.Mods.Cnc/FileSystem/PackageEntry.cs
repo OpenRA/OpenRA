@@ -13,9 +13,9 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using OpenRA.FileFormats;
+using OpenRA.Mods.Cnc.FileFormats;
 
-namespace OpenRA.FileSystem
+namespace OpenRA.Mods.Cnc.FileSystem
 {
 	public enum PackageHashType { Classic, CRC32 }
 

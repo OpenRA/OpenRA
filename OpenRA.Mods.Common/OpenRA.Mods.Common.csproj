@@ -760,7 +760,6 @@
     <Compile Include="Widgets\Logic\Installation\ModContentDiscTooltipLogic.cs" />
     <Compile Include="Widgets\Logic\Installation\InstallFromDiscLogic.cs" />
     <Compile Include="Widgets\Logic\Installation\ModContentPromptLogic.cs" />
-    <Compile Include="UtilityCommands\ListMixContentsCommand.cs" />
     <Compile Include="UtilityCommands\ListMSCabContentsCommand.cs" />
     <Compile Include="FileFormats\MSCabCompression.cs" />
     <Compile Include="Traits\World\ScriptLobbyDropdown.cs" />

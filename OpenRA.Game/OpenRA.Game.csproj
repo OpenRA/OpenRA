@@ -107,11 +107,8 @@
     <Compile Include="Activities\CallFunc.cs" />
     <Compile Include="Actor.cs" />
     <Compile Include="CacheStorage.cs" />
-    <Compile Include="FileSystem\IdxEntry.cs" />
     <Compile Include="FileSystem\IPackage.cs" />
     <Compile Include="LogProxy.cs" />
-    <Compile Include="FileFormats\IdxReader.cs" />
-    <Compile Include="FileSystem\BagFile.cs" />
     <Compile Include="Map\MapGrid.cs" />
     <Compile Include="Map\MapPlayers.cs" />
     <Compile Include="MPos.cs" />
@@ -263,10 +260,7 @@
   <ItemGroup>
     <Compile Include="FileSystem\Folder.cs" />
     <Compile Include="FileSystem\InstallShieldPackage.cs" />
-    <Compile Include="FileSystem\MixFile.cs" />
-    <Compile Include="FileSystem\Pak.cs" />
     <Compile Include="FileSystem\ZipFile.cs" />
-    <Compile Include="FileSystem\BigFile.cs" />
     <Compile Include="Map\PlayerReference.cs" />
     <Compile Include="Map\TileReference.cs" />
     <Compile Include="Map\TileSet.cs" />
@@ -275,11 +269,6 @@
     <Compile Include="Manifest.cs" />
     <Compile Include="Graphics\Vertex.cs" />
     <Compile Include="FileFormats\Blast.cs" />
-    <Compile Include="FileFormats\Blowfish.cs" />
-    <Compile Include="FileFormats\BlowfishKeyProvider.cs" />
-    <Compile Include="FileFormats\CRC32.cs" />
-    <Compile Include="FileFormats\XccGlobalDatabase.cs" />
-    <Compile Include="FileFormats\XccLocalDatabase.cs" />
     <Compile Include="FileFormats\HvaReader.cs" />
     <Compile Include="FileFormats\PngLoader.cs" />
     <Compile Include="FileFormats\VxlReader.cs" />
@@ -303,7 +292,6 @@
     <Compile Include="Map\MapCache.cs" />
     <Compile Include="Map\MapPreview.cs" />
     <Compile Include="Graphics\HSLColor.cs" />
-    <Compile Include="FileSystem\PackageEntry.cs" />
     <Compile Include="CPos.cs" />
     <Compile Include="CVec.cs" />
     <Compile Include="WAngle.cs" />
