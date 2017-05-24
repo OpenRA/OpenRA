@@ -53,9 +53,14 @@ namespace OpenRA.FileSystem
 
 		public IReadOnlyPackage OpenPackage(string filename, FileSystem context)
 		{
-			var subFolder = Platform.ResolvePath(Path.Combine(Name, filename));
-			if (Directory.Exists(subFolder))
-				return new Folder(subFolder);
+			var resolvedPath = Platform.ResolvePath(Path.Combine(Name, filename));
+			if (Directory.Exists(resolvedPath))
+				return new Folder(resolvedPath);
+
+			// Zip files loaded from Folders (and *only* from Folders) can be read-write
+			IReadWritePackage readWritePackage;
+			if (ZipFileLoader.TryParseReadWritePackage(resolvedPath, out readWritePackage))
+				return readWritePackage;
 
 			// Other package types can be loaded normally
 			IReadOnlyPackage package;

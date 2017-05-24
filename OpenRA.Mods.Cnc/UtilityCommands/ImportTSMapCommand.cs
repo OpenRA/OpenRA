@@ -271,7 +271,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 			map.PlayerDefinitions = mapPlayers.ToMiniYaml();
 
 			var dest = Path.GetFileNameWithoutExtension(args[1]) + ".oramap";
-			map.Save(ZipFileLoader.Create(dest, new Folder(".")));
+			map.Save(ZipFileLoader.Create(dest));
 			Console.WriteLine(dest + " saved.");
 		}
 
