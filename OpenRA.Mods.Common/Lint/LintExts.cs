@@ -20,7 +20,7 @@ namespace OpenRA.Mods.Common.Lint
 {
 	public class LintExts
 	{
-		static IEnumerable<string> GetValues(object value, Type type, object parent, string name, Action<string> emitError)
+		static IEnumerable<string> GetValues(object value, Type type, object parent, string name, Action<string> emitError, bool preferVariableExpressions = false)
 		{
 			if (value == null)
 				return Enumerable.Empty<string>();
@@ -44,9 +44,11 @@ namespace OpenRA.Mods.Common.Lint
 
 				if (type.GetGenericTypeDefinition() == typeof(Dictionary<,>))
 				{
-					var keyIsExpression = typeof(VariableExpression).IsAssignableFrom(type.GetGenericArguments()[0]);
-					value = keyIsExpression ? type.GetProperty("Keys").GetValue(value) : type.GetProperty("Values").GetValue(value);
-					return GetValues(value, value.GetType(), parent, name, emitError);
+					var useKeys = preferVariableExpressions
+						? typeof(VariableExpression).IsAssignableFrom(type.GetGenericArguments()[0])
+						: typeof(VariableExpression).IsAssignableFrom(type.GetGenericArguments()[1]);
+					value = useKeys ? type.GetProperty("Keys").GetValue(value) : type.GetProperty("Values").GetValue(value);
+					return GetValues(value, value.GetType(), parent, name, emitError, preferVariableExpressions);
 				}
 
 				var values = value as IEnumerable<object>;
@@ -57,24 +59,22 @@ namespace OpenRA.Mods.Common.Lint
 					if (type == null)
 						return Enumerable.Empty<string>();
 
-					return values.SelectMany(item => GetValues(item, type, parent, name, emitError)).Distinct();
+					return values.SelectMany(item => GetValues(item, type, parent, name, emitError, preferVariableExpressions)).Distinct();
 				}
 			}
 
-			throw new InvalidOperationException(
-				"Bad type for reference on " + parent.GetType().Name + "." + name + "."
-				+ " Supported types: string, BooleanExpression, IntegerExpression, IEnumerable<(supported)>,"
-				+ " Dictionary<?, (supported)>, Dictionary<BooleanExpression, ?>, Dictionary<IntegerExpression, ?>");
+			throw new InvalidOperationException("Bad type for reference on " + parent.GetType().Name + "." + name
+				+ ". Supported types: string, BooleanExpression, IntegerExpression, IEnumerable<(supported)>, Dictionary<?, (supported)>, Dictionary<(supported), ?>");
 		}
 
-		public static IEnumerable<string> GetFieldValues(object ruleInfo, FieldInfo fieldInfo, Action<string> emitError)
+		public static IEnumerable<string> GetFieldValues(object ruleInfo, FieldInfo fieldInfo, Action<string> emitError, bool preferVariableExpressions = false)
 		{
-			return GetValues(fieldInfo.GetValue(ruleInfo), fieldInfo.FieldType, ruleInfo.GetType(), fieldInfo.Name, emitError);
+			return GetValues(fieldInfo.GetValue(ruleInfo), fieldInfo.FieldType, ruleInfo, fieldInfo.Name, emitError, preferVariableExpressions);
 		}
 
-		public static IEnumerable<string> GetPropertyValues(object ruleInfo, PropertyInfo propertyInfo, Action<string> emitError)
+		public static IEnumerable<string> GetPropertyValues(object ruleInfo, PropertyInfo propertyInfo, Action<string> emitError, bool preferVariableExpressions = false)
 		{
-			return GetValues(propertyInfo.GetValue(ruleInfo), propertyInfo.PropertyType, ruleInfo.GetType(), propertyInfo.Name, emitError);
+			return GetValues(propertyInfo.GetValue(ruleInfo), propertyInfo.PropertyType, ruleInfo, propertyInfo.Name, emitError, preferVariableExpressions);
 		}
 	}
 }
