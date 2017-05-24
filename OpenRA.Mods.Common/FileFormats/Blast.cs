@@ -15,7 +15,7 @@
 using System;
 using System.IO;
 
-namespace OpenRA.FileFormats
+namespace OpenRA.Mods.Common.FileFormats
 {
 	public static class Blast
 	{
