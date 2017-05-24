@@ -82,7 +82,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						.Select(m => new Map(modData, m.Package)));
 				}
 				else
-					maps.Add(new Map(modData, modData.ModFiles.OpenPackage(args[1], new FileSystem.Folder("."))));
+					maps.Add(new Map(modData, new FileSystem.Folder(".").OpenPackage(args[1], modData.ModFiles)));
 
 				foreach (var testMap in maps)
 				{

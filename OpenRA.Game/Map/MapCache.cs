@@ -92,7 +92,7 @@ namespace OpenRA
 					{
 						using (new Support.PerfTimer(map))
 						{
-							mapPackage = modData.ModFiles.OpenPackage(map, kv.Key);
+							mapPackage = kv.Key.OpenPackage(map, modData.ModFiles);
 							if (mapPackage == null)
 								continue;
 
