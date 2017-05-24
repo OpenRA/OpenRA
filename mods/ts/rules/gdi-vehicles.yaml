@@ -282,6 +282,11 @@ SONIC:
 		TurnSpeed: 5
 		Offset: -170,0,0
 	WithVoxelTurret:
+	Explodes:
+		RequiresCondition: !rank-elite
+	Explodes@ELITE:
+		RequiresCondition: rank-elite
+		Weapon: UnitExplode
 
 JUGG:
 	Inherits: ^Tank
