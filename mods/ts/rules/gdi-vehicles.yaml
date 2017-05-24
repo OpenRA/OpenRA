@@ -188,6 +188,10 @@ MMCH:
 		Recoil: 128
 		RecoilRecovery: 32
 		LocalOffset: 905,272,1177
+	DetectCloaked:
+		Range: 1c768
+		RequiresCondition: rank-elite
+	RenderDetectionCircle:
 	WithMuzzleOverlay:
 	RenderVoxels:
 	WithVoxelBarrel:
