@@ -27,8 +27,8 @@ waypoint:
 		InitialFacing: 160
 	Turreted:
 		InitialFacing: 160
-	WithInfantryBody:
-		StandSequences: run
+	WithFacingSpriteBody:
+		Sequence: walk
 	RenderVoxels:
 		Image: mmch
 		Palette: colorpicker

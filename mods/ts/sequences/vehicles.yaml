@@ -159,11 +159,12 @@ mmch:
 		Stride: 15
 		ShadowStart: 152
 		Offset: 0, 0, 12
-	run:
+	walk:
 		Length: 15
 		Facings: -8
 		ShadowStart: 152
 		Offset: 0, 0, 12
+		Tick: 60
 	turret:
 		Start: 120
 		Facings: -32
@@ -181,11 +182,12 @@ jugg:
 		Stride: 15
 		ShadowStart: 120
 		Offset: 0, 0, 12
-	run: jugger
+	walk: jugger
 		Length: 15
 		Facings: -8
 		ShadowStart: 120
 		Offset: 0, 0, 12
+		Tick: 60
 	turret: djugg_a
 		Facings: 32
 		Offset: -4, 0, 12
@@ -219,16 +221,17 @@ smech:
 		Start: 96
 		Facings: -8
 		ShadowStart: 232
-	run:
+	walk:
 		Facings: -8
 		Length: 12
 		ShadowStart: 136
+		Tick: 48
 	shoot:
 		Start: 104
 		Length: 4
 		Facings: -8
 		ShadowStart: 240
-		Tick: 100
+		Tick: 80
 	icon: smchicon
 
 trucka:
