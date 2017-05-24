@@ -20,42 +20,61 @@ namespace OpenRA.Mods.Common.Lint
 {
 	public class LintExts
 	{
-		public static IEnumerable<string> GetFieldValues(object ruleInfo, FieldInfo fieldInfo, Action<string> emitError)
+		static IEnumerable<string> GetValues(object value, Type type, object parent, string name, Action<string> emitError)
 		{
-			var type = fieldInfo.FieldType;
+			if (value == null)
+				return Enumerable.Empty<string>();
+
 			if (type == typeof(string))
-				return new[] { (string)fieldInfo.GetValue(ruleInfo) };
+				return new[] { (string)value };
 
-			if (typeof(IEnumerable<string>).IsAssignableFrom(type))
-				return fieldInfo.GetValue(ruleInfo) as IEnumerable<string>;
+			var expression = value as VariableExpression;
+			if (expression != null)
+				return expression.Variables;
 
-			if (type == typeof(BooleanExpression) || type == typeof(IntegerExpression))
+			if (value is IEnumerable)
 			{
-				var expr = (VariableExpression)fieldInfo.GetValue(ruleInfo);
-				return expr != null ? expr.Variables : Enumerable.Empty<string>();
+				var strings = value as IEnumerable<string>;
+				if (strings != null)
+					return strings;
+
+				var expressions = value as IEnumerable<VariableExpression>;
+				if (expressions != null)
+					return expressions.SelectMany(expr => expr.Variables).Distinct();
+
+				if (type.GetGenericTypeDefinition() == typeof(Dictionary<,>))
+				{
+					var keyIsExpression = typeof(VariableExpression).IsAssignableFrom(type.GetGenericArguments()[0]);
+					value = keyIsExpression ? type.GetProperty("Keys").GetValue(value) : type.GetProperty("Values").GetValue(value);
+					return GetValues(value, value.GetType(), parent, name, emitError);
+				}
+
+				var values = value as IEnumerable<object>;
+				if (values != null)
+				{
+					var first = values.FirstOrDefault();
+					type = first == null ? null : first.GetType();
+					if (type == null)
+						return Enumerable.Empty<string>();
+
+					return values.SelectMany(item => GetValues(item, type, parent, name, emitError)).Distinct();
+				}
 			}
 
-			throw new InvalidOperationException("Bad type for reference on {0}.{1}. Supported types: string, IEnumerable<string>, BooleanExpression, IntegerExpression"
-				.F(ruleInfo.GetType().Name, fieldInfo.Name));
+			throw new InvalidOperationException(
+				"Bad type for reference on " + parent.GetType().Name + "." + name + "."
+				+ " Supported types: string, BooleanExpression, IntegerExpression, IEnumerable<(supported)>,"
+				+ " Dictionary<?, (supported)>, Dictionary<BooleanExpression, ?>, Dictionary<IntegerExpression, ?>");
+		}
+
+		public static IEnumerable<string> GetFieldValues(object ruleInfo, FieldInfo fieldInfo, Action<string> emitError)
+		{
+			return GetValues(fieldInfo.GetValue(ruleInfo), fieldInfo.FieldType, ruleInfo.GetType(), fieldInfo.Name, emitError);
 		}
 
 		public static IEnumerable<string> GetPropertyValues(object ruleInfo, PropertyInfo propertyInfo, Action<string> emitError)
 		{
-			var type = propertyInfo.PropertyType;
-			if (type == typeof(string))
-				return new[] { (string)propertyInfo.GetValue(ruleInfo) };
-
-			if (typeof(IEnumerable).IsAssignableFrom(type))
-				return (IEnumerable<string>)propertyInfo.GetValue(ruleInfo);
-
-			if (type == typeof(BooleanExpression) || type == typeof(IntegerExpression))
-			{
-				var expr = (VariableExpression)propertyInfo.GetValue(ruleInfo);
-				return expr != null ? expr.Variables : Enumerable.Empty<string>();
-			}
-
-			throw new InvalidOperationException("Bad type for reference on {0}.{1}. Supported types: string, IEnumerable<string>, BooleanExpression, IntegerExpression"
-				.F(ruleInfo.GetType().Name, propertyInfo.Name));
+			return GetValues(propertyInfo.GetValue(ruleInfo), propertyInfo.PropertyType, ruleInfo.GetType(), propertyInfo.Name, emitError);
 		}
 	}
 }
