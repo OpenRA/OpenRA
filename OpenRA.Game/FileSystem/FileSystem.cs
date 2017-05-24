@@ -81,12 +81,6 @@ namespace OpenRA.FileSystem
 			return null;
 		}
 
-		public IReadOnlyPackage OpenPackage(string filename, IReadOnlyPackage parent)
-		{
-			// TODO: Make legacy callers access the parent package directly
-			return parent.OpenPackage(filename, this);
-		}
-
 		public void Mount(string name, string explicitName = null)
 		{
 			var optional = name.StartsWith("~", StringComparison.Ordinal);

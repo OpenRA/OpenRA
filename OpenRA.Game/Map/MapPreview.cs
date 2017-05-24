@@ -471,7 +471,7 @@ namespace OpenRA
 						Log.Write("debug", "Downloaded map to '{0}'", mapFilename);
 						Game.RunAfterTick(() =>
 						{
-							var package = modData.ModFiles.OpenPackage(mapFilename, mapInstallPackage);
+							var package = mapInstallPackage.OpenPackage(mapFilename, modData.ModFiles);
 							if (package == null)
 								innerData.Status = MapStatus.DownloadError;
 							else
