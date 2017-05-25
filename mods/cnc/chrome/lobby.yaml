@@ -123,7 +123,7 @@ Container@SERVER_LOBBY:
 					X: 15
 					Y: 285
 					Width: PARENT_RIGHT - 30
-					Height: PARENT_BOTTOM - 330
+					Height: PARENT_BOTTOM - 300
 		Button@DISCONNECT_BUTTON:
 			Y: PARENT_BOTTOM - 36
 			Width: 140

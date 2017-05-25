@@ -22,7 +22,7 @@ Container@LOBBY_GLOBALCHAT_PANEL:
 				ScrollPanel@HISTORY_PANEL:
 					Y: 19
 					Width: 582
-					Height: PARENT_BOTTOM - 19
+					Height: PARENT_BOTTOM - 49
 					TopBottomSpacing: 4
 					ItemSpacing: 4
 					Children:
@@ -52,7 +52,7 @@ Container@LOBBY_GLOBALCHAT_PANEL:
 									Shadow: True
 				TextField@CHAT_TEXTFIELD:
 					X: 200
-					Y: PARENT_BOTTOM + 5
+					Y: PARENT_BOTTOM - 25
 					Width: 382
 					Height: 25
 					LeftMargin: 60
@@ -66,7 +66,7 @@ Container@LOBBY_GLOBALCHAT_PANEL:
 				ScrollPanel@NICKNAME_PANEL:
 					X: 596
 					Width: PARENT_RIGHT - 596
-					Height: PARENT_BOTTOM
+					Height: PARENT_BOTTOM - 30
 					Children:
 						Container@NICKNAME_TEMPLATE:
 							Height: 20
@@ -83,48 +83,52 @@ Container@LOBBY_GLOBALCHAT_PANEL:
 									Height: 20
 				Button@DISCONNECT_BUTTON:
 					X: 596
-					Y: PARENT_BOTTOM + 5
+					Y: PARENT_BOTTOM - 25
 					Width: PARENT_RIGHT - 596
 					Height: 25
 					Text: Leave Chat
 					Font: Bold
-		Background@GLOBALCHAT_CONNECT_PANEL:
+		Container@GLOBALCHAT_CONNECT_PANEL:
 			Width: PARENT_RIGHT
 			Height: PARENT_BOTTOM
-			Background: scrollpanel-bg
 			Children:
-				Label@GLOBAL_CHAT_LABEL:
-					Y: PARENT_BOTTOM / 4
+				Background:
 					Width: PARENT_RIGHT
-					Align: Center
-					Text: Global Chat
-					Font: Bold
-				Label@NICKNAME_LABEL:
-					X: 200
-					Y: PARENT_BOTTOM / 4 + 35
-					Text: Nickname:
-				TextField@NICKNAME_TEXTFIELD:
-					X: 270
-					Y: PARENT_BOTTOM / 4 + 25
-					Width: 150
-					Height: 25
-				Checkbox@CONNECT_AUTOMATICALLY_CHECKBOX:
-					X: 270
-					Y: PARENT_BOTTOM / 4 + 75
-					Height: 20
-					Width: 180
-					Font: Regular
-					Text: Connect Automatically
-				Button@CONNECT_BUTTON:
-					X: 430
-					Y: PARENT_BOTTOM / 4 + 25
-					Width: 100
-					Height: 25
-					Text: Connect
-					Font: Bold
+					Height: PARENT_BOTTOM - 30
+					Background: scrollpanel-bg
+					Children:
+						Label@GLOBAL_CHAT_LABEL:
+							Y: PARENT_BOTTOM / 4
+							Width: PARENT_RIGHT
+							Align: Center
+							Text: Global Chat
+							Font: Bold
+						Label@NICKNAME_LABEL:
+							X: 200
+							Y: PARENT_BOTTOM / 4 + 35
+							Text: Nickname:
+						TextField@NICKNAME_TEXTFIELD:
+							X: 270
+							Y: PARENT_BOTTOM / 4 + 25
+							Width: 150
+							Height: 25
+						Checkbox@CONNECT_AUTOMATICALLY_CHECKBOX:
+							X: 270
+							Y: PARENT_BOTTOM / 4 + 75
+							Height: 20
+							Width: 180
+							Font: Regular
+							Text: Connect Automatically
+						Button@CONNECT_BUTTON:
+							X: 430
+							Y: PARENT_BOTTOM / 4 + 25
+							Width: 100
+							Height: 25
+							Text: Connect
+							Font: Bold
 				TextField@FAKE_CHAT:
 					X: 200
-					Y: PARENT_BOTTOM + 5
+					Y: PARENT_BOTTOM - 25
 					Width: PARENT_RIGHT - 200
 					Height: 25
 					LeftMargin: 60
