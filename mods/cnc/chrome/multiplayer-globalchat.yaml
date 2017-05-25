@@ -28,7 +28,7 @@ Container@GLOBALCHAT_PANEL:
 					Children:
 						Container@CHAT_TEMPLATE:
 							X: 2
-							Width: PARENT_RIGHT-27
+							Width: PARENT_RIGHT - 27
 							Height: 16
 							Children:
 								Label@TIME:
