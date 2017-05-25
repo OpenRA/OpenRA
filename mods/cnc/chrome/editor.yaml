@@ -320,10 +320,16 @@ Container@EDITOR_WORLD_ROOT:
 							Width: PARENT_RIGHT
 							Height: 25
 							Font: Bold
-						ScrollPanel@ACTORTEMPLATE_LIST:
-							Y: 24
+						DropDownButton@ACTOR_CATEGORY:
+							Y: 25
 							Width: PARENT_RIGHT
-							Height: PARENT_BOTTOM - 24
+							Height: 25
+							Text: Categories
+							Font: Bold
+						ScrollPanel@ACTORTEMPLATE_LIST:
+							Y: 50
+							Width: PARENT_RIGHT
+							Height: PARENT_BOTTOM - 50
 							TopBottomSpacing: 4
 							ItemSpacing: 4
 							Children:
@@ -409,3 +415,29 @@ Container@EDITOR_WORLD_ROOT:
 			Align: Left
 			Font: Bold
 			Contrast: true
+
+ScrollPanel@ACTOR_CATEGORY_FILTER_PANEL:
+	Width: 250
+	Children:
+		Container@SELECT_CATEGORIES_BUTTONS
+			Width: PARENT_RIGHT
+			Height: 30
+			Children:
+				Button@SELECT_ALL:
+					X: 10
+					Y: 2 
+					Width: 100
+					Height: 25
+					Text: Select all
+				Button@SELECT_NONE:
+					X: 120
+					Y: 2
+					Width: 100
+					Height: 25
+					Text: Select none
+		Checkbox@CATEGORY_TEMPLATE:
+			X: 5
+			Y: 5
+			Width: PARENT_RIGHT - 29
+			Height: 22
+			Visible: false

@@ -10,11 +10,11 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
-using OpenRA.Traits;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
@@ -28,6 +28,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly Ruleset mapRules;
 		readonly World world;
 		readonly WorldRenderer worldRenderer;
+		readonly List<string> allCategories;
+		readonly List<string> selectedCategories = new List<string>();
 
 		PlayerReference selectedOwner;
 
@@ -57,7 +59,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					ownersDropDown.Text = selectedOwner.Name;
 					ownersDropDown.TextColor = selectedOwner.Color.RGB;
 
-					IntializeActorPreviews();
+					InitializeActorPreviews();
 				});
 
 				item.Get<LabelWidget>("LABEL").GetText = () => option.Name;
@@ -75,15 +77,70 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			ownersDropDown.Text = selectedOwner.Name;
 			ownersDropDown.TextColor = selectedOwner.Color.RGB;
 
-			IntializeActorPreviews();
+			var actorCategorySelector = widget.Get<DropDownButtonWidget>("ACTOR_CATEGORY");
+			var filtersPanel = Ui.LoadWidget("ACTOR_CATEGORY_FILTER_PANEL", null, new WidgetArgs());
+			var categoryTemplate = filtersPanel.Get<CheckboxWidget>("CATEGORY_TEMPLATE");
+			var tileSetId = world.Map.Rules.TileSet.Id;
+			allCategories = mapRules.Actors.Where(a => !a.Value.Name.Contains('^')).Select(a => a.Value.TraitInfoOrDefault<EditorTilesetFilterInfo>())
+				.Where(i => i != null && i.Categories != null &&
+					!(i.ExcludeTilesets != null && i.ExcludeTilesets.Contains(tileSetId)) && !(i.RequireTilesets != null && !i.RequireTilesets.Contains(tileSetId)))
+				.SelectMany(i => i.Categories).Distinct().OrderBy(i => i).ToList();
+			selectedCategories.AddRange(allCategories);
+
+			var selectButtons = filtersPanel.Get<ContainerWidget>("SELECT_CATEGORIES_BUTTONS");
+			filtersPanel.AddChild(selectButtons);
+			filtersPanel.Bounds.Height = Math.Min(allCategories.Count * categoryTemplate.Bounds.Height + 5 + selectButtons.Bounds.Height, panel.Bounds.Height);
+
+			var selectAll = selectButtons.Get<ButtonWidget>("SELECT_ALL");
+			selectAll.OnClick = () =>
+			{
+				selectedCategories.Clear();
+				selectedCategories.AddRange(allCategories);
+				InitializeActorPreviews();
+			};
+
+			var selectNone = selectButtons.Get<ButtonWidget>("SELECT_NONE");
+			selectNone.OnClick = () =>
+			{
+				selectedCategories.Clear();
+				InitializeActorPreviews();
+			};
+
+			actorCategorySelector.OnMouseDown = _ =>
+			{
+				actorCategorySelector.RemovePanel();
+				actorCategorySelector.AttachPanel(filtersPanel);
+			};
+
+			foreach (var cat in allCategories)
+			{
+				var category = (CheckboxWidget)categoryTemplate.Clone();
+				category.GetText = () => cat;
+				category.IsChecked = () => selectedCategories.Contains(cat);
+				category.IsVisible = () => true;
+				category.OnClick = () =>
+				{
+					if (selectedCategories.Contains(cat))
+						selectedCategories.Remove(cat);
+					else
+						selectedCategories.Add(cat);
+
+					InitializeActorPreviews();
+				};
+
+				filtersPanel.AddChild(category);
+			}
+
+			InitializeActorPreviews();
 		}
 
-		void IntializeActorPreviews()
+		void InitializeActorPreviews()
 		{
 			panel.RemoveChildren();
 
 			var actors = mapRules.Actors.Where(a => !a.Value.Name.Contains('^'))
 				.Select(a => a.Value);
+			var tileSetId = world.Map.Rules.TileSet.Id;
 
 			foreach (var a in actors)
 			{
@@ -95,13 +152,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					continue;
 
 				var filter = actor.TraitInfoOrDefault<EditorTilesetFilterInfo>();
-				if (filter != null)
-				{
-					if (filter.ExcludeTilesets != null && filter.ExcludeTilesets.Contains(world.Map.Rules.TileSet.Id))
-						continue;
-					if (filter.RequireTilesets != null && !filter.RequireTilesets.Contains(world.Map.Rules.TileSet.Id))
-						continue;
-				}
+				if (filter == null || filter.Categories == null || !filter.Categories.Intersect(selectedCategories).Any())
+					continue;
+
+				if (filter.ExcludeTilesets != null && filter.ExcludeTilesets.Contains(tileSetId))
+					continue;
+
+				if (filter.RequireTilesets != null && !filter.RequireTilesets.Contains(tileSetId))
+					continue;
 
 				var td = new TypeDictionary();
 				td.Add(new FacingInit(92));
