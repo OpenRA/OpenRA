@@ -201,7 +201,19 @@ namespace OpenRA
 				foreach (var p in todo)
 				{
 					if (p.Preview != null)
-						Game.RunAfterTick(() => p.SetMinimap(sheetBuilder.Add(p.Preview)));
+					{
+						Game.RunAfterTick(() =>
+						{
+							try
+							{
+								p.SetMinimap(sheetBuilder.Add(p.Preview));
+							}
+							catch (Exception e)
+							{
+								Log.Write("debug", "Failed to load minimap with exception: {0}", e);
+							}
+						});
+					}
 
 					// Yuck... But this helps the UI Jank when opening the map selector significantly.
 					Thread.Sleep(Environment.ProcessorCount == 1 ? 25 : 5);
