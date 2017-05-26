@@ -38,13 +38,22 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public readonly string BodyName = "body";
 
 		public override object Create(ActorInitializer init) { return new WithAttackAnimation(init, this); }
+
+		public override void RulesetLoaded(Ruleset rules, ActorInfo ai)
+		{
+			var matches = ai.TraitInfos<WithSpriteBodyInfo>().Count(w => BodyName == w.Name);
+			if (matches != 1)
+				throw new YamlException("WithAttackAnimation needs exactly one sprite body with matching name.");
+
+			base.RulesetLoaded(rules, ai);
+		}
 	}
 
 	public class WithAttackAnimation : ConditionalTrait<WithAttackAnimationInfo>, ITick, INotifyAttack
 	{
 		readonly AttackBase attack;
 		readonly Armament armament;
-		readonly WithSpriteBody[] wsbs;
+		readonly WithSpriteBody wsb;
 		readonly bool noAimOrReloadAnim;
 
 		int tick;
@@ -56,19 +65,15 @@ namespace OpenRA.Mods.Common.Traits.Render
 			attack = init.Self.Trait<AttackBase>();
 			armament = init.Self.TraitsImplementing<Armament>()
 				.Single(a => a.Info.Name == Info.Armament);
-			wsbs = init.Self.TraitsImplementing<WithSpriteBody>().Where(w => Info.BodyName == w.Info.Name).ToArray();
+			wsb = init.Self.TraitsImplementing<WithSpriteBody>().First(w => w.Info.Name == Info.BodyName);
 
 			noAimOrReloadAnim = string.IsNullOrEmpty(Info.AimSequence) && string.IsNullOrEmpty(Info.ReloadPrefix);
 		}
 
 		void PlayAttackAnimation(Actor self)
 		{
-			if (!IsTraitDisabled && !string.IsNullOrEmpty(Info.AttackSequence))
+			if (!IsTraitDisabled && !wsb.IsTraitDisabled && !string.IsNullOrEmpty(Info.AttackSequence))
 			{
-				var wsb = wsbs.FirstOrDefault(Exts.IsTraitEnabled);
-				if (wsb == null)
-					return;
-
 				attackAnimPlaying = true;
 				wsb.PlayCustomAnimation(self, Info.AttackSequence,
 					() => { wsb.CancelCustomAnimation(self); attackAnimPlaying = false; });
@@ -102,11 +107,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			if (Info.Delay > 0 && --tick == 0)
 				PlayAttackAnimation(self);
 
-			if (IsTraitDisabled || noAimOrReloadAnim || attackAnimPlaying)
-				return;
-
-			var wsb = wsbs.FirstOrDefault(Exts.IsTraitEnabled);
-			if (wsb == null)
+			if (IsTraitDisabled || noAimOrReloadAnim || attackAnimPlaying || wsb.IsTraitDisabled)
 				return;
 
 			var sequence = wsb.Info.Sequence;
