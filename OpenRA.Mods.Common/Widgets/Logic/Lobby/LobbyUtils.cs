@@ -81,7 +81,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				var item = ScrollItemWidget.Setup(itemTemplate,
 					() => client.Team == ii,
-					() => orderManager.IssueOrder(Order.Command("team {0} {1}".F(client.Index, ii))));
+					() =>
+					{
+						orderManager.IssueOrder(Order.Command("team {0} {1}".F(client.Index, ii)));
+						Game.Settings.Lobby.Team = ii;
+						Game.Settings.Save();
+					});
 				item.Get<LabelWidget>("LABEL").GetText = () => ii == 0 ? "-" : ii.ToString();
 				return item;
 			};
@@ -112,7 +117,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				var item = ScrollItemWidget.Setup(itemTemplate,
 					() => client.Faction == factionId,
-					() => orderManager.IssueOrder(Order.Command("faction {0} {1}".F(client.Index, factionId))));
+					() =>
+					{
+						orderManager.IssueOrder(Order.Command("faction {0} {1}".F(client.Index, factionId)));
+						Game.Settings.Lobby.Faction = factionId;
+						Game.Settings.Save();
+					});
 				var faction = factions[factionId];
 				item.Get<LabelWidget>("LABEL").GetText = () => faction.Name;
 				var flag = item.Get<ImageWidget>("FLAG");

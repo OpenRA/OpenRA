@@ -330,9 +330,16 @@ namespace OpenRA
 		public bool ConnectAutomatically = false;
 	}
 
+	public class LobbySettings
+	{
+		public string Faction = "Random";
+		public int Team = 0;
+	}
+
 	public class Settings
 	{
 		string settingsFile;
+		string modSettingsFile;
 
 		public PlayerSettings Player = new PlayerSettings();
 		public GameSettings Game = new GameSettings();
@@ -342,11 +349,15 @@ namespace OpenRA
 		public DebugSettings Debug = new DebugSettings();
 		public KeySettings Keys = new KeySettings();
 		public ChatSettings Chat = new ChatSettings();
+		public LobbySettings Lobby = new LobbySettings();
 
 		public Dictionary<string, object> Sections;
+		public Dictionary<string, object> ModSections;
 
 		public Settings(string file, Arguments args)
 		{
+			FieldLoader.UnknownFieldAction = (s, f) => Console.WriteLine("Ignoring unknown field `{0}` on `{1}`".F(s, f.Name));
+
 			settingsFile = file;
 			Sections = new Dictionary<string, object>()
 			{
@@ -360,33 +371,7 @@ namespace OpenRA
 				{ "Chat", Chat }
 			};
 
-			// Override fieldloader to ignore invalid entries
-			var err1 = FieldLoader.UnknownFieldAction;
-			var err2 = FieldLoader.InvalidValueAction;
-			try
-			{
-				FieldLoader.UnknownFieldAction = (s, f) => Console.WriteLine("Ignoring unknown field `{0}` on `{1}`".F(s, f.Name));
-
-				if (File.Exists(settingsFile))
-				{
-					var yaml = MiniYaml.DictFromFile(settingsFile);
-
-					foreach (var kv in Sections)
-						if (yaml.ContainsKey(kv.Key))
-							LoadSectionYaml(yaml[kv.Key], kv.Value);
-				}
-
-				// Override with commandline args
-				foreach (var kv in Sections)
-					foreach (var f in kv.Value.GetType().GetFields())
-						if (args.Contains(kv.Key + "." + f.Name))
-							FieldLoader.LoadField(kv.Value, f.Name, args.GetValue(kv.Key + "." + f.Name, ""));
-			}
-			finally
-			{
-				FieldLoader.UnknownFieldAction = err1;
-				FieldLoader.InvalidValueAction = err2;
-			}
+			LoadSettings(Sections, settingsFile, args);
 		}
 
 		public void Save()
@@ -396,6 +381,15 @@ namespace OpenRA
 				root.Add(new MiniYamlNode(kv.Key, FieldSaver.SaveDifferences(kv.Value, Activator.CreateInstance(kv.Value.GetType()))));
 
 			root.WriteToFile(settingsFile);
+
+			if (ModSections != null)
+			{
+				root = new List<MiniYamlNode>();
+				foreach (var kv in ModSections)
+					root.Add(new MiniYamlNode(kv.Key, FieldSaver.SaveDifferences(kv.Value, Activator.CreateInstance(kv.Value.GetType()))));
+
+				root.WriteToFile(modSettingsFile);
+			}
 		}
 
 		static string SanitizedName(string dirty)
@@ -450,6 +444,52 @@ namespace OpenRA
 			};
 
 			FieldLoader.Load(section, yaml);
+		}
+
+		internal void LoadModSettings(string mod, string settingsFile, Arguments args)
+		{
+			modSettingsFile = settingsFile;
+			ModSections = new Dictionary<string, object>()
+			{
+				{ "Player", Player },
+				{ "Lobby", Lobby },
+				{ "Server", Server },
+				{ "Keys", Keys }
+			};
+
+			LoadSettings(ModSections, modSettingsFile, args);
+		}
+
+		private void LoadSettings(Dictionary<string, object> sections, string settingsFile, Arguments args)
+		{
+			// Override fieldloader to ignore invalid entries
+			var err1 = FieldLoader.UnknownFieldAction;
+			var err2 = FieldLoader.InvalidValueAction;
+			try
+			{
+				if (File.Exists(settingsFile))
+				{
+					var yaml = MiniYaml.DictFromFile(settingsFile);
+
+					foreach (var kv in sections)
+						if (yaml.ContainsKey(kv.Key))
+							LoadSectionYaml(yaml[kv.Key], kv.Value);
+				}
+
+				if (args != null)
+				{
+					// Override with commandline args
+					foreach (var kv in sections)
+						foreach (var f in kv.Value.GetType().GetFields())
+							if (args.Contains(kv.Key + "." + f.Name))
+								FieldLoader.LoadField(kv.Value, f.Name, args.GetValue(kv.Key + "." + f.Name, ""));
+				}
+			}
+			finally
+			{
+				FieldLoader.UnknownFieldAction = err1;
+				FieldLoader.InvalidValueAction = err2;
+			}
 		}
 	}
 }
