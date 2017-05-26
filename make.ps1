@@ -234,7 +234,13 @@ else
 	$command = $args
 }
 
-switch ($command) 
+$execute = $command
+if ($command.Length -gt 1)
+{
+	$execute = $command[0]
+}
+
+switch ($execute)
 {
 	"all" { All-Command }
 	"dependencies" { Dependencies-Command }
