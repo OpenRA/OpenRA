@@ -61,10 +61,18 @@ function Version-Command
 	}
 	elseif (Get-Command 'git' -ErrorAction SilentlyContinue)
 	{
-		$version = git name-rev --name-only --tags --no-undefined HEAD 2>$null
-		if ($version -eq $null)
+		$gitRepo = git rev-parse --is-inside-work-tree
+		if ($gitRepo)
 		{
-			$version = "git-" + (git rev-parse --short HEAD)
+			$version = git name-rev --name-only --tags --no-undefined HEAD 2>$null
+			if ($version -eq $null)
+			{
+				$version = "git-" + (git rev-parse --short HEAD)
+			}
+		}
+		else
+		{
+			echo "Not a git repository. The version will remain unchanged."
 		}
 	}
 	else
