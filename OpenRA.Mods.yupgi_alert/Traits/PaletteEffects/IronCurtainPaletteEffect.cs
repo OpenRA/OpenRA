@@ -43,18 +43,11 @@ namespace OpenRA.Mods.Common.Traits
 				var color = Color.FromArgb(64, val, 0, 0);
 				p.SetColor(j, color);
 			}
-
-			/*
-			for (var j = 0; j < colors.Length; j++)
-			{
-				var k = (i + j) % 16 + 0xb0;
-				p.SetColor(k, colors[j]);
-			}
-			*/
 		}
 
 		public void Tick(Actor self)
 		{
+			// color cycling speed
 			t = (t + 16) % 1024;
 		}
 	}
