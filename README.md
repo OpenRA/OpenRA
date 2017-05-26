@@ -8,6 +8,7 @@ In commit message, I put these string as tags:
 * [GRINDER]: Yuri grinder logic related commits
 * [IRON_EFF]: iron curtain flashing effect
 * [RADIO_ACTIVITY]: radio activity layer stuff (desolator rad eruption, nuke radiation...)
+* [SPACE]: codes for space themed maps
 
 # OpenRA
 
