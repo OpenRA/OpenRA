@@ -137,22 +137,22 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 			var remove = new List<CPos>();
 			foreach (var c in dirty)
 			{
-				if (!self.World.FogObscures(c))
-				{
-					if (rendered_tiles.ContainsKey(c))
-					{
-						world.Remove(rendered_tiles[c]);
-						rendered_tiles.Remove(c);
-					}
+				if (self.World.FogObscures(c))
+					continue;
 
-					// synchronize observations with true value.
-					if (tiles.ContainsKey(c))
-					{
-						rendered_tiles[c] = new Radioactivity(tiles[c]);
-						world.Add(rendered_tiles[c]);
-					}
-					remove.Add(c);
+				if (rendered_tiles.ContainsKey(c))
+				{
+					world.Remove(rendered_tiles[c]);
+					rendered_tiles.Remove(c);
 				}
+
+				// synchronize observations with true value.
+				if (tiles.ContainsKey(c))
+				{
+					rendered_tiles[c] = new Radioactivity(tiles[c]);
+					world.Add(rendered_tiles[c]);
+				}
+				remove.Add(c);
 			}
 
 			foreach (var r in remove)
