@@ -1,3 +1,14 @@
+# OpenRA Engine Modification for Over Powered Mod
+
+If you are looking for the mod, please visit https://github.com/forcecore/yupgi_alert0/ and http://www.moddb.com/mods/over-powered-mod. My mod is like a show case for the engine modification.
+
+## Commit tags
+In commit message, I put these string as tags:
+* [SPAWN]: code modifications for spawners or spawned ones. Used for aircraft carriers and V3-like AA shootable missiles.
+* [GRINDER]: Yuri grinder logic related commits
+* [IRON_EFF]: iron curtain flashing effect
+* [RADIO_ACTIVITY]: radio activity layer stuff (desolator rad eruption, nuke radiation...)
+
 # OpenRA
 
 A Libre/Free Real Time Strategy game engine supporting early Westwood classics.
