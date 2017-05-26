@@ -391,8 +391,10 @@ namespace OpenRA.Mods.Common.Traits
 			var name = a.Info.Name;
 			if (Info.RearmBuildings.Contains(name))
 				yield return new Rearm(self);
+
+			// Add a CloseEnough range of 512 to ensure we're at the host actor
 			if (Info.RepairBuildings.Contains(name))
-				yield return new Repair(self, a);
+				yield return new Repair(self, a, new WDist(512));
 		}
 
 		public void ModifyDeathActorInit(Actor self, TypeDictionary init)
