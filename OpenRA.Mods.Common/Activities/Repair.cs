@@ -19,16 +19,13 @@ namespace OpenRA.Mods.Common.Activities
 {
 	public class Repair : Activity
 	{
+		readonly Health health;
 		readonly RepairsUnits[] allRepairsUnits;
 		readonly Target host;
 		readonly WDist closeEnough;
 
 		int remainingTicks;
-		Health health;
 		bool played = false;
-
-		public Repair(Actor self, Actor host)
-			: this(self, host, WDist.Zero) { }
 
 		public Repair(Actor self, Actor host, WDist closeEnough)
 		{
