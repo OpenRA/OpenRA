@@ -34,6 +34,9 @@ namespace OpenRA.Mods.Common.Traits.Render
 		[Desc("Should the animation be delayed relative to preparation or actual attack?")]
 		public readonly AttackDelayType DelayRelativeTo = AttackDelayType.Preparation;
 
+		[Desc("Which sprite body to modify.")]
+		public readonly string BodyName = "body";
+
 		public object Create(ActorInitializer init) { return new WithAttackAnimation(init, this); }
 	}
 
@@ -42,9 +45,11 @@ namespace OpenRA.Mods.Common.Traits.Render
 		readonly WithAttackAnimationInfo info;
 		readonly AttackBase attack;
 		readonly Armament armament;
-		readonly WithSpriteBody wsb;
+		readonly WithSpriteBody[] wsbs;
+		readonly bool noAimOrReloadAnim;
 
 		int tick;
+		bool attackAnimPlaying;
 
 		public WithAttackAnimation(ActorInitializer init, WithAttackAnimationInfo info)
 		{
@@ -52,13 +57,23 @@ namespace OpenRA.Mods.Common.Traits.Render
 			attack = init.Self.Trait<AttackBase>();
 			armament = init.Self.TraitsImplementing<Armament>()
 				.Single(a => a.Info.Name == info.Armament);
-			wsb = init.Self.Trait<WithSpriteBody>();
+			wsbs = init.Self.TraitsImplementing<WithSpriteBody>().Where(w => info.BodyName == w.Info.Name).ToArray();
+
+			noAimOrReloadAnim = string.IsNullOrEmpty(info.AimSequence) && string.IsNullOrEmpty(info.ReloadPrefix);
 		}
 
 		void PlayAttackAnimation(Actor self)
 		{
 			if (!string.IsNullOrEmpty(info.AttackSequence))
-				wsb.PlayCustomAnimation(self, info.AttackSequence, () => wsb.CancelCustomAnimation(self));
+			{
+				var wsb = wsbs.FirstOrDefault(Exts.IsTraitEnabled);
+				if (wsb == null)
+					return;
+
+				attackAnimPlaying = true;
+				wsb.PlayCustomAnimation(self, info.AttackSequence,
+					() => { wsb.CancelCustomAnimation(self); attackAnimPlaying = false; });
+			}
 		}
 
 		void INotifyAttack.Attacking(Actor self, Target target, Armament a, Barrel barrel)
@@ -88,7 +103,11 @@ namespace OpenRA.Mods.Common.Traits.Render
 			if (info.Delay > 0 && --tick == 0)
 				PlayAttackAnimation(self);
 
-			if (string.IsNullOrEmpty(info.AimSequence) && string.IsNullOrEmpty(info.ReloadPrefix))
+			if (noAimOrReloadAnim || attackAnimPlaying)
+				return;
+
+			var wsb = wsbs.FirstOrDefault(Exts.IsTraitEnabled);
+			if (wsb == null)
 				return;
 
 			var sequence = wsb.Info.Sequence;
