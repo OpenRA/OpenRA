@@ -375,7 +375,10 @@ namespace OpenRA
 			ModData = null;
 
 			if (mod == null)
-				throw new InvalidOperationException("Game.Mod argument missing or mod could not be found.");
+				throw new InvalidOperationException("Game.Mod argument missing.");
+
+			if (!Mods.ContainsKey(mod))
+				throw new InvalidOperationException("Unknown or invalid mod '{0}'.".F(mod));
 
 			Console.WriteLine("Loading mod: {0}", mod);
 
