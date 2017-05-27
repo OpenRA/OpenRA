@@ -31,6 +31,7 @@ namespace OpenRA.Traits
 	{
 		public readonly PPos[] Footprint;
 		public readonly WPos CenterPosition;
+		public readonly IEnumerable<WPos> TargetablePositions;
 		public readonly Rectangle Bounds;
 		public readonly HashSet<string> TargetTypes;
 		readonly Actor actor;
@@ -77,6 +78,7 @@ namespace OpenRA.Traits
 					footprint.Select(p => shroud.Contains(p).ToString()).JoinWith("|")));
 
 			CenterPosition = self.CenterPosition;
+			TargetablePositions = Target.GetActorTargetablePositions(self);
 			Bounds = self.Bounds;
 			TargetTypes = self.GetEnabledTargetTypes().ToHashSet();
 

@@ -80,27 +80,7 @@ namespace OpenRA.Mods.Common
 			// Flashes the frozen proxy
 			self.SetTargetLine(frozen, targetLine, true);
 
-			// Target is still alive - resolve the real order
-			if (frozen.Actor != null && frozen.Actor.IsInWorld)
-				return Target.FromActor(frozen.Actor);
-
-			if (!order.Queued)
-				self.CancelActivity();
-
-			var move = self.TraitOrDefault<IMove>();
-			if (move != null)
-			{
-				// Move within sight range of the frozen actor
-				var range = self.TraitsImplementing<RevealsShroud>()
-					.Where(s => !s.IsTraitDisabled)
-					.Select(s => s.Range)
-					.Append(WDist.FromCells(2))
-					.Max();
-
-				self.QueueActivity(move.MoveWithinRange(Target.FromPos(frozen.CenterPosition), range));
-			}
-
-			return Target.Invalid;
+			return Target.FromFrozenActor(frozen);
 		}
 
 		public static void NotifyBlocker(this Actor self, IEnumerable<Actor> blockers)

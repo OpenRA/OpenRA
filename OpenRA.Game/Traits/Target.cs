@@ -142,19 +142,9 @@ namespace OpenRA.Traits
 				switch (Type)
 				{
 					case TargetType.Actor:
-						if (!actor.Targetables.Any(Exts.IsTraitEnabled))
-							return new[] { actor.CenterPosition };
-
-						var targetablePositions = actor.TraitsImplementing<ITargetablePositions>().Where(Exts.IsTraitEnabled);
-						if (targetablePositions.Any())
-						{
-							var target = this;
-							return targetablePositions.SelectMany(tp => tp.TargetablePositions(target.actor));
-						}
-
-						return new[] { actor.CenterPosition };
+						return GetActorTargetablePositions(actor);
 					case TargetType.FrozenActor:
-						return new[] { frozen.CenterPosition };
+						return frozen.TargetablePositions;
 					case TargetType.Terrain:
 						return new[] { pos };
 					default:
@@ -190,6 +180,18 @@ namespace OpenRA.Traits
 				case TargetType.Invalid:
 					return "Invalid";
 			}
+		}
+
+		public static IEnumerable<WPos> GetActorTargetablePositions(Actor actor)
+		{
+			if (!actor.Targetables.Any(Exts.IsTraitEnabled))
+				return new[] { actor.CenterPosition };
+
+			var targetablePositions = actor.TraitsImplementing<ITargetablePositions>().Where(Exts.IsTraitEnabled);
+			if (targetablePositions.Any())
+				return targetablePositions.SelectMany(tp => tp.TargetablePositions(actor)).ToList();
+
+			return new[] { actor.CenterPosition };
 		}
 	}
 }
