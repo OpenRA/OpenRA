@@ -195,21 +195,19 @@ function Docs-Command
 
 function FindMSBuild
 {
-	$msBuildVersions = @("4.0")
-	foreach ($msBuildVersion in $msBuildVersions)
+	$key = "HKLM:\SOFTWARE\Microsoft\MSBuild\ToolsVersions\4.0"
+	$property = Get-ItemProperty $key -ErrorAction SilentlyContinue
+	if ($property -eq $null -or $property.MSBuildToolsPath -eq $null)
 	{
-		$key = "HKLM:\SOFTWARE\Microsoft\MSBuild\ToolsVersions\{0}" -f $msBuildVersion
-		$property = Get-ItemProperty $key -ErrorAction SilentlyContinue
-		if ($property -eq $null -or $property.MSBuildToolsPath -eq $null)
-		{
-			continue
-		}
-		$path = Join-Path $property.MSBuildToolsPath -ChildPath "MSBuild.exe"
-		if (Test-Path $path)
-		{
-			return $path
-		}
+		return $null
 	}
+
+	$path = Join-Path $property.MSBuildToolsPath -ChildPath "MSBuild.exe"
+	if (Test-Path $path)
+	{
+		return $path
+	}
+
 	return $null
 }
 
