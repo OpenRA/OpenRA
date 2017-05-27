@@ -80,7 +80,7 @@ namespace OpenRA
 					mod.Icon = sheetBuilder.Add(bitmap);
 			}
 
-			mods.Add(ExternalMod.MakeKey(mod), mod);
+			mods[ExternalMod.MakeKey(mod)] = mod;
 		}
 
 		internal void Register(Manifest mod)
