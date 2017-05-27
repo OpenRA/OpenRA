@@ -27,8 +27,8 @@ namespace OpenRA.Mods.Common.Server
 
 		static readonly Dictionary<int, string> MasterServerErrors = new Dictionary<int, string>()
 		{
-			{ 1, "Server ports are not forwarded." },
-			{ 2, "Server contains blacklisted word in server name." }
+			{ 1, "Server port is not accessible from the internet." },
+			{ 2, "Server name contains a blacklisted word." }
 		};
 
 		public int TickTimeout { get { return MasterPingInterval * 10000; } }
