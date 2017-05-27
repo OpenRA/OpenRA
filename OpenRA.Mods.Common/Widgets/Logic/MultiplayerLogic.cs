@@ -634,5 +634,18 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			return false;
 		}
+
+		bool disposed;
+		protected override void Dispose(bool disposing)
+		{
+			if (disposing && !disposed)
+			{
+				disposed = true;
+				if (lanGameProbe != null)
+					lanGameProbe.Dispose();
+			}
+
+			base.Dispose(disposing);
+		}
 	}
 }
