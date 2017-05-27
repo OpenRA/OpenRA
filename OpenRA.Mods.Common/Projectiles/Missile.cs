@@ -133,6 +133,9 @@ namespace OpenRA.Mods.Common.Projectiles
 		[Desc("Range of facings by which jammed missiles can stray from current path.")]
 		public readonly int JammedDiversionRange = 20;
 
+		[Desc("Missile shootable by point defense laser?")]
+		public readonly bool LaserShootable = true;
+
 		[Desc("Explodes when leaving the following terrain type, e.g., Water for torpedoes.")]
 		public readonly string BoundToTerrainType = "";
 
@@ -412,6 +415,25 @@ namespace OpenRA.Mods.Common.Projectiles
 				return false;
 
 			return tp.Actor.World.SharedRandom.Next(100 / tp.Trait.Chance) == 0;
+		}
+
+		bool ShotBy(TraitPair<ShootsMissiles> tp)
+		{
+			if ((tp.Actor.CenterPosition - pos).HorizontalLengthSquared > tp.Trait.Range.LengthSquared)
+				return false;
+
+			if (!tp.Trait.DeflectionStances.HasStance(tp.Actor.Owner.Stances[args.SourceActor.Owner]))
+				return false;
+
+			if (tp.Trait.Armament.IsReloading)
+				return false;
+
+			args.SourceActor.World.AddFrameEndTask(w =>
+			{
+				if (!tp.Actor.IsDead)
+					tp.Trait.Armament.CheckFire(tp.Actor, null, Target.FromPos(pos));
+			});
+			return true;
 		}
 
 		void ChangeSpeed(int sign = 1)
@@ -829,6 +851,10 @@ namespace OpenRA.Mods.Common.Projectiles
 				info.TargetExtraSearchRadius, out blockedPos))
 			{
 				pos = blockedPos;
+				shouldExplode = true;
+			}
+			else if (info.LaserShootable && world.ActorsWithTrait<ShootsMissiles>().Any(ShotBy))
+			{
 				shouldExplode = true;
 			}
 

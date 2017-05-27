@@ -88,7 +88,7 @@
     <Compile Include="Activities\CaptureActor.cs" />
     <Compile Include="Activities\DeliverResources.cs" />
     <Compile Include="Activities\Demolish.cs" />
-    <Compile Include="Activities\DonateSupplies.cs" />
+    <Compile Include="Activities\DonateCash.cs" />
     <Compile Include="Activities\Enter.cs" />
     <Compile Include="Activities\EnterTransport.cs" />
     <Compile Include="Activities\ExternalCaptureActor.cs" />
@@ -248,7 +248,7 @@
     <Compile Include="Scripting\Properties\ParadropProperties.cs" />
     <Compile Include="Scripting\Properties\ParatroopersProperties.cs" />
     <Compile Include="TraitsInterfaces.cs" />
-    <Compile Include="Traits\AcceptsSupplies.cs" />
+    <Compile Include="Traits\AcceptsDeliveredCash.cs" />
     <Compile Include="Traits\Air\Aircraft.cs" />
     <Compile Include="Traits\Air\AttackBomber.cs" />
     <Compile Include="Traits\Air\AttackHeli.cs" />
@@ -292,6 +292,7 @@
     <Compile Include="Traits\Buildings\Reservable.cs" />
     <Compile Include="Traits\Burns.cs" />
     <Compile Include="Traits\Health.cs" />
+    <Compile Include="Traits\ShootsMissiles.cs" />
     <Compile Include="Traits\PowerTooltip.cs" />
     <Compile Include="Traits\Render\VeteranProductionIconOverlay.cs" />
     <Compile Include="Traits\Capturable.cs" />
@@ -478,7 +479,7 @@
     <Compile Include="Traits\Sound\DeathSounds.cs" />
     <Compile Include="Traits\Sound\SoundOnDamageTransition.cs" />
     <Compile Include="Traits\Sound\AttackSounds.cs" />
-    <Compile Include="Traits\SupplyTruck.cs" />
+    <Compile Include="Traits\DeliversCash.cs" />
     <Compile Include="Traits\SupportPowers\AirstrikePower.cs" />
     <Compile Include="Traits\SupportPowers\GrantExternalConditionPower.cs" />
     <Compile Include="Traits\SupportPowers\NukePower.cs" />
@@ -803,22 +804,14 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="AfterBuild">
-    <MakeDir Directories="$(SolutionDir)mods/common/"/>
-    <Copy
-      SourceFiles="$(TargetPath)"
-      DestinationFolder="$(SolutionDir)mods/common/"/>
+    <MakeDir Directories="$(SolutionDir)mods/common/" />
+    <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(SolutionDir)mods/common/" />
     <!--
         We need to copy OpenRA.Mods.Common.pdb (not `.dll.pdb`). This is only necessary on Windows.
         Mono outputs a `.dll.mdb` so we can just append `.mdb` directly.
     -->
-    <Copy
-      SourceFiles="$(TargetDir)$(TargetName).pdb"
-      DestinationFolder="$(SolutionDir)mods/common/"
-      Condition="'$(OS)' == 'Windows_NT'"/>
-    <Copy
-      SourceFiles="$(TargetPath).mdb"
-      DestinationFolder="$(SolutionDir)mods/common/"
-      Condition="'$(OS)' == 'Unix'"/>
+    <Copy SourceFiles="$(TargetDir)$(TargetName).pdb" DestinationFolder="$(SolutionDir)mods/common/" Condition="'$(OS)' == 'Windows_NT'" />
+    <Copy SourceFiles="$(TargetPath).mdb" DestinationFolder="$(SolutionDir)mods/common/" Condition="'$(OS)' == 'Unix'" />
     <!-- Uncomment these lines when debugging or adding to this target
     <Message Text="DEBUG OS:                     $(OS)"/>
     <Message Text="DEBUG SolutionDir:            $(SolutionDir)"/>

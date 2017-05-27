@@ -42,10 +42,11 @@ namespace OpenRA.Mods.Common.Effects
 		public object Create(ActorInitializer init) { return new Contrail(init.Self, this); }
 	}
 
-	class Contrail : ITick, IRender
+	class Contrail : ITick, IRender, INotifyAddedToWorld
 	{
 		readonly ContrailInfo info;
 		readonly BodyOrientation body;
+		readonly Color color;
 
 		// This is a mutable struct, so it can't be readonly.
 		ContrailRenderable trail;
@@ -54,7 +55,7 @@ namespace OpenRA.Mods.Common.Effects
 		{
 			this.info = info;
 
-			var color = info.UsePlayerColor ? ContrailRenderable.ChooseColor(self) : info.Color;
+			color = info.UsePlayerColor ? ContrailRenderable.ChooseColor(self) : info.Color;
 			trail = new ContrailRenderable(self.World, color, info.TrailWidth, info.TrailLength, 0, info.ZOffset);
 
 			body = self.Trait<BodyOrientation>();
@@ -63,12 +64,18 @@ namespace OpenRA.Mods.Common.Effects
 		public void Tick(Actor self)
 		{
 			var local = info.Offset.Rotate(body.QuantizeOrientation(self, self.Orientation));
-			trail.Update(self.CenterPosition + body.LocalToWorld(local));
+			if (self.IsInWorld)
+				trail.Update(self.CenterPosition + body.LocalToWorld(local));
 		}
 
 		public IEnumerable<IRenderable> Render(Actor self, WorldRenderer wr)
 		{
 			return new IRenderable[] { trail };
+		}
+
+		public void AddedToWorld(Actor self)
+		{
+			trail = new ContrailRenderable(self.World, color, info.TrailWidth, info.TrailLength, 0, info.ZOffset);
 		}
 	}
 }

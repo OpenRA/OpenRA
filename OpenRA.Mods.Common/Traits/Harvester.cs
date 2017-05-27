@@ -46,6 +46,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Which resources it can harvest.")]
 		public readonly HashSet<string> Resources = new HashSet<string>();
 
+		[Desc("Teleports harvested ore? \"Chrono harvester\"?")]
+		public readonly bool OreTeleporter = false;
+
 		[Desc("Percentage of maximum speed when fully loaded.")]
 		public readonly int FullyLoadedSpeed = 85;
 
@@ -257,6 +260,21 @@ namespace OpenRA.Mods.Common.Traits
 
 				// Find more resources but not at this location:
 				self.QueueActivity(new FindResources(self, cell));
+			}
+			else if (act is Move && blocking.CurrentActivity is Move)
+			{
+				// Both the harvester could be moving in each other's direction, possibly trying to mine
+				// what's underneath each other and get stuck in Move activity. In this situation,
+				// if self is standing on a resource patch and the blocking one is on its own patch too,
+				// then they in a possible deadlock.
+				// Not checking if the resource is harvestable here, it doesn't matter.
+				var resLayer = self.World.WorldActor.Trait<ResourceLayer>();
+				if (resLayer.GetResource(self.Location) != null && resLayer.GetResource(blocking.Location) != null)
+				{
+					// Breaking one of the loop element is enough to remove the dead lock.
+					self.CancelActivity();
+					self.QueueActivity(new FindResources(self, blocking.Location));
+				}
 			}
 		}
 

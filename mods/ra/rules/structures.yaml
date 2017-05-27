@@ -403,7 +403,7 @@ PDOX:
 		DisplayRadarPing: True
 		Range: 2
 	SupportPowerChargeBar:
-	-AcceptsSupplies:
+	-AcceptsDeliveredCash:
 	Power:
 		Amount: -200
 	MustBeDestroyed:
@@ -1299,6 +1299,7 @@ AFLD:
 		ReferencePoint: Top
 		ZOffset: 256
 		RequiresCondition: primary
+	WithRearmAnimation:
 	WithRearmAnimation:
 
 POWR:

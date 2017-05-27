@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using OpenRA.Traits;
 
 namespace OpenRA.Graphics
@@ -18,6 +19,9 @@ namespace OpenRA.Graphics
 	sealed class TerrainRenderer : IDisposable
 	{
 		readonly Map map;
+		readonly Sprite skyImage;
+		readonly float2 skySz;
+
 		readonly Dictionary<string, TerrainSpriteLayer> spriteLayers = new Dictionary<string, TerrainSpriteLayer>();
 		readonly Theater theater;
 
@@ -25,6 +29,19 @@ namespace OpenRA.Graphics
 		{
 			map = world.Map;
 			theater = wr.Theater;
+
+			if (map.SkyboxImage != null && map.Package.Contains(map.SkyboxImage))
+			{
+				skySz = new float2(Game.Renderer.Resolution.Width, Game.Renderer.Resolution.Width);
+				using (var dataStream = map.Package.GetStream(map.SkyboxImage))
+				{
+					var bmp = new Bitmap(dataStream);
+					var sheetBuilder = new SheetBuilder(SheetType.BGRA, bmp.Size.Width);
+					skyImage = sheetBuilder.Add(bmp);
+				}
+			}
+
+			//spriteCache = Exts.Lazy(() => new SpriteCache(fileSystem, modData.SpriteLoaders, new SheetBuilder(SheetType.Indexed)));
 
 			foreach (var template in map.Rules.TileSet.Templates)
 			{
@@ -52,8 +69,17 @@ namespace OpenRA.Graphics
 				kv.Value.Update(cell, palette == kv.Key ? sprite : null);
 		}
 
+		void drawSkybox(WorldRenderer wr, Viewport viewport)
+		{
+			if (skyImage == null)
+				return;
+			Game.Renderer.RgbaSpriteRenderer.DrawSprite(skyImage, float2.Zero, skySz);
+		}
+
 		public void Draw(WorldRenderer wr, Viewport viewport)
 		{
+			drawSkybox(wr, viewport);
+
 			foreach (var kv in spriteLayers.Values)
 				kv.Draw(wr.Viewport);
 

@@ -34,23 +34,25 @@ namespace OpenRA.Mods.Common.Activities
 			resLayer = self.World.WorldActor.Trait<ResourceLayer>();
 		}
 
+		Activity UnclaimAndNext(Actor self)
+		{
+			if (territory != null)
+				territory.UnclaimByActor(self);
+			return NextActivity;
+		}
+
 		public override Activity Tick(Actor self)
 		{
 			if (IsCanceled)
-			{
-				if (territory != null)
-					territory.UnclaimByActor(self);
-				return NextActivity;
-			}
+				return UnclaimAndNext(self);
+
+			if (!self.CanHarvestAt(self.Location, resLayer, harvInfo, territory))
+				return UnclaimAndNext(self);
 
 			harv.LastHarvestedCell = self.Location;
 
 			if (harv.IsFull)
-			{
-				if (territory != null)
-					territory.UnclaimByActor(self);
-				return NextActivity;
-			}
+				return UnclaimAndNext(self);
 
 			// Turn to one of the harvestable facings
 			if (harvInfo.HarvestFacings != 0)
@@ -63,11 +65,7 @@ namespace OpenRA.Mods.Common.Activities
 
 			var resource = resLayer.Harvest(self.Location);
 			if (resource == null)
-			{
-				if (territory != null)
-					territory.UnclaimByActor(self);
-				return NextActivity;
-			}
+				return UnclaimAndNext(self);
 
 			harv.AcceptResource(resource);
 

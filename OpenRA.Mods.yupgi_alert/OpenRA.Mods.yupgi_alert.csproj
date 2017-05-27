@@ -1,0 +1,122 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>10.0.0</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{5B9AB03E-2B8D-4F03-A127-0E9B62E02689}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>OpenRA.Mods.yupgi_alert</RootNamespace>
+    <AssemblyName>OpenRA.Mods.yupgi_alert</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CustomCommands>
+      <CustomCommands>
+        <Command type="AfterBuild" command="cp ${TargetFile} ../mods/yupgi_alert" workingdir="${ProjectDir}" />
+        <Command type="AfterBuild" command="cp ${TargetFile}.mdb ../mods/yupgi_alert" workingdir="${ProjectDir}" />
+      </CustomCommands>
+    </CustomCommands>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <DebugType>full</DebugType>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <Optimize>true</Optimize>
+    <CustomCommands>
+      <CustomCommands>
+        <Command type="AfterBuild" command="cp ${TargetFile} ../mods/yupgi_alert" workingdir="${ProjectDir}" />
+        <Command type="AfterBuild" command="cp ${TargetFile}.mdb ../mods/yupgi_alert" workingdir="${ProjectDir}" />
+      </CustomCommands>
+    </CustomCommands>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Eluant">
+      <HintPath>..\thirdparty\download\Eluant.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <ProjectReference Include="..\OpenRA.Game\OpenRA.Game.csproj">
+      <Project>{0DFB103F-2962-400F-8C6D-E2C28CCBA633}</Project>
+      <Name>OpenRA.Game</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\OpenRA.Mods.Common\OpenRA.Mods.Common.csproj">
+      <Project>{fe6c8cc0-2f07-442a-b29f-17617b3b7fc6}</Project>
+      <Name>OpenRA.Mods.Common</Name>
+      <Private>False</Private>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Activities\Air\BlimpFallToEarth.cs" />
+    <Compile Include="Activities\Air\ShootableBallisticMissileFly.cs" />
+    <Compile Include="Activities\Air\SpawnedFlyAttack.cs" />
+    <Compile Include="Activities\Air\SpawnedTakeOff.cs" />
+    <Compile Include="Activities\EnterNydus.cs" />
+    <Compile Include="Activities\EnterSpawner.cs" />
+    <Compile Include="Graphics\Radioactivity.cs" />
+    <Compile Include="Graphics\RadBeamRenderable.cs" />
+    <Compile Include="Orders\ShootableBallisticMissileMoveOrderTargeter.cs" />
+    <Compile Include="Projectiles\RadBeam.cs" />
+    <Compile Include="Traits\AIDeployHelper.cs" />
+    <Compile Include="Traits\PaletteEffects\IronCurtainPaletteEffect.cs" />
+    <Compile Include="Traits\SpawnedExplodes.cs" />
+    <Compile Include="Traits\ShootableBallisticMissile.cs" />
+    <Compile Include="Traits\Air\BlimpFallsToEarth.cs" />
+    <Compile Include="Traits\CargoCashTrickler.cs" />
+    <Compile Include="Traits\CargoTransformer.cs" />
+    <Compile Include="Traits\Conditions\GrantTimedConditionOnDeploy.cs" />
+    <Compile Include="Traits\Player\BotProvidesPrerequisite.cs" />
+    <Compile Include="Traits\Spawned.cs" />
+    <Compile Include="Traits\DamagedByRadioactivity.cs" />
+    <Compile Include="Traits\ExplodeWeapon.cs" />
+    <Compile Include="Traits\Nydus.cs" />
+    <Compile Include="Traits\NydusPrimaryExit.cs" />
+    <Compile Include="Traits\Spawner.cs" />
+    <Compile Include="Traits\StructureChrono.cs" />
+    <Compile Include="Traits\Warheads\CreateRadioactivityWarhead.cs" />
+    <Compile Include="Traits\Warheads\FireClusterWarhead.cs" />
+    <Compile Include="Traits\Warheads\WarheadAS.cs" />
+    <Compile Include="Traits\Render\WithAcceptDeliveredCashAnimation.cs" />
+    <Compile Include="Traits\World\RadioactivityLayer.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Effects\" />
+    <Folder Include="Player\" />
+    <Folder Include="SpriteLoaders\" />
+    <Folder Include="Traits\Buildings\" />
+    <Folder Include="Traits\SupportPowers\" />
+    <Folder Include="Traits\Widgets\" />
+    <Folder Include="UtilityCommands\" />
+  </ItemGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <PropertyGroup>
+    <PostBuildEvent>mkdir "$(SolutionDir)mods/yupgi_alert/"
+          copy "$(TargetPath)" "$(SolutionDir)mods/yupgi_alert/"
+cd "$(SolutionDir)"</PostBuildEvent>
+  </PropertyGroup>
+</Project>

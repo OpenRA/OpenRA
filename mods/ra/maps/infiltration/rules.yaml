@@ -82,7 +82,7 @@ TRUK.Hijackable:
 	ExternalCapturable:
 		Type: MissionObjective
 		CaptureCompleteTime: 1
-	-SupplyTruck:
+	-DeliversCash:
 	RenderSprites:
 		Image: TRUK
 		Palette: truk-soviets

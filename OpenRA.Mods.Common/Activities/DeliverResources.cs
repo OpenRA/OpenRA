@@ -23,7 +23,7 @@ namespace OpenRA.Mods.Common.Activities
 		readonly IMove movement;
 		readonly Harvester harv;
 
-		bool isDocking;
+		bool isDocking = false;
 		int chosenTicks;
 
 		public DeliverResources(Actor self)
@@ -33,6 +33,7 @@ namespace OpenRA.Mods.Common.Activities
 			IsInterruptible = false;
 		}
 
+		bool teleporter_bug_fix_ran_once = false;
 		public override Activity Tick(Actor self)
 		{
 			if (NextInQueue != null)
@@ -63,13 +64,25 @@ namespace OpenRA.Mods.Common.Activities
 			var iao = proc.Trait<IAcceptResources>();
 
 			self.SetTargetLine(Target.FromActor(proc), Color.Green, false);
-			if (self.Location != proc.Location + iao.DeliveryOffset)
+			var dest = proc.Location + iao.DeliveryOffset;
+			if (harv.Info.OreTeleporter)
+			{
+				// do nothing and continue below.
+				// Force issue dock order.
+				if (!teleporter_bug_fix_ran_once)
+				{
+					teleporter_bug_fix_ran_once = true;
+					return ActivityUtils.SequenceActivities(new Wait(10), this);
+				}
+			}
+			else if (self.Location != dest)
 			{
 				var notify = self.TraitsImplementing<INotifyHarvesterAction>();
 				foreach (var n in notify)
-					n.MovingToRefinery(self, proc.Location + iao.DeliveryOffset, this);
+					n.MovingToRefinery(self, dest, this);
 
-				return ActivityUtils.SequenceActivities(movement.MoveTo(proc.Location + iao.DeliveryOffset, 0), this);
+				// Move to the target proc then came back to this activity for re-eval, I think.
+				return ActivityUtils.SequenceActivities(movement.MoveTo(dest, 0), this);
 			}
 
 			if (!isDocking)

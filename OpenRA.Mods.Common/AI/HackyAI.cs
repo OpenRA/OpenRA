@@ -182,6 +182,8 @@ namespace OpenRA.Mods.Common.AI
 		[FieldLoader.LoadUsing("LoadBuildingCategories", true)]
 		public readonly BuildingCategories BuildingCommonNames;
 
+		public readonly Dictionary<string, string> CoreDefinitions = null;
+
 		[Desc("What buildings should the AI have a maximum limit to build.")]
 		public readonly Dictionary<string, int> BuildingLimits = null;
 

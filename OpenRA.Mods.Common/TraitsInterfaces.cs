@@ -91,6 +91,7 @@ namespace OpenRA.Mods.Common.Traits
 	public interface INotifyDiscovered { void OnDiscovered(Actor self, Player discoverer, bool playNotification); }
 	public interface IRenderActorPreviewInfo : ITraitInfo { IEnumerable<IActorPreview> RenderPreview(ActorPreviewInitializer init); }
 	public interface ICruiseAltitudeInfo : ITraitInfo { WDist GetCruiseAltitude(); }
+	public interface INotifyCashTransfer { void OnCashTransfer(Actor self, Actor donor); }
 
 	[RequireExplicitImplementation]
 	public interface INotifyInfiltrated { void Infiltrated(Actor self, Actor infiltrator); }

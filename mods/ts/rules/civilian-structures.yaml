@@ -1309,7 +1309,6 @@ GAICBM:
 	Inherits: ^Building
 	Valued:
 		Cost: 800
-	-AcceptsSupplies:
 	Tooltip:
 		Name: Deployed ICBM
 	-GivesBuildableArea:
