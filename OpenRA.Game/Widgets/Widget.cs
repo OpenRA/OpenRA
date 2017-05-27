@@ -108,7 +108,7 @@ namespace OpenRA.Widgets
 			if (mi.Event == MouseInputEvent.Move)
 			{
 				Viewport.LastMousePos = mi.Location;
-				Viewport.TicksSinceLastMove = 0;
+				Viewport.LastMoveRunTime = Game.RunTime;
 			}
 
 			if (wasMouseOver != MouseOverWidget)
