@@ -391,9 +391,9 @@ namespace OpenRA
 			}
 			catch (Exception e)
 			{
+				Log.Write("debug", "Failed to load rules for {0} with error {1}", Title, e);
 				InvalidCustomRules = true;
 				Rules = Ruleset.LoadDefaultsForTileSet(modData, Tileset);
-				Log.Write("debug", "Failed to load rules for {0} with error {1}", Title, e.Message);
 			}
 
 			Rules.Sequences.Preload();
