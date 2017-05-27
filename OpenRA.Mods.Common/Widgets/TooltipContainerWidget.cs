@@ -24,12 +24,12 @@ namespace OpenRA.Mods.Common.Widgets
 		public int BottomEdgeYOffset = -5;
 
 		public Action BeforeRender = Nothing;
-		public int TooltipDelay = 5;
+		public int TooltipDelayMilliseconds = 200;
 		Widget tooltip;
 
 		public TooltipContainerWidget()
 		{
-			IsVisible = () => Viewport.TicksSinceLastMove >= TooltipDelay;
+			IsVisible = () => Game.RunTime > Viewport.LastMoveRunTime + TooltipDelayMilliseconds;
 		}
 
 		public void SetTooltip(string id, WidgetArgs args)

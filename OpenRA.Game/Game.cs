@@ -539,8 +539,6 @@ namespace OpenRA
 				var integralTickTimestep = (uiTickDelta / Timestep) * Timestep;
 				Ui.LastTickTime += integralTickTimestep >= TimestepJankThreshold ? integralTickTimestep : Timestep;
 
-				Viewport.TicksSinceLastMove += uiTickDelta / Timestep;
-
 				Sync.CheckSyncUnchanged(world, Ui.Tick);
 				Cursor.Tick();
 			}
