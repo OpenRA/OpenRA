@@ -20,7 +20,6 @@ using System.Text;
 using OpenRA.FileSystem;
 using OpenRA.Support;
 using OpenRA.Traits;
-using OpenRA.Graphics;
 
 namespace OpenRA
 {
