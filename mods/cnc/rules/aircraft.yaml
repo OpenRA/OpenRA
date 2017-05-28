@@ -54,6 +54,7 @@ TRAN:
 HELI:
 	Inherits: ^Helicopter
 	Inherits@EXPERIENCE: ^GainsExperience
+	Inherits@AUTOTARGET: ^AutoTargetAll
 	Valued:
 		Cost: 1200
 	Tooltip:
@@ -103,7 +104,6 @@ HELI:
 	WithMuzzleOverlay:
 	SpawnActorOnDeath:
 		Actor: HELI.Husk
-	AutoTarget:
 	Explodes:
 		Weapon: HeliExplode
 		EmptyWeapon: HeliExplode
@@ -113,6 +113,7 @@ HELI:
 ORCA:
 	Inherits: ^Helicopter
 	Inherits@EXPERIENCE: ^GainsExperience
+	Inherits@AUTOTARGET: ^AutoTargetAll
 	Valued:
 		Cost: 1200
 	Tooltip:
@@ -150,7 +151,6 @@ ORCA:
 		SelfReloadDelay: 100
 	SpawnActorOnDeath:
 		Actor: ORCA.Husk
-	AutoTarget:
 	Explodes:
 		Weapon: HeliExplode
 		EmptyWeapon: HeliExplode

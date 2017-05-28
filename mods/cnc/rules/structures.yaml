@@ -655,6 +655,7 @@ TMPL:
 
 GUN:
 	Inherits: ^Defense
+	Inherits@AUTOTARGET: ^AutoTargetGround
 	Valued:
 		Cost: 600
 	Tooltip:
@@ -697,6 +698,7 @@ GUN:
 SAM:
 	Inherits: ^Defense
 	Inherits@IDISABLE: ^DisabledOverlay
+	Inherits@AUTOTARGET: ^AutoTargetAir
 	Valued:
 		Cost: 650
 	Tooltip:
@@ -739,6 +741,7 @@ SAM:
 OBLI:
 	Inherits: ^Defense
 	Inherits@IDISABLE: ^DisabledOverlay
+	Inherits@AUTOTARGET: ^AutoTargetGround
 	Valued:
 		Cost: 1500
 	Tooltip:
@@ -782,6 +785,7 @@ OBLI:
 
 GTWR:
 	Inherits: ^Defense
+	Inherits@AUTOTARGET: ^AutoTargetGround
 	Valued:
 		Cost: 600
 	Tooltip:
@@ -818,6 +822,7 @@ GTWR:
 ATWR:
 	Inherits: ^Defense
 	Inherits@IDISABLE: ^DisabledOverlay
+	Inherits@AUTOTARGET: ^AutoTargetAll
 	Valued:
 		Cost: 1000
 	Tooltip:

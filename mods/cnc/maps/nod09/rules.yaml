@@ -193,6 +193,7 @@ RMBO.easy:
 RMBO.hard:
 	Inherits: RMBO
 	-AutoTarget:
+	-AutoTargetPriority@DEFAULT:
 	-AttackMove:
 	RenderSprites:
 		Image: RMBO
