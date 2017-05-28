@@ -54,7 +54,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			inAttackRange = false;
 
-			var f = facing.Value.Facing;
+			var f = facing.Facing;
 			var delta = target.CenterPosition - self.CenterPosition;
 			var facingToTarget = delta.HorizontalLengthSquared != 0 ? delta.Yaw.Facing : f;
 			facingTarget = Math.Abs(facingToTarget - f) % 256 <= info.FacingTolerance;
@@ -66,7 +66,7 @@ namespace OpenRA.Mods.Common.Traits
 					continue;
 
 				inAttackRange = true;
-				a.CheckFire(self, facing.Value, bombTarget);
+				a.CheckFire(self, facing, bombTarget);
 			}
 
 			// Guns only fire when approaching the target
@@ -81,7 +81,7 @@ namespace OpenRA.Mods.Common.Traits
 
 					var gunPos = self.CenterPosition - new WVec(0, a.MaxRange().Length / 2, 0).Rotate(WRot.FromFacing(f));
 					var gunHeight = self.World.Map.DistanceAboveTerrain(gunPos);
-					a.CheckFire(self, facing.Value, Target.FromPos(gunPos - new WVec(WDist.Zero, WDist.Zero, gunHeight)));
+					a.CheckFire(self, facing, Target.FromPos(gunPos - new WVec(WDist.Zero, WDist.Zero, gunHeight)));
 				}
 			}
 
