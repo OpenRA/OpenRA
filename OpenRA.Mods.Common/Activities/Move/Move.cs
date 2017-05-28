@@ -277,9 +277,9 @@ namespace OpenRA.Mods.Common.Activities
 			return new TargetLineNode(Target.FromCell(self.World, this.destination.Value), color, NextActivity);
 		}
 
-		public abstract class MovePart : Activity
+		abstract class MovePart : Activity
 		{
-			public readonly Move Move;
+			protected readonly Move Move;
 			protected readonly WPos From, To;
 			protected readonly int FromFacing, ToFacing;
 			protected readonly bool EnableArc;
