@@ -62,7 +62,7 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		protected override bool CanAttack(Actor self, Target target)
 		{
-			if (state == PopupState.Transitioning || !building.Value.BuildComplete)
+			if (state == PopupState.Transitioning || !building.BuildComplete)
 				return false;
 
 			if (!base.CanAttack(self, target))

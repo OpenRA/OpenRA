@@ -38,7 +38,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!base.CanAttack(self, target))
 				return false;
 
-			var f = facing.Value.Facing;
+			var f = facing.Facing;
 			var delta = target.CenterPosition - self.CenterPosition;
 			var facingToTarget = delta.HorizontalLengthSquared != 0 ? delta.Yaw.Facing : f;
 
