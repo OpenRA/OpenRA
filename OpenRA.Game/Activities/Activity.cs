@@ -293,17 +293,4 @@ namespace OpenRA.Activities
 			}
 		}
 	}
-
-	public static class ActivityExts
-	{
-/*
-		public static IEnumerable<Target> GetTargetQueue(this Actor self)
-		{
-			return self.CurrentActivity
-				.Iterate(u => u.NextActivity)
-				.TakeWhile(u => u != null)
-				.SelectMany(u => u.GetTargets(self));
-		}
-*/
-	}
 }
