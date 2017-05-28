@@ -111,7 +111,7 @@ namespace OpenRA.Mods.Common.Traits
 				a.CheckFire(self, facing, target);
 		}
 
-		public IEnumerable<IOrderTargeter> Orders
+		IEnumerable<IOrderTargeter> IIssueOrder.Orders
 		{
 			get
 			{
@@ -127,7 +127,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
+		Order IIssueOrder.IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
 		{
 			if (order is AttackOrderTargeter)
 			{
@@ -145,7 +145,7 @@ namespace OpenRA.Mods.Common.Traits
 			return null;
 		}
 
-		public virtual void ResolveOrder(Actor self, Order order)
+		void IResolveOrder.ResolveOrder(Actor self, Order order)
 		{
 			var forceAttack = order.OrderString == forceAttackOrderName;
 			if (forceAttack || order.OrderString == attackOrderName)
@@ -159,7 +159,12 @@ namespace OpenRA.Mods.Common.Traits
 			}
 
 			if (order.OrderString == "Stop")
-				self.CancelActivity();
+				OnStopOrder(self);
+		}
+
+		protected virtual void OnStopOrder(Actor self)
+		{
+			self.CancelActivity();
 		}
 
 		static Target TargetFromOrder(Actor self, Order order)
@@ -184,7 +189,7 @@ namespace OpenRA.Mods.Common.Traits
 			return Target.Invalid;
 		}
 
-		public string VoicePhraseForOrder(Actor self, Order order)
+		string IOrderVoice.VoicePhraseForOrder(Actor self, Order order)
 		{
 			return order.OrderString == attackOrderName || order.OrderString == forceAttackOrderName ? Info.Voice : null;
 		}
