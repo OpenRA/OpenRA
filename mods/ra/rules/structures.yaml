@@ -448,6 +448,7 @@ PDOX:
 TSLA:
 	Inherits: ^Defense
 	Inherits@IDISABLE: ^DisabledOverlay
+	Inherits@AUTOTARGET: ^AutoTargetGround
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 80
@@ -493,6 +494,7 @@ TSLA:
 AGUN:
 	Inherits: ^Defense
 	Inherits@IDISABLE: ^DisabledOverlay
+	Inherits@AUTOTARGET: ^AutoTargetAir
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 90
@@ -592,6 +594,7 @@ DOME:
 
 PBOX:
 	Inherits: ^Defense
+	Inherits@AUTOTARGET: ^AutoTargetAll
 	Tooltip:
 		Name: Pillbox
 	Building:
@@ -640,6 +643,7 @@ PBOX:
 
 HBOX:
 	Inherits: ^Defense
+	Inherits@AUTOTARGET: ^AutoTargetAll
 	Tooltip:
 		Name: Camo Pillbox
 	Building:
@@ -695,6 +699,7 @@ HBOX:
 
 GUN:
 	Inherits: ^Defense
+	Inherits@AUTOTARGET: ^AutoTargetGround
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 70
@@ -736,6 +741,7 @@ GUN:
 
 FTUR:
 	Inherits: ^Defense
+	Inherits@AUTOTARGET: ^AutoTargetGround
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 60
@@ -780,6 +786,7 @@ SAM:
 	Inherits: ^Defense
 	Inherits@IDISABLE: ^DisabledOverlay
 	Inherits@shape: ^2x1Shape
+	Inherits@AUTOTARGET: ^AutoTargetAir
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 100

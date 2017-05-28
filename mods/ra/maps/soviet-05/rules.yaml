@@ -85,8 +85,11 @@ APC:
 DOME:
 	ExternalCondition@lua:
 		Condition: captured
-	AutoTargetIgnore:
+	Targetable:
+		RequiresCondition: captured		
+	Targetable@NOAUTOTARGET:
 		RequiresCondition: !captured
+		TargetTypes: Ground, Structure, C4, DetonateAttack, SpyInfiltrate, NoAutoTarget
 
 powerproxy.paratroopers:
 	ParatroopersPower:

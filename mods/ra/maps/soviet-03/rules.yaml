@@ -17,7 +17,8 @@ World:
 		Default: easy
 
 ^TechBuilding:
-	AutoTargetIgnore:
+	Targetable:
+		TargetTypes: Ground, C4, DetonateAttack, Structure, NoAutoTarget
 
 ^Infantry:
 	-GivesBounty:

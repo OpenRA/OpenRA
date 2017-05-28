@@ -207,7 +207,6 @@ MINE:
 	AppearsOnRadar:
 	RadarColorFromTerrain:
 		Terrain: Ore
-	AutoTargetIgnore:
 	SeedsResource:
 
 GMINE:
@@ -224,7 +223,6 @@ GMINE:
 	AppearsOnRadar:
 	RadarColorFromTerrain:
 		Terrain: Gems
-	AutoTargetIgnore:
 	SeedsResource:
 		ResourceType: Gems
 
@@ -239,7 +237,6 @@ RAILMINE:
 	Building:
 		Footprint: xx
 		Dimensions: 2,1
-	AutoTargetIgnore:
 	EditorTilesetFilter:
 		ExcludeTilesets: INTERIOR
 
