@@ -58,7 +58,11 @@ namespace OpenRA.Mods.Common.AI
 			public readonly HashSet<string> Silo = new HashSet<string>();
 		}
 
-		[Desc("Ingame name this bot uses.")]
+		[FieldLoader.Require]
+		[Desc("Internal id for this bot.")]
+		public readonly string Type = null;
+
+		[Desc("Human-readable name this bot uses.")]
 		public readonly string Name = "Unnamed Bot";
 
 		[Desc("Minimum number of units AI must have before attacking.")]
@@ -162,8 +166,6 @@ namespace OpenRA.Mods.Common.AI
 		[Desc("Should the AI repair its buildings if damaged?")]
 		public readonly bool ShouldRepairBuildings = true;
 
-		string IBotInfo.Name { get { return Name; } }
-
 		[Desc("What units to the AI should build.", "What % of the total army must be this type of unit.")]
 		public readonly Dictionary<string, float> UnitsToBuild = null;
 
@@ -232,6 +234,10 @@ namespace OpenRA.Mods.Common.AI
 
 			return ret;
 		}
+
+		string IBotInfo.Type { get { return Type; } }
+
+		string IBotInfo.Name { get { return Name; } }
 
 		public object Create(ActorInitializer init) { return new HackyAI(this, init); }
 	}

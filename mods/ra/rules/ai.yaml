@@ -1,6 +1,7 @@
 Player:
 	HackyAI@RushAI:
 		Name: Rush AI
+		Type: Rush AI
 		MinimumExcessPower: 40
 		BuildingCommonNames:
 			ConstructionYard: fact
@@ -114,6 +115,7 @@ Player:
 				CheckRadius: 7c0
 	HackyAI@NormalAI:
 		Name: Normal AI
+		Type: Normal AI
 		MinimumExcessPower: 60
 		BuildingCommonNames:
 			ConstructionYard: fact
@@ -245,6 +247,7 @@ Player:
 				CheckRadius: 7c0
 	HackyAI@TurtleAI:
 		Name: Turtle AI
+		Type: Turtle AI
 		MinimumExcessPower: 100
 		BuildingCommonNames:
 			ConstructionYard: fact
@@ -376,6 +379,7 @@ Player:
 				CheckRadius: 7c0
 	HackyAI@NavalAI:
 		Name: Naval AI
+		Type: Naval AI
 		BuildingCommonNames:
 			ConstructionYard: fact
 			Refinery: proc

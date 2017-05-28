@@ -106,8 +106,9 @@ namespace OpenRA
 				Color = client.Color;
 				if (client.Bot != null)
 				{
+					var botInfo = world.Map.Rules.Actors["player"].TraitInfos<IBotInfo>().First(b => b.Type == client.Bot);
 					var botsOfSameType = world.LobbyInfo.Clients.Where(c => c.Bot == client.Bot).ToArray();
-					PlayerName = botsOfSameType.Length == 1 ? client.Bot : "{0} {1}".F(client.Bot, botsOfSameType.IndexOf(client) + 1);
+					PlayerName = botsOfSameType.Length == 1 ? botInfo.Name : "{0} {1}".F(botInfo.Name, botsOfSameType.IndexOf(client) + 1);
 				}
 				else
 					PlayerName = client.Name;
@@ -139,7 +140,7 @@ namespace OpenRA
 			IsBot = BotType != null;
 			if (IsBot && Game.IsHost)
 			{
-				var logic = PlayerActor.TraitsImplementing<IBot>().FirstOrDefault(b => b.Info.Name == BotType);
+				var logic = PlayerActor.TraitsImplementing<IBot>().FirstOrDefault(b => b.Info.Type == BotType);
 				if (logic == null)
 					Log.Write("debug", "Invalid bot type: {0}", BotType);
 				else

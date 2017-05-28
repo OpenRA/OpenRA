@@ -1,6 +1,7 @@
 Player:
 	HackyAI@Omnius:
 		Name: Omnius
+		Type: Omnius
 		MinimumExcessPower: 60
 		BuildingQueues: Building, Upgrade
 		UnitQueues: Infantry, Vehicle, Armor, Starport, Aircraft
@@ -119,6 +120,7 @@ Player:
 				Against: Ally
 	HackyAI@Vidius:
 		Name: Vidious
+		Type: Vidious
 		MinimumExcessPower: 60
 		BuildingQueues: Building, Upgrade
 		UnitQueues: Infantry, Vehicle, Armor, Starport, Aircraft
@@ -239,6 +241,7 @@ Player:
 				Against: Ally
 	HackyAI@Gladius:
 		Name: Gladius
+		Type: Gladius
 		MinimumExcessPower: 60
 		BuildingQueues: Building, Upgrade
 		UnitQueues: Infantry, Vehicle, Armor, Starport, Aircraft

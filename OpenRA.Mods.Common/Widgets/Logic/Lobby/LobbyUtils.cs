@@ -50,13 +50,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var bots = new List<SlotDropDownOption>();
 			if (slot.AllowBots)
 			{
-				foreach (var b in map.Rules.Actors["player"].TraitInfos<IBotInfo>().Select(t => t.Name))
+				foreach (var b in map.Rules.Actors["player"].TraitInfos<IBotInfo>())
 				{
-					var bot = b;
 					var botController = orderManager.LobbyInfo.Clients.FirstOrDefault(c => c.IsAdmin);
-					bots.Add(new SlotDropDownOption(bot,
-						"slot_bot {0} {1} {2}".F(slot.PlayerReference, botController.Index, bot),
-						() => client != null && client.Bot == bot));
+					bots.Add(new SlotDropDownOption(b.Name,
+						"slot_bot {0} {1} {2}".F(slot.PlayerReference, botController.Index, b.Type),
+						() => client != null && client.Bot == b.Type));
 				}
 			}
 
