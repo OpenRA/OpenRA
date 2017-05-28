@@ -1,6 +1,7 @@
 E1:
 	Inherits: ^Soldier
 	Inherits@EXPERIENCE: ^GainsExperience
+	Inherits@AUTOTARGET: ^AutoTargetGround
 	Valued:
 		Cost: 100
 	Tooltip:
@@ -13,6 +14,8 @@ E1:
 		Speed: 56
 	Health:
 		HP: 50
+	AutoTarget:
+		ScanRadius: 4
 	Armament:
 		Weapon: M16
 	AttackFrontal:
@@ -23,6 +26,7 @@ E1:
 E2:
 	Inherits: ^Soldier
 	Inherits@EXPERIENCE: ^GainsExperience
+	Inherits@AUTOTARGET: ^AutoTargetGround
 	Valued:
 		Cost: 160
 	Tooltip:
@@ -36,6 +40,8 @@ E2:
 		Speed: 71
 	Health:
 		HP: 50
+	AutoTarget:
+		ScanRadius: 4
 	Armament:
 		Weapon: Grenade
 		LocalOffset: 0,0,427
@@ -53,6 +59,7 @@ E2:
 E3:
 	Inherits: ^Soldier
 	Inherits@EXPERIENCE: ^GainsExperience
+	Inherits@AUTOTARGET: ^AutoTargetAll
 	Valued:
 		Cost: 300
 	Tooltip:
@@ -80,6 +87,7 @@ E3:
 E4:
 	Inherits: ^Soldier
 	Inherits@EXPERIENCE: ^GainsExperience
+	Inherits@AUTOTARGET: ^AutoTargetGround
 	Valued:
 		Cost: 200
 	Tooltip:
@@ -93,6 +101,8 @@ E4:
 		Speed: 56
 	Health:
 		HP: 90
+	AutoTarget:
+		ScanRadius: 4
 	Armament:
 		Weapon: Flamethrower
 		LocalOffset: 341,0,256
@@ -108,6 +118,7 @@ E4:
 E5:
 	Inherits: ^Soldier
 	Inherits@EXPERIENCE: ^GainsExperience
+	Inherits@AUTOTARGET: ^AutoTargetGround
 	Valued:
 		Cost: 300
 	Tooltip:
@@ -126,6 +137,8 @@ E5:
 				PathingCost: 90
 	Health:
 		HP: 90
+	AutoTarget:
+		ScanRadius: 4
 	Armament:
 		Weapon: Chemspray
 		LocalOffset: 341,0,256
@@ -160,11 +173,11 @@ E6:
 	Captures:
 		CaptureTypes: building, husk
 		PlayerExperience: 50
-	-AutoTarget:
 
 RMBO:
 	Inherits: ^Soldier
 	Inherits@EXPERIENCE: ^GainsExperience
+	Inherits@AUTOTARGET: ^AutoTargetGround
 	Valued:
 		Cost: 2000
 	Tooltip:
