@@ -120,6 +120,18 @@
 		RequiresCondition: rank-elite
 		ZOffset: 256
 
+^AutoTargetGround:
+	AutoTarget:
+	AutoTargetPriority@DEFAULT:
+		ValidTargets: Infantry, Vehicle, Water, Structure, Defense
+		InvalidTargets: NoAutoTarget
+
+^AutoTargetAll:
+	AutoTarget:
+	AutoTargetPriority@DEFAULT:
+		ValidTargets: Infantry, Vehicle, Water, Air, Structure, Defense
+		InvalidTargets: NoAutoTarget
+
 ^Vehicle:
 	Inherits@1: ^ExistsInWorld
 	Inherits@2: ^GainsExperience
@@ -190,7 +202,6 @@
 		Type: CenterPosition
 	Tooltip:
 		Name: Wreck
-	AutoTargetIgnore:
 	ScriptTriggers:
 	WithFacingSpriteBody:
 	HitShape:
@@ -278,7 +289,6 @@
 			SmallExplosionDeath: 3
 			BulletDeath: 4
 		CrushedSequence: die-crushed
-	AutoTarget:
 	AttackMove:
 	DrawLineToTarget:
 	Passenger:
@@ -395,7 +405,6 @@
 	Inherits: ^Building
 	WithSpriteTurret:
 	AttackTurreted:
-	AutoTarget:
 	RenderRangeCircle:
 	DetectCloaked:
 		Range: 1c768
