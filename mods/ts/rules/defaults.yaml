@@ -123,6 +123,24 @@
 	ExternalCondition@CRATE-CLOAK:
 		Condition: crate-cloak
 
+^AutoTargetGround:
+	AutoTarget:
+	AutoTargetPriority@DEFAULT:
+		ValidTargets: Infantry, Vehicle, Water, Structure, Defense
+		InvalidTargets: NoAutoTarget
+
+^AutoTargetAir:
+	AutoTarget:
+	AutoTargetPriority@DEFAULT:
+		ValidTargets: Air
+		InvalidTargets: NoAutoTarget
+
+^AutoTargetAll:
+	AutoTarget:
+	AutoTargetPriority@DEFAULT:
+		ValidTargets: Infantry, Vehicle, Water, Air, Structure, Defense
+		InvalidTargets: NoAutoTarget
+
 ^BasicBuilding:
 	Inherits@1: ^ExistsInWorld
 	Inherits@2: ^SpriteActor
@@ -278,7 +296,6 @@
 		TargetTypes: Ground, Wall, C4
 	WithWallSpriteBody:
 		Type: wall
-	AutoTargetIgnore:
 	Sellable:
 		SellSounds: cashturn.aud
 	Demolishable:
@@ -348,7 +365,6 @@
 	QuantizeFacingsFromSequence:
 		Sequence: stand
 	WithInfantryBody:
-	AutoTarget:
 	AttackMove:
 		Voice: Move
 	Passenger:
@@ -671,7 +687,6 @@
 		Type: Heavy
 	HiddenUnderFog:
 		Type: GroundPosition
-	AutoTargetIgnore:
 	ScriptTriggers:
 	Tooltip:
 		GenericName: Destroyed Aircraft
@@ -801,7 +816,6 @@
 ^Defense:
 	Inherits: ^Building
 	-GivesBuildableArea:
-	AutoTarget:
 	RenderRangeCircle:
 	RenderDetectionCircle:
 	RevealsShroud:
