@@ -54,9 +54,9 @@ namespace OpenRA.Mods.Common.Traits.Render
 			this.info = info;
 			attack = init.Self.Trait<AttackBase>();
 			armament = init.Self.TraitsImplementing<Armament>()
-				.Single(a => a.Info.Name == info.Armament);
+				.First(a => a.Info.Name == info.Armament);
 			wst = init.Self.TraitsImplementing<WithSpriteTurret>()
-				.Single(st => st.Info.Turret == info.Turret);
+				.First(st => st.Info.Turret == info.Turret);
 		}
 
 		void PlayAttackAnimation(Actor self)
