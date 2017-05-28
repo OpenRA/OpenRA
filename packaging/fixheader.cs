@@ -21,16 +21,30 @@ namespace fixheader
 
 		static void Main(string[] args)
 		{
+			if (args.Length == 0)
+			{
+				Console.WriteLine("Syntax: fixheader <FILE>");
+				return;
+			}
+
+			var osPlatform = Environment.OSVersion.Platform;
+
 			Console.WriteLine("fixheader {0}", args[0]);
 			data = File.ReadAllBytes(args[0]);
 			peOffset = BitConverter.ToInt32(data, 0x3c);
-			var corHeaderRva = BitConverter.ToInt32(data, peOffset + 20 + 100 + 14 * 8);
-			var corHeaderOffset = RvaToOffset(corHeaderRva);
 
-			data[corHeaderOffset + 16] |= 2;
+			if (osPlatform == PlatformID.MacOSX || osPlatform == PlatformID.Unix)
+			{
+				var corHeaderRva = BitConverter.ToInt32(data, peOffset + 20 + 100 + 14 * 8);
+				var corHeaderOffset = RvaToOffset(corHeaderRva);
+				data[corHeaderOffset + 16] |= 2;
+			}
 
-			// Set Flag "Application can handle large (>2GB) addresses (/LARGEADDRESSAWARE)"
-			data[peOffset + 4 + 18] |= 0x20;
+			if (osPlatform != PlatformID.MacOSX && osPlatform != PlatformID.Unix)
+			{
+				// Set Flag "Application can handle large (>2GB) addresses (/LARGEADDRESSAWARE)"
+				data[peOffset + 4 + 18] |= 0x20;
+			}
 
 			File.WriteAllBytes(args[0], data);
 		}
