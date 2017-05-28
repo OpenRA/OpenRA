@@ -808,6 +808,19 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				// Bots must now specify an internal type as well as their display name
+				if (engineVersion < 20170707)
+				{
+					if (node.Key.StartsWith("HackyAI", StringComparison.Ordinal) || node.Key.StartsWith("DummyAI", StringComparison.Ordinal))
+					{
+						var nameNode = node.Value.Nodes.FirstOrDefault(n => n.Key == "Name");
+
+						// Just duplicate the name to avoid incompatibility with maps
+						if (nameNode != null)
+							node.Value.Nodes.Add(new MiniYamlNode("Type", nameNode.Value.Value));
+					}
+				}
+
 				UpgradeActorRules(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 

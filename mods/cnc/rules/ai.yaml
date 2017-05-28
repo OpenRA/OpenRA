@@ -1,6 +1,7 @@
 Player:
 	HackyAI@Cabal:
 		Name: Cabal
+		Type: Cabal
 		MinimumExcessPower: 60
 		BuildingCommonNames:
 			ConstructionYard: fact
@@ -122,6 +123,7 @@ Player:
 				CheckRadius: 7c0
 	HackyAI@Watson:
 		Name: Watson
+		Type: Watson
 		MinimumExcessPower: 60
 		BuildingCommonNames:
 			ConstructionYard: fact
@@ -243,6 +245,7 @@ Player:
 				CheckRadius: 7c0
 	HackyAI@HAL9001:
 		Name: HAL 9001
+		Type: HAL 9001
 		MinimumExcessPower: 60
 		BuildingCommonNames:
 			ConstructionYard: fact
