@@ -1,7 +1,7 @@
 Player:
 	HackyAI@TestAI:
 		Name: Test AI
-		Type: Test AI
+		Type: test
 		MinimumExcessPower: 60
 		BuildingCommonNames:
 			ConstructionYard: gacnst

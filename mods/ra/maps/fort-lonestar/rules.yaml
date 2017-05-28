@@ -100,7 +100,7 @@ Player:
 	-HackyAI@TurtleAI:
 	DummyAI@LonestarAI:
 		Name: Lonestar AI
-		Type: Lonestar AI
+		Type: lonestar
 
 ^Infantry:
 	Inherits@IC: ^IronCurtainable
