@@ -1,0 +1,9 @@
+[submodule "Tao"]
+	path = Tao
+	url = git://github.com/OpenRA/tao.git
+[submodule "ICSharpCode.SharpZipLib"]
+	path = ICSharpCode.SharpZipLib
+	url = git://github.com/icsharpcode/SharpZipLib.git
+[submodule "Mono.Nat"]
+	path = Mono.Nat
+	url = git://github.com/mono/Mono.Nat.git
