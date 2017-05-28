@@ -170,27 +170,21 @@ Container@LOBBY_MUSIC_BIN:
 			Visible: false
 			Children:
 				Label@TITLE:
-					Y: 65
+					Y: 75
 					Width: PARENT_RIGHT - 24
 					Height: 25
 					Font: Bold
 					Align: Center
 					Text: Music Not Installed
 				Label@DESCA:
-					Y: 85
+					Y: 95
 					Width: PARENT_RIGHT - 24
 					Height: 25
 					Align: Center
 					Text: The game music can be installed
 				Label@DESCB:
-					Y: 105
+					Y: 115
 					Width: PARENT_RIGHT - 24
 					Height: 25
 					Align: Center
-					Text: from the "Manage Content" menu
-				Label@DESCC:
-					Y: 125
-					Width: PARENT_RIGHT - 24
-					Height: 25
-					Align: Center
-					Text: in the mod chooser.
+					Text: from the "Manage Content" menu.
