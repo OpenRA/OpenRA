@@ -163,11 +163,9 @@ namespace OpenRA.Mods.Common.Activities
 			return 45 * speed / planeInfo.TurnSpeed;
 		}
 
-		public override Color TargetLineColor { get { return Color.Yellow; } }
-
-		public override IEnumerable<Target> GetTargets(Actor self)
+		public override TargetLineNode TargetLineNode(Actor self)
 		{
-			yield return Target.FromActor(dest);
+			return new TargetLineNode(Target.FromActor(dest), Color.Yellow, NextActivity);
 		}
 	}
 }

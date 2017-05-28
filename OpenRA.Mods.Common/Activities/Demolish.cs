@@ -11,6 +11,7 @@
 
 using System.Drawing;
 using System.Linq;
+using OpenRA.Activities;
 using OpenRA.Effects;
 using OpenRA.Mods.Common.Effects;
 using OpenRA.Mods.Common.Traits;
@@ -81,6 +82,9 @@ namespace OpenRA.Mods.Common.Activities
 			});
 		}
 
-		public override Color TargetLineColor { get { return Color.Red; } }
+		public override TargetLineNode TargetLineNode(Actor self)
+		{
+			return new TargetLineNode(Target, Color.Red, NextActivity);
+		}
 	}
 }

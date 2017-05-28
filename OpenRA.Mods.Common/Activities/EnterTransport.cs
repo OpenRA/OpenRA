@@ -11,6 +11,7 @@
 
 using System;
 using System.Drawing;
+using OpenRA.Activities;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
@@ -32,7 +33,10 @@ namespace OpenRA.Mods.Common.Activities
 			passenger = self.Trait<Passenger>();
 		}
 
-		public override Color TargetLineColor { get { return Color.Yellow; } }
+		public override TargetLineNode TargetLineNode(Actor self)
+		{
+			return new TargetLineNode(Target, Color.Yellow, null);
+		}
 
 		protected override void Unreserve(Actor self, bool abort) { passenger.Unreserve(self); }
 		protected override bool CanReserve(Actor self) { return cargo.Unloading || cargo.CanLoad(transport, self); }

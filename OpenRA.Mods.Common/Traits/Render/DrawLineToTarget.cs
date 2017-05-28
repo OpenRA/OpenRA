@@ -10,10 +10,8 @@
 #endregion
 
 using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
+using OpenRA.Activities;
 using OpenRA.Graphics;
-using OpenRA.Mods.Common.Activities;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -65,26 +63,17 @@ namespace OpenRA.Mods.Common.Traits
 				yield break;
 
 			WPos prev = self.CenterPosition;
-			for (var a = self.CurrentActivity; a != null; a = a.NextActivity)
+			TargetLineNode n;
+			for (var a = self.CurrentActivity; a != null; a = n.Next)
 			{
-				if (a is OpenRA.Mods.Common.Activities.Move.MovePart)
-					a = ((OpenRA.Mods.Common.Activities.Move.MovePart)a).Move;
+				n = a.TargetLineNode(self);
 
-				foreach (var target in a.GetTargets(self))
-				{
-					if (a.IsCanceled || target.Type == TargetType.Invalid)
-						continue;
+				// Some activities aren't drawable and has invalid type target.
+				if (a.IsCanceled || n.Target.Type == TargetType.Invalid)
+					continue;
 
-					yield return new TargetLineRenderable(new[] { prev, target.CenterPosition }, a.TargetLineColor);
-					prev = target.CenterPosition;
-				}
-
-				if (a is ResupplyAircraft)
-					break; /// If we don't break, we get infinite loop.
-				if (a is EnterTransport)
-					break;
-				if (a is HarvestResource)
-					break;
+				yield return new TargetLineRenderable(new[] { prev, n.Target.CenterPosition }, n.Color);
+				prev = n.Target.CenterPosition;
 			}
 		}
 	}

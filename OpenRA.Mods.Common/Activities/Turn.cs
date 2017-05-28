@@ -41,5 +41,12 @@ namespace OpenRA.Mods.Common.Activities
 
 			return this;
 		}
+
+		public override TargetLineNode TargetLineNode(Actor self)
+		{
+			if (NextActivity != null)
+				return NextActivity.TargetLineNode(self);
+			return base.TargetLineNode(self);
+		}
 	}
 }

@@ -64,5 +64,10 @@ namespace OpenRA.Mods.Common.Activities
 		{
 			yield return Target.FromPos(end);
 		}
+
+		public override TargetLineNode TargetLineNode(Actor self)
+		{
+			return new TargetLineNode(Target.FromPos(end), Color.Green, NextActivity);
+		}
 	}
 }

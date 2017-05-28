@@ -262,19 +262,19 @@ namespace OpenRA.Mods.Common.Activities
 			return Pair.New(nextCell, subCell);
 		}
 
-		public override Color TargetLineColor
-		{
-			get
-			{
-				if (NextActivity != null)
-					return NextActivity.TargetLineColor;
-				return Color.Green;
-			}
-		}
-
 		public override IEnumerable<Target> GetTargets(Actor self)
 		{
-			yield return Target.FromCell(self.World, this.destination.Value);
+			if (path != null)
+				return Enumerable.Reverse(path).Select(c => Target.FromCell(self.World, c));
+			if (destination != null)
+				return new Target[] { Target.FromCell(self.World, destination.Value) };
+			return Target.None;
+		}
+
+		public override TargetLineNode TargetLineNode(Actor self)
+		{
+			var color = NextActivity == null ? Color.Green : NextActivity.TargetLineNode(self).Color;
+			return new TargetLineNode(Target.FromCell(self.World, this.destination.Value), color, NextActivity);
 		}
 
 		public abstract class MovePart : Activity
@@ -388,9 +388,9 @@ namespace OpenRA.Mods.Common.Activities
 
 			protected abstract MovePart OnComplete(Actor self, Mobile mobile, Move parent);
 
-			public override IEnumerable<Target> GetTargets(Actor self)
+			public override TargetLineNode TargetLineNode(Actor self)
 			{
-				return Move.GetTargets(self);
+				return new TargetLineNode(Target.Invalid, Color.Green, Move);
 			}
 		}
 

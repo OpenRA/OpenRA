@@ -55,21 +55,19 @@ namespace OpenRA.Mods.Common.Activities
 			return base.Cancel(self, keepQueue);
 		}
 
-		public override Color TargetLineColor
-		{
-			get
-			{
-				if (inner != null && inner is MoveWithinRange)
-					return inner.TargetLineColor;
-				return Color.Red;
-			}
-		}
-
 		public override IEnumerable<Target> GetTargets(Actor self)
 		{
 			if (inner != null)
-				foreach (var t in inner.GetTargets(self))
-					yield return t;
+				return inner.GetTargets(self);
+
+			return Target.None;
+		}
+
+		public override TargetLineNode TargetLineNode(Actor self)
+		{
+			if (inner != null)
+				return inner.TargetLineNode(self);
+			return new TargetLineNode(Target.Invalid, Color.Green, NextActivity);
 		}
 	}
 }

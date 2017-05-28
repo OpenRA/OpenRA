@@ -65,11 +65,9 @@ namespace OpenRA.Mods.Cnc.Activities
 			return base.Tick(self);
 		}
 
-		public override Color TargetLineColor { get { return Color.Yellow; } }
-
-		public override IEnumerable<Target> GetTargets(Actor self)
+		public override TargetLineNode TargetLineNode(Actor self)
 		{
-			yield return Target.FromActor(target);
+			return new TargetLineNode(Target, Color.Yellow, NextActivity);
 		}
 	}
 }

@@ -9,8 +9,10 @@
  */
 #endregion
 
+using System.Drawing;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Activities
 {
@@ -50,6 +52,12 @@ namespace OpenRA.Mods.Common.Activities
 				return this;
 
 			return NextActivity;
+		}
+
+		public override TargetLineNode TargetLineNode(Actor self)
+		{
+			var color = NextActivity == null ? Color.Green : NextActivity.TargetLineNode(self).Color;
+			return new TargetLineNode(Target.Invalid, color, NextActivity);
 		}
 	}
 }

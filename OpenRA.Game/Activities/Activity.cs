@@ -19,6 +19,21 @@ namespace OpenRA.Activities
 {
 	public enum ActivityState { Queued, Active, Done, Canceled }
 
+	public struct TargetLineNode
+	{
+		public readonly Target Target;
+		public readonly Color Color;
+		public readonly Activity Next;
+
+		public TargetLineNode(Target target, Color color, Activity next)
+		{
+			// Note: Not all activities are drawable. In that case, pass Target.Invalid as target.
+			Target = target;
+			Color = color;
+			Next = next;
+		}
+	}
+
 	/*
 	 * Activities are actions carried out by actors during each tick.
 	 *
@@ -263,11 +278,14 @@ namespace OpenRA.Activities
 			}
 		}
 
-		public virtual Color TargetLineColor { get { return Color.Green; } }
-
 		public virtual IEnumerable<Target> GetTargets(Actor self)
 		{
 			yield break;
+		}
+
+		public virtual TargetLineNode TargetLineNode(Actor self)
+		{
+			return new TargetLineNode(Target.Invalid, Color.Green, NextActivity);
 		}
 	}
 

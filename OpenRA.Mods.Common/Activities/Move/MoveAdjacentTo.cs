@@ -153,19 +153,18 @@ namespace OpenRA.Mods.Common.Activities
 				return pathFinder.FindBidiPath(fromSrc, fromDest);
 		}
 
-		public override Color TargetLineColor
-		{
-			get
-			{
-				if (NextActivity != null)
-					return NextActivity.TargetLineColor;
-				return Color.Green;
-			}
-		}
-
 		public override IEnumerable<Target> GetTargets(Actor self)
 		{
-			yield return Target;
+			if (inner != null)
+				return inner.GetTargets(self);
+
+			return Target.None;
+		}
+
+		public override TargetLineNode TargetLineNode(Actor self)
+		{
+			var color = NextActivity == null ? Color.Green : NextActivity.TargetLineNode(self).Color;
+			return new TargetLineNode(Target, color, NextActivity);
 		}
 
 		public override bool Cancel(Actor self, bool keepQueue = false)

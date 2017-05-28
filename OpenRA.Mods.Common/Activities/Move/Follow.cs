@@ -50,24 +50,12 @@ namespace OpenRA.Mods.Common.Activities
 			return ActivityUtils.SequenceActivities(path, this);
 		}
 
-		public override Color TargetLineColor
+		public override TargetLineNode TargetLineNode(Actor self)
 		{
-			get
-			{
-				// Follow-guard case.
-				if (NextActivity == null)
-					return Color.Yellow;
-
-				// By default, return red color for attack.
-				// Attack activities are declared as classes INSIDE another class and
-				// harder to distinguish check with "is" operator.
-				return Color.Red;
-			}
-		}
-
-		public override IEnumerable<Target> GetTargets(Actor self)
-		{
-			yield return target;
+			// Follow-guard case. (Easier to tell than follow-attack)
+			if (NextActivity == null)
+				return new TargetLineNode(target, Color.Yellow, NextActivity);
+			return new TargetLineNode(target, Color.Red, NextActivity);
 		}
 	}
 }

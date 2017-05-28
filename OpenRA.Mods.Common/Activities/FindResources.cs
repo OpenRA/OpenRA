@@ -145,11 +145,14 @@ namespace OpenRA.Mods.Common.Activities
 			return null;
 		}
 
-		public override Color TargetLineColor { get { return Color.Red; } }
-
 		public override IEnumerable<Target> GetTargets(Actor self)
 		{
 			yield return Target.FromCell(self.World, self.Location);
+		}
+
+		public override TargetLineNode TargetLineNode(Actor self)
+		{
+			return new TargetLineNode(Target.FromCell(self.World, harv.LastOrderLocation.Value), Color.Red, NextActivity);
 		}
 	}
 }

@@ -9,7 +9,7 @@
  */
 #endregion
 
-using System.Collections.Generic;
+using System.Drawing;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
@@ -87,9 +87,10 @@ namespace OpenRA.Mods.Common.Activities
 			NextActivity = activity;
 		}
 
-		public override IEnumerable<Target> GetTargets(Actor self)
+		public override TargetLineNode TargetLineNode(Actor self)
 		{
-			yield return Target.FromPos(dropPosition);
+			// Does have a valid target but draws inaccurately. Skip drawing rather.
+			return new TargetLineNode(Target.Invalid, Color.Green, NextActivity);
 		}
 	}
 }
