@@ -66,7 +66,7 @@ namespace OpenRA.Mods.Common.Traits
 			return null;
 		}
 
-		public bool IsCloseEnoughToBase(World world, Player p, string buildingName, CPos topLeft)
+		public virtual bool IsCloseEnoughToBase(World world, Player p, string buildingName, CPos topLeft)
 		{
 			if (p.PlayerActor.Trait<DeveloperMode>().BuildAnywhere)
 				return true;
