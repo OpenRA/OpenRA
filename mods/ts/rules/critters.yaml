@@ -53,6 +53,7 @@ VISC_SML:
 VISC_LRG:
 	Inherits: ^Visceroid
 	Inherits@CRATESTATS: ^CrateStatModifiers
+	Inherits@AUTOTARGET: ^AutoTargetGround
 	Tooltip:
 		Name: Adult Visceroid
 	Health:
@@ -82,6 +83,7 @@ VISC_LRG:
 JFISH:
 	Inherits: ^Visceroid
 	Inherits@CRATESTATS: ^CrateStatModifiers
+	Inherits@AUTOTARGET: ^AutoTargetGround
 	Tooltip:
 		Name: Tiberium Floater
 	Health:

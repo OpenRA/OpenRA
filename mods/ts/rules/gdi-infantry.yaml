@@ -1,6 +1,7 @@
 E2:
 	Inherits: ^Soldier
 	Inherits@EXPERIENCE: ^GainsExperience
+	Inherits@AUTOTARGET: ^AutoTargetGround
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 20
@@ -57,6 +58,9 @@ MEDIC:
 		ForceTargetStances: None
 		Cursor: heal
 		OutsideRangeCursor: heal
+	AutoTarget:
+	AutoTargetPriority@DEFAULT:
+		ValidTargets: Infantry
 	AttackFrontal:
 	WithInfantryBody:
 		DefaultAttackSequence: heal
@@ -68,6 +72,7 @@ MEDIC:
 JUMPJET:
 	Inherits: ^Soldier
 	Inherits@EXPERIENCE: ^GainsExperience
+	Inherits@AUTOTARGET: ^AutoTargetGround
 	Valued:
 		Cost: 600
 	Tooltip:
@@ -152,7 +157,6 @@ JUMPJET.Husk:
 	Aircraft:
 	HiddenUnderFog:
 		Type: GroundPosition
-	AutoTargetIgnore:
 	ScriptTriggers:
 	Tooltip:
 		Name: Jumpjet Infantry
@@ -184,6 +188,7 @@ GHOST:
 	Inherits: ^Soldier
 	Inherits@EXPERIENCE: ^GainsExperience
 	Inherits@2: ^HealsOnTiberium
+	Inherits@AUTOTARGET: ^AutoTargetGround
 	Valued:
 		Cost: 1750
 	Tooltip:
