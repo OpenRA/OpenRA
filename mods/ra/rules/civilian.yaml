@@ -1,7 +1,6 @@
 C1:
 	Inherits@1: ^CivInfantry
 	Inherits@2: ^ArmedCivilian
-	AutoTarget:
 
 C2:
 	Inherits: ^CivInfantry
@@ -33,7 +32,6 @@ C6:
 C7:
 	Inherits@1: ^CivInfantry
 	Inherits@2: ^ArmedCivilian
-	AutoTarget:
 	RenderSprites:
 		Image: C1
 
@@ -59,7 +57,6 @@ C10:
 TECN:
 	Inherits@1: ^CivInfantry
 	Inherits@2: ^ArmedCivilian
-	AutoTarget:
 	Tooltip:
 		Name: Technician
 	RenderSprites:
@@ -265,7 +262,8 @@ V19:
 	-SpawnActorOnDeath@3:
 	SpawnActorOnDeath:
 		Actor: V19.Husk
-	AutoTargetIgnore:
+	Targetable:
+		TargetTypes: Ground, C4, DetonateAttack, Structure, NoAutoTarget
 
 V19.Husk:
 	Inherits: ^CivBuilding
@@ -298,11 +296,10 @@ BARL:
 	Tooltip:
 		Name: Explosive Barrel
 		ShowOwnerRow: False
-	AutoTargetIgnore:
 	Armor:
 		Type: None
 	Targetable:
-		TargetTypes: Ground, DemoTruck, Barrel
+		TargetTypes: Ground, DemoTruck, Barrel, NoAutoTarget
 	-ShakeOnDeath:
 	-SoundOnDamageTransition:
 	-Demolishable:
@@ -321,11 +318,10 @@ BRL3:
 	Tooltip:
 		Name: Explosive Barrel
 		ShowOwnerRow: False
-	AutoTargetIgnore:
 	Armor:
 		Type: None
 	Targetable:
-		TargetTypes: Ground, DemoTruck, Barrel
+		TargetTypes: Ground, DemoTruck, Barrel, NoAutoTarget
 	-ShakeOnDeath:
 	-SoundOnDamageTransition:
 	-Demolishable:

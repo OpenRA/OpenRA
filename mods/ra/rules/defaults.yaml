@@ -157,6 +157,24 @@
 	ExternalCondition@INVULNERABILITY:
 		Condition: invulnerability
 
+^AutoTargetGround:
+	AutoTarget:
+	AutoTargetPriority@DEFAULT:
+		ValidTargets: Infantry, Vehicle, Water, Structure, Defense
+		InvalidTargets: NoAutoTarget
+
+^AutoTargetAir:
+	AutoTarget:
+	AutoTargetPriority@DEFAULT:
+		ValidTargets: Air
+		InvalidTargets: NoAutoTarget
+
+^AutoTargetAll:
+	AutoTarget:
+	AutoTargetPriority@DEFAULT:
+		ValidTargets: Infantry, Vehicle, Water, Air, Structure, Defense
+		InvalidTargets: NoAutoTarget
+
 ^Vehicle:
 	Inherits@1: ^ExistsInWorld
 	Inherits@2: ^GainsExperience
@@ -359,7 +377,6 @@
 	Inherits: ^Infantry
 	UpdatesPlayerStatistics:
 	MustBeDestroyed:
-	AutoTarget:
 	ProximityCaptor:
 		Types: Infantry
 	TakeCover:
@@ -393,6 +410,7 @@
 		MaxMoveDelay: 750
 
 ^ArmedCivilian:
+	Inherits@AUTOTARGET: ^AutoTargetGround
 	Armament:
 		Weapon: Pistol
 	AttackFrontal:
@@ -584,7 +602,6 @@
 		TargetTypes: Ground, C4, DetonateAttack, Structure, Defense
 	MustBeDestroyed:
 		RequiredForShortGame: false
-	AutoTarget:
 	-GivesBuildableArea:
 	-AcceptsDeliveredCash:
 	DrawLineToTarget:
@@ -614,11 +631,10 @@
 	LineBuildNode:
 		Types: wall
 	Targetable:
-		TargetTypes: Ground, DetonateAttack, Wall
+		TargetTypes: Ground, DetonateAttack, Wall, NoAutoTarget
 	RenderSprites:
 		Palette: effect
 	WithWallSpriteBody:
-	AutoTargetIgnore:
 	Sellable:
 		SellSounds: cashturn.aud
 	Guardable:
@@ -704,7 +720,8 @@
 		Weapon: UnitExplode
 	Tooltip:
 		Name: Ammo Box
-	AutoTargetIgnore:
+	Targetable:
+		TargetTypes: Ground, C4, DetonateAttack, Structure, NoAutoTarget
 	Armor:
 		Type: Light
 	Targetable:
@@ -775,7 +792,6 @@
 		Image: burn-l
 		MinimumDamageState: Heavy
 		MaximumDamageState: Dead
-	AutoTargetIgnore:
 	HiddenUnderShroud:
 	ScriptTriggers:
 	EditorTilesetFilter:
@@ -802,7 +818,6 @@
 		Type: Heavy
 	HiddenUnderFog:
 		Type: CenterPosition
-	AutoTargetIgnore:
 	ScriptTriggers:
 	WithFacingSpriteBody:
 	HitShape:
@@ -822,7 +837,7 @@
 	WithColoredOverlay@IDISABLE:
 		Palette: disabled
 	Targetable:
-		TargetTypes: Ground, Husk
+		TargetTypes: Ground, Husk, NoAutoTarget
 		RequiresForceFire: true
 	Chronoshiftable:
 	Tooltip:
@@ -874,7 +889,6 @@
 		HP: 1000
 	Armor:
 		Type: Concrete
-	AutoTargetIgnore:
 	ScriptTriggers:
 	BodyOrientation:
 		QuantizedFacings: 1

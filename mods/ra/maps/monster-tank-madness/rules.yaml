@@ -109,6 +109,7 @@ PBOX:
 
 5TNK:
 	Inherits: ^Tank
+	Inherits@AUTOTARGET: ^AutoTargetAll
 	Valued:
 		Cost: 10000
 	Tooltip:
@@ -148,7 +149,6 @@ PBOX:
 	AttackTurreted:
 	WithMuzzleOverlay:
 	WithSpriteTurret:
-	AutoTarget:
 	Explodes:
 		Weapon: MiniNuke
 		EmptyWeapon: MiniNuke
