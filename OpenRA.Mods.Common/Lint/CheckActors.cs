@@ -23,6 +23,14 @@ namespace OpenRA.Mods.Common.Lint
 			foreach (var actor in actorTypes)
 				if (!map.Rules.Actors.Keys.Contains(actor.ToLowerInvariant()))
 					emitError("Actor {0} is not defined by any rule.".F(actor));
+
+			foreach (var kv in map.ActorDefinitions)
+			{
+				var actorReference = new ActorReference(kv.Value.Value, kv.Value.ToDictionary());
+				var locationInit = actorReference.InitDict.GetOrDefault<LocationInit>();
+				if (locationInit == null)
+					emitError("Actor {0} does not define a Location.".F(kv.Key));
+			}
 		}
 	}
 }
