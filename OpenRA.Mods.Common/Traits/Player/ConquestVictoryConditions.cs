@@ -26,6 +26,24 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Disable the win/loss messages and audio notifications?")]
 		public readonly bool SuppressNotifications = false;
 
+		[Desc("The defeat announcer's name.")]
+		public readonly string DefeatAnnouncer = "Battlefield Control";
+
+		[Desc("The victory announcer's name.")]
+		public readonly string VictoryAnnouncer = "Battlefield Control";
+
+		[Desc("The victory announcer's color.")]
+		public readonly Color DefeatColor = Color.White;
+
+		[Desc("The defeat announcer's color.")]
+		public readonly Color VictoryColor = Color.White;
+
+		[Desc("The message which comes after a player won.'@' is the players name.")]
+		public readonly string VictoryMessage = "@ is victorious.";
+
+		[Desc("The message which comes after a player is defeated.'@' is the players name.")]
+		public readonly string DefeatMessage = "@ is defeated.";
+
 		public object Create(ActorInitializer init) { return new ConquestVictoryConditions(init.Self, this); }
 	}
 
@@ -39,6 +57,8 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			info = cvcInfo;
 			mo = self.Trait<MissionObjectives>();
+			if (info.DefeatMessage.IndexOf('@') < 0 || info.VictoryMessage.IndexOf('@') < 0)
+				throw new YamlException("Victory- and Defeatmessage need a '@'.");
 		}
 
 		public void Tick(Actor self)
@@ -68,7 +88,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (info.SuppressNotifications)
 				return;
 
-			Game.AddChatLine(Color.White, "Battlefield Control", player.PlayerName + " is defeated.");
+			Game.AddChatLine(info.DefeatColor, info.DefeatAnnouncer, info.DefeatMessage.Substring(0, info.DefeatMessage.IndexOf('@')) + player.PlayerName + info.DefeatMessage.Substring(info.DefeatMessage.IndexOf('@') + 1));
 			Game.RunAfterDelay(info.NotificationDelay, () =>
 			{
 				if (Game.IsCurrentWorld(player.World) && player == player.World.LocalPlayer)
@@ -81,7 +101,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (info.SuppressNotifications)
 				return;
 
-			Game.AddChatLine(Color.White, "Battlefield Control", player.PlayerName + " is victorious.");
+			Game.AddChatLine(info.VictoryColor, info.VictoryAnnouncer, info.VictoryMessage.Substring(0, info.VictoryMessage.IndexOf('@')) + player.PlayerName + info.VictoryMessage.Substring(info.VictoryMessage.IndexOf('@') + 1));
 			Game.RunAfterDelay(info.NotificationDelay, () =>
 			{
 				if (Game.IsCurrentWorld(player.World) && player == player.World.LocalPlayer)
