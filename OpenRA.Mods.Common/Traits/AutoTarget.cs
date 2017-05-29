@@ -17,7 +17,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("The actor will automatically engage the enemy when it is in range.")]
-	public class AutoTargetInfo : ConditionalTraitInfo, Requires<AttackBaseInfo>, UsesInit<StanceInit>
+	public class AutoTargetInfo : ConditionalTraitInfo, IRulesetLoaded, Requires<AttackBaseInfo>, UsesInit<StanceInit>
 	{
 		[Desc("It will try to hunt down the enemy if it is not set to defend.")]
 		public readonly bool AllowMovement = true;
@@ -32,7 +32,23 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Possible values are HoldFire, ReturnFire, Defend and AttackAnything. Used for human players.")]
 		public readonly UnitStance InitialStance = UnitStance.Defend;
 
-		[Desc("Stance-condition key-value pairs for specifying condition granting by stance.")]
+		[GrantedConditionReference]
+		[Desc("The condition to grant to self while in the HoldFire stance.")]
+		public readonly string HoldFireCondition = null;
+
+		[GrantedConditionReference]
+		[Desc("The condition to grant to self while in the ReturnFire stance.")]
+		public readonly string ReturnFireCondition = null;
+
+		[GrantedConditionReference]
+		[Desc("The condition to grant to self while in the Defend stance.")]
+		public readonly string DefendCondition = null;
+
+		[GrantedConditionReference]
+		[Desc("The condition to grant to self while in the AttackAnything stance.")]
+		public readonly string AttackAnythingCondition = null;
+
+		[FieldLoader.Ignore]
 		public readonly Dictionary<UnitStance, string> ConditionByStance = new Dictionary<UnitStance, string>();
 
 		[Desc("Allow the player to change the unit stance.")]
@@ -48,10 +64,24 @@ namespace OpenRA.Mods.Common.Traits
 
 		public readonly bool TargetWhenDamaged = true;
 
-		[GrantedConditionReference]
-		public IEnumerable<string> GrantedConditions { get { return ConditionByStance.Values; } }
-
 		public override object Create(ActorInitializer init) { return new AutoTarget(init, this); }
+
+		public override void RulesetLoaded(Ruleset rules, ActorInfo info)
+		{
+			base.RulesetLoaded(rules, info);
+
+			if (HoldFireCondition != null)
+				ConditionByStance[UnitStance.HoldFire] = HoldFireCondition;
+
+			if (ReturnFireCondition != null)
+				ConditionByStance[UnitStance.ReturnFire] = ReturnFireCondition;
+
+			if (DefendCondition != null)
+				ConditionByStance[UnitStance.Defend] = DefendCondition;
+
+			if (AttackAnythingCondition != null)
+				ConditionByStance[UnitStance.AttackAnything] = AttackAnythingCondition;
+		}
 	}
 
 	public enum UnitStance { HoldFire, ReturnFire, Defend, AttackAnything }
