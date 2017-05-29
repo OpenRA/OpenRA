@@ -2,6 +2,8 @@
 
 If you are looking for the mod, please visit https://github.com/forcecore/yupgi_alert0/ and http://www.moddb.com/mods/over-powered-mod. My mod is like a show case for the engine modification.
 
+This fork is like experimental branch in Linux Debian distribution. AttacqueSuperior features more stable higher quality traits and modder friendly: https://github.com/AttacqueSuperior/Engine. Some of my modules are tamed and imported into their engine too!
+
 ## Commit tags
 In commit message, I put these string as tags:
 * [SPAWN]: code modifications for spawners or spawned ones. Used for aircraft carriers and V3-like AA shootable missiles.
