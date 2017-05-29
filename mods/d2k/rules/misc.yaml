@@ -161,6 +161,7 @@ waypoint:
 
 ^carryall.colorpicker:
 	Inherits: carryall
+	-Health:
 	Aircraft:
 		InitialFacing: 104
 	RenderSprites:
