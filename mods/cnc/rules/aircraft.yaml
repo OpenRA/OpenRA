@@ -170,10 +170,6 @@ C17:
 		Speed: 326
 		Repulsable: False
 		MaximumPitch: 36
-	Health:
-		HP: 25
-	Armor:
-		Type: Heavy
 	HiddenUnderFog:
 		AlwaysVisibleStances: None
 		Type: CenterPosition
@@ -207,10 +203,6 @@ A10:
 		TurnSpeed: 4
 		Speed: 373
 		Repulsable: False
-	Health:
-		HP: 150
-	Armor:
-		Type: Heavy
 	AttackBomber:
 		Armaments: gun, bombs
 		Guns: gun
