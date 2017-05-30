@@ -76,6 +76,9 @@ namespace OpenRA.Mods.Common.Activities
 			{
 				isDocking = true;
 				iao.OnDock(self, this);
+
+				// Run what OnDock queued.
+				return NextActivity;
 			}
 
 			return ActivityUtils.SequenceActivities(new Wait(10), this);
