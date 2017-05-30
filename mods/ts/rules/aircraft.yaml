@@ -1,5 +1,6 @@
 DPOD:
 	Inherits: ^Helicopter
+	Inherits@AutoTarget: ^AutoTarget
 	Valued:
 		Cost: 10
 	Tooltip:
@@ -29,7 +30,6 @@ DPOD:
 		PipCount: 5
 		PipType: Ammo
 		PipTypeEmpty: AmmoEmpty
-	AutoTarget:
 
 DSHP:
 	Inherits: ^Helicopter
@@ -65,6 +65,7 @@ DSHP:
 ORCA:
 	Inherits: ^Helicopter
 	Inherits@EXPERIENCE: ^GainsExperience
+	Inherits@AutoTarget: ^AutoTarget
 	Valued:
 		Cost: 1000
 	Tooltip:
@@ -99,7 +100,6 @@ ORCA:
 		PipCount: 5
 		PipType: Ammo
 		PipTypeEmpty: AmmoEmpty
-	AutoTarget:
 	RenderSprites:
 	SpawnActorOnDeath:
 		Actor: ORCA.Husk
@@ -107,6 +107,7 @@ ORCA:
 ORCAB:
 	Inherits: ^Aircraft
 	Inherits@EXPERIENCE: ^GainsExperience
+	Inherits@AutoTarget: ^AutoTarget
 	Valued:
 		Cost: 1600
 	Tooltip:
@@ -147,7 +148,6 @@ ORCAB:
 		ReloadDelay: 200
 		PipType: Ammo
 		PipTypeEmpty: AmmoEmpty
-	AutoTarget:
 	RenderSprites:
 	Hovers@CRUISING:
 		RequiresCondition: cruising
@@ -230,6 +230,7 @@ TRNSPORT:
 SCRIN:
 	Inherits: ^Aircraft
 	Inherits@EXPERIENCE: ^GainsExperience
+	Inherits@AutoTarget: ^AutoTarget
 	Valued:
 		Cost: 1500
 	Tooltip:
@@ -271,7 +272,6 @@ SCRIN:
 		ReloadCount: 5
 		PipType: Ammo
 		PipTypeEmpty: AmmoEmpty
-	AutoTarget:
 	RenderSprites:
 	DeathSounds:
 	SpawnActorOnDeath:
@@ -280,6 +280,7 @@ SCRIN:
 APACHE:
 	Inherits: ^Helicopter
 	Inherits@EXPERIENCE: ^GainsExperience
+	Inherits@AutoTarget: ^AutoTarget
 	Valued:
 		Cost: 1000
 	Tooltip:
@@ -312,7 +313,6 @@ APACHE:
 		PipCount: 4
 		PipType: Ammo
 		PipTypeEmpty: AmmoEmpty
-	AutoTarget:
 	WithIdleOverlay@ROTORAIR:
 		Offset: 85,0,384
 		Sequence: rotor

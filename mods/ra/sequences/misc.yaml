@@ -117,10 +117,30 @@ pips:
 		Start: 4
 	pip-blue: pips2
 		Start: 5
+	pip-orange: pips2
+		Start: 6
 	pip-disguise: pip-disguise
 		Length: *
 		Tick: 300
 		Offset: 0, -6
+	pip-green-anim: pipsanim
+		Start: 0
+		Length: 4
+	pip-yellow-anim: pipsanim
+		Start: 4
+		Length: 4
+	pip-gray-anim: pipsanim
+		Start: 8
+		Length: 4
+	pip-red-anim: pipsanim
+		Start: 12
+		Length: 4
+	pip-blue-anim: pipsanim
+		Start: 16
+		Length: 4
+	pip-orange-anim: pipsanim
+		Start: 20
+		Length: 4
 
 v2:
 	idle:

@@ -1,7 +1,7 @@
 C1:
 	Inherits@1: ^CivInfantry
 	Inherits@2: ^ArmedCivilian
-	AutoTarget:
+	Inherits@AutoTarget: ^AutoTarget
 
 C2:
 	Inherits: ^CivInfantry
@@ -33,7 +33,7 @@ C6:
 C7:
 	Inherits@1: ^CivInfantry
 	Inherits@2: ^ArmedCivilian
-	AutoTarget:
+	Inherits@AutoTarget: ^AutoTarget
 	RenderSprites:
 		Image: C1
 
@@ -59,7 +59,7 @@ C10:
 TECN:
 	Inherits@1: ^CivInfantry
 	Inherits@2: ^ArmedCivilian
-	AutoTarget:
+	Inherits@AutoTarget: ^AutoTarget
 	Tooltip:
 		Name: Technician
 	RenderSprites:

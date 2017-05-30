@@ -23,6 +23,7 @@ NAPULS:
 	RevealsShroud:
 		Range: 8c0
 	-AutoTarget:
+	-WithTextUnitStanceDecoration:
 	Turreted:
 		TurnSpeed: 10
 		InitialFacing: 224

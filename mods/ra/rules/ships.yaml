@@ -1,5 +1,6 @@
 SS:
 	Inherits: ^Ship
+	Inherits@AutoTarget: ^AutoTarget
 	Buildable:
 		Queue: Ship
 		BuildAtProductionType: Submarine
@@ -61,6 +62,7 @@ SS:
 
 MSUB:
 	Inherits: ^Ship
+	Inherits@AutoTarget: ^AutoTarget
 	Buildable:
 		Queue: Ship
 		BuildAtProductionType: Submarine
@@ -126,6 +128,7 @@ MSUB:
 
 DD:
 	Inherits: ^Ship
+	Inherits@AutoTarget: ^AutoTarget
 	Buildable:
 		Queue: Ship
 		BuildAtProductionType: Boat
@@ -167,7 +170,6 @@ DD:
 	SelectionDecorations:
 		VisualBounds: 38,38
 	WithSpriteTurret:
-	AutoTarget:
 	DetectCloaked:
 		CloakTypes: Underwater
 		Range: 4c0
@@ -175,6 +177,7 @@ DD:
 
 CA:
 	Inherits: ^Ship
+	Inherits@AutoTarget: ^AutoTarget
 	Buildable:
 		Queue: Ship
 		BuildAtProductionType: Boat
@@ -228,7 +231,6 @@ CA:
 		Turret: primary
 	WithSpriteTurret@SECONDARY:
 		Turret: secondary
-	AutoTarget:
 
 LST:
 	Inherits: ^Ship
@@ -270,6 +272,7 @@ LST:
 
 PT:
 	Inherits: ^Ship
+	Inherits@AutoTarget: ^AutoTarget
 	Buildable:
 		Queue: Ship
 		BuildAtProductionType: Boat
@@ -308,7 +311,6 @@ PT:
 	SelectionDecorations:
 		VisualBounds: 36,36
 	WithSpriteTurret:
-	AutoTarget:
 	DetectCloaked:
 		CloakTypes: Underwater
 		Range: 4c0

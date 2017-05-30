@@ -230,10 +230,21 @@
 		Name: Destroyed Tower
 	ScriptTriggers:
 
+^AutoTarget:
+	AutoTarget:
+	WithTextUnitStanceDecoration:
+		ReferencePoint: Top, Left
+		ScreenOffset: 0, -8
+		HoldFireText: .
+		ReturnFireText: .
+		DefendText: .
+		AttackAnythingText: .
+
 ^Infantry:
 	Inherits@1: ^ExistsInWorld
 	Inherits@2: ^GainsExperience
 	Inherits@3: ^SpriteActor
+	Inherits@AutoTarget: ^AutoTarget
 	Huntable:
 	Health:
 		Shape: Circle
@@ -277,7 +288,6 @@
 			SmallExplosionDeath: 3
 			BulletDeath: 4
 		CrushedSequence: die-crushed
-	AutoTarget:
 	AttackMove:
 	DrawLineToTarget:
 	Passenger:
@@ -383,9 +393,9 @@
 
 ^Defense:
 	Inherits: ^Building
+	Inherits@AutoTarget: ^AutoTarget
 	WithSpriteTurret:
 	AttackTurreted:
-	AutoTarget:
 	RenderRangeCircle:
 	DetectCloaked:
 		Range: 1c768

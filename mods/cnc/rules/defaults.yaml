@@ -335,8 +335,22 @@
 	Voiced:
 		VoiceSet: GenericVoice
 
+^AutoTarget:
+	AutoTarget:
+	WithSpriteUnitStanceDecoration:
+		ReferencePoint: Top, Left
+		HoldFireSequence: pip-blue
+		ReturnFireSequence: pip-yellow
+		DefendSequence: pip-orange
+		AttackAnythingSequence: pip-red
+		HoldFireStartSequence: pip-blue-anim
+		ReturnFireStartSequence: pip-yellow-anim
+		DefendStartSequence: pip-orange-anim
+		AttackAnythingStartSequence: pip-red-anim
+
 ^Soldier:
 	Inherits: ^Infantry
+	Inherits@AutoTarget: ^AutoTarget
 	MustBeDestroyed:
 	Tooltip:
 		GenericName: Soldier
@@ -388,6 +402,7 @@
 ^DINO:
 	Inherits@1: ^ExistsInWorld
 	Inherits@2: ^SpriteActor
+	Inherits@AutoTarget: ^AutoTarget
 	Huntable:
 	Health:
 		HP: 1000
@@ -433,6 +448,7 @@
 		UseDeathTypeSuffix: false
 	AutoTarget:
 		ScanRadius: 4
+	WithTextUnitStanceDecoration:
 	AttackMove:
 		Voice: Attack
 	AttackFrontal:
@@ -445,6 +461,7 @@
 ^Viceroid:
 	Inherits@1: ^ExistsInWorld
 	Inherits@2: ^SpriteActor
+	Inherits@AutoTarget: ^AutoTarget
 	Huntable:
 	Health:
 		HP: 300
@@ -472,6 +489,7 @@
 		TargetTypes: Ground, Creep
 	AutoTarget:
 		ScanRadius: 5
+	WithTextUnitStanceDecoration:
 	AttackMove:
 		Voice: Attack
 	DrawLineToTarget:
@@ -887,7 +905,7 @@
 
 ^Defense:
 	Inherits: ^BaseBuilding
-	AutoTarget:
+	Inherits@AutoTarget: ^AutoTarget
 	RenderRangeCircle:
 	RenderDetectionCircle:
 	-GivesBuildableArea:

@@ -325,11 +325,24 @@
 		Offset: 0,0,427
 		RequiresCondition: parachute
 
+^AutoTarget:
+	AutoTarget:
+	WithSpriteUnitStanceDecoration:
+		ReferencePoint: Top, Left
+		HoldFireSequence: pip-blue
+		ReturnFireSequence: pip-yellow
+		DefendSequence: pip-orange
+		AttackAnythingSequence: pip-red
+		HoldFireStartSequence: pip-blue-anim
+		ReturnFireStartSequence: pip-yellow-anim
+		DefendStartSequence: pip-orange-anim
+		AttackAnythingStartSequence: pip-red-anim
+
 ^Soldier:
 	Inherits: ^Infantry
+	Inherits@AutoTarget: ^AutoTarget
 	UpdatesPlayerStatistics:
 	MustBeDestroyed:
-	AutoTarget:
 	ProximityCaptor:
 		Types: Infantry
 	TakeCover:
@@ -547,11 +560,11 @@
 
 ^Defense:
 	Inherits: ^Building
+	Inherits@AutoTarget: ^AutoTarget
 	Targetable:
 		TargetTypes: Ground, C4, DetonateAttack, Structure, Defense
 	MustBeDestroyed:
 		RequiredForShortGame: false
-	AutoTarget:
 	-GivesBuildableArea:
 	-AcceptsDeliveredCash:
 	DrawLineToTarget:

@@ -212,6 +212,7 @@ E6:
 		Type: building
 		PlayerExperience: 25
 	-AutoTarget:
+	-WithSpriteUnitStanceDecoration:
 	Voiced:
 		VoiceSet: EngineerVoice
 	Selectable:
@@ -464,6 +465,7 @@ THF:
 		InfiltrateTypes: Cash
 		PlayerExperience: 50
 	-AutoTarget:
+	-WithSpriteUnitStanceDecoration:
 	Voiced:
 		VoiceSet: ThiefVoice
 	WithInfantryBody:
@@ -494,6 +496,7 @@ HIJACKER:
 		CaptureTypes: vehicle
 		PlayerExperience: 50
 	-AutoTarget:
+	-WithSpriteUnitStanceDecoration:
 	Voiced:
 		VoiceSet: ThiefVoice
 	-TakeCover:

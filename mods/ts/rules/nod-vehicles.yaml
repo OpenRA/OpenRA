@@ -2,6 +2,7 @@ BGGY:
 	Inherits: ^Vehicle
 	Inherits@VOXELS: ^VoxelActor
 	Inherits@EXPERIENCE: ^GainsExperience
+	Inherits@AutoTarget: ^AutoTarget
 	Valued:
 		Cost: 500
 	Tooltip:
@@ -30,7 +31,6 @@ BGGY:
 		MuzzleSplitFacings: 8
 	AttackFrontal:
 		Voice: Attack
-	AutoTarget:
 	WithMuzzleOverlay:
 	-DamagedByTerrain@VEINS:
 	-LeavesTrails@VEINS:
@@ -39,6 +39,7 @@ BIKE:
 	Inherits: ^Vehicle
 	Inherits@VOXELS: ^VoxelActor
 	Inherits@EXPERIENCE: ^GainsExperience
+	Inherits@AutoTarget: ^AutoTarget
 	Valued:
 		Cost: 600
 	Tooltip:
@@ -69,12 +70,12 @@ BIKE:
 		LocalOffset: -153,-204,509, -153,204,509
 	AttackFrontal:
 		Voice: Attack
-	AutoTarget:
 
 TTNK:
 	Inherits: ^Tank
 	Inherits@VOXELS: ^VoxelActor
 	Inherits@EXPERIENCE: ^GainsExperience
+	Inherits@AutoTarget: ^AutoTarget
 	Valued:
 		Cost: 800
 	Tooltip:
@@ -170,7 +171,6 @@ TTNK:
 	Armor@deployed:
 		Type: Concrete
 		RequiresCondition: deployed
-	AutoTarget:
 	Carryable:
 		RequiresCondition: undeployed
 	RevealOnFire:
@@ -182,6 +182,7 @@ ART2:
 	Inherits: ^Tank
 	Inherits@VOXELS: ^VoxelActor
 	Inherits@EXPERIENCE: ^GainsExperience
+	Inherits@AutoTarget: ^AutoTarget
 	Valued:
 		Cost: 975
 	Tooltip:
@@ -252,7 +253,6 @@ ART2:
 		MuzzleSequence: muzzle
 		MuzzlePalette: effect-ignore-lighting
 	WithMuzzleOverlay:
-	AutoTarget:
 	Carryable:
 		RequiresCondition: undeployed
 	RevealOnFire:
@@ -379,6 +379,7 @@ SUBTANK:
 	Inherits: ^Tank
 	Inherits@VOXELS: ^VoxelActor
 	Inherits@EXPERIENCE: ^GainsExperience
+	Inherits@AutoTarget: ^AutoTarget
 	Valued:
 		Cost: 750
 	Tooltip:
@@ -413,7 +414,6 @@ SUBTANK:
 		Weapon: FireballLauncher
 	AttackFrontal:
 		Voice: Attack
-	AutoTarget:
 	WithVoxelBody:
 		RequiresCondition: !submerged
 	Targetable:
@@ -423,6 +423,7 @@ STNK:
 	Inherits: ^Tank
 	Inherits@VOXELS: ^VoxelActor
 	Inherits@EXPERIENCE: ^GainsExperience
+	Inherits@AutoTarget: ^AutoTarget
 	Valued:
 		Cost: 1100
 	Tooltip:
