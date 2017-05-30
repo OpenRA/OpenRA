@@ -134,6 +134,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{ "onMouseDown",  (Action<MapPreviewWidget, MapPreview, MouseInput>)((preview, mapPreview, mi) =>
 					LobbyUtils.SelectSpawnPoint(orderManager, preview, mapPreview, mi)) },
 				{ "getSpawnOccupants", (Func<MapPreview, Dictionary<CPos, SpawnOccupant>>)(mapPreview => LobbyUtils.GetSpawnOccupants(orderManager.LobbyInfo, mapPreview)) },
+				{ "showUnoccupiedSpawnpoints", true },
 			});
 
 			UpdateCurrentMap();
