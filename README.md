@@ -9,6 +9,9 @@ In commit message, I put these string as tags:
 * [IRON_EFF]: iron curtain flashing effect
 * [RADIO_ACTIVITY]: radio activity layer stuff (desolator rad eruption, nuke radiation...)
 * [SPACE]: codes for space themed maps
+* [CMIN]: Chrono miner (ore teleporter)
+* [HARV]: Harvester AI related stuff
+* [IDEPLOY]: (un)deploy notification interface
 
 # OpenRA
 

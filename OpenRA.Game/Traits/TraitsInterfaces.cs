@@ -441,4 +441,10 @@ namespace OpenRA.Traits
 			return playerName + " " + BoolValues[newValue] + " " + Name + ".";
 		}
 	}
+
+	public interface INotifyDeploy
+	{
+		void OnDeployed(Actor self);
+		void OnUndeployed(Actor self);
+	}
 }

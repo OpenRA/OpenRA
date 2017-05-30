@@ -257,6 +257,10 @@ namespace OpenRA.Mods.Common.Traits
 				deployedToken = conditionManager.GrantCondition(self, info.DeployedCondition);
 
 			deployState = DeployState.Deployed;
+
+			var notis = self.TraitsImplementing<INotifyDeploy>();
+			foreach (var noti in notis)
+				noti.OnDeployed(self);
 		}
 
 		void OnUndeployStarted()
@@ -265,6 +269,10 @@ namespace OpenRA.Mods.Common.Traits
 				deployedToken = conditionManager.RevokeCondition(self, deployedToken);
 
 			deployState = DeployState.Deploying;
+
+			var notis = self.TraitsImplementing<INotifyDeploy>();
+			foreach (var noti in notis)
+				noti.OnUndeployed(self);
 		}
 
 		void OnUndeployCompleted()

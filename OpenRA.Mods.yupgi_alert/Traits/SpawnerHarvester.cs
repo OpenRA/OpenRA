@@ -27,7 +27,8 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.yupgi_alert.Traits
 {
 	[Desc("This actor is a harvester that uses its spawns to indirectly harvest resources. i.e., Slave Miner.")]
-	public class SpawnerHarvesterInfo : ITraitInfo, Requires<IOccupySpaceInfo>, Requires<MobileInfo>, Requires<GrantConditionOnDeployInfo>
+	public class SpawnerHarvesterInfo : ITraitInfo, Requires<IOccupySpaceInfo>,
+			Requires<MobileInfo>, Requires<GrantConditionOnDeployInfo>
 	{
 		[Desc("Number of spawned units")]
 		public readonly int Count = 5;
@@ -86,13 +87,11 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 
 	public class SpawnerHarvester : INotifyCreated, INotifyKilled, INotifyIdle,
 		INotifyOwnerChanged, ITick, INotifySold, INotifyActorDisposing,
-		IIssueOrder, IResolveOrder, IOrderVoice, INotifyBuildComplete
+		IIssueOrder, IResolveOrder, IOrderVoice, INotifyBuildComplete, INotifyDeploy
 	{
 		readonly SpawnerHarvesterInfo info;
 		readonly Actor self;
 		readonly Mobile mobile;
-
-		readonly GrantConditionOnDeploy deploy;
 
 		// Because activities don't remember states, we remember states here for them.
 		public CPos? LastOrderLocation = null;
@@ -121,7 +120,6 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 			exits = self.Info.TraitInfos<ExitInfo>().ToArray();
 
 			mobile = self.Trait<Mobile>();
-			deploy = self.Trait<GrantConditionOnDeploy>();
 
 			kickTicks = info.KickDelay;
 		}
@@ -387,10 +385,6 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 
 		public void TickIdle(Actor self)
 		{
-			// Manual deploy (or even automatic deploy) allows kick.
-			if (deploy.DeployState == DeployState.Deployed)
-				allowKicks = true;
-
 			// wake up on idle for long
 			if (allowKicks && self.IsIdle)
 				kickTicks--;
@@ -402,6 +396,32 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 				kickTicks = info.KickDelay;
 				MiningState = MiningState.Kick;
 				self.World.IssueOrder(new Order("SpawnerHarvest", self, false));
+			}
+		}
+
+		public void OnDeployed(Actor self)
+		{
+			allowKicks = true;
+
+			// rescan from where we are
+			MiningState = MiningState.Scan;
+
+			// Tell harvesters to unload and restart mining.
+			foreach (var s in launched)
+			{
+				s.CancelActivity();
+				AssignTargetForSpawned(s, self.Location);
+				s.QueueActivity(new DeliverResources(s));
+			}
+		}
+
+		public void OnUndeployed(Actor self)
+		{
+			// Interrupt harvesters and order them to follow me.
+			foreach (var s in launched)
+			{
+				s.CancelActivity();
+				s.QueueActivity(new Follow(s, Target.FromActor(self), WDist.FromCells(1), WDist.FromCells(3)));
 			}
 		}
 	}
