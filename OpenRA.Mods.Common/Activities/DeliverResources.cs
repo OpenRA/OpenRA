@@ -39,22 +39,25 @@ namespace OpenRA.Mods.Common.Activities
 			if (NextInQueue != null)
 				return NextInQueue;
 
-			// Find the nearest best refinery if not explicitly ordered to a specific refinery:
-			if (harv.OwnerLinkedProc == null || !harv.OwnerLinkedProc.IsInWorld)
+			// If a refinery is explicitly specified, link it.
+			if (harv.OwnerLinkedProc != null && harv.OwnerLinkedProc.IsInWorld)
+			{
+				harv.LinkProc(self, harv.OwnerLinkedProc);
+				harv.OwnerLinkedProc = null;
+			}
+			// at this point, harv.OwnerLinkedProc == null.
+
+			// Is the refinery still alive? If not, link one.
+			if (harv.LinkedProc == null || !harv.LinkedProc.IsInWorld)
 			{
 				// Maybe we lost the owner-linked refinery:
-				harv.OwnerLinkedProc = null;
+				harv.LinkedProc = null;
 				if (self.World.WorldTick - chosenTicks > NextChooseTime)
 				{
 					harv.ChooseNewProc(self, null);
 					chosenTicks = self.World.WorldTick;
 				}
 			}
-			else
-				harv.LinkProc(self, harv.OwnerLinkedProc);
-
-			if (harv.LinkedProc == null || !harv.LinkedProc.IsInWorld)
-				harv.ChooseNewProc(self, null);
 
 			// No refineries exist; check again after delay defined in Harvester.
 			if (harv.LinkedProc == null)
