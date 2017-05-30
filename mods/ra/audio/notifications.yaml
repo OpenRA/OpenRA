@@ -113,7 +113,9 @@ Speech:
 		WarningFourMinutesRemaining: 4minr
 		WarningFiveMinutesRemaining: 5minr
 		Win: misnwon1
-
+	AltTexts:
+		BaseAttack: Base under attack
+		InsufficientFunds: Insufficient funds
 Sounds:
 	Notifications:
 		RadarUp: radaron2

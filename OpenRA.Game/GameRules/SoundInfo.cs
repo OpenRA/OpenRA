@@ -21,6 +21,7 @@ namespace OpenRA.GameRules
 		public readonly Dictionary<string, string[]> Prefixes = new Dictionary<string, string[]>();
 		public readonly Dictionary<string, string[]> Voices = new Dictionary<string, string[]>();
 		public readonly Dictionary<string, string[]> Notifications = new Dictionary<string, string[]>();
+		public readonly Dictionary<string, string> AltTexts = new Dictionary<string, string>();
 		public readonly string DefaultVariant = ".aud";
 		public readonly string DefaultPrefix = "";
 		public readonly HashSet<string> DisableVariants = new HashSet<string>();
@@ -34,17 +35,29 @@ namespace OpenRA.GameRules
 			FieldLoader.Load(this, y);
 
 			VoicePools = Exts.Lazy(() => Voices.ToDictionary(a => a.Key, a => new SoundPool(a.Value)));
-			NotificationsPools = Exts.Lazy(() => Notifications.ToDictionary(a => a.Key, a => new SoundPool(a.Value)));
+			NotificationsPools = Exts.Lazy(() => Notifications.ToDictionary(a => a.Key, a => {
+				string altText = "";
+				AltTexts.TryGetValue(a.Key, out altText);
+				return new SoundPool(altText, a.Value);
+			}));
 		}
 	}
 
 	public class SoundPool
 	{
+		public readonly string AltText;
 		readonly string[] clips;
 		readonly List<string> liveclips = new List<string>();
 
 		public SoundPool(params string[] clips)
 		{
+			AltText = "";
+			this.clips = clips;
+		}
+
+		public SoundPool(string altText, params string[] clips)
+		{
+			AltText = altText;
 			this.clips = clips;
 		}
 
