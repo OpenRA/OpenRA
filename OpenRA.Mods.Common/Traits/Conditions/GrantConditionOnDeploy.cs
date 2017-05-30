@@ -75,6 +75,8 @@ namespace OpenRA.Mods.Common.Traits
 		int deployedToken = ConditionManager.InvalidConditionToken;
 		int undeployedToken = ConditionManager.InvalidConditionToken;
 
+		public DeployState DeployState { get { return deployState; } }
+
 		public GrantConditionOnDeploy(ActorInitializer init, GrantConditionOnDeployInfo info)
 		{
 			self = init.Self;
@@ -154,36 +156,37 @@ namespace OpenRA.Mods.Common.Traits
 
 		bool IsCursorBlocked()
 		{
-			return ((deployState == DeployState.Deployed) && !info.CanUndeploy) || (!IsOnValidTerrain() && (deployState != DeployState.Deployed));
+			return ((deployState == DeployState.Deployed) && !info.CanUndeploy) ||
+				(!CanDeployAtLocation(self.Location) && (deployState != DeployState.Deployed));
 		}
 
-		bool IsOnValidTerrain()
+		public bool CanDeployAtLocation(CPos location)
 		{
-			return IsOnValidTerrainType() && IsOnValidRampType();
+			return IsValidTerrainType(location) && IsValidRampType(location);
 		}
 
-		bool IsOnValidTerrainType()
+		bool IsValidTerrainType(CPos location)
 		{
-			if (!self.World.Map.Contains(self.Location))
+			if (!self.World.Map.Contains(location))
 				return false;
 
 			if (!checkTerrainType)
 				return true;
 
-			var terrainType = self.World.Map.GetTerrainInfo(self.Location).Type;
+			var terrainType = self.World.Map.GetTerrainInfo(location).Type;
 
 			return info.AllowedTerrainTypes.Contains(terrainType);
 		}
 
-		bool IsOnValidRampType()
+		bool IsValidRampType(CPos location)
 		{
 			if (info.CanDeployOnRamps)
 				return true;
 
 			var ramp = 0;
-			if (self.World.Map.Contains(self.Location))
+			if (self.World.Map.Contains(location))
 			{
-				var tile = self.World.Map.Tiles[self.Location];
+				var tile = self.World.Map.Tiles[location];
 				var ti = self.World.Map.Rules.TileSet.GetTileInfo(tile);
 				if (ti != null)
 					ramp = ti.RampType;
@@ -200,7 +203,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!init && deployState != DeployState.Undeployed)
 				return;
 
-			if (!IsOnValidTerrain())
+			if (!CanDeployAtLocation(self.Location))
 				return;
 
 			if (!string.IsNullOrEmpty(info.DeploySound))
