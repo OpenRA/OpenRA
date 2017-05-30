@@ -35,7 +35,6 @@ namespace OpenRA.Mods.yupgi_alert.Activities
 		readonly IPathFinder pathFinder;
 		readonly DomainIndex domainIndex;
 		readonly GrantConditionOnDeploy deploy;
-		int miningTicks;
 
 		CPos? avoidCell;
 
@@ -50,8 +49,6 @@ namespace OpenRA.Mods.yupgi_alert.Activities
 			territory = self.World.WorldActor.TraitOrDefault<ResourceClaimLayer>();
 			pathFinder = self.World.WorldActor.Trait<IPathFinder>();
 			domainIndex = self.World.WorldActor.Trait<DomainIndex>();
-
-			miningTicks = harvInfo.KickDelay;
 		}
 
 		public SpawnerHarvesterHarvest(Actor self, CPos avoidCell)
@@ -63,8 +60,8 @@ namespace OpenRA.Mods.yupgi_alert.Activities
 		Activity UndeployAndGo(Actor self, CPos? mineLocation, out MiningState state)
 		{
 			state = MiningState.Scan;
-			self.World.IssueOrder(new Order("GrantConditionOnDeploy", self, false)); // undeploy
-			var mineOrder = new Order("SpawnerHarvest", self, true);
+			self.World.IssueOrder(new Order("GrantConditionOnDeploy", self, false) { SuppressVisualFeedback = true }); // undeploy
+			var mineOrder = new Order("SpawnerHarvest", self, true) { SuppressVisualFeedback = true };
 			if (mineLocation.HasValue)
 				mineOrder.TargetLocation = mineLocation.Value;
 			self.World.IssueOrder(mineOrder);
@@ -145,8 +142,8 @@ namespace OpenRA.Mods.yupgi_alert.Activities
 			state = MiningState.Deploying;
 			if (deploy.DeployState == DeployState.Undeployed)
 			{
-				self.World.IssueOrder(new Order("GrantConditionOnDeploy", self, false));
-				self.World.IssueOrder(new Order("SpawnerHarvestDeploying", self, true));
+				self.World.IssueOrder(new Order("GrantConditionOnDeploy", self, false) { SuppressVisualFeedback = true });
+				self.World.IssueOrder(new Order("SpawnerHarvestDeploying", self, true) { SuppressVisualFeedback = true });
 			}
 			return null; // issuing order cancels everything so no use returning anything.
 		}
@@ -170,18 +167,10 @@ namespace OpenRA.Mods.yupgi_alert.Activities
 
 		Activity MiningTick(Actor self, out MiningState state)
 		{
-			// I don't like this busy waiting logic here but
-			// it is much neater to check mining state from SpawnerHarvester to see
-			// if the slave miner may eject slaves.
-
-			miningTicks--;
+			// Let the harvester become idle so it can shoot enemies.
+			// Tick in SpawnerHarvester trait will kick activity back to KickTick.
 			state = MiningState.Mining;
-			if (miningTicks <= 0)
-			{
-				state = MiningState.Kick;
-				miningTicks = harvInfo.KickDelay;
-			}
-			return this;
+			return null;
 		}
 
 		Activity KickTick(Actor self, out MiningState state)

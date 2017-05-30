@@ -84,13 +84,15 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 		Kick // Check if there's ore field is close enough.
 	}
 
-	public class SpawnerHarvester : INotifyCreated, INotifyKilled,
+	public class SpawnerHarvester : INotifyCreated, INotifyKilled, INotifyIdle,
 		INotifyOwnerChanged, ITick, INotifySold, INotifyActorDisposing,
 		IIssueOrder, IResolveOrder, IOrderVoice, INotifyBuildComplete
 	{
 		readonly SpawnerHarvesterInfo info;
 		readonly Actor self;
 		readonly Mobile mobile;
+
+		readonly GrantConditionOnDeploy deploy;
 
 		// Because activities don't remember states, we remember states here for them.
 		public CPos? LastOrderLocation = null;
@@ -101,17 +103,14 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 		readonly Lazy<IFacing> facing;
 		readonly ExitInfo[] exits;
 
-		// condition management
-		ConditionManager conditionManager;
-
-		public int SpawnCount { get { return launched.Count; } }
-
 		public IEnumerable<IOrderTargeter> Orders
 		{
 			get { yield return new SpawnerHarvestOrderTargeter(); }
 		}
 
 		int respawnTicks; // allowed to spawn a new slave when <= 0.
+		int kickTicks;
+		bool allowKicks = true; // allow kicks?
 
 		public SpawnerHarvester(ActorInitializer init, SpawnerHarvesterInfo info)
 		{
@@ -122,6 +121,9 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 			exits = self.Info.TraitInfos<ExitInfo>().ToArray();
 
 			mobile = self.Trait<Mobile>();
+			deploy = self.Trait<GrantConditionOnDeploy>();
+
+			kickTicks = info.KickDelay;
 		}
 
 		void FindResourcesOnCreation(Actor self)
@@ -132,7 +134,6 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 
 		public void Created(Actor self)
 		{
-			conditionManager = self.Trait<ConditionManager>();
 			FindResourcesOnCreation(self);
 		}
 
@@ -149,10 +150,6 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 		public bool CanLoad(Actor self, Actor a)
 		{
 			return true; // can always load slaves, unless the airbourne carrier has to land (not implemented)
-		}
-
-		public virtual void OnBecomingIdle(Actor self)
-		{
 		}
 
 		public void SpawnedRemoved(Actor self, Actor slave)
@@ -339,6 +336,8 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 
 		void handleSpawnerHarvest(Actor self, Order order, MiningState state)
 		{
+			allowKicks = true;
+
 			MiningState = state;
 			if (state != MiningState.Deploying)
 				// state == Deploying implies order string of SpawnerHarvestDeploying
@@ -366,12 +365,44 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 			else if (order.OrderString == "SpawnerHarvestDeploying")
 				handleSpawnerHarvest(self, order, MiningState.Deploying);
 			else if (order.OrderString == "Stop" || order.OrderString == "Move")
+			{
+				allowKicks = false;
 				MiningState = MiningState.Scan;
+			}
+			else if (order.OrderString == "GrantConditionOnDeploy")
+			{
+				if (!order.SuppressVisualFeedback)
+					// Implies manual order from UI.
+					allowKicks = false;
+				// Manual DEPLOY order should enable kick, but deploy state is unstable as of now,
+				// as we are only attempting to deploy and there is no guaurantee that it is successful or not.
+				// That is handled in OnBecomingIdle.
+			}
 		}
 
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
 			return order.OrderString == "SpawnerHarvest" ? info.HarvestVoice : null;
+		}
+
+		public void TickIdle(Actor self)
+		{
+			// Manual deploy (or even automatic deploy) allows kick.
+			if (deploy.DeployState == DeployState.Deployed)
+				allowKicks = true;
+
+			// wake up on idle for long
+			if (allowKicks && self.IsIdle)
+				kickTicks--;
+			else
+				kickTicks = info.KickDelay;
+
+			if (kickTicks-- <= 0)
+			{
+				kickTicks = info.KickDelay;
+				MiningState = MiningState.Kick;
+				self.World.IssueOrder(new Order("SpawnerHarvest", self, false));
+			}
 		}
 	}
 
