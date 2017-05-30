@@ -337,8 +337,11 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 
 		public void Killed(Actor self, AttackInfo e)
 		{
+			// kill stuff inside
 			foreach (var c in spawns)
 				c.s.Kill(e.Attacker);
+		
+			// kill stuff outside
 			foreach (var c in launched)
 			{
 				if (!c.IsDead)
@@ -365,6 +368,8 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 		bool sold = false;
 		public void Sold(Actor self)
 		{
+			if (sold)
+				return;
 			sold = true;
 
 			// Dispose slaved.
@@ -378,17 +383,6 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 				if (!c.IsDead)
 					c.Kill(self);
 			launched.Clear();
-		}
-
-		void SpawnSlave(Actor s)
-		{
-			self.World.AddFrameEndTask(w =>
-			{
-				w.Add(s);
-				s.Trait<IPositionable>().SetPosition(s, self.Location);
-
-				// TODO: this won't work well for >1 actor as they should move towards the next enterable (sub) cell instead
-			});
 		}
 
 		public void OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)

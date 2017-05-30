@@ -58,7 +58,7 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 		void INotifyKilled.Killed(Actor self, AttackInfo e)
 		{
 			// If killed, I tell my master that I'm gone.
-			if (Master == null || Master.IsDead)
+			if (Master == null || Master.Disposed || Master.IsDead)
 				// Can happen, when built from build palette (w00t)
 				return;
 			var spawner = Master.Trait<Spawner>();
