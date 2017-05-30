@@ -81,6 +81,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{ "onMouseDown",  (Action<MapPreviewWidget, MapPreview, MouseInput>)((preview, mapPreview, mi) => { }) },
 				{ "getSpawnOccupants", (Func<MapPreview, Dictionary<CPos, SpawnOccupant>>)(mapPreview =>
 					LobbyUtils.GetSpawnOccupants(selectedReplay.GameInfo.Players, mapPreview)) },
+				{ "showUnoccupiedSpawnpoints", false },
 			});
 
 			var replayDuration = new CachedTransform<ReplayMetadata, string>(r =>
