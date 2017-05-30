@@ -86,7 +86,7 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 
 	public class SpawnerHarvester : INotifyCreated, INotifyKilled,
 		INotifyOwnerChanged, ITick, INotifySold, INotifyActorDisposing,
-		IIssueOrder, IResolveOrder, IOrderVoice, INotifyResourceClaimLost, INotifyBuildComplete
+		IIssueOrder, IResolveOrder, IOrderVoice, INotifyBuildComplete
 	{
 		readonly SpawnerHarvesterInfo info;
 		readonly Actor self;
@@ -111,8 +111,7 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 			get { yield return new SpawnerHarvestOrderTargeter(); }
 		}
 
-		int regen_ticks = 0; // allowed to spawn a new slave when <= 0.
-		int launchingToken = ConditionManager.InvalidConditionToken;
+		int respawnTicks; // allowed to spawn a new slave when <= 0.
 
 		public SpawnerHarvester(ActorInitializer init, SpawnerHarvesterInfo info)
 		{
@@ -154,19 +153,9 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 
 		public virtual void OnBecomingIdle(Actor self)
 		{
-			Recall(self);
 		}
 
-		void Recall(Actor self)
-		{
-			// Tell launched slaves to come back and enter me.
-			foreach (var s in launched)
-			{
-				s.Trait<Spawned>().EnterSpawner(s);
-			}
-		}
-
-		public void SlaveKilled(Actor self, Actor slave)
+		public void SpawnedRemoved(Actor self, Actor slave)
 		{
 			if (self.IsDead || self.Disposed || sold)
 				// Well, complicated. Killed() invokes slave.kill(), whichi invokes this logic.
@@ -175,8 +164,6 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 
 			if (launched.Contains(slave))
 				launched.Remove(slave);
-
-			regen_ticks = info.RespawnTicks; // set clock so that regen happens.
 		}
 
 		// Production.cs use random to select an exit.
@@ -191,18 +178,68 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 			return exits[exit_round_robin];
 		}
 
-		public Actor Launch(Actor self)
+		// target: target to mine.
+		void EjectSpawned(Actor self, Actor spawned, ExitInfo exit, CPos targetLocation)
+		{
+			self.World.AddFrameEndTask(w =>
+			{
+				if (self.IsDead || self.Disposed)
+					return;
+
+				var spawn_offset = exit == null ? WVec.Zero : exit.SpawnOffset;
+				spawned.Trait<IPositionable>().SetVisualPosition(spawned, self.CenterPosition + spawn_offset);
+
+				spawned.CancelActivity(); // Reset any activity.
+
+				// Move into world, if not. Ground units get stuck without this.
+				if (info.SpawnIsGroundUnit)
+				{
+					var mv = spawned.Trait<IMove>().MoveIntoWorld(spawned, self.Location);
+					if (mv != null)
+						spawned.QueueActivity(mv);
+				}
+
+				AssignTargetForSpawned(spawned, targetLocation);
+				spawned.QueueActivity(new FindResources(spawned));
+				w.Add(spawned);
+			});
+		}
+
+		void AssignTargetForSpawned(Actor s, CPos targetLocation)
+		{
+			// set target spot to mine
+			var sh = s.Trait<Harvester>();
+			sh.LastOrderLocation = targetLocation;
+
+			// This prevents harvesters returning to an empty patch when the player orders them to a new patch:
+			sh.LastHarvestedCell = sh.LastOrderLocation;
+		}
+
+		// Launch a slave spawn to do mining "target".
+		// Returns true when spawned something.
+		public bool Launch(Actor self, CPos targetLocation)
 		{
 			if (launched.Count >= info.Count)
-				return null;
+				return false;
 
-			var unit = self.World.CreateActor(false, info.SpawnUnit.ToLowerInvariant(),
+			if (respawnTicks > 0)
+				return false;
+
+			var s = CreateSpawned(self);
+			var exit = ChooseExit(self);
+			EjectSpawned(self, s, exit, targetLocation);
+			return true;
+		}
+
+		Actor CreateSpawned(Actor self)
+		{
+			var actor = self.World.CreateActor(false, info.SpawnUnit.ToLowerInvariant(),
 				new TypeDictionary { new OwnerInit(self.Owner) });
-			var spawned = unit.Trait<SpawnedHarvester>();
-			spawned.Master = self; // let the spawned unit return to me for reloading and repair.
+			var sh = actor.Trait<Harvester>();
+			sh.Master = self; // let the spawned actor resolve me.
 
-			launched.Add(unit);
-			return unit;
+			launched.Add(actor);
+			return actor;
 		}
 
 		void SetSpawnedFacing(Actor spawned, Actor spawner, ExitInfo exit)
@@ -230,7 +267,8 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 		public void Disposing(Actor self)
 		{
 			foreach (var a in launched)
-				a.Dispose();
+				if (!a.IsDead && !a.Disposed)
+					a.Dispose();
 			launched.Clear();
 		}
 
@@ -264,7 +302,14 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 		{
 			if (launched.Count >= info.Count)
 				return;
-			regen_ticks--;
+
+			// Keep launching slaves if we can.
+			if (respawnTicks-- <= 0)
+			{
+				if (MiningState == MiningState.Mining)
+					Launch(self, LastOrderLocation.Value);
+				respawnTicks = info.RespawnTicks;
+			}
 		}
 
 		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
@@ -285,12 +330,11 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 			if (territory != null)
 			{
 				// Find the nearest claimable cell to the order location (useful for group-select harvest):
-				return mobile.NearestCell(loc, p => mobile.CanEnterCell(p) && territory.ClaimResource(self, p), 1, 6);
+				return mobile.NearestCell(loc, p => mobile.CanEnterCell(p), 1, 6);
 			}
 
 			// Find the nearest cell to the order location (useful for group-select harvest):
-			var taken = new HashSet<CPos>();
-			return mobile.NearestCell(loc, p => mobile.CanEnterCell(p) && taken.Add(p), 1, 6);
+			return mobile.NearestCell(loc, p => mobile.CanEnterCell(p), 1, 6);
 		}
 
 		void handleSpawnerHarvest(Actor self, Order order, MiningState state)
@@ -307,8 +351,12 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 			self.QueueActivity(findResources);
 			self.SetTargetLine(Target.FromCell(self.World, loc), Color.Red);
 
-			// This prevents harvesters returning to an empty patch when the player orders them to a new patch:
-			//LastHarvestedCell = LastOrderLocation;
+			// Assign new targets for slaves too.
+			foreach (var s in launched)
+			{
+				// Don't cancel but "queue" it.
+				AssignTargetForSpawned(s, loc);
+			}
 		}
 
 		public void ResolveOrder(Actor self, Order order)
@@ -318,31 +366,12 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 			else if (order.OrderString == "SpawnerHarvestDeploying")
 				handleSpawnerHarvest(self, order, MiningState.Deploying);
 			else if (order.OrderString == "Stop" || order.OrderString == "Move")
-			{
 				MiningState = MiningState.Scan;
-				// Turn off idle smarts to obey the stop/move:
-				//idleSmart = false;
-				// idleSmart == scan and move and mining stuff, when the player is not looking.
-				// which is to be implemented.
-
-				// make slaves follow this unit.
-
-				// Turn idleSmart on at some point.
-			}
 		}
 
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
 			return order.OrderString == "SpawnerHarvest" ? info.HarvestVoice : null;
-		}
-
-		public void OnNotifyResourceClaimLost(Actor self, ResourceClaim claim, Actor claimer)
-		{
-			if (self == claimer) return;
-
-			// Our claim on a resource was stolen, find more unclaimed resources:
-			self.CancelActivity();
-			self.QueueActivity(new SpawnerHarvesterHarvest(self));
 		}
 	}
 

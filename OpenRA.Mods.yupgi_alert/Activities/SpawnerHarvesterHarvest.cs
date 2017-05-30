@@ -35,6 +35,7 @@ namespace OpenRA.Mods.yupgi_alert.Activities
 		readonly IPathFinder pathFinder;
 		readonly DomainIndex domainIndex;
 		readonly GrantConditionOnDeploy deploy;
+		int miningTicks;
 
 		CPos? avoidCell;
 
@@ -49,12 +50,25 @@ namespace OpenRA.Mods.yupgi_alert.Activities
 			territory = self.World.WorldActor.TraitOrDefault<ResourceClaimLayer>();
 			pathFinder = self.World.WorldActor.Trait<IPathFinder>();
 			domainIndex = self.World.WorldActor.Trait<DomainIndex>();
+
+			miningTicks = harvInfo.KickDelay;
 		}
 
 		public SpawnerHarvesterHarvest(Actor self, CPos avoidCell)
 			: this(self)
 		{
 			this.avoidCell = avoidCell;
+		}
+
+		Activity UndeployAndGo(Actor self, CPos? mineLocation, out MiningState state)
+		{
+			state = MiningState.Scan;
+			self.World.IssueOrder(new Order("GrantConditionOnDeploy", self, false)); // undeploy
+			var mineOrder = new Order("SpawnerHarvest", self, true);
+			if (mineLocation.HasValue)
+				mineOrder.TargetLocation = mineLocation.Value;
+			self.World.IssueOrder(mineOrder);
+			return null; // issued oders take over.
 		}
 
 		Activity ScanTick(Actor self, out MiningState state)
@@ -93,6 +107,21 @@ namespace OpenRA.Mods.yupgi_alert.Activities
 			if (deployPosition == null)
 				// Just sit there until we can. Won't happen unless the map is filled with units.
 				return ActivityUtils.SequenceActivities(new Wait(harvInfo.KickDelay), this);
+
+			// I could be in deploy state and given this order.
+			if (deploy.DeployState == DeployState.Deployed)
+			{
+				if ((deployPosition.Value - self.Location).LengthSquared <= harvInfo.KickScanRadius * harvInfo.KickScanRadius)
+				{
+					// New target near enough. Stay.
+					state = MiningState.Mining;
+					return this;
+				}
+				else
+				{
+					return UndeployAndGo(self, harv.LastOrderLocation, out state);
+				}
+			}
 
 			// TODO: The harvest-deliver-return sequence is a horrible mess of duplicated code and edge-cases
 			var notify = self.TraitsImplementing<INotifyHarvesterAction>();
@@ -141,13 +170,23 @@ namespace OpenRA.Mods.yupgi_alert.Activities
 
 		Activity MiningTick(Actor self, out MiningState state)
 		{
-			state = MiningState.Kick;
-			return ActivityUtils.SequenceActivities(new Wait(harvInfo.KickDelay), this);
+			// I don't like this busy waiting logic here but
+			// it is much neater to check mining state from SpawnerHarvester to see
+			// if the slave miner may eject slaves.
+
+			miningTicks--;
+			state = MiningState.Mining;
+			if (miningTicks <= 0)
+			{
+				state = MiningState.Kick;
+				miningTicks = harvInfo.KickDelay;
+			}
+			return this;
 		}
 
 		Activity KickTick(Actor self, out MiningState state)
 		{
-			var closestHarvestablePosition = ClosestHarvestablePos(self, self.Location, harvInfo.KickScanRadius);
+			var closestHarvestablePosition = ClosestHarvestablePos(self, harvInfo.KickScanRadius);
 			if (closestHarvestablePosition.HasValue)
 			{
 				// I may stay mining.
@@ -156,9 +195,7 @@ namespace OpenRA.Mods.yupgi_alert.Activities
 			}
 
 			// get going
-			state = MiningState.Scan;
-			self.World.IssueOrder(new Order("GrantConditionOnDeploy", self, false));
-			return this;
+			return UndeployAndGo(self, null, out state);
 		}
 
 		public override Activity Tick(Actor self)
@@ -198,14 +235,28 @@ namespace OpenRA.Mods.yupgi_alert.Activities
 		{
 			// FindTilesInAnnulus gives sorted cells by distance :) Nice.
 			foreach (var tile in self.World.Map.FindTilesInAnnulus(harvestablePos, 0, harvInfo.DeployScanRadius))
-				if (deploy.CanDeployAtLocation(tile))
+				if (deploy.CanDeployAtLocation(tile) && mobile.CanEnterCell(tile))
 					return tile;
 
 			// Try broader search if unable to find deploy location
 			foreach (var tile in self.World.Map.FindTilesInAnnulus(harvestablePos, harvInfo.DeployScanRadius, harvInfo.LongScanRadius))
-				if (deploy.CanDeployAtLocation(tile))
+				if (deploy.CanDeployAtLocation(tile) && mobile.CanEnterCell(tile))
 					return tile;
 
+			return null;
+		}
+
+		// Find closest harvestable location from location given by loc.
+		CPos? ClosestHarvestablePos(Actor self, CPos loc, int searchRadius)
+		{
+			// fast common case
+			if (self.CanHarvestAt(loc, resLayer, harvInfo, territory))
+				return loc;
+
+			// FindTilesInAnnulus gives sorted cells by distance :) Nice.
+			foreach (var tile in self.World.Map.FindTilesInAnnulus(loc, 0, searchRadius))
+				if (self.CanHarvestAt(tile, resLayer, harvInfo, territory))
+					return tile;
 			return null;
 		}
 
@@ -213,13 +264,14 @@ namespace OpenRA.Mods.yupgi_alert.Activities
 		/// Finds the closest harvestable pos between the current position of the harvester
 		/// and the last order location
 		/// </summary>
-		CPos? ClosestHarvestablePos(Actor self, CPos searchFromLoc, int radius)
+		CPos? ClosestHarvestablePos(Actor self, int searchRadius)
 		{
 			if (self.CanHarvestAt(self.Location, resLayer, harvInfo, territory))
 				return self.Location;
 
 			// Determine where to search from and how far to search:
-			var searchRadiusSquared = radius * radius;
+			var searchFromLoc = harv.LastOrderLocation ?? self.Location;
+			var searchRadiusSquared = searchRadius * searchRadius;
 
 			// Find any harvestable resources:
 			var passable = (uint)mobileInfo.GetMovementClass(self.World.Map.Rules.TileSet);

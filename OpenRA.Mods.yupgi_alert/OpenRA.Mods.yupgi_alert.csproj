@@ -78,8 +78,8 @@
     <Compile Include="Orders\ShootableBallisticMissileMoveOrderTargeter.cs" />
     <Compile Include="Projectiles\RadBeam.cs" />
     <Compile Include="Traits\AIDeployHelper.cs" />
-    <Compile Include="Traits\PaletteEffects\IronCurtainPaletteEffect.cs" />
     <Compile Include="Traits\SpawnedHarvester.cs" />
+    <Compile Include="Traits\PaletteEffects\IronCurtainPaletteEffect.cs" />
     <Compile Include="Traits\SpawnedExplodes.cs" />
     <Compile Include="Traits\ShootableBallisticMissile.cs" />
     <Compile Include="Traits\Air\BlimpFallsToEarth.cs" />

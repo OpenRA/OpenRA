@@ -49,6 +49,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Teleports harvested ore? \"Chrono harvester\"?")]
 		public readonly bool OreTeleporter = false;
 
+		[Desc("Slaved to a slave miner?")]
+		public readonly bool Slaved = false;
+
 		[Desc("Percentage of maximum speed when fully loaded.")]
 		public readonly int FullyLoadedSpeed = 85;
 
@@ -92,6 +95,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Sync] public Actor OwnerLinkedProc = null;
 		[Sync] public Actor LastLinkedProc = null;
 		[Sync] public Actor LinkedProc = null;
+		[Sync] public Actor Master = null; // if slaved, then who is the master?
 		[Sync] int currentUnloadTicks;
 		public CPos? LastHarvestedCell = null;
 		public CPos? LastOrderLocation = null;
@@ -173,6 +177,10 @@ namespace OpenRA.Mods.Common.Traits
 
 		public Actor ClosestProc(Actor self, Actor ignore)
 		{
+			if (Info.Slaved)
+				// For slaved harvesters can only attach to master.
+				return Master;
+
 			// Find all refineries and their occupancy count:
 			var refs = self.World.ActorsWithTrait<IAcceptResources>()
 				.Where(r => r.Actor != ignore && r.Actor.Owner == self.Owner && IsAcceptableProcType(r.Actor))
