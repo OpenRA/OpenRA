@@ -100,7 +100,6 @@ Container@MULTIPLAYER_BROWSER_PANEL:
 							Y: 1
 							Width: PARENT_RIGHT - 2
 							Height: PARENT_BOTTOM - 2
-							TooltipContainer: TOOLTIP_CONTAINER
 				Label@SELECTED_MAP:
 					Y: 172
 					Width: PARENT_RIGHT
