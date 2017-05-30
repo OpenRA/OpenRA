@@ -33,7 +33,6 @@ namespace OpenRA.Mods.Common.Activities
 			IsInterruptible = false;
 		}
 
-		bool teleporter_bug_fix_ran_once = false;
 		public override Activity Tick(Actor self)
 		{
 			if (NextInQueue != null)
@@ -68,17 +67,7 @@ namespace OpenRA.Mods.Common.Activities
 
 			self.SetTargetLine(Target.FromActor(proc), Color.Green, false);
 			var dest = proc.Location + iao.DeliveryOffset;
-			if (harv.Info.OreTeleporter)
-			{
-				// do nothing and continue below.
-				// Force issue dock order.
-				if (!teleporter_bug_fix_ran_once)
-				{
-					teleporter_bug_fix_ran_once = true;
-					return ActivityUtils.SequenceActivities(new Wait(10), this);
-				}
-			}
-			else if (self.Location != dest)
+			if (!harv.Info.OreTeleporter && self.Location != dest)
 			{
 				var notify = self.TraitsImplementing<INotifyHarvesterAction>();
 				foreach (var n in notify)
@@ -94,7 +83,7 @@ namespace OpenRA.Mods.Common.Activities
 				iao.OnDock(self, this);
 
 				// Run what OnDock queued.
-				return NextActivity;
+				return ActivityUtils.SequenceActivities(new Wait(10), NextActivity);
 			}
 
 			return ActivityUtils.SequenceActivities(new Wait(10), this);
