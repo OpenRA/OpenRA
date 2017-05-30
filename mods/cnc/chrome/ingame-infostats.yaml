@@ -34,8 +34,8 @@ Container@SKIRMISH_STATS:
 			Width: 393
 			Children:
 				Label@NAME:
-					X: 10
-					Width: 210
+					X: 15
+					Width: 205
 					Height: 25
 					Text: Player
 					Font: Bold
@@ -83,9 +83,20 @@ Container@SKIRMISH_STATS:
 					Height: 25
 					X: 2
 					Children:
+						Container@LATENCY:
+							Y: 6
+							Width: 11
+							Height: 14
+							Visible: false
+							Children:
+								ColorBlock@LATENCY_COLOR:
+									X: 2
+									Y: 2
+									Width: PARENT_RIGHT - 4
+									Height: PARENT_BOTTOM - 4
 						Label@NAME:
-							X: 10
-							Width: 210
+							X: 15
+							Width: 205
 							Height: 25
 							Shadow: True
 						ClientTooltipRegion@CLIENT_REGION:
