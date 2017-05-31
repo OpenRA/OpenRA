@@ -373,14 +373,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			// Games that we can't join are sorted last
 			if (!testEntry.IsCompatible)
-				return 0;
+				return testEntry.ModId == modData.Manifest.Id ? 1 : 0;
 
 			// Games for the current mod+version are sorted first
 			if (testEntry.ModId == modData.Manifest.Id)
-				return 2;
+				return testEntry.ModVersion == modData.Manifest.Metadata.Version ? 4 : 3;
 
 			// Followed by games for different mods that are joinable
-			return 1;
+			return 2;
 		}
 
 		void SelectServer(GameServer server)
