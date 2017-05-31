@@ -49,9 +49,11 @@ namespace OpenRA.Mods.Common.Traits
 			this.info = info;
 		}
 
-		void INotifyCreated.Created(Actor self)
+		protected override void Created(Actor self)
 		{
 			conditionManager = self.TraitOrDefault<ConditionManager>();
+
+			base.Created(self);
 		}
 
 		void ITick.Tick(Actor self)
