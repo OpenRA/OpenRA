@@ -47,7 +47,10 @@ namespace OpenRA.Mods.Common.Activities
 				return UnclaimAndNext(self);
 
 			if (!self.CanHarvestAt(self.Location, resLayer, harvInfo, territory))
+			{
+				Queue(new FindResources(self));
 				return UnclaimAndNext(self);
+			}
 
 			harv.LastHarvestedCell = self.Location;
 
@@ -60,19 +63,26 @@ namespace OpenRA.Mods.Common.Activities
 				var current = facing.Facing;
 				var desired = body.QuantizeFacing(current, harvInfo.HarvestFacings);
 				if (desired != current)
+				{
 					return ActivityUtils.SequenceActivities(new Turn(self, desired), this);
+				}
 			}
 
 			var resource = resLayer.Harvest(self.Location);
 			if (resource == null)
+			{
+				Queue(new FindResources(self));
 				return UnclaimAndNext(self);
+			}
 
 			harv.AcceptResource(resource);
 
 			foreach (var t in self.TraitsImplementing<INotifyHarvesterAction>())
 				t.Harvested(self, resource);
 
-			return ActivityUtils.SequenceActivities(new Wait(harvInfo.BaleLoadDelay), this);
+			Queue(new Wait(harvInfo.BaleLoadDelay));
+			Queue(new HarvestResource(self));
+			return NextActivity;
 		}
 	}
 }
