@@ -39,12 +39,6 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 		[Desc("Spawn regen delay, in ticks")]
 		public readonly int RespawnTicks = 15;
 
-		[Desc("For slaves to dock, we need this condition.")]
-		public readonly string RequiredDockingCondition = null;
-
-		[Desc("The spawner must have this condition to launch the spawned.")]
-		public readonly string RequiredLaunchCondition = null;
-
 		[Desc("Air units and ground units have different mobile trait so...")]
 		// This can be computed but that requires a few cycles of cpu time XD
 		// Interesting... flying slaved harvester units...
