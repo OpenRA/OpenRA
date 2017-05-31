@@ -47,14 +47,13 @@ namespace OpenRA.Mods.Common.Traits
 		List<Actor> virtuallyDockedHarvs;
 
 		[Sync] public int Ore = 0;
-		[Sync] Actor dockedHarv = null;
 		[Sync] bool preventDock = false;
 
 		public bool AllowDocking { get { return !preventDock; } }
 
-		public Dock ReserveDock(Actor client, DeliverResources dockOrder)
+		public void ReserveDock(Actor client, DeliverResources dockOrder)
 		{
-			return docks.ReserveDock(self, client, dockOrder);
+			docks.ReserveDock(self, client, dockOrder);
 		}
 
 		IEnumerable<CPos> IAcceptResources.DockLocations { get { return docks.DockLocations; } }
@@ -96,16 +95,7 @@ namespace OpenRA.Mods.Common.Traits
 		void CancelDock(Actor self)
 		{
 			preventDock = true;
-
-			// Cancel the dock sequence
-			if (dockedHarv != null && !dockedHarv.IsDead)
-				dockedHarv.CancelActivity();
-
-			foreach (var harv in virtuallyDockedHarvs)
-			{
-				if (!harv.IsDead)
-					harv.CancelActivity();
-			}
+			docks.CancelDock();
 		}
 
 		void ITick.Tick(Actor self)
@@ -118,14 +108,9 @@ namespace OpenRA.Mods.Common.Traits
 				// Well, the list shouldn't be too long.
 				virtuallyDockedHarvs.Remove(rm);
 			// Harvester was killed while unloading
-			if (dockedHarv != null && dockedHarv.IsDead)
-			{
-				dockedHarv = null;
 
-				if (virtuallyDockedHarvs.Count == 0)
-					// when nothing docked and virtually docked harv has nothing too...
+			if (virtuallyDockedHarvs.Count == 0 && docks.DockedHarvs.Count() == 0)
 					wsb.CancelCustomAnimation(self);
-			}
 
 			if (info.ShowTicks && currentDisplayValue > 0 && --currentDisplayTick <= 0)
 			{
@@ -144,7 +129,7 @@ namespace OpenRA.Mods.Common.Traits
 				harv.Trait.UnlinkProc(harv.Actor, self);
 		}
 
-		public void OnDock(Actor harv, DeliverResources dockOrder, Dock dock)
+		public void QueueOnDockActivity(Actor harv, DeliverResources dockOrder, Dock dock)
 		{
 			if (!preventDock)
 			{
@@ -156,13 +141,23 @@ namespace OpenRA.Mods.Common.Traits
 				}
 				else
 				{
-					harv.QueueActivity(new CallFunc(() => dockedHarv = harv, false));
+					harv.QueueActivity(new CallFunc(() => OnArrival(harv, dock)));
 					harv.QueueActivity(DockSequence(harv, self, dock));
-					harv.QueueActivity(new CallFunc(() => dockedHarv = null, false));
+					harv.QueueActivity(new CallFunc(() => OnUndock(harv, dock)));
 				}
 			}
 
 			harv.QueueActivity(new CallFunc(() => harv.Trait<Harvester>().ContinueHarvesting(harv)));
+		}
+
+		public void OnArrival(Actor harv, Dock dock)
+		{
+			docks.OnArrival(harv, dock);
+		}
+
+		public void OnUndock(Actor harv, Dock dock)
+		{
+			docks.OnUndock(harv, dock);
 		}
 
 		void INotifyOwnerChanged.OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
@@ -177,7 +172,11 @@ namespace OpenRA.Mods.Common.Traits
 		void INotifyCapture.OnCapture(Actor self, Actor captor, Player oldOwner, Player newOwner)
 		{
 			// Steal any docked harv too
-			if (dockedHarv != null)
+			var harvs = docks.DockedHarvs;
+			if (harvs.Count() == 0)
+				return;
+
+			foreach (var dockedHarv in harvs)
 			{
 				dockedHarv.ChangeOwner(newOwner);
 

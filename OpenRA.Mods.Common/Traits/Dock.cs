@@ -82,7 +82,7 @@ namespace OpenRA.Mods.Common.Traits
 					return;
 				}
 			IsBlocked = false;
-		}	
+		}
 	}
 
 	public class DockManagerInfo : ITraitInfo, Requires<DockInfo>
@@ -102,19 +102,18 @@ namespace OpenRA.Mods.Common.Traits
 	 */
 	public class DockManager
 	{
-		struct DockEntry
+		class DockEntry
 		{
-			public Activity onDockActivity;
+			public DeliverResources DockOrder;
 			public Dock CurrentDock;
 		}
 
 		readonly DockManagerInfo info;
-		readonly Actor self;
+		readonly Actor self; // == proc
 		readonly Dock[] allDocks;
 		readonly Dock[] serviceDocks;
 		readonly Dock[] waitDocks;
-		readonly Queue<Actor> queue = new Queue<Actor>();
-
+		readonly List<Actor> queue = new List<Actor>();
 		readonly Dictionary<Actor, DockEntry> dockEntries = new Dictionary<Actor, DockEntry>();
 
 		CPos lastLocation; // in case this is a mobile dock.
@@ -129,6 +128,16 @@ namespace OpenRA.Mods.Common.Traits
 				{
 					yield return d.Location;
 				}
+			}
+		}
+
+		public IEnumerable<Actor> DockedHarvs
+		{
+			get
+			{
+				foreach (var d in serviceDocks)
+					if (d.Occupier != null && !d.Occupier.IsDead && !d.Occupier.Disposed)
+						yield return d.Occupier;
 			}
 		}
 
@@ -166,15 +175,18 @@ namespace OpenRA.Mods.Common.Traits
 		//
 		// The dock is assumed to be immobile at the time of this reservation task.
 		// Even slave miners deploy to get dockings!
-		public Dock ReserveDock(Actor self, Actor client, DeliverResources dockOrder)
+		public void ReserveDock(Actor self, Actor client, DeliverResources dockOrder)
 		{
 			// First, put the new client in the queue then process it.
-			queue.Enqueue(client);
+			if (queue.Contains(client))
+				return;
+
+			queue.Add(client);
 			dockEntries[client] = new DockEntry()
 			{
-				CurrentDock = null
+				DockOrder = dockOrder
 			};
-			return processQueue(self, client);
+			processQueue(self, client);
 		}
 
 		// I'm assuming the docks.Length and queue size are small.
@@ -183,28 +195,103 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			foreach (var dok in allDocks)
 				if (dok.Occupier != null && (dok.Occupier.Disposed || dok.Occupier.IsDead))
+				{
+					if (dockEntries.ContainsKey(dok.Occupier))
+						dockEntries.Remove(dok.Occupier);
 					dok.Occupier = null;
+				}
+		}
+
+		public void CancelDock()
+		{
+			/*
+			// Cancel the dock sequence
+			if (dockedHarv != null && !dockedHarv.IsDead)
+				dockedHarv.CancelActivity();
+
+			foreach (var harv in virtuallyDockedHarvs)
+			{
+				if (!harv.IsDead)
+					harv.CancelActivity();
+			}
+			*/
+			Game.Debug("not impl");
+		}
+
+		public void OnArrival(Actor harv, Dock dock)
+		{
+			queue.Remove(harv);
+		}
+
+		public void OnUndock(Actor harv, Dock dock)
+		{
+			dock.Occupier = null;
+			dockEntries.Remove(harv);
+			processQueue(self, null); // notify queue
 		}
 
 		// Get the queue going by popping queue.
 		// Then, find a suitable dock place for the client and return it.
-		Dock processQueue(Actor self, Actor client)
+		void processQueue(Actor self, Actor client)
 		{
+			if (queue.Count == 0)
+				return;
+
 			checkObstacle(self);
 
 			updateOccupierDeadOrAlive();
 
 			// Now serve the 1st in line.
-			var head = queue.Dequeue();
+			var head = queue.First();
+			var entry = dockEntries[head];
 
-			// find the first available slot.
+			// find the first available slot in the service docks.
+			var dock = serviceDocks.FirstOrDefault(d => d.Occupier == null);
+			if (dock != null)
+			{
+				if (entry.CurrentDock != null)
+					// Free the old slot, if we were there.
+					entry.CurrentDock.Occupier = null;
+				entry.CurrentDock = dock;
 
-			// By default, return the sharing slot for the client...
-			// Or maybe the last service dock.
-			if (waitDocks.Count() > 0)
-				return waitDocks.Last();
+				// Let this guy continue with OnDock.
+				dock.Occupier = head;
+				var iao = self.Trait<IAcceptResources>();
+				head.CancelActivity();
+				head.QueueActivity(head.Trait<Mobile>().MoveTo(dock.Location, 0));
+				// Since there is 0 tolerance about distance, we WILL arrive at the dock (or we get bug haha)
+				iao.QueueOnDockActivity(head, entry.DockOrder, dock); // resource transfer activities are queued by OnDock.
+			}
+
+			// was just a queue notification when the head released the dock.
+			if (client == null)
+				return;
+
+			// And as for our new client...
+			if (client == head)
+				return;
+
+			entry = dockEntries[client];
+
+			if (waitDocks.Count() == 0)
+				dock = serviceDocks.Last();
 			else
-				return serviceDocks.Last();
+			{
+				// Find any available waiting slot.
+				dock = waitDocks.FirstOrDefault(d => d.Occupier == null);
+
+				// on nothing, share the last slot.
+				if (dock == null)
+					dock = waitDocks.Last();
+			}
+
+			// For last dock, current dock and occupier will be messed up but doesn't matter.
+			// The last one is shared anyway. The vacancy info is not very meaningful there.
+			entry.CurrentDock = dock;
+			dock.Occupier = client;
+
+			// Cancel what ever it was doing and make harv come to the waiting dock.
+			client.QueueActivity(false, client.Trait<Mobile>().MoveTo(dock.Location, 2));
 		}
 	}
 }

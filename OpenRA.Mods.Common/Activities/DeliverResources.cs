@@ -16,7 +16,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Activities
 {
-	public class DeliverResources : Activity
+	public class DeliverResources : CompositeActivity
 	{
 		const int NextChooseTime = 100;
 
@@ -66,7 +66,12 @@ namespace OpenRA.Mods.Common.Activities
 			var iao = proc.Trait<IAcceptResources>();
 
 			self.SetTargetLine(Target.FromActor(proc), Color.Green, false);
-			var dock = iao.ReserveDock(self, this); // MUST cache this, docks are randomly picked and subject to occupied check.
+			iao.ReserveDock(self, this); // MUST cache this, docks are randomly picked and subject to occupied check.
+
+			// ReserveDock handles the queueing.
+			return self.CurrentActivity;
+
+			/*
 			if (!harv.Info.OreTeleporter && self.Location != dock.Location)
 			{
 				var notify = self.TraitsImplementing<INotifyHarvesterAction>();
@@ -88,6 +93,7 @@ namespace OpenRA.Mods.Common.Activities
 			}
 
 			return ActivityUtils.SequenceActivities(new Wait(10), this);
+			*/
 		}
 	}
 }
