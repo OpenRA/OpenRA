@@ -60,7 +60,10 @@ namespace OpenRA.Mods.Common.Activities
 			var deliver = new DeliverResources(self);
 
 			if (harv.IsFull)
-				return ActivityUtils.SequenceActivities(deliver, NextActivity);
+			{
+				Queue(deliver);
+				return NextActivity;
+			}
 
 			var closestHarvestablePosition = ClosestHarvestablePos(self);
 
@@ -69,7 +72,10 @@ namespace OpenRA.Mods.Common.Activities
 			if (!closestHarvestablePosition.HasValue)
 			{
 				if (!harv.IsEmpty)
-					return deliver;
+				{
+					Queue(deliver);
+					return NextActivity;
+				}
 
 				var unblockCell = harv.LastHarvestedCell ?? (self.Location + harvInfo.UnblockCell);
 				var moveTo = mobile.NearestMoveableCell(unblockCell, 2, 5);
@@ -105,7 +111,10 @@ namespace OpenRA.Mods.Common.Activities
 				foreach (var n in notify)
 					n.MovingToResources(self, closestHarvestablePosition.Value, this);
 
-				return ActivityUtils.SequenceActivities(mobile.MoveTo(closestHarvestablePosition.Value, 2), new HarvestResource(self), this);
+				Queue(mobile.MoveTo(closestHarvestablePosition.Value, 2));
+				Queue(new HarvestResource(self));
+				Queue(new FindResources(self)); // don't reuse "this" activity.
+				return NextActivity;
 			}
 		}
 
