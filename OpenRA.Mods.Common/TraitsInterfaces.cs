@@ -151,10 +151,16 @@ namespace OpenRA.Mods.Common.Traits
 	public interface IAcceptResourcesInfo : ITraitInfo { }
 	public interface IAcceptResources
 	{
-		void OnDock(Actor harv, DeliverResources dockOrder);
+		void OnDock(Actor harv, DeliverResources dockOrder, Dock dock);
 		void GiveResource(int amount);
 		bool CanGiveResource(int amount);
-		CVec DeliveryOffset { get; }
+
+		// If complex stuff is required, modify client's queue and return a suitable dock as you imagine.
+		// However, Reserve doesn't need to be complex.
+		// For older OpenRA behavior, just return the one and only dock slot and do nothing to the client activity.
+		Dock ReserveDock(Actor client, DeliverResources dockOrder);
+
+		IEnumerable<CPos> DockLocations { get; }
 		bool AllowDocking { get; }
 	}
 

@@ -20,23 +20,8 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class RefineryInfo : IAcceptResourcesInfo, Requires<WithSpriteBodyInfo>
+	public class RefineryInfo : IAcceptResourcesInfo, Requires<WithSpriteBodyInfo>, Requires<DockManagerInfo>
 	{
-		[Desc("Actual harvester facing when docking, 0-255 counter-clock-wise.")]
-		public readonly int DockAngle = 0;
-
-		[Desc("Docking cell relative to top-left cell.")]
-		public readonly CVec DockOffset = CVec.Zero;
-
-		[Desc("Does the refinery require the harvester to be dragged in?")]
-		public readonly bool IsDragRequired = false;
-
-		[Desc("Vector by which the harvester will be dragged when docking.")]
-		public readonly WVec DragOffset = WVec.Zero;
-
-		[Desc("In how many steps to perform the dragging?")]
-		public readonly int DragLength = 0;
-
 		[Desc("Discard resources once silo capacity has been reached.")]
 		public readonly bool DiscardExcessResources = false;
 
@@ -52,6 +37,7 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		readonly Actor self;
 		readonly RefineryInfo info;
+		readonly DockManager docks;
 		readonly WithSpriteBody wsb;
 		PlayerResources playerResources;
 
@@ -65,11 +51,13 @@ namespace OpenRA.Mods.Common.Traits
 		[Sync] bool preventDock = false;
 
 		public bool AllowDocking { get { return !preventDock; } }
-		public CVec DeliveryOffset { get { return info.DockOffset; } }
-		public int DeliveryAngle { get { return info.DockAngle; } }
-		public bool IsDragRequired { get { return info.IsDragRequired; } }
-		public WVec DragOffset { get { return info.DragOffset; } }
-		public int DragLength { get { return info.DragLength; } }
+
+		public Dock ReserveDock(Actor client, DeliverResources dockOrder)
+		{
+			return docks.ReserveDock(self, client, dockOrder);
+		}
+
+		IEnumerable<CPos> IAcceptResources.DockLocations { get { return docks.DockLocations; } }
 
 		public Refinery(Actor self, RefineryInfo info)
 		{
@@ -79,11 +67,13 @@ namespace OpenRA.Mods.Common.Traits
 			currentDisplayTick = info.TickRate;
 			wsb = self.Trait<WithSpriteBody>();
 			virtuallyDockedHarvs = new List<Actor>();
+			docks = self.Trait<DockManager>();
 		}
 
-		public virtual Activity DockSequence(Actor harv, Actor self)
+		public virtual Activity DockSequence(Actor harv, Actor self, Dock dock)
 		{
-			return new SpriteHarvesterDockSequence(harv, self, DeliveryAngle, IsDragRequired, DragOffset, DragLength);
+			return new SpriteHarvesterDockSequence(harv, self,
+				dock.Info.Angle, dock.Info.IsDragRequired, dock.Info.DragOffset, dock.Info.DragLength);
 		}
 
 		public IEnumerable<TraitPair<Harvester>> GetLinkedHarvesters()
@@ -154,20 +144,20 @@ namespace OpenRA.Mods.Common.Traits
 				harv.Trait.UnlinkProc(harv.Actor, self);
 		}
 
-		public void OnDock(Actor harv, DeliverResources dockOrder)
+		public void OnDock(Actor harv, DeliverResources dockOrder, Dock dock)
 		{
 			if (!preventDock)
 			{
 				if (harv.Info.TraitInfo<HarvesterInfo>().OreTeleporter)
 				{
 					harv.QueueActivity(new CallFunc(() => virtuallyDockedHarvs.Add(harv), false));
-					harv.QueueActivity(DockSequence(harv, self));
+					harv.QueueActivity(DockSequence(harv, self, dock));
 					harv.QueueActivity(new CallFunc(() => virtuallyDockedHarvs.Remove(harv), false)); // list, but shouldn't be too long.
 				}
 				else
 				{
 					harv.QueueActivity(new CallFunc(() => dockedHarv = harv, false));
-					harv.QueueActivity(DockSequence(harv, self));
+					harv.QueueActivity(DockSequence(harv, self, dock));
 					harv.QueueActivity(new CallFunc(() => dockedHarv = null, false));
 				}
 			}

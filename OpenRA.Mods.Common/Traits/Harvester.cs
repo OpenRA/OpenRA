@@ -185,7 +185,7 @@ namespace OpenRA.Mods.Common.Traits
 			var refs = self.World.ActorsWithTrait<IAcceptResources>()
 				.Where(r => r.Actor != ignore && r.Actor.Owner == self.Owner && IsAcceptableProcType(r.Actor))
 				.Select(r => new {
-					Location = r.Actor.Location + r.Trait.DeliveryOffset,
+					Location = r.Actor.Location, // ignore dock offsets
 					Actor = r.Actor,
 					Occupancy = self.World.ActorsHavingTrait<Harvester>(h => h.LinkedProc == r.Actor).Count() })
 				.ToDictionary(r => r.Location);
@@ -232,11 +232,13 @@ namespace OpenRA.Mods.Common.Traits
 			var lastproc = LastLinkedProc ?? LinkedProc;
 			if (lastproc != null && !lastproc.Disposed)
 			{
-				var deliveryLoc = lastproc.Location + lastproc.Trait<IAcceptResources>().DeliveryOffset;
-				if (self.Location == deliveryLoc)
+				// Am I blocking one of the dock position?
+				var deliveryLocs = lastproc.Trait<IAcceptResources>().DockLocations;
+				var deliveryLoc = deliveryLocs.Where(loc => loc == self.Location);
+				if (deliveryLoc.Any())
 				{
 					// Get out of the way:
-					var unblockCell = LastHarvestedCell ?? (deliveryLoc + Info.UnblockCell);
+					var unblockCell = LastHarvestedCell ?? (deliveryLoc.First() + Info.UnblockCell);
 					var moveTo = mobile.NearestMoveableCell(unblockCell, 1, 5);
 
 					// TODO: The harvest-deliver-return sequence is a horrible mess of duplicated code and edge-cases

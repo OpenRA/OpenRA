@@ -14,6 +14,7 @@ In commit message, I put these string as tags:
 * [CMIN]: Chrono miner (ore teleporter)
 * [HARV]: Harvester AI related stuff
 * [IDEPLOY]: (un)deploy notification interface
+* [DOCKS]: multi-dock support
 
 # OpenRA
 

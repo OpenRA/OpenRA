@@ -66,21 +66,22 @@ namespace OpenRA.Mods.Common.Activities
 			var iao = proc.Trait<IAcceptResources>();
 
 			self.SetTargetLine(Target.FromActor(proc), Color.Green, false);
-			var dest = proc.Location + iao.DeliveryOffset;
-			if (!harv.Info.OreTeleporter && self.Location != dest)
+			var dock = iao.ReserveDock(self, this); // MUST cache this, docks are randomly picked and subject to occupied check.
+			if (!harv.Info.OreTeleporter && self.Location != dock.Location)
 			{
 				var notify = self.TraitsImplementing<INotifyHarvesterAction>();
 				foreach (var n in notify)
-					n.MovingToRefinery(self, dest, this);
+					n.MovingToRefinery(self, dock.Location, this);
 
 				// Move to the target proc then came back to this activity for re-eval, I think.
-				return ActivityUtils.SequenceActivities(movement.MoveTo(dest, 0), this);
+				dock.Occupier = self;
+				return ActivityUtils.SequenceActivities(movement.MoveTo(dock.Location, 0), this);
 			}
 
 			if (!isDocking)
 			{
 				isDocking = true;
-				iao.OnDock(self, this);
+				iao.OnDock(self, this, dock);
 
 				// Run what OnDock queued.
 				return ActivityUtils.SequenceActivities(new Wait(10), NextActivity);

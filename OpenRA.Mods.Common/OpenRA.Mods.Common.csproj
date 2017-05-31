@@ -291,6 +291,7 @@
     <Compile Include="Traits\Buildings\RepairsUnits.cs" />
     <Compile Include="Traits\Buildings\Reservable.cs" />
     <Compile Include="Traits\Burns.cs" />
+    <Compile Include="Traits\Dock.cs" />
     <Compile Include="Traits\Health.cs" />
     <Compile Include="Traits\ShootsMissiles.cs" />
     <Compile Include="Traits\PowerTooltip.cs" />
