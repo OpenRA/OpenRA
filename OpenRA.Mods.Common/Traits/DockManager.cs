@@ -14,13 +14,14 @@ using System.Linq;
 using OpenRA.Traits;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Activities;
+using System;
 
 namespace OpenRA.Mods.Common.Traits
 {
 	public class DockManagerInfo : ITraitInfo, Requires<DockInfo>
 	{
 		[Desc("Are any of the docks lie outside the building footprint? (and needs obstacle checking)")]
-		public readonly bool ExternalDocks = true;
+		public readonly bool ExternalDocks = false;
 
 		[Desc("Queue will be processed this often.")]
 		public readonly int WaitInterval = 19; // prime number yay
@@ -34,24 +35,18 @@ namespace OpenRA.Mods.Common.Traits
 	 */
 	public class DockManager
 	{
-		class DockEntry
-		{
-			public DeliverResources DockOrder;
-			public Dock CurrentDock;
-		}
-
 		readonly DockManagerInfo info;
-		readonly Actor self; // == proc
+		readonly Actor self; // == host
 		readonly Dock[] allDocks;
 		readonly Dock[] serviceDocks;
 		readonly Dock[] waitDocks;
 		readonly List<Actor> queue = new List<Actor>();
-		readonly Dictionary<Actor, DockEntry> dockEntries = new Dictionary<Actor, DockEntry>();
 
 		CPos lastLocation; // in case this is a mobile dock.
 
 		public bool HasExternalDock { get { return info.ExternalDocks; } }
 
+		// for blocking check.
 		public IEnumerable<CPos> DockLocations
 		{
 			get
@@ -63,6 +58,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
+		// For determining whether PROC to play animation or not. (+ some others)
 		public IEnumerable<Actor> DockedHarvs
 		{
 			get
@@ -98,26 +94,21 @@ namespace OpenRA.Mods.Common.Traits
 				d.CheckObstacle();
 		}
 
-		// onDock: actions to do when we ARRIVE at a service dock. (not waiting dock)
-		// Not just one activity, as the activity may be the head activity + linked activity.
-		// We modify guys activity when they get into waiting line so we keep pointers to onDock.
-		//
-		// If we run ot of dock, then return the last one and let clients wait near there.
-		// So, the client will get a dock although it may share the dock with other client.
-		//
-		// The dock is assumed to be immobile at the time of this reservation task.
-		// Even slave miners deploy to get dockings!
-		public void ReserveDock(Actor self, Actor client, DeliverResources dockOrder)
+		public void ReserveDock(Actor self, Actor client, Activity postUndockActivity)
 		{
 			// First, put the new client in the queue then process it.
-			if (queue.Contains(client))
-				return;
-
-			queue.Add(client);
-			dockEntries[client] = new DockEntry()
+			if (!queue.Contains(client))
 			{
-				DockOrder = dockOrder
-			};
+				queue.Add(client);
+
+				// Initialize this noob.
+				// It might had been transferred from proc A to this proc.
+				var dc = client.Trait<DockClient>();
+				dc.PostUndockActivity = postUndockActivity;
+				dc.DockState = DockState.NotAssigned;
+			}
+
+			// notify the queue
 			processQueue(self, client);
 		}
 
@@ -164,78 +155,103 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void OnArrival(Actor harv, Dock dock)
 		{
+			// Currently nothing to do...?
 		}
 
 		public void OnUndock(Actor harv, Dock dock)
 		{
 			dock.Occupier = null;
-			if (dockEntries.ContainsKey(harv))
-				dockEntries.Remove(harv);
-			if (queue.Contains(harv))
-				queue.Remove(harv);
 			processQueue(self, null); // notify queue
 		}
 
-		void serveHead(Actor self, Actor head, DockEntry entry)
+		void serveHead(Actor self, Actor head, Dock serviceDock)
 		{
-			// find the first available slot in the service docks.
-			var dock = serviceDocks.FirstOrDefault(d => d.Occupier == null);
-			var cd = entry.CurrentDock;
+			var dockClient = head.Trait<DockClient>();
+			var currentDock = dockClient.CurrentDock;
 
 			// cd == null means the queue is not so busy that the head is a new comer. (for example, head == client case)
 			// With thi in mind,
 			// 4 cases of null/not nullness of dock and cd:
-			// cd == null and dock == null    What? Docks can't be busy when cd == null. Can't happen.
+			// cd == null and dock == null    ERROR: What? Docks can't be busy when cd == null. Can't happen.
 			// cd == null and dock != null    Safe to serve.
-			// cd != null and dock == null    First in line, has nowhere to go? Can't happen.
+			// cd != null and dock == null    ERROR: First in line, has nowhere to go? Can't happen.
 			// cd != null and dock != null    Was in the waiting queue and now ready to serve.
-			// So, except for the errorneous state that can't happen, head is safe to sere.
-
-			System.Diagnostics.Debug.Assert(dock != null);
-
-			// Already at serving dock. Do nothing.
-			if (cd != null && cd.Info.WaitingPlace == false)
-				return;
+			// So, except for the errorneous state that can't happen, head is safe to serve.
+			// We rule out dock == null case in outer loop, before calling this function though.
 
 			// House keeping
-			if (cd != null && cd.Info.WaitingPlace == true)
-				cd.Occupier = null;
-			entry.CurrentDock = dock;
-			dock.Occupier = head;
+			if (currentDock != null)
+				currentDock.Occupier = null;
+			dockClient.DockState = DockState.ServiceAssigned;
+			dockClient.CurrentDock = serviceDock;
+			serviceDock.Occupier = head;
 
-			// Let this guy continue with OnDock and unload.
-			dock.Occupier = head;
-			var iao = self.Trait<IAcceptResources>();
-			head.QueueActivity(head.Trait<Mobile>().MoveTo(dock.Location, 0));
-			// Since there is 0 tolerance about distance, we WILL arrive at the dock (or we get bug haha)
-			iao.QueueOnDockActivity(head, entry.DockOrder, dock); // resource transfer activities are queued by OnDock.
+			// Since there is 0 tolerance about distance, we WILL arrive at the dock (or we get stuck haha)
+			head.QueueActivity(head.Trait<Mobile>().MoveTo(serviceDock.Location, 0));
+
+			head.QueueActivity(new CallFunc(() => OnArrival(head, serviceDock)));
+
+			// resource transfer activities are queued by OnDock.
+			self.Trait<IAcceptDock>().QueueOnDockActivity(head, dockClient.PostUndockActivity, serviceDock);
+
+			head.QueueActivity(new CallFunc(() => OnUndock(head, serviceDock)));
+
+			// Move to south of the ref to avoid cluttering up with other dock locations
+			head.QueueActivity(new Move(head, serviceDock.Location + serviceDock.Info.ExitOffset, new WDist(2048)));
+
+			head.QueueActivity(dockClient.PostUndockActivity);
+		}
+
+		// As the actors are coming from all directions, first request, first served is not good.
+		// Let it be first come first served.
+		// We approximate distance computation by Rect-linear distance here, not Euclidean dist.
+		Actor nearestClient(Actor self, IEnumerable<Actor> queue)
+		{
+			Actor r = null;
+			int bestDist = -1;
+			foreach (var a in queue)
+			{
+				var vec = self.World.Map.CenterOfCell(a.Location) - self.CenterPosition;
+				var dist = vec.VerticalLength + vec.HorizontalLength;
+				if (r == null || dist < bestDist)
+				{
+					r = a;
+					bestDist = dist;
+				}
+			}
+			return r;
 		}
 
 		// Get the queue going by popping queue.
 		// Then, find a suitable dock place for the client and return it.
 		void processQueue(Actor self, Actor client)
 		{
-			if (queue.Count == 0)
-				return;
-
 			checkObstacle(self);
 
 			updateOccupierDeadOrAlive();
 
-			// Now serve the 1st in line.
-			var head = queue.First();
-			var entry = dockEntries[head];
-			serveHead(self, head, entry);
+			// Now serve the 1st in line, until all service docks are occupied.
+			Actor head = null;
+			while (queue.Count > 0)
+			{
+				head = nearestClient(self, queue);
+				// find the first available slot in the service docks.
+				var serviceDock = serviceDocks.FirstOrDefault(d => d.Occupier == null);
+				if (serviceDock == null)
+					break;
+				serveHead(self, head, serviceDock);
+				queue.Remove(head); // remove head
+			}
 
-			// was just a queue notification when the head released the dock.
+			// was just a queue notification when the someone released the dock.
 			if (client == null)
 				return;
 
-			// And as for our new client...
-			if (client == head)
+			// Is served already?
+			if (!queue.Contains(client))
 				return;
 
-			entry = dockEntries[client];
+			var dockClient = client.Trait<DockClient>();
 
 			Dock dock;
 			if (waitDocks.Count() == 0)
@@ -252,11 +268,13 @@ namespace OpenRA.Mods.Common.Traits
 
 			// For last dock, current dock and occupier will be messed up but doesn't matter.
 			// The last one is shared anyway. The vacancy info is not very meaningful there.
-			entry.CurrentDock = dock;
+			dockClient.DockState = DockState.WaitAssigned;
+			dockClient.CurrentDock = dock;
 			dock.Occupier = client;
 
 			// Cancel what ever it was doing and make harv come to the waiting dock.
 			client.QueueActivity(client.Trait<Mobile>().MoveTo(dock.Location, 2));
+			client.QueueActivity(new WaitFor(() => dockClient.DockState == DockState.ServiceAssigned));
 		}
 	}
 }

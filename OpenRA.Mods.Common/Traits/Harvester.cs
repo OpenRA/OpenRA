@@ -182,7 +182,7 @@ namespace OpenRA.Mods.Common.Traits
 				return Master;
 
 			// Find all refineries and their occupancy count:
-			var refs = self.World.ActorsWithTrait<IAcceptResources>()
+			var refs = self.World.ActorsWithTrait<IAcceptDock>()
 				.Where(r => r.Actor != ignore && r.Actor.Owner == self.Owner && IsAcceptableProcType(r.Actor))
 				.Select(r => new {
 					Location = r.Actor.Location, // ignore dock offsets
@@ -233,7 +233,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (lastproc != null && !lastproc.Disposed)
 			{
 				// Am I blocking one of the dock position?
-				var deliveryLocs = lastproc.Trait<IAcceptResources>().DockLocations;
+				var deliveryLocs = lastproc.Trait<IAcceptDock>().DockLocations;
 				var deliveryLoc = deliveryLocs.Where(loc => loc == self.Location);
 				if (deliveryLoc.Any())
 				{
@@ -323,11 +323,11 @@ namespace OpenRA.Mods.Common.Traits
 			if (contents.Keys.Count > 0)
 			{
 				var type = contents.First().Key;
-				var iao = proc.Trait<IAcceptResources>();
-				if (!iao.CanGiveResource(type.ValuePerUnit))
+				var iad = proc.Trait<IAcceptDock>();
+				if (!iad.CanGiveResource(type.ValuePerUnit))
 					return false;
 
-				iao.GiveResource(type.ValuePerUnit);
+				iad.GiveResource(type.ValuePerUnit);
 				if (--contents[type] == 0)
 					contents.Remove(type);
 
@@ -341,9 +341,9 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			get
 			{
-				yield return new EnterAlliedActorTargeter<IAcceptResourcesInfo>("Deliver", 5,
+				yield return new EnterAlliedActorTargeter<IAcceptDockInfo>("Deliver", 5,
 					proc => IsAcceptableProcType(proc),
-					proc => proc.Trait<IAcceptResources>().AllowDocking);
+					proc => proc.Trait<IAcceptDock>().AllowDocking);
 				yield return new HarvestOrderTargeter();
 			}
 		}
@@ -420,8 +420,8 @@ namespace OpenRA.Mods.Common.Traits
 			else if (order.OrderString == "Deliver")
 			{
 				// NOTE: An explicit deliver order forces the harvester to always deliver to this refinery.
-				var iao = order.TargetActor.TraitOrDefault<IAcceptResources>();
-				if (iao == null || !iao.AllowDocking || !IsAcceptableProcType(order.TargetActor))
+				var iad = order.TargetActor.TraitOrDefault<IAcceptDock>();
+				if (iad == null || !iad.AllowDocking || !IsAcceptableProcType(order.TargetActor))
 					return;
 
 				if (order.TargetActor != OwnerLinkedProc)

@@ -60,10 +60,8 @@ namespace OpenRA.Mods.Common.Activities
 				return ActivityUtils.SequenceActivities(new Wait(harv.Info.SearchForDeliveryBuildingDelay), this);
 
 			var proc = harv.LinkedProc;
-			var iao = proc.Trait<IAcceptResources>();
-
 			self.SetTargetLine(Target.FromActor(proc), Color.Green, false);
-			iao.ReserveDock(self, this); // MUST cache this, docks are randomly picked and subject to occupied check.
+			proc.Trait<IAcceptDock>().ReserveDock(self, new CallFunc(() => harv.ContinueHarvesting(self)));
 			return NextActivity;
 		}
 	}

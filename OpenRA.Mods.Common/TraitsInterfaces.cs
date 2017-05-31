@@ -148,17 +148,19 @@ namespace OpenRA.Mods.Common.Traits
 
 	public interface INotifyTransform { void BeforeTransform(Actor self); void OnTransform(Actor self); void AfterTransform(Actor toActor); }
 
-	public interface IAcceptResourcesInfo : ITraitInfo { }
-	public interface IAcceptResources
+	public interface IAcceptDockInfo : ITraitInfo { }
+	public interface IAcceptDock
 	{
-		void QueueOnDockActivity(Actor harv, DeliverResources dockOrder, Dock dock);
+		// postUndockActivity: after undock, we start doing this, after OnDockActivity is done.
+		void QueueOnDockActivity(Actor harv, Activity postUndockActivity, Dock dock);
 		void OnUndock(Actor harv, Dock dock);
 		void OnArrival(Actor harv, Dock dock);
 		void GiveResource(int amount);
 		bool CanGiveResource(int amount);
 
 		// ReserveDock should queue activities that make the client come to a valid dock and do dock activity
-		void ReserveDock(Actor client, DeliverResources dockOrder);
+		// (or wait activity, depending on the situation)
+		void ReserveDock(Actor client, Activity postDockOrder);
 
 		IEnumerable<CPos> DockLocations { get; }
 		bool AllowDocking { get; }

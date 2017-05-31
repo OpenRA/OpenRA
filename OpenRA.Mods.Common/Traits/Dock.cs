@@ -56,7 +56,7 @@ namespace OpenRA.Mods.Common.Traits
 	public class Dock
 	{
 		public readonly DockInfo Info;
-		public readonly Actor self;
+		readonly Actor self;
 
 		public Actor Occupier;
 

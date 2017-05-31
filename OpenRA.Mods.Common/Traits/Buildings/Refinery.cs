@@ -20,7 +20,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class RefineryInfo : IAcceptResourcesInfo, Requires<WithSpriteBodyInfo>, Requires<DockManagerInfo>
+	public class RefineryInfo : IAcceptDockInfo, Requires<WithSpriteBodyInfo>, Requires<DockManagerInfo>
 	{
 		[Desc("Discard resources once silo capacity has been reached.")]
 		public readonly bool DiscardExcessResources = false;
@@ -33,7 +33,7 @@ namespace OpenRA.Mods.Common.Traits
 		public virtual object Create(ActorInitializer init) { return new Refinery(init.Self, this); }
 	}
 
-	public class Refinery : ITick, IAcceptResources, INotifySold, INotifyCapture, INotifyOwnerChanged, IExplodeModifier, ISync, INotifyActorDisposing
+	public class Refinery : ITick, IAcceptDock, INotifySold, INotifyCapture, INotifyOwnerChanged, IExplodeModifier, ISync, INotifyActorDisposing
 	{
 		readonly Actor self;
 		readonly RefineryInfo info;
@@ -51,12 +51,12 @@ namespace OpenRA.Mods.Common.Traits
 
 		public bool AllowDocking { get { return !preventDock; } }
 
-		public void ReserveDock(Actor client, DeliverResources dockOrder)
+		public void ReserveDock(Actor client, Activity postDockOrder)
 		{
-			docks.ReserveDock(self, client, dockOrder);
+			docks.ReserveDock(self, client, postDockOrder);
 		}
 
-		IEnumerable<CPos> IAcceptResources.DockLocations { get { return docks.DockLocations; } }
+		IEnumerable<CPos> IAcceptDock.DockLocations { get { return docks.DockLocations; } }
 
 		public Refinery(Actor self, RefineryInfo info)
 		{
@@ -129,7 +129,7 @@ namespace OpenRA.Mods.Common.Traits
 				harv.Trait.UnlinkProc(harv.Actor, self);
 		}
 
-		public void QueueOnDockActivity(Actor harv, DeliverResources dockOrder, Dock dock)
+		public void QueueOnDockActivity(Actor harv, Activity postUndockActivity, Dock dock)
 		{
 			if (!preventDock)
 			{
@@ -141,15 +141,9 @@ namespace OpenRA.Mods.Common.Traits
 				}
 				else
 				{
-					harv.QueueActivity(new CallFunc(() => OnArrival(harv, dock)));
 					harv.QueueActivity(DockSequence(harv, self, dock));
-					harv.QueueActivity(new CallFunc(() => OnUndock(harv, dock)));
-					// Move to south of the ref to avoid cluttering up with other dock locations
-					harv.QueueActivity(new Move(harv, dock.Location + dock.Info.ExitOffset, new WDist(2048)));
 				}
 			}
-
-			harv.QueueActivity(new CallFunc(() => harv.Trait<Harvester>().ContinueHarvesting(harv)));
 		}
 
 		public void OnArrival(Actor harv, Dock dock)
