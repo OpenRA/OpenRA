@@ -144,6 +144,8 @@ namespace OpenRA.Mods.Common.Traits
 					harv.QueueActivity(new CallFunc(() => OnArrival(harv, dock)));
 					harv.QueueActivity(DockSequence(harv, self, dock));
 					harv.QueueActivity(new CallFunc(() => OnUndock(harv, dock)));
+					// Move to south of the ref to avoid cluttering up with other dock locations
+					harv.QueueActivity(new Move(harv, dock.Location + dock.Info.ExitOffset, new WDist(2048)));
 				}
 			}
 

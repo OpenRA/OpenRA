@@ -16,14 +16,14 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Activities
 {
-	public class DeliverResources : CompositeActivity
+	// I haven't renamed the class but this should be called "get into waiting queue"
+	public class DeliverResources : Activity
 	{
 		const int NextChooseTime = 100;
 
 		readonly IMove movement;
 		readonly Harvester harv;
 
-		bool isDocking = false;
 		int chosenTicks;
 
 		public DeliverResources(Actor self)
@@ -35,9 +35,6 @@ namespace OpenRA.Mods.Common.Activities
 
 		public override Activity Tick(Actor self)
 		{
-			if (NextInQueue != null)
-				return NextInQueue;
-
 			// If a refinery is explicitly specified, link it.
 			if (harv.OwnerLinkedProc != null && harv.OwnerLinkedProc.IsInWorld)
 			{
@@ -58,7 +55,7 @@ namespace OpenRA.Mods.Common.Activities
 				}
 			}
 
-			// No refineries exist; check again after delay defined in Harvester.
+			// No refineries exist. Check again after delay defined in Harvester.
 			if (harv.LinkedProc == null)
 				return ActivityUtils.SequenceActivities(new Wait(harv.Info.SearchForDeliveryBuildingDelay), this);
 
@@ -67,33 +64,7 @@ namespace OpenRA.Mods.Common.Activities
 
 			self.SetTargetLine(Target.FromActor(proc), Color.Green, false);
 			iao.ReserveDock(self, this); // MUST cache this, docks are randomly picked and subject to occupied check.
-
-			// ReserveDock handles the queueing.
-			return self.CurrentActivity;
-
-			/*
-			if (!harv.Info.OreTeleporter && self.Location != dock.Location)
-			{
-				var notify = self.TraitsImplementing<INotifyHarvesterAction>();
-				foreach (var n in notify)
-					n.MovingToRefinery(self, dock.Location, this);
-
-				// Move to the target proc then came back to this activity for re-eval, I think.
-				dock.Occupier = self;
-				return ActivityUtils.SequenceActivities(movement.MoveTo(dock.Location, 0), this);
-			}
-
-			if (!isDocking)
-			{
-				isDocking = true;
-				iao.OnDock(self, this, dock);
-
-				// Run what OnDock queued.
-				return ActivityUtils.SequenceActivities(new Wait(10), NextActivity);
-			}
-
-			return ActivityUtils.SequenceActivities(new Wait(10), this);
-			*/
+			return NextActivity;
 		}
 	}
 }
