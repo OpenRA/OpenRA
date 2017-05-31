@@ -60,13 +60,15 @@ namespace OpenRA.Mods.Common.Traits
 			this.self = self;
 		}
 
-		void INotifyCreated.Created(Actor self)
+		protected override void Created(Actor self)
 		{
 			facing = self.TraitOrDefault<IFacing>();
 			building = self.TraitOrDefault<Building>();
 			positionable = self.TraitOrDefault<IPositionable>();
 
 			getArmaments = InitializeGetArmaments(self);
+
+			base.Created(self);
 		}
 
 		protected virtual Func<IEnumerable<Armament>> InitializeGetArmaments(Actor self)
