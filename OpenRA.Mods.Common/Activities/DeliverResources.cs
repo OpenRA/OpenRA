@@ -13,6 +13,7 @@ using System.Drawing;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
+using System.Linq;
 
 namespace OpenRA.Mods.Common.Activities
 {
@@ -61,7 +62,18 @@ namespace OpenRA.Mods.Common.Activities
 
 			var proc = harv.LinkedProc;
 			self.SetTargetLine(Target.FromActor(proc), Color.Green, false);
-			proc.Trait<IAcceptDock>().ReserveDock(self, new CallFunc(() => harv.ContinueHarvesting(self)));
+			var cont = new CallFunc(() => harv.ContinueHarvesting(self));
+
+			if (!self.Info.TraitInfo<HarvesterInfo>().OreTeleporter)
+			{
+				proc.Trait<IAcceptDock>().ReserveDock(self, cont);
+			}
+			else
+			{
+				var dock = proc.TraitsImplementing<Dock>().First();
+				proc.Trait<Refinery>().QueueOnDockActivity(self, null, dock);
+				Queue(cont);
+			}
 			return NextActivity;
 		}
 	}

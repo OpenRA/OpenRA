@@ -14,6 +14,7 @@ using System.Linq;
 using OpenRA.Traits;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Activities;
+using System;
 
 namespace OpenRA.Mods.Common.Traits
 {
@@ -30,7 +31,7 @@ namespace OpenRA.Mods.Common.Traits
 	}
 
 	// When dockmanager manages docked units, these units require dock client trait.
-	public class DockClient
+	public class DockClient : INotifyKilled, INotifyBecomingIdle, INotifyActorDisposing
 	{
 		public readonly DockClientInfo Info;
 		public readonly Actor self;
@@ -44,6 +45,44 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			Info = info;
 			self = init.Self;
+		}
+
+		public void Acquire(Dock dock, DockState dockState)
+		{
+			// You are to acquire only when you don't have one.
+			// i.e., release first.
+			System.Diagnostics.Debug.Assert(CurrentDock == null);
+			dock.Occupier = self;
+			CurrentDock = dock;
+			DockState = dockState;
+		}
+
+		public void Release(Dock dock)
+		{
+			// You are to release only what you have.
+			if (dock != null && CurrentDock != null)
+				System.Diagnostics.Debug.Assert(dock == CurrentDock);
+
+			if (dock == null)
+				return;
+			dock.Occupier = null;
+			CurrentDock = null;
+			DockState = DockState.NotAssigned;
+		}
+
+		void INotifyKilled.Killed(Actor self, AttackInfo e)
+		{
+			Release(CurrentDock);
+		}
+
+		void INotifyBecomingIdle.OnBecomingIdle(Actor self)
+		{
+			Release(CurrentDock);
+		}
+
+		void INotifyActorDisposing.Disposing(Actor self)
+		{
+			Release(CurrentDock);
 		}
 	}
 }

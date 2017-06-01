@@ -44,7 +44,20 @@ namespace OpenRA.Mods.Common.Traits
 
 		CPos lastLocation; // in case this is a mobile dock.
 
-		public bool HasExternalDock { get { return info.ExternalDocks; } }
+		public DockManager(ActorInitializer init, DockManagerInfo info)
+		{
+			self = init.Self;
+			this.info = info;
+
+			// sort the dock traits by their Order trait.
+			var t0 = self.TraitsImplementing<Dock>().ToList();
+			t0.Sort(delegate (Dock a, Dock b) { return a.Info.Order - b.Info.Order; });
+			var t1 = t0.Where(d => !d.Info.WaitingPlace).ToList();
+			var t2 = t0.Where(d => d.Info.WaitingPlace).ToList();
+			allDocks = t0.ToArray();
+			serviceDocks = t1.ToArray();
+			waitDocks = t2.ToArray();
+		}
 
 		// for blocking check.
 		public IEnumerable<CPos> DockLocations
@@ -63,25 +76,8 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			get
 			{
-				foreach (var d in serviceDocks)
-					if (d.Occupier != null && !d.Occupier.IsDead && !d.Occupier.Disposed)
-						yield return d.Occupier;
+				return serviceDocks.Where(d => d.Occupier != null).Select(d => d.Occupier);
 			}
-		}
-
-		public DockManager(ActorInitializer init, DockManagerInfo info)
-		{
-			self = init.Self;
-			this.info = info;
-
-			// sort the dock traits by their Order trait.
-			var t0 = self.TraitsImplementing<Dock>().ToList();
-			t0.Sort(delegate (Dock a, Dock b) { return a.Info.Order - b.Info.Order; });
-			var t1 = t0.Where(d => !d.Info.WaitingPlace).ToList();
-			var t2 = t0.Where(d => d.Info.WaitingPlace).ToList();
-			allDocks = t0.ToArray();
-			serviceDocks = t1.ToArray();
-			waitDocks = t2.ToArray();
 		}
 
 		void checkObstacle(Actor self)
@@ -112,53 +108,40 @@ namespace OpenRA.Mods.Common.Traits
 			processQueue(self, client);
 		}
 
-		// I'm assuming the docks.Length and queue size are small.
-		// If it isn't the case then we need KilledNotification.
-		void updateOccupierDeadOrAlive()
+		void CancelDock(IEnumerable<Actor> actors)
 		{
-			foreach (var d in allDocks)
+			foreach (var a in actors)
 			{
-				var a = d.Occupier;
-				if (a == null)
-					continue;
+				if (a != null && !a.IsDead)
+				{
+					a.CancelActivity();
 
-				bool rm = false;
-				if (a.Disposed || a.IsDead)
-					rm = true;
-				else if (a.IsIdle)
-					rm = true;
-				// And there might be some intermediate states but that kind of case
-				// won't happen for too long, because it implies losing game for the player or something.
-
-				if (rm)
-					OnUndock(a, d);
+					// A little bit of hard coding here.
+					// Continue with post dock operation?
+					if (a.TraitOrDefault<Harvester>() != null)
+					{
+						a.QueueActivity(new FindResources(a));
+					}
+				}
 			}
 		}
 
+		// When the host dies...
 		public void CancelDock()
 		{
-			/*
-			// Cancel the dock sequence
-			if (dockedHarv != null && !dockedHarv.IsDead)
-				dockedHarv.CancelActivity();
-
-			foreach (var harv in virtuallyDockedHarvs)
-			{
-				if (!harv.IsDead)
-					harv.CancelActivity();
-			}
-			*/
-			Game.Debug("not impl");
+			CancelDock(serviceDocks.Select(d => d.Occupier));
+			CancelDock(queue);
 		}
 
 		public void OnArrival(Actor harv, Dock dock)
 		{
+			// We arrived at the docking spot.
 			// Currently nothing to do...?
 		}
 
-		public void OnUndock(Actor harv, Dock dock)
+		public void OnUndock(Actor client, Dock dock)
 		{
-			dock.Occupier = null;
+			client.Trait<DockClient>().Release(dock);
 			processQueue(self, null); // notify queue
 		}
 
@@ -177,12 +160,8 @@ namespace OpenRA.Mods.Common.Traits
 			// So, except for the errorneous state that can't happen, head is safe to serve.
 			// We rule out dock == null case in outer loop, before calling this function though.
 
-			// House keeping
-			if (currentDock != null)
-				currentDock.Occupier = null;
-			dockClient.DockState = DockState.ServiceAssigned;
-			dockClient.CurrentDock = serviceDock;
-			serviceDock.Occupier = head;
+			dockClient.Release(currentDock);
+			dockClient.Acquire(serviceDock, DockState.ServiceAssigned);
 
 			// Since there is 0 tolerance about distance, we WILL arrive at the dock (or we get stuck haha)
 			head.QueueActivity(head.Trait<Mobile>().MoveTo(serviceDock.Location, 0));
@@ -221,13 +200,52 @@ namespace OpenRA.Mods.Common.Traits
 			return r;
 		}
 
+		void serveNewClient(Actor client)
+		{
+			var dockClient = client.Trait<DockClient>();
+
+			Dock dock = null;
+			if (waitDocks.Count() == 0)
+			{
+				dock = serviceDocks.Last();
+			}
+			else
+			{
+				// Find any available waiting slot.
+				dock = waitDocks.FirstOrDefault(d => d.Occupier == null && !d.IsBlocked);
+
+				// on nothing, share the last slot.
+				if (dock == null)
+					dock = waitDocks.Last();
+			}
+
+			// For last dock, current dock and occupier will be messed up but doesn't matter.
+			// The last one is shared anyway. The vacancy info is not very meaningful there.
+			if (dockClient.CurrentDock != null)
+				dockClient.Release(dockClient.CurrentDock);
+			dockClient.Acquire(dock, DockState.WaitAssigned);
+
+			// Move to the waiting dock and wait for service dock to be released.
+			client.QueueActivity(client.Trait<Mobile>().MoveTo(dock.Location, 2));
+			client.QueueActivity(new WaitFor(() => dockClient.DockState == DockState.ServiceAssigned));
+		}
+
+		void removeDead(List<Actor> queue)
+		{
+			// dock release, acquire is done by DockClient trait. But, queue must be updated by DockManager.
+			// It won't be too hard though.
+			var rms = queue.Where(a => a.IsDead || a.IsIdle || a.Disposed);
+			foreach (var rm in rms)
+				queue.Remove(rm);
+		}
+
 		// Get the queue going by popping queue.
 		// Then, find a suitable dock place for the client and return it.
 		void processQueue(Actor self, Actor client)
 		{
 			checkObstacle(self);
 
-			updateOccupierDeadOrAlive();
+			removeDead(queue);
 
 			// Now serve the 1st in line, until all service docks are occupied.
 			Actor head = null;
@@ -250,30 +268,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!queue.Contains(client))
 				return;
 
-			var dockClient = client.Trait<DockClient>();
-
-			Dock dock;
-			if (waitDocks.Count() == 0)
-				dock = serviceDocks.Last();
-			else
-			{
-				// Find any available waiting slot.
-				dock = waitDocks.FirstOrDefault(d => d.Occupier == null && !d.IsBlocked);
-
-				// on nothing, share the last slot.
-				if (dock == null)
-					dock = waitDocks.Last();
-			}
-
-			// For last dock, current dock and occupier will be messed up but doesn't matter.
-			// The last one is shared anyway. The vacancy info is not very meaningful there.
-			dockClient.DockState = DockState.WaitAssigned;
-			dockClient.CurrentDock = dock;
-			dock.Occupier = client;
-
-			// Cancel what ever it was doing and make harv come to the waiting dock.
-			client.QueueActivity(client.Trait<Mobile>().MoveTo(dock.Location, 2));
-			client.QueueActivity(new WaitFor(() => dockClient.DockState == DockState.ServiceAssigned));
+			serveNewClient(client);
 		}
 	}
 }
