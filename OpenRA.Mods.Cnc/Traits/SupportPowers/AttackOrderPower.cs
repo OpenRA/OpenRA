@@ -47,9 +47,11 @@ namespace OpenRA.Mods.Cnc.Traits
 			attack.AttackTarget(Target.FromCell(self.World, order.TargetLocation), false, false, true);
 		}
 
-		void INotifyCreated.Created(Actor self)
+		protected override void Created(Actor self)
 		{
 			attack = self.Trait<AttackBase>();
+
+			base.Created(self);
 		}
 
 		void INotifyBurstComplete.FiredBurst(Actor self, Target target, Armament a)

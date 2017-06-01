@@ -40,9 +40,11 @@ namespace OpenRA.Mods.Common.Traits
 		protected override void TraitEnabled(Actor self) { UpdateStatus(self); }
 		protected override void TraitDisabled(Actor self) { Revoke(self); }
 
-		void INotifyCreated.Created(Actor self)
+		protected override void Created(Actor self)
 		{
 			conditionManager = self.TraitOrDefault<ConditionManager>();
+
+			base.Created(self);
 		}
 
 		float ISelectionBar.GetValue()

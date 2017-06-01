@@ -80,7 +80,7 @@ namespace OpenRA.Mods.Common.Traits
 			remainingTime = info.InitialDelay;
 		}
 
-		void INotifyCreated.Created(Actor self)
+		protected override void Created(Actor self)
 		{
 			conditionManager = self.TraitOrDefault<ConditionManager>();
 
@@ -90,6 +90,8 @@ namespace OpenRA.Mods.Common.Traits
 				if (conditionManager != null && cloakedToken == ConditionManager.InvalidConditionToken && !string.IsNullOrEmpty(Info.CloakedCondition))
 					cloakedToken = conditionManager.GrantCondition(self, Info.CloakedCondition);
 			}
+
+			base.Created(self);
 		}
 
 		public bool Cloaked { get { return !IsTraitDisabled && remainingTime <= 0; } }
