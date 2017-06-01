@@ -11,9 +11,9 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using OpenRA.Traits;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Activities;
+using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
@@ -84,6 +84,7 @@ namespace OpenRA.Mods.Common.Traits
 					IsBlocked = true;
 					return;
 				}
+
 			IsBlocked = false;
 		}
 	}

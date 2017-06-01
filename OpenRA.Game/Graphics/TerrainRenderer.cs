@@ -41,8 +41,6 @@ namespace OpenRA.Graphics
 				}
 			}
 
-			//spriteCache = Exts.Lazy(() => new SpriteCache(fileSystem, modData.SpriteLoaders, new SheetBuilder(SheetType.Indexed)));
-
 			foreach (var template in map.Rules.TileSet.Templates)
 			{
 				var palette = template.Value.Palette ?? TileSet.TerrainPaletteInternalName;
@@ -69,7 +67,7 @@ namespace OpenRA.Graphics
 				kv.Value.Update(cell, palette == kv.Key ? sprite : null);
 		}
 
-		void drawSkybox(WorldRenderer wr, Viewport viewport)
+		void DrawSkybox(WorldRenderer wr, Viewport viewport)
 		{
 			if (skyImage == null)
 				return;
@@ -78,7 +76,7 @@ namespace OpenRA.Graphics
 
 		public void Draw(WorldRenderer wr, Viewport viewport)
 		{
-			drawSkybox(wr, viewport);
+			DrawSkybox(wr, viewport);
 
 			foreach (var kv in spriteLayers.Values)
 				kv.Draw(wr.Viewport);

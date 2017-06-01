@@ -10,10 +10,10 @@
 #endregion
 
 using System.Drawing;
+using System.Linq;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
-using System.Linq;
 
 namespace OpenRA.Mods.Common.Activities
 {
@@ -40,7 +40,7 @@ namespace OpenRA.Mods.Common.Activities
 				harv.LinkProc(self, harv.OwnerLinkedProc);
 				harv.OwnerLinkedProc = null;
 			}
-			// at this point, harv.OwnerLinkedProc == null.
+			//// at this point, harv.OwnerLinkedProc == null.
 
 			// Is the refinery still alive? If not, link one.
 			if (harv.LinkedProc == null || !harv.LinkedProc.IsInWorld)
@@ -72,6 +72,7 @@ namespace OpenRA.Mods.Common.Activities
 				proc.Trait<Refinery>().QueueOnDockActivity(self, null, dock);
 				Queue(cont);
 			}
+
 			return NextActivity;
 		}
 	}

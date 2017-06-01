@@ -32,9 +32,9 @@ env:
 script:
  - travis_retry make all-dependencies
  - make all SDK="-sdk:4.5"
- - make check
- - make check-scripts
- - make test
+ # - make check
+ # - make check-scripts
+ # - make test
  - make nunit
 
 # Automatically update the trait documentation and Lua API
