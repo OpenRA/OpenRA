@@ -203,14 +203,15 @@ namespace OpenRA.Mods.Common.Traits
 		// As the actors are coming from all directions, first request, first served is not good.
 		// Let it be first come first served.
 		// We approximate distance computation by Rect-linear distance here, not Euclidean dist.
-		Actor nearestClient(Actor self, IEnumerable<Actor> queue)
+		// To simplify the computation, give firstPriorityDock to compute distance from.
+		Actor nearestClient(Actor self, Dock firstPriorityDock, IEnumerable<Actor> queue)
 		{
 			Actor r = null;
 			int bestDist = -1;
 			foreach (var a in queue)
 			{
-				var vec = self.World.Map.CenterOfCell(a.Location) - self.CenterPosition;
-				var dist = vec.VerticalLength + vec.HorizontalLength;
+				var vec = a.Location - firstPriorityDock.Location;
+				var dist = Math.Abs(vec.X) + Math.Abs(vec.Y);
 				if (r == null || dist < bestDist)
 				{
 					r = a;
@@ -232,7 +233,7 @@ namespace OpenRA.Mods.Common.Traits
 			Actor head = null;
 			while (queue.Count > 0)
 			{
-				head = nearestClient(self, queue);
+				head = nearestClient(self, serviceDocks[0], queue);
 				// find the first available slot in the service docks.
 				var serviceDock = serviceDocks.FirstOrDefault(d => d.Occupier == null && !d.IsBlocked);
 				if (serviceDock == null)
