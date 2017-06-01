@@ -23,8 +23,14 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Are any of the docks lie outside the building footprint? (and needs obstacle checking)")]
 		public readonly bool ExternalDocks = false;
 
-		[Desc("Queue will be processed this often.")]
-		public readonly int WaitInterval = 19; // prime number yay
+		[Desc("Enable deadlock detection")]
+		public readonly bool DetectDetectionEnabled = true;
+
+		[Desc("Dead lock detection sampling is done this often.")]
+		public readonly int DeadlockDetectionPeriod = 79; // prime number yay
+
+		[Desc("Sampled this many times then the queue is reset.")]
+		public readonly int DeadlockDetectionThreshold = 5;
 
 		public object Create(ActorInitializer init) { return new DockManager(init, this); }
 	}
@@ -33,21 +39,24 @@ namespace OpenRA.Mods.Common.Traits
 	 * The class to do all the crazy queue management.
 	 * Not all multi-dock guys need queue management so making a separate manager class.
 	 */
-	public class DockManager
+	public class DockManager : ITick
 	{
 		readonly DockManagerInfo info;
 		readonly Actor self; // == host
+
 		readonly Dock[] allDocks;
 		readonly Dock[] serviceDocks;
 		readonly Dock[] waitDocks;
 		readonly List<Actor> queue = new List<Actor>();
 
 		CPos lastLocation; // in case this is a mobile dock.
+		int ticks;
 
 		public DockManager(ActorInitializer init, DockManagerInfo info)
 		{
 			self = init.Self;
 			this.info = info;
+			ticks = info.DeadlockDetectionPeriod;
 
 			// sort the dock traits by their Order trait.
 			var t0 = self.TraitsImplementing<Dock>().ToList();
@@ -133,10 +142,70 @@ namespace OpenRA.Mods.Common.Traits
 			CancelDock(queue);
 		}
 
-		public void OnArrival(Actor harv, Dock dock)
+		public void OnArrival(Actor client, Dock dock)
 		{
-			// We arrived at the docking spot.
-			// Currently nothing to do...?
+			// We have "arrived". But did we get to where we intended?
+			var dc = client.Trait<DockClient>();
+
+			// I tried to arrive at a waiting spot but actually it was a working dock and I'm sitting on it!
+			// (happens often when only one dock which is shared)
+			if (dock.Info.WaitingPlace == false && dc.DockState == DockState.WaitAssigned && self.Location == dock.Location)
+			{
+				dc.Release(dock);
+				self.CancelActivity();
+				processQueue(self, client);
+			}
+		}
+
+		int unchangedCount = 0;
+		Actor[] deadlockTracker;
+		void removeDeadLock(List<Actor> queue)
+		{
+			// This one is tricky.
+			// When there are more than one service dock... say we have 2.
+			// Client on x tries to dock at y and there is another client on y which tries to dock at x,
+			// and when the dock is adjacent, we are in dead lock situation. They will not budge at all.
+			// 1. Computing and finding cycles to break them is too expensive.
+			// 2. Exploit that only adjacent docks can be deadlocked... Still too expensive. O(n^2).
+			// 3. Assume dock is "linearly" placed and perform linear check: may not hold up.
+			// Lets do simple sampling method here instead.
+
+			// Queue is so sparse that everything is null.
+			if (deadlockTracker == null || serviceDocks.All(d => d.Occupier == null))
+			{
+				unchangedCount = 0;
+				deadlockTracker = serviceDocks.Select(d => d.Occupier).ToArray();
+				return;
+			}
+
+			for (int i = 0; i < serviceDocks.Length; i++)
+			{
+				if (deadlockTracker[i] != serviceDocks[i].Occupier)
+				{
+					// reset counter and remember current composition.
+					unchangedCount = 0;
+					deadlockTracker = serviceDocks.Select(d => d.Occupier).ToArray();
+					return;
+				}
+			}
+
+			// no change!
+			if (unchangedCount++ < info.DeadlockDetectionThreshold)
+				return;
+
+			// We have deadlock. Release these docks
+			foreach (var d in serviceDocks)
+				if (d.Occupier != null)
+				{
+					// The ones that occupy the docks are previously dequeued and can't be seen by processQueue yet.
+					// Must put them back in the queue!
+					queue.Add(d.Occupier);
+					d.Occupier.CancelActivity();
+					d.Occupier.Trait<DockClient>().Release(d);
+				}
+
+			unchangedCount = 0;
+			processQueue(self, null);
 		}
 
 		public void OnUndock(Actor client, Dock dock)
@@ -182,14 +251,13 @@ namespace OpenRA.Mods.Common.Traits
 		// As the actors are coming from all directions, first request, first served is not good.
 		// Let it be first come first served.
 		// We approximate distance computation by Rect-linear distance here, not Euclidean dist.
-		// To simplify the computation, give firstPriorityDock to compute distance from.
-		Actor nearestClient(Actor self, Dock firstPriorityDock, IEnumerable<Actor> queue)
+		Actor nearestClient(Actor self, Dock dock, IEnumerable<Actor> queue)
 		{
 			Actor r = null;
 			int bestDist = -1;
 			foreach (var a in queue)
 			{
-				var vec = a.Location - firstPriorityDock.Location;
+				var vec = a.Location - dock.Location;
 				var dist = Math.Abs(vec.X) + Math.Abs(vec.Y);
 				if (r == null || dist < bestDist)
 				{
@@ -227,6 +295,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			// Move to the waiting dock and wait for service dock to be released.
 			client.QueueActivity(client.Trait<Mobile>().MoveTo(dock.Location, 2));
+			client.QueueActivity(new CallFunc(() => OnArrival(client, dock)));
 			client.QueueActivity(new WaitFor(() => dockClient.DockState == DockState.ServiceAssigned));
 		}
 
@@ -234,7 +303,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			// dock release, acquire is done by DockClient trait. But, queue must be updated by DockManager.
 			// It won't be too hard though.
-			var rms = queue.Where(a => a.IsDead || a.IsIdle || a.Disposed);
+			var rms = queue.Where(a => a.IsDead || a.IsIdle || a.Disposed).ToList();
 			foreach (var rm in rms)
 				queue.Remove(rm);
 		}
@@ -248,14 +317,13 @@ namespace OpenRA.Mods.Common.Traits
 			removeDead(queue);
 
 			// Now serve the 1st in line, until all service docks are occupied.
-			Actor head = null;
 			while (queue.Count > 0)
 			{
-				head = nearestClient(self, serviceDocks[0], queue);
-				// find the first available slot in the service docks.
 				var serviceDock = serviceDocks.FirstOrDefault(d => d.Occupier == null && !d.IsBlocked);
+				// find the first available slot in the service docks.
 				if (serviceDock == null)
 					break;
+				var head = nearestClient(self, serviceDock, queue);
 				serveHead(self, head, serviceDock);
 				queue.Remove(head); // remove head
 			}
@@ -269,6 +337,18 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			serveNewClient(client);
+		}
+
+		void ITick.Tick(Actor self)
+		{
+			if (!info.DetectDetectionEnabled)
+				return;
+
+			if (ticks-- <= 0)
+			{
+				removeDeadLock(queue);
+				ticks = info.DeadlockDetectionPeriod;
+			}
 		}
 	}
 }
