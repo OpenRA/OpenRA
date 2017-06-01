@@ -285,8 +285,11 @@ REPAIR:
 		OutsideRangeCursor: repair
 		TargetStances: Ally
 		ForceTargetStances: None
+		LocalOffset: 300,0,500
+		MuzzleSequence: emp-overlay
 	AttackFrontal:
 		Voice: Attack
+	WithMuzzleOverlay:
 
 WEED:
 	Inherits: ^Tank
