@@ -145,6 +145,8 @@ namespace OpenRA.Mods.Common.Traits
 		bool isMovingVertically;
 		WPos cachedPosition;
 
+		CPos currentDestination;
+
 		public Aircraft(ActorInitializer init, AircraftInfo info)
 		{
 			Info = info;
@@ -585,6 +587,11 @@ namespace OpenRA.Mods.Common.Traits
 
 				if (!Info.MoveIntoShroud && !self.Owner.Shroud.IsExplored(cell))
 					return;
+
+				if (order.TargetLocation == currentDestination)
+					return;
+
+				currentDestination = order.TargetLocation;
 
 				if (!order.Queued)
 					UnReserve();

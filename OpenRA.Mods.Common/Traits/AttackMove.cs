@@ -64,7 +64,12 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (order.OrderString == "AttackMove")
 			{
-				TargetLocation = move.NearestMoveableCell(order.TargetLocation);
+				var newTargetLocation = move.NearestMoveableCell(order.TargetLocation);
+				if (newTargetLocation == TargetLocation)
+					return;
+				else
+					TargetLocation = newTargetLocation;
+
 				self.SetTargetLine(Target.FromCell(self.World, TargetLocation.Value), Color.Red);
 				Activate(self);
 			}
