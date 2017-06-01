@@ -102,13 +102,12 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 		// Carriers don't need to land to spawn stuff!
 		// I want to make this like Protoss Carrier.
 		ConditionManager conditionManager;
-		int loadingToken = ConditionManager.InvalidConditionToken;
 		Stack<int> loadedTokens = new Stack<int>();
 
 		public int SpawnCount { get { return spawns.Count; } }
 
 		int regen_ticks = 0;
-		int launchingToken = ConditionManager.InvalidConditionToken;
+		//int launchingToken = ConditionManager.InvalidConditionToken;
 
 		public Spawner(ActorInitializer init, SpawnerInfo info)
 		{
@@ -174,8 +173,8 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 				return;
 
 			// grant timed launching condition
-			if (Info.LaunchingCondition != null)
-				launchingToken = conditionManager.GrantCondition(self, Info.LaunchingCondition, Info.LaunchingTicks);
+			//if (Info.LaunchingCondition != null)
+			//	launchingToken = conditionManager.GrantCondition(self, Info.LaunchingCondition, Info.LaunchingTicks);
 
 			var exit = ChooseExit(self);
 			SetSpawnedFacing(s, self, exit);

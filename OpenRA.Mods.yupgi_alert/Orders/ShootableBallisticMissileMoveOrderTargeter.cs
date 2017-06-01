@@ -25,11 +25,11 @@ namespace OpenRA.Mods.yupgi_alert.Orders
 			return modifiers.HasModifier(TargetModifiers.ForceMove);
 		}
 
-		readonly ShootableBallisticMissileInfo info;
+		//readonly ShootableBallisticMissileInfo info;
 
 		public ShootableBallisticMissileMoveOrderTargeter(ShootableBallisticMissileInfo info)
 		{
-			this.info = info;
+			//this.info = info;
 			OrderID = "Move";
 			OrderPriority = 4;
 		}

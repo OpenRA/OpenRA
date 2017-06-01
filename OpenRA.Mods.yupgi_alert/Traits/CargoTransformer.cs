@@ -107,7 +107,6 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 						return;
 
 					var move = passenger.Trait<IMove>();
-					var pos = passenger.Trait<IPositionable>();
 
 					passenger.QueueActivity(new AttackMoveActivity(
 						passenger, move.MoveTo(rp.Location, 1)));

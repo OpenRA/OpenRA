@@ -164,6 +164,15 @@ mod_d2k_LIBS = $(COMMON_LIBS) $(STD_MOD_LIBS) $(mod_common_TARGET)
 PROGRAMS += mod_d2k
 mod_d2k: $(mod_d2k_TARGET)
 
+# Over Powered Mod
+mod_yupgi_alert_SRCS := $(shell find OpenRA.Mods.yupgi_alert/ -iname '*.cs')
+mod_yupgi_alert_TARGET = mods/yupgi_alert/OpenRA.Mods.yupgi_alert.dll
+mod_yupgi_alert_KIND = library
+mod_yupgi_alert_DEPS = $(STD_MOD_DEPS) $(mod_common_TARGET)
+mod_yupgi_alert_LIBS = $(COMMON_LIBS) $(STD_MOD_LIBS) $(mod_common_TARGET)
+PROGRAMS += mod_yupgi_alert
+mod_yupgi_alert: $(mod_yupgi_alert_TARGET)
+
 check-scripts:
 	@echo
 	@echo "Checking for Lua syntax errors..."
@@ -223,17 +232,8 @@ nunit: test_dll
 
 test: utility mods
 	@echo
-	@echo "Testing Tiberian Sun mod MiniYAML..."
-	@mono --debug OpenRA.Utility.exe ts --check-yaml
-	@echo
-	@echo "Testing Dune 2000 mod MiniYAML..."
-	@mono --debug OpenRA.Utility.exe d2k --check-yaml
-	@echo
-	@echo "Testing Tiberian Dawn mod MiniYAML..."
-	@mono --debug OpenRA.Utility.exe cnc --check-yaml
-	@echo
-	@echo "Testing Red Alert mod MiniYAML..."
-	@mono --debug OpenRA.Utility.exe ra --check-yaml
+	@echo "Over Powered Mod MiniYAML..."
+	@mono --debug OpenRA.Utility.exe yupgi_alert --check-yaml
 
 
 ##### Launchers / Utilities #####
@@ -301,7 +301,7 @@ tools: gamemonitor
 
 package: all-dependencies core tools docs version
 
-mods: mod_common mod_cnc mod_d2k
+mods: mod_common mod_cnc mod_d2k mod_yupgi_alert
 
 all: dependencies core tools
 

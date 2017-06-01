@@ -70,7 +70,6 @@ namespace OpenRA.Mods.yupgi_alert.Projectiles
 		readonly RadBeamInfo info;
 		readonly Animation hitanim;
 		int ticks = 0;
-		Color color;
 		bool doneDamage;
 		bool animationComplete;
 		WPos target;
@@ -79,7 +78,6 @@ namespace OpenRA.Mods.yupgi_alert.Projectiles
 		{
 			this.args = args;
 			this.info = info;
-			this.color = color;
 			target = args.PassiveTarget;
 
 			if (!string.IsNullOrEmpty(info.HitAnim))
