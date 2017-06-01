@@ -478,9 +478,11 @@ namespace OpenRA.Mods.Common.Traits
 				SetVisualPosition(self, init.Get<CenterPositionInit, WPos>());
 		}
 
-		void INotifyCreated.Created(Actor self)
+		protected override void Created(Actor self)
 		{
 			conditionManager = self.TraitOrDefault<ConditionManager>();
+
+			base.Created(self);
 		}
 
 		// Returns a valid sub-cell
