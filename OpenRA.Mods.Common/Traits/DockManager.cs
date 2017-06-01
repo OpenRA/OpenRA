@@ -125,8 +125,6 @@ namespace OpenRA.Mods.Common.Traits
 				bool rm = false;
 				if (a.Disposed || a.IsDead)
 					rm = true;
-				else if (a.Trait<Harvester>().LinkedProc != self)
-					rm = true;
 				else if (a.IsIdle)
 					rm = true;
 				// And there might be some intermediate states but that kind of case
@@ -236,7 +234,7 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				head = nearestClient(self, queue);
 				// find the first available slot in the service docks.
-				var serviceDock = serviceDocks.FirstOrDefault(d => d.Occupier == null);
+				var serviceDock = serviceDocks.FirstOrDefault(d => d.Occupier == null && !d.IsBlocked);
 				if (serviceDock == null)
 					break;
 				serveHead(self, head, serviceDock);
@@ -259,7 +257,7 @@ namespace OpenRA.Mods.Common.Traits
 			else
 			{
 				// Find any available waiting slot.
-				dock = waitDocks.FirstOrDefault(d => d.Occupier == null);
+				dock = waitDocks.FirstOrDefault(d => d.Occupier == null && !d.IsBlocked);
 
 				// on nothing, share the last slot.
 				if (dock == null)
