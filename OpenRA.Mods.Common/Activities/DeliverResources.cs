@@ -22,14 +22,12 @@ namespace OpenRA.Mods.Common.Activities
 	{
 		const int NextChooseTime = 100;
 
-		readonly IMove movement;
 		readonly Harvester harv;
 
 		int chosenTicks;
 
 		public DeliverResources(Actor self)
 		{
-			movement = self.Trait<IMove>();
 			harv = self.Trait<Harvester>();
 			IsInterruptible = false;
 		}
