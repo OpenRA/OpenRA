@@ -107,10 +107,13 @@ namespace OpenRA.Mods.Common.Traits
 			foreach (var rm in rms)
 				// Well, the list shouldn't be too long.
 				virtuallyDockedHarvs.Remove(rm);
-			// Harvester was killed while unloading
 
-			if (virtuallyDockedHarvs.Count == 0 && docks.DockedHarvs.Count() == 0)
-					wsb.CancelCustomAnimation(self);
+			// Refining animation cancelation.
+			// When everything docked all get killed in one shot then refining anim should be canceled.
+			// (Nukes...) Lets not care about virtual ones. Won't look too odd.
+			var dockedHarvs = docks.DockedHarvs;
+			if (dockedHarvs.Count() > 0 && dockedHarvs.Count() == dockedHarvs.Where(a => a.IsDead).Count())
+				wsb.CancelCustomAnimation(self);
 
 			if (info.ShowTicks && currentDisplayValue > 0 && --currentDisplayTick <= 0)
 			{
