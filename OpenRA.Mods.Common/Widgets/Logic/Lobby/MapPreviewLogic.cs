@@ -12,7 +12,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using OpenRA.Network;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
@@ -24,8 +23,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		int blinkTick;
 
 		[ObjectCreator.UseCtor]
-		internal MapPreviewLogic(Widget widget, ModData modData, OrderManager orderManager, Func<MapPreview> getMap,
-			Action<MapPreviewWidget, MapPreview, MouseInput> onMouseDown, Func<MapPreview, Dictionary<CPos, SpawnOccupant>> getSpawnOccupants)
+		internal MapPreviewLogic(Widget widget, ModData modData, Func<MapPreview> getMap, Action<MapPreviewWidget, MouseInput> onMouseDown,
+			Func<Dictionary<CPos, SpawnOccupant>> getSpawnOccupants, Func<string> getTeamArrangementInfo, Action onMapInstall)
 		{
 			var mapRepository = modData.Manifest.Get<WebServices>().MapRepository;
 
@@ -38,7 +37,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					return map.Status == MapStatus.Available && (!map.RulesLoaded || !map.InvalidCustomRules);
 				};
 
-				SetupWidgets(available, getMap, onMouseDown, getSpawnOccupants);
+				SetupWidgets(available, getMap, onMouseDown, getSpawnOccupants, getTeamArrangementInfo);
 			}
 
 			var invalid = widget.GetOrNull("MAP_INVALID");
@@ -50,14 +49,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					return map.Status == MapStatus.Available && map.InvalidCustomRules;
 				};
 
-				SetupWidgets(invalid, getMap, onMouseDown, getSpawnOccupants);
+				SetupWidgets(invalid, getMap, onMouseDown, getSpawnOccupants, getTeamArrangementInfo);
 			}
 
 			var download = widget.GetOrNull("MAP_DOWNLOADABLE");
 			if (download != null)
 			{
 				download.IsVisible = () => getMap().Status == MapStatus.DownloadAvailable;
-				SetupWidgets(download, getMap, onMouseDown, getSpawnOccupants);
+				SetupWidgets(download, getMap, onMouseDown, getSpawnOccupants, getTeamArrangementInfo);
 
 				var install = download.GetOrNull<ButtonWidget>("MAP_INSTALL");
 				if (install != null)
@@ -68,8 +67,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						map.Install(mapRepository, () =>
 						{
 							map.PreloadRules();
-							if (orderManager != null)
-								Game.RunAfterTick(() => orderManager.IssueOrder(Order.Command("state {0}".F(Session.ClientState.NotReady))));
+							onMapInstall();
 						});
 					};
 
@@ -86,7 +84,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					return map.Status != MapStatus.Available && map.Status != MapStatus.DownloadAvailable;
 				};
 
-				SetupWidgets(progress, getMap, onMouseDown, getSpawnOccupants);
+				SetupWidgets(progress, getMap, onMouseDown, getSpawnOccupants, getTeamArrangementInfo);
 
 				var statusSearching = progress.GetOrNull("MAP_STATUS_SEARCHING");
 				if (statusSearching != null)
@@ -141,8 +139,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 							map.Install(mapRepository, () =>
 							{
 								map.PreloadRules();
-								if (orderManager != null)
-									Game.RunAfterTick(() => orderManager.IssueOrder(Order.Command("state {0}".F(Session.ClientState.NotReady))));
+								onMapInstall();
 							});
 						}
 						else if (map.Status == MapStatus.Unavailable)
@@ -172,12 +169,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		}
 
 		void SetupWidgets(Widget parent, Func<MapPreview> getMap,
-			Action<MapPreviewWidget, MapPreview, MouseInput> onMouseDown, Func<MapPreview, Dictionary<CPos, SpawnOccupant>> getSpawnOccupants)
+			Action<MapPreviewWidget, MouseInput> onMouseDown, Func<Dictionary<CPos, SpawnOccupant>> getSpawnOccupants, Func<string> getTeamArrangementInfo)
 		{
 			var preview = parent.Get<MapPreviewWidget>("MAP_PREVIEW");
 			preview.Preview = () => getMap();
-			preview.OnMouseDown = mi => onMouseDown(preview, getMap(), mi);
-			preview.SpawnOccupants = () => getSpawnOccupants(getMap());
+			preview.OnMouseDown = mi => onMouseDown(preview, mi);
+			preview.SpawnOccupants = () => getSpawnOccupants();
 
 			var titleLabel = parent.GetOrNull<LabelWithTooltipWidget>("MAP_TITLE");
 			if (titleLabel != null)
@@ -186,7 +183,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var font = Game.Renderer.Fonts[titleLabel.Font];
 				var title = new CachedTransform<MapPreview, string>(m => WidgetUtils.TruncateText(m.Title, titleLabel.Bounds.Width, font));
 				titleLabel.GetText = () => title.Update(getMap());
-				titleLabel.GetTooltipText = () => getMap().Title;
+				titleLabel.GetTooltipText = () =>
+				{
+					var map = getMap();
+					return "{0}\nby {1}".F(map.Title, map.Author);
+				};
 			}
 
 			var typeLabel = parent.GetOrNull<LabelWidget>("MAP_TYPE");
@@ -196,13 +197,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				typeLabel.GetText = () => type.Update(getMap());
 			}
 
-			var authorLabel = parent.GetOrNull<LabelWidget>("MAP_AUTHOR");
-			if (authorLabel != null)
+			var teamsLabel = parent.GetOrNull<LabelWidget>("TEAM_ARRANGEMENT");
+			if (teamsLabel != null)
 			{
-				var font = Game.Renderer.Fonts[authorLabel.Font];
-				var author = new CachedTransform<MapPreview, string>(
-					m => WidgetUtils.TruncateText("Created by {0}".F(m.Author), authorLabel.Bounds.Width, font));
-				authorLabel.GetText = () => author.Update(getMap());
+				var font = Game.Renderer.Fonts[teamsLabel.Font];
+				var teamInfo = new CachedTransform<string, string>(info => WidgetUtils.TruncateText(info, teamsLabel.Bounds.Width, font));
+				teamsLabel.GetText = () => teamInfo.Update(getTeamArrangementInfo());
 			}
 		}
 	}

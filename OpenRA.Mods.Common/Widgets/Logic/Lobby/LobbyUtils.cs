@@ -554,6 +554,33 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 		}
 
+		public static string GetTeamArrangementInfo(IEnumerable<int> teams)
+		{
+			var teamsInfo = "";
+			var noTeamPlayersCount = teams.Count(t => t == 0);
+			var allTeams = teams.Where(t => t != 0).GroupBy(t => t).OrderByDescending(g => g.Count()).ToList();
+			var teamsWithPlayers = allTeams.Where(t => t.Count() > 1).ToList();
+
+			if (noTeamPlayersCount + allTeams.Count > 1 && teamsWithPlayers.Count > 0)
+			{
+				teamsInfo = teamsWithPlayers[0].Count().ToString();
+				for (int i = 1; i < teamsWithPlayers.Count; i++)
+				{
+					teamsInfo += " v {0}".F(teamsWithPlayers[i].Count());
+				}
+
+				var onePlayerTeamsCount = noTeamPlayersCount + allTeams.Count(t => t.Count() == 1);
+				if (onePlayerTeamsCount > 1 && noTeamPlayersCount + allTeams.Count() > 4)
+					teamsInfo += " + " + onePlayerTeamsCount;
+				else
+					teamsInfo += string.Concat(Enumerable.Repeat(" v 1", onePlayerTeamsCount));
+			}
+			else
+				teamsInfo = teams.Count() == 2 ? "1 v 1" : "FFA";
+
+			return teamsInfo;
+		}
+
 		static void HideChildWidget(Widget parent, string widgetId)
 		{
 			var widget = parent.GetOrNull(widgetId);

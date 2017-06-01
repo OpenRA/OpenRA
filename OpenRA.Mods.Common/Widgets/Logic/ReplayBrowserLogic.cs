@@ -27,6 +27,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	{
 		static Filter filter = new Filter();
 
+		public string TeamArrangementInfo { get; private set; }
+		public Dictionary<CPos, SpawnOccupant> SpawnOccupants { get; private set; }
+
 		readonly Widget panel;
 		readonly ScrollPanelWidget replayList, playerList;
 		readonly ScrollItemWidget playerTemplate, playerHeader;
@@ -78,9 +81,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				{ "orderManager", null },
 				{ "getMap", (Func<MapPreview>)(() => map) },
-				{ "onMouseDown",  (Action<MapPreviewWidget, MapPreview, MouseInput>)((preview, mapPreview, mi) => { }) },
-				{ "getSpawnOccupants", (Func<MapPreview, Dictionary<CPos, SpawnOccupant>>)(mapPreview =>
-					LobbyUtils.GetSpawnOccupants(selectedReplay.GameInfo.Players, mapPreview)) },
+				{ "onMouseDown",  (Action<MapPreviewWidget, MouseInput>)((preview, mi) => { }) },
+				{ "getSpawnOccupants", (Func<Dictionary<CPos, SpawnOccupant>>)(() => SpawnOccupants) },
+				{ "getTeamArrangementInfo", (Func<string>)(() => TeamArrangementInfo) },
+				{ "onMapInstall", () => SpawnOccupants = selectedReplay != null ?
+					LobbyUtils.GetSpawnOccupants(selectedReplay.GameInfo.Players, map) : new Dictionary<CPos, SpawnOccupant>() }
 			});
 
 			var replayDuration = new CachedTransform<ReplayMetadata, string>(r =>
@@ -603,6 +608,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			selectedReplay = replay;
 			map = selectedReplay != null ? selectedReplay.GameInfo.MapPreview : MapCache.UnknownMap;
+			SpawnOccupants = selectedReplay != null ? LobbyUtils.GetSpawnOccupants(selectedReplay.GameInfo.Players, map) : new Dictionary<CPos, SpawnOccupant>();
+			TeamArrangementInfo = selectedReplay != null ? LobbyUtils.GetTeamArrangementInfo(selectedReplay.GameInfo.Players.Select(p => p.Team)) : "";
 
 			if (replay == null)
 				return;
