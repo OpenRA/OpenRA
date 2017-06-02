@@ -49,12 +49,6 @@ namespace OpenRA.Mods.Common.Activities
 
 		void Calculate(Actor self)
 		{
-			if (dest == null || dest.IsDead || Reservable.IsReserved(dest))
-				dest = ChooseAirfield(self, true);
-
-			if (dest == null)
-				return;
-
 			var landPos = dest.CenterPosition;
 			var altitude = planeInfo.CruiseAltitude.Length;
 
@@ -114,7 +108,27 @@ namespace OpenRA.Mods.Common.Activities
 				return NextActivity;
 
 			if (!isCalculated)
-				Calculate(self);
+			{
+				bool targetReserved = false;
+
+				if (dest != null)
+				{
+					targetReserved = !dest.IsDead && Reservable.IsReserved(dest);
+
+					// If the target for repair is reserved (or dead) then drop the order
+					if ((dest.IsDead || targetReserved) && planeInfo.RepairBuildings.Contains(dest.Info.Name))
+					{
+						Cancel(self);
+						return new FlyCircle(self);
+					}
+				}
+
+				if (dest == null || dest.IsDead || targetReserved)
+					dest = ChooseAirfield(self, true);
+
+				if (dest != null)
+					Calculate(self);
+			}
 
 			if (dest == null || dest.IsDead)
 			{
