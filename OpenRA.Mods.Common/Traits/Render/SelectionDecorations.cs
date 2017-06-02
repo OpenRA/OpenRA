@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -35,6 +36,15 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public readonly Color SelectionBoxColor = Color.White;
 
 		public readonly string Image = "pips";
+
+		[Desc("Prefer isometric style layout. Works only for RectangularIsometric grids.")]
+		public readonly bool Isometric = false;
+
+		[Desc("If Isometric = true, this is used to set height for selection box")]
+		public readonly int IsometricHeight = 100;
+
+		[Desc("Isometric bar dimensions")]
+		public readonly float[] IsometricBarDim = { 5f, 5f };
 
 		public object Create(ActorInitializer init) { return new SelectionDecorations(init.Self, this); }
 
@@ -107,10 +117,10 @@ namespace OpenRA.Mods.Common.Traits.Render
 			var displayExtra = selected || (regularWorld && statusBars != StatusBarsType.Standard);
 
 			if (Info.RenderSelectionBox && selected)
-				yield return new SelectionBoxRenderable(self, Info.SelectionBoxColor);
+				yield return new SelectionBoxRenderable(self, Info.SelectionBoxColor, Convert.ToInt32(Info.Isometric) * Info.IsometricHeight);
 
 			if (Info.RenderSelectionBars && (displayHealth || displayExtra))
-				yield return new SelectionBarsRenderable(self, displayHealth, displayExtra);
+				yield return new SelectionBarsRenderable(self, displayHealth, displayExtra, Convert.ToInt32(Info.Isometric) * Info.IsometricHeight);
 
 			// Target lines and pips are always only displayed for selected allied actors
 			if (!selected || !self.Owner.IsAlliedWith(wr.World.RenderPlayer))

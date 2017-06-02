@@ -131,6 +131,8 @@
 	WithTextControlGroupDecoration:
 	SelectionDecorations:
 		Palette: pips
+		Isometric: true
+		IsometricHeight: 40 # TODO: add all original heights from art.ini
 	Selectable:
 		Priority: 3
 	Targetable:

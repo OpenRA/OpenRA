@@ -49,6 +49,8 @@ namespace OpenRA
 		public static bool operator !=(float3 me, float3 other) { return !(me == other); }
 		public override int GetHashCode() { return X.GetHashCode() ^ Y.GetHashCode() ^ Z.GetHashCode(); }
 
+		public float3 Round() { return new float3((float)Math.Round(X), (float)Math.Round(Y), (float)Math.Round(Z)); }
+
 		public override bool Equals(object obj)
 		{
 			var o = obj as float3?;
