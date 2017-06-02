@@ -211,6 +211,8 @@ namespace OpenRA.Mods.Common.Traits
 		public void OnUndock(Actor client, Dock dock)
 		{
 			client.Trait<DockClient>().Release(dock);
+			if (self.IsDead || self.Disposed)
+				return;
 			ProcessQueue(self, null); // notify queue
 		}
 

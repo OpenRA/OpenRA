@@ -13,18 +13,14 @@
 #endregion
 
 using System;
-using System.Drawing;
 using System.Collections.Generic;
 using System.Linq;
-using OpenRA.Mods.Common.Activities;
-using OpenRA.Mods.yupgi_alert.Activities;
-using OpenRA.Mods.Common.Orders;
-using OpenRA.Mods.Common.Traits;
 using OpenRA.Mods.Common;
+using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.yupgi_alert.Traits
+namespace OpenRA.Mods.Yupgi_alert.Traits
 {
 	[Desc("This actor can spawn actors.")]
 	public class SpawnerInfo : ITraitInfo, Requires<IOccupySpaceInfo>
@@ -54,8 +50,8 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 		[Desc("After this many ticks, we remove the condition.")]
 		public readonly int LaunchingTicks = 15;
 
+		// This can be computed but this should be faster.
 		[Desc("Air units and ground units have different mobile trait so...")]
-		// This can be computed but that requires a few cycles of cpu time XD
 		public readonly bool SpawnIsGroundUnit = false;
 
 		[Desc("Pip color for the spawn count.")]
@@ -81,7 +77,7 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 
 	class SpawnEntry
 	{
-		public Actor s;
+		public Actor Spawned;
 		public int RearmTicks;
 	}
 
@@ -93,21 +89,22 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 		readonly Actor self;
 
 		readonly List<SpawnEntry> spawns = new List<SpawnEntry>(); // contained
+
 		// keep track of launched ones so spawner can call them in or designate another target.
 		readonly HashSet<Actor> launched = new HashSet<Actor>();
+
 		readonly Dictionary<string, Stack<int>> spawnContainTokens = new Dictionary<string, Stack<int>>();
 		readonly Lazy<IFacing> facing;
 		readonly ExitInfo[] exits;
-		//Aircraft aircraft;
-		// Carriers don't need to land to spawn stuff!
-		// I want to make this like Protoss Carrier.
 		ConditionManager conditionManager;
 		Stack<int> loadedTokens = new Stack<int>();
 
-		public int SpawnCount { get { return spawns.Count; } }
-
-		int regen_ticks = 0;
-		//int launchingToken = ConditionManager.InvalidConditionToken;
+		// Aircraft aircraft;
+		// Carriers don't need to land to spawn stuff!
+		// I want to make this like Protoss Carrier.
+		// When we need that control you need this back.
+		// int launchingToken = ConditionManager.InvalidConditionToken;
+		int regenTicks = 0;
 
 		public Spawner(ActorInitializer init, SpawnerInfo info)
 		{
@@ -130,15 +127,13 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 			spawned.Master = self; // let the spawned unit return to me for reloading and repair.
 
 			var se = new SpawnEntry();
-			se.s = unit;
+			se.Spawned = unit;
 			se.RearmTicks = 0;
 			spawns.Add(se);
 		}
 
 		public void Created(Actor self)
 		{
-			//aircraft = self.TraitOrDefault<Aircraft>();
-			// If I want the airbourne spawner to land, I need to revive this logic (as was in cargo.cs)
 			conditionManager = self.Trait<ConditionManager>();
 		}
 
@@ -161,8 +156,8 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 			if (a.Info.Name != Info.SpawnerArmamentName)
 				return;
 
-			foreach(var spawned in launched)
-				// Issue retarget order for already launched ones
+			// Issue retarget order for already launched ones
+			foreach (var spawned in launched)
 				spawned.Trait<Spawned>().AttackTarget(spawned, target);
 
 			if (spawns.Count == 0)
@@ -172,9 +167,12 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 			if (s == null)
 				return;
 
-			// grant timed launching condition
+			/*
+			 * Commenting out, not in use at the moment.
+			// grant timed launching condition...
 			//if (Info.LaunchingCondition != null)
 			//	launchingToken = conditionManager.GrantCondition(self, Info.LaunchingCondition, Info.LaunchingTicks);
+			*/
 
 			var exit = ChooseExit(self);
 			SetSpawnedFacing(s, self, exit);
@@ -230,15 +228,15 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 
 		public void SlaveKilled(Actor self, Actor slave)
 		{
+			// Complicated. Killed() invokes slave.kill(), which invokes this logic.
+			// == infinite loop. Lets break it.
 			if (self.IsDead || self.Disposed || sold)
-				// Well, complicated. Killed() invokes slave.kill(), whichi invokes this logic.
-				// That's a bad loop. Don't let it be a loop.
 				return;
 
 			if (launched.Contains(slave))
 				launched.Remove(slave);
 
-			regen_ticks = Info.RespawnTicks; // set clock so that regen happens.
+			regenTicks = Info.RespawnTicks; // set clock so that regen happens.
 		}
 
 		Actor PopLaunchable(Actor self)
@@ -256,21 +254,22 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 			if (result != null)
 			{
 				spawns.Remove(result);
-				return result.s;
+				return result.Spawned;
 			}
+
 			return null;
 		}
 
 		// Production.cs use random to select an exit.
 		// Here, we choose one by round robin.
 		// Start from -1 so that +1 logic below will make it 0.
-		int exit_round_robin = -1;
+		int exitRoundRobin = -1;
 		ExitInfo ChooseExit(Actor self)
 		{
 			if (exits.Length == 0)
 				return null;
-			exit_round_robin = (exit_round_robin + 1) % exits.Length;
-			return exits[exit_round_robin];
+			exitRoundRobin = (exitRoundRobin + 1) % exits.Length;
+			return exits[exitRoundRobin];
 		}
 
 		public Actor Launch(Actor self)
@@ -286,9 +285,11 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 		{
 			if (facing.Value == null)
 				return;
+
+			// Missiles have its own facing code
 			if (Info.SpawnIsMissile)
-				// Missiles have its own facing code
 				return;
+
 			var launch_angle = exit != null ? exit.Facing : 0;
 
 			var spawnFacing = spawned.TraitOrDefault<IFacing>();
@@ -329,7 +330,7 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 
 			// Set up rearm.
 			var se = new SpawnEntry();
-			se.s = a;
+			se.Spawned = a;
 			se.RearmTicks = Info.RearmTicks;
 			spawns.Add(se);
 		}
@@ -338,7 +339,7 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 		{
 			// kill stuff inside
 			foreach (var c in spawns)
-				c.s.Kill(e.Attacker);
+				c.Spawned.Kill(e.Attacker);
 		
 			// kill stuff outside
 			foreach (var c in launched)
@@ -354,7 +355,7 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 		public void Disposing(Actor self)
 		{
 			foreach (var se in spawns)
-				se.s.Dispose();
+				se.Spawned.Dispose();
 			foreach (var c in launched)
 				c.Dispose();
 
@@ -373,7 +374,7 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 
 			// Dispose slaved.
 			foreach (var se in spawns)
-				se.s.Dispose();
+				se.Spawned.Dispose();
 			spawns.Clear();
 
 			// Kill launched.
@@ -389,7 +390,7 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 			self.World.AddFrameEndTask(w =>
 			{
 				foreach (var s in spawns)
-					s.s.ChangeOwner(newOwner); // Under influence of mind control.
+					s.Spawned.ChangeOwner(newOwner); // Under influence of mind control.
 				foreach (var s in launched) // Kill launched, they are not under influence.
 					s.Kill(self);
 			});
@@ -398,10 +399,10 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 		public void Tick(Actor self)
 		{
 			// Regeneration
-			if (regen_ticks > 0)
+			if (regenTicks > 0)
 			{
-				regen_ticks--;
-				if (regen_ticks == 0)
+				regenTicks--;
+				if (regenTicks == 0)
 					while (spawns.Count + launched.Count < Info.Count)
 						Replenish(self);
 			}

@@ -11,13 +11,13 @@
  */
 #endregion
 
-using OpenRA.Mods.Common.Traits;
-using OpenRA.Traits;
 using System.Drawing;
 using OpenRA.Mods.Common.Activities;
-using OpenRA.Mods.yupgi_alert.Traits;
+using OpenRA.Mods.Common.Traits;
+using OpenRA.Mods.Yupgi_alert.Traits;
+using OpenRA.Traits;
 
-namespace OpenRA.Mods.yupgi_alert.Activities
+namespace OpenRA.Mods.Yupgi_alert.Activities
 {
 	class EnterNydus : Enter
 	{
@@ -34,14 +34,15 @@ namespace OpenRA.Mods.yupgi_alert.Activities
 
 		protected override void OnInside(Actor self)
 		{
+			// entered the nydus canal but the entrance is dead immediately. haha;;
 			if (Target.Actor.IsDead)
-				// entered the nydus canal but the entrance is dead immediately. haha;;
 				return;
 
 			// Find the primary nydus exit.
 			var pri = self.Owner.PlayerActor.Trait<NydusCounter>().PrimaryActor;
+
+			// Unfortunately, primary exit is killed for some reason and not exists at this time.
 			if (pri == null)
-				// Unfortunately, primary exit is killed for some reason and not exists at this time.
 				return;
 
 			var exitinfo = pri.Info.TraitInfo<ExitInfo>();
@@ -95,9 +96,11 @@ namespace OpenRA.Mods.yupgi_alert.Activities
 				{
 					if (exitinfo.MoveIntoWorld)
 					{
+						/*
 						// Exit delay is ignored.
-						//if (exitinfo.ExitDelay > 0)
+						// if (exitinfo.ExitDelay > 0)
 						//	newUnit.QueueActivity(new Wait(exitinfo.ExitDelay, false));
+						*/
 
 						self.QueueActivity(new AttackMoveActivity(
 							self, move.MoveTo(exitLocation, 1)));

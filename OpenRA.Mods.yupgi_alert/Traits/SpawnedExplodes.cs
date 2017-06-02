@@ -15,8 +15,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.GameRules;
+using OpenRA.Mods.Yupgi_alert.Traits;
 using OpenRA.Traits;
-using OpenRA.Mods.yupgi_alert.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {

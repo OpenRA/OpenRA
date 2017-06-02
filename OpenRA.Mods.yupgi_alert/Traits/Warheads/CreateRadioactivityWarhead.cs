@@ -15,11 +15,11 @@
 using System.Collections.Generic;
 using OpenRA.GameRules;
 using OpenRA.Mods.Common.Traits;
-using OpenRA.Traits;
 using OpenRA.Mods.Common.Warheads;
-using OpenRA.Mods.yupgi_alert.Traits;
+using OpenRA.Mods.Yupgi_alert.Traits;
+using OpenRA.Traits;
 
-namespace OpenRA.Mods.yupgi_alert.Warheads
+namespace OpenRA.Mods.Yupgi_alert.Warheads
 {
 	public class CreateRadioactivityWarhead : DamageWarhead, IRulesetLoaded<WeaponInfo>
 	{
@@ -30,7 +30,7 @@ namespace OpenRA.Mods.yupgi_alert.Warheads
 		public readonly int[] Falloff = { 100, 37, 14, 5, 0 };
 
 		// Since radioactivity level is accumulative, we pre-compute this var from Falloff. (Lookup table)
-		private int[] FalloffDifference;
+		int[] falloffDifference;
 
 		[Desc("Ranges at which each Falloff step is defined (in cells). Overrides Spread.")]
 		public int[] Range = null;
@@ -39,7 +39,6 @@ namespace OpenRA.Mods.yupgi_alert.Warheads
 		public int Level = 32; // in RA2, they used 500 for most weapons
 
 		[Desc("Radio activity saturates at this level, by this weapon.")]
-		// If you fire a weapon with Level = 500 twice, the level will never go beyond 500 (=MaxLevel).
 		public int MaxLevel = 500;
 
 		public void RulesetLoaded(Ruleset rules, WeaponInfo info)
@@ -57,14 +56,16 @@ namespace OpenRA.Mods.yupgi_alert.Warheads
 				Range = Exts.MakeArray(Falloff.Length, i => i * Spread);
 
 			// Compute FalloffDifference LUT.
-			FalloffDifference = new int[Falloff.Length];
-			for(var i = 0; i < FalloffDifference.Length-1; i++)
+			falloffDifference = new int[Falloff.Length];
+
+			for (var i = 0; i < falloffDifference.Length - 1; i++)
 			{
 				// with Falloff = { 100, 37, 14, 5, 0 }, you get
 				// { 63, 23, 9, 5, 0 }
-				FalloffDifference[i] = Falloff[i] - Falloff[i + 1];
+				falloffDifference[i] = Falloff[i] - Falloff[i + 1];
 			}
-			FalloffDifference[FalloffDifference.Length - 1] = 0;
+
+			falloffDifference[falloffDifference.Length - 1] = 0;
 		}
 
 		public override void DoImpact(WPos pos, Actor firedBy, IEnumerable<int> damageModifiers)
@@ -83,7 +84,6 @@ namespace OpenRA.Mods.yupgi_alert.Warheads
 
 			// Accumulate radiation
 			var targetTile = world.Map.CellContaining(pos);
-			//for (var i = Range.Length-1; i >=0; i--)
 			for (var i = 0; i < Range.Length; i++)
 			{
 				// Find affected cells, from outer Range down to inner range.
@@ -93,7 +93,7 @@ namespace OpenRA.Mods.yupgi_alert.Warheads
 
 				foreach (var cell in affectedCells)
 				{
-					var foff = FalloffDifference[i];
+					var foff = falloffDifference[i];
 					IncreaseRALevel(cell, foff, ra_layer);
 				}
 			}

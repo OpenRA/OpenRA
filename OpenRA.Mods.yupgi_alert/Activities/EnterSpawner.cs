@@ -28,17 +28,17 @@ using System.Drawing;
 using System.Linq;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Traits;
-using OpenRA.Mods.yupgi_alert.Traits;
+using OpenRA.Mods.Yupgi_alert.Traits;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.yupgi_alert.Activities
+namespace OpenRA.Mods.Yupgi_alert.Activities
 {
 	class EnterSpawner : Enter
 	{
 		readonly Actor master; // remember spawner.
 		readonly Spawner spawner;
 		readonly AmmoPool[] ammoPools;
-		//readonly Dictionary<AmmoPool, int> ammoPoolsReloadTimes;
+		//// readonly Dictionary<AmmoPool, int> ammoPoolsReloadTimes;
 
 		public EnterSpawner(Actor self, Actor target, EnterBehaviour enterBehaviour)
 			: base(self, target, enterBehaviour)
@@ -50,8 +50,6 @@ namespace OpenRA.Mods.yupgi_alert.Activities
 
 			if (ammoPools == null)
 				return;
-
-			//ammoPoolsReloadTimes = ammoPools.ToDictionary(x => x, y => y.Info.ReloadDelay);
 		}
 
 		protected override bool CanReserve(Actor self)
@@ -82,7 +80,7 @@ namespace OpenRA.Mods.yupgi_alert.Activities
 						case ReserveStatus.None:
 							return EnterState.Done; // No available target -> abort to next activity
 						case ReserveStatus.TooFar:
-							inner = move.MoveToTarget(self, targetCenter ? Target.FromPos(Target.CenterPosition) : Target); // Approach
+							inner = Move.MoveToTarget(self, TargetCenter ? Target.FromPos(Target.CenterPosition) : Target); // Approach
 							return EnterState.ApproachingOrEntering;
 						case ReserveStatus.Pending:
 							return EnterState.ApproachingOrEntering; // Retry next tick
@@ -94,7 +92,7 @@ namespace OpenRA.Mods.yupgi_alert.Activities
 					isEnteringOrInside = true;
 					savedPos = self.CenterPosition; // Save position of self, before entering, for returning on exit
 
-					inner = move.MoveIntoTarget(self, Target); // Enter
+					inner = Move.MoveIntoTarget(self, Target); // Enter
 
 					if (inner != null)
 					{
@@ -110,14 +108,14 @@ namespace OpenRA.Mods.yupgi_alert.Activities
 					if (nextState == EnterState.ApproachingOrEntering)
 						nextState = EnterState.Inside;
 
-					// Boolbada: removed moving target recovery.
-					// I'm assuming Carrier is not too fast!
+					//// Unlike enter.cs, target recovery is removed.
+					//// I'm assuming spawner.speed < spawned.speed
 
 					OnInside(self);
 
-					if (enterBehaviour == EnterBehaviour.Suicide)
+					if (EnterBehaviour == EnterBehaviour.Suicide)
 						self.Kill(self);
-					else if (enterBehaviour == EnterBehaviour.Dispose)
+					else if (EnterBehaviour == EnterBehaviour.Dispose)
 						self.Dispose();
 
 					// Return if Abort(Actor) or Done(self) was called from OnInside.
@@ -130,7 +128,7 @@ namespace OpenRA.Mods.yupgi_alert.Activities
 
 				// TODO: Handle target moved while inside or always call done for movable targets and use a separate exit activity
 				case EnterState.Exiting:
-					inner = move.MoveIntoWorld(self, self.World.Map.CellContaining(savedPos));
+					inner = Move.MoveIntoWorld(self, self.World.Map.CellContaining(savedPos));
 
 					// If not successfully exiting, retry on next tick
 					if (inner == null)
@@ -148,8 +146,8 @@ namespace OpenRA.Mods.yupgi_alert.Activities
 
 		protected override void OnInside(Actor self)
 		{
+			// entered the nydus canal but the entrance is dead immediately. haha;;
 			if (master.IsDead)
-				// entered the nydus canal but the entrance is dead immediately. haha;;
 				return;
 
 			Done(self); // no exit shit.

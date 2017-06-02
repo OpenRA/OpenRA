@@ -9,11 +9,11 @@
  */
 #endregion
 
-using OpenRA.Traits;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Mods.Common.Traits.Render;
+using OpenRA.Traits;
 
-namespace OpenRA.Mods.yupgi_alert.Traits.Render
+namespace OpenRA.Mods.Yupgi_alert.Traits.Render
 {
 	[Desc("Replaces the building animation when it accepts a cash delivery unit.")]
 	public class WithAcceptDeliveredCashAnimationInfo : ITraitInfo, Requires<WithSpriteBodyInfo>

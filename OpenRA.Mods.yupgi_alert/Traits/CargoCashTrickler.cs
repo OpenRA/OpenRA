@@ -13,10 +13,10 @@
 #endregion
 
 using OpenRA.Mods.Common.Effects;
-using OpenRA.Traits;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Traits;
 
-namespace OpenRA.Mods.yupgi_alert.Traits
+namespace OpenRA.Mods.Yupgi_alert.Traits
 {
 	[Desc("Lets the actor generate cash in a set periodic time.")]
 	class CargoCashTricklerInfo : ITraitInfo, Requires<CargoInfo>
@@ -81,9 +81,9 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 			if (!info.ShowTicks)
 				return;
 
-			for( int i = 0; i < cnt; i++)
+			for (int i = 0; i < cnt; i++)
 			{
-				var offset = new WVec((i<<8), -(i<<8), 0);
+				var offset = new WVec(i << 8, -i << 8, 0);
 				var pos = self.CenterPosition + offset;
 				self.World.AddFrameEndTask(
 					w => w.Add(

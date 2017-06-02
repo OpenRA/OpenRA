@@ -11,10 +11,10 @@
 
 using System.Collections.Generic;
 using OpenRA.Mods.Common.Traits;
-using OpenRA.Mods.yupgi_alert.Traits;
+using OpenRA.Mods.Yupgi_alert.Traits;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.yupgi_alert.Orders
+namespace OpenRA.Mods.Yupgi_alert.Orders
 {
 	public class ShootableBallisticMissileMoveOrderTargeter : IOrderTargeter
 	{
@@ -25,11 +25,8 @@ namespace OpenRA.Mods.yupgi_alert.Orders
 			return modifiers.HasModifier(TargetModifiers.ForceMove);
 		}
 
-		//readonly ShootableBallisticMissileInfo info;
-
 		public ShootableBallisticMissileMoveOrderTargeter(ShootableBallisticMissileInfo info)
 		{
-			//this.info = info;
 			OrderID = "Move";
 			OrderPriority = 4;
 		}

@@ -13,22 +13,21 @@
  */
 #endregion
 
-using System;
-using OpenRA.Graphics;
-using OpenRA.Mods.yupgi_alert.Traits;
-using System.Drawing;
-using OpenRA.Traits;
 using System.Collections.Generic;
+using System.Drawing;
 using OpenRA.Effects;
+using OpenRA.Graphics;
+using OpenRA.Mods.Yupgi_alert.Traits;
 
-namespace OpenRA.Mods.yupgi_alert.Graphics
+namespace OpenRA.Mods.Yupgi_alert.Graphics
 {
 	class Radioactivity : IRenderable, IFinalizedRenderable, IEffect
 	{
-		public int ticks = 0;
-		public int level = 0;
+		public int Ticks = 0;
+		public int Level = 0;
 		readonly RadioactivityLayer layer;
 		readonly WPos pos;
+
 		public int ZOffset
 		{
 			get
@@ -45,8 +44,8 @@ namespace OpenRA.Mods.yupgi_alert.Graphics
 
 		public Radioactivity(Radioactivity src)
 		{
-			ticks = src.ticks;
-			level = src.level;
+			Ticks = src.Ticks;
+			Level = src.Level;
 			layer = src.layer;
 			pos = src.pos;
 		}
@@ -71,11 +70,11 @@ namespace OpenRA.Mods.yupgi_alert.Graphics
 			var tl = wr.Screen3DPosition(pos - new WVec(512, 512, 0)); // cos 512 is half a cell.
 			var br = wr.Screen3DPosition(pos + new WVec(512, 512, 0));
 
-			int level = this.level > layer.Info.MaxLevel ? layer.Info.MaxLevel : this.level;
+			int level = this.Level > layer.Info.MaxLevel ? layer.Info.MaxLevel : this.Level;
 			if (level == 0)
 				return; // don't visualize 0 cells. They show up before cells get removed.
 
-			int alpha = (layer.Y_intercept100 + layer.Slope100 * level) / 100; // Linear interpolation
+			int alpha = (layer.YIntercept100 + layer.Slope100 * level) / 100; // Linear interpolation
 			alpha = alpha > 255 ? 255 : alpha; // just to be safe.
 
 			Color color = Color.FromArgb(alpha, layer.Info.Color);

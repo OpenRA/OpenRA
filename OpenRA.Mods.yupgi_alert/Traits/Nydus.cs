@@ -11,25 +11,23 @@
  */
 #endregion
 
-//using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using OpenRA.Mods.Common;
-using OpenRA.Mods.Common.Traits;
 using OpenRA.Mods.Common.Activities;
-using OpenRA.Mods.yupgi_alert.Activities;
 using OpenRA.Mods.Common.Orders;
-//using OpenRA.Primitives;
-using System.Drawing;
+using OpenRA.Mods.Common.Traits;
+using OpenRA.Mods.Yupgi_alert.Activities;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.yupgi_alert.Traits
+namespace OpenRA.Mods.Yupgi_alert.Traits
 {
 	[Desc("This player actor has this many Nydus canals. Must be attached to the player by attaching in player.yaml, otherwise Nydus logic won't work.")]
 	public class NydusCounterInfo : TraitInfo<NydusCounter> { }
 	public class NydusCounter
 	{
-		public int cnt = 0;
+		public int Cnt = 0;
 		public Actor PrimaryActor = null;
 	}
 
@@ -41,7 +39,7 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 
 	// The nydus canal does nothing.
 	// The actor teleports itself, upon entering: works the same as EngineerRepairalbe trait.
-	public class Nydus: INotifyCreated, INotifyActorDisposing, INotifyOwnerChanged
+	public class Nydus : INotifyCreated, INotifyActorDisposing, INotifyOwnerChanged
 	{
 		public Nydus(ActorInitializer init, NydusInfo info)
 		{
@@ -50,19 +48,21 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 		void IncreaseNydusCnt(Actor self, Player owner)
 		{
 			var counter = owner.PlayerActor.Trait<NydusCounter>();
+
 			// Assign itself as primary, when first one.
-			if (counter.cnt == 0)
+			if (counter.Cnt == 0)
 			{
 				var pri = self.Trait<NydusPrimaryExit>();
 				pri.SetPrimary(self);
 			}
-			counter.cnt++;
+
+			counter.Cnt++;
 		}
 
 		void DecreaseNydusCnt(Actor self, Player owner)
 		{
 			var counter = owner.PlayerActor.Trait<NydusCounter>();
-			counter.cnt--;
+			counter.Cnt--;
 
 			// what if primary was killed?
 			if (self.IsPrimaryNydusExit())
@@ -84,10 +84,13 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 
 		public void Created(Actor self) { IncreaseNydusCnt(self, self.Owner); }
 		public void Disposing(Actor self) { DecreaseNydusCnt(self, self.Owner); }
-		//public void AddedToWorld(Actor self) { IncreaseNydusCnt(self.Owner); } // created happens first. no need.
-		//public void Killed(Actor self, AttackInfo e) { DecreaseNydusCnt(self.Owner); } // killed then disposed. no need.
-		//public void Sold(Actor self) { DecreaseNydusCnt(self.Owner); } // sold and disposed. no need.
-		//public void Selling(Actor self) { }
+
+		/*
+		//  public void AddedToWorld(Actor self) { IncreaseNydusCnt(self.Owner); } // created happens first. no need.
+		//  public void Killed(Actor self, AttackInfo e) { DecreaseNydusCnt(self.Owner); } // killed then disposed. no need.
+		//  public void Sold(Actor self) { DecreaseNydusCnt(self.Owner); } // sold and disposed. no need.
+		//  public void Selling(Actor self) { }
+		*/
 
 		public void OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
 		{
@@ -126,8 +129,8 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 			if (order.OrderID != "NydusTransport")
 				return null;
 
+			// You can't enter enemy nydus canal so this will do.
 			if (target.Type == TargetType.FrozenActor)
-				//return new Order(order.OrderID, self, queued) { ExtraData = target.FrozenActor.ID };
 				return null;
 
 			return new Order(order.OrderID, self, queued) { TargetActor = target.Actor };
@@ -139,7 +142,7 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 		static bool HasEnoughCanals(Actor self)
 		{
 			var counter = self.Owner.PlayerActor.Trait<NydusCounter>();
-			return counter.cnt > 1;
+			return counter.Cnt > 1;
 		}
 
 		static bool IsValidOrder(Actor self, Order order)
@@ -194,8 +197,8 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 				if (!target.Info.HasTraitInfo<NydusInfo>())
 					return false;
 
+				// can only enter player owned one. (Not even ally's)
 				if (self.Owner != target.Owner)
-					// can only enter player owned one.
 					return false;
 
 				if (target.IsPrimaryNydusExit()) // block, if primary exit.

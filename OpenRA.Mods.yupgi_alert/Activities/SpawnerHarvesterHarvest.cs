@@ -15,14 +15,14 @@
 using System.Collections.Generic;
 using System.Drawing;
 using OpenRA.Activities;
+using OpenRA.Mods.Common;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Pathfinder;
 using OpenRA.Mods.Common.Traits;
-using OpenRA.Mods.yupgi_alert.Traits;
+using OpenRA.Mods.Yupgi_alert.Traits;
 using OpenRA.Traits;
-using OpenRA.Mods.Common;
 
-namespace OpenRA.Mods.yupgi_alert.Activities
+namespace OpenRA.Mods.Yupgi_alert.Activities
 {
 	public class SpawnerHarvesterHarvest : Activity
 	{	
@@ -82,16 +82,14 @@ namespace OpenRA.Mods.yupgi_alert.Activities
 			if (!closestHarvestablePosition.HasValue)
 			{
 				var randFrames = self.World.SharedRandom.Next(100, 175);
+
 				// Avoid creating an activity cycle
 				var next = NextInQueue;
 				NextInQueue = null;
 				return ActivityUtils.SequenceActivities(next, new Wait(randFrames), this);
 			}
 
-			// Attempt to claim a resource as ours
-			// ... Don't claim yet. Slaves will claim by themselves.
-			//if (territory != null && !territory.ClaimResource(self, closestHarvestablePosition.Value))
-			//	return ActivityUtils.SequenceActivities(new Wait(25), this);
+			//// ... Don't claim resource layer here. Slaves will claim by themselves.
 
 			// If not given a direct order, assume ordered to the first resource location we find:
 			if (!harv.LastOrderLocation.HasValue)
@@ -100,9 +98,10 @@ namespace OpenRA.Mods.yupgi_alert.Activities
 			self.SetTargetLine(Target.FromCell(self.World, closestHarvestablePosition.Value), Color.Red, false);
 
 			// Calculate best depoly position.
-			var deployPosition = calcDeployPosition(self, closestHarvestablePosition.Value);
+			var deployPosition = CalcDeployPosition(self, closestHarvestablePosition.Value);
+
+			// Just sit there until we can. Won't happen unless the map is filled with units.
 			if (deployPosition == null)
-				// Just sit there until we can. Won't happen unless the map is filled with units.
 				return ActivityUtils.SequenceActivities(new Wait(harvInfo.KickDelay), this);
 
 			// I could be in deploy state and given this order.
@@ -145,6 +144,7 @@ namespace OpenRA.Mods.yupgi_alert.Activities
 				self.World.IssueOrder(new Order("GrantConditionOnDeploy", self, false) { SuppressVisualFeedback = true });
 				self.World.IssueOrder(new Order("SpawnerHarvestDeploying", self, true) { SuppressVisualFeedback = true });
 			}
+
 			return null; // issuing order cancels everything so no use returning anything.
 		}
 
@@ -220,7 +220,7 @@ namespace OpenRA.Mods.yupgi_alert.Activities
 		}
 
 		// Find a nearest deployable position from harvestablePos
-		CPos? calcDeployPosition(Actor self, CPos harvestablePos)
+		CPos? CalcDeployPosition(Actor self, CPos harvestablePos)
 		{
 			// FindTilesInAnnulus gives sorted cells by distance :) Nice.
 			foreach (var tile in self.World.Map.FindTilesInAnnulus(harvestablePos, 0, harvInfo.DeployScanRadius))

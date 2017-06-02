@@ -13,19 +13,17 @@
 #endregion
 
 using System.Collections.Generic;
-using System.Linq;
-using OpenRA.GameRules;
-using OpenRA.Traits;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Traits;
 
-namespace OpenRA.Mods.yupgi_alert.Traits
+namespace OpenRA.Mods.Yupgi_alert.Traits
 {
 	[Desc("This actor receives damage from the given weapon when in radioactive area.")]
 	class DamagedByRadioactivityInfo : ConditionalTraitInfo, Requires<HealthInfo>
 	{
-		[Desc("Damage received per radioactivity level, in per mille, per DamageInterval. (Damage = DamageCoeff * RadioactivityLevel / 1000")]
 		// Considering that 1% of level 500 is 5, it is quite tough to have percent. We use per mille here.
 		// 5 damage is much larger than Mods.cnc's tiberium damage.
+		[Desc("Damage received per radioactivity level, in per mille, per DamageInterval. (Damage = DamageCoeff * RadioactivityLevel / 1000")]
 		[FieldLoader.Require] public readonly int DamageCoeff = 0;
 
 		[Desc("Delay (in ticks) between receiving damage.")]

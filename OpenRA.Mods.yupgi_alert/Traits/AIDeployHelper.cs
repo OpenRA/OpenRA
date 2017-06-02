@@ -77,10 +77,13 @@ namespace OpenRA.Mods.AS.Traits
 			{
 				// don't deploy if there are more friends than enemies
 				var units = self.World.FindActorsInCircle(self.CenterPosition, WDist.FromCells(info.ActorScanRadius));
+
+				// Direct owner check is incorrect, as disguise is involved. Using AppearsFriendlyTo
 				int nfriendly = units.Where(a => a.AppearsFriendlyTo(self)).Count();
-				int nenemy = units.Where(a => a.AppearsHostileTo(self)).Count();
+
 				// units.count - nfriendly != nemeny, as even trees are actors!
-				// Direct owner check is still incorrect, as disguise is involved.
+				int nenemy = units.Where(a => a.AppearsHostileTo(self)).Count();
+
 				if (nfriendly > nenemy)
 					return;
 			}

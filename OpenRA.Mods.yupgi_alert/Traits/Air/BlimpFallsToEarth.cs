@@ -10,11 +10,11 @@
 #endregion
 
 using OpenRA.GameRules;
-using OpenRA.Mods.yupgi_alert.Activities;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Mods.Yupgi_alert.Activities;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.yupgi_alert.Traits
+namespace OpenRA.Mods.Yupgi_alert.Traits
 {
 	[Desc("Causes aircraft husks that are spawned in the air to crash to the ground.")]
 	public class BlimpFallsToEarthInfo : ITraitInfo, IRulesetLoaded, Requires<AircraftInfo>

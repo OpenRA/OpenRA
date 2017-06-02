@@ -12,10 +12,10 @@
 using System.Linq;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Traits;
-using OpenRA.Mods.yupgi_alert.Traits;
+using OpenRA.Mods.Yupgi_alert.Traits;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.yupgi_alert.Activities
+namespace OpenRA.Mods.Yupgi_alert.Activities
 {
 	public class BlimpFallToEarth : Activity
 	{

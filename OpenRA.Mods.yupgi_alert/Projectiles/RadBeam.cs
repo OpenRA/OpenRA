@@ -13,15 +13,12 @@
 
 using System.Collections.Generic;
 using System.Drawing;
-//using OpenRA.Effects;
 using OpenRA.GameRules;
 using OpenRA.Graphics;
-//using OpenRA.Mods.Common.Effects;
-using OpenRA.Mods.Common.Graphics;
+using OpenRA.Mods.Yupgi_alert.Graphics;
 using OpenRA.Traits;
-using OpenRA.Mods.yupgi_alert.Graphics;
 
-namespace OpenRA.Mods.yupgi_alert.Projectiles
+namespace OpenRA.Mods.Yupgi_alert.Projectiles
 {
 	[Desc("Not a sprite, but an engine effect.")]
 	public class RadBeamInfo : IProjectileInfo
@@ -33,7 +30,6 @@ namespace OpenRA.Mods.yupgi_alert.Projectiles
 		public readonly WDist Amplitude = new WDist(128);
 
 		[Desc("The wavelength of the beam. (in WDist)")]
-		//public readonly WDist WaveLength = new WDist(96);
 		public readonly WDist WaveLength = new WDist(64);
 
 		[Desc("Equivalent to sequence ZOffset. Controls Z sorting.")]
@@ -45,7 +41,7 @@ namespace OpenRA.Mods.yupgi_alert.Projectiles
 		public readonly bool UsePlayerColor = false;
 
 		[Desc("Beam color in (A),R,G,B.")]
-		public readonly Color Color = Color.FromArgb(128,0,255,0);
+		public readonly Color Color = Color.FromArgb(128, 0, 255, 0);
 
 		[Desc("Impact animation.")]
 		public readonly string HitAnim = null;
@@ -117,10 +113,8 @@ namespace OpenRA.Mods.yupgi_alert.Projectiles
 
 			if (ticks < info.BeamDuration)
 			{
-				// lasers get transparent over time but radbeams don't.
-				//var rc = Color.FromArgb(255, color);
-				//var rc = Color.FromArgb((info.BeamDuration - ticks) * 255 / info.BeamDuration, color);
-				WDist amp = info.Amplitude * ticks / info.BeamDuration; // gets curvier over time, as in RA2.
+				// gets curvier over time, as in RA2.
+				WDist amp = info.Amplitude * ticks / info.BeamDuration;
 				yield return new RadBeamRenderable(args.Source, info.ZOffset, target - args.Source, info.Thickness, info.Color, amp, info.WaveLength);
 			}
 

@@ -14,7 +14,7 @@
 using System.Drawing;
 using OpenRA.Graphics;
 
-namespace OpenRA.Mods.yupgi_alert.Graphics
+namespace OpenRA.Mods.Yupgi_alert.Graphics
 {
 	public struct RadBeamRenderable : IRenderable, IFinalizedRenderable
 	{
@@ -28,9 +28,9 @@ namespace OpenRA.Mods.yupgi_alert.Graphics
 
 		// integer version of sine wave (LUT).
 		// 100 * ( i * pi / 4 ). Maybe we could sample more points
-		//static readonly int[] wave = { 0, 71, 100, 71, 0, -71, -100, -71, 0 };
+		// static readonly int[] wave = { 0, 71, 100, 71, 0, -71, -100, -71, 0 };
 		// 100 * ( i * pi / 8 ).
-		static readonly int[] wave = { 0, 38, 71, 92, 100, 92, 71, 38, 0, -38, -71, -92, -100, -92, -71, -38 };
+		static readonly int[] Wave = { 0, 38, 71, 92, 100, 92, 71, 38, 0, -38, -71, -92, -100, -92, -71, -38 };
 
 		public RadBeamRenderable(WPos pos, int zOffset, WVec length, WDist width, Color color, WDist amplitude, WDist wavelength)
 		{
@@ -65,11 +65,9 @@ namespace OpenRA.Mods.yupgi_alert.Graphics
 			var x = (length * wavelength.Length) / length.Length;
 
 			// y-axis can be gotten by world vector?? (perpendicular to the ground)
-			var y = new WVec(0,0,amplitude.Length);
+			var y = new WVec(0, 0, amplitude.Length);
 
 			var start = wr.Screen3DPosition(pos);
-			//var end = wr.Screen3DPosition(pos + length);
-
 			int cnt = vecLength / wavelength.Length;
 			if (length.Length % wavelength.Length != 0)
 				cnt += 1; // I'm emulating math.ceil
@@ -78,10 +76,11 @@ namespace OpenRA.Mods.yupgi_alert.Graphics
 
 			var last = start; // last point the rad beam "reached"
 			var xx = pos;
-			for(var i = 0; i < cnt; i++)
+
+			for (var i = 0; i < cnt; i++)
 			{
-				var index = i % wave.Length;
-				var sin = y * wave[index] / 100; // value * y vector
+				var index = i % Wave.Length;
+				var sin = y * Wave[index] / 100; // value * y vector
 				xx += x; // keep moving along x axis
 				var end = wr.Screen3DPosition(xx + sin);
 				Game.Renderer.WorldRgbaColorRenderer.DrawLine(last, end, screenWidth, color);

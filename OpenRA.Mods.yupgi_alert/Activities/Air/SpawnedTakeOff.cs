@@ -13,22 +13,22 @@
 #endregion
 
 using OpenRA.Activities;
-using OpenRA.Mods.Common.Traits;
-using OpenRA.Mods.yupgi_alert.Traits;
 using OpenRA.Mods.Common.Activities;
+using OpenRA.Mods.Common.Traits;
+using OpenRA.Mods.Yupgi_alert.Traits;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.yupgi_alert.Activities
+namespace OpenRA.Mods.Yupgi_alert.Activities
 {
 	public class SpawnedTakeOff : Activity
 	{
+		// readonly Actor self;
 		readonly Aircraft aircraft;
 		readonly IMove move;
-		//readonly Actor self;
 
 		public SpawnedTakeOff(Actor self)
 		{
-			//this.self = self;
+			// this.self = self;
 			aircraft = self.Trait<Aircraft>();
 			move = self.Trait<IMove>();
 		}

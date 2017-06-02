@@ -15,14 +15,13 @@ using System.Drawing;
 using System.Linq;
 using OpenRA.Activities;
 using OpenRA.Mods.Common;
-using OpenRA.Mods.Common.Activities;
-using OpenRA.Mods.yupgi_alert.Activities;
-using OpenRA.Mods.yupgi_alert.Orders;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Mods.Yupgi_alert.Activities;
+using OpenRA.Mods.Yupgi_alert.Orders;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.yupgi_alert.Traits
+namespace OpenRA.Mods.Yupgi_alert.Traits
 {
 	[Desc("This unit, when ordered to move, will fly in ballistic path then will detonate itself upon reaching target.")]
 	public class ShootableBallisticMissileInfo : ITraitInfo, IMoveInfo, IPositionableInfo, IFacingInfo,
@@ -31,9 +30,11 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 		[Desc("Projectile speed in WDist / tick, two values indicate variable velocity.")]
 		public readonly int Speed = 17;
 
+		/*
 		// RA2 Dreadnaut style initial pitch. Can't test this in RA1, not implementing.
-		//public readonly int InitialPitch = 0;
-		//public readonly int LaunchTicks = 15; // Time needed to make init pitch to launch pitch.
+		// public readonly int InitialPitch = 0;
+		// public readonly int LaunchTicks = 15; // Time needed to make init pitch to launch pitch.
+		*/
 
 		[Desc("In angle. Missile is launched at this pitch and the intial tangential line of the ballistic path will be this.")]
 		public readonly WAngle LaunchAngle = WAngle.Zero;
@@ -222,7 +223,7 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 			// Probably you shouldn't run this.
 
 			// Leaving old code here just in case.
-			//return ActivityUtils.SequenceActivities(new CallFunc(() => SetVisualPosition(self, fromPos)),
+			// return ActivityUtils.SequenceActivities(new CallFunc(() => SetVisualPosition(self, fromPos)),
 			//	new HeliFly(self, Target.FromPos(toPos)));
 			return new ShootableBallisticMissileFly(self, Target.FromPos(toPos));
 		}
@@ -231,8 +232,20 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 
 		// Technically, ballstic movement always moves non-vertical moves = always false.
 		public bool IsMovingVertically { get { return false; } set { } }
+
 		// And ballistic missiles can't stop moving.
-		public bool IsMoving { get { return true; } set { } }
+		public bool IsMoving
+		{
+			get
+			{
+				return true;
+			}
+
+			set
+			{
+				System.Diagnostics.Debug.Assert(false, "You can't set IsMoving property for shootable ballistic missiles.");
+			}
+		}
 
 		public bool CanEnterTargetNow(Actor self, Target target)
 		{
@@ -248,12 +261,6 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 		{
 			get
 			{
-				// No orders for BM.
-				yield return null;
-
-				//yield return new EnterAlliedActorTargeter<BuildingInfo>("Enter", 5,
-				//	target => AircraftCanEnter(target), target => !Reservable.IsReserved(target));
-
 				yield return new ShootableBallisticMissileMoveOrderTargeter(Info);
 			}
 		}
@@ -274,11 +281,7 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 			if (order.OrderString == "Move")
 			{
 				var cell = self.World.Map.Clamp(order.TargetLocation);
-
 				var target = Target.FromCell(self.World, cell);
-
-				//self.SetTargetLine(target, Color.Green);
-
 				self.QueueActivity(order.Queued, new ShootableBallisticMissileFly(self, target));
 			}
 		}

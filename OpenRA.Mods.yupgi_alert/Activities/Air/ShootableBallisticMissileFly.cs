@@ -12,10 +12,10 @@
 using System;
 using System.Collections.Generic;
 using OpenRA.Activities;
-using OpenRA.Mods.yupgi_alert.Traits;
+using OpenRA.Mods.Yupgi_alert.Traits;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.yupgi_alert.Activities
+namespace OpenRA.Mods.Yupgi_alert.Activities
 {
 	public class ShootableBallisticMissileFly : Activity
 	{
@@ -63,9 +63,13 @@ namespace OpenRA.Mods.yupgi_alert.Activities
 
 			// The next move would overshoot, so consider it close enough
 			var move = sbm.FlyStep(sbm.Facing);
+
+			// Destruct so that Explodes will be called
 			if (d.HorizontalLengthSquared < move.HorizontalLengthSquared)
-				// Destruct so that Explodes will be called
-				return new CallFunc(() => self.Kill(self));
+			{
+				Queue(new CallFunc(() => self.Kill(self)));
+				return NextActivity;
+			}
 
 			FlyToward(self, sbm);
 			ticks++;

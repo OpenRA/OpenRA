@@ -23,10 +23,10 @@ namespace OpenRA.Mods.Common.Activities
 		public enum ReserveStatus { None, TooFar, Pending, Ready }
 		protected enum EnterState { ApproachingOrEntering, Inside, Exiting, Done }
 
-		protected readonly IMove move;
+		protected readonly IMove Move;
 		readonly int maxTries = 0;
-		protected readonly EnterBehaviour enterBehaviour;
-		protected readonly bool targetCenter;
+		protected readonly EnterBehaviour EnterBehaviour;
+		protected readonly bool TargetCenter;
 
 		public Target Target { get { return target; } }
 		Target target;
@@ -38,11 +38,11 @@ namespace OpenRA.Mods.Common.Activities
 
 		protected Enter(Actor self, Actor target, EnterBehaviour enterBehaviour, int maxTries = 1, bool targetCenter = false)
 		{
-			move = self.Trait<IMove>();
+			Move = self.Trait<IMove>();
 			this.target = Target.FromActor(target);
 			this.maxTries = maxTries;
-			this.enterBehaviour = enterBehaviour;
-			this.targetCenter = targetCenter;
+			this.EnterBehaviour = enterBehaviour;
+			this.TargetCenter = targetCenter;
 		}
 
 		// CanEnter(target) should to be true; otherwise, Enter may abort.
@@ -51,7 +51,7 @@ namespace OpenRA.Mods.Common.Activities
 		protected virtual bool CanReserve(Actor self) { return true; }
 		protected virtual ReserveStatus Reserve(Actor self)
 		{
-			return !CanReserve(self) ? ReserveStatus.None : move.CanEnterTargetNow(self, target) ? ReserveStatus.Ready : ReserveStatus.TooFar;
+			return !CanReserve(self) ? ReserveStatus.None : Move.CanEnterTargetNow(self, target) ? ReserveStatus.Ready : ReserveStatus.TooFar;
 		}
 
 		protected virtual void Unreserve(Actor self, bool abort) { }
@@ -169,7 +169,7 @@ namespace OpenRA.Mods.Common.Activities
 						case ReserveStatus.None:
 							return EnterState.Done; // No available target -> abort to next activity
 						case ReserveStatus.TooFar:
-							inner = move.MoveToTarget(self, targetCenter ? Target.FromPos(target.CenterPosition) : target); // Approach
+							inner = Move.MoveToTarget(self, TargetCenter ? Target.FromPos(target.CenterPosition) : target); // Approach
 							return EnterState.ApproachingOrEntering;
 						case ReserveStatus.Pending:
 							return EnterState.ApproachingOrEntering; // Retry next tick
@@ -181,7 +181,7 @@ namespace OpenRA.Mods.Common.Activities
 					isEnteringOrInside = true;
 					savedPos = self.CenterPosition; // Save position of self, before entering, for returning on exit
 
-					inner = move.MoveIntoTarget(self, target); // Enter
+					inner = Move.MoveIntoTarget(self, target); // Enter
 
 					if (inner != null)
 					{
@@ -204,7 +204,7 @@ namespace OpenRA.Mods.Common.Activities
 						Unreserve(self, false);
 						if (Reserve(self) == ReserveStatus.Ready)
 						{
-							inner = move.MoveIntoTarget(self, target); // Enter
+							inner = Move.MoveIntoTarget(self, target); // Enter
 							if (inner != null)
 								return EnterState.ApproachingOrEntering;
 
@@ -214,16 +214,16 @@ namespace OpenRA.Mods.Common.Activities
 
 						nextState = EnterState.ApproachingOrEntering;
 						isEnteringOrInside = false;
-						inner = move.MoveIntoWorld(self, self.World.Map.CellContaining(savedPos));
+						inner = Move.MoveIntoWorld(self, self.World.Map.CellContaining(savedPos));
 
 						return EnterState.ApproachingOrEntering;
 					}
 
 					OnInside(self);
 
-					if (enterBehaviour == EnterBehaviour.Suicide)
+					if (EnterBehaviour == EnterBehaviour.Suicide)
 						self.Kill(self);
-					else if (enterBehaviour == EnterBehaviour.Dispose)
+					else if (EnterBehaviour == EnterBehaviour.Dispose)
 						self.Dispose();
 
 					// Return if Abort(Actor) or Done(self) was called from OnInside.
@@ -236,7 +236,7 @@ namespace OpenRA.Mods.Common.Activities
 
 				// TODO: Handle target moved while inside or always call done for movable targets and use a separate exit activity
 				case EnterState.Exiting:
-					inner = move.MoveIntoWorld(self, self.World.Map.CellContaining(savedPos));
+					inner = Move.MoveIntoWorld(self, self.World.Map.CellContaining(savedPos));
 
 					// If not successfully exiting, retry on next tick
 					if (inner == null)

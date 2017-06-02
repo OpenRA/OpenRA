@@ -12,23 +12,19 @@
  */
 #endregion
 
-using System;
 using System.Collections.Generic;
-//using System.IO;
-//using System.Linq;
-//using System.Diagnostics; // assert thingy for temporary debugging
-using OpenRA.Graphics;
 using System.Drawing;
+using OpenRA.Graphics;
+using OpenRA.Mods.Yupgi_alert.Graphics;
 using OpenRA.Traits;
-using OpenRA.Mods.yupgi_alert.Graphics;
 
-namespace OpenRA.Mods.yupgi_alert.Traits
+namespace OpenRA.Mods.Yupgi_alert.Traits
 {
 	[Desc("Attach this to the world actor. Radioactivity layer, as in RA2 desolator radioactivity. Order of the layers defines the Z sorting.")]
+
 	// You can attach this layer by editing rules/world.yaml
 	// I (boolbada) made this layer by cloning resources layer, as resource amount is quite similar to
 	// radio activity. I looked at SmudgeLayer too.
-
 	public class RadioactivityLayerInfo : ITraitInfo
 	{
 		[Desc("Color of radio activity")]
@@ -69,27 +65,28 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 		readonly Dictionary<CPos, Radioactivity> tiles = new Dictionary<CPos, Radioactivity>();
 
 		// what's visible to the player.
-		readonly Dictionary<CPos, Radioactivity> rendered_tiles = new Dictionary<CPos, Radioactivity>();
+		readonly Dictionary<CPos, Radioactivity> renderedTiles = new Dictionary<CPos, Radioactivity>();
 
 		readonly HashSet<CPos> dirty = new HashSet<CPos>(); // dirty, as in cache dirty bits.
 
 		readonly int k1000; // half life constant, to be computed at init.
 		public readonly int Slope100;
-		public readonly int Y_intercept100;
+		public readonly int YIntercept100;
 
 		public RadioactivityLayer(Actor self, RadioactivityLayerInfo info)
 		{
 			world = self.World;
 			Info = info;
-			//k = info.UpdateDelay * ((float) Math.Log(2)) / info.Halflife;
 			k1000 = info.UpdateDelay * 693 / info.Halflife; // (693 is 1000*ln(2) so we must divide by 1000 later on.)
-			//Debug.Assert(k > 0);
-			// half life decay follows differential equation d/dt m(t) = -k m(t).
-			// d/dt will be in ticks, ofcourse.
+
+			/*
+			 * half life decay follows differential equation d/dt m(t) = -k m(t).
+			 * d/dt will be in ticks, ofcourse.
+			 */
 
 			// rad level visualization constants...
 			Slope100 = 100 * (info.Brightest - info.Darkest) / (info.MaxLevel - 1);
-			Y_intercept100 = 100*info.Brightest - (info.MaxLevel * Slope100);
+			YIntercept100 = 100 * info.Brightest - (info.MaxLevel * Slope100);
 		}
 	
 		public void Tick(Actor self)
@@ -100,22 +97,23 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 			foreach (var kv in tiles)
 			{
 				var ra = kv.Value;
-				ra.ticks--; // count half-life.
-				if (ra.ticks > 0)
+				ra.Ticks--; // count half-life.
+				if (ra.Ticks > 0)
 					continue;
 
-				// on each half life...
-				//ra.ticks = info.Halflife; // reset ticks
-				//ra.level /= 2; // simple is best haha...
-				// Looks unnatural and induces "flickers"
+				/* on each half life...
+				 * ra.ticks = info.Halflife; // reset ticks
+				 * ra.level /= 2; // simple is best haha...
+				 * Looks unnatural and induces "flickers"
+				 */
 
-				ra.ticks = Info.UpdateDelay; // reset ticks
-				int dlevel = k1000 * ra.level / 1000;
+				ra.Ticks = Info.UpdateDelay; // reset ticks
+				int dlevel = k1000 * ra.Level / 1000;
 				if (dlevel < 1)
 					dlevel = 1; // must decrease by at least 1 so that the contamination disappears eventually.
-				ra.level -= dlevel;
+				ra.Level -= dlevel;
 
-				if (ra.level <= 0)
+				if (ra.Level <= 0)
 				{
 					// Not radioactive anymore. Remove from this.tiles.
 					remove.Add(kv.Key);
@@ -140,18 +138,19 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 				if (self.World.FogObscures(c))
 					continue;
 
-				if (rendered_tiles.ContainsKey(c))
+				if (renderedTiles.ContainsKey(c))
 				{
-					world.Remove(rendered_tiles[c]);
-					rendered_tiles.Remove(c);
+					world.Remove(renderedTiles[c]);
+					renderedTiles.Remove(c);
 				}
 
 				// synchronize observations with true value.
 				if (tiles.ContainsKey(c))
 				{
-					rendered_tiles[c] = new Radioactivity(tiles[c]);
-					world.Add(rendered_tiles[c]);
+					renderedTiles[c] = new Radioactivity(tiles[c]);
+					world.Add(renderedTiles[c]);
 				}
+
 				remove.Add(c);
 			}
 
@@ -166,7 +165,7 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 			if (!tiles.ContainsKey(cell))
 				return 0;
 
-			var level = tiles[cell].level;
+			var level = tiles[cell].Level;
 			if (level > Info.MaxLevel)
 				return Info.MaxLevel;
 			else
@@ -180,19 +179,18 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 				tiles[cell] = new Radioactivity(this, world.Map.CenterOfCell(cell));
 
 			var ra = tiles[cell];
-			var new_level = level + ra.level;
+			var new_level = level + ra.Level;
 
 			if (new_level > max_level)
 				new_level = max_level;
 
-			if (ra.level > new_level)
+			if (ra.Level > new_level)
 				return; // the given weapon can't make the cell more radio active. (saturate)
 
 			// apply new level.
-			ra.level = new_level;
+			ra.Level = new_level;
 
-			ra.ticks = Info.UpdateDelay;
-			//ra.ticks = info.Halflife;
+			ra.Ticks = Info.UpdateDelay;
 
 			dirty.Add(cell);
 		}
@@ -200,10 +198,9 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 		public void Destroy(CPos cell)
 		{
 			// Clear cell
-			//Content[cell] = EmptyCell;
-			//world.Map.CustomTerrain[cell] = byte.MaxValue;
-
-			//dirty[cell] = 100;
+			// Content[cell] = EmptyCell;
+			// world.Map.CustomTerrain[cell] = byte.MaxValue;
+			// dirty[cell] = 100;
 		}
 		
 		bool disposed = false;

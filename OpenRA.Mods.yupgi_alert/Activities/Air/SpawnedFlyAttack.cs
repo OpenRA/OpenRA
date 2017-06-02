@@ -15,12 +15,12 @@
 
 using System.Linq;
 using OpenRA.Activities;
-using OpenRA.Mods.Common.Traits;
-using OpenRA.Mods.yupgi_alert.Traits;
 using OpenRA.Mods.Common.Activities;
+using OpenRA.Mods.Common.Traits;
+using OpenRA.Mods.Yupgi_alert.Traits;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.yupgi_alert.Activities
+namespace OpenRA.Mods.Yupgi_alert.Activities
 {
 	public class SpawnedFlyAttack : Activity
 	{
@@ -48,11 +48,8 @@ namespace OpenRA.Mods.yupgi_alert.Activities
 			// TODO: This should check whether there is ammo left that is actually suitable for the target
 			if (ammoPools.All(x => !x.Info.SelfReloads && !x.HasAmmo()))
 			{
-				//var master = self.Trait<Spawned>().Master;
-				//var tgt = Target.FromActor(master);
-				//// We let the spawned to move closer then Enter.
-				//// If we just let it enter, it "slides on the ground", targetable by ground units.
-				//return ActivityUtils.SequenceActivities(new Fly(self, tgt, new WDist(1024*3), new WDist(1024*5)), new EnterSpawner(self, master, EnterBehaviour.Exit));
+				// We let the spawned to move closer then Enter.
+				// If we just let it enter, it "slides on the ground", targetable by ground units.
 				self.Trait<Spawned>().EnterSpawner(self);
 			}
 

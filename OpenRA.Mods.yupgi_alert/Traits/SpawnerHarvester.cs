@@ -13,18 +13,17 @@
 #endregion
 
 using System;
-using System.Drawing;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
-using OpenRA.Mods.Common.Activities;
-using OpenRA.Mods.yupgi_alert.Activities;
-using OpenRA.Mods.Common.Orders;
-using OpenRA.Mods.Common.Traits;
 using OpenRA.Mods.Common;
+using OpenRA.Mods.Common.Activities;
+using OpenRA.Mods.Common.Traits;
+using OpenRA.Mods.Yupgi_alert.Activities;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.yupgi_alert.Traits
+namespace OpenRA.Mods.Yupgi_alert.Traits
 {
 	[Desc("This actor is a harvester that uses its spawns to indirectly harvest resources. i.e., Slave Miner.")]
 	public class SpawnerHarvesterInfo : ITraitInfo, Requires<IOccupySpaceInfo>,
@@ -39,9 +38,9 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 		[Desc("Spawn regen delay, in ticks")]
 		public readonly int RespawnTicks = 15;
 
-		[Desc("Air units and ground units have different mobile trait so...")]
-		// This can be computed but that requires a few cycles of cpu time XD
+		// This can be computed but that this should be faster.
 		// Interesting... flying slaved harvester units...
+		[Desc("Air units and ground units have different mobile trait so...")]
 		public readonly bool SpawnIsGroundUnit = true;
 
 		[VoiceReference] public readonly string HarvestVoice = "Action";
@@ -146,9 +145,8 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 
 		public void SpawnedRemoved(Actor self, Actor slave)
 		{
+			// master.Killed() invokes slave.kill() and slave.kill() goes back to master. Break loop.
 			if (self.IsDead || self.Disposed || sold)
-				// Well, complicated. Killed() invokes slave.kill(), whichi invokes this logic.
-				// That's a bad loop. Don't let it be a loop.
 				return;
 
 			if (launched.Contains(slave))
@@ -158,13 +156,13 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 		// Production.cs use random to select an exit.
 		// Here, we choose one by round robin.
 		// Start from -1 so that +1 logic below will make it 0.
-		int exit_round_robin = -1;
+		int exitRoundRobin = -1;
 		ExitInfo ChooseExit(Actor self)
 		{
 			if (exits.Length == 0)
 				return null;
-			exit_round_robin = (exit_round_robin + 1) % exits.Length;
-			return exits[exit_round_robin];
+			exitRoundRobin = (exitRoundRobin + 1) % exits.Length;
+			return exits[exitRoundRobin];
 		}
 
 		// target: target to mine.
@@ -308,7 +306,7 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 			return null;
 		}
 
-		CPos resolveHarvestLocation(Actor self, Order order)
+		CPos ResolveHarvestLocation(Actor self, Order order)
 		{
 			if (order.TargetLocation == CPos.Zero)
 				return self.Location;
@@ -326,17 +324,18 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 			return mobile.NearestCell(loc, p => mobile.CanEnterCell(p), 1, 6);
 		}
 
-		void handleSpawnerHarvest(Actor self, Order order, MiningState state)
+		void HandleSpawnerHarvest(Actor self, Order order, MiningState state)
 		{
 			allowKicks = true;
 
 			MiningState = state;
+
+			// state == Deploying implies order string of SpawnerHarvestDeploying
+			// and must not cancel deploy activity!
 			if (state != MiningState.Deploying)
-				// state == Deploying implies order string of SpawnerHarvestDeploying
-				// and must not cancel deploy activity!
 				self.CancelActivity();
 
-			CPos loc = resolveHarvestLocation(self, order);
+			CPos loc = ResolveHarvestLocation(self, order);
 			LastOrderLocation = loc;
 			var findResources = new SpawnerHarvesterHarvest(self);
 			self.QueueActivity(findResources);
@@ -353,22 +352,13 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 		public void ResolveOrder(Actor self, Order order)
 		{
 			if (order.OrderString == "SpawnerHarvest")
-				handleSpawnerHarvest(self, order, MiningState.Scan);
+				HandleSpawnerHarvest(self, order, MiningState.Scan);
 			else if (order.OrderString == "SpawnerHarvestDeploying")
-				handleSpawnerHarvest(self, order, MiningState.Deploying);
+				HandleSpawnerHarvest(self, order, MiningState.Deploying);
 			else if (order.OrderString == "Stop" || order.OrderString == "Move")
 			{
 				allowKicks = false;
 				MiningState = MiningState.Scan;
-			}
-			else if (order.OrderString == "GrantConditionOnDeploy")
-			{
-				if (!order.SuppressVisualFeedback)
-					// Implies manual order from UI.
-					allowKicks = false;
-				// Manual DEPLOY order should enable kick, but deploy state is unstable as of now,
-				// as we are only attempting to deploy and there is no guaurantee that it is successful or not.
-				// That is handled in OnBecomingIdle.
 			}
 		}
 
@@ -411,6 +401,8 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 
 		public void OnUndeployed(Actor self)
 		{
+			allowKicks = false;
+
 			// Interrupt harvesters and order them to follow me.
 			foreach (var s in launched)
 			{

@@ -13,21 +13,20 @@
  */
 #endregion
 
-using System.Drawing;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
-using OpenRA.Traits;
-using OpenRA.Mods.Common.Traits;
 using OpenRA.Mods.Common.Activities;
+using OpenRA.Mods.Common.Traits;
 using OpenRA.Mods.Common.Traits.Render;
 using OpenRA.Primitives;
+using OpenRA.Traits;
 
-namespace OpenRA.Mods.yupgi_alert.Traits
+namespace OpenRA.Mods.Yupgi_alert.Traits
 {
 	[Desc("Transforms cargo inside when some predefined combination is met.")]
 	public class CargoTransformerInfo : ITraitInfo, Requires<CargoInfo>
 	{
-		//[FieldLoader.LoadUsing("LoadSpeeds", true)]
 		[Desc("Unit type to emit when the combination is met")]
 		public readonly Dictionary<string, string[]> Combinations;
 
@@ -43,12 +42,12 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 	public class CargoTransformer : INotifyPassengerEntered, INotifyPassengerExited
 	{
 		public readonly CargoTransformerInfo Info;
-		Cargo Cargo;
+		Cargo cargo;
 
 		public CargoTransformer(Actor self, CargoTransformerInfo info)
 		{
 			Info = info;
-			Cargo = self.Trait<Cargo>(); // I required CargoInfo so this will always work.
+			cargo = self.Trait<Cargo>(); // I required CargoInfo so this will always work.
 		}
 
 		void SpawnUnit(Actor self, string unit)
@@ -61,20 +60,17 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 			// For dramatic cargo, lets have those ejected and killed!
 			// Actually not a good idea. I get unit lost sound. :(
 			// Just dispose silently.
-			while (!Cargo.IsEmpty(self))
+			while (!cargo.IsEmpty(self))
 			{
-				var c = Cargo.Unload(self);
+				var c = cargo.Unload(self);
 				c.Dispose();
 			}
 
-			// Now lets "produce" new unit given by name.
-			//var pd = self.Trait<Production>();
-			//var ai = self.World.Map.Rules.Actors[unit];
-			//var faction = self.Owner.Faction.InternalName;
-			//pd.Produce(self, ai, faction);
-			// Production wasn't a good idea.
+			/*
+			// I attempted "production" but it wasn't a good idea.
 			// When the exit is blocked, the unit disappears.
 			// Blocking is better handled by unload.
+			*/
 
 			var wsb = self.TraitOrDefault<WithSpriteBody>();
 			if (wsb != null && wsb.DefaultAnimation.HasSequence(Info.ActiveSequence))
@@ -85,7 +81,7 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 				new OwnerInit(self.Owner),
 			};
 			var newUnit = self.World.CreateActor(false, unit.ToLowerInvariant(), td);
-			Cargo.Load(self, newUnit);
+			cargo.Load(self, newUnit);
 			self.QueueActivity(new Wait(15)); // slight pause
 			self.QueueActivity(new UnloadCargo(self, true)); // queue unload so that the unit will come out automatically.
 		}
@@ -117,10 +113,10 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 		void INotifyPassengerEntered.OnPassengerEntered(Actor self, Actor passenger)
 		{
 			// get rules entry name for each passenger.
-			var names = Cargo.Passengers.Select(x => x.Info.Name).ToArray();
+			var names = cargo.Passengers.Select(x => x.Info.Name).ToArray();
 
 			// Lets examine the contents.
-			foreach(var kv in Info.Combinations)
+			foreach (var kv in Info.Combinations)
 			{
 				if (Enumerable.SequenceEqual(names, kv.Value))
 				{

@@ -12,12 +12,11 @@
 #endregion
 
 using System.Collections.Generic;
-//using System.Linq;
-using OpenRA.Traits;
 using OpenRA.Mods.Common.Orders;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Traits;
 
-namespace OpenRA.Mods.yupgi_alert.Traits
+namespace OpenRA.Mods.Yupgi_alert.Traits
 {
 	static class NydusPrimaryExitExts
 	{
@@ -75,8 +74,8 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 
 		public void ResolveOrder(Actor self, Order order)
 		{
+			// You can NEVER unselect a primary nydus building, unlike primary productions buildings in RA1.
 			if (order.OrderString == "PrimaryExit")
-				// You can NEVER unselect a primary building, unlike primary productions buildings in RA1.
 				SetPrimary(self);
 		}
 
@@ -92,8 +91,8 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 			// revoke primary of previous primary actor.
 			var counter = self.Owner.PlayerActor.Trait<NydusCounter>();
 			var pri = counter.PrimaryActor;
+
 			if (pri != null)
-				// Well, initially, there is no tunnel at all. Need to check.
 				pri.Trait<NydusPrimaryExit>().RevokePrimary(pri);
 
 			IsPrimary = true;

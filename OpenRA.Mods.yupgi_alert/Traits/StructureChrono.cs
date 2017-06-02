@@ -12,17 +12,17 @@
 #endregion
 
 using System.Collections.Generic;
-using System.Linq;
 using System.Drawing;
+using System.Linq;
 using OpenRA.Graphics;
+using OpenRA.Mods.Common;
 using OpenRA.Mods.Common.Graphics;
 using OpenRA.Mods.Common.Orders;
-using OpenRA.Traits;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
-using OpenRA.Mods.Common;
+using OpenRA.Traits;
 
-namespace OpenRA.Mods.yupgi_alert.Traits
+namespace OpenRA.Mods.Yupgi_alert.Traits
 {
 	class StructureChronoInfo : ITraitInfo
 	{
@@ -43,12 +43,6 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 
 		[Desc("Cursor to display when unable to deploy the actor.")]
 		public readonly string DeployBlockedCursor = "deploy-blocked";
-
-		// This module displays structure preview.
-		//[Desc("Cursor to display when targeting a teleport location.")]
-		//public readonly string TargetCursor = "chrono-target";
-		//[Desc("Cursor to display when the targeted location is blocked.")]
-		//public readonly string TargetBlockedCursor = "move-blocked";
 
 		[VoiceReference]
 		public readonly string Voice = "Action";
@@ -77,7 +71,6 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 		{
 			get
 			{
-				//yield return new StructureChronoOrderTargeter(Info.TargetCursor);
 				yield return new DeployOrderTargeter("StructureChronoDeploy", 5,
 					() => CanTeleport ? Info.DeployCursor : Info.DeployBlockedCursor);
 			}
@@ -102,7 +95,6 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 			if (order.OrderString == "StructureChronoTeleport" && CanTeleport)
 			{
 				self.CancelActivity();
-				//self.QueueActivity(new Teleport(self, order.TargetLocation, maxDistance, true, false, Info.ChronoshiftSound));
 
 				self.World.AddFrameEndTask(w =>
 				{
@@ -122,7 +114,6 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 
 					// TODO: I'm assuming that structures don't get veterrancy.
 					// If necessary, add veterrancy to the new actor.
-
 					var building = w.CreateActor(self.Info.Name, init);
 
 					// Chronoshift is "used".
@@ -201,15 +192,12 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 	{
 		readonly string building; // name in rules definition
 		readonly BuildingInfo buildingInfo;
-		//readonly PlaceBuildingInfo placeBuildingInfo;
 		readonly Sprite buildOk;
 		readonly Sprite buildBlocked;
-		IActorPreview[] preview;
-		//readonly string faction;
-
 		readonly Actor self;
 		readonly StructureChronoInfo info;
 
+		IActorPreview[] preview;
 		bool initialized;
 
 		public StructureChronoOrderGenerator(Actor self, StructureChronoInfo info)
@@ -219,10 +207,6 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 			this.info = info;
 
 			buildingInfo = self.Info.TraitInfo<BuildingInfo>();
-			//BuildableInfo buildableInfo = self.Info.TraitInfo<BuildableInfo>();
-			//faction = buildableInfo.ForceFaction
-			//	?? (mostLikelyProducer.Trait != null ? mostLikelyProducer.Trait.Faction : queue.Actor.Owner.Faction.InternalName);
-
 			var map = world.Map;
 			var tileset = world.Map.Tileset.ToLowerInvariant();
 			buildOk = map.Rules.Sequences.GetSequence("overlay", "build-valid-{0}".F(tileset)).GetSprite(0);
@@ -266,7 +250,7 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 			{
 				var topLeft = cell - FootprintUtils.AdjustForBuildingSize(buildingInfo);
 				var selfPos = self.Trait<IOccupySpace>().TopLeft;
-				var isCloseEnough = ((topLeft - selfPos).Length) <= info.MaxDistance;
+				var isCloseEnough = (topLeft - selfPos).Length <= info.MaxDistance;
 
 				if (!world.CanPlaceBuilding(building, buildingInfo, topLeft, null) || !isCloseEnough)
 				{
@@ -280,10 +264,6 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 
 		public void Tick(World world)
 		{
-			// build queue non existent
-			//if (queue.CurrentItem() == null || queue.CurrentItem().Item != building)
-			//	world.CancelInputMode();
-
 			if (preview == null)
 				return;
 
@@ -319,7 +299,6 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 			{
 				var td = new TypeDictionary()
 				{
-					//new OpenRA.Mods.Common.FactionInit(faction),
 					new OpenRA.Mods.Common.FactionInit(""),
 					new OwnerInit(self.Owner),
 					new HideBibPreviewInit()
@@ -342,7 +321,7 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 
 			var res = world.WorldActor.Trait<ResourceLayer>();
 			var selfPos = self.Trait<IOccupySpace>().TopLeft;
-			var isCloseEnough = ((topLeft - selfPos).Length) <= info.MaxDistance;
+			var isCloseEnough = (topLeft - selfPos).Length <= info.MaxDistance;
 			foreach (var t in FootprintUtils.Tiles(rules, building, buildingInfo, topLeft))
 				cells.Add(t, isCloseEnough && world.IsCellBuildable(t, buildingInfo) && res.GetResource(t) == null);
 

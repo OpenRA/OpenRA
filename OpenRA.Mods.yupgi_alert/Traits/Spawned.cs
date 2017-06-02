@@ -12,20 +12,18 @@
  */
 #endregion
 
-using System;
-using System.Drawing;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using OpenRA.Activities;
+using OpenRA.Mods.Common;
 using OpenRA.Mods.Common.Activities;
-using OpenRA.Mods.yupgi_alert.Activities;
 using OpenRA.Mods.Common.Orders;
 using OpenRA.Mods.Common.Traits;
-using OpenRA.Mods.Common;
-using OpenRA.Primitives;
+using OpenRA.Mods.Yupgi_alert.Activities;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.yupgi_alert.Traits
+namespace OpenRA.Mods.Yupgi_alert.Traits
 {
 	[Desc("Can be slaved to a spawner.")]
 	class SpawnedInfo : ITraitInfo
@@ -33,7 +31,7 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 		public readonly string EnterCursor = "enter";
 
 		[Desc("Move this close to the spawner, before entering it.")]
-		public readonly WDist LandingDistance = new WDist(5*1024);
+		public readonly WDist LandingDistance = new WDist(5 * 1024);
 
 		public object Create(ActorInitializer init) { return new Spawned(init, this); }
 	}
@@ -58,8 +56,8 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 		void INotifyKilled.Killed(Actor self, AttackInfo e)
 		{
 			// If killed, I tell my master that I'm gone.
+			// Can happen, when built from build palette (w00t)
 			if (Master == null || Master.Disposed || Master.IsDead)
-				// Can happen, when built from build palette (w00t)
 				return;
 			var spawner = Master.Trait<Spawner>();
 			spawner.SlaveKilled(Master, self);
@@ -67,8 +65,8 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 
 		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
 		{
-			// don't mind too much about this part.
-			// Everything is (or, should be.) automatically ordered properly by the master.
+			//// don't mind too much about this part.
+			//// Everything is (or, should be.) automatically ordered properly by the master.
 
 			if (order.OrderID != "SpawnedReturn")
 				return null;
@@ -127,7 +125,7 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 			return ammoPools.All(x => !x.Info.SelfReloads && !x.HasAmmo());
 		}
 
-		Actor last_target = null;
+		Actor lastTarget = null;
 		public virtual void AttackTarget(Actor self, Target target)
 		{
 			// If missile, no need for complex stuff.
@@ -139,8 +137,8 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 				return;
 			}
 
-			if (last_target != null && last_target == target.Actor)
-				// Don't have to change target or alter current activity.
+			// Don't have to change target or alter current activity.
+			if (lastTarget != null && lastTarget == target.Actor)
 				return;
 
 			// The following checks come after cancel activity because
@@ -179,9 +177,10 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 					else if (target.Actor.Owner.Stances[self.Owner] == Stance.Ally)
 						atb.AttackTarget(target, true, true, true); // force fire on ally.
 					else
-						// Well, target deprives me of force fire information.
-						// This is a glitch if force fire weapon and normal fire are different, as in
-						// RA mod spies but won't matter too much for carriers.
+						/* Target deprives me of force fire information.
+						 * This is a glitch if force fire weapon and normal fire are different, as in
+						 * RA mod spies but won't matter too much for carriers.
+						 */
 						atb.AttackTarget(target, true, true, target.RequiresForceFire);
 				}
 			}	
@@ -209,8 +208,8 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 				if (!target.Info.HasTraitInfo<SpawnerInfo>())
 					return false;
 
+				// can only enter player owned one.
 				if (self.Owner != target.Owner)
-					// can only enter player owned one.
 					return false;
 
 				var spawned = self.Trait<Spawned>();
