@@ -83,7 +83,7 @@ namespace OpenRA.Mods.Common.Graphics
 			}
 		}
 
-		void DrawIsometricBar(WorldRenderer wr, float value, Color barColor, int barNum = 0, float maxValue = -1, int displayValue = -1)
+		void DrawIsometricBar(WorldRenderer wr, float value, Color barColor, int barNum = 0, float displayValue = -1f)
 		{
 			IEnumerable<CPos> cells;
 			var color = Color.FromArgb(100, 30, 30, 30);
@@ -136,9 +136,29 @@ namespace OpenRA.Mods.Common.Graphics
 			wcr.DrawLine(lp + top + (barDim.X - 1) * isoOff, lp + top + (barDim.X - 1) * isoOff + (barDim.Y - 1) * isoOff2, 1f, color);
 			wcr.DrawLine(lp + top, lp + top + (barDim.X - 1) * isoOff, 1f, color);
 			wcr.DrawLine(lp + top + (barDim.Y - 1) * isoOff2, lp + top + (barDim.X - 1) * isoOff + (barDim.Y - 1) * isoOff2, 1f, color);
+
+			if (displayValue != -1 && displayValue != value)
+			{
+				var deltaColor = Color.OrangeRed;
+				var deltaShadow = Color.FromArgb(
+					deltaColor.A,
+					deltaColor.R / 2,
+					deltaColor.G / 2,
+					deltaColor.B / 2);
+				var zz = float3.Lerp(tp, lp, displayValue);
+
+				for (int i = 1; i < barDim.X; ++i)
+				{
+					wcr.DrawLine(z + top + i * isoOff, zz + top + i * isoOff, 1.0f, deltaColor);
+					wcr.DrawLine(zz + top + i * isoOff, zz + top + i * isoOff + (barDim.Y - 1) * isoOff2, 1.0f, deltaShadow);
+				}
+
+				for (int i = 1; i < barDim.Y; ++i)
+					wcr.DrawLine(z + top + (barDim.X - 1) * isoOff + i * isoOff2, zz + top + (barDim.X - 1) * isoOff + i * isoOff2, 1.0f, deltaShadow);
+			}
 		}
 
-		void DrawRectangularBar(WorldRenderer wr, float3 start, float3 end, float value, Color barColor, float maxValue = -1, int displayValue = -1)
+		void DrawRectangularBar(WorldRenderer wr, float3 start, float3 end, float value, Color barColor, float displayValue = -1f)
 		{
 			var iz = 1 / wr.Viewport.Zoom;
 			var c = Color.FromArgb(128, 30, 30, 30);
@@ -168,7 +188,7 @@ namespace OpenRA.Mods.Common.Graphics
 					deltaColor.R / 2,
 					deltaColor.G / 2,
 					deltaColor.B / 2);
-				var zz = float3.Lerp(start, end, (float)displayValue / maxValue);
+				var zz = float3.Lerp(start, end, displayValue);
 
 				wcr.DrawLine(z + p, zz + p, iz, deltaColor2);
 				wcr.DrawLine(z + q, zz + q, iz, deltaColor);
@@ -206,9 +226,9 @@ namespace OpenRA.Mods.Common.Graphics
 					return;
 
 				if (isometricHeight > 0)
-					DrawIsometricBar(wr, (float)health.HP / health.MaxHP, GetHealthColor(health), 0, health.MaxHP, health.DisplayHP);
+					DrawIsometricBar(wr, (float)health.HP / health.MaxHP, GetHealthColor(health), 0, (float)health.DisplayHP / health.MaxHP);
 				else
-					DrawRectangularBar(wr, start, end, (float)health.HP / health.MaxHP, GetHealthColor(health), health.MaxHP, health.DisplayHP);
+					DrawRectangularBar(wr, start, end, (float)health.HP / health.MaxHP, GetHealthColor(health), (float)health.DisplayHP / health.MaxHP);
 			}
 
 			if (DisplayExtra)

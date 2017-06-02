@@ -108,9 +108,9 @@ namespace OpenRA.Mods.Common.Graphics
 
 			// Top lines
 			wcr.DrawLine(new[] { tp + a4 + top, tp + top, tp + a6 + top }, iz, color, true);
-			wcr.DrawLine(new[] { tp + top, tp + a8 + top }, 1 / iz, color, true);
+			wcr.DrawLine(new[] { tp + top, tp + a8 + top }, iz, color, true);
 			wcr.DrawLine(new[] { lp + a2 + top, lp + top, lp + a6 + top }, iz, color, true);
-			wcr.DrawLine(new[] { rp + a10 + top, rp + top }, 1 / iz, color, true);
+			wcr.DrawLine(new[] { rp + a10 + top, rp + top }, iz, color, true);
 			wcr.DrawLine(new[] { rp + a8 + top, rp + top, rp + a6 + top }, iz, color, true);
 
 			// Bottom lines
