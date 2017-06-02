@@ -42,6 +42,7 @@ CyborgExplode:
 	Warhead@1Eff: CreateEffect
 		Explosions: medium_bang
 		ImpactSounds: expnew10.aud
+		ExplosionPalette: effect-ignore-lighting-alpha75
 
 TiberiumExplosion:
 	Inherits: ^DamagingExplosion
@@ -54,6 +55,7 @@ TiberiumExplosion:
 		Size: 1,1
 	Warhead@2Eff: CreateEffect
 		Explosions: large_explosion
+		ExplosionPalette: effect-ignore-lighting-alpha75
 	-Warhead@4Smu: LeaveSmudge
 
 Demolish:
