@@ -1,0 +1,3 @@
+[submodule "mods/yupgi_alert0"]
+	path = mods/yupgi_alert
+	url = https://github.com/forcecore/yupgi_alert0.git
