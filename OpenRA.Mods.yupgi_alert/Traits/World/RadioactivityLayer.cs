@@ -69,7 +69,9 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 
 		readonly HashSet<CPos> dirty = new HashSet<CPos>(); // dirty, as in cache dirty bits.
 
-		readonly int k1000; // half life constant, to be computed at init.
+		// There's LERP function but the problem is, it is better to reuse these constants than computing
+		// related constants (in LERP) every time.
+		public readonly int K1000; // half life constant, to be computed at init.
 		public readonly int Slope100;
 		public readonly int YIntercept100;
 
@@ -77,7 +79,7 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 		{
 			world = self.World;
 			Info = info;
-			k1000 = info.UpdateDelay * 693 / info.Halflife; // (693 is 1000*ln(2) so we must divide by 1000 later on.)
+			K1000 = info.UpdateDelay * 693 / info.Halflife; // (693 is 1000*ln(2) so we must divide by 1000 later on.)
 
 			/*
 			 * half life decay follows differential equation d/dt m(t) = -k m(t).
@@ -96,28 +98,12 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 			// Apply half life to each cell.
 			foreach (var kv in tiles)
 			{
-				var ra = kv.Value;
-				ra.Ticks--; // count half-life.
-				if (ra.Ticks > 0)
+				if (!kv.Value.Decay(Info.UpdateDelay))
 					continue;
-
-				/* on each half life...
-				 * ra.ticks = info.Halflife; // reset ticks
-				 * ra.level /= 2; // simple is best haha...
-				 * Looks unnatural and induces "flickers"
-				 */
-
-				ra.Ticks = Info.UpdateDelay; // reset ticks
-				int dlevel = k1000 * ra.Level / 1000;
-				if (dlevel < 1)
-					dlevel = 1; // must decrease by at least 1 so that the contamination disappears eventually.
-				ra.Level -= dlevel;
-
-				if (ra.Level <= 0)
-				{
-					// Not radioactive anymore. Remove from this.tiles.
+	
+				// Not radioactive anymore. Remove from this.tiles.
+				if (kv.Value.Level <= 0)
 					remove.Add(kv.Key);
-				}
 
 				dirty.Add(kv.Key);
 			}
@@ -158,13 +144,13 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 				dirty.Remove(r);
 		}
 
-		// Gets level, for damage calculation!!
-		// That is, the level is constrained by MaxLevel!!!!
+		// Gets level, for damage calculation.
 		public int GetLevel(CPos cell)
 		{
 			if (!tiles.ContainsKey(cell))
 				return 0;
 
+			// The damage is constrained by MaxLevel!!!!
 			var level = tiles[cell].Level;
 			if (level > Info.MaxLevel)
 				return Info.MaxLevel;
@@ -178,20 +164,7 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 			if (!tiles.ContainsKey(cell))
 				tiles[cell] = new Radioactivity(this, world.Map.CenterOfCell(cell));
 
-			var ra = tiles[cell];
-			var new_level = level + ra.Level;
-
-			if (new_level > max_level)
-				new_level = max_level;
-
-			if (ra.Level > new_level)
-				return; // the given weapon can't make the cell more radio active. (saturate)
-
-			// apply new level.
-			ra.Level = new_level;
-
-			ra.Ticks = Info.UpdateDelay;
-
+			tiles[cell].IncreaseLevel(Info.UpdateDelay, level, max_level);	
 			dirty.Add(cell);
 		}
 

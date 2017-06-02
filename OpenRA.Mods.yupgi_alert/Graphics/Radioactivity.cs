@@ -93,6 +93,43 @@ namespace OpenRA.Mods.Yupgi_alert.Graphics
 		{
 		}
 
+		// Returns true when "dirty" (RA value changed)
+		public bool Decay(int updateDelay)
+		{
+			Ticks--; // count half-life.
+			if (Ticks > 0)
+				return false;
+
+			/* on each half life...
+			 * ra.ticks = info.Halflife; // reset ticks
+			 * ra.level /= 2; // simple is best haha...
+			 * Looks unnatural and induces "flickers"
+			 */
+
+			Ticks = updateDelay; // reset ticks
+			int dlevel = layer.K1000 * Level / 1000;
+			if (dlevel < 1)
+				dlevel = 1; // must decrease by at least 1 so that the contamination disappears eventually.
+			Level -= dlevel;
+
+			return true;
+		}
+
+		public void IncreaseLevel(int updateDelay, int level, int max_level)
+		{
+			Ticks = updateDelay;
+
+			var new_level = this.Level + level;
+
+			if (new_level > max_level)
+				new_level = max_level;
+
+			if (Level > new_level)
+				return; // the given weapon can't make the cell more radio active. (saturate)
+
+			Level = new_level;
+		}
+
 		IEnumerable<IRenderable> IEffect.Render(WorldRenderer r)
 		{
 			yield return this;
