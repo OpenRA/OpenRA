@@ -1,13 +1,13 @@
 #region Copyright & License Information
 /*
- * Modified by Boolbada of OP Mod from OpenRA laser projectiles.
- * Original laser projectile source is by:
- * Copyright 2007-2017 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made
- * available to you under the terms of the GNU General Public License
- * as published by the Free Software Foundation, either version 3 of
- * the License, or (at your option) any later version. For more
- * information, see COPYING.
+ * Made by Boolbada of OP Mod then rectified by Mods.AS devs then modified again by Boolbada
+ * Long story haha
+ * 
+ * Copyright 2015- OpenRA.Mods.AS Developers (see AUTHORS)
+ * This file is a part of a third-party plugin for OpenRA, which is
+ * free software. It is made available to you under the terms of the
+ * GNU General Public License as published by the Free Software
+ * Foundation. For more information, see COPYING.
  */
 #endregion
 
@@ -18,7 +18,7 @@ using OpenRA.Graphics;
 using OpenRA.Mods.Yupgi_alert.Graphics;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.Yupgi_alert.Projectiles
+namespace OpenRA.Mods.AS.Projectiles
 {
 	[Desc("Not a sprite, but an engine effect.")]
 	public class RadBeamInfo : IProjectileInfo
@@ -30,13 +30,18 @@ namespace OpenRA.Mods.Yupgi_alert.Projectiles
 		public readonly WDist Amplitude = new WDist(128);
 
 		[Desc("The wavelength of the beam. (in WDist)")]
-		public readonly WDist WaveLength = new WDist(64);
+		public readonly WDist WaveLength = new WDist(512);
+
+		[Desc("Draw each cycle with this many quantization steps")]
+		public readonly int QuantizationCount = 8;
 
 		[Desc("Equivalent to sequence ZOffset. Controls Z sorting.")]
 		public readonly int ZOffset = 0;
 
-		[Desc("Duration of the beam. Don't make this too long or it will look very odd.")]
+		[Desc("Duration of the beam.")]
 		public readonly int BeamDuration = 15;
+
+		public readonly bool ScaleAmplitudeWithDuration = true;
 
 		public readonly bool UsePlayerColor = false;
 
@@ -106,16 +111,16 @@ namespace OpenRA.Mods.Yupgi_alert.Projectiles
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)
 		{
-			// Both ends not visible to player. Don't draw.
 			if (wr.World.FogObscures(target) &&
 				wr.World.FogObscures(args.Source))
 				yield break;
 
 			if (ticks < info.BeamDuration)
 			{
-				// gets curvier over time, as in RA2.
-				WDist amp = info.Amplitude * ticks / info.BeamDuration;
-				yield return new RadBeamRenderable(args.Source, info.ZOffset, target - args.Source, info.Thickness, info.Color, amp, info.WaveLength);
+				WDist amp = info.ScaleAmplitudeWithDuration
+					? info.Amplitude * ticks / info.BeamDuration
+					: info.Amplitude;
+				yield return new RadBeamRenderable(args.Source, info.ZOffset, target - args.Source, info.Thickness, info.Color, amp, info.WaveLength, info.QuantizationCount);
 			}
 
 			if (hitanim != null)
