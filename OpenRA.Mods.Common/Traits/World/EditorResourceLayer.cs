@@ -96,10 +96,13 @@ namespace OpenRA.Mods.Common.Traits
 			ResourceType type;
 			if (Resources.TryGetValue(tile.Type, out type))
 			{
+				var rt = Map.Tiles[cell];
+				var tileInfo = Map.Rules.TileSet.GetTileInfo(rt);
+				var rampType = tileInfo != null ? tileInfo.RampType : (byte)0;
 				Tiles[uv] = new CellContents
 				{
 					Type = type,
-					Variant = ChooseRandomVariant(type),
+					Variant = ChooseResourceVariant(type, (TerrainTileInfo.RampSides)rampType),
 				};
 
 				Map.CustomTerrain[uv] = Tileset.GetTerrainIndex(type.Info.TerrainType);
@@ -117,8 +120,25 @@ namespace OpenRA.Mods.Common.Traits
 				Dirty.Add(cell + d);
 		}
 
-		protected virtual string ChooseRandomVariant(ResourceType t)
+		protected virtual string ChooseResourceVariant(ResourceType t, TerrainTileInfo.RampSides rampType = TerrainTileInfo.RampSides.None)
 		{
+			if (t.Info.RampSequences != null && rampType > 0 && rampType <= TerrainTileInfo.RampSides.ResourceRamp)
+			{
+				switch (rampType)
+				{
+					case TerrainTileInfo.RampSides.NW:
+						return t.RampVariants[ResourceTypeInfo.RampType.NW].Keys.Random(Game.CosmeticRandom);
+					case TerrainTileInfo.RampSides.NE:
+						return t.RampVariants[ResourceTypeInfo.RampType.NE].Keys.Random(Game.CosmeticRandom);
+					case TerrainTileInfo.RampSides.SE:
+						return t.RampVariants[ResourceTypeInfo.RampType.SE].Keys.Random(Game.CosmeticRandom);
+					case TerrainTileInfo.RampSides.SW:
+						return t.RampVariants[ResourceTypeInfo.RampType.SW].Keys.Random(Game.CosmeticRandom);
+					default:
+						throw new InvalidDataException("Incorrect ramp variant");
+				}
+			}
+
 			return t.Variants.Keys.Random(Game.CosmeticRandom);
 		}
 
@@ -160,7 +180,20 @@ namespace OpenRA.Mods.Common.Traits
 
 			NetWorth += t.Density * type.Info.ValuePerUnit;
 
-			var sprites = type.Variants[t.Variant];
+			Sprite[] sprites = null;
+			if (t.Type.Variants.ContainsKey(t.Variant))
+				sprites = t.Type.Variants[t.Variant];
+			else
+				foreach (var v in t.Type.RampVariants)
+					if (v.Value.ContainsKey(t.Variant))
+					{
+						sprites = v.Value[t.Variant];
+						break;
+					}
+
+			if (sprites == null)
+				throw new NullReferenceException("Resource sprite variant isn't found: " + t.Variant);
+
 			var frame = int2.Lerp(0, sprites.Length - 1, t.Density, type.Info.MaxDensity);
 			t.Sprite = sprites[frame];
 

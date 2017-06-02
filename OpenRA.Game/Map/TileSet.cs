@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
@@ -20,6 +21,16 @@ namespace OpenRA
 {
 	public class TerrainTileInfo
 	{
+		public enum RampSides : byte
+		{
+			None = 0x0,
+			NW = 0x1,
+			NE = 0x2,
+			SE = 0x3,
+			SW = 0x4,
+			ResourceRamp = 0x4,
+		}
+
 		[FieldLoader.Ignore]
 		public readonly byte TerrainType = byte.MaxValue;
 		public readonly byte Height;

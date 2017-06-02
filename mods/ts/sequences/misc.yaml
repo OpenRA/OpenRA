@@ -343,18 +343,66 @@ resources:
 	tib10: tib10
 	tib11: tib11
 	tib12: tib12
-	tib13: tib13 # TODO: NW ramp variant, currently unused
-	tib14: tib14 # TODO: NW ramp variant, currently unused
-	tib15: tib15 # TODO: NE ramp variant, currently unused
-	tib16: tib16 # TODO: NE ramp variant, currently unused
-	tib17: tib17 # TODO: SE ramp variant, currently unused
-	tib18: tib18 # TODO: SE ramp variant, currently unused
-	tib19: tib19 # TODO: SW ramp variant, currently unused
-	tib20: tib20 # TODO: SW ramp variant, currently unused
+	tib13: tib13
+	tib14: tib14
+	tib15: tib15
+	tib16: tib16
+	tib17: tib17
+	tib18: tib18
+	tib19: tib19
+	tib20: tib20
 	veins: veins
 		Length: 1
 		Start: 52
-		ShadowStart: -1
+		ShadowStart: 112
+		Tick: 180
+		Offset: 0, -12, 2.5
+	veinsnw1: veins
+		Length: 1
+		Start: 53
+		ShadowStart: 113
+		Tick: 180
+		Offset: 0, -12, 2.5
+	veinsnw2: veins
+		Length: 1
+		Start: 54
+		ShadowStart: 114
+		Tick: 180
+		Offset: 0, -12, 2.5
+	veinsne1: veins
+		Length: 1
+		Start: 55
+		ShadowStart: 115
+		Tick: 180
+		Offset: 0, -12, 2.5
+	veinsne2: veins
+		Length: 1
+		Start: 56
+		ShadowStart: 116
+		Tick: 180
+		Offset: 0, -12, 2.5
+	veinsse1: veins
+		Length: 1
+		Start: 57
+		ShadowStart: 117
+		Tick: 180
+		Offset: 0, -12, 2.5
+	veinsse2: veins
+		Length: 1
+		Start: 58
+		ShadowStart: 118
+		Tick: 180
+		Offset: 0, -12, 2.5
+	veinssw1: veins
+		Length: 1
+		Start: 59
+		ShadowStart: 119
+		Tick: 180
+		Offset: 0, -12, 2.5
+	veinssw2: veins
+		Length: 1
+		Start: 60
+		ShadowStart: 120
 		Tick: 180
 		Offset: 0, -12, 2.5
 

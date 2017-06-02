@@ -62,7 +62,7 @@ namespace OpenRA.Mods.D2k.Traits
 			return t;
 		}
 
-		protected override string ChooseRandomVariant(ResourceType t)
+		protected override string ChooseResourceVariant(ResourceType t, TerrainTileInfo.RampSides rampType = TerrainTileInfo.RampSides.None)
 		{
 			return D2kResourceLayer.Variants.Keys.Random(Game.CosmeticRandom);
 		}
