@@ -24,11 +24,11 @@ namespace OpenRA.Mods.yupgi_alert.Activities
 	{
 		readonly Aircraft aircraft;
 		readonly IMove move;
-		readonly Actor self;
+		//readonly Actor self;
 
 		public SpawnedTakeOff(Actor self)
 		{
-			this.self = self;
+			//this.self = self;
 			aircraft = self.Trait<Aircraft>();
 			move = self.Trait<IMove>();
 		}

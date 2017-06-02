@@ -39,14 +39,12 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 
 	class DamagedByRadioactivity : ConditionalTrait<DamagedByRadioactivityInfo>, ITick, ISync
 	{
-		readonly Health health;
 		readonly RadioactivityLayer raLayer;
 
 		[Sync] int damageTicks;
 
 		public DamagedByRadioactivity(Actor self, DamagedByRadioactivityInfo info) : base(info)
 		{
-			health = self.Trait<Health>();
 			raLayer = self.World.WorldActor.Trait<RadioactivityLayer>();
 		}
 

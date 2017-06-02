@@ -104,8 +104,10 @@ namespace OpenRA.Mods.Common.Traits
 			foreach (var harv in virtuallyDockedHarvs)
 				if (harv.IsDead)
 					rms.Add(harv);
+
+            // The list shouldn't be too long and removing element from a list (not set)
+            // shouldn't take too long.
 			foreach (var rm in rms)
-				// Well, the list shouldn't be too long.
 				virtuallyDockedHarvs.Remove(rm);
 
 			// Refining animation cancelation.

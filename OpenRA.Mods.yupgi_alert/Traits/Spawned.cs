@@ -199,12 +199,9 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 
 		class SpawnedReturnOrderTargeter : UnitOrderTargeter
 		{
-			SpawnedInfo info;
-
 			public SpawnedReturnOrderTargeter(SpawnedInfo info)
 				: base("SpawnedReturn", 6, info.EnterCursor, false, true)
 			{
-				this.info = info;
 			}
 
 			public override bool CanTargetActor(Actor self, Actor target, TargetModifiers modifiers, ref string cursor)

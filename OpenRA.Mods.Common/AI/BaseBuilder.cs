@@ -294,12 +294,12 @@ namespace OpenRA.Mods.Common.AI
 				// Can we build this structure?
 				if (!buildableThings.Any(b => b.Name == name))
 				{
-					// Well, check one more time. Check if it is defined in the core and buildable.
+					// Check if it is defined in the core and buildable.
 					if (!ai.Info.CoreDefinitions.ContainsKey(name))
-						// Not even indirectly buildable with a "core".
+						//// Not even indirectly buildable with a "core".
 						continue;
 					if (!buildableThings.Any(b => b.Name == ai.Info.CoreDefinitions[name]))
-						// Indirectly buildable, but that core is not currently buildable.
+						//// Indirectly buildable, but that core is not currently buildable.
 						continue;
 				}
 

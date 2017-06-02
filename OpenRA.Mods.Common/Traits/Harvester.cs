@@ -177,8 +177,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		public Actor ClosestProc(Actor self, Actor ignore)
 		{
+            // Slaved harvesters can only attach to master.
 			if (Info.Slaved)
-				// For slaved harvesters can only attach to master.
 				return Master;
 
 			// Find all refineries and their occupancy count:

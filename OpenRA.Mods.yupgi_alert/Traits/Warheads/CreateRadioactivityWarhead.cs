@@ -70,7 +70,6 @@ namespace OpenRA.Mods.yupgi_alert.Warheads
 		public override void DoImpact(WPos pos, Actor firedBy, IEnumerable<int> damageModifiers)
 		{
 			var world = firedBy.World;
-			var resLayer = world.WorldActor.Trait<RadioactivityLayer>();
 
 			if (world.LocalPlayer != null)
 			{
