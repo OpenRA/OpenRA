@@ -726,7 +726,7 @@ SAM:
 	WithTurretedSpriteBody:
 	AutoSelectionSize:
 	Armament:
-		Weapon: SAMMissile
+		Weapon: Dragon
 		MuzzleSequence: muzzle
 	AttackPopupTurreted:
 	WithMuzzleOverlay:

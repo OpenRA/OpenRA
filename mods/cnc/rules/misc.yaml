@@ -17,13 +17,23 @@ CRATE:
 		Weapon: Napalm.Crate
 		SelectionShares: 5
 	GrantExternalConditionCrateAction@cloak:
-		SelectionShares: 5
+		SelectionShares: 3
 		Effect: cloak
 		Condition: cloak-crate-collected
 	GiveMcvCrateAction:
 		SelectionShares: 0
-		NoBaseSelectionShares: 120
+		NoBaseSelectionShares: 50
 		Units: mcv
+	ExplodeCrateAction:
+		Weapon: Atomic
+		SelectionShares: 1
+	GiveUnitCrateAction:
+		Units: vice
+		Owner: Creeps
+		SelectionShares: 10
+	LevelUpCrateAction:
+		Levels: 4
+		SelectionShares: 12
 
 WCRATE:
 	Inherits: ^Crate
