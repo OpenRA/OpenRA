@@ -27,6 +27,13 @@ namespace OpenRA.Mods.Common.Activities
 
 		public override Activity Tick(Actor self)
 		{
+			// Refuse to take off if it would land immediately again.
+			if (helicopter.ForceLanding)
+			{
+				Cancel(self);
+				return NextActivity;
+			}
+
 			if (IsCanceled)
 				return NextActivity;
 
