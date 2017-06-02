@@ -83,13 +83,12 @@ namespace OpenRA.Mods.Common.Traits
 		void INotifyCreated.Created(Actor self)
 		{
 			conditionManager = self.TraitOrDefault<ConditionManager>();
+		}
 
+		protected override void TraitEnabled(Actor self)
+		{
 			if (Cloaked)
-			{
 				wasCloaked = true;
-				if (conditionManager != null && cloakedToken == ConditionManager.InvalidConditionToken && !string.IsNullOrEmpty(Info.CloakedCondition))
-					cloakedToken = conditionManager.GrantCondition(self, Info.CloakedCondition);
-			}
 		}
 
 		public bool Cloaked { get { return !IsTraitDisabled && remainingTime <= 0; } }
