@@ -149,5 +149,5 @@ Grenade:
 			Concrete: 28
 		DamageTypes: Prone70Percent, TriggerProne, ExplosionDeath
 	Warhead@2Eff: CreateEffect
-		Explosions: large_grey_explosion
+		Explosions: small_grey_explosion
 		ImpactSounds: expnew13.aud
