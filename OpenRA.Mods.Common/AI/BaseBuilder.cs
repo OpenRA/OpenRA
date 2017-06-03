@@ -295,7 +295,7 @@ namespace OpenRA.Mods.Common.AI
 				if (!buildableThings.Any(b => b.Name == name))
 				{
 					// Check if it is defined in the core and buildable.
-					if (!ai.Info.CoreDefinitions.ContainsKey(name))
+					if (ai.Info.CoreDefinitions == null || !ai.Info.CoreDefinitions.ContainsKey(name))
 						//// Not even indirectly buildable with a "core".
 						continue;
 					if (!buildableThings.Any(b => b.Name == ai.Info.CoreDefinitions[name]))
@@ -339,7 +339,7 @@ namespace OpenRA.Mods.Common.AI
 					queue.Actor.Owner, name, frac.Value, frac.Value * playerBuildings.Length, playerBuildings.Length, count);
 
 				// If a core actor, return the core instead.
-				if (ai.Info.CoreDefinitions.ContainsKey(name))
+				if (ai.Info.CoreDefinitions != null && ai.Info.CoreDefinitions.ContainsKey(name))
 					return world.Map.Rules.Actors[ai.Info.CoreDefinitions[name]];
 				else
 					return actor;
