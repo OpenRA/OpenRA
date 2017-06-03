@@ -82,6 +82,8 @@ namespace OpenRA
 			if (!modData.Manifest.Contains<MapGrid>())
 				return;
 
+			previews.Clear();
+
 			var mapGrid = modData.Manifest.Get<MapGrid>();
 			foreach (var kv in MapLocations)
 			{

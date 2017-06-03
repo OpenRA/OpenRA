@@ -121,6 +121,17 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				});
 			};
 
+			var refreshMapsButton = widget.GetOrNull<ButtonWidget>("REFRESHMAPS_BUTTON");
+			if (refreshMapsButton != null)
+			{
+				refreshMapsButton.OnClick = () =>
+				{
+					Game.ModData.MapCache.LoadMaps();
+					RefreshMaps(currentTab, filter);
+					EnumerateMaps(currentTab, itemTemplate);
+				};
+			}
+
 			SetupMapTab(MapClassification.User, filter, "USER_MAPS_TAB_BUTTON", "USER_MAPS_TAB", itemTemplate);
 			SetupMapTab(MapClassification.System, filter, "SYSTEM_MAPS_TAB_BUTTON", "SYSTEM_MAPS_TAB", itemTemplate);
 

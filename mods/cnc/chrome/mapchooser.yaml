@@ -114,32 +114,38 @@ Container@MAPCHOOSER_PANEL:
 				Button@BUTTON_CANCEL:
 					Key: escape
 					Y: 539
-					Width: 140
+					Width: 110
 					Height: 35
 					Text: Cancel
 				Button@RANDOMMAP_BUTTON:
 					Key: space
-					X: PARENT_RIGHT - 150 - WIDTH
+					X: PARENT_RIGHT - 130 - WIDTH
 					Y: 539
-					Width: 140
+					Width: 130
 					Height: 35
 					Text: Random
 				Button@DELETE_MAP_BUTTON:
-					X: PARENT_RIGHT - 300 - WIDTH
+					X: PARENT_RIGHT - 270 - WIDTH
 					Y: 539
-					Width: 140
+					Width: 130
 					Height: 35
 					Text: Delete Map
 				Button@DELETE_ALL_MAPS_BUTTON:
-					X: PARENT_RIGHT - 450 - WIDTH
+					X: PARENT_RIGHT - 410 - WIDTH
 					Y: 539
-					Width: 140
+					Width: 130
 					Height: 35
 					Text: Delete All Maps
+				Button@REFRESHMAPS_BUTTON:
+					X: PARENT_RIGHT - 550 - WIDTH
+					Y: 539
+					Width: 130
+					Height: 35
+					Text: Refresh
 				Button@BUTTON_OK:
 					Key: return
 					X: PARENT_RIGHT - WIDTH
 					Y: 539
-					Width: 140
+					Width: 120
 					Height: 35
 					Text: Ok
