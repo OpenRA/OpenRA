@@ -29,6 +29,7 @@ namespace OpenRA.GameRules
 		public Actor SourceActor;
 		public WPos PassiveTarget;
 		public Target GuidedTarget;
+		public bool TrackClosestGuidedTargetPosition;
 	}
 
 	public interface IProjectile : IEffect { }

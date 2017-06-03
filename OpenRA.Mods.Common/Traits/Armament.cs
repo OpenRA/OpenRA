@@ -63,6 +63,8 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Use multiple muzzle images if non-zero")]
 		public readonly int MuzzleSplitFacings = 0;
 
+		public readonly bool ShootAtClosestTargetablePosition = false;
+
 		public WeaponInfo WeaponInfo { get; private set; }
 		public WDist ModifiedRange { get; private set; }
 
@@ -229,8 +231,9 @@ namespace OpenRA.Mods.Common.Traits
 				Source = muzzlePosition(),
 				CurrentSource = muzzlePosition,
 				SourceActor = self,
-				PassiveTarget = target.CenterPosition,
-				GuidedTarget = target
+				PassiveTarget = Info.ShootAtClosestTargetablePosition ? target.Positions.PositionClosestTo(muzzlePosition()) : target.CenterPosition,
+				GuidedTarget = target,
+				TrackClosestGuidedTargetPosition = Info.ShootAtClosestTargetablePosition
 			};
 
 			foreach (var na in self.TraitsImplementing<INotifyAttack>())

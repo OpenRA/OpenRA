@@ -799,7 +799,7 @@ namespace OpenRA.Mods.Common.Projectiles
 			// Check if target position should be updated (actor visible & locked on)
 			var newTarPos = targetPosition;
 			if (args.GuidedTarget.IsValidFor(args.SourceActor) && lockOn)
-				newTarPos = args.GuidedTarget.CenterPosition
+				newTarPos = (args.TrackClosestGuidedTargetPosition ? args.GuidedTarget.Positions.PositionClosestTo(args.Source) : args.GuidedTarget.CenterPosition)
 					+ new WVec(WDist.Zero, WDist.Zero, info.AirburstAltitude);
 
 			// Compute target's predicted velocity vector (assuming uniform circular motion)
