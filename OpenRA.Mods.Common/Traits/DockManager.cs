@@ -27,10 +27,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly bool DetectDetectionEnabled = true;
 
 		[Desc("Dead lock detection sampling is done this often.")]
-		public readonly int DeadlockDetectionPeriod = 79; // prime number yay
-
-		[Desc("Sampled this many times then the queue is reset.")]
-		public readonly int DeadlockDetectionThreshold = 5;
+		public readonly int DeadlockDetectionPeriod = 457; // prime number yay =~ 30 seconds
 
 		public object Create(ActorInitializer init) { return new DockManager(init, this); }
 	}
@@ -157,54 +154,73 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		int unchangedCount = 0;
-		Actor[] deadlockTracker;
 		void RemoveDeadLock(List<Actor> queue)
 		{
-			// This one is tricky.
-			// When there are more than one service dock... say we have 2.
-			// Client on x tries to dock at y and there is another client on y which tries to dock at x,
-			// and when the dock is adjacent, we are in dead lock situation. They will not budge at all.
-			// 1. Computing and finding cycles to break them is too expensive.
-			// 2. Exploit that only adjacent docks can be deadlocked... Still too expensive. O(n^2).
-			// 3. Assume dock is "linearly" placed and perform linear check: may not hold up.
-			// Lets do simple sampling method here instead.
+			// Since graph detection is cumbersome, we only do that with =~ 30s period
+			// Considering wait docks have arrival distance tolerance, dead locks only occur between those
+			// who want to put stuff into the serving dock.
 
-			// Queue is so sparse that everything is null.
-			if (deadlockTracker == null || serviceDocks.All(d => d.Occupier == null))
-			{
-				unchangedCount = 0;
-				deadlockTracker = serviceDocks.Select(d => d.Occupier).ToArray();
-				return;
-			}
-
-			for (int i = 0; i < serviceDocks.Length; i++)
-			{
-				if (deadlockTracker[i] != serviceDocks[i].Occupier)
-				{
-					// reset counter and remember current composition.
-					unchangedCount = 0;
-					deadlockTracker = serviceDocks.Select(d => d.Occupier).ToArray();
-					return;
-				}
-			}
-
-			// no change!
-			if (unchangedCount++ < info.DeadlockDetectionThreshold)
+			// Can't get dead locked.
+			if (serviceDocks.Length == 1)
 				return;
 
-			// We have deadlock. Release these docks
+			var holding = new Dictionary<Actor, Dock>();
 			foreach (var d in serviceDocks)
-				if (d.Occupier != null)
-				{
-					// The ones that occupy the docks are previously dequeued and can't be seen by ProcessQueue yet.
-					// Must put them back in the queue!
-					queue.Add(d.Occupier);
-					d.Occupier.CancelActivity();
-					d.Occupier.Trait<DockClient>().Release(d);
-				}
+				foreach (var a in self.World.ActorMap.GetActorsAt(d.Location))
+					holding[a] = d;
 
-			unchangedCount = 0;
+			var visited = new Dictionary<Dock, bool>();
+
+			// Traverse to find cycle.
+			// Cycles are cycles in reverse graphs too so... I'll traverse in "reverse" direction.
+			// Also, in this graph, there are only 1 outgoing edge for each node so no need for full DFS.
+			foreach (var d in serviceDocks)
+			{
+				// Already exampined by below cycle finding loop already, in previous iterations. Skip.
+				if (visited.ContainsKey(d))
+					continue;
+
+				for (var currentDock = d; currentDock != null; currentDock = holding[currentDock.Occupier])
+				{
+					if (visited.ContainsKey(currentDock))
+					{
+						ResetServiceDocks();
+						return;
+					}
+
+					visited[currentDock] = true;
+
+					// not a loop:
+					if (currentDock.Occupier == null)
+						break;
+
+					// Occupier isn't even on the docks yet.
+					if (!holding.ContainsKey(currentDock.Occupier))
+						break;
+
+					// self loops aren't dead locks.
+					if (currentDock == holding[currentDock.Occupier])
+						break;
+				}
+			}
+		}
+
+		void ResetServiceDocks()
+		{
+			foreach (var d in serviceDocks)
+			{
+				if (d.Occupier == null)
+					continue;
+
+				// These occupiers are ejected out of the dock by ServeHead. Put them back in.
+				queue.Add(d.Occupier);
+
+				var dc = d.Occupier.Trait<DockClient>();
+				d.Occupier.CancelActivity();
+				dc.DockState = DockState.NotAssigned;
+				dc.Release(dc.CurrentDock);
+			}
+
 			ProcessQueue(self, null);
 		}
 
