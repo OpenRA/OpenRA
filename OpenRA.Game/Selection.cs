@@ -19,10 +19,22 @@ namespace OpenRA
 {
 	public class Selection
 	{
+		public int Hash { get; private set; }
+		public IEnumerable<Actor> Actors { get { return actors; } }
 		readonly HashSet<Actor> actors = new HashSet<Actor>();
+
+		void UpdateHash()
+		{
+			Hash = actors.Count << 16;
+			foreach (var a in actors)
+				Hash ^= Sync.HashActor(a);
+		}
+
 		public void Add(World w, Actor a)
 		{
 			actors.Add(a);
+			UpdateHash();
+
 			foreach (var sel in a.TraitsImplementing<INotifySelected>())
 				sel.Selected(a);
 			foreach (var ns in w.WorldActor.TraitsImplementing<INotifySelection>())
@@ -58,6 +70,8 @@ namespace OpenRA
 				}
 			}
 
+			UpdateHash();
+
 			foreach (var a in newSelection)
 				foreach (var sel in a.TraitsImplementing<INotifySelected>())
 					sel.Selected(a);
@@ -85,12 +99,16 @@ namespace OpenRA
 			}
 		}
 
-		public IEnumerable<Actor> Actors { get { return actors; } }
-		public void Clear() { actors.Clear(); }
+		public void Clear()
+		{
+			actors.Clear();
+			UpdateHash();
+		}
 
 		public void Tick(World world)
 		{
 			actors.RemoveWhere(a => !a.IsInWorld || (!a.Owner.IsAlliedWith(world.RenderPlayer) && world.FogObscures(a)));
+			UpdateHash();
 
 			foreach (var cg in controlGroups.Values)
 			{
