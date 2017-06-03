@@ -23,7 +23,7 @@ namespace OpenRA.Mods.Common.Traits
 	public class ExplodesInfo : ConditionalTraitInfo, Requires<HealthInfo>
 	{
 		[WeaponReference, FieldLoader.Require, Desc("Default weapon to use for explosion if ammo/payload is loaded.")]
-		public readonly string Weapon = "UnitExplode";
+		public readonly string Weapon = null;
 
 		[WeaponReference, Desc("Fallback weapon to use for explosion if empty (no ammo/payload).")]
 		public readonly string EmptyWeapon = "UnitExplode";
