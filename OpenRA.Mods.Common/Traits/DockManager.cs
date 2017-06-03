@@ -24,7 +24,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly bool ExternalDocks = false;
 
 		[Desc("Enable deadlock detection")]
-		public readonly bool DetectDetectionEnabled = true;
+		public readonly bool DeadlockDetectionEnabled = true;
 
 		[Desc("Dead lock detection sampling is done this often.")]
 		public readonly int DeadlockDetectionPeriod = 457; // prime number yay =~ 30 seconds
@@ -364,7 +364,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void ITick.Tick(Actor self)
 		{
-			if (!info.DetectDetectionEnabled)
+			if (!info.DeadlockDetectionEnabled)
 				return;
 
 			if (ticks-- <= 0)
