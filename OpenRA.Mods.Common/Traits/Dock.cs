@@ -19,9 +19,8 @@ namespace OpenRA.Mods.Common.Traits
 {
 	public class DockInfo : ITraitInfo
 	{
-		[Desc("Docking offset relative to top-left cell. Can be used as WVec or CVec.",
-			"*Use CPosOffset to \"cast\" this as CPos.")]
-		public readonly WVec Offset = WVec.Zero;
+		[Desc("Docking offset relative to top-left cell.")]
+		public readonly CVec DockOffset = CVec.Zero;
 
 		[Desc("When undocking, move this direction from the DOCK to avoid cluttering with other dock locations")]
 		public readonly CVec ExitOffset = CVec.Zero;
@@ -33,12 +32,12 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly bool WaitingPlace = false;
 
 		[Desc("Dock angle. If < 0, the docker doesn't need to turn.")]
-		public readonly int Angle = -1;
+		public readonly int DockAngle = -1;
 
 		[Desc("Does the refinery require the harvester to be dragged in?")]
 		public readonly bool IsDragRequired = false;
 
-		[Desc("Vector by which the harvester will be dragged when docking.")]
+		[Desc("Dock client gets dragged to the the location, where location = center of the host actor + this offset.")]
 		public readonly WVec DragOffset = WVec.Zero;
 
 		[Desc("In how many steps to perform the dragging?")]
@@ -46,9 +45,6 @@ namespace OpenRA.Mods.Common.Traits
 
 		[Desc("Priority of the docks, when managed by DockManager.")]
 		public readonly int Order = 0;
-
-		// "Cast" Offset as CVec.
-		public CVec CPosOffset { get { return new CVec(Offset.X, Offset.Y); } }
 
 		public object Create(ActorInitializer init) { return new Dock(init, this); }
 	}
@@ -61,7 +57,7 @@ namespace OpenRA.Mods.Common.Traits
 		public Actor Occupier;
 
 		// Returns the location of the dock, interpreting Offset as CVec.
-		public CPos Location { get { return self.Location + Info.CPosOffset; } }
+		public CPos Location { get { return self.Location + Info.DockOffset; } }
 
 		// blocked by some immoble obstacle?
 		public bool IsBlocked;

@@ -71,8 +71,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		public virtual Activity DockSequence(Actor harv, Actor self, Dock dock)
 		{
-			return new SpriteHarvesterDockSequence(harv, self,
-				dock.Info.Angle, dock.Info.IsDragRequired, dock.Info.DragOffset, dock.Info.DragLength);
+			return new SpriteHarvesterDockSequence(harv, self, dock.Location,
+				dock.Info.DockAngle, dock.Info.IsDragRequired, dock.Info.DragOffset, dock.Info.DragLength);
 		}
 
 		public IEnumerable<TraitPair<Harvester>> GetLinkedHarvesters()
