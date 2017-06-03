@@ -811,6 +811,7 @@
     <Compile Include="Traits\TunnelEntrance.cs" />
     <Compile Include="FileSystem\InstallShieldPackage.cs" />
     <Compile Include="FileFormats\Blast.cs" />
+    <Compile Include="Orders\ForceModifiersOrderGenerator.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="AfterBuild">
