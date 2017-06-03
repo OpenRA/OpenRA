@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Common.Traits
 		public object Create(ActorInitializer init) { return new AttackSuicides(init.Self, this); }
 	}
 
-	class AttackSuicides : IIssueOrder, IResolveOrder, IOrderVoice
+	class AttackSuicides : IIssueOrder, IResolveOrder, IOrderVoice, IIssueDeployOrder
 	{
 		readonly AttackSuicidesInfo info;
 		readonly IMove move;
@@ -54,6 +54,11 @@ namespace OpenRA.Mods.Common.Traits
 				return new Order(order.OrderID, self, queued) { ExtraData = target.FrozenActor.ID };
 
 			return new Order(order.OrderID, self, queued) { TargetActor = target.Actor };
+		}
+
+		Order IIssueDeployOrder.IssueDeployOrder(Actor self)
+		{
+			return new Order("Detonate", self, false);
 		}
 
 		public string VoicePhraseForOrder(Actor self, Order order)

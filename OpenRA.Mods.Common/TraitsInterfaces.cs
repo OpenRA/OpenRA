@@ -283,4 +283,11 @@ namespace OpenRA.Mods.Common.Traits
 		byte GetTerrainIndex(CPos cell);
 		WPos CenterOfCell(CPos cell);
 	}
+
+	// For traits that want to be exposed to the "Deploy" UI button / hotkey
+	[RequireExplicitImplementation]
+	public interface IIssueDeployOrder
+	{
+		Order IssueDeployOrder(Actor self);
+	}
 }

@@ -60,7 +60,7 @@ namespace OpenRA.Mods.Common.Traits
 
 	public enum DeployState { Undeployed, Deploying, Deployed, Undeploying }
 
-	public class GrantConditionOnDeploy : IResolveOrder, IIssueOrder, INotifyCreated, INotifyDeployComplete
+	public class GrantConditionOnDeploy : IResolveOrder, IIssueOrder, INotifyCreated, INotifyDeployComplete, IIssueDeployOrder
 	{
 		readonly Actor self;
 		readonly GrantConditionOnDeployInfo info;
@@ -126,6 +126,11 @@ namespace OpenRA.Mods.Common.Traits
 				return new Order(order.OrderID, self, queued);
 
 			return null;
+		}
+
+		Order IIssueDeployOrder.IssueDeployOrder(Actor self)
+		{
+			return new Order("GrantConditionOnDeploy", self, false);
 		}
 
 		public void ResolveOrder(Actor self, Order order)
