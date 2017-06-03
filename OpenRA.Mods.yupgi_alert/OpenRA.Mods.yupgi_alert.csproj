@@ -73,9 +73,11 @@
     <Compile Include="Activities\EnterNydus.cs" />
     <Compile Include="Activities\EnterSpawner.cs" />
     <Compile Include="Activities\SpawnerHarvesterHarvest.cs" />
+    <Compile Include="Graphics\RailgunRenderable.cs" />
     <Compile Include="Graphics\Radioactivity.cs" />
     <Compile Include="Graphics\RadBeamRenderable.cs" />
     <Compile Include="Orders\ShootableBallisticMissileMoveOrderTargeter.cs" />
+    <Compile Include="Projectiles\Railgun.cs" />
     <Compile Include="Projectiles\RadBeam.cs" />
     <Compile Include="Traits\AIDeployHelper.cs" />
     <Compile Include="Traits\SpawnedHarvester.cs" />
