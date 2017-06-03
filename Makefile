@@ -74,6 +74,7 @@ RM_R = $(RM) -r
 RM_F = $(RM) -f
 RM_RF = $(RM) -rf
 CP = cp
+LN_SF = ln -sf
 CP_R = $(CP) -r
 INSTALL = install
 INSTALL_DIR = $(INSTALL) -d
@@ -304,6 +305,7 @@ osx-dependencies: cli-dependencies geoip-dependencies
 	@./thirdparty/fetch-thirdparty-deps-osx.sh
 	@ $(CP_R) thirdparty/download/osx/*.dylib .
 	@ $(CP_R) thirdparty/download/osx/*.dll.config .
+	@ $(LN_SF) /Library/Frameworks/Mono.framework/Versions/Current/lib/libgdiplus.dylib .
 
 geoip-dependencies:
 	@./thirdparty/fetch-geoip-db.sh
