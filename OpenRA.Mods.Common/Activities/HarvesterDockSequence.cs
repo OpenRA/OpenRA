@@ -53,9 +53,12 @@ namespace OpenRA.Mods.Common.Activities
 					return this;
 				case DockingState.Turn:
 					dockingState = DockingState.Dock;
-					if (IsDragRequired)
+					if (!IsDragRequired)
+						return ActivityUtils.SequenceActivities(new Turn(self, DockAngle), this);
+					if (DockAngle < 0)
+						return ActivityUtils.SequenceActivities(new Drag(self, StartDrag, EndDrag, DragLength), this);
+					else
 						return ActivityUtils.SequenceActivities(new Turn(self, DockAngle), new Drag(self, StartDrag, EndDrag, DragLength), this);
-					return ActivityUtils.SequenceActivities(new Turn(self, DockAngle), this);
 				case DockingState.Dock:
 					if (Refinery.IsInWorld && !Refinery.IsDead)
 						foreach (var nd in Refinery.TraitsImplementing<INotifyDocking>())
