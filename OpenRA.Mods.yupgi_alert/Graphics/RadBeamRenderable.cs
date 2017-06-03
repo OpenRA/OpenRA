@@ -58,7 +58,7 @@ namespace OpenRA.Mods.Yupgi_alert.Graphics
 		public IFinalizedRenderable PrepareRender(WorldRenderer wr) { return this; }
 		public void Render(WorldRenderer wr)
 		{
-			if (sourceToTarget.Length == 0)
+			if (sourceToTarget == WVec.Zero)
 				return;
 
 			// WAngle.Sin(x) = 1024 * Math.Sin(2pi/1024 * x)

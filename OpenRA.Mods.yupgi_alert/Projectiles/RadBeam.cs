@@ -18,7 +18,7 @@ using OpenRA.Graphics;
 using OpenRA.Mods.Yupgi_alert.Graphics;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.AS.Projectiles
+namespace OpenRA.Mods.Yupgi_alert.Projectiles
 {
 	[Desc("Not a sprite, but an engine effect.")]
 	public class RadBeamInfo : IProjectileInfo
