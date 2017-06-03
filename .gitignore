@@ -29,6 +29,7 @@ mods/*/*.pdb
 /*.pdb
 /*.mdb
 /*.exe
+/*.xml
 thirdparty/download/*
 *.mmdb.gz
 
