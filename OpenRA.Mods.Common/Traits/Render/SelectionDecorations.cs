@@ -37,14 +37,11 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		public readonly string Image = "pips";
 
-		[Desc("Prefer isometric style layout. Works only for RectangularIsometric grids.")]
-		public readonly bool Isometric = false;
-
-		[Desc("If Isometric = true, this is used to set height for selection box")]
-		public readonly int IsometricHeight = 100;
+		[Desc("If > 0, draws an isometric selection drcorations with specified height (in pixels)")]
+		public readonly uint IsometricHeight = 0;
 
 		[Desc("Isometric bar dimensions")]
-		public readonly float[] IsometricBarDim = { 5f, 5f };
+		public readonly float2 IsometricBarDim = new float2(5f, 5f);
 
 		public object Create(ActorInitializer init) { return new SelectionDecorations(init.Self, this); }
 
@@ -97,6 +94,20 @@ namespace OpenRA.Mods.Common.Traits.Render
 			return DrawDecorations(self, wr);
 		}
 
+		public IRenderable DrawSelectionBox(Actor self, Color color)
+		{
+			if (self.World.Map.Grid.Type == MapGridType.RectangularIsometric && Info.IsometricHeight > 0)
+				return new IsometricSelectionBoxRenderable(self, color, Info.IsometricHeight);
+			return new RectangularSelectionBoxRenderable(self, color);
+		}
+
+		public IRenderable DrawSelectionBars(Actor self, bool displayHealth, bool displayExtra)
+		{
+			if (self.World.Map.Grid.Type == MapGridType.RectangularIsometric && Info.IsometricHeight > 0)
+				return new IsometricSelectionBarsRenderable(self, displayHealth, displayExtra, Info.IsometricHeight, Info.IsometricBarDim);
+			return new RectangularSelectionBarsRenderable(self, displayHealth, displayExtra);
+		}
+
 		IEnumerable<IRenderable> DrawDecorations(Actor self, WorldRenderer wr)
 		{
 			var selected = self.World.Selection.Contains(self);
@@ -117,10 +128,10 @@ namespace OpenRA.Mods.Common.Traits.Render
 			var displayExtra = selected || (regularWorld && statusBars != StatusBarsType.Standard);
 
 			if (Info.RenderSelectionBox && selected)
-				yield return new SelectionBoxRenderable(self, Info.SelectionBoxColor, Convert.ToInt32(Info.Isometric) * Info.IsometricHeight);
+				yield return DrawSelectionBox(self, Info.SelectionBoxColor);
 
 			if (Info.RenderSelectionBars && (displayHealth || displayExtra))
-				yield return new SelectionBarsRenderable(self, displayHealth, displayExtra, Convert.ToInt32(Info.Isometric) * Info.IsometricHeight);
+				yield return DrawSelectionBars(self, displayHealth, displayExtra);
 
 			// Target lines and pips are always only displayed for selected allied actors
 			if (!selected || !self.Owner.IsAlliedWith(wr.World.RenderPlayer))

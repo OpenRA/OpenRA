@@ -18,15 +18,15 @@ using OpenRA.Mods.Common.Traits;
 
 namespace OpenRA.Mods.Common.Graphics
 {
-	public struct SelectionBoxRenderable : IRenderable, IFinalizedRenderable
+	public struct IsometricSelectionBoxRenderable : IRenderable, IFinalizedRenderable
 	{
 		readonly WPos pos;
 		readonly Rectangle visualBounds;
 		readonly Color color;
 		readonly IEnumerable<CPos> cells;
-		readonly float isometricHeight;
+		readonly uint isometricHeight;
 
-		public SelectionBoxRenderable(Actor actor, Color color, float isometricHeight = 0)
+		public IsometricSelectionBoxRenderable(Actor actor, Color color, uint isometricHeight = 0)
 		{
 			this.pos = actor.CenterPosition;
 			this.visualBounds = actor.VisualBounds;
@@ -41,7 +41,7 @@ namespace OpenRA.Mods.Common.Graphics
 			this.isometricHeight = isometricHeight;
 		}
 
-		private SelectionBoxRenderable(WPos pos, Rectangle visualBounds, Color color, IEnumerable<CPos> cells, float isometricHeight)
+		private IsometricSelectionBoxRenderable(WPos pos, Rectangle visualBounds, Color color, IEnumerable<CPos> cells, uint isometricHeight)
 		{
 			this.pos = pos;
 			this.visualBounds = visualBounds;
@@ -58,30 +58,12 @@ namespace OpenRA.Mods.Common.Graphics
 
 		public IRenderable WithPalette(PaletteReference newPalette) { return this; }
 		public IRenderable WithZOffset(int newOffset) { return this; }
-		public IRenderable OffsetBy(WVec vec) { return new SelectionBoxRenderable(pos + vec, visualBounds, color, cells, isometricHeight); }
+		public IRenderable OffsetBy(WVec vec) { return new IsometricSelectionBoxRenderable(pos + vec, visualBounds, color, cells, isometricHeight); }
 		public IRenderable AsDecoration() { return this; }
 
 		public IFinalizedRenderable PrepareRender(WorldRenderer wr) { return this; }
 
-	    private void RenderRectangular(WorldRenderer wr)
-	    {
-            var iz = 1 / wr.Viewport.Zoom;
-            var screenPos = wr.Screen3DPxPosition(pos);
-            var tl = screenPos + new float2(visualBounds.Left, visualBounds.Top);
-            var br = screenPos + new float2(visualBounds.Right, visualBounds.Bottom);
-            var tr = new float3(br.X, tl.Y, screenPos.Z);
-            var bl = new float3(tl.X, br.Y, screenPos.Z);
-            var u = new float2(4 * iz, 0);
-            var v = new float2(0, 4 * iz);
-
-            var wcr = Game.Renderer.WorldRgbaColorRenderer;
-            wcr.DrawLine(new[] { tl + u, tl, tl + v }, iz, color, true);
-            wcr.DrawLine(new[] { tr - u, tr, tr + v }, iz, color, true);
-            wcr.DrawLine(new[] { br - u, br, br - v }, iz, color, true);
-            wcr.DrawLine(new[] { bl + u, bl, bl - v }, iz, color, true);
-        }
-
-		private void RenderIsometric(WorldRenderer wr)
+		public void Render(WorldRenderer wr)
 		{
 			var iz = 1 / wr.Viewport.Zoom;
 
@@ -116,14 +98,6 @@ namespace OpenRA.Mods.Common.Graphics
 			// Bottom lines
 			wcr.DrawLine(new[] { lp + a0, lp, lp + a4 }, iz, color, true);
 			wcr.DrawLine(new[] { rp + a0, rp, rp + a8 }, iz, color, true);
-		}
-
-		public void Render(WorldRenderer wr)
-		{
-		    if (wr.World.Map.Grid.Type == MapGridType.RectangularIsometric && isometricHeight > 0)
-		        RenderIsometric(wr);
-		    else
-		        RenderRectangular(wr);
 		}
 
 	    public void RenderDebugGeometry(WorldRenderer wr) { }

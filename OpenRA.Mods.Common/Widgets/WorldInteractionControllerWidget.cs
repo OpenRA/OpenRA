@@ -50,10 +50,7 @@ namespace OpenRA.Mods.Common.Widgets
 			// TODO: Integrate this with SelectionDecorations to unhardcode the *Renderable
 			if (unit.Info.HasTraitInfo<SelectionDecorationsInfo>() && !unit.World.Selection.Contains(unit))
 			{
-				var isometricHeight = unit.Info.TraitInfo<SelectionDecorationsInfo>().IsometricHeight
-					* Convert.ToInt32(unit.Info.TraitInfo<SelectionDecorationsInfo>().Isometric)
-					* Convert.ToInt32(World.Map.Grid.Type == MapGridType.RectangularIsometric);
-				new SelectionBarsRenderable(unit, true, true, isometricHeight).Render(worldRenderer);
+				unit.TraitOrDefault<SelectionDecorations>().DrawSelectionBars(unit, true, true).PrepareRender(worldRenderer).Render(worldRenderer);
 			}
 		}
 

@@ -16,6 +16,7 @@ using OpenRA.Graphics;
 using OpenRA.Mods.Cnc.Activities;
 using OpenRA.Mods.Common.Graphics;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Mods.Common.Traits.Render;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Cnc.Traits
@@ -158,7 +159,11 @@ namespace OpenRA.Mods.Cnc.Traits
 
 				foreach (var unit in targetUnits)
 					if (manager.Self.Owner.CanTargetActor(unit))
-						yield return new SelectionBoxRenderable(unit, Color.Red);
+						if (unit.Info.HasTraitInfo<SelectionDecorationsInfo>())
+						{
+							var box = unit.TraitOrDefault<SelectionDecorations>().DrawSelectionBox(unit, Color.Red);
+							yield return box;
+						}
 			}
 
 			public IEnumerable<IRenderable> Render(WorldRenderer wr, World world)
@@ -268,7 +273,11 @@ namespace OpenRA.Mods.Cnc.Traits
 
 				foreach (var unit in power.UnitsInRange(sourceLocation))
 					if (manager.Self.Owner.CanTargetActor(unit))
-						yield return new SelectionBoxRenderable(unit, Color.Red);
+						if (unit.Info.HasTraitInfo<SelectionDecorationsInfo>())
+						{
+							var box = unit.TraitOrDefault<SelectionDecorations>().DrawSelectionBox(unit, Color.Red);
+							yield return box;
+						}
 			}
 
 			public IEnumerable<IRenderable> Render(WorldRenderer wr, World world)

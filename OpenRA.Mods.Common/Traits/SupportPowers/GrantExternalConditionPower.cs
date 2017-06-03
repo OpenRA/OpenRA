@@ -134,7 +134,11 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				var xy = wr.Viewport.ViewToWorld(Viewport.LastMousePos);
 				foreach (var unit in power.UnitsInRange(xy))
-					yield return new SelectionBoxRenderable(unit, Color.Red);
+					if (unit.Info.HasTraitInfo<SelectionDecorationsInfo>())
+					{
+						var box = unit.TraitOrDefault<SelectionDecorations>().DrawSelectionBox(unit, Color.Red);
+						yield return box;
+					}
 			}
 
 			public IEnumerable<IRenderable> Render(WorldRenderer wr, World world)

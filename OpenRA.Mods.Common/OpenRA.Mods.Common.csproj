@@ -146,7 +146,9 @@
     <Compile Include="Effects\RallyPointIndicator.cs" />
     <Compile Include="Effects\RepairIndicator.cs" />
     <Compile Include="Effects\SpriteEffect.cs" />
-    <Compile Include="Graphics\SelectionBarsRenderable.cs" />
+    <Compile Include="Graphics\Selection\IsometricSelectionBarsRenderable.cs" />
+    <Compile Include="Graphics\Selection\RectangularSelectionBarsRenderable.cs" />
+    <Compile Include="Graphics\Selection\IsometricSelectionBoxRenderable.cs" />
     <Compile Include="Projectiles\AreaBeam.cs" />
     <Compile Include="Projectiles\Bullet.cs" />
     <Compile Include="Projectiles\InstantHit.cs" />
@@ -162,7 +164,7 @@
     <Compile Include="Graphics\BeamRenderable.cs" />
     <Compile Include="Graphics\ContrailRenderable.cs" />
     <Compile Include="Graphics\RangeCircleRenderable.cs" />
-    <Compile Include="Graphics\SelectionBoxRenderable.cs" />
+    <Compile Include="Graphics\Selection\RectangularSelectionBoxRenderable.cs" />
     <Compile Include="Graphics\SpriteActorPreview.cs" />
     <Compile Include="Graphics\TextRenderable.cs" />
     <Compile Include="Graphics\VoxelActorPreview.cs" />
