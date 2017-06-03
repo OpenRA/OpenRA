@@ -64,7 +64,7 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 	    public readonly int KickScanRadius = 5;
 
 		[Desc("If the SlaveMiner is idle for this long, he'll try to look for ore again at SlaveMinerShortScan range to find ore and wake up (in ticks)")]
-	    public readonly int KickDelay = 150;
+	    public readonly int KickDelay = 301;
 
 		public object Create(ActorInitializer init) { return new SpawnerHarvester(init, this); }
 	}
@@ -353,6 +353,8 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 		{
 			if (order.OrderString == "SpawnerHarvest")
 				HandleSpawnerHarvest(self, order, MiningState.Scan);
+			else if (order.OrderString == "SpawnerHarvestKick")
+				HandleSpawnerHarvest(self, order, MiningState.Kick);
 			else if (order.OrderString == "SpawnerHarvestDeploying")
 				HandleSpawnerHarvest(self, order, MiningState.Deploying);
 			else if (order.OrderString == "Stop" || order.OrderString == "Move")
@@ -375,11 +377,11 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 			else
 				kickTicks = info.KickDelay;
 
-			if (kickTicks-- <= 0)
+			if (kickTicks <= 0)
 			{
 				kickTicks = info.KickDelay;
 				MiningState = MiningState.Kick;
-				self.World.IssueOrder(new Order("SpawnerHarvest", self, false));
+				self.World.IssueOrder(new Order("SpawnerHarvestKick", self, false));
 			}
 		}
 

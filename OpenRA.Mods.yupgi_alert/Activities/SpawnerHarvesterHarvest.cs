@@ -65,7 +65,7 @@ namespace OpenRA.Mods.Yupgi_alert.Activities
 			if (mineLocation.HasValue)
 				mineOrder.TargetLocation = mineLocation.Value;
 			self.World.IssueOrder(mineOrder);
-			return null; // issued oders take over.
+			return NextActivity; // issued oders take over.
 		}
 
 		Activity ScanTick(Actor self, out MiningState state)
@@ -170,7 +170,7 @@ namespace OpenRA.Mods.Yupgi_alert.Activities
 			// Let the harvester become idle so it can shoot enemies.
 			// Tick in SpawnerHarvester trait will kick activity back to KickTick.
 			state = MiningState.Mining;
-			return null;
+			return NextActivity;
 		}
 
 		Activity KickTick(Actor self, out MiningState state)
@@ -180,7 +180,7 @@ namespace OpenRA.Mods.Yupgi_alert.Activities
 			{
 				// I may stay mining.
 				state = MiningState.Mining;
-				return this;
+				return NextActivity;
 			}
 
 			// get going
