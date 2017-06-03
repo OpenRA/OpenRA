@@ -93,7 +93,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				// so we can't do this inside the input handler.
 				Game.RunAfterTick(() =>
 				{
-					Game.InitializeMod("modcontent", new Arguments(new[] { "Content.Mod=" + modData.Manifest.Id }));
+					var content = modData.Manifest.Get<ModContent>();
+					Game.InitializeMod(content.ContentInstallerMod, new Arguments(new[] { "Content.Mod=" + modData.Manifest.Id }));
 				});
 			};
 
