@@ -69,17 +69,17 @@ namespace OpenRA.Traits
 		[Desc("Harvester content pip color.")]
 		public PipType PipColor = PipType.Yellow;
 
-		[Desc("Resource growth rate (seconds per growth)")]
-		public int GrowthRate = 37;
+		[Desc("Resource growth rate (tics per growth)")]
+		public int GrowthRate = 500;
 
 		[Desc("Resource growth percent (% of max density)")]
-		public float GrowthPercent = 0.09f;
+		public int GrowthPercent = 9;
 
-		[Desc("Resource spread rate (seconds per spread)")]
-		public int SpreadRate = 37;
+		[Desc("Resource spread rate (tics per spread)")]
+		public int SpreadRate = 500;
 
 		[Desc("Resource spread percent (% of max density)")]
-		public float SpreadPercent = 0.09f;
+		public int SpreadPercent = 9;
 
 		public object Create(ActorInitializer init) { return new ResourceType(this, init.World); }
 	}

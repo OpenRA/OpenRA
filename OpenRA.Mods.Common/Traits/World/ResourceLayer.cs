@@ -226,14 +226,15 @@ namespace OpenRA.Mods.Common.Traits
 				var type = r.Type;
 				if (type != null)
 				{
-					if (--r.GrowthTics <= 0)
+					if ((r.GrowthTics -= 25) <= 0)
 					{
 						r.GrowthTics = type.Info.GrowthRate;
-						if (!world.ActorMap.AnyActorsAt(cell, SubCell.FullCell, a => a.Info.HasTraitInfo<HarvesterInfo>()))
-							AddResource(type, cell, Math.Max(1, (int)(type.Info.GrowthPercent * r.Density)));
+						if (world.SharedRandom.Next() % 100 <= type.Info.GrowthPercent
+							&& !world.ActorMap.AnyActorsAt(cell, SubCell.FullCell, a => a.Info.HasTraitInfo<HarvesterInfo>()))
+								AddResource(type, cell, 1);
 					}
 
-					if (--r.SpreadTics <= 0)
+					if ((r.SpreadTics -= 25) <= 0)
 					{
 						r.SpreadTics = type.Info.SpreadRate;
 
@@ -241,9 +242,10 @@ namespace OpenRA.Mods.Common.Traits
 							for (var v = -1; v < 2; v++)
 							{
 								var c = cell + new CVec(u, v);
-								if (Content.Contains(c) && CanSpawnResourceAt(type, c)
-									&& (type.Info.MaxDensity == 1 || type.Info.SpreadPercent * r.Density > 1))
-										AddResource(type, c, Math.Max(1, (int)(type.Info.SpreadPercent * r.Density)));
+								if (world.SharedRandom.Next() % 100 <= type.Info.SpreadPercent
+									&& Content.Contains(c) && CanSpawnResourceAt(type, c)
+									&& type.Info.MaxDensity == r.Density)
+										AddResource(type, c, Math.Max(1, type.Info.MaxDensity / 2));
 							}
 					}
 				}

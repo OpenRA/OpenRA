@@ -33,10 +33,10 @@
 			NE: tib15, tib16
 			SE: tib17, tib18
 			SW: tib19, tib20
-		GrowthRate: 37
-		GrowthPercent: 0.09
-		SpreadRate: 37
-		SpreadPercent: 0.09
+		GrowthRate: 500
+		GrowthPercent: 9
+		SpreadRate: 500
+		SpreadPercent: 9
 		MaxDensity: 12
 		ValuePerUnit: 25
 		AllowedTerrainTypes: Clear, Rough, DirtRoad
@@ -55,10 +55,10 @@
 			NE: tib15, tib16
 			SE: tib17, tib18
 			SW: tib19, tib20
-		GrowthRate: 166
-		GrowthPercent: 0.05
-		SpreadRate: 166
-		SpreadPercent: 0.05
+		GrowthRate: 2000
+		GrowthPercent: 5
+		SpreadRate: 2000
+		SpreadPercent: 5
 		MaxDensity: 12
 		ValuePerUnit: 40
 		AllowedTerrainTypes: Clear, Rough, DirtRoad
