@@ -25,9 +25,10 @@ namespace OpenRA
 
 		void UpdateHash()
 		{
-			Hash = actors.Count << 16;
-			foreach (var a in actors)
-				Hash ^= Sync.HashActor(a);
+			// Not a real hash, but things checking this only care about checking when the selection has changed
+			// For this purpose, having a false positive (forcing a refresh when nothing changed) is much better
+			// than a false negative (selection state mismatch)
+			Hash += 1;
 		}
 
 		public void Add(World w, Actor a)
@@ -107,8 +108,9 @@ namespace OpenRA
 
 		public void Tick(World world)
 		{
-			actors.RemoveWhere(a => !a.IsInWorld || (!a.Owner.IsAlliedWith(world.RenderPlayer) && world.FogObscures(a)));
-			UpdateHash();
+			var removed = actors.RemoveWhere(a => !a.IsInWorld || (!a.Owner.IsAlliedWith(world.RenderPlayer) && world.FogObscures(a)));
+			if (removed > 0)
+				UpdateHash();
 
 			foreach (var cg in controlGroups.Values)
 			{

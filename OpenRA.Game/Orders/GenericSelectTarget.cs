@@ -15,8 +15,8 @@ namespace OpenRA.Orders
 {
 	public class GenericSelectTarget : UnitOrderGenerator
 	{
+		public readonly string OrderName;
 		protected readonly IEnumerable<Actor> Subjects;
-		protected readonly string OrderName;
 		protected readonly string Cursor;
 		protected readonly MouseButton ExpectedButton;
 
