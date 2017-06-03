@@ -10,20 +10,17 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
-using System.Drawing;
-using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Orders
 {
-	public class EnterTransportTargeter : EnterAlliedActorTargeter<CargoInfo>
+	public class EnterTransportTargeter : EnterActorTargeter<CargoInfo>
 	{
 		readonly AlternateTransportsMode mode;
 
 		public EnterTransportTargeter(string order, int priority,
-			Func<Actor, bool> canTarget, Func<Actor, bool> useEnterCursor,
+			Func<Actor, Actor, bool> canTarget, Func<Actor, Actor, bool> useEnterCursor,
 			AlternateTransportsMode mode)
 			: base(order, priority, canTarget, useEnterCursor) { this.mode = mode; }
 

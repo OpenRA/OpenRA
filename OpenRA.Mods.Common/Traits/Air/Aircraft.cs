@@ -546,8 +546,8 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			get
 			{
-				yield return new EnterAlliedActorTargeter<BuildingInfo>("Enter", 5,
-					target => AircraftCanEnter(target), target => !Reservable.IsReserved(target));
+				yield return new EnterActorTargeter<BuildingInfo>("Enter", 5,
+					(self, target) => AircraftCanEnter(target), (self, target) => !Reservable.IsReserved(target));
 
 				yield return new AircraftMoveOrderTargeter(Info);
 			}

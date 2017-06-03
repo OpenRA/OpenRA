@@ -193,7 +193,7 @@
     <Compile Include="ShroudExts.cs" />
     <Compile Include="Orders\BeaconOrderGenerator.cs" />
     <Compile Include="Orders\DeployOrderTargeter.cs" />
-    <Compile Include="Orders\EnterAlliedActorTargeter.cs" />
+    <Compile Include="Orders\EnterActorTargeter.cs" />
     <Compile Include="Orders\EnterTransportTargeter.cs" />
     <Compile Include="Orders\EnterTransportsTargeter.cs" />
     <Compile Include="Orders\RepairOrderGenerator.cs" />
@@ -296,6 +296,7 @@
     <Compile Include="Traits\Burns.cs" />
     <Compile Include="Traits\ChangesTerrain.cs" />
     <Compile Include="Traits\Health.cs" />
+    <Compile Include="Traits\Player\ChangeOwner.cs" />
     <Compile Include="Traits\PowerTooltip.cs" />
     <Compile Include="Traits\Render\VeteranProductionIconOverlay.cs" />
     <Compile Include="Traits\Capturable.cs" />

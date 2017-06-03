@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Linq;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
@@ -28,7 +29,7 @@ namespace OpenRA.Mods.Common.Activities
 			this.transport = transport;
 			this.maxTries = maxTries;
 			cargo = transport.Trait<Cargo>();
-			passenger = self.Trait<Passenger>();
+			passenger = self.TraitsImplementing<Passenger>().Single(p => cargo.Info.Types.Contains(p.Info.CargoType));
 		}
 
 		protected override void Unreserve(Actor self, bool abort) { passenger.Unreserve(self); }
