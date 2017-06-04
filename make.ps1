@@ -247,16 +247,12 @@ switch ($command)
 	Default { echo ("Invalid command '{0}'" -f $command) }
 }
 
-#In case the script was called without any parameters we keep the window open 
-if ($args.Length -eq 0)
+echo "Press enter to continue."
+while ($true)
 {
-	echo "Press enter to continue."
-	while ($true)
+	if ([System.Console]::KeyAvailable)
 	{
-		if ([System.Console]::KeyAvailable)
-		{
-			break
-		}
-		Start-Sleep -Milliseconds 50
+		break
 	}
+	Start-Sleep -Milliseconds 50
 }
