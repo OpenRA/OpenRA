@@ -84,7 +84,6 @@
     <Compile Include="Effects\AirstrikePowerASEffect.cs" />
     <Compile Include="Graphics\RadBeamRenderable.cs" />
     <Compile Include="Lint\CheckSpawnActorWarheads.cs" />
-    <Compile Include="Lint\CheckTargetHealthRadiusAS.cs" />
     <Compile Include="Projectiles\AthenaProjectile.cs" />
     <Compile Include="Projectiles\InstantExplode.cs" />
     <Compile Include="Projectiles\RadBeam.cs" />

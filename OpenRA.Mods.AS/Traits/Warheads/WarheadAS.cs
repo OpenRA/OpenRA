@@ -9,6 +9,9 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Linq;
+using OpenRA.GameRules;
+using OpenRA.Mods.Common;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Mods.Common.Warheads;
 using OpenRA.Traits;
@@ -17,10 +20,11 @@ namespace OpenRA.Mods.AS.Warheads
 {
 	[Desc("AS warhead extension class." +
 		"These warheads check for the Air TargetType when detonated inair!")]
-	public abstract class WarheadAS : Warhead
+	public abstract class WarheadAS : Warhead, IRulesetLoaded<WeaponInfo>
 	{
-		[Desc("Search radius around impact for 'direct hit' check.")]
-		public readonly WDist TargetSearchRadius = new WDist(2048);
+		[Desc("Extra search radius beyond maximum spread. If set to zero (default), it will automatically scale to the largest health shape.",
+			"Custom overrides should not be necessary under normal circumstances.")]
+		public WDist VictimScanRadius = WDist.Zero;
 
 		public ImpactType GetImpactType(World world, CPos cell, WPos pos, Actor firedBy)
 		{
@@ -43,7 +47,7 @@ namespace OpenRA.Mods.AS.Warheads
 
 		public bool GetDirectHit(World world, CPos cell, WPos pos, Actor firedBy, bool checkTargetType = false)
 		{
-			foreach (var victim in world.FindActorsInCircle(pos, TargetSearchRadius))
+			foreach (var victim in world.FindActorsInCircle(pos, VictimScanRadius))
 			{
 				if (checkTargetType && !IsValidAgainst(victim, firedBy))
 					continue;
@@ -52,8 +56,9 @@ namespace OpenRA.Mods.AS.Warheads
 				if (healthInfo == null)
 					continue;
 
-				// If the impact position is within any actor's HitShape, we have a direct hit
-				if (healthInfo.Shape.DistanceFromEdge(pos, victim).Length <= 0)
+				// If the impact position is within any HitShape, we have a direct hit
+				var activeShapes = victim.TraitsImplementing<HitShape>().Where(Exts.IsTraitEnabled);
+				if (activeShapes.Any(i => i.Info.Type.DistanceFromEdge(pos, victim).Length <= 0))
 					return true;
 			}
 
@@ -84,6 +89,12 @@ namespace OpenRA.Mods.AS.Warheads
 			}
 
 			return validImpact;
+		}
+
+		void IRulesetLoaded<WeaponInfo>.RulesetLoaded(Ruleset rules, WeaponInfo info)
+		{
+			if (VictimScanRadius == WDist.Zero)
+				VictimScanRadius = Util.MinimumRequiredVictimScanRadius(rules);
 		}
 	}
 }
