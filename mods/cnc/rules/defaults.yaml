@@ -881,6 +881,7 @@
 		DestroyedSounds: xplobig4.aud
 	ScriptTriggers:
 	BodyOrientation:
+		QuantizedFacings: 1
 	HitShape:
 
 ^Crate:
