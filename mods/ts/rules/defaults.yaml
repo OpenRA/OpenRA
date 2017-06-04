@@ -362,6 +362,7 @@
 
 ^OldBase:
 	Inherits: ^CivBuilding
+	Inherits@SHAPE: ^2x2Shape
 	Building:
 		Footprint: xx xx
 		Dimensions: 2, 2
