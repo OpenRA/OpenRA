@@ -190,6 +190,7 @@ NAOBEL:
 	Inherits: ^Defense
 	Inherits@IDISABLE: ^DisabledOverlay
 	Inherits@AUTOTARGET: ^AutoTargetGround
+	Inherits@SHAPE: ^2x2Shape
 	Valued:
 		Cost: 1500
 	Tooltip:
@@ -273,6 +274,9 @@ NASAM:
 NASTLH:
 	Inherits: ^Building
 	Inherits@IDISABLED: ^DisabledOverlay
+	Inherits@SHAPE: ^3x2Shape
+	HitShape:
+		TargetableOffsets: 250,0,0, 600,-864,0
 	Valued:
 		Cost: 2500
 	Tooltip:
@@ -283,7 +287,7 @@ NASTLH:
 		Prerequisites: proc, natech, ~structures.nod, ~techlevel.high
 		Description: Generates a cloaking field\nto hide your forces from the enemy.
 	Building:
-		Footprint: xxx xxx
+		Footprint: xxx XXX
 		Dimensions: 3,2
 	Health:
 		HP: 600
@@ -320,6 +324,7 @@ NASTLH:
 NAMISL:
 	Inherits: ^Building
 	Inherits@IDISABLE: ^DisabledOverlay
+	Inherits@SHAPE: ^2x2Shape
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 180
@@ -378,6 +383,10 @@ NAMISL:
 
 NAWAST:
 	Inherits: ^Building
+	HitShape:
+		Type: Rectangle
+			TopLeft: -1536, -1536
+			BottomRight: 512, 1536
 	Valued:
 		Cost: 1600
 	Tooltip:
@@ -389,7 +398,7 @@ NAWAST:
 		BuildLimit: 1
 		Description: Processes Veins\ninto useable resources.\nMaximum 1 can be built.
 	Building:
-		Footprint: =x= xx= =x=
+		Footprint: Xx= xx= Xx=
 		Dimensions: 3,3
 	Selectable:
 		Bounds: 100, 60, 5, -5

@@ -1,6 +1,7 @@
 NAPULS:
 	Inherits: ^Defense
 	Inherits@IDISABLE: ^DisabledOverlay
+	Inherits@SHAPE: ^2x2Shape
 	Valued:
 		Cost: 1000
 	Tooltip:

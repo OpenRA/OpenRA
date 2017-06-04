@@ -2,6 +2,7 @@ NAPOWR:
 	Inherits: ^Building
 	Inherits@IDISABLE: ^DisabledOverlay
 	Inherits@POWER_OUTAGE: ^DisabledByPowerOutage
+	Inherits@SHAPE: ^2x2Shape
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 20
@@ -41,6 +42,7 @@ NAAPWR:
 	Inherits: ^Building
 	Inherits@IDISABLE: ^DisabledOverlay
 	Inherits@POWER_OUTAGE: ^DisabledByPowerOutage
+	Inherits@SHAPE: ^2x3Shape
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 120
@@ -79,6 +81,7 @@ NAAPWR:
 
 NAHAND:
 	Inherits: ^Building
+	Inherits@SHAPE: ^3x2Shape
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 40
@@ -134,6 +137,7 @@ NAHAND:
 
 NAWEAP:
 	Inherits: ^Building
+	Inherits@SHAPE: ^4x3FactoryWithBibShape
 	Valued:
 		Cost: 2000
 	Tooltip:
@@ -146,7 +150,7 @@ NAWEAP:
 		Prerequisites: proc, ~structures.nod, ~techlevel.low
 		Description: Produces vehicles.
 	Building:
-		Footprint: xxx= xxx= xxx=
+		Footprint: xxX= xxX= xxX=
 		Dimensions: 4,3
 	Selectable:
 		Bounds: 149, 80, -3, -10
@@ -193,6 +197,7 @@ NAWEAP:
 
 NAHPAD:
 	Inherits: ^Building
+	Inherits@SHAPE: ^2x2Shape
 	Valued:
 		Cost: 500
 	Tooltip:
@@ -250,6 +255,7 @@ NAHPAD:
 NARADR:
 	Inherits: ^Building
 	Inherits@IDISABLED: ^DisabledOverlay
+	Inherits@SHAPE: ^2x2Shape
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 90
@@ -298,6 +304,7 @@ NARADR:
 NATECH:
 	Inherits: ^Building
 	Inherits@IDISABLED: ^DisabledOverlay
+	Inherits@SHAPE: ^2x2Shape
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 160
@@ -334,6 +341,9 @@ NATECH:
 NATMPL:
 	Inherits: ^Building
 	Inherits@IDISABLED: ^DisabledOverlay
+	Inherits@SHAPE: ^4x3Shape
+	HitShape:
+		TargetableOffsets: -1280,363,0
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 180
@@ -346,7 +356,7 @@ NATMPL:
 		Name: Temple of Nod
 	Building:
 		Adjacent: 3
-		Footprint: xxxx xxxx xxxx
+		Footprint: xxxx xxxx xxxX
 		Dimensions: 4,3
 	Selectable:
 		Bounds: 134, 120, 12, -12
