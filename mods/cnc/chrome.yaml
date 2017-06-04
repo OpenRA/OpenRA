@@ -519,9 +519,87 @@ order-icons: chrome.png
 	beacon: 400,48,16,16
 	beacon-disabled: 400,64,16,16
 	beacon-active: 400,80,16,16
-	stats: 480,96,16,16
-	stats-disabled: 480,112,16,16
-	stats-active: 480,128,16,16
+	stats: 464,96,16,16
+	stats-disabled: 480,96,16,16
+	stats-active: 496,96,16,16
+
+command-icons: chrome.png
+	attack-move: 320,128,24,24
+	attack-move-disabled: 320,152,24,24
+	force-move: 344,128,24,24
+	force-move-disabled: 344,152,24,24
+	force-attack: 368,128,24,24
+	force-attack-disabled: 368,152,24,24
+	guard: 392,128,24,24
+	guard-disabled: 392,152,24,24
+	deploy: 416,128,24,24
+	deploy-disabled: 416,152,24,24
+	scatter: 440,128,24,24
+	scatter-disabled: 440,152,24,24
+	stop: 464,128,24,24
+	stop-disabled: 464,152,24,24
+	queue-orders: 488,128,24,24
+	queue-orders-disabled: 488,152,24,24
+
+stance-icons: chrome.png
+	attack-anything: 320,176,16,16
+	attack-anything-disabled: 336,176,16,16
+	attack-anything-active: 352,176,16,16
+	defend: 368,176,16,16
+	defend-disabled: 384,176,16,16
+	defend-active: 400,176,16,16
+	return-fire: 416,176,16,16
+	return-fire-disabled: 432,176,16,16
+	return-fire-active: 448,176,16,16
+	hold-fire: 464,176,16,16
+	hold-fire-disabled: 480,176,16,16
+	hold-fire-active: 496,176,16,16
 
 dropdown: chrome.png
-    separator: 64,1,1,19
+	separator: 64,1,1,19
+
+command-button: chrome.png
+
+command-button-hover: chrome.png
+	background: 2,130,60,60
+
+command-button-disabled: chrome.png
+
+command-button-pressed: chrome.png
+	background: 66,194,60,60
+
+command-button-highlighted: chrome.png
+	background: 257,129,30,30
+
+command-button-highlighted-hover: chrome.png
+	background: 289,129,30,30
+
+command-button-highlighted-pressed: chrome.png
+	background: 257,161,30,30
+
+command-button-highlighted-disabled: chrome.png
+	background: 289,161,30,30
+
+stance-button: chrome.png
+	background: 2,194,60,60
+
+stance-button-hover: chrome.png
+	background: 2,130,60,60
+
+stance-button-disabled: chrome.png
+	background: 66,130,60,60
+
+stance-button-pressed: chrome.png
+	background: 66,194,60,60
+
+stance-button-highlighted: chrome.png
+	background: 257,129,30,30
+
+stance-button-highlighted-hover: chrome.png
+	background: 289,129,30,30
+
+stance-button-highlighted-pressed: chrome.png
+	background: 257,161,30,30
+
+stance-button-highlighted-disabled: chrome.png
+	background: 289,161,30,30
