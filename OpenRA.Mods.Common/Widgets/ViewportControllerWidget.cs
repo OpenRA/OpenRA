@@ -35,8 +35,7 @@ namespace OpenRA.Mods.Common.Widgets
 		public FrozenActor FrozenActorTooltip { get; private set; }
 		public ResourceType ResourceTooltip { get; private set; }
 
-		public int EdgeScrollThreshold = 15;
-		public int EdgeCornerScrollThreshold = 35;
+		public int EdgeScrollThreshold = 5;
 
 		int2? joystickScrollStart, joystickScrollEnd;
 		int2? standardScrollStart;
