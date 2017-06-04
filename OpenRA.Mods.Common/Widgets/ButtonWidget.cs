@@ -27,6 +27,8 @@ namespace OpenRA.Mods.Common.Widgets
 			set { GetKey = _ => value; }
 		}
 
+		public bool DisableKeyRepeat = false;
+
 		[Translate] public string Text = "";
 		public string Background = "button";
 		public bool Depressed = false;
@@ -133,7 +135,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public override bool HandleKeyPress(KeyInput e)
 		{
-			if (Hotkey.FromKeyInput(e) != Key || e.Event != KeyInputEvent.Down)
+			if (Hotkey.FromKeyInput(e) != Key || e.Event != KeyInputEvent.Down || (DisableKeyRepeat && e.IsRepeat))
 				return false;
 
 			if (!IsDisabled())
