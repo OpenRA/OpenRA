@@ -812,6 +812,9 @@
     <Compile Include="FileSystem\InstallShieldPackage.cs" />
     <Compile Include="FileFormats\Blast.cs" />
     <Compile Include="Orders\ForceModifiersOrderGenerator.cs" />
+    <Compile Include="Widgets\Logic\Ingame\CommandBarLogic.cs" />
+    <Compile Include="Widgets\Logic\Ingame\StanceSelectorLogic.cs" />
+    <Compile Include="Widgets\Logic\ButtonTooltipWithDescHighlightLogic.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="AfterBuild">
