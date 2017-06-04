@@ -65,5 +65,12 @@ namespace OpenRA.Mods.Common.Scripting
 
 		[Desc("Whether the actor can move (false if immobilized).")]
 		public bool IsMobile { get { return !mobile.IsTraitDisabled; } }
+
+		[ScriptActorPropertyActivity]
+		[Desc("Makes the actor turn in direction")]
+		public void Turn(int facing)
+		{
+			Self.QueueActivity(new Turn(Self, facing));
+		}
 	}
 }
