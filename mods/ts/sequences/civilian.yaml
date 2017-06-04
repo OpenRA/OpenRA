@@ -359,9 +359,9 @@ cacrsh05:
 cahosp:
 	Defaults:
 		DepthSprite: isodepth.shp
-		DepthSpriteOffset: 12, 0
+		DepthSpriteOffset: 15, 0
 		UseTilesetCode: true
-		Offset: 12, -42, 42
+		Offset: 15, -36, 36
 	idle:
 		ShadowStart: 3
 	damaged-idle:
@@ -677,7 +677,7 @@ namntk:
 ntpyra:
 	Defaults:
 		DepthSprite: isodepth.shp
-		Offset: 0, -48, 48
+		Offset: 0, -42, 42
 	idle:
 		ShadowStart: 3
 	damaged-idle:
