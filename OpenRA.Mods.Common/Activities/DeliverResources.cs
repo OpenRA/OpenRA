@@ -69,7 +69,7 @@ namespace OpenRA.Mods.Common.Activities
 			else
 			{
 				var dock = proc.TraitsImplementing<Dock>().First();
-				proc.Trait<Refinery>().QueueOnDockActivity(self, null, dock);
+				proc.Trait<Refinery>().QueueOnDockActivity(self, dock);
 				Queue(cont);
 			}
 

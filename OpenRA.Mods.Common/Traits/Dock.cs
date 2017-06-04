@@ -26,7 +26,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly CVec ExitOffset = CVec.Zero;
 
 		[Desc("Override Offset value and use center of the host actor as the dock offset?")]
-		public readonly bool Center = true;
+		public readonly bool Center = false;
 
 		[Desc("Just a waiting slot, not a dock that allows reloading / unloading / fixing")]
 		public readonly bool WaitingPlace = false;

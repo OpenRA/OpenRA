@@ -23,6 +23,10 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Are any of the docks lie outside the building footprint? (and needs obstacle checking)")]
 		public readonly bool ExternalDocks = false;
 
+		[Desc("Dock next to the actor like RA1 naval yard?",
+			"Although dock position is ignored, one dummy dock is still required to determine DockAngle and stuff when docking.")]
+		public readonly bool DockNextToActor = false;
+
 		[Desc("Enable deadlock detection")]
 		public readonly bool DeadlockDetectionEnabled = true;
 
@@ -98,6 +102,12 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void ReserveDock(Actor self, Actor client, Activity postUndockActivity)
 		{
+			if (info.DockNextToActor)
+			{
+				ServeDockNext(self, client, postUndockActivity);
+				return;
+			}
+
 			// First, put the new client in the queue then process it.
 			if (!queue.Contains(client))
 			{
@@ -232,6 +242,17 @@ namespace OpenRA.Mods.Common.Traits
 			ProcessQueue(self, null); // notify queue
 		}
 
+		void ServeDockNext(Actor self, Actor client, Activity postUndockActivity)
+		{
+			// Since there is 0 tolerance about distance, we WILL arrive at the dock (or we get stuck haha)
+			client.QueueActivity(new MoveAdjacentTo(client, Target.FromActor(self)));
+
+			// resource transfer activities are queued by OnDock.
+			self.Trait<IAcceptDock>().QueueOnDockActivity(client, self.Trait<Dock>());
+
+			client.QueueActivity(postUndockActivity);
+		}
+
 		void ServeHead(Actor self, Actor head, Dock serviceDock)
 		{
 			var dockClient = head.Trait<DockClient>();
@@ -260,7 +281,7 @@ namespace OpenRA.Mods.Common.Traits
 			head.QueueActivity(new CallFunc(() => OnArrival(head, serviceDock)));
 
 			// resource transfer activities are queued by OnDock.
-			self.Trait<IAcceptDock>().QueueOnDockActivity(head, dockClient.PostUndockActivity, serviceDock);
+			self.Trait<IAcceptDock>().QueueOnDockActivity(head, serviceDock);
 
 			head.QueueActivity(new CallFunc(() => OnUndock(head, serviceDock)));
 

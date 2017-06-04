@@ -134,7 +134,7 @@ namespace OpenRA.Mods.Common.Traits
 				harv.Trait.UnlinkProc(harv.Actor, self);
 		}
 
-		public void QueueOnDockActivity(Actor harv, Activity postUndockActivity, Dock dock)
+		public void QueueOnDockActivity(Actor harv, Dock dock)
 		{
 			if (!preventDock)
 			{
