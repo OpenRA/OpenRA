@@ -158,7 +158,7 @@ Container@MUSIC_PANEL:
 					X: 15
 					Y: 120
 					Width: 330
-					Height: 80
+					Height: 60
 					Visible: false
 					Children:
 						Label@TITLE:
@@ -178,13 +178,7 @@ Container@MUSIC_PANEL:
 							Width: PARENT_RIGHT - 24
 							Height: 25
 							Align: Center
-							Text: from the "Manage Content" menu
-						Label@DESCC:
-							Y: 60
-							Width: PARENT_RIGHT - 24
-							Height: 25
-							Align: Center
-							Text: in the mod chooser.
+							Text: from the "Manage Content" menu.
 		Button@BACK_BUTTON:
 			Key: escape
 			X: 0

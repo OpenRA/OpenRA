@@ -145,12 +145,11 @@ namespace OpenRA.Traits
 						if (!actor.Targetables.Any(Exts.IsTraitEnabled))
 							return new[] { actor.CenterPosition };
 
-						var targetablePositions = actor.TraitOrDefault<ITargetablePositions>();
-						if (targetablePositions != null)
+						var targetablePositions = actor.TraitsImplementing<ITargetablePositions>().Where(Exts.IsTraitEnabled);
+						if (targetablePositions.Any())
 						{
-							var positions = targetablePositions.TargetablePositions(actor);
-							if (positions.Any())
-								return positions;
+							var target = this;
+							return targetablePositions.SelectMany(tp => tp.TargetablePositions(target.actor));
 						}
 
 						return new[] { actor.CenterPosition };

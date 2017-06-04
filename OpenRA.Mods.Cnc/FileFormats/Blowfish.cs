@@ -9,7 +9,7 @@
  */
 #endregion
 
-namespace OpenRA.FileFormats
+namespace OpenRA.Mods.Cnc.FileFormats
 {
 	class Blowfish
 	{

@@ -651,8 +651,6 @@ Ant:
 		VisualBounds: 30,30,0,-2
 	Health:
 		HP: 750
-		Shape: Circle
-			Radius: 469
 	Mobile:
 		Speed: 99
 		TurnSpeed: 12
@@ -671,3 +669,6 @@ Ant:
 		UseDeathTypeSuffix: false
 	Voiced:
 		VoiceSet: AntVoice
+	HitShape:
+		Type: Circle
+			Radius: 469

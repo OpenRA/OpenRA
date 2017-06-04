@@ -679,6 +679,37 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				// Added HitShape trait
+				if (engineVersion < 20170531)
+				{
+					var hitShapeNode = new MiniYamlNode("HitShape", "");
+
+					// Moved and renamed Health.Shape to HitShape.Type
+					var health = node.Value.Nodes.FirstOrDefault(n => n.Key == "Health");
+					if (health != null)
+					{
+						var shape = health.Value.Nodes.FirstOrDefault(n => n.Key == "Shape");
+						if (shape != null)
+						{
+							RenameNodeKey(shape, "Type");
+							hitShapeNode.Value.Nodes.Add(shape);
+							node.Value.Nodes.Add(hitShapeNode);
+							health.Value.Nodes.Remove(shape);
+						}
+						else
+							node.Value.Nodes.Add(hitShapeNode);
+					}
+
+					// Moved ITargetablePositions from Building to HitShape
+					var building = node.Value.Nodes.FirstOrDefault(n => n.Key == "Building");
+					var hitShape = node.Value.Nodes.FirstOrDefault(n => n.Key == "HitShape");
+					if (building != null && hitShape == null)
+					{
+						hitShapeNode.Value.Nodes.Add(new MiniYamlNode("UseOccupiedCellsOffsets", "true"));
+						node.Value.Nodes.Add(hitShapeNode);
+					}
+				}
+
 				UpgradeActorRules(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 

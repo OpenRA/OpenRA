@@ -13,6 +13,7 @@ using System;
 using System.Drawing;
 using System.Linq;
 using OpenRA.Graphics;
+using OpenRA.Mods.Common.Graphics;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.HitShapes
@@ -66,7 +67,10 @@ namespace OpenRA.Mods.Common.HitShapes
 			quadrantSize = (BottomRight - TopLeft) / 2;
 			center = TopLeft + quadrantSize;
 
-			OuterRadius = new WDist(Math.Max(TopLeft.Length, BottomRight.Length));
+			var topRight = new int2(BottomRight.X, TopLeft.Y);
+			var bottomLeft = new int2(TopLeft.X, BottomRight.Y);
+			var corners = new[] { TopLeft, BottomRight, topRight, bottomLeft };
+			OuterRadius = new WDist(corners.Select(x => x.Length).Max());
 
 			combatOverlayVertsTop = new WVec[]
 			{
@@ -139,6 +143,8 @@ namespace OpenRA.Mods.Common.HitShapes
 				wcr.DrawPolygon(vertsTop.ToArray(), 1, Color.Yellow);
 				wcr.DrawPolygon(vertsBottom.ToArray(), 1, Color.Yellow);
 			}
+
+			RangeCircleRenderable.DrawRangeCircle(wr, actorPos, OuterRadius, 1, Color.LimeGreen, 0, Color.LimeGreen);
 		}
 	}
 }

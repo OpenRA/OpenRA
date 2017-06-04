@@ -11,7 +11,7 @@
 
 using System;
 using System.IO;
-using OpenRA.FileSystem;
+using OpenRA.Mods.Common.FileSystem;
 
 namespace OpenRA.Mods.Common.UtilityCommands
 {

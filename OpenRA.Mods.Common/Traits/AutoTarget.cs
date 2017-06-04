@@ -17,7 +17,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("The actor will automatically engage the enemy when it is in range.")]
-	public class AutoTargetInfo : ConditionalTraitInfo, Requires<AttackBaseInfo>, UsesInit<StanceInit>
+	public class AutoTargetInfo : ConditionalTraitInfo, IRulesetLoaded, Requires<AttackBaseInfo>, UsesInit<StanceInit>
 	{
 		[Desc("It will try to hunt down the enemy if it is not set to defend.")]
 		public readonly bool AllowMovement = true;
@@ -31,6 +31,25 @@ namespace OpenRA.Mods.Common.Traits
 
 		[Desc("Possible values are HoldFire, ReturnFire, Defend and AttackAnything. Used for human players.")]
 		public readonly UnitStance InitialStance = UnitStance.Defend;
+
+		[GrantedConditionReference]
+		[Desc("The condition to grant to self while in the HoldFire stance.")]
+		public readonly string HoldFireCondition = null;
+
+		[GrantedConditionReference]
+		[Desc("The condition to grant to self while in the ReturnFire stance.")]
+		public readonly string ReturnFireCondition = null;
+
+		[GrantedConditionReference]
+		[Desc("The condition to grant to self while in the Defend stance.")]
+		public readonly string DefendCondition = null;
+
+		[GrantedConditionReference]
+		[Desc("The condition to grant to self while in the AttackAnything stance.")]
+		public readonly string AttackAnythingCondition = null;
+
+		[FieldLoader.Ignore]
+		public readonly Dictionary<UnitStance, string> ConditionByStance = new Dictionary<UnitStance, string>();
 
 		[Desc("Allow the player to change the unit stance.")]
 		public readonly bool EnableStances = true;
@@ -46,22 +65,66 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly bool TargetWhenDamaged = true;
 
 		public override object Create(ActorInitializer init) { return new AutoTarget(init, this); }
+
+		public override void RulesetLoaded(Ruleset rules, ActorInfo info)
+		{
+			base.RulesetLoaded(rules, info);
+
+			if (HoldFireCondition != null)
+				ConditionByStance[UnitStance.HoldFire] = HoldFireCondition;
+
+			if (ReturnFireCondition != null)
+				ConditionByStance[UnitStance.ReturnFire] = ReturnFireCondition;
+
+			if (DefendCondition != null)
+				ConditionByStance[UnitStance.Defend] = DefendCondition;
+
+			if (AttackAnythingCondition != null)
+				ConditionByStance[UnitStance.AttackAnything] = AttackAnythingCondition;
+		}
 	}
 
 	public enum UnitStance { HoldFire, ReturnFire, Defend, AttackAnything }
 
-	public class AutoTarget : ConditionalTrait<AutoTargetInfo>, INotifyIdle, INotifyDamage, ITick, IResolveOrder, ISync
+	public class AutoTarget : ConditionalTrait<AutoTargetInfo>, INotifyIdle, INotifyDamage, ITick, IResolveOrder, ISync, INotifyCreated
 	{
 		readonly IEnumerable<AttackBase> activeAttackBases;
 		readonly AttackFollow[] attackFollows;
 		[Sync] int nextScanTime = 0;
 
-		public UnitStance Stance;
+		public UnitStance Stance { get { return stance; } }
+
 		[Sync] public Actor Aggressor;
 		[Sync] public Actor TargetedActor;
 
 		// NOT SYNCED: do not refer to this anywhere other than UI code
 		public UnitStance PredictedStance;
+
+		UnitStance stance;
+		ConditionManager conditionManager;
+		int conditionToken = ConditionManager.InvalidConditionToken;
+
+		public void SetStance(Actor self, UnitStance value)
+		{
+			if (stance == value)
+				return;
+
+			stance = value;
+			ApplyStanceCondition(self);
+		}
+
+		void ApplyStanceCondition(Actor self)
+		{
+			if (conditionManager == null)
+				return;
+
+			if (conditionToken != ConditionManager.InvalidConditionToken)
+				conditionToken = conditionManager.RevokeCondition(self, conditionToken);
+
+			string condition;
+			if (Info.ConditionByStance.TryGetValue(stance, out condition))
+				conditionToken = conditionManager.GrantCondition(self, condition);
+		}
 
 		public AutoTarget(ActorInitializer init, AutoTargetInfo info)
 			: base(info)
@@ -70,18 +133,24 @@ namespace OpenRA.Mods.Common.Traits
 			activeAttackBases = self.TraitsImplementing<AttackBase>().ToArray().Where(Exts.IsTraitEnabled);
 
 			if (init.Contains<StanceInit>())
-				Stance = init.Get<StanceInit, UnitStance>();
+				stance = init.Get<StanceInit, UnitStance>();
 			else
-				Stance = self.Owner.IsBot || !self.Owner.Playable ? info.InitialStanceAI : info.InitialStance;
+				stance = self.Owner.IsBot || !self.Owner.Playable ? info.InitialStanceAI : info.InitialStance;
 
-			PredictedStance = Stance;
+			PredictedStance = stance;
 			attackFollows = self.TraitsImplementing<AttackFollow>().ToArray();
+		}
+
+		void INotifyCreated.Created(Actor self)
+		{
+			conditionManager = self.TraitOrDefault<ConditionManager>();
+			ApplyStanceCondition(self);
 		}
 
 		public void ResolveOrder(Actor self, Order order)
 		{
 			if (order.OrderString == "SetUnitStance" && Info.EnableStances)
-				Stance = (UnitStance)order.ExtraData;
+				SetStance(self, (UnitStance)order.ExtraData);
 		}
 
 		public void Damaged(Actor self, AttackInfo e)

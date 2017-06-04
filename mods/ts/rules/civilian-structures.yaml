@@ -681,10 +681,6 @@ CACRSH01:
 	Inherits: ^Decoration
 	Tooltip:
 		Name: Crash Site
-	Armor:
-		Type: concrete
-	Health:
-		HP: 400
 
 CACRSH02:
 	Inherits: CACRSH01

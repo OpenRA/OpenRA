@@ -173,6 +173,7 @@
 	RevealOnDeath:
 		Duration: 100
 		Radius: 2c512
+	HitShape:
 
 ^Tank:
 	Inherits: ^Vehicle
@@ -192,6 +193,7 @@
 	AutoTargetIgnore:
 	ScriptTriggers:
 	WithFacingSpriteBody:
+	HitShape:
 
 ^VehicleHusk:
 	Inherits: ^Husk
@@ -229,6 +231,7 @@
 	Tooltip:
 		Name: Destroyed Tower
 	ScriptTriggers:
+	HitShape:
 
 ^Infantry:
 	Inherits@1: ^ExistsInWorld
@@ -236,8 +239,6 @@
 	Inherits@3: ^SpriteActor
 	Huntable:
 	Health:
-		Shape: Circle
-			Radius: 96
 	Armor:
 		Type: none
 	RevealsShroud:
@@ -303,6 +304,9 @@
 	RevealOnFire:
 	RevealOnDeath:
 		Duration: 100
+	HitShape:
+		Type: Circle
+			Radius: 96
 
 ^Plane:
 	Inherits@1: ^ExistsInWorld
@@ -318,6 +322,7 @@
 	DrawLineToTarget:
 	WithFacingSpriteBody:
 	WithShadow:
+	HitShape:
 
 ^Building:
 	Inherits@1: ^ExistsInWorld
@@ -331,6 +336,8 @@
 		VisibilityType: CenterPosition
 	Targetable:
 		TargetTypes: Ground, C4, Structure
+	HitShape:
+		UseOccupiedCellsOffsets: true
 	Building:
 		Dimensions: 1,1
 		Footprint: x

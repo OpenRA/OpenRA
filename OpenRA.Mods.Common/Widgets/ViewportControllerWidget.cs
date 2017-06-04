@@ -368,99 +368,95 @@ namespace OpenRA.Mods.Common.Widgets
 			var key = Hotkey.FromKeyInput(e);
 			var ks = Game.Settings.Keys;
 
-			if (key == ks.MapScrollUp)
+			Func<Hotkey, ScrollDirection, bool> handleMapScrollKey = (hotkey, scrollDirection) =>
 			{
-				keyboardDirections = keyboardDirections.Set(ScrollDirection.Up, e.Event == KeyInputEvent.Down);
-				return true;
-			}
+				var isHotkey = false;
+				if (key.Key == hotkey.Key)
+				{
+					isHotkey = key == hotkey;
+					keyboardDirections = keyboardDirections.Set(scrollDirection, e.Event == KeyInputEvent.Down && (isHotkey || hotkey.Modifiers == Modifiers.None));
+				}
 
-			if (key == ks.MapScrollDown)
-			{
-				keyboardDirections = keyboardDirections.Set(ScrollDirection.Down, e.Event == KeyInputEvent.Down);
-				return true;
-			}
+				return isHotkey;
+			};
 
-			if (key == ks.MapScrollLeft)
-			{
-				keyboardDirections = keyboardDirections.Set(ScrollDirection.Left, e.Event == KeyInputEvent.Down);
+			if (handleMapScrollKey(ks.MapScrollUp, ScrollDirection.Up) || handleMapScrollKey(ks.MapScrollDown, ScrollDirection.Down)
+				|| handleMapScrollKey(ks.MapScrollLeft, ScrollDirection.Left) || handleMapScrollKey(ks.MapScrollRight, ScrollDirection.Right))
 				return true;
-			}
 
-			if (key == ks.MapScrollRight)
-			{
-				keyboardDirections = keyboardDirections.Set(ScrollDirection.Right, e.Event == KeyInputEvent.Down);
-				return true;
-			}
+			if (e.Event != KeyInputEvent.Down)
+				return false;
 
 			if (key == ks.MapPushTop)
 			{
 				worldRenderer.Viewport.Center(new WPos(worldRenderer.Viewport.CenterPosition.X, 0, 0));
-				return false;
+				return true;
 			}
 
 			if (key == ks.MapPushBottom)
 			{
 				worldRenderer.Viewport.Center(new WPos(worldRenderer.Viewport.CenterPosition.X, worldRenderer.World.Map.ProjectedBottomRight.Y, 0));
-				return false;
+				return true;
 			}
 
 			if (key == ks.MapPushLeftEdge)
 			{
 				worldRenderer.Viewport.Center(new WPos(0, worldRenderer.Viewport.CenterPosition.Y, 0));
-				return false;
+				return true;
 			}
 
 			if (key == ks.MapPushRightEdge)
 			{
 				worldRenderer.Viewport.Center(new WPos(worldRenderer.World.Map.ProjectedBottomRight.X, worldRenderer.Viewport.CenterPosition.Y, 0));
+				return true;
 			}
 
 			if (key == ks.ViewPortBookmarkSaveSlot1)
 			{
 				SaveCurrentPositionToBookmark(0);
-				return false;
+				return true;
 			}
 
 			if (key == ks.ViewPortBookmarkSaveSlot2)
 			{
 				SaveCurrentPositionToBookmark(1);
-				return false;
+				return true;
 			}
 
 			if (key == ks.ViewPortBookmarkSaveSlot3)
 			{
 				SaveCurrentPositionToBookmark(2);
-				return false;
+				return true;
 			}
 
 			if (key == ks.ViewPortBookmarkSaveSlot4)
 			{
 				SaveCurrentPositionToBookmark(3);
-				return false;
+				return true;
 			}
 
 			if (key == ks.ViewPortBookmarkUseSlot1)
 			{
 				JumpToSavedBookmark(0);
-				return false;
+				return true;
 			}
 
 			if (key == ks.ViewPortBookmarkUseSlot2)
 			{
 				JumpToSavedBookmark(1);
-				return false;
+				return true;
 			}
 
 			if (key == ks.ViewPortBookmarkUseSlot3)
 			{
 				JumpToSavedBookmark(2);
-				return false;
+				return true;
 			}
 
 			if (key == ks.ViewPortBookmarkUseSlot4)
 			{
 				JumpToSavedBookmark(3);
-				return false;
+				return true;
 			}
 
 			return false;

@@ -180,14 +180,14 @@ namespace OpenRA.Mods.Common
 		// TODO: Investigate caching this or moving it to ActorMapInfo
 		public static WDist MinimumRequiredVictimScanRadius(Ruleset rules)
 		{
-			return rules.Actors.SelectMany(a => a.Value.TraitInfos<HealthInfo>()).Max(h => h.Shape.OuterRadius);
+			return rules.Actors.SelectMany(a => a.Value.TraitInfos<HitShapeInfo>()).Max(h => h.Type.OuterRadius);
 		}
 
 		// TODO: Investigate caching this or moving it to ActorMapInfo
 		public static WDist MinimumRequiredBlockerScanRadius(Ruleset rules)
 		{
 			return rules.Actors.Where(a => a.Value.HasTraitInfo<IBlocksProjectilesInfo>())
-				.SelectMany(a => a.Value.TraitInfos<HealthInfo>()).Max(h => h.Shape.OuterRadius);
+				.SelectMany(a => a.Value.TraitInfos<HitShapeInfo>()).Max(h => h.Type.OuterRadius);
 		}
 	}
 }

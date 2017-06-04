@@ -9,7 +9,7 @@
  */
 #endregion
 
-namespace OpenRA.FileFormats
+namespace OpenRA.Mods.Cnc.FileFormats
 {
 	/// <summary>
 	/// Static class that uses a lookup table to calculates CRC32

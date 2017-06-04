@@ -9,10 +9,9 @@
  */
 #endregion
 
-using System.Collections.Generic;
 using System.IO;
 
-namespace OpenRA.FileSystem
+namespace OpenRA.Mods.Cnc.FileFormats
 {
 	public class IdxEntry
 	{

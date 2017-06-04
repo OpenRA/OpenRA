@@ -69,8 +69,9 @@ namespace OpenRA.Mods.Common.Widgets
 				if (key == ks.DeployKey)
 					return PerformDeploy();
 
-				if (key == ks.StanceCycleKey)
-					return PerformStanceCycle();
+				var stanceKeyIdx = new Hotkey[] { ks.StanceHoldFireKey, ks.StanceReturnFireKey, ks.StanceDefendKey, ks.StanceAttackAnythingKey }.IndexOf(key);
+				if (stanceKeyIdx > -1)
+					return SetUnitStance((UnitStance)stanceKeyIdx);
 
 				if (key == ks.GuardKey)
 					return PerformGuard();
@@ -129,36 +130,18 @@ namespace OpenRA.Mods.Common.Widgets
 			return true;
 		}
 
-		bool PerformStanceCycle()
+		bool SetUnitStance(UnitStance unitStance)
 		{
-			var actor = world.Selection.Actors
-				.Where(a => a.Owner == world.LocalPlayer && !a.Disposed)
-				.Select(a => Pair.New(a, a.TraitOrDefault<AutoTarget>()))
-				.FirstOrDefault(a => a.Second != null);
-
-			if (actor.First == null)
-				return true;
-
-			var ati = actor.First.Info.TraitInfoOrDefault<AutoTargetInfo>();
-			if (ati == null || !ati.EnableStances)
-				return false;
-
-			var stances = Enum<UnitStance>.GetValues();
-			var nextStance = stances.Concat(stances)
-				.SkipWhile(s => s != actor.Second.PredictedStance)
-				.Skip(1)
-				.First();
-
 			PerformKeyboardOrderOnSelection(a =>
 			{
 				var at = a.TraitOrDefault<AutoTarget>();
 				if (at != null)
-					at.PredictedStance = nextStance;
+					at.PredictedStance = unitStance;
 
-				return new Order("SetUnitStance", a, false) { ExtraData = (uint)nextStance };
+				return new Order("SetUnitStance", a, false) { ExtraData = (uint)unitStance };
 			});
 
-			Game.AddChatLine(Color.White, "Battlefield Control", "Unit stance set to: {0}".F(nextStance));
+			Game.AddChatLine(Color.White, "Battlefield Control", "Unit stance set to: {0}".F(unitStance));
 
 			return true;
 		}

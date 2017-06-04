@@ -134,6 +134,19 @@
     <Compile Include="UtilityCommands\ImportRedAlertLegacyMapCommand.cs" />
     <Compile Include="Traits\Infiltration\InfiltrateForDecoration.cs" />
     <Compile Include="TraitsInterfaces.cs" />
+    <Compile Include="FileSystem\BagFile.cs" />
+    <Compile Include="FileSystem\BigFile.cs" />
+    <Compile Include="FileSystem\MixFile.cs" />
+    <Compile Include="FileSystem\PackageEntry.cs" />
+    <Compile Include="FileSystem\Pak.cs" />
+    <Compile Include="UtilityCommands\ListMixContentsCommand.cs" />
+    <Compile Include="FileFormats\Blowfish.cs" />
+    <Compile Include="FileFormats\BlowfishKeyProvider.cs" />
+    <Compile Include="FileFormats\IdxEntry.cs" />
+    <Compile Include="FileFormats\IdxReader.cs" />
+    <Compile Include="FileFormats\XccGlobalDatabase.cs" />
+    <Compile Include="FileFormats\XccLocalDatabase.cs" />
+    <Compile Include="FileFormats\CRC32.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.Game\OpenRA.Game.csproj">

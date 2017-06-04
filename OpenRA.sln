@@ -134,6 +134,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Dune 2000 Lua scripts", "Du
 		mods\d2k\maps\ordos-02b\ordos02b-AI.lua = mods\d2k\maps\ordos-02b\ordos02b-AI.lua
 		mods\d2k\maps\ordos-03a\ordos03a.lua = mods\d2k\maps\ordos-03a\ordos03a.lua
 		mods\d2k\maps\ordos-03a\ordos03a-AI.lua = mods\d2k\maps\ordos-03a\ordos03a-AI.lua
+		mods\d2k\maps\ordos-03b\ordos03b.lua = mods\d2k\maps\ordos-03b\ordos03b.lua
+		mods\d2k\maps\ordos-03b\ordos03b-AI.lua = mods\d2k\maps\ordos-03b\ordos03b-AI.lua
 		mods\d2k\maps\ordos-04\ordos04.lua = mods\d2k\maps\ordos-04\ordos04.lua
 		mods\d2k\maps\ordos-04\ordos04-AI.lua = mods\d2k\maps\ordos-04\ordos04-AI.lua
 	EndProjectSection

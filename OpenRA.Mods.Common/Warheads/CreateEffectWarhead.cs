@@ -10,6 +10,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Linq;
 using OpenRA.GameRules;
 using OpenRA.Mods.Common.Effects;
 using OpenRA.Mods.Common.Traits;
@@ -88,12 +89,9 @@ namespace OpenRA.Mods.Common.Warheads
 				if (checkTargetType && !IsValidAgainst(victim, firedBy))
 					continue;
 
-				var healthInfo = victim.Info.TraitInfoOrDefault<HealthInfo>();
-				if (healthInfo == null)
-					continue;
-
-				// If the impact position is within any actor's HitShape, we have a direct hit
-				if (healthInfo.Shape.DistanceFromEdge(pos, victim).Length <= 0)
+				// If the impact position is within any HitShape, we have a direct hit
+				var activeShapes = victim.TraitsImplementing<HitShape>().Where(Exts.IsTraitEnabled);
+				if (activeShapes.Any(i => i.Info.Type.DistanceFromEdge(pos, victim).Length <= 0))
 					return true;
 			}
 

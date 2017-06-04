@@ -57,6 +57,8 @@ namespace OpenRA
 
 		public static GlobalChat GlobalChat;
 
+		public static string EngineVersion { get; private set; }
+
 		static Task discoverNat;
 
 		public static OrderManager JoinServer(string host, int port, string password, bool recordReplay = true)
@@ -245,6 +247,18 @@ namespace OpenRA
 		internal static void Initialize(Arguments args)
 		{
 			Console.WriteLine("Platform is {0}", Platform.CurrentPlatform);
+
+			// Load the engine version as early as possible so it can be written to exception logs
+			try
+			{
+				EngineVersion = File.ReadAllText(Platform.ResolvePath(Path.Combine(".", "VERSION"))).Trim();
+			}
+			catch { }
+
+			if (string.IsNullOrEmpty(EngineVersion))
+				EngineVersion = "Unknown";
+
+			Console.WriteLine("Engine version is {0}", EngineVersion);
 
 			// Special case handling of Game.Mod argument: if it matches a real filesystem path
 			// then we use this to override the mod search path, and replace it with the mod id

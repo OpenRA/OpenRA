@@ -40,6 +40,7 @@ CABHUT:
 		HP: 500
 	Armor:
 		Type: Concrete
+	HitShape:
 
 LOBRDG_A:
 	Inherits: ^LowBridge

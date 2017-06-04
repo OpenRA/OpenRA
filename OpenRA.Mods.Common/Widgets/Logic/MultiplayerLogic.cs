@@ -112,9 +112,16 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			Game.LoadWidget(null, "GLOBALCHAT_PANEL", widget.Get("GLOBALCHAT_ROOT"), new WidgetArgs());
 
 			lanGameLocations = new List<BeaconLocation>();
-			lanGameProbe = new Probe("OpenRALANGame");
-			lanGameProbe.BeaconsUpdated += locations => lanGameLocations = locations;
-			lanGameProbe.Start();
+			try
+			{
+				lanGameProbe = new Probe("OpenRALANGame");
+				lanGameProbe.BeaconsUpdated += locations => lanGameLocations = locations;
+				lanGameProbe.Start();
+			}
+			catch (Exception ex)
+			{
+				Log.Write("debug", "BeaconLib.Probe: " + ex.Message);
+			}
 
 			RefreshServerList();
 
@@ -355,7 +362,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			};
 
 			var queryURL = services.ServerList + "games?version={0}&mod={1}&modversion={2}".F(
-				Uri.EscapeUriString(Game.Mods["modcontent"].Metadata.Version),
+				Uri.EscapeUriString(Game.EngineVersion),
 				Uri.EscapeUriString(Game.ModData.Manifest.Id),
 				Uri.EscapeUriString(Game.ModData.Manifest.Metadata.Version));
 
@@ -626,6 +633,19 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				return true;
 
 			return false;
+		}
+
+		bool disposed;
+		protected override void Dispose(bool disposing)
+		{
+			if (disposing && !disposed)
+			{
+				disposed = true;
+				if (lanGameProbe != null)
+					lanGameProbe.Dispose();
+			}
+
+			base.Dispose(disposing);
 		}
 	}
 }
