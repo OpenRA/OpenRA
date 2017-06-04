@@ -856,6 +856,7 @@
 	AutoTargetIgnore:
 	ScriptTriggers:
 	BodyOrientation:
+		QuantizedFacings: 1
 	HitShape:
 
 ^Rock:
