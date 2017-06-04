@@ -54,6 +54,8 @@ namespace OpenRA.Mods.Common.Widgets
 		Lazy<TooltipContainerWidget> tooltipContainer;
 		[Translate] public string TooltipText;
 		public Func<string> GetTooltipText;
+		[Translate] public string TooltipDesc;
+		public Func<string> GetTooltipDesc;
 
 		// Equivalent to OnMouseUp, but without an input arg
 		public Action OnClick = () => { };
@@ -77,6 +79,7 @@ namespace OpenRA.Mods.Common.Widgets
 			IsDisabled = () => Disabled;
 			IsHighlighted = () => Highlighted;
 			GetTooltipText = () => TooltipText;
+			GetTooltipDesc = () => TooltipDesc;
 			tooltipContainer = Exts.Lazy(() =>
 				Ui.Root.Get<TooltipContainerWidget>(TooltipContainer));
 		}
@@ -115,6 +118,8 @@ namespace OpenRA.Mods.Common.Widgets
 			TooltipTemplate = other.TooltipTemplate;
 			TooltipText = other.TooltipText;
 			GetTooltipText = other.GetTooltipText;
+			TooltipDesc = other.TooltipDesc;
+			GetTooltipDesc = other.GetTooltipDesc;
 			TooltipContainer = other.TooltipContainer;
 			tooltipContainer = Exts.Lazy(() =>
 				Ui.Root.Get<TooltipContainerWidget>(TooltipContainer));
@@ -195,7 +200,7 @@ namespace OpenRA.Mods.Common.Widgets
 				return;
 
 			tooltipContainer.Value.SetTooltip(TooltipTemplate,
-				new WidgetArgs { { "button", this }, { "getText", GetTooltipText } });
+				new WidgetArgs { { "button", this }, { "getText", GetTooltipText }, { "getDesc", GetTooltipDesc } });
 		}
 
 		public override void MouseExited()
