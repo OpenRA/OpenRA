@@ -21,12 +21,14 @@ namespace OpenRA.Mods.Common.Effects
 		Actor target;
 		Player player;
 		int remainingTicks;
+		int delay;
 
-		public FlashTarget(Actor target, Player asPlayer = null, int ticks = 4)
+		public FlashTarget(Actor target, Player asPlayer = null, int ticks = 4, int delay = 0)
 		{
 			this.target = target;
 			player = asPlayer;
 			remainingTicks = ticks;
+			this.delay = delay;
 			target.World.RemoveAll(effect =>
 			{
 				var flashTarget = effect as FlashTarget;
@@ -36,13 +38,16 @@ namespace OpenRA.Mods.Common.Effects
 
 		public void Tick(World world)
 		{
+			if (--delay >= 0)
+				return;
+
 			if (--remainingTicks == 0 || !target.IsInWorld)
 				world.AddFrameEndTask(w => w.Remove(this));
 		}
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)
 		{
-			if (target.IsInWorld && remainingTicks % 2 == 0)
+			if (target.IsInWorld && delay <= 0 && remainingTicks % 2 == 0)
 			{
 				var palette = wr.Palette(player == null ? "highlight" : "highlight" + player.InternalName);
 				return target.Render(wr)

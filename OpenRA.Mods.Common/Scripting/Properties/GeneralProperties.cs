@@ -76,9 +76,9 @@ namespace OpenRA.Mods.Common.Scripting
 
 		[Desc("Render a target flash on the actor. If set, 'asPlayer'",
 			"defines which player palette to use. Duration is in ticks.")]
-		public void Flash(int duration = 4, Player asPlayer = null)
+		public void Flash(int duration = 4, Player asPlayer = null, int delay = 0)
 		{
-			Self.World.Add(new FlashTarget(Self, asPlayer, duration));
+			Self.World.Add(new FlashTarget(Self, asPlayer, duration, delay));
 		}
 	}
 

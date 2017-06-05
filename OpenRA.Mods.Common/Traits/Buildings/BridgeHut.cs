@@ -164,7 +164,7 @@ namespace OpenRA.Mods.Common.Traits
 			repairDelay = Info.RepairPropagationDelay;
 		}
 
-		public void Demolish(Actor self, Actor saboteur)
+		void IDemolishable.Demolish(Actor self, Actor saboteur, int delay)
 		{
 			if (Info.DemolishPropagationDelay > 0)
 			{

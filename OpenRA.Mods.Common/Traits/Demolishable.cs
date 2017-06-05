@@ -9,6 +9,8 @@
  */
 #endregion
 
+using System.Collections.Generic;
+using System.Linq;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -24,9 +26,12 @@ namespace OpenRA.Mods.Common.Traits
 		public object Create(ActorInitializer init) { return new Demolishable(init.Self, this); }
 	}
 
-	public class Demolishable : IDemolishable, IPreventsEjectOnDeath
+	public class Demolishable : IDemolishable, IPreventsEjectOnDeath, ITick
 	{
 		readonly DemolishableInfo info;
+
+		Actor saboteur;
+		int delay;
 
 		public Demolishable(Actor self, DemolishableInfo info)
 		{
@@ -38,14 +43,40 @@ namespace OpenRA.Mods.Common.Traits
 			return info.PreventsEjectOnDeath;
 		}
 
-		public void Demolish(Actor self, Actor saboteur)
+		public void Demolish(Actor self, Actor saboteur, int delay)
 		{
-			self.Kill(saboteur);
+			if (this.delay > 0)
+				return;
+
+			this.delay = delay;
+			this.saboteur = saboteur;
 		}
 
 		public bool IsValidTarget(Actor self, Actor saboteur)
 		{
 			return true;
+		}
+
+		void ITick.Tick(Actor self)
+		{
+			if (self.IsDead)
+				return;
+
+			if (delay == 0 || --delay > 0)
+				return;
+
+			var modifiers = self.TraitsImplementing<IDamageModifier>()
+				.Concat(saboteur.Owner.PlayerActor.TraitsImplementing<IDamageModifier>())
+				.Select(t => t.GetDamageModifier(saboteur, null));
+
+			if (Util.ApplyPercentageModifiers(100, modifiers) > 0)
+				self.Kill(saboteur);
+			else
+			{
+				var building = self.TraitOrDefault<Building>();
+				if (building != null)
+					building.Unlock();
+			}
 		}
 	}
 }
