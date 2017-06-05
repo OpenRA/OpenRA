@@ -693,7 +693,7 @@
 	AppearsOnRadar:
 	Building:
 		Dimensions: 1,1
-		Footprint: _
+		Footprint: =
 	Tooltip:
 		Name: Field (Destroyed)
 		GenericVisibility: None
