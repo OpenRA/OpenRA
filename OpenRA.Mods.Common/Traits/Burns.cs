@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Common.Traits
 	class BurnsInfo : ITraitInfo, Requires<RenderSpritesInfo>
 	{
 		public readonly string Anim = "1";
-		public readonly string Palette;
+		public readonly string Palette = null;
 		public readonly int Damage = 1;
 		public readonly int Interval = 8;
 
