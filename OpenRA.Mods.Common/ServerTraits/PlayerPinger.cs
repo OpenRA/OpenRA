@@ -32,16 +32,16 @@ namespace OpenRA.Mods.Common.Server
 		{
 			if ((Game.RunTime - lastPing > PingInterval) || isInitialPing)
 			{
-				isInitialPing = false;
+				var conns = server.Conns.ToList();
 				lastPing = Game.RunTime;
 
 				// Ignore client timeout in singleplayer games to make debugging easier
 				if (server.LobbyInfo.IsSinglePlayer && !server.Dedicated)
-					foreach (var c in server.Conns.ToList())
-						server.SendOrderTo(c, "Ping", Game.RunTime.ToString());
+					foreach (var c in conns)
+						server.SendOrderTo(c, "Ping", isInitialPing ? "-1" : Game.RunTime.ToString());
 				else
 				{
-					foreach (var c in server.Conns.ToList())
+					foreach (var c in conns)
 					{
 						if (c == null || c.Socket == null)
 							continue;
@@ -56,7 +56,7 @@ namespace OpenRA.Mods.Common.Server
 
 						if (c.TimeSinceLastResponse < ConnTimeout)
 						{
-							server.SendOrderTo(c, "Ping", Game.RunTime.ToString());
+							server.SendOrderTo(c, "Ping", isInitialPing ? "-1" : Game.RunTime.ToString());
 							if (!c.TimeoutMessageShown && c.TimeSinceLastResponse > PingInterval * 2)
 							{
 								server.SendMessage(client.Name + " is experiencing connection problems.");
@@ -74,7 +74,7 @@ namespace OpenRA.Mods.Common.Server
 					{
 						lastConnReport = Game.RunTime;
 
-						var timeouts = server.Conns
+						var timeouts = conns
 							.Where(c => c.TimeSinceLastResponse > ConnReportInterval && c.TimeSinceLastResponse < ConnTimeout)
 							.OrderBy(c => c.TimeSinceLastResponse);
 
@@ -89,6 +89,9 @@ namespace OpenRA.Mods.Common.Server
 						}
 					}
 				}
+
+				if (conns.Count > 0)
+					isInitialPing = false;
 			}
 		}
 	}
