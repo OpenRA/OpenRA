@@ -311,6 +311,26 @@ namespace OpenRA.Platforms.Default
 			AL10.alListenerf(EFX.AL_METERS_PER_UNIT, .01f);
 		}
 
+		public void ReleaseSourcePool()
+		{
+			foreach (var slot in sourcePool)
+				if (slot.Value.Sound != null)
+					ReleaseSound(slot.Key);
+		}
+
+		public void ReleaseSound(ISound sound)
+		{
+			var openAlSound = sound as OpenAlSound;
+			if (openAlSound != null)
+				ReleaseSound(openAlSound.Source);
+		}
+
+		void ReleaseSound(uint source)
+		{
+			AL10.alSourceStop(source);
+			AL10.alSourcei(source, AL10.AL_BUFFER, 0);
+		}
+
 		~OpenAlSoundEngine()
 		{
 			Dispose(false);
@@ -341,7 +361,10 @@ namespace OpenRA.Platforms.Default
 
 	class OpenAlSoundSource : ISoundSource
 	{
-		public readonly uint Buffer;
+		uint buffer;
+		bool disposed;
+
+		public uint Buffer { get { return buffer; } }
 
 		static int MakeALFormat(int channels, int bits)
 		{
@@ -353,8 +376,28 @@ namespace OpenRA.Platforms.Default
 
 		public OpenAlSoundSource(byte[] data, int channels, int sampleBits, int sampleRate)
 		{
-			AL10.alGenBuffers(new IntPtr(1), out Buffer);
-			AL10.alBufferData(Buffer, MakeALFormat(channels, sampleBits), data, new IntPtr(data.Length), new IntPtr(sampleRate));
+			AL10.alGenBuffers(new IntPtr(1), out buffer);
+			AL10.alBufferData(buffer, MakeALFormat(channels, sampleBits), data, new IntPtr(data.Length), new IntPtr(sampleRate));
+		}
+
+		protected virtual void Dispose(bool disposing)
+		{
+			if (!disposed)
+			{
+				AL10.alDeleteBuffers(new IntPtr(1), ref buffer);
+				disposed = true;
+			}
+		}
+
+		~OpenAlSoundSource()
+		{
+			Dispose(false);
+		}
+
+		public void Dispose()
+		{
+			Dispose(true);
+			GC.SuppressFinalize(this);
 		}
 	}
 
