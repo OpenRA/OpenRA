@@ -18,24 +18,30 @@ namespace OpenRA.Mods.Common.Traits
 	public class IronCurtainPaletteEffectInfo : ITraitInfo
 	{
 		public readonly string PaletteName = "invuln";
+		public readonly int Amplitude = 32;
+		public readonly int Offset = 32;
+
+		[Desc("Cycle speed in game angles per tick. 360 degrees = 1024 game degrees.")]
+		public readonly int CycleSpeed = 16;
 		public object Create(ActorInitializer init) { return new IronCurtainPaletteEffect(this); }
 	}
 
 	public class IronCurtainPaletteEffect : IPaletteModifier, ITick
 	{
 		int t;
-		string paletteName;
+		IronCurtainPaletteEffectInfo info;
 
 		public IronCurtainPaletteEffect(IronCurtainPaletteEffectInfo info)
 		{
-			paletteName = info.PaletteName;
+			this.info = info;
+			System.Diagnostics.Debug.Assert(info.Offset >= info.Amplitude, "Offset should be GE than amplitude.");
 		}
 
 		public void AdjustPalette(IReadOnlyDictionary<string, MutablePalette> b)
 		{
 			// cos value is in range of [-1024, 1024].
-			int val = 16 + (WAngle.FromDegrees(t).Cos() / 64); // [0, 32]
-			var p = b[paletteName];
+			int val = info.Offset + info.Amplitude * WAngle.FromDegrees(t).Cos() / 1024;
+			var p = b[info.PaletteName];
 
 			// modify all colors except index 0 which is transparent color.
 			for (int j = 1; j < Palette.Size; j++)
@@ -48,7 +54,7 @@ namespace OpenRA.Mods.Common.Traits
 		public void Tick(Actor self)
 		{
 			// color cycling speed
-			t = (t + 16) % 1024;
+			t = (t + info.CycleSpeed) % 1024;
 		}
 	}
 }
