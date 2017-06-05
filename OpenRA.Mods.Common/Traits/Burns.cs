@@ -19,6 +19,7 @@ namespace OpenRA.Mods.Common.Traits
 	class BurnsInfo : ITraitInfo, Requires<RenderSpritesInfo>
 	{
 		public readonly string Anim = "1";
+		public readonly string Palette;
 		public readonly int Damage = 1;
 		public readonly int Interval = 8;
 
@@ -37,7 +38,10 @@ namespace OpenRA.Mods.Common.Traits
 			var anim = new Animation(self.World, "fire", () => 0);
 			anim.IsDecoration = true;
 			anim.PlayRepeating(info.Anim);
-			self.Trait<RenderSprites>().Add(anim);
+			if (string.IsNullOrEmpty(info.Anim))
+				self.Trait<RenderSprites>().Add(anim);
+			else
+				self.Trait<RenderSprites>().Add(anim, info.Palette);
 		}
 
 		public void Tick(Actor self)
