@@ -187,28 +187,65 @@ function Docs-Command
 
 function FindMSBuild
 {
-	$msBuildVersions = @("4.0")
-	foreach ($msBuildVersion in $msBuildVersions)
+	# VS 2017 ships MSBuild within its install (msbuild 15). Earlier versions
+	# have a dedicated install folder. I am not interested in the stuff installed
+	# with .NET if there's no SDK installs...
+	$path = Get-LatestProgramVersion 'Microsoft Visual Studio' 'msbuild.exe'
+	if ($path -eq $null)
 	{
-		$key = "HKLM:\SOFTWARE\Microsoft\MSBuild\ToolsVersions\{0}" -f $msBuildVersion
-		$property = Get-ItemProperty $key -ErrorAction SilentlyContinue
-		if ($property -eq $null -or $property.MSBuildToolsPath -eq $null)
+		$path = Get-LatestProgramVersion 'MSBuild' 'msbuild.exe'
+
+		if ($path -eq $null)
 		{
-			continue
-		}
-		$path = Join-Path $property.MSBuildToolsPath -ChildPath "MSBuild.exe"
-		if (Test-Path $path)
-		{
-			return $path
+			$msBuildVersions = @("4.0")
+			foreach ($msBuildVersion in $msBuildVersions)
+			{
+				$key = "HKLM:\SOFTWARE\Microsoft\MSBuild\ToolsVersions\{0}" -f $msBuildVersion
+				$property = Get-ItemProperty $key -ErrorAction SilentlyContinue
+				if ($property -eq $null -or $property.MSBuildToolsPath -eq $null)
+				{
+					continue
+				}
+				$path = Join-Path $property.MSBuildToolsPath -ChildPath "MSBuild.exe"
+				if (Test-Path $path)
+				{
+					return $path
+				}
+			}
 		}
 	}
-	return $null
+
+	if (Test-Path $path)
+	{
+		return $path
+	}
+
+	return $null;
 }
 
 function UtilityNotFound
 {
 	echo "OpenRA.Utility.exe could not be found. Build the project first using the `"all`" command."
 }
+
+function script:Get-LatestProgramVersion ([string]$prefix, [string]$binary_name, [bool]$x86 = $true)
+{
+	$search_dir = ${env:ProgramFiles(x86)}
+	if (-not $x86)
+	{
+		$search_dir = ${env:ProgramFiles}
+	}
+	$search_dir = (join-path $search_dir ($prefix + '*'))
+ 
+	$matching = (get-childitem -recurse -filter $binary_name $search_dir | sort-object -descending)
+	if ($matching -ne $null -and $matching.Count -gt 0)
+	{
+		return $matching[0]
+	}
+ 
+	return $null
+}
+
 ###############################################################
 ############################ Main #############################
 ###############################################################
