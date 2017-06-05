@@ -105,7 +105,7 @@ patriot:
 explosion:
 	Defaults:
 		Length: *
-		ZOffset: 511
+		ZOffset: 2047
 	nuke_explosion: atomsfx
 	piff: piff
 	piffs: piffpiff
