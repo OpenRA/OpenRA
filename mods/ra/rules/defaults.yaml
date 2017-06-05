@@ -13,6 +13,34 @@
 	AutoSelectionSize:
 	RenderSprites:
 
+^1x1Shape:
+	HitShape:
+		UseOccupiedCellsOffsets: true
+		Type: Rectangle
+			TopLeft: -512, -512
+			BottomRight: 512, 512
+
+^2x1Shape:
+	HitShape:
+		UseOccupiedCellsOffsets: true
+		Type: Rectangle
+			TopLeft: -1024, -512
+			BottomRight: 1024, 512
+
+^2x2Shape:
+	HitShape:
+		UseOccupiedCellsOffsets: true
+		Type: Rectangle
+			TopLeft: -1024, -1024
+			BottomRight: 1024, 1024
+
+^3x2Shape:
+	HitShape:
+		UseOccupiedCellsOffsets: true
+		Type: Rectangle
+			TopLeft: -1536, -1024
+			BottomRight: 1536, 1024
+
 ^GainsExperience:
 	GainsExperience:
 		Conditions:
@@ -497,8 +525,6 @@
 		Priority: 3
 	Targetable:
 		TargetTypes: Ground, C4, DetonateAttack, Structure
-	HitShape:
-		UseOccupiedCellsOffsets: true
 	Building:
 		Dimensions: 1,1
 		Footprint: x
@@ -569,6 +595,7 @@
 ^Wall:
 	Inherits@1: ^ExistsInWorld
 	Inherits@2: ^SpriteActor
+	Inherits@shape: ^1x1Shape
 	Building:
 		Dimensions: 1,1
 		Footprint: x
@@ -598,10 +625,6 @@
 	FrozenUnderFogUpdatedByGps:
 	Health:
 		HP: 100
-	HitShape:
-		Type: Rectangle
-			TopLeft: -512, -512
-			BottomRight: 512, 512
 
 ^Gate:
 	Inherits: ^BasicBuilding
@@ -625,7 +648,6 @@
 		OpeningSound: cashturn.aud
 		ClosingSound: cashturn.aud
 		TerrainTypes: Clear, Road
-	HitShape:
 
 ^TechBuilding:
 	Inherits: ^BasicBuilding
@@ -638,7 +660,6 @@
 		Name: Civilian Building
 		GenericVisibility: None
 	FrozenUnderFog:
-	HitShape:
 
 ^FakeBuilding:
 	Inherits: ^Building
@@ -658,7 +679,6 @@
 		ZOffset: 256
 	-EmitInfantryOnSell:
 	-MustBeDestroyed:
-	HitShape:
 
 ^InfiltratableFake:
 	Targetable:
@@ -688,7 +708,6 @@
 		Type: Light
 	Targetable:
 		TargetTypes: Ground, DetonateAttack
-	HitShape:
 
 ^CivBuilding:
 	Inherits: ^TechBuilding
@@ -721,6 +740,7 @@
 
 ^Tree:
 	Inherits@1: ^SpriteActor
+	Inherits@shape: ^1x1Shape
 	Tooltip:
 		Name: Tree
 		ShowOwnerRow: false
@@ -759,7 +779,6 @@
 	ScriptTriggers:
 	EditorTilesetFilter:
 		ExcludeTilesets: INTERIOR
-	HitShape:
 
 ^TreeHusk:
 	Inherits@1: ^SpriteActor
@@ -837,6 +856,7 @@
 		UseClassicFacingFudge: True
 
 ^Bridge:
+	Inherits@shape: ^1x1Shape
 	AlwaysVisible:
 	Tooltip:
 		Name: Bridge
@@ -857,7 +877,6 @@
 	ScriptTriggers:
 	BodyOrientation:
 		QuantizedFacings: 1
-	HitShape:
 
 ^Rock:
 	Inherits@1: ^SpriteActor
