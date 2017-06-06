@@ -147,6 +147,7 @@
     <Compile Include="Effects\RallyPointIndicator.cs" />
     <Compile Include="Effects\RepairIndicator.cs" />
     <Compile Include="Effects\SpriteEffect.cs" />
+    <Compile Include="Graphics\RailgunRenderable.cs" />
     <Compile Include="Projectiles\AreaBeam.cs" />
     <Compile Include="Projectiles\Bullet.cs" />
     <Compile Include="Projectiles\InstantHit.cs" />
@@ -189,6 +190,7 @@
     <Compile Include="Lint\LintExts.cs" />
     <Compile Include="LoadScreens\ModContentLoadScreen.cs" />
     <Compile Include="ActorInitializer.cs" />
+    <Compile Include="Projectiles\Railgun.cs" />
     <Compile Include="Scripting\Properties\AmmoPoolProperties.cs" />
     <Compile Include="Scripting\Properties\HackyAIProperties.cs" />
     <Compile Include="Scripting\Properties\RepairableProperties.cs" />
