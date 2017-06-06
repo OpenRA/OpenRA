@@ -51,8 +51,8 @@ WormJaw:
 OrniBomb:
 	ReloadDelay: 25
 	Burst: 5
-	BurstDelay: 4
-	Range: 2c0
+	BurstDelay: 6
+	Range: 3c0
 	Projectile: GravityBomb
 		Image: BOMBS
 		Velocity: 0, 0, -64
@@ -61,7 +61,7 @@ OrniBomb:
 	Warhead@1Dam: SpreadDamage
 		Spread: 320
 		Falloff: 100, 60, 30, 15, 0
-		Damage: 1000 #400 in original, reduce when bombers can do multiple passes
+		Damage: 750 #400 in original, reduce when bombers can do multiple passes
 		Versus:
 			none: 90
 			wall: 50
