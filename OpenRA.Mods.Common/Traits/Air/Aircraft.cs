@@ -392,9 +392,9 @@ namespace OpenRA.Mods.Common.Traits
 			if (Info.RearmBuildings.Contains(name))
 				yield return new Rearm(self);
 
-			// Add a CloseEnough range of 512 to ensure we're at the host actor
+			// The ResupplyAircraft activity guarantees that we're on the helipad
 			if (Info.RepairBuildings.Contains(name))
-				yield return new Repair(self, a, new WDist(512));
+				yield return new Repair(self, a, WDist.Zero);
 		}
 
 		public void ModifyDeathActorInit(Actor self, TypeDictionary init)
