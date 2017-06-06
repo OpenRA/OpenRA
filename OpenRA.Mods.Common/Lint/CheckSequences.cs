@@ -82,7 +82,13 @@ namespace OpenRA.Mods.Common.Lint
 										{
 											foreach (var imageOverride in LintExts.GetFieldValues(traitInfo, imageField, emitError))
 											{
-												if (!string.IsNullOrEmpty(imageOverride) && sequenceDefinitions.All(s => s.Key != imageOverride.ToLowerInvariant()))
+												if (string.IsNullOrEmpty(imageOverride))
+												{
+													emitWarning("Custom sprite image of actor {0} is null.".F(actorInfo.Value.Name));
+													continue;
+												}
+
+												if (sequenceDefinitions.All(s => s.Key != imageOverride.ToLowerInvariant()))
 													emitError("Custom sprite image {0} from actor {1} has no sequence definition.".F(imageOverride, actorInfo.Value.Name));
 												else
 													CheckDefintions(imageOverride, sequenceReference, actorInfo, sequence, faction, field, traitInfo);
