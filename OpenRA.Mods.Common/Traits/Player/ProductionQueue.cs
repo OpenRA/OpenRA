@@ -114,7 +114,7 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			// Refund the current item
-			playerResources.GiveCash(queue[0].TotalCost - queue[0].RemainingCost);
+			playerResources.GiveCash(queue[0].TotalCost - queue[0].RemainingCost, true);
 			queue.Clear();
 		}
 
@@ -234,7 +234,7 @@ namespace OpenRA.Mods.Common.Traits
 			while (queue.Count > 0 && BuildableItems().All(b => b.Name != queue[0].Item))
 			{
 				// Refund what's been paid so far
-				playerResources.GiveCash(queue[0].TotalCost - queue[0].RemainingCost);
+				playerResources.GiveCash(queue[0].TotalCost - queue[0].RemainingCost, true);
 				FinishProduction();
 			}
 
@@ -342,7 +342,7 @@ namespace OpenRA.Mods.Common.Traits
 				var item = queue[0];
 
 				// Refund what has been paid
-				playerResources.GiveCash(item.TotalCost - item.RemainingCost);
+				playerResources.GiveCash(item.TotalCost - item.RemainingCost, true);
 				FinishProduction();
 			}
 		}

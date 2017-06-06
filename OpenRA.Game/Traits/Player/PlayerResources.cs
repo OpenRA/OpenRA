@@ -96,7 +96,7 @@ namespace OpenRA.Traits
 			return true;
 		}
 
-		public void GiveCash(int num)
+		public void GiveCash(int num, bool isRefund = false)
 		{
 			if (Cash < int.MaxValue)
 			{
@@ -113,7 +113,9 @@ namespace OpenRA.Traits
 				}
 			}
 
-			if (Earned < int.MaxValue)
+			if (isRefund)
+				Spent -= num;
+			else if (Earned < int.MaxValue)
 			{
 				try
 				{
