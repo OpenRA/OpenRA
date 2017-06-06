@@ -2,14 +2,13 @@
 	ReloadDelay: 60
 	Range: 6c0
 	Report: bigggun1.aud
-	Projectile: AreaBeam
+	Projectile: Railgun
 		Speed: 20c0
-		Duration: 3
-		DamageInterval: 2
+		Duration: 15
 		Width: 80
-		BeyondTargetRange: 0c64
 		Blockable: true
-		Color: 0080FFC8
+		DamageActorsInLine: true
+		BeamColor: 0080FFC8
 	Warhead@1Dam: SpreadDamage
 		Range: 0, 32
 		Falloff: 100, 100
@@ -48,8 +47,8 @@ MechRailgun:
 	Burst: 2 # for alternating muzzle offsets, dmg/s identical to original
 	BurstDelay: 60
 	Report: railuse5.aud
-	Projectile: AreaBeam
-		Color: 00FFFFC8
+	Projectile: Railgun
+		BeamColor: 00FFFFC8
 	Warhead@1Dam: SpreadDamage
 		Damage: 200
 		Versus:
