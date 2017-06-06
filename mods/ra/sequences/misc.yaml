@@ -18,15 +18,18 @@ powerdown:
 explosion:
 	Defaults:
 		Length: *
-		ZOffset: 511
+		ZOffset: 2047
 	piff: piff
 	piffs: piffpiff
 	water_piff: wpiff
 	water_piffs: wpifpif
 	small_explosion: veh-hit3
 	med_explosion: veh-hit2
+	flak_explosion_ground: flak
 	small_explosion_air: flak
+		ZOffset: 511 # only used by AA weapons, so a high ZOffset to overlay buildings isn't needed
 	med_explosion_air: veh-hit1
+		ZOffset: 511 # only used by AA weapons, so a high ZOffset to overlay buildings isn't needed
 	large_splash: h2o_exp1
 	napalm: napalm2
 	building_napalm: napalm2
