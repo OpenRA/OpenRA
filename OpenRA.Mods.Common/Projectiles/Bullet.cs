@@ -61,6 +61,10 @@ namespace OpenRA.Mods.Common.Projectiles
 		[Desc("Arc in WAngles, two values indicate variable arc.")]
 		public readonly WAngle[] LaunchAngle = { WAngle.Zero };
 
+		[Desc("Altitude where this bullet should explode when reached.",
+			"Negative values allow this bullet to pass cliffs and terrain bumps.")]
+		public readonly WDist ExplodeUnderThisAltitude = WDist.Zero;
+
 		[Desc("Up to how many times does this bullet bounce when touching ground without hitting a target.",
 			"0 implies exploding on contact with the originally targeted position.")]
 		public readonly int BounceCount = 0;
@@ -247,8 +251,8 @@ namespace OpenRA.Mods.Common.Projectiles
 			// Flight length reached / exceeded
 			shouldExplode |= flightLengthReached && !shouldBounce;
 
-			// Driving into cell with higher height level
-			shouldExplode |= world.Map.DistanceAboveTerrain(pos).Length < 0;
+			// Driving into cell with different height level
+			shouldExplode |= world.Map.DistanceAboveTerrain(pos) < info.ExplodeUnderThisAltitude;
 
 			// After first bounce, check for targets each tick
 			if (remainingBounces < info.BounceCount)
