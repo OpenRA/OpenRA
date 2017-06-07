@@ -40,7 +40,7 @@ namespace OpenRA.Mods.Cnc.Projectiles
 		readonly ProjectileArgs args;
 		readonly TeslaZapInfo info;
 		TeslaZapRenderable zap;
-		int timeUntilRemove; // # of frames
+		int ticksUntilRemove;
 		bool doneDamage = false;
 		bool initialized = false;
 
@@ -48,12 +48,12 @@ namespace OpenRA.Mods.Cnc.Projectiles
 		{
 			this.args = args;
 			this.info = info;
-			this.timeUntilRemove = info.Duration;
+			ticksUntilRemove = info.Duration;
 		}
 
 		public void Tick(World world)
 		{
-			if (timeUntilRemove-- <= 0)
+			if (ticksUntilRemove-- <= 0)
 				world.AddFrameEndTask(w => w.Remove(this));
 
 			if (!doneDamage)
