@@ -40,9 +40,26 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var scriptContext = world.WorldActor.TraitOrDefault<LuaScript>();
 			var hasError = scriptContext != null && scriptContext.FatalErrorOccurred;
 
+			Action closeMenu = () =>
+			{
+				Ui.CloseWindow();
+				if (mpe != null)
+					mpe.Fade(MenuPaletteEffect.EffectType.None);
+				onExit();
+			};
+
+			Action onSurrender = () =>
+			{
+				world.IssueOrder(new Order("Surrender", world.LocalPlayer.PlayerActor, false));
+				closeMenu();
+			};
+
 			// TODO: Create a mechanism to do things like this cleaner. Also needed for scripted missions
 			Action onQuit = () =>
 			{
+				if (CanSurrender(world, hasError) && !Game.IsHost)
+					onSurrender();
+
 				if (world.Type == WorldType.Regular)
 					Game.Sound.PlayNotification(world.Map.Rules, null, "Speech", "Leave", world.LocalPlayer == null ? null : world.LocalPlayer.Faction.InternalName);
 
@@ -69,14 +86,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					Ui.ResetAll();
 					Game.LoadShellMap();
 				});
-			};
-
-			Action closeMenu = () =>
-			{
-				Ui.CloseWindow();
-				if (mpe != null)
-					mpe.Fade(MenuPaletteEffect.EffectType.None);
-				onExit();
 			};
 
 			Action showMenu = () => hideMenu = false;
@@ -139,16 +148,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					onCancel: showMenu);
 			};
 
-			Action onSurrender = () =>
-			{
-				world.IssueOrder(new Order("Surrender", world.LocalPlayer.PlayerActor, false));
-				closeMenu();
-			};
 			var surrenderButton = menu.Get<ButtonWidget>("SURRENDER");
 			surrenderButton.IsVisible = () => world.Type == WorldType.Regular;
-			surrenderButton.IsDisabled = () =>
-				world.LocalPlayer == null || world.LocalPlayer.WinState != WinState.Undefined ||
-				world.Map.Visibility.HasFlag(MapVisibility.MissionSelector) || hasError;
+			surrenderButton.IsDisabled = () => !CanSurrender(world, hasError);
 			surrenderButton.OnClick = () =>
 			{
 				hideMenu = true;
@@ -219,6 +221,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				gameInfoPanel.IsVisible = () => !hideMenu;
 			}
+		}
+
+		bool CanSurrender(World world, bool hasError)
+		{
+			return !(world.LocalPlayer == null || world.LocalPlayer.WinState != WinState.Undefined ||
+				world.Map.Visibility.HasFlag(MapVisibility.MissionSelector) || hasError);
 		}
 	}
 }
