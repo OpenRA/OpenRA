@@ -60,7 +60,7 @@ namespace OpenRA.Mods.Common.Traits
 	public class HitShape : ConditionalTrait<HitShapeInfo>, ITargetablePositions
 	{
 		BodyOrientation orientation;
-		IOccupySpace occupy;
+		ITargetableCells targetableCells;
 
 		public HitShape(Actor self, HitShapeInfo info)
 			: base(info) { }
@@ -68,7 +68,7 @@ namespace OpenRA.Mods.Common.Traits
 		protected override void Created(Actor self)
 		{
 			orientation = self.Trait<BodyOrientation>();
-			occupy = self.TraitOrDefault<IOccupySpace>();
+			targetableCells = self.TraitOrDefault<ITargetableCells>();
 
 			base.Created(self);
 		}
@@ -78,8 +78,8 @@ namespace OpenRA.Mods.Common.Traits
 			if (IsTraitDisabled)
 				yield break;
 
-			if (Info.UseOccupiedCellsOffsets && occupy != null)
-				foreach (var c in occupy.OccupiedCells())
+			if (Info.UseOccupiedCellsOffsets && targetableCells != null)
+				foreach (var c in targetableCells.TargetableCells())
 					yield return self.World.Map.CenterOfCell(c.First);
 
 			foreach (var o in Info.TargetableOffsets)
