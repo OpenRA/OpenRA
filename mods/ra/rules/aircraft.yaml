@@ -320,11 +320,11 @@ HIND:
 		BuildAtProductionType: Helicopter
 		BuildPaletteOrder: 20
 		Prerequisites: ~hpad, ~techlevel.medium
-		Description: Helicopter gunship armed\nwith dual chainguns.\n  Strong vs Infantry, Light armor.\n  Weak vs Tanks, Aircraft
+		Description: Helicopter gunship armed\nwith a powerful chaingun.\n  Strong vs Infantry, Light armor.\n  Weak vs Tanks, Aircraft
 	Valued:
 		Cost: 1350
 	Tooltip:
-		Name: Hind
+		Name: Cobra
 	Health:
 		HP: 100
 	Armor:
@@ -338,12 +338,7 @@ HIND:
 		Type: GroundPosition
 	Armament@PRIMARY:
 		Weapon: ChainGun
-		LocalOffset: 85,-213,-85
-		MuzzleSequence: muzzle
-	Armament@SECONDARY:
-		Name: secondary
-		Weapon: ChainGun
-		LocalOffset: 85,213,-85
+		LocalOffset: 875,0,-225
 		MuzzleSequence: muzzle
 	AttackHeli:
 		FacingTolerance: 20
@@ -362,9 +357,9 @@ HIND:
 		Sequence: slow-rotor
 		RequiresCondition: !airborne
 	AmmoPool:
-		Ammo: 24
+		Ammo: 12
 		PipCount: 6
-		ReloadDelay: 8
+		ReloadDelay: 16
 	SelectionDecorations:
 		VisualBounds: 38,32
 	WithMuzzleOverlay:

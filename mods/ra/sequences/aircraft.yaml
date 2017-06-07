@@ -23,7 +23,7 @@ heli:
 	icon: heliicon
 
 hind:
-	idle:
+	idle: cobra
 		Facings: 32
 		UseClassicFacingFudge: True
 	rotor: lrotorlg
@@ -34,7 +34,7 @@ hind:
 	muzzle: minigun
 		Length: 6
 		Facings: 8
-	icon: hindicon
+	icon: cobraicon
 
 tran:
 	idle: tran2

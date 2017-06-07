@@ -193,10 +193,11 @@ ChainGun:
 	Inherits: ^HeavyMG
 	ReloadDelay: 10
 	Range: 5c0
-	MinRange: 0c768
+	MinRange: 1c768
 	Projectile: Bullet
 		Blockable: false
 	Warhead@1Dam: SpreadDamage
+		Damage: 60
 		Versus:
 			None: 120
 
