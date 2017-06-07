@@ -35,13 +35,13 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public readonly AttackDelayType DelayRelativeTo = AttackDelayType.Preparation;
 
 		[Desc("Which sprite body to modify.")]
-		public readonly string BodyName = "body";
+		public readonly string Body = "body";
 
 		public override object Create(ActorInitializer init) { return new WithAttackAnimation(init, this); }
 
 		public override void RulesetLoaded(Ruleset rules, ActorInfo ai)
 		{
-			var matches = ai.TraitInfos<WithSpriteBodyInfo>().Count(w => BodyName == w.Name);
+			var matches = ai.TraitInfos<WithSpriteBodyInfo>().Count(w => Body == w.Name);
 			if (matches != 1)
 				throw new YamlException("WithAttackAnimation needs exactly one sprite body with matching name.");
 
@@ -65,7 +65,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			attack = init.Self.Trait<AttackBase>();
 			armament = init.Self.TraitsImplementing<Armament>()
 				.Single(a => a.Info.Name == Info.Armament);
-			wsb = init.Self.TraitsImplementing<WithSpriteBody>().First(w => w.Info.Name == Info.BodyName);
+			wsb = init.Self.TraitsImplementing<WithSpriteBody>().First(w => w.Info.Name == Info.Body);
 
 			noAimOrReloadAnim = string.IsNullOrEmpty(Info.AimSequence) && string.IsNullOrEmpty(Info.ReloadPrefix);
 		}
