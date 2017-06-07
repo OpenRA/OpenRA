@@ -35,7 +35,7 @@
 Dragon:
 	Inherits: ^MissileWeapon
 	ReloadDelay: 20
-	Range: 12c0
+	Range: 10c0
 	Report: rocket2.aud
 	ValidTargets: Air
 	Burst: 2
@@ -43,7 +43,7 @@ Dragon:
 	Projectile: Missile
 		Speed: 426
 		HorizontalRateOfTurn: 20
-		RangeLimit: 15c0
+		RangeLimit: 12c0
 	Warhead@1Dam: SpreadDamage
 		ValidTargets: Air
 		Versus:
@@ -84,7 +84,7 @@ OrcaAGMissiles:
 		Speed: 256
 		RangeLimit: 6c0
 	Warhead@1Dam: SpreadDamage
-		Damage: 25
+		Damage: 28
 		ValidTargets: Ground
 		Versus:
 			None: 50

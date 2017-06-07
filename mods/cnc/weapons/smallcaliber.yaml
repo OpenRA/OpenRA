@@ -113,6 +113,17 @@ MachineGun:
 	Warhead@2Eff: CreateEffect
 		Explosions: piffs
 
+MachineGunH:
+	Inherits: ^LightMG
+	Burst: 5
+	Report: mgun11.aud
+	Warhead@1Dam: SpreadDamage
+		Versus:
+			Wood: 10
+			Light: 55
+	Warhead@2Eff: CreateEffect
+		Explosions: piffs
+
 APCGun:
 	ReloadDelay: 18
 	Range: 5c0

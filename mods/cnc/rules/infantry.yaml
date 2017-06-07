@@ -150,15 +150,19 @@ E6:
 		Queue: Infantry.GDI, Infantry.Nod
 		Description: Damages and captures enemy structures.\n  Unarmed
 	Mobile:
-		Speed: 56
+		Speed: 48
 	Health:
 		HP: 30
 	Passenger:
 		PipType: Yellow
 	EngineerRepair:
 	RepairsBridges:
+	ExternalCaptures:
+		CaptureTypes: building
+		ConsumeActor: True
+		PlayerExperience: 50
 	Captures:
-		CaptureTypes: building, husk
+		CaptureTypes: husk
 		PlayerExperience: 50
 	-AutoTarget:
 

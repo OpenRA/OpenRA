@@ -615,7 +615,9 @@
 	EngineerRepairable:
 	Sellable:
 		SellSounds: cashturn.aud
-	Capturable:
+	ExternalCapturable:
+		CaptureCompleteTime: 5
+	ExternalCapturableBar:
 	WithMakeAnimation:
 
 ^CivBuilding:
@@ -645,7 +647,9 @@
 
 ^TechBuilding:
 	Inherits: ^CivBuilding
-	Capturable:
+	ExternalCapturable:
+		CaptureCompleteTime: 5
+	ExternalCapturableBar:
 	CaptureNotification:
 		Notification: CivilianBuildingCaptured
 	RepairableBuilding:

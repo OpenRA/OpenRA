@@ -1,7 +1,7 @@
 MCV:
 	Inherits: ^Vehicle
 	Valued:
-		Cost: 4000
+		Cost: 3600
 	Tooltip:
 		Name: Mobile Construction Vehicle
 	Buildable:

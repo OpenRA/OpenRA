@@ -90,7 +90,9 @@ SAM:
 	Building:
 	Power:
 		Amount: -10
-	-Capturable:
+	-ExternalCapturable:
+		CaptureCompleteTime: 5
+	-ExternalCapturableBar:
 
 HQ:
 	Tooltip:
