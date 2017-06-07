@@ -42,7 +42,6 @@ namespace OpenRA.Mods.Cnc.Projectiles
 		TeslaZapRenderable zap;
 		int ticksUntilRemove;
 		bool doneDamage = false;
-		bool initialized = false;
 
 		public TeslaZap(TeslaZapInfo info, ProjectileArgs args)
 		{
@@ -66,12 +65,9 @@ namespace OpenRA.Mods.Cnc.Projectiles
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)
 		{
-			if (!initialized)
-			{
-				var pos = args.GuidedTarget.IsValidFor(args.SourceActor) ? args.GuidedTarget.CenterPosition : args.PassiveTarget;
-				zap = new TeslaZapRenderable(args.Source, 0, pos - args.Source,
-					info.Image, info.BrightSequence, info.BrightZaps, info.DimSequence, info.DimZaps, info.Palette);
-			}
+			var pos = args.GuidedTarget.IsValidFor(args.SourceActor) ? args.GuidedTarget.CenterPosition : args.PassiveTarget;
+			zap = new TeslaZapRenderable(args.Source, 0, pos - args.Source,
+				info.Image, info.BrightSequence, info.BrightZaps, info.DimSequence, info.DimZaps, info.Palette);
 
 			yield return zap;
 		}
