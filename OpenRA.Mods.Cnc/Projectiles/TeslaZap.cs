@@ -32,22 +32,26 @@ namespace OpenRA.Mods.Cnc.Projectiles
 
 		public readonly int Duration = 2;
 
+		public readonly bool TrackTarget = true;
+
 		public IProjectile Create(ProjectileArgs args) { return new TeslaZap(this, args); }
 	}
 
-	public class TeslaZap : IProjectile
+	public class TeslaZap : IProjectile, ISync
 	{
 		readonly ProjectileArgs args;
 		readonly TeslaZapInfo info;
 		TeslaZapRenderable zap;
 		int ticksUntilRemove;
 		bool doneDamage = false;
+		[Sync] WPos target;
 
 		public TeslaZap(TeslaZapInfo info, ProjectileArgs args)
 		{
 			this.args = args;
 			this.info = info;
 			ticksUntilRemove = info.Duration;
+			target = args.PassiveTarget;
 		}
 
 		public void Tick(World world)
@@ -55,18 +59,20 @@ namespace OpenRA.Mods.Cnc.Projectiles
 			if (ticksUntilRemove-- <= 0)
 				world.AddFrameEndTask(w => w.Remove(this));
 
+			// Zap tracks target
+			if (info.TrackTarget && args.GuidedTarget.IsValidFor(args.SourceActor))
+				target = args.GuidedTarget.Positions.PositionClosestTo(args.Source);
+
 			if (!doneDamage)
 			{
-				var pos = args.GuidedTarget.IsValidFor(args.SourceActor) ? args.GuidedTarget.CenterPosition : args.PassiveTarget;
-				args.Weapon.Impact(Target.FromPos(pos), args.SourceActor, args.DamageModifiers);
+				args.Weapon.Impact(Target.FromPos(target), args.SourceActor, args.DamageModifiers);
 				doneDamage = true;
 			}
 		}
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)
 		{
-			var pos = args.GuidedTarget.IsValidFor(args.SourceActor) ? args.GuidedTarget.CenterPosition : args.PassiveTarget;
-			zap = new TeslaZapRenderable(args.Source, 0, pos - args.Source,
+			zap = new TeslaZapRenderable(args.Source, 0, target - args.Source,
 				info.Image, info.BrightSequence, info.BrightZaps, info.DimSequence, info.DimZaps, info.Palette);
 
 			yield return zap;
