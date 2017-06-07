@@ -91,8 +91,6 @@ namespace OpenRA.Mods.Common.Traits
 				if (move != null)
 					newUnit.QueueActivity(move.MoveTo(destination, 2));
 
-				newUnit.ShowTargetLines();
-
 				if (!self.IsDead)
 					foreach (var t in self.TraitsImplementing<INotifyProduction>())
 						t.UnitProduced(self, newUnit, destination);

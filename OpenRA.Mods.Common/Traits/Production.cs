@@ -110,8 +110,6 @@ namespace OpenRA.Mods.Common.Traits
 					}
 				}
 
-				newUnit.ShowTargetLines();
-
 				if (!self.IsDead)
 					foreach (var t in self.TraitsImplementing<INotifyProduction>())
 						t.UnitProduced(self, newUnit, exit);

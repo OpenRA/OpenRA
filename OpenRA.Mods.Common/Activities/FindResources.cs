@@ -97,8 +97,6 @@ namespace OpenRA.Mods.Common.Activities
 				if (!harv.LastOrderLocation.HasValue)
 					harv.LastOrderLocation = closestHarvestablePosition;
 
-				self.ShowTargetLines();
-
 				// TODO: The harvest-deliver-return sequence is a horrible mess of duplicated code and edge-cases
 				var notify = self.TraitsImplementing<INotifyHarvesterAction>();
 				foreach (var n in notify)
