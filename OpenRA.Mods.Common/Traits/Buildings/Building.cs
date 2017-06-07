@@ -144,7 +144,7 @@ namespace OpenRA.Mods.Common.Traits
 		}
 	}
 
-	public class Building : IOccupySpace, INotifySold, INotifyTransform, ISync, INotifyCreated, INotifyAddedToWorld, INotifyRemovedFromWorld
+	public class Building : IOccupySpace, ITargetableCells, INotifySold, INotifyTransform, ISync, INotifyCreated, INotifyAddedToWorld, INotifyRemovedFromWorld
 	{
 		public readonly BuildingInfo Info;
 		public bool BuildComplete { get; private set; }
@@ -153,6 +153,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly bool SkipMakeAnimation;
 
 		Pair<CPos, SubCell>[] occupiedCells;
+		Pair<CPos, SubCell>[] targetableCells;
 
 		// Shared activity lock: undeploy, sell, capture, etc.
 		[Sync] public bool Locked = true;
@@ -180,11 +181,16 @@ namespace OpenRA.Mods.Common.Traits
 			occupiedCells = FootprintUtils.UnpathableTiles(self.Info.Name, Info, TopLeft)
 				.Select(c => Pair.New(c, SubCell.FullCell)).ToArray();
 
+			targetableCells = FootprintUtils.UnpathableTiles(self.Info.Name, Info, TopLeft)
+				.Select(c => Pair.New(c, SubCell.FullCell)).ToArray();
+
 			CenterPosition = init.World.Map.CenterOfCell(topLeft) + FootprintUtils.CenterOffset(init.World, Info);
 			SkipMakeAnimation = init.Contains<SkipMakeAnimsInit>();
 		}
 
 		public IEnumerable<Pair<CPos, SubCell>> OccupiedCells() { return occupiedCells; }
+
+		public IEnumerable<Pair<CPos, SubCell>> TargetableCells() { return targetableCells; }
 
 		void INotifyCreated.Created(Actor self)
 		{
