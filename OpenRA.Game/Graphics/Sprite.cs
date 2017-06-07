@@ -26,6 +26,9 @@ namespace OpenRA.Graphics
 		public readonly float3 FractionalOffset;
 		public readonly float Top, Left, Bottom, Right;
 
+		public Sprite(Sprite sprite)
+			: this(sprite.Sheet, sprite.Bounds, sprite.ZRamp, sprite.Offset, sprite.Channel, sprite.BlendMode) { }
+
 		public Sprite(Sheet sheet, Rectangle bounds, TextureChannel channel)
 			: this(sheet, bounds, 0, float2.Zero, channel) { }
 
@@ -45,6 +48,17 @@ namespace OpenRA.Graphics
 			Top = (float)Math.Min(bounds.Top, bounds.Bottom) / sheet.Size.Height;
 			Right = (float)Math.Max(bounds.Left, bounds.Right) / sheet.Size.Width;
 			Bottom = (float)Math.Max(bounds.Top, bounds.Bottom) / sheet.Size.Height;
+		}
+
+		public virtual Sprite With(Sheet sheet, Rectangle? bounds, float? zRamp, float3? offset, TextureChannel? channel, BlendMode? blendMode)
+		{
+			// Override to keep custom properties.
+			return new Sprite(sheet ?? Sheet, bounds ?? Bounds, zRamp ?? ZRamp, offset ?? Offset, channel ?? Channel, blendMode ?? BlendMode);
+		}
+
+		public virtual void Set(ISpecificSpriteFrame frame)
+		{
+			// Override to populate custom properties.
 		}
 	}
 

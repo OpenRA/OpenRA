@@ -167,7 +167,7 @@ namespace OpenRA.Mods.Common.Graphics
 
 						var subSrc = GetSpriteSrc(modData, tileSet, sequence, animation, sub.Key, sd);
 						var subSprites = cache[subSrc].Select(
-							s => new Sprite(s.Sheet,
+							s => s.With(s.Sheet,
 								FlipRectangle(s.Bounds, subFlipX, subFlipY), ZRamp,
 								new float3(subFlipX ? -s.Offset.X : s.Offset.X, subFlipY ? -s.Offset.Y : s.Offset.Y, s.Offset.Z) + subOffset + offset,
 								s.Channel, blendMode));
@@ -190,7 +190,7 @@ namespace OpenRA.Mods.Common.Graphics
 					// Different sequences may apply different offsets to the same frame
 					var src = GetSpriteSrc(modData, tileSet, sequence, animation, info.Value, d);
 					sprites = cache[src].Select(
-						s => new Sprite(s.Sheet,
+						s => s.With(s.Sheet,
 							FlipRectangle(s.Bounds, flipX, flipY), ZRamp,
 							new float3(flipX ? -s.Offset.X : s.Offset.X, flipY ? -s.Offset.Y : s.Offset.Y, s.Offset.Z) + offset,
 							s.Channel, blendMode)).ToArray();
