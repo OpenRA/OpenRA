@@ -32,6 +32,8 @@ namespace OpenRA.Mods.Cnc.Projectiles
 
 		public readonly int Duration = 2;
 
+		public readonly int DamageDuration = 1;
+
 		public readonly bool TrackTarget = true;
 
 		public IProjectile Create(ProjectileArgs args) { return new TeslaZap(this, args); }
@@ -43,7 +45,7 @@ namespace OpenRA.Mods.Cnc.Projectiles
 		readonly TeslaZapInfo info;
 		TeslaZapRenderable zap;
 		int ticksUntilRemove;
-		bool doneDamage = false;
+		int damageDuration;
 		[Sync] WPos target;
 
 		public TeslaZap(TeslaZapInfo info, ProjectileArgs args)
@@ -51,6 +53,7 @@ namespace OpenRA.Mods.Cnc.Projectiles
 			this.args = args;
 			this.info = info;
 			ticksUntilRemove = info.Duration;
+			damageDuration = info.DamageDuration > info.Duration ? info.Duration : info.DamageDuration;
 			target = args.PassiveTarget;
 		}
 
@@ -63,11 +66,8 @@ namespace OpenRA.Mods.Cnc.Projectiles
 			if (info.TrackTarget && args.GuidedTarget.IsValidFor(args.SourceActor))
 				target = args.GuidedTarget.Positions.PositionClosestTo(args.Source);
 
-			if (!doneDamage)
-			{
+			if (damageDuration-- > 0)
 				args.Weapon.Impact(Target.FromPos(target), args.SourceActor, args.DamageModifiers);
-				doneDamage = true;
-			}
 		}
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)
