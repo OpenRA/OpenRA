@@ -111,7 +111,7 @@ namespace OpenRA.Mods.Common.Activities
 
 		public override TargetLineNode? TargetLineNode(Actor self)
 		{
-			return new TargetLineNode(Target.FromActor(dest), Color.Yellow, false);
+			return new TargetLineNode(Target.FromActor(dest), Color.Green, false);
 		}
 	}
 }

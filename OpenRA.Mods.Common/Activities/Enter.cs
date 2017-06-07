@@ -288,8 +288,6 @@ namespace OpenRA.Mods.Common.Activities
 
 		public override TargetLineNode? TargetLineNode(Actor self)
 		{
-			if (inner != null)
-				return inner.TargetLineNode(self);
 			return new TargetLineNode(Target, Color.Yellow, false);
 		}
 	}

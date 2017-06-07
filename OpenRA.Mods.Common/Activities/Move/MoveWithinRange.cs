@@ -10,9 +10,7 @@
 #endregion
 
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
-using OpenRA.Activities;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
@@ -56,13 +54,6 @@ namespace OpenRA.Mods.Common.Activities
 		bool AtCorrectRange(WPos origin)
 		{
 			return Target.IsInRange(origin, maxRange) && !Target.IsInRange(origin, minRange);
-		}
-
-		public override TargetLineNode? TargetLineNode(Actor self)
-		{
-			//var color = NextActivity == null ? Color.Green : NextActivity.TargetLineNode(self).Color;
-			//return new TargetLineNode(Target.Invalid, color, NextActivity);
-			return null;
 		}
 	}
 }

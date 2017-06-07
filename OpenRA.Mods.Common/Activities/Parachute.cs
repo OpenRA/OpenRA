@@ -9,7 +9,6 @@
  */
 #endregion
 
-using System.Drawing;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
@@ -85,13 +84,6 @@ namespace OpenRA.Mods.Common.Activities
 		public override void Queue(Activity activity)
 		{
 			NextActivity = activity;
-		}
-
-		public override TargetLineNode? TargetLineNode(Actor self)
-		{
-			// Does have a valid target but draws inaccurately. Skip drawing rather.
-			//return new TargetLineNode(Target.Invalid, Color.Green, NextActivity);
-			return null;
 		}
 	}
 }

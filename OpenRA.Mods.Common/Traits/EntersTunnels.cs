@@ -79,6 +79,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!order.Queued)
 				self.CancelActivity();
 
+			self.ShowTargetLines();
 			self.QueueActivity(move.MoveTo(tunnel.Entrance, tunnel.NearEnough));
 			self.QueueActivity(move.MoveTo(tunnel.Exit.Value, tunnel.NearEnough));
 		}

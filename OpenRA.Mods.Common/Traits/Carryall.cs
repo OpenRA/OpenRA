@@ -260,6 +260,7 @@ namespace OpenRA.Mods.Common.Traits
 					if (!order.Queued)
 						self.CancelActivity();
 
+					self.ShowTargetLines();
 					self.QueueActivity(order.Queued, new PickupUnit(self, target.Actor, Info.LoadingDelay));
 				}
 			}

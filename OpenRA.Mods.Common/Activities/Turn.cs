@@ -9,7 +9,6 @@
  */
 #endregion
 
-using System.Collections.Generic;
 using OpenRA.Activities;
 using OpenRA.Traits;
 
@@ -40,14 +39,6 @@ namespace OpenRA.Mods.Common.Activities
 			facing.Facing = Util.TickFacing(facing.Facing, desiredFacing, facing.TurnSpeed);
 
 			return this;
-		}
-
-		public override TargetLineNode? TargetLineNode(Actor self)
-		{
-			//if (NextActivity != null)
-			//	return NextActivity.TargetLineNode(self);
-			//return base.TargetLineNode(self);
-			return null;
 		}
 	}
 }

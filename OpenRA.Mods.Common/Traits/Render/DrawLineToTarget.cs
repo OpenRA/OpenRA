@@ -63,8 +63,14 @@ namespace OpenRA.Mods.Common.Traits
 				yield break;
 
 			WPos prev = self.CenterPosition;
-			for (var a = self.CurrentActivity; a != null; a = a.NextActivity)
+			Activity a = self.CurrentActivity;
+			if (a != null && a.RootActivity != null)
+				a = a.RootActivity;
+			for (; a != null; a = a.NextActivity)
 			{
+				if (a.IsCanceled)
+					continue;
+
 				var n = a.TargetLineNode(self);
 
 				// n == null doesn't mean termination. It is just an undrawable activity.
@@ -74,9 +80,11 @@ namespace OpenRA.Mods.Common.Traits
 					continue;
 				var node = n.Value;
 
-				// Some activities aren't drawable and has invalid type target.
-				if (a.IsCanceled || node.Target.Type == TargetType.Invalid)
-					continue;
+				if (node.Target.Type == TargetType.Invalid)
+					if (node.IsTerminal)
+						break;
+					else
+						continue;
 
 				yield return new TargetLineRenderable(new[] { prev, node.Target.CenterPosition }, node.Color);
 				prev = node.Target.CenterPosition;

@@ -390,9 +390,13 @@ namespace OpenRA.Mods.Common.Activities
 
 			protected abstract MovePart OnComplete(Actor self, Mobile mobile);
 
+			public override IEnumerable<Target> GetTargets(Actor self)
+			{
+				return Move.GetTargets(self);
+			}
+
 			public override TargetLineNode? TargetLineNode(Actor self)
 			{
-				//return new TargetLineNode(Target.Invalid, Color.Green, Move);
 				return null;
 			}
 		}
@@ -416,7 +420,7 @@ namespace OpenRA.Mods.Common.Activities
 
 				if (!IsCanceled || self.Location.Layer == CustomMovementLayerType.Tunnel)
 				{
-					var nextCell = (ParentActivity as Move).PopPath(self);
+					var nextCell = Move.PopPath(self);
 					if (nextCell != null)
 					{
 						if (IsTurn(mobile, nextCell.Value.First))
@@ -435,7 +439,7 @@ namespace OpenRA.Mods.Common.Activities
 							return ret;
 						}
 
-						(ParentActivity as Move).path.Add(nextCell.Value.First);
+						Move.path.Add(nextCell.Value.First);
 					}
 				}
 

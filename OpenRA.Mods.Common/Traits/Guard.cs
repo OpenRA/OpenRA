@@ -45,7 +45,6 @@ namespace OpenRA.Mods.Common.Traits
 				var target = Target.FromActor(order.TargetActor);
 
 				GuardTarget(self, target);
-				self.ShowTargetLines();
 			}
 		}
 
@@ -54,7 +53,8 @@ namespace OpenRA.Mods.Common.Traits
 			self.ShowTargetLines();
 
 			var range = target.Actor.Info.TraitInfo<GuardableInfo>().Range;
-			self.QueueActivity(false, new AttackMoveActivity(self, move.MoveFollow(self, target, WDist.Zero, range)));
+			var inner = new AttackMoveActivity(self, move.MoveFollow(self, target, WDist.Zero, range));
+			self.QueueActivity(false, new GuardTargetActivity(self, target, inner));
 		}
 
 		public string VoicePhraseForOrder(Actor self, Order order)

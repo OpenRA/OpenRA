@@ -9,7 +9,6 @@
  */
 #endregion
 
-using System.Drawing;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
@@ -76,11 +75,6 @@ namespace OpenRA.Mods.Common.Activities
 				t.Harvested(self, resource);
 
 			return ActivityUtils.SequenceActivities(new Wait(harvInfo.BaleLoadDelay), this);
-		}
-
-		public override TargetLineNode? TargetLineNode(Actor self)
-		{
-			return null;
 		}
 	}
 }

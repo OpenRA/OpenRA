@@ -52,11 +52,9 @@ namespace OpenRA.Mods.Common.Activities
 
 		public override TargetLineNode? TargetLineNode(Actor self)
 		{
-			// Follow-guard case. (Easier to tell than follow-attack)
-			//if (NextActivity == null)
-			//	return new TargetLineNode(target, Color.Yellow, NextActivity);
-			//return new TargetLineNode(target, Color.Red, NextActivity);
-			return new TargetLineNode(target, Color.Aqua, false);
+			// Since GuardTargetActivity encapsulates AttackMove-Guard case,
+			// the only use case left is the actual attack case which should be drawn in red.
+			return new TargetLineNode(target, Color.Red, false);
 		}
 	}
 }

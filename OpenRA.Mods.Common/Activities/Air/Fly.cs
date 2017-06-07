@@ -92,9 +92,7 @@ namespace OpenRA.Mods.Common.Activities
 
 		public override TargetLineNode? TargetLineNode(Actor self)
 		{
-			//var color = NextActivity == null ? Color.Green : NextActivity.TargetLineNode(self).Color;
-			//return new TargetLineNode(target, color, NextActivity);
-			return new TargetLineNode(target, Color.Aqua, false);
+			return new TargetLineNode(target, Color.Green, false);
 		}
 	}
 

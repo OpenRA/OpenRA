@@ -150,7 +150,7 @@ namespace OpenRA.Mods.Common.Activities
 
 		public override TargetLineNode? TargetLineNode(Actor self)
 		{
-			return new TargetLineNode(Target.FromCell(self.World, harv.LastOrderLocation.Value), Color.Red, false);
+			return new TargetLineNode(Target.Invalid, Color.Red, false);
 		}
 	}
 }

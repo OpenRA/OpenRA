@@ -67,7 +67,7 @@ namespace OpenRA.Mods.Cnc.Activities
 
 		public override TargetLineNode? TargetLineNode(Actor self)
 		{
-			return new TargetLineNode(Target, Color.Yellow, false);
+			return new TargetLineNode(Target, Color.Red, false);
 		}
 	}
 }

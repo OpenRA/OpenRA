@@ -12,48 +12,35 @@
 using System.Collections.Generic;
 using System.Drawing;
 using OpenRA.Activities;
-using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Activities
 {
-	public class Land : Activity
+	public class GuardTargetActivity : Activity
 	{
-		readonly Target target;
-		readonly Aircraft plane;
+		Target target;
 
-		public Land(Actor self, Target t)
+		public GuardTargetActivity(Actor self, Target target, Activity inner)
 		{
-			target = t;
-			plane = self.Trait<Aircraft>();
+			this.target = target;
+			ChildActivity = inner;
 		}
 
 		public override Activity Tick(Actor self)
 		{
-			if (!target.IsValidFor(self))
-				Cancel(self);
-
-			if (IsCanceled)
+			if (ChildActivity == null)
 				return NextActivity;
+			return ChildActivity;
+		}
 
-			var d = target.CenterPosition - self.CenterPosition;
-
-			// The next move would overshoot, so just set the final position
-			var move = plane.FlyStep(plane.Facing);
-			if (d.HorizontalLengthSquared < move.HorizontalLengthSquared)
-			{
-				plane.SetPosition(self, target.CenterPosition);
-				return NextActivity;
-			}
-
-			Fly.FlyToward(self, plane, d.Yaw.Facing, WDist.Zero);
-
-			return this;
+		public override IEnumerable<Target> GetTargets(Actor self)
+		{
+			return ChildActivity.GetTargets(self);
 		}
 
 		public override TargetLineNode? TargetLineNode(Actor self)
 		{
-			return new TargetLineNode(target, Color.Green, false);
+			return new TargetLineNode(target, Color.Yellow, false);
 		}
 	}
 }
