@@ -90,10 +90,11 @@ namespace OpenRA.Mods.Common.Activities
 			yield return target;
 		}
 
-		public override TargetLineNode TargetLineNode(Actor self)
+		public override TargetLineNode? TargetLineNode(Actor self)
 		{
-			var color = NextActivity == null ? Color.Green : NextActivity.TargetLineNode(self).Color;
-			return new TargetLineNode(target, color, NextActivity);
+			//var color = NextActivity == null ? Color.Green : NextActivity.TargetLineNode(self).Color;
+			//return new TargetLineNode(target, color, NextActivity);
+			return new TargetLineNode(target, Color.Aqua, false);
 		}
 	}
 

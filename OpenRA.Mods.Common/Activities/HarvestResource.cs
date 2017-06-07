@@ -78,9 +78,9 @@ namespace OpenRA.Mods.Common.Activities
 			return ActivityUtils.SequenceActivities(new Wait(harvInfo.BaleLoadDelay), this);
 		}
 
-		public override TargetLineNode TargetLineNode(Actor self)
+		public override TargetLineNode? TargetLineNode(Actor self)
 		{
-			return new TargetLineNode(Target.Invalid, Color.Red, null);
+			return null;
 		}
 	}
 }

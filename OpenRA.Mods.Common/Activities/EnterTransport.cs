@@ -33,9 +33,9 @@ namespace OpenRA.Mods.Common.Activities
 			passenger = self.Trait<Passenger>();
 		}
 
-		public override TargetLineNode TargetLineNode(Actor self)
+		public override TargetLineNode? TargetLineNode(Actor self)
 		{
-			return new TargetLineNode(Target, Color.Yellow, null);
+			return new TargetLineNode(Target, Color.Yellow, true);
 		}
 
 		protected override void Unreserve(Actor self, bool abort) { passenger.Unreserve(self); }

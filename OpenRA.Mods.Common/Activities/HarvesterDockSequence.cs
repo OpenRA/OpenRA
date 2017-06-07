@@ -93,9 +93,9 @@ namespace OpenRA.Mods.Common.Activities
 			yield return Target.FromActor(Refinery);
 		}
 
-		public override TargetLineNode TargetLineNode(Actor self)
+		public override TargetLineNode? TargetLineNode(Actor self)
 		{
-			return new TargetLineNode(Target.FromActor(Refinery), Color.Green, NextActivity);
+			return new TargetLineNode(Target.FromActor(Refinery), Color.Green, false);
 		}
 
 		public abstract Activity OnStateDock(Actor self);

@@ -87,10 +87,11 @@ namespace OpenRA.Mods.Common.Activities
 			NextActivity = activity;
 		}
 
-		public override TargetLineNode TargetLineNode(Actor self)
+		public override TargetLineNode? TargetLineNode(Actor self)
 		{
 			// Does have a valid target but draws inaccurately. Skip drawing rather.
-			return new TargetLineNode(Target.Invalid, Color.Green, NextActivity);
+			//return new TargetLineNode(Target.Invalid, Color.Green, NextActivity);
+			return null;
 		}
 	}
 }

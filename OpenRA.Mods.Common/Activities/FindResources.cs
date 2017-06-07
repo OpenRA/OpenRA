@@ -148,9 +148,9 @@ namespace OpenRA.Mods.Common.Activities
 			yield return Target.FromCell(self.World, self.Location);
 		}
 
-		public override TargetLineNode TargetLineNode(Actor self)
+		public override TargetLineNode? TargetLineNode(Actor self)
 		{
-			return new TargetLineNode(Target.FromCell(self.World, harv.LastOrderLocation.Value), Color.Red, NextActivity);
+			return new TargetLineNode(Target.FromCell(self.World, harv.LastOrderLocation.Value), Color.Red, false);
 		}
 	}
 }

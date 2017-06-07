@@ -53,10 +53,11 @@ namespace OpenRA.Mods.Common.Activities
 			return NextActivity;
 		}
 
-		public override TargetLineNode TargetLineNode(Actor self)
+		public override TargetLineNode? TargetLineNode(Actor self)
 		{
 			// Terminal activity, as anything queued next is ignored after reloading.
-			return new TargetLineNode(Target.Invalid, Color.Yellow, null);
+			//return new TargetLineNode(Target.Invalid, Color.Yellow, null);
+			return null;
 		}
 	}
 }

@@ -63,17 +63,26 @@ namespace OpenRA.Mods.Common.Traits
 				yield break;
 
 			WPos prev = self.CenterPosition;
-			TargetLineNode n;
-			for (var a = self.CurrentActivity; a != null; a = n.Next)
+			for (var a = self.CurrentActivity; a != null; a = a.NextActivity)
 			{
-				n = a.TargetLineNode(self);
+				var n = a.TargetLineNode(self);
+
+				// n == null doesn't mean termination. It is just an undrawable activity.
+				// If you need an underawable terminal activity,
+				// return Invalid target type + IsTerminal == true.
+				if (n == null)
+					continue;
+				var node = n.Value;
 
 				// Some activities aren't drawable and has invalid type target.
-				if (a.IsCanceled || n.Target.Type == TargetType.Invalid)
+				if (a.IsCanceled || node.Target.Type == TargetType.Invalid)
 					continue;
 
-				yield return new TargetLineRenderable(new[] { prev, n.Target.CenterPosition }, n.Color);
-				prev = n.Target.CenterPosition;
+				yield return new TargetLineRenderable(new[] { prev, node.Target.CenterPosition }, node.Color);
+				prev = node.Target.CenterPosition;
+
+				if (node.IsTerminal)
+					break;
 			}
 		}
 	}

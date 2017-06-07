@@ -50,12 +50,13 @@ namespace OpenRA.Mods.Common.Activities
 			return ActivityUtils.SequenceActivities(path, this);
 		}
 
-		public override TargetLineNode TargetLineNode(Actor self)
+		public override TargetLineNode? TargetLineNode(Actor self)
 		{
 			// Follow-guard case. (Easier to tell than follow-attack)
-			if (NextActivity == null)
-				return new TargetLineNode(target, Color.Yellow, NextActivity);
-			return new TargetLineNode(target, Color.Red, NextActivity);
+			//if (NextActivity == null)
+			//	return new TargetLineNode(target, Color.Yellow, NextActivity);
+			//return new TargetLineNode(target, Color.Red, NextActivity);
+			return new TargetLineNode(target, Color.Aqua, false);
 		}
 	}
 }

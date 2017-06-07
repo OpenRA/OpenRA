@@ -109,9 +109,9 @@ namespace OpenRA.Mods.Common.Activities
 					.Any(p => !p.Info.SelfReloads && !p.FullAmmo());
 		}
 
-		public override TargetLineNode TargetLineNode(Actor self)
+		public override TargetLineNode? TargetLineNode(Actor self)
 		{
-			return new TargetLineNode(Target.FromActor(dest), Color.Yellow, NextActivity);
+			return new TargetLineNode(Target.FromActor(dest), Color.Yellow, false);
 		}
 	}
 }

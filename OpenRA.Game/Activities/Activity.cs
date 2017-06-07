@@ -23,14 +23,14 @@ namespace OpenRA.Activities
 	{
 		public readonly Target Target;
 		public readonly Color Color;
-		public readonly Activity Next;
+		public readonly bool IsTerminal;
 
-		public TargetLineNode(Target target, Color color, Activity next)
+		public TargetLineNode(Target target, Color color, bool isTerminal)
 		{
 			// Note: Not all activities are drawable. In that case, pass Target.Invalid as target.
 			Target = target;
 			Color = color;
-			Next = next;
+			IsTerminal = isTerminal;
 		}
 	}
 
@@ -283,9 +283,9 @@ namespace OpenRA.Activities
 			yield break;
 		}
 
-		public virtual TargetLineNode TargetLineNode(Actor self)
+		public virtual TargetLineNode? TargetLineNode(Actor self)
 		{
-			return new TargetLineNode(Target.Invalid, Color.Green, NextActivity);
+			return null;
 		}
 	}
 

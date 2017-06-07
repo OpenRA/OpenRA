@@ -271,10 +271,11 @@ namespace OpenRA.Mods.Common.Activities
 			return Target.None;
 		}
 
-		public override TargetLineNode TargetLineNode(Actor self)
+		public override TargetLineNode? TargetLineNode(Actor self)
 		{
-			var color = NextActivity == null ? Color.Green : NextActivity.TargetLineNode(self).Color;
-			return new TargetLineNode(Target.FromCell(self.World, this.destination.Value), color, NextActivity);
+			//var color = NextActivity == null ? Color.Green : NextActivity.TargetLineNode(self).Color;
+			//return new TargetLineNode(Target.FromCell(self.World, this.destination.Value), color, NextActivity);
+			return new TargetLineNode(Target.FromCell(self.World, this.destination.Value), Color.Aqua, false);
 		}
 
 		abstract class MovePart : Activity
@@ -388,9 +389,10 @@ namespace OpenRA.Mods.Common.Activities
 
 			protected abstract MovePart OnComplete(Actor self, Mobile mobile, Move parent);
 
-			public override TargetLineNode TargetLineNode(Actor self)
+			public override TargetLineNode? TargetLineNode(Actor self)
 			{
-				return new TargetLineNode(Target.Invalid, Color.Green, Move);
+				//return new TargetLineNode(Target.Invalid, Color.Green, Move);
+				return null;
 			}
 		}
 

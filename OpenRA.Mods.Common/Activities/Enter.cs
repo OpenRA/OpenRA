@@ -286,11 +286,11 @@ namespace OpenRA.Mods.Common.Activities
 			return this;
 		}
 
-		public override TargetLineNode TargetLineNode(Actor self)
+		public override TargetLineNode? TargetLineNode(Actor self)
 		{
 			if (inner != null)
 				return inner.TargetLineNode(self);
-			return new TargetLineNode(Target, Color.Yellow, NextActivity);
+			return new TargetLineNode(Target, Color.Yellow, false);
 		}
 	}
 }
