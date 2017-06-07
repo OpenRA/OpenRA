@@ -74,11 +74,16 @@ namespace OpenRA.Mods.Common.Traits
 			}
 
 			List<CPos> pb;
-			using (var fromSrc = PathSearch.FromPoint(world, mi, self, target, source, true).WithIgnoredActor(ignoreActor))
-			using (var fromDest = PathSearch.FromPoint(world, mi, self, source, target, true).WithIgnoredActor(ignoreActor).Reverse())
-				pb = FindBidiPath(fromSrc, fromDest);
+			if ((target - source).Length > 1)
+			{
+				using (var fromSrc = PathSearch.FromPoint(world, mi, self, target, source, true).WithIgnoredActor(ignoreActor))
+				using (var fromDest = PathSearch.FromPoint(world, mi, self, source, target, true).WithIgnoredActor(ignoreActor).Reverse())
+					pb = FindBidiPath(fromSrc, fromDest);
 
-			CheckSanePath2(pb, source, target);
+				CheckSanePath2(pb, source, target);
+			}
+			else
+				pb = new List<CPos>() { target, source };
 
 			return pb;
 		}
