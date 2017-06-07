@@ -79,24 +79,34 @@ aban08:
 
 aban09:
 	Inherits: ^aban2x2
+	Defaults:
+		Offset: 2, -20, 24
 
 aban10:
 	Inherits: ^aban2x2
 
 aban11:
 	Inherits: ^aban2x2
+	Defaults:
+		Offset: 0, -20, 24
 
 aban12:
 	Inherits: ^aban2x2
+	Defaults:
+		Offset: 2, -22, 24
 
 aban13:
 	Inherits: ^aban1x1
+	Defaults:
+		Offset: 0, -10, 12
 
 aban14:
 	Inherits: ^aban1x1
 
 aban15:
 	Inherits: ^aban1x1
+	Defaults:
+		Offset: 0, -10, 12
 
 aban16:
 	Inherits: ^aban2x2
