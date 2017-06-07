@@ -123,7 +123,7 @@ namespace OpenRA.Mods.Common.Widgets
 						var unit = World.ScreenMap.ActorsAt(mousePos)
 							.WithHighestSelectionPriority(mousePos);
 
-						if (unit != null && unit.Owner == (World.RenderPlayer ?? World.LocalPlayer))
+						if (unit != null && ((unit.Owner == (World.RenderPlayer ?? World.LocalPlayer)) || World.IsSpectating))
 						{
 							var s = unit.TraitOrDefault<Selectable>();
 							if (s != null)

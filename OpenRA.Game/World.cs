@@ -87,6 +87,11 @@ namespace OpenRA
 			get { return OrderManager.Connection is ReplayConnection; }
 		}
 
+		public bool IsSpectating
+		{
+			get { return IsReplay || (LocalPlayer == null && RenderPlayer == null); }
+		}
+
 		void SetLocalPlayer(Player localPlayer)
 		{
 			if (localPlayer == null)
