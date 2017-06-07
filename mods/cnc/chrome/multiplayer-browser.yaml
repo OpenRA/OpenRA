@@ -55,9 +55,20 @@ Container@MULTIPLAYER_BROWSER_PANEL:
 					Height: 25
 					X: 2
 					Children:
+						Container@LATENCY:
+							Y: 6
+							Width: 11
+							Height: 14
+							Visible: false
+							Children:
+								ColorBlock@LATENCY_COLOR:
+									X: 2
+									Y: 2
+									Width: PARENT_RIGHT - 4
+									Height: PARENT_BOTTOM - 4
 						Label@TITLE:
-							X: 5
-							Width: 255
+							X: 15
+							Width: 245
 							Height: 25
 						Image@PASSWORD_PROTECTED:
 							X: 272

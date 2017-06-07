@@ -15,6 +15,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Threading;
 using OpenRA.Graphics;
@@ -79,6 +80,25 @@ namespace OpenRA.Server
 				c.Team = pr.Team;
 
 			c.Color = pr.LockColor ? pr.Color : c.PreferredColor;
+		}
+
+		public static double GetAveragePingTime(string host, int echoNum)
+		{
+			var totalTime = 0L;
+			var successNum = 0;
+			var pingSender = new Ping();
+
+			for (var i = 0; i < echoNum; i++)
+			{
+				var reply = pingSender.Send(host, 1000);
+				if (reply.Status == IPStatus.Success)
+				{
+					totalTime += reply.RoundtripTime;
+					successNum += 1;
+				}
+			}
+
+			return successNum > 0 ? totalTime / successNum : -1;
 		}
 
 		static void SendData(Socket s, byte[] data)

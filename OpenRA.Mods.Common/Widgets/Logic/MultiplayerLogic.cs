@@ -15,6 +15,7 @@ using System.Drawing;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Threading.Tasks;
 using BeaconLib;
 using OpenRA.Network;
 using OpenRA.Server;
@@ -55,6 +56,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		Download currentQuery;
 		Widget serverList;
 		IEnumerable<BeaconLocation> lanGameLocations;
+		Dictionary<string, Lazy<Task<double>>> pingTasks = new Dictionary<string, Lazy<Task<double>>>();
+		Dictionary<string, List<Widget>> latencyWidgets = new Dictionary<string, List<Widget>>();
+		DateTime lastRefreshTime;
 
 		public string ProgressLabelText()
 		{
@@ -400,6 +404,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			ScrollItemWidget nextServerRow = null;
 			var rows = new List<Widget>();
+			latencyWidgets.Clear();
+			if ((DateTime.UtcNow - lastRefreshTime).TotalSeconds > 20)
+				pingTasks.Clear();
+
 			foreach (var modGames in mods)
 			{
 				if (modGames.All(Filtered))
@@ -439,14 +447,47 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 							continue;
 
 						var canJoin = game.IsJoinable;
+						var host = game.Address.Split(':')[0];
 						var item = ScrollItemWidget.Setup(serverTemplate, () => currentServer == game, () => SelectServer(game), () => Join(game));
+
 						var title = item.GetOrNull<LabelWidget>("TITLE");
 						if (title != null)
 						{
 							var font = Game.Renderer.Fonts[title.Font];
 							var label = WidgetUtils.TruncateText(game.Name, title.Bounds.Width, font);
-							title.GetText = () => label;
+							title.GetText = () =>
+							{
+								// Get ping for visible servers
+								var task = pingTasks.ContainsKey(host) ? pingTasks[host].Value : null;
+
+								// This useless return condition is here to satisfy Travis -'Warning as Error: The variable `task' is assigned but its value is never used'
+								return task == null ? label : label;
+							};
+
 							title.GetColor = () => canJoin ? title.TextColor : incompatibleGameColor;
+						}
+
+						var latency = item.GetOrNull("LATENCY");
+						if (latency != null)
+						{
+							if (!pingTasks.ContainsKey(host))
+							{
+								pingTasks.Add(host, new Lazy<Task<double>>(() =>
+								{
+									var task = Task.Run(() => OpenRA.Server.Server.GetAveragePingTime(host, 2));
+									task.ContinueWith(t => Game.RunAfterTick(() => {
+										RefreshLatencyWidgets(host);
+										lastRefreshTime = DateTime.UtcNow;
+									}));
+
+									return task;
+								}));
+							}
+
+							if (!latencyWidgets.ContainsKey(host))
+								latencyWidgets[host] = new List<Widget>();
+
+							latencyWidgets[host].Add(latency);
 						}
 
 						var password = item.GetOrNull<ImageWidget>("PASSWORD_PROTECTED");
@@ -480,7 +521,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						if (location != null)
 						{
 							var font = Game.Renderer.Fonts[location.Font];
-							var cachedServerLocation = game.Id != -1 ? GeoIP.LookupCountry(game.Address.Split(':')[0]) : "Local Network";
+							var cachedServerLocation = game.Id != -1 ? GeoIP.LookupCountry(host) : "Local Network";
 							var label = WidgetUtils.TruncateText(cachedServerLocation, location.Bounds.Width, font);
 							location.GetText = () => label;
 							location.GetColor = () => canJoin ? location.TextColor : incompatibleGameColor;
@@ -517,12 +558,33 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				if (Game.Settings.Game.AllowDownloading)
 					modData.MapCache.QueryRemoteMapDetails(services.MapRepository, games.Where(g => !Filtered(g)).Select(g => g.Map));
 
+				// Refresh latency widgets with already completed pings (could be from previous Refresh)
+				foreach (var pt in pingTasks.Where(pt => pt.Value.IsValueCreated))
+					RefreshLatencyWidgets(pt.Key);
+
 				foreach (var row in rows)
 					serverList.AddChild(row);
 
 				if (nextServerRow != null)
 					nextServerRow.OnClick();
 			});
+		}
+
+		private void RefreshLatencyWidgets(string host)
+		{
+			if (!latencyWidgets.ContainsKey(host))
+				return;
+
+			var pingTask = pingTasks[host].Value;
+			if (!pingTask.IsCompleted)
+				return;
+
+			var color = LobbyUtils.LatencyColor(new Session.ClientPing() { Latency = (long)pingTask.Result });
+			foreach (var latency in latencyWidgets[host])
+			{
+				latency.IsVisible = () => true;
+				latency.Get<ColorBlockWidget>("LATENCY_COLOR").GetColor = () => color;
+			}
 		}
 
 		void OpenLobby()
