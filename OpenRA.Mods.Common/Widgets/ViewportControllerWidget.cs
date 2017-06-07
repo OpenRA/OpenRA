@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Orders;
 using OpenRA.Traits;
 using OpenRA.Widgets;
 
@@ -173,6 +174,10 @@ namespace OpenRA.Mods.Common.Widgets
 		{
 			TooltipType = WorldTooltipType.None;
 			ActorTooltipExtra = null;
+
+			if (!(world.OrderGenerator is UnitOrderGenerator))
+				return;
+
 			var cell = worldRenderer.Viewport.ViewToWorld(Viewport.LastMousePos);
 			if (!world.Map.Contains(cell))
 				return;
