@@ -78,6 +78,7 @@ namespace OpenRA.Mods.Common
 				return Target.Invalid;
 
 			// Flashes the frozen proxy
+			frozen.Flash();
 			self.ShowTargetLines();
 
 			// Target is still alive - resolve the real order
