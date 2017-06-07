@@ -258,6 +258,7 @@
     <Compile Include="Traits\Air\AttackPlane.cs" />
     <Compile Include="Traits\Air\FlyAwayOnIdle.cs" />
     <Compile Include="Traits\Air\FallsToEarth.cs" />
+    <Compile Include="Traits\Air\FlyCircleOnIdle.cs" />
     <Compile Include="Traits\Air\ReturnOnIdle.cs" />
     <Compile Include="Traits\Armament.cs" />
     <Compile Include="Traits\Armor.cs" />
