@@ -20,7 +20,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 {
 	public interface IRenderActorPreviewVoxelsInfo : ITraitInfo
 	{
-		IEnumerable<VoxelAnimation> RenderPreviewVoxels(
+		IEnumerable<ModelAnimation> RenderPreviewVoxels(
 			ActorPreviewInitializer init, RenderVoxelsInfo rv, string image, Func<WRot> orientation, int facings, PaletteReference p);
 	}
 
@@ -71,7 +71,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 	public class RenderVoxels : IRender, INotifyOwnerChanged
 	{
-		readonly List<VoxelAnimation> components = new List<VoxelAnimation>();
+		readonly List<ModelAnimation> components = new List<ModelAnimation>();
 		readonly Actor self;
 		readonly RenderVoxelsInfo info;
 		readonly BodyOrientation body;
@@ -109,7 +109,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		}
 
 		public string Image { get { return info.Image ?? self.Info.Name; } }
-		public void Add(VoxelAnimation v) { components.Add(v); }
-		public void Remove(VoxelAnimation v) { components.Remove(v); }
+		public void Add(ModelAnimation v) { components.Add(v); }
+		public void Remove(ModelAnimation v) { components.Remove(v); }
 	}
 }

@@ -28,12 +28,12 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		public override object Create(ActorInitializer init) { return new WithVoxelBody(init.Self, this); }
 
-		public IEnumerable<VoxelAnimation> RenderPreviewVoxels(
+		public IEnumerable<ModelAnimation> RenderPreviewVoxels(
 			ActorPreviewInitializer init, RenderVoxelsInfo rv, string image, Func<WRot> orientation, int facings, PaletteReference p)
 		{
 			var body = init.Actor.TraitInfo<BodyOrientationInfo>();
 			var voxel = VoxelProvider.GetVoxel(image, Sequence);
-			yield return new VoxelAnimation(voxel, () => WVec.Zero,
+			yield return new ModelAnimation(voxel, () => WVec.Zero,
 				() => new[] { body.QuantizeOrientation(orientation(), facings) },
 				() => false, () => 0, ShowShadow);
 		}
@@ -50,7 +50,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			var rv = self.Trait<RenderVoxels>();
 
 			var voxel = VoxelProvider.GetVoxel(rv.Image, info.Sequence);
-			rv.Add(new VoxelAnimation(voxel, () => WVec.Zero,
+			rv.Add(new ModelAnimation(voxel, () => WVec.Zero,
 				() => new[] { body.QuantizeOrientation(self, self.Orientation) },
 				() => IsTraitDisabled, () => 0, info.ShowShadow));
 

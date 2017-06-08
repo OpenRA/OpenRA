@@ -23,13 +23,16 @@ namespace OpenRA.Graphics
 		public VoxelRenderData RenderData;
 	}
 
-	public class Voxel
+	public class Voxel : IModel
 	{
 		Limb[] limbData;
 		float[] transforms;
 
 		public readonly uint Frames;
 		public readonly uint Limbs;
+
+		uint IModel.Frames { get { return Frames; } }
+		uint IModel.Sections { get { return Limbs; } }
 
 		public Voxel(VoxelLoader loader, VxlReader vxl, HvaReader hva)
 		{

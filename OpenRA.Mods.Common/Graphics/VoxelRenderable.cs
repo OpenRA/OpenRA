@@ -20,7 +20,7 @@ namespace OpenRA.Mods.Common.Graphics
 {
 	public struct VoxelRenderable : IRenderable
 	{
-		readonly IEnumerable<VoxelAnimation> voxels;
+		readonly IEnumerable<ModelAnimation> voxels;
 		readonly WPos pos;
 		readonly int zOffset;
 		readonly WRot camera;
@@ -33,7 +33,7 @@ namespace OpenRA.Mods.Common.Graphics
 		readonly float scale;
 
 		public VoxelRenderable(
-			IEnumerable<VoxelAnimation> voxels, WPos pos, int zOffset, WRot camera, float scale,
+			IEnumerable<ModelAnimation> voxels, WPos pos, int zOffset, WRot camera, float scale,
 			WRot lightSource, float[] lightAmbientColor, float[] lightDiffuseColor,
 			PaletteReference color, PaletteReference normals, PaletteReference shadow)
 		{
@@ -158,7 +158,7 @@ namespace OpenRA.Mods.Common.Graphics
 
 				foreach (var v in draw)
 				{
-					var bounds = v.Voxel.Bounds(v.FrameFunc());
+					var bounds = v.Model.Bounds(v.FrameFunc());
 					var worldTransform = v.RotationFunc().Reverse().Aggregate(scaleTransform,
 						(x, y) => OpenRA.Graphics.Util.MatrixMultiply(x, OpenRA.Graphics.Util.MakeFloatMatrix(y.AsMatrix())));
 
@@ -216,7 +216,7 @@ namespace OpenRA.Mods.Common.Graphics
 
 				foreach (var v in draw)
 				{
-					var bounds = v.Voxel.Bounds(v.FrameFunc());
+					var bounds = v.Model.Bounds(v.FrameFunc());
 					var worldTransform = v.RotationFunc().Reverse().Aggregate(scaleTransform,
 						(x, y) => OpenRA.Graphics.Util.MatrixMultiply(x, OpenRA.Graphics.Util.MakeFloatMatrix(y.AsMatrix())));
 
