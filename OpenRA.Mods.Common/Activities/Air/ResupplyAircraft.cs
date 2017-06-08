@@ -23,7 +23,7 @@ namespace OpenRA.Mods.Common.Activities
 		protected override void OnFirstRun(Actor self)
 		{
 			var aircraft = self.Trait<Aircraft>();
-			var host = aircraft.GetActorBelow();
+			var host = aircraft.GetSupplierActorBelow();
 
 			if (host == null)
 				return;

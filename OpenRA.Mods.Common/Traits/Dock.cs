@@ -57,7 +57,7 @@ namespace OpenRA.Mods.Common.Traits
 		public Actor Occupier;
 
 		public CPos Location { get { return self.Location + Info.DockOffset; } }
-		public WPos CenterPosition { get { return self.World.Map.CenterOfCell(self.Location); } }
+		public WPos CenterPosition { get { return self.World.Map.CenterOfCell(Location); } }
 
 		// blocked by some immoble obstacle?
 		public bool IsBlocked;

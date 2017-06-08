@@ -53,6 +53,11 @@ namespace OpenRA.Mods.Common.Traits
 		readonly Dock[] waitDocks;
 		readonly List<Actor> queue = new List<Actor>();
 
+		// DockManager requires traits that implement IAcceptDock.
+		// On the other hand, these traits that implementing IAcceptDock requires DockManager!
+		// Hence, I'd resolve the trait at queueing time, not at the constructor.
+		IAcceptDock iAcceptDock;
+
 		CPos lastLocation; // in case this is a mobile dock.
 		int ticks;
 
@@ -64,13 +69,31 @@ namespace OpenRA.Mods.Common.Traits
 
 			// sort the dock traits by their Order trait.
 			var t0 = self.TraitsImplementing<Dock>().ToList();
-			t0.Sort(delegate(Dock a, Dock b) { return a.Info.Order - b.Info.Order; });
+			t0.Sort(delegate (Dock a, Dock b) { return a.Info.Order - b.Info.Order; });
 			var t1 = t0.Where(d => !d.Info.WaitingPlace).ToList();
 			var t2 = t0.Where(d => d.Info.WaitingPlace).ToList();
 			allDocks = t0.ToArray();
 			serviceDocks = t1.ToArray();
 			waitDocks = t2.ToArray();
 		}
+
+		void ResolveIAcceptDock()
+		{
+			if (iAcceptDock != null)
+				return;
+
+			// Argh, Hacky. Repair gets the least priority.
+			var iads = self.TraitsImplementing<IAcceptDock>();
+			System.Diagnostics.Debug.Assert(iads.Count() > 0, "IAcceptDock trait not found for actor type " + self.Info.Name);
+			System.Diagnostics.Debug.Assert(iads.Count() <= 2, "Too many IAcceptDock traits for actor type " + self.Info.Name);
+
+			if (iads.Count() == 1)
+				iAcceptDock = iads.First();
+			else
+				iAcceptDock = iads.First(t => !(t is RepairsUnits));
+		}
+
+		public int NumFreeDocks { get { return serviceDocks.Where(d => d.Occupier == null).Count(); } }
 
 		// for blocking check.
 		public IEnumerable<CPos> DockLocations
@@ -105,6 +128,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void ReserveDock(Actor self, Actor client)
 		{
+			ResolveIAcceptDock();
+
 			if (info.DockNextToActor)
 			{
 				ServeAdjacentDocker(self, client);
@@ -250,8 +275,8 @@ namespace OpenRA.Mods.Common.Traits
 			client.QueueActivity(new MoveAdjacentTo(client, Target.FromActor(self)));
 
 			// resource transfer activities are queued by OnDock.
-			self.Trait<IAcceptDock>().QueueOnDockActivity(client, self.Trait<Dock>());
-			self.Trait<IAcceptDock>().QueueUndockActivity(client, self.Trait<Dock>());
+			iAcceptDock.QueueOnDockActivity(client, self.Trait<Dock>());
+			iAcceptDock.QueueUndockActivity(client, self.Trait<Dock>());
 		}
 
 		void ServeHead(Actor self, Actor head, Dock serviceDock)
@@ -278,21 +303,21 @@ namespace OpenRA.Mods.Common.Traits
 
 			// Since there is 0 tolerance about distance, we WILL arrive at the dock (or we get stuck haha)
 			if (info.DockOnActor)
-				head.QueueActivity(head.Trait<Mobile>().MoveTo(serviceDock.Location, self));
+				head.QueueActivity(head.Trait<IMove>().MoveTo(serviceDock.Location, self));
 			else
-				head.QueueActivity(head.Trait<Mobile>().MoveTo(serviceDock.Location, 0));
+				head.QueueActivity(head.Trait<IMove>().MoveTo(serviceDock.Location, 0));
 
 			head.QueueActivity(new CallFunc(() => OnArrival(head, serviceDock)));
 
 			// resource transfer activities are queued by OnDock.
-			self.Trait<IAcceptDock>().QueueOnDockActivity(head, serviceDock);
+			iAcceptDock.QueueOnDockActivity(head, serviceDock);
 
 			head.QueueActivity(new CallFunc(() => OnUndock(head, serviceDock)));
 
 			// Move to south of the ref to avoid cluttering up with other dock locations
-			head.QueueActivity(new Move(head, serviceDock.Location + serviceDock.Info.ExitOffset, new WDist(2048)));
+			head.QueueActivity(head.Trait<IMove>().MoveTo(serviceDock.Location + serviceDock.Info.ExitOffset, 2));
 
-			self.Trait<IAcceptDock>().QueueUndockActivity(head, serviceDock);
+			iAcceptDock.QueueUndockActivity(head, serviceDock);
 		}
 
 		// As the actors are coming from all directions, first request, first served is not good.

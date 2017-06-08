@@ -35,7 +35,7 @@ namespace OpenRA.Mods.Common.Traits
 	}
 
 	// When dockmanager manages docked units, these units require dock client trait.
-	public class DockClient : INotifyKilled, INotifyBecomingIdle, INotifyActorDisposing
+	public class DockClient : INotifyKilled, INotifyBecomingIdle, INotifyActorDisposing, INotifyOwnerChanged
 	{
 		// readonly DockClientInfo info;
 		readonly Actor self;
@@ -84,6 +84,11 @@ namespace OpenRA.Mods.Common.Traits
 		}
 
 		void INotifyActorDisposing.Disposing(Actor self)
+		{
+			Release(CurrentDock);
+		}
+
+		void INotifyOwnerChanged.OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
 		{
 			Release(CurrentDock);
 		}

@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Traits;
@@ -31,11 +32,23 @@ namespace OpenRA.Mods.Common.Activities
 			this.dest = dest;
 		}
 
-		public Actor ChooseHelipad(Actor self)
+		IEnumerable<Actor> GetHelipads(Actor self)
 		{
-			var rearmBuildings = heli.Info.RearmBuildings;
-			return self.World.Actors.Where(a => a.Owner == self.Owner).FirstOrDefault(
-				a => rearmBuildings.Contains(a.Info.Name) && !Reservable.IsReserved(a));
+			return self.World.Actors.Where(a =>
+				a.Owner == self.Owner &&
+				heli.Info.RearmBuildings.Contains(a.Info.Name) &&
+				!a.IsDead &&
+				!a.Disposed);
+		}
+
+		IEnumerable<Actor> GetDockableHelipads(Actor self)
+		{
+			foreach (var pad in GetHelipads(self))
+			{
+				var dockManager = pad.Trait<DockManager>();
+				if (dockManager.NumFreeDocks > 0)
+					yield return pad;
+			}
 		}
 
 		public override Activity Tick(Actor self)
@@ -43,57 +56,63 @@ namespace OpenRA.Mods.Common.Activities
 			if (IsCanceled)
 				return NextActivity;
 
-			if (dest == null || dest.IsDead || Reservable.IsReserved(dest))
-				dest = ChooseHelipad(self);
-
-			var initialFacing = heli.Info.InitialFacing;
-
-			if (dest == null || dest.IsDead)
+			// Check status and make dest correct.
+			// Priorities:
+			// 1. closest reloadable hpad
+			// 2. closest hpad
+			// 3. null
+			IEnumerable<Actor> hpads;
+			IEnumerable<Actor> dockableHpads;
+			if (dest == null || dest.IsDead || dest.Disposed)
 			{
-				var rearmBuildings = heli.Info.RearmBuildings;
-				var nearestHpad = self.World.ActorsHavingTrait<Reservable>()
-					.Where(a => a.Owner == self.Owner && rearmBuildings.Contains(a.Info.Name))
-					.ClosestTo(self);
-
-				if (nearestHpad == null)
-					return ActivityUtils.SequenceActivities(new Turn(self, initialFacing), new HeliLand(self, true), NextActivity);
+				hpads = GetHelipads(self);
+				dockableHpads = hpads.Where(p => p.Trait<DockManager>().NumFreeDocks > 0);
+				if (dockableHpads.Any())
+					dest = dockableHpads.ClosestTo(self);
+				else if (hpads.Any())
+					dest = hpads.ClosestTo(self);
 				else
-				{
-					var distanceFromHelipad = (nearestHpad.CenterPosition - self.CenterPosition).HorizontalLength;
-					var distanceLength = heli.Info.WaitDistanceFromResupplyBase.Length;
-
-					// If no pad is available, move near one and wait
-					if (distanceFromHelipad > distanceLength)
-					{
-						var randomPosition = WVec.FromPDF(self.World.SharedRandom, 2) * distanceLength / 1024;
-
-						var target = Target.FromPos(nearestHpad.CenterPosition + randomPosition);
-
-						return ActivityUtils.SequenceActivities(new HeliFly(self, target, WDist.Zero, heli.Info.WaitDistanceFromResupplyBase), this);
-					}
-
-					return this;
-				}
+					dest = null;
 			}
 
-			var exit = dest.Info.TraitInfos<ExitInfo>().FirstOrDefault();
-			var offset = (exit != null) ? exit.SpawnOffset : WVec.Zero;
-
-			if (ShouldLandAtBuilding(self, dest))
+			// Owner doesn't have any feasible helipad, in this case.
+			if (dest == null)
 			{
-				heli.MakeReservation(dest);
-
+				// Probably the owner is having a crisis lol.
+				// Doesn't matter if the unit just sits there or do what ever NextActivity is.
 				return ActivityUtils.SequenceActivities(
-					new HeliFly(self, Target.FromPos(dest.CenterPosition + offset)),
-					new Turn(self, initialFacing),
-					new HeliLand(self, false),
-					new ResupplyAircraft(self),
-					!abortOnResupply ? NextActivity : null);
+					new Turn(self, heli.Info.InitialFacing),
+					new HeliLand(self, true),
+					NextActivity);
 			}
 
-			return ActivityUtils.SequenceActivities(
-				new HeliFly(self, Target.FromPos(dest.CenterPosition + offset)),
-				NextActivity);
+			// Do we need to land and reload/repair?
+			if (!ShouldLandAtBuilding(self, dest))
+			{
+				// Move near the hpad then do next activity.
+				return ActivityUtils.SequenceActivities(
+					new HeliFly(self, Target.FromActor(dest), new WDist(2048), new WDist(4096)),
+					NextActivity);
+			}
+
+			// Can't dock :(
+			if (dest.Trait<DockManager>().NumFreeDocks == 0)
+			{
+				// If no pad is available, move near one and wait
+				var distanceLength = (dest.CenterPosition - self.CenterPosition).HorizontalLength;
+				var randomPosition = WVec.FromPDF(self.World.SharedRandom, 2) * distanceLength / 1024;
+				var target = Target.FromPos(dest.CenterPosition + randomPosition);
+
+				Queue(ActivityUtils.SequenceActivities(
+					new HeliFly(self, target, WDist.Zero, heli.Info.WaitDistanceFromResupplyBase),
+					new Wait(29),
+					new HeliReturnToBase(self, abortOnResupply, null, alwaysLand)));
+				return NextActivity;
+			}
+
+			// Do the docking.
+			dest.Trait<DockManager>().ReserveDock(dest, self);
+			return NextActivity;
 		}
 
 		bool ShouldLandAtBuilding(Actor self, Actor dest)

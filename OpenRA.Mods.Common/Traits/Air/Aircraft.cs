@@ -193,7 +193,7 @@ namespace OpenRA.Mods.Common.Traits
 
 				ReserveSpawnBuilding();
 
-				var host = GetActorBelow();
+				var host = GetSupplierActorBelow();
 				if (host == null)
 					return;
 
@@ -293,7 +293,7 @@ namespace OpenRA.Mods.Common.Traits
 			return (d * 1024 * 8) / (int)distSq;
 		}
 
-		public Actor GetActorBelow()
+		public Actor GetSupplierActorBelow()
 		{
 			// Map.DistanceAboveTerrain(WPos pos) is called directly because Aircraft is an IPositionable trait
 			// and all calls occur in Tick methods.
@@ -301,13 +301,13 @@ namespace OpenRA.Mods.Common.Traits
 				return null; // not on the ground.
 
 			return self.World.ActorMap.GetActorsAt(self.Location)
-				.FirstOrDefault(a => a.Info.HasTraitInfo<ReservableInfo>());
+				.FirstOrDefault(a => Info.RearmBuildings.Contains(a.Info.Name) || Info.RepairBuildings.Contains(a.Info.Name));
 		}
 
 		protected void ReserveSpawnBuilding()
 		{
 			// HACK: Not spawning in the air, so try to associate with our spawner.
-			var spawner = GetActorBelow();
+			var spawner = GetSupplierActorBelow();
 			if (spawner == null)
 				return;
 
@@ -643,7 +643,7 @@ namespace OpenRA.Mods.Common.Traits
 			else if (order.OrderString == "Stop")
 			{
 				self.CancelActivity();
-				if (GetActorBelow() != null)
+				if (GetSupplierActorBelow() != null)
 				{
 					self.QueueActivity(new ResupplyAircraft(self));
 					return;
