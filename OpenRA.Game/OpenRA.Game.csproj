@@ -199,7 +199,7 @@
     <Compile Include="Graphics\VoxelRenderer.cs" />
     <Compile Include="Graphics\VoxelLoader.cs" />
     <Compile Include="Graphics\VoxelProvider.cs" />
-    <Compile Include="Graphics\VoxelAnimation.cs" />
+    <Compile Include="Graphics\ModelAnimation.cs" />
     <Compile Include="Traits\Player\FrozenActorLayer.cs" />
     <Compile Include="Graphics\Theater.cs" />
     <Compile Include="Traits\Player\PlayerColorPalette.cs" />

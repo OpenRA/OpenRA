@@ -79,7 +79,7 @@ namespace OpenRA.Graphics
 		}
 
 		public VoxelRenderProxy RenderAsync(
-			WorldRenderer wr, IEnumerable<VoxelAnimation> voxels, WRot camera, float scale,
+			WorldRenderer wr, IEnumerable<ModelAnimation> voxels, WRot camera, float scale,
 			float[] groundNormal, WRot lightSource, float[] lightAmbientColor, float[] lightDiffuseColor,
 			PaletteReference color, PaletteReference normals, PaletteReference shadowPalette)
 		{
@@ -116,7 +116,7 @@ namespace OpenRA.Graphics
 				worldTransform = Util.MatrixMultiply(scaleTransform, worldTransform);
 				worldTransform = Util.MatrixMultiply(offsetTransform, worldTransform);
 
-				var bounds = v.Voxel.Bounds(v.FrameFunc());
+				var bounds = v.Model.Bounds(v.FrameFunc());
 				var worldBounds = Util.MatrixAABBMultiply(worldTransform, bounds);
 				var screenBounds = Util.MatrixAABBMultiply(cameraTransform, worldBounds);
 				var shadowBounds = Util.MatrixAABBMultiply(shadowTransform, worldBounds);
@@ -197,10 +197,10 @@ namespace OpenRA.Graphics
 					var lightTransform = Util.MatrixMultiply(Util.MatrixInverse(rotations), invShadowTransform);
 
 					var frame = v.FrameFunc();
-					for (uint i = 0; i < v.Voxel.Limbs; i++)
+					for (uint i = 0; i < v.Model.Sections; i++)
 					{
-						var rd = v.Voxel.RenderData(i);
-						var t = v.Voxel.TransformationMatrix(i, frame);
+						var rd = v.Model.RenderData(i);
+						var t = v.Model.TransformationMatrix(i, frame);
 						var it = Util.MatrixInverse(t);
 						if (it == null)
 							throw new InvalidOperationException("Failed to invert the transformed matrix of frame {0} during RenderAsync.".F(i));

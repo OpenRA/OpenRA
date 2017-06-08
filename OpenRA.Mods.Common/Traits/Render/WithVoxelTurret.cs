@@ -31,7 +31,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		public override object Create(ActorInitializer init) { return new WithVoxelTurret(init.Self, this); }
 
-		public IEnumerable<VoxelAnimation> RenderPreviewVoxels(
+		public IEnumerable<ModelAnimation> RenderPreviewVoxels(
 			ActorPreviewInitializer init, RenderVoxelsInfo rv, string image, Func<WRot> orientation, int facings, PaletteReference p)
 		{
 			if (!EnabledByDefault)
@@ -46,7 +46,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 			var turretFacing = Turreted.TurretFacingFromInit(init, t.InitialFacing, Turret);
 			Func<WRot> turretBodyOrientation = () => WRot.FromYaw(WAngle.FromFacing(turretFacing()) - orientation().Yaw);
-			yield return new VoxelAnimation(voxel, turretOffset,
+			yield return new ModelAnimation(voxel, turretOffset,
 				() => new[] { turretBodyOrientation(), body.QuantizeOrientation(orientation(), facings) }, () => false, () => 0, ShowShadow);
 		}
 	}
@@ -70,7 +70,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			buildComplete = !self.Info.HasTraitInfo<BuildingInfo>(); // always render instantly for units
 
 			var rv = self.Trait<RenderVoxels>();
-			rv.Add(new VoxelAnimation(VoxelProvider.GetVoxel(rv.Image, Info.Sequence),
+			rv.Add(new ModelAnimation(VoxelProvider.GetVoxel(rv.Image, Info.Sequence),
 				() => turreted.Position(self), TurretRotation,
 				() => IsTraitDisabled || !buildComplete, () => 0, info.ShowShadow));
 		}

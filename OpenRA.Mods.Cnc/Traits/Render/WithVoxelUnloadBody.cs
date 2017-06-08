@@ -33,12 +33,12 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 
 		public object Create(ActorInitializer init) { return new WithVoxelUnloadBody(init.Self, this); }
 
-		public IEnumerable<VoxelAnimation> RenderPreviewVoxels(
+		public IEnumerable<ModelAnimation> RenderPreviewVoxels(
 			ActorPreviewInitializer init, RenderVoxelsInfo rv, string image, Func<WRot> orientation, int facings, PaletteReference p)
 		{
 			var body = init.Actor.TraitInfo<BodyOrientationInfo>();
 			var voxel = VoxelProvider.GetVoxel(image, IdleSequence);
-			yield return new VoxelAnimation(voxel, () => WVec.Zero,
+			yield return new ModelAnimation(voxel, () => WVec.Zero,
 				() => new[] { body.QuantizeOrientation(orientation(), facings) },
 				() => false, () => 0, ShowShadow);
 		}
@@ -56,7 +56,7 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 			var rv = self.Trait<RenderVoxels>();
 
 			var idleVoxel = VoxelProvider.GetVoxel(rv.Image, info.IdleSequence);
-			rv.Add(new VoxelAnimation(idleVoxel, () => WVec.Zero,
+			rv.Add(new ModelAnimation(idleVoxel, () => WVec.Zero,
 				() => new[] { body.QuantizeOrientation(self, self.Orientation) },
 				() => Docked,
 				() => 0, info.ShowShadow));
@@ -67,7 +67,7 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 			size = new int2(s, s);
 
 			var unloadVoxel = VoxelProvider.GetVoxel(rv.Image, info.UnloadSequence);
-			rv.Add(new VoxelAnimation(unloadVoxel, () => WVec.Zero,
+			rv.Add(new ModelAnimation(unloadVoxel, () => WVec.Zero,
 				() => new[] { body.QuantizeOrientation(self, self.Orientation) },
 				() => !Docked,
 				() => 0, info.ShowShadow));
