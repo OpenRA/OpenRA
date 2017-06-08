@@ -155,7 +155,7 @@ namespace OpenRA.Mods.Common.Traits
 		void QueueOnDockActivity(Actor client, Dock dock);
 		void QueueUndockActivity(Actor client, Dock dock);
 		void OnUndock(Actor client, Dock dock);
-		void OnArrival(Actor client, Dock dock);
+		void OnDock(Actor client, Dock dock);
 		void GiveResource(int amount);
 		bool CanGiveResource(int amount);
 

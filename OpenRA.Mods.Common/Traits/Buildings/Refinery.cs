@@ -156,14 +156,14 @@ namespace OpenRA.Mods.Common.Traits
 			client.QueueActivity(new CallFunc(() => client.Trait<Harvester>().ContinueHarvesting(client)));
 		}
 
-		public void OnArrival(Actor harv, Dock dock)
+		public void OnDock(Actor harv, Dock dock)
 		{
-			docks.OnArrival(harv, dock);
+			docks.OnArrivalCheck(harv, dock);
 		}
 
 		public void OnUndock(Actor harv, Dock dock)
 		{
-			docks.OnUndock(harv, dock);
+			docks.ReleaseAndNext(harv, dock);
 		}
 
 		void INotifyOwnerChanged.OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)

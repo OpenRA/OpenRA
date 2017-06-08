@@ -176,7 +176,7 @@ namespace OpenRA.Mods.Common.Traits
 			CancelDock(queue);
 		}
 
-		public void OnArrival(Actor client, Dock dock)
+		public void OnArrivalCheck(Actor client, Dock dock)
 		{
 			// We have "arrived". But did we get to where we intended?
 			var dc = client.Trait<DockClient>();
@@ -186,7 +186,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (dock.Info.WaitingPlace == false && dc.DockState == DockState.WaitAssigned && self.Location == dock.Location)
 			{
 				dc.Release(dock);
-				self.CancelActivity();
+				client.CancelActivity();
 				ProcessQueue(self, client);
 			}
 		}
@@ -261,7 +261,7 @@ namespace OpenRA.Mods.Common.Traits
 			ProcessQueue(self, null);
 		}
 
-		public void OnUndock(Actor client, Dock dock)
+		public void ReleaseAndNext(Actor client, Dock dock)
 		{
 			client.Trait<DockClient>().Release(dock);
 			if (self.IsDead || self.Disposed)
@@ -307,12 +307,12 @@ namespace OpenRA.Mods.Common.Traits
 			else
 				head.QueueActivity(head.Trait<IMove>().MoveTo(serviceDock.Location, 0));
 
-			head.QueueActivity(new CallFunc(() => OnArrival(head, serviceDock)));
+			head.QueueActivity(new CallFunc(() => iAcceptDock.OnDock(head, serviceDock)));
 
 			// resource transfer activities are queued by OnDock.
 			iAcceptDock.QueueOnDockActivity(head, serviceDock);
 
-			head.QueueActivity(new CallFunc(() => OnUndock(head, serviceDock)));
+			head.QueueActivity(new CallFunc(() => iAcceptDock.OnUndock(head, serviceDock)));
 
 			// Move to south of the ref to avoid cluttering up with other dock locations
 			head.QueueActivity(head.Trait<IMove>().MoveTo(serviceDock.Location + serviceDock.Info.ExitOffset, 2));
@@ -368,7 +368,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			// Move to the waiting dock and wait for service dock to be released.
 			client.QueueActivity(client.Trait<Mobile>().MoveTo(dock.Location, 2));
-			client.QueueActivity(new CallFunc(() => OnArrival(client, dock)));
+			client.QueueActivity(new CallFunc(() => OnArrivalCheck(client, dock)));
 			client.QueueActivity(new WaitFor(() => dockClient.DockState == DockState.ServiceAssigned));
 		}
 

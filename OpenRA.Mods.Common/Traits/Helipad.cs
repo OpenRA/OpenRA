@@ -66,7 +66,7 @@ namespace OpenRA.Mods.Common.Traits
 			throw new NotImplementedException();
 		}
 
-		void IAcceptDock.OnArrival(Actor client, Dock dock)
+		void IAcceptDock.OnDock(Actor client, Dock dock)
 		{
 			throw new NotImplementedException();
 		}

@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using OpenRA.Activities;
 using OpenRA.Traits;
+using OpenRA.Mods.Common.Activities;
 
 namespace OpenRA.Mods.Common.Traits
 {
@@ -83,14 +84,15 @@ namespace OpenRA.Mods.Common.Traits
 			throw new NotImplementedException();
 		}
 
-		void IAcceptDock.OnArrival(Actor client, Dock dock)
+		void IAcceptDock.OnDock(Actor client, Dock dock)
 		{
-			dockManager.OnArrival(client, dock);
+			dockManager.OnArrivalCheck(client, dock);
 		}
 
 		void IAcceptDock.OnUndock(Actor client, Dock dock)
 		{
-			dockManager.OnUndock(client, dock);
+			client.SetTargetLine(Target.FromCell(self.World, rallyPoint.Location), Color.Green);
+			dockManager.ReleaseAndNext(client, dock);
 		}
 
 		void IAcceptDock.QueueOnDockActivity(Actor client, Dock dock)
@@ -103,11 +105,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			if (rallyPoint != null)
 			{
-				self.QueueActivity(new CallFunc(() =>
-				{
-					client.SetTargetLine(Target.FromCell(self.World, rallyPoint.Location), Color.Green);
-					client.QueueActivity(client.Trait<IMove>().MoveTo(rallyPoint.Location, self));
-				}));
+				client.QueueActivity(new AttackMoveActivity(client, client.Trait<IMove>().MoveTo(rallyPoint.Location, 2)));
 			}
 		}
 
