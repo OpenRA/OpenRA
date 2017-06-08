@@ -17,14 +17,14 @@ using OpenRA.Primitives;
 
 namespace OpenRA.Graphics
 {
-	public class VoxelRenderProxy
+	public class ModelRenderProxy
 	{
 		public readonly Sprite Sprite;
 		public readonly Sprite ShadowSprite;
 		public readonly float ShadowDirection;
 		public readonly float3[] ProjectedShadowBounds;
 
-		public VoxelRenderProxy(Sprite sprite, Sprite shadowSprite, float3[] projectedShadowBounds, float shadowDirection)
+		public ModelRenderProxy(Sprite sprite, Sprite shadowSprite, float3[] projectedShadowBounds, float shadowDirection)
 		{
 			Sprite = sprite;
 			ShadowSprite = shadowSprite;
@@ -33,7 +33,7 @@ namespace OpenRA.Graphics
 		}
 	}
 
-	public sealed class VoxelRenderer : IDisposable
+	public sealed class ModelRenderer : IDisposable
 	{
 		// Static constants
 		static readonly float[] ShadowDiffuse = new float[] { 0, 0, 0 };
@@ -53,7 +53,7 @@ namespace OpenRA.Graphics
 
 		SheetBuilder sheetBuilder;
 
-		public VoxelRenderer(Renderer renderer, IShader shader)
+		public ModelRenderer(Renderer renderer, IShader shader)
 		{
 			this.renderer = renderer;
 			this.shader = shader;
@@ -78,7 +78,7 @@ namespace OpenRA.Graphics
 			shader.SetMatrix("View", view);
 		}
 
-		public VoxelRenderProxy RenderAsync(
+		public ModelRenderProxy RenderAsync(
 			WorldRenderer wr, IEnumerable<ModelAnimation> voxels, WRot camera, float scale,
 			float[] groundNormal, WRot lightSource, float[] lightAmbientColor, float[] lightDiffuseColor,
 			PaletteReference color, PaletteReference normals, PaletteReference shadowPalette)
@@ -221,7 +221,7 @@ namespace OpenRA.Graphics
 
 			var screenLightVector = Util.MatrixVectorMultiply(invShadowTransform, ZVector);
 			screenLightVector = Util.MatrixVectorMultiply(cameraTransform, screenLightVector);
-			return new VoxelRenderProxy(sprite, shadowSprite, screenCorners, -screenLightVector[2] / screenLightVector[1]);
+			return new ModelRenderProxy(sprite, shadowSprite, screenCorners, -screenLightVector[2] / screenLightVector[1]);
 		}
 
 		static void CalculateSpriteGeometry(float2 tl, float2 br, float scale, out Size size, out int2 offset)

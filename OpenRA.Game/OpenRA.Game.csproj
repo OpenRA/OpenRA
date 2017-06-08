@@ -196,7 +196,7 @@
     <Compile Include="Network\UPnP.cs" />
     <Compile Include="Graphics\Renderable.cs" />
     <Compile Include="Graphics\Voxel.cs" />
-    <Compile Include="Graphics\VoxelRenderer.cs" />
+    <Compile Include="Graphics\ModelRenderer.cs" />
     <Compile Include="Graphics\VoxelLoader.cs" />
     <Compile Include="Graphics\VoxelProvider.cs" />
     <Compile Include="Graphics\ModelAnimation.cs" />

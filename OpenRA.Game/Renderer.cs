@@ -23,7 +23,7 @@ namespace OpenRA
 		public SpriteRenderer WorldSpriteRenderer { get; private set; }
 		public SpriteRenderer WorldRgbaSpriteRenderer { get; private set; }
 		public RgbaColorRenderer WorldRgbaColorRenderer { get; private set; }
-		public VoxelRenderer WorldVoxelRenderer { get; private set; }
+		public ModelRenderer WorldModelRenderer { get; private set; }
 		public RgbaColorRenderer RgbaColorRenderer { get; private set; }
 		public SpriteRenderer RgbaSpriteRenderer { get; private set; }
 		public SpriteRenderer SpriteRenderer { get; private set; }
@@ -59,7 +59,7 @@ namespace OpenRA
 			WorldSpriteRenderer = new SpriteRenderer(this, Device.CreateShader("shp"));
 			WorldRgbaSpriteRenderer = new SpriteRenderer(this, Device.CreateShader("rgba"));
 			WorldRgbaColorRenderer = new RgbaColorRenderer(this, Device.CreateShader("color"));
-			WorldVoxelRenderer = new VoxelRenderer(this, Device.CreateShader("vxl"));
+			WorldModelRenderer = new ModelRenderer(this, Device.CreateShader("model"));
 			RgbaColorRenderer = new RgbaColorRenderer(this, Device.CreateShader("color"));
 			RgbaSpriteRenderer = new SpriteRenderer(this, Device.CreateShader("rgba"));
 			SpriteRenderer = new SpriteRenderer(this, Device.CreateShader("shp"));
@@ -136,7 +136,7 @@ namespace OpenRA
 				lastZoom = zoom;
 				WorldRgbaSpriteRenderer.SetViewportParams(Resolution, depthScale, depthOffset, zoom, scroll);
 				WorldSpriteRenderer.SetViewportParams(Resolution, depthScale, depthOffset, zoom, scroll);
-				WorldVoxelRenderer.SetViewportParams(Resolution, zoom, scroll);
+				WorldModelRenderer.SetViewportParams(Resolution, zoom, scroll);
 				WorldRgbaColorRenderer.SetViewportParams(Resolution, depthScale, depthOffset, zoom, scroll);
 			}
 		}
@@ -153,7 +153,7 @@ namespace OpenRA
 			SpriteRenderer.SetPalette(currentPaletteTexture);
 			WorldSpriteRenderer.SetPalette(currentPaletteTexture);
 			WorldRgbaSpriteRenderer.SetPalette(currentPaletteTexture);
-			WorldVoxelRenderer.SetPalette(currentPaletteTexture);
+			WorldModelRenderer.SetPalette(currentPaletteTexture);
 		}
 
 		public void EndFrame(IInputHandler inputHandler)
@@ -267,7 +267,7 @@ namespace OpenRA
 		public void Dispose()
 		{
 			Device.Dispose();
-			WorldVoxelRenderer.Dispose();
+			WorldModelRenderer.Dispose();
 			tempBuffer.Dispose();
 			if (fontSheetBuilder != null)
 				fontSheetBuilder.Dispose();
