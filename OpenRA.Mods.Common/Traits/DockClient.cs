@@ -41,7 +41,6 @@ namespace OpenRA.Mods.Common.Traits
 		readonly Actor self;
 
 		public Dock CurrentDock;
-		public Activity PostUndockActivity;
 
 		public DockState DockState = DockState.NotAssigned;
 

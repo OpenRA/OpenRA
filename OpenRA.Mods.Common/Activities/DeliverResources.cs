@@ -60,17 +60,15 @@ namespace OpenRA.Mods.Common.Activities
 
 			var proc = harv.LinkedProc;
 			self.SetTargetLine(Target.FromActor(proc), Color.Green, false);
-			var cont = new CallFunc(() => harv.ContinueHarvesting(self));
 
 			if (!self.Info.TraitInfo<HarvesterInfo>().OreTeleporter)
 			{
-				proc.Trait<IAcceptDock>().ReserveDock(self, cont);
+				proc.Trait<IAcceptDock>().ReserveDock(self);
 			}
 			else
 			{
 				var dock = proc.TraitsImplementing<Dock>().First();
 				proc.Trait<Refinery>().QueueOnDockActivity(self, dock);
-				Queue(cont);
 			}
 
 			return NextActivity;

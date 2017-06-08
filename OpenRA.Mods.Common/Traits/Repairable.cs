@@ -87,6 +87,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void ResolveOrder(Actor self, Order order)
 		{
+			var dc = self.Trait<DockClient>();
+			dc.Release(dc.CurrentDock);
+
 			if (order.OrderString == "Repair")
 			{
 				if (!CanRepairAt(order.TargetActor) || (!CanRepair() && !CanRearm()))
@@ -95,37 +98,25 @@ namespace OpenRA.Mods.Common.Traits
 				var target = Target.FromOrder(self.World, order);
 				self.SetTargetLine(target, Color.Green);
 
+				var host = target.Actor;
+				var dm = host.Trait<DockManager>();
 				self.CancelActivity();
-				self.QueueActivity(new WaitForTransport(self, ActivityUtils.SequenceActivities(new MoveAdjacentTo(self, target),
-					new CallFunc(() => AfterReachActivities(self, order, movement)))));
-
-				TryCallTransport(self, target, new CallFunc(() => AfterReachActivities(self, order, movement)));
+				dm.ReserveDock(host, self);
 			}
 		}
 
-		void AfterReachActivities(Actor self, Order order, IMove movement)
+		public void AfterReachActivities(Actor self, Actor host, Dock dock)
 		{
-			if (!order.TargetActor.IsInWorld || order.TargetActor.IsDead || order.TargetActor.IsDisabled())
+			if (!host.IsInWorld || host.IsDead || host.IsDisabled())
 				return;
 
 			// TODO: This is hacky, but almost every single component affected
 			// will need to be rewritten anyway, so this is OK for now.
-			self.QueueActivity(movement.MoveTo(self.World.Map.CellContaining(order.TargetActor.CenterPosition), order.TargetActor));
-			if (CanRearmAt(order.TargetActor) && CanRearm())
+			if (CanRearmAt(host) && CanRearm())
 				self.QueueActivity(new Rearm(self));
 
 			// Add a CloseEnough range of 512 to ensure we're at the host actor
-			self.QueueActivity(new Repair(self, order.TargetActor, new WDist(512)));
-
-			var rp = order.TargetActor.TraitOrDefault<RallyPoint>();
-			if (rp != null)
-			{
-				self.QueueActivity(new CallFunc(() =>
-				{
-					self.SetTargetLine(Target.FromCell(self.World, rp.Location), Color.Green);
-					self.QueueActivity(movement.MoveTo(rp.Location, order.TargetActor));
-				}));
-			}
+			self.QueueActivity(new Repair(self, host, new WDist(512)));
 		}
 
 		public Actor FindRepairBuilding(Actor self)

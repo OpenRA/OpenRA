@@ -51,9 +51,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		public bool AllowDocking { get { return !preventDock; } }
 
-		public void ReserveDock(Actor client, Activity postDockOrder)
+		public void ReserveDock(Actor client)
 		{
-			docks.ReserveDock(self, client, postDockOrder);
+			docks.ReserveDock(self, client);
 		}
 
 		IEnumerable<CPos> IAcceptDock.DockLocations { get { return docks.DockLocations; } }
@@ -149,6 +149,11 @@ namespace OpenRA.Mods.Common.Traits
 					harv.QueueActivity(DockSequence(harv, self, dock));
 				}
 			}
+		}
+
+		public void QueueUndockActivity(Actor client, Dock dock)
+		{
+			client.QueueActivity(new CallFunc(() => client.Trait<Harvester>().ContinueHarvesting(client)));
 		}
 
 		public void OnArrival(Actor harv, Dock dock)

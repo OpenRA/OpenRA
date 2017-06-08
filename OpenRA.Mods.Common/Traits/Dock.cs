@@ -56,8 +56,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		public Actor Occupier;
 
-		// Returns the location of the dock, interpreting Offset as CVec.
 		public CPos Location { get { return self.Location + Info.DockOffset; } }
+		public WPos CenterPosition { get { return self.World.Map.CenterOfCell(self.Location); } }
 
 		// blocked by some immoble obstacle?
 		public bool IsBlocked;

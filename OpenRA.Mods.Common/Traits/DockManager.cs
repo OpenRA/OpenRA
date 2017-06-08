@@ -23,6 +23,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Are any of the docks lie outside the building footprint? (and needs obstacle checking)")]
 		public readonly bool ExternalDocks = false;
 
+		[Desc("Like airfield or service depots, are the docks on the place where it is normally inaccessible?")]
+		public readonly bool DockOnActor = false;
+
 		[Desc("Dock next to the actor like RA1 naval yard?",
 			"Although dock position is ignored, one dummy dock is still required to determine DockAngle and stuff when docking.")]
 		public readonly bool DockNextToActor = false;
@@ -100,11 +103,11 @@ namespace OpenRA.Mods.Common.Traits
 				d.CheckObstacle();
 		}
 
-		public void ReserveDock(Actor self, Actor client, Activity postUndockActivity)
+		public void ReserveDock(Actor self, Actor client)
 		{
 			if (info.DockNextToActor)
 			{
-				ServeDockNext(self, client, postUndockActivity);
+				ServeAdjacentDocker(self, client);
 				return;
 			}
 
@@ -116,7 +119,6 @@ namespace OpenRA.Mods.Common.Traits
 				// Initialize this noob.
 				// It might had been transferred from proc A to this proc.
 				var dc = client.Trait<DockClient>();
-				dc.PostUndockActivity = postUndockActivity;
 				dc.DockState = DockState.NotAssigned;
 			}
 
@@ -242,15 +244,14 @@ namespace OpenRA.Mods.Common.Traits
 			ProcessQueue(self, null); // notify queue
 		}
 
-		void ServeDockNext(Actor self, Actor client, Activity postUndockActivity)
+		void ServeAdjacentDocker(Actor self, Actor client)
 		{
 			// Since there is 0 tolerance about distance, we WILL arrive at the dock (or we get stuck haha)
 			client.QueueActivity(new MoveAdjacentTo(client, Target.FromActor(self)));
 
 			// resource transfer activities are queued by OnDock.
 			self.Trait<IAcceptDock>().QueueOnDockActivity(client, self.Trait<Dock>());
-
-			client.QueueActivity(postUndockActivity);
+			self.Trait<IAcceptDock>().QueueUndockActivity(client, self.Trait<Dock>());
 		}
 
 		void ServeHead(Actor self, Actor head, Dock serviceDock)
@@ -276,7 +277,10 @@ namespace OpenRA.Mods.Common.Traits
 			dockClient.Acquire(serviceDock, DockState.ServiceAssigned);
 
 			// Since there is 0 tolerance about distance, we WILL arrive at the dock (or we get stuck haha)
-			head.QueueActivity(head.Trait<Mobile>().MoveTo(serviceDock.Location, 0));
+			if (info.DockOnActor)
+				head.QueueActivity(head.Trait<Mobile>().MoveTo(serviceDock.Location, self));
+			else
+				head.QueueActivity(head.Trait<Mobile>().MoveTo(serviceDock.Location, 0));
 
 			head.QueueActivity(new CallFunc(() => OnArrival(head, serviceDock)));
 
@@ -288,7 +292,7 @@ namespace OpenRA.Mods.Common.Traits
 			// Move to south of the ref to avoid cluttering up with other dock locations
 			head.QueueActivity(new Move(head, serviceDock.Location + serviceDock.Info.ExitOffset, new WDist(2048)));
 
-			head.QueueActivity(dockClient.PostUndockActivity);
+			self.Trait<IAcceptDock>().QueueUndockActivity(head, serviceDock);
 		}
 
 		// As the actors are coming from all directions, first request, first served is not good.
@@ -347,7 +351,14 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			// dock release, acquire is done by DockClient trait. But, queue must be updated by DockManager.
 			// It won't be too hard though.
-			var rms = queue.Where(a => a.IsDead || a.IsIdle || a.Disposed).ToList();
+
+			// hack: For refinaries idle ones should be excluded.
+			List<Actor> rms;
+			if (self.TraitOrDefault<Refinery>() != null)
+				rms = queue.Where(a => a.IsDead || a.IsIdle || a.Disposed).ToList();
+			else
+				rms = queue.Where(a => a.IsDead || a.Disposed).ToList();
+
 			foreach (var rm in rms)
 				queue.Remove(rm);
 		}

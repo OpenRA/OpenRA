@@ -153,14 +153,15 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		// postUndockActivity: after undock, we start doing this, after OnDockActivity is done.
 		void QueueOnDockActivity(Actor client, Dock dock);
-		void OnUndock(Actor harv, Dock dock);
-		void OnArrival(Actor harv, Dock dock);
+		void QueueUndockActivity(Actor client, Dock dock);
+		void OnUndock(Actor client, Dock dock);
+		void OnArrival(Actor client, Dock dock);
 		void GiveResource(int amount);
 		bool CanGiveResource(int amount);
 
 		// ReserveDock should queue activities that make the client come to a valid dock and do dock activity
 		// (or wait activity, depending on the situation)
-		void ReserveDock(Actor client, Activity postDockOrder);
+		void ReserveDock(Actor client);
 
 		IEnumerable<CPos> DockLocations { get; }
 		bool AllowDocking { get; }

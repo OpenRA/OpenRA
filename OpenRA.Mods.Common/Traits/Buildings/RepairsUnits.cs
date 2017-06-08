@@ -9,11 +9,15 @@
  */
 #endregion
 
+using System;
+using System.Collections.Generic;
+using System.Drawing;
+using OpenRA.Activities;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class RepairsUnitsInfo : TraitInfo<RepairsUnits>
+	public class RepairsUnitsInfo : ITraitInfo, IAcceptDockInfo, Requires<DockManagerInfo>
 	{
 		[Desc("Cost in % of the unit value to fully repair the unit.")]
 		public readonly int ValuePercentage = 20;
@@ -30,7 +34,86 @@ namespace OpenRA.Mods.Common.Traits
 
 		[Desc("Experience gained by the player owning this actor for repairing an allied unit.")]
 		public readonly int PlayerExperience = 0;
+
+		public object Create(ActorInitializer init) { return new RepairsUnits(init.Self, this); }
 	}
 
-	public class RepairsUnits { }
+	public class RepairsUnits : IAcceptDock
+	{
+		RepairsUnitsInfo info;
+		Actor self;
+		DockManager dockManager;
+		RallyPoint rallyPoint;
+
+		public RepairsUnits(Actor self, RepairsUnitsInfo info)
+		{
+			this.self = self;
+			this.info = info;
+			dockManager = self.Trait<DockManager>();
+			rallyPoint = self.TraitOrDefault<RallyPoint>();
+		}
+
+		// Unused. Repairable.cs takes care of this.
+		bool IAcceptDock.AllowDocking
+		{
+			get
+			{
+				throw new NotImplementedException();
+			}
+		}
+
+		// Unused.
+		IEnumerable<CPos> IAcceptDock.DockLocations
+		{
+			get
+			{
+				throw new NotImplementedException();
+			}
+		}
+
+		// Nothing to do with resources
+		bool IAcceptDock.CanGiveResource(int amount)
+		{
+			throw new NotImplementedException();
+		}
+
+		// Nothing to do with resources
+		void IAcceptDock.GiveResource(int amount)
+		{
+			throw new NotImplementedException();
+		}
+
+		void IAcceptDock.OnArrival(Actor client, Dock dock)
+		{
+			dockManager.OnArrival(client, dock);
+		}
+
+		void IAcceptDock.OnUndock(Actor client, Dock dock)
+		{
+			dockManager.OnUndock(client, dock);
+		}
+
+		void IAcceptDock.QueueOnDockActivity(Actor client, Dock dock)
+		{
+			client.Trait<Repairable>().AfterReachActivities(client, self, dock);
+		}
+
+
+		void IAcceptDock.QueueUndockActivity(Actor client, Dock dock)
+		{
+			if (rallyPoint != null)
+			{
+				self.QueueActivity(new CallFunc(() =>
+				{
+					client.SetTargetLine(Target.FromCell(self.World, rallyPoint.Location), Color.Green);
+					client.QueueActivity(client.Trait<IMove>().MoveTo(rallyPoint.Location, self));
+				}));
+			}
+		}
+
+		void IAcceptDock.ReserveDock(Actor client)
+		{
+			dockManager.ReserveDock(self, client);
+		}
+	}
 }
