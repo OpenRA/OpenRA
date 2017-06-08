@@ -255,6 +255,7 @@ namespace OpenRA
 				explicitModPaths = new[] { modArgument };
 				args.ReplaceValue("Game.Mod", Path.GetFileNameWithoutExtension(modArgument));
 			}
+
 			if (string.IsNullOrEmpty(modArgument))
 			{
 				var exe = Path.GetFileName(Process.GetCurrentProcess().MainModule.FileName);
@@ -263,6 +264,7 @@ namespace OpenRA
 				if (exe != "Game")
 					args.ReplaceValue("Game.Mod", exe);
 			}
+
 			InitializeSettings(args);
 
 			Log.AddChannel("perf", "perf.log");

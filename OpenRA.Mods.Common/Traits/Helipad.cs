@@ -11,9 +11,9 @@
 
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Traits;
-using System.Drawing;
 
 namespace OpenRA.Mods.Common.Traits
 {
@@ -95,7 +95,7 @@ namespace OpenRA.Mods.Common.Traits
 				new ResupplyAircraft(client)));
 
 			// I know this depreciates AbortOnResupply activity but it is a bug to reuse NextActivity!
-			//client.Info.TraitInfo<AircraftInfo>().AbortOnResupply ? null : client.CurrentActivity.NextActivity));
+			// client.Info.TraitInfo<AircraftInfo>().AbortOnResupply ? null : client.CurrentActivity.NextActivity));
 		}
 
 		void IAcceptDock.ReserveDock(Actor client)

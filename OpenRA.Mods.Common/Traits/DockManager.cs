@@ -69,7 +69,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			// sort the dock traits by their Order trait.
 			var t0 = self.TraitsImplementing<Dock>().ToList();
-			t0.Sort(delegate (Dock a, Dock b) { return a.Info.Order - b.Info.Order; });
+			t0.Sort(delegate(Dock a, Dock b) { return a.Info.Order - b.Info.Order; });
 			var t1 = t0.Where(d => !d.Info.WaitingPlace).ToList();
 			var t2 = t0.Where(d => d.Info.WaitingPlace).ToList();
 			allDocks = t0.ToArray();

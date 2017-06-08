@@ -211,7 +211,7 @@ namespace OpenRA.Mods.Common.Traits
 		public void Repulse()
 		{
 			var repulsionForce = GetRepulsionForce();
-			if (repulsionForce.HorizontalLengthSquared == 0)
+			if (repulsionForce.X == 0 && repulsionForce.Y == 0)
 				return;
 
 			var speed = Info.RepulsionSpeed != -1 ? Info.RepulsionSpeed : MovementSpeed;
@@ -223,9 +223,17 @@ namespace OpenRA.Mods.Common.Traits
 			if (!Info.Repulsable)
 				return WVec.Zero;
 
+			// To delete when reservation is gone:
 			if (reservation != null)
 			{
 				var distanceFromReservationActor = (ReservedActor.CenterPosition - self.CenterPosition).HorizontalLength;
+				if (distanceFromReservationActor < Info.WaitDistanceFromResupplyBase.Length)
+					return WVec.Zero;
+			}
+
+			if (self.Trait<DockClient>().CurrentDock != null)
+			{
+				var distanceFromReservationActor = (self.Trait<DockClient>().CurrentDock.CenterPosition - self.CenterPosition).HorizontalLength;
 				if (distanceFromReservationActor < Info.WaitDistanceFromResupplyBase.Length)
 					return WVec.Zero;
 			}
