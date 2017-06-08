@@ -633,9 +633,9 @@ namespace OpenRA
 
 				using (new PerfSample("render_widgets"))
 				{
-					Renderer.WorldVoxelRenderer.BeginFrame();
+					Renderer.WorldModelRenderer.BeginFrame();
 					Ui.PrepareRenderables();
-					Renderer.WorldVoxelRenderer.EndFrame();
+					Renderer.WorldModelRenderer.EndFrame();
 
 					Ui.Draw();
 

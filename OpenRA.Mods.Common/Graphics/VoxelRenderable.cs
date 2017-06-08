@@ -91,14 +91,14 @@ namespace OpenRA.Mods.Common.Graphics
 		struct FinalizedVoxelRenderable : IFinalizedRenderable
 		{
 			readonly VoxelRenderable voxel;
-			readonly VoxelRenderProxy renderProxy;
+			readonly ModelRenderProxy renderProxy;
 
 			public FinalizedVoxelRenderable(WorldRenderer wr, VoxelRenderable voxel)
 			{
 				this.voxel = voxel;
 				var draw = voxel.voxels.Where(v => v.DisableFunc == null || !v.DisableFunc());
 
-				renderProxy = Game.Renderer.WorldVoxelRenderer.RenderAsync(
+				renderProxy = Game.Renderer.WorldModelRenderer.RenderAsync(
 					wr, draw, voxel.camera, voxel.scale, GroundNormal, voxel.lightSource,
 					voxel.lightAmbientColor, voxel.lightDiffuseColor,
 					voxel.palette, voxel.normalsPalette, voxel.shadowPalette);
