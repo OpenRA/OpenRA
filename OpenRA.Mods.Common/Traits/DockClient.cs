@@ -35,7 +35,7 @@ namespace OpenRA.Mods.Common.Traits
 	}
 
 	// When dockmanager manages docked units, these units require dock client trait.
-	public class DockClient : INotifyKilled, INotifyBecomingIdle, INotifyActorDisposing, INotifyOwnerChanged
+	public class DockClient : INotifyKilled, INotifyBecomingIdle, INotifyActorDisposing, INotifyOwnerChanged, IResolveOrder
 	{
 		// readonly DockClientInfo info;
 		readonly Actor self;
@@ -62,12 +62,13 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void Release(Dock dock)
 		{
-			// You are to release only what you have.
-			if (dock != null && CurrentDock != null)
-				System.Diagnostics.Debug.Assert(dock == CurrentDock, "To release, you must have it first.");
-
 			if (dock == null)
 				return;
+
+			// You are to release only what you have.
+			if (CurrentDock != dock)
+				System.Diagnostics.Debug.Assert(dock == CurrentDock, "To release, you must have it first.");
+
 			dock.Occupier = null;
 			CurrentDock = null;
 			DockState = DockState.NotAssigned;
@@ -90,6 +91,12 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyOwnerChanged.OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
 		{
+			Release(CurrentDock);
+		}
+
+		void IResolveOrder.ResolveOrder(Actor self, Order order)
+		{
+			// Any explicit order from player will cause release.
 			Release(CurrentDock);
 		}
 	}

@@ -415,6 +415,11 @@ namespace OpenRA.Mods.Common.Traits
 			ServeNewClient(client);
 		}
 
+		public static bool IsInQueue(Actor host, Actor client)
+		{
+			return host.Trait<DockManager>().queue.Contains(client);
+		}
+
 		void ITick.Tick(Actor self)
 		{
 			if (!info.DeadlockDetectionEnabled)

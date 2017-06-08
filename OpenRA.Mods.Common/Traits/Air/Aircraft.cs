@@ -608,6 +608,14 @@ namespace OpenRA.Mods.Common.Traits
 			}
 			else if (order.OrderString == "Enter")
 			{
+				if (self.TraitOrDefault<DockClient>() != null && !IsPlane)
+				{
+					if (!order.Queued)
+						self.CancelActivity();
+					self.QueueActivity(new HeliReturnToBase(self, Info.AbortOnResupply));
+					return;
+				}
+
 				if (!order.Queued)
 					UnReserve();
 
