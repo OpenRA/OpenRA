@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Traits;
+using System.Drawing;
 
 namespace OpenRA.Mods.Common.Traits
 {
@@ -27,13 +28,15 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class Helipad : IAcceptDock
 	{
-		Actor host;
-		DockManager dockManager;
+		readonly Actor host;
+		readonly DockManager dockManager;
+		readonly RallyPoint rallyPoint;
 
 		public Helipad(ActorInitializer init)
 		{
 			host = init.Self;
 			dockManager = host.Trait<DockManager>();
+			rallyPoint = host.TraitOrDefault<RallyPoint>();
 		}
 
 		// unused
@@ -68,15 +71,21 @@ namespace OpenRA.Mods.Common.Traits
 
 		void IAcceptDock.OnDock(Actor client, Dock dock)
 		{
-			throw new NotImplementedException();
+			client.SetTargetLine(Target.FromCell(client.World, dock.Location), Color.Green, false);
+			dockManager.OnArrivalCheck(client, dock);
 		}
 
 		void IAcceptDock.OnUndock(Actor client, Dock dock)
-		{	
-			throw new NotImplementedException();
+		{
+			client.SetTargetLine(Target.FromCell(client.World, rallyPoint.Location), Color.Green, false);
+
+			// ResupplyAircraft handles this.
+			// Take off and move to RP.
+			if (rallyPoint != null)
+				client.QueueActivity(new AttackMoveActivity(client, client.Trait<IMove>().MoveTo(rallyPoint.Location, 2)));
 		}
 
-		void IAcceptDock.QueueOnDockActivity(Actor client, Dock dock)
+		void IAcceptDock.QueueDockActivity(Actor client, Dock dock)
 		{
 			// Let's reload. The assumption here is that for aircrafts, there are no waiting docks.
 			client.QueueActivity(ActivityUtils.SequenceActivities(
@@ -87,11 +96,6 @@ namespace OpenRA.Mods.Common.Traits
 
 			// I know this depreciates AbortOnResupply activity but it is a bug to reuse NextActivity!
 			//client.Info.TraitInfo<AircraftInfo>().AbortOnResupply ? null : client.CurrentActivity.NextActivity));
-		}
-
-		void IAcceptDock.QueueUndockActivity(Actor client, Dock dock)
-		{
-			// ResupplyAircraft handles this.
 		}
 
 		void IAcceptDock.ReserveDock(Actor client)

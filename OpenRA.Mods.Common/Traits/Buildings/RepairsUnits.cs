@@ -93,20 +93,13 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			client.SetTargetLine(Target.FromCell(self.World, rallyPoint.Location), Color.Green);
 			dockManager.ReleaseAndNext(client, dock);
+			if (rallyPoint != null)
+				client.QueueActivity(new AttackMoveActivity(client, client.Trait<IMove>().MoveTo(rallyPoint.Location, 2)));
 		}
 
-		void IAcceptDock.QueueOnDockActivity(Actor client, Dock dock)
+		void IAcceptDock.QueueDockActivity(Actor client, Dock dock)
 		{
 			client.Trait<Repairable>().AfterReachActivities(client, self, dock);
-		}
-
-
-		void IAcceptDock.QueueUndockActivity(Actor client, Dock dock)
-		{
-			if (rallyPoint != null)
-			{
-				client.QueueActivity(new AttackMoveActivity(client, client.Trait<IMove>().MoveTo(rallyPoint.Location, 2)));
-			}
 		}
 
 		void IAcceptDock.ReserveDock(Actor client)

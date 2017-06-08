@@ -275,8 +275,8 @@ namespace OpenRA.Mods.Common.Traits
 			client.QueueActivity(new MoveAdjacentTo(client, Target.FromActor(self)));
 
 			// resource transfer activities are queued by OnDock.
-			iAcceptDock.QueueOnDockActivity(client, self.Trait<Dock>());
-			iAcceptDock.QueueUndockActivity(client, self.Trait<Dock>());
+			iAcceptDock.QueueDockActivity(client, self.Trait<Dock>());
+			iAcceptDock.OnUndock(client, self.Trait<Dock>());
 		}
 
 		void ServeHead(Actor self, Actor head, Dock serviceDock)
@@ -310,14 +310,10 @@ namespace OpenRA.Mods.Common.Traits
 			head.QueueActivity(new CallFunc(() => iAcceptDock.OnDock(head, serviceDock)));
 
 			// resource transfer activities are queued by OnDock.
-			iAcceptDock.QueueOnDockActivity(head, serviceDock);
+			iAcceptDock.QueueDockActivity(head, serviceDock);
 
+			head.QueueActivity(new CallFunc(() => ReleaseAndNext(head, serviceDock)));
 			head.QueueActivity(new CallFunc(() => iAcceptDock.OnUndock(head, serviceDock)));
-
-			// Move to south of the ref to avoid cluttering up with other dock locations
-			head.QueueActivity(head.Trait<IMove>().MoveTo(serviceDock.Location + serviceDock.Info.ExitOffset, 2));
-
-			iAcceptDock.QueueUndockActivity(head, serviceDock);
 		}
 
 		// As the actors are coming from all directions, first request, first served is not good.

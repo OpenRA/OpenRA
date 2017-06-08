@@ -152,8 +152,7 @@ namespace OpenRA.Mods.Common.Traits
 	public interface IAcceptDock
 	{
 		// postUndockActivity: after undock, we start doing this, after OnDockActivity is done.
-		void QueueOnDockActivity(Actor client, Dock dock);
-		void QueueUndockActivity(Actor client, Dock dock);
+		void QueueDockActivity(Actor client, Dock dock);
 		void OnUndock(Actor client, Dock dock);
 		void OnDock(Actor client, Dock dock);
 		void GiveResource(int amount);

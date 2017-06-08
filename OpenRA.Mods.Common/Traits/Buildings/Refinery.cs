@@ -134,7 +134,7 @@ namespace OpenRA.Mods.Common.Traits
 				harv.Trait.UnlinkProc(harv.Actor, self);
 		}
 
-		public void QueueOnDockActivity(Actor harv, Dock dock)
+		public void QueueDockActivity(Actor harv, Dock dock)
 		{
 			if (!preventDock)
 			{
@@ -151,11 +151,6 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		public void QueueUndockActivity(Actor client, Dock dock)
-		{
-			client.QueueActivity(new CallFunc(() => client.Trait<Harvester>().ContinueHarvesting(client)));
-		}
-
 		public void OnDock(Actor harv, Dock dock)
 		{
 			docks.OnArrivalCheck(harv, dock);
@@ -163,7 +158,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void OnUndock(Actor harv, Dock dock)
 		{
-			docks.ReleaseAndNext(harv, dock);
+			// Move to south of the ref to avoid cluttering up with other dock locations
+			harv.QueueActivity(harv.Trait<IMove>().MoveTo(dock.Location + dock.Info.ExitOffset, 2));
+			harv.QueueActivity(new CallFunc(() => harv.Trait<Harvester>().ContinueHarvesting(harv)));
 		}
 
 		void INotifyOwnerChanged.OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
