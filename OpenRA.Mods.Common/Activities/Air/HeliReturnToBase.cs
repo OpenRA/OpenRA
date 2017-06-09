@@ -46,7 +46,7 @@ namespace OpenRA.Mods.Common.Activities
 			foreach (var pad in GetHelipads(self))
 			{
 				var dockManager = pad.Trait<DockManager>();
-				if (dockManager.NumFreeDocks > 0)
+				if (dockManager.HasFreeServiceDock(self))
 					yield return pad;
 			}
 		}
@@ -64,7 +64,7 @@ namespace OpenRA.Mods.Common.Activities
 			if (dest == null || dest.IsDead || dest.Disposed)
 			{
 				var hpads = GetHelipads(self);
-				var dockableHpads = hpads.Where(p => p.Trait<DockManager>().NumFreeDocks > 0);
+				var dockableHpads = hpads.Where(p => p.Trait<DockManager>().HasFreeServiceDock(self));
 				if (dockableHpads.Any())
 					dest = dockableHpads.ClosestTo(self);
 				else if (hpads.Any())
@@ -94,7 +94,7 @@ namespace OpenRA.Mods.Common.Activities
 			}
 
 			// Can't dock :(
-			if (dest.Trait<DockManager>().NumFreeDocks == 0)
+			if (!dest.Trait<DockManager>().HasFreeServiceDock(self))
 			{
 				// If no pad is available, move near one and wait
 				var distanceLength = (dest.CenterPosition - self.CenterPosition).HorizontalLength;

@@ -144,6 +144,7 @@ namespace OpenRA.Mods.Common.Traits
 		bool isMoving;
 		bool isMovingVertically;
 		WPos cachedPosition;
+		DockClient dockClient;
 
 		public Aircraft(ActorInitializer init, AircraftInfo info)
 		{
@@ -168,6 +169,7 @@ namespace OpenRA.Mods.Common.Traits
 			conditionManager = self.TraitOrDefault<ConditionManager>();
 			speedModifiers = self.TraitsImplementing<ISpeedModifier>().ToArray().Select(sm => sm.GetSpeedModifier());
 			cachedPosition = self.CenterPosition;
+			dockClient = self.TraitOrDefault<DockClient>();
 		}
 
 		public void AddedToWorld(Actor self)
@@ -231,9 +233,9 @@ namespace OpenRA.Mods.Common.Traits
 					return WVec.Zero;
 			}
 
-			if (self.Trait<DockClient>().CurrentDock != null)
+			if (dockClient != null && dockClient.CurrentDock != null)
 			{
-				var distanceFromReservationActor = (self.Trait<DockClient>().CurrentDock.CenterPosition - self.CenterPosition).HorizontalLength;
+				var distanceFromReservationActor = (dockClient.CurrentDock.CenterPosition - self.CenterPosition).HorizontalLength;
 				if (distanceFromReservationActor < Info.WaitDistanceFromResupplyBase.Length)
 					return WVec.Zero;
 			}
@@ -608,7 +610,12 @@ namespace OpenRA.Mods.Common.Traits
 			}
 			else if (order.OrderString == "Enter")
 			{
-				if (self.TraitOrDefault<DockClient>() != null && !IsPlane)
+				System.Diagnostics.Debug.Assert(dockClient != null, "Only DockClient can dock now.");
+
+				// Let go first.
+				dockClient.Release(dockClient.CurrentDock);
+
+				if (!IsPlane)
 				{
 					if (!order.Queued)
 						self.CancelActivity();

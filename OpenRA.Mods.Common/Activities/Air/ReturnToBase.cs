@@ -110,7 +110,7 @@ namespace OpenRA.Mods.Common.Activities
 			if (dest == null || dest.IsDead || dest.Disposed)
 			{
 				var aflds = GetAirfields(self);
-				var dockableAflds = aflds.Where(p => p.Trait<DockManager>().NumFreeDocks > 0);
+				var dockableAflds = aflds.Where(p => p.Trait<DockManager>().HasFreeServiceDock(self));
 				if (dockableAflds.Any())
 					dest = dockableAflds.ClosestTo(self);
 				else if (aflds.Any())
@@ -129,7 +129,7 @@ namespace OpenRA.Mods.Common.Activities
 			}
 
 			// Player has an airfield but it is busy. Circle around.
-			if (dest.Trait<DockManager>().NumFreeDocks == 0)
+			if (!dest.Trait<DockManager>().HasFreeServiceDock(self))
 			{
 				Queue(ActivityUtils.SequenceActivities(
 					new Fly(self, Target.FromActor(dest), WDist.Zero, plane.Info.WaitDistanceFromResupplyBase),
