@@ -307,7 +307,7 @@ namespace OpenRA
 				var musicDefinitions = LoadRuleSection(yaml, "Music");
 				var notificationDefinitions = LoadRuleSection(yaml, "Notifications");
 				var sequenceDefinitions = LoadRuleSection(yaml, "Sequences");
-				var modelSequenceDefinitions = LoadRuleSection(yaml, "VoxelSequences");
+				var modelSequenceDefinitions = LoadRuleSection(yaml, "ModelSequences");
 				var rules = Ruleset.Load(modData, this, TileSet, ruleDefinitions, weaponDefinitions,
 					voiceDefinitions, notificationDefinitions, musicDefinitions, sequenceDefinitions, modelSequenceDefinitions);
 				var flagged = Ruleset.DefinesUnsafeCustomRules(modData, this, ruleDefinitions,
@@ -391,7 +391,7 @@ namespace OpenRA
 						var musicDefinitions = LoadRuleSection(rulesYaml, "Music");
 						var notificationDefinitions = LoadRuleSection(rulesYaml, "Notifications");
 						var sequenceDefinitions = LoadRuleSection(rulesYaml, "Sequences");
-						var modelSequenceDefinitions = LoadRuleSection(rulesYaml, "VoxelSequences");
+						var modelSequenceDefinitions = LoadRuleSection(rulesYaml, "ModelSequences");
 						var rules = Ruleset.Load(modData, this, TileSet, ruleDefinitions, weaponDefinitions,
 							voiceDefinitions, notificationDefinitions, musicDefinitions, sequenceDefinitions, modelSequenceDefinitions);
 						var flagged = Ruleset.DefinesUnsafeCustomRules(modData, this, ruleDefinitions,

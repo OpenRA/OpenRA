@@ -57,7 +57,7 @@ namespace OpenRA
 		public readonly ModMetadata Metadata;
 		public readonly string[]
 			Rules, ServerTraits,
-			Sequences, VoxelSequences, Cursors, Chrome, Assemblies, ChromeLayout,
+			Sequences, ModelSequences, Cursors, Chrome, Assemblies, ChromeLayout,
 			Weapons, Voices, Notifications, Music, Translations, TileSets,
 			ChromeMetrics, MapCompatibility, Missions;
 
@@ -71,7 +71,7 @@ namespace OpenRA
 		public readonly string[] PackageFormats = { };
 
 		readonly string[] reservedModuleNames = { "Metadata", "Folders", "MapFolders", "Packages", "Rules",
-			"Sequences", "VoxelSequences", "Cursors", "Chrome", "Assemblies", "ChromeLayout", "Weapons",
+			"Sequences", "ModelSequences", "Cursors", "Chrome", "Assemblies", "ChromeLayout", "Weapons",
 			"Voices", "Notifications", "Music", "Translations", "TileSets", "ChromeMetrics", "Missions",
 			"ServerTraits", "LoadScreen", "Fonts", "SupportsMapsFrom", "SoundFormats", "SpriteFormats",
 			"RequiresMods", "PackageFormats" };
@@ -98,7 +98,7 @@ namespace OpenRA
 
 			Rules = YamlList(yaml, "Rules");
 			Sequences = YamlList(yaml, "Sequences");
-			VoxelSequences = YamlList(yaml, "VoxelSequences");
+			ModelSequences = YamlList(yaml, "ModelSequences");
 			Cursors = YamlList(yaml, "Cursors");
 			Chrome = YamlList(yaml, "Chrome");
 			Assemblies = YamlList(yaml, "Assemblies");
