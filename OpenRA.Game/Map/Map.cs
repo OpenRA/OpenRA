@@ -18,6 +18,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using OpenRA.FileSystem;
+using OpenRA.Graphics;
 using OpenRA.Support;
 using OpenRA.Traits;
 
@@ -386,7 +387,7 @@ namespace OpenRA
 			try
 			{
 				Rules = Ruleset.Load(modData, this, Tileset, RuleDefinitions, WeaponDefinitions,
-					VoiceDefinitions, NotificationDefinitions, MusicDefinitions, SequenceDefinitions);
+					VoiceDefinitions, NotificationDefinitions, MusicDefinitions, SequenceDefinitions, VoxelSequenceDefinitions);
 			}
 			catch (Exception e)
 			{

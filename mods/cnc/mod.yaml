@@ -197,6 +197,8 @@ SpriteSequenceFormat: TilesetSpecificSpriteSequence
 		DESERT: .des
 		JUNGLE: .jun
 
+ModelSequenceFormat: PlaceholderModelSequence
+
 GameSpeeds:
 	slower:
 		Name: Slower
