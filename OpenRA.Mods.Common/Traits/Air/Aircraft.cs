@@ -612,49 +612,14 @@ namespace OpenRA.Mods.Common.Traits
 				{
 					if (!order.Queued)
 						self.CancelActivity();
-					self.QueueActivity(new HeliReturnToBase(self, Info.AbortOnResupply));
+					self.QueueActivity(new HeliReturnToBase(self, Info.AbortOnResupply, order.TargetActor));
 					return;
 				}
 
+				// for planes, do...
 				if (!order.Queued)
-					UnReserve();
-
-				if (Reservable.IsReserved(order.TargetActor))
-				{
-					if (IsPlane)
-						self.QueueActivity(new ReturnToBase(self, Info.AbortOnResupply));
-					else
-						self.QueueActivity(new HeliReturnToBase(self, Info.AbortOnResupply));
-				}
-				else
-				{
-					self.SetTargetLine(Target.FromActor(order.TargetActor), Color.Green);
-
-					if (IsPlane)
-					{
-						self.QueueActivity(order.Queued, ActivityUtils.SequenceActivities(
-							new ReturnToBase(self, Info.AbortOnResupply, order.TargetActor),
-							new ResupplyAircraft(self)));
-					}
-					else
-					{
-						MakeReservation(order.TargetActor);
-
-						Action enter = () =>
-						{
-							var exit = order.TargetActor.Info.TraitInfos<ExitInfo>().FirstOrDefault();
-							var offset = (exit != null) ? exit.SpawnOffset : WVec.Zero;
-
-							self.QueueActivity(new HeliFly(self, Target.FromPos(order.TargetActor.CenterPosition + offset)));
-							self.QueueActivity(new Turn(self, Info.InitialFacing));
-							self.QueueActivity(new HeliLand(self, false));
-							self.QueueActivity(new ResupplyAircraft(self));
-							self.QueueActivity(new TakeOff(self));
-						};
-
-						self.QueueActivity(order.Queued, new CallFunc(enter));
-					}
-				}
+					self.CancelActivity();
+				self.QueueActivity(new ReturnToBase(self, Info.AbortOnResupply, order.TargetActor));
 			}
 			else if (order.OrderString == "Stop")
 			{
