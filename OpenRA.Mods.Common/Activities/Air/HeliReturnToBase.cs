@@ -30,6 +30,11 @@ namespace OpenRA.Mods.Common.Activities
 			this.alwaysLand = alwaysLand;
 			this.abortOnResupply = abortOnResupply;
 			this.dest = dest;
+
+			// Release first, before trying to dock.
+			var dc = self.TraitOrDefault<DockClient>();
+			if (dc != null)
+				dc.Release(dc.CurrentDock);
 		}
 
 		IEnumerable<Actor> GetHelipads(Actor self)

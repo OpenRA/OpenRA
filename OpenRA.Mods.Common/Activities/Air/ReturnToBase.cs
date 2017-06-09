@@ -33,6 +33,11 @@ namespace OpenRA.Mods.Common.Activities
 			this.abortOnResupply = abortOnResupply;
 			plane = self.Trait<Aircraft>();
 			planeInfo = self.Info.TraitInfo<AircraftInfo>();
+
+			// Release first, before trying to dock.
+			var dc = self.TraitOrDefault<DockClient>();
+			if (dc != null)
+				dc.Release(dc.CurrentDock);
 		}
 
 		public static IEnumerable<Actor> GetAirfields(Actor self)

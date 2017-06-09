@@ -64,6 +64,11 @@ namespace OpenRA.Mods.Common.Traits
 			if (dock == null)
 				return;
 
+			if (CurrentDock == null)
+				// Still OK, because ordering units like crazy will automatically release the dock from
+				// DockClient code and previously queued release will try to release what is already released.
+				return;
+
 			// You are to release only what you have.
 			if (CurrentDock != dock)
 				System.Diagnostics.Debug.Assert(dock == CurrentDock, "To release, you must have it first.");
