@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Mods.Common.Traits;
@@ -82,5 +83,37 @@ namespace OpenRA.Mods.Common.AI
 		}
 
 		public WPos CenterPosition { get { return Units.Select(u => u.CenterPosition).Average(); } }
+
+		public CPos CenterLocation { get { return World.Map.CellContaining(CenterPosition); } }
+
+		void reflexAvoidance(Actor attacker)
+		{
+			// Like when you retract your finger when it touches hot stuff,
+			// let air untis avoid the attacker very quickly. (faster than flee state's response)
+			WVec vec = CenterPosition - attacker.CenterPosition;
+			WPos dest = CenterPosition + vec;
+			CPos cdest = World.Map.CellContaining(dest);
+
+			foreach (var a in Units)
+				Bot.QueueOrder(new Order("Move", a, false) { TargetLocation = cdest });
+		}
+
+		internal void Damage(AttackInfo e)
+		{
+			if (Type == SquadType.Air)
+			{
+				// decide flee or retaliate.
+				if (AirStateBase.NearToPosSafely(this, this.CenterPosition))
+				{
+					TargetActor = e.Attacker;
+					FuzzyStateMachine.ChangeState(this, new AirAttackState(), true);
+					return;
+				}
+
+				// Flee
+				reflexAvoidance(e.Attacker);
+				FuzzyStateMachine.ChangeState(this, new AirFleeState(), true);
+			}
+		}
 	}
 }

@@ -56,6 +56,7 @@ namespace OpenRA.Mods.Common.AI
 			public readonly HashSet<string> Production = new HashSet<string>();
 			public readonly HashSet<string> NavalProduction = new HashSet<string>();
 			public readonly HashSet<string> Silo = new HashSet<string>();
+			public readonly HashSet<string> StaticAntiAir = new HashSet<string>();
 		}
 
 		[Desc("Ingame name this bot uses.")]
@@ -256,6 +257,7 @@ namespace OpenRA.Mods.Common.AI
 
 		public bool IsEnabled;
 		public List<Squad> Squads = new List<Squad>();
+		public Dictionary<Actor, Squad> whichSquad = new Dictionary<Actor, Squad>();
 		public Player Player { get; private set; }
 
 		readonly DomainIndex domainIndex;
@@ -836,6 +838,7 @@ namespace OpenRA.Mods.Common.AI
 						air = RegisterNewSquad(SquadType.Air);
 
 					air.Units.Add(a);
+					whichSquad[a] = air;
 				}
 
 				activeUnits.Add(a);
@@ -854,7 +857,10 @@ namespace OpenRA.Mods.Common.AI
 
 				foreach (var a in unitsHangingAroundTheBase)
 					if (!a.Info.HasTraitInfo<AircraftInfo>())
+					{
 						attackForce.Units.Add(a);
+						whichSquad[a] = attackForce;
+					}
 
 				unitsHangingAroundTheBase.Clear();
 			}
@@ -883,7 +889,10 @@ namespace OpenRA.Mods.Common.AI
 						rush = RegisterNewSquad(SquadType.Rush, target);
 
 					foreach (var a3 in ownUnits)
+					{
 						rush.Units.Add(a3);
+						whichSquad[a3] = rush;
+					}
 
 					return;
 				}
@@ -906,7 +915,10 @@ namespace OpenRA.Mods.Common.AI
 						&& unit.Info.HasTraitInfo<AttackBaseInfo>());
 
 				foreach (var a in ownUnits)
+				{
 					protectSq.Units.Add(a);
+					whichSquad[a] = protectSq;
+				}
 			}
 		}
 
@@ -1202,6 +1214,14 @@ namespace OpenRA.Mods.Common.AI
 			{
 				defenseCenter = e.Attacker.Location;
 				ProtectOwn(e.Attacker);
+			}
+			else if (self.TraitOrDefault<Aircraft>() != null)
+			{
+				if (whichSquad.ContainsKey(self))
+				{
+					whichSquad[self].Damage(e);
+					whichSquad[self].Update();
+				}
 			}
 		}
 	}
