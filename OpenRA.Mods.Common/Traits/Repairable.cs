@@ -33,14 +33,12 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		readonly RepairableInfo info;
 		readonly Health health;
-		readonly IMove movement;
 		readonly AmmoPool[] ammoPools;
 
 		public Repairable(Actor self, RepairableInfo info)
 		{
 			this.info = info;
 			health = self.Trait<Health>();
-			movement = self.Trait<IMove>();
 			ammoPools = self.TraitsImplementing<AmmoPool>().ToArray();
 		}
 

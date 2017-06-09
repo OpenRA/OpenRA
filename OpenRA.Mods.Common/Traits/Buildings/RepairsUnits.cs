@@ -40,7 +40,6 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class RepairsUnits : IAcceptDock
 	{
-		RepairsUnitsInfo info;
 		Actor self;
 		DockManager dockManager;
 		RallyPoint rallyPoint;
@@ -48,7 +47,6 @@ namespace OpenRA.Mods.Common.Traits
 		public RepairsUnits(Actor self, RepairsUnitsInfo info)
 		{
 			this.self = self;
-			this.info = info;
 			dockManager = self.Trait<DockManager>();
 			rallyPoint = self.TraitOrDefault<RallyPoint>();
 		}

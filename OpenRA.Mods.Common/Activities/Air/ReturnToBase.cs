@@ -146,7 +146,6 @@ namespace OpenRA.Mods.Common.Activities
 
 		public Activity LandingProcedure(Actor self, Dock dock)
 		{
-			var plane = self.Trait<Aircraft>();
 			var planeInfo = self.Info.TraitInfo<AircraftInfo>();
 			WPos w1, w2, w3;
 			CalculateLandingPath(self, dock, out w1, out w2, out w3);
