@@ -316,7 +316,8 @@ namespace OpenRA.Mods.Common.AI
 					&& !unit.Info.HasTraitInfo<HuskInfo>()
 					&& unit.Info.HasTraitInfo<ITargetableInfo>();
 
-			unitCannotBeOrdered = a => a.Owner != Player || a.IsDead || !a.IsInWorld;
+			unitCannotBeOrdered = a => a.Owner != Player || a.IsDead || !a.IsInWorld ||
+				(a.TraitOrDefault<AmmoPool>() != null && !a.Trait<AmmoPool>().HasAmmo());
 
 			foreach (var decision in info.PowerDecisions)
 				powerDecisions.Add(decision.OrderName, decision);
@@ -502,8 +503,12 @@ namespace OpenRA.Mods.Common.AI
 			if (ammoPoolsInfo.Any(x => !x.SelfReloads))
 			{
 				var countOwnAir = CountUnits(actorInfo.Name, Player);
-				var countBuildings = aircraftInfo.RearmBuildings.Sum(b => CountBuilding(b, Player));
-				if (countOwnAir >= countBuildings)
+				var bldgs = World.ActorsHavingTrait<Building>().Where(a =>
+					a.Owner == Player && aircraftInfo.RearmBuildings.Contains(a.Info.Name));
+				int dockCount = 0;
+				foreach (var b in bldgs)
+					dockCount += b.TraitsImplementing<Dock>().Count();
+				if (countOwnAir >= dockCount)
 					return false;
 			}
 
