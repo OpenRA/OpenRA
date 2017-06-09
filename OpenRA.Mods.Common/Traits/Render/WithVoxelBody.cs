@@ -32,8 +32,8 @@ namespace OpenRA.Mods.Common.Traits.Render
 			ActorPreviewInitializer init, RenderVoxelsInfo rv, string image, Func<WRot> orientation, int facings, PaletteReference p)
 		{
 			var body = init.Actor.TraitInfo<BodyOrientationInfo>();
-			var voxel = VoxelProvider.GetVoxel(image, Sequence);
-			yield return new ModelAnimation(voxel, () => WVec.Zero,
+			var model = init.World.ModelCache.GetModelSequence(image, Sequence);
+			yield return new ModelAnimation(model, () => WVec.Zero,
 				() => new[] { body.QuantizeOrientation(orientation(), facings) },
 				() => false, () => 0, ShowShadow);
 		}
@@ -49,14 +49,14 @@ namespace OpenRA.Mods.Common.Traits.Render
 			var body = self.Trait<BodyOrientation>();
 			var rv = self.Trait<RenderVoxels>();
 
-			var voxel = VoxelProvider.GetVoxel(rv.Image, info.Sequence);
-			rv.Add(new ModelAnimation(voxel, () => WVec.Zero,
+			var model = self.World.ModelCache.GetModelSequence(rv.Image, info.Sequence);
+			rv.Add(new ModelAnimation(model, () => WVec.Zero,
 				() => new[] { body.QuantizeOrientation(self, self.Orientation) },
 				() => IsTraitDisabled, () => 0, info.ShowShadow));
 
 			// Selection size
 			var rvi = self.Info.TraitInfo<RenderVoxelsInfo>();
-			var s = (int)(rvi.Scale * voxel.Size.Aggregate(Math.Max));
+			var s = (int)(rvi.Scale * model.Size.Aggregate(Math.Max));
 			size = new int2(s, s);
 		}
 

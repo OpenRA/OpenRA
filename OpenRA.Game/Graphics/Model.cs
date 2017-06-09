@@ -22,7 +22,21 @@ namespace OpenRA.Graphics
 		float[] TransformationMatrix(uint section, uint frame);
 		float[] Size { get; }
 		float[] Bounds(uint frame);
-		VoxelRenderData RenderData(uint section);
+		ModelRenderData RenderData(uint section);
+	}
+
+	public struct ModelRenderData
+	{
+		public readonly int Start;
+		public readonly int Count;
+		public readonly Sheet Sheet;
+
+		public ModelRenderData(int start, int count, Sheet sheet)
+		{
+			Start = start;
+			Count = count;
+			Sheet = sheet;
+		}
 	}
 
 	public interface IModelCache : IDisposable

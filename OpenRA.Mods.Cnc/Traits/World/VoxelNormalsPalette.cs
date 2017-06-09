@@ -9,11 +9,11 @@
  */
 #endregion
 
-using OpenRA.FileFormats;
 using OpenRA.Graphics;
+using OpenRA.Mods.Cnc.FileFormats;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.Common.Traits
+namespace OpenRA.Mods.Cnc.Traits
 {
 	public class VoxelNormalsPaletteInfo : ITraitInfo
 	{

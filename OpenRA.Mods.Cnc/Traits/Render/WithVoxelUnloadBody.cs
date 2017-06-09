@@ -37,8 +37,8 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 			ActorPreviewInitializer init, RenderVoxelsInfo rv, string image, Func<WRot> orientation, int facings, PaletteReference p)
 		{
 			var body = init.Actor.TraitInfo<BodyOrientationInfo>();
-			var voxel = VoxelProvider.GetVoxel(image, IdleSequence);
-			yield return new ModelAnimation(voxel, () => WVec.Zero,
+			var model = init.World.ModelCache.GetModelSequence(image, IdleSequence);
+			yield return new ModelAnimation(model, () => WVec.Zero,
 				() => new[] { body.QuantizeOrientation(orientation(), facings) },
 				() => false, () => 0, ShowShadow);
 		}
@@ -55,19 +55,19 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 			var body = self.Trait<BodyOrientation>();
 			var rv = self.Trait<RenderVoxels>();
 
-			var idleVoxel = VoxelProvider.GetVoxel(rv.Image, info.IdleSequence);
-			rv.Add(new ModelAnimation(idleVoxel, () => WVec.Zero,
+			var idleModel = self.World.ModelCache.GetModelSequence(rv.Image, info.IdleSequence);
+			rv.Add(new ModelAnimation(idleModel, () => WVec.Zero,
 				() => new[] { body.QuantizeOrientation(self, self.Orientation) },
 				() => Docked,
 				() => 0, info.ShowShadow));
 
 			// Selection size
 			var rvi = self.Info.TraitInfo<RenderVoxelsInfo>();
-			var s = (int)(rvi.Scale * idleVoxel.Size.Aggregate(Math.Max));
+			var s = (int)(rvi.Scale * idleModel.Size.Aggregate(Math.Max));
 			size = new int2(s, s);
 
-			var unloadVoxel = VoxelProvider.GetVoxel(rv.Image, info.UnloadSequence);
-			rv.Add(new ModelAnimation(unloadVoxel, () => WVec.Zero,
+			var unloadModel = self.World.ModelCache.GetModelSequence(rv.Image, info.UnloadSequence);
+			rv.Add(new ModelAnimation(unloadModel, () => WVec.Zero,
 				() => new[] { body.QuantizeOrientation(self, self.Orientation) },
 				() => !Docked,
 				() => 0, info.ShowShadow));

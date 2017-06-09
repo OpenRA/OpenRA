@@ -32,7 +32,6 @@ namespace OpenRA
 		public readonly ISpriteSequenceLoader SpriteSequenceLoader;
 		public readonly IModelSequenceLoader ModelSequenceLoader;
 		public ILoadScreen LoadScreen { get; private set; }
-		public VoxelLoader VoxelLoader { get; private set; }
 		public CursorProvider CursorProvider { get; private set; }
 		public FS ModFiles;
 		public IReadOnlyFileSystem DefaultFileSystem { get { return ModFiles; } }
@@ -132,10 +131,6 @@ namespace OpenRA
 
 			Game.Sound.Initialize(SoundLoaders, fileSystem);
 
-			if (VoxelLoader != null)
-				VoxelLoader.Dispose();
-			VoxelLoader = new VoxelLoader(fileSystem);
-
 			CursorProvider = new CursorProvider(this);
 		}
 
@@ -199,9 +194,6 @@ namespace OpenRA
 				foreach (var entry in map.Rules.Music)
 					entry.Value.Load(map);
 
-			VoxelProvider.Initialize(VoxelLoader, map, MiniYaml.Load(map, Manifest.VoxelSequences, map.VoxelSequenceDefinitions));
-			VoxelLoader.Finish();
-
 			return map;
 		}
 
@@ -210,8 +202,6 @@ namespace OpenRA
 			if (LoadScreen != null)
 				LoadScreen.Dispose();
 			MapCache.Dispose();
-			if (VoxelLoader != null)
-				VoxelLoader.Dispose();
 
 			if (ObjectCreator != null)
 				ObjectCreator.Dispose();

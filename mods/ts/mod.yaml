@@ -236,7 +236,7 @@ SpriteSequenceFormat: TilesetSpecificSpriteSequence
 		TEMPERATE: t
 		SNOW: a
 
-ModelSequenceFormat: PlaceholderModelSequence
+ModelSequenceFormat: VoxelModelSequence
 
 GameSpeeds:
 	slower:
