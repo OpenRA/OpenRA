@@ -92,5 +92,155 @@ namespace OpenRA.Test
 			Assert.That(shape.DistanceFromEdge(new WVec(-1000, -400, 0)).Length,
 				Is.EqualTo(877));
 		}
+
+		[TestCase(TestName = "PolygonShape report accurate distance")]
+		public void Polygon()
+		{
+			// Rectangle like above,
+			// Note: The calculations don't match for all, but do have a tolerance of 1.
+			shape = new PolygonShape(new int2[] { new int2(-123, -456), new int2(100, -456), new int2(100, 100), new int2(-123, 100) });
+			shape.Initialize();
+
+			Assert.That(shape.DistanceFromEdge(new WVec(10, 10, 0)).Length,
+				Is.EqualTo(0));
+
+			Assert.That(shape.DistanceFromEdge(new WVec(-100, 50, 0)).Length,
+				Is.EqualTo(0));
+
+			Assert.That(shape.DistanceFromEdge(new WVec(0, 200, 0)).Length,
+				Is.EqualTo(100));
+
+			Assert.That(shape.DistanceFromEdge(new WVec(123, 0, 0)).Length,
+				Is.EqualTo(23));
+
+			Assert.That(shape.DistanceFromEdge(new WVec(-100, -400, 0)).Length,
+				Is.EqualTo(0));
+
+			Assert.That(shape.DistanceFromEdge(new WVec(-1000, -400, 0)).Length,
+				Is.EqualTo(877));
+
+			// Rectangle like above but reverse order
+			// Note: The calculations don't match for all, but do have a tolerance of 1.
+			shape = new PolygonShape(new int2[] { new int2(-123, 100), new int2(100, 100), new int2(100, -456), new int2(-123, -456) });
+			shape.Initialize();
+
+			Assert.That(shape.DistanceFromEdge(new WVec(10, 10, 0)).Length,
+				Is.EqualTo(0));
+
+			Assert.That(shape.DistanceFromEdge(new WVec(-100, 50, 0)).Length,
+				Is.EqualTo(0));
+
+			Assert.That(shape.DistanceFromEdge(new WVec(0, 200, 0)).Length,
+				Is.EqualTo(100));
+
+			Assert.That(shape.DistanceFromEdge(new WVec(123, 0, 0)).Length,
+				Is.EqualTo(23));
+
+			Assert.That(shape.DistanceFromEdge(new WVec(-100, -400, 0)).Length,
+				Is.EqualTo(0));
+
+			Assert.That(shape.DistanceFromEdge(new WVec(-1000, -400, 0)).Length,
+				Is.EqualTo(877));
+
+			// Right triangle taken from above by removing a point
+			shape = new PolygonShape(new int2[] { new int2(-123, -456), new int2(100, -456), new int2(100, 100) });
+			shape.Initialize();
+
+			Assert.That(shape.DistanceFromEdge(new WVec(10, 10, 0)).Length,
+				Is.EqualTo(50));
+
+			Assert.That(shape.DistanceFromEdge(new WVec(99, 10, 0)).Length,
+				Is.EqualTo(0));
+
+			Assert.That(shape.DistanceFromEdge(new WVec(100, 10, 0)).Length,
+				Is.EqualTo(0));
+
+			Assert.That(shape.DistanceFromEdge(new WVec(-100, 50, 0)).Length,
+				Is.EqualTo(167));
+
+			Assert.That(shape.DistanceFromEdge(new WVec(0, 200, 0)).Length,
+				Is.EqualTo(141));
+
+			Assert.That(shape.DistanceFromEdge(new WVec(123, 0, 0)).Length,
+				Is.EqualTo(23));
+
+			Assert.That(shape.DistanceFromEdge(new WVec(-100, -400, 0)).Length,
+				Is.EqualTo(0));
+
+			Assert.That(shape.DistanceFromEdge(new WVec(-1000, -400, 0)).Length,
+				Is.EqualTo(878));
+
+			// Right triangle taken from above but reverse order
+			shape = new PolygonShape(new int2[] { new int2(100, 100), new int2(100, -456), new int2(-123, -456) });
+			shape.Initialize();
+
+			Assert.That(shape.DistanceFromEdge(new WVec(10, 10, 0)).Length,
+				Is.EqualTo(49)); // Differs from above by integer rounding.
+
+			Assert.That(shape.DistanceFromEdge(new WVec(99, 10, 0)).Length,
+				Is.EqualTo(0));
+
+			Assert.That(shape.DistanceFromEdge(new WVec(100, 10, 0)).Length,
+				Is.EqualTo(0));
+
+			Assert.That(shape.DistanceFromEdge(new WVec(-100, 50, 0)).Length,
+				Is.EqualTo(167));
+
+			Assert.That(shape.DistanceFromEdge(new WVec(0, 200, 0)).Length,
+				Is.EqualTo(141));
+
+			Assert.That(shape.DistanceFromEdge(new WVec(123, 0, 0)).Length,
+				Is.EqualTo(23));
+
+			Assert.That(shape.DistanceFromEdge(new WVec(-100, -400, 0)).Length,
+				Is.EqualTo(0));
+
+			Assert.That(shape.DistanceFromEdge(new WVec(-1000, -400, 0)).Length,
+				Is.EqualTo(878));
+
+			// Plus shaped dodecagon
+			shape = new PolygonShape(new int2[] {
+				new int2(-511, -1535), new int2(511, -1535), new int2(511, -511), new int2(1535, -511),
+				new int2(1535, 511), new int2(511, 511), new int2(511, 1535), new int2(-511, 1535),
+				new int2(-511, 511), new int2(-1535, 511), new int2(-1535, -511), new int2(-511, -511)
+			});
+			shape.Initialize();
+
+			Assert.That(shape.DistanceFromEdge(new WVec(10, 10, 0)).Length,
+				Is.EqualTo(0));
+
+			Assert.That(shape.DistanceFromEdge(new WVec(-511, -1535, 0)).Length,
+				Is.EqualTo(0));
+
+			Assert.That(shape.DistanceFromEdge(new WVec(-512, -1536, 0)).Length,
+				Is.EqualTo(1));
+
+			Assert.That(shape.DistanceFromEdge(new WVec(0, -1535, 0)).Length,
+				Is.EqualTo(0));
+
+			Assert.That(shape.DistanceFromEdge(new WVec(0, 1535, 0)).Length,
+				Is.EqualTo(0));
+
+			Assert.That(shape.DistanceFromEdge(new WVec(-1535, 0, 0)).Length,
+				Is.EqualTo(0));
+
+			Assert.That(shape.DistanceFromEdge(new WVec(1535, 0, 0)).Length,
+				Is.EqualTo(0));
+
+			Assert.That(shape.DistanceFromEdge(new WVec(-1535, -1535, 0)).Length,
+				Is.EqualTo(1024));
+
+			Assert.That(shape.DistanceFromEdge(new WVec(1535, -1535, 0)).Length,
+				Is.EqualTo(1024));
+
+			Assert.That(shape.DistanceFromEdge(new WVec(-1535, 1535, 0)).Length,
+				Is.EqualTo(1024));
+
+			Assert.That(shape.DistanceFromEdge(new WVec(1535, 1535, 0)).Length,
+				Is.EqualTo(1024));
+
+			Assert.That(shape.DistanceFromEdge(new WVec(-500, -1635, 0)).Length,
+				Is.EqualTo(100));
+		}
 	}
 }
