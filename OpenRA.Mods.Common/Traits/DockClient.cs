@@ -39,10 +39,9 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		// readonly DockClientInfo info;
 		readonly Actor self;
-
 		public Dock CurrentDock;
-
 		public DockState DockState = DockState.NotAssigned;
+		public Activity parameters; // Sometimes, activity knows the best how to dock/undock. Remember that here.
 
 		public DockClient(ActorInitializer init, DockClientInfo info)
 		{
@@ -96,8 +95,17 @@ namespace OpenRA.Mods.Common.Traits
 
 		void IResolveOrder.ResolveOrder(Actor self, Order order)
 		{
-			// Any explicit order from player will cause release.
-			Release(CurrentDock);
+			switch (order.OrderString)
+			{
+				case "Enter":
+				case "Deliver":
+				case "ReturnToBase":
+				case "Repair":
+					break;
+				default:
+					Release(CurrentDock);
+					break;
+			}
 		}
 	}
 }

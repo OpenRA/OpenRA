@@ -101,7 +101,7 @@ namespace OpenRA.Mods.Common.Traits
 				var host = target.Actor;
 				var dm = host.Trait<DockManager>();
 				self.CancelActivity();
-				dm.ReserveDock(host, self);
+				dm.ReserveDock(host, self, null);
 			}
 		}
 

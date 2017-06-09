@@ -24,9 +24,7 @@ namespace OpenRA.Mods.Common.Activities
 		readonly AircraftInfo planeInfo;
 		readonly bool alwaysLand;
 		readonly bool abortOnResupply;
-		bool isCalculated;
 		Actor dest;
-		WPos w1, w2, w3;
 
 		public ReturnToBase(Actor self, bool abortOnResupply, Actor dest = null, bool alwaysLand = true)
 		{
@@ -37,25 +35,18 @@ namespace OpenRA.Mods.Common.Activities
 			planeInfo = self.Info.TraitInfo<AircraftInfo>();
 		}
 
-		public static Actor ChooseAirfield(Actor self, bool unreservedOnly)
+		public static IEnumerable<Actor> GetAirfields(Actor self)
 		{
 			var rearmBuildings = self.Info.TraitInfo<AircraftInfo>().RearmBuildings;
-			return self.World.ActorsHavingTrait<Reservable>()
-				.Where(a => a.Owner == self.Owner
-					&& rearmBuildings.Contains(a.Info.Name)
-					&& (!unreservedOnly || !Reservable.IsReserved(a)))
-				.ClosestTo(self);
+			return self.World.ActorsHavingTrait<DockManager>()
+				.Where(a => a.Owner == self.Owner && rearmBuildings.Contains(a.Info.Name));
 		}
 
-		void Calculate(Actor self)
+		void CalculateLandingPath(Actor self, Dock dock, out WPos w1, out WPos w2, out WPos w3)
 		{
-			if (dest == null || dest.IsDead || Reservable.IsReserved(dest))
-				dest = ChooseAirfield(self, true);
-
-			if (dest == null)
-				return;
-
-			var landPos = dest.CenterPosition;
+			var plane = self.Trait<Aircraft>();
+			var planeInfo = self.Info.TraitInfo<AircraftInfo>();
+			var landPos = dock.CenterPosition;
 			var altitude = planeInfo.CruiseAltitude.Length;
 
 			// Distance required for descent.
@@ -66,7 +57,7 @@ namespace OpenRA.Mods.Common.Activities
 
 			// Add 10% to the turning radius to ensure we have enough room
 			var speed = plane.MovementSpeed * 32 / 35;
-			var turnRadius = CalculateTurnRadius(speed);
+			var turnRadius = CalculateTurnRadius(planeInfo, speed);
 
 			// Find the center of the turning circles for clockwise and counterclockwise turns
 			var angle = WAngle.FromFacing(plane.Facing);
@@ -92,8 +83,6 @@ namespace OpenRA.Mods.Common.Activities
 			w1 = posCenter + tangentOffset;
 			w2 = approachCenter + tangentOffset;
 			w3 = approachStart;
-
-			isCalculated = true;
 		}
 
 		bool ShouldLandAtBuilding(Actor self, Actor dest)
@@ -110,32 +99,61 @@ namespace OpenRA.Mods.Common.Activities
 
 		public override Activity Tick(Actor self)
 		{
-			if (IsCanceled || self.IsDead)
+			if (IsCanceled)
 				return NextActivity;
 
-			if (!isCalculated)
-				Calculate(self);
-
-			if (dest == null || dest.IsDead)
+			// Check status and make dest correct.
+			// Priorities:
+			// 1. closest reloadable afld
+			// 2. closest afld
+			// 3. null
+			if (dest == null || dest.IsDead || dest.Disposed)
 			{
-				var nearestAfld = ChooseAirfield(self, false);
-
-				if (nearestAfld != null)
-					return ActivityUtils.SequenceActivities(
-						new Fly(self, Target.FromActor(nearestAfld), WDist.Zero, plane.Info.WaitDistanceFromResupplyBase),
-						new FlyCircleTimed(self, plane.Info.NumberOfTicksToVerifyAvailableAirport),
-						this);
+				var aflds = GetAirfields(self);
+				var dockableAflds = aflds.Where(p => p.Trait<DockManager>().NumFreeDocks > 0);
+				if (dockableAflds.Any())
+					dest = dockableAflds.ClosestTo(self);
+				else if (aflds.Any())
+					dest = aflds.ClosestTo(self);
 				else
-				{
-					// Prevent an infinite loop in case we'd return to the activity that called ReturnToBase in the first place. Go idle instead.
-					Cancel(self);
-					return NextActivity;
-				}
+					dest = null;
 			}
+
+			// Owner doesn't have any feasible afld. In this case,
+			if (dest == null)
+			{
+				// Prevent an infinite loop in case we'd return to the activity that called ReturnToBase in the first place.
+				// Go idle instead.
+				Cancel(self);
+				return NextActivity;
+			}
+
+			// Player has an airfield but it is busy. Circle around.
+			if (dest.Trait<DockManager>().NumFreeDocks == 0)
+			{
+				Queue(ActivityUtils.SequenceActivities(
+					new Fly(self, Target.FromActor(dest), WDist.Zero, plane.Info.WaitDistanceFromResupplyBase),
+					new FlyCircleTimed(self, plane.Info.NumberOfTicksToVerifyAvailableAirport),
+					new ReturnToBase(self, abortOnResupply, null, alwaysLand)));
+				return NextActivity;
+			}
+
+			// Now we land. Unlike helis, regardless of ShouldLandAtBuilding, we should land.
+			// The difference is, do we just land or do we land and resupply.
+			dest.Trait<DockManager>().ReserveDock(dest, self, this);
+			return NextActivity;
+		}
+
+		public Activity LandingProcedure(Actor self, Dock dock)
+		{
+			var plane = self.Trait<Aircraft>();
+			var planeInfo = self.Info.TraitInfo<AircraftInfo>();
+			WPos w1, w2, w3;
+			CalculateLandingPath(self, dock, out w1, out w2, out w3);
 
 			List<Activity> landingProcedures = new List<Activity>();
 
-			var turnRadius = CalculateTurnRadius(planeInfo.Speed);
+			var turnRadius = CalculateTurnRadius(planeInfo, planeInfo.Speed);
 
 			landingProcedures.Add(new Fly(self, Target.FromPos(w1), WDist.Zero, new WDist(turnRadius * 3)));
 			landingProcedures.Add(new Fly(self, Target.FromPos(w2)));
@@ -144,20 +162,16 @@ namespace OpenRA.Mods.Common.Activities
 			landingProcedures.Add(new Fly(self, Target.FromPos(w3), WDist.Zero, new WDist(turnRadius / 2)));
 
 			if (ShouldLandAtBuilding(self, dest))
-			{
-				plane.MakeReservation(dest);
+				landingProcedures.Add(new Land(self, Target.FromPos(dock.CenterPosition)));
 
-				landingProcedures.Add(new Land(self, Target.FromActor(dest)));
-				landingProcedures.Add(new ResupplyAircraft(self));
-			}
-
-			if (!abortOnResupply)
-				landingProcedures.Add(NextActivity);
+			// Causes bugs
+			// if (!abortOnResupply)
+			//	landingProcedures.Add(NextActivity);
 
 			return ActivityUtils.SequenceActivities(landingProcedures.ToArray());
 		}
 
-		int CalculateTurnRadius(int speed)
+		int CalculateTurnRadius(AircraftInfo planeInfo, int speed)
 		{
 			return 45 * speed / planeInfo.TurnSpeed;
 		}

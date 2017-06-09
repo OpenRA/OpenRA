@@ -148,22 +148,29 @@ namespace OpenRA.Mods.Common.Traits
 
 	public interface INotifyTransform { void BeforeTransform(Actor self); void OnTransform(Actor self); void AfterTransform(Actor toActor); }
 
-	public interface IAcceptDockInfo : ITraitInfo { }
 	public interface IAcceptDock
 	{
-		// postUndockActivity: after undock, we start doing this, after OnDockActivity is done.
-		void QueueDockActivity(Actor client, Dock dock);
-		void OnUndock(Actor client, Dock dock);
+		// How to command the actor to move to the dock location.
+		// Assumes that this activity has 100% chance of making client to reach the dock.
+		// That means if you make client to move with nearenough threshold, things will break
+		// and the actor will perform docking actions out of place.
+		Activity ApproachDockActivity(Actor client, Dock dock, Activity parameters);
+
+		// Do house keeping stuff here. Called when dock actually happens.
 		void OnDock(Actor client, Dock dock);
+
+		// What to do during the dock.
+		void QueueDockActivity(Actor client, Dock dock, Activity parameters);
+
+		// Called when docking is complete.
+		// Queue client's post-undocking activities in this function, too.
+		void OnUndock(Actor client, Dock dock, Activity parameters);
+	}
+
+	public interface IResourceExchange
+	{
 		void GiveResource(int amount);
 		bool CanGiveResource(int amount);
-
-		// ReserveDock should queue activities that make the client come to a valid dock and do dock activity
-		// (or wait activity, depending on the situation)
-		void ReserveDock(Actor client);
-
-		IEnumerable<CPos> DockLocations { get; }
-		bool AllowDocking { get; }
 	}
 
 	public interface IProvidesAssetBrowserPalettes

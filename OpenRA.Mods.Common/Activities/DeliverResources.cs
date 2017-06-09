@@ -63,12 +63,12 @@ namespace OpenRA.Mods.Common.Activities
 
 			if (!self.Info.TraitInfo<HarvesterInfo>().OreTeleporter)
 			{
-				proc.Trait<IAcceptDock>().ReserveDock(self);
+				proc.Trait<DockManager>().ReserveDock(proc, self, null);
 			}
 			else
 			{
 				var dock = proc.TraitsImplementing<Dock>().First();
-				proc.Trait<Refinery>().QueueDockActivity(self, dock);
+				proc.Trait<Refinery>().QueueDockActivity(self, dock, null);
 			}
 
 			return NextActivity;

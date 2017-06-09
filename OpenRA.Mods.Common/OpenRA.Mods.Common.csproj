@@ -295,6 +295,7 @@
     <Compile Include="Traits\DockManager.cs" />
     <Compile Include="Traits\Dock.cs" />
     <Compile Include="Traits\Health.cs" />
+    <Compile Include="Traits\Airfield.cs" />
     <Compile Include="Traits\Helipad.cs" />
     <Compile Include="Traits\ShootsMissiles.cs" />
     <Compile Include="Traits\PowerTooltip.cs" />

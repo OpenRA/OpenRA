@@ -233,7 +233,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (lastproc != null && !lastproc.Disposed)
 			{
 				// Am I blocking one of the dock position?
-				var deliveryLocs = lastproc.Trait<IAcceptDock>().DockLocations;
+				var deliveryLocs = lastproc.Trait<DockManager>().DockLocations;
 				var deliveryLoc = deliveryLocs.Where(loc => loc == self.Location);
 				if (deliveryLoc.Any())
 				{
@@ -323,7 +323,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (contents.Keys.Count > 0)
 			{
 				var type = contents.First().Key;
-				var iad = proc.Trait<IAcceptDock>();
+				var iad = proc.Trait<IResourceExchange>();
 				if (!iad.CanGiveResource(type.ValuePerUnit))
 					return false;
 
@@ -341,9 +341,9 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			get
 			{
-				yield return new EnterAlliedActorTargeter<IAcceptDockInfo>("Deliver", 5,
+				yield return new EnterAlliedActorTargeter<RefineryInfo>("Deliver", 5,
 					proc => IsAcceptableProcType(proc),
-					proc => proc.Trait<IAcceptDock>().AllowDocking);
+					proc => proc.Trait<Refinery>().AllowDocking);
 				yield return new HarvestOrderTargeter();
 			}
 		}
@@ -421,7 +421,11 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				// NOTE: An explicit deliver order forces the harvester to always deliver to this refinery.
 				var iad = order.TargetActor.TraitOrDefault<IAcceptDock>();
-				if (iad == null || !iad.AllowDocking || !IsAcceptableProcType(order.TargetActor))
+				if (iad == null || !IsAcceptableProcType(order.TargetActor))
+					return;
+
+				var refi = order.TargetActor.TraitOrDefault<Refinery>();
+				if (refi == null || !refi.AllowDocking)
 					return;
 
 				if (order.TargetActor != OwnerLinkedProc)

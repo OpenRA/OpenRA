@@ -34,7 +34,7 @@ namespace OpenRA.Mods.Common.Activities
 
 		IEnumerable<Actor> GetHelipads(Actor self)
 		{
-			return self.World.Actors.Where(a =>
+			return self.World.ActorsHavingTrait<DockManager>().Where(a =>
 				a.Owner == self.Owner &&
 				heli.Info.RearmBuildings.Contains(a.Info.Name) &&
 				!a.IsDead &&
@@ -61,12 +61,10 @@ namespace OpenRA.Mods.Common.Activities
 			// 1. closest reloadable hpad
 			// 2. closest hpad
 			// 3. null
-			IEnumerable<Actor> hpads;
-			IEnumerable<Actor> dockableHpads;
 			if (dest == null || dest.IsDead || dest.Disposed)
 			{
-				hpads = GetHelipads(self);
-				dockableHpads = hpads.Where(p => p.Trait<DockManager>().NumFreeDocks > 0);
+				var hpads = GetHelipads(self);
+				var dockableHpads = hpads.Where(p => p.Trait<DockManager>().NumFreeDocks > 0);
 				if (dockableHpads.Any())
 					dest = dockableHpads.ClosestTo(self);
 				else if (hpads.Any())
@@ -111,7 +109,7 @@ namespace OpenRA.Mods.Common.Activities
 			}
 
 			// Do the docking.
-			dest.Trait<DockManager>().ReserveDock(dest, self);
+			dest.Trait<DockManager>().ReserveDock(dest, self, null);
 			return NextActivity;
 		}
 

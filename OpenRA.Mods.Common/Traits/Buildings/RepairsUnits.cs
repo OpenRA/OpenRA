@@ -10,14 +10,14 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
 using System.Drawing;
+using OpenRA.Activities;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class RepairsUnitsInfo : ITraitInfo, IAcceptDockInfo, Requires<DockManagerInfo>
+	public class RepairsUnitsInfo : ITraitInfo, Requires<DockManagerInfo>
 	{
 		[Desc("Cost in % of the unit value to fully repair the unit.")]
 		public readonly int ValuePercentage = 20;
@@ -53,57 +53,26 @@ namespace OpenRA.Mods.Common.Traits
 			rallyPoint = self.TraitOrDefault<RallyPoint>();
 		}
 
-		// Unused. Repairable.cs takes care of this.
-		bool IAcceptDock.AllowDocking
-		{
-			get
-			{
-				throw new NotImplementedException();
-			}
-		}
-
-		// Unused.
-		IEnumerable<CPos> IAcceptDock.DockLocations
-		{
-			get
-			{
-				throw new NotImplementedException();
-			}
-		}
-
-		// Nothing to do with resources
-		bool IAcceptDock.CanGiveResource(int amount)
-		{
-			throw new NotImplementedException();
-		}
-
-		// Nothing to do with resources
-		void IAcceptDock.GiveResource(int amount)
-		{
-			throw new NotImplementedException();
-		}
-
 		void IAcceptDock.OnDock(Actor client, Dock dock)
 		{
 			dockManager.OnArrivalCheck(client, dock);
 		}
 
-		void IAcceptDock.OnUndock(Actor client, Dock dock)
+		void IAcceptDock.OnUndock(Actor client, Dock dock, Activity parameters)
 		{
 			client.SetTargetLine(Target.FromCell(self.World, rallyPoint.Location), Color.Green);
-			dockManager.ReleaseAndNext(client, dock);
 			if (rallyPoint != null)
 				client.QueueActivity(new AttackMoveActivity(client, client.Trait<IMove>().MoveTo(rallyPoint.Location, 2)));
 		}
 
-		void IAcceptDock.QueueDockActivity(Actor client, Dock dock)
+		void IAcceptDock.QueueDockActivity(Actor client, Dock dock, Activity parameters)
 		{
 			client.Trait<Repairable>().AfterReachActivities(client, self, dock);
 		}
 
-		void IAcceptDock.ReserveDock(Actor client)
+		Activity IAcceptDock.ApproachDockActivity(Actor client, Dock dock, Activity parameters)
 		{
-			dockManager.ReserveDock(self, client);
+			return client.Trait<IMove>().MoveTo(dock.Location, self);
 		}
 	}
 }

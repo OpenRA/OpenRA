@@ -26,12 +26,9 @@ namespace OpenRA.Mods.Common.Activities
 			target = t;
 			plane = self.Trait<Aircraft>();
 
-			// Well, we could be landing into an airborne carrier!
-			var target_info = t.Actor.Info.TraitInfoOrDefault<AircraftInfo>();
-			if (target_info != null)
-				landHeight = target_info.CruiseAltitude;
-			else
-				landHeight = WDist.Zero;
+			landHeight = WDist.Zero;
+			if (t.Actor != null && t.Actor.Info.TraitInfoOrDefault<AircraftInfo>() != null)
+				landHeight = t.Actor.Info.TraitInfoOrDefault<AircraftInfo>().CruiseAltitude;
 		}
 
 		public override Activity Tick(Actor self)

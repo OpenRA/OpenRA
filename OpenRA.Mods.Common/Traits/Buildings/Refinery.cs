@@ -20,7 +20,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class RefineryInfo : IAcceptDockInfo, Requires<WithSpriteBodyInfo>, Requires<DockManagerInfo>
+	public class RefineryInfo : ITraitInfo, Requires<WithSpriteBodyInfo>, Requires<DockManagerInfo>
 	{
 		[Desc("Discard resources once silo capacity has been reached.")]
 		public readonly bool DiscardExcessResources = false;
@@ -33,7 +33,8 @@ namespace OpenRA.Mods.Common.Traits
 		public virtual object Create(ActorInitializer init) { return new Refinery(init.Self, this); }
 	}
 
-	public class Refinery : ITick, IAcceptDock, INotifySold, INotifyCapture, INotifyOwnerChanged, IExplodeModifier, ISync, INotifyActorDisposing
+	public class Refinery : ITick, IAcceptDock, INotifySold, INotifyCapture, INotifyOwnerChanged,
+		IExplodeModifier, ISync, INotifyActorDisposing, IResourceExchange
 	{
 		readonly Actor self;
 		readonly RefineryInfo info;
@@ -50,13 +51,6 @@ namespace OpenRA.Mods.Common.Traits
 		[Sync] bool preventDock = false;
 
 		public bool AllowDocking { get { return !preventDock; } }
-
-		public void ReserveDock(Actor client)
-		{
-			docks.ReserveDock(self, client);
-		}
-
-		IEnumerable<CPos> IAcceptDock.DockLocations { get { return docks.DockLocations; } }
 
 		public Refinery(Actor self, RefineryInfo info)
 		{
@@ -134,7 +128,7 @@ namespace OpenRA.Mods.Common.Traits
 				harv.Trait.UnlinkProc(harv.Actor, self);
 		}
 
-		public void QueueDockActivity(Actor harv, Dock dock)
+		public void QueueDockActivity(Actor harv, Dock dock, Activity parameters)
 		{
 			if (!preventDock)
 			{
@@ -156,7 +150,7 @@ namespace OpenRA.Mods.Common.Traits
 			docks.OnArrivalCheck(harv, dock);
 		}
 
-		public void OnUndock(Actor harv, Dock dock)
+		public void OnUndock(Actor harv, Dock dock, Activity parameters)
 		{
 			// Move to south of the ref to avoid cluttering up with other dock locations
 			harv.QueueActivity(harv.Trait<IMove>().MoveTo(dock.Location + dock.Info.ExitOffset, 2));
@@ -196,5 +190,10 @@ namespace OpenRA.Mods.Common.Traits
 		}
 
 		public bool ShouldExplode(Actor self) { return Ore > 0; }
+
+		Activity IAcceptDock.ApproachDockActivity(Actor client, Dock dock, Activity parameters)
+		{
+			return client.Trait<IMove>().MoveTo(dock.Location, 0);
+		}
 	}
 }

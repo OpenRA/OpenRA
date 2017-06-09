@@ -10,29 +10,30 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Drawing;
-using OpenRA.Activities;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Traits;
+using OpenRA.Activities;
 
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Provides docking procedures for helicopters")]
-	class HelipadInfo : ITraitInfo, Requires<DockManagerInfo>
+	class AirfieldInfo : ITraitInfo, Requires<DockManagerInfo>
 	{
 		public object Create(ActorInitializer init)
 		{
-			return new Helipad(init);
+			return new Airfield(init);
 		}
 	}
 
-	public class Helipad : IAcceptDock
+	public class Airfield : IAcceptDock
 	{
 		readonly Actor host;
 		readonly DockManager dockManager;
 		readonly RallyPoint rallyPoint;
 
-		public Helipad(ActorInitializer init)
+		public Airfield(ActorInitializer init)
 		{
 			host = init.Self;
 			dockManager = host.Trait<DockManager>();
@@ -52,24 +53,23 @@ namespace OpenRA.Mods.Common.Traits
 			// ResupplyAircraft handles this.
 			// Take off and move to RP.
 			if (rallyPoint != null)
-				client.QueueActivity(client.Trait<IMove>().MoveTo(rallyPoint.Location, 2));
+			{
+				client.QueueActivity(new Fly(client, Target.FromCell(client.World, rallyPoint.Location)));
+				client.QueueActivity(new FlyCircle(client));
+			}
 		}
 
 		void IAcceptDock.QueueDockActivity(Actor client, Dock dock, Activity parameters)
 		{
-			// Let's reload. The assumption here is that for aircrafts, there are no waiting docks.
 			client.QueueActivity(new ResupplyAircraft(client));
-
-			// I know this depreciates AbortOnResupply activity but it is a bug to reuse NextActivity!
-			// client.Info.TraitInfo<AircraftInfo>().AbortOnResupply ? null : client.CurrentActivity.NextActivity));
 		}
 
 		Activity IAcceptDock.ApproachDockActivity(Actor client, Dock dock, Activity parameters)
 		{
-			return ActivityUtils.SequenceActivities(
-				new HeliFly(client, Target.FromPos(dock.CenterPosition)),
-				new Turn(client, dock.Info.DockAngle),
-				new HeliLand(client, false));
+			// Let's reload. The assumption here is that for aircrafts, there are no waiting docks.
+			System.Diagnostics.Debug.Assert(parameters is ReturnToBase);
+			var rtb = parameters as ReturnToBase;
+			return rtb.LandingProcedure(client, dock);
 		}
 	}
 }
