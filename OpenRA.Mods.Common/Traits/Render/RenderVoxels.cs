@@ -102,7 +102,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 				initializePalettes = false;
 			}
 
-			return new IRenderable[] { new VoxelRenderable(
+			return new IRenderable[] { new ModelRenderable(
 				components, self.CenterPosition, 0, camera, info.Scale,
 				lightSource, info.LightAmbientColor, info.LightDiffuseColor,
 				colorPalette, normalsPalette, shadowPalette) };

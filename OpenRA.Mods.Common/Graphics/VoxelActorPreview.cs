@@ -52,7 +52,7 @@ namespace OpenRA.Mods.Common.Graphics
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr, WPos pos)
 		{
-			yield return new VoxelRenderable(components, pos + offset, zOffset, camera, scale,
+			yield return new ModelRenderable(components, pos + offset, zOffset, camera, scale,
 				lightSource, lightAmbientColor, lightDiffuseColor,
 				colorPalette, normalsPalette, shadowPalette);
 		}
