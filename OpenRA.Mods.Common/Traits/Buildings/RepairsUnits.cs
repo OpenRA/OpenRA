@@ -65,11 +65,39 @@ namespace OpenRA.Mods.Common.Traits
 
 		void IAcceptDock.QueueDockActivity(Actor client, Dock dock, Activity parameters)
 		{
+			var air = client.TraitOrDefault<Aircraft>();
+			if (air != null)
+			{
+				client.QueueActivity(new ResupplyAircraft(client));
+				return;
+			}
+
 			client.Trait<Repairable>().AfterReachActivities(client, self, dock);
 		}
 
 		Activity IAcceptDock.ApproachDockActivity(Actor client, Dock dock, Activity parameters)
 		{
+			var air = client.TraitOrDefault<Aircraft>();
+			if (air != null)
+			{
+				if (air.IsPlane)
+				{
+					// Let's reload. The assumption here is that for aircrafts, there are no waiting docks.
+					System.Diagnostics.Debug.Assert(parameters is ReturnToBase, "Wrong parameter for landing");
+					var rtb = parameters as ReturnToBase;
+					return rtb.LandingProcedure(client, dock);
+				}
+
+				var angle = dock.Info.DockAngle;
+				if (angle < 0)
+					angle = client.Info.TraitInfo<AircraftInfo>().InitialFacing;
+
+				return ActivityUtils.SequenceActivities(
+					new HeliFly(client, Target.FromPos(dock.CenterPosition)),
+					new Turn(client, angle),
+					new HeliLand(client, false));
+			}
+
 			return client.Trait<IMove>().MoveTo(dock.Location, self);
 		}
 	}
