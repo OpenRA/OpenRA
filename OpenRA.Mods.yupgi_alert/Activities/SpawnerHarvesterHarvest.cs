@@ -84,9 +84,7 @@ namespace OpenRA.Mods.Yupgi_alert.Activities
 				var randFrames = self.World.SharedRandom.Next(100, 175);
 
 				// Avoid creating an activity cycle
-				var next = NextInQueue;
-				NextInQueue = null;
-				return ActivityUtils.SequenceActivities(next, new Wait(randFrames), this);
+				return ActivityUtils.SequenceActivities(new Wait(randFrames), this);
 			}
 
 			//// ... Don't claim resource layer here. Slaves will claim by themselves.
