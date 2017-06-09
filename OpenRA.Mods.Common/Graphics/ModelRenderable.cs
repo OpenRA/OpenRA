@@ -18,9 +18,9 @@ using OpenRA.Primitives;
 
 namespace OpenRA.Mods.Common.Graphics
 {
-	public struct VoxelRenderable : IRenderable
+	public struct ModelRenderable : IRenderable
 	{
-		readonly IEnumerable<ModelAnimation> voxels;
+		readonly IEnumerable<ModelAnimation> models;
 		readonly WPos pos;
 		readonly int zOffset;
 		readonly WRot camera;
@@ -32,12 +32,12 @@ namespace OpenRA.Mods.Common.Graphics
 		readonly PaletteReference shadowPalette;
 		readonly float scale;
 
-		public VoxelRenderable(
-			IEnumerable<ModelAnimation> voxels, WPos pos, int zOffset, WRot camera, float scale,
+		public ModelRenderable(
+			IEnumerable<ModelAnimation> models, WPos pos, int zOffset, WRot camera, float scale,
 			WRot lightSource, float[] lightAmbientColor, float[] lightDiffuseColor,
 			PaletteReference color, PaletteReference normals, PaletteReference shadow)
 		{
-			this.voxels = voxels;
+			this.models = models;
 			this.pos = pos;
 			this.zOffset = zOffset;
 			this.scale = scale;
@@ -57,24 +57,24 @@ namespace OpenRA.Mods.Common.Graphics
 
 		public IRenderable WithPalette(PaletteReference newPalette)
 		{
-			return new VoxelRenderable(
-				voxels, pos, zOffset, camera, scale,
+			return new ModelRenderable(
+				models, pos, zOffset, camera, scale,
 				lightSource, lightAmbientColor, lightDiffuseColor,
 				newPalette, normalsPalette, shadowPalette);
 		}
 
 		public IRenderable WithZOffset(int newOffset)
 		{
-			return new VoxelRenderable(
-				voxels, pos, newOffset, camera, scale,
+			return new ModelRenderable(
+				models, pos, newOffset, camera, scale,
 				lightSource, lightAmbientColor, lightDiffuseColor,
 				palette, normalsPalette, shadowPalette);
 		}
 
 		public IRenderable OffsetBy(WVec vec)
 		{
-			return new VoxelRenderable(
-				voxels, pos + vec, zOffset, camera, scale,
+			return new ModelRenderable(
+				models, pos + vec, zOffset, camera, scale,
 				lightSource, lightAmbientColor, lightDiffuseColor,
 				palette, normalsPalette, shadowPalette);
 		}
@@ -85,32 +85,32 @@ namespace OpenRA.Mods.Common.Graphics
 		static readonly float[] GroundNormal = new float[] { 0, 0, 1, 1 };
 		public IFinalizedRenderable PrepareRender(WorldRenderer wr)
 		{
-			return new FinalizedVoxelRenderable(wr, this);
+			return new FinalizedModelRenderable(wr, this);
 		}
 
-		struct FinalizedVoxelRenderable : IFinalizedRenderable
+		struct FinalizedModelRenderable : IFinalizedRenderable
 		{
-			readonly VoxelRenderable voxel;
+			readonly ModelRenderable model;
 			readonly ModelRenderProxy renderProxy;
 
-			public FinalizedVoxelRenderable(WorldRenderer wr, VoxelRenderable voxel)
+			public FinalizedModelRenderable(WorldRenderer wr, ModelRenderable model)
 			{
-				this.voxel = voxel;
-				var draw = voxel.voxels.Where(v => v.DisableFunc == null || !v.DisableFunc());
+				this.model = model;
+				var draw = model.models.Where(v => v.DisableFunc == null || !v.DisableFunc());
 
 				renderProxy = Game.Renderer.WorldModelRenderer.RenderAsync(
-					wr, draw, voxel.camera, voxel.scale, GroundNormal, voxel.lightSource,
-					voxel.lightAmbientColor, voxel.lightDiffuseColor,
-					voxel.palette, voxel.normalsPalette, voxel.shadowPalette);
+					wr, draw, model.camera, model.scale, GroundNormal, model.lightSource,
+					model.lightAmbientColor, model.lightDiffuseColor,
+					model.palette, model.normalsPalette, model.shadowPalette);
 			}
 
 			public void Render(WorldRenderer wr)
 			{
-				var groundPos = voxel.pos - new WVec(0, 0, wr.World.Map.DistanceAboveTerrain(voxel.pos).Length);
+				var groundPos = model.pos - new WVec(0, 0, wr.World.Map.DistanceAboveTerrain(model.pos).Length);
 				var tileScale = wr.World.Map.Grid.Type == MapGridType.RectangularIsometric ? 1448f : 1024f;
 
-				var groundZ = wr.World.Map.Grid.TileSize.Height * (groundPos.Z - voxel.pos.Z) / tileScale;
-				var pxOrigin = wr.Screen3DPosition(voxel.pos);
+				var groundZ = wr.World.Map.Grid.TileSize.Height * (groundPos.Z - model.pos.Z) / tileScale;
+				var pxOrigin = wr.Screen3DPosition(model.pos);
 
 				// HACK: We don't have enough texture channels to pass the depth data to the shader
 				// so for now just offset everything forward so that the back corner is rendered at pos.
@@ -129,9 +129,9 @@ namespace OpenRA.Mods.Common.Graphics
 
 			public void RenderDebugGeometry(WorldRenderer wr)
 			{
-				var groundPos = voxel.pos - new WVec(0, 0, wr.World.Map.DistanceAboveTerrain(voxel.pos).Length);
-				var groundZ = wr.World.Map.Grid.TileSize.Height * (groundPos.Z - voxel.pos.Z) / 1024f;
-				var pxOrigin = wr.Screen3DPosition(voxel.pos);
+				var groundPos = model.pos - new WVec(0, 0, wr.World.Map.DistanceAboveTerrain(model.pos).Length);
+				var groundZ = wr.World.Map.Grid.TileSize.Height * (groundPos.Z - model.pos.Z) / 1024f;
+				var pxOrigin = wr.Screen3DPosition(model.pos);
 				var shadowOrigin = pxOrigin - groundZ * (new float2(renderProxy.ShadowDirection, 1));
 				var iz = 1 / wr.Viewport.Zoom;
 
@@ -151,10 +151,10 @@ namespace OpenRA.Mods.Common.Graphics
 					shadowOrigin + psb[2]
 				}, iz, c);
 
-				// Draw voxel bounding box
-				var draw = voxel.voxels.Where(v => v.DisableFunc == null || !v.DisableFunc());
-				var scaleTransform = OpenRA.Graphics.Util.ScaleMatrix(voxel.scale, voxel.scale, voxel.scale);
-				var cameraTransform = OpenRA.Graphics.Util.MakeFloatMatrix(voxel.camera.AsMatrix());
+				// Draw bounding box
+				var draw = model.models.Where(v => v.DisableFunc == null || !v.DisableFunc());
+				var scaleTransform = OpenRA.Graphics.Util.ScaleMatrix(model.scale, model.scale, model.scale);
+				var cameraTransform = OpenRA.Graphics.Util.MakeFloatMatrix(model.camera.AsMatrix());
 
 				foreach (var v in draw)
 				{
@@ -202,10 +202,10 @@ namespace OpenRA.Mods.Common.Graphics
 
 			Pair<Rectangle, float2> Screen3DBounds(WorldRenderer wr)
 			{
-				var pxOrigin = wr.ScreenPosition(voxel.pos);
-				var draw = voxel.voxels.Where(v => v.DisableFunc == null || !v.DisableFunc());
-				var scaleTransform = OpenRA.Graphics.Util.ScaleMatrix(voxel.scale, voxel.scale, voxel.scale);
-				var cameraTransform = OpenRA.Graphics.Util.MakeFloatMatrix(voxel.camera.AsMatrix());
+				var pxOrigin = wr.ScreenPosition(model.pos);
+				var draw = model.models.Where(v => v.DisableFunc == null || !v.DisableFunc());
+				var scaleTransform = OpenRA.Graphics.Util.ScaleMatrix(model.scale, model.scale, model.scale);
+				var cameraTransform = OpenRA.Graphics.Util.MakeFloatMatrix(model.camera.AsMatrix());
 
 				var minX = float.MaxValue;
 				var minY = float.MaxValue;

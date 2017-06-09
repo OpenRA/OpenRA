@@ -165,7 +165,7 @@
     <Compile Include="Graphics\SpriteActorPreview.cs" />
     <Compile Include="Graphics\TextRenderable.cs" />
     <Compile Include="Graphics\VoxelActorPreview.cs" />
-    <Compile Include="Graphics\VoxelRenderable.cs" />
+    <Compile Include="Graphics\ModelRenderable.cs" />
     <Compile Include="HitShapes\IHitShape.cs" />
     <Compile Include="HitShapes\Rectangle.cs" />
     <Compile Include="HitShapes\Capsule.cs" />
