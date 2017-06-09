@@ -14,7 +14,7 @@ using OpenRA.Graphics;
 
 namespace OpenRA.Mods.Common.Graphics
 {
-	public class VoxelPreview : IActorPreview
+	public class ModelPreview : IActorPreview
 	{
 		readonly ModelAnimation[] components;
 		readonly float scale;
@@ -28,7 +28,7 @@ namespace OpenRA.Mods.Common.Graphics
 		readonly WVec offset;
 		readonly int zOffset;
 
-		public VoxelPreview(ModelAnimation[] components, WVec offset, int zOffset, float scale, WAngle lightPitch, WAngle lightYaw,
+		public ModelPreview(ModelAnimation[] components, WVec offset, int zOffset, float scale, WAngle lightPitch, WAngle lightYaw,
 			float[] lightAmbientColor, float[] lightDiffuseColor, WAngle cameraPitch,
 			PaletteReference colorPalette, PaletteReference normalsPalette, PaletteReference shadowPalette)
 		{

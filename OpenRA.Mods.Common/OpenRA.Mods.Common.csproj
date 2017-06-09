@@ -164,7 +164,7 @@
     <Compile Include="Graphics\SelectionBoxRenderable.cs" />
     <Compile Include="Graphics\SpriteActorPreview.cs" />
     <Compile Include="Graphics\TextRenderable.cs" />
-    <Compile Include="Graphics\VoxelActorPreview.cs" />
+    <Compile Include="Graphics\ModelActorPreview.cs" />
     <Compile Include="Graphics\ModelRenderable.cs" />
     <Compile Include="HitShapes\IHitShape.cs" />
     <Compile Include="HitShapes\Rectangle.cs" />
