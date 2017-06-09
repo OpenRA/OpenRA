@@ -63,7 +63,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 				.SelectMany(rvpi => rvpi.RenderPreviewVoxels(init, this, image, init.GetOrientation(), facings, palette))
 				.ToArray();
 
-			yield return new VoxelPreview(components, WVec.Zero, 0, Scale, LightPitch,
+			yield return new ModelPreview(components, WVec.Zero, 0, Scale, LightPitch,
 				LightYaw, LightAmbientColor, LightDiffuseColor, body.CameraPitch,
 				palette, init.WorldRenderer.Palette(NormalsPalette), init.WorldRenderer.Palette(ShadowPalette));
 		}
