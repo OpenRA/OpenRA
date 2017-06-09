@@ -195,10 +195,7 @@
     <Compile Include="Traits\DebugPauseState.cs" />
     <Compile Include="Network\UPnP.cs" />
     <Compile Include="Graphics\Renderable.cs" />
-    <Compile Include="Graphics\Voxel.cs" />
     <Compile Include="Graphics\ModelRenderer.cs" />
-    <Compile Include="Graphics\VoxelLoader.cs" />
-    <Compile Include="Graphics\VoxelProvider.cs" />
     <Compile Include="Graphics\ModelAnimation.cs" />
     <Compile Include="Traits\Player\FrozenActorLayer.cs" />
     <Compile Include="Graphics\Theater.cs" />
@@ -268,9 +265,7 @@
     <Compile Include="FieldSaver.cs" />
     <Compile Include="Manifest.cs" />
     <Compile Include="Graphics\Vertex.cs" />
-    <Compile Include="FileFormats\HvaReader.cs" />
     <Compile Include="FileFormats\PngLoader.cs" />
-    <Compile Include="FileFormats\VxlReader.cs" />
     <Compile Include="Primitives\ActionQueue.cs" />
     <Compile Include="Primitives\Bits.cs" />
     <Compile Include="Primitives\Cache.cs" />

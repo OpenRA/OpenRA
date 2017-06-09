@@ -13,7 +13,7 @@
 using System.Collections.Generic;
 using System.IO;
 
-namespace OpenRA.FileFormats
+namespace OpenRA.Mods.Cnc.FileFormats
 {
 	public enum NormalType { TiberianSun = 2, RedAlert2 = 4 }
 	public class VxlElement

@@ -11,16 +11,17 @@
 
 using System;
 using System.Linq;
-using OpenRA.FileFormats;
+using OpenRA.Graphics;
+using OpenRA.Mods.Cnc.FileFormats;
 
-namespace OpenRA.Graphics
+namespace OpenRA.Mods.Cnc.Graphics
 {
 	struct Limb
 	{
 		public float Scale;
 		public float[] Bounds;
 		public byte[] Size;
-		public VoxelRenderData RenderData;
+		public ModelRenderData RenderData;
 	}
 
 	public class Voxel : IModel
@@ -79,7 +80,7 @@ namespace OpenRA.Graphics
 			return t;
 		}
 
-		public VoxelRenderData RenderData(uint limb)
+		public ModelRenderData RenderData(uint limb)
 		{
 			return limbData[limb].RenderData;
 		}
