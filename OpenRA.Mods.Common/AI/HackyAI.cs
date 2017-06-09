@@ -18,6 +18,7 @@ using OpenRA.Mods.Common.Pathfinder;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Support;
 using OpenRA.Traits;
+using OpenRA.Activities;
 
 namespace OpenRA.Mods.Common.AI
 {
@@ -671,6 +672,7 @@ namespace OpenRA.Mods.Common.AI
 			if (--assignRolesTicks <= 0)
 			{
 				assignRolesTicks = Info.AssignRolesInterval;
+				KillOutOfMapAircrafts();
 				GiveOrdersToIdleHarvesters();
 				FindNewUnits(self);
 				FindAndDeployBackupMcv(self);
@@ -686,6 +688,20 @@ namespace OpenRA.Mods.Common.AI
 			{
 				minCaptureDelayTicks = Info.MinimumCaptureDelay;
 				QueueCaptureOrders();
+			}
+		}
+
+		void KillOutOfMapAircrafts()
+		{
+			var map = World.Map;
+			var toKill = World.ActorsHavingTrait<IPositionable>()
+				.Where(a => a.Owner == Player && !map.Contains(a.Location));
+
+			foreach (var a in toKill)
+
+			{
+				a.CancelActivity();
+				a.QueueActivity(new CallFunc(() => a.Kill(a)));
 			}
 		}
 
