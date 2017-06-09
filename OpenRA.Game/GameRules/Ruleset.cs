@@ -122,7 +122,7 @@ namespace OpenRA
 				var music = MergeOrDefault("Manifest,Music", fs, m.Music, null, null,
 					k => new MusicInfo(k.Key, k.Value));
 
-				var modelSequences = MergeOrDefault("Manifest,ModelSequences", fs, m.VoxelSequences, null, null,
+				var modelSequences = MergeOrDefault("Manifest,ModelSequences", fs, m.ModelSequences, null, null,
 					k => k);
 
 				// The default ruleset does not include a preferred tileset or sequence set
@@ -189,7 +189,7 @@ namespace OpenRA
 
 				var modelSequences = dr.ModelSequences;
 				if (mapModelSequences != null)
-					modelSequences = MergeOrDefault("ModelSequences", fileSystem, m.VoxelSequences, mapModelSequences, dr.ModelSequences,
+					modelSequences = MergeOrDefault("ModelSequences", fileSystem, m.ModelSequences, mapModelSequences, dr.ModelSequences,
 						k => k);
 
 				ruleset = new Ruleset(actors, weapons, voices, notifications, music, ts, sequences, modelSequences);

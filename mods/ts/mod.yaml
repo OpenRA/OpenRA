@@ -100,7 +100,7 @@ Sequences:
 	ts|sequences/bridges.yaml
 	ts|sequences/critters.yaml
 
-VoxelSequences:
+ModelSequences:
 	ts|sequences/voxels.yaml
 
 TileSets:
