@@ -29,6 +29,7 @@ namespace OpenRA
 		public readonly IReadOnlyDictionary<string, MusicInfo> Music;
 		public readonly TileSet TileSet;
 		public readonly SequenceProvider Sequences;
+		public readonly IReadOnlyDictionary<string, MiniYamlNode> ModelSequences;
 
 		public Ruleset(
 			IReadOnlyDictionary<string, ActorInfo> actors,
@@ -37,7 +38,8 @@ namespace OpenRA
 			IReadOnlyDictionary<string, SoundInfo> notifications,
 			IReadOnlyDictionary<string, MusicInfo> music,
 			TileSet tileSet,
-			SequenceProvider sequences)
+			SequenceProvider sequences,
+			IReadOnlyDictionary<string, MiniYamlNode> modelSequences)
 		{
 			Actors = actors;
 			Weapons = weapons;
@@ -46,6 +48,7 @@ namespace OpenRA
 			Music = music;
 			TileSet = tileSet;
 			Sequences = sequences;
+			ModelSequences = modelSequences;
 
 			foreach (var a in Actors.Values)
 			{
@@ -119,8 +122,11 @@ namespace OpenRA
 				var music = MergeOrDefault("Manifest,Music", fs, m.Music, null, null,
 					k => new MusicInfo(k.Key, k.Value));
 
+				var modelSequences = MergeOrDefault("Manifest,ModelSequences", fs, m.VoxelSequences, null, null,
+					k => k);
+
 				// The default ruleset does not include a preferred tileset or sequence set
-				ruleset = new Ruleset(actors, weapons, voices, notifications, music, null, null);
+				ruleset = new Ruleset(actors, weapons, voices, notifications, music, null, null, modelSequences);
 			};
 
 			if (modData.IsOnMainThread)
@@ -145,12 +151,13 @@ namespace OpenRA
 			var dr = modData.DefaultRules;
 			var ts = modData.DefaultTileSets[tileSet];
 			var sequences = modData.DefaultSequences[tileSet];
-			return new Ruleset(dr.Actors, dr.Weapons, dr.Voices, dr.Notifications, dr.Music, ts, sequences);
+
+			return new Ruleset(dr.Actors, dr.Weapons, dr.Voices, dr.Notifications, dr.Music, ts, sequences, dr.ModelSequences);
 		}
 
 		public static Ruleset Load(ModData modData, IReadOnlyFileSystem fileSystem, string tileSet,
 			MiniYaml mapRules, MiniYaml mapWeapons, MiniYaml mapVoices, MiniYaml mapNotifications,
-			MiniYaml mapMusic, MiniYaml mapSequences)
+			MiniYaml mapMusic, MiniYaml mapSequences, MiniYaml mapModelSequences)
 		{
 			var m = modData.Manifest;
 			var dr = modData.DefaultRules;
@@ -180,8 +187,12 @@ namespace OpenRA
 				var sequences = mapSequences == null ? modData.DefaultSequences[tileSet] :
 					new SequenceProvider(fileSystem, modData, ts, mapSequences);
 
-				// TODO: Add support for custom voxel sequences
-				ruleset = new Ruleset(actors, weapons, voices, notifications, music, ts, sequences);
+				var modelSequences = dr.ModelSequences;
+				if (mapModelSequences != null)
+					modelSequences = MergeOrDefault("ModelSequences", fileSystem, m.VoxelSequences, mapModelSequences, dr.ModelSequences,
+						k => k);
+
+				ruleset = new Ruleset(actors, weapons, voices, notifications, music, ts, sequences, modelSequences);
 			};
 
 			if (modData.IsOnMainThread)

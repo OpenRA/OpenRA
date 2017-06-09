@@ -200,6 +200,8 @@ SpriteSequenceFormat: TilesetSpecificSpriteSequence
 		INTERIOR: .int
 		DESERT: .des
 
+ModelSequenceFormat: PlaceholderModelSequence
+
 GameSpeeds:
 	slower:
 		Name: Slower

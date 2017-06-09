@@ -256,6 +256,7 @@
     <Compile Include="CryptoUtil.cs" />
     <Compile Include="Support\VariableExpression.cs" />
     <Compile Include="ExternalMods.cs" />
+    <Compile Include="Graphics\Model.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FileSystem\Folder.cs" />
