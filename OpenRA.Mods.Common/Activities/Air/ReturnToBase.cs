@@ -164,9 +164,11 @@ namespace OpenRA.Mods.Common.Activities
 			if (ShouldLandAtBuilding(self, dest))
 				landingProcedures.Add(new Land(self, Target.FromPos(dock.CenterPosition)));
 
-			// Causes bugs
+			/*
+			// Causes bugs. Aircrafts should forget what they were doing.
 			// if (!abortOnResupply)
 			//	landingProcedures.Add(NextActivity);
+			*/
 
 			return ActivityUtils.SequenceActivities(landingProcedures.ToArray());
 		}

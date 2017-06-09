@@ -144,7 +144,7 @@ namespace OpenRA.Mods.Common.Traits
 				// It might had been transferred from proc A to this proc.
 				var dc = client.Trait<DockClient>();
 				dc.DockState = DockState.NotAssigned;
-				dc.parameters = parameters;
+				dc.Parameters = parameters;
 			}
 
 			// notify the queue
@@ -303,15 +303,15 @@ namespace OpenRA.Mods.Common.Traits
 			dockClient.Release(currentDock);
 			dockClient.Acquire(serviceDock, DockState.ServiceAssigned);
 
-			head.QueueActivity(iAcceptDock.ApproachDockActivity(head, serviceDock, dockClient.parameters));
+			head.QueueActivity(iAcceptDock.ApproachDockActivity(head, serviceDock, dockClient.Parameters));
 
 			head.QueueActivity(new CallFunc(() => iAcceptDock.OnDock(head, serviceDock)));
 
 			// resource transfer activities are queued by OnDock.
-			iAcceptDock.QueueDockActivity(head, serviceDock, dockClient.parameters);
+			iAcceptDock.QueueDockActivity(head, serviceDock, dockClient.Parameters);
 
 			head.QueueActivity(new CallFunc(() => ReleaseAndNext(head, serviceDock)));
-			head.QueueActivity(new CallFunc(() => iAcceptDock.OnUndock(head, serviceDock, dockClient.parameters)));
+			head.QueueActivity(new CallFunc(() => iAcceptDock.OnUndock(head, serviceDock, dockClient.Parameters)));
 		}
 
 		// As the actors are coming from all directions, first request, first served is not good.

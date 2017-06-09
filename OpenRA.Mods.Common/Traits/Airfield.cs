@@ -9,12 +9,10 @@
  */
 #endregion
 
-using System;
-using System.Collections.Generic;
 using System.Drawing;
+using OpenRA.Activities;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Traits;
-using OpenRA.Activities;
 
 namespace OpenRA.Mods.Common.Traits
 {
@@ -67,7 +65,7 @@ namespace OpenRA.Mods.Common.Traits
 		Activity IAcceptDock.ApproachDockActivity(Actor client, Dock dock, Activity parameters)
 		{
 			// Let's reload. The assumption here is that for aircrafts, there are no waiting docks.
-			System.Diagnostics.Debug.Assert(parameters is ReturnToBase);
+			System.Diagnostics.Debug.Assert(parameters is ReturnToBase, "Wrong parameter for landing");
 			var rtb = parameters as ReturnToBase;
 			return rtb.LandingProcedure(client, dock);
 		}

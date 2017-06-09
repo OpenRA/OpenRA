@@ -41,7 +41,7 @@ namespace OpenRA.Mods.Common.Traits
 		readonly Actor self;
 		public Dock CurrentDock;
 		public DockState DockState = DockState.NotAssigned;
-		public Activity parameters; // Sometimes, activity knows the best how to dock/undock. Remember that here.
+		public Activity Parameters; // Sometimes, activity knows the best how to dock/undock. Remember that here.
 
 		public DockClient(ActorInitializer init, DockClientInfo info)
 		{
