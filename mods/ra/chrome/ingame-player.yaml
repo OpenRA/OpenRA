@@ -3,9 +3,6 @@ Container@PLAYER_WIDGETS:
 		LogicKeyListener@CONTROLGROUP_KEYHANDLER:
 			Logic: ControlGroupLogic
 		LogicTicker@SIDEBAR_TICKER:
-		UnitCommand:
-			Width: WINDOW_RIGHT
-			Height: WINDOW_BOTTOM
 		Container@SUPPORT_POWERS:
 			Logic: SupportPowerBinLogic
 			X: 10
@@ -32,6 +29,217 @@ Container@PLAYER_WIDGETS:
 			X: 80
 			Y: 10
 			Order: Descending
+		Image@COMMAND_BAR_BACKGROUND:
+			X: 5
+			Y: WINDOW_BOTTOM - HEIGHT - 5
+			Width: 416
+			Height: 44
+			ImageCollection: sidebar-bits
+			ImageName: commandbar-background
+		Container@COMMAND_BAR:
+			Logic: CommandBarLogic
+			X: 14
+			Y: WINDOW_BOTTOM - HEIGHT - 14
+			Width: 275
+			Height: 26
+			Children:
+				Button@ATTACK_MOVE:
+					Logic: AddFactionSuffixLogic
+					Width: 34
+					Height: 26
+					Background: command-button
+					DisableKeyRepeat: true
+					TooltipText: Attack Move
+					TooltipDesc: Selected units will move to the desired location\nand attack any enemies they encounter en route.\n\nLeft-click icon then right-click on target location.
+					TooltipContainer: TOOLTIP_CONTAINER
+					Children:
+						Image@ICON:
+							X: 5
+							Y: 1
+							ImageCollection: command-icons
+							ImageName: attack-move
+				Button@FORCE_MOVE:
+					Logic: AddFactionSuffixLogic
+					X: 34
+					Width: 34
+					Height: 26
+					Background: command-button
+					TooltipText: Force Move
+					TooltipDesc: Selected units will move to the desired location\n - Default activity for the target is suppressed\n - Vehicles will attempt to crush enemies at the target location\n - Units entering transports will consider nearby alternatives\n - Chrono Tanks will teleport towards the target location\n\nLeft-click icon then right-click on target.\nHold {(Alt)} to activate temporarily while commanding units.
+					TooltipContainer: TOOLTIP_CONTAINER
+					TooltipTemplate: BUTTON_WITH_DESC_HIGHLIGHT_TOOLTIP
+					Children:
+						Image@ICON:
+							X: 5
+							Y: 1
+							ImageCollection: command-icons
+							ImageName: force-move
+				Button@FORCE_ATTACK:
+					Logic: AddFactionSuffixLogic
+					X: 68
+					Width: 34
+					Height: 26
+					Background: command-button
+					TooltipText: Force Attack
+					TooltipDesc: Selected units will attack the targeted unit or location\nignoring their default activity for the target.\n\nLeft-click icon then right-click on target.\nHold {(Ctrl)} to activate temporarily while commanding units.
+					TooltipContainer: TOOLTIP_CONTAINER
+					TooltipTemplate: BUTTON_WITH_DESC_HIGHLIGHT_TOOLTIP
+					Children:
+						Image@ICON:
+							X: 5
+							Y: 1
+							ImageCollection: command-icons
+							ImageName: force-attack
+				Button@GUARD:
+					Logic: AddFactionSuffixLogic
+					X: 102
+					Width: 34
+					Height: 26
+					Background: command-button
+					DisableKeyRepeat: true
+					TooltipText: Guard
+					TooltipDesc: Selected units will follow the targeted unit.\n\nLeft-click icon then right-click on target unit.
+					TooltipContainer: TOOLTIP_CONTAINER
+					Children:
+						Image@ICON:
+							X: 5
+							Y: 1
+							ImageCollection: command-icons
+							ImageName: guard
+				Button@DEPLOY:
+					Logic: AddFactionSuffixLogic
+					X: 136
+					Width: 34
+					Height: 26
+					Background: command-button
+					DisableKeyRepeat: true
+					TooltipText: Deploy
+					TooltipDesc: Selected units will perform their default deploy activity\n - MCVs will unpack into a Construction Yard\n - Construction Yards will re-pack into a MCV\n - Transports will unload their passengers\n - Aircraft will return to base\n\nActs immediately on selected units.
+					TooltipContainer: TOOLTIP_CONTAINER
+					Children:
+						Image@ICON:
+							X: 5
+							Y: 1
+							ImageCollection: command-icons
+							ImageName: deploy
+				Button@SCATTER:
+					Logic: AddFactionSuffixLogic
+					X: 170
+					Width: 34
+					Height: 26
+					Background: command-button
+					DisableKeyRepeat: true
+					TooltipText: Scatter
+					TooltipDesc: Selected units will stop their current activity\nand move to a nearby location.\n\nActs immediately on selected units.
+					TooltipContainer: TOOLTIP_CONTAINER
+					Children:
+						Image@ICON:
+							X: 5
+							Y: 1
+							ImageCollection: command-icons
+							ImageName: scatter
+				Button@STOP:
+					Logic: AddFactionSuffixLogic
+					X: 204
+					Width: 34
+					Height: 26
+					Background: command-button
+					DisableKeyRepeat: true
+					TooltipText: Stop
+					TooltipDesc: Selected units will stop their current activity.\n\nActs immediately on selected units.
+					TooltipContainer: TOOLTIP_CONTAINER
+					Children:
+						Image@ICON:
+							X: 5
+							Y: 1
+							ImageCollection: command-icons
+							ImageName: stop
+				Button@QUEUE_ORDERS:
+					Logic: AddFactionSuffixLogic
+					X: 238
+					Width: 34
+					Height: 26
+					Background: command-button
+					TooltipText: Waypoint Mode
+					TooltipDesc: Use Waypoint Mode to give multiple linking commands\nto the selected units. Units will execute the commands\nimmediately upon receiving them.\n\nLeft-click icon then give commands in the game world.\nHold {(Shift)} to activate temporarily while commanding units.
+					TooltipContainer: TOOLTIP_CONTAINER
+					TooltipTemplate: BUTTON_WITH_DESC_HIGHLIGHT_TOOLTIP
+					Children:
+						Image@ICON:
+							X: 5
+							Y: 1
+							ImageCollection: command-icons
+							ImageName: queue-orders
+		Container@STANCE_BAR:
+			Logic: StanceSelectorLogic
+			X: 294
+			Y: WINDOW_BOTTOM - HEIGHT - 14
+			Width: 138
+			Height: 26
+			Children:
+				Button@STANCE_ATTACKANYTHING:
+					Logic: AddFactionSuffixLogic
+					Width: 34
+					Height: 26
+					Background: command-button
+					DisableKeyRepeat: true
+					TooltipText: Attack Anything Stance
+					TooltipDesc: Set the selected units to Attack Anything stance:\n - Units will attack enemy units and structures on sight\n - Units will pursue attackers across the battlefield
+					TooltipContainer: TOOLTIP_CONTAINER
+					Children:
+						Image@ICON:
+							X: 9
+							Y: 5
+							ImageCollection: stance-icons
+							ImageName: attack-anything
+				Button@STANCE_DEFEND:
+					Logic: AddFactionSuffixLogic
+					X: 34
+					Width: 34
+					Height: 26
+					Background: command-button
+					DisableKeyRepeat: true
+					TooltipText: Defend Stance
+					TooltipDesc: Set the selected units to Defend stance:\n - Units will attack enemy units and structures on sight\n - Units will not move or pursue enemies
+					TooltipContainer: TOOLTIP_CONTAINER
+					Children:
+						Image@ICON:
+							X: 9
+							Y: 5
+							ImageCollection: stance-icons
+							ImageName: defend
+				Button@STANCE_RETURNFIRE:
+					Logic: AddFactionSuffixLogic
+					X: 68
+					Width: 34
+					Height: 26
+					Background: command-button
+					DisableKeyRepeat: true
+					TooltipText: Return Fire Stance
+					TooltipDesc: Set the selected units to Return Fire stance:\n - Units will retaliate against enemies that attack them\n - Units will not move or pursue enemies
+					TooltipContainer: TOOLTIP_CONTAINER
+					Children:
+						Image@ICON:
+							X: 9
+							Y: 5
+							ImageCollection: stance-icons
+							ImageName: return-fire
+				Button@STANCE_HOLDFIRE:
+					Logic: AddFactionSuffixLogic
+					X: 102
+					Width: 34
+					Height: 26
+					Background: command-button
+					DisableKeyRepeat: true
+					TooltipText: Hold Fire Stance
+					TooltipDesc: Set the selected units to Hold Fire stance:\n - Units will not fire upon enemies\n - Units will not move or pursue enemies
+					TooltipContainer: TOOLTIP_CONTAINER
+					Children:
+						Image@ICON:
+							X: 9
+							Y: 5
+							ImageCollection: stance-icons
+							ImageName: hold-fire
 		Image@SIDEBAR_BACKGROUND_TOP:
 			Logic: AddFactionSuffixLogic
 			X: WINDOW_RIGHT - 250
