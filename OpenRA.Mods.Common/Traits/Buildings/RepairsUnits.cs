@@ -51,11 +51,6 @@ namespace OpenRA.Mods.Common.Traits
 			rallyPoint = self.TraitOrDefault<RallyPoint>();
 		}
 
-		void IAcceptDock.OnDock(Actor client, Dock dock)
-		{
-			dockManager.OnArrivalCheck(client, dock);
-		}
-
 		void IAcceptDock.OnUndock(Actor client, Dock dock, Activity parameters)
 		{
 			client.SetTargetLine(Target.FromCell(self.World, rallyPoint.Location), Color.Green);

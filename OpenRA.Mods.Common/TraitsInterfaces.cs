@@ -156,9 +156,6 @@ namespace OpenRA.Mods.Common.Traits
 		// and the actor will perform docking actions out of place.
 		Activity ApproachDockActivity(Actor client, Dock dock, Activity parameters);
 
-		// Do house keeping stuff here. Called when dock actually happens.
-		void OnDock(Actor client, Dock dock);
-
 		// What to do during the dock.
 		void QueueDockActivity(Actor client, Dock dock, Activity parameters);
 

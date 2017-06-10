@@ -100,6 +100,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		void IResolveOrder.ResolveOrder(Actor self, Order order)
 		{
+			if (order.Queued)
+				return;
+
 			switch (order.OrderString)
 			{
 				case "Enter":

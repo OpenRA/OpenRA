@@ -145,11 +145,6 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		public void OnDock(Actor harv, Dock dock)
-		{
-			docks.OnArrivalCheck(harv, dock);
-		}
-
 		public void OnUndock(Actor harv, Dock dock, Activity parameters)
 		{
 			// Move to south of the ref to avoid cluttering up with other dock locations

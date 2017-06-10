@@ -53,13 +53,7 @@ namespace OpenRA.Mods.Cnc.Activities
 				if (rearmTarget == null)
 					return new Wait(20);
 
-				// Add a CloseEnough range of 512 to the Repair activity in order to ensure that we're at the host actor
-				return ActivityUtils.SequenceActivities(
-					new MoveAdjacentTo(self, Target.FromActor(rearmTarget)),
-					movement.MoveTo(self.World.Map.CellContaining(rearmTarget.CenterPosition), rearmTarget),
-					new Rearm(self),
-					new Repair(self, rearmTarget, new WDist(512)),
-					this);
+				rearmTarget.Trait<DockManager>().ReserveDock(rearmTarget, self, this);
 			}
 
 			if (minelayer.Minefield.Contains(self.Location) && ShouldLayMine(self, self.Location))

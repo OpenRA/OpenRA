@@ -39,12 +39,6 @@ namespace OpenRA.Mods.Common.Traits
 			rallyPoint = host.TraitOrDefault<RallyPoint>();
 		}
 
-		void IAcceptDock.OnDock(Actor client, Dock dock)
-		{
-			client.SetTargetLine(Target.FromCell(client.World, dock.Location), Color.Green, false);
-			dockManager.OnArrivalCheck(client, dock);
-		}
-
 		void IAcceptDock.OnUndock(Actor client, Dock dock, Activity parameters)
 		{
 			client.SetTargetLine(Target.FromCell(client.World, rallyPoint.Location), Color.Green, false);
@@ -57,6 +51,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		void IAcceptDock.QueueDockActivity(Actor client, Dock dock, Activity parameters)
 		{
+			client.SetTargetLine(Target.FromCell(client.World, dock.Location), Color.Green, false);
+
 			// Let's reload. The assumption here is that for aircrafts, there are no waiting docks.
 			client.QueueActivity(new ResupplyAircraft(client));
 
