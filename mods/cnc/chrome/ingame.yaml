@@ -261,7 +261,7 @@ Container@PLAYER_WIDGETS:
 			X: 5
 			Y: WINDOW_BOTTOM - HEIGHT - 5
 			Background: panel-black
-			Width: 275
+			Width: 276
 			Height: 36
 			Children:
 				Button@ATTACK_MOVE:
@@ -313,10 +313,10 @@ Container@PLAYER_WIDGETS:
 							ImageCollection: command-icons
 							ImageName: force-attack
 				Button@GUARD:
-					X: 104
+					X: 105
 					Y: 1
-					Width: 35
-					Height: 35
+					Width: 34
+					Height: 34
 					Background: command-button
 					DisableKeyRepeat: true
 					TooltipText: Guard
@@ -329,7 +329,7 @@ Container@PLAYER_WIDGETS:
 							ImageCollection: command-icons
 							ImageName: guard
 				Button@DEPLOY:
-					X: 138
+					X: 139
 					Y: 1
 					Width: 34
 					Height: 34
@@ -345,7 +345,7 @@ Container@PLAYER_WIDGETS:
 							ImageCollection: command-icons
 							ImageName: deploy
 				Button@SCATTER:
-					X: 172
+					X: 173
 					Y: 1
 					Width: 34
 					Height: 34
@@ -361,7 +361,7 @@ Container@PLAYER_WIDGETS:
 							ImageCollection: command-icons
 							ImageName: scatter
 				Button@STOP:
-					X: 206
+					X: 207
 					Y: 1
 					Width: 34
 					Height: 34
@@ -377,7 +377,7 @@ Container@PLAYER_WIDGETS:
 							ImageCollection: command-icons
 							ImageName: stop
 				Button@QUEUE_ORDERS:
-					X: 240
+					X: 241
 					Y: 1
 					Width: 34
 					Height: 34
@@ -394,7 +394,7 @@ Container@PLAYER_WIDGETS:
 							ImageName: queue-orders
 		Background@COMMAND_BAR:
 			Logic: StanceSelectorLogic
-			X: 279
+			X: 280
 			Y: WINDOW_BOTTOM - HEIGHT - 5
 			Background: panel-black
 			Width: 138
@@ -408,7 +408,7 @@ Container@PLAYER_WIDGETS:
 					Background: stance-button
 					DisableKeyRepeat: true
 					TooltipText: Attack Anything Stance
-					TooltipDesc: Set the selected units to Attack Anything stance:\n - Units will attack enemy units and structures on sight\n - Units will persue attackers across the battlefield
+					TooltipDesc: Set the selected units to Attack Anything stance:\n - Units will attack enemy units and structures on sight\n - Units will pursue attackers across the battlefield
 					TooltipContainer: TOOLTIP_CONTAINER
 					Children:
 						Image@ICON:
@@ -424,7 +424,7 @@ Container@PLAYER_WIDGETS:
 					Background: stance-button
 					DisableKeyRepeat: true
 					TooltipText: Defend Stance
-					TooltipDesc: Set the selected units to Defend stance:\n - Units will attack enemy units and structures on sight\n - Units will not move or persue enemies
+					TooltipDesc: Set the selected units to Defend stance:\n - Units will attack enemy units and structures on sight\n - Units will not move or pursue enemies
 					TooltipContainer: TOOLTIP_CONTAINER
 					Children:
 						Image@ICON:
@@ -440,7 +440,7 @@ Container@PLAYER_WIDGETS:
 					Background: stance-button
 					DisableKeyRepeat: true
 					TooltipText: Return Fire Stance
-					TooltipDesc: Set the selected units to Return Fire stance:\n - Units will retaliate against enemies that attack them\n - Units will not move or persue enemies
+					TooltipDesc: Set the selected units to Return Fire stance:\n - Units will retaliate against enemies that attack them\n - Units will not move or pursue enemies
 					TooltipContainer: TOOLTIP_CONTAINER
 					Children:
 						Image@ICON:
@@ -456,7 +456,7 @@ Container@PLAYER_WIDGETS:
 					Background: stance-button
 					DisableKeyRepeat: true
 					TooltipText: Hold Fire Stance
-					TooltipDesc: Set the selected units to Hold Fire stance:\n - Units will not fire upon enemies\n - Units will not move or persue enemies
+					TooltipDesc: Set the selected units to Hold Fire stance:\n - Units will not fire upon enemies\n - Units will not move or pursue enemies
 					TooltipContainer: TOOLTIP_CONTAINER
 					Children:
 						Image@ICON:
