@@ -392,107 +392,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		void RefreshServerListInner(List<GameServer> games)
 		{
 			ScrollItemWidget nextServerRow = null;
-			var rows = new List<Widget>();
+			List<Widget> rows = null;
 
 			if (games != null)
-			{
-				var mods = games.GroupBy(g => g.Mods)
-					.OrderByDescending(g => GroupSortOrder(g.First()))
-					.ThenByDescending(g => g.Count());
-				foreach (var modGames in mods)
-				{
-					if (modGames.All(Filtered))
-						continue;
-
-					var header = ScrollItemWidget.Setup(headerTemplate, () => true, () => { });
-
-					var headerTitle = modGames.First().ModLabel;
-					header.Get<LabelWidget>("LABEL").GetText = () => headerTitle;
-					rows.Add(header);
-
-					Func<GameServer, int> listOrder = g =>
-					{
-						// Servers waiting for players are always first
-						if (g.State == (int)ServerState.WaitingPlayers && g.Players > 0)
-							return 0;
-
-						// Then servers with spectators
-						if (g.State == (int)ServerState.WaitingPlayers && g.Spectators > 0)
-							return 1;
-
-						// Then active games
-						if (g.State >= (int)ServerState.GameStarted)
-							return 2;
-
-						// Empty servers are shown at the end because a flood of empty servers
-						// at the top of the game list make the community look dead
-						return 3;
-					};
-
-					foreach (var modGamesByState in modGames.GroupBy(listOrder).OrderBy(g => g.Key))
-					{
-						// Sort 'Playing' games by Started, others by number of players
-						foreach (var game in modGamesByState.Key == 2 ? modGamesByState.OrderByDescending(g => g.Started) : modGamesByState.OrderByDescending(g => g.Players))
-						{
-							if (Filtered(game))
-								continue;
-
-							var canJoin = game.IsJoinable;
-							var item = ScrollItemWidget.Setup(serverTemplate, () => currentServer == game, () => SelectServer(game), () => Join(game));
-							var title = item.GetOrNull<LabelWidget>("TITLE");
-							if (title != null)
-							{
-								var font = Game.Renderer.Fonts[title.Font];
-								var label = WidgetUtils.TruncateText(game.Name, title.Bounds.Width, font);
-								title.GetText = () => label;
-								title.GetColor = () => canJoin ? title.TextColor : incompatibleGameColor;
-							}
-
-							var password = item.GetOrNull<ImageWidget>("PASSWORD_PROTECTED");
-							if (password != null)
-							{
-								password.IsVisible = () => game.Protected;
-								password.GetImageName = () => canJoin ? "protected" : "protected-disabled";
-							}
-
-							var players = item.GetOrNull<LabelWidget>("PLAYERS");
-							if (players != null)
-							{
-								players.GetText = () => "{0} / {1}".F(game.Players, game.MaxPlayers)
-									+ (game.Spectators > 0 ? " + {0}".F(game.Spectators) : "");
-
-								players.GetColor = () => canJoin ? players.TextColor : incompatibleGameColor;
-							}
-
-							var state = item.GetOrNull<LabelWidget>("STATUS");
-							if (state != null)
-							{
-								var label = game.State >= (int)ServerState.GameStarted ?
-									"Playing" : "Waiting";
-								state.GetText = () => label;
-
-								var color = GetStateColor(game, state, !canJoin);
-								state.GetColor = () => color;
-							}
-
-							var location = item.GetOrNull<LabelWidget>("LOCATION");
-							if (location != null)
-							{
-								var font = Game.Renderer.Fonts[location.Font];
-								var cachedServerLocation = game.Id != -1 ? GeoIP.LookupCountry(game.Address.Split(':')[0]) : "Local Network";
-								var label = WidgetUtils.TruncateText(cachedServerLocation, location.Bounds.Width, font);
-								location.GetText = () => label;
-								location.GetColor = () => canJoin ? location.TextColor : incompatibleGameColor;
-							}
-
-							if (currentServer != null && game.Address == currentServer.Address)
-								nextServerRow = item;
-
-							rows.Add(item);
-						}
-					}
-				}
-			}
+				rows = LoadGameRows(games, out nextServerRow);
 
 			Game.RunAfterTick(() =>
 			{
@@ -523,6 +426,111 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				if (nextServerRow != null)
 					nextServerRow.OnClick();
 			});
+		}
+
+		List<Widget> LoadGameRows(List<GameServer> games, out ScrollItemWidget nextServerRow)
+		{
+			nextServerRow = null;
+			var rows = new List<Widget>();
+			var mods = games.GroupBy(g => g.Mods)
+				.OrderByDescending(g => GroupSortOrder(g.First()))
+				.ThenByDescending(g => g.Count());
+
+			foreach (var modGames in mods)
+			{
+				if (modGames.All(Filtered))
+					continue;
+
+				var header = ScrollItemWidget.Setup(headerTemplate, () => true, () => { });
+
+				var headerTitle = modGames.First().ModLabel;
+				header.Get<LabelWidget>("LABEL").GetText = () => headerTitle;
+				rows.Add(header);
+
+				Func<GameServer, int> listOrder = g =>
+				{
+					// Servers waiting for players are always first
+					if (g.State == (int)ServerState.WaitingPlayers && g.Players > 0)
+						return 0;
+
+					// Then servers with spectators
+					if (g.State == (int)ServerState.WaitingPlayers && g.Spectators > 0)
+						return 1;
+
+					// Then active games
+					if (g.State >= (int)ServerState.GameStarted)
+						return 2;
+
+					// Empty servers are shown at the end because a flood of empty servers
+					// at the top of the game list make the community look dead
+					return 3;
+				};
+
+				foreach (var modGamesByState in modGames.GroupBy(listOrder).OrderBy(g => g.Key))
+				{
+					// Sort 'Playing' games by Started, others by number of players
+					foreach (var game in modGamesByState.Key == 2 ? modGamesByState.OrderByDescending(g => g.Started) : modGamesByState.OrderByDescending(g => g.Players))
+					{
+						if (Filtered(game))
+							continue;
+
+						var canJoin = game.IsJoinable;
+						var item = ScrollItemWidget.Setup(serverTemplate, () => currentServer == game, () => SelectServer(game), () => Join(game));
+						var title = item.GetOrNull<LabelWidget>("TITLE");
+						if (title != null)
+						{
+							var font = Game.Renderer.Fonts[title.Font];
+							var label = WidgetUtils.TruncateText(game.Name, title.Bounds.Width, font);
+							title.GetText = () => label;
+							title.GetColor = () => canJoin ? title.TextColor : incompatibleGameColor;
+						}
+
+						var password = item.GetOrNull<ImageWidget>("PASSWORD_PROTECTED");
+						if (password != null)
+						{
+							password.IsVisible = () => game.Protected;
+							password.GetImageName = () => canJoin ? "protected" : "protected-disabled";
+						}
+
+						var players = item.GetOrNull<LabelWidget>("PLAYERS");
+						if (players != null)
+						{
+							players.GetText = () => "{0} / {1}".F(game.Players, game.MaxPlayers)
+								+ (game.Spectators > 0 ? " + {0}".F(game.Spectators) : "");
+
+							players.GetColor = () => canJoin ? players.TextColor : incompatibleGameColor;
+						}
+
+						var state = item.GetOrNull<LabelWidget>("STATUS");
+						if (state != null)
+						{
+							var label = game.State >= (int)ServerState.GameStarted ?
+								"Playing" : "Waiting";
+							state.GetText = () => label;
+
+							var color = GetStateColor(game, state, !canJoin);
+							state.GetColor = () => color;
+						}
+
+						var location = item.GetOrNull<LabelWidget>("LOCATION");
+						if (location != null)
+						{
+							var font = Game.Renderer.Fonts[location.Font];
+							var cachedServerLocation = game.Id != -1 ? GeoIP.LookupCountry(game.Address.Split(':')[0]) : "Local Network";
+							var label = WidgetUtils.TruncateText(cachedServerLocation, location.Bounds.Width, font);
+							location.GetText = () => label;
+							location.GetColor = () => canJoin ? location.TextColor : incompatibleGameColor;
+						}
+
+						if (currentServer != null && game.Address == currentServer.Address)
+							nextServerRow = item;
+
+						rows.Add(item);
+					}
+				}
+			}
+
+			return rows;
 		}
 
 		void OpenLobby()
