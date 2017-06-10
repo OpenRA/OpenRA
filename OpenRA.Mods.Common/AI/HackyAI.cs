@@ -672,7 +672,7 @@ namespace OpenRA.Mods.Common.AI
 			if (--assignRolesTicks <= 0)
 			{
 				assignRolesTicks = Info.AssignRolesInterval;
-				KillOutOfMapAircrafts();
+				//KillOutOfMapAircrafts();
 				GiveOrdersToIdleHarvesters();
 				FindNewUnits(self);
 				FindAndDeployBackupMcv(self);
@@ -698,7 +698,6 @@ namespace OpenRA.Mods.Common.AI
 				.Where(a => a.Owner == Player && !map.Contains(a.Location));
 
 			foreach (var a in toKill)
-
 			{
 				a.CancelActivity();
 				a.QueueActivity(new CallFunc(() => a.Kill(a)));
