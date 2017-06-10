@@ -13,12 +13,12 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.Activities;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Pathfinder;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Support;
 using OpenRA.Traits;
-using OpenRA.Activities;
 
 namespace OpenRA.Mods.Common.AI
 {
@@ -258,7 +258,7 @@ namespace OpenRA.Mods.Common.AI
 
 		public bool IsEnabled;
 		public List<Squad> Squads = new List<Squad>();
-		public Dictionary<Actor, Squad> whichSquad = new Dictionary<Actor, Squad>();
+		public Dictionary<Actor, Squad> WhichSquad = new Dictionary<Actor, Squad>();
 		public Player Player { get; private set; }
 
 		readonly DomainIndex domainIndex;
@@ -854,7 +854,7 @@ namespace OpenRA.Mods.Common.AI
 						air = RegisterNewSquad(SquadType.Air);
 
 					air.Units.Add(a);
-					whichSquad[a] = air;
+					WhichSquad[a] = air;
 				}
 
 				activeUnits.Add(a);
@@ -875,7 +875,7 @@ namespace OpenRA.Mods.Common.AI
 					if (!a.Info.HasTraitInfo<AircraftInfo>())
 					{
 						attackForce.Units.Add(a);
-						whichSquad[a] = attackForce;
+						WhichSquad[a] = attackForce;
 					}
 
 				unitsHangingAroundTheBase.Clear();
@@ -907,7 +907,7 @@ namespace OpenRA.Mods.Common.AI
 					foreach (var a3 in ownUnits)
 					{
 						rush.Units.Add(a3);
-						whichSquad[a3] = rush;
+						WhichSquad[a3] = rush;
 					}
 
 					return;
@@ -933,7 +933,7 @@ namespace OpenRA.Mods.Common.AI
 				foreach (var a in ownUnits)
 				{
 					protectSq.Units.Add(a);
-					whichSquad[a] = protectSq;
+					WhichSquad[a] = protectSq;
 				}
 			}
 		}
@@ -1233,10 +1233,10 @@ namespace OpenRA.Mods.Common.AI
 			}
 			else if (self.TraitOrDefault<Aircraft>() != null)
 			{
-				if (whichSquad.ContainsKey(self))
+				if (WhichSquad.ContainsKey(self))
 				{
-					whichSquad[self].Damage(e);
-					whichSquad[self].Update();
+					WhichSquad[self].Damage(e);
+					WhichSquad[self].Update();
 				}
 			}
 		}

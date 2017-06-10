@@ -9,17 +9,17 @@
  */
 #endregion
 
+using System.Drawing;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
-using System.Drawing;
 
 namespace OpenRA.Mods.Common.Activities
 {
 	public static class DockUtils
 	{
 		public static Activity GenericApproachDockActivities(Actor host, Actor client, Dock dock,
-			Activity requester, bool goThroughHost=false)
+			Activity requester, bool goThroughHost = false)
 		{
 			var air = client.TraitOrDefault<Aircraft>();
 			if (air != null)

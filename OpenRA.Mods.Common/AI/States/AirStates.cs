@@ -9,12 +9,12 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
-using System;
 
 namespace OpenRA.Mods.Common.AI
 {
@@ -339,7 +339,7 @@ namespace OpenRA.Mods.Common.AI
 				}
 			}
 
-			System.Diagnostics.Debug.Assert(owner.World.Map.Contains(best));
+			System.Diagnostics.Debug.Assert(owner.World.Map.Contains(best), "What? Unit out of map?");
 			return best;
 		}
 

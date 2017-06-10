@@ -86,7 +86,7 @@ namespace OpenRA.Mods.Common.AI
 
 		public CPos CenterLocation { get { return World.Map.CellContaining(CenterPosition); } }
 
-		void reflexAvoidance(Actor attacker)
+		void ReflexAvoidance(Actor attacker)
 		{
 			// Like when you retract your finger when it touches hot stuff,
 			// let air untis avoid the attacker very quickly. (faster than flee state's response)
@@ -111,7 +111,7 @@ namespace OpenRA.Mods.Common.AI
 				}
 
 				// Flee
-				reflexAvoidance(e.Attacker);
+				ReflexAvoidance(e.Attacker);
 				FuzzyStateMachine.ChangeState(this, new AirFleeState(), true);
 			}
 		}

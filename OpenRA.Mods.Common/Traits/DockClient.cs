@@ -41,7 +41,7 @@ namespace OpenRA.Mods.Common.Traits
 		readonly Actor self;
 		public Dock CurrentDock;
 		public DockState DockState = DockState.NotAssigned;
-		public IDockActivity requester; // The activity that requested dock.
+		public IDockActivity Requester; // The activity that requested dock.
 
 		public DockClient(ActorInitializer init, DockClientInfo info)
 		{
@@ -65,8 +65,8 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			if (CurrentDock == null)
-				// Still OK, because ordering units like crazy will automatically release the dock from
-				// DockClient code and previously queued release will try to release what is already released.
+				//// Still OK, because ordering units like crazy will automatically release the dock from
+				//// DockClient code and previously queued release will try to release what is already released.
 				return;
 
 			// You are to release only what you have.

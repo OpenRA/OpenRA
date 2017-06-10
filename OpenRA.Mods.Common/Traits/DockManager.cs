@@ -78,6 +78,7 @@ namespace OpenRA.Mods.Common.Traits
 				if (d.Occupier == client)
 					return true;
 			}
+
 			return false;
 		}
 
@@ -131,7 +132,7 @@ namespace OpenRA.Mods.Common.Traits
 				// It might had been transferred from proc A to this proc.
 				var dc = client.Trait<DockClient>();
 				dc.DockState = DockState.NotAssigned;
-				dc.requester = requester;
+				dc.Requester = requester;
 			}
 
 			// notify the queue
@@ -147,7 +148,7 @@ namespace OpenRA.Mods.Common.Traits
 			dc.Release(dc.CurrentDock);
 
 			a.CancelActivity();
-			var act = dc.requester.ActivitiesOnDockFail(a);
+			var act = dc.Requester.ActivitiesOnDockFail(a);
 			if (act != null)
 				a.QueueActivity(act);
 		}
@@ -192,9 +193,9 @@ namespace OpenRA.Mods.Common.Traits
 			if (dock.Info.WaitingPlace == false && dc.DockState == DockState.ServiceAssigned && client.Location == dock.Location)
 			{
 				// resource transfer activities are queued by OnDock.
-				client.QueueActivity(dc.requester.DockActivities(host, client, dock));
+				client.QueueActivity(dc.Requester.DockActivities(host, client, dock));
 				client.QueueActivity(new CallFunc(() => ReleaseAndNext(client, dock)));
-				client.QueueActivity(dc.requester.ActivitiesAfterDockDone(host, client, dock));
+				client.QueueActivity(dc.Requester.ActivitiesAfterDockDone(host, client, dock));
 			}
 		}
 
@@ -311,7 +312,7 @@ namespace OpenRA.Mods.Common.Traits
 			dockClient.Release(currentDock);
 			dockClient.Acquire(serviceDock, DockState.ServiceAssigned);
 
-			head.QueueActivity(dockClient.requester.ApproachDockActivities(host, head, serviceDock));
+			head.QueueActivity(dockClient.Requester.ApproachDockActivities(host, head, serviceDock));
 			head.QueueActivity(new CallFunc(() => OnDock(head, serviceDock)));
 		}
 
