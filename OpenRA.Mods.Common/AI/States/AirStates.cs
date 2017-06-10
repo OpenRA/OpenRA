@@ -60,7 +60,6 @@ namespace OpenRA.Mods.Common.AI
 		protected static List<Actor> ScanEnemyUnits(Squad owner, int maxCount)
 		{
 			// Use random sampling. Search from near to far.
-			var map = owner.World.Map;
 			var loc = owner.CenterLocation;
 			var any = owner.Units.First();
 			List<Actor> sampledCandidates;
@@ -293,7 +292,6 @@ namespace OpenRA.Mods.Common.AI
 
 		void Flee(Squad owner, Actor a)
 		{
-			var dest = RandomBuildingLocation(owner);
 			var safePoint = AirFleeState.CalcSafePoint(owner, owner.CenterLocation, EnemyStaticAAs(owner));
 			owner.Bot.QueueOrder(new Order("Move", a, false) { TargetLocation = safePoint });
 			owner.Bot.QueueOrder(new Order("ReturnToBase", a, true));
@@ -360,7 +358,7 @@ namespace OpenRA.Mods.Common.AI
 			var denom = (new CVec(a, b)).Length;
 
 			int score = 0;
-			
+
 			foreach (var aa in enemyStaticAAs)
 			{
 				score += Math.Abs(a * aa.Location.X + b * aa.Location.Y + c) / denom;
