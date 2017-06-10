@@ -143,8 +143,7 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		public bool CanTarget(Actor self, Target target, List<Actor> othersAtTarget, ref TargetModifiers modifiers, ref string cursor)
 		{
-			// TODO: When target modifiers are configurable this needs to be revisited
-			if (modifiers.HasModifier(TargetModifiers.ForceMove) || modifiers.HasModifier(TargetModifiers.ForceQueue))
+			if (modifiers.HasModifier(TargetModifiers.ForceMove))
 			{
 				var xy = self.World.Map.CellContaining(target.CenterPosition);
 
