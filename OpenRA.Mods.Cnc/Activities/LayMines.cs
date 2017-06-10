@@ -55,6 +55,7 @@ namespace OpenRA.Mods.Cnc.Activities
 					return new Wait(20);
 
 				rearmTarget.Trait<DockManager>().ReserveDock(rearmTarget, self, this);
+				return NextActivity;
 			}
 
 			if (minelayer.Minefield.Contains(self.Location) && ShouldLayMine(self, self.Location))
@@ -104,23 +105,25 @@ namespace OpenRA.Mods.Cnc.Activities
 
 		Activity IDockActivity.ApproachDockActivities(Actor host, Actor client, Dock dock)
 		{
-			throw new NotImplementedException();
+			return DockUtils.GenericApproachDockActivities(host, client, dock, this, true);
 		}
 
 		Activity IDockActivity.DockActivities(Actor host, Actor client, Dock dock)
 		{
-			throw new NotImplementedException();
+			return ActivityUtils.SequenceActivities(
+				new Rearm(client),
+				new Repair(client, host, new WDist(512)));
 		}
 
 		Activity IDockActivity.ActivitiesAfterDockDone(Actor host, Actor client, Dock dock)
 		{
-			throw new NotImplementedException();
+			return new LayMines(client);
 		}
 
 		Activity IDockActivity.ActivitiesOnDockFail(Actor client)
 		{
-			// Stay idle
-			return null;
+			// Find another FIX or something.
+			return new LayMines(client);
 		}
 	}
 }

@@ -105,11 +105,6 @@ namespace OpenRA.Mods.Common.Traits
 
 		public Activity AfterReachActivities(Actor self, Actor host, Dock dock)
 		{
-			if (host == null || host.IsDead || host.Disposed)
-				return null;
-
-			// TODO: This is hacky, but almost every single component affected
-			// will need to be rewritten anyway, so this is OK for now.
 			if (CanRearmAt(host) && CanRearm())
 				return ActivityUtils.SequenceActivities(
 					new Rearm(self),
