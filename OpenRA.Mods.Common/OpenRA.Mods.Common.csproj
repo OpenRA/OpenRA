@@ -815,6 +815,7 @@
     <Compile Include="Widgets\Logic\Ingame\CommandBarLogic.cs" />
     <Compile Include="Widgets\Logic\Ingame\StanceSelectorLogic.cs" />
     <Compile Include="Widgets\Logic\ButtonTooltipWithDescHighlightLogic.cs" />
+    <Compile Include="Traits\AutoTargetPriority.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="AfterBuild">
