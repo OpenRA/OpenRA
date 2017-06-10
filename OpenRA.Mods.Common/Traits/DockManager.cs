@@ -40,7 +40,7 @@ namespace OpenRA.Mods.Common.Traits
 	 * The class to do all the crazy queue management.
 	 * Not all multi-dock guys need queue management so making a separate manager class.
 	 */
-	public class DockManager : ITick
+	public class DockManager : ITick, INotifyKilled, INotifyActorDisposing
 	{
 		readonly DockManagerInfo info;
 		readonly Actor host; // Don't use "self" as the name. Eventually, it gets confusing with client and causes bug!
@@ -49,11 +49,6 @@ namespace OpenRA.Mods.Common.Traits
 		readonly Dock[] serviceDocks;
 		readonly Dock[] waitDocks;
 		readonly List<Actor> queue = new List<Actor>();
-
-		// DockManager requires traits that implement IAcceptDock.
-		// On the other hand, these traits that implementing IAcceptDock requires DockManager!
-		// Hence, I'd resolve the trait at queueing time, not at the constructor.
-		IAcceptDock iAcceptDock;
 
 		CPos lastLocation; // in case this is a mobile dock.
 		int ticks;
@@ -72,22 +67,6 @@ namespace OpenRA.Mods.Common.Traits
 			allDocks = t0.ToArray();
 			serviceDocks = t1.ToArray();
 			waitDocks = t2.ToArray();
-		}
-
-		void ResolveIAcceptDock()
-		{
-			if (iAcceptDock != null)
-				return;
-
-			// Argh, Hacky. Repair gets the least priority.
-			var iads = host.TraitsImplementing<IAcceptDock>();
-			System.Diagnostics.Debug.Assert(iads.Count() > 0, "IAcceptDock trait not found for actor type " + host.Info.Name);
-			System.Diagnostics.Debug.Assert(iads.Count() <= 2, "Too many IAcceptDock traits for actor type " + host.Info.Name);
-
-			if (iads.Count() == 1)
-				iAcceptDock = iads.First();
-			else
-				iAcceptDock = iads.First(t => !(t is RepairsUnits));
 		}
 
 		public bool HasFreeServiceDock(Actor client)
@@ -135,13 +114,11 @@ namespace OpenRA.Mods.Common.Traits
 
 		// Parameters: sometimes the activity that requests ReserveDock knows well on how to do the docking.
 		// To help docking, pass this as param.
-		public void ReserveDock(Actor host, Actor client, Activity parameters)
+		public void ReserveDock(Actor host, Actor client, IDockActivity requester)
 		{
-			ResolveIAcceptDock();
-
 			if (info.DockNextToActor)
 			{
-				ServeAdjacentDocker(host, client, parameters);
+				ServeAdjacentDocker(host, client, requester);
 				return;
 			}
 
@@ -154,36 +131,35 @@ namespace OpenRA.Mods.Common.Traits
 				// It might had been transferred from proc A to this proc.
 				var dc = client.Trait<DockClient>();
 				dc.DockState = DockState.NotAssigned;
-				dc.parameters = parameters;
+				dc.requester = requester;
 			}
 
 			// notify the queue
 			ProcessQueue(host, client);
 		}
 
-		void CancelDock(IEnumerable<Actor> actors)
+		void CancelDock(Actor a)
 		{
-			foreach (var a in actors)
-			{
-				if (a != null && !a.IsDead)
-				{
-					a.CancelActivity();
+			if (a == null || a.IsDead || a.Disposed)
+				return;
 
-					// A little bit of hard coding here.
-					// Continue with post dock operation?
-					if (a.TraitOrDefault<Harvester>() != null)
-					{
-						a.QueueActivity(new FindResources(a));
-					}
-				}
-			}
+			var dc = a.Trait<DockClient>();
+			dc.Release(dc.CurrentDock);
+
+			a.CancelActivity();
+			var act = dc.requester.ActivitiesOnDockFail(a);
+			if (act != null)
+				a.QueueActivity(act);
 		}
 
-		// When the host dies...
+		// Cancel on request or death
 		public void CancelDock()
 		{
-			CancelDock(serviceDocks.Select(d => d.Occupier));
-			CancelDock(queue);
+			foreach (var a in serviceDocks.Select(d => d.Occupier))
+				CancelDock(a);
+
+			foreach (var a in queue)
+				CancelDock(a);
 		}
 
 		// OnDock is called, even when client arrives at a waiting dock.
@@ -191,6 +167,16 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			// We have "arrived". But did we get to where we intended?
 			var dc = client.Trait<DockClient>();
+
+			if (client == null || client.IsDead || client.Disposed)
+				return;
+
+			if (host == null || host.IsDead || host.Disposed)
+			{
+				dc.Release(dc.CurrentDock);
+				CancelDock(client);
+				return;
+			}
 
 			// I tried to arrive at a waiting spot but actually it was a working dock and I'm sitting on it!
 			// (happens often when only one dock which is shared)
@@ -206,9 +192,9 @@ namespace OpenRA.Mods.Common.Traits
 			if (dock.Info.WaitingPlace == false && dc.DockState == DockState.ServiceAssigned && client.Location == dock.Location)
 			{
 				// resource transfer activities are queued by OnDock.
-				iAcceptDock.QueueDockActivity(client, dock, dc.parameters);
+				client.QueueActivity(dc.requester.DockActivities(host, client, dock));
 				client.QueueActivity(new CallFunc(() => ReleaseAndNext(client, dock)));
-				client.QueueActivity(new CallFunc(() => iAcceptDock.OnUndock(client, dock, dc.parameters)));
+				client.QueueActivity(dc.requester.ActivitiesAfterDockDone(host, client, dock));
 			}
 		}
 
@@ -291,7 +277,7 @@ namespace OpenRA.Mods.Common.Traits
 			ProcessQueue(host, null); // notify queue
 		}
 
-		void ServeAdjacentDocker(Actor host, Actor client, Activity parameters)
+		void ServeAdjacentDocker(Actor host, Actor client, IDockActivity requester)
 		{
 			// Since there is 0 tolerance about distance, we WILL arrive at the dock (or we get stuck haha)
 			client.QueueActivity(new MoveAdjacentTo(client, Target.FromActor(host)));
@@ -299,8 +285,8 @@ namespace OpenRA.Mods.Common.Traits
 			var dock = host.Trait<Dock>();
 
 			// resource transfer activities are queued by OnDock.
-			iAcceptDock.QueueDockActivity(client, dock, parameters);
-			iAcceptDock.OnUndock(client, dock, parameters);
+			client.QueueActivity(requester.DockActivities(host, client, dock));
+			client.QueueActivity(requester.ActivitiesAfterDockDone(host, client, dock));
 		}
 
 		void ServeHead(Actor host, Actor head, Dock serviceDock)
@@ -325,7 +311,7 @@ namespace OpenRA.Mods.Common.Traits
 			dockClient.Release(currentDock);
 			dockClient.Acquire(serviceDock, DockState.ServiceAssigned);
 
-			head.QueueActivity(iAcceptDock.ApproachDockActivity(head, serviceDock, dockClient.parameters));
+			head.QueueActivity(dockClient.requester.ApproachDockActivities(host, head, serviceDock));
 			head.QueueActivity(new CallFunc(() => OnDock(head, serviceDock)));
 		}
 
@@ -443,6 +429,16 @@ namespace OpenRA.Mods.Common.Traits
 				RemoveDeadLock(queue);
 				ticks = info.DeadlockDetectionPeriod;
 			}
+		}
+
+		public void Killed(Actor self, AttackInfo e)
+		{
+			CancelDock();
+		}
+
+		public void Disposing(Actor self)
+		{
+			CancelDock();
 		}
 	}
 }

@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Traits;
@@ -18,7 +19,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Activities
 {
-	public class ReturnToBase : Activity
+	public class ReturnToBase : Activity, IDockActivity
 	{
 		readonly Aircraft plane;
 		readonly AircraftInfo planeInfo;
@@ -180,6 +181,37 @@ namespace OpenRA.Mods.Common.Activities
 		int CalculateTurnRadius(AircraftInfo planeInfo, int speed)
 		{
 			return 45 * speed / planeInfo.TurnSpeed;
+		}
+
+		Activity IDockActivity.ApproachDockActivities(Actor host, Actor client, Dock dock)
+		{
+			// Let's reload. The assumption here is that for aircrafts, there are no waiting docks.
+			return LandingProcedure(client, dock);
+		}
+
+		Activity IDockActivity.DockActivities(Actor host, Actor client, Dock dock)
+		{
+			client.SetTargetLine(Target.FromCell(client.World, dock.Location), Color.Green, false);
+			return new ResupplyAircraft(client);
+		}
+
+		Activity IDockActivity.ActivitiesAfterDockDone(Actor host, Actor client, Dock dock)
+		{
+			// I'm ASSUMING rallypoint here.
+			var rp = host.Trait<RallyPoint>();
+
+			client.SetTargetLine(Target.FromCell(client.World, rp.Location), Color.Green, false);
+
+			// ResupplyAircraft handles this.
+			// Take off and move to RP.
+			return ActivityUtils.SequenceActivities(
+				new Fly(client, Target.FromCell(client.World, rp.Location)),
+				new FlyCircle(client));
+		}
+
+		Activity IDockActivity.ActivitiesOnDockFail(Actor client)
+		{
+			return new ReturnToBase(client, abortOnResupply);
 		}
 	}
 }

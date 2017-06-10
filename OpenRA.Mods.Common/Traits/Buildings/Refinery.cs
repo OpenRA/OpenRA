@@ -33,7 +33,7 @@ namespace OpenRA.Mods.Common.Traits
 		public virtual object Create(ActorInitializer init) { return new Refinery(init.Self, this); }
 	}
 
-	public class Refinery : ITick, IAcceptDock, INotifySold, INotifyCapture, INotifyOwnerChanged,
+	public class Refinery : ITick, INotifySold, INotifyCapture, INotifyOwnerChanged,
 		IExplodeModifier, ISync, INotifyActorDisposing, IResourceExchange
 	{
 		readonly Actor self;
@@ -44,8 +44,6 @@ namespace OpenRA.Mods.Common.Traits
 
 		int currentDisplayTick = 0;
 		int currentDisplayValue = 0;
-
-		List<Actor> virtuallyDockedHarvs;
 
 		[Sync] public int Ore = 0;
 		[Sync] bool preventDock = false;
@@ -59,7 +57,6 @@ namespace OpenRA.Mods.Common.Traits
 			playerResources = self.Owner.PlayerActor.Trait<PlayerResources>();
 			currentDisplayTick = info.TickRate;
 			wsb = self.Trait<WithSpriteBody>();
-			virtuallyDockedHarvs = new List<Actor>();
 			docks = self.Trait<DockManager>();
 		}
 
@@ -89,24 +86,13 @@ namespace OpenRA.Mods.Common.Traits
 		void CancelDock(Actor self)
 		{
 			preventDock = true;
-			docks.CancelDock();
 		}
 
 		void ITick.Tick(Actor self)
 		{
-			var rms = new List<Actor>();
-			foreach (var harv in virtuallyDockedHarvs)
-				if (harv.IsDead)
-					rms.Add(harv);
-
-            // The list shouldn't be too long and removing element from a list (not set)
-            // shouldn't take too long.
-			foreach (var rm in rms)
-				virtuallyDockedHarvs.Remove(rm);
-
 			// Refining animation cancelation.
 			// When everything docked all get killed in one shot then refining anim should be canceled.
-			// (Nukes...) Lets not care about virtual ones. Won't look too odd.
+			// (Nukes...) Lets not care about chrono miners. Won't look too odd.
 			var dockedHarvs = docks.DockedHarvs;
 			if (dockedHarvs.Count() > 0 && dockedHarvs.Count() == dockedHarvs.Where(a => a.IsDead).Count())
 				wsb.CancelCustomAnimation(self);
@@ -126,30 +112,6 @@ namespace OpenRA.Mods.Common.Traits
 			CancelDock(self);
 			foreach (var harv in GetLinkedHarvesters())
 				harv.Trait.UnlinkProc(harv.Actor, self);
-		}
-
-		public void QueueDockActivity(Actor harv, Dock dock, Activity parameters)
-		{
-			if (!preventDock)
-			{
-				if (harv.Info.TraitInfo<HarvesterInfo>().OreTeleporter)
-				{
-					harv.QueueActivity(new CallFunc(() => virtuallyDockedHarvs.Add(harv), false));
-					harv.QueueActivity(DockSequence(harv, self, dock));
-					harv.QueueActivity(new CallFunc(() => virtuallyDockedHarvs.Remove(harv), false)); // list, but shouldn't be too long.
-				}
-				else
-				{
-					harv.QueueActivity(DockSequence(harv, self, dock));
-				}
-			}
-		}
-
-		public void OnUndock(Actor harv, Dock dock, Activity parameters)
-		{
-			// Move to south of the ref to avoid cluttering up with other dock locations
-			harv.QueueActivity(harv.Trait<IMove>().MoveTo(dock.Location + dock.Info.ExitOffset, 2));
-			harv.QueueActivity(new CallFunc(() => harv.Trait<Harvester>().ContinueHarvesting(harv)));
 		}
 
 		void INotifyOwnerChanged.OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
@@ -185,10 +147,5 @@ namespace OpenRA.Mods.Common.Traits
 		}
 
 		public bool ShouldExplode(Actor self) { return Ore > 0; }
-
-		Activity IAcceptDock.ApproachDockActivity(Actor client, Dock dock, Activity parameters)
-		{
-			return client.Trait<IMove>().MoveTo(dock.Location, 0);
-		}
 	}
 }

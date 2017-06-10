@@ -148,22 +148,6 @@ namespace OpenRA.Mods.Common.Traits
 
 	public interface INotifyTransform { void BeforeTransform(Actor self); void OnTransform(Actor self); void AfterTransform(Actor toActor); }
 
-	public interface IAcceptDock
-	{
-		// How to command the actor to move to the dock location.
-		// Assumes that this activity has 100% chance of making client to reach the dock.
-		// That means if you make client to move with nearenough threshold, things will break
-		// and the actor will perform docking actions out of place.
-		Activity ApproachDockActivity(Actor client, Dock dock, Activity parameters);
-
-		// What to do during the dock.
-		void QueueDockActivity(Actor client, Dock dock, Activity parameters);
-
-		// Called when docking is complete.
-		// Queue client's post-undocking activities in this function, too.
-		void OnUndock(Actor client, Dock dock, Activity parameters);
-	}
-
 	public interface IResourceExchange
 	{
 		void GiveResource(int amount);

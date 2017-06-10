@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Activities;
@@ -21,7 +22,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Cnc.Activities
 {
 	// Assumes you have Minelayer on that unit
-	public class LayMines : Activity
+	public class LayMines : Activity, IDockActivity
 	{
 		readonly Minelayer minelayer;
 		readonly MinelayerInfo info;
@@ -99,6 +100,27 @@ namespace OpenRA.Mods.Cnc.Activities
 					new LocationInit(self.Location),
 					new OwnerInit(self.Owner),
 				}));
+		}
+
+		Activity IDockActivity.ApproachDockActivities(Actor host, Actor client, Dock dock)
+		{
+			throw new NotImplementedException();
+		}
+
+		Activity IDockActivity.DockActivities(Actor host, Actor client, Dock dock)
+		{
+			throw new NotImplementedException();
+		}
+
+		Activity IDockActivity.ActivitiesAfterDockDone(Actor host, Actor client, Dock dock)
+		{
+			throw new NotImplementedException();
+		}
+
+		Activity IDockActivity.ActivitiesOnDockFail(Actor client)
+		{
+			// Stay idle
+			return null;
 		}
 	}
 }

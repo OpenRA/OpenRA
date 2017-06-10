@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using System.Drawing;
 using System.Linq;
 using OpenRA.Activities;
@@ -18,7 +19,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Activities
 {
 	// I haven't renamed the class but this should be called "get into waiting queue"
-	public class DeliverResources : Activity
+	public class DeliverResources : Activity, IDockActivity
 	{
 		const int NextChooseTime = 100;
 
@@ -63,15 +64,40 @@ namespace OpenRA.Mods.Common.Activities
 
 			if (!self.Info.TraitInfo<HarvesterInfo>().OreTeleporter)
 			{
-				proc.Trait<DockManager>().ReserveDock(proc, self, null);
+				proc.Trait<DockManager>().ReserveDock(proc, self, this);
 			}
 			else
 			{
 				var dock = proc.TraitsImplementing<Dock>().First();
-				proc.Trait<Refinery>().QueueDockActivity(self, dock, null);
+				Queue(DockActivities(proc, self, dock));
+				Queue(new CallFunc(() => harv.ContinueHarvesting(self)));
 			}
 
 			return NextActivity;
+		}
+
+		Activity IDockActivity.ApproachDockActivities(Actor host, Actor client, Dock dock)
+		{
+			return DockUtils.GenericApproachDockActivities(host, client, dock, this);
+		}
+
+		public Activity DockActivities(Actor host, Actor client, Dock dock)
+		{
+			return host.Trait<Refinery>().DockSequence(client, host, dock);
+		}
+
+		Activity IDockActivity.ActivitiesAfterDockDone(Actor host, Actor client, Dock dock)
+		{
+			// Move to south of the ref to avoid cluttering up with other dock locations
+			return ActivityUtils.SequenceActivities(
+				client.Trait<IMove>().MoveTo(dock.Location + dock.Info.ExitOffset, 2),
+				new CallFunc(() => harv.ContinueHarvesting(client)));
+		}
+
+		Activity IDockActivity.ActivitiesOnDockFail(Actor client)
+		{
+			// go to somewhere else
+			return new CallFunc(() => harv.ContinueHarvesting(client));
 		}
 	}
 }

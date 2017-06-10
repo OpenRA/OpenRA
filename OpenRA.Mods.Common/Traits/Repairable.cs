@@ -99,22 +99,24 @@ namespace OpenRA.Mods.Common.Traits
 				var host = target.Actor;
 				var dm = host.Trait<DockManager>();
 				self.CancelActivity();
-				dm.ReserveDock(host, self, null);
+				dm.ReserveDock(host, self, new RepairDocking(self, order.TargetActor));
 			}
 		}
 
-		public void AfterReachActivities(Actor self, Actor host, Dock dock)
+		public Activity AfterReachActivities(Actor self, Actor host, Dock dock)
 		{
-			if (!host.IsInWorld || host.IsDead || host.IsDisabled())
-				return;
+			if (host == null || host.IsDead || host.Disposed)
+				return null;
 
 			// TODO: This is hacky, but almost every single component affected
 			// will need to be rewritten anyway, so this is OK for now.
 			if (CanRearmAt(host) && CanRearm())
-				self.QueueActivity(new Rearm(self));
+				return ActivityUtils.SequenceActivities(
+					new Rearm(self),
+					new Repair(self, host, new WDist(512)));
 
 			// Add a CloseEnough range of 512 to ensure we're at the host actor
-			self.QueueActivity(new Repair(self, host, new WDist(512)));
+			return new Repair(self, host, new WDist(512));
 		}
 
 		public Actor FindRepairBuilding(Actor self)

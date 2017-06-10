@@ -67,6 +67,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Activities\DockUtils.cs" />
     <Compile Include="Activities\Air\AllowYieldingReservation.cs" />
     <Compile Include="Activities\Air\FallToEarth.cs" />
     <Compile Include="Activities\Air\Fly.cs" />
@@ -108,6 +109,7 @@
     <Compile Include="Activities\Repair.cs" />
     <Compile Include="Activities\RepairBridge.cs" />
     <Compile Include="Activities\RepairBuilding.cs" />
+    <Compile Include="Activities\RepairDocking.cs" />
     <Compile Include="Activities\Sell.cs" />
     <Compile Include="Activities\SimpleTeleport.cs" />
     <Compile Include="Activities\SpriteHarvesterDockSequence.cs" />
@@ -247,6 +249,7 @@
     <Compile Include="Scripting\Properties\ConditionProperties.cs" />
     <Compile Include="Scripting\Properties\ParadropProperties.cs" />
     <Compile Include="Scripting\Properties\ParatroopersProperties.cs" />
+    <Compile Include="Activities\ActivityInterfaces.cs" />
     <Compile Include="TraitsInterfaces.cs" />
     <Compile Include="Traits\AcceptsDeliveredCash.cs" />
     <Compile Include="Traits\Air\Aircraft.cs" />
@@ -295,8 +298,6 @@
     <Compile Include="Traits\DockManager.cs" />
     <Compile Include="Traits\Dock.cs" />
     <Compile Include="Traits\Health.cs" />
-    <Compile Include="Traits\Airfield.cs" />
-    <Compile Include="Traits\Helipad.cs" />
     <Compile Include="Traits\ShootsMissiles.cs" />
     <Compile Include="Traits\PowerTooltip.cs" />
     <Compile Include="Traits\Render\VeteranProductionIconOverlay.cs" />

@@ -182,7 +182,7 @@ namespace OpenRA.Mods.Common.Traits
 				return Master;
 
 			// Find all refineries and their occupancy count:
-			var refs = self.World.ActorsWithTrait<IAcceptDock>()
+			var refs = self.World.ActorsWithTrait<Refinery>()
 				.Where(r => r.Actor != ignore && r.Actor.Owner == self.Owner && IsAcceptableProcType(r.Actor))
 				.Select(r => new {
 					Location = r.Actor.Location, // ignore dock offsets
@@ -420,10 +420,6 @@ namespace OpenRA.Mods.Common.Traits
 			else if (order.OrderString == "Deliver")
 			{
 				// NOTE: An explicit deliver order forces the harvester to always deliver to this refinery.
-				var iad = order.TargetActor.TraitOrDefault<IAcceptDock>();
-				if (iad == null || !IsAcceptableProcType(order.TargetActor))
-					return;
-
 				var refi = order.TargetActor.TraitOrDefault<Refinery>();
 				if (refi == null || !refi.AllowDocking)
 					return;

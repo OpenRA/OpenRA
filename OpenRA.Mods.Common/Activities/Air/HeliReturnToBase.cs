@@ -9,15 +9,17 @@
  */
 #endregion
 
+using System.Drawing;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
+using System;
 
 namespace OpenRA.Mods.Common.Activities
 {
-	public class HeliReturnToBase : Activity
+	public class HeliReturnToBase : Activity, IDockActivity
 	{
 		readonly Aircraft heli;
 		readonly bool alwaysLand;
@@ -114,7 +116,7 @@ namespace OpenRA.Mods.Common.Activities
 			}
 
 			// Do the docking.
-			dest.Trait<DockManager>().ReserveDock(dest, self, null);
+			dest.Trait<DockManager>().ReserveDock(dest, self, this);
 			return NextActivity;
 		}
 
@@ -128,6 +130,41 @@ namespace OpenRA.Mods.Common.Activities
 
 			return heli.Info.RearmBuildings.Contains(dest.Info.Name) && self.TraitsImplementing<AmmoPool>()
 					.Any(p => !p.Info.SelfReloads && !p.FullAmmo());
+		}
+
+		Activity IDockActivity.ApproachDockActivities(Actor host, Actor client, Dock dock)
+		{
+			return ActivityUtils.SequenceActivities(
+				new HeliFly(client, Target.FromPos(dock.CenterPosition)),
+				new Turn(client, dock.Info.DockAngle),
+				new HeliLand(client, false));
+		}
+
+		Activity IDockActivity.DockActivities(Actor host, Actor client, Dock dock)
+		{
+			client.SetTargetLine(Target.FromCell(client.World, dock.Location), Color.Green, false);
+
+			// Let's reload. The assumption here is that for aircrafts, there are no waiting docks.
+			return new ResupplyAircraft(client);
+		}
+
+		Activity IDockActivity.ActivitiesAfterDockDone(Actor host, Actor client, Dock dock)
+		{
+			var rp = host.Trait<RallyPoint>();
+
+			// Take off and move to RP.
+			// I know this depreciates AbortOnResupply activity but it is a bug to reuse NextActivity!
+			client.SetTargetLine(Target.FromCell(client.World, rp.Location), Color.Green, false);
+			return client.Trait<IMove>().MoveTo(rp.Location, 2);
+
+			// Old code:
+			// client.Info.TraitInfo<AircraftInfo>().AbortOnResupply ? null : client.CurrentActivity.NextActivity));
+		}
+
+		Activity IDockActivity.ActivitiesOnDockFail(Actor client)
+		{
+			// Stay idle
+			return null;
 		}
 	}
 }
