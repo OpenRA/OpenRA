@@ -32,7 +32,11 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 		public readonly string SpawnUnit;
 
 		[Desc("The armament which will trigger the spawning. (== \"Name:\" tag of Armament, not @tag!)")]
+		[WeaponReference]
 		public readonly string SpawnerArmamentName = "primary";
+
+		[Desc("Spawned will not take any orders from the spawner?")]
+		public readonly bool IndependentSpawned = false;
 
 		[Desc("Spawn is a missile that dies and not return.")]
 		public readonly bool SpawnIsMissile = false;
@@ -106,6 +110,8 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 		// int launchingToken = ConditionManager.InvalidConditionToken;
 		int regenTicks = 0;
 
+		RallyPoint rallyPoint;
+
 		public Spawner(ActorInitializer init, SpawnerInfo info)
 		{
 			self = init.Self;
@@ -123,8 +129,8 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 		{
 			var unit = self.World.CreateActor(false, Info.SpawnUnit.ToLowerInvariant(),
 				new TypeDictionary { new OwnerInit(self.Owner) });
-			var spawned = unit.Trait<Spawned>();
-			spawned.Master = self; // let the spawned unit return to me for reloading and repair.
+
+			unit.Trait<Spawned>().LinkMaster(self, Info.IndependentSpawned);
 
 			var se = new SpawnEntry();
 			se.Spawned = unit;
@@ -135,6 +141,7 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 		public void Created(Actor self)
 		{
 			conditionManager = self.Trait<ConditionManager>();
+			rallyPoint = self.TraitOrDefault<RallyPoint>();
 		}
 
 		IEnumerable<CPos> GetAdjacentCells()
@@ -157,8 +164,9 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 				return;
 
 			// Issue retarget order for already launched ones
-			foreach (var spawned in launched)
-				spawned.Trait<Spawned>().AttackTarget(spawned, target);
+			if (!Info.IndependentSpawned)
+				foreach (var spawned in launched)
+					spawned.Trait<Spawned>().AttackTarget(spawned, target);
 
 			if (spawns.Count == 0)
 				return;
@@ -202,12 +210,14 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 				// Move into world, if not. Ground units get stuck without this.
 				if (Info.SpawnIsGroundUnit)
 				{
-					var mv = s.Trait<IMove>().MoveIntoWorld(s, self.Location);
-					if (mv != null)
-						s.QueueActivity(mv);
+					var mv = s.Trait<IMove>(); // .MoveIntoWorld(s, self.Location);
+					s.QueueActivity(mv.MoveIntoWorld(s, self.World.Map.CellContaining(self.CenterPosition + spawn_offset)));
+					if (rallyPoint != null)
+						s.QueueActivity(mv.MoveTo(rallyPoint.Location, 2));
 				}
 
-				s.Trait<Spawned>().AttackTarget(s, target);
+				if (!Info.IndependentSpawned)
+					s.Trait<Spawned>().AttackTarget(s, target);
 				w.Add(s);
 			});
 		}
@@ -219,11 +229,12 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 
 		void Recall(Actor self)
 		{
+			if (Info.IndependentSpawned)
+				return;
+
 			// Tell launched slaves to come back and enter me.
 			foreach (var s in launched)
-			{
 				s.Trait<Spawned>().EnterSpawner(s);
-			}
 		}
 
 		public void SlaveKilled(Actor self, Actor slave)

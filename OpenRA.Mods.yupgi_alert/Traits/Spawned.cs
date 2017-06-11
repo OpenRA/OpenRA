@@ -39,8 +39,12 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 	class Spawned : IIssueOrder, IResolveOrder, INotifyKilled, INotifyBecomingIdle
 	{
 		readonly SpawnedInfo info;
-		public Actor Master = null;
 		readonly AmmoPool[] ammoPools;
+
+		Actor master = null;
+		bool independent = false; // can be ordered like an independent unit?
+
+		public Actor Master { get { return master; } }
 
 		public Spawned(ActorInitializer init, SpawnedInfo info)
 		{
@@ -48,19 +52,33 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 			ammoPools = init.Self.TraitsImplementing<AmmoPool>().ToArray();
 		}
 
+		public void LinkMaster(Actor master, bool independent)
+		{
+			this.master = master;
+			this.independent = independent;
+		}
+
 		public IEnumerable<IOrderTargeter> Orders
 		{
-			get { yield return new SpawnedReturnOrderTargeter(info); }
+			get { yield return new SpawnedReturnOrderTargeter(Info); }
+		}
+
+		internal SpawnedInfo Info
+		{
+			get
+			{
+				return info;
+			}
 		}
 
 		void INotifyKilled.Killed(Actor self, AttackInfo e)
 		{
 			// If killed, I tell my master that I'm gone.
 			// Can happen, when built from build palette (w00t)
-			if (Master == null || Master.Disposed || Master.IsDead)
+			if (master == null || master.Disposed || master.IsDead)
 				return;
-			var spawner = Master.Trait<Spawner>();
-			spawner.SlaveKilled(Master, self);
+			var spawner = master.Trait<Spawner>();
+			spawner.SlaveKilled(master, self);
 		}
 
 		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
@@ -84,7 +102,7 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 				return false;
 
 			var spawned = self.Trait<Spawned>();
-			return order.TargetActor == spawned.Master;
+			return order.TargetActor == spawned.master;
 		}
 
 		public void ResolveOrder(Actor self, Order order)
@@ -105,15 +123,15 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 
 		public void EnterSpawner(Actor self)
 		{
-			if (Master == null || Master.IsDead)
+			if (master == null || master.IsDead)
 				self.Kill(self); // No master == death.
 			else if (!(self.CurrentActivity is EnterSpawner))
 			{
-				var tgt = Target.FromActor(Master);
+				var tgt = Target.FromActor(master);
 				self.CancelActivity();
 				if (self.TraitOrDefault<AttackPlane>() != null) // Let attack planes approach me first, before landing.
-					self.QueueActivity(new Fly(self, tgt, WDist.Zero, info.LandingDistance));
-				self.QueueActivity(new EnterSpawner(self, Master, EnterBehaviour.Exit));
+					self.QueueActivity(new Fly(self, tgt, WDist.Zero, Info.LandingDistance));
+				self.QueueActivity(new EnterSpawner(self, master, EnterBehaviour.Exit));
 			}
 		}
 
@@ -188,6 +206,9 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 
 		public virtual void OnBecomingIdle(Actor self)
 		{
+			if (independent)
+				return;
+
 			// Return when nothing to attack.
 			// Don't let myself to circle around the player's construction yard.
 			if (self.TraitOrDefault<ShootableBallisticMissile>() != null)
@@ -214,7 +235,7 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 
 				var spawned = self.Trait<Spawned>();
 
-				if (target != spawned.Master)
+				if (target != spawned.master)
 					return false;
 
 				return true;
