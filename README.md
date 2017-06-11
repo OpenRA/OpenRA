@@ -6,6 +6,10 @@ This fork is like experimental branch of Linux Debian distribution: I push the b
 
 I do hope that one day these experimental stuff get popular and find its way into main OpenRA code...
 
+## Notable modification to OpenRA.Game.exe, in this branch
+* Supports "sky box". (needed game.exe modification argh)
+* You can rename it to OpenRA.{modname}.exe and it will launch the mod.
+
 ## Commit tags
 In commit message, I put these string as tags:
 * [SPAWN]: code modifications for spawners or spawned ones. Used for aircraft carriers and V3-like AA shootable missiles.
