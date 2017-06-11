@@ -31,6 +31,11 @@ using OpenRA.Mods.Common.Traits;
 using OpenRA.Mods.Yupgi_alert.Traits;
 using OpenRA.Traits;
 
+/*
+Requires base engine changes.
+Since this inherits "Enter", you need to make several variables "protected".
+*/
+
 namespace OpenRA.Mods.Yupgi_alert.Activities
 {
 	class EnterSpawner : Enter

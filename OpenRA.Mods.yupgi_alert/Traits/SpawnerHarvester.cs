@@ -23,6 +23,12 @@ using OpenRA.Mods.Yupgi_alert.Activities;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
+/*
+Sort of works without engine mod if you get docking right.
+If you want "legit" OP Mod docking behavior where the slaves dock any cells near the Master,
+then you need to modify harvester logics, which is the very core of the engine!
+*/
+
 namespace OpenRA.Mods.Yupgi_alert.Traits
 {
 	[Desc("This actor is a harvester that uses its spawns to indirectly harvest resources. i.e., Slave Miner.")]

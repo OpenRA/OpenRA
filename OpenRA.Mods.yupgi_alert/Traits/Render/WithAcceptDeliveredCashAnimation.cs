@@ -13,6 +13,12 @@ using OpenRA.Mods.Common.Traits;
 using OpenRA.Mods.Common.Traits.Render;
 using OpenRA.Traits;
 
+/*
+Needs base engine modification.
+Need to define INotifyCashTransfer at OpenRA.Mods.Common\TraitsInterfaces.cs
+Then modify DeliversCash to implement the notification.
+*/
+
 namespace OpenRA.Mods.Yupgi_alert.Traits.Render
 {
 	[Desc("Replaces the building animation when it accepts a cash delivery unit.")]

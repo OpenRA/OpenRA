@@ -16,6 +16,8 @@ using System.Collections.Generic;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
+/* Works without base engine modification */
+
 namespace OpenRA.Mods.Yupgi_alert.Traits
 {
 	[Desc("This actor receives damage from the given weapon when in radioactive area.")]

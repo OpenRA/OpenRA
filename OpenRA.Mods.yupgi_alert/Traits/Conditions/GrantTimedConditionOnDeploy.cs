@@ -18,6 +18,8 @@ using OpenRA.Mods.Common.Traits;
 using OpenRA.Mods.Common.Traits.Render;
 using OpenRA.Traits;
 
+/* Works without base engine modification */
+
 namespace OpenRA.Mods.AS.Traits
 {
 	public class GrantTimedConditionOnDeployInfo : ITraitInfo

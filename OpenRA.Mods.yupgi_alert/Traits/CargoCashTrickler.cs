@@ -16,6 +16,8 @@ using OpenRA.Mods.Common.Effects;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
+/* Works without base engine modification */
+
 namespace OpenRA.Mods.Yupgi_alert.Traits
 {
 	[Desc("Lets the actor generate cash in a set periodic time.")]

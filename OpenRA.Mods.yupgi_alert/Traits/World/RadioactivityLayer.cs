@@ -18,6 +18,8 @@ using OpenRA.Graphics;
 using OpenRA.Mods.Yupgi_alert.Graphics;
 using OpenRA.Traits;
 
+/* Works without base engine modification */
+
 namespace OpenRA.Mods.Yupgi_alert.Traits
 {
 	[Desc("Attach this to the world actor. Radioactivity layer, as in RA2 desolator radioactivity. Order of the layers defines the Z sorting.")]

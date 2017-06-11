@@ -21,6 +21,8 @@ using OpenRA.Mods.Common.Traits;
 using OpenRA.Mods.Yupgi_alert.Activities;
 using OpenRA.Traits;
 
+/* Works without base engine modification */
+
 namespace OpenRA.Mods.Yupgi_alert.Traits
 {
 	[Desc("This player actor has this many Nydus canals. Must be attached to the player by attaching in player.yaml, otherwise Nydus logic won't work.")]

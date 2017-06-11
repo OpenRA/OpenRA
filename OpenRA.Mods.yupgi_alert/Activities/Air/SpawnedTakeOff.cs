@@ -18,6 +18,8 @@ using OpenRA.Mods.Common.Traits;
 using OpenRA.Mods.Yupgi_alert.Traits;
 using OpenRA.Traits;
 
+/* Works with no base engine modification */
+
 namespace OpenRA.Mods.Yupgi_alert.Activities
 {
 	public class SpawnedTakeOff : Activity

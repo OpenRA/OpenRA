@@ -18,6 +18,8 @@ using OpenRA.GameRules;
 using OpenRA.Mods.Yupgi_alert.Traits;
 using OpenRA.Traits;
 
+/* Works without base engine modification. */
+
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("This actor explodes when killed and the kill XP goes to the Spawner.")]

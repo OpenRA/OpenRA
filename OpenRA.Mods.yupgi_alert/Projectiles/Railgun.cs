@@ -11,6 +11,8 @@
  */
 #endregion
 
+/* Works without base engine modification */
+
 using System.Collections.Generic;
 using System.Drawing;
 using OpenRA.GameRules;

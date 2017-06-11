@@ -22,6 +22,8 @@ using OpenRA.Mods.Common.Traits.Render;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
+/* Works without base engine modification */
+
 namespace OpenRA.Mods.Yupgi_alert.Traits
 {
 	[Desc("Transforms cargo inside when some predefined combination is met.")]

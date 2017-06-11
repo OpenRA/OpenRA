@@ -17,6 +17,8 @@ using OpenRA.Mods.Common.Traits;
 using OpenRA.Mods.Common.Warheads;
 using OpenRA.Traits;
 
+/* Works without base engine modification */
+
 namespace OpenRA.Mods.AS.Warheads
 {
 	[Desc("AS warhead extension class." +

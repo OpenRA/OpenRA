@@ -13,6 +13,8 @@ using System.Drawing;
 using OpenRA.Graphics;
 using OpenRA.Traits;
 
+/* Works without base engine modification */
+
 namespace OpenRA.Mods.Common.Traits
 {
 	public class IronCurtainPaletteEffectInfo : ITraitInfo

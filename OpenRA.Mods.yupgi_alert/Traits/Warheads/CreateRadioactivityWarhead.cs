@@ -19,6 +19,8 @@ using OpenRA.Mods.Common.Warheads;
 using OpenRA.Mods.Yupgi_alert.Traits;
 using OpenRA.Traits;
 
+/* Works without base engine modification */
+
 namespace OpenRA.Mods.Yupgi_alert.Warheads
 {
 	public class CreateRadioactivityWarhead : DamageWarhead, IRulesetLoaded<WeaponInfo>

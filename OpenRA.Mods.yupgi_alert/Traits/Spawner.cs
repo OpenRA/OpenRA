@@ -20,6 +20,23 @@ using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
+/*
+Needs base engine modifications...
+
+For slave miners:
+But the docking procedure may need to change to fit your needs.
+In OP Mod, docking changed for Harvester.cs and related files to that
+these slaves can "dock" to any adjacent cells near the master.
+
+For airborne carriers:
+Those spawned aircrafts do work without any base engine modifcation.
+However, land.cs modified so that they will "land" mid air.
+Track readonly WDist landHeight; for related changes.
+
+EnterSpawner needs modifications too, as it inherits Enter.cs
+and uses its internal variables.
+*/
+
 namespace OpenRA.Mods.Yupgi_alert.Traits
 {
 	[Desc("This actor can spawn actors.")]

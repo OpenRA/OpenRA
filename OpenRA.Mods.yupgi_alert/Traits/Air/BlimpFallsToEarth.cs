@@ -14,6 +14,8 @@ using OpenRA.Mods.Common.Traits;
 using OpenRA.Mods.Yupgi_alert.Activities;
 using OpenRA.Traits;
 
+/* Works without base engine modification */
+
 namespace OpenRA.Mods.Yupgi_alert.Traits
 {
 	[Desc("Causes aircraft husks that are spawned in the air to crash to the ground.")]

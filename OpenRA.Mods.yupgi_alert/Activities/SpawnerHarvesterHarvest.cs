@@ -12,6 +12,11 @@
  */
 #endregion
 
+/*
+This one itself doesn't need engine mod.
+The slave harvester's docking however, needs engine mod.
+*/
+
 using System.Collections.Generic;
 using System.Drawing;
 using OpenRA.Activities;

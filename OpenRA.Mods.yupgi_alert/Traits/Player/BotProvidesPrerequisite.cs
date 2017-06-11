@@ -14,6 +14,8 @@ using System.Linq;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
+/* Works without base engine modification */
+
 namespace OpenRA.Mods.Yupgi_alert.Traits
 {
 	public class BotProvidesPrerequisiteInfo : ITechTreePrerequisiteInfo

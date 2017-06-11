@@ -21,6 +21,8 @@ using OpenRA.Mods.Yupgi_alert.Orders;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
+/* Works without base engine modification */
+
 namespace OpenRA.Mods.Yupgi_alert.Traits
 {
 	[Desc("This unit, when ordered to move, will fly in ballistic path then will detonate itself upon reaching target.")]

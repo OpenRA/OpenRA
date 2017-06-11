@@ -1,5 +1,7 @@
 ﻿#region Copyright & License Information
 /*
+ * Made by Boolbada of OP mod then adopted by Mods.AS devs then improved again by Boolbada
+ *
  * Copyright 2015- OpenRA.Mods.AS Developers (see AUTHORS)
  * This file is a part of a third-party plugin for OpenRA, which is
  * free software. It is made available to you under the terms of the
@@ -7,6 +9,8 @@
  * Foundation. For more information, see COPYING.
  */
 #endregion
+
+/* Works without base engine modification */
 
 using System;
 using System.Linq;

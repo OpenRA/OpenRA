@@ -23,6 +23,12 @@ using OpenRA.Mods.Common.Traits;
 using OpenRA.Mods.Yupgi_alert.Activities;
 using OpenRA.Traits;
 
+/*
+Works without base engine modification.
+However, Mods.Common\Activities\Air\Land.cs is modified to support the air units to land "mid air!"
+See landHeight private variable to track the changes.
+*/
+
 namespace OpenRA.Mods.Yupgi_alert.Traits
 {
 	[Desc("Can be slaved to a spawner.")]

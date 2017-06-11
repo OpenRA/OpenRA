@@ -19,6 +19,10 @@ using OpenRA.Effects;
 using OpenRA.Graphics;
 using OpenRA.Mods.Yupgi_alert.Traits;
 
+/*
+Works without base engine modification
+*/
+
 namespace OpenRA.Mods.Yupgi_alert.Graphics
 {
 	class Radioactivity : IRenderable, IFinalizedRenderable, IEffect
