@@ -229,6 +229,7 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 			var actor = self.World.CreateActor(false, info.SpawnUnit.ToLowerInvariant(),
 				new TypeDictionary { new OwnerInit(self.Owner) });
 			var sh = actor.Trait<Harvester>();
+
 			sh.Master = self; // let the spawned actor resolve me.
 
 			launched.Add(actor);

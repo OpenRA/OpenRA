@@ -1232,10 +1232,11 @@ namespace OpenRA.Mods.Common.AI
 			}
 			else if (self.TraitOrDefault<Aircraft>() != null)
 			{
+				// Aircraft micro control
 				if (WhichSquad.ContainsKey(self))
 				{
-					WhichSquad[self].Damage(e);
-					WhichSquad[self].Update();
+					WhichSquad[self].Damage(e); // Reflex avoidance
+					WhichSquad[self].Update(); // Determine flee or not
 				}
 			}
 		}

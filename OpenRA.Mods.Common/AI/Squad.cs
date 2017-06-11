@@ -100,6 +100,10 @@ namespace OpenRA.Mods.Common.AI
 
 		internal void Damage(AttackInfo e)
 		{
+			// Friendly fire damage can happen, as weapons have spread damage.a
+			if (e.Attacker.AppearsFriendlyTo(Bot.Player.PlayerActor))
+				return;
+
 			if (Type == SquadType.Air)
 			{
 				// decide flee or retaliate.
