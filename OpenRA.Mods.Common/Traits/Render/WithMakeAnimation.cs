@@ -35,7 +35,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 	public class WithMakeAnimation : INotifyCreated, INotifyDeployTriggered
 	{
 		readonly WithMakeAnimationInfo info;
-		readonly WithSpriteBody[] wsbs;
+		readonly IPlayCustomAnimation[] pcas;
 
 		ConditionManager conditionManager;
 		int token = ConditionManager.InvalidConditionToken;
@@ -44,7 +44,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		{
 			this.info = info;
 			var self = init.Self;
-			wsbs = self.TraitsImplementing<WithSpriteBody>().Where(w => info.BodyNames.Contains(w.Info.Name)).ToArray();
+			pcas = self.TraitsImplementing<IPlayCustomAnimation>().Where(p => info.BodyNames.Contains(p.BodyName)).ToArray();
 		}
 
 		void INotifyCreated.Created(Actor self)
@@ -60,7 +60,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			if (conditionManager != null && !string.IsNullOrEmpty(info.Condition) && token == ConditionManager.InvalidConditionToken)
 				token = conditionManager.GrantCondition(self, info.Condition);
 
-			var wsb = wsbs.FirstOrDefault(Exts.IsTraitEnabled);
+			var wsb = pcas.FirstOrDefault(Exts.IsTraitEnabled);
 
 			if (wsb == null)
 				return;
@@ -80,7 +80,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			if (conditionManager != null && !string.IsNullOrEmpty(info.Condition) && token == ConditionManager.InvalidConditionToken)
 				token = conditionManager.GrantCondition(self, info.Condition);
 
-			var wsb = wsbs.FirstOrDefault(Exts.IsTraitEnabled);
+			var wsb = pcas.FirstOrDefault(Exts.IsTraitEnabled);
 
 			if (wsb == null)
 				return;
@@ -99,14 +99,14 @@ namespace OpenRA.Mods.Common.Traits.Render
 		{
 			Reverse(self, () =>
 			{
-				var wsb = wsbs.FirstOrDefault(Exts.IsTraitEnabled);
+				var pca = pcas.FirstOrDefault(Exts.IsTraitEnabled);
 
 				// HACK: The actor remains alive and active for one tick before the followup activity
 				// (sell/transform/etc) runs. This causes visual glitches that we attempt to minimize
 				// by forcing the animation to frame 0 and regranting the make condition.
 				// These workarounds will break the actor if the followup activity doesn't dispose it!
-				if (wsb != null)
-					wsb.DefaultAnimation.PlayFetchIndex(info.Sequence, () => 0);
+				if (pca != null)
+					pca.PlayFetchIndex(self, info.Sequence, () => 0);
 
 				if (conditionManager != null && !string.IsNullOrEmpty(info.Condition))
 					token = conditionManager.GrantCondition(self, info.Condition);
@@ -120,13 +120,13 @@ namespace OpenRA.Mods.Common.Traits.Render
 		{
 			var notified = false;
 
-			foreach (var wsb in wsbs)
+			foreach (var pca in pcas)
 			{
-				if (wsb.IsTraitDisabled)
+				if (pca.IsAnimDisabled)
 					continue;
 
 				var notify = self.TraitsImplementing<INotifyDeployComplete>();
-				wsb.PlayCustomAnimation(self, info.Sequence, () =>
+				pca.PlayCustomAnimation(self, info.Sequence, () =>
 				{
 					if (notified)
 						return;
@@ -145,13 +145,13 @@ namespace OpenRA.Mods.Common.Traits.Render
 		{
 			var notified = false;
 
-			foreach (var wsb in wsbs)
+			foreach (var pca in pcas)
 			{
-				if (wsb.IsTraitDisabled)
+				if (pca.IsAnimDisabled)
 					continue;
 
 				var notify = self.TraitsImplementing<INotifyDeployComplete>();
-				wsb.PlayCustomAnimationBackwards(self, info.Sequence, () =>
+				pca.PlayCustomAnimationBackwards(self, info.Sequence, () =>
 				{
 					if (notified)
 						return;

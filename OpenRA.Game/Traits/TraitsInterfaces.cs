@@ -443,4 +443,15 @@ namespace OpenRA.Traits
 			return playerName + " " + BoolValues[newValue] + " " + Name + ".";
 		}
 	}
+
+	public interface IPlayCustomAnimation
+	{
+		void PlayCustomAnimation(Actor self, string name, Action after = null);
+		void PlayCustomAnimationRepeating(Actor self, string name);
+		void PlayCustomAnimationBackwards(Actor self, string name, Action after = null);
+		void PlayFetchIndex(Actor self, string name, Func<int> func);
+		void CancelCustomAnimation(Actor self);
+		string BodyName { get; }
+		bool IsAnimDisabled { get; }
+	}
 }

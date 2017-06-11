@@ -98,6 +98,7 @@ thumper:
 	Mobile:
 		Speed: 43
 		RequiresCondition: !deployed
+	WithMakeAnimation:
 	GrantConditionOnDeploy:
 		DeployedCondition: deployed
 		Facing: 128
