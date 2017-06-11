@@ -9,13 +9,12 @@
  */
 #endregion
 
-using System;
 using System.Collections.Generic;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Orders;
-using OpenRA.Mods.Common.Traits.Render;
 using OpenRA.Traits;
+using System.Linq;
 
 namespace OpenRA.Mods.Common.Traits
 {
@@ -68,7 +67,6 @@ namespace OpenRA.Mods.Common.Traits
 		readonly GrantConditionOnDeployInfo info;
 		readonly bool checkTerrainType;
 		readonly bool canTurn;
-		readonly Lazy<WithSpriteBody> body;
 
 		DeployState deployState;
 		ConditionManager conditionManager;
@@ -83,7 +81,6 @@ namespace OpenRA.Mods.Common.Traits
 			this.info = info;
 			checkTerrainType = info.AllowedTerrainTypes.Count > 0;
 			canTurn = self.Info.HasTraitInfo<IFacingInfo>();
-			body = Exts.Lazy(self.TraitOrDefault<WithSpriteBody>);
 			if (init.Contains<DeployStateInit>())
 				deployState = init.Get<DeployStateInit, DeployState>();
 		}
@@ -195,6 +192,14 @@ namespace OpenRA.Mods.Common.Traits
 			return ramp == 0;
 		}
 
+		IPlayCustomAnimation GetEnabledAnimationProvider(Actor self)
+		{
+			var tmp = self.TraitsImplementing<IPlayCustomAnimation>().Where(b => b.IsTraitEnabled());
+			if (!tmp.Any())
+				return null;
+			return tmp.First();
+		}
+
 		/// <summary>Play deploy sound and animation.</summary>
 		void Deploy() { Deploy(false); }
 		void Deploy(bool init)
@@ -213,12 +218,14 @@ namespace OpenRA.Mods.Common.Traits
 			if (!init)
 				OnDeployStarted();
 
+			var body = GetEnabledAnimationProvider(self);
+
 			// If there is no animation to play just grant the condition that is used while deployed.
 			// Alternatively, play the deploy animation and then grant the condition.
-			if (string.IsNullOrEmpty(info.DeployAnimation) || body.Value == null)
+			if (string.IsNullOrEmpty(info.DeployAnimation) || body == null)
 				OnDeployCompleted();
 			else
-				body.Value.PlayCustomAnimation(self, info.DeployAnimation, OnDeployCompleted);
+				body.PlayCustomAnimation(self, info.DeployAnimation, OnDeployCompleted);
 		}
 
 		/// <summary>Play undeploy sound and animation and after that revoke the condition.</summary>
@@ -235,12 +242,14 @@ namespace OpenRA.Mods.Common.Traits
 			if (!init)
 				OnUndeployStarted();
 
+			var body = GetEnabledAnimationProvider(self);
+
 			// If there is no animation to play just grant the condition that is used while undeployed.
 			// Alternatively, play the undeploy animation and then grant the condition.
-			if (string.IsNullOrEmpty(info.DeployAnimation) || body.Value == null)
+			if (string.IsNullOrEmpty(info.DeployAnimation) || body == null)
 				OnUndeployCompleted();
 			else
-				body.Value.PlayCustomAnimationBackwards(self, info.DeployAnimation, OnUndeployCompleted);
+				body.PlayCustomAnimationBackwards(self, info.DeployAnimation, OnUndeployCompleted);
 		}
 
 		void OnDeployStarted()

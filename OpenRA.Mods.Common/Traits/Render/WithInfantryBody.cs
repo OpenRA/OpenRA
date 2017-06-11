@@ -52,7 +52,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		}
 	}
 
-	public class WithInfantryBody : ConditionalTrait<WithInfantryBodyInfo>, ITick, INotifyAttack, INotifyIdle
+	public class WithInfantryBody : ConditionalTrait<WithInfantryBodyInfo>, ITick, INotifyAttack, INotifyIdle, IPlayCustomAnimation
 	{
 		readonly IMove move;
 		protected readonly Animation DefaultAnimation;
@@ -134,6 +134,9 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		public virtual void Tick(Actor self)
 		{
+			if (state == AnimationState.PlayingCustomAnimation)
+				return;
+
 			if (rsm != null)
 			{
 				if (wasModifying != rsm.IsModifyingSequence)
@@ -159,7 +162,13 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		public void TickIdle(Actor self)
 		{
-			if (state != AnimationState.Idle && state != AnimationState.IdleAnimating && state != AnimationState.Attacking)
+			if (state == AnimationState.PlayingCustomAnimation)
+				return;
+
+			if (state == AnimationState.Attacking)
+				return;
+
+			if (state != AnimationState.Idle && state != AnimationState.IdleAnimating)
 			{
 				PlayStandAnimation(self);
 				state = AnimationState.Idle;
@@ -192,13 +201,56 @@ namespace OpenRA.Mods.Common.Traits.Render
 			}
 		}
 
+		public void PlayCustomAnimation(Actor self, string name, Action after = null)
+		{
+			state = AnimationState.PlayingCustomAnimation;
+			DefaultAnimation.PlayThen(NormalizeInfantrySequence(self, name), () =>
+			{
+				DefaultAnimation.PlayThen(NormalizeInfantrySequence(self, name), () =>
+				{
+					state = AnimationState.Waiting;
+					PlayStandAnimation(self);
+				});
+				after?.Invoke();
+			});
+		}
+
+		public void PlayCustomAnimationRepeating(Actor self, string name)
+		{
+			state = AnimationState.PlayingCustomAnimation;
+			var sequence = NormalizeInfantrySequence(self, name);
+			DefaultAnimation.PlayThen(sequence, () =>
+			{
+				state = AnimationState.Waiting;
+				PlayStandAnimation(self);
+			});
+		}
+
+		public void PlayCustomAnimationBackwards(Actor self, string name, Action after = null)
+		{
+			state = AnimationState.PlayingCustomAnimation;
+			DefaultAnimation.PlayBackwardsThen(NormalizeInfantrySequence(self, name), () =>
+			{
+				state = AnimationState.Waiting;
+				PlayStandAnimation(self);
+				after?.Invoke();
+			});
+		}
+
+		public void CancelCustomAnimation(Actor self)
+		{
+			state = AnimationState.Waiting;
+			PlayStandAnimation(self);
+		}
+
 		enum AnimationState
 		{
 			Idle,
 			Attacking,
 			Moving,
 			Waiting,
-			IdleAnimating
+			IdleAnimating,
+			PlayingCustomAnimation
 		}
 	}
 }

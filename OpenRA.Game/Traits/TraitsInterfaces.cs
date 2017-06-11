@@ -447,4 +447,12 @@ namespace OpenRA.Traits
 		void OnDeployed(Actor self);
 		void OnUndeployed(Actor self);
 	}
+
+	public interface IPlayCustomAnimation
+	{
+		void PlayCustomAnimation(Actor self, string name, Action after = null);
+		void PlayCustomAnimationRepeating(Actor self, string name);
+		void PlayCustomAnimationBackwards(Actor self, string name, Action after = null);
+		void CancelCustomAnimation(Actor self);
+	}
 }

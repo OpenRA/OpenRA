@@ -43,7 +43,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		}
 	}
 
-	public class WithSpriteBody : ConditionalTrait<WithSpriteBodyInfo>, INotifyDamageStateChanged, INotifyBuildComplete
+	public class WithSpriteBody : ConditionalTrait<WithSpriteBodyInfo>, INotifyDamageStateChanged, INotifyBuildComplete, IPlayCustomAnimation
 	{
 		public readonly Animation DefaultAnimation;
 
