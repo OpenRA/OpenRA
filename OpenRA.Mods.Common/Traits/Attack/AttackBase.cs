@@ -24,6 +24,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Armament names")]
 		public readonly string[] Armaments = { "primary", "secondary" };
 
+		[Desc("Attack the target's center, instead of the closest targetable offset.")]
+		public readonly bool AttackTargetCenter = false;
+
 		public readonly string Cursor = null;
 
 		public readonly string OutsideRangeCursor = null;
