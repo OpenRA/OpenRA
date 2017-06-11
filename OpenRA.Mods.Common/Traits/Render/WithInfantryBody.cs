@@ -211,7 +211,8 @@ namespace OpenRA.Mods.Common.Traits.Render
 					state = AnimationState.Waiting;
 					PlayStandAnimation(self);
 				});
-				after?.Invoke();
+                if (after != null)
+                    after.Invoke();
 			});
 		}
 
@@ -233,7 +234,8 @@ namespace OpenRA.Mods.Common.Traits.Render
 			{
 				state = AnimationState.Waiting;
 				PlayStandAnimation(self);
-				after?.Invoke();
+                if (after != null)
+                    after.Invoke();
 			});
 		}
 
