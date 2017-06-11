@@ -156,6 +156,7 @@ ARTY:
 		LocalOffset: 624,0,208
 		MuzzleSequence: muzzle
 	AttackFrontal:
+		AttackTargetCenter: true
 	WithMuzzleOverlay:
 	AutoTarget:
 		InitialStanceAI: Defend
@@ -472,6 +473,7 @@ MSAM:
 		Weapon: 227mm
 		LocalOffset: 213,-128,0, 213,128,0
 	AttackFrontal:
+		AttackTargetCenter: true
 	WithSpriteTurret:
 		AimSequence: aim
 	SpawnActorOnDeath:
