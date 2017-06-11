@@ -71,6 +71,12 @@ namespace OpenRA.Mods.Common.Traits
 
 		public bool HasFreeServiceDock(Actor client)
 		{
+			// This one is usually used by actors who will NOT use
+			// waiting docks (aircrafts).
+			// It makes sense to update dock status here.
+			CheckObstacle(host);
+			RemoveDead(queue);
+
 			foreach (var d in serviceDocks)
 			{
 				if (d.Occupier == null)
@@ -105,6 +111,12 @@ namespace OpenRA.Mods.Common.Traits
 
 		void CheckObstacle(Actor host)
 		{
+			if (info.DockNextToActor)
+				return;
+
+			if (!info.ExternalDocks)
+				return;
+
 			if (host.Location == lastLocation)
 				return;
 			lastLocation = host.Location;
@@ -389,7 +401,6 @@ namespace OpenRA.Mods.Common.Traits
 		void ProcessQueue(Actor host, Actor client)
 		{
 			CheckObstacle(host);
-
 			RemoveDead(queue);
 
 			// Now serve the 1st in line, until all service docks are occupied.
