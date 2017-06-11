@@ -36,6 +36,9 @@ namespace OpenRA.Mods.Cnc.Projectiles
 
 		public readonly bool TrackTarget = true;
 
+		[Desc("Ignore any other targetable positions and aim directly at center of target actor.")]
+		public readonly bool TargetCenterPosition = false;
+
 		public IProjectile Create(ProjectileArgs args) { return new TeslaZap(this, args); }
 	}
 
@@ -64,7 +67,7 @@ namespace OpenRA.Mods.Cnc.Projectiles
 
 			// Zap tracks target
 			if (info.TrackTarget && args.GuidedTarget.IsValidFor(args.SourceActor))
-				target = args.GuidedTarget.Positions.PositionClosestTo(args.Source);
+				target = info.TargetCenterPosition ? args.GuidedTarget.CenterPosition : args.GuidedTarget.Positions.PositionClosestTo(args.Source);
 
 			if (damageDuration-- > 0)
 				args.Weapon.Impact(Target.FromPos(target), args.SourceActor, args.DamageModifiers);
