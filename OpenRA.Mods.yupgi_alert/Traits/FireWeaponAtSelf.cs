@@ -19,9 +19,9 @@ namespace OpenRA.Mods.AS.Traits
 	[Desc("Fires one of its armament at the actor's position when enabled.")]
 	public class FireWeaponAtSelfInfo : ConditionalTraitInfo, Requires<ArmamentInfo>
 	{
-		[WeaponReference, FieldLoader.Require]
+		[WeaponReference]
 		[Desc("The name of the weapon, one of its armament. Must be specified with \"Name:\" field.")]
-		public readonly string Name = null;
+		public readonly string Name = "primary";
 
 		[Desc("Fire at this position.")]
 		public readonly WVec LocalOffset = WVec.Zero;
@@ -42,7 +42,7 @@ namespace OpenRA.Mods.AS.Traits
 			this.info = info;
 
 			armaments = self.TraitsImplementing<Armament>().Where(a => a.Info.Name == info.Name).ToArray();
-			System.Diagnostics.Debug.Assert(armaments.Length == 1, "Multiple armaments with given name detected.");
+			System.Diagnostics.Debug.Assert(armaments.Length == 1, "Multiple armaments with given name detected: " + info.Name);
 			body = self.TraitOrDefault<BodyOrientation>();
 
 			// Not sure about attackbase selection. I assert there is only one active at once,
