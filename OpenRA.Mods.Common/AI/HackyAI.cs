@@ -672,7 +672,7 @@ namespace OpenRA.Mods.Common.AI
 			if (--assignRolesTicks <= 0)
 			{
 				assignRolesTicks = Info.AssignRolesInterval;
-				//KillOutOfMapAircrafts();
+				////KillOutOfMapAircrafts();
 				GiveOrdersToIdleHarvesters();
 				FindNewUnits(self);
 				FindAndDeployBackupMcv(self);

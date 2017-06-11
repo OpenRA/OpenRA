@@ -42,10 +42,11 @@ namespace OpenRA.Mods.AS.Traits
 			this.info = info;
 
 			armaments = self.TraitsImplementing<Armament>().Where(a => a.Info.Name == info.Name).ToArray();
-			System.Diagnostics.Debug.Assert(armaments.Length == 1);
+			System.Diagnostics.Debug.Assert(armaments.Length == 1, "Multiple armaments with given name detected.");
 			body = self.TraitOrDefault<BodyOrientation>();
 
-			// Not sure about attackbase selection. I assert there is only one active at once.
+			// Not sure about attackbase selection. I assert there is only one active at once,
+			// but then if we decide this at creation time... ugh.
 			attackBase = self.TraitsImplementing<AttackBase>().Where(a => a.IsTraitEnabled()).First();
 		}
 
