@@ -1,5 +1,8 @@
 #region Copyright & License Information
 /*
+ * Modded by Boolbada of OP Mod.
+ * Started from Mod.AS's ExplodesWeapon trait but not much left.
+ * 
  * Copyright 2015- OpenRA.Mods.AS Developers (see AUTHORS)
  * This file is a part of a third-party plugin for OpenRA, which is
  * free software. It is made available to you under the terms of the
@@ -14,7 +17,7 @@ using OpenRA.Traits;
 
 /* Works without base engine modification */
 
-namespace OpenRA.Mods.AS.Traits
+namespace OpenRA.Mods.yupgi_alert.Traits
 {
 	[Desc("Fires one of its armament at the actor's position when enabled.")]
 	public class FireWeaponAtSelfInfo : ConditionalTraitInfo, Requires<ArmamentInfo>
