@@ -76,6 +76,7 @@
     <Compile Include="Graphics\RailgunRenderable.cs" />
     <Compile Include="Graphics\Radioactivity.cs" />
     <Compile Include="Graphics\RadBeamRenderable.cs" />
+    <Compile Include="Graphics\ArcRenderable.cs" />
     <Compile Include="Orders\ShootableBallisticMissileMoveOrderTargeter.cs" />
     <Compile Include="Projectiles\Railgun.cs" />
     <Compile Include="Projectiles\RadBeam.cs" />

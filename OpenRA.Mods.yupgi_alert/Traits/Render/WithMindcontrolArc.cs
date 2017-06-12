@@ -9,23 +9,32 @@
  */
 #endregion
 
-using System;
 using System.Collections.Generic;
 using System.Drawing;
 using OpenRA.Graphics;
 using OpenRA.Traits;
+using OpenRA.Yupgi_alert.Graphics;
 
 /* Works without base engine modification */
 
-namespace OpenRA.Mods.yupgi_alert.Traits
+namespace OpenRA.Mods.Yupgi_alert.Traits
 {
 	public class WithMindcontrolArcInfo : ITraitInfo
 	{
 		[Desc("Color of the arc")]
-		public readonly Color Color = Color.PaleVioletRed;
+		public readonly Color Color = Color.FromArgb(128, Color.PaleVioletRed);
 
 		[Desc("Height of the highest point")]
 		public readonly WDist Height = new WDist(1024);
+
+		[Desc("Drawing from self.CenterPosition draws the curve from the foot. Add this much for better looks.")]
+		public readonly WVec Offset = new WVec(0, 0, 512);
+
+		[Desc("Angle of the ballistic arc, in WAngle")]
+		public readonly WAngle Angle = new WAngle(64);
+
+		[Desc("Draw with this many piecewise-linear lines")]
+		public readonly int Segments = 16;
 
 		public virtual object Create(ActorInitializer init) { return new WithMindcontrolArc(init.Self, this); }
 	}
@@ -41,11 +50,6 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 
 		void INotifySelected.Selected(Actor a) { }
 
-		IEnumerable<IRenderable> Arc(WPos src, WPos dest)
-		{
-			yield return new TargetLineRenderable(new[] { src, dest }, info.Color);
-		}
-
 		IEnumerable<IRenderable> IRenderAboveShroudWhenSelected.RenderAboveShroud(Actor self, WorldRenderer wr)
 		{
 			// Mindcontroller has multiple arc to the slaves
@@ -53,9 +57,10 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 			if (mcr != null)
 			{
 				foreach (var s in mcr.Slaves)
-					foreach (var x in Arc(s.CenterPosition, self.CenterPosition))
-						yield return x;
-
+					yield return new ArcRenderable(
+						self.CenterPosition + info.Offset,
+						s.CenterPosition + info.Offset,
+						info.Angle, info.Color, info.Segments);
 				yield break;
 			}
 
@@ -64,8 +69,10 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 				yield break;
 
 			// Slaves only get one arc to the master.
-			foreach (var x in Arc(self.CenterPosition, master.CenterPosition))
-				yield return x;
+			yield return new ArcRenderable(
+				master.CenterPosition + info.Offset,
+				self.CenterPosition + info.Offset,
+				info.Angle, info.Color, info.Segments);
 		}
 	}
 }

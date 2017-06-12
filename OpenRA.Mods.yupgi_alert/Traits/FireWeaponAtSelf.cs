@@ -17,7 +17,7 @@ using OpenRA.Traits;
 
 /* Works without base engine modification */
 
-namespace OpenRA.Mods.yupgi_alert.Traits
+namespace OpenRA.Mods.Yupgi_alert.Traits
 {
 	[Desc("Fires one of its armament at the actor's position when enabled.")]
 	public class FireWeaponAtSelfInfo : ConditionalTraitInfo, Requires<ArmamentInfo>

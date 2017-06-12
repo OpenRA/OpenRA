@@ -19,7 +19,7 @@ using OpenRA.Traits;
  * Mindcontroller is assumed that they aren't mindcontrollable!
  */
 
-namespace OpenRA.Mods.yupgi_alert.Traits
+namespace OpenRA.Mods.Yupgi_alert.Traits
 {
 	public enum MindcontrolPolicy
 	{

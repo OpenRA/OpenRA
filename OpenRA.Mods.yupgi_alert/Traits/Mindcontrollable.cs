@@ -8,14 +8,13 @@
  */
 #endregion
 
-using System;
 using System.Linq;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
 /* Works without base engine modification */
 
-namespace OpenRA.Mods.yupgi_alert.Traits
+namespace OpenRA.Mods.Yupgi_alert.Traits
 {
 	[Desc("Can be mindcontrolled by mindcontrollers?")]
 	public class MindcontrollableInfo : ConditionalTraitInfo
@@ -26,7 +25,7 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 		public override object Create(ActorInitializer init) { return new Mindcontrollable(init.Self, this); }
 	}
 
-	class Mindcontrollable: ConditionalTrait<MindcontrollableInfo>, INotifyKilled, INotifyActorDisposing
+	class Mindcontrollable : ConditionalTrait<MindcontrollableInfo>, INotifyKilled, INotifyActorDisposing
 	{
 		readonly MindcontrollableInfo info;
 
@@ -72,7 +71,7 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 		// Notify owner and let the owner get his capacity back.
 		public void UnlinkMaster(Actor self, Actor master)
 		{
-			System.Diagnostics.Debug.Assert(this.master == null || this.master == master);
+			System.Diagnostics.Debug.Assert(this.master == null || this.master == master, "UnlinkMaster call from not-my-master!");
 
 			this.master = null;
 			if (master == null || master.Disposed || master.IsDead)
