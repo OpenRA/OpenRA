@@ -185,27 +185,27 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 			// Make the spawned actor attack my target.
 			if (self.TraitOrDefault<AttackPlane>() != null)
 			{
-				self.QueueActivity(new SpawnedFlyAttack(self, target)); // Different from regular attacks so not using attack base.
+				self.QueueActivity(false, new SpawnedFlyAttack(self, target)); // Different from regular attacks so not using attack base.
 			}
 			else if (self.TraitOrDefault<AttackHeli>() != null)
 			{
 				Game.Debug("Warning: AttackHeli's are not ready for spawned slave.");
-				self.QueueActivity(new HeliAttack(self, target)); // not ready for helis...
+				self.QueueActivity(false, new HeliAttack(self, target)); // not ready for helis...
 			}
 			else
 			{
 				foreach (var atb in self.TraitsImplementing<AttackBase>())
 				{
 					if (target.Actor == null)
-						atb.AttackTarget(target, true, true, true); // force fire on the ground.
+						atb.AttackTarget(target, false, true, true); // force fire on the ground.
 					else if (target.Actor.Owner.Stances[self.Owner] == Stance.Ally)
-						atb.AttackTarget(target, true, true, true); // force fire on ally.
+						atb.AttackTarget(target, false, true, true); // force fire on ally.
 					else
 						/* Target deprives me of force fire information.
 						 * This is a glitch if force fire weapon and normal fire are different, as in
 						 * RA mod spies but won't matter too much for carriers.
 						 */
-						atb.AttackTarget(target, true, true, target.RequiresForceFire);
+						atb.AttackTarget(target, false, true, target.RequiresForceFire);
 				}
 			}	
 		}
