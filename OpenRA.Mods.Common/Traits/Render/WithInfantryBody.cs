@@ -114,6 +114,10 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		public void Attacking(Actor self, Target target, Armament a)
 		{
+			// PCA has higher priority so don't allow attacking anim override the playing anim.
+			if (state == AnimationState.PlayingCustomAnimation)
+				return;
+
 			string sequence;
 			if (!Info.AttackSequences.TryGetValue(a.Info.Name, out sequence))
 				sequence = Info.DefaultAttackSequence;
