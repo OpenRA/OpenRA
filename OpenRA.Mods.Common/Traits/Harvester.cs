@@ -179,7 +179,11 @@ namespace OpenRA.Mods.Common.Traits
 		{
             // Slaved harvesters can only attach to master.
 			if (Info.Slaved)
+			{
+				if (!Master.IsInWorld)
+					return null;
 				return Master;
+			}
 
 			// Find all refineries and their occupancy count:
 			var refs = self.World.ActorsWithTrait<Refinery>()
