@@ -64,13 +64,16 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 				yield break;
 			}
 
-			var master = self.Trait<Mindcontrollable>().Master;
-			if (master == null)
+			var mc = self.TraitOrDefault<Mindcontrollable>();
+			if (mc == null)
+				yield break;
+
+			if (mc.Master == null)
 				yield break;
 
 			// Slaves only get one arc to the master.
 			yield return new ArcRenderable(
-				master.CenterPosition + info.Offset,
+				mc.Master.CenterPosition + info.Offset,
 				self.CenterPosition + info.Offset,
 				info.Angle, info.Color, info.Segments);
 		}
