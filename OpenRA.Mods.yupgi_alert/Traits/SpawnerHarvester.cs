@@ -263,10 +263,10 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 
 		public void Disposing(Actor self)
 		{
-			foreach (var a in launched)
+			var toKill = launched.ToArray();
+			foreach (var a in toKill)
 				if (!a.IsDead && !a.Disposed)
-					a.Dispose();
-			launched.Clear();
+					a.Kill(a);
 		}
 
 		public void Selling(Actor self) { }

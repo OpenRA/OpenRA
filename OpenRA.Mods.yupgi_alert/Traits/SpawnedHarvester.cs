@@ -88,7 +88,7 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 			self.World.AddFrameEndTask(w =>
 			{
 				if (harv.Master.Owner != self.Owner)
-					self.Kill(newOwner.PlayerActor);
+					self.Kill(self);
 			});
 		}
 	}
