@@ -55,9 +55,6 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 			var oldOwner = self.Owner;
 			self.ChangeOwner(master.Owner);
 
-			foreach (var t in self.TraitsImplementing<INotifyOwnerChanged>())
-				t.OnOwnerChanged(self, self.Owner, master.Owner);
-
 			UnlinkMaster(self, this.master); // Unlink old master.
 			this.master = master; // Link new master.
 
@@ -87,9 +84,6 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 
 			// Current owner, most likely to be createrOwner but could be some other guy who MC'ed me before.
 			self.ChangeOwner(creatorOwner);
-
-			foreach (var t in self.TraitsImplementing<INotifyOwnerChanged>())
-				t.OnOwnerChanged(self, oldOwner, creatorOwner);
 
 			// Unlink old master.
 			UnlinkMaster(self, master);

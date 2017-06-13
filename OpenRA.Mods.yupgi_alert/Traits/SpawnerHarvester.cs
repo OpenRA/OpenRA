@@ -254,7 +254,10 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 		{
 			foreach (var a in launched)
 				if (!a.IsDead && !a.Disposed)
-					a.Kill(e.Attacker);
+					if (e.Attacker.Owner != self.Owner)
+						a.Trait<SpawnedHarvester>().Unslave(a, e.Attacker);
+					else
+						a.Kill(e.Attacker);
 			launched.Clear();
 		}
 
@@ -286,7 +289,8 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 		{
 			self.World.AddFrameEndTask(w =>
 			{
-				// Slaves just work for the new owner.
+				// Slaves owner change too but...
+				// What happens after that depends on slave's OnOwnerChanged().
 				foreach (var a in launched)
 					a.ChangeOwner(newOwner);
 			});
