@@ -34,6 +34,7 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 		// who produced this unit?
 		// After produced by Player A and mindcontrolled by player B then C,
 		// this unit should return to player A when the most recent controller dies.
+		// Then there's ownership change to some non-mindcontrol stuff.
 		Player creatorOwner;
 
 		public Actor Master { get { return master; } }
@@ -42,7 +43,6 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 			: base(info)
 		{
 			this.info = info;
-			creatorOwner = self.Owner;
 		}
 
 		// Transfer ownership
@@ -50,6 +50,11 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 		{
 			// Reset anything it was doing.
 			self.CancelActivity();
+
+			// There can be mind-control wars, so we track the ownerwhip just
+			// before the first MC.
+			if (this.master == null)
+				creatorOwner = self.Owner;
 
 			// Current owner, most likely to be createrOwner but could be some other guy who MC'ed me before.
 			var oldOwner = self.Owner;
