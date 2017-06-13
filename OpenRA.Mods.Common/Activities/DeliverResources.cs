@@ -57,7 +57,10 @@ namespace OpenRA.Mods.Common.Activities
 
 			// No refineries exist. Check again after delay defined in Harvester.
 			if (harv.LinkedProc == null)
-				return ActivityUtils.SequenceActivities(new Wait(harv.Info.SearchForDeliveryBuildingDelay), this);
+			{
+				Queue(ActivityUtils.SequenceActivities(new Wait(harv.Info.SearchForDeliveryBuildingDelay), new DeliverResources(self)));
+				return NextActivity;
+			}
 
 			var proc = harv.LinkedProc;
 			self.SetTargetLine(Target.FromActor(proc), Color.Green, false);
