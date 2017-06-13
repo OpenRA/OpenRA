@@ -112,6 +112,11 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		public void Attacking(Actor self, Target target, Armament a)
 		{
+			// Custom animations such as Deploy is never to be canceled
+			// otherwise the unit will get stuck in "deploying" state limbo and will never deploy/undeploy again.
+			if (state == AnimationState.PlayingCustomAnimation)
+				return;
+
 			string sequence;
 			if (!Info.AttackSequences.TryGetValue(a.Info.Name, out sequence))
 				sequence = Info.DefaultAttackSequence;
