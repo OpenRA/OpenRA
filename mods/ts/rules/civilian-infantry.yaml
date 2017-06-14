@@ -29,6 +29,7 @@ UMAGON:
 	Inherits: ^Soldier
 	Inherits@2: ^HealsOnTiberium
 	Inherits@EXPERIENCE: ^GainsExperience
+	Inherits@AUTOTARGET: ^AutoTargetGround
 	Valued:
 		Cost: 400
 	Tooltip:
@@ -77,7 +78,6 @@ CHAMSPY:
 		RequiresCondition: disguise
 	Infiltrates:
 		Types: SpyInfiltrate
-	-AutoTarget:
 	-WithInfantryBody:
 	WithDisguisingInfantryBody:
 		IdleSequences: idle1,idle2
@@ -86,6 +86,7 @@ MUTANT:
 	Inherits: ^Soldier
 	Inherits@2: ^HealsOnTiberium
 	Inherits@EXPERIENCE: ^GainsExperience
+	Inherits@AUTOTARGET: ^AutoTargetGround
 	Valued:
 		Cost: 100
 	Tooltip:
@@ -111,6 +112,7 @@ MWMN:
 	Inherits: ^Soldier
 	Inherits@2: ^HealsOnTiberium
 	Inherits@EXPERIENCE: ^GainsExperience
+	Inherits@AUTOTARGET: ^AutoTargetGround
 	Valued:
 		Cost: 100
 	Tooltip:
@@ -136,6 +138,7 @@ MUTANT3:
 	Inherits: ^Soldier
 	Inherits@2: ^HealsOnTiberium
 	Inherits@EXPERIENCE: ^GainsExperience
+	Inherits@AUTOTARGET: ^AutoTargetGround
 	Valued:
 		Cost: 100
 	Tooltip:
@@ -172,7 +175,6 @@ TRATOS:
 		Speed: 71
 	RevealsShroud:
 		Range: 4c0
-	-AutoTarget:
 	WithInfantryBody:
 		DefaultAttackSequence:
 
@@ -190,7 +192,6 @@ OXANNA:
 		Speed: 56
 	RevealsShroud:
 		Range: 4c0
-	-AutoTarget:
 	WithInfantryBody:
 		DefaultAttackSequence: attack
 
@@ -208,12 +209,12 @@ SLAV:
 		Speed: 56
 	RevealsShroud:
 		Range: 4c0
-	-AutoTarget:
 	WithInfantryBody:
 		DefaultAttackSequence: attack
 
 CIV1:
 	Inherits: ^CivilianInfantry
+	Inherits@AUTOTARGET: ^AutoTargetGround
 	WithInfantryBody:
 		DefaultAttackSequence: attack
 	Armament:
@@ -223,10 +224,10 @@ CIV1:
 
 CIV2:
 	Inherits: ^CivilianInfantry
-	-AutoTarget:
 
 CIV3:
 	Inherits: ^CivilianInfantry
+	Inherits@AUTOTARGET: ^AutoTargetGround
 	WithInfantryBody:
 		DefaultAttackSequence: attack
 	Armament:

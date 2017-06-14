@@ -49,6 +49,7 @@ FLAK-23-AG:
 	Warhead@1Dam: SpreadDamage
 		ValidTargets: Air, Ground, Water
 	Warhead@2Eff: CreateEffect
+		Explosions: flak_explosion_ground
 		InvalidImpactTypes: Water
 	Warhead@3EffWater: CreateEffect
 		Explosions: small_splash

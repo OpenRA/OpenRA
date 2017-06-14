@@ -102,6 +102,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		UnitStance stance;
 		ConditionManager conditionManager;
+		AutoTargetPriority[] targetPriorities;
 		int conditionToken = ConditionManager.InvalidConditionToken;
 
 		public void SetStance(Actor self, UnitStance value)
@@ -144,6 +145,7 @@ namespace OpenRA.Mods.Common.Traits
 		void INotifyCreated.Created(Actor self)
 		{
 			conditionManager = self.TraitOrDefault<ConditionManager>();
+			targetPriorities = self.TraitsImplementing<AutoTargetPriority>().ToArray();
 			ApplyStanceCondition(self);
 		}
 
@@ -265,10 +267,21 @@ namespace OpenRA.Mods.Common.Traits
 				ab.AttackTarget(target, false, allowMove);
 		}
 
-		Actor ChooseTarget(Actor self, AttackBase ab, Stance attackStances, WDist range, bool allowMove)
+		Actor ChooseTarget(Actor self, AttackBase ab, Stance attackStances, WDist scanRange, bool allowMove)
 		{
-			var actorsByArmament = new Dictionary<Armament, List<Actor>>();
-			var actorsInRange = self.World.FindActorsInCircle(self.CenterPosition, range);
+			Actor chosenTarget = null;
+			var chosenTargetPriority = int.MinValue;
+			int chosenTargetRange = 0;
+
+			var activePriorities = targetPriorities.Where(Exts.IsTraitEnabled)
+				.Select(at => at.Info)
+				.OrderByDescending(ati => ati.Priority)
+				.ToList();
+
+			if (!activePriorities.Any())
+				return null;
+
+			var actorsInRange = self.World.FindActorsInCircle(self.CenterPosition, scanRange);
 			foreach (var actor in actorsInRange)
 			{
 				// PERF: Most units can only attack enemy units. If this is the case but the target is not an enemy, we
@@ -278,43 +291,53 @@ namespace OpenRA.Mods.Common.Traits
 				if (attackStances == OpenRA.Traits.Stance.Enemy && !actor.AppearsHostileTo(self))
 					continue;
 
-				if (PreventsAutoTarget(self, actor) || !self.Owner.CanTargetActor(actor))
+				// Check whether we can auto-target this actor
+				var targetTypes = actor.TraitsImplementing<ITargetable>()
+					.Where(Exts.IsTraitEnabled).SelectMany(t => t.TargetTypes)
+					.ToHashSet();
+
+				var target = Target.FromActor(actor);
+				var validPriorities = activePriorities.Where(ati =>
+				{
+					// Already have a higher priority target
+					if (ati.Priority < chosenTargetPriority)
+						return false;
+
+					// Incompatible target types
+					if (!targetTypes.Overlaps(ati.ValidTargets) || targetTypes.Overlaps(ati.InvalidTargets))
+						return false;
+
+					return true;
+				}).ToList();
+
+				if (!validPriorities.Any() || PreventsAutoTarget(self, actor) || !self.Owner.CanTargetActor(actor))
 					continue;
 
-				// Select only the first compatible armament for each actor: if this actor is selected
-				// it will be thanks to the first armament anyways, since that is the first selection
-				// criterion
-				var target = Target.FromActor(actor);
+				// Make sure that we can actually fire on the actor
 				var armaments = ab.ChooseArmamentsForTarget(target, false);
 				if (!allowMove)
 					armaments = armaments.Where(arm =>
 						target.IsInRange(self.CenterPosition, arm.MaxRange()) &&
 						!target.IsInRange(self.CenterPosition, arm.Weapon.MinRange));
 
-				var armament = armaments.FirstOrDefault();
-				if (armament == null)
+				if (!armaments.Any())
 					continue;
 
-				List<Actor> actors;
-				if (actorsByArmament.TryGetValue(armament, out actors))
-					actors.Add(actor);
-				else
-					actorsByArmament.Add(armament, new List<Actor> { actor });
+				// Evaluate whether we want to target this actor
+				var targetRange = (target.CenterPosition - self.CenterPosition).Length;
+				foreach (var ati in validPriorities)
+				{
+					if (chosenTarget == null || chosenTargetPriority < ati.Priority
+						|| (chosenTargetPriority == ati.Priority && targetRange < chosenTargetRange))
+					{
+						chosenTarget = actor;
+						chosenTargetPriority = ati.Priority;
+						chosenTargetRange = targetRange;
+					}
+				}
 			}
 
-			// Armaments are enumerated in attack.Armaments in construct order
-			// When autotargeting, first choose targets according to the used armament construct order
-			// And then according to distance from actor
-			// This enables preferential treatment of certain armaments
-			// (e.g. tesla trooper's tesla zap should have precedence over tesla charge)
-			foreach (var arm in ab.Armaments)
-			{
-				List<Actor> actors;
-				if (actorsByArmament.TryGetValue(arm, out actors))
-					return actors.ClosestTo(self);
-			}
-
-			return null;
+			return chosenTarget;
 		}
 
 		bool PreventsAutoTarget(Actor attacker, Actor target)
@@ -324,23 +347,6 @@ namespace OpenRA.Mods.Common.Traits
 					return true;
 
 			return false;
-		}
-	}
-
-	[Desc("Will not get automatically targeted by enemy (like walls)")]
-	class AutoTargetIgnoreInfo : ConditionalTraitInfo
-	{
-		public override object Create(ActorInitializer init) { return new AutoTargetIgnore(this); }
-	}
-
-	class AutoTargetIgnore : ConditionalTrait<AutoTargetIgnoreInfo>, IPreventsAutoTarget
-	{
-		public AutoTargetIgnore(AutoTargetIgnoreInfo info)
-			: base(info) { }
-
-		public bool PreventsAutoTarget(Actor self, Actor attacker)
-		{
-			return !IsTraitDisabled;
 		}
 	}
 

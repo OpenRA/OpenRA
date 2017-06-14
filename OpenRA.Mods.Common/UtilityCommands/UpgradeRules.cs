@@ -710,6 +710,18 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				// AutoTargetIgnore replaced with AutoTargetPriority and target types
+				if (engineVersion < 20170610)
+				{
+					if (node.Key.StartsWith("AutoTarget", StringComparison.Ordinal) || node.Key.StartsWith("-AutoTarget", StringComparison.Ordinal))
+					{
+						Console.WriteLine("The AutoTarget traits have been reworked to use target types:");
+						Console.WriteLine(" * Actors with AutoTarget must specify one or more AutoTargetPriority traits.");
+						Console.WriteLine(" * The AutoTargetIgnore trait has been removed.");
+						Console.WriteLine("   Append NoAutoTarget to the target types instead.");
+					}
+				}
+
 				UpgradeActorRules(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 

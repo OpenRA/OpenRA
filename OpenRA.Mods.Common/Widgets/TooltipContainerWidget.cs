@@ -19,7 +19,10 @@ namespace OpenRA.Mods.Common.Widgets
 	public class TooltipContainerWidget : Widget
 	{
 		static readonly Action Nothing = () => { };
+
 		public int2 CursorOffset = new int2(0, 20);
+		public int BottomEdgeYOffset = -5;
+
 		public Action BeforeRender = Nothing;
 		public int TooltipDelay = 5;
 		Widget tooltip;
@@ -52,8 +55,13 @@ namespace OpenRA.Mods.Common.Widgets
 				var pos = Viewport.LastMousePos + (CursorProvider.CursorViewportZoomed ? CursorOffset * 2 : CursorOffset);
 				if (tooltip != null)
 				{
+					// If the tooltip overlaps the right edge of the screen, move it left until it fits
 					if (pos.X + tooltip.Bounds.Right > Game.Renderer.Resolution.Width)
 						pos = pos.WithX(Game.Renderer.Resolution.Width - tooltip.Bounds.Right);
+
+					// If the tooltip overlaps the bottom edge of the screen, switch tooltip above cursor
+					if (pos.Y + tooltip.Bounds.Bottom > Game.Renderer.Resolution.Height)
+						pos = pos.WithY(Viewport.LastMousePos.Y + (CursorProvider.CursorViewportZoomed ? 2 : 1) * BottomEdgeYOffset - tooltip.Bounds.Height);
 				}
 
 				return pos;

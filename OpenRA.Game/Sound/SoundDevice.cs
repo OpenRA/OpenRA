@@ -25,6 +25,8 @@ namespace OpenRA
 		void StopAllSounds();
 		void SetListenerPosition(WPos position);
 		void SetSoundVolume(float volume, ISound music, ISound video);
+		void ReleaseSourcePool();
+		void ReleaseSound(ISound sound);
 	}
 
 	public class SoundDevice
@@ -39,7 +41,7 @@ namespace OpenRA
 		}
 	}
 
-	public interface ISoundSource { }
+	public interface ISoundSource : IDisposable { }
 
 	public interface ISound
 	{

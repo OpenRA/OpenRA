@@ -148,6 +148,7 @@ NAFNCE:
 NALASR:
 	Inherits: ^Defense
 	Inherits@IDISABLE: ^DisabledOverlay
+	Inherits@AUTOTARGET: ^AutoTargetGround
 	Valued:
 		Cost: 300
 	Tooltip:
@@ -188,6 +189,7 @@ NALASR:
 NAOBEL:
 	Inherits: ^Defense
 	Inherits@IDISABLE: ^DisabledOverlay
+	Inherits@AUTOTARGET: ^AutoTargetGround
 	Valued:
 		Cost: 1500
 	Tooltip:
@@ -233,6 +235,7 @@ NAOBEL:
 NASAM:
 	Inherits: ^Defense
 	Inherits@IDISABLE: ^DisabledOverlay
+	Inherits@AUTOTARGET: ^AutoTargetAir
 	Valued:
 		Cost: 500
 	Tooltip:

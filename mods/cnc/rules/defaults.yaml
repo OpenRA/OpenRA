@@ -119,6 +119,24 @@
 		RequiresCondition: rank-elite
 		ZOffset: 256
 
+^AutoTargetGround:
+	AutoTarget:
+	AutoTargetPriority@DEFAULT:
+		ValidTargets: Infantry, Vehicle, Water, Structure, Defense
+		InvalidTargets: NoAutoTarget
+
+^AutoTargetAir:
+	AutoTarget:
+	AutoTargetPriority@DEFAULT:
+		ValidTargets: Air
+		InvalidTargets: NoAutoTarget
+
+^AutoTargetAll:
+	AutoTarget:
+	AutoTargetPriority@DEFAULT:
+		ValidTargets: Infantry, Vehicle, Water, Air, Structure, Defense
+		InvalidTargets: NoAutoTarget
+
 ^AcceptsCloakCrate:
 	Cloak:
 		InitialDelay: 15
@@ -344,8 +362,6 @@
 	Tooltip:
 		GenericName: Soldier
 	Guard:
-	AutoTarget:
-		ScanRadius: 4
 	TakeCover:
 		SpeedModifier: 60
 		DamageModifiers:
@@ -391,6 +407,7 @@
 ^DINO:
 	Inherits@1: ^ExistsInWorld
 	Inherits@2: ^SpriteActor
+	Inherits@AUTOTARGET: ^AutoTargetGround
 	Huntable:
 	Health:
 		HP: 1000
@@ -449,6 +466,7 @@
 ^Viceroid:
 	Inherits@1: ^ExistsInWorld
 	Inherits@2: ^SpriteActor
+	Inherits@AUTOTARGET: ^AutoTargetGround
 	Huntable:
 	Health:
 		HP: 300
@@ -710,7 +728,6 @@
 		Palette: staticterrain
 	WithWallSpriteBody:
 	GivesExperience:
-	AutoTargetIgnore:
 	Sellable:
 		SellSounds: cashturn.aud
 	Guardable:
@@ -758,7 +775,6 @@
 		Image: burn-l
 		MinimumDamageState: Heavy
 		MaximumDamageState: Dead
-	AutoTargetIgnore:
 	HiddenUnderShroud:
 	ScriptTriggers:
 	HitShape:
@@ -820,7 +836,6 @@
 		Type: Light
 	HiddenUnderFog:
 		Type: CenterPosition
-	AutoTargetIgnore:
 	WithFacingSpriteBody:
 	HitShape:
 
@@ -881,6 +896,7 @@
 		DestroyedSounds: xplobig4.aud
 	ScriptTriggers:
 	BodyOrientation:
+		QuantizedFacings: 1
 	HitShape:
 
 ^Crate:
@@ -900,7 +916,6 @@
 
 ^Defense:
 	Inherits: ^BaseBuilding
-	AutoTarget:
 	RenderRangeCircle:
 	RenderDetectionCircle:
 	-GivesBuildableArea:

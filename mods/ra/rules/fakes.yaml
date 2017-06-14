@@ -1,6 +1,10 @@
 FPWR:
 	Inherits: ^FakeBuilding
 	Inherits@infiltrate: ^InfiltratableFake
+	Inherits@shape: ^2x2Shape
+	HitShape:
+		UseOccupiedCellsOffsets: false
+		TargetableOffsets: 0,0,0, 640,-384,0, 640,512,0, -710,-512,0, -710,512,0
 	Buildable:
 		BuildPaletteOrder: 870
 		Queue: Defense
@@ -56,6 +60,18 @@ SYRF:
 		Type: Light
 	EditorTilesetFilter:
 		ExcludeTilesets: INTERIOR
+	HitShape:
+		UseOccupiedCellsOffsets: false
+		TargetableOffsets: 0,0,0, 0,-1024,0, 0,1024,0, 768,0,0, 768,-1024,0, 768,1024,0
+		Type: Rectangle
+			TopLeft: -1536, -1152
+			BottomRight: 1536, 598
+	HitShape@BOTTOM:
+		UseOccupiedCellsOffsets: false
+		TargetableOffsets: -768,0,0
+		Type: Rectangle
+			TopLeft: -512, 598
+			BottomRight: 512, 1110
 
 SPEF:
 	Inherits: ^FakeBuilding
@@ -88,10 +104,23 @@ SPEF:
 		Type: Light
 	EditorTilesetFilter:
 		ExcludeTilesets: INTERIOR
+	HitShape:
+		UseOccupiedCellsOffsets: false
+		TargetableOffsets: 0,0,0, 0,-1024,0, 0,1024,0
+		Type: Rectangle
+			TopLeft: -1536, -598
+			BottomRight: 1536, 598
+	HitShape@TOPANDBOTTOM:
+		UseOccupiedCellsOffsets: false
+		TargetableOffsets: 811,0,0, -811,0,0
+		Type: Rectangle
+			TopLeft: -555, -1110
+			BottomRight: 555, 1110
 
 WEAF:
 	Inherits: ^FakeBuilding
 	Inherits@infiltrate: ^InfiltratableFake
+	Inherits@shape: ^3x2Shape
 	Buildable:
 		BuildPaletteOrder: 920
 		Prerequisites: ~structures.france, ~techlevel.medium
@@ -122,6 +151,10 @@ DOMF:
 	Inherits: ^FakeBuilding
 	Inherits@IDISABLE: ^DisabledOverlay
 	Inherits@infiltrate: ^InfiltratableFake
+	Inherits@shape: ^2x2Shape
+	HitShape:
+		UseOccupiedCellsOffsets: false
+		TargetableOffsets: 0,0,0, 630,-384,0, 630,384,0, -700,-512,0, -700,512,0
 	Tooltip:
 		Name: Fake Radar Dome
 		GenericName: Radar Dome
@@ -173,10 +206,26 @@ FIXF:
 		Image: FIX
 	Valued:
 		Cost: 120
+	HitShape:
+		UseOccupiedCellsOffsets: false
+		TargetableOffsets: 0,0,0, 0,-1024,0, 0,1024,0
+		Type: Rectangle
+			TopLeft: -1536, -683
+			BottomRight: 1536, 853
+	HitShape@TOPANDBOTTOM:
+		UseOccupiedCellsOffsets: false
+		TargetableOffsets: 840,0,0, -1060,0,0
+		Type: Rectangle
+			TopLeft: -640, -768
+			BottomRight: 640, 1024
 
 FAPW:
 	Inherits: ^FakeBuilding
 	Inherits@infiltrate: ^InfiltratableFake
+	Inherits@shape: ^3x2Shape
+	HitShape:
+		UseOccupiedCellsOffsets: false
+		TargetableOffsets: 0,0,0, 840,0,0, 840,-1024,0, 840,1024,0, -840,0,0, -355,-1024,0, -840,1024,0
 	Buildable:
 		BuildPaletteOrder: 950
 		Queue: Defense
@@ -208,6 +257,7 @@ FAPW:
 ATEF:
 	Inherits: ^FakeBuilding
 	Inherits@IDISABLE: ^DisabledOverlay
+	Inherits@shape: ^2x2Shape
 	Tooltip:
 		Name: Fake Allied Tech Center
 		GenericName: Allied Tech Center
@@ -236,6 +286,7 @@ ATEF:
 PDOF:
 	Inherits: ^FakeBuilding
 	Inherits@IDISABLE: ^DisabledOverlay
+	Inherits@shape: ^2x2Shape
 	Tooltip:
 		Name: Fake Chronosphere
 		GenericName: Chronosphere
@@ -268,6 +319,7 @@ PDOF:
 MSLF:
 	Inherits: ^FakeBuilding
 	Inherits@IDISABLE: ^DisabledOverlay
+	Inherits@shape: ^2x1Shape
 	Tooltip:
 		Name: Fake Missile Silo
 		GenericName: Missile Silo
@@ -320,3 +372,9 @@ FACF:
 		HP: 1500
 	Armor:
 		Type: Wood
+	HitShape:
+		UseOccupiedCellsOffsets: false
+		TargetableOffsets: 0,0,0, 0,-1024,0, 0,1024,0, 1483,0,0, 1483,-1024,0, 1273,939,0, -1483,0,0, -980,-640,0, -980,640,0
+		Type: Rectangle
+			TopLeft: -1536, -1536
+			BottomRight: 1536, 1536

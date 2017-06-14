@@ -207,7 +207,6 @@ MINE:
 	AppearsOnRadar:
 	RadarColorFromTerrain:
 		Terrain: Ore
-	AutoTargetIgnore:
 	SeedsResource:
 
 GMINE:
@@ -224,7 +223,6 @@ GMINE:
 	AppearsOnRadar:
 	RadarColorFromTerrain:
 		Terrain: Gems
-	AutoTargetIgnore:
 	SeedsResource:
 		ResourceType: Gems
 
@@ -239,12 +237,12 @@ RAILMINE:
 	Building:
 		Footprint: xx
 		Dimensions: 2,1
-	AutoTargetIgnore:
 	EditorTilesetFilter:
 		ExcludeTilesets: INTERIOR
 
 QUEE:
 	Inherits@1: ^SpriteActor
+	Inherits@shape: ^2x1Shape
 	HiddenUnderShroud:
 	Tooltip:
 		Name: Queen Ant
@@ -258,6 +256,7 @@ QUEE:
 
 LAR1:
 	Inherits@1: ^SpriteActor
+	Inherits@shape: ^1x1Shape
 	HiddenUnderShroud:
 	Tooltip:
 		Name: Ant Larva

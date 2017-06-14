@@ -22,7 +22,6 @@ NAPULS:
 		Type: Heavy
 	RevealsShroud:
 		Range: 8c0
-	-AutoTarget:
 	Turreted:
 		TurnSpeed: 10
 		InitialFacing: 224

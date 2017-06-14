@@ -1,6 +1,7 @@
 E1:
 	Inherits: ^Soldier
 	Inherits@EXPERIENCE: ^GainsExperience
+	Inherits@AUTOTARGET: ^AutoTargetGround
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 10
@@ -59,7 +60,6 @@ ENGINEER:
 	Captures:
 		CaptureTypes: building
 		PlayerExperience: 50
-	-AutoTarget:
 	RenderSprites:
 		Image: engineer.gdi
 		FactionImages:

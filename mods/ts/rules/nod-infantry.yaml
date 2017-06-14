@@ -1,6 +1,7 @@
 E3:
 	Inherits: ^Soldier
 	Inherits@EXPERIENCE: ^GainsExperience
+	Inherits@AUTOTARGET: ^AutoTargetAll
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 30
@@ -33,6 +34,7 @@ E3:
 CYBORG:
 	Inherits: ^Cyborg
 	Inherits@EXPERIENCE: ^GainsExperience
+	Inherits@AUTOTARGET: ^AutoTargetGround
 	Armor:
 		Type: Light
 	Valued:
@@ -67,6 +69,7 @@ CYBORG:
 CYC2:
 	Inherits: ^Cyborg
 	Inherits@EXPERIENCE: ^GainsExperience
+	Inherits@AUTOTARGET: ^AutoTargetGround
 	Armor:
 		Type: Heavy
 	Valued:
@@ -125,4 +128,3 @@ MHIJACK:
 		PlayerExperience: 50
 	RevealsShroud:
 		Range: 6c0
-	-AutoTarget:

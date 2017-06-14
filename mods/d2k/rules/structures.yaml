@@ -700,7 +700,6 @@ wall:
 	Targetable:
 		TargetTypes: Ground, Wall
 	WithWallSpriteBody:
-	AutoTargetIgnore:
 	Sellable:
 		SellSounds: CHUNG.WAV
 	Guardable:
@@ -718,6 +717,7 @@ wall:
 
 medium_gun_turret:
 	Inherits: ^Defense
+	Inherits@AUTOTARGET: ^AutoTargetGround
 	Buildable:
 		Queue: Building
 		Prerequisites: barracks
@@ -761,6 +761,7 @@ medium_gun_turret:
 large_gun_turret:
 	Inherits: ^Defense
 	Inherits@IDISABLE: ^DisabledOverlay
+	Inherits@AUTOTARGET: ^AutoTargetGround
 	Buildable:
 		Queue: Building
 		Prerequisites: outpost, upgrade.conyard, ~techlevel.medium

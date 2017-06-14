@@ -32,46 +32,48 @@ namespace OpenRA.Mods.Cnc.Projectiles
 
 		public readonly int Duration = 2;
 
+		public readonly int DamageDuration = 1;
+
+		public readonly bool TrackTarget = true;
+
 		public IProjectile Create(ProjectileArgs args) { return new TeslaZap(this, args); }
 	}
 
-	public class TeslaZap : IProjectile
+	public class TeslaZap : IProjectile, ISync
 	{
 		readonly ProjectileArgs args;
 		readonly TeslaZapInfo info;
 		TeslaZapRenderable zap;
-		int timeUntilRemove; // # of frames
-		bool doneDamage = false;
-		bool initialized = false;
+		int ticksUntilRemove;
+		int damageDuration;
+		[Sync] WPos target;
 
 		public TeslaZap(TeslaZapInfo info, ProjectileArgs args)
 		{
 			this.args = args;
 			this.info = info;
-			this.timeUntilRemove = info.Duration;
+			ticksUntilRemove = info.Duration;
+			damageDuration = info.DamageDuration > info.Duration ? info.Duration : info.DamageDuration;
+			target = args.PassiveTarget;
 		}
 
 		public void Tick(World world)
 		{
-			if (timeUntilRemove-- <= 0)
+			if (ticksUntilRemove-- <= 0)
 				world.AddFrameEndTask(w => w.Remove(this));
 
-			if (!doneDamage)
-			{
-				var pos = args.GuidedTarget.IsValidFor(args.SourceActor) ? args.GuidedTarget.CenterPosition : args.PassiveTarget;
-				args.Weapon.Impact(Target.FromPos(pos), args.SourceActor, args.DamageModifiers);
-				doneDamage = true;
-			}
+			// Zap tracks target
+			if (info.TrackTarget && args.GuidedTarget.IsValidFor(args.SourceActor))
+				target = args.GuidedTarget.Positions.PositionClosestTo(args.Source);
+
+			if (damageDuration-- > 0)
+				args.Weapon.Impact(Target.FromPos(target), args.SourceActor, args.DamageModifiers);
 		}
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)
 		{
-			if (!initialized)
-			{
-				var pos = args.GuidedTarget.IsValidFor(args.SourceActor) ? args.GuidedTarget.CenterPosition : args.PassiveTarget;
-				zap = new TeslaZapRenderable(args.Source, 0, pos - args.Source,
-					info.Image, info.BrightSequence, info.BrightZaps, info.DimSequence, info.DimZaps, info.Palette);
-			}
+			zap = new TeslaZapRenderable(args.Source, 0, target - args.Source,
+				info.Image, info.BrightSequence, info.BrightZaps, info.DimSequence, info.DimZaps, info.Palette);
 
 			yield return zap;
 		}

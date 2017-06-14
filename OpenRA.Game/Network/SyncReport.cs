@@ -65,6 +65,8 @@ namespace OpenRA.Network
 			report.SyncedRandom = orderManager.World.SharedRandom.Last;
 			report.TotalCount = orderManager.World.SharedRandom.TotalCount;
 			report.Traits.Clear();
+			report.Effects.Clear();
+
 			foreach (var actor in orderManager.World.ActorsHavingTrait<ISync>())
 				foreach (var syncHash in actor.SyncHashes)
 					if (syncHash.Hash != 0)

@@ -33,13 +33,17 @@ barracks.harkonnen:
 	Buildable:
 		Prerequisites: ~disabled
 	-MustBeDestroyed:
-	AutoTargetIgnore:
+	Targetable:
+		TargetTypes: Ground, C4, Structure, NoAutoTarget
 
 starport:
 	ExternalCondition@lua:
 		Condition: captured
-	AutoTargetIgnore:
+	Targetable:
+		RequiresCondition: captured
+	Targetable@AUTOTARGET:
 		RequiresCondition: !captured
+		TargetTypes: Ground, C4, Structure, NoAutoTarget
 
 concreteb:
 	Buildable:

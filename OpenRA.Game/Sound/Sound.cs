@@ -39,6 +39,8 @@ namespace OpenRA
 		readonly ISoundEngine soundEngine;
 		Cache<string, ISoundSource> sounds;
 		ISoundSource rawSource;
+		Func<string, ISoundSource> getSoundSource;
+		ISoundSource musicSource;
 		ISound music;
 		ISound video;
 		MusicInfo currentMusic;
@@ -81,9 +83,18 @@ namespace OpenRA
 
 		public void Initialize(ISoundLoader[] loaders, IReadOnlyFileSystem fileSystem)
 		{
-			sounds = new Cache<string, ISoundSource>(s => LoadSound(loaders, fileSystem, s));
+			StopMusic();
+			soundEngine.ReleaseSourcePool();
+
+			if (sounds != null)
+				foreach (var soundSource in sounds.Values)
+					soundSource.Dispose();
+
+			getSoundSource = s => LoadSound(loaders, fileSystem, s);
+			sounds = new Cache<string, ISoundSource>(getSoundSource);
 			currentSounds = new Dictionary<uint, ISound>();
 			music = null;
+			musicSource = null;
 			currentMusic = null;
 			video = null;
 		}
@@ -195,11 +206,11 @@ namespace OpenRA
 
 			StopMusic();
 
-			var sound = sounds[m.Filename];
-			if (sound == null)
+			musicSource = getSoundSource(m.Filename);
+			if (musicSource == null)
 				return;
 
-			music = soundEngine.Play2D(sound, false, true, WPos.Zero, MusicVolume, false);
+			music = soundEngine.Play2D(musicSource, false, true, WPos.Zero, MusicVolume, false);
 			currentMusic = m;
 			MusicPlaying = true;
 		}
@@ -222,7 +233,13 @@ namespace OpenRA
 		public void StopMusic()
 		{
 			if (music != null)
+			{
 				soundEngine.StopSound(music);
+				soundEngine.ReleaseSound(music);
+				music = null;
+				musicSource.Dispose();
+				musicSource = null;
+			}
 
 			MusicPlaying = false;
 			currentMusic = null;

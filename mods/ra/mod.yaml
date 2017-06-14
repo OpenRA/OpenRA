@@ -90,7 +90,7 @@ ChromeLayout:
 	common|chrome/ingame-menu.yaml
 	ra|chrome/ingame-observer.yaml
 	common|chrome/ingame-observerstats.yaml
-	common|chrome/ingame-player.yaml
+	ra|chrome/ingame-player.yaml
 	common|chrome/ingame-perf.yaml
 	common|chrome/ingame-debug.yaml
 	common|chrome/mainmenu.yaml

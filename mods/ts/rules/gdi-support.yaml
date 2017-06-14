@@ -44,6 +44,7 @@ GAGATE_B:
 GACTWR:
 	Inherits: ^Defense
 	Inherits@IDISABLE: ^DisabledOverlay
+	Inherits@AUTOTARGET: ^AutoTargetAll
 	-WithSpriteBody:
 	WithWallSpriteBody:
 		Type: wall
