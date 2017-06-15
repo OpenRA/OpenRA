@@ -640,14 +640,41 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					if (node.Key == "Offset" && parent.Key.StartsWith("WithHarvestOverlay", StringComparison.Ordinal))
 						RenameNodeKey(node, "LocalOffset");
 
-					if (node.Key == "LocalOffset")
+					var gridType = modData.Manifest.Get<MapGrid>().Type;
+					if (gridType == MapGridType.RectangularIsometric)
 					{
-						var orig = FieldLoader.GetValue<WVec[]>(node.Key, node.Value.Value);
-						var scaled = orig.Select(o => FieldSaver.FormatValue(new WVec(
-							(int)Math.Round(Math.Sqrt(2) * o.X),
-							(int)Math.Round(Math.Sqrt(2) * o.Y),
-							(int)Math.Round(Math.Sqrt(2) * o.Z))));
-						node.Value.Value = scaled.JoinWith(", ");
+						if (node.Key == "LocalOffset")
+						{
+							var orig = FieldLoader.GetValue<WVec[]>(node.Key, node.Value.Value);
+							var scaled = orig.Select(o => FieldSaver.FormatValue(new WVec(
+								(int)Math.Round(Math.Sqrt(2) * o.X),
+								(int)Math.Round(Math.Sqrt(2) * o.Y),
+								(int)Math.Round(Math.Sqrt(2) * o.Z))));
+							node.Value.Value = scaled.JoinWith(", ");
+						}
+
+						if (node.Key == "Radius" && parent.Key == "Shape")
+						{
+							var orig = FieldLoader.GetValue<WDist>(node.Key, node.Value.Value);
+							var scaled = (int)Math.Round(Math.Sqrt(2) * orig.Length);
+							node.Value.Value = scaled.ToString();
+						}
+
+						if (node.Key == "TopLeft" || node.Key == "BottomRight" || node.Key == "PointA" || node.Key == "PointB")
+						{
+							var orig = FieldLoader.GetValue<int2>(node.Key, node.Value.Value);
+							var scaled = new int2(
+								(int)Math.Round(Math.Sqrt(2) * orig.X),
+								(int)Math.Round(Math.Sqrt(2) * orig.Y));
+							node.Value.Value = scaled.ToString();
+						}
+
+						if (node.Key == "VerticalTopOffset" || node.Key == "VerticalBottomOffset")
+						{
+							var orig = FieldLoader.GetValue<int>(node.Key, node.Value.Value);
+							var scaled = (int)Math.Round(Math.Sqrt(2) * orig);
+							node.Value.Value = scaled.ToString();
+						}
 					}
 				}
 
