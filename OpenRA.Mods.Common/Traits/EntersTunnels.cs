@@ -96,7 +96,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			public override bool CanTargetActor(Actor self, Actor target, TargetModifiers modifiers, ref string cursor)
 			{
-				if (target.IsDead)
+				if (target == null || target.IsDead)
 					return false;
 
 				var tunnel = target.TraitOrDefault<TunnelEntrance>();
