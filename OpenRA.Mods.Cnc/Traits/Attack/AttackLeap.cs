@@ -9,28 +9,37 @@
  */
 #endregion
 
-using System.Collections.Generic;
-using System.Linq;
-using OpenRA.Mods.Cnc.Activities;
+using OpenRA.Activities;
+using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Cnc.Traits
 {
-	[Desc("Dogs use this attack model.")]
-	class AttackLeapInfo : AttackFrontalInfo
+	[Desc("Move onto the target then execute the attack. Remark: MinRange ignored. This is assumed to be a melee attacking behaviour.")]
+	public class AttackLeapInfo : AttackFrontalInfo, Requires<MobileInfo>
 	{
-		[Desc("Leap speed (in units/tick).")]
+		[Desc("Leap speed (in WDist units/tick).")]
 		public readonly WDist Speed = new WDist(426);
 
-		public readonly WAngle Angle = WAngle.FromDegrees(20);
+		[Desc("Conditions that last from start of leap till attack.")]
+		[GrantedConditionReference]
+		public readonly string LeapCondition = "leap";
+
+		[Desc("Conditions to grant on approaching out-or-range targets")]
+		[GrantedConditionReference]
+		public readonly string ApproachCondition = "rush";
 
 		public override object Create(ActorInitializer init) { return new AttackLeap(init.Self, this); }
 	}
 
-	class AttackLeap : AttackFrontal
+	public class AttackLeap : AttackFrontal, INotifyCreated
 	{
 		readonly AttackLeapInfo info;
+
+		ConditionManager conditionManager;
+		int approachToken = ConditionManager.InvalidConditionToken;
+		int leapToken = ConditionManager.InvalidConditionToken;
 
 		public AttackLeap(Actor self, AttackLeapInfo info)
 			: base(self, info)
@@ -38,20 +47,56 @@ namespace OpenRA.Mods.Cnc.Traits
 			this.info = info;
 		}
 
-		public override void DoAttack(Actor self, Target target, IEnumerable<Armament> armaments = null)
+		protected override void Created(Actor self)
 		{
-			if (target.Type != TargetType.Actor || !CanAttack(self, target))
-				return;
+			conditionManager = self.TraitOrDefault<ConditionManager>();
+			base.Created(self);
+		}
 
-			var a = ChooseArmamentsForTarget(target, true).FirstOrDefault();
-			if (a == null)
-				return;
+		// LeapAttack.Cancel() never gets called so handling that with OnStopOrder here.
+		protected override void OnStopOrder(Actor self)
+		{
+			LeapBuffOff(self);
+			ApproachBuffOff(self);
+			base.OnStopOrder(self);
+		}
 
-			if (!target.IsInRange(self.CenterPosition, a.MaxRange()))
-				return;
+		protected override bool CanAttack(Actor self, Target target)
+		{
+			// No facing check when we reached the target
+			if (target.Actor != null && self.Location == target.Actor.Location && HasAnyValidWeapons(target))
+				return true;
 
-			self.CancelActivity();
-			self.QueueActivity(new Leap(self, target.Actor, a, info.Speed, info.Angle));
+			return base.CanAttack(self, target);
+		}
+
+		public void ApproachBuffOn(Actor self)
+		{
+			if (conditionManager != null && string.IsNullOrEmpty(info.ApproachCondition))
+				approachToken = conditionManager.GrantCondition(self, info.ApproachCondition);
+		}
+
+		public void ApproachBuffOff(Actor self)
+		{
+			if (approachToken != ConditionManager.InvalidConditionToken)
+				approachToken = conditionManager.RevokeCondition(self, approachToken);
+		}
+
+		public void LeapBuffOn(Actor self)
+		{
+			if (conditionManager != null && string.IsNullOrEmpty(info.LeapCondition))
+				leapToken = conditionManager.GrantCondition(self, info.LeapCondition);
+		}
+
+		public void LeapBuffOff(Actor self)
+		{
+			if (leapToken != ConditionManager.InvalidConditionToken)
+				leapToken = conditionManager.RevokeCondition(self, leapToken);
+		}
+
+		public override Activity GetAttackActivity(Actor self, Target newTarget, bool allowMove, bool forceAttack)
+		{
+			return new LeapAttack(self, newTarget, allowMove, info);
 		}
 	}
 }

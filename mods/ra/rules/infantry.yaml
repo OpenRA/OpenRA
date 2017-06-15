@@ -20,6 +20,7 @@ DOG:
 	Mobile:
 		Speed: 99
 		Voice: Move
+		RequiresCondition: !rip
 	Guard:
 		Voice: Move
 	Passenger:
@@ -30,8 +31,13 @@ DOG:
 		Weapon: DogJaw
 	AttackLeap:
 		Voice: Attack
+		LeapCondition: leap
+		ApproachCondition: rush
 	AttackMove:
 		Voice: Move
+	GrantConditionOnAttack:
+		AttackingCondition: rip
+		AttackingDuration: 30
 	AutoTarget:
 		InitialStance: AttackAnything
 	AutoTargetPriority@DEFAULT:
@@ -39,8 +45,27 @@ DOG:
 	Targetable:
 		TargetTypes: Ground, Infantry
 	WithInfantryBody:
-		DefaultAttackSequence: shoot
+		MoveSequence: walk
 		StandSequences: stand
+		AttackSequence: eat
+		RequiresCondition: !leap && !rush && !rip
+	WithInfantryBody@RUSH:
+		MoveSequence: run
+		AttackSequence: run
+		RequiresCondition: rush
+	WithInfantryBody@LEAP:
+		MoveSequence: jump
+		AttackSequence: jump
+		RequiresCondition: leap
+	WithInfantryBody@EAT:
+		MoveSequence: eat
+		AttackSequence: eat
+		StandSequences: eat
+		IdleSequences: eat
+		RequiresCondition: rip
+	SpeedMultiplier@HUNGER:
+		Modifier: 150
+		RequiresCondition: rush
 	IgnoresDisguise:
 	DetectCloaked:
 		CloakTypes: Cloak, Hijacker
