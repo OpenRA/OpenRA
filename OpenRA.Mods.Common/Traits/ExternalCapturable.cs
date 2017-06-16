@@ -14,7 +14,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("This actor can be captured by a unit with ExternalCaptures: trait.")]
-	public class ExternalCapturableInfo : ITraitInfo
+	public class ExternalCapturableInfo : ConditionalTraitInfo
 	{
 		[Desc("Type of actor (the ExternalCaptures: trait defines what Types it can capture).")]
 		public readonly string Type = "building";
@@ -27,7 +27,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Whether to prevent autotargeting this actor while it is being captured by an ally.")]
 		public readonly bool PreventsAutoTarget = true;
 
-		public bool CanBeTargetedBy(Actor captor, Player owner)
+		public bool FrozenCanBeTargetedBy(Actor captor, Player owner)
 		{
 			var c = captor.Info.TraitInfoOrDefault<ExternalCapturesInfo>();
 			if (c == null)
@@ -49,18 +49,18 @@ namespace OpenRA.Mods.Common.Traits
 			return true;
 		}
 
-		public object Create(ActorInitializer init) { return new ExternalCapturable(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new ExternalCapturable(init.Self, this); }
 	}
 
-	public class ExternalCapturable : ITick, ISync, IPreventsAutoTarget
+	public class ExternalCapturable : ConditionalTrait<ExternalCapturableInfo>, ITick, ISync, IPreventsAutoTarget
 	{
 		[Sync] public int CaptureProgressTime = 0;
 		[Sync] public Actor Captor;
 		private Actor self;
-		public ExternalCapturableInfo Info;
+		public new ExternalCapturableInfo Info;
 		public bool CaptureInProgress { get { return Captor != null; } }
 
-		public ExternalCapturable(Actor self, ExternalCapturableInfo info)
+		public ExternalCapturable(Actor self, ExternalCapturableInfo info) : base(info)
 		{
 			this.self = self;
 			Info = info;
@@ -98,6 +98,14 @@ namespace OpenRA.Mods.Common.Traits
 		public bool PreventsAutoTarget(Actor self, Actor attacker)
 		{
 			return Info.PreventsAutoTarget && Captor != null && attacker.AppearsFriendlyTo(Captor);
+		}
+
+		public bool CanBeTargetedBy(Actor captor, Player owner)
+		{
+			if (IsTraitDisabled)
+				return false;
+
+			return Info.FrozenCanBeTargetedBy(captor, owner);
 		}
 	}
 }

@@ -86,11 +86,11 @@ namespace OpenRA.Mods.Common.Traits
 					return false;
 
 				var ci = frozen.Info.TraitInfoOrDefault<ExternalCapturableInfo>();
-				return ci != null && ci.CanBeTargetedBy(self, frozen.Owner);
+				return ci != null && ci.FrozenCanBeTargetedBy(self, frozen.Owner);
 			}
 
 			var c = order.TargetActor.TraitOrDefault<ExternalCapturable>();
-			return c != null && !c.CaptureInProgress && c.Info.CanBeTargetedBy(self, order.TargetActor.Owner);
+			return c != null && !c.CaptureInProgress && c.CanBeTargetedBy(self, order.TargetActor.Owner);
 		}
 
 		public string VoicePhraseForOrder(Actor self, Order order)
@@ -124,7 +124,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			var c = target.TraitOrDefault<ExternalCapturable>();
 
-			var canTargetActor = c != null && !c.CaptureInProgress && c.Info.CanBeTargetedBy(self, target.Owner);
+			var canTargetActor = c != null && !c.CaptureInProgress && c.CanBeTargetedBy(self, target.Owner);
 			var capturesInfo = self.Trait<ExternalCaptures>().Info;
 			cursor = canTargetActor ? capturesInfo.CaptureCursor : capturesInfo.CaptureBlockedCursor;
 			return canTargetActor;
@@ -134,7 +134,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			var c = target.Info.TraitInfoOrDefault<ExternalCapturableInfo>();
 
-			var canTargetActor = c != null && c.CanBeTargetedBy(self, target.Owner);
+			var canTargetActor = c != null && c.FrozenCanBeTargetedBy(self, target.Owner);
 			var capturesInfo = self.Trait<ExternalCaptures>().Info;
 			cursor = canTargetActor ? capturesInfo.CaptureCursor : capturesInfo.CaptureBlockedCursor;
 			return canTargetActor;

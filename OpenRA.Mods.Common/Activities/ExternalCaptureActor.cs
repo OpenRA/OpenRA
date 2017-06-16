@@ -36,7 +36,7 @@ namespace OpenRA.Mods.Common.Activities
 			if (target.Type != TargetType.Actor)
 				return NextActivity;
 
-			if (IsCanceled || !self.IsInWorld || self.IsDead || !target.IsValidFor(self))
+			if (IsCanceled || !self.IsInWorld || self.IsDead || !target.IsValidFor(self) || capturable.IsTraitDisabled)
 			{
 				if (capturable.CaptureInProgress)
 					capturable.EndCapture();

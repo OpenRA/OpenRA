@@ -14,7 +14,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("This actor can be captured by a unit with Captures: trait.")]
-	public class CapturableInfo : ITraitInfo
+	public class CapturableInfo : ConditionalTraitInfo
 	{
 		[Desc("Type listed under Types in Captures: trait of actors that can capture this).")]
 		public readonly string Type = "building";
@@ -25,9 +25,9 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int CaptureThreshold = 50;
 		public readonly bool CancelActivity = false;
 
-		public object Create(ActorInitializer init) { return new Capturable(this); }
+		public override object Create(ActorInitializer init) { return new Capturable(this); }
 
-		public bool CanBeTargetedBy(Actor captor, Player owner)
+		public bool FrozenCanBeTargetedBy(Actor captor, Player owner)
 		{
 			var c = captor.Info.TraitInfoOrDefault<CapturesInfo>();
 			if (c == null)
@@ -50,11 +50,11 @@ namespace OpenRA.Mods.Common.Traits
 		}
 	}
 
-	public class Capturable : INotifyCapture
+	public class Capturable : ConditionalTrait<CapturableInfo>, INotifyCapture
 	{
-		public readonly CapturableInfo Info;
+		public readonly new CapturableInfo Info;
 		public bool BeingCaptured { get; private set; }
-		public Capturable(CapturableInfo info) { Info = info; }
+		public Capturable(CapturableInfo info) : base(info) { Info = info; }
 
 		public void OnCapture(Actor self, Actor captor, Player oldOwner, Player newOwner)
 		{
@@ -67,6 +67,14 @@ namespace OpenRA.Mods.Common.Traits
 				foreach (var t in self.TraitsImplementing<IResolveOrder>())
 					t.ResolveOrder(self, stop);
 			}
+		}
+
+		public bool CanBeTargetedBy(Actor captor, Player owner)
+		{
+			if (IsTraitDisabled)
+				return false;
+
+			return Info.FrozenCanBeTargetedBy(captor, owner);
 		}
 	}
 }

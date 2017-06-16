@@ -34,12 +34,12 @@ namespace OpenRA.Mods.Common.Activities
 
 		protected override bool CanReserve(Actor self)
 		{
-			return !capturable.BeingCaptured && capturable.Info.CanBeTargetedBy(self, actor.Owner);
+			return !capturable.BeingCaptured && capturable.CanBeTargetedBy(self, actor.Owner);
 		}
 
 		protected override void OnInside(Actor self)
 		{
-			if (actor.IsDead || capturable.BeingCaptured)
+			if (actor.IsDead || capturable.BeingCaptured || capturable.IsTraitDisabled)
 				return;
 
 			if (building != null && !building.Lock())
