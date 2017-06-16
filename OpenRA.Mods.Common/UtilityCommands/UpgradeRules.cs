@@ -574,16 +574,16 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						RenameNodeKey(node, "DisguiseTooltip");
 
 				// Split UncloakOn: Damage => Damage, Heal, SelfHeal
-				if (engineVersion < 20170315)
+				if (engineVersion < 20170528)
 					if (node.Key.StartsWith("UncloakOn", StringComparison.Ordinal))
 						node.Value.Value = node.Value.Value.Replace("Damage", "Damage, Heal, SelfHeal");
 
 				// Removed dead ActorGroupProxy trait
-				if (engineVersion < 20170318)
+				if (engineVersion < 20170528)
 					node.Value.Nodes.RemoveAll(n => n.Key == "ActorGroupProxy");
 
 				// Refactor SupplyTruck/AcceptsSupplies traits to DeliversCash/AcceptsDeliveredCash
-				if (engineVersion < 20170415)
+				if (engineVersion < 20170528)
 				{
 					if (node.Key == "SupplyTruck")
 						RenameNodeKey(node, "DeliversCash");
@@ -597,12 +597,12 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				}
 
 				// Add random sound support to AmbientSound
-				if (engineVersion < 20170422)
+				if (engineVersion < 20170528)
 					if (node.Key == "SoundFile" && parent.Key.StartsWith("AmbientSound", StringComparison.Ordinal))
 						RenameNodeKey(node, "SoundFiles");
 
 				// PauseOnLowPower property has been replaced with PauseOnCondition/RequiresCondition
-				if (engineVersion < 20170501)
+				if (engineVersion < 20170528)
 				{
 					if (node.Key.StartsWith("WithRearmAnimation", StringComparison.Ordinal) || node.Key.StartsWith("WithRepairAnimation", StringComparison.Ordinal)
 						|| node.Key.StartsWith("WithIdleAnimation", StringComparison.Ordinal))
@@ -635,7 +635,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
-				if (engineVersion < 20170507)
+				if (engineVersion < 20170528)
 				{
 					if (node.Key == "Offset" && parent.Key.StartsWith("WithHarvestOverlay", StringComparison.Ordinal))
 						RenameNodeKey(node, "LocalOffset");
@@ -652,7 +652,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				}
 
 				// Refactor Rectangle shape RotateToIsometry bool into WAngle LocalYaw
-				if (engineVersion < 20170509)
+				if (engineVersion < 20170528)
 				{
 					if (node.Key.StartsWith("RotateToIsometry", StringComparison.Ordinal))
 					{
@@ -664,7 +664,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				}
 
 				// Removed GrantConditionOnDeploy.DeployAnimation and made WithMakeAnimation compatible instead
-				if (engineVersion < 20170510)
+				if (engineVersion < 20170528)
 				{
 					var grantCondOnDeploy = node.Value.Nodes.FirstOrDefault(n => n.Key == "GrantConditionOnDeploy");
 					if (grantCondOnDeploy != null)
@@ -765,7 +765,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				}
 
 				// Refactor GravityBomb Speed WDist to Velocity WVec and Acceleration from vertical WDist to vector
-				if (engineVersion < 20170329)
+				if (engineVersion < 20170528)
 				{
 					var projectile = node.Value.Nodes.FirstOrDefault(n => n.Key == "Projectile");
 					if (projectile != null && projectile.Value.Value == "GravityBomb")
@@ -788,7 +788,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				}
 
 				// Optimal victim scan radii are now calculated automatically
-				if (engineVersion < 20170505)
+				if (engineVersion < 20170528)
 				{
 					var targetExtraSearchRadius = node.Value.Nodes.FirstOrDefault(n => n.Key == "TargetSearchRadius" || n.Key == "TargetExtraSearchRadius");
 					if (targetExtraSearchRadius != null)
