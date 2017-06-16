@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.IO;
 
 namespace OpenRA
 {
@@ -18,6 +19,7 @@ namespace OpenRA
 		SoundDevice[] AvailableDevices();
 		ISoundSource AddSoundSourceFromMemory(byte[] data, int channels, int sampleBits, int sampleRate);
 		ISound Play2D(ISoundSource sound, bool loop, bool relative, WPos pos, float volume, bool attenuateVolume);
+		ISound Play2DStream(Stream stream, int channels, int sampleBits, int sampleRate, bool loop, bool relative, WPos pos, float volume);
 		float Volume { get; set; }
 		void PauseSound(ISound sound, bool paused);
 		void StopSound(ISound sound);
@@ -25,8 +27,6 @@ namespace OpenRA
 		void StopAllSounds();
 		void SetListenerPosition(WPos position);
 		void SetSoundVolume(float volume, ISound music, ISound video);
-		void ReleaseSourcePool();
-		void ReleaseSound(ISound sound);
 	}
 
 	public class SoundDevice
@@ -47,7 +47,7 @@ namespace OpenRA
 	{
 		float Volume { get; set; }
 		float SeekPosition { get; }
-		bool Playing { get; }
+		bool Complete { get; }
 		void SetPosition(WPos pos);
 	}
 }
