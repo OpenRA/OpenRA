@@ -87,8 +87,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				if (currentSong == null || musicPlaylist.CurrentSongIsBackground)
 					return "";
 
-				var minutes = (int)Game.Sound.MusicSeekPosition / 60;
-				var seconds = (int)Game.Sound.MusicSeekPosition % 60;
+				var seek = Game.Sound.MusicSeekPosition;
+				var minutes = (int)seek / 60;
+				var seconds = (int)seek % 60;
 				var totalMinutes = currentSong.Length / 60;
 				var totalSeconds = currentSong.Length % 60;
 
