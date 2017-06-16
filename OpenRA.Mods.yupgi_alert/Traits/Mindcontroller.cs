@@ -44,6 +44,10 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 		[Desc("Can this unit MC beyond Capacity temporarily?")]
 		public readonly MindcontrolPolicy Policy = MindcontrolPolicy.DiscardOldest;
 
+		[Desc("Condition to grant to the controlled actor")]
+		[GrantedConditionReference]
+		public readonly string GiveCondition;
+
 		[Desc("Damage taken if hyper controlling beyond capacity.")]
 		public readonly int HyperControlDamage = 2;
 
@@ -133,7 +137,7 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 
 			// At this point, the target should be mind controlled. How we manage them is another thing.
 			slaves.Add(target.Actor);
-			mcable.LinkMaster(target.Actor, self);
+			mcable.LinkMaster(target.Actor, self, info.GiveCondition);
 
 			// Play sound
 			if (info.Sound != null && info.Sound.Any())

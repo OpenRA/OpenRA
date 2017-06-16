@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
@@ -25,9 +26,10 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 		public override object Create(ActorInitializer init) { return new Mindcontrollable(init.Self, this); }
 	}
 
-	class Mindcontrollable : ConditionalTrait<MindcontrollableInfo>, INotifyKilled, INotifyActorDisposing
+	class Mindcontrollable : ConditionalTrait<MindcontrollableInfo>, INotifyKilled, INotifyActorDisposing, INotifyCreated
 	{
 		readonly MindcontrollableInfo info;
+		Dictionary<Actor, int> conditions = new Dictionary<Actor, int>();
 
 		Actor master; // The actor who mindcontrolled this unit
 
@@ -37,6 +39,8 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 		// Then there's ownership change to some non-mindcontrol stuff.
 		Player creatorOwner;
 
+		ConditionManager conditionManager;
+
 		public Actor Master { get { return master; } }
 
 		public Mindcontrollable(Actor self, MindcontrollableInfo info)
@@ -45,8 +49,40 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 			this.info = info;
 		}
 
-		// Transfer ownership
-		public void LinkMaster(Actor self, Actor master)
+		protected override void Created(Actor self)
+		{
+			conditionManager = self.TraitOrDefault<ConditionManager>();
+		}
+
+		void ConditionOn(Actor self, Actor master, string cond)
+		{
+			if (conditionManager == null)
+				return;
+
+			if (string.IsNullOrEmpty(cond))
+				return;
+
+			if (conditions.ContainsKey(master))
+				return;
+
+			var tok = conditionManager.GrantCondition(self, cond);
+			conditions.Add(master, tok);
+		}
+
+		void ConditionOff(Actor self, Actor master)
+		{
+			if (conditionManager == null)
+				return;
+
+			if (!conditions.ContainsKey(master))
+				return;
+
+			var tok = conditions[master];
+			conditionManager.RevokeCondition(self, tok);
+			conditions.Remove(master);
+		}
+
+		public void LinkMaster(Actor self, Actor master, string condition)
 		{
 			// Reset anything it was doing.
 			self.CancelActivity();
@@ -63,6 +99,8 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 			UnlinkMaster(self, this.master); // Unlink old master.
 			this.master = master; // Link new master.
 
+			ConditionOn(self, master, condition);
+
 			// In Kane's Wrath, when the MC'ed unit gets MC'ed back to the creatorOwner,
 			// then all the MC stuff is cancelled.
 			// Be sure to check with master.owner because self.Owner is not committed yet.
@@ -78,7 +116,10 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 			this.master = null;
 			if (master == null || master.Disposed || master.IsDead)
 				return;
+
 			master.Trait<Mindcontroller>().UnlinkSlave(master, self);
+
+			ConditionOff(self, master);
 		}
 
 		// Give this unit back to the creator owner.
