@@ -23,7 +23,7 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 {
 	public enum MindcontrolPolicy
 	{
-		NewOneUnaffected, // Like Yuri's MC tower
+		NewOneUnaffected, // Like Yuri's MC tower. Best if you use ControllingCondition to forbid the dummy weapon from firing too.
 		DiscardOldest, // Like Yuri Clone
 		HyperControl // Like Yuri Master Mind
 	}
@@ -48,6 +48,10 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 		[GrantedConditionReference]
 		public readonly string GiveCondition;
 
+		[Desc("Condition to grant to self when controlling actors. Can stack up by the number of enslaved actors. You can use this to forbid firing of the dummy MC weapon.")]
+		[GrantedConditionReference]
+		public readonly string ControllingCondition;
+
 		[Desc("Damage taken if hyper controlling beyond capacity.")]
 		public readonly int HyperControlDamage = 2;
 
@@ -66,14 +70,16 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 		public override object Create(ActorInitializer init) { return new Mindcontroller(init.Self, this); }
 	}
 
-	class Mindcontroller : ConditionalTrait<MindcontrollerInfo>, INotifyAttack, IPips, INotifyKilled, INotifyActorDisposing, ITick
+	class Mindcontroller : ConditionalTrait<MindcontrollerInfo>, INotifyAttack, IPips, INotifyKilled, INotifyActorDisposing, ITick,
+			INotifyCreated
 	{
 		readonly MindcontrollerInfo info;
-		readonly Armament[] armaments;
 		readonly Health health;
 		readonly List<Actor> slaves = new List<Actor>();
 
 		int ticks;
+		Stack<int> controllingTokens = new Stack<int>();
+		ConditionManager conditionManager;
 
 		public IEnumerable<Actor> Slaves { get { return slaves; } }
 
@@ -83,8 +89,35 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 			this.info = info;
 			health = self.Trait<Health>();
 
-			armaments = self.TraitsImplementing<Armament>().Where(a => a.Info.Name == info.Name).ToArray();
+			var armaments = self.TraitsImplementing<Armament>().Where(a => a.Info.Name == info.Name).ToArray();
 			System.Diagnostics.Debug.Assert(armaments.Length == 1, "Multiple armaments with given name detected: " + info.Name);
+		}
+
+		protected override void Created(Actor self)
+		{
+			conditionManager = self.TraitOrDefault<ConditionManager>();
+		}
+
+		void StackControllingCondition(Actor self, string condition)
+		{
+			if (conditionManager == null)
+				return;
+
+			if (string.IsNullOrEmpty(condition))
+				return;
+
+			controllingTokens.Push(conditionManager.GrantCondition(self, condition));
+		}
+
+		void UnstackControllingCondition(Actor self, string condition)
+		{
+			if (conditionManager == null)
+				return;
+
+			if (string.IsNullOrEmpty(condition))
+				return;
+
+			conditionManager.RevokeCondition(self, controllingTokens.Pop());
 		}
 
 		public IEnumerable<PipType> GetPips(Actor self)
@@ -99,6 +132,7 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 		// Unlink a dead or mind-controlled-by-somebody-else slave.
 		public void UnlinkSlave(Actor self, Actor slave)
 		{
+			UnstackControllingCondition(self, info.ControllingCondition);
 			if (slaves.Contains(slave))
 				slaves.Remove(slave);
 		}
@@ -110,16 +144,16 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 
 		public void Attacking(Actor self, Target target, Armament a, Barrel barrel)
 		{
+			// Only specified MC weapon can do mind control.
+			if (info.Name != a.Info.Name)
+				return;
+
 			// Must target an actor.
-			if (target.Actor == null)
+			if (target.Actor == null || !target.IsValidFor(self))
 				return;
 
 			// Don't allow ally mind control
 			if (self.Owner.Stances[target.Actor.Owner] == Stance.Ally)
-				return;
-
-			// Must be a valid target specified by the weapon targeting spec.
-			if (!target.IsValidFor(self))
 				return;
 
 			var mcable = target.Actor.TraitOrDefault<Mindcontrollable>();
@@ -138,6 +172,7 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 			// At this point, the target should be mind controlled. How we manage them is another thing.
 			slaves.Add(target.Actor);
 			mcable.LinkMaster(target.Actor, self, info.GiveCondition);
+			StackControllingCondition(self, info.ControllingCondition);
 
 			// Play sound
 			if (info.Sound != null && info.Sound.Any())
