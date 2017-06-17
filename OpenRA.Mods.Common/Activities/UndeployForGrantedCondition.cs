@@ -17,12 +17,10 @@ namespace OpenRA.Mods.Common.Activities
 {
 	public class UndeployForGrantedCondition : Activity
 	{
-		readonly Actor self;
 		readonly GrantConditionOnDeploy deploy;
 
 		public UndeployForGrantedCondition(Actor self) : base()
 		{
-			this.self = self;
 			deploy = self.Trait<GrantConditionOnDeploy>();
 		}
 
