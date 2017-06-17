@@ -12,6 +12,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.Linq;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Pathfinder;
@@ -184,8 +185,9 @@ namespace OpenRA.Mods.Common.Activities
 					mobile.Facing,
 					mobile.Facing,
 					0);
+				ChildActivity = move;
 
-				return move;
+				return ChildActivity;
 			}
 		}
 
@@ -270,6 +272,11 @@ namespace OpenRA.Mods.Common.Activities
 			return Target.None;
 		}
 
+		public override TargetLineNode? TargetLineNode(Actor self)
+		{
+			return new TargetLineNode(Target.FromCell(self.World, this.destination.Value), Color.Green, false);
+		}
+
 		abstract class MovePart : Activity
 		{
 			protected readonly Move Move;
@@ -318,13 +325,15 @@ namespace OpenRA.Mods.Common.Activities
 
 			public override bool Cancel(Actor self, bool keepQueue = false)
 			{
-				Move.Cancel(self, keepQueue);
-				return base.Cancel(self);
+				// MovePart has no child or queued activity so it is correct to cancel this
+				// then return the RootActivity's cancel result.
+				base.Cancel(self);
+				return RootActivity.Cancel(self, keepQueue);
 			}
 
 			public override void Queue(Activity activity)
 			{
-				Move.Queue(activity);
+				ParentActivity.Queue(activity);
 			}
 
 			public override Activity Tick(Actor self)
@@ -345,11 +354,11 @@ namespace OpenRA.Mods.Common.Activities
 				if (moveFraction <= MoveFractionTotal)
 					return this;
 
-				var next = OnComplete(self, mobile, Move);
+				var next = OnComplete(self, mobile);
 				if (next != null)
 					return next;
 
-				return Move;
+				return NextActivity;
 			}
 
 			void UpdateCenterLocation(Actor self, Mobile mobile)
@@ -379,11 +388,16 @@ namespace OpenRA.Mods.Common.Activities
 					mobile.Facing = int2.Lerp(FromFacing, ToFacing, moveFraction, MoveFractionTotal) & 0xFF;
 			}
 
-			protected abstract MovePart OnComplete(Actor self, Mobile mobile, Move parent);
+			protected abstract MovePart OnComplete(Actor self, Mobile mobile);
 
 			public override IEnumerable<Target> GetTargets(Actor self)
 			{
 				return Move.GetTargets(self);
+			}
+
+			public override TargetLineNode? TargetLineNode(Actor self)
+			{
+				return null;
 			}
 		}
 
@@ -398,7 +412,7 @@ namespace OpenRA.Mods.Common.Activities
 					mobile.ToCell - mobile.FromCell;
 			}
 
-			protected override MovePart OnComplete(Actor self, Mobile mobile, Move parent)
+			protected override MovePart OnComplete(Actor self, Mobile mobile)
 			{
 				var map = self.World.Map;
 				var fromSubcellOffset = map.Grid.OffsetOfSubCell(mobile.FromSubCell);
@@ -406,7 +420,7 @@ namespace OpenRA.Mods.Common.Activities
 
 				if (!IsCanceled || self.Location.Layer == CustomMovementLayerType.Tunnel)
 				{
-					var nextCell = parent.PopPath(self);
+					var nextCell = Move.PopPath(self);
 					if (nextCell != null)
 					{
 						if (IsTurn(mobile, nextCell.Value.First))
@@ -425,7 +439,7 @@ namespace OpenRA.Mods.Common.Activities
 							return ret;
 						}
 
-						parent.path.Add(nextCell.Value.First);
+						Move.path.Add(nextCell.Value.First);
 					}
 				}
 
@@ -451,7 +465,7 @@ namespace OpenRA.Mods.Common.Activities
 			public MoveSecondHalf(Move move, WPos from, WPos to, int fromFacing, int toFacing, int startingFraction)
 				: base(move, from, to, fromFacing, toFacing, startingFraction) { }
 
-			protected override MovePart OnComplete(Actor self, Mobile mobile, Move parent)
+			protected override MovePart OnComplete(Actor self, Mobile mobile)
 			{
 				mobile.SetPosition(self, mobile.ToCell);
 				return null;

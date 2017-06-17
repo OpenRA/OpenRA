@@ -90,7 +90,7 @@ namespace OpenRA.Mods.Common.Activities
 				if (inner != null)
 					inner.Cancel(self);
 
-				self.SetTargetLine(Target.FromCell(self.World, targetPosition), Color.Green);
+				self.ShowTargetLines();
 				return ActivityUtils.RunActivity(self, new AttackMoveActivity(self, Mobile.MoveTo(targetPosition, 0)));
 			}
 
@@ -159,6 +159,11 @@ namespace OpenRA.Mods.Common.Activities
 				return inner.GetTargets(self);
 
 			return Target.None;
+		}
+
+		public override TargetLineNode? TargetLineNode(Actor self)
+		{
+			return null;
 		}
 
 		public override bool Cancel(Actor self, bool keepQueue = false)

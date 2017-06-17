@@ -89,7 +89,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!order.Queued)
 				self.CancelActivity();
 
-			self.SetTargetLine(target, Color.Red);
+			self.ShowTargetLines();
 			self.QueueActivity(new CaptureActor(self, target.Actor));
 		}
 

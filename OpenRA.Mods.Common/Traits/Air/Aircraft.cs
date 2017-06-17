@@ -596,7 +596,7 @@ namespace OpenRA.Mods.Common.Traits
 
 				var target = Target.FromCell(self.World, cell);
 
-				self.SetTargetLine(target, Color.Green);
+				self.ShowTargetLines();
 
 				if (IsPlane)
 					self.QueueActivity(order.Queued, new FlyAndContinueWithCirclesWhenIdle(self, target));
@@ -617,7 +617,7 @@ namespace OpenRA.Mods.Common.Traits
 				}
 				else
 				{
-					self.SetTargetLine(Target.FromActor(order.TargetActor), Color.Green);
+					self.ShowTargetLines();
 
 					if (IsPlane)
 					{

@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Traits;
@@ -160,6 +161,11 @@ namespace OpenRA.Mods.Common.Activities
 		int CalculateTurnRadius(int speed)
 		{
 			return 45 * speed / planeInfo.TurnSpeed;
+		}
+
+		public override TargetLineNode? TargetLineNode(Actor self)
+		{
+			return new TargetLineNode(Target.FromActor(dest), Color.Green, false);
 		}
 	}
 }

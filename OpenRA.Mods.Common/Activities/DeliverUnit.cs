@@ -9,7 +9,7 @@
  */
 #endregion
 
-using System.Linq;
+using System.Drawing;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
@@ -213,6 +213,17 @@ namespace OpenRA.Mods.Common.Activities
 				return false;
 
 			return base.Cancel(self);
+		}
+
+		public override TargetLineNode? TargetLineNode(Actor self)
+		{
+			if (innerActivity != null && innerActivity is HeliFly)
+			{
+				var a = innerActivity as HeliFly;
+				return new TargetLineNode(a.Target, Color.Yellow, true);
+			}
+
+			return null;
 		}
 	}
 }

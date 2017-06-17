@@ -89,6 +89,7 @@
     <Compile Include="Activities\Air\ReturnToBase.cs" />
     <Compile Include="Activities\Air\TakeOff.cs" />
     <Compile Include="Activities\Attack.cs" />
+    <Compile Include="Activities\GuardTargetActivity.cs" />
     <Compile Include="Activities\CaptureActor.cs" />
     <Compile Include="Activities\DeliverResources.cs" />
     <Compile Include="Activities\Demolish.cs" />

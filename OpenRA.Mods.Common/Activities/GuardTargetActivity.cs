@@ -12,38 +12,30 @@
 using System.Collections.Generic;
 using System.Drawing;
 using OpenRA.Activities;
-using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Activities
 {
-	public class FlyFollow : Activity
+	public class GuardTargetActivity : Activity
 	{
 		Target target;
-		Aircraft plane;
-		WDist minRange;
-		WDist maxRange;
 
-		public FlyFollow(Actor self, Target target, WDist minRange, WDist maxRange)
+		public GuardTargetActivity(Actor self, Target target, Activity inner)
 		{
 			this.target = target;
-			plane = self.Trait<Aircraft>();
-			this.minRange = minRange;
-			this.maxRange = maxRange;
+			ChildActivity = inner;
 		}
 
 		public override Activity Tick(Actor self)
 		{
-			if (IsCanceled || !target.IsValidFor(self))
+			if (ChildActivity == null)
 				return NextActivity;
+			return ChildActivity;
+		}
 
-			if (target.IsInRange(self.CenterPosition, maxRange) && !target.IsInRange(self.CenterPosition, minRange))
-			{
-				Fly.FlyToward(self, plane, plane.Facing, plane.Info.CruiseAltitude);
-				return this;
-			}
-
-			return ActivityUtils.SequenceActivities(new Fly(self, target, minRange, maxRange), this);
+		public override IEnumerable<Target> GetTargets(Actor self)
+		{
+			return ChildActivity.GetTargets(self);
 		}
 
 		public override TargetLineNode? TargetLineNode(Actor self)

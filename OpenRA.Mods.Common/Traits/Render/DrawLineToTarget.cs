@@ -10,7 +10,7 @@
 #endregion
 
 using System.Collections.Generic;
-using System.Drawing;
+using OpenRA.Activities;
 using OpenRA.Graphics;
 using OpenRA.Traits;
 
@@ -23,11 +23,9 @@ namespace OpenRA.Mods.Common.Traits
 		public virtual object Create(ActorInitializer init) { return new DrawLineToTarget(init.Self, this); }
 	}
 
-	public class DrawLineToTarget : IRenderAboveShroudWhenSelected, INotifySelected, INotifyBecomingIdle
+	public class DrawLineToTarget : IRenderAboveShroudWhenSelected, INotifySelected
 	{
 		readonly DrawLineToTargetInfo info;
-		List<Target> targets;
-		Color c;
 		int lifetime;
 
 		public DrawLineToTarget(Actor self, DrawLineToTargetInfo info)
@@ -35,25 +33,7 @@ namespace OpenRA.Mods.Common.Traits
 			this.info = info;
 		}
 
-		public void SetTarget(Actor self, Target target, Color c, bool display)
-		{
-			targets = new List<Target> { target };
-			this.c = c;
-
-			if (display)
-				lifetime = info.Delay;
-		}
-
-		public void SetTargets(Actor self, List<Target> targets, Color c, bool display)
-		{
-			this.targets = targets;
-			this.c = c;
-
-			if (display)
-				lifetime = info.Delay;
-		}
-
-		void INotifySelected.Selected(Actor a)
+		public void ShowTargetLines(Actor a)
 		{
 			if (a.IsIdle)
 				return;
@@ -62,80 +42,70 @@ namespace OpenRA.Mods.Common.Traits
 			lifetime = info.Delay;
 		}
 
+		void INotifySelected.Selected(Actor a)
+		{
+			ShowTargetLines(a);
+		}
+
 		IEnumerable<IRenderable> IRenderAboveShroudWhenSelected.RenderAboveShroud(Actor self, WorldRenderer wr)
 		{
-			var force = Game.GetModifierKeys().HasModifier(Modifiers.Alt);
+			if (self.Owner != self.World.LocalPlayer)
+				yield break;
+
+			// shift is "force" too, players want to see the lines when in waypoint mode.
+			bool force = Game.GetModifierKeys().HasModifier(Modifiers.Alt)
+			          || Game.GetModifierKeys().HasModifier(Modifiers.Shift);
+
 			if ((lifetime <= 0 || --lifetime <= 0) && !force)
 				yield break;
 
 			if (!(force || Game.Settings.Game.DrawTargetLine))
 				yield break;
 
-			if (targets == null || targets.Count == 0)
-				yield break;
-
-			foreach (var target in targets)
+			WPos prev = self.CenterPosition;
+			Activity a = self.CurrentActivity;
+			if (a != null && a.RootActivity != null)
+				a = a.RootActivity;
+			for (; a != null; a = a.NextActivity)
 			{
-				if (target.Type == TargetType.Invalid)
+				if (a.IsCanceled)
 					continue;
 
-				yield return new TargetLineRenderable(new[] { self.CenterPosition, target.CenterPosition }, c);
-			}
-		}
+				var n = a.TargetLineNode(self);
 
-		void INotifyBecomingIdle.OnBecomingIdle(Actor a)
-		{
-			if (a.IsIdle)
-				targets = null;
+				// n == null doesn't mean termination. It is just an undrawable activity.
+				// If you need an underawable terminal activity,
+				// return Invalid target type + IsTerminal == true.
+				if (n == null)
+					continue;
+				var node = n.Value;
+
+				if (node.Target.Type == TargetType.Invalid)
+					if (node.IsTerminal)
+						break;
+					else
+						continue;
+
+				yield return new TargetLineRenderable(new[] { prev, node.Target.CenterPosition }, node.Color);
+				prev = node.Target.CenterPosition;
+
+				if (node.IsTerminal)
+					break;
+			}
 		}
 	}
 
 	public static class LineTargetExts
 	{
-		public static void SetTargetLines(this Actor self, List<Target> targets, Color color)
+		public static void ShowTargetLines(this Actor self)
 		{
+			if (self.Owner != self.World.LocalPlayer)
+				return;
+
+			// Draw after frame end so that all the queueing of activities are done before drawing.
 			var line = self.TraitOrDefault<DrawLineToTarget>();
 			if (line != null)
-				self.World.AddFrameEndTask(w => line.SetTargets(self, targets, color, false));
-		}
-
-		public static void SetTargetLine(this Actor self, Target target, Color color)
-		{
-			self.SetTargetLine(target, color, true);
-		}
-
-		public static void SetTargetLine(this Actor self, Target target, Color color, bool display)
-		{
-			if (self.Owner != self.World.LocalPlayer)
-				return;
-
-			self.World.AddFrameEndTask(w =>
-			{
-				if (self.Disposed)
-					return;
-
-				var line = self.TraitOrDefault<DrawLineToTarget>();
-				if (line != null)
-					line.SetTarget(self, target, color, display);
-			});
-		}
-
-		public static void SetTargetLine(this Actor self, FrozenActor target, Color color, bool display)
-		{
-			if (self.Owner != self.World.LocalPlayer)
-				return;
-
-			self.World.AddFrameEndTask(w =>
-			{
-				if (self.Disposed)
-					return;
-
-				target.Flash();
-
-				var line = self.TraitOrDefault<DrawLineToTarget>();
-				if (line != null)
-					line.SetTarget(self, Target.FromPos(target.CenterPosition), color, display);
-			});
+				self.World.AddFrameEndTask(w => line.ShowTargetLines(self));
 		}
 	}
 }

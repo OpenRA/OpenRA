@@ -10,6 +10,8 @@
 #endregion
 
 using System;
+using System.Drawing;
+using OpenRA.Activities;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
@@ -29,6 +31,11 @@ namespace OpenRA.Mods.Common.Activities
 			this.maxTries = maxTries;
 			cargo = transport.Trait<Cargo>();
 			passenger = self.Trait<Passenger>();
+		}
+
+		public override TargetLineNode? TargetLineNode(Actor self)
+		{
+			return new TargetLineNode(Target, Color.Yellow, true);
 		}
 
 		protected override void Unreserve(Actor self, bool abort) { passenger.Unreserve(self); }

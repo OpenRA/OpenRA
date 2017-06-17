@@ -50,10 +50,11 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void GuardTarget(Actor self, Target target)
 		{
-			self.SetTargetLine(target, Color.Yellow);
+			self.ShowTargetLines();
 
 			var range = target.Actor.Info.TraitInfo<GuardableInfo>().Range;
-			self.QueueActivity(false, new AttackMoveActivity(self, move.MoveFollow(self, target, WDist.Zero, range)));
+			var inner = new AttackMoveActivity(self, move.MoveFollow(self, target, WDist.Zero, range));
+			self.QueueActivity(false, new GuardTargetActivity(self, target, inner));
 		}
 
 		public string VoicePhraseForOrder(Actor self, Order order)

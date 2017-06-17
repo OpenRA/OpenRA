@@ -9,6 +9,8 @@
  */
 #endregion
 
+using System.Collections.Generic;
+using System.Drawing;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
@@ -47,6 +49,11 @@ namespace OpenRA.Mods.Common.Activities
 			Fly.FlyToward(self, plane, d.Yaw.Facing, WDist.Zero);
 
 			return this;
+		}
+
+		public override TargetLineNode? TargetLineNode(Actor self)
+		{
+			return new TargetLineNode(target, Color.Green, false);
 		}
 	}
 }

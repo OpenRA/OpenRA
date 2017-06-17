@@ -95,8 +95,7 @@ namespace OpenRA.Mods.Common.Traits
 				else
 					return;
 
-				self.SetTargetLine(Target.FromOrder(self.World, order), Color.Yellow);
-
+				self.ShowTargetLines();
 				self.CancelActivity();
 				self.QueueActivity(new RepairBridge(self, order.TargetActor, info.EnterBehaviour, info.RepairNotification));
 			}

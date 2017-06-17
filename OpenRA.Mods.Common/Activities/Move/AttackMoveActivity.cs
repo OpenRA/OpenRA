@@ -61,5 +61,21 @@ namespace OpenRA.Mods.Common.Activities
 
 			return Target.None;
 		}
+
+		public override TargetLineNode? TargetLineNode(Actor self)
+		{
+			// Attack move is a special case.
+			// It is natural to show combat while attacking something and
+			// when it is not, it should show "move".
+			if (inner != null)
+			{
+				if (inner is Turn)
+					return inner.NextActivity.TargetLineNode(self);
+				else
+					return inner.RootActivity.TargetLineNode(self);
+			}
+
+			return null;
+		}
 	}
 }

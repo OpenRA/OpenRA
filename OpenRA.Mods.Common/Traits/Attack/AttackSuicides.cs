@@ -77,11 +77,12 @@ namespace OpenRA.Mods.Common.Traits
 				if (!order.Queued)
 					self.CancelActivity();
 
-				self.SetTargetLine(target, Color.Red);
-
 				self.QueueActivity(move.MoveToTarget(self, target));
+				self.ShowTargetLines();
 
-				self.QueueActivity(new CallFunc(() => self.Kill(self)));
+				var act = new CallFunc(() => self.Kill(self));
+				act.SetTargetLineNode(target, Color.Red, true);
+				self.QueueActivity(act);
 			}
 			else if (order.OrderString == "Detonate")
 				self.Kill(self);

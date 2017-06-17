@@ -10,6 +10,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Drawing;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
@@ -18,8 +19,8 @@ namespace OpenRA.Mods.Common.Activities
 {
 	public class HeliFly : Activity
 	{
+		public readonly Target Target;
 		readonly Aircraft helicopter;
-		readonly Target target;
 		readonly WDist maxRange;
 		readonly WDist minRange;
 		bool playedSound;
@@ -27,7 +28,7 @@ namespace OpenRA.Mods.Common.Activities
 		public HeliFly(Actor self, Target t)
 		{
 			helicopter = self.Trait<Aircraft>();
-			target = t;
+			Target = t;
 		}
 
 		public HeliFly(Actor self, Target t, WDist minRange, WDist maxRange)
@@ -54,7 +55,7 @@ namespace OpenRA.Mods.Common.Activities
 
 		public override Activity Tick(Actor self)
 		{
-			if (IsCanceled || !target.IsValidFor(self))
+			if (IsCanceled || !Target.IsValidFor(self))
 				return NextActivity;
 
 			if (!playedSound && helicopter.Info.TakeoffSound != null && self.IsAtGroundLevel())
@@ -66,7 +67,7 @@ namespace OpenRA.Mods.Common.Activities
 			if (AdjustAltitude(self, helicopter, helicopter.Info.CruiseAltitude))
 				return this;
 
-			var pos = target.CenterPosition;
+			var pos = Target.CenterPosition;
 
 			// Rotate towards the target
 			var dist = pos - self.CenterPosition;
@@ -75,14 +76,14 @@ namespace OpenRA.Mods.Common.Activities
 			var move = helicopter.FlyStep(desiredFacing);
 
 			// Inside the minimum range, so reverse
-			if (minRange.Length > 0 && target.IsInRange(helicopter.CenterPosition, minRange))
+			if (minRange.Length > 0 && Target.IsInRange(helicopter.CenterPosition, minRange))
 			{
 				helicopter.SetPosition(self, helicopter.CenterPosition - move);
 				return this;
 			}
 
 			// Inside the maximum range, so we're done
-			if (maxRange.Length > 0 && target.IsInRange(helicopter.CenterPosition, maxRange))
+			if (maxRange.Length > 0 && Target.IsInRange(helicopter.CenterPosition, maxRange))
 				return NextActivity;
 
 			// The next move would overshoot, so just set the final position
@@ -100,7 +101,12 @@ namespace OpenRA.Mods.Common.Activities
 
 		public override IEnumerable<Target> GetTargets(Actor self)
 		{
-			yield return target;
+			yield return Target;
+		}
+
+		public override TargetLineNode? TargetLineNode(Actor self)
+		{
+			return new TargetLineNode(Target, Color.Green, false);
 		}
 	}
 
