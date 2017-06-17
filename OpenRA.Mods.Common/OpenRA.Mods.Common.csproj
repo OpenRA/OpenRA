@@ -92,6 +92,7 @@
     <Compile Include="Activities\CaptureActor.cs" />
     <Compile Include="Activities\DeliverResources.cs" />
     <Compile Include="Activities\Demolish.cs" />
+    <Compile Include="Activities\DeployForGrantedCondition.cs" />
     <Compile Include="Activities\DonateCash.cs" />
     <Compile Include="Activities\Enter.cs" />
     <Compile Include="Activities\EnterTransport.cs" />
@@ -117,6 +118,7 @@
     <Compile Include="Activities\SpriteHarvesterDockSequence.cs" />
     <Compile Include="Activities\Transform.cs" />
     <Compile Include="Activities\Turn.cs" />
+    <Compile Include="Activities\UndeployForGrantedCondition.cs" />
     <Compile Include="Activities\UnloadCargo.cs" />
     <Compile Include="Activities\Wait.cs" />
     <Compile Include="Activities\WaitForTransport.cs" />
