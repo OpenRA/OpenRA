@@ -201,15 +201,23 @@ ChainGun:
 		Versus:
 			None: 120
 
-ChainGun.Yak:
+ChainGun.Yak.Right:
 	Inherits: ^HeavyMG
-	ReloadDelay: 3
-	Range: 5c0
-	MinRange: 3c0
+	Burst: 5
+	FirstBurstTargetOffset: -684,213,0
+	FollowingBurstTargetOffset: 342,0,0
+	BurstDelay: 2
+	ReloadDelay: 10
+	Range: 5c6
+	MinRange: 3c420
 	Projectile: Bullet
 		Blockable: false
 	Warhead@1Dam: SpreadDamage
 		Damage: 40
+
+ChainGun.Yak.Left:
+	Inherits: ChainGun.Yak.Right
+	FirstBurstTargetOffset: -684,-213,0
 
 Pistol:
 	Inherits: ^LightMG
