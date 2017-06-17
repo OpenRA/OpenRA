@@ -81,6 +81,7 @@
     <Compile Include="Projectiles\Railgun.cs" />
     <Compile Include="Projectiles\RadBeam.cs" />
     <Compile Include="Traits\AIDeployHelper.cs" />
+    <Compile Include="Traits\Buildings\PeriodicFreeActor.cs" />
     <Compile Include="Traits\Mindcontrollable.cs" />
     <Compile Include="Traits\Mindcontroller.cs" />
     <Compile Include="Traits\FireWeaponAtSelf.cs" />
@@ -112,7 +113,6 @@
     <Folder Include="Effects\" />
     <Folder Include="Player\" />
     <Folder Include="SpriteLoaders\" />
-    <Folder Include="Traits\Buildings\" />
     <Folder Include="Traits\SupportPowers\" />
     <Folder Include="Traits\Widgets\" />
     <Folder Include="UtilityCommands\" />
