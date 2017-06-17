@@ -26,7 +26,7 @@ namespace OpenRA.Mods.Common.Activities
 		readonly IMove move;
 		readonly int maxTries = 0;
 		readonly EnterBehaviour enterBehaviour;
-		readonly bool targetCenter;
+		readonly bool repathWhileMoving;
 
 		public Target Target { get { return target; } }
 		Target target;
@@ -36,13 +36,13 @@ namespace OpenRA.Mods.Common.Activities
 		Activity inner;
 		bool firstApproach = true;
 
-		protected Enter(Actor self, Actor target, EnterBehaviour enterBehaviour, int maxTries = 1, bool targetCenter = false)
+		protected Enter(Actor self, Actor target, EnterBehaviour enterBehaviour, int maxTries = 1, bool repathWhileMoving = true)
 		{
 			move = self.Trait<IMove>();
 			this.target = Target.FromActor(target);
 			this.maxTries = maxTries;
 			this.enterBehaviour = enterBehaviour;
-			this.targetCenter = targetCenter;
+			this.repathWhileMoving = repathWhileMoving;
 		}
 
 		// CanEnter(target) should to be true; otherwise, Enter may abort.
@@ -169,7 +169,7 @@ namespace OpenRA.Mods.Common.Activities
 						case ReserveStatus.None:
 							return EnterState.Done; // No available target -> abort to next activity
 						case ReserveStatus.TooFar:
-							inner = move.MoveToTarget(self, targetCenter ? Target.FromPos(target.CenterPosition) : target); // Approach
+							inner = move.MoveToTarget(self, repathWhileMoving ? target : Target.FromPos(target.CenterPosition)); // Approach
 							return EnterState.ApproachingOrEntering;
 						case ReserveStatus.Pending:
 							return EnterState.ApproachingOrEntering; // Retry next tick
