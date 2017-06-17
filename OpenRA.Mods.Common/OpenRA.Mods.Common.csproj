@@ -67,6 +67,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Activities\UndeployForGrantedCondition.cs" />
+    <Compile Include="Activities\DeployForGrantedCondition.cs" />
     <Compile Include="Activities\DockUtils.cs" />
     <Compile Include="Activities\Air\AllowYieldingReservation.cs" />
     <Compile Include="Activities\Air\FallToEarth.cs" />

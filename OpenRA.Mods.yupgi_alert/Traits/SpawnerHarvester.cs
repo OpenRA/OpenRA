@@ -78,7 +78,7 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 	public enum MiningState
 	{
 		Scan, // Scan ore and move there
-		CheckDeploy, // Check we can catually deploy and do it if possible
+		TryDeploy, // Try to deploy
 		Deploying, // Playing deploy animation.
 		Mining, // Slaves are mining. We get kicked sometimes to move closer to ore.
 		Kick // Check if there's ore field is close enough.
@@ -335,41 +335,36 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 			return mobile.NearestCell(loc, p => mobile.CanEnterCell(p), 1, 6);
 		}
 
-		void HandleSpawnerHarvest(Actor self, Order order, MiningState state)
+		void HandleSpawnerHarvest(Actor self, Order order)
 		{
 			allowKicks = true;
 
-			MiningState = state;
-
 			// state == Deploying implies order string of SpawnerHarvestDeploying
 			// and must not cancel deploy activity!
-			if (state != MiningState.Deploying)
+			if (MiningState != MiningState.Deploying)
 				self.CancelActivity();
 
-			CPos loc = ResolveHarvestLocation(self, order);
-			LastOrderLocation = loc;
-			var findResources = new SpawnerHarvesterHarvest(self);
-			self.QueueActivity(findResources);
-			self.SetTargetLine(Target.FromCell(self.World, loc), Color.Red);
+			MiningState = MiningState.Scan;
+
+			LastOrderLocation = ResolveHarvestLocation(self, order);
+			self.QueueActivity(new SpawnerHarvesterHarvest(self));
+			self.SetTargetLine(Target.FromCell(self.World, LastOrderLocation.Value), Color.Red);
 
 			// Assign new targets for slaves too.
 			foreach (var s in launched)
 			{
 				// Don't cancel but "queue" it.
-				AssignTargetForSpawned(s, loc);
+				AssignTargetForSpawned(s, LastOrderLocation.Value);
 			}
 		}
 
 		public void ResolveOrder(Actor self, Order order)
 		{
 			if (order.OrderString == "SpawnerHarvest")
-				HandleSpawnerHarvest(self, order, MiningState.Scan);
-			else if (order.OrderString == "SpawnerHarvestKick")
-				HandleSpawnerHarvest(self, order, MiningState.Kick);
-			else if (order.OrderString == "SpawnerHarvestDeploying")
-				HandleSpawnerHarvest(self, order, MiningState.Deploying);
+				HandleSpawnerHarvest(self, order);
 			else if (order.OrderString == "Stop" || order.OrderString == "Move")
 			{
+				// Disable "smart idle"
 				allowKicks = false;
 				MiningState = MiningState.Scan;
 			}
@@ -392,7 +387,7 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 			{
 				kickTicks = info.KickDelay;
 				MiningState = MiningState.Kick;
-				self.World.IssueOrder(new Order("SpawnerHarvestKick", self, false));
+				self.QueueActivity(new SpawnerHarvesterHarvest(self));
 			}
 		}
 

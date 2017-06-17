@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * CnP of FindResources.cs of OpenRA.
+ * CnP of FindResources.cs of OpenRA... erm... Not quite, anymore!
  * Modded by Boolbada of OP Mod
  * 
  * Copyright 2007-2017 The OpenRA Developers (see AUTHORS)
@@ -62,34 +62,35 @@ namespace OpenRA.Mods.Yupgi_alert.Activities
 			this.avoidCell = avoidCell;
 		}
 
-		Activity UndeployAndGo(Actor self, CPos? mineLocation, out MiningState state)
+		Activity UndeployAndGo(Actor self, out MiningState state)
 		{
 			state = MiningState.Scan;
-			self.World.IssueOrder(new Order("GrantConditionOnDeploy", self, false) { SuppressVisualFeedback = true }); // undeploy
-			var mineOrder = new Order("SpawnerHarvest", self, true) { SuppressVisualFeedback = true };
-			if (mineLocation.HasValue)
-				mineOrder.TargetLocation = mineLocation.Value;
-			self.World.IssueOrder(mineOrder);
-			return NextActivity; // issued oders take over.
+			QueueChild(new UndeployForGrantedCondition(self));
+			return this;
 		}
 
 		Activity ScanTick(Actor self, out MiningState state)
 		{
-			state = MiningState.Scan;
+			if (ChildActivity != null)
+			{
+				ChildActivity = ActivityUtils.RunActivity(self, ChildActivity);
+				state = MiningState.Scan;
+				return this;
+			}
 
 			var searchFromLoc = harv.LastOrderLocation ?? self.Location;
 			var closestHarvestablePosition = ClosestHarvestablePos(self, searchFromLoc, harvInfo.LongScanRadius);
 
-			// If no harvestable position could be found, either deliver the remaining resources
-			// or get out of the way and do not disturb.
-			// Well... We don't need to deliver nor have to get out of the way, we are in the field.
+			// No suitable resource field found.
 			// We only have to wait for resource to regen.
 			if (!closestHarvestablePosition.HasValue)
 			{
 				var randFrames = self.World.SharedRandom.Next(100, 175);
 
 				// Avoid creating an activity cycle
-				return ActivityUtils.SequenceActivities(new Wait(randFrames), this);
+				QueueChild(new Wait(randFrames));
+				state = MiningState.Scan;
+				return this;
 			}
 
 			//// ... Don't claim resource layer here. Slaves will claim by themselves.
@@ -105,9 +106,13 @@ namespace OpenRA.Mods.Yupgi_alert.Activities
 
 			// Just sit there until we can. Won't happen unless the map is filled with units.
 			if (deployPosition == null)
-				return ActivityUtils.SequenceActivities(new Wait(harvInfo.KickDelay), this);
+			{
+				QueueChild(new Wait(harvInfo.KickDelay));
+				state = MiningState.Scan;
+				return this;
+			}
 
-			// I could be in deploy state and given this order.
+			// I could be in deployed state and given this order.
 			if (deploy.DeployState == DeployState.Deployed)
 			{
 				if ((deployPosition.Value - self.Location).LengthSquared <= harvInfo.KickScanRadius * harvInfo.KickScanRadius)
@@ -118,7 +123,7 @@ namespace OpenRA.Mods.Yupgi_alert.Activities
 				}
 				else
 				{
-					return UndeployAndGo(self, harv.LastOrderLocation, out state);
+					return UndeployAndGo(self, out state);
 				}
 			}
 
@@ -127,12 +132,22 @@ namespace OpenRA.Mods.Yupgi_alert.Activities
 			foreach (var n in notify)
 				n.MovingToResources(self, deployPosition.Value, this);
 
-			state = MiningState.CheckDeploy;
-			return ActivityUtils.SequenceActivities(mobile.MoveTo(deployPosition.Value, 2), this);
+			state = MiningState.TryDeploy;
+			QueueChild(mobile.MoveTo(deployPosition.Value, 2));
+			return this;
 		}
 
-		Activity CheckDeployTick(Actor self, out MiningState state)
+		Activity TryDeployTick(Actor self, out MiningState state)
 		{
+			// Wait for child wait activity to be done.
+			// Could be wait or could be move to.
+			if (ChildActivity != null)
+			{
+				ChildActivity = ActivityUtils.RunActivity(self, ChildActivity);
+				state = MiningState.TryDeploy;
+				return this;
+			}
+
 			if (!deploy.CanDeployAtLocation(self.Location))
 			{
 				// If we can't deploy, go back to scan state so that we scan try deploy again.
@@ -141,27 +156,32 @@ namespace OpenRA.Mods.Yupgi_alert.Activities
 			}
 
 			// Issue deploy order and enter deploying state.
-			state = MiningState.Deploying;
 			if (deploy.DeployState == DeployState.Undeployed)
 			{
-				self.World.IssueOrder(new Order("GrantConditionOnDeploy", self, false) { SuppressVisualFeedback = true });
-				self.World.IssueOrder(new Order("SpawnerHarvestDeploying", self, true) { SuppressVisualFeedback = true });
+				IsInterruptible = false;
+				QueueChild(new DeployForGrantedCondition(self));
 			}
 
-			return null; // issuing order cancels everything so no use returning anything.
+			state = MiningState.Deploying;
+			return this;
 		}
 
 		Activity DeployingTick(Actor self, out MiningState state)
 		{
-			state = MiningState.Deploying;
+			// Deploying in progress
+			if (ChildActivity != null)
+			{
+				ChildActivity = ActivityUtils.RunActivity(self, ChildActivity);
+				state = MiningState.Deploying;
+				return this;
+			}
+
+			// deploy failure.
 			if (deploy.DeployState == DeployState.Undeployed)
 			{
-				state = MiningState.CheckDeploy;
-				return ActivityUtils.SequenceActivities(new Wait(15), this);
-			}
-			else if (deploy.DeployState == DeployState.Deploying)
-			{
-				return ActivityUtils.SequenceActivities(new Wait(15), this);
+				QueueChild(new Wait(15));
+				state = MiningState.TryDeploy;
+				return this;
 			}
 
 			state = MiningState.Mining;
@@ -187,7 +207,8 @@ namespace OpenRA.Mods.Yupgi_alert.Activities
 			}
 
 			// get going
-			return UndeployAndGo(self, null, out state);
+			harv.LastOrderLocation = null;
+			return UndeployAndGo(self, out state);
 		}
 
 		public override Activity Tick(Actor self)
@@ -208,8 +229,8 @@ namespace OpenRA.Mods.Yupgi_alert.Activities
 			{
 				case MiningState.Scan:
 					return ScanTick(self, out harv.MiningState);
-				case MiningState.CheckDeploy:
-					return CheckDeployTick(self, out harv.MiningState);
+				case MiningState.TryDeploy:
+					return TryDeployTick(self, out harv.MiningState);
 				case MiningState.Deploying:
 					return DeployingTick(self, out harv.MiningState);
 				case MiningState.Mining:

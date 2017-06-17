@@ -138,17 +138,9 @@ namespace OpenRA.Mods.Common.Traits
 				self.CancelActivity();
 
 			if (deployState == DeployState.Deployed && info.CanUndeploy)
-			{
-				self.QueueActivity(new CallFunc(Undeploy));
-			}
+				self.QueueActivity(new UndeployForGrantedCondition(self));
 			else if (deployState == DeployState.Undeployed)
-			{
-				// Turn to the required facing.
-				if (info.Facing != -1 && canTurn)
-					self.QueueActivity(new Turn(self, info.Facing));
-
-				self.QueueActivity(new CallFunc(Deploy));
-			}
+				self.QueueActivity(new DeployForGrantedCondition(self));
 		}
 
 		bool IsCursorBlocked()
@@ -201,7 +193,7 @@ namespace OpenRA.Mods.Common.Traits
 		}
 
 		/// <summary>Play deploy sound and animation.</summary>
-		void Deploy() { Deploy(false); }
+		public void Deploy() { Deploy(false); }
 		void Deploy(bool init)
 		{
 			// Something went wrong, most likely due to deploy order spam and the fact that this is a delayed action.
@@ -229,7 +221,7 @@ namespace OpenRA.Mods.Common.Traits
 		}
 
 		/// <summary>Play undeploy sound and animation and after that revoke the condition.</summary>
-		void Undeploy() { Undeploy(false); }
+		public void Undeploy() { Undeploy(false); }
 		void Undeploy(bool init)
 		{
 			// Something went wrong, most likely due to deploy order spam and the fact that this is a delayed action.
