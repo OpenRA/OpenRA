@@ -126,6 +126,7 @@ namespace OpenRA.Mods.Common.Activities
 		ReserveStatus TryReserveElseTryAlternateReserve(Actor self)
 		{
 			for (var tries = 0;;)
+			{
 				switch (Reserve(self))
 				{
 					case ReserveStatus.None:
@@ -145,7 +146,10 @@ namespace OpenRA.Mods.Common.Activities
 						Target t = target;
 						if (!TryGetAlternateTarget(self, tries, ref t))
 							return ReserveStatus.TooFar;
-						if ((target.CenterPosition - self.CenterPosition).HorizontalLengthSquared <= (t.CenterPosition - self.CenterPosition).HorizontalLengthSquared)
+
+						var targetPosition = target.Positions.PositionClosestTo(self.CenterPosition);
+						var alternatePosition = t.Positions.PositionClosestTo(self.CenterPosition);
+						if ((targetPosition - self.CenterPosition).HorizontalLengthSquared <= (alternatePosition - self.CenterPosition).HorizontalLengthSquared)
 							return ReserveStatus.TooFar;
 						target = t;
 						continue;
@@ -154,6 +158,7 @@ namespace OpenRA.Mods.Common.Activities
 					case ReserveStatus.Ready:
 						return ReserveStatus.Ready;
 				}
+			}
 		}
 
 		EnterState FindAndTransitionToNextState(Actor self)
@@ -169,8 +174,12 @@ namespace OpenRA.Mods.Common.Activities
 						case ReserveStatus.None:
 							return EnterState.Done; // No available target -> abort to next activity
 						case ReserveStatus.TooFar:
-							inner = move.MoveToTarget(self, repathWhileMoving ? target : Target.FromPos(target.CenterPosition)); // Approach
+						{
+							var moveTarget = repathWhileMoving ? target : Target.FromPos(target.Positions.PositionClosestTo(self.CenterPosition));
+							inner = move.MoveToTarget(self, moveTarget); // Approach
 							return EnterState.ApproachingOrEntering;
+						}
+
 						case ReserveStatus.Pending:
 							return EnterState.ApproachingOrEntering; // Retry next tick
 						case ReserveStatus.Ready:
@@ -198,7 +207,7 @@ namespace OpenRA.Mods.Common.Activities
 						nextState = EnterState.Inside;
 
 					// Otherwise, try to recover from moving target
-					else if (target.CenterPosition != self.CenterPosition)
+					else if (target.Positions.PositionClosestTo(self.CenterPosition) != self.CenterPosition)
 					{
 						nextState = EnterState.ApproachingOrEntering;
 						Unreserve(self, false);
