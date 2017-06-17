@@ -107,6 +107,7 @@ namespace OpenRA.Mods.Common.Traits
 		Turreted turret;
 		AmmoPool ammoPool;
 		BodyOrientation coords;
+		INotifyBurstComplete[] notifyBurstComplete;
 		IEnumerable<int> rangeModifiers;
 		List<Pair<int, Action>> delayedActions = new List<Pair<int, Action>>();
 
@@ -149,6 +150,7 @@ namespace OpenRA.Mods.Common.Traits
 			turret = self.TraitsImplementing<Turreted>().FirstOrDefault(t => t.Name == Info.Turret);
 			ammoPool = self.TraitsImplementing<AmmoPool>().FirstOrDefault(la => la.Info.Name == Info.AmmoPoolName);
 			coords = self.Trait<BodyOrientation>();
+			notifyBurstComplete = self.TraitsImplementing<INotifyBurstComplete>().ToArray();
 			rangeModifiers = self.TraitsImplementing<IRangeModifier>().ToArray().Select(m => m.GetRangeModifier());
 
 			base.Created(self);
@@ -281,7 +283,7 @@ namespace OpenRA.Mods.Common.Traits
 					});
 				}
 
-				foreach (var nbc in self.TraitsImplementing<INotifyBurstComplete>())
+				foreach (var nbc in notifyBurstComplete)
 					nbc.FiredBurst(self, target, this);
 			}
 
