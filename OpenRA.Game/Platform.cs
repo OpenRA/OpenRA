@@ -70,8 +70,9 @@ namespace OpenRA
 		static string GetSupportDir()
 		{
 			// Use a local directory in the game root if it exists
-			if (Directory.Exists("Support"))
-				return "Support" + Path.DirectorySeparatorChar;
+			var supportDir = Path.Combine(GameDir, "Support");
+			if (Directory.Exists(supportDir))
+				return supportDir + Path.DirectorySeparatorChar;
 
 			var dir = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
 
