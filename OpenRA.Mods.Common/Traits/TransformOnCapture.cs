@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Traits;
 
@@ -19,6 +20,9 @@ namespace OpenRA.Mods.Common.Traits
 		[ActorReference] public readonly string IntoActor = null;
 		public readonly int ForceHealthPercentage = 0;
 		public readonly bool SkipMakeAnims = true;
+
+		[Desc("Type filter, different from capturable type.")]
+		public readonly string Type = "husk";
 
 		public virtual object Create(ActorInitializer init) { return new TransformOnCapture(init, this); }
 	}
@@ -36,12 +40,28 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void OnCapture(Actor self, Actor captor, Player oldOwner, Player newOwner)
 		{
+			if (!IsValidCaptor(captor))
+				return;
+
 			var facing = self.TraitOrDefault<IFacing>();
 			var transform = new Transform(self, info.IntoActor) { ForceHealthPercentage = info.ForceHealthPercentage, Faction = faction };
 			if (facing != null) transform.Facing = facing.Facing;
 			transform.SkipMakeAnims = info.SkipMakeAnims;
 			self.CancelActivity();
 			self.QueueActivity(transform);
+		}
+
+		bool IsValidCaptor(Actor captor)
+		{
+			var capInfo = captor.Info.TraitInfoOrDefault<CapturesInfo>();
+			if (capInfo != null && capInfo.TransformTypes.Contains(info.Type))
+				return true;
+
+			var extCapInfo = captor.Info.TraitInfoOrDefault<ExternalCapturesInfo>();
+			if (extCapInfo != null && extCapInfo.TransformTypes.Contains(info.Type))
+				return true;
+
+			return false;
 		}
 	}
 }

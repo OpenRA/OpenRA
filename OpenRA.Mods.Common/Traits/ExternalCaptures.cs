@@ -23,6 +23,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Types of actors that it can capture, as long as the type also exists in the ExternalCapturable Type: trait.")]
 		public readonly HashSet<string> CaptureTypes = new HashSet<string> { "building" };
 
+		[Desc("Triggers TransformOnCapture tagged by these types")]
+		public readonly HashSet<string> TransformTypes = new HashSet<string> { "husk" };
+
 		[Desc("Destroy the unit after capturing.")]
 		public readonly bool ConsumeActor = false;
 
