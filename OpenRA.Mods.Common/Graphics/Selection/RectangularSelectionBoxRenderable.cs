@@ -9,21 +9,29 @@
  */
 #endregion
 
+using System.Collections;
+using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using OpenRA.Graphics;
+using OpenRA.Mods.Common.Traits;
 
 namespace OpenRA.Mods.Common.Graphics
 {
-	public struct SelectionBoxRenderable : IRenderable, IFinalizedRenderable
+	public struct RectangularSelectionBoxRenderable : IRenderable, IFinalizedRenderable
 	{
 		readonly WPos pos;
 		readonly Rectangle visualBounds;
 		readonly Color color;
 
-		public SelectionBoxRenderable(Actor actor, Color color)
-			: this(actor.CenterPosition, actor.VisualBounds, color) { }
+		public RectangularSelectionBoxRenderable(Actor actor, Color color, float isometricHeight = 0)
+		{
+			this.pos = actor.CenterPosition;
+			this.visualBounds = actor.VisualBounds;
+			this.color = color;
+		}
 
-		public SelectionBoxRenderable(WPos pos, Rectangle visualBounds, Color color)
+		private RectangularSelectionBoxRenderable(WPos pos, Rectangle visualBounds, Color color)
 		{
 			this.pos = pos;
 			this.visualBounds = visualBounds;
@@ -38,10 +46,11 @@ namespace OpenRA.Mods.Common.Graphics
 
 		public IRenderable WithPalette(PaletteReference newPalette) { return this; }
 		public IRenderable WithZOffset(int newOffset) { return this; }
-		public IRenderable OffsetBy(WVec vec) { return new SelectionBoxRenderable(pos + vec, visualBounds, color); }
+		public IRenderable OffsetBy(WVec vec) { return new RectangularSelectionBoxRenderable(pos + vec, visualBounds, color); }
 		public IRenderable AsDecoration() { return this; }
 
 		public IFinalizedRenderable PrepareRender(WorldRenderer wr) { return this; }
+
 		public void Render(WorldRenderer wr)
 		{
 			var iz = 1 / wr.Viewport.Zoom;
@@ -60,7 +69,7 @@ namespace OpenRA.Mods.Common.Graphics
 			wcr.DrawLine(new[] { bl + u, bl, bl - v }, iz, color, true);
 		}
 
-		public void RenderDebugGeometry(WorldRenderer wr) { }
+	    public void RenderDebugGeometry(WorldRenderer wr) { }
 		public Rectangle ScreenBounds(WorldRenderer wr) { return Rectangle.Empty; }
 	}
 }

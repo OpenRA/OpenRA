@@ -224,7 +224,6 @@
     <Compile Include="Graphics\PlatformInterfaces.cs" />
     <Compile Include="Sound\Sound.cs" />
     <Compile Include="Sound\SoundDevice.cs" />
-    <Compile Include="Graphics\SelectionBarsRenderable.cs" />
     <Compile Include="Graphics\TargetLineRenderable.cs" />
     <Compile Include="Graphics\UISpriteRenderable.cs" />
     <Compile Include="Graphics\SoftwareCursor.cs" />

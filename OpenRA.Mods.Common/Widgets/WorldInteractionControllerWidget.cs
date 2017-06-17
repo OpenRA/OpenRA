@@ -9,11 +9,14 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Effects;
+using OpenRA.Mods.Common.Graphics;
+using OpenRA.Mods.Common.Traits.Render;
 using OpenRA.Orders;
 using OpenRA.Traits;
 using OpenRA.Widgets;
@@ -45,8 +48,10 @@ namespace OpenRA.Mods.Common.Widgets
 		void DrawRollover(Actor unit)
 		{
 			// TODO: Integrate this with SelectionDecorations to unhardcode the *Renderable
-			if (unit.Info.HasTraitInfo<SelectableInfo>())
-				new SelectionBarsRenderable(unit, true, true).Render(worldRenderer);
+			if (unit.Info.HasTraitInfo<SelectionDecorationsInfo>() && !unit.World.Selection.Contains(unit))
+			{
+				unit.TraitOrDefault<SelectionDecorations>().DrawSelectionBars(unit, true, true).PrepareRender(worldRenderer).Render(worldRenderer);
+			}
 		}
 
 		public override void Draw()
