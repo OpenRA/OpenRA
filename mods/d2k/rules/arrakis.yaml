@@ -79,7 +79,7 @@ sandworm:
 			SpiceSand: 100
 			Spice: 100
 	Targetable:
-		TargetTypes: Ground
+		TargetTypes: Ground, Creep
 	WithSpriteBody:
 	WithIdleAnimation:
 		Interval: 160

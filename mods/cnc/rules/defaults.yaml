@@ -150,7 +150,7 @@
 ^AutoTargetGround:
 	AutoTarget:
 	AutoTargetPriority@DEFAULT:
-		ValidTargets: Infantry, Vehicle, Water, Structure, Defense
+		ValidTargets: Infantry, Vehicle, Creep, Water, Structure, Defense
 		InvalidTargets: NoAutoTarget
 
 ^AutoTargetAir:
@@ -162,7 +162,7 @@
 ^AutoTargetAll:
 	AutoTarget:
 	AutoTargetPriority@DEFAULT:
-		ValidTargets: Infantry, Vehicle, Water, Air, Structure, Defense
+		ValidTargets: Infantry, Vehicle, Creep, Water, Air, Structure, Defense
 		InvalidTargets: NoAutoTarget
 
 ^AcceptsCloakCrate:
