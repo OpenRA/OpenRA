@@ -102,8 +102,6 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly Barrel[] Barrels;
 
 		readonly Actor self;
-		readonly AttackBase[] attackTraits;
-		AttackBase attack;
 		Turreted turret;
 		AmmoPool ammoPool;
 		BodyOrientation coords;
@@ -143,7 +141,6 @@ namespace OpenRA.Mods.Common.Traits
 				barrels.Add(new Barrel { Offset = WVec.Zero, Yaw = WAngle.Zero });
 
 			Barrels = barrels.ToArray();
-			attackTraits = self.TraitsImplementing<AttackBase>().Where(a => a.Info.Armaments.Contains(Info.Name)).ToArray();
 		}
 
 		public virtual WDist MaxRange()
@@ -206,10 +203,6 @@ namespace OpenRA.Mods.Common.Traits
 		// The world coordinate model uses Actor.Orientation
 		public virtual Barrel CheckFire(Actor self, IFacing facing, Target target)
 		{
-			attack = attackTraits.FirstOrDefault(Exts.IsTraitEnabled);
-			if (attack == null)
-				return null;
-
 			if (IsReloading)
 				return null;
 
@@ -246,7 +239,7 @@ namespace OpenRA.Mods.Common.Traits
 				Source = muzzlePosition(),
 				CurrentSource = muzzlePosition,
 				SourceActor = self,
-				PassiveTarget = attack.Info.AttackTargetCenter ? target.CenterPosition : target.Positions.PositionClosestTo(muzzlePosition()),
+				PassiveTarget = Weapon.TargetActorCenter ? target.CenterPosition : target.Positions.PositionClosestTo(muzzlePosition()),
 				GuidedTarget = target
 			};
 

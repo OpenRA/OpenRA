@@ -137,9 +137,6 @@ namespace OpenRA.Mods.Common.Projectiles
 			"the missile enters the radius of the current speed around the target.")]
 		public readonly bool AllowSnapping = false;
 
-		[Desc("Ignore any other targetable positions and aim directly at center of target actor.")]
-		public readonly bool TargetCenterPosition = false;
-
 		[Desc("Explodes when inside this proximity radius to target.",
 			"Note: If this value is lower than the missile speed, this check might",
 			"not trigger fast enough, causing the missile to fly past the target.")]
@@ -802,7 +799,7 @@ namespace OpenRA.Mods.Common.Projectiles
 			// Check if target position should be updated (actor visible & locked on)
 			var newTarPos = targetPosition;
 			if (args.GuidedTarget.IsValidFor(args.SourceActor) && lockOn)
-				newTarPos = (info.TargetCenterPosition ? args.GuidedTarget.CenterPosition : args.GuidedTarget.Positions.PositionClosestTo(args.Source))
+				newTarPos = (args.Weapon.TargetActorCenter ? args.GuidedTarget.CenterPosition : args.GuidedTarget.Positions.PositionClosestTo(args.Source))
 					+ new WVec(WDist.Zero, WDist.Zero, info.AirburstAltitude);
 
 			// Compute target's predicted velocity vector (assuming uniform circular motion)

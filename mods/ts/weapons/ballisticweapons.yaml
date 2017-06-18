@@ -98,6 +98,7 @@ RPGTower:
 	Inherits: ^ArtilleryWeapon
 	ReloadDelay: 110
 	Range: 18c0
+	TargetActorCenter: true
 	Projectile: Bullet
 		Speed: 384
 		LaunchAngle: 165
@@ -117,6 +118,7 @@ Jugg90mm:
 	BurstDelay: 3
 	-Report:
 	StartBurstReport: jugger1.aud
+	TargetActorCenter: true
 	Projectile: Bullet
 		Speed: 384
 		LaunchAngle: 165

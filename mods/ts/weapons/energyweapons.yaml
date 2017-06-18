@@ -200,8 +200,8 @@ TurretLaserFire:
 		Damage: 30
 
 LaserFence:
+	TargetActorCenter: true
 	Projectile: InstantHit
-		TargetCenterPosition: true
 	Warhead@1Dam: TargetDamage
 		DebugOverlayColor: FF0000
 		Damage: 99999

@@ -106,6 +106,7 @@ TurretGun:
 	Inherits: ^Artillery
 	MinRange: 3c0
 	Report: tank5.aud
+	TargetActorCenter: true
 	Projectile: Bullet
 		ContrailLength: 30
 
@@ -116,6 +117,7 @@ TurretGun:
 	Range: 16c0
 	Burst: 2
 	Report: turret1.aud
+	TargetActorCenter: true
 	Projectile: Bullet
 		Inaccuracy: 2c938
 		ContrailLength: 30

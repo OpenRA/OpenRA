@@ -69,6 +69,9 @@ namespace OpenRA.GameRules
 		[Desc("The minimum range the weapon can fire.")]
 		public readonly WDist MinRange = WDist.Zero;
 
+		[Desc("Does this weapon aim at the target's center regardless of other targetable offsets?")]
+		public readonly bool TargetActorCenter = false;
+
 		[FieldLoader.LoadUsing("LoadProjectile")]
 		public readonly IProjectileInfo Projectile;
 

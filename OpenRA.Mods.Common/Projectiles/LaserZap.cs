@@ -49,9 +49,6 @@ namespace OpenRA.Mods.Common.Projectiles
 		[Desc("Beam can be blocked.")]
 		public readonly bool Blockable = false;
 
-		[Desc("Ignore any other targetable positions and aim directly at center of target actor.")]
-		public readonly bool TargetCenterPosition = false;
-
 		[Desc("Draw a second beam (for 'glow' effect).")]
 		public readonly bool SecondaryBeam = false;
 
@@ -131,7 +128,7 @@ namespace OpenRA.Mods.Common.Projectiles
 		{
 			// Beam tracks target
 			if (info.TrackTarget && args.GuidedTarget.IsValidFor(args.SourceActor))
-				target = info.TargetCenterPosition ? args.GuidedTarget.CenterPosition : args.GuidedTarget.Positions.PositionClosestTo(source);
+				target = args.Weapon.TargetActorCenter ? args.GuidedTarget.CenterPosition : args.GuidedTarget.Positions.PositionClosestTo(source);
 
 			// Check for blocking actors
 			WPos blockedPos;
