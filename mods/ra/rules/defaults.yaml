@@ -159,7 +159,13 @@
 
 ^AutoTargetGround:
 	AutoTarget:
+		AttackAnythingCondition: stance-attackanything
 	AutoTargetPriority@DEFAULT:
+		RequiresCondition: !stance-attackanything
+		ValidTargets: Infantry, Vehicle, Tank, Water, Underwater, Defense
+		InvalidTargets: NoAutoTarget
+	AutoTargetPriority@ATTACKANYTHING:
+		RequiresCondition: stance-attackanything
 		ValidTargets: Infantry, Vehicle, Tank, Water, Underwater, Structure, Defense
 		InvalidTargets: NoAutoTarget
 
@@ -171,7 +177,13 @@
 
 ^AutoTargetAll:
 	AutoTarget:
+		AttackAnythingCondition: stance-attackanything
 	AutoTargetPriority@DEFAULT:
+		RequiresCondition: !stance-attackanything
+		ValidTargets: Infantry, Vehicle, Tank, Water, Underwater, Air, Defense
+		InvalidTargets: NoAutoTarget
+	AutoTargetPriority@ATTACKANYTHING:
+		RequiresCondition: stance-attackanything
 		ValidTargets: Infantry, Vehicle, Tank, Water, Underwater, Air, Structure, Defense
 		InvalidTargets: NoAutoTarget
 

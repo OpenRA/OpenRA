@@ -154,3 +154,4 @@ ORCA.IN:
 		Image: ORCA
 	-AutoTarget:
 	-AutoTargetPriority@DEFAULT:
+	-AutoTargetPriority@ATTACKANYTHING:
