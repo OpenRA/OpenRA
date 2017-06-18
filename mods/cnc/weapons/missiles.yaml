@@ -142,6 +142,7 @@ MammothMissiles:
 	BurstDelay: 4
 	Report: rocket1.aud
 	ValidTargets: Ground
+	TargetActorCenter: true
 	Projectile: Bullet
 		Inaccuracy: 853
 		LaunchAngle: 62

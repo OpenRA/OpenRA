@@ -57,9 +57,6 @@ namespace OpenRA.Mods.Common.Projectiles
 		[Desc("Does the beam follow the target.")]
 		public readonly bool TrackTarget = false;
 
-		[Desc("Ignore any other targetable positions and aim directly at center of target actor.")]
-		public readonly bool TargetCenterPosition = false;
-
 		[Desc("Should the beam be visually rendered? False = Beam is invisible.")]
 		public readonly bool RenderBeam = true;
 
@@ -160,7 +157,7 @@ namespace OpenRA.Mods.Common.Projectiles
 
 			if (args.GuidedTarget.IsValidFor(args.SourceActor))
 			{
-				var guidedTargetPos = info.TargetCenterPosition ? args.GuidedTarget.CenterPosition : args.GuidedTarget.Positions.PositionClosestTo(args.Source);
+				var guidedTargetPos = args.Weapon.TargetActorCenter ? args.GuidedTarget.CenterPosition : args.GuidedTarget.Positions.PositionClosestTo(args.Source);
 				var targetDistance = new WDist((guidedTargetPos - args.Source).Length);
 
 				// Only continue tracking target if it's within weapon range +

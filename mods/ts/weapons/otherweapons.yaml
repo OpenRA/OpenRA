@@ -28,6 +28,7 @@ Bomb:
 	Burst: 5
 	BurstDelay: 6
 	Range: 2c512
+	TargetActorCenter: true
 	Projectile: GravityBomb
 		Velocity: 72, 0, -90
 		Acceleration: 0, 0, -8

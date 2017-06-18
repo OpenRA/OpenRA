@@ -295,6 +295,7 @@ TorpTube:
 SubMissile:
 	Inherits: ^SubMissileDefault
 	Range: 16c0
+	TargetActorCenter: true
 	-Projectile:
 	Projectile: Bullet
 		Speed: 162
