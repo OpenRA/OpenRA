@@ -200,7 +200,7 @@ Container@PLAYER_WIDGETS:
 					Background: command-button
 					DisableKeyRepeat: true
 					TooltipText: Defend Stance
-					TooltipDesc: Set the selected units to Defend stance:\n - Units will attack enemy units and structures on sight\n - Units will not move or pursue enemies
+					TooltipDesc: Set the selected units to Defend stance:\n - Units will attack enemy units on sight\n - Units will not move or pursue enemies
 					TooltipContainer: TOOLTIP_CONTAINER
 					Children:
 						Image@ICON:
