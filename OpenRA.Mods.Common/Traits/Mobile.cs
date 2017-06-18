@@ -384,10 +384,6 @@ namespace OpenRA.Mods.Common.Traits
 	public class Mobile : ConditionalTrait<MobileInfo>, INotifyCreated, IIssueOrder, IResolveOrder, IOrderVoice, IPositionable, IMove,
 		IFacing, IDeathActorInitModifier, INotifyAddedToWorld, INotifyRemovedFromWorld, INotifyBlockingMove, IActorPreviewInitModifier, INotifyBecomingIdle
 	{
-		const int AverageTicksBeforePathing = 5;
-		const int SpreadTicksBeforePathing = 5;
-		internal int TicksBeforePathing = 0;
-
 		readonly Actor self;
 		readonly Lazy<IEnumerable<int>> speedModifiers;
 		public bool IsMoving { get; set; }
@@ -621,33 +617,6 @@ namespace OpenRA.Mods.Common.Traits
 			return target;
 		}
 
-		void PerformMoveInner(Actor self, CPos targetLocation, bool queued)
-		{
-			var currentLocation = NearestMoveableCell(targetLocation);
-
-			if (!CanEnterCell(currentLocation))
-			{
-				if (queued) self.CancelActivity();
-				return;
-			}
-
-			if (!queued) self.CancelActivity();
-
-			TicksBeforePathing = AverageTicksBeforePathing + self.World.SharedRandom.Next(-SpreadTicksBeforePathing, SpreadTicksBeforePathing);
-
-			self.QueueActivity(new Move(self, currentLocation, WDist.FromCells(8)));
-
-			self.SetTargetLine(Target.FromCell(self.World, currentLocation), Color.Green);
-		}
-
-		protected void PerformMove(Actor self, CPos targetLocation, bool queued)
-		{
-			if (queued)
-				self.QueueActivity(new CallFunc(() => PerformMoveInner(self, targetLocation, true)));
-			else
-				PerformMoveInner(self, targetLocation, false);
-		}
-
 		public void ResolveOrder(Actor self, Order order)
 		{
 			if (order.OrderString == "Move")
@@ -655,8 +624,11 @@ namespace OpenRA.Mods.Common.Traits
 				if (!Info.MoveIntoShroud && !self.Owner.Shroud.IsExplored(order.TargetLocation))
 					return;
 
-				PerformMove(self, self.World.Map.Clamp(order.TargetLocation),
-					order.Queued && !self.IsIdle);
+				if (!order.Queued)
+					self.CancelActivity();
+
+				self.SetTargetLine(Target.FromCell(self.World, order.TargetLocation), Color.Green);
+				self.QueueActivity(order.Queued, new Move(self, order.TargetLocation, WDist.FromCells(8), null, true));
 			}
 
 			if (order.OrderString == "Stop")

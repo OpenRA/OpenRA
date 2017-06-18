@@ -23,6 +23,8 @@ namespace OpenRA.Mods.Common.Activities
 {
 	public class Move : Activity
 	{
+		const int AverageTicksBeforePathing = 5;
+		const int SpreadTicksBeforePathing = 5;
 		static readonly List<CPos> NoPath = new List<CPos>();
 
 		readonly Mobile mobile;
@@ -37,6 +39,10 @@ namespace OpenRA.Mods.Common.Activities
 		bool hasWaited;
 		bool hasNotifiedBlocker;
 		int waitTicksRemaining;
+
+		// To work around queued activity issues while minimizing changes to legacy behaviour
+		int ticksBeforePathing;
+		bool evaluateNearestMovableCell;
 
 		// Scriptable move order
 		// Ignores lane bias and nearby units
@@ -57,15 +63,25 @@ namespace OpenRA.Mods.Common.Activities
 			nearEnough = WDist.Zero;
 		}
 
-		public Move(Actor self, CPos destination, WDist nearEnough, Actor ignoreActor = null)
+		public Move(Actor self, CPos destination, WDist nearEnough, Actor ignoreActor = null, bool evaluateNearestMovableCell = false)
 		{
 			mobile = self.Trait<Mobile>();
 
-			getPath = () => self.World.WorldActor.Trait<IPathFinder>()
-				.FindUnitPath(mobile.ToCell, destination, self, ignoreActor);
+			getPath = () =>
+			{
+				if (!this.destination.HasValue)
+					return NoPath;
+
+				return self.World.WorldActor.Trait<IPathFinder>()
+					.FindUnitPath(mobile.ToCell, this.destination.Value, self, ignoreActor);
+			};
+
+			// Note: Will be recalculated from OnFirstRun if evaluateNearestMovableCell is true
 			this.destination = destination;
+
 			this.nearEnough = nearEnough;
 			this.ignoreActor = ignoreActor;
+			this.evaluateNearestMovableCell = evaluateNearestMovableCell;
 		}
 
 		public Move(Actor self, CPos destination, SubCell subCell, WDist nearEnough)
@@ -122,6 +138,18 @@ namespace OpenRA.Mods.Common.Activities
 			return path;
 		}
 
+		protected override void OnFirstRun(Actor self)
+		{
+			ticksBeforePathing = AverageTicksBeforePathing +
+				self.World.SharedRandom.Next(-SpreadTicksBeforePathing, SpreadTicksBeforePathing);
+
+			if (evaluateNearestMovableCell && destination.HasValue)
+			{
+				var movableDestination = mobile.NearestMoveableCell(destination.Value);
+				destination = mobile.CanEnterCell(movableDestination) ? movableDestination : (CPos?)null;
+			}
+		}
+
 		public override Activity Tick(Actor self)
 		{
 			// If the actor is inside a tunnel then we must let them move
@@ -137,9 +165,9 @@ namespace OpenRA.Mods.Common.Activities
 
 			if (path == null)
 			{
-				if (mobile.TicksBeforePathing > 0)
+				if (ticksBeforePathing > 0)
 				{
-					--mobile.TicksBeforePathing;
+					--ticksBeforePathing;
 					return this;
 				}
 
@@ -236,9 +264,9 @@ namespace OpenRA.Mods.Common.Activities
 				if (--waitTicksRemaining >= 0)
 					return null;
 
-				if (mobile.TicksBeforePathing > 0)
+				if (ticksBeforePathing > 0)
 				{
-					--mobile.TicksBeforePathing;
+					--ticksBeforePathing;
 					return null;
 				}
 
