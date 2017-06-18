@@ -108,6 +108,7 @@ namespace OpenRA.Mods.Common.Traits
 		AmmoPool ammoPool;
 		BodyOrientation coords;
 		INotifyBurstComplete[] notifyBurstComplete;
+		INotifyAttack[] notifyAttacks;
 
 		IEnumerable<int> rangeModifiers;
 		IEnumerable<int> reloadModifiers;
@@ -156,6 +157,7 @@ namespace OpenRA.Mods.Common.Traits
 			ammoPool = self.TraitsImplementing<AmmoPool>().FirstOrDefault(la => la.Info.Name == Info.AmmoPoolName);
 			coords = self.Trait<BodyOrientation>();
 			notifyBurstComplete = self.TraitsImplementing<INotifyBurstComplete>().ToArray();
+			notifyAttacks = self.TraitsImplementing<INotifyAttack>().ToArray();
 
 			rangeModifiers = self.TraitsImplementing<IRangeModifier>().ToArray().Select(m => m.GetRangeModifier());
 			reloadModifiers = self.TraitsImplementing<IReloadModifier>().ToArray().Select(m => m.GetReloadModifier());
@@ -248,7 +250,7 @@ namespace OpenRA.Mods.Common.Traits
 				GuidedTarget = target
 			};
 
-			foreach (var na in self.TraitsImplementing<INotifyAttack>())
+			foreach (var na in notifyAttacks)
 				na.PreparingAttack(self, target, this, barrel);
 
 			ScheduleDelayedAction(Info.FireDelay, () =>
@@ -265,7 +267,7 @@ namespace OpenRA.Mods.Common.Traits
 					if (Burst == args.Weapon.Burst && args.Weapon.StartBurstReport != null && args.Weapon.StartBurstReport.Any())
 						Game.Sound.Play(SoundType.World, args.Weapon.StartBurstReport.Random(self.World.SharedRandom), self.CenterPosition);
 
-					foreach (var na in self.TraitsImplementing<INotifyAttack>())
+					foreach (var na in notifyAttacks)
 						na.Attacking(self, target, this, barrel);
 
 					Recoil = Info.Recoil;
