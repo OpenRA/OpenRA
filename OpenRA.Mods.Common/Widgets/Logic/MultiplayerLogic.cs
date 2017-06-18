@@ -356,9 +356,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					}
 				}
 
-				lanGames = lanGames.GroupBy(gs => gs.Address).Select(g => g.Last()).ToList();
+				var groupedLanGames = lanGames.GroupBy(gs => gs.Address).Select(g => g.Last());
+				if (games != null)
+					games.AddRange(groupedLanGames);
+				else if (groupedLanGames.Any())
+					games = groupedLanGames.ToList();
 
-				Game.RunAfterTick(() => RefreshServerListInner(games == null ? (lanGames.Count == 0 ? null : lanGames.ToList()) : games.Concat(lanGames).ToList()));
+				Game.RunAfterTick(() => RefreshServerListInner(games));
 			};
 
 			var queryURL = services.ServerList + "games?version={0}&mod={1}&modversion={2}".F(
