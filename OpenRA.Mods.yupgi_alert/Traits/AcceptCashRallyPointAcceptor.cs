@@ -9,11 +9,9 @@
  */
 #endregion
 
-using System;
-using System.Collections.Generic;
 using System.Drawing;
+using OpenRA.Activities;
 using OpenRA.Mods.Common.Activities;
-using OpenRA.Mods.Common.Orders;
 using OpenRA.Traits;
 
 /*
@@ -38,11 +36,11 @@ namespace OpenRA.Mods.Common.Traits
 			return produced.TraitOrDefault<DeliversCash>() != null;
 		}
 
-		void IAcceptsRallyPoint.QueueActivities(Actor produced, Actor dest)
+		Activity IAcceptsRallyPoint.RallyActivities(Actor produced, Actor dest)
 		{
 			var info = produced.Info.TraitInfo<DeliversCashInfo>();
 			produced.SetTargetLine(Target.FromActor(dest), Color.Yellow);
-			produced.QueueActivity(new DonateCash(produced, dest, info.Payload, info.PlayerExperience));
+			return new DonateCash(produced, dest, info.Payload, info.PlayerExperience);
 		}
 	}
 }

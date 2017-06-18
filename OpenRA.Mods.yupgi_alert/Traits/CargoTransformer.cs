@@ -17,9 +17,11 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using OpenRA.Activities;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Mods.Common.Traits.Render;
+using OpenRA.Mods.Yupgi_alert.Activities;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
@@ -137,13 +139,13 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 			return produced.TraitOrDefault<Passenger>() != null;
 		}
 
-		void IAcceptsRallyPoint.QueueActivities(Actor produced, Actor dest)
+		Activity IAcceptsRallyPoint.RallyActivities(Actor produced, Actor dest)
 		{
 			var passenger = produced.TraitOrDefault<Passenger>();
 			if (passenger == null)
 				throw new InvalidProgramException("IsAcceltableActor check is to be done before QueueActivities!");
 
-			produced.QueueActivity(new EnterTransport(produced, dest));
+			return new EnterTransportWithWait(produced, dest);
 		}
 	}
 }

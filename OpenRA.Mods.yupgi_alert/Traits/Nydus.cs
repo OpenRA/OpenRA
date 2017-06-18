@@ -11,10 +11,10 @@
  */
 #endregion
 
-using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using OpenRA.Activities;
 using OpenRA.Mods.Common;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Orders;
@@ -107,9 +107,9 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 			return produced.TraitOrDefault<NydusTransportable>() != null;
 		}
 
-		void IAcceptsRallyPoint.QueueActivities(Actor produced, Actor dest)
+		Activity IAcceptsRallyPoint.RallyActivities(Actor produced, Actor dest)
 		{
-			produced.QueueActivity(new EnterNydus(produced, dest, EnterBehaviour.Exit));
+			return new EnterNydus(produced, dest, EnterBehaviour.Exit);
 		}
 	}
 

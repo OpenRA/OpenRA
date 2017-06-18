@@ -86,32 +86,48 @@ namespace OpenRA.Mods.Common.Traits
 				Location = order.TargetLocation;
 		}
 
+		Actor cachedResult = null;
+		Actor GetRallyAcceptor(Actor self, CPos location)
+		{
+			if (cachedResult != null && !cachedResult.IsDead && !cachedResult.Disposed)
+				return cachedResult;
+
+			var actors = self.World.ActorMap.GetActorsAt(Location).Where(
+				a => a.TraitsImplementing<IAcceptsRallyPoint>().Count() > 0);
+
+			if (!actors.Any())
+				return null;
+
+			// If we have multiple of them, let's just go for first.
+			cachedResult = actors.First();
+			return cachedResult;
+		}
+
 		// self isn't the rally point but the one that has rally point trait.
 		// unit is the one that is to follow the rally point.
 		public void QueueRallyOrder(Actor self, Actor unit)
 		{
-			// See if target location has an actor with accept rally point trait.
-			var actors = self.World.ActorMap.GetActorsAt(Location);
-			if (actors.Count() == 1)
-			{
-				var targetActor = actors.First();
-				var ars = targetActor.TraitsImplementing<IAcceptsRallyPoint>();
-				if (ars.Count() > 1)
-					throw new InvalidOperationException("Actor has multiple traits implementing IAcceptsRallyPoint!");
+			if (unit.TraitOrDefault<IMove>() == null)
+				throw new InvalidOperationException("How come rally point mover not have IMove trait? Actor: " + unit.ToString());
 
-				var ar = ars.First();
-				if (ar.IsAcceptableActor(unit, targetActor))
-				{
-					ar.QueueActivities(unit, targetActor);
-					return;
-				}
+			var rallyAcceptor = GetRallyAcceptor(self, Location);
+
+			if (rallyAcceptor == null)
+			{
+				unit.QueueActivity(new AttackMoveActivity(unit, unit.Trait<IMove>().MoveTo(Location, 1)));
+				return;
 			}
 
-			if (unit.TraitOrDefault<IMove>() == null)
-				return;
+			var ars = rallyAcceptor.TraitsImplementing<IAcceptsRallyPoint>();
+			if (ars.Count() > 1)
+				throw new InvalidOperationException(
+					"Actor {0} has multiple traits implementing IAcceptsRallyPoint!".F(rallyAcceptor.ToString()));
 
-			unit.QueueActivity(new AttackMoveActivity(
-				unit, unit.Trait<IMove>().MoveTo(Location, 1)));
+			var ar = ars.First();
+			if (ar.IsAcceptableActor(unit, rallyAcceptor))
+				unit.QueueActivity(ar.RallyActivities(unit, rallyAcceptor));
+			else
+				unit.QueueActivity(new AttackMoveActivity(unit, unit.Trait<IMove>().MoveTo(Location, 1)));
 		}
 
 		class RallyPointOrderTargeter : IOrderTargeter

@@ -99,7 +99,6 @@ namespace OpenRA.Mods.Yupgi_alert.Activities
 					if (exitinfo.MoveIntoWorld)
 					{
 						// Exit delay is ignored.
-
 						if (rp != null)
 							rp.QueueRallyOrder(pri, self);
 						else

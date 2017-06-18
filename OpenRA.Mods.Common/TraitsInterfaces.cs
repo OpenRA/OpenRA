@@ -96,7 +96,7 @@ namespace OpenRA.Mods.Common.Traits
 	public interface IAcceptsRallyPoint
 	{
 		bool IsAcceptableActor(Actor produced, Actor dest);
-		void QueueActivities(Actor produced, Actor dest);
+		Activity RallyActivities(Actor produced, Actor dest);
 	}
 
 	[RequireExplicitImplementation]

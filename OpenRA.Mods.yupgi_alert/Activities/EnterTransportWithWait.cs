@@ -11,13 +11,10 @@
  */
 #endregion
 
-using System.Drawing;
+using OpenRA.Activities;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Traits;
-using OpenRA.Mods.Yupgi_alert.Traits;
 using OpenRA.Traits;
-using OpenRA.Activities;
-using System;
 
 /* Works with no base engine modification */
 
@@ -38,6 +35,11 @@ namespace OpenRA.Mods.Yupgi_alert.Activities
 			cargo = target.Trait<Cargo>();
 		}
 
+		protected override void OnFirstRun(Actor self)
+		{
+			QueueChild(new MoveAdjacentTo(self, Target.FromActor(target)));
+		}
+
 		public override Activity Tick(Actor self)
 		{
 			if (ChildActivity != null)
@@ -46,8 +48,14 @@ namespace OpenRA.Mods.Yupgi_alert.Activities
 				return this;
 			}
 
+			if (IsCanceled)
+				return NextActivity;
+
 			if (!passenger.Reserve(self, cargo))
+			{
 				QueueChild(new Wait(23));
+				return this;
+			}
 
 			Queue(new EnterTransport(self, target));
 			return NextActivity;
