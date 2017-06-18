@@ -23,9 +23,6 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Types of actors that it can capture, as long as the type also exists in the Capturable Type: trait.")]
 		public readonly HashSet<string> CaptureTypes = new HashSet<string> { "building" };
 
-		[Desc("Triggers TransformOnCapture tagged by these types")]
-		public readonly HashSet<string> TransformTypes = new HashSet<string> { "husk" };
-
 		[Desc("Unit will do damage to the actor instead of capturing it. Unit is destroyed when sabotaging.")]
 		public readonly bool Sabotage = true;
 
