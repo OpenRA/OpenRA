@@ -160,7 +160,7 @@
 ^AutoTargetGround:
 	AutoTarget:
 	AutoTargetPriority@DEFAULT:
-		ValidTargets: Infantry, Vehicle, Tank, Water, Structure, Defense
+		ValidTargets: Infantry, Vehicle, Tank, Water, Underwater, Structure, Defense
 		InvalidTargets: NoAutoTarget
 
 ^AutoTargetAir:
@@ -172,7 +172,7 @@
 ^AutoTargetAll:
 	AutoTarget:
 	AutoTargetPriority@DEFAULT:
-		ValidTargets: Infantry, Vehicle, Tank, Water, Air, Structure, Defense
+		ValidTargets: Infantry, Vehicle, Tank, Water, Underwater, Air, Structure, Defense
 		InvalidTargets: NoAutoTarget
 
 ^Vehicle:
