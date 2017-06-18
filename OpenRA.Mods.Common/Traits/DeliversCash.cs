@@ -23,7 +23,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Donate money to actors with the `AcceptsDeliveredCash` trait.")]
-	class DeliversCashInfo : ITraitInfo
+	public class DeliversCashInfo : ITraitInfo
 	{
 		[Desc("The amount of cash the owner receives.")]
 		public readonly int Payload = 500;
@@ -42,7 +42,7 @@ namespace OpenRA.Mods.Common.Traits
 		public object Create(ActorInitializer init) { return new DeliversCash(this); }
 	}
 
-	class DeliversCash : IIssueOrder, IResolveOrder, IOrderVoice, INotifyCashTransfer
+	public class DeliversCash : IIssueOrder, IResolveOrder, IOrderVoice, INotifyCashTransfer
 	{
 		readonly DeliversCashInfo info;
 

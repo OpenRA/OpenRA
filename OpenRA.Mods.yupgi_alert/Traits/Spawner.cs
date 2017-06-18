@@ -230,7 +230,7 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 					var mv = s.Trait<IMove>(); // .MoveIntoWorld(s, self.Location);
 					s.QueueActivity(mv.MoveIntoWorld(s, self.World.Map.CellContaining(self.CenterPosition + spawn_offset)));
 					if (rallyPoint != null)
-						s.QueueActivity(mv.MoveTo(rallyPoint.Location, 2));
+						rallyPoint.QueueRallyOrder(self, s);
 				}
 
 				if (!Info.IndependentSpawned)

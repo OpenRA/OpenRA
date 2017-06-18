@@ -98,14 +98,13 @@ namespace OpenRA.Mods.Yupgi_alert.Activities
 				{
 					if (exitinfo.MoveIntoWorld)
 					{
-						/*
 						// Exit delay is ignored.
-						// if (exitinfo.ExitDelay > 0)
-						//	newUnit.QueueActivity(new Wait(exitinfo.ExitDelay, false));
-						*/
 
-						self.QueueActivity(new AttackMoveActivity(
-							self, move.MoveTo(exitLocation, 1)));
+						if (rp != null)
+							rp.QueueRallyOrder(pri, self);
+						else
+							self.QueueActivity(new AttackMoveActivity(
+								self, move.MoveTo(exitLocation, 1)));
 					}
 				}
 

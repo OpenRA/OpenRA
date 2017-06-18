@@ -13,6 +13,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -41,7 +42,7 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 		public object Create(ActorInitializer init) { return new CargoTransformer(init.Self, this); }
 	}
 
-	public class CargoTransformer : INotifyPassengerEntered, INotifyPassengerExited
+	public class CargoTransformer : INotifyPassengerEntered, INotifyPassengerExited, IAcceptsRallyPoint
 	{
 		public readonly CargoTransformerInfo Info;
 		Cargo cargo;
@@ -106,8 +107,11 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 
 					var move = passenger.Trait<IMove>();
 
-					passenger.QueueActivity(new AttackMoveActivity(
-						passenger, move.MoveTo(rp.Location, 1)));
+					if (rp != null)
+						rp.QueueRallyOrder(self, passenger);
+					else
+						passenger.QueueActivity(new AttackMoveActivity(passenger, move.MoveTo(rp.Location, 1)));
+
 					passenger.SetTargetLine(Target.FromCell(w2, rp.Location), Color.Green, false);
 				}));
 		}
@@ -126,6 +130,20 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 					return; // no need to examine any other combination.
 				}
 			}
+		}
+
+		bool IAcceptsRallyPoint.IsAcceptableActor(Actor produced, Actor dest)
+		{
+			return produced.TraitOrDefault<Passenger>() != null;
+		}
+
+		void IAcceptsRallyPoint.QueueActivities(Actor produced, Actor dest)
+		{
+			var passenger = produced.TraitOrDefault<Passenger>();
+			if (passenger == null)
+				throw new InvalidProgramException("IsAcceltableActor check is to be done before QueueActivities!");
+
+			produced.QueueActivity(new EnterTransport(produced, dest));
 		}
 	}
 }

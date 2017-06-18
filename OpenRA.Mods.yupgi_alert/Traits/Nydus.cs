@@ -11,6 +11,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -41,7 +42,7 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 
 	// The nydus canal does nothing.
 	// The actor teleports itself, upon entering: works the same as EngineerRepairalbe trait.
-	public class Nydus : INotifyCreated, INotifyActorDisposing, INotifyOwnerChanged
+	public class Nydus : INotifyCreated, INotifyActorDisposing, INotifyOwnerChanged, IAcceptsRallyPoint
 	{
 		public Nydus(ActorInitializer init, NydusInfo info)
 		{
@@ -99,6 +100,16 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 			// this one is trickier haha.
 			IncreaseNydusCnt(self, newOwner);
 			DecreaseNydusCnt(self, oldOwner); // probably oldOwner == self.Owner but to avoid risk...
+		}
+
+		bool IAcceptsRallyPoint.IsAcceptableActor(Actor produced, Actor dest)
+		{
+			return produced.TraitOrDefault<NydusTransportable>() != null;
+		}
+
+		void IAcceptsRallyPoint.QueueActivities(Actor produced, Actor dest)
+		{
+			produced.QueueActivity(new EnterNydus(produced, dest, EnterBehaviour.Exit));
 		}
 	}
 

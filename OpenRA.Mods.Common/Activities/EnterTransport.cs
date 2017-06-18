@@ -15,7 +15,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Activities
 {
-	class EnterTransport : Enter
+	public class EnterTransport : Enter
 	{
 		readonly Passenger passenger;
 		readonly int maxTries;

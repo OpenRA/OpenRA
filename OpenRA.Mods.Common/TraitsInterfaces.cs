@@ -93,6 +93,12 @@ namespace OpenRA.Mods.Common.Traits
 	public interface ICruiseAltitudeInfo : ITraitInfo { WDist GetCruiseAltitude(); }
 	public interface INotifyCashTransfer { void OnCashTransfer(Actor self, Actor donor); }
 
+	public interface IAcceptsRallyPoint
+	{
+		bool IsAcceptableActor(Actor produced, Actor dest);
+		void QueueActivities(Actor produced, Actor dest);
+	}
+
 	[RequireExplicitImplementation]
 	public interface INotifyInfiltrated { void Infiltrated(Actor self, Actor infiltrator); }
 

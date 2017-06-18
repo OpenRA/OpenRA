@@ -70,6 +70,7 @@
     <Compile Include="Activities\Air\ShootableBallisticMissileFly.cs" />
     <Compile Include="Activities\Air\SpawnedFlyAttack.cs" />
     <Compile Include="Activities\Air\SpawnedTakeOff.cs" />
+    <Compile Include="Activities\EnterTransportWithWait.cs" />
     <Compile Include="Activities\EnterNydus.cs" />
     <Compile Include="Activities\EnterSpawner.cs" />
     <Compile Include="Activities\SpawnerHarvesterHarvest.cs" />
@@ -82,6 +83,7 @@
     <Compile Include="Projectiles\RadBeam.cs" />
     <Compile Include="Traits\AIDeployHelper.cs" />
     <Compile Include="Traits\Buildings\PeriodicFreeActor.cs" />
+    <Compile Include="Traits\AcceptCashRallyPointAcceptor.cs" />
     <Compile Include="Traits\Mindcontrollable.cs" />
     <Compile Include="Traits\Mindcontroller.cs" />
     <Compile Include="Traits\FireWeaponAtSelf.cs" />

@@ -149,7 +149,10 @@ namespace OpenRA.Mods.Common.Traits
 							newUnit.QueueActivity(new Wait(exitinfo.ExitDelay, false));
 
 						newUnit.QueueActivity(move.MoveIntoWorld(newUnit, exit));
-						newUnit.QueueActivity(new AttackMoveActivity(newUnit, move.MoveTo(exitLocation, 1)));
+						if (rp.Value != null)
+							rp.Value.QueueRallyOrder(self, newUnit);
+						else
+							newUnit.QueueActivity(new AttackMoveActivity(newUnit, move.MoveTo(exitLocation, 1)));
 					}
 				}
 

@@ -9,8 +9,10 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Effects;
 using OpenRA.Traits;
 
@@ -82,6 +84,34 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			if (order.OrderString == "SetRallyPoint")
 				Location = order.TargetLocation;
+		}
+
+		// self isn't the rally point but the one that has rally point trait.
+		// unit is the one that is to follow the rally point.
+		public void QueueRallyOrder(Actor self, Actor unit)
+		{
+			// See if target location has an actor with accept rally point trait.
+			var actors = self.World.ActorMap.GetActorsAt(Location);
+			if (actors.Count() == 1)
+			{
+				var targetActor = actors.First();
+				var ars = targetActor.TraitsImplementing<IAcceptsRallyPoint>();
+				if (ars.Count() > 1)
+					throw new InvalidOperationException("Actor has multiple traits implementing IAcceptsRallyPoint!");
+
+				var ar = ars.First();
+				if (ar.IsAcceptableActor(unit, targetActor))
+				{
+					ar.QueueActivities(unit, targetActor);
+					return;
+				}
+			}
+
+			if (unit.TraitOrDefault<IMove>() == null)
+				return;
+
+			unit.QueueActivity(new AttackMoveActivity(
+				unit, unit.Trait<IMove>().MoveTo(Location, 1)));
 		}
 
 		class RallyPointOrderTargeter : IOrderTargeter

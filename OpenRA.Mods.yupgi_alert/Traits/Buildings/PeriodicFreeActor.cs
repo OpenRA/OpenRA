@@ -78,8 +78,12 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 							newUnit.QueueActivity(new Wait(exitinfo.ExitDelay, false));
 
 						newUnit.QueueActivity(move.MoveIntoWorld(newUnit, exit));
-						newUnit.QueueActivity(new AttackMoveActivity(
-							newUnit, move.MoveTo(rpLocation, 1)));
+
+						if (rp != null)
+							rp.QueueRallyOrder(self, newUnit);
+						else
+							newUnit.QueueActivity(new AttackMoveActivity(
+								newUnit, move.MoveTo(rpLocation, 1)));
 					}
 				}
 

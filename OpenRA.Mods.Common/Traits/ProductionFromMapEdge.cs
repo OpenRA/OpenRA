@@ -89,7 +89,10 @@ namespace OpenRA.Mods.Common.Traits
 
 				var move = newUnit.TraitOrDefault<IMove>();
 				if (move != null)
-					newUnit.QueueActivity(move.MoveTo(destination, 2));
+					if (rp == null)
+						newUnit.QueueActivity(move.MoveTo(destination, 2));
+					else
+						rp.QueueRallyOrder(self, newUnit);
 
 				newUnit.SetTargetLine(Target.FromCell(self.World, destination), Color.Green, false);
 
