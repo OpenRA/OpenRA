@@ -104,6 +104,8 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 
 		bool IAcceptsRallyPoint.IsAcceptableActor(Actor produced, Actor dest)
 		{
+			if (dest.IsPrimaryNydusExit())
+				return false;
 			return produced.TraitOrDefault<NydusTransportable>() != null;
 		}
 
