@@ -83,7 +83,10 @@ namespace OpenRA.Mods.Common.Traits
 		public void ResolveOrder(Actor self, Order order)
 		{
 			if (order.OrderString == "SetRallyPoint")
+			{
 				Location = order.TargetLocation;
+				cachedResult = null;
+			}
 		}
 
 		Actor cachedResult = null;
