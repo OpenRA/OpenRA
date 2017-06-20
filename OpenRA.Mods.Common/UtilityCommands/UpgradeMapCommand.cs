@@ -74,7 +74,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			map.Save(package);
 		}
 
-		[Desc("MAP", "CURRENTENGINE", "Upgrade map rules to the latest engine version.")]
+		[Desc("MAP", "OLDENGINE", "Upgrade map rules to the latest engine version.")]
 		void IUtilityCommand.Run(Utility utility, string[] args)
 		{
 			// HACK: The engine code assumes that Game.modData is set.
