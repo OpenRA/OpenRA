@@ -42,8 +42,13 @@ namespace OpenRA.Mods.Common.Traits
 		public RallyPointInfo Info;
 		public string PaletteName { get; private set; }
 
+		// Keep track of rally pointed acceptor actors
+		bool dirty = true;
+		Actor cachedResult = null;
+
 		public void ResetLocation(Actor self)
 		{
+			dirty = true;
 			Location = self.Location + Info.Offset;
 		}
 
@@ -57,6 +62,7 @@ namespace OpenRA.Mods.Common.Traits
 		public void Created(Actor self)
 		{
 			self.World.Add(new RallyPointIndicator(self, this, self.Info.TraitInfos<ExitInfo>().ToArray()));
+			dirty = true;
 		}
 
 		public void OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
@@ -85,21 +91,31 @@ namespace OpenRA.Mods.Common.Traits
 			if (order.OrderString == "SetRallyPoint")
 			{
 				Location = order.TargetLocation;
-				cachedResult = null;
+				dirty = true;
 			}
 		}
 
-		Actor cachedResult = null;
 		Actor GetRallyAcceptor(Actor self, CPos location)
 		{
-			if (cachedResult != null && !cachedResult.IsDead && !cachedResult.Disposed)
-				return cachedResult;
+			if (!dirty)
+			{
+				if (cachedResult == null)
+					return null;
+
+				if (!cachedResult.IsDead && !cachedResult.Disposed)
+					return cachedResult;
+			}
 
 			var actors = self.World.ActorMap.GetActorsAt(Location).Where(
 				a => a.TraitsImplementing<IAcceptsRallyPoint>().Count() > 0);
 
+			dirty = false;
+
 			if (!actors.Any())
+			{
+				cachedResult = null;
 				return null;
+			}
 
 			// If we have multiple of them, let's just go for first.
 			cachedResult = actors.First();
