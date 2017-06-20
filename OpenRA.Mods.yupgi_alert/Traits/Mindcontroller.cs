@@ -132,9 +132,11 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 		// Unlink a dead or mind-controlled-by-somebody-else slave.
 		public void UnlinkSlave(Actor self, Actor slave)
 		{
-			UnstackControllingCondition(self, info.ControllingCondition);
 			if (slaves.Contains(slave))
+			{
 				slaves.Remove(slave);
+				UnstackControllingCondition(self, info.ControllingCondition);
+			}
 		}
 
 		public void PreparingAttack(Actor self, Target target, Armament a, Barrel barrel)
@@ -171,8 +173,8 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 
 			// At this point, the target should be mind controlled. How we manage them is another thing.
 			slaves.Add(target.Actor);
-			mcable.LinkMaster(target.Actor, self, info.GiveCondition);
 			StackControllingCondition(self, info.ControllingCondition);
+			mcable.LinkMaster(target.Actor, self, info.GiveCondition);
 
 			// Play sound
 			if (info.Sound != null && info.Sound.Any())
