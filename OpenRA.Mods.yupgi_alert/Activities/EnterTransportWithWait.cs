@@ -22,14 +22,12 @@ namespace OpenRA.Mods.Yupgi_alert.Activities
 {
 	class EnterTransportWithWait : Activity
 	{
-		readonly Actor self;
 		readonly Actor target;
 		readonly Passenger passenger;
 		readonly Cargo cargo;
 
 		public EnterTransportWithWait(Actor self, Actor target)
 		{
-			this.self = self;
 			this.target = target;
 			passenger = self.Trait<Passenger>();
 			cargo = target.Trait<Cargo>();
