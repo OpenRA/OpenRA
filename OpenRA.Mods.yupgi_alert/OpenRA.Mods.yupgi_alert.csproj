@@ -82,6 +82,7 @@
     <Compile Include="Projectiles\Railgun.cs" />
     <Compile Include="Projectiles\RadBeam.cs" />
     <Compile Include="Traits\AIDeployHelper.cs" />
+    <Compile Include="Traits\AegisAutoTarget.cs" />
     <Compile Include="Traits\Buildings\PeriodicFreeActor.cs" />
     <Compile Include="Traits\AcceptCashRallyPointAcceptor.cs" />
     <Compile Include="Traits\Mindcontrollable.cs" />
