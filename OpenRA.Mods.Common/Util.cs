@@ -87,6 +87,15 @@ namespace OpenRA.Mods.Common
 			return negative == 0 ? 0 : 256 - negative;
 		}
 
+		public static bool FacingWithinTolerance(int facing, int desiredFacing, int facingTolerance)
+		{
+			if (facingTolerance == 0 && facing == desiredFacing)
+				return true;
+
+			var delta = Util.NormalizeFacing(desiredFacing - facing);
+			return delta <= facingTolerance || delta >= 256 - facingTolerance;
+		}
+
 		public static WPos BetweenCells(World w, CPos from, CPos to)
 		{
 			var fromPos = from.Layer == 0 ? w.Map.CenterOfCell(from) :
