@@ -19,9 +19,9 @@ namespace OpenRA.Mods.Common.Activities
 	{
 		readonly GrantConditionOnDeploy deploy;
 
-		public UndeployForGrantedCondition(Actor self) : base()
+		public UndeployForGrantedCondition(Actor self, GrantConditionOnDeploy deploy)
 		{
-			deploy = self.Trait<GrantConditionOnDeploy>();
+			this.deploy = deploy;
 		}
 
 		public override Activity Tick(Actor self)

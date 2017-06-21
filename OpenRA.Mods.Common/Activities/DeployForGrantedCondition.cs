@@ -18,21 +18,19 @@ namespace OpenRA.Mods.Common.Activities
 	public class DeployForGrantedCondition : Activity
 	{
 		readonly GrantConditionOnDeploy deploy;
-		readonly int facing;
 		readonly bool canTurn;
 
-		public DeployForGrantedCondition(Actor self) : base()
+		public DeployForGrantedCondition(Actor self, GrantConditionOnDeploy deploy)
 		{
+			this.deploy = deploy;
 			canTurn = self.Info.HasTraitInfo<IFacingInfo>();
-			facing = self.Info.TraitInfo<GrantConditionOnDeployInfo>().Facing;
-			deploy = self.Trait<GrantConditionOnDeploy>();
 		}
 
 		protected override void OnFirstRun(Actor self)
 		{
 			// Turn to the required facing.
-			if (facing != -1 && canTurn)
-				QueueChild(new Turn(self, facing));
+			if (deploy.Info.Facing != -1 && canTurn)
+				QueueChild(new Turn(self, deploy.Info.Facing));
 		}
 
 		public override Activity Tick(Actor self)
