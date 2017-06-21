@@ -7,40 +7,46 @@
    information, see COPYING.
 ]]
 
-AtreidesReinforcements = { }
-AtreidesReinforcements["easy"] =
+AtreidesReinforcements =
 {
-	{ "light_inf", "light_inf" }
-}
+	easy =
+	{
+		{ "light_inf", "light_inf" }
+	},
 
-AtreidesReinforcements["normal"] =
-{
-	{ "light_inf", "light_inf" },
-	{ "light_inf", "light_inf", "light_inf" },
-	{ "light_inf", "trike" },
-}
+	normal =
+	{
+		{ "light_inf", "light_inf" },
+		{ "light_inf", "light_inf", "light_inf" },
+		{ "light_inf", "trike" }
+	},
 
-AtreidesReinforcements["hard"] =
-{
-	{ "light_inf", "light_inf" },
-	{ "trike", "trike" },
-	{ "light_inf", "light_inf", "light_inf" },
-	{ "light_inf", "trike" },
-	{ "trike", "trike" }
+	hard =
+	{
+		{ "light_inf", "light_inf" },
+		{ "trike", "trike" },
+		{ "light_inf", "light_inf", "light_inf" },
+		{ "light_inf", "trike" },
+		{ "trike", "trike" }
+	}
 }
 
 AtreidesEntryWaypoints = { AtreidesWaypoint1.Location, AtreidesWaypoint2.Location, AtreidesWaypoint3.Location, AtreidesWaypoint4.Location }
 AtreidesAttackDelay = DateTime.Seconds(30)
 
-AtreidesAttackWaves = { }
-AtreidesAttackWaves["easy"] = 1
-AtreidesAttackWaves["normal"] = 5
-AtreidesAttackWaves["hard"] = 12
+AtreidesAttackWaves =
+{
+	easy = 1,
+	normal = 5,
+	hard = 12
+}
 
-ToHarvest = { }
-ToHarvest["easy"] = 2500
-ToHarvest["normal"] = 3000
-ToHarvest["hard"] = 3500
+ToHarvest =
+{
+	easy = 2500,
+	normal = 3000,
+	hard = 3500
+}
 
 HarkonnenReinforcements = { "light_inf", "light_inf", "light_inf", "trike" }
 HarkonnenEntryPath = { HarkonnenWaypoint.Location, HarkonnenRally.Location }
@@ -53,19 +59,12 @@ Messages =
 	"Build a Silo to store additional Spice."
 }
 
-
-IdleHunt = function(actor)
-	if not actor.IsDead then
-		Trigger.OnIdle(actor, actor.Hunt)
-	end
-end
-
 Tick = function()
 	if AtreidesArrived and atreides.HasNoRequiredUnits() then
 		player.MarkCompletedObjective(KillAtreides)
 	end
 
-	if player.Resources > ToHarvest[Map.LobbyOption("difficulty")] - 1 then
+	if player.Resources > SpiceToHarvest - 1 then
 		player.MarkCompletedObjective(GatherSpice)
 	end
 
@@ -86,14 +85,19 @@ Tick = function()
 		Media.DisplayMessage(Messages[4], "Mentat")
 	end
 
-	UserInterface.SetMissionText("Harvested resources: " .. player.Resources .. "/" .. ToHarvest[Map.LobbyOption("difficulty")], player.Color)
+	UserInterface.SetMissionText("Harvested resources: " .. player.Resources .. "/" .. SpiceToHarvest, player.Color)
 end
 
 WorldLoaded = function()
 	player = Player.GetPlayer("Harkonnen")
 	atreides = Player.GetPlayer("Atreides")
 
-	InitObjectives()
+	SpiceToHarvest = ToHarvest[Difficulty]
+
+	InitObjectives(player)
+	KillHarkonnen = atreides.AddPrimaryObjective("Kill all Harkonnen units.")
+	GatherSpice = player.AddPrimaryObjective("Harvest " .. tostring(SpiceToHarvest) .. " Solaris worth of Spice.")
+	KillAtreides = player.AddSecondaryObjective("Eliminate all Atreides units and reinforcements\nin the area.")
 
 	Trigger.OnRemovedFromWorld(HarkonnenConyard, function()
 		local refs = Utils.Where(Map.ActorsInWorld, function(actor) return actor.Type == "refinery" end)
@@ -114,12 +118,12 @@ WorldLoaded = function()
 		Reinforcements.Reinforce(player, HarkonnenReinforcements, HarkonnenEntryPath)
 	end)
 
-	WavesLeft = AtreidesAttackWaves[Map.LobbyOption("difficulty")]
+	WavesLeft = AtreidesAttackWaves[Difficulty]
 	SendReinforcements()
 end
 
 SendReinforcements = function()
-	local units = AtreidesReinforcements[Map.LobbyOption("difficulty")]
+	local units = AtreidesReinforcements[Difficulty]
 	local delay = Utils.RandomInteger(AtreidesAttackDelay - DateTime.Seconds(2), AtreidesAttackDelay)
 	AtreidesAttackDelay = AtreidesAttackDelay - (#units * 3 - 3 - WavesLeft) * DateTime.Seconds(1)
 	if AtreidesAttackDelay < 0 then AtreidesAttackDelay = 0 end
@@ -133,33 +137,5 @@ SendReinforcements = function()
 		else
 			SendReinforcements()
 		end
-	end)
-end
-
-InitObjectives = function()
-	Trigger.OnObjectiveAdded(player, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "New " .. string.lower(p.GetObjectiveType(id)) .. " objective")
-	end)
-
-	KillHarkonnen = atreides.AddPrimaryObjective("Kill all Harkonnen units.")
-	GatherSpice = player.AddPrimaryObjective("Harvest " .. tostring(ToHarvest[Map.LobbyOption("difficulty")]) .. " Solaris worth of Spice.")
-	KillAtreides = player.AddSecondaryObjective("Eliminate all Atreides units and reinforcements\nin the area.")
-
-	Trigger.OnObjectiveCompleted(player, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective completed")
-	end)
-	Trigger.OnObjectiveFailed(player, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective failed")
-	end)
-
-	Trigger.OnPlayerLost(player, function()
-		Trigger.AfterDelay(DateTime.Seconds(1), function()
-			Media.PlaySpeechNotification(player, "Lose")
-		end)
-	end)
-	Trigger.OnPlayerWon(player, function()
-		Trigger.AfterDelay(DateTime.Seconds(1), function()
-			Media.PlaySpeechNotification(player, "Win")
-		end)
 	end)
 end

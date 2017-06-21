@@ -4,7 +4,7 @@ Player:
 
 World:
 	LuaScript:
-		Scripts: harkonnen04.lua, harkonnen04-AI.lua
+		Scripts: campaign-global.lua, harkonnen04.lua, harkonnen04-AI.lua
 	MissionData:
 		Briefing: The native Fremen must be dealt with. Assemble a strike force to lead a sweep through the mountains. Seek out the Fremen hold, and destroy it. If any House responds, destroy it.\n\nTanks have been deployed to grind the Fremen beneath their treads. Demonstrate the power of House Harkonnen.
 		BriefingVideo: H_BR04_E.VQA

@@ -6,7 +6,6 @@
    the License, or (at your option) any later version. For more
    information, see COPYING.
 ]]
-IdlingUnits = { }
 
 AttackGroupSize =
 {
@@ -25,37 +24,15 @@ AttackDelays =
 HarkonnenInfantryTypes = { "light_inf", "light_inf", "trooper", "trooper", "trooper" }
 HarkonnenTankType = { "combat_tank_h" }
 
-HarvesterKilled = true
-
-IdleHunt = function(unit) if not unit.IsDead then Trigger.OnIdle(unit, unit.Hunt) end end
-
-SetupAttackGroup = function()
-	local units = { }
-
-	for i = 0, AttackGroupSize[Difficulty] do
-		if #IdlingUnits == 0 then
-			return units
-		end
-
-		local number = Utils.RandomInteger(1, #IdlingUnits + 1)
-
-		if IdlingUnits[number] and not IdlingUnits[number].IsDead then
-			units[i] = IdlingUnits[number]
-			table.remove(IdlingUnits, number)
-		end
-	end
-
-	return units
-end
-
-SendAttack = function()
-	if Attacking then
+-- Overwrite the template function because of the message
+SendAttack = function(owner, size)
+	if Attacking[owner] then
 		return
 	end
-	Attacking = true
-	HoldProduction = true
+	Attacking[owner] = true
+	HoldProduction[owner] = true
 
-	local units = SetupAttackGroup()
+	local units = SetupAttackGroup(owner, size)
 	Utils.Do(units, IdleHunt)
 
 	if #units > 0 then
@@ -63,107 +40,27 @@ SendAttack = function()
 	end
 
 	Trigger.OnAllRemovedFromWorld(units, function()
-		Attacking = false
-		HoldProduction = false
-	end)
-end
-
-ProtectHarvester = function(unit)
-	DefendActor(unit)
-	Trigger.OnKilled(unit, function() HarvesterKilled = true end)
-end
-
-DefendActor = function(unit)
-	Trigger.OnDamaged(unit, function(self, attacker)
-		if Defending then
-			return
-		end
-		Defending = true
-
-		-- Don't try to attack spiceblooms
-		if attacker and attacker.Type == "spicebloom" then
-			return
-		end
-
-		local Guards = SetupAttackGroup()
-
-		if #Guards <= 0 then
-			Defending = false
-			return
-		end
-
-		Utils.Do(Guards, function(unit)
-			if not self.IsDead then
-				unit.AttackMove(self.Location)
-			end
-			IdleHunt(unit)
-		end)
-
-		Trigger.OnAllRemovedFromWorld(Guards, function() Defending = false end)
+		Attacking[owner] = false
+		HoldProduction[owner] = false
 	end)
 end
 
 InitAIUnits = function()
-	IdlingUnits = Reinforcements.Reinforce(harkonnen, InitialHarkonnenReinforcements, HarkonnenPaths[1])
+	IdlingUnits[harkonnen] = Reinforcements.Reinforce(harkonnen, InitialHarkonnenReinforcements, HarkonnenPaths[1])
 
-	Utils.Do(HarkonnenBase, function(actor)
-		DefendActor(actor)
-		Trigger.OnDamaged(actor, function(building)
-			if building.Owner == harkonnen and building.Health < building.MaxHealth * 3/4 then
-				building.StartBuildingRepairs()
-			end
-		end)
-	end)
-end
-
-ProduceInfantry = function()
-	if HarkonnenBarracks.IsDead then
-		return
-	end
-
-	if HoldProduction then
-		Trigger.AfterDelay(DateTime.Seconds(30), ProduceInfantry)
-		return
-	end
-
-	local delay = Utils.RandomInteger(AttackDelays[Difficulty][1], AttackDelays[Difficulty][2] + 1)
-	local toBuild = { Utils.Random(HarkonnenInfantryTypes) }
-	harkonnen.Build(toBuild, function(unit)
-		IdlingUnits[#IdlingUnits + 1] = unit[1]
-		Trigger.AfterDelay(delay, ProduceInfantry)
-
-		if #IdlingUnits >= (AttackGroupSize[Difficulty] * 2.5) then
-			SendAttack()
-		end
-	end)
-end
-
-
-ProduceTanks = function()
-	if HarkonnenHeavyFact.IsDead then
-		return
-	end
-
-	if HoldProduction then
-		Trigger.AfterDelay(DateTime.Seconds(30), ProduceTanks)
-		return
-	end
-
-	local delay = Utils.RandomInteger(AttackDelays[Difficulty][1], AttackDelays[Difficulty][2] + 1)
-	harkonnen.Build(HarkonnenTankType, function(unit)
-		IdlingUnits[#IdlingUnits + 1] = unit[1]
-		Trigger.AfterDelay(delay, ProduceTanks)
-
-		if #IdlingUnits >= (AttackGroupSize[Difficulty] * 2.5) then
-			SendAttack()
-		end
-	end)
+	DefendAndRepairBase(harkonnen, HarkonnenBase, 0.75, AttackGroupSize[Difficulty])
 end
 
 ActivateAI = function()
+	HarvesterKilled[harkonnen] = true
 	InitAIUnits()
 	FremenProduction()
 
-	ProduceInfantry()
-	ProduceTanks()
+	local delay = function() return Utils.RandomInteger(AttackDelays[Difficulty][1], AttackDelays[Difficulty][2] + 1) end
+	local infantryToBuild = function() return { Utils.Random(HarkonnenInfantryTypes) } end
+	local tanksToBuild = function() return HarkonnenTankType end
+	local attackThresholdSize = AttackGroupSize[Difficulty] * 2.5
+
+	ProduceUnits(harkonnen, HarkonnenBarracks, delay, infantryToBuild, AttackGroupSize[Difficulty], attackThresholdSize)
+	ProduceUnits(harkonnen, HarkonnenHeavyFact, delay, tanksToBuild, AttackGroupSize[Difficulty], attackThresholdSize)
 end

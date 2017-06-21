@@ -1,3 +1,12 @@
+--[[
+   Copyright 2007-2017 The OpenRA Developers (see AUTHORS)
+   This file is part of OpenRA, which is free software. It is made
+   available to you under the terms of the GNU General Public License
+   as published by the Free Software Foundation, either version 3 of
+   the License, or (at your option) any later version. For more
+   information, see COPYING.
+]]
+
 AtreidesBase = { ABarracks, AWindTrap1, AWindTrap2, ALightFactory, AOutpost, AConyard, ARefinery, ASilo }
 AtreidesBaseAreaTriggers =
 {
@@ -53,7 +62,7 @@ AtreidesAttackWaves =
 	hard = 9
 }
 
-AtreidesHunters = 
+AtreidesHunters =
 {
 	{ "trooper", "trooper", "trooper", "trooper" },
 	{ "trike", "trike", "trike" },
@@ -69,7 +78,7 @@ AtreidesPaths =
 	{ AtreidesEntry3.Location, AtreidesRally3.Location }
 }
 
-AtreidesHunterPaths = 
+AtreidesHunterPaths =
 {
 	{ AtreidesEntry4.Location, AtreidesRally4.Location },
 	{ AtreidesEntry5.Location, AtreidesRally5.Location },
@@ -84,38 +93,8 @@ HarkonnenPath = { HarkonnenEntry.Location, HarkonnenRally.Location }
 HarkonnenBaseBuildings = { "barracks", "light_factory" }
 HarkonnenUpgrades = { "upgrade.barracks", "upgrade.light" }
 
-wave = 0
-SendAtreides = function()
-	Trigger.AfterDelay(AtreidesAttackDelay[Map.LobbyOption("difficulty")], function()
-		if player.IsObjectiveCompleted(KillAtreides) then
-			return
-		end
-
-		wave = wave + 1
-		if wave > AtreidesAttackWaves[Map.LobbyOption("difficulty")] then
-			return
-		end
-
-		local path = Utils.Random(AtreidesPaths)
-		local units = Reinforcements.ReinforceWithTransport(atreides, "carryall.reinforce", AtreidesReinforcements[Map.LobbyOption("difficulty")][wave], path, { path[1] })[2]
-		Utils.Do(units, IdleHunt)
-
-		SendAtreides()
-	end)
-end
-
 MessageCheck = function(index)
 	return #player.GetActorsByType(HarkonnenBaseBuildings[index]) > 0 and not player.HasPrerequisites({ HarkonnenUpgrades[index] })
-end
-
-SendHunters = function(areaTrigger, unit, path, check)
-	Trigger.OnEnteredFootprint(areaTrigger, function(a, id)
-		if not check and a.Owner == player then
-			local units = Reinforcements.ReinforceWithTransport(atreides, "carryall.reinforce", unit, path, { path[1] })[2]
-			Utils.Do(units, IdleHunt)
-			check = true
-		end
-	end)
 end
 
 Tick = function()
@@ -128,12 +107,12 @@ Tick = function()
 		player.MarkCompletedObjective(KillAtreides)
 	end
 
-	if DateTime.GameTime % DateTime.Seconds(30) and HarvesterKilled then
+	if DateTime.GameTime % DateTime.Seconds(30) and HarvesterKilled[atreides] then
 		local units = atreides.GetActorsByType("harvester")
 
 		if #units > 0 then
-			HarvesterKilled = false
-			ProtectHarvester(units[1])
+			HarvesterKilled[atreides] = false
+			ProtectHarvester(units[1], atreides, AttackGroupSize[Difficulty])
 		end
 	end
 
@@ -146,7 +125,9 @@ WorldLoaded = function()
 	atreides = Player.GetPlayer("Atreides")
 	player = Player.GetPlayer("Harkonnen")
 
-	InitObjectives()
+	InitObjectives(player)
+	KillHarkonnen = atreides.AddPrimaryObjective("Kill all Harkonnen units.")
+	KillAtreides = player.AddPrimaryObjective("Eliminate all Atreides units and reinforcements\nin the area.")
 
 	Camera.Position = HConyard.CenterPosition
 
@@ -154,43 +135,18 @@ WorldLoaded = function()
 		Utils.Do(atreides.GetGroundAttackers(), IdleHunt)
 	end)
 
-	SendAtreides()
-	ActivateAI()
+	local path = function() return Utils.Random(AtreidesPaths) end
+	local waveCondition = function() return player.IsObjectiveCompleted(KillAtreides) end
+	SendCarryallReinforcements(atreides, 0, AtreidesAttackWaves[Difficulty], AtreidesAttackDelay[Difficulty], path, AtreidesReinforcements[Difficulty], waveCondition)
+	Trigger.AfterDelay(0, ActivateAI)
 
 	Trigger.AfterDelay(DateTime.Minutes(2) + DateTime.Seconds(30), function()
 		Reinforcements.ReinforceWithTransport(player, "carryall.reinforce", HarkonnenReinforcements, HarkonnenPath, { HarkonnenPath[1] })
 	end)
 
-	SendHunters(AtreidesBaseAreaTriggers[1], AtreidesHunters[1], AtreidesHunterPaths[1], HuntersSent1)
-	SendHunters(AtreidesBaseAreaTriggers[1], AtreidesHunters[2], AtreidesHunterPaths[2], HuntersSent2)
-	SendHunters(AtreidesBaseAreaTriggers[2], AtreidesHunters[3], AtreidesHunterPaths[3], HuntersSent3)
-	SendHunters(AtreidesBaseAreaTriggers[2], AtreidesHunters[4], AtreidesHunterPaths[4], HuntersSent4)
-	SendHunters(AtreidesBaseAreaTriggers[3], AtreidesHunters[5], AtreidesHunterPaths[5], HuntersSent5)
-end
-
-InitObjectives = function()
-	Trigger.OnObjectiveAdded(player, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "New " .. string.lower(p.GetObjectiveType(id)) .. " objective")
-	end)
-
-	KillHarkonnen = atreides.AddPrimaryObjective("Kill all Harkonnen units.")
-	KillAtreides = player.AddPrimaryObjective("Eliminate all Atreides units and reinforcements\nin the area.")
-
-	Trigger.OnObjectiveCompleted(player, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective completed")
-	end)
-	Trigger.OnObjectiveFailed(player, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective failed")
-	end)
-
-	Trigger.OnPlayerLost(player, function()
-		Trigger.AfterDelay(DateTime.Seconds(1), function()
-			Media.PlaySpeechNotification(player, "Lose")
-		end)
-	end)
-	Trigger.OnPlayerWon(player, function()
-		Trigger.AfterDelay(DateTime.Seconds(1), function()
-			Media.PlaySpeechNotification(player, "Win")
-		end)
-	end)
+	TriggerCarryallReinforcements(player, atreides, AtreidesBaseAreaTriggers[1], AtreidesHunters[1], AtreidesHunterPaths[1])
+	TriggerCarryallReinforcements(player, atreides, AtreidesBaseAreaTriggers[1], AtreidesHunters[2], AtreidesHunterPaths[2])
+	TriggerCarryallReinforcements(player, atreides, AtreidesBaseAreaTriggers[2], AtreidesHunters[3], AtreidesHunterPaths[3])
+	TriggerCarryallReinforcements(player, atreides, AtreidesBaseAreaTriggers[2], AtreidesHunters[4], AtreidesHunterPaths[4])
+	TriggerCarryallReinforcements(player, atreides, AtreidesBaseAreaTriggers[3], AtreidesHunters[5], AtreidesHunterPaths[5])
 end

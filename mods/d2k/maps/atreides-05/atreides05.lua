@@ -1,3 +1,12 @@
+--[[
+   Copyright 2007-2017 The OpenRA Developers (see AUTHORS)
+   This file is part of OpenRA, which is free software. It is made
+   available to you under the terms of the GNU General Public License
+   as published by the Free Software Foundation, either version 3 of
+   the License, or (at your option) any later version. For more
+   information, see COPYING.
+]]
+
 HarkonnenBase = { HarkonnenConstructionYard, HarkonnenWindTrap1, HarkonnenWindTrap2, HarkonnenWindTrap3, HarkonnenWindTrap4, HarkonnenWindTrap5, HarkonnenWindTrap6, HarkonnenWindTrap7, HarkonnenWindTrap8, HarkonnenSilo1, HarkonnenSilo2, HarkonnenSilo3, HarkonnenSilo4, HarkonnenGunTurret1, HarkonnenGunTurret2, HarkonnenGunTurret3, HarkonnenGunTurret4, HarkonnenGunTurret5, HarkonnenGunTurret6, HarkonnenGunTurret7, HarkonnenHeavyFactory, HarkonnenRefinery, HarkonnenOutpost, HarkonnenLightFactory }
 SmugglerBase = { SmugglerWindTrap1, SmugglerWindTrap2 }
 
@@ -251,12 +260,12 @@ Tick = function()
 		player.MarkCompletedObjective(KillSmuggler)
 	end
 
-	if HarvesterKilled and DateTime.GameTime % DateTime.Seconds(30) then
+	if HarvesterKilled[harkonnen] and DateTime.GameTime % DateTime.Seconds(30) then
 		local units = harkonnen.GetActorsByType("harvester")
 
 		if #units > 0 then
-			HarvesterKilled = false
-			ProtectHarvester(units[1])
+			HarvesterKilled[harkonnen] = false
+			ProtectHarvester(units[1], harkonnen, AttackGroupSize[Difficulty])
 		end
 	end
 
@@ -278,10 +287,13 @@ WorldLoaded = function()
 	mercenary = Player.GetPlayer("Mercenaries")
 	player = Player.GetPlayer("Atreides")
 
-	Difficulty = Map.LobbyOption("difficulty")
 	InfantryReinforcements = Difficulty ~= "easy"
 
-	InitObjectives()
+	InitObjectives(player)
+	KillAtreides = harkonnen.AddPrimaryObjective("Kill all Atreides units.")
+	CaptureBarracks = player.AddPrimaryObjective("Capture the Barracks at Sietch Tabr.")
+	KillHarkonnen = player.AddSecondaryObjective("Annihilate all other Harkonnen units\nand reinforcements.")
+	CaptureStarport = player.AddSecondaryObjective("Capture the Smuggler Starport and\nconfiscate the contraband.")
 
 	Camera.Position = ARefinery.CenterPosition
 	HarkonnenAttackLocation = AtreidesRally.Location
@@ -410,34 +422,5 @@ WorldLoaded = function()
 			Media.DisplayMessage("Capture the Harkonnen barracks to release the hostages.", "Mentat")
 			StopInfantryProduction = true
 		end
-	end)
-end
-
-InitObjectives = function()
-	Trigger.OnObjectiveAdded(player, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "New " .. string.lower(p.GetObjectiveType(id)) .. " objective")
-	end)
-
-	KillAtreides = harkonnen.AddPrimaryObjective("Kill all Atreides units.")
-	CaptureBarracks = player.AddPrimaryObjective("Capture the Barracks at Sietch Tabr.")
-	KillHarkonnen = player.AddSecondaryObjective("Annihilate all other Harkonnen units\nand reinforcements.")
-	CaptureStarport = player.AddSecondaryObjective("Capture the Smuggler Starport and\nconfiscate the contraband.")
-
-	Trigger.OnObjectiveCompleted(player, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective completed")
-	end)
-	Trigger.OnObjectiveFailed(player, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective failed")
-	end)
-
-	Trigger.OnPlayerLost(player, function()
-		Trigger.AfterDelay(DateTime.Seconds(1), function()
-			Media.PlaySpeechNotification(player, "Lose")
-		end)
-	end)
-	Trigger.OnPlayerWon(player, function()
-		Trigger.AfterDelay(DateTime.Seconds(1), function()
-			Media.PlaySpeechNotification(player, "Win")
-		end)
 	end)
 end

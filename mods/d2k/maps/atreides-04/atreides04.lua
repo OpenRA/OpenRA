@@ -6,6 +6,7 @@
    the License, or (at your option) any later version. For more
    information, see COPYING.
 ]]
+
 HarkonnenBase = { HarkonnenOutpost, HarkonnenRefinery, HarkonnenHeavyFact, HarkonnenTurret1, HarkonnenTurret2, HarkonnenBarracks, HarkonnenSilo1, HarkonnenSilo2, HarkonnenWindTrap1, HarkonnenWindTrap2, HarkonnenWindTrap3, HarkonnenWindTrap4, HarkonnenWindTrap5 }
 
 HarkonnenReinforcements =
@@ -89,29 +90,6 @@ IntegrityLevel =
 	hard = 100
 }
 
-wave = 0
-SendHarkonnen = function()
-	Trigger.AfterDelay(HarkonnenAttackDelay[Difficulty], function()
-		if player.IsObjectiveCompleted(KillHarkonnen) then
-			return
-		end
-
-		wave = wave + 1
-		if wave > HarkonnenAttackWaves[Difficulty] then
-			return
-		end
-
-		local entryPath = Utils.Random(HarkonnenPaths)
-		local units = Reinforcements.ReinforceWithTransport(harkonnen, "carryall.reinforce", HarkonnenReinforcements[Difficulty][wave], entryPath, { entryPath[1] })[2]
-		Utils.Do(units, function(unit)
-			unit.AttackMove(HarkonnenAttackLocation)
-			IdleHunt(unit)
-		end)
-
-		SendHarkonnen()
-	end)
-end
-
 FremenProduction = function()
 	if Sietch.IsDead then
 		return
@@ -119,7 +97,7 @@ FremenProduction = function()
 
 	local delay = Utils.RandomInteger(FremenInterval[Difficulty][1], FremenInterval[Difficulty][2] + 1)
 	fremen.Build({ "nsfremen" }, function()
-		Trigger.AfterDelay(delay, ProduceInfantry)
+		Trigger.AfterDelay(delay, FremenProduction)
 	end)
 end
 
@@ -136,12 +114,12 @@ Tick = function()
 		player.MarkCompletedObjective(KeepIntegrity)
 	end
 
-	if DateTime.GameTime % DateTime.Seconds(30) and HarvesterKilled then
+	if DateTime.GameTime % DateTime.Seconds(30) and HarvesterKilled[harkonnen] then
 		local units = harkonnen.GetActorsByType("harvester")
 
 		if #units > 0 then
-			HarvesterKilled = false
-			ProtectHarvester(units[1])
+			HarvesterKilled[harkonnen] = false
+			ProtectHarvester(units[1], harkonnen, AttackGroupSize[Difficulty])
 		end
 	end
 
@@ -161,9 +139,11 @@ WorldLoaded = function()
 	fremen = Player.GetPlayer("Fremen")
 	player = Player.GetPlayer("Atreides")
 
-	Difficulty = Map.LobbyOption("difficulty")
-
-	InitObjectives()
+	InitObjectives(player)
+	KillAtreides = harkonnen.AddPrimaryObjective("Kill all Atreides units.")
+	ProtectFremen = player.AddPrimaryObjective("Protect the Fremen Sietch.")
+	KillHarkonnen = player.AddPrimaryObjective("Destroy the Harkonnen.")
+	KeepIntegrity = player.AddSecondaryObjective("Keep the Sietch " .. IntegrityLevel[Difficulty] .. "% intact!")
 
 	Camera.Position = AConyard.CenterPosition
 	HarkonnenAttackLocation = AConyard.Location
@@ -196,7 +176,14 @@ WorldLoaded = function()
 		end
 	end)
 
-	SendHarkonnen()
+	local path = function() return Utils.Random(HarkonnenPaths) end
+	local waveCondition = function() return player.IsObjectiveCompleted(KillHarkonnen) end
+	local huntFunction = function(unit)
+		unit.AttackMove(HarkonnenAttackLocation)
+		IdleHunt(unit)
+	end
+	SendCarryallReinforcements(harkonnen, 0, HarkonnenAttackWaves[Difficulty], HarkonnenAttackDelay[Difficulty], path, HarkonnenReinforcements[Difficulty], waveCondition, huntFunction)
+
 	Actor.Create("upgrade.barracks", true, { Owner = harkonnen })
 	Trigger.AfterDelay(0, ActivateAI)
 
@@ -215,34 +202,5 @@ WorldLoaded = function()
 			local units = Reinforcements.Reinforce(harkonnen, { "light_inf", "combat_tank_h", "trike" }, HarkonnenPaths[1])
 			Utils.Do(units, IdleHunt)
 		end
-	end)
-end
-
-InitObjectives = function()
-	Trigger.OnObjectiveAdded(player, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "New " .. string.lower(p.GetObjectiveType(id)) .. " objective")
-	end)
-
-	KillAtreides = harkonnen.AddPrimaryObjective("Kill all Atreides units.")
-	ProtectFremen = player.AddPrimaryObjective("Protect the Fremen Sietch.")
-	KillHarkonnen = player.AddPrimaryObjective("Destroy the Harkonnen.")
-	KeepIntegrity = player.AddSecondaryObjective("Keep the Sietch " .. IntegrityLevel[Difficulty] .. "% intact!")
-
-	Trigger.OnObjectiveCompleted(player, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective completed")
-	end)
-	Trigger.OnObjectiveFailed(player, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective failed")
-	end)
-
-	Trigger.OnPlayerLost(player, function()
-		Trigger.AfterDelay(DateTime.Seconds(1), function()
-			Media.PlaySpeechNotification(player, "Lose")
-		end)
-	end)
-	Trigger.OnPlayerWon(player, function()
-		Trigger.AfterDelay(DateTime.Seconds(1), function()
-			Media.PlaySpeechNotification(player, "Win")
-		end)
 	end)
 end

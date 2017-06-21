@@ -7,40 +7,46 @@
    information, see COPYING.
 ]]
 
-HarkonnenReinforcements = { }
-HarkonnenReinforcements["easy"] =
+HarkonnenReinforcements =
 {
-	{ "light_inf", "light_inf" }
-}
+	easy =
+	{
+		{ "light_inf", "light_inf" }
+	},
 
-HarkonnenReinforcements["normal"] =
-{
-	{ "light_inf", "light_inf" },
-	{ "light_inf", "light_inf", "light_inf" },
-	{ "light_inf", "trike" },
-}
+	normal =
+	{
+		{ "light_inf", "light_inf" },
+		{ "light_inf", "light_inf", "light_inf" },
+		{ "light_inf", "trike" }
+	},
 
-HarkonnenReinforcements["hard"] =
-{
-	{ "light_inf", "light_inf" },
-	{ "trike", "trike" },
-	{ "light_inf", "light_inf", "light_inf" },
-	{ "light_inf", "trike" },
-	{ "trike", "trike" }
+	hard =
+	{
+		{ "light_inf", "light_inf" },
+		{ "trike", "trike" },
+		{ "light_inf", "light_inf", "light_inf" },
+		{ "light_inf", "trike" },
+		{ "trike", "trike" }
+	}
 }
 
 HarkonnenEntryWaypoints = { HarkonnenWaypoint1.Location, HarkonnenWaypoint2.Location, HarkonnenWaypoint3.Location, HarkonnenWaypoint4.Location }
 HarkonnenAttackDelay = DateTime.Seconds(30)
 
-HarkonnenAttackWaves = { }
-HarkonnenAttackWaves["easy"] = 1
-HarkonnenAttackWaves["normal"] = 5
-HarkonnenAttackWaves["hard"] = 12
+HarkonnenAttackWaves =
+{
+	easy = 1,
+	normal = 5,
+	hard = 12
+}
 
-ToHarvest = { }
-ToHarvest["easy"] = 2500
-ToHarvest["normal"] = 3000
-ToHarvest["hard"] = 3500
+ToHarvest =
+{
+	easy = 2500,
+	normal = 3000,
+	hard = 3500
+}
 
 OrdosReinforcements = { "light_inf", "light_inf", "light_inf", "light_inf", "raider" }
 OrdosEntryPath = { OrdosWaypoint.Location, OrdosRally.Location }
@@ -53,19 +59,12 @@ Messages =
 	"Build a Silo to store additional Spice."
 }
 
-
-IdleHunt = function(actor)
-	if not actor.IsDead then
-		Trigger.OnIdle(actor, actor.Hunt)
-	end
-end
-
 Tick = function()
 	if HarkonnenArrived and harkonnen.HasNoRequiredUnits() then
 		player.MarkCompletedObjective(KillHarkonnen)
 	end
 
-	if player.Resources > ToHarvest[Map.LobbyOption("difficulty")] - 1 then
+	if player.Resources > SpiceToHarvest - 1 then
 		player.MarkCompletedObjective(GatherSpice)
 	end
 
@@ -86,14 +85,19 @@ Tick = function()
 		Media.DisplayMessage(Messages[4], "Mentat")
 	end
 
-	UserInterface.SetMissionText("Harvested resources: " .. player.Resources .. "/" .. ToHarvest[Map.LobbyOption("difficulty")], player.Color)
+	UserInterface.SetMissionText("Harvested resources: " .. player.Resources .. "/" .. SpiceToHarvest, player.Color)
 end
 
 WorldLoaded = function()
 	player = Player.GetPlayer("Ordos")
 	harkonnen = Player.GetPlayer("Harkonnen")
 
-	InitObjectives()
+	SpiceToHarvest = ToHarvest[Difficulty]
+
+	InitObjectives(player)
+	KillAtreides = harkonnen.AddPrimaryObjective("Kill all Ordos units.")
+	GatherSpice = player.AddPrimaryObjective("Harvest " .. tostring(SpiceToHarvest) .. " Solaris worth of Spice.")
+	KillHarkonnen = player.AddSecondaryObjective("Eliminate all Harkonnen units and reinforcements\nin the area.")
 
 	Trigger.OnRemovedFromWorld(OrdosConyard, function()
 		local refs = Utils.Where(Map.ActorsInWorld, function(actor) return actor.Type == "refinery" end)
@@ -114,12 +118,12 @@ WorldLoaded = function()
 		Reinforcements.Reinforce(player, OrdosReinforcements, OrdosEntryPath)
 	end)
 
-	WavesLeft = HarkonnenAttackWaves[Map.LobbyOption("difficulty")]
+	WavesLeft = HarkonnenAttackWaves[Difficulty]
 	SendReinforcements()
 end
 
 SendReinforcements = function()
-	local units = HarkonnenReinforcements[Map.LobbyOption("difficulty")]
+	local units = HarkonnenReinforcements[Difficulty]
 	local delay = Utils.RandomInteger(HarkonnenAttackDelay - DateTime.Seconds(2), HarkonnenAttackDelay)
 	HarkonnenAttackDelay = HarkonnenAttackDelay - (#units * 3 - 3 - WavesLeft) * DateTime.Seconds(1)
 	if HarkonnenAttackDelay < 0 then HarkonnenAttackDelay = 0 end
@@ -133,33 +137,5 @@ SendReinforcements = function()
 		else
 			SendReinforcements()
 		end
-	end)
-end
-
-InitObjectives = function()
-	Trigger.OnObjectiveAdded(player, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "New " .. string.lower(p.GetObjectiveType(id)) .. " objective")
-	end)
-
-	KillAtreides = harkonnen.AddPrimaryObjective("Kill all Ordos units.")
-	GatherSpice = player.AddPrimaryObjective("Harvest " .. tostring(ToHarvest[Map.LobbyOption("difficulty")]) .. " Solaris worth of Spice.")
-	KillHarkonnen = player.AddSecondaryObjective("Eliminate all Harkonnen units and reinforcements\nin the area.")
-
-	Trigger.OnObjectiveCompleted(player, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective completed")
-	end)
-	Trigger.OnObjectiveFailed(player, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective failed")
-	end)
-
-	Trigger.OnPlayerLost(player, function()
-		Trigger.AfterDelay(DateTime.Seconds(1), function()
-			Media.PlaySpeechNotification(player, "Lose")
-		end)
-	end)
-	Trigger.OnPlayerWon(player, function()
-		Trigger.AfterDelay(DateTime.Seconds(1), function()
-			Media.PlaySpeechNotification(player, "Win")
-		end)
 	end)
 end
