@@ -51,7 +51,7 @@ namespace OpenRA.Graphics
 			Cursors = cursors.AsReadOnly();
 		}
 
-		public static bool CursorViewportZoomed { get { return Game.Settings.Graphics.CursorDouble && Game.Settings.Graphics.PixelDouble; } }
+		public static float CursorViewportZoomed { get { return Game.Settings.Graphics.CursorScale ? Game.Settings.Graphics.PixelScale : 1; } }
 
 		public bool HasCursorSequence(string cursor)
 		{

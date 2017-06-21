@@ -109,8 +109,8 @@ namespace OpenRA
 
 		public bool HardwareCursors = true;
 
-		public bool PixelDouble = false;
-		public bool CursorDouble = false;
+		public float PixelScale = 1;
+		public bool CursorScale = false;
 
 		[Desc("Add a frame rate limiter. It is recommended to not disable this.")]
 		public bool CapFramerate = true;
@@ -233,7 +233,7 @@ namespace OpenRA
 		public Hotkey ObserverWorldView = new Hotkey(Keycode.EQUALS, Modifiers.None);
 
 		public Hotkey CycleStatusBarsKey = new Hotkey(Keycode.COMMA, Modifiers.None);
-		public Hotkey TogglePixelDoubleKey = new Hotkey(Keycode.PERIOD, Modifiers.None);
+		public Hotkey TogglePixelScaleKey = new Hotkey(Keycode.PERIOD, Modifiers.None);
 		public Hotkey TogglePlayerStanceColorsKey = new Hotkey(Keycode.COMMA, Modifiers.Ctrl);
 
 		public Hotkey DevReloadChromeKey = new Hotkey(Keycode.C, Modifiers.Ctrl | Modifiers.Shift);

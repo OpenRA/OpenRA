@@ -78,11 +78,9 @@ namespace OpenRA.Graphics
 
 			var cursorSequence = cursorProvider.GetCursorSequence(cursorName);
 			var cursorSprite = sprites[cursorName][((int)cursorFrame % cursorSequence.Length)];
-			var cursorSize = CursorProvider.CursorViewportZoomed ? 2.0f * cursorSprite.Size : cursorSprite.Size;
+			var cursorSize = CursorProvider.CursorViewportZoomed * cursorSprite.Size;
 
-			var cursorOffset = CursorProvider.CursorViewportZoomed ?
-				(2 * cursorSequence.Hotspot) + cursorSprite.Size.XY.ToInt2() :
-				cursorSequence.Hotspot + (0.5f * cursorSprite.Size.XY).ToInt2();
+			var cursorOffset = (int)CursorProvider.CursorViewportZoomed * (cursorSequence.Hotspot + (0.5f * cursorSprite.Size.XY).ToInt2());
 
 			renderer.SetPalette(palette);
 			renderer.SpriteRenderer.DrawSprite(cursorSprite,

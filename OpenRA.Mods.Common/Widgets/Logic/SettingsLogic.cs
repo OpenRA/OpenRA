@@ -159,8 +159,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var gs = Game.Settings.Game;
 
 			BindCheckboxPref(panel, "HARDWARECURSORS_CHECKBOX", ds, "HardwareCursors");
-			BindCheckboxPref(panel, "PIXELDOUBLE_CHECKBOX", ds, "PixelDouble");
-			BindCheckboxPref(panel, "CURSORDOUBLE_CHECKBOX", ds, "CursorDouble");
+			BindCheckboxPref(panel, "CURSORSCALE_CHECKBOX", ds, "CursorScale");
 			BindCheckboxPref(panel, "FRAME_LIMIT_CHECKBOX", ds, "CapFramerate");
 			BindCheckboxPref(panel, "DISPLAY_TARGET_LINES_CHECKBOX", gs, "DrawTargetLine");
 			BindCheckboxPref(panel, "PLAYER_STANCE_COLORS_CHECKBOX", gs, "UsePlayerStanceColors");
@@ -180,20 +179,21 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				"Standard" : gs.StatusBars.ToString() == "DamageShow" ? "Show On Damage" : "Always Show";
 
 			// Update zoom immediately
-			var pixelDoubleCheckbox = panel.Get<CheckboxWidget>("PIXELDOUBLE_CHECKBOX");
-			var pixelDoubleOnClick = pixelDoubleCheckbox.OnClick;
-			pixelDoubleCheckbox.OnClick = () =>
-			{
-				pixelDoubleOnClick();
-				worldRenderer.Viewport.Zoom = ds.PixelDouble ? 2 : 1;
-			};
+			var scales = new string[worldRenderer.Viewport.AvailableZoomSteps.Length];
+
+			for (var i = 0; i < scales.Length; i++)
+				scales[i] = worldRenderer.Viewport.AvailableZoomSteps[i].ToString();
+
+			var pixelScaleDropDown = panel.Get<DropDownButtonWidget>("PIXELSCALE_DROPDOWNBUTTON");
+			pixelScaleDropDown.OnMouseDown = _ => ShowScaleDropdown(pixelScaleDropDown, scales, worldRenderer);
+			windowModeDropdown.GetText = () => worldRenderer.Viewport.Zoom.ToString();
 
 			// Cursor doubling is only supported with software cursors and when pixel doubling is enabled
-			var cursorDoubleCheckbox = panel.Get<CheckboxWidget>("CURSORDOUBLE_CHECKBOX");
-			cursorDoubleCheckbox.IsDisabled = () => !ds.PixelDouble || Game.Cursor is HardwareCursor;
+			var cursorScaleCheckbox = panel.Get<CheckboxWidget>("CURSORSCALE_CHECKBOX");
+			cursorScaleCheckbox.IsDisabled = () => ds.PixelScale == 1 || Game.Cursor is HardwareCursor;
 
-			var cursorDoubleIsChecked = cursorDoubleCheckbox.IsChecked;
-			cursorDoubleCheckbox.IsChecked = () => !cursorDoubleCheckbox.IsDisabled() && cursorDoubleIsChecked();
+			var cursorScaleIsChecked = cursorScaleCheckbox.IsChecked;
+			cursorScaleCheckbox.IsChecked = () => !cursorScaleCheckbox.IsDisabled() && cursorScaleIsChecked();
 
 			panel.Get("WINDOW_RESOLUTION").IsVisible = () => ds.Mode == WindowMode.Windowed;
 			var windowWidth = panel.Get<TextFieldWidget>("WINDOW_WIDTH");
@@ -296,9 +296,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				ds.Mode = dds.Mode;
 				ds.WindowedSize = dds.WindowedSize;
 
-				ds.PixelDouble = dds.PixelDouble;
-				ds.CursorDouble = dds.CursorDouble;
-				worldRenderer.Viewport.Zoom = ds.PixelDouble ? 2 : 1;
+				ds.PixelScale = dds.PixelScale;
+				ds.CursorScale = dds.CursorScale;
+				worldRenderer.Viewport.Zoom = ds.PixelScale;
 
 				ps.Color = dps.Color;
 				ps.Name = dps.Name;
@@ -446,7 +446,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					{ "CycleProductionBuildingsKey", "Cycle production facilities" },
 
 					{ "CycleStatusBarsKey", "Cycle status bars display" },
-					{ "TogglePixelDoubleKey", "Toggle pixel doubling" },
+					{ "TogglePixelScaleKey", "Toggle pixel scale" },
 					{ "ToggleMuteKey", "Toggle audio mute" },
 					{ "TogglePlayerStanceColorsKey", "Toggle player stance colors" }
 				};
@@ -801,6 +801,25 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			};
 
 			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 500, languages, setupItem);
+			return true;
+		}
+
+		static bool ShowScaleDropdown(DropDownButtonWidget dropdown, IEnumerable<string> scales, WorldRenderer worldRenderer)
+		{
+			Func<string, ScrollItemWidget, ScrollItemWidget> setupItem = (o, itemTemplate) =>
+			{
+				var item = ScrollItemWidget.Setup(itemTemplate,
+					() => worldRenderer.Viewport.Zoom == float.Parse(o),
+					() =>
+					{
+						worldRenderer.Viewport.Zoom = float.Parse(o);
+					});
+
+				item.Get<LabelWidget>("LABEL").GetText = () => FieldLoader.Translate(o);
+				return item;
+			};
+
+			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 500, scales, setupItem);
 			return true;
 		}
 

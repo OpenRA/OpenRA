@@ -14,6 +14,7 @@ using System.Drawing;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Effects;
+using OpenRA.Mods.Common.Traits;
 using OpenRA.Orders;
 using OpenRA.Traits;
 using OpenRA.Widgets;
@@ -290,8 +291,8 @@ namespace OpenRA.Mods.Common.Widgets
 				}
 				else if (key == Game.Settings.Keys.CycleStatusBarsKey)
 					return CycleStatusBars();
-				else if (key == Game.Settings.Keys.TogglePixelDoubleKey)
-					return TogglePixelDouble();
+				else if (key == Game.Settings.Keys.TogglePixelScaleKey)
+					return TogglePixelScale();
 				else if (key == Game.Settings.Keys.ToggleMuteKey)
 					return ToggleMute();
 				else if (key == Game.Settings.Keys.TogglePlayerStanceColorsKey)
@@ -348,18 +349,18 @@ namespace OpenRA.Mods.Common.Widgets
 			return true;
 		}
 
-		bool TogglePixelDouble()
+		bool TogglePixelScale()
 		{
-			if (worldRenderer.Viewport.Zoom == 1f)
-				worldRenderer.Viewport.Zoom = 2f;
+			var current = worldRenderer.Viewport.AvailableZoomSteps.IndexOf(worldRenderer.Viewport.Zoom);
+
+			if (current + 1 == worldRenderer.Viewport.AvailableZoomSteps.Length)
+				worldRenderer.Viewport.Zoom = worldRenderer.Viewport.AvailableZoomSteps[0];
 			else
 			{
-				// Reset zoom to regular view if it was anything else before
-				// (like a zoom level only reachable by using the scroll wheel).
-				worldRenderer.Viewport.Zoom = 1f;
+				worldRenderer.Viewport.Zoom = worldRenderer.Viewport.AvailableZoomSteps[current + 1];
 			}
 
-			Game.Settings.Graphics.PixelDouble = worldRenderer.Viewport.Zoom == 2f;
+			Game.Settings.Graphics.PixelScale = worldRenderer.Viewport.Zoom;
 
 			return true;
 		}
