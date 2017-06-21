@@ -4,7 +4,7 @@ Player:
 
 World:
 	LuaScript:
-		Scripts: atreides04.lua, atreides04-AI.lua
+		Scripts: campaign-global.lua, atreides04.lua, atreides04-AI.lua
 	MissionData:
 		Briefing: Our scouts have discovered the hidden Fremen base. The Harkonnen blockade of the Fremen must be broken.\n\nPowerful Harkonnen forces to the South are massing for an assault on the Fremen. Heavy forces have been allocated to you to smash through the Harkonnen fortifications and come to the aid of the Fremen.\n\nGood luck.\n
 		BriefingVideo: A_BR04_E.VQA

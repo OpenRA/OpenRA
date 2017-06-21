@@ -1,3 +1,12 @@
+--[[
+   Copyright 2007-2017 The OpenRA Developers (see AUTHORS)
+   This file is part of OpenRA, which is free software. It is made
+   available to you under the terms of the GNU General Public License
+   as published by the Free Software Foundation, either version 3 of
+   the License, or (at your option) any later version. For more
+   information, see COPYING.
+]]
+
 HarkonnenBase = { HBarracks, HWindTrap1, HWindTrap2, HWindTrap3, HWindTrap4, HLightFactory, HOutpost, HConyard, HRefinery, HSilo1, HSilo2, HSilo3, HSilo4 }
 HarkonnenBaseAreaTrigger = { CPos.New(2, 58), CPos.New(3, 58), CPos.New(4, 58), CPos.New(5, 58), CPos.New(6, 58), CPos.New(7, 58), CPos.New(8, 58), CPos.New(9, 58), CPos.New(10, 58), CPos.New(11, 58), CPos.New(12, 58), CPos.New(13, 58), CPos.New(14, 58), CPos.New(15, 58), CPos.New(16, 58), CPos.New(16, 59), CPos.New(16, 60) }
 
@@ -96,38 +105,8 @@ OrdosReinforcementDelays =
 OrdosBaseBuildings = { "barracks", "light_factory" }
 OrdosUpgrades = { "upgrade.barracks", "upgrade.light" }
 
-wave = 0
-SendHarkonnen = function()
-	Trigger.AfterDelay(HarkonnenAttackDelay[Map.LobbyOption("difficulty")], function()
-		if player.IsObjectiveCompleted(KillHarkonnen) then
-			return
-		end
-
-		wave = wave + 1
-		if wave > HarkonnenAttackWaves[Map.LobbyOption("difficulty")] then
-			return
-		end
-
-		local path = Utils.Random(HarkonnenPaths)
-		local units = Reinforcements.ReinforceWithTransport(harkonnen, "carryall.reinforce", HarkonnenReinforcements[Map.LobbyOption("difficulty")][wave], path, { path[1] })[2]
-		Utils.Do(units, IdleHunt)
-
-		SendHarkonnen()
-	end)
-end
-
 MessageCheck = function(index)
 	return #player.GetActorsByType(OrdosBaseBuildings[index]) > 0 and not player.HasPrerequisites({ OrdosUpgrades[index] })
-end
-
-SendHunters = function(areaTrigger, unit, path, check)
-	Trigger.OnEnteredFootprint(areaTrigger, function(a, id)
-		if not check and a.Owner == player then
-			local units = Reinforcements.ReinforceWithTransport(harkonnen, "carryall.reinforce", unit, path, { path[1] })[2]
-			Utils.Do(units, IdleHunt)
-			check = true
-		end
-	end)
 end
 
 SendOrdosReinforcements = function(timer, unit, path)
@@ -148,12 +127,12 @@ Tick = function()
 		player.MarkCompletedObjective(KillHarkonnen)
 	end
 
-	if DateTime.GameTime % DateTime.Seconds(30) and HarvesterKilled then
+	if DateTime.GameTime % DateTime.Seconds(30) and HarvesterKilled[harkonnen] then
 		local units = harkonnen.GetActorsByType("harvester")
 
 		if #units > 0 then
-			HarvesterKilled = false
-			ProtectHarvester(units[1])
+			HarvesterKilled[harkonnen] = false
+			ProtectHarvester(units[1], harkonnen, AttackGroupSize[Difficulty])
 		end
 	end
 
@@ -166,7 +145,9 @@ WorldLoaded = function()
 	harkonnen = Player.GetPlayer("Harkonnen")
 	player = Player.GetPlayer("Ordos")
 
-	InitObjectives()
+	InitObjectives(player)
+	KillOrdos = harkonnen.AddPrimaryObjective("Kill all Ordos units.")
+	KillHarkonnen = player.AddPrimaryObjective("Eliminate all Harkonnen units and reinforcements\nin the area.")
 
 	Camera.Position = OConyard.CenterPosition
 
@@ -174,7 +155,9 @@ WorldLoaded = function()
 		Utils.Do(harkonnen.GetGroundAttackers(), IdleHunt)
 	end)
 
-	SendHarkonnen()
+	local path = function() return Utils.Random(HarkonnenPaths) end
+	local waveCondition = function() return player.IsObjectiveCompleted(KillHarkonnen) end
+	SendCarryallReinforcements(harkonnen, 0, HarkonnenAttackWaves[Difficulty], HarkonnenAttackDelay[Difficulty], path, HarkonnenReinforcements[Difficulty], waveCondition)
 	ActivateAI()
 
 	SendOrdosReinforcements(OrdosReinforcementDelays[1], OrdosReinforcements[1], OrdosPaths[1])
@@ -184,34 +167,7 @@ WorldLoaded = function()
 		Reinforcements.ReinforceWithTransport(player, "carryall.reinforce", OrdosReinforcements[2], OrdosPaths[2], { OrdosPaths[2][1] })
 	end)
 
-	SendHunters(HarkonnenBaseAreaTrigger, HarkonnenHunters[1], HarkonnenHunterPaths[1], HuntersSent1)
-	SendHunters(HarkonnenBaseAreaTrigger, HarkonnenHunters[2], HarkonnenHunterPaths[2], HuntersSent2)
-	SendHunters(HarkonnenBaseAreaTrigger, HarkonnenHunters[3], HarkonnenHunterPaths[3], HuntersSent3)
-end
-
-InitObjectives = function()
-	Trigger.OnObjectiveAdded(player, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "New " .. string.lower(p.GetObjectiveType(id)) .. " objective")
-	end)
-
-	KillOrdos = harkonnen.AddPrimaryObjective("Kill all Ordos units.")
-	KillHarkonnen = player.AddPrimaryObjective("Eliminate all Harkonnen units and reinforcements\nin the area.")
-
-	Trigger.OnObjectiveCompleted(player, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective completed")
-	end)
-	Trigger.OnObjectiveFailed(player, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective failed")
-	end)
-
-	Trigger.OnPlayerLost(player, function()
-		Trigger.AfterDelay(DateTime.Seconds(1), function()
-			Media.PlaySpeechNotification(player, "Lose")
-		end)
-	end)
-	Trigger.OnPlayerWon(player, function()
-		Trigger.AfterDelay(DateTime.Seconds(1), function()
-			Media.PlaySpeechNotification(player, "Win")
-		end)
-	end)
+	TriggerCarryallReinforcements(player, harkonnen, HarkonnenBaseAreaTrigger, HarkonnenHunters[1], HarkonnenHunterPaths[1])
+	TriggerCarryallReinforcements(player, harkonnen, HarkonnenBaseAreaTrigger, HarkonnenHunters[2], HarkonnenHunterPaths[2])
+	TriggerCarryallReinforcements(player, harkonnen, HarkonnenBaseAreaTrigger, HarkonnenHunters[3], HarkonnenHunterPaths[3])
 end
