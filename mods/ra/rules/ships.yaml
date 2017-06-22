@@ -113,7 +113,6 @@ MSUB:
 		LocalOffset: 0,-171,0, 0,171,0
 		FireDelay: 2
 	AttackFrontal:
-		AttackTargetCenter: true
 	SelectionDecorations:
 		VisualBounds: 44,44
 	AutoTarget:
@@ -226,7 +225,6 @@ CA:
 		RecoilRecovery: 34
 		MuzzleSequence: muzzle
 	AttackTurreted:
-		AttackTargetCenter: true
 	WithMuzzleOverlay:
 	SelectionDecorations:
 		VisualBounds: 44,44

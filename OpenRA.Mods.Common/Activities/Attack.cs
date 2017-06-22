@@ -114,7 +114,7 @@ namespace OpenRA.Mods.Common.Activities
 				return NextActivity;
 			}
 
-			var targetedPosition = attack.Info.AttackTargetCenter ? Target.CenterPosition : Target.Positions.PositionClosestTo(pos);
+			var targetedPosition = attack.GetTargetPosition(pos, Target);
 			var desiredFacing = (targetedPosition - pos).Yaw.Facing;
 			if (facing.Facing != desiredFacing)
 			{

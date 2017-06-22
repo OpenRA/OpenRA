@@ -243,7 +243,6 @@ ARTY:
 		LocalOffset: 624,0,208
 		MuzzleSequence: muzzle
 	AttackFrontal:
-		AttackTargetCenter: true
 	WithMuzzleOverlay:
 	Explodes:
 		Weapon: ArtilleryExplode
