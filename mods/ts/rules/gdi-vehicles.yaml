@@ -357,7 +357,6 @@ JUGG:
 		Voice: Attack
 		Armaments: deployed
 		RequiresCondition: deployed
-		AttackTargetCenter: true
 	Armament@deployed:
 		Name: deployed
 		Turret: deployed

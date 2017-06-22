@@ -40,7 +40,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			var f = facing.Facing;
 			var pos = self.CenterPosition;
-			var targetedPosition = Info.AttackTargetCenter ? target.CenterPosition : target.Positions.PositionClosestTo(pos);
+			var targetedPosition = GetTargetPosition(pos, target);
 			var delta = targetedPosition - pos;
 			var facingToTarget = delta.HorizontalLengthSquared != 0 ? delta.Yaw.Facing : f;
 
