@@ -90,6 +90,10 @@ namespace OpenRA.Mods.Common.Traits.Render
 			if (barrel == null)
 				return;
 
+			// Weapon might had been fired from some other attack base, such as AttackGarrisoned
+			if (!anims.ContainsKey(barrel))
+				return;
+
 			visible[barrel] = true;
 			anims[barrel].Animation.PlayThen(sequence, () => visible[barrel] = false);
 		}

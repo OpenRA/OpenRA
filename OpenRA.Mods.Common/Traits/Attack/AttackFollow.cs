@@ -61,7 +61,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		class AttackActivity : Activity
 		{
-			readonly AttackFollow attack;
+			readonly AttackFollow[] attacks;
 			readonly IMove move;
 			readonly Target target;
 			readonly bool forceAttack;
@@ -70,7 +70,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			public AttackActivity(Actor self, Target target, bool allowMove, bool forceAttack)
 			{
-				attack = self.Trait<AttackFollow>();
+				attacks = self.TraitsImplementing<AttackFollow>().ToArray();
 				move = allowMove ? self.TraitOrDefault<IMove>() : null;
 
 				// HACK: Mobile.OnRails is horrible. Blergh.
@@ -85,6 +85,20 @@ namespace OpenRA.Mods.Common.Traits
 				this.forceAttack = forceAttack;
 			}
 
+			Armament GetFirstFeasibleWeapon(Target target, bool forceAttack)
+			{
+				// We scan attackbases in order.
+				// That means, the order of attack base in YAML matters!
+				foreach (var atb in attacks)
+				{
+					var weapon = atb.ChooseArmamentsForTarget(target, forceAttack).FirstOrDefault();
+					if (weapon != null)
+						return weapon;
+				}
+
+				return null;
+			}
+
 			public override Activity Tick(Actor self)
 			{
 				if (IsCanceled || !target.IsValidFor(self))
@@ -93,7 +107,7 @@ namespace OpenRA.Mods.Common.Traits
 				if (self.IsDisabled())
 					return this;
 
-				var weapon = attack.ChooseArmamentsForTarget(target, forceAttack).FirstOrDefault();
+				var weapon = GetFirstFeasibleWeapon(target, forceAttack);
 				if (weapon != null)
 				{
 					var targetIsMobile = (target.Type == TargetType.Actor && target.Actor.Info.HasTraitInfo<IMoveInfo>())
@@ -106,10 +120,12 @@ namespace OpenRA.Mods.Common.Traits
 
 					// Check that AttackFollow hasn't cancelled the target by modifying attack.Target
 					// Having both this and AttackFollow modify that field is a horrible hack.
-					if (hasTicked && attack.Target.Type == TargetType.Invalid)
+					if (hasTicked && attacks.All(a => a.Target.Type == TargetType.Invalid))
 						return NextActivity;
 
-					attack.Target = target;
+					// Assign targets to all so if it can fire, it will fire.
+					foreach (var attack in attacks)
+						attack.Target = target;
 					hasTicked = true;
 
 					if (move != null)
@@ -121,7 +137,8 @@ namespace OpenRA.Mods.Common.Traits
 				}
 
 				if (!onRailsHack)
-					attack.Target = Target.Invalid;
+					foreach (var attack in attacks)
+						attack.Target = Target.Invalid;
 
 				return NextActivity;
 			}
