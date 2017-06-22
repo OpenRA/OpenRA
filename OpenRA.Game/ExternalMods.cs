@@ -16,10 +16,12 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using OpenRA.Graphics;
-using OpenRA.Primitives;
 
 namespace OpenRA
 {
+	[Flags]
+	enum ModRegistration { User = 1, System = 2 }
+
 	public class ExternalMod
 	{
 		public readonly string Id;
@@ -43,22 +45,27 @@ namespace OpenRA
 		{
 			sheetBuilder = new SheetBuilder(SheetType.BGRA, 256);
 
-			// Load registered mods
-			var supportPath = Platform.ResolvePath(Path.Combine("^", "ModMetadata"));
-			if (!Directory.Exists(supportPath))
-				return;
-
-			foreach (var path in Directory.GetFiles(supportPath, "*.yaml"))
+			// If the player has defined a local support directory (in the game directory)
+			// then this will override both the regular and system support dirs
+			var sources = new[] { Platform.SystemSupportDir, Platform.SupportDir };
+			foreach (var source in sources.Distinct())
 			{
-				try
+				var metadataPath = Path.Combine(source, "ModMetadata");
+				if (!Directory.Exists(metadataPath))
+					continue;
+
+				foreach (var path in Directory.GetFiles(metadataPath, "*.yaml"))
 				{
-					var yaml = MiniYaml.FromStream(File.OpenRead(path), path).First().Value;
-					LoadMod(yaml, path);
-				}
-				catch (Exception e)
-				{
-					Log.Write("debug", "Failed to parse mod metadata file '{0}'", path);
-					Log.Write("debug", e.ToString());
+					try
+					{
+						var yaml = MiniYaml.FromStream(File.OpenRead(path), path).First().Value;
+						LoadMod(yaml, path);
+					}
+					catch (Exception e)
+					{
+						Log.Write("debug", "Failed to parse mod metadata file '{0}'", path);
+						Log.Write("debug", e.ToString());
+					}
 				}
 			}
 		}
@@ -80,7 +87,7 @@ namespace OpenRA
 				mods[key] = mod;
 		}
 
-		internal void Register(Manifest mod, string launchPath)
+		internal void Register(Manifest mod, string launchPath, ModRegistration registration)
 		{
 			if (mod.Metadata.Hidden)
 				return;
@@ -104,20 +111,33 @@ namespace OpenRA
 				}))
 			};
 
-			var supportPath = Platform.ResolvePath(Path.Combine("^", "ModMetadata"));
+			var sources = new List<string>();
+			if (registration.HasFlag(ModRegistration.System))
+				sources.Add(Platform.SystemSupportDir);
 
-			try
-			{
-				// Make sure the mod is available for this session, even if saving it fails
-				LoadMod(yaml.First().Value);
+			if (registration.HasFlag(ModRegistration.User))
+				sources.Add(Platform.SupportDir);
 
-				Directory.CreateDirectory(supportPath);
-				File.WriteAllLines(Path.Combine(supportPath, key + ".yaml"), yaml.ToLines(false).ToArray());
-			}
-			catch (Exception e)
+			// Make sure the mod is available for this session, even if saving it fails
+			LoadMod(yaml.First().Value);
+
+			foreach (var source in sources.Distinct())
 			{
-				Log.Write("debug", "Failed to register current mod metadata");
-				Log.Write("debug", e.ToString());
+				if (!Directory.Exists(source))
+					continue;
+
+				var metadataPath = Path.Combine(source, "ModMetadata");
+
+				try
+				{
+					Directory.CreateDirectory(metadataPath);
+					File.WriteAllLines(Path.Combine(metadataPath, key + ".yaml"), yaml.ToLines(false).ToArray());
+				}
+				catch (Exception e)
+				{
+					Log.Write("debug", "Failed to register current mod metadata");
+					Log.Write("debug", e.ToString());
+				}
 			}
 		}
 
@@ -128,43 +148,56 @@ namespace OpenRA
 		/// * Filename doesn't match internal key
 		/// * Fails to parse as a mod registration
 		/// </summary>
-		internal void ClearInvalidRegistrations(ExternalMod activeMod)
+		internal void ClearInvalidRegistrations(ExternalMod activeMod, ModRegistration registration)
 		{
-			var metadataPath = Platform.ResolvePath(Path.Combine("^", "ModMetadata"));
-			foreach (var path in Directory.GetFiles(metadataPath, "*.yaml"))
+			var sources = new List<string>();
+			if (registration.HasFlag(ModRegistration.System))
+				sources.Add(Platform.SystemSupportDir);
+
+			if (registration.HasFlag(ModRegistration.User))
+				sources.Add(Platform.SupportDir);
+
+			foreach (var source in sources.Distinct())
 			{
-				string modKey = null;
-				try
-				{
-					var yaml = MiniYaml.FromStream(File.OpenRead(path), path).First().Value;
-					var m = FieldLoader.Load<ExternalMod>(yaml);
-					modKey = ExternalMod.MakeKey(m);
+				var metadataPath = Path.Combine(source, "ModMetadata");
+				if (!Directory.Exists(metadataPath))
+					continue;
 
-					// Continue to the next entry if this one is valid
-					if (File.Exists(m.LaunchPath) && Path.GetFileNameWithoutExtension(path) == modKey &&
-						!(activeMod != null && m.LaunchPath == activeMod.LaunchPath && m.Id == activeMod.Id && m.Version != activeMod.Version))
-						continue;
-				}
-				catch (Exception e)
+				foreach (var path in Directory.GetFiles(metadataPath, "*.yaml"))
 				{
-					Log.Write("debug", "Failed to parse mod metadata file '{0}'", path);
-					Log.Write("debug", e.ToString());
-				}
+					string modKey = null;
+					try
+					{
+						var yaml = MiniYaml.FromStream(File.OpenRead(path), path).First().Value;
+						var m = FieldLoader.Load<ExternalMod>(yaml);
+						modKey = ExternalMod.MakeKey(m);
 
-				// Remove from the ingame mod switcher
-				if (Path.GetFileNameWithoutExtension(path) == modKey)
-					mods.Remove(modKey);
+						// Continue to the next entry if this one is valid
+						if (File.Exists(m.LaunchPath) && Path.GetFileNameWithoutExtension(path) == modKey &&
+							!(activeMod != null && m.LaunchPath == activeMod.LaunchPath && m.Id == activeMod.Id && m.Version != activeMod.Version))
+							continue;
+					}
+					catch (Exception e)
+					{
+						Log.Write("debug", "Failed to parse mod metadata file '{0}'", path);
+						Log.Write("debug", e.ToString());
+					}
 
-				// Remove stale or corrupted metadata
-				try
-				{
-					File.Delete(path);
-					Log.Write("debug", "Removed invalid mod metadata file '{0}'", path);
-				}
-				catch (Exception e)
-				{
-					Log.Write("debug", "Failed to remove mod metadata file '{0}'", path);
-					Log.Write("debug", e.ToString());
+					// Remove from the ingame mod switcher
+					if (Path.GetFileNameWithoutExtension(path) == modKey)
+						mods.Remove(modKey);
+
+					// Remove stale or corrupted metadata
+					try
+					{
+						File.Delete(path);
+						Log.Write("debug", "Removed invalid mod metadata file '{0}'", path);
+					}
+					catch (Exception e)
+					{
+						Log.Write("debug", "Failed to remove mod metadata file '{0}'", path);
+						Log.Write("debug", e.ToString());
+					}
 				}
 			}
 		}

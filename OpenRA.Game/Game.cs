@@ -350,11 +350,11 @@ namespace OpenRA
 				if (launchPath.First() == '"' && launchPath.Last() == '"')
 					launchPath = launchPath.Substring(1, launchPath.Length - 2);
 
-				ExternalMods.Register(Mods[modID], launchPath);
+				ExternalMods.Register(Mods[modID], launchPath, ModRegistration.User);
 
 				ExternalMod activeMod;
 				if (ExternalMods.TryGetValue(ExternalMod.MakeKey(Mods[modID]), out activeMod))
-					ExternalMods.ClearInvalidRegistrations(activeMod);
+					ExternalMods.ClearInvalidRegistrations(activeMod, ModRegistration.User);
 			}
 
 			Console.WriteLine("External mods:");
