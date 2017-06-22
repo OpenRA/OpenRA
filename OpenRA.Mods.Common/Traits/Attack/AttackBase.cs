@@ -198,7 +198,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public abstract Activity GetAttackActivity(Actor self, Target newTarget, bool allowMove, bool forceAttack);
 
-		public bool HasAnyValidWeapons(Target t)
+		public bool HasAnyValidWeapons(Target t, bool checkForCenterTargetingWeapons = false)
 		{
 			if (IsTraitDisabled)
 				return false;
@@ -209,25 +209,8 @@ namespace OpenRA.Mods.Common.Traits
 			// PERF: Avoid LINQ.
 			foreach (var armament in Armaments)
 			{
-				if (!armament.OutOfAmmo && armament.Weapon.IsValidAgainst(t, self.World, self))
-					return true;
-			}
-
-			return false;
-		}
-
-		public bool HasAnyValidCenterTargetingWeapons(Target t)
-		{
-			if (IsTraitDisabled)
-				return false;
-
-			if (Info.AttackRequiresEnteringCell && (positionable == null || !positionable.CanEnterCell(t.Actor.Location, null, false)))
-				return false;
-
-			// PERF: Avoid LINQ.
-			foreach (var armament in Armaments)
-			{
-				if (armament.Weapon.TargetActorCenter && armament.Weapon.IsValidAgainst(t, self.World, self))
+				var checkIsValid = checkForCenterTargetingWeapons ? armament.Weapon.TargetActorCenter : !armament.OutOfAmmo;
+				if (checkIsValid && armament.Weapon.IsValidAgainst(t, self.World, self))
 					return true;
 			}
 
@@ -236,7 +219,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public virtual WPos GetTargetPosition(WPos pos, Target target)
 		{
-			return HasAnyValidCenterTargetingWeapons(target) ? target.CenterPosition : target.Positions.PositionClosestTo(pos);
+			return HasAnyValidWeapons(target, true) ? target.CenterPosition : target.Positions.PositionClosestTo(pos);
 		}
 
 		public WDist GetMinimumRange()
