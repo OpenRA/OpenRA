@@ -88,14 +88,12 @@ namespace OpenRA
 
 			if (sounds != null)
 				foreach (var soundSource in sounds.Values)
-					soundSource.Dispose();
+					if (soundSource != null)
+						soundSource.Dispose();
 
 			getSoundSource = s => LoadSound(loaders, fileSystem, s);
 			sounds = new Cache<string, ISoundSource>(getSoundSource);
 			currentSounds = new Dictionary<uint, ISound>();
-			music = null;
-			musicSource = null;
-			currentMusic = null;
 			video = null;
 		}
 
@@ -236,13 +234,15 @@ namespace OpenRA
 			{
 				soundEngine.StopSound(music);
 				soundEngine.ReleaseSound(music);
-				music = null;
-				musicSource.Dispose();
-				musicSource = null;
 			}
 
-			MusicPlaying = false;
+			if (musicSource != null)
+				musicSource.Dispose();
+
+			music = null;
+			musicSource = null;
 			currentMusic = null;
+			MusicPlaying = false;
 		}
 
 		public void PauseMusic()
