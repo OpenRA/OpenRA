@@ -44,6 +44,7 @@ namespace OpenRA.Mods.Common.AI
 		public class UnitCategories
 		{
 			public readonly HashSet<string> Mcv = new HashSet<string>();
+			public readonly HashSet<string> Seige = new HashSet<string>();
 			public readonly HashSet<string> ExcludeFromSquads = new HashSet<string>();
 		}
 
@@ -1236,6 +1237,9 @@ namespace OpenRA.Mods.Common.AI
 			}
 			else if (self.TraitOrDefault<Aircraft>() != null)
 			{
+				if (e.Damage.Value == 0)
+					return;
+
 				// Aircraft micro control
 				if (WhichSquad.ContainsKey(self))
 				{

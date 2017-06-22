@@ -25,6 +25,18 @@ namespace OpenRA.Mods.Common.AI
 
 		public void Activate(Squad owner) { }
 
+		bool ShouldAttack(Squad owner, Actor target)
+		{
+			if (owner.IsTargetVisible)
+				return true;
+
+			// Is it seige unit?
+			if (owner.Bot.Info.UnitsCommonNames.Seige.Contains(target.Info.Name))
+				return true;
+
+			return false;
+		}
+
 		public void Tick(Squad owner)
 		{
 			if (!owner.IsValid)
@@ -41,7 +53,7 @@ namespace OpenRA.Mods.Common.AI
 				}
 			}
 
-			if (!owner.IsTargetVisible)
+			if (!ShouldAttack(owner, owner.TargetActor))
 			{
 				if (Backoff < 0)
 				{
