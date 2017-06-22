@@ -65,7 +65,7 @@ namespace OpenRA.Mods.Yupgi_alert.Activities
 		Activity UndeployAndGo(Actor self, out MiningState state)
 		{
 			state = MiningState.Scan;
-			QueueChild(new UndeployForGrantedCondition(self));
+			QueueChild(new UndeployForGrantedCondition(self, deploy));
 			return this;
 		}
 
@@ -159,7 +159,7 @@ namespace OpenRA.Mods.Yupgi_alert.Activities
 			if (deploy.DeployState == DeployState.Undeployed)
 			{
 				IsInterruptible = false;
-				QueueChild(new DeployForGrantedCondition(self));
+				QueueChild(new DeployForGrantedCondition(self, deploy));
 			}
 
 			state = MiningState.Deploying;
