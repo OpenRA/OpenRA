@@ -16,18 +16,19 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Warheads
 {
-	[Flags]
 	public enum ImpactType
 	{
-		None = 0,
-		Ground = 1,
-		GroundHit = 2,
-		Water = 4,
-		WaterHit = 8,
-		Air = 16,
-		AirHit = 32,
-		TargetTerrain = 64,
-		TargetHit = 128
+		None,
+		Ground,
+		Air,
+		TargetHit
+	}
+
+	public enum ImpactTargetType
+	{
+		NoActor,
+		ValidActor,
+		InvalidActor
 	}
 
 	[Desc("Base warhead class. This can be used to derive other warheads from.")]
