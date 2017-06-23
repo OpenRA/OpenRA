@@ -15,6 +15,7 @@ Atomic:
 	Warhead@2Eff_impact: CreateEffect
 		Explosions: nuke_explosion
 		ImpactSounds: nukexplo.aud
+		VictimScanRadius: 0
 	Warhead@3Dam_areanukea: SpreadDamage
 		Spread: 2c512
 		Damage: 110
@@ -38,6 +39,7 @@ Atomic:
 	Warhead@6Eff_areanukea: CreateEffect
 		ImpactSounds: xplobig4.aud
 		Delay: 3
+		VictimScanRadius: 0
 	Warhead@7Dam_areanukeb: SpreadDamage
 		Spread: 3c768
 		Damage: 50

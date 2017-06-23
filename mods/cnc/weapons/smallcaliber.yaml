@@ -29,6 +29,7 @@ Sniper:
 		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
 	Warhead@2Eff: CreateEffect
 		Explosions: piffs
+		VictimScanRadius: 0
 
 HighV:
 	Inherits: ^HeavyMG
