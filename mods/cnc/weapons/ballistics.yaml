@@ -21,6 +21,7 @@
 	Warhead@3Eff: CreateEffect
 		Explosions: small_frag
 		ImpactSounds: xplos.aud
+		VictimScanRadius: 0
 
 70mm:
 	Inherits: ^BallisticWeapon
