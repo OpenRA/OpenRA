@@ -79,10 +79,36 @@ namespace OpenRA.Mods.Common.Traits
 				});
 			}
 
-			if (!unitGroup.SupportActors.Any())
+			var supportSpawnCells = w.Map.FindTilesInAnnulus(sp, unitGroup.InnerSupportRadius + 1, unitGroup.OuterSupportRadius);
+
+			if (!unitGroup.SupportBuildings.Any())
 				return;
 
-			var supportSpawnCells = w.Map.FindTilesInAnnulus(sp, unitGroup.InnerSupportRadius + 1, unitGroup.OuterSupportRadius);
+			foreach (var s in unitGroup.SupportBuildings)
+			{
+				var actorRules = w.Map.Rules.Actors[s.ToLowerInvariant()];
+				var buildingInfo = actorRules.TraitInfo<BuildingInfo>();
+
+				var validCells = supportSpawnCells.Where(c => w.CanPlaceBuilding(s, buildingInfo, c, null));
+				if (!validCells.Any())
+				{
+					Log.Write("debug", "No cells available to spawn starting building {0} for player {1}".F(s, p));
+					continue;
+				}
+
+				var cell = validCells.Random(w.SharedRandom);
+
+				w.CreateActor(s.ToLowerInvariant(), new TypeDictionary
+				{
+					new OwnerInit(p),
+					new LocationInit(cell),
+					new SkipMakeAnimsInit(),
+					new FacingInit(unitGroup.SupportActorsFacing < 0 ? w.SharedRandom.Next(256) : unitGroup.SupportActorsFacing)
+				});
+			}
+
+			if (!unitGroup.SupportActors.Any())
+				return;
 
 			foreach (var s in unitGroup.SupportActors)
 			{

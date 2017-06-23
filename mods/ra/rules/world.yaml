@@ -162,6 +162,47 @@ World:
 		SupportActors: e1,e1,e1,e3,e3,apc,ftrk,3tnk,3tnk
 		InnerSupportRadius: 3
 		OuterSupportRadius: 5
+	MPStartUnits@cyardonly:
+		Class: cyardonly
+		ClassName: Con. Yard Only
+		Factions: allies, england, france, germany, soviet, russia, ukraine
+		BaseActor: fact
+	MPStartUnits@smallbaseallied:
+		Class: smallbase
+		ClassName: Small Base
+		Factions: allies, england, france, germany
+		BaseActor: fact
+		SupportActors: e1,e1,e3,jeep
+		SupportBuildings: powr, tent, proc, silo, pbox
+		InnerSupportRadius: 4
+		OuterSupportRadius: 7
+	MPStartUnits@smallbasesoviet:
+		Class: smallbase
+		ClassName: Small Base
+		Factions: soviet, russia, ukraine
+		BaseActor: fact
+		SupportActors: e1,e1,e3,apc
+		SupportBuildings: powr, barr, proc, silo, ftur
+		InnerSupportRadius: 4
+		OuterSupportRadius: 7
+	MPStartUnits@bigbaseallied:
+		Class: bigbase
+		ClassName: Big Base
+		Factions: allies, england, france, germany
+		BaseActor: fact
+		SupportActors: e1,e1,e1,e3,e3,jeep,1tnk,2tnk
+		SupportBuildings: powr, powr, tent, proc, silo, silo, silo, pbox, gun, agun, hpad
+		InnerSupportRadius: 4
+		OuterSupportRadius: 7
+	MPStartUnits@bigbasesoviet:
+		Class: bigbase
+		ClassName: Big Base
+		Factions: soviet, russia, ukraine
+		BaseActor: fact
+		SupportActors: e1,e1,e1,e3,e3,apc,ftrk,3tnk
+		SupportBuildings: powr, powr, barr, proc, silo, silo, silo, ftur, ftur, sam, afld
+		InnerSupportRadius: 4
+		OuterSupportRadius: 7
 	MPStartLocations:
 	SpawnMPUnits:
 	PathFinder:
