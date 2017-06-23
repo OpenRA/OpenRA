@@ -68,7 +68,7 @@ Templates:
 		Frames: 0, 8, 9, 48, 49, 50, 51, 52, 68, 69, 70, 71, 72
 		Size: 1,1
 		PickAny: True
-		Category: Basic
+		Categories: Basic
 		Tiles:
 			0: SpiceSand
 			1: SpiceSand
@@ -88,7 +88,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 10, 11, 30, 31
 		Size: 2,2
-		Category: Dune
+		Categories: Dune
 		Tiles:
 			0: Sand
 			1: Dune
@@ -99,7 +99,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 12, 13, 32, 33
 		Size: 2,2
-		Category: Cliff-Type-Changer
+		Categories: Cliff-Type-Changer
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -110,7 +110,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 14, 15, 34, 35
 		Size: 2,2
-		Category: Cliff-Type-Changer
+		Categories: Cliff-Type-Changer
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -121,7 +121,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 16, 17, 36, 37
 		Size: 2,2
-		Category: Dune
+		Categories: Dune
 		Tiles:
 			0: Sand
 			1: Dune
@@ -132,7 +132,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 18, 19, 38, 39
 		Size: 2,2
-		Category: Dune
+		Categories: Dune
 		Tiles:
 			0: Dune
 			1: Sand
@@ -143,7 +143,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 58, 59, 78, 79
 		Size: 2,2
-		Category: Dune
+		Categories: Dune
 		Tiles:
 			0: Dune
 			1: Dune
@@ -154,7 +154,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 56, 57, 76, 77
 		Size: 2,2
-		Category: Dune
+		Categories: Dune
 		Tiles:
 			0: Dune
 			1: Dune
@@ -165,7 +165,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 54, 55, 74, 75
 		Size: 2,2
-		Category: Cliff-Type-Changer
+		Categories: Cliff-Type-Changer
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -176,7 +176,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 53, 73
 		Size: 1,2
-		Category: Sand-Rock-Cliff
+		Categories: Sand-Rock-Cliff
 		Tiles:
 			0: Transition
 			1: Transition
@@ -185,7 +185,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 98, 99, 118, 119
 		Size: 2,2
-		Category: Sand-Sand-Cliff
+		Categories: Sand-Sand-Cliff
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -196,7 +196,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 138, 139, 158, 159
 		Size: 2,2
-		Category: Sand-Sand-Cliff
+		Categories: Sand-Sand-Cliff
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -207,7 +207,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 136, 137, 156, 157
 		Size: 2,2
-		Category: Sand-Sand-Cliff
+		Categories: Sand-Sand-Cliff
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -218,7 +218,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 134, 135, 154, 155
 		Size: 2,2
-		Category: Sand-Sand-Cliff
+		Categories: Sand-Sand-Cliff
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -229,7 +229,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 132, 133, 152, 153
 		Size: 2,2
-		Category: Sand-Sand-Cliff
+		Categories: Sand-Sand-Cliff
 		Tiles:
 			0: Sand
 			1: Cliff
@@ -240,7 +240,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 130, 131, 150, 151
 		Size: 2,2
-		Category: Sand-Sand-Cliff
+		Categories: Sand-Sand-Cliff
 		Tiles:
 			0: Cliff
 			1: Sand
@@ -251,7 +251,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 128, 129, 148, 149
 		Size: 2,2
-		Category: Sand-Sand-Cliff
+		Categories: Sand-Sand-Cliff
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -262,7 +262,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 126, 127, 146, 147
 		Size: 2,2
-		Category: Sand-Sand-Cliff
+		Categories: Sand-Sand-Cliff
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -273,7 +273,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 124, 125, 144, 145
 		Size: 2,2
-		Category: Sand-Sand-Cliff
+		Categories: Sand-Sand-Cliff
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -284,7 +284,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 122, 123, 142, 143
 		Size: 2,2
-		Category: Sand-Sand-Cliff
+		Categories: Sand-Sand-Cliff
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -295,7 +295,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 120, 121, 140, 141
 		Size: 2,2
-		Category: Sand-Sand-Cliff
+		Categories: Sand-Sand-Cliff
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -306,7 +306,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 178, 179, 198, 199
 		Size: 2,2
-		Category: Rock-Sand-Smooth
+		Categories: Rock-Sand-Smooth
 		Tiles:
 			0: Transition
 			1: Transition
@@ -317,7 +317,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 176, 177, 196, 197
 		Size: 2,2
-		Category: Cliff-Ends
+		Categories: Cliff-Ends
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -328,7 +328,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 174, 175, 194, 195
 		Size: 2,2
-		Category: Cliff-Ends
+		Categories: Cliff-Ends
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -339,7 +339,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 172, 173, 192, 193
 		Size: 2,2
-		Category: Cliff-Ends
+		Categories: Cliff-Ends
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -350,7 +350,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 170, 171, 190, 191
 		Size: 2,2
-		Category: Cliff-Ends
+		Categories: Cliff-Ends
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -361,7 +361,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 168, 169, 188, 189
 		Size: 2,2
-		Category: Sand-Sand-Cliff
+		Categories: Sand-Sand-Cliff
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -372,7 +372,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 166, 167, 186, 187
 		Size: 2,2
-		Category: Sand-Sand-Cliff
+		Categories: Sand-Sand-Cliff
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -383,7 +383,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 164, 165, 184, 185
 		Size: 2,2
-		Category: Rock-Detail
+		Categories: Rock-Detail
 		Tiles:
 			0: Rough
 			1: Rough
@@ -394,7 +394,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 162, 163, 182, 183
 		Size: 2,2
-		Category: Sand-Sand-Cliff
+		Categories: Sand-Sand-Cliff
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -405,7 +405,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 160, 161, 180, 181
 		Size: 2,2
-		Category: Sand-Sand-Cliff
+		Categories: Sand-Sand-Cliff
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -416,7 +416,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 202, 203, 222, 223, 242, 243
 		Size: 2,3
-		Category: Sand-Sand-Cliff
+		Categories: Sand-Sand-Cliff
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -429,7 +429,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 260, 261, 280, 281
 		Size: 2,2
-		Category: Rock-Sand-Smooth
+		Categories: Rock-Sand-Smooth
 		Tiles:
 			0: Transition
 			1: Transition
@@ -440,7 +440,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 200, 201, 220, 221, 240, 241
 		Size: 2,3
-		Category: Sand-Sand-Cliff
+		Categories: Sand-Sand-Cliff
 		Tiles:
 			0: Cliff
 			1: Sand
@@ -453,7 +453,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 204, 205, 224, 225, 244, 245
 		Size: 2,3
-		Category: Sand-Sand-Cliff
+		Categories: Sand-Sand-Cliff
 		Tiles:
 			0: Cliff
 			1: Sand
@@ -466,7 +466,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 206, 207, 226, 227, 246, 247
 		Size: 2,3
-		Category: Sand-Sand-Cliff
+		Categories: Sand-Sand-Cliff
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -479,7 +479,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 262, 263, 282, 283
 		Size: 2,2
-		Category: Rock-Sand-Smooth
+		Categories: Rock-Sand-Smooth
 		Tiles:
 			0: Transition
 			1: Transition
@@ -490,7 +490,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 264, 265, 284, 285
 		Size: 2,2
-		Category: Rock-Sand-Smooth
+		Categories: Rock-Sand-Smooth
 		Tiles:
 			0: Transition
 			1: Transition
@@ -501,7 +501,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 85, 86, 105, 106
 		Size: 2,2
-		Category: Sand-Sand-Cliff
+		Categories: Sand-Sand-Cliff
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -512,7 +512,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 87, 88, 107, 108
 		Size: 2,2
-		Category: Sand-Sand-Cliff
+		Categories: Sand-Sand-Cliff
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -523,7 +523,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 89, 90, 109, 110
 		Size: 2,2
-		Category: Sand-Sand-Cliff
+		Categories: Sand-Sand-Cliff
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -534,7 +534,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 91, 92, 111, 112
 		Size: 2,2
-		Category: Sand-Sand-Cliff
+		Categories: Sand-Sand-Cliff
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -545,7 +545,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 93, 94, 113, 114
 		Size: 2,2
-		Category: Sand-Sand-Cliff
+		Categories: Sand-Sand-Cliff
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -556,7 +556,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 95, 96, 115, 116
 		Size: 2,2
-		Category: Cliff-Type-Changer
+		Categories: Cliff-Type-Changer
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -567,7 +567,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 218, 219, 238, 239
 		Size: 2,2
-		Category: Rock-Sand-Smooth
+		Categories: Rock-Sand-Smooth
 		Tiles:
 			0: Transition
 			1: Transition
@@ -578,7 +578,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 258, 259, 278, 279
 		Size: 2,2
-		Category: Rock-Sand-Smooth
+		Categories: Rock-Sand-Smooth
 		Tiles:
 			0: Sand
 			1: Transition
@@ -589,7 +589,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 256, 257, 276, 277
 		Size: 2,2
-		Category: Rock-Sand-Smooth
+		Categories: Rock-Sand-Smooth
 		Tiles:
 			0: Transition
 			1: Transition
@@ -600,7 +600,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 216, 217, 236, 237
 		Size: 2,2
-		Category: Cliff-Ends
+		Categories: Cliff-Ends
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -611,7 +611,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 214, 215, 234, 235
 		Size: 2,2
-		Category: Cliff-Ends
+		Categories: Cliff-Ends
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -622,7 +622,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 211, 212, 213, 231, 232, 233
 		Size: 3,2
-		Category: Sand-Sand-Cliff
+		Categories: Sand-Sand-Cliff
 		Tiles:
 			0: Sand
 			1: Cliff
@@ -635,7 +635,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 251, 252, 253, 271, 272, 273
 		Size: 3,2
-		Category: Sand-Sand-Cliff
+		Categories: Sand-Sand-Cliff
 		Tiles:
 			0: Sand
 			1: Cliff
@@ -648,7 +648,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 248, 249, 250, 268, 269, 270
 		Size: 3,2
-		Category: Sand-Sand-Cliff
+		Categories: Sand-Sand-Cliff
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -661,7 +661,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 208, 209, 210, 228, 229, 230
 		Size: 3,2
-		Category: Sand-Sand-Cliff
+		Categories: Sand-Sand-Cliff
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -674,7 +674,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 266, 267, 286, 287
 		Size: 2,2
-		Category: Rock-Sand-Smooth
+		Categories: Rock-Sand-Smooth
 		Tiles:
 			0: Sand
 			1: Transition
@@ -685,7 +685,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 322
 		Size: 1,1
-		Category: Sand-Detail
+		Categories: Sand-Detail
 		Tiles:
 			0: Rough
 	Template@59:
@@ -693,7 +693,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 302
 		Size: 1,1
-		Category: Rock-Detail
+		Categories: Rock-Detail
 		Tiles:
 			0: Rock
 	Template@60:
@@ -701,7 +701,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 288
 		Size: 1,1
-		Category: Rock-Sand-Smooth
+		Categories: Rock-Sand-Smooth
 		Tiles:
 			0: Sand
 	Template@61:
@@ -709,7 +709,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 308
 		Size: 1,1
-		Category: Rock-Detail
+		Categories: Rock-Detail
 		Tiles:
 			0: Rock
 	Template@62:
@@ -717,7 +717,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 328
 		Size: 1,1
-		Category: Sand-Detail
+		Categories: Sand-Detail
 		Tiles:
 			0: Sand
 	Template@63:
@@ -725,7 +725,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 329
 		Size: 1,1
-		Category: Rock-Sand-Smooth
+		Categories: Rock-Sand-Smooth
 		Tiles:
 			0: Transition
 	Template@64:
@@ -733,7 +733,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 330
 		Size: 1,1
-		Category: Sand-Detail
+		Categories: Sand-Detail
 		Tiles:
 			0: Sand
 	Template@65:
@@ -741,7 +741,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 289, 290, 309, 310
 		Size: 2,2
-		Category: Rock-Detail
+		Categories: Rock-Detail
 		Tiles:
 			0: Rough
 			1: Rough
@@ -752,7 +752,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 331
 		Size: 1,1
-		Category: Rock-Sand-Smooth
+		Categories: Rock-Sand-Smooth
 		Tiles:
 			0: Transition
 	Template@67:
@@ -760,7 +760,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 332
 		Size: 1,1
-		Category: Rock-Sand-Smooth
+		Categories: Rock-Sand-Smooth
 		Tiles:
 			0: Transition
 	Template@68:
@@ -768,7 +768,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 298, 299
 		Size: 2,1
-		Category: Cliff-Ends
+		Categories: Cliff-Ends
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -777,7 +777,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 317, 318
 		Size: 2,1
-		Category: Rock-Sand-Smooth
+		Categories: Rock-Sand-Smooth
 		Tiles:
 			0: Transition
 			1: Transition
@@ -786,7 +786,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 338, 339, 358, 359
 		Size: 2,2
-		Category: Rock-Detail
+		Categories: Rock-Detail
 		Tiles:
 			0: Rough
 			1: Rough
@@ -797,7 +797,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 337
 		Size: 1,1
-		Category: Rock-Sand-Smooth
+		Categories: Rock-Sand-Smooth
 		Tiles:
 			0: Transition
 	Template@72:
@@ -805,7 +805,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 336
 		Size: 1,1
-		Category: Rock-Sand-Smooth
+		Categories: Rock-Sand-Smooth
 		Tiles:
 			0: Transition
 	Template@73:
@@ -813,7 +813,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 335
 		Size: 1,1
-		Category: Rock-Sand-Smooth
+		Categories: Rock-Sand-Smooth
 		Tiles:
 			0: Transition
 	Template@74:
@@ -821,7 +821,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 313, 333
 		Size: 1,2
-		Category: Rock-Sand-Smooth
+		Categories: Rock-Sand-Smooth
 		Tiles:
 			0: Transition
 			1: Transition
@@ -830,7 +830,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 314, 334
 		Size: 1,2
-		Category: Rock-Sand-Smooth
+		Categories: Rock-Sand-Smooth
 		Tiles:
 			0: Transition
 			1: Transition
@@ -839,7 +839,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 315
 		Size: 1,1
-		Category: Rock-Sand-Smooth
+		Categories: Rock-Sand-Smooth
 		Tiles:
 			0: Transition
 	Template@77:
@@ -847,7 +847,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 291, 292
 		Size: 2,1
-		Category: Rock-Sand-Smooth
+		Categories: Rock-Sand-Smooth
 		Tiles:
 			0: Transition
 			1: Transition
@@ -856,7 +856,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 293, 294
 		Size: 2,1
-		Category: Rock-Sand-Smooth
+		Categories: Rock-Sand-Smooth
 		Tiles:
 			0: Transition
 			1: Transition
@@ -865,7 +865,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 295, 296
 		Size: 2,1
-		Category: Rock-Sand-Smooth
+		Categories: Rock-Sand-Smooth
 		Tiles:
 			0: Transition
 			1: Transition
@@ -874,7 +874,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 719
 		Size: 1,1
-		Category: Sand-Detail
+		Categories: Sand-Detail
 		Tiles:
 			0: Cliff
 	Template@81:
@@ -882,7 +882,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 718
 		Size: 1,1
-		Category: Sand-Detail
+		Categories: Sand-Detail
 		Tiles:
 			0: Cliff
 	Template@82:
@@ -890,7 +890,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 738
 		Size: 1,1
-		Category: Sand-Detail
+		Categories: Sand-Detail
 		Tiles:
 			0: Sand
 	Template@83:
@@ -898,7 +898,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 739
 		Size: 1,1
-		Category: Sand-Detail
+		Categories: Sand-Detail
 		Tiles:
 			0: Sand
 	Template@84:
@@ -906,7 +906,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 737
 		Size: 1,1
-		Category: Sand-Detail
+		Categories: Sand-Detail
 		Tiles:
 			0: Sand
 	Template@85:
@@ -914,7 +914,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 717
 		Size: 1,1
-		Category: Sand-Detail
+		Categories: Sand-Detail
 		Tiles:
 			0: Sand
 	Template@86:
@@ -922,7 +922,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 716
 		Size: 1,1
-		Category: Rock-Detail
+		Categories: Rock-Detail
 		Tiles:
 			0: Rough
 	Template@87:
@@ -930,7 +930,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 736
 		Size: 1,1
-		Category: Sand-Detail
+		Categories: Sand-Detail
 		Tiles:
 			0: Sand
 	Template@88:
@@ -939,7 +939,7 @@ Templates:
 		Frames: 657, 658, 659, 691
 		Size: 1,1
 		PickAny: True
-		Category: Basic
+		Categories: Basic
 		Tiles:
 			0: Concrete
 			1: Concrete
@@ -950,7 +950,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 685
 		Size: 1,1
-		Category: Rock-Detail
+		Categories: Rock-Detail
 		Tiles:
 			0: Rough
 	Template@94:
@@ -958,7 +958,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 661, 662, 681, 682
 		Size: 2,2
-		Category: Rock-Detail
+		Categories: Rock-Detail
 		Tiles:
 			0: Rough
 			1: Rock
@@ -969,7 +969,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 660, 680
 		Size: 1,2
-		Category: Rock-Detail
+		Categories: Rock-Detail
 		Tiles:
 			0: Rough
 			1: Rock
@@ -978,7 +978,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 619, 639
 		Size: 1,2
-		Category: Rock-Detail
+		Categories: Rock-Detail
 		Tiles:
 			0: Rock
 			1: Rock
@@ -987,7 +987,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 538
 		Size: 1,1
-		Category: Rock-Detail
+		Categories: Rock-Detail
 		Tiles:
 			0: Rough
 	Template@100:
@@ -995,7 +995,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 539
 		Size: 1,1
-		Category: Rock-Detail
+		Categories: Rock-Detail
 		Tiles:
 			0: Rough
 	Template@101:
@@ -1003,7 +1003,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 557, 558, 559, 577, 578, 579, 597, 598, 599
 		Size: 3,3
-		Category: Rock-Detail
+		Categories: Rock-Detail
 		Tiles:
 			0: Rough
 			1: Rough
@@ -1019,7 +1019,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 652, 653, 672, 673
 		Size: 2,2
-		Category: Rock-Detail
+		Categories: Rock-Detail
 		Tiles:
 			0: Rock
 			1: Cliff
@@ -1030,7 +1030,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 692, 693
 		Size: 2,1
-		Category: Sand-Sand-Cliff
+		Categories: Sand-Sand-Cliff
 		Tiles:
 			0: Cliff
 			1: Sand
@@ -1039,7 +1039,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 689, 690
 		Size: 2,1
-		Category: Sand-Sand-Cliff
+		Categories: Sand-Sand-Cliff
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -1048,7 +1048,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 674, 694
 		Size: 1,2
-		Category: Sand-Sand-Cliff
+		Categories: Sand-Sand-Cliff
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -1057,7 +1057,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 675, 695
 		Size: 1,2
-		Category: Sand-Sand-Cliff
+		Categories: Sand-Sand-Cliff
 		Tiles:
 			0: Cliff
 			1: Sand
@@ -1066,7 +1066,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 677, 697
 		Size: 1,2
-		Category: Sand-Rock-Cliff
+		Categories: Sand-Rock-Cliff
 		Tiles:
 			0: Cliff
 			1: Rock
@@ -1075,7 +1075,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 697
 		Size: 1,1
-		Category: Rock-Detail
+		Categories: Rock-Detail
 		Tiles:
 			0: Rock
 	Template@110:
@@ -1083,7 +1083,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 678, 679
 		Size: 2,1
-		Category: Sand-Rock-Cliff
+		Categories: Sand-Rock-Cliff
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -1092,7 +1092,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 698, 699
 		Size: 2,1
-		Category: Sand-Rock-Cliff
+		Categories: Sand-Rock-Cliff
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -1101,7 +1101,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 715, 735
 		Size: 1,2
-		Category: Rock-Detail
+		Categories: Rock-Detail
 		Tiles:
 			0: Rough
 			1: Rough
@@ -1110,7 +1110,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 711, 712, 713, 714, 731, 732, 733, 734
 		Size: 4,2
-		Category: Rock-Detail
+		Categories: Rock-Detail
 		Tiles:
 			0: Rough
 			1: Rock
@@ -1125,7 +1125,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 709, 710, 729, 730
 		Size: 2,2
-		Category: Rock-Detail
+		Categories: Rock-Detail
 		Tiles:
 			0: Rough
 			1: Rough
@@ -1136,7 +1136,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 708
 		Size: 1,1
-		Category: Rock-Detail
+		Categories: Rock-Detail
 		Tiles:
 			0: Rough
 	Template@116:
@@ -1144,7 +1144,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 728
 		Size: 1,1
-		Category: Sand-Detail
+		Categories: Sand-Detail
 		Tiles:
 			0: Rough
 	Template@117:
@@ -1152,7 +1152,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 706, 707, 726, 727
 		Size: 2,2
-		Category: Sand-Detail
+		Categories: Sand-Detail
 		Tiles:
 			0: Rough
 			1: Sand
@@ -1163,7 +1163,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 700, 701, 702, 720, 721, 722
 		Size: 3,2
-		Category: Sand-Detail
+		Categories: Sand-Detail
 		Tiles:
 			0: Rough
 			1: Rough
@@ -1176,7 +1176,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 703, 704, 723, 724
 		Size: 2,2
-		Category: Sand-Detail
+		Categories: Sand-Detail
 		Tiles:
 			0: Rough
 			1: Rough
@@ -1187,7 +1187,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 705, 725
 		Size: 1,2
-		Category: Sand-Detail
+		Categories: Sand-Detail
 		Tiles:
 			0: Rough
 			1: Rough
@@ -1196,7 +1196,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 746, 747
 		Size: 2,1
-		Category: Sand-Detail
+		Categories: Sand-Detail
 		Tiles:
 			0: Rough
 			1: Rough
@@ -1205,7 +1205,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 744, 745
 		Size: 2,1
-		Category: Sand-Detail
+		Categories: Sand-Detail
 		Tiles:
 			0: Rough
 			1: Rough
@@ -1214,7 +1214,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 743
 		Size: 1,1
-		Category: Sand-Detail
+		Categories: Sand-Detail
 		Tiles:
 			0: Rough
 	Template@124:
@@ -1222,7 +1222,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 742
 		Size: 1,1
-		Category: Sand-Detail
+		Categories: Sand-Detail
 		Tiles:
 			0: Rough
 	Template@125:
@@ -1230,7 +1230,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 740, 741
 		Size: 2,1
-		Category: Sand-Detail
+		Categories: Sand-Detail
 		Tiles:
 			0: Rough
 			1: Rough
@@ -1239,7 +1239,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 600, 601, 602, 620, 621, 622, 640, 641, 642
 		Size: 3,3
-		Category: Sand-Rock-Cliff
+		Categories: Sand-Rock-Cliff
 		Tiles:
 			0: Rock
 			1: Rock
@@ -1255,7 +1255,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 603, 604, 623, 624
 		Size: 2,2
-		Category: Sand-Sand-Cliff
+		Categories: Sand-Sand-Cliff
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -1266,7 +1266,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 605, 606, 625, 626
 		Size: 2,2
-		Category: Sand-Sand-Cliff
+		Categories: Sand-Sand-Cliff
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -1277,7 +1277,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 564, 565, 584, 585
 		Size: 2,2
-		Category: Sand-Rock-Cliff
+		Categories: Sand-Rock-Cliff
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -1288,7 +1288,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 566, 567, 586, 587
 		Size: 2,2
-		Category: Sand-Rock-Cliff
+		Categories: Sand-Rock-Cliff
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -1299,7 +1299,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 562, 563, 582, 583
 		Size: 2,2
-		Category: Cliff-Ends
+		Categories: Cliff-Ends
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -1310,7 +1310,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 560, 561, 580, 581
 		Size: 2,2
-		Category: Sand-Rock-Cliff
+		Categories: Sand-Rock-Cliff
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -1321,7 +1321,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 607, 608, 627, 628
 		Size: 2,2
-		Category: Rock-Detail
+		Categories: Rock-Detail
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -1332,7 +1332,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 609, 610, 629, 630
 		Size: 2,2
-		Category: Rock-Detail
+		Categories: Rock-Detail
 		Tiles:
 			0: Cliff
 			1: Rock
@@ -1343,7 +1343,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 568, 569, 588, 589
 		Size: 2,2
-		Category: Sand-Rock-Cliff
+		Categories: Sand-Rock-Cliff
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -1354,7 +1354,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 570, 571, 590, 591
 		Size: 2,2
-		Category: Sand-Rock-Cliff
+		Categories: Sand-Rock-Cliff
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -1365,7 +1365,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 529, 530, 549, 550
 		Size: 2,2
-		Category: Sand-Rock-Cliff
+		Categories: Sand-Rock-Cliff
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -1376,7 +1376,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 527, 528, 547, 548
 		Size: 2,2
-		Category: Sand-Rock-Cliff
+		Categories: Sand-Rock-Cliff
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -1387,7 +1387,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 525, 526, 545, 546
 		Size: 2,2
-		Category: Cliff-Ends
+		Categories: Cliff-Ends
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -1398,7 +1398,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 523, 524, 543, 544
 		Size: 2,2
-		Category: Cliff-Ends
+		Categories: Cliff-Ends
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -1409,7 +1409,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 520, 521, 522, 540, 541, 542
 		Size: 3,2
-		Category: Sand-Rock-Cliff
+		Categories: Sand-Rock-Cliff
 		Tiles:
 			0: Sand
 			1: Cliff
@@ -1422,7 +1422,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 480, 481, 482, 500, 501, 502
 		Size: 3,2
-		Category: Sand-Rock-Cliff
+		Categories: Sand-Rock-Cliff
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -1435,7 +1435,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 440, 441, 460, 461
 		Size: 2,2
-		Category: Cliff-Ends
+		Categories: Cliff-Ends
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -1446,7 +1446,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 402, 403, 422, 423, 442, 443
 		Size: 2,3
-		Category: Sand-Rock-Cliff
+		Categories: Sand-Rock-Cliff
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -1459,7 +1459,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 400, 401, 420, 421
 		Size: 2,2
-		Category: Cliff-Ends
+		Categories: Cliff-Ends
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -1470,7 +1470,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 408, 409, 428, 429
 		Size: 2,2
-		Category: Sand-Rock-Cliff
+		Categories: Sand-Rock-Cliff
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -1481,7 +1481,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 410, 411, 430, 431, 450, 451
 		Size: 2,3
-		Category: Sand-Rock-Cliff
+		Categories: Sand-Rock-Cliff
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -1494,7 +1494,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 412, 413, 432, 433
 		Size: 2,2
-		Category: Cliff-Ends
+		Categories: Cliff-Ends
 		Tiles:
 			0: Cliff
 			1: Transition
@@ -1505,7 +1505,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 452, 453
 		Size: 2,1
-		Category: Cliff-Ends
+		Categories: Cliff-Ends
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -1514,7 +1514,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 454, 455, 474, 475, 494, 495
 		Size: 2,3
-		Category: Sand-Rock-Cliff
+		Categories: Sand-Rock-Cliff
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -1527,7 +1527,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 489, 490, 509, 510
 		Size: 2,2
-		Category: Sand-Rock-Cliff
+		Categories: Sand-Rock-Cliff
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -1538,7 +1538,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 448, 449, 468, 469
 		Size: 2,2
-		Category: Sand-Rock-Cliff
+		Categories: Sand-Rock-Cliff
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -1549,7 +1549,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 487, 488, 507, 508
 		Size: 2,2
-		Category: Sand-Rock-Cliff
+		Categories: Sand-Rock-Cliff
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -1560,7 +1560,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 446, 447, 466, 467
 		Size: 2,2
-		Category: Sand-Rock-Cliff
+		Categories: Sand-Rock-Cliff
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -1571,7 +1571,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 444, 445, 464, 465
 		Size: 2,2
-		Category: Sand-Rock-Cliff
+		Categories: Sand-Rock-Cliff
 		Tiles:
 			0: Cliff
 			1: Rock
@@ -1582,7 +1582,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 456, 457, 476, 477, 496, 497
 		Size: 2,3
-		Category: Sand-Rock-Cliff
+		Categories: Sand-Rock-Cliff
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -1595,7 +1595,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 498, 499, 518, 519
 		Size: 2,2
-		Category: Cliff-Type-Changer
+		Categories: Cliff-Type-Changer
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -1606,7 +1606,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 458, 459, 478, 479
 		Size: 2,2
-		Category: Cliff-Type-Changer
+		Categories: Cliff-Type-Changer
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -1617,7 +1617,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 418, 419, 438, 439
 		Size: 2,2
-		Category: Sand-Rock-Cliff
+		Categories: Sand-Rock-Cliff
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -1628,7 +1628,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 378, 379, 398, 399
 		Size: 2,2
-		Category: Sand-Rock-Cliff
+		Categories: Sand-Rock-Cliff
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -1639,7 +1639,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 416, 417, 436, 437
 		Size: 2,2
-		Category: Sand-Rock-Cliff
+		Categories: Sand-Rock-Cliff
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -1650,7 +1650,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 376, 377, 396, 397
 		Size: 2,2
-		Category: Sand-Rock-Cliff
+		Categories: Sand-Rock-Cliff
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -1661,7 +1661,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 414, 415, 434, 435
 		Size: 2,2
-		Category: Sand-Detail
+		Categories: Sand-Detail
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -1672,7 +1672,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 354, 355, 374, 375, 394, 395
 		Size: 2,3
-		Category: Sand-Detail
+		Categories: Sand-Detail
 		Tiles:
 			0: Rough
 			1: Rough
@@ -1685,7 +1685,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 356
 		Size: 1,1
-		Category: Ice-Detail
+		Categories: Ice-Detail
 		Tiles:
 			0: Sand
 	Template@216:
@@ -1693,7 +1693,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 347, 348, 367, 368, 387, 388
 		Size: 2,3
-		Category: Rotten-Base
+		Categories: Rotten-Base
 		Tiles:
 			0: Sand
 			1: Sand
@@ -1706,7 +1706,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 386
 		Size: 1,1
-		Category: Rotten-Base
+		Categories: Rotten-Base
 		Tiles:
 			0: Cliff
 	Template@218:
@@ -1714,7 +1714,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 345, 346, 365, 366
 		Size: 2,2
-		Category: Rotten-Base
+		Categories: Rotten-Base
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -1725,7 +1725,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 343, 344, 363, 364
 		Size: 2,2
-		Category: Rotten-Base
+		Categories: Rotten-Base
 		Tiles:
 			0: Sand
 			1: Sand
@@ -1736,7 +1736,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 340, 341, 342, 360, 361, 362
 		Size: 3,2
-		Category: Rotten-Base
+		Categories: Rotten-Base
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -1749,7 +1749,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 380, 381, 382
 		Size: 3,1
-		Category: Rotten-Base
+		Categories: Rotten-Base
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -1759,7 +1759,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 483, 484, 503, 504
 		Size: 2,2
-		Category: Cliff-Ends
+		Categories: Cliff-Ends
 		Tiles:
 			0: Cliff
 			1: Transition
@@ -1770,7 +1770,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 485, 486, 505, 506
 		Size: 2,2
-		Category: Sand-Rock-Cliff
+		Categories: Sand-Rock-Cliff
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -1781,7 +1781,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 83, 84, 103, 104
 		Size: 2,2
-		Category: Dune
+		Categories: Dune
 		Tiles:
 			0: Dune
 			1: Dune
@@ -1792,7 +1792,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 28
 		Size: 1,1
-		Category: Dune
+		Categories: Dune
 		Tiles:
 			0: Dune
 	Template@229:
@@ -1800,7 +1800,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 26, 27, 46, 47
 		Size: 2,2
-		Category: Dune
+		Categories: Dune
 		Tiles:
 			0: Dune
 			1: Sand
@@ -1811,7 +1811,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 65, 66
 		Size: 2,1
-		Category: Dune
+		Categories: Dune
 		Tiles:
 			0: Dune
 			1: Dune
@@ -1820,7 +1820,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 63, 64
 		Size: 2,1
-		Category: Dune
+		Categories: Dune
 		Tiles:
 			0: Dune
 			1: Dune
@@ -1829,7 +1829,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 22, 23, 42, 43
 		Size: 2,2
-		Category: Dune
+		Categories: Dune
 		Tiles:
 			0: Dune
 			1: Dune
@@ -1840,7 +1840,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 60
 		Size: 1,1
-		Category: Dune
+		Categories: Dune
 		Tiles:
 			0: Dune
 	Template@234:
@@ -1848,7 +1848,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 61
 		Size: 1,1
-		Category: Dune
+		Categories: Dune
 		Tiles:
 			0: Dune
 	Template@235:
@@ -1856,7 +1856,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 62
 		Size: 1,1
-		Category: Dune
+		Categories: Dune
 		Tiles:
 			0: Dune
 	Template@236:
@@ -1864,7 +1864,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 82
 		Size: 1,1
-		Category: Dune
+		Categories: Dune
 		Tiles:
 			0: Dune
 	Template@237:
@@ -1872,7 +1872,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 102
 		Size: 1,1
-		Category: Dune
+		Categories: Dune
 		Tiles:
 			0: Dune
 	Template@238:
@@ -1880,7 +1880,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 101
 		Size: 1,1
-		Category: Dune
+		Categories: Dune
 		Tiles:
 			0: Dune
 	Template@239:
@@ -1888,7 +1888,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 100
 		Size: 1,1
-		Category: Dune
+		Categories: Dune
 		Tiles:
 			0: Dune
 	Template@240:
@@ -1896,7 +1896,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 80
 		Size: 1,1
-		Category: Dune
+		Categories: Dune
 		Tiles:
 			0: Dune
 	Template@241:
@@ -1904,7 +1904,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 81
 		Size: 1,1
-		Category: Dune
+		Categories: Dune
 		Tiles:
 			0: Dune
 	Template@242:
@@ -1912,7 +1912,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 21
 		Size: 1,1
-		Category: Dune
+		Categories: Dune
 		Tiles:
 			0: Dune
 	Template@243:
@@ -1920,7 +1920,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 41
 		Size: 1,1
-		Category: Dune
+		Categories: Dune
 		Tiles:
 			0: Dune
 	Template@244:
@@ -1928,7 +1928,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 40
 		Size: 1,1
-		Category: Dune
+		Categories: Dune
 		Tiles:
 			0: Dune
 	Template@245:
@@ -1936,7 +1936,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 20
 		Size: 1,1
-		Category: Dune
+		Categories: Dune
 		Tiles:
 			0: Dune
 	Template@246:
@@ -1944,7 +1944,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 24, 25, 44, 45
 		Size: 2,2
-		Category: Dune
+		Categories: Dune
 		Tiles:
 			0: Dune
 			1: Dune
@@ -1955,7 +1955,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 352, 353, 372, 373
 		Size: 2,2
-		Category: Ice-Detail
+		Categories: Ice-Detail
 		Tiles:
 			0: Sand
 			1: Sand
@@ -1966,7 +1966,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 392, 393
 		Size: 2,1
-		Category: Rotten-Base
+		Categories: Rotten-Base
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -1975,7 +1975,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 390
 		Size: 1,1
-		Category: Sand-Detail
+		Categories: Sand-Detail
 		Tiles:
 			0: Rough
 	Template@250:
@@ -1983,7 +1983,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 389
 		Size: 1,1
-		Category: Rotten-Base
+		Categories: Rotten-Base
 		Tiles:
 			0: Cliff
 	Template@251:
@@ -1991,7 +1991,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 349, 350, 369, 370
 		Size: 2,2
-		Category: Rotten-Base
+		Categories: Rotten-Base
 		Tiles:
 			0: Rough
 			1: Cliff
@@ -2002,7 +2002,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 254, 255, 274, 275
 		Size: 2,2
-		Category: Cliff-Ends
+		Categories: Cliff-Ends
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -2013,7 +2013,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 514, 515, 534, 535
 		Size: 2,2
-		Category: Cliff-Type-Changer
+		Categories: Cliff-Type-Changer
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -2024,7 +2024,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 516, 517, 536, 537
 		Size: 2,2
-		Category: Cliff-Type-Changer
+		Categories: Cliff-Type-Changer
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -2035,7 +2035,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 404, 405, 424, 425
 		Size: 2,2
-		Category: Sand-Rock-Cliff
+		Categories: Sand-Rock-Cliff
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -2046,7 +2046,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 406, 407, 426, 427
 		Size: 2,2
-		Category: Sand-Rock-Cliff
+		Categories: Sand-Rock-Cliff
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -2057,7 +2057,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 676, 696
 		Size: 1,2
-		Category: Sand-Rock-Cliff
+		Categories: Sand-Rock-Cliff
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -2066,7 +2066,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 303
 		Size: 1,1
-		Category: Rock-Sand-Smooth
+		Categories: Rock-Sand-Smooth
 		Tiles:
 			0: Transition
 	Template@260:
@@ -2074,7 +2074,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 304
 		Size: 1,1
-		Category: Rock-Sand-Smooth
+		Categories: Rock-Sand-Smooth
 		Tiles:
 			0: Transition
 	Template@261:
@@ -2082,7 +2082,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 324
 		Size: 1,1
-		Category: Rock-Sand-Smooth
+		Categories: Rock-Sand-Smooth
 		Tiles:
 			0: Transition
 	Template@262:
@@ -2090,7 +2090,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 323
 		Size: 1,1
-		Category: Rock-Sand-Smooth
+		Categories: Rock-Sand-Smooth
 		Tiles:
 			0: Transition
 	Template@263:
@@ -2098,7 +2098,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 511, 512, 513, 531, 532, 533
 		Size: 3,2
-		Category: Sand-Rock-Cliff
+		Categories: Sand-Rock-Cliff
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -2111,7 +2111,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 471, 472, 473, 491, 492, 493
 		Size: 3,2
-		Category: Sand-Rock-Cliff
+		Categories: Sand-Rock-Cliff
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -2125,7 +2125,7 @@ Templates:
 		Frames: 306, 307, 552, 553, 554, 555, 556, 572, 573, 574, 575, 576, 592, 593, 594, 595, 596
 		Size: 1,1
 		PickAny: True
-		Category: Basic
+		Categories: Basic
 		Tiles:
 			0: Rock
 			1: Rock
@@ -2149,7 +2149,7 @@ Templates:
 		Images: BLOXBASE.R8
 		Frames: 326, 327
 		Size: 2,1
-		Category: Rock-Sand-Smooth
+		Categories: Rock-Sand-Smooth
 		Tiles:
 			0: Transition
 			1: Transition
@@ -2158,7 +2158,7 @@ Templates:
 		Images: BLOXBAT.R8
 		Frames: 1
 		Size: 1,1
-		Category: Rock-Detail
+		Categories: Rock-Detail
 		Tiles:
 			0: Cliff
 	Template@272:
@@ -2166,7 +2166,7 @@ Templates:
 		Images: BLOXBAT.R8
 		Frames: 2
 		Size: 1,1
-		Category: Ice-Detail
+		Categories: Ice-Detail
 		Tiles:
 			0: Cliff
 	Template@273:
@@ -2174,7 +2174,7 @@ Templates:
 		Images: BLOXBAT.R8
 		Frames: 3
 		Size: 1,1
-		Category: Rotten-Base
+		Categories: Rotten-Base
 		Tiles:
 			0: Cliff
 	Template@274:
@@ -2182,7 +2182,7 @@ Templates:
 		Images: BLOXBAT.R8
 		Frames: 4
 		Size: 1,1
-		Category: Sand-Detail
+		Categories: Sand-Detail
 		Tiles:
 			0: Rough
 	Template@275:
@@ -2190,7 +2190,7 @@ Templates:
 		Images: BLOXBAT.R8
 		Frames: 5
 		Size: 1,1
-		Category: Ice-Detail
+		Categories: Ice-Detail
 		Tiles:
 			0: Rough
 	Template@276:
@@ -2198,7 +2198,7 @@ Templates:
 		Images: BLOXBAT.R8
 		Frames: 6
 		Size: 1,1
-		Category: Sand-Detail
+		Categories: Sand-Detail
 		Tiles:
 			0: Cliff
 	Template@277:
@@ -2206,7 +2206,7 @@ Templates:
 		Images: BLOXBAT.R8
 		Frames: 322
 		Size: 1,1
-		Category: Sand-Detail
+		Categories: Sand-Detail
 		Tiles:
 			0: Cliff
 	Template@278:
@@ -2214,7 +2214,7 @@ Templates:
 		Images: BLOXBAT.R8
 		Frames: 165
 		Size: 1,1
-		Category: Rock-Detail
+		Categories: Rock-Detail
 		Tiles:
 			0: Rough
 	Template@279:
@@ -2222,7 +2222,7 @@ Templates:
 		Images: BLOXBAT.R8
 		Frames: 164
 		Size: 1,1
-		Category: Rock-Detail
+		Categories: Rock-Detail
 		Tiles:
 			0: Rough
 	Template@280:
@@ -2230,7 +2230,7 @@ Templates:
 		Images: BLOXBAT.R8
 		Frames: 184
 		Size: 1,1
-		Category: Rock-Detail
+		Categories: Rock-Detail
 		Tiles:
 			0: Rock
 	Template@281:
@@ -2238,7 +2238,7 @@ Templates:
 		Images: BLOXBAT.R8
 		Frames: 305
 		Size: 1,1
-		Category: Rock-Detail
+		Categories: Rock-Detail
 		Tiles:
 			0: Rough
 	Template@282:
@@ -2246,7 +2246,7 @@ Templates:
 		Images: BLOXBAT.R8
 		Frames: 325
 		Size: 1,1
-		Category: Rock-Detail
+		Categories: Rock-Detail
 		Tiles:
 			0: Rough
 	Template@283:
@@ -2254,7 +2254,7 @@ Templates:
 		Images: BLOXBAT.R8
 		Frames: 289, 290, 309, 310
 		Size: 2,2
-		Category: Sand-Detail
+		Categories: Sand-Detail
 		Tiles:
 			0: Rough
 			1: Rough
@@ -2265,7 +2265,7 @@ Templates:
 		Images: BLOXBAT.R8
 		Frames: 316
 		Size: 1,1
-		Category: Rotten-Base
+		Categories: Rotten-Base
 		Tiles:
 			0: Sand
 	Template@285:
@@ -2273,7 +2273,7 @@ Templates:
 		Images: BLOXBAT.R8
 		Frames: 297
 		Size: 1,1
-		Category: Rotten-Base
+		Categories: Rotten-Base
 		Tiles:
 			0: Sand
 	Template@286:
@@ -2281,7 +2281,7 @@ Templates:
 		Images: BLOXBAT.R8
 		Frames: 338, 339, 358, 359
 		Size: 2,2
-		Category: Rotten-Base
+		Categories: Rotten-Base
 		Tiles:
 			0: Sand
 			1: Sand
@@ -2292,7 +2292,7 @@ Templates:
 		Images: BLOXBAT.R8
 		Frames: 340, 341, 360, 361, 380, 381
 		Size: 2,3
-		Category: Sand-Detail
+		Categories: Sand-Detail
 		Tiles:
 			0: Rough
 			1: Rough
@@ -2305,7 +2305,7 @@ Templates:
 		Images: BLOXBAT.R8
 		Frames: 342, 343, 362, 363, 382, 383
 		Size: 2,3
-		Category: Sand-Detail
+		Categories: Sand-Detail
 		Tiles:
 			0: Rough
 			1: Rough
@@ -2318,7 +2318,7 @@ Templates:
 		Images: BLOXBAT.R8
 		Frames: 344, 345, 364, 365, 384, 385
 		Size: 2,3
-		Category: Sand-Detail
+		Categories: Sand-Detail
 		Tiles:
 			0: Rough
 			1: Rough
@@ -2331,7 +2331,7 @@ Templates:
 		Images: BLOXBAT.R8
 		Frames: 349, 350, 369, 370, 389, 390
 		Size: 2,3
-		Category: Sand-Detail
+		Categories: Sand-Detail
 		Tiles:
 			0: Rough
 			1: Sand
@@ -2344,7 +2344,7 @@ Templates:
 		Images: BLOXBAT.R8
 		Frames: 351, 371
 		Size: 1,2
-		Category: Rotten-Base
+		Categories: Rotten-Base
 		Tiles:
 			0: Sand
 			1: Sand
@@ -2353,7 +2353,7 @@ Templates:
 		Images: BLOXBAT.R8
 		Frames: 391
 		Size: 1,1
-		Category: Rotten-Base
+		Categories: Rotten-Base
 		Tiles:
 			0: Sand
 	Template@293:
@@ -2361,7 +2361,7 @@ Templates:
 		Images: BLOXBAT.R8
 		Frames: 392
 		Size: 1,1
-		Category: Rotten-Base
+		Categories: Rotten-Base
 		Tiles:
 			0: Sand
 	Template@294:
@@ -2369,7 +2369,7 @@ Templates:
 		Images: BLOXBAT.R8
 		Frames: 393
 		Size: 1,1
-		Category: Rotten-Base
+		Categories: Rotten-Base
 		Tiles:
 			0: Sand
 	Template@295:
@@ -2377,7 +2377,7 @@ Templates:
 		Images: BLOXBAT.R8
 		Frames: 352, 372
 		Size: 1,2
-		Category: Rotten-Base
+		Categories: Rotten-Base
 		Tiles:
 			0: Sand
 			1: Sand
@@ -2386,7 +2386,7 @@ Templates:
 		Images: BLOXBAT.R8
 		Frames: 353
 		Size: 1,1
-		Category: Rotten-Base
+		Categories: Rotten-Base
 		Tiles:
 			0: Sand
 	Template@297:
@@ -2394,7 +2394,7 @@ Templates:
 		Images: BLOXBAT.R8
 		Frames: 354
 		Size: 1,1
-		Category: Rotten-Base
+		Categories: Rotten-Base
 		Tiles:
 			0: Sand
 	Template@298:
@@ -2402,7 +2402,7 @@ Templates:
 		Images: BLOXBAT.R8
 		Frames: 374
 		Size: 1,1
-		Category: Rotten-Base
+		Categories: Rotten-Base
 		Tiles:
 			0: Sand
 	Template@299:
@@ -2410,7 +2410,7 @@ Templates:
 		Images: BLOXBAT.R8
 		Frames: 373
 		Size: 1,1
-		Category: Rotten-Base
+		Categories: Rotten-Base
 		Tiles:
 			0: Sand
 	Template@300:
@@ -2418,7 +2418,7 @@ Templates:
 		Images: BLOXBAT.R8
 		Frames: 394, 395, 414, 415
 		Size: 2,2
-		Category: Rotten-Base
+		Categories: Rotten-Base
 		Tiles:
 			0: Sand
 			1: Sand
@@ -2429,7 +2429,7 @@ Templates:
 		Images: BLOXBAT.R8
 		Frames: 434, 435
 		Size: 2,1
-		Category: Rock-Detail
+		Categories: Rock-Detail
 		Tiles:
 			0: Rough
 			1: Rough
@@ -2438,7 +2438,7 @@ Templates:
 		Images: BLOXBAT.R8
 		Frames: 355, 375
 		Size: 1,2
-		Category: Rock-Detail
+		Categories: Rock-Detail
 		Tiles:
 			0: Rough
 			1: Rough
@@ -2447,7 +2447,7 @@ Templates:
 		Images: BLOXBAT.R8
 		Frames: 356, 357
 		Size: 2,1
-		Category: Rock-Detail
+		Categories: Rock-Detail
 		Tiles:
 			0: Rough
 			1: Rough
@@ -2456,7 +2456,7 @@ Templates:
 		Images: BLOXBAT.R8
 		Frames: 462, 463
 		Size: 2,1
-		Category: Rotten-Base
+		Categories: Rotten-Base
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -2465,7 +2465,7 @@ Templates:
 		Images: BLOXBAT.R8
 		Frames: 551
 		Size: 1,1
-		Category: Rotten-Base
+		Categories: Rotten-Base
 		Tiles:
 			0: Cliff
 	Template@306:
@@ -2473,7 +2473,7 @@ Templates:
 		Images: BLOXBAT.R8
 		Frames: 607, 608, 627, 628
 		Size: 2,2
-		Category: Rotten-Base
+		Categories: Rotten-Base
 		Tiles:
 			0: Rough
 			1: Cliff
@@ -2484,7 +2484,7 @@ Templates:
 		Images: BLOXBAT.R8
 		Frames: 609, 610, 629, 630
 		Size: 2,2
-		Category: Dead-Worm
+		Categories: Dead-Worm
 		Tiles:
 			0: Sand
 			1: Sand
@@ -2495,7 +2495,7 @@ Templates:
 		Images: BLOXBAT.R8
 		Frames: 652, 653, 672, 673
 		Size: 2,2
-		Category: Rotten-Base
+		Categories: Rotten-Base
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -2506,7 +2506,7 @@ Templates:
 		Images: BLOXBAT.R8
 		Frames: 713, 714, 715, 733, 734, 735
 		Size: 3,2
-		Category: Rotten-Base
+		Categories: Rotten-Base
 		Tiles:
 			0: Sand
 			1: Cliff
@@ -2519,7 +2519,7 @@ Templates:
 		Images: BLOXBAT.R8
 		Frames: 709, 710, 711, 712, 729, 730, 731, 732
 		Size: 4,2
-		Category: Rotten-Base
+		Categories: Rotten-Base
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -2534,7 +2534,7 @@ Templates:
 		Images: BLOXBAT.R8
 		Frames: 661, 662, 681, 682
 		Size: 2,2
-		Category: Ice-Detail
+		Categories: Ice-Detail
 		Tiles:
 			0: Sand
 			1: Sand
@@ -2545,7 +2545,7 @@ Templates:
 		Images: BLOXBAT.R8
 		Frames: 683
 		Size: 1,1
-		Category: Sand-Detail
+		Categories: Sand-Detail
 		Tiles:
 			0: Sand
 	Template@313:
@@ -2553,7 +2553,7 @@ Templates:
 		Images: BLOXBAT.R8
 		Frames: 684
 		Size: 1,1
-		Category: Rotten-Base
+		Categories: Rotten-Base
 		Tiles:
 			0: Cliff
 	Template@314:
@@ -2561,7 +2561,7 @@ Templates:
 		Images: BLOXBAT.R8
 		Frames: 703
 		Size: 1,1
-		Category: Sand-Detail
+		Categories: Sand-Detail
 		Tiles:
 			0: Sand
 	Template@315:
@@ -2569,7 +2569,7 @@ Templates:
 		Images: BLOXBAT.R8
 		Frames: 723
 		Size: 1,1
-		Category: Sand-Detail
+		Categories: Sand-Detail
 		Tiles:
 			0: Sand
 	Template@316:
@@ -2577,7 +2577,7 @@ Templates:
 		Images: BLOXBAT.R8
 		Frames: 722
 		Size: 1,1
-		Category: Rotten-Base
+		Categories: Rotten-Base
 		Tiles:
 			0: Sand
 	Template@317:
@@ -2585,7 +2585,7 @@ Templates:
 		Images: BLOXBAT.R8
 		Frames: 721
 		Size: 1,1
-		Category: Rotten-Base
+		Categories: Rotten-Base
 		Tiles:
 			0: Sand
 	Template@318:
@@ -2593,7 +2593,7 @@ Templates:
 		Images: BLOXBAT.R8
 		Frames: 720
 		Size: 1,1
-		Category: Sand-Detail
+		Categories: Sand-Detail
 		Tiles:
 			0: Sand
 	Template@319:
@@ -2601,7 +2601,7 @@ Templates:
 		Images: BLOXBAT.R8
 		Frames: 700
 		Size: 1,1
-		Category: Sand-Detail
+		Categories: Sand-Detail
 		Tiles:
 			0: Sand
 	Template@320:
@@ -2609,7 +2609,7 @@ Templates:
 		Images: BLOXBAT.R8
 		Frames: 701, 702
 		Size: 2,1
-		Category: Rotten-Base
+		Categories: Rotten-Base
 		Tiles:
 			0: Sand
 			1: Sand
@@ -2618,7 +2618,7 @@ Templates:
 		Images: BLOXBAT.R8
 		Frames: 741
 		Size: 1,1
-		Category: Rotten-Base
+		Categories: Rotten-Base
 		Tiles:
 			0: Sand
 	Template@322:
@@ -2626,7 +2626,7 @@ Templates:
 		Images: BLOXBAT.R8
 		Frames: 742
 		Size: 1,1
-		Category: Rotten-Base
+		Categories: Rotten-Base
 		Tiles:
 			0: Sand
 	Template@323:
@@ -2634,7 +2634,7 @@ Templates:
 		Images: BLOXBAT.R8
 		Frames: 743
 		Size: 1,1
-		Category: Rotten-Base
+		Categories: Rotten-Base
 		Tiles:
 			0: Sand
 	Template@324:
@@ -2642,7 +2642,7 @@ Templates:
 		Images: BLOXBAT.R8
 		Frames: 744
 		Size: 1,1
-		Category: Rotten-Base
+		Categories: Rotten-Base
 		Tiles:
 			0: Sand
 	Template@325:
@@ -2650,7 +2650,7 @@ Templates:
 		Images: BLOXBAT.R8
 		Frames: 745, 746
 		Size: 2,1
-		Category: Rotten-Base
+		Categories: Rotten-Base
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -2659,7 +2659,7 @@ Templates:
 		Images: BLOXBAT.R8
 		Frames: 747
 		Size: 1,1
-		Category: Rotten-Base
+		Categories: Rotten-Base
 		Tiles:
 			0: Sand
 	Template@327:
@@ -2667,7 +2667,7 @@ Templates:
 		Images: BLOXBAT.R8
 		Frames: 728
 		Size: 1,1
-		Category: Rotten-Base
+		Categories: Rotten-Base
 		Tiles:
 			0: Sand
 	Template@328:
@@ -2675,7 +2675,7 @@ Templates:
 		Images: BLOXBAT.R8
 		Frames: 708
 		Size: 1,1
-		Category: Dead-Worm
+		Categories: Dead-Worm
 		Tiles:
 			0: Sand
 	Template@329:
@@ -2683,7 +2683,7 @@ Templates:
 		Images: BLOXBAT.R8
 		Frames: 716, 717, 736, 737
 		Size: 2,2
-		Category: Sand-Rock-Cliff
+		Categories: Sand-Rock-Cliff
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -2694,7 +2694,7 @@ Templates:
 		Images: BLOXBAT.R8
 		Frames: 538, 539, 558, 559
 		Size: 2,2
-		Category: Rock-Detail
+		Categories: Rock-Detail
 		Tiles:
 			0: Rough
 			1: Rough
@@ -2705,7 +2705,7 @@ Templates:
 		Images: BLOXBAT.R8
 		Frames: 578, 579, 598, 599
 		Size: 2,2
-		Category: Rock-Detail
+		Categories: Rock-Detail
 		Tiles:
 			0: Rough
 			1: Rough
@@ -2716,7 +2716,7 @@ Templates:
 		Images: BLOXBAT.R8
 		Frames: 718, 719, 738, 739, 758, 759
 		Size: 2,3
-		Category: Sand-Detail
+		Categories: Sand-Detail
 		Tiles:
 			0: Rough
 			1: Rough
@@ -2729,7 +2729,7 @@ Templates:
 		Images: BLOXBAT.R8
 		Frames: 704, 705, 724, 725
 		Size: 2,2
-		Category: Rock-Detail
+		Categories: Rock-Detail
 		Tiles:
 			0: Rock
 			1: Rock
@@ -2740,7 +2740,7 @@ Templates:
 		Images: BLOXBAT.R8
 		Frames: 706, 707, 726, 727
 		Size: 2,2
-		Category: Rock-Detail
+		Categories: Rock-Detail
 		Tiles:
 			0: Rock
 			1: Rock
@@ -2751,7 +2751,7 @@ Templates:
 		Images: BLOXBAT.R8
 		Frames: 660, 680
 		Size: 1,2
-		Category: Sand-Detail
+		Categories: Sand-Detail
 		Tiles:
 			0: Sand
 			1: Sand
@@ -2760,7 +2760,7 @@ Templates:
 		Images: BLOXBAT.R8
 		Frames: 388
 		Size: 1,1
-		Category: Rotten-Base
+		Categories: Rotten-Base
 		Tiles:
 			0: Sand
 	Template@337:
@@ -2768,7 +2768,7 @@ Templates:
 		Images: BLOXBAT.R8
 		Frames: 346, 347, 348, 366, 367, 368
 		Size: 3,2
-		Category: Sand-Detail
+		Categories: Sand-Detail
 		Tiles:
 			0: Rough
 			1: Rough
@@ -2781,7 +2781,7 @@ Templates:
 		Images: BLOXBAT.R8
 		Frames: 386, 387
 		Size: 2,1
-		Category: Sand-Detail
+		Categories: Sand-Detail
 		Tiles:
 			0: Rough
 			1: Rough
@@ -2790,7 +2790,7 @@ Templates:
 		Images: BLOXBGBS.R8
 		Frames: 164, 165, 184, 185
 		Size: 2,2
-		Category: Rock-Detail
+		Categories: Rock-Detail
 		Tiles:
 			0: Rough
 			1: Rough
@@ -2801,7 +2801,7 @@ Templates:
 		Images: BLOXBGBS.R8
 		Frames: 289, 290, 309, 310
 		Size: 2,2
-		Category: Ice-Detail
+		Categories: Ice-Detail
 		Tiles:
 			0: Sand
 			1: Sand
@@ -2812,7 +2812,7 @@ Templates:
 		Images: BLOXBGBS.R8
 		Frames: 338, 339, 358, 359
 		Size: 2,2
-		Category: Rock-Detail
+		Categories: Rock-Detail
 		Tiles:
 			0: Rough
 			1: Rough
@@ -2823,7 +2823,7 @@ Templates:
 		Images: BLOXBGBS.R8
 		Frames: 349, 350, 351, 352, 353, 354, 369, 370, 371, 372, 373, 374, 389, 390, 391, 392, 393, 394
 		Size: 6,3
-		Category: Bridge
+		Categories: Bridge
 		Tiles:
 			0: Rock
 			1: Cliff
@@ -2848,7 +2848,7 @@ Templates:
 		Images: BLOXBGBS.R8
 		Frames: 340, 341, 342, 360, 361, 362, 380, 381, 382
 		Size: 3,3
-		Category: Sand-Rock-Cliff
+		Categories: Sand-Rock-Cliff
 		Tiles:
 			0: Rock
 			1: Rock
@@ -2864,7 +2864,7 @@ Templates:
 		Images: BLOXBGBS.R8
 		Frames: 363, 364, 383, 384
 		Size: 2,2
-		Category: Rock-Detail
+		Categories: Rock-Detail
 		Tiles:
 			0: Rock
 			1: Rock
@@ -2875,7 +2875,7 @@ Templates:
 		Images: BLOXBGBS.R8
 		Frames: 343, 344
 		Size: 2,1
-		Category: Rock-Detail
+		Categories: Rock-Detail
 		Tiles:
 			0: Rock
 			1: Rock
@@ -2884,7 +2884,7 @@ Templates:
 		Images: BLOXBGBS.R8
 		Frames: 345, 346
 		Size: 2,1
-		Category: Rock-Detail
+		Categories: Rock-Detail
 		Tiles:
 			0: Rock
 			1: Rock
@@ -2893,7 +2893,7 @@ Templates:
 		Images: BLOXBGBS.R8
 		Frames: 365, 366, 367, 368, 385, 386, 387, 388
 		Size: 4,2
-		Category: Rock-Detail
+		Categories: Rock-Detail
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -2908,7 +2908,7 @@ Templates:
 		Images: BLOXBGBS.R8
 		Frames: 414, 415, 434, 435
 		Size: 2,2
-		Category: Rock-Detail
+		Categories: Rock-Detail
 		Tiles:
 			0: Rough
 			1: Rock
@@ -2919,7 +2919,7 @@ Templates:
 		Images: BLOXBGBS.R8
 		Frames: 607, 608, 609, 627, 628, 629
 		Size: 3,2
-		Category: Sand-Detail
+		Categories: Sand-Detail
 		Tiles:
 			0: Sand
 			1: Sand
@@ -2932,7 +2932,7 @@ Templates:
 		Images: BLOXBGBS.R8
 		Frames: 610
 		Size: 1,1
-		Category: Sand-Detail
+		Categories: Sand-Detail
 		Tiles:
 			0: Sand
 	Template@351:
@@ -2940,7 +2940,7 @@ Templates:
 		Images: BLOXBGBS.R8
 		Frames: 652, 653, 672, 673
 		Size: 2,2
-		Category: Rock-Detail
+		Categories: Rock-Detail
 		Tiles:
 			0: Rough
 			1: Rough
@@ -2951,7 +2951,7 @@ Templates:
 		Images: BLOXBGBS.R8
 		Frames: 700
 		Size: 1,1
-		Category: Ice-Detail
+		Categories: Ice-Detail
 		Tiles:
 			0: Sand
 	Template@353:
@@ -2959,7 +2959,7 @@ Templates:
 		Images: BLOXBGBS.R8
 		Frames: 720
 		Size: 1,1
-		Category: Ice-Detail
+		Categories: Ice-Detail
 		Tiles:
 			0: Sand
 	Template@354:
@@ -2967,7 +2967,7 @@ Templates:
 		Images: BLOXBGBS.R8
 		Frames: 701, 702, 703, 721, 722, 723, 741, 742, 743
 		Size: 3,3
-		Category: Sand-Detail
+		Categories: Sand-Detail
 		Tiles:
 			0: Rough
 			1: Rough
@@ -2983,7 +2983,7 @@ Templates:
 		Images: BLOXBGBS.R8
 		Frames: 724, 725, 744, 745
 		Size: 2,2
-		Category: Sand-Detail
+		Categories: Sand-Detail
 		Tiles:
 			0: Rough
 			1: Rough
@@ -2994,7 +2994,7 @@ Templates:
 		Images: BLOXBGBS.R8
 		Frames: 726, 727, 746, 747
 		Size: 2,2
-		Category: Sand-Detail
+		Categories: Sand-Detail
 		Tiles:
 			0: Rough
 			1: Rough
@@ -3005,7 +3005,7 @@ Templates:
 		Images: BLOXBGBS.R8
 		Frames: 734, 735
 		Size: 2,1
-		Category: Sand-Detail
+		Categories: Sand-Detail
 		Tiles:
 			0: Rough
 			1: Rough
@@ -3014,7 +3014,7 @@ Templates:
 		Images: BLOXBGBS.R8
 		Frames: 716, 717, 736, 737
 		Size: 2,2
-		Category: Sand-Detail
+		Categories: Sand-Detail
 		Tiles:
 			0: Rough
 			1: Rough
@@ -3025,7 +3025,7 @@ Templates:
 		Images: BLOXBGBS.R8
 		Frames: 718, 719, 738, 739
 		Size: 2,2
-		Category: Sand-Detail
+		Categories: Sand-Detail
 		Tiles:
 			0: Rough
 			1: Sand
@@ -3036,7 +3036,7 @@ Templates:
 		Images: BLOXBGBS.R8
 		Frames: 758, 759
 		Size: 2,1
-		Category: Sand-Detail
+		Categories: Sand-Detail
 		Tiles:
 			0: Rough
 			1: Rough
@@ -3045,7 +3045,7 @@ Templates:
 		Images: BLOXICE.R8
 		Frames: 97, 117
 		Size: 1,2
-		Category: Sand-Ice-Cliff
+		Categories: Sand-Ice-Cliff
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -3054,7 +3054,7 @@ Templates:
 		Images: BLOXICE.R8
 		Frames: 164, 165, 184, 185
 		Size: 2,2
-		Category: Sand-Rock-Cliff
+		Categories: Sand-Rock-Cliff
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -3065,7 +3065,7 @@ Templates:
 		Images: BLOXICE.R8
 		Frames: 289, 290
 		Size: 2,1
-		Category: Rotten-Base
+		Categories: Rotten-Base
 		Tiles:
 			0: Sand
 			1: Sand
@@ -3074,7 +3074,7 @@ Templates:
 		Images: BLOXICE.R8
 		Frames: 309, 310, 311, 312, 355, 356, 357, 358, 1, 2, 3, 4, 5, 6, 7, 8
 		Size: 4,4
-		Category: Ice-Detail
+		Categories: Ice-Detail
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -3097,7 +3097,7 @@ Templates:
 		Images: BLOXICE.R8
 		Frames: 322
 		Size: 1,1
-		Category: Sand-Detail
+		Categories: Sand-Detail
 		Tiles:
 			0: Sand
 	Template@368:
@@ -3105,7 +3105,7 @@ Templates:
 		Images: BLOXICE.R8
 		Frames: 325
 		Size: 1,1
-		Category: Sand-Detail
+		Categories: Sand-Detail
 		Tiles:
 			0: Rough
 	Template@369:
@@ -3113,7 +3113,7 @@ Templates:
 		Images: BLOXICE.R8
 		Frames: 305
 		Size: 1,1
-		Category: Dead-Worm
+		Categories: Dead-Worm
 		Tiles:
 			0: Sand
 	Template@370:
@@ -3121,7 +3121,7 @@ Templates:
 		Images: BLOXICE.R8
 		Frames: 297
 		Size: 1,1
-		Category: Ice-Detail
+		Categories: Ice-Detail
 		Tiles:
 			0: Sand
 	Template@371:
@@ -3129,7 +3129,7 @@ Templates:
 		Images: BLOXICE.R8
 		Frames: 375, 395, 415, 435
 		Size: 1,4
-		Category: Ice-Detail
+		Categories: Ice-Detail
 		Tiles:
 			0: Cliff
 			1: Sand
@@ -3140,7 +3140,7 @@ Templates:
 		Images: BLOXICE.R8
 		Frames: 414, 434
 		Size: 1,2
-		Category: Ice-Detail
+		Categories: Ice-Detail
 		Tiles:
 			0: Sand
 			1: Sand
@@ -3149,7 +3149,7 @@ Templates:
 		Images: BLOXICE.R8
 		Frames: 340, 341, 342, 343, 344, 345, 360, 361, 362, 363, 364, 365, 380, 381, 382, 383, 384, 385
 		Size: 6,3
-		Category: Ice-Detail
+		Categories: Ice-Detail
 		Tiles:
 			0: Sand
 			1: Sand
@@ -3174,7 +3174,7 @@ Templates:
 		Images: BLOXICE.R8
 		Frames: 366, 367, 368, 386, 387, 388
 		Size: 3,2
-		Category: Ice-Detail
+		Categories: Ice-Detail
 		Tiles:
 			0: Sand
 			1: Sand
@@ -3187,7 +3187,7 @@ Templates:
 		Images: BLOXICE.R8
 		Frames: 346
 		Size: 1,1
-		Category: Ice-Detail
+		Categories: Ice-Detail
 		Tiles:
 			0: Sand
 	Template@376:
@@ -3195,7 +3195,7 @@ Templates:
 		Images: BLOXICE.R8
 		Frames: 349, 350, 351, 352, 369, 370, 371, 372, 389, 390, 391, 392
 		Size: 4,3
-		Category: Sand-Ice-Cliff
+		Categories: Sand-Ice-Cliff
 		Tiles:
 			0: Cliff
 			1: Ice
@@ -3214,7 +3214,7 @@ Templates:
 		Images: BLOXICE.R8
 		Frames: 353, 354, 373, 374, 393, 394
 		Size: 2,3
-		Category: Sand-Detail
+		Categories: Sand-Detail
 		Tiles:
 			0: Transition
 			1: Transition
@@ -3227,7 +3227,7 @@ Templates:
 		Images: BLOXICE.R8
 		Frames: 462
 		Size: 1,1
-		Category: Ice-Detail
+		Categories: Ice-Detail
 		Tiles:
 			0: Cliff
 	Template@380:
@@ -3235,7 +3235,7 @@ Templates:
 		Images: BLOXICE.R8
 		Frames: 463
 		Size: 1,1
-		Category: Ice-Detail
+		Categories: Ice-Detail
 		Tiles:
 			0: Rough
 	Template@381:
@@ -3243,7 +3243,7 @@ Templates:
 		Images: BLOXICE.R8
 		Frames: 551
 		Size: 1,1
-		Category: Unidentified
+		Categories: Unidentified
 		Tiles:
 			0: Sand
 	Template@383:
@@ -3251,7 +3251,7 @@ Templates:
 		Images: BLOXICE.R8
 		Frames: 539, 559
 		Size: 1,2
-		Category: Sand-Rock-Cliff
+		Categories: Sand-Rock-Cliff
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -3260,7 +3260,7 @@ Templates:
 		Images: BLOXICE.R8
 		Frames: 557, 558, 577, 578, 597, 598
 		Size: 2,3
-		Category: Sand-Detail
+		Categories: Sand-Detail
 		Tiles:
 			0: Rough
 			1: Rough
@@ -3273,7 +3273,7 @@ Templates:
 		Images: BLOXICE.R8
 		Frames: 607, 608, 627, 628
 		Size: 2,2
-		Category: Sand-Detail
+		Categories: Sand-Detail
 		Tiles:
 			0: Rough
 			1: Rough
@@ -3284,7 +3284,7 @@ Templates:
 		Images: BLOXICE.R8
 		Frames: 609, 610, 629, 630
 		Size: 2,2
-		Category: Sand-Detail
+		Categories: Sand-Detail
 		Tiles:
 			0: Rough
 			1: Sand
@@ -3295,7 +3295,7 @@ Templates:
 		Images: BLOXICE.R8
 		Frames: 700, 701, 720, 721, 740, 741
 		Size: 2,3
-		Category: Sand-Ice-Cliff
+		Categories: Sand-Ice-Cliff
 		Tiles:
 			0: Ice
 			1: Cliff
@@ -3308,7 +3308,7 @@ Templates:
 		Images: BLOXICE.R8
 		Frames: 702, 703, 722, 723
 		Size: 2,2
-		Category: Sand-Ice-Cliff
+		Categories: Sand-Ice-Cliff
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -3319,7 +3319,7 @@ Templates:
 		Images: BLOXICE.R8
 		Frames: 742
 		Size: 1,1
-		Category: Ice-Detail
+		Categories: Ice-Detail
 		Tiles:
 			0: Cliff
 	Template@390:
@@ -3327,7 +3327,7 @@ Templates:
 		Images: BLOXICE.R8
 		Frames: 743
 		Size: 1,1
-		Category: Ice-Detail
+		Categories: Ice-Detail
 		Tiles:
 			0: Sand
 	Template@391:
@@ -3335,7 +3335,7 @@ Templates:
 		Images: BLOXICE.R8
 		Frames: 744
 		Size: 1,1
-		Category: Ice-Detail
+		Categories: Ice-Detail
 		Tiles:
 			0: Sand
 	Template@392:
@@ -3343,7 +3343,7 @@ Templates:
 		Images: BLOXICE.R8
 		Frames: 745
 		Size: 1,1
-		Category: Ice-Detail
+		Categories: Ice-Detail
 		Tiles:
 			0: Sand
 	Template@393:
@@ -3351,7 +3351,7 @@ Templates:
 		Images: BLOXICE.R8
 		Frames: 704, 705, 724, 725
 		Size: 2,2
-		Category: Sand-Ice-Cliff
+		Categories: Sand-Ice-Cliff
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -3362,7 +3362,7 @@ Templates:
 		Images: BLOXICE.R8
 		Frames: 706, 707, 726, 727, 746, 747
 		Size: 2,3
-		Category: Sand-Ice-Cliff
+		Categories: Sand-Ice-Cliff
 		Tiles:
 			0: Cliff
 			1: Ice
@@ -3375,7 +3375,7 @@ Templates:
 		Images: BLOXICE.R8
 		Frames: 708, 709, 728, 729
 		Size: 2,2
-		Category: Sand-Ice-Cliff
+		Categories: Sand-Ice-Cliff
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -3386,7 +3386,7 @@ Templates:
 		Images: BLOXICE.R8
 		Frames: 710, 711, 730, 731
 		Size: 2,2
-		Category: Sand-Ice-Cliff
+		Categories: Sand-Ice-Cliff
 		Tiles:
 			0: Ice
 			1: Ice
@@ -3397,7 +3397,7 @@ Templates:
 		Images: BLOXICE.R8
 		Frames: 712, 713, 732, 733
 		Size: 2,2
-		Category: Sand-Ice-Cliff
+		Categories: Sand-Ice-Cliff
 		Tiles:
 			0: Ice
 			1: Cliff
@@ -3408,7 +3408,7 @@ Templates:
 		Images: BLOXICE.R8
 		Frames: 714, 715, 734, 735
 		Size: 2,2
-		Category: Sand-Ice-Cliff
+		Categories: Sand-Ice-Cliff
 		Tiles:
 			0: Ice
 			1: Ice
@@ -3419,7 +3419,7 @@ Templates:
 		Images: BLOXICE.R8
 		Frames: 716, 717
 		Size: 2,1
-		Category: Ice-Detail
+		Categories: Ice-Detail
 		Tiles:
 			0: Sand
 			1: Sand
@@ -3428,7 +3428,7 @@ Templates:
 		Images: BLOXICE.R8
 		Frames: 736, 737
 		Size: 2,1
-		Category: Ice-Detail
+		Categories: Ice-Detail
 		Tiles:
 			0: Sand
 			1: Sand
@@ -3437,7 +3437,7 @@ Templates:
 		Images: BLOXICE.R8
 		Frames: 718, 719, 738, 739, 758, 759
 		Size: 2,3
-		Category: Rock-Detail
+		Categories: Rock-Detail
 		Tiles:
 			0: Sand
 			1: Sand
@@ -3450,7 +3450,7 @@ Templates:
 		Images: BLOXICE.R8
 		Frames: 660, 661, 662
 		Size: 3,1
-		Category: Unidentified
+		Categories: Unidentified
 		Tiles:
 			0: Rough
 			1: Sand
@@ -3460,7 +3460,7 @@ Templates:
 		Images: BLOXICE.R8
 		Frames: 680, 681
 		Size: 2,1
-		Category: Sand-Detail
+		Categories: Sand-Detail
 		Tiles:
 			0: Rough
 			1: Rough
@@ -3469,7 +3469,7 @@ Templates:
 		Images: BLOXICE.R8
 		Frames: 682, 683
 		Size: 2,1
-		Category: Sand-Detail
+		Categories: Sand-Detail
 		Tiles:
 			0: Rough
 			1: Rough
@@ -3478,7 +3478,7 @@ Templates:
 		Images: BLOXICE.R8
 		Frames: 684, 685
 		Size: 2,1
-		Category: Sand-Detail
+		Categories: Sand-Detail
 		Tiles:
 			0: Rough
 			1: Rough
@@ -3487,7 +3487,7 @@ Templates:
 		Images: BLOXICE.R8
 		Frames: 652, 653
 		Size: 2,1
-		Category: Sand-Detail
+		Categories: Sand-Detail
 		Tiles:
 			0: Rough
 			1: Rough
@@ -3496,7 +3496,7 @@ Templates:
 		Images: BLOXICE.R8
 		Frames: 672, 673
 		Size: 2,1
-		Category: Sand-Detail
+		Categories: Sand-Detail
 		Tiles:
 			0: Rough
 			1: Rough
@@ -3505,7 +3505,7 @@ Templates:
 		Images: BLOXTREE.R8
 		Frames: 6
 		Size: 1,1
-		Category: Sand-Detail
+		Categories: Sand-Detail
 		Tiles:
 			0: Rough
 	Template@409:
@@ -3513,7 +3513,7 @@ Templates:
 		Images: BLOXTREE.R8
 		Frames: 7
 		Size: 1,1
-		Category: Sand-Detail
+		Categories: Sand-Detail
 		Tiles:
 			0: Rough
 	Template@410:
@@ -3521,7 +3521,7 @@ Templates:
 		Images: BLOXTREE.R8
 		Frames: 67
 		Size: 1,1
-		Category: Rock-Detail
+		Categories: Rock-Detail
 		Tiles:
 			0: Rock
 	Template@411:
@@ -3529,7 +3529,7 @@ Templates:
 		Images: BLOXTREE.R8
 		Frames: 97, 117
 		Size: 1,2
-		Category: Sand-Detail
+		Categories: Sand-Detail
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -3538,7 +3538,7 @@ Templates:
 		Images: BLOXTREE.R8
 		Frames: 340, 341, 360, 361
 		Size: 2,2
-		Category: Rotten-Base
+		Categories: Rotten-Base
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -3549,7 +3549,7 @@ Templates:
 		Images: BLOXTREE.R8
 		Frames: 342, 343, 344, 362, 363, 364
 		Size: 3,2
-		Category: Rotten-Base
+		Categories: Rotten-Base
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -3562,7 +3562,7 @@ Templates:
 		Images: BLOXTREE.R8
 		Frames: 1, 2, 3, 4, 5
 		Size: 5,1
-		Category: Rock-Detail
+		Categories: Rock-Detail
 		Tiles:
 			0: Rock
 			1: Rock
@@ -3574,7 +3574,7 @@ Templates:
 		Images: BLOXTREE.R8
 		Frames: 305, 325
 		Size: 1,2
-		Category: Sand-Detail
+		Categories: Sand-Detail
 		Tiles:
 			0: Sand
 			1: Sand
@@ -3583,7 +3583,7 @@ Templates:
 		Images: BLOXTREE.R8
 		Frames: 289, 290, 309, 310
 		Size: 2,2
-		Category: Ice-Detail
+		Categories: Ice-Detail
 		Tiles:
 			0: Sand
 			1: Sand
@@ -3594,7 +3594,7 @@ Templates:
 		Images: BLOXTREE.R8
 		Frames: 311, 312
 		Size: 2,1
-		Category: Sand-Detail
+		Categories: Sand-Detail
 		Tiles:
 			0: Transition
 			1: Transition
@@ -3603,7 +3603,7 @@ Templates:
 		Images: BLOXTREE.R8
 		Frames: 316
 		Size: 1,1
-		Category: Rock-Detail
+		Categories: Rock-Detail
 		Tiles:
 			0: Rock
 	Template@419:
@@ -3611,7 +3611,7 @@ Templates:
 		Images: BLOXTREE.R8
 		Frames: 297
 		Size: 1,1
-		Category: Rock-Detail
+		Categories: Rock-Detail
 		Tiles:
 			0: Rock
 	Template@420:
@@ -3619,7 +3619,7 @@ Templates:
 		Images: BLOXTREE.R8
 		Frames: 319
 		Size: 1,1
-		Category: Rock-Detail
+		Categories: Rock-Detail
 		Tiles:
 			0: Rock
 	Template@421:
@@ -3627,7 +3627,7 @@ Templates:
 		Images: BLOXTREE.R8
 		Frames: 338, 339, 358, 359
 		Size: 2,2
-		Category: Rock-Detail
+		Categories: Rock-Detail
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -3638,7 +3638,7 @@ Templates:
 		Images: BLOXTREE.R8
 		Frames: 374, 375, 394, 395
 		Size: 2,2
-		Category: Rock-Detail
+		Categories: Rock-Detail
 		Tiles:
 			0: Rock
 			1: Rock
@@ -3649,7 +3649,7 @@ Templates:
 		Images: BLOXTREE.R8
 		Frames: 414, 415, 434, 435
 		Size: 2,2
-		Category: Rock-Detail
+		Categories: Rock-Detail
 		Tiles:
 			0: Rock
 			1: Rock
@@ -3660,7 +3660,7 @@ Templates:
 		Images: BLOXTREE.R8
 		Frames: 349, 350, 351, 352, 353, 354
 		Size: 6,1
-		Category: Rock-Detail
+		Categories: Rock-Detail
 		Tiles:
 			0: Rock
 			1: Rock
@@ -3673,7 +3673,7 @@ Templates:
 		Images: BLOXTREE.R8
 		Frames: 355, 356, 357
 		Size: 3,1
-		Category: Rock-Detail
+		Categories: Rock-Detail
 		Tiles:
 			0: Rock
 			1: Rock
@@ -3683,7 +3683,7 @@ Templates:
 		Images: BLOXTREE.R8
 		Frames: 462, 463
 		Size: 2,1
-		Category: Rock-Detail
+		Categories: Rock-Detail
 		Tiles:
 			0: Rock
 			1: Rock
@@ -3692,7 +3692,7 @@ Templates:
 		Images: BLOXTREE.R8
 		Frames: 538, 539, 558, 559
 		Size: 2,2
-		Category: Sand-Sand-Cliff
+		Categories: Sand-Sand-Cliff
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -3703,7 +3703,7 @@ Templates:
 		Images: BLOXTREE.R8
 		Frames: 578, 579, 598, 599
 		Size: 2,2
-		Category: Ice-Detail
+		Categories: Ice-Detail
 		Tiles:
 			0: Transition
 			1: Transition
@@ -3714,7 +3714,7 @@ Templates:
 		Images: BLOXTREE.R8
 		Frames: 700, 701, 702, 720, 721, 722, 740, 741, 742
 		Size: 3,3
-		Category: Sand-Detail
+		Categories: Sand-Detail
 		Tiles:
 			0: Rough
 			1: Rough
@@ -3730,7 +3730,7 @@ Templates:
 		Images: BLOXTREE.R8
 		Frames: 747
 		Size: 1,1
-		Category: Sand-Detail
+		Categories: Sand-Detail
 		Tiles:
 			0: Rough
 	Template@431:
@@ -3738,7 +3738,7 @@ Templates:
 		Images: BLOXTREE.R8
 		Frames: 707, 708, 727, 728
 		Size: 2,2
-		Category: Sand-Detail
+		Categories: Sand-Detail
 		Tiles:
 			0: Rough
 			1: Rough
@@ -3749,7 +3749,7 @@ Templates:
 		Images: BLOXTREE.R8
 		Frames: 709
 		Size: 1,1
-		Category: Dead-Worm
+		Categories: Dead-Worm
 		Tiles:
 			0: Sand
 	Template@433:
@@ -3757,7 +3757,7 @@ Templates:
 		Images: BLOXTREE.R8
 		Frames: 729
 		Size: 1,1
-		Category: Sand-Detail
+		Categories: Sand-Detail
 		Tiles:
 			0: Cliff
 	Template@434:
@@ -3765,7 +3765,7 @@ Templates:
 		Images: BLOXTREE.R8
 		Frames: 730, 731
 		Size: 2,1
-		Category: Sand-Detail
+		Categories: Sand-Detail
 		Tiles:
 			0: Rough
 			1: Rough
@@ -3774,7 +3774,7 @@ Templates:
 		Images: BLOXTREE.R8
 		Frames: 710, 711, 712
 		Size: 3,1
-		Category: Rotten-Base
+		Categories: Rotten-Base
 		Tiles:
 			0: Cliff
 			1: Rough
@@ -3784,7 +3784,7 @@ Templates:
 		Images: BLOXTREE.R8
 		Frames: 718, 719, 738, 739, 758, 759
 		Size: 2,3
-		Category: Sand-Detail
+		Categories: Sand-Detail
 		Tiles:
 			0: Rough
 			1: Rough
@@ -3797,7 +3797,7 @@ Templates:
 		Images: BLOXTREE.R8
 		Frames: 732
 		Size: 1,1
-		Category: Rock-Detail
+		Categories: Rock-Detail
 		Tiles:
 			0: Rock
 	Template@438:
@@ -3805,7 +3805,7 @@ Templates:
 		Images: BLOXTREE.R8
 		Frames: 713, 714, 733, 734
 		Size: 2,2
-		Category: Rock-Detail
+		Categories: Rock-Detail
 		Tiles:
 			0: Rock
 			1: Rock
@@ -3816,7 +3816,7 @@ Templates:
 		Images: BLOXTREE.R8
 		Frames: 715, 716, 717, 735, 736, 737
 		Size: 3,2
-		Category: Rock-Detail
+		Categories: Rock-Detail
 		Tiles:
 			0: Rock
 			1: Rock
@@ -3829,7 +3829,7 @@ Templates:
 		Images: BLOXTREE.R8
 		Frames: 652, 653, 672, 673
 		Size: 2,2
-		Category: Rock-Detail
+		Categories: Rock-Detail
 		Tiles:
 			0: Rock
 			1: Rock
@@ -3840,7 +3840,7 @@ Templates:
 		Images: BLOXTREE.R8
 		Frames: 610
 		Size: 1,1
-		Category: Rock-Detail
+		Categories: Rock-Detail
 		Tiles:
 			0: Rock
 	Template@442:
@@ -3848,7 +3848,7 @@ Templates:
 		Images: BLOXTREE.R8
 		Frames: 630
 		Size: 1,1
-		Category: Rock-Detail
+		Categories: Rock-Detail
 		Tiles:
 			0: Rock
 	Template@443:
@@ -3856,7 +3856,7 @@ Templates:
 		Images: BLOXTREE.R8
 		Frames: 607, 608, 609, 627, 628, 629
 		Size: 3,2
-		Category: Sand-Rock-Cliff
+		Categories: Sand-Rock-Cliff
 		Tiles:
 			0: Rock
 			1: Rough
@@ -3869,7 +3869,7 @@ Templates:
 		Images: BLOXTREE.R8
 		Frames: 551
 		Size: 1,1
-		Category: Rock-Detail
+		Categories: Rock-Detail
 		Tiles:
 			0: Rock
 	Template@445:
@@ -3877,7 +3877,7 @@ Templates:
 		Images: BLOXWAST.R8
 		Frames: 700, 701, 702, 703, 704, 705, 720, 721, 722, 723, 724, 725, 740, 741, 742, 743, 744, 745
 		Size: 6,3
-		Category: Ice-Detail
+		Categories: Ice-Detail
 		Tiles:
 			0: SpiceSand
 			1: Sand
@@ -3902,7 +3902,7 @@ Templates:
 		Images: BLOXWAST.R8
 		Frames: 683, 684, 685
 		Size: 3,1
-		Category: Sand-Detail
+		Categories: Sand-Detail
 		Tiles:
 			0: Dune
 			1: Dune
@@ -3912,7 +3912,7 @@ Templates:
 		Images: BLOXWAST.R8
 		Frames: 746, 747
 		Size: 2,1
-		Category: Sand-Detail
+		Categories: Sand-Detail
 		Tiles:
 			0: Sand
 			1: Dune
@@ -3921,7 +3921,7 @@ Templates:
 		Images: BLOXWAST.R8
 		Frames: 708, 709, 728, 729
 		Size: 2,2
-		Category: Sand-Detail
+		Categories: Sand-Detail
 		Tiles:
 			0: Dune
 			1: Dune
@@ -3932,7 +3932,7 @@ Templates:
 		Images: BLOXWAST.R8
 		Frames: 710, 711
 		Size: 2,1
-		Category: Sand-Detail
+		Categories: Sand-Detail
 		Tiles:
 			0: Sand
 			1: Dune
@@ -3941,7 +3941,7 @@ Templates:
 		Images: BLOXWAST.R8
 		Frames: 730, 731
 		Size: 2,1
-		Category: Sand-Detail
+		Categories: Sand-Detail
 		Tiles:
 			0: Sand
 			1: Sand
@@ -3950,7 +3950,7 @@ Templates:
 		Images: BLOXWAST.R8
 		Frames: 712
 		Size: 1,1
-		Category: Ice-Detail
+		Categories: Ice-Detail
 		Tiles:
 			0: Sand
 	Template@452:
@@ -3958,7 +3958,7 @@ Templates:
 		Images: BLOXWAST.R8
 		Frames: 732
 		Size: 1,1
-		Category: Ice-Detail
+		Categories: Ice-Detail
 		Tiles:
 			0: Sand
 	Template@453:
@@ -3966,7 +3966,7 @@ Templates:
 		Images: BLOXWAST.R8
 		Frames: 713, 733
 		Size: 1,2
-		Category: Ice-Detail
+		Categories: Ice-Detail
 		Tiles:
 			0: Dune
 			1: Dune
@@ -3975,7 +3975,7 @@ Templates:
 		Images: BLOXWAST.R8
 		Frames: 734, 735
 		Size: 2,1
-		Category: Ice-Detail
+		Categories: Ice-Detail
 		Tiles:
 			0: Sand
 			1: Sand
@@ -3984,7 +3984,7 @@ Templates:
 		Images: BLOXWAST.R8
 		Frames: 714, 715
 		Size: 2,1
-		Category: Ice-Detail
+		Categories: Ice-Detail
 		Tiles:
 			0: Sand
 			1: Sand
@@ -3993,7 +3993,7 @@ Templates:
 		Images: BLOXWAST.R8
 		Frames: 716, 717, 718, 736, 737, 738
 		Size: 3,2
-		Category: Ice-Detail
+		Categories: Ice-Detail
 		Tiles:
 			0: Sand
 			1: Sand
@@ -4006,7 +4006,7 @@ Templates:
 		Images: BLOXWAST.R8
 		Frames: 739
 		Size: 1,1
-		Category: Ice-Detail
+		Categories: Ice-Detail
 		Tiles:
 			0: Sand
 	Template@458:
@@ -4014,7 +4014,7 @@ Templates:
 		Images: BLOXWAST.R8
 		Frames: 758, 759
 		Size: 2,1
-		Category: Ice-Detail
+		Categories: Ice-Detail
 		Tiles:
 			0: Sand
 			1: Sand
@@ -4023,7 +4023,7 @@ Templates:
 		Images: BLOXWAST.R8
 		Frames: 652, 653, 672, 673
 		Size: 2,2
-		Category: Ice-Detail
+		Categories: Ice-Detail
 		Tiles:
 			0: Sand
 			1: Sand
@@ -4034,7 +4034,7 @@ Templates:
 		Images: BLOXWAST.R8
 		Frames: 345, 346, 365, 366
 		Size: 2,2
-		Category: Dead-Worm
+		Categories: Dead-Worm
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -4045,7 +4045,7 @@ Templates:
 		Images: BLOXWAST.R8
 		Frames: 355, 356, 357, 358, 359, 373, 374, 375, 338, 339
 		Size: 5,2
-		Category: Rotten-Base
+		Categories: Rotten-Base
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -4062,7 +4062,7 @@ Templates:
 		Images: BLOXWAST.R8
 		Frames: 97, 117
 		Size: 1,2
-		Category: Dead-Worm
+		Categories: Dead-Worm
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -4071,7 +4071,7 @@ Templates:
 		Images: BLOXWAST.R8
 		Frames: 67
 		Size: 1,1
-		Category: Rotten-Base
+		Categories: Rotten-Base
 		Tiles:
 			0: Sand
 	Template@466:
@@ -4079,7 +4079,7 @@ Templates:
 		Images: BLOXWAST.R8
 		Frames: 1
 		Size: 1,1
-		Category: Rotten-Base
+		Categories: Rotten-Base
 		Tiles:
 			0: Sand
 	Template@467:
@@ -4087,7 +4087,7 @@ Templates:
 		Images: BLOXWAST.R8
 		Frames: 2, 3
 		Size: 2,1
-		Category: Sand-Detail
+		Categories: Sand-Detail
 		Tiles:
 			0: Cliff
 			1: Sand
@@ -4096,7 +4096,7 @@ Templates:
 		Images: BLOXWAST.R8
 		Frames: 4
 		Size: 1,1
-		Category: Sand-Detail
+		Categories: Sand-Detail
 		Tiles:
 			0: Cliff
 	Template@469:
@@ -4104,7 +4104,7 @@ Templates:
 		Images: BLOXWAST.R8
 		Frames: 5
 		Size: 1,1
-		Category: Sand-Detail
+		Categories: Sand-Detail
 		Tiles:
 			0: Cliff
 	Template@470:
@@ -4112,7 +4112,7 @@ Templates:
 		Images: BLOXWAST.R8
 		Frames: 6, 7
 		Size: 2,1
-		Category: Sand-Detail
+		Categories: Sand-Detail
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -4121,7 +4121,7 @@ Templates:
 		Images: BLOXWAST.R8
 		Frames: 312
 		Size: 1,1
-		Category: Dead-Worm
+		Categories: Dead-Worm
 		Tiles:
 			0: Sand
 	Template@472:
@@ -4129,7 +4129,7 @@ Templates:
 		Images: BLOXWAST.R8
 		Frames: 310, 311
 		Size: 2,1
-		Category: Dead-Worm
+		Categories: Dead-Worm
 		Tiles:
 			0: Sand
 			1: Sand
@@ -4138,7 +4138,7 @@ Templates:
 		Images: BLOXWAST.R8
 		Frames: 309
 		Size: 1,1
-		Category: Dead-Worm
+		Categories: Dead-Worm
 		Tiles:
 			0: Sand
 	Template@474:
@@ -4146,7 +4146,7 @@ Templates:
 		Images: BLOXWAST.R8
 		Frames: 349, 350, 351, 352, 369, 370, 371, 372, 389, 390, 391, 392, 385, 386, 387, 388
 		Size: 4,4
-		Category: Sand-Detail
+		Categories: Sand-Detail
 		Tiles:
 			0: Sand
 			1: Cliff
@@ -4169,7 +4169,7 @@ Templates:
 		Images: BLOXWAST.R8
 		Frames: 706, 707, 726, 727
 		Size: 2,2
-		Category: Sand-Rock-Cliff
+		Categories: Sand-Rock-Cliff
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -4180,7 +4180,7 @@ Templates:
 		Images: BLOXWAST.R8
 		Frames: 557, 558, 559, 577, 578, 579
 		Size: 3,2
-		Category: Sand-Rock-Cliff
+		Categories: Sand-Rock-Cliff
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -4193,7 +4193,7 @@ Templates:
 		Images: BLOXWAST.R8
 		Frames: 619, 639
 		Size: 1,2
-		Category: Sand-Detail
+		Categories: Sand-Detail
 		Tiles:
 			0: Rough
 			1: Rough
@@ -4202,7 +4202,7 @@ Templates:
 		Images: BLOXWAST.R8
 		Frames: 305
 		Size: 1,1
-		Category: Rock-Detail
+		Categories: Rock-Detail
 		Tiles:
 			0: Rough
 	Template@479:
@@ -4210,7 +4210,7 @@ Templates:
 		Images: BLOXWAST.R8
 		Frames: 325
 		Size: 1,1
-		Category: Rock-Detail
+		Categories: Rock-Detail
 		Tiles:
 			0: Rough
 	Template@481:
@@ -4218,7 +4218,7 @@ Templates:
 		Images: BLOXWAST.R8
 		Frames: 414, 415, 434, 435
 		Size: 2,2
-		Category: Sand-Rock-Cliff
+		Categories: Sand-Rock-Cliff
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -4229,7 +4229,7 @@ Templates:
 		Images: BLOXWAST.R8
 		Frames: 538, 539
 		Size: 2,1
-		Category: Sand-Detail
+		Categories: Sand-Detail
 		Tiles:
 			0: Rough
 			1: Rough
@@ -4238,7 +4238,7 @@ Templates:
 		Images: BLOXXMAS.R8
 		Frames: 305
 		Size: 1,1
-		Category: Rotten-Base
+		Categories: Rotten-Base
 		Tiles:
 			0: Rough
 	Template@501:
@@ -4246,7 +4246,7 @@ Templates:
 		Images: BLOXXMAS.R8
 		Frames: 325
 		Size: 1,1
-		Category: Rotten-Base
+		Categories: Rotten-Base
 		Tiles:
 			0: Sand
 	Template@502:
@@ -4254,7 +4254,7 @@ Templates:
 		Images: BLOXXMAS.R8
 		Frames: 311
 		Size: 1,1
-		Category: Rotten-Base
+		Categories: Rotten-Base
 		Tiles:
 			0: Rough
 	Template@503:
@@ -4262,7 +4262,7 @@ Templates:
 		Images: BLOXXMAS.R8
 		Frames: 312
 		Size: 1,1
-		Category: Rotten-Base
+		Categories: Rotten-Base
 		Tiles:
 			0: Rough
 	Template@504:
@@ -4270,7 +4270,7 @@ Templates:
 		Images: BLOXXMAS.R8
 		Frames: 330
 		Size: 1,1
-		Category: Rotten-Base
+		Categories: Rotten-Base
 		Tiles:
 			0: Rough
 	Template@505:
@@ -4278,7 +4278,7 @@ Templates:
 		Images: BLOXXMAS.R8
 		Frames: 316
 		Size: 1,1
-		Category: Bridge
+		Categories: Bridge
 		Tiles:
 			0: Rough
 	Template@506:
@@ -4286,7 +4286,7 @@ Templates:
 		Images: BLOXXMAS.R8
 		Frames: 297
 		Size: 1,1
-		Category: Bridge
+		Categories: Bridge
 		Tiles:
 			0: Rough
 	Template@507:
@@ -4294,7 +4294,7 @@ Templates:
 		Images: BLOXXMAS.R8
 		Frames: 356, 357
 		Size: 2,1
-		Category: Rotten-Base
+		Categories: Rotten-Base
 		Tiles:
 			0: Rough
 			1: Rough
@@ -4303,7 +4303,7 @@ Templates:
 		Images: BLOXXMAS.R8
 		Frames: 355
 		Size: 1,1
-		Category: Rotten-Base
+		Categories: Rotten-Base
 		Tiles:
 			0: Rough
 	Template@509:
@@ -4311,7 +4311,7 @@ Templates:
 		Images: BLOXXMAS.R8
 		Frames: 375
 		Size: 1,1
-		Category: Rotten-Base
+		Categories: Rotten-Base
 		Tiles:
 			0: Rough
 	Template@510:
@@ -4319,7 +4319,7 @@ Templates:
 		Images: BLOXXMAS.R8
 		Frames: 395
 		Size: 1,1
-		Category: Rotten-Base
+		Categories: Rotten-Base
 		Tiles:
 			0: Rough
 	Template@511:
@@ -4327,7 +4327,7 @@ Templates:
 		Images: BLOXXMAS.R8
 		Frames: 414, 415, 434, 435
 		Size: 2,2
-		Category: Rotten-Base
+		Categories: Rotten-Base
 		Tiles:
 			0: Rough
 			1: Rough
@@ -4338,7 +4338,7 @@ Templates:
 		Images: BLOXXMAS.R8
 		Frames: 353, 354, 373, 374, 393, 394
 		Size: 2,3
-		Category: Bridge
+		Categories: Bridge
 		Tiles:
 			0: Rough
 			1: Rough
@@ -4351,7 +4351,7 @@ Templates:
 		Images: BLOXXMAS.R8
 		Frames: 350, 351, 352, 370, 371, 372, 390, 391, 392
 		Size: 3,3
-		Category: Bridge
+		Categories: Bridge
 		Tiles:
 			0: Cliff
 			1: Rock
@@ -4367,7 +4367,7 @@ Templates:
 		Images: BLOXXMAS.R8
 		Frames: 347, 348, 349, 367, 368, 369, 387, 388, 389
 		Size: 3,3
-		Category: Bridge
+		Categories: Bridge
 		Tiles:
 			0: Rough
 			1: Rough
@@ -4383,7 +4383,7 @@ Templates:
 		Images: BLOXXMAS.R8
 		Frames: 340, 341, 342, 343, 360, 361, 362, 363, 380, 381, 382, 383
 		Size: 4,3
-		Category: Bridge
+		Categories: Bridge
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -4402,7 +4402,7 @@ Templates:
 		Images: BLOXXMAS.R8
 		Frames: 717
 		Size: 1,1
-		Category: Rotten-Base
+		Categories: Rotten-Base
 		Tiles:
 			0: Cliff
 	Template@517:
@@ -4410,7 +4410,7 @@ Templates:
 		Images: BLOXXMAS.R8
 		Frames: 718
 		Size: 1,1
-		Category: Rotten-Base
+		Categories: Rotten-Base
 		Tiles:
 			0: Rough
 	Template@518:
@@ -4418,7 +4418,7 @@ Templates:
 		Images: BLOXXMAS.R8
 		Frames: 737
 		Size: 1,1
-		Category: Rotten-Base
+		Categories: Rotten-Base
 		Tiles:
 			0: Cliff
 	Template@519:
@@ -4426,7 +4426,7 @@ Templates:
 		Images: BLOXXMAS.R8
 		Frames: 738, 739, 758, 759
 		Size: 2,2
-		Category: Rotten-Base
+		Categories: Rotten-Base
 		Tiles:
 			0: Sand
 			1: Sand
@@ -4437,7 +4437,7 @@ Templates:
 		Images: BLOXXMAS.R8
 		Frames: 652, 653, 672, 673
 		Size: 2,2
-		Category: Rotten-Base
+		Categories: Rotten-Base
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -4447,7 +4447,7 @@ Templates:
 		Id: 600
 		Images: t600.tmp
 		Size: 2,2
-		Category: Rock-Rock-Cliff
+		Categories: Rock-Rock-Cliff
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -4457,7 +4457,7 @@ Templates:
 		Id: 601
 		Images: t601.tmp
 		Size: 2,2
-		Category: Rock-Rock-Cliff
+		Categories: Rock-Rock-Cliff
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -4467,7 +4467,7 @@ Templates:
 		Id: 602
 		Images: t602.tmp
 		Size: 2,2
-		Category: Rock-Rock-Cliff
+		Categories: Rock-Rock-Cliff
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -4477,7 +4477,7 @@ Templates:
 		Id: 603
 		Images: t603.tmp
 		Size: 2,2
-		Category: Rock-Rock-Cliff
+		Categories: Rock-Rock-Cliff
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -4487,7 +4487,7 @@ Templates:
 		Id: 604
 		Images: t604.tmp
 		Size: 2,3
-		Category: Rock-Rock-Cliff
+		Categories: Rock-Rock-Cliff
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -4499,7 +4499,7 @@ Templates:
 		Id: 605
 		Images: t605.tmp
 		Size: 2,3
-		Category: Rock-Rock-Cliff
+		Categories: Rock-Rock-Cliff
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -4511,7 +4511,7 @@ Templates:
 		Id: 606
 		Images: t606.tmp
 		Size: 2,1
-		Category: Rock-Rock-Cliff
+		Categories: Rock-Rock-Cliff
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -4519,7 +4519,7 @@ Templates:
 		Id: 607
 		Images: t607.tmp
 		Size: 2,1
-		Category: Rock-Rock-Cliff
+		Categories: Rock-Rock-Cliff
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -4527,7 +4527,7 @@ Templates:
 		Id: 608
 		Images: t608.tmp
 		Size: 1,2
-		Category: Rock-Rock-Cliff
+		Categories: Rock-Rock-Cliff
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -4535,7 +4535,7 @@ Templates:
 		Id: 609
 		Images: t609.tmp
 		Size: 1,2
-		Category: Rock-Rock-Cliff
+		Categories: Rock-Rock-Cliff
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -4543,7 +4543,7 @@ Templates:
 		Id: 610
 		Images: t610.tmp
 		Size: 2,2
-		Category: Cliff-Ends
+		Categories: Cliff-Ends
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -4553,7 +4553,7 @@ Templates:
 		Id: 611
 		Images: t611.tmp
 		Size: 2,1
-		Category: Cliff-Ends
+		Categories: Cliff-Ends
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -4561,7 +4561,7 @@ Templates:
 		Id: 612
 		Images: t612.tmp
 		Size: 3,3
-		Category: Rock-Rock-Cliff
+		Categories: Rock-Rock-Cliff
 		Tiles:
 			0: Rock
 			1: Rock
@@ -4576,7 +4576,7 @@ Templates:
 		Id: 613
 		Images: t613.tmp
 		Size: 2,2
-		Category: Rock-Rock-Cliff
+		Categories: Rock-Rock-Cliff
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -4586,7 +4586,7 @@ Templates:
 		Id: 614
 		Images: t614.tmp
 		Size: 2,2
-		Category: Rock-Rock-Cliff
+		Categories: Rock-Rock-Cliff
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -4596,7 +4596,7 @@ Templates:
 		Id: 615
 		Images: t615.tmp
 		Size: 2,2
-		Category: Rock-Rock-Cliff
+		Categories: Rock-Rock-Cliff
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -4606,7 +4606,7 @@ Templates:
 		Id: 616
 		Images: t616.tmp
 		Size: 2,2
-		Category: Rock-Rock-Cliff
+		Categories: Rock-Rock-Cliff
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -4616,7 +4616,7 @@ Templates:
 		Id: 617
 		Images: t617.tmp
 		Size: 2,2
-		Category: Rock-Rock-Cliff
+		Categories: Rock-Rock-Cliff
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -4626,7 +4626,7 @@ Templates:
 		Id: 618
 		Images: t618.tmp
 		Size: 2,2
-		Category: Rock-Rock-Cliff
+		Categories: Rock-Rock-Cliff
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -4636,7 +4636,7 @@ Templates:
 		Id: 619
 		Images: t619.tmp
 		Size: 2,2
-		Category: Rock-Rock-Cliff
+		Categories: Rock-Rock-Cliff
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -4646,7 +4646,7 @@ Templates:
 		Id: 620
 		Images: t620.tmp
 		Size: 2,2
-		Category: Rock-Rock-Cliff
+		Categories: Rock-Rock-Cliff
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -4656,7 +4656,7 @@ Templates:
 		Id: 621
 		Images: t621.tmp
 		Size: 2,2
-		Category: Rock-Rock-Cliff
+		Categories: Rock-Rock-Cliff
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -4666,7 +4666,7 @@ Templates:
 		Id: 622
 		Images: t622.tmp
 		Size: 2,2
-		Category: Rock-Rock-Cliff
+		Categories: Rock-Rock-Cliff
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -4676,7 +4676,7 @@ Templates:
 		Id: 623
 		Images: t623.tmp
 		Size: 2,2
-		Category: Rock-Rock-Cliff
+		Categories: Rock-Rock-Cliff
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -4686,7 +4686,7 @@ Templates:
 		Id: 624
 		Images: t624.tmp
 		Size: 2,2
-		Category: Rock-Rock-Cliff
+		Categories: Rock-Rock-Cliff
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -4696,7 +4696,7 @@ Templates:
 		Id: 625
 		Images: t625.tmp
 		Size: 2,2
-		Category: Rock-Rock-Cliff
+		Categories: Rock-Rock-Cliff
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -4706,7 +4706,7 @@ Templates:
 		Id: 626
 		Images: t626.tmp
 		Size: 2,2
-		Category: Rock-Rock-Cliff
+		Categories: Rock-Rock-Cliff
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -4716,7 +4716,7 @@ Templates:
 		Id: 627
 		Images: t627.tmp
 		Size: 2,2
-		Category: Rock-Rock-Cliff
+		Categories: Rock-Rock-Cliff
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -4726,7 +4726,7 @@ Templates:
 		Id: 628
 		Images: t628.tmp
 		Size: 2,2
-		Category: Rock-Rock-Cliff
+		Categories: Rock-Rock-Cliff
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -4736,7 +4736,7 @@ Templates:
 		Id: 629
 		Images: t629.tmp
 		Size: 2,3
-		Category: Rock-Rock-Cliff
+		Categories: Rock-Rock-Cliff
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -4748,7 +4748,7 @@ Templates:
 		Id: 630
 		Images: t630.tmp
 		Size: 2,3
-		Category: Rock-Rock-Cliff
+		Categories: Rock-Rock-Cliff
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -4760,7 +4760,7 @@ Templates:
 		Id: 631
 		Images: t631.tmp
 		Size: 3,2
-		Category: Rock-Rock-Cliff
+		Categories: Rock-Rock-Cliff
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -4772,7 +4772,7 @@ Templates:
 		Id: 632
 		Images: t632.tmp
 		Size: 3,2
-		Category: Rock-Rock-Cliff
+		Categories: Rock-Rock-Cliff
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -4784,7 +4784,7 @@ Templates:
 		Id: 633
 		Images: t633.tmp
 		Size: 3,2
-		Category: Rock-Rock-Cliff
+		Categories: Rock-Rock-Cliff
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -4796,7 +4796,7 @@ Templates:
 		Id: 634
 		Images: t634.tmp
 		Size: 3,2
-		Category: Rock-Rock-Cliff
+		Categories: Rock-Rock-Cliff
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -4808,7 +4808,7 @@ Templates:
 		Id: 635
 		Images: t635.tmp
 		Size: 2,2
-		Category: Cliff-Ends
+		Categories: Cliff-Ends
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -4818,7 +4818,7 @@ Templates:
 		Id: 636
 		Images: t636.tmp
 		Size: 2,2
-		Category: Cliff-Ends
+		Categories: Cliff-Ends
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -4828,7 +4828,7 @@ Templates:
 		Id: 637
 		Images: t637.tmp
 		Size: 2,2
-		Category: Cliff-Ends
+		Categories: Cliff-Ends
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -4838,7 +4838,7 @@ Templates:
 		Id: 638
 		Images: t638.tmp
 		Size: 2,2
-		Category: Cliff-Ends
+		Categories: Cliff-Ends
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -4848,7 +4848,7 @@ Templates:
 		Id: 639
 		Images: t639.tmp
 		Size: 2,2
-		Category: Cliff-Ends
+		Categories: Cliff-Ends
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -4858,7 +4858,7 @@ Templates:
 		Id: 640
 		Images: t640.tmp
 		Size: 2,2
-		Category: Cliff-Ends
+		Categories: Cliff-Ends
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -4868,7 +4868,7 @@ Templates:
 		Id: 800
 		Images: t800.tmp
 		Size: 2,2
-		Category: Rock-Sand-Cliff
+		Categories: Rock-Sand-Cliff
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -4878,7 +4878,7 @@ Templates:
 		Id: 801
 		Images: t801.tmp
 		Size: 2,2
-		Category: Rock-Sand-Cliff
+		Categories: Rock-Sand-Cliff
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -4888,7 +4888,7 @@ Templates:
 		Id: 802
 		Images: t802.tmp
 		Size: 2,2
-		Category: Rock-Sand-Cliff
+		Categories: Rock-Sand-Cliff
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -4898,7 +4898,7 @@ Templates:
 		Id: 803
 		Images: t803.tmp
 		Size: 2,2
-		Category: Rock-Sand-Cliff
+		Categories: Rock-Sand-Cliff
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -4908,7 +4908,7 @@ Templates:
 		Id: 804
 		Images: t804.tmp
 		Size: 2,2
-		Category: Rock-Sand-Cliff
+		Categories: Rock-Sand-Cliff
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -4918,7 +4918,7 @@ Templates:
 		Id: 805
 		Images: t805.tmp
 		Size: 2,2
-		Category: Rock-Sand-Cliff
+		Categories: Rock-Sand-Cliff
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -4928,7 +4928,7 @@ Templates:
 		Id: 806
 		Images: t806.tmp
 		Size: 2,2
-		Category: Cliff-Type-Changer
+		Categories: Cliff-Type-Changer
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -4938,7 +4938,7 @@ Templates:
 		Id: 807
 		Images: t807.tmp
 		Size: 2,2
-		Category: Cliff-Type-Changer
+		Categories: Cliff-Type-Changer
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -4948,7 +4948,7 @@ Templates:
 		Id: 808
 		Images: t808.tmp
 		Size: 2,2
-		Category: Rock-Sand-Cliff
+		Categories: Rock-Sand-Cliff
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -4958,7 +4958,7 @@ Templates:
 		Id: 809
 		Images: t809.tmp
 		Size: 2,2
-		Category: Rock-Sand-Cliff
+		Categories: Rock-Sand-Cliff
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -4968,7 +4968,7 @@ Templates:
 		Id: 810
 		Images: t810.tmp
 		Size: 2,2
-		Category: Rock-Sand-Cliff
+		Categories: Rock-Sand-Cliff
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -4978,7 +4978,7 @@ Templates:
 		Id: 811
 		Images: t811.tmp
 		Size: 2,2
-		Category: Rock-Sand-Cliff
+		Categories: Rock-Sand-Cliff
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -4988,7 +4988,7 @@ Templates:
 		Id: 812
 		Images: t812.tmp
 		Size: 2,2
-		Category: Rock-Sand-Cliff
+		Categories: Rock-Sand-Cliff
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -4998,7 +4998,7 @@ Templates:
 		Id: 813
 		Images: t813.tmp
 		Size: 2,2
-		Category: Rock-Sand-Cliff
+		Categories: Rock-Sand-Cliff
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -5008,7 +5008,7 @@ Templates:
 		Id: 814
 		Images: t814.tmp
 		Size: 2,2
-		Category: Rock-Sand-Cliff
+		Categories: Rock-Sand-Cliff
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -5018,7 +5018,7 @@ Templates:
 		Id: 815
 		Images: t815.tmp
 		Size: 2,2
-		Category: Rock-Sand-Cliff
+		Categories: Rock-Sand-Cliff
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -5028,7 +5028,7 @@ Templates:
 		Id: 816
 		Images: t816.tmp
 		Size: 2,2
-		Category: Rock-Sand-Cliff
+		Categories: Rock-Sand-Cliff
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -5038,7 +5038,7 @@ Templates:
 		Id: 817
 		Images: t817.tmp
 		Size: 2,2
-		Category: Rock-Sand-Cliff
+		Categories: Rock-Sand-Cliff
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -5048,7 +5048,7 @@ Templates:
 		Id: 818
 		Images: t818.tmp
 		Size: 2,1
-		Category: Rock-Sand-Cliff
+		Categories: Rock-Sand-Cliff
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -5056,7 +5056,7 @@ Templates:
 		Id: 819
 		Images: t819.tmp
 		Size: 2,1
-		Category: Rock-Sand-Cliff
+		Categories: Rock-Sand-Cliff
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -5064,7 +5064,7 @@ Templates:
 		Id: 820
 		Images: t820.tmp
 		Size: 1,2
-		Category: Rock-Sand-Cliff
+		Categories: Rock-Sand-Cliff
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -5072,7 +5072,7 @@ Templates:
 		Id: 821
 		Images: t821.tmp
 		Size: 1,2
-		Category: Rock-Sand-Cliff
+		Categories: Rock-Sand-Cliff
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -5080,7 +5080,7 @@ Templates:
 		Id: 822
 		Images: t822.tmp
 		Size: 2,2
-		Category: Rock-Sand-Cliff
+		Categories: Rock-Sand-Cliff
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -5090,7 +5090,7 @@ Templates:
 		Id: 823
 		Images: t823.tmp
 		Size: 2,2
-		Category: Rock-Sand-Cliff
+		Categories: Rock-Sand-Cliff
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -5100,7 +5100,7 @@ Templates:
 		Id: 824
 		Images: t824.tmp
 		Size: 2,2
-		Category: Rock-Sand-Cliff
+		Categories: Rock-Sand-Cliff
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -5110,7 +5110,7 @@ Templates:
 		Id: 825
 		Images: t825.tmp
 		Size: 2,2
-		Category: Rock-Sand-Cliff
+		Categories: Rock-Sand-Cliff
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -5120,7 +5120,7 @@ Templates:
 		Id: 826
 		Images: t826.tmp
 		Size: 2,3
-		Category: Rock-Sand-Cliff
+		Categories: Rock-Sand-Cliff
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -5132,7 +5132,7 @@ Templates:
 		Id: 827
 		Images: t827.tmp
 		Size: 2,3
-		Category: Rock-Sand-Cliff
+		Categories: Rock-Sand-Cliff
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -5143,7 +5143,7 @@ Templates:
 		Id: 828
 		Images: t828.tmp
 		Size: 2,3
-		Category: Rock-Sand-Cliff
+		Categories: Rock-Sand-Cliff
 		Tiles:
 			0: Cliff
 			1: Transition
@@ -5155,7 +5155,7 @@ Templates:
 		Id: 829
 		Images: t829.tmp
 		Size: 2,3
-		Category: Rock-Sand-Cliff
+		Categories: Rock-Sand-Cliff
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -5167,7 +5167,7 @@ Templates:
 		Id: 830
 		Images: t830.tmp
 		Size: 2,2
-		Category: Cliff-Type-Changer
+		Categories: Cliff-Type-Changer
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -5177,7 +5177,7 @@ Templates:
 		Id: 831
 		Images: t831.tmp
 		Size: 2,2
-		Category: Cliff-Type-Changer
+		Categories: Cliff-Type-Changer
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -5187,7 +5187,7 @@ Templates:
 		Id: 832
 		Images: t832.tmp
 		Size: 2,2
-		Category: Cliff-Type-Changer
+		Categories: Cliff-Type-Changer
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -5197,7 +5197,7 @@ Templates:
 		Id: 833
 		Images: t833.tmp
 		Size: 2,2
-		Category: Cliff-Type-Changer
+		Categories: Cliff-Type-Changer
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -5207,7 +5207,7 @@ Templates:
 		Id: 834
 		Images: t834.tmp
 		Size: 2,2
-		Category: Cliff-Type-Changer
+		Categories: Cliff-Type-Changer
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -5217,7 +5217,7 @@ Templates:
 		Id: 835
 		Images: t835.tmp
 		Size: 2,2
-		Category: Cliff-Type-Changer
+		Categories: Cliff-Type-Changer
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -5227,7 +5227,7 @@ Templates:
 		Id: 836
 		Images: t836.tmp
 		Size: 2,2
-		Category: Cliff-Type-Changer
+		Categories: Cliff-Type-Changer
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -5237,7 +5237,7 @@ Templates:
 		Id: 837
 		Images: t837.tmp
 		Size: 2,2
-		Category: Cliff-Type-Changer
+		Categories: Cliff-Type-Changer
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -5247,7 +5247,7 @@ Templates:
 		Id: 838
 		Images: t838.tmp
 		Size: 3,2
-		Category: Rock-Sand-Cliff
+		Categories: Rock-Sand-Cliff
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -5259,7 +5259,7 @@ Templates:
 		Id: 839
 		Images: t839.tmp
 		Size: 3,2
-		Category: Rock-Sand-Cliff
+		Categories: Rock-Sand-Cliff
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -5271,7 +5271,7 @@ Templates:
 		Id: 840
 		Images: t840.tmp
 		Size: 3,2
-		Category: Rock-Sand-Cliff
+		Categories: Rock-Sand-Cliff
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -5283,7 +5283,7 @@ Templates:
 		Id: 841
 		Images: t841.tmp
 		Size: 3,2
-		Category: Rock-Sand-Cliff
+		Categories: Rock-Sand-Cliff
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -5295,7 +5295,7 @@ Templates:
 		Id: 842
 		Images: t842.tmp
 		Size: 2,2
-		Category: Cliff-Type-Changer
+		Categories: Cliff-Type-Changer
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -5305,7 +5305,7 @@ Templates:
 		Id: 843
 		Images: t843.tmp
 		Size: 2,2
-		Category: Cliff-Type-Changer
+		Categories: Cliff-Type-Changer
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -5315,7 +5315,7 @@ Templates:
 		Id: 844
 		Images: t844.tmp
 		Size: 2,2
-		Category: Cliff-Type-Changer
+		Categories: Cliff-Type-Changer
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -5325,7 +5325,7 @@ Templates:
 		Id: 845
 		Images: t845.tmp
 		Size: 2,2
-		Category: Cliff-Type-Changer
+		Categories: Cliff-Type-Changer
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -5335,7 +5335,7 @@ Templates:
 		Id: 846
 		Images: t846.tmp
 		Size: 2,2
-		Category: Cliff-Type-Changer
+		Categories: Cliff-Type-Changer
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -5345,7 +5345,7 @@ Templates:
 		Id: 847
 		Images: t847.tmp
 		Size: 2,2
-		Category: Cliff-Type-Changer
+		Categories: Cliff-Type-Changer
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -5355,7 +5355,7 @@ Templates:
 		Id: 848
 		Images: t848.tmp
 		Size: 2,2
-		Category: Cliff-Type-Changer
+		Categories: Cliff-Type-Changer
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -5365,7 +5365,7 @@ Templates:
 		Id: 849
 		Images: t849.tmp
 		Size: 2,2
-		Category: Cliff-Type-Changer
+		Categories: Cliff-Type-Changer
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -5375,7 +5375,7 @@ Templates:
 		Id: 850
 		Images: t850.tmp
 		Size: 2,2
-		Category: Cliff-Type-Changer
+		Categories: Cliff-Type-Changer
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -5385,7 +5385,7 @@ Templates:
 		Id: 851
 		Images: t851.tmp
 		Size: 2,2
-		Category: Cliff-Type-Changer
+		Categories: Cliff-Type-Changer
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -5395,7 +5395,7 @@ Templates:
 		Id: 852
 		Images: t852.tmp
 		Size: 2,2
-		Category: Cliff-Type-Changer
+		Categories: Cliff-Type-Changer
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -5405,7 +5405,7 @@ Templates:
 		Id: 853
 		Images: t853.tmp
 		Size: 2,2
-		Category: Cliff-Type-Changer
+		Categories: Cliff-Type-Changer
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -5415,7 +5415,7 @@ Templates:
 		Id: 854
 		Images: t854.tmp
 		Size: 2,2
-		Category: Cliff-Type-Changer
+		Categories: Cliff-Type-Changer
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -5425,7 +5425,7 @@ Templates:
 		Id: 855
 		Images: t855.tmp
 		Size: 2,2
-		Category: Cliff-Type-Changer
+		Categories: Cliff-Type-Changer
 		Tiles:
 			0: Cliff
 			1: Cliff
@@ -5435,119 +5435,119 @@ Templates:
 		Id: 1000
 		Images: t1000.tmp
 		Size: 1,1
-		Category: Sand-Platform
+		Categories: Sand-Platform
 		Tiles:
 			0: Cliff
 	Template@1001:
 		Id: 1001
 		Images: t1001.tmp
 		Size: 1,1
-		Category: Sand-Platform
+		Categories: Sand-Platform
 		Tiles:
 			0: Cliff
 	Template@1002:
 		Id: 1002
 		Images: t1002.tmp
 		Size: 1,1
-		Category: Sand-Platform
+		Categories: Sand-Platform
 		Tiles:
 			0: Cliff
 	Template@1003:
 		Id: 1003
 		Images: t1003.tmp
 		Size: 1,1
-		Category: Sand-Platform
+		Categories: Sand-Platform
 		Tiles:
 			0: Cliff
 	Template@1004:
 		Id: 1004
 		Images: t1004.tmp
 		Size: 1,1
-		Category: Sand-Platform
+		Categories: Sand-Platform
 		Tiles:
 			0: Cliff
 	Template@1005:
 		Id: 1005
 		Images: t1005.tmp
 		Size: 1,1
-		Category: Sand-Platform
+		Categories: Sand-Platform
 		Tiles:
 			0: Cliff
 	Template@1006:
 		Id: 1006
 		Images: t1006.tmp
 		Size: 1,1
-		Category: Sand-Platform
+		Categories: Sand-Platform
 		Tiles:
 			0: Cliff
 	Template@1007:
 		Id: 1007
 		Images: t1007.tmp
 		Size: 1,1
-		Category: Sand-Platform
+		Categories: Sand-Platform
 		Tiles:
 			0: Cliff
 	Template@1008:
 		Id: 1008
 		Images: t1008.tmp
 		Size: 1,1
-		Category: Sand-Platform
+		Categories: Sand-Platform
 		Tiles:
 			0: Cliff
 	Template@1009:
 		Id: 1009
 		Images: t1009.tmp
 		Size: 1,1
-		Category: Sand-Platform
+		Categories: Sand-Platform
 		Tiles:
 			0: Cliff
 	Template@1010:
 		Id: 1010
 		Images: t1010.tmp
 		Size: 1,1
-		Category: Sand-Platform
+		Categories: Sand-Platform
 		Tiles:
 			0: Cliff
 	Template@1011:
 		Id: 1011
 		Images: t1011.tmp
 		Size: 1,1
-		Category: Sand-Platform
+		Categories: Sand-Platform
 		Tiles:
 			0: Cliff
 	Template@1012:
 		Id: 1012
 		Images: t1012.tmp
 		Size: 1,1
-		Category: Sand-Platform
+		Categories: Sand-Platform
 		Tiles:
 			0: Cliff
 	Template@1013:
 		Id: 1013
 		Images: t1013.tmp
 		Size: 1,1
-		Category: Sand-Platform
+		Categories: Sand-Platform
 		Tiles:
 			0: Cliff
 	Template@1014:
 		Id: 1014
 		Images: t1014.tmp
 		Size: 1,1
-		Category: Sand-Platform
+		Categories: Sand-Platform
 		Tiles:
 			0: Cliff
 	Template@1015:
 		Id: 1015
 		Images: t1015.tmp
 		Size: 1,1
-		Category: Sand-Platform
+		Categories: Sand-Platform
 		Tiles:
 			0: Cliff
 	Template@1016:
 		Id: 1016
 		Images: t1016.tmp
 		Size: 2,1
-		Category: Sand-Platform
+		Categories: Sand-Platform
 		Tiles:
 			0: Rock
 			1: Rock
@@ -5555,14 +5555,14 @@ Templates:
 		Id: 1017
 		Images: t1017.tmp
 		Size: 1,1
-		Category: Sand-Platform
+		Categories: Sand-Platform
 		Tiles:
 			0: Rock
 	Template@1018:
 		Id: 1018
 		Images: t1018.tmp
 		Size: 1,1
-		Category: Sand-Platform
+		Categories: Sand-Platform
 		Tiles:
 			0: Rock
 	Template@1019:
@@ -5570,7 +5570,7 @@ Templates:
 		Images: BLOXBGBS.R8
 		Frames: 29
 		Size: 1,1
-		Category: Sand-Detail
+		Categories: Sand-Detail
 		Tiles:
 			0: Sand
 	Template@1020:
@@ -5578,7 +5578,7 @@ Templates:
 		Images: BLOXBGBS.R8
 		Frames: 617, 618, 637, 638
 		Size: 2,2
-		Category: Rock-Detail
+		Categories: Rock-Detail
 		Tiles:
 			0: Rock
 			1: Rock
@@ -5589,7 +5589,7 @@ Templates:
 		Images: BLOXTREE.R8
 		Frames: 345
 		Size: 1,1
-		Category: Sand-Detail
+		Categories: Sand-Detail
 		Tiles:
 			0: Rough
 	Template@1022:
@@ -5597,7 +5597,7 @@ Templates:
 		Images: BLOXWAST.R8
 		Frames: 393, 394, 470, 395
 		Size: 2,2
-		Category: Rock-Detail
+		Categories: Rock-Detail
 		Tiles:
 			0: Rough
 			1: Rough
@@ -5607,7 +5607,7 @@ Templates:
 		Images: BLOXWAST.R8
 		Frames: 353, 354
 		Size: 1,2
-		Category: Rock-Detail
+		Categories: Rock-Detail
 		Tiles:
 			0: Rough
 			1: Rough
@@ -5616,7 +5616,7 @@ Templates:
 		Images: BLOXTREE.R8
 		Frames: 373
 		Size: 1,1
-		Category: Sand-Detail
+		Categories: Sand-Detail
 		Tiles:
 			0: Rough
 	Template@1025:
@@ -5624,7 +5624,7 @@ Templates:
 		Images: BLOXTREE.R8
 		Frames: 367, 368, 387, 388
 		Size: 2, 2
-		Category: Sand-Detail
+		Categories: Sand-Detail
 		Tiles:
 			0: Rough
 			1: Rough
@@ -5635,7 +5635,7 @@ Templates:
 		Images: BLOXTREE.R8
 		Frames: 371
 		Size: 1, 1
-		Category: Sand-Detail
+		Categories: Sand-Detail
 		Tiles:
 			0: Rough
 	Template@1027:
@@ -5643,7 +5643,7 @@ Templates:
 		Images: BLOXTREE.R8
 		Frames: 383, 384
 		Size: 2, 1
-		Category: Sand-Detail
+		Categories: Sand-Detail
 		Tiles:
 			0: Rough
 			1: Rough
@@ -5652,7 +5652,7 @@ Templates:
 		Images: BLOXTREE.R8
 		Frames: 391
 		Size: 1, 1
-		Category: Sand-Detail
+		Categories: Sand-Detail
 		Tiles:
 			0: Rough
 	Template@1029:
@@ -5660,7 +5660,7 @@ Templates:
 		Images: BLOXTREE.R8
 		Frames: 372
 		Size: 1, 1
-		Category: Sand-Detail
+		Categories: Sand-Detail
 		Tiles:
 			0: Rough
 	Template@1030:
@@ -5668,7 +5668,7 @@ Templates:
 		Images: BLOXTREE.R8
 		Frames: 385
 		Size: 1, 1
-		Category: Sand-Detail
+		Categories: Sand-Detail
 		Tiles:
 			0: Rough
 	Template@1031:
@@ -5676,7 +5676,7 @@ Templates:
 		Images: BLOXBGBS.R8
 		Frames: 710, 711, 730, 630
 		Size: 2,2
-		Category: Rock-Detail
+		Categories: Rock-Detail
 		Tiles:
 			0: Rough
 			1: Rough
@@ -5686,7 +5686,7 @@ Templates:
 		Images: BLOXBGBS.R8
 		Frames: 709, 729
 		Size: 1,2
-		Category: Rock-Detail
+		Categories: Rock-Detail
 		Tiles:
 			0: Rough
 			1: Rough
@@ -5695,7 +5695,7 @@ Templates:
 		Images: BLOXBGBS.R8
 		Frames: 714, 715
 		Size: 2,1
-		Category: Rock-Detail
+		Categories: Rock-Detail
 		Tiles:
 			0: Rough
 			1: Rough
@@ -5704,7 +5704,7 @@ Templates:
 		Images: BLOXBGBS.R8
 		Frames: 611, 612, 613, 631, 632, 633
 		Size: 3,2
-		Category: Rock-Detail
+		Categories: Rock-Detail
 		Tiles:
 			0: Rock
 			1: Rock
@@ -5717,7 +5717,7 @@ Templates:
 		Images: BLOXBGBS.R8
 		Frames: 614, 615, 616, 634, 635, 636, 654, 655, 656
 		Size: 3,3
-		Category: Rock-Detail
+		Categories: Rock-Detail
 		Tiles:
 			0: Rock
 			1: Rock
@@ -5733,7 +5733,7 @@ Templates:
 		Images: BLOXBGBS.R8
 		Frames: 684, 685, 704, 705
 		Size: 2,2
-		Category: Rock-Detail
+		Categories: Rock-Detail
 		Tiles:
 			0: Rough
 			1: Rough
@@ -5744,7 +5744,7 @@ Templates:
 		Images: BLOXBGBS.R8
 		Frames: 662, 630, 682, 683
 		Size: 2,2
-		Category: Rock-Detail
+		Categories: Rock-Detail
 		Tiles:
 			0: Rough
 			2: Rough
@@ -5754,7 +5754,7 @@ Templates:
 		Images: BLOXICE.R8
 		Frames: 359
 		Size: 1,1
-		Category: Rock-Detail
+		Categories: Rock-Detail
 		Tiles:
 			0: Cliff
 	Template@1041:
@@ -5762,7 +5762,7 @@ Templates:
 		Images: BLOXICE.R8
 		Frames: 339
 		Size: 1,1
-		Category: Rock-Detail
+		Categories: Rock-Detail
 		Tiles:
 			0: Cliff
 	Template@1042:
@@ -5770,7 +5770,7 @@ Templates:
 		Images: BLOXICE.R8
 		Frames: 319
 		Size: 1,1
-		Category: Rock-Detail
+		Categories: Rock-Detail
 		Tiles:
 			0: Cliff
 	Template@1043:
@@ -5778,7 +5778,7 @@ Templates:
 		Images: BLOXICE.R8
 		Frames: 538
 		Size: 1,1
-		Category: Sand-Detail
+		Categories: Sand-Detail
 		Tiles:
 			0: Sand
 	Template@1046:
@@ -5786,7 +5786,7 @@ Templates:
 		Images: BLOXTREE.R8
 		Frames: 700
 		Size: 1,1
-		Category: Sand-Detail
+		Categories: Sand-Detail
 		Tiles:
 			0: Rough
 	Template@1047:
@@ -5794,7 +5794,7 @@ Templates:
 		Images: BLOXBGBS.R8
 		Frames: 681
 		Size: 1,1
-		Category: Sand-Detail
+		Categories: Sand-Detail
 		Tiles:
 			0: Rough
 	Template@1048:
@@ -5802,7 +5802,7 @@ Templates:
 		Images: BLOXBGBS.R8
 		Frames: 661
 		Size: 1,1
-		Category: Sand-Detail
+		Categories: Sand-Detail
 		Tiles:
 			0: Rough
 	Template@1049:
@@ -5810,7 +5810,7 @@ Templates:
 		Images: BLOXBGBS.R8
 		Frames: 680
 		Size: 1,1
-		Category: Sand-Detail
+		Categories: Sand-Detail
 		Tiles:
 			0: Rough
 	Template@1050:
@@ -5818,7 +5818,7 @@ Templates:
 		Images: BLOXTREE.R8
 		Frames: 392
 		Size: 1,1
-		Category: Sand-Detail
+		Categories: Sand-Detail
 		Tiles:
 			0: Rough
 	Template@1051:
@@ -5826,7 +5826,7 @@ Templates:
 		Images: BLOXTREE.R8
 		Frames: 393
 		Size: 1,1
-		Category: Sand-Detail
+		Categories: Sand-Detail
 		Tiles:
 			0: Rough
 	Template@1052:
@@ -5834,7 +5834,7 @@ Templates:
 		Images: BLOXTREE.R8
 		Frames: 346, 366
 		Size: 1,2
-		Category: Sand-Detail
+		Categories: Sand-Detail
 		Tiles:
 			0: Rough
 			1: Rough
@@ -5843,7 +5843,7 @@ Templates:
 		Images: BLOXTREE.R8
 		Frames: 365
 		Size: 1,1
-		Category: Sand-Detail
+		Categories: Sand-Detail
 		Tiles:
 			0: Rough
 	Template@1054:
@@ -5851,7 +5851,7 @@ Templates:
 		Images: BLOXTREE.R8
 		Frames: 386
 		Size: 1,1
-		Category: Sand-Detail
+		Categories: Sand-Detail
 		Tiles:
 			0: Rough
 	Template@1055:
@@ -5859,7 +5859,7 @@ Templates:
 		Images: BLOXTREE.R8
 		Frames: 639
 		Size: 1,1
-		Category: Rock-Detail
+		Categories: Rock-Detail
 		Tiles:
 			0: Rock
 	Template@1057:
@@ -5867,7 +5867,7 @@ Templates:
 		Images: BLOXTREE.R8
 		Frames: 382
 		Size: 1,1
-		Category: Rock-Detail
+		Categories: Rock-Detail
 		Tiles:
 			0: Cliff
 	Template@1058:
@@ -5875,7 +5875,7 @@ Templates:
 		Images: BLOXWAST.R8
 		Frames: 393, 394, 470, 395
 		Size: 2,2
-		Category: Rock-Detail
+		Categories: Rock-Detail
 		Tiles:
 			0: Rough
 			1: Rough
@@ -5885,7 +5885,7 @@ Templates:
 		Images: BLOXBGBS.R8
 		Frames: 660
 		Size: 1,1
-		Category: Sand-Detail
+		Categories: Sand-Detail
 		Tiles:
 			0: Rough
 	Template@1060:
@@ -5893,7 +5893,7 @@ Templates:
 		Images: BLOXWAST.R8
 		Frames: 164, 165, 184, 185
 		Size: 2,2
-		Category: Dead-Worm
+		Categories: Dead-Worm
 		Tiles:
 			0: Sand
 			1: Sand
@@ -5904,7 +5904,7 @@ Templates:
 		Images: BLOXWAST.R8
 		Frames: 382
 		Size: 1,1
-		Category: Sand-Detail
+		Categories: Sand-Detail
 		Tiles:
 			0: Rough
 	Template@1062:
@@ -5912,7 +5912,7 @@ Templates:
 		Images: BLOXWAST.R8
 		Frames: 368
 		Size: 1,1
-		Category: Sand-Detail
+		Categories: Sand-Detail
 		Tiles:
 			0: Rough
 	Template@1063:
@@ -5920,7 +5920,7 @@ Templates:
 		Images: BLOXWAST.R8
 		Frames: 380
 		Size: 1,1
-		Category: Sand-Detail
+		Categories: Sand-Detail
 		Tiles:
 			0: Rough
 	Template@1064:
@@ -5928,7 +5928,7 @@ Templates:
 		Images: BLOXWAST.R8
 		Frames: 290
 		Size: 1,1
-		Category: Sand-Detail
+		Categories: Sand-Detail
 		Tiles:
 			0: Rough
 	Template@1068:
@@ -5936,7 +5936,7 @@ Templates:
 		Images: BLOXWAST.R8
 		Frames: 367
 		Size: 1,1
-		Category: Sand-Detail
+		Categories: Sand-Detail
 		Tiles:
 			0: Sand
 	Template@1069:
@@ -5944,7 +5944,7 @@ Templates:
 		Images: BLOXWAST.R8
 		Frames: 381
 		Size: 1,1
-		Category: Sand-Detail
+		Categories: Sand-Detail
 		Tiles:
 			0: Rough
 	Template@1070:
@@ -5952,7 +5952,7 @@ Templates:
 		Images: BLOXWAST.R8
 		Frames: 343
 		Size: 1,1
-		Category: Sand-Detail
+		Categories: Sand-Detail
 		Tiles:
 			0: Rough
 	Template@1074:
@@ -5960,7 +5960,7 @@ Templates:
 		Images: BLOXWAST.R8
 		Frames: 289
 		Size: 1,1
-		Category: Sand-Detail
+		Categories: Sand-Detail
 		Tiles:
 			0: Sand
 	Template@1075:
@@ -5968,7 +5968,7 @@ Templates:
 		Images: BLOXWAST.R8
 		Frames: 344
 		Size: 1,1
-		Category: Sand-Detail
+		Categories: Sand-Detail
 		Tiles:
 			0: Sand
 	Template@1076:
@@ -5976,7 +5976,7 @@ Templates:
 		Images: BLOXWAST.R8
 		Frames: 362, 363, 364
 		Size: 3,1
-		Category: Rotten-Base
+		Categories: Rotten-Base
 		Tiles:
 			0: Cliff
 			1: Rough
@@ -5986,7 +5986,7 @@ Templates:
 		Images: BLOXWAST.R8
 		Frames: 607
 		Size: 1,1
-		Category: Rotten-Base
+		Categories: Rotten-Base
 		Tiles:
 			0: Sand
 	Template@1078:
@@ -5994,7 +5994,7 @@ Templates:
 		Images: BLOXBAT.R8
 		Frames: 311, 312
 		Size: 2,1
-		Category: Sand-Detail
+		Categories: Sand-Detail
 		Tiles:
 			0: Rough
 			1: Rough
@@ -6003,7 +6003,7 @@ Templates:
 		Images: BLOXBAT.R8
 		Frames: 185
 		Size: 1,1
-		Category: Sand-Detail
+		Categories: Sand-Detail
 		Tiles:
 			0: Rough
 	Template@1080:
@@ -6011,7 +6011,7 @@ Templates:
 		Images: BLOXBGBS.R8
 		Frames: 713, 733
 		Size: 1,2
-		Category: Rock-Detail
+		Categories: Rock-Detail
 		Tiles:
 			0: Rough
 			1: Rough
@@ -6020,7 +6020,7 @@ Templates:
 		Images: BLOXBGBS.R8
 		Frames: 712
 		Size: 1,1
-		Category: Rock-Detail
+		Categories: Rock-Detail
 		Tiles:
 			0: Rough
 	Template@1082:
@@ -6028,7 +6028,7 @@ Templates:
 		Images: BLOXBGBS.R8
 		Frames: 728
 		Size: 1,1
-		Category: Rock-Detail
+		Categories: Rock-Detail
 		Tiles:
 			0: Rough
 	Template@1083:
@@ -6036,7 +6036,7 @@ Templates:
 		Images: BLOXBGBS.R8
 		Frames: 707, 708
 		Size: 2,1
-		Category: Rock-Detail
+		Categories: Rock-Detail
 		Tiles:
 			0: Rough
 			1: Rough
@@ -6045,7 +6045,7 @@ Templates:
 		Images: BLOXBGBS.R8
 		Frames: 731, 732
 		Size: 2,1
-		Category: Rock-Detail
+		Categories: Rock-Detail
 		Tiles:
 			0: Rough
 			1: Rough
@@ -6054,7 +6054,7 @@ Templates:
 		Images: BLOXXMAS.R8
 		Frames: 344, 345
 		Size: 2,1
-		Category: Bridge
+		Categories: Bridge
 		Tiles:
 			0: Cliff
 			1: Transition
@@ -6063,7 +6063,7 @@ Templates:
 		Images: BLOXXMAS.R8
 		Frames: 345, 346
 		Size: 2,1
-		Category: Bridge
+		Categories: Bridge
 		Tiles:
 			0: Transition
 			1: Cliff
@@ -6072,7 +6072,7 @@ Templates:
 		Images: BLOXXMAS.R8
 		Frames: 364, 365
 		Size: 2,1
-		Category: Bridge
+		Categories: Bridge
 		Tiles:
 			0: Cliff
 			1: Transition
@@ -6081,7 +6081,7 @@ Templates:
 		Images: BLOXXMAS.R8
 		Frames: 365, 366
 		Size: 2,1
-		Category: Bridge
+		Categories: Bridge
 		Tiles:
 			0: Transition
 			1: Cliff
@@ -6090,7 +6090,7 @@ Templates:
 		Images: BLOXXMAS.R8
 		Frames: 384, 385
 		Size: 2,1
-		Category: Bridge
+		Categories: Bridge
 		Tiles:
 			0: Cliff
 			1: Transition
@@ -6099,7 +6099,7 @@ Templates:
 		Images: BLOXXMAS.R8
 		Frames: 385, 386
 		Size: 2,1
-		Category: Bridge
+		Categories: Bridge
 		Tiles:
 			0: Transition
 			1: Cliff
@@ -6108,7 +6108,7 @@ Templates:
 		Images: BLOXXMAS.R8
 		Frames: 1, 340, 2, 360
 		Size: 2,2
-		Category: Bridge
+		Categories: Bridge
 		Tiles:
 			0: Rock
 			1: Cliff
@@ -6119,7 +6119,7 @@ Templates:
 		Images: BLOXXMAS.R8
 		Frames: 343, 4, 363, 5
 		Size: 2,2
-		Category: Bridge
+		Categories: Bridge
 		Tiles:
 			0: Cliff
 			1: Rock
@@ -6130,7 +6130,7 @@ Templates:
 		Images: BLOXXMAS.R8
 		Frames: 2, 360, 3, 380
 		Size: 2,2
-		Category: Bridge
+		Categories: Bridge
 		Tiles:
 			0: Rock
 			1: Transition
@@ -6141,7 +6141,7 @@ Templates:
 		Images: BLOXXMAS.R8
 		Frames: 363, 5, 383, 6
 		Size: 2,2
-		Category: Bridge
+		Categories: Bridge
 		Tiles:
 			0: Transition
 			1: Rock
@@ -6152,7 +6152,7 @@ Templates:
 		Images: BLOXXMAS.R8
 		Frames: 350, 351, 370, 371
 		Size: 2,2
-		Category: Bridge
+		Categories: Bridge
 		Tiles:
 			0: Cliff
 			1: Rock
@@ -6163,7 +6163,7 @@ Templates:
 		Images: BLOXXMAS.R8
 		Frames: 351, 352, 371, 372
 		Size: 2,2
-		Category: Bridge
+		Categories: Bridge
 		Tiles:
 			0: Rock
 			1: Cliff
@@ -6174,7 +6174,7 @@ Templates:
 		Images: BLOXXMAS.R8
 		Frames: 367, 368, 387, 388
 		Size: 2,2
-		Category: Bridge
+		Categories: Bridge
 		Tiles:
 			0: Cliff
 			1: Transition
@@ -6185,7 +6185,7 @@ Templates:
 		Images: BLOXXMAS.R8
 		Frames: 368, 369, 388, 389
 		Size: 2,2
-		Category: Bridge
+		Categories: Bridge
 		Tiles:
 			0: Transition
 			1: Cliff
@@ -6196,7 +6196,7 @@ Templates:
 		Images: BLOXXMAS.R8
 		Frames: 341, 361
 		Size: 1,2
-		Category: Bridge
+		Categories: Bridge
 		Tiles:
 			0: Cliff
 			1: Transition
@@ -6205,7 +6205,7 @@ Templates:
 		Images: BLOXXMAS.R8
 		Frames: 342, 362
 		Size: 1,2
-		Category: Bridge
+		Categories: Bridge
 		Tiles:
 			0: Cliff
 			1: Transition
@@ -6214,7 +6214,7 @@ Templates:
 		Images: BLOXXMAS.R8
 		Frames: 353, 373
 		Size: 1,2
-		Category: Bridge
+		Categories: Bridge
 		Tiles:
 			0: Rough
 			1: Rough
@@ -6223,7 +6223,7 @@ Templates:
 		Images: BLOXXMAS.R8
 		Frames: 354, 374
 		Size: 1,2
-		Category: Bridge
+		Categories: Bridge
 		Tiles:
 			0: Rough
 			1: Rough
@@ -6232,7 +6232,7 @@ Templates:
 		Images: BLOXXMAS.R8
 		Frames: 361, 381
 		Size: 1,2
-		Category: Bridge
+		Categories: Bridge
 		Tiles:
 			0: Transition
 			1: Cliff
@@ -6241,7 +6241,7 @@ Templates:
 		Images: BLOXXMAS.R8
 		Frames: 362, 382
 		Size: 1,2
-		Category: Bridge
+		Categories: Bridge
 		Tiles:
 			0: Transition
 			1: Cliff
@@ -6250,7 +6250,7 @@ Templates:
 		Images: BLOXXMAS.R8
 		Frames: 297, 393
 		Size: 1,2
-		Category: Bridge
+		Categories: Bridge
 		Tiles:
 			0: Rough
 			1: Rough
@@ -6259,7 +6259,7 @@ Templates:
 		Images: BLOXXMAS.R8
 		Frames: 316, 394
 		Size: 1,2
-		Category: Bridge
+		Categories: Bridge
 		Tiles:
 			0: Rough
 			1: Rough
@@ -6268,7 +6268,7 @@ Templates:
 		Images: BLOXTREE.R8
 		Frames: 381
 		Size: 1,1
-		Category: Rock-Detail
+		Categories: Rock-Detail
 		Tiles:
 			0: Rock
 	Template@1108:
@@ -6276,7 +6276,7 @@ Templates:
 		Images: BLOXXMAS.R8
 		Frames: 289, 290, 309, 310
 		Size: 2,2
-		Category: Rotten-Base
+		Categories: Rotten-Base
 		Tiles:
 			0: Rough
 			1: Rough
@@ -6287,7 +6287,7 @@ Templates:
 		Images: BLOXXMAS.R8
 		Frames: 347, 348
 		Size: 2,1
-		Category: Bridge
+		Categories: Bridge
 		Tiles:
 			0: Rough
 			1: Rough
@@ -6296,7 +6296,7 @@ Templates:
 		Images: BLOXXMAS.R8
 		Frames: 348, 349
 		Size: 2,1
-		Category: Bridge
+		Categories: Bridge
 		Tiles:
 			0: Rough
 			1: Rough
@@ -6305,7 +6305,7 @@ Templates:
 		Images: BLOXXMAS.R8
 		Frames: 390, 391
 		Size: 2,1
-		Category: Bridge
+		Categories: Bridge
 		Tiles:
 			0: Rough
 			1: Rough
@@ -6314,7 +6314,7 @@ Templates:
 		Images: BLOXXMAS.R8
 		Frames: 391, 392
 		Size: 2,1
-		Category: Bridge
+		Categories: Bridge
 		Tiles:
 			0: Rough
 			1: Rough
