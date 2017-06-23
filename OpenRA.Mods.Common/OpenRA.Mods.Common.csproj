@@ -359,6 +359,7 @@
     <Compile Include="Traits\JamsMissiles.cs" />
     <Compile Include="Traits\KillsSelf.cs" />
     <Compile Include="Traits\AmmoPool.cs" />
+    <Compile Include="Traits\ReloadAmmoPool.cs" />
     <Compile Include="Traits\Mobile.cs" />
     <Compile Include="Traits\Modifiers\FrozenUnderFog.cs" />
     <Compile Include="Traits\Modifiers\HiddenUnderFog.cs" />

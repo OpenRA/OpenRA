@@ -107,6 +107,7 @@ namespace OpenRA.Mods.Common.Traits
 		readonly Actor self;
 		Turreted turret;
 		AmmoPool ammoPool;
+		ReloadAmmoPool reloadAmmoPool;
 		BodyOrientation coords;
 		INotifyBurstComplete[] notifyBurstComplete;
 		INotifyAttack[] notifyAttacks;
@@ -157,6 +158,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			turret = self.TraitsImplementing<Turreted>().FirstOrDefault(t => t.Name == Info.Turret);
 			ammoPool = self.TraitsImplementing<AmmoPool>().FirstOrDefault(la => la.Info.Name == Info.AmmoPoolName);
+			reloadAmmoPool = self.TraitsImplementing<ReloadAmmoPool>().FirstOrDefault(ra => ra.Info.AmmoPool == Info.AmmoPoolName);
 			coords = self.Trait<BodyOrientation>();
 			notifyBurstComplete = self.TraitsImplementing<INotifyBurstComplete>().ToArray();
 			notifyAttacks = self.TraitsImplementing<INotifyAttack>().ToArray();
@@ -339,7 +341,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		public virtual bool OutOfAmmo { get { return ammoPool != null && !ammoPool.Info.SelfReloads && !ammoPool.HasAmmo(); } }
+		public virtual bool OutOfAmmo { get { return ammoPool != null && !ammoPool.HasAmmo() && (reloadAmmoPool == null || reloadAmmoPool.IsTraitDisabled); } }
 		public virtual bool IsReloading { get { return FireDelay > 0 || IsTraitDisabled; } }
 		public virtual bool AllowExplode { get { return !IsReloading; } }
 		bool IExplodeModifier.ShouldExplode(Actor self) { return AllowExplode; }

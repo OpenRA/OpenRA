@@ -120,7 +120,7 @@ namespace OpenRA.Mods.Common.AI
 		protected static bool ReloadsAutomatically(Actor a)
 		{
 			var ammoPools = a.TraitsImplementing<AmmoPool>();
-			return ammoPools.All(x => x.Info.SelfReloads);
+			return ammoPools.All(x => x.SelfReloads);
 		}
 
 		protected static bool IsRearm(Actor a)

@@ -21,7 +21,6 @@ namespace OpenRA.Mods.Common.Activities
 	{
 		readonly Aircraft helicopter;
 		readonly AttackHeli attackHeli;
-		readonly AmmoPool[] ammoPools;
 		readonly bool attackOnlyVisibleTargets;
 
 		Target target;
@@ -46,7 +45,6 @@ namespace OpenRA.Mods.Common.Activities
 			Target = target;
 			helicopter = self.Trait<Aircraft>();
 			attackHeli = self.Trait<AttackHeli>();
-			ammoPools = self.TraitsImplementing<AmmoPool>().ToArray();
 			this.attackOnlyVisibleTargets = attackOnlyVisibleTargets;
 		}
 
@@ -74,8 +72,8 @@ namespace OpenRA.Mods.Common.Activities
 				return new HeliFly(self, newTarget);
 			}
 
-			// If any AmmoPool is depleted and no weapon is valid against target, return to helipad to reload and then resume the activity
-			if (ammoPools.Any(x => !x.Info.SelfReloads && !x.HasAmmo()) && !attackHeli.HasAnyValidWeapons(target))
+			// If all valid weapons have depleted their ammo, return to RearmBuilding to reload and then resume the activity
+			if (attackHeli.Armaments.All(x => x.OutOfAmmo || !x.Weapon.IsValidAgainst(target, self.World, self)))
 				return ActivityUtils.SequenceActivities(new HeliReturnToBase(self, helicopter.Info.AbortOnResupply), this);
 
 			var dist = targetPos - pos;

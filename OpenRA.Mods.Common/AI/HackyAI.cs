@@ -500,9 +500,9 @@ namespace OpenRA.Mods.Common.AI
 			if (aircraftInfo == null)
 				return true;
 
-			var ammoPoolsInfo = actorInfo.TraitInfos<AmmoPoolInfo>();
-
-			if (ammoPoolsInfo.Any(x => !x.SelfReloads))
+			// If the aircraft has at least 1 AmmoPool and defines 1 or more RearmBuildings, check if we have enough of those
+			var hasAmmoPool = actorInfo.TraitInfos<AmmoPoolInfo>().Any();
+			if (hasAmmoPool && aircraftInfo.RearmBuildings.Count > 0)
 			{
 				var countOwnAir = CountUnits(actorInfo.Name, Player);
 				var countBuildings = aircraftInfo.RearmBuildings.Sum(b => CountBuilding(b, Player));

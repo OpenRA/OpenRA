@@ -20,21 +20,15 @@ namespace OpenRA.Mods.Common.Activities
 	public class Rearm : Activity
 	{
 		readonly AmmoPool[] ammoPools;
-		readonly Dictionary<AmmoPool, int> ammoPoolsReloadTimes;
 
 		public Rearm(Actor self)
 		{
-			ammoPools = self.TraitsImplementing<AmmoPool>().Where(p => !p.Info.SelfReloads).ToArray();
-
-			if (ammoPools == null)
-				return;
-
-			ammoPoolsReloadTimes = ammoPools.ToDictionary(x => x, y => y.Info.ReloadDelay);
+			ammoPools = self.TraitsImplementing<AmmoPool>().Where(p => !p.SelfReloads).ToArray();
 		}
 
 		public override Activity Tick(Actor self)
 		{
-			if (IsCanceled || ammoPoolsReloadTimes == null)
+			if (IsCanceled)
 				return NextActivity;
 
 			var needsReloading = false;
@@ -46,30 +40,32 @@ namespace OpenRA.Mods.Common.Activities
 
 				needsReloading = true;
 
-				if (--ammoPoolsReloadTimes[pool] > 0)
-					continue;
+				Reload(self, pool);
+			}
 
+			return needsReloading ? this : NextActivity;
+		}
+
+		void Reload(Actor self, AmmoPool ammoPool)
+		{
+			if (--ammoPool.RemainingTicks == 0)
+			{
 				// HACK to check if we are on the helipad/airfield/etc.
 				var hostBuilding = self.World.ActorMap.GetActorsAt(self.Location)
 					.FirstOrDefault(a => a.Info.HasTraitInfo<BuildingInfo>());
 
 				if (hostBuilding == null || !hostBuilding.IsInWorld)
-					return NextActivity;
-
-				if (!pool.GiveAmmo())
-					continue;
+					return;
 
 				foreach (var host in hostBuilding.TraitsImplementing<INotifyRearm>())
 					host.Rearming(hostBuilding, self);
 
-				var sound = pool.Info.RearmSound;
-				if (sound != null)
-					Game.Sound.PlayToPlayer(SoundType.World, self.Owner, sound, self.CenterPosition);
+				ammoPool.RemainingTicks = ammoPool.Info.ReloadDelay;
+				if (!string.IsNullOrEmpty(ammoPool.Info.RearmSound))
+					Game.Sound.PlayToPlayer(SoundType.World, self.Owner, ammoPool.Info.RearmSound, self.CenterPosition);
 
-				ammoPoolsReloadTimes[pool] = pool.Info.ReloadDelay;
+				ammoPool.GiveAmmo(self, ammoPool.Info.ReloadCount);
 			}
-
-			return needsReloading ? this : NextActivity;
 		}
 	}
 }
