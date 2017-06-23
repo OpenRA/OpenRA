@@ -74,9 +74,9 @@ namespace OpenRA.Mods.Common.Projectiles
 
 		[PaletteReference] public readonly string HitAnimPalette = "effect";
 
-		[Desc("Scan radius for actors with projectile-blocking trait. If set to zero (default), it will automatically scale",
+		[Desc("Scan radius for actors with projectile-blocking trait. If set to a negative value (default), it will automatically scale",
 			"to the blocker with the largest health shape. Only set custom values if you know what you're doing.")]
-		public WDist BlockerScanRadius = WDist.Zero;
+		public WDist BlockerScanRadius = new WDist(-1);
 
 		public IProjectile Create(ProjectileArgs args)
 		{
@@ -86,7 +86,7 @@ namespace OpenRA.Mods.Common.Projectiles
 
 		void IRulesetLoaded<WeaponInfo>.RulesetLoaded(Ruleset rules, WeaponInfo wi)
 		{
-			if (BlockerScanRadius == WDist.Zero)
+			if (BlockerScanRadius < WDist.Zero)
 				BlockerScanRadius = Util.MinimumRequiredBlockerScanRadius(rules);
 		}
 	}

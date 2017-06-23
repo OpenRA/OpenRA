@@ -41,13 +41,13 @@ namespace OpenRA.Mods.Common.Warheads
 		[Desc("What impact types should this effect NOT apply to.", "Overrides ValidImpactTypes.")]
 		public readonly ImpactType InvalidImpactTypes = ImpactType.None;
 
-		[Desc("Scan radius for victims around impact. If set to zero (default), it will automatically scale to the largest health shape.",
+		[Desc("Scan radius for victims around impact. If set to a negative value (default), it will automatically scale to the largest health shape.",
 			"Custom overrides should not be necessary under normal circumstances.")]
-		public WDist VictimScanRadius = WDist.Zero;
+		public WDist VictimScanRadius = new WDist(-1);
 
 		void IRulesetLoaded<WeaponInfo>.RulesetLoaded(Ruleset rules, WeaponInfo info)
 		{
-			if (VictimScanRadius == WDist.Zero)
+			if (VictimScanRadius < WDist.Zero)
 				VictimScanRadius = Util.MinimumRequiredVictimScanRadius(rules);
 		}
 
