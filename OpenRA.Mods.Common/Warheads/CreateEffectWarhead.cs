@@ -38,11 +38,8 @@ namespace OpenRA.Mods.Common.Warheads
 		[Desc("List of sounds that can be played on impact.")]
 		public readonly string[] ImpactSounds = new string[0];
 
-		[Desc("What impact types should this effect apply to.")]
-		public readonly ImpactType ValidImpactTypes = ImpactType.Ground | ImpactType.Water | ImpactType.Air | ImpactType.GroundHit | ImpactType.WaterHit | ImpactType.AirHit;
-
-		[Desc("What impact types should this effect NOT apply to.", "Overrides ValidImpactTypes.")]
-		public readonly ImpactType InvalidImpactTypes = ImpactType.None;
+		[Desc("Consider explosion above this altitude an air explosion.")]
+		public readonly WDist AirThreshold = new WDist(128);
 
 		[Desc("Scan radius for victims around impact. If set to a negative value (default), it will automatically scale to the largest health shape.",
 			"Custom overrides should not be necessary under normal circumstances.")]
@@ -54,51 +51,57 @@ namespace OpenRA.Mods.Common.Warheads
 				VictimScanRadius = Util.MinimumRequiredVictimScanRadius(rules);
 		}
 
+		static readonly string[] TargetTypeAir = new string[] { "Air" };
+
 		public ImpactType GetImpactType(World world, CPos cell, WPos pos, Actor firedBy)
 		{
-			// Missiles need a margin because they sometimes explode a little above ground
-			// due to their explosion check triggering slightly too early (because of CloseEnough).
-			// TODO: Base ImpactType on target altitude instead of explosion altitude.
-			var airMargin = new WDist(128);
-
 			// Matching target actor
-			if (ValidImpactTypes.HasFlag(ImpactType.TargetHit) && GetDirectHit(world, cell, pos, firedBy, true))
-				return ImpactType.TargetHit;
+			if (VictimScanRadius > WDist.Zero)
+			{
+				var targetType = GetDirectHitTargetType(world, cell, pos, firedBy, true);
+				if (targetType == ImpactTargetType.ValidActor)
+					return ImpactType.TargetHit;
+				if (targetType == ImpactTargetType.InvalidActor)
+					return ImpactType.None;
+			}
 
 			var dat = world.Map.DistanceAboveTerrain(pos);
-			var isDirectHit = GetDirectHit(world, cell, pos, firedBy);
-
-			if (dat.Length > airMargin.Length)
-				return isDirectHit ? ImpactType.AirHit : ImpactType.Air;
-
-			if (dat.Length <= airMargin.Length && world.Map.GetTerrainInfo(cell).IsWater)
-				return isDirectHit ? ImpactType.WaterHit : ImpactType.Water;
-
-			if (isDirectHit)
-				return ImpactType.GroundHit;
-
-			// Matching target terrain
-			if (ValidImpactTypes.HasFlag(ImpactType.TargetTerrain)
-				&& IsValidTarget(world.Map.GetTerrainInfo(cell).TargetTypes))
-				return ImpactType.TargetTerrain;
+			if (dat > AirThreshold)
+				return ImpactType.Air;
 
 			return ImpactType.Ground;
 		}
 
-		public bool GetDirectHit(World world, CPos cell, WPos pos, Actor firedBy, bool checkTargetType = false)
+		public ImpactTargetType GetDirectHitTargetType(World world, CPos cell, WPos pos, Actor firedBy, bool checkTargetValidity = false)
 		{
-			foreach (var victim in world.FindActorsInCircle(pos, VictimScanRadius))
+			var victims = world.FindActorsInCircle(pos, VictimScanRadius);
+			var invalidHit = false;
+
+			foreach (var victim in victims)
 			{
-				if (checkTargetType && !IsValidAgainst(victim, firedBy))
+				if (!AffectsParent && victim == firedBy)
+					continue;
+
+				if (!victim.Info.HasTraitInfo<HealthInfo>())
 					continue;
 
 				// If the impact position is within any HitShape, we have a direct hit
 				var activeShapes = victim.TraitsImplementing<HitShape>().Where(Exts.IsTraitEnabled);
-				if (activeShapes.Any(i => i.Info.Type.DistanceFromEdge(pos, victim).Length <= 0))
-					return true;
+				var directHit = activeShapes.Any(i => i.Info.Type.DistanceFromEdge(pos, victim).Length <= 0);
+
+				// If the warhead landed outside the actor's hit-shape(s), we need to skip the rest so it won't be considered an invalidHit
+				if (!directHit)
+					continue;
+
+				if (!checkTargetValidity || IsValidAgainst(victim, firedBy))
+					return ImpactTargetType.ValidActor;
+
+				// If we got here, it must be an invalid target
+				invalidHit = true;
 			}
 
-			return false;
+			// If there was at least a single direct hit, but none on valid target(s), we return InvalidActor
+			return invalidHit ? ImpactTargetType.InvalidActor : ImpactTargetType.NoActor;
 		}
 
 		public override void DoImpact(Target target, Actor firedBy, IEnumerable<int> damageModifiers)
@@ -143,10 +146,18 @@ namespace OpenRA.Mods.Common.Warheads
 				return false;
 
 			var impactType = GetImpactType(world, targetTile, pos, firedBy);
-			if (!ValidImpactTypes.HasFlag(impactType) || InvalidImpactTypes.HasFlag(impactType))
-				return false;
-
-			return true;
+			switch (impactType)
+			{
+				case ImpactType.TargetHit:
+					return true;
+				case ImpactType.Air:
+					return IsValidTarget(TargetTypeAir);
+				case ImpactType.Ground:
+					var tileInfo = world.Map.GetTerrainInfo(targetTile);
+					return IsValidTarget(tileInfo.TargetTypes);
+				default:
+					return false;
+			}
 		}
 	}
 }
