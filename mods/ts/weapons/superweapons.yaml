@@ -79,21 +79,27 @@ IonCannon:
 		Explosions: ionbeam
 		ExplosionPalette: effect-ignore-lighting-alpha75
 		ImpactSounds: ion1.aud
+		VictimScanRadius: 0
 	Warhead@5Effect: CreateEffect
 		Explosions: ionbeam2
 		ExplosionPalette: effect-ignore-lighting-alpha75
+		VictimScanRadius: 0
 	Warhead@6Effect: CreateEffect
 		Explosions: ionbeam3
 		ExplosionPalette: effect-ignore-lighting-alpha75
+		VictimScanRadius: 0
 	Warhead@7Effect: CreateEffect
 		Explosions: ionbeam4
 		ExplosionPalette: effect-ignore-lighting-alpha75
+		VictimScanRadius: 0
 	Warhead@8Effect: CreateEffect
 		Explosions: ionbeam5
 		ExplosionPalette: effect-ignore-lighting-alpha75
+		VictimScanRadius: 0
 	Warhead@9Effect: CreateEffect
 		Explosions: ionbeam6
 		ExplosionPalette: effect-ignore-lighting-alpha75
+		VictimScanRadius: 0
 
 EMPulseCannon:
 	ReloadDelay: 100
@@ -108,6 +114,7 @@ EMPulseCannon:
 	Warhead@1Eff: CreateEffect
 		Explosions: pulse_explosion
 		ExplosionPalette: effect-ignore-lighting-alpha75
+		VictimScanRadius: 0
 	Warhead@emp: GrantExternalCondition
 		Range: 4c0
 		Duration: 250
@@ -127,6 +134,7 @@ ClusterMissile:
 		Explosions: large_explosion
 		ExplosionPalette: effect-ignore-lighting-alpha75
 		ImpactSounds: expnew19.aud
+		VictimScanRadius: 0
 	Warhead@ResourceDestruction0: DestroyResource
 		Size: 1
 	Warhead@ClusterSmudges0: LeaveSmudge
