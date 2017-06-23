@@ -452,7 +452,7 @@
 	Selectable:
 		Bounds: 24,24
 	Targetable:
-		TargetTypes: Ground, Water, Repair
+		TargetTypes: Ground, Water, Ship, Repair
 	HiddenUnderFog:
 	AttackMove:
 	ActorLostNotification:
