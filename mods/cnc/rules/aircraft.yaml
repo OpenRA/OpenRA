@@ -89,9 +89,6 @@ HELI:
 	AmmoPool:
 		Ammo: 10
 		PipCount: 5
-		SelfReloads: true
-		ReloadCount: 1
-		SelfReloadDelay: 40
 	WithIdleOverlay@ROTORAIR:
 		Offset: 0,0,85
 		Sequence: rotor
@@ -108,6 +105,9 @@ HELI:
 		EmptyWeapon: HeliExplode
 	SelectionDecorations:
 		VisualBounds: 30,24
+	ReloadAmmoPool:
+		Delay: 40
+		Count: 1
 
 ORCA:
 	Inherits: ^Helicopter
@@ -144,9 +144,6 @@ ORCA:
 	AmmoPool:
 		Ammo: 6
 		PipCount: 6
-		SelfReloads: true
-		ReloadCount: 2
-		SelfReloadDelay: 100
 	SpawnActorOnDeath:
 		Actor: ORCA.Husk
 	Explodes:
@@ -156,6 +153,9 @@ ORCA:
 		MoveSequence: move
 	SelectionDecorations:
 		VisualBounds: 30,24
+	ReloadAmmoPool:
+		Delay: 100
+		Count: 2
 
 C17:
 	Inherits: ^Plane

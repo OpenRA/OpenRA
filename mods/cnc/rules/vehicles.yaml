@@ -510,9 +510,6 @@ MLRS:
 	AmmoPool:
 		Ammo: 2
 		PipCount: 0
-		SelfReloads: true
-		ReloadCount: 1
-		SelfReloadDelay: 45
 	AttackTurreted:
 	WithReloadingSpriteTurret:
 		AmmoPoolName: primary
@@ -521,6 +518,9 @@ MLRS:
 	RenderRangeCircle:
 	SpawnActorOnDeath:
 		Actor: MLRS.Husk
+	ReloadAmmoPool:
+		Delay: 45
+		Count: 1
 
 STNK:
 	Inherits: ^Vehicle

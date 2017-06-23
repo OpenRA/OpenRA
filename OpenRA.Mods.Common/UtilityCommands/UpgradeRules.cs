@@ -1053,6 +1053,66 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				// Self-reload properties were decoupled from AmmoPool to ReloadAmmoPool.
+				if (engineVersion < 20171104)
+				{
+					var poolNumber = 0;
+					var ammoPools = node.Value.Nodes.Where(n => n.Key.StartsWith("AmmoPool", StringComparison.Ordinal));
+					foreach (var pool in ammoPools.ToList())
+					{
+						var selfReloads = pool.Value.Nodes.FirstOrDefault(n => n.Key == "SelfReloads");
+						if (selfReloads != null && FieldLoader.GetValue<bool>("SelfReloads", selfReloads.Value.Value))
+						{
+							poolNumber++;
+							var name = pool.Value.Nodes.FirstOrDefault(n => n.Key == "Name");
+							var selfReloadDelay = pool.Value.Nodes.FirstOrDefault(n => n.Key == "SelfReloadDelay");
+							var reloadCount = pool.Value.Nodes.FirstOrDefault(n => n.Key == "ReloadCount");
+							var reset = pool.Value.Nodes.FirstOrDefault(n => n.Key == "ResetOnFire");
+							var rearmSound = pool.Value.Nodes.FirstOrDefault(n => n.Key == "RearmSound");
+							var reloadOnCond = new MiniYamlNode("ReloadAmmoPool@" + poolNumber.ToString(), "");
+
+							if (name != null)
+							{
+								var rap = new MiniYamlNode("ReloadAmmoPool", name.Value.Value);
+								reloadOnCond.Value.Nodes.Add(rap);
+							}
+
+							if (selfReloadDelay != null)
+							{
+								var rd = selfReloadDelay;
+								RenameNodeKey(rd, "Delay");
+								reloadOnCond.Value.Nodes.Add(rd);
+								pool.Value.Nodes.Remove(selfReloads);
+								pool.Value.Nodes.Remove(selfReloadDelay);
+							}
+
+							if (reloadCount != null)
+							{
+								var rc = reloadCount;
+								RenameNodeKey(rc, "Count");
+								reloadOnCond.Value.Nodes.Add(rc);
+								pool.Value.Nodes.Remove(reloadCount);
+							}
+
+							if (reset != null)
+							{
+								reloadOnCond.Value.Nodes.Add(reset);
+								pool.Value.Nodes.Remove(reset);
+							}
+
+							if (rearmSound != null)
+							{
+								var rs = rearmSound;
+								RenameNodeKey(rs, "Sound");
+								reloadOnCond.Value.Nodes.Add(rs);
+								pool.Value.Nodes.Remove(rearmSound);
+							}
+
+							node.Value.Nodes.Add(reloadOnCond);
+						}
+					}
+				}
+
 				UpgradeActorRules(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 
