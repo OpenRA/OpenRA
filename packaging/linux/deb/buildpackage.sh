@@ -21,6 +21,7 @@ DEB_BUILD_ROOT="$(pwd)/build"
 
 LIBDIR=/usr/lib/openra
 DOCDIR=/usr/share/doc/openra
+SYSTEMSUPPORTDIR=/var/games/openra
 LINTIANORDIR=/usr/share/lintian/overrides
 E_BADARGS=85
 
@@ -80,6 +81,9 @@ else
 fi
 
 sed "s/{VERSION}/${VERSION}/" DEBIAN/control | sed "s/{SIZE}/${PACKAGE_SIZE}/" > "${DEB_BUILD_ROOT}/DEBIAN/control"
+sed "s|{LIBDIR}|${LIBDIR}|g" DEBIAN/postinst | sed "s|{SYSTEMSUPPORTDIR}|${SYSTEMSUPPORTDIR}|g" > "${DEB_BUILD_ROOT}/DEBIAN/postinst"
+sed "s|{LIBDIR}|${LIBDIR}|g" DEBIAN/prerm | sed "s|{SYSTEMSUPPORTDIR}|${SYSTEMSUPPORTDIR}|g" > "${DEB_BUILD_ROOT}/DEBIAN/prerm"
+chmod 0755 "${DEB_BUILD_ROOT}/DEBIAN/postinst" "${DEB_BUILD_ROOT}/DEBIAN/prerm"
 
 # Build it in the temp directory, but place the finished deb in our starting directory
 pushd "${DEB_BUILD_ROOT}" >/dev/null
