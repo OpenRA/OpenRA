@@ -45,7 +45,7 @@ namespace OpenRA.Mods.Common.Warheads
 			"Custom overrides should not be necessary under normal circumstances.")]
 		public WDist VictimScanRadius = WDist.Zero;
 
-		public void RulesetLoaded(Ruleset rules, WeaponInfo wi)
+		void IRulesetLoaded<WeaponInfo>.RulesetLoaded(Ruleset rules, WeaponInfo info)
 		{
 			if (VictimScanRadius == WDist.Zero)
 				VictimScanRadius = Util.MinimumRequiredVictimScanRadius(rules);
