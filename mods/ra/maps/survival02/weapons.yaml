@@ -15,13 +15,9 @@ ParaBomb:
 			Heavy: 50
 			Concrete: 25
 		DamageTypes: Prone50Percent, TriggerProne, FireDeath
-	Warhead@2Smu: LeaveSmudge
-		SmudgeType: Crater
 	Warhead@3Eff: CreateEffect
 		Explosions: napalm
 		ImpactSounds: firebl3.aud
-		InvalidImpactTypes: Water
 	Warhead@4EffWater: CreateEffect
 		Explosions: napalm
-		ImpactSounds: splash9.aud
-		ValidImpactTypes: Water
+		ImpactSounds: firebl3.aud

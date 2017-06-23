@@ -7,6 +7,7 @@ TurretGun:
 		Blockable: false
 
 SuperTankPrimary:
+	Inherits: ^Cannon
 	ROF: 70
 	Range: 4c768
 	Report: turret1.aud
@@ -27,9 +28,7 @@ SuperTankPrimary:
 		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
-	Warhead@3EffGround: CreateEffect
+	Warhead@3Eff: CreateEffect
 		Explosions: small_explosion
-		InvalidImpactTypes: Water
 	Warhead@4EffWater: CreateEffect
 		Explosions: small_splash
-		ValidImpactTypes: Water
