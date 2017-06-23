@@ -83,14 +83,11 @@ MammothTusk:
 			Concrete: 28
 		DamageTypes: Explosion
 	Warhead@2Eff: CreateEffect
+		VictimScanRadius: 0
 		Explosions: medium_twlt
 		ImpactSounds: expnew07.aud
 		InvalidImpactTypes: Water
-	Warhead@3EffWater: CreateEffect
-		Explosions: small_watersplash
-		ExplosionPalette: player
-		ImpactSounds: ssplash3.aud
-		ValidImpactTypes: Water
+	-Warhead@3EffWater: CreateEffect
 
 BikeMissile:
 	Inherits: ^DefaultMissile
@@ -150,3 +147,4 @@ RedEye2:
 	Warhead@2Eff: CreateEffect
 		Explosions: large_grey_explosion
 		ImpactSounds: expnew13.aud
+		VictimScanRadius: 0
