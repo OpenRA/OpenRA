@@ -19,6 +19,7 @@
 	Warhead@3Eff: CreateEffect
 		Explosions: napalm
 		ImpactSounds: firebl3.aud
+		VictimScanRadius: 0
 
 FireballLauncher:
 	Inherits: ^FireWeapon
@@ -182,3 +183,4 @@ MADTankDetonate:
 	Warhead@3Eff: CreateEffect
 		Explosions: med_explosion
 		ImpactSounds: mineblo1.aud
+		VictimScanRadius: 0
