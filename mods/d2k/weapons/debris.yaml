@@ -31,6 +31,7 @@ Debris:
 		InvalidTargets: Vehicle, Structure
 	Warhead@3Eff: CreateEffect
 		Explosions: tiny_explosion
+		VictimScanRadius: 0
 
 Debris2:
 	Inherits: Debris
