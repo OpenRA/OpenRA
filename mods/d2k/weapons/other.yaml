@@ -79,6 +79,7 @@ OrniBomb:
 	Warhead@3Eff: CreateEffect
 		Explosions: large_explosion
 		ImpactSounds: EXPLSML4.WAV
+		VictimScanRadius: 0
 
 Crush:
 	Warhead@1Dam: SpreadDamage
@@ -93,6 +94,7 @@ Demolish:
 	Warhead@2Eff: CreateEffect
 		Explosions: building
 		ImpactSounds: EXPLLG2.WAV
+		VictimScanRadius: 0
 
 Atomic:
 	Warhead@1Dam: SpreadDamage
@@ -113,6 +115,7 @@ Atomic:
 	Warhead@2Eff: CreateEffect
 		Explosions: nuke
 		ImpactSounds: EXPLLG2.WAV
+		VictimScanRadius: 0
 
 CrateNuke:
 	Inherits: Atomic
@@ -142,30 +145,36 @@ CrateExplosion:
 	Warhead@2Eff: CreateEffect
 		Explosions: large_explosion
 		ImpactSounds: EXPLSML4.WAV
+		VictimScanRadius: 0
 
 UnitExplodeSmall:
 	Warhead@1Eff: CreateEffect
 		Explosions: self_destruct
 		ImpactSounds: EXPLSML1.WAV
+		VictimScanRadius: 0
 
 UnitExplodeMed:
 	Warhead@1Eff: CreateEffect
 		Explosions: building
 		ImpactSounds: EXPLSML2.WAV
+		VictimScanRadius: 0
 
 UnitExplodeLarge:
 	Warhead@1Eff: CreateEffect
 		Explosions: large_explosion
 		ImpactSounds: EXPLLG2.WAV
+		VictimScanRadius: 0
 
 BuildingExplode:
 	Warhead@1Eff: CreateEffect
 		Explosions: building, self_destruct, large_explosion
+		VictimScanRadius: 0
 
 WallExplode:
 	Warhead@1Eff: CreateEffect
 		Explosions: wall_explosion
 		ImpactSounds: EXPLHG1.WAV
+		VictimScanRadius: 0
 
 grenade:
 	ReloadDelay: 50
@@ -196,6 +205,7 @@ grenade:
 	Warhead@3Eff: CreateEffect
 		Explosions: med_explosion
 		ImpactSounds: EXPLMD2.WAV
+		VictimScanRadius: 0
 
 GrenDeath:
 	Warhead@1Dam: SpreadDamage
@@ -216,6 +226,7 @@ GrenDeath:
 	Warhead@3Eff: CreateEffect
 		Explosions: building
 		ImpactSounds: EXPLSML4.WAV
+		VictimScanRadius: 0
 
 SardDeath:
 	Warhead@1Dam: SpreadDamage
@@ -237,6 +248,7 @@ SardDeath:
 	Warhead@3Eff: CreateEffect
 		Explosions: small_napalm
 		ImpactSounds: EXPLSML2.WAV
+		VictimScanRadius: 0
 
 SpiceExplosion:
 	Projectile: Bullet
@@ -266,6 +278,7 @@ SpiceExplosion:
 		Size: 1
 	Warhead@3Eff: CreateEffect
 		Explosions: med_explosion
+		VictimScanRadius: 0
 
 BloomExplosion:
 	Report: EXPLMD1.WAV
