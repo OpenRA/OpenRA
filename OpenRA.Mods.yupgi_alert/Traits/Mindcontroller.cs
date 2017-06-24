@@ -164,7 +164,7 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 			// mindcontrollable trait.
 			if (mcable == null)
 			{
-				Game.Debug("Warning: mindcontrollable unit doesn't actually have mindcontrallable trait");
+				Game.Debug("Warning: mindcontrol weapon targetable unit doesn't actually have mindcontrallable trait");
 				return;
 			}
 
