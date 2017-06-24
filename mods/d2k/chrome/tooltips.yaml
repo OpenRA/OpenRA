@@ -230,22 +230,3 @@ Background@SUPPORT_POWER_TOOLTIP:
 			Y: 28
 			Font: TinyBold
 			VAlign: Top
-
-Background@FACTION_DESCRIPTION_TOOLTIP:
-	Logic: FactionTooltipLogic
-	Background: dialog3
-	Children:
-		Label@HEADER:
-			X: 7
-			Y: 7
-			Width: 8
-			Height: 10
-			Font: Bold
-			VAlign: Top
-		Label@DESCRIPTION:
-			X: 14
-			Y: 0
-			Width: 15
-			Height: 14
-			Font: TinyBold
-			VAlign: Top
