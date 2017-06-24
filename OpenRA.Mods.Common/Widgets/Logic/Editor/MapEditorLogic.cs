@@ -103,6 +103,24 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				if (reslayer != null)
 					cashLabel.GetText = () => "$ {0}".F(reslayer.NetWorth);
 			}
+
+			var searchTextField = widget.GetOrNull<TextFieldWidget>("MAPSEARCH_TEXTFIELD");
+			if (searchTextField != null)
+			{
+				searchTextField.OnEnterKey = () =>
+				{
+					var yamlNode = world.Map.ActorDefinitions.FirstOrDefault(ad => ad.Key == "Actor" + searchTextField.Text);
+					if (yamlNode != null)
+					{
+						var actor = new ActorReference(yamlNode.Value.Value, yamlNode.Value.ToDictionary());
+						var location = actor.InitDict.Get<LocationInit>().Value(null);
+						worldRenderer.Viewport.Center(new WPos(1024 * location.X + 512, 1024 * location.Y + 512, 0));
+						return true;
+					}
+
+					return false;
+				};
+			}
 		}
 	}
 }

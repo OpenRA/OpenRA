@@ -421,3 +421,16 @@ Container@EDITOR_WORLD_ROOT:
 			Align: Left
 			Font: Bold
 			Contrast: true
+		Label@MAPSEARCH_LABEL:
+			X: 165
+			Width: 50
+			Height: 25
+			Align: Left
+			Font: Bold
+			Contrast: true
+			Text: ActorID:
+		TextField@MAPSEARCH_TEXTFIELD:
+			X: 225
+			Width: 45
+			Height: 25
+			Font: Bold
