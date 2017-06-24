@@ -590,7 +590,6 @@
     <Compile Include="Widgets\Logic\ButtonTooltipLogic.cs" />
     <Compile Include="Widgets\Logic\ColorPickerLogic.cs" />
     <Compile Include="Widgets\Logic\ConnectionLogic.cs" />
-    <Compile Include="Widgets\Logic\FactionTooltipLogic.cs" />
     <Compile Include="Widgets\Logic\CreditsLogic.cs" />
     <Compile Include="Widgets\Logic\DisconnectWatcherLogic.cs" />
     <Compile Include="Widgets\Logic\Ingame\AddFactionSuffixLogic.cs" />

@@ -118,7 +118,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var flag = item.Get<ImageWidget>("FLAG");
 				flag.GetImageCollection = () => "flags";
 				flag.GetImageName = () => factionId;
-				item.GetTooltipText = () => faction.Description;
+
+				var factionName = faction.Description.SubstringBefore("\\n", StringComparison.Ordinal);
+				var factionDescription = faction.Description.SubstringAfter("\\n", StringComparison.Ordinal);
+				item.GetTooltipText = () => factionName;
+				if (factionDescription != factionName)
+					item.GetTooltipDesc = () => factionDescription;
+
 				return item;
 			};
 
@@ -408,8 +414,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var dropdown = parent.Get<DropDownButtonWidget>("FACTION");
 			dropdown.IsDisabled = () => s.LockFaction || orderManager.LocalClient.IsReady;
 			dropdown.OnMouseDown = _ => ShowFactionDropDown(dropdown, c, orderManager, factions);
-			var factionDescription = factions[c.Faction].Description;
-			dropdown.GetTooltipText = () => factionDescription;
+
+			var factionName = factions[c.Faction].Description.SubstringBefore("\\n", StringComparison.Ordinal);
+			var factionDescription = factions[c.Faction].Description.SubstringAfter("\\n", StringComparison.Ordinal);
+			dropdown.GetTooltipText = () => factionName;
+			if (factionDescription != factionName)
+				dropdown.GetTooltipDesc = () => factionDescription;
+
 			SetupFactionWidget(dropdown, s, c, factions);
 		}
 
