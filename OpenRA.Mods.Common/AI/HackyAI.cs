@@ -1360,6 +1360,10 @@ namespace OpenRA.Mods.Common.AI
 				if (e.Damage.Value == 0)
 					return;
 
+				// U2 or spawned stuff
+				if (self.TraitOrDefault<Selectable>() == null)
+					return;
+
 				// Aircraft micro control
 				if (WhichSquad.ContainsKey(self))
 				{
