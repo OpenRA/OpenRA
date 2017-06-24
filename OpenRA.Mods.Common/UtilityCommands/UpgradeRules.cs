@@ -900,6 +900,54 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				// Valid-/InvalidImpactTypes were removed from CreateEffectWarhead, which uses Valid-/InvalidTargets instead now
+				if (engineVersion < 20170625)
+				{
+					if (node.Key.StartsWith("Warhead", StringComparison.Ordinal) && node.Value.Value == "CreateEffect")
+					{
+						var validImpactTypes = node.Value.Nodes.FirstOrDefault(n => n.Key == "ValidImpactTypes");
+						var invalidImpactTypes = node.Value.Nodes.FirstOrDefault(n => n.Key == "InvalidImpactTypes");
+						var validTargetsNode = node.Value.Nodes.FirstOrDefault(n => n.Key == "ValidTargets");
+						if (validImpactTypes != null && validTargetsNode == null)
+						{
+							Console.WriteLine("CreateEffectWarhead now uses Valid-/InvalidTargets instead of Valid-/InvalidImpactTypes.");
+							Console.WriteLine("Please check whether you need to make manual adjustments.");
+
+							var validTargets = new List<string>();
+							if (validImpactTypes.Value.Value.Contains("Ground"))
+								validTargets.Add("Ground");
+							if (validImpactTypes.Value.Value.Contains("Water"))
+								validTargets.Add("Water");
+							if (validImpactTypes.Value.Value.Contains("Air"))
+								validTargets.Add("Air");
+
+							// 'validTargets' can be 0 here if the only valid ImpactType(s) were None, TargetHit or TargetTerrain.
+							// In that case we remove it and let the modder fix it manually.
+							if (validTargets.Count > 0)
+							{
+								validImpactTypes.Value.Value = validTargets.JoinWith(", ");
+								RenameNodeKey(validImpactTypes, "ValidTargets");
+							}
+							else
+								node.Value.Nodes.Remove(validImpactTypes);
+						}
+						else if (validTargetsNode == null)
+						{
+							// 'Air' is not part of the internal warhead ValidTargets default, but was part of the ValidImpactTypes default.
+							node.Value.Nodes.Add(new MiniYamlNode("ValidTargets", "Ground, Water, Air"));
+						}
+
+						if (invalidImpactTypes != null)
+						{
+							Console.WriteLine("CreateEffectWarhead now uses Valid-/InvalidTargets instead of Valid-/InvalidImpactTypes.");
+							Console.WriteLine("Please check whether you need to make manual adjustments.");
+
+							// It's too complicated to get all possible combinations right, so we just remove it and let the modder fix it manually
+							node.Value.Nodes.Remove(invalidImpactTypes);
+						}
+					}
+				}
+
 				UpgradeWeaponRules(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}
