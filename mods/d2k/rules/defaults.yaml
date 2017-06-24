@@ -434,6 +434,8 @@
 	MustBeDestroyed:
 		RequiredForShortGame: false
 	RevealOnFire:
+	Targetable:
+		TargetTypes: Ground, C4, Structure, Defense
 
 ^DisabledOverlay:
 	WithColoredOverlay@IDISABLE:
