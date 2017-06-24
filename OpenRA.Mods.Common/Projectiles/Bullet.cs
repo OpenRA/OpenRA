@@ -103,7 +103,7 @@ namespace OpenRA.Mods.Common.Projectiles
 
 		public IProjectile Create(ProjectileArgs args) { return new Bullet(this, args); }
 
-		public void RulesetLoaded(Ruleset rules, WeaponInfo wi)
+		void IRulesetLoaded<WeaponInfo>.RulesetLoaded(Ruleset rules, WeaponInfo wi)
 		{
 			if (BlockerScanRadius == WDist.Zero)
 				BlockerScanRadius = Util.MinimumRequiredBlockerScanRadius(rules);
