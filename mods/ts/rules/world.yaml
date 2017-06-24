@@ -15,12 +15,15 @@
 		Name: Any
 		InternalName: Random
 		RandomFactionMembers: gdi, nod
+		Description: Random Faction\nA random faction will be chosen when the game starts.
 	Faction@0:
 		Name: GDI
 		InternalName: gdi
+		Description: Global Defense Initiative\nThe GDI is an international military branch of the United Nations tasked\nwith keeping world peace. Commanding the combined forces of the world's\nmost powerful nations, they possess an unmatched arsenal of high-tech weaponry.
 	Faction@1:
 		Name: Nod
 		InternalName: nod
+		Description: Brotherhood of Nod\nThe Brotherhood is a religious cult centered around their leader Kane\nand the alien substance Tiberium. They utilize stealth technology\nand guerilla tactics to defeat those who oppose them.
 	ResourceType@Tiberium:
 		Type: Tiberium
 		Name: Tiberium
