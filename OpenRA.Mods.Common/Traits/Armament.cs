@@ -113,6 +113,8 @@ namespace OpenRA.Mods.Common.Traits
 		IEnumerable<int> damageModifiers;
 		IEnumerable<int> inaccuracyModifiers;
 
+		int ticksSinceLastShot;
+
 		List<Pair<int, Action>> delayedActions = new List<Pair<int, Action>>();
 
 		public WDist Recoil;
@@ -169,6 +171,9 @@ namespace OpenRA.Mods.Common.Traits
 			if (IsTraitDisabled)
 				return;
 
+			if (ticksSinceLastShot < Weapon.ReloadDelay)
+				++ticksSinceLastShot;
+
 			if (FireDelay > 0)
 				--FireDelay;
 
@@ -220,6 +225,11 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (!Weapon.IsValidAgainst(target, self.World, self))
 				return null;
+
+			if (ticksSinceLastShot >= Weapon.ReloadDelay)
+				Burst = Weapon.Burst;
+
+			ticksSinceLastShot = 0;
 
 			var barrel = Barrels[Burst % Barrels.Length];
 			Func<WPos> muzzlePosition = () => self.CenterPosition + MuzzleOffset(self, barrel);
