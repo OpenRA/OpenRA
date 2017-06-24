@@ -105,6 +105,7 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 			if (cooldown <= 0)
 			{
 				shotsFired = 0;
+				cooldown = info.UnstackDelay;
 				UnstackCondition(self);
 			}
 		}
