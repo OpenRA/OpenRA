@@ -55,6 +55,13 @@ namespace OpenRA.Mods.Common.Scripting
 		}
 
 		[ScriptActorPropertyActivity]
+		[Desc("Queues a landing activity on the specififed actor.")]
+		public void HeliLand(Actor landOn, bool requiresSpace)
+		{
+			Self.QueueActivity(new HeliLand(Self, requiresSpace));
+		}
+
+		[ScriptActorPropertyActivity]
 		[Desc("Starts the resupplying activity when being on a host building.")]
 		public void Resupply()
 		{

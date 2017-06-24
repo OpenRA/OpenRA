@@ -94,6 +94,18 @@ namespace OpenRA.Mods.Common.Scripting
 			return FilteredObjects(Context.World.Map.AllEdgeCells.OrderBy(c => (givenCell - c).Length), filter).FirstOrDefault();
 		}
 
+		[Desc("Returns cells in circle. Don't make maxRange too large!")]
+		public CPos[] FindTilesInCircle(CPos center, int maxRange)
+		{
+			return Context.World.Map.FindTilesInCircle(center, maxRange).ToArray();
+		}
+
+		[Desc("Returns cells in circle. Don't make maxRange too large!")]
+		public CPos[] FindTilesInAnnulus(CPos center, int minRange, int maxRange)
+		{
+			return Context.World.Map.FindTilesInAnnulus(center, minRange, maxRange).ToArray();
+		}
+
 		[Desc("Returns the center of a cell in world coordinates.")]
 		public WPos CenterOfCell(CPos cell)
 		{

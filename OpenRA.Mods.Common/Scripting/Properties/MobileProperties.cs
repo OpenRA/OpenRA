@@ -72,5 +72,12 @@ namespace OpenRA.Mods.Common.Scripting
 		{
 			Self.QueueActivity(new Turn(Self, facing));
 		}
+
+		[ScriptActorPropertyActivity]
+		[Desc("Cen enter cell?")]
+		public bool CanEnter(CPos cell)
+		{
+			return mobile.CanEnterCell(cell);
+		}
 	}
 }
