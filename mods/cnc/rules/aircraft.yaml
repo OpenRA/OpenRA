@@ -205,8 +205,6 @@ A10:
 		Repulsable: False
 	AttackBomber:
 		Armaments: gun, bombs
-		Guns: gun
-		Bombs: bombs
 	Armament@GUNS:
 		Name: gun
 		Weapon: Vulcan
