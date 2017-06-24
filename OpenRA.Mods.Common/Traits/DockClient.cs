@@ -39,9 +39,15 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		// readonly DockClientInfo info;
 		readonly Actor self;
+		Actor host;
+
 		public Dock CurrentDock;
 		public DockState DockState = DockState.NotAssigned;
 		public IDockActivity Requester; // The activity that requested dock.
+
+		int acquireTimeStamp = -1;
+
+		public Actor Host { get { return host; } }
 
 		public DockClient(ActorInitializer init, DockClientInfo info)
 		{
@@ -49,33 +55,41 @@ namespace OpenRA.Mods.Common.Traits
 			self = init.Self;
 		}
 
-		public void Acquire(Dock dock, DockState dockState)
+		public void Acquire(Actor host, Dock dock, DockState dockState)
 		{
 			// You are to acquire only when you don't have one.
 			// i.e., release first.
+			Release(CurrentDock);
+
 			System.Diagnostics.Debug.Assert(CurrentDock == null, "To acquire dock, release first.");
-			dock.Occupier = self;
+			dock.Reserver = self;
 			CurrentDock = dock;
 			DockState = dockState;
+			this.host = host;
+
+			acquireTimeStamp = self.World.WorldTick;
 		}
 
 		public void Release(Dock dock)
 		{
-			if (dock == null)
-				return;
-
-			if (CurrentDock == null)
-				//// Still OK, because ordering units like crazy will automatically release the dock from
-				//// DockClient code and previously queued release will try to release what is already released.
-				return;
-
 			// You are to release only what you have.
-			if (CurrentDock != dock)
+			if (dock != null && CurrentDock != null && CurrentDock != dock)
 				System.Diagnostics.Debug.Assert(dock == CurrentDock, "To release, you must have it first.");
 
-			dock.Occupier = null;
 			CurrentDock = null;
 			DockState = DockState.NotAssigned;
+			acquireTimeStamp = -1;
+			host = null;
+
+			if (dock != null)
+				dock.Reserver = null;
+		}
+
+		public bool WaitedLong(int threshold)
+		{
+			if (acquireTimeStamp < 0)
+				return false;
+			return (self.World.WorldTick - acquireTimeStamp) >= threshold;
 		}
 
 		void INotifyKilled.Killed(Actor self, AttackInfo e)

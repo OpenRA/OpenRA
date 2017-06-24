@@ -79,9 +79,9 @@ namespace OpenRA.Mods.Common.Traits
 
 			foreach (var d in serviceDocks)
 			{
-				if (d.Occupier == null)
+				if (d.Reserver == null)
 					return true;
-				if (d.Occupier == client)
+				if (d.Reserver == client)
 					return true;
 			}
 
@@ -105,7 +105,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			get
 			{
-				return serviceDocks.Where(d => d.Occupier != null).Select(d => d.Occupier);
+				return serviceDocks.Where(d => d.Reserver != null).Select(d => d.Reserver);
 			}
 		}
 
@@ -151,6 +151,7 @@ namespace OpenRA.Mods.Common.Traits
 			ProcessQueue(host, client);
 		}
 
+		// This client cancels the dock.
 		void CancelDock(Actor a)
 		{
 			if (a == null || a.IsDead || a.Disposed)
@@ -165,10 +166,10 @@ namespace OpenRA.Mods.Common.Traits
 				a.QueueActivity(act);
 		}
 
-		// Cancel on request or death
-		public void CancelDock()
+		// Cancel on request or death (host's mass cancel notification to all clients)
+		public void CancelDockAllClients()
 		{
-			foreach (var a in serviceDocks.Select(d => d.Occupier))
+			foreach (var a in serviceDocks.Select(d => d.Reserver))
 				CancelDock(a);
 
 			foreach (var a in queue)
@@ -213,69 +214,53 @@ namespace OpenRA.Mods.Common.Traits
 
 		void RemoveDeadLock(List<Actor> queue)
 		{
-			// Since graph detection is cumbersome, we only do that with =~ 30s period
-			// Considering wait docks have arrival distance tolerance, dead locks only occur between those
-			// who want to put stuff into the serving dock.
+			bool locked = false;
+			var occupiers = new List<Actor>();
 
-			// Can't get dead locked.
-			if (serviceDocks.Length == 1)
-				return;
-
-			var holding = new Dictionary<Actor, Dock>();
 			foreach (var d in allDocks)
-				foreach (var a in host.World.ActorMap.GetActorsAt(d.Location))
-					holding[a] = d;
-
-			var visited = new Dictionary<Dock, bool>();
-
-			// Traverse to find cycle.
-			// Cycles are cycles in reverse graphs too so... I'll traverse in "reverse" direction.
-			// Also, in this graph, there are only 1 outgoing edge for each node so no need for full DFS.
-			foreach (var d in serviceDocks)
 			{
-				// Already exampined by below cycle finding loop already, in previous iterations. Skip.
-				if (visited.ContainsKey(d))
-					continue;
-
-				for (var currentDock = d; currentDock != null; currentDock = holding[currentDock.Occupier])
+				foreach (var a in host.World.ActorMap.GetActorsAt(d.Location))
 				{
-					if (visited.ContainsKey(currentDock))
+					var dc = a.TraitOrDefault<DockClient>();
+					var mobile = a.TraitOrDefault<Mobile>();
+
+					if (host.Owner.Stances[a.Owner] != Stance.Ally)
+						continue;
+
+					// Not even my client. Get off my dock.
+					if (dc == null && mobile != null)
 					{
-						ResetServiceDocks();
-						return;
+						mobile.Nudge(a, host, true);
+						continue;
 					}
+					else if (dc == null) // do nothing, probably non-reloading aircraft or something.
+						continue;
 
-					visited[currentDock] = true;
-
-					// not a loop:
-					if (currentDock.Occupier == null)
-						break;
-
-					// Occupier isn't even on the docks yet.
-					if (!holding.ContainsKey(currentDock.Occupier))
-						break;
-
-					// self loops aren't dead locks.
-					if (currentDock == holding[currentDock.Occupier])
-						break;
+					if (dc.CurrentDock != null && dc.WaitedLong(info.DeadlockDetectionPeriod))
+						locked = true;
 				}
 			}
+			
+			if (locked)
+				ResetDocks();
 		}
 
-		void ResetServiceDocks()
+		void ResetDocks()
 		{
-			foreach (var d in serviceDocks)
+			// Expensive, but a sure solution where all locked guys get rescued.
+			// We don't get deadlocks very often so, let's be sure to remove then when they occur.
+			var clients = host.World.ActorsHavingTrait<DockClient>().Where(a => a.Trait<DockClient>().Host == host);
+			queue.Clear();
+
+			foreach (var a in clients)
 			{
-				if (d.Occupier == null)
+				if (a.IsDead || a.Disposed)
 					continue;
 
-				// These occupiers are ejected out of the dock by ServeHead. Put them back in.
-				queue.Add(d.Occupier);
-
-				var dc = d.Occupier.Trait<DockClient>();
-				d.Occupier.CancelActivity();
-				dc.DockState = DockState.NotAssigned;
+				var dc = a.Trait<DockClient>();
+				a.CancelActivity();
 				dc.Release(dc.CurrentDock);
+				ReserveDock(host, a, dc.Requester);
 			}
 
 			ProcessQueue(host, null);
@@ -322,7 +307,7 @@ namespace OpenRA.Mods.Common.Traits
             */
 
 			dockClient.Release(currentDock);
-			dockClient.Acquire(serviceDock, DockState.ServiceAssigned);
+			dockClient.Acquire(host, serviceDock, DockState.ServiceAssigned);
 
 			head.QueueActivity(dockClient.Requester.ApproachDockActivities(host, head, serviceDock));
 			head.QueueActivity(new CallFunc(() => OnDock(head, serviceDock)));
@@ -361,7 +346,7 @@ namespace OpenRA.Mods.Common.Traits
 			else
 			{
 				// Find any available waiting slot.
-				dock = waitDocks.FirstOrDefault(d => d.Occupier == null && !d.IsBlocked);
+				dock = waitDocks.FirstOrDefault(d => d.Reserver == null && !d.IsBlocked);
 
 				// on nothing, share the last slot.
 				if (dock == null)
@@ -372,7 +357,7 @@ namespace OpenRA.Mods.Common.Traits
 			// The last one is shared anyway. The vacancy info is not very meaningful there.
 			if (dockClient.CurrentDock != null)
 				dockClient.Release(dockClient.CurrentDock);
-			dockClient.Acquire(dock, DockState.WaitAssigned);
+			dockClient.Acquire(host, dock, DockState.WaitAssigned);
 
 			// Move to the waiting dock and wait for service dock to be released.
 			client.QueueActivity(client.Trait<Mobile>().MoveTo(dock.Location, 2));
@@ -407,7 +392,7 @@ namespace OpenRA.Mods.Common.Traits
 			while (queue.Count > 0)
 			{
 				// find the first available slot in the service docks.
-				var serviceDock = serviceDocks.FirstOrDefault(d => d.Occupier == null && !d.IsBlocked);
+				var serviceDock = serviceDocks.FirstOrDefault(d => d.Reserver == null && !d.IsBlocked);
 				if (serviceDock == null)
 					break;
 				var head = NearestClient(host, serviceDock, queue);
@@ -445,12 +430,12 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void Killed(Actor self, AttackInfo e)
 		{
-			CancelDock();
+			CancelDockAllClients();
 		}
 
 		public void Disposing(Actor self)
 		{
-			CancelDock();
+			CancelDockAllClients();
 		}
 	}
 }

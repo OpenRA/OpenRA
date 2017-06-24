@@ -54,7 +54,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly DockInfo Info;
 		readonly Actor self;
 
-		public Actor Occupier;
+		public Actor Reserver;
 
 		public CPos Location { get { return self.Location + Info.DockOffset; } }
 		public WPos CenterPosition { get { return self.World.Map.CenterOfCell(Location); } }
