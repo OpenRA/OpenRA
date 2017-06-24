@@ -84,7 +84,7 @@ namespace OpenRA.Mods.Common.Projectiles
 			return new LaserZap(this, args, c);
 		}
 
-		public void RulesetLoaded(Ruleset rules, WeaponInfo wi)
+		void IRulesetLoaded<WeaponInfo>.RulesetLoaded(Ruleset rules, WeaponInfo wi)
 		{
 			if (BlockerScanRadius == WDist.Zero)
 				BlockerScanRadius = Util.MinimumRequiredBlockerScanRadius(rules);
