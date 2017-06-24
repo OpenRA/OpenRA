@@ -30,7 +30,7 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class AttackBomber : AttackBase, ITick, ISync, INotifyRemovedFromWorld
 	{
-		AttackBomberInfo info;
+		readonly AttackBomberInfo info;
 		[Sync] Target target;
 		[Sync] bool inAttackRange;
 		[Sync] bool facingTarget = true;
@@ -45,7 +45,7 @@ namespace OpenRA.Mods.Common.Traits
 			this.info = info;
 		}
 
-		public void Tick(Actor self)
+		void ITick.Tick(Actor self)
 		{
 			var bombHeight = self.World.Map.DistanceAboveTerrain(self.CenterPosition);
 			var bombTarget = Target.FromPos(self.CenterPosition - new WVec(WDist.Zero, WDist.Zero, bombHeight));
@@ -98,7 +98,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void SetTarget(World w, WPos pos) { target = Target.FromPos(pos); }
 
-		public void RemovedFromWorld(Actor self)
+		void INotifyRemovedFromWorld.RemovedFromWorld(Actor self)
 		{
 			OnRemovedFromWorld(self);
 		}
