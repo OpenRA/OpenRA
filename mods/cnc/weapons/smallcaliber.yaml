@@ -36,7 +36,12 @@ HighV:
 
 Vulcan:
 	Inherits: ^HeavyMG
-	ReloadDelay: 2
+	Range: 8c0
+	Burst: 9
+	BurstDelay: 2
+	FirstBurstTargetOffset: -2984,0,0
+	FollowingBurstTargetOffset: 746,0,0
+	ReloadDelay: 125
 	Report: gun5.aud
 	Warhead@1Dam: SpreadDamage
 		Spread: 426

@@ -829,6 +829,22 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						node.Key = "UseTargetableCellsOffsets";
 				}
 
+				// Refactored AttackBomb so it doesn't need it's own special sauce anymore
+				if (engineVersion < 20170713)
+				{
+					if (node.Key == "AttackBomber")
+					{
+						var gunsOrBombs = node.Value.Nodes.FirstOrDefault(n => n.Key == "Guns" || n.Key == "Bombs");
+						if (gunsOrBombs != null)
+						{
+							Console.WriteLine("Hardcoded Guns and Bombs logic has been removed from AttackBomber.");
+							Console.WriteLine("Bombs should work like usual, for gun strafing use the new Weapon TargetOffset modifiers.");
+							Console.WriteLine("Look at the TD mod's A10 for an example.");
+							node.Value.Nodes.RemoveAll(n => n.Key == "Guns" || n.Key == "Bombs");
+						}
+					}
+				}
+
 				UpgradeActorRules(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 
