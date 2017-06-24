@@ -30,6 +30,7 @@ Sniper:
 	Warhead@2Eff: CreateEffect
 		Explosions: piffs
 		VictimScanRadius: 0
+		ValidTargets: Ground, Water, Air
 
 HighV:
 	Inherits: ^HeavyMG
@@ -131,6 +132,7 @@ APCGun:
 		DamageTypes: Prone50Percent, TriggerProne, DefaultDeath
 	Warhead@2Eff: CreateEffect
 		Explosions: small_poof
+		ValidTargets: Ground, Water, Air
 
 APCGun.AA:
 	Inherits: APCGun
