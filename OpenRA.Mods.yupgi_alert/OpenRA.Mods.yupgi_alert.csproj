@@ -87,6 +87,7 @@
     <Compile Include="Traits\AcceptCashRallyPointAcceptor.cs" />
     <Compile Include="Traits\Conditions\GrantConditionOnFire.cs" />
     <Compile Include="Traits\Conditions\GrantConditionOnAttack.cs" />
+    <Compile Include="Traits\AirstrikeOnFire.cs" />
     <Compile Include="Traits\Mindcontrollable.cs" />
     <Compile Include="Traits\Mindcontroller.cs" />
     <Compile Include="Traits\FireWeaponAtSelf.cs" />
