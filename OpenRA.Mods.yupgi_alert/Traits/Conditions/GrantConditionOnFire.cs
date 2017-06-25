@@ -45,6 +45,9 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 		[Desc("Without firing for this period of time, we unstack one level of condition.")]
 		public readonly int UnstackDelay = 15;
 
+		[Desc("Discard stack, if you switch target? You probably want PopAll too.")]
+		public readonly bool UnstackOnNewTarget = false;
+
 		[Desc("Pop all condition stack on unstack?")]
 		public readonly bool PopAll = false;
 
@@ -83,6 +86,8 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 
 		void UnstackCondition(Actor self)
 		{
+			shotsFired = 0;
+
 			if (manager == null)
 				return;
 
@@ -104,16 +109,42 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 			cooldown--;
 			if (cooldown <= 0)
 			{
-				shotsFired = 0;
 				cooldown = info.UnstackDelay;
 				UnstackCondition(self);
 			}
 		}
 
+		bool TargetChanged(Target lastTarget, Target target)
+		{
+			if (lastTarget.Type == TargetType.Invalid)
+				return true;
+
+			if (target.Type == TargetType.Invalid)
+				return true;
+
+			// Same actor, fine.
+			if (lastTarget.Actor == target.Actor)
+				return false;
+
+			// Position designated. No position change = same target.
+			if (lastTarget.CenterPosition == target.CenterPosition)
+				return false;
+
+			return true;
+		}
+
+		Target lastTarget;
 		public void Attacking(Actor self, Target target, Armament a, Barrel barrel)
 		{
 			if (a.Info.Name != info.Armament)
 				return;
+
+			if (info.UnstackOnNewTarget)
+			{
+				if (TargetChanged(lastTarget, target))
+					UnstackCondition(self);
+				lastTarget = target;
+			}
 
 			cooldown = info.UnstackDelay;
 
