@@ -13,9 +13,9 @@ ParaBomb:
 		Damage: 300
 		Versus:
 			None: 30
-			Wood: 75
+			Wood: 40
 			Light: 75
-			Concrete: 50
+			Concrete: 25
 		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
