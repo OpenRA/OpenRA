@@ -68,6 +68,12 @@ namespace OpenRA.Mods.Common.Scripting
 		[Desc("The type of the actor (e.g. \"e1\").")]
 		public string Type { get { return Self.Info.Name; } }
 
+		[Desc("Unique ID of the actor (e.g. \"e1 234\"")]
+		public string UID { get { return Self.ToString(); } }
+
+		[Desc("Unique ID of the actor (e.g. \"234\"")]
+		public int ActorID { get { return (int) Self.ActorID; } }
+
 		[Desc("Test whether an actor has a specific property.")]
 		public bool HasProperty(string name)
 		{
