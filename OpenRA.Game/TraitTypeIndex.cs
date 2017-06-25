@@ -14,7 +14,6 @@ using System.Collections.Generic;
 
 namespace OpenRA
 {
-	
 	public class TraitTypeIndexMap
 	{
 		private static Dictionary<Type, int> map = new Dictionary<Type, int>();
@@ -24,7 +23,8 @@ namespace OpenRA
 			if (map.TryGetValue(t, out index)) {
 				return index;
 			}
-			index = map.Count+1;
+
+			index = map.Count + 1;
 			map.Add(t, index);
 			return index;
 		}
@@ -34,6 +34,7 @@ namespace OpenRA
 			if (map.TryGetValue(t, out index)) {
 				return index;
 			}
+
 			return 0;
 		}
 
@@ -44,29 +45,29 @@ namespace OpenRA
 		public static Type GetType(int index) {
 			if (index > 0 && index < map.Count) {
 				foreach (var t in map) {
-					if (t.Value == index) {
+					if (t.Value == index)
 						return t.Key;
-					}
 				}
 			}
+
 			return null;
 		}
-	};
+	}
 
 	// Index of type in array
 	public class TraitTypeIndex<T>
 	{
-		private static int TypeIndex = 0;
+		private static int typeIndex = 0;
 		public static int GetTypeIndex() {
-			if (TypeIndex == 0) {
-				TypeIndex = TraitTypeIndexMap.RegisterType(typeof(T));
+			if (typeIndex == 0) {
+				typeIndex = TraitTypeIndexMap.RegisterType(typeof(T));
 			}
-			return TypeIndex;
+
+			return typeIndex;
 		}
 
 		public static bool IsRegistered() {
-			return TypeIndex != 0;
+			return typeIndex != 0;
 		}
-	};
+	}
 }
-

@@ -67,17 +67,20 @@ namespace OpenRA
 			if (index <= 0) {
 				throw new InvalidOperationException("Traits type index out of bounds (<=0)");
 			}
+
 			if (index >= traits.Length) {
 				Resize();
 				if (index > traits.Length) {
 					throw new InvalidOperationException("Traits type index out of bounds, index greater than max registered type index");
 				}
 			}
+
 			ITraitContainer trait = traits[index];
 			if (trait == null) {
 				trait = CreateTraitContainer(t);
 				traits[index] = trait;
 			}
+
 			return trait;
 		}
 
@@ -89,7 +92,7 @@ namespace OpenRA
 
 		TraitContainer<T> InnerGet<T>()
 		{
-			return (TraitContainer<T>) InnerGet(TraitTypeIndex<T>.GetTypeIndex(), typeof(T));
+			return (TraitContainer<T>)InnerGet(TraitTypeIndex<T>.GetTypeIndex(), typeof(T));
 		}
 
 		public void PrintReport()
@@ -97,9 +100,10 @@ namespace OpenRA
 			if (traits == null) {
 				return;
 			}
+
 			Log.AddChannel("traitreport", "traitreport.log");
 			Log.Write("traitreport", "Number of registered trait types {0}", TraitTypeIndexMap.GetCount());
-			for (int i=1;i<traits.Length;i++) {
+			for (int i = 1; i < traits.Length; i++) {
 				var trait = traits[i];
 				if (trait != null) {
 					Log.Write("traitreport", "{0}: {1}", TraitTypeIndexMap.GetType(i), trait.Queries);
