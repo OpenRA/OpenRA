@@ -600,7 +600,6 @@ V21:
 			TopLeft: -1024, -1024
 			BottomRight: 1024, 0
 	HitShape@WELL:
-		UseOccupiedCellsOffsets: false
 		TargetableOffsets: -770,512,0
 		Type: Rectangle
 			TopLeft: 0, 0
