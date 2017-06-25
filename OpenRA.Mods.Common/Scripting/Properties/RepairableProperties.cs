@@ -20,12 +20,12 @@ namespace OpenRA.Mods.Common.Scripting
 	[ScriptPropertyGroup("Repairable")]
 	public class RepairableProperties : ScriptActorProperties, Requires<RepairableInfo>
 	{
-		//readonly Repaira cargo;
+		//// readonly Repaira cargo;
 
 		public RepairableProperties(ScriptContext context, Actor self)
 			: base(context, self)
 		{
-			//cargo = self.Trait<Cargo>();
+			// cargo = self.Trait<Cargo>();
 		}
 
 		[ScriptActorPropertyActivity]

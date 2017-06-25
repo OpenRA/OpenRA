@@ -72,7 +72,7 @@ namespace OpenRA.Mods.Common.Scripting
 		public string UID { get { return Self.ToString(); } }
 
 		[Desc("Unique ID of the actor (e.g. \"234\"")]
-		public int ActorID { get { return (int) Self.ActorID; } }
+		public int ActorID { get { return (int)Self.ActorID; } }
 
 		[Desc("Test whether an actor has a specific property.")]
 		public bool HasProperty(string name)
