@@ -10,8 +10,8 @@ Container@PERF_WIDGETS:
 		Background@GRAPH_BG:
 			ClickThrough: true
 			Background: dialog4
-			X: 30
-			Y: WINDOW_BOTTOM - 240
+			X: 10
+			Y: WINDOW_BOTTOM - 265
 			Width: 210
 			Height: 210
 			Children:
