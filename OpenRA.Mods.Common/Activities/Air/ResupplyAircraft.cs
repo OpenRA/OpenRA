@@ -18,6 +18,8 @@ namespace OpenRA.Mods.Common.Activities
 {
 	public class ResupplyAircraft : CompositeActivity
 	{
+		Activity[] resupplyActivities;
+
 		public ResupplyAircraft(Actor self) { }
 
 		protected override void OnFirstRun(Actor self)
@@ -28,6 +30,9 @@ namespace OpenRA.Mods.Common.Activities
 			if (host == null)
 				return;
 
+			resupplyActivities = aircraft.GetResupplyActivities(host).ToArray();
+
+			/*
 			if (aircraft.IsPlane)
 			{
 				ChildActivity = ActivityUtils.SequenceActivities(
@@ -46,10 +51,23 @@ namespace OpenRA.Mods.Common.Activities
 					.Append(new AllowYieldingReservation(self))
 					.Append(new TakeOff(self)).ToArray());
 			}
+			*/
 		}
 
 		public override Activity Tick(Actor self)
 		{
+			int cnt = 0;
+			for (int i = 0; i < resupplyActivities.Length; i++)
+			{
+				if (resupplyActivities[i] == null)
+					continue;
+				resupplyActivities[i] = ActivityUtils.RunActivity(self, resupplyActivities[i]);
+				cnt++;
+			}
+
+			if (cnt > 0)
+				return this;
+
 			return NextActivity;
 		}
 	}
