@@ -222,7 +222,7 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			var holding = new Dictionary<Actor, Dock>();
-			foreach (var d in serviceDocks)
+			foreach (var d in allDocks)
 				foreach (var a in host.World.ActorMap.GetActorsAt(d.Location))
 					holding[a] = d;
 
