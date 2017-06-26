@@ -814,7 +814,7 @@ SAM:
 	WithTurretedSpriteBody:
 	AutoSelectionSize:
 	Armament:
-		Weapon: SAMMissile
+		Weapon: Dragon
 		MuzzleSequence: muzzle
 	AttackPopupTurreted:
 	WithMuzzleOverlay:
@@ -941,7 +941,7 @@ ATWR:
 		LocalOffset: 256,128,0, 256,-128,0
 		LocalYaw: -100,100
 	Armament@SECONDARY:
-		Weapon: SAMMissile
+		Weapon: TowerAAMissile
 		LocalOffset: 256,128,0, 256,-128,0
 		LocalYaw: -100,100
 	AttackTurreted:

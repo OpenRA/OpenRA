@@ -6,6 +6,7 @@ Atomic:
 		Damage: 150
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		ValidTargets: Ground, Air, Trees
+		AffectsParent: True
 		Versus:
 			None: 100
 			Wood: 100
@@ -22,6 +23,7 @@ Atomic:
 		Falloff: 1000, 700, 500, 300, 150, 50, 0
 		Delay: 3
 		ValidTargets: Ground, Air
+		AffectsParent: True
 		Versus:
 			None: 100
 			Wood: 100
@@ -46,6 +48,7 @@ Atomic:
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		Delay: 6
 		ValidTargets: Ground, Air, Trees
+		AffectsParent: True
 		Versus:
 			None: 100
 			Wood: 100
@@ -66,6 +69,7 @@ Atomic:
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		Delay: 9
 		ValidTargets: Ground, Air, Trees
+		AffectsParent: True
 		Versus:
 			None: 100
 			Wood: 100
@@ -88,6 +92,7 @@ IonCannon:
 		Damage: 100
 		Falloff: 1000, 1000, 250, 100
 		ValidTargets: Ground, Air, Trees
+		AffectsParent: True
 		DamageTypes: Prone50Percent, TriggerProne, FireDeath, Incendiary
 	Warhead@2Smu_impact: LeaveSmudge
 		SmudgeType: Scorch

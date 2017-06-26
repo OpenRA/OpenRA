@@ -114,6 +114,12 @@ MachineGun:
 	Warhead@2Eff: CreateEffect
 		Explosions: piffs
 
+MachineGunH:
+	Inherits: MachineGun
+	Warhead@1Dam: SpreadDamage
+		Versus:
+			Light: 55
+
 APCGun:
 	ReloadDelay: 18
 	Range: 5c0
