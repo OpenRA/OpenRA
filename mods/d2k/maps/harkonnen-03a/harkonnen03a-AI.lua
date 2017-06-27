@@ -26,7 +26,7 @@ AtreidesVehicleTypes = { "trike", "trike", "quad" }
 
 ActivateAI = function()
 	IdlingUnits[atreides] = { }
-	HarvesterKilled[atreides] = true
+	LastHarvesterEaten[atreides] = true
 	DefendAndRepairBase(atreides, AtreidesBase, 0.75, AttackGroupSize[Difficulty])
 
 	AConyard.Produce(HarkonnenUpgrades[1])

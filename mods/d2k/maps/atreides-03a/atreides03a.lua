@@ -91,11 +91,11 @@ Tick = function()
 		player.MarkCompletedObjective(KillOrdos)
 	end
 
-	if DateTime.GameTime % DateTime.Seconds(30) and HarvesterKilled[ordos] then
+	if DateTime.GameTime % DateTime.Seconds(30) and LastHarvesterEaten[ordos] then
 		local units = ordos.GetActorsByType("harvester")
 
 		if #units > 0 then
-			HarvesterKilled[ordos] = false
+			LastHarvesterEaten[ordos] = false
 			ProtectHarvester(units[1], ordos, AttackGroupSize[Difficulty])
 		end
 	end

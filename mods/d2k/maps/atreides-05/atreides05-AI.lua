@@ -63,7 +63,7 @@ end
 
 ActivateAI = function()
 	harkonnen.Cash = 15000
-	HarvesterKilled[harkonnen] = true
+	LastHarvesterEaten[harkonnen] = true
 	InitAIUnits()
 
 	local delay = function() return Utils.RandomInteger(AttackDelays[Difficulty][1], AttackDelays[Difficulty][2] + 1) end

@@ -52,7 +52,7 @@ InitAIUnits = function()
 end
 
 ActivateAI = function()
-	HarvesterKilled[harkonnen] = true
+	LastHarvesterEaten[harkonnen] = true
 	InitAIUnits()
 	FremenProduction()
 

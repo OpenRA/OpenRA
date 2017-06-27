@@ -30,7 +30,7 @@ SmugglerVehicleTypes = { "raider", "raider", "quad" }
 SmugglerTankType = { "combat_tank_o" }
 
 InitAIUnits = function(house)
-	HarvesterKilled[house] = true
+	LastHarvesterEaten[house] = true
 	IdlingUnits[house] = Reinforcements.Reinforce(house, InitialReinforcements[house.Name], InitialReinforcementsPaths[house.Name])
 
 	DefendAndRepairBase(house, Base[house.Name], 0.75, AttackGroupSize[Difficulty])

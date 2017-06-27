@@ -83,7 +83,7 @@ end
 IdlingUnits = { }
 Attacking = { }
 HoldProduction = { }
-HarvesterKilled = { }
+LastHarvesterEaten = { }
 
 SetupAttackGroup = function(owner, size)
 	local units = { }
@@ -153,7 +153,20 @@ end
 
 ProtectHarvester = function(unit, owner, defenderCount)
 	DefendActor(unit, owner, defenderCount)
-	Trigger.OnKilled(unit, function() HarvesterKilled[unit.Owner] = true end)
+
+	-- Worms don't kill the actor, but dispose it instead.
+	-- If a worm kills the last harvester (hence we check for remaining ones),
+	-- a new harvester is delivered by the harvester insurance.
+	-- Otherwise, there's no need to check for new harvesters.
+	local killed = false
+	Trigger.OnKilled(unit, function()
+		killed = true
+	end)
+	Trigger.OnRemovedFromWorld(unit, function()
+		if not killed and #unit.Owner.GetActorsByType("harvester") == 0 then
+			LastHarvesterEaten[owner] = true
+		end
+	end)
 end
 
 RepairBuilding = function(owner, actor, modifier)

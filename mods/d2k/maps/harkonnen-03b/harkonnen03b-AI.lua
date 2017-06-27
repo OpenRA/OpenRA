@@ -31,7 +31,7 @@ InitAIUnits = function()
 end
 
 ActivateAI = function()
-	HarvesterKilled[atreides] = true
+	LastHarvesterEaten[atreides] = true
 	Trigger.AfterDelay(0, InitAIUnits)
 
 	AConyard.Produce(HarkonnenUpgrades[1])

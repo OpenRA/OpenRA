@@ -71,11 +71,11 @@ Hunt = function(house)
 end
 
 CheckHarvester = function(house)
-	if DateTime.GameTime % DateTime.Seconds(30) and HarvesterKilled[house] then
+	if DateTime.GameTime % DateTime.Seconds(30) and LastHarvesterEaten[house] then
 		local units = house.GetActorsByType("harvester")
 
 		if #units > 0 then
-			HarvesterKilled[house] = false
+			LastHarvesterEaten[house] = false
 			ProtectHarvester(units[1], house, AttackGroupSize[Difficulty])
 		end
 	end
