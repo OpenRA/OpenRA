@@ -91,7 +91,7 @@ Tick = function()
 		player.MarkCompletedObjective(KillOrdos)
 	end
 
-	if DateTime.GameTime % DateTime.Seconds(30) and LastHarvesterEaten[ordos] then
+	if DateTime.GameTime % DateTime.Seconds(10) == 0 and LastHarvesterEaten[ordos] then
 		local units = ordos.GetActorsByType("harvester")
 
 		if #units > 0 then
