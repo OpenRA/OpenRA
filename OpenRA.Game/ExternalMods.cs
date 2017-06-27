@@ -38,15 +38,9 @@ namespace OpenRA
 	{
 		readonly Dictionary<string, ExternalMod> mods = new Dictionary<string, ExternalMod>();
 		readonly SheetBuilder sheetBuilder;
-		readonly string launchPath;
 
-		public ExternalMods(string launchPath)
+		public ExternalMods()
 		{
-			// Process.Start requires paths to not be quoted, even if they contain spaces
-			if (launchPath.First() == '"' && launchPath.Last() == '"')
-				launchPath = launchPath.Substring(1, launchPath.Length - 2);
-
-			this.launchPath = launchPath;
 			sheetBuilder = new SheetBuilder(SheetType.BGRA, 256);
 
 			// Load registered mods
@@ -83,7 +77,7 @@ namespace OpenRA
 			mods[ExternalMod.MakeKey(mod)] = mod;
 		}
 
-		internal void Register(Manifest mod)
+		internal void Register(Manifest mod, string launchPath)
 		{
 			if (mod.Metadata.Hidden)
 				return;

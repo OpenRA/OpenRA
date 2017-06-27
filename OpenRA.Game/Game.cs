@@ -338,8 +338,21 @@ namespace OpenRA
 			foreach (var mod in Mods)
 				Console.WriteLine("\t{0}: {1} ({2})", mod.Key, mod.Value.Metadata.Title, mod.Value.Metadata.Version);
 
-			var launchPath = args.GetValue("Engine.LaunchPath", Assembly.GetEntryAssembly().Location);
-			ExternalMods = new ExternalMods(launchPath);
+			ExternalMods = new ExternalMods();
+
+			Manifest currentMod;
+			if (modID != null && Mods.TryGetValue(modID, out currentMod))
+			{
+				var launchPath = args.GetValue("Engine.LaunchPath", Assembly.GetEntryAssembly().Location);
+
+				// Sanitize input from platform-specific launchers
+				// Process.Start requires paths to not be quoted, even if they contain spaces
+				if (launchPath.First() == '"' && launchPath.Last() == '"')
+					launchPath = launchPath.Substring(1, launchPath.Length - 2);
+
+				ExternalMods.Register(Mods[modID], launchPath);
+			}
+
 			Console.WriteLine("External mods:");
 			foreach (var mod in ExternalMods)
 				Console.WriteLine("\t{0}: {1} ({2})", mod.Key, mod.Value.Title, mod.Value.Version);
@@ -385,7 +398,6 @@ namespace OpenRA
 			Sound.StopVideo();
 
 			ModData = new ModData(Mods[mod], Mods, true);
-			ExternalMods.Register(ModData.Manifest);
 
 			if (!ModData.LoadScreen.BeforeLoad())
 				return;
