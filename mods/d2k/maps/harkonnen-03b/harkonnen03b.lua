@@ -109,11 +109,11 @@ Tick = function()
 		player.MarkCompletedObjective(KillAtreides)
 	end
 
-	if DateTime.GameTime % DateTime.Seconds(30) and HarvesterKilled[atreides] then
+	if DateTime.GameTime % DateTime.Seconds(30) and LastHarvesterEaten[atreides] then
 		local units = atreides.GetActorsByType("harvester")
 
 		if #units > 0 then
-			HarvesterKilled[atreides] = false
+			LastHarvesterEaten[atreides] = false
 			ProtectHarvester(units[1], atreides, AttackGroupSize[Difficulty])
 		end
 	end

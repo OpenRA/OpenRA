@@ -260,11 +260,11 @@ Tick = function()
 		player.MarkCompletedObjective(KillSmuggler)
 	end
 
-	if HarvesterKilled[harkonnen] and DateTime.GameTime % DateTime.Seconds(30) then
+	if LastHarvesterEaten[harkonnen] and DateTime.GameTime % DateTime.Seconds(30) then
 		local units = harkonnen.GetActorsByType("harvester")
 
 		if #units > 0 then
-			HarvesterKilled[harkonnen] = false
+			LastHarvesterEaten[harkonnen] = false
 			ProtectHarvester(units[1], harkonnen, AttackGroupSize[Difficulty])
 		end
 	end
