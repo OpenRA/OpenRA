@@ -77,18 +77,16 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 			// Blocking is better handled by unload.
 			*/
 
-			var wsb = self.TraitOrDefault<WithSpriteBody>();
-			if (wsb != null && wsb.DefaultAnimation.HasSequence(Info.ActiveSequence))
-				wsb.PlayCustomAnimation(self, Info.ActiveSequence);
-
 			var td = new TypeDictionary
 			{
 				new OwnerInit(self.Owner),
 			};
 			var newUnit = self.World.CreateActor(false, unit.ToLowerInvariant(), td);
 			cargo.Load(self, newUnit);
-			self.QueueActivity(new Wait(15)); // slight pause
-			self.QueueActivity(new UnloadCargo(self, true)); // queue unload so that the unit will come out automatically.
+
+			var wsb = self.TraitOrDefault<WithSpriteBody>();
+			if (wsb != null && wsb.DefaultAnimation.HasSequence(Info.ActiveSequence))
+				wsb.PlayCustomAnimation(self, Info.ActiveSequence, () => self.QueueActivity(new UnloadCargo(self, true)));
 		}
 
 		void INotifyPassengerExited.OnPassengerExited(Actor self, Actor passenger)
@@ -121,7 +119,7 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 		void INotifyPassengerEntered.OnPassengerEntered(Actor self, Actor passenger)
 		{
 			// get rules entry name for each passenger.
-			var names = cargo.Passengers.Select(x => x.Info.Name).ToArray();
+			var names = cargo.Passengers.OrderBy(x => x.Info.Name).Select(x => x.Info.Name).ToArray();
 
 			// Lets examine the contents.
 			foreach (var kv in Info.Combinations)
@@ -143,7 +141,7 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 		{
 			var passenger = produced.TraitOrDefault<Passenger>();
 			if (passenger == null)
-				throw new InvalidProgramException("IsAcceltableActor check is to be done before QueueActivities!");
+				throw new InvalidProgramException("Is acceptable check didn't filter this?");
 
 			return new EnterTransportWithWait(produced, dest);
 		}
