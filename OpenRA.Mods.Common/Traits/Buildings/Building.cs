@@ -27,21 +27,30 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		[Desc("Where you are allowed to place the building (Water, Clear, ...)")]
 		public readonly HashSet<string> TerrainTypes = new HashSet<string>();
+
 		[Desc("The range to the next building it can be constructed. Set it higher for walls.")]
 		public readonly int Adjacent = 2;
+
 		[Desc("x means space it blocks, _ is a part that is passable by actors.")]
 		public readonly string Footprint = "x";
+
 		public readonly CVec Dimensions = new CVec(1, 1);
+
 		public readonly bool RequiresBaseProvider = false;
+
 		public readonly bool AllowInvalidPlacement = false;
+
 		[Desc("Clear smudges from underneath the building footprint.")]
 		public readonly bool RemoveSmudgesOnBuild = true;
+
 		[Desc("Clear smudges from underneath the building footprint on sell.")]
 		public readonly bool RemoveSmudgesOnSell = true;
+
 		[Desc("Clear smudges from underneath the building footprint on transform.")]
 		public readonly bool RemoveSmudgesOnTransform = true;
 
 		public readonly string[] BuildSounds = { "placbldg.aud", "build5.aud" };
+
 		public readonly string[] UndeploySounds = { "cashturn.aud" };
 
 		public virtual object Create(ActorInitializer init) { return new Building(init, this); }
