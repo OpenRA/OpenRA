@@ -107,7 +107,7 @@ Tick = function()
 		player.MarkCompletedObjective(KillAtreides)
 	end
 
-	if DateTime.GameTime % DateTime.Seconds(30) and LastHarvesterEaten[atreides] then
+	if DateTime.GameTime % DateTime.Seconds(10) == 0 and LastHarvesterEaten[atreides] then
 		local units = atreides.GetActorsByType("harvester")
 
 		if #units > 0 then

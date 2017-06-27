@@ -71,7 +71,7 @@ Hunt = function(house)
 end
 
 CheckHarvester = function(house)
-	if DateTime.GameTime % DateTime.Seconds(30) and LastHarvesterEaten[house] then
+	if DateTime.GameTime % DateTime.Seconds(10) == 0 and LastHarvesterEaten[house] then
 		local units = house.GetActorsByType("harvester")
 
 		if #units > 0 then

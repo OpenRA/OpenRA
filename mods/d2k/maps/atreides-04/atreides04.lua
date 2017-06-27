@@ -114,7 +114,7 @@ Tick = function()
 		player.MarkCompletedObjective(KeepIntegrity)
 	end
 
-	if DateTime.GameTime % DateTime.Seconds(30) and LastHarvesterEaten[harkonnen] then
+	if DateTime.GameTime % DateTime.Seconds(10) == 0 and LastHarvesterEaten[harkonnen] then
 		local units = harkonnen.GetActorsByType("harvester")
 
 		if #units > 0 then

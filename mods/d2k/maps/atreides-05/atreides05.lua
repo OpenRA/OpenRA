@@ -260,7 +260,7 @@ Tick = function()
 		player.MarkCompletedObjective(KillSmuggler)
 	end
 
-	if LastHarvesterEaten[harkonnen] and DateTime.GameTime % DateTime.Seconds(30) then
+	if LastHarvesterEaten[harkonnen] and DateTime.GameTime % DateTime.Seconds(10) == 0 then
 		local units = harkonnen.GetActorsByType("harvester")
 
 		if #units > 0 then
