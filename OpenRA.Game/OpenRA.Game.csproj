@@ -255,6 +255,9 @@
     <Compile Include="Support\VariableExpression.cs" />
     <Compile Include="ExternalMods.cs" />
     <Compile Include="Graphics\Model.cs" />
+    <Compile Include="UtilityCommands\RegisterModCommand.cs" />
+    <Compile Include="UtilityCommands\UnregisterModCommand.cs" />
+    <Compile Include="UtilityCommands\ClearInvalidModRegistrationsCommand.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FileSystem\Folder.cs" />
