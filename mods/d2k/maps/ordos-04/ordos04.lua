@@ -81,6 +81,7 @@ CheckHarvester = function(house)
 	end
 end
 
+AttackNotifier = 0
 Tick = function()
 	if player.HasNoRequiredUnits() then
 		harkonnen.MarkCompletedObjective(KillOrdosH)
@@ -95,6 +96,8 @@ Tick = function()
 
 	CheckHarvester(harkonnen)
 	CheckHarvester(smuggler)
+
+	AttackNotifier = AttackNotifier - 1
 end
 
 WorldLoaded = function()
@@ -133,6 +136,16 @@ WorldLoaded = function()
 			player.MarkCompletedObjective(CaptureOutpost)
 			smuggler.MarkFailedObjective(DefendOutpost)
 		end)
+	end)
+	Trigger.OnDamaged(SOutpost, function()
+		if SOutpost.Owner ~= smuggler then
+			return
+		end
+
+		if AttackNotifier <= 0 then
+			AttackNotifier = DateTime.Seconds(10)
+			Media.DisplayMessage("Don't destroy the Outpost!", "Mentat")
+		end
 	end)
 
 	Trigger.AfterDelay(HarkonnenAttackDelay[Difficulty] - DateTime.Seconds(5), function()
