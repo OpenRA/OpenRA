@@ -150,6 +150,8 @@ CAMERA:
 	WithSpriteBody:
 	RenderSpritesEditorOnly:
 		Image: camera
+	EditorTilesetFilter:
+		Categories: System
 
 camera.paradrop:
 	Inherits: CAMERA
@@ -192,6 +194,8 @@ FLARE:
 		Name: Flare
 		ShowOwnerRow: false
 	AutoSelectionSize:
+	EditorTilesetFilter:
+		Categories: System
 
 MINE:
 	Inherits@1: ^SpriteActor
@@ -208,6 +212,8 @@ MINE:
 	RadarColorFromTerrain:
 		Terrain: Ore
 	SeedsResource:
+	EditorTilesetFilter:
+		Categories: Resource spawn
 
 GMINE:
 	Inherits@1: ^SpriteActor
@@ -225,6 +231,8 @@ GMINE:
 		Terrain: Gems
 	SeedsResource:
 		ResourceType: Gems
+	EditorTilesetFilter:
+		Categories: Resource spawn
 
 RAILMINE:
 	Inherits@1: ^SpriteActor
@@ -239,6 +247,7 @@ RAILMINE:
 		Dimensions: 2,1
 	EditorTilesetFilter:
 		ExcludeTilesets: INTERIOR
+		Categories: Civilian building
 
 QUEE:
 	Inherits@1: ^SpriteActor
@@ -253,6 +262,7 @@ QUEE:
 	AppearsOnRadar:
 	EditorTilesetFilter:
 		RequireTilesets: INTERIOR
+		Categories: Critter
 
 LAR1:
 	Inherits@1: ^SpriteActor
@@ -269,6 +279,7 @@ LAR1:
 	AppearsOnRadar:
 	EditorTilesetFilter:
 		RequireTilesets: INTERIOR
+		Categories: Critter
 
 LAR2:
 	Inherits@1: LAR1
@@ -347,6 +358,8 @@ mpspawn:
 	RenderSpritesEditorOnly:
 	BodyOrientation:
 		QuantizedFacings: 1
+	EditorTilesetFilter:
+		Categories: System
 
 waypoint:
 	EditorOnlyTooltip:
@@ -358,6 +371,8 @@ waypoint:
 	RenderSpritesEditorOnly:
 	BodyOrientation:
 		QuantizedFacings: 1
+	EditorTilesetFilter:
+		Categories: System
 
 ^fact.colorpicker:
 	Inherits: FACT
@@ -379,3 +394,5 @@ CTFLAG:
 	-Selectable:
 	-SelectionDecorations:
 	-Targetable:
+	EditorTilesetFilter:
+		Categories: System
