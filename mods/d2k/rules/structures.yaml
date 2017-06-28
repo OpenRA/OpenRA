@@ -721,6 +721,8 @@ wall:
 		Type: Rectangle
 			TopLeft: -512, -512
 			BottomRight: 512, 512
+	EditorTilesetFilter:
+		Categories: Wall
 
 medium_gun_turret:
 	Inherits: ^Defense
