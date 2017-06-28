@@ -358,6 +358,11 @@ namespace OpenRA.Mods.Common.AI
 			if (a.Owner != Player || a.IsDead || !a.IsInWorld)
 				return true;
 
+			// Don't make aircrafts land and take off like crazy
+			var pool = a.TraitOrDefault<AmmoPool>();
+			if (pool != null && pool.Info.SelfReloads == false && pool.HasAmmo() == false)
+				return true;
+
 			// Actors in luaOccupiedActors are under control of scripted actions and
 			// shouldn't be ordered by the default hacky controller.
 			return IsLuaOccupied(a);
@@ -1357,6 +1362,10 @@ namespace OpenRA.Mods.Common.AI
 			else if (self.TraitOrDefault<Aircraft>() != null)
 			{
 				if (e.Damage.Value == 0)
+					return;
+
+				// HARDCODE: Aurora keep target
+				if (self.Info.Name == "mig")
 					return;
 
 				// U2 or spawned stuff
