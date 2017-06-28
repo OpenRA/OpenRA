@@ -204,7 +204,6 @@ namespace OpenRA.Mods.Common.Orders
 					{
 						new FactionInit(faction),
 						new OwnerInit(queue.Actor.Owner),
-						new HideBibPreviewInit()
 					};
 
 					foreach (var api in actor.TraitInfos<IActorPreviewInitInfo>())
