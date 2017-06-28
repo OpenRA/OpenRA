@@ -202,6 +202,34 @@ namespace OpenRA
 			}
 		}
 
+		internal void Unregister(Manifest mod, ModRegistration registration)
+		{
+			var sources = new List<string>();
+			if (registration.HasFlag(ModRegistration.System))
+				sources.Add(Platform.SystemSupportDir);
+
+			if (registration.HasFlag(ModRegistration.User))
+				sources.Add(Platform.SupportDir);
+
+			var key = ExternalMod.MakeKey(mod);
+			mods.Remove(key);
+
+			foreach (var source in sources.Distinct())
+			{
+				var path = Path.Combine(source, "ModMetadata", key + ".yaml");
+				try
+				{
+					if (File.Exists(path))
+						File.Delete(path);
+				}
+				catch (Exception e)
+				{
+					Log.Write("debug", "Failed to remove mod metadata file '{0}'", path);
+					Log.Write("debug", e.ToString());
+				}
+			}
+		}
+
 		public ExternalMod this[string key] { get { return mods[key]; } }
 		public int Count { get { return mods.Count; } }
 		public ICollection<string> Keys { get { return mods.Keys; } }
