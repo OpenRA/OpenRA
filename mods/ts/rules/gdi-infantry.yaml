@@ -183,6 +183,8 @@ JUMPJET.Husk:
 	WithDeathAnimation@SPLASH:
 		RequiresCondition: water-death
 		FallbackSequence: die-splash
+	EditorTilesetFilter:
+		Categories: Husk
 
 GHOST:
 	Inherits: ^Soldier

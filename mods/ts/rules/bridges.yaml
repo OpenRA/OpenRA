@@ -15,6 +15,8 @@ CABHUT:
 	-SelectionDecorations:
 	-Demolishable:
 	-Explodes:
+	EditorTilesetFilter:
+		Categories: Bridge
 
 ^LowBridgeRamp:
 	AlwaysVisible:
@@ -30,6 +32,8 @@ CABHUT:
 		QuantizedFacings: 1
 	Tooltip:
 		Name: Bridge
+	EditorTilesetFilter:
+		Categories: Bridge
 
 ^LowBridge:
 	Inherits: ^LowBridgeRamp
@@ -172,6 +176,8 @@ LOBRDG_R_SW:
 		OccupiesSpace: false
 	CustomSelectionSize:
 		CustomBounds: 96, 144
+	EditorTilesetFilter:
+		Categories: Bridge
 
 BRIDGE1:
 	Inherits: ^ElevatedBridgePlaceholder
