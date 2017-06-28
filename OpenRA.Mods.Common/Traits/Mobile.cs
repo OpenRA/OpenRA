@@ -50,7 +50,7 @@ namespace OpenRA.Mods.Common.Traits
 
 	[Desc("Unit is able to move.")]
 	public class MobileInfo : ConditionalTraitInfo, IMoveInfo, IPositionableInfo, IFacingInfo,
-		UsesInit<FacingInit>, UsesInit<LocationInit>, UsesInit<SubCellInit>
+		UsesInit<FacingInit>, UsesInit<LocationInit>, UsesInit<SubCellInit>, IActorPreviewInitInfo
 	{
 		[FieldLoader.LoadUsing("LoadSpeeds", true)]
 		[Desc("Set Water: 0 for ground units and lower the value on rough terrain.")]
@@ -133,6 +133,14 @@ namespace OpenRA.Mods.Common.Traits
 
 		[Desc("Can this actor transition on slopes?")]
 		public readonly bool JumpjetTransitionOnRamps = true;
+
+		[Desc("Facing to use for actor previews (map editor, color picker, etc)")]
+		public readonly int PreviewFacing = 92;
+
+		IEnumerable<object> IActorPreviewInitInfo.ActorPreviewInits(ActorInfo ai, ActorPreviewType type)
+		{
+			yield return new FacingInit(PreviewFacing);
+		}
 
 		public override object Create(ActorInitializer init) { return new Mobile(init, this); }
 
