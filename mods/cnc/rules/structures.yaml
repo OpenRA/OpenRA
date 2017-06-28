@@ -6,15 +6,16 @@ FACT:
 	Tooltip:
 		Name: Construction Yard
 	Building:
-		Footprint: xxx xxx
-		Dimensions: 3,2
+		Footprint: xxx xxx ===
+		Dimensions: 3,3
+		LocalCenterOffset: 0,-512,0
 	Health:
 		HP: 2100
 	Armor:
 		Type: Wood
 	RevealsShroud:
 		Range: 10c0
-	Bib:
+	WithBuildingBib:
 	Production:
 		Produces: Building.GDI, Building.Nod, Defence.GDI, Defence.Nod
 	Transforms:
@@ -110,13 +111,14 @@ NUKE:
 		Queue: Building.GDI, Building.Nod
 		Description: Generates power
 	Building:
-		Footprint: xx xx
-		Dimensions: 2,2
+		Footprint: xx xx ==
+		Dimensions: 2,3
+		LocalCenterOffset: 0,-512,0
 	Health:
 		HP: 500
 	RevealsShroud:
 		Range: 4c0
-	Bib:
+	WithBuildingBib:
 	Power:
 		Amount: 100
 	ScalePowerWithHealth:
@@ -139,13 +141,14 @@ NUK2:
 		Queue: Building.GDI, Building.Nod
 		Description: Provides more power, cheaper than the\nstandard Power Plant
 	Building:
-		Footprint: xx xx
-		Dimensions: 2,2
+		Footprint: xx xx ==
+		Dimensions: 2,3
+		LocalCenterOffset: 0,-512,0
 	Health:
 		HP: 700
 	RevealsShroud:
 		Range: 4c0
-	Bib:
+	WithBuildingBib:
 	Power:
 		Amount: 200
 	ScalePowerWithHealth:
@@ -172,13 +175,14 @@ PROC:
 		Queue: Building.GDI, Building.Nod
 		Description: Processes raw Tiberium\ninto useable resources
 	Building:
-		Footprint: _x_ xxx ===
-		Dimensions: 3,3
+		Footprint: _x_ xxx === ===
+		Dimensions: 3,4
+		LocalCenterOffset: 0,-512,0
 	Health:
 		HP: 1000
 	RevealsShroud:
 		Range: 6c0
-	Bib:
+	WithBuildingBib:
 	Refinery:
 		DockAngle: 112
 		DockOffset: 0,2
@@ -225,7 +229,7 @@ SILO:
 		HP: 500
 	RevealsShroud:
 		Range: 4c0
-	Bib:
+	WithBuildingBib:
 		HasMinibib: Yes
 	RenderSprites:
 	WithSpriteBody:
@@ -263,13 +267,14 @@ PYLE:
 		Queue: Building.GDI
 		Description: Trains infantry
 	Building:
-		Footprint: xx xx
-		Dimensions: 2,2
+		Footprint: xx xx ==
+		Dimensions: 2,3
+		LocalCenterOffset: 0,-512,0
 	Health:
 		HP: 600
 	RevealsShroud:
 		Range: 5c0
-	Bib:
+	WithBuildingBib:
 	RallyPoint:
 	Exit@1:
 		SpawnOffset: -426,85,0
@@ -309,13 +314,14 @@ HAND:
 		Queue: Building.Nod
 		Description: Trains infantry
 	Building:
-		Footprint: xx xx
-		Dimensions: 2,2
+		Footprint: xx xx ==
+		Dimensions: 2,3
+		LocalCenterOffset: 0,-512,0
 	Health:
 		HP: 600
 	RevealsShroud:
 		Range: 5c0
-	Bib:
+	WithBuildingBib:
 	RallyPoint:
 		Offset: 1,2
 	Exit@1:
@@ -357,13 +363,14 @@ AFLD:
 		Queue: Building.Nod
 		Description: Provides a dropzone\nfor vehicle reinforcements
 	Building:
-		Footprint: xxxx xxxx
-		Dimensions: 4,2
+		Footprint: xxxx xxxx ====
+		Dimensions: 4,3
+		LocalCenterOffset: 0,-512,0
 	Health:
 		HP: 1100
 	RevealsShroud:
 		Range: 7c0
-	Bib:
+	WithBuildingBib:
 	WithIdleOverlay@DISH:
 		Sequence: idle-dish
 	RallyPoint:
@@ -405,8 +412,9 @@ WEAP:
 		Queue: Building.GDI
 		Description: Produces vehicles
 	Building:
-		Footprint: xxx ===
-		Dimensions: 3,2
+		Footprint: xxx === ===
+		Dimensions: 3,3
+		LocalCenterOffset: 0,-512,0
 	Selectable:
 		Bounds: 72,48
 	SelectionDecorations:
@@ -415,7 +423,7 @@ WEAP:
 		HP: 1100
 	RevealsShroud:
 		Range: 4c0
-	Bib:
+	WithBuildingBib:
 	WithProductionDoorOverlay:
 		Sequence: build-top
 	RallyPoint:
@@ -506,8 +514,9 @@ HQ:
 		Queue: Building.GDI, Building.Nod
 		Description: Provides radar and Air Strike support power.\nUnlocks higher-tech units and buildings.\nRequires power to operate.
 	Building:
-		Footprint: x_ xx
-		Dimensions: 2,2
+		Footprint: x_ xx ==
+		Dimensions: 2,3
+		LocalCenterOffset: 0,-512,0
 	Selectable:
 		Bounds: 48,40,0,9
 	SelectionDecorations:
@@ -522,7 +531,7 @@ HQ:
 		HP: 800
 	RevealsShroud:
 		Range: 10c0
-	Bib:
+	WithBuildingBib:
 	ProvidesRadar:
 		RequiresCondition: !disabled
 	RenderDetectionCircle:
@@ -588,7 +597,7 @@ FIX:
 		HP: 800
 	RevealsShroud:
 		Range: 5c0
-	Bib:
+	WithBuildingBib:
 		HasMinibib: Yes
 	Reservable:
 	RepairsUnits:
@@ -621,8 +630,9 @@ EYE:
 		Queue: Building.GDI
 		Description: Provides radar and Orbital Ion Cannon support power.\nUnlocks Mammoth Tank and Commando.\nRequires power to operate.
 	Building:
-		Footprint: x_ xx
-		Dimensions: 2,2
+		Footprint: x_ xx ==
+		Dimensions: 2,3
+		LocalCenterOffset: 0,-512,0
 	Selectable:
 		Bounds: 48,40,0,9
 	SelectionDecorations:
@@ -637,7 +647,7 @@ EYE:
 		HP: 1300
 	RevealsShroud:
 		Range: 10c0
-	Bib:
+	WithBuildingBib:
 	ProvidesRadar:
 		RequiresCondition: !disabled
 	RenderDetectionCircle:
@@ -682,8 +692,9 @@ TMPL:
 		Queue: Building.Nod
 		Description: Provides Nuclear Strike support power.\nUnlocks Stealth Tank, Chem. Warrior and Obelisk of Light.\nRequires power to operate.
 	Building:
-		Footprint: xxx xxx
-		Dimensions: 3,2
+		Footprint: xxx xxx ===
+		Dimensions: 3,3
+		LocalCenterOffset: 0,-512,0
 	Selectable:
 		Bounds: 72,48
 	SelectionDecorations:
@@ -696,7 +707,7 @@ TMPL:
 		HP: 2100
 	RevealsShroud:
 		Range: 6c0
-	Bib:
+	WithBuildingBib:
 	RenderDetectionCircle:
 	DetectCloaked:
 		Range: 5c0
@@ -748,7 +759,7 @@ GUN:
 		Type: Heavy
 	RevealsShroud:
 		Range: 6c0
-	Bib:
+	WithBuildingBib:
 		HasMinibib: Yes
 	Turreted:
 		TurnSpeed: 12
@@ -839,7 +850,7 @@ OBLI:
 		Type: Heavy
 	RevealsShroud:
 		Range: 8c0
-	Bib:
+	WithBuildingBib:
 		HasMinibib: Yes
 	WithChargeAnimation:
 	Armament:
@@ -877,7 +888,7 @@ GTWR:
 		HP: 400
 	RevealsShroud:
 		Range: 7c0
-	Bib:
+	WithBuildingBib:
 		HasMinibib: Yes
 	Armament:
 		Weapon: HighV
@@ -920,7 +931,7 @@ ATWR:
 		Type: Heavy
 	RevealsShroud:
 		Range: 8c0
-	Bib:
+	WithBuildingBib:
 		HasMinibib: Yes
 	Turreted:
 		TurnSpeed: 255

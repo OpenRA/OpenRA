@@ -17,13 +17,14 @@ FPWR:
 		GenericVisibility: Enemy
 		GenericStancePrefix: False
 	Building:
-		Footprint: xx xx
-		Dimensions: 2,2
+		Footprint: xx xx ==
+		Dimensions: 2,3
+		LocalCenterOffset: 0,-512,0
 	Health:
 		HP: 400
 	Armor:
 		Type: Wood
-	Bib:
+	WithBuildingBib:
 	RenderSprites:
 		Image: POWR
 	Valued:
@@ -133,9 +134,10 @@ WEAF:
 		GenericVisibility: Enemy
 		GenericStancePrefix: False
 	Building:
-		Footprint: xxx xxx
-		Dimensions: 3,2
-	Bib:
+		Footprint: xxx xxx ===
+		Dimensions: 3,3
+		LocalCenterOffset: 0,-512,0
+	WithBuildingBib:
 	RenderSprites:
 		Image: WEAP
 	WithProductionDoorOverlay:
@@ -167,9 +169,10 @@ DOMF:
 		Description: Looks like a Radar Dome.
 		Icon: fake-icon
 	Building:
-		Footprint: xx xx
-		Dimensions: 2,2
-	Bib:
+		Footprint: xx xx ==
+		Dimensions: 2,3
+		LocalCenterOffset: 0,-512,0
+	WithBuildingBib:
 	RenderSprites:
 		Image: DOME
 	Valued:
@@ -200,7 +203,7 @@ FIXF:
 		HP: 800
 	Armor:
 		Type: Wood
-	Bib:
+	WithBuildingBib:
 		HasMinibib: Yes
 	RenderSprites:
 		Image: FIX
@@ -238,13 +241,14 @@ FAPW:
 		GenericVisibility: Enemy
 		GenericStancePrefix: False
 	Building:
-		Footprint: xxx xxx
-		Dimensions: 3,2
+		Footprint: xxx xxx ===
+		Dimensions: 3,3
+		LocalCenterOffset: 0,-512,0
 	Health:
 		HP: 700
 	Armor:
 		Type: Wood
-	Bib:
+	WithBuildingBib:
 	RenderSprites:
 		Image: APWR
 	Selectable:
@@ -270,9 +274,10 @@ ATEF:
 		Description: Looks like an Allied Tech Center.
 		Icon: fake-icon
 	Building:
-		Footprint: xx xx
-		Dimensions: 2,2
-	Bib:
+		Footprint: xx xx ==
+		Dimensions: 2,3
+		LocalCenterOffset: 0,-512,0
+	WithBuildingBib:
 	RenderSprites:
 		Image: ATEK
 	Valued:
@@ -304,7 +309,7 @@ PDOF:
 		Dimensions: 2,2
 	RenderSprites:
 		Image: PDOX
-	Bib:
+	WithBuildingBib:
 		HasMinibib: Yes
 	Valued:
 		Cost: 150
@@ -361,9 +366,10 @@ FACF:
 		GenericVisibility: Enemy
 		GenericStancePrefix: False
 	Building:
-		Footprint: xxx xxx xxx
-		Dimensions: 3,3
-	Bib:
+		Footprint: xxx xxx xxx ===
+		Dimensions: 3,4
+		LocalCenterOffset: 0,-512,0
+	WithBuildingBib:
 	RenderSprites:
 		Image: FACT
 	Valued:
