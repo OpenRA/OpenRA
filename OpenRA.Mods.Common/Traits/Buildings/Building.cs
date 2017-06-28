@@ -36,6 +36,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		public readonly CVec Dimensions = new CVec(1, 1);
 
+		[Desc("Shift center of the actor by this offset.")]
+		public readonly WVec LocalCenterOffset = WVec.Zero;
+
 		public readonly bool RequiresBaseProvider = false;
 
 		public readonly bool AllowInvalidPlacement = false;
@@ -84,9 +87,6 @@ namespace OpenRA.Mods.Common.Traits
 				return false;
 
 			var buildingMaxBounds = Dimensions;
-			var bibInfo = world.Map.Rules.Actors[buildingName].TraitInfoOrDefault<BibInfo>();
-			if (bibInfo != null && !bibInfo.HasMinibib)
-				buildingMaxBounds += new CVec(0, 1);
 
 			var scanStart = world.Map.Clamp(topLeft - new CVec(Adjacent, Adjacent));
 			var scanEnd = world.Map.Clamp(topLeft + buildingMaxBounds + new CVec(Adjacent, Adjacent));
