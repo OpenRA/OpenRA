@@ -20,15 +20,7 @@ namespace OpenRA.Mods.Common.Traits
 		public static IEnumerable<CPos> Tiles(Ruleset rules, string name, BuildingInfo buildingInfo, CPos topLeft, bool includePassable = false)
 		{
 			var dim = buildingInfo.Dimensions;
-
 			var footprint = buildingInfo.Footprint.Where(x => !char.IsWhiteSpace(x));
-
-			var bibInfo = rules.Actors[name].TraitInfoOrDefault<BibInfo>();
-			if (bibInfo != null && !bibInfo.HasMinibib)
-			{
-				dim += new CVec(0, 1);
-				footprint = footprint.Concat(new char[dim.X]);
-			}
 
 			return TilesWhere(name, dim, footprint.ToArray(), a => includePassable || a != '_').Select(t => t + topLeft);
 		}
@@ -78,8 +70,9 @@ namespace OpenRA.Mods.Common.Traits
 		public static WVec CenterOffset(World w, BuildingInfo buildingInfo)
 		{
 			var dim = buildingInfo.Dimensions;
+			var localOffset = buildingInfo.LocalCenterOffset;
 			var off = (w.Map.CenterOfCell(new CPos(dim.X, dim.Y)) - w.Map.CenterOfCell(new CPos(1, 1))) / 2;
-			return off - new WVec(0, 0, off.Z);
+			return (off - new WVec(0, 0, off.Z)) + localOffset;
 		}
 	}
 }
