@@ -290,4 +290,12 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		Order IssueDeployOrder(Actor self);
 	}
+
+	public enum ActorPreviewType { PlaceBuilding, ColorPicker, MapEditorSidebar }
+
+	[RequireExplicitImplementation]
+	public interface IActorPreviewInitInfo : ITraitInfo
+	{
+		IEnumerable<object> ActorPreviewInits(ActorInfo ai, ActorPreviewType type);
+	}
 }

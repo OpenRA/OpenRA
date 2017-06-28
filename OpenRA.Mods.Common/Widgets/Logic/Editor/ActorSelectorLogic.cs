@@ -109,6 +109,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				td.Add(new HideBibPreviewInit());
 				td.Add(new OwnerInit(selectedOwner.Name));
 				td.Add(new FactionInit(selectedOwner.Faction));
+				foreach (var api in actor.TraitInfos<IActorPreviewInitInfo>())
+					foreach (var o in api.ActorPreviewInits(actor, ActorPreviewType.MapEditorSidebar))
+						td.Add(o);
 
 				try
 				{
