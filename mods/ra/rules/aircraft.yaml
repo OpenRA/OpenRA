@@ -186,9 +186,9 @@ YAK:
 		TargetWhenDamaged: false
 		EnableStances: false
 	AmmoPool:
-		Ammo: 18
-		PipCount: 6
-		ReloadDelay: 11
+		Ammo: 20
+		PipCount: 5
+		ReloadDelay: 10
 	ReturnOnIdle:
 	SelectionDecorations:
 		VisualBounds: 30,28,0,2

@@ -214,6 +214,11 @@ ChainGun.Yak.Right:
 		Blockable: false
 	Warhead@1Dam: SpreadDamage
 		Damage: 40
+		Spread: 171
+		Versus:
+			None: 125
+			Light: 70
+			Heavy: 28
 
 ChainGun.Yak.Left:
 	Inherits: ChainGun.Yak.Right
