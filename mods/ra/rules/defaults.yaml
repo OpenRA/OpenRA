@@ -268,6 +268,8 @@
 	BodyOrientation:
 		UseClassicFacingFudge: True
 	HitShape:
+	EditorTilesetFilter:
+		Categories: Vehicle
 
 ^Tank:
 	Inherits: ^Vehicle
@@ -384,6 +386,8 @@
 	HitShape:
 		Type: Circle
 			Radius: 128
+	EditorTilesetFilter:
+		Categories: Infantry
 
 ^Soldier:
 	Inherits: ^Infantry
@@ -420,6 +424,8 @@
 	Wanders:
 		MinMoveDelay: 150
 		MaxMoveDelay: 750
+	EditorTilesetFilter:
+		Categories: Civilian infantry
 
 ^ArmedCivilian:
 	Inherits@AUTOTARGET: ^AutoTargetGround
@@ -469,6 +475,7 @@
 	MustBeDestroyed:
 	EditorTilesetFilter:
 		ExcludeTilesets: INTERIOR
+		Categories: Naval
 	Voiced:
 		VoiceSet: VehicleVoice
 	WithFacingSpriteBody:
@@ -525,6 +532,8 @@
 	Voiced:
 		VoiceSet: GenericVoice
 	HitShape:
+	EditorTilesetFilter:
+		Categories: Aircraft
 
 ^Plane:
 	Inherits: ^NeutralPlane
@@ -581,6 +590,8 @@
 	Tooltip:
 		GenericName: Structure
 	Demolishable:
+	EditorTilesetFilter:
+		Categories: Building
 
 ^Building:
 	Inherits: ^BasicBuilding
@@ -621,6 +632,8 @@
 	Explodes:
 		Weapon: SmallBuildingExplode
 		EmptyWeapon: SmallBuildingExplode
+	EditorTilesetFilter:
+		Categories: Defense
 
 ^Wall:
 	Inherits@1: ^ExistsInWorld
@@ -654,6 +667,8 @@
 	FrozenUnderFogUpdatedByGps:
 	Health:
 		HP: 100
+	EditorTilesetFilter:
+		Categories: Wall
 
 ^Gate:
 	Inherits: ^BasicBuilding
@@ -677,6 +692,8 @@
 		OpeningSound: cashturn.aud
 		ClosingSound: cashturn.aud
 		TerrainTypes: Clear, Road
+	EditorTilesetFilter:
+		Categories: Gate
 
 ^TechBuilding:
 	Inherits: ^BasicBuilding
@@ -689,6 +706,8 @@
 		Name: Civilian Building
 		GenericVisibility: None
 	FrozenUnderFog:
+	EditorTilesetFilter:
+		Categories: Tech building  
 
 ^FakeBuilding:
 	Inherits: ^Building
@@ -708,6 +727,8 @@
 		ZOffset: 256
 	-EmitInfantryOnSell:
 	-MustBeDestroyed:
+	 EditorTilesetFilter:
+		Categories: Fake
 
 ^InfiltratableFake:
 	Targetable:
@@ -745,6 +766,7 @@
 		Palette: terrain
 	EditorTilesetFilter:
 		ExcludeTilesets: INTERIOR
+		Categories: Civilian building
 	SpawnActorOnDeath@1:
 		Actor: c1
 		Probability: 40
@@ -808,6 +830,7 @@
 	ScriptTriggers:
 	EditorTilesetFilter:
 		ExcludeTilesets: INTERIOR
+		Categories: Tree
 
 ^TreeHusk:
 	Inherits@1: ^SpriteActor
@@ -821,6 +844,8 @@
 		ShowOwnerRow: false
 	FrozenUnderFog:
 	ScriptTriggers:
+	EditorTilesetFilter:
+		Categories: Tree
 
 ^BasicHusk:
 	Inherits@1: ^SpriteActor
@@ -833,6 +858,8 @@
 	ScriptTriggers:
 	WithFacingSpriteBody:
 	HitShape:
+	EditorTilesetFilter:
+		Categories: Husk
 
 ^Husk:
 	Inherits: ^BasicHusk
@@ -869,6 +896,8 @@
 		Spins: False
 		Moves: True
 		Velocity: 86
+	EditorTilesetFilter:
+		Categories: Husk
 
 ^HelicopterHusk:
 	Inherits: ^BasicHusk
@@ -923,6 +952,7 @@
 	ScriptTriggers:
 	EditorTilesetFilter:
 		RequireTilesets: DESERT
+		Categories: Rock
 
 ^DesertCivBuilding:
 	Inherits: ^CivBuilding
@@ -961,6 +991,8 @@
 		ShadowSequence: idle
 		RequiresCondition: parachute
 	ConditionManager:
+	EditorTilesetFilter:
+		Categories: System
 
 ^Mine:
 	Inherits: ^SpriteActor
@@ -989,6 +1021,8 @@
 	Immobile:
 		OccupiesSpace: true
 	HitShape:
+	EditorTilesetFilter:
+		Categories: System
 
 ^DisabledOverlay:
 	WithColoredOverlay@IDISABLE:
