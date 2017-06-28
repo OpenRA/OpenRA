@@ -25,6 +25,8 @@ spicebloom.spawnpoint:
 	HitShape:
 		Type: Circle
 			Radius: 1
+	EditorTilesetFilter:
+		Categories: System
 
 spicebloom:
 	HiddenUnderShroud:
@@ -59,6 +61,8 @@ spicebloom:
 	HitShape:
 		Type: Circle
 			Radius: 512
+	EditorTilesetFilter:
+		Categories: System
 
 sandworm:
 	Inherits@1: ^SpriteActor

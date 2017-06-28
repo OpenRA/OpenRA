@@ -136,6 +136,8 @@ crate:
 	Passenger:
 	CustomSelectionSize:
 		CustomBounds: 20,20
+	EditorTilesetFilter:
+		Categories: System
 
 mpspawn:
 	EditorOnlyTooltip:
@@ -147,6 +149,8 @@ mpspawn:
 	WithSpriteBody:
 	BodyOrientation:
 		QuantizedFacings: 1
+	EditorTilesetFilter:
+		Categories: System
 
 waypoint:
 	EditorOnlyTooltip:
@@ -158,6 +162,8 @@ waypoint:
 	WithSpriteBody:
 	BodyOrientation:
 		QuantizedFacings: 1
+	EditorTilesetFilter:
+		Categories: System
 
 ^carryall.colorpicker:
 	Inherits: carryall
@@ -181,6 +187,8 @@ camera:
 	RevealsShroud:
 		Range: 6c768
 		Type: CenterPosition
+	EditorTilesetFilter:
+		Categories: System
 
 wormspawner:
 	EditorOnlyTooltip:
@@ -193,6 +201,8 @@ wormspawner:
 	BodyOrientation:
 		QuantizedFacings: 1
 	WormSpawner:
+	EditorTilesetFilter:
+		Categories: System
 
 upgrade.conyard:
 	AlwaysVisible:
