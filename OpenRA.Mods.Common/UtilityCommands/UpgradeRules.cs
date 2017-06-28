@@ -749,6 +749,28 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				// Removed ApplyToAllTargetablePositions hack from Rectangle shape
+				if (engineVersion < 20170629)
+				{
+					if (node.Key.StartsWith("HitShape", StringComparison.Ordinal))
+					{
+						var shape = node.Value.Nodes.FirstOrDefault(n => n.Key == "Type" && n.Value.Value == "Rectangle");
+						if (shape != null)
+						{
+							var hack = shape.Value.Nodes.FirstOrDefault(n => n.Key == "ApplyToAllTargetablePositions");
+							if (hack != null)
+							{
+								Console.WriteLine("Rectangle.ApplyToAllTargetablePositions has been removed due to incompatibilities");
+								Console.WriteLine("with the HitShape refactor and projectile/warhead victim scans, as well as performance concerns.");
+								Console.WriteLine("If you absolutely want to use it, please ship a duplicate of the old Rectangle code with your mod code.");
+								Console.WriteLine("Otherwise, we recommend using inheritable shape templates for rectangular buildings");
+								Console.WriteLine("and custom setups for the rest (see our official mods for examples).");
+								shape.Value.Nodes.Remove(hack);
+							}
+						}
+					}
+				}
+
 				UpgradeActorRules(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 
