@@ -372,7 +372,7 @@ CTFLAG:
 		Dimensions: 1,1
 	Tooltip:
 		Name: Flag
-	Bib:
+	WithBuildingBib:
 		HasMinibib: Yes
 	DamageMultiplier@INVULNERABLE:
 		Modifier: 0

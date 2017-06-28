@@ -66,8 +66,9 @@ FCOM:
 	Inherits: ^TechBuilding
 	Inherits@shape: ^2x2Shape
 	Building:
-		Footprint: xx xx
-		Dimensions: 2,2
+		Footprint: xx xx ==
+		Dimensions: 2,3
+		LocalCenterOffset: 0,-512,0
 	Valued:
 		Cost: 2000
 	Health:
@@ -78,7 +79,7 @@ FCOM:
 		Name: Forward Command
 	RevealsShroud:
 		Range: 10c0
-	Bib:
+	WithBuildingBib:
 	Power:
 		Amount: -200
 	ProvidesPrerequisite@buildingname:
@@ -100,7 +101,7 @@ HOSP:
 		Name: Hospital
 	RevealsShroud:
 		Range: 3c0
-	Bib:
+	WithBuildingBib:
 		HasMinibib: Yes
 	WithDeathAnimation:
 		DeathSequence: dead
@@ -344,8 +345,9 @@ MISS:
 	Selectable:
 		Priority: 0
 	Building:
-		Footprint: xxx xxx
-		Dimensions: 3,2
+		Footprint: xxx xxx ===
+		Dimensions: 3,3
+		LocalCenterOffset: 0,-512,0
 	Valued:
 		Cost: 2000
 	Health:
@@ -356,7 +358,7 @@ MISS:
 		Type: Wood
 	Tooltip:
 		Name: Technology Center
-	Bib:
+	WithBuildingBib:
 	WithDeathAnimation:
 		DeathSequence: dead
 		UseDeathTypeSuffix: false

@@ -113,7 +113,7 @@ OILB:
 		HP: 3000
 	Armor:
 		Type: Wood
-	Bib:
+	WithBuildingBib:
 	RevealsShroud:
 		Range: 3c0
 	CashTrickler:

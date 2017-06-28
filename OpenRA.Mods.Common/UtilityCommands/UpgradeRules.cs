@@ -771,6 +771,43 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				// Refactor Building/Bib interaction, partially refactor and rename Bib
+				if (engineVersion < 20170706)
+				{
+					var building = node.Value.Nodes.FirstOrDefault(n => n.Key == "Building");
+					var bib = node.Value.Nodes.FirstOrDefault(n => n.Key == "Bib");
+
+					var hasBib = false;
+					if (bib != null)
+					{
+						var minibib = bib.Value.Nodes.FirstOrDefault(n => n.Key == "HasMinibib");
+						if (minibib != null)
+							hasBib = !FieldLoader.GetValue<bool>("HasMinibib", minibib.Value.Value);
+						else
+							hasBib = true;
+
+						Console.WriteLine("Bibs are no longer automatically included in building footprints. Please check if any manual adjustments are needed.");
+						RenameNodeKey(bib, "WithBuildingBib");
+					}
+
+					if (building != null && hasBib)
+					{
+						var footprint = building.Value.Nodes.FirstOrDefault(n => n.Key == "Footprint");
+						var dimensions = building.Value.Nodes.FirstOrDefault(n => n.Key == "Dimensions");
+						if (footprint != null && dimensions != null)
+						{
+							var newDim = FieldLoader.GetValue<CVec>("Dimensions", dimensions.Value.Value) + new CVec(0, 1);
+							var oldFootprint = FieldLoader.GetValue<string>("Footprint", footprint.Value.Value);
+							dimensions.Value.Value = newDim.ToString();
+							footprint.Value.Value = oldFootprint + " " + string.Concat(Enumerable.Repeat("=", newDim.X));
+
+							var gridType = modData.Manifest.Get<MapGrid>().Type;
+							if (gridType == MapGridType.Rectangular)
+								building.Value.Nodes.Add(new MiniYamlNode("LocalCenterOffset", "0,-512,0"));
+						}
+					}
+				}
+
 				UpgradeActorRules(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 
