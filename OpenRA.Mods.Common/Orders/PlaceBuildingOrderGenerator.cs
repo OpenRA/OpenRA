@@ -227,7 +227,7 @@ namespace OpenRA.Mods.Common.Orders
 
 				var res = world.WorldActor.Trait<ResourceLayer>();
 				var isCloseEnough = buildingInfo.IsCloseEnoughToBase(world, world.LocalPlayer, building, topLeft);
-				foreach (var t in FootprintUtils.Tiles(rules, building, buildingInfo, topLeft))
+				foreach (var t in buildingInfo.Tiles(topLeft))
 					cells.Add(t, MakeCellType(isCloseEnough && world.IsCellBuildable(t, buildingInfo) && res.GetResource(t) == null));
 			}
 
@@ -248,7 +248,7 @@ namespace OpenRA.Mods.Common.Orders
 
 		IEnumerable<Order> ClearBlockersOrders(World world, CPos topLeft)
 		{
-			var allTiles = FootprintUtils.Tiles(world.Map.Rules, building, buildingInfo, topLeft).ToArray();
+			var allTiles = buildingInfo.Tiles(topLeft).ToArray();
 			var neightborTiles = Util.ExpandFootprint(allTiles, true).Except(allTiles)
 				.Where(world.Map.Contains).ToList();
 

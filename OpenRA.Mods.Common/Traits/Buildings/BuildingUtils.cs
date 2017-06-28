@@ -44,7 +44,7 @@ namespace OpenRA.Mods.Common.Traits
 				return true;
 
 			var res = world.WorldActor.Trait<ResourceLayer>();
-			return FootprintUtils.Tiles(world.Map.Rules, name, building, topLeft).All(
+			return building.Tiles(topLeft).All(
 				t => world.Map.Contains(t) && res.GetResource(t) == null &&
 					world.IsCellBuildable(t, building, toIgnore));
 		}
