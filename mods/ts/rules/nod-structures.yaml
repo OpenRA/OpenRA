@@ -105,6 +105,7 @@ NAHAND:
 	Exit@1:
 		SpawnOffset: 384,768,0
 		ExitCell: 3,2
+		Type: Infantry
 	ExitsDebugOverlay:
 	RallyPoint:
 		Offset: 3,3
@@ -165,6 +166,7 @@ NAWEAP:
 		SpawnOffset: -384,-384,0
 		ExitCell: 3,1
 		ExitDelay: 5
+		Type: Vehicle
 	ExitsDebugOverlay:
 	Production:
 		Produces: Vehicle
@@ -212,6 +214,7 @@ NAHPAD:
 		MaxHeightDelta: 3
 	Exit@1:
 		SpawnOffset: 0,-256,0
+		Type: Air
 	ExitsDebugOverlay:
 	RallyPoint:
 		Palette: mouse
@@ -375,4 +378,5 @@ NATMPL:
 	Production:
 		Produces: HunterSeeker
 	Exit@1:
+		Type: HunterSeeker
 	ExitsDebugOverlay:

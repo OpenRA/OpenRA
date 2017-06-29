@@ -274,9 +274,11 @@ PYLE:
 	Exit@1:
 		SpawnOffset: -426,85,0
 		ExitCell: 0,1
+		Type: Infantry.GDI
 	Exit@2:
 		SpawnOffset: 298,298,0
 		ExitCell: 1,1
+		Type: Infantry.GDI
 	Production:
 		Produces: Infantry.GDI
 	ProductionQueue:
@@ -321,6 +323,7 @@ HAND:
 	Exit@1:
 		SpawnOffset: 512,1024,0
 		ExitCell: 1,2
+		Type: Infantry.Nod
 	Production:
 		Produces: Infantry.Nod
 	ProductionQueue:
@@ -371,6 +374,7 @@ AFLD:
 	Exit@1:
 		SpawnOffset: -1024,0,0
 		ExitCell: 3,1
+		Type: Vehicle.Nod
 	ProductionAirdrop:
 		Produces: Vehicle.Nod
 	WithDeliveryAnimation:
@@ -424,6 +428,7 @@ WEAP:
 		SpawnOffset: -512,-512,0
 		ExitCell: 0,1
 		ExitDelay: 3
+		Type: Vehicle.GDI
 	Production:
 		Produces: Vehicle.GDI
 	ProductionQueue:
@@ -460,6 +465,7 @@ HPAD:
 		Range: 5c0
 	Exit@1:
 		SpawnOffset: 0,-256,0
+		Type: Aircraft.GDI, Aircraft.Nod
 	Production:
 		Produces: Aircraft.GDI, Aircraft.Nod
 	Reservable:

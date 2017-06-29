@@ -92,7 +92,7 @@ namespace OpenRA.Mods.Common.Traits
 	public interface INotifyBurstComplete { void FiredBurst(Actor self, Target target, Armament a); }
 	public interface INotifyChat { bool OnChat(string from, string message); }
 	public interface INotifyProduction { void UnitProduced(Actor self, Actor other, CPos exit); }
-	public interface INotifyOtherProduction { void UnitProducedByOther(Actor self, Actor producer, Actor produced); }
+	public interface INotifyOtherProduction { void UnitProducedByOther(Actor self, Actor producer, Actor produced, string type); }
 	public interface INotifyDelivery { void IncomingDelivery(Actor self); void Delivered(Actor self); }
 	public interface INotifyDocking { void Docked(Actor self, Actor harvester); void Undocked(Actor self, Actor harvester); }
 	public interface INotifyParachute { void OnParachute(Actor self); void OnLanded(Actor self, Actor ignore); }

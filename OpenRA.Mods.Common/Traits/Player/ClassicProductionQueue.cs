@@ -105,7 +105,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			foreach (var p in producers.Where(p => !p.Actor.IsDisabled()))
 			{
-				if (p.Trait.Produce(p.Actor, unit, p.Trait.Faction))
+				if (p.Trait.Produce(p.Actor, unit, p.Trait.Faction, Info.Type))
 				{
 					FinishProduction();
 					return true;

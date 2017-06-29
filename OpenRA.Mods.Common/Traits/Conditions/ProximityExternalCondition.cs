@@ -120,7 +120,7 @@ namespace OpenRA.Mods.Common.Traits
 				tokens[a] = external.GrantCondition(a, self);
 		}
 
-		public void UnitProducedByOther(Actor self, Actor producer, Actor produced)
+		public void UnitProducedByOther(Actor self, Actor producer, Actor produced, string type)
 		{
 			// If the produced Actor doesn't occupy space, it can't be in range
 			if (produced.OccupiesSpace == null)

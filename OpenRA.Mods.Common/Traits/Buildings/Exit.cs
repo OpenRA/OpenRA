@@ -9,6 +9,9 @@
  */
 #endregion
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -23,6 +26,9 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly CVec ExitCell = CVec.Zero;
 		public readonly int Facing = -1;
 
+		[Desc("Type tags on this exit.")]
+		public readonly HashSet<string> Types = new HashSet<string>();
+
 		[Desc("AttackMove to a RallyPoint or stay where you are spawned.")]
 		public readonly bool MoveIntoWorld = true;
 
@@ -31,4 +37,40 @@ namespace OpenRA.Mods.Common.Traits
 	}
 
 	public class Exit { }
+
+	public static class ExitExts
+	{
+		public static int CountExits(this ActorInfo info, string type = null)
+		{
+			var all = info.TraitInfos<ExitInfo>();
+			return type == null ? all.Count(e => e.Types.Count == 0) : all.Count(e => e.Types.Contains(type));
+		}
+
+		public static ExitInfo FirstExitOrDefault(this ActorInfo info, string type = null)
+		{
+			var all = info.TraitInfos<ExitInfo>();
+			return type == null ? all.FirstOrDefault(e => e.Types.Count == 0) : all.FirstOrDefault(e => e.Types.Contains(type));
+		}
+
+		public static IEnumerable<ExitInfo> Exits(this ActorInfo info, string type = null)
+		{
+			var all = info.TraitInfos<ExitInfo>();
+			return type == null ? all.Where(e => e.Types.Count == 0) : all.Where(e => e.Types.Contains(type));
+		}
+
+		public static ExitInfo RandomExitOrDefault(this ActorInfo info, World world, string type, Func<ExitInfo, bool> p = null)
+		{
+			var allOfType = Exits(info, type);
+			if (!allOfType.Any())
+				return null;
+
+			var shuffled = allOfType.Shuffle(world.SharedRandom);
+			return p != null ? shuffled.FirstOrDefault(p) : shuffled.First();
+		}
+
+		public static ExitInfo RandomExitOrDefault(this Actor self, string type, Func<ExitInfo, bool> p = null)
+		{
+			return RandomExitOrDefault(self.Info, self.World, type, p);
+		}
+	}
 }

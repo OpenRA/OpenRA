@@ -133,18 +133,42 @@ SPEN:
 		SpawnOffset: 0,-213,0
 		Facing: 96
 		ExitCell: -1,2
+		Types: Submarine
 	Exit@2:
 		SpawnOffset: 0,-213,0
 		Facing: 160
 		ExitCell: 3,2
+		Types: Submarine
 	Exit@3:
 		SpawnOffset: 0,0,0
 		Facing: 32
 		ExitCell: 0,0
+		Types: Submarine
 	Exit@4:
 		SpawnOffset: 0,0,0
 		Facing: 224
 		ExitCell: 2,0
+		Types: Submarine
+	Exit@b1:
+		SpawnOffset: -1024,1024,0
+		Facing: 160
+		ExitCell: 0,2
+		Types: Ship
+	Exit@b2:
+		SpawnOffset: 1024,1024,0
+		Facing: 224
+		ExitCell: 2,2
+		Types: Ship
+	Exit@b3:
+		SpawnOffset: -1024,-1024,0
+		Facing: 96
+		ExitCell: 0,0
+		Types: Ship
+	Exit@b4:
+		SpawnOffset: 1024,-1024,0
+		Facing: 32
+		ExitCell: 2,0
+		Types: Ship
 	Production:
 		Produces: Ship, Submarine
 	PrimaryBuilding:
@@ -235,18 +259,22 @@ SYRD:
 		SpawnOffset: -1024,1024,0
 		Facing: 160
 		ExitCell: 0,2
+		Types: Ship
 	Exit@2:
 		SpawnOffset: 1024,1024,0
 		Facing: 224
 		ExitCell: 2,2
+		Types: Ship
 	Exit@3:
 		SpawnOffset: -1024,-1024,0
 		Facing: 96
 		ExitCell: 0,0
+		Types: Ship
 	Exit@4:
 		SpawnOffset: 1024,-1024,0
 		Facing: 32
 		ExitCell: 2,0
+		Types: Ship
 	Production:
 		Produces: Ship, Boat
 	PrimaryBuilding:
@@ -902,6 +930,7 @@ WEAP:
 	Exit@1:
 		SpawnOffset: 213,-128,0
 		ExitCell: 1,2
+		Types: Vehicle
 	Production:
 		Produces: Vehicle
 	ProvidesPrerequisite@allies:
@@ -1197,6 +1226,7 @@ HPAD:
 		ExitCell: 0,0
 		MoveIntoWorld: false
 		Facing: 224
+		Types: Helicopter, Aircraft
 	RallyPoint:
 	Production:
 		Produces: Aircraft, Helicopter
@@ -1281,6 +1311,7 @@ AFLD:
 		ExitCell: 1,1
 		Facing: 192
 		MoveIntoWorld: false
+		Types: Plane, Aircraft
 	RallyPoint:
 	Production:
 		Produces: Aircraft, Plane
@@ -1526,9 +1557,11 @@ BARR:
 	Exit@1:
 		SpawnOffset: -170,810,0
 		ExitCell: 1,2
+		Types: Soldier, Infantry
 	Exit@2:
 		SpawnOffset: -725,640,0
 		ExitCell: 0,2
+		Types: Soldier, Infantry
 	Production:
 		Produces: Infantry, Soldier
 	PrimaryBuilding:
@@ -1601,9 +1634,11 @@ KENN:
 	Exit@1:
 		SpawnOffset: -280,400,0
 		ExitCell: 0,1
+		Types: Dog, Infantry
 	Exit@2:
 		SpawnOffset: -280,400,0
 		ExitCell: -1,0
+		Types: Dog, Infantry
 	Production:
 		Produces: Infantry, Dog
 	PrimaryBuilding:
@@ -1653,9 +1688,11 @@ TENT:
 	Exit@1:
 		SpawnOffset: -42,810,0
 		ExitCell: 1,2
+		Types: Soldier, Infantry
 	Exit@2:
 		SpawnOffset: -725,640,0
 		ExitCell: 0,2
+		Types: Soldier, Infantry
 	Production:
 		Produces: Infantry, Soldier
 	PrimaryBuilding:
