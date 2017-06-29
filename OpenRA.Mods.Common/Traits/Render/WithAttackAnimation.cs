@@ -41,7 +41,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		public override void RulesetLoaded(Ruleset rules, ActorInfo ai)
 		{
-			var matches = ai.TraitInfos<WithSpriteBodyInfo>().Count(w => Body == w.Name);
+			var matches = ai.TraitInfos<WithSpriteBodyInfo>().Count(w => w.Name == Body);
 			if (matches != 1)
 				throw new YamlException("WithAttackAnimation needs exactly one sprite body with matching name.");
 
