@@ -13,6 +13,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Sockets;
+using System.Text;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Pathfinder;
@@ -20,10 +23,6 @@ using OpenRA.Mods.Common.Traits;
 using OpenRA.Scripting;
 using OpenRA.Support;
 using OpenRA.Traits;
-using System.Net.Sockets;
-using System.IO;
-using System.Text;
-using System.Net;
 
 namespace OpenRA.Mods.Common.AI
 {
@@ -1405,7 +1404,7 @@ namespace OpenRA.Mods.Common.AI
 
 		void Send(UdpClient udp, string msg)
 		{
-			Byte[] sendBytes = Encoding.UTF8.GetBytes(msg);
+			var sendBytes = Encoding.UTF8.GetBytes(msg);
 			udp.Send(sendBytes, sendBytes.Length);
 		}
 
@@ -1425,8 +1424,8 @@ namespace OpenRA.Mods.Common.AI
 			Send(client, "END");
 
 			// Get incoming result
-			IPEndPoint RemoteIpEndPoint = new IPEndPoint(IPAddress.Any, 0);
-			var recv = client.Receive(ref RemoteIpEndPoint);
+			IPEndPoint remoteIpEndPoint = new IPEndPoint(IPAddress.Any, 0);
+			var recv = client.Receive(ref remoteIpEndPoint);
 			string name = Encoding.UTF8.GetString(recv);
 
 			QueueOrder(Order.StartProduction(queue.Actor, name, 1));
