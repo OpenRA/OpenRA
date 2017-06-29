@@ -43,23 +43,72 @@ namespace OpenRA
 		static readonly Func<Type, ITraitContainer> CreateTraitContainer = t =>
 			(ITraitContainer)typeof(TraitContainer<>).MakeGenericType(t).GetConstructor(Type.EmptyTypes).Invoke(null);
 
-		readonly Dictionary<Type, ITraitContainer> traits = new Dictionary<Type, ITraitContainer>();
+		private ITraitContainer[] traits = null;
+
+		public TraitDictionary() {
+			Resize();
+		}
+
+		private void Resize() {
+			// New trait types have been registered. Ensure our array is same size as trait type index map.
+			int newSize = TraitTypeIndexMap.GetCount() + 64;
+			if (traits == null) {
+				traits = new ITraitContainer[newSize];
+			}
+			else {
+				if (traits.Length < newSize) {
+					Array.Resize(ref traits, newSize);
+				}
+			}
+		}
+
+		private ITraitContainer InnerGet(int index, Type t) {
+			// Lookup trait by index in array, rather than hash key in dictionary.
+			if (index <= 0) {
+				throw new InvalidOperationException("Traits type index out of bounds (<=0)");
+			}
+
+			if (index >= traits.Length) {
+				Resize();
+				if (index > traits.Length) {
+					throw new InvalidOperationException("Traits type index out of bounds, index greater than max registered type index");
+				}
+			}
+
+			ITraitContainer trait = traits[index];
+			if (trait == null) {
+				trait = CreateTraitContainer(t);
+				traits[index] = trait;
+			}
+
+			return trait;
+		}
 
 		ITraitContainer InnerGet(Type t)
 		{
-			return traits.GetOrAdd(t, CreateTraitContainer);
+			// Slower, dictionary lookup of index
+			return InnerGet(TraitTypeIndexMap.RegisterType(t), t);
 		}
 
 		TraitContainer<T> InnerGet<T>()
 		{
-			return (TraitContainer<T>)InnerGet(typeof(T));
+			return (TraitContainer<T>)InnerGet(TraitTypeIndex<T>.GetTypeIndex(), typeof(T));
 		}
 
 		public void PrintReport()
 		{
+			if (traits == null) {
+				return;
+			}
+
 			Log.AddChannel("traitreport", "traitreport.log");
-			foreach (var t in traits.OrderByDescending(t => t.Value.Queries).TakeWhile(t => t.Value.Queries > 0))
-				Log.Write("traitreport", "{0}: {1}", t.Key.Name, t.Value.Queries);
+			Log.Write("traitreport", "Number of registered trait types {0}", TraitTypeIndexMap.GetCount());
+			for (int i = 1; i < traits.Length; i++) {
+				var trait = traits[i];
+				if (trait != null) {
+					Log.Write("traitreport", "{0}: {1}", TraitTypeIndexMap.GetType(i), trait.Queries);
+				}
+			}
 		}
 
 		public void AddTrait(Actor actor, object val)
@@ -118,8 +167,11 @@ namespace OpenRA
 
 		public void RemoveActor(Actor a)
 		{
-			foreach (var t in traits)
-				t.Value.RemoveActor(a.ActorID);
+			foreach (var t in traits) {
+				if (t != null) {
+					t.RemoveActor(a.ActorID);
+				}
+			}
 		}
 
 		interface ITraitContainer
