@@ -330,7 +330,7 @@ namespace OpenRA.Mods.Common.AI
 			pathfinder = World.WorldActor.Trait<IPathFinder>();
 
 			isEnemyUnit = unit =>
-				Player.Stances[unit.Owner] == Stance.Enemy
+				IsOwnedByEnemy(unit)
 					&& !unit.Info.HasTraitInfo<HuskInfo>()
 					&& unit.Info.HasTraitInfo<ITargetableInfo>();
 
@@ -639,7 +639,7 @@ namespace OpenRA.Mods.Common.AI
 				case BuildingPlacementType.Defense:
 					{
 						// Build near the closest enemy structure
-						var closestEnemy = World.ActorsHavingTrait<Building>().Where(a => !a.Disposed && Player.Stances[a.Owner] == Stance.Enemy)
+						var closestEnemy = World.ActorsHavingTrait<Building>().Where(a => !a.Disposed && IsOwnedByEnemy(a))
 							.ClosestTo(World.Map.CenterOfCell(defenseCenter));
 
 						var targetCell = closestEnemy != null ? closestEnemy.Location : baseCenter;
@@ -650,7 +650,7 @@ namespace OpenRA.Mods.Common.AI
 				case BuildingPlacementType.Fragile:
 					{
 						// Build far from the closest enemy structure
-						var closestEnemy = World.ActorsHavingTrait<Building>().Where(a => !a.Disposed && Player.Stances[a.Owner] == Stance.Enemy)
+						var closestEnemy = World.ActorsHavingTrait<Building>().Where(a => !a.Disposed && IsOwnedByEnemy(a))
 							.ClosestTo(World.Map.CenterOfCell(defenseCenter));
 
 						CVec direction = CVec.Zero;
@@ -748,7 +748,7 @@ namespace OpenRA.Mods.Common.AI
 
 		List<Actor> FindEnemyConstructionYards()
 		{
-			return World.Actors.Where(a => Player.Stances[a.Owner] == Stance.Enemy && !a.IsDead &&
+			return World.Actors.Where(a => IsOwnedByEnemy(a) && !a.IsDead &&
 				Info.BuildingCommonNames.ConstructionYard.Contains(a.Info.Name)).ToList();
 		}
 
@@ -924,7 +924,7 @@ namespace OpenRA.Mods.Common.AI
 				PathSearch.Search(World, mobileInfo, harvester, true,
 					loc => domainIndex.IsPassable(harvester.Location, loc, mobileInfo, passable) && harvester.CanHarvestAt(loc, resLayer, harvInfo, territory))
 					.WithCustomCost(loc => World.FindActorsInCircle(World.Map.CenterOfCell(loc), Info.HarvesterEnemyAvoidanceRadius)
-						.Where(u => !u.IsDead && harvester.Owner.Stances[u.Owner] == Stance.Enemy)
+						.Where(u => !u.IsDead && IsOwnedByEnemy(u))
 						.Sum(u => Math.Max(WDist.Zero.Length, Info.HarvesterEnemyAvoidanceRadius.Length - (World.Map.CenterOfCell(loc) - u.CenterPosition).Length)))
 					.FromPoint(harvester.Location));
 
@@ -1008,6 +1008,11 @@ namespace OpenRA.Mods.Common.AI
 			}
 		}
 
+		public bool IsOwnedByEnemy(Actor a)
+		{
+			return Player.Stances[a.Owner] == Stance.Enemy && a.Owner.InternalName.ToLowerInvariant().StartsWith("multi");
+		}
+
 		void TryToRushAttack()
 		{
 			var allEnemyBaseBuilder = FindEnemyConstructionYards();
@@ -1021,7 +1026,7 @@ namespace OpenRA.Mods.Common.AI
 			foreach (var b in allEnemyBaseBuilder)
 			{
 				var enemies = World.FindActorsInCircle(b.CenterPosition, WDist.FromCells(Info.RushAttackScanRadius))
-					.Where(unit => Player.Stances[unit.Owner] == Stance.Enemy && unit.Info.HasTraitInfo<AttackBaseInfo>()).ToList();
+					.Where(unit => IsOwnedByEnemy(unit) && unit.Info.HasTraitInfo<AttackBaseInfo>()).ToList();
 
 				if (AttackOrFleeFuzzy.Rush.CanAttack(ownUnits, enemies))
 				{
