@@ -20,6 +20,10 @@ using OpenRA.Mods.Common.Traits;
 using OpenRA.Scripting;
 using OpenRA.Support;
 using OpenRA.Traits;
+using System.Net.Sockets;
+using System.IO;
+using System.Text;
+using System.Net;
 
 namespace OpenRA.Mods.Common.AI
 {
@@ -72,6 +76,9 @@ namespace OpenRA.Mods.Common.AI
 
 		[Desc("Build units according to Lua script? (false = old hacky AI behavior).")]
 		public readonly bool EnableLuaUnitProduction = false;
+
+		[Desc("EXPERIMENTAL")]
+		public readonly bool PipeExternalQuery = false;
 
 		[Desc("Minimum number of units AI must have before attacking.")]
 		public readonly int SquadSize = 8;
@@ -316,6 +323,8 @@ namespace OpenRA.Mods.Common.AI
 		readonly HashSet<Actor> luaOccupiedActors = new HashSet<Actor>();
 		readonly Dictionary<Player, AIScriptContext> luaContexts = new Dictionary<Player, AIScriptContext>();
 
+		UdpClient client;
+
 		public HackyAI(HackyAIInfo info, ActorInitializer init)
 		{
 			Info = info;
@@ -338,6 +347,9 @@ namespace OpenRA.Mods.Common.AI
 				powerDecisions.Add(decision.OrderName, decision);
 
 			maximumCaptureTargetOptions = Math.Max(1, Info.MaximumCaptureTargetOptions);
+
+			client = new UdpClient();
+			client.Connect("localhost", 9999);
 		}
 
 		public void SetLuaOccupied(Actor a, bool occupied)
@@ -1291,7 +1303,12 @@ namespace OpenRA.Mods.Common.AI
 				BuildUnit("Vehicle", GetInfoByCommonName(Info.UnitsCommonNames.Mcv, Player).Name);
 
 			foreach (var q in Info.UnitQueues)
-				BuildUnit(q, unitsHangingAroundTheBase.Count < Info.IdleBaseUnitsMaximum);
+			{
+				if (Info.PipeExternalQuery)
+					QueryPipe(q, unitsHangingAroundTheBase);
+				else
+					BuildUnit(q, unitsHangingAroundTheBase.Count < Info.IdleBaseUnitsMaximum);
+			}
 		}
 
 		void BuildUnit(string category, bool buildRandom)
@@ -1384,6 +1401,35 @@ namespace OpenRA.Mods.Common.AI
 					WhichSquad[self].Update(); // Determine flee or not
 				}
 			}
+		}
+
+		void Send(UdpClient udp, string msg)
+		{
+			Byte[] sendBytes = Encoding.UTF8.GetBytes(msg);
+			udp.Send(sendBytes, sendBytes.Length);
+		}
+
+		void QueryPipe(string category, IEnumerable<Actor> unit)
+		{
+			// Pick a free queue
+			var queue = FindQueues(category).FirstOrDefault(q => q.CurrentItem() == null);
+			if (queue == null)
+				return;
+
+			var buildableThings = queue.BuildableItems();
+			if (!buildableThings.Any())
+				return;
+
+			foreach (var b in buildableThings)
+				Send(client, b.Name);
+			Send(client, "END");
+
+			// Get incoming result
+			IPEndPoint RemoteIpEndPoint = new IPEndPoint(IPAddress.Any, 0);
+			var recv = client.Receive(ref RemoteIpEndPoint);
+			string name = Encoding.UTF8.GetString(recv);
+
+			QueueOrder(Order.StartProduction(queue.Actor, name, 1));
 		}
 	}
 }
