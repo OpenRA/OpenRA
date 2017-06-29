@@ -103,7 +103,7 @@ namespace OpenRA.Mods.Common.Activities
 			maxRange = armaments.Min(a => a.MaxRange());
 
 			var mobile = move as Mobile;
-			if (!Target.IsInRange(self.CenterPosition, maxRange) || Target.IsInRange(self.CenterPosition, minRange)
+			if (!Target.IsInRange(self.CenterPosition, maxRange) || (minRange.LengthSquared != 0 && Target.IsInRange(self.CenterPosition, minRange))
 				|| (mobile != null && !mobile.CanInteractWithGroundLayer(self)))
 			{
 				// Try to move within range, drop the target otherwise
