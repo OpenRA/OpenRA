@@ -86,7 +86,7 @@ DOME:
 	ExternalCondition@lua:
 		Condition: captured
 	Targetable:
-		RequiresCondition: captured		
+		RequiresCondition: captured
 	Targetable@NOAUTOTARGET:
 		RequiresCondition: !captured
 		TargetTypes: Ground, Structure, C4, DetonateAttack, SpyInfiltrate, NoAutoTarget
