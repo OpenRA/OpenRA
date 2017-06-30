@@ -15,8 +15,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Net;
 using System.Text;
-using ICSharpCode.SharpZipLib;
-using ICSharpCode.SharpZipLib.Zip;
+using OpenRA.Primitives;
 using OpenRA.Support;
 using OpenRA.Widgets;
 
@@ -140,7 +139,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				try
 				{
 					using (var stream = File.OpenRead(file))
-					using (var z = new ZipFile(stream))
+					using (var z = ZipFileHelper.Create(stream))
 					{
 						foreach (var kv in download.Extract)
 						{
