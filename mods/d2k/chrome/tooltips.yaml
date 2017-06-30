@@ -35,6 +35,30 @@ Background@BUTTON_TOOLTIP:
 			Font: TinyBold
 			VAlign: Top
 
+Background@BUTTON_WITH_DESC_HIGHLIGHT_TOOLTIP:
+	Logic: ButtonTooltipWithDescHighlightLogic
+		Highlight: FFFF00
+	Background: dialog3
+	Height: 31
+	Children:
+		Label@LABEL:
+			X: 5
+			Y: 3
+			Height: 23
+			Font: Bold
+		Label@HOTKEY:
+			Y: 3
+			Visible: false
+			TextColor: FFFF00
+			Height: 23
+			Font: Bold
+		Label@DESC:
+			X: 5
+			Y: 26
+			Height: 12
+			Font: TinyBold
+			VAlign: Top
+
 Background@WORLD_TOOLTIP:
 	Logic: WorldTooltipLogic
 	Background: dialog3
