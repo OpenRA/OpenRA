@@ -109,16 +109,16 @@ explosion:
 	nuke_explosion: atomsfx
 	piff: piff
 	piffs: piffpiff
-	chemball: chemball # Same size as small_napalm, but bright green.
-	small_napalm: napalm1 # Not used by much. Currently used for flamethrower.
-	med_napalm: napalm2 # Explosion for bomblets
-	big_napalm: napalm3 # Huge; not used. (SSM used this explosion in C&C Gold?)
-	small_frag: veh-hit3 # The most common weapon-hit explosion. For rockets, tank shells, etc.
-	med_frag: frag1 # Fragmentation-style; quite large. (MLRS used this explosion in C&C Gold?)
-	big_frag: frag3 # Same as med_frag, except fire hangs around longer.
-	small_poof: veh-hit2 # For Grenades, tower missiles, boat missiles and APC AA gun.
-	poof: art-exp1 # For UnitExplode (artillery), artillery shell hit, building explosion and GrenadierExplode
-	small_building: veh-hit1 # Used for heli-explosion in C&C Gold?
+	chemball: chemball
+	small_napalm: napalm1
+	med_napalm: napalm2
+	big_napalm: napalm3
+	small_frag: veh-hit3
+	med_frag: frag1
+	big_frag: frag3
+	small_poof: veh-hit2
+	poof: art-exp1
+	small_building: veh-hit1
 	building: fball1
 	building_napalm: napalm2
 		FlipX: true
