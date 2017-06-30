@@ -13,9 +13,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using ICSharpCode.SharpZipLib.Zip;
-using SZipFile = ICSharpCode.SharpZipLib.Zip.ZipFile;
+using OpenRA.Primitives;
 
 namespace OpenRA.FileSystem
 {
@@ -26,12 +25,7 @@ namespace OpenRA.FileSystem
 		class ReadOnlyZipFile : IReadOnlyPackage
 		{
 			public string Name { get; protected set; }
-			protected SZipFile pkg;
-
-			static ReadOnlyZipFile()
-			{
-				ZipConstants.DefaultCodePage = Encoding.UTF8.CodePage;
-			}
+			protected ZipFile pkg;
 
 			// Dummy constructor for use with ReadWriteZipFile
 			protected ReadOnlyZipFile() { }
@@ -39,7 +33,7 @@ namespace OpenRA.FileSystem
 			public ReadOnlyZipFile(Stream s, string filename)
 			{
 				Name = filename;
-				pkg = new SZipFile(s);
+				pkg = ZipFileHelper.Create(s);
 			}
 
 			public Stream GetStream(string filename)
@@ -117,7 +111,7 @@ namespace OpenRA.FileSystem
 				}
 
 				pkgStream.Position = 0;
-				pkg = new SZipFile(pkgStream);
+				pkg = ZipFileHelper.Create(pkgStream);
 				Name = filename;
 			}
 
@@ -151,11 +145,6 @@ namespace OpenRA.FileSystem
 			public string Name { get { return path; } }
 			public ReadOnlyZipFile Parent { get; private set; }
 			readonly string path;
-
-			static ZipFolder()
-			{
-				ZipConstants.DefaultCodePage = Encoding.UTF8.CodePage;
-			}
 
 			public ZipFolder(ReadOnlyZipFile parent, string path)
 			{
