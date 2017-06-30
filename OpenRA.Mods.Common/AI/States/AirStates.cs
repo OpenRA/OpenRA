@@ -374,6 +374,9 @@ namespace OpenRA.Mods.Common.AI
 
 			foreach (var a in owner.Units)
 			{
+				if (!a.IsInWorld)
+					continue;
+
 				if (!ReloadsAutomatically(a) && !FullAmmo(a))
 				{
 					if (IsRearm(a))
