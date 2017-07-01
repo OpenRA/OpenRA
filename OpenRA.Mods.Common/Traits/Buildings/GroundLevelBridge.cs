@@ -51,7 +51,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			bridgeLayer = self.World.WorldActor.Trait<BridgeLayer>();
 			var buildingInfo = self.Info.TraitInfo<BuildingInfo>();
-			cells = FootprintUtils.PathableTiles(self.Info.Name, buildingInfo, self.Location);
+			cells = buildingInfo.PathableTiles(self.Location);
 		}
 
 		void UpdateTerrain(Actor self, byte terrainIndex)

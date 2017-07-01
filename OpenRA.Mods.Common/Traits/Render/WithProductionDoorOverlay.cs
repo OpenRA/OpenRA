@@ -30,7 +30,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			anim.PlayFetchIndex(RenderSprites.NormalizeSequence(anim, init.GetDamageState(), Sequence), () => 0);
 
 			var bi = init.Actor.TraitInfo<BuildingInfo>();
-			var offset = FootprintUtils.CenterOffset(init.World, bi).Y + 512; // Additional 512 units move from center -> top of cell
+			var offset = bi.CenterOffset(init.World).Y + 512; // Additional 512 units move from center -> top of cell
 			yield return new SpriteActorPreview(anim, () => WVec.Zero, () => offset, p, rs.Scale);
 		}
 	}
@@ -53,7 +53,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 			var buildingInfo = self.Info.TraitInfo<BuildingInfo>();
 
-			var offset = FootprintUtils.CenterOffset(self.World, buildingInfo).Y + 512;
+			var offset = buildingInfo.CenterOffset(self.World).Y + 512;
 			renderSprites.Add(new AnimationWithOffset(door, null, () => !buildComplete, offset));
 		}
 

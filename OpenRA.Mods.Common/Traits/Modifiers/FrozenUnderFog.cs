@@ -63,7 +63,8 @@ namespace OpenRA.Mods.Common.Traits
 			var shroudInfo = init.World.Map.Rules.Actors["player"].TraitInfo<ShroudInfo>();
 			var exploredMap = init.World.LobbyInfo.GlobalSettings.OptionOrDefault("explored", shroudInfo.ExploredMapEnabled);
 			startsRevealed = exploredMap && init.Contains<SpawnedByMapInit>() && !init.Contains<HiddenUnderFogInit>();
-			var footprintCells = FootprintUtils.FrozenUnderFogTiles(init.Self).ToList();
+			var buildingInfo = init.Self.Info.TraitInfoOrDefault<BuildingInfo>();
+			var footprintCells = buildingInfo != null ? buildingInfo.FrozenUnderFogTiles(init.Self.Location).ToList() : new List<CPos>() { init.Self.Location };
 			footprint = footprintCells.SelectMany(c => map.ProjectedCellsCovering(c.ToMPos(map))).ToArray();
 		}
 
