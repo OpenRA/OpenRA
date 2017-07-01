@@ -279,7 +279,6 @@
     <Compile Include="Traits\Buildings\BuildingInfluence.cs" />
     <Compile Include="Traits\Buildings\BuildingUtils.cs" />
     <Compile Include="Traits\Buildings\Exit.cs" />
-    <Compile Include="Traits\Buildings\FootprintUtils.cs" />
     <Compile Include="Traits\Buildings\FreeActor.cs" />
     <Compile Include="Traits\Buildings\Gate.cs" />
     <Compile Include="Traits\Buildings\LineBuild.cs" />

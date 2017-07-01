@@ -93,7 +93,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (Info.Type == ExplosionType.Footprint && buildingInfo != null)
 			{
-				var cells = FootprintUtils.UnpathableTiles(self.Info.Name, buildingInfo, self.Location);
+				var cells = buildingInfo.UnpathableTiles(self.Location);
 				foreach (var c in cells)
 					weapon.Impact(Target.FromPos(self.World.Map.CenterOfCell(c)), e.Attacker, Enumerable.Empty<int>());
 
