@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using OpenRA.Activities;
 using OpenRA.Mods.Common.Orders;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Mods.Common.Traits.Render;
@@ -64,7 +65,14 @@ namespace OpenRA.Mods.Cnc.Traits
 	{
 		None = 0,
 		Attack = 1,
-		Damaged = 2
+		Damaged = 2,
+		SelfHeal = 4,
+		Heal = 8,
+		Infiltrate = 16,
+		Demolish = 32,
+		Move = 64,
+		Unload = 128,
+		Dock = 256
 	}
 
 	[Desc("Provides access to the disguise command, which makes the actor appear to be another player's actor.")]
@@ -76,13 +84,21 @@ namespace OpenRA.Mods.Cnc.Traits
 		[Desc("The condition to grant to self while disguised.")]
 		public readonly string DisguisedCondition = null;
 
-		[Desc("Triggers which cause the actor to drop it's disguise. Possible values: None, Attack, Damaged.")]
+		//Added this for more control over when disguises break
+		[Desc("Events leading to the actor breaking Disguise. Possible values are: Attack, Move, Unload, Infiltrate, Demolish, Dock, Damaged, Heal and SelfHeal.")]
 		public readonly RevealDisguiseType RevealDisguiseOn = RevealDisguiseType.Attack;
+
+		//This is to help narrow down the list of types an actor can be further.
+		//It helps prevent cases of say a spy trying to disguise as a tank or a tree when it doesn't have the needed traits to do so.
+		[Desc("This is to limit the range of types an actor with the Disguise trait can turn into.",
+			"Leave list empty to allow for any type that is targetable by Disguise to be used.",
+			"ValidTargets here has the same targets as warhead and autotarget.")]
+		public readonly HashSet<string> ValidTargets = new HashSet<string>();
 
 		public object Create(ActorInitializer init) { return new Disguise(init.Self, this); }
 	}
 
-	class Disguise : INotifyCreated, IEffectiveOwner, IIssueOrder, IResolveOrder, IOrderVoice, IRadarColorModifier, INotifyAttack, INotifyDamage
+	class Disguise : INotifyCreated, IEffectiveOwner, IIssueOrder, IResolveOrder, IOrderVoice, IRadarColorModifier, INotifyAttack, INotifyDamage, ITick, INotifyHarvesterAction
 	{
 		public Player AsPlayer { get; private set; }
 		public string AsSprite { get; private set; }
@@ -93,6 +109,9 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		readonly Actor self;
 		readonly DisguiseInfo info;
+
+		CPos? lastPos;
+		bool isDocking;
 
 		ConditionManager conditionManager;
 		int disguisedToken = ConditionManager.InvalidConditionToken;
@@ -112,7 +131,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		{
 			get
 			{
-				yield return new TargetTypeOrderTargeter(new HashSet<string> { "Disguise" }, "Disguise", 7, "ability", true, true) { ForceAttack = false };
+				yield return new DisguiseOrderTargeter(info) { ForceAttack = false };
 			}
 		}
 
@@ -209,16 +228,82 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		void INotifyAttack.PreparingAttack(Actor self, Target target, Armament a, Barrel barrel) { }
 
-		void INotifyAttack.Attacking(Actor self, Target target, Armament a, Barrel barrel)
-		{
-			if (info.RevealDisguiseOn.HasFlag(RevealDisguiseType.Attack))
-				DisguiseAs(null);
-		}
+		void INotifyAttack.Attacking(Actor self, Target target, Armament a, Barrel barrel) { if (info.RevealDisguiseOn.HasFlag(RevealDisguiseType.Attack)) DisguiseAs(null); }
 
 		void INotifyDamage.Damaged(Actor self, AttackInfo e)
 		{
-			if (info.RevealDisguiseOn.HasFlag(RevealDisguiseType.Damaged) && e.Damage.Value > 0)
+			if (e.Damage.Value == 0)
+				return;
+			
+			if ( (info.RevealDisguiseOn.HasFlag(RevealDisguiseType.Damaged) && e.Damage.Value > 0) || 
+				(e.Attacker == self && e.Damage.Value < 0 && (info.RevealDisguiseOn.HasFlag(RevealDisguiseType.SelfHeal) || info.RevealDisguiseOn.HasFlag(RevealDisguiseType.Heal)) ))
 				DisguiseAs(null);
+		}
+
+		void ITick.Tick(Actor self)
+		{
+			if (self.IsDisabled())
+				DisguiseAs(null);
+
+			if (info.RevealDisguiseOn.HasFlag(RevealDisguiseType.Move) && (lastPos == null || lastPos.Value != self.Location))
+			{
+				DisguiseAs(null);
+				lastPos = self.Location;
+			}
+		}
+
+		void INotifyHarvesterAction.MovingToResources(Actor self, CPos targetCell, Activity next){}
+
+		void INotifyHarvesterAction.MovingToRefinery(Actor self, CPos targetCell, Activity next){}
+
+		void INotifyHarvesterAction.MovementCancelled(Actor self){}
+
+		void INotifyHarvesterAction.Harvested(Actor self, ResourceType resource){}
+
+		void INotifyHarvesterAction.Docked()
+		{
+			if (info.RevealDisguiseOn.HasFlag(RevealDisguiseType.Dock))
+			{
+				isDocking = true;
+				DisguiseAs(null);
+			}
+		}
+
+		void INotifyHarvesterAction.Undocked()
+		{
+			isDocking = false;
+		}
+
+		class DisguiseOrderTargeter : TargetTypeOrderTargeter
+		{
+			readonly DisguiseInfo disguisinginfo;
+
+			public DisguiseOrderTargeter(DisguiseInfo info)
+				: base(new HashSet<string> { "Disguise" }, "Disguise", 7, "ability", true, true)
+			{
+				disguisinginfo = info;
+			}
+
+			public override bool CanTargetActor(Actor self, Actor target, TargetModifiers modifiers, ref string cursor)
+			{
+				
+				//Does the original check first than checks the list to see if it has anything in it or not, 
+				//than if it does it checks to see if the target type name matches anything in the list
+				return base.CanTargetActor(self, target, modifiers, ref cursor) && 
+					(!disguisinginfo.ValidTargets.Any() || (disguisinginfo.ValidTargets.Any() && 
+					disguisinginfo.ValidTargets.Overlaps(target.GetEnabledTargetTypes())));
+
+			}
+
+			public override bool CanTargetFrozenActor(Actor self, FrozenActor target, TargetModifiers modifiers, ref string cursor)
+			{
+				
+				//Does the original check first than checks the list to see if it has anything in it or not, 
+				//than if it does it checks to see if the target type name matches anything in the list
+				return base.CanTargetFrozenActor(self, target, modifiers, ref cursor) &&
+					(!disguisinginfo.ValidTargets.Any() || (disguisinginfo.ValidTargets.Any() &&
+					disguisinginfo.ValidTargets.Overlaps(target.TargetTypes)));
+			}
 		}
 	}
 }
