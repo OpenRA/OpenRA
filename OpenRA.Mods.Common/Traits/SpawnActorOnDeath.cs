@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Common.Traits
 	public enum OwnerType { Victim, Killer, InternalName }
 
 	[Desc("Spawn another actor immediately upon death.")]
-	public class SpawnActorOnDeathInfo : ITraitInfo
+	public class SpawnActorOnDeathInfo : ConditionalTraitInfo
 	{
 		[ActorReference, FieldLoader.Require]
 		[Desc("Actor to spawn on death.")]
@@ -50,34 +50,33 @@ namespace OpenRA.Mods.Common.Traits
 			"lead to unexpected behaviour.")]
 		public readonly CVec Offset = CVec.Zero;
 
-		public object Create(ActorInitializer init) { return new SpawnActorOnDeath(init, this); }
+		public override object Create(ActorInitializer init) { return new SpawnActorOnDeath(init, this); }
 	}
 
-	public class SpawnActorOnDeath : INotifyKilled
+	public class SpawnActorOnDeath : ConditionalTrait<SpawnActorOnDeathInfo>, INotifyKilled
 	{
-		readonly SpawnActorOnDeathInfo info;
 		readonly string faction;
 		readonly bool enabled;
 
 		public SpawnActorOnDeath(ActorInitializer init, SpawnActorOnDeathInfo info)
+			: base(info)
 		{
-			this.info = info;
 			enabled = !info.RequiresLobbyCreeps || init.Self.World.WorldActor.Trait<MapCreeps>().Enabled;
 			faction = init.Contains<FactionInit>() ? init.Get<FactionInit, string>() : init.Self.Owner.Faction.InternalName;
 		}
 
 		public void Killed(Actor self, AttackInfo e)
 		{
-			if (!enabled)
+			if (!enabled || IsTraitDisabled)
 				return;
 
 			if (!self.IsInWorld)
 				return;
 
-			if (self.World.SharedRandom.Next(100) > info.Probability)
+			if (self.World.SharedRandom.Next(100) > Info.Probability)
 				return;
 
-			if (info.DeathType != null && !e.Damage.DamageTypes.Contains(info.DeathType))
+			if (Info.DeathType != null && !e.Damage.DamageTypes.Contains(Info.DeathType))
 				return;
 
 			self.World.AddFrameEndTask(w =>
@@ -89,19 +88,19 @@ namespace OpenRA.Mods.Common.Traits
 				var td = new TypeDictionary
 				{
 					new ParentActorInit(self),
-					new LocationInit(self.Location + info.Offset),
+					new LocationInit(self.Location + Info.Offset),
 					new CenterPositionInit(self.CenterPosition),
 					new FactionInit(faction)
 				};
 
-				if (info.OwnerType == OwnerType.Victim)
+				if (Info.OwnerType == OwnerType.Victim)
 					td.Add(new OwnerInit(self.Owner));
-				else if (info.OwnerType == OwnerType.Killer)
+				else if (Info.OwnerType == OwnerType.Killer)
 					td.Add(new OwnerInit(e.Attacker.Owner));
 				else
-					td.Add(new OwnerInit(self.World.Players.First(p => p.InternalName == info.InternalOwner)));
+					td.Add(new OwnerInit(self.World.Players.First(p => p.InternalName == Info.InternalOwner)));
 
-				if (info.SkipMakeAnimations)
+				if (Info.SkipMakeAnimations)
 					td.Add(new SkipMakeAnimsInit());
 
 				foreach (var modifier in self.TraitsImplementing<IDeathActorInitModifier>())
@@ -111,7 +110,7 @@ namespace OpenRA.Mods.Common.Traits
 					.Select(ihm => ihm.HuskActor(self))
 					.FirstOrDefault(a => a != null);
 
-				w.CreateActor(huskActor ?? info.Actor, td);
+				w.CreateActor(huskActor ?? Info.Actor, td);
 			});
 		}
 	}
