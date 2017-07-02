@@ -84,12 +84,12 @@ namespace OpenRA.Mods.Cnc.Traits
 		[Desc("The condition to grant to self while disguised.")]
 		public readonly string DisguisedCondition = null;
 
-		//Added this for more control over when disguises break
+		// Added this for more control over when disguises break
 		[Desc("Events leading to the actor breaking Disguise. Possible values are: Attack, Move, Unload, Infiltrate, Demolish, Dock, Damaged, Heal and SelfHeal.")]
 		public readonly RevealDisguiseType RevealDisguiseOn = RevealDisguiseType.Attack;
 
-		//This is to help narrow down the list of types an actor can be further.
-		//It helps prevent cases of say a spy trying to disguise as a tank or a tree when it doesn't have the needed traits to do so.
+		// This is to help narrow down the list of types an actor can be further.
+		// It helps prevent cases of say a spy trying to disguise as a tank or a tree when it doesn't have the needed traits to do so.
 		[Desc("This is to limit the range of types an actor with the Disguise trait can turn into.",
 			"Leave list empty to allow for any type that is targetable by Disguise to be used.",
 			"ValidTargets here has the same targets as warhead and autotarget.")]
@@ -282,8 +282,8 @@ namespace OpenRA.Mods.Cnc.Traits
 			public override bool CanTargetActor(Actor self, Actor target, TargetModifiers modifiers, ref string cursor)
 			{
 				
-				//Does the original check first than checks the list to see if it has anything in it or not, 
-				//than if it does it checks to see if the target type name matches anything in the list
+				// Does the original check first than checks the list to see if it has anything in it or not, 
+				// than if it does it checks to see if the target type name matches anything in the list
 				return base.CanTargetActor(self, target, modifiers, ref cursor) && 
 					(!disguisinginfo.ValidTargets.Any() || (disguisinginfo.ValidTargets.Any() && 
 					disguisinginfo.ValidTargets.Overlaps(target.GetEnabledTargetTypes())));
@@ -293,8 +293,8 @@ namespace OpenRA.Mods.Cnc.Traits
 			public override bool CanTargetFrozenActor(Actor self, FrozenActor target, TargetModifiers modifiers, ref string cursor)
 			{
 				
-				//Does the original check first than checks the list to see if it has anything in it or not, 
-				//than if it does it checks to see if the target type name matches anything in the list
+				// Does the original check first than checks the list to see if it has anything in it or not, 
+				// than if it does it checks to see if the target type name matches anything in the list
 				return base.CanTargetFrozenActor(self, target, modifiers, ref cursor) &&
 					(!disguisinginfo.ValidTargets.Any() || (disguisinginfo.ValidTargets.Any() &&
 					disguisinginfo.ValidTargets.Overlaps(target.TargetTypes)));
