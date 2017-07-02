@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Traits;
@@ -23,6 +24,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		readonly ScrollPanelWidget layerTemplateList;
 		readonly ScrollItemWidget layerPreviewTemplate;
+		readonly Dictionary<string, ScrollItemWidget> scrollItems = new Dictionary<string, ScrollItemWidget>();
 
 		[ObjectCreator.UseCtor]
 		public LayerSelectorLogic(Widget widget, WorldRenderer worldRenderer)
@@ -35,11 +37,31 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			layerPreviewTemplate = layerTemplateList.Get<ScrollItemWidget>("LAYERPREVIEW_TEMPLATE");
 
 			IntializeLayerPreview(widget);
+
+			var searchTextField = widget.GetOrNull<TextFieldWidget>("SEARCH_TEXTFIELD");
+			if (searchTextField != null)
+			{
+				searchTextField.OnEnterKey = () =>
+				{
+					var text = searchTextField.Text.ToLowerInvariant();
+					ScrollItemWidget item;
+					if (scrollItems.TryGetValue(text, out item))
+					{
+						layerTemplateList.ScrollToItem(item.ItemKey);
+						item.OnClick();
+						return true;
+					}
+
+					return false;
+				};
+			}
 		}
 
 		void IntializeLayerPreview(Widget widget)
 		{
 			layerTemplateList.RemoveChildren();
+			scrollItems.Clear();
+
 			var rules = worldRenderer.World.Map.Rules;
 			var resources = rules.Actors["world"].TraitInfos<ResourceTypeInfo>();
 			var tileSize = worldRenderer.World.Map.Grid.TileSize;
@@ -49,6 +71,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					() => { var brush = editor.CurrentBrush as EditorResourceBrush; return brush != null && brush.ResourceType == resource; },
 					() => editor.SetBrush(new EditorResourceBrush(editor, resource, worldRenderer)));
 
+				newResourcePreviewTemplate.ItemKey = resource.Type;
 				newResourcePreviewTemplate.Bounds.X = 0;
 				newResourcePreviewTemplate.Bounds.Y = 0;
 
@@ -69,6 +92,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				newResourcePreviewTemplate.IsVisible = () => true;
 				newResourcePreviewTemplate.GetTooltipText = () => resource.Type;
 
+				scrollItems[resource.Type.ToLowerInvariant()] = newResourcePreviewTemplate;
 				layerTemplateList.AddChild(newResourcePreviewTemplate);
 			}
 		}

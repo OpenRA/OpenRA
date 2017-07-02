@@ -228,7 +228,7 @@ Container@EDITOR_WORLD_ROOT:
 					X: WINDOW_RIGHT - 250
 					Y: 290
 					Width: 240
-					Height: WINDOW_BOTTOM - 382
+					Height: WINDOW_BOTTOM - 357
 					Children:
 						DropDownButton@TILE_CATEGORY:
 							X: 10
@@ -236,11 +236,16 @@ Container@EDITOR_WORLD_ROOT:
 							Width: 220
 							Height: 25
 							Font: Bold
-						ScrollPanel@TILETEMPLATE_LIST:
+						TextField@SEARCH_TEXTFIELD:
 							X: 10
 							Y: 35
 							Width: PARENT_RIGHT - 20
-							Height: PARENT_BOTTOM - 45
+							Height: 25
+						ScrollPanel@TILETEMPLATE_LIST:
+							X: 10
+							Y: 60
+							Width: PARENT_RIGHT - 20
+							Height: PARENT_BOTTOM - 70
 							TopBottomSpacing: 4
 							ItemSpacing: 4
 							Children:
@@ -260,13 +265,18 @@ Container@EDITOR_WORLD_ROOT:
 					X: WINDOW_RIGHT - 250
 					Y: 290
 					Width: 240
-					Height: WINDOW_BOTTOM - 382
+					Height: WINDOW_BOTTOM - 357
 					Children:
-						ScrollPanel@LAYERTEMPLATE_LIST:
+						TextField@SEARCH_TEXTFIELD:
 							X: 10
 							Y: 10
 							Width: PARENT_RIGHT - 20
-							Height: PARENT_BOTTOM - 20
+							Height: 25
+						ScrollPanel@LAYERTEMPLATE_LIST:
+							X: 10
+							Y: 35
+							Width: PARENT_RIGHT - 20
+							Height: PARENT_BOTTOM - 45
 							TopBottomSpacing: 4
 							ItemSpacing: 4
 							Children:
@@ -287,7 +297,7 @@ Container@EDITOR_WORLD_ROOT:
 					X: WINDOW_RIGHT - 250
 					Y: 290
 					Width: 240
-					Height: WINDOW_BOTTOM - 382
+					Height: WINDOW_BOTTOM - 357
 					Children:
 						DropDownButton@OWNERS_DROPDOWN:
 							X: 10
@@ -295,11 +305,16 @@ Container@EDITOR_WORLD_ROOT:
 							Width: 220
 							Height: 25
 							Font: Bold
-						ScrollPanel@ACTORTEMPLATE_LIST:
+						TextField@SEARCH_TEXTFIELD:
 							X: 10
 							Y: 35
 							Width: PARENT_RIGHT - 20
-							Height: PARENT_BOTTOM - 45
+							Height: 25
+						ScrollPanel@ACTORTEMPLATE_LIST:
+							X: 10
+							Y: 60
+							Width: PARENT_RIGHT - 20
+							Height: PARENT_BOTTOM - 70
 							TopBottomSpacing: 4
 							ItemSpacing: 4
 							Children:
@@ -394,3 +409,16 @@ Container@EDITOR_WORLD_ROOT:
 			Align: Left
 			Font: Bold
 			Contrast: true
+		Label@MAPSEARCH_LABEL:
+			X: 640
+			Width: 50
+			Height: 25
+			Align: Left
+			Font: Bold
+			Contrast: true
+			Text: ActorID:
+		TextField@MAPSEARCH_TEXTFIELD:
+			X: 700
+			Width: 45
+			Height: 25
+			Font: Bold
