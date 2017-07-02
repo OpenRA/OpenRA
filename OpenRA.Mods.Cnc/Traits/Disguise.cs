@@ -79,7 +79,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		public readonly string DisguisedCondition = null;
 
 		// Added this for more control over when disguises break
-		[Desc("Events leading to the actor breaking Disguise. Possible values are: Attack, Move, Demolish, and Damaged.")]
+		[Desc("Events leading to the actor breaking Disguise. Possible values are: None, Attack, Move, Demolish, and Damaged.")]
 		public readonly RevealDisguiseType RevealDisguiseOn = RevealDisguiseType.Attack;
 
 		// This is to help narrow down the list of types an actor can be further.
