@@ -111,8 +111,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		readonly DisguiseInfo info;
 
 		CPos? lastPos;
-		bool isDocking;
-
+		
 		ConditionManager conditionManager;
 		int disguisedToken = ConditionManager.InvalidConditionToken;
 
@@ -264,15 +263,11 @@ namespace OpenRA.Mods.Cnc.Traits
 		{
 			if (info.RevealDisguiseOn.HasFlag(RevealDisguiseType.Dock))
 			{
-				isDocking = true;
 				DisguiseAs(null);
 			}
 		}
 
-		void INotifyHarvesterAction.Undocked()
-		{
-			isDocking = false;
-		}
+		void INotifyHarvesterAction.Undocked(){}
 
 		class DisguiseOrderTargeter : TargetTypeOrderTargeter
 		{
