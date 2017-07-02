@@ -105,7 +105,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		readonly DisguiseInfo info;
 
 		CPos? lastPos;
-		
+
 		ConditionManager conditionManager;
 		int disguisedToken = ConditionManager.InvalidConditionToken;
 
@@ -219,19 +219,19 @@ namespace OpenRA.Mods.Cnc.Traits
 			}
 		}
 
-		void INotifyAttack.PreparingAttack(Actor self, Target target, Armament a, Barrel barrel) {}
+		void INotifyAttack.PreparingAttack(Actor self, Target target, Armament a, Barrel barrel) { }
 
 		void INotifyAttack.Attacking(Actor self, Target target, Armament a, Barrel barrel)
 		{
 			if (info.RevealDisguiseOn.HasFlag(RevealDisguiseType.Attack) || info.RevealDisguiseOn.HasFlag(RevealDisguiseType.Demolish))
 				DisguiseAs(null);
 		}
-		
+
 		void INotifyDamage.Damaged(Actor self, AttackInfo e)
 		{
 			if (e.Damage.Value == 0)
 				return;
-			
+
 			if (info.RevealDisguiseOn.HasFlag(RevealDisguiseType.Damaged) && e.Damage.Value > 0)
 				DisguiseAs(null);
 		}
@@ -260,18 +260,15 @@ namespace OpenRA.Mods.Cnc.Traits
 
 			public override bool CanTargetActor(Actor self, Actor target, TargetModifiers modifiers, ref string cursor)
 			{
-				
 				// Does the original check first than checks the list to see if it has anything in it or not,
 				// than if it does it checks to see if the target type name matches anything in the list
 				return base.CanTargetActor(self, target, modifiers, ref cursor) &&
 					(!disguisinginfo.ValidTargets.Any() || (disguisinginfo.ValidTargets.Any() &&
 					disguisinginfo.ValidTargets.Overlaps(target.GetEnabledTargetTypes())));
-
 			}
 
 			public override bool CanTargetFrozenActor(Actor self, FrozenActor target, TargetModifiers modifiers, ref string cursor)
 			{
-				
 				// Does the original check first than checks the list to see if it has anything in it or not,
 				// than if it does it checks to see if the target type name matches anything in the list
 				return base.CanTargetFrozenActor(self, target, modifiers, ref cursor) &&
