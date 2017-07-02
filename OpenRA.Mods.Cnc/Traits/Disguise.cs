@@ -13,7 +13,6 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using OpenRA.Activities;
 using OpenRA.Mods.Common.Orders;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Mods.Common.Traits.Render;
@@ -66,13 +65,8 @@ namespace OpenRA.Mods.Cnc.Traits
 		None = 0,
 		Attack = 1,
 		Damaged = 2,
-		SelfHeal = 4,
-		Heal = 8,
-		Infiltrate = 16,
-		Demolish = 32,
-		Move = 64,
-		Unload = 128,
-		Dock = 256
+		Demolish = 4,
+		Move = 8
 	}
 
 	[Desc("Provides access to the disguise command, which makes the actor appear to be another player's actor.")]
@@ -85,7 +79,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		public readonly string DisguisedCondition = null;
 
 		// Added this for more control over when disguises break
-		[Desc("Events leading to the actor breaking Disguise. Possible values are: Attack, Move, Unload, Infiltrate, Demolish, Dock, Damaged, Heal and SelfHeal.")]
+		[Desc("Events leading to the actor breaking Disguise. Possible values are: Attack, Move, Demolish, and Damaged.")]
 		public readonly RevealDisguiseType RevealDisguiseOn = RevealDisguiseType.Attack;
 
 		// This is to help narrow down the list of types an actor can be further.
@@ -98,7 +92,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		public object Create(ActorInitializer init) { return new Disguise(init.Self, this); }
 	}
 
-	class Disguise : INotifyCreated, IEffectiveOwner, IIssueOrder, IResolveOrder, IOrderVoice, IRadarColorModifier, INotifyAttack, INotifyDamage, ITick, INotifyHarvesterAction
+	class Disguise : INotifyCreated, IEffectiveOwner, IIssueOrder, IResolveOrder, IOrderVoice, IRadarColorModifier, INotifyAttack, INotifyDamage, ITick
 	{
 		public Player AsPlayer { get; private set; }
 		public string AsSprite { get; private set; }
@@ -225,18 +219,20 @@ namespace OpenRA.Mods.Cnc.Traits
 			}
 		}
 
-		void INotifyAttack.PreparingAttack(Actor self, Target target, Armament a, Barrel barrel) { }
+		void INotifyAttack.PreparingAttack(Actor self, Target target, Armament a, Barrel barrel) {}
 
-		void INotifyAttack.Attacking(Actor self, Target target, Armament a, Barrel barrel) { if (info.RevealDisguiseOn.HasFlag(RevealDisguiseType.Attack)) DisguiseAs(null); }
-
+		void INotifyAttack.Attacking(Actor self, Target target, Armament a, Barrel barrel)
+		{
+			if (info.RevealDisguiseOn.HasFlag(RevealDisguiseType.Attack) || info.RevealDisguiseOn.HasFlag(RevealDisguiseType.Demolish))
+				DisguiseAs(null);
+		}
+		
 		void INotifyDamage.Damaged(Actor self, AttackInfo e)
 		{
 			if (e.Damage.Value == 0)
 				return;
 			
-			if ((info.RevealDisguiseOn.HasFlag(RevealDisguiseType.Damaged) && e.Damage.Value > 0) ||
-				(e.Attacker == self && e.Damage.Value < 0 && (info.RevealDisguiseOn.HasFlag(RevealDisguiseType.SelfHeal) ||
-				info.RevealDisguiseOn.HasFlag(RevealDisguiseType.Heal))))
+			if (info.RevealDisguiseOn.HasFlag(RevealDisguiseType.Damaged) && e.Damage.Value > 0)
 				DisguiseAs(null);
 		}
 
@@ -251,24 +247,6 @@ namespace OpenRA.Mods.Cnc.Traits
 				lastPos = self.Location;
 			}
 		}
-
-		void INotifyHarvesterAction.MovingToResources(Actor self, CPos targetCell, Activity next){}
-
-		void INotifyHarvesterAction.MovingToRefinery(Actor self, CPos targetCell, Activity next){}
-
-		void INotifyHarvesterAction.MovementCancelled(Actor self){}
-
-		void INotifyHarvesterAction.Harvested(Actor self, ResourceType resource){}
-
-		void INotifyHarvesterAction.Docked()
-		{
-			if (info.RevealDisguiseOn.HasFlag(RevealDisguiseType.Dock))
-			{
-				DisguiseAs(null);
-			}
-		}
-
-		void INotifyHarvesterAction.Undocked(){}
 
 		class DisguiseOrderTargeter : TargetTypeOrderTargeter
 		{
