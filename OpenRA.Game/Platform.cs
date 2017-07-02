@@ -95,12 +95,24 @@ namespace OpenRA
 			return dir + Path.DirectorySeparatorChar;
 		}
 
-		public static string GameDir { get { return AppDomain.CurrentDomain.BaseDirectory; } }
+		public static string GameDir
+		{
+			get
+			{
+				var dir = AppDomain.CurrentDomain.BaseDirectory;
+
+				// Add trailing DirectorySeparator for some buggy AppPool hosts
+				if (!dir.EndsWith(Path.DirectorySeparatorChar.ToString(), StringComparison.Ordinal))
+					dir += Path.DirectorySeparatorChar;
+
+				return dir;
+			}
+		}
 
 		/// <summary>Replaces special character prefixes with full paths.</summary>
 		public static string ResolvePath(string path)
 		{
-			path = path.TrimEnd(new char[] { ' ', '\t' });
+			path = path.TrimEnd(' ', '\t');
 
 			// Paths starting with ^ are relative to the support dir
 			if (path.StartsWith("^", StringComparison.Ordinal))
