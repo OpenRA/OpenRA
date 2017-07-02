@@ -40,6 +40,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var blinking = false;
 				var lp = world.LocalPlayer;
 				options.IsDisabled = () => disableSystemButtons;
+				options.OnKeyPress = ki => { if (ki.Event == KeyInputEvent.Down && !ki.IsRepeat) options.OnClick(); };
 				options.OnClick = () =>
 				{
 					blinking = false;
