@@ -234,8 +234,9 @@ namespace OpenRA.Mods.Cnc.Traits
 			if (e.Damage.Value == 0)
 				return;
 			
-			if ( (info.RevealDisguiseOn.HasFlag(RevealDisguiseType.Damaged) && e.Damage.Value > 0) || 
-				(e.Attacker == self && e.Damage.Value < 0 && (info.RevealDisguiseOn.HasFlag(RevealDisguiseType.SelfHeal) || info.RevealDisguiseOn.HasFlag(RevealDisguiseType.Heal)) ))
+			if ((info.RevealDisguiseOn.HasFlag(RevealDisguiseType.Damaged) && e.Damage.Value > 0) ||
+				(e.Attacker == self && e.Damage.Value < 0 && (info.RevealDisguiseOn.HasFlag(RevealDisguiseType.SelfHeal) ||
+				info.RevealDisguiseOn.HasFlag(RevealDisguiseType.Heal))))
 				DisguiseAs(null);
 		}
 
@@ -282,10 +283,10 @@ namespace OpenRA.Mods.Cnc.Traits
 			public override bool CanTargetActor(Actor self, Actor target, TargetModifiers modifiers, ref string cursor)
 			{
 				
-				// Does the original check first than checks the list to see if it has anything in it or not, 
+				// Does the original check first than checks the list to see if it has anything in it or not,
 				// than if it does it checks to see if the target type name matches anything in the list
-				return base.CanTargetActor(self, target, modifiers, ref cursor) && 
-					(!disguisinginfo.ValidTargets.Any() || (disguisinginfo.ValidTargets.Any() && 
+				return base.CanTargetActor(self, target, modifiers, ref cursor) &&
+					(!disguisinginfo.ValidTargets.Any() || (disguisinginfo.ValidTargets.Any() &&
 					disguisinginfo.ValidTargets.Overlaps(target.GetEnabledTargetTypes())));
 
 			}
@@ -293,7 +294,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			public override bool CanTargetFrozenActor(Actor self, FrozenActor target, TargetModifiers modifiers, ref string cursor)
 			{
 				
-				// Does the original check first than checks the list to see if it has anything in it or not, 
+				// Does the original check first than checks the list to see if it has anything in it or not,
 				// than if it does it checks to see if the target type name matches anything in the list
 				return base.CanTargetFrozenActor(self, target, modifiers, ref cursor) &&
 					(!disguisinginfo.ValidTargets.Any() || (disguisinginfo.ValidTargets.Any() &&
