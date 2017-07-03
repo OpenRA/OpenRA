@@ -34,14 +34,14 @@ namespace OpenRA.Mods.AS.Traits
 
 		public override object Create(ActorInitializer init) { return new WithVoxelHelicopterBody(init.Self, this); }
 
-		public IEnumerable<VoxelAnimation> RenderPreviewVoxels(
+		public IEnumerable<ModelAnimation> RenderPreviewVoxels(
 			ActorPreviewInitializer init, RenderVoxelsInfo rv, string image, Func<WRot> orientation, int facings, PaletteReference p)
 		{
-			var voxel = VoxelProvider.GetVoxel(image, Sequence);
+			var voxel = init.World.ModelCache.GetModelSequence(image, Sequence);
 			var body = init.Actor.TraitInfo<BodyOrientationInfo>();
 			var frame = init.Contains<BodyAnimationFrameInit>() ? init.Get<BodyAnimationFrameInit, uint>() : 0;
 
-			yield return new VoxelAnimation(voxel, () => WVec.Zero,
+			yield return new ModelAnimation(voxel, () => WVec.Zero,
 				() => new[] { body.QuantizeOrientation(orientation(), facings) },
 				() => false, () => frame, ShowShadow);
 		}
@@ -61,9 +61,9 @@ namespace OpenRA.Mods.AS.Traits
 			var body = self.Trait<BodyOrientation>();
 			var rv = self.Trait<RenderVoxels>();
 
-			var voxel = VoxelProvider.GetVoxel(rv.Image, info.Sequence);
+			var voxel = self.World.ModelCache.GetModelSequence(rv.Image, info.Sequence);
 			frames = voxel.Frames;
-			rv.Add(new VoxelAnimation(voxel, () => WVec.Zero,
+			rv.Add(new ModelAnimation(voxel, () => WVec.Zero,
 				() => new[] { body.QuantizeOrientation(self, self.Orientation) },
 				() => IsTraitDisabled, () => frame, info.ShowShadow));
 
