@@ -40,6 +40,7 @@ namespace OpenRA
 		public Session LobbyInfo { get { return OrderManager.LobbyInfo; } }
 
 		public readonly MersenneTwister SharedRandom;
+		public readonly IModelCache ModelCache;
 
 		public Player[] Players = new Player[0];
 
@@ -147,7 +148,7 @@ namespace OpenRA
 			}
 		}
 
-		internal World(Map map, OrderManager orderManager, WorldType type)
+		internal World(ModData modData, Map map, OrderManager orderManager, WorldType type)
 		{
 			Type = type;
 			OrderManager = orderManager;
@@ -155,6 +156,8 @@ namespace OpenRA
 			Map = map;
 			Timestep = orderManager.LobbyInfo.GlobalSettings.Timestep;
 			SharedRandom = new MersenneTwister(orderManager.LobbyInfo.GlobalSettings.RandomSeed);
+
+			ModelCache = modData.ModelSequenceLoader.CacheModels(map, modData, map.Rules.ModelSequences);
 
 			var worldActorType = type == WorldType.Editor ? "EditorWorld" : "World";
 			WorldActor = CreateActor(worldActorType, new TypeDictionary());
@@ -436,6 +439,8 @@ namespace OpenRA
 
 			Game.Sound.StopAudio();
 			Game.Sound.StopVideo();
+
+			ModelCache.Dispose();
 
 			// Dispose newer actors first, and the world actor last
 			foreach (var a in actors.Values.Reverse())

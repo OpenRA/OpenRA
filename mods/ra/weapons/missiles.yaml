@@ -39,6 +39,8 @@
 ^AntiAirMissile:
 	Inherits: ^AntiGroundMissile
 	ValidTargets: Air
+	Warhead@3Eff: CreateEffect
+		VictimScanRadius: 0
 
 Maverick:
 	Inherits: ^AntiGroundMissile
@@ -295,6 +297,7 @@ TorpTube:
 SubMissile:
 	Inherits: ^SubMissileDefault
 	Range: 16c0
+	TargetActorCenter: true
 	-Projectile:
 	Projectile: Bullet
 		Speed: 162

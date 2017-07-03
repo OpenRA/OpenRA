@@ -443,7 +443,7 @@ MSAM:
 	Inherits: ^Tank
 	Inherits@EXPERIENCE: ^GainsExperience
 	Inherits@CLOAK: ^AcceptsCloakCrate
-	Inherits@AUTOTARGET: ^AutoTargetAir
+	Inherits@AUTOTARGET: ^AutoTargetGround
 	Valued:
 		Cost: 1000
 	Tooltip:
@@ -481,7 +481,7 @@ MLRS:
 	Inherits: ^Tank
 	Inherits@EXPERIENCE: ^GainsExperience
 	Inherits@CLOAK: ^AcceptsCloakCrate
-	Inherits@AUTOTARGET: ^AutoTargetGround
+	Inherits@AUTOTARGET: ^AutoTargetAir
 	Valued:
 		Cost: 600
 	Tooltip:

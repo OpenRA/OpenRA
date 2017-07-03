@@ -215,7 +215,7 @@ E6:
 	EngineerRepair:
 	RepairsBridges:
 	ExternalCaptures:
-		Type: building
+		CaptureTypes: building
 		PlayerExperience: 25
 	Voiced:
 		VoiceSet: EngineerVoice

@@ -18,6 +18,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using OpenRA.FileSystem;
+using OpenRA.Graphics;
 using OpenRA.Support;
 using OpenRA.Traits;
 
@@ -168,7 +169,7 @@ namespace OpenRA
 			new MapField("Actors", "ActorDefinitions"),
 			new MapField("Rules", "RuleDefinitions", required: false),
 			new MapField("Sequences", "SequenceDefinitions", required: false),
-			new MapField("VoxelSequences", "VoxelSequenceDefinitions", required: false),
+			new MapField("ModelSequences", "ModelSequenceDefinitions", required: false),
 			new MapField("Weapons", "WeaponDefinitions", required: false),
 			new MapField("Voices", "VoiceDefinitions", required: false),
 			new MapField("Music", "MusicDefinitions", required: false),
@@ -199,7 +200,7 @@ namespace OpenRA
 		// Custom map yaml. Public for access by the map importers and lint checks
 		public readonly MiniYaml RuleDefinitions;
 		public readonly MiniYaml SequenceDefinitions;
-		public readonly MiniYaml VoxelSequenceDefinitions;
+		public readonly MiniYaml ModelSequenceDefinitions;
 		public readonly MiniYaml WeaponDefinitions;
 		public readonly MiniYaml VoiceDefinitions;
 		public readonly MiniYaml MusicDefinitions;
@@ -386,13 +387,13 @@ namespace OpenRA
 			try
 			{
 				Rules = Ruleset.Load(modData, this, Tileset, RuleDefinitions, WeaponDefinitions,
-					VoiceDefinitions, NotificationDefinitions, MusicDefinitions, SequenceDefinitions);
+					VoiceDefinitions, NotificationDefinitions, MusicDefinitions, SequenceDefinitions, ModelSequenceDefinitions);
 			}
 			catch (Exception e)
 			{
+				Log.Write("debug", "Failed to load rules for {0} with error {1}", Title, e);
 				InvalidCustomRules = true;
 				Rules = Ruleset.LoadDefaultsForTileSet(modData, Tileset);
-				Log.Write("debug", "Failed to load rules for {0} with error {1}", Title, e.Message);
 			}
 
 			Rules.Sequences.Preload();

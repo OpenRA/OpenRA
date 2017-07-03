@@ -61,10 +61,18 @@ function Version-Command
 	}
 	elseif (Get-Command 'git' -ErrorAction SilentlyContinue)
 	{
-		$version = git name-rev --name-only --tags --no-undefined HEAD 2>$null
-		if ($version -eq $null)
+		$gitRepo = git rev-parse --is-inside-work-tree
+		if ($gitRepo)
 		{
-			$version = "git-" + (git rev-parse --short HEAD)
+			$version = git name-rev --name-only --tags --no-undefined HEAD 2>$null
+			if ($version -eq $null)
+			{
+				$version = "git-" + (git rev-parse --short HEAD)
+			}
+		}
+		else
+		{
+			echo "Not a git repository. The version will remain unchanged."
 		}
 	}
 	else
@@ -189,21 +197,19 @@ function Docs-Command
 
 function FindMSBuild
 {
-	$msBuildVersions = @("4.0")
-	foreach ($msBuildVersion in $msBuildVersions)
+	$key = "HKLM:\SOFTWARE\Microsoft\MSBuild\ToolsVersions\4.0"
+	$property = Get-ItemProperty $key -ErrorAction SilentlyContinue
+	if ($property -eq $null -or $property.MSBuildToolsPath -eq $null)
 	{
-		$key = "HKLM:\SOFTWARE\Microsoft\MSBuild\ToolsVersions\{0}" -f $msBuildVersion
-		$property = Get-ItemProperty $key -ErrorAction SilentlyContinue
-		if ($property -eq $null -or $property.MSBuildToolsPath -eq $null)
-		{
-			continue
-		}
-		$path = Join-Path $property.MSBuildToolsPath -ChildPath "MSBuild.exe"
-		if (Test-Path $path)
-		{
-			return $path
-		}
+		return $null
 	}
+
+	$path = Join-Path $property.MSBuildToolsPath -ChildPath "MSBuild.exe"
+	if (Test-Path $path)
+	{
+		return $path
+	}
+
 	return $null
 }
 
@@ -236,7 +242,13 @@ else
 	$command = $args
 }
 
-switch ($command) 
+$execute = $command
+if ($command.Length -gt 1)
+{
+	$execute = $command[0]
+}
+
+switch ($execute)
 {
 	"all" { All-Command }
 	"dependencies" { Dependencies-Command }

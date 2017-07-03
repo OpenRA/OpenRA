@@ -22,7 +22,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	public class AircraftInfo : ITraitInfo, IPositionableInfo, IFacingInfo, IMoveInfo, ICruiseAltitudeInfo,
-		UsesInit<LocationInit>, UsesInit<FacingInit>
+		UsesInit<LocationInit>, UsesInit<FacingInit>, IActorPreviewInitInfo
 	{
 		public readonly WDist CruiseAltitude = new WDist(1280);
 		public readonly WDist IdealSeparation = new WDist(1706);
@@ -91,6 +91,14 @@ namespace OpenRA.Mods.Common.Traits
 
 		[Desc("The number of ticks that a airplane will wait to make a new search for an available airport.")]
 		public readonly int NumberOfTicksToVerifyAvailableAirport = 150;
+
+		[Desc("Facing to use for actor previews (map editor, color picker, etc)")]
+		public readonly int PreviewFacing = 92;
+
+		IEnumerable<object> IActorPreviewInitInfo.ActorPreviewInits(ActorInfo ai, ActorPreviewType type)
+		{
+			yield return new FacingInit(PreviewFacing);
+		}
 
 		public IReadOnlyDictionary<CPos, SubCell> OccupiedCells(ActorInfo info, CPos location, SubCell subCell = SubCell.Any) { return new ReadOnlyDictionary<CPos, SubCell>(); }
 		bool IOccupySpaceInfo.SharesCell { get { return false; } }

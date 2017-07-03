@@ -17,7 +17,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class BibInfo : ITraitInfo, Requires<BuildingInfo>, IRenderActorPreviewSpritesInfo, Requires<RenderSpritesInfo>
+	public class BibInfo : ITraitInfo, Requires<BuildingInfo>, IRenderActorPreviewSpritesInfo, IActorPreviewInitInfo, Requires<RenderSpritesInfo>
 	{
 		[SequenceReference] public readonly string Sequence = "bib";
 		[PaletteReference] public readonly string Palette = TileSet.TerrainPaletteInternalName;
@@ -63,6 +63,11 @@ namespace OpenRA.Mods.Common.Traits
 				var offset = map.CenterOfCell(cell) - map.CenterOfCell(location) - centerOffset;
 				yield return new SpriteActorPreview(anim, () => offset, () => -(offset.Y + centerOffset.Y + 512), p, rs.Scale);
 			}
+		}
+
+		IEnumerable<object> IActorPreviewInitInfo.ActorPreviewInits(ActorInfo ai, ActorPreviewType type)
+		{
+			yield return new HideBibPreviewInit();
 		}
 	}
 
@@ -120,7 +125,7 @@ namespace OpenRA.Mods.Common.Traits
 		}
 	}
 
-	public class HideBibPreviewInit : IActorInit<bool>, ISuppressInitExport
+	class HideBibPreviewInit : IActorInit<bool>, ISuppressInitExport
 	{
 		[FieldFromYamlKey] readonly bool value = true;
 		public HideBibPreviewInit() { }

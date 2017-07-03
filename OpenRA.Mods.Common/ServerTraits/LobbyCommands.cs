@@ -58,19 +58,19 @@ namespace OpenRA.Mods.Common.Server
 
 		static void CheckAutoStart(S server)
 		{
-			// A spectating admin is included for checking these rules
-			var playerClients = server.LobbyInfo.Clients.Where(c => (c.Bot == null && c.Slot != null) || c.IsAdmin);
+			var nonBotPlayers = server.LobbyInfo.NonBotPlayers;
 
-			// Are all players ready?
-			if (!playerClients.Any() || playerClients.Any(c => c.State != Session.ClientState.Ready))
+			// Are all players and admin (could be spectating) ready?
+			if (nonBotPlayers.Any(c => c.State != Session.ClientState.Ready) ||
+				server.LobbyInfo.Clients.First(c => c.IsAdmin).State != Session.ClientState.Ready)
+				return;
+
+			// Does server have at least 2 human players?
+			if (!server.LobbyInfo.GlobalSettings.EnableSingleplayer && nonBotPlayers.Count() < 2)
 				return;
 
 			// Are the map conditions satisfied?
 			if (server.LobbyInfo.Slots.Any(sl => sl.Value.Required && server.LobbyInfo.ClientInSlot(sl.Key) == null))
-				return;
-
-			// Does server have only one player?
-			if (!server.LobbyInfo.GlobalSettings.EnableSingleplayer && playerClients.Count() == 1)
 				return;
 
 			server.StartGame();
@@ -121,8 +121,7 @@ namespace OpenRA.Mods.Common.Server
 							return true;
 						}
 
-						if (!server.LobbyInfo.GlobalSettings.EnableSingleplayer &&
-							server.LobbyInfo.Clients.Where(c => c.Bot == null && c.Slot != null).Count() == 1)
+						if (!server.LobbyInfo.GlobalSettings.EnableSingleplayer && server.LobbyInfo.NonBotPlayers.Count() < 2)
 						{
 							server.SendOrderTo(conn, "Message", server.TwoHumansRequiredText);
 							return true;

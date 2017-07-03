@@ -14,7 +14,7 @@ using System;
 using System.IO;
 using OpenRA.Graphics;
 
-namespace OpenRA.FileFormats
+namespace OpenRA.Mods.Cnc.FileFormats
 {
 	public class HvaReader
 	{

@@ -11,25 +11,28 @@
 
 using System;
 using System.Linq;
-using OpenRA.FileFormats;
+using OpenRA.Graphics;
+using OpenRA.Mods.Cnc.FileFormats;
 
-namespace OpenRA.Graphics
+namespace OpenRA.Mods.Cnc.Graphics
 {
 	struct Limb
 	{
 		public float Scale;
 		public float[] Bounds;
 		public byte[] Size;
-		public VoxelRenderData RenderData;
+		public ModelRenderData RenderData;
 	}
 
-	public class Voxel
+	public class Voxel : IModel
 	{
-		Limb[] limbData;
-		float[] transforms;
+		readonly Limb[] limbData;
+		readonly float[] transforms;
+		readonly uint frames;
+		readonly uint limbs;
 
-		public readonly uint Frames;
-		public readonly uint Limbs;
+		uint IModel.Frames { get { return frames; } }
+		uint IModel.Sections { get { return limbs; } }
 
 		public Voxel(VoxelLoader loader, VxlReader vxl, HvaReader hva)
 		{
@@ -37,8 +40,8 @@ namespace OpenRA.Graphics
 				throw new InvalidOperationException("Voxel and hva limb counts don't match");
 
 			transforms = hva.Transforms;
-			Frames = hva.FrameCount;
-			Limbs = hva.LimbCount;
+			frames = hva.FrameCount;
+			limbs = hva.LimbCount;
 
 			limbData = new Limb[vxl.LimbCount];
 			for (var i = 0; i < vxl.LimbCount; i++)
@@ -55,14 +58,14 @@ namespace OpenRA.Graphics
 
 		public float[] TransformationMatrix(uint limb, uint frame)
 		{
-			if (frame >= Frames)
-				throw new ArgumentOutOfRangeException("frame", "Only {0} frames exist.".F(Frames));
-			if (limb >= Limbs)
-				throw new ArgumentOutOfRangeException("limb", "Only {1} limbs exist.".F(Limbs));
+			if (frame >= frames)
+				throw new ArgumentOutOfRangeException("frame", "Only {0} frames exist.".F(frames));
+			if (limb >= limbs)
+				throw new ArgumentOutOfRangeException("limb", "Only {1} limbs exist.".F(limbs));
 
 			var l = limbData[limb];
 			var t = new float[16];
-			Array.Copy(transforms, 16 * (Limbs * frame + limb), t, 0, 16);
+			Array.Copy(transforms, 16 * (limbs * frame + limb), t, 0, 16);
 
 			// Fix limb position
 			t[12] *= l.Scale * (l.Bounds[3] - l.Bounds[0]) / l.Size[0];
@@ -76,7 +79,7 @@ namespace OpenRA.Graphics
 			return t;
 		}
 
-		public VoxelRenderData RenderData(uint limb)
+		public ModelRenderData RenderData(uint limb)
 		{
 			return limbData[limb].RenderData;
 		}
@@ -100,7 +103,7 @@ namespace OpenRA.Graphics
 			var ret = new float[] { float.MaxValue, float.MaxValue, float.MaxValue,
 				float.MinValue, float.MinValue, float.MinValue };
 
-			for (uint j = 0; j < Limbs; j++)
+			for (uint j = 0; j < limbs; j++)
 			{
 				var l = limbData[j];
 				var b = new float[]

@@ -18,7 +18,7 @@
 		Name: Any
 		InternalName: Random
 		RandomFactionMembers: atreides, harkonnen, ordos
-		Description: Select a random House.
+		Description: Random House\nA random house will be chosen when the game starts.
 	Faction@Atreides:
 		Name: Atreides
 		InternalName: atreides

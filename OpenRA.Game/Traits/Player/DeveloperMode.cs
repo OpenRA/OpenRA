@@ -10,6 +10,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Linq;
 
 namespace OpenRA.Traits
 {
@@ -113,7 +114,7 @@ namespace OpenRA.Traits
 
 		void INotifyCreated.Created(Actor self)
 		{
-			Enabled = self.World.LobbyInfo.IsSinglePlayer || self.World.LobbyInfo.GlobalSettings
+			Enabled = self.World.LobbyInfo.NonBotPlayers.Count() == 1 || self.World.LobbyInfo.GlobalSettings
 				.OptionOrDefault("cheats", info.Enabled);
 		}
 

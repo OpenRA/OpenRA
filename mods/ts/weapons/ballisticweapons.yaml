@@ -98,6 +98,7 @@ RPGTower:
 	Inherits: ^ArtilleryWeapon
 	ReloadDelay: 110
 	Range: 18c0
+	TargetActorCenter: true
 	Projectile: Bullet
 		Speed: 384
 		LaunchAngle: 165
@@ -117,6 +118,7 @@ Jugg90mm:
 	BurstDelay: 3
 	-Report:
 	StartBurstReport: jugger1.aud
+	TargetActorCenter: true
 	Projectile: Bullet
 		Speed: 384
 		LaunchAngle: 165
@@ -149,5 +151,5 @@ Grenade:
 			Concrete: 28
 		DamageTypes: Prone70Percent, TriggerProne, ExplosionDeath
 	Warhead@2Eff: CreateEffect
-		Explosions: large_grey_explosion
+		Explosions: small_grey_explosion
 		ImpactSounds: expnew13.aud

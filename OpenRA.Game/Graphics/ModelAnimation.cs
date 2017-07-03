@@ -14,18 +14,18 @@ using System.Collections.Generic;
 
 namespace OpenRA.Graphics
 {
-	public struct VoxelAnimation
+	public struct ModelAnimation
 	{
-		public readonly Voxel Voxel;
+		public readonly IModel Model;
 		public readonly Func<WVec> OffsetFunc;
 		public readonly Func<IEnumerable<WRot>> RotationFunc;
 		public readonly Func<bool> DisableFunc;
 		public readonly Func<uint> FrameFunc;
 		public readonly bool ShowShadow;
 
-		public VoxelAnimation(Voxel voxel, Func<WVec> offset, Func<IEnumerable<WRot>> rotation, Func<bool> disable, Func<uint> frame, bool showshadow)
+		public ModelAnimation(IModel model, Func<WVec> offset, Func<IEnumerable<WRot>> rotation, Func<bool> disable, Func<uint> frame, bool showshadow)
 		{
-			Voxel = voxel;
+			Model = model;
 			OffsetFunc = offset;
 			RotationFunc = rotation;
 			DisableFunc = disable;

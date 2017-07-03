@@ -69,13 +69,13 @@ namespace OpenRA.Mods.Common.Projectiles
 		[Desc("Beam color is the player's color.")]
 		public readonly bool UsePlayerColor = false;
 
-		[Desc("Scan radius for actors with projectile-blocking trait. If set to zero (default), it will automatically scale",
+		[Desc("Scan radius for actors with projectile-blocking trait. If set to a negative value (default), it will automatically scale",
 			"to the blocker with the largest health shape. Only set custom values if you know what you're doing.")]
-		public WDist BlockerScanRadius = WDist.Zero;
+		public WDist BlockerScanRadius = new WDist(-1);
 
-		[Desc("Scan radius for actors damaged by beam. If set to zero (default), it will automatically scale to the largest health shape.",
+		[Desc("Scan radius for actors damaged by beam. If set to a negative value (default), it will automatically scale to the largest health shape.",
 			"Only set custom values if you know what you're doing.")]
-		public WDist AreaVictimScanRadius = WDist.Zero;
+		public WDist AreaVictimScanRadius = new WDist(-1);
 
 		public IProjectile Create(ProjectileArgs args)
 		{
@@ -83,12 +83,12 @@ namespace OpenRA.Mods.Common.Projectiles
 			return new AreaBeam(this, args, c);
 		}
 
-		public void RulesetLoaded(Ruleset rules, WeaponInfo wi)
+		void IRulesetLoaded<WeaponInfo>.RulesetLoaded(Ruleset rules, WeaponInfo wi)
 		{
-			if (BlockerScanRadius == WDist.Zero)
+			if (BlockerScanRadius < WDist.Zero)
 				BlockerScanRadius = Util.MinimumRequiredBlockerScanRadius(rules);
 
-			if (AreaVictimScanRadius == WDist.Zero)
+			if (AreaVictimScanRadius < WDist.Zero)
 				AreaVictimScanRadius = Util.MinimumRequiredVictimScanRadius(rules);
 		}
 	}
@@ -157,7 +157,7 @@ namespace OpenRA.Mods.Common.Projectiles
 
 			if (args.GuidedTarget.IsValidFor(args.SourceActor))
 			{
-				var guidedTargetPos = args.GuidedTarget.Positions.PositionClosestTo(args.Source);
+				var guidedTargetPos = args.Weapon.TargetActorCenter ? args.GuidedTarget.CenterPosition : args.GuidedTarget.Positions.PositionClosestTo(args.Source);
 				var targetDistance = new WDist((guidedTargetPos - args.Source).Length);
 
 				// Only continue tracking target if it's within weapon range +

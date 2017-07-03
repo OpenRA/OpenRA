@@ -32,6 +32,9 @@ namespace OpenRA.Mods.Common.Warheads
 		[Desc("Remap explosion effect to player color, if art supports it.")]
 		public readonly bool UsePlayerPalette = false;
 
+		[Desc("Display explosion effect at ground level, regardless of explosion altitude.")]
+		public readonly bool ForceDisplayAtGroundLevel = false;
+
 		[Desc("List of sounds that can be played on impact.")]
 		public readonly string[] ImpactSounds = new string[0];
 
@@ -41,13 +44,13 @@ namespace OpenRA.Mods.Common.Warheads
 		[Desc("What impact types should this effect NOT apply to.", "Overrides ValidImpactTypes.")]
 		public readonly ImpactType InvalidImpactTypes = ImpactType.None;
 
-		[Desc("Scan radius for victims around impact. If set to zero (default), it will automatically scale to the largest health shape.",
+		[Desc("Scan radius for victims around impact. If set to a negative value (default), it will automatically scale to the largest health shape.",
 			"Custom overrides should not be necessary under normal circumstances.")]
-		public WDist VictimScanRadius = WDist.Zero;
+		public WDist VictimScanRadius = new WDist(-1);
 
-		public void RulesetLoaded(Ruleset rules, WeaponInfo wi)
+		void IRulesetLoaded<WeaponInfo>.RulesetLoaded(Ruleset rules, WeaponInfo info)
 		{
-			if (VictimScanRadius == WDist.Zero)
+			if (VictimScanRadius < WDist.Zero)
 				VictimScanRadius = Util.MinimumRequiredVictimScanRadius(rules);
 		}
 
@@ -117,7 +120,15 @@ namespace OpenRA.Mods.Common.Warheads
 
 			var explosion = Explosions.RandomOrDefault(Game.CosmeticRandom);
 			if (Image != null && explosion != null)
+			{
+				if (ForceDisplayAtGroundLevel)
+				{
+					var dat = world.Map.DistanceAboveTerrain(pos);
+					pos = new WPos(pos.X, pos.Y, pos.Z - dat.Length);
+				}
+
 				world.AddFrameEndTask(w => w.Add(new SpriteEffect(pos, w, Image, explosion, palette)));
+			}
 
 			var impactSound = ImpactSounds.RandomOrDefault(Game.CosmeticRandom);
 			if (impactSound != null)

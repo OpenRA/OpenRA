@@ -63,7 +63,7 @@ namespace OpenRA.Mods.Common.Traits
 	public class GrantConditionOnDeploy : IResolveOrder, IIssueOrder, INotifyCreated, INotifyDeployComplete, IIssueDeployOrder
 	{
 		readonly Actor self;
-		readonly GrantConditionOnDeployInfo info;
+		public readonly GrantConditionOnDeployInfo Info;
 		readonly bool checkTerrainType;
 		readonly bool canTurn;
 
@@ -73,10 +73,12 @@ namespace OpenRA.Mods.Common.Traits
 		int deployedToken = ConditionManager.InvalidConditionToken;
 		int undeployedToken = ConditionManager.InvalidConditionToken;
 
+		public DeployState DeployState { get { return deployState; } }
+
 		public GrantConditionOnDeploy(ActorInitializer init, GrantConditionOnDeployInfo info)
 		{
 			self = init.Self;
-			this.info = info;
+			Info = info;
 			checkTerrainType = info.AllowedTerrainTypes.Count > 0;
 			canTurn = self.Info.HasTraitInfo<IFacingInfo>();
 			if (init.Contains<DeployStateInit>())
@@ -95,19 +97,19 @@ namespace OpenRA.Mods.Common.Traits
 					break;
 				case DeployState.Deploying:
 					if (canTurn)
-						self.Trait<IFacing>().Facing = info.Facing;
+						self.Trait<IFacing>().Facing = Info.Facing;
 
 					Deploy(true);
 					break;
 				case DeployState.Deployed:
 					if (canTurn)
-						self.Trait<IFacing>().Facing = info.Facing;
+						self.Trait<IFacing>().Facing = Info.Facing;
 
 					OnDeployCompleted();
 					break;
 				case DeployState.Undeploying:
 					if (canTurn)
-						self.Trait<IFacing>().Facing = info.Facing;
+						self.Trait<IFacing>().Facing = Info.Facing;
 
 					Undeploy(true);
 					break;
@@ -117,7 +119,7 @@ namespace OpenRA.Mods.Common.Traits
 		public IEnumerable<IOrderTargeter> Orders
 		{
 			get { yield return new DeployOrderTargeter("GrantConditionOnDeploy", 5,
-				() => IsCursorBlocked() ? info.DeployBlockedCursor : info.DeployCursor); }
+				() => IsCursorBlocked() ? Info.DeployBlockedCursor : Info.DeployCursor); }
 		}
 
 		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
@@ -141,52 +143,44 @@ namespace OpenRA.Mods.Common.Traits
 			if (!order.Queued)
 				self.CancelActivity();
 
-			if (deployState == DeployState.Deployed && info.CanUndeploy)
-			{
-				self.QueueActivity(new CallFunc(Undeploy));
-			}
+			if (deployState == DeployState.Deployed && Info.CanUndeploy)
+				self.QueueActivity(new UndeployForGrantedCondition(self, this));
 			else if (deployState == DeployState.Undeployed)
-			{
-				// Turn to the required facing.
-				if (info.Facing != -1 && canTurn)
-					self.QueueActivity(new Turn(self, info.Facing));
-
-				self.QueueActivity(new CallFunc(Deploy));
-			}
+				self.QueueActivity(new DeployForGrantedCondition(self, this));
 		}
 
 		bool IsCursorBlocked()
 		{
-			return ((deployState == DeployState.Deployed) && !info.CanUndeploy) || (!IsOnValidTerrain() && (deployState != DeployState.Deployed));
+			return ((deployState == DeployState.Deployed) && !Info.CanUndeploy) || (!IsValidTerrain(self.Location) && (deployState != DeployState.Deployed));
 		}
 
-		bool IsOnValidTerrain()
+		public bool IsValidTerrain(CPos location)
 		{
-			return IsOnValidTerrainType() && IsOnValidRampType();
+			return IsValidTerrainType(location) && IsValidRampType(location);
 		}
 
-		bool IsOnValidTerrainType()
+		bool IsValidTerrainType(CPos location)
 		{
-			if (!self.World.Map.Contains(self.Location))
+			if (!self.World.Map.Contains(location))
 				return false;
 
 			if (!checkTerrainType)
 				return true;
 
-			var terrainType = self.World.Map.GetTerrainInfo(self.Location).Type;
+			var terrainType = self.World.Map.GetTerrainInfo(location).Type;
 
-			return info.AllowedTerrainTypes.Contains(terrainType);
+			return Info.AllowedTerrainTypes.Contains(terrainType);
 		}
 
-		bool IsOnValidRampType()
+		bool IsValidRampType(CPos location)
 		{
-			if (info.CanDeployOnRamps)
+			if (Info.CanDeployOnRamps)
 				return true;
 
 			var ramp = 0;
-			if (self.World.Map.Contains(self.Location))
+			if (self.World.Map.Contains(location))
 			{
-				var tile = self.World.Map.Tiles[self.Location];
+				var tile = self.World.Map.Tiles[location];
 				var ti = self.World.Map.Rules.TileSet.GetTileInfo(tile);
 				if (ti != null)
 					ramp = ti.RampType;
@@ -206,18 +200,18 @@ namespace OpenRA.Mods.Common.Traits
 		}
 
 		/// <summary>Play deploy sound and animation.</summary>
-		void Deploy() { Deploy(false); }
+		public void Deploy() { Deploy(false); }
 		void Deploy(bool init)
 		{
 			// Something went wrong, most likely due to deploy order spam and the fact that this is a delayed action.
 			if (!init && deployState != DeployState.Undeployed)
 				return;
 
-			if (!IsOnValidTerrain())
+			if (!IsValidTerrain(self.Location))
 				return;
 
-			if (!string.IsNullOrEmpty(info.DeploySound))
-				Game.Sound.Play(SoundType.World, info.DeploySound, self.CenterPosition);
+			if (!string.IsNullOrEmpty(Info.DeploySound))
+				Game.Sound.Play(SoundType.World, Info.DeploySound, self.CenterPosition);
 
 			// Revoke condition that is applied while undeployed.
 			if (!init)
@@ -233,15 +227,15 @@ namespace OpenRA.Mods.Common.Traits
 		}
 
 		/// <summary>Play undeploy sound and animation and after that revoke the condition.</summary>
-		void Undeploy() { Undeploy(false); }
+		public void Undeploy() { Undeploy(false); }
 		void Undeploy(bool init)
 		{
 			// Something went wrong, most likely due to deploy order spam and the fact that this is a delayed action.
 			if (!init && deployState != DeployState.Deployed)
 				return;
 
-			if (!string.IsNullOrEmpty(info.UndeploySound))
-				Game.Sound.Play(SoundType.World, info.UndeploySound, self.CenterPosition);
+			if (!string.IsNullOrEmpty(Info.UndeploySound))
+				Game.Sound.Play(SoundType.World, Info.UndeploySound, self.CenterPosition);
 
 			if (!init)
 				OnUndeployStarted();
@@ -265,8 +259,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		void OnDeployCompleted()
 		{
-			if (conditionManager != null && !string.IsNullOrEmpty(info.DeployedCondition) && deployedToken == ConditionManager.InvalidConditionToken)
-				deployedToken = conditionManager.GrantCondition(self, info.DeployedCondition);
+			if (conditionManager != null && !string.IsNullOrEmpty(Info.DeployedCondition) && deployedToken == ConditionManager.InvalidConditionToken)
+				deployedToken = conditionManager.GrantCondition(self, Info.DeployedCondition);
 
 			deployState = DeployState.Deployed;
 		}
@@ -281,8 +275,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		void OnUndeployCompleted()
 		{
-			if (conditionManager != null && !string.IsNullOrEmpty(info.UndeployedCondition) && undeployedToken == ConditionManager.InvalidConditionToken)
-				undeployedToken = conditionManager.GrantCondition(self, info.UndeployedCondition);
+			if (conditionManager != null && !string.IsNullOrEmpty(Info.UndeployedCondition) && undeployedToken == ConditionManager.InvalidConditionToken)
+				undeployedToken = conditionManager.GrantCondition(self, Info.UndeployedCondition);
 
 			deployState = DeployState.Undeployed;
 		}

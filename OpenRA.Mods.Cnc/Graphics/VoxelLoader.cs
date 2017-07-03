@@ -13,26 +13,13 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using OpenRA.FileFormats;
 using OpenRA.FileSystem;
+using OpenRA.Graphics;
+using OpenRA.Mods.Cnc.FileFormats;
 using OpenRA.Primitives;
 
-namespace OpenRA.Graphics
+namespace OpenRA.Mods.Cnc.Graphics
 {
-	public struct VoxelRenderData
-	{
-		public readonly int Start;
-		public readonly int Count;
-		public readonly Sheet Sheet;
-
-		public VoxelRenderData(int start, int count, Sheet sheet)
-		{
-			Start = start;
-			Count = count;
-			Sheet = sheet;
-		}
-	}
-
 	public sealed class VoxelLoader : IDisposable
 	{
 		static readonly float[] ChannelSelect = { 0.75f, 0.25f, -0.25f, -0.75f };
@@ -182,7 +169,7 @@ namespace OpenRA.Graphics
 						(u, v) => new float3(u, v, z));
 		}
 
-		public VoxelRenderData GenerateRenderData(VxlLimb l)
+		public ModelRenderData GenerateRenderData(VxlLimb l)
 		{
 			Vertex[] v;
 			try
@@ -203,14 +190,14 @@ namespace OpenRA.Graphics
 			var start = totalVertexCount;
 			var count = v.Length;
 			totalVertexCount += count;
-			return new VoxelRenderData(start, count, sheetBuilder.Current);
+			return new ModelRenderData(start, count, sheetBuilder.Current);
 		}
 
 		public void RefreshBuffer()
 		{
 			if (vertexBuffer != null)
 				vertexBuffer.Dispose();
-			vertexBuffer = Game.Renderer.Device.CreateVertexBuffer(totalVertexCount);
+			vertexBuffer = Game.Renderer.CreateVertexBuffer(totalVertexCount);
 			vertexBuffer.SetData(vertices.SelectMany(v => v).ToArray(), totalVertexCount);
 			cachedVertexCount = totalVertexCount;
 		}

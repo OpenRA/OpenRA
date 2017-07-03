@@ -25,6 +25,7 @@ V19.Husk:
 
 HOSP:
 	Inherits: ^TechBuilding
+	Inherits@shape: ^2x2Shape
 	Selectable:
 		Priority: 0
 	Building:
@@ -52,6 +53,7 @@ HOSP.Husk:
 
 BIO:
 	Inherits: ^TechBuilding
+	Inherits@shape: ^2x2Shape
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
@@ -86,6 +88,7 @@ BIO.Husk:
 
 MISS:
 	Inherits: ^CivBuilding
+	Inherits@shape: ^3x2Shape
 	Building:
 		Footprint: xxx xxx
 		Dimensions: 3,2

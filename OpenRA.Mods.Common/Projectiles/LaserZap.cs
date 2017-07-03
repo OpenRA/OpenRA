@@ -74,9 +74,9 @@ namespace OpenRA.Mods.Common.Projectiles
 
 		[PaletteReference] public readonly string HitAnimPalette = "effect";
 
-		[Desc("Scan radius for actors with projectile-blocking trait. If set to zero (default), it will automatically scale",
+		[Desc("Scan radius for actors with projectile-blocking trait. If set to a negative value (default), it will automatically scale",
 			"to the blocker with the largest health shape. Only set custom values if you know what you're doing.")]
-		public WDist BlockerScanRadius = WDist.Zero;
+		public WDist BlockerScanRadius = new WDist(-1);
 
 		public IProjectile Create(ProjectileArgs args)
 		{
@@ -84,9 +84,9 @@ namespace OpenRA.Mods.Common.Projectiles
 			return new LaserZap(this, args, c);
 		}
 
-		public void RulesetLoaded(Ruleset rules, WeaponInfo wi)
+		void IRulesetLoaded<WeaponInfo>.RulesetLoaded(Ruleset rules, WeaponInfo wi)
 		{
-			if (BlockerScanRadius == WDist.Zero)
+			if (BlockerScanRadius < WDist.Zero)
 				BlockerScanRadius = Util.MinimumRequiredBlockerScanRadius(rules);
 		}
 	}
@@ -128,7 +128,7 @@ namespace OpenRA.Mods.Common.Projectiles
 		{
 			// Beam tracks target
 			if (info.TrackTarget && args.GuidedTarget.IsValidFor(args.SourceActor))
-				target = args.GuidedTarget.Positions.PositionClosestTo(source);
+				target = args.Weapon.TargetActorCenter ? args.GuidedTarget.CenterPosition : args.GuidedTarget.Positions.PositionClosestTo(source);
 
 			// Check for blocking actors
 			WPos blockedPos;

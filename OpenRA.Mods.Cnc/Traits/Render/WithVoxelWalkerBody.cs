@@ -34,14 +34,14 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 		public readonly bool ShowShadow = true;
 		public object Create(ActorInitializer init) { return new WithVoxelWalkerBody(init.Self, this); }
 
-		public IEnumerable<VoxelAnimation> RenderPreviewVoxels(
+		public IEnumerable<ModelAnimation> RenderPreviewVoxels(
 			ActorPreviewInitializer init, RenderVoxelsInfo rv, string image, Func<WRot> orientation, int facings, PaletteReference p)
 		{
-			var voxel = VoxelProvider.GetVoxel(image, Sequence);
+			var model = init.World.ModelCache.GetModelSequence(image, Sequence);
 			var body = init.Actor.TraitInfo<BodyOrientationInfo>();
 			var frame = init.Contains<BodyAnimationFrameInit>() ? init.Get<BodyAnimationFrameInit, uint>() : 0;
 
-			yield return new VoxelAnimation(voxel, () => WVec.Zero,
+			yield return new ModelAnimation(model, () => WVec.Zero,
 				() => new[] { body.QuantizeOrientation(orientation(), facings) },
 				() => false, () => frame, ShowShadow);
 		}
@@ -65,15 +65,15 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 			var body = self.Trait<BodyOrientation>();
 			var rv = self.Trait<RenderVoxels>();
 
-			var voxel = VoxelProvider.GetVoxel(rv.Image, info.Sequence);
-			frames = voxel.Frames;
-			rv.Add(new VoxelAnimation(voxel, () => WVec.Zero,
+			var model = self.World.ModelCache.GetModelSequence(rv.Image, info.Sequence);
+			frames = model.Frames;
+			rv.Add(new ModelAnimation(model, () => WVec.Zero,
 				() => new[] { body.QuantizeOrientation(self, self.Orientation) },
 				() => false, () => frame, info.ShowShadow));
 
 			// Selection size
 			var rvi = self.Info.TraitInfo<RenderVoxelsInfo>();
-			var s = (int)(rvi.Scale * voxel.Size.Aggregate(Math.Max));
+			var s = (int)(rvi.Scale * model.Size.Aggregate(Math.Max));
 			size = new int2(s, s);
 		}
 

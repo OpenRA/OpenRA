@@ -47,6 +47,7 @@ Container@PLAYER_WIDGETS:
 					Logic: AddFactionSuffixLogic
 					Width: 34
 					Height: 26
+					VisualHeight: 0
 					Background: command-button
 					DisableKeyRepeat: true
 					TooltipText: Attack Move
@@ -63,6 +64,7 @@ Container@PLAYER_WIDGETS:
 					X: 34
 					Width: 34
 					Height: 26
+					VisualHeight: 0
 					Background: command-button
 					TooltipText: Force Move
 					TooltipDesc: Selected units will move to the desired location\n - Default activity for the target is suppressed\n - Vehicles will attempt to crush enemies at the target location\n - Units entering transports will consider nearby alternatives\n - Chrono Tanks will teleport towards the target location\n\nLeft-click icon then right-click on target.\nHold {(Alt)} to activate temporarily while commanding units.
@@ -79,6 +81,7 @@ Container@PLAYER_WIDGETS:
 					X: 68
 					Width: 34
 					Height: 26
+					VisualHeight: 0
 					Background: command-button
 					TooltipText: Force Attack
 					TooltipDesc: Selected units will attack the targeted unit or location\nignoring their default activity for the target.\n\nLeft-click icon then right-click on target.\nHold {(Ctrl)} to activate temporarily while commanding units.
@@ -95,6 +98,7 @@ Container@PLAYER_WIDGETS:
 					X: 102
 					Width: 34
 					Height: 26
+					VisualHeight: 0
 					Background: command-button
 					DisableKeyRepeat: true
 					TooltipText: Guard
@@ -111,6 +115,7 @@ Container@PLAYER_WIDGETS:
 					X: 136
 					Width: 34
 					Height: 26
+					VisualHeight: 0
 					Background: command-button
 					DisableKeyRepeat: true
 					TooltipText: Deploy
@@ -127,6 +132,7 @@ Container@PLAYER_WIDGETS:
 					X: 170
 					Width: 34
 					Height: 26
+					VisualHeight: 0
 					Background: command-button
 					DisableKeyRepeat: true
 					TooltipText: Scatter
@@ -143,6 +149,7 @@ Container@PLAYER_WIDGETS:
 					X: 204
 					Width: 34
 					Height: 26
+					VisualHeight: 0
 					Background: command-button
 					DisableKeyRepeat: true
 					TooltipText: Stop
@@ -159,6 +166,7 @@ Container@PLAYER_WIDGETS:
 					X: 238
 					Width: 34
 					Height: 26
+					VisualHeight: 0
 					Background: command-button
 					TooltipText: Waypoint Mode
 					TooltipDesc: Use Waypoint Mode to give multiple linking commands\nto the selected units. Units will execute the commands\nimmediately upon receiving them.\n\nLeft-click icon then give commands in the game world.\nHold {(Shift)} to activate temporarily while commanding units.
@@ -181,6 +189,7 @@ Container@PLAYER_WIDGETS:
 					Logic: AddFactionSuffixLogic
 					Width: 34
 					Height: 26
+					VisualHeight: 0
 					Background: command-button
 					DisableKeyRepeat: true
 					TooltipText: Attack Anything Stance
@@ -197,10 +206,11 @@ Container@PLAYER_WIDGETS:
 					X: 34
 					Width: 34
 					Height: 26
+					VisualHeight: 0
 					Background: command-button
 					DisableKeyRepeat: true
 					TooltipText: Defend Stance
-					TooltipDesc: Set the selected units to Defend stance:\n - Units will attack enemy units and structures on sight\n - Units will not move or pursue enemies
+					TooltipDesc: Set the selected units to Defend stance:\n - Units will attack enemy units on sight\n - Units will not move or pursue enemies
 					TooltipContainer: TOOLTIP_CONTAINER
 					Children:
 						Image@ICON:
@@ -213,6 +223,7 @@ Container@PLAYER_WIDGETS:
 					X: 68
 					Width: 34
 					Height: 26
+					VisualHeight: 0
 					Background: command-button
 					DisableKeyRepeat: true
 					TooltipText: Return Fire Stance
@@ -229,6 +240,7 @@ Container@PLAYER_WIDGETS:
 					X: 102
 					Width: 34
 					Height: 26
+					VisualHeight: 0
 					Background: command-button
 					DisableKeyRepeat: true
 					TooltipText: Hold Fire Stance

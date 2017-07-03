@@ -28,6 +28,7 @@ Bomb:
 	Burst: 5
 	BurstDelay: 6
 	Range: 2c512
+	TargetActorCenter: true
 	Projectile: GravityBomb
 		Velocity: 72, 0, -90
 		Acceleration: 0, 0, -8
@@ -91,8 +92,10 @@ SlimeAttack:
 	Range: 1c384
 	Report: vicer1.aud
 	Projectile: InstantHit
-	Warhead@1Dam: TargetDamage
+	InvalidTargets: Wall, Bridge
+	Warhead@1Dam: SpreadDamage
 		Damage: 100
+		InvalidTargets: Wall, Bridge
 		Versus:
 			Light: 60
 			Heavy: 40
@@ -105,7 +108,7 @@ Tentacle:
 	Report: floatk1.aud
 	Projectile: InstantHit
 	InvalidTargets: Wall, Bridge
-	Warhead@1Dam: TargetDamage
+	Warhead@1Dam: SpreadDamage
 		Damage: 160
 		InvalidTargets: Wall, Bridge
 		Versus:

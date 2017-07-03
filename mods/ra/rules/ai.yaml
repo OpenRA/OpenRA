@@ -8,7 +8,7 @@ Player:
 			Power: powr,apwr
 			Barracks: barr,tent
 			VehiclesFactory: weap
-			Production: barr,tent,weap,afld,hpad
+			Production: barr,tent,weap
 			Silo: silo
 		UnitsCommonNames:
 			Mcv: mcv

@@ -33,12 +33,12 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 
 		public object Create(ActorInitializer init) { return new WithVoxelUnloadBody(init.Self, this); }
 
-		public IEnumerable<VoxelAnimation> RenderPreviewVoxels(
+		public IEnumerable<ModelAnimation> RenderPreviewVoxels(
 			ActorPreviewInitializer init, RenderVoxelsInfo rv, string image, Func<WRot> orientation, int facings, PaletteReference p)
 		{
 			var body = init.Actor.TraitInfo<BodyOrientationInfo>();
-			var voxel = VoxelProvider.GetVoxel(image, IdleSequence);
-			yield return new VoxelAnimation(voxel, () => WVec.Zero,
+			var model = init.World.ModelCache.GetModelSequence(image, IdleSequence);
+			yield return new ModelAnimation(model, () => WVec.Zero,
 				() => new[] { body.QuantizeOrientation(orientation(), facings) },
 				() => false, () => 0, ShowShadow);
 		}
@@ -55,19 +55,19 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 			var body = self.Trait<BodyOrientation>();
 			var rv = self.Trait<RenderVoxels>();
 
-			var idleVoxel = VoxelProvider.GetVoxel(rv.Image, info.IdleSequence);
-			rv.Add(new VoxelAnimation(idleVoxel, () => WVec.Zero,
+			var idleModel = self.World.ModelCache.GetModelSequence(rv.Image, info.IdleSequence);
+			rv.Add(new ModelAnimation(idleModel, () => WVec.Zero,
 				() => new[] { body.QuantizeOrientation(self, self.Orientation) },
 				() => Docked,
 				() => 0, info.ShowShadow));
 
 			// Selection size
 			var rvi = self.Info.TraitInfo<RenderVoxelsInfo>();
-			var s = (int)(rvi.Scale * idleVoxel.Size.Aggregate(Math.Max));
+			var s = (int)(rvi.Scale * idleModel.Size.Aggregate(Math.Max));
 			size = new int2(s, s);
 
-			var unloadVoxel = VoxelProvider.GetVoxel(rv.Image, info.UnloadSequence);
-			rv.Add(new VoxelAnimation(unloadVoxel, () => WVec.Zero,
+			var unloadModel = self.World.ModelCache.GetModelSequence(rv.Image, info.UnloadSequence);
+			rv.Add(new ModelAnimation(unloadModel, () => WVec.Zero,
 				() => new[] { body.QuantizeOrientation(self, self.Orientation) },
 				() => !Docked,
 				() => 0, info.ShowShadow));

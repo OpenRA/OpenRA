@@ -194,6 +194,7 @@ RMBO.hard:
 	Inherits: RMBO
 	-AutoTarget:
 	-AutoTargetPriority@DEFAULT:
+	-AutoTargetPriority@ATTACKANYTHING:
 	-AttackMove:
 	RenderSprites:
 		Image: RMBO

@@ -28,13 +28,13 @@ namespace OpenRA.Mods.Common.Warheads
 		[Desc("Ranges at which each Falloff step is defined. Overrides Spread.")]
 		public WDist[] Range = null;
 
-		[Desc("Extra search radius beyond maximum spread. If set to zero (default), it will automatically scale to the largest health shape.",
+		[Desc("Extra search radius beyond maximum spread. If set to a negative value (default), it will automatically scale to the largest health shape.",
 			"Custom overrides should not be necessary under normal circumstances.")]
-		public WDist VictimScanRadius = WDist.Zero;
+		public WDist VictimScanRadius = new WDist(-1);
 
-		public void RulesetLoaded(Ruleset rules, WeaponInfo info)
+		void IRulesetLoaded<WeaponInfo>.RulesetLoaded(Ruleset rules, WeaponInfo info)
 		{
-			if (VictimScanRadius == WDist.Zero)
+			if (VictimScanRadius < WDist.Zero)
 				VictimScanRadius = Util.MinimumRequiredVictimScanRadius(rules);
 
 			if (Range != null)

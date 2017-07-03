@@ -1,5 +1,6 @@
 FACT:
 	Inherits: ^BaseBuilding
+	Inherits@shape: ^3x2Shape
 	Valued:
 		Cost: 4000
 	Tooltip:
@@ -93,6 +94,10 @@ FACT.NOD:
 
 NUKE:
 	Inherits: ^BaseBuilding
+	Inherits@shape: ^2x2Shape
+	HitShape:
+		UseOccupiedCellsOffsets: false
+		TargetableOffsets: 0,0,0, -700,-512,0, -700,512,0, 840,-512,0, 630,299,0
 	Valued:
 		Cost: 500
 	Tooltip:
@@ -118,6 +123,10 @@ NUKE:
 
 NUK2:
 	Inherits: ^BaseBuilding
+	Inherits@shape: ^2x2Shape
+	HitShape:
+		UseOccupiedCellsOffsets: false
+		TargetableOffsets: 0,0,0, -840,-512,0, -840,512,0, 840,-512,0, 630,299,0
 	Valued:
 		Cost: 800
 	Tooltip:
@@ -143,6 +152,16 @@ NUK2:
 
 PROC:
 	Inherits: ^BaseBuilding
+	HitShape:
+		TargetableOffsets: 0,0,0, 0,-1024,0, 0,1024,0
+		Type: Rectangle
+			TopLeft: -1536, -512
+			BottomRight: 1536, 853
+	HitShape@TOP:
+		UseOccupiedCellsOffsets: false
+		Type: Rectangle
+			TopLeft: -512, -1450
+			BottomRight: 896, -512
 	Valued:
 		Cost: 1500
 	Tooltip:
@@ -188,6 +207,7 @@ PROC:
 
 SILO:
 	Inherits: ^BaseBuilding
+	Inherits@shape: ^2x1Shape
 	Valued:
 		Cost: 300
 	Tooltip:
@@ -225,6 +245,12 @@ SILO:
 
 PYLE:
 	Inherits: ^BaseBuilding
+	HitShape:
+		UseOccupiedCellsOffsets: false
+		TargetableOffsets: 0,0,0, 840,-256,0, 840,512,0, 210,-512,0, -71,512,0
+		Type: Rectangle
+			TopLeft: -1024, -1024
+			BottomRight: 1024, 640
 	Valued:
 		Cost: 500
 	Tooltip:
@@ -267,6 +293,10 @@ PYLE:
 
 HAND:
 	Inherits: ^BaseBuilding
+	Inherits@shape: ^2x2Shape
+	HitShape:
+		UseOccupiedCellsOffsets: false
+		TargetableOffsets: 0,0,0, 630,-512,0, 355,512,0, -281,-512,0, -630,512,0
 	Valued:
 		Cost: 500
 	Tooltip:
@@ -309,6 +339,12 @@ HAND:
 
 AFLD:
 	Inherits: ^BaseBuilding
+	HitShape:
+		UseOccupiedCellsOffsets: false
+		TargetableOffsets: 0,0,0, 0,-512,256, 0,-1536,256, -840,-512,0, -840,-1536,0, 0,512,0, 0,1536,0, -840,512,0, -840,1536,0
+		Type: Rectangle
+			TopLeft: -2048, -1024
+			BottomRight: 2048, 1024
 	Valued:
 		Cost: 2000
 	Tooltip:
@@ -351,6 +387,12 @@ AFLD:
 
 WEAP:
 	Inherits: ^BaseBuilding
+	Inherits@shape: ^3x2Shape
+	HitShape:
+		TargetableOffsets: 0,0,0, 0,1024,0, 0,-1024,0
+		Type: Rectangle
+			TopLeft: -1536, -1024
+			BottomRight: 1536, 512
 	Valued:
 		Cost: 2000
 	Tooltip:
@@ -396,6 +438,10 @@ WEAP:
 
 HPAD:
 	Inherits: ^BaseBuilding
+	Inherits@shape: ^2x2Shape
+	HitShape:
+		UseOccupiedCellsOffsets: false
+		TargetableOffsets: 0,0,0, 768,-512,0, 768,512,0, -281,-512,0, -630,512,0
 	Valued:
 		Cost: 1000
 	Tooltip:
@@ -442,6 +488,12 @@ HPAD:
 HQ:
 	Inherits: ^BaseBuilding
 	Inherits@IDISABLE: ^DisabledOverlay
+	HitShape:
+		UseOccupiedCellsOffsets: false
+		TargetableOffsets: 0,0,0, 0,512,0, 420,-598,256, -840,-512,0, -840,512,0
+		Type: Rectangle
+			TopLeft: -1024, -384
+			BottomRight: 1024, 1024
 	Valued:
 		Cost: 1000
 	Tooltip:
@@ -504,6 +556,18 @@ HQ:
 
 FIX:
 	Inherits: ^BaseBuilding
+	HitShape:
+		UseOccupiedCellsOffsets: false
+		TargetableOffsets: 0,0,0, 0,-1024,0, 0,1024,0
+		Type: Rectangle
+			TopLeft: -1536, -683
+			BottomRight: 1536, 768
+	HitShape@TOPANDBOTTOM:
+		UseOccupiedCellsOffsets: false
+		TargetableOffsets: 840,0,0, -1060,0,0
+		Type: Rectangle
+			TopLeft: -640, -980
+			BottomRight: 640, 1110
 	Valued:
 		Cost: 500
 	Tooltip:
@@ -539,6 +603,12 @@ FIX:
 EYE:
 	Inherits: ^BaseBuilding
 	Inherits@IDISABLE: ^DisabledOverlay
+	HitShape:
+		UseOccupiedCellsOffsets: false
+		TargetableOffsets: 0,0,0, 0,512,128, 420,-598,213, -840,-512,0, -840,512,0
+		Type: Rectangle
+			TopLeft: -1024, -384
+			BottomRight: 1024, 1024
 	Valued:
 		Cost: 1800
 	Tooltip:
@@ -596,6 +666,10 @@ EYE:
 TMPL:
 	Inherits: ^BaseBuilding
 	Inherits@IDISABLE: ^DisabledOverlay
+	Inherits@shape: ^3x2Shape
+	HitShape:
+		UseOccupiedCellsOffsets: false
+		TargetableOffsets: 0,0,0, 0,-896,0, 0,896,0, 840,0,0, -706,0,0, -706,-768,0, -706,640,0
 	Valued:
 		Cost: 2000
 	Tooltip:
@@ -699,6 +773,7 @@ SAM:
 	Inherits: ^Defense
 	Inherits@IDISABLE: ^DisabledOverlay
 	Inherits@AUTOTARGET: ^AutoTargetAir
+	Inherits@shape: ^2x1Shape
 	Valued:
 		Cost: 650
 	Tooltip:

@@ -165,7 +165,7 @@ namespace OpenRA
 			using (new PerfTimer("PrepareMap"))
 				map = ModData.PrepareMap(mapUID);
 			using (new PerfTimer("NewWorld"))
-				OrderManager.World = new World(map, OrderManager, type);
+				OrderManager.World = new World(ModData, map, OrderManager, type);
 
 			worldRenderer = new WorldRenderer(ModData, OrderManager.World);
 
@@ -375,7 +375,10 @@ namespace OpenRA
 			ModData = null;
 
 			if (mod == null)
-				throw new InvalidOperationException("Game.Mod argument missing or mod could not be found.");
+				throw new InvalidOperationException("Game.Mod argument missing.");
+
+			if (!Mods.ContainsKey(mod))
+				throw new InvalidOperationException("Unknown or invalid mod '{0}'.".F(mod));
 
 			Console.WriteLine("Loading mod: {0}", mod);
 
@@ -539,8 +542,6 @@ namespace OpenRA
 				var integralTickTimestep = (uiTickDelta / Timestep) * Timestep;
 				Ui.LastTickTime += integralTickTimestep >= TimestepJankThreshold ? integralTickTimestep : Timestep;
 
-				Viewport.TicksSinceLastMove += uiTickDelta / Timestep;
-
 				Sync.CheckSyncUnchanged(world, Ui.Tick);
 				Cursor.Tick();
 			}
@@ -633,9 +634,9 @@ namespace OpenRA
 
 				using (new PerfSample("render_widgets"))
 				{
-					Renderer.WorldVoxelRenderer.BeginFrame();
+					Renderer.WorldModelRenderer.BeginFrame();
 					Ui.PrepareRenderables();
-					Renderer.WorldVoxelRenderer.EndFrame();
+					Renderer.WorldModelRenderer.EndFrame();
 
 					Ui.Draw();
 

@@ -28,6 +28,36 @@ Background@BUTTON_TOOLTIP:
 			Height: 23
 			TextColor: FFFF00
 			Font: Bold
+		Label@DESC:
+			X: 5
+			Y: 28
+			Height: 12
+			Font: TinyBold
+			VAlign: Top
+
+Background@BUTTON_WITH_DESC_HIGHLIGHT_TOOLTIP:
+	Logic: ButtonTooltipWithDescHighlightLogic
+		Highlight: FFFF00
+	Background: dialog3
+	Height: 31
+	Children:
+		Label@LABEL:
+			X: 5
+			Y: 3
+			Height: 23
+			Font: Bold
+		Label@HOTKEY:
+			Y: 3
+			Visible: false
+			TextColor: FFFF00
+			Height: 23
+			Font: Bold
+		Label@DESC:
+			X: 5
+			Y: 26
+			Height: 12
+			Font: TinyBold
+			VAlign: Top
 
 Background@WORLD_TOOLTIP:
 	Logic: WorldTooltipLogic
@@ -230,22 +260,3 @@ Background@SUPPORT_POWER_TOOLTIP:
 			Font: TinyBold
 			VAlign: Top
 			Text: $
-
-Background@FACTION_DESCRIPTION_TOOLTIP:
-	Logic: FactionTooltipLogic
-	Background: dialog3
-	Children:
-		Label@HEADER:
-			X: 7
-			Y: 7
-			Width: 8
-			Height: 10
-			Font: Bold
-			VAlign: Top
-		Label@DESCRIPTION:
-			X: 14
-			Y: 0
-			Width: 15
-			Height: 14
-			Font: TinyBold
-			VAlign: Top

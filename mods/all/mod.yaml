@@ -30,3 +30,5 @@ SoundFormats:
 SpriteFormats:
 
 SpriteSequenceFormat: DefaultSpriteSequence
+
+ModelSequenceFormat: PlaceholderModelSequence

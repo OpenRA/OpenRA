@@ -189,6 +189,7 @@ CrateNuke:
 	Warhead@3Eff_impact: CreateEffect
 		Explosions: nuke
 		ImpactSounds: kaboom1.aud
+		VictimScanRadius: 0
 	Warhead@4Dam_areanuke1: SpreadDamage
 		Spread: 1c0
 		Damage: 60
@@ -205,6 +206,7 @@ CrateNuke:
 	Warhead@6Eff_areanuke1: CreateEffect
 		ImpactSounds: kaboom22.aud
 		Delay: 5
+		VictimScanRadius: 0
 	Warhead@6Smu_areanuke1: LeaveSmudge
 		SmudgeType: Scorch
 		InvalidTargets: Vehicle, Tank, Structure, Wall, Trees
@@ -234,6 +236,7 @@ MiniNuke:
 	Warhead@3Eff_impact: CreateEffect
 		Explosions: nuke
 		ImpactSounds: kaboom1.aud
+		VictimScanRadius: 0
 	Warhead@4Dam_areanuke1: SpreadDamage
 		Spread: 2c0
 		Damage: 60
@@ -250,6 +253,7 @@ MiniNuke:
 	Warhead@6Eff_areanuke1: CreateEffect
 		ImpactSounds: kaboom22.aud
 		Delay: 5
+		VictimScanRadius: 0
 	Warhead@7Dam_areanuke2: SpreadDamage
 		Spread: 3c0
 		Damage: 60

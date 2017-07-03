@@ -198,14 +198,19 @@ namespace OpenRA.Mods.Common.Orders
 			{
 				if (!initialized)
 				{
+					var actor = rules.Actors[building];
+
 					var td = new TypeDictionary()
 					{
 						new FactionInit(faction),
 						new OwnerInit(queue.Actor.Owner),
-						new HideBibPreviewInit()
 					};
 
-					var init = new ActorPreviewInitializer(rules.Actors[building], wr, td);
+					foreach (var api in actor.TraitInfos<IActorPreviewInitInfo>())
+						foreach (var o in api.ActorPreviewInits(actor, ActorPreviewType.PlaceBuilding))
+							td.Add(o);
+
+					var init = new ActorPreviewInitializer(actor, wr, td);
 					preview = rules.Actors[building].TraitInfos<IRenderActorPreviewInfo>()
 						.SelectMany(rpi => rpi.RenderPreview(init))
 						.ToArray();

@@ -100,7 +100,7 @@ Sequences:
 	ts|sequences/bridges.yaml
 	ts|sequences/critters.yaml
 
-VoxelSequences:
+ModelSequences:
 	ts|sequences/voxels.yaml
 
 TileSets:
@@ -235,6 +235,8 @@ SpriteSequenceFormat: TilesetSpecificSpriteSequence
 	TilesetCodes:
 		TEMPERATE: t
 		SNOW: a
+
+ModelSequenceFormat: VoxelModelSequence
 
 GameSpeeds:
 	slower:

@@ -122,14 +122,26 @@
 
 ^AutoTargetGround:
 	AutoTarget:
+		AttackAnythingCondition: stance-attackanything
 	AutoTargetPriority@DEFAULT:
-		ValidTargets: Infantry, Vehicle, Water, Structure, Defense
+		RequiresCondition: !stance-attackanything
+		ValidTargets: Infantry, Vehicle, Creep, Water, Defense
+		InvalidTargets: NoAutoTarget
+	AutoTargetPriority@ATTACKANYTHING:
+		RequiresCondition: stance-attackanything
+		ValidTargets: Infantry, Vehicle, Creep, Water, Structure, Defense
 		InvalidTargets: NoAutoTarget
 
 ^AutoTargetAll:
 	AutoTarget:
+		AttackAnythingCondition: stance-attackanything
 	AutoTargetPriority@DEFAULT:
-		ValidTargets: Infantry, Vehicle, Water, Air, Structure, Defense
+		RequiresCondition: !stance-attackanything
+		ValidTargets: Infantry, Vehicle, Creep, Water, Air, Defense
+		InvalidTargets: NoAutoTarget
+	AutoTargetPriority@ATTACKANYTHING:
+		RequiresCondition: stance-attackanything
+		ValidTargets: Infantry, Vehicle, Creep, Water, Air, Structure, Defense
 		InvalidTargets: NoAutoTarget
 
 ^Vehicle:
@@ -422,6 +434,8 @@
 	MustBeDestroyed:
 		RequiredForShortGame: false
 	RevealOnFire:
+	Targetable:
+		TargetTypes: Ground, C4, Structure, Defense
 
 ^DisabledOverlay:
 	WithColoredOverlay@IDISABLE:

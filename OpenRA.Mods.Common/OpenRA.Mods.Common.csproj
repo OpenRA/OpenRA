@@ -92,6 +92,7 @@
     <Compile Include="Activities\CaptureActor.cs" />
     <Compile Include="Activities\DeliverResources.cs" />
     <Compile Include="Activities\Demolish.cs" />
+    <Compile Include="Activities\DeployForGrantedCondition.cs" />
     <Compile Include="Activities\DonateCash.cs" />
     <Compile Include="Activities\Enter.cs" />
     <Compile Include="Activities\EnterTransport.cs" />
@@ -117,6 +118,7 @@
     <Compile Include="Activities\SpriteHarvesterDockSequence.cs" />
     <Compile Include="Activities\Transform.cs" />
     <Compile Include="Activities\Turn.cs" />
+    <Compile Include="Activities\UndeployForGrantedCondition.cs" />
     <Compile Include="Activities\UnloadCargo.cs" />
     <Compile Include="Activities\Wait.cs" />
     <Compile Include="Activities\WaitForTransport.cs" />
@@ -164,8 +166,8 @@
     <Compile Include="Graphics\SelectionBoxRenderable.cs" />
     <Compile Include="Graphics\SpriteActorPreview.cs" />
     <Compile Include="Graphics\TextRenderable.cs" />
-    <Compile Include="Graphics\VoxelActorPreview.cs" />
-    <Compile Include="Graphics\VoxelRenderable.cs" />
+    <Compile Include="Graphics\ModelActorPreview.cs" />
+    <Compile Include="Graphics\ModelRenderable.cs" />
     <Compile Include="HitShapes\IHitShape.cs" />
     <Compile Include="HitShapes\Rectangle.cs" />
     <Compile Include="HitShapes\Capsule.cs" />
@@ -521,7 +523,6 @@
     <Compile Include="Traits\World\PaletteFromFile.cs" />
     <Compile Include="Traits\World\PaletteFromRGBA.cs" />
     <Compile Include="Traits\World\ValidateOrder.cs" />
-    <Compile Include="Traits\World\VoxelNormalsPalette.cs" />
     <Compile Include="Pathfinder\CellInfoLayerPool.cs" />
     <Compile Include="Pathfinder\Constants.cs" />
     <Compile Include="Pathfinder\PathGraph.cs" />
@@ -590,7 +591,6 @@
     <Compile Include="Widgets\Logic\ButtonTooltipLogic.cs" />
     <Compile Include="Widgets\Logic\ColorPickerLogic.cs" />
     <Compile Include="Widgets\Logic\ConnectionLogic.cs" />
-    <Compile Include="Widgets\Logic\FactionTooltipLogic.cs" />
     <Compile Include="Widgets\Logic\CreditsLogic.cs" />
     <Compile Include="Widgets\Logic\DisconnectWatcherLogic.cs" />
     <Compile Include="Widgets\Logic\Ingame\AddFactionSuffixLogic.cs" />
@@ -823,11 +823,19 @@
     <MakeDir Directories="$(SolutionDir)mods/common/" />
     <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(SolutionDir)mods/common/" />
     <!--
-        We need to copy OpenRA.Mods.Common.pdb (not `.dll.pdb`). This is only necessary on Windows.
-        Mono outputs a `.dll.mdb` so we can just append `.mdb` directly.
+      csc generates .pdb symbol files (not `.dll.pdb`).
+      mcs generates .dll.mdb symbol files.
     -->
     <Copy SourceFiles="$(TargetDir)$(TargetName).pdb" DestinationFolder="$(SolutionDir)mods/common/" Condition="'$(OS)' == 'Windows_NT'" />
     <Copy SourceFiles="$(TargetPath).mdb" DestinationFolder="$(SolutionDir)mods/common/" Condition="'$(OS)' == 'Unix'" />
+    <Copy
+      SourceFiles="$(TargetDir)$(TargetName).pdb"
+      DestinationFolder="$(SolutionDir)mods/common/"
+      Condition="Exists('$(TargetDir)$(TargetName).pdb')"/>
+    <Copy
+      SourceFiles="$(TargetPath).mdb"
+      DestinationFolder="$(SolutionDir)mods/common/"
+      Condition="Exists('$(TargetPath).mdb')"/>
     <!-- Uncomment these lines when debugging or adding to this target
     <Message Text="DEBUG OS:                     $(OS)"/>
     <Message Text="DEBUG SolutionDir:            $(SolutionDir)"/>

@@ -17,14 +17,14 @@ using OpenRA.Primitives;
 
 namespace OpenRA.Graphics
 {
-	public class VoxelRenderProxy
+	public class ModelRenderProxy
 	{
 		public readonly Sprite Sprite;
 		public readonly Sprite ShadowSprite;
 		public readonly float ShadowDirection;
 		public readonly float3[] ProjectedShadowBounds;
 
-		public VoxelRenderProxy(Sprite sprite, Sprite shadowSprite, float3[] projectedShadowBounds, float shadowDirection)
+		public ModelRenderProxy(Sprite sprite, Sprite shadowSprite, float3[] projectedShadowBounds, float shadowDirection)
 		{
 			Sprite = sprite;
 			ShadowSprite = shadowSprite;
@@ -33,7 +33,7 @@ namespace OpenRA.Graphics
 		}
 	}
 
-	public sealed class VoxelRenderer : IDisposable
+	public sealed class ModelRenderer : IDisposable
 	{
 		// Static constants
 		static readonly float[] ShadowDiffuse = new float[] { 0, 0, 0 };
@@ -53,7 +53,7 @@ namespace OpenRA.Graphics
 
 		SheetBuilder sheetBuilder;
 
-		public VoxelRenderer(Renderer renderer, IShader shader)
+		public ModelRenderer(Renderer renderer, IShader shader)
 		{
 			this.renderer = renderer;
 			this.shader = shader;
@@ -78,8 +78,8 @@ namespace OpenRA.Graphics
 			shader.SetMatrix("View", view);
 		}
 
-		public VoxelRenderProxy RenderAsync(
-			WorldRenderer wr, IEnumerable<VoxelAnimation> voxels, WRot camera, float scale,
+		public ModelRenderProxy RenderAsync(
+			WorldRenderer wr, IEnumerable<ModelAnimation> models, WRot camera, float scale,
 			float[] groundNormal, WRot lightSource, float[] lightAmbientColor, float[] lightDiffuseColor,
 			PaletteReference color, PaletteReference normals, PaletteReference shadowPalette)
 		{
@@ -105,18 +105,18 @@ namespace OpenRA.Graphics
 			var stl = new float2(float.MaxValue, float.MaxValue);
 			var sbr = new float2(float.MinValue, float.MinValue);
 
-			foreach (var v in voxels)
+			foreach (var m in models)
 			{
 				// Convert screen offset back to world coords
-				var offsetVec = Util.MatrixVectorMultiply(invCameraTransform, wr.ScreenVector(v.OffsetFunc()));
+				var offsetVec = Util.MatrixVectorMultiply(invCameraTransform, wr.ScreenVector(m.OffsetFunc()));
 				var offsetTransform = Util.TranslationMatrix(offsetVec[0], offsetVec[1], offsetVec[2]);
 
-				var worldTransform = v.RotationFunc().Aggregate(Util.IdentityMatrix(),
+				var worldTransform = m.RotationFunc().Aggregate(Util.IdentityMatrix(),
 					(x, y) => Util.MatrixMultiply(Util.MakeFloatMatrix(y.AsMatrix()), x));
 				worldTransform = Util.MatrixMultiply(scaleTransform, worldTransform);
 				worldTransform = Util.MatrixMultiply(offsetTransform, worldTransform);
 
-				var bounds = v.Voxel.Bounds(v.FrameFunc());
+				var bounds = m.Model.Bounds(m.FrameFunc());
 				var worldBounds = Util.MatrixAABBMultiply(worldTransform, bounds);
 				var screenBounds = Util.MatrixAABBMultiply(cameraTransform, worldBounds);
 				var shadowBounds = Util.MatrixAABBMultiply(shadowTransform, worldBounds);
@@ -177,13 +177,13 @@ namespace OpenRA.Graphics
 
 			doRender.Add(Pair.New<Sheet, Action>(sprite.Sheet, () =>
 			{
-				foreach (var v in voxels)
+				foreach (var m in models)
 				{
 					// Convert screen offset to world offset
-					var offsetVec = Util.MatrixVectorMultiply(invCameraTransform, wr.ScreenVector(v.OffsetFunc()));
+					var offsetVec = Util.MatrixVectorMultiply(invCameraTransform, wr.ScreenVector(m.OffsetFunc()));
 					var offsetTransform = Util.TranslationMatrix(offsetVec[0], offsetVec[1], offsetVec[2]);
 
-					var rotations = v.RotationFunc().Aggregate(Util.IdentityMatrix(),
+					var rotations = m.RotationFunc().Aggregate(Util.IdentityMatrix(),
 						(x, y) => Util.MatrixMultiply(Util.MakeFloatMatrix(y.AsMatrix()), x));
 					var worldTransform = Util.MatrixMultiply(scaleTransform, rotations);
 					worldTransform = Util.MatrixMultiply(offsetTransform, worldTransform);
@@ -196,11 +196,11 @@ namespace OpenRA.Graphics
 
 					var lightTransform = Util.MatrixMultiply(Util.MatrixInverse(rotations), invShadowTransform);
 
-					var frame = v.FrameFunc();
-					for (uint i = 0; i < v.Voxel.Limbs; i++)
+					var frame = m.FrameFunc();
+					for (uint i = 0; i < m.Model.Sections; i++)
 					{
-						var rd = v.Voxel.RenderData(i);
-						var t = v.Voxel.TransformationMatrix(i, frame);
+						var rd = m.Model.RenderData(i);
+						var t = m.Model.TransformationMatrix(i, frame);
 						var it = Util.MatrixInverse(t);
 						if (it == null)
 							throw new InvalidOperationException("Failed to invert the transformed matrix of frame {0} during RenderAsync.".F(i));
@@ -208,12 +208,12 @@ namespace OpenRA.Graphics
 						// Transform light vector from shadow -> world -> limb coords
 						var lightDirection = ExtractRotationVector(Util.MatrixMultiply(it, lightTransform));
 
-						Render(rd, Util.MatrixMultiply(transform, t), lightDirection,
+						Render(rd, wr.World.ModelCache, Util.MatrixMultiply(transform, t), lightDirection,
 							lightAmbientColor, lightDiffuseColor, color.TextureMidIndex, normals.TextureMidIndex);
 
 						// Disable shadow normals by forcing zero diffuse and identity ambient light
-						if (v.ShowShadow)
-							Render(rd, Util.MatrixMultiply(shadow, t), lightDirection,
+						if (m.ShowShadow)
+							Render(rd, wr.World.ModelCache, Util.MatrixMultiply(shadow, t), lightDirection,
 								ShadowAmbient, ShadowDiffuse, shadowPalette.TextureMidIndex, normals.TextureMidIndex);
 					}
 				}
@@ -221,7 +221,7 @@ namespace OpenRA.Graphics
 
 			var screenLightVector = Util.MatrixVectorMultiply(invShadowTransform, ZVector);
 			screenLightVector = Util.MatrixVectorMultiply(cameraTransform, screenLightVector);
-			return new VoxelRenderProxy(sprite, shadowSprite, screenCorners, -screenLightVector[2] / screenLightVector[1]);
+			return new ModelRenderProxy(sprite, shadowSprite, screenCorners, -screenLightVector[2] / screenLightVector[1]);
 		}
 
 		static void CalculateSpriteGeometry(float2 tl, float2 br, float scale, out Size size, out int2 offset)
@@ -258,7 +258,8 @@ namespace OpenRA.Graphics
 		}
 
 		void Render(
-			VoxelRenderData renderData,
+			ModelRenderData renderData,
+			IModelCache cache,
 			float[] t, float[] lightDirection,
 			float[] ambientLight, float[] diffuseLight,
 			float colorPaletteTextureMidIndex, float normalsPaletteTextureMidIndex)
@@ -270,7 +271,7 @@ namespace OpenRA.Graphics
 			shader.SetVec("AmbientLight", ambientLight, 3);
 			shader.SetVec("DiffuseLight", diffuseLight, 3);
 
-			shader.Render(() => renderer.DrawBatch(Game.ModData.VoxelLoader.VertexBuffer, renderData.Start, renderData.Count, PrimitiveType.TriangleList));
+			shader.Render(() => renderer.DrawBatch(cache.VertexBuffer, renderData.Start, renderData.Count, PrimitiveType.TriangleList));
 		}
 
 		public void BeginFrame()

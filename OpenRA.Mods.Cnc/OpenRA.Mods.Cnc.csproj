@@ -147,6 +147,12 @@
     <Compile Include="FileFormats\XccGlobalDatabase.cs" />
     <Compile Include="FileFormats\XccLocalDatabase.cs" />
     <Compile Include="FileFormats\CRC32.cs" />
+    <Compile Include="Graphics\VoxelModelSequenceLoader.cs" />
+    <Compile Include="Graphics\VoxelLoader.cs" />
+    <Compile Include="Graphics\Voxel.cs" />
+    <Compile Include="FileFormats\HvaReader.cs" />
+    <Compile Include="FileFormats\VxlReader.cs" />
+    <Compile Include="Traits\World\VoxelNormalsPalette.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.Game\OpenRA.Game.csproj">
@@ -184,17 +190,17 @@
       SourceFiles="$(TargetPath)"
       DestinationFolder="$(SolutionDir)mods/common/"/>
     <!--
-        We need to copy OpenRA.Mods.Cnc.pdb (not `.dll.pdb`). This is only necessary on Windows.
-        Mono outputs a `.dll.mdb` so we can just append `.mdb` directly.
+      csc generates .pdb symbol files (not `.dll.pdb`).
+      mcs generates .dll.mdb symbol files.
     -->
     <Copy
       SourceFiles="$(TargetDir)$(TargetName).pdb"
       DestinationFolder="$(SolutionDir)mods/common/"
-      Condition="'$(OS)' == 'Windows_NT'"/>
+      Condition="Exists('$(TargetDir)$(TargetName).pdb')"/>
     <Copy
       SourceFiles="$(TargetPath).mdb"
       DestinationFolder="$(SolutionDir)mods/common/"
-      Condition="'$(OS)' == 'Unix'"/>
+      Condition="Exists('$(TargetPath).mdb')"/>
     <!-- Uncomment these lines when debugging or adding to this target
     <Message Text="DEBUG OS:                     $(OS)"/>
     <Message Text="DEBUG SolutionDir:            $(SolutionDir)"/>

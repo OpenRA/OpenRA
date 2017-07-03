@@ -51,19 +51,19 @@
 		InternalName: Random
 		RandomFactionMembers: RandomAllies, RandomSoviet
 		Side: Random
-		Description: A random country.
+		Description: Random Country\nA random country will be chosen when the game starts.
 	Faction@randomallies:
 		Name: Allies
 		InternalName: RandomAllies
 		RandomFactionMembers: england, france, germany
 		Side: Random
-		Description: A random Allied country.
+		Description: Random Allied Country\nA random Allied country will be chosen when the game starts.
 	Faction@randomsoviet:
 		Name: Soviet
 		InternalName: RandomSoviet
 		RandomFactionMembers: russia, ukraine
 		Side: Random
-		Description: A random Soviet country.
+		Description: Random Soviet Country\nA random Soviet country will be chosen when the game starts.
 	ResourceType@ore:
 		Type: Ore
 		Name: Valuable Minerals

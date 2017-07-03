@@ -50,7 +50,6 @@ ScrollPanel@FACTION_DROPDOWN_TEMPLATE:
 			Y: 0
 			Visible: false
 			TooltipContainer: TOOLTIP_CONTAINER
-			TooltipTemplate: FACTION_DESCRIPTION_TOOLTIP
 			Children:
 				Image@FLAG:
 					X: 4

@@ -574,16 +574,16 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						RenameNodeKey(node, "DisguiseTooltip");
 
 				// Split UncloakOn: Damage => Damage, Heal, SelfHeal
-				if (engineVersion < 20170315)
+				if (engineVersion < 20170528)
 					if (node.Key.StartsWith("UncloakOn", StringComparison.Ordinal))
 						node.Value.Value = node.Value.Value.Replace("Damage", "Damage, Heal, SelfHeal");
 
 				// Removed dead ActorGroupProxy trait
-				if (engineVersion < 20170318)
+				if (engineVersion < 20170528)
 					node.Value.Nodes.RemoveAll(n => n.Key == "ActorGroupProxy");
 
 				// Refactor SupplyTruck/AcceptsSupplies traits to DeliversCash/AcceptsDeliveredCash
-				if (engineVersion < 20170415)
+				if (engineVersion < 20170528)
 				{
 					if (node.Key == "SupplyTruck")
 						RenameNodeKey(node, "DeliversCash");
@@ -597,12 +597,12 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				}
 
 				// Add random sound support to AmbientSound
-				if (engineVersion < 20170422)
+				if (engineVersion < 20170528)
 					if (node.Key == "SoundFile" && parent.Key.StartsWith("AmbientSound", StringComparison.Ordinal))
 						RenameNodeKey(node, "SoundFiles");
 
 				// PauseOnLowPower property has been replaced with PauseOnCondition/RequiresCondition
-				if (engineVersion < 20170501)
+				if (engineVersion < 20170528)
 				{
 					if (node.Key.StartsWith("WithRearmAnimation", StringComparison.Ordinal) || node.Key.StartsWith("WithRepairAnimation", StringComparison.Ordinal)
 						|| node.Key.StartsWith("WithIdleAnimation", StringComparison.Ordinal))
@@ -635,24 +635,51 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
-				if (engineVersion < 20170507)
+				if (engineVersion < 20170528)
 				{
 					if (node.Key == "Offset" && parent.Key.StartsWith("WithHarvestOverlay", StringComparison.Ordinal))
 						RenameNodeKey(node, "LocalOffset");
 
-					if (node.Key == "LocalOffset")
+					var gridType = modData.Manifest.Get<MapGrid>().Type;
+					if (gridType == MapGridType.RectangularIsometric)
 					{
-						var orig = FieldLoader.GetValue<WVec[]>(node.Key, node.Value.Value);
-						var scaled = orig.Select(o => FieldSaver.FormatValue(new WVec(
-							(int)Math.Round(Math.Sqrt(2) * o.X),
-							(int)Math.Round(Math.Sqrt(2) * o.Y),
-							(int)Math.Round(Math.Sqrt(2) * o.Z))));
-						node.Value.Value = scaled.JoinWith(", ");
+						if (node.Key == "LocalOffset")
+						{
+							var orig = FieldLoader.GetValue<WVec[]>(node.Key, node.Value.Value);
+							var scaled = orig.Select(o => FieldSaver.FormatValue(new WVec(
+								(int)Math.Round(Math.Sqrt(2) * o.X),
+								(int)Math.Round(Math.Sqrt(2) * o.Y),
+								(int)Math.Round(Math.Sqrt(2) * o.Z))));
+							node.Value.Value = scaled.JoinWith(", ");
+						}
+
+						if (node.Key == "Radius" && parent.Key == "Shape")
+						{
+							var orig = FieldLoader.GetValue<WDist>(node.Key, node.Value.Value);
+							var scaled = (int)Math.Round(Math.Sqrt(2) * orig.Length);
+							node.Value.Value = scaled.ToString();
+						}
+
+						if (node.Key == "TopLeft" || node.Key == "BottomRight" || node.Key == "PointA" || node.Key == "PointB")
+						{
+							var orig = FieldLoader.GetValue<int2>(node.Key, node.Value.Value);
+							var scaled = new int2(
+								(int)Math.Round(Math.Sqrt(2) * orig.X),
+								(int)Math.Round(Math.Sqrt(2) * orig.Y));
+							node.Value.Value = scaled.ToString();
+						}
+
+						if (node.Key == "VerticalTopOffset" || node.Key == "VerticalBottomOffset")
+						{
+							var orig = FieldLoader.GetValue<int>(node.Key, node.Value.Value);
+							var scaled = (int)Math.Round(Math.Sqrt(2) * orig);
+							node.Value.Value = scaled.ToString();
+						}
 					}
 				}
 
 				// Refactor Rectangle shape RotateToIsometry bool into WAngle LocalYaw
-				if (engineVersion < 20170509)
+				if (engineVersion < 20170528)
 				{
 					if (node.Key.StartsWith("RotateToIsometry", StringComparison.Ordinal))
 					{
@@ -664,7 +691,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				}
 
 				// Removed GrantConditionOnDeploy.DeployAnimation and made WithMakeAnimation compatible instead
-				if (engineVersion < 20170510)
+				if (engineVersion < 20170528)
 				{
 					var grantCondOnDeploy = node.Value.Nodes.FirstOrDefault(n => n.Key == "GrantConditionOnDeploy");
 					if (grantCondOnDeploy != null)
@@ -722,6 +749,28 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				// Removed ApplyToAllTargetablePositions hack from Rectangle shape
+				if (engineVersion < 20170629)
+				{
+					if (node.Key.StartsWith("HitShape", StringComparison.Ordinal))
+					{
+						var shape = node.Value.Nodes.FirstOrDefault(n => n.Key == "Type" && n.Value.Value == "Rectangle");
+						if (shape != null)
+						{
+							var hack = shape.Value.Nodes.FirstOrDefault(n => n.Key == "ApplyToAllTargetablePositions");
+							if (hack != null)
+							{
+								Console.WriteLine("Rectangle.ApplyToAllTargetablePositions has been removed due to incompatibilities");
+								Console.WriteLine("with the HitShape refactor and projectile/warhead victim scans, as well as performance concerns.");
+								Console.WriteLine("If you absolutely want to use it, please ship a duplicate of the old Rectangle code with your mod code.");
+								Console.WriteLine("Otherwise, we recommend using inheritable shape templates for rectangular buildings");
+								Console.WriteLine("and custom setups for the rest (see our official mods for examples).");
+								shape.Value.Nodes.Remove(hack);
+							}
+						}
+					}
+				}
+
 				UpgradeActorRules(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 
@@ -765,7 +814,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				}
 
 				// Refactor GravityBomb Speed WDist to Velocity WVec and Acceleration from vertical WDist to vector
-				if (engineVersion < 20170329)
+				if (engineVersion < 20170528)
 				{
 					var projectile = node.Value.Nodes.FirstOrDefault(n => n.Key == "Projectile");
 					if (projectile != null && projectile.Value.Value == "GravityBomb")
@@ -788,7 +837,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				}
 
 				// Optimal victim scan radii are now calculated automatically
-				if (engineVersion < 20170505)
+				if (engineVersion < 20170528)
 				{
 					var targetExtraSearchRadius = node.Value.Nodes.FirstOrDefault(n => n.Key == "TargetSearchRadius" || n.Key == "TargetExtraSearchRadius");
 					if (targetExtraSearchRadius != null)

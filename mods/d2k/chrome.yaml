@@ -5,90 +5,145 @@ sidebar: chrome.png
 	background-supportoverlay: 236,212,60,48
 
 sidebar-button: chrome.png
-	background: 0,357,25,25
+	background: 377,0,25,25
 sidebar-button-hover: chrome.png
-	background: 25,357,25,25
+	background: 402,0,25,25
 sidebar-button-pressed: chrome.png
-	background: 25,357,25,25
+	background: 402,0,25,25
 sidebar-button-highlighted: chrome.png
-	background: 25,357,25,25
+	background: 402,0,25,25
 sidebar-button-highlighted-hover: chrome.png
-	background: 25,357,25,25
+	background: 402,0,25,25
 sidebar-button-highlighted-pressed: chrome.png
-	background: 25,357,25,25
+	background: 402,0,25,25
 sidebar-button-disabled: chrome.png
-	background: 50,357,25,25
+	background: 427,0,25,25
 sidebar-button-highlighted-disabled: chrome.png
-	background: 50,357,25,25
+	background: 427,0,25,25
 
 sidebar-bits: chrome.png
-	production-tooltip-time: 430,208,16,16
-	production-tooltip-power: 494,176,16,16
-	production-tooltip-cost: 494,144,16,16
-	production-iconoverlay: 236,112,226,48
+	production-tooltip-time: 480,112,16,16
+	production-tooltip-power: 496,112,16,16
+	production-tooltip-cost: 464,112,16,16
+	commandbar-background: 0,469,454,43
 
-minimap: chrome.png
-	overlapping-elements: 227,0,202,202
+minimap-overlay: chrome.png
+	top-left: 236,15,7,7
+	top: 236,0,141,4
+	top-right: 243,15,7,7
+	left: 231,0,5,22
+	right: 226,0,5,22
+	bottom-left: 236,8,7,7
+	bottom-right: 243,8,7,7
 
 radar-atreides: chrome.png
-	insignia: 236,268,100,106
-radar-harkonnen: chrome.png
-	insignia: 341,377,100,106
+	insignia: 226,25,100,100
 radar-ordos: chrome.png
-	insignia: 341,266,100,106
+	insignia: 326,25,100,100
+radar-harkonnen: chrome.png
+	insignia: 226,125,100,100
 
 power-icons: chrome.png
-	power-normal: 430,176,16,16
-	power-critical: 478,176,16,16
+	power-normal: 496,112,16,16
+	power-critical: 496,128,16,16
 
 production-icons: chrome.png
-	building: 430,0,16,16
-	building-disabled: 446,0,16,16
-	building-alert: 462,0,16,16
-	upgrade: 430,224,16,16
-	upgrade-disabled: 446,224,16,16
-	upgrade-alert: 462,224,16,16
-	infantry: 430,32,16,16
-	infantry-disabled: 446,32,16,16
-	infantry-alert: 462,32,16,16
-	vehicle: 430,96,16,16
-	vehicle-disabled: 446,96,16,16
-	vehicle-alert: 462,96,16,16
-	armor: 430,48,16,16
-	armor-disabled: 446,48,16,16
-	armor-alert: 462,48,16,16
-	aircraft: 430,64,16,16
-	aircraft-disabled: 446,64,16,16
-	aircraft-alert: 462,64,16,16
-	starport: 430,144,16,16
-	starport-disabled: 446,144,16,16
-	starport-alert: 462,144,16,16
+	building: 464,0,16,16
+	building-disabled: 480,0,16,16
+	building-alert: 496,0,16,16
+	upgrade: 464,16,16,16
+	upgrade-disabled: 480,16,16,16
+	upgrade-alert: 496,16,16,16
+	infantry: 464,32,16,16
+	infantry-disabled: 480,32,16,16
+	infantry-alert: 496,32,16,16
+	vehicle: 464,48,16,16
+	vehicle-disabled: 480,48,16,16
+	vehicle-alert: 496,48,16,16
+	armor: 464,64,16,16
+	armor-disabled: 480,64,16,16
+	armor-alert: 496,64,16,16
+	aircraft: 464,80,16,16
+	aircraft-disabled: 480,80,16,16
+	aircraft-alert: 496,80,16,16
+	starport: 464,96,16,16
+	starport-disabled: 480,96,16,16
+	starport-alert: 496,96,16,16
 
 order-icons: chrome.png
-	debug: 10,388,34,35
-	debug-disabled: 10,428,34,35
-	debug-active: 10,468,34,35
-	guard: 49,388,34,35
-	guard-disabled: 49,428,34,35
-	guard-active: 49,468,34,35
-	repair: 88,388,34,35
-	repair-disabled: 88,428,34,35
-	repair-active: 88,468,34,35
-	sell: 127,388,34,35
-	sell-disabled: 127,428,34,35
-	sell-active: 127,468,34,35
-	options: 165,388,40,38
-	options-disabled: 165,428,40,38
-	options-active: 165,468,40,38   
-	beacon: 209,388,36,35
-	beacon-disabled: 209,428,36,35
-	beacon-active: 209,468,36,35
-	power: 248,388,34,35
-	power-disabled: 248,428,36,35
-	power-active: 248,468,36,35
-	diplomacy: 288,388,34,35
-	diplomacy-disabled: 288,428,34,35
-	diplomacy-active: 288,468,34,35
+	debug: 10,357,34,35
+	debug-disabled: 10,393,34,35
+	debug-active: 10,430,34,35
+	guard: 49,357,34,35
+	guard-disabled: 49,393,34,35
+	guard-active: 49,430,34,35
+	repair: 88,357,34,35
+	repair-disabled: 88,393,34,35
+	repair-active: 88,430,34,35
+	sell: 127,357,34,35
+	sell-disabled: 127,393,34,35
+	sell-active: 127,430,34,35
+	options: 165,357,40,38
+	options-disabled: 165,393,40,38
+	options-active: 165,430,40,38
+	beacon: 209,357,36,35
+	beacon-disabled: 209,393,36,35
+	beacon-active: 209,430,36,35
+	power: 248,357,34,35
+	power-disabled: 248,393,36,35
+	power-active: 248,430,36,35
+	diplomacy: 288,357,34,35
+	diplomacy-disabled: 288,393,34,35
+	diplomacy-active: 288,430,34,35
+
+command-button: chrome.png
+	background: 332,428,34,41
+command-button-hover: chrome.png
+	background: 332,428,34,41
+command-button-pressed: chrome.png
+	background: 400,428,34,41
+command-button-highlighted: chrome.png
+	background: 400,428,34,41
+command-button-highlighted-hover: chrome.png
+	background: 400,428,34,41
+command-button-highlighted-pressed: chrome.png
+	background: 400,428,34,41
+command-button-disabled: chrome.png
+	background: 366,428,34,41
+command-button-highlighted-disabled: chrome.png
+	background: 366,428,34,41
+
+command-icons: chrome.png
+	attack-move: 408,144,26,26
+	attack-move-disabled: 408,170,26,26
+	force-move: 434,144,24,24
+	force-move-disabled: 434,170,26,26
+	force-attack: 460,144,26,26
+	force-attack-disabled: 460,170,26,26
+	guard: 486,144,24,24
+	guard-disabled: 486,170,26,26
+	deploy: 408,196,24,24
+	deploy-disabled: 408,222,26,26
+	scatter: 434,196,26,26
+	scatter-disabled: 434,222,26,26
+	stop: 460,196,26,26
+	stop-disabled: 460,222,26,26
+	queue-orders: 486,196,26,26
+	queue-orders-disabled: 486,222,26,26
+
+stance-icons: chrome.png
+	attack-anything: 416,248,16,16
+	attack-anything-disabled: 432,248,16,16
+	attack-anything-active: 448,248,16,16
+	defend: 464,248,16,16
+	defend-disabled: 480,248,16,16
+	defend-active: 496,248,16,16
+	return-fire: 416,264,16,16
+	return-fire-disabled: 432,264,16,16
+	return-fire-active: 448,264,16,16
+	hold-fire: 464,264,16,16
+	hold-fire-disabled: 480,264,16,16
+	hold-fire-active: 496,264,16,16
 
 flags: buttons.png
 	atreides: 0,114,22,21

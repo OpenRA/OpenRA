@@ -91,7 +91,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			var t = Tiles[cell];
 			if (t.Density > 0)
-				NetWorth -= t.Density * t.Type.Info.ValuePerUnit;
+				NetWorth -= (t.Density + 1) * t.Type.Info.ValuePerUnit;
 
 			ResourceType type;
 			if (Resources.TryGetValue(tile.Type, out type))
@@ -153,12 +153,14 @@ namespace OpenRA.Mods.Common.Traits
 				return t;
 			}
 
-			NetWorth -= t.Density * type.Info.ValuePerUnit;
+			// Density + 1 as workaround for fixing ResourceLayer.Harvest as it would be very disruptive to balancing
+			if (t.Density > 0)
+				NetWorth -= (t.Density + 1) * type.Info.ValuePerUnit;
 
 			// Set density based on the number of neighboring resources
 			t.Density = ResourceDensityAt(c);
 
-			NetWorth += t.Density * type.Info.ValuePerUnit;
+			NetWorth += (t.Density + 1) * type.Info.ValuePerUnit;
 
 			var sprites = type.Variants[t.Variant];
 			var frame = int2.Lerp(0, sprites.Length - 1, t.Density, type.Info.MaxDensity);

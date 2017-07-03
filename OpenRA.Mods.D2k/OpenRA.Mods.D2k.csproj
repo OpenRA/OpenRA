@@ -89,11 +89,6 @@
     <Compile Include="Lint\CheckImportActors.cs" />
     <Compile Include="PackageLoaders\D2kSoundResources.cs" />
   </ItemGroup>
-  <PropertyGroup>
-    <PostBuildEvent>mkdir "$(SolutionDir)mods/d2k/"
-copy "$(TargetPath)" "$(SolutionDir)mods/d2k/"
-cd "$(SolutionDir)"</PostBuildEvent>
-  </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.Game\OpenRA.Game.csproj">
       <Project>{0DFB103F-2962-400F-8C6D-E2C28CCBA633}</Project>
@@ -130,17 +125,17 @@ cd "$(SolutionDir)"</PostBuildEvent>
       SourceFiles="$(TargetPath)"
       DestinationFolder="$(SolutionDir)mods/d2k/"/>
     <!--
-        We need to copy OpenRA.Mods.D2k.pdb (not `.dll.pdb`). This is only necessary on Windows.
-        Mono outputs a `.dll.mdb` so we can just append `.mdb` directly.
+      csc generates .pdb symbol files (not `.dll.pdb`).
+      mcs generates .dll.mdb symbol files.
     -->
     <Copy
       SourceFiles="$(TargetDir)$(TargetName).pdb"
       DestinationFolder="$(SolutionDir)mods/d2k/"
-      Condition="'$(OS)' == 'Windows_NT'"/>
+      Condition="Exists('$(TargetDir)$(TargetName).pdb')"/>
     <Copy
       SourceFiles="$(TargetPath).mdb"
       DestinationFolder="$(SolutionDir)mods/d2k/"
-      Condition="'$(OS)' == 'Unix'"/>
+      Condition="Exists('$(TargetPath).mdb')"/>
     <!-- Uncomment these lines when debugging or adding to this target
     <Message Text="DEBUG OS:                     $(OS)"/>
     <Message Text="DEBUG SolutionDir:            $(SolutionDir)"/>
