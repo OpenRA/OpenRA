@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Common.Server
 	{
 		static readonly int PingInterval = 5000; // Ping every 5 seconds
 		static readonly int ConnReportInterval = 20000; // Report every 20 seconds
-		static readonly int ConnTimeout = 60000; // Drop unresponsive clients after 60 seconds
+		static readonly int ConnTimeout = 180000; // Drop unresponsive clients after 180 seconds
 
 		// TickTimeout is in microseconds
 		public int TickTimeout { get { return PingInterval * 100; } }
