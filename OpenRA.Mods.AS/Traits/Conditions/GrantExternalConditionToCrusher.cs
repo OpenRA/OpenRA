@@ -42,7 +42,7 @@ namespace OpenRA.Mods.AS.Traits
 				.FirstOrDefault(t => t.Info.Condition == Info.Condition && t.CanGrantCondition(crusher, self));
 
 			if (external != null)
-				external.GrantCondition(crusher, self);
+				external.GrantCondition(crusher, self, Info.Duration);
 		}
 
 		void INotifyCrushed.WarnCrush(Actor self, Actor crusher, HashSet<string> crushClasses) { }
