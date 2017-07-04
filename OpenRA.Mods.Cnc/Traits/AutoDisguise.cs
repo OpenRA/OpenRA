@@ -40,7 +40,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			"valid input true or false")]
 		public readonly bool ActiveDisguise = false;
 
-		public override object Create(ActorInitializer init) { return new AutoDisguise(this); }
+		public override object Create(ActorInitializer init) { return new AutoDisguise(init.Self, this); }
 	}
 
 	public class AutoDisguise : ConditionalTrait<AutoDisguiseInfo>, INotifyCreated, IResolveOrder, INotifyAttack, 
@@ -51,7 +51,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		ConditionManager conditionManager;
 		int autoDisguisingToken = ConditionManager.InvalidConditionToken;
 
-		public AutoDisguise(AutoDisguiseInfo info)
+		public AutoDisguise(Actor self, AutoDisguiseInfo info)
 			: base(info)
 		{
 			timeRemaining = info.InitialDelay;
@@ -138,20 +138,6 @@ namespace OpenRA.Mods.Cnc.Traits
 
 					timeRemaining = Info.DisguisingDelay;
 				}
-			}
-
-			HandleCondition(self);
-		}
-
-		void HandleCondition(Actor self)
-		{
-			var disguisingself = self.TraitOrDefault<Disguise>();
-			if (disguisingself != null && conditionManager != null)
-			{
-				if (disguisingself.Disguised && autoDisguisingToken == ConditionManager.InvalidConditionToken && !string.IsNullOrEmpty(Info.AutoDisguisedCondition))
-					autoDisguisingToken = conditionManager.GrantCondition(self, Info.AutoDisguisedCondition);
-				else if (!disguisingself.Disguised && autoDisguisingToken != ConditionManager.InvalidConditionToken)
-					autoDisguisingToken = conditionManager.RevokeCondition(self, autoDisguisingToken);
 			}
 		}
 
