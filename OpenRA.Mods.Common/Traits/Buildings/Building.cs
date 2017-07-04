@@ -27,7 +27,8 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		Empty = '_',
 		OccupiedPassable = '=',
-		Blocking = 'x'
+		Occupied = 'x',
+		OccupiedUntargetable = 'X'
 	}
 
 	public class BuildingInfo : ITraitInfo, IOccupySpaceInfo, IPlaceBuildingDecorationInfo, UsesInit<LocationInit>
@@ -38,8 +39,8 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("The range to the next building it can be constructed. Set it higher for walls.")]
 		public readonly int Adjacent = 2;
 
-		[Desc("x means cell is blocked, = means part of the footprint but passable, ",
-			"_ means completely empty.")]
+		[Desc("x means cell is blocked, capital X means blocked but not counting as targetable, ",
+			"= means part of the footprint but passable, _ means completely empty.")]
 		[FieldLoader.LoadUsing("LoadFootprint")]
 		public readonly Dictionary<CVec, FootprintCellType> Footprint;
 
@@ -109,7 +110,10 @@ namespace OpenRA.Mods.Common.Traits
 			foreach (var t in FootprintTiles(location, FootprintCellType.OccupiedPassable))
 				yield return t;
 
-			foreach (var t in FootprintTiles(location, FootprintCellType.Blocking))
+			foreach (var t in FootprintTiles(location, FootprintCellType.Occupied))
+				yield return t;
+
+			foreach (var t in FootprintTiles(location, FootprintCellType.OccupiedUntargetable))
 				yield return t;
 		}
 
@@ -124,7 +128,10 @@ namespace OpenRA.Mods.Common.Traits
 
 		public IEnumerable<CPos> UnpathableTiles(CPos location)
 		{
-			foreach (var t in FootprintTiles(location, FootprintCellType.Blocking))
+			foreach (var t in FootprintTiles(location, FootprintCellType.Occupied))
+				yield return t;
+
+			foreach (var t in FootprintTiles(location, FootprintCellType.OccupiedUntargetable))
 				yield return t;
 		}
 
@@ -271,7 +278,7 @@ namespace OpenRA.Mods.Common.Traits
 			occupiedCells = Info.UnpathableTiles(TopLeft)
 				.Select(c => Pair.New(c, SubCell.FullCell)).ToArray();
 
-			targetableCells = Info.FootprintTiles(TopLeft, FootprintCellType.Blocking)
+			targetableCells = Info.FootprintTiles(TopLeft, FootprintCellType.Occupied)
 				.Select(c => Pair.New(c, SubCell.FullCell)).ToArray();
 
 			CenterPosition = init.World.Map.CenterOfCell(topLeft) + Info.CenterOffset(init.World);
