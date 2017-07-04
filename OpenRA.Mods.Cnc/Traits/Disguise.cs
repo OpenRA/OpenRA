@@ -70,7 +70,7 @@ namespace OpenRA.Mods.Cnc.Traits
 	}
 
 	[Desc("Provides access to the disguise command, which makes the actor appear to be another player's actor.")]
-	class DisguiseInfo : ConditionalTraitInfo // ITraitInfo
+	class DisguiseInfo : ITraitInfo
 	{
 		[VoiceReference] public readonly string Voice = "Action";
 
@@ -89,10 +89,10 @@ namespace OpenRA.Mods.Cnc.Traits
 			"ValidTargets here has the same targets as warhead and autotarget.")]
 		public readonly HashSet<string> ValidTargets = new HashSet<string>();
 
-		public override object Create(ActorInitializer init) { return new Disguise(init.Self, this); }
+		public object Create(ActorInitializer init) { return new Disguise(init.Self, this); }
 	}
 
-	class Disguise : ConditionalTrait<DisguiseInfo>, INotifyCreated, IEffectiveOwner, IIssueOrder, IResolveOrder, IOrderVoice, IRadarColorModifier, INotifyAttack, INotifyDamage, ITick
+	class Disguise : INotifyCreated, IEffectiveOwner, IIssueOrder, IResolveOrder, IOrderVoice, IRadarColorModifier, INotifyAttack, INotifyDamage, ITick
 	{
 		public Player AsPlayer { get; private set; }
 		public string AsSprite { get; private set; }
@@ -102,6 +102,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		public Player Owner { get { return AsPlayer; } }
 
 		readonly Actor self;
+		readonly DisguiseInfo info;
 
 		CPos? lastPos;
 
@@ -109,9 +110,9 @@ namespace OpenRA.Mods.Cnc.Traits
 		int disguisedToken = ConditionManager.InvalidConditionToken;
 
 		public Disguise(Actor self, DisguiseInfo info)
-			: base(info)
 		{
 			this.self = self;
+			this.info = info;
 		}
 
 		void INotifyCreated.Created(Actor self)
@@ -123,7 +124,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		{
 			get
 			{
-				yield return new DisguiseOrderTargeter(Info) { ForceAttack = false };
+				yield return new DisguiseOrderTargeter(info) { ForceAttack = false };
 			}
 		}
 
@@ -146,7 +147,7 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
-			return order.OrderString == "Disguise" ? Info.Voice : null;
+			return order.OrderString == "Disguise" ? info.Voice : null;
 		}
 
 		public Color RadarColorOverride(Actor self, Color color)
@@ -211,8 +212,8 @@ namespace OpenRA.Mods.Cnc.Traits
 
 			if (Disguised != oldDisguiseSetting && conditionManager != null)
 			{
-				if (Disguised && disguisedToken == ConditionManager.InvalidConditionToken && !string.IsNullOrEmpty(Info.DisguisedCondition))
-					disguisedToken = conditionManager.GrantCondition(self, Info.DisguisedCondition);
+				if (Disguised && disguisedToken == ConditionManager.InvalidConditionToken && !string.IsNullOrEmpty(info.DisguisedCondition))
+					disguisedToken = conditionManager.GrantCondition(self, info.DisguisedCondition);
 				else if (!Disguised && disguisedToken != ConditionManager.InvalidConditionToken)
 					disguisedToken = conditionManager.RevokeCondition(self, disguisedToken);
 			}
@@ -222,7 +223,7 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		void INotifyAttack.Attacking(Actor self, Target target, Armament a, Barrel barrel)
 		{
-			if (Info.RevealDisguiseOn.HasFlag(RevealDisguiseType.Attack) || Info.RevealDisguiseOn.HasFlag(RevealDisguiseType.Demolish))
+			if (info.RevealDisguiseOn.HasFlag(RevealDisguiseType.Attack) || info.RevealDisguiseOn.HasFlag(RevealDisguiseType.Demolish))
 				DisguiseAs(null);
 		}
 
@@ -231,22 +232,19 @@ namespace OpenRA.Mods.Cnc.Traits
 			if (e.Damage.Value == 0)
 				return;
 
-			if (Info.RevealDisguiseOn.HasFlag(RevealDisguiseType.Damaged) && e.Damage.Value > 0)
+			if (info.RevealDisguiseOn.HasFlag(RevealDisguiseType.Damaged) && e.Damage.Value > 0)
 				DisguiseAs(null);
 		}
 
 		void ITick.Tick(Actor self)
 		{
-			if (!IsTraitDisabled)
-			{
-				if (self.IsDisabled())
-					DisguiseAs(null);
+			if (self.IsDisabled())
+				DisguiseAs(null);
 
-				if (Info.RevealDisguiseOn.HasFlag(RevealDisguiseType.Move) && (lastPos == null || lastPos.Value != self.Location))
-				{
-					DisguiseAs(null);
-					lastPos = self.Location;
-				}
+			if (info.RevealDisguiseOn.HasFlag(RevealDisguiseType.Move) && (lastPos == null || lastPos.Value != self.Location))
+			{
+				DisguiseAs(null);
+				lastPos = self.Location;
 			}
 		}
 
