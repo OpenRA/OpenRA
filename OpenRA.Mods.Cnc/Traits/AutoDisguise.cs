@@ -46,6 +46,7 @@ namespace OpenRA.Mods.Cnc.Traits
 	public class AutoDisguise : ConditionalTrait<AutoDisguiseInfo>, INotifyCreated, IResolveOrder, INotifyAttack, 
 		INotifyDamage, ITick, ISync, INotifyIdle
 	{
+		readonly Actor self;
 		[Sync] int timeRemaining;
 
 		ConditionManager conditionManager;
@@ -54,6 +55,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		public AutoDisguise(Actor self, AutoDisguiseInfo info)
 			: base(info)
 		{
+			this.self = self;
 			timeRemaining = info.InitialDelay;
 		}
 
