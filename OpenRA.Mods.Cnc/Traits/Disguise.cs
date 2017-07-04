@@ -65,8 +65,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		None = 0,
 		Attack = 1,
 		Damaged = 2,
-		Demolish = 4,
-		Move = 8
+		Move = 4
 	}
 
 	[Desc("Provides access to the disguise command, which makes the actor appear to be another player's actor.")]
@@ -79,7 +78,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		public readonly string DisguisedCondition = null;
 
 		// Added this for more control over when disguises break
-		[Desc("Events leading to the actor breaking Disguise. Possible values are: None, Attack, Move, Demolish, and Damaged.")]
+		[Desc("Events leading to the actor breaking Disguise. Possible values are: None, Attack, Move, and Damaged.")]
 		public readonly RevealDisguiseType RevealDisguiseOn = RevealDisguiseType.Attack;
 
 		// This is to help narrow down the list of types an actor can be further.
@@ -223,24 +222,18 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		void INotifyAttack.Attacking(Actor self, Target target, Armament a, Barrel barrel)
 		{
-			if (info.RevealDisguiseOn.HasFlag(RevealDisguiseType.Attack) || info.RevealDisguiseOn.HasFlag(RevealDisguiseType.Demolish))
+			if (info.RevealDisguiseOn.HasFlag(RevealDisguiseType.Attack))
 				DisguiseAs(null);
 		}
 
 		void INotifyDamage.Damaged(Actor self, AttackInfo e)
 		{
-			if (e.Damage.Value == 0)
-				return;
-
 			if (info.RevealDisguiseOn.HasFlag(RevealDisguiseType.Damaged) && e.Damage.Value > 0)
 				DisguiseAs(null);
 		}
 
 		void ITick.Tick(Actor self)
 		{
-			if (self.IsDisabled())
-				DisguiseAs(null);
-
 			if (info.RevealDisguiseOn.HasFlag(RevealDisguiseType.Move) && (lastPos == null || lastPos.Value != self.Location))
 			{
 				DisguiseAs(null);
