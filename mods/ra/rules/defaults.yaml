@@ -693,7 +693,7 @@
 		ClosingSound: cashturn.aud
 		TerrainTypes: Clear, Road
 	EditorTilesetFilter:
-		Categories: Gate
+		Categories: Wall
 
 ^TechBuilding:
 	Inherits: ^BasicBuilding
@@ -759,6 +759,8 @@
 		Type: Light
 	Targetable:
 		TargetTypes: Ground, DetonateAttack
+	EditorTilesetFilter:
+		Categories: Decoration
 
 ^CivBuilding:
 	Inherits: ^TechBuilding
@@ -952,7 +954,7 @@
 	ScriptTriggers:
 	EditorTilesetFilter:
 		RequireTilesets: DESERT
-		Categories: Rock
+		Categories: Decoration
 
 ^DesertCivBuilding:
 	Inherits: ^CivBuilding

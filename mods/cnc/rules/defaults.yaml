@@ -897,7 +897,7 @@
 	ScriptTriggers:
 	EditorTilesetFilter:
 		RequireTilesets: DESERT
-		Categories: Rock
+		Categories: Decoration
 
 ^CommonHuskDefaults:
 	Inherits@1: ^SpriteActor

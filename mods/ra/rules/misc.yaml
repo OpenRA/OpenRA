@@ -195,7 +195,7 @@ FLARE:
 		ShowOwnerRow: false
 	AutoSelectionSize:
 	EditorTilesetFilter:
-		Categories: System
+		Categories: Decoration
 
 MINE:
 	Inherits@1: ^SpriteActor
@@ -395,4 +395,4 @@ CTFLAG:
 	-SelectionDecorations:
 	-Targetable:
 	EditorTilesetFilter:
-		Categories: System
+		Categories: Decoration
