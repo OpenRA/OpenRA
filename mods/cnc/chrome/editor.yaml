@@ -464,7 +464,7 @@ Container@EDITOR_WORLD_ROOT:
 			Font: Bold
 			Contrast: true
 		Label@CASH_LABEL:
-			X: 95
+			X: 125
 			Width: 50
 			Height: 25
 			Align: Left
