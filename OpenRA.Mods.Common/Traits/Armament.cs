@@ -206,19 +206,14 @@ namespace OpenRA.Mods.Common.Traits
 
 		protected virtual bool CanFire(Actor self, Target target)
 		{
-			if (IsReloading)
-				return false;
-
-			if (ammoPool != null && !ammoPool.HasAmmo())
+			if (IsReloading || (ammoPool != null && !ammoPool.HasAmmo()))
 				return false;
 
 			if (turret != null && !turret.HasAchievedDesiredFacing)
 				return false;
 
-			if (!target.IsInRange(self.CenterPosition, MaxRange()))
-				return false;
-
-			if (Weapon.MinRange != WDist.Zero && target.IsInRange(self.CenterPosition, Weapon.MinRange))
+			if ((!target.IsInRange(self.CenterPosition, MaxRange()))
+				|| (Weapon.MinRange != WDist.Zero && target.IsInRange(self.CenterPosition, Weapon.MinRange)))
 				return false;
 
 			if (!Weapon.IsValidAgainst(target, self.World, self))
