@@ -33,6 +33,8 @@ namespace OpenRA.Mods.Common.Widgets
 		bool forceAttackDisabled = true;
 		bool guardDisabled = true;
 		bool scatterDisabled = true;
+		bool stopDisabled = true;
+		bool waypointModeDisabled = true;
 
 		int deployHighlighted;
 		int scatterHighlighted;
@@ -148,7 +150,7 @@ namespace OpenRA.Mods.Common.Widgets
 				BindButtonIcon(stopButton);
 
 				stopButton.GetKey = _ => ks.StopKey;
-				stopButton.IsDisabled = () => { UpdateStateIfNecessary(); return !selectedActors.Any(); };
+				stopButton.IsDisabled = () => { UpdateStateIfNecessary(); return stopDisabled; };
 				stopButton.IsHighlighted = () => stopHighlighted > 0;
 				stopButton.OnClick = () => PerformKeyboardOrderOnSelection(a => new Order("Stop", a, false));
 				stopButton.OnKeyPress = ki => { stopHighlighted = 2; stopButton.OnClick(); };
@@ -159,7 +161,7 @@ namespace OpenRA.Mods.Common.Widgets
 			{
 				BindButtonIcon(queueOrdersButton);
 
-				queueOrdersButton.IsDisabled = () => { UpdateStateIfNecessary(); return !selectedActors.Any(); };
+				queueOrdersButton.IsDisabled = () => { UpdateStateIfNecessary(); return waypointModeDisabled; };
 				queueOrdersButton.IsHighlighted = () => !queueOrdersButton.IsDisabled() && IsForceModifiersActive(Modifiers.Shift);
 				queueOrdersButton.OnClick = () =>
 				{
@@ -223,6 +225,10 @@ namespace OpenRA.Mods.Common.Widgets
 				.SelectMany(a => a.TraitsImplementing<IIssueDeployOrder>()
 					.Select(d => new TraitPair<IIssueDeployOrder>(a, d)))
 				.ToArray();
+
+			var cbbInfos = selectedActors.Select(a => a.Info.TraitInfoOrDefault<CommandBarBlacklistInfo>()).ToArray();
+			stopDisabled = !cbbInfos.Any(i => i == null || !i.DisableStop);
+			waypointModeDisabled = !cbbInfos.Any(i => i == null || !i.DisableWaypointMode);
 
 			selectionHash = world.Selection.Hash;
 		}
