@@ -249,18 +249,18 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			// Expensive, but a sure solution where all locked guys get rescued.
 			// We don't get deadlocks very often so, let's be sure to remove then when they occur.
-			var clients = host.World.ActorsHavingTrait<DockClient>().Where(a => a.Trait<DockClient>().Host == host);
+			var clients = host.World.ActorsWithTrait<DockClient>().Where(a => a.Trait.Host == host);
 			queue.Clear();
 
 			foreach (var a in clients)
 			{
-				if (a.IsDead || a.Disposed)
+				if (a.Actor.IsDead || a.Actor.Disposed)
 					continue;
 
-				var dc = a.Trait<DockClient>();
-				a.CancelActivity();
+				var dc = a.Trait;
+				a.Actor.CancelActivity();
 				dc.Release();
-				queue.Add(a);
+				queue.Add(a.Actor);
 			}
 
 			ProcessQueue(host, null);
