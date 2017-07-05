@@ -592,6 +592,7 @@
 	Demolishable:
 	EditorTilesetFilter:
 		Categories: Building
+	CommandBarBlacklist:
 
 ^Building:
 	Inherits: ^BasicBuilding
@@ -634,6 +635,7 @@
 		EmptyWeapon: SmallBuildingExplode
 	EditorTilesetFilter:
 		Categories: Defense
+	-CommandBarBlacklist:
 
 ^Wall:
 	Inherits@1: ^ExistsInWorld

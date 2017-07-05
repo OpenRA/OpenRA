@@ -291,6 +291,7 @@
     <Compile Include="Traits\Buildings\Reservable.cs" />
     <Compile Include="Traits\Burns.cs" />
     <Compile Include="Traits\ChangesTerrain.cs" />
+    <Compile Include="Traits\CommandBarBlacklist.cs" />
     <Compile Include="Traits\Health.cs" />
     <Compile Include="Traits\HitShape.cs" />
     <Compile Include="Traits\PowerTooltip.cs" />

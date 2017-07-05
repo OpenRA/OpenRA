@@ -669,6 +669,7 @@
 	Demolishable:
 	EditorTilesetFilter:
 		Categories: Building
+	CommandBarBlacklist:
 
 ^BaseBuilding:
 	Inherits: ^Building
@@ -1000,6 +1001,7 @@
 		TargetTypes: Ground, C4, Structure, Defense
 	EditorTilesetFilter:
 		Categories: Defense
+	-CommandBarBlacklist:
 
 ^DisabledOverlay:
 	WithColoredOverlay@IDISABLE:
