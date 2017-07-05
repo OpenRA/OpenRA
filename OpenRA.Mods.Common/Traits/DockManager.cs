@@ -158,7 +158,7 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			var dc = a.Trait<DockClient>();
-			dc.Release(dc.CurrentDock);
+			dc.Release();
 
 			a.CancelActivity();
 			var act = dc.Requester.ActivitiesOnDockFail(a);
@@ -187,7 +187,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (host == null || host.IsDead || host.Disposed)
 			{
-				dc.Release(dc.CurrentDock);
+				dc.Release();
 				CancelDock(client);
 				return;
 			}
@@ -196,7 +196,7 @@ namespace OpenRA.Mods.Common.Traits
 			// (happens often when only one dock which is shared)
 			if (dock.Info.WaitingPlace == false && dc.DockState == DockState.WaitAssigned && client.Location == dock.Location)
 			{
-				dc.Release(dc.CurrentDock);
+				dc.Release();
 				client.CancelActivity();
 				ProcessQueue(host, client);
 				return;
@@ -207,7 +207,7 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				// resource transfer activities are queued by OnDock.
 				client.QueueActivity(dc.Requester.DockActivities(host, client, dock));
-				client.QueueActivity(new CallFunc(() => ReleaseAndNext(client, dock)));
+				client.QueueActivity(new CallFunc(() => ReleaseAndSignalNext(client)));
 				client.QueueActivity(dc.Requester.ActivitiesAfterDockDone(host, client, dock));
 			}
 		}
@@ -259,16 +259,16 @@ namespace OpenRA.Mods.Common.Traits
 
 				var dc = a.Trait<DockClient>();
 				a.CancelActivity();
-				dc.Release(dc.CurrentDock);
-				ReserveDock(host, a, dc.Requester);
+				dc.Release();
+				queue.Add(a);
 			}
 
 			ProcessQueue(host, null);
 		}
 
-		public void ReleaseAndNext(Actor client, Dock dock)
+		public void ReleaseAndSignalNext(Actor client)
 		{
-			client.Trait<DockClient>().Release(dock);
+			client.Trait<DockClient>().Release();
 
 			if (host.IsDead || host.Disposed)
 				return;
@@ -290,9 +290,8 @@ namespace OpenRA.Mods.Common.Traits
 		void ServeHead(Actor host, Actor head, Dock serviceDock)
 		{
 			var dockClient = head.Trait<DockClient>();
-			var currentDock = dockClient.CurrentDock;
 
-            /*
+			/*
 			cd == null means the queue is not so busy that the head is a new comer.
             (for example, head == client case)
 			With thi in mind, 4 cases of null/not nullness of dock and cd:
@@ -306,7 +305,7 @@ namespace OpenRA.Mods.Common.Traits
 			We rule out dock == null case in outer loop, before calling this function though.
             */
 
-			dockClient.Release(currentDock);
+			dockClient.Release();
 			dockClient.Acquire(host, serviceDock, DockState.ServiceAssigned);
 
 			head.QueueActivity(dockClient.Requester.ApproachDockActivities(host, head, serviceDock));
@@ -356,7 +355,7 @@ namespace OpenRA.Mods.Common.Traits
 			// For last dock, current dock and occupier will be messed up but doesn't matter.
 			// The last one is shared anyway. The vacancy info is not very meaningful there.
 			if (dockClient.CurrentDock != null)
-				dockClient.Release(dockClient.CurrentDock);
+				dockClient.Release();
 			dockClient.Acquire(host, dock, DockState.WaitAssigned);
 
 			// Move to the waiting dock and wait for service dock to be released.

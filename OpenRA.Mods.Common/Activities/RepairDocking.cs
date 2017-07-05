@@ -28,7 +28,7 @@ namespace OpenRA.Mods.Common.Activities
 			repairable = self.Trait<Repairable>();
 
 			var dc = self.Trait<DockClient>();
-			dc.Release(dc.CurrentDock);
+			dc.Release();
 		}
 
 		public override Activity Tick(Actor self)

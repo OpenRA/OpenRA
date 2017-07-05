@@ -35,7 +35,7 @@ namespace OpenRA.Mods.Common.Activities
 			// Release first, before trying to dock.
 			var dc = self.TraitOrDefault<DockClient>();
 			if (dc != null)
-				dc.Release(dc.CurrentDock);
+				dc.Release();
 		}
 
 		IEnumerable<Actor> GetHelipads(Actor self)

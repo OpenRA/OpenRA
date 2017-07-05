@@ -40,14 +40,16 @@ namespace OpenRA.Mods.Common.Traits
 		// readonly DockClientInfo info;
 		readonly Actor self;
 		Actor host;
+		Dock currentDock;
 
-		public Dock CurrentDock;
 		public DockState DockState = DockState.NotAssigned;
 		public IDockActivity Requester; // The activity that requested dock.
 
 		int acquireTimeStamp = -1;
 
 		public Actor Host { get { return host; } }
+
+		public Dock CurrentDock { get { return currentDock; } }
 
 		public DockClient(ActorInitializer init, DockClientInfo info)
 		{
@@ -59,30 +61,28 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			// You are to acquire only when you don't have one.
 			// i.e., release first.
-			Release(CurrentDock);
+			Release();
 
-			System.Diagnostics.Debug.Assert(CurrentDock == null, "To acquire dock, release first.");
+			System.Diagnostics.Debug.Assert(currentDock == null, "To acquire dock, release first.");
 			dock.Reserver = self;
-			CurrentDock = dock;
+			currentDock = dock;
 			DockState = dockState;
 			this.host = host;
 
 			acquireTimeStamp = self.World.WorldTick;
 		}
 
-		public void Release(Dock dock)
+		// Release what we are currently holding
+		public void Release()
 		{
-			// You are to release only what you have.
-			if (dock != null && CurrentDock != null && CurrentDock != dock)
-				System.Diagnostics.Debug.Assert(dock == CurrentDock, "To release, you must have it first.");
+			if (currentDock != null)
+				currentDock.Reserver = null;
 
-			CurrentDock = null;
+			currentDock = null;
 			DockState = DockState.NotAssigned;
 			acquireTimeStamp = -1;
 			host = null;
-
-			if (dock != null)
-				dock.Reserver = null;
+			// do NOT reset Requester! Deadlock resoluiton needs it.
 		}
 
 		public bool WaitedLong(int threshold)
@@ -94,22 +94,22 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyKilled.Killed(Actor self, AttackInfo e)
 		{
-			Release(CurrentDock);
+			Release();
 		}
 
 		void INotifyBecomingIdle.OnBecomingIdle(Actor self)
 		{
-			Release(CurrentDock);
+			Release();
 		}
 
 		void INotifyActorDisposing.Disposing(Actor self)
 		{
-			Release(CurrentDock);
+			Release();
 		}
 
 		void INotifyOwnerChanged.OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
 		{
-			Release(CurrentDock);
+			Release();
 		}
 
 		void IResolveOrder.ResolveOrder(Actor self, Order order)
@@ -128,7 +128,7 @@ namespace OpenRA.Mods.Common.Traits
 					// this gets evaled and releases it! Not good.
 					break;
 				default:
-					Release(CurrentDock);
+					Release();
 					break;
 			}
 		}

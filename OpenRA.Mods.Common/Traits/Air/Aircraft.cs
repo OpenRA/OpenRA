@@ -626,7 +626,7 @@ namespace OpenRA.Mods.Common.Traits
 				System.Diagnostics.Debug.Assert(dockClient != null, "Only DockClient can dock now.");
 
 				// Let go first.
-				dockClient.Release(dockClient.CurrentDock);
+				dockClient.Release();
 
 				if (!IsPlane)
 				{

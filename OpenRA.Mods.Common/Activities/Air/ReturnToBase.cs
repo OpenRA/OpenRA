@@ -38,7 +38,7 @@ namespace OpenRA.Mods.Common.Activities
 			// Release first, before trying to dock.
 			var dc = self.TraitOrDefault<DockClient>();
 			if (dc != null)
-				dc.Release(dc.CurrentDock);
+				dc.Release();
 		}
 
 		public static IEnumerable<Actor> GetAirfields(Actor self)

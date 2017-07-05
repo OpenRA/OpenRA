@@ -86,7 +86,7 @@ namespace OpenRA.Mods.Common.Traits
 		public void ResolveOrder(Actor self, Order order)
 		{
 			var dc = self.Trait<DockClient>();
-			dc.Release(dc.CurrentDock);
+			dc.Release();
 
 			if (order.OrderString == "Repair")
 			{
