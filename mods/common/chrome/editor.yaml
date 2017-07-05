@@ -439,7 +439,7 @@ Container@EDITOR_WORLD_ROOT:
 			Font: Bold
 			Contrast: true
 		Label@CASH_LABEL:
-			X: 570
+			X: 600
 			Width: 50
 			Height: 25
 			Align: Left
