@@ -821,6 +821,14 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				// We now differentiate between "occupied and provides offset" and "occupied but provides no offset",
+				// so the old property name was no longer correct.
+				if (engineVersion < 20170705)
+				{
+					if (node.Key == "UseOccupiedCellsOffsets")
+						node.Key = "UseTargetableCellsOffsets";
+				}
+
 				UpgradeActorRules(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 

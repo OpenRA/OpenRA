@@ -3,7 +3,7 @@ FPWR:
 	Inherits@infiltrate: ^InfiltratableFake
 	Inherits@shape: ^2x2Shape
 	HitShape:
-		UseOccupiedCellsOffsets: false
+		UseTargetableCellsOffsets: false
 		TargetableOffsets: 0,0,0, 640,-384,0, 640,512,0, -710,-512,0, -710,512,0
 	Buildable:
 		BuildPaletteOrder: 870
@@ -150,7 +150,7 @@ DOMF:
 	Inherits@infiltrate: ^InfiltratableFake
 	Inherits@shape: ^2x2Shape
 	HitShape:
-		UseOccupiedCellsOffsets: false
+		UseTargetableCellsOffsets: false
 		TargetableOffsets: 0,0,0, 630,-384,0, 630,384,0, -700,-512,0, -700,512,0
 	Tooltip:
 		Name: Fake Radar Dome
