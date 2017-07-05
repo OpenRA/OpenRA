@@ -204,26 +204,34 @@ namespace OpenRA.Mods.Common.Traits
 				a();
 		}
 
+		protected virtual bool CanFire(Actor self, Target target)
+		{
+			if (IsReloading)
+				return false;
+
+			if (ammoPool != null && !ammoPool.HasAmmo())
+				return false;
+
+			if (turret != null && !turret.HasAchievedDesiredFacing)
+				return false;
+
+			if (!target.IsInRange(self.CenterPosition, MaxRange()))
+				return false;
+
+			if (Weapon.MinRange != WDist.Zero && target.IsInRange(self.CenterPosition, Weapon.MinRange))
+				return false;
+
+			if (!Weapon.IsValidAgainst(target, self.World, self))
+				return false;
+
+			return true;
+		}
+
 		// Note: facing is only used by the legacy positioning code
 		// The world coordinate model uses Actor.Orientation
 		public virtual Barrel CheckFire(Actor self, IFacing facing, Target target)
 		{
-			if (IsReloading)
-				return null;
-
-			if (ammoPool != null && !ammoPool.HasAmmo())
-				return null;
-
-			if (turret != null && !turret.HasAchievedDesiredFacing)
-				return null;
-
-			if (!target.IsInRange(self.CenterPosition, MaxRange()))
-				return null;
-
-			if (Weapon.MinRange != WDist.Zero && target.IsInRange(self.CenterPosition, Weapon.MinRange))
-				return null;
-
-			if (!Weapon.IsValidAgainst(target, self.World, self))
+			if (!CanFire(self, target))
 				return null;
 
 			if (ticksSinceLastShot >= Weapon.ReloadDelay)
