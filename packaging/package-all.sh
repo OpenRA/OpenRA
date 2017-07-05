@@ -2,35 +2,33 @@
 # OpenRA master packaging script
 
 if [ $# -ne "2" ]; then
-    echo "Usage: `basename $0` version outputdir"
+    echo "Usage: ${0##*/} version outputdir."
     exit 1
 fi
 
-# Set the working dir to the location of this script
-cd $(dirname $0)
+export GIT_TAG="$1"
+export BUILD_OUTPUT_DIR="$2"
 
-pushd windows >/dev/null
-echo "Building Windows package"
-./buildpackage.sh "$1" "$2"
-if [ $? -ne 0 ]; then
-    echo "Windows package build failed."
-fi
-popd >/dev/null
+# Set the working dir to the location of this script using bash parameter expansion
+cd "${0%/*}"
 
-pushd osx >/dev/null
-echo "Building macOS package"
-./buildpackage.sh "$1" "$2"
-if [ $? -ne 0 ]; then
-    echo "macOS package build failed."
-fi
-popd >/dev/null
+#build packages using a subshell so directory changes do not persist beyond the function
+function build_package() (
+    function on_build() {
+        echo "$1 package build failed." 1>&2
+    }
+    #trap function executes on any error in the following commands
+    trap "on_build $1" ERR
+    set -e
+    echo "Building $1 package(s)."
+    cd "$1"
+    ./buildpackage.sh "${GIT_TAG}" "${BUILD_OUTPUT_DIR}"
+)
 
-pushd linux >/dev/null
-echo "Building Linux packages"
-./buildpackage.sh "$1" "$2"
-if [ $? -ne 0 ]; then
-    echo "Linux package build failed."
-fi
-popd >/dev/null
+#exit on any non-zero exited (failed) command
+set -e
+build_package windows
+build_package osx
+build_package linux
 
 echo "Package build done."
