@@ -99,8 +99,27 @@ WorldLoaded = function()
 	GatherSpice = player.AddPrimaryObjective("Harvest " .. tostring(SpiceToHarvest) .. " Solaris worth of Spice.")
 	KillHarkonnen = player.AddSecondaryObjective("Eliminate all Harkonnen units and reinforcements\nin the area.")
 
+	local checkResourceCapacity = function()
+		Trigger.AfterDelay(0, function()
+			if player.ResourceCapacity < SpiceToHarvest then
+				Media.DisplayMessage("We don't have enough silo space to store the required amount of Spice!", "Mentat")
+				Trigger.AfterDelay(DateTime.Seconds(3), function()
+					harkonnen.MarkCompletedObjective(KillAtreides)
+				end)
+
+				return true
+			end
+		end)
+	end
+
 	Trigger.OnRemovedFromWorld(OrdosConyard, function()
-		local refs = Utils.Where(Map.ActorsInWorld, function(actor) return actor.Type == "refinery" end)
+
+		-- Mission already failed, no need to check the other conditions as well
+		if checkResourceCapacity() then
+			return
+		end
+
+		local refs = Utils.Where(Map.ActorsInWorld, function(actor) return actor.Type == "refinery" and actor.Owner == player end)
 
 		if #refs == 0 then
 			harkonnen.MarkCompletedObjective(KillOrdos)
@@ -108,6 +127,10 @@ WorldLoaded = function()
 			Trigger.OnAllRemovedFromWorld(refs, function()
 				harkonnen.MarkCompletedObjective(KillOrdos)
 			end)
+
+			local silos = Utils.Where(Map.ActorsInWorld, function(actor) return actor.Type == "silo" and actor.Owner == player end)
+			Utils.Do(refs, function(actor) Trigger.OnRemovedFromWorld(actor, checkResourceCapacity) end)
+			Utils.Do(silos, function(actor) Trigger.OnRemovedFromWorld(actor, checkResourceCapacity) end)
 		end
 	end)
 
