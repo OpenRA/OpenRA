@@ -304,6 +304,8 @@ BARL:
 	-ShakeOnDeath:
 	-SoundOnDamageTransition:
 	-Demolishable:
+	EditorTilesetFilter:
+		Categories: Decoration
 
 BRL3:
 	Inherits: ^TechBuilding
@@ -326,6 +328,8 @@ BRL3:
 	-ShakeOnDeath:
 	-SoundOnDamageTransition:
 	-Demolishable:
+	EditorTilesetFilter:
+		Categories: Decoration
 
 AMMOBOX1:
 	Inherits: ^AmmoBox

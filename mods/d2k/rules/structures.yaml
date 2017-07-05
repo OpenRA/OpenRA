@@ -722,7 +722,7 @@ wall:
 			TopLeft: -512, -512
 			BottomRight: 512, 512
 	EditorTilesetFilter:
-		Categories: Wall
+		Categories: Defense
 
 medium_gun_turret:
 	Inherits: ^Defense

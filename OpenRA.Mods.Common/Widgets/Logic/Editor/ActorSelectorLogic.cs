@@ -137,6 +137,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		void InitializeActorPreviews()
 		{
 			panel.RemoveChildren();
+			if (!selectedCategories.Any())
+				return;
 
 			var actors = mapRules.Actors.Where(a => !a.Value.Name.Contains('^'))
 				.Select(a => a.Value);

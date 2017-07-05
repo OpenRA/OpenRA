@@ -271,6 +271,8 @@
 		Pieces: 1, 3
 	ThrowsShrapnel@LARGE:
 		Pieces: 1, 1
+	EditorTilesetFilter:
+		Categories: Billboard
 
 ^Crate:
 	HiddenUnderFog:
@@ -824,7 +826,7 @@
 	Tooltip:
 		Name: Rock
 	EditorTilesetFilter:
-		Categories: Rock
+		Categories: Decoration
 
 ^Decoration:
 	Inherits@1: ^SpriteActor
@@ -997,7 +999,7 @@
 			BottomRight: 512, 512
 			VerticalTopOffset: 768
 	EditorTilesetFilter:
-		Categories: Gate
+		Categories: Wall
 
 ^Gate_A:
 	Inherits: ^Gate
