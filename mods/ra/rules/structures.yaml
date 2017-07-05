@@ -543,7 +543,7 @@ DOME:
 	Inherits@IDISABLE: ^DisabledOverlay
 	Inherits@shape: ^2x2Shape
 	HitShape:
-		UseOccupiedCellsOffsets: false
+		UseTargetableCellsOffsets: false
 		TargetableOffsets: 0,0,0, 630,-384,0, 630,384,0, -700,-512,0, -700,512,0
 	Buildable:
 		Queue: Building
@@ -1163,7 +1163,7 @@ HPAD:
 	Inherits: ^Building
 	Inherits@shape: ^2x2Shape
 	HitShape:
-		UseOccupiedCellsOffsets: false
+		UseTargetableCellsOffsets: false
 		TargetableOffsets: 0,0,0, 768,-512,0, 768,512,0, -281,-512,0, -630,512,0
 	Buildable:
 		Queue: Building
@@ -1250,7 +1250,7 @@ AFLD:
 	Inherits: ^Building
 	Inherits@shape: ^3x2Shape
 	HitShape:
-		UseOccupiedCellsOffsets: false
+		UseTargetableCellsOffsets: false
 		TargetableOffsets: 0,0,0, 420,0,0, 420,-1024,0, 420,1024,0, -777,0,0, -777,-1024,0, -777,1024,0
 	Buildable:
 		Queue: Building
@@ -1385,7 +1385,7 @@ POWR:
 	Inherits@POWER_OUTAGE: ^DisabledByPowerOutage
 	Inherits@shape: ^2x2Shape
 	HitShape:
-		UseOccupiedCellsOffsets: false
+		UseTargetableCellsOffsets: false
 		TargetableOffsets: 0,0,0, 640,-384,0, 640,512,0, -710,-512,0, -710,512,0
 	Buildable:
 		Queue: Building
@@ -1495,7 +1495,7 @@ BARR:
 	Inherits: ^Building
 	Inherits@shape: ^2x2Shape
 	HitShape:
-		UseOccupiedCellsOffsets: false
+		UseTargetableCellsOffsets: false
 		TargetableOffsets: 0,0,0, 490,-470,0, 355,512,0, -355,-512,0, -630,512,0
 	Buildable:
 		Queue: Building
@@ -1623,7 +1623,7 @@ TENT:
 	Inherits: ^Building
 	Inherits@shape: ^2x2Shape
 	HitShape:
-		UseOccupiedCellsOffsets: false
+		UseTargetableCellsOffsets: false
 		TargetableOffsets: 0,0,0, 630,-512,0, 355,512,0, -281,-512,0, -630,512,0
 	Buildable:
 		Queue: Building
@@ -1841,7 +1841,7 @@ BRIK:
 VGATE:
 	Inherits: ^Gate
 	HitShape:
-		UseOccupiedCellsOffsets: true
+		UseTargetableCellsOffsets: true
 		Type: Rectangle
 			TopLeft: -512, -1536
 			BottomRight: 512, 1536
@@ -1858,7 +1858,7 @@ VGATE:
 HGATE:
 	Inherits: ^Gate
 	HitShape:
-		UseOccupiedCellsOffsets: true
+		UseTargetableCellsOffsets: true
 		Type: Rectangle
 			TopLeft: -1536, -512
 			BottomRight: 1536, 512

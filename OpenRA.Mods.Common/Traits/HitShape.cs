@@ -23,7 +23,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly WVec[] TargetableOffsets = { WVec.Zero };
 
 		[Desc("Create a targetable position at the center of each occupied cell. Stacks with TargetableOffsets.")]
-		public readonly bool UseOccupiedCellsOffsets = false;
+		public readonly bool UseTargetableCellsOffsets = false;
 
 		[FieldLoader.LoadUsing("LoadShape")]
 		public readonly IHitShape Type;
@@ -78,7 +78,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (IsTraitDisabled)
 				yield break;
 
-			if (Info.UseOccupiedCellsOffsets && targetableCells != null)
+			if (Info.UseTargetableCellsOffsets && targetableCells != null)
 				foreach (var c in targetableCells.TargetableCells())
 					yield return self.World.Map.CenterOfCell(c.First);
 

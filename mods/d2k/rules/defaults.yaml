@@ -369,7 +369,7 @@
 	Targetable:
 		TargetTypes: Ground, C4, Structure
 	HitShape:
-		UseOccupiedCellsOffsets: true
+		UseTargetableCellsOffsets: true
 		Type: Rectangle
 			TopLeft: -512, -512
 			BottomRight: 512, 512
