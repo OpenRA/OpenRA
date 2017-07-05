@@ -235,6 +235,34 @@ namespace OpenRA.Mods.Common.Traits
 			ticksSinceLastShot = 0;
 
 			var barrel = Barrels[Burst % Barrels.Length];
+
+			FireBarrel(self, facing, target, barrel);
+
+			if (--Burst > 0)
+				FireDelay = Weapon.BurstDelay;
+			else
+			{
+				var modifiers = reloadModifiers.ToArray();
+				FireDelay = Util.ApplyPercentageModifiers(Weapon.ReloadDelay, modifiers);
+				Burst = Weapon.Burst;
+
+				if (Weapon.AfterFireSound != null && Weapon.AfterFireSound.Any())
+				{
+					ScheduleDelayedAction(Weapon.AfterFireSoundDelay, () =>
+					{
+						Game.Sound.Play(SoundType.World, Weapon.AfterFireSound.Random(self.World.SharedRandom), self.CenterPosition);
+					});
+				}
+
+				foreach (var nbc in notifyBurstComplete)
+					nbc.FiredBurst(self, target, this);
+			}
+
+			return barrel;
+		}
+
+		protected virtual void FireBarrel(Actor self, IFacing facing, Target target, Barrel barrel)
+		{
 			Func<WPos> muzzlePosition = () => self.CenterPosition + MuzzleOffset(self, barrel);
 			var legacyFacing = MuzzleOrientation(self, barrel).Yaw.Angle / 4;
 
@@ -296,28 +324,6 @@ namespace OpenRA.Mods.Common.Traits
 					Recoil = Info.Recoil;
 				}
 			});
-
-			if (--Burst > 0)
-				FireDelay = Weapon.BurstDelay;
-			else
-			{
-				var modifiers = reloadModifiers.ToArray();
-				FireDelay = Util.ApplyPercentageModifiers(Weapon.ReloadDelay, modifiers);
-				Burst = Weapon.Burst;
-
-				if (args.Weapon.AfterFireSound != null && args.Weapon.AfterFireSound.Any())
-				{
-					ScheduleDelayedAction(Weapon.AfterFireSoundDelay, () =>
-					{
-						Game.Sound.Play(SoundType.World, Weapon.AfterFireSound.Random(self.World.SharedRandom), self.CenterPosition);
-					});
-				}
-
-				foreach (var nbc in notifyBurstComplete)
-					nbc.FiredBurst(self, target, this);
-			}
-
-			return barrel;
 		}
 
 		public virtual bool OutOfAmmo { get { return ammoPool != null && !ammoPool.Info.SelfReloads && !ammoPool.HasAmmo(); } }
