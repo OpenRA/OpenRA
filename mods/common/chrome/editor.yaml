@@ -230,17 +230,36 @@ Container@EDITOR_WORLD_ROOT:
 					Width: 240
 					Height: WINDOW_BOTTOM - 382
 					Children:
-						DropDownButton@TILE_CATEGORY:
-							X: 10
+						Label@SEARCH_LABEL:
 							Y: 10
-							Width: 220
+							Width: 55
+							Height: 25
+							Text: Search:
+							Align: Right
+							Font: TinyBold
+						TextField@SEARCH_TEXTFIELD:
+							X: 60
+							Y: 10
+							Width: PARENT_RIGHT - 70
+							Height: 25
+						Label@CATEGORIES_LABEL:
+							Y: 34
+							Width: 55
+							Height: 25
+							Text: Filter:
+							Align: Right
+							Font: TinyBold
+						DropDownButton@CATEGORIES_DROPDOWN:
+							X: 60
+							Y: 34
+							Width: PARENT_RIGHT - 70
 							Height: 25
 							Font: Bold
 						ScrollPanel@TILETEMPLATE_LIST:
 							X: 10
-							Y: 35
+							Y: 58
 							Width: PARENT_RIGHT - 20
-							Height: PARENT_BOTTOM - 45
+							Height: PARENT_BOTTOM - 68
 							TopBottomSpacing: 4
 							ItemSpacing: 4
 							Children:
