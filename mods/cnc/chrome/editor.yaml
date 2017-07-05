@@ -316,18 +316,49 @@ Container@EDITOR_WORLD_ROOT:
 					Width: PARENT_RIGHT
 					Height: PARENT_BOTTOM
 					Children:
-						DropDownButton@OWNERS_DROPDOWN:
-							Width: PARENT_RIGHT
+						Background:
+							Width: 61
+							Height: 75
+							Background: panel-black
+							Children:
+								Label@SEARCH_LABEL:
+									Width: PARENT_RIGHT - 5
+									Height: 25
+									Text: Search:
+									Align: Right
+									Font: TinyBold
+								Label@CATEGORIES_LABEL:
+									Y: 24
+									Width: PARENT_RIGHT - 5
+									Height: 25
+									Text: Filter:
+									Align: Right
+									Font: TinyBold
+								Label@OWNERS_LABEL:
+									Y: 48
+									Width: PARENT_RIGHT - 5
+									Height: 25
+									Text: Owner:
+									Align: Right
+									Font: TinyBold
+						TextField@SEARCH_TEXTFIELD:
+							X: 60
+							Width: PARENT_RIGHT - 60
+							Height: 25
+						DropDownButton@CATEGORIES_DROPDOWN:
+							X: 60
+							Y: 24
+							Width: PARENT_RIGHT - 60
 							Height: 25
 							Font: Bold
-						DropDownButton@ACTOR_CATEGORY:
-							Y: 25
-							Width: PARENT_RIGHT
+						DropDownButton@OWNERS_DROPDOWN:
+							X: 60
+							Y: 48
+							Width: PARENT_RIGHT - 60
 							Height: 25
-							Text: Categories
 							Font: Bold
 						ScrollPanel@ACTORTEMPLATE_LIST:
-							Y: 50
+							Y: 72
 							Width: PARENT_RIGHT
 							Height: PARENT_BOTTOM - 50
 							TopBottomSpacing: 4
@@ -417,7 +448,7 @@ Container@EDITOR_WORLD_ROOT:
 			Contrast: true
 
 ScrollPanel@ACTOR_CATEGORY_FILTER_PANEL:
-	Width: 250
+	Width: 190
 	Children:
 		Container@SELECT_CATEGORIES_BUTTONS:
 			Width: PARENT_RIGHT
@@ -426,15 +457,15 @@ ScrollPanel@ACTOR_CATEGORY_FILTER_PANEL:
 				Button@SELECT_ALL:
 					X: 10
 					Y: 2
-					Width: 100
+					Width: 60
 					Height: 25
-					Text: Select all
+					Text: All
 				Button@SELECT_NONE:
-					X: 120
+					X: PARENT_RIGHT - WIDTH - 34
 					Y: 2
-					Width: 100
+					Width: 60
 					Height: 25
-					Text: Select none
+					Text: None
 		Checkbox@CATEGORY_TEMPLATE:
 			X: 5
 			Y: 5

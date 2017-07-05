@@ -289,24 +289,49 @@ Container@EDITOR_WORLD_ROOT:
 					Width: 240
 					Height: WINDOW_BOTTOM - 382
 					Children:
-						DropDownButton@OWNERS_DROPDOWN:
-							X: 10
+						Label@SEARCH_LABEL:
 							Y: 10
-							Width: 220
+							Width: 55
+							Height: 25
+							Text: Search:
+							Align: Right
+							Font: TinyBold
+						TextField@SEARCH_TEXTFIELD:
+							X: 60
+							Y: 10
+							Width: PARENT_RIGHT - 70
+							Height: 25
+						Label@CATEGORIES_LABEL:
+							Y: 34
+							Width: 55
+							Height: 25
+							Text: Filter:
+							Align: Right
+							Font: TinyBold
+						DropDownButton@CATEGORIES_DROPDOWN:
+							X: 60
+							Y: 34
+							Width: PARENT_RIGHT - 70
 							Height: 25
 							Font: Bold
-						DropDownButton@ACTOR_CATEGORY:
-							X: 10
-							Y: 35
-							Width: 220
+						Label@OWNERS_LABEL:
+							Y: 58
+							Width: 55
 							Height: 25
-							Text: Categories
+							Text: Owner:
+							Align: Right
+							Font: TinyBold
+						DropDownButton@OWNERS_DROPDOWN:
+							X: 60
+							Y: 58
+							Width: PARENT_RIGHT - 70
+							Height: 25
 							Font: Bold
 						ScrollPanel@ACTORTEMPLATE_LIST:
 							X: 10
-							Y: 60
-							Width: 220
-							Height: PARENT_BOTTOM - 70
+							Y: 82
+							Width: PARENT_RIGHT - 20
+							Height: PARENT_BOTTOM - 92
 							TopBottomSpacing: 4
 							ItemSpacing: 4
 							Children:
@@ -403,25 +428,25 @@ Container@EDITOR_WORLD_ROOT:
 			Contrast: true
 
 ScrollPanel@ACTOR_CATEGORY_FILTER_PANEL:
-	Width: 220
+	Width: 170
 	Children:
 		Container@SELECT_CATEGORIES_BUTTONS:
-			Width: 220
+			Width: PARENT_RIGHT
 			Height: 29
 			Children:
 				Button@SELECT_ALL:
-					X: 5
+					X: 10
 					Y: 2
-					Width: 90
+					Width: 60
 					Height: 25
-					Text: Select all
+					Text: All
 					Font: Bold
 				Button@SELECT_NONE:
-					X: 100
+					X: PARENT_RIGHT - WIDTH - 34
 					Y: 2
-					Width: 90
+					Width: 60
 					Height: 25
-					Text: Select none
+					Text: None
 					Font: Bold
 		Checkbox@CATEGORY_TEMPLATE:
 			X: 5
