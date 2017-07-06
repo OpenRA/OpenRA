@@ -336,7 +336,12 @@ namespace OpenRA.Mods.Common.Traits
 		public virtual bool AllowExplode { get { return !IsReloading; } }
 		bool IExplodeModifier.ShouldExplode(Actor self) { return AllowExplode; }
 
-		public virtual WVec MuzzleOffset(Actor self, Barrel b)
+		public WVec MuzzleOffset(Actor self, Barrel b)
+		{
+			return CalculateMuzzleOffset(self, b);
+		}
+
+		protected virtual WVec CalculateMuzzleOffset(Actor self, Barrel b)
 		{
 			var bodyOrientation = coords.QuantizeOrientation(self, self.Orientation);
 			var localOffset = b.Offset + new WVec(-Recoil, WDist.Zero, WDist.Zero);
@@ -353,7 +358,12 @@ namespace OpenRA.Mods.Common.Traits
 			return coords.LocalToWorld(localOffset.Rotate(bodyOrientation));
 		}
 
-		public virtual WRot MuzzleOrientation(Actor self, Barrel b)
+		public WRot MuzzleOrientation(Actor self, Barrel b)
+		{
+			return CalculateMuzzleOrientation(self, b);
+		}
+
+		protected virtual WRot CalculateMuzzleOrientation(Actor self, Barrel b)
 		{
 			var orientation = turret != null ? turret.WorldOrientation(self) :
 				coords.QuantizeOrientation(self, self.Orientation);
