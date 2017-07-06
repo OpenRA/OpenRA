@@ -81,6 +81,15 @@ namespace OpenRA.Mods.Common.Projectiles
 
 		[PaletteReference] public readonly string HitAnimPalette = "effect";
 
+		[Desc("Image containing launch effect sequence.")]
+		public readonly string LaunchEffectImage = null;
+
+		[Desc("Launch effect sequence to play.")]
+		[SequenceReference("LaunchEffectImage")] public readonly string LaunchEffectSequence = null;
+
+		[Desc("Palette to use for launch effect.")]
+		[PaletteReference] public readonly string LaunchEffectPalette = "effect";
+
 		public IProjectile Create(ProjectileArgs args)
 		{
 			var c = UsePlayerColor ? args.SourceActor.Owner.Color.RGB : Color;
@@ -98,6 +107,7 @@ namespace OpenRA.Mods.Common.Projectiles
 		int ticks = 0;
 		int interval;
 		bool showHitAnim;
+		bool hasLaunchEffect;
 		[Sync] WPos target;
 		[Sync] WPos source;
 
@@ -122,11 +132,17 @@ namespace OpenRA.Mods.Common.Projectiles
 				hitanim = new Animation(args.SourceActor.World, info.HitAnim);
 				showHitAnim = true;
 			}
+
+			hasLaunchEffect = !string.IsNullOrEmpty(info.LaunchEffectImage) && !string.IsNullOrEmpty(info.LaunchEffectSequence);
 		}
 
 		public void Tick(World world)
 		{
 			source = args.CurrentSource();
+
+			if (hasLaunchEffect && ticks == 0)
+				world.AddFrameEndTask(w => w.Add(new LaunchEffect(world, args.CurrentSource, () => 0,
+					info.LaunchEffectImage, info.LaunchEffectSequence, info.LaunchEffectPalette)));
 
 			// Beam tracks target
 			if (info.TrackTarget && args.GuidedTarget.IsValidFor(args.SourceActor))
