@@ -33,7 +33,14 @@ namespace OpenRA.Mods.Common.Projectiles
 		[Desc("Equivalent to sequence ZOffset. Controls Z sorting.")]
 		public readonly int ZOffset = 0;
 
+		[Desc("The maximum duration (in ticks) of the beam's existence.")]
 		public readonly int Duration = 10;
+
+		[Desc("Total time-frame in ticks that the beam deals damage every DamageInterval.")]
+		public readonly int DamageDuration = 1;
+
+		[Desc("The number of ticks between the beam causing warhead impacts in its area of effect.")]
+		public readonly int DamageInterval = 1;
 
 		public readonly bool UsePlayerColor = false;
 
@@ -89,8 +96,8 @@ namespace OpenRA.Mods.Common.Projectiles
 		readonly Color color;
 		readonly Color secondaryColor;
 		int ticks = 0;
-		bool doneDamage;
-		bool animationComplete;
+		int interval;
+		bool showHitAnim;
 		[Sync] WPos target;
 		[Sync] WPos source;
 
@@ -111,7 +118,10 @@ namespace OpenRA.Mods.Common.Projectiles
 			}
 
 			if (!string.IsNullOrEmpty(info.HitAnim))
+			{
 				hitanim = new Animation(args.SourceActor.World, info.HitAnim);
+				showHitAnim = true;
+			}
 		}
 
 		public void Tick(World world)
@@ -128,21 +138,21 @@ namespace OpenRA.Mods.Common.Projectiles
 				target = blockedPos;
 			}
 
-			if (!doneDamage)
+			if (ticks < info.DamageDuration && --interval <= 0)
 			{
-				if (hitanim != null)
-					hitanim.PlayThen(info.HitAnimSequence, () => animationComplete = true);
-				else
-					animationComplete = true;
-
 				args.Weapon.Impact(Target.FromPos(target), args.SourceActor, args.DamageModifiers);
-				doneDamage = true;
+				interval = info.DamageInterval;
 			}
 
-			if (hitanim != null)
-				hitanim.Tick();
+			if (showHitAnim)
+			{
+				if (ticks == 0)
+					hitanim.PlayThen(info.HitAnimSequence, () => showHitAnim = false);
 
-			if (++ticks >= info.Duration && animationComplete)
+				hitanim.Tick();
+			}
+
+			if (++ticks >= info.Duration && !showHitAnim)
 				world.AddFrameEndTask(w => w.Remove(this));
 		}
 
@@ -165,7 +175,7 @@ namespace OpenRA.Mods.Common.Projectiles
 				}
 			}
 
-			if (hitanim != null)
+			if (showHitAnim)
 				foreach (var r in hitanim.Render(target, wr.Palette(info.HitAnimPalette)))
 					yield return r;
 		}
