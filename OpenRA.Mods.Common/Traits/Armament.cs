@@ -238,25 +238,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			FireBarrel(self, facing, target, barrel);
 
-			if (--Burst > 0)
-				FireDelay = Weapon.BurstDelay;
-			else
-			{
-				var modifiers = reloadModifiers.ToArray();
-				FireDelay = Util.ApplyPercentageModifiers(Weapon.ReloadDelay, modifiers);
-				Burst = Weapon.Burst;
-
-				if (Weapon.AfterFireSound != null && Weapon.AfterFireSound.Any())
-				{
-					ScheduleDelayedAction(Weapon.AfterFireSoundDelay, () =>
-					{
-						Game.Sound.Play(SoundType.World, Weapon.AfterFireSound.Random(self.World.SharedRandom), self.CenterPosition);
-					});
-				}
-
-				foreach (var nbc in notifyBurstComplete)
-					nbc.FiredBurst(self, target, this);
-			}
+			UpdateBurst(self, target);
 
 			return barrel;
 		}
@@ -324,6 +306,29 @@ namespace OpenRA.Mods.Common.Traits
 					Recoil = Info.Recoil;
 				}
 			});
+		}
+
+		protected virtual void UpdateBurst(Actor self, Target target)
+		{
+			if (--Burst > 0)
+				FireDelay = Weapon.BurstDelay;
+			else
+			{
+				var modifiers = reloadModifiers.ToArray();
+				FireDelay = Util.ApplyPercentageModifiers(Weapon.ReloadDelay, modifiers);
+				Burst = Weapon.Burst;
+
+				if (Weapon.AfterFireSound != null && Weapon.AfterFireSound.Any())
+				{
+					ScheduleDelayedAction(Weapon.AfterFireSoundDelay, () =>
+					{
+						Game.Sound.Play(SoundType.World, Weapon.AfterFireSound.Random(self.World.SharedRandom), self.CenterPosition);
+					});
+				}
+
+				foreach (var nbc in notifyBurstComplete)
+					nbc.FiredBurst(self, target, this);
+			}
 		}
 
 		public virtual bool OutOfAmmo { get { return ammoPool != null && !ammoPool.Info.SelfReloads && !ammoPool.HasAmmo(); } }
