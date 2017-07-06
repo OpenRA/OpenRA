@@ -297,13 +297,13 @@ namespace OpenRA.Mods.Common.Widgets
 
 			var scrollType = MouseScrollType.Disabled;
 
-			if (mi.Button == MouseButton.Middle || mi.Button == (MouseButton.Left | MouseButton.Right))
+			if (mi.Button.HasFlag(MouseButton.Middle) || mi.Button.HasFlag(MouseButton.Left | MouseButton.Right))
 				scrollType = Game.Settings.Game.MiddleMouseScroll;
-			else if (mi.Button == MouseButton.Right)
+			else if (mi.Button.HasFlag(MouseButton.Right))
 				scrollType = Game.Settings.Game.RightMouseScroll;
 
 			if (scrollType == MouseScrollType.Disabled)
-				return false;
+				return IsJoystickScrolling || isStandardScrolling;
 
 			if (scrollType == MouseScrollType.Standard || scrollType == MouseScrollType.Inverted)
 			{
@@ -358,7 +358,7 @@ namespace OpenRA.Mods.Common.Widgets
 				}
 			}
 
-			return false;
+			return IsJoystickScrolling || isStandardScrolling;
 		}
 
 		public override bool YieldMouseFocus(MouseInput mi)
