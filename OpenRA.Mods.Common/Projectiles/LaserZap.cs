@@ -126,6 +126,8 @@ namespace OpenRA.Mods.Common.Projectiles
 
 		public void Tick(World world)
 		{
+			source = args.CurrentSource();
+
 			// Beam tracks target
 			if (info.TrackTarget && args.GuidedTarget.IsValidFor(args.SourceActor))
 				target = args.Weapon.TargetActorCenter ? args.GuidedTarget.CenterPosition : args.GuidedTarget.Positions.PositionClosestTo(source);
@@ -159,18 +161,18 @@ namespace OpenRA.Mods.Common.Projectiles
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)
 		{
 			if (wr.World.FogObscures(target) &&
-				wr.World.FogObscures(args.Source))
+				wr.World.FogObscures(source))
 				yield break;
 
 			if (ticks < info.Duration)
 			{
 				var rc = Color.FromArgb((info.Duration - ticks) * color.A / info.Duration, color);
-				yield return new BeamRenderable(args.Source, info.ZOffset, target - args.Source, info.Shape, info.Width, rc);
+				yield return new BeamRenderable(source, info.ZOffset, target - source, info.Shape, info.Width, rc);
 
 				if (info.SecondaryBeam)
 				{
 					var src = Color.FromArgb((info.Duration - ticks) * secondaryColor.A / info.Duration, secondaryColor);
-					yield return new BeamRenderable(args.Source, info.SecondaryBeamZOffset, target - args.Source,
+					yield return new BeamRenderable(source, info.SecondaryBeamZOffset, target - source,
 						info.SecondaryBeamShape, info.SecondaryBeamWidth, src);
 				}
 			}
