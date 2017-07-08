@@ -23,6 +23,10 @@
 # to install Linux startup scripts, desktop files and icons:
 #   make install-linux-shortcuts [DEBUG=false]
 #
+# to install the engine and common mod files (omitting the default mods):
+#   make install-engine
+#   make install-common-mod-files
+#
 # to uninstall, run:
 #   make uninstall
 #
@@ -335,21 +339,11 @@ install: default install-core
 
 install-linux-shortcuts: install-linux-scripts install-linux-icons install-linux-desktop
 
-install-core:
-	@-echo "Installing OpenRA to $(DATA_INSTALL_DIR)"
+install-engine:
+	@-echo "Installing OpenRA engine to $(DATA_INSTALL_DIR)"
 	@$(INSTALL_DIR) "$(DATA_INSTALL_DIR)"
 	@$(INSTALL_PROGRAM) $(foreach prog,$(CORE),$($(prog)_TARGET)) "$(DATA_INSTALL_DIR)"
-	@$(INSTALL_DIR) "$(DATA_INSTALL_DIR)/mods"
-	@$(CP_R) mods/common "$(DATA_INSTALL_DIR)/mods/"
-	@$(INSTALL_PROGRAM) $(mod_common_TARGET) "$(DATA_INSTALL_DIR)/mods/common"
-	@$(INSTALL_PROGRAM) $(mod_cnc_TARGET) "$(DATA_INSTALL_DIR)/mods/common"
-	@$(CP_R) mods/cnc "$(DATA_INSTALL_DIR)/mods/"
-	@$(CP_R) mods/ra "$(DATA_INSTALL_DIR)/mods/"
-	@$(CP_R) mods/d2k "$(DATA_INSTALL_DIR)/mods/"
-	@$(INSTALL_PROGRAM) $(mod_d2k_TARGET) "$(DATA_INSTALL_DIR)/mods/d2k"
-	@$(CP_R) mods/modcontent "$(DATA_INSTALL_DIR)/mods/"
 
-	@$(INSTALL_DATA) "global mix database.dat" "$(DATA_INSTALL_DIR)/global mix database.dat"
 	@$(INSTALL_DATA) "GeoLite2-Country.mmdb.gz" "$(DATA_INSTALL_DIR)/GeoLite2-Country.mmdb.gz"
 	@$(INSTALL_DATA) VERSION "$(DATA_INSTALL_DIR)/VERSION"
 	@$(INSTALL_DATA) AUTHORS "$(DATA_INSTALL_DIR)/AUTHORS"
@@ -368,6 +362,25 @@ install-core:
 	@$(INSTALL_PROGRAM) MaxMind.Db.dll "$(DATA_INSTALL_DIR)"
 	@$(INSTALL_PROGRAM) SmarIrc4net.dll "$(DATA_INSTALL_DIR)"
 	@$(INSTALL_PROGRAM) rix0rrr.BeaconLib.dll "$(DATA_INSTALL_DIR)"
+
+install-common-mod-files:
+	@-echo "Installing OpenRA common mod files to $(DATA_INSTALL_DIR)"
+	@$(INSTALL_DIR) "$(DATA_INSTALL_DIR)/mods"
+	@$(CP_R) mods/common "$(DATA_INSTALL_DIR)/mods/"
+	@$(INSTALL_PROGRAM) $(mod_common_TARGET) "$(DATA_INSTALL_DIR)/mods/common"
+	@$(INSTALL_PROGRAM) $(mod_cnc_TARGET) "$(DATA_INSTALL_DIR)/mods/common"
+	@$(INSTALL_DATA) "global mix database.dat" "$(DATA_INSTALL_DIR)/global mix database.dat"
+
+install-default-mods:
+	@-echo "Installing OpenRA default mods to $(DATA_INSTALL_DIR)"
+	@$(INSTALL_DIR) "$(DATA_INSTALL_DIR)/mods"
+	@$(CP_R) mods/cnc "$(DATA_INSTALL_DIR)/mods/"
+	@$(CP_R) mods/ra "$(DATA_INSTALL_DIR)/mods/"
+	@$(CP_R) mods/d2k "$(DATA_INSTALL_DIR)/mods/"
+	@$(INSTALL_PROGRAM) $(mod_d2k_TARGET) "$(DATA_INSTALL_DIR)/mods/d2k"
+	@$(CP_R) mods/modcontent "$(DATA_INSTALL_DIR)/mods/"
+
+install-core: install-engine install-common-mod-files install-default-mods
 	@$(CP) *.sh "$(DATA_INSTALL_DIR)"
 
 install-linux-icons:
