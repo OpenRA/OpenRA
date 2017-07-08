@@ -102,7 +102,8 @@ namespace OpenRA.Mods.Common.Activities
 
 			var pos = self.CenterPosition;
 			var mobile = move as Mobile;
-			if (!Target.IsInRange(pos, maxRange) || Target.IsInRange(pos, minRange)
+			if (!Target.IsInRange(pos, maxRange)
+				|| (minRange.Length != 0 && Target.IsInRange(pos, minRange))
 				|| (mobile != null && !mobile.CanInteractWithGroundLayer(self)))
 			{
 				// Try to move within range, drop the target otherwise
