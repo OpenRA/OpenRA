@@ -43,6 +43,7 @@ namespace OpenRA.Mods.Common.AI
 		public class UnitCategories
 		{
 			public readonly HashSet<string> Mcv = new HashSet<string>();
+			public readonly HashSet<string> NavalUnits = new HashSet<string>();
 			public readonly HashSet<string> ExcludeFromSquads = new HashSet<string>();
 		}
 
@@ -836,6 +837,14 @@ namespace OpenRA.Mods.Common.AI
 						air = RegisterNewSquad(SquadType.Air);
 
 					air.Units.Add(a);
+				}
+				else if (Info.UnitsCommonNames.NavalUnits.Contains(a.Info.Name))
+				{
+					var ships = GetSquadOfType(SquadType.Naval);
+					if (ships == null)
+						ships = RegisterNewSquad(SquadType.Naval);
+
+					ships.Units.Add(a);
 				}
 
 				activeUnits.Add(a);
