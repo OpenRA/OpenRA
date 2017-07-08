@@ -47,6 +47,14 @@ namespace OpenRA.Mods.Common.Activities
 			var maxCells = (maxRange.Length + 1023) / 1024;
 			var minCells = minRange.Length / 1024;
 
+			if (minCells != 0 && Target.IsInRange(self.CenterPosition, minRange))
+			{
+				// Avoid cells on the far side of the enemy by requiring a negative dot product.
+				return map.FindTilesInAnnulus(targetPosition, minCells, maxCells)
+					.Where(c => AtCorrectRange(map.CenterOfSubCell(c, Mobile.FromSubCell))
+						&& CVec.Dot(c - self.Location, targetPosition - self.Location) < 0);
+			}
+
 			return map.FindTilesInAnnulus(targetPosition, minCells, maxCells)
 				.Where(c => AtCorrectRange(map.CenterOfSubCell(c, Mobile.FromSubCell)));
 		}
