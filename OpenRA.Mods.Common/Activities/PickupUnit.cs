@@ -87,7 +87,7 @@ namespace OpenRA.Mods.Common.Activities
 					// Line up with the attachment point
 					var localOffset = carryall.OffsetForCarryable(self, cargo).Rotate(carryableBody.QuantizeOrientation(self, cargo.Orientation));
 					var targetPosition = cargo.CenterPosition - carryableBody.LocalToWorld(localOffset);
-					if ((self.CenterPosition - targetPosition).HorizontalLengthSquared != 0)
+					if ((self.CenterPosition - targetPosition).HasNonZeroHorizontalLength)
 					{
 						// Run the first tick of the move activity immediately to avoid a one-frame pause
 						innerActivity = ActivityUtils.RunActivity(self, new HeliFly(self, Target.FromPos(targetPosition)));
@@ -112,7 +112,7 @@ namespace OpenRA.Mods.Common.Activities
 				{
 					var localOffset = carryall.OffsetForCarryable(self, cargo).Rotate(carryableBody.QuantizeOrientation(self, cargo.Orientation));
 					var targetPosition = cargo.CenterPosition - carryableBody.LocalToWorld(localOffset);
-					if ((self.CenterPosition - targetPosition).HorizontalLengthSquared != 0 || carryallFacing.Facing != carryableFacing.Facing)
+					if ((self.CenterPosition - targetPosition).HasNonZeroHorizontalLength || carryallFacing.Facing != carryableFacing.Facing)
 					{
 						state = PickupState.MoveToCarryable;
 						return this;

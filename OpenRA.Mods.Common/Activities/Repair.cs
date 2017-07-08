@@ -68,7 +68,7 @@ namespace OpenRA.Mods.Common.Activities
 			if (host.Type == TargetType.Invalid || health == null)
 				return NextActivity;
 
-			if (closeEnough.LengthSquared > 0 && !host.IsInRange(self.CenterPosition, closeEnough))
+			if (closeEnough.Length != 0 && !host.IsInRange(self.CenterPosition, closeEnough))
 				return NextActivity;
 
 			if (health.DamageState == DamageState.Undamaged)

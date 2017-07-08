@@ -110,11 +110,11 @@ namespace OpenRA.Mods.Common.Activities
 
 					var localOffset = carryall.CarryableOffset.Rotate(body.QuantizeOrientation(self, self.Orientation));
 					var carryablePosition = self.CenterPosition + body.LocalToWorld(localOffset);
-					if ((carryablePosition - targetPosition).HorizontalLengthSquared != 0)
+					if ((carryablePosition - targetPosition).HasNonZeroHorizontalLength)
 					{
 						// For non-zero offsets the drop position depends on the carryall facing
 						// We therefore need to predict/correct for the facing *at the drop point*
-						if (carryall.CarryableOffset.HorizontalLengthSquared != 0)
+						if (carryall.CarryableOffset.HasNonZeroHorizontalLength)
 						{
 							var facing = (targetPosition - self.CenterPosition).Yaw.Facing;
 							localOffset = carryall.CarryableOffset.Rotate(body.QuantizeOrientation(self, WRot.FromFacing(facing)));

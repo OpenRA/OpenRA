@@ -841,7 +841,7 @@ namespace OpenRA
 		public int FacingBetween(CPos cell, CPos towards, int fallbackfacing)
 		{
 			var delta = CenterOfCell(towards) - CenterOfCell(cell);
-			if (delta.HorizontalLengthSquared == 0)
+			if (!delta.HasNonZeroHorizontalLength)
 				return fallbackfacing;
 
 			return delta.Yaw.Facing;

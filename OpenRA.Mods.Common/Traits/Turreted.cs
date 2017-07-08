@@ -141,7 +141,7 @@ namespace OpenRA.Mods.Common.Traits
 			var pos = self.CenterPosition;
 			var targetPos = attack != null ? attack.GetTargetPosition(pos, target) : target.CenterPosition;
 			var delta = targetPos - pos;
-			DesiredFacing = delta.HorizontalLengthSquared != 0 ? delta.Yaw.Facing : TurretFacing;
+			DesiredFacing = delta.HasNonZeroHorizontalLength ? delta.Yaw.Facing : TurretFacing;
 			MoveTurret();
 			return HasAchievedDesiredFacing;
 		}

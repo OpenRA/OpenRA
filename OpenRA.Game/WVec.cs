@@ -39,6 +39,7 @@ namespace OpenRA
 		public static int Dot(WVec a, WVec b) { return a.X * b.X + a.Y * b.Y + a.Z * b.Z; }
 		public long LengthSquared { get { return (long)X * X + (long)Y * Y + (long)Z * Z; } }
 		public int Length { get { return (int)Exts.ISqrt(LengthSquared); } }
+		public bool HasNonZeroHorizontalLength { get { return X != 0 || Y != 0; } }
 		public long HorizontalLengthSquared { get { return (long)X * X + (long)Y * Y; } }
 		public int HorizontalLength { get { return (int)Exts.ISqrt(HorizontalLengthSquared); } }
 		public long VerticalLengthSquared { get { return (long)Z * Z; } }
@@ -65,7 +66,7 @@ namespace OpenRA
 		{
 			get
 			{
-				if (LengthSquared == 0)
+				if (this == WVec.Zero)
 					return WAngle.Zero;
 
 				// OpenRA defines north as -y
