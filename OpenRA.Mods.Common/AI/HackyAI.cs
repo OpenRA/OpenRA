@@ -261,12 +261,12 @@ namespace OpenRA.Mods.Common.AI
 		public bool IsEnabled;
 		public List<Squad> Squads = new List<Squad>();
 		public Player Player { get; private set; }
+		public readonly Func<Actor, bool> IsEnemyUnit;
 
 		readonly DomainIndex domainIndex;
 		readonly ResourceClaimLayer claimLayer;
 		readonly IPathFinder pathfinder;
 
-		readonly Func<Actor, bool> isEnemyUnit;
 		readonly Predicate<Actor> unitCannotBeOrdered;
 		Dictionary<SupportPowerInstance, int> waitingPowers = new Dictionary<SupportPowerInstance, int>();
 		Dictionary<string, SupportPowerDecision> powerDecisions = new Dictionary<string, SupportPowerDecision>();
@@ -313,7 +313,7 @@ namespace OpenRA.Mods.Common.AI
 			claimLayer = World.WorldActor.TraitOrDefault<ResourceClaimLayer>();
 			pathfinder = World.WorldActor.Trait<IPathFinder>();
 
-			isEnemyUnit = unit =>
+			IsEnemyUnit = unit =>
 				Player.Stances[unit.Owner] == Stance.Enemy
 					&& !unit.Info.HasTraitInfo<HuskInfo>()
 					&& unit.Info.HasTraitInfo<ITargetableInfo>();
@@ -551,7 +551,7 @@ namespace OpenRA.Mods.Common.AI
 				case BuildingType.Defense:
 
 					// Build near the closest enemy structure
-					var closestEnemy = World.ActorsHavingTrait<Building>().Where(a => !a.Disposed && Player.Stances[a.Owner] == Stance.Enemy)
+					var closestEnemy = World.ActorsHavingTrait<Building>().Where(a => !a.Disposed && IsEnemyUnit(a))
 						.ClosestTo(World.Map.CenterOfCell(defenseCenter));
 
 					var targetCell = closestEnemy != null ? closestEnemy.Location : baseCenter;
@@ -609,17 +609,17 @@ namespace OpenRA.Mods.Common.AI
 
 		internal Actor FindClosestEnemy(WPos pos)
 		{
-			return World.Actors.Where(isEnemyUnit).ClosestTo(pos);
+			return World.Actors.Where(IsEnemyUnit).ClosestTo(pos);
 		}
 
 		internal Actor FindClosestEnemy(WPos pos, WDist radius)
 		{
-			return World.FindActorsInCircle(pos, radius).Where(isEnemyUnit).ClosestTo(pos);
+			return World.FindActorsInCircle(pos, radius).Where(IsEnemyUnit).ClosestTo(pos);
 		}
 
 		List<Actor> FindEnemyConstructionYards()
 		{
-			return World.Actors.Where(a => Player.Stances[a.Owner] == Stance.Enemy && !a.IsDead &&
+			return World.Actors.Where(a => IsEnemyUnit(a) && !a.IsDead &&
 				Info.BuildingCommonNames.ConstructionYard.Contains(a.Info.Name)).ToList();
 		}
 
@@ -873,7 +873,7 @@ namespace OpenRA.Mods.Common.AI
 			foreach (var b in allEnemyBaseBuilder)
 			{
 				var enemies = World.FindActorsInCircle(b.CenterPosition, WDist.FromCells(Info.RushAttackScanRadius))
-					.Where(unit => Player.Stances[unit.Owner] == Stance.Enemy && unit.Info.HasTraitInfo<AttackBaseInfo>()).ToList();
+					.Where(unit => IsEnemyUnit(unit) && unit.Info.HasTraitInfo<AttackBaseInfo>()).ToList();
 
 				if (AttackOrFleeFuzzy.Rush.CanAttack(ownUnits, enemies))
 				{
@@ -1197,8 +1197,7 @@ namespace OpenRA.Mods.Common.AI
 				return;
 
 			// Protected harvesters or building
-			if ((self.Info.HasTraitInfo<HarvesterInfo>() || self.Info.HasTraitInfo<BuildingInfo>()) &&
-				Player.Stances[e.Attacker.Owner] == Stance.Enemy)
+			if ((self.Info.HasTraitInfo<HarvesterInfo>() || self.Info.HasTraitInfo<BuildingInfo>()) && IsEnemyUnit(e.Attacker))
 			{
 				defenseCenter = e.Attacker.Location;
 				ProtectOwn(e.Attacker);
