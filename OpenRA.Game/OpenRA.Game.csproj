@@ -161,6 +161,7 @@
     <Compile Include="Player.cs" />
     <Compile Include="Primitives\MergedStream.cs" />
     <Compile Include="Primitives\PlayerDictionary.cs" />
+    <Compile Include="Primitives\ReadOnlyAdapterStream.cs" />
     <Compile Include="Primitives\SegmentStream.cs" />
     <Compile Include="Primitives\SpatiallyPartitioned.cs" />
     <Compile Include="Primitives\ConcurrentCache.cs" />
