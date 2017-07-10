@@ -1015,9 +1015,8 @@ palace:
 	Tooltip:
 		Name: Palace
 	Building:
-		Footprint: xx= xxx =xx ===
-		Dimensions: 3,4
-		LocalCenterOffset: 0,-512,0
+		Footprint: xx= xxx =xx
+		Dimensions: 3,3
 	WithBuildingBib:
 		HasMinibib: True
 	Health:
