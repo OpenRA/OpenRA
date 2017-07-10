@@ -419,7 +419,11 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 			{
 				foreach (var s in spawns)
 					s.Spawned.ChangeOwner(newOwner); // Under influence of mind control.
-				foreach (var s in launched) // Kill launched, they are not under influence.
+
+				// Kill launched, they are not under influence.
+				// Don't iterate launched directly, Kill changes the launched list.
+				var toKill = launched.ToList();
+				foreach (var s in toKill)
 					s.Kill(self);
 			});
 		}
