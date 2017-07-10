@@ -86,7 +86,7 @@ namespace OpenRA.Mods.AS.Traits
 				int nfriendly = units.Where(a => a.AppearsFriendlyTo(self)).Count();
 
 				// units.count - nfriendly != nemeny, as even trees are actors!
-				int nenemy = units.Where(a => a.AppearsHostileTo(self)).Count();
+				int nenemy = units.Where(a => !a.Owner.NonCombatant && a.AppearsHostileTo(self)).Count();
 
 				if (nfriendly > nenemy)
 					return;
