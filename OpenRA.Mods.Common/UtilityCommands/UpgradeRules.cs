@@ -984,6 +984,10 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				if (engineVersion < 20170915)
+					if (node.Key.StartsWith("WithTurretedAttackAnimation", StringComparison.Ordinal))
+						RenameNodeKey(node, "WithTurretAttackAnimation");
+
 				UpgradeActorRules(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 
