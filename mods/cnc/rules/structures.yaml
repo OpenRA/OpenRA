@@ -761,7 +761,7 @@ GUN:
 		TurnSpeed: 12
 		InitialFacing: 56
 	-WithSpriteBody:
-	WithTurretedSpriteBody:
+	WithEmbeddedTurretSpriteBody:
 	Armament:
 		Weapon: TurretGun
 		LocalOffset: 512,0,112
@@ -811,7 +811,7 @@ SAM:
 		InitialFacing: 0
 		RealignDelay: -1
 	-WithSpriteBody:
-	WithTurretedSpriteBody:
+	WithEmbeddedTurretSpriteBody:
 	AutoSelectionSize:
 	Armament:
 		Weapon: Dragon
