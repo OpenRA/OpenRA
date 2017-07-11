@@ -37,6 +37,9 @@ namespace OpenRA.Mods.Common.Traits.Render
 		[Desc("Should the animation be delayed relative to preparation or actual attack?")]
 		public readonly AttackDelayType DelayRelativeTo = AttackDelayType.Preparation;
 
+		[Desc("Whether the animation can be interrupted/overridden by other animations.")]
+		public readonly bool IsInterruptible = false;
+
 		public object Create(ActorInitializer init) { return new WithTurretedAttackAnimation(init, this); }
 	}
 
@@ -62,7 +65,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		void PlayAttackAnimation(Actor self)
 		{
 			if (!string.IsNullOrEmpty(info.AttackSequence))
-				wst.PlayCustomAnimation(self, info.AttackSequence, () => wst.CancelCustomAnimation(self));
+				wst.PlayCustomAnimation(self, info.AttackSequence, () => wst.CancelCustomAnimation(self), !info.IsInterruptible);
 		}
 
 		void INotifyAttack.Attacking(Actor self, Target target, Armament a, Barrel barrel)
