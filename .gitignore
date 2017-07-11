@@ -81,3 +81,5 @@ StyleCopViolations.xml
 
 # Support directory
 /Support
+/da/Microsoft.Build.Utilities.v3.5.resources.dll
+/da
