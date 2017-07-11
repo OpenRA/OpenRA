@@ -67,6 +67,7 @@
     <Compile Include="Traits\Attack\AttackPopupTurreted.cs" />
     <Compile Include="Traits\Buildings\ProductionAirdrop.cs" />
     <Compile Include="Traits\Render\WithGunboatBody.cs" />
+    <Compile Include="Traits\Render\WithEmbeddedTurretSpriteBody.cs" />
     <Compile Include="Traits\Render\WithCargo.cs" />
     <Compile Include="Traits\Render\WithDeliveryAnimation.cs" />
     <Compile Include="Traits\Render\WithReloadingSpriteTurret.cs" />

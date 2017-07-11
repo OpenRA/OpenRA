@@ -14,14 +14,16 @@ using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Graphics;
+using OpenRA.Mods.Common.Traits;
+using OpenRA.Mods.Common.Traits.Render;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.Common.Traits.Render
+namespace OpenRA.Mods.Cnc.Traits.Render
 {
 	[Desc("This actor has turret art with facings baked into the sprite.")]
-	public class WithTurretedSpriteBodyInfo : WithSpriteBodyInfo, Requires<TurretedInfo>, Requires<BodyOrientationInfo>
+	public class WithEmbeddedTurretSpriteBodyInfo : WithSpriteBodyInfo, Requires<TurretedInfo>, Requires<BodyOrientationInfo>
 	{
-		public override object Create(ActorInitializer init) { return new WithTurretedSpriteBody(init, this); }
+		public override object Create(ActorInitializer init) { return new WithEmbeddedTurretSpriteBody(init, this); }
 
 		public override IEnumerable<IActorPreview> RenderPreviewSprites(ActorPreviewInitializer init, RenderSpritesInfo rs, string image, int facings, PaletteReference p)
 		{
@@ -36,7 +38,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		}
 	}
 
-	public class WithTurretedSpriteBody : WithSpriteBody
+	public class WithEmbeddedTurretSpriteBody : WithSpriteBody
 	{
 		readonly Turreted turreted;
 
@@ -47,7 +49,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			return () => turreted.TurretFacing;
 		}
 
-		public WithTurretedSpriteBody(ActorInitializer init, WithSpriteBodyInfo info)
+		public WithEmbeddedTurretSpriteBody(ActorInitializer init, WithSpriteBodyInfo info)
 			: base(init, info, MakeTurretFacingFunc(init.Self))
 		{
 			turreted = init.Self.TraitsImplementing<Turreted>().FirstOrDefault();

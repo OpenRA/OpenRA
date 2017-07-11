@@ -418,7 +418,6 @@
     <Compile Include="Traits\Render\LeavesTrails.cs" />
     <Compile Include="Traits\Render\RenderSpritesEditorOnly.cs" />
     <Compile Include="Traits\Render\WithTurretAttackAnimation.cs" />
-    <Compile Include="Traits\Render\WithTurretedSpriteBody.cs" />
     <Compile Include="Traits\Render\RenderUtils.cs" />
     <Compile Include="Traits\Render\RenderDebugState.cs" />
     <Compile Include="Traits\Render\RenderNameTag.cs" />
