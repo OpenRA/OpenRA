@@ -87,7 +87,7 @@
     <Compile Include="Traits\AegisAutoTarget.cs" />
     <Compile Include="Traits\Buildings\PeriodicFreeActor.cs" />
     <Compile Include="Traits\AcceptCashRallyPointAcceptor.cs" />
-    <Compile Include="Traits\Conditions\GrantConditionOnFire.cs" />
+    <Compile Include="Traits\Conditions\GrantStackableConditionOnFire.cs" />
     <Compile Include="Traits\Conditions\GrantConditionOnAttack.cs" />
     <Compile Include="Traits\AirstrikeOnFire.cs" />
     <Compile Include="Traits\Mindcontrollable.cs" />
