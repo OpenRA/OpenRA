@@ -38,7 +38,8 @@ namespace OpenRA.Mods.Common.Warheads
 		[Desc("List of sounds that can be played on impact.")]
 		public readonly string[] ImpactSounds = new string[0];
 
-		[Desc("Consider explosion above this altitude an air explosion.")]
+		[Desc("Consider explosion above this altitude an air explosion.",
+			"If that's the case, this warhead will consider the explosion position to have the 'Air' TargetType (in addition to any nearby actor's TargetTypes).")]
 		public readonly WDist AirThreshold = new WDist(128);
 
 		[Desc("Scan radius for victims around impact. If set to a negative value (default), it will automatically scale to the largest health shape.",
