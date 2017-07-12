@@ -91,6 +91,7 @@
     <Compile Include="Activities\Demolish.cs" />
     <Compile Include="Activities\DeployForGrantedCondition.cs" />
     <Compile Include="Activities\DonateCash.cs" />
+    <Compile Include="Activities\DonateExperience.cs" />
     <Compile Include="Activities\Enter.cs" />
     <Compile Include="Activities\EnterTransport.cs" />
     <Compile Include="Activities\ExternalCaptureActor.cs" />
@@ -253,6 +254,7 @@
     <Compile Include="Scripting\Properties\ParatroopersProperties.cs" />
     <Compile Include="TraitsInterfaces.cs" />
     <Compile Include="Traits\AcceptsDeliveredCash.cs" />
+    <Compile Include="Traits\AcceptsDeliveredExperience.cs" />
     <Compile Include="Traits\Air\Aircraft.cs" />
     <Compile Include="Traits\Air\AttackBomber.cs" />
     <Compile Include="Traits\Air\AttackHeli.cs" />
@@ -324,6 +326,8 @@
     <Compile Include="Traits\CustomSellValue.cs" />
     <Compile Include="Traits\CustomSelectionSize.cs" />
     <Compile Include="Traits\DamagedByTerrain.cs" />
+    <Compile Include="Traits\DeliversCash.cs" />
+    <Compile Include="Traits\DeliversExperience.cs" />
     <Compile Include="Traits\Demolishable.cs" />
     <Compile Include="Traits\Demolition.cs" />
     <Compile Include="Traits\DetectCloaked.cs" />
@@ -485,7 +489,6 @@
     <Compile Include="Traits\Sound\DeathSounds.cs" />
     <Compile Include="Traits\Sound\SoundOnDamageTransition.cs" />
     <Compile Include="Traits\Sound\AttackSounds.cs" />
-    <Compile Include="Traits\DeliversCash.cs" />
     <Compile Include="Traits\SupportPowers\AirstrikePower.cs" />
     <Compile Include="Traits\SupportPowers\GrantExternalConditionPower.cs" />
     <Compile Include="Traits\SupportPowers\NukePower.cs" />
