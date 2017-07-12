@@ -307,7 +307,10 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 			if (respawnTicks-- <= 0)
 			{
 				if (MiningState == MiningState.Mining)
-					Launch(self, LastOrderLocation.Value);
+					if (LastOrderLocation.HasValue)
+						Launch(self, LastOrderLocation.Value);
+					else
+						Launch(self, self.Location);
 				respawnTicks = info.RespawnTicks;
 			}
 		}
