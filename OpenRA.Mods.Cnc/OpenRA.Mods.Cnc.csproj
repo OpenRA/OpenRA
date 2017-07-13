@@ -64,7 +64,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CncLoadScreen.cs" />
-    <Compile Include="Traits\AttackPopupTurreted.cs" />
+    <Compile Include="Traits\Attack\AttackPopupTurreted.cs" />
     <Compile Include="Traits\Buildings\ProductionAirdrop.cs" />
     <Compile Include="Traits\Render\WithGunboatBody.cs" />
     <Compile Include="Traits\Render\WithCargo.cs" />
