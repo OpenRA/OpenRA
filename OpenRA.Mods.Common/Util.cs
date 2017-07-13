@@ -137,7 +137,7 @@ namespace OpenRA.Mods.Common
 
 		public static IEnumerable<CPos> AdjacentCells(World w, Target target)
 		{
-			var cells = target.Positions.Select(p => w.Map.CellContaining(p)).Distinct();
+			var cells = target.AccessiblePositions.Select(p => w.Map.CellContaining(p)).Distinct();
 			return ExpandFootprint(cells, true);
 		}
 

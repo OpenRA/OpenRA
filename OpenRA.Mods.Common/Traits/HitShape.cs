@@ -57,7 +57,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new HitShape(init.Self, this); }
 	}
 
-	public class HitShape : ConditionalTrait<HitShapeInfo>, ITargetablePositions
+	public class HitShape : ConditionalTrait<HitShapeInfo>, IAttackablePositions, IAccessiblePositions
 	{
 		BodyOrientation orientation;
 		ITargetableCells targetableCells;
