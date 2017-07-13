@@ -691,10 +691,12 @@
 ^BaseBuilding:
 	Inherits: ^Building
 	Building:
-		Adjacent: 4
 		RequiresBaseProvider: true
 		BuildSounds: constru2.aud, hvydoor1.aud
 		TerrainTypes: Clear,Road
+	RequiresBuildableArea:
+		AreaTypes: building
+		Adjacent: 4
 	MustBeDestroyed:
 		RequiredForShortGame: true
 	RepairableBuilding:
@@ -705,6 +707,7 @@
 		DeathSequence: dead
 		UseDeathTypeSuffix: false
 	GivesBuildableArea:
+		AreaTypes: building
 	EmitInfantryOnSell:
 		ActorTypes: e6,e1,e1,e1
 	EngineerRepairable:
@@ -796,8 +799,10 @@
 		Dimensions: 1,1
 		Footprint: x
 		BuildSounds: hvydoor1.aud
-		Adjacent: 7
 		TerrainTypes: Clear,Road
+	RequiresBuildableArea:
+		AreaTypes: building
+		Adjacent: 4
 	Targetable:
 		TargetTypes: Ground, Wall
 	Crushable:

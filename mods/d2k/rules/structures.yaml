@@ -1,10 +1,12 @@
 ^concrete:
 	AlwaysVisible:
 	Building:
-		Adjacent: 4
 		TerrainTypes: Rock
 		BuildSounds: CHUNG.WAV
 		AllowInvalidPlacement: true
+	RequiresBuildableArea:
+		AreaTypes: building
+		Adjacent: 4
 	LaysTerrain:
 		Template: 88
 		TerrainTypes: Rock
@@ -55,7 +57,6 @@ construction_yard:
 	Building:
 		Footprint: xxx xxx ===
 		Dimensions: 3,3
-		Adjacent: 4
 		LocalCenterOffset: 0,-512,0
 	LaysTerrain:
 		TerrainTypes: Rock
@@ -324,7 +325,7 @@ silo:
 		Cost: 120
 	Tooltip:
 		Name: Silo
-	Building:
+	RequiresBuildableArea:
 		Adjacent: 4
 	-GivesBuildableArea:
 	Health:
@@ -677,8 +678,10 @@ wall:
 	AppearsOnRadar:
 	Building:
 		BuildSounds: CHUNG.WAV
-		Adjacent: 7
 		TerrainTypes: Rock, Concrete
+	RequiresBuildableArea:
+		AreaTypes: building
+		Adjacent: 7
 	Health:
 		HP: 2000
 	Armor:
@@ -729,8 +732,9 @@ medium_gun_turret:
 	Tooltip:
 		Name: Gun Turret
 	Building:
-		Adjacent: 4
 		BuildSounds: CHUNG.WAV
+	RequiresBuildableArea:
+		Adjacent: 4
 	Sellable:
 		SellSounds: CHUNG.WAV
 	Selectable:
@@ -775,8 +779,9 @@ large_gun_turret:
 	Tooltip:
 		Name: Rocket Turret
 	Building:
-		Adjacent: 4
 		BuildSounds: CHUNG.WAV
+	RequiresBuildableArea:
+		Adjacent: 4
 	Sellable:
 		SellSounds: CHUNG.WAV
 	Selectable:

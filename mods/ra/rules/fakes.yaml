@@ -49,8 +49,9 @@ SYRF:
 	Building:
 		Footprint: XXX xxx XXX
 		Dimensions: 3,3
-		Adjacent: 8
 		TerrainTypes: Water
+	RequiresBuildableArea:
+		Adjacent: 8
 	RenderSprites:
 		Image: SYRD
 	Valued:
@@ -91,8 +92,9 @@ SPEF:
 	Building:
 		Footprint: XXX xxx XXX
 		Dimensions: 3,3
-		Adjacent: 8
 		TerrainTypes: Water
+	RequiresBuildableArea:
+		Adjacent: 8
 	RenderSprites:
 		Image: SPEN
 	Valued:

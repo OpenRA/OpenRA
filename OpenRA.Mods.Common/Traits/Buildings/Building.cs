@@ -19,10 +19,6 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	[Desc("Remove this trait to limit base-walking by cheap or defensive buildings.")]
-	public class GivesBuildableAreaInfo : TraitInfo<GivesBuildableArea> { }
-	public class GivesBuildableArea { }
-
 	public enum FootprintCellType
 	{
 		Empty = '_',
@@ -35,10 +31,6 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		[Desc("Where you are allowed to place the building (Water, Clear, ...)")]
 		public readonly HashSet<string> TerrainTypes = new HashSet<string>();
-
-		[Desc("The range to the next building it can be constructed. Set it higher for walls.",
-			"Set to '-1' to disable adjacency checks.")]
-		public readonly int Adjacent = 2;
 
 		[Desc("x means cell is blocked, capital X means blocked but not counting as targetable, ",
 			"= means part of the footprint but passable, _ means completely empty.")]
@@ -175,19 +167,28 @@ namespace OpenRA.Mods.Common.Traits
 			return null;
 		}
 
+		bool ActorGrantsValidArea(Actor a, RequiresBuildableAreaInfo rba)
+		{
+			return rba.AreaTypes.Overlaps(a.TraitsImplementing<GivesBuildableArea>()
+				.SelectMany(gba => gba.AreaTypes));
+		}
+
 		public virtual bool IsCloseEnoughToBase(World world, Player p, string buildingName, CPos topLeft)
 		{
+			var requiresBuildableArea = world.Map.Rules.Actors[buildingName].TraitInfoOrDefault<RequiresBuildableAreaInfo>();
 			var mapBuildRadius = world.WorldActor.Trait<MapBuildRadius>();
-			if (Adjacent < 0 || p.PlayerActor.Trait<DeveloperMode>().BuildAnywhere)
+
+			if (requiresBuildableArea == null || p.PlayerActor.Trait<DeveloperMode>().BuildAnywhere)
 				return true;
 
 			if (mapBuildRadius.BuildRadiusEnabled && RequiresBaseProvider && FindBaseProvider(world, p, topLeft) == null)
 				return false;
 
+			var adjacent = requiresBuildableArea.Adjacent;
 			var buildingMaxBounds = Dimensions;
 
-			var scanStart = world.Map.Clamp(topLeft - new CVec(Adjacent, Adjacent));
-			var scanEnd = world.Map.Clamp(topLeft + buildingMaxBounds + new CVec(Adjacent, Adjacent));
+			var scanStart = world.Map.Clamp(topLeft - new CVec(adjacent, adjacent));
+			var scanEnd = world.Map.Clamp(topLeft + buildingMaxBounds + new CVec(adjacent, adjacent));
 
 			var nearnessCandidates = new List<CPos>();
 			var bi = world.WorldActor.Trait<BuildingInfluence>();
@@ -205,12 +206,12 @@ namespace OpenRA.Mods.Common.Traits
 					{
 						var unitsAtPos = world.ActorMap.GetActorsAt(pos).Where(a => a.IsInWorld
 							&& (a.Owner == p || (allyBuildEnabled && a.Owner.Stances[p] == Stance.Ally))
-							&& a.Info.HasTraitInfo<GivesBuildableAreaInfo>());
+							&& ActorGrantsValidArea(a, requiresBuildableArea));
 
 						if (unitsAtPos.Any())
 							nearnessCandidates.Add(pos);
 					}
-					else if (buildingAtPos.IsInWorld && buildingAtPos.Info.HasTraitInfo<GivesBuildableAreaInfo>()
+					else if (buildingAtPos.IsInWorld && ActorGrantsValidArea(buildingAtPos, requiresBuildableArea)
 						&& (buildingAtPos.Owner == p || (allyBuildEnabled && buildingAtPos.Owner.Stances[p] == Stance.Ally)))
 						nearnessCandidates.Add(pos);
 				}
@@ -219,8 +220,8 @@ namespace OpenRA.Mods.Common.Traits
 			var buildingTiles = Tiles(topLeft).ToList();
 			return nearnessCandidates
 				.Any(a => buildingTiles
-					.Any(b => Math.Abs(a.X - b.X) <= Adjacent
-						&& Math.Abs(a.Y - b.Y) <= Adjacent));
+					.Any(b => Math.Abs(a.X - b.X) <= adjacent
+						&& Math.Abs(a.Y - b.Y) <= adjacent));
 		}
 
 		public IReadOnlyDictionary<CPos, SubCell> OccupiedCells(ActorInfo info, CPos topLeft, SubCell subCell = SubCell.Any)

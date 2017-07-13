@@ -141,7 +141,6 @@ MINVV:
 	HiddenUnderFog:
 	Building:
 		TerrainTypes: Clear,Road
-		Adjacent: -1
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 10
