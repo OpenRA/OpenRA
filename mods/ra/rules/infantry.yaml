@@ -16,7 +16,7 @@ DOG:
 	SelectionDecorations:
 		VisualBounds: 12,17,-1,-4
 	Health:
-		HP: 12
+		HP: 18
 	Mobile:
 		Speed: 99
 		Voice: Move

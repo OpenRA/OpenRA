@@ -128,7 +128,7 @@ SPEN:
 	Armor:
 		Type: Light
 	RevealsShroud:
-		Range: 4c0
+		Range: 5c0
 	Exit@1:
 		SpawnOffset: 0,-213,0
 		Facing: 96
@@ -227,7 +227,7 @@ SYRD:
 	Armor:
 		Type: Light
 	RevealsShroud:
-		Range: 4c0
+		Range: 5c0
 	Exit@1:
 		SpawnOffset: -1024,1024,0
 		Facing: 160
@@ -483,7 +483,7 @@ TSLA:
 	Power:
 		Amount: -100
 	DetectCloaked:
-		Range: 8c0
+		Range: 6c0
 	ProvidesPrerequisite@buildingname:
 
 AGUN:
@@ -570,9 +570,14 @@ DOME:
 		Type: Wood
 	RevealsShroud:
 		Range: 10c0
+		RequiresCondition: !disabled
 		RevealGeneratedShroud: False
+	RevealsShroud@Offline:
+		Range: 5c0
+		RequiresCondition: disabled
 	RevealsShroud@GAPGEN:
 		Range: 6c0
+		RequiresCondition: !disabled
 	WithBuildingBib:
 	ProvidesRadar:
 		RequiresCondition: !jammed && !disabled
@@ -649,11 +654,11 @@ HBOX:
 		Prerequisites: tent, ~structures.allies, ~techlevel.medium
 		Description: Camouflaged static defense with a fireport\nfor a garrisoned soldier.\nCan detect cloaked units.\n  Strong vs Infantry, Light armor\n  Weak vs Tanks, Aircraft
 	Valued:
-		Cost: 800
+		Cost: 700
 	CustomSellValue:
-		Value: 600
+		Value: 500
 	Health:
-		HP: 450
+		HP: 400
 	Armor:
 		Type: Heavy
 	RevealsShroud:
@@ -731,7 +736,7 @@ GUN:
 	Power:
 		Amount: -40
 	DetectCloaked:
-		Range: 7c0
+		Range: 6c0
 	BodyOrientation:
 		UseClassicFacingFudge: True
 
@@ -822,7 +827,7 @@ SAM:
 	Power:
 		Amount: -40
 	DetectCloaked:
-		Range: 5c0
+		Range: 6c0
 	BodyOrientation:
 		UseClassicFacingFudge: True
 
@@ -892,7 +897,7 @@ WEAP:
 	Armor:
 		Type: Wood
 	RevealsShroud:
-		Range: 4c0
+		Range: 5c0
 	WithBuildingBib:
 	WithProductionDoorOverlay:
 		Sequence: build-top
@@ -1139,6 +1144,7 @@ SILO:
 	Tooltip:
 		Name: Silo
 	Building:
+		Adjacent: 4
 	-GivesBuildableArea:
 	Health:
 		HP: 300
@@ -1151,7 +1157,7 @@ SILO:
 	WithSiloAnimation:
 	StoresResources:
 		PipCount: 5
-		Capacity: 1500
+		Capacity: 3000
 	-EmitInfantryOnSell:
 	Power:
 		Amount: -10
@@ -1485,7 +1491,7 @@ STEK:
 	Armor:
 		Type: Wood
 	RevealsShroud:
-		Range: 4c0
+		Range: 5c0
 	WithBuildingBib:
 	Power:
 		Amount: -100
@@ -1585,6 +1591,7 @@ KENN:
 	Tooltip:
 		Name: Kennel
 	Building:
+		Adjacent: 4
 	-GivesBuildableArea:
 	Health:
 		HP: 300
@@ -1719,7 +1726,7 @@ FIX:
 	Tooltip:
 		Name: Service Depot
 	Building:
-		Footprint: _X_ xxx _X_
+		Footprint: _=_ xxx _=_
 		Dimensions: 3,3
 	Selectable:
 		Bounds: 68,34,0,3
@@ -1739,7 +1746,7 @@ FIX:
 	Reservable:
 	RallyPoint:
 	RepairsUnits:
-		Interval: 10
+		Interval: 7
 		FinishRepairingNotification: UnitRepaired
 		PlayerExperience: 15
 	WithRepairAnimation:
