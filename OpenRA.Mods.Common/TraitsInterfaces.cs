@@ -148,6 +148,24 @@ namespace OpenRA.Mods.Common.Traits
 		void Undocked();
 	}
 
+	[RequireExplicitImplementation]
+	public interface INotifyUnload
+	{
+		void Unloading(Actor self);
+	}
+
+	[RequireExplicitImplementation]
+	public interface INotifyDemolition
+	{
+		void Demolishing(Actor self);
+	}
+
+	[RequireExplicitImplementation]
+	public interface INotifyInfiltration
+	{
+		void Infiltrating(Actor self);
+	}
+
 	public interface ITechTreePrerequisiteInfo : ITraitInfo { }
 	public interface ITechTreePrerequisite
 	{

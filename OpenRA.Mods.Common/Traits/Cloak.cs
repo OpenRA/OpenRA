@@ -62,8 +62,8 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new Cloak(this); }
 	}
 
-	public class Cloak : ConditionalTrait<CloakInfo>, IRenderModifier, INotifyDamage,
-	INotifyAttack, ITick, IVisibilityModifier, IRadarColorModifier, INotifyCreated, INotifyHarvesterAction
+	public class Cloak : ConditionalTrait<CloakInfo>, IRenderModifier, INotifyDamage, INotifyUnload, INotifyDemolition, INotifyInfiltration,
+		INotifyAttack, ITick, IVisibilityModifier, IRadarColorModifier, INotifyCreated, INotifyHarvesterAction
 	{
 		[Sync] int remainingTime;
 		bool isDocking;
@@ -211,6 +211,24 @@ namespace OpenRA.Mods.Common.Traits
 		void INotifyHarvesterAction.Undocked()
 		{
 			isDocking = false;
+		}
+
+		void INotifyUnload.Unloading(Actor self)
+		{
+			if (Info.UncloakOn.HasFlag(UncloakType.Unload))
+				Uncloak();
+		}
+
+		void INotifyDemolition.Demolishing(Actor self)
+		{
+			if (Info.UncloakOn.HasFlag(UncloakType.Demolish))
+				Uncloak();
+		}
+
+		void INotifyInfiltration.Infiltrating(Actor self)
+		{
+			if (Info.UncloakOn.HasFlag(UncloakType.Infiltrate))
+				Uncloak();
 		}
 	}
 }

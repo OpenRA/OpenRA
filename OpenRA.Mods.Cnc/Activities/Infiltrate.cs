@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Linq;
 using OpenRA.Activities;
 using OpenRA.Mods.Cnc.Traits;
 using OpenRA.Mods.Common.Activities;
@@ -21,14 +22,14 @@ namespace OpenRA.Mods.Cnc.Activities
 	{
 		readonly Actor target;
 		readonly Infiltrates infiltrates;
-		readonly Cloak cloak;
+		readonly INotifyInfiltration[] notifiers;
 
 		public Infiltrate(Actor self, Actor target, Infiltrates infiltrate)
 			: base(self, target, infiltrate.Info.EnterBehaviour)
 		{
 			this.target = target;
 			infiltrates  = infiltrate;
-			cloak = self.TraitOrDefault<Cloak>();
+			notifiers = self.TraitsImplementing<INotifyInfiltration>().ToArray();
 		}
 
 		protected override void OnInside(Actor self)
@@ -40,8 +41,8 @@ namespace OpenRA.Mods.Cnc.Activities
 			if (!infiltrates.Info.ValidStances.HasStance(stance))
 				return;
 
-			if (cloak != null && cloak.Info.UncloakOn.HasFlag(UncloakType.Infiltrate))
-				cloak.Uncloak();
+			foreach (var ini in notifiers)
+				ini.Infiltrating(self);
 
 			foreach (var t in target.TraitsImplementing<INotifyInfiltrated>())
 				t.Infiltrated(target, self);
