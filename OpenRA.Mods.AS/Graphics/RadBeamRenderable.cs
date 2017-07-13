@@ -17,26 +17,29 @@ namespace OpenRA.Mods.AS.Graphics
 	{
 		readonly WPos pos;
 		readonly int zOffset;
-		readonly WVec length;
+		readonly WVec sourceToTarget;
 		readonly WDist width;
 		readonly Color color;
 		readonly WDist amplitude;
 		readonly WDist wavelength;
+		readonly int quantizationCount;
 
-		// integer version of sine wave (LUT).
-		// 100 * ( i * pi / 16 ).
-		static readonly int[] SineLUT = { 0, 19, 38, 55, 71, 83, 92, 98, 100, 98, 92, 83, 71, 55, 38, 19,
-										 0, -19, -38, -55, -71, -83, -92, -98, -100, -98, -92, -83, -71, -55, -38, -19 };
-
-		public RadBeamRenderable(WPos pos, int zOffset, WVec length, WDist width, Color color, WDist amplitude, WDist wavelength)
+		public RadBeamRenderable(
+				WPos pos,
+				int zOffset,
+				WVec sourceToTarget,
+				WDist width, Color color,
+				WDist amplitude, WDist wavelength,
+				int quantizationCount)
 		{
 			this.pos = pos;
 			this.zOffset = zOffset;
-			this.length = length;
+			this.sourceToTarget = sourceToTarget;
 			this.width = width;
 			this.color = color;
 			this.amplitude = amplitude;
 			this.wavelength = wavelength;
+			this.quantizationCount = quantizationCount;
 		}
 
 		public WPos Pos { get { return pos; } }
@@ -44,43 +47,50 @@ namespace OpenRA.Mods.AS.Graphics
 		public int ZOffset { get { return zOffset; } }
 		public bool IsDecoration { get { return true; } }
 
-		public IRenderable WithPalette(PaletteReference newPalette) { return new RadBeamRenderable(pos, zOffset, length, width, color, amplitude, wavelength); }
-		public IRenderable WithZOffset(int newOffset) { return new RadBeamRenderable(pos, zOffset, length, width, color, amplitude, wavelength); }
-		public IRenderable OffsetBy(WVec vec) { return new RadBeamRenderable(pos + vec, zOffset, length, width, color, amplitude, wavelength); }
+		public IRenderable WithPalette(PaletteReference newPalette)
+		{
+			return new RadBeamRenderable(pos, zOffset, sourceToTarget, width, color, amplitude, wavelength, quantizationCount);
+		}
+
+		public IRenderable WithZOffset(int newOffset) { return new RadBeamRenderable(pos, zOffset, sourceToTarget, width, color, amplitude, wavelength, quantizationCount); }
+
+		public IRenderable OffsetBy(WVec vec) { return new RadBeamRenderable(pos + vec, zOffset, sourceToTarget, width, color, amplitude, wavelength, quantizationCount); }
+
 		public IRenderable AsDecoration() { return this; }
 
 		public IFinalizedRenderable PrepareRender(WorldRenderer wr) { return this; }
 		public void Render(WorldRenderer wr)
 		{
-			var vecLength = length.Length;
-			if (vecLength == 0)
+			if (sourceToTarget == WVec.Zero)
 				return;
 
-			// Let's compute through x-axis vector and y-axis vector.
-			// Fortunately, length is already in x-axis direction. All we need to do is to compute length.
-			var x = (length * wavelength.Length) / length.Length;
+			// WAngle.Sin(x) = 1024 * Math.Sin(2pi/1024 * x)
 
-			// y-axis can be gotten by world vector?? (perpendicular to the ground)
-			var y = new WVec(0, 0, amplitude.Length);
+			// forward step, pointing from src to target.
+			// QuantizationCont * forwardStep == One cycle of beam in src2target direction.
+			var forwardStep = (wavelength.Length * sourceToTarget) / (quantizationCount * sourceToTarget.Length);
 
-			var start = wr.Screen3DPosition(pos);
-
-			int cnt = vecLength / wavelength.Length;
-			if (length.Length % wavelength.Length != 0)
-				cnt += 1; // I'm emulating math.ceil
+			int cycleCnt = sourceToTarget.Length / wavelength.Length;
+			if (sourceToTarget.Length % wavelength.Length != 0)
+				cycleCnt += 1; // I'm emulating math.ceil
 
 			var screenWidth = wr.ScreenVector(new WVec(width, WDist.Zero, WDist.Zero))[0];
 
-			var last = start; // last point the rad beam "reached"
-			var xx = pos;
-			for (var i = 0; i < cnt; i++)
+			var angle = new WAngle(0);
+			var angleStep = new WAngle(1024 / quantizationCount);
+
+			// last point the rad beam "reached"
+			var pos = this.pos; // where we are.
+			var last = wr.Screen3DPosition(pos); // we start from the shooter
+			for (var i = 0; i < cycleCnt * quantizationCount; i++)
 			{
-				var index = i % SineLUT.Length;
-				var sin = y * SineLUT[index] / 100; // value * y vector
-				xx += x; // keep moving along x axis
-				var end = wr.Screen3DPosition(xx + sin);
+				var y = new WVec(0, 0, amplitude.Length * angle.Sin() / 1024);
+				var end = wr.Screen3DPosition(pos + y);
 				Game.Renderer.WorldRgbaColorRenderer.DrawLine(last, end, screenWidth, color);
+
+				pos += forwardStep; // keep moving along x axis
 				last = end;
+				angle += angleStep;
 			}
 		}
 

@@ -13,7 +13,6 @@ using System.Drawing;
 using OpenRA.GameRules;
 using OpenRA.Graphics;
 using OpenRA.Mods.AS.Graphics;
-using OpenRA.Mods.Common.Graphics;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.AS.Projectiles
@@ -28,7 +27,10 @@ namespace OpenRA.Mods.AS.Projectiles
 		public readonly WDist Amplitude = new WDist(128);
 
 		[Desc("The wavelength of the beam. (in WDist)")]
-		public readonly WDist WaveLength = new WDist(64);
+		public readonly WDist WaveLength = new WDist(512);
+
+		[Desc("Draw each cycle with this many quantization steps")]
+		public readonly int QuantizationCount = 8;
 
 		[Desc("Equivalent to sequence ZOffset. Controls Z sorting.")]
 		public readonly int ZOffset = 0;
@@ -115,7 +117,7 @@ namespace OpenRA.Mods.AS.Projectiles
 				WDist amp = info.ScaleAmplitudeWithDuration
 					? info.Amplitude * ticks / info.BeamDuration
 					: info.Amplitude;
-				yield return new RadBeamRenderable(args.Source, info.ZOffset, target - args.Source, info.Thickness, info.Color, amp, info.WaveLength);
+				yield return new RadBeamRenderable(args.Source, info.ZOffset, target - args.Source, info.Thickness, info.Color, amp, info.WaveLength, info.QuantizationCount);
 			}
 
 			if (hitanim != null)
