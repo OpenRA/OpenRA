@@ -7,7 +7,7 @@ ParaBomb:
 		OpenSequence: open
 		Velocity: 0, 0, -86
 		Acceleration: 0, 0, 0
-		Shadow: True
+		Shadow: False
 	Warhead@1Dam: SpreadDamage
 		Spread: 768
 		Damage: 300

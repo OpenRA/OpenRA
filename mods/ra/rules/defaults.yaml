@@ -415,7 +415,7 @@
 		Name: Civilian
 		GenericVisibility: None
 	RevealsShroud:
-		Range: 2c0
+		Range: 3c0
 	ProximityCaptor:
 		Types: CivilianInfantry
 	ScaredyCat:
@@ -547,6 +547,7 @@
 		RearmBuildings: hpad
 		CanHover: True
 		CruisingCondition: cruising
+		WaitDistanceFromResupplyBase: 4c0
 	GpsDot:
 		String: Helicopter
 	Hovers@CRUISING:
@@ -659,6 +660,7 @@
 		Types: wall
 	Targetable:
 		TargetTypes: Ground, DetonateAttack, Wall, NoAutoTarget
+	-GivesExperience:
 	RenderSprites:
 		Palette: effect
 	WithWallSpriteBody:
