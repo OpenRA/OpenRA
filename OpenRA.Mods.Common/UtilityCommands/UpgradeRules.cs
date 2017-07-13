@@ -972,6 +972,18 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				// Made Missile terrain height checks disableable and disabled by default
+				if (engineVersion < 20170713)
+				{
+					var gridMaxHeight = modData.Manifest.Get<MapGrid>().MaximumTerrainHeight;
+					if (gridMaxHeight > 0)
+					{
+						var projectile = node.Value.Nodes.FirstOrDefault(n => n.Key == "Projectile");
+						if (projectile != null && projectile.Value.Value == "Missile")
+							projectile.Value.Nodes.Add(new MiniYamlNode("TerrainHeightAware", "true"));
+					}
+				}
+
 				UpgradeWeaponRules(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}

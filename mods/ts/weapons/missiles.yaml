@@ -21,6 +21,7 @@
 		VerticalRateOfTurn: 11
 		CruiseAltitude: 2c124
 		AllowSnapping: true
+		TerrainHeightAware: true
 	Warhead@1Dam: SpreadDamage
 		Spread: 108
 		Falloff: 100, 50, 25, 12, 6, 3, 0

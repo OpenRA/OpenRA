@@ -129,6 +129,7 @@ CyCannon:
 		MinimumLaunchSpeed: 75
 		Speed: 384
 		RangeLimit: 8c0
+		TerrainHeightAware: true
 	Warhead@1Dam: SpreadDamage
 		Spread: 43
 		Damage: 120
