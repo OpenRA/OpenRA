@@ -1,7 +1,7 @@
 V01:
 	Inherits: ^CivBuilding
 	HitShape:
-		UseOccupiedCellsOffsets: false
+		UseTargetableCellsOffsets: false
 		TargetableOffsets: -490,-384,0, 0,0,0, 0,470,0
 		Type: Rectangle
 			TopLeft: -768, -597
@@ -29,7 +29,7 @@ V01.Husk:
 V02:
 	Inherits: ^CivBuilding
 	HitShape:
-		UseOccupiedCellsOffsets: false
+		UseTargetableCellsOffsets: false
 		TargetableOffsets: -490,-512,0, 0,0,0, 0,512,0
 		Type: Rectangle
 			TopLeft: -1024, -512
@@ -57,7 +57,7 @@ V02.Husk:
 V03:
 	Inherits: ^CivBuilding
 	HitShape:
-		UseOccupiedCellsOffsets: false
+		UseTargetableCellsOffsets: false
 		TargetableOffsets: -490,-512,0, 0,0,0, 421,512,0, -210,512,0
 		Type: Rectangle
 			TopLeft: -1024, -597
@@ -85,7 +85,7 @@ V03.Husk:
 V04:
 	Inherits: ^CivBuilding
 	HitShape:
-		UseOccupiedCellsOffsets: false
+		UseTargetableCellsOffsets: false
 		TargetableOffsets: 0,0,0, -421,-256,0, -421,256,0
 		Type: Rectangle
 			TopLeft: -683, -432

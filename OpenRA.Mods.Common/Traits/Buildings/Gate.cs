@@ -117,7 +117,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override void AddedToWorld(Actor self)
 		{
 			base.AddedToWorld(self);
-			blockedPositions = FootprintUtils.Tiles(self);
+			blockedPositions = Info.Tiles(self.Location);
 		}
 
 		bool IsBlocked()

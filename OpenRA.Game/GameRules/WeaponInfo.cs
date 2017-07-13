@@ -39,6 +39,12 @@ namespace OpenRA.GameRules
 		[Desc("The maximum range the weapon can fire.")]
 		public readonly WDist Range = WDist.Zero;
 
+		[Desc("First burst is aimed at this offset relative to target position.")]
+		public readonly WVec FirstBurstTargetOffset = WVec.Zero;
+
+		[Desc("Each burst after the first lands by this offset away from the previous burst.")]
+		public readonly WVec FollowingBurstTargetOffset = WVec.Zero;
+
 		[Desc("The sound played each time the weapon is fired.")]
 		public readonly string[] Report = null;
 

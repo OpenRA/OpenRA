@@ -122,7 +122,7 @@ V01:
 	EditorTilesetFilter:
 		ExcludeTilesets: DESERT, INTERIOR
 	HitShape:
-		UseOccupiedCellsOffsets: false
+		UseTargetableCellsOffsets: false
 		TargetableOffsets: -490,-384,0, 0,0,0, 0,470,0
 		Type: Rectangle
 			TopLeft: -768, -597
@@ -136,7 +136,7 @@ V02:
 	EditorTilesetFilter:
 		ExcludeTilesets: DESERT, INTERIOR
 	HitShape:
-		UseOccupiedCellsOffsets: false
+		UseTargetableCellsOffsets: false
 		TargetableOffsets: -490,-512,0, 0,0,0, 0,512,0
 		Type: Rectangle
 			TopLeft: -1024, -512
@@ -150,7 +150,7 @@ V03:
 	EditorTilesetFilter:
 		ExcludeTilesets: DESERT, INTERIOR
 	HitShape:
-		UseOccupiedCellsOffsets: false
+		UseTargetableCellsOffsets: false
 		TargetableOffsets: -490,-512,0, 0,0,0, 421,512,0, -210,512,0
 		Type: Rectangle
 			TopLeft: -1024, -597
@@ -164,7 +164,7 @@ V04:
 	EditorTilesetFilter:
 		ExcludeTilesets: DESERT, INTERIOR
 	HitShape:
-		UseOccupiedCellsOffsets: false
+		UseTargetableCellsOffsets: false
 		TargetableOffsets: 0,0,0, -421,-256,0, -421,256,0
 		Type: Rectangle
 			TopLeft: -683, -432
@@ -344,7 +344,7 @@ MISS:
 	Inherits: ^TechBuilding
 	Inherits@shape: ^3x2Shape
 	HitShape:
-		UseOccupiedCellsOffsets: false
+		UseTargetableCellsOffsets: false
 		TargetableOffsets: 0,0,0, 840,0,0, 840,-1024,0, 420,768,0, -840,0,0, -840,-1024,0, -840,1024,0
 	Selectable:
 		Priority: 0
@@ -392,7 +392,7 @@ OILB:
 	Inherits: ^TechBuilding
 	Inherits@shape: ^2x2Shape
 	HitShape:
-		UseOccupiedCellsOffsets: false
+		UseTargetableCellsOffsets: false
 		TargetableOffsets: 0,0,0, 630,-300,0, 420,512,0, -420,-512,0, -630,300,0
 	Selectable:
 		Priority: 0
@@ -582,7 +582,7 @@ V20:
 		Footprint: xx xx
 		Dimensions: 2,2
 	HitShape:
-		UseOccupiedCellsOffsets: false
+		UseTargetableCellsOffsets: false
 		TargetableOffsets: -840,-512,0, 0,0,0, -840,512,0
 		Type: Rectangle
 			TopLeft: -1024, -512
@@ -594,13 +594,12 @@ V21:
 		Footprint: xx xx
 		Dimensions: 2,2
 	HitShape:
-		UseOccupiedCellsOffsets: false
+		UseTargetableCellsOffsets: false
 		TargetableOffsets: 840,-512,0, 420,0,0, 840,512,0
 		Type: Rectangle
 			TopLeft: -1024, -1024
 			BottomRight: 1024, 0
 	HitShape@WELL:
-		UseOccupiedCellsOffsets: false
 		TargetableOffsets: -770,512,0
 		Type: Rectangle
 			TopLeft: 0, 0
@@ -622,7 +621,7 @@ V24:
 		Footprint: xx xx
 		Dimensions: 2,2
 	HitShape:
-		UseOccupiedCellsOffsets: false
+		UseTargetableCellsOffsets: false
 		TargetableOffsets: -630,-512,0, 0,0,0, -630,256,0, 420,-512,0
 		Type: Rectangle
 			TopLeft: -1024, -683
@@ -638,7 +637,7 @@ V25:
 	RevealsShroud:
 		Range: 10c0
 	HitShape:
-		UseOccupiedCellsOffsets: false
+		UseTargetableCellsOffsets: false
 		TargetableOffsets: 0,-128,0, 420,512,0
 		Type: Rectangle
 			TopLeft: -683, -683
@@ -703,7 +702,7 @@ V37:
 		Footprint: __xx_ ___xx
 		Dimensions: 5,2
 	HitShape:
-		UseOccupiedCellsOffsets: false
+		UseTargetableCellsOffsets: false
 		TargetableOffsets: 0,0,0, 0,1024,0
 		Type: Rectangle
 			TopLeft: -512, -597
@@ -722,7 +721,7 @@ RUSHOUSE:
 		Footprint: x x
 		Dimensions: 1,2
 	HitShape:
-		UseOccupiedCellsOffsets: false
+		UseTargetableCellsOffsets: false
 
 ASIANHUT:
 	Inherits: ^CivBuilding
@@ -739,7 +738,7 @@ SNOWHUT:
 	RenderSprites:
 		Scale: 0.7
 	HitShape:
-		UseOccupiedCellsOffsets: false
+		UseTargetableCellsOffsets: false
 
 LHUS:
 	Inherits: ^CivBuilding

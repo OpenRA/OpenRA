@@ -118,7 +118,7 @@ SPEN:
 	Targetable:
 		TargetTypes: Ground, Water, Structure, C4, DetonateAttack, SpyInfiltrate
 	Building:
-		Footprint: xxx xxx xxx
+		Footprint: XXX xxx XXX
 		Dimensions: 3,3
 		Adjacent: 8
 		TerrainTypes: Water
@@ -192,13 +192,10 @@ SPEN:
 		ZOffset: 256
 		RequiresCondition: primary
 	HitShape:
-		UseOccupiedCellsOffsets: false
-		TargetableOffsets: 0,0,0, 0,-1024,0, 0,1024,0
 		Type: Rectangle
 			TopLeft: -1536, -598
 			BottomRight: 1536, 598
 	HitShape@TOPANDBOTTOM:
-		UseOccupiedCellsOffsets: false
 		TargetableOffsets: 811,0,0, -811,0,0
 		Type: Rectangle
 			TopLeft: -555, -1110
@@ -220,7 +217,7 @@ SYRD:
 	Targetable:
 		TargetTypes: Ground, Water, Structure, C4, DetonateAttack, SpyInfiltrate
 	Building:
-		Footprint: xxx xxx xxx
+		Footprint: XXX xxx XXX
 		Dimensions: 3,3
 		Adjacent: 8
 		TerrainTypes: Water
@@ -300,13 +297,11 @@ SYRD:
 		ZOffset: 256
 		RequiresCondition: primary
 	HitShape:
-		UseOccupiedCellsOffsets: false
-		TargetableOffsets: 0,0,0, 0,-1024,0, 0,1024,0, 768,0,0, 768,-1024,0, 768,1024,0
+		TargetableOffsets: 768,0,0, 768,-1024,0, 768,1024,0
 		Type: Rectangle
 			TopLeft: -1536, -1152
 			BottomRight: 1536, 598
 	HitShape@BOTTOM:
-		UseOccupiedCellsOffsets: false
 		TargetableOffsets: -768,0,0
 		Type: Rectangle
 			TopLeft: -512, 598
@@ -548,7 +543,7 @@ DOME:
 	Inherits@IDISABLE: ^DisabledOverlay
 	Inherits@shape: ^2x2Shape
 	HitShape:
-		UseOccupiedCellsOffsets: false
+		UseTargetableCellsOffsets: false
 		TargetableOffsets: 0,0,0, 630,-384,0, 630,384,0, -700,-512,0, -700,512,0
 	Buildable:
 		Queue: Building
@@ -982,7 +977,7 @@ WEAP:
 FACT:
 	Inherits: ^Building
 	Building:
-		Footprint: xxx xxx xxx ===
+		Footprint: xxX xxx XxX ===
 		Dimensions: 3,4
 		LocalCenterOffset: 0,-512,0
 	Buildable:
@@ -1057,8 +1052,7 @@ FACT:
 		UseDeathTypeSuffix: false
 	ProvidesPrerequisite@buildingname:
 	HitShape:
-		UseOccupiedCellsOffsets: false
-		TargetableOffsets: 0,0,0, 0,-1024,0, 0,1024,0, 1483,0,0, 1483,-1024,0, 1273,939,0, -1483,0,0, -980,-640,0, -980,640,0
+		TargetableOffsets: 1273,939,0, -980,-640,0, -980,640,0
 		Type: Rectangle
 			TopLeft: -1536, -1536
 			BottomRight: 1536, 1536
@@ -1075,7 +1069,7 @@ PROC:
 	Tooltip:
 		Name: Ore Refinery
 	Building:
-		Footprint: _x_ xxx x== ===
+		Footprint: _X_ xxx X== ===
 		Dimensions: 3,4
 		LocalCenterOffset: 0,-512,0
 	Selectable:
@@ -1119,19 +1113,15 @@ PROC:
 		UseDeathTypeSuffix: false
 	ProvidesPrerequisite@buildingname:
 	HitShape:
-		UseOccupiedCellsOffsets: false
-		TargetableOffsets: 0,0,0, 0,-1024,0, 0,1024,0
 		Type: Rectangle
 			TopLeft: -1536, -512
 			BottomRight: 1536, 598
 	HitShape@TOP:
-		UseOccupiedCellsOffsets: false
 		TargetableOffsets: 1680,0,0
 		Type: Rectangle
 			TopLeft: -512, -1536
 			BottomRight: 512, -512
 	HitShape@BOTTOMLEFT:
-		UseOccupiedCellsOffsets: false
 		TargetableOffsets: -1260,-1024,0
 		Type: Rectangle
 			TopLeft: -1536, 598
@@ -1173,7 +1163,7 @@ HPAD:
 	Inherits: ^Building
 	Inherits@shape: ^2x2Shape
 	HitShape:
-		UseOccupiedCellsOffsets: false
+		UseTargetableCellsOffsets: false
 		TargetableOffsets: 0,0,0, 768,-512,0, 768,512,0, -281,-512,0, -630,512,0
 	Buildable:
 		Queue: Building
@@ -1260,7 +1250,7 @@ AFLD:
 	Inherits: ^Building
 	Inherits@shape: ^3x2Shape
 	HitShape:
-		UseOccupiedCellsOffsets: false
+		UseTargetableCellsOffsets: false
 		TargetableOffsets: 0,0,0, 420,0,0, 420,-1024,0, 420,1024,0, -777,0,0, -777,-1024,0, -777,1024,0
 	Buildable:
 		Queue: Building
@@ -1395,7 +1385,7 @@ POWR:
 	Inherits@POWER_OUTAGE: ^DisabledByPowerOutage
 	Inherits@shape: ^2x2Shape
 	HitShape:
-		UseOccupiedCellsOffsets: false
+		UseTargetableCellsOffsets: false
 		TargetableOffsets: 0,0,0, 640,-384,0, 640,512,0, -710,-512,0, -710,512,0
 	Buildable:
 		Queue: Building
@@ -1434,8 +1424,7 @@ APWR:
 	Inherits@POWER_OUTAGE: ^DisabledByPowerOutage
 	Inherits@shape: ^3x2Shape
 	HitShape:
-		UseOccupiedCellsOffsets: false
-		TargetableOffsets: 0,0,0, 840,0,0, 840,-1024,0, 840,1024,0, -840,0,0, -355,-1024,0, -840,1024,0
+		TargetableOffsets: -355,-1024,0
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 110
@@ -1448,7 +1437,7 @@ APWR:
 	ProvidesPrerequisite:
 		Prerequisite: anypower
 	Building:
-		Footprint: xxx xxx ===
+		Footprint: xxx Xxx ===
 		Dimensions: 3,3
 		LocalCenterOffset: 0,-512,0
 	Selectable:
@@ -1475,8 +1464,7 @@ STEK:
 	Inherits: ^ScienceBuilding
 	Inherits@shape: ^3x2Shape
 	HitShape:
-		UseOccupiedCellsOffsets: false
-		TargetableOffsets: 0,0,0, 840,0,0, -840,0,0, 420,-768,0, 420,768,0, -770,-768,0, -770,768,0
+		TargetableOffsets: 420,-768,0, 420,768,0, -770,-768,0, -770,768,0
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 150
@@ -1489,7 +1477,7 @@ STEK:
 	ProvidesPrerequisite:
 		Prerequisite: techcenter
 	Building:
-		Footprint: xxx xxx ===
+		Footprint: XxX XxX ===
 		Dimensions: 3,3
 		LocalCenterOffset: 0,-512,0
 	Health:
@@ -1507,7 +1495,7 @@ BARR:
 	Inherits: ^Building
 	Inherits@shape: ^2x2Shape
 	HitShape:
-		UseOccupiedCellsOffsets: false
+		UseTargetableCellsOffsets: false
 		TargetableOffsets: 0,0,0, 490,-470,0, 355,512,0, -355,-512,0, -630,512,0
 	Buildable:
 		Queue: Building
@@ -1635,7 +1623,7 @@ TENT:
 	Inherits: ^Building
 	Inherits@shape: ^2x2Shape
 	HitShape:
-		UseOccupiedCellsOffsets: false
+		UseTargetableCellsOffsets: false
 		TargetableOffsets: 0,0,0, 630,-512,0, 355,512,0, -281,-512,0, -630,512,0
 	Buildable:
 		Queue: Building
@@ -1731,7 +1719,7 @@ FIX:
 	Tooltip:
 		Name: Service Depot
 	Building:
-		Footprint: _x_ xxx _x_
+		Footprint: _X_ xxx _X_
 		Dimensions: 3,3
 	Selectable:
 		Bounds: 68,34,0,3
@@ -1760,13 +1748,10 @@ FIX:
 		Amount: -30
 	ProvidesPrerequisite@buildingname:
 	HitShape:
-		UseOccupiedCellsOffsets: false
-		TargetableOffsets: 0,0,0, 0,-1024,0, 0,1024,0
 		Type: Rectangle
 			TopLeft: -1536, -683
 			BottomRight: 1536, 853
 	HitShape@TOPANDBOTTOM:
-		UseOccupiedCellsOffsets: false
 		TargetableOffsets: 840,0,0, -1060,0,0
 		Type: Rectangle
 			TopLeft: -640, -768
@@ -1856,7 +1841,7 @@ BRIK:
 VGATE:
 	Inherits: ^Gate
 	HitShape:
-		UseOccupiedCellsOffsets: true
+		UseTargetableCellsOffsets: true
 		Type: Rectangle
 			TopLeft: -512, -1536
 			BottomRight: 512, 1536
@@ -1873,7 +1858,7 @@ VGATE:
 HGATE:
 	Inherits: ^Gate
 	HitShape:
-		UseOccupiedCellsOffsets: true
+		UseTargetableCellsOffsets: true
 		Type: Rectangle
 			TopLeft: -1536, -512
 			BottomRight: 1536, 512

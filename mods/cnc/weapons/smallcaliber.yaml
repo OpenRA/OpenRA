@@ -30,13 +30,19 @@ Sniper:
 	Warhead@2Eff: CreateEffect
 		Explosions: piffs
 		VictimScanRadius: 0
+		ValidTargets: Ground, Water, Air
 
 HighV:
 	Inherits: ^HeavyMG
 
 Vulcan:
 	Inherits: ^HeavyMG
-	ReloadDelay: 2
+	Range: 8c0
+	Burst: 9
+	BurstDelay: 2
+	FirstBurstTargetOffset: -2984,0,0
+	FollowingBurstTargetOffset: 746,0,0
+	ReloadDelay: 125
 	Report: gun5.aud
 	Warhead@1Dam: SpreadDamage
 		Spread: 426
@@ -137,6 +143,7 @@ APCGun:
 		DamageTypes: Prone50Percent, TriggerProne, DefaultDeath
 	Warhead@2Eff: CreateEffect
 		Explosions: small_poof
+		ValidTargets: Ground, Water, Air
 
 APCGun.AA:
 	Inherits: APCGun

@@ -7,14 +7,15 @@ ParaBomb:
 		OpenSequence: open
 		Velocity: 0, 0, -86
 		Acceleration: 0, 0, 0
+		Shadow: True
 	Warhead@1Dam: SpreadDamage
 		Spread: 768
 		Damage: 300
 		Versus:
 			None: 30
-			Wood: 75
+			Wood: 40
 			Light: 75
-			Concrete: 50
+			Concrete: 25
 		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
@@ -22,11 +23,12 @@ ParaBomb:
 	Warhead@3Eff: CreateEffect
 		Explosions: artillery_explosion
 		ImpactSounds: kaboom15.aud
-		InvalidImpactTypes: Water
+		ValidTargets: Ground, Ship
 	Warhead@4EffWater: CreateEffect
 		Explosions: small_splash
 		ImpactSounds: splash9.aud
-		ValidImpactTypes: Water
+		ValidTargets: Water, Underwater
+		InvalidTargets: Ship, Structure
 
 Atomic:
 	ValidTargets: Ground, Trees, Water, Underwater, Air

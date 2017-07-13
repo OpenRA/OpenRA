@@ -149,7 +149,7 @@ namespace OpenRA.Mods.Common.Traits
 
 				var buildingInfo = Info.TraitInfoOrDefault<BuildingInfo>();
 				if (buildingInfo != null)
-					offset = FootprintUtils.CenterOffset(world, buildingInfo);
+					offset = buildingInfo.CenterOffset(world);
 
 				return world.Map.CenterOfSubCell(cell, subCell) + offset;
 			}

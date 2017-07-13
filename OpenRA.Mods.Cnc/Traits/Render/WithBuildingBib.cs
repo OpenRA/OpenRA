@@ -41,7 +41,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			var rows = HasMinibib ? 1 : 2;
 			var width = bi.Dimensions.X;
 			var bibOffset = bi.Dimensions.Y - rows;
-			var centerOffset = FootprintUtils.CenterOffset(init.World, bi);
+			var centerOffset = bi.CenterOffset(init.World);
 			var map = init.World.Map;
 			var location = CPos.Zero;
 
@@ -93,7 +93,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			var rows = info.HasMinibib ? 1 : 2;
 			var width = bi.Dimensions.X;
 			var bibOffset = bi.Dimensions.Y - rows;
-			var centerOffset = FootprintUtils.CenterOffset(self.World, bi);
+			var centerOffset = bi.CenterOffset(self.World);
 			var location = self.Location;
 			var map = self.World.Map;
 

@@ -36,7 +36,7 @@ namespace OpenRA.Mods.Common.Traits
 				if (b == null)
 					return;
 
-				foreach (var u in FootprintUtils.Tiles(map.Rules, a.Info.Name, b, a.Location))
+				foreach (var u in b.Tiles(a.Location))
 					if (influence.Contains(u) && influence[u] == null)
 						influence[u] = a;
 			};
@@ -47,7 +47,7 @@ namespace OpenRA.Mods.Common.Traits
 				if (b == null)
 					return;
 
-				foreach (var u in FootprintUtils.Tiles(map.Rules, a.Info.Name, b, a.Location))
+				foreach (var u in b.Tiles(a.Location))
 					if (influence.Contains(u) && influence[u] == a)
 						influence[u] = null;
 			};

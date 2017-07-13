@@ -32,6 +32,7 @@
 		Explosions: small_frag
 		ImpactSounds: xplos.aud
 		VictimScanRadius: 0
+		ValidTargets: Ground, Water, Air
 
 Dragon:
 	Inherits: ^MissileWeapon
@@ -128,12 +129,12 @@ MammothMissiles:
 	Warhead@3Eff: CreateEffect
 		Explosions: small_poof
 		ImpactSounds: xplos.aud
-		InvalidImpactTypes: Air, AirHit
+		ValidTargets: Ground, Water
 	Warhead@4EffAir: CreateEffect
 		Explosions: small_building
 		ImpactSounds: xplos.aud
 		VictimScanRadius: 0
-		ValidImpactTypes: Air, AirHit
+		ValidTargets: Air
 
 227mm:
 	Inherits: ^MissileWeapon
@@ -207,12 +208,12 @@ BoatMissile:
 	Warhead@3Eff: CreateEffect
 		Explosions: small_poof
 		ImpactSounds: xplos.aud
-		InvalidImpactTypes: Air, AirHit
+		ValidTargets: Ground, Water
 	Warhead@4EffAir: CreateEffect
 		Explosions: small_building
 		ImpactSounds: xplos.aud
-		ValidImpactTypes: Air, AirHit
 		VictimScanRadius: 0
+		ValidTargets: Air
 
 TowerMissle:
 	Inherits: ^MissileWeapon
