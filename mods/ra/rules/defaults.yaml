@@ -587,6 +587,8 @@
 		Footprint: x
 		TerrainTypes: Clear,Road
 		RequiresBaseProvider: True
+	RequiresBuildableArea:
+		AreaTypes: building
 	SoundOnDamageTransition:
 		DamagedSounds: kaboom1.aud
 		DestroyedSounds: kaboom22.aud
@@ -616,6 +618,7 @@
 	Huntable:
 	UpdatesPlayerStatistics:
 	GivesBuildableArea:
+		AreaTypes: building
 	RepairableBuilding:
 		PlayerExperience: 25
 	EngineerRepairable:
@@ -662,8 +665,10 @@
 		Dimensions: 1,1
 		Footprint: x
 		BuildSounds: placbldg.aud
-		Adjacent: 7
 		TerrainTypes: Clear,Road
+	RequiresBuildableArea:
+		AreaTypes: building
+		Adjacent: 7
 	SoundOnDamageTransition:
 		DamagedSounds: sandbag2.aud
 		DestroyedSounds: sandbag2.aud
@@ -706,12 +711,14 @@
 	Tooltip:
 		Name: Gate
 	Gate:
-		Adjacent: 4
 		BlocksProjectilesHeight: 0
 		BuildSounds: place2.aud
 		OpeningSound: cashturn.aud
 		ClosingSound: cashturn.aud
 		TerrainTypes: Clear, Road
+	RequiresBuildableArea:
+		AreaTypes: building
+		Adjacent: 4
 	EditorTilesetFilter:
 		Categories: Wall
 

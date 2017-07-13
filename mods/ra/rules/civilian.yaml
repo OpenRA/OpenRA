@@ -85,6 +85,7 @@ FCOM:
 		CaptureCompleteTime: 30
 	ExternalCapturableBar:
 	GivesBuildableArea:
+		AreaTypes: building
 	BaseProvider:
 		Range: 8c0
 	EngineerRepairable:

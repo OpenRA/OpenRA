@@ -1210,6 +1210,30 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				if (engineVersion < 20171120)
+				{
+					// AreaTypes support is added to GivesBuildableArea and it is required.
+					var givesBuildableArea = node.Value.Nodes.FirstOrDefault(n => n.Key == "GivesBuildableArea");
+					if (givesBuildableArea != null)
+						givesBuildableArea.Value.Nodes.Add(new MiniYamlNode("AreaTypes", "building"));
+
+					// RequiresBuildableArea trait is added and Building.Adjacent is moved there.
+					var building = node.Value.Nodes.FirstOrDefault(n => n.Key == "Building");
+					if (building != null)
+					{
+						var adjacent = building.Value.Nodes.FirstOrDefault(n => n.Key == "Adjacent");
+						var areaTypes = new MiniYamlNode("AreaTypes", "building");
+						var requiresBuildableArea = new MiniYamlNode("RequiresBuildableArea", "");
+
+						requiresBuildableArea.Value.Nodes.Add(areaTypes);
+						if (adjacent != null)
+							requiresBuildableArea.Value.Nodes.Add(adjacent);
+
+						node.Value.Nodes.Add(requiresBuildableArea);
+						building.Value.Nodes.Remove(adjacent);
+					}
+				}
+
 				UpgradeActorRules(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 

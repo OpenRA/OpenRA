@@ -395,8 +395,11 @@
 		Footprint: x
 		TerrainTypes: Rock, Concrete
 		BuildSounds: BUILD1.WAV
+	RequiresBuildableArea:
+		AreaTypes: building
 		Adjacent: 3
 	GivesBuildableArea:
+		AreaTypes: building
 	Capturable:
 		CaptureThreshold: 100
 	SoundOnDamageTransition:

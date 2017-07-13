@@ -348,9 +348,10 @@ NATMPL:
 	Tooltip:
 		Name: Temple of Nod
 	Building:
-		Adjacent: 3
 		Footprint: xxxx xxxx xxxX
 		Dimensions: 4,3
+	RequiresBuildableArea:
+		Adjacent: 3
 	Selectable:
 		Bounds: 134, 120, 12, -12
 	Health:

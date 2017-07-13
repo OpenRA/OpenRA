@@ -125,8 +125,10 @@ SPEN:
 	Building:
 		Footprint: XXX xxx XXX
 		Dimensions: 3,3
-		Adjacent: 8
 		TerrainTypes: Water
+	RequiresBuildableArea:
+		AreaTypes: building
+		Adjacent: 8
 	-GivesBuildableArea:
 	Health:
 		HP: 1000
@@ -227,8 +229,9 @@ SYRD:
 	Building:
 		Footprint: XXX xxx XXX
 		Dimensions: 3,3
-		Adjacent: 8
 		TerrainTypes: Water
+	RequiresBuildableArea:
+		Adjacent: 8
 	-GivesBuildableArea:
 	Health:
 		HP: 1000
@@ -1154,8 +1157,6 @@ SILO:
 		Cost: 150
 	Tooltip:
 		Name: Silo
-	Building:
-		Adjacent: 2
 	-GivesBuildableArea:
 	Health:
 		HP: 300
@@ -1603,8 +1604,6 @@ KENN:
 		Cost: 100
 	Tooltip:
 		Name: Kennel
-	Building:
-		Adjacent: 2
 	-GivesBuildableArea:
 	Health:
 		HP: 300

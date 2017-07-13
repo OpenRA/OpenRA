@@ -309,6 +309,8 @@
 		Footprint: x
 		BuildSounds: place2.aud
 		TerrainTypes: Clear, Road, DirtRoad, Rough
+	RequiresBuildableArea:
+		AreaTypes: building
 		Adjacent: 4
 	FrozenUnderFog:
 	SoundOnDamageTransition:
@@ -340,6 +342,7 @@
 	Inherits@1: ^BasicBuilding
 	Inherits@2: ^EmpDisable
 	GivesBuildableArea:
+		AreaTypes: building
 	Capturable:
 	RepairableBuilding:
 		IndicatorPalette: mouse
@@ -439,8 +442,10 @@
 		Dimensions: 1,1
 		Footprint: x
 		BuildSounds: place2.aud
-		Adjacent: 7
 		TerrainTypes: Clear, Rough, Road, DirtRoad, Green, Sand, Pavement
+	RequiresBuildableArea:
+		AreaTypes: building
+		Adjacent: 7
 	SoundOnDamageTransition:
 		DamagedSounds: expnew01.aud
 		DestroyedSounds: crmble2.aud
@@ -1134,7 +1139,6 @@
 		OpenSequence: open
 	Tooltip:
 	Gate:
-		Adjacent: 4
 		BuildSounds: place2.aud
 		OpeningSound: gateup1.aud
 		ClosingSound: gatedwn1.aud

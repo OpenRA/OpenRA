@@ -175,6 +175,7 @@ FTUR:
 	Power:
 		Amount: 0
 	GivesBuildableArea:
+		AreaTypes: building
 
 PBOX:
 	Buildable:
@@ -188,6 +189,7 @@ PBOX:
 	Power:
 		Amount: 0
 	GivesBuildableArea:
+		AreaTypes: building
 
 DOG:
 	Buildable:
