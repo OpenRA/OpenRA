@@ -15,6 +15,8 @@
 	RenderSprites:
 
 ^1x1Shape:
+	Entrances:
+		UseOccupiedCellsOffsets: true
 	HitShape:
 		UseTargetableCellsOffsets: true
 		Type: Rectangle
@@ -22,6 +24,8 @@
 			BottomRight: 512, 512
 
 ^2x1Shape:
+	Entrances:
+		UseOccupiedCellsOffsets: true
 	HitShape:
 		UseTargetableCellsOffsets: true
 		Type: Rectangle
@@ -29,6 +33,8 @@
 			BottomRight: 1024, 512
 
 ^2x2Shape:
+	Entrances:
+		UseOccupiedCellsOffsets: true
 	HitShape:
 		UseTargetableCellsOffsets: true
 		Type: Rectangle
@@ -36,6 +42,8 @@
 			BottomRight: 1024, 1024
 
 ^3x2Shape:
+	Entrances:
+		UseOccupiedCellsOffsets: true
 	HitShape:
 		UseTargetableCellsOffsets: true
 		Type: Rectangle

@@ -368,6 +368,8 @@
 		VisibilityType: CenterPosition
 	Targetable:
 		TargetTypes: Ground, C4, Structure
+	Entrances:
+		UseOccupiedCellsOffsets: true
 	HitShape:
 		UseTargetableCellsOffsets: true
 		Type: Rectangle

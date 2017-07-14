@@ -165,6 +165,8 @@
 		Priority: 3
 	Targetable:
 		TargetTypes: Ground, Building, C4
+	Entrances:
+		UseOccupiedCellsOffsets: true
 	HitShape:
 		UseOccupiedCellsOffsets: true
 	Building:
