@@ -154,6 +154,8 @@
     <Compile Include="FileFormats\HvaReader.cs" />
     <Compile Include="FileFormats\VxlReader.cs" />
     <Compile Include="Traits\World\VoxelNormalsPalette.cs" />
+    <Compile Include="Traits\TDGunboat.cs" />
+    <Compile Include="Traits\Attack\AttackTDGunboatTurreted.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.Game\OpenRA.Game.csproj">

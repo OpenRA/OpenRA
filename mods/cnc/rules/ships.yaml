@@ -10,20 +10,18 @@ BOAT:
 		HP: 700
 	Armor:
 		Type: Heavy
-	Mobile:
-		InitialFacing: 64
-		TurnSpeed: 32
+	TDGunboat:
 		Speed: 28
-		OnRails: true
 	RevealsShroud:
 		Range: 7c0
+		Type: CenterPosition
 	Turreted:
 		TurnSpeed: 5
 		Offset: 0,896,171
 	Armament:
 		Weapon: BoatMissile
 		LocalOffset: 85,-85,0, 85,85,0
-	AttackTurreted:
+	AttackTDGunboatTurreted:
 	-QuantizeFacingsFromSequence:
 	BodyOrientation:
 		QuantizedFacings: 2
