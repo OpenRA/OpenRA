@@ -707,7 +707,7 @@
 		GenericVisibility: None
 	FrozenUnderFog:
 	EditorTilesetFilter:
-		Categories: Tech building  
+		Categories: Tech building
 
 ^FakeBuilding:
 	Inherits: ^Building
@@ -727,7 +727,7 @@
 		ZOffset: 256
 	-EmitInfantryOnSell:
 	-MustBeDestroyed:
-	 EditorTilesetFilter:
+	EditorTilesetFilter:
 		Categories: Fake
 
 ^InfiltratableFake:

@@ -419,13 +419,13 @@ Container@EDITOR_WORLD_ROOT:
 ScrollPanel@ACTOR_CATEGORY_FILTER_PANEL:
 	Width: 250
 	Children:
-		Container@SELECT_CATEGORIES_BUTTONS
+		Container@SELECT_CATEGORIES_BUTTONS:
 			Width: PARENT_RIGHT
 			Height: 30
 			Children:
 				Button@SELECT_ALL:
 					X: 10
-					Y: 2 
+					Y: 2
 					Width: 100
 					Height: 25
 					Text: Select all
