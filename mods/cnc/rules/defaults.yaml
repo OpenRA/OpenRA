@@ -272,6 +272,7 @@
 		AirborneCondition: airborne
 		CruisingCondition: cruising
 		CanHover: True
+		TakeOffOnResupply: true
 	HiddenUnderFog:
 		Type: GroundPosition
 	ActorLostNotification:

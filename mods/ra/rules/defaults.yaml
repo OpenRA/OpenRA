@@ -548,6 +548,7 @@
 		CanHover: True
 		CruisingCondition: cruising
 		WaitDistanceFromResupplyBase: 4c0
+		TakeOffOnResupply: true
 	GpsDot:
 		String: Helicopter
 	Hovers@CRUISING:
