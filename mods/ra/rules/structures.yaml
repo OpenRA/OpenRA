@@ -77,9 +77,9 @@ GAP:
 	WithSpriteBody:
 		PauseAnimationWhenDisabled: true
 	Health:
-		HP: 1000
+		HP: 500
 	Armor:
-		Type: Wood
+		Type: Heavy
 	RevealsShroud:
 		Range: 6c0
 		RevealGeneratedShroud: False
@@ -126,7 +126,7 @@ SPEN:
 	Health:
 		HP: 1000
 	Armor:
-		Type: Light
+		Type: Wood
 	RevealsShroud:
 		Range: 5c0
 	Exit@1:
@@ -225,7 +225,7 @@ SYRD:
 	Health:
 		HP: 1000
 	Armor:
-		Type: Light
+		Type: Wood
 	RevealsShroud:
 		Range: 5c0
 	Exit@1:
