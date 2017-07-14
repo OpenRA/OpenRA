@@ -139,6 +139,9 @@ BOAT:
 		InitialStance: AttackAnything
 	RejectsOrders:
 		Except: Attack
+	RevealsShroud:
+		ValidStances: Ally, Neutral, Enemy
+		Range: 4c0
 
 TRAN.IN:
 	Inherits: TRAN
@@ -148,14 +151,6 @@ TRAN.IN:
 		Image: TRAN
 	Buildable:
 		Prerequisites: ~disabled
-
-Camera.Boat:
-	AlwaysVisible:
-	Mobile:
-		TerrainSpeeds:
-	RevealsShroud:
-		Range: 4c0
-	ScriptTriggers:
 
 NUKEOUT.IN:
 	Inherits: NUKE

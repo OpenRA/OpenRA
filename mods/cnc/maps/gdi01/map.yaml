@@ -375,12 +375,6 @@ Actors:
 	nod3: waypoint
 		Location: 52,52
 		Owner: Neutral
-	gunboatRight: waypoint
-		Location: 61,59
-		Owner: Neutral
-	gunboatLeft: waypoint
-		Location: 35,59
-		Owner: Neutral
 	lstStart: waypoint
 		Location: 54,61
 		Owner: Neutral

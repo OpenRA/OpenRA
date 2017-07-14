@@ -729,18 +729,6 @@ Actors:
 		Location: 25,60
 		Owner: GDI
 		Facing: 192
-	GunboatLeft1: waypoint
-		Owner: Neutral
-		Location: 3,59
-	GunboatLeft2: waypoint
-		Owner: Neutral
-		Location: 3,60
-	GunboatRight1: waypoint
-		Owner: Neutral
-		Location: 61,59
-	GunboatRight2: waypoint
-		Owner: Neutral
-		Location: 61,60
 	MoneyCrate: MoneyCrate
 		Owner: Neutral
 		Location: 24,54
