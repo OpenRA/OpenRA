@@ -602,10 +602,6 @@
 	Inherits@1: ^ExistsInWorld
 	Inherits@3: ^SpriteActor
 	Huntable:
-	Mobile:
-		Crushes: crate
-		TerrainSpeeds:
-			Water: 100
 	SelectionDecorations:
 	WithSpriteControlGroupDecoration:
 	Selectable:
