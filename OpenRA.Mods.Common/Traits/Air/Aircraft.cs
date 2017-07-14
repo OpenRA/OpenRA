@@ -26,30 +26,35 @@ namespace OpenRA.Mods.Common.Traits
 		UsesInit<LocationInit>, UsesInit<FacingInit>, IActorPreviewInitInfo
 	{
 		public readonly WDist CruiseAltitude = new WDist(1280);
-		public readonly WDist IdealSeparation = new WDist(1706);
+
 		[Desc("Whether the aircraft can be repulsed.")]
 		public readonly bool Repulsable = true;
+
+		[Desc("The distance it tries to maintain from other aircraft if repulsable.")]
+		public readonly WDist IdealSeparation = new WDist(1706);
+
 		[Desc("The speed at which the aircraft is repulsed from other aircraft. Specify -1 for normal movement speed.")]
 		public readonly int RepulsionSpeed = -1;
 
 		[ActorReference]
 		public readonly HashSet<string> RepairBuildings = new HashSet<string> { };
+
 		[ActorReference]
 		public readonly HashSet<string> RearmBuildings = new HashSet<string> { };
+
 		public readonly int InitialFacing = 0;
+
 		public readonly int TurnSpeed = 255;
+
 		public readonly int Speed = 1;
 
 		[Desc("Minimum altitude where this aircraft is considered airborne.")]
 		public readonly int MinAirborneAltitude = 1;
+
 		public readonly HashSet<string> LandableTerrainTypes = new HashSet<string>();
 
 		[Desc("Can the actor be ordered to move in to shroud?")]
 		public readonly bool MoveIntoShroud = true;
-
-		public virtual object Create(ActorInitializer init) { return new Aircraft(init, this); }
-		public int GetInitialFacing() { return InitialFacing; }
-		public WDist GetCruiseAltitude() { return CruiseAltitude; }
 
 		[VoiceReference] public readonly string Voice = "Action";
 
@@ -73,6 +78,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Does this actor cancel its previous activity after resupplying?")]
 		public readonly bool AbortOnResupply = true;
 
+		[Desc("Altitude at which the aircraft considers itself landed.")]
 		public readonly WDist LandAltitude = WDist.Zero;
 
 		[Desc("How fast this actor ascends or descends when using horizontal take off/landing.")]
@@ -96,6 +102,11 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Facing to use for actor previews (map editor, color picker, etc)")]
 		public readonly int PreviewFacing = 92;
 
+		public int GetInitialFacing() { return InitialFacing; }
+		public WDist GetCruiseAltitude() { return CruiseAltitude; }
+
+		public virtual object Create(ActorInitializer init) { return new Aircraft(init, this); }
+
 		IEnumerable<object> IActorPreviewInitInfo.ActorPreviewInits(ActorInfo ai, ActorPreviewType type)
 		{
 			yield return new FacingInit(PreviewFacing);
@@ -106,6 +117,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly BooleanExpression LandOnCondition;
 
 		public IReadOnlyDictionary<CPos, SubCell> OccupiedCells(ActorInfo info, CPos location, SubCell subCell = SubCell.Any) { return new ReadOnlyDictionary<CPos, SubCell>(); }
+
 		bool IOccupySpaceInfo.SharesCell { get { return false; } }
 
 		// Used to determine if an aircraft can spawn landed
