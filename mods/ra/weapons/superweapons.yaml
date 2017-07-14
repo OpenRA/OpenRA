@@ -13,7 +13,7 @@ ParaBomb:
 		Damage: 300
 		Versus:
 			None: 30
-			Wood: 40
+			Wood: 30
 			Light: 75
 			Concrete: 25
 		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
@@ -38,6 +38,7 @@ Atomic:
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		ValidTargets: Ground, Trees, Water, Underwater, Air
 		Versus:
+			Wood: 25
 			Concrete: 25
 		DamageTypes: Prone50Percent, TriggerProne, FireDeath, Incendiary
 	Warhead@2Res_impact: DestroyResource
@@ -57,6 +58,7 @@ Atomic:
 		Delay: 5
 		ValidTargets: Ground, Trees, Water, Underwater, Air
 		Versus:
+			Wood: 25
 			Concrete: 25
 		DamageTypes: Prone50Percent, TriggerProne, FireDeath, Incendiary
 	Warhead@6Res_areanuke1: DestroyResource
@@ -78,6 +80,7 @@ Atomic:
 		Delay: 10
 		ValidTargets: Ground, Water, Underwater, Air
 		Versus:
+			Wood: 50
 			Concrete: 25
 		DamageTypes: Prone50Percent, TriggerProne, FireDeath, Incendiary
 	Warhead@10Dam_areanuke2: SpreadDamage
