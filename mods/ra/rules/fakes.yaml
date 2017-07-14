@@ -2,6 +2,9 @@ FPWR:
 	Inherits: ^FakeBuilding
 	Inherits@infiltrate: ^InfiltratableFake
 	Inherits@shape: ^2x2Shape
+	Entrances:
+		UseTargetableCellsOffsets: false
+		EntranceOffsets: 640,-384,0, 640,512,0, -710,-512,0, -710,512,0
 	HitShape:
 		UseTargetableCellsOffsets: false
 		TargetableOffsets: 0,0,0, 640,-384,0, 640,512,0, -710,-512,0, -710,512,0
@@ -61,6 +64,8 @@ SYRF:
 		Type: Light
 	EditorTilesetFilter:
 		ExcludeTilesets: INTERIOR
+	Entrances:
+		EntranceOffsets: 768,0,0, 768,-1024,0, 768,1024,0
 	HitShape:
 		TargetableOffsets: 768,0,0, 768,-1024,0, 768,1024,0
 		Type: Rectangle
@@ -103,6 +108,8 @@ SPEF:
 		Type: Light
 	EditorTilesetFilter:
 		ExcludeTilesets: INTERIOR
+	Entrances:
+		EntranceOffsets: 811,0,0, -811,0,0
 	HitShape:
 		Type: Rectangle
 			TopLeft: -1536, -598
@@ -149,6 +156,9 @@ DOMF:
 	Inherits@IDISABLE: ^DisabledOverlay
 	Inherits@infiltrate: ^InfiltratableFake
 	Inherits@shape: ^2x2Shape
+	Entrances:
+		UseTargetableCellsOffsets: false
+		EntranceOffsets: 630,-384,0, 630,384,0, -700,-512,0, -700,512,0
 	HitShape:
 		UseTargetableCellsOffsets: false
 		TargetableOffsets: 0,0,0, 630,-384,0, 630,384,0, -700,-512,0, -700,512,0
@@ -204,6 +214,8 @@ FIXF:
 		Image: FIX
 	Valued:
 		Cost: 120
+	Entrances:
+		EntranceOffsets: 840,0,0, -1060,0,0
 	HitShape:
 		Type: Rectangle
 			TopLeft: -1536, -683
@@ -218,6 +230,8 @@ FAPW:
 	Inherits: ^FakeBuilding
 	Inherits@infiltrate: ^InfiltratableFake
 	Inherits@shape: ^3x2Shape
+	Entrances:
+		EntranceOffsets: -355,-1024,0
 	HitShape:
 		TargetableOffsets: -355,-1024,0
 	Buildable:
@@ -369,6 +383,8 @@ FACF:
 		HP: 1500
 	Armor:
 		Type: Wood
+	Entrances:
+		EntranceOffsets: 1273,939,0, -980,-640,0, -980,640,0
 	HitShape:
 		TargetableOffsets: 1273,939,0, -980,-640,0, -980,640,0
 		Type: Rectangle

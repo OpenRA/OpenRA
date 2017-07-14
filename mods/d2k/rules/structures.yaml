@@ -380,6 +380,8 @@ light_factory:
 	WithBuildingBib:
 	Health:
 		HP: 3300
+	Entrances:
+		EntranceOffsets: -210,608,0
 	HitShape:
 		TargetableOffsets: -210,608,0
 		Type: Rectangle
@@ -464,6 +466,8 @@ heavy_factory:
 	WithBuildingBib:
 	Health:
 		HP: 3500
+	Entrances:
+		EntranceOffsets: -1155,-704,0, -1365,832,0
 	HitShape:
 		TargetableOffsets: -1155,-704,0, -1365,832,0
 		Type: Rectangle
@@ -892,6 +896,8 @@ high_tech_factory:
 	WithBuildingBib:
 	Health:
 		HP: 3500
+	Entrances:
+		EntranceOffsets: -1312,0,0, -1312,-1024,0, -1312,1024,0
 	HitShape:
 		TargetableOffsets: -1312,0,0, -1312,-1024,0, -1312,1024,0
 		Type: Rectangle
@@ -969,6 +975,8 @@ research_centre:
 	WithBuildingBib:
 	Health:
 		HP: 2500
+	Entrances:
+		EntranceOffsets: -1574,-158,0, -1050,-1024,0, -1155,960,0
 	HitShape:
 		TargetableOffsets: -1574,-158,0, -1050,-1024,0, -1155,960,0
 		Type: Rectangle
