@@ -732,7 +732,6 @@ namespace OpenRA.Mods.Common.Traits
 							self.QueueActivity(new Turn(self, Info.InitialFacing));
 							self.QueueActivity(new HeliLand(self, false));
 							self.QueueActivity(new ResupplyAircraft(self));
-							self.QueueActivity(new TakeOff(self));
 						};
 
 						self.QueueActivity(order.Queued, new CallFunc(enter));
