@@ -201,14 +201,24 @@ namespace OpenRA.Mods.Common.Traits
 			landNow = Info.LandOnCondition.Evaluate(variables);
 		}
 
-		public void Created(Actor self)
+		void INotifyCreated.Created(Actor self)
+		{
+			Created(self);
+		}
+
+		protected virtual void Created(Actor self)
 		{
 			conditionManager = self.TraitOrDefault<ConditionManager>();
 			speedModifiers = self.TraitsImplementing<ISpeedModifier>().ToArray().Select(sm => sm.GetSpeedModifier());
 			cachedPosition = self.CenterPosition;
 		}
 
-		public void AddedToWorld(Actor self)
+		void INotifyAddedToWorld.AddedToWorld(Actor self)
+		{
+			AddedToWorld(self);
+		}
+
+		protected virtual void AddedToWorld(Actor self)
 		{
 			self.World.AddToMaps(self, this);
 
@@ -219,7 +229,26 @@ namespace OpenRA.Mods.Common.Traits
 				OnCruisingAltitudeReached();
 		}
 
-		public virtual void Tick(Actor self)
+		void INotifyRemovedFromWorld.RemovedFromWorld(Actor self)
+		{
+			RemovedFromWorld(self);
+		}
+
+		protected virtual void RemovedFromWorld(Actor self)
+		{
+			UnReserve();
+			self.World.RemoveFromMaps(self, this);
+
+			OnCruisingAltitudeLeft();
+			OnAirborneAltitudeLeft();
+		}
+
+		void ITick.Tick(Actor self)
+		{
+			Tick(self);
+		}
+
+		protected virtual void Tick(Actor self)
 		{
 			if (firstTick)
 			{
@@ -742,15 +771,6 @@ namespace OpenRA.Mods.Common.Traits
 		}
 
 		#endregion
-
-		public void RemovedFromWorld(Actor self)
-		{
-			UnReserve();
-			self.World.RemoveFromMaps(self, this);
-
-			OnCruisingAltitudeLeft();
-			OnAirborneAltitudeLeft();
-		}
 
 		#region Airborne conditions
 
