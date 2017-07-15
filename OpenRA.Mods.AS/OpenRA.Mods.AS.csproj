@@ -110,6 +110,7 @@
     <Compile Include="Traits\Warheads\FireClusterWarhead.cs" />
     <Compile Include="Traits\Warheads\FireFragmentWarhead.cs" />
     <Compile Include="Traits\Warheads\FireShrapnelWarhead.cs" />
+    <Compile Include="Traits\Warheads\GlobalExplodeWeaponWarhead.cs" />
     <Compile Include="Traits\Warheads\SpawnActorWarhead.cs" />
     <Compile Include="Traits\Warheads\WarheadAS.cs" />
     <Compile Include="Traits\Render\WithExitOverlay.cs" />
