@@ -8,10 +8,13 @@
  */
 #endregion
 
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using OpenRA.GameRules;
 using OpenRA.Mods.Common;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.AS.Traits
@@ -54,6 +57,8 @@ namespace OpenRA.Mods.AS.Traits
 		int fireDelay;
 		int burst;
 
+		List<Pair<int, Action>> delayedActions = new List<Pair<int, Action>>();
+
 		public ExplodeWeapon(Actor self, ExplodeWeaponInfo info)
 			: base(info)
 		{
@@ -66,6 +71,16 @@ namespace OpenRA.Mods.AS.Traits
 
 		void ITick.Tick(Actor self)
 		{
+			for (var i = 0; i < delayedActions.Count; i++)
+			{
+				var x = delayedActions[i];
+				if (--x.First <= 0)
+					x.Second();
+				delayedActions[i] = x;
+			}
+
+			delayedActions.RemoveAll(a => a.First <= 0);
+
 			if (IsTraitDisabled)
 				return;
 
@@ -81,6 +96,9 @@ namespace OpenRA.Mods.AS.Traits
 				if (weapon.Report != null && weapon.Report.Any())
 					Game.Sound.Play(SoundType.World, weapon.Report.Random(self.World.SharedRandom), self.CenterPosition);
 
+				if (burst == weapon.Burst && weapon.StartBurstReport != null && weapon.StartBurstReport.Any())
+					Game.Sound.Play(SoundType.World, weapon.StartBurstReport.Random(self.World.SharedRandom), self.CenterPosition);
+
 				if (--burst > 0)
 					fireDelay = weapon.BurstDelay;
 				else
@@ -89,6 +107,14 @@ namespace OpenRA.Mods.AS.Traits
 						.Select(m => m.GetReloadModifier());
 					fireDelay = Util.ApplyPercentageModifiers(weapon.ReloadDelay, modifiers);
 					burst = weapon.Burst;
+
+					if (weapon.AfterFireSound != null && weapon.AfterFireSound.Any())
+					{
+						ScheduleDelayedAction(weapon.AfterFireSoundDelay, () =>
+						{
+							Game.Sound.Play(SoundType.World, weapon.AfterFireSound.Random(self.World.SharedRandom), self.CenterPosition);
+						});
+					}
 				}
 			}
 		}
@@ -100,6 +126,14 @@ namespace OpenRA.Mods.AS.Traits
 				burst = weapon.Burst;
 				fireDelay = 0;
 			}
+		}
+
+		protected void ScheduleDelayedAction(int t, Action a)
+		{
+			if (t > 0)
+				delayedActions.Add(Pair.New(t, a));
+			else
+				a();
 		}
 	}
 }
