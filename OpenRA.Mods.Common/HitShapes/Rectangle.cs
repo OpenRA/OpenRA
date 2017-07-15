@@ -87,11 +87,11 @@ namespace OpenRA.Mods.Common.HitShapes
 
 		public WDist DistanceFromEdge(WVec v)
 		{
-			var r = new int2(
+			var r = new WVec(
 				Math.Max(Math.Abs(v.X - center.X) - quadrantSize.X, 0),
-				Math.Max(Math.Abs(v.Y - center.Y) - quadrantSize.Y, 0));
+				Math.Max(Math.Abs(v.Y - center.Y) - quadrantSize.Y, 0), 0);
 
-			return new WDist(r.Length);
+			return new WDist(r.HorizontalLength);
 		}
 
 		public WDist DistanceFromEdge(WPos pos, Actor actor)
