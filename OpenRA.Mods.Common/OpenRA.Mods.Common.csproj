@@ -527,7 +527,6 @@
     <Compile Include="Pathfinder\BasePathSearch.cs" />
     <Compile Include="Traits\World\PlayerPaletteFromCurrentTileset.cs" />
     <Compile Include="Traits\World\RadarPings.cs" />
-    <Compile Include="Traits\World\ResourceClaim.cs" />
     <Compile Include="Traits\World\ResourceClaimLayer.cs" />
     <Compile Include="Traits\World\ResourceLayer.cs" />
     <Compile Include="Traits\World\ShroudPalette.cs" />
