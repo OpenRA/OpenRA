@@ -42,7 +42,7 @@ namespace OpenRA.Mods.Common.Traits
 			var pos = self.CenterPosition;
 			var targetedPosition = GetTargetPosition(pos, target);
 			var delta = targetedPosition - pos;
-			var facingToTarget = delta.HorizontalLengthSquared != 0 ? delta.Yaw.Facing : f;
+			var facingToTarget = delta.HasNonZeroHorizontalLength ? delta.Yaw.Facing : f;
 
 			if (Math.Abs(facingToTarget - f) % 256 > info.FacingTolerance)
 				return false;

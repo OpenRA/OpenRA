@@ -210,8 +210,8 @@ namespace OpenRA.Mods.Common.Traits
 
 			var oldCachedPosition = cachedPosition;
 			cachedPosition = self.CenterPosition;
-			isMoving = (oldCachedPosition - cachedPosition).HorizontalLengthSquared != 0;
-			isMovingVertically = (oldCachedPosition - cachedPosition).VerticalLengthSquared != 0;
+			isMoving = (oldCachedPosition - cachedPosition).HasNonZeroHorizontalLength;
+			isMovingVertically = (oldCachedPosition - cachedPosition).Z != 0;
 
 			Repulse();
 		}
@@ -219,7 +219,7 @@ namespace OpenRA.Mods.Common.Traits
 		public void Repulse()
 		{
 			var repulsionForce = GetRepulsionForce();
-			if (repulsionForce.HorizontalLengthSquared == 0)
+			if (!repulsionForce.HasNonZeroHorizontalLength)
 				return;
 
 			var speed = Info.RepulsionSpeed != -1 ? Info.RepulsionSpeed : MovementSpeed;

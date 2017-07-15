@@ -74,7 +74,7 @@ namespace OpenRA.Mods.Common.Traits
 				if (exitinfo.Facing < 0)
 				{
 					var delta = to - spawn;
-					if (delta.HorizontalLengthSquared == 0)
+					if (!delta.HasNonZeroHorizontalLength)
 					{
 						var fi = producee.TraitInfoOrDefault<IFacingInfo>();
 						initialFacing = fi != null ? fi.GetInitialFacing() : 0;

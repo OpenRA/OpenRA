@@ -581,7 +581,7 @@ namespace OpenRA.Mods.Common.Projectiles
 				{
 					// Aim for the target
 					var vDist = new WVec(-relTarHgt, -relTarHorDist, 0);
-					desiredVFacing = (sbyte)vDist.HorizontalLengthSquared != 0 ? vDist.Yaw.Facing : vFacing;
+					desiredVFacing = (sbyte)(vDist.HasNonZeroHorizontalLength ? vDist.Yaw.Facing : vFacing);
 
 					// Do not accept -1  as valid vertical facing since it is usually a numerical error
 					// and will lead to premature descent and crashing into the ground
@@ -674,7 +674,7 @@ namespace OpenRA.Mods.Common.Projectiles
 							{
 								// Aim for the target
 								var vDist = new WVec(-relTarHgt, -relTarHorDist, 0);
-								desiredVFacing = (sbyte)vDist.HorizontalLengthSquared != 0 ? vDist.Yaw.Facing : vFacing;
+								desiredVFacing = (sbyte)(vDist.HasNonZeroHorizontalLength ? vDist.Yaw.Facing : vFacing);
 								if (desiredVFacing < 0 && info.VerticalRateOfTurn < (sbyte)vFacing)
 									desiredVFacing = 0;
 							}
@@ -684,7 +684,7 @@ namespace OpenRA.Mods.Common.Projectiles
 					{
 						// Aim for the target
 						var vDist = new WVec(-relTarHgt, relTarHorDist, 0);
-						desiredVFacing = (sbyte)vDist.HorizontalLengthSquared != 0 ? vDist.Yaw.Facing : vFacing;
+						desiredVFacing = (sbyte)(vDist.HasNonZeroHorizontalLength ? vDist.Yaw.Facing : vFacing);
 						if (desiredVFacing < 0 && info.VerticalRateOfTurn < (sbyte)vFacing)
 							desiredVFacing = 0;
 					}
@@ -694,7 +694,7 @@ namespace OpenRA.Mods.Common.Projectiles
 					// Aim to attain cruise altitude as soon as possible while having the absolute value
 					// of vertical facing bound by the maximum vertical rate of turn
 					var vDist = new WVec(-diffClfMslHgt - info.CruiseAltitude.Length, -speed, 0);
-					desiredVFacing = (sbyte)vDist.HorizontalLengthSquared != 0 ? vDist.Yaw.Facing : vFacing;
+					desiredVFacing = (sbyte)(vDist.HasNonZeroHorizontalLength ? vDist.Yaw.Facing : vFacing);
 
 					// If the missile is launched above CruiseAltitude, it has to descend instead of climbing
 					if (-diffClfMslHgt > info.CruiseAltitude.Length)
@@ -710,7 +710,7 @@ namespace OpenRA.Mods.Common.Projectiles
 				// Aim to attain cruise altitude as soon as possible while having the absolute value
 				// of vertical facing bound by the maximum vertical rate of turn
 				var vDist = new WVec(-diffClfMslHgt - info.CruiseAltitude.Length, -speed, 0);
-				desiredVFacing = (sbyte)vDist.HorizontalLengthSquared != 0 ? vDist.Yaw.Facing : vFacing;
+				desiredVFacing = (sbyte)(vDist.HasNonZeroHorizontalLength ? vDist.Yaw.Facing : vFacing);
 
 				// If the missile is launched above CruiseAltitude, it has to descend instead of climbing
 				if (-diffClfMslHgt > info.CruiseAltitude.Length)
@@ -745,7 +745,7 @@ namespace OpenRA.Mods.Common.Projectiles
 
 			// Compute which direction the projectile should be facing
 			var velVec = tarDistVec + predVel;
-			var desiredHFacing = velVec.HorizontalLengthSquared != 0 ? velVec.Yaw.Facing : hFacing;
+			var desiredHFacing = velVec.HasNonZeroHorizontalLength ? velVec.Yaw.Facing : hFacing;
 
 			var delta = Util.NormalizeFacing(hFacing - desiredHFacing);
 			if (allowPassBy && delta > 64 && delta < 192)
@@ -816,9 +816,9 @@ namespace OpenRA.Mods.Common.Projectiles
 					+ new WVec(WDist.Zero, WDist.Zero, info.AirburstAltitude);
 
 			// Compute target's predicted velocity vector (assuming uniform circular motion)
-			var yaw1 = tarVel.HorizontalLengthSquared != 0 ? tarVel.Yaw : WAngle.FromFacing(hFacing);
+			var yaw1 = tarVel.HasNonZeroHorizontalLength ? tarVel.Yaw : WAngle.FromFacing(hFacing);
 			tarVel = newTarPos - targetPosition;
-			var yaw2 = tarVel.HorizontalLengthSquared != 0 ? tarVel.Yaw : WAngle.FromFacing(hFacing);
+			var yaw2 = tarVel.HasNonZeroHorizontalLength ? tarVel.Yaw : WAngle.FromFacing(hFacing);
 			predVel = tarVel.Rotate(WRot.FromYaw(yaw2 - yaw1));
 			targetPosition = newTarPos;
 

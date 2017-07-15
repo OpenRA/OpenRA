@@ -958,7 +958,7 @@ namespace OpenRA.Mods.Common.Traits
 			var length = speed > 0 ? (toPos - fromPos).Length / speed : 0;
 
 			var delta = toPos - fromPos;
-			var facing = delta.HorizontalLengthSquared != 0 ? delta.Yaw.Facing : Facing;
+			var facing = delta.HasNonZeroHorizontalLength ? delta.Yaw.Facing : Facing;
 			return ActivityUtils.SequenceActivities(new Turn(self, facing), new Drag(self, fromPos, toPos, length));
 		}
 

@@ -51,7 +51,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			var f = facing.Facing;
 			var delta = target.CenterPosition - self.CenterPosition;
-			var facingToTarget = delta.HorizontalLengthSquared != 0 ? delta.Yaw.Facing : f;
+			var facingToTarget = delta.HasNonZeroHorizontalLength ? delta.Yaw.Facing : f;
 			facingTarget = Math.Abs(facingToTarget - f) % 256 <= info.FacingTolerance;
 
 			foreach (var a in Armaments)
