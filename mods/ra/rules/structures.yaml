@@ -85,7 +85,7 @@ GAP:
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
 		Range: 5c0
-	Bib:
+	WithBuildingBib:
 		HasMinibib: Yes
 	CreatesShroud:
 		Range: 6c0
@@ -118,7 +118,7 @@ SPEN:
 	Targetable:
 		TargetTypes: Ground, Water, Structure, C4, DetonateAttack, SpyInfiltrate
 	Building:
-		Footprint: xxx xxx xxx
+		Footprint: XXX xxx XXX
 		Dimensions: 3,3
 		Adjacent: 8
 		TerrainTypes: Water
@@ -192,13 +192,10 @@ SPEN:
 		ZOffset: 256
 		RequiresCondition: primary
 	HitShape:
-		UseOccupiedCellsOffsets: false
-		TargetableOffsets: 0,0,0, 0,-1024,0, 0,1024,0
 		Type: Rectangle
 			TopLeft: -1536, -598
 			BottomRight: 1536, 598
 	HitShape@TOPANDBOTTOM:
-		UseOccupiedCellsOffsets: false
 		TargetableOffsets: 811,0,0, -811,0,0
 		Type: Rectangle
 			TopLeft: -555, -1110
@@ -220,7 +217,7 @@ SYRD:
 	Targetable:
 		TargetTypes: Ground, Water, Structure, C4, DetonateAttack, SpyInfiltrate
 	Building:
-		Footprint: xxx xxx xxx
+		Footprint: XXX xxx XXX
 		Dimensions: 3,3
 		Adjacent: 8
 		TerrainTypes: Water
@@ -300,13 +297,11 @@ SYRD:
 		ZOffset: 256
 		RequiresCondition: primary
 	HitShape:
-		UseOccupiedCellsOffsets: false
-		TargetableOffsets: 0,0,0, 0,-1024,0, 0,1024,0, 768,0,0, 768,-1024,0, 768,1024,0
+		TargetableOffsets: 768,0,0, 768,-1024,0, 768,1024,0
 		Type: Rectangle
 			TopLeft: -1536, -1152
 			BottomRight: 1536, 598
 	HitShape@BOTTOM:
-		UseOccupiedCellsOffsets: false
 		TargetableOffsets: -768,0,0
 		Type: Rectangle
 			TopLeft: -512, 598
@@ -346,7 +341,7 @@ IRON:
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
 		Range: 6c0
-	Bib:
+	WithBuildingBib:
 		HasMinibib: Yes
 	GrantExternalConditionPower@IRONCURTAIN:
 		PauseOnCondition: disabled
@@ -398,7 +393,7 @@ PDOX:
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
 		Range: 6c0
-	Bib:
+	WithBuildingBib:
 		HasMinibib: Yes
 	ProvidesPrerequisite@germany:
 		Factions: germany
@@ -475,7 +470,7 @@ TSLA:
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
 		Range: 6c0
-	Bib:
+	WithBuildingBib:
 		HasMinibib: Yes
 	WithTeslaChargeAnimation:
 	Armament:
@@ -521,7 +516,7 @@ AGUN:
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
 		Range: 5c0
-	Bib:
+	WithBuildingBib:
 		HasMinibib: Yes
 	Turreted:
 		TurnSpeed: 15
@@ -548,7 +543,7 @@ DOME:
 	Inherits@IDISABLE: ^DisabledOverlay
 	Inherits@shape: ^2x2Shape
 	HitShape:
-		UseOccupiedCellsOffsets: false
+		UseTargetableCellsOffsets: false
 		TargetableOffsets: 0,0,0, 630,-384,0, 630,384,0, -700,-512,0, -700,512,0
 	Buildable:
 		Queue: Building
@@ -560,8 +555,9 @@ DOME:
 	Tooltip:
 		Name: Radar Dome
 	Building:
-		Footprint: xx xx
-		Dimensions: 2,2
+		Footprint: xx xx ==
+		Dimensions: 2,3
+		LocalCenterOffset: 0,-512,0
 	Targetable:
 		TargetTypes: Ground, Structure, C4, DetonateAttack, SpyInfiltrate
 	RequiresPower:
@@ -577,7 +573,7 @@ DOME:
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
 		Range: 6c0
-	Bib:
+	WithBuildingBib:
 	ProvidesRadar:
 		RequiresCondition: !jammed && !disabled
 	InfiltrateForExploration:
@@ -616,7 +612,7 @@ PBOX:
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
 		Range: 5c0
-	Bib:
+	WithBuildingBib:
 		HasMinibib: Yes
 	Turreted:
 		TurnSpeed: 255
@@ -719,7 +715,7 @@ GUN:
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
 		Range: 5c0
-	Bib:
+	WithBuildingBib:
 		HasMinibib: Yes
 	Turreted:
 		TurnSpeed: 12
@@ -761,7 +757,7 @@ FTUR:
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
 		Range: 5c0
-	Bib:
+	WithBuildingBib:
 		HasMinibib: Yes
 	Turreted:
 		TurnSpeed: 255
@@ -809,7 +805,7 @@ SAM:
 		Type: Heavy
 	RevealsShroud:
 		Range: 5c0
-	Bib:
+	WithBuildingBib:
 		HasMinibib: Yes
 	Turreted:
 		TurnSpeed: 30
@@ -846,8 +842,9 @@ ATEK:
 	ProvidesPrerequisite:
 		Prerequisite: techcenter
 	Building:
-		Footprint: xx xx
-		Dimensions: 2,2
+		Footprint: xx xx ==
+		Dimensions: 2,3
+		LocalCenterOffset: 0,-512,0
 	Health:
 		HP: 600
 	Armor:
@@ -857,7 +854,7 @@ ATEK:
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
 		Range: 6c0
-	Bib:
+	WithBuildingBib:
 	GpsPower:
 		PauseOnCondition: disabled
 		Icon: gps
@@ -887,15 +884,16 @@ WEAP:
 	Tooltip:
 		Name: War Factory
 	Building:
-		Footprint: xxx xxx
-		Dimensions: 3,2
+		Footprint: xxx xxx ===
+		Dimensions: 3,3
+		LocalCenterOffset: 0,-512,0
 	Health:
 		HP: 1500
 	Armor:
 		Type: Wood
 	RevealsShroud:
 		Range: 4c0
-	Bib:
+	WithBuildingBib:
 	WithProductionDoorOverlay:
 		Sequence: build-top
 	RallyPoint:
@@ -979,8 +977,9 @@ WEAP:
 FACT:
 	Inherits: ^Building
 	Building:
-		Footprint: xxx xxx xxx
-		Dimensions: 3,3
+		Footprint: xxX xxx XxX ===
+		Dimensions: 3,4
+		LocalCenterOffset: 0,-512,0
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 1000
@@ -1022,7 +1021,7 @@ FACT:
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
 		Range: 4c0
-	Bib:
+	WithBuildingBib:
 	Production:
 		Produces: Building,Defense
 	Valued:
@@ -1053,8 +1052,7 @@ FACT:
 		UseDeathTypeSuffix: false
 	ProvidesPrerequisite@buildingname:
 	HitShape:
-		UseOccupiedCellsOffsets: false
-		TargetableOffsets: 0,0,0, 0,-1024,0, 0,1024,0, 1483,0,0, 1483,-1024,0, 1273,939,0, -1483,0,0, -980,-640,0, -980,640,0
+		TargetableOffsets: 1273,939,0, -980,-640,0, -980,640,0
 		Type: Rectangle
 			TopLeft: -1536, -1536
 			BottomRight: 1536, 1536
@@ -1071,8 +1069,9 @@ PROC:
 	Tooltip:
 		Name: Ore Refinery
 	Building:
-		Footprint: _x_ xxx x==
-		Dimensions: 3,3
+		Footprint: _X_ xxx X== ===
+		Dimensions: 3,4
+		LocalCenterOffset: 0,-512,0
 	Selectable:
 		Bounds: 72,50,0,12
 	SelectionDecorations:
@@ -1088,7 +1087,7 @@ PROC:
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
 		Range: 4c0
-	Bib:
+	WithBuildingBib:
 	Refinery:
 		DockAngle: 64
 		DockOffset: 1,2
@@ -1114,19 +1113,15 @@ PROC:
 		UseDeathTypeSuffix: false
 	ProvidesPrerequisite@buildingname:
 	HitShape:
-		UseOccupiedCellsOffsets: false
-		TargetableOffsets: 0,0,0, 0,-1024,0, 0,1024,0
 		Type: Rectangle
 			TopLeft: -1536, -512
 			BottomRight: 1536, 598
 	HitShape@TOP:
-		UseOccupiedCellsOffsets: false
 		TargetableOffsets: 1680,0,0
 		Type: Rectangle
 			TopLeft: -512, -1536
 			BottomRight: 512, -512
 	HitShape@BOTTOMLEFT:
-		UseOccupiedCellsOffsets: false
 		TargetableOffsets: -1260,-1024,0
 		Type: Rectangle
 			TopLeft: -1536, 598
@@ -1151,7 +1146,7 @@ SILO:
 		Type: Wood
 	RevealsShroud:
 		Range: 4c0
-	Bib:
+	WithBuildingBib:
 		HasMinibib: Yes
 	WithSiloAnimation:
 	StoresResources:
@@ -1168,7 +1163,7 @@ HPAD:
 	Inherits: ^Building
 	Inherits@shape: ^2x2Shape
 	HitShape:
-		UseOccupiedCellsOffsets: false
+		UseTargetableCellsOffsets: false
 		TargetableOffsets: 0,0,0, 768,-512,0, 768,512,0, -281,-512,0, -630,512,0
 	Buildable:
 		Queue: Building
@@ -1180,8 +1175,9 @@ HPAD:
 	Tooltip:
 		Name: Helipad
 	Building:
-		Footprint: xx xx
-		Dimensions: 2,2
+		Footprint: xx xx ==
+		Dimensions: 2,3
+		LocalCenterOffset: 0,-512,0
 	Health:
 		HP: 800
 	Armor:
@@ -1191,7 +1187,7 @@ HPAD:
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
 		Range: 4c0
-	Bib:
+	WithBuildingBib:
 	Exit@1:
 		SpawnOffset: 0,-256,0
 		ExitCell: 0,0
@@ -1254,7 +1250,7 @@ AFLD:
 	Inherits: ^Building
 	Inherits@shape: ^3x2Shape
 	HitShape:
-		UseOccupiedCellsOffsets: false
+		UseTargetableCellsOffsets: false
 		TargetableOffsets: 0,0,0, 420,0,0, 420,-1024,0, 420,1024,0, -777,0,0, -777,-1024,0, -777,1024,0
 	Buildable:
 		Queue: Building
@@ -1389,7 +1385,7 @@ POWR:
 	Inherits@POWER_OUTAGE: ^DisabledByPowerOutage
 	Inherits@shape: ^2x2Shape
 	HitShape:
-		UseOccupiedCellsOffsets: false
+		UseTargetableCellsOffsets: false
 		TargetableOffsets: 0,0,0, 640,-384,0, 640,512,0, -710,-512,0, -710,512,0
 	Buildable:
 		Queue: Building
@@ -1403,15 +1399,16 @@ POWR:
 	ProvidesPrerequisite:
 		Prerequisite: anypower
 	Building:
-		Footprint: xx xx
-		Dimensions: 2,2
+		Footprint: xx xx ==
+		Dimensions: 2,3
+		LocalCenterOffset: 0,-512,0
 	Health:
 		HP: 400
 	Armor:
 		Type: Wood
 	RevealsShroud:
 		Range: 4c0
-	Bib:
+	WithBuildingBib:
 	Power:
 		Amount: 100
 	Targetable:
@@ -1427,8 +1424,7 @@ APWR:
 	Inherits@POWER_OUTAGE: ^DisabledByPowerOutage
 	Inherits@shape: ^3x2Shape
 	HitShape:
-		UseOccupiedCellsOffsets: false
-		TargetableOffsets: 0,0,0, 840,0,0, 840,-1024,0, 840,1024,0, -840,0,0, -355,-1024,0, -840,1024,0
+		TargetableOffsets: -355,-1024,0
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 110
@@ -1441,8 +1437,9 @@ APWR:
 	ProvidesPrerequisite:
 		Prerequisite: anypower
 	Building:
-		Footprint: xxx xxx
-		Dimensions: 3,2
+		Footprint: xxx Xxx ===
+		Dimensions: 3,3
+		LocalCenterOffset: 0,-512,0
 	Selectable:
 		Bounds: 72,48
 	SelectionDecorations:
@@ -1453,7 +1450,7 @@ APWR:
 		Type: Wood
 	RevealsShroud:
 		Range: 4c0
-	Bib:
+	WithBuildingBib:
 	Power:
 		Amount: 200
 	Targetable:
@@ -1467,8 +1464,7 @@ STEK:
 	Inherits: ^ScienceBuilding
 	Inherits@shape: ^3x2Shape
 	HitShape:
-		UseOccupiedCellsOffsets: false
-		TargetableOffsets: 0,0,0, 840,0,0, -840,0,0, 420,-768,0, 420,768,0, -770,-768,0, -770,768,0
+		TargetableOffsets: 420,-768,0, 420,768,0, -770,-768,0, -770,768,0
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 150
@@ -1481,15 +1477,16 @@ STEK:
 	ProvidesPrerequisite:
 		Prerequisite: techcenter
 	Building:
-		Footprint: xxx xxx
-		Dimensions: 3,2
+		Footprint: XxX XxX ===
+		Dimensions: 3,3
+		LocalCenterOffset: 0,-512,0
 	Health:
 		HP: 600
 	Armor:
 		Type: Wood
 	RevealsShroud:
 		Range: 4c0
-	Bib:
+	WithBuildingBib:
 	Power:
 		Amount: -100
 	ProvidesPrerequisite@buildingname:
@@ -1498,7 +1495,7 @@ BARR:
 	Inherits: ^Building
 	Inherits@shape: ^2x2Shape
 	HitShape:
-		UseOccupiedCellsOffsets: false
+		UseTargetableCellsOffsets: false
 		TargetableOffsets: 0,0,0, 490,-470,0, 355,512,0, -355,-512,0, -630,512,0
 	Buildable:
 		Queue: Building
@@ -1510,8 +1507,9 @@ BARR:
 	Tooltip:
 		Name: Soviet Barracks
 	Building:
-		Footprint: xx xx
-		Dimensions: 2,2
+		Footprint: xx xx ==
+		Dimensions: 2,3
+		LocalCenterOffset: 0,-512,0
 	Health:
 		HP: 600
 	Armor:
@@ -1521,7 +1519,7 @@ BARR:
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
 		Range: 4c0
-	Bib:
+	WithBuildingBib:
 	RallyPoint:
 	Exit@1:
 		SpawnOffset: -170,810,0
@@ -1594,7 +1592,7 @@ KENN:
 		Type: Wood
 	RevealsShroud:
 		Range: 4c0
-	Bib:
+	WithBuildingBib:
 		HasMinibib: True
 	RallyPoint:
 		Offset: 0,2
@@ -1625,7 +1623,7 @@ TENT:
 	Inherits: ^Building
 	Inherits@shape: ^2x2Shape
 	HitShape:
-		UseOccupiedCellsOffsets: false
+		UseTargetableCellsOffsets: false
 		TargetableOffsets: 0,0,0, 630,-512,0, 355,512,0, -281,-512,0, -630,512,0
 	Buildable:
 		Queue: Building
@@ -1637,8 +1635,9 @@ TENT:
 	Tooltip:
 		Name: Allied Barracks
 	Building:
-		Footprint: xx xx
-		Dimensions: 2,2
+		Footprint: xx xx ==
+		Dimensions: 2,3
+		LocalCenterOffset: 0,-512,0
 	Health:
 		HP: 600
 	Armor:
@@ -1648,7 +1647,7 @@ TENT:
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
 		Range: 4c0
-	Bib:
+	WithBuildingBib:
 	RallyPoint:
 	Exit@1:
 		SpawnOffset: -42,810,0
@@ -1720,7 +1719,7 @@ FIX:
 	Tooltip:
 		Name: Service Depot
 	Building:
-		Footprint: _x_ xxx _x_
+		Footprint: _X_ xxx _X_
 		Dimensions: 3,3
 	Selectable:
 		Bounds: 68,34,0,3
@@ -1735,7 +1734,7 @@ FIX:
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
 		Range: 4c0
-	Bib:
+	WithBuildingBib:
 		HasMinibib: Yes
 	Reservable:
 	RallyPoint:
@@ -1749,13 +1748,10 @@ FIX:
 		Amount: -30
 	ProvidesPrerequisite@buildingname:
 	HitShape:
-		UseOccupiedCellsOffsets: false
-		TargetableOffsets: 0,0,0, 0,-1024,0, 0,1024,0
 		Type: Rectangle
 			TopLeft: -1536, -683
 			BottomRight: 1536, 853
 	HitShape@TOPANDBOTTOM:
-		UseOccupiedCellsOffsets: false
 		TargetableOffsets: 840,0,0, -1060,0,0
 		Type: Rectangle
 			TopLeft: -640, -768
@@ -1845,7 +1841,7 @@ BRIK:
 VGATE:
 	Inherits: ^Gate
 	HitShape:
-		UseOccupiedCellsOffsets: true
+		UseTargetableCellsOffsets: true
 		Type: Rectangle
 			TopLeft: -512, -1536
 			BottomRight: 512, 1536
@@ -1862,7 +1858,7 @@ VGATE:
 HGATE:
 	Inherits: ^Gate
 	HitShape:
-		UseOccupiedCellsOffsets: true
+		UseTargetableCellsOffsets: true
 		Type: Rectangle
 			TopLeft: -1536, -512
 			BottomRight: 1536, 512

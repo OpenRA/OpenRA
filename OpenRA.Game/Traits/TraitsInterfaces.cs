@@ -201,6 +201,11 @@ namespace OpenRA.Traits
 
 	public interface IRadarColorModifier { Color RadarColorOverride(Actor self, Color color); }
 
+	public interface ITargetableCells
+	{
+		IEnumerable<Pair<CPos, SubCell>> TargetableCells();
+	}
+
 	public interface IOccupySpaceInfo : ITraitInfoInterface
 	{
 		IReadOnlyDictionary<CPos, SubCell> OccupiedCells(ActorInfo info, CPos location, SubCell subCell = SubCell.Any);
@@ -332,7 +337,12 @@ namespace OpenRA.Traits
 	public interface IWorldLoaded { void WorldLoaded(World w, WorldRenderer wr); }
 	public interface ICreatePlayers { void CreatePlayers(World w); }
 
-	public interface IBotInfo : ITraitInfoInterface { string Name { get; } }
+	public interface IBotInfo : ITraitInfoInterface
+	{
+		string Type { get; }
+		string Name { get; }
+	}
+
 	public interface IBot
 	{
 		void Activate(Player p);

@@ -161,9 +161,11 @@
     <Compile Include="Player.cs" />
     <Compile Include="Primitives\MergedStream.cs" />
     <Compile Include="Primitives\PlayerDictionary.cs" />
+    <Compile Include="Primitives\ReadOnlyAdapterStream.cs" />
     <Compile Include="Primitives\SegmentStream.cs" />
     <Compile Include="Primitives\SpatiallyPartitioned.cs" />
     <Compile Include="Primitives\ConcurrentCache.cs" />
+    <Compile Include="Primitives\ZipFileHelper.cs" />
     <Compile Include="SelectableExts.cs" />
     <Compile Include="Selection.cs" />
     <Compile Include="Server\Connection.cs" />
@@ -254,6 +256,9 @@
     <Compile Include="Support\VariableExpression.cs" />
     <Compile Include="ExternalMods.cs" />
     <Compile Include="Graphics\Model.cs" />
+    <Compile Include="UtilityCommands\RegisterModCommand.cs" />
+    <Compile Include="UtilityCommands\UnregisterModCommand.cs" />
+    <Compile Include="UtilityCommands\ClearInvalidModRegistrationsCommand.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FileSystem\Folder.cs" />
@@ -296,6 +301,7 @@
     <Compile Include="Primitives\TypeDictionary.cs" />
     <Compile Include="Map\ActorInitializer.cs" />
     <Compile Include="Map\ActorReference.cs" />
+    <Compile Include="Support\Evaluator.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Graphics\PlayerColorRemap.cs" />
     <Compile Include="Graphics\Palette.cs" />

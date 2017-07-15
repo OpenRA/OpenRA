@@ -280,12 +280,20 @@ namespace OpenRA.Mods.Common.Server
 							return false;
 						}
 
-						var botType = parts.Skip(2).JoinWith(" ");
-
 						// Invalid slot
 						if (bot != null && bot.Bot == null)
 						{
 							server.SendOrderTo(conn, "Message", "Can't add bots to a slot with another client.");
+							return true;
+						}
+
+						var botType = parts[2];
+						var botInfo = server.Map.Rules.Actors["player"].TraitInfos<IBotInfo>()
+							.FirstOrDefault(b => b.Type == botType);
+
+						if (botInfo == null)
+						{
+							server.SendOrderTo(conn, "Message", "Invalid bot type.");
 							return true;
 						}
 
@@ -296,7 +304,7 @@ namespace OpenRA.Mods.Common.Server
 							bot = new Session.Client()
 							{
 								Index = server.ChooseFreePlayerIndex(),
-								Name = botType,
+								Name = botInfo.Name,
 								Bot = botType,
 								Slot = parts[0],
 								Faction = "Random",
@@ -319,7 +327,7 @@ namespace OpenRA.Mods.Common.Server
 						else
 						{
 							// Change the type of the existing bot
-							bot.Name = botType;
+							bot.Name = botInfo.Name;
 							bot.Bot = botType;
 						}
 
@@ -366,7 +374,7 @@ namespace OpenRA.Mods.Common.Server
 							//  - Players who now lack a slot are made observers
 							//  - Bots who now lack a slot are dropped
 							//  - Bots who are not defined in the map rules are dropped
-							var botNames = server.Map.Rules.Actors["player"].TraitInfos<IBotInfo>().Select(t => t.Name);
+							var botTypes = server.Map.Rules.Actors["player"].TraitInfos<IBotInfo>().Select(t => t.Type);
 							var slots = server.LobbyInfo.Slots.Keys.ToArray();
 							var i = 0;
 							foreach (var os in oldSlots)
@@ -380,7 +388,7 @@ namespace OpenRA.Mods.Common.Server
 								if (c.Slot != null)
 								{
 									// Remove Bot from slot if slot forbids bots
-									if (c.Bot != null && (!server.Map.Players.Players[c.Slot].AllowBots || !botNames.Contains(c.Bot)))
+									if (c.Bot != null && (!server.Map.Players.Players[c.Slot].AllowBots || !botTypes.Contains(c.Bot)))
 										server.LobbyInfo.Clients.Remove(c);
 									S.SyncClientToPlayerReference(c, server.Map.Players.Players[c.Slot]);
 								}

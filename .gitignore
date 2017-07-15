@@ -11,6 +11,7 @@ obj
 *.CodeAnalysisLog.xml
 *.lastcodeanalysissucceeded
 _ReSharper.*/
+/.vs
 
 # movies
 *.vqa

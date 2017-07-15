@@ -140,7 +140,7 @@ SMECH:
 	WithAttackAnimation:
 		AttackSequence: shoot
 	WithMoveAnimation:
-		MoveSequence: run
+		MoveSequence: walk
 	Selectable:
 		Bounds: 20, 32, 0, -8
 	-DamagedByTerrain@VEINS:
@@ -174,7 +174,10 @@ MMCH:
 	BodyOrientation:
 		QuantizedFacings: 32
 		UseClassicPerspectiveFudge: False
-	WithInfantryBody:
+	WithFacingSpriteBody:
+		Sequence: stand
+	WithMoveAnimation:
+		MoveSequence: walk
 	Turreted:
 		TurnSpeed: 5
 	AttackTurreted:
@@ -187,7 +190,7 @@ MMCH:
 		MuzzlePalette: effect-ignore-lighting
 		Recoil: 128
 		RecoilRecovery: 32
-		LocalOffset: 905,272,1177
+		LocalOffset: 1024,272,1216
 	DetectCloaked:
 		Range: 1c768
 		RequiresCondition: rank-elite
@@ -195,7 +198,7 @@ MMCH:
 	WithMuzzleOverlay:
 	RenderVoxels:
 	WithVoxelBarrel:
-		LocalOffset: -91,91,362
+		LocalOffset: 0,51,256
 	Selectable:
 		Bounds: 30, 42, 0, -8
 	Carryable:
@@ -328,7 +331,7 @@ JUGG:
 		Sequence: stand
 		RequiresCondition: undeployed
 	WithMoveAnimation:
-		MoveSequence: run
+		MoveSequence: walk
 	GrantConditionOnDeploy:
 		DeployedCondition: deployed
 		UndeployedCondition: undeployed

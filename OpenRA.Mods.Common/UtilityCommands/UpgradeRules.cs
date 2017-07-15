@@ -771,6 +771,80 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				// Refactor Building/Bib interaction, partially refactor and rename Bib
+				if (engineVersion < 20170706)
+				{
+					var building = node.Value.Nodes.FirstOrDefault(n => n.Key == "Building");
+					var bib = node.Value.Nodes.FirstOrDefault(n => n.Key == "Bib");
+
+					var hasBib = false;
+					if (bib != null)
+					{
+						var minibib = bib.Value.Nodes.FirstOrDefault(n => n.Key == "HasMinibib");
+						if (minibib != null)
+							hasBib = !FieldLoader.GetValue<bool>("HasMinibib", minibib.Value.Value);
+						else
+							hasBib = true;
+
+						Console.WriteLine("Bibs are no longer automatically included in building footprints. Please check if any manual adjustments are needed.");
+						RenameNodeKey(bib, "WithBuildingBib");
+					}
+
+					if (building != null && hasBib)
+					{
+						var footprint = building.Value.Nodes.FirstOrDefault(n => n.Key == "Footprint");
+						var dimensions = building.Value.Nodes.FirstOrDefault(n => n.Key == "Dimensions");
+						if (footprint != null && dimensions != null)
+						{
+							var newDim = FieldLoader.GetValue<CVec>("Dimensions", dimensions.Value.Value) + new CVec(0, 1);
+							var oldFootprint = FieldLoader.GetValue<string>("Footprint", footprint.Value.Value);
+							dimensions.Value.Value = newDim.ToString();
+							footprint.Value.Value = oldFootprint + " " + string.Concat(Enumerable.Repeat("=", newDim.X));
+
+							var gridType = modData.Manifest.Get<MapGrid>().Type;
+							if (gridType == MapGridType.Rectangular)
+								building.Value.Nodes.Add(new MiniYamlNode("LocalCenterOffset", "0,-512,0"));
+						}
+					}
+				}
+
+				// Bots must now specify an internal type as well as their display name
+				if (engineVersion < 20170707)
+				{
+					if (node.Key.StartsWith("HackyAI", StringComparison.Ordinal) || node.Key.StartsWith("DummyAI", StringComparison.Ordinal))
+					{
+						var nameNode = node.Value.Nodes.FirstOrDefault(n => n.Key == "Name");
+
+						// Just duplicate the name to avoid incompatibility with maps
+						if (nameNode != null)
+							node.Value.Nodes.Add(new MiniYamlNode("Type", nameNode.Value.Value));
+					}
+				}
+
+				// We now differentiate between "occupied and provides offset" and "occupied but provides no offset",
+				// so the old property name was no longer correct.
+				if (engineVersion < 20170705)
+				{
+					if (node.Key == "UseOccupiedCellsOffsets")
+						node.Key = "UseTargetableCellsOffsets";
+				}
+
+				// Refactored AttackBomb so it doesn't need it's own special sauce anymore
+				if (engineVersion < 20170713)
+				{
+					if (node.Key == "AttackBomber")
+					{
+						var gunsOrBombs = node.Value.Nodes.FirstOrDefault(n => n.Key == "Guns" || n.Key == "Bombs");
+						if (gunsOrBombs != null)
+						{
+							Console.WriteLine("Hardcoded Guns and Bombs logic has been removed from AttackBomber.");
+							Console.WriteLine("Bombs should work like usual, for gun strafing use the new Weapon TargetOffset modifiers.");
+							Console.WriteLine("Look at the TD mod's A10 for an example.");
+							node.Value.Nodes.RemoveAll(n => n.Key == "Guns" || n.Key == "Bombs");
+						}
+					}
+				}
+
 				UpgradeActorRules(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 
@@ -850,6 +924,66 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				// Valid-/InvalidImpactTypes were removed from CreateEffectWarhead, which uses Valid-/InvalidTargets instead now
+				if (engineVersion < 20170625)
+				{
+					if (node.Key.StartsWith("Warhead", StringComparison.Ordinal) && node.Value.Value == "CreateEffect")
+					{
+						var validImpactTypes = node.Value.Nodes.FirstOrDefault(n => n.Key == "ValidImpactTypes");
+						var invalidImpactTypes = node.Value.Nodes.FirstOrDefault(n => n.Key == "InvalidImpactTypes");
+						var validTargetsNode = node.Value.Nodes.FirstOrDefault(n => n.Key == "ValidTargets");
+						if (validImpactTypes != null && validTargetsNode == null)
+						{
+							Console.WriteLine("CreateEffectWarhead now uses Valid-/InvalidTargets instead of Valid-/InvalidImpactTypes.");
+							Console.WriteLine("Please check whether you need to make manual adjustments.");
+
+							var validTargets = new List<string>();
+							if (validImpactTypes.Value.Value.Contains("Ground"))
+								validTargets.Add("Ground");
+							if (validImpactTypes.Value.Value.Contains("Water"))
+								validTargets.Add("Water");
+							if (validImpactTypes.Value.Value.Contains("Air"))
+								validTargets.Add("Air");
+
+							// 'validTargets' can be 0 here if the only valid ImpactType(s) were None, TargetHit or TargetTerrain.
+							// In that case we remove it and let the modder fix it manually.
+							if (validTargets.Count > 0)
+							{
+								validImpactTypes.Value.Value = validTargets.JoinWith(", ");
+								RenameNodeKey(validImpactTypes, "ValidTargets");
+							}
+							else
+								node.Value.Nodes.Remove(validImpactTypes);
+						}
+						else if (validTargetsNode == null)
+						{
+							// 'Air' is not part of the internal warhead ValidTargets default, but was part of the ValidImpactTypes default.
+							node.Value.Nodes.Add(new MiniYamlNode("ValidTargets", "Ground, Water, Air"));
+						}
+
+						if (invalidImpactTypes != null)
+						{
+							Console.WriteLine("CreateEffectWarhead now uses Valid-/InvalidTargets instead of Valid-/InvalidImpactTypes.");
+							Console.WriteLine("Please check whether you need to make manual adjustments.");
+
+							// It's too complicated to get all possible combinations right, so we just remove it and let the modder fix it manually
+							node.Value.Nodes.Remove(invalidImpactTypes);
+						}
+					}
+				}
+
+				// Made Missile terrain height checks disableable and disabled by default
+				if (engineVersion < 20170713)
+				{
+					var gridMaxHeight = modData.Manifest.Get<MapGrid>().MaximumTerrainHeight;
+					if (gridMaxHeight > 0)
+					{
+						var projectile = node.Value.Nodes.FirstOrDefault(n => n.Key == "Projectile");
+						if (projectile != null && projectile.Value.Value == "Missile")
+							projectile.Value.Nodes.Add(new MiniYamlNode("TerrainHeightAware", "true"));
+					}
+				}
+
 				UpgradeWeaponRules(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}
@@ -867,7 +1001,17 @@ namespace OpenRA.Mods.Common.UtilityCommands
 		{
 			foreach (var node in nodes)
 			{
-				// Add rules here
+				// Renamed Category to Categories in Template.
+				if (engineVersion < 20170623)
+				{
+					if (node.Key == "Template" || node.Key.StartsWith("Template@", StringComparison.Ordinal))
+					{
+						var category = node.Value.Nodes.FirstOrDefault(n => n.Key == "Category");
+						if (category != null)
+							category.Key = "Categories";
+					}
+				}
+
 				UpgradeTileset(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}

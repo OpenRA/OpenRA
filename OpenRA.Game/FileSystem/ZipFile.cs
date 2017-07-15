@@ -13,9 +13,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using ICSharpCode.SharpZipLib.Zip;
-using SZipFile = ICSharpCode.SharpZipLib.Zip.ZipFile;
+using OpenRA.Primitives;
 
 namespace OpenRA.FileSystem
 {
@@ -26,12 +25,7 @@ namespace OpenRA.FileSystem
 		class ReadOnlyZipFile : IReadOnlyPackage
 		{
 			public string Name { get; protected set; }
-			protected SZipFile pkg;
-
-			static ReadOnlyZipFile()
-			{
-				ZipConstants.DefaultCodePage = Encoding.UTF8.CodePage;
-			}
+			protected ZipFile pkg;
 
 			// Dummy constructor for use with ReadWriteZipFile
 			protected ReadOnlyZipFile() { }
@@ -39,7 +33,7 @@ namespace OpenRA.FileSystem
 			public ReadOnlyZipFile(Stream s, string filename)
 			{
 				Name = filename;
-				pkg = new SZipFile(s);
+				pkg = ZipFileHelper.Create(s);
 			}
 
 			public Stream GetStream(string filename)
@@ -105,19 +99,14 @@ namespace OpenRA.FileSystem
 		{
 			readonly MemoryStream pkgStream;
 
-			public ReadWriteZipFile(Stream stream, string filename)
+			public ReadWriteZipFile(string filename, bool create = false)
 			{
 				// SharpZipLib breaks when asked to update archives loaded from outside streams or files
 				// We can work around this by creating a clean in-memory-only file, cutting all outside references
-				pkgStream = new MemoryStream();
-				if (stream != null)
-				{
-					stream.CopyTo(pkgStream);
-					stream.Dispose();
-				}
+				pkgStream = create ? new MemoryStream() : new MemoryStream(File.ReadAllBytes(filename));
 
 				pkgStream.Position = 0;
-				pkg = new SZipFile(pkgStream);
+				pkg = ZipFileHelper.Create(pkgStream);
 				Name = filename;
 			}
 
@@ -151,11 +140,6 @@ namespace OpenRA.FileSystem
 			public string Name { get { return path; } }
 			public ReadOnlyZipFile Parent { get; private set; }
 			readonly string path;
-
-			static ZipFolder()
-			{
-				ZipConstants.DefaultCodePage = Encoding.UTF8.CodePage;
-			}
 
 			public ZipFolder(ReadOnlyZipFile parent, string path)
 			{
@@ -236,14 +220,13 @@ namespace OpenRA.FileSystem
 				return false;
 			}
 
-			var s = new FileStream(filename, FileMode.Open);
-			package = new ReadWriteZipFile(s, filename);
+			package = new ReadWriteZipFile(filename);
 			return true;
 		}
 
 		public static IReadWritePackage Create(string filename)
 		{
-			return new ReadWriteZipFile(null, filename);
+			return new ReadWriteZipFile(filename, true);
 		}
 	}
 }

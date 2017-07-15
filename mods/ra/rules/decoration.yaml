@@ -219,6 +219,7 @@ BOXES01:
 		Name: Boxes
 	EditorTilesetFilter:
 		ExcludeTilesets: DESERT
+		Categories: Decoration
 
 BOXES02:
 	Inherits: ^Tree
@@ -226,6 +227,7 @@ BOXES02:
 		Name: Boxes
 	EditorTilesetFilter:
 		ExcludeTilesets: DESERT
+		Categories: Decoration
 
 BOXES03:
 	Inherits: ^Tree
@@ -233,6 +235,7 @@ BOXES03:
 		Name: Boxes
 	EditorTilesetFilter:
 		ExcludeTilesets: DESERT
+		Categories: Decoration
 
 BOXES04:
 	Inherits: ^Tree
@@ -240,6 +243,7 @@ BOXES04:
 		Name: Boxes
 	EditorTilesetFilter:
 		ExcludeTilesets: DESERT
+		Categories: Decoration
 
 BOXES05:
 	Inherits: ^Tree
@@ -247,6 +251,7 @@ BOXES05:
 		Name: Boxes
 	EditorTilesetFilter:
 		ExcludeTilesets: DESERT
+		Categories: Decoration
 
 BOXES06:
 	Inherits: ^Tree
@@ -254,6 +259,7 @@ BOXES06:
 		Name: Boxes
 	EditorTilesetFilter:
 		ExcludeTilesets: DESERT
+		Categories: Decoration
 
 BOXES07:
 	Inherits: ^Tree
@@ -261,6 +267,7 @@ BOXES07:
 		Name: Boxes
 	EditorTilesetFilter:
 		ExcludeTilesets: DESERT
+		Categories: Decoration
 
 BOXES08:
 	Inherits: ^Tree
@@ -268,6 +275,7 @@ BOXES08:
 		Name: Boxes
 	EditorTilesetFilter:
 		ExcludeTilesets: DESERT
+		Categories: Decoration
 
 BOXES09:
 	Inherits: ^Tree
@@ -275,6 +283,7 @@ BOXES09:
 		Name: Boxes
 	EditorTilesetFilter:
 		ExcludeTilesets: DESERT
+		Categories: Decoration
 
 ICE01:
 	Inherits: ^Tree
@@ -285,6 +294,7 @@ ICE01:
 		Name: Ice Floe
 	EditorTilesetFilter:
 		ExcludeTilesets: DESERT, INTERIOR
+		Categories: Decoration
 
 ICE02:
 	Inherits: ^Tree
@@ -295,6 +305,7 @@ ICE02:
 		Name: Ice Floe
 	EditorTilesetFilter:
 		ExcludeTilesets: DESERT, INTERIOR
+		Categories: Decoration
 
 ICE03:
 	Inherits: ^Tree
@@ -305,6 +316,7 @@ ICE03:
 		Name: Ice Floe
 	EditorTilesetFilter:
 		ExcludeTilesets: DESERT, INTERIOR
+		Categories: Decoration
 
 ICE04:
 	Inherits: ^Tree
@@ -312,6 +324,7 @@ ICE04:
 		Name: Ice Floe
 	EditorTilesetFilter:
 		ExcludeTilesets: DESERT, INTERIOR
+		Categories: Decoration
 
 ICE05:
 	Inherits: ^Tree
@@ -319,6 +332,7 @@ ICE05:
 		Name: Ice Floe
 	EditorTilesetFilter:
 		ExcludeTilesets: DESERT, INTERIOR
+		Categories: Decoration
 
 ROCK1:
 	Inherits: ^Rock
@@ -368,6 +382,7 @@ UTILPOL1:
 		Name: Utility Pole
 	EditorTilesetFilter:
 		ExcludeTilesets: DESERT
+		Categories: Decoration
 
 UTILPOL2:
 	Inherits: ^Tree
@@ -375,6 +390,7 @@ UTILPOL2:
 		Name: Utility Pole
 	EditorTilesetFilter:
 		ExcludeTilesets: DESERT
+		Categories: Decoration
 
 TANKTRAP1:
 	Inherits: ^Rock

@@ -92,8 +92,8 @@ namespace OpenRA.Mods.Common.Traits
 
 			foreach (var kvp in palettes)
 			{
-				if ((info.Palettes.Count > 0 && !AnyPaletteNameStartsWith(info.Palettes, kvp.Key))
-					|| (info.ExcludePalettes.Count > 0 && AnyPaletteNameStartsWith(info.ExcludePalettes, kvp.Key)))
+				if ((info.Palettes.Count > 0 && !StartsWithAny(kvp.Key, info.Palettes))
+					|| (info.ExcludePalettes.Count > 0 && StartsWithAny(kvp.Key, info.ExcludePalettes)))
 					continue;
 
 				var palette = kvp.Value;
@@ -106,11 +106,11 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		static bool AnyPaletteNameStartsWith(HashSet<string> names, string prefix)
+		static bool StartsWithAny(string name, HashSet<string> prefixes)
 		{
 			// PERF: Avoid LINQ.
-			foreach (var name in names)
-				if (name.StartsWith(prefix))
+			foreach (var pref in prefixes)
+				if (name.StartsWith(pref))
 					return true;
 
 			return false;

@@ -55,9 +55,6 @@
       <HintPath>..\thirdparty\download\Eluant.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="StyleCop">
-      <HintPath>..\thirdparty\download\StyleCop.dll</HintPath>
-    </Reference>
     <Reference Include="ICSharpCode.SharpZipLib">
       <HintPath>..\thirdparty\download\ICSharpCode.SharpZipLib.dll</HintPath>
       <Private>False</Private>
@@ -172,7 +169,6 @@
     <Compile Include="HitShapes\Rectangle.cs" />
     <Compile Include="HitShapes\Capsule.cs" />
     <Compile Include="HitShapes\Circle.cs" />
-    <Compile Include="Lint\CheckBuildingFootprint.cs" />
     <Compile Include="Lint\CheckAngle.cs" />
     <Compile Include="Lint\CheckSequences.cs" />
     <Compile Include="Lint\CheckPalettes.cs" />
@@ -278,14 +274,12 @@
     <Compile Include="Traits\Buildable.cs" />
     <Compile Include="Traits\Buildings\BaseBuilding.cs" />
     <Compile Include="Traits\Buildings\BaseProvider.cs" />
-    <Compile Include="Traits\Buildings\Bib.cs" />
     <Compile Include="Traits\Buildings\Bridge.cs" />
     <Compile Include="Traits\Buildings\LegacyBridgeHut.cs" />
     <Compile Include="Traits\Buildings\Building.cs" />
     <Compile Include="Traits\Buildings\BuildingInfluence.cs" />
     <Compile Include="Traits\Buildings\BuildingUtils.cs" />
     <Compile Include="Traits\Buildings\Exit.cs" />
-    <Compile Include="Traits\Buildings\FootprintUtils.cs" />
     <Compile Include="Traits\Buildings\FreeActor.cs" />
     <Compile Include="Traits\Buildings\Gate.cs" />
     <Compile Include="Traits\Buildings\LineBuild.cs" />
@@ -298,6 +292,7 @@
     <Compile Include="Traits\Buildings\Reservable.cs" />
     <Compile Include="Traits\Burns.cs" />
     <Compile Include="Traits\ChangesTerrain.cs" />
+    <Compile Include="Traits\CommandBarBlacklist.cs" />
     <Compile Include="Traits\Health.cs" />
     <Compile Include="Traits\HitShape.cs" />
     <Compile Include="Traits\PowerTooltip.cs" />
@@ -546,7 +541,6 @@
     <Compile Include="Traits\World\WarheadDebugOverlay.cs" />
     <Compile Include="Traits\World\WeatherOverlay.cs" />
     <Compile Include="UtilityCommands\CheckYaml.cs" />
-    <Compile Include="UtilityCommands\CheckCodeStyle.cs" />
     <Compile Include="UtilityCommands\ConvertPngToShpCommand.cs" />
     <Compile Include="UtilityCommands\ConvertSpriteToPngCommand.cs" />
     <Compile Include="UtilityCommands\CreateManPage.cs" />
@@ -817,6 +811,7 @@
     <Compile Include="Widgets\Logic\Ingame\StanceSelectorLogic.cs" />
     <Compile Include="Widgets\Logic\ButtonTooltipWithDescHighlightLogic.cs" />
     <Compile Include="Traits\AutoTargetPriority.cs" />
+    <Compile Include="Traits\Conditions\GrantConditionOnBotOwner.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="AfterBuild">

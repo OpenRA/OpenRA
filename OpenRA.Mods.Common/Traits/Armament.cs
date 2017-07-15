@@ -113,6 +113,8 @@ namespace OpenRA.Mods.Common.Traits
 		IEnumerable<int> damageModifiers;
 		IEnumerable<int> inaccuracyModifiers;
 
+		int ticksSinceLastShot;
+
 		List<Pair<int, Action>> delayedActions = new List<Pair<int, Action>>();
 
 		public WDist Recoil;
@@ -169,6 +171,9 @@ namespace OpenRA.Mods.Common.Traits
 			if (IsTraitDisabled)
 				return;
 
+			if (ticksSinceLastShot < Weapon.ReloadDelay)
+				++ticksSinceLastShot;
+
 			if (FireDelay > 0)
 				--FireDelay;
 
@@ -221,9 +226,31 @@ namespace OpenRA.Mods.Common.Traits
 			if (!Weapon.IsValidAgainst(target, self.World, self))
 				return null;
 
+			if (ticksSinceLastShot >= Weapon.ReloadDelay)
+				Burst = Weapon.Burst;
+
+			ticksSinceLastShot = 0;
+
 			var barrel = Barrels[Burst % Barrels.Length];
 			Func<WPos> muzzlePosition = () => self.CenterPosition + MuzzleOffset(self, barrel);
 			var legacyFacing = MuzzleOrientation(self, barrel).Yaw.Angle / 4;
+
+			var passiveTarget = Weapon.TargetActorCenter ? target.CenterPosition : target.Positions.PositionClosestTo(muzzlePosition());
+			var initialOffset = Weapon.FirstBurstTargetOffset;
+			if (initialOffset != WVec.Zero)
+			{
+				// We want this to match Armament.LocalOffset, so we need to convert it to forward, right, up
+				initialOffset = new WVec(initialOffset.Y, -initialOffset.X, initialOffset.Z);
+				passiveTarget += initialOffset.Rotate(WRot.FromFacing(legacyFacing));
+			}
+
+			var followingOffset = Weapon.FollowingBurstTargetOffset;
+			if (followingOffset != WVec.Zero)
+			{
+				// We want this to match Armament.LocalOffset, so we need to convert it to forward, right, up
+				followingOffset = new WVec(followingOffset.Y, -followingOffset.X, followingOffset.Z);
+				passiveTarget += ((Weapon.Burst - Burst) * followingOffset).Rotate(WRot.FromFacing(legacyFacing));
+			}
 
 			var args = new ProjectileArgs
 			{
@@ -239,7 +266,7 @@ namespace OpenRA.Mods.Common.Traits
 				Source = muzzlePosition(),
 				CurrentSource = muzzlePosition,
 				SourceActor = self,
-				PassiveTarget = Weapon.TargetActorCenter ? target.CenterPosition : target.Positions.PositionClosestTo(muzzlePosition()),
+				PassiveTarget = passiveTarget,
 				GuidedTarget = target
 			};
 

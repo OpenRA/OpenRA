@@ -31,6 +31,7 @@
 	Warhead@3Eff: CreateEffect
 		Explosions: tiny_explosion
 		VictimScanRadius: 0
+		ValidTargets: Ground, Air
 
 ^Missile:
 	Inherits: ^Rocket

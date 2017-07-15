@@ -50,8 +50,8 @@ namespace OpenRA.Mods.Common.Widgets
 			var buildingInfo = actor.TraitInfoOrDefault<BuildingInfo>();
 			if (buildingInfo != null)
 			{
-				locationOffset = -FootprintUtils.AdjustForBuildingSize(buildingInfo);
-				previewOffset = FootprintUtils.CenterOffset(world, buildingInfo);
+				locationOffset = -buildingInfo.LocationOffset();
+				previewOffset = buildingInfo.CenterOffset(world);
 			}
 
 			var td = new TypeDictionary();

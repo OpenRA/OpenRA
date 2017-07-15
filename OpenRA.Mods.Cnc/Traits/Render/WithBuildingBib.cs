@@ -12,18 +12,21 @@
 using System.Collections.Generic;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Graphics;
+using OpenRA.Mods.Common.Traits;
 using OpenRA.Mods.Common.Traits.Render;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.Common.Traits
+namespace OpenRA.Mods.Cnc.Traits
 {
-	public class BibInfo : ITraitInfo, Requires<BuildingInfo>, IRenderActorPreviewSpritesInfo, IActorPreviewInitInfo, Requires<RenderSpritesInfo>
+	public class WithBuildingBibInfo : ITraitInfo, Requires<BuildingInfo>, IRenderActorPreviewSpritesInfo, IActorPreviewInitInfo, Requires<RenderSpritesInfo>
 	{
 		[SequenceReference] public readonly string Sequence = "bib";
+
 		[PaletteReference] public readonly string Palette = TileSet.TerrainPaletteInternalName;
+
 		public readonly bool HasMinibib = false;
 
-		public object Create(ActorInitializer init) { return new Bib(init.Self, this); }
+		public object Create(ActorInitializer init) { return new WithBuildingBib(init.Self, this); }
 
 		public IEnumerable<IActorPreview> RenderPreviewSprites(ActorPreviewInitializer init, RenderSpritesInfo rs, string image, int facings, PaletteReference p)
 		{
@@ -35,10 +38,10 @@ namespace OpenRA.Mods.Common.Traits
 
 			var bi = init.Actor.TraitInfo<BuildingInfo>();
 
-			var width = bi.Dimensions.X;
-			var bibOffset = bi.Dimensions.Y - 1;
-			var centerOffset = FootprintUtils.CenterOffset(init.World, bi);
 			var rows = HasMinibib ? 1 : 2;
+			var width = bi.Dimensions.X;
+			var bibOffset = bi.Dimensions.Y - rows;
+			var centerOffset = bi.CenterOffset(init.World);
 			var map = init.World.Map;
 			var location = CPos.Zero;
 
@@ -71,14 +74,14 @@ namespace OpenRA.Mods.Common.Traits
 		}
 	}
 
-	public class Bib : INotifyAddedToWorld, INotifyRemovedFromWorld
+	public class WithBuildingBib : INotifyAddedToWorld, INotifyRemovedFromWorld
 	{
-		readonly BibInfo info;
+		readonly WithBuildingBibInfo info;
 		readonly RenderSprites rs;
 		readonly BuildingInfo bi;
 		readonly List<AnimationWithOffset> anims = new List<AnimationWithOffset>();
 
-		public Bib(Actor self, BibInfo info)
+		public WithBuildingBib(Actor self, WithBuildingBibInfo info)
 		{
 			this.info = info;
 			rs = self.Trait<RenderSprites>();
@@ -87,11 +90,11 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void AddedToWorld(Actor self)
 		{
-			var width = bi.Dimensions.X;
-			var bibOffset = bi.Dimensions.Y - 1;
-			var centerOffset = FootprintUtils.CenterOffset(self.World, bi);
-			var location = self.Location;
 			var rows = info.HasMinibib ? 1 : 2;
+			var width = bi.Dimensions.X;
+			var bibOffset = bi.Dimensions.Y - rows;
+			var centerOffset = bi.CenterOffset(self.World);
+			var location = self.Location;
 			var map = self.World.Map;
 
 			for (var i = 0; i < rows * width; i++)

@@ -195,6 +195,8 @@
 		Weapons: LargeDebris, LargeDebrisWithTrail
 		Pieces: 1, 2
 		Range: 2c0, 5c0
+	EditorTilesetFilter:
+		Categories: Building
 
 ^Building:
 	Inherits@1: ^BasicBuilding
@@ -236,6 +238,8 @@
 		MaxHeightDelta: 3
 	RenderSprites:
 		Palette: terraindecoration
+	EditorTilesetFilter:
+		Categories: Civilian building
 
 ^OldBase:
 	Inherits: ^CivBuilding
@@ -267,6 +271,8 @@
 		Pieces: 1, 3
 	ThrowsShrapnel@LARGE:
 		Pieces: 1, 1
+	EditorTilesetFilter:
+		Categories: Billboard
 
 ^Crate:
 	HiddenUnderFog:
@@ -281,6 +287,8 @@
 		Images: crate
 	CustomSelectionSize:
 		CustomBounds: 24,24
+	EditorTilesetFilter:
+		Categories: System
 
 ^Wall:
 	Inherits@1: ^SpriteActor
@@ -320,6 +328,8 @@
 			TopLeft: -512, -512
 			BottomRight: 512, 512
 			VerticalTopOffset: 768
+	EditorTilesetFilter:
+		Categories: Wall
 
 ^BuildingPlug:
 	AlwaysVisible:
@@ -414,6 +424,8 @@
 	HitShape:
 		Type: Circle
 			Radius: 128
+	EditorTilesetFilter:
+		Categories: Infantry
 
 ^RegularInfantryDeath:
 	WithDeathAnimation@normal:
@@ -519,6 +531,8 @@
 	Wanders:
 		MinMoveDelay: 150
 		MaxMoveDelay: 750
+	EditorTilesetFilter:
+		Categories: Civilian infantry
 
 ^Vehicle:
 	Inherits@2: ^ExistsInWorld
@@ -601,6 +615,8 @@
 	EntersTunnels:
 		Voice: Move
 	HitShape:
+	EditorTilesetFilter:
+		Categories: Vehicle
 
 ^Tank:
 	Inherits: ^Vehicle
@@ -675,6 +691,8 @@
 	WithVoxelBody:
 	RevealOnFire:
 	HitShape:
+	EditorTilesetFilter:
+		Categories: Aircraft
 
 ^Helicopter:
 	Inherits: ^Aircraft
@@ -707,6 +725,8 @@
 		Moves: true
 		Velocity: 86
 	HitShape:
+	EditorTilesetFilter:
+		Categories: Husk
 
 ^Visceroid:
 	Inherits@1: ^ExistsInWorld
@@ -750,6 +770,8 @@
 		Type: Circle
 			Radius: 256
 			VerticalTopOffset: 512
+	EditorTilesetFilter:
+		Categories: Critter
 
 ^BlossomTree:
 	Inherits@1: ^SpriteActor
@@ -769,6 +791,8 @@
 		ResourceType: Tiberium
 		Interval: 55
 	WithIdleAnimation:
+	EditorTilesetFilter:
+		Categories: Resource spawn
 
 ^Tree:
 	Inherits@1: ^SpriteActor
@@ -784,6 +808,8 @@
 		Terrain: Tree
 	Tooltip:
 		Name: Tree
+	EditorTilesetFilter:
+		Categories: Tree
 
 ^Rock:
 	Inherits@1: ^SpriteActor
@@ -799,6 +825,8 @@
 		Terrain: Rock
 	Tooltip:
 		Name: Rock
+	EditorTilesetFilter:
+		Categories: Decoration
 
 ^Decoration:
 	Inherits@1: ^SpriteActor
@@ -809,6 +837,8 @@
 	Building:
 		Footprint: x
 		Dimensions: 1, 1
+	EditorTilesetFilter:
+		Categories: Decoration
 
 ^Box:
 	Inherits: ^Decoration
@@ -835,6 +865,8 @@
 	DetectCloaked:
 		Range: 5c0
 	RevealOnFire:
+	EditorTilesetFilter:
+		Categories: Defense
 
 ^Train:
 	Inherits@1: ^EmpDisable
@@ -889,6 +921,8 @@
 		Pieces: 3, 7
 		Range: 2c0, 5c0
 	HitShape:
+	EditorTilesetFilter:
+		Categories: Railway
 
 ^TerrainOverlay:
 	AlwaysVisible:
@@ -908,6 +942,8 @@
 	AutoSelectionSize:
 	ChangesTerrain:
 		TerrainType: Rail
+	EditorTilesetFilter:
+		Categories: Railway
 
 ^Tunnel:
 	RenderSprites:
@@ -925,6 +961,8 @@
 	AlwaysVisible:
 	TunnelEntrance:
 		Dimensions: 3, 3
+	EditorTilesetFilter:
+		Categories: Tunnel
 
 ^Gate:
 	Inherits: ^Building
@@ -960,6 +998,8 @@
 			TopLeft: -512, -512
 			BottomRight: 512, 512
 			VerticalTopOffset: 768
+	EditorTilesetFilter:
+		Categories: Wall
 
 ^Gate_A:
 	Inherits: ^Gate

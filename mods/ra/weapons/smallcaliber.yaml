@@ -19,12 +19,13 @@
 		DamageTypes: Prone50Percent, TriggerProne, DefaultDeath
 	Warhead@2Eff: CreateEffect
 		Explosions: small_explosion_air
+		ValidTargets: Air, Ground, Water
 
 ZSU-23:
 	Inherits: ^AACannon
 	Burst: 2
-	BurstDelay: 5
-	ReloadDelay: 0
+	BurstDelay: 0
+	ReloadDelay: 5
 	Range: 10c0
 	Projectile: Bullet
 		Speed: 3c340
@@ -50,10 +51,11 @@ FLAK-23-AG:
 		ValidTargets: Air, Ground, Water
 	Warhead@2Eff: CreateEffect
 		Explosions: flak_explosion_ground
-		InvalidImpactTypes: Water
+		ValidTargets: Ground, Ship, Air
 	Warhead@3EffWater: CreateEffect
 		Explosions: small_splash
-		ValidImpactTypes: Water
+		ValidTargets: Water, Underwater
+		InvalidTargets: Ship, Structure
 
 ^HeavyMG:
 	ReloadDelay: 30
@@ -73,10 +75,11 @@ FLAK-23-AG:
 		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
 	Warhead@2Eff: CreateEffect
 		Explosions: piffs
-		InvalidImpactTypes: Water
+		ValidTargets: Ground, Ship, Air
 	Warhead@3EffWater: CreateEffect
 		Explosions: water_piffs
-		ValidImpactTypes: Water
+		ValidTargets: Water, Underwater
+		InvalidTargets: Ship, Structure
 
 ^LightMG:
 	Inherits: ^HeavyMG
@@ -107,11 +110,11 @@ Vulcan:
 		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
 	Warhead@4Eff_2: CreateEffect
 		Explosions: piffs
-		InvalidImpactTypes: Water
+		ValidTargets: Ground
 		Delay: 2
 	Warhead@4Eff_2Water: CreateEffect
 		Explosions: water_piffs
-		ValidImpactTypes: Water
+		ValidTargets: Water
 		Delay: 2
 	Warhead@5Dam_3: SpreadDamage
 		Spread: 128
@@ -126,11 +129,11 @@ Vulcan:
 		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
 	Warhead@6Eff_3: CreateEffect
 		Explosions: piffs
-		InvalidImpactTypes: Water
+		ValidTargets: Ground
 		Delay: 4
 	Warhead@6Eff_3Water: CreateEffect
 		Explosions: water_piffs
-		ValidImpactTypes: Water
+		ValidTargets: Water
 		Delay: 4
 	Warhead@7Dam_4: SpreadDamage
 		Spread: 128
@@ -145,11 +148,11 @@ Vulcan:
 		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
 	Warhead@8Eff_4: CreateEffect
 		Explosions: piffs
-		InvalidImpactTypes: Water
+		ValidTargets: Ground
 		Delay: 6
 	Warhead@8Eff_4Water: CreateEffect
 		Explosions: water_piffs
-		ValidImpactTypes: Water
+		ValidTargets: Water
 		Delay: 6
 	Warhead@9Dam_5: SpreadDamage
 		Spread: 128
@@ -164,11 +167,11 @@ Vulcan:
 		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
 	Warhead@10Eff_5: CreateEffect
 		Explosions: piffs
-		InvalidImpactTypes: Water
+		ValidTargets: Ground
 		Delay: 8
 	Warhead@10Eff_5Water: CreateEffect
 		Explosions: water_piffs
-		ValidImpactTypes: Water
+		ValidTargets: Water
 		Delay: 8
 	Warhead@11Dam_6: SpreadDamage
 		Spread: 128
@@ -183,11 +186,11 @@ Vulcan:
 		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
 	Warhead@12Eff_6: CreateEffect
 		Explosions: piffs
-		InvalidImpactTypes: Water
+		ValidTargets: Ground
 		Delay: 10
 	Warhead@12Eff_6Water: CreateEffect
 		Explosions: water_piffs
-		ValidImpactTypes: Water
+		ValidTargets: Water
 		Delay: 10
 
 ChainGun:
@@ -201,15 +204,28 @@ ChainGun:
 		Versus:
 			None: 120
 
-ChainGun.Yak:
+ChainGun.Yak.Right:
 	Inherits: ^HeavyMG
-	ReloadDelay: 3
-	Range: 5c0
-	MinRange: 3c0
+	Burst: 5
+	FirstBurstTargetOffset: -684,213,0
+	FollowingBurstTargetOffset: 342,0,0
+	BurstDelay: 2
+	ReloadDelay: 10
+	Range: 5c6
+	MinRange: 3c420
 	Projectile: Bullet
 		Blockable: false
 	Warhead@1Dam: SpreadDamage
 		Damage: 40
+		Spread: 171
+		Versus:
+			None: 125
+			Light: 70
+			Heavy: 28
+
+ChainGun.Yak.Left:
+	Inherits: ChainGun.Yak.Right
+	FirstBurstTargetOffset: -684,-213,0
 
 Pistol:
 	Inherits: ^LightMG
@@ -260,10 +276,11 @@ SilencedPPK:
 		Spread: 128
 	Warhead@2Eff: CreateEffect
 		Explosions: piffs
-		InvalidImpactTypes: Water
+		ValidTargets: Ground, Ship, Air
 	Warhead@3EffWater: CreateEffect
 		Explosions: water_piffs
-		ValidImpactTypes: Water
+		ValidTargets: Water, Underwater
+		InvalidTargets: Ship, Structure
 
 Colt45:
 	Inherits: ^SnipeWeapon
@@ -273,10 +290,11 @@ Colt45:
 		Damage: 50
 	Warhead@2Eff: CreateEffect
 		Explosions: piff
-		InvalidImpactTypes: Water
+		ValidTargets: Ground, Ship, Air
 	Warhead@3EffWater: CreateEffect
 		Explosions: water_piff
-		ValidImpactTypes: Water
+		ValidTargets: Water, Underwater
+		InvalidTargets: Ship, Structure
 
 Sniper:
 	Inherits: ^SnipeWeapon

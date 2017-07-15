@@ -198,6 +198,8 @@
 		Duration: 100
 		Radius: 2c512
 	HitShape:
+	EditorTilesetFilter:
+		Categories: Vehicle
 
 ^Tank:
 	Inherits: ^Vehicle
@@ -217,6 +219,8 @@
 	ScriptTriggers:
 	WithFacingSpriteBody:
 	HitShape:
+	EditorTilesetFilter:
+		Categories: Husk
 
 ^VehicleHusk:
 	Inherits: ^Husk
@@ -255,6 +259,8 @@
 		Name: Destroyed Tower
 	ScriptTriggers:
 	HitShape:
+	EditorTilesetFilter:
+		Categories: Husk
 
 ^Infantry:
 	Inherits@1: ^ExistsInWorld
@@ -329,6 +335,8 @@
 	HitShape:
 		Type: Circle
 			Radius: 96
+	EditorTilesetFilter:
+		Categories: Infantry
 
 ^Plane:
 	Inherits@1: ^ExistsInWorld
@@ -345,6 +353,8 @@
 	WithFacingSpriteBody:
 	WithShadow:
 	HitShape:
+	EditorTilesetFilter:
+		Categories: Aircraft
 
 ^Building:
 	Inherits@1: ^ExistsInWorld
@@ -359,7 +369,7 @@
 	Targetable:
 		TargetTypes: Ground, C4, Structure
 	HitShape:
-		UseOccupiedCellsOffsets: true
+		UseTargetableCellsOffsets: true
 		Type: Rectangle
 			TopLeft: -512, -512
 			BottomRight: 512, 512
@@ -412,6 +422,9 @@
 	RevealOnDeath:
 		Duration: 100
 		Radius: 4c768
+	EditorTilesetFilter:
+		Categories: Building
+	CommandBarBlacklist:
 
 ^Defense:
 	Inherits: ^Building
@@ -436,6 +449,9 @@
 	RevealOnFire:
 	Targetable:
 		TargetTypes: Ground, C4, Structure, Defense
+	EditorTilesetFilter:
+		Categories: Defense
+	-CommandBarBlacklist:
 
 ^DisabledOverlay:
 	WithColoredOverlay@IDISABLE:

@@ -47,12 +47,13 @@ namespace OpenRA
 		public readonly bool Playable = true;
 		public readonly int ClientIndex;
 		public readonly PlayerReference PlayerReference;
+		public readonly bool IsBot;
+		public readonly string BotType;
 
 		/// <summary>The faction (including Random, etc) that was selected in the lobby.</summary>
 		public readonly FactionInfo DisplayFaction;
 
 		public WinState WinState = WinState.Undefined;
-		public bool IsBot;
 		public int SpawnPoint;
 		public bool HasObjectives = false;
 		public bool Spectating;
@@ -94,8 +95,6 @@ namespace OpenRA
 
 		public Player(World world, Session.Client client, PlayerReference pr)
 		{
-			string botType;
-
 			World = world;
 			InternalName = pr.Name;
 			PlayerReference = pr;
@@ -107,13 +106,14 @@ namespace OpenRA
 				Color = client.Color;
 				if (client.Bot != null)
 				{
+					var botInfo = world.Map.Rules.Actors["player"].TraitInfos<IBotInfo>().First(b => b.Type == client.Bot);
 					var botsOfSameType = world.LobbyInfo.Clients.Where(c => c.Bot == client.Bot).ToArray();
-					PlayerName = botsOfSameType.Length == 1 ? client.Bot : "{0} {1}".F(client.Bot, botsOfSameType.IndexOf(client) + 1);
+					PlayerName = botsOfSameType.Length == 1 ? botInfo.Name : "{0} {1}".F(botInfo.Name, botsOfSameType.IndexOf(client) + 1);
 				}
 				else
 					PlayerName = client.Name;
 
-				botType = client.Bot;
+				BotType = client.Bot;
 				Faction = ChooseFaction(world, client.Faction, !pr.LockFaction);
 				DisplayFaction = ChooseDisplayFaction(world, client.Faction);
 			}
@@ -126,7 +126,7 @@ namespace OpenRA
 				NonCombatant = pr.NonCombatant;
 				Playable = pr.Playable;
 				Spectating = pr.Spectating;
-				botType = pr.Bot;
+				BotType = pr.Bot;
 				Faction = ChooseFaction(world, pr.Faction, false);
 				DisplayFaction = ChooseDisplayFaction(world, pr.Faction);
 			}
@@ -137,12 +137,12 @@ namespace OpenRA
 			fogVisibilities = PlayerActor.TraitsImplementing<IFogVisibilityModifier>().ToArray();
 
 			// Enable the bot logic on the host
-			IsBot = botType != null;
+			IsBot = BotType != null;
 			if (IsBot && Game.IsHost)
 			{
-				var logic = PlayerActor.TraitsImplementing<IBot>().FirstOrDefault(b => b.Info.Name == botType);
+				var logic = PlayerActor.TraitsImplementing<IBot>().FirstOrDefault(b => b.Info.Type == BotType);
 				if (logic == null)
-					Log.Write("debug", "Invalid bot type: {0}", botType);
+					Log.Write("debug", "Invalid bot type: {0}", BotType);
 				else
 					logic.Activate(this);
 			}

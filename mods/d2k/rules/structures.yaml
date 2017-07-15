@@ -53,13 +53,14 @@ construction_yard:
 		Description: Produces structures.
 	-DamagedByTerrain:
 	Building:
-		Footprint: xxx xxx
-		Dimensions: 3,2
+		Footprint: xxx xxx ===
+		Dimensions: 3,3
 		Adjacent: 4
+		LocalCenterOffset: 0,-512,0
 	LaysTerrain:
 		TerrainTypes: Rock
 		Template: 88
-	Bib:
+	WithBuildingBib:
 	Selectable:
 		Bounds: 96,64
 	Health:
@@ -133,9 +134,10 @@ wind_trap:
 	Tooltip:
 		Name: Wind Trap
 	Building:
-		Footprint: xx xx
-		Dimensions: 2,2
-	Bib:
+		Footprint: xx xx ==
+		Dimensions: 2,3
+		LocalCenterOffset: 0,-512,0
+	WithBuildingBib:
 	Health:
 		HP: 3000
 	HitShape:
@@ -178,9 +180,10 @@ barracks:
 	Tooltip:
 		Name: Barracks
 	Building:
-		Footprint: xx xx
-		Dimensions: 2,2
-	Bib:
+		Footprint: xx xx ==
+		Dimensions: 2,3
+		LocalCenterOffset: 0,-512,0
+	WithBuildingBib:
 	Health:
 		HP: 3200
 	HitShape:
@@ -258,9 +261,10 @@ refinery:
 	Tooltip:
 		Name: Spice Refinery
 	Building:
-		Footprint: =xx xx=
-		Dimensions: 3,2
-	Bib:
+		Footprint: =xx xx= ===
+		Dimensions: 3,3
+		LocalCenterOffset: 0,-512,0
+	WithBuildingBib:
 	Health:
 		HP: 3000
 	HitShape:
@@ -268,7 +272,6 @@ refinery:
 			TopLeft: -512, -1024
 			BottomRight: 1536, 0
 	HitShape@BOTTOM:
-		UseOccupiedCellsOffsets: false
 		Type: Rectangle
 			TopLeft: -1536, 0
 			BottomRight: 512, 1024
@@ -371,9 +374,10 @@ light_factory:
 	Tooltip:
 		Name: Light Factory
 	Building:
-		Footprint: xxx xx=
-		Dimensions: 3,2
-	Bib:
+		Footprint: xxx xx= ===
+		Dimensions: 3,3
+		LocalCenterOffset: 0,-512,0
+	WithBuildingBib:
 	Health:
 		HP: 3300
 	HitShape:
@@ -454,20 +458,18 @@ heavy_factory:
 	Tooltip:
 		Name: Heavy Factory
 	Building:
-		Footprint: _x_ xxx =xx
-		Dimensions: 3,3
-	Bib:
+		Footprint: _x_ xxx =xX ===
+		Dimensions: 3,4
+		LocalCenterOffset: 0,-512,0
+	WithBuildingBib:
 	Health:
 		HP: 3500
 	HitShape:
-		UseOccupiedCellsOffsets: false
-		TargetableOffsets: 0,0,0, -1680,0,0, 0,1024,0, 0,-1024,0, -1155,-704,0, -1365,832,0
+		TargetableOffsets: -1155,-704,0, -1365,832,0
 		Type: Rectangle
 			TopLeft: -1536, -512
 			BottomRight: 1536, 1536
 	HitShape@TOP:
-		UseOccupiedCellsOffsets: false
-		TargetableOffsets: 1680,0,0
 		Type: Rectangle
 			TopLeft: -512, -1536
 			BottomRight: 512, -512
@@ -551,9 +553,10 @@ outpost:
 	Tooltip:
 		Name: Outpost
 	Building:
-		Footprint: xxx xxx
-		Dimensions: 3,2
-	Bib:
+		Footprint: xxx xxx ===
+		Dimensions: 3,3
+		LocalCenterOffset: 0,-512,0
+	WithBuildingBib:
 	Health:
 		HP: 3500
 	HitShape:
@@ -610,7 +613,6 @@ starport:
 			TopLeft: -1536, -1536
 			BottomRight: 1536, 512
 	HitShape@BOTTOM:
-		UseOccupiedCellsOffsets: false
 		Type: Rectangle
 			TopLeft: -512, 512
 			BottomRight: 512, 1536
@@ -714,6 +716,8 @@ wall:
 		Type: Rectangle
 			TopLeft: -512, -512
 			BottomRight: 512, 512
+	EditorTilesetFilter:
+		Categories: Defense
 
 medium_gun_turret:
 	Inherits: ^Defense
@@ -829,7 +833,6 @@ repair_pad:
 			TopLeft: -1536, -512
 			BottomRight: 1536, 512
 	HitShape@TOPANDBOTTOM:
-		UseOccupiedCellsOffsets: false
 		Type: Rectangle
 			TopLeft: -512, -1536
 			BottomRight: 512, 1536
@@ -883,19 +886,18 @@ high_tech_factory:
 		SpawnOffset: 0,0,728
 		ExitCell: 0,0
 	Building:
-		Footprint: _x_ xxx xxx
-		Dimensions: 3,3
-	Bib:
+		Footprint: _X_ xxx XXX ===
+		Dimensions: 3,4
+		LocalCenterOffset: 0,-512,0
+	WithBuildingBib:
 	Health:
 		HP: 3500
 	HitShape:
-		UseOccupiedCellsOffsets: false
-		TargetableOffsets: 0,0,0, -1312,0,0, 0,-1024,0, -1312,-1024,0, 0,1024,0, -1312,1024,0
+		TargetableOffsets: -1312,0,0, -1312,-1024,0, -1312,1024,0
 		Type: Rectangle
 			TopLeft: -1536, -512
 			BottomRight: 1536, 1536
 	HitShape@TOP:
-		UseOccupiedCellsOffsets: false
 		TargetableOffsets: 1280,0,0
 		Type: Rectangle
 			TopLeft: -512, -1536
@@ -961,19 +963,18 @@ research_centre:
 	Tooltip:
 		Name: IX Research Center
 	Building:
-		Footprint: _x_ xxx xxx
-		Dimensions: 3,3
-	Bib:
+		Footprint: _X_ xxx XXX ===
+		Dimensions: 3,4
+		LocalCenterOffset: 0,-512,0
+	WithBuildingBib:
 	Health:
 		HP: 2500
 	HitShape:
-		UseOccupiedCellsOffsets: false
-		TargetableOffsets: 0,0,0, -1574,-158,0, 0,-1024,0, -1050,-1024,0, 0,1024,0, -1155,960,0
+		TargetableOffsets: -1574,-158,0, -1050,-1024,0, -1155,960,0
 		Type: Rectangle
 			TopLeft: -1536, -512
 			BottomRight: 1536, 1536
 	HitShape@TOP:
-		UseOccupiedCellsOffsets: false
 		TargetableOffsets: 1312,0,0
 		Type: Rectangle
 			TopLeft: -512, -1536
@@ -1016,7 +1017,7 @@ palace:
 	Building:
 		Footprint: xx= xxx =xx
 		Dimensions: 3,3
-	Bib:
+	WithBuildingBib:
 		HasMinibib: True
 	Health:
 		HP: 4000
@@ -1025,12 +1026,10 @@ palace:
 			TopLeft: -1536, -512
 			BottomRight: 1536, 512
 	HitShape@TOP:
-		UseOccupiedCellsOffsets: false
 		Type: Rectangle
 			TopLeft: -1536, -1536
 			BottomRight: 512, -512
 	HitShape@BOTTOM:
-		UseOccupiedCellsOffsets: false
 		Type: Rectangle
 			TopLeft: -512, 512
 			BottomRight: 1536, 1536

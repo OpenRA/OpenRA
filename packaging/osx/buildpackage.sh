@@ -9,7 +9,7 @@ if [[ "$OSTYPE" != "darwin"* ]]; then
 	command -v genisoimage >/dev/null 2>&1 || { echo >&2 "macOS packaging requires genisoimage."; exit 1; }
 fi
 
-LAUNCHER_TAG="osx-launcher-20170604"
+LAUNCHER_TAG="osx-launcher-20170708"
 
 if [ $# -ne "2" ]; then
 	echo "Usage: `basename $0` tag outputdir"
@@ -36,7 +36,7 @@ populate_template() {
 	cp -r "${BUILTDIR}/OpenRA.app" "${TEMPLATE_DIR}"
 
 	# Copy macOS specific files
-	cp "${MOD_ID}.icns" "${TEMPLATE_DIR}/Contents/Resources/OpenRA.icns"
+	cp "${MOD_ID}.icns" "${TEMPLATE_DIR}/Contents/Resources/"
 	modify_plist "{MOD_ID}" "${MOD_ID}" "${TEMPLATE_DIR}/Contents/Info.plist"
 	modify_plist "{MOD_NAME}" "${MOD_NAME}" "${TEMPLATE_DIR}/Contents/Info.plist"
 	modify_plist "{JOIN_SERVER_URL_SCHEME}" "openra-${MOD_ID}-${TAG}" "${TEMPLATE_DIR}/Contents/Info.plist"

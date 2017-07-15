@@ -99,7 +99,7 @@ namespace OpenRA.Mods.Common.Orders
 			if (mi.Button == MouseButton.Left)
 			{
 				var orderType = "PlaceBuilding";
-				var topLeft = cell - FootprintUtils.AdjustForBuildingSize(buildingInfo);
+				var topLeft = cell - buildingInfo.LocationOffset();
 
 				var plugInfo = world.Map.Rules.Actors[building].TraitInfoOrDefault<PlugInfo>();
 				if (plugInfo != null)
@@ -163,8 +163,8 @@ namespace OpenRA.Mods.Common.Orders
 		public IEnumerable<IRenderable> RenderAboveShroud(WorldRenderer wr, World world)
 		{
 			var xy = wr.Viewport.ViewToWorld(Viewport.LastMousePos);
-			var topLeft = xy - FootprintUtils.AdjustForBuildingSize(buildingInfo);
-			var offset = world.Map.CenterOfCell(topLeft) + FootprintUtils.CenterOffset(world, buildingInfo);
+			var topLeft = xy - buildingInfo.LocationOffset();
+			var offset = world.Map.CenterOfCell(topLeft) + buildingInfo.CenterOffset(world);
 			var rules = world.Map.Rules;
 
 			var actorInfo = rules.Actors[building];
@@ -211,7 +211,7 @@ namespace OpenRA.Mods.Common.Orders
 							td.Add(o);
 
 					var init = new ActorPreviewInitializer(actor, wr, td);
-					preview = rules.Actors[building].TraitInfos<IRenderActorPreviewInfo>()
+					preview = actor.TraitInfos<IRenderActorPreviewInfo>()
 						.SelectMany(rpi => rpi.RenderPreview(init))
 						.ToArray();
 
@@ -227,7 +227,7 @@ namespace OpenRA.Mods.Common.Orders
 
 				var res = world.WorldActor.Trait<ResourceLayer>();
 				var isCloseEnough = buildingInfo.IsCloseEnoughToBase(world, world.LocalPlayer, building, topLeft);
-				foreach (var t in FootprintUtils.Tiles(rules, building, buildingInfo, topLeft))
+				foreach (var t in buildingInfo.Tiles(topLeft))
 					cells.Add(t, MakeCellType(isCloseEnough && world.IsCellBuildable(t, buildingInfo) && res.GetResource(t) == null));
 			}
 
@@ -248,7 +248,7 @@ namespace OpenRA.Mods.Common.Orders
 
 		IEnumerable<Order> ClearBlockersOrders(World world, CPos topLeft)
 		{
-			var allTiles = FootprintUtils.Tiles(world.Map.Rules, building, buildingInfo, topLeft).ToArray();
+			var allTiles = buildingInfo.Tiles(topLeft).ToArray();
 			var neightborTiles = Util.ExpandFootprint(allTiles, true).Except(allTiles)
 				.Where(world.Map.Contains).ToList();
 

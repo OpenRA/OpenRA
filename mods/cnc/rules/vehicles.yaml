@@ -302,7 +302,7 @@ JEEP:
 		TurnSpeed: 10
 		Offset: -85,0,128
 	Armament:
-		Weapon: MachineGun
+		Weapon: MachineGunH
 		LocalOffset: 171,0,85
 		MuzzleSequence: muzzle
 	AttackTurreted:

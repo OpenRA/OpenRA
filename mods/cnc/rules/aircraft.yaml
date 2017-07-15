@@ -91,8 +91,8 @@ HELI:
 		Ammo: 10
 		PipCount: 5
 		SelfReloads: true
-		ReloadCount: 10
-		SelfReloadDelay: 200
+		ReloadCount: 1
+		SelfReloadDelay: 40
 	WithIdleOverlay@ROTORAIR:
 		Offset: 0,0,85
 		Sequence: rotor
@@ -205,8 +205,6 @@ A10:
 		Repulsable: False
 	AttackBomber:
 		Armaments: gun, bombs
-		Guns: gun
-		Bombs: bombs
 	Armament@GUNS:
 		Name: gun
 		Weapon: Vulcan

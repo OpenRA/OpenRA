@@ -32,11 +32,12 @@
 		Explosions: small_frag
 		ImpactSounds: xplos.aud
 		VictimScanRadius: 0
+		ValidTargets: Ground, Water, Air
 
 Dragon:
 	Inherits: ^MissileWeapon
 	ReloadDelay: 20
-	Range: 12c0
+	Range: 10c0
 	Report: rocket2.aud
 	ValidTargets: Air
 	Burst: 2
@@ -44,7 +45,7 @@ Dragon:
 	Projectile: Missile
 		Speed: 426
 		HorizontalRateOfTurn: 20
-		RangeLimit: 15c0
+		RangeLimit: 12c0
 	Warhead@1Dam: SpreadDamage
 		ValidTargets: Air
 		Versus:
@@ -85,7 +86,7 @@ OrcaAGMissiles:
 		Speed: 256
 		RangeLimit: 6c0
 	Warhead@1Dam: SpreadDamage
-		Damage: 25
+		Damage: 28
 		ValidTargets: Ground
 		Versus:
 			None: 50
@@ -128,12 +129,12 @@ MammothMissiles:
 	Warhead@3Eff: CreateEffect
 		Explosions: small_poof
 		ImpactSounds: xplos.aud
-		InvalidImpactTypes: Air, AirHit
+		ValidTargets: Ground, Water
 	Warhead@4EffAir: CreateEffect
 		Explosions: small_building
 		ImpactSounds: xplos.aud
 		VictimScanRadius: 0
-		ValidImpactTypes: Air, AirHit
+		ValidTargets: Air
 
 227mm:
 	Inherits: ^MissileWeapon
@@ -207,12 +208,12 @@ BoatMissile:
 	Warhead@3Eff: CreateEffect
 		Explosions: small_poof
 		ImpactSounds: xplos.aud
-		InvalidImpactTypes: Air, AirHit
+		ValidTargets: Ground, Water
 	Warhead@4EffAir: CreateEffect
 		Explosions: small_building
 		ImpactSounds: xplos.aud
-		ValidImpactTypes: Air, AirHit
 		VictimScanRadius: 0
+		ValidTargets: Air
 
 TowerMissle:
 	Inherits: ^MissileWeapon
@@ -236,7 +237,7 @@ TowerMissle:
 		Explosions: med_frag
 		ImpactSounds: xplos.aud
 
-SAMMissile:
+TowerAAMissile:
 	Inherits: ^MissileWeapon
 	ReloadDelay: 15
 	Range: 8c0

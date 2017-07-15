@@ -98,3 +98,5 @@ FLAMEGUY:
 		FallbackSequence: die
 		UseDeathTypeSuffix: false
 	HitShape:
+	EditorTilesetFilter:
+		Categories: System

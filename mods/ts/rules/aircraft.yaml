@@ -366,3 +366,5 @@ HUNTER:
 		Palette: pips
 	ActorLostNotification:
 	HitShape:
+	EditorTilesetFilter:
+		Categories: System

@@ -8,6 +8,8 @@ mpspawn:
 	WithSpriteBody:
 	BodyOrientation:
 		QuantizedFacings: 1
+	EditorTilesetFilter:
+		Categories: System
 
 waypoint:
 	EditorOnlyTooltip:
@@ -19,6 +21,8 @@ waypoint:
 	WithSpriteBody:
 	BodyOrientation:
 		QuantizedFacings: 1
+	EditorTilesetFilter:
+		Categories: System
 
 ^mmch.colorpicker:
 	Inherits: MMCH
@@ -27,8 +31,8 @@ waypoint:
 		InitialFacing: 160
 	Turreted:
 		InitialFacing: 160
-	WithInfantryBody:
-		StandSequences: run
+	WithFacingSpriteBody:
+		Sequence: walk
 	RenderVoxels:
 		Image: mmch
 		Palette: colorpicker
@@ -51,6 +55,8 @@ CAMERA:
 		Type: CenterPosition
 	DetectCloaked:
 		Range: 10c0
+	EditorTilesetFilter:
+		Categories: System
 
 CRATE:
 	Inherits: ^Crate
@@ -94,6 +100,8 @@ CRATE:
 		SelectionShares: 5
 		Condition: crate-speed
 		Notification: 00-i080.aud
+	EditorTilesetFilter:
+		Categories: System
 
 SROCK01:
 	Inherits: ^Rock

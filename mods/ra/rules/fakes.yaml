@@ -3,7 +3,7 @@ FPWR:
 	Inherits@infiltrate: ^InfiltratableFake
 	Inherits@shape: ^2x2Shape
 	HitShape:
-		UseOccupiedCellsOffsets: false
+		UseTargetableCellsOffsets: false
 		TargetableOffsets: 0,0,0, 640,-384,0, 640,512,0, -710,-512,0, -710,512,0
 	Buildable:
 		BuildPaletteOrder: 870
@@ -17,13 +17,14 @@ FPWR:
 		GenericVisibility: Enemy
 		GenericStancePrefix: False
 	Building:
-		Footprint: xx xx
-		Dimensions: 2,2
+		Footprint: xx xx ==
+		Dimensions: 2,3
+		LocalCenterOffset: 0,-512,0
 	Health:
 		HP: 400
 	Armor:
 		Type: Wood
-	Bib:
+	WithBuildingBib:
 	RenderSprites:
 		Image: POWR
 	Valued:
@@ -46,7 +47,7 @@ SYRF:
 	Targetable:
 		TargetTypes: Ground, Water, Structure, SpyInfiltrate
 	Building:
-		Footprint: xxx xxx xxx
+		Footprint: XXX xxx XXX
 		Dimensions: 3,3
 		Adjacent: 8
 		TerrainTypes: Water
@@ -61,13 +62,11 @@ SYRF:
 	EditorTilesetFilter:
 		ExcludeTilesets: INTERIOR
 	HitShape:
-		UseOccupiedCellsOffsets: false
-		TargetableOffsets: 0,0,0, 0,-1024,0, 0,1024,0, 768,0,0, 768,-1024,0, 768,1024,0
+		TargetableOffsets: 768,0,0, 768,-1024,0, 768,1024,0
 		Type: Rectangle
 			TopLeft: -1536, -1152
 			BottomRight: 1536, 598
 	HitShape@BOTTOM:
-		UseOccupiedCellsOffsets: false
 		TargetableOffsets: -768,0,0
 		Type: Rectangle
 			TopLeft: -512, 598
@@ -90,7 +89,7 @@ SPEF:
 		GenericVisibility: Enemy
 		GenericStancePrefix: False
 	Building:
-		Footprint: xxx xxx xxx
+		Footprint: XXX xxx XXX
 		Dimensions: 3,3
 		Adjacent: 8
 		TerrainTypes: Water
@@ -105,13 +104,10 @@ SPEF:
 	EditorTilesetFilter:
 		ExcludeTilesets: INTERIOR
 	HitShape:
-		UseOccupiedCellsOffsets: false
-		TargetableOffsets: 0,0,0, 0,-1024,0, 0,1024,0
 		Type: Rectangle
 			TopLeft: -1536, -598
 			BottomRight: 1536, 598
 	HitShape@TOPANDBOTTOM:
-		UseOccupiedCellsOffsets: false
 		TargetableOffsets: 811,0,0, -811,0,0
 		Type: Rectangle
 			TopLeft: -555, -1110
@@ -133,9 +129,10 @@ WEAF:
 		GenericVisibility: Enemy
 		GenericStancePrefix: False
 	Building:
-		Footprint: xxx xxx
-		Dimensions: 3,2
-	Bib:
+		Footprint: xxx xxx ===
+		Dimensions: 3,3
+		LocalCenterOffset: 0,-512,0
+	WithBuildingBib:
 	RenderSprites:
 		Image: WEAP
 	WithProductionDoorOverlay:
@@ -153,7 +150,7 @@ DOMF:
 	Inherits@infiltrate: ^InfiltratableFake
 	Inherits@shape: ^2x2Shape
 	HitShape:
-		UseOccupiedCellsOffsets: false
+		UseTargetableCellsOffsets: false
 		TargetableOffsets: 0,0,0, 630,-384,0, 630,384,0, -700,-512,0, -700,512,0
 	Tooltip:
 		Name: Fake Radar Dome
@@ -167,9 +164,10 @@ DOMF:
 		Description: Looks like a Radar Dome.
 		Icon: fake-icon
 	Building:
-		Footprint: xx xx
-		Dimensions: 2,2
-	Bib:
+		Footprint: xx xx ==
+		Dimensions: 2,3
+		LocalCenterOffset: 0,-512,0
+	WithBuildingBib:
 	RenderSprites:
 		Image: DOME
 	Valued:
@@ -194,26 +192,23 @@ FIXF:
 		GenericVisibility: Enemy
 		GenericStancePrefix: False
 	Building:
-		Footprint: _x_ xxx _x_
+		Footprint: _X_ xxx _X_
 		Dimensions: 3,3
 	Health:
 		HP: 800
 	Armor:
 		Type: Wood
-	Bib:
+	WithBuildingBib:
 		HasMinibib: Yes
 	RenderSprites:
 		Image: FIX
 	Valued:
 		Cost: 120
 	HitShape:
-		UseOccupiedCellsOffsets: false
-		TargetableOffsets: 0,0,0, 0,-1024,0, 0,1024,0
 		Type: Rectangle
 			TopLeft: -1536, -683
 			BottomRight: 1536, 853
 	HitShape@TOPANDBOTTOM:
-		UseOccupiedCellsOffsets: false
 		TargetableOffsets: 840,0,0, -1060,0,0
 		Type: Rectangle
 			TopLeft: -640, -768
@@ -224,8 +219,7 @@ FAPW:
 	Inherits@infiltrate: ^InfiltratableFake
 	Inherits@shape: ^3x2Shape
 	HitShape:
-		UseOccupiedCellsOffsets: false
-		TargetableOffsets: 0,0,0, 840,0,0, 840,-1024,0, 840,1024,0, -840,0,0, -355,-1024,0, -840,1024,0
+		TargetableOffsets: -355,-1024,0
 	Buildable:
 		BuildPaletteOrder: 950
 		Queue: Defense
@@ -238,13 +232,14 @@ FAPW:
 		GenericVisibility: Enemy
 		GenericStancePrefix: False
 	Building:
-		Footprint: xxx xxx
-		Dimensions: 3,2
+		Footprint: xxx Xxx ===
+		Dimensions: 3,3
+		LocalCenterOffset: 0,-512,0
 	Health:
 		HP: 700
 	Armor:
 		Type: Wood
-	Bib:
+	WithBuildingBib:
 	RenderSprites:
 		Image: APWR
 	Selectable:
@@ -270,9 +265,10 @@ ATEF:
 		Description: Looks like an Allied Tech Center.
 		Icon: fake-icon
 	Building:
-		Footprint: xx xx
-		Dimensions: 2,2
-	Bib:
+		Footprint: xx xx ==
+		Dimensions: 2,3
+		LocalCenterOffset: 0,-512,0
+	WithBuildingBib:
 	RenderSprites:
 		Image: ATEK
 	Valued:
@@ -304,7 +300,7 @@ PDOF:
 		Dimensions: 2,2
 	RenderSprites:
 		Image: PDOX
-	Bib:
+	WithBuildingBib:
 		HasMinibib: Yes
 	Valued:
 		Cost: 150
@@ -361,9 +357,10 @@ FACF:
 		GenericVisibility: Enemy
 		GenericStancePrefix: False
 	Building:
-		Footprint: xxx xxx xxx
-		Dimensions: 3,3
-	Bib:
+		Footprint: xxX xxx XxX ===
+		Dimensions: 3,4
+		LocalCenterOffset: 0,-512,0
+	WithBuildingBib:
 	RenderSprites:
 		Image: FACT
 	Valued:
@@ -373,8 +370,7 @@ FACF:
 	Armor:
 		Type: Wood
 	HitShape:
-		UseOccupiedCellsOffsets: false
-		TargetableOffsets: 0,0,0, 0,-1024,0, 0,1024,0, 1483,0,0, 1483,-1024,0, 1273,939,0, -1483,0,0, -980,-640,0, -980,640,0
+		TargetableOffsets: 1273,939,0, -980,-640,0, -980,640,0
 		Type: Rectangle
 			TopLeft: -1536, -1536
 			BottomRight: 1536, 1536

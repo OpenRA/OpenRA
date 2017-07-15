@@ -78,6 +78,7 @@ Napalm:
 		Damage: 30
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		Versus:
+			Wood: 35
 			Heavy: 80
 	Warhead@3Eff: CreateEffect
 		Explosions: med_napalm

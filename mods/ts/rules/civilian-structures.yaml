@@ -714,6 +714,8 @@ CAHOSP:
 		Pieces: 5, 9
 	ThrowsShrapnel@LARGE:
 		Pieces: 2, 4
+	EditorTilesetFilter:
+		Categories: Civilian building
 
 CAPYR01:
 	Inherits: ^CivBuilding
@@ -1263,6 +1265,8 @@ GASPOT:
 		Sequence: idle-lights
 	SelectionDecorations:
 		VisualBounds: 48, 82, 0, -25
+	EditorTilesetFilter:
+		Categories: Civilian building
 
 GALITE:
 	Inherits: ^Building
@@ -1294,6 +1298,8 @@ GALITE:
 	-Cloak@EXTERNALCLOAK:
 	-ExternalCondition@CLOAKGENERATOR:
 	-ExternalCondition@CRATE-CLOAK:
+	EditorTilesetFilter:
+		Categories: Civilian building
 
 TSTLAMP:
 	Inherits: GALITE
@@ -1322,6 +1328,8 @@ GAICBM:
 		TransformSounds: place2.aud
 		NoTransformSounds:
 	-WithDeathAnimation:
+	EditorTilesetFilter:
+		Categories: Vehicle
 
 NAMNTK:
 	Inherits: ^CivBuilding

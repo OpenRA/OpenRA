@@ -50,13 +50,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var bots = new List<SlotDropDownOption>();
 			if (slot.AllowBots)
 			{
-				foreach (var b in map.Rules.Actors["player"].TraitInfos<IBotInfo>().Select(t => t.Name))
+				foreach (var b in map.Rules.Actors["player"].TraitInfos<IBotInfo>())
 				{
-					var bot = b;
 					var botController = orderManager.LobbyInfo.Clients.FirstOrDefault(c => c.IsAdmin);
-					bots.Add(new SlotDropDownOption(bot,
-						"slot_bot {0} {1} {2}".F(slot.PlayerReference, botController.Index, bot),
-						() => client != null && client.Bot == bot));
+					bots.Add(new SlotDropDownOption(b.Name,
+						"slot_bot {0} {1} {2}".F(slot.PlayerReference, botController.Index, b.Type),
+						() => client != null && client.Bot == b.Type));
 				}
 			}
 
@@ -105,6 +104,18 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			dropdown.ShowDropDown("SPAWN_DROPDOWN_TEMPLATE", 150, spawnPoints, setupItem);
 		}
 
+		/// <summary>Splits a string into two parts on the first instance of a given token.</summary>
+		static Pair<string, string> SplitOnFirstToken(string input, string token = "\\n")
+		{
+			if (string.IsNullOrEmpty(input))
+				return Pair.New<string, string>(null, null);
+
+			var split = input.IndexOf(token, StringComparison.Ordinal);
+			var first = split > 0 ? input.Substring(0, split) : input;
+			var second = split > 0 ? input.Substring(split + token.Length) : null;
+			return Pair.New(first, second);
+		}
+
 		public static void ShowFactionDropDown(DropDownButtonWidget dropdown, Session.Client client,
 			OrderManager orderManager, Dictionary<string, LobbyFaction> factions)
 		{
@@ -119,11 +130,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				flag.GetImageCollection = () => "flags";
 				flag.GetImageName = () => factionId;
 
-				var factionName = faction.Description.SubstringBefore("\\n", StringComparison.Ordinal);
-				var factionDescription = faction.Description.SubstringAfter("\\n", StringComparison.Ordinal);
-				item.GetTooltipText = () => factionName;
-				if (factionDescription != factionName)
-					item.GetTooltipDesc = () => factionDescription;
+				var tooltip = SplitOnFirstToken(faction.Description);
+				item.GetTooltipText = () => tooltip.First;
+				item.GetTooltipDesc = () => tooltip.Second;
 
 				return item;
 			};
@@ -415,11 +424,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			dropdown.IsDisabled = () => s.LockFaction || orderManager.LocalClient.IsReady;
 			dropdown.OnMouseDown = _ => ShowFactionDropDown(dropdown, c, orderManager, factions);
 
-			var factionName = factions[c.Faction].Description.SubstringBefore("\\n", StringComparison.Ordinal);
-			var factionDescription = factions[c.Faction].Description.SubstringAfter("\\n", StringComparison.Ordinal);
-			dropdown.GetTooltipText = () => factionName;
-			if (factionDescription != factionName)
-				dropdown.GetTooltipDesc = () => factionDescription;
+			var tooltip = SplitOnFirstToken(factions[c.Faction].Description);
+			dropdown.GetTooltipText = () => tooltip.First;
+			dropdown.GetTooltipDesc = () => tooltip.Second;
 
 			SetupFactionWidget(dropdown, s, c, factions);
 		}

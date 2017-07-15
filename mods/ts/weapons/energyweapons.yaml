@@ -107,12 +107,13 @@ SonicZap:
 		Explosions: large_explosion
 		ExplosionPalette: effect-ignore-lighting-alpha75
 		ImpactSounds: expnew12.aud
-		InvalidImpactTypes: Water
+		ValidTargets: Ground, Air
 	Warhead@3EffWater: CreateEffect
 		Explosions: small_watersplash
 		ExplosionPalette: player
 		ImpactSounds: ssplash3.aud
-		ValidImpactTypes: Water
+		ValidTargets: Water
+		InvalidTargets: Vehicle
 	Warhead@4Smu: LeaveSmudge
 		SmudgeType: SmallScorch
 		InvalidTargets: Vehicle, Building, Wall
@@ -128,6 +129,7 @@ CyCannon:
 		MinimumLaunchSpeed: 75
 		Speed: 384
 		RangeLimit: 8c0
+		TerrainHeightAware: true
 	Warhead@1Dam: SpreadDamage
 		Spread: 43
 		Damage: 120

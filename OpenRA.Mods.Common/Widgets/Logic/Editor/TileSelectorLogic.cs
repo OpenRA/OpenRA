@@ -56,9 +56,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			panel.RemoveChildren();
 
-			var tileIds = tileset.Templates
-				.Where(t => t.Value.Category == category)
-				.Select(t => t.Value.Id);
+			var categoryTiles = tileset.Templates.Where(t => t.Value.Categories.Contains(category)).Select(t => t.Value).ToList();
+			var tileIds = categoryTiles.Where(t => t.Categories[0] == category)
+				.Concat(categoryTiles.Where(t => t.Categories[0] != category))
+				.Select(t => t.Id);
 
 			foreach (var t in tileIds)
 			{

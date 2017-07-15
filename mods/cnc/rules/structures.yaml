@@ -6,15 +6,16 @@ FACT:
 	Tooltip:
 		Name: Construction Yard
 	Building:
-		Footprint: xxx xxx
-		Dimensions: 3,2
+		Footprint: xxx xxx ===
+		Dimensions: 3,3
+		LocalCenterOffset: 0,-512,0
 	Health:
 		HP: 2100
 	Armor:
 		Type: Wood
 	RevealsShroud:
 		Range: 10c0
-	Bib:
+	WithBuildingBib:
 	Production:
 		Produces: Building.GDI, Building.Nod, Defence.GDI, Defence.Nod
 	Transforms:
@@ -96,8 +97,7 @@ NUKE:
 	Inherits: ^BaseBuilding
 	Inherits@shape: ^2x2Shape
 	HitShape:
-		UseOccupiedCellsOffsets: false
-		TargetableOffsets: 0,0,0, -700,-512,0, -700,512,0, 840,-512,0, 630,299,0
+		TargetableOffsets: 630,299,0
 	Valued:
 		Cost: 500
 	Tooltip:
@@ -110,13 +110,14 @@ NUKE:
 		Queue: Building.GDI, Building.Nod
 		Description: Generates power
 	Building:
-		Footprint: xx xx
-		Dimensions: 2,2
+		Footprint: xX xx ==
+		Dimensions: 2,3
+		LocalCenterOffset: 0,-512,0
 	Health:
 		HP: 500
 	RevealsShroud:
 		Range: 4c0
-	Bib:
+	WithBuildingBib:
 	Power:
 		Amount: 100
 	ScalePowerWithHealth:
@@ -125,8 +126,7 @@ NUK2:
 	Inherits: ^BaseBuilding
 	Inherits@shape: ^2x2Shape
 	HitShape:
-		UseOccupiedCellsOffsets: false
-		TargetableOffsets: 0,0,0, -840,-512,0, -840,512,0, 840,-512,0, 630,299,0
+		TargetableOffsets: 630,299,0
 	Valued:
 		Cost: 800
 	Tooltip:
@@ -139,13 +139,14 @@ NUK2:
 		Queue: Building.GDI, Building.Nod
 		Description: Provides more power, cheaper than the\nstandard Power Plant
 	Building:
-		Footprint: xx xx
-		Dimensions: 2,2
+		Footprint: xX xx ==
+		Dimensions: 2,3
+		LocalCenterOffset: 0,-512,0
 	Health:
 		HP: 700
 	RevealsShroud:
 		Range: 4c0
-	Bib:
+	WithBuildingBib:
 	Power:
 		Amount: 200
 	ScalePowerWithHealth:
@@ -153,12 +154,10 @@ NUK2:
 PROC:
 	Inherits: ^BaseBuilding
 	HitShape:
-		TargetableOffsets: 0,0,0, 0,-1024,0, 0,1024,0
 		Type: Rectangle
 			TopLeft: -1536, -512
 			BottomRight: 1536, 853
 	HitShape@TOP:
-		UseOccupiedCellsOffsets: false
 		Type: Rectangle
 			TopLeft: -512, -1450
 			BottomRight: 896, -512
@@ -172,13 +171,14 @@ PROC:
 		Queue: Building.GDI, Building.Nod
 		Description: Processes raw Tiberium\ninto useable resources
 	Building:
-		Footprint: _x_ xxx ===
-		Dimensions: 3,3
+		Footprint: _x_ xxx === ===
+		Dimensions: 3,4
+		LocalCenterOffset: 0,-512,0
 	Health:
 		HP: 1000
 	RevealsShroud:
 		Range: 6c0
-	Bib:
+	WithBuildingBib:
 	Refinery:
 		DockAngle: 112
 		DockOffset: 0,2
@@ -225,7 +225,7 @@ SILO:
 		HP: 500
 	RevealsShroud:
 		Range: 4c0
-	Bib:
+	WithBuildingBib:
 		HasMinibib: Yes
 	RenderSprites:
 	WithSpriteBody:
@@ -246,7 +246,7 @@ SILO:
 PYLE:
 	Inherits: ^BaseBuilding
 	HitShape:
-		UseOccupiedCellsOffsets: false
+		UseTargetableCellsOffsets: false
 		TargetableOffsets: 0,0,0, 840,-256,0, 840,512,0, 210,-512,0, -71,512,0
 		Type: Rectangle
 			TopLeft: -1024, -1024
@@ -263,13 +263,14 @@ PYLE:
 		Queue: Building.GDI
 		Description: Trains infantry
 	Building:
-		Footprint: xx xx
-		Dimensions: 2,2
+		Footprint: xx xx ==
+		Dimensions: 2,3
+		LocalCenterOffset: 0,-512,0
 	Health:
 		HP: 600
 	RevealsShroud:
 		Range: 5c0
-	Bib:
+	WithBuildingBib:
 	RallyPoint:
 	Exit@1:
 		SpawnOffset: -426,85,0
@@ -295,7 +296,7 @@ HAND:
 	Inherits: ^BaseBuilding
 	Inherits@shape: ^2x2Shape
 	HitShape:
-		UseOccupiedCellsOffsets: false
+		UseTargetableCellsOffsets: false
 		TargetableOffsets: 0,0,0, 630,-512,0, 355,512,0, -281,-512,0, -630,512,0
 	Valued:
 		Cost: 500
@@ -309,13 +310,14 @@ HAND:
 		Queue: Building.Nod
 		Description: Trains infantry
 	Building:
-		Footprint: xx xx
-		Dimensions: 2,2
+		Footprint: xx xx ==
+		Dimensions: 2,3
+		LocalCenterOffset: 0,-512,0
 	Health:
 		HP: 600
 	RevealsShroud:
 		Range: 5c0
-	Bib:
+	WithBuildingBib:
 	RallyPoint:
 		Offset: 1,2
 	Exit@1:
@@ -340,8 +342,7 @@ HAND:
 AFLD:
 	Inherits: ^BaseBuilding
 	HitShape:
-		UseOccupiedCellsOffsets: false
-		TargetableOffsets: 0,0,0, 0,-512,256, 0,-1536,256, -840,-512,0, -840,-1536,0, 0,512,0, 0,1536,0, -840,512,0, -840,1536,0
+		TargetableOffsets: 0,0,0, 0,-512,256, 0,-1536,256
 		Type: Rectangle
 			TopLeft: -2048, -1024
 			BottomRight: 2048, 1024
@@ -357,13 +358,14 @@ AFLD:
 		Queue: Building.Nod
 		Description: Provides a dropzone\nfor vehicle reinforcements
 	Building:
-		Footprint: xxxx xxxx
-		Dimensions: 4,2
+		Footprint: xxXX xxxx ====
+		Dimensions: 4,3
+		LocalCenterOffset: 0,-512,0
 	Health:
 		HP: 1100
 	RevealsShroud:
 		Range: 7c0
-	Bib:
+	WithBuildingBib:
 	WithIdleOverlay@DISH:
 		Sequence: idle-dish
 	RallyPoint:
@@ -405,8 +407,9 @@ WEAP:
 		Queue: Building.GDI
 		Description: Produces vehicles
 	Building:
-		Footprint: xxx ===
-		Dimensions: 3,2
+		Footprint: xxx === ===
+		Dimensions: 3,3
+		LocalCenterOffset: 0,-512,0
 	Selectable:
 		Bounds: 72,48
 	SelectionDecorations:
@@ -415,7 +418,7 @@ WEAP:
 		HP: 1100
 	RevealsShroud:
 		Range: 4c0
-	Bib:
+	WithBuildingBib:
 	WithProductionDoorOverlay:
 		Sequence: build-top
 	RallyPoint:
@@ -440,7 +443,7 @@ HPAD:
 	Inherits: ^BaseBuilding
 	Inherits@shape: ^2x2Shape
 	HitShape:
-		UseOccupiedCellsOffsets: false
+		UseTargetableCellsOffsets: false
 		TargetableOffsets: 0,0,0, 768,-512,0, 768,512,0, -281,-512,0, -630,512,0
 	Valued:
 		Cost: 1000
@@ -489,8 +492,7 @@ HQ:
 	Inherits: ^BaseBuilding
 	Inherits@IDISABLE: ^DisabledOverlay
 	HitShape:
-		UseOccupiedCellsOffsets: false
-		TargetableOffsets: 0,0,0, 0,512,0, 420,-598,256, -840,-512,0, -840,512,0
+		TargetableOffsets: 0,0,0, 0,512,0, 420,-598,256
 		Type: Rectangle
 			TopLeft: -1024, -384
 			BottomRight: 1024, 1024
@@ -506,8 +508,9 @@ HQ:
 		Queue: Building.GDI, Building.Nod
 		Description: Provides radar and Air Strike support power.\nUnlocks higher-tech units and buildings.\nRequires power to operate.
 	Building:
-		Footprint: x_ xx
-		Dimensions: 2,2
+		Footprint: X_ xx ==
+		Dimensions: 2,3
+		LocalCenterOffset: 0,-512,0
 	Selectable:
 		Bounds: 48,40,0,9
 	SelectionDecorations:
@@ -522,7 +525,7 @@ HQ:
 		HP: 800
 	RevealsShroud:
 		Range: 10c0
-	Bib:
+	WithBuildingBib:
 	ProvidesRadar:
 		RequiresCondition: !disabled
 	RenderDetectionCircle:
@@ -557,13 +560,10 @@ HQ:
 FIX:
 	Inherits: ^BaseBuilding
 	HitShape:
-		UseOccupiedCellsOffsets: false
-		TargetableOffsets: 0,0,0, 0,-1024,0, 0,1024,0
 		Type: Rectangle
 			TopLeft: -1536, -683
 			BottomRight: 1536, 768
 	HitShape@TOPANDBOTTOM:
-		UseOccupiedCellsOffsets: false
 		TargetableOffsets: 840,0,0, -1060,0,0
 		Type: Rectangle
 			TopLeft: -640, -980
@@ -578,7 +578,7 @@ FIX:
 		Queue: Building.GDI, Building.Nod
 		Description: Repairs vehicles
 	Building:
-		Footprint: _x_ xxx _x_
+		Footprint: _X_ xxx _X_
 		Dimensions: 3,3
 	Selectable:
 		Bounds: 64,34,0,3
@@ -588,7 +588,7 @@ FIX:
 		HP: 800
 	RevealsShroud:
 		Range: 5c0
-	Bib:
+	WithBuildingBib:
 		HasMinibib: Yes
 	Reservable:
 	RepairsUnits:
@@ -604,8 +604,7 @@ EYE:
 	Inherits: ^BaseBuilding
 	Inherits@IDISABLE: ^DisabledOverlay
 	HitShape:
-		UseOccupiedCellsOffsets: false
-		TargetableOffsets: 0,0,0, 0,512,128, 420,-598,213, -840,-512,0, -840,512,0
+		TargetableOffsets: 0,0,0, 0,512,128, 420,-598,213
 		Type: Rectangle
 			TopLeft: -1024, -384
 			BottomRight: 1024, 1024
@@ -621,8 +620,9 @@ EYE:
 		Queue: Building.GDI
 		Description: Provides radar and Orbital Ion Cannon support power.\nUnlocks Mammoth Tank and Commando.\nRequires power to operate.
 	Building:
-		Footprint: x_ xx
-		Dimensions: 2,2
+		Footprint: X_ xx ==
+		Dimensions: 2,3
+		LocalCenterOffset: 0,-512,0
 	Selectable:
 		Bounds: 48,40,0,9
 	SelectionDecorations:
@@ -637,7 +637,7 @@ EYE:
 		HP: 1300
 	RevealsShroud:
 		Range: 10c0
-	Bib:
+	WithBuildingBib:
 	ProvidesRadar:
 		RequiresCondition: !disabled
 	RenderDetectionCircle:
@@ -668,7 +668,7 @@ TMPL:
 	Inherits@IDISABLE: ^DisabledOverlay
 	Inherits@shape: ^3x2Shape
 	HitShape:
-		UseOccupiedCellsOffsets: false
+		UseTargetableCellsOffsets: false
 		TargetableOffsets: 0,0,0, 0,-896,0, 0,896,0, 840,0,0, -706,0,0, -706,-768,0, -706,640,0
 	Valued:
 		Cost: 2000
@@ -682,8 +682,9 @@ TMPL:
 		Queue: Building.Nod
 		Description: Provides Nuclear Strike support power.\nUnlocks Stealth Tank, Chem. Warrior and Obelisk of Light.\nRequires power to operate.
 	Building:
-		Footprint: xxx xxx
-		Dimensions: 3,2
+		Footprint: xxx xxx ===
+		Dimensions: 3,3
+		LocalCenterOffset: 0,-512,0
 	Selectable:
 		Bounds: 72,48
 	SelectionDecorations:
@@ -696,7 +697,7 @@ TMPL:
 		HP: 2100
 	RevealsShroud:
 		Range: 6c0
-	Bib:
+	WithBuildingBib:
 	RenderDetectionCircle:
 	DetectCloaked:
 		Range: 5c0
@@ -748,7 +749,7 @@ GUN:
 		Type: Heavy
 	RevealsShroud:
 		Range: 6c0
-	Bib:
+	WithBuildingBib:
 		HasMinibib: Yes
 	Turreted:
 		TurnSpeed: 12
@@ -803,7 +804,7 @@ SAM:
 	WithTurretedSpriteBody:
 	AutoSelectionSize:
 	Armament:
-		Weapon: SAMMissile
+		Weapon: Dragon
 		MuzzleSequence: muzzle
 	AttackPopupTurreted:
 	WithMuzzleOverlay:
@@ -839,7 +840,7 @@ OBLI:
 		Type: Heavy
 	RevealsShroud:
 		Range: 8c0
-	Bib:
+	WithBuildingBib:
 		HasMinibib: Yes
 	WithChargeAnimation:
 	Armament:
@@ -877,7 +878,7 @@ GTWR:
 		HP: 400
 	RevealsShroud:
 		Range: 7c0
-	Bib:
+	WithBuildingBib:
 		HasMinibib: Yes
 	Armament:
 		Weapon: HighV
@@ -920,7 +921,7 @@ ATWR:
 		Type: Heavy
 	RevealsShroud:
 		Range: 8c0
-	Bib:
+	WithBuildingBib:
 		HasMinibib: Yes
 	Turreted:
 		TurnSpeed: 255
@@ -930,7 +931,7 @@ ATWR:
 		LocalOffset: 256,128,0, 256,-128,0
 		LocalYaw: -100,100
 	Armament@SECONDARY:
-		Weapon: SAMMissile
+		Weapon: TowerAAMissile
 		LocalOffset: 256,128,0, 256,-128,0
 		LocalYaw: -100,100
 	AttackTurreted:

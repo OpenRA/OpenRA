@@ -22,8 +22,18 @@ CRATE:
 		Condition: cloak-crate-collected
 	GiveMcvCrateAction:
 		SelectionShares: 0
-		NoBaseSelectionShares: 120
+		NoBaseSelectionShares: 50
 		Units: mcv
+	ExplodeCrateAction:
+		Weapon: Atomic
+		SelectionShares: 1
+	GiveUnitCrateAction:
+		Units: vice
+		Owner: Creeps
+		SelectionShares: 10
+	LevelUpCrateAction:
+		Levels: 4
+		SelectionShares: 12
 
 WCRATE:
 	Inherits: ^Crate
@@ -45,6 +55,8 @@ mpspawn:
 	RenderSpritesEditorOnly:
 	BodyOrientation:
 		QuantizedFacings: 1
+	EditorTilesetFilter:
+		Categories: System
 
 waypoint:
 	EditorOnlyTooltip:
@@ -56,6 +68,8 @@ waypoint:
 	RenderSpritesEditorOnly:
 	BodyOrientation:
 		QuantizedFacings: 1
+	EditorTilesetFilter:
+		Categories: System
 
 ^fact.colorpicker:
 	Inherits: FACT
@@ -76,6 +90,8 @@ CAMERA:
 	RevealsShroud:
 		Range: 10c0
 		Type: CenterPosition
+	EditorTilesetFilter:
+		Categories: System
 
 CAMERA.small:
 	EditorOnlyTooltip:
@@ -94,6 +110,8 @@ CAMERA.small:
 	RevealsShroud:
 		Range: 6c0
 		Type: CenterPosition
+	EditorTilesetFilter:
+		Categories: System
 
 FLARE:
 	Immobile:
@@ -114,3 +132,5 @@ FLARE:
 	BodyOrientation:
 		QuantizedFacings: 1
 	AutoSelectionSize:
+	EditorTilesetFilter:
+		Categories: System

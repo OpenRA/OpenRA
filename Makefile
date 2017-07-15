@@ -23,6 +23,10 @@
 # to install Linux startup scripts, desktop files and icons:
 #   make install-linux-shortcuts [DEBUG=false]
 #
+# to install the engine and common mod files (omitting the default mods):
+#   make install-engine
+#   make install-common-mod-files
+#
 # to uninstall, run:
 #   make uninstall
 #
@@ -119,7 +123,7 @@ mod_common_SRCS := $(shell find OpenRA.Mods.Common/ -iname '*.cs')
 mod_common_TARGET = mods/common/OpenRA.Mods.Common.dll
 mod_common_KIND = library
 mod_common_DEPS = $(game_TARGET)
-mod_common_LIBS = $(COMMON_LIBS) $(STD_MOD_LIBS) thirdparty/download/StyleCop.dll thirdparty/download/StyleCop.CSharp.dll thirdparty/download/StyleCop.CSharp.Rules.dll
+mod_common_LIBS = $(COMMON_LIBS) $(STD_MOD_LIBS)
 PROGRAMS += mod_common
 mod_common: $(mod_common_TARGET)
 
@@ -171,37 +175,37 @@ check-scripts:
 	@luac -p $(shell find mods/*/maps/* -iname '*.lua')
 	@luac -p $(shell find lua/* -iname '*.lua')
 
-check: utility mods
+check: utility stylecheck mods
 	@echo
 	@echo "Checking for explicit interface violations..."
 	@mono --debug OpenRA.Utility.exe all --check-explicit-interfaces
 	@echo
 	@echo "Checking for code style violations in OpenRA.Game..."
-	@mono --debug OpenRA.Utility.exe ra --check-code-style OpenRA.Game
+	@mono --debug OpenRA.StyleCheck.exe OpenRA.Game
 	@echo
 	@echo "Checking for code style violations in OpenRA.Platforms.Default..."
-	@mono --debug OpenRA.Utility.exe ra --check-code-style OpenRA.Platforms.Default
+	@mono --debug OpenRA.StyleCheck.exe OpenRA.Platforms.Default
 	@echo
 	@echo "Checking for code style violations in OpenRA.Mods.Common..."
-	@mono --debug OpenRA.Utility.exe ra --check-code-style OpenRA.Mods.Common
+	@mono --debug OpenRA.StyleCheck.exe OpenRA.Mods.Common
 	@echo
 	@echo "Checking for code style violations in OpenRA.Mods.Cnc..."
-	@mono --debug OpenRA.Utility.exe ra --check-code-style OpenRA.Mods.Cnc
+	@mono --debug OpenRA.StyleCheck.exe OpenRA.Mods.Cnc
 	@echo
 	@echo "Checking for code style violations in OpenRA.Mods.D2k..."
-	@mono --debug OpenRA.Utility.exe ra --check-code-style OpenRA.Mods.D2k
+	@mono --debug OpenRA.StyleCheck.exe OpenRA.Mods.D2k
 	@echo
 	@echo "Checking for code style violations in OpenRA.Mods.AS..."
 	@mono --debug OpenRA.Utility.exe ra --check-code-style OpenRA.Mods.AS
 	@echo
 	@echo "Checking for code style violations in OpenRA.Utility..."
-	@mono --debug OpenRA.Utility.exe ra --check-code-style OpenRA.Utility
+	@mono --debug OpenRA.StyleCheck.exe OpenRA.Utility
 	@echo
 	@echo "Checking for code style violations in OpenRA.Test..."
-	@mono --debug OpenRA.Utility.exe ra --check-code-style OpenRA.Test
+	@mono --debug OpenRA.StyleCheck.exe OpenRA.Test
 	@echo
 	@echo "Checking for code style violations in OpenRA.Server..."
-	@mono --debug OpenRA.Utility.exe ra --check-code-style OpenRA.Server
+	@mono --debug OpenRA.StyleCheck.exe OpenRA.Server
 
 NUNIT_CONSOLE := $(shell test -f thirdparty/download/nunit3-console.exe && echo mono thirdparty/download/nunit3-console.exe || \
 	which nunit3-console 2>/dev/null || which nunit2-console 2>/dev/null || which nunit-console 2>/dev/null)
@@ -247,6 +251,13 @@ utility_LIBS = $(COMMON_LIBS) $(utility_DEPS) thirdparty/download/ICSharpCode.Sh
 PROGRAMS += utility
 utility: $(utility_TARGET)
 
+stylecheck_SRCS := $(shell find OpenRA.StyleCheck/ -iname '*.cs')
+stylecheck_TARGET = OpenRA.StyleCheck.exe
+stylecheck_KIND = exe
+stylecheck_LIBS = thirdparty/download/StyleCop.dll thirdparty/download/StyleCop.CSharp.dll thirdparty/download/StyleCop.CSharp.Rules.dll
+PROGRAMS += stylecheck
+stylecheck: $(stylecheck_TARGET)
+
 # Dedicated server
 server_SRCS := $(shell find OpenRA.Server/ -iname '*.cs')
 server_TARGET = OpenRA.Server.exe
@@ -290,7 +301,7 @@ core: dependencies game platforms mods utility server
 
 mods: mod_common mod_cnc mod_d2k mod_as
 
-all: dependencies core
+all: dependencies core stylecheck
 
 clean:
 	@-$(RM_F) *.exe *.dll *.dylib *.dll.config ./OpenRA*/*.dll ./OpenRA*/*.mdb *.mdb mods/**/*.dll mods/**/*.mdb *.resources
@@ -340,21 +351,11 @@ install: default install-core
 
 install-linux-shortcuts: install-linux-scripts install-linux-icons install-linux-desktop
 
-install-core:
-	@-echo "Installing OpenRA to $(DATA_INSTALL_DIR)"
+install-engine:
+	@-echo "Installing OpenRA engine to $(DATA_INSTALL_DIR)"
 	@$(INSTALL_DIR) "$(DATA_INSTALL_DIR)"
 	@$(INSTALL_PROGRAM) $(foreach prog,$(CORE),$($(prog)_TARGET)) "$(DATA_INSTALL_DIR)"
-	@$(INSTALL_DIR) "$(DATA_INSTALL_DIR)/mods"
-	@$(CP_R) mods/common "$(DATA_INSTALL_DIR)/mods/"
-	@$(INSTALL_PROGRAM) $(mod_common_TARGET) "$(DATA_INSTALL_DIR)/mods/common"
-	@$(INSTALL_PROGRAM) $(mod_cnc_TARGET) "$(DATA_INSTALL_DIR)/mods/common"
-	@$(CP_R) mods/cnc "$(DATA_INSTALL_DIR)/mods/"
-	@$(CP_R) mods/ra "$(DATA_INSTALL_DIR)/mods/"
-	@$(CP_R) mods/d2k "$(DATA_INSTALL_DIR)/mods/"
-	@$(INSTALL_PROGRAM) $(mod_d2k_TARGET) "$(DATA_INSTALL_DIR)/mods/d2k"
-	@$(CP_R) mods/modcontent "$(DATA_INSTALL_DIR)/mods/"
 
-	@$(INSTALL_DATA) "global mix database.dat" "$(DATA_INSTALL_DIR)/global mix database.dat"
 	@$(INSTALL_DATA) "GeoLite2-Country.mmdb.gz" "$(DATA_INSTALL_DIR)/GeoLite2-Country.mmdb.gz"
 	@$(INSTALL_DATA) VERSION "$(DATA_INSTALL_DIR)/VERSION"
 	@$(INSTALL_DATA) AUTHORS "$(DATA_INSTALL_DIR)/AUTHORS"
@@ -373,6 +374,25 @@ install-core:
 	@$(INSTALL_PROGRAM) MaxMind.Db.dll "$(DATA_INSTALL_DIR)"
 	@$(INSTALL_PROGRAM) SmarIrc4net.dll "$(DATA_INSTALL_DIR)"
 	@$(INSTALL_PROGRAM) rix0rrr.BeaconLib.dll "$(DATA_INSTALL_DIR)"
+
+install-common-mod-files:
+	@-echo "Installing OpenRA common mod files to $(DATA_INSTALL_DIR)"
+	@$(INSTALL_DIR) "$(DATA_INSTALL_DIR)/mods"
+	@$(CP_R) mods/common "$(DATA_INSTALL_DIR)/mods/"
+	@$(INSTALL_PROGRAM) $(mod_common_TARGET) "$(DATA_INSTALL_DIR)/mods/common"
+	@$(INSTALL_PROGRAM) $(mod_cnc_TARGET) "$(DATA_INSTALL_DIR)/mods/common"
+	@$(INSTALL_DATA) "global mix database.dat" "$(DATA_INSTALL_DIR)/global mix database.dat"
+
+install-default-mods:
+	@-echo "Installing OpenRA default mods to $(DATA_INSTALL_DIR)"
+	@$(INSTALL_DIR) "$(DATA_INSTALL_DIR)/mods"
+	@$(CP_R) mods/cnc "$(DATA_INSTALL_DIR)/mods/"
+	@$(CP_R) mods/ra "$(DATA_INSTALL_DIR)/mods/"
+	@$(CP_R) mods/d2k "$(DATA_INSTALL_DIR)/mods/"
+	@$(INSTALL_PROGRAM) $(mod_d2k_TARGET) "$(DATA_INSTALL_DIR)/mods/d2k"
+	@$(CP_R) mods/modcontent "$(DATA_INSTALL_DIR)/mods/"
+
+install-core: install-engine install-common-mod-files install-default-mods
 	@$(CP) *.sh "$(DATA_INSTALL_DIR)"
 
 install-linux-icons:

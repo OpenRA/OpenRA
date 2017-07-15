@@ -100,6 +100,7 @@ Player:
 	-HackyAI@TurtleAI:
 	DummyAI@LonestarAI:
 		Name: Lonestar AI
+		Type: lonestar
 
 ^Infantry:
 	Inherits@IC: ^IronCurtainable
@@ -113,7 +114,7 @@ OILB:
 		HP: 3000
 	Armor:
 		Type: Wood
-	Bib:
+	WithBuildingBib:
 	RevealsShroud:
 		Range: 3c0
 	CashTrickler:
