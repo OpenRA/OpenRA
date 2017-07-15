@@ -34,9 +34,8 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			if (claimByActor.Remove(claim.Claimer) & claimByCell.Remove(claim.Cell))
 			{
-				if (claim.Claimer.Disposed) return;
-				if (!claim.Claimer.IsInWorld) return;
-				if (claim.Claimer.IsDead) return;
+				if (claim.Claimer.Disposed || claim.Claimer.IsDead || !claim.Claimer.IsInWorld)
+					return;
 
 				claim.Claimer.Trait<INotifyResourceClaimLost>().OnNotifyResourceClaimLost(claim.Claimer, claim, claimer);
 			}
@@ -59,17 +58,8 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			// Has anyone else claimed this point?
 			ResourceClaim claim;
-			if (claimByCell.TryGetValue(cell, out claim))
-			{
-				// Same claimer:
-				if (claim.Claimer == claimer) return true;
-
-				// This is to prevent in-fighting amongst friendly harvesters:
-				if (claimer.Owner == claim.Claimer.Owner) return false;
-				if (claimer.Owner.Stances[claim.Claimer.Owner] == Stance.Ally) return false;
-
-				// If an enemy/neutral claimed this, don't respect that claim:
-			}
+			if (IsClaimedByAnyoneElse(claimer, cell, out claim))
+				return false;
 
 			// Either nobody else claims this point or an enemy/neutral claims it:
 			MakeClaim(claimer, cell);
@@ -109,11 +99,19 @@ namespace OpenRA.Mods.Common.Traits
 			if (claimByCell.TryGetValue(cell, out claim))
 			{
 				// Same claimer:
-				if (claim.Claimer == self) return false;
+				if (claim.Claimer == self)
+					return false;
+
+				if (claim.Claimer.IsDead || claim.Claimer.Disposed)
+				{
+					claimByActor.Remove(claim.Claimer);
+					claimByCell.Remove(cell);
+					return false;
+				}
 
 				// This is to prevent in-fighting amongst friendly harvesters:
-				if (self.Owner == claim.Claimer.Owner) return true;
-				if (self.Owner.Stances[claim.Claimer.Owner] == Stance.Ally) return true;
+				if (self.Owner == claim.Claimer.Owner || self.Owner.Stances[claim.Claimer.Owner] == Stance.Ally)
+					return true;
 
 				// If an enemy/neutral claimed this, don't respect that claim and fall through:
 			}
