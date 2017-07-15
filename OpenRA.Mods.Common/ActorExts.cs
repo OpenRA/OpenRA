@@ -122,32 +122,6 @@ namespace OpenRA.Mods.Common
 			NotifyBlocker(self, positions.SelectMany(p => self.World.ActorMap.GetActorsAt(p)));
 		}
 
-		public static bool CanHarvestAt(this Actor self, CPos pos, ResourceLayer resLayer, HarvesterInfo harvInfo,
-			ResourceClaimLayer territory)
-		{
-			// Resources only exist in the ground layer
-			if (pos.Layer != 0)
-				return false;
-
-			var resType = resLayer.GetResource(pos);
-			if (resType == null)
-				return false;
-
-			// Can the harvester collect this kind of resource?
-			if (!harvInfo.Resources.Contains(resType.Info.Type))
-				return false;
-
-			if (territory != null)
-			{
-				// Another harvester has claimed this resource:
-				ResourceClaim claim;
-				if (territory.IsClaimedByAnyoneElse(self as Actor, pos, out claim))
-					return false;
-			}
-
-			return true;
-		}
-
 		public static CPos ClosestCell(this Actor self, IEnumerable<CPos> cells)
 		{
 			return cells.MinByOrDefault(c => (self.Location - c).LengthSquared);
