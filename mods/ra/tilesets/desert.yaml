@@ -2316,6 +2316,52 @@ Templates:
 			6: River
 			7: Water
 			8: Beach
+	Template@431:
+		Id: 431
+		Images: sh54.des
+		Size: 3,2
+		Categories: Beach
+		Tiles:
+			0: Clear
+			1: Tree
+			2: River
+			3: Beach
+			4: Water
+			5: River
+	Template@432:
+		Id: 432
+		Images: sh55.des
+		Size: 3,2
+		Categories: Beach
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Clear
+			3: Water
+			4: Rock
+			5: Rock
+	Template@439:
+		Id: 439
+		Images: sh62.des
+		Size: 6,1
+		Categories: Beach
+		Tiles:
+			0: Beach
+			1: Beach
+			2: Beach
+			3: Beach
+			4: Beach
+			5: Beach
+	Template@440:
+		Id: 440
+		Images: sh63.des
+		Size: 4,1
+		Categories: Beach
+		Tiles:
+			0: Beach
+			1: Beach
+			2: Beach
+			3: Beach
 	Template@406:
 		Id: 406
 		Images: sh25.des
@@ -2397,6 +2443,27 @@ Templates:
 			6: Clear
 			7: River
 			8: Rock
+	Template@433:
+		Id: 433
+		Images: sh56.des
+		Size: 3,2
+		Categories: Beach
+		Tiles:
+			1: Water
+			2: River
+			3: Beach
+			4: Rock
+			5: Rock
+	Template@434:
+		Id: 434
+		Images: sh57.des
+		Size: 3,2
+		Categories: Beach
+		Tiles:
+			0: Beach
+			3: Beach
+			4: Water
+			5: River
 	Template@413:
 		Id: 413
 		Images: sh36.des
@@ -2455,52 +2522,6 @@ Templates:
 			6: Beach
 			7: Rock
 			8: Clear
-	Template@419:
-		Id: 419
-		Images: sh42.des
-		Size: 1,2
-		Categories: Beach
-		Tiles:
-			0: Beach
-			1: Beach
-	Template@420:
-		Id: 420
-		Images: sh43.des
-		Size: 1,3
-		Categories: Beach
-		Tiles:
-			0: Beach
-			1: Clear
-			2: Beach
-	Template@421:
-		Id: 421
-		Images: sh44.des
-		Size: 1,3
-		Categories: Beach
-		Tiles:
-			0: Beach
-			1: Clear
-			2: Beach
-	Template@441:
-		Id: 441
-		Images: sh64.des
-		Size: 2,3
-		Categories: Beach
-		Tiles:
-			0: River
-			1: Rough
-			2: River
-			3: River
-			4: River
-			5: Rock
-	Template@422:
-		Id: 422
-		Images: sh45.des
-		Size: 1,2
-		Categories: Beach
-		Tiles:
-			0: Beach
-			1: Beach
 	Template@423:
 		Id: 423
 		Images: sh46.des
@@ -2516,18 +2537,6 @@ Templates:
 			6: Beach
 			7: Water
 			8: Water
-	Template@442:
-		Id: 442
-		Images: sh65.des
-		Size: 2,3
-		Categories: Beach
-		Tiles:
-			0: Rough
-			1: River
-			2: River
-			3: River
-			4: Rock
-			5: River
 	Template@424:
 		Id: 424
 		Images: sh47.des
@@ -2626,75 +2635,24 @@ Templates:
 			8: River
 			9: Water
 			10: River
-			11: River
-	Template@431:
-		Id: 431
-		Images: sh54.des
-		Size: 3,2
-		Categories: Beach
-		Tiles:
-			0: Clear
-			1: Tree
-			2: River
-			3: Beach
-			4: Water
-			5: River
-	Template@432:
-		Id: 432
-		Images: sh55.des
-		Size: 3,2
-		Categories: Beach
-		Tiles:
-			0: Rock
-			1: Rock
-			2: Clear
-			3: Water
-			4: Rock
-			5: Rock
-	Template@433:
-		Id: 433
-		Images: sh56.des
-		Size: 3,2
-		Categories: Beach
-		Tiles:
-			1: Water
-			2: River
-			3: Beach
-			4: Rock
-			5: Rock
-	Template@434:
-		Id: 434
-		Images: sh57.des
-		Size: 3,2
+			11: River	
+	Template@419:
+		Id: 419
+		Images: sh42.des
+		Size: 1,2
 		Categories: Beach
 		Tiles:
 			0: Beach
-			3: Beach
-			4: Water
-			5: River
-	Template@435:
-		Id: 435
-		Images: sh58.des
-		Size: 2,3
-		Categories: Beach
-		Tiles:
-			0: Beach
-			2: Beach
-			3: Water
-			4: Clear
-			5: Beach
-	Template@436:
-		Id: 436
-		Images: sh59.des
-		Size: 2,3
-		Categories: Beach
-		Tiles:
-			0: Clear
 			1: Beach
+	Template@420:
+		Id: 420
+		Images: sh43.des
+		Size: 1,3
+		Categories: Beach
+		Tiles:
+			0: Beach
+			1: Clear
 			2: Beach
-			3: River
-			4: River
-			5: River
 	Template@437:
 		Id: 437
 		Images: sh60.des
@@ -2718,28 +2676,70 @@ Templates:
 			2: Water
 			3: Beach
 			5: Beach
-	Template@439:
-		Id: 439
-		Images: sh62.des
-		Size: 6,1
+	Template@441:
+		Id: 441
+		Images: sh64.des
+		Size: 2,3
+		Categories: Beach
+		Tiles:
+			0: River
+			1: Rough
+			2: River
+			3: River
+			4: River
+			5: Rock
+	Template@421:
+		Id: 421
+		Images: sh44.des
+		Size: 1,3
+		Categories: Beach
+		Tiles:
+			0: Beach
+			1: Clear
+			2: Beach
+	Template@422:
+		Id: 422
+		Images: sh45.des
+		Size: 1,2
 		Categories: Beach
 		Tiles:
 			0: Beach
 			1: Beach
+	Template@435:
+		Id: 435
+		Images: sh58.des
+		Size: 2,3
+		Categories: Beach
+		Tiles:
+			0: Beach
 			2: Beach
-			3: Beach
-			4: Beach
+			3: Water
+			4: Clear
 			5: Beach
-	Template@440:
-		Id: 440
-		Images: sh63.des
-		Size: 4,1
+	Template@436:
+		Id: 436
+		Images: sh59.des
+		Size: 2,3
 		Categories: Beach
 		Tiles:
-			0: Beach
+			0: Clear
 			1: Beach
 			2: Beach
-			3: Beach
+			3: River
+			4: River
+			5: River
+	Template@442:
+		Id: 442
+		Images: sh65.des
+		Size: 2,3
+		Categories: Beach
+		Tiles:
+			0: Rough
+			1: River
+			2: River
+			3: River
+			4: Rock
+			5: River
 	Template@600:
 		Id: 600
 		Images: f01.des
