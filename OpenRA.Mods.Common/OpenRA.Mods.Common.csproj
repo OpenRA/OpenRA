@@ -55,6 +55,9 @@
       <HintPath>..\thirdparty\download\Eluant.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="StyleCop">
+      <HintPath>..\thirdparty\download\StyleCop.dll</HintPath>
+    </Reference>
     <Reference Include="ICSharpCode.SharpZipLib">
       <HintPath>..\thirdparty\download\ICSharpCode.SharpZipLib.dll</HintPath>
       <Private>False</Private>
@@ -541,6 +544,7 @@
     <Compile Include="Traits\World\WarheadDebugOverlay.cs" />
     <Compile Include="Traits\World\WeatherOverlay.cs" />
     <Compile Include="UtilityCommands\CheckYaml.cs" />
+    <Compile Include="UtilityCommands\CheckCodeStyle.cs" />
     <Compile Include="UtilityCommands\ConvertPngToShpCommand.cs" />
     <Compile Include="UtilityCommands\ConvertSpriteToPngCommand.cs" />
     <Compile Include="UtilityCommands\CreateManPage.cs" />
