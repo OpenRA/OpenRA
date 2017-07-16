@@ -135,7 +135,7 @@ namespace OpenRA.Traits
 
 		// Positions available to target for range checks
 		static readonly WPos[] NoPositions = { };
-		public IEnumerable<WPos> Positions
+		public IEnumerable<WPos> AttackablePositions
 		{
 			get
 			{
@@ -145,7 +145,7 @@ namespace OpenRA.Traits
 						if (!actor.Targetables.Any(Exts.IsTraitEnabled))
 							return new[] { actor.CenterPosition };
 
-						var targetablePositions = actor.TraitsImplementing<ITargetablePositions>().Where(Exts.IsTraitEnabled);
+						var targetablePositions = actor.TraitsImplementing<IAttackablePositions>().Where(Exts.IsTraitEnabled);
 						if (targetablePositions.Any())
 						{
 							var target = this;
@@ -158,7 +158,34 @@ namespace OpenRA.Traits
 					case TargetType.Terrain:
 						return new[] { pos };
 					default:
-					case TargetType.Invalid:
+						return NoPositions;
+				}
+			}
+		}
+
+		public IEnumerable<WPos> AccessiblePositions
+		{
+			get
+			{
+				switch (Type)
+				{
+					case TargetType.Actor:
+						if (!actor.Targetables.Any(Exts.IsTraitEnabled))
+							return new[] { actor.CenterPosition };
+
+						var targetablePositions = actor.TraitsImplementing<IAccessiblePositions>().Where(Exts.IsTraitEnabled);
+						if (targetablePositions.Any())
+						{
+							var target = this;
+							return targetablePositions.SelectMany(tp => tp.TargetablePositions(target.actor));
+						}
+
+						return new[] { actor.CenterPosition };
+					case TargetType.FrozenActor:
+						return new[] { frozen.CenterPosition };
+					case TargetType.Terrain:
+						return new[] { pos };
+					default:
 						return NoPositions;
 				}
 			}
@@ -170,7 +197,7 @@ namespace OpenRA.Traits
 				return false;
 
 			// Target ranges are calculated in 2D, so ignore height differences
-			return Positions.Any(t => (t - origin).HorizontalLengthSquared <= range.LengthSquared);
+			return AttackablePositions.Any(t => (t - origin).HorizontalLengthSquared <= range.LengthSquared);
 		}
 
 		public override string ToString()

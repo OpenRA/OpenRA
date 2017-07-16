@@ -121,6 +121,9 @@ V01:
 		Range: 10c0
 	EditorTilesetFilter:
 		ExcludeTilesets: DESERT, INTERIOR
+	Entrances:
+		UseTargetableCellsOffsets: false
+		EntranceOffsets: -490,-384,0, 0,0,0, 0,470,0
 	HitShape:
 		UseTargetableCellsOffsets: false
 		TargetableOffsets: -490,-384,0, 0,0,0, 0,470,0
@@ -135,6 +138,9 @@ V02:
 		Dimensions: 2,2
 	EditorTilesetFilter:
 		ExcludeTilesets: DESERT, INTERIOR
+	Entrances:
+		UseTargetableCellsOffsets: false
+		EntranceOffsets: -490,-512,0, 0,0,0, 0,512,0
 	HitShape:
 		UseTargetableCellsOffsets: false
 		TargetableOffsets: -490,-512,0, 0,0,0, 0,512,0
@@ -149,6 +155,9 @@ V03:
 		Dimensions: 2,2
 	EditorTilesetFilter:
 		ExcludeTilesets: DESERT, INTERIOR
+	Entrances:
+		UseTargetableCellsOffsets: false
+		EntranceOffsets: -490,-512,0, 0,0,0, 421,512,0, -210,512,0
 	HitShape:
 		UseTargetableCellsOffsets: false
 		TargetableOffsets: -490,-512,0, 0,0,0, 421,512,0, -210,512,0
@@ -163,6 +172,9 @@ V04:
 		Dimensions: 2,2
 	EditorTilesetFilter:
 		ExcludeTilesets: DESERT, INTERIOR
+	Entrances:
+		UseTargetableCellsOffsets: false
+		EntranceOffsets: 0,0,0, -421,-256,0, -421,256,0
 	HitShape:
 		UseTargetableCellsOffsets: false
 		TargetableOffsets: 0,0,0, -421,-256,0, -421,256,0
@@ -343,6 +355,9 @@ AMMOBOX3:
 MISS:
 	Inherits: ^TechBuilding
 	Inherits@shape: ^3x2Shape
+	Entrances:
+		UseTargetableCellsOffsets: false
+		EntranceOffsets: 840,0,0, 840,-1024,0, 420,768,0, -840,0,0, -840,-1024,0, -840,1024,0
 	HitShape:
 		UseTargetableCellsOffsets: false
 		TargetableOffsets: 0,0,0, 840,0,0, 840,-1024,0, 420,768,0, -840,0,0, -840,-1024,0, -840,1024,0
@@ -391,6 +406,9 @@ BIO:
 OILB:
 	Inherits: ^TechBuilding
 	Inherits@shape: ^2x2Shape
+	Entrances:
+		UseTargetableCellsOffsets: false
+		EntranceOffsets: 630,-300,0, 420,512,0, -420,-512,0, -630,300,0
 	HitShape:
 		UseTargetableCellsOffsets: false
 		TargetableOffsets: 0,0,0, 630,-300,0, 420,512,0, -420,-512,0, -630,300,0
@@ -581,6 +599,9 @@ V20:
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
+	Entrances:
+		UseTargetableCellsOffsets: false
+		EntranceOffsets: -840,-512,0, 0,0,0, -840,512,0
 	HitShape:
 		UseTargetableCellsOffsets: false
 		TargetableOffsets: -840,-512,0, 0,0,0, -840,512,0
@@ -593,6 +614,9 @@ V21:
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
+	Entrances:
+		UseTargetableCellsOffsets: false
+		EntranceOffsets: 840,-512,0, 420,0,0, 840,512,0
 	HitShape:
 		UseTargetableCellsOffsets: false
 		TargetableOffsets: 840,-512,0, 420,0,0, 840,512,0
@@ -620,6 +644,9 @@ V24:
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
+	Entrances:
+		UseTargetableCellsOffsets: false
+		EntranceOffsets: -630,-512,0, 0,0,0, -630,256,0, 420,-512,0
 	HitShape:
 		UseTargetableCellsOffsets: false
 		TargetableOffsets: -630,-512,0, 0,0,0, -630,256,0, 420,-512,0
@@ -636,6 +663,9 @@ V25:
 		Name: Church
 	RevealsShroud:
 		Range: 10c0
+	Entrances:
+		UseTargetableCellsOffsets: false
+		EntranceOffsets: 0,-128,0, 420,512,0
 	HitShape:
 		UseTargetableCellsOffsets: false
 		TargetableOffsets: 0,-128,0, 420,512,0
@@ -701,6 +731,9 @@ V37:
 	Building:
 		Footprint: __xx_ ___xx
 		Dimensions: 5,2
+	Entrances:
+		UseTargetableCellsOffsets: false
+		EntranceOffsets: 0,0,0, 0,1024,0
 	HitShape:
 		UseTargetableCellsOffsets: false
 		TargetableOffsets: 0,0,0, 0,1024,0
@@ -720,6 +753,8 @@ RUSHOUSE:
 	Building:
 		Footprint: x x
 		Dimensions: 1,2
+	Entrances:
+		UseTargetableCellsOffsets: false
 	HitShape:
 		UseTargetableCellsOffsets: false
 
@@ -737,6 +772,8 @@ SNOWHUT:
 		Dimensions: 1,2
 	RenderSprites:
 		Scale: 0.7
+	Entrances:
+		UseTargetableCellsOffsets: false
 	HitShape:
 		UseTargetableCellsOffsets: false
 

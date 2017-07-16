@@ -1,5 +1,8 @@
 V01:
 	Inherits: ^CivBuilding
+	Entrances:
+		UseTargetableCellsOffsets: false
+		EntranceOffsets: -490,-384,0, 0,0,0, 0,470,0
 	HitShape:
 		UseTargetableCellsOffsets: false
 		TargetableOffsets: -490,-384,0, 0,0,0, 0,470,0
@@ -28,6 +31,9 @@ V01.Husk:
 
 V02:
 	Inherits: ^CivBuilding
+	Entrances:
+		UseTargetableCellsOffsets: false
+		EntranceOffsets: -490,-512,0, 0,0,0, 0,512,0
 	HitShape:
 		UseTargetableCellsOffsets: false
 		TargetableOffsets: -490,-512,0, 0,0,0, 0,512,0
@@ -56,6 +62,9 @@ V02.Husk:
 
 V03:
 	Inherits: ^CivBuilding
+	Entrances:
+		UseTargetableCellsOffsets: false
+		EntranceOffsets: -490,-512,0, 0,0,0, 421,512,0, -210,512,0
 	HitShape:
 		UseTargetableCellsOffsets: false
 		TargetableOffsets: -490,-512,0, 0,0,0, 421,512,0, -210,512,0
@@ -84,6 +93,9 @@ V03.Husk:
 
 V04:
 	Inherits: ^CivBuilding
+	Entrances:
+		UseTargetableCellsOffsets: false
+		EntranceOffsets: 0,0,0, -421,-256,0, -421,256,0
 	HitShape:
 		UseTargetableCellsOffsets: false
 		TargetableOffsets: 0,0,0, -421,-256,0, -421,256,0

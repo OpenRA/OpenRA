@@ -147,8 +147,8 @@ namespace OpenRA.Mods.Common.Activities
 						if (!TryGetAlternateTarget(self, tries, ref t))
 							return ReserveStatus.TooFar;
 
-						var targetPosition = target.Positions.PositionClosestTo(self.CenterPosition);
-						var alternatePosition = t.Positions.PositionClosestTo(self.CenterPosition);
+						var targetPosition = target.AccessiblePositions.PositionClosestTo(self.CenterPosition);
+						var alternatePosition = t.AccessiblePositions.PositionClosestTo(self.CenterPosition);
 						if ((targetPosition - self.CenterPosition).HorizontalLengthSquared <= (alternatePosition - self.CenterPosition).HorizontalLengthSquared)
 							return ReserveStatus.TooFar;
 						target = t;
@@ -175,7 +175,7 @@ namespace OpenRA.Mods.Common.Activities
 							return EnterState.Done; // No available target -> abort to next activity
 						case ReserveStatus.TooFar:
 						{
-							var moveTarget = repathWhileMoving ? target : Target.FromPos(target.Positions.PositionClosestTo(self.CenterPosition));
+							var moveTarget = repathWhileMoving ? target : Target.FromPos(target.AccessiblePositions.PositionClosestTo(self.CenterPosition));
 							inner = move.MoveToTarget(self, moveTarget); // Approach
 							return EnterState.ApproachingOrEntering;
 						}
@@ -207,7 +207,7 @@ namespace OpenRA.Mods.Common.Activities
 						nextState = EnterState.Inside;
 
 					// Otherwise, try to recover from moving target
-					else if (target.Positions.PositionClosestTo(self.CenterPosition) != self.CenterPosition)
+					else if (target.AccessiblePositions.PositionClosestTo(self.CenterPosition) != self.CenterPosition)
 					{
 						nextState = EnterState.ApproachingOrEntering;
 						Unreserve(self, false);

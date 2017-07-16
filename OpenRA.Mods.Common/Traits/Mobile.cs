@@ -939,7 +939,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (target.Type == TargetType.Invalid)
 				return null;
 
-			return VisualMove(self, self.CenterPosition, target.Positions.PositionClosestTo(self.CenterPosition));
+			return VisualMove(self, self.CenterPosition, target.AccessiblePositions.PositionClosestTo(self.CenterPosition));
 		}
 
 		public bool CanEnterTargetNow(Actor self, Target target)

@@ -219,7 +219,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public virtual WPos GetTargetPosition(WPos pos, Target target)
 		{
-			return HasAnyValidWeapons(target, true) ? target.CenterPosition : target.Positions.PositionClosestTo(pos);
+			return HasAnyValidWeapons(target, true) ? target.CenterPosition : target.AttackablePositions.PositionClosestTo(pos);
 		}
 
 		public WDist GetMinimumRange()

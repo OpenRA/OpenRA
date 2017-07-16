@@ -96,6 +96,8 @@ FACT.NOD:
 NUKE:
 	Inherits: ^BaseBuilding
 	Inherits@shape: ^2x2Shape
+	Entrances:
+		EntranceOffsets: 630,299,0
 	HitShape:
 		TargetableOffsets: 630,299,0
 	Valued:
@@ -125,6 +127,8 @@ NUKE:
 NUK2:
 	Inherits: ^BaseBuilding
 	Inherits@shape: ^2x2Shape
+	Entrances:
+		EntranceOffsets: 630,299,0
 	HitShape:
 		TargetableOffsets: 630,299,0
 	Valued:
@@ -246,6 +250,9 @@ SILO:
 
 PYLE:
 	Inherits: ^BaseBuilding
+	Entrances:
+		UseTargetableCellsOffsets: false
+		EntranceOffsets: 840,-256,0, 840,512,0, 210,-512,0, -71,512,0
 	HitShape:
 		UseTargetableCellsOffsets: false
 		TargetableOffsets: 0,0,0, 840,-256,0, 840,512,0, 210,-512,0, -71,512,0
@@ -296,6 +303,9 @@ PYLE:
 HAND:
 	Inherits: ^BaseBuilding
 	Inherits@shape: ^2x2Shape
+	Entrances:
+		UseTargetableCellsOffsets: false
+		EntranceOffsets: 630,-512,0, 355,512,0, -281,-512,0, -630,512,0
 	HitShape:
 		UseTargetableCellsOffsets: false
 		TargetableOffsets: 0,0,0, 630,-512,0, 355,512,0, -281,-512,0, -630,512,0
@@ -342,6 +352,8 @@ HAND:
 
 AFLD:
 	Inherits: ^BaseBuilding
+	Entrances:
+		EntranceOffsets: 0,0,0, 0,-512,256, 0,-1536,256
 	HitShape:
 		TargetableOffsets: 0,0,0, 0,-512,256, 0,-1536,256
 		Type: Rectangle
@@ -391,6 +403,8 @@ AFLD:
 WEAP:
 	Inherits: ^BaseBuilding
 	Inherits@shape: ^3x2Shape
+	Entrances:
+		EntranceOffsets: 0,0,0, 0,1024,0, 0,-1024,0
 	HitShape:
 		TargetableOffsets: 0,0,0, 0,1024,0, 0,-1024,0
 		Type: Rectangle
@@ -443,6 +457,9 @@ WEAP:
 HPAD:
 	Inherits: ^BaseBuilding
 	Inherits@shape: ^2x2Shape
+	Entrances:
+		UseTargetableCellsOffsets: false
+		EntranceOffsets: 768,-512,0, 768,512,0, -281,-512,0, -630,512,0
 	HitShape:
 		UseTargetableCellsOffsets: false
 		TargetableOffsets: 0,0,0, 768,-512,0, 768,512,0, -281,-512,0, -630,512,0
@@ -492,6 +509,8 @@ HPAD:
 HQ:
 	Inherits: ^BaseBuilding
 	Inherits@IDISABLE: ^DisabledOverlay
+	Entrances:
+		EntranceOffsets: 0,0,0, 0,512,0, 420,-598,256
 	HitShape:
 		TargetableOffsets: 0,0,0, 0,512,0, 420,-598,256
 		Type: Rectangle
@@ -560,6 +579,8 @@ HQ:
 
 FIX:
 	Inherits: ^BaseBuilding
+	Entrances:
+		EntranceOffsets: 0,0,0, 840,0,0, -1060,0,0
 	HitShape:
 		Type: Rectangle
 			TopLeft: -1536, -683
@@ -604,6 +625,8 @@ FIX:
 EYE:
 	Inherits: ^BaseBuilding
 	Inherits@IDISABLE: ^DisabledOverlay
+	Entrances:
+		EntranceOffsets: 0,0,0, 0,512,128, 420,-598,213
 	HitShape:
 		TargetableOffsets: 0,0,0, 0,512,128, 420,-598,213
 		Type: Rectangle
@@ -668,6 +691,9 @@ TMPL:
 	Inherits: ^BaseBuilding
 	Inherits@IDISABLE: ^DisabledOverlay
 	Inherits@shape: ^3x2Shape
+	Entrances:
+		UseTargetableCellsOffsets: false
+		EntranceOffsets: 0,-896,0, 0,896,0, 840,0,0, -706,0,0, -706,-768,0, -706,640,0
 	HitShape:
 		UseTargetableCellsOffsets: false
 		TargetableOffsets: 0,0,0, 0,-896,0, 0,896,0, 840,0,0, -706,0,0, -706,-768,0, -706,640,0

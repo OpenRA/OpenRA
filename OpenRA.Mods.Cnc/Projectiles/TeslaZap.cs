@@ -64,7 +64,7 @@ namespace OpenRA.Mods.Cnc.Projectiles
 
 			// Zap tracks target
 			if (info.TrackTarget && args.GuidedTarget.IsValidFor(args.SourceActor))
-				target = args.Weapon.TargetActorCenter ? args.GuidedTarget.CenterPosition : args.GuidedTarget.Positions.PositionClosestTo(args.Source);
+				target = args.Weapon.TargetActorCenter ? args.GuidedTarget.CenterPosition : args.GuidedTarget.AttackablePositions.PositionClosestTo(args.Source);
 
 			if (damageDuration-- > 0)
 				args.Weapon.Impact(Target.FromPos(target), args.SourceActor, args.DamageModifiers);
