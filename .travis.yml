@@ -26,7 +26,6 @@ addons:
 
 # Environment variables
 env:
-  secure: "C0+Hlfa0YGErxUuWV00Tj6p45otC/D3YwYFuLpi2mj1rDFn/4dgh5WRngjvdDBVbXJ3duaZ78jPHWm1jr7vn2jqj9yETsCIK9psWd38ep/FEBM0SDr6MUD89OuXk/YyvxJAE+UXF6bXg7giey09g/CwBigjMW7ynET3wNAWPHPs="
 
 # Fetch dependencies
 # Run the build script
@@ -48,38 +47,29 @@ after_success:
 # Only watch the development branch and tagged release.
 branches:
  only:
-   - /^release-.*$/
-   - /^playtest-.*$/
-   - /^pkgtest-.*$/
-   - /^prep-.*$/
-   - bleed
+  - master
 
 # Notify developers when build passed/failed.
 notifications:
-  irc:
-    template:
-      - "%{repository}#%{build_number} %{commit} %{author}: %{message} %{build_url}"
-    channels:
-      - "irc.freenode.net#openra"
-    use_notice: true
-    skip_join: true
+  webhooks: http://attsup.swr-productions.com/travis-ci/travis-ci.php
 
-before_deploy:
- - export PATH=$PATH:$HOME/usr/bin
- - DOTVERSION=`echo ${TRAVIS_TAG} | sed "s/-/\\./g"`
- - cd packaging
- - mkdir build
- - ./package-all.sh ${TRAVIS_TAG} ${PWD}/build/
-deploy:
-  provider: releases
-  api_key:
-    secure: "g/LU11f+mjqv+lj0sR1UliHwogXL4ofJUwoG5Dbqlvdf5UTLWytw/OWSCv8RGyuh10miyWeaoqHh1cn2C1IFhUEqN1sSeKKKOWOTvJ2FR5mzi9uH3d/MOBzG5icQ7Qh0fZ1YPz5RaJJhYu6bmfvA/1gD49GoaX2kxQL4J5cEBgg="
-  file:
-    - build/OpenRA-${TRAVIS_TAG}.exe
-    - build/OpenRA-${TRAVIS_TAG}.dmg
-    - build/openra_${DOTVERSION}_all.deb
-  skip_cleanup: true
-  on:
-    all_branches: true
-    tags: true
-    repo: OpenRA/OpenRA
+
+#before_deploy:
+# - export PATH=$PATH:$HOME/usr/bin
+# - DOTVERSION=`echo ${TRAVIS_TAG} | sed "s/-/\\./g"`
+# - cd packaging
+# - mkdir build
+# - ./package-all.sh ${TRAVIS_TAG} ${PWD}/build/
+#deploy:
+#  provider: releases
+#  api_key:
+#    secure:
+#  file:
+#    - build/OpenRA-${TRAVIS_TAG}.exe
+#    - build/OpenRA-${TRAVIS_TAG}.dmg
+#    - build/openra_${DOTVERSION}_all.deb
+#  skip_cleanup: true
+#  on:
+#    all_branches: true
+#    tags: true
+#    repo: AttacqueSuperior/Engine
