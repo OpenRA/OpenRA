@@ -1092,6 +1092,11 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				// Rename BurstDelay to BurstDelays
+				if (engineVersion < 20170818)
+					if (node.Key == "BurstDelay")
+						node.Key = "BurstDelays";
+
 				UpgradeWeaponRules(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}
