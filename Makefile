@@ -292,9 +292,12 @@ default: core
 
 core: dependencies game platforms mods utility server
 
-mods: mod_common mod_cnc mod_d2k mod_as
+mods: mod_common mod_cnc mod_d2k setupasfolder mod_as
 
 all: dependencies core
+
+setupasfolder:
+	@mkdir -p ./mods/as
 
 clean:
 	@-$(RM_F) *.exe *.dll *.dylib *.dll.config ./OpenRA*/*.dll ./OpenRA*/*.mdb *.mdb mods/**/*.dll mods/**/*.mdb *.resources
