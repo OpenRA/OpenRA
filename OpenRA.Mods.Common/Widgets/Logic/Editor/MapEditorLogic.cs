@@ -92,7 +92,18 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					var cell = worldRenderer.Viewport.ViewToWorld(Viewport.LastMousePos);
 					var map = worldRenderer.World.Map;
 					var height = map.Height.Contains(cell) ? map.Height[cell] : 0;
-					return "{0},{1}".F(cell, height);
+					var rampType = "0";
+
+					if (world.Map.Tiles.Contains(cell))
+					{
+						var tile = world.Map.Tiles[cell];
+						var tileInfo = world.Map.Rules.TileSet.GetTileInfo(tile);
+
+						if (tileInfo != null && tileInfo.RampType > 0)
+							rampType = tileInfo.RampType.ToString();
+					}
+
+					return "{0},{1},{2}".F(cell, height, rampType);
 				};
 			}
 

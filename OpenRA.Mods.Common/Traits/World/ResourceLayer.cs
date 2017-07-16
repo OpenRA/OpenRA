@@ -24,7 +24,7 @@ namespace OpenRA.Mods.Common.Traits
 		public virtual object Create(ActorInitializer init) { return new ResourceLayer(init.Self); }
 	}
 
-	public class ResourceLayer : IRenderOverlay, IWorldLoaded, ITickRender, INotifyActorDisposing
+	public class ResourceLayer : IRenderOverlay, IWorldLoaded, ITick, ITickRender, INotifyActorDisposing
 	{
 		static readonly CellContents EmptyCell = new CellContents();
 
@@ -36,6 +36,8 @@ namespace OpenRA.Mods.Common.Traits
 		protected readonly CellLayer<CellContents> Content;
 		protected readonly CellLayer<CellContents> RenderContent;
 
+		int ticks;
+
 		public ResourceLayer(Actor self)
 		{
 			world = self.World;
@@ -45,6 +47,8 @@ namespace OpenRA.Mods.Common.Traits
 			RenderContent = new CellLayer<CellContents>(world.Map);
 
 			RenderContent.CellEntryChanged += UpdateSpriteLayers;
+
+			ticks = 0;
 		}
 
 		void UpdateSpriteLayers(CPos cell)
@@ -131,6 +135,8 @@ namespace OpenRA.Mods.Common.Traits
 					var density = int2.Lerp(0, type.Info.MaxDensity, adjacent, 9);
 					var temp = Content[cell];
 					temp.Density = Math.Max(density, 1);
+					temp.GrowthTics = w.SharedRandom.Next() % type.Info.GrowthRate;
+					temp.SpreadTics = w.SharedRandom.Next() % type.Info.SpreadRate;
 
 					// Initialize the RenderContent with the initial map state
 					// because the shroud may not be enabled.
@@ -145,7 +151,20 @@ namespace OpenRA.Mods.Common.Traits
 			var t = RenderContent[cell];
 			if (t.Density > 0)
 			{
-				var sprites = t.Type.Variants[t.Variant];
+				Sprite[] sprites = null;
+				if (t.Type.Variants.ContainsKey(t.Variant))
+					sprites = t.Type.Variants[t.Variant];
+				else
+					foreach (var v in t.Type.RampVariants)
+						if (v.Value.ContainsKey(t.Variant))
+						{
+							sprites = v.Value[t.Variant];
+							break;
+						}
+
+				if (sprites == null)
+					throw new NullReferenceException("Resource sprite variant isn't found: " + t.Variant);
+
 				var frame = int2.Lerp(0, sprites.Length - 1, t.Density, t.Type.Info.MaxDensity);
 				t.Sprite = sprites[frame];
 			}
@@ -155,8 +174,25 @@ namespace OpenRA.Mods.Common.Traits
 			RenderContent[cell] = t;
 		}
 
-		protected virtual string ChooseRandomVariant(ResourceType t)
+		protected virtual string ChooseResourceVariant(ResourceType t, TerrainTileInfo.RampSides rampType = TerrainTileInfo.RampSides.None)
 		{
+			if (t.Info.RampSequences != null && rampType > 0 && rampType <= TerrainTileInfo.RampSides.ResourceRamp)
+			{
+				switch (rampType)
+				{
+					case TerrainTileInfo.RampSides.NW:
+						return t.RampVariants[ResourceTypeInfo.RampType.NW].Keys.Random(Game.CosmeticRandom);
+					case TerrainTileInfo.RampSides.NE:
+						return t.RampVariants[ResourceTypeInfo.RampType.NE].Keys.Random(Game.CosmeticRandom);
+					case TerrainTileInfo.RampSides.SE:
+						return t.RampVariants[ResourceTypeInfo.RampType.SE].Keys.Random(Game.CosmeticRandom);
+					case TerrainTileInfo.RampSides.SW:
+						return t.RampVariants[ResourceTypeInfo.RampType.SW].Keys.Random(Game.CosmeticRandom);
+					default:
+						throw new InvalidDataException("Incorrect ramp variant");
+				}
+			}
+
 			return t.Variants.Keys.Random(Game.CosmeticRandom);
 		}
 
@@ -177,6 +213,45 @@ namespace OpenRA.Mods.Common.Traits
 				dirty.Remove(r);
 		}
 
+		public void Tick(Actor self)
+		{
+			if (--ticks > 0)
+				return;
+			ticks = 25;
+
+			// Resource growth and spreading logic
+			foreach (var cell in world.Map.AllCells)
+			{
+				var r = Content[cell];
+				var type = r.Type;
+				if (type != null)
+				{
+					if ((r.GrowthTics -= 25) <= 0)
+					{
+						r.GrowthTics = type.Info.GrowthRate;
+						if (world.SharedRandom.Next() % 100 <= type.Info.GrowthPercent
+							&& !world.ActorMap.AnyActorsAt(cell, SubCell.FullCell, a => a.Info.HasTraitInfo<HarvesterInfo>()))
+								AddResource(type, cell, 1);
+					}
+
+					if ((r.SpreadTics -= 25) <= 0)
+					{
+						r.SpreadTics = type.Info.SpreadRate;
+
+						for (var u = -1; u < 2; u++)
+							for (var v = -1; v < 2; v++)
+							{
+								var c = cell + new CVec(u, v);
+								if (world.SharedRandom.Next() % 100 <= type.Info.SpreadPercent
+									&& Content.Contains(c) && CanSpawnResourceAt(type, c)
+									&& type.Info.MaxDensity == r.Density)
+										AddResource(type, c, Math.Max(1, type.Info.MaxDensity / 2));
+							}
+					}
+				}
+			}
+		}
+
 		public bool AllowResourceAt(ResourceType rt, CPos cell)
 		{
 			if (!world.Map.Contains(cell))
@@ -195,7 +270,14 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				var tile = world.Map.Tiles[cell];
 				var tileInfo = world.Map.Rules.TileSet.GetTileInfo(tile);
-				if (tileInfo != null && tileInfo.RampType > 0)
+				if (tileInfo != null && tileInfo.RampType > (byte)TerrainTileInfo.RampSides.None)
+						return false;
+			}
+			else
+			{
+				var tile = world.Map.Tiles[cell];
+				var tileInfo = world.Map.Rules.TileSet.GetTileInfo(tile);
+				if (tileInfo != null && tileInfo.RampType > (byte)TerrainTileInfo.RampSides.ResourceRamp)
 					return false;
 			}
 
@@ -215,11 +297,14 @@ namespace OpenRA.Mods.Common.Traits
 		CellContents CreateResourceCell(ResourceType t, CPos cell)
 		{
 			world.Map.CustomTerrain[cell] = world.Map.Rules.TileSet.GetTerrainIndex(t.Info.TerrainType);
+			var tile = world.Map.Tiles[cell];
+			var tileInfo = world.Map.Rules.TileSet.GetTileInfo(tile);
+			var rampType = tileInfo != null ? tileInfo.RampType : (byte)0;
 
 			return new CellContents
 			{
 				Type = t,
-				Variant = ChooseRandomVariant(t),
+				Variant = ChooseResourceVariant(t, (TerrainTileInfo.RampSides)rampType),
 			};
 		}
 
@@ -233,6 +318,8 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			cell.Density = Math.Min(cell.Type.Info.MaxDensity, cell.Density + n);
+			cell.GrowthTics = world.SharedRandom.Next() % t.Info.GrowthRate;
+			cell.SpreadTics = world.SharedRandom.Next() % t.Info.SpreadRate;
 			Content[p] = cell;
 
 			dirty.Add(p);
@@ -307,6 +394,10 @@ namespace OpenRA.Mods.Common.Traits
 			public int Density;
 			public string Variant;
 			public Sprite Sprite;
+
+			public int GrowthTics;
+			public int SpreadTics;
+			public int Power;
 		}
 	}
 }

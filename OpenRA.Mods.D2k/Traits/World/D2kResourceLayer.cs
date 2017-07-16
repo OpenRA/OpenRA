@@ -180,7 +180,7 @@ namespace OpenRA.Mods.D2k.Traits
 			UpdateRenderedTileInner(p + new CVec(1, 1));
 		}
 
-		protected override string ChooseRandomVariant(ResourceType t)
+		protected override string ChooseResourceVariant(ResourceType t, TerrainTileInfo.RampSides rampType = TerrainTileInfo.RampSides.None)
 		{
 			return Variants.Keys.Random(Game.CosmeticRandom);
 		}

@@ -94,7 +94,7 @@ namespace OpenRA.Mods.Common.Widgets
 			if (!ResourceType.AllowedTerrainTypes.Contains(terrainType.Type))
 				return false;
 
-			return ResourceType.AllowOnRamps || tileInfo.RampType == 0;
+			return (ResourceType.AllowOnRamps && (TerrainTileInfo.RampSides)tileInfo.RampType <= TerrainTileInfo.RampSides.ResourceRamp) || tileInfo.RampType == 0;
 		}
 
 		public void Tick()

@@ -31,10 +31,20 @@
 		ResourceType: 1
 		Palette: greentiberium
 		Sequences: tib01, tib02, tib03, tib04, tib05, tib06, tib07, tib08, tib09, tib10, tib11, tib12
+		RampSequences:
+			NW: tib13, tib14
+			NE: tib15, tib16
+			SE: tib17, tib18
+			SW: tib19, tib20
+		GrowthRate: 500
+		GrowthPercent: 9
+		SpreadRate: 500
+		SpreadPercent: 9
 		MaxDensity: 12
 		ValuePerUnit: 25
 		AllowedTerrainTypes: Clear, Rough, DirtRoad
 		AllowUnderActors: true
+		AllowOnRamps: true
 		TerrainType: Tiberium
 	ResourceType@BlueTiberium:
 		Type: BlueTiberium
@@ -43,10 +53,20 @@
 		ResourceType: 2
 		Palette: bluetiberium
 		Sequences: tib01, tib02, tib03, tib04, tib05, tib06, tib07, tib08, tib09, tib10, tib11, tib12
+		RampSequences:
+			NW: tib13, tib14
+			NE: tib15, tib16
+			SE: tib17, tib18
+			SW: tib19, tib20
+		GrowthRate: 2000
+		GrowthPercent: 5
+		SpreadRate: 2000
+		SpreadPercent: 5
 		MaxDensity: 12
 		ValuePerUnit: 40
 		AllowedTerrainTypes: Clear, Rough, DirtRoad
 		AllowUnderActors: true
+		AllowOnRamps: true
 		TerrainType: BlueTiberium
 	ResourceType@Veins:
 		Type: Veins
@@ -55,10 +75,16 @@
 		ResourceType: 3
 		Palette: player
 		Sequences: veins
+		RampSequences:
+			NW: veinsnw1, veinsnw2
+			NE: veinsne1, veinsne2
+			SE: veinsse1, veinsse2
+			SW: veinssw1, veinssw2
 		MaxDensity: 1
 		ValuePerUnit: 0
 		AllowedTerrainTypes: Clear, Rough, DirtRoad
 		AllowUnderActors: true
+		AllowOnRamps: true
 		TerrainType: Veins
 	TerrainGeometryOverlay:
 	ExitsDebugOverlayManager:

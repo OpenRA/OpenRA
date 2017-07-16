@@ -16,6 +16,8 @@ namespace OpenRA.Traits
 {
 	public class ResourceTypeInfo : ITraitInfo
 	{
+		public enum RampType { NW, NE, SW, SE }
+
 		[Desc("Sequence image that holds the different variants.")]
 		public readonly string Image = "resources";
 
@@ -23,6 +25,9 @@ namespace OpenRA.Traits
 		[SequenceReference("Image")]
 		[Desc("Randomly chosen image sequences.")]
 		public readonly string[] Sequences = { };
+
+		[Desc("Image sequences for ramps")]
+		public readonly Dictionary<RampType, string[]> RampSequences;
 
 		[PaletteReference]
 		[Desc("Palette used for rendering the resource sprites.")]
@@ -64,6 +69,18 @@ namespace OpenRA.Traits
 		[Desc("Harvester content pip color.")]
 		public PipType PipColor = PipType.Yellow;
 
+		[Desc("Resource growth rate (tics per growth)")]
+		public int GrowthRate = 500;
+
+		[Desc("Resource growth percent (% of max density)")]
+		public int GrowthPercent = 9;
+
+		[Desc("Resource spread rate (tics per spread)")]
+		public int SpreadRate = 500;
+
+		[Desc("Resource spread percent (% of max density)")]
+		public int SpreadPercent = 9;
+
 		public object Create(ActorInitializer init) { return new ResourceType(this, init.World); }
 	}
 
@@ -72,16 +89,34 @@ namespace OpenRA.Traits
 		public readonly ResourceTypeInfo Info;
 		public PaletteReference Palette { get; private set; }
 		public readonly Dictionary<string, Sprite[]> Variants;
+		public readonly Dictionary<ResourceTypeInfo.RampType, Dictionary<string, Sprite[]>> RampVariants;
 
 		public ResourceType(ResourceTypeInfo info, World world)
 		{
 			Info = info;
 			Variants = new Dictionary<string, Sprite[]>();
+			RampVariants = new Dictionary<ResourceTypeInfo.RampType, Dictionary<string, Sprite[]>>();
 			foreach (var v in info.Sequences)
 			{
 				var seq = world.Map.Rules.Sequences.GetSequence(Info.Image, v);
 				var sprites = Exts.MakeArray(seq.Length, x => seq.GetSprite(x));
 				Variants.Add(v, sprites);
+			}
+
+			if (info.RampSequences != null)
+			{
+				foreach (var rv in info.RampSequences)
+				{
+					var v = new Dictionary<string, Sprite[]>();
+					foreach (var u in rv.Value)
+					{
+						var seq = world.Map.Rules.Sequences.GetSequence(Info.Image, u);
+						var sprites = Exts.MakeArray(seq.Length, x => seq.GetSprite(x));
+						v.Add(u, sprites);
+					}
+
+					RampVariants.Add(rv.Key, v);
+				}
 			}
 		}
 
