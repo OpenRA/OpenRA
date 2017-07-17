@@ -84,7 +84,7 @@ WorldLoaded = function()
 	Trigger.OnIdle(DinoTrex, DinoTrex.Hunt)
 
 	ReinforceWithLandingCraft(RifleReinforcments, SeaEntryA.Location, BeachReinforceA.Location, BeachReinforceA.Location)
-	Trigger.AfterDelay(DateTime.Seconds(1), function() InitialUnitsArrived = true end)
+	Trigger.AfterDelay(DateTime.Seconds(3), function() InitialUnitsArrived = true end)
 
 	Trigger.AfterDelay(DateTime.Seconds(15), function() ReinforceWithLandingCraft(BazookaReinforcments, SeaEntryB.Location, BeachReinforceB.Location, BeachReinforceB.Location) end)
 	if Map.LobbyOption("difficulty") == "easy" then
