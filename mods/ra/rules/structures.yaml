@@ -20,7 +20,15 @@ MSLO:
 	Armor:
 		Type: Wood
 	RevealsShroud:
+		Range: 6c0
+		RequiresCondition: !disabled
+		RevealGeneratedShroud: False
+	RevealsShroud@Offline:
 		Range: 5c0
+		RequiresCondition: disabled
+	RevealsShroud@GAPGEN:
+		Range: 5c0
+		RequiresCondition: !disabled
 	NukePower:
 		PauseOnCondition: disabled
 		Cursor: nuke
@@ -337,10 +345,15 @@ IRON:
 	Armor:
 		Type: Wood
 	RevealsShroud:
-		Range: 10c0
-		RevealGeneratedShroud: False
-	RevealsShroud@GAPGEN:
 		Range: 6c0
+		RequiresCondition: !disabled
+		RevealGeneratedShroud: False
+	RevealsShroud@Offline:
+		Range: 5c0
+		RequiresCondition: disabled
+	RevealsShroud@GAPGEN:
+		Range: 5c0
+		RequiresCondition: !disabled
 	WithBuildingBib:
 		HasMinibib: Yes
 	GrantExternalConditionPower@IRONCURTAIN:
@@ -389,10 +402,15 @@ PDOX:
 	Armor:
 		Type: Wood
 	RevealsShroud:
-		Range: 10c0
-		RevealGeneratedShroud: False
-	RevealsShroud@GAPGEN:
 		Range: 6c0
+		RequiresCondition: !disabled
+		RevealGeneratedShroud: False
+	RevealsShroud@Offline:
+		Range: 5c0
+		RequiresCondition: disabled
+	RevealsShroud@GAPGEN:
+		Range: 5c0
+		RequiresCondition: !disabled
 	WithBuildingBib:
 		HasMinibib: Yes
 	ProvidesPrerequisite@germany:
