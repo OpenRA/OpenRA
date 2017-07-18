@@ -37,7 +37,7 @@ namespace OpenRA.Mods.AS.Warheads
 			if (!IsValidImpact(target.CenterPosition, firedBy))
 				return;
 
-			var allowedActors = firedBy.World.Actors.Where(a => a.IsInWorld && IsValidAgainst(a, firedBy));
+			var allowedActors = firedBy.World.Actors.Where(a => a.IsInWorld  && !a.IsDead && IsValidAgainst(a, firedBy));
 
 			foreach (var actor in allowedActors)
 			{
