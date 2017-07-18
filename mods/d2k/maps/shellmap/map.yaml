@@ -1030,4 +1030,4 @@ Actors:
 		Owner: Neutral
 		Location: 50,65
 
-Rules: rules.yaml
+Rules: d2k|rules/campaign-palettes.yaml, rules.yaml

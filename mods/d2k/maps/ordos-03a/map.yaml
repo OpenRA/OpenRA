@@ -143,4 +143,4 @@ Actors:
 		Owner: Harkonnen
 		Location: 4,60
 
-Rules: d2k|rules/campaign-rules.yaml, rules.yaml
+Rules: d2k|rules/campaign-rules.yaml, d2k|rules/campaign-palettes.yaml, rules.yaml
