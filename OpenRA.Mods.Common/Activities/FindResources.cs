@@ -103,7 +103,7 @@ namespace OpenRA.Mods.Common.Activities
 				foreach (var n in notify)
 					n.MovingToResources(self, closestHarvestablePosition.Value, this);
 
-				return ActivityUtils.SequenceActivities(mobile.MoveTo(closestHarvestablePosition.Value, 1), new HarvestResource(self), this);
+				return ActivityUtils.SequenceActivities(mobile.MoveTo(closestHarvestablePosition.Value, 2), new HarvestResource(self), this);
 			}
 		}
 
