@@ -130,10 +130,20 @@ namespace OpenRA.Mods.Common.Traits
 			if (conditionManager == null || source == null)
 				return false;
 
-			var removed = permanentTokens.GetOrAdd(source).Remove(token) ||
-				timedTokens.GetOrAdd(source).RemoveWhere(t => t.Token == token) > 0;
+			HashSet<int> permanentTokensForSource;
+			if (permanentTokens.TryGetValue(source, out permanentTokensForSource))
+			{
+				if (!permanentTokensForSource.Remove(token))
+					return false;
+			}
+			else
+			{
+				HashSet<TimedToken> timedTokensForSource = null;
+				if (timedTokens.TryGetValue(source, out timedTokensForSource) && timedTokensForSource.RemoveWhere(t => t.Token == token) == 0)
+					return false;
+			}
 
-			if (removed && conditionManager.TokenValid(self, token))
+			if (conditionManager.TokenValid(self, token))
 				conditionManager.RevokeCondition(self, token);
 
 			return true;

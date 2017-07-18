@@ -156,7 +156,8 @@ namespace OpenRA.Mods.Common.Traits
 
 			tokens.Remove(a);
 			foreach (var external in a.TraitsImplementing<ExternalCondition>())
-				external.TryRevokeCondition(a, self, token);
+				if (external.TryRevokeCondition(a, self, token))
+					break;
 		}
 	}
 }
