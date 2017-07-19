@@ -60,7 +60,7 @@ endif
 
 ######################### UTILITIES/SETTINGS ###########################
 #
-VERSION     = $(shell git name-rev --name-only --tags --no-undefined HEAD 2>/dev/null || echo git-`git rev-parse --short HEAD`)
+VERSION = $(shell git name-rev --name-only --tags --no-undefined HEAD 2>/dev/null || echo git-`git rev-parse --short HEAD`)
 
 # install locations
 prefix ?= /usr/local
@@ -385,6 +385,7 @@ install-core: install-engine install-common-mod-files install-default-mods
 install-linux-icons:
 	@$(INSTALL_DIR) "$(DESTDIR)$(datadir)/icons/"
 	@$(CP_R) packaging/linux/hicolor "$(DESTDIR)$(datadir)/icons/"
+	@find "$(DESTDIR)$(datadir)/icons/" -type f -exec rename 's|openra-(.*)\.(.*)|openra-$$1-'"$(VERSION)"'.$$2|' {} +
 
 install-linux-desktop:
 	@$(INSTALL_DIR) "$(DESTDIR)$(datadir)/applications"
@@ -409,7 +410,7 @@ install-linux-mime:
 	@$(INSTALL_DATA) packaging/linux/openra-cnc-join-servers-$(VERSION).desktop "$(DESTDIR)$(datadir)/applications"
 	@sed 's/{MOD}/d2k/g' packaging/linux/openra-join-servers.desktop.in | sed 's/{MODNAME}/Dune 2000/g' | sed 's/{TAG}/$(VERSION)/g' > packaging/linux/openra-d2k-join-servers-$(VERSION).desktop
 	@$(INSTALL_DATA) packaging/linux/openra-d2k-join-servers-$(VERSION).desktop "$(DESTDIR)$(datadir)/applications"
-	@-$(RM) packaging/linux/openra-$(VERSION)-mimeinfo.xml packaging/linux/openra-ra-join-servers-$(VERSION).desktop packaging/linux/openra-cnc-join-servers-$(VERSION).desktop packaging/linux/openra-d2k-join-servers-$(VERSION).desktop
+	@-$(RM) packaging/linux/openra-mimeinfo.xml packaging/linux/openra-ra-join-servers-$(VERSION).desktop packaging/linux/openra-cnc-join-servers-$(VERSION).desktop packaging/linux/openra-d2k-join-servers-$(VERSION).desktop
 
 install-linux-appdata:
 	@$(INSTALL_DIR) "$(DESTDIR)$(datadir)/appdata/"
