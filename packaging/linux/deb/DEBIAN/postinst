@@ -6,3 +6,11 @@ mkdir -p "{SYSTEMSUPPORTDIR}/ModMetadata"
 mono {LIBDIR}/OpenRA.Utility.exe ra --register-mod /usr/games/openra-ra system
 mono {LIBDIR}/OpenRA.Utility.exe cnc --register-mod /usr/games/openra-cnc system
 mono {LIBDIR}/OpenRA.Utility.exe d2k --register-mod /usr/games/openra-d2k system
+
+# Register using update-alternatives
+update-alternatives --install /usr/games/openra-ra{SUFFIX} openra-ra{SUFFIX} /usr/games/openra-ra-{TAG} {PRIORITY} \
+                      --slave /usr/games/openra-cnc{SUFFIX} openra-cnc{SUFFIX} /usr/games/openra-cnc-{TAG} \
+		      --slave /usr/games/openra-d2k{SUFFIX} openra-d2k{SUFFIX} /usr/games/openra-d2k-{TAG} \
+                      --slave /usr/games/openra-ra-server{SUFFIX} openra-ra-server{SUFFIX} /usr/games/openra-ra-server-{TAG} \
+                      --slave /usr/games/openra-cnc-server{SUFFIX} openra-cnc-server{SUFFIX} /usr/games/openra-cnc-server-{TAG} \
+		      --slave /usr/games/openra-d2k-server{SUFFIX} openra-d2k-server{SUFFIX} /usr/games/openra-d2k-server-{TAG}

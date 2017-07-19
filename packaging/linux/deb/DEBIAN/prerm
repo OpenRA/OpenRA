@@ -4,3 +4,6 @@ set -e
 mono {LIBDIR}/OpenRA.Utility.exe ra --unregister-mod system
 mono {LIBDIR}/OpenRA.Utility.exe cnc --unregister-mod system
 mono {LIBDIR}/OpenRA.Utility.exe d2k --unregister-mod system
+
+# Unregister the whole group from update-alternatives
+update-alternatives --remove openra-ra{SUFFIX} /usr/games/openra-ra-{TAG}

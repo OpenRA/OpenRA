@@ -28,10 +28,11 @@ E_BADARGS=85
 DATE=`echo ${TAG} | grep -o "[0-9]\\+-\\?[0-9]\\?"`
 TYPE=`echo $1 | grep -o "^[a-z]*"`
 VERSION="${DATE}.${TYPE}"
-CHANNEL_SUFFIX="-$(echo $TAG | cut -d- -f1)"
-if [[ "$CHANNEL_SUFFIX" == "-release" ]]; then
+CHANNEL_SUFFIX="-$(echo ${TAG} | cut -d- -f1)"
+if [[ "${CHANNEL_SUFFIX}" == "-release" ]]; then
 	CHANNEL_SUFFIX=""
 fi
+PRIORITY=${DATE}
 
 # Copy template files into a clean build directory (required)
 mkdir "${DEB_BUILD_ROOT}"
@@ -85,8 +86,8 @@ else
 fi
 
 sed "s/{VERSION}/${VERSION}/" DEBIAN/control | sed "s/{SIZE}/${PACKAGE_SIZE}/" | sed "s/{TAG}/${TAG}/" > "${DEB_BUILD_ROOT}/DEBIAN/control"
-sed "s|{LIBDIR}|${LIBDIR}|g" DEBIAN/postinst | sed "s|{SYSTEMSUPPORTDIR}|${SYSTEMSUPPORTDIR}|g" > "${DEB_BUILD_ROOT}/DEBIAN/postinst"
-sed "s|{LIBDIR}|${LIBDIR}|g" DEBIAN/prerm | sed "s|{SYSTEMSUPPORTDIR}|${SYSTEMSUPPORTDIR}|g" > "${DEB_BUILD_ROOT}/DEBIAN/prerm"
+sed "s|{LIBDIR}|${LIBDIR}|g" DEBIAN/postinst | sed "s|{SYSTEMSUPPORTDIR}|${SYSTEMSUPPORTDIR}|g" | sed "s/{TAG}/${TAG}/" | sed "s/{SUFFIX}/${CHANNEL_SUFFIX}/g" | sed "s/{PRIORITY}/${PRIORITY}/g" > "${DEB_BUILD_ROOT}/DEBIAN/postinst"
+sed "s|{LIBDIR}|${LIBDIR}|g" DEBIAN/prerm | sed "s|{SYSTEMSUPPORTDIR}|${SYSTEMSUPPORTDIR}|g" | sed "s/{TAG}/${TAG}/" | sed "s/{SUFFIX}/${CHANNEL_SUFFIX}/g" | sed "s/{PRIORITY}/${PRIORITY}/g" > "${DEB_BUILD_ROOT}/DEBIAN/prerm"
 chmod 0755 "${DEB_BUILD_ROOT}/DEBIAN/postinst" "${DEB_BUILD_ROOT}/DEBIAN/prerm"
 
 # Build it in the temp directory, but place the finished deb in our starting directory
