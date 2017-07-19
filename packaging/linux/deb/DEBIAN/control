@@ -1,4 +1,4 @@
-Package: openra
+Package: openra-{TAG}
 Version: {VERSION}
 Architecture: all
 Maintainer: Paul Chote <paul@chote.net>
