@@ -28,10 +28,14 @@ E_BADARGS=85
 DATE=`echo ${TAG} | grep -o "[0-9]\\+-\\?[0-9]\\?"`
 TYPE=`echo $1 | grep -o "^[a-z]*"`
 VERSION="${DATE}.${TYPE}"
+CHANNEL_SUFFIX="-$(echo $TAG | cut -d- -f1)"
+if [[ "$CHANNEL_SUFFIX" == "-release" ]]; then
+	CHANNEL_SUFFIX=""
+fi
 
 # Copy template files into a clean build directory (required)
 mkdir "${DEB_BUILD_ROOT}"
-cp -R DEBIAN "${DEB_BUILD_ROOT}"
+mkdir "${DEB_BUILD_ROOT}/DEBIAN"
 cp -R "${LINUX_BUILD_ROOT}/usr" "${DEB_BUILD_ROOT}"
 cp -R Eluant.dll.config "${DEB_BUILD_ROOT}/${LIBDIR}/"
 chmod 0644 "${DEB_BUILD_ROOT}/${LIBDIR}/"*.dll
@@ -107,3 +111,10 @@ fakeroot dpkg-deb -b . "${OUTPUTDIR}/openra-${TAG}_${PKGVERSION}_all.deb"
 popd >/dev/null
 rm -rf "${DEB_BUILD_ROOT}"
 
+# Build virtual package for update channel
+mkdir -p "${DEB_BUILD_ROOT}/DEBIAN"
+sed "s/{VERSION}/${VERSION}/g" DEBIAN/control.virtual | sed "s/{TAG}/${TAG}/g" | sed "s/{SUFFIX}/${CHANNEL_SUFFIX}/g" > "${DEB_BUILD_ROOT}/DEBIAN/control"
+pushd "${DEB_BUILD_ROOT}" >/dev/null
+fakeroot dpkg-deb -b . "${OUTPUTDIR}/openra${CHANNEL_SUFFIX}_${PKGVERSION}_all.deb"
+popd >/dev/null
+rm -rf "${DEB_BUILD_ROOT}"
