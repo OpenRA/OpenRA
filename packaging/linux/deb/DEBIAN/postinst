@@ -3,9 +3,9 @@ set -e
 
 # Register default mods for in-game switching
 mkdir -p "{SYSTEMSUPPORTDIR}/ModMetadata"
-mono {LIBDIR}/OpenRA.Utility.exe ra --register-mod /usr/games/openra-ra system
-mono {LIBDIR}/OpenRA.Utility.exe cnc --register-mod /usr/games/openra-cnc system
-mono {LIBDIR}/OpenRA.Utility.exe d2k --register-mod /usr/games/openra-d2k system
+mono {LIBDIR}/OpenRA.Utility.exe ra --register-mod /usr/games/openra-ra-{TAG} system
+mono {LIBDIR}/OpenRA.Utility.exe cnc --register-mod /usr/games/openra-cnc-{TAG} system
+mono {LIBDIR}/OpenRA.Utility.exe d2k --register-mod /usr/games/openra-d2k-{TAG} system
 
 # Register using update-alternatives
 update-alternatives --install /usr/games/openra-ra{SUFFIX} openra-ra{SUFFIX} /usr/games/openra-ra-{TAG} {PRIORITY} \
