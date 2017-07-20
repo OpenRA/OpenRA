@@ -24,7 +24,7 @@
 FireballLauncher:
 	Inherits: ^FireWeapon
 	Burst: 2
-	BurstDelay: 20
+	BurstDelays: 20
 	Projectile: Bullet
 		Speed: 250
 		TrailImage: fb2
@@ -37,7 +37,7 @@ Flamer:
 	Inherits: ^FireWeapon
 	ReloadDelay: 50
 	Burst: 15
-	BurstDelay: 1
+	BurstDelays: 1
 	Projectile: Bullet
 		Speed: 170
 		TrailImage: fb4
