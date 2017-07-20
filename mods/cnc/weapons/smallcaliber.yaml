@@ -39,7 +39,7 @@ Vulcan:
 	Inherits: ^HeavyMG
 	Range: 8c0
 	Burst: 9
-	BurstDelay: 2
+	BurstDelays: 2
 	FirstBurstTargetOffset: -2984,0,0
 	FollowingBurstTargetOffset: 746,0,0
 	ReloadDelay: 125
@@ -56,7 +56,7 @@ HeliAGGun:
 	Inherits: ^HeavyMG
 	ReloadDelay: 20
 	Burst: 2
-	BurstDelay: 0
+	BurstDelays: 0
 	Range: 4c0
 	MinRange: 0c768
 	Report: gun5.aud
