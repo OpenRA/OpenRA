@@ -78,13 +78,14 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class Harvester : IIssueOrder, IResolveOrder, IPips,
 		IExplodeModifier, IOrderVoice, ISpeedModifier, ISync, INotifyCreated,
-		INotifyIdle, INotifyBlockingMove, INotifyBuildComplete
+		INotifyIdle, INotifyBlockingMove
 	{
 		public readonly HarvesterInfo Info;
 		readonly Mobile mobile;
 		readonly ResourceLayer resLayer;
 		readonly ResourceClaimLayer claimLayer;
 		Dictionary<ResourceTypeInfo, int> contents = new Dictionary<ResourceTypeInfo, int>();
+		INotifyHarvesterAction[] notify;
 		bool idleSmart = true;
 		int idleDuration;
 
@@ -118,14 +119,11 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyCreated.Created(Actor self)
 		{
-			if (Info.SearchOnCreation)
-				self.QueueActivity(new FindResources(self));
-		}
+			notify = self.TraitsImplementing<INotifyHarvesterAction>().ToArray();
 
-		void INotifyBuildComplete.BuildingComplete(Actor self)
-		{
+			// Note: This is queued in a FrameEndTask because otherwise the activity is dropped/overridden while moving out of a factory.
 			if (Info.SearchOnCreation)
-				self.QueueActivity(new FindResources(self));
+				self.World.AddFrameEndTask(w => self.QueueActivity(new FindResources(self)));
 		}
 
 		public void SetProcLines(Actor proc)
@@ -389,7 +387,6 @@ namespace OpenRA.Mods.Common.Traits
 				self.QueueActivity(findResources);
 				self.SetTargetLine(Target.FromCell(self.World, loc.Value), Color.Red);
 
-				var notify = self.TraitsImplementing<INotifyHarvesterAction>();
 				foreach (var n in notify)
 					n.MovingToResources(self, loc.Value, findResources);
 
@@ -417,13 +414,11 @@ namespace OpenRA.Mods.Common.Traits
 				var deliver = new DeliverResources(self);
 				self.QueueActivity(deliver);
 
-				var notify = self.TraitsImplementing<INotifyHarvesterAction>();
 				foreach (var n in notify)
 					n.MovingToRefinery(self, order.TargetLocation, deliver);
 			}
 			else if (order.OrderString == "Stop" || order.OrderString == "Move")
 			{
-				var notify = self.TraitsImplementing<INotifyHarvesterAction>();
 				foreach (var n in notify)
 					n.MovementCancelled(self);
 
