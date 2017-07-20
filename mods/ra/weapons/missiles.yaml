@@ -50,7 +50,7 @@ Maverick:
 	MinRange: 3c0
 	Report: missile7.aud
 	Burst: 2
-	BurstDelay: 7
+	BurstDelays: 7
 	Projectile: Missile
 		Speed: 256
 		Inaccuracy: 512
@@ -74,7 +74,7 @@ HellfireAG:
 	ReloadDelay: 60
 	MinRange: 1c256
 	Burst: 4
-	BurstDelay: 14
+	BurstDelays: 14
 	Projectile: Missile
 		Speed: 256
 		HorizontalRateOfTurn: 10
@@ -92,7 +92,7 @@ HellfireAA:
 	ReloadDelay: 60
 	MinRange: 1c256
 	Burst: 2
-	BurstDelay: 10
+	BurstDelays: 10
 	Projectile: Missile
 		Speed: 384
 		Inaccuracy: 128
@@ -177,7 +177,7 @@ Stinger:
 	ReloadDelay: 60
 	Range: 7c512
 	Burst: 2
-	BurstDelay: 0
+	BurstDelays: 0
 	InvalidTargets: Underwater
 	Projectile: Missile
 		Arm: 3
@@ -225,7 +225,7 @@ TorpTube:
 	Report: torpedo1.aud
 	ValidTargets: Water, Underwater, Bridge
 	Burst: 2
-	BurstDelay: 20
+	BurstDelays: 20
 	Projectile: Missile
 		Image: torpedo
 		Arm: 3

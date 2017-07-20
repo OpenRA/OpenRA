@@ -24,7 +24,7 @@
 ZSU-23:
 	Inherits: ^AACannon
 	Burst: 2
-	BurstDelay: 0
+	BurstDelays: 0
 	ReloadDelay: 5
 	Range: 10c0
 	Projectile: Bullet
