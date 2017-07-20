@@ -130,8 +130,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void SetProcLines(Actor proc)
 		{
-			if (proc == null) return;
-			if (proc.Disposed) return;
+			if (proc == null || proc.IsDead)
+				return;
 
 			var linkedHarvs = proc.World.ActorsHavingTrait<Harvester>(h => h.LinkedProc == proc)
 				.Select(a => Target.FromActor(a))
