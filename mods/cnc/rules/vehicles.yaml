@@ -597,6 +597,8 @@ TDTRUK:
 		Cost: 500
 	Tooltip:
 		Name: Supply Truck
+	Selectable:
+		Priority: 6
 	Health:
 		HP: 110
 	Armor:
