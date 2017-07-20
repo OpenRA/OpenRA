@@ -117,9 +117,8 @@ Jugg90mm:
 	Range: 18c0
 	MinRange: 5c0
 	Burst: 3
-	BurstDelays: 3
-	-Report:
-	StartBurstReport: jugger1.aud
+	BurstDelays: 3, 5
+	Report: jugger1-single.aud
 	TargetActorCenter: true
 	Projectile: Bullet
 		Speed: 384
