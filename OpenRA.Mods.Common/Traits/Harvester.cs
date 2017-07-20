@@ -268,7 +268,8 @@ namespace OpenRA.Mods.Common.Traits
 		void INotifyIdle.TickIdle(Actor self)
 		{
 			// Should we be intelligent while idle?
-			if (!idleSmart) return;
+			if (!idleSmart)
+				return;
 
 			// Are we not empty? Deliver resources:
 			if (!IsEmpty)
