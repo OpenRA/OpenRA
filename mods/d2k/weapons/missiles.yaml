@@ -96,7 +96,7 @@ TowerMissile:
 	Inherits: ^Missile
 	ReloadDelay: 60
 	Burst: 2
-	BurstDelay: 60
+	BurstDelays: 60
 	ValidTargets: Ground, Air
 	Projectile: Missile
 		HorizontalRateOfTurn: 1
@@ -108,7 +108,7 @@ mtank_pri:
 	Inherits: ^Missile
 	ReloadDelay: 115
 	Burst: 2
-	BurstDelay: 115
+	BurstDelays: 115
 	Range: 6c0
 	ValidTargets: Ground, Air
 	Projectile: Missile

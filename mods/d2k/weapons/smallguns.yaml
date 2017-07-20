@@ -80,7 +80,7 @@ HMG_muzzle:
 	ReloadDelay: 16
 	Range: 3c0
 	Burst: 3
-	BurstDelay: 2
+	BurstDelays: 2
 	Projectile: InstantHit
 	Warhead@TargetValidation: SpreadDamage
 

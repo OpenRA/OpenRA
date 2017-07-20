@@ -51,7 +51,7 @@ WormJaw:
 OrniBomb:
 	ReloadDelay: 25
 	Burst: 5
-	BurstDelay: 6
+	BurstDelays: 6
 	Range: 3c0
 	Projectile: GravityBomb
 		Image: BOMBS
