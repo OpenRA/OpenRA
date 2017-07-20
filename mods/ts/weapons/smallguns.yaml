@@ -86,7 +86,7 @@ RaiderCannon:
 	ReloadDelay: 55
 	Range: 4c0
 	Burst: 2 # this + BurstDelay just makes the buggy alternate between barrels (for muzzle flash), no actual difference to original TS
-	BurstDelay: 55
+	BurstDelays: 55
 	Report: chaingn1.aud
 	Warhead@1Dam: SpreadDamage
 		Damage: 40

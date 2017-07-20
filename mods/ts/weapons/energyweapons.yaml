@@ -45,7 +45,7 @@ MechRailgun:
 	Inherits: ^Railgun
 	Range: 8c0
 	Burst: 2 # for alternating muzzle offsets, dmg/s identical to original
-	BurstDelay: 60
+	BurstDelays: 60
 	Report: railuse5.aud
 	Projectile: Railgun
 		BeamColor: 00FFFFC8
@@ -144,7 +144,7 @@ Proton:
 	Inherits: ^EnergyBlast
 	Range: 5c0
 	Burst: 5
-	BurstDelay: 3
+	BurstDelays: 3
 	Projectile: Bullet
 		Speed: 341
 		Blockable: false
