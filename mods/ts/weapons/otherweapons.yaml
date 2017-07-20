@@ -7,7 +7,7 @@ FireballLauncher:
 		Image: FLAMEALL
 		Inaccuracy: 384
 	Burst: 5
-	BurstDelay: 5
+	BurstDelays: 5
 	Warhead@1Dam: SpreadDamage
 		Spread: 288
 		Falloff: 100, 50, 25, 12, 6, 3, 0
@@ -26,7 +26,7 @@ FireballLauncher:
 Bomb:
 	ReloadDelay: 60
 	Burst: 5
-	BurstDelay: 6
+	BurstDelays: 6
 	Range: 2c512
 	TargetActorCenter: true
 	Projectile: GravityBomb
