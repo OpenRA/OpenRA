@@ -343,7 +343,7 @@ HAND:
 AFLD:
 	Inherits: ^BaseBuilding
 	HitShape:
-		TargetableOffsets: 0,0,0, 0,-512,256, 0,-1536,256
+		TargetableOffsets: 0,0,0, 0,-512,256, 0,-1451,384, 0,512,128, 0,1536,85
 		Type: Rectangle
 			TopLeft: -2048, -1024
 			BottomRight: 2048, 1024
@@ -359,7 +359,7 @@ AFLD:
 		Queue: Building.Nod
 		Description: Provides a dropzone\nfor vehicle reinforcements
 	Building:
-		Footprint: xxXX xxxx ====
+		Footprint: XXXX xxxx ====
 		Dimensions: 4,3
 		LocalCenterOffset: 0,-512,0
 	Health:
