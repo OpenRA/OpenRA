@@ -1,3 +1,11 @@
+--[[
+   Copyright 2007-2017 The OpenRA Developers (see AUTHORS)
+   This file is part of OpenRA, which is free software. It is made
+   available to you under the terms of the GNU General Public License
+   as published by the Free Software Foundation, either version 3 of
+   the License, or (at your option) any later version. For more
+   information, see COPYING.
+]]
 NodUnits = { "bike", "e3", "e1", "bggy", "e1", "e3", "bike", "bggy" }
 FirstAttackWave = { "e1", "e1", "e1", "e2", }
 SecondThirdAttackWave = { "e1", "e1", "e2", }

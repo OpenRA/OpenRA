@@ -38,6 +38,8 @@ bio:
 		Length: *
 
 oilb:
+	Defaults:
+		Offset: 0,-6
 	idle:
 	damaged-idle:
 		Start: 1
@@ -45,6 +47,7 @@ oilb:
 	make:
 	bib: bib3
 		Length: *
+		Offset: 0,0
 		UseTilesetExtension: true
 		TilesetOverrides:
 			INTERIOR: TEMPERAT
@@ -197,10 +200,13 @@ kenn:
 
 dome:
 	idle:
+		Offset: 0,-4
 	damaged-idle:
 		Start: 1
+		Offset: 0,-4
 	make: domemake
 		Length: *
+		Offset: 0,-4
 	bib: bib3
 		Length: *
 		UseTilesetExtension: true
@@ -311,10 +317,13 @@ afld:
 
 spen:
 	idle:
+		Offset: 0,2
 	damaged-idle:
 		Start: 1
+		Offset: 0,2
 	make: spenmake
 		Length: *
+		Offset: 0,2
 	icon: spenicon
 	fake-icon: speficon
 

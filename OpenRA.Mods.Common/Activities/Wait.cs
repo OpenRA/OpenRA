@@ -30,9 +30,9 @@ namespace OpenRA.Mods.Common.Activities
 			return (remainingTicks-- == 0) ? NextActivity : this;
 		}
 
-		public override bool Cancel(Actor self)
+		public override bool Cancel(Actor self, bool keepQueue = false)
 		{
-			if (!base.Cancel(self))
+			if (!base.Cancel(self, keepQueue))
 				return false;
 
 			remainingTicks = 0;
@@ -56,9 +56,9 @@ namespace OpenRA.Mods.Common.Activities
 			return (f == null || f()) ? NextActivity : this;
 		}
 
-		public override bool Cancel(Actor self)
+		public override bool Cancel(Actor self, bool keepQueue = false)
 		{
-			if (!base.Cancel(self))
+			if (!base.Cancel(self, keepQueue))
 				return false;
 
 			f = null;

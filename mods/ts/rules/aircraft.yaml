@@ -1,5 +1,6 @@
 DPOD:
 	Inherits: ^Helicopter
+	Inherits@AUTOTARGET: ^AutoTargetGround
 	Valued:
 		Cost: 10
 	Tooltip:
@@ -29,7 +30,6 @@ DPOD:
 		PipCount: 5
 		PipType: Ammo
 		PipTypeEmpty: AmmoEmpty
-	AutoTarget:
 
 DSHP:
 	Inherits: ^Helicopter
@@ -65,13 +65,14 @@ DSHP:
 ORCA:
 	Inherits: ^Helicopter
 	Inherits@EXPERIENCE: ^GainsExperience
+	Inherits@AUTOTARGET: ^AutoTargetGround
 	Valued:
 		Cost: 1000
 	Tooltip:
 		Name: Orca Fighter
 	Buildable:
 		Queue: Air
-		BuildPaletteOrder: 20
+		BuildPaletteOrder: 10
 		Prerequisites: ~gahpad
 		Description: Fast assault gunship with\ndual missile launchers.\n  Strong vs Buildings, Vehicles\n  Weak vs Infantry, Aircraft
 	Selectable:
@@ -99,7 +100,6 @@ ORCA:
 		PipCount: 5
 		PipType: Ammo
 		PipTypeEmpty: AmmoEmpty
-	AutoTarget:
 	RenderSprites:
 	SpawnActorOnDeath:
 		Actor: ORCA.Husk
@@ -107,13 +107,14 @@ ORCA:
 ORCAB:
 	Inherits: ^Aircraft
 	Inherits@EXPERIENCE: ^GainsExperience
+	Inherits@AUTOTARGET: ^AutoTargetGround
 	Valued:
 		Cost: 1600
 	Tooltip:
 		Name: Orca Bomber
 	Buildable:
 		Queue: Air
-		BuildPaletteOrder: 20
+		BuildPaletteOrder: 30
 		Prerequisites: ~gahpad, gatech
 		Description: Heavy bomber.\n  Strong vs Buildings, Vehicles\n  Weak vs Infantry, Aircraft
 	Selectable:
@@ -147,7 +148,6 @@ ORCAB:
 		ReloadDelay: 200
 		PipType: Ammo
 		PipTypeEmpty: AmmoEmpty
-	AutoTarget:
 	RenderSprites:
 	Hovers@CRUISING:
 		RequiresCondition: cruising
@@ -162,7 +162,7 @@ ORCATRAN:
 		Name: Orca Transport
 	Buildable:
 		Queue: Air
-		BuildPaletteOrder: 10
+		BuildPaletteOrder: 50
 		Prerequisites: ~disabled
 	RenderSprites:
 	Aircraft:
@@ -198,7 +198,7 @@ TRNSPORT:
 		Name: Carryall
 	Buildable:
 		Queue: Air
-		BuildPaletteOrder: 10
+		BuildPaletteOrder: 60
 		Prerequisites: ~gahpad, gadept
 		Description: VTOL aircraft capable of lifting\nand transporting vehicles.\n  Unarmed
 	Aircraft:
@@ -213,7 +213,7 @@ TRNSPORT:
 		MoveIntoShroud: false
 	Carryall:
 		Voice: Move
-		LocalOffset: 0, 0, -224
+		LocalOffset: 0,0,-317
 	Health:
 		HP: 175
 	Armor:
@@ -230,13 +230,14 @@ TRNSPORT:
 SCRIN:
 	Inherits: ^Aircraft
 	Inherits@EXPERIENCE: ^GainsExperience
+	Inherits@AUTOTARGET: ^AutoTargetGround
 	Valued:
 		Cost: 1500
 	Tooltip:
 		Name: Banshee Fighter
 	Buildable:
 		Queue: Air
-		BuildPaletteOrder: 20
+		BuildPaletteOrder: 40
 		Prerequisites: ~nahpad, natech
 		Description: Advanced fighter-bomber craft\nwith twin plasma cannons.\n  Strong vs Buildings, Vehicles\n  Weak vs Infantry, Aircraft
 	Selectable:
@@ -271,7 +272,6 @@ SCRIN:
 		ReloadCount: 5
 		PipType: Ammo
 		PipTypeEmpty: AmmoEmpty
-	AutoTarget:
 	RenderSprites:
 	DeathSounds:
 	SpawnActorOnDeath:
@@ -280,6 +280,7 @@ SCRIN:
 APACHE:
 	Inherits: ^Helicopter
 	Inherits@EXPERIENCE: ^GainsExperience
+	Inherits@AUTOTARGET: ^AutoTargetGround
 	Valued:
 		Cost: 1000
 	Tooltip:
@@ -312,7 +313,6 @@ APACHE:
 		PipCount: 4
 		PipType: Ammo
 		PipTypeEmpty: AmmoEmpty
-	AutoTarget:
 	WithIdleOverlay@ROTORAIR:
 		Offset: 85,0,384
 		Sequence: rotor
@@ -365,3 +365,6 @@ HUNTER:
 	SelectionDecorations:
 		Palette: pips
 	ActorLostNotification:
+	HitShape:
+	EditorTilesetFilter:
+		Categories: System

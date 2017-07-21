@@ -1,10 +1,11 @@
 E2:
 	Inherits: ^Soldier
 	Inherits@EXPERIENCE: ^GainsExperience
+	Inherits@AUTOTARGET: ^AutoTargetGround
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 20
-		Prerequisites: ~gapile
+		Prerequisites: ~gapile, ~techlevel.low
 		Description: Infantry armed with special explosive discs.\n  Strong vs Buildings, Infantry\n  Weak vs Vehicles, Aircraft
 	Valued:
 		Cost: 200
@@ -16,7 +17,7 @@ E2:
 		Speed: 56
 	Armament:
 		Weapon: Grenade
-		LocalOffset: 0,0,555
+		LocalOffset: 0,0,785
 		FireDelay: 5
 	TakeCover:
 		ProneOffset: 160,128,-555
@@ -24,6 +25,8 @@ E2:
 		Voice: Attack
 	WithInfantryBody:
 		DefaultAttackSequence: attack
+	RevealsShroud:
+		Range: 7c0
 	ProducibleWithLevel:
 		Prerequisites: barracks.upgraded
 
@@ -36,8 +39,8 @@ MEDIC:
 		Name: Medic
 	Buildable:
 		Queue: Infantry
-		BuildPaletteOrder: 70
-		Prerequisites: ~gapile
+		BuildPaletteOrder: 50
+		Prerequisites: ~gapile, ~techlevel.low
 		Description: Heals nearby infantry.\n  Unarmed
 	Voiced:
 		VoiceSet: Medic
@@ -55,6 +58,9 @@ MEDIC:
 		ForceTargetStances: None
 		Cursor: heal
 		OutsideRangeCursor: heal
+	AutoTarget:
+	AutoTargetPriority@DEFAULT:
+		ValidTargets: Infantry
 	AttackFrontal:
 	WithInfantryBody:
 		DefaultAttackSequence: heal
@@ -66,19 +72,20 @@ MEDIC:
 JUMPJET:
 	Inherits: ^Soldier
 	Inherits@EXPERIENCE: ^GainsExperience
+	Inherits@AUTOTARGET: ^AutoTargetGround
 	Valued:
 		Cost: 600
 	Tooltip:
 		Name: Jumpjet Infantry
 	Buildable:
 		Queue: Infantry
-		BuildPaletteOrder: 40
-		Prerequisites: ~gapile, garadr
+		BuildPaletteOrder: 70
+		Prerequisites: ~gapile, garadr, ~techlevel.medium
 		Description: Airborne soldier.\n  Strong vs Infantry, Aircraft\n  Weak vs Vehicles
 	Voiced:
 		VoiceSet: JumpJet
 	Mobile:
-		Speed: 56
+		Speed: 71
 		Jumpjet: True
 		JumpjetTransitionCost: 100
 		JumpjetCondition: airborne
@@ -150,7 +157,6 @@ JUMPJET.Husk:
 	Aircraft:
 	HiddenUnderFog:
 		Type: GroundPosition
-	AutoTargetIgnore:
 	ScriptTriggers:
 	Tooltip:
 		Name: Jumpjet Infantry
@@ -165,19 +171,34 @@ JUMPJET.Husk:
 	AutoSelectionSize:
 	WithSpriteBody:
 		Sequence: die-falling
+	Health:
+	HitShape:
+	ConditionManager:
+	GrantConditionOnTerrain:
+		TerrainTypes: Water
+		Condition: water-death
+	WithDeathAnimation:
+		RequiresCondition: !water-death
+		FallbackSequence: die-flying
+	WithDeathAnimation@SPLASH:
+		RequiresCondition: water-death
+		FallbackSequence: die-splash
+	EditorTilesetFilter:
+		Categories: Husk
 
 GHOST:
 	Inherits: ^Soldier
 	Inherits@EXPERIENCE: ^GainsExperience
 	Inherits@2: ^HealsOnTiberium
+	Inherits@AUTOTARGET: ^AutoTargetGround
 	Valued:
 		Cost: 1750
 	Tooltip:
 		Name: Ghost Stalker
 	Buildable:
 		Queue: Infantry
-		BuildPaletteOrder: 50
-		Prerequisites: ~gapile, gatech
+		BuildPaletteOrder: 90
+		Prerequisites: ~gapile, gatech, ~techlevel.high
 		BuildLimit: 1
 		Description: Elite commando infantry, armed with\na railgun and C4.\n  Strong vs Infantry, Buildings\n  Weak vs Vehicles, Aircraft\n  Special Ability: Destroy Building with C4\nMaximum 1 can be trained.
 	Voiced:
@@ -193,7 +214,7 @@ GHOST:
 		Range: 6c0
 	Armament:
 		Weapon: LtRail
-		LocalOffset: 85,0,384
+		LocalOffset: 120,0,543
 	TakeCover:
 		ProneOffset: 256,32,-384
 	Crushable:

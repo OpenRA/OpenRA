@@ -30,7 +30,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 			this.cacheStorage = cacheStorage;
 		}
 
-		public List<CPos> FindUnitPath(CPos source, CPos target, Actor self)
+		public List<CPos> FindUnitPath(CPos source, CPos target, Actor self, Actor ignoreActor)
 		{
 			using (new PerfSample("Pathfinder"))
 			{
@@ -40,7 +40,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 				if (cachedPath != null)
 					return cachedPath;
 
-				var pb = pathFinder.FindUnitPath(source, target, self);
+				var pb = pathFinder.FindUnitPath(source, target, self, ignoreActor);
 
 				cacheStorage.Store(key, pb);
 

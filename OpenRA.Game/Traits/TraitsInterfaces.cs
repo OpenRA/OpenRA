@@ -95,6 +95,8 @@ namespace OpenRA.Traits
 	public interface ITick { void Tick(Actor self); }
 	public interface ITickRender { void TickRender(WorldRenderer wr, Actor self); }
 	public interface IRender { IEnumerable<IRenderable> Render(Actor self, WorldRenderer wr); }
+
+	public interface IAutoSelectionSizeInfo : ITraitInfoInterface { }
 	public interface IAutoSelectionSize { int2 SelectionSize(Actor self); }
 
 	public interface IIssueOrder
@@ -199,6 +201,11 @@ namespace OpenRA.Traits
 
 	public interface IRadarColorModifier { Color RadarColorOverride(Actor self, Color color); }
 
+	public interface ITargetableCells
+	{
+		IEnumerable<Pair<CPos, SubCell>> TargetableCells();
+	}
+
 	public interface IOccupySpaceInfo : ITraitInfoInterface
 	{
 		IReadOnlyDictionary<CPos, SubCell> OccupiedCells(ActorInfo info, CPos location, SubCell subCell = SubCell.Any);
@@ -285,7 +292,7 @@ namespace OpenRA.Traits
 	public interface IMove
 	{
 		Activity MoveTo(CPos cell, int nearEnough);
-		Activity MoveTo(CPos cell, Actor ignoredActor);
+		Activity MoveTo(CPos cell, Actor ignoreActor);
 		Activity MoveWithinRange(Target target, WDist range);
 		Activity MoveWithinRange(Target target, WDist minRange, WDist maxRange);
 		Activity MoveFollow(Actor self, Target target, WDist minRange, WDist maxRange);
@@ -330,7 +337,12 @@ namespace OpenRA.Traits
 	public interface IWorldLoaded { void WorldLoaded(World w, WorldRenderer wr); }
 	public interface ICreatePlayers { void CreatePlayers(World w); }
 
-	public interface IBotInfo : ITraitInfoInterface { string Name { get; } }
+	public interface IBotInfo : ITraitInfoInterface
+	{
+		string Type { get; }
+		string Name { get; }
+	}
+
 	public interface IBot
 	{
 		void Activate(Player p);

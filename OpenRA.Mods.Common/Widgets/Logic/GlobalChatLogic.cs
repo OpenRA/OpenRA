@@ -18,7 +18,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	class GlobalChatLogic : ChromeLogic
 	{
 		readonly ScrollPanelWidget historyPanel;
-		readonly LabelWidget historyTemplate;
+		readonly ContainerWidget chatTemplate;
 		readonly ScrollPanelWidget nicknamePanel;
 		readonly Widget nicknameTemplate;
 		readonly TextFieldWidget inputBox;
@@ -27,9 +27,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		public GlobalChatLogic(Widget widget)
 		{
 			historyPanel = widget.Get<ScrollPanelWidget>("HISTORY_PANEL");
-			historyTemplate = historyPanel.Get<LabelWidget>("HISTORY_TEMPLATE");
+			chatTemplate = historyPanel.Get<ContainerWidget>("CHAT_TEMPLATE");
 			nicknamePanel = widget.Get<ScrollPanelWidget>("NICKNAME_PANEL");
 			nicknameTemplate = nicknamePanel.Get("NICKNAME_TEMPLATE");
+
+			var textColor = ChromeMetrics.Get<Color>("GlobalChatTextColor");
+			var textLabel = chatTemplate.Get<LabelWidget>("TEXT");
+			textLabel.GetColor = () => textColor;
 
 			historyPanel.Bind(Game.GlobalChat.History, MakeHistoryWidget, HistoryWidgetEquals, true);
 			nicknamePanel.Bind(Game.GlobalChat.Users, MakeUserWidget, UserWidgetEquals, false);
@@ -38,12 +42,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			inputBox.IsDisabled = () => Game.GlobalChat.ConnectionStatus != ChatConnectionStatus.Joined;
 			inputBox.OnEnterKey = EnterPressed;
 
-			// Set a random default nick
-			if (Game.Settings.Chat.Nickname == new ChatSettings().Nickname)
-				Game.Settings.Chat.Nickname += Game.CosmeticRandom.Next(100, 999);
-
+			var nickName = Game.GlobalChat.SanitizedName(Game.Settings.Player.Name);
 			var nicknameBox = widget.Get<TextFieldWidget>("NICKNAME_TEXTFIELD");
-			nicknameBox.Text = Game.GlobalChat.SanitizedName(Game.Settings.Chat.Nickname);
+			nicknameBox.Text = nickName;
 			nicknameBox.OnTextEdited = () =>
 			{
 				nicknameBox.Text = Game.GlobalChat.SanitizedName(nicknameBox.Text);
@@ -61,38 +62,28 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var connectButton = connectPanel.Get<ButtonWidget>("CONNECT_BUTTON");
 			connectButton.IsDisabled = () => !Game.GlobalChat.IsValidNickname(nicknameBox.Text);
-			connectButton.OnClick = () =>
-			{
-				Game.Settings.Chat.Nickname = nicknameBox.Text;
-				Game.Settings.Save();
-				Game.GlobalChat.Connect();
-			};
+			connectButton.OnClick = () => Game.GlobalChat.Connect(nicknameBox.Text);
 
 			var mainPanel = widget.Get("GLOBALCHAT_MAIN_PANEL");
 			mainPanel.IsVisible = () => Game.GlobalChat.ConnectionStatus != ChatConnectionStatus.Disconnected;
 
 			mainPanel.Get<LabelWidget>("CHANNEL_TOPIC").GetText = () => Game.GlobalChat.Topic;
 
-			if (Game.Settings.Chat.ConnectAutomatically && Game.GlobalChat.IsValidNickname(Game.Settings.Chat.Nickname))
-				Game.GlobalChat.Connect();
+			if (Game.Settings.Chat.ConnectAutomatically)
+				Game.GlobalChat.Connect(nickName);
 		}
 
 		Widget MakeHistoryWidget(object o)
 		{
 			var message = (ChatMessage)o;
-			var widget = (LabelWidget)historyTemplate.Clone();
-			var font = Game.Renderer.Fonts[widget.Font];
+			var from = message.Type == ChatMessageType.Notification ? "Battlefield Control" : message.Nick;
+			var color = message.Type == ChatMessageType.Notification ? ChromeMetrics.Get<Color>("GlobalChatNotificationColor")
+				: ChromeMetrics.Get<Color>("GlobalChatPlayerNameColor");
+			var template = (ContainerWidget)chatTemplate.Clone();
+			LobbyUtils.SetupChatLine(template, color, from, message.Message);
 
-			var color = message.Type == ChatMessageType.Notification ?
-				ChromeMetrics.Get<Color>("GlobalChatNotificationColor") :
-				ChromeMetrics.Get<Color>("GlobalChatTextColor");
-
-			var display = WidgetUtils.WrapText(message.ToString(), widget.Bounds.Width, font);
-			widget.Bounds.Height = font.Measure(display).Y;
-			widget.GetText = () => display;
-			widget.GetColor = () => color;
-			widget.Id = message.UID;
-			return widget;
+			template.Id = message.UID;
+			return template;
 		}
 
 		bool HistoryWidgetEquals(Widget widget, object o)

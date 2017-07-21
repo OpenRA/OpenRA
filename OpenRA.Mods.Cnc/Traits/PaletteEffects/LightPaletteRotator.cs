@@ -18,7 +18,17 @@ namespace OpenRA.Mods.Cnc.Traits
 	[Desc("Palette effect used for blinking \"animations\" on actors.")]
 	class LightPaletteRotatorInfo : ITraitInfo
 	{
+		[Desc("Palettes this effect should not apply to.")]
 		public readonly HashSet<string> ExcludePalettes = new HashSet<string>();
+
+		[Desc("'Speed' at which the effect cycles through palette indices.")]
+		public readonly float TimeStep = .5f;
+
+		[Desc("Palette index to map to rotating color indices.")]
+		public readonly int ModifyIndex = 103;
+
+		[Desc("Palette indices to rotate through.")]
+		public readonly int[] RotationIndices = { 230, 231, 232, 233, 234, 235, 236, 237, 238, 239, 238, 237, 236, 235, 234, 233, 232, 231 };
 
 		public object Create(ActorInitializer init) { return new LightPaletteRotator(this); }
 	}
@@ -33,23 +43,20 @@ namespace OpenRA.Mods.Cnc.Traits
 			this.info = info;
 		}
 
-		public void Tick(Actor self)
+		void ITick.Tick(Actor self)
 		{
-			t += .5f;
+			t += info.TimeStep;
 		}
 
-		public void AdjustPalette(IReadOnlyDictionary<string, MutablePalette> palettes)
+		void IPaletteModifier.AdjustPalette(IReadOnlyDictionary<string, MutablePalette> palettes)
 		{
 			foreach (var pal in palettes)
 			{
 				if (info.ExcludePalettes.Contains(pal.Key))
 					continue;
 
-				var rotate = (int)t % 18;
-				if (rotate > 9)
-					rotate = 18 - rotate;
-
-				pal.Value.SetColor(0x67, pal.Value.GetColor(230 + rotate));
+				var rotate = (int)t % info.RotationIndices.Length;
+				pal.Value.SetColor(info.ModifyIndex, pal.Value.GetColor(info.RotationIndices[rotate]));
 			}
 		}
 	}

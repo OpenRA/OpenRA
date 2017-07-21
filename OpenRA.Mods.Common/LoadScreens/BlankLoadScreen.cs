@@ -39,7 +39,7 @@ namespace OpenRA.Mods.Common.LoadScreens
 			Game.Renderer.EndFrame(new NullInputHandler());
 		}
 
-		public void StartGame(Arguments args)
+		public virtual void StartGame(Arguments args)
 		{
 			Launch = new LaunchArguments(args);
 			Ui.ResetAll();
@@ -124,7 +124,7 @@ namespace OpenRA.Mods.Common.LoadScreens
 			if (contentInstalled)
 				return true;
 
-			Game.InitializeMod(content.ContentInstallerMod, new Arguments());
+			Game.InitializeMod(content.ContentInstallerMod, new Arguments(new[] { "Content.Mod=" + modData.Manifest.Id }));
 			return false;
 		}
 	}

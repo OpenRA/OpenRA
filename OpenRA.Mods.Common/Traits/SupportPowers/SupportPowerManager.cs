@@ -160,7 +160,7 @@ namespace OpenRA.Mods.Common.Traits
 		public int RemainingTime;
 		public int TotalTime;
 		public bool Active { get; private set; }
-		public bool Disabled { get { return !prereqsAvailable || !instancesEnabled; } }
+		public bool Disabled { get { return (!prereqsAvailable && !manager.DevMode.AllTech) || !instancesEnabled; } }
 
 		public SupportPowerInfo Info { get { return Instances.Select(i => i.Info).FirstOrDefault(); } }
 		public bool Ready { get { return Active && RemainingTime == 0; } }
@@ -179,11 +179,6 @@ namespace OpenRA.Mods.Common.Traits
 			prereqsAvailable = available;
 		}
 
-		static bool InstanceDisabled(SupportPower sp)
-		{
-			return sp.Self.IsDisabled();
-		}
-
 		bool notifiedCharging;
 		bool notifiedReady;
 		public void Tick()
@@ -192,7 +187,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!instancesEnabled)
 				RemainingTime = TotalTime;
 
-			Active = !Disabled && Instances.Any(i => !i.Self.IsDisabled());
+			Active = !Disabled && Instances.Any(i => !i.IsTraitPaused);
 			if (!Active)
 				return;
 
@@ -224,7 +219,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!Ready)
 				return;
 
-			var power = Instances.FirstOrDefault();
+			var power = Instances.FirstOrDefault(i => !i.IsTraitPaused);
 			if (power == null)
 				return;
 
@@ -236,7 +231,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!Ready)
 				return;
 
-			var power = Instances.Where(i => !InstanceDisabled(i))
+			var power = Instances.Where(i => !i.IsTraitPaused)
 				.MinByOrDefault(a =>
 				{
 					if (a.Self.OccupiesSpace == null)

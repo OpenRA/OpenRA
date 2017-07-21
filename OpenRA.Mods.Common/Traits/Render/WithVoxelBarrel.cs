@@ -29,12 +29,15 @@ namespace OpenRA.Mods.Common.Traits.Render
 		[Desc("Visual offset")]
 		public readonly WVec LocalOffset = WVec.Zero;
 
+		[Desc("Rotate the barrel relative to the body")]
+		public readonly WRot LocalOrientation = WRot.Zero;
+
 		[Desc("Defines if the Voxel should have a shadow.")]
 		public readonly bool ShowShadow = true;
 
 		public override object Create(ActorInitializer init) { return new WithVoxelBarrel(init.Self, this); }
 
-		public IEnumerable<VoxelAnimation> RenderPreviewVoxels(
+		public IEnumerable<ModelAnimation> RenderPreviewVoxels(
 			ActorPreviewInitializer init, RenderVoxelsInfo rv, string image, Func<WRot> orientation, int facings, PaletteReference p)
 		{
 			if (!EnabledByDefault)
@@ -46,7 +49,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			var t = init.Actor.TraitInfos<TurretedInfo>()
 				.First(tt => tt.Turret == armament.Turret);
 
-			var voxel = VoxelProvider.GetVoxel(image, Sequence);
+			var model = init.World.ModelCache.GetModelSequence(image, Sequence);
 
 			var turretFacing = Turreted.TurretFacingFromInit(init, t.InitialFacing, t.Turret);
 			Func<WRot> turretOrientation = () => body.QuantizeOrientation(WRot.FromYaw(WAngle.FromFacing(turretFacing()) - orientation().Yaw), facings);
@@ -55,7 +58,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			Func<WRot> quantizedBody = () => body.QuantizeOrientation(orientation(), facings);
 			Func<WVec> barrelOffset = () => body.LocalToWorld((t.Offset + LocalOffset.Rotate(quantizedTurret())).Rotate(quantizedBody()));
 
-			yield return new VoxelAnimation(voxel, barrelOffset, () => new[] { turretOrientation(), orientation() },
+			yield return new ModelAnimation(model, barrelOffset, () => new[] { turretOrientation(), orientation() },
 				() => false, () => 0, ShowShadow);
 		}
 	}
@@ -83,7 +86,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			buildComplete = !self.Info.HasTraitInfo<BuildingInfo>(); // always render instantly for units
 
 			var rv = self.Trait<RenderVoxels>();
-			rv.Add(new VoxelAnimation(VoxelProvider.GetVoxel(rv.Image, Info.Sequence),
+			rv.Add(new ModelAnimation(self.World.ModelCache.GetModelSequence(rv.Image, Info.Sequence),
 				BarrelOffset, BarrelRotation,
 				() => IsTraitDisabled || !buildComplete, () => 0, info.ShowShadow));
 		}
@@ -103,6 +106,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		{
 			var b = self.Orientation;
 			var qb = body.QuantizeOrientation(self, b);
+			yield return Info.LocalOrientation;
 			yield return turreted.WorldOrientation(self) - b + WRot.FromYaw(b.Yaw - qb.Yaw);
 			yield return qb;
 		}

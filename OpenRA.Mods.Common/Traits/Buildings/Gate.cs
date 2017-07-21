@@ -16,7 +16,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Will open and be passable for actors that appear friendly when there are no enemies in range.")]
-	public class GateInfo : BuildingInfo
+	public class GateInfo : BuildingInfo, IBlocksProjectilesInfo
 	{
 		public readonly string OpeningSound = null;
 		public readonly string ClosingSound = null;
@@ -28,7 +28,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int TransitionDelay = 33;
 
 		[Desc("Blocks bullets scaled to open value.")]
-		public readonly int BlocksProjectilesHeight = 640;
+		public readonly WDist BlocksProjectilesHeight = new WDist(640);
 
 		public override object Create(ActorInitializer init) { return new Gate(init, this); }
 	}
@@ -117,7 +117,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override void AddedToWorld(Actor self)
 		{
 			base.AddedToWorld(self);
-			blockedPositions = FootprintUtils.Tiles(self);
+			blockedPositions = Info.Tiles(self.Location);
 		}
 
 		bool IsBlocked()
@@ -129,7 +129,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			get
 			{
-				return new WDist(info.BlocksProjectilesHeight * (OpenPosition - Position) / OpenPosition);
+				return new WDist(info.BlocksProjectilesHeight.Length * (OpenPosition - Position) / OpenPosition);
 			}
 		}
 	}

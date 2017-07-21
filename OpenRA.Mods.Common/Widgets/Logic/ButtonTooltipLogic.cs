@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
@@ -37,6 +38,29 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				hotkey.Bounds.X = labelWidth + 2 * label.Bounds.X;
 
 				widget.Bounds.Width = hotkey.Bounds.X + label.Bounds.X + font.Measure(hotkeyLabel).X;
+			}
+
+			var desc = button.GetTooltipDesc();
+			if (!string.IsNullOrEmpty(desc))
+			{
+				var descTemplate = widget.Get<LabelWidget>("DESC");
+				widget.RemoveChild(descTemplate);
+
+				var descFont = Game.Renderer.Fonts[descTemplate.Font];
+				var descWidth = 0;
+				var descOffset = descTemplate.Bounds.Y;
+				foreach (var line in desc.Split(new[] { "\\n" }, StringSplitOptions.None))
+				{
+					descWidth = Math.Max(descWidth, descFont.Measure(line).X);
+					var lineLabel = (LabelWidget)descTemplate.Clone();
+					lineLabel.GetText = () => line;
+					lineLabel.Bounds.Y = descOffset;
+					widget.AddChild(lineLabel);
+					descOffset += descTemplate.Bounds.Height;
+				}
+
+				widget.Bounds.Width = Math.Max(widget.Bounds.Width, descTemplate.Bounds.X * 2 + descWidth);
+				widget.Bounds.Height += descOffset - descTemplate.Bounds.Y + descTemplate.Bounds.X;
 			}
 		}
 	}

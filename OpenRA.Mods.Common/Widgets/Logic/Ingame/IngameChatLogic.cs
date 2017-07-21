@@ -47,7 +47,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			chatTraits = world.WorldActor.TraitsImplementing<INotifyChat>().ToArray();
 
 			var players = world.Players.Where(p => p != world.LocalPlayer && !p.NonCombatant && !p.IsBot);
-			disableTeamChat = world.IsReplay || world.LobbyInfo.IsSinglePlayer || (world.LocalPlayer != null && !players.Any(p => p.IsAlliedWith(world.LocalPlayer)));
+			disableTeamChat = world.IsReplay || world.LobbyInfo.NonBotClients.Count() == 1 || (world.LocalPlayer != null && !players.Any(p => p.IsAlliedWith(world.LocalPlayer)));
 			teamChat = !disableTeamChat;
 
 			tabCompletion.Commands = chatTraits.OfType<ChatCommands>().SelectMany(x => x.Commands.Keys).ToList();

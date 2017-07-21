@@ -112,14 +112,32 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Dune 2000 Lua scripts", "Du
 		mods\d2k\maps\atreides-03b\atreides03b.lua = mods\d2k\maps\atreides-03b\atreides03b.lua
 		mods\d2k\maps\atreides-04\atreides04-AI.lua = mods\d2k\maps\atreides-04\atreides04-AI.lua
 		mods\d2k\maps\atreides-04\atreides04.lua = mods\d2k\maps\atreides-04\atreides04.lua
+		mods\d2k\maps\atreides-05\atreides05-AI.lua = mods\d2k\maps\atreides-05\atreides05-AI.lua
+		mods\d2k\maps\atreides-05\atreides05.lua = mods\d2k\maps\atreides-05\atreides05.lua
 		mods\d2k\maps\harkonnen-01a\harkonnen01a.lua = mods\d2k\maps\harkonnen-01a\harkonnen01a.lua
 		mods\d2k\maps\harkonnen-01b\harkonnen01b.lua = mods\d2k\maps\harkonnen-01b\harkonnen01b.lua
 		mods\d2k\maps\harkonnen-02a\harkonnen02a-AI.lua = mods\d2k\maps\harkonnen-02a\harkonnen02a-AI.lua
 		mods\d2k\maps\harkonnen-02a\harkonnen02a.lua = mods\d2k\maps\harkonnen-02a\harkonnen02a.lua
 		mods\d2k\maps\harkonnen-02b\harkonnen02b-AI.lua = mods\d2k\maps\harkonnen-02b\harkonnen02b-AI.lua
 		mods\d2k\maps\harkonnen-02b\harkonnen02b.lua = mods\d2k\maps\harkonnen-02b\harkonnen02b.lua
+		mods\d2k\maps\harkonnen-03a\harkonnen03a-AI.lua = mods\d2k\maps\harkonnen-03a\harkonnen03a-AI.lua
+		mods\d2k\maps\harkonnen-03a\harkonnen03a.lua = mods\d2k\maps\harkonnen-03a\harkonnen03a.lua
+		mods\d2k\maps\harkonnen-03b\harkonnen03b-AI.lua = mods\d2k\maps\harkonnen-03b\harkonnen03b-AI.lua
+		mods\d2k\maps\harkonnen-03b\harkonnen03b.lua = mods\d2k\maps\harkonnen-03b\harkonnen03b.lua
+		mods\d2k\maps\harkonnen-04\harkonnen04-AI.lua = mods\d2k\maps\harkonnen-04\harkonnen04-AI.lua
+		mods\d2k\maps\harkonnen-04\harkonnen04.lua = mods\d2k\maps\harkonnen-04\harkonnen04.lua
 		mods\d2k\maps\ordos-01a\ordos01a.lua = mods\d2k\maps\ordos-01a\ordos01a.lua
 		mods\d2k\maps\ordos-01b\ordos01b.lua = mods\d2k\maps\ordos-01b\ordos01b.lua
+		mods\d2k\maps\ordos-02a\ordos02a.lua = mods\d2k\maps\ordos-02a\ordos02a.lua
+		mods\d2k\maps\ordos-02a\ordos02a-AI.lua = mods\d2k\maps\ordos-02a\ordos02a-AI.lua
+		mods\d2k\maps\ordos-02b\ordos02b.lua = mods\d2k\maps\ordos-02b\ordos02b.lua
+		mods\d2k\maps\ordos-02b\ordos02b-AI.lua = mods\d2k\maps\ordos-02b\ordos02b-AI.lua
+		mods\d2k\maps\ordos-03a\ordos03a.lua = mods\d2k\maps\ordos-03a\ordos03a.lua
+		mods\d2k\maps\ordos-03a\ordos03a-AI.lua = mods\d2k\maps\ordos-03a\ordos03a-AI.lua
+		mods\d2k\maps\ordos-03b\ordos03b.lua = mods\d2k\maps\ordos-03b\ordos03b.lua
+		mods\d2k\maps\ordos-03b\ordos03b-AI.lua = mods\d2k\maps\ordos-03b\ordos03b-AI.lua
+		mods\d2k\maps\ordos-04\ordos04.lua = mods\d2k\maps\ordos-04\ordos04.lua
+		mods\d2k\maps\ordos-04\ordos04-AI.lua = mods\d2k\maps\ordos-04\ordos04-AI.lua
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "System Lua scripts", "System Lua scripts", "{A4D6AEA4-8009-4256-903B-8D227E50452B}"
@@ -129,8 +147,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "System Lua scripts", "Syste
 		lua\stacktraceplus.lua = lua\stacktraceplus.lua
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenRA.GameMonitor", "OpenRA.GameMonitor\OpenRA.GameMonitor.csproj", "{68295755-7902-4602-AC2C-9A8AC36D5EF7}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenRA.Test", "OpenRA.Test\OpenRA.Test.csproj", "{6CB8E1B7-6B36-4D93-8633-7C573E194AC4}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tiberian Sun Lua scripts", "Tiberian Sun Lua scripts", "{85159569-F5BD-458E-B5C0-EB16690C432B}"
@@ -139,6 +155,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tiberian Sun Lua scripts", 
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenRA.Mods.yupgi_alert", "OpenRA.Mods.yupgi_alert\OpenRA.Mods.yupgi_alert.csproj", "{5B9AB03E-2B8D-4F03-A127-0E9B62E02689}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenRA.StyleCheck", "OpenRA.StyleCheck\OpenRA.StyleCheck.csproj", "{5FEAB6DC-4E81-4B63-958B-22FC3534C606}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -174,10 +191,6 @@ Global
 		{FE6C8CC0-2F07-442A-B29F-17617B3B7FC6}.Debug|x86.Build.0 = Debug|x86
 		{FE6C8CC0-2F07-442A-B29F-17617B3B7FC6}.Release|x86.ActiveCfg = Release|x86
 		{FE6C8CC0-2F07-442A-B29F-17617B3B7FC6}.Release|x86.Build.0 = Release|x86
-		{68295755-7902-4602-AC2C-9A8AC36D5EF7}.Debug|x86.ActiveCfg = Debug|x86
-		{68295755-7902-4602-AC2C-9A8AC36D5EF7}.Debug|x86.Build.0 = Debug|x86
-		{68295755-7902-4602-AC2C-9A8AC36D5EF7}.Release|x86.ActiveCfg = Release|x86
-		{68295755-7902-4602-AC2C-9A8AC36D5EF7}.Release|x86.Build.0 = Release|x86
 		{6CB8E1B7-6B36-4D93-8633-7C573E194AC4}.Debug|x86.ActiveCfg = Debug|x86
 		{6CB8E1B7-6B36-4D93-8633-7C573E194AC4}.Debug|x86.Build.0 = Debug|x86
 		{6CB8E1B7-6B36-4D93-8633-7C573E194AC4}.Release|x86.ActiveCfg = Release|x86
@@ -186,6 +199,10 @@ Global
 		{5B9AB03E-2B8D-4F03-A127-0E9B62E02689}.Debug|x86.Build.0 = Debug|x86
 		{5B9AB03E-2B8D-4F03-A127-0E9B62E02689}.Release|x86.ActiveCfg = Release|x86
 		{5B9AB03E-2B8D-4F03-A127-0E9B62E02689}.Release|x86.Build.0 = Release|x86
+		{5FEAB6DC-4E81-4B63-958B-22FC3534C606}.Debug|x86.ActiveCfg = Debug|x86
+		{5FEAB6DC-4E81-4B63-958B-22FC3534C606}.Debug|x86.Build.0 = Debug|x86
+		{5FEAB6DC-4E81-4B63-958B-22FC3534C606}.Release|x86.ActiveCfg = Release|x86
+		{5FEAB6DC-4E81-4B63-958B-22FC3534C606}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

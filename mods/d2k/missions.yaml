@@ -6,13 +6,22 @@ Atreides Campaign:
 	./mods/d2k/maps/atreides-03a
 	./mods/d2k/maps/atreides-03b
 	./mods/d2k/maps/atreides-04
+	./mods/d2k/maps/atreides-05
 
 Ordos Campaign:
 	./mods/d2k/maps/ordos-01a
 	./mods/d2k/maps/ordos-01b
+	./mods/d2k/maps/ordos-02a
+	./mods/d2k/maps/ordos-02b
+	./mods/d2k/maps/ordos-03a
+	./mods/d2k/maps/ordos-03b
+	./mods/d2k/maps/ordos-04
 
 Harkonnen Campaign:
 	./mods/d2k/maps/harkonnen-01a
 	./mods/d2k/maps/harkonnen-01b
 	./mods/d2k/maps/harkonnen-02a
 	./mods/d2k/maps/harkonnen-02b
+	./mods/d2k/maps/harkonnen-03a
+	./mods/d2k/maps/harkonnen-03b
+	./mods/d2k/maps/harkonnen-04

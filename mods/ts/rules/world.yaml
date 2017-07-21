@@ -15,12 +15,15 @@
 		Name: Any
 		InternalName: Random
 		RandomFactionMembers: gdi, nod
+		Description: Random Faction\nA random faction will be chosen when the game starts.
 	Faction@0:
 		Name: GDI
 		InternalName: gdi
+		Description: Global Defense Initiative\nThe GDI is an international military branch of the United Nations tasked\nwith keeping world peace. Commanding the combined forces of the world's\nmost powerful nations, they possess an unmatched arsenal of high-tech weaponry.
 	Faction@1:
 		Name: Nod
 		InternalName: nod
+		Description: Brotherhood of Nod\nThe Brotherhood is a religious cult centered around their leader Kane\nand the alien substance Tiberium. They utilize stealth technology\nand guerilla tactics to defeat those who oppose them.
 	ResourceType@Tiberium:
 		Type: Tiberium
 		Name: Tiberium
@@ -29,7 +32,7 @@
 		Palette: greentiberium
 		Sequences: tib01, tib02, tib03, tib04, tib05, tib06, tib07, tib08, tib09, tib10, tib11, tib12
 		MaxDensity: 12
-		ValuePerUnit: 50
+		ValuePerUnit: 25
 		AllowedTerrainTypes: Clear, Rough, DirtRoad
 		AllowUnderActors: true
 		TerrainType: Tiberium
@@ -41,7 +44,7 @@
 		Palette: bluetiberium
 		Sequences: tib01, tib02, tib03, tib04, tib05, tib06, tib07, tib08, tib09, tib10, tib11, tib12
 		MaxDensity: 12
-		ValuePerUnit: 100
+		ValuePerUnit: 40
 		AllowedTerrainTypes: Clear, Rough, DirtRoad
 		AllowUnderActors: true
 		TerrainType: BlueTiberium
@@ -54,7 +57,7 @@
 		Sequences: veins
 		MaxDensity: 1
 		ValuePerUnit: 0
-		AllowedTerrainTypes: Clear
+		AllowedTerrainTypes: Clear, Rough, DirtRoad
 		AllowUnderActors: true
 		TerrainType: Veins
 	TerrainGeometryOverlay:
@@ -189,4 +192,5 @@ EditorWorld:
 	EditorResourceLayer:
 	EditorSelectionLayer:
 		Palette: placebuilding
+		LineBuildSegmentPalette: placelinesegment
 	LoadWidgetAtGameStart:

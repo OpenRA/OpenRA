@@ -62,7 +62,6 @@ Player:
 	PlayerResources:
 		SelectableCash: 2500, 5000, 7000, 10000, 20000
 		InsufficientFundsNotification: InsufficientFunds
-	ActorGroupProxy:
 	DeveloperMode:
 	BaseAttackNotifier:
 	Shroud:

@@ -1,1 +1,1 @@
-@powershell -NoProfile -ExecutionPolicy Unrestricted -File make.ps1 %*
+@powershell -NoProfile -ExecutionPolicy Bypass -File make.ps1 %*

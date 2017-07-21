@@ -22,6 +22,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Palette to use for rendering the placement sprite.")]
 		[PaletteReference] public readonly string Palette = TileSet.TerrainPaletteInternalName;
 
+		[Desc("Palette to use for rendering the placement sprite for line build segments.")]
+		[PaletteReference] public readonly string LineBuildSegmentPalette = TileSet.TerrainPaletteInternalName;
+
 		[Desc("Play NewOptionsNotification this many ticks after building placement.")]
 		public readonly int NewOptionsNotificationDelay = 10;
 
@@ -74,21 +77,35 @@ namespace OpenRA.Mods.Common.Traits
 
 				if (os == "LineBuild")
 				{
-					var playSounds = true;
+					// Build the parent actor first
+					var placed = w.CreateActor(order.TargetString, new TypeDictionary
+					{
+						new LocationInit(order.TargetLocation),
+						new OwnerInit(order.Player),
+						new FactionInit(faction),
+					});
+
+					foreach (var s in buildingInfo.BuildSounds)
+						Game.Sound.PlayToPlayer(SoundType.World, order.Player, s, placed.CenterPosition);
+
+					// Build the connection segments
+					var segmentType = unit.TraitInfo<LineBuildInfo>().SegmentType;
+					if (string.IsNullOrEmpty(segmentType))
+						segmentType = order.TargetString;
+
 					foreach (var t in BuildingUtils.GetLineBuildCells(w, order.TargetLocation, order.TargetString, buildingInfo))
 					{
-						var building = w.CreateActor(order.TargetString, new TypeDictionary
+						if (t.First == order.TargetLocation)
+							continue;
+
+						w.CreateActor(t.First == order.TargetLocation ? order.TargetString : segmentType, new TypeDictionary
 						{
-							new LocationInit(t),
+							new LocationInit(t.First),
 							new OwnerInit(order.Player),
-							new FactionInit(faction)
+							new FactionInit(faction),
+							new LineBuildDirectionInit(t.First.X == order.TargetLocation.X ? LineBuildDirection.Y : LineBuildDirection.X),
+							new LineBuildParentInit(new[] { t.Second, placed })
 						});
-
-						if (playSounds)
-							foreach (var s in buildingInfo.BuildSounds)
-								Game.Sound.PlayToPlayer(SoundType.World, order.Player, s, building.CenterPosition);
-
-						playSounds = false;
 					}
 				}
 				else if (os == "PlacePlug")

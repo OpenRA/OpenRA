@@ -14,7 +14,7 @@ Container@GLOBALCHAT_PANEL:
 					Children:
 						Label@CHANNEL_TOPIC:
 							X: 10
-							Y: 0-1
+							Y: 0 - 1
 							Width: PARENT_RIGHT - 20
 							Height: PARENT_BOTTOM
 							Font: TinyBold
@@ -26,10 +26,30 @@ Container@GLOBALCHAT_PANEL:
 					TopBottomSpacing: 4
 					ItemSpacing: 4
 					Children:
-						Label@HISTORY_TEMPLATE:
-							X: 5
-							Width: 530
-							WordWrap: True
+						Container@CHAT_TEMPLATE:
+							X: 2
+							Width: PARENT_RIGHT - 27
+							Height: 16
+							Children:
+								Label@TIME:
+									X: 3
+									Width: 50
+									Height: 15
+									VAlign: Top
+									Shadow: True
+								Label@NAME:
+									X: 45
+									Width: 50
+									Height: 15
+									VAlign: Top
+									Shadow: True
+								Label@TEXT:
+									X: 55
+									Width: PARENT_RIGHT - 60
+									Height: 15
+									WordWrap: true
+									VAlign: Top
+									Shadow: True
 				TextField@CHAT_TEXTFIELD:
 					Y: PARENT_BOTTOM - 25
 					Width: 582
@@ -37,19 +57,19 @@ Container@GLOBALCHAT_PANEL:
 					LeftMargin: 60
 					Children:
 						Label@LABEL_CHATTYPE:
-							Y: 0-1
+							Y: 0 - 1
 							Width: 55
 							Height: 25
 							Align: Right
 							Text: Global:
 				ScrollPanel@NICKNAME_PANEL:
-					X: PARENT_RIGHT-WIDTH
+					X: PARENT_RIGHT - WIDTH
 					Width: 174
 					Height: PARENT_BOTTOM - 30
 					Children:
 						Container@NICKNAME_TEMPLATE:
 							Height: 20
-							Width: PARENT_RIGHT-25
+							Width: PARENT_RIGHT - 25
 							Children:
 								Image@INDICATOR:
 									ImageCollection: lobby-bits
@@ -58,10 +78,10 @@ Container@GLOBALCHAT_PANEL:
 									Y: 9
 								Label@NICK:
 									X: 15
-									Width: PARENT_RIGHT-15
+									Width: PARENT_RIGHT - 15
 									Height: 20
 				Button@DISCONNECT_BUTTON:
-					X: PARENT_RIGHT-WIDTH
+					X: PARENT_RIGHT - WIDTH
 					Y: PARENT_BOTTOM - 25
 					Width: 174
 					Height: 25

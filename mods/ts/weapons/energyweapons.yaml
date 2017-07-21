@@ -105,14 +105,15 @@ SonicZap:
 		ValidTargets: Ground
 	Warhead@2Eff: CreateEffect
 		Explosions: large_explosion
-		ExplosionPalette: effectalpha75
+		ExplosionPalette: effect-ignore-lighting-alpha75
 		ImpactSounds: expnew12.aud
-		InvalidImpactTypes: Water
+		ValidTargets: Ground, Air
 	Warhead@3EffWater: CreateEffect
 		Explosions: small_watersplash
 		ExplosionPalette: player
 		ImpactSounds: ssplash3.aud
-		ValidImpactTypes: Water
+		ValidTargets: Water
+		InvalidTargets: Vehicle
 	Warhead@4Smu: LeaveSmudge
 		SmudgeType: SmallScorch
 		InvalidTargets: Vehicle, Building, Wall
@@ -128,6 +129,7 @@ CyCannon:
 		MinimumLaunchSpeed: 75
 		Speed: 384
 		RangeLimit: 8c0
+		TerrainHeightAware: true
 	Warhead@1Dam: SpreadDamage
 		Spread: 43
 		Damage: 120
@@ -198,3 +200,11 @@ TurretLaserFire:
 		SecondaryBeamColor: FF000030
 	Warhead@1Dam: SpreadDamage
 		Damage: 30
+
+LaserFence:
+	TargetActorCenter: true
+	Projectile: InstantHit
+	Warhead@1Dam: TargetDamage
+		DebugOverlayColor: FF0000
+		Damage: 99999
+		DamageTypes: FireDeath

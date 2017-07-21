@@ -1,14 +1,14 @@
 Container@SERVER_LOBBY:
 	Logic: LobbyLogic
-	X: (WINDOW_RIGHT - WIDTH)/2
-	Y: (WINDOW_BOTTOM - 560)/2
+	X: (WINDOW_RIGHT - WIDTH) / 2
+	Y: (WINDOW_BOTTOM - 560) / 2
 	Width: 800
 	Height: 575
 	Children:
 		ColorPreviewManager@COLOR_MANAGER:
 		Label@SERVER_NAME:
 			Width: PARENT_RIGHT
-			Y: 0-25
+			Y: 0 - 25
 			Font: BigBold
 			Contrast: true
 			Align: Center
@@ -18,7 +18,7 @@ Container@SERVER_LOBBY:
 			Background: panel-black
 			Children:
 				Container@MAP_PREVIEW_ROOT:
-					X: PARENT_RIGHT-15-WIDTH
+					X: PARENT_RIGHT - 15 - WIDTH
 					Y: 30
 					Width: 174
 					Height: 250
@@ -82,7 +82,7 @@ Container@SERVER_LOBBY:
 							ItemSpacing: 2
 							Children:
 								Container@CHAT_TEMPLATE:
-									Width: PARENT_RIGHT-27
+									Width: PARENT_RIGHT - 27
 									Height: 16
 									X: 2
 									Y: 0
@@ -114,7 +114,7 @@ Container@SERVER_LOBBY:
 							LeftMargin: 50
 							Children:
 								Label@LABEL_CHATTYPE:
-									Y: 0-1
+									Y: 0 - 1
 									Width: 45
 									Height: 25
 									Align: Right
@@ -123,7 +123,7 @@ Container@SERVER_LOBBY:
 					X: 15
 					Y: 285
 					Width: PARENT_RIGHT - 30
-					Height: PARENT_BOTTOM - 330
+					Height: PARENT_BOTTOM - 300
 		Button@DISCONNECT_BUTTON:
 			Y: PARENT_BOTTOM - 36
 			Width: 140

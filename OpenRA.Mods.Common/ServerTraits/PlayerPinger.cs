@@ -36,7 +36,7 @@ namespace OpenRA.Mods.Common.Server
 				lastPing = Game.RunTime;
 
 				// Ignore client timeout in singleplayer games to make debugging easier
-				if (server.LobbyInfo.IsSinglePlayer && !server.Dedicated)
+				if (server.LobbyInfo.NonBotClients.Count() < 2 && !server.Dedicated)
 					foreach (var c in server.Conns.ToList())
 						server.SendOrderTo(c, "Ping", Game.RunTime.ToString());
 				else

@@ -4,7 +4,7 @@ Container@LOBBY_PLAYER_BIN:
 	Children:
 		Container@LABEL_CONTAINER:
 			X: 5
-			Y: 0-27
+			Y: 0 - 27
 			Width: PARENT_RIGHT
 			Height: PARENT_BOTTOM
 			Children:
@@ -75,8 +75,8 @@ Container@LOBBY_PLAYER_BIN:
 								ColorBlock@LATENCY_COLOR:
 									X: 2
 									Y: 2
-									Width: PARENT_RIGHT-4
-									Height: PARENT_BOTTOM-4
+									Width: PARENT_RIGHT - 4
+									Height: PARENT_BOTTOM - 4
 						ClientTooltipRegion@CLIENT_REGION:
 							Width: 11
 							Height: 25
@@ -104,15 +104,14 @@ Container@LOBBY_PLAYER_BIN:
 								ColorBlock@COLORBLOCK:
 									X: 5
 									Y: 6
-									Width: PARENT_RIGHT-35
-									Height: PARENT_BOTTOM-12
+									Width: PARENT_RIGHT - 35
+									Height: PARENT_BOTTOM - 12
 						DropDownButton@FACTION:
 							X: 270
 							Width: 130
 							Height: 25
 							IgnoreChildMouseOver: true
 							TooltipContainer: TOOLTIP_CONTAINER
-							TooltipTemplate: FACTION_DESCRIPTION_TOOLTIP
 							PanelRoot: FACTION_DROPDOWN_PANEL_ROOT # ensure that tooltips for the options are on top of the dropdown panel
 							Children:
 								Image@FACTIONFLAG:
@@ -125,12 +124,12 @@ Container@LOBBY_PLAYER_BIN:
 									Width: 60
 									Height: 25
 									Text: Faction
-						DropDownButton@TEAM:
+						DropDownButton@TEAM_DROPDOWN:
 							X: 410
 							Width: 48
 							Height: 25
 							Text: Team
-						DropDownButton@SPAWN:
+						DropDownButton@SPAWN_DROPDOWN:
 							X: 468
 							Width: 48
 							Height: 25
@@ -169,8 +168,8 @@ Container@LOBBY_PLAYER_BIN:
 								ColorBlock@LATENCY_COLOR:
 									X: 2
 									Y: 2
-									Width: PARENT_RIGHT-4
-									Height: PARENT_BOTTOM-4
+									Width: PARENT_RIGHT - 4
+									Height: PARENT_BOTTOM - 4
 						ClientTooltipRegion@CLIENT_REGION:
 							Width: 11
 							Height: 25
@@ -178,7 +177,7 @@ Container@LOBBY_PLAYER_BIN:
 							Template: CLIENT_TOOLTIP
 						Label@NAME:
 							X: 20
-							Y: 0-1
+							Y: 0 - 1
 							Width: 165
 							Height: 25
 							Text: Name
@@ -220,6 +219,16 @@ Container@LOBBY_PLAYER_BIN:
 							Width: 23
 							Height: 25
 							Align: Center
+						DropDownButton@TEAM_DROPDOWN:
+							X: 410
+							Width: 48
+							Height: 25
+							Visible: false
+						DropDownButton@SPAWN_DROPDOWN:
+							X: 468
+							Width: 48
+							Height: 25
+							Visible: false
 						Image@STATUS_IMAGE:
 							X: 527
 							Y: 4
@@ -238,7 +247,7 @@ Container@LOBBY_PLAYER_BIN:
 							Width: 165
 							Height: 25
 							X: 20
-							Y: 0-1
+							Y: 0 - 1
 							Text: Name
 						DropDownButton@SLOT_OPTIONS:
 							X: 15
@@ -271,8 +280,8 @@ Container@LOBBY_PLAYER_BIN:
 								ColorBlock@LATENCY_COLOR:
 									X: 2
 									Y: 2
-									Width: PARENT_RIGHT-4
-									Height: PARENT_BOTTOM-4
+									Width: PARENT_RIGHT - 4
+									Height: PARENT_BOTTOM - 4
 						ClientTooltipRegion@CLIENT_REGION:
 							Width: 11
 							Height: 25
@@ -325,8 +334,8 @@ Container@LOBBY_PLAYER_BIN:
 								ColorBlock@LATENCY_COLOR:
 									X: 2
 									Y: 2
-									Width: PARENT_RIGHT-4
-									Height: PARENT_BOTTOM-4
+									Width: PARENT_RIGHT - 4
+									Height: PARENT_BOTTOM - 4
 						ClientTooltipRegion@CLIENT_REGION:
 							Width: 11
 							Height: 25
@@ -336,7 +345,7 @@ Container@LOBBY_PLAYER_BIN:
 							Width: 160
 							Height: 25
 							X: 20
-							Y: 0-1
+							Y: 0 - 1
 							Text: Name
 						Button@KICK:
 							X: 155
@@ -384,7 +393,7 @@ ScrollPanel@FACTION_DROPDOWN_TEMPLATE:
 	Children:
 		ScrollItem@HEADER:
 			BaseName: scrollheader
-			Width: PARENT_RIGHT-27
+			Width: PARENT_RIGHT - 27
 			Height: 13
 			X: 2
 			Y: 0
@@ -396,13 +405,12 @@ ScrollPanel@FACTION_DROPDOWN_TEMPLATE:
 					Height: 10
 					Align: Center
 		ScrollItem@TEMPLATE:
-			Width: PARENT_RIGHT-27
+			Width: PARENT_RIGHT - 27
 			Height: 25
 			X: 2
 			Y: 0
 			Visible: false
 			TooltipContainer: TOOLTIP_CONTAINER
-			TooltipTemplate: FACTION_DESCRIPTION_TOOLTIP
 			Children:
 				Image@FLAG:
 					X: 5

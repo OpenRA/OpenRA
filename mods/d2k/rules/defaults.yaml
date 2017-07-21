@@ -120,6 +120,30 @@
 		RequiresCondition: rank-elite
 		ZOffset: 256
 
+^AutoTargetGround:
+	AutoTarget:
+		AttackAnythingCondition: stance-attackanything
+	AutoTargetPriority@DEFAULT:
+		RequiresCondition: !stance-attackanything
+		ValidTargets: Infantry, Vehicle, Creep, Water, Defense
+		InvalidTargets: NoAutoTarget
+	AutoTargetPriority@ATTACKANYTHING:
+		RequiresCondition: stance-attackanything
+		ValidTargets: Infantry, Vehicle, Creep, Water, Structure, Defense
+		InvalidTargets: NoAutoTarget
+
+^AutoTargetAll:
+	AutoTarget:
+		AttackAnythingCondition: stance-attackanything
+	AutoTargetPriority@DEFAULT:
+		RequiresCondition: !stance-attackanything
+		ValidTargets: Infantry, Vehicle, Creep, Water, Air, Defense
+		InvalidTargets: NoAutoTarget
+	AutoTargetPriority@ATTACKANYTHING:
+		RequiresCondition: stance-attackanything
+		ValidTargets: Infantry, Vehicle, Creep, Water, Air, Structure, Defense
+		InvalidTargets: NoAutoTarget
+
 ^Vehicle:
 	Inherits@1: ^ExistsInWorld
 	Inherits@2: ^GainsExperience
@@ -170,6 +194,12 @@
 		Offset: -12, -12
 		RequiresCondition: carryall-reserved
 	RevealOnFire:
+	RevealOnDeath:
+		Duration: 100
+		Radius: 2c512
+	HitShape:
+	EditorTilesetFilter:
+		Categories: Vehicle
 
 ^Tank:
 	Inherits: ^Vehicle
@@ -186,9 +216,11 @@
 		Type: CenterPosition
 	Tooltip:
 		Name: Wreck
-	AutoTargetIgnore:
 	ScriptTriggers:
 	WithFacingSpriteBody:
+	HitShape:
+	EditorTilesetFilter:
+		Categories: Husk
 
 ^VehicleHusk:
 	Inherits: ^Husk
@@ -199,7 +231,8 @@
 	Targetable:
 		TargetTypes: Ground, Vehicle
 		RequiresForceFire: true
-	DisabledOverlay:
+	WithColoredOverlay@IDISABLE:
+		Palette: disabled
 	Explodes:
 		Weapon: UnitExplodeMed
 		EmptyWeapon: UnitExplodeMed
@@ -225,6 +258,9 @@
 	Tooltip:
 		Name: Destroyed Tower
 	ScriptTriggers:
+	HitShape:
+	EditorTilesetFilter:
+		Categories: Husk
 
 ^Infantry:
 	Inherits@1: ^ExistsInWorld
@@ -232,8 +268,6 @@
 	Inherits@3: ^SpriteActor
 	Huntable:
 	Health:
-		Shape: Circle
-			Radius: 96
 	Armor:
 		Type: none
 	RevealsShroud:
@@ -273,7 +307,6 @@
 			SmallExplosionDeath: 3
 			BulletDeath: 4
 		CrushedSequence: die-crushed
-	AutoTarget:
 	AttackMove:
 	DrawLineToTarget:
 	Passenger:
@@ -297,6 +330,13 @@
 	Voiced:
 		VoiceSet: InfantryVoice
 	RevealOnFire:
+	RevealOnDeath:
+		Duration: 100
+	HitShape:
+		Type: Circle
+			Radius: 96
+	EditorTilesetFilter:
+		Categories: Infantry
 
 ^Plane:
 	Inherits@1: ^ExistsInWorld
@@ -312,6 +352,9 @@
 	DrawLineToTarget:
 	WithFacingSpriteBody:
 	WithShadow:
+	HitShape:
+	EditorTilesetFilter:
+		Categories: Aircraft
 
 ^Building:
 	Inherits@1: ^ExistsInWorld
@@ -325,6 +368,11 @@
 		VisibilityType: CenterPosition
 	Targetable:
 		TargetTypes: Ground, C4, Structure
+	HitShape:
+		UseTargetableCellsOffsets: true
+		Type: Rectangle
+			TopLeft: -512, -512
+			BottomRight: 512, 512
 	Building:
 		Dimensions: 1,1
 		Footprint: x
@@ -371,12 +419,17 @@
 		Pieces: 2, 5
 		Range: 1c512, 4c0
 	WithMakeAnimation:
+	RevealOnDeath:
+		Duration: 100
+		Radius: 4c768
+	EditorTilesetFilter:
+		Categories: Building
+	CommandBarBlacklist:
 
 ^Defense:
 	Inherits: ^Building
 	WithSpriteTurret:
 	AttackTurreted:
-	AutoTarget:
 	RenderRangeCircle:
 	DetectCloaked:
 		Range: 1c768
@@ -394,3 +447,15 @@
 	MustBeDestroyed:
 		RequiredForShortGame: false
 	RevealOnFire:
+	Targetable:
+		TargetTypes: Ground, C4, Structure, Defense
+	EditorTilesetFilter:
+		Categories: Defense
+	-CommandBarBlacklist:
+
+^DisabledOverlay:
+	WithColoredOverlay@IDISABLE:
+		RequiresCondition: disabled
+		Palette: disabled
+	GrantConditionOnDisabled@IDISABLE:
+		Condition: disabled

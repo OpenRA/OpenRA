@@ -152,6 +152,7 @@ namespace OpenRA.Activities
 			set { NextActivity = value; }
 		}
 
+		public bool IsIdle { get; protected set; }
 		public bool IsInterruptible { get; protected set; }
 		public bool IsCanceled { get { return State == ActivityState.Canceled; } }
 
@@ -200,7 +201,7 @@ namespace OpenRA.Activities
 		/// </summary>
 		protected virtual void OnLastRun(Actor self) { }
 
-		public virtual bool Cancel(Actor self)
+		public virtual bool Cancel(Actor self, bool keepQueue = false)
 		{
 			if (!IsInterruptible)
 				return false;
@@ -208,9 +209,11 @@ namespace OpenRA.Activities
 			if (ChildActivity != null && !ChildActivity.Cancel(self))
 				return false;
 
-			State = ActivityState.Canceled;
-			NextActivity = null;
+			if (!keepQueue)
+				NextActivity = null;
+
 			ChildActivity = null;
+			State = ActivityState.Canceled;
 
 			return true;
 		}

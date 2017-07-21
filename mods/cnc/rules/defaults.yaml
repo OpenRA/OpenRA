@@ -14,6 +14,34 @@
 	AutoSelectionSize:
 	RenderSprites:
 
+^1x1Shape:
+	HitShape:
+		UseTargetableCellsOffsets: true
+		Type: Rectangle
+			TopLeft: -512, -512
+			BottomRight: 512, 512
+
+^2x1Shape:
+	HitShape:
+		UseTargetableCellsOffsets: true
+		Type: Rectangle
+			TopLeft: -1024, -512
+			BottomRight: 1024, 512
+
+^2x2Shape:
+	HitShape:
+		UseTargetableCellsOffsets: true
+		Type: Rectangle
+			TopLeft: -1024, -1024
+			BottomRight: 1024, 1024
+
+^3x2Shape:
+	HitShape:
+		UseTargetableCellsOffsets: true
+		Type: Rectangle
+			TopLeft: -1536, -1024
+			BottomRight: 1536, 1024
+
 ^GainsExperience:
 	GainsExperience:
 		Conditions:
@@ -119,6 +147,36 @@
 		RequiresCondition: rank-elite
 		ZOffset: 256
 
+^AutoTargetGround:
+	AutoTarget:
+		AttackAnythingCondition: stance-attackanything
+	AutoTargetPriority@DEFAULT:
+		RequiresCondition: !stance-attackanything
+		ValidTargets: Infantry, Vehicle, Creep, Water, Defense
+		InvalidTargets: NoAutoTarget
+	AutoTargetPriority@ATTACKANYTHING:
+		RequiresCondition: stance-attackanything
+		ValidTargets: Infantry, Vehicle, Creep, Water, Structure, Defense
+		InvalidTargets: NoAutoTarget
+
+^AutoTargetAir:
+	AutoTarget:
+	AutoTargetPriority@DEFAULT:
+		ValidTargets: Air
+		InvalidTargets: NoAutoTarget
+
+^AutoTargetAll:
+	AutoTarget:
+		AttackAnythingCondition: stance-attackanything
+	AutoTargetPriority@DEFAULT:
+		RequiresCondition: !stance-attackanything
+		ValidTargets: Infantry, Vehicle, Creep, Water, Air, Defense
+		InvalidTargets: NoAutoTarget
+	AutoTargetPriority@ATTACKANYTHING:
+		RequiresCondition: stance-attackanything
+		ValidTargets: Infantry, Vehicle, Creep, Water, Air, Structure, Defense
+		InvalidTargets: NoAutoTarget
+
 ^AcceptsCloakCrate:
 	Cloak:
 		InitialDelay: 15
@@ -173,6 +231,9 @@
 		VoiceSet: VehicleVoice
 	BodyOrientation:
 		UseClassicFacingFudge: True
+	HitShape:
+	EditorTilesetFilter:
+		Categories: Vehicle
 
 ^Tank:
 	Inherits: ^Vehicle
@@ -234,14 +295,15 @@
 		VoiceSet: VehicleVoice
 	BodyOrientation:
 		UseClassicFacingFudge: True
+	HitShape:
+	EditorTilesetFilter:
+		Categories: Aircraft
 
 ^Infantry:
 	Inherits@1: ^ExistsInWorld
 	Inherits@3: ^SpriteActor
 	Huntable:
 	Health:
-		Shape: Circle
-			Radius: 128
 	Armor:
 		Type: None
 	RevealsShroud:
@@ -334,6 +396,11 @@
 		DeathTypes: TiberiumDeath
 	Voiced:
 		VoiceSet: GenericVoice
+	HitShape:
+		Type: Circle
+			Radius: 128
+	EditorTilesetFilter:
+		Categories: Infantry
 
 ^Soldier:
 	Inherits: ^Infantry
@@ -341,8 +408,6 @@
 	Tooltip:
 		GenericName: Soldier
 	Guard:
-	AutoTarget:
-		ScanRadius: 4
 	TakeCover:
 		SpeedModifier: 60
 		DamageModifiers:
@@ -377,6 +442,8 @@
 	Wanders:
 		MinMoveDelay: 150
 		MaxMoveDelay: 750
+	EditorTilesetFilter:
+		Categories: Civilian infantry
 
 ^ArmedCivilian:
 	Armament:
@@ -388,11 +455,10 @@
 ^DINO:
 	Inherits@1: ^ExistsInWorld
 	Inherits@2: ^SpriteActor
+	Inherits@AUTOTARGET: ^AutoTargetGround
 	Huntable:
 	Health:
 		HP: 1000
-		Shape: Circle
-			Radius: 128
 	Armor:
 		Type: Wood
 	Buildable:
@@ -441,15 +507,19 @@
 	DeathSounds:
 	Voiced:
 		VoiceSet: DinoVoice
+	HitShape:
+		Type: Circle
+			Radius: 128
+	EditorTilesetFilter:
+		Categories: Critter
 
 ^Viceroid:
 	Inherits@1: ^ExistsInWorld
 	Inherits@2: ^SpriteActor
+	Inherits@AUTOTARGET: ^AutoTargetGround
 	Huntable:
 	Health:
 		HP: 300
-		Shape: Circle
-			Radius: 427
 	Armor:
 		Type: Wood
 	RevealsShroud:
@@ -500,6 +570,11 @@
 		Terrain: Tiberium, BlueTiberium
 	Voiced:
 		VoiceSet: DinoVoice
+	HitShape:
+		Type: Circle
+			Radius: 427
+	EditorTilesetFilter:
+		Categories: Critter
 
 ^Plane:
 	Inherits@1: ^ExistsInWorld
@@ -520,6 +595,8 @@
 	RejectsOrders:
 	Aircraft:
 		CruiseAltitude: 2560
+	EditorTilesetFilter:
+		Categories: Aircraft
 
 ^Ship:
 	Inherits@1: ^ExistsInWorld
@@ -548,10 +625,14 @@
 		GenericName: Ship
 	Voiced:
 		VoiceSet: VehicleVoice
+	HitShape:
+	EditorTilesetFilter:
+		Categories: Naval
 
 ^Building:
 	Inherits@1: ^ExistsInWorld
 	Inherits@2: ^SpriteActor
+	Inherits@shape: ^1x1Shape
 	Huntable:
 	SelectionDecorations:
 	WithSpriteControlGroupDecoration:
@@ -561,6 +642,8 @@
 		TargetTypes: Ground, C4, Structure
 	Armor:
 		Type: Wood
+	Health:
+		HP: 400
 	Building:
 		Dimensions: 1,1
 		Footprint: x
@@ -584,6 +667,10 @@
 		GenericName: Structure
 	FrozenUnderFog:
 	Demolishable:
+	EditorTilesetFilter:
+		Categories: Building
+	CommandBarBlacklist:
+	AcceptsDeliveredCash:
 
 ^BaseBuilding:
 	Inherits: ^Building
@@ -613,13 +700,13 @@
 ^CivBuilding:
 	Inherits: ^Building
 	-ConditionManager:
-	Health:
-		HP: 400
 	Tooltip:
 		GenericName: Civilian Building
 		GenericStancePrefix: false
 		ShowOwnerRow: false
 	FrozenUnderFog:
+	EditorTilesetFilter:
+		Categories: Civilian building
 
 ^CivBuildingHusk:
 	Inherits@1: ^SpriteActor
@@ -634,6 +721,8 @@
 		ShowOwnerRow: false
 	FrozenUnderFog:
 	ScriptTriggers:
+	EditorTilesetFilter:
+		Categories: Husk
 
 ^TechBuilding:
 	Inherits: ^CivBuilding
@@ -649,6 +738,8 @@
 		Range: 3c0
 	Tooltip:
 		ShowOwnerRow: True
+	EditorTilesetFilter:
+		Categories: Tech building
 
 ^CivField:
 	Inherits: ^CivBuilding
@@ -667,7 +758,7 @@
 	AppearsOnRadar:
 	Building:
 		Dimensions: 1,1
-		Footprint: _
+		Footprint: =
 	Tooltip:
 		Name: Field (Destroyed)
 		GenericVisibility: None
@@ -677,9 +768,12 @@
 	WithSpriteBody:
 	FrozenUnderFog:
 	ScriptTriggers:
+	EditorTilesetFilter:
+		Categories: Husk
 
 ^Wall:
 	Inherits@1: ^SpriteActor
+	Inherits@shape: ^1x1Shape
 	CombatDebugOverlay:
 	AppearsOnRadar:
 	Building:
@@ -702,7 +796,6 @@
 		Palette: staticterrain
 	WithWallSpriteBody:
 	GivesExperience:
-	AutoTargetIgnore:
 	Sellable:
 		SellSounds: cashturn.aud
 	Guardable:
@@ -710,9 +803,8 @@
 	ScriptTriggers:
 	Health:
 		HP: 100
-		Shape: Rectangle
-			TopLeft: -512, -512
-			BottomRight: 512, 512
+	EditorTilesetFilter:
+		Categories: Wall
 
 ^Tree:
 	Inherits@1: ^SpriteActor
@@ -749,9 +841,11 @@
 		Image: burn-l
 		MinimumDamageState: Heavy
 		MaximumDamageState: Dead
-	AutoTargetIgnore:
 	HiddenUnderShroud:
 	ScriptTriggers:
+	HitShape:
+	EditorTilesetFilter:
+		Categories: Tree
 
 ^TreeHusk:
 	Inherits@1: ^SpriteActor
@@ -765,6 +859,8 @@
 		ShowOwnerRow: false
 	FrozenUnderFog:
 	ScriptTriggers:
+	EditorTilesetFilter:
+		Categories: Tree
 
 ^TibTree:
 	Inherits@1: ^SpriteActor
@@ -782,6 +878,8 @@
 		Terrain: Tiberium
 	HiddenUnderShroud:
 	WithMakeAnimation:
+	EditorTilesetFilter:
+		Categories: Resource spawn
 
 ^Rock:
 	Inherits@1: ^SpriteActor
@@ -801,6 +899,7 @@
 	ScriptTriggers:
 	EditorTilesetFilter:
 		RequireTilesets: DESERT
+		Categories: Decoration
 
 ^CommonHuskDefaults:
 	Inherits@1: ^SpriteActor
@@ -810,8 +909,10 @@
 		Type: Light
 	HiddenUnderFog:
 		Type: CenterPosition
-	AutoTargetIgnore:
 	WithFacingSpriteBody:
+	HitShape:
+	EditorTilesetFilter:
+		Categories: Husk
 
 ^Husk:
 	Inherits: ^CommonHuskDefaults
@@ -830,7 +931,8 @@
 		ForceHealthPercentage: 25
 	Tooltip:
 		GenericName: Destroyed Vehicle
-	DisabledOverlay:
+	WithColoredOverlay@IDISABLE:
+		Palette: disabled
 	ScriptTriggers:
 	Explodes:
 		Weapon: UnitExplodeSmall
@@ -855,6 +957,7 @@
 		UseClassicFacingFudge: True
 
 ^Bridge:
+	Inherits@shape: ^1x1Shape
 	AlwaysVisible:
 	Tooltip:
 		Name: Bridge
@@ -868,6 +971,8 @@
 		DamagedSounds: xplos.aud
 		DestroyedSounds: xplobig4.aud
 	ScriptTriggers:
+	BodyOrientation:
+		QuantizedFacings: 1
 
 ^Crate:
 	Inherits@1: ^SpriteActor
@@ -883,12 +988,26 @@
 		Image: crate
 	WithCrateBody:
 		XmasImages: xcratea, xcrateb, xcratec, xcrated
+	EditorTilesetFilter:
+		Categories: System
 
 ^Defense:
 	Inherits: ^BaseBuilding
-	AutoTarget:
 	RenderRangeCircle:
 	RenderDetectionCircle:
 	-GivesBuildableArea:
 	MustBeDestroyed:
 		RequiredForShortGame: false
+	Targetable:
+		TargetTypes: Ground, C4, Structure, Defense
+	EditorTilesetFilter:
+		Categories: Defense
+	-CommandBarBlacklist:
+	-AcceptsDeliveredCash:
+
+^DisabledOverlay:
+	WithColoredOverlay@IDISABLE:
+		RequiresCondition: disabled
+		Palette: disabled
+	GrantConditionOnDisabled@IDISABLE:
+		Condition: disabled

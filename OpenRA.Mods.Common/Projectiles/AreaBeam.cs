@@ -22,7 +22,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Projectiles
 {
-	public class AreaBeamInfo : IProjectileInfo
+	public class AreaBeamInfo : IProjectileInfo, IRulesetLoaded<WeaponInfo>
 	{
 		[Desc("Projectile speed in WDist / tick, two values indicate a randomly picked velocity per beam.")]
 		public readonly WDist[] Speed = { new WDist(128) };
@@ -57,9 +57,6 @@ namespace OpenRA.Mods.Common.Projectiles
 		[Desc("Does the beam follow the target.")]
 		public readonly bool TrackTarget = false;
 
-		[Desc("Extra search radius beyond beam width. Required to ensure affecting actors with large health radius.")]
-		public readonly WDist TargetExtraSearchRadius = new WDist(1536);
-
 		[Desc("Should the beam be visually rendered? False = Beam is invisible.")]
 		public readonly bool RenderBeam = true;
 
@@ -72,10 +69,27 @@ namespace OpenRA.Mods.Common.Projectiles
 		[Desc("Beam color is the player's color.")]
 		public readonly bool UsePlayerColor = false;
 
+		[Desc("Scan radius for actors with projectile-blocking trait. If set to a negative value (default), it will automatically scale",
+			"to the blocker with the largest health shape. Only set custom values if you know what you're doing.")]
+		public WDist BlockerScanRadius = new WDist(-1);
+
+		[Desc("Scan radius for actors damaged by beam. If set to a negative value (default), it will automatically scale to the largest health shape.",
+			"Only set custom values if you know what you're doing.")]
+		public WDist AreaVictimScanRadius = new WDist(-1);
+
 		public IProjectile Create(ProjectileArgs args)
 		{
 			var c = UsePlayerColor ? args.SourceActor.Owner.Color.RGB : Color;
 			return new AreaBeam(this, args, c);
+		}
+
+		void IRulesetLoaded<WeaponInfo>.RulesetLoaded(Ruleset rules, WeaponInfo wi)
+		{
+			if (BlockerScanRadius < WDist.Zero)
+				BlockerScanRadius = Util.MinimumRequiredBlockerScanRadius(rules);
+
+			if (AreaVictimScanRadius < WDist.Zero)
+				AreaVictimScanRadius = Util.MinimumRequiredVictimScanRadius(rules);
 		}
 	}
 
@@ -143,7 +157,7 @@ namespace OpenRA.Mods.Common.Projectiles
 
 			if (args.GuidedTarget.IsValidFor(args.SourceActor))
 			{
-				var guidedTargetPos = args.GuidedTarget.CenterPosition;
+				var guidedTargetPos = args.Weapon.TargetActorCenter ? args.GuidedTarget.CenterPosition : args.GuidedTarget.Positions.PositionClosestTo(args.Source);
 				var targetDistance = new WDist((guidedTargetPos - args.Source).Length);
 
 				// Only continue tracking target if it's within weapon range +
@@ -211,7 +225,7 @@ namespace OpenRA.Mods.Common.Projectiles
 			// Check for blocking actors
 			WPos blockedPos;
 			if (info.Blockable && BlocksProjectiles.AnyBlockingActorsBetween(world, tailPos, headPos,
-				info.Width, info.TargetExtraSearchRadius, out blockedPos))
+				info.Width, info.BlockerScanRadius, out blockedPos))
 			{
 				headPos = blockedPos;
 				target = headPos;
@@ -221,7 +235,7 @@ namespace OpenRA.Mods.Common.Projectiles
 			// Damage is applied to intersected actors every DamageInterval ticks
 			if (headTicks % info.DamageInterval == 0)
 			{
-				var actors = world.FindActorsOnLine(tailPos, headPos, info.Width, info.TargetExtraSearchRadius);
+				var actors = world.FindActorsOnLine(tailPos, headPos, info.Width, info.AreaVictimScanRadius);
 				foreach (var a in actors)
 				{
 					var adjustedModifiers = args.DamageModifiers.Append(GetFalloff((args.Source - a.CenterPosition).Length));

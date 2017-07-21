@@ -31,12 +31,21 @@ namespace OpenRA
 		}
 	}
 
+	public sealed class ModelSequenceFormat : IGlobalModData
+	{
+		public readonly string Type;
+		public readonly IReadOnlyDictionary<string, MiniYaml> Metadata;
+		public ModelSequenceFormat(MiniYaml yaml)
+		{
+			Type = yaml.Value;
+			Metadata = new ReadOnlyDictionary<string, MiniYaml>(yaml.ToDictionary());
+		}
+	}
+
 	public class ModMetadata
 	{
 		public string Title;
-		public string Description;
 		public string Version;
-		public string Author;
 		public bool Hidden;
 	}
 
@@ -48,25 +57,24 @@ namespace OpenRA
 		public readonly ModMetadata Metadata;
 		public readonly string[]
 			Rules, ServerTraits,
-			Sequences, VoxelSequences, Cursors, Chrome, Assemblies, ChromeLayout,
+			Sequences, ModelSequences, Cursors, Chrome, Assemblies, ChromeLayout,
 			Weapons, Voices, Notifications, Music, Translations, TileSets,
 			ChromeMetrics, MapCompatibility, Missions;
 
 		public readonly IReadOnlyDictionary<string, string> Packages;
 		public readonly IReadOnlyDictionary<string, string> MapFolders;
 		public readonly MiniYaml LoadScreen;
-
-		public readonly Dictionary<string, string> RequiresMods;
 		public readonly Dictionary<string, Pair<string, int>> Fonts;
 
 		public readonly string[] SoundFormats = { };
 		public readonly string[] SpriteFormats = { };
+		public readonly string[] PackageFormats = { };
 
 		readonly string[] reservedModuleNames = { "Metadata", "Folders", "MapFolders", "Packages", "Rules",
-			"Sequences", "VoxelSequences", "Cursors", "Chrome", "Assemblies", "ChromeLayout", "Weapons",
+			"Sequences", "ModelSequences", "Cursors", "Chrome", "Assemblies", "ChromeLayout", "Weapons",
 			"Voices", "Notifications", "Music", "Translations", "TileSets", "ChromeMetrics", "Missions",
 			"ServerTraits", "LoadScreen", "Fonts", "SupportsMapsFrom", "SoundFormats", "SpriteFormats",
-			"RequiresMods" };
+			"RequiresMods", "PackageFormats" };
 
 		readonly TypeDictionary modules = new TypeDictionary();
 		readonly Dictionary<string, MiniYaml> yaml;
@@ -90,7 +98,7 @@ namespace OpenRA
 
 			Rules = YamlList(yaml, "Rules");
 			Sequences = YamlList(yaml, "Sequences");
-			VoxelSequences = YamlList(yaml, "VoxelSequences");
+			ModelSequences = YamlList(yaml, "ModelSequences");
 			Cursors = YamlList(yaml, "Cursors");
 			Chrome = YamlList(yaml, "Chrome");
 			Assemblies = YamlList(yaml, "Assemblies");
@@ -115,8 +123,6 @@ namespace OpenRA
 				return Pair.New(nd["Font"].Value, Exts.ParseIntegerInvariant(nd["Size"].Value));
 			});
 
-			RequiresMods = yaml["RequiresMods"].ToDictionary(my => my.Value);
-
 			// Allow inherited mods to import parent maps.
 			var compat = new List<string> { Id };
 
@@ -124,6 +130,9 @@ namespace OpenRA
 				compat.AddRange(yaml["SupportsMapsFrom"].Value.Split(',').Select(c => c.Trim()));
 
 			MapCompatibility = compat.ToArray();
+
+			if (yaml.ContainsKey("PackageFormats"))
+				PackageFormats = FieldLoader.GetValue<string[]>("PackageFormats", yaml["PackageFormats"].Value);
 
 			if (yaml.ContainsKey("SoundFormats"))
 				SoundFormats = FieldLoader.GetValue<string[]>("SoundFormats", yaml["SoundFormats"].Value);

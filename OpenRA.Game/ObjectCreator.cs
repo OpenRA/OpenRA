@@ -18,7 +18,7 @@ using OpenRA.Primitives;
 
 namespace OpenRA
 {
-	public class ObjectCreator
+	public sealed class ObjectCreator : IDisposable
 	{
 		// .NET does not support unloading assemblies, so mod libraries will leak across mod changes.
 		// This tracks the assemblies that have been loaded since game start so that we don't load multiple copies
@@ -29,34 +29,30 @@ namespace OpenRA
 		readonly Pair<Assembly, string>[] assemblies;
 		readonly bool isMonoRuntime = Type.GetType("Mono.Runtime") != null;
 
-		public ObjectCreator(Assembly a)
-		{
-			typeCache = new Cache<string, Type>(FindType);
-			ctorCache = new Cache<Type, ConstructorInfo>(GetCtor);
-			assemblies = a.GetNamespaces().Select(ns => Pair.New(a, ns)).ToArray();
-		}
-
-		public ObjectCreator(Manifest manifest, FileSystem.FileSystem modFiles)
+		public ObjectCreator(Manifest manifest, InstalledMods mods)
 		{
 			typeCache = new Cache<string, Type>(FindType);
 			ctorCache = new Cache<Type, ConstructorInfo>(GetCtor);
 
 			// Allow mods to load types from the core Game assembly, and any additional assemblies they specify.
+			// Assemblies can only be loaded from directories to avoid circular dependencies on package loaders.
 			var assemblyList = new List<Assembly>() { typeof(Game).Assembly };
 			foreach (var path in manifest.Assemblies)
 			{
-				var data = modFiles.Open(path).ReadAllBytes();
+				var resolvedPath = FileSystem.FileSystem.ResolveAssemblyPath(path, manifest, mods);
+				if (resolvedPath == null)
+					throw new FileNotFoundException("Assembly `{0}` not found.".F(path));
 
 				// .NET doesn't provide any way of querying the metadata of an assembly without either:
 				//   (a) loading duplicate data into the application domain, breaking the world.
 				//   (b) crashing if the assembly has already been loaded.
 				// We can't check the internal name of the assembly, so we'll work off the data instead
-				var hash = CryptoUtil.SHA1Hash(data);
+				var hash = CryptoUtil.SHA1Hash(File.ReadAllBytes(resolvedPath));
 
 				Assembly assembly;
 				if (!ResolvedAssemblies.TryGetValue(hash, out assembly))
 				{
-					Stream symbolStream = null;
+					assembly = Assembly.LoadFile(resolvedPath);
 					var hasSymbols = false;
 
 					// Mono has its own symbol format.
@@ -76,7 +72,6 @@ namespace OpenRA
 
 			AppDomain.CurrentDomain.AssemblyResolve += ResolveAssembly;
 			assemblies = assemblyList.SelectMany(asm => asm.GetNamespaces().Select(ns => Pair.New(asm, ns))).ToArray();
-			AppDomain.CurrentDomain.AssemblyResolve -= ResolveAssembly;
 		}
 
 		Assembly ResolveAssembly(object sender, ResolveEventArgs e)
@@ -84,6 +79,9 @@ namespace OpenRA
 			foreach (var a in AppDomain.CurrentDomain.GetAssemblies())
 				if (a.FullName == e.Name)
 					return a;
+
+			if (assemblies == null)
+				return null;
 
 			return assemblies.Select(a => a.First).FirstOrDefault(a => a.FullName == e.Name);
 		}
@@ -157,6 +155,38 @@ namespace OpenRA
 		{
 			return assemblies.Select(ma => ma.First).Distinct()
 				.SelectMany(ma => ma.GetTypes());
+		}
+
+		public TLoader[] GetLoaders<TLoader>(IEnumerable<string> formats, string name)
+		{
+			var loaders = new List<TLoader>();
+			foreach (var format in formats)
+			{
+				var loader = FindType(format + "Loader");
+				if (loader == null || !loader.GetInterfaces().Contains(typeof(TLoader)))
+					throw new InvalidOperationException("Unable to find a {0} loader for type '{1}'.".F(name, format));
+
+				loaders.Add((TLoader)CreateBasic(loader));
+			}
+
+			return loaders.ToArray();
+		}
+
+		~ObjectCreator()
+		{
+			Dispose(false);
+		}
+
+		public void Dispose()
+		{
+			Dispose(true);
+			GC.SuppressFinalize(this);
+		}
+
+		void Dispose(bool disposing)
+		{
+			if (disposing)
+				AppDomain.CurrentDomain.AssemblyResolve -= ResolveAssembly;
 		}
 
 		[AttributeUsage(AttributeTargets.Constructor)]

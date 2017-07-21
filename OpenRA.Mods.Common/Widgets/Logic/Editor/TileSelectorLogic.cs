@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Widgets;
@@ -18,51 +19,123 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public class TileSelectorLogic : ChromeLogic
 	{
+		class TileSelectorTemplate
+		{
+			public readonly TerrainTemplateInfo Template;
+			public readonly string[] Categories;
+			public readonly string[] SearchTerms;
+			public readonly string Tooltip;
+
+			public TileSelectorTemplate(TerrainTemplateInfo template)
+			{
+				Template = template;
+				Categories = template.Categories;
+				Tooltip = template.Id.ToString();
+				SearchTerms = new[] { Tooltip };
+			}
+		}
+
+		readonly TileSet tileset;
+		readonly WorldRenderer worldRenderer;
 		readonly EditorViewportControllerWidget editor;
 		readonly ScrollPanelWidget panel;
 		readonly ScrollItemWidget itemTemplate;
+		readonly TileSelectorTemplate[] allTemplates;
+
+		string selectedCategory;
+		string userSelectedCategory;
+		string searchFilter;
 
 		[ObjectCreator.UseCtor]
 		public TileSelectorLogic(Widget widget, WorldRenderer worldRenderer)
 		{
-			var rules = worldRenderer.World.Map.Rules;
-			var tileset = rules.TileSet;
+			tileset = worldRenderer.World.Map.Rules.TileSet;
+			this.worldRenderer = worldRenderer;
 
 			editor = widget.Parent.Get<EditorViewportControllerWidget>("MAP_EDITOR");
 			panel = widget.Get<ScrollPanelWidget>("TILETEMPLATE_LIST");
 			itemTemplate = panel.Get<ScrollItemWidget>("TILEPREVIEW_TEMPLATE");
 			panel.Layout = new GridLayout(panel);
 
-			var tileCategorySelector = widget.Get<DropDownButtonWidget>("TILE_CATEGORY");
-			var categories = tileset.EditorTemplateOrder;
+			allTemplates = tileset.Templates.Values.Select(t => new TileSelectorTemplate(t)).ToArray();
+
+			var orderedCategories = allTemplates.SelectMany(t => t.Categories)
+				.Distinct()
+				.OrderBy(CategoryOrder)
+				.ToArray();
+
+			var searchTextField = widget.Get<TextFieldWidget>("SEARCH_TEXTFIELD");
+			searchTextField.OnTextEdited = () =>
+			{
+				searchFilter = searchTextField.Text.Trim();
+				selectedCategory = string.IsNullOrEmpty(searchFilter) ? userSelectedCategory : null;
+
+				InitializeTilePreview();
+			};
+
+			Func<string, string> categoryTitle = s => s != null ? s : "Search Results";
 			Func<string, ScrollItemWidget, ScrollItemWidget> setupItem = (option, template) =>
 			{
-				var item = ScrollItemWidget.Setup(template,
-					() => tileCategorySelector.Text == option,
-					() => { tileCategorySelector.Text = option; IntializeTilePreview(widget, worldRenderer, tileset, option); });
+				var item = ScrollItemWidget.Setup(template,	() => selectedCategory == option, () =>
+				{
+					selectedCategory = option;
+					if (option != null)
+						userSelectedCategory = option;
 
-				item.Get<LabelWidget>("LABEL").GetText = () => option;
+					InitializeTilePreview();
+				});
+
+				var title = categoryTitle(option);
+				item.Get<LabelWidget>("LABEL").GetText = () => title;
 				return item;
 			};
 
+			var tileCategorySelector = widget.Get<DropDownButtonWidget>("CATEGORIES_DROPDOWN");
 			tileCategorySelector.OnClick = () =>
-				tileCategorySelector.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 270, categories, setupItem);
+			{
+				if (searchTextField != null)
+					searchTextField.YieldKeyboardFocus();
 
-			tileCategorySelector.Text = categories.First();
-			IntializeTilePreview(widget, worldRenderer, tileset, categories.First());
+				var categories = orderedCategories.AsEnumerable();
+				if (!string.IsNullOrEmpty(searchFilter))
+				{
+					var filteredCategories = allTemplates.Where(t => t.SearchTerms.Any(
+							s => s.IndexOf(searchFilter, StringComparison.OrdinalIgnoreCase) >= 0))
+						.SelectMany(t => t.Categories)
+						.Distinct()
+						.OrderBy(CategoryOrder);
+					categories = new string[] { null }.Concat(filteredCategories);
+				}
+
+				tileCategorySelector.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 270, categories, setupItem);
+			};
+
+			var actorCategorySelector = widget.Get<DropDownButtonWidget>("CATEGORIES_DROPDOWN");
+			actorCategorySelector.GetText = () => categoryTitle(selectedCategory);
+
+			selectedCategory = userSelectedCategory = orderedCategories.First();
+			InitializeTilePreview();
 		}
 
-		void IntializeTilePreview(Widget widget, WorldRenderer worldRenderer, TileSet tileset, string category)
+		int CategoryOrder(string category)
+		{
+			var i = tileset.EditorTemplateOrder.IndexOf(category);
+			return i >= 0 ? i : int.MaxValue;
+		}
+
+		void InitializeTilePreview()
 		{
 			panel.RemoveChildren();
 
-			var tileIds = tileset.Templates
-				.Where(t => t.Value.Category == category)
-				.Select(t => t.Value.Id);
-
-			foreach (var t in tileIds)
+			foreach (var t in allTemplates)
 			{
-				var tileId = t;
+				if (selectedCategory != null && !t.Categories.Contains(selectedCategory))
+					continue;
+
+				if (!string.IsNullOrEmpty(searchFilter) && !t.SearchTerms.Any(s => s.IndexOf(searchFilter, StringComparison.OrdinalIgnoreCase) >= 0))
+					continue;
+
+				var tileId = t.Template.Id;
 				var item = ScrollItemWidget.Setup(itemTemplate,
 					() => { var brush = editor.CurrentBrush as EditorTileBrush; return brush != null && brush.Template == tileId; },
 					() => editor.SetBrush(new EditorTileBrush(editor, tileId, worldRenderer)));
@@ -85,7 +158,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				item.Bounds.Width = preview.Bounds.Width + 2 * preview.Bounds.X;
 				item.Bounds.Height = preview.Bounds.Height + 2 * preview.Bounds.Y;
 				item.IsVisible = () => true;
-				item.GetTooltipText = () => tileId.ToString();
+				item.GetTooltipText = () => t.Tooltip;
 
 				panel.AddChild(item);
 			}

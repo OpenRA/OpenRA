@@ -519,7 +519,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					{ "AttackMoveKey", "Attack Move" },
 					{ "StopKey", "Stop" },
 					{ "ScatterKey", "Scatter" },
-					{ "StanceCycleKey", "Cycle Stance" },
 					{ "DeployKey", "Deploy" },
 					{ "GuardKey", "Guard" }
 				};
@@ -530,6 +529,24 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				foreach (var kv in hotkeys)
 					BindHotkeyPref(kv, ks, unitTemplate, hotkeyList);
+			}
+
+			// Unit stance
+			{
+				var hotkeys = new Dictionary<string, string>()
+				{
+					{ "StanceHoldFireKey", "Hold fire" },
+					{ "StanceReturnFireKey", "Return fire" },
+					{ "StanceDefendKey", "Defend" },
+					{ "StanceAttackAnythingKey", "Attack anything" }
+				};
+
+				var header = ScrollItemWidget.Setup(hotkeyHeader, returnTrue, doNothing);
+				header.Get<LabelWidget>("LABEL").GetText = () => "Unit Stance Commands";
+				hotkeyList.AddChild(header);
+
+				foreach (var kv in hotkeys)
+					BindHotkeyPref(kv, ks, globalTemplate, hotkeyList);
 			}
 
 			// Production
@@ -582,7 +599,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				};
 
 				var header = ScrollItemWidget.Setup(hotkeyHeader, returnTrue, doNothing);
-				header.Get<LabelWidget>("LABEL").GetText = () => "Developer commands";
+				header.Get<LabelWidget>("LABEL").GetText = () => "Developer Commands";
 				hotkeyList.AddChild(header);
 
 				foreach (var kv in hotkeys)
@@ -600,7 +617,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				};
 
 				var header = ScrollItemWidget.Setup(hotkeyHeader, returnTrue, doNothing);
-				header.Get<LabelWidget>("LABEL").GetText = () => "Music commands";
+				header.Get<LabelWidget>("LABEL").GetText = () => "Music Commands";
 				hotkeyList.AddChild(header);
 
 				foreach (var kv in hotkeys)
@@ -710,6 +727,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{ "Ctrl", Modifiers.Ctrl },
 				{ "Meta", Modifiers.Meta },
 				{ "Shift", Modifiers.Shift },
+				{ "None", Modifiers.None }
 			};
 
 			Func<string, ScrollItemWidget, ScrollItemWidget> setupItem = (o, itemTemplate) =>

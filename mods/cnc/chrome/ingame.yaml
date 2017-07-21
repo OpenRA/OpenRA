@@ -11,7 +11,7 @@ Container@INGAME_ROOT:
 				LogicTicker@DISCONNECT_WATCHER:
 					Logic: DisconnectWatcherLogic
 				Label@MISSION_TEXT:
-					X: WINDOW_RIGHT/2 - 256
+					X: WINDOW_RIGHT / 2 - 256
 					Y: 22
 					Width: 512
 					Height: 25
@@ -19,7 +19,7 @@ Container@INGAME_ROOT:
 					Align: Center
 					Contrast: true
 				StrategicProgress@STRATEGIC_PROGRESS:
-					X: WINDOW_RIGHT/2
+					X: WINDOW_RIGHT / 2
 					Y: 40
 				Container@PERF_ROOT:
 				WorldInteractionController@INTERACTION_CONTROLLER:
@@ -34,7 +34,7 @@ Container@INGAME_ROOT:
 					Height: WINDOW_BOTTOM
 				Container@GAME_TIMER_BLOCK:
 					Logic: GameTimerLogic
-					X: WINDOW_RIGHT/2 - WIDTH
+					X: WINDOW_RIGHT / 2 - WIDTH
 					Width: 100
 					Height: 55
 					Children:
@@ -68,8 +68,8 @@ Container@PERF_WIDGETS:
 			Contrast: true
 			VAlign: Top
 		Background@GRAPH_BG:
-			X: 10
-			Y: WINDOW_BOTTOM-HEIGHT-10
+			X: 5
+			Y: WINDOW_BOTTOM - HEIGHT - 45
 			Width: 220
 			Height: 220
 			Background: panel-black
@@ -85,7 +85,7 @@ Container@OBSERVER_WIDGETS:
 	Children:
 		MenuButton@OPTIONS_BUTTON:
 			Key: escape
-			X: WINDOW_RIGHT-260-WIDTH
+			X: WINDOW_RIGHT - 260 - WIDTH
 			Y: 5
 			Width: 30
 			Height: 25
@@ -100,7 +100,7 @@ Container@OBSERVER_WIDGETS:
 					ImageName: options
 		MenuButton@OBSERVER_STATS_BUTTON:
 			Key: F1
-			X: WINDOW_RIGHT-260-WIDTH
+			X: WINDOW_RIGHT - 260 - WIDTH
 			Y: 35
 			Width: 30
 			Height: 25
@@ -116,7 +116,7 @@ Container@OBSERVER_WIDGETS:
 					ImageCollection: order-icons
 					ImageName: stats
 		Background@RADAR:
-			X: WINDOW_RIGHT-WIDTH-5
+			X: WINDOW_RIGHT - WIDTH - 5
 			Y: 5
 			Width: 256
 			Height: 256
@@ -125,11 +125,11 @@ Container@OBSERVER_WIDGETS:
 				Radar:
 					X: 1
 					Y: 1
-					Width: PARENT_RIGHT-2
-					Height: PARENT_BOTTOM-2
+					Width: PARENT_RIGHT - 2
+					Height: PARENT_BOTTOM - 2
 		Background@REPLAY_PLAYER:
 			Logic: ReplayControlBarLogic
-			X: WINDOW_RIGHT-WIDTH-5
+			X: WINDOW_RIGHT - WIDTH - 5
 			Y: 283
 			Width: 256
 			Height: 46
@@ -187,7 +187,7 @@ Container@OBSERVER_WIDGETS:
 					Text: 100%
 					Font: TinyBold
 				Button@BUTTON_FAST:
-					X: 57 + 48*2
+					X: 57 + 48 * 2
 					Y: 13
 					Width: 38
 					Height: 20
@@ -198,7 +198,7 @@ Container@OBSERVER_WIDGETS:
 					Text: 200%
 					Font: TinyBold
 				Button@BUTTON_MAXIMUM:
-					X: 57 + 48*3
+					X: 57 + 48 * 3
 					Y: 13
 					Width: 38
 					Height: 20
@@ -210,7 +210,7 @@ Container@OBSERVER_WIDGETS:
 					Font: TinyBold
 		DropDownButton@SHROUD_SELECTOR:
 			Logic: ObserverShroudSelectorLogic
-			X: WINDOW_RIGHT-WIDTH-5
+			X: WINDOW_RIGHT - WIDTH - 5
 			Y: 260
 			Width: 256
 			Height: 25
@@ -238,9 +238,6 @@ Container@PLAYER_WIDGETS:
 		LogicKeyListener@CONTROLGROUP_KEYHANDLER:
 			Logic: ControlGroupLogic
 		LogicTicker@SIDEBAR_TICKER:
-		UnitCommand:
-			Width: WINDOW_RIGHT
-			Height: WINDOW_BOTTOM
 		Container@SUPPORT_POWERS:
 			Logic: SupportPowerBinLogic
 			X: 10
@@ -259,6 +256,214 @@ Container@PLAYER_WIDGETS:
 					TooltipContainer: TOOLTIP_CONTAINER
 					ReadyText: Ready
 					HoldText: On Hold
+		Background@COMMAND_BAR:
+			Logic: CommandBarLogic
+			X: 5
+			Y: WINDOW_BOTTOM - HEIGHT - 5
+			Background: panel-black
+			Width: 276
+			Height: 36
+			Children:
+				Button@ATTACK_MOVE:
+					X: 1
+					Y: 1
+					Width: 34
+					Height: 34
+					Background: command-button
+					DisableKeyRepeat: true
+					TooltipText: Attack Move
+					TooltipDesc: Selected units will move to the desired location\nand attack any enemies they encounter en route.\n\nLeft-click icon then right-click on target location.
+					TooltipContainer: TOOLTIP_CONTAINER
+					Children:
+						Image@ICON:
+							X: 5
+							Y: 5
+							ImageCollection: command-icons
+							ImageName: attack-move
+				Button@FORCE_MOVE:
+					X: 35
+					Y: 1
+					Width: 34
+					Height: 34
+					Background: command-button
+					TooltipText: Force Move
+					TooltipDesc: Selected units will move to the desired location\n - Default activity for the target is suppressed\n - Vehicles will attempt to crush enemies at the target location\n - Units entering transports will consider nearby alternatives\n\nLeft-click icon then right-click on target.\nHold {(Alt)} to activate temporarily while commanding units.
+					TooltipContainer: TOOLTIP_CONTAINER
+					TooltipTemplate: BUTTON_WITH_DESC_HIGHLIGHT_TOOLTIP
+					Children:
+						Image@ICON:
+							X: 5
+							Y: 5
+							ImageCollection: command-icons
+							ImageName: force-move
+				Button@FORCE_ATTACK:
+					X: 69
+					Y: 1
+					Width: 34
+					Height: 34
+					Background: command-button
+					TooltipText: Force Attack
+					TooltipDesc: Selected units will attack the targeted unit or location\nignoring their default activity for the target.\n\nLeft-click icon then right-click on target.\nHold {(Ctrl)} to activate temporarily while commanding units.
+					TooltipContainer: TOOLTIP_CONTAINER
+					TooltipTemplate: BUTTON_WITH_DESC_HIGHLIGHT_TOOLTIP
+					Children:
+						Image@ICON:
+							X: 5
+							Y: 5
+							ImageCollection: command-icons
+							ImageName: force-attack
+				Button@GUARD:
+					X: 105
+					Y: 1
+					Width: 34
+					Height: 34
+					Background: command-button
+					DisableKeyRepeat: true
+					TooltipText: Guard
+					TooltipDesc: Selected units will follow the targeted unit.\n\nLeft-click icon then right-click on target unit.
+					TooltipContainer: TOOLTIP_CONTAINER
+					Children:
+						Image@ICON:
+							X: 5
+							Y: 5
+							ImageCollection: command-icons
+							ImageName: guard
+				Button@DEPLOY:
+					X: 139
+					Y: 1
+					Width: 34
+					Height: 34
+					Background: command-button
+					DisableKeyRepeat: true
+					TooltipText: Deploy
+					TooltipDesc: Selected units will perform their default deploy activity\n - MCVs will unpack into a Construction Yard\n - Construction Yards will re-pack into a MCV\n - Transports will unload their passengers\n - Helicopters will return to base\n\nActs immediately on selected units.
+					TooltipContainer: TOOLTIP_CONTAINER
+					Children:
+						Image@ICON:
+							X: 5
+							Y: 5
+							ImageCollection: command-icons
+							ImageName: deploy
+				Button@SCATTER:
+					X: 173
+					Y: 1
+					Width: 34
+					Height: 34
+					Background: command-button
+					DisableKeyRepeat: true
+					TooltipText: Scatter
+					TooltipDesc: Selected units will stop their current activity\nand move to a nearby location.\n\nActs immediately on selected units.
+					TooltipContainer: TOOLTIP_CONTAINER
+					Children:
+						Image@ICON:
+							X: 5
+							Y: 5
+							ImageCollection: command-icons
+							ImageName: scatter
+				Button@STOP:
+					X: 207
+					Y: 1
+					Width: 34
+					Height: 34
+					Background: command-button
+					DisableKeyRepeat: true
+					TooltipText: Stop
+					TooltipDesc: Selected units will stop their current activity.\n\nActs immediately on selected units.
+					TooltipContainer: TOOLTIP_CONTAINER
+					Children:
+						Image@ICON:
+							X: 5
+							Y: 5
+							ImageCollection: command-icons
+							ImageName: stop
+				Button@QUEUE_ORDERS:
+					X: 241
+					Y: 1
+					Width: 34
+					Height: 34
+					Background: command-button
+					TooltipText: Waypoint Mode
+					TooltipDesc: Use Waypoint Mode to give multiple linking commands\nto the selected units. Units will execute the commands\nimmediately upon receiving them.\n\nLeft-click icon then give commands in the game world.\nHold {(Shift)} to activate temporarily while commanding units.
+					TooltipContainer: TOOLTIP_CONTAINER
+					TooltipTemplate: BUTTON_WITH_DESC_HIGHLIGHT_TOOLTIP
+					Children:
+						Image@ICON:
+							X: 5
+							Y: 5
+							ImageCollection: command-icons
+							ImageName: queue-orders
+		Background@COMMAND_BAR:
+			Logic: StanceSelectorLogic
+			X: 280
+			Y: WINDOW_BOTTOM - HEIGHT - 5
+			Background: panel-black
+			Width: 138
+			Height: 28
+			Children:
+				Button@STANCE_ATTACKANYTHING:
+					X: 1
+					Y: 1
+					Width: 34
+					Height: 26
+					Background: stance-button
+					DisableKeyRepeat: true
+					TooltipText: Attack Anything Stance
+					TooltipDesc: Set the selected units to Attack Anything stance:\n - Units will attack enemy units and structures on sight\n - Units will pursue attackers across the battlefield
+					TooltipContainer: TOOLTIP_CONTAINER
+					Children:
+						Image@ICON:
+							X: 9
+							Y: 5
+							ImageCollection: stance-icons
+							ImageName: attack-anything
+				Button@STANCE_DEFEND:
+					X: 35
+					Y: 1
+					Width: 34
+					Height: 26
+					Background: stance-button
+					DisableKeyRepeat: true
+					TooltipText: Defend Stance
+					TooltipDesc: Set the selected units to Defend stance:\n - Units will attack enemy units on sight\n - Units will not move or pursue enemies
+					TooltipContainer: TOOLTIP_CONTAINER
+					Children:
+						Image@ICON:
+							X: 9
+							Y: 5
+							ImageCollection: stance-icons
+							ImageName: defend
+				Button@STANCE_RETURNFIRE:
+					X: 69
+					Y: 1
+					Width: 34
+					Height: 26
+					Background: stance-button
+					DisableKeyRepeat: true
+					TooltipText: Return Fire Stance
+					TooltipDesc: Set the selected units to Return Fire stance:\n - Units will retaliate against enemies that attack them\n - Units will not move or pursue enemies
+					TooltipContainer: TOOLTIP_CONTAINER
+					Children:
+						Image@ICON:
+							X: 9
+							Y: 5
+							ImageCollection: stance-icons
+							ImageName: return-fire
+				Button@STANCE_HOLDFIRE:
+					X: 103
+					Y: 1
+					Width: 34
+					Height: 26
+					Background: stance-button
+					DisableKeyRepeat: true
+					TooltipText: Hold Fire Stance
+					TooltipDesc: Set the selected units to Hold Fire stance:\n - Units will not fire upon enemies\n - Units will not move or pursue enemies
+					TooltipContainer: TOOLTIP_CONTAINER
+					Children:
+						Image@ICON:
+							X: 9
+							Y: 5
+							ImageCollection: stance-icons
+							ImageName: hold-fire
 		Background@SIDEBAR_BACKGROUND:
 			Logic: MenuButtonsChromeLogic
 			X: WINDOW_RIGHT - 204
@@ -270,7 +475,7 @@ Container@PLAYER_WIDGETS:
 				MenuButton@OPTIONS_BUTTON:
 					Key: escape
 					X: 22
-					Y: 0-24
+					Y: 0 - 24
 					Width: 30
 					Height: 25
 					Font: Bold
@@ -286,7 +491,7 @@ Container@PLAYER_WIDGETS:
 				Button@BEACON_BUTTON:
 					Logic: BeaconOrderButtonLogic
 					X: 62
-					Y: 0-24
+					Y: 0 - 24
 					Width: 30
 					Height: 25
 					Font: Bold
@@ -300,7 +505,7 @@ Container@PLAYER_WIDGETS:
 				Button@SELL_BUTTON:
 					Logic: SellOrderButtonLogic
 					X: 102
-					Y: 0-24
+					Y: 0 - 24
 					Width: 30
 					Height: 25
 					Font: Bold
@@ -314,7 +519,7 @@ Container@PLAYER_WIDGETS:
 				Button@REPAIR_BUTTON:
 					Logic: RepairOrderButtonLogic
 					X: 142
-					Y: 0-24
+					Y: 0 - 24
 					Width: 30
 					Height: 25
 					Font: Bold
@@ -336,16 +541,16 @@ Container@PLAYER_WIDGETS:
 							Logic: IngameRadarDisplayLogic
 							X: 1
 							Y: 1
-							Width: PARENT_RIGHT-2
-							Height: PARENT_BOTTOM-2
+							Width: PARENT_RIGHT - 2
+							Height: PARENT_BOTTOM - 2
 							WorldInteractionController: INTERACTION_CONTROLLER
 							Children:
 								LogicTicker@RADAR_TICKER:
 						VqaPlayer@PLAYER:
 							X: 1
 							Y: 1
-							Width: PARENT_RIGHT-2
-							Height: PARENT_BOTTOM-2
+							Width: PARENT_RIGHT - 2
+							Height: PARENT_BOTTOM - 2
 							Skippable: false
 				Background@POWERBAR_PANEL:
 					Logic: IngamePowerBarLogic
@@ -358,8 +563,8 @@ Container@PLAYER_WIDGETS:
 						ResourceBar@POWERBAR:
 							X: 1
 							Y: 1
-							Width: PARENT_RIGHT-2
-							Height: PARENT_BOTTOM-2
+							Width: PARENT_RIGHT - 2
+							Height: PARENT_BOTTOM - 2
 							TooltipContainer: TOOLTIP_CONTAINER
 							TooltipTemplate: SIMPLE_TOOLTIP
 							IndicatorImage: indicator-left
@@ -374,8 +579,8 @@ Container@PLAYER_WIDGETS:
 						ResourceBar@SILOBAR:
 							X: 1
 							Y: 1
-							Width: PARENT_RIGHT-2
-							Height: PARENT_BOTTOM-2
+							Width: PARENT_RIGHT - 2
+							Height: PARENT_BOTTOM - 2
 							TooltipContainer: TOOLTIP_CONTAINER
 							TooltipTemplate: SIMPLE_TOOLTIP
 							IndicatorImage: indicator-right

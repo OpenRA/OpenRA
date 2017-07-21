@@ -27,11 +27,11 @@ gacnst:
 		ZOffset: 1023
 	idle-top: gtcnst_c
 		Length: 15
-		Tick: 200
+		Tick: 80
 	damaged-idle-top: gtcnst_c
 		Start: 15
 		Length: 15
-		Tick: 200
+		Tick: 80
 	idle-side: gtcnst_a
 		Length: 10
 	damaged-idle-side: gtcnst_a
@@ -128,11 +128,11 @@ gapile:
 		Start: 2
 		ShadowStart: 5
 		Tick: 400
-	production-lights: gtpile_a
+	idle-lights: gtpile_a
 		Length: 7
 		Tick: 200
 		ZOffset: 1023
-	damaged-production-lights: gtpile_a
+	damaged-idle-lights: gtpile_a
 		Start: 7
 		Length: 7
 		Tick: 200
@@ -146,9 +146,11 @@ gapile:
 		Tick: 200
 	idle-flag: gtpile_c
 		Length: 7
+		Tick: 100
 	damaged-idle-flag: gtpile_c
 		Start: 7
 		Length: 7
+		Tick: 100
 	make: gtpilemk
 		Length: 20
 		ShadowStart: 20
@@ -192,22 +194,12 @@ gaweap:
 		Start: 2
 		ShadowStart: 5
 		Tick: 400
-	production-lights-white: gtweap_a
-		Length: 8
+	idle-lights-white: gtweap_a
+		Length: 16
 		Tick: 100
 		ZOffset: 2048
-	damaged-production-lights-white: gtweap_a
-		Start: 8
+	idle-lights-red: gtweap_b
 		Length: 8
-		Tick: 100
-		ZOffset: 2048
-	production-lights-red: gtweap_b
-		Length: 4
-		Tick: 120
-		ZOffset: 2048
-	damaged-production-lights-red: gtweap_b
-		Start: 4
-		Length: 4
 		Tick: 120
 		ZOffset: 2048
 	idle-turbines: gtweap_c
@@ -350,11 +342,11 @@ nahand:
 		Start: 2
 		ShadowStart: 5
 		Tick: 400
-	production-light: nthand_a
+	idle-light: nthand_a
 		Length: 5
 		Tick: 100
 		ZOffset: 1023
-	damaged-production-light: nthand_a
+	damaged-idle-light: nthand_a
 		Start: 5
 		Length: 5
 		Tick: 100
@@ -411,11 +403,11 @@ naweap:
 		Start: 2
 		ShadowStart: 5
 		Tick: 400
-	production-lights: ntweap_a
+	idle-lights: ntweap_a
 		Length: 16
 		Tick: 100
 		ZOffset: 2048
-	damaged-production-lights: ntweap_a
+	damaged-idle-lights: ntweap_a
 		Start: 16
 		Length: 16
 		Tick: 100
@@ -867,6 +859,90 @@ nagate_b:
 		UseTilesetCode: false
 		-DepthSprite:
 
+napost:
+	Defaults:
+		Offset: 0, -12, 13
+		UseTilesetCode: true
+		DepthSprite: isodepth.shp
+	idle:
+		Start: 0
+		ShadowStart: 3
+	damaged-idle:
+		Start: 1
+		ShadowStart: 4
+	lights: napost_b
+		Start: 0
+		Length: 7
+		ShadowStart: 14
+		Tick: 80
+	damaged-lights: napost_b
+		Start: 7
+		Length: 7
+		ShadowStart: 21
+		Tick: 80
+	chainoflights: napost_a
+		Start: 0
+		Length: 12
+		ShadowStart: 24
+		Tick: 80
+	damaged-chainoflights: napost_a
+		Start: 12
+		Length: 12
+		ShadowStart: 36
+		Tick: 80
+	dead:
+		Start: 2
+		Tick: 400
+		ShadowStart: 5
+	make: napostmk
+		Start: 0
+		Length: 12
+		ShadowStart: 12
+	emp-overlay: emp_fx01
+		Length: *
+		Offset: 0, 0, 25
+		UseTilesetCode: false
+		ZOffset: 512
+		BlendMode: Additive
+		-DepthSprite:
+	icon: lasricon
+		Offset: 0, 0
+		UseTilesetCode: false
+		-DepthSprite:
+
+nafnce:
+	Defaults:
+		Offset: 0, -12, 13
+		UseTilesetCode: true
+		DepthSprite: isodepth.shp
+	idle:
+		Length: 1
+	disabled-x:
+		Start: 8
+		Length: 1
+		Offset: 0, -12, 1
+		ZRamp: 1
+		-DepthSprite:
+	disabled-y:
+		Start: 12
+		Length: 1
+		Offset: 0, -12, 1
+		ZRamp: 1
+		-DepthSprite:
+	enabled-x:
+		Frames: 3,3,1,1,3,3,1,1,2,2,0,0,2,2,0,0
+		Length: 16
+	enabled-y:
+		Frames: 7,5,7,5,6,4,6,4,7,5,7,5,6,4,6,4
+		Length: 16
+	emp-overlay: emp_fx01
+		Length: *
+		Offset: 0, 0, 25
+		UseTilesetCode: false
+		ZOffset: 512
+		BlendMode: Additive
+		-DepthSprite:
+
 nawall:
 	Defaults:
 		Offset: 0, -12, 12
@@ -909,31 +985,6 @@ gaicbm:
 	make: gaicbmmk
 		Length: 30
 		ShadowStart: 30
-
-gaarty:
-	Defaults:
-		Offset: 0, -12, 12
-		UseTilesetCode: true
-		DepthSprite: isodepth.shp
-	idle:
-		ShadowStart: 3
-	damaged-idle:
-		Start: 1
-		ShadowStart: 4
-	muzzle: gunfire
-		Length: *
-		Offset: 0, 0
-		UseTilesetCode: false
-	emp-overlay: emp_fx01
-		Length: *
-		Offset: 0, 0, 13
-		UseTilesetCode: false
-		ZOffset: 512
-		BlendMode: Additive
-		-DepthSprite:
-	make: gaartymk
-		Length: 16
-		ShadowStart: 16
 
 naobel:
 	Defaults:
@@ -1257,14 +1308,14 @@ gahpad:
 		ZRamp: 1
 	idle-lights: gthpad_a
 		Length: 8
-		Tick: 200
+		Tick: 100
 		Offset: 0, -36
 		ZOffset: -1c511
 		ZRamp: 1
 	damaged-idle-lights: gthpad_a
 		Start: 8
 		Length: 8
-		Tick: 200
+		Tick: 100
 		Offset: 0, -36
 		ZOffset: -1c511
 		ZRamp: 1
@@ -1326,12 +1377,12 @@ nahpad:
 	idle-lights: nthpad_a
 		Length: 46
 		ZOffset: -1c511
-		Tick: 120
+		Tick: 100
 		ZRamp: 1
 	damaged-idle-lights: nthpad_a
 		Start: 46
 		Length: 46
-		Tick: 120
+		Tick: 100
 		ZOffset: -1c511
 		ZRamp: 1
 	make: nthpadmk

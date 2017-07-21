@@ -30,15 +30,18 @@
 	Warhead@3Eff: CreateEffect
 		Explosions: med_explosion
 		ImpactSounds: kaboom25.aud
-		InvalidImpactTypes: Water
+		ValidTargets: Ground, Air, Ship
 	Warhead@4EffWater: CreateEffect
 		Explosions: med_splash
 		ImpactSounds: splash9.aud
-		ValidImpactTypes: Water
+		ValidTargets: Water, Underwater
+		InvalidTargets: Ship, Structure
 
 ^AntiAirMissile:
 	Inherits: ^AntiGroundMissile
 	ValidTargets: Air
+	Warhead@3Eff: CreateEffect
+		VictimScanRadius: 0
 
 Maverick:
 	Inherits: ^AntiGroundMissile
@@ -125,11 +128,11 @@ MammothTusk:
 		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
 	Warhead@3Eff: CreateEffect
 		ImpactSounds: kaboom12.aud
-		InvalidImpactTypes: Water, Air, AirHit
+		ValidTargets: Ground
 	Warhead@5EffAir: CreateEffect
 		Explosions: med_explosion_air
 		ImpactSounds: kaboom25.aud
-		ValidImpactTypes: Air, AirHit
+		ValidTargets: Air
 
 Nike:
 	Inherits: ^AntiAirMissile
@@ -175,6 +178,7 @@ Stinger:
 	Range: 7c512
 	Burst: 2
 	BurstDelay: 0
+	InvalidTargets: Underwater
 	Projectile: Missile
 		Arm: 3
 		Inaccuracy: 0
@@ -188,12 +192,6 @@ Stinger:
 			None: 30
 			Light: 75
 			Concrete: 50
-	Warhead@3Eff: CreateEffect
-		InvalidImpactTypes: Water, Air, AirHit
-	Warhead@5EffAir: CreateEffect
-		Explosions: med_explosion_air
-		ImpactSounds: kaboom25.aud
-		ValidImpactTypes: Air, AirHit
 
 StingerAA:
 	Inherits: Stinger
@@ -201,6 +199,9 @@ StingerAA:
 	Projectile: Missile
 		Speed: 255
 		CloseEnough: 298
+	Warhead@3Eff: CreateEffect
+		Explosions: med_explosion_air
+		ImpactSounds: kaboom25.aud
 
 APTusk:
 	Inherits: ^AntiGroundMissile
@@ -248,15 +249,16 @@ TorpTube:
 	Warhead@3Eff: CreateEffect
 		Explosions: large_explosion
 		ImpactSounds: kaboom15.aud
-		InvalidImpactTypes: Water, WaterHit
+		InvalidTargets: Water
 	Warhead@5EffWaterHit: CreateEffect
 		Explosions: artillery_explosion
 		ImpactSounds: kaboom15.aud
-		ValidImpactTypes: WaterHit
+		ValidTargets: Ship, Structure, Underwater
 	Warhead@4EffWater: CreateEffect
 		Explosions: large_splash
 		ImpactSounds: splash9.aud
-		ValidImpactTypes: Water
+		ValidTargets: Water
+		InvalidTargets: Ship, Structure, Underwater
 
 ^SubMissileDefault:
 	Inherits: ^AntiGroundMissile
@@ -278,7 +280,7 @@ TorpTube:
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		Versus:
 			None: 40
-			Wood: 100
+			Wood: 40
 			Light: 30
 			Heavy: 30
 			Concrete: 100
@@ -286,15 +288,14 @@ TorpTube:
 	Warhead@3Eff: CreateEffect
 		Explosions: artillery_explosion
 		ImpactSounds: kaboom15.aud
-		InvalidImpactTypes: Water
 	Warhead@4EffWater: CreateEffect
 		Explosions: large_splash
 		ImpactSounds: splash9.aud
-		ValidImpactTypes: Water
 
 SubMissile:
 	Inherits: ^SubMissileDefault
 	Range: 16c0
+	TargetActorCenter: true
 	-Projectile:
 	Projectile: Bullet
 		Speed: 162

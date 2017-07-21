@@ -21,6 +21,7 @@ harv.gdi:
 	harvest: harvestr
 		Length: *
 		ZRamp: 1
+		Offset: 0, 0, 3
 	icon: sidebar-gdi|harvicon
 
 harv.nod:
@@ -28,6 +29,7 @@ harv.nod:
 	harvest: harvestr
 		Length: *
 		ZRamp: 1
+		Offset: 0, 0, 3
 	icon: sidebar-nod|harvicon
 
 hvr:
@@ -44,13 +46,13 @@ lpst.gdi:
 	idle: gadpsa
 		DepthSprite: isodepth.shp
 		DepthSpriteOffset: -6, -6
-		Offset: 0, -12, 12
+		Offset: 0, -13, 12
 		UseTilesetCode: true
 		ShadowStart: 3
 	make: gadpsamk
 		DepthSprite: isodepth.shp
 		DepthSpriteOffset: -6, -6
-		Offset: 0, -12, 12
+		Offset: 0, -13, 12
 		UseTilesetCode: true
 		Length: 36
 		ShadowStart: 36
@@ -67,6 +69,26 @@ repair:
 art2:
 	Inherits: ^VehicleOverlays
 	icon: artyicon
+	idle: gaarty
+		ShadowStart: 3
+		Offset: 0, -12, 12
+		UseTilesetCode: true
+		DepthSprite: isodepth.shp
+	damaged-idle: gaarty
+		Start: 1
+		ShadowStart: 4
+		Offset: 0, -12, 12
+		UseTilesetCode: true
+		DepthSprite: isodepth.shp
+	make: gaartymk
+		Length: 16
+		ShadowStart: 16
+		Offset: 0, -12, 12
+		UseTilesetCode: true
+		DepthSprite: isodepth.shp
+	muzzle: gunfire
+		Length: *
+		Offset: 0, 0, 24
 
 weed:
 	Inherits: ^VehicleOverlays
@@ -112,15 +134,15 @@ ttnk:
 	Inherits: ^VehicleOverlays
 	idle: gatick
 		ShadowStart: 3
-		Offset: 0, -12, 12
+		Offset: 0, -14, 14
 	damaged-idle: gatick
 		Start: 1
 		ShadowStart: 4
-		Offset: 0, -12, 12
+		Offset: 0, -14, 14
 	make: gatickmk
 		Length: 24
 		ShadowStart: 24
-		Offset: 0, -12, 12
+		Offset: 0, -14, 14
 	muzzle: gunfire
 		Length: *
 		Offset: 0, 0, 24
@@ -137,11 +159,12 @@ mmch:
 		Stride: 15
 		ShadowStart: 152
 		Offset: 0, 0, 12
-	run:
+	walk:
 		Length: 15
 		Facings: -8
 		ShadowStart: 152
 		Offset: 0, 0, 12
+		Tick: 60
 	turret:
 		Start: 120
 		Facings: -32
@@ -150,6 +173,38 @@ mmch:
 		Length: *
 		Offset: 0, 0, 12
 	icon: mmchicon
+
+jugg:
+	Inherits: ^VehicleOverlays
+	icon: juggicon
+	stand: jugger
+		Facings: -8
+		Stride: 15
+		ShadowStart: 120
+		Offset: 0, 0, 12
+	walk: jugger
+		Length: 15
+		Facings: -8
+		ShadowStart: 120
+		Offset: 0, 0, 12
+		Tick: 60
+	turret: djugg_a
+		Facings: 32
+		Offset: -4, 0, 12
+	idle: djugg
+		ShadowStart: 3
+		Offset: 0, -12, 12
+	damaged-idle: djugg
+		Start: 1
+		ShadowStart: 4
+		Offset: 0, -12, 12
+	make: djuggmk
+		Length: 18
+		ShadowStart: 18
+		Offset: 0, -12, 12
+	muzzle: gunfire
+		Length: *
+		Offset: 0, 0, 24
 
 gghunt:
 	Inherits: ^VehicleOverlays
@@ -166,16 +221,17 @@ smech:
 		Start: 96
 		Facings: -8
 		ShadowStart: 232
-	run:
+	walk:
 		Facings: -8
 		Length: 12
 		ShadowStart: 136
+		Tick: 48
 	shoot:
 		Start: 104
 		Length: 4
 		Facings: -8
 		ShadowStart: 240
-		Tick: 100
+		Tick: 80
 	icon: smchicon
 
 trucka:

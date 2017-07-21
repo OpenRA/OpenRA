@@ -39,7 +39,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override abstract object Create(ActorInitializer init);
 	}
 
-	public abstract class AttackBase : ConditionalTrait<AttackBaseInfo>, IIssueOrder, IResolveOrder, IOrderVoice, ISync
+	public abstract class AttackBase : ConditionalTrait<AttackBaseInfo>, INotifyCreated, IIssueOrder, IResolveOrder, IOrderVoice, ISync
 	{
 		readonly string attackOrderName = "Attack";
 		readonly string forceAttackOrderName = "ForceAttack";
@@ -47,9 +47,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Sync] public bool IsAttacking { get; internal set; }
 		public IEnumerable<Armament> Armaments { get { return getArmaments(); } }
 
-		protected Lazy<IFacing> facing;
-		protected Lazy<Building> building;
-		protected Lazy<IPositionable> positionable;
+		protected IFacing facing;
+		protected Building building;
+		protected IPositionable positionable;
 		protected Func<IEnumerable<Armament>> getArmaments;
 
 		readonly Actor self;
@@ -58,15 +58,25 @@ namespace OpenRA.Mods.Common.Traits
 			: base(info)
 		{
 			this.self = self;
+		}
 
-			var armaments = Exts.Lazy(() => self.TraitsImplementing<Armament>()
-				.Where(a => info.Armaments.Contains(a.Info.Name)).ToArray());
+		protected override void Created(Actor self)
+		{
+			facing = self.TraitOrDefault<IFacing>();
+			building = self.TraitOrDefault<Building>();
+			positionable = self.TraitOrDefault<IPositionable>();
 
-			getArmaments = () => armaments.Value;
+			getArmaments = InitializeGetArmaments(self);
 
-			facing = Exts.Lazy(() => self.TraitOrDefault<IFacing>());
-			building = Exts.Lazy(() => self.TraitOrDefault<Building>());
-			positionable = Exts.Lazy(() => self.Trait<IPositionable>());
+			base.Created(self);
+		}
+
+		protected virtual Func<IEnumerable<Armament>> InitializeGetArmaments(Actor self)
+		{
+			var armaments = self.TraitsImplementing<Armament>()
+				.Where(a => Info.Armaments.Contains(a.Info.Name)).ToArray();
+
+			return () => armaments;
 		}
 
 		protected virtual bool CanAttack(Actor self, Target target)
@@ -80,8 +90,12 @@ namespace OpenRA.Mods.Common.Traits
 			if (!HasAnyValidWeapons(target))
 				return false;
 
+			var mobile = self.TraitOrDefault<Mobile>();
+			if (mobile != null && !mobile.CanInteractWithGroundLayer(self))
+				return false;
+
 			// Building is under construction or is being sold
-			if (building.Value != null && !building.Value.BuildComplete)
+			if (building != null && !building.BuildComplete)
 				return false;
 
 			if (Armaments.All(a => a.IsReloading))
@@ -96,10 +110,10 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			foreach (var a in armaments ?? Armaments)
-				a.CheckFire(self, facing.Value, target);
+				a.CheckFire(self, facing, target);
 		}
 
-		public IEnumerable<IOrderTargeter> Orders
+		IEnumerable<IOrderTargeter> IIssueOrder.Orders
 		{
 			get
 			{
@@ -115,7 +129,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
+		Order IIssueOrder.IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
 		{
 			if (order is AttackOrderTargeter)
 			{
@@ -133,7 +147,7 @@ namespace OpenRA.Mods.Common.Traits
 			return null;
 		}
 
-		public virtual void ResolveOrder(Actor self, Order order)
+		void IResolveOrder.ResolveOrder(Actor self, Order order)
 		{
 			var forceAttack = order.OrderString == forceAttackOrderName;
 			if (forceAttack || order.OrderString == attackOrderName)
@@ -147,7 +161,12 @@ namespace OpenRA.Mods.Common.Traits
 			}
 
 			if (order.OrderString == "Stop")
-				self.CancelActivity();
+				OnStopOrder(self);
+		}
+
+		protected virtual void OnStopOrder(Actor self)
+		{
+			self.CancelActivity();
 		}
 
 		static Target TargetFromOrder(Actor self, Order order)
@@ -172,27 +191,35 @@ namespace OpenRA.Mods.Common.Traits
 			return Target.Invalid;
 		}
 
-		public string VoicePhraseForOrder(Actor self, Order order)
+		string IOrderVoice.VoicePhraseForOrder(Actor self, Order order)
 		{
 			return order.OrderString == attackOrderName || order.OrderString == forceAttackOrderName ? Info.Voice : null;
 		}
 
 		public abstract Activity GetAttackActivity(Actor self, Target newTarget, bool allowMove, bool forceAttack);
 
-		public bool HasAnyValidWeapons(Target t)
+		public bool HasAnyValidWeapons(Target t, bool checkForCenterTargetingWeapons = false)
 		{
 			if (IsTraitDisabled)
 				return false;
 
-			if (Info.AttackRequiresEnteringCell && !positionable.Value.CanEnterCell(t.Actor.Location, null, false))
+			if (Info.AttackRequiresEnteringCell && (positionable == null || !positionable.CanEnterCell(t.Actor.Location, null, false)))
 				return false;
 
 			// PERF: Avoid LINQ.
 			foreach (var armament in Armaments)
-				if (!armament.OutOfAmmo && armament.Weapon.IsValidAgainst(t, self.World, self))
+			{
+				var checkIsValid = checkForCenterTargetingWeapons ? armament.Weapon.TargetActorCenter : !armament.OutOfAmmo;
+				if (checkIsValid && armament.Weapon.IsValidAgainst(t, self.World, self))
 					return true;
+			}
 
 			return false;
+		}
+
+		public virtual WPos GetTargetPosition(WPos pos, Target target)
+		{
+			return HasAnyValidWeapons(target, true) ? target.CenterPosition : target.Positions.PositionClosestTo(pos);
 		}
 
 		public WDist GetMinimumRange()

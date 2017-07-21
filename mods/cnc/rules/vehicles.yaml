@@ -82,6 +82,7 @@ APC:
 	Inherits: ^Tank
 	Inherits@EXPERIENCE: ^GainsExperience
 	Inherits@CLOAK: ^AcceptsCloakCrate
+	Inherits@AUTOTARGET: ^AutoTargetAll
 	Valued:
 		Cost: 550
 	Tooltip:
@@ -119,7 +120,6 @@ APC:
 	AttackTurreted:
 	WithMuzzleOverlay:
 	WithSpriteTurret:
-	AutoTarget:
 	Cargo:
 		Types: Infantry
 		MaxWeight: 5
@@ -132,6 +132,7 @@ ARTY:
 	Inherits: ^Tank
 	Inherits@EXPERIENCE: ^GainsExperience
 	Inherits@CLOAK: ^AcceptsCloakCrate
+	Inherits@AUTOTARGET: ^AutoTargetGround
 	Valued:
 		Cost: 600
 	Tooltip:
@@ -169,6 +170,7 @@ FTNK:
 	Inherits: ^Tank
 	Inherits@EXPERIENCE: ^GainsExperience
 	Inherits@CLOAK: ^AcceptsCloakCrate
+	Inherits@AUTOTARGET: ^AutoTargetGround
 	Valued:
 		Cost: 600
 	Tooltip:
@@ -192,7 +194,6 @@ FTNK:
 		LocalOffset: 512,128,42, 512,-128,42
 		MuzzleSequence: muzzle
 	AttackFrontal:
-	AutoTarget:
 	WithMuzzleOverlay:
 	Explodes:
 		Weapon: FlametankExplode
@@ -204,6 +205,7 @@ BGGY:
 	Inherits: ^Vehicle
 	Inherits@@EXPERIENCE: ^GainsExperience
 	Inherits@CLOAK: ^AcceptsCloakCrate
+	Inherits@AUTOTARGET: ^AutoTargetGround
 	Valued:
 		Cost: 300
 	Tooltip:
@@ -232,7 +234,6 @@ BGGY:
 	AttackTurreted:
 	WithMuzzleOverlay:
 	WithSpriteTurret:
-	AutoTarget:
 	SpawnActorOnDeath:
 		Actor: BGGY.Husk
 
@@ -240,6 +241,7 @@ BIKE:
 	Inherits: ^Vehicle
 	Inherits@EXPERIENCE: ^GainsExperience
 	Inherits@CLOAK: ^AcceptsCloakCrate
+	Inherits@AUTOTARGET: ^AutoTargetAll
 	Valued:
 		Cost: 500
 	Tooltip:
@@ -270,7 +272,6 @@ BIKE:
 		LocalOffset: -128, -170, 170, -128, 170, 170
 		LocalYaw: 100, -100
 	AttackFrontal:
-	AutoTarget:
 	SpawnActorOnDeath:
 		Actor: BIKE.Husk
 
@@ -278,6 +279,7 @@ JEEP:
 	Inherits: ^Vehicle
 	Inherits@EXPERIENCE: ^GainsExperience
 	Inherits@CLOAK: ^AcceptsCloakCrate
+	Inherits@AUTOTARGET: ^AutoTargetGround
 	Valued:
 		Cost: 400
 	Tooltip:
@@ -300,13 +302,12 @@ JEEP:
 		TurnSpeed: 10
 		Offset: -85,0,128
 	Armament:
-		Weapon: MachineGun
+		Weapon: MachineGunH
 		LocalOffset: 171,0,85
 		MuzzleSequence: muzzle
 	AttackTurreted:
 	WithMuzzleOverlay:
 	WithSpriteTurret:
-	AutoTarget:
 	SpawnActorOnDeath:
 		Actor: JEEP.Husk
 
@@ -314,6 +315,7 @@ LTNK:
 	Inherits: ^Tank
 	Inherits@EXPERIENCE: ^GainsExperience
 	Inherits@CLOAK: ^AcceptsCloakCrate
+	Inherits@AUTOTARGET: ^AutoTargetGround
 	Valued:
 		Cost: 650
 	Tooltip:
@@ -345,7 +347,6 @@ LTNK:
 	AttackTurreted:
 	WithMuzzleOverlay:
 	WithSpriteTurret:
-	AutoTarget:
 	SpawnActorOnDeath:
 		Actor: LTNK.Husk
 
@@ -353,6 +354,7 @@ MTNK:
 	Inherits: ^Tank
 	Inherits@EXPERIENCE: ^GainsExperience
 	Inherits@CLOAK: ^AcceptsCloakCrate
+	Inherits@AUTOTARGET: ^AutoTargetGround
 	Valued:
 		Cost: 800
 	Tooltip:
@@ -381,7 +383,6 @@ MTNK:
 	AttackTurreted:
 	WithMuzzleOverlay:
 	WithSpriteTurret:
-	AutoTarget:
 	SpawnActorOnDeath:
 		Actor: MTNK.Husk
 	SelectionDecorations:
@@ -391,6 +392,7 @@ HTNK:
 	Inherits: ^Tank
 	Inherits@EXPERIENCE: ^GainsExperience
 	Inherits@CLOAK: ^AcceptsCloakCrate
+	Inherits@AUTOTARGET: ^AutoTargetAll
 	Valued:
 		Cost: 1500
 	Tooltip:
@@ -428,7 +430,6 @@ HTNK:
 		MuzzleSequence: muzzle
 	AttackTurreted:
 	WithMuzzleOverlay:
-	AutoTarget:
 	SelfHealing:
 		Delay: 10
 		HealIfBelow: 50
@@ -442,6 +443,7 @@ MSAM:
 	Inherits: ^Tank
 	Inherits@EXPERIENCE: ^GainsExperience
 	Inherits@CLOAK: ^AcceptsCloakCrate
+	Inherits@AUTOTARGET: ^AutoTargetGround
 	Valued:
 		Cost: 1000
 	Tooltip:
@@ -472,7 +474,6 @@ MSAM:
 	AttackFrontal:
 	WithSpriteTurret:
 		AimSequence: aim
-	AutoTarget:
 	SpawnActorOnDeath:
 		Actor: MSAM.Husk
 
@@ -480,6 +481,7 @@ MLRS:
 	Inherits: ^Tank
 	Inherits@EXPERIENCE: ^GainsExperience
 	Inherits@CLOAK: ^AcceptsCloakCrate
+	Inherits@AUTOTARGET: ^AutoTargetAir
 	Valued:
 		Cost: 600
 	Tooltip:
@@ -523,6 +525,7 @@ MLRS:
 STNK:
 	Inherits: ^Vehicle
 	Inherits@EXPERIENCE: ^GainsExperience
+	Inherits@AUTOTARGET: ^AutoTargetAll
 	Valued:
 		Cost: 900
 	Tooltip:
@@ -582,3 +585,28 @@ MHQ:
 		Offset: -256,0,256
 	Buildable:
 		Description: Mobile base of operations
+
+TDTRUK:
+	Inherits: ^Vehicle
+	Buildable:
+		Queue: Vehicle.GDI, Vehicle.Nod
+		BuildPaletteOrder: 35
+		Prerequisites: ~techlevel.low
+		Description: Transports cash to other players.\n  Unarmed
+	Valued:
+		Cost: 500
+	Tooltip:
+		Name: Supply Truck
+	Selectable:
+		Priority: 6
+	Health:
+		HP: 110
+	Armor:
+		Type: Light
+	Mobile:
+		Speed: 128
+	RevealsShroud:
+		Range: 4c0
+	DeliversCash:
+		Payload: 500
+		PlayerExperience: 50

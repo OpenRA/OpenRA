@@ -107,7 +107,7 @@ namespace OpenRA.Mods.Common.Traits
 
 				self.CancelActivity();
 				var transports = order.OrderString == "EnterTransports";
-				self.QueueActivity(new EnterTransport(self, order.TargetActor, transports ? Info.MaxAlternateTransportAttempts : 0, transports));
+				self.QueueActivity(new EnterTransport(self, order.TargetActor, transports ? Info.MaxAlternateTransportAttempts : 0, !transports));
 			}
 		}
 

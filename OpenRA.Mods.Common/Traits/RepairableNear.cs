@@ -11,6 +11,7 @@
 
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Orders;
 using OpenRA.Traits;
@@ -83,6 +84,18 @@ namespace OpenRA.Mods.Common.Traits
 
 				self.SetTargetLine(target, Color.Green, false);
 			}
+		}
+
+		public Actor FindRepairBuilding(Actor self)
+		{
+			var repairBuilding = self.World.ActorsWithTrait<RepairsUnits>()
+				.Where(a => !a.Actor.IsDead && a.Actor.IsInWorld
+					&& a.Actor.Owner.IsAlliedWith(self.Owner) &&
+					info.Buildings.Contains(a.Actor.Info.Name))
+				.OrderBy(p => (self.Location - p.Actor.Location).LengthSquared);
+
+			// Worst case FirstOrDefault() will return a TraitPair<null, null>, which is OK.
+			return repairBuilding.FirstOrDefault().Actor;
 		}
 	}
 }

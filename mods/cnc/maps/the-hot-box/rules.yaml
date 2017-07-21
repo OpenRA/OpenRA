@@ -35,7 +35,7 @@ UNITCRATE:
 		Units: e1
 	GiveUnitCrateAction@e3:
 		SelectionShares: 1
-		Units: e3		
+		Units: e3
 
 APC:
 	Health:

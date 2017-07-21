@@ -1,14 +1,14 @@
 Container@MUSIC_PANEL:
 	Logic: MusicPlayerLogic
-	X: (WINDOW_RIGHT - WIDTH)/2
-	Y: (WINDOW_BOTTOM - 400)/2
+	X: (WINDOW_RIGHT - WIDTH) / 2
+	Y: (WINDOW_BOTTOM - 400) / 2
 	Width: 360
 	Height: 435
 	Children:
 		LogicTicker@SONG_WATCHER:
 		Label@TITLE:
 			Width: 360
-			Y: 0-25
+			Y: 0 - 25
 			Font: BigBold
 			Contrast: true
 			Align: Center
@@ -25,7 +25,7 @@ Container@MUSIC_PANEL:
 					Height: 275
 					Children:
 						ScrollItem@MUSIC_TEMPLATE:
-							Width: PARENT_RIGHT-27
+							Width: PARENT_RIGHT - 27
 							Height: 25
 							X: 2
 							Y: 0
@@ -33,11 +33,11 @@ Container@MUSIC_PANEL:
 							Children:
 								Label@TITLE:
 									X: 10
-									Width: PARENT_RIGHT-50
+									Width: PARENT_RIGHT - 50
 									Height: 25
 								Label@LENGTH:
 									Width: 50
-									X: PARENT_RIGHT-60
+									X: PARENT_RIGHT - 60
 									Align: Right
 									Height: 25
 				Container@LABEL_CONTAINER:
@@ -52,7 +52,7 @@ Container@MUSIC_PANEL:
 							Align: Center
 							Font: Bold
 						Label@TYPE:
-							X: PARENT_RIGHT-85
+							X: PARENT_RIGHT - 85
 							Height: 25
 							Width: 50
 							Text: Length
@@ -60,7 +60,7 @@ Container@MUSIC_PANEL:
 							Font: Bold
 				Container@BUTTONS:
 					X: 15
-					Y: PARENT_BOTTOM-HEIGHT-40
+					Y: PARENT_BOTTOM - HEIGHT - 40
 					Width: 170
 					Children:
 						Button@BUTTON_PREV:
@@ -135,7 +135,7 @@ Container@MUSIC_PANEL:
 							Height: 20
 							Ticks: 5
 				Label@TIME_LABEL:
-					X: (PARENT_RIGHT-WIDTH)/2
+					X: (PARENT_RIGHT - WIDTH) / 2
 					Y: 315
 					Width: 140
 					Height: 25
@@ -148,7 +148,7 @@ Container@MUSIC_PANEL:
 					Font: Regular
 					Text: Shuffle
 				Checkbox@REPEAT:
-					X: PARENT_RIGHT-15-WIDTH
+					X: PARENT_RIGHT - 15 - WIDTH
 					Y: 320
 					Width: 70
 					Height: 20
@@ -158,33 +158,27 @@ Container@MUSIC_PANEL:
 					X: 15
 					Y: 120
 					Width: 330
-					Height: 80
+					Height: 60
 					Visible: false
 					Children:
 						Label@TITLE:
-							Width: PARENT_RIGHT-24
+							Width: PARENT_RIGHT - 24
 							Height: 25
 							Font: Bold
 							Align: Center
 							Text: Music Not Installed
 						Label@DESCA:
 							Y: 20
-							Width: PARENT_RIGHT-24
+							Width: PARENT_RIGHT - 24
 							Height: 25
 							Align: Center
 							Text: The game music can be installed
 						Label@DESCB:
 							Y: 40
-							Width: PARENT_RIGHT-24
+							Width: PARENT_RIGHT - 24
 							Height: 25
 							Align: Center
-							Text: from the "Manage Content" menu
-						Label@DESCC:
-							Y: 60
-							Width: PARENT_RIGHT-24
-							Height: 25
-							Align: Center
-							Text: in the mod chooser.
+							Text: from the "Manage Content" menu.
 		Button@BACK_BUTTON:
 			Key: escape
 			X: 0

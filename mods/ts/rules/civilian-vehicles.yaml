@@ -2,6 +2,7 @@
 	Inherits: ^Tank
 	Inherits@VOXELS: ^VoxelActor
 	Inherits@EXPERIENCE: ^GainsExperience
+	Inherits@AUTOTARGET: ^AutoTargetAll
 	Valued:
 		Cost: 1700
 	Tooltip:
@@ -22,14 +23,14 @@
 		TurnSpeed: 3
 	Armament@PRIMARY:
 		Weapon: 120mmx
-		LocalOffset: 500,60,360, 500,-85,360
+		LocalOffset: 707,85,509, 707,-120,509
 		MuzzleSequence: muzzle
+		MuzzlePalette: effect-ignore-lighting
 	Armament@SECONDARY:
 		Weapon: MammothTusk
-		LocalOffset: 0,200,410, 0,-200,410
+		LocalOffset: 0,283,580, 0,-283,580
 	AttackTurreted:
 		Voice: Attack
-	AutoTarget:
 	SelfHealing:
 		Delay: 10
 		HealIfBelow: 50

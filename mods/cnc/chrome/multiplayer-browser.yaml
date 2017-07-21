@@ -24,7 +24,7 @@ Container@MULTIPLAYER_BROWSER_PANEL:
 					X: 380
 					Width: 110
 					Height: 25
-					Text: Country
+					Text: Location
 					Font: Bold
 				Label@STATUS:
 					X: 495
@@ -39,19 +39,19 @@ Container@MULTIPLAYER_BROWSER_PANEL:
 			TopBottomSpacing: 2
 			Children:
 				ScrollItem@HEADER_TEMPLATE:
-					Width: PARENT_RIGHT-27
+					Width: PARENT_RIGHT - 27
 					Height: 20
 					X: 2
 					Visible: false
 					Children:
 						Label@LABEL:
-							Y: 0-1
+							Y: 0 - 1
 							Font: TinyBold
 							Width: PARENT_RIGHT
 							Height: 20
 							Align: Center
 				ScrollItem@SERVER_TEMPLATE:
-					Width: PARENT_RIGHT-27
+					Width: PARENT_RIGHT - 27
 					Height: 25
 					X: 2
 					Children:
@@ -85,7 +85,7 @@ Container@MULTIPLAYER_BROWSER_PANEL:
 			Align: Center
 			Visible: false
 		Container@SELECTED_SERVER:
-			X: PARENT_RIGHT-WIDTH
+			X: PARENT_RIGHT - WIDTH
 			Y: 30
 			Width: 174
 			Height: 280
@@ -98,9 +98,8 @@ Container@MULTIPLAYER_BROWSER_PANEL:
 						MapPreview@SELECTED_MAP_PREVIEW:
 							X: 1
 							Y: 1
-							Width: PARENT_RIGHT-2
-							Height: PARENT_BOTTOM-2
-							TooltipContainer: TOOLTIP_CONTAINER
+							Width: PARENT_RIGHT - 2
+							Height: PARENT_BOTTOM - 2
 				Label@SELECTED_MAP:
 					Y: 172
 					Width: PARENT_RIGHT

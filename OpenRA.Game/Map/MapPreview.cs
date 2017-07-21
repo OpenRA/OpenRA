@@ -123,8 +123,8 @@ namespace OpenRA
 		}
 
 		static readonly CPos[] NoSpawns = new CPos[] { };
-		MapCache cache;
-		ModData modData;
+		readonly MapCache cache;
+		readonly ModData modData;
 
 		public readonly string Uid;
 		public IReadOnlyPackage Package { get; private set; }
@@ -307,8 +307,9 @@ namespace OpenRA
 				var musicDefinitions = LoadRuleSection(yaml, "Music");
 				var notificationDefinitions = LoadRuleSection(yaml, "Notifications");
 				var sequenceDefinitions = LoadRuleSection(yaml, "Sequences");
+				var modelSequenceDefinitions = LoadRuleSection(yaml, "ModelSequences");
 				var rules = Ruleset.Load(modData, this, TileSet, ruleDefinitions, weaponDefinitions,
-					voiceDefinitions, notificationDefinitions, musicDefinitions, sequenceDefinitions);
+					voiceDefinitions, notificationDefinitions, musicDefinitions, sequenceDefinitions, modelSequenceDefinitions);
 				var flagged = Ruleset.DefinesUnsafeCustomRules(modData, this, ruleDefinitions,
 					weaponDefinitions, voiceDefinitions, notificationDefinitions, sequenceDefinitions);
 				return Pair.New(rules, flagged);
@@ -390,8 +391,9 @@ namespace OpenRA
 						var musicDefinitions = LoadRuleSection(rulesYaml, "Music");
 						var notificationDefinitions = LoadRuleSection(rulesYaml, "Notifications");
 						var sequenceDefinitions = LoadRuleSection(rulesYaml, "Sequences");
+						var modelSequenceDefinitions = LoadRuleSection(rulesYaml, "ModelSequences");
 						var rules = Ruleset.Load(modData, this, TileSet, ruleDefinitions, weaponDefinitions,
-							voiceDefinitions, notificationDefinitions, musicDefinitions, sequenceDefinitions);
+							voiceDefinitions, notificationDefinitions, musicDefinitions, sequenceDefinitions, modelSequenceDefinitions);
 						var flagged = Ruleset.DefinesUnsafeCustomRules(modData, this, ruleDefinitions,
 							weaponDefinitions, voiceDefinitions, notificationDefinitions, sequenceDefinitions);
 						return Pair.New(rules, flagged);
@@ -416,7 +418,7 @@ namespace OpenRA
 			innerData = newData;
 		}
 
-		public void Install(Action onSuccess)
+		public void Install(string mapRepositoryUrl, Action onSuccess)
 		{
 			if (Status != MapStatus.DownloadAvailable || !Game.Settings.Game.AllowDownloading)
 				return;
@@ -431,12 +433,11 @@ namespace OpenRA
 			}
 
 			var mapInstallPackage = installLocation.Key as IReadWritePackage;
-			var modData = Game.ModData;
 			new Thread(() =>
 			{
 				// Request the filename from the server
 				// Run in a worker thread to avoid network delays
-				var mapUrl = Game.Settings.Game.MapRepository + Uid;
+				var mapUrl = mapRepositoryUrl + Uid;
 				var mapFilename = string.Empty;
 				try
 				{
@@ -472,7 +473,7 @@ namespace OpenRA
 						Log.Write("debug", "Downloaded map to '{0}'", mapFilename);
 						Game.RunAfterTick(() =>
 						{
-							var package = modData.ModFiles.OpenPackage(mapFilename, mapInstallPackage);
+							var package = mapInstallPackage.OpenPackage(mapFilename, modData.ModFiles);
 							if (package == null)
 								innerData.Status = MapStatus.DownloadError;
 							else

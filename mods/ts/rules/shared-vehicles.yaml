@@ -3,24 +3,24 @@ MCV:
 	Inherits@VOXELS: ^VoxelActor
 	Buildable:
 		Queue: Vehicle
-		BuildPaletteOrder: 110
-		Prerequisites: ~factory, tech
+		BuildPaletteOrder: 160
+		Prerequisites: ~factory, tech, ~techlevel.medium
 		Description: Deploys into another Construction Yard.\n  Unarmed
 	Valued:
-		Cost: 2000
+		Cost: 2500
 	Tooltip:
 		Name: Mobile Construction Vehicle
 	Selectable:
 		Priority: 3
 	Health:
-		HP: 600
+		HP: 1000
 	Armor:
-		Type: Light
+		Type: Heavy
 	Mobile:
-		Speed: 85
+		Speed: 42
 	RevealsShroud:
 		RequiresCondition: !inside-tunnel
-		Range: 4c0
+		Range: 6c0
 		MaxHeightDelta: 3
 	MustBeDestroyed:
 		RequiredForShortGame: true
@@ -50,7 +50,7 @@ HARV:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 10
-		Prerequisites: ~factory, proc
+		Prerequisites: ~factory, proc, ~techlevel.low
 		Description: Collects Tiberium for processing.\n  Unarmed
 	Selectable:
 		Priority: 7
@@ -59,7 +59,9 @@ HARV:
 		DeliveryBuildings: proc
 		Capacity: 28
 		Resources: Tiberium, BlueTiberium
-		BaleUnloadDelay: 1
+		BaleLoadDelay: 15
+		BaleUnloadDelay: 15
+		FullyLoadedSpeed: 100
 		SearchFromProcRadius: 36
 		SearchFromOrderRadius: 18
 		HarvestVoice: Attack
@@ -93,7 +95,7 @@ HARV:
 	Explodes:
 		Weapon: TiberiumExplosion
 	WithHarvestOverlay:
-		Offset: 384,0,0
+		LocalOffset: 543,0,0
 		Palette: effect
 	SelectionDecorations:
 		VisualBounds: 36,36
@@ -111,8 +113,8 @@ LPST:
 	-AppearsOnRadar:
 	Buildable:
 		Queue: Vehicle
-		BuildPaletteOrder: 100
-		Prerequisites: ~factory, radar
+		BuildPaletteOrder: 90
+		Prerequisites: ~factory, radar, ~techlevel.medium
 		Description: Can detect cloaked and subterranean\nunits when deployed.\n  Unarmed
 	Valued:
 		Cost: 950
@@ -131,9 +133,14 @@ LPST:
 		TurnSpeed: 5
 		RequiresCondition: !empdisable && undeployed
 	RevealsShroud:
-		RequiresCondition: !inside-tunnel
-		Range: 7c0
+		RequiresCondition: !inside-tunnel && undeployed
+		Range: 10c0
 		MaxHeightDelta: 3
+	RevealsShroud@DEPLOYED:
+		RequiresCondition: !undeployed
+		Range: 8c0
+		MaxHeightDelta: 3
+	WithMakeAnimation:
 	GrantCondition@PREVIEWWORKAROUND:
 		Condition: real-actor
 	RenderSprites:
@@ -144,7 +151,6 @@ LPST:
 	GrantConditionOnDeploy:
 		DeployedCondition: deployed
 		UndeployedCondition: undeployed
-		DeployAnimation: make
 		Facing: 160
 		AllowedTerrainTypes: Clear, Road, DirtRoad, Rough
 		DeploySound: place2.aud
@@ -161,3 +167,5 @@ LPST:
 		TrailCount: 3
 	Carryable:
 		RequiresCondition: undeployed
+	RenderVoxels:
+		Scale: 11.5

@@ -1,0 +1,59 @@
+Metadata:
+	Title: Mod Content Manager
+	Version: {DEV_VERSION}
+	Hidden: true
+
+Packages:
+	.
+	./mods/modcontent: modcontent
+	./mods/common: common
+
+Cursors:
+	modcontent|cursors.yaml
+
+Chrome:
+	modcontent|chrome.yaml
+
+Assemblies:
+	common|OpenRA.Mods.Common.dll
+
+ChromeLayout:
+	modcontent|content.yaml
+
+Notifications:
+	modcontent|notifications.yaml
+
+LoadScreen: ModContentLoadScreen
+	Image: ./mods/modcontent/chrome.png
+
+ChromeMetrics:
+	common|metrics.yaml
+	modcontent|metrics.yaml
+
+Fonts:
+	Regular:
+		Font: common|FreeSans.ttf
+		Size:14
+	Bold:
+		Font: common|FreeSansBold.ttf
+		Size:14
+	BigBold:
+		Font: common|FreeSansBold.ttf
+		Size:24
+	MediumBold:
+		Font: common|FreeSansBold.ttf
+		Size:18
+	Tiny:
+		Font: common|FreeSans.ttf
+		Size:10
+	TinyBold:
+		Font: common|FreeSansBold.ttf
+		Size:10
+
+SoundFormats:
+
+SpriteFormats: ShpTD
+
+SpriteSequenceFormat: DefaultSpriteSequence
+
+ModelSequenceFormat: PlaceholderModelSequence

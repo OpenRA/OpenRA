@@ -21,9 +21,6 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		public readonly int Interval = 750;
 
-		[Desc("Pause when the actor is disabled.  Deprecated.  Use conditions instead.")]
-		public readonly bool PauseOnLowPower = false;
-
 		public override object Create(ActorInitializer init) { return new WithIdleAnimation(init.Self, this); }
 	}
 
@@ -48,8 +45,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 			if (--ticks <= 0)
 			{
-				if (!(Info.PauseOnLowPower && self.IsDisabled()))
-					wsb.PlayCustomAnimation(self, Info.Sequences.Random(Game.CosmeticRandom), () => wsb.CancelCustomAnimation(self));
+				wsb.PlayCustomAnimation(self, Info.Sequences.Random(Game.CosmeticRandom), () => wsb.CancelCustomAnimation(self));
 				ticks = Info.Interval;
 			}
 		}

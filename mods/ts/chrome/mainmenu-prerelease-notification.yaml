@@ -1,7 +1,7 @@
 Background@MAINMENU_PRERELEASE_NOTIFICATION:
 	Logic: PreReleaseWarningPrompt
-	X: (WINDOW_RIGHT - WIDTH)/2
-	Y: (WINDOW_BOTTOM - HEIGHT)/2
+	X: (WINDOW_RIGHT - WIDTH) / 2
+	Y: (WINDOW_BOTTOM - HEIGHT) / 2
 	Width: 520
 	Height: 195
 	Children:
@@ -39,7 +39,7 @@ Background@MAINMENU_PRERELEASE_NOTIFICATION:
 			Width: PARENT_RIGHT - 30
 			Height: 16
 			Align: Center
-			Text: optimized, and balance will not be addressed until a future beta. 
+			Text: optimized, and balance will not be addressed until a future beta.
 		Label@PROMPT_TEXT_E:
 			X: 15
 			Y: 140

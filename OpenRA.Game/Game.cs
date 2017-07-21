@@ -57,6 +57,8 @@ namespace OpenRA
 
 		public static GlobalChat GlobalChat;
 
+		public static string EngineVersion { get; private set; }
+
 		static Task discoverNat;
 
 		public static OrderManager JoinServer(string host, int port, string password, bool recordReplay = true)
@@ -163,7 +165,7 @@ namespace OpenRA
 			using (new PerfTimer("PrepareMap"))
 				map = ModData.PrepareMap(mapUID);
 			using (new PerfTimer("NewWorld"))
-				OrderManager.World = new World(map, OrderManager, type);
+				OrderManager.World = new World(ModData, map, OrderManager, type);
 
 			worldRenderer = new WorldRenderer(ModData, OrderManager.World);
 
@@ -246,14 +248,26 @@ namespace OpenRA
 		{
 			Console.WriteLine("Platform is {0}", Platform.CurrentPlatform);
 
+			// Load the engine version as early as possible so it can be written to exception logs
+			try
+			{
+				EngineVersion = File.ReadAllText(Platform.ResolvePath(Path.Combine(".", "VERSION"))).Trim();
+			}
+			catch { }
+
+			if (string.IsNullOrEmpty(EngineVersion))
+				EngineVersion = "Unknown";
+
+			Console.WriteLine("Engine version is {0}", EngineVersion);
+
 			// Special case handling of Game.Mod argument: if it matches a real filesystem path
 			// then we use this to override the mod search path, and replace it with the mod id
-			var modArgument = args.GetValue("Game.Mod", null);
+			var modID = args.GetValue("Game.Mod", null);
 			var explicitModPaths = new string[0];
-			if (modArgument != null && (File.Exists(modArgument) || Directory.Exists(modArgument)))
+			if (modID != null && (File.Exists(modID) || Directory.Exists(modID)))
 			{
-				explicitModPaths = new[] { modArgument };
-				args.ReplaceValue("Game.Mod", Path.GetFileNameWithoutExtension(modArgument));
+				explicitModPaths = new[] { modID };
+				modID = Path.GetFileNameWithoutExtension(modID);
 			}
 
 			if (string.IsNullOrEmpty(modArgument))
@@ -326,32 +340,37 @@ namespace OpenRA
 			var modSearchArg = args.GetValue("Engine.ModSearchPaths", null);
 			var modSearchPaths = modSearchArg != null ?
 				FieldLoader.GetValue<string[]>("Engine.ModsPath", modSearchArg) :
-				new[] { Path.Combine(".", "mods"), Path.Combine("^", "mods") };
+				new[] { Path.Combine(".", "mods") };
 
 			Mods = new InstalledMods(modSearchPaths, explicitModPaths);
 			Console.WriteLine("Internal mods:");
 			foreach (var mod in Mods)
 				Console.WriteLine("\t{0}: {1} ({2})", mod.Key, mod.Value.Metadata.Title, mod.Value.Metadata.Version);
 
-			var launchPath = args.GetValue("Engine.LaunchPath", Assembly.GetEntryAssembly().Location);
-			ExternalMods = new ExternalMods(launchPath);
+			ExternalMods = new ExternalMods();
+
+			Manifest currentMod;
+			if (modID != null && Mods.TryGetValue(modID, out currentMod))
+			{
+				var launchPath = args.GetValue("Engine.LaunchPath", Assembly.GetEntryAssembly().Location);
+
+				// Sanitize input from platform-specific launchers
+				// Process.Start requires paths to not be quoted, even if they contain spaces
+				if (launchPath.First() == '"' && launchPath.Last() == '"')
+					launchPath = launchPath.Substring(1, launchPath.Length - 2);
+
+				ExternalMods.Register(Mods[modID], launchPath, ModRegistration.User);
+
+				ExternalMod activeMod;
+				if (ExternalMods.TryGetValue(ExternalMod.MakeKey(Mods[modID]), out activeMod))
+					ExternalMods.ClearInvalidRegistrations(activeMod, ModRegistration.User);
+			}
+
 			Console.WriteLine("External mods:");
 			foreach (var mod in ExternalMods)
 				Console.WriteLine("\t{0}: {1} ({2})", mod.Key, mod.Value.Title, mod.Value.Version);
 
-			InitializeMod(Settings.Game.Mod, args);
-		}
-
-		public static bool IsModInstalled(string modId)
-		{
-			return Mods.ContainsKey(modId) && Mods[modId].RequiresMods.All(IsModInstalled);
-		}
-
-		public static bool IsModInstalled(KeyValuePair<string, string> mod)
-		{
-			return Mods.ContainsKey(mod.Key)
-				&& Mods[mod.Key].Metadata.Version == mod.Value
-				&& IsModInstalled(mod.Key);
+			InitializeMod(modID, args);
 		}
 
 		public static void InitializeMod(string mod, Arguments args)
@@ -381,17 +400,17 @@ namespace OpenRA
 
 			ModData = null;
 
-			// Fall back to default if the mod doesn't exist or has missing prerequisites.
-			if (mod == null || !IsModInstalled(mod))
-				mod = args.GetValue("Engine.DefaultMod", "modchooser");
+			if (mod == null)
+				throw new InvalidOperationException("Game.Mod argument missing.");
+
+			if (!Mods.ContainsKey(mod))
+				throw new InvalidOperationException("Unknown or invalid mod '{0}'.".F(mod));
 
 			Console.WriteLine("Loading mod: {0}", mod);
-			Settings.Game.Mod = mod;
 
 			Sound.StopVideo();
 
 			ModData = new ModData(Mods[mod], Mods, true);
-			ExternalMods.Register(ModData.Manifest);
 
 			if (!ModData.LoadScreen.BeforeLoad())
 				return;
@@ -548,8 +567,6 @@ namespace OpenRA
 				var integralTickTimestep = (uiTickDelta / Timestep) * Timestep;
 				Ui.LastTickTime += integralTickTimestep >= TimestepJankThreshold ? integralTickTimestep : Timestep;
 
-				Viewport.TicksSinceLastMove += uiTickDelta / Timestep;
-
 				Sync.CheckSyncUnchanged(world, Ui.Tick);
 				Cursor.Tick();
 			}
@@ -642,9 +659,9 @@ namespace OpenRA
 
 				using (new PerfSample("render_widgets"))
 				{
-					Renderer.WorldVoxelRenderer.BeginFrame();
+					Renderer.WorldModelRenderer.BeginFrame();
 					Ui.PrepareRenderables();
-					Renderer.WorldVoxelRenderer.EndFrame();
+					Renderer.WorldModelRenderer.EndFrame();
 
 					Ui.Draw();
 

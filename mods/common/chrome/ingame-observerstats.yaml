@@ -19,7 +19,7 @@ Background@INGAME_OBSERVERSTATS_BG:
 					Align: Center
 					Text: Statistics
 				DropDownButton@STATS_DROPDOWN:
-					X: PARENT_RIGHT-200
+					X: PARENT_RIGHT - 200
 					Y: 15
 					Width: 185
 					Height: 25
@@ -272,15 +272,15 @@ Background@INGAME_OBSERVERSTATS_BG:
 				ScrollPanel@PLAYER_STATS_PANEL:
 					X: 25
 					Y: 70
-					Width: PARENT_RIGHT-50
-					Height: PARENT_BOTTOM-45-50
+					Width: PARENT_RIGHT - 50
+					Height: PARENT_BOTTOM - 45 - 50
 					TopBottomSpacing: 5
 					ItemSpacing: 5
 					Children:
 						ScrollItem@TEAM_TEMPLATE:
 							X: 0
 							Y: 0
-							Width: PARENT_RIGHT-35
+							Width: PARENT_RIGHT - 35
 							Height: 25
 							Children:
 								Label@TEAM:
@@ -292,14 +292,14 @@ Background@INGAME_OBSERVERSTATS_BG:
 						ScrollItem@BASIC_PLAYER_TEMPLATE:
 							X: 0
 							Y: 0
-							Width: PARENT_RIGHT-35
+							Width: PARENT_RIGHT - 35
 							Height: 25
 							Children:
 								Image@FLAG:
 									X: 20
 									Y: 5
 									Width: 35
-									Height: PARENT_BOTTOM-5
+									Height: PARENT_BOTTOM - 5
 									ImageName: random
 									ImageCollection: flags
 								Label@PLAYER:
@@ -372,14 +372,14 @@ Background@INGAME_OBSERVERSTATS_BG:
 						ScrollItem@ECONOMY_PLAYER_TEMPLATE:
 							X: 0
 							Y: 0
-							Width: PARENT_RIGHT-35
+							Width: PARENT_RIGHT - 35
 							Height: 25
 							Children:
 								Image@FLAG:
 									X: 20
 									Y: 5
 									Width: 35
-									Height: PARENT_BOTTOM-5
+									Height: PARENT_BOTTOM - 5
 									ImageName: random
 									ImageCollection: flags
 								Label@PLAYER:
@@ -435,14 +435,14 @@ Background@INGAME_OBSERVERSTATS_BG:
 						ScrollItem@PRODUCTION_PLAYER_TEMPLATE:
 							X: 0
 							Y: 0
-							Width: PARENT_RIGHT-35
+							Width: PARENT_RIGHT - 35
 							Height: 25
 							Children:
 								Image@FLAG:
 									X: 20
 									Y: 5
 									Width: 35
-									Height: PARENT_BOTTOM-5
+									Height: PARENT_BOTTOM - 5
 									ImageName: random
 									ImageCollection: flags
 								Label@PLAYER:
@@ -457,6 +457,7 @@ Background@INGAME_OBSERVERSTATS_BG:
 									Y: 0
 									Width: 320
 									Height: PARENT_BOTTOM
+									TooltipContainer: TOOLTIP_CONTAINER
 								ObserverSupportPowerIcons@SUPPORT_POWER_ICONS:
 									X: 535
 									Y: 0
@@ -465,14 +466,14 @@ Background@INGAME_OBSERVERSTATS_BG:
 						ScrollItem@COMBAT_PLAYER_TEMPLATE:
 							X: 0
 							Y: 0
-							Width: PARENT_RIGHT-35
+							Width: PARENT_RIGHT - 35
 							Height: 25
 							Children:
 								Image@FLAG:
 									X: 20
 									Y: 5
 									Width: 35
-									Height: PARENT_BOTTOM-5
+									Height: PARENT_BOTTOM - 5
 									ImageName: random
 									ImageCollection: flags
 								Label@PLAYER:
@@ -525,8 +526,8 @@ Background@INGAME_OBSERVERSTATS_BG:
 						Container@EARNED_THIS_MIN_GRAPH_TEMPLATE:
 							X: 0
 							Y: 0
-							Width: PARENT_RIGHT-100
-							Height: PARENT_BOTTOM-50
+							Width: PARENT_RIGHT - 100
+							Height: PARENT_BOTTOM - 50
 							Children:
 								LineGraph@EARNED_THIS_MIN_GRAPH:
 									X: 0

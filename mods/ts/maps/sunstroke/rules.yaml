@@ -1,0 +1,47 @@
+World:
+	ElevatedBridgeLayer:
+	ElevatedBridgePlaceholder@1:
+		Location: 60, -26
+		Height: 5
+		Orientation: Y
+		Length: 8
+	ElevatedBridgePlaceholder@2:
+		Location: 139, -10
+		Height: 5
+		Orientation: Y
+		Length: 19
+	GlobalLightingPaletteEffect:
+		Red: 1.6
+		Blue: 0.9
+		Green: 1.2
+		Ambient: 0.3
+	LuaScript:
+		Scripts: sunstroke.lua
+
+GAOLDCC2:
+	Capturable:
+	ProvidesPrerequisite@BuildingName:
+
+GAOLDCC3:
+	Capturable:
+	ProvidesPrerequisite@BuildingName:
+
+4TNK:
+	Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 70
+		Prerequisites: ~gaoldcc3
+		Description: Heavy tank\nwith double barreled gun.
+
+SLAV:
+	Tooltip:
+		Name: Black Hand Rifleman
+	Buildable:
+		Queue: Infantry
+		BuildPaletteOrder: 70
+		Prerequisites: ~gaoldcc2
+		Description: Religious loyalist\narmed with sniper rifle.
+	AttackFrontal:
+		Voice: Attack
+	Armament:
+		Weapon: Sniper

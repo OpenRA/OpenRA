@@ -14,7 +14,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits.Render
 {
-	public class WithAttackAnimationInfo : ITraitInfo, Requires<WithSpriteBodyInfo>, Requires<ArmamentInfo>, Requires<AttackBaseInfo>
+	public class WithAttackAnimationInfo : ConditionalTraitInfo, Requires<WithSpriteBodyInfo>, Requires<ArmamentInfo>, Requires<AttackBaseInfo>
 	{
 		[Desc("Armament name")]
 		public readonly string Armament = "primary";
@@ -34,39 +34,58 @@ namespace OpenRA.Mods.Common.Traits.Render
 		[Desc("Should the animation be delayed relative to preparation or actual attack?")]
 		public readonly AttackDelayType DelayRelativeTo = AttackDelayType.Preparation;
 
-		public object Create(ActorInitializer init) { return new WithAttackAnimation(init, this); }
+		[Desc("Which sprite body to modify.")]
+		public readonly string Body = "body";
+
+		public override object Create(ActorInitializer init) { return new WithAttackAnimation(init, this); }
+
+		public override void RulesetLoaded(Ruleset rules, ActorInfo ai)
+		{
+			var matches = ai.TraitInfos<WithSpriteBodyInfo>().Count(w => w.Name == Body);
+			if (matches != 1)
+				throw new YamlException("WithAttackAnimation needs exactly one sprite body with matching name.");
+
+			base.RulesetLoaded(rules, ai);
+		}
 	}
 
-	public class WithAttackAnimation : ITick, INotifyAttack
+	public class WithAttackAnimation : ConditionalTrait<WithAttackAnimationInfo>, ITick, INotifyAttack
 	{
-		readonly WithAttackAnimationInfo info;
 		readonly AttackBase attack;
 		readonly Armament armament;
 		readonly WithSpriteBody wsb;
+		readonly bool noAimOrReloadAnim;
 
 		int tick;
+		bool attackAnimPlaying;
 
 		public WithAttackAnimation(ActorInitializer init, WithAttackAnimationInfo info)
+			: base(info)
 		{
-			this.info = info;
 			attack = init.Self.Trait<AttackBase>();
 			armament = init.Self.TraitsImplementing<Armament>()
-				.Single(a => a.Info.Name == info.Armament);
-			wsb = init.Self.Trait<WithSpriteBody>();
+				.Single(a => a.Info.Name == Info.Armament);
+			wsb = init.Self.TraitsImplementing<WithSpriteBody>().First(w => w.Info.Name == Info.Body);
+
+			noAimOrReloadAnim = string.IsNullOrEmpty(Info.AimSequence) && string.IsNullOrEmpty(Info.ReloadPrefix);
 		}
 
 		void PlayAttackAnimation(Actor self)
 		{
-			if (!string.IsNullOrEmpty(info.AttackSequence))
-				wsb.PlayCustomAnimation(self, info.AttackSequence, () => wsb.CancelCustomAnimation(self));
+			if (!IsTraitDisabled && !wsb.IsTraitDisabled && !string.IsNullOrEmpty(Info.AttackSequence))
+			{
+				attackAnimPlaying = true;
+				wsb.PlayCustomAnimation(self, Info.AttackSequence,
+					() => { wsb.CancelCustomAnimation(self); attackAnimPlaying = false; });
+			}
 		}
 
 		void INotifyAttack.Attacking(Actor self, Target target, Armament a, Barrel barrel)
 		{
-			if (info.DelayRelativeTo == AttackDelayType.Attack)
+			if (Info.DelayRelativeTo == AttackDelayType.Attack)
 			{
-				if (info.Delay > 0)
-					tick = info.Delay;
+				if (Info.Delay > 0)
+					tick = Info.Delay;
 				else
 					PlayAttackAnimation(self);
 			}
@@ -74,10 +93,10 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		void INotifyAttack.PreparingAttack(Actor self, Target target, Armament a, Barrel barrel)
 		{
-			if (info.DelayRelativeTo == AttackDelayType.Preparation)
+			if (Info.DelayRelativeTo == AttackDelayType.Preparation)
 			{
-				if (info.Delay > 0)
-					tick = info.Delay;
+				if (Info.Delay > 0)
+					tick = Info.Delay;
 				else
 					PlayAttackAnimation(self);
 			}
@@ -85,17 +104,17 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		void ITick.Tick(Actor self)
 		{
-			if (info.Delay > 0 && --tick == 0)
+			if (Info.Delay > 0 && --tick == 0)
 				PlayAttackAnimation(self);
 
-			if (string.IsNullOrEmpty(info.AimSequence) && string.IsNullOrEmpty(info.ReloadPrefix))
+			if (IsTraitDisabled || noAimOrReloadAnim || attackAnimPlaying || wsb.IsTraitDisabled)
 				return;
 
 			var sequence = wsb.Info.Sequence;
-			if (!string.IsNullOrEmpty(info.AimSequence) && attack.IsAttacking)
-				sequence = info.AimSequence;
+			if (!string.IsNullOrEmpty(Info.AimSequence) && attack.IsAttacking)
+				sequence = Info.AimSequence;
 
-			var prefix = (armament.IsReloading && !string.IsNullOrEmpty(info.ReloadPrefix)) ? info.ReloadPrefix : "";
+			var prefix = (armament.IsReloading && !string.IsNullOrEmpty(Info.ReloadPrefix)) ? Info.ReloadPrefix : "";
 
 			if (!string.IsNullOrEmpty(prefix) && sequence != (prefix + sequence))
 				sequence = prefix + sequence;

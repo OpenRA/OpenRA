@@ -79,6 +79,8 @@ namespace OpenRA.Chat
 		volatile ChatConnectionStatus connectionStatus = ChatConnectionStatus.Disconnected;
 		public ChatConnectionStatus ConnectionStatus { get { return connectionStatus; } }
 
+		string nickname;
+
 		public GlobalChat()
 		{
 			client.Encoding = System.Text.Encoding.UTF8;
@@ -106,8 +108,6 @@ namespace OpenRA.Chat
 			client.OnDevoice += (_, e) => SetUserVoiced(e.Whom, false);
 			client.OnPart += OnPart;
 			client.OnQuit += OnQuit;
-
-			TrySetNickname(Game.Settings.Player.Name);
 		}
 
 		void SetUserOp(string whom, bool isOp)
@@ -130,10 +130,12 @@ namespace OpenRA.Chat
 			});
 		}
 
-		public void Connect()
+		public void Connect(string nickname)
 		{
-			if (client.IsConnected)
+			if (client.IsConnected || !IsValidNickname(nickname))
 				return;
+
+			this.nickname = nickname;
 
 			new Thread(() =>
 			{
@@ -185,12 +187,7 @@ namespace OpenRA.Chat
 			AddNotification("Connected.");
 			connectionStatus = ChatConnectionStatus.Connected;
 
-			// Guard against settings.yaml modification
-			var nick = SanitizedName(Game.Settings.Chat.Nickname);
-			if (nick != Game.Settings.Chat.Nickname)
-				Game.RunAfterTick(() => Game.Settings.Chat.Nickname = nick);
-
-			client.Login(nick, "in-game IRC client", 0, "OpenRA");
+			client.Login(nickname, "in-game IRC client", 0, "OpenRA");
 			client.RfcJoin("#" + Game.Settings.Chat.Channel);
 		}
 
@@ -341,7 +338,6 @@ namespace OpenRA.Chat
 			if (Rfc2812.IsValidNickname(nick))
 			{
 				client.RfcNick(nick);
-				Game.Settings.Chat.Nickname = nick;
 				return true;
 			}
 
@@ -368,7 +364,7 @@ namespace OpenRA.Chat
 
 			AddNotification("Disconnecting from {0}...".F(client.Address));
 
-			Game.RunAfterTick(() => Game.Settings.Chat.ConnectAutomatically = false);
+			Game.RunAfterTick(() => { Game.Settings.Chat.ConnectAutomatically = false; Game.Settings.Save(); });
 		}
 
 		public void Dispose()

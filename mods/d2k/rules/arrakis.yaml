@@ -20,10 +20,13 @@ spicebloom.spawnpoint:
 		Actor: spicebloom
 	Health:
 		HP: 9999
-		Shape: Circle
-			Radius: 1
 	Immobile:
 		OccupiesSpace: false
+	HitShape:
+		Type: Circle
+			Radius: 1
+	EditorTilesetFilter:
+		Categories: System
 
 spicebloom:
 	HiddenUnderShroud:
@@ -48,8 +51,6 @@ spicebloom:
 	Immobile:
 	Health:
 		HP: 1
-		Shape: Circle
-			Radius: 512
 	Targetable:
 		TargetTypes: Ground
 		RequiresForceFire: true
@@ -57,6 +58,11 @@ spicebloom:
 		Type: none
 	SpawnActorOnDeath:
 		Actor: spicebloom.spawnpoint
+	HitShape:
+		Type: Circle
+			Radius: 512
+	EditorTilesetFilter:
+		Categories: System
 
 sandworm:
 	Inherits@1: ^SpriteActor
@@ -64,7 +70,9 @@ sandworm:
 		Name: Sandworm
 	Health:
 		HP: 9990
-		Radius: 256
+	HitShape:
+		Type: Circle
+			Radius: 256
 	Armor:
 		Type: heavy
 	Mobile:
@@ -75,14 +83,14 @@ sandworm:
 			SpiceSand: 100
 			Spice: 100
 	Targetable:
-		TargetTypes: Ground
+		TargetTypes: Ground, Creep
 	WithSpriteBody:
 	WithIdleAnimation:
 		Interval: 160
 		Sequences: lightninga, lightningb, lightningc, lightningd, lightninge, lightningf
 		RequiresCondition: !attacking
 	AmbientSound:
-		SoundFile: WRMSIGN1.WAV
+		SoundFiles: WRMSIGN1.WAV
 		Interval: 160
 		RequiresCondition: !attacking
 	WithAttackOverlay@mouth:

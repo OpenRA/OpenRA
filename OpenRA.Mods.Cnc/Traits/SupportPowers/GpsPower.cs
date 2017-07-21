@@ -101,18 +101,18 @@ namespace OpenRA.Mods.Cnc.Traits
 		}
 
 		bool NoActiveRadar { get { return !self.World.ActorsHavingTrait<ProvidesRadar>(r => !r.IsTraitDisabled).Any(a => a.Owner == self.Owner); } }
-		bool wasDisabled;
+		bool wasPaused;
 
 		void ITick.Tick(Actor self)
 		{
-			if (!wasDisabled && (self.IsDisabled() || (info.RequiresActiveRadar && NoActiveRadar)))
+			if (!wasPaused && (IsTraitPaused || (info.RequiresActiveRadar && NoActiveRadar)))
 			{
-				wasDisabled = true;
+				wasPaused = true;
 				RemoveGps(self);
 			}
-			else if (wasDisabled && !self.IsDisabled() && !(info.RequiresActiveRadar && NoActiveRadar))
+			else if (wasPaused && !IsTraitPaused && !(info.RequiresActiveRadar && NoActiveRadar))
 			{
-				wasDisabled = false;
+				wasPaused = false;
 				owner.GpsAdd(self);
 			}
 		}

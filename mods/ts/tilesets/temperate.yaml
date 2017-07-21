@@ -82,7 +82,7 @@ Terrain:
 # Automatically generated. DO NOT EDIT!
 Templates:
 	Template@0:
-		Category: Clear
+		Categories: Clear
 		Id: 0
 		Images: clear01.tem, clear01a.tem, clear01b.tem, clear01c.tem, clear01d.tem, clear01e.tem, clear01f.tem, clear01g.tem
 		Size: 1, 1
@@ -93,7 +93,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@1:
-		Category: Misc Buildings
+		Categories: Misc Buildings
 		Id: 1
 		Images: bld01.tem
 		Size: 1, 1
@@ -104,7 +104,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@2:
-		Category: Misc Buildings
+		Categories: Misc Buildings
 		Id: 2
 		Images: bld02.tem
 		Size: 2, 2
@@ -130,7 +130,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@3:
-		Category: Misc Buildings
+		Categories: Misc Buildings
 		Id: 3
 		Images: bld03.tem
 		Size: 3, 3
@@ -181,7 +181,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@4:
-		Category: Clear
+		Categories: Clear
 		Id: 4
 		Images: snow01.tem, snow01a.tem, snow01b.tem, snow01c.tem
 		Size: 1, 1
@@ -192,7 +192,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@5:
-		Category: Clear
+		Categories: Clear
 		Id: 5
 		Images: snow02.tem
 		Size: 1, 1
@@ -203,7 +203,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@6:
-		Category: Clear
+		Categories: Clear
 		Id: 6
 		Images: snow03.tem
 		Size: 1, 1
@@ -214,7 +214,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@7:
-		Category: Clear
+		Categories: Clear
 		Id: 7
 		Images: snow04.tem
 		Size: 1, 1
@@ -225,7 +225,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@8:
-		Category: Cliff Pieces
+		Categories: Cliff Pieces
 		Id: 8
 		Images: clif01.tem
 		Size: 1, 1
@@ -236,7 +236,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@9:
-		Category: Cliff Pieces
+		Categories: Cliff Pieces
 		Id: 9
 		Images: clif02.tem
 		Size: 1, 1
@@ -247,7 +247,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@10:
-		Category: Ice Flow
+		Categories: Ice Flow
 		Id: 10
 		Images: flow01.tem
 		Size: 9, 7
@@ -433,7 +433,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@11:
-		Category: House
+		Categories: House
 		Id: 11
 		Images: house01.tem
 		Size: 2, 2
@@ -459,7 +459,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@12:
-		Category: Blank
+		Categories: Blank
 		Id: 12
 		Images: blank01.tem
 		Size: 1, 1
@@ -470,7 +470,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@40:
-		Category: Ice Ramps
+		Categories: Ice Ramps
 		Id: 40
 		Images: slope01.tem, slope01a.tem, slope01b.tem, slope01c.tem
 		Size: 1, 1
@@ -482,7 +482,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@41:
-		Category: Ice Ramps
+		Categories: Ice Ramps
 		Id: 41
 		Images: slope02.tem, slope02a.tem, slope02b.tem, slope02c.tem
 		Size: 1, 1
@@ -494,7 +494,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@42:
-		Category: Ice Ramps
+		Categories: Ice Ramps
 		Id: 42
 		Images: slope03.tem, slope03a.tem, slope03b.tem, slope03c.tem
 		Size: 1, 1
@@ -506,7 +506,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@43:
-		Category: Ice Ramps
+		Categories: Ice Ramps
 		Id: 43
 		Images: slope04.tem, slope04a.tem, slope04b.tem, slope04c.tem
 		Size: 1, 1
@@ -518,7 +518,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@44:
-		Category: Ice Ramps
+		Categories: Ice Ramps
 		Id: 44
 		Images: slope05.tem, slope05a.tem, slope05b.tem, slope05c.tem
 		Size: 1, 1
@@ -530,7 +530,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@45:
-		Category: Ice Ramps
+		Categories: Ice Ramps
 		Id: 45
 		Images: slope06.tem, slope06a.tem, slope06b.tem, slope06c.tem
 		Size: 1, 1
@@ -542,7 +542,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@46:
-		Category: Ice Ramps
+		Categories: Ice Ramps
 		Id: 46
 		Images: slope07.tem, slope07a.tem, slope07b.tem, slope07c.tem
 		Size: 1, 1
@@ -554,7 +554,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@47:
-		Category: Ice Ramps
+		Categories: Ice Ramps
 		Id: 47
 		Images: slope08.tem, slope08a.tem, slope08b.tem, slope08c.tem
 		Size: 1, 1
@@ -566,7 +566,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@48:
-		Category: Ice Ramps
+		Categories: Ice Ramps
 		Id: 48
 		Images: slope09.tem, slope09a.tem, slope09b.tem, slope09c.tem
 		Size: 1, 1
@@ -578,7 +578,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@49:
-		Category: Ice Ramps
+		Categories: Ice Ramps
 		Id: 49
 		Images: slope10.tem, slope10a.tem, slope10b.tem, slope10c.tem
 		Size: 1, 1
@@ -590,7 +590,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@50:
-		Category: Ice Ramps
+		Categories: Ice Ramps
 		Id: 50
 		Images: slope11.tem, slope11a.tem, slope11b.tem, slope11c.tem
 		Size: 1, 1
@@ -602,7 +602,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@51:
-		Category: Ice Ramps
+		Categories: Ice Ramps
 		Id: 51
 		Images: slope12.tem, slope12a.tem, slope12b.tem, slope12c.tem
 		Size: 1, 1
@@ -614,7 +614,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@52:
-		Category: Ice Ramps
+		Categories: Ice Ramps
 		Id: 52
 		Images: slope13.tem, slope13a.tem, slope13b.tem, slope13c.tem
 		Size: 1, 1
@@ -626,7 +626,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@53:
-		Category: Ice Ramps
+		Categories: Ice Ramps
 		Id: 53
 		Images: slope14.tem, slope14a.tem, slope14b.tem, slope14c.tem
 		Size: 1, 1
@@ -638,7 +638,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@54:
-		Category: Ice Ramps
+		Categories: Ice Ramps
 		Id: 54
 		Images: slope15.tem, slope15a.tem, slope15b.tem, slope15c.tem
 		Size: 1, 1
@@ -650,7 +650,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@55:
-		Category: Ice Ramps
+		Categories: Ice Ramps
 		Id: 55
 		Images: slope16.tem, slope16a.tem, slope16b.tem, slope16c.tem
 		Size: 1, 1
@@ -662,7 +662,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@56:
-		Category: Ice Ramps
+		Categories: Ice Ramps
 		Id: 56
 		Images: slope17.tem
 		Size: 1, 1
@@ -674,7 +674,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@57:
-		Category: Ice Ramps
+		Categories: Ice Ramps
 		Id: 57
 		Images: slope18.tem
 		Size: 1, 1
@@ -686,7 +686,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@58:
-		Category: Ice Ramps
+		Categories: Ice Ramps
 		Id: 58
 		Images: slope19.tem
 		Size: 1, 1
@@ -698,7 +698,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@59:
-		Category: Ice Ramps
+		Categories: Ice Ramps
 		Id: 59
 		Images: slope20.tem
 		Size: 1, 1
@@ -710,7 +710,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@60:
-		Category: Cliff Set
+		Categories: Cliff Set
 		Id: 60
 		Images: cliff01.tem
 		Size: 2, 3
@@ -738,7 +738,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@61:
-		Category: Cliff Set
+		Categories: Cliff Set
 		Id: 61
 		Images: cliff02.tem
 		Size: 1, 2
@@ -755,7 +755,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@62:
-		Category: Cliff Set
+		Categories: Cliff Set
 		Id: 62
 		Images: cliff03.tem
 		Size: 2, 3
@@ -783,7 +783,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@63:
-		Category: Cliff Set
+		Categories: Cliff Set
 		Id: 63
 		Images: cliff04.tem
 		Size: 2, 3
@@ -811,7 +811,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@64:
-		Category: Cliff Set
+		Categories: Cliff Set
 		Id: 64
 		Images: cliff05.tem
 		Size: 2, 2
@@ -839,7 +839,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@65:
-		Category: Cliff Set
+		Categories: Cliff Set
 		Id: 65
 		Images: cliff06.tem
 		Size: 2, 2
@@ -867,7 +867,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@66:
-		Category: Cliff Set
+		Categories: Cliff Set
 		Id: 66
 		Images: cliff07.tem
 		Size: 2, 2
@@ -895,7 +895,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@67:
-		Category: Cliff Set
+		Categories: Cliff Set
 		Id: 67
 		Images: cliff08.tem
 		Size: 1, 2
@@ -912,7 +912,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@68:
-		Category: Cliff Set
+		Categories: Cliff Set
 		Id: 68
 		Images: cliff09.tem
 		Size: 2, 2
@@ -934,7 +934,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@69:
-		Category: Cliff Set
+		Categories: Cliff Set
 		Id: 69
 		Images: cliff10.tem
 		Size: 2, 2
@@ -956,7 +956,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@70:
-		Category: Cliff Set
+		Categories: Cliff Set
 		Id: 70
 		Images: cliff11.tem
 		Size: 2, 2
@@ -978,7 +978,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@71:
-		Category: Cliff Set
+		Categories: Cliff Set
 		Id: 71
 		Images: cliff12.tem
 		Size: 1, 1
@@ -989,7 +989,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@72:
-		Category: Cliff Set
+		Categories: Cliff Set
 		Id: 72
 		Images: cliff13.tem
 		Size: 1, 1
@@ -1000,7 +1000,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@73:
-		Category: Cliff Set
+		Categories: Cliff Set
 		Id: 73
 		Images: cliff14.tem
 		Size: 1, 1
@@ -1011,7 +1011,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@74:
-		Category: Cliff Set
+		Categories: Cliff Set
 		Id: 74
 		Images: cliff15.tem
 		Size: 2, 2
@@ -1039,7 +1039,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@75:
-		Category: Cliff Set
+		Categories: Cliff Set
 		Id: 75
 		Images: cliff16.tem
 		Size: 2, 2
@@ -1067,7 +1067,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@76:
-		Category: Cliff Set
+		Categories: Cliff Set
 		Id: 76
 		Images: cliff17.tem
 		Size: 2, 2
@@ -1095,7 +1095,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@77:
-		Category: Cliff Set
+		Categories: Cliff Set
 		Id: 77
 		Images: cliff18.tem
 		Size: 2, 1
@@ -1112,7 +1112,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@78:
-		Category: Cliff Set
+		Categories: Cliff Set
 		Id: 78
 		Images: cliff19.tem
 		Size: 3, 2
@@ -1140,7 +1140,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@79:
-		Category: Cliff Set
+		Categories: Cliff Set
 		Id: 79
 		Images: cliff20.tem
 		Size: 3, 2
@@ -1168,7 +1168,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@80:
-		Category: Cliff Set
+		Categories: Cliff Set
 		Id: 80
 		Images: cliff21.tem
 		Size: 3, 2
@@ -1196,7 +1196,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@81:
-		Category: Cliff Set
+		Categories: Cliff Set
 		Id: 81
 		Images: cliff22.tem
 		Size: 2, 1
@@ -1213,7 +1213,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@82:
-		Category: Cliff Set
+		Categories: Cliff Set
 		Id: 82
 		Images: cliff23.tem
 		Size: 2, 1
@@ -1231,7 +1231,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@83:
-		Category: Cliff Set
+		Categories: Cliff Set
 		Id: 83
 		Images: cliff24.tem
 		Size: 2, 1
@@ -1249,7 +1249,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@84:
-		Category: Cliff Set
+		Categories: Cliff Set
 		Id: 84
 		Images: cliff25.tem
 		Size: 2, 1
@@ -1267,7 +1267,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@85:
-		Category: Cliff Set
+		Categories: Cliff Set
 		Id: 85
 		Images: cliff26.tem
 		Size: 1, 1
@@ -1279,7 +1279,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@86:
-		Category: Cliff Set
+		Categories: Cliff Set
 		Id: 86
 		Images: cliff27.tem
 		Size: 2, 2
@@ -1303,7 +1303,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@87:
-		Category: Cliff Set
+		Categories: Cliff Set
 		Id: 87
 		Images: cliff28.tem
 		Size: 2, 2
@@ -1327,7 +1327,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@88:
-		Category: Cliff Set
+		Categories: Cliff Set
 		Id: 88
 		Images: cliff29.tem
 		Size: 1, 1
@@ -1339,7 +1339,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@89:
-		Category: Cliff Set
+		Categories: Cliff Set
 		Id: 89
 		Images: cliff30.tem
 		Size: 1, 1
@@ -1351,7 +1351,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@90:
-		Category: Cliff Set
+		Categories: Cliff Set
 		Id: 90
 		Images: cliff31.tem
 		Size: 2, 2
@@ -1375,7 +1375,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@91:
-		Category: Cliff Set
+		Categories: Cliff Set
 		Id: 91
 		Images: cliff32.tem
 		Size: 2, 2
@@ -1399,7 +1399,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@92:
-		Category: Cliff Set
+		Categories: Cliff Set
 		Id: 92
 		Images: cliff33.tem, cliff33a.tem
 		Size: 1, 1
@@ -1411,7 +1411,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@93:
-		Category: Cliff Set
+		Categories: Cliff Set
 		Id: 93
 		Images: cliff34.tem, cliff34a.tem
 		Size: 1, 1
@@ -1423,7 +1423,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@94:
-		Category: Cliff Set
+		Categories: Cliff Set
 		Id: 94
 		Images: cliff35.tem
 		Size: 1, 2
@@ -1441,7 +1441,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@95:
-		Category: Cliff Set
+		Categories: Cliff Set
 		Id: 95
 		Images: cliff36.tem
 		Size: 1, 2
@@ -1459,7 +1459,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@96:
-		Category: Cliff Set
+		Categories: Cliff Set
 		Id: 96
 		Images: cliff37.tem
 		Size: 1, 2
@@ -1477,7 +1477,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@97:
-		Category: Cliff Set
+		Categories: Cliff Set
 		Id: 97
 		Images: cliff38.tem
 		Size: 1, 1
@@ -1489,7 +1489,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@98:
-		Category: Cliff Set
+		Categories: Cliff Set
 		Id: 98
 		Images: cliff39.tem
 		Size: 1, 1
@@ -1501,7 +1501,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@99:
-		Category: Cliff Set
+		Categories: Cliff Set
 		Id: 99
 		Images: cliff40.tem
 		Size: 1, 1
@@ -1513,7 +1513,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@100:
-		Category: Civilian Buildings
+		Categories: Civilian Buildings
 		Id: 100
 		Images: civ01.tem
 		Size: 3, 3
@@ -1564,7 +1564,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@101:
-		Category: Civilian Buildings
+		Categories: Civilian Buildings
 		Id: 101
 		Images: civ02.tem
 		Size: 1, 2
@@ -1580,7 +1580,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@102:
-		Category: Civilian Buildings
+		Categories: Civilian Buildings
 		Id: 102
 		Images: civ03.tem
 		Size: 1, 1
@@ -1591,7 +1591,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@103:
-		Category: Civilian Buildings
+		Categories: Civilian Buildings
 		Id: 103
 		Images: civ04.tem
 		Size: 1, 2
@@ -1607,7 +1607,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@104:
-		Category: Civilian Buildings
+		Categories: Civilian Buildings
 		Id: 104
 		Images: civ05.tem
 		Size: 2, 2
@@ -1628,7 +1628,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@105:
-		Category: Civilian Buildings
+		Categories: Civilian Buildings
 		Id: 105
 		Images: civ06.tem
 		Size: 3, 3
@@ -1664,7 +1664,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@106:
-		Category: Civilian Buildings
+		Categories: Civilian Buildings
 		Id: 106
 		Images: civ07.tem
 		Size: 1, 1
@@ -1675,7 +1675,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@107:
-		Category: Civilian Buildings
+		Categories: Civilian Buildings
 		Id: 107
 		Images: civ08.tem
 		Size: 1, 2
@@ -1691,7 +1691,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@108:
-		Category: Shore Pieces
+		Categories: Shore Pieces
 		Id: 108
 		Images: shore01.tem
 		Size: 2, 2
@@ -1717,7 +1717,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@109:
-		Category: Shore Pieces
+		Categories: Shore Pieces
 		Id: 109
 		Images: shore02.tem
 		Size: 2, 2
@@ -1743,7 +1743,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@110:
-		Category: Shore Pieces
+		Categories: Shore Pieces
 		Id: 110
 		Images: shore03.tem
 		Size: 2, 2
@@ -1769,7 +1769,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@111:
-		Category: Shore Pieces
+		Categories: Shore Pieces
 		Id: 111
 		Images: shore04.tem
 		Size: 1, 2
@@ -1785,7 +1785,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@112:
-		Category: Shore Pieces
+		Categories: Shore Pieces
 		Id: 112
 		Images: shore05.tem
 		Size: 2, 3
@@ -1821,7 +1821,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@113:
-		Category: Shore Pieces
+		Categories: Shore Pieces
 		Id: 113
 		Images: shore06.tem
 		Size: 2, 3
@@ -1857,7 +1857,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@114:
-		Category: Shore Pieces
+		Categories: Shore Pieces
 		Id: 114
 		Images: shore07.tem
 		Size: 2, 2
@@ -1883,7 +1883,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@115:
-		Category: Shore Pieces
+		Categories: Shore Pieces
 		Id: 115
 		Images: shore08.tem
 		Size: 2, 2
@@ -1909,7 +1909,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@116:
-		Category: Shore Pieces
+		Categories: Shore Pieces
 		Id: 116
 		Images: shore09.tem
 		Size: 2, 2
@@ -1935,7 +1935,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@117:
-		Category: Shore Pieces
+		Categories: Shore Pieces
 		Id: 117
 		Images: shore10.tem
 		Size: 2, 2
@@ -1961,7 +1961,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@118:
-		Category: Shore Pieces
+		Categories: Shore Pieces
 		Id: 118
 		Images: shore11.tem
 		Size: 2, 2
@@ -1987,7 +1987,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@119:
-		Category: Shore Pieces
+		Categories: Shore Pieces
 		Id: 119
 		Images: shore12.tem
 		Size: 2, 1
@@ -2003,7 +2003,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@120:
-		Category: Shore Pieces
+		Categories: Shore Pieces
 		Id: 120
 		Images: shore13.tem
 		Size: 3, 2
@@ -2039,7 +2039,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@121:
-		Category: Shore Pieces
+		Categories: Shore Pieces
 		Id: 121
 		Images: shore14.tem
 		Size: 3, 2
@@ -2075,7 +2075,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@122:
-		Category: Shore Pieces
+		Categories: Shore Pieces
 		Id: 122
 		Images: shore15.tem
 		Size: 2, 2
@@ -2101,7 +2101,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@123:
-		Category: Shore Pieces
+		Categories: Shore Pieces
 		Id: 123
 		Images: shore16.tem
 		Size: 2, 2
@@ -2127,7 +2127,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@124:
-		Category: Shore Pieces
+		Categories: Shore Pieces
 		Id: 124
 		Images: shore17.tem
 		Size: 2, 2
@@ -2153,7 +2153,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@125:
-		Category: Shore Pieces
+		Categories: Shore Pieces
 		Id: 125
 		Images: shore18.tem
 		Size: 2, 2
@@ -2179,7 +2179,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@126:
-		Category: Shore Pieces
+		Categories: Shore Pieces
 		Id: 126
 		Images: shore19.tem
 		Size: 2, 2
@@ -2205,7 +2205,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@127:
-		Category: Shore Pieces
+		Categories: Shore Pieces
 		Id: 127
 		Images: shore20.tem
 		Size: 1, 2
@@ -2221,7 +2221,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@128:
-		Category: Shore Pieces
+		Categories: Shore Pieces
 		Id: 128
 		Images: shore21.tem
 		Size: 2, 3
@@ -2257,7 +2257,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@129:
-		Category: Shore Pieces
+		Categories: Shore Pieces
 		Id: 129
 		Images: shore22.tem
 		Size: 2, 3
@@ -2293,7 +2293,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@130:
-		Category: Shore Pieces
+		Categories: Shore Pieces
 		Id: 130
 		Images: shore23.tem
 		Size: 2, 2
@@ -2319,7 +2319,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@131:
-		Category: Shore Pieces
+		Categories: Shore Pieces
 		Id: 131
 		Images: shore24.tem
 		Size: 2, 2
@@ -2345,7 +2345,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@132:
-		Category: Shore Pieces
+		Categories: Shore Pieces
 		Id: 132
 		Images: shore25.tem
 		Size: 2, 2
@@ -2371,7 +2371,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@133:
-		Category: Shore Pieces
+		Categories: Shore Pieces
 		Id: 133
 		Images: shore26.tem
 		Size: 2, 2
@@ -2397,7 +2397,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@134:
-		Category: Shore Pieces
+		Categories: Shore Pieces
 		Id: 134
 		Images: shore27.tem
 		Size: 2, 2
@@ -2423,7 +2423,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@135:
-		Category: Shore Pieces
+		Categories: Shore Pieces
 		Id: 135
 		Images: shore28.tem
 		Size: 2, 1
@@ -2439,7 +2439,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@136:
-		Category: Shore Pieces
+		Categories: Shore Pieces
 		Id: 136
 		Images: shore29.tem
 		Size: 3, 2
@@ -2475,7 +2475,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@137:
-		Category: Shore Pieces
+		Categories: Shore Pieces
 		Id: 137
 		Images: shore30.tem
 		Size: 3, 2
@@ -2511,7 +2511,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@138:
-		Category: Shore Pieces
+		Categories: Shore Pieces
 		Id: 138
 		Images: shore31.tem
 		Size: 2, 2
@@ -2537,7 +2537,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@139:
-		Category: Shore Pieces
+		Categories: Shore Pieces
 		Id: 139
 		Images: shore32.tem
 		Size: 2, 2
@@ -2563,7 +2563,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@140:
-		Category: Shore Pieces
+		Categories: Shore Pieces
 		Id: 140
 		Images: shore33.tem
 		Size: 2, 2
@@ -2589,7 +2589,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@141:
-		Category: Shore Pieces
+		Categories: Shore Pieces
 		Id: 141
 		Images: shore34.tem
 		Size: 2, 2
@@ -2615,7 +2615,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@142:
-		Category: Shore Pieces
+		Categories: Shore Pieces
 		Id: 142
 		Images: shore35.tem
 		Size: 2, 2
@@ -2641,7 +2641,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@143:
-		Category: Shore Pieces
+		Categories: Shore Pieces
 		Id: 143
 		Images: shore36.tem
 		Size: 2, 2
@@ -2667,7 +2667,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@144:
-		Category: Shore Pieces
+		Categories: Shore Pieces
 		Id: 144
 		Images: shore37.tem
 		Size: 2, 2
@@ -2693,7 +2693,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@145:
-		Category: Shore Pieces
+		Categories: Shore Pieces
 		Id: 145
 		Images: shore38.tem
 		Size: 2, 2
@@ -2719,7 +2719,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@146:
-		Category: Shore Pieces
+		Categories: Shore Pieces
 		Id: 146
 		Images: shore39.tem
 		Size: 2, 2
@@ -2745,7 +2745,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@147:
-		Category: Shore Pieces
+		Categories: Shore Pieces
 		Id: 147
 		Images: shore40.tem
 		Size: 2, 2
@@ -2771,7 +2771,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@148:
-		Category: Shore Pieces
+		Categories: Shore Pieces
 		Id: 148
 		Images: shore41.tem
 		Size: 6, 4
@@ -2882,7 +2882,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@149:
-		Category: Shore Pieces
+		Categories: Shore Pieces
 		Id: 149
 		Images: shore42.tem
 		Size: 9, 5
@@ -3038,7 +3038,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@150:
-		Category: Rough LAT tile
+		Categories: Rough LAT tile
 		Id: 150
 		Images: ruff01.tem, ruff01a.tem, ruff01b.tem, ruff01c.tem, ruff01d.tem, ruff01e.tem, ruff01f.tem, ruff01g.tem
 		Size: 1, 1
@@ -3049,7 +3049,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@151:
-		Category: Clear/Rough LAT
+		Categories: Clear/Rough LAT
 		Id: 151
 		Images: clat01.tem, clat01a.tem
 		Size: 1, 1
@@ -3060,7 +3060,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@152:
-		Category: Clear/Rough LAT
+		Categories: Clear/Rough LAT
 		Id: 152
 		Images: clat02.tem, clat02a.tem
 		Size: 1, 1
@@ -3071,7 +3071,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@153:
-		Category: Clear/Rough LAT
+		Categories: Clear/Rough LAT
 		Id: 153
 		Images: clat03.tem, clat03a.tem
 		Size: 1, 1
@@ -3082,7 +3082,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@154:
-		Category: Clear/Rough LAT
+		Categories: Clear/Rough LAT
 		Id: 154
 		Images: clat04.tem, clat04a.tem
 		Size: 1, 1
@@ -3093,7 +3093,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@155:
-		Category: Clear/Rough LAT
+		Categories: Clear/Rough LAT
 		Id: 155
 		Images: clat05.tem, clat05a.tem
 		Size: 1, 1
@@ -3104,7 +3104,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@156:
-		Category: Clear/Rough LAT
+		Categories: Clear/Rough LAT
 		Id: 156
 		Images: clat06.tem, clat06a.tem
 		Size: 1, 1
@@ -3115,7 +3115,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@157:
-		Category: Clear/Rough LAT
+		Categories: Clear/Rough LAT
 		Id: 157
 		Images: clat07.tem, clat07a.tem
 		Size: 1, 1
@@ -3126,7 +3126,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@158:
-		Category: Clear/Rough LAT
+		Categories: Clear/Rough LAT
 		Id: 158
 		Images: clat08.tem, clat08a.tem
 		Size: 1, 1
@@ -3137,7 +3137,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@159:
-		Category: Clear/Rough LAT
+		Categories: Clear/Rough LAT
 		Id: 159
 		Images: clat09.tem, clat09a.tem
 		Size: 1, 1
@@ -3148,7 +3148,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@160:
-		Category: Clear/Rough LAT
+		Categories: Clear/Rough LAT
 		Id: 160
 		Images: clat10.tem, clat10a.tem
 		Size: 1, 1
@@ -3159,7 +3159,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@161:
-		Category: Clear/Rough LAT
+		Categories: Clear/Rough LAT
 		Id: 161
 		Images: clat11.tem, clat11a.tem
 		Size: 1, 1
@@ -3170,7 +3170,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@162:
-		Category: Clear/Rough LAT
+		Categories: Clear/Rough LAT
 		Id: 162
 		Images: clat12.tem, clat12a.tem
 		Size: 1, 1
@@ -3181,7 +3181,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@163:
-		Category: Clear/Rough LAT
+		Categories: Clear/Rough LAT
 		Id: 163
 		Images: clat13.tem, clat13a.tem
 		Size: 1, 1
@@ -3192,7 +3192,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@164:
-		Category: Clear/Rough LAT
+		Categories: Clear/Rough LAT
 		Id: 164
 		Images: clat14.tem, clat14a.tem
 		Size: 1, 1
@@ -3203,7 +3203,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@165:
-		Category: Clear/Rough LAT
+		Categories: Clear/Rough LAT
 		Id: 165
 		Images: clat15.tem, clat15a.tem
 		Size: 1, 1
@@ -3214,7 +3214,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@166:
-		Category: Clear/Rough LAT
+		Categories: Clear/Rough LAT
 		Id: 166
 		Images: clat16.tem, clat16a.tem
 		Size: 1, 1
@@ -3225,7 +3225,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@167:
-		Category: Cliff/Water pieces
+		Categories: Cliff/Water pieces
 		Id: 167
 		Images: wcliff01.tem
 		Size: 2, 3
@@ -3253,7 +3253,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@168:
-		Category: Cliff/Water pieces
+		Categories: Cliff/Water pieces
 		Id: 168
 		Images: wcliff02.tem
 		Size: 1, 2
@@ -3270,7 +3270,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@169:
-		Category: Cliff/Water pieces
+		Categories: Cliff/Water pieces
 		Id: 169
 		Images: wcliff03.tem
 		Size: 2, 3
@@ -3298,7 +3298,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@170:
-		Category: Cliff/Water pieces
+		Categories: Cliff/Water pieces
 		Id: 170
 		Images: wcliff04.tem
 		Size: 2, 3
@@ -3326,7 +3326,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@171:
-		Category: Cliff/Water pieces
+		Categories: Cliff/Water pieces
 		Id: 171
 		Images: wcliff05.tem
 		Size: 2, 2
@@ -3354,7 +3354,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@172:
-		Category: Cliff/Water pieces
+		Categories: Cliff/Water pieces
 		Id: 172
 		Images: wcliff06.tem
 		Size: 2, 2
@@ -3382,7 +3382,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@173:
-		Category: Cliff/Water pieces
+		Categories: Cliff/Water pieces
 		Id: 173
 		Images: wcliff07.tem
 		Size: 2, 2
@@ -3410,7 +3410,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@174:
-		Category: Cliff/Water pieces
+		Categories: Cliff/Water pieces
 		Id: 174
 		Images: wcliff08.tem
 		Size: 1, 2
@@ -3427,7 +3427,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@175:
-		Category: Cliff/Water pieces
+		Categories: Cliff/Water pieces
 		Id: 175
 		Images: wcliff09.tem
 		Size: 2, 2
@@ -3449,7 +3449,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@176:
-		Category: Cliff/Water pieces
+		Categories: Cliff/Water pieces
 		Id: 176
 		Images: wcliff10.tem
 		Size: 2, 2
@@ -3476,7 +3476,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@177:
-		Category: Cliff/Water pieces
+		Categories: Cliff/Water pieces
 		Id: 177
 		Images: wcliff11.tem
 		Size: 2, 2
@@ -3498,7 +3498,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@178:
-		Category: Cliff/Water pieces
+		Categories: Cliff/Water pieces
 		Id: 178
 		Images: wcliff12.tem
 		Size: 1, 1
@@ -3509,7 +3509,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@179:
-		Category: Cliff/Water pieces
+		Categories: Cliff/Water pieces
 		Id: 179
 		Images: wcliff13.tem
 		Size: 1, 1
@@ -3520,7 +3520,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@180:
-		Category: Cliff/Water pieces
+		Categories: Cliff/Water pieces
 		Id: 180
 		Images: wcliff14.tem
 		Size: 1, 1
@@ -3531,7 +3531,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@181:
-		Category: Cliff/Water pieces
+		Categories: Cliff/Water pieces
 		Id: 181
 		Images: wcliff15.tem
 		Size: 2, 2
@@ -3559,7 +3559,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@182:
-		Category: Cliff/Water pieces
+		Categories: Cliff/Water pieces
 		Id: 182
 		Images: wcliff16.tem
 		Size: 2, 2
@@ -3587,7 +3587,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@183:
-		Category: Cliff/Water pieces
+		Categories: Cliff/Water pieces
 		Id: 183
 		Images: wcliff17.tem
 		Size: 2, 2
@@ -3615,7 +3615,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@184:
-		Category: Cliff/Water pieces
+		Categories: Cliff/Water pieces
 		Id: 184
 		Images: wcliff18.tem
 		Size: 2, 1
@@ -3632,7 +3632,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@185:
-		Category: Cliff/Water pieces
+		Categories: Cliff/Water pieces
 		Id: 185
 		Images: wcliff19.tem
 		Size: 3, 2
@@ -3660,7 +3660,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@186:
-		Category: Cliff/Water pieces
+		Categories: Cliff/Water pieces
 		Id: 186
 		Images: wcliff20.tem
 		Size: 3, 2
@@ -3688,7 +3688,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@187:
-		Category: Cliff/Water pieces
+		Categories: Cliff/Water pieces
 		Id: 187
 		Images: wcliff21.tem
 		Size: 3, 2
@@ -3716,7 +3716,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@188:
-		Category: Cliff/Water pieces
+		Categories: Cliff/Water pieces
 		Id: 188
 		Images: wcliff22.tem
 		Size: 2, 1
@@ -3733,7 +3733,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@189:
-		Category: Cliff/Water pieces
+		Categories: Cliff/Water pieces
 		Id: 189
 		Images: wcliff23.tem
 		Size: 2, 3
@@ -3766,7 +3766,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@190:
-		Category: Cliff/Water pieces
+		Categories: Cliff/Water pieces
 		Id: 190
 		Images: wcliff24.tem
 		Size: 1, 2
@@ -3782,7 +3782,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@191:
-		Category: Cliff/Water pieces
+		Categories: Cliff/Water pieces
 		Id: 191
 		Images: wcliff25.tem
 		Size: 2, 1
@@ -3798,7 +3798,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@192:
-		Category: Cliff/Water pieces
+		Categories: Cliff/Water pieces
 		Id: 192
 		Images: wcliff26.tem
 		Size: 2, 1
@@ -3814,7 +3814,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@193:
-		Category: Cliff/Water pieces
+		Categories: Cliff/Water pieces
 		Id: 193
 		Images: wcliff27.tem
 		Size: 1, 2
@@ -3830,7 +3830,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@194:
-		Category: Cliff/Water pieces
+		Categories: Cliff/Water pieces
 		Id: 194
 		Images: wcliff28.tem
 		Size: 3, 2
@@ -3863,7 +3863,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@195:
-		Category: Bendy Dirt Roads
+		Categories: Bendy Dirt Roads
 		Id: 195
 		Images: droadc01.tem
 		Size: 3, 2
@@ -3894,7 +3894,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@196:
-		Category: Bendy Dirt Roads
+		Categories: Bendy Dirt Roads
 		Id: 196
 		Images: droadc02.tem
 		Size: 2, 2
@@ -3920,7 +3920,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@197:
-		Category: Bendy Dirt Roads
+		Categories: Bendy Dirt Roads
 		Id: 197
 		Images: droadc03.tem
 		Size: 2, 2
@@ -3946,7 +3946,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@198:
-		Category: Bendy Dirt Roads
+		Categories: Bendy Dirt Roads
 		Id: 198
 		Images: droadc04.tem
 		Size: 2, 2
@@ -3967,7 +3967,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@199:
-		Category: Bendy Dirt Roads
+		Categories: Bendy Dirt Roads
 		Id: 199
 		Images: droadc05.tem
 		Size: 2, 2
@@ -3993,7 +3993,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@200:
-		Category: Bendy Dirt Roads
+		Categories: Bendy Dirt Roads
 		Id: 200
 		Images: droadc06.tem
 		Size: 3, 2
@@ -4024,7 +4024,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@201:
-		Category: Bendy Dirt Roads
+		Categories: Bendy Dirt Roads
 		Id: 201
 		Images: droadc07.tem
 		Size: 2, 3
@@ -4055,7 +4055,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@202:
-		Category: Bendy Dirt Roads
+		Categories: Bendy Dirt Roads
 		Id: 202
 		Images: droadc08.tem
 		Size: 2, 2
@@ -4081,7 +4081,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@203:
-		Category: Bendy Dirt Roads
+		Categories: Bendy Dirt Roads
 		Id: 203
 		Images: droadc09.tem
 		Size: 2, 2
@@ -4107,7 +4107,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@204:
-		Category: Bendy Dirt Roads
+		Categories: Bendy Dirt Roads
 		Id: 204
 		Images: droadc10.tem
 		Size: 2, 2
@@ -4133,7 +4133,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@205:
-		Category: Bendy Dirt Roads
+		Categories: Bendy Dirt Roads
 		Id: 205
 		Images: droadc11.tem
 		Size: 3, 2
@@ -4164,7 +4164,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@206:
-		Category: Bendy Dirt Roads
+		Categories: Bendy Dirt Roads
 		Id: 206
 		Images: droadc12.tem
 		Size: 3, 2
@@ -4195,7 +4195,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@207:
-		Category: Bendy Dirt Roads
+		Categories: Bendy Dirt Roads
 		Id: 207
 		Images: droadc13.tem
 		Size: 2, 3
@@ -4231,7 +4231,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@208:
-		Category: Bendy Dirt Roads
+		Categories: Bendy Dirt Roads
 		Id: 208
 		Images: droadc14.tem
 		Size: 2, 2
@@ -4257,7 +4257,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@209:
-		Category: Bendy Dirt Roads
+		Categories: Bendy Dirt Roads
 		Id: 209
 		Images: droadc15.tem
 		Size: 2, 2
@@ -4278,7 +4278,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@210:
-		Category: Bendy Dirt Roads
+		Categories: Bendy Dirt Roads
 		Id: 210
 		Images: droadc16.tem
 		Size: 2, 2
@@ -4299,7 +4299,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@211:
-		Category: Bendy Dirt Roads
+		Categories: Bendy Dirt Roads
 		Id: 211
 		Images: droadc17.tem
 		Size: 3, 2
@@ -4335,7 +4335,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@212:
-		Category: Bendy Dirt Roads
+		Categories: Bendy Dirt Roads
 		Id: 212
 		Images: droadc18.tem
 		Size: 2, 2
@@ -4356,7 +4356,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@213:
-		Category: Bendy Dirt Roads
+		Categories: Bendy Dirt Roads
 		Id: 213
 		Images: droadc19.tem
 		Size: 2, 2
@@ -4382,7 +4382,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@214:
-		Category: Bendy Dirt Roads
+		Categories: Bendy Dirt Roads
 		Id: 214
 		Images: droadc20.tem
 		Size: 3, 2
@@ -4413,7 +4413,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@215:
-		Category: Bendy Dirt Roads
+		Categories: Bendy Dirt Roads
 		Id: 215
 		Images: droadc21.tem
 		Size: 2, 2
@@ -4439,7 +4439,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@216:
-		Category: Bendy Dirt Roads
+		Categories: Bendy Dirt Roads
 		Id: 216
 		Images: droadc22.tem
 		Size: 2, 2
@@ -4460,7 +4460,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@217:
-		Category: Bendy Dirt Roads
+		Categories: Bendy Dirt Roads
 		Id: 217
 		Images: droadc23.tem
 		Size: 2, 3
@@ -4486,7 +4486,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@218:
-		Category: Bendy Dirt Roads
+		Categories: Bendy Dirt Roads
 		Id: 218
 		Images: droadc24.tem
 		Size: 2, 3
@@ -4517,7 +4517,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@219:
-		Category: Dirt Road Junctions
+		Categories: Dirt Road Junctions
 		Id: 219
 		Images: droadj01.tem
 		Size: 2, 2
@@ -4543,7 +4543,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@220:
-		Category: Dirt Road Junctions
+		Categories: Dirt Road Junctions
 		Id: 220
 		Images: droadj02.tem
 		Size: 2, 2
@@ -4569,7 +4569,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@221:
-		Category: Dirt Road Junctions
+		Categories: Dirt Road Junctions
 		Id: 221
 		Images: droadj03.tem
 		Size: 2, 2
@@ -4595,7 +4595,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@222:
-		Category: Dirt Road Junctions
+		Categories: Dirt Road Junctions
 		Id: 222
 		Images: droadj04.tem
 		Size: 2, 2
@@ -4621,7 +4621,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@223:
-		Category: Dirt Road Junctions
+		Categories: Dirt Road Junctions
 		Id: 223
 		Images: droadj05.tem
 		Size: 2, 2
@@ -4647,7 +4647,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@224:
-		Category: Dirt Road Junctions
+		Categories: Dirt Road Junctions
 		Id: 224
 		Images: droadj06.tem
 		Size: 3, 3
@@ -4688,7 +4688,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@225:
-		Category: Dirt Road Junctions
+		Categories: Dirt Road Junctions
 		Id: 225
 		Images: droadj07.tem
 		Size: 3, 3
@@ -4724,7 +4724,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@226:
-		Category: Dirt Road Junctions
+		Categories: Dirt Road Junctions
 		Id: 226
 		Images: droadj08.tem
 		Size: 3, 3
@@ -4760,7 +4760,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@227:
-		Category: Dirt Road Junctions
+		Categories: Dirt Road Junctions
 		Id: 227
 		Images: droadj09.tem
 		Size: 3, 3
@@ -4801,7 +4801,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@228:
-		Category: Dirt Road Junctions
+		Categories: Dirt Road Junctions
 		Id: 228
 		Images: droadj10.tem
 		Size: 3, 3
@@ -4842,7 +4842,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@229:
-		Category: Dirt Road Junctions
+		Categories: Dirt Road Junctions
 		Id: 229
 		Images: droadj11.tem
 		Size: 4, 4
@@ -4913,7 +4913,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@230:
-		Category: Straight Dirt Roads
+		Categories: Straight Dirt Roads
 		Id: 230
 		Images: droads01.tem
 		Size: 4, 4
@@ -4964,7 +4964,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@231:
-		Category: Straight Dirt Roads
+		Categories: Straight Dirt Roads
 		Id: 231
 		Images: droads02.tem
 		Size: 4, 4
@@ -5015,7 +5015,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@232:
-		Category: Straight Dirt Roads
+		Categories: Straight Dirt Roads
 		Id: 232
 		Images: droads03.tem
 		Size: 4, 4
@@ -5066,7 +5066,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@233:
-		Category: Straight Dirt Roads
+		Categories: Straight Dirt Roads
 		Id: 233
 		Images: droads04.tem
 		Size: 4, 4
@@ -5132,7 +5132,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@234:
-		Category: Straight Dirt Roads
+		Categories: Straight Dirt Roads
 		Id: 234
 		Images: droads05.tem
 		Size: 3, 3
@@ -5168,7 +5168,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@235:
-		Category: Straight Dirt Roads
+		Categories: Straight Dirt Roads
 		Id: 235
 		Images: droads06.tem
 		Size: 2, 2
@@ -5189,7 +5189,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@236:
-		Category: Straight Dirt Roads
+		Categories: Straight Dirt Roads
 		Id: 236
 		Images: droads07.tem
 		Size: 2, 2
@@ -5210,7 +5210,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@237:
-		Category: Straight Dirt Roads
+		Categories: Straight Dirt Roads
 		Id: 237
 		Images: droads08.tem
 		Size: 4, 4
@@ -5256,7 +5256,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@238:
-		Category: Straight Dirt Roads
+		Categories: Straight Dirt Roads
 		Id: 238
 		Images: droads09.tem
 		Size: 4, 3
@@ -5307,7 +5307,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@239:
-		Category: Straight Dirt Roads
+		Categories: Straight Dirt Roads
 		Id: 239
 		Images: droads10.tem
 		Size: 3, 3
@@ -5343,7 +5343,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@240:
-		Category: Straight Dirt Roads
+		Categories: Straight Dirt Roads
 		Id: 240
 		Images: droads11.tem
 		Size: 4, 4
@@ -5394,7 +5394,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@241:
-		Category: Straight Dirt Roads
+		Categories: Straight Dirt Roads
 		Id: 241
 		Images: droads12.tem
 		Size: 3, 4
@@ -5445,7 +5445,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@242:
-		Category: Straight Dirt Roads
+		Categories: Straight Dirt Roads
 		Id: 242
 		Images: droads13.tem
 		Size: 3, 3
@@ -5481,7 +5481,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@243:
-		Category: Straight Dirt Roads
+		Categories: Straight Dirt Roads
 		Id: 243
 		Images: droads14.tem
 		Size: 5, 3
@@ -5537,7 +5537,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@244:
-		Category: Straight Dirt Roads
+		Categories: Straight Dirt Roads
 		Id: 244
 		Images: droads15.tem
 		Size: 3, 5
@@ -5593,7 +5593,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@245:
-		Category: Straight Dirt Roads
+		Categories: Straight Dirt Roads
 		Id: 245
 		Images: droads16.tem
 		Size: 2, 4
@@ -5629,7 +5629,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@246:
-		Category: Straight Dirt Roads
+		Categories: Straight Dirt Roads
 		Id: 246
 		Images: droads17.tem
 		Size: 4, 2
@@ -5675,7 +5675,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@247:
-		Category: Straight Dirt Roads
+		Categories: Straight Dirt Roads
 		Id: 247
 		Images: droads18.tem
 		Size: 4, 2
@@ -5721,7 +5721,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@248:
-		Category: Straight Dirt Roads
+		Categories: Straight Dirt Roads
 		Id: 248
 		Images: droads19.tem
 		Size: 4, 2
@@ -5767,7 +5767,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@249:
-		Category: Straight Dirt Roads
+		Categories: Straight Dirt Roads
 		Id: 249
 		Images: droads20.tem
 		Size: 4, 2
@@ -5813,7 +5813,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@250:
-		Category: Straight Dirt Roads
+		Categories: Straight Dirt Roads
 		Id: 250
 		Images: droads21.tem
 		Size: 3, 2
@@ -5849,7 +5849,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@251:
-		Category: Straight Dirt Roads
+		Categories: Straight Dirt Roads
 		Id: 251
 		Images: droads22.tem
 		Size: 2, 2
@@ -5875,7 +5875,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@252:
-		Category: Straight Dirt Roads
+		Categories: Straight Dirt Roads
 		Id: 252
 		Images: droads23.tem
 		Size: 1, 2
@@ -5891,7 +5891,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@253:
-		Category: Straight Dirt Roads
+		Categories: Straight Dirt Roads
 		Id: 253
 		Images: droads24.tem
 		Size: 1, 2
@@ -5907,7 +5907,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@254:
-		Category: Straight Dirt Roads
+		Categories: Straight Dirt Roads
 		Id: 254
 		Images: droads25.tem
 		Size: 3, 2
@@ -5943,7 +5943,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@255:
-		Category: Straight Dirt Roads
+		Categories: Straight Dirt Roads
 		Id: 255
 		Images: droads26.tem
 		Size: 2, 2
@@ -5969,7 +5969,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@256:
-		Category: Straight Dirt Roads
+		Categories: Straight Dirt Roads
 		Id: 256
 		Images: droads27.tem
 		Size: 3, 3
@@ -6010,7 +6010,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@257:
-		Category: Straight Dirt Roads
+		Categories: Straight Dirt Roads
 		Id: 257
 		Images: droads28.tem
 		Size: 3, 2
@@ -6046,7 +6046,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@258:
-		Category: Straight Dirt Roads
+		Categories: Straight Dirt Roads
 		Id: 258
 		Images: droads29.tem
 		Size: 2, 2
@@ -6072,7 +6072,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@259:
-		Category: Straight Dirt Roads
+		Categories: Straight Dirt Roads
 		Id: 259
 		Images: droads30.tem
 		Size: 2, 2
@@ -6098,7 +6098,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@260:
-		Category: Straight Dirt Roads
+		Categories: Straight Dirt Roads
 		Id: 260
 		Images: droads31.tem
 		Size: 4, 3
@@ -6144,7 +6144,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@261:
-		Category: Straight Dirt Roads
+		Categories: Straight Dirt Roads
 		Id: 261
 		Images: droads32.tem
 		Size: 4, 3
@@ -6190,7 +6190,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@262:
-		Category: Straight Dirt Roads
+		Categories: Straight Dirt Roads
 		Id: 262
 		Images: droads33.tem
 		Size: 4, 2
@@ -6236,7 +6236,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@263:
-		Category: Straight Dirt Roads
+		Categories: Straight Dirt Roads
 		Id: 263
 		Images: droads34.tem
 		Size: 4, 4
@@ -6287,7 +6287,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@264:
-		Category: Straight Dirt Roads
+		Categories: Straight Dirt Roads
 		Id: 264
 		Images: droads35.tem
 		Size: 4, 4
@@ -6338,7 +6338,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@265:
-		Category: Straight Dirt Roads
+		Categories: Straight Dirt Roads
 		Id: 265
 		Images: droads36.tem
 		Size: 4, 4
@@ -6389,7 +6389,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@266:
-		Category: Straight Dirt Roads
+		Categories: Straight Dirt Roads
 		Id: 266
 		Images: droads37.tem
 		Size: 4, 4
@@ -6440,7 +6440,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@267:
-		Category: Straight Dirt Roads
+		Categories: Straight Dirt Roads
 		Id: 267
 		Images: droads38.tem
 		Size: 3, 3
@@ -6476,7 +6476,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@268:
-		Category: Straight Dirt Roads
+		Categories: Straight Dirt Roads
 		Id: 268
 		Images: droads39.tem
 		Size: 2, 2
@@ -6497,7 +6497,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@269:
-		Category: Straight Dirt Roads
+		Categories: Straight Dirt Roads
 		Id: 269
 		Images: droads40.tem
 		Size: 2, 2
@@ -6518,7 +6518,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@270:
-		Category: Straight Dirt Roads
+		Categories: Straight Dirt Roads
 		Id: 270
 		Images: droads41.tem
 		Size: 4, 4
@@ -6569,7 +6569,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@271:
-		Category: Straight Dirt Roads
+		Categories: Straight Dirt Roads
 		Id: 271
 		Images: droads42.tem
 		Size: 4, 5
@@ -6625,7 +6625,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@272:
-		Category: Straight Dirt Roads
+		Categories: Straight Dirt Roads
 		Id: 272
 		Images: droads43.tem
 		Size: 3, 3
@@ -6661,7 +6661,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@273:
-		Category: Straight Dirt Roads
+		Categories: Straight Dirt Roads
 		Id: 273
 		Images: droads44.tem
 		Size: 4, 4
@@ -6712,7 +6712,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@274:
-		Category: Straight Dirt Roads
+		Categories: Straight Dirt Roads
 		Id: 274
 		Images: droads45.tem
 		Size: 2, 3
@@ -6748,7 +6748,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@275:
-		Category: Straight Dirt Roads
+		Categories: Straight Dirt Roads
 		Id: 275
 		Images: droads46.tem
 		Size: 3, 3
@@ -6784,7 +6784,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@276:
-		Category: Straight Dirt Roads
+		Categories: Straight Dirt Roads
 		Id: 276
 		Images: droads47.tem
 		Size: 5, 3
@@ -6845,7 +6845,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@277:
-		Category: Straight Dirt Roads
+		Categories: Straight Dirt Roads
 		Id: 277
 		Images: droads48.tem
 		Size: 3, 5
@@ -6901,7 +6901,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@278:
-		Category: Straight Dirt Roads
+		Categories: Straight Dirt Roads
 		Id: 278
 		Images: droads49.tem
 		Size: 4, 4
@@ -6952,7 +6952,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@279:
-		Category: Straight Dirt Roads
+		Categories: Straight Dirt Roads
 		Id: 279
 		Images: droads50.tem
 		Size: 2, 4
@@ -6998,7 +6998,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@280:
-		Category: Straight Dirt Roads
+		Categories: Straight Dirt Roads
 		Id: 280
 		Images: droads51.tem
 		Size: 2, 4
@@ -7044,7 +7044,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@281:
-		Category: Straight Dirt Roads
+		Categories: Straight Dirt Roads
 		Id: 281
 		Images: droads52.tem
 		Size: 2, 4
@@ -7090,7 +7090,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@282:
-		Category: Straight Dirt Roads
+		Categories: Straight Dirt Roads
 		Id: 282
 		Images: droads53.tem
 		Size: 2, 4
@@ -7136,7 +7136,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@283:
-		Category: Straight Dirt Roads
+		Categories: Straight Dirt Roads
 		Id: 283
 		Images: droads54.tem
 		Size: 2, 3
@@ -7172,7 +7172,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@284:
-		Category: Straight Dirt Roads
+		Categories: Straight Dirt Roads
 		Id: 284
 		Images: droads55.tem
 		Size: 2, 2
@@ -7198,7 +7198,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@285:
-		Category: Straight Dirt Roads
+		Categories: Straight Dirt Roads
 		Id: 285
 		Images: droads56.tem
 		Size: 2, 1
@@ -7214,7 +7214,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@286:
-		Category: Straight Dirt Roads
+		Categories: Straight Dirt Roads
 		Id: 286
 		Images: droads57.tem
 		Size: 2, 1
@@ -7230,7 +7230,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@287:
-		Category: Straight Dirt Roads
+		Categories: Straight Dirt Roads
 		Id: 287
 		Images: droads58.tem
 		Size: 2, 4
@@ -7276,7 +7276,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@288:
-		Category: Straight Dirt Roads
+		Categories: Straight Dirt Roads
 		Id: 288
 		Images: droads59.tem
 		Size: 3, 3
@@ -7317,7 +7317,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@289:
-		Category: Straight Dirt Roads
+		Categories: Straight Dirt Roads
 		Id: 289
 		Images: droads60.tem
 		Size: 2, 3
@@ -7348,7 +7348,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@290:
-		Category: Straight Dirt Roads
+		Categories: Straight Dirt Roads
 		Id: 290
 		Images: droads61.tem
 		Size: 2, 4
@@ -7389,7 +7389,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@291:
-		Category: Straight Dirt Roads
+		Categories: Straight Dirt Roads
 		Id: 291
 		Images: droads62.tem
 		Size: 2, 4
@@ -7435,7 +7435,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@292:
-		Category: Straight Dirt Roads
+		Categories: Straight Dirt Roads
 		Id: 292
 		Images: droads63.tem
 		Size: 2, 2
@@ -7461,7 +7461,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@293:
-		Category: Straight Dirt Roads
+		Categories: Straight Dirt Roads
 		Id: 293
 		Images: droads64.tem
 		Size: 3, 4
@@ -7507,7 +7507,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@294:
-		Category: Straight Dirt Roads
+		Categories: Straight Dirt Roads
 		Id: 294
 		Images: droads65.tem
 		Size: 3, 4
@@ -7553,7 +7553,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@295:
-		Category: Straight Dirt Roads
+		Categories: Straight Dirt Roads
 		Id: 295
 		Images: droads66.tem
 		Size: 2, 3
@@ -7584,7 +7584,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@296:
-		Category: Bridges
+		Categories: Bridges
 		Id: 296
 		Images: ovrps01.tem
 		Size: 3, 5
@@ -7673,7 +7673,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@297:
-		Category: Bridges
+		Categories: Bridges
 		Id: 297
 		Images: ovrps02.tem
 		Size: 3, 5
@@ -7762,7 +7762,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@298:
-		Category: Bridges
+		Categories: Bridges
 		Id: 298
 		Images: ovrps03.tem
 		Size: 2, 5
@@ -7826,7 +7826,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@299:
-		Category: Bridges
+		Categories: Bridges
 		Id: 299
 		Images: ovrps04.tem
 		Size: 5, 3
@@ -7915,7 +7915,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@300:
-		Category: Bridges
+		Categories: Bridges
 		Id: 300
 		Images: ovrps05.tem
 		Size: 5, 3
@@ -8004,7 +8004,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@301:
-		Category: Bridges
+		Categories: Bridges
 		Id: 301
 		Images: ovrps06.tem
 		Size: 5, 2
@@ -8068,7 +8068,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@302:
-		Category: Bridges
+		Categories: Bridges
 		Id: 302
 		Images: ovrps07.tem
 		Size: 2, 5
@@ -8127,7 +8127,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@303:
-		Category: Bridges
+		Categories: Bridges
 		Id: 303
 		Images: ovrps08.tem
 		Size: 2, 5
@@ -8186,7 +8186,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@304:
-		Category: Bridges
+		Categories: Bridges
 		Id: 304
 		Images: ovrps09.tem
 		Size: 2, 5
@@ -8245,7 +8245,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@305:
-		Category: Bridges
+		Categories: Bridges
 		Id: 305
 		Images: ovrps10.tem
 		Size: 2, 5
@@ -8304,7 +8304,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@306:
-		Category: Bridges
+		Categories: Bridges
 		Id: 306
 		Images: ovrps11.tem
 		Size: 2, 5
@@ -8360,7 +8360,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@307:
-		Category: Bridges
+		Categories: Bridges
 		Id: 307
 		Images: ovrps12.tem
 		Size: 5, 2
@@ -8414,7 +8414,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@308:
-		Category: Bridges
+		Categories: Bridges
 		Id: 308
 		Images: ovrps13.tem
 		Size: 5, 2
@@ -8468,7 +8468,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@309:
-		Category: Bridges
+		Categories: Bridges
 		Id: 309
 		Images: ovrps14.tem
 		Size: 5, 2
@@ -8522,7 +8522,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@310:
-		Category: Bridges
+		Categories: Bridges
 		Id: 310
 		Images: ovrps15.tem
 		Size: 5, 2
@@ -8576,7 +8576,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@311:
-		Category: Bridges
+		Categories: Bridges
 		Id: 311
 		Images: ovrps16.tem
 		Size: 5, 2
@@ -8630,7 +8630,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@312:
-		Category: Paved Roads
+		Categories: Paved Roads
 		Id: 312
 		Images: proad01.tem, proad01a.tem, proad01b.tem, proad01c.tem
 		Size: 1, 3
@@ -8651,7 +8651,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@313:
-		Category: Paved Roads
+		Categories: Paved Roads
 		Id: 313
 		Images: proad02.tem, proad02a.tem, proad02b.tem, proad02c.tem
 		Size: 3, 1
@@ -8672,7 +8672,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@314:
-		Category: Paved Roads
+		Categories: Paved Roads
 		Id: 314
 		Images: proad03.tem
 		Size: 3, 3
@@ -8723,7 +8723,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@315:
-		Category: Paved Roads
+		Categories: Paved Roads
 		Id: 315
 		Images: proad04.tem
 		Size: 3, 3
@@ -8774,7 +8774,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@316:
-		Category: Paved Roads
+		Categories: Paved Roads
 		Id: 316
 		Images: proad05.tem
 		Size: 3, 3
@@ -8825,7 +8825,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@317:
-		Category: Paved Roads
+		Categories: Paved Roads
 		Id: 317
 		Images: proad06.tem
 		Size: 3, 3
@@ -8876,7 +8876,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@318:
-		Category: Paved Roads
+		Categories: Paved Roads
 		Id: 318
 		Images: proad07.tem
 		Size: 3, 3
@@ -8927,7 +8927,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@319:
-		Category: Paved Roads
+		Categories: Paved Roads
 		Id: 319
 		Images: proad08.tem
 		Size: 3, 3
@@ -8978,7 +8978,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@320:
-		Category: Paved Roads
+		Categories: Paved Roads
 		Id: 320
 		Images: proad09.tem
 		Size: 3, 3
@@ -9029,7 +9029,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@321:
-		Category: Paved Roads
+		Categories: Paved Roads
 		Id: 321
 		Images: proad10.tem
 		Size: 4, 3
@@ -9095,7 +9095,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@322:
-		Category: Paved Roads
+		Categories: Paved Roads
 		Id: 322
 		Images: proad11.tem
 		Size: 4, 3
@@ -9161,7 +9161,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@323:
-		Category: Paved Roads
+		Categories: Paved Roads
 		Id: 323
 		Images: proad12.tem
 		Size: 4, 3
@@ -9227,7 +9227,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@324:
-		Category: Paved Roads
+		Categories: Paved Roads
 		Id: 324
 		Images: proad13.tem
 		Size: 3, 4
@@ -9293,7 +9293,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@325:
-		Category: Paved Roads
+		Categories: Paved Roads
 		Id: 325
 		Images: proad14.tem
 		Size: 3, 4
@@ -9359,7 +9359,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@326:
-		Category: Paved Roads
+		Categories: Paved Roads
 		Id: 326
 		Images: proad15.tem
 		Size: 3, 4
@@ -9425,7 +9425,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@327:
-		Category: Paved Roads
+		Categories: Paved Roads
 		Id: 327
 		Images: proad16.tem
 		Size: 4, 5
@@ -9511,7 +9511,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@328:
-		Category: Paved Roads
+		Categories: Paved Roads
 		Id: 328
 		Images: proad17.tem
 		Size: 4, 4
@@ -9587,7 +9587,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@329:
-		Category: Paved Roads
+		Categories: Paved Roads
 		Id: 329
 		Images: proad18.tem
 		Size: 4, 5
@@ -9673,7 +9673,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@330:
-		Category: Paved Roads
+		Categories: Paved Roads
 		Id: 330
 		Images: proad19.tem
 		Size: 5, 4
@@ -9759,7 +9759,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@331:
-		Category: Paved Roads
+		Categories: Paved Roads
 		Id: 331
 		Images: proad20.tem
 		Size: 4, 4
@@ -9835,7 +9835,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@332:
-		Category: Paved Roads
+		Categories: Paved Roads
 		Id: 332
 		Images: proad21.tem
 		Size: 5, 4
@@ -9921,7 +9921,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@333:
-		Category: Water
+		Categories: Water
 		Id: 333
 		Images: water01.tem
 		Size: 2, 2
@@ -9947,7 +9947,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@334:
-		Category: Water
+		Categories: Water
 		Id: 334
 		Images: water02.tem
 		Size: 2, 2
@@ -9973,7 +9973,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@335:
-		Category: Water
+		Categories: Water
 		Id: 335
 		Images: water03.tem
 		Size: 2, 2
@@ -9999,7 +9999,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@336:
-		Category: Water
+		Categories: Water
 		Id: 336
 		Images: water04.tem
 		Size: 2, 2
@@ -10025,7 +10025,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@337:
-		Category: Water
+		Categories: Water
 		Id: 337
 		Images: water05.tem
 		Size: 2, 2
@@ -10051,7 +10051,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@338:
-		Category: Water
+		Categories: Water
 		Id: 338
 		Images: water06.tem
 		Size: 2, 2
@@ -10077,7 +10077,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@339:
-		Category: Water
+		Categories: Water
 		Id: 339
 		Images: water07.tem
 		Size: 2, 2
@@ -10103,7 +10103,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@340:
-		Category: Water
+		Categories: Water
 		Id: 340
 		Images: water08.tem
 		Size: 2, 2
@@ -10129,7 +10129,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@341:
-		Category: Water
+		Categories: Water
 		Id: 341
 		Images: water09.tem
 		Size: 1, 1
@@ -10140,7 +10140,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@342:
-		Category: Water
+		Categories: Water
 		Id: 342
 		Images: water10.tem
 		Size: 1, 1
@@ -10151,7 +10151,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@343:
-		Category: Water
+		Categories: Water
 		Id: 343
 		Images: water11.tem
 		Size: 1, 1
@@ -10162,7 +10162,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@344:
-		Category: Water
+		Categories: Water
 		Id: 344
 		Images: water12.tem
 		Size: 1, 1
@@ -10173,7 +10173,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@345:
-		Category: Water
+		Categories: Water
 		Id: 345
 		Images: water13.tem
 		Size: 1, 1
@@ -10184,7 +10184,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@346:
-		Category: Water
+		Categories: Water
 		Id: 346
 		Images: water14.tem
 		Size: 1, 1
@@ -10195,7 +10195,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@387:
-		Category: Dirt Road Slopes
+		Categories: Dirt Road Slopes
 		Id: 387
 		Images: drslpe01.tem
 		Size: 1, 2
@@ -10213,7 +10213,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@388:
-		Category: Dirt Road Slopes
+		Categories: Dirt Road Slopes
 		Id: 388
 		Images: drslpe02.tem
 		Size: 1, 2
@@ -10231,7 +10231,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@389:
-		Category: Dirt Road Slopes
+		Categories: Dirt Road Slopes
 		Id: 389
 		Images: drslpe03.tem
 		Size: 2, 1
@@ -10249,7 +10249,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@390:
-		Category: Dirt Road Slopes
+		Categories: Dirt Road Slopes
 		Id: 390
 		Images: drslpe04.tem
 		Size: 2, 1
@@ -10267,7 +10267,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@391:
-		Category: Dirt Road Slopes
+		Categories: Dirt Road Slopes
 		Id: 391
 		Images: drslpe05.tem
 		Size: 1, 2
@@ -10285,7 +10285,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@392:
-		Category: Dirt Road Slopes
+		Categories: Dirt Road Slopes
 		Id: 392
 		Images: drslpe06.tem
 		Size: 1, 2
@@ -10303,7 +10303,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@393:
-		Category: Dirt Road Slopes
+		Categories: Dirt Road Slopes
 		Id: 393
 		Images: drslpe07.tem
 		Size: 2, 1
@@ -10321,7 +10321,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@394:
-		Category: Dirt Road Slopes
+		Categories: Dirt Road Slopes
 		Id: 394
 		Images: drslpe08.tem
 		Size: 2, 1
@@ -10339,7 +10339,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@403:
-		Category: Slope Set Pieces
+		Categories: Slope Set Pieces
 		Id: 403
 		Images: ramp01.tem
 		Size: 3, 4
@@ -10409,7 +10409,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@404:
-		Category: Slope Set Pieces
+		Categories: Slope Set Pieces
 		Id: 404
 		Images: ramp02.tem
 		Size: 3, 4
@@ -10479,7 +10479,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@405:
-		Category: Slope Set Pieces
+		Categories: Slope Set Pieces
 		Id: 405
 		Images: ramp03.tem
 		Size: 4, 3
@@ -10549,7 +10549,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@406:
-		Category: Slope Set Pieces
+		Categories: Slope Set Pieces
 		Id: 406
 		Images: ramp04.tem
 		Size: 4, 3
@@ -10619,7 +10619,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@407:
-		Category: Slope Set Pieces
+		Categories: Slope Set Pieces
 		Id: 407
 		Images: ramp05.tem
 		Size: 3, 4
@@ -10688,7 +10688,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@408:
-		Category: Slope Set Pieces
+		Categories: Slope Set Pieces
 		Id: 408
 		Images: ramp06.tem
 		Size: 3, 4
@@ -10738,7 +10738,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@409:
-		Category: Slope Set Pieces
+		Categories: Slope Set Pieces
 		Id: 409
 		Images: ramp07.tem
 		Size: 2, 2
@@ -10764,7 +10764,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@410:
-		Category: Slope Set Pieces
+		Categories: Slope Set Pieces
 		Id: 410
 		Images: ramp08.tem
 		Size: 4, 3
@@ -10833,7 +10833,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@411:
-		Category: Slope Set Pieces
+		Categories: Slope Set Pieces
 		Id: 411
 		Images: ramp09.tem
 		Size: 4, 3
@@ -10883,7 +10883,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@412:
-		Category: Slope Set Pieces
+		Categories: Slope Set Pieces
 		Id: 412
 		Images: ramp10.tem
 		Size: 2, 2
@@ -10909,7 +10909,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@423:
-		Category: Dead Oil Tanker
+		Categories: Dead Oil Tanker
 		Id: 423
 		Images: tanker01.tem
 		Size: 5, 8
@@ -11043,7 +11043,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@424:
-		Category: Ruins
+		Categories: Ruins
 		Id: 424
 		Images: ruin01.tem
 		Size: 3, 3
@@ -11084,7 +11084,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@435:
-		Category: Waterfalls
+		Categories: Waterfalls
 		Id: 435
 		Images: w-a-01.tem
 		Size: 2, 4
@@ -11134,7 +11134,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@436:
-		Category: Waterfalls
+		Categories: Waterfalls
 		Id: 436
 		Images: w-a-02.tem
 		Size: 1, 4
@@ -11162,7 +11162,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@437:
-		Category: Waterfalls
+		Categories: Waterfalls
 		Id: 437
 		Images: w-a-03.tem
 		Size: 2, 4
@@ -11212,7 +11212,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@438:
-		Category: Waterfalls
+		Categories: Waterfalls
 		Id: 438
 		Images: w-a-04.tem
 		Size: 2, 4
@@ -11262,7 +11262,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@439:
-		Category: Ground 01
+		Categories: Ground 01
 		Id: 439
 		Images: des0101.tem
 		Size: 1, 1
@@ -11273,7 +11273,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@440:
-		Category: Ground 01
+		Categories: Ground 01
 		Id: 440
 		Images: des0102.tem
 		Size: 1, 1
@@ -11284,7 +11284,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@441:
-		Category: Ground 01
+		Categories: Ground 01
 		Id: 441
 		Images: des0103.tem
 		Size: 1, 1
@@ -11295,7 +11295,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@442:
-		Category: Ground 01
+		Categories: Ground 01
 		Id: 442
 		Images: des0104.tem
 		Size: 1, 1
@@ -11306,7 +11306,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@443:
-		Category: Ground 01
+		Categories: Ground 01
 		Id: 443
 		Images: des0105.tem
 		Size: 1, 1
@@ -11317,7 +11317,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@444:
-		Category: Ground 01
+		Categories: Ground 01
 		Id: 444
 		Images: des0106.tem
 		Size: 1, 1
@@ -11328,7 +11328,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@445:
-		Category: Ground 01
+		Categories: Ground 01
 		Id: 445
 		Images: des0107.tem
 		Size: 1, 1
@@ -11339,7 +11339,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@446:
-		Category: Ground 01
+		Categories: Ground 01
 		Id: 446
 		Images: des0108.tem
 		Size: 1, 1
@@ -11350,7 +11350,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@447:
-		Category: Ground 01
+		Categories: Ground 01
 		Id: 447
 		Images: des0109.tem
 		Size: 1, 1
@@ -11361,7 +11361,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@448:
-		Category: Ground 01
+		Categories: Ground 01
 		Id: 448
 		Images: des0110.tem
 		Size: 1, 1
@@ -11372,7 +11372,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@449:
-		Category: Ground 01
+		Categories: Ground 01
 		Id: 449
 		Images: des0111.tem
 		Size: 1, 1
@@ -11383,7 +11383,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@450:
-		Category: Ground 01
+		Categories: Ground 01
 		Id: 450
 		Images: des0112.tem
 		Size: 1, 1
@@ -11394,7 +11394,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@451:
-		Category: Ground 01
+		Categories: Ground 01
 		Id: 451
 		Images: des0113.tem
 		Size: 1, 1
@@ -11405,7 +11405,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@452:
-		Category: Ground 01
+		Categories: Ground 01
 		Id: 452
 		Images: des0114.tem
 		Size: 1, 1
@@ -11416,7 +11416,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@453:
-		Category: Ground 01
+		Categories: Ground 01
 		Id: 453
 		Images: des0115.tem
 		Size: 1, 1
@@ -11427,7 +11427,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@454:
-		Category: Ground 01
+		Categories: Ground 01
 		Id: 454
 		Images: des0116.tem
 		Size: 1, 1
@@ -11438,7 +11438,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@455:
-		Category: Ground 01
+		Categories: Ground 01
 		Id: 455
 		Images: des0117.tem
 		Size: 1, 1
@@ -11449,7 +11449,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@456:
-		Category: Ground 01
+		Categories: Ground 01
 		Id: 456
 		Images: des0118.tem
 		Size: 1, 1
@@ -11460,7 +11460,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@457:
-		Category: Ground 01
+		Categories: Ground 01
 		Id: 457
 		Images: des0119.tem
 		Size: 1, 1
@@ -11471,7 +11471,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@458:
-		Category: Ground 01
+		Categories: Ground 01
 		Id: 458
 		Images: des0120.tem
 		Size: 1, 1
@@ -11482,7 +11482,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@459:
-		Category: Ground 01
+		Categories: Ground 01
 		Id: 459
 		Images: des0121.tem
 		Size: 1, 1
@@ -11493,7 +11493,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@460:
-		Category: Ground 01
+		Categories: Ground 01
 		Id: 460
 		Images: des0122.tem
 		Size: 1, 1
@@ -11504,7 +11504,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@461:
-		Category: Ground 01
+		Categories: Ground 01
 		Id: 461
 		Images: des0123.tem
 		Size: 1, 1
@@ -11515,7 +11515,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@462:
-		Category: Ground 01
+		Categories: Ground 01
 		Id: 462
 		Images: des0124.tem
 		Size: 1, 1
@@ -11526,7 +11526,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@463:
-		Category: Ground 01
+		Categories: Ground 01
 		Id: 463
 		Images: des0125.tem
 		Size: 1, 1
@@ -11537,7 +11537,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@464:
-		Category: Ground 01
+		Categories: Ground 01
 		Id: 464
 		Images: des0126.tem
 		Size: 1, 1
@@ -11548,7 +11548,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@465:
-		Category: Ground 01
+		Categories: Ground 01
 		Id: 465
 		Images: des0127.tem
 		Size: 1, 1
@@ -11559,7 +11559,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@466:
-		Category: Ground 01
+		Categories: Ground 01
 		Id: 466
 		Images: des0128.tem
 		Size: 1, 1
@@ -11570,7 +11570,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@467:
-		Category: Ground 01
+		Categories: Ground 01
 		Id: 467
 		Images: des0129.tem
 		Size: 1, 1
@@ -11581,7 +11581,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@468:
-		Category: Ground 01
+		Categories: Ground 01
 		Id: 468
 		Images: des0130.tem
 		Size: 1, 1
@@ -11592,7 +11592,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@469:
-		Category: Ground 01
+		Categories: Ground 01
 		Id: 469
 		Images: des0131.tem
 		Size: 1, 1
@@ -11603,7 +11603,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@470:
-		Category: Ground 01
+		Categories: Ground 01
 		Id: 470
 		Images: des0132.tem
 		Size: 1, 1
@@ -11614,7 +11614,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@471:
-		Category: Ground 01
+		Categories: Ground 01
 		Id: 471
 		Images: des0133.tem
 		Size: 1, 1
@@ -11625,7 +11625,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@472:
-		Category: Ground 01
+		Categories: Ground 01
 		Id: 472
 		Images: des0134.tem
 		Size: 1, 1
@@ -11636,7 +11636,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@473:
-		Category: Ground 01
+		Categories: Ground 01
 		Id: 473
 		Images: des0135.tem
 		Size: 1, 1
@@ -11647,7 +11647,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@474:
-		Category: Ground 01
+		Categories: Ground 01
 		Id: 474
 		Images: des0136.tem
 		Size: 1, 1
@@ -11658,7 +11658,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@475:
-		Category: Ground 01
+		Categories: Ground 01
 		Id: 475
 		Images: des0137.tem
 		Size: 1, 1
@@ -11669,7 +11669,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@476:
-		Category: Ground 01
+		Categories: Ground 01
 		Id: 476
 		Images: des0138.tem
 		Size: 1, 1
@@ -11680,7 +11680,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@477:
-		Category: Ground 01
+		Categories: Ground 01
 		Id: 477
 		Images: des0139.tem
 		Size: 1, 1
@@ -11691,7 +11691,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@478:
-		Category: Ground 01
+		Categories: Ground 01
 		Id: 478
 		Images: des0140.tem
 		Size: 1, 1
@@ -11702,7 +11702,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@479:
-		Category: Ground 01
+		Categories: Ground 01
 		Id: 479
 		Images: des0141.tem
 		Size: 1, 1
@@ -11713,7 +11713,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@480:
-		Category: Ground 01
+		Categories: Ground 01
 		Id: 480
 		Images: des0142.tem
 		Size: 1, 1
@@ -11724,7 +11724,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@481:
-		Category: Ground 01
+		Categories: Ground 01
 		Id: 481
 		Images: des0143.tem
 		Size: 1, 1
@@ -11735,7 +11735,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@482:
-		Category: Ground 01
+		Categories: Ground 01
 		Id: 482
 		Images: des0144.tem
 		Size: 1, 1
@@ -11746,7 +11746,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@483:
-		Category: Ground 01
+		Categories: Ground 01
 		Id: 483
 		Images: des0145.tem
 		Size: 1, 1
@@ -11757,7 +11757,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@484:
-		Category: Ground 01
+		Categories: Ground 01
 		Id: 484
 		Images: des0146.tem
 		Size: 1, 1
@@ -11768,7 +11768,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@485:
-		Category: Ground 01
+		Categories: Ground 01
 		Id: 485
 		Images: des0147.tem
 		Size: 1, 1
@@ -11779,7 +11779,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@486:
-		Category: Ground 01
+		Categories: Ground 01
 		Id: 486
 		Images: des0148.tem
 		Size: 1, 1
@@ -11790,7 +11790,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@487:
-		Category: Ground 02
+		Categories: Ground 02
 		Id: 487
 		Images: des0201.tem
 		Size: 1, 1
@@ -11801,7 +11801,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@488:
-		Category: Ground 02
+		Categories: Ground 02
 		Id: 488
 		Images: des0202.tem
 		Size: 1, 1
@@ -11812,7 +11812,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@489:
-		Category: Ground 02
+		Categories: Ground 02
 		Id: 489
 		Images: des0203.tem
 		Size: 1, 1
@@ -11823,7 +11823,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@490:
-		Category: Ground 02
+		Categories: Ground 02
 		Id: 490
 		Images: des0204.tem
 		Size: 1, 1
@@ -11834,7 +11834,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@491:
-		Category: Ground 02
+		Categories: Ground 02
 		Id: 491
 		Images: des0205.tem
 		Size: 1, 1
@@ -11845,7 +11845,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@492:
-		Category: Ground 02
+		Categories: Ground 02
 		Id: 492
 		Images: des0206.tem
 		Size: 1, 1
@@ -11856,7 +11856,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@493:
-		Category: Ground 02
+		Categories: Ground 02
 		Id: 493
 		Images: des0207.tem
 		Size: 1, 1
@@ -11867,7 +11867,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@494:
-		Category: Ground 02
+		Categories: Ground 02
 		Id: 494
 		Images: des0208.tem
 		Size: 1, 1
@@ -11878,7 +11878,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@495:
-		Category: Ground 02
+		Categories: Ground 02
 		Id: 495
 		Images: des0209.tem
 		Size: 1, 1
@@ -11889,7 +11889,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@496:
-		Category: Ground 02
+		Categories: Ground 02
 		Id: 496
 		Images: des0210.tem
 		Size: 1, 1
@@ -11900,7 +11900,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@497:
-		Category: Ground 02
+		Categories: Ground 02
 		Id: 497
 		Images: des0211.tem
 		Size: 1, 1
@@ -11911,7 +11911,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@498:
-		Category: Ground 02
+		Categories: Ground 02
 		Id: 498
 		Images: des0212.tem
 		Size: 1, 1
@@ -11922,7 +11922,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@499:
-		Category: Ground 02
+		Categories: Ground 02
 		Id: 499
 		Images: des0213.tem
 		Size: 1, 1
@@ -11933,7 +11933,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@500:
-		Category: Ground 02
+		Categories: Ground 02
 		Id: 500
 		Images: des0214.tem
 		Size: 1, 1
@@ -11944,7 +11944,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@501:
-		Category: Ground 02
+		Categories: Ground 02
 		Id: 501
 		Images: des0215.tem
 		Size: 1, 1
@@ -11955,7 +11955,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@502:
-		Category: Ground 02
+		Categories: Ground 02
 		Id: 502
 		Images: des0216.tem
 		Size: 1, 1
@@ -11966,7 +11966,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@503:
-		Category: Ground 02
+		Categories: Ground 02
 		Id: 503
 		Images: des0217.tem
 		Size: 1, 1
@@ -11977,7 +11977,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@504:
-		Category: Ground 02
+		Categories: Ground 02
 		Id: 504
 		Images: des0218.tem
 		Size: 1, 1
@@ -11988,7 +11988,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@505:
-		Category: Ground 02
+		Categories: Ground 02
 		Id: 505
 		Images: des0219.tem
 		Size: 1, 1
@@ -11999,7 +11999,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@506:
-		Category: Ground 02
+		Categories: Ground 02
 		Id: 506
 		Images: des0220.tem
 		Size: 1, 1
@@ -12010,7 +12010,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@507:
-		Category: Ground 02
+		Categories: Ground 02
 		Id: 507
 		Images: des0221.tem
 		Size: 1, 1
@@ -12021,7 +12021,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@508:
-		Category: Ground 02
+		Categories: Ground 02
 		Id: 508
 		Images: des0222.tem
 		Size: 1, 1
@@ -12032,7 +12032,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@509:
-		Category: Ground 02
+		Categories: Ground 02
 		Id: 509
 		Images: des0223.tem
 		Size: 1, 1
@@ -12043,7 +12043,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@510:
-		Category: Ground 02
+		Categories: Ground 02
 		Id: 510
 		Images: des0224.tem
 		Size: 1, 1
@@ -12054,7 +12054,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@511:
-		Category: Ground 02
+		Categories: Ground 02
 		Id: 511
 		Images: des0225.tem
 		Size: 1, 1
@@ -12065,7 +12065,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@512:
-		Category: Ground 02
+		Categories: Ground 02
 		Id: 512
 		Images: des0226.tem
 		Size: 1, 1
@@ -12076,7 +12076,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@513:
-		Category: Ground 02
+		Categories: Ground 02
 		Id: 513
 		Images: des0227.tem
 		Size: 1, 1
@@ -12087,7 +12087,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@514:
-		Category: Ground 02
+		Categories: Ground 02
 		Id: 514
 		Images: des0228.tem
 		Size: 1, 1
@@ -12098,7 +12098,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@515:
-		Category: Ground 02
+		Categories: Ground 02
 		Id: 515
 		Images: des0229.tem
 		Size: 1, 1
@@ -12109,7 +12109,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@516:
-		Category: Ground 02
+		Categories: Ground 02
 		Id: 516
 		Images: des0230.tem
 		Size: 1, 1
@@ -12120,7 +12120,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@517:
-		Category: Ground 02
+		Categories: Ground 02
 		Id: 517
 		Images: des0231.tem
 		Size: 1, 1
@@ -12131,7 +12131,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@518:
-		Category: Ground 02
+		Categories: Ground 02
 		Id: 518
 		Images: des0232.tem
 		Size: 1, 1
@@ -12142,7 +12142,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@519:
-		Category: Ground 02
+		Categories: Ground 02
 		Id: 519
 		Images: des0233.tem
 		Size: 1, 1
@@ -12153,7 +12153,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@520:
-		Category: Ground 02
+		Categories: Ground 02
 		Id: 520
 		Images: des0234.tem
 		Size: 1, 1
@@ -12164,7 +12164,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@521:
-		Category: Ground 02
+		Categories: Ground 02
 		Id: 521
 		Images: des0235.tem
 		Size: 1, 1
@@ -12175,7 +12175,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@522:
-		Category: Ground 02
+		Categories: Ground 02
 		Id: 522
 		Images: des0236.tem
 		Size: 1, 1
@@ -12186,7 +12186,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@523:
-		Category: Ground 02
+		Categories: Ground 02
 		Id: 523
 		Images: des0237.tem
 		Size: 1, 1
@@ -12197,7 +12197,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@524:
-		Category: Ground 02
+		Categories: Ground 02
 		Id: 524
 		Images: des0238.tem
 		Size: 1, 1
@@ -12208,7 +12208,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@525:
-		Category: Ground 02
+		Categories: Ground 02
 		Id: 525
 		Images: des0239.tem
 		Size: 1, 1
@@ -12219,7 +12219,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@526:
-		Category: Ground 02
+		Categories: Ground 02
 		Id: 526
 		Images: des0240.tem
 		Size: 1, 1
@@ -12230,7 +12230,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@527:
-		Category: Ground 02
+		Categories: Ground 02
 		Id: 527
 		Images: des0241.tem
 		Size: 1, 1
@@ -12241,7 +12241,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@528:
-		Category: Ground 02
+		Categories: Ground 02
 		Id: 528
 		Images: des0242.tem
 		Size: 1, 1
@@ -12252,7 +12252,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@529:
-		Category: Ground 02
+		Categories: Ground 02
 		Id: 529
 		Images: des0243.tem
 		Size: 1, 1
@@ -12263,7 +12263,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@530:
-		Category: Ground 02
+		Categories: Ground 02
 		Id: 530
 		Images: des0244.tem
 		Size: 1, 1
@@ -12274,7 +12274,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@531:
-		Category: Ground 02
+		Categories: Ground 02
 		Id: 531
 		Images: des0245.tem
 		Size: 1, 1
@@ -12285,7 +12285,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@532:
-		Category: Ground 02
+		Categories: Ground 02
 		Id: 532
 		Images: des0246.tem
 		Size: 1, 1
@@ -12296,7 +12296,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@533:
-		Category: Ground 02
+		Categories: Ground 02
 		Id: 533
 		Images: des0247.tem
 		Size: 1, 1
@@ -12307,7 +12307,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@534:
-		Category: Ground 02
+		Categories: Ground 02
 		Id: 534
 		Images: des0248.tem
 		Size: 1, 1
@@ -12318,7 +12318,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@535:
-		Category: Sand
+		Categories: Sand
 		Id: 535
 		Images: sandy01.tem, sandy01a.tem, sandy01b.tem, sandy01c.tem, sandy01d.tem, sandy01e.tem, sandy01f.tem, sandy01g.tem
 		Size: 1, 1
@@ -12329,7 +12329,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@536:
-		Category: Sand/Clear LAT
+		Categories: Sand/Clear LAT
 		Id: 536
 		Images: dlat01.tem, dlat01a.tem
 		Size: 1, 1
@@ -12340,7 +12340,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@537:
-		Category: Sand/Clear LAT
+		Categories: Sand/Clear LAT
 		Id: 537
 		Images: dlat02.tem, dlat02a.tem
 		Size: 1, 1
@@ -12351,7 +12351,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@538:
-		Category: Sand/Clear LAT
+		Categories: Sand/Clear LAT
 		Id: 538
 		Images: dlat03.tem, dlat03a.tem
 		Size: 1, 1
@@ -12362,7 +12362,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@539:
-		Category: Sand/Clear LAT
+		Categories: Sand/Clear LAT
 		Id: 539
 		Images: dlat04.tem, dlat04a.tem
 		Size: 1, 1
@@ -12373,7 +12373,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@540:
-		Category: Sand/Clear LAT
+		Categories: Sand/Clear LAT
 		Id: 540
 		Images: dlat05.tem, dlat05a.tem
 		Size: 1, 1
@@ -12384,7 +12384,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@541:
-		Category: Sand/Clear LAT
+		Categories: Sand/Clear LAT
 		Id: 541
 		Images: dlat06.tem, dlat06a.tem
 		Size: 1, 1
@@ -12395,7 +12395,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@542:
-		Category: Sand/Clear LAT
+		Categories: Sand/Clear LAT
 		Id: 542
 		Images: dlat07.tem, dlat07a.tem
 		Size: 1, 1
@@ -12406,7 +12406,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@543:
-		Category: Sand/Clear LAT
+		Categories: Sand/Clear LAT
 		Id: 543
 		Images: dlat08.tem, dlat08a.tem
 		Size: 1, 1
@@ -12417,7 +12417,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@544:
-		Category: Sand/Clear LAT
+		Categories: Sand/Clear LAT
 		Id: 544
 		Images: dlat09.tem, dlat09a.tem
 		Size: 1, 1
@@ -12428,7 +12428,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@545:
-		Category: Sand/Clear LAT
+		Categories: Sand/Clear LAT
 		Id: 545
 		Images: dlat10.tem, dlat10a.tem
 		Size: 1, 1
@@ -12439,7 +12439,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@546:
-		Category: Sand/Clear LAT
+		Categories: Sand/Clear LAT
 		Id: 546
 		Images: dlat11.tem, dlat11a.tem
 		Size: 1, 1
@@ -12450,7 +12450,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@547:
-		Category: Sand/Clear LAT
+		Categories: Sand/Clear LAT
 		Id: 547
 		Images: dlat12.tem, dlat12a.tem
 		Size: 1, 1
@@ -12461,7 +12461,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@548:
-		Category: Sand/Clear LAT
+		Categories: Sand/Clear LAT
 		Id: 548
 		Images: dlat13.tem, dlat13a.tem
 		Size: 1, 1
@@ -12472,7 +12472,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@549:
-		Category: Sand/Clear LAT
+		Categories: Sand/Clear LAT
 		Id: 549
 		Images: dlat14.tem, dlat14a.tem
 		Size: 1, 1
@@ -12483,7 +12483,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@550:
-		Category: Sand/Clear LAT
+		Categories: Sand/Clear LAT
 		Id: 550
 		Images: dlat15.tem, dlat15a.tem
 		Size: 1, 1
@@ -12494,7 +12494,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@551:
-		Category: Sand/Clear LAT
+		Categories: Sand/Clear LAT
 		Id: 551
 		Images: dlat16.tem, dlat16a.tem
 		Size: 1, 1
@@ -12505,7 +12505,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@552:
-		Category: Rough ground
+		Categories: Rough ground
 		Id: 552
 		Images: rough01.tem
 		Size: 9, 7
@@ -12691,7 +12691,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@553:
-		Category: Rough ground
+		Categories: Rough ground
 		Id: 553
 		Images: rough02.tem
 		Size: 4, 4
@@ -12747,7 +12747,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@554:
-		Category: Rough ground
+		Categories: Rough ground
 		Id: 554
 		Images: rough03.tem
 		Size: 5, 3
@@ -12808,7 +12808,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@555:
-		Category: Rough ground
+		Categories: Rough ground
 		Id: 555
 		Images: rough04.tem
 		Size: 4, 3
@@ -12854,7 +12854,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@556:
-		Category: Rough ground
+		Categories: Rough ground
 		Id: 556
 		Images: rough05.tem
 		Size: 3, 5
@@ -12920,7 +12920,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@557:
-		Category: Rough ground
+		Categories: Rough ground
 		Id: 557
 		Images: rough06.tem
 		Size: 4, 4
@@ -12991,7 +12991,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@558:
-		Category: Rough ground
+		Categories: Rough ground
 		Id: 558
 		Images: rough07.tem
 		Size: 3, 3
@@ -13037,7 +13037,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@559:
-		Category: Rough ground
+		Categories: Rough ground
 		Id: 559
 		Images: rough08.tem
 		Size: 6, 10
@@ -13153,7 +13153,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@560:
-		Category: Rough ground
+		Categories: Rough ground
 		Id: 560
 		Images: rough09.tem
 		Size: 8, 3
@@ -13239,7 +13239,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@561:
-		Category: Rough ground
+		Categories: Rough ground
 		Id: 561
 		Images: rough10.tem
 		Size: 3, 4
@@ -13285,7 +13285,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@562:
-		Category: Paved Road Ends
+		Categories: Paved Road Ends
 		Id: 562
 		Images: p_end01.tem
 		Size: 1, 3
@@ -13306,7 +13306,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@563:
-		Category: Paved Road Ends
+		Categories: Paved Road Ends
 		Id: 563
 		Images: p_end02.tem
 		Size: 3, 1
@@ -13327,7 +13327,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@564:
-		Category: Paved Road Ends
+		Categories: Paved Road Ends
 		Id: 564
 		Images: p_end03.tem
 		Size: 1, 3
@@ -13348,7 +13348,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@565:
-		Category: Paved Road Ends
+		Categories: Paved Road Ends
 		Id: 565
 		Images: p_end04.tem
 		Size: 3, 1
@@ -13369,7 +13369,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@566:
-		Category: TrainBridges
+		Categories: TrainBridges
 		Id: 566
 		Images: tovrps01.tem
 		Size: 3, 5
@@ -13458,7 +13458,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@567:
-		Category: TrainBridges
+		Categories: TrainBridges
 		Id: 567
 		Images: tovrps02.tem
 		Size: 3, 5
@@ -13547,7 +13547,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@568:
-		Category: TrainBridges
+		Categories: TrainBridges
 		Id: 568
 		Images: tovrps03.tem
 		Size: 2, 5
@@ -13611,7 +13611,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@569:
-		Category: TrainBridges
+		Categories: TrainBridges
 		Id: 569
 		Images: tovrps04.tem
 		Size: 5, 3
@@ -13700,7 +13700,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@570:
-		Category: TrainBridges
+		Categories: TrainBridges
 		Id: 570
 		Images: tovrps05.tem
 		Size: 5, 3
@@ -13789,7 +13789,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@571:
-		Category: TrainBridges
+		Categories: TrainBridges
 		Id: 571
 		Images: tovrps06.tem
 		Size: 5, 2
@@ -13853,7 +13853,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@572:
-		Category: TrainBridges
+		Categories: TrainBridges
 		Id: 572
 		Images: tovrps07.tem
 		Size: 2, 5
@@ -13912,7 +13912,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@573:
-		Category: TrainBridges
+		Categories: TrainBridges
 		Id: 573
 		Images: tovrps08.tem
 		Size: 2, 5
@@ -13971,7 +13971,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@574:
-		Category: TrainBridges
+		Categories: TrainBridges
 		Id: 574
 		Images: tovrps09.tem
 		Size: 2, 5
@@ -14030,7 +14030,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@575:
-		Category: TrainBridges
+		Categories: TrainBridges
 		Id: 575
 		Images: tovrps10.tem
 		Size: 2, 5
@@ -14089,7 +14089,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@576:
-		Category: TrainBridges
+		Categories: TrainBridges
 		Id: 576
 		Images: tovrps11.tem
 		Size: 2, 5
@@ -14145,7 +14145,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@577:
-		Category: TrainBridges
+		Categories: TrainBridges
 		Id: 577
 		Images: tovrps12.tem
 		Size: 5, 2
@@ -14204,7 +14204,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@578:
-		Category: TrainBridges
+		Categories: TrainBridges
 		Id: 578
 		Images: tovrps13.tem
 		Size: 5, 2
@@ -14258,7 +14258,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@579:
-		Category: TrainBridges
+		Categories: TrainBridges
 		Id: 579
 		Images: tovrps14.tem
 		Size: 5, 2
@@ -14317,7 +14317,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@580:
-		Category: TrainBridges
+		Categories: TrainBridges
 		Id: 580
 		Images: tovrps15.tem
 		Size: 5, 2
@@ -14371,7 +14371,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@581:
-		Category: TrainBridges
+		Categories: TrainBridges
 		Id: 581
 		Images: tovrps16.tem
 		Size: 5, 2
@@ -14427,7 +14427,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@582:
-		Category: Pavement
+		Categories: Pavement
 		Id: 582
 		Images: pave01.tem
 		Size: 1, 1
@@ -14438,7 +14438,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@583:
-		Category: Pavement
+		Categories: Pavement
 		Id: 583
 		Images: pave02.tem
 		Size: 1, 1
@@ -14449,7 +14449,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@584:
-		Category: Pavement
+		Categories: Pavement
 		Id: 584
 		Images: pave03.tem
 		Size: 1, 1
@@ -14460,7 +14460,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@585:
-		Category: Pavement
+		Categories: Pavement
 		Id: 585
 		Images: pave04.tem
 		Size: 1, 1
@@ -14471,7 +14471,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@586:
-		Category: Pavement
+		Categories: Pavement
 		Id: 586
 		Images: pave05.tem
 		Size: 2, 2
@@ -14497,7 +14497,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@587:
-		Category: Pavement
+		Categories: Pavement
 		Id: 587
 		Images: pave06.tem
 		Size: 2, 2
@@ -14523,7 +14523,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@588:
-		Category: Pavement
+		Categories: Pavement
 		Id: 588
 		Images: pave07.tem
 		Size: 2, 2
@@ -14549,7 +14549,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@589:
-		Category: Pavement
+		Categories: Pavement
 		Id: 589
 		Images: pave08.tem
 		Size: 2, 2
@@ -14575,7 +14575,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@590:
-		Category: Pavement
+		Categories: Pavement
 		Id: 590
 		Images: pave09.tem
 		Size: 2, 2
@@ -14601,7 +14601,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@591:
-		Category: Pavement
+		Categories: Pavement
 		Id: 591
 		Images: pave10.tem
 		Size: 2, 2
@@ -14627,7 +14627,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@592:
-		Category: Pavement
+		Categories: Pavement
 		Id: 592
 		Images: pave11.tem
 		Size: 2, 2
@@ -14653,7 +14653,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@593:
-		Category: Pavement
+		Categories: Pavement
 		Id: 593
 		Images: pave12.tem
 		Size: 2, 2
@@ -14679,7 +14679,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@594:
-		Category: Pavement
+		Categories: Pavement
 		Id: 594
 		Images: pave13.tem
 		Size: 2, 2
@@ -14705,7 +14705,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@595:
-		Category: Pavement
+		Categories: Pavement
 		Id: 595
 		Images: pave14.tem
 		Size: 2, 2
@@ -14731,7 +14731,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@596:
-		Category: Pavement/Clear LAT
+		Categories: Pavement/Clear LAT
 		Id: 596
 		Images: plat01.tem, plat01a.tem
 		Size: 1, 1
@@ -14742,7 +14742,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@597:
-		Category: Pavement/Clear LAT
+		Categories: Pavement/Clear LAT
 		Id: 597
 		Images: plat02.tem, plat02a.tem
 		Size: 1, 1
@@ -14753,7 +14753,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@598:
-		Category: Pavement/Clear LAT
+		Categories: Pavement/Clear LAT
 		Id: 598
 		Images: plat03.tem, plat03a.tem
 		Size: 1, 1
@@ -14764,7 +14764,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@599:
-		Category: Pavement/Clear LAT
+		Categories: Pavement/Clear LAT
 		Id: 599
 		Images: plat04.tem, plat04a.tem
 		Size: 1, 1
@@ -14775,7 +14775,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@600:
-		Category: Pavement/Clear LAT
+		Categories: Pavement/Clear LAT
 		Id: 600
 		Images: plat05.tem, plat05a.tem
 		Size: 1, 1
@@ -14786,7 +14786,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@601:
-		Category: Pavement/Clear LAT
+		Categories: Pavement/Clear LAT
 		Id: 601
 		Images: plat06.tem, plat06a.tem
 		Size: 1, 1
@@ -14797,7 +14797,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@602:
-		Category: Pavement/Clear LAT
+		Categories: Pavement/Clear LAT
 		Id: 602
 		Images: plat07.tem, plat07a.tem
 		Size: 1, 1
@@ -14808,7 +14808,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@603:
-		Category: Pavement/Clear LAT
+		Categories: Pavement/Clear LAT
 		Id: 603
 		Images: plat08.tem, plat08a.tem
 		Size: 1, 1
@@ -14819,7 +14819,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@604:
-		Category: Pavement/Clear LAT
+		Categories: Pavement/Clear LAT
 		Id: 604
 		Images: plat09.tem, plat09a.tem
 		Size: 1, 1
@@ -14830,7 +14830,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@605:
-		Category: Pavement/Clear LAT
+		Categories: Pavement/Clear LAT
 		Id: 605
 		Images: plat10.tem, plat10a.tem
 		Size: 1, 1
@@ -14841,7 +14841,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@606:
-		Category: Pavement/Clear LAT
+		Categories: Pavement/Clear LAT
 		Id: 606
 		Images: plat11.tem, plat11a.tem
 		Size: 1, 1
@@ -14852,7 +14852,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@607:
-		Category: Pavement/Clear LAT
+		Categories: Pavement/Clear LAT
 		Id: 607
 		Images: plat12.tem, plat12a.tem
 		Size: 1, 1
@@ -14863,7 +14863,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@608:
-		Category: Pavement/Clear LAT
+		Categories: Pavement/Clear LAT
 		Id: 608
 		Images: plat13.tem, plat13a.tem
 		Size: 1, 1
@@ -14874,7 +14874,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@609:
-		Category: Pavement/Clear LAT
+		Categories: Pavement/Clear LAT
 		Id: 609
 		Images: plat14.tem, plat14a.tem
 		Size: 1, 1
@@ -14885,7 +14885,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@610:
-		Category: Pavement/Clear LAT
+		Categories: Pavement/Clear LAT
 		Id: 610
 		Images: plat15.tem, plat15a.tem
 		Size: 1, 1
@@ -14896,7 +14896,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@611:
-		Category: Pavement/Clear LAT
+		Categories: Pavement/Clear LAT
 		Id: 611
 		Images: plat16.tem, plat16a.tem
 		Size: 1, 1
@@ -14907,7 +14907,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@612:
-		Category: Paved road bits
+		Categories: Paved road bits
 		Id: 612
 		Images: proadc01.tem
 		Size: 1, 1
@@ -14918,7 +14918,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@613:
-		Category: Paved road bits
+		Categories: Paved road bits
 		Id: 613
 		Images: proadc02.tem
 		Size: 1, 1
@@ -14929,7 +14929,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@614:
-		Category: Paved road bits
+		Categories: Paved road bits
 		Id: 614
 		Images: proadc03.tem
 		Size: 1, 1
@@ -14940,7 +14940,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@615:
-		Category: Paved road bits
+		Categories: Paved road bits
 		Id: 615
 		Images: proadc04.tem
 		Size: 1, 1
@@ -14951,7 +14951,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@616:
-		Category: Paved road bits
+		Categories: Paved road bits
 		Id: 616
 		Images: proadc05.tem
 		Size: 1, 1
@@ -14962,7 +14962,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@617:
-		Category: Paved road bits
+		Categories: Paved road bits
 		Id: 617
 		Images: proadc06.tem
 		Size: 1, 1
@@ -14973,7 +14973,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@618:
-		Category: Paved road bits
+		Categories: Paved road bits
 		Id: 618
 		Images: proadc07.tem
 		Size: 1, 1
@@ -14984,7 +14984,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@619:
-		Category: Paved road bits
+		Categories: Paved road bits
 		Id: 619
 		Images: proadc08.tem
 		Size: 1, 1
@@ -14995,7 +14995,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@620:
-		Category: Paved road bits
+		Categories: Paved road bits
 		Id: 620
 		Images: proadc09.tem
 		Size: 1, 1
@@ -15006,7 +15006,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@621:
-		Category: Paved road bits
+		Categories: Paved road bits
 		Id: 621
 		Images: proadc10.tem
 		Size: 1, 1
@@ -15017,7 +15017,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@622:
-		Category: Paved road bits
+		Categories: Paved road bits
 		Id: 622
 		Images: proadc11.tem
 		Size: 1, 1
@@ -15028,7 +15028,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@623:
-		Category: Paved road bits
+		Categories: Paved road bits
 		Id: 623
 		Images: proadc12.tem
 		Size: 1, 1
@@ -15039,7 +15039,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@624:
-		Category: Paved road bits
+		Categories: Paved road bits
 		Id: 624
 		Images: proadc13.tem
 		Size: 1, 3
@@ -15060,7 +15060,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@625:
-		Category: Paved road bits
+		Categories: Paved road bits
 		Id: 625
 		Images: proadc14.tem
 		Size: 3, 1
@@ -15081,7 +15081,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@626:
-		Category: Green
+		Categories: Green
 		Id: 626
 		Images: green01.tem, green01a.tem, green01b.tem, green01c.tem, green01d.tem, green01e.tem, green01f.tem, green01g.tem
 		Size: 1, 1
@@ -15092,7 +15092,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@627:
-		Category: Green/Clear LAT
+		Categories: Green/Clear LAT
 		Id: 627
 		Images: glat01.tem, glat01a.tem
 		Size: 1, 1
@@ -15103,7 +15103,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@628:
-		Category: Green/Clear LAT
+		Categories: Green/Clear LAT
 		Id: 628
 		Images: glat02.tem, glat02a.tem
 		Size: 1, 1
@@ -15114,7 +15114,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@629:
-		Category: Green/Clear LAT
+		Categories: Green/Clear LAT
 		Id: 629
 		Images: glat03.tem, glat03a.tem
 		Size: 1, 1
@@ -15125,7 +15125,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@630:
-		Category: Green/Clear LAT
+		Categories: Green/Clear LAT
 		Id: 630
 		Images: glat04.tem, glat04a.tem
 		Size: 1, 1
@@ -15136,7 +15136,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@631:
-		Category: Green/Clear LAT
+		Categories: Green/Clear LAT
 		Id: 631
 		Images: glat05.tem, glat05a.tem
 		Size: 1, 1
@@ -15147,7 +15147,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@632:
-		Category: Green/Clear LAT
+		Categories: Green/Clear LAT
 		Id: 632
 		Images: glat06.tem, glat06a.tem
 		Size: 1, 1
@@ -15158,7 +15158,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@633:
-		Category: Green/Clear LAT
+		Categories: Green/Clear LAT
 		Id: 633
 		Images: glat07.tem, glat07a.tem
 		Size: 1, 1
@@ -15169,7 +15169,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@634:
-		Category: Green/Clear LAT
+		Categories: Green/Clear LAT
 		Id: 634
 		Images: glat08.tem, glat08a.tem
 		Size: 1, 1
@@ -15180,7 +15180,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@635:
-		Category: Green/Clear LAT
+		Categories: Green/Clear LAT
 		Id: 635
 		Images: glat09.tem, glat09a.tem
 		Size: 1, 1
@@ -15191,7 +15191,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@636:
-		Category: Green/Clear LAT
+		Categories: Green/Clear LAT
 		Id: 636
 		Images: glat10.tem, glat10a.tem
 		Size: 1, 1
@@ -15202,7 +15202,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@637:
-		Category: Green/Clear LAT
+		Categories: Green/Clear LAT
 		Id: 637
 		Images: glat11.tem, glat11a.tem
 		Size: 1, 1
@@ -15213,7 +15213,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@638:
-		Category: Green/Clear LAT
+		Categories: Green/Clear LAT
 		Id: 638
 		Images: glat12.tem, glat12a.tem
 		Size: 1, 1
@@ -15224,7 +15224,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@639:
-		Category: Green/Clear LAT
+		Categories: Green/Clear LAT
 		Id: 639
 		Images: glat13.tem, glat13a.tem
 		Size: 1, 1
@@ -15235,7 +15235,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@640:
-		Category: Green/Clear LAT
+		Categories: Green/Clear LAT
 		Id: 640
 		Images: glat14.tem, glat14a.tem
 		Size: 1, 1
@@ -15246,7 +15246,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@641:
-		Category: Green/Clear LAT
+		Categories: Green/Clear LAT
 		Id: 641
 		Images: glat15.tem, glat15a.tem
 		Size: 1, 1
@@ -15257,7 +15257,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@642:
-		Category: Green/Clear LAT
+		Categories: Green/Clear LAT
 		Id: 642
 		Images: glat16.tem, glat16a.tem
 		Size: 1, 1
@@ -15268,7 +15268,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@643:
-		Category: Ramp edge fixup
+		Categories: Ramp edge fixup
 		Id: 643
 		Images: rmpfx01.tem, rmpfx01a.tem, rmpfx01b.tem, rmpfx01c.tem
 		Size: 1, 1
@@ -15280,7 +15280,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@644:
-		Category: Ramp edge fixup
+		Categories: Ramp edge fixup
 		Id: 644
 		Images: rmpfx02.tem, rmpfx02a.tem, rmpfx02b.tem, rmpfx02c.tem
 		Size: 1, 1
@@ -15292,7 +15292,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@645:
-		Category: Ramp edge fixup
+		Categories: Ramp edge fixup
 		Id: 645
 		Images: rmpfx03.tem, rmpfx03a.tem, rmpfx03b.tem, rmpfx03c.tem
 		Size: 1, 1
@@ -15304,7 +15304,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@646:
-		Category: Ramp edge fixup
+		Categories: Ramp edge fixup
 		Id: 646
 		Images: rmpfx04.tem, rmpfx04a.tem, rmpfx04b.tem, rmpfx04c.tem
 		Size: 1, 1
@@ -15316,7 +15316,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@647:
-		Category: Ramp edge fixup
+		Categories: Ramp edge fixup
 		Id: 647
 		Images: rmpfx05.tem, rmpfx05a.tem, rmpfx05b.tem, rmpfx05c.tem
 		Size: 1, 1
@@ -15328,7 +15328,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@648:
-		Category: Ramp edge fixup
+		Categories: Ramp edge fixup
 		Id: 648
 		Images: rmpfx06.tem, rmpfx06a.tem, rmpfx06b.tem, rmpfx06c.tem
 		Size: 1, 1
@@ -15340,7 +15340,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@649:
-		Category: Ramp edge fixup
+		Categories: Ramp edge fixup
 		Id: 649
 		Images: rmpfx07.tem, rmpfx07a.tem, rmpfx07b.tem, rmpfx07c.tem
 		Size: 1, 1
@@ -15352,7 +15352,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@650:
-		Category: Ramp edge fixup
+		Categories: Ramp edge fixup
 		Id: 650
 		Images: rmpfx08.tem, rmpfx08a.tem, rmpfx08b.tem, rmpfx08c.tem
 		Size: 1, 1
@@ -15364,7 +15364,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@651:
-		Category: Ramp edge fixup
+		Categories: Ramp edge fixup
 		Id: 651
 		Images: rmpfx09.tem, rmpfx09a.tem, rmpfx09b.tem, rmpfx09c.tem
 		Size: 1, 1
@@ -15376,7 +15376,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@652:
-		Category: Ramp edge fixup
+		Categories: Ramp edge fixup
 		Id: 652
 		Images: rmpfx10.tem, rmpfx10a.tem, rmpfx10b.tem, rmpfx10c.tem
 		Size: 1, 1
@@ -15388,7 +15388,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@653:
-		Category: Ramp edge fixup
+		Categories: Ramp edge fixup
 		Id: 653
 		Images: rmpfx11.tem, rmpfx11a.tem, rmpfx11b.tem, rmpfx11c.tem
 		Size: 1, 1
@@ -15400,7 +15400,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@654:
-		Category: Ramp edge fixup
+		Categories: Ramp edge fixup
 		Id: 654
 		Images: rmpfx12.tem, rmpfx12a.tem, rmpfx12b.tem, rmpfx12c.tem
 		Size: 1, 1
@@ -15412,7 +15412,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@667:
-		Category: Water slopes
+		Categories: Water slopes
 		Id: 667
 		Images: wslope01.tem
 		Size: 1, 4
@@ -15442,7 +15442,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@668:
-		Category: Water slopes
+		Categories: Water slopes
 		Id: 668
 		Images: wslope02.tem
 		Size: 4, 1
@@ -15472,7 +15472,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@669:
-		Category: Water slopes
+		Categories: Water slopes
 		Id: 669
 		Images: wslope03.tem
 		Size: 1, 4
@@ -15502,7 +15502,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@670:
-		Category: Water slopes
+		Categories: Water slopes
 		Id: 670
 		Images: wslope04.tem
 		Size: 4, 1
@@ -15532,7 +15532,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@671:
-		Category: Pavement (Use for LAT)
+		Categories: Pavement (Use for LAT)
 		Id: 671
 		Images: pvclr01.tem, pvclr01a.tem, pvclr01b.tem, pvclr01c.tem, pvclr01d.tem, pvclr01e.tem, pvclr01f.tem, pvclr01g.tem
 		Size: 1, 1
@@ -15543,7 +15543,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@672:
-		Category: Paved Road Slopes
+		Categories: Paved Road Slopes
 		Id: 672
 		Images: prslpe01.tem
 		Size: 1, 3
@@ -15567,7 +15567,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@673:
-		Category: Paved Road Slopes
+		Categories: Paved Road Slopes
 		Id: 673
 		Images: prslpe02.tem
 		Size: 3, 1
@@ -15591,7 +15591,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@674:
-		Category: Paved Road Slopes
+		Categories: Paved Road Slopes
 		Id: 674
 		Images: prslpe03.tem
 		Size: 1, 3
@@ -15615,7 +15615,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@675:
-		Category: Paved Road Slopes
+		Categories: Paved Road Slopes
 		Id: 675
 		Images: prslpe04.tem
 		Size: 3, 1
@@ -15639,7 +15639,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@676:
-		Category: Monorail Slopes
+		Categories: Monorail Slopes
 		Id: 676
 		Images: tslope01.tem
 		Size: 1, 1
@@ -15651,7 +15651,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@677:
-		Category: Monorail Slopes
+		Categories: Monorail Slopes
 		Id: 677
 		Images: tslope02.tem
 		Size: 1, 1
@@ -15663,7 +15663,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@678:
-		Category: Monorail Slopes
+		Categories: Monorail Slopes
 		Id: 678
 		Images: tslope03.tem
 		Size: 1, 1
@@ -15675,7 +15675,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@679:
-		Category: Monorail Slopes
+		Categories: Monorail Slopes
 		Id: 679
 		Images: tslope04.tem
 		Size: 1, 1
@@ -15687,7 +15687,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@680:
-		Category: Waterfalls-B
+		Categories: Waterfalls-B
 		Id: 680
 		Images: w-b-01.tem
 		Size: 4, 2
@@ -15737,7 +15737,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@681:
-		Category: Waterfalls-B
+		Categories: Waterfalls-B
 		Id: 681
 		Images: w-b-02.tem
 		Size: 4, 1
@@ -15765,7 +15765,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@682:
-		Category: Waterfalls-B
+		Categories: Waterfalls-B
 		Id: 682
 		Images: w-b-03.tem
 		Size: 4, 2
@@ -15815,7 +15815,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@683:
-		Category: Waterfalls-B
+		Categories: Waterfalls-B
 		Id: 683
 		Images: w-b-04.tem
 		Size: 4, 2
@@ -15865,7 +15865,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@684:
-		Category: Waterfalls-C
+		Categories: Waterfalls-C
 		Id: 684
 		Images: w-c-01.tem
 		Size: 2, 2
@@ -15889,7 +15889,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@685:
-		Category: Waterfalls-C
+		Categories: Waterfalls-C
 		Id: 685
 		Images: w-c-02.tem
 		Size: 1, 1
@@ -15901,7 +15901,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@686:
-		Category: Waterfalls-C
+		Categories: Waterfalls-C
 		Id: 686
 		Images: w-c-03.tem
 		Size: 2, 1
@@ -15919,7 +15919,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@687:
-		Category: Waterfalls-C
+		Categories: Waterfalls-C
 		Id: 687
 		Images: w-c-04.tem
 		Size: 2, 2
@@ -15943,7 +15943,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@688:
-		Category: Waterfalls-D
+		Categories: Waterfalls-D
 		Id: 688
 		Images: w-d-01.tem
 		Size: 2, 2
@@ -15967,7 +15967,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@689:
-		Category: Waterfalls-D
+		Categories: Waterfalls-D
 		Id: 689
 		Images: w-d-02.tem
 		Size: 1, 1
@@ -15979,7 +15979,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@690:
-		Category: Waterfalls-D
+		Categories: Waterfalls-D
 		Id: 690
 		Images: w-d-03.tem
 		Size: 1, 2
@@ -15997,7 +15997,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@691:
-		Category: Waterfalls-D
+		Categories: Waterfalls-D
 		Id: 691
 		Images: w-d-04.tem
 		Size: 2, 2
@@ -16021,7 +16021,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@707:
-		Category: Tunnel Floor
+		Categories: Tunnel Floor
 		Id: 707
 		Images: tunnel01.tem
 		Size: 3, 5
@@ -16102,7 +16102,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@708:
-		Category: Tunnel Floor
+		Categories: Tunnel Floor
 		Id: 708
 		Images: tunnel02.tem
 		Size: 5, 3
@@ -16183,7 +16183,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@709:
-		Category: Tunnel Floor
+		Categories: Tunnel Floor
 		Id: 709
 		Images: tunnel03.tem
 		Size: 3, 4
@@ -16249,7 +16249,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@710:
-		Category: Tunnel Floor
+		Categories: Tunnel Floor
 		Id: 710
 		Images: tunnel04.tem
 		Size: 4, 3
@@ -16315,7 +16315,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@711:
-		Category: Tunnel Side
+		Categories: Tunnel Side
 		Id: 711
 		Images: tunnex01.tem
 		Size: 3, 1
@@ -16337,7 +16337,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@712:
-		Category: Tunnel Side
+		Categories: Tunnel Side
 		Id: 712
 		Images: tunnex02.tem
 		Size: 1, 3
@@ -16359,7 +16359,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@713:
-		Category: TrackTunnel Floor
+		Categories: TrackTunnel Floor
 		Id: 713
 		Images: tunnet01.tem
 		Size: 3, 5
@@ -16440,7 +16440,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@714:
-		Category: TrackTunnel Floor
+		Categories: TrackTunnel Floor
 		Id: 714
 		Images: tunnet02.tem
 		Size: 5, 3
@@ -16521,7 +16521,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@715:
-		Category: TrackTunnel Floor
+		Categories: TrackTunnel Floor
 		Id: 715
 		Images: tunnet03.tem
 		Size: 3, 4
@@ -16587,7 +16587,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@716:
-		Category: TrackTunnel Floor
+		Categories: TrackTunnel Floor
 		Id: 716
 		Images: tunnet04.tem
 		Size: 4, 3
@@ -16653,7 +16653,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@717:
-		Category: Destroyable Cliffs
+		Categories: Destroyable Cliffs
 		Id: 717
 		Images: dcliff01.tem
 		Size: 6, 4
@@ -16769,7 +16769,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@718:
-		Category: Destroyable Cliffs
+		Categories: Destroyable Cliffs
 		Id: 718
 		Images: dcliff02.tem
 		Size: 4, 6
@@ -16885,7 +16885,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@719:
-		Category: Water Caves
+		Categories: Water Caves
 		Id: 719
 		Images: wcave01.tem
 		Size: 2, 2
@@ -16913,7 +16913,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@720:
-		Category: Water Caves
+		Categories: Water Caves
 		Id: 720
 		Images: wcave02.tem
 		Size: 2, 2
@@ -16941,7 +16941,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@721:
-		Category: Water Caves
+		Categories: Water Caves
 		Id: 721
 		Images: wcave03.tem
 		Size: 1, 2
@@ -16958,7 +16958,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@722:
-		Category: Water Caves
+		Categories: Water Caves
 		Id: 722
 		Images: wcave04.tem
 		Size: 2, 2
@@ -16986,7 +16986,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@723:
-		Category: Water Caves
+		Categories: Water Caves
 		Id: 723
 		Images: wcave05.tem
 		Size: 2, 2
@@ -17014,7 +17014,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@724:
-		Category: Water Caves
+		Categories: Water Caves
 		Id: 724
 		Images: wcave06.tem
 		Size: 2, 2
@@ -17042,7 +17042,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@725:
-		Category: Water Caves
+		Categories: Water Caves
 		Id: 725
 		Images: wcave07.tem
 		Size: 2, 1
@@ -17059,7 +17059,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@726:
-		Category: Water Caves
+		Categories: Water Caves
 		Id: 726
 		Images: wcave08.tem
 		Size: 2, 2
@@ -17087,7 +17087,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@940:
-		Category: Scrin Wreckage
+		Categories: Scrin Wreckage
 		Id: 940
 		Images: scrin01.tem
 		Size: 6, 7
@@ -17249,7 +17249,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@941:
-		Category: Scrin Wreckage
+		Categories: Scrin Wreckage
 		Id: 941
 		Images: scrin02.tem
 		Size: 5, 5
@@ -17337,7 +17337,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@942:
-		Category: Scrin Wreckage
+		Categories: Scrin Wreckage
 		Id: 942
 		Images: scrin03.tem
 		Size: 9, 8
@@ -17579,7 +17579,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@943:
-		Category: Scrin Wreckage
+		Categories: Scrin Wreckage
 		Id: 943
 		Images: scrin04.tem
 		Size: 8, 6
@@ -17625,7 +17625,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@944:
-		Category: Scrin Wreckage
+		Categories: Scrin Wreckage
 		Id: 944
 		Images: scrin05.tem
 		Size: 8, 6
@@ -17816,7 +17816,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@945:
-		Category: Scrin Wreckage
+		Categories: Scrin Wreckage
 		Id: 945
 		Images: scrin06.tem
 		Size: 7, 10
@@ -18057,7 +18057,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@952:
-		Category: DirtTrackTunnel Floor
+		Categories: DirtTrackTunnel Floor
 		Id: 952
 		Images: dtunnt01.tem
 		Size: 3, 5
@@ -18138,7 +18138,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@953:
-		Category: DirtTrackTunnel Floor
+		Categories: DirtTrackTunnel Floor
 		Id: 953
 		Images: dtunnt02.tem
 		Size: 5, 3
@@ -18219,7 +18219,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@954:
-		Category: DirtTrackTunnel Floor
+		Categories: DirtTrackTunnel Floor
 		Id: 954
 		Images: dtunnt03.tem
 		Size: 3, 4
@@ -18285,7 +18285,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@955:
-		Category: DirtTrackTunnel Floor
+		Categories: DirtTrackTunnel Floor
 		Id: 955
 		Images: dtunnt04.tem
 		Size: 4, 3
@@ -18351,7 +18351,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@956:
-		Category: DirtTunnel Floor
+		Categories: DirtTunnel Floor
 		Id: 956
 		Images: dtunn01.tem
 		Size: 3, 5
@@ -18432,7 +18432,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@957:
-		Category: DirtTunnel Floor
+		Categories: DirtTunnel Floor
 		Id: 957
 		Images: dtunn02.tem
 		Size: 5, 3
@@ -18513,7 +18513,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@958:
-		Category: DirtTunnel Floor
+		Categories: DirtTunnel Floor
 		Id: 958
 		Images: dtunn03.tem
 		Size: 3, 4
@@ -18579,7 +18579,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@959:
-		Category: DirtTunnel Floor
+		Categories: DirtTunnel Floor
 		Id: 959
 		Images: dtunn04.tem
 		Size: 4, 3
@@ -18645,7 +18645,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@960:
-		Category: Crystal LAT tile
+		Categories: Crystal LAT tile
 		Id: 960
 		Images: crys01.tem, crys01a.tem, crys01b.tem, crys01c.tem, crys01d.tem, crys01e.tem, crys01f.tem, crys01g.tem
 		Size: 1, 1
@@ -18656,7 +18656,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@961:
-		Category: Clear Crystal LAT
+		Categories: Clear Crystal LAT
 		Id: 961
 		Images: cylat01.tem, cylat01a.tem
 		Size: 1, 1
@@ -18667,7 +18667,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@962:
-		Category: Clear Crystal LAT
+		Categories: Clear Crystal LAT
 		Id: 962
 		Images: cylat02.tem, cylat02a.tem
 		Size: 1, 1
@@ -18678,7 +18678,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@963:
-		Category: Clear Crystal LAT
+		Categories: Clear Crystal LAT
 		Id: 963
 		Images: cylat03.tem, cylat03a.tem
 		Size: 1, 1
@@ -18689,7 +18689,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@964:
-		Category: Clear Crystal LAT
+		Categories: Clear Crystal LAT
 		Id: 964
 		Images: cylat04.tem, cylat04a.tem
 		Size: 1, 1
@@ -18700,7 +18700,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@965:
-		Category: Clear Crystal LAT
+		Categories: Clear Crystal LAT
 		Id: 965
 		Images: cylat05.tem, cylat05a.tem
 		Size: 1, 1
@@ -18711,7 +18711,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@966:
-		Category: Clear Crystal LAT
+		Categories: Clear Crystal LAT
 		Id: 966
 		Images: cylat06.tem, cylat06a.tem
 		Size: 1, 1
@@ -18722,7 +18722,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@967:
-		Category: Clear Crystal LAT
+		Categories: Clear Crystal LAT
 		Id: 967
 		Images: cylat07.tem, cylat07a.tem
 		Size: 1, 1
@@ -18733,7 +18733,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@968:
-		Category: Clear Crystal LAT
+		Categories: Clear Crystal LAT
 		Id: 968
 		Images: cylat08.tem, cylat08a.tem
 		Size: 1, 1
@@ -18744,7 +18744,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@969:
-		Category: Clear Crystal LAT
+		Categories: Clear Crystal LAT
 		Id: 969
 		Images: cylat09.tem, cylat09a.tem
 		Size: 1, 1
@@ -18755,7 +18755,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@970:
-		Category: Clear Crystal LAT
+		Categories: Clear Crystal LAT
 		Id: 970
 		Images: cylat10.tem, cylat10a.tem
 		Size: 1, 1
@@ -18766,7 +18766,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@971:
-		Category: Clear Crystal LAT
+		Categories: Clear Crystal LAT
 		Id: 971
 		Images: cylat11.tem, cylat11a.tem
 		Size: 1, 1
@@ -18777,7 +18777,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@972:
-		Category: Clear Crystal LAT
+		Categories: Clear Crystal LAT
 		Id: 972
 		Images: cylat12.tem, cylat12a.tem
 		Size: 1, 1
@@ -18788,7 +18788,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@973:
-		Category: Clear Crystal LAT
+		Categories: Clear Crystal LAT
 		Id: 973
 		Images: cylat13.tem, cylat13a.tem
 		Size: 1, 1
@@ -18799,7 +18799,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@974:
-		Category: Clear Crystal LAT
+		Categories: Clear Crystal LAT
 		Id: 974
 		Images: cylat14.tem, cylat14a.tem
 		Size: 1, 1
@@ -18810,7 +18810,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@975:
-		Category: Clear Crystal LAT
+		Categories: Clear Crystal LAT
 		Id: 975
 		Images: cylat15.tem, cylat15a.tem
 		Size: 1, 1
@@ -18821,7 +18821,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@976:
-		Category: Clear Crystal LAT
+		Categories: Clear Crystal LAT
 		Id: 976
 		Images: cylat16.tem, cylat16a.tem
 		Size: 1, 1
@@ -18832,7 +18832,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@977:
-		Category: Swampy
+		Categories: Swampy
 		Id: 977
 		Images: swamp01.tem, swamp01a.tem, swamp01b.tem, swamp01c.tem, swamp01d.tem, swamp01e.tem, swamp01f.tem, swamp01g.tem
 		Size: 1, 1
@@ -18843,7 +18843,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@978:
-		Category: Swampy
+		Categories: Swampy
 		Id: 978
 		Images: swamp02.tem
 		Size: 2, 2
@@ -18869,7 +18869,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@979:
-		Category: Swampy
+		Categories: Swampy
 		Id: 979
 		Images: swamp03.tem
 		Size: 2, 2
@@ -18895,7 +18895,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@980:
-		Category: Swampy
+		Categories: Swampy
 		Id: 980
 		Images: swamp04.tem
 		Size: 2, 2
@@ -18921,7 +18921,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@981:
-		Category: Swampy
+		Categories: Swampy
 		Id: 981
 		Images: swamp05.tem
 		Size: 1, 1
@@ -18932,7 +18932,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@982:
-		Category: Swampy
+		Categories: Swampy
 		Id: 982
 		Images: swamp06.tem
 		Size: 1, 1
@@ -18943,7 +18943,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@983:
-		Category: Swampy
+		Categories: Swampy
 		Id: 983
 		Images: swamp07.tem
 		Size: 1, 1
@@ -18954,7 +18954,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@984:
-		Category: Swampy
+		Categories: Swampy
 		Id: 984
 		Images: swamp08.tem
 		Size: 1, 1
@@ -18965,7 +18965,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@985:
-		Category: Swampy
+		Categories: Swampy
 		Id: 985
 		Images: swamp09.tem
 		Size: 1, 1
@@ -18976,7 +18976,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@986:
-		Category: Swampy LAT
+		Categories: Swampy LAT
 		Id: 986
 		Images: slat01.tem, slat01a.tem
 		Size: 1, 1
@@ -18987,7 +18987,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@987:
-		Category: Swampy LAT
+		Categories: Swampy LAT
 		Id: 987
 		Images: slat02.tem, slat02a.tem
 		Size: 1, 1
@@ -18998,7 +18998,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@988:
-		Category: Swampy LAT
+		Categories: Swampy LAT
 		Id: 988
 		Images: slat03.tem, slat03a.tem
 		Size: 1, 1
@@ -19009,7 +19009,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@989:
-		Category: Swampy LAT
+		Categories: Swampy LAT
 		Id: 989
 		Images: slat04.tem, slat04a.tem
 		Size: 1, 1
@@ -19020,7 +19020,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@990:
-		Category: Swampy LAT
+		Categories: Swampy LAT
 		Id: 990
 		Images: slat05.tem, slat05a.tem
 		Size: 1, 1
@@ -19031,7 +19031,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@991:
-		Category: Swampy LAT
+		Categories: Swampy LAT
 		Id: 991
 		Images: slat06.tem, slat06a.tem
 		Size: 1, 1
@@ -19042,7 +19042,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@992:
-		Category: Swampy LAT
+		Categories: Swampy LAT
 		Id: 992
 		Images: slat07.tem, slat07a.tem
 		Size: 1, 1
@@ -19053,7 +19053,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@993:
-		Category: Swampy LAT
+		Categories: Swampy LAT
 		Id: 993
 		Images: slat08.tem, slat08a.tem
 		Size: 1, 1
@@ -19064,7 +19064,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@994:
-		Category: Swampy LAT
+		Categories: Swampy LAT
 		Id: 994
 		Images: slat09.tem, slat09a.tem
 		Size: 1, 1
@@ -19075,7 +19075,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@995:
-		Category: Swampy LAT
+		Categories: Swampy LAT
 		Id: 995
 		Images: slat10.tem, slat10a.tem
 		Size: 1, 1
@@ -19086,7 +19086,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@996:
-		Category: Swampy LAT
+		Categories: Swampy LAT
 		Id: 996
 		Images: slat11.tem, slat11a.tem
 		Size: 1, 1
@@ -19097,7 +19097,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@997:
-		Category: Swampy LAT
+		Categories: Swampy LAT
 		Id: 997
 		Images: slat12.tem, slat12a.tem
 		Size: 1, 1
@@ -19108,7 +19108,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@998:
-		Category: Swampy LAT
+		Categories: Swampy LAT
 		Id: 998
 		Images: slat13.tem, slat13a.tem
 		Size: 1, 1
@@ -19119,7 +19119,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@999:
-		Category: Swampy LAT
+		Categories: Swampy LAT
 		Id: 999
 		Images: slat14.tem, slat14a.tem
 		Size: 1, 1
@@ -19130,7 +19130,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@1000:
-		Category: Swampy LAT
+		Categories: Swampy LAT
 		Id: 1000
 		Images: slat15.tem, slat15a.tem
 		Size: 1, 1
@@ -19141,7 +19141,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@1001:
-		Category: Swampy LAT
+		Categories: Swampy LAT
 		Id: 1001
 		Images: slat16.tem, slat16a.tem
 		Size: 1, 1
@@ -19152,7 +19152,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@1002:
-		Category: Blue Mold
+		Categories: Blue Mold
 		Id: 1002
 		Images: blue01.tem, blue01a.tem, blue01b.tem, blue01c.tem, blue01d.tem, blue01e.tem, blue01f.tem, blue01g.tem
 		Size: 1, 1
@@ -19163,7 +19163,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@1003:
-		Category: Blue Mold LAT
+		Categories: Blue Mold LAT
 		Id: 1003
 		Images: blat01.tem, blat01a.tem
 		Size: 1, 1
@@ -19174,7 +19174,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@1004:
-		Category: Blue Mold LAT
+		Categories: Blue Mold LAT
 		Id: 1004
 		Images: blat02.tem, blat02a.tem
 		Size: 1, 1
@@ -19185,7 +19185,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@1005:
-		Category: Blue Mold LAT
+		Categories: Blue Mold LAT
 		Id: 1005
 		Images: blat03.tem, blat03a.tem
 		Size: 1, 1
@@ -19196,7 +19196,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@1006:
-		Category: Blue Mold LAT
+		Categories: Blue Mold LAT
 		Id: 1006
 		Images: blat04.tem, blat04a.tem
 		Size: 1, 1
@@ -19207,7 +19207,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@1007:
-		Category: Blue Mold LAT
+		Categories: Blue Mold LAT
 		Id: 1007
 		Images: blat05.tem, blat05a.tem
 		Size: 1, 1
@@ -19218,7 +19218,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@1008:
-		Category: Blue Mold LAT
+		Categories: Blue Mold LAT
 		Id: 1008
 		Images: blat06.tem, blat06a.tem
 		Size: 1, 1
@@ -19229,7 +19229,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@1009:
-		Category: Blue Mold LAT
+		Categories: Blue Mold LAT
 		Id: 1009
 		Images: blat07.tem, blat07a.tem
 		Size: 1, 1
@@ -19240,7 +19240,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@1010:
-		Category: Blue Mold LAT
+		Categories: Blue Mold LAT
 		Id: 1010
 		Images: blat08.tem, blat08a.tem
 		Size: 1, 1
@@ -19251,7 +19251,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@1011:
-		Category: Blue Mold LAT
+		Categories: Blue Mold LAT
 		Id: 1011
 		Images: blat09.tem, blat09a.tem
 		Size: 1, 1
@@ -19262,7 +19262,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@1012:
-		Category: Blue Mold LAT
+		Categories: Blue Mold LAT
 		Id: 1012
 		Images: blat10.tem, blat10a.tem
 		Size: 1, 1
@@ -19273,7 +19273,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@1013:
-		Category: Blue Mold LAT
+		Categories: Blue Mold LAT
 		Id: 1013
 		Images: blat11.tem, blat11a.tem
 		Size: 1, 1
@@ -19284,7 +19284,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@1014:
-		Category: Blue Mold LAT
+		Categories: Blue Mold LAT
 		Id: 1014
 		Images: blat12.tem, blat12a.tem
 		Size: 1, 1
@@ -19295,7 +19295,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@1015:
-		Category: Blue Mold LAT
+		Categories: Blue Mold LAT
 		Id: 1015
 		Images: blat13.tem, blat13a.tem
 		Size: 1, 1
@@ -19306,7 +19306,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@1016:
-		Category: Blue Mold LAT
+		Categories: Blue Mold LAT
 		Id: 1016
 		Images: blat14.tem, blat14a.tem
 		Size: 1, 1
@@ -19317,7 +19317,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@1017:
-		Category: Blue Mold LAT
+		Categories: Blue Mold LAT
 		Id: 1017
 		Images: blat15.tem, blat15a.tem
 		Size: 1, 1
@@ -19328,7 +19328,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@1018:
-		Category: Blue Mold LAT
+		Categories: Blue Mold LAT
 		Id: 1018
 		Images: blat16.tem, blat16a.tem
 		Size: 1, 1
@@ -19339,7 +19339,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@1019:
-		Category: Crystal Cliff
+		Categories: Crystal Cliff
 		Id: 1019
 		Images: ccliff01.tem
 		Size: 2, 2
@@ -19367,7 +19367,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@1020:
-		Category: Crystal Cliff
+		Categories: Crystal Cliff
 		Id: 1020
 		Images: ccliff02.tem
 		Size: 2, 2
@@ -19395,7 +19395,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@1021:
-		Category: Crystal Cliff
+		Categories: Crystal Cliff
 		Id: 1021
 		Images: ccliff03.tem
 		Size: 2, 2
@@ -19417,7 +19417,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@1022:
-		Category: Crystal Cliff
+		Categories: Crystal Cliff
 		Id: 1022
 		Images: ccliff04.tem
 		Size: 1, 1
@@ -19428,7 +19428,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@1023:
-		Category: Crystal Cliff
+		Categories: Crystal Cliff
 		Id: 1023
 		Images: ccliff05.tem
 		Size: 2, 2
@@ -19456,7 +19456,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@1024:
-		Category: Crystal Cliff
+		Categories: Crystal Cliff
 		Id: 1024
 		Images: ccliff06.tem
 		Size: 2, 2
@@ -19484,7 +19484,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@1025:
-		Category: Kodiak Crash
+		Categories: Kodiak Crash
 		Id: 1025
 		Images: crash01.tem
 		Size: 6, 9
@@ -19705,7 +19705,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@1026:
-		Category: Kodiak Crash
+		Categories: Kodiak Crash
 		Id: 1026
 		Images: crash02.tem
 		Size: 4, 3
@@ -19751,7 +19751,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@1027:
-		Category: Kodiak Crash
+		Categories: Kodiak Crash
 		Id: 1027
 		Images: crash03.tem
 		Size: 12, 9
@@ -20102,7 +20102,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@1028:
-		Category: Kodiak Crash
+		Categories: Kodiak Crash
 		Id: 1028
 		Images: crash04.tem
 		Size: 6, 4
@@ -20198,7 +20198,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@1029:
-		Category: Kodiak Crash
+		Categories: Kodiak Crash
 		Id: 1029
 		Images: crash05.tem
 		Size: 8, 4
@@ -20292,7 +20292,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@1030:
-		Category: Kodiak Crash
+		Categories: Kodiak Crash
 		Id: 1030
 		Images: crash06.tem
 		Size: 8, 5
@@ -20386,7 +20386,7 @@ Templates:
 				ZOffset: -12
 				ZRamp: 0
 	Template@1031:
-		Category: Kodiak Crash
+		Categories: Kodiak Crash
 		Id: 1031
 		Images: crash07.tem
 		Size: 7, 6

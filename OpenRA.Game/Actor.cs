@@ -45,7 +45,6 @@ namespace OpenRA
 
 		public Activity CurrentActivity { get; private set; }
 
-		public Group Group;
 		public int Generation;
 
 		public Rectangle Bounds { get; private set; }
@@ -54,7 +53,7 @@ namespace OpenRA
 		public IOccupySpace OccupiesSpace { get; private set; }
 		public ITargetable[] Targetables { get; private set; }
 
-		public bool IsIdle { get { return CurrentActivity == null; } }
+		public bool IsIdle { get { return CurrentActivity == null || CurrentActivity.IsIdle; } }
 		public bool IsDead { get { return Disposed || (health != null && health.IsDead); } }
 
 		public CPos Location { get { return OccupiesSpace.TopLeft; } }

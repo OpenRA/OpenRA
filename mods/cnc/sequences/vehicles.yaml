@@ -336,3 +336,9 @@ apc.destroyed:
 	turret: apctur
 		Facings: 32
 		ZOffset: -512
+
+tdtruk:
+	idle:
+		Facings: 32
+		UseClassicFacingFudge: True
+	icon: tdtrukicon

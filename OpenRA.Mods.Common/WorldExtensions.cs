@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using OpenRA.Mods.Common.Traits;
 
 namespace OpenRA.Mods.Common
@@ -45,9 +46,9 @@ namespace OpenRA.Mods.Common
 			foreach (var currActor in actorsInSquare)
 			{
 				var actorWidth = 0;
-				var healthInfo = currActor.Info.TraitInfoOrDefault<HealthInfo>();
-				if (healthInfo != null)
-					actorWidth = healthInfo.Shape.OuterRadius.Length;
+				var shapes = currActor.TraitsImplementing<HitShape>().Where(Exts.IsTraitEnabled);
+				if (shapes.Any())
+					actorWidth = shapes.Max(h => h.Info.Type.OuterRadius.Length);
 
 				var projection = MinimumPointLineProjection(lineStart, lineEnd, currActor.CenterPosition);
 				var distance = (currActor.CenterPosition - projection).HorizontalLength;

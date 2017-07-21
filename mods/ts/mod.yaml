@@ -1,11 +1,8 @@
 Metadata:
 	Title: Tiberian Sun
-	Description: Developer stub, not yet ready for release!
 	Version: {DEV_VERSION}
-	Author: the OpenRA Developers
 
-RequiresMods:
-	modchooser: {DEV_VERSION}
+PackageFormats: Mix
 
 Packages:
 	~^Content/ts
@@ -64,6 +61,7 @@ Rules:
 	ts|rules/aircraft.yaml
 	ts|rules/husks.yaml
 	ts|rules/civilian-infantry.yaml
+	ts|rules/critters.yaml
 	ts|rules/civilian-structures.yaml
 	ts|rules/civilian-vehicles.yaml
 	ts|rules/gdi-infantry.yaml
@@ -100,8 +98,9 @@ Sequences:
 	ts|sequences/vehicles.yaml
 	ts|sequences/trees.yaml
 	ts|sequences/bridges.yaml
+	ts|sequences/critters.yaml
 
-VoxelSequences:
+ModelSequences:
 	ts|sequences/voxels.yaml
 
 TileSets:
@@ -113,7 +112,7 @@ MapGrid:
 	EnableDepthBuffer: True
 	Type: RectangularIsometric
 	MaximumTerrainHeight: 16
-	SubCellOffsets: 0,0,0, -256,128,0, 0,-128,0, 256,128,0
+	SubCellOffsets: 0,0,0, -362,181,0, 0,-128,0, 362,181,0
 	DefaultSubCell: 2
 
 Cursors:
@@ -136,7 +135,7 @@ ChromeLayout:
 	common|chrome/ingame-infobriefing.yaml
 	common|chrome/ingame-infoobjectives.yaml
 	common|chrome/ingame-infostats.yaml
-	common|chrome/ingame-observer.yaml
+	ts|chrome/ingame-observer.yaml
 	ts|chrome/ingame-observerstats.yaml
 	ts|chrome/ingame-player.yaml
 	common|chrome/ingame-perf.yaml
@@ -236,6 +235,8 @@ SpriteSequenceFormat: TilesetSpecificSpriteSequence
 	TilesetCodes:
 		TEMPERATE: t
 		SNOW: a
+
+ModelSequenceFormat: VoxelModelSequence
 
 GameSpeeds:
 	slower:

@@ -1,0 +1,183 @@
+panel-header: chrome.png
+	background: 3,515,58,58
+	border-r: 61,515,3,58
+	border-l: 0,515,3,58
+	border-b: 3,573,58,3
+	border-t: 3,512,58,3
+	corner-tl: 0,512,3,3
+	corner-tr: 61,512,3,3
+	corner-bl: 0,573,3,3
+	corner-br: 61,573,3,3
+
+panel-bg: chrome.png
+	background: 67,515,58,58
+	border-r: 125,515,3,58
+	border-l: 64,515,3,58
+	border-b: 67,573,58,3
+	border-t: 67,512,58,3
+	corner-tl: 64,512,3,3
+	corner-tr: 125,512,3,3
+	corner-bl: 64,573,3,3
+	corner-br: 125,573,3,3
+
+panel-thinborder: chrome.png
+	background: 3,515,58,58
+	border-r: 61,515,2,58
+	border-l: 1,515,2,58
+	border-b: 3,573,58,2
+	border-t: 3,513,58,2
+	corner-tl: 1,513,2,2
+	corner-tr: 61,513,2,2
+	corner-bl: 1,573,2,2
+	corner-br: 61,573,2,2
+
+panel-thinborder-light: chrome.png
+	background: 643,515,58,58
+	border-r: 701,515,2,58
+	border-l: 641,515,2,58
+	border-b: 643,573,58,2
+	border-t: 643,513,58,2
+	corner-tl: 641,513,2,2
+	corner-tr: 701,513,2,2
+	corner-bl: 641,573,2,2
+	corner-br: 701,573,2,2
+
+button: chrome.png
+	background: 138,522,44,44
+	border-r: 182,522,10,44
+	border-l: 128,522,10,44
+	border-b: 138,566,44,10
+	border-t: 138,512,44,10
+	corner-tl: 128,512,10,10
+	corner-tr: 182,512,10,10
+	corner-bl: 128,566,10,10
+	corner-br: 182,566,10,10
+
+button-hover: chrome.png
+	background: 202,522,44,44
+	border-r: 246,522,10,44
+	border-l: 192,522,10,44
+	border-b: 202,566,44,10
+	border-t: 202,512,44,10
+	corner-tl: 192,512,10,10
+	corner-tr: 246,512,10,10
+	corner-bl: 192,566,10,10
+	corner-br: 246,566,10,10
+
+button-disabled: chrome.png
+	Inherits: button
+
+button-pressed: chrome.png
+	background: 330,522,44,44
+	border-r: 374,522,10,44
+	border-l: 320,522,10,44
+	border-b: 330,566,44,10
+	border-t: 330,512,44,10
+	corner-tl: 320,512,10,10
+	corner-tr: 374,512,10,10
+	corner-bl: 320,566,10,10
+	corner-br: 374,566,10,10
+
+button-highlighted: chrome.png
+	background: 266,522,44,44
+	border-r: 310,522,10,44
+	border-l: 256,522,10,44
+	border-b: 266,566,44,10
+	border-t: 266,512,44,10
+	corner-tl: 256,512,10,10
+	corner-tr: 310,512,10,10
+	corner-bl: 256,566,10,10
+	corner-br: 310,566,10,10
+
+button-highlighted-hover: chrome.png
+	Inherits: button-pressed
+
+button-highlighted-pressed: chrome.png
+	Inherits: button-pressed
+
+button-highlighted-disabled: chrome.png
+	Inherits: button-highlighted
+
+button-highlighted-thin: chrome.png
+	background: 522,522,44,44
+	border-r: 566,522,10,44
+	border-l: 512,522,10,44
+	border-b: 522,566,44,10
+	border-t: 522,512,44,10
+	corner-tl: 512,512,10,10
+	corner-tr: 566,512,10,10
+	corner-bl: 512,566,10,10
+	corner-br: 566,566,10,10
+
+button-highlighted-thin-hover: chrome.png
+	Inherits: button-highlighted-thin-pressed
+
+button-highlighted-thin-pressed: chrome.png
+	background: 586,522,44,44
+	border-r: 630,522,10,44
+	border-l: 576,522,10,44
+	border-b: 586,566,44,10
+	border-t: 586,512,44,10
+	corner-tl: 576,512,10,10
+	corner-tr: 630,512,10,10
+	corner-bl: 576,566,10,10
+	corner-br: 630,566,10,10
+
+button-highlighted-thin-disabled: chrome.png
+	Inherits: button-highlighted-thin
+
+
+progressbar-bg: chrome.png
+	background: 453,565,56,6
+	border-r: 507,565,5,6
+	border-l: 448,565,5,6
+	border-b: 453,571,54,5
+	border-t: 453,560,54,5
+	corner-tl: 448,560,5,5
+	corner-tr: 507,560,5,5
+	corner-bl: 448,571,5,5
+	corner-br: 507,571,5,5
+
+progressbar-thumb: chrome.png
+	background: 453,549,56,6
+	border-r: 507,549,5,6
+	border-l: 448,549,5,6
+	border-b: 453,555,54,5
+	border-t: 453,544,54,5
+	corner-tl: 448,544,5,5
+	corner-tr: 507,544,5,5
+	corner-bl: 448,555,5,5
+	corner-br: 507,555,5,5
+
+panel-rule: chrome.png
+	border-t: 64,512,64,2
+
+background: chrome.png
+	background:0,0,1024,480
+
+modcontent: chrome.png
+	logo: 0,576,280,128
+	leftarrow:384,512,20,64
+	rightarrow:404,512,20,64
+	cdicon: 448,512,20,20
+
+scrollpanel-bg: chrome.png
+	Inherits: panel-thinborder
+
+scrollpanel-button: chrome.png
+	Inherits: panel-thinborder
+
+scrollpanel-button-hover: chrome.png
+	Inherits: panel-thinborder-light
+
+scrollpanel-button-disabled: chrome.png
+	Inherits: panel-thinborder
+
+scrollpanel-button-pressed: chrome.png
+	Inherits: panel-thinborder-light
+
+scrollbar: chrome.png
+	down_arrow: 480,512,16,16
+	down_pressed: 480,512,16,16
+	up_arrow: 480,528,16,16
+	up_pressed: 480,528,16,16

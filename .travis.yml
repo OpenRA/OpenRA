@@ -19,6 +19,11 @@ addons:
     - nsis-common
     - dpkg
     - markdown
+    - zlib1g-dev
+    - libbz2-dev
+    - cmake
+    - genisoimage
+    - fakeroot
 
 #env:
 #  secure: "C0+Hlfa0YGErxUuWV00Tj6p45otC/D3YwYFuLpi2mj1rDFn/4dgh5WRngjvdDBVbXJ3duaZ78jPHWm1jr7vn2jqj9yETsCIK9psWd38ep/FEBM0SDr6MUD89OuXk/YyvxJAE+UXF6bXg7giey09g/CwBigjMW7ynET3wNAWPHPs="

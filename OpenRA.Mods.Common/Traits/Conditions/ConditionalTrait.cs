@@ -10,20 +10,19 @@
 #endregion
 
 using System.Collections.Generic;
-using System.Linq;
 using OpenRA.Support;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	/// <summary>Use as base class for *Info to subclass of UpgradableTrait. (See UpgradableTrait.)</summary>
-	public abstract class ConditionalTraitInfo : IConditionConsumerInfo, IRulesetLoaded
+	/// <summary>Use as base class for *Info to subclass of ConditionalTrait. (See ConditionalTrait.)</summary>
+	public abstract class ConditionalTraitInfo : IObservesVariablesInfo, IRulesetLoaded
 	{
-		static readonly IReadOnlyDictionary<string, int> NoConditions = new ReadOnlyDictionary<string, int>(new Dictionary<string, int>());
+		protected static readonly IReadOnlyDictionary<string, int> NoConditions = new ReadOnlyDictionary<string, int>(new Dictionary<string, int>());
 
 		[ConsumedConditionReference]
 		[Desc("Boolean expression defining the condition to enable this trait.")]
-		public readonly ConditionExpression RequiresCondition = null;
+		public readonly BooleanExpression RequiresCondition = null;
 
 		public abstract object Create(ActorInitializer init);
 
@@ -34,28 +33,24 @@ namespace OpenRA.Mods.Common.Traits
 
 		public virtual void RulesetLoaded(Ruleset rules, ActorInfo ai)
 		{
-			EnabledByDefault = RequiresCondition != null ? RequiresCondition.Evaluate(NoConditions) > 0 : true;
+			EnabledByDefault = RequiresCondition == null || RequiresCondition.Evaluate(NoConditions);
 		}
 	}
 
 	/// <summary>
 	/// Abstract base for enabling and disabling trait using conditions.
-	/// Requires basing *Info on UpgradableTraitInfo and using base(info) constructor.
+	/// Requires basing *Info on ConditionalTraitInfo and using base(info) constructor.
 	/// TraitEnabled will be called at creation if the trait starts enabled or does not use conditions.
 	/// </summary>
-	public abstract class ConditionalTrait<InfoType> : IConditionConsumer, IDisabledTrait, INotifyCreated, ISync where InfoType : ConditionalTraitInfo
+	public abstract class ConditionalTrait<InfoType> : IObservesVariables, IDisabledTrait, INotifyCreated, ISync where InfoType : ConditionalTraitInfo
 	{
 		public readonly InfoType Info;
 
-		IEnumerable<string> IConditionConsumer.Conditions
+		// Overrides must call `base.GetVariableObservers()` to avoid breaking RequiresCondition.
+		public virtual IEnumerable<VariableObserver> GetVariableObservers()
 		{
-			get
-			{
-				if (Info.RequiresCondition != null)
-					return Info.RequiresCondition.Variables;
-
-				return Enumerable.Empty<string>();
-			}
+			if (Info.RequiresCondition != null)
+				yield return new VariableObserver(RequiredConditionsChanged, Info.RequiresCondition.Variables);
 		}
 
 		[Sync] public bool IsTraitDisabled { get; private set; }
@@ -65,7 +60,7 @@ namespace OpenRA.Mods.Common.Traits
 			Info = info;
 
 			// Conditional traits will be enabled (if appropriate) by the ConditionManager
-			// calling IConditionConsumer.ConditionsChanged at the end of INotifyCreated.
+			// calling ConditionConsumers at the end of INotifyCreated.
 			IsTraitDisabled = Info.RequiresCondition != null;
 		}
 
@@ -77,13 +72,13 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyCreated.Created(Actor self) { Created(self); }
 
-		void IConditionConsumer.ConditionsChanged(Actor self, IReadOnlyDictionary<string, int> conditions)
+		void RequiredConditionsChanged(Actor self, IReadOnlyDictionary<string, int> conditions)
 		{
 			if (Info.RequiresCondition == null)
 				return;
 
 			var wasDisabled = IsTraitDisabled;
-			IsTraitDisabled = Info.RequiresCondition.Evaluate(conditions) <= 0;
+			IsTraitDisabled = !Info.RequiresCondition.Evaluate(conditions);
 
 			if (IsTraitDisabled != wasDisabled)
 			{

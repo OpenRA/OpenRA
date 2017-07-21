@@ -115,7 +115,12 @@ namespace OpenRA.Mods.Common.Traits.Render
 			overlayActive[ai] = true;
 		}
 
-		public void PrerequisitesUnavailable(string key) { }
+		public void PrerequisitesUnavailable(string key)
+		{
+			var ai = self.World.Map.Rules.Actors[GetName(key)];
+			overlayActive[ai] = false;
+		}
+
 		public void PrerequisitesItemHidden(string key) { }
 		public void PrerequisitesItemVisible(string key) { }
 	}

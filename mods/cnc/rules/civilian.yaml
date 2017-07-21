@@ -1,5 +1,11 @@
 V01:
 	Inherits: ^CivBuilding
+	HitShape:
+		UseTargetableCellsOffsets: false
+		TargetableOffsets: -490,-384,0, 0,0,0, 0,470,0
+		Type: Rectangle
+			TopLeft: -768, -597
+			BottomRight: 896, 683
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
@@ -22,6 +28,12 @@ V01.Husk:
 
 V02:
 	Inherits: ^CivBuilding
+	HitShape:
+		UseTargetableCellsOffsets: false
+		TargetableOffsets: -490,-512,0, 0,0,0, 0,512,0
+		Type: Rectangle
+			TopLeft: -1024, -512
+			BottomRight: 1024, 597
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
@@ -44,6 +56,12 @@ V02.Husk:
 
 V03:
 	Inherits: ^CivBuilding
+	HitShape:
+		UseTargetableCellsOffsets: false
+		TargetableOffsets: -490,-512,0, 0,0,0, 421,512,0, -210,512,0
+		Type: Rectangle
+			TopLeft: -1024, -597
+			BottomRight: 1024, 597
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
@@ -66,6 +84,12 @@ V03.Husk:
 
 V04:
 	Inherits: ^CivBuilding
+	HitShape:
+		UseTargetableCellsOffsets: false
+		TargetableOffsets: 0,0,0, -421,-256,0, -421,256,0
+		Type: Rectangle
+			TopLeft: -683, -432
+			BottomRight: 683, 683
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
@@ -88,6 +112,7 @@ V04.Husk:
 
 V05:
 	Inherits: ^CivBuilding
+	Inherits@shape: ^2x1Shape
 	Building:
 		Footprint: xx
 		Dimensions: 2,1
@@ -110,6 +135,7 @@ V05.Husk:
 
 V06:
 	Inherits: ^CivBuilding
+	Inherits@shape: ^2x1Shape
 	Building:
 		Footprint: xx
 		Dimensions: 2,1
@@ -132,6 +158,7 @@ V06.Husk:
 
 V07:
 	Inherits: ^CivBuilding
+	Inherits@shape: ^2x1Shape
 	Building:
 		Footprint: xx
 		Dimensions: 2,1
@@ -330,6 +357,7 @@ V18.Husk:
 
 ARCO:
 	Inherits: ^CivBuilding
+	Inherits@shape: ^2x1Shape
 	Building:
 		Footprint: xx
 		Dimensions: 2,1

@@ -33,7 +33,7 @@ namespace OpenRA.Mods.Common.Traits
 		/// Calculates a path for the actor from source to destination
 		/// </summary>
 		/// <returns>A path from start to target</returns>
-		List<CPos> FindUnitPath(CPos source, CPos target, Actor self);
+		List<CPos> FindUnitPath(CPos source, CPos target, Actor self, Actor ignoreActor);
 
 		List<CPos> FindUnitPathToRange(CPos source, SubCell srcSub, WPos target, WDist range, Actor self);
 
@@ -60,7 +60,7 @@ namespace OpenRA.Mods.Common.Traits
 			this.world = world;
 		}
 
-		public List<CPos> FindUnitPath(CPos source, CPos target, Actor self)
+		public List<CPos> FindUnitPath(CPos source, CPos target, Actor self, Actor ignoreActor)
 		{
 			var mi = self.Info.TraitInfo<MobileInfo>();
 
@@ -74,8 +74,8 @@ namespace OpenRA.Mods.Common.Traits
 			}
 
 			List<CPos> pb;
-			using (var fromSrc = PathSearch.FromPoint(world, mi, self, target, source, true))
-			using (var fromDest = PathSearch.FromPoint(world, mi, self, source, target, true).Reverse())
+			using (var fromSrc = PathSearch.FromPoint(world, mi, self, target, source, true).WithIgnoredActor(ignoreActor))
+			using (var fromDest = PathSearch.FromPoint(world, mi, self, source, target, true).WithIgnoredActor(ignoreActor).Reverse())
 				pb = FindBidiPath(fromSrc, fromDest);
 
 			CheckSanePath2(pb, source, target);

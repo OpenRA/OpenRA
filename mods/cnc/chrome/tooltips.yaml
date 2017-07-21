@@ -8,7 +8,7 @@ Background@SIMPLE_TOOLTIP:
 			Height: 19
 		Label@LABEL:
 			X: 5
-			Y: 0-2
+			Y: 0 - 2
 			Height: 23
 			Font: Bold
 
@@ -26,6 +26,34 @@ Background@BUTTON_TOOLTIP:
 			TextColor: FFFF00
 			Height: 23
 			Font: Bold
+		Label@DESC:
+			X: 5
+			Y: 23
+			Height: 12
+			Font: TinyBold
+			VAlign: Top
+
+Background@BUTTON_WITH_DESC_HIGHLIGHT_TOOLTIP:
+	Logic: ButtonTooltipWithDescHighlightLogic
+		Highlight: FFFF00
+	Background: panel-black
+	Height: 25
+	Children:
+		Label@LABEL:
+			X: 5
+			Height: 23
+			Font: Bold
+		Label@HOTKEY:
+			Visible: false
+			TextColor: FFFF00
+			Height: 23
+			Font: Bold
+		Label@DESC:
+			X: 5
+			Y: 23
+			Height: 12
+			Font: TinyBold
+			VAlign: Top
 
 Background@WORLD_TOOLTIP:
 	Logic: WorldTooltipLogic
@@ -217,22 +245,3 @@ Background@INGAME_CLIENT_TOOLTIP:
 			Height: 10
 			Font: TinyBold
 			Align: Center
-
-Background@FACTION_DESCRIPTION_TOOLTIP:
-	Logic: FactionTooltipLogic
-	Background: panel-black
-	Children:
-		Label@HEADER:
-			X: 7
-			Y: 6
-			Width: 8
-			Height: 12
-			Font: Bold
-			VAlign: Top
-		Label@DESCRIPTION:
-			X: 14
-			Y: 0
-			Width: 15
-			Height: 14
-			Font: TinyBold
-			VAlign: Top

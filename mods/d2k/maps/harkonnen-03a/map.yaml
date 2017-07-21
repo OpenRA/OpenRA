@@ -1,0 +1,180 @@
+MapFormat: 11
+
+RequiresMod: d2k
+
+Title: Harkonnen 03a
+
+Author: Westwood Studios
+
+Tileset: ARRAKIS
+
+MapSize: 68,68
+
+Bounds: 2,2,64,64
+
+Visibility: MissionSelector
+
+Categories: Campaign
+
+LockPreview: True
+
+Players:
+	PlayerReference@Neutral:
+		Name: Neutral
+		OwnsWorld: True
+		NonCombatant: True
+	PlayerReference@Creeps:
+		Name: Creeps
+		NonCombatant: True
+		Enemies: Harkonnen, Atreides
+	PlayerReference@Harkonnen:
+		Name: Harkonnen
+		Playable: True
+		LockFaction: True
+		Faction: harkonnen
+		LockColor: True
+		Color: FE0000
+		Enemies: Atreides, Creeps
+	PlayerReference@Atreides:
+		Name: Atreides
+		LockFaction: True
+		Faction: atreides
+		LockColor: True
+		Color: 9191FF
+		Enemies: Harkonnen
+
+Actors:
+	Actor0: light_inf
+		Location: 30,9
+		Owner: Harkonnen
+	Actor1: trooper
+		Location: 34,9
+		Owner: Harkonnen
+	HConyard: construction_yard
+		Location: 31,11
+		Owner: Harkonnen
+	Actor3: quad
+		Location: 37,12
+		Owner: Harkonnen
+	Actor4: wormspawner
+		Location: 6,14
+		Owner: Creeps
+	Actor5: trike
+		Location: 27,16
+		Owner: Harkonnen
+	Actor6: light_inf
+		Location: 31,16
+		Owner: Harkonnen
+	Actor7: trooper
+		Location: 33,16
+		Owner: Harkonnen
+	Actor8: wall
+		Location: 33,51
+		Owner: Atreides
+	Actor9: wall
+		Location: 42,51
+		Owner: Atreides
+	Actor10: wall
+		Location: 33,52
+		Owner: Atreides
+	Actor11: wall
+		Location: 34,52
+		Owner: Atreides
+	Actor12: wall
+		Location: 35,52
+		Owner: Atreides
+	Actor13: wall
+		Location: 40,52
+		Owner: Atreides
+	Actor14: wall
+		Location: 41,52
+		Owner: Atreides
+	Actor15: wall
+		Location: 42,52
+		Owner: Atreides
+	Actor16: quad
+		Location: 34,53
+		Owner: Atreides
+	Actor17: quad
+		Location: 40,53
+		Owner: Atreides
+	ARefinery: refinery
+		Location: 23,57
+		Owner: Atreides
+	AWindTrap1: wind_trap
+		Location: 20,59
+		Owner: Atreides
+	ASilo: silo
+		Location: 27,59
+		Owner: Atreides
+	AConyard: construction_yard
+		Location: 22,61
+		Owner: Atreides
+	AWindTrap2: wind_trap
+		Location: 27,62
+		Owner: Atreides
+	AOutpost: outpost
+		Location: 29,62
+		Owner: Atreides
+	ALightFactory: light_factory
+		Location: 37,62
+		Owner: Atreides
+	ABarracks: barracks
+		Location: 34,63
+		Owner: Atreides
+	AtreidesRally4: waypoint
+		Owner: Neutral
+		Location: 21,11
+	AtreidesEntry4: waypoint
+		Owner: Neutral
+		Location: 21,2
+	AtreidesRally2: waypoint
+		Owner: Neutral
+		Location: 13,19
+	AtreidesEntry3: waypoint
+		Owner: Neutral
+		Location: 29,60
+	AtreidesRally3: waypoint
+		Owner: Neutral
+		Location: 29,65
+	AtreidesRally6: waypoint
+		Owner: Neutral
+		Location: 19,57
+	AtreidesEntry6: waypoint
+		Owner: Neutral
+		Location: 19,65
+	AtreidesRally7: waypoint
+		Owner: Neutral
+		Location: 45,61
+	AtreidesEntry7: waypoint
+		Owner: Neutral
+		Location: 45,65
+	AtreidesRally5: waypoint
+		Owner: Neutral
+		Location: 33,45
+	AtreidesEntry5: waypoint
+		Owner: Neutral
+		Location: 33,65
+	AtreidesEntry2: waypoint
+		Owner: Neutral
+		Location: 2,19
+	AtreidesRally1: waypoint
+		Owner: Neutral
+		Location: 42,18
+	AtreidesEntry1: waypoint
+		Owner: Neutral
+		Location: 65,18
+	AtreidesRally8: waypoint
+		Owner: Neutral
+		Location: 47,27
+	AtreidesEntry8: waypoint
+		Owner: Neutral
+		Location: 65,27
+	HarkonnenRally: waypoint
+		Owner: Neutral
+		Location: 29,12
+	HarkonnenEntry: waypoint
+		Owner: Neutral
+		Location: 29,2
+
+Rules: d2k|rules/campaign-rules.yaml, rules.yaml

@@ -15,23 +15,41 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Disables the actor when a power outage is triggered (see `InfiltrateForPowerOutage` for more information).")]
-	public class AffectedByPowerOutageInfo : ITraitInfo
+	public class AffectedByPowerOutageInfo : ConditionalTraitInfo
 	{
-		public object Create(ActorInitializer init) { return new AffectedByPowerOutage(init.Self); }
+		[GrantedConditionReference]
+		[Desc("The condition to grant while there is a power outage.")]
+		public readonly string Condition = null;
+
+		public override object Create(ActorInitializer init) { return new AffectedByPowerOutage(init.Self, this); }
 	}
 
-	public class AffectedByPowerOutage : INotifyOwnerChanged, ISelectionBar, IPowerModifier, IDisable
+	public class AffectedByPowerOutage : ConditionalTrait<AffectedByPowerOutageInfo>, INotifyOwnerChanged, ISelectionBar, INotifyCreated, INotifyAddedToWorld
 	{
 		PowerManager playerPower;
+		ConditionManager conditionManager;
+		int token = ConditionManager.InvalidConditionToken;
 
-		public AffectedByPowerOutage(Actor self)
+		public AffectedByPowerOutage(Actor self, AffectedByPowerOutageInfo info)
+			: base(info)
 		{
 			playerPower = self.Owner.PlayerActor.Trait<PowerManager>();
 		}
 
+		void INotifyAddedToWorld.AddedToWorld(Actor self) { UpdateStatus(self); }
+		protected override void TraitEnabled(Actor self) { UpdateStatus(self); }
+		protected override void TraitDisabled(Actor self) { Revoke(self); }
+
+		protected override void Created(Actor self)
+		{
+			conditionManager = self.TraitOrDefault<ConditionManager>();
+
+			base.Created(self);
+		}
+
 		float ISelectionBar.GetValue()
 		{
-			if (playerPower.PowerOutageRemainingTicks <= 0)
+			if (IsTraitDisabled || playerPower.PowerOutageRemainingTicks <= 0)
 				return 0;
 
 			return (float)playerPower.PowerOutageRemainingTicks / playerPower.PowerOutageTotalTicks;
@@ -44,19 +62,30 @@ namespace OpenRA.Mods.Common.Traits
 
 		bool ISelectionBar.DisplayWhenEmpty { get { return false; } }
 
-		int IPowerModifier.GetPowerModifier()
+		public void UpdateStatus(Actor self)
 		{
-			return playerPower.PowerOutageRemainingTicks > 0 ? 0 : 100;
+			if (!IsTraitDisabled && playerPower.PowerOutageRemainingTicks > 0)
+				Grant(self);
+			else
+				Revoke(self);
 		}
 
-		public bool Disabled
+		void Grant(Actor self)
 		{
-			get { return playerPower.PowerOutageRemainingTicks > 0; }
+			if (token == ConditionManager.InvalidConditionToken)
+				token = conditionManager.GrantCondition(self, Info.Condition);
+		}
+
+		void Revoke(Actor self)
+		{
+			if (token != ConditionManager.InvalidConditionToken)
+				token = conditionManager.RevokeCondition(self, token);
 		}
 
 		void INotifyOwnerChanged.OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
 		{
 			playerPower = newOwner.PlayerActor.Trait<PowerManager>();
+			UpdateStatus(self);
 		}
 	}
 }

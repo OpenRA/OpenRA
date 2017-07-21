@@ -28,15 +28,19 @@ namespace OpenRA.Mods.Common.Traits
 		int QuantizedBodyFacings(ActorInfo ai, SequenceProvider sequenceProvider, string race);
 	}
 
-	public interface INotifyResourceClaimLost
-	{
-		void OnNotifyResourceClaimLost(Actor self, ResourceClaim claim, Actor claimer);
-	}
-
 	public interface IPlaceBuildingDecorationInfo : ITraitInfo
 	{
 		IEnumerable<IRenderable> Render(WorldRenderer wr, World w, ActorInfo ai, WPos centerPosition);
 	}
+
+	[RequireExplicitImplementation]
+	public interface IBlocksProjectiles
+	{
+		WDist BlockingHeight { get; }
+	}
+
+	[RequireExplicitImplementation]
+	public interface IBlocksProjectilesInfo : ITraitInfoInterface { }
 
 	[RequireExplicitImplementation]
 	public interface INotifySold
@@ -112,12 +116,23 @@ namespace OpenRA.Mods.Common.Traits
 	public interface INotifyPassengerExited { void OnPassengerExited(Actor self, Actor passenger); }
 
 	[RequireExplicitImplementation]
-	public interface IConditionConsumerInfo : ITraitInfo { }
+	public interface IObservesVariablesInfo : ITraitInfo { }
 
-	public interface IConditionConsumer
+	public delegate void VariableObserverNotifier(Actor self, IReadOnlyDictionary<string, int> variables);
+	public struct VariableObserver
 	{
-		IEnumerable<string> Conditions { get; }
-		void ConditionsChanged(Actor self, IReadOnlyDictionary<string, int> conditions);
+		public VariableObserverNotifier Notifier;
+		public IEnumerable<string> Variables;
+		public VariableObserver(VariableObserverNotifier notifier, IEnumerable<string> variables)
+		{
+			Notifier = notifier;
+			Variables = variables;
+		}
+	}
+
+	public interface IObservesVariables
+	{
+		IEnumerable<VariableObserver> GetVariableObservers();
 	}
 
 	public interface INotifyHarvesterAction
@@ -152,7 +167,24 @@ namespace OpenRA.Mods.Common.Traits
 		bool IsOverlayActive(ActorInfo ai);
 	}
 
-	public interface INotifyTransform { void BeforeTransform(Actor self); void OnTransform(Actor self); void AfterTransform(Actor toActor); }
+	public interface INotifyTransform
+	{
+		void BeforeTransform(Actor self);
+		void OnTransform(Actor self);
+		void AfterTransform(Actor toActor);
+	}
+
+	public interface INotifyDeployComplete
+	{
+		void FinishedDeploy(Actor self);
+		void FinishedUndeploy(Actor self);
+	}
+
+	public interface INotifyDeployTriggered
+	{
+		void Deploy(Actor self);
+		void Undeploy(Actor self);
+	}
 
 	public interface IResourceExchange
 	{
@@ -248,5 +280,20 @@ namespace OpenRA.Mods.Common.Traits
 
 		byte GetTerrainIndex(CPos cell);
 		WPos CenterOfCell(CPos cell);
+	}
+
+	// For traits that want to be exposed to the "Deploy" UI button / hotkey
+	[RequireExplicitImplementation]
+	public interface IIssueDeployOrder
+	{
+		Order IssueDeployOrder(Actor self);
+	}
+
+	public enum ActorPreviewType { PlaceBuilding, ColorPicker, MapEditorSidebar }
+
+	[RequireExplicitImplementation]
+	public interface IActorPreviewInitInfo : ITraitInfo
+	{
+		IEnumerable<object> ActorPreviewInits(ActorInfo ai, ActorPreviewType type);
 	}
 }

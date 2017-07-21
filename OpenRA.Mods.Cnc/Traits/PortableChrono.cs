@@ -45,6 +45,12 @@ namespace OpenRA.Mods.Cnc.Traits
 		[Desc("Cursor to display when the targeted location is blocked.")]
 		public readonly string TargetBlockedCursor = "move-blocked";
 
+		[Desc("Kill cargo on teleporting.")]
+		public readonly bool KillCargo = true;
+
+		[Desc("Flash the screen on teleporting.")]
+		public readonly bool FlashScreen = false;
+
 		[VoiceReference] public readonly string Voice = "Action";
 
 		public object Create(ActorInitializer init) { return new PortableChrono(this); }
@@ -93,7 +99,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			{
 				var maxDistance = Info.HasDistanceLimit ? Info.MaxDistance : (int?)null;
 				self.CancelActivity();
-				self.QueueActivity(new Teleport(self, order.TargetLocation, maxDistance, true, false, Info.ChronoshiftSound));
+				self.QueueActivity(new Teleport(self, order.TargetLocation, maxDistance, Info.KillCargo, Info.FlashScreen, Info.ChronoshiftSound));
 			}
 		}
 
@@ -137,8 +143,7 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		public bool CanTarget(Actor self, Target target, List<Actor> othersAtTarget, ref TargetModifiers modifiers, ref string cursor)
 		{
-			// TODO: When target modifiers are configurable this needs to be revisited
-			if (modifiers.HasModifier(TargetModifiers.ForceMove) || modifiers.HasModifier(TargetModifiers.ForceQueue))
+			if (modifiers.HasModifier(TargetModifiers.ForceMove))
 			{
 				var xy = self.World.Map.CellContaining(target.CenterPosition);
 

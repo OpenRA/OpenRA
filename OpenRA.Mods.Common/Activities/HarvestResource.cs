@@ -20,7 +20,7 @@ namespace OpenRA.Mods.Common.Activities
 		readonly Harvester harv;
 		readonly HarvesterInfo harvInfo;
 		readonly IFacing facing;
-		readonly ResourceClaimLayer territory;
+		readonly ResourceClaimLayer claimLayer;
 		readonly ResourceLayer resLayer;
 		readonly BodyOrientation body;
 
@@ -30,14 +30,13 @@ namespace OpenRA.Mods.Common.Activities
 			harvInfo = self.Info.TraitInfo<HarvesterInfo>();
 			facing = self.Trait<IFacing>();
 			body = self.Trait<BodyOrientation>();
-			territory = self.World.WorldActor.TraitOrDefault<ResourceClaimLayer>();
+			claimLayer = self.World.WorldActor.Trait<ResourceClaimLayer>();
 			resLayer = self.World.WorldActor.Trait<ResourceLayer>();
 		}
 
 		Activity UnclaimAndNext(Actor self)
 		{
-			if (territory != null)
-				territory.UnclaimByActor(self);
+				claimLayer.RemoveClaim(self);
 			return NextActivity;
 		}
 
@@ -48,8 +47,7 @@ namespace OpenRA.Mods.Common.Activities
 
 			if (!self.CanHarvestAt(self.Location, resLayer, harvInfo, territory))
 			{
-				Queue(new FindResources(self));
-				return UnclaimAndNext(self);
+				claimLayer.RemoveClaim(self);
 			}
 
 			harv.LastHarvestedCell = self.Location;
@@ -71,8 +69,7 @@ namespace OpenRA.Mods.Common.Activities
 			var resource = resLayer.Harvest(self.Location);
 			if (resource == null)
 			{
-				Queue(new FindResources(self));
-				return UnclaimAndNext(self);
+				claimLayer.RemoveClaim(self);
 			}
 
 			harv.AcceptResource(resource);

@@ -46,12 +46,10 @@ namespace OpenRA.Mods.Common.Traits
 			return new AttackActivity(self, newTarget, allowMove, forceAttack);
 		}
 
-		public override void ResolveOrder(Actor self, Order order)
+		protected override void OnStopOrder(Actor self)
 		{
-			base.ResolveOrder(self, order);
-
-			if (order.OrderString == "Stop")
-				Target = Target.Invalid;
+			Target = Target.Invalid;
+			base.OnStopOrder(self);
 		}
 
 		public void OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)

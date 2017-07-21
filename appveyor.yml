@@ -53,10 +53,19 @@ after_test:
   - appveyor DownloadFile "https://raw.githubusercontent.com/wiki/OpenRA/OpenRA/Changelog.md" -FileName Changelog.md
   - make docs
   - ps: dir *.md | % {gc $_ -Raw | .\ConvertFrom-Markdown.ps1 | Out-File -FilePath "$($_.Name.TrimEnd(".md")).html"}
-  - ps: cp OpenRA.Game/OpenRA.ico .
-  - '"C:\Program Files (x86)\NSIS\makensis.exe" /DSRCDIR="%APPVEYOR_BUILD_FOLDER%" /DDEPSDIR="%APPVEYOR_BUILD_FOLDER%\thirdparty\download\windows" /V3 packaging/windows/OpenRA.nsi'
+  - ps: (Get-Content "${env:APPVEYOR_BUILD_FOLDER}\packaging\windows\WindowsLauncher.cs.in").replace('DISPLAY_NAME', 'Red Alert').replace('MOD_ID', 'ra').replace('FAQ_URL', 'http://wiki.openra.net/FAQ') | Set-Content "${env:APPVEYOR_BUILD_FOLDER}\packaging\windows\WindowsLauncher.cs"
+  - ps: csc.exe /noconfig /platform:x86 /reference:System.dll /reference:System.Core.dll /reference:System.Drawing.dll /reference:System.Windows.Forms.dll /reference:"${env:APPVEYOR_BUILD_FOLDER}\OpenRA.Game.exe" /out:"${env:APPVEYOR_BUILD_FOLDER}\RedAlert.exe" /win32icon:"${env:APPVEYOR_BUILD_FOLDER}\packaging\windows\RedAlert.ico" /target:winexe ${env:APPVEYOR_BUILD_FOLDER}\packaging\windows\WindowsLauncher.cs
+  - ps: (Get-Content "${env:APPVEYOR_BUILD_FOLDER}\packaging\windows\WindowsLauncher.cs.in").replace('DISPLAY_NAME', 'Tiberian Dawn').replace('MOD_ID', 'cnc').replace('FAQ_URL', 'http://wiki.openra.net/FAQ') | Set-Content "${env:APPVEYOR_BUILD_FOLDER}\packaging\windows\WindowsLauncher.cs"
+  - ps: csc.exe /noconfig /platform:x86 /reference:System.dll /reference:System.Core.dll /reference:System.Drawing.dll /reference:System.Windows.Forms.dll /reference:"${env:APPVEYOR_BUILD_FOLDER}\OpenRA.Game.exe" /out:"${env:APPVEYOR_BUILD_FOLDER}\TiberianDawn.exe" /win32icon:"${env:APPVEYOR_BUILD_FOLDER}\packaging\windows\TiberianDawn.ico" /target:winexe ${env:APPVEYOR_BUILD_FOLDER}\packaging\windows\WindowsLauncher.cs
+  - ps: (Get-Content "${env:APPVEYOR_BUILD_FOLDER}\packaging\windows\WindowsLauncher.cs.in").replace('DISPLAY_NAME', 'Dune 2000').replace('MOD_ID', 'd2k').replace('FAQ_URL', 'http://wiki.openra.net/FAQ') | Set-Content "${env:APPVEYOR_BUILD_FOLDER}\packaging\windows\WindowsLauncher.cs"
+  - ps: csc.exe /noconfig /platform:x86 /reference:System.dll /reference:System.Core.dll /reference:System.Drawing.dll /reference:System.Windows.Forms.dll /reference:"${env:APPVEYOR_BUILD_FOLDER}\OpenRA.Game.exe" /out:"${env:APPVEYOR_BUILD_FOLDER}\Dune2000.exe" /win32icon:"${env:APPVEYOR_BUILD_FOLDER}\packaging\windows\Dune2000.ico" /target:winexe ${env:APPVEYOR_BUILD_FOLDER}\packaging\windows\WindowsLauncher.cs
+  - ps: cp packaging\windows\OpenRA.ico .
+  - ps: cp packaging\windows\RedAlert.ico .
+  - ps: cp packaging\windows\TiberianDawn.ico .
+  - ps: cp packaging\windows\Dune2000.ico .
   - if defined APPVEYOR_REPO_TAG_NAME set VERSION=%APPVEYOR_REPO_TAG_NAME%
   - if not defined APPVEYOR_REPO_TAG_NAME set VERSION=%APPVEYOR_REPO_COMMIT:~0,7%
+  - '"C:\Program Files (x86)\NSIS\makensis.exe" /DSRCDIR="%APPVEYOR_BUILD_FOLDER%" /DDEPSDIR="%APPVEYOR_BUILD_FOLDER%\thirdparty\download\windows" /DTAG="git-%VERSION%" /DSUFFIX=" (dev)" /V3 packaging/windows/OpenRA.nsi'
   - move /Y %APPVEYOR_BUILD_FOLDER%\packaging\windows\OpenRA.Setup.exe %APPVEYOR_BUILD_FOLDER%\OpenRA-%VERSION%.exe
 
 artifacts:

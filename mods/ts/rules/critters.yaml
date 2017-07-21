@@ -1,0 +1,125 @@
+DOGGIE:
+	Inherits@1: ^Infantry
+	Inherits@2: ^RegularInfantryDeath
+	Inherits@3: ^HealsOnTiberium
+	Tooltip:
+		Name: Tiberian Fiend
+	Health:
+		HP: 250
+	Selectable:
+		Bounds: 24,24
+	Valued:
+		Cost: 100
+	Armor:
+		Type: Light
+	RevealsShroud:
+		Range: 4c0
+	Mobile:
+		Speed: 113
+	Voiced:
+		VoiceSet: Fiend
+	Targetable:
+		TargetTypes: Ground
+	Armament:
+		Weapon: FiendShard
+	AttackFrontal:
+		Voice: Attack
+	AttackWander:
+		WanderMoveRadius: 2
+		MinMoveDelay: 200
+		MaxMoveDelay: 600
+	-SpawnActorOnDeath@FLAMEGUY:
+	WithDeathAnimation@fire:
+		DeathSequence: die-
+		DeathTypes:
+			FireDeath: burning
+	HitShape:
+		Type: Circle
+			Radius: 213
+
+VISC_SML:
+	Inherits: ^Visceroid
+	Tooltip:
+		Name: Baby Visceroid
+	Health:
+		HP: 200
+	AttackWander:
+		WanderMoveRadius: 2
+		MinMoveDelay: 30
+		MaxMoveDelay: 60
+	RenderSprites:
+		Image: vissml
+
+VISC_LRG:
+	Inherits: ^Visceroid
+	Inherits@CRATESTATS: ^CrateStatModifiers
+	Inherits@AUTOTARGET: ^AutoTargetGround
+	Tooltip:
+		Name: Adult Visceroid
+	Health:
+		HP: 500
+	Armor:
+		Type: Heavy
+	RevealsShroud:
+		Range: 4c0
+	Armament:
+		Weapon: SlimeAttack
+		FireDelay: 10
+	AutoTarget:
+		ScanRadius: 5
+	AttackFrontal:
+		Voice: Attack
+	AttackWander:
+		WanderMoveRadius: 2
+		MinMoveDelay: 25
+		MaxMoveDelay: 50
+	WithAttackAnimation:
+		AttackSequence: attack
+	Mobile:
+		Crushes: crate, infantry
+	RenderSprites:
+		Image: vislrg
+
+JFISH:
+	Inherits: ^Visceroid
+	Inherits@CRATESTATS: ^CrateStatModifiers
+	Inherits@AUTOTARGET: ^AutoTargetGround
+	Tooltip:
+		Name: Tiberium Floater
+	Health:
+		HP: 500
+	RevealsShroud:
+		Range: 5c0
+	Mobile:
+		Speed: 72
+		Crushes: crate
+		TerrainSpeeds:
+			Clear: 100
+			Rail: 100
+			DirtRoad: 100
+			Rough: 100
+			Water: 100
+	Armament:
+		Weapon: Tentacle
+		FireDelay: 10
+	AutoTarget:
+		ScanRadius: 5
+	AttackFrontal:
+	AttackWander:
+		WanderMoveRadius: 6
+		MinMoveDelay: 250
+		MaxMoveDelay: 600
+	WithAttackAnimation:
+		AttackSequence: attack
+	RenderSprites:
+		Image: floater
+	Selectable:
+		Bounds: 32,32,0,-5
+	AmbientSound:
+		SoundFiles: floatmov.aud, flotmov2.aud, flotmov3.aud, flotmov4.aud
+		Delay: 150, 450
+		Interval: 300, 800
+	HitShape:
+		Type: Circle
+			Radius: 363
+			VerticalTopOffset: 768

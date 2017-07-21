@@ -1,0 +1,140 @@
+MapFormat: 11
+
+RequiresMod: d2k
+
+Title: Ordos 02b
+
+Author: Westwood Studios
+
+Tileset: ARRAKIS
+
+MapSize: 52,52
+
+Bounds: 2,2,48,48
+
+Visibility: MissionSelector
+
+Categories: Campaign
+
+LockPreview: True
+
+Players:
+	PlayerReference@Neutral:
+		Name: Neutral
+		OwnsWorld: True
+		NonCombatant: True
+		Faction: Random
+	PlayerReference@Creeps:
+		Name: Creeps
+		NonCombatant: True
+		Faction: Random
+		Enemies: Ordos, Harkonnen
+	PlayerReference@Ordos:
+		Name: Ordos
+		Playable: True
+		LockFaction: True
+		Faction: ordos
+		LockColor: True
+		Color: B3EAA5
+		Enemies: Harkonnen, Creeps
+	PlayerReference@Harkonnen:
+		Name: Harkonnen
+		LockFaction: True
+		Faction: harkonnen
+		LockColor: True
+		Color: FE0000
+		Enemies: Ordos
+
+Actors:
+	Actor0: light_inf
+		Location: 12,3
+		Owner: Ordos
+	OPower1: wind_trap
+		Location: 15,3
+		Owner: Ordos
+	OConyard: construction_yard
+		Location: 20,4
+		Owner: Ordos
+	Actor3: light_inf
+		Location: 9,5
+		Owner: Ordos
+	Actor4: light_inf
+		Location: 13,5
+		Owner: Ordos
+	Actor5: light_inf
+		Location: 18,6
+		Owner: Ordos
+	Actor6: raider
+		Location: 12,7
+		Owner: Ordos
+	Actor7: raider
+		Location: 19,8
+		Owner: Ordos
+	Actor8: light_inf
+		Location: 36,10
+		Owner: Harkonnen
+	Actor9: light_inf
+		Location: 5,19
+		Owner: Harkonnen
+	Actor10: light_inf
+		Location: 45,25
+		Owner: Harkonnen
+	Actor11: light_inf
+		Location: 45,32
+		Owner: Harkonnen
+	Actor12: light_inf
+		Location: 42,33
+		Owner: Harkonnen
+	Actor13: light_inf
+		Location: 48,33
+		Owner: Harkonnen
+	HPower1: wind_trap
+		Location: 38,36
+		Owner: Harkonnen
+	HPower2: wind_trap
+		Location: 40,36
+		Owner: Harkonnen
+	HOutpost: outpost
+		Location: 45,37
+		Owner: Harkonnen
+	Actor17: light_inf
+		Location: 38,40
+		Owner: Harkonnen
+	Actor18: light_inf
+		Location: 41,40
+		Owner: Harkonnen
+	Actor19: light_inf
+		Location: 10,42
+		Owner: Harkonnen
+	Actor20: wormspawner
+		Location: 17,42
+		Owner: Creeps
+	HBarracks: barracks
+		Location: 39,42
+		Owner: Harkonnen
+	HConyard: construction_yard
+		Location: 45,43
+		Owner: Harkonnen
+	Actor23: trike
+		Location: 38,46
+		Owner: Harkonnen
+	Actor24: trike
+		Location: 41,47
+		Owner: Harkonnen
+	HarkonnenRally1: waypoint
+		Owner: Neutral
+		Location: 25,15
+	HarkonnenEntry1: waypoint
+		Owner: Neutral
+		Location: 49,15
+	HarkonnenRally2: waypoint
+		Owner: Neutral
+		Location: 14,13
+	HarkonnenEntry2: waypoint
+		Owner: Neutral
+		Location: 31,49
+	HarkonnenRally3: waypoint
+		Owner: Neutral
+		Location: 9,8
+
+Rules: d2k|rules/campaign-rules.yaml, rules.yaml

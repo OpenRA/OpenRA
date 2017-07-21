@@ -29,7 +29,7 @@ To compile OpenRA, run `make all` from the command line.
 
 Run with either `launch-game.sh` or `mono --debug OpenRA.Game.exe`.
 
-Type `sudo make install-all` for system wide installation. Run `make install-linux-shortcuts` to get startup scripts, icons and desktop files. You can then run from the `openra` shortcut.
+Type `sudo make install` for system wide installation. Run `make install-linux-shortcuts` to get startup scripts, icons and desktop files. You can then run from the `openra` shortcut.
 
 Debian/Ubuntu
 -------------

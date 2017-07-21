@@ -42,7 +42,7 @@ Container@MULTIPLAYER_DIRECTCONNECT_PANEL:
 							Height: 25
 							MaxLength: 5
 		Container@SIDEBAR:
-			X: PARENT_RIGHT-WIDTH
+			X: PARENT_RIGHT - WIDTH
 			Y: 30
 			Width: 174
 			Height: 280

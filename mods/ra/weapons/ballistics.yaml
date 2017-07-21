@@ -21,11 +21,12 @@
 	Warhead@3Eff: CreateEffect
 		Explosions: small_explosion
 		ImpactSounds: kaboom12.aud
-		InvalidImpactTypes: Water
+		ValidTargets: Ground, Ship
 	Warhead@4EffWater: CreateEffect
 		Explosions: small_splash
 		ImpactSounds: splash9.aud
-		ValidImpactTypes: Water
+		ValidTargets: Water, Underwater
+		InvalidTargets: Ship, Structure
 
 25mm:
 	Inherits: ^Cannon
@@ -85,13 +86,13 @@ TurretGun:
 		Speed: 204
 		Blockable: false
 		LaunchAngle: 62
-		Inaccuracy: 1c682
+		Inaccuracy: 2c256
 	Warhead@1Dam: SpreadDamage
 		Spread: 426
-		Damage: 220
+		Damage: 240
 		Versus:
 			None: 90
-			Wood: 75
+			Wood: 40
 			Light: 60
 			Heavy: 25
 			Concrete: 50
@@ -106,6 +107,7 @@ TurretGun:
 	Inherits: ^Artillery
 	MinRange: 3c0
 	Report: tank5.aud
+	TargetActorCenter: true
 	Projectile: Bullet
 		ContrailLength: 30
 
@@ -116,6 +118,7 @@ TurretGun:
 	Range: 16c0
 	Burst: 2
 	Report: turret1.aud
+	TargetActorCenter: true
 	Projectile: Bullet
 		Inaccuracy: 2c938
 		ContrailLength: 30
@@ -125,7 +128,7 @@ TurretGun:
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		Versus:
 			None: 60
-			Wood: 75
+			Wood: 35
 			Light: 60
 			Heavy: 25
 			Concrete: 100
@@ -137,6 +140,7 @@ TurretGun:
 	ReloadDelay: 60
 	Range: 5c512
 	Report: cannon2.aud
+	InvalidTargets: Underwater
 	Projectile: Bullet
 		Speed: 426
 	Warhead@1Dam: SpreadDamage
@@ -181,7 +185,8 @@ DepthCharge:
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 80
-		ValidTargets: Underwater
+		ValidTargets: Underwater, Water
+		InvalidTargets: Ship
 		Versus:
 			None: 30
 			Wood: 75
@@ -192,8 +197,8 @@ DepthCharge:
 	Warhead@4EffWater: CreateEffect
 		Explosions: large_splash
 		ImpactSounds: h2obomb2.aud
-		ValidImpactTypes: Water, WaterHit
+		ValidTargets: Water, Underwater
 	Warhead@3Eff: CreateEffect
 		Explosions: small_explosion
 		ImpactSounds: kaboom15.aud
-		ValidImpactTypes: WaterHit
+		ValidTargets: Underwater

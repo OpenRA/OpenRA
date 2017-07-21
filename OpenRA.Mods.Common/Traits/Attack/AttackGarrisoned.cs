@@ -92,8 +92,11 @@ namespace OpenRA.Mods.Common.Traits
 			paxFacing = new Dictionary<Actor, IFacing>();
 			paxPos = new Dictionary<Actor, IPositionable>();
 			paxRender = new Dictionary<Actor, RenderSprites>();
+		}
 
-			getArmaments = () => armaments;
+		protected override Func<IEnumerable<Armament>> InitializeGetArmaments(Actor self)
+		{
+			return () => armaments;
 		}
 
 		void INotifyPassengerEntered.OnPassengerEntered(Actor self, Actor passenger)
@@ -117,7 +120,7 @@ namespace OpenRA.Mods.Common.Traits
 		FirePort SelectFirePort(Actor self, WAngle targetYaw)
 		{
 			// Pick a random port that faces the target
-			var bodyYaw = facing.Value != null ? WAngle.FromFacing(facing.Value.Facing) : WAngle.Zero;
+			var bodyYaw = facing != null ? WAngle.FromFacing(facing.Facing) : WAngle.Zero;
 			var indices = Enumerable.Range(0, Info.Ports.Length).Shuffle(self.World.SharedRandom);
 			foreach (var i in indices)
 			{
@@ -143,7 +146,8 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			var pos = self.CenterPosition;
-			var targetYaw = (target.CenterPosition - self.CenterPosition).Yaw;
+			var targetedPosition = GetTargetPosition(pos, target);
+			var targetYaw = (targetedPosition - pos).Yaw;
 
 			foreach (var a in Armaments)
 			{
@@ -155,9 +159,9 @@ namespace OpenRA.Mods.Common.Traits
 				paxFacing[a.Actor].Facing = muzzleFacing;
 				paxPos[a.Actor].SetVisualPosition(a.Actor, pos + PortOffset(self, port));
 
-				var barrel = a.CheckFire(a.Actor, facing.Value, target);
+				var barrel = a.CheckFire(a.Actor, facing, target);
 				if (barrel == null)
-					return;
+					continue;
 
 				if (a.Info.MuzzleSequence != null)
 				{

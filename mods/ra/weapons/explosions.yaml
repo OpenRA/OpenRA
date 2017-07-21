@@ -1,4 +1,5 @@
 ^Explosion:
+	ValidTargets: Ground, Water, Air
 	Warhead@1Dam: SpreadDamage
 		Spread: 426
 		Damage: 50
@@ -15,11 +16,12 @@
 	Warhead@2Eff: CreateEffect
 		Explosions: self_destruct
 		ImpactSounds: kaboom22.aud
-		InvalidImpactTypes: Water
+		ValidTargets: Ground, Air, Ship
 	Warhead@3EffWater: CreateEffect
 		Explosions: large_splash
 		ImpactSounds: splash9.aud
-		ValidImpactTypes: Water
+		ValidTargets: Water, Underwater
+		InvalidTargets: Ship, Structure
 
 CrateNapalm:
 	Inherits: ^Explosion
@@ -37,7 +39,7 @@ CrateNapalm:
 	Warhead@2Eff: CreateEffect
 		Explosions: napalm
 		ImpactSounds: firebl3.aud
-		InvalidImpactTypes: None
+		ValidTargets: Ground, Water, Air
 	-Warhead@3EffWater: CreateEffect
 	Warhead@Smu: LeaveSmudge
 		SmudgeType: Scorch
@@ -48,7 +50,7 @@ CrateExplosion:
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		AffectsParent: true
 	Warhead@2Eff: CreateEffect
-		InvalidImpactTypes: None
+		ValidTargets: Ground, Water, Air
 	-Warhead@3EffWater: CreateEffect
 
 UnitExplode:
@@ -62,7 +64,7 @@ UnitExplodeShip:
 	Warhead@2Eff: CreateEffect
 		Explosions: building
 		ImpactSounds: kaboom25.aud
-		InvalidImpactTypes: None
+		ValidTargets: Ground, Water
 
 UnitExplodeSubmarine:
 	Inherits: ^Explosion
@@ -70,7 +72,7 @@ UnitExplodeSubmarine:
 	Warhead@2Eff: CreateEffect
 		Explosions: large_splash
 		ImpactSounds: splash9.aud
-		InvalidImpactTypes: None
+		ValidTargets: Ground, Water
 
 UnitExplodeSmall:
 	Inherits: ^Explosion
@@ -127,7 +129,6 @@ BarrelExplode:
 		Explosions: napalm
 		ImpactSounds: firebl3.aud
 		Delay: 5
-		InvalidImpactTypes: None
 	-Warhead@3EffWater: CreateEffect
 	Warhead@Smu: LeaveSmudge
 		SmudgeType: Scorch
@@ -189,6 +190,7 @@ CrateNuke:
 	Warhead@3Eff_impact: CreateEffect
 		Explosions: nuke
 		ImpactSounds: kaboom1.aud
+		VictimScanRadius: 0
 	Warhead@4Dam_areanuke1: SpreadDamage
 		Spread: 1c0
 		Damage: 60
@@ -205,6 +207,7 @@ CrateNuke:
 	Warhead@6Eff_areanuke1: CreateEffect
 		ImpactSounds: kaboom22.aud
 		Delay: 5
+		VictimScanRadius: 0
 	Warhead@6Smu_areanuke1: LeaveSmudge
 		SmudgeType: Scorch
 		InvalidTargets: Vehicle, Tank, Structure, Wall, Trees
@@ -226,6 +229,7 @@ MiniNuke:
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		ValidTargets: Ground, Trees, Water, Air
 		Versus:
+			Wood: 25
 			Concrete: 25
 		AffectsParent: true
 		DamageTypes: Prone50Percent, TriggerProne, FireDeath, Incendiary
@@ -234,6 +238,7 @@ MiniNuke:
 	Warhead@3Eff_impact: CreateEffect
 		Explosions: nuke
 		ImpactSounds: kaboom1.aud
+		VictimScanRadius: 0
 	Warhead@4Dam_areanuke1: SpreadDamage
 		Spread: 2c0
 		Damage: 60
@@ -241,6 +246,7 @@ MiniNuke:
 		Delay: 5
 		ValidTargets: Ground, Trees, Water, Underwater, Air
 		Versus:
+			Wood: 50
 			Concrete: 25
 		AffectsParent: true
 		DamageTypes: Prone50Percent, TriggerProne, FireDeath, Incendiary
@@ -250,6 +256,7 @@ MiniNuke:
 	Warhead@6Eff_areanuke1: CreateEffect
 		ImpactSounds: kaboom22.aud
 		Delay: 5
+		VictimScanRadius: 0
 	Warhead@7Dam_areanuke2: SpreadDamage
 		Spread: 3c0
 		Damage: 60
@@ -257,6 +264,7 @@ MiniNuke:
 		Delay: 10
 		ValidTargets: Ground, Water, Underwater, Air
 		Versus:
+			Wood: 50
 			Concrete: 25
 		AffectsParent: true
 		DamageTypes: Prone50Percent, TriggerProne, FireDeath, Incendiary

@@ -21,6 +21,7 @@
 	Warhead@3Eff: CreateEffect
 		Explosions: small_frag
 		ImpactSounds: xplos.aud
+		VictimScanRadius: 0
 
 70mm:
 	Inherits: ^BallisticWeapon
@@ -64,6 +65,7 @@ ArtilleryShell:
 	Range: 11c0
 	MinRange: 3c0
 	Report: tnkfire2.aud
+	TargetActorCenter: true
 	Projectile: Bullet
 		Speed: 204
 		Blockable: false

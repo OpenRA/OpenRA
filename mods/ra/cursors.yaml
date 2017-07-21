@@ -5,36 +5,60 @@ Cursors:
 	mouse.shp: cursor
 		scroll-t:
 			Start: 1
+			Y: -7
 		scroll-tr:
 			Start: 2
+			X: 6
+			Y: -5
 		scroll-r:
 			Start: 3
+			X: 7
 		scroll-br:
 			Start: 4
+			X: 6
+			Y: 5
 		scroll-b:
 			Start: 5
+			Y: 7
 		scroll-bl:
 			Start: 6
+			X: -6
+			Y: 5
 		scroll-l:
 			Start: 7
+			X: -8
 		scroll-tl:
 			Start: 8
+			X: -6
+			y: 5
 		scroll-t-blocked:
 			Start: 124
+			Y: -7
 		scroll-tr-blocked:
 			Start: 125
+			X: 6
+			Y: -5
 		scroll-r-blocked:
 			Start: 126
+			X: 7
 		scroll-br-blocked:
 			Start: 127
+			X: 6
+			Y: 5
 		scroll-b-blocked:
 			Start: 128
+			Y: 7
 		scroll-bl-blocked:
 			Start: 129
+			X: -6
+			Y: 5
 		scroll-l-blocked:
 			Start: 130
+			X: -8
 		scroll-tl-blocked:
 			Start: 131
+			X: -6
+			Y: 5
 		select:
 			Start: 15
 			Length: 6

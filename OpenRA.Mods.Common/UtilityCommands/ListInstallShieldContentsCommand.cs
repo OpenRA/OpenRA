@@ -11,7 +11,7 @@
 
 using System;
 using System.IO;
-using OpenRA.FileSystem;
+using OpenRA.Mods.Common.FileSystem;
 
 namespace OpenRA.Mods.Common.UtilityCommands
 {
@@ -27,13 +27,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 		[Desc("ARCHIVE.Z", "Lists the content ranges for a InstallShield V3 file")]
 		void IUtilityCommand.Run(Utility utility, string[] args)
 		{
-			var filename = Path.GetFileName(args[1]);
-			var path = Path.GetDirectoryName(args[1]);
-
-			var fs = new FileSystem.FileSystem(utility.Mods);
-			fs.Mount(path, "parent");
-			var package = new InstallShieldPackage(fs, "parent|" + filename);
-
+			var package = new InstallShieldLoader.InstallShieldPackage(File.OpenRead(args[1]), args[1]);
 			foreach (var kv in package.Index)
 			{
 				Console.WriteLine("{0}:", kv.Key);

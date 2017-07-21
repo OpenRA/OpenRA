@@ -3,9 +3,6 @@ Container@PLAYER_WIDGETS:
 		LogicKeyListener@CONTROLGROUP_KEYHANDLER:
 			Logic: ControlGroupLogic
 		LogicTicker@SIDEBAR_TICKER:
-		UnitCommand:
-			Width: WINDOW_RIGHT
-			Height: WINDOW_BOTTOM
 		Container@SUPPORT_POWERS:
 			Logic: SupportPowerBinLogic
 			X: 10
@@ -20,13 +17,224 @@ Container@PLAYER_WIDGETS:
 				Container@PALETTE_FOREGROUND:
 					Children:
 						Image@ICON_TEMPLATE:
-							X: 0-2
-							Y: 0-2
+							X: 0 - 2
+							Y: 0 - 2
 							Width: 60
 							Height: 48
 							IgnoreMouseOver: true
 							ImageCollection: sidebar
 							ImageName: background-supportoverlay
+		Image@COMMAND_BAR_BACKGROUND:
+			X: 0
+			Y: WINDOW_BOTTOM - HEIGHT
+			Width: 416
+			Height: 43
+			ImageCollection: sidebar-bits
+			ImageName: commandbar-background
+		Container@COMMAND_BAR:
+			Logic: CommandBarLogic
+			X: 24
+			Y: WINDOW_BOTTOM - HEIGHT - 9
+			Width: 275
+			Height: 41
+			Children:
+				Button@ATTACK_MOVE:
+					Width: 34
+					Height: 41
+					VisualHeight: 0
+					Background: command-button
+					DisableKeyRepeat: true
+					TooltipText: Attack Move
+					TooltipDesc: Selected units will move to the desired location\nand attack any enemies they encounter en route.\n\nLeft-click icon then right-click on target location.
+					TooltipContainer: TOOLTIP_CONTAINER
+					Children:
+						Image@ICON:
+							X: 4
+							Y: 8
+							ImageCollection: command-icons
+							ImageName: attack-move
+				Button@FORCE_MOVE:
+					X: 35
+					Width: 34
+					Height: 41
+					VisualHeight: 0
+					Background: command-button
+					TooltipText: Force Move
+					TooltipDesc: Selected units will move to the desired location\n - Default activity for the target is suppressed\n - Vehicles will attempt to crush enemies at the target location\n\nLeft-click icon then right-click on target.\nHold {(Alt)} to activate temporarily while commanding units.
+					TooltipContainer: TOOLTIP_CONTAINER
+					TooltipTemplate: BUTTON_WITH_DESC_HIGHLIGHT_TOOLTIP
+					Children:
+						Image@ICON:
+							X: 4
+							Y: 8
+							ImageCollection: command-icons
+							ImageName: force-move
+				Button@FORCE_ATTACK:
+					X: 70
+					Width: 34
+					Height: 41
+					VisualHeight: 0
+					Background: command-button
+					TooltipText: Force Attack
+					TooltipDesc: Selected units will attack the targeted unit or location\nignoring their default activity for the target.\n\nLeft-click icon then right-click on target.\nHold {(Ctrl)} to activate temporarily while commanding units.
+					TooltipContainer: TOOLTIP_CONTAINER
+					TooltipTemplate: BUTTON_WITH_DESC_HIGHLIGHT_TOOLTIP
+					Children:
+						Image@ICON:
+							X: 4
+							Y: 8
+							ImageCollection: command-icons
+							ImageName: force-attack
+				Button@GUARD:
+					X: 105
+					Width: 34
+					Height: 41
+					VisualHeight: 0
+					Background: command-button
+					DisableKeyRepeat: true
+					TooltipText: Guard
+					TooltipDesc: Selected units will follow the targeted unit.\n\nLeft-click icon then right-click on target unit.
+					TooltipContainer: TOOLTIP_CONTAINER
+					Children:
+						Image@ICON:
+							X: 4
+							Y: 8
+							ImageCollection: command-icons
+							ImageName: guard
+				Button@DEPLOY:
+					X: 140
+					Width: 34
+					Height: 41
+					VisualHeight: 0
+					Background: command-button
+					DisableKeyRepeat: true
+					TooltipText: Deploy
+					TooltipDesc: Selected units will perform their default deploy activity\n - MCVs will unpack into a Construction Yard\n - Thumpers will start or stop attracting worms\n\nActs immediately on selected units.
+					TooltipContainer: TOOLTIP_CONTAINER
+					Children:
+						Image@ICON:
+							X: 4
+							Y: 8
+							ImageCollection: command-icons
+							ImageName: deploy
+				Button@SCATTER:
+					X: 175
+					Width: 34
+					Height: 41
+					VisualHeight: 0
+					Background: command-button
+					DisableKeyRepeat: true
+					TooltipText: Scatter
+					TooltipDesc: Selected units will stop their current activity\nand move to a nearby location.\n\nActs immediately on selected units.
+					TooltipContainer: TOOLTIP_CONTAINER
+					Children:
+						Image@ICON:
+							X: 4
+							Y: 8
+							ImageCollection: command-icons
+							ImageName: scatter
+				Button@STOP:
+					X: 210
+					Width: 34
+					Height: 41
+					VisualHeight: 0
+					Background: command-button
+					DisableKeyRepeat: true
+					TooltipText: Stop
+					TooltipDesc: Selected units will stop their current activity.\n\nActs immediately on selected units.
+					TooltipContainer: TOOLTIP_CONTAINER
+					Children:
+						Image@ICON:
+							X: 4
+							Y: 8
+							ImageCollection: command-icons
+							ImageName: stop
+				Button@QUEUE_ORDERS:
+					X: 245
+					Width: 34
+					Height: 41
+					VisualHeight: 0
+					Background: command-button
+					TooltipText: Waypoint Mode
+					TooltipDesc: Use Waypoint Mode to give multiple linking commands\nto the selected units. Units will execute the commands\nimmediately upon receiving them.\n\nLeft-click icon then give commands in the game world.\nHold {(Shift)} to activate temporarily while commanding units.
+					TooltipContainer: TOOLTIP_CONTAINER
+					TooltipTemplate: BUTTON_WITH_DESC_HIGHLIGHT_TOOLTIP
+					Children:
+						Image@ICON:
+							X: 4
+							Y: 8
+							ImageCollection: command-icons
+							ImageName: queue-orders
+		Container@STANCE_BAR:
+			Logic: StanceSelectorLogic
+			X: 316
+			Y: WINDOW_BOTTOM - HEIGHT - 11
+			Width: 138
+			Height: 26
+			Children:
+				Button@STANCE_ATTACKANYTHING:
+					Width: 29
+					Height: 26
+					VisualHeight: 0
+					Background:
+					DisableKeyRepeat: true
+					TooltipText: Attack Anything Stance
+					TooltipDesc: Set the selected units to Attack Anything stance:\n - Units will attack enemy units and structures on sight\n - Units will pursue attackers across the battlefield
+					TooltipContainer: TOOLTIP_CONTAINER
+					Children:
+						Image@ICON:
+							X: 6
+							Y: 5
+							ImageCollection: stance-icons
+							ImageName: attack-anything
+				Button@STANCE_DEFEND:
+					X: 29
+					Width: 29
+					Height: 26
+					VisualHeight: 0
+					Background:
+					DisableKeyRepeat: true
+					TooltipText: Defend Stance
+					TooltipDesc: Set the selected units to Defend stance:\n - Units will attack enemy units on sight\n - Units will not move or pursue enemies
+					TooltipContainer: TOOLTIP_CONTAINER
+					Children:
+						Image@ICON:
+							X: 6
+							Y: 5
+							ImageCollection: stance-icons
+							ImageName: defend
+				Button@STANCE_RETURNFIRE:
+					X: 58
+					Width: 29
+					Height: 26
+					VisualHeight: 0
+					Background:
+					DisableKeyRepeat: true
+					TooltipText: Return Fire Stance
+					TooltipDesc: Set the selected units to Return Fire stance:\n - Units will retaliate against enemies that attack them\n - Units will not move or pursue enemies
+					TooltipContainer: TOOLTIP_CONTAINER
+					Children:
+						Image@ICON:
+							X: 6
+							Y: 5
+							ImageCollection: stance-icons
+							ImageName: return-fire
+				Button@STANCE_HOLDFIRE:
+					X: 87
+					Width: 29
+					Height: 26
+					VisualHeight: 0
+					Background:
+					DisableKeyRepeat: true
+					TooltipText: Hold Fire Stance
+					TooltipDesc: Set the selected units to Hold Fire stance:\n - Units will not fire upon enemies\n - Units will not move or pursue enemies
+					TooltipContainer: TOOLTIP_CONTAINER
+					Children:
+						Image@ICON:
+							X: 6
+							Y: 5
+							ImageCollection: stance-icons
+							ImageName: hold-fire
 		Image@SIDEBAR_BACKGROUND_TOP:
 			X: WINDOW_RIGHT - 226
 			Y: 0
@@ -136,8 +344,8 @@ Container@PLAYER_WIDGETS:
 						LogicTicker@RADAR_TICKER:
 						Image@INSIGNIA:
 							Logic: AddFactionSuffixLogic
-							X: 60
-							Y: 75
+							X: 63
+							Y: 88
 							ImageCollection: radar
 							ImageName: insignia
 						ColorBlock@RADAR_FADETOBLACK:
@@ -158,11 +366,39 @@ Container@PLAYER_WIDGETS:
 							Width: 202
 							Height: 202
 							Skippable: false
-						Image@MINIMAP:
+						Container@MINIMAP_OVERLAY:
 							X: 12
 							Y: 34
-							ImageName: overlapping-elements
-							ImageCollection: minimap
+							Children:
+								Image@TOPLEFT:
+									ImageCollection: minimap-overlay
+									ImageName: top-left
+								Image@TOP:
+									X: 30
+									ImageCollection: minimap-overlay
+									ImageName: top
+								Image@TOPRIGHT:
+									X: 195
+									ImageCollection: minimap-overlay
+									ImageName: top-right
+								Image@LEFT:
+									Y: 94
+									ImageCollection: minimap-overlay
+									ImageName: left
+								Image@RIGHT:
+									X: 197
+									Y: 94
+									ImageCollection: minimap-overlay
+									ImageName: right
+								Image@BOTTOMLEFT:
+									Y: 195
+									ImageCollection: minimap-overlay
+									ImageName: bottom-left
+								Image@BOTTOMRIGHT:
+									X: 195
+									Y: 195
+									ImageCollection: minimap-overlay
+									ImageName: bottom-right
 				Label@GAME_TIMER:
 					Logic: GameTimerLogic
 					X: 10
@@ -231,16 +467,6 @@ Container@PLAYER_WIDGETS:
 					IconSpriteOffset: 0, 0
 					MinimumRows: 5
 					MaximumRows: 6
-				Container@PALETTE_FOREGROUND:
-					X: 64
-					Y: 0
-					Children:
-						Image@ROW_TEMPLATE:
-							Width: 226
-							Height: 48
-							IgnoreMouseOver: true
-							ImageCollection: sidebar-bits
-							ImageName: production-iconoverlay
 				Container@PRODUCTION_TYPES:
 					X: 6
 					Y: 2

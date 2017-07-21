@@ -19,7 +19,8 @@ Player:
 		Modifier: 0
 
 ^CivBuilding:
-	AutoTargetIgnore:
+	Targetable:
+		TargetTypes: Ground, C4, Structure, NoAutoTarget
 
 CYCL:
 	Buildable:

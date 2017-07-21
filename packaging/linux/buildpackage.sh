@@ -1,41 +1,60 @@
 #!/bin/bash
 # OpenRA packaging master script for linux packages
 
-if [ $# -ne "3" ]; then
-	echo "Usage: `basename $0` tag files-dir outputdir"
+command -v curl >/dev/null 2>&1 || { echo >&2 "Linux packaging requires curl."; exit 1; }
+command -v markdown >/dev/null 2>&1 || { echo >&2 "Linux packaging requires markdown."; exit 1; }
+
+if [ $# -ne "2" ]; then
+	echo "Usage: `basename $0` tag outputdir"
     exit 1
 fi
 
-TAG=$1
-VERSION=`echo $TAG | grep -o "[0-9]\\+-\\?[0-9]\\?"`
-BUILTDIR=$2
-PACKAGEDIR=$3
-ROOTDIR=root
+# Set the working dir to the location of this script
+cd $(dirname $0)
+
+TAG="${1}"
+VERSION=`echo ${TAG} | grep -o "[0-9]\\+-\\?[0-9]\\?"`
+OUTPUTDIR="${2}"
+
+SRCDIR="$(pwd)/../.."
+BUILTDIR="$(pwd)/build"
 
 # Clean up
-rm -rf $ROOTDIR
+rm -rf ${BUILTDIR}
 
-cd ../..
+echo "Building core files"
 
-# Copy files for OpenRA.Game.exe and OpenRA.Editor.exe as well as all dependencies.
-make install-all prefix="/usr" DESTDIR="$PWD/packaging/linux/$ROOTDIR"
+pushd ${SRCDIR} > /dev/null
+make linux-dependencies
+make core SDK="-sdk:4.5"
+make version VERSION="${TAG}"
 
-# Install startup scripts, desktop files and icons
-make install-linux-shortcuts prefix="/usr" DESTDIR="$PWD/packaging/linux/$ROOTDIR"
-make install-linux-mime prefix="/usr" DESTDIR="$PWD/packaging/linux/$ROOTDIR"
-make install-linux-appdata prefix="/usr" DESTDIR="$PWD/packaging/linux/$ROOTDIR"
-make install-man-page prefix="/usr" DESTDIR="$PWD/packaging/linux/$ROOTDIR"
+make install-core prefix="/usr" DESTDIR="${BUILTDIR}"
+make install-linux-shortcuts prefix="/usr" DESTDIR="${BUILTDIR}"
+make install-linux-mime prefix="/usr" DESTDIR="${BUILTDIR}"
+make install-linux-appdata prefix="/usr" DESTDIR="${BUILTDIR}"
+make install-man-page prefix="/usr" DESTDIR="${BUILTDIR}"
+
+popd > /dev/null
 
 # Documentation
-mkdir -p $PWD/packaging/linux/$ROOTDIR/usr/share/doc/openra/
-cp *.html $PWD/packaging/linux/$ROOTDIR/usr/share/doc/openra/
+DOCSDIR="${BUILTDIR}/usr/share/doc/openra/"
 
-pushd packaging/linux/deb >/dev/null
-echo "Building Debian package."
-./buildpackage.sh "$TAG" ../$ROOTDIR "$PACKAGEDIR"
+mkdir -p "${DOCSDIR}"
+
+curl -s -L -O https://raw.githubusercontent.com/wiki/OpenRA/OpenRA/Changelog.md
+markdown Changelog.md > "${DOCSDIR}/Changelog.html"
+rm Changelog.md
+
+markdown ${SRCDIR}/README.md > "${DOCSDIR}/README.html"
+markdown ${SRCDIR}/CONTRIBUTING.md > "${DOCSDIR}/CONTRIBUTING.html"
+
+pushd deb >/dev/null
+echo "Building Debian package"
+./buildpackage.sh "${TAG}" "${BUILTDIR}" "${OUTPUTDIR}"
 if [ $? -ne 0 ]; then
     echo "Debian package build failed."
 fi
 popd >/dev/null
 
-rm -rf $PWD/packaging/linux/$ROOTDIR/
+rm -rf "${BUILTDIR}"

@@ -10,6 +10,9 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Linq;
+using OpenRA.Primitives;
+using OpenRA.Support;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -20,22 +23,36 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly CVec Offset = CVec.Zero;
 
 		[FieldLoader.Require]
-		[Desc("Conditions to grant for each accepted plug type.")]
+		[Desc("Conditions to grant for each accepted plug type.",
+			"Key is the plug type.",
+			"Value is the condition that is granted when the plug is enabled.")]
 		public readonly Dictionary<string, string> Conditions = null;
+
+		[Desc("Requirements for accepting a plug type.",
+			"Key is the plug type that the requirements applies to.",
+			"Value is the condition expression defining the requirements to place the plug.")]
+		public readonly Dictionary<string, BooleanExpression> Requirements = new Dictionary<string, BooleanExpression>();
 
 		[GrantedConditionReference]
 		public IEnumerable<string> LinterConditions { get { return Conditions.Values; } }
 
+		[ConsumedConditionReference]
+		public IEnumerable<string> ConsumedConditions
+		{
+			get { return Requirements.Values.SelectMany(r => r.Variables).Distinct(); }
+		}
+
 		public object Create(ActorInitializer init) { return new Pluggable(init, this); }
 	}
 
-	public class Pluggable : INotifyCreated
+	public class Pluggable : IObservesVariables, INotifyCreated
 	{
 		public readonly PluggableInfo Info;
 
 		readonly string initialPlug;
 		ConditionManager conditionManager;
 		int conditionToken = ConditionManager.InvalidConditionToken;
+		Dictionary<string, bool> plugTypesAvailability = null;
 
 		string active;
 
@@ -46,6 +63,13 @@ namespace OpenRA.Mods.Common.Traits
 			var plugInit = init.Contains<PlugsInit>() ? init.Get<PlugsInit, Dictionary<CVec, string>>() : new Dictionary<CVec, string>();
 			if (plugInit.ContainsKey(Info.Offset))
 				initialPlug = plugInit[Info.Offset];
+
+			if (info.Requirements.Count > 0)
+			{
+				plugTypesAvailability = new Dictionary<string, bool>();
+				foreach (var plug in info.Requirements)
+					plugTypesAvailability[plug.Key] = true;
+			}
 		}
 
 		public void Created(Actor self)
@@ -58,7 +82,13 @@ namespace OpenRA.Mods.Common.Traits
 
 		public bool AcceptsPlug(Actor self, string type)
 		{
-			return active == null && Info.Conditions.ContainsKey(type);
+			if (!Info.Conditions.ContainsKey(type))
+				return false;
+
+			if (!Info.Requirements.ContainsKey(type))
+				return active == null;
+
+			return plugTypesAvailability[type];
 		}
 
 		public void EnablePlug(Actor self, string type)
@@ -66,6 +96,9 @@ namespace OpenRA.Mods.Common.Traits
 			string condition;
 			if (!Info.Conditions.TryGetValue(type, out condition))
 				return;
+
+			if (conditionToken != ConditionManager.InvalidConditionToken)
+				conditionManager.RevokeCondition(self, conditionToken);
 
 			conditionToken = conditionManager.GrantCondition(self, condition);
 			active = type;
@@ -80,6 +113,14 @@ namespace OpenRA.Mods.Common.Traits
 				conditionToken = conditionManager.RevokeCondition(self, conditionToken);
 
 			active = null;
+		}
+
+		IEnumerable<VariableObserver> IObservesVariables.GetVariableObservers()
+		{
+			foreach (var req in Info.Requirements)
+				yield return new VariableObserver(
+					(self, variables) => plugTypesAvailability[req.Key] = req.Value.Evaluate(variables),
+					req.Value.Variables);
 		}
 	}
 

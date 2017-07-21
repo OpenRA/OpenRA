@@ -16,7 +16,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class TurretedInfo : ITraitInfo, UsesInit<TurretFacingInit>, Requires<BodyOrientationInfo>
+	public class TurretedInfo : ITraitInfo, UsesInit<TurretFacingInit>, Requires<BodyOrientationInfo>, IActorPreviewInitInfo
 	{
 		public readonly string Turret = "primary";
 		[Desc("Speed at which the turret turns.")]
@@ -28,6 +28,14 @@ namespace OpenRA.Mods.Common.Traits
 
 		[Desc("Muzzle position relative to turret or body. (forward, right, up) triples")]
 		public readonly WVec Offset = WVec.Zero;
+
+		[Desc("Facing to use for actor previews (map editor, color picker, etc)")]
+		public readonly int PreviewFacing = 92;
+
+		IEnumerable<object> IActorPreviewInitInfo.ActorPreviewInits(ActorInfo ai, ActorPreviewType type)
+		{
+			yield return new TurretFacingInit(PreviewFacing);
+		}
 
 		public virtual object Create(ActorInitializer init) { return new Turreted(init, this); }
 	}
@@ -130,7 +138,9 @@ namespace OpenRA.Mods.Common.Traits
 			if (self.IsDisabled())
 				return false;
 
-			var delta = target.CenterPosition - self.CenterPosition;
+			var pos = self.CenterPosition;
+			var targetPos = attack != null ? attack.GetTargetPosition(pos, target) : target.CenterPosition;
+			var delta = targetPos - pos;
 			DesiredFacing = delta.HorizontalLengthSquared != 0 ? delta.Yaw.Facing : TurretFacing;
 			MoveTurret();
 			return HasAchievedDesiredFacing;

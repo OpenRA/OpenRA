@@ -123,7 +123,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					directoryDropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 210, writableDirectories, setupItem);
 			}
 
-			var mapIsUnpacked = map.Package != null && (map.Package is Folder || map.Package is ZipFolder);
+			var mapIsUnpacked = map.Package != null && map.Package is Folder;
 
 			var filename = widget.Get<TextFieldWidget>("FILENAME");
 			filename.Text = map.Package == null ? "" : mapIsUnpacked ? Path.GetFileName(map.Package.Name) : Path.GetFileNameWithoutExtension(map.Package.Name);
@@ -185,25 +185,31 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					{
 						selectedDirectory.Folder.Delete(combinedPath);
 						if (fileType == MapFileType.OraMap)
-							package = ZipFile.Create(combinedPath, selectedDirectory.Folder);
+							package = ZipFileLoader.Create(combinedPath);
 						else
 							package = new Folder(combinedPath);
 					}
 
 					map.Save(package);
+
+					// Update the map cache so it can be loaded without restarting the game
+					modData.MapCache[map.Uid].UpdateFromMap(map.Package, selectedDirectory.Folder, selectedDirectory.Classification, null, map.Grid.Type);
+
+					Console.WriteLine("Saved current map at {0}", combinedPath);
+					Ui.CloseWindow();
+
+					onSave(map.Uid);
 				}
-				catch
+				catch (Exception e)
 				{
-					Console.WriteLine("Failed to save map at {0}", combinedPath);
+					Log.Write("debug", "Failed to save map at {0}: {1}", combinedPath, e.Message);
+
+					ConfirmationDialogs.ButtonPrompt(
+						title: "Failed to save map",
+						text: "See debug.log for details.",
+						onConfirm: () => { },
+						confirmText: "Ok");
 				}
-
-				// Update the map cache so it can be loaded without restarting the game
-				modData.MapCache[map.Uid].UpdateFromMap(map.Package, selectedDirectory.Folder, selectedDirectory.Classification, null, map.Grid.Type);
-
-				Console.WriteLine("Saved current map at {0}", combinedPath);
-				Ui.CloseWindow();
-
-				onSave(map.Uid);
 			};
 		}
 	}

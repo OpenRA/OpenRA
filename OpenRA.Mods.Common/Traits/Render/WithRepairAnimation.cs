@@ -14,32 +14,29 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits.Render
 {
 	[Desc("Replaces the building animation when it repairs a unit.")]
-	public class WithRepairAnimationInfo : ITraitInfo, Requires<WithSpriteBodyInfo>
+	public class WithRepairAnimationInfo : ConditionalTraitInfo, Requires<WithSpriteBodyInfo>
 	{
 		[Desc("Sequence name to use")]
 		[SequenceReference] public readonly string Sequence = "active";
 
-		public readonly bool PauseOnLowPower = false;
-
-		public object Create(ActorInitializer init) { return new WithRepairAnimation(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new WithRepairAnimation(init.Self, this); }
 	}
 
-	public class WithRepairAnimation : INotifyRepair, INotifyBuildComplete, INotifySold
+	public class WithRepairAnimation : ConditionalTrait<WithRepairAnimationInfo>, INotifyRepair, INotifyBuildComplete, INotifySold
 	{
-		readonly WithRepairAnimationInfo info;
 		readonly WithSpriteBody spriteBody;
 		bool buildComplete;
 
 		public WithRepairAnimation(Actor self, WithRepairAnimationInfo info)
+			: base(info)
 		{
-			this.info = info;
 			spriteBody = self.TraitOrDefault<WithSpriteBody>();
 		}
 
 		void INotifyRepair.Repairing(Actor self, Actor target)
 		{
-			if (buildComplete && spriteBody != null && !(info.PauseOnLowPower && self.IsDisabled()))
-				spriteBody.PlayCustomAnimation(self, info.Sequence, () => spriteBody.CancelCustomAnimation(self));
+			if (buildComplete && spriteBody != null && !IsTraitDisabled)
+				spriteBody.PlayCustomAnimation(self, Info.Sequence, () => spriteBody.CancelCustomAnimation(self));
 		}
 
 		void INotifyBuildComplete.BuildingComplete(Actor self)

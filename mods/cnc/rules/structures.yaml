@@ -1,19 +1,21 @@
 FACT:
 	Inherits: ^BaseBuilding
+	Inherits@shape: ^3x2Shape
 	Valued:
 		Cost: 4000
 	Tooltip:
 		Name: Construction Yard
 	Building:
-		Footprint: xxx xxx
-		Dimensions: 3,2
+		Footprint: xxx xxx ===
+		Dimensions: 3,3
+		LocalCenterOffset: 0,-512,0
 	Health:
 		HP: 2100
 	Armor:
 		Type: Wood
 	RevealsShroud:
 		Range: 10c0
-	Bib:
+	WithBuildingBib:
 	Production:
 		Produces: Building.GDI, Building.Nod, Defence.GDI, Defence.Nod
 	Transforms:
@@ -93,6 +95,9 @@ FACT.NOD:
 
 NUKE:
 	Inherits: ^BaseBuilding
+	Inherits@shape: ^2x2Shape
+	HitShape:
+		TargetableOffsets: 630,299,0
 	Valued:
 		Cost: 500
 	Tooltip:
@@ -105,19 +110,23 @@ NUKE:
 		Queue: Building.GDI, Building.Nod
 		Description: Generates power
 	Building:
-		Footprint: xx xx
-		Dimensions: 2,2
+		Footprint: xX xx ==
+		Dimensions: 2,3
+		LocalCenterOffset: 0,-512,0
 	Health:
 		HP: 500
 	RevealsShroud:
 		Range: 4c0
-	Bib:
+	WithBuildingBib:
 	Power:
 		Amount: 100
 	ScalePowerWithHealth:
 
 NUK2:
 	Inherits: ^BaseBuilding
+	Inherits@shape: ^2x2Shape
+	HitShape:
+		TargetableOffsets: 630,299,0
 	Valued:
 		Cost: 800
 	Tooltip:
@@ -130,19 +139,28 @@ NUK2:
 		Queue: Building.GDI, Building.Nod
 		Description: Provides more power, cheaper than the\nstandard Power Plant
 	Building:
-		Footprint: xx xx
-		Dimensions: 2,2
+		Footprint: xX xx ==
+		Dimensions: 2,3
+		LocalCenterOffset: 0,-512,0
 	Health:
 		HP: 700
 	RevealsShroud:
 		Range: 4c0
-	Bib:
+	WithBuildingBib:
 	Power:
 		Amount: 200
 	ScalePowerWithHealth:
 
 PROC:
 	Inherits: ^BaseBuilding
+	HitShape:
+		Type: Rectangle
+			TopLeft: -1536, -512
+			BottomRight: 1536, 853
+	HitShape@TOP:
+		Type: Rectangle
+			TopLeft: -512, -1450
+			BottomRight: 896, -512
 	Valued:
 		Cost: 1500
 	Tooltip:
@@ -153,13 +171,14 @@ PROC:
 		Queue: Building.GDI, Building.Nod
 		Description: Processes raw Tiberium\ninto useable resources
 	Building:
-		Footprint: _x_ xxx ===
-		Dimensions: 3,3
+		Footprint: _x_ xxx === ===
+		Dimensions: 3,4
+		LocalCenterOffset: 0,-512,0
 	Health:
 		HP: 1000
 	RevealsShroud:
 		Range: 6c0
-	Bib:
+	WithBuildingBib:
 	Refinery:
 		DockAngle: 112
 		DockOffset: 0,2
@@ -188,6 +207,7 @@ PROC:
 
 SILO:
 	Inherits: ^BaseBuilding
+	Inherits@shape: ^2x1Shape
 	Valued:
 		Cost: 300
 	Tooltip:
@@ -205,7 +225,7 @@ SILO:
 		HP: 500
 	RevealsShroud:
 		Range: 4c0
-	Bib:
+	WithBuildingBib:
 		HasMinibib: Yes
 	RenderSprites:
 	WithSpriteBody:
@@ -222,9 +242,16 @@ SILO:
 		RequiredForShortGame: false
 	SelectionDecorations:
 		VisualBounds: 49,30
+	-AcceptsDeliveredCash:
 
 PYLE:
 	Inherits: ^BaseBuilding
+	HitShape:
+		UseTargetableCellsOffsets: false
+		TargetableOffsets: 0,0,0, 840,-256,0, 840,512,0, 210,-512,0, -71,512,0
+		Type: Rectangle
+			TopLeft: -1024, -1024
+			BottomRight: 1024, 640
 	Valued:
 		Cost: 500
 	Tooltip:
@@ -237,13 +264,14 @@ PYLE:
 		Queue: Building.GDI
 		Description: Trains infantry
 	Building:
-		Footprint: xx xx
-		Dimensions: 2,2
+		Footprint: xx xx ==
+		Dimensions: 2,3
+		LocalCenterOffset: 0,-512,0
 	Health:
 		HP: 600
 	RevealsShroud:
 		Range: 5c0
-	Bib:
+	WithBuildingBib:
 	RallyPoint:
 	Exit@1:
 		SpawnOffset: -426,85,0
@@ -267,6 +295,10 @@ PYLE:
 
 HAND:
 	Inherits: ^BaseBuilding
+	Inherits@shape: ^2x2Shape
+	HitShape:
+		UseTargetableCellsOffsets: false
+		TargetableOffsets: 0,0,0, 630,-512,0, 355,512,0, -281,-512,0, -630,512,0
 	Valued:
 		Cost: 500
 	Tooltip:
@@ -279,13 +311,14 @@ HAND:
 		Queue: Building.Nod
 		Description: Trains infantry
 	Building:
-		Footprint: xx xx
-		Dimensions: 2,2
+		Footprint: xx xx ==
+		Dimensions: 2,3
+		LocalCenterOffset: 0,-512,0
 	Health:
 		HP: 600
 	RevealsShroud:
 		Range: 5c0
-	Bib:
+	WithBuildingBib:
 	RallyPoint:
 		Offset: 1,2
 	Exit@1:
@@ -309,6 +342,11 @@ HAND:
 
 AFLD:
 	Inherits: ^BaseBuilding
+	HitShape:
+		TargetableOffsets: 0,0,0, 0,-512,256, 0,-1451,384, 0,512,128, 0,1536,85
+		Type: Rectangle
+			TopLeft: -2048, -1024
+			BottomRight: 2048, 1024
 	Valued:
 		Cost: 2000
 	Tooltip:
@@ -321,13 +359,14 @@ AFLD:
 		Queue: Building.Nod
 		Description: Provides a dropzone\nfor vehicle reinforcements
 	Building:
-		Footprint: xxxx xxxx
-		Dimensions: 4,2
+		Footprint: XXXX xxxx ====
+		Dimensions: 4,3
+		LocalCenterOffset: 0,-512,0
 	Health:
 		HP: 1100
 	RevealsShroud:
 		Range: 7c0
-	Bib:
+	WithBuildingBib:
 	WithIdleOverlay@DISH:
 		Sequence: idle-dish
 	RallyPoint:
@@ -351,6 +390,12 @@ AFLD:
 
 WEAP:
 	Inherits: ^BaseBuilding
+	Inherits@shape: ^3x2Shape
+	HitShape:
+		TargetableOffsets: 0,0,0, 0,1024,0, 0,-1024,0
+		Type: Rectangle
+			TopLeft: -1536, -1024
+			BottomRight: 1536, 512
 	Valued:
 		Cost: 2000
 	Tooltip:
@@ -363,8 +408,9 @@ WEAP:
 		Queue: Building.GDI
 		Description: Produces vehicles
 	Building:
-		Footprint: xxx ===
-		Dimensions: 3,2
+		Footprint: xxx === ===
+		Dimensions: 3,3
+		LocalCenterOffset: 0,-512,0
 	Selectable:
 		Bounds: 72,48
 	SelectionDecorations:
@@ -373,7 +419,7 @@ WEAP:
 		HP: 1100
 	RevealsShroud:
 		Range: 4c0
-	Bib:
+	WithBuildingBib:
 	WithProductionDoorOverlay:
 		Sequence: build-top
 	RallyPoint:
@@ -396,6 +442,10 @@ WEAP:
 
 HPAD:
 	Inherits: ^BaseBuilding
+	Inherits@shape: ^2x2Shape
+	HitShape:
+		UseTargetableCellsOffsets: false
+		TargetableOffsets: 0,0,0, 768,-512,0, 768,512,0, -281,-512,0, -630,512,0
 	Valued:
 		Cost: 1000
 	Tooltip:
@@ -441,6 +491,12 @@ HPAD:
 
 HQ:
 	Inherits: ^BaseBuilding
+	Inherits@IDISABLE: ^DisabledOverlay
+	HitShape:
+		TargetableOffsets: 0,0,0, 0,512,0, 420,-598,256
+		Type: Rectangle
+			TopLeft: -1024, -384
+			BottomRight: 1024, 1024
 	Valued:
 		Cost: 1000
 	Tooltip:
@@ -453,8 +509,9 @@ HQ:
 		Queue: Building.GDI, Building.Nod
 		Description: Provides radar and Air Strike support power.\nUnlocks higher-tech units and buildings.\nRequires power to operate.
 	Building:
-		Footprint: x_ xx
-		Dimensions: 2,2
+		Footprint: X_ xx ==
+		Dimensions: 2,3
+		LocalCenterOffset: 0,-512,0
 	Selectable:
 		Bounds: 48,40,0,9
 	SelectionDecorations:
@@ -463,20 +520,20 @@ HQ:
 	CanPowerDown:
 		PowerupSound: EnablePower
 		PowerdownSound: DisablePower
-	DisabledOverlay:
 	WithSpriteBody:
 		PauseAnimationWhenDisabled: true
 	Health:
 		HP: 800
 	RevealsShroud:
 		Range: 10c0
-	Bib:
+	WithBuildingBib:
 	ProvidesRadar:
 		RequiresCondition: !disabled
 	RenderDetectionCircle:
 	DetectCloaked:
 		Range: 5c0
 	AirstrikePower:
+		PauseOnCondition: disabled
 		Prerequisites: ~techlevel.superweapons
 		Icon: airstrike
 		ChargeTime: 240
@@ -500,11 +557,18 @@ HQ:
 	SupportPowerChargeBar:
 	Power:
 		Amount: -50
-	GrantConditionOnDisabled@IDISABLE:
-		Condition: disabled
 
 FIX:
 	Inherits: ^BaseBuilding
+	HitShape:
+		Type: Rectangle
+			TopLeft: -1536, -683
+			BottomRight: 1536, 768
+	HitShape@TOPANDBOTTOM:
+		TargetableOffsets: 840,0,0, -1060,0,0
+		Type: Rectangle
+			TopLeft: -640, -980
+			BottomRight: 640, 1110
 	Valued:
 		Cost: 500
 	Tooltip:
@@ -515,7 +579,7 @@ FIX:
 		Queue: Building.GDI, Building.Nod
 		Description: Repairs vehicles
 	Building:
-		Footprint: _x_ xxx _x_
+		Footprint: _X_ xxx _X_
 		Dimensions: 3,3
 	Selectable:
 		Bounds: 64,34,0,3
@@ -525,7 +589,7 @@ FIX:
 		HP: 800
 	RevealsShroud:
 		Range: 5c0
-	Bib:
+	WithBuildingBib:
 		HasMinibib: Yes
 	Reservable:
 	RepairsUnits:
@@ -539,6 +603,12 @@ FIX:
 
 EYE:
 	Inherits: ^BaseBuilding
+	Inherits@IDISABLE: ^DisabledOverlay
+	HitShape:
+		TargetableOffsets: 0,0,0, 0,512,128, 420,-598,213
+		Type: Rectangle
+			TopLeft: -1024, -384
+			BottomRight: 1024, 1024
 	Valued:
 		Cost: 1800
 	Tooltip:
@@ -551,8 +621,9 @@ EYE:
 		Queue: Building.GDI
 		Description: Provides radar and Orbital Ion Cannon support power.\nUnlocks Mammoth Tank and Commando.\nRequires power to operate.
 	Building:
-		Footprint: x_ xx
-		Dimensions: 2,2
+		Footprint: X_ xx ==
+		Dimensions: 2,3
+		LocalCenterOffset: 0,-512,0
 	Selectable:
 		Bounds: 48,40,0,9
 	SelectionDecorations:
@@ -561,20 +632,20 @@ EYE:
 	CanPowerDown:
 		PowerupSound: EnablePower
 		PowerdownSound: DisablePower
-	DisabledOverlay:
 	WithSpriteBody:
 		PauseAnimationWhenDisabled: true
 	Health:
 		HP: 1300
 	RevealsShroud:
 		Range: 10c0
-	Bib:
+	WithBuildingBib:
 	ProvidesRadar:
 		RequiresCondition: !disabled
 	RenderDetectionCircle:
 	DetectCloaked:
 		Range: 5c0
 	IonCannonPower:
+		PauseOnCondition: disabled
 		Prerequisites: ~techlevel.superweapons
 		Icon: ioncannon
 		Cursor: ioncannon
@@ -592,11 +663,14 @@ EYE:
 	Power:
 		Amount: -200
 	ProvidesPrerequisite@buildingname:
-	GrantConditionOnDisabled@IDISABLE:
-		Condition: disabled
 
 TMPL:
 	Inherits: ^BaseBuilding
+	Inherits@IDISABLE: ^DisabledOverlay
+	Inherits@shape: ^3x2Shape
+	HitShape:
+		UseTargetableCellsOffsets: false
+		TargetableOffsets: 0,0,0, 0,-896,0, 0,896,0, 840,0,0, -706,0,0, -706,-768,0, -706,640,0
 	Valued:
 		Cost: 2000
 	Tooltip:
@@ -609,8 +683,9 @@ TMPL:
 		Queue: Building.Nod
 		Description: Provides Nuclear Strike support power.\nUnlocks Stealth Tank, Chem. Warrior and Obelisk of Light.\nRequires power to operate.
 	Building:
-		Footprint: xxx xxx
-		Dimensions: 3,2
+		Footprint: xxx xxx ===
+		Dimensions: 3,3
+		LocalCenterOffset: 0,-512,0
 	Selectable:
 		Bounds: 72,48
 	SelectionDecorations:
@@ -619,16 +694,16 @@ TMPL:
 	CanPowerDown:
 		PowerupSound: EnablePower
 		PowerdownSound: DisablePower
-	DisabledOverlay:
 	Health:
 		HP: 2100
 	RevealsShroud:
 		Range: 6c0
-	Bib:
+	WithBuildingBib:
 	RenderDetectionCircle:
 	DetectCloaked:
 		Range: 5c0
 	NukePower:
+		PauseOnCondition: disabled
 		Prerequisites: ~techlevel.superweapons
 		Icon: abomb
 		Cursor: nuke
@@ -656,6 +731,7 @@ TMPL:
 
 GUN:
 	Inherits: ^Defense
+	Inherits@AUTOTARGET: ^AutoTargetGround
 	Valued:
 		Cost: 600
 	Tooltip:
@@ -674,7 +750,7 @@ GUN:
 		Type: Heavy
 	RevealsShroud:
 		Range: 6c0
-	Bib:
+	WithBuildingBib:
 		HasMinibib: Yes
 	Turreted:
 		TurnSpeed: 12
@@ -697,6 +773,9 @@ GUN:
 
 SAM:
 	Inherits: ^Defense
+	Inherits@IDISABLE: ^DisabledOverlay
+	Inherits@AUTOTARGET: ^AutoTargetAir
+	Inherits@shape: ^2x1Shape
 	Valued:
 		Cost: 650
 	Tooltip:
@@ -712,7 +791,6 @@ SAM:
 		Footprint: xx
 		Dimensions: 2,1
 	RequiresPower:
-	DisabledOverlay:
 	Health:
 		HP: 400
 	Armor:
@@ -727,7 +805,7 @@ SAM:
 	WithTurretedSpriteBody:
 	AutoSelectionSize:
 	Armament:
-		Weapon: SAMMissile
+		Weapon: Dragon
 		MuzzleSequence: muzzle
 	AttackPopupTurreted:
 	WithMuzzleOverlay:
@@ -739,6 +817,8 @@ SAM:
 
 OBLI:
 	Inherits: ^Defense
+	Inherits@IDISABLE: ^DisabledOverlay
+	Inherits@AUTOTARGET: ^AutoTargetGround
 	Valued:
 		Cost: 1500
 	Tooltip:
@@ -755,14 +835,13 @@ OBLI:
 	SelectionDecorations:
 		VisualBounds: 22,44,0,-10
 	RequiresPower:
-	DisabledOverlay:
 	Health:
 		HP: 600
 	Armor:
 		Type: Heavy
 	RevealsShroud:
 		Range: 8c0
-	Bib:
+	WithBuildingBib:
 		HasMinibib: Yes
 	WithChargeAnimation:
 	Armament:
@@ -773,7 +852,7 @@ OBLI:
 		ChargingCondition: charging
 	AmbientSound:
 		RequiresCondition: charging
-		SoundFile: obelpowr.aud
+		SoundFiles: obelpowr.aud
 		Interval: 30, 40
 	-EmitInfantryOnSell:
 	DetectCloaked:
@@ -783,6 +862,7 @@ OBLI:
 
 GTWR:
 	Inherits: ^Defense
+	Inherits@AUTOTARGET: ^AutoTargetGround
 	Valued:
 		Cost: 600
 	Tooltip:
@@ -799,7 +879,7 @@ GTWR:
 		HP: 400
 	RevealsShroud:
 		Range: 7c0
-	Bib:
+	WithBuildingBib:
 		HasMinibib: Yes
 	Armament:
 		Weapon: HighV
@@ -818,6 +898,8 @@ GTWR:
 
 ATWR:
 	Inherits: ^Defense
+	Inherits@IDISABLE: ^DisabledOverlay
+	Inherits@AUTOTARGET: ^AutoTargetAll
 	Valued:
 		Cost: 1000
 	Tooltip:
@@ -834,14 +916,13 @@ ATWR:
 	SelectionDecorations:
 		VisualBounds: 22,48,0,-12
 	RequiresPower:
-	DisabledOverlay:
 	Health:
 		HP: 550
 	Armor:
 		Type: Heavy
 	RevealsShroud:
 		Range: 8c0
-	Bib:
+	WithBuildingBib:
 		HasMinibib: Yes
 	Turreted:
 		TurnSpeed: 255
@@ -851,7 +932,7 @@ ATWR:
 		LocalOffset: 256,128,0, 256,-128,0
 		LocalYaw: -100,100
 	Armament@SECONDARY:
-		Weapon: SAMMissile
+		Weapon: TowerAAMissile
 		LocalOffset: 256,128,0, 256,-128,0
 		LocalYaw: -100,100
 	AttackTurreted:

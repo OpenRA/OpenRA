@@ -26,8 +26,9 @@ chmod 0600 "$SSH_KEY"
 
 rm -rf $HOME/openra-wiki
 git clone git@github.com:OpenRA/OpenRA.wiki.git $HOME/openra-wiki
-cp -fr ../DOCUMENTATION.md "${HOME}/openra-wiki/Traits${TAG}.md"
-cp -fr ../Lua-API.md "${HOME}/openra-wiki/Lua API${TAG}.md"
+
+mono --debug ../OpenRA.Utility.exe all --docs > "${HOME}/openra-wiki/Traits${TAG}.md"
+mono --debug ../OpenRA.Utility.exe all --lua-docs > "${HOME}/openra-wiki/Lua API${TAG}.md"
 
 pushd $HOME/openra-wiki
 git config --local user.email "orabot@users.noreply.github.com"

@@ -75,7 +75,7 @@ namespace OpenRA.Mods.Common.Traits
 	}
 
 	public class Cargo : IPips, IIssueOrder, IResolveOrder, IOrderVoice, INotifyCreated, INotifyKilled,
-		INotifyOwnerChanged, INotifyAddedToWorld, ITick, INotifySold, INotifyActorDisposing
+		INotifyOwnerChanged, INotifyAddedToWorld, ITick, INotifySold, INotifyActorDisposing, IIssueDeployOrder
 	{
 		public readonly CargoInfo Info;
 		readonly Actor self;
@@ -158,6 +158,11 @@ namespace OpenRA.Mods.Common.Traits
 				return new Order(order.OrderID, self, queued);
 
 			return null;
+		}
+
+		Order IIssueDeployOrder.IssueDeployOrder(Actor self)
+		{
+			return new Order("Unload", self, false);
 		}
 
 		public void ResolveOrder(Actor self, Order order)

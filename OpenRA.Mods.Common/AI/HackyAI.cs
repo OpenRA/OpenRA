@@ -67,7 +67,11 @@ namespace OpenRA.Mods.Common.AI
 			public readonly HashSet<string> Defense = new HashSet<string>();
 		}
 
-		[Desc("Ingame name this bot uses.")]
+		[FieldLoader.Require]
+		[Desc("Internal id for this bot.")]
+		public readonly string Type = null;
+
+		[Desc("Human-readable name this bot uses.")]
 		public readonly string Name = "Unnamed Bot";
 
 		[Desc("The Script AI will read and execute")]
@@ -183,8 +187,6 @@ namespace OpenRA.Mods.Common.AI
 		[Desc("Should the AI repair its buildings if damaged?")]
 		public readonly bool ShouldRepairBuildings = true;
 
-		string IBotInfo.Name { get { return Name; } }
-
 		[Desc("What units to the AI should build.", "What % of the total army must be this type of unit.")]
 		public readonly Dictionary<string, float> UnitsToBuild = null;
 
@@ -256,6 +258,10 @@ namespace OpenRA.Mods.Common.AI
 			return ret;
 		}
 
+		string IBotInfo.Type { get { return Type; } }
+
+		string IBotInfo.Name { get { return Name; } }
+
 		public object Create(ActorInitializer init) { return new HackyAI(this, init); }
 	}
 
@@ -281,8 +287,7 @@ namespace OpenRA.Mods.Common.AI
 		public Player Player { get; private set; }
 
 		readonly DomainIndex domainIndex;
-		readonly ResourceLayer resLayer;
-		readonly ResourceClaimLayer territory;
+		readonly ResourceClaimLayer claimLayer;
 		readonly IPathFinder pathfinder;
 
 		readonly Func<Actor, bool> isEnemyUnit;
@@ -333,8 +338,7 @@ namespace OpenRA.Mods.Common.AI
 				return;
 
 			domainIndex = World.WorldActor.Trait<DomainIndex>();
-			resLayer = World.WorldActor.Trait<ResourceLayer>();
-			territory = World.WorldActor.TraitOrDefault<ResourceClaimLayer>();
+			claimLayer = World.WorldActor.TraitOrDefault<ResourceClaimLayer>();
 			pathfinder = World.WorldActor.Trait<IPathFinder>();
 
 			isEnemyUnit = unit =>
@@ -925,19 +929,22 @@ namespace OpenRA.Mods.Common.AI
 			return targets.MinByOrDefault(target => (target.Actor.CenterPosition - capturer.CenterPosition).LengthSquared);
 		}
 
-		CPos FindNextResource(Actor harvester)
+		CPos FindNextResource(Actor actor, Harvester harv)
 		{
-			var harvInfo = harvester.Info.TraitInfo<HarvesterInfo>();
-			var mobileInfo = harvester.Info.TraitInfo<MobileInfo>();
+			var mobileInfo = actor.Info.TraitInfo<MobileInfo>();
 			var passable = (uint)mobileInfo.GetMovementClass(World.Map.Rules.TileSet);
 
+			Func<CPos, bool> isValidResource = cell =>
+				domainIndex.IsPassable(actor.Location, cell, mobileInfo, passable) &&
+				harv.CanHarvestCell(actor, cell) &&
+				claimLayer.CanClaimCell(actor, cell);
+
 			var path = pathfinder.FindPath(
-				PathSearch.Search(World, mobileInfo, harvester, true,
-					loc => domainIndex.IsPassable(harvester.Location, loc, mobileInfo, passable) && harvester.CanHarvestAt(loc, resLayer, harvInfo, territory))
+				PathSearch.Search(World, mobileInfo, actor, true, isValidResource)
 					.WithCustomCost(loc => World.FindActorsInCircle(World.Map.CenterOfCell(loc), Info.HarvesterEnemyAvoidanceRadius)
 						.Where(u => !u.IsDead && IsOwnedByEnemy(u))
 						.Sum(u => Math.Max(WDist.Zero.Length, Info.HarvesterEnemyAvoidanceRadius.Length - (World.Map.CenterOfCell(loc) - u.CenterPosition).Length)))
-					.FromPoint(harvester.Location));
+					.FromPoint(actor.Location));
 
 			if (path.Count == 0)
 				return CPos.Zero;
@@ -965,7 +972,7 @@ namespace OpenRA.Mods.Common.AI
 					continue;
 
 				// Tell the idle harvester to quit slacking:
-				var newSafeResourcePatch = FindNextResource(harvester);
+				var newSafeResourcePatch = FindNextResource(harvester, harv);
 				BotDebug("AI: Harvester {0} is idle. Ordering to {1} in search for new resources.".F(harvester, newSafeResourcePatch));
 				QueueOrder(new Order("Harvest", harvester, false) { TargetLocation = newSafeResourcePatch });
 			}

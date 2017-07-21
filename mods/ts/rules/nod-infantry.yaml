@@ -1,10 +1,11 @@
 E3:
 	Inherits: ^Soldier
 	Inherits@EXPERIENCE: ^GainsExperience
+	Inherits@AUTOTARGET: ^AutoTargetAll
 	Buildable:
 		Queue: Infantry
-		BuildPaletteOrder: 20
-		Prerequisites: ~nahand
+		BuildPaletteOrder: 30
+		Prerequisites: ~nahand, ~techlevel.low
 		Description: Anti-tank infantry.\n  Strong vs Vehicles, Aircraft, Buildings\n  Weak vs Infantry
 	Valued:
 		Cost: 250
@@ -15,22 +16,25 @@ E3:
 	Health:
 		HP: 100
 	Mobile:
-		Speed: 42
+		Speed: 56
 	Armament@PRIMARY:
 		Weapon: Bazooka
-		LocalOffset: 252,0,684
+		LocalOffset: 356,0,967
 	TakeCover:
 		ProneOffset: 52,64,-652
 	AttackFrontal:
 		Voice: Attack
 	WithInfantryBody:
 		DefaultAttackSequence: attack
+	RevealsShroud:
+		Range: 7c0
 	ProducibleWithLevel:
 		Prerequisites: barracks.upgraded
 
 CYBORG:
 	Inherits: ^Cyborg
 	Inherits@EXPERIENCE: ^GainsExperience
+	Inherits@AUTOTARGET: ^AutoTargetGround
 	Armor:
 		Type: Light
 	Valued:
@@ -39,8 +43,8 @@ CYBORG:
 		Name: Cyborg Infantry
 	Buildable:
 		Queue: Infantry
-		BuildPaletteOrder: 40
-		Prerequisites: ~nahand
+		BuildPaletteOrder: 60
+		Prerequisites: ~nahand, ~techlevel.medium
 		Description: Cybernetic infantry unit.\n  Strong vs Infantry, Light armor\n  Weak vs Vehicles, Aircraft
 	Selectable:
 		Bounds: 16,31,0,-10
@@ -65,6 +69,7 @@ CYBORG:
 CYC2:
 	Inherits: ^Cyborg
 	Inherits@EXPERIENCE: ^GainsExperience
+	Inherits@AUTOTARGET: ^AutoTargetGround
 	Armor:
 		Type: Heavy
 	Valued:
@@ -73,8 +78,8 @@ CYC2:
 		Name: Cyborg Commando
 	Buildable:
 		Queue: Infantry
-		BuildPaletteOrder: 50
-		Prerequisites: ~nahand, natmpl
+		BuildPaletteOrder: 100
+		Prerequisites: ~nahand, natmpl, ~techlevel.high
 		BuildLimit: 1
 		Description: Elite cybernetic infantry unit.\n  Strong vs Infantry, Vehicles, Buildings\n  Weak vs Aircraft\nMaximum 1 can be trained.
 	Selectable:
@@ -90,7 +95,7 @@ CYC2:
 		Range: 7c0
 	Armament:
 		Weapon: CyCannon
-		LocalOffset: 170,85,683
+		LocalOffset: 240,120,966
 	AttackFrontal:
 		Voice: Attack
 	SelectionDecorations:
@@ -103,8 +108,8 @@ MHIJACK:
 	Inherits@2: ^HealsOnTiberium
 	Buildable:
 		Queue: Infantry
-		BuildPaletteOrder: 60
-		Prerequisites: ~nahand, natmpl
+		BuildPaletteOrder: 80
+		Prerequisites: ~nahand, natmpl, ~techlevel.high
 		Description: Hijacks enemy vehicles.\n  Unarmed
 	Valued:
 		Cost: 1850
@@ -123,4 +128,3 @@ MHIJACK:
 		PlayerExperience: 50
 	RevealsShroud:
 		Range: 6c0
-	-AutoTarget:

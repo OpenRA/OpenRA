@@ -26,10 +26,12 @@ FireballLauncher:
 Bomb:
 	ReloadDelay: 60
 	Burst: 5
-	BurstDelay: 5
-	Range: 2c0
+	BurstDelay: 6
+	Range: 2c512
+	TargetActorCenter: true
 	Projectile: GravityBomb
-		Speed: 170
+		Velocity: 72, 0, -90
+		Acceleration: 0, 0, -8
 		Image: 120mm
 		Shadow: true
 		Palette: ra
@@ -46,14 +48,15 @@ Bomb:
 		DamageTypes: Prone100Percent, TriggerProne, ExplosionDeath
 	Warhead@2Eff: CreateEffect
 		Explosions: large_explosion
-		ExplosionPalette: effectalpha75
+		ExplosionPalette: effect-ignore-lighting-alpha75
 		ImpactSounds: expnew09.aud
-		InvalidImpactTypes: Water
+		ValidTargets: Ground, Air
 	Warhead@3EffWater: CreateEffect
 		Explosions: small_watersplash
 		ExplosionPalette: player
 		ImpactSounds: ssplash3.aud
-		ValidImpactTypes: Water
+		ValidTargets: Water
+		InvalidTargets: Vehicle
 	Warhead@4Smu: LeaveSmudge
 		SmudgeType: MediumCrater
 		InvalidTargets: Vehicle, Building, Wall
@@ -83,20 +86,40 @@ FiendShard:
 		Explosions: small_watersplash
 		ExplosionPalette: player
 		ImpactSounds: ssplash3.aud
-		ValidImpactTypes: Water
+		ValidTargets: Water
+		InvalidTargets: Vehicle
 
 SlimeAttack:
 	ReloadDelay: 80
 	Range: 1c384
 	Report: vicer1.aud
 	Projectile: InstantHit
-	Warhead@1Dam: TargetDamage
+	InvalidTargets: Wall, Bridge
+	Warhead@1Dam: SpreadDamage
 		Damage: 100
+		InvalidTargets: Wall, Bridge
 		Versus:
 			Light: 60
 			Heavy: 40
 			Concrete: 20
 		DamageTypes: Prone100Percent, TriggerProne, SmallExplosionDeath
+
+Tentacle:
+	ReloadDelay: 80
+	Range: 1c384
+	Report: floatk1.aud
+	Projectile: InstantHit
+	InvalidTargets: Wall, Bridge
+	Warhead@1Dam: SpreadDamage
+		Damage: 160
+		InvalidTargets: Wall, Bridge
+		Versus:
+			None: 60
+			Wood: 45
+			Light: 90
+			Heavy: 55
+			Concrete: 10
+		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
 
 Veins:
 	ReloadDelay: 16
@@ -129,13 +152,14 @@ Veins:
 		DamageTypes: Prone100Percent, TriggerProne, ExplosionDeath
 	Warhead@2Eff: CreateEffect
 		Explosions: tiny_twlt
-		ExplosionPalette: effectalpha75
-		InvalidImpactTypes: Water
+		ExplosionPalette: effect-ignore-lighting-alpha75
+		ValidTargets: Ground, Air
 	Warhead@3EffWater: CreateEffect
 		Explosions: small_watersplash
 		ExplosionPalette: player
 		ImpactSounds: ssplash3.aud
-		ValidImpactTypes: Water
+		ValidTargets: Water
+		InvalidTargets: Vehicle
 	Warhead@4Smu: LeaveSmudge
 		SmudgeType: SmallScorch
 		InvalidTargets: Vehicle, Building, Wall

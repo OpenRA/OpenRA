@@ -87,14 +87,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				});
 			};
 
-			mainMenu.Get<ButtonWidget>("MODS_BUTTON").OnClick = () =>
+			mainMenu.Get<ButtonWidget>("CONTENT_BUTTON").OnClick = () =>
 			{
 				// Switching mods changes the world state (by disposing it),
 				// so we can't do this inside the input handler.
 				Game.RunAfterTick(() =>
 				{
-					Game.Settings.Game.PreviousMod = modData.Manifest.Id;
-					Game.InitializeMod("modchooser", null);
+					var content = modData.Manifest.Get<ModContent>();
+					Game.InitializeMod(content.ContentInstallerMod, new Arguments(new[] { "Content.Mod=" + modData.Manifest.Id }));
 				});
 			};
 
@@ -235,6 +235,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			Game.OnRemoteDirectConnect += OnRemoteDirectConnect;
 
+			var newsURL = modData.Manifest.Get<WebServices>().GameNews;
+
 			// System information opt-out prompt
 			var sysInfoPrompt = widget.Get("SYSTEM_INFO_PROMPT");
 			sysInfoPrompt.IsVisible = () => menuType == MenuType.SystemInfoPrompt;
@@ -263,14 +265,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					Game.Settings.Debug.SystemInformationVersionPrompt = SystemInformationVersion;
 					Game.Settings.Save();
 					SwitchMenu(MenuType.Main);
-					LoadAndDisplayNews(newsBG);
+					LoadAndDisplayNews(newsURL, newsBG);
 				};
 			}
 			else
-				LoadAndDisplayNews(newsBG);
+				LoadAndDisplayNews(newsURL, newsBG);
 		}
 
-		void LoadAndDisplayNews(Widget newsBG)
+		void LoadAndDisplayNews(string newsURL, Widget newsBG)
 		{
 			if (newsBG != null)
 			{
@@ -285,8 +287,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					if (!fetchedNews)
 					{
 						// Send the mod and engine version to support version-filtered news (update prompts)
-						var newsURL = Game.Settings.Game.NewsUrl + "?version={0}&mod={1}&modversion={2}".F(
-							Uri.EscapeUriString(Game.Mods["modchooser"].Metadata.Version),
+						newsURL += "?version={0}&mod={1}&modversion={2}".F(
+							Uri.EscapeUriString(Game.EngineVersion),
 							Uri.EscapeUriString(Game.ModData.Manifest.Id),
 							Uri.EscapeUriString(Game.ModData.Manifest.Metadata.Version));
 

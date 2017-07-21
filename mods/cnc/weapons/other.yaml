@@ -7,7 +7,7 @@
 	Projectile: Bullet
 		Speed: 1c682
 	Warhead@1Dam: SpreadDamage
-		Spread: 341
+		Spread: 468
 		Damage: 40
 		ValidTargets: Ground, Water, Trees
 		InvalidTargets: Wall
@@ -23,6 +23,7 @@
 	Warhead@3Eff: CreateEffect
 		Explosions: small_napalm
 		ImpactSounds: flamer2.aud
+		VictimScanRadius: 0
 
 Flamethrower:
 	Inherits: ^FlameWeapon
@@ -77,6 +78,7 @@ Napalm:
 		Damage: 30
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		Versus:
+			Wood: 35
 			Heavy: 80
 	Warhead@3Eff: CreateEffect
 		Explosions: med_napalm
@@ -139,3 +141,4 @@ Demolish:
 	Warhead@2Eff: CreateEffect
 		Explosions: building
 		ImpactSounds: xplobig6.aud
+		VictimScanRadius: 0

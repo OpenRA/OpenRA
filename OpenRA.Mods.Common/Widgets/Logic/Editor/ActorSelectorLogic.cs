@@ -10,17 +10,33 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
-using OpenRA.Traits;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public class ActorSelectorLogic : ChromeLogic
 	{
+		class ActorSelectorActor
+		{
+			public readonly ActorInfo Actor;
+			public readonly string[] Categories;
+			public readonly string[] SearchTerms;
+			public readonly string Tooltip;
+
+			public ActorSelectorActor(ActorInfo actor, string[] categories, string[] searchTerms, string tooltip)
+			{
+				Actor = actor;
+				Categories = categories;
+				SearchTerms = searchTerms;
+				Tooltip = tooltip;
+			}
+		}
+
 		readonly EditorViewportControllerWidget editor;
 		readonly DropDownButtonWidget ownersDropDown;
 		readonly ScrollPanelWidget panel;
@@ -28,8 +44,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly Ruleset mapRules;
 		readonly World world;
 		readonly WorldRenderer worldRenderer;
+		readonly string[] allCategories;
+		readonly HashSet<string> selectedCategories = new HashSet<string>();
+		readonly List<string> filteredCategories = new List<string>();
+
+		readonly ActorSelectorActor[] allActors;
 
 		PlayerReference selectedOwner;
+		string searchFilter;
 
 		[ObjectCreator.UseCtor]
 		public ActorSelectorLogic(Widget widget, World world, WorldRenderer worldRenderer)
@@ -57,7 +79,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					ownersDropDown.Text = selectedOwner.Name;
 					ownersDropDown.TextColor = selectedOwner.Color.RGB;
 
-					IntializeActorPreviews();
+					InitializeActorPreviews();
 				});
 
 				item.Get<LabelWidget>("LABEL").GetText = () => option.Name;
@@ -75,40 +97,174 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			ownersDropDown.Text = selectedOwner.Name;
 			ownersDropDown.TextColor = selectedOwner.Color.RGB;
 
-			IntializeActorPreviews();
+			var tileSetId = world.Map.Rules.TileSet.Id;
+			var allActorsTemp = new List<ActorSelectorActor>();
+			foreach (var a in mapRules.Actors.Values)
+			{
+				// Partial templates are not allowed
+				if (a.Name.Contains('^'))
+					continue;
+
+				// Actor must have a preview associated with it
+				if (!a.HasTraitInfo<IRenderActorPreviewInfo>())
+					continue;
+
+				var editorData = a.TraitInfoOrDefault<EditorTilesetFilterInfo>();
+
+				// Actor must be included in at least one category
+				if (editorData == null || editorData.Categories == null)
+					continue;
+
+				// Excluded by tileset
+				if (editorData.ExcludeTilesets != null && editorData.ExcludeTilesets.Contains(tileSetId))
+					continue;
+
+				if (editorData.RequireTilesets != null && !editorData.RequireTilesets.Contains(tileSetId))
+					continue;
+
+				var tooltip = a.TraitInfos<EditorOnlyTooltipInfo>().FirstOrDefault(ti => ti.EnabledByDefault) as TooltipInfoBase
+					?? a.TraitInfos<TooltipInfo>().FirstOrDefault(ti => ti.EnabledByDefault);
+
+				var searchTerms = new List<string>() { a.Name };
+				if (tooltip != null)
+					searchTerms.Add(tooltip.Name);
+
+				var tooltipText = (tooltip == null ? "Type: " : tooltip.Name + "\nType: ") + a.Name;
+				allActorsTemp.Add(new ActorSelectorActor(a, editorData.Categories, searchTerms.ToArray(), tooltipText));
+ 			}
+
+			allActors = allActorsTemp.ToArray();
+
+			allCategories = allActors.SelectMany(ac => ac.Categories)
+				.Distinct()
+				.OrderBy(x => x)
+				.ToArray();
+
+			foreach (var c in allCategories)
+			{
+				selectedCategories.Add(c);
+				filteredCategories.Add(c);
+			}
+
+			var searchTextField = widget.Get<TextFieldWidget>("SEARCH_TEXTFIELD");
+			searchTextField.OnTextEdited = () =>
+			{
+				searchFilter = searchTextField.Text.Trim();
+				filteredCategories.Clear();
+
+				if (!string.IsNullOrEmpty(searchFilter))
+					filteredCategories.AddRange(
+						allActors.Where(t => t.SearchTerms.Any(
+							s => s.IndexOf(searchFilter, StringComparison.OrdinalIgnoreCase) >= 0))
+						.SelectMany(t => t.Categories)
+						.Distinct()
+						.OrderBy(x => x));
+				else
+					filteredCategories.AddRange(allCategories);
+
+				InitializeActorPreviews();
+			};
+
+			var actorCategorySelector = widget.Get<DropDownButtonWidget>("CATEGORIES_DROPDOWN");
+			actorCategorySelector.GetText = () =>
+			{
+				if (selectedCategories.Count == 0)
+					return "None";
+
+				if (!string.IsNullOrEmpty(searchFilter))
+					return "Search Results";
+
+				if (selectedCategories.Count == 1)
+					return selectedCategories.First();
+
+				if (selectedCategories.Count == allCategories.Length)
+					return "All";
+
+				return "Multiple";
+			};
+
+			actorCategorySelector.OnMouseDown = _ =>
+			{
+				if (searchTextField != null)
+					searchTextField.YieldKeyboardFocus();
+
+				actorCategorySelector.RemovePanel();
+				actorCategorySelector.AttachPanel(CreateCategoriesPanel());
+			};
+
+			InitializeActorPreviews();
 		}
 
-		void IntializeActorPreviews()
+		Widget CreateCategoriesPanel()
+		{
+			var categoriesPanel = Ui.LoadWidget("ACTOR_CATEGORY_FILTER_PANEL", null, new WidgetArgs());
+			var categoryTemplate = categoriesPanel.Get<CheckboxWidget>("CATEGORY_TEMPLATE");
+
+			var selectButtons = categoriesPanel.Get<ContainerWidget>("SELECT_CATEGORIES_BUTTONS");
+			categoriesPanel.AddChild(selectButtons);
+
+			var selectAll = selectButtons.Get<ButtonWidget>("SELECT_ALL");
+			selectAll.OnClick = () =>
+			{
+				selectedCategories.Clear();
+				foreach (var c in allCategories)
+					selectedCategories.Add(c);
+
+				InitializeActorPreviews();
+			};
+
+			var selectNone = selectButtons.Get<ButtonWidget>("SELECT_NONE");
+			selectNone.OnClick = () =>
+			{
+				selectedCategories.Clear();
+				InitializeActorPreviews();
+			};
+
+			var categoryHeight = 5 + selectButtons.Bounds.Height;
+			foreach (var cat in filteredCategories)
+			{
+				var category = (CheckboxWidget)categoryTemplate.Clone();
+				category.GetText = () => cat;
+				category.IsChecked = () => selectedCategories.Contains(cat);
+				category.IsVisible = () => true;
+				category.OnClick = () =>
+				{
+					if (!selectedCategories.Remove(cat))
+						selectedCategories.Add(cat);
+
+					InitializeActorPreviews();
+				};
+
+				categoriesPanel.AddChild(category);
+				categoryHeight += categoryTemplate.Bounds.Height;
+			}
+
+			categoriesPanel.Bounds.Height = Math.Min(categoryHeight, panel.Bounds.Height);
+
+			return categoriesPanel;
+		}
+
+		void InitializeActorPreviews()
 		{
 			panel.RemoveChildren();
+			if (!selectedCategories.Any())
+				return;
 
-			var actors = mapRules.Actors.Where(a => !a.Value.Name.Contains('^'))
-				.Select(a => a.Value);
-
-			foreach (var a in actors)
+			foreach (var a in allActors)
 			{
-				var actor = a;
-				if (actor.HasTraitInfo<BridgeInfo>()) // bridge layer takes care about that automatically
+				if (!selectedCategories.Overlaps(a.Categories))
 					continue;
 
-				if (!actor.HasTraitInfo<IRenderActorPreviewInfo>())
+				if (!string.IsNullOrEmpty(searchFilter) && !a.SearchTerms.Any(s => s.IndexOf(searchFilter, StringComparison.OrdinalIgnoreCase) >= 0))
 					continue;
 
-				var filter = actor.TraitInfoOrDefault<EditorTilesetFilterInfo>();
-				if (filter != null)
-				{
-					if (filter.ExcludeTilesets != null && filter.ExcludeTilesets.Contains(world.Map.Rules.TileSet.Id))
-						continue;
-					if (filter.RequireTilesets != null && !filter.RequireTilesets.Contains(world.Map.Rules.TileSet.Id))
-						continue;
-				}
-
+				var actor = a.Actor;
 				var td = new TypeDictionary();
-				td.Add(new FacingInit(92));
-				td.Add(new TurretFacingInit(92));
-				td.Add(new HideBibPreviewInit());
 				td.Add(new OwnerInit(selectedOwner.Name));
 				td.Add(new FactionInit(selectedOwner.Faction));
+				foreach (var api in actor.TraitInfos<IActorPreviewInitInfo>())
+					foreach (var o in api.ActorPreviewInits(actor, ActorPreviewType.MapEditorSidebar))
+						td.Add(o);
 
 				try
 				{
@@ -132,10 +288,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					item.Bounds.Height = preview.Bounds.Height + 2 * preview.Bounds.Y;
 					item.IsVisible = () => true;
 
-					var tooltip = actor.TraitInfos<EditorOnlyTooltipInfo>().FirstOrDefault(Exts.IsTraitEnabled) as TooltipInfoBase
-						?? actor.TraitInfos<TooltipInfo>().FirstOrDefault(Exts.IsTraitEnabled);
-
-					item.GetTooltipText = () => (tooltip == null ? "Type: " : tooltip.Name + "\nType: ") + actor.Name;
+					item.GetTooltipText = () => a.Tooltip;
 
 					panel.AddChild(item);
 				}

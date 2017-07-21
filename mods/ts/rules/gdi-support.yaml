@@ -2,8 +2,8 @@ GAWALL:
 	Inherits: ^Wall
 	Buildable:
 		Queue: Defense
-		BuildPaletteOrder: 20
-		Prerequisites: ~structures.gdi
+		BuildPaletteOrder: 10
+		Prerequisites: ~structures.gdi, ~techlevel.low
 		Description: Stops infantry and blocks enemy fire.\nCan NOT be crushed by tanks.
 	-SoundOnDamageTransition:
 	Valued:
@@ -17,7 +17,7 @@ GAWALL:
 	Armor:
 		Type: Concrete
 	BlocksProjectiles:
-		Height: 640
+		Height: 768
 	Crushable:
 		CrushClasses: heavywall
 	LineBuild:
@@ -27,8 +27,8 @@ GAGATE_A:
 	Inherits: ^Gate_A
 	Buildable:
 		Queue: Defense
-		BuildPaletteOrder: 100
-		Prerequisites: gapile, ~structures.gdi
+		BuildPaletteOrder: 30
+		Prerequisites: gapile, ~structures.gdi, ~techlevel.low
 	Tooltip:
 		Name: GDI Gate
 
@@ -36,13 +36,15 @@ GAGATE_B:
 	Inherits: ^Gate_B
 	Buildable:
 		Queue: Defense
-		BuildPaletteOrder: 100
-		Prerequisites: gapile, ~structures.gdi
+		BuildPaletteOrder: 50
+		Prerequisites: gapile, ~structures.gdi, ~techlevel.low
 	Tooltip:
 		Name: GDI Gate
 
 GACTWR:
 	Inherits: ^Defense
+	Inherits@IDISABLE: ^DisabledOverlay
+	Inherits@AUTOTARGET: ^AutoTargetAll
 	-WithSpriteBody:
 	WithWallSpriteBody:
 		Type: wall
@@ -52,13 +54,12 @@ GACTWR:
 		Name: Component Tower
 	Buildable:
 		Queue: Defense
-		BuildPaletteOrder: 30
-		Prerequisites: gapile, ~structures.gdi
+		BuildPaletteOrder: 70
+		Prerequisites: gapile, ~structures.gdi, ~techlevel.low
 		Description: Modular tower for base defenses.
 	Building:
 	Selectable:
 		Bounds: 48, 36, 0, -6
-	DisabledOverlay:
 	Health:
 		HP: 500
 	Armor:
@@ -93,27 +94,30 @@ GACTWR:
 	Armament@VULCPRIMARY:
 		RequiresCondition: tower.vulcan
 		Weapon: VulcanTower
-		LocalOffset: 416,85,960
+		LocalOffset: 588,120,1358
 		MuzzleSequence: muzzle
+		MuzzlePalette: effect-ignore-lighting
 		MuzzleSplitFacings: 8
 	Armament@VULCSECONDARY:
 		RequiresCondition: tower.vulcan
 		Name: secondary
 		Weapon: VulcanTower
-		LocalOffset: 416,-85,960
+		LocalOffset: 588,-120,1358
 		MuzzleSequence: muzzle
+		MuzzlePalette: effect-ignore-lighting
 		MuzzleSplitFacings: 8
 	Armament@ROCKET:
 		RequiresCondition: tower.rocket
 		Weapon: RPGTower
-		LocalOffset: 192,-65,1056
+		LocalOffset: 272,-92,1493
 	Armament@SAM:
 		RequiresCondition: tower.sam
 		Weapon: RedEye2
-		LocalOffset: 384,0,1200
+		LocalOffset: 543,0,1697
 	WithMuzzleOverlay:
 		RequiresCondition: tower.vulcan
 	WithIdleOverlay@LIGHTS:
+		RequiresCondition: !disabled
 		Sequence: idle-lights
 	LineBuildNode:
 		Types: turret
@@ -142,8 +146,8 @@ GAVULC:
 		Name: Vulcan Tower
 	Buildable:
 		Queue: Defense
-		BuildPaletteOrder: 40
-		Prerequisites: gactwr, gapile, ~structures.gdi
+		BuildPaletteOrder: 120
+		Prerequisites: gactwr, gapile, ~structures.gdi, ~techlevel.low
 		Description: Basic base defense.\nDoes not require power to operate.\n  Strong vs Infantry, Light armor\n  Weak vs Aircraft
 	Plug:
 		Type: tower.vulcan
@@ -158,8 +162,8 @@ GAROCK:
 		Name: RPG Upgrade
 	Buildable:
 		Queue: Defense
-		BuildPaletteOrder: 40
-		Prerequisites: gactwr, gapile, ~structures.gdi
+		BuildPaletteOrder: 130
+		Prerequisites: gactwr, gapile, ~structures.gdi, ~techlevel.high
 		Description: GDI Advanced base defense.\nDoes not require power to operate.\n  Strong vs Armored ground units\n  Weak vs Aircraft
 	Plug:
 		Type: tower.rocket
@@ -174,8 +178,8 @@ GACSAM:
 		Name: SAM Upgrade
 	Buildable:
 		Queue: Defense
-		BuildPaletteOrder: 40
-		Prerequisites: gactwr, garadr, ~structures.gdi
+		BuildPaletteOrder: 140
+		Prerequisites: gactwr, garadr, ~structures.gdi, ~techlevel.medium
 		Description: GDI Anti-Air base defense.\nDoes not require power to operate.\n  Strong vs Aircraft\n  Weak vs Ground units
 	Plug:
 		Type: tower.sam
@@ -190,8 +194,8 @@ GAPOWRUP:
 		Name: Power Turbine
 	Buildable:
 		Queue: Defense
-		BuildPaletteOrder: 10
-		Prerequisites: gapowr, ~structures.gdi
+		BuildPaletteOrder: 80
+		Prerequisites: gapowr, ~structures.gdi, ~techlevel.medium
 		Description: Provides extra power generation.
 	Plug:
 		Type: powrup
@@ -206,8 +210,8 @@ GAPLUG2:
 		Name: Seeker Control
 	Buildable:
 		Queue: Defense
-		BuildPaletteOrder: 1000
-		Prerequisites: gaplug, gatech, gaweap, ~structures.gdi
+		BuildPaletteOrder: 170
+		Prerequisites: gaplug, gatech, gaweap, ~structures.gdi, ~techlevel.superweapons
 		Description: Enables use of the hunter-seeker droid.
 	Plug:
 		Type: plug.hunterseeker
@@ -222,8 +226,8 @@ GAPLUG3:
 		Name: Ion Cannon Uplink
 	Buildable:
 		Queue: Defense
-		BuildPaletteOrder: 1000
-		Prerequisites: gaplug, gatech, ~structures.gdi
+		BuildPaletteOrder: 180
+		Prerequisites: gaplug, gatech, ~structures.gdi, ~techlevel.superweapons
 		Description: Enables use of the Ion Cannon.
 	Plug:
 		Type: plug.ioncannon

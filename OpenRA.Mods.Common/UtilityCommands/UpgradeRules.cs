@@ -573,8 +573,17 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					if (node.Key.StartsWith("DisguiseToolTip", StringComparison.Ordinal))
 						RenameNodeKey(node, "DisguiseTooltip");
 
+				// Split UncloakOn: Damage => Damage, Heal, SelfHeal
+				if (engineVersion < 20170528)
+					if (node.Key.StartsWith("UncloakOn", StringComparison.Ordinal))
+						node.Value.Value = node.Value.Value.Replace("Damage", "Damage, Heal, SelfHeal");
+
+				// Removed dead ActorGroupProxy trait
+				if (engineVersion < 20170528)
+					node.Value.Nodes.RemoveAll(n => n.Key == "ActorGroupProxy");
+
 				// Refactor SupplyTruck/AcceptsSupplies traits to DeliversCash/AcceptsDeliveredCash
-				if (engineVersion < 20170415)
+				if (engineVersion < 20170528)
 				{
 					if (node.Key == "SupplyTruck")
 						RenameNodeKey(node, "DeliversCash");
@@ -585,6 +594,255 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						RenameNodeKey(node, "AcceptsDeliveredCash");
 					if (node.Key == "-AcceptsSupplies")
 						RenameNodeKey(node, "-AcceptsDeliveredCash");
+				}
+
+				// Add random sound support to AmbientSound
+				if (engineVersion < 20170528)
+					if (node.Key == "SoundFile" && parent.Key.StartsWith("AmbientSound", StringComparison.Ordinal))
+						RenameNodeKey(node, "SoundFiles");
+
+				// PauseOnLowPower property has been replaced with PauseOnCondition/RequiresCondition
+				if (engineVersion < 20170528)
+				{
+					if (node.Key.StartsWith("WithRearmAnimation", StringComparison.Ordinal) || node.Key.StartsWith("WithRepairAnimation", StringComparison.Ordinal)
+						|| node.Key.StartsWith("WithIdleAnimation", StringComparison.Ordinal))
+					{
+						var pauseOnLowPowerNode = node.Value.Nodes.FirstOrDefault(n => n.Key == "PauseOnLowPower");
+						if (pauseOnLowPowerNode != null)
+						{
+							node.Value.Nodes.Remove(pauseOnLowPowerNode);
+							Console.WriteLine("PauseOnLowPower has been removed from {0}; use RequiresCondition instead.".F(node.Key));
+						}
+					}
+					else if (node.Key.StartsWith("WithIdleOverlay", StringComparison.Ordinal) || node.Key.StartsWith("WithRepairOverlay", StringComparison.Ordinal))
+					{
+						var pauseOnLowPowerNode = node.Value.Nodes.FirstOrDefault(n => n.Key == "PauseOnLowPower");
+						if (pauseOnLowPowerNode != null)
+						{
+							node.Value.Nodes.Remove(pauseOnLowPowerNode);
+							Console.WriteLine("PauseOnLowPower has been removed from {0}; use PauseOnCondition or RequiresCondition instead.".F(node.Key));
+						}
+					}
+					else if (node.Key.StartsWith("AffectedByPowerOutage", StringComparison.Ordinal))
+					{
+						Console.WriteLine("Actor {0} has AffectedByPowerOutage; use the Condition property to apply its effects.".F(node.Key));
+					}
+					else if (node.Key.StartsWith("IonCannonPower", StringComparison.Ordinal) || node.Key.StartsWith("ProduceActorPower", StringComparison.Ordinal)
+						|| node.Key.StartsWith("NukePower", StringComparison.Ordinal) || node.Key.StartsWith("AttackOrderPower", StringComparison.Ordinal)
+						|| node.Key.StartsWith("GpsPower", StringComparison.Ordinal))
+					{
+						Console.WriteLine("{0} requires PauseOnCondition for pausing.".F(node.Key));
+					}
+				}
+
+				if (engineVersion < 20170528)
+				{
+					if (node.Key == "Offset" && parent.Key.StartsWith("WithHarvestOverlay", StringComparison.Ordinal))
+						RenameNodeKey(node, "LocalOffset");
+
+					var gridType = modData.Manifest.Get<MapGrid>().Type;
+					if (gridType == MapGridType.RectangularIsometric)
+					{
+						if (node.Key == "LocalOffset")
+						{
+							var orig = FieldLoader.GetValue<WVec[]>(node.Key, node.Value.Value);
+							var scaled = orig.Select(o => FieldSaver.FormatValue(new WVec(
+								(int)Math.Round(Math.Sqrt(2) * o.X),
+								(int)Math.Round(Math.Sqrt(2) * o.Y),
+								(int)Math.Round(Math.Sqrt(2) * o.Z))));
+							node.Value.Value = scaled.JoinWith(", ");
+						}
+
+						if (node.Key == "Radius" && parent.Key == "Shape")
+						{
+							var orig = FieldLoader.GetValue<WDist>(node.Key, node.Value.Value);
+							var scaled = (int)Math.Round(Math.Sqrt(2) * orig.Length);
+							node.Value.Value = scaled.ToString();
+						}
+
+						if (node.Key == "TopLeft" || node.Key == "BottomRight" || node.Key == "PointA" || node.Key == "PointB")
+						{
+							var orig = FieldLoader.GetValue<int2>(node.Key, node.Value.Value);
+							var scaled = new int2(
+								(int)Math.Round(Math.Sqrt(2) * orig.X),
+								(int)Math.Round(Math.Sqrt(2) * orig.Y));
+							node.Value.Value = scaled.ToString();
+						}
+
+						if (node.Key == "VerticalTopOffset" || node.Key == "VerticalBottomOffset")
+						{
+							var orig = FieldLoader.GetValue<int>(node.Key, node.Value.Value);
+							var scaled = (int)Math.Round(Math.Sqrt(2) * orig);
+							node.Value.Value = scaled.ToString();
+						}
+					}
+				}
+
+				// Refactor Rectangle shape RotateToIsometry bool into WAngle LocalYaw
+				if (engineVersion < 20170528)
+				{
+					if (node.Key.StartsWith("RotateToIsometry", StringComparison.Ordinal))
+					{
+						var value = FieldLoader.GetValue<bool>("RotateToIsometry", node.Value.Value);
+						node.Value.Value = value ? "128" : "0";
+
+						node.Key = "LocalYaw";
+					}
+				}
+
+				// Removed GrantConditionOnDeploy.DeployAnimation and made WithMakeAnimation compatible instead
+				if (engineVersion < 20170528)
+				{
+					var grantCondOnDeploy = node.Value.Nodes.FirstOrDefault(n => n.Key == "GrantConditionOnDeploy");
+					if (grantCondOnDeploy != null)
+					{
+						var deployAnimNode = grantCondOnDeploy.Value.Nodes.FirstOrDefault(n => n.Key == "DeployAnimation");
+						if (deployAnimNode != null)
+						{
+							grantCondOnDeploy.Value.Nodes.Remove(deployAnimNode);
+							Console.WriteLine("DeployAnimation was removed from GrantConditionOnDeploy.");
+							Console.WriteLine("Use WithMakeAnimation instead if a deploy animation is needed.");
+						}
+					}
+				}
+
+				// Added HitShape trait
+				if (engineVersion < 20170531)
+				{
+					var hitShapeNode = new MiniYamlNode("HitShape", "");
+
+					// Moved and renamed Health.Shape to HitShape.Type
+					var health = node.Value.Nodes.FirstOrDefault(n => n.Key == "Health");
+					if (health != null)
+					{
+						var shape = health.Value.Nodes.FirstOrDefault(n => n.Key == "Shape");
+						if (shape != null)
+						{
+							RenameNodeKey(shape, "Type");
+							hitShapeNode.Value.Nodes.Add(shape);
+							node.Value.Nodes.Add(hitShapeNode);
+							health.Value.Nodes.Remove(shape);
+						}
+						else
+							node.Value.Nodes.Add(hitShapeNode);
+					}
+
+					// Moved ITargetablePositions from Building to HitShape
+					var building = node.Value.Nodes.FirstOrDefault(n => n.Key == "Building");
+					var hitShape = node.Value.Nodes.FirstOrDefault(n => n.Key == "HitShape");
+					if (building != null && hitShape == null)
+					{
+						hitShapeNode.Value.Nodes.Add(new MiniYamlNode("UseOccupiedCellsOffsets", "true"));
+						node.Value.Nodes.Add(hitShapeNode);
+					}
+				}
+
+				// AutoTargetIgnore replaced with AutoTargetPriority and target types
+				if (engineVersion < 20170610)
+				{
+					if (node.Key.StartsWith("AutoTarget", StringComparison.Ordinal) || node.Key.StartsWith("-AutoTarget", StringComparison.Ordinal))
+					{
+						Console.WriteLine("The AutoTarget traits have been reworked to use target types:");
+						Console.WriteLine(" * Actors with AutoTarget must specify one or more AutoTargetPriority traits.");
+						Console.WriteLine(" * The AutoTargetIgnore trait has been removed.");
+						Console.WriteLine("   Append NoAutoTarget to the target types instead.");
+					}
+				}
+
+				// Removed ApplyToAllTargetablePositions hack from Rectangle shape
+				if (engineVersion < 20170629)
+				{
+					if (node.Key.StartsWith("HitShape", StringComparison.Ordinal))
+					{
+						var shape = node.Value.Nodes.FirstOrDefault(n => n.Key == "Type" && n.Value.Value == "Rectangle");
+						if (shape != null)
+						{
+							var hack = shape.Value.Nodes.FirstOrDefault(n => n.Key == "ApplyToAllTargetablePositions");
+							if (hack != null)
+							{
+								Console.WriteLine("Rectangle.ApplyToAllTargetablePositions has been removed due to incompatibilities");
+								Console.WriteLine("with the HitShape refactor and projectile/warhead victim scans, as well as performance concerns.");
+								Console.WriteLine("If you absolutely want to use it, please ship a duplicate of the old Rectangle code with your mod code.");
+								Console.WriteLine("Otherwise, we recommend using inheritable shape templates for rectangular buildings");
+								Console.WriteLine("and custom setups for the rest (see our official mods for examples).");
+								shape.Value.Nodes.Remove(hack);
+							}
+						}
+					}
+				}
+
+				// Refactor Building/Bib interaction, partially refactor and rename Bib
+				if (engineVersion < 20170706)
+				{
+					var building = node.Value.Nodes.FirstOrDefault(n => n.Key == "Building");
+					var bib = node.Value.Nodes.FirstOrDefault(n => n.Key == "Bib");
+
+					var hasBib = false;
+					if (bib != null)
+					{
+						var minibib = bib.Value.Nodes.FirstOrDefault(n => n.Key == "HasMinibib");
+						if (minibib != null)
+							hasBib = !FieldLoader.GetValue<bool>("HasMinibib", minibib.Value.Value);
+						else
+							hasBib = true;
+
+						Console.WriteLine("Bibs are no longer automatically included in building footprints. Please check if any manual adjustments are needed.");
+						RenameNodeKey(bib, "WithBuildingBib");
+					}
+
+					if (building != null && hasBib)
+					{
+						var footprint = building.Value.Nodes.FirstOrDefault(n => n.Key == "Footprint");
+						var dimensions = building.Value.Nodes.FirstOrDefault(n => n.Key == "Dimensions");
+						if (footprint != null && dimensions != null)
+						{
+							var newDim = FieldLoader.GetValue<CVec>("Dimensions", dimensions.Value.Value) + new CVec(0, 1);
+							var oldFootprint = FieldLoader.GetValue<string>("Footprint", footprint.Value.Value);
+							dimensions.Value.Value = newDim.ToString();
+							footprint.Value.Value = oldFootprint + " " + string.Concat(Enumerable.Repeat("=", newDim.X));
+
+							var gridType = modData.Manifest.Get<MapGrid>().Type;
+							if (gridType == MapGridType.Rectangular)
+								building.Value.Nodes.Add(new MiniYamlNode("LocalCenterOffset", "0,-512,0"));
+						}
+					}
+				}
+
+				// Bots must now specify an internal type as well as their display name
+				if (engineVersion < 20170707)
+				{
+					if (node.Key.StartsWith("HackyAI", StringComparison.Ordinal) || node.Key.StartsWith("DummyAI", StringComparison.Ordinal))
+					{
+						var nameNode = node.Value.Nodes.FirstOrDefault(n => n.Key == "Name");
+
+						// Just duplicate the name to avoid incompatibility with maps
+						if (nameNode != null)
+							node.Value.Nodes.Add(new MiniYamlNode("Type", nameNode.Value.Value));
+					}
+				}
+
+				// We now differentiate between "occupied and provides offset" and "occupied but provides no offset",
+				// so the old property name was no longer correct.
+				if (engineVersion < 20170705)
+				{
+					if (node.Key == "UseOccupiedCellsOffsets")
+						node.Key = "UseTargetableCellsOffsets";
+				}
+
+				// Refactored AttackBomb so it doesn't need it's own special sauce anymore
+				if (engineVersion < 20170713)
+				{
+					if (node.Key == "AttackBomber")
+					{
+						var gunsOrBombs = node.Value.Nodes.FirstOrDefault(n => n.Key == "Guns" || n.Key == "Bombs");
+						if (gunsOrBombs != null)
+						{
+							Console.WriteLine("Hardcoded Guns and Bombs logic has been removed from AttackBomber.");
+							Console.WriteLine("Bombs should work like usual, for gun strafing use the new Weapon TargetOffset modifiers.");
+							Console.WriteLine("Look at the TD mod's A10 for an example.");
+							node.Value.Nodes.RemoveAll(n => n.Key == "Guns" || n.Key == "Bombs");
+						}
+					}
 				}
 
 				UpgradeActorRules(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);
@@ -629,6 +887,103 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						node.Key = "TrackTarget";
 				}
 
+				// Refactor GravityBomb Speed WDist to Velocity WVec and Acceleration from vertical WDist to vector
+				if (engineVersion < 20170528)
+				{
+					var projectile = node.Value.Nodes.FirstOrDefault(n => n.Key == "Projectile");
+					if (projectile != null && projectile.Value.Value == "GravityBomb")
+					{
+						var speedNode = projectile.Value.Nodes.FirstOrDefault(x => x.Key == "Speed");
+						if (speedNode != null)
+						{
+							var oldWDistSpeed = FieldLoader.GetValue<string>("Speed", speedNode.Value.Value);
+							speedNode.Value.Value = "0, 0, -" + oldWDistSpeed;
+							speedNode.Key = "Velocity";
+						}
+
+						var accelNode = projectile.Value.Nodes.FirstOrDefault(x => x.Key == "Acceleration");
+						if (accelNode != null)
+						{
+							var oldWDistAccel = FieldLoader.GetValue<string>("Acceleration", accelNode.Value.Value);
+							accelNode.Value.Value = "0, 0, -" + oldWDistAccel;
+						}
+					}
+				}
+
+				// Optimal victim scan radii are now calculated automatically
+				if (engineVersion < 20170528)
+				{
+					var targetExtraSearchRadius = node.Value.Nodes.FirstOrDefault(n => n.Key == "TargetSearchRadius" || n.Key == "TargetExtraSearchRadius");
+					if (targetExtraSearchRadius != null)
+					{
+						Console.WriteLine("Warheads and projectiles now calculate the best victim search radius automatically.");
+						Console.WriteLine("If you absolutely need to override that for whatever reason, use the new fields:");
+						Console.WriteLine("VictimScanRadius for warheads, BlockerScanRadius for projectiles,");
+						Console.WriteLine("BounceBlockerScanRadius for bouncing Bullets and AreaVictimScanRadius for AreaBeams.");
+						node.Value.Nodes.Remove(targetExtraSearchRadius);
+					}
+				}
+
+				// Valid-/InvalidImpactTypes were removed from CreateEffectWarhead, which uses Valid-/InvalidTargets instead now
+				if (engineVersion < 20170625)
+				{
+					if (node.Key.StartsWith("Warhead", StringComparison.Ordinal) && node.Value.Value == "CreateEffect")
+					{
+						var validImpactTypes = node.Value.Nodes.FirstOrDefault(n => n.Key == "ValidImpactTypes");
+						var invalidImpactTypes = node.Value.Nodes.FirstOrDefault(n => n.Key == "InvalidImpactTypes");
+						var validTargetsNode = node.Value.Nodes.FirstOrDefault(n => n.Key == "ValidTargets");
+						if (validImpactTypes != null && validTargetsNode == null)
+						{
+							Console.WriteLine("CreateEffectWarhead now uses Valid-/InvalidTargets instead of Valid-/InvalidImpactTypes.");
+							Console.WriteLine("Please check whether you need to make manual adjustments.");
+
+							var validTargets = new List<string>();
+							if (validImpactTypes.Value.Value.Contains("Ground"))
+								validTargets.Add("Ground");
+							if (validImpactTypes.Value.Value.Contains("Water"))
+								validTargets.Add("Water");
+							if (validImpactTypes.Value.Value.Contains("Air"))
+								validTargets.Add("Air");
+
+							// 'validTargets' can be 0 here if the only valid ImpactType(s) were None, TargetHit or TargetTerrain.
+							// In that case we remove it and let the modder fix it manually.
+							if (validTargets.Count > 0)
+							{
+								validImpactTypes.Value.Value = validTargets.JoinWith(", ");
+								RenameNodeKey(validImpactTypes, "ValidTargets");
+							}
+							else
+								node.Value.Nodes.Remove(validImpactTypes);
+						}
+						else if (validTargetsNode == null)
+						{
+							// 'Air' is not part of the internal warhead ValidTargets default, but was part of the ValidImpactTypes default.
+							node.Value.Nodes.Add(new MiniYamlNode("ValidTargets", "Ground, Water, Air"));
+						}
+
+						if (invalidImpactTypes != null)
+						{
+							Console.WriteLine("CreateEffectWarhead now uses Valid-/InvalidTargets instead of Valid-/InvalidImpactTypes.");
+							Console.WriteLine("Please check whether you need to make manual adjustments.");
+
+							// It's too complicated to get all possible combinations right, so we just remove it and let the modder fix it manually
+							node.Value.Nodes.Remove(invalidImpactTypes);
+						}
+					}
+				}
+
+				// Made Missile terrain height checks disableable and disabled by default
+				if (engineVersion < 20170713)
+				{
+					var gridMaxHeight = modData.Manifest.Get<MapGrid>().MaximumTerrainHeight;
+					if (gridMaxHeight > 0)
+					{
+						var projectile = node.Value.Nodes.FirstOrDefault(n => n.Key == "Projectile");
+						if (projectile != null && projectile.Value.Value == "Missile")
+							projectile.Value.Nodes.Add(new MiniYamlNode("TerrainHeightAware", "true"));
+					}
+				}
+
 				UpgradeWeaponRules(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}
@@ -646,7 +1001,17 @@ namespace OpenRA.Mods.Common.UtilityCommands
 		{
 			foreach (var node in nodes)
 			{
-				// Add rules here
+				// Renamed Category to Categories in Template.
+				if (engineVersion < 20170623)
+				{
+					if (node.Key == "Template" || node.Key.StartsWith("Template@", StringComparison.Ordinal))
+					{
+						var category = node.Value.Nodes.FirstOrDefault(n => n.Key == "Category");
+						if (category != null)
+							category.Key = "Categories";
+					}
+				}
+
 				UpgradeTileset(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}

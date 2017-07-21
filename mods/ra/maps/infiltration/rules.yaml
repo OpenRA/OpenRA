@@ -24,9 +24,8 @@ World:
 		Color: FE1100
 
 MISS:
-	AutoTargetIgnore:
 	Targetable:
-		TargetTypes: Ground, C4, DetonateAttack, Structure, MissionObjective
+		TargetTypes: Ground, C4, DetonateAttack, Structure, MissionObjective, NoAutoTarget
 
 LST.Unselectable.UnloadOnly:
 	Inherits: LST
@@ -38,7 +37,8 @@ LST.Unselectable.UnloadOnly:
 	Cargo:
 		MaxWeight: 0
 		PipCount: 0
-	AutoTargetIgnore:
+	Targetable:
+		TargetTypes: Ground, Water, Repair, NoAutoTarget
 
 SPY.Strong:
 	Inherits: SPY
@@ -77,7 +77,8 @@ TRUK.Hijackable:
 		PipCount: 5
 		PassengerConditions:
 			spy.strong: mobile
-	AutoTargetIgnore:
+	Targetable:
+		TargetTypes: Ground, Repair, Vehicle, NoAutoTarget
 	-Huntable:
 	ExternalCapturable:
 		Type: MissionObjective

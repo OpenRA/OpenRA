@@ -84,10 +84,12 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class Harvester : IIssueOrder, IResolveOrder, IPips,
 		IExplodeModifier, IOrderVoice, ISpeedModifier, ISync, INotifyCreated,
-		INotifyResourceClaimLost, INotifyIdle, INotifyBlockingMove, INotifyBuildComplete
+		INotifyIdle, INotifyBlockingMove, INotifyBuildComplete
 	{
 		public readonly HarvesterInfo Info;
 		readonly Mobile mobile;
+		readonly ResourceLayer resLayer;
+		readonly ResourceClaimLayer claimLayer;
 		Dictionary<ResourceTypeInfo, int> contents = new Dictionary<ResourceTypeInfo, int>();
 		bool idleSmart = true;
 		int idleDuration;
@@ -115,6 +117,9 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			Info = info;
 			mobile = self.Trait<Mobile>();
+			resLayer = self.World.WorldActor.Trait<ResourceLayer>();
+			claimLayer = self.World.WorldActor.Trait<ResourceClaimLayer>();
+
 			self.QueueActivity(new CallFunc(() => ChooseNewProc(self, null)));
 		}
 
@@ -226,8 +231,10 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void AcceptResource(ResourceType type)
 		{
-			if (!contents.ContainsKey(type.Info)) contents[type.Info] = 1;
-			else contents[type.Info]++;
+			if (!contents.ContainsKey(type.Info))
+				contents[type.Info] = 1;
+			else
+				contents[type.Info]++;
 		}
 
 		public void UnblockRefinery(Actor self)
@@ -341,6 +348,20 @@ namespace OpenRA.Mods.Common.Traits
 			return contents.Count == 0;
 		}
 
+		public bool CanHarvestCell(Actor self, CPos cell)
+		{
+			// Resources only exist in the ground layer
+			if (cell.Layer != 0)
+				return false;
+
+			var resType = resLayer.GetResource(cell);
+			if (resType == null)
+				return false;
+
+			// Can the harvester collect this kind of resource?
+			return Info.Resources.Contains(resType.Info.Type);
+		}
+
 		public IEnumerable<IOrderTargeter> Orders
 		{
 			get
@@ -387,20 +408,8 @@ namespace OpenRA.Mods.Common.Traits
 				CPos? loc;
 				if (order.TargetLocation != CPos.Zero)
 				{
-					loc = order.TargetLocation;
-
-					var territory = self.World.WorldActor.TraitOrDefault<ResourceClaimLayer>();
-					if (territory != null)
-					{
-						// Find the nearest claimable cell to the order location (useful for group-select harvest):
-						loc = mobile.NearestCell(loc.Value, p => mobile.CanEnterCell(p) && territory.ClaimResource(self, p), 1, 6);
-					}
-					else
-					{
-						// Find the nearest cell to the order location (useful for group-select harvest):
-						var taken = new HashSet<CPos>();
-						loc = mobile.NearestCell(loc.Value, p => mobile.CanEnterCell(p) && taken.Add(p), 1, 6);
-					}
+					// Find the nearest claimable cell to the order location (useful for group-select harvest):
+					loc = mobile.NearestCell(order.TargetLocation, p => mobile.CanEnterCell(p) && claimLayer.TryClaimCell(self, p), 1, 6);
 				}
 				else
 				{
@@ -453,15 +462,6 @@ namespace OpenRA.Mods.Common.Traits
 				// Turn off idle smarts to obey the stop/move:
 				idleSmart = false;
 			}
-		}
-
-		public void OnNotifyResourceClaimLost(Actor self, ResourceClaim claim, Actor claimer)
-		{
-			if (self == claimer) return;
-
-			// Our claim on a resource was stolen, find more unclaimed resources:
-			self.CancelActivity();
-			self.QueueActivity(new FindResources(self));
 		}
 
 		PipType GetPipAt(int i)

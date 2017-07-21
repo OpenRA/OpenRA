@@ -19,16 +19,6 @@
 			Heavy: 25
 		Damage: 250
 		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
-	Warhead@1Eff: CreateEffect
-		Explosions: large_explosion
-		ImpactSounds: kaboom12.aud
-		ValidImpactTypes: Ground
-	Warhead@2Eff: CreateEffect
-		Explosions: large_splash
-		ImpactSounds: splash9.aud
-		ValidImpactTypes: Water
-	Warhead@3Smu: LeaveSmudge
-		SmudgeType: Crater
 
 SubMissile:
 	ReloadDelay: 250
@@ -51,13 +41,3 @@ SubMissile:
 			Heavy: 30
 		Damage: 400
 		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
-	Warhead@1Eff: CreateEffect
-		Explosions: large_explosion
-		ImpactSounds: kaboom12.aud
-		ValidImpactTypes: Ground
-	Warhead@2Eff: CreateEffect
-		Explosions: large_splash
-		ImpactSounds: splash9.aud
-		ValidImpactTypes: Water
-	Warhead@3Smu: LeaveSmudge
-		SmudgeType: Crater

@@ -62,8 +62,8 @@ PROC:
 		Name: Tiberium Refinery
 	Buildable:
 		Queue: Building
-		BuildPaletteOrder: 20
-		Prerequisites: anypower
+		BuildPaletteOrder: 50
+		Prerequisites: anypower, ~techlevel.low
 		Description: Processes raw Tiberium\ninto useable resources.
 	Building:
 		Footprint: xxx= xx== xxx=
@@ -81,8 +81,8 @@ PROC:
 		DiscardExcessResources: true
 	StoresResources:
 		PipColor: Green
-		PipCount: 15
-		Capacity: 3000
+		PipCount: 10
+		Capacity: 2000
 	CustomSellValue:
 		Value: 600
 	FreeActor:
@@ -114,8 +114,8 @@ GASILO:
 	Inherits: ^Building
 	Buildable:
 		Queue: Building
-		BuildPaletteOrder: 70
-		Prerequisites: proc
+		BuildPaletteOrder: 100
+		Prerequisites: proc, ~techlevel.low
 		Description: Stores excess Tiberium.
 	Valued:
 		Cost: 150
@@ -146,6 +146,7 @@ GASILO:
 	WithIdleOverlay@LIGHTS:
 		Sequence: idle-lights
 	StoresResources:
+		PipColor: Green
 		PipCount: 5
 		Capacity: 1500
 	Power:

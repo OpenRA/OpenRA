@@ -306,7 +306,7 @@ namespace OpenRA.Server
 					IpAddress = ((IPEndPoint)newConn.Socket.RemoteEndPoint).Address.ToString(),
 					Index = newConn.PlayerIndex,
 					Slot = LobbyInfo.FirstEmptySlot(),
-					PreferredColor = handshake.Client.Color,
+					PreferredColor = handshake.Client.PreferredColor,
 					Color = handshake.Client.Color,
 					Faction = "Random",
 					SpawnPoint = 0,
@@ -375,7 +375,7 @@ namespace OpenRA.Server
 				Log.Write("server", "{0} ({1}) has joined the game.",
 					client.Name, newConn.Socket.RemoteEndPoint);
 
-				if (Dedicated || !LobbyInfo.IsSinglePlayer)
+				if (LobbyInfo.NonBotClients.Count() > 1)
 					SendMessage("{0} has joined the game.".F(client.Name));
 
 				// Send initial ping
@@ -392,7 +392,7 @@ namespace OpenRA.Server
 						SendOrderTo(newConn, "Message", motd);
 				}
 
-				if (!LobbyInfo.IsSinglePlayer && Map.DefinesUnsafeCustomRules)
+				if (Map.DefinesUnsafeCustomRules)
 					SendOrderTo(newConn, "Message", "This map contains custom rules. Game experience may change.");
 
 				if (!LobbyInfo.GlobalSettings.EnableSingleplayer)
@@ -679,7 +679,7 @@ namespace OpenRA.Server
 			}
 
 			// HACK: Turn down the latency if there is only one real player
-			if (LobbyInfo.IsSinglePlayer)
+			if (LobbyInfo.NonBotClients.Count() == 1)
 				LobbyInfo.GlobalSettings.OrderLatency = 1;
 
 			SyncLobbyInfo();

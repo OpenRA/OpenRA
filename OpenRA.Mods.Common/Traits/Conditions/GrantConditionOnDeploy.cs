@@ -41,9 +41,6 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Cursor to display when unable to (un)deploy the actor.")]
 		public readonly string DeployBlockedCursor = "deploy-blocked";
 
-		[SequenceReference, Desc("Animation to play for deploying/undeploying.")]
-		public readonly string DeployAnimation = null;
-
 		[Desc("Facing that the actor must face before deploying. Set to -1 to deploy regardless of facing.")]
 		public readonly int Facing = -1;
 
@@ -61,7 +58,7 @@ namespace OpenRA.Mods.Common.Traits
 
 	public enum DeployState { Undeployed, Deploying, Deployed, Undeploying }
 
-	public class GrantConditionOnDeploy : IResolveOrder, IIssueOrder, INotifyCreated
+	public class GrantConditionOnDeploy : IResolveOrder, IIssueOrder, INotifyCreated, INotifyDeployComplete, IIssueDeployOrder
 	{
 		readonly Actor self;
 		public readonly GrantConditionOnDeployInfo Info;
@@ -70,6 +67,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		DeployState deployState;
 		ConditionManager conditionManager;
+		INotifyDeployTriggered[] notify;
 		int deployedToken = ConditionManager.InvalidConditionToken;
 		int undeployedToken = ConditionManager.InvalidConditionToken;
 
@@ -88,6 +86,7 @@ namespace OpenRA.Mods.Common.Traits
 		public void Created(Actor self)
 		{
 			conditionManager = self.TraitOrDefault<ConditionManager>();
+			notify = self.TraitsImplementing<INotifyDeployTriggered>().ToArray();
 
 			switch (deployState)
 			{
@@ -129,6 +128,11 @@ namespace OpenRA.Mods.Common.Traits
 			return null;
 		}
 
+		Order IIssueDeployOrder.IssueDeployOrder(Actor self)
+		{
+			return new Order("GrantConditionOnDeploy", self, false);
+		}
+
 		public void ResolveOrder(Actor self, Order order)
 		{
 			if (order.OrderString != "GrantConditionOnDeploy" || deployState == DeployState.Deploying || deployState == DeployState.Undeploying)
@@ -148,12 +152,12 @@ namespace OpenRA.Mods.Common.Traits
 			return ((deployState == DeployState.Deployed) && !Info.CanUndeploy) || (!IsValidTerrain(self.Location) && (deployState != DeployState.Deployed));
 		}
 
-		public bool CanDeployAtLocation(CPos location)
+		public bool IsValidTerrain(CPos location)
 		{
-			return IsValidTerrain(location) && IsValidRampType(location);
+			return IsValidTerrainType(location) && IsValidRampType(location);
 		}
 
-		bool IsValidTerrain(CPos location)
+		bool IsValidTerrainType(CPos location)
 		{
 			if (!self.World.Map.Contains(location))
 				return false;
@@ -183,12 +187,14 @@ namespace OpenRA.Mods.Common.Traits
 			return ramp == 0;
 		}
 
-		IPlayCustomAnimation GetEnabledAnimationProvider(Actor self)
+		void INotifyDeployComplete.FinishedDeploy(Actor self)
 		{
-			var tmp = self.TraitsImplementing<IPlayCustomAnimation>().Where(b => b.IsTraitEnabled());
-			if (!tmp.Any())
-				return null;
-			return tmp.First();
+			OnDeployCompleted();
+		}
+
+		void INotifyDeployComplete.FinishedUndeploy(Actor self)
+		{
+			OnUndeployCompleted();
 		}
 
 		/// <summary>Play deploy sound and animation.</summary>
@@ -199,7 +205,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!init && deployState != DeployState.Undeployed)
 				return;
 
-			if (!CanDeployAtLocation(self.Location))
+			if (!IsValidTerrain(self.Location))
 				return;
 
 			if (!string.IsNullOrEmpty(Info.DeploySound))
@@ -213,10 +219,11 @@ namespace OpenRA.Mods.Common.Traits
 
 			// If there is no animation to play just grant the condition that is used while deployed.
 			// Alternatively, play the deploy animation and then grant the condition.
-			if (string.IsNullOrEmpty(Info.DeployAnimation) || body == null)
+			if (!notify.Any())
 				OnDeployCompleted();
 			else
-				body.PlayCustomAnimation(self, Info.DeployAnimation, OnDeployCompleted);
+				foreach (var n in notify)
+					n.Deploy(self);
 		}
 
 		/// <summary>Play undeploy sound and animation and after that revoke the condition.</summary>
@@ -237,10 +244,11 @@ namespace OpenRA.Mods.Common.Traits
 
 			// If there is no animation to play just grant the condition that is used while undeployed.
 			// Alternatively, play the undeploy animation and then grant the condition.
-			if (string.IsNullOrEmpty(Info.DeployAnimation) || body == null)
+			if (!notify.Any())
 				OnUndeployCompleted();
 			else
-				body.PlayCustomAnimationBackwards(self, Info.DeployAnimation, OnUndeployCompleted);
+				foreach (var n in notify)
+					n.Undeploy(self);
 		}
 
 		void OnDeployStarted()

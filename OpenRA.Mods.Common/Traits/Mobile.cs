@@ -16,6 +16,7 @@ using System.Linq;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Effects;
+using OpenRA.Mods.Common.Pathfinder;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
@@ -49,7 +50,7 @@ namespace OpenRA.Mods.Common.Traits
 
 	[Desc("Unit is able to move.")]
 	public class MobileInfo : ConditionalTraitInfo, IMoveInfo, IPositionableInfo, IFacingInfo,
-		UsesInit<FacingInit>, UsesInit<LocationInit>, UsesInit<SubCellInit>
+		UsesInit<FacingInit>, UsesInit<LocationInit>, UsesInit<SubCellInit>, IActorPreviewInitInfo
 	{
 		[FieldLoader.LoadUsing("LoadSpeeds", true)]
 		[Desc("Set Water: 0 for ground units and lower the value on rough terrain.")]
@@ -132,6 +133,14 @@ namespace OpenRA.Mods.Common.Traits
 
 		[Desc("Can this actor transition on slopes?")]
 		public readonly bool JumpjetTransitionOnRamps = true;
+
+		[Desc("Facing to use for actor previews (map editor, color picker, etc)")]
+		public readonly int PreviewFacing = 92;
+
+		IEnumerable<object> IActorPreviewInitInfo.ActorPreviewInits(ActorInfo ai, ActorPreviewType type)
+		{
+			yield return new FacingInit(PreviewFacing);
+		}
 
 		public override object Create(ActorInitializer init) { return new Mobile(init, this); }
 
@@ -381,12 +390,8 @@ namespace OpenRA.Mods.Common.Traits
 	}
 
 	public class Mobile : ConditionalTrait<MobileInfo>, INotifyCreated, IIssueOrder, IResolveOrder, IOrderVoice, IPositionable, IMove,
-		IFacing, IDeathActorInitModifier, INotifyAddedToWorld, INotifyRemovedFromWorld, INotifyBlockingMove, IActorPreviewInitModifier
+		IFacing, IDeathActorInitModifier, INotifyAddedToWorld, INotifyRemovedFromWorld, INotifyBlockingMove, IActorPreviewInitModifier, INotifyBecomingIdle
 	{
-		const int AverageTicksBeforePathing = 5;
-		const int SpreadTicksBeforePathing = 5;
-		internal int TicksBeforePathing = 0;
-
 		readonly Actor self;
 		readonly Lazy<IEnumerable<int>> speedModifiers;
 		public bool IsMoving { get; set; }
@@ -477,9 +482,11 @@ namespace OpenRA.Mods.Common.Traits
 				SetVisualPosition(self, init.Get<CenterPositionInit, WPos>());
 		}
 
-		void INotifyCreated.Created(Actor self)
+		protected override void Created(Actor self)
 		{
 			conditionManager = self.TraitOrDefault<ConditionManager>();
+
+			base.Created(self);
 		}
 
 		// Returns a valid sub-cell
@@ -618,33 +625,6 @@ namespace OpenRA.Mods.Common.Traits
 			return target;
 		}
 
-		void PerformMoveInner(Actor self, CPos targetLocation, bool queued)
-		{
-			var currentLocation = NearestMoveableCell(targetLocation);
-
-			if (!CanEnterCell(currentLocation))
-			{
-				if (queued) self.CancelActivity();
-				return;
-			}
-
-			if (!queued) self.CancelActivity();
-
-			TicksBeforePathing = AverageTicksBeforePathing + self.World.SharedRandom.Next(-SpreadTicksBeforePathing, SpreadTicksBeforePathing);
-
-			self.QueueActivity(new Move(self, currentLocation, WDist.FromCells(8)));
-
-			self.SetTargetLine(Target.FromCell(self.World, currentLocation), Color.Green);
-		}
-
-		protected void PerformMove(Actor self, CPos targetLocation, bool queued)
-		{
-			if (queued)
-				self.QueueActivity(new CallFunc(() => PerformMoveInner(self, targetLocation, true)));
-			else
-				PerformMoveInner(self, targetLocation, false);
-		}
-
 		public void ResolveOrder(Actor self, Order order)
 		{
 			if (order.OrderString == "Move")
@@ -652,8 +632,11 @@ namespace OpenRA.Mods.Common.Traits
 				if (!Info.MoveIntoShroud && !self.Owner.Shroud.IsExplored(order.TargetLocation))
 					return;
 
-				PerformMove(self, self.World.Map.Clamp(order.TargetLocation),
-					order.Queued && !self.IsIdle);
+				if (!order.Queued)
+					self.CancelActivity();
+
+				self.SetTargetLine(Target.FromCell(self.World, order.TargetLocation), Color.Green);
+				self.QueueActivity(order.Queued, new Move(self, order.TargetLocation, WDist.FromCells(8), null, true));
 			}
 
 			if (order.OrderString == "Stop")
@@ -913,7 +896,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public Activity ScriptedMove(CPos cell) { return new Move(self, cell); }
 		public Activity MoveTo(CPos cell, int nearEnough) { return new Move(self, cell, WDist.FromCells(nearEnough)); }
-		public Activity MoveTo(CPos cell, Actor ignoredActor) { return new Move(self, cell, ignoredActor); }
+		public Activity MoveTo(CPos cell, Actor ignoreActor) { return new Move(self, cell, WDist.Zero, ignoreActor); }
 		public Activity MoveWithinRange(Target target, WDist range) { return new MoveWithinRange(self, target, WDist.Zero, range); }
 		public Activity MoveWithinRange(Target target, WDist minRange, WDist maxRange) { return new MoveWithinRange(self, target, minRange, maxRange); }
 		public Activity MoveFollow(Actor self, Target target, WDist minRange, WDist maxRange) { return new Follow(self, target, minRange, maxRange); }
@@ -956,7 +939,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (target.Type == TargetType.Invalid)
 				return null;
 
-			return VisualMove(self, self.CenterPosition, target.CenterPosition);
+			return VisualMove(self, self.CenterPosition, target.Positions.PositionClosestTo(self.CenterPosition));
 		}
 
 		public bool CanEnterTargetNow(Actor self, Target target)
@@ -986,6 +969,35 @@ namespace OpenRA.Mods.Common.Traits
 			// Allows the husk to drag to its final position
 			if (CanEnterCell(self.Location, self, false))
 				init.Add(new HuskSpeedInit(MovementSpeedForCell(self, self.Location)));
+		}
+
+		CPos? ClosestGroundCell()
+		{
+			var above = new CPos(TopLeft.X, TopLeft.Y);
+			if (CanEnterCell(above))
+				return above;
+
+			var pathFinder = self.World.WorldActor.Trait<IPathFinder>();
+			List<CPos> path;
+			using (var search = PathSearch.Search(self.World, Info, self, true,
+					loc => loc.Layer == 0 && CanEnterCell(loc))
+				.FromPoint(self.Location))
+				path = pathFinder.FindPath(search);
+
+			if (path.Count > 0)
+				return path[0];
+
+			return null;
+		}
+
+		void INotifyBecomingIdle.OnBecomingIdle(Actor self)
+		{
+			if (TopLeft.Layer == 0)
+				return;
+
+			var moveTo = ClosestGroundCell();
+			if (moveTo != null)
+				self.QueueActivity(MoveTo(moveTo.Value, 0));
 		}
 	}
 }

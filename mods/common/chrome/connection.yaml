@@ -1,7 +1,7 @@
 Background@CONNECTIONFAILED_PANEL:
 	Logic: ConnectionFailedLogic
-	X: (WINDOW_RIGHT - WIDTH)/2
-	Y: (WINDOW_BOTTOM - HEIGHT)/2
+	X: (WINDOW_RIGHT - WIDTH) / 2
+	Y: (WINDOW_BOTTOM - HEIGHT) / 2
 	Width: 450
 	Height: 160
 	Children:
@@ -60,8 +60,8 @@ Background@CONNECTIONFAILED_PANEL:
 
 Background@CONNECTING_PANEL:
 	Logic: ConnectionLogic
-	X: (WINDOW_RIGHT - WIDTH)/2
-	Y: (WINDOW_BOTTOM - HEIGHT)/2
+	X: (WINDOW_RIGHT - WIDTH) / 2
+	Y: (WINDOW_BOTTOM - HEIGHT) / 2
 	Width: 450
 	Height: 150
 	Children:
@@ -91,8 +91,8 @@ Background@CONNECTING_PANEL:
 
 Background@CONNECTION_SWITCHMOD_PANEL:
 	Logic: ConnectionSwitchModLogic
-	X: (WINDOW_RIGHT - WIDTH)/2
-	Y: (WINDOW_BOTTOM - HEIGHT)/2
+	X: (WINDOW_RIGHT - WIDTH) / 2
+	Y: (WINDOW_BOTTOM - HEIGHT) / 2
 	Width: 450
 	Height: 191
 	Children:

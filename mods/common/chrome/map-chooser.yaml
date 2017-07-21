@@ -1,6 +1,6 @@
 Background@MAPCHOOSER_PANEL:
-	X: (WINDOW_RIGHT - WIDTH)/2
-	Y: (WINDOW_BOTTOM - HEIGHT)/2
+	X: (WINDOW_RIGHT - WIDTH) / 2
+	Y: (WINDOW_BOTTOM - HEIGHT) / 2
 	Logic: MapChooserLogic
 	Width: 808
 	Height: 600
@@ -53,7 +53,7 @@ Background@MAPCHOOSER_PANEL:
 			Visible: false
 			Children:
 				MapPreview@PREVIEW:
-					X: (PARENT_RIGHT - WIDTH)/2
+					X: (PARENT_RIGHT - WIDTH) / 2
 					Y: 3
 					Width: 179
 					Height: 179
@@ -61,25 +61,25 @@ Background@MAPCHOOSER_PANEL:
 					IgnoreMouseInput: true
 				Label@TITLE:
 					X: 4
-					Y: PARENT_BOTTOM-53
-					Width: PARENT_RIGHT-8
+					Y: PARENT_BOTTOM - 53
+					Width: PARENT_RIGHT - 8
 					Align: Center
 				Label@DETAILS:
-					Width: PARENT_RIGHT-8
+					Width: PARENT_RIGHT - 8
 					X: 4
-					Y: PARENT_BOTTOM-37
+					Y: PARENT_BOTTOM - 37
 					Align: Center
 					Font: Tiny
 				Label@AUTHOR:
-					Width: PARENT_RIGHT-8
+					Width: PARENT_RIGHT - 8
 					X: 4
-					Y: PARENT_BOTTOM-25
+					Y: PARENT_BOTTOM - 25
 					Align: Center
 					Font: Tiny
 				Label@SIZE:
-					Width: PARENT_RIGHT-8
+					Width: PARENT_RIGHT - 8
 					X: 4
-					Y: PARENT_BOTTOM-13
+					Y: PARENT_BOTTOM - 13
 					Align: Center
 					Font: Tiny
 		Label@FILTER_DESC:

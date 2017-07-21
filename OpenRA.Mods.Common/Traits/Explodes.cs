@@ -20,10 +20,10 @@ namespace OpenRA.Mods.Common.Traits
 	public enum ExplosionType { Footprint, CenterPosition }
 
 	[Desc("This actor explodes when killed.")]
-	public class ExplodesInfo : ITraitInfo, IRulesetLoaded, Requires<HealthInfo>
+	public class ExplodesInfo : ConditionalTraitInfo, Requires<HealthInfo>
 	{
 		[WeaponReference, FieldLoader.Require, Desc("Default weapon to use for explosion if ammo/payload is loaded.")]
-		public readonly string Weapon = "UnitExplode";
+		public readonly string Weapon = null;
 
 		[WeaponReference, Desc("Fallback weapon to use for explosion if empty (no ammo/payload).")]
 		public readonly string EmptyWeapon = "UnitExplode";
@@ -47,23 +47,24 @@ namespace OpenRA.Mods.Common.Traits
 		public WeaponInfo WeaponInfo { get; private set; }
 		public WeaponInfo EmptyWeaponInfo { get; private set; }
 
-		public object Create(ActorInitializer init) { return new Explodes(this, init.Self); }
-		public void RulesetLoaded(Ruleset rules, ActorInfo ai)
+		public override object Create(ActorInitializer init) { return new Explodes(this, init.Self); }
+		public override void RulesetLoaded(Ruleset rules, ActorInfo ai)
 		{
 			WeaponInfo = string.IsNullOrEmpty(Weapon) ? null : rules.Weapons[Weapon.ToLowerInvariant()];
 			EmptyWeaponInfo = string.IsNullOrEmpty(EmptyWeapon) ? null : rules.Weapons[EmptyWeapon.ToLowerInvariant()];
+
+			base.RulesetLoaded(rules, ai);
 		}
 	}
 
-	public class Explodes : INotifyKilled, INotifyDamage, INotifyCreated
+	public class Explodes : ConditionalTrait<ExplodesInfo>, INotifyKilled, INotifyDamage, INotifyCreated
 	{
-		readonly ExplodesInfo info;
 		readonly Health health;
 		BuildingInfo buildingInfo;
 
 		public Explodes(ExplodesInfo info, Actor self)
+			: base(info)
 		{
-			this.info = info;
 			health = self.Trait<Health>();
 		}
 
@@ -74,13 +75,13 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyKilled.Killed(Actor self, AttackInfo e)
 		{
-			if (!self.IsInWorld)
+			if (IsTraitDisabled || !self.IsInWorld)
 				return;
 
-			if (self.World.SharedRandom.Next(100) > info.Chance)
+			if (self.World.SharedRandom.Next(100) > Info.Chance)
 				return;
 
-			if (info.DeathTypes.Count > 0 && !e.Damage.DamageTypes.Overlaps(info.DeathTypes))
+			if (Info.DeathTypes.Count > 0 && !e.Damage.DamageTypes.Overlaps(Info.DeathTypes))
 				return;
 
 			var weapon = ChooseWeaponForExplosion(self);
@@ -90,9 +91,9 @@ namespace OpenRA.Mods.Common.Traits
 			if (weapon.Report != null && weapon.Report.Any())
 				Game.Sound.Play(SoundType.World, weapon.Report.Random(e.Attacker.World.SharedRandom), self.CenterPosition);
 
-			if (info.Type == ExplosionType.Footprint && buildingInfo != null)
+			if (Info.Type == ExplosionType.Footprint && buildingInfo != null)
 			{
-				var cells = FootprintUtils.UnpathableTiles(self.Info.Name, buildingInfo, self.Location);
+				var cells = buildingInfo.UnpathableTiles(self.Location);
 				foreach (var c in cells)
 					weapon.Impact(Target.FromPos(self.World.Map.CenterOfCell(c)), e.Attacker, Enumerable.Empty<int>());
 
@@ -106,16 +107,19 @@ namespace OpenRA.Mods.Common.Traits
 		WeaponInfo ChooseWeaponForExplosion(Actor self)
 		{
 			var shouldExplode = self.TraitsImplementing<IExplodeModifier>().All(a => a.ShouldExplode(self));
-			var useFullExplosion = self.World.SharedRandom.Next(100) <= info.LoadedChance;
-			return (shouldExplode && useFullExplosion) ? info.WeaponInfo : info.EmptyWeaponInfo;
+			var useFullExplosion = self.World.SharedRandom.Next(100) <= Info.LoadedChance;
+			return (shouldExplode && useFullExplosion) ? Info.WeaponInfo : Info.EmptyWeaponInfo;
 		}
 
 		void INotifyDamage.Damaged(Actor self, AttackInfo e)
 		{
-			if (info.DamageThreshold == 0)
+			if (IsTraitDisabled || !self.IsInWorld)
 				return;
 
-			if (health.HP * 100 < info.DamageThreshold * health.MaxHP)
+			if (Info.DamageThreshold == 0)
+				return;
+
+			if (health.HP * 100 < Info.DamageThreshold * health.MaxHP)
 				self.World.AddFrameEndTask(w => self.Kill(e.Attacker));
 		}
 	}

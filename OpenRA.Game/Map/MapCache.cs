@@ -54,12 +54,21 @@ namespace OpenRA
 					? MapClassification.Unknown : Enum<MapClassification>.Parse(kv.Value);
 
 				IReadOnlyPackage package;
-				var optional = name.StartsWith("~");
+				var optional = name.StartsWith("~", StringComparison.Ordinal);
 				if (optional)
 					name = name.Substring(1);
 
 				try
 				{
+					// HACK: If the path is inside the the support directory then we may need to create it
+					if (name.StartsWith("^", StringComparison.Ordinal))
+					{
+						// Assume that the path is a directory if there is not an existing file with the same name
+						var resolved = Platform.ResolvePath(name);
+						if (!File.Exists(resolved))
+							Directory.CreateDirectory(resolved);
+					}
+
 					package = modData.ModFiles.OpenPackage(name);
 				}
 				catch
@@ -92,7 +101,7 @@ namespace OpenRA
 					{
 						using (new Support.PerfTimer(map))
 						{
-							mapPackage = modData.ModFiles.OpenPackage(map, kv.Key);
+							mapPackage = kv.Key.OpenPackage(map, modData.ModFiles);
 							if (mapPackage == null)
 								continue;
 
@@ -113,7 +122,7 @@ namespace OpenRA
 			}
 		}
 
-		public void QueryRemoteMapDetails(IEnumerable<string> uids, Action<MapPreview> mapDetailsReceived = null, Action queryFailed = null)
+		public void QueryRemoteMapDetails(string repositoryUrl, IEnumerable<string> uids, Action<MapPreview> mapDetailsReceived = null, Action queryFailed = null)
 		{
 			var maps = uids.Distinct()
 				.Select(uid => previews[uid])
@@ -126,7 +135,7 @@ namespace OpenRA
 			foreach (var p in maps.Values)
 				p.UpdateRemoteSearch(MapStatus.Searching, null);
 
-			var url = Game.Settings.Game.MapRepository + "hash/" + string.Join(",", maps.Keys) + "/yaml";
+			var url = repositoryUrl + "hash/" + string.Join(",", maps.Keys) + "/yaml";
 
 			Action<DownloadDataCompletedEventArgs> onInfoComplete = i =>
 			{

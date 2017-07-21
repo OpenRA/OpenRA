@@ -15,6 +15,7 @@ MultiCluster:
 		Palette: ra
 		MinimumLaunchSpeed: 75
 		Speed: 384
+		TerrainHeightAware: true
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 65
@@ -29,12 +30,12 @@ MultiCluster:
 	Warhead@2Eff: CreateEffect
 		Explosions: large_explosion
 		ImpactSounds: expnew09.aud
-		InvalidImpactTypes: Water
+		ValidTargets: Ground, Air
 	Warhead@3EffWater: CreateEffect
 		Explosions: small_watersplash
 		ExplosionPalette: player
-		ImpactSounds: ssplash2.aud
-		ValidImpactTypes: Water
+		ValidTargets: Water
+		InvalidTargets: Vehicle
 	Warhead@4Smu: LeaveSmudge
 		SmudgeType: MediumCrater
 		InvalidTargets: Vehicle, Building, Wall
@@ -77,23 +78,29 @@ IonCannon:
 		Delay: 3
 	Warhead@4Effect: CreateEffect
 		Explosions: ionbeam
-		ExplosionPalette: effectalpha75
+		ExplosionPalette: effect-ignore-lighting-alpha75
 		ImpactSounds: ion1.aud
+		VictimScanRadius: 0
 	Warhead@5Effect: CreateEffect
 		Explosions: ionbeam2
-		ExplosionPalette: effectalpha75
+		ExplosionPalette: effect-ignore-lighting-alpha75
+		VictimScanRadius: 0
 	Warhead@6Effect: CreateEffect
 		Explosions: ionbeam3
-		ExplosionPalette: effectalpha75
+		ExplosionPalette: effect-ignore-lighting-alpha75
+		VictimScanRadius: 0
 	Warhead@7Effect: CreateEffect
 		Explosions: ionbeam4
-		ExplosionPalette: effectalpha75
+		ExplosionPalette: effect-ignore-lighting-alpha75
+		VictimScanRadius: 0
 	Warhead@8Effect: CreateEffect
 		Explosions: ionbeam5
-		ExplosionPalette: effectalpha75
+		ExplosionPalette: effect-ignore-lighting-alpha75
+		VictimScanRadius: 0
 	Warhead@9Effect: CreateEffect
 		Explosions: ionbeam6
-		ExplosionPalette: effectalpha75
+		ExplosionPalette: effect-ignore-lighting-alpha75
+		VictimScanRadius: 0
 
 EMPulseCannon:
 	ReloadDelay: 100
@@ -107,6 +114,8 @@ EMPulseCannon:
 		Image: pulsball
 	Warhead@1Eff: CreateEffect
 		Explosions: pulse_explosion
+		ExplosionPalette: effect-ignore-lighting-alpha75
+		VictimScanRadius: 0
 	Warhead@emp: GrantExternalCondition
 		Range: 4c0
 		Duration: 250
@@ -124,7 +133,9 @@ ClusterMissile:
 		DamageTypes: Prone50Percent, TriggerProne, FireDeath
 	Warhead@SoundEffect0: CreateEffect
 		Explosions: large_explosion
+		ExplosionPalette: effect-ignore-lighting-alpha75
 		ImpactSounds: expnew19.aud
+		VictimScanRadius: 0
 	Warhead@ResourceDestruction0: DestroyResource
 		Size: 1
 	Warhead@ClusterSmudges0: LeaveSmudge

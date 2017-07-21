@@ -18,6 +18,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using OpenRA.FileSystem;
+using OpenRA.Graphics;
 using OpenRA.Support;
 using OpenRA.Traits;
 
@@ -169,7 +170,7 @@ namespace OpenRA
 			new MapField("Actors", "ActorDefinitions"),
 			new MapField("Rules", "RuleDefinitions", required: false),
 			new MapField("Sequences", "SequenceDefinitions", required: false),
-			new MapField("VoxelSequences", "VoxelSequenceDefinitions", required: false),
+			new MapField("ModelSequences", "ModelSequenceDefinitions", required: false),
 			new MapField("Weapons", "WeaponDefinitions", required: false),
 			new MapField("Voices", "VoiceDefinitions", required: false),
 			new MapField("Music", "MusicDefinitions", required: false),
@@ -201,7 +202,7 @@ namespace OpenRA
 		// Custom map yaml. Public for access by the map importers and lint checks
 		public readonly MiniYaml RuleDefinitions;
 		public readonly MiniYaml SequenceDefinitions;
-		public readonly MiniYaml VoxelSequenceDefinitions;
+		public readonly MiniYaml ModelSequenceDefinitions;
 		public readonly MiniYaml WeaponDefinitions;
 		public readonly MiniYaml VoiceDefinitions;
 		public readonly MiniYaml MusicDefinitions;
@@ -388,13 +389,13 @@ namespace OpenRA
 			try
 			{
 				Rules = Ruleset.Load(modData, this, Tileset, RuleDefinitions, WeaponDefinitions,
-					VoiceDefinitions, NotificationDefinitions, MusicDefinitions, SequenceDefinitions);
+					VoiceDefinitions, NotificationDefinitions, MusicDefinitions, SequenceDefinitions, ModelSequenceDefinitions);
 			}
 			catch (Exception e)
 			{
+				Log.Write("debug", "Failed to load rules for {0} with error {1}", Title, e);
 				InvalidCustomRules = true;
 				Rules = Ruleset.LoadDefaultsForTileSet(modData, Tileset);
-				Log.Write("debug", "Failed to load rules for {0} with error {1}", Title, e.Message);
 			}
 
 			Rules.Sequences.Preload();
@@ -763,8 +764,11 @@ namespace OpenRA
 			// (b) Therefore:
 			//  - ax + by adds (a - b) * 512 + 512 to u
 			//  - ax + by adds (a + b) * 512 + 512 to v
-			var z = Height.Contains(cell) ? 512 * Height[cell] : 0;
-			return new WPos(512 * (cell.X - cell.Y + 1), 512 * (cell.X + cell.Y + 1), z);
+			// (c) u, v coordinates run diagonally to the cell axes, and we define
+			//     1024 as the length projected onto the primary cell axis
+			//  - 512 * sqrt(2) = 724
+			var z = Height.Contains(cell) ? 724 * Height[cell] : 0;
+			return new WPos(724 * (cell.X - cell.Y + 1), 724 * (cell.X + cell.Y + 1), z);
 		}
 
 		public WPos CenterOfSubCell(CPos cell, SubCell subCell)
@@ -788,15 +792,15 @@ namespace OpenRA
 				return new CPos(pos.X / 1024, pos.Y / 1024);
 
 			// Convert from world position to isometric cell position:
-			// (a) Subtract (512, 512) to move the rotation center to the middle of the corner cell
-			// (b) Rotate axes by -pi/4
-			// (c) Divide through by sqrt(2) to bring us to an equivalent world pos aligned with u,v axes
-			// (d) Apply an offset so that the integer division by 1024 rounds in the right direction:
-			//      (i) u is always positive, so add 512 (which then partially cancels the -1024 term from the rotation)
-			//     (ii) v can be negative, so we need to be careful about rounding directions.  We add 512 *away from 0* (negative if y > x).
-			// (e) Divide by 1024 to bring into cell coords.
-			var u = (pos.Y + pos.X - 512) / 1024;
-			var v = (pos.Y - pos.X + (pos.Y > pos.X ? 512 : -512)) / 1024;
+			// (a) Subtract ([1/2 cell], [1/2 cell]) to move the rotation center to the middle of the corner cell
+			// (b) Rotate axes by -pi/4 to align the world axes with the cell axes
+			// (c) Apply an offset so that the integer division by [1 cell] rounds in the right direction:
+			//      (i) u is always positive, so add [1/2 cell] (which then partially cancels the -[1 cell] term from the rotation)
+			//     (ii) v can be negative, so we need to be careful about rounding directions.  We add [1/2 cell] *away from 0* (negative if y > x).
+			// (e) Divide by [1 cell] to bring into cell coords.
+			// The world axes are rotated relative to the cell axes, so the standard cell size (1024) is increased by a factor of sqrt(2)
+			var u = (pos.Y + pos.X - 724) / 1448;
+			var v = (pos.Y - pos.X + (pos.Y > pos.X ? 724 : -724)) / 1448;
 			return new CPos(u, v);
 		}
 
@@ -870,19 +874,19 @@ namespace OpenRA
 			Bounds = Rectangle.FromLTRB(tl.U, tl.V, br.U + 1, br.V + 1);
 
 			// Directly calculate the projected map corners in world units avoiding unnecessary
-			// conversions.  This abuses the definition that the width of the cell is always
-			// 1024 units, and that the height of two rows is 2048 for classic cells and 1024
+			// conversions.  This abuses the definition that the width of the cell along the x world axis
+			// is always 1024 or 1448 units, and that the height of two rows is 2048 for classic cells and 724
 			// for isometric cells.
-			var wtop = tl.V * 1024;
-			var wbottom = (br.V + 1) * 1024;
 			if (Grid.Type == MapGridType.RectangularIsometric)
 			{
-				wtop /= 2;
-				wbottom /= 2;
+				ProjectedTopLeft = new WPos(tl.U * 1448, tl.V * 724, 0);
+				ProjectedBottomRight = new WPos(br.U * 1448 - 1, (br.V + 1) * 724 - 1, 0);
 			}
-
-			ProjectedTopLeft = new WPos(tl.U * 1024, wtop, 0);
-			ProjectedBottomRight = new WPos(br.U * 1024 - 1, wbottom - 1, 0);
+			else
+			{
+				ProjectedTopLeft = new WPos(tl.U * 1024, tl.V * 1024, 0);
+				ProjectedBottomRight = new WPos(br.U * 1024 - 1, (br.V + 1) * 1024 - 1, 0);
+			}
 
 			ProjectedCellBounds = new ProjectedCellRegion(this, tl, br);
 		}

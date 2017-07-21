@@ -47,7 +47,7 @@ namespace OpenRA.Mods.Common
 			if (self.EffectiveOwner != null && self.EffectiveOwner.Disguised && !toActor.Info.HasTraitInfo<IgnoresDisguiseInfo>())
 				return toActor.Owner.Stances[self.EffectiveOwner.Owner] == Stance.Ally;
 
-			return stance == Stance.Ally;
+			return false;
 		}
 
 		public static bool AppearsHostileTo(this Actor self, Actor toActor)
@@ -120,30 +120,6 @@ namespace OpenRA.Mods.Common
 		public static void NotifyBlocker(this Actor self, IEnumerable<CPos> positions)
 		{
 			NotifyBlocker(self, positions.SelectMany(p => self.World.ActorMap.GetActorsAt(p)));
-		}
-
-		public static bool CanHarvestAt(this Actor self, CPos pos, ResourceLayer resLayer, HarvesterInfo harvInfo,
-			ResourceClaimLayer territory)
-		{
-			var resType = resLayer.GetResource(pos);
-			if (resType == null)
-				return false;
-
-			// Can the harvester collect this kind of resource?
-			if (!harvInfo.Resources.Contains(resType.Info.Type))
-				return false;
-
-			if (territory != null)
-			{
-				// Another harvester has claimed this resource:
-				ResourceClaim claim;
-				if (territory.IsClaimedByAnyoneElse(self as Actor, pos, out claim))
-					return false;
-			}
-
-			if (self.Location == pos)
-				return true;
-			return self.Trait<Mobile>().CanEnterCell(pos);
 		}
 
 		public static CPos ClosestCell(this Actor self, IEnumerable<CPos> cells)

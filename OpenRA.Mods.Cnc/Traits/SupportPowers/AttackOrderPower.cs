@@ -47,9 +47,11 @@ namespace OpenRA.Mods.Cnc.Traits
 			attack.AttackTarget(Target.FromCell(self.World, order.TargetLocation), false, false, true);
 		}
 
-		void INotifyCreated.Created(Actor self)
+		protected override void Created(Actor self)
 		{
 			attack = self.Trait<AttackBase>();
+
+			base.Created(self);
 		}
 
 		void INotifyBurstComplete.FiredBurst(Actor self, Target target, Armament a)
@@ -88,7 +90,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			var pos = world.Map.CenterOfCell(cell);
 			var range = attack.GetMaximumRange().LengthSquared;
 
-			return instance.Instances.Where(i => !i.Self.IsDisabled()).MinByOrDefault(a => (a.Self.CenterPosition - pos).HorizontalLengthSquared).Self;
+			return instance.Instances.Where(i => !i.IsTraitPaused).MinByOrDefault(a => (a.Self.CenterPosition - pos).HorizontalLengthSquared).Self;
 		}
 
 		bool IsValidTarget(World world, CPos cell)
@@ -96,7 +98,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			var pos = world.Map.CenterOfCell(cell);
 			var range = attack.GetMaximumRange().LengthSquared;
 
-			return world.Map.Contains(cell) && instance.Instances.Any(a => !a.Self.IsDisabled() && (a.Self.CenterPosition - pos).HorizontalLengthSquared < range);
+			return world.Map.Contains(cell) && instance.Instances.Any(a => !a.IsTraitPaused && (a.Self.CenterPosition - pos).HorizontalLengthSquared < range);
 		}
 
 		IEnumerable<Order> IOrderGenerator.Order(World world, CPos cell, int2 worldPixel, MouseInput mi)
@@ -122,7 +124,7 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		IEnumerable<IRenderable> IOrderGenerator.RenderAboveShroud(WorldRenderer wr, World world)
 		{
-			foreach (var a in instance.Instances.Where(i => !i.Self.IsDisabled()))
+			foreach (var a in instance.Instances.Where(i => !i.IsTraitPaused))
 			{
 				yield return new RangeCircleRenderable(
 					a.Self.CenterPosition,

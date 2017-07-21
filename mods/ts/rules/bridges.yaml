@@ -15,6 +15,8 @@ CABHUT:
 	-SelectionDecorations:
 	-Demolishable:
 	-Explodes:
+	EditorTilesetFilter:
+		Categories: Bridge
 
 ^LowBridgeRamp:
 	AlwaysVisible:
@@ -30,16 +32,19 @@ CABHUT:
 		QuantizedFacings: 1
 	Tooltip:
 		Name: Bridge
+	EditorTilesetFilter:
+		Categories: Bridge
 
 ^LowBridge:
 	Inherits: ^LowBridgeRamp
 	Targetable:
-		TargetTypes: Ground, Building
+		TargetTypes: Ground, Building, Bridge
 		RequiresForceFire: true
 	Health:
 		HP: 500
 	Armor:
 		Type: Concrete
+	HitShape:
 
 LOBRDG_A:
 	Inherits: ^LowBridge
@@ -171,6 +176,8 @@ LOBRDG_R_SW:
 		OccupiesSpace: false
 	CustomSelectionSize:
 		CustomBounds: 96, 144
+	EditorTilesetFilter:
+		Categories: Bridge
 
 BRIDGE1:
 	Inherits: ^ElevatedBridgePlaceholder

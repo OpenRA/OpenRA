@@ -9,7 +9,6 @@ Player:
 	PowerManager:
 	AllyRepair:
 	PlayerResources:
-	ActorGroupProxy:
 	DeveloperMode:
 	BaseAttackNotifier:
 	Shroud:

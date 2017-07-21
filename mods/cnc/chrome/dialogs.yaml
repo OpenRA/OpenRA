@@ -3,7 +3,7 @@ ScrollPanel@LABEL_DROPDOWN_TEMPLATE:
 	Background: panel-black
 	Children:
 		ScrollItem@HEADER:
-			Width: PARENT_RIGHT-27
+			Width: PARENT_RIGHT - 27
 			Height: 13
 			X: 2
 			Y: 0
@@ -15,7 +15,7 @@ ScrollPanel@LABEL_DROPDOWN_TEMPLATE:
 					Height: 10
 					Align: Center
 		ScrollItem@TEMPLATE:
-			Width: PARENT_RIGHT-27
+			Width: PARENT_RIGHT - 27
 			Height: 25
 			X: 2
 			Y: 0
@@ -23,7 +23,7 @@ ScrollPanel@LABEL_DROPDOWN_TEMPLATE:
 			Children:
 				Label@LABEL:
 					X: 10
-					Width: PARENT_RIGHT-20
+					Width: PARENT_RIGHT - 20
 					Height: 25
 
 ScrollPanel@FACTION_DROPDOWN_TEMPLATE:
@@ -32,7 +32,7 @@ ScrollPanel@FACTION_DROPDOWN_TEMPLATE:
 	Children:
 		ScrollItem@HEADER:
 			BaseName: scrollheader
-			Width: PARENT_RIGHT-27
+			Width: PARENT_RIGHT - 27
 			Height: 13
 			X: 2
 			Y: 0
@@ -44,13 +44,12 @@ ScrollPanel@FACTION_DROPDOWN_TEMPLATE:
 					Height: 10
 					Align: Center
 		ScrollItem@TEMPLATE:
-			Width: PARENT_RIGHT-27
+			Width: PARENT_RIGHT - 27
 			Height: 25
 			X: 2
 			Y: 0
 			Visible: false
 			TooltipContainer: TOOLTIP_CONTAINER
-			TooltipTemplate: FACTION_DESCRIPTION_TOOLTIP
 			Children:
 				Image@FLAG:
 					X: 4
@@ -67,7 +66,7 @@ ScrollPanel@TEAM_DROPDOWN_TEMPLATE:
 	Background: panel-black
 	Children:
 		ScrollItem@TEMPLATE:
-			Width: PARENT_RIGHT-27
+			Width: PARENT_RIGHT - 27
 			Height: 25
 			X: 2
 			Y: 0
@@ -84,7 +83,7 @@ ScrollPanel@SPAWN_DROPDOWN_TEMPLATE:
 	Background: panel-black
 	Children:
 		ScrollItem@TEMPLATE:
-			Width: PARENT_RIGHT-27
+			Width: PARENT_RIGHT - 27
 			Height: 25
 			X: 2
 			Y: 0
@@ -101,7 +100,7 @@ ScrollPanel@SPECTATOR_DROPDOWN_TEMPLATE:
 	Background: panel-black
 	Children:
 		ScrollItem@HEADER:
-			Width: PARENT_RIGHT-27
+			Width: PARENT_RIGHT - 27
 			Height: 13
 			X: 2
 			Y: 0
@@ -113,7 +112,7 @@ ScrollPanel@SPECTATOR_DROPDOWN_TEMPLATE:
 					Height: 10
 					Align: Center
 		ScrollItem@TEMPLATE:
-			Width: PARENT_RIGHT-27
+			Width: PARENT_RIGHT - 27
 			Height: 25
 			X: 2
 			Y: 0
@@ -136,15 +135,15 @@ ScrollPanel@SPECTATOR_DROPDOWN_TEMPLATE:
 					Shadow: True
 
 Background@THREEBUTTON_PROMPT:
-	X: (WINDOW_RIGHT - WIDTH)/2
-	Y: (WINDOW_BOTTOM - 90)/2
+	X: (WINDOW_RIGHT - WIDTH) / 2
+	Y: (WINDOW_BOTTOM - 90) / 2
 	Width: 500
 	Height: 41
 	Background: panel-black
 	Children:
 		Label@PROMPT_TITLE:
 			Width: PARENT_RIGHT
-			Y: 0-25
+			Y: 0 - 25
 			Font: BigBold
 			Contrast: true
 			Align: Center
@@ -179,15 +178,15 @@ Background@THREEBUTTON_PROMPT:
 			Visible: false
 
 Background@TWOBUTTON_PROMPT:
-	X: (WINDOW_RIGHT - WIDTH)/2
-	Y: (WINDOW_BOTTOM - 90)/2
+	X: (WINDOW_RIGHT - WIDTH) / 2
+	Y: (WINDOW_BOTTOM - 90) / 2
 	Width: 370
 	Height: 31
 	Background: panel-black
 	Children:
 		Label@PROMPT_TITLE:
 			Width: PARENT_RIGHT
-			Y: 0-25
+			Y: 0 - 25
 			Font: BigBold
 			Contrast: true
 			Align: Center
@@ -214,14 +213,14 @@ Background@TWOBUTTON_PROMPT:
 			Visible: false
 
 Container@TEXT_INPUT_PROMPT:
-	X: (WINDOW_RIGHT - WIDTH)/2
-	Y: (WINDOW_BOTTOM - HEIGHT)/2
+	X: (WINDOW_RIGHT - WIDTH) / 2
+	Y: (WINDOW_BOTTOM - HEIGHT) / 2
 	Width: 370
 	Height: 80
 	Children:
 		Label@PROMPT_TITLE:
 			Width: PARENT_RIGHT
-			Y: 0-25
+			Y: 0 - 25
 			Font: BigBold
 			Contrast: true
 			Align: Center

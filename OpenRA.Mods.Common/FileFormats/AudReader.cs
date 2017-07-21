@@ -10,7 +10,9 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.IO;
+using OpenRA.Primitives;
 
 namespace OpenRA.Mods.Common.FileFormats
 {
@@ -44,7 +46,7 @@ namespace OpenRA.Mods.Common.FileFormats
 		}
 	}
 
-	public class AudReader
+	public static class AudReader
 	{
 		static readonly int[] IndexAdjust = { -1, -1, -1, -1, 2, 4, 6, 8 };
 		static readonly int[] StepTable =
@@ -116,55 +118,87 @@ namespace OpenRA.Mods.Common.FileFormats
 			var samples = outputSize;
 			if (0 != (flags & SoundFlags.Stereo)) samples /= 2;
 			if (0 != (flags & SoundFlags._16Bit)) samples /= 2;
-			return samples / sampleRate;
+			return (float)samples / sampleRate;
 		}
 
-		public static bool LoadSound(Stream s, out byte[] rawData, out int sampleRate)
+		public static bool LoadSound(Stream s, out Func<Stream> result, out int sampleRate)
 		{
-			rawData = null;
-
-			sampleRate = s.ReadUInt16();
-			var dataSize = s.ReadInt32();
-			var outputSize = s.ReadInt32();
-
-			var readFlag = s.ReadByte();
-			if (!Enum.IsDefined(typeof(SoundFlags), readFlag))
-				return false;
-
-			var readFormat = s.ReadByte();
-			if (!Enum.IsDefined(typeof(SoundFormat), readFormat))
-				return false;
-
-			var output = new byte[outputSize];
-			var offset = 0;
-			var index = 0;
-			var currentSample = 0;
-
-			while (dataSize > 0)
+			result = null;
+			var startPosition = s.Position;
+			try
 			{
-				var chunk = Chunk.Read(s);
+				sampleRate = s.ReadUInt16();
+				var dataSize = s.ReadInt32();
+				var outputSize = s.ReadInt32();
+
+				var readFlag = s.ReadByte();
+				if (!Enum.IsDefined(typeof(SoundFlags), readFlag))
+					return false;
+
+				var readFormat = s.ReadByte();
+				if (!Enum.IsDefined(typeof(SoundFormat), readFormat))
+					return false;
+
+				var offsetPosition = s.Position;
+
+				result = () =>
+				{
+					var audioStream = SegmentStream.CreateWithoutOwningStream(s, offsetPosition, (int)(s.Length - offsetPosition));
+					return new AudStream(audioStream, outputSize, dataSize);
+				};
+			}
+			finally
+			{
+				s.Position = startPosition;
+			}
+
+			return true;
+		}
+
+		sealed class AudStream : ReadOnlyAdapterStream
+		{
+			readonly int outputSize;
+			int dataSize;
+
+			int currentSample;
+			int baseOffset;
+			int index;
+
+			public AudStream(Stream stream, int outputSize, int dataSize) : base(stream)
+			{
+				this.outputSize = outputSize;
+				this.dataSize = dataSize;
+			}
+
+			protected override bool BufferData(Stream baseStream, Queue<byte> data)
+			{
+				if (dataSize <= 0)
+					return true;
+
+				var chunk = Chunk.Read(baseStream);
 				for (var n = 0; n < chunk.CompressedSize; n++)
 				{
-					var b = s.ReadUInt8();
+					var b = baseStream.ReadUInt8();
 
 					var t = DecodeSample(b, ref index, ref currentSample);
-					output[offset++] = (byte)t;
-					output[offset++] = (byte)(t >> 8);
+					data.Enqueue((byte)t);
+					data.Enqueue((byte)(t >> 8));
+					baseOffset += 2;
 
-					if (offset < outputSize)
+					if (baseOffset < outputSize)
 					{
 						/* possible that only half of the final byte is used! */
 						t = DecodeSample((byte)(b >> 4), ref index, ref currentSample);
-						output[offset++] = (byte)t;
-						output[offset++] = (byte)(t >> 8);
+						data.Enqueue((byte)t);
+						data.Enqueue((byte)(t >> 8));
+						baseOffset += 2;
 					}
 				}
 
 				dataSize -= 8 + chunk.CompressedSize;
-			}
 
-			rawData = output;
-			return true;
+				return dataSize <= 0;
+			}
 		}
 	}
 }

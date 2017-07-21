@@ -1,9 +1,11 @@
 GAPOWR:
 	Inherits: ^Building
+	Inherits@IDISABLE: ^DisabledOverlay
+	Inherits@POWER_OUTAGE: ^DisabledByPowerOutage
 	Buildable:
 		Queue: Building
-		BuildPaletteOrder: 0
-		Prerequisites: ~structures.gdi
+		BuildPaletteOrder: 10
+		Prerequisites: ~structures.gdi, ~techlevel.low
 		Description: Provides power for other structures.
 	Valued:
 		Cost: 300
@@ -22,29 +24,29 @@ GAPOWR:
 		Range: 4c0
 		MaxHeightDelta: 3
 	WithIdleOverlay@LIGHTS:
+		RequiresCondition: !disabled
 		Sequence: idle-lights
 	WithIdleOverlay@PLUG:
+		PauseOnCondition: disabled
 		Sequence: idle-plug
 	Selectable:
 		Bounds: 90, 48, 0, -6
 	Power:
 		Amount: 100
-	InfiltrateForPowerOutage:
-	AffectedByPowerOutage:
 	PowerTooltip:
 	Targetable:
 		TargetTypes: Ground, C4, DetonateAttack, SpyInfiltrate
 	ScalePowerWithHealth:
-	DisabledOverlay:
 	Pluggable@pluga:
 		Offset: 0,1
 		Conditions:
 			powrup: powrup.a
 	Power@pluga:
-		RequiresCondition: powrup.a
+		RequiresCondition: powrup.a && !power-outage
 		Amount: 50
 	WithIdleOverlay@pluga:
 		RequiresCondition: powrup.a
+		PauseOnCondition: disabled
 		Sequence: idle-powrupa
 	Pluggable@plugb:
 		Offset: 1,1
@@ -52,9 +54,10 @@ GAPOWR:
 			powrup: powrup.b
 	WithIdleOverlay@plugb:
 		RequiresCondition: powrup.b
+		PauseOnCondition: disabled
 		Sequence: idle-powrupb
 	Power@plugb:
-		RequiresCondition: powrup.b
+		RequiresCondition: powrup.b && !power-outage
 		Amount: 50
 	ProvidesPrerequisite@buildingname:
 	SelectionDecorations:
@@ -65,7 +68,7 @@ GAPILE:
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 30
-		Prerequisites: anypower, ~structures.gdi
+		Prerequisites: anypower, ~structures.gdi, ~techlevel.low
 		Description: Produces infantry.
 	Valued:
 		Cost: 300
@@ -98,8 +101,8 @@ GAPILE:
 	PrimaryBuilding:
 		PrimaryCondition: primary
 	ProductionBar:
-	WithProductionOverlay@LIGHTS:
-		Sequence: production-lights
+	WithIdleOverlay@LIGHTS:
+		Sequence: idle-lights
 	WithIdleOverlay@LIGHT:
 		Sequence: idle-light
 	WithIdleOverlay@FLAG:
@@ -127,8 +130,8 @@ GAWEAP:
 		Prerequisite: factory
 	Buildable:
 		Queue: Building
-		BuildPaletteOrder: 50
-		Prerequisites: proc, ~structures.gdi
+		BuildPaletteOrder: 60
+		Prerequisites: proc, ~structures.gdi, ~techlevel.low
 		Description: Produces vehicles.
 	Building:
 		Footprint: xxx= xxx= xxx=
@@ -159,10 +162,10 @@ GAWEAP:
 	WithIdleOverlay@ROOF:
 		Sequence: idle-roof
 	WithProductionDoorOverlay@DOOR:
-	WithProductionOverlay@WHITELIGHTS:
-		Sequence: production-lights-white
-	WithProductionOverlay@REDLIGHTS:
-		Sequence: production-lights-red
+	WithIdleOverlay@WHITELIGHTS:
+		Sequence: idle-lights-white
+	WithIdleOverlay@REDLIGHTS:
+		Sequence: idle-lights-red
 	WithIdleOverlay@TURBINES:
 		Sequence: idle-turbines
 	WithIdleOverlay@BIB:
@@ -187,9 +190,9 @@ GAHPAD:
 	Tooltip:
 		Name: Helipad
 	Buildable:
-		BuildPaletteOrder: 60
+		BuildPaletteOrder: 130
 		Queue: Building
-		Prerequisites: garadr, ~structures.gdi
+		Prerequisites: garadr, ~structures.gdi, ~techlevel.medium
 		Description: Produces, rearms and\nrepairs helicopters.
 	Building:
 		Footprint: xx xx
@@ -211,6 +214,7 @@ GAHPAD:
 		PrimaryCondition: primary
 	Reservable:
 	RepairsUnits:
+		PauseOnCondition: empdisable
 		PlayerExperience: 15
 	ProductionBar:
 	WithIdleOverlay@PLATFORM:
@@ -242,8 +246,8 @@ GADEPT:
 	Tooltip:
 		Name: Service Depot
 	Buildable:
-		BuildPaletteOrder: 80
-		Prerequisites: factory, ~structures.gdi
+		BuildPaletteOrder: 110
+		Prerequisites: factory, ~structures.gdi, ~techlevel.medium
 		Queue: Building
 		Description: Repairs vehicles.
 	Building:
@@ -258,6 +262,7 @@ GADEPT:
 		MaxHeightDelta: 3
 	Reservable:
 	RepairsUnits:
+		PauseOnCondition: empdisable
 		PlayerExperience: 15
 	RallyPoint:
 		Palette: mouse
@@ -269,8 +274,10 @@ GADEPT:
 	WithIdleOverlay@CIRCUITS:
 		Sequence: circuits
 	WithRepairOverlay@CRANE:
+		PauseOnCondition: empdisable
 		Sequence: crane
 	WithRepairOverlay@PLATFORM:
+		RequiresCondition: !empdisable
 		Sequence: platform
 	WithDeathAnimation@BIB:
 		DeathSequence: dead-ground
@@ -288,10 +295,11 @@ GADEPT:
 
 GARADR:
 	Inherits: ^Building
+	Inherits@IDISABLED: ^DisabledOverlay
 	Buildable:
 		Queue: Building
-		BuildPaletteOrder: 90
-		Prerequisites: proc, ~structures.gdi
+		BuildPaletteOrder: 80
+		Prerequisites: proc, ~structures.gdi, ~techlevel.low
 		Description: Provides an overview of the battlefield.\nCan detect cloaked units.\nRequires power to operate.
 	Valued:
 		Cost: 1000
@@ -324,7 +332,7 @@ GARADR:
 		MaxHeightDelta: 3
 	WithIdleOverlay@DISH:
 		Sequence: idle-dish
-		PauseOnLowPower: yes
+		PauseOnCondition: disabled
 	Targetable:
 		TargetTypes: Ground, C4, SpyInfiltrate
 	Power:
@@ -332,15 +340,14 @@ GARADR:
 	ProvidesPrerequisite@buildingname:
 	SelectionDecorations:
 		VisualBounds: 96, 118, 0, -38
-	GrantConditionOnDisabled@IDISABLE:
-		Condition: disabled
 
 GATECH:
 	Inherits: ^Building
+	Inherits@IDISABLE: ^DisabledOverlay
 	Buildable:
 		Queue: Building
-		BuildPaletteOrder: 100
-		Prerequisites: gaweap, garadr, ~structures.gdi
+		BuildPaletteOrder: 150
+		Prerequisites: gaweap, garadr, ~structures.gdi, ~techlevel.medium
 		Description: Provides access to advanced GDI technologies.
 	Valued:
 		Cost: 1500
@@ -361,15 +368,18 @@ GATECH:
 		Range: 4c0
 		MaxHeightDelta: 3
 	WithIdleOverlay@LIGHTS:
+		RequiresCondition: !disabled
 		Sequence: idle-lights
 	Power:
 		Amount: -150
+	RequiresPower:
 	ProvidesPrerequisite@buildingname:
 	SelectionDecorations:
 		VisualBounds: 110, 60, 3, -4
 
 GAPLUG:
 	Inherits: ^Building
+	Inherits@IDISABLE: ^DisabledOverlay
 	Valued:
 		Cost: 1000
 	Tooltip:
@@ -377,8 +387,8 @@ GAPLUG:
 	Selectable:
 		Bounds: 115,72,0,-12
 	Buildable:
-		BuildPaletteOrder: 100
-		Prerequisites: proc, gatech, ~structures.gdi
+		BuildPaletteOrder: 170
+		Prerequisites: proc, gatech, ~structures.gdi, ~techlevel.superweapons
 		Queue: Building
 		Description: Can be upgraded for additional technology.
 	Building:
@@ -389,12 +399,14 @@ GAPLUG:
 		IndicatorPalette: mouse
 		PowerupSpeech: EnablePower
 		PowerdownSpeech: DisablePower
-	DisabledOverlay:
 	WithIdleOverlay@DISH:
+		PauseOnCondition: disabled
 		Sequence: idle-dish
 	WithIdleOverlay@LIGHTS:
+		RequiresCondition: !disabled
 		Sequence: idle-lights
 	WithIdleOverlay@STRIP:
+		RequiresCondition: !disabled
 		Sequence: idle-strip
 	Health:
 		HP: 1000
@@ -405,6 +417,7 @@ GAPLUG:
 		MaxHeightDelta: 3
 	IonCannonPower:
 		Cursor: ioncannon
+		PauseOnCondition: disabled || empdisable
 		RequiresCondition: plug.ioncannona || plug.ioncannonb
 		Icon: ioncannon
 		Effect: explosion
@@ -419,6 +432,7 @@ GAPLUG:
 		DisplayRadarPing: True
 		CameraActor: camera
 	ProduceActorPower:
+		PauseOnCondition: disabled || empdisable
 		RequiresCondition: plug.hunterseekera || plug.hunterseekerb
 		Description: Hunter Seeker
 		LongDesc: Releases a drone that will acquire and destroy an enemy target.
@@ -444,22 +458,32 @@ GAPLUG:
 		Conditions:
 			plug.ioncannon: plug.ioncannona
 			plug.hunterseeker: plug.hunterseekera
+		Requirements:
+			plug.ioncannon: !plug.ioncannonb && !plug.ioncannona && !plug.hunterseekera
+			plug.hunterseeker: !plug.hunterseekerb && !plug.ioncannona && !plug.hunterseekera
 	WithIdleOverlay@ioncannona:
 		RequiresCondition: plug.ioncannona
+		PauseOnCondition: disabled
 		Sequence: idle-ioncannona
 	WithIdleOverlay@hunterseekera:
 		RequiresCondition: plug.hunterseekera
+		PauseOnCondition: disabled
 		Sequence: idle-hunterseekera
 	Pluggable@plugb:
 		Offset: 1,2
 		Conditions:
 			plug.ioncannon: plug.ioncannonb
 			plug.hunterseeker: plug.hunterseekerb
+		Requirements:
+			plug.ioncannon: !plug.ioncannona && !plug.ioncannonb && !plug.hunterseekerb
+			plug.hunterseeker: !plug.hunterseekera && !plug.ioncannonb && !plug.hunterseekerb
 	WithIdleOverlay@ioncannonb:
 		RequiresCondition: plug.ioncannonb
+		PauseOnCondition: disabled
 		Sequence: idle-ioncannonb
 	WithIdleOverlay@hunterseekerb:
 		RequiresCondition: plug.hunterseekerb
+		PauseOnCondition: disabled
 		Sequence: idle-hunterseekerb
 	ProvidesPrerequisite@buildingname:
 	SelectionDecorations:

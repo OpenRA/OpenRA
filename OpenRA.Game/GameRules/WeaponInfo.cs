@@ -39,8 +39,23 @@ namespace OpenRA.GameRules
 		[Desc("The maximum range the weapon can fire.")]
 		public readonly WDist Range = WDist.Zero;
 
-		[Desc("The sound played when the weapon is fired.")]
+		[Desc("First burst is aimed at this offset relative to target position.")]
+		public readonly WVec FirstBurstTargetOffset = WVec.Zero;
+
+		[Desc("Each burst after the first lands by this offset away from the previous burst.")]
+		public readonly WVec FollowingBurstTargetOffset = WVec.Zero;
+
+		[Desc("The sound played each time the weapon is fired.")]
 		public readonly string[] Report = null;
+
+		[Desc("Sound played only on first burst in a salvo.")]
+		public readonly string[] StartBurstReport = null;
+
+		[Desc("The sound played when the weapon is reloaded.")]
+		public readonly string[] AfterFireSound = null;
+
+		[Desc("Delay in ticks to play reloading sound.")]
+		public readonly int AfterFireSoundDelay = 0;
 
 		[Desc("Delay in ticks between reloading ammo magazines.")]
 		public readonly int ReloadDelay = 1;
@@ -59,6 +74,9 @@ namespace OpenRA.GameRules
 
 		[Desc("The minimum range the weapon can fire.")]
 		public readonly WDist MinRange = WDist.Zero;
+
+		[Desc("Does this weapon aim at the target's center regardless of other targetable offsets?")]
+		public readonly bool TargetActorCenter = false;
 
 		[FieldLoader.LoadUsing("LoadProjectile")]
 		public readonly IProjectileInfo Projectile;

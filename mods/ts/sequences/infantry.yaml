@@ -375,6 +375,8 @@ jumpjet:
 		Start: 445
 		Length: 6
 		ShadowStart: 896
+	die-splash: h2o_exp2
+		Length: *
 	die-exploding: s_bang34
 		Length: *
 	die-crushed:
@@ -473,86 +475,6 @@ weedguy:
 		Length: 3
 		ShadowStart: 376
 		Tick: 1000
-
-doggie:
-	Defaults:
-		Tick: 80
-		Offset: 0, 0, 16
-	stand:
-		Facings: 8
-		ShadowStart: 119
-	run:
-		Start: 8
-		Length: 6
-		Facings: 8
-		ShadowStart: 127
-	attack:
-		Start: 56
-		Length: 4
-		Facings: 8
-		ShadowStart: 175
-	laydown: # TODO: Implement hiding when on a tiberium patch
-		Start: 88
-		Length: 2
-		ShadowStart: 207
-	hide: # TODO: Implement hiding when on a tiberium patch
-		Start: 90
-		ShadowStart: 209
-	idle1:
-		Start: 91
-		Length: 8
-		ShadowStart: 210
-	die-twirling:
-		Start: 99
-		Length: 10
-		ShadowStart: 218
-	die-flying:
-		Start: 99
-		Length: 10
-		ShadowStart: 218
-	die-exploding: s_bang34
-		Length: *
-	die-crushed:
-		Start: 105
-		Length: 4
-		ShadowStart: 224
-		Tick: 800
-		ZOffset: -511
-	die-burning:
-		Start: 109
-		Length: 10
-		ShadowStart: 228
-	die-melting:
-		Start: 109
-		Length: 10
-		ShadowStart: 228
-
-vissml:
-	idle:
-		Length: 90
-		ShadowStart: 90
-		Tick: 80
-		Offset: 0, 0, 16
-
-vislrg:
-	idle:
-		Length: 90
-		ShadowStart: 90
-		Tick: 80
-		Offset: 0, 0, 16
-	attack:
-		Combine:
-			vislgatk:
-				Start: 5
-				Length: 35
-			vislgatk:
-				Start: 0
-				Length: 5
-		Facings: -8
-		Length: 5
-		Tick: 80
-		Offset: 0, 0, 16
-#		ShadowStart: 40 # TODO: enable shadow frames
 
 flameguy:
 	Defaults:

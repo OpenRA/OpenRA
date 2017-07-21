@@ -14,7 +14,7 @@ WEEDGUY:
 		CrushSound: squishy2.aud
 	Armament:
 		Weapon: FireballLauncher
-		LocalOffset: 224,0,320
+		LocalOffset: 317,0,453
 	TakeCover:
 		ProneOffset: 128,0,-320
 	AttackFrontal:
@@ -29,6 +29,7 @@ UMAGON:
 	Inherits: ^Soldier
 	Inherits@2: ^HealsOnTiberium
 	Inherits@EXPERIENCE: ^GainsExperience
+	Inherits@AUTOTARGET: ^AutoTargetGround
 	Valued:
 		Cost: 400
 	Tooltip:
@@ -77,7 +78,6 @@ CHAMSPY:
 		RequiresCondition: disguise
 	Infiltrates:
 		Types: SpyInfiltrate
-	-AutoTarget:
 	-WithInfantryBody:
 	WithDisguisingInfantryBody:
 		IdleSequences: idle1,idle2
@@ -86,6 +86,7 @@ MUTANT:
 	Inherits: ^Soldier
 	Inherits@2: ^HealsOnTiberium
 	Inherits@EXPERIENCE: ^GainsExperience
+	Inherits@AUTOTARGET: ^AutoTargetGround
 	Valued:
 		Cost: 100
 	Tooltip:
@@ -111,6 +112,7 @@ MWMN:
 	Inherits: ^Soldier
 	Inherits@2: ^HealsOnTiberium
 	Inherits@EXPERIENCE: ^GainsExperience
+	Inherits@AUTOTARGET: ^AutoTargetGround
 	Valued:
 		Cost: 100
 	Tooltip:
@@ -136,6 +138,7 @@ MUTANT3:
 	Inherits: ^Soldier
 	Inherits@2: ^HealsOnTiberium
 	Inherits@EXPERIENCE: ^GainsExperience
+	Inherits@AUTOTARGET: ^AutoTargetGround
 	Valued:
 		Cost: 100
 	Tooltip:
@@ -172,7 +175,6 @@ TRATOS:
 		Speed: 71
 	RevealsShroud:
 		Range: 4c0
-	-AutoTarget:
 	WithInfantryBody:
 		DefaultAttackSequence:
 
@@ -190,7 +192,6 @@ OXANNA:
 		Speed: 56
 	RevealsShroud:
 		Range: 4c0
-	-AutoTarget:
 	WithInfantryBody:
 		DefaultAttackSequence: attack
 
@@ -208,92 +209,12 @@ SLAV:
 		Speed: 56
 	RevealsShroud:
 		Range: 4c0
-	-AutoTarget:
 	WithInfantryBody:
 		DefaultAttackSequence: attack
 
-DOGGIE:
-	Inherits@1: ^Infantry
-	Inherits@2: ^RegularInfantryDeath
-	Inherits@3: ^HealsOnTiberium
-	Tooltip:
-		Name: Tiberian Fiend
-	Health:
-		HP: 250
-		Shape: Circle
-			Radius: 213
-	Selectable:
-		Bounds: 24,24
-	Valued:
-		Cost: 100
-	Armor:
-		Type: Light
-	RevealsShroud:
-		Range: 4c0
-	Mobile:
-		Speed: 113
-	Voiced:
-		VoiceSet: Fiend
-	Targetable:
-		TargetTypes: Ground
-	Armament:
-		Weapon: FiendShard
-	AttackFrontal:
-		Voice: Attack
-	AttackWander:
-		WanderMoveRadius: 2
-		MinMoveDelay: 200
-		MaxMoveDelay: 600
-	-SpawnActorOnDeath@FLAMEGUY:
-	WithDeathAnimation@fire:
-		DeathSequence: die-
-		DeathTypes:
-			FireDeath: burning
-
-VISC_SML:
-	Inherits: ^Visceroid
-	Tooltip:
-		Name: Baby Visceroid
-	Health:
-		HP: 200
-	AttackWander:
-		WanderMoveRadius: 2
-		MinMoveDelay: 30
-		MaxMoveDelay: 60
-	RenderSprites:
-		Image: vissml
-
-VISC_LRG:
-	Inherits: ^Visceroid
-	Inherits@CRATESTATS: ^CrateStatModifiers
-	Tooltip:
-		Name: Adult Visceroid
-	Health:
-		HP: 500
-	Armor:
-		Type: Heavy
-	RevealsShroud:
-		Range: 4c0
-	Armament:
-		Weapon: SlimeAttack
-		FireDelay: 10
-	AutoTarget:
-		ScanRadius: 5
-	AttackFrontal:
-		Voice: Attack
-	AttackWander:
-		WanderMoveRadius: 2
-		MinMoveDelay: 25
-		MaxMoveDelay: 50
-	WithAttackAnimation:
-		AttackSequence: attack
-	Mobile:
-		Crushes: crate, infantry
-	RenderSprites:
-		Image: vislrg
-
 CIV1:
 	Inherits: ^CivilianInfantry
+	Inherits@AUTOTARGET: ^AutoTargetGround
 	WithInfantryBody:
 		DefaultAttackSequence: attack
 	Armament:
@@ -303,10 +224,10 @@ CIV1:
 
 CIV2:
 	Inherits: ^CivilianInfantry
-	-AutoTarget:
 
 CIV3:
 	Inherits: ^CivilianInfantry
+	Inherits@AUTOTARGET: ^AutoTargetGround
 	WithInfantryBody:
 		DefaultAttackSequence: attack
 	Armament:

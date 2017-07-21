@@ -17,7 +17,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("The actor will automatically engage the enemy when it is in range.")]
-	public class AutoTargetInfo : ConditionalTraitInfo, Requires<AttackBaseInfo>, UsesInit<StanceInit>
+	public class AutoTargetInfo : ConditionalTraitInfo, IRulesetLoaded, Requires<AttackBaseInfo>, UsesInit<StanceInit>
 	{
 		[Desc("It will try to hunt down the enemy if it is not set to defend.")]
 		public readonly bool AllowMovement = true;
@@ -31,6 +31,25 @@ namespace OpenRA.Mods.Common.Traits
 
 		[Desc("Possible values are HoldFire, ReturnFire, Defend and AttackAnything. Used for human players.")]
 		public readonly UnitStance InitialStance = UnitStance.Defend;
+
+		[GrantedConditionReference]
+		[Desc("The condition to grant to self while in the HoldFire stance.")]
+		public readonly string HoldFireCondition = null;
+
+		[GrantedConditionReference]
+		[Desc("The condition to grant to self while in the ReturnFire stance.")]
+		public readonly string ReturnFireCondition = null;
+
+		[GrantedConditionReference]
+		[Desc("The condition to grant to self while in the Defend stance.")]
+		public readonly string DefendCondition = null;
+
+		[GrantedConditionReference]
+		[Desc("The condition to grant to self while in the AttackAnything stance.")]
+		public readonly string AttackAnythingCondition = null;
+
+		[FieldLoader.Ignore]
+		public readonly Dictionary<UnitStance, string> ConditionByStance = new Dictionary<UnitStance, string>();
 
 		[Desc("Allow the player to change the unit stance.")]
 		public readonly bool EnableStances = true;
@@ -46,22 +65,67 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly bool TargetWhenDamaged = true;
 
 		public override object Create(ActorInitializer init) { return new AutoTarget(init, this); }
+
+		public override void RulesetLoaded(Ruleset rules, ActorInfo info)
+		{
+			base.RulesetLoaded(rules, info);
+
+			if (HoldFireCondition != null)
+				ConditionByStance[UnitStance.HoldFire] = HoldFireCondition;
+
+			if (ReturnFireCondition != null)
+				ConditionByStance[UnitStance.ReturnFire] = ReturnFireCondition;
+
+			if (DefendCondition != null)
+				ConditionByStance[UnitStance.Defend] = DefendCondition;
+
+			if (AttackAnythingCondition != null)
+				ConditionByStance[UnitStance.AttackAnything] = AttackAnythingCondition;
+		}
 	}
 
 	public enum UnitStance { HoldFire, ReturnFire, Defend, AttackAnything }
 
-	public class AutoTarget : ConditionalTrait<AutoTargetInfo>, INotifyIdle, INotifyDamage, ITick, IResolveOrder, ISync
+	public class AutoTarget : ConditionalTrait<AutoTargetInfo>, INotifyIdle, INotifyDamage, ITick, IResolveOrder, ISync, INotifyCreated
 	{
 		readonly IEnumerable<AttackBase> activeAttackBases;
 		readonly AttackFollow[] attackFollows;
 		[Sync] int nextScanTime = 0;
 
-		public UnitStance Stance;
+		public UnitStance Stance { get { return stance; } }
+
 		[Sync] public Actor Aggressor;
 		[Sync] public Actor TargetedActor;
 
 		// NOT SYNCED: do not refer to this anywhere other than UI code
 		public UnitStance PredictedStance;
+
+		UnitStance stance;
+		ConditionManager conditionManager;
+		AutoTargetPriority[] targetPriorities;
+		int conditionToken = ConditionManager.InvalidConditionToken;
+
+		public void SetStance(Actor self, UnitStance value)
+		{
+			if (stance == value)
+				return;
+
+			stance = value;
+			ApplyStanceCondition(self);
+		}
+
+		void ApplyStanceCondition(Actor self)
+		{
+			if (conditionManager == null)
+				return;
+
+			if (conditionToken != ConditionManager.InvalidConditionToken)
+				conditionToken = conditionManager.RevokeCondition(self, conditionToken);
+
+			string condition;
+			if (Info.ConditionByStance.TryGetValue(stance, out condition))
+				conditionToken = conditionManager.GrantCondition(self, condition);
+		}
 
 		public AutoTarget(ActorInitializer init, AutoTargetInfo info)
 			: base(info)
@@ -70,18 +134,25 @@ namespace OpenRA.Mods.Common.Traits
 			activeAttackBases = self.TraitsImplementing<AttackBase>().ToArray().Where(Exts.IsTraitEnabled);
 
 			if (init.Contains<StanceInit>())
-				Stance = init.Get<StanceInit, UnitStance>();
+				stance = init.Get<StanceInit, UnitStance>();
 			else
-				Stance = self.Owner.IsBot || !self.Owner.Playable ? info.InitialStanceAI : info.InitialStance;
+				stance = self.Owner.IsBot || !self.Owner.Playable ? info.InitialStanceAI : info.InitialStance;
 
-			PredictedStance = Stance;
+			PredictedStance = stance;
 			attackFollows = self.TraitsImplementing<AttackFollow>().ToArray();
+		}
+
+		void INotifyCreated.Created(Actor self)
+		{
+			conditionManager = self.TraitOrDefault<ConditionManager>();
+			targetPriorities = self.TraitsImplementing<AutoTargetPriority>().ToArray();
+			ApplyStanceCondition(self);
 		}
 
 		public void ResolveOrder(Actor self, Order order)
 		{
 			if (order.OrderString == "SetUnitStance" && Info.EnableStances)
-				Stance = (UnitStance)order.ExtraData;
+				SetStance(self, (UnitStance)order.ExtraData);
 		}
 
 		public void Damaged(Actor self, AttackInfo e)
@@ -196,10 +267,21 @@ namespace OpenRA.Mods.Common.Traits
 				ab.AttackTarget(target, false, allowMove);
 		}
 
-		Actor ChooseTarget(Actor self, AttackBase ab, Stance attackStances, WDist range, bool allowMove)
+		Actor ChooseTarget(Actor self, AttackBase ab, Stance attackStances, WDist scanRange, bool allowMove)
 		{
-			var actorsByArmament = new Dictionary<Armament, List<Actor>>();
-			var actorsInRange = self.World.FindActorsInCircle(self.CenterPosition, range);
+			Actor chosenTarget = null;
+			var chosenTargetPriority = int.MinValue;
+			int chosenTargetRange = 0;
+
+			var activePriorities = targetPriorities.Where(Exts.IsTraitEnabled)
+				.Select(at => at.Info)
+				.OrderByDescending(ati => ati.Priority)
+				.ToList();
+
+			if (!activePriorities.Any())
+				return null;
+
+			var actorsInRange = self.World.FindActorsInCircle(self.CenterPosition, scanRange);
 			foreach (var actor in actorsInRange)
 			{
 				// PERF: Most units can only attack enemy units. If this is the case but the target is not an enemy, we
@@ -209,43 +291,53 @@ namespace OpenRA.Mods.Common.Traits
 				if (attackStances == OpenRA.Traits.Stance.Enemy && !actor.AppearsHostileTo(self))
 					continue;
 
-				if (PreventsAutoTarget(self, actor) || !self.Owner.CanTargetActor(actor))
+				// Check whether we can auto-target this actor
+				var targetTypes = actor.TraitsImplementing<ITargetable>()
+					.Where(Exts.IsTraitEnabled).SelectMany(t => t.TargetTypes)
+					.ToHashSet();
+
+				var target = Target.FromActor(actor);
+				var validPriorities = activePriorities.Where(ati =>
+				{
+					// Already have a higher priority target
+					if (ati.Priority < chosenTargetPriority)
+						return false;
+
+					// Incompatible target types
+					if (!targetTypes.Overlaps(ati.ValidTargets) || targetTypes.Overlaps(ati.InvalidTargets))
+						return false;
+
+					return true;
+				}).ToList();
+
+				if (!validPriorities.Any() || PreventsAutoTarget(self, actor) || !self.Owner.CanTargetActor(actor))
 					continue;
 
-				// Select only the first compatible armament for each actor: if this actor is selected
-				// it will be thanks to the first armament anyways, since that is the first selection
-				// criterion
-				var target = Target.FromActor(actor);
+				// Make sure that we can actually fire on the actor
 				var armaments = ab.ChooseArmamentsForTarget(target, false);
 				if (!allowMove)
 					armaments = armaments.Where(arm =>
 						target.IsInRange(self.CenterPosition, arm.MaxRange()) &&
 						!target.IsInRange(self.CenterPosition, arm.Weapon.MinRange));
 
-				var armament = armaments.FirstOrDefault();
-				if (armament == null)
+				if (!armaments.Any())
 					continue;
 
-				List<Actor> actors;
-				if (actorsByArmament.TryGetValue(armament, out actors))
-					actors.Add(actor);
-				else
-					actorsByArmament.Add(armament, new List<Actor> { actor });
+				// Evaluate whether we want to target this actor
+				var targetRange = (target.CenterPosition - self.CenterPosition).Length;
+				foreach (var ati in validPriorities)
+				{
+					if (chosenTarget == null || chosenTargetPriority < ati.Priority
+						|| (chosenTargetPriority == ati.Priority && targetRange < chosenTargetRange))
+					{
+						chosenTarget = actor;
+						chosenTargetPriority = ati.Priority;
+						chosenTargetRange = targetRange;
+					}
+				}
 			}
 
-			// Armaments are enumerated in attack.Armaments in construct order
-			// When autotargeting, first choose targets according to the used armament construct order
-			// And then according to distance from actor
-			// This enables preferential treatment of certain armaments
-			// (e.g. tesla trooper's tesla zap should have precedence over tesla charge)
-			foreach (var arm in ab.Armaments)
-			{
-				List<Actor> actors;
-				if (actorsByArmament.TryGetValue(arm, out actors))
-					return actors.ClosestTo(self);
-			}
-
-			return null;
+			return chosenTarget;
 		}
 
 		bool PreventsAutoTarget(Actor attacker, Actor target)
@@ -255,23 +347,6 @@ namespace OpenRA.Mods.Common.Traits
 					return true;
 
 			return false;
-		}
-	}
-
-	[Desc("Will not get automatically targeted by enemy (like walls)")]
-	class AutoTargetIgnoreInfo : ConditionalTraitInfo
-	{
-		public override object Create(ActorInitializer init) { return new AutoTargetIgnore(this); }
-	}
-
-	class AutoTargetIgnore : ConditionalTrait<AutoTargetIgnoreInfo>, IPreventsAutoTarget
-	{
-		public AutoTargetIgnore(AutoTargetIgnoreInfo info)
-			: base(info) { }
-
-		public bool PreventsAutoTarget(Actor self, Actor attacker)
-		{
-			return !IsTraitDisabled;
 		}
 	}
 

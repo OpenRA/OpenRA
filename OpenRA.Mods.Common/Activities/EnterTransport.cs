@@ -22,8 +22,8 @@ namespace OpenRA.Mods.Common.Activities
 		Actor transport;
 		Cargo cargo;
 
-		public EnterTransport(Actor self, Actor transport, int maxTries = 0, bool targetCenter = false)
-			: base(self, transport, EnterBehaviour.Exit, maxTries, targetCenter)
+		public EnterTransport(Actor self, Actor transport, int maxTries = 0, bool repathWhileMoving = true)
+			: base(self, transport, EnterBehaviour.Exit, maxTries, repathWhileMoving)
 		{
 			this.transport = transport;
 			this.maxTries = maxTries;

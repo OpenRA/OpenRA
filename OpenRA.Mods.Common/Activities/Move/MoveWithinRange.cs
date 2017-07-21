@@ -48,7 +48,7 @@ namespace OpenRA.Mods.Common.Activities
 			var minCells = minRange.Length / 1024;
 
 			return map.FindTilesInAnnulus(targetPosition, minCells, maxCells)
-				.Where(c => AtCorrectRange(map.CenterOfCell(c)));
+				.Where(c => AtCorrectRange(map.CenterOfSubCell(c, Mobile.FromSubCell)));
 		}
 
 		bool AtCorrectRange(WPos origin)

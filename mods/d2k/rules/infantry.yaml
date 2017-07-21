@@ -1,5 +1,6 @@
 light_inf:
 	Inherits: ^Infantry
+	Inherits@AUTOTARGET: ^AutoTargetGround
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 10
@@ -43,13 +44,13 @@ engineer:
 	Captures:
 		CaptureTypes: building, husk
 		PlayerExperience: 50
-	-AutoTarget:
 	-RevealOnFire:
 	Voiced:
 		VoiceSet: EngineerVoice
 
 trooper:
 	Inherits: ^Infantry
+	Inherits@AUTOTARGET: ^AutoTargetGround
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 20
@@ -78,7 +79,6 @@ trooper:
 
 thumper:
 	Inherits: ^Infantry
-	-AutoTarget:
 	-RevealOnFire:
 	Buildable:
 		Queue: Infantry
@@ -111,7 +111,7 @@ thumper:
 		Sequence: thump-sand
 		RequiresCondition: deployed
 	AmbientSound:
-		SoundFile: THUMPER1.WAV
+		SoundFiles: THUMPER1.WAV
 		Interval: 60
 		RequiresCondition: deployed
 	AttractsWorms:
@@ -121,6 +121,7 @@ thumper:
 
 fremen:
 	Inherits: ^Infantry
+	Inherits@AUTOTARGET: ^AutoTargetGround
 	Tooltip:
 		Name: Fremen
 	Buildable:
@@ -150,7 +151,7 @@ fremen:
 	Cloak:
 		InitialDelay: 85
 		CloakDelay: 85
-		UncloakOn: Attack, Unload, Infiltrate, Demolish, Dock, Damage
+		UncloakOn: Attack, Unload, Infiltrate, Demolish, Dock, Damage, Heal
 		CloakSound: STEALTH1.WAV
 		UncloakSound: STEALTH2.WAV
 		IsPlayerPalette: true
@@ -164,6 +165,7 @@ fremen:
 
 grenadier:
 	Inherits: ^Infantry
+	Inherits@AUTOTARGET: ^AutoTargetGround
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 80
@@ -194,6 +196,7 @@ grenadier:
 
 sardaukar:
 	Inherits: ^Infantry
+	Inherits@AUTOTARGET: ^AutoTargetGround
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 80
@@ -244,14 +247,13 @@ saboteur:
 		DetonationDelay: 0
 		Flashes: 0
 		EnterBehaviour: Suicide
-	-AutoTarget:
 	-RevealOnFire:
 	Cloak:
 		InitialDelay: 85
 		CloakDelay: 85
 		CloakSound: STEALTH1.WAV
 		UncloakSound: STEALTH2.WAV
-		UncloakOn: Attack, Unload, Infiltrate, Demolish, Move, Damage
+		UncloakOn: Attack, Unload, Infiltrate, Demolish, Move, Damage, Heal
 		IsPlayerPalette: true
 		RequiresCondition: !cloak-force-disabled
 	GrantConditionOnDamageState@UNCLOAK:

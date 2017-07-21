@@ -16,7 +16,7 @@
 		Name: Any
 		InternalName: Random
 		RandomFactionMembers: gdi, nod
-		Description: Select a random faction.
+		Description: Random Faction\nA random faction will be chosen when the game starts.
 	Faction@gdi:
 		Name: GDI
 		InternalName: gdi

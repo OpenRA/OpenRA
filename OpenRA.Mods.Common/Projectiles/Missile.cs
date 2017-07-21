@@ -23,7 +23,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Projectiles
 {
-	public class MissileInfo : IProjectileInfo
+	public class MissileInfo : IProjectileInfo, IRulesetLoaded<WeaponInfo>
 	{
 		[Desc("Name of the image containing the projectile sequence.")]
 		public readonly string Image = null;
@@ -61,11 +61,11 @@ namespace OpenRA.Mods.Common.Projectiles
 		[Desc("Is the missile blocked by actors with BlocksProjectiles: trait.")]
 		public readonly bool Blockable = true;
 
+		[Desc("Is the missile aware of terrain height levels. Only needed for mods with real, non-visual height levels.")]
+		public readonly bool TerrainHeightAware = false;
+
 		[Desc("Width of projectile (used for finding blocking actors).")]
 		public readonly WDist Width = new WDist(1);
-
-		[Desc("Extra search radius beyond path for blocking actors.")]
-		public readonly WDist TargetExtraSearchRadius = new WDist(1536);
 
 		[Desc("Maximum offset at the maximum range")]
 		public readonly WDist Inaccuracy = WDist.Zero;
@@ -148,7 +148,17 @@ namespace OpenRA.Mods.Common.Projectiles
 			"not trigger fast enough, causing the missile to fly past the target.")]
 		public readonly WDist CloseEnough = new WDist(298);
 
+		[Desc("Scan radius for actors with projectile-blocking trait. If set to a negative value (default), it will automatically scale",
+			"to the blocker with the largest health shape. Only set custom values if you know what you're doing.")]
+		public WDist BlockerScanRadius = new WDist(-1);
+
 		public IProjectile Create(ProjectileArgs args) { return new Missile(this, args); }
+
+		void IRulesetLoaded<WeaponInfo>.RulesetLoaded(Ruleset rules, WeaponInfo wi)
+		{
+			if (BlockerScanRadius < WDist.Zero)
+				BlockerScanRadius = Util.MinimumRequiredBlockerScanRadius(rules);
+		}
 	}
 
 	// TODO: double check square roots!!!
@@ -313,14 +323,19 @@ namespace OpenRA.Mods.Common.Projectiles
 			var tarDistVec = targetPosition + offset - pos;
 			var relTarHorDist = tarDistVec.HorizontalLength;
 
-			int predClfHgt, predClfDist, lastHtChg, lastHt;
-			InclineLookahead(world, relTarHorDist, out predClfHgt, out predClfDist, out lastHtChg, out lastHt);
+			int predClfHgt = 0;
+			int predClfDist = 0;
+			int lastHtChg = 0;
+			int lastHt = 0;
+
+			if (info.TerrainHeightAware)
+				InclineLookahead(world, relTarHorDist, out predClfHgt, out predClfDist, out lastHtChg, out lastHt);
 
 			// Height difference between the incline height and missile height
 			var diffClfMslHgt = predClfHgt - pos.Z;
 
 			// Incline coming up
-			if (diffClfMslHgt >= 0 && predClfDist > 0)
+			if (info.TerrainHeightAware && diffClfMslHgt >= 0 && predClfDist > 0)
 				DetermineLaunchSpeedAndAngleForIncline(predClfDist, diffClfMslHgt, relTarHorDist, out speed, out vFacing);
 			else if (lastHt != 0)
 			{
@@ -574,7 +589,7 @@ namespace OpenRA.Mods.Common.Projectiles
 			// the missile hasn't been fired near a cliff) is simply finding the smallest
 			// vertical facing that allows for a smooth climb to the new terrain's height
 			// and coming in at predClfDist at exactly zero vertical facing
-			if (diffClfMslHgt >= 0 && !allowPassBy)
+			if (info.TerrainHeightAware && diffClfMslHgt >= 0 && !allowPassBy)
 				desiredVFacing = IncreaseAltitude(predClfDist, diffClfMslHgt, relTarHorDist, vFacing);
 			else if (relTarHorDist <= 3 * loopRadius || state == States.Hitting)
 			{
@@ -660,7 +675,7 @@ namespace OpenRA.Mods.Common.Projectiles
 						else
 						{
 							// Avoid the cliff edge
-							if (edgeVector.Length > loopRadius && lastHt > targetPosition.Z)
+							if (info.TerrainHeightAware && edgeVector.Length > loopRadius && lastHt > targetPosition.Z)
 							{
 								int vFac;
 								for (vFac = vFacing + 1; vFac <= vFacing + info.VerticalRateOfTurn - 1; vFac++)
@@ -733,8 +748,13 @@ namespace OpenRA.Mods.Common.Projectiles
 
 		WVec HomingTick(World world, WVec tarDistVec, int relTarHorDist)
 		{
-			int predClfHgt, predClfDist, lastHtChg, lastHt;
-			InclineLookahead(world, relTarHorDist, out predClfHgt, out predClfDist, out lastHtChg, out lastHt);
+			int predClfHgt = 0;
+			int predClfDist = 0;
+			int lastHtChg = 0;
+			int lastHt = 0;
+
+			if (info.TerrainHeightAware)
+				InclineLookahead(world, relTarHorDist, out predClfHgt, out predClfDist, out lastHtChg, out lastHt);
 
 			// Height difference between the incline height and missile height
 			var diffClfMslHgt = predClfHgt - pos.Z;
@@ -814,7 +834,7 @@ namespace OpenRA.Mods.Common.Projectiles
 			// Check if target position should be updated (actor visible & locked on)
 			var newTarPos = targetPosition;
 			if (args.GuidedTarget.IsValidFor(args.SourceActor) && lockOn)
-				newTarPos = args.GuidedTarget.CenterPosition
+				newTarPos = (args.Weapon.TargetActorCenter ? args.GuidedTarget.CenterPosition : args.GuidedTarget.Positions.PositionClosestTo(args.Source))
 					+ new WVec(WDist.Zero, WDist.Zero, info.AirburstAltitude);
 
 			// Compute target's predicted velocity vector (assuming uniform circular motion)
@@ -848,7 +868,7 @@ namespace OpenRA.Mods.Common.Projectiles
 			var shouldExplode = false;
 			WPos blockedPos;
 			if (info.Blockable && BlocksProjectiles.AnyBlockingActorsBetween(world, lastPos, pos, info.Width,
-				info.TargetExtraSearchRadius, out blockedPos))
+				info.BlockerScanRadius, out blockedPos))
 			{
 				pos = blockedPos;
 				shouldExplode = true;

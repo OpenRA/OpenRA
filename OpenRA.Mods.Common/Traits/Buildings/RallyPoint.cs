@@ -38,12 +38,17 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class RallyPoint : IIssueOrder, IResolveOrder, ISync, INotifyOwnerChanged, INotifyCreated
 	{
+		const string OrderID = "SetRallyPoint";
+
 		[Sync] public CPos Location;
 		public RallyPointInfo Info;
 		public string PaletteName { get; private set; }
 
 		// Keep track of rally pointed acceptor actors
 		bool dirty = true;
+
+		const uint ForceSet = 1;
+
 		Actor cachedResult = null;
 
 		public void ResetLocation(Actor self)
@@ -80,15 +85,16 @@ namespace OpenRA.Mods.Common.Traits
 
 		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
 		{
-			if (order.OrderID == "SetRallyPoint")
-				return new Order(order.OrderID, self, false) { TargetLocation = self.World.Map.CellContaining(target.CenterPosition), SuppressVisualFeedback = true };
+			if (order.OrderID == OrderID)
+				return new Order(order.OrderID, self, false) { TargetLocation = self.World.Map.CellContaining(target.CenterPosition), SuppressVisualFeedback = true,
+					ExtraData = ((RallyPointOrderTargeter)order).ForceSet ? ForceSet : 0 };
 
 			return null;
 		}
 
 		public void ResolveOrder(Actor self, Order order)
 		{
-			if (order.OrderString == "SetRallyPoint")
+			if (order.OrderString == OrderID)
 			{
 				Location = order.TargetLocation;
 				dirty = true;
@@ -149,11 +155,17 @@ namespace OpenRA.Mods.Common.Traits
 				unit.QueueActivity(new AttackMoveActivity(unit, unit.Trait<IMove>().MoveTo(Location, 1)));
 		}
 
+		public static bool IsForceSet(Order order)
+		{
+			return order.OrderString == OrderID && order.ExtraData == ForceSet;
+		}
+
 		class RallyPointOrderTargeter : IOrderTargeter
 		{
 			public string OrderID { get { return "SetRallyPoint"; } }
 			public int OrderPriority { get { return 0; } }
 			public bool TargetOverridesSelection(TargetModifiers modifiers) { return true; }
+			public bool ForceSet { get; private set; }
 
 			public bool CanTarget(Actor self, Target target, List<Actor> othersAtTarget, ref TargetModifiers modifiers, ref string cursor)
 			{
@@ -164,6 +176,15 @@ namespace OpenRA.Mods.Common.Traits
 				if (self.World.Map.Contains(location))
 				{
 					cursor = "ability";
+
+					// Notify force-set 'RallyPoint' order watchers with Ctrl and only if this is the only building of its type selected
+					if (modifiers.HasModifier(TargetModifiers.ForceAttack))
+					{
+						var selfName = self.Info.Name;
+						if (!self.World.Selection.Actors.Any(a => a.Info.Name == selfName && a.ActorID != self.ActorID))
+							ForceSet = true;
+					}
+
 					return true;
 				}
 

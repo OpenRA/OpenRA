@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		[SequenceReference] public readonly string Sequence = "harvest";
 
 		[Desc("Position relative to body")]
-		public readonly WVec Offset = WVec.Zero;
+		public readonly WVec LocalOffset = WVec.Zero;
 
 		[PaletteReference] public readonly string Palette = "effect";
 
@@ -45,7 +45,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			anim.IsDecoration = true;
 			anim.Play(info.Sequence);
 			rs.Add(new AnimationWithOffset(anim,
-				() => body.LocalToWorld(info.Offset.Rotate(body.QuantizeOrientation(self, self.Orientation))),
+				() => body.LocalToWorld(info.LocalOffset.Rotate(body.QuantizeOrientation(self, self.Orientation))),
 				() => !visible,
 				p => ZOffsetFromCenter(self, p, 0)), info.Palette);
 		}

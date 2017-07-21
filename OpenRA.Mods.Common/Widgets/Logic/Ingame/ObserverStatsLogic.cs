@@ -220,6 +220,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			template.Get<ObserverProductionIconsWidget>("PRODUCTION_ICONS").GetPlayer = () => player;
 			template.Get<ObserverSupportPowerIconsWidget>("SUPPORT_POWER_ICONS").GetPlayer = () => player;
+			template.IgnoreChildMouseOver = false;
 
 			return template;
 		}

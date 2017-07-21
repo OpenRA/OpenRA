@@ -97,6 +97,7 @@ MNLYR:
 		Image: MNLY
 	Chronoshiftable:
 		ReturnToOrigin: false
+	HitShape:
 
 FTUR:
 	Health:
@@ -164,6 +165,7 @@ MINVV:
 	Explodes:
 		Weapon: CrateNuke
 		EmptyWeapon: CrateNuke
+	HitShape:
 
 T17:
 	Health:

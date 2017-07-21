@@ -1,7 +1,7 @@
 Background@NEW_MAP_BG:
 	Logic: NewMapLogic
-	X: (WINDOW_RIGHT - WIDTH)/2
-	Y: (WINDOW_BOTTOM - HEIGHT)/2
+	X: (WINDOW_RIGHT - WIDTH) / 2
+	Y: (WINDOW_BOTTOM - HEIGHT) / 2
 	Width: 300
 	Height: 185
 	Children:
@@ -76,13 +76,13 @@ Background@NEW_MAP_BG:
 
 Background@SAVE_MAP_PANEL:
 	Logic: SaveMapLogic
-	X: (WINDOW_RIGHT - WIDTH)/2
-	Y: (WINDOW_BOTTOM - HEIGHT)/2
+	X: (WINDOW_RIGHT - WIDTH) / 2
+	Y: (WINDOW_BOTTOM - HEIGHT) / 2
 	Width: 350
 	Height: 300
 	Children:
 		Label@LABEL_TITLE:
-			X: (PARENT_RIGHT - WIDTH)/2
+			X: (PARENT_RIGHT - WIDTH) / 2
 			Y: 20
 			Width: 250
 			Height: 25
@@ -211,7 +211,7 @@ Container@EDITOR_WORLD_ROOT:
 			Height: WINDOW_BOTTOM
 			IgnoreMouseOver: True
 		Background@RADAR_BG:
-			X: WINDOW_RIGHT-255
+			X: WINDOW_RIGHT - 255
 			Y: 5
 			Width: 250
 			Height: 250
@@ -219,28 +219,47 @@ Container@EDITOR_WORLD_ROOT:
 				Radar@INGAME_RADAR:
 					X: 10
 					Y: 10
-					Width: PARENT_RIGHT-19
-					Height: PARENT_BOTTOM-19
+					Width: PARENT_RIGHT - 19
+					Height: PARENT_BOTTOM - 19
 		Container@TILE_WIDGETS:
 			Logic: TileSelectorLogic
 			Children:
 				Background@TILES_BG:
-					X: WINDOW_RIGHT-250
+					X: WINDOW_RIGHT - 250
 					Y: 290
 					Width: 240
-					Height: WINDOW_BOTTOM-382
+					Height: WINDOW_BOTTOM - 382
 					Children:
-						DropDownButton@TILE_CATEGORY:
-							X: 10
+						Label@SEARCH_LABEL:
 							Y: 10
-							Width: 220
+							Width: 55
+							Height: 25
+							Text: Search:
+							Align: Right
+							Font: TinyBold
+						TextField@SEARCH_TEXTFIELD:
+							X: 60
+							Y: 10
+							Width: PARENT_RIGHT - 70
+							Height: 25
+						Label@CATEGORIES_LABEL:
+							Y: 34
+							Width: 55
+							Height: 25
+							Text: Filter:
+							Align: Right
+							Font: TinyBold
+						DropDownButton@CATEGORIES_DROPDOWN:
+							X: 60
+							Y: 34
+							Width: PARENT_RIGHT - 70
 							Height: 25
 							Font: Bold
 						ScrollPanel@TILETEMPLATE_LIST:
 							X: 10
-							Y: 35
-							Width: PARENT_RIGHT-20
-							Height: PARENT_BOTTOM-45
+							Y: 58
+							Width: PARENT_RIGHT - 20
+							Height: PARENT_BOTTOM - 68
 							TopBottomSpacing: 4
 							ItemSpacing: 4
 							Children:
@@ -257,16 +276,16 @@ Container@EDITOR_WORLD_ROOT:
 			Logic: LayerSelectorLogic
 			Children:
 				Background@LAYERS_BG:
-					X: WINDOW_RIGHT-250
+					X: WINDOW_RIGHT - 250
 					Y: 290
 					Width: 240
-					Height: WINDOW_BOTTOM-382
+					Height: WINDOW_BOTTOM - 382
 					Children:
 						ScrollPanel@LAYERTEMPLATE_LIST:
 							X: 10
 							Y: 10
-							Width: PARENT_RIGHT-20
-							Height: PARENT_BOTTOM-20
+							Width: PARENT_RIGHT - 20
+							Height: PARENT_BOTTOM - 20
 							TopBottomSpacing: 4
 							ItemSpacing: 4
 							Children:
@@ -284,22 +303,54 @@ Container@EDITOR_WORLD_ROOT:
 			Logic: ActorSelectorLogic
 			Children:
 				Background@ACTORS_BG:
-					X: WINDOW_RIGHT-250
+					X: WINDOW_RIGHT - 250
 					Y: 290
 					Width: 240
-					Height: WINDOW_BOTTOM-382
+					Height: WINDOW_BOTTOM - 382
 					Children:
-						DropDownButton@OWNERS_DROPDOWN:
-							X: 10
+						Label@SEARCH_LABEL:
 							Y: 10
-							Width: 220
+							Width: 55
+							Height: 25
+							Text: Search:
+							Align: Right
+							Font: TinyBold
+						TextField@SEARCH_TEXTFIELD:
+							X: 60
+							Y: 10
+							Width: PARENT_RIGHT - 70
+							Height: 25
+						Label@CATEGORIES_LABEL:
+							Y: 34
+							Width: 55
+							Height: 25
+							Text: Filter:
+							Align: Right
+							Font: TinyBold
+						DropDownButton@CATEGORIES_DROPDOWN:
+							X: 60
+							Y: 34
+							Width: PARENT_RIGHT - 70
+							Height: 25
+							Font: Bold
+						Label@OWNERS_LABEL:
+							Y: 58
+							Width: 55
+							Height: 25
+							Text: Owner:
+							Align: Right
+							Font: TinyBold
+						DropDownButton@OWNERS_DROPDOWN:
+							X: 60
+							Y: 58
+							Width: PARENT_RIGHT - 70
 							Height: 25
 							Font: Bold
 						ScrollPanel@ACTORTEMPLATE_LIST:
 							X: 10
-							Y: 35
-							Width: PARENT_RIGHT-20
-							Height: PARENT_BOTTOM-45
+							Y: 82
+							Width: PARENT_RIGHT - 20
+							Height: PARENT_BOTTOM - 92
 							TopBottomSpacing: 4
 							ItemSpacing: 4
 							Children:
@@ -316,7 +367,7 @@ Container@EDITOR_WORLD_ROOT:
 											Visible: true
 		Container@MAP_EDITOR_TAB_CONTAINER:
 			Logic: MapEditorTabsLogic
-			X: WINDOW_RIGHT-245
+			X: WINDOW_RIGHT - 245
 			Y: 260
 			Width: 240
 			Height: 25
@@ -388,9 +439,37 @@ Container@EDITOR_WORLD_ROOT:
 			Font: Bold
 			Contrast: true
 		Label@CASH_LABEL:
-			X: 570
+			X: 600
 			Width: 50
 			Height: 25
 			Align: Left
 			Font: Bold
 			Contrast: true
+
+ScrollPanel@ACTOR_CATEGORY_FILTER_PANEL:
+	Width: 170
+	Children:
+		Container@SELECT_CATEGORIES_BUTTONS:
+			Width: PARENT_RIGHT
+			Height: 29
+			Children:
+				Button@SELECT_ALL:
+					X: 10
+					Y: 2
+					Width: 60
+					Height: 25
+					Text: All
+					Font: Bold
+				Button@SELECT_NONE:
+					X: PARENT_RIGHT - WIDTH - 34
+					Y: 2
+					Width: 60
+					Height: 25
+					Text: None
+					Font: Bold
+		Checkbox@CATEGORY_TEMPLATE:
+			X: 5
+			Y: 5
+			Width: PARENT_RIGHT - 29
+			Height: 20
+			Visible: false

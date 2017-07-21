@@ -68,7 +68,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			if (target.Type == TargetType.Actor)
 				return target.Actor.Owner;
-			else if (target.Type == TargetType.FrozenActor && !target.FrozenActor.Actor.IsDead)
+			else if (target.Type == TargetType.FrozenActor && target.FrozenActor.Actor != null && !target.FrozenActor.Actor.IsDead)
 				return target.FrozenActor.Actor.Owner;
 
 			return null;

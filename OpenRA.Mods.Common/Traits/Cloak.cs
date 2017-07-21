@@ -29,7 +29,9 @@ namespace OpenRA.Mods.Common.Traits
 		Infiltrate = 8,
 		Demolish = 16,
 		Damage = 32,
-		Dock = 64
+		Heal = 64,
+		SelfHeal = 128,
+		Dock = 256
 	}
 
 	[Desc("This unit can cloak and uncloak in specific situations.")]
@@ -41,7 +43,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Measured in game ticks.")]
 		public readonly int CloakDelay = 30;
 
-		[Desc("Events leading to the actor getting uncloaked. Possible values are: Attack, Move, Unload, Infiltrate, Demolish, Dock and Damage")]
+		[Desc("Events leading to the actor getting uncloaked. Possible values are: Attack, Move, Unload, Infiltrate, Demolish, Dock, Damage, Heal and SelfHeal.")]
 		public readonly UncloakType UncloakOn = UncloakType.Attack
 			| UncloakType.Unload | UncloakType.Infiltrate | UncloakType.Demolish | UncloakType.Dock;
 
@@ -78,7 +80,7 @@ namespace OpenRA.Mods.Common.Traits
 			remainingTime = info.InitialDelay;
 		}
 
-		void INotifyCreated.Created(Actor self)
+		protected override void Created(Actor self)
 		{
 			conditionManager = self.TraitOrDefault<ConditionManager>();
 
@@ -88,6 +90,8 @@ namespace OpenRA.Mods.Common.Traits
 				if (conditionManager != null && cloakedToken == ConditionManager.InvalidConditionToken && !string.IsNullOrEmpty(Info.CloakedCondition))
 					cloakedToken = conditionManager.GrantCondition(self, Info.CloakedCondition);
 			}
+
+			base.Created(self);
 		}
 
 		public bool Cloaked { get { return !IsTraitDisabled && remainingTime <= 0; } }
@@ -102,7 +106,13 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyDamage.Damaged(Actor self, AttackInfo e)
 		{
-			if (Info.UncloakOn.HasFlag(UncloakType.Damage))
+			if (e.Damage.Value == 0)
+				return;
+
+			var type = e.Damage.Value < 0
+				? (e.Attacker == self ? UncloakType.SelfHeal : UncloakType.Heal)
+				: UncloakType.Damage;
+			if (Info.UncloakOn.HasFlag(type))
 				Uncloak();
 		}
 

@@ -51,3 +51,5 @@ FTUR:
 
 PBOX:
 	-AutoTarget:
+	-AutoTargetPriority@DEFAULT:
+	-AutoTargetPriority@ATTACKANYTHING:

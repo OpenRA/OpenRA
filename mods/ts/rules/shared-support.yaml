@@ -1,13 +1,14 @@
 NAPULS:
 	Inherits: ^Defense
+	Inherits@IDISABLE: ^DisabledOverlay
 	Valued:
 		Cost: 1000
 	Tooltip:
 		Name: E.M. Pulse Cannon
 	Buildable:
 		Queue: Defense
-		BuildPaletteOrder: 90
-		Prerequisites: radar
+		BuildPaletteOrder: 110
+		Prerequisites: radar, ~techlevel.superweapons
 		Description: Disables mechanical units in an area.\nRequires power to operate.
 	Building:
 		Footprint: xx xx
@@ -15,21 +16,19 @@ NAPULS:
 	Selectable:
 		Bounds: 78, 54, 0, -12
 	RequiresPower:
-	DisabledOverlay:
 	Health:
 		HP: 500
 	Armor:
 		Type: Heavy
 	RevealsShroud:
 		Range: 8c0
-	-AutoTarget:
 	Turreted:
 		TurnSpeed: 10
 		InitialFacing: 224
 	AttackTurreted:
 	Armament:
 		Weapon: EMPulseCannon
-		LocalOffset: 150,0,1250
+		LocalOffset: 212,0,1768
 		LocalYaw: 0,100
 	WithSpriteTurret:
 		Sequence: turret
@@ -45,6 +44,7 @@ NAPULS:
 	ProvidesPrerequisite@gdi:
 		ResetOnOwnerChange: true
 	AttackOrderPower:
+		PauseOnCondition: empdisable || disabled
 		Cursor: emp
 		Icon: emp
 		ChargeTime: 135

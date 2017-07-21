@@ -31,7 +31,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			Console.WriteLine("openra \\- An Open Source modernization of the early 2D Command & Conquer games.");
 			Console.WriteLine(".SH SYNOPSIS");
 			Console.WriteLine(".B openra");
-			Console.WriteLine("[\\fB\\Game.Mod=\\fR\\fImodchooser\\fR]");
+			Console.WriteLine("[\\fB\\Game.Mod=\\fR\\fIra\\fR]");
 			Console.WriteLine(".SH DESCRIPTION");
 			Console.WriteLine(".B openra");
 			Console.WriteLine("starts the game.");
@@ -51,7 +51,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 					Console.Write(".BR {0}.{1}=".F(section.Key, field.Name));
 					var value = field.GetValue(section.Value);
-					if (value != null && !value.ToString().StartsWith("System."))
+					if (value != null && !value.ToString().StartsWith("System.", StringComparison.Ordinal))
 						Console.WriteLine("\\fI{0}\\fR".F(value));
 					else
 						Console.WriteLine();
@@ -67,7 +67,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			Console.WriteLine(".SH BUGS");
 			Console.WriteLine("Known issues are tracked at http://bugs.openra.net");
 			Console.WriteLine(".SH COPYRIGHT");
-			Console.WriteLine("Copyright 2007-2015 The OpenRA Developers (see AUTHORS)");
+			Console.WriteLine("Copyright 2007-2017 The OpenRA Developers (see AUTHORS)");
 			Console.WriteLine("This manual is part of OpenRA, which is free software. It is GNU GPL v3 licensed. See COPYING for details.");
 		}
 	}

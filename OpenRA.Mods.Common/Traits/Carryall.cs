@@ -288,7 +288,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			static bool CanTarget(Actor self, Actor target)
 			{
-				if (!target.AppearsFriendlyTo(self))
+				if (target == null || !target.AppearsFriendlyTo(self))
 					return false;
 
 				var carryable = target.TraitOrDefault<Carryable>();

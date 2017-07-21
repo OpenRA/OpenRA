@@ -117,11 +117,41 @@
 		IsPlayerPalette: true
 		CloakSound: cloak5.aud
 		UncloakSound: cloak5.aud
-		UncloakOn: Attack, Unload, Infiltrate, Demolish, Damage
+		UncloakOn: Attack, Unload, Infiltrate, Demolish, Damage, Heal
 	ExternalCondition@CLOAKGENERATOR:
 		Condition: cloakgenerator
 	ExternalCondition@CRATE-CLOAK:
 		Condition: crate-cloak
+
+^AutoTargetGround:
+	AutoTarget:
+		AttackAnythingCondition: stance-attackanything
+	AutoTargetPriority@DEFAULT:
+		RequiresCondition: !stance-attackanything
+		ValidTargets: Infantry, Vehicle, Creep, Water, Defense
+		InvalidTargets: NoAutoTarget
+	AutoTargetPriority@ATTACKANYTHING:
+		RequiresCondition: stance-attackanything
+		ValidTargets: Infantry, Vehicle, Creep, Water, Structure, Defense
+		InvalidTargets: NoAutoTarget
+
+^AutoTargetAir:
+	AutoTarget:
+	AutoTargetPriority@DEFAULT:
+		ValidTargets: Air
+		InvalidTargets: NoAutoTarget
+
+^AutoTargetAll:
+	AutoTarget:
+		AttackAnythingCondition: stance-attackanything
+	AutoTargetPriority@DEFAULT:
+		RequiresCondition: !stance-attackanything
+		ValidTargets: Infantry, Vehicle, Creep, Water, Air, Defense
+		InvalidTargets: NoAutoTarget
+	AutoTargetPriority@ATTACKANYTHING:
+		RequiresCondition: stance-attackanything
+		ValidTargets: Infantry, Vehicle, Creep, Water, Air, Structure, Defense
+		InvalidTargets: NoAutoTarget
 
 ^BasicBuilding:
 	Inherits@1: ^ExistsInWorld
@@ -135,6 +165,8 @@
 		Priority: 3
 	Targetable:
 		TargetTypes: Ground, Building, C4
+	HitShape:
+		UseOccupiedCellsOffsets: true
 	Building:
 		Dimensions: 1,1
 		Footprint: x
@@ -163,6 +195,8 @@
 		Weapons: LargeDebris, LargeDebrisWithTrail
 		Pieces: 1, 2
 		Range: 2c0, 5c0
+	EditorTilesetFilter:
+		Categories: Building
 
 ^Building:
 	Inherits@1: ^BasicBuilding
@@ -204,6 +238,8 @@
 		MaxHeightDelta: 3
 	RenderSprites:
 		Palette: terraindecoration
+	EditorTilesetFilter:
+		Categories: Civilian building
 
 ^OldBase:
 	Inherits: ^CivBuilding
@@ -215,7 +251,7 @@
 	Health:
 		HP: 400
 	RenderSprites:
-		Palette: player
+		-Palette:
 	-Cloak@EXTERNALCLOAK:
 	-ExternalCondition@CLOAKGENERATOR:
 	-ExternalCondition@CRATE-CLOAK:
@@ -235,6 +271,8 @@
 		Pieces: 1, 3
 	ThrowsShrapnel@LARGE:
 		Pieces: 1, 1
+	EditorTilesetFilter:
+		Categories: Billboard
 
 ^Crate:
 	HiddenUnderFog:
@@ -249,6 +287,8 @@
 		Images: crate
 	CustomSelectionSize:
 		CustomBounds: 24,24
+	EditorTilesetFilter:
+		Categories: System
 
 ^Wall:
 	Inherits@1: ^SpriteActor
@@ -276,18 +316,20 @@
 		TargetTypes: Ground, Wall, C4
 	WithWallSpriteBody:
 		Type: wall
-	AutoTargetIgnore:
 	Sellable:
 		SellSounds: cashturn.aud
 	Demolishable:
 	ScriptTriggers:
 	ConditionManager:
 	Health:
-		Shape: Rectangle
-			RotateToIsometry: true
-			TopLeft: -384, -384
-			BottomRight: 384, 384
-			VerticalTopOffset: 512
+	HitShape:
+		Type: Rectangle
+			LocalYaw: 128
+			TopLeft: -512, -512
+			BottomRight: 512, 512
+			VerticalTopOffset: 768
+	EditorTilesetFilter:
+		Categories: Wall
 
 ^BuildingPlug:
 	AlwaysVisible:
@@ -306,9 +348,6 @@
 	DrawLineToTarget:
 	Health:
 		HP: 50
-		Shape: Circle
-			Radius: 128
-			VerticalTopOffset: 512
 	Armor:
 		Type: None
 	Valued:
@@ -348,7 +387,6 @@
 	QuantizeFacingsFromSequence:
 		Sequence: stand
 	WithInfantryBody:
-	AutoTarget:
 	AttackMove:
 		Voice: Move
 	Passenger:
@@ -381,6 +419,13 @@
 		ReferencePoint: Bottom, Right
 		RequiresCondition: hospitalheal
 	RevealOnFire:
+	EntersTunnels:
+		Voice: Move
+	HitShape:
+		Type: Circle
+			Radius: 128
+	EditorTilesetFilter:
+		Categories: Infantry
 
 ^RegularInfantryDeath:
 	WithDeathAnimation@normal:
@@ -486,6 +531,8 @@
 	Wanders:
 		MinMoveDelay: 150
 		MaxMoveDelay: 750
+	EditorTilesetFilter:
+		Categories: Civilian infantry
 
 ^Vehicle:
 	Inherits@2: ^ExistsInWorld
@@ -565,6 +612,11 @@
 	Carryable:
 		RequiresCondition: !inside-tunnel
 	RevealOnFire:
+	EntersTunnels:
+		Voice: Move
+	HitShape:
+	EditorTilesetFilter:
+		Categories: Vehicle
 
 ^Tank:
 	Inherits: ^Vehicle
@@ -638,6 +690,9 @@
 	RenderVoxels:
 	WithVoxelBody:
 	RevealOnFire:
+	HitShape:
+	EditorTilesetFilter:
+		Categories: Aircraft
 
 ^Helicopter:
 	Inherits: ^Aircraft
@@ -662,7 +717,6 @@
 		Type: Heavy
 	HiddenUnderFog:
 		Type: GroundPosition
-	AutoTargetIgnore:
 	ScriptTriggers:
 	Tooltip:
 		GenericName: Destroyed Aircraft
@@ -670,6 +724,9 @@
 		Spins: true
 		Moves: true
 		Velocity: 86
+	HitShape:
+	EditorTilesetFilter:
+		Categories: Husk
 
 ^Visceroid:
 	Inherits@1: ^ExistsInWorld
@@ -678,9 +735,6 @@
 	Huntable:
 	DrawLineToTarget:
 	Health:
-		Shape: Circle
-			Radius: 256
-			VerticalTopOffset: 512
 	Armor:
 		Type: Light
 	Mobile:
@@ -710,6 +764,14 @@
 	Guardable:
 	WithFacingSpriteBody:
 	RevealOnFire:
+	EntersTunnels:
+		Voice: Move
+	HitShape:
+		Type: Circle
+			Radius: 256
+			VerticalTopOffset: 512
+	EditorTilesetFilter:
+		Categories: Critter
 
 ^BlossomTree:
 	Inherits@1: ^SpriteActor
@@ -729,6 +791,8 @@
 		ResourceType: Tiberium
 		Interval: 55
 	WithIdleAnimation:
+	EditorTilesetFilter:
+		Categories: Resource spawn
 
 ^Tree:
 	Inherits@1: ^SpriteActor
@@ -744,6 +808,8 @@
 		Terrain: Tree
 	Tooltip:
 		Name: Tree
+	EditorTilesetFilter:
+		Categories: Tree
 
 ^Rock:
 	Inherits@1: ^SpriteActor
@@ -759,6 +825,8 @@
 		Terrain: Rock
 	Tooltip:
 		Name: Rock
+	EditorTilesetFilter:
+		Categories: Decoration
 
 ^Decoration:
 	Inherits@1: ^SpriteActor
@@ -769,6 +837,8 @@
 	Building:
 		Footprint: x
 		Dimensions: 1, 1
+	EditorTilesetFilter:
+		Categories: Decoration
 
 ^Box:
 	Inherits: ^Decoration
@@ -788,7 +858,6 @@
 ^Defense:
 	Inherits: ^Building
 	-GivesBuildableArea:
-	AutoTarget:
 	RenderRangeCircle:
 	RenderDetectionCircle:
 	RevealsShroud:
@@ -796,6 +865,8 @@
 	DetectCloaked:
 		Range: 5c0
 	RevealOnFire:
+	EditorTilesetFilter:
+		Categories: Defense
 
 ^Train:
 	Inherits@1: ^EmpDisable
@@ -849,6 +920,9 @@
 		Weapons: SmallDebris
 		Pieces: 3, 7
 		Range: 2c0, 5c0
+	HitShape:
+	EditorTilesetFilter:
+		Categories: Railway
 
 ^TerrainOverlay:
 	AlwaysVisible:
@@ -866,11 +940,29 @@
 	EditorOnlyTooltip:
 		Name: Railway
 	AutoSelectionSize:
+	ChangesTerrain:
+		TerrainType: Rail
+	EditorTilesetFilter:
+		Categories: Railway
 
 ^Tunnel:
-	Inherits: ^TerrainOverlay
+	RenderSprites:
+		Palette: terraindecoration
+	WithSpriteBody:
+	BodyOrientation:
+		UseClassicPerspectiveFudge: False
+		QuantizedFacings: 1
+	Building:
+		Dimensions: 3, 3
+		Footprint: ___ ___ ___
 	CustomSelectionSize:
-		CustomBounds: 220,220
+		CustomBounds: 144, 144
+	Targetable:
+	AlwaysVisible:
+	TunnelEntrance:
+		Dimensions: 3, 3
+	EditorTilesetFilter:
+		Categories: Tunnel
 
 ^Gate:
 	Inherits: ^Building
@@ -897,12 +989,21 @@
 		OpeningSound: gateup1.aud
 		ClosingSound: gatedwn1.aud
 		TerrainTypes: Clear, Rough, Road, DirtRoad, Green, Sand, Pavement
-		BlocksProjectilesHeight: 640
+		BlocksProjectilesHeight: 768
 	Buildable:
 		Description: Automated barrier that opens for allied units.
+	HitShape:
+		Type: Rectangle
+			LocalYaw: 128
+			TopLeft: -512, -512
+			BottomRight: 512, 512
+			VerticalTopOffset: 768
+	EditorTilesetFilter:
+		Categories: Wall
 
 ^Gate_A:
 	Inherits: ^Gate
+	Health:
 	Gate:
 		Dimensions: 3,1
 		Footprint: xxx
@@ -910,9 +1011,14 @@
 		WallConnections: -1,0, 3,0
 	LineBuildNode:
 		Connections: -1,0, 1,0
+	HitShape:
+		Type: Rectangle
+			TopLeft: -512, -1536
+			BottomRight: 512, 1536
 
 ^Gate_B:
 	Inherits: ^Gate
+	Health:
 	Gate:
 		Dimensions: 1,3
 		Footprint: x x x
@@ -920,6 +1026,10 @@
 		WallConnections: 0,-1, 0,3
 	LineBuildNode:
 		Connections: 0,-1, 0,1
+	HitShape:
+		Type: Rectangle
+			TopLeft: -1536, -512
+			BottomRight: 1536, 512
 
 ^HealsOnTiberium:
 	DamagedByTerrain:
@@ -945,3 +1055,19 @@
 		StartDelay: -1
 		SpawnAtLastPosition: false
 		RequiresCondition: !inside-tunnel
+
+^DisabledOverlay:
+	WithColoredOverlay@IDISABLE:
+		RequiresCondition: disabled
+		Palette: disabled
+	GrantConditionOnDisabled@IDISABLE:
+		Condition: disabled
+
+^DisabledByPowerOutage:
+	AffectedByPowerOutage:
+		Condition: power-outage
+	InfiltrateForPowerOutage:
+	DisableOnCondition@POWER_OUTAGE:
+		RequiresCondition: power-outage
+	Power:
+		RequiresCondition: !power-outage

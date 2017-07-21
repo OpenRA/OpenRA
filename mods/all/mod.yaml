@@ -1,11 +1,7 @@
 Metadata:
 	Title: All mods
 	Version: {DEV_VERSION}
-	Author: The OpenRA Developers
 	Hidden: true
-	Description: Depending on all DLLs.
-
-RequiresMods:
 
 Packages:
 	.
@@ -34,3 +30,5 @@ SoundFormats:
 SpriteFormats:
 
 SpriteSequenceFormat: DefaultSpriteSequence
+
+ModelSequenceFormat: PlaceholderModelSequence

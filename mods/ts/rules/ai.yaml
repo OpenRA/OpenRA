@@ -1,6 +1,7 @@
 Player:
 	HackyAI@TestAI:
 		Name: Test AI
+		Type: test
 		MinimumExcessPower: 60
 		BuildingCommonNames:
 			ConstructionYard: gacnst
@@ -14,6 +15,7 @@ Player:
 			Mcv: mcv
 		BuildingLimits:
 			proc: 4
+			gasilo: 2
 			gapowr: 8
 			napowr: 8
 			gapile: 1

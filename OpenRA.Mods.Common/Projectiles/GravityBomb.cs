@@ -34,10 +34,11 @@ namespace OpenRA.Mods.Common.Projectiles
 
 		[PaletteReference] public readonly string ShadowPalette = "shadow";
 
-		public readonly WDist Speed = WDist.Zero;
+		[Desc("Projectile movement vector per tick (forward, right, up), use negative values for opposite directions.")]
+		public readonly WVec Velocity = WVec.Zero;
 
-		[Desc("Value added to speed every tick.")]
-		public readonly WDist Acceleration = new WDist(15);
+		[Desc("Value added to Velocity every tick.")]
+		public readonly WVec Acceleration = new WVec(0, 0, -15);
 
 		public IProjectile Create(ProjectileArgs args) { return new GravityBomb(this, args); }
 	}
@@ -47,17 +48,18 @@ namespace OpenRA.Mods.Common.Projectiles
 		readonly GravityBombInfo info;
 		readonly Animation anim;
 		readonly ProjectileArgs args;
+		readonly WVec acceleration;
 		[Sync] WVec velocity;
 		[Sync] WPos pos;
-		[Sync] WVec acceleration;
 
 		public GravityBomb(GravityBombInfo info, ProjectileArgs args)
 		{
 			this.info = info;
 			this.args = args;
 			pos = args.Source;
-			velocity = new WVec(WDist.Zero, WDist.Zero, -info.Speed);
-			acceleration = new WVec(WDist.Zero, WDist.Zero, info.Acceleration);
+			var convertedVelocity = new WVec(info.Velocity.Y, -info.Velocity.X, info.Velocity.Z);
+			velocity = convertedVelocity.Rotate(WRot.FromFacing(args.Facing));
+			acceleration = new WVec(info.Acceleration.Y, -info.Acceleration.X, info.Acceleration.Z);
 
 			if (!string.IsNullOrEmpty(info.Image))
 			{
@@ -72,8 +74,8 @@ namespace OpenRA.Mods.Common.Projectiles
 
 		public void Tick(World world)
 		{
-			velocity -= acceleration;
 			pos += velocity;
+			velocity += acceleration;
 
 			if (pos.Z <= args.PassiveTarget.Z)
 			{

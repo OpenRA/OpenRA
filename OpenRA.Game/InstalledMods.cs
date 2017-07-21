@@ -53,9 +53,6 @@ namespace OpenRA
 					var directory = new DirectoryInfo(resolved);
 					foreach (var subdir in directory.EnumerateDirectories())
 						mods.Add(Pair.New(subdir.Name, subdir.FullName));
-
-					foreach (var file in directory.EnumerateFiles("*.oramod"))
-						mods.Add(Pair.New(Path.GetFileNameWithoutExtension(file.Name), file.FullName));
 				}
 				catch (Exception e)
 				{
@@ -71,40 +68,39 @@ namespace OpenRA
 			IReadOnlyPackage package = null;
 			try
 			{
-				if (Directory.Exists(path))
-					package = new Folder(path);
-				else
+				if (!Directory.Exists(path))
 				{
-					try
-					{
-						using (var fileStream = File.OpenRead(path))
-							package = new ZipFile(fileStream, path);
-					}
-					catch
-					{
-						throw new InvalidDataException(path + " is not a valid mod package");
-					}
+					Log.Write("debug", path + " is not a valid mod package");
+					return null;
 				}
 
-				if (!package.Contains("mod.yaml"))
-					throw new InvalidDataException(path + " is not a valid mod package");
+				package = new Folder(path);
+				if (package.Contains("mod.yaml"))
+				{
+					var manifest = new Manifest(id, package);
 
-				using (var stream = package.GetStream("icon.png"))
-					if (stream != null)
-						using (var bitmap = new Bitmap(stream))
-							icons[id] = sheetBuilder.Add(bitmap);
+					if (package.Contains("icon.png"))
+					{
+						using (var stream = package.GetStream("icon.png"))
+							if (stream != null)
+								using (var bitmap = new Bitmap(stream))
+									icons[id] = sheetBuilder.Add(bitmap);
+					}
+					else if (!manifest.Metadata.Hidden)
+						Log.Write("debug", "Mod '{0}' is missing 'icon.png'.".F(path));
 
-				// Mods in the support directory and oramod packages (which are listed later
-				// in the CandidateMods list) override mods in the main install.
-				return new Manifest(id, package);
+					return manifest;
+				}
 			}
-			catch (Exception)
+			catch (Exception e)
 			{
-				if (package != null)
-					package.Dispose();
-
-				return null;
+				Log.Write("debug", "Load mod '{0}': {1}".F(path, e));
 			}
+
+			if (package != null)
+				package.Dispose();
+
+			return null;
 		}
 
 		Dictionary<string, Manifest> GetInstalledMods(IEnumerable<string> searchPaths, IEnumerable<string> explicitPaths)
@@ -116,9 +112,6 @@ namespace OpenRA
 			foreach (var pair in candidates)
 			{
 				var mod = LoadMod(pair.First, pair.Second);
-
-				// Mods in the support directory and oramod packages (which are listed later
-				// in the CandidateMods list) override mods in the main install.
 				if (mod != null)
 					ret[pair.First] = mod;
 			}

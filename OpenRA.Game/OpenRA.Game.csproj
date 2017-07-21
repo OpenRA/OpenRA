@@ -16,7 +16,6 @@
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
     <IsWebBootstrapper>false</IsWebBootstrapper>
-    <ApplicationIcon>OpenRA.ico</ApplicationIcon>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -42,6 +41,8 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <PlatformTarget>x86</PlatformTarget>
     <UseVSHostingProcess>false</UseVSHostingProcess>
+    <StartArguments>Game.Mod=ra</StartArguments>
+    <Commandlineparameters>Game.Mod=ra</Commandlineparameters>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
     <DebugSymbols>true</DebugSymbols>
@@ -53,6 +54,24 @@
     <UseVSHostingProcess>false</UseVSHostingProcess>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <Optimize>true</Optimize>
+    <StartArguments>Game.Mod=ra</StartArguments>
+    <Commandlineparameters>Game.Mod=ra</Commandlineparameters>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(RunConfiguration)' == 'Default' ">
+    <StartAction>Project</StartAction>
+    <StartArguments>Game.Mod=ra</StartArguments>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(RunConfiguration)' == 'Dune 2000' ">
+    <StartAction>Project</StartAction>
+    <StartArguments>Game.Mod=d2k</StartArguments>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(RunConfiguration)' == 'Tiberian Dawn' ">
+    <StartAction>Project</StartAction>
+    <StartArguments>Game.Mod=cnc</StartArguments>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(RunConfiguration)' == 'Tiberian Sun' ">
+    <StartAction>Project</StartAction>
+    <StartArguments>Game.Mod=ts</StartArguments>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -88,11 +107,8 @@
     <Compile Include="Activities\CallFunc.cs" />
     <Compile Include="Actor.cs" />
     <Compile Include="CacheStorage.cs" />
-    <Compile Include="FileSystem\IdxEntry.cs" />
     <Compile Include="FileSystem\IPackage.cs" />
     <Compile Include="LogProxy.cs" />
-    <Compile Include="FileFormats\IdxReader.cs" />
-    <Compile Include="FileSystem\BagFile.cs" />
     <Compile Include="Map\MapGrid.cs" />
     <Compile Include="Map\MapPlayers.cs" />
     <Compile Include="MPos.cs" />
@@ -124,7 +140,6 @@
     <Compile Include="Graphics\Util.cs" />
     <Compile Include="Graphics\Viewport.cs" />
     <Compile Include="Graphics\WorldRenderer.cs" />
-    <Compile Include="Group.cs" />
     <Compile Include="IUtilityCommand.cs" />
     <Compile Include="ModData.cs" />
     <Compile Include="Network\Connection.cs" />
@@ -146,10 +161,12 @@
     <Compile Include="Player.cs" />
     <Compile Include="Primitives\MergedStream.cs" />
     <Compile Include="Primitives\PlayerDictionary.cs" />
+    <Compile Include="Primitives\ReadOnlyAdapterStream.cs" />
     <Compile Include="Primitives\SegmentStream.cs" />
     <Compile Include="Primitives\SpatiallyPartitioned.cs" />
     <Compile Include="Primitives\ConcurrentCache.cs" />
     <Compile Include="Scripting\AIScriptContext.cs" />
+    <Compile Include="Primitives\ZipFileHelper.cs" />
     <Compile Include="SelectableExts.cs" />
     <Compile Include="Selection.cs" />
     <Compile Include="Server\Connection.cs" />
@@ -181,11 +198,8 @@
     <Compile Include="Traits\DebugPauseState.cs" />
     <Compile Include="Network\UPnP.cs" />
     <Compile Include="Graphics\Renderable.cs" />
-    <Compile Include="Graphics\Voxel.cs" />
-    <Compile Include="Graphics\VoxelRenderer.cs" />
-    <Compile Include="Graphics\VoxelLoader.cs" />
-    <Compile Include="Graphics\VoxelProvider.cs" />
-    <Compile Include="Graphics\VoxelAnimation.cs" />
+    <Compile Include="Graphics\ModelRenderer.cs" />
+    <Compile Include="Graphics\ModelAnimation.cs" />
     <Compile Include="Traits\Player\FrozenActorLayer.cs" />
     <Compile Include="Graphics\Theater.cs" />
     <Compile Include="Traits\Player\PlayerColorPalette.cs" />
@@ -222,7 +236,6 @@
     <Compile Include="Support\PerfSample.cs" />
     <Compile Include="Graphics\SpriteRenderable.cs" />
     <Compile Include="Widgets\Widget.cs" />
-    <Compile Include="Widgets\RootWidget.cs" />
     <Compile Include="Widgets\WidgetLoader.cs" />
     <Compile Include="Widgets\ChromeMetrics.cs" />
     <Compile Include="Widgets\WidgetUtils.cs" />
@@ -238,21 +251,19 @@
     <Compile Include="Graphics\RgbaColorRenderer.cs" />
     <Compile Include="Traits\Player\IndexedPlayerPalette.cs" />
     <Compile Include="Traits\ActivityUtils.cs" />
-    <Compile Include="FileSystem\ZipFolder.cs" />
     <Compile Include="Primitives\float3.cs" />
     <Compile Include="InstalledMods.cs" />
     <Compile Include="CryptoUtil.cs" />
-    <Compile Include="Support\ConditionExpression.cs" />
+    <Compile Include="Support\VariableExpression.cs" />
     <Compile Include="ExternalMods.cs" />
+    <Compile Include="Graphics\Model.cs" />
+    <Compile Include="UtilityCommands\RegisterModCommand.cs" />
+    <Compile Include="UtilityCommands\UnregisterModCommand.cs" />
+    <Compile Include="UtilityCommands\ClearInvalidModRegistrationsCommand.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FileSystem\D2kSoundResources.cs" />
     <Compile Include="FileSystem\Folder.cs" />
-    <Compile Include="FileSystem\InstallShieldPackage.cs" />
-    <Compile Include="FileSystem\MixFile.cs" />
-    <Compile Include="FileSystem\Pak.cs" />
     <Compile Include="FileSystem\ZipFile.cs" />
-    <Compile Include="FileSystem\BigFile.cs" />
     <Compile Include="Map\PlayerReference.cs" />
     <Compile Include="Map\TileReference.cs" />
     <Compile Include="Map\TileSet.cs" />
@@ -260,15 +271,7 @@
     <Compile Include="FieldSaver.cs" />
     <Compile Include="Manifest.cs" />
     <Compile Include="Graphics\Vertex.cs" />
-    <Compile Include="FileFormats\Blast.cs" />
-    <Compile Include="FileFormats\Blowfish.cs" />
-    <Compile Include="FileFormats\BlowfishKeyProvider.cs" />
-    <Compile Include="FileFormats\CRC32.cs" />
-    <Compile Include="FileFormats\XccGlobalDatabase.cs" />
-    <Compile Include="FileFormats\XccLocalDatabase.cs" />
-    <Compile Include="FileFormats\HvaReader.cs" />
     <Compile Include="FileFormats\PngLoader.cs" />
-    <Compile Include="FileFormats\VxlReader.cs" />
     <Compile Include="Primitives\ActionQueue.cs" />
     <Compile Include="Primitives\Bits.cs" />
     <Compile Include="Primitives\Cache.cs" />
@@ -289,7 +292,6 @@
     <Compile Include="Map\MapCache.cs" />
     <Compile Include="Map\MapPreview.cs" />
     <Compile Include="Graphics\HSLColor.cs" />
-    <Compile Include="FileSystem\PackageEntry.cs" />
     <Compile Include="CPos.cs" />
     <Compile Include="CVec.cs" />
     <Compile Include="WAngle.cs" />
@@ -334,8 +336,5 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup>
-    <Content Include="OpenRA.ico" />
-  </ItemGroup>
-  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />  
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

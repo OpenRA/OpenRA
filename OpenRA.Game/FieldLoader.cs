@@ -349,7 +349,7 @@ namespace OpenRA
 					if (parts.Length == 3)
 					{
 						int rr, rp, ry;
-						if (Exts.TryParseIntegerInvariant(value, out rr) && Exts.TryParseIntegerInvariant(value, out rp) && Exts.TryParseIntegerInvariant(value, out ry))
+						if (Exts.TryParseIntegerInvariant(parts[0], out rr) && Exts.TryParseIntegerInvariant(parts[1], out rp) && Exts.TryParseIntegerInvariant(parts[2], out ry))
 							return new WRot(new WAngle(rr), new WAngle(rp), new WAngle(ry));
 					}
 				}
@@ -398,13 +398,29 @@ namespace OpenRA
 
 				return InvalidValueAction(value, fieldType, fieldName);
 			}
-			else if (fieldType == typeof(ConditionExpression))
+			else if (fieldType == typeof(BooleanExpression))
 			{
 				if (value != null)
 				{
 					try
 					{
-						return new ConditionExpression(value);
+						return new BooleanExpression(value);
+					}
+					catch (InvalidDataException e)
+					{
+						throw new YamlException(e.Message);
+					}
+				}
+
+				return InvalidValueAction(value, fieldType, fieldName);
+			}
+			else if (fieldType == typeof(IntegerExpression))
+			{
+				if (value != null)
+				{
+					try
+					{
+						return new IntegerExpression(value);
 					}
 					catch (InvalidDataException e)
 					{
