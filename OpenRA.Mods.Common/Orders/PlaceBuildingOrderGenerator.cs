@@ -23,7 +23,7 @@ namespace OpenRA.Mods.Common.Orders
 	public class PlaceBuildingOrderGenerator : IOrderGenerator
 	{
 		[Flags]
-		enum CellType { Valid = 0, Invalid = 1, LineBuild = 2 }
+		public enum CellType { Valid = 0, Invalid = 1, LineBuild = 2 } // made public for Yupgi_alert
 
 		readonly ProductionQueue queue;
 		readonly string building;
@@ -65,7 +65,8 @@ namespace OpenRA.Mods.Common.Orders
 			buildingInfluence = world.WorldActor.Trait<BuildingInfluence>();
 		}
 
-		CellType MakeCellType(bool valid, bool lineBuild = false)
+		// made public static for Yupgi_alert
+		public static CellType MakeCellType(bool valid, bool lineBuild = false)
 		{
 			var cell = valid ? CellType.Valid : CellType.Invalid;
 			if (lineBuild)

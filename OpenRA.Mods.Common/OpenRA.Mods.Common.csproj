@@ -68,7 +68,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Activities\UndeployForGrantedCondition.cs" />
     <Compile Include="Activities\DockUtils.cs" />
     <Compile Include="Activities\Air\AllowYieldingReservation.cs" />
     <Compile Include="Activities\Air\FallToEarth.cs" />
@@ -299,7 +298,6 @@
     <Compile Include="Traits\DockClient.cs" />
     <Compile Include="Traits\DockManager.cs" />
     <Compile Include="Traits\Dock.cs" />
-    <Compile Include="Traits\Health.cs" />
     <Compile Include="Traits\ShootsMissiles.cs" />
     <Compile Include="Traits\ChangesTerrain.cs" />
     <Compile Include="Traits\CommandBarBlacklist.cs" />

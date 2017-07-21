@@ -57,9 +57,9 @@ namespace OpenRA.Mods.Common.Traits
 				return false;
 
 			var delta = target.CenterPosition - self.CenterPosition;
-			var facingToTarget = delta.HorizontalLengthSquared != 0 ? delta.Yaw.Facing : facing.Value.Facing;
+			var facingToTarget = delta.HorizontalLengthSquared != 0 ? delta.Yaw.Facing : facing.Facing;
 
-			return WithinFacingTolerance(facing.Value.Facing, facingToTarget, info.FacingTolerance);
+			return WithinFacingTolerance(facing.Facing, facingToTarget, info.FacingTolerance);
 		}
 
 		public override Activity GetAttackActivity(Actor self, Target newTarget, bool allowMove, bool forceAttack)

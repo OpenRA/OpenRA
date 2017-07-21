@@ -43,7 +43,6 @@ namespace OpenRA.Mods.Common.Activities
 			this.target = Target.FromActor(target);
 			this.maxTries = maxTries;
 			this.EnterBehaviour = enterBehaviour;
-			this.TargetCenter = targetCenter;
 			this.repathWhileMoving = repathWhileMoving;
 		}
 
@@ -178,7 +177,7 @@ namespace OpenRA.Mods.Common.Activities
 						case ReserveStatus.TooFar:
 						{
 							var moveTarget = repathWhileMoving ? target : Target.FromPos(target.Positions.PositionClosestTo(self.CenterPosition));
-							inner = move.MoveToTarget(self, moveTarget); // Approach
+							inner = Move.MoveToTarget(self, moveTarget); // Approach
 							return EnterState.ApproachingOrEntering;
 						}
 

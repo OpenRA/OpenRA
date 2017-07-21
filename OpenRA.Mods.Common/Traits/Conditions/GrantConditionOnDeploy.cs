@@ -215,8 +215,6 @@ namespace OpenRA.Mods.Common.Traits
 			if (!init)
 				OnDeployStarted();
 
-			var body = GetEnabledAnimationProvider(self);
-
 			// If there is no animation to play just grant the condition that is used while deployed.
 			// Alternatively, play the deploy animation and then grant the condition.
 			if (!notify.Any())
@@ -239,8 +237,6 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (!init)
 				OnUndeployStarted();
-
-			var body = GetEnabledAnimationProvider(self);
 
 			// If there is no animation to play just grant the condition that is used while undeployed.
 			// Alternatively, play the undeploy animation and then grant the condition.
