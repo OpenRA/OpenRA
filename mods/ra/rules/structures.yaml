@@ -1527,7 +1527,7 @@ BARR:
 		Prerequisites: anypower, ~structures.soviet, ~techlevel.infonly
 		Description: Trains infantry.
 	Valued:
-		Cost: 400
+		Cost: 500
 	Tooltip:
 		Name: Soviet Barracks
 	Building:
@@ -1656,7 +1656,7 @@ TENT:
 		Prerequisites: anypower, ~structures.allies, ~techlevel.infonly
 		Description: Trains infantry.
 	Valued:
-		Cost: 400
+		Cost: 500
 	Tooltip:
 		Name: Allied Barracks
 	Building:
