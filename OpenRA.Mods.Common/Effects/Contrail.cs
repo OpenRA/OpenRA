@@ -64,8 +64,7 @@ namespace OpenRA.Mods.Common.Effects
 		public void Tick(Actor self)
 		{
 			var local = info.Offset.Rotate(body.QuantizeOrientation(self, self.Orientation));
-			if (self.IsInWorld)
-				trail.Update(self.CenterPosition + body.LocalToWorld(local));
+			trail.Update(self.CenterPosition + body.LocalToWorld(local));
 		}
 
 		public IEnumerable<IRenderable> Render(Actor self, WorldRenderer wr)

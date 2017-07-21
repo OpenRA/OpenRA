@@ -119,6 +119,7 @@ namespace OpenRA.Mods.Common.Activities
 
 			var targetedPosition = attack.GetTargetPosition(pos, Target);
 			var desiredFacing = (targetedPosition - pos).Yaw.Facing;
+			if (!AttackFrontal.WithinFacingTolerance(facing.Facing, desiredFacing, facingTolerance))
 			{
 				attackStatus |= AttackStatus.NeedsToTurn;
 				turnActivity = ActivityUtils.SequenceActivities(new Turn(self, desiredFacing), this);

@@ -270,15 +270,6 @@ namespace OpenRA
 				modID = Path.GetFileNameWithoutExtension(modID);
 			}
 
-			if (string.IsNullOrEmpty(modArgument))
-			{
-				var exe = Path.GetFileName(Process.GetCurrentProcess().MainModule.FileName);
-				if (exe.StartsWith("OpenRA") && exe.EndsWith(".exe"))
-					exe = exe.Remove(exe.Length - 4, 4).Remove(0, 7);
-				if (exe != "Game")
-					args.ReplaceValue("Game.Mod", exe);
-			}
-
 			InitializeSettings(args);
 
 			Log.AddChannel("perf", "perf.log");

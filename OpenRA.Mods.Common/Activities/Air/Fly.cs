@@ -104,6 +104,7 @@ namespace OpenRA.Mods.Common.Activities
 
 			if (activity == null && !IsCanceled)
 			{
+				self.QueueActivity(new FlyCircle(self));
 				activity = NextActivity;
 			}
 

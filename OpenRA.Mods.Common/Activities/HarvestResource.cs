@@ -34,26 +34,21 @@ namespace OpenRA.Mods.Common.Activities
 			resLayer = self.World.WorldActor.Trait<ResourceLayer>();
 		}
 
-		Activity UnclaimAndNext(Actor self)
-		{
-				claimLayer.RemoveClaim(self);
-			return NextActivity;
-		}
-
 		public override Activity Tick(Actor self)
 		{
 			if (IsCanceled)
-				return UnclaimAndNext(self);
-
-			if (!self.CanHarvestAt(self.Location, resLayer, harvInfo, territory))
 			{
 				claimLayer.RemoveClaim(self);
+				return NextActivity;
 			}
 
 			harv.LastHarvestedCell = self.Location;
 
 			if (harv.IsFull)
-				return UnclaimAndNext(self);
+			{
+				claimLayer.RemoveClaim(self);
+				return NextActivity;
+			}
 
 			// Turn to one of the harvestable facings
 			if (harvInfo.HarvestFacings != 0)
@@ -61,15 +56,14 @@ namespace OpenRA.Mods.Common.Activities
 				var current = facing.Facing;
 				var desired = body.QuantizeFacing(current, harvInfo.HarvestFacings);
 				if (desired != current)
-				{
 					return ActivityUtils.SequenceActivities(new Turn(self, desired), this);
-				}
 			}
 
 			var resource = resLayer.Harvest(self.Location);
 			if (resource == null)
 			{
 				claimLayer.RemoveClaim(self);
+				return NextActivity;
 			}
 
 			harv.AcceptResource(resource);
@@ -77,9 +71,7 @@ namespace OpenRA.Mods.Common.Activities
 			foreach (var t in self.TraitsImplementing<INotifyHarvesterAction>())
 				t.Harvested(self, resource);
 
-			Queue(new Wait(harvInfo.BaleLoadDelay));
-			Queue(new HarvestResource(self));
-			return NextActivity;
+			return ActivityUtils.SequenceActivities(new Wait(harvInfo.BaleLoadDelay), this);
 		}
 	}
 }

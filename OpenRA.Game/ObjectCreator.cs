@@ -27,7 +27,6 @@ namespace OpenRA
 		readonly Cache<string, Type> typeCache;
 		readonly Cache<Type, ConstructorInfo> ctorCache;
 		readonly Pair<Assembly, string>[] assemblies;
-		readonly bool isMonoRuntime = Type.GetType("Mono.Runtime") != null;
 
 		public ObjectCreator(Manifest manifest, InstalledMods mods)
 		{
@@ -53,17 +52,6 @@ namespace OpenRA
 				if (!ResolvedAssemblies.TryGetValue(hash, out assembly))
 				{
 					assembly = Assembly.LoadFile(resolvedPath);
-					var hasSymbols = false;
-
-					// Mono has its own symbol format.
-					if (isMonoRuntime)
-						hasSymbols = modFiles.TryOpen(path + ".mdb", out symbolStream);
-
-					// .NET uses .pdb files.
-					else
-						hasSymbols = modFiles.TryOpen(path.Substring(0, path.Length - 4) + ".pdb", out symbolStream);
-
-					assembly = hasSymbols ? Assembly.Load(data, symbolStream.ReadAllBytes()) : Assembly.Load(data);
 					ResolvedAssemblies.Add(hash, assembly);
 				}
 
