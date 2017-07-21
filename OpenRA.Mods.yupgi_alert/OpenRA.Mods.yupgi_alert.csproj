@@ -59,6 +59,10 @@
       <Name>OpenRA.Game</Name>
       <Private>False</Private>
     </ProjectReference>
+    <ProjectReference Include="..\OpenRA.Mods.Cnc\OpenRA.Mods.Cnc.csproj">
+      <Project>{2881135d-4d62-493e-8f83-5eee92ccc6be}</Project>
+      <Name>OpenRA.Mods.Cnc</Name>
+    </ProjectReference>
     <ProjectReference Include="..\OpenRA.Mods.Common\OpenRA.Mods.Common.csproj">
       <Project>{fe6c8cc0-2f07-442a-b29f-17617b3b7fc6}</Project>
       <Name>OpenRA.Mods.Common</Name>
@@ -74,12 +78,10 @@
     <Compile Include="Activities\EnterNydus.cs" />
     <Compile Include="Activities\EnterSpawner.cs" />
     <Compile Include="Activities\SpawnerHarvesterHarvest.cs" />
-    <Compile Include="Graphics\RailgunRenderable.cs" />
     <Compile Include="Graphics\Radioactivity.cs" />
     <Compile Include="Graphics\RadBeamRenderable.cs" />
     <Compile Include="Graphics\ArcRenderable.cs" />
     <Compile Include="Orders\ShootableBallisticMissileMoveOrderTargeter.cs" />
-    <Compile Include="Projectiles\Railgun.cs" />
     <Compile Include="Projectiles\RadBeam.cs" />
     <Compile Include="Traits\AIDeployHelper.cs" />
     <Compile Include="Traits\AegisAutoTarget.cs" />
@@ -110,8 +112,6 @@
     <Compile Include="Traits\Spawner.cs" />
     <Compile Include="Traits\StructureChrono.cs" />
     <Compile Include="Traits\Warheads\CreateRadioactivityWarhead.cs" />
-    <Compile Include="Traits\Warheads\FireClusterWarhead.cs" />
-    <Compile Include="Traits\Warheads\WarheadAS.cs" />
     <Compile Include="Traits\Render\WithAcceptDeliveredCashAnimation.cs" />
     <Compile Include="Traits\World\RadioactivityLayer.cs" />
   </ItemGroup>

@@ -90,6 +90,7 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 	{
 		readonly SpawnerHarvesterInfo info;
 		readonly Actor self;
+		readonly ResourceLayer resLayer;
 		readonly Mobile mobile;
 
 		// Because activities don't remember states, we remember states here for them.
@@ -119,6 +120,7 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 			exits = self.Info.TraitInfos<ExitInfo>().ToArray();
 
 			mobile = self.Trait<Mobile>();
+			resLayer = self.World.WorldActor.Trait<ResourceLayer>();
 
 			kickTicks = info.KickDelay;
 		}
@@ -418,6 +420,20 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 				s.QueueActivity(new Follow(s, Target.FromActor(self), WDist.FromCells(1), WDist.FromCells(3)));
 			}
 		}
+
+		public bool CanHarvestCell(Actor self, CPos cell)
+		{
+			// Resources only exist in the ground layer
+			if (cell.Layer != 0)
+				return false;
+
+			var resType = resLayer.GetResource(cell);
+			if (resType == null)
+				return false;
+
+			// Can the harvester collect this kind of resource?
+			return info.Resources.Contains(resType.Info.Type);
+		}
 	}
 
 	class SpawnerHarvestOrderTargeter : IOrderTargeter
@@ -451,33 +467,6 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 			IsQueued = modifiers.HasModifier(TargetModifiers.ForceQueue);
 
 			return true;
-		}
-	}
-
-	public static class ActorExts
-	{
-		public static bool CanHarvestAt(this Actor self, CPos pos, ResourceLayer resLayer, SpawnerHarvesterInfo harvInfo,
-		ResourceClaimLayer territory)
-		{
-			var resType = resLayer.GetResource(pos);
-			if (resType == null)
-				return false;
-
-			// Can the harvester collect this kind of resource?
-			if (!harvInfo.Resources.Contains(resType.Info.Type))
-				return false;
-
-			if (territory != null)
-			{
-				// Another harvester has claimed this resource:
-				ResourceClaim claim;
-				if (territory.IsClaimedByAnyoneElse(self as Actor, pos, out claim))
-					return false;
-			}
-
-			if (self.Location == pos)
-				return true;
-			return self.Trait<Mobile>().CanEnterCell(pos);
 		}
 	}
 }

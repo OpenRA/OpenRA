@@ -19,6 +19,7 @@ using OpenRA.Mods.Common;
 using OpenRA.Mods.Common.Graphics;
 using OpenRA.Mods.Common.Orders;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Mods.Cnc.Traits;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
@@ -250,7 +251,7 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 			var owner = self.Owner;
 			if (mi.Button == MouseButton.Left)
 			{
-				var topLeft = cell - FootprintUtils.AdjustForBuildingSize(buildingInfo);
+				var topLeft = cell - buildingInfo.LocationOffset();
 				var selfPos = self.Trait<IOccupySpace>().TopLeft;
 				var isCloseEnough = (topLeft - selfPos).Length <= info.MaxDistance;
 
@@ -274,6 +275,9 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 		}
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr, World world) { yield break; }
+
+		// I mostly copy pasted code from
+		// OpenRA.Mods.Common/Orders/PlaceBuildingOrderGenerator.cs : RenderAboveShroud
 		public IEnumerable<IRenderable> RenderAboveShroud(WorldRenderer wr, World world)
 		{
 			// Draw chrono range
@@ -285,8 +289,8 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 				Color.FromArgb(96, Color.Black));
 
 			var xy = wr.Viewport.ViewToWorld(Viewport.LastMousePos);
-			var topLeft = xy - FootprintUtils.AdjustForBuildingSize(buildingInfo);
-			var offset = world.Map.CenterOfCell(topLeft) + FootprintUtils.CenterOffset(world, buildingInfo);
+			var topLeft = xy - buildingInfo.LocationOffset();
+			var offset = world.Map.CenterOfCell(topLeft) + buildingInfo.CenterOffset(world);
 			var rules = world.Map.Rules;
 
 			var actorInfo = self.Info; // rules.Actors[building];
@@ -295,16 +299,19 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 					yield return r;
 
 			// Cells, we are about to construct and occupy.
-			var cells = new Dictionary<CPos, bool>();
+			var cells = new Dictionary<CPos, PlaceBuildingOrderGenerator.CellType>();
 
 			if (!initialized)
 			{
 				var td = new TypeDictionary()
 				{
-					new OpenRA.Mods.Common.FactionInit(""),
+					new FactionInit(""),
 					new OwnerInit(self.Owner),
-					new HideBibPreviewInit()
 				};
+
+				foreach (var api in actorInfo.TraitInfos<IActorPreviewInitInfo>())
+					foreach (var o in api.ActorPreviewInits(actorInfo, ActorPreviewType.PlaceBuilding))
+						td.Add(o);
 
 				var init = new ActorPreviewInitializer(actorInfo, wr, td);
 				preview = actorInfo.TraitInfos<IRenderActorPreviewInfo>()
@@ -324,17 +331,18 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 			var res = world.WorldActor.Trait<ResourceLayer>();
 			var selfPos = self.Trait<IOccupySpace>().TopLeft;
 			var isCloseEnough = (topLeft - selfPos).Length <= info.MaxDistance;
-			foreach (var t in FootprintUtils.Tiles(rules, building, buildingInfo, topLeft))
-				cells.Add(t, isCloseEnough && world.IsCellBuildable(t, buildingInfo) && res.GetResource(t) == null);
-
-			var placeBuildingInfo = self.Owner.PlayerActor.Info.TraitInfo<PlaceBuildingInfo>();
-			var pal = wr.Palette(placeBuildingInfo.Palette);
-			var topLeftPos = world.Map.CenterOfCell(topLeft);
+			foreach (var t in buildingInfo.Tiles(topLeft))
+				cells.Add(t, PlaceBuildingOrderGenerator.MakeCellType(isCloseEnough && world.IsCellBuildable(t, buildingInfo) && res.GetResource(t) == null));
 
 			// draw red or white buildable cell indicator.
+			var placeBuildingInfo = self.Owner.PlayerActor.Info.TraitInfo<PlaceBuildingInfo>();
+			var cellPalette = wr.Palette(placeBuildingInfo.Palette);
+			var linePalette = wr.Palette(placeBuildingInfo.LineBuildSegmentPalette);
+			var topLeftPos = world.Map.CenterOfCell(topLeft);
 			foreach (var c in cells)
 			{
-				var tile = c.Value ? buildOk : buildBlocked;
+				var tile = !c.Value.HasFlag(PlaceBuildingOrderGenerator.CellType.Invalid) ? buildOk : buildBlocked;
+				var pal = c.Value.HasFlag(PlaceBuildingOrderGenerator.CellType.LineBuild) ? linePalette : cellPalette;
 				var pos = world.Map.CenterOfCell(c.Key);
 				yield return new SpriteRenderable(tile, pos, new WVec(0, 0, topLeftPos.Z - pos.Z),
 					-511, pal, 1f, true);
@@ -343,10 +351,11 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 
 		public string GetCursor(World world, CPos cell, int2 worldPixel, MouseInput mi) { return "default"; }
 
+		// CnP from PlaceBuildingOrderGenerator.cs
 		IEnumerable<Order> ClearBlockersOrders(World world, CPos topLeft)
 		{
-			var allTiles = FootprintUtils.Tiles(world.Map.Rules, building, buildingInfo, topLeft).ToArray();
-			var neightborTiles = OpenRA.Mods.Common.Util.ExpandFootprint(allTiles, true).Except(allTiles)
+			var allTiles = buildingInfo.Tiles(topLeft).ToArray();
+			var neightborTiles = Common.Util.ExpandFootprint(allTiles, true).Except(allTiles)
 				.Where(world.Map.Contains).ToList();
 
 			var blockers = allTiles.SelectMany(world.ActorMap.GetActorsAt)
@@ -361,7 +370,8 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 
 				yield return new Order("Move", blocker.Actor, false)
 				{
-					TargetLocation = blocker.Actor.ClosestCell(availableCells)
+					TargetLocation = blocker.Actor.ClosestCell(availableCells),
+					SuppressVisualFeedback = true
 				};
 			}
 		}

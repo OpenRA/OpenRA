@@ -20,7 +20,6 @@ The slave harvester's docking however, needs engine mod.
 using System.Collections.Generic;
 using System.Drawing;
 using OpenRA.Activities;
-using OpenRA.Mods.Common;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Pathfinder;
 using OpenRA.Mods.Common.Traits;
@@ -36,7 +35,7 @@ namespace OpenRA.Mods.Yupgi_alert.Activities
 		readonly Mobile mobile;
 		readonly MobileInfo mobileInfo;
 		readonly ResourceLayer resLayer;
-		readonly ResourceClaimLayer territory;
+		readonly ResourceClaimLayer claimLayer;
 		readonly IPathFinder pathFinder;
 		readonly DomainIndex domainIndex;
 		readonly GrantConditionOnDeploy deploy;
@@ -51,7 +50,7 @@ namespace OpenRA.Mods.Yupgi_alert.Activities
 			mobileInfo = self.Info.TraitInfo<MobileInfo>();
 			deploy = self.Trait<GrantConditionOnDeploy>();
 			resLayer = self.World.WorldActor.Trait<ResourceLayer>();
-			territory = self.World.WorldActor.TraitOrDefault<ResourceClaimLayer>();
+			claimLayer = self.World.WorldActor.TraitOrDefault<ResourceClaimLayer>();
 			pathFinder = self.World.WorldActor.Trait<IPathFinder>();
 			domainIndex = self.World.WorldActor.Trait<DomainIndex>();
 		}
@@ -148,7 +147,7 @@ namespace OpenRA.Mods.Yupgi_alert.Activities
 				return this;
 			}
 
-			if (!deploy.CanDeployAtLocation(self.Location))
+			if (!deploy.IsValidTerrain(self.Location))
 			{
 				// If we can't deploy, go back to scan state so that we scan try deploy again.
 				state = MiningState.Scan;
@@ -248,12 +247,12 @@ namespace OpenRA.Mods.Yupgi_alert.Activities
 		{
 			// FindTilesInAnnulus gives sorted cells by distance :) Nice.
 			foreach (var tile in self.World.Map.FindTilesInAnnulus(harvestablePos, 0, harvInfo.DeployScanRadius))
-				if (deploy.CanDeployAtLocation(tile) && mobile.CanEnterCell(tile))
+				if (deploy.IsValidTerrain(tile) && mobile.CanEnterCell(tile))
 					return tile;
 
 			// Try broader search if unable to find deploy location
 			foreach (var tile in self.World.Map.FindTilesInAnnulus(harvestablePos, harvInfo.DeployScanRadius, harvInfo.LongScanRadius))
-				if (deploy.CanDeployAtLocation(tile) && mobile.CanEnterCell(tile))
+				if (deploy.IsValidTerrain(tile) && mobile.CanEnterCell(tile))
 					return tile;
 
 			return null;
@@ -263,12 +262,12 @@ namespace OpenRA.Mods.Yupgi_alert.Activities
 		CPos? ClosestHarvestablePos(Actor self, CPos loc, int searchRadius)
 		{
 			// fast common case
-			if (self.CanHarvestAt(loc, resLayer, harvInfo, territory))
+			if (harv.CanHarvestCell(self, loc) && claimLayer.CanClaimCell(self, loc))
 				return loc;
 
 			// FindTilesInAnnulus gives sorted cells by distance :) Nice.
 			foreach (var tile in self.World.Map.FindTilesInAnnulus(loc, 0, searchRadius))
-				if (self.CanHarvestAt(tile, resLayer, harvInfo, territory))
+				if (harv.CanHarvestCell(self, loc) && claimLayer.CanClaimCell(self, loc))
 					return tile;
 			return null;
 		}
@@ -279,7 +278,7 @@ namespace OpenRA.Mods.Yupgi_alert.Activities
 		/// </summary>
 		CPos? ClosestHarvestablePos(Actor self, int searchRadius)
 		{
-			if (self.CanHarvestAt(self.Location, resLayer, harvInfo, territory))
+			if (harv.CanHarvestCell(self, self.Location) && claimLayer.CanClaimCell(self, self.Location))
 				return self.Location;
 
 			// Determine where to search from and how far to search:
@@ -290,7 +289,8 @@ namespace OpenRA.Mods.Yupgi_alert.Activities
 			var passable = (uint)mobileInfo.GetMovementClass(self.World.Map.Rules.TileSet);
 			List<CPos> path;
 			using (var search = PathSearch.Search(self.World, mobileInfo, self, true,
-				loc => domainIndex.IsPassable(self.Location, loc, mobileInfo, passable) && self.CanHarvestAt(loc, resLayer, harvInfo, territory))
+				loc => domainIndex.IsPassable(self.Location, loc, mobileInfo, passable)
+					&& harv.CanHarvestCell(self, loc) && claimLayer.CanClaimCell(self, loc))
 				.WithCustomCost(loc =>
 				{
 					if ((avoidCell.HasValue && loc == avoidCell.Value) ||
