@@ -56,7 +56,6 @@ namespace OpenRA.Mods.Cnc.Activities
 
 				// Add a CloseEnough range of 512 to the Repair activity in order to ensure that we're at the host actor
 				return NextActivity;
-					new Repair(self, rearmTarget, new WDist(512)),
 			}
 
 			if (minelayer.Minefield.Contains(self.Location) && ShouldLayMine(self, self.Location))
