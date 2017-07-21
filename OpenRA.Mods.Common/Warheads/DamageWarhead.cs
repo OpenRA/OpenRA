@@ -44,6 +44,16 @@ namespace OpenRA.Mods.Common.Warheads
 			return Util.ApplyPercentageModifiers(100, armor);
 		}
 
+		public int DamageVersus(Actor victim, HitShapeInfo shape)
+		{
+			var armor = victim.TraitsImplementing<Armor>()
+				.Where(a => !a.IsTraitDisabled && a.Info.Type != null && Versus.ContainsKey(a.Info.Type) &&
+					(!shape.ArmorTypes.Any() || shape.ArmorTypes.Contains(a.Info.Type)))
+				.Select(a => Versus[a.Info.Type]);
+
+			return Util.ApplyPercentageModifiers(100, armor);
+		}
+
 		public override void DoImpact(Target target, Actor firedBy, IEnumerable<int> damageModifiers)
 		{
 			// Used by traits that damage a single actor, rather than a position
@@ -61,6 +71,15 @@ namespace OpenRA.Mods.Common.Warheads
 				return;
 
 			var damage = Util.ApplyPercentageModifiers(Damage, damageModifiers.Append(DamageVersus(victim)));
+			victim.InflictDamage(firedBy, new Damage(damage, DamageTypes));
+		}
+
+		public virtual void DoImpact(Actor victim, Actor firedBy, HitShapeInfo shape, IEnumerable<int> damageModifiers)
+		{
+			if (!IsValidAgainst(victim, firedBy))
+				return;
+
+			var damage = Util.ApplyPercentageModifiers(Damage, damageModifiers.Append(DamageVersus(victim, shape)));
 			victim.InflictDamage(firedBy, new Damage(damage, DamageTypes));
 		}
 	}
