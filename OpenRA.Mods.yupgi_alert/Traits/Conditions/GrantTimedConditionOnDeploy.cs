@@ -58,8 +58,7 @@ namespace OpenRA.Mods.AS.Traits
 
 		public readonly bool StartsFullyCharged = false;
 
-		[VoiceReference]
-		public readonly string Voice = "Action";
+		[VoiceReference] public readonly string Voice = "Action";
 
 		public readonly bool ShowSelectionBar = true;
 		public readonly Color ChargingColor = Color.DarkRed;
@@ -80,8 +79,7 @@ namespace OpenRA.Mods.AS.Traits
 		int deployingToken = ConditionManager.InvalidConditionToken;
 
 		ConditionManager manager;
-		[Sync]
-		int ticks;
+		[Sync] int ticks;
 		TimedDeployState deployState;
 
 		public GrantTimedConditionOnDeploy(ActorInitializer init, GrantTimedConditionOnDeployInfo info)
@@ -110,11 +108,8 @@ namespace OpenRA.Mods.AS.Traits
 
 		IEnumerable<IOrderTargeter> IIssueOrder.Orders
 		{
-			get
-			{
-				yield return new DeployOrderTargeter("GrantConditionOnDeploy", 5,
-			  () => IsCursorBlocked() ? info.DeployBlockedCursor : info.DeployCursor);
-			}
+			get { yield return new DeployOrderTargeter("GrantConditionOnDeploy", 5,
+				() => IsCursorBlocked() ? info.DeployBlockedCursor : info.DeployCursor); }
 		}
 
 		Order IIssueOrder.IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
@@ -171,12 +166,6 @@ namespace OpenRA.Mods.AS.Traits
 					deployingToken = manager.GrantCondition(self, info.DeployingCondition);
 				body.Value.PlayCustomAnimation(self, info.DeployAnimation, OnDeployCompleted);
 			}
-		}
-
-		public void AIDeploy()
-		{
-			// Just an interface for my AI Deploy Helper.
-			Deploy();
 		}
 
 		void OnDeployCompleted()
