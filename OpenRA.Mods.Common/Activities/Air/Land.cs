@@ -19,20 +19,11 @@ namespace OpenRA.Mods.Common.Activities
 	{
 		readonly Target target;
 		readonly Aircraft plane;
-		readonly WDist landHeight;
 
 		public Land(Actor self, Target t)
 		{
 			target = t;
 			plane = self.Trait<Aircraft>();
-
-			landHeight = WDist.Zero;
-			if (t.Actor != null)
-			{
-				var aircraftInfo = t.Actor.Info.TraitInfoOrDefault<AircraftInfo>();
-				if (aircraftInfo != null)
-					landHeight = aircraftInfo.CruiseAltitude;
-			}
 		}
 
 		public override Activity Tick(Actor self)
@@ -53,7 +44,7 @@ namespace OpenRA.Mods.Common.Activities
 				return NextActivity;
 			}
 
-			Fly.FlyToward(self, plane, d.Yaw.Facing, landHeight);
+			Fly.FlyToward(self, plane, d.Yaw.Facing, self.Info.TraitInfo<AircraftInfo>().LandAltitude);
 
 			return this;
 		}
