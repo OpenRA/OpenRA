@@ -928,7 +928,7 @@ ATWR:
 		TurnSpeed: 255
 		Offset: 128,128,384
 	Armament@PRIMARY:
-		Weapon: TowerMissle
+		Weapon: TowerMissile
 		LocalOffset: 256,128,0, 256,-128,0
 		LocalYaw: -100,100
 	Armament@SECONDARY:
