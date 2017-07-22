@@ -215,7 +215,7 @@ BoatMissile:
 		VictimScanRadius: 0
 		ValidTargets: Air
 
-TowerMissle:
+TowerMissile:
 	Inherits: ^MissileWeapon
 	ReloadDelay: 15
 	Range: 7c0
