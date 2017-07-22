@@ -31,11 +31,6 @@ namespace OpenRA.Mods.Common.Activities
 			this.alwaysLand = alwaysLand;
 			this.abortOnResupply = abortOnResupply;
 			this.dest = dest;
-
-			// Release first, before trying to dock.
-			var dc = self.TraitOrDefault<DockClient>();
-			if (dc != null)
-				dc.Release();
 		}
 
 		IEnumerable<Actor> GetHelipads(Actor self)
@@ -55,6 +50,14 @@ namespace OpenRA.Mods.Common.Activities
 				if (dockManager.HasFreeServiceDock(self))
 					yield return pad;
 			}
+		}
+
+		protected override void OnFirstRun(Actor self)
+		{
+			// Release first, before trying to dock.
+			var dc = self.TraitOrDefault<DockClient>();
+			if (dc != null)
+				dc.Release();
 		}
 
 		public override Activity Tick(Actor self)
