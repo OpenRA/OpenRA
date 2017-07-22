@@ -117,9 +117,8 @@ MIG:
 		RepulsionSpeed: 40
 		MaximumPitch: 56
 	AutoTarget:
-		TargetWhenIdle: false
-		TargetWhenDamaged: false
-		EnableStances: false
+		InitialStance: HoldFire
+		InitialStanceAI: HoldFire
 	AmmoPool:
 		Ammo: 8
 	ReturnOnIdle:
@@ -182,9 +181,8 @@ YAK:
 		RepulsionSpeed: 40
 		MaximumPitch: 56
 	AutoTarget:
-		TargetWhenIdle: false
-		TargetWhenDamaged: false
-		EnableStances: false
+		InitialStance: HoldFire
+		InitialStanceAI: HoldFire
 	AmmoPool:
 		Ammo: 18
 		PipCount: 6
