@@ -27,8 +27,12 @@ namespace OpenRA.Mods.Common.Activities
 			plane = self.Trait<Aircraft>();
 
 			landHeight = WDist.Zero;
-			if (t.Actor != null && t.Actor.Info.TraitInfoOrDefault<AircraftInfo>() != null)
-				landHeight = t.Actor.Info.TraitInfoOrDefault<AircraftInfo>().CruiseAltitude;
+			if (t.Actor != null)
+			{
+				var aircraftInfo = t.Actor.Info.TraitInfoOrDefault<AircraftInfo>();
+				if (aircraftInfo != null)
+					landHeight = aircraftInfo.CruiseAltitude;
+			}
 		}
 
 		public override Activity Tick(Actor self)
