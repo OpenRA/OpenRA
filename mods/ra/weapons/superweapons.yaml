@@ -23,7 +23,7 @@ ParaBomb:
 	Warhead@3Eff: CreateEffect
 		Explosions: artillery_explosion
 		ImpactSounds: kaboom15.aud
-		ValidTargets: Ground, Ship
+		ValidTargets: Ground, Ship, Trees
 	Warhead@4EffWater: CreateEffect
 		Explosions: small_splash
 		ImpactSounds: splash9.aud
@@ -51,6 +51,7 @@ Atomic:
 		Explosions: nuke
 		ImpactSounds: kaboom1.aud
 		VictimScanRadius: 0
+		ValidTargets: Ground, Water, Air
 	Warhead@5Dam_areanuke1: SpreadDamage
 		Spread: 2c0
 		Damage: 60
