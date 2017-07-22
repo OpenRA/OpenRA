@@ -19,7 +19,6 @@ using OpenRA.Mods.Common;
 using OpenRA.Mods.Common.Graphics;
 using OpenRA.Mods.Common.Orders;
 using OpenRA.Mods.Common.Traits;
-using OpenRA.Mods.Cnc.Traits;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
