@@ -21,28 +21,27 @@ namespace OpenRA.Mods.Common.Activities
 	public abstract class Enter : Activity
 	{
 		public enum ReserveStatus { None, TooFar, Pending, Ready }
-		protected enum EnterState { ApproachingOrEntering, Inside, Exiting, Done }
+		enum EnterState { ApproachingOrEntering, Inside, Exiting, Done }
 
-		protected readonly IMove Move;
+		readonly IMove move;
 		readonly int maxTries = 0;
-		protected readonly EnterBehaviour EnterBehaviour;
-		protected readonly bool TargetCenter;
+		readonly EnterBehaviour enterBehaviour;
 		readonly bool repathWhileMoving;
 
 		public Target Target { get { return target; } }
 		Target target;
-		protected EnterState nextState = EnterState.ApproachingOrEntering; // Hint/starting point for next state
-		protected bool isEnteringOrInside = false; // Used to know if exiting should be used
-		protected WPos savedPos; // Position just before entering
-		protected Activity inner;
+		EnterState nextState = EnterState.ApproachingOrEntering; // Hint/starting point for next state
+		bool isEnteringOrInside = false; // Used to know if exiting should be used
+		WPos savedPos; // Position just before entering
+		Activity inner;
 		bool firstApproach = true;
 
 		protected Enter(Actor self, Actor target, EnterBehaviour enterBehaviour, int maxTries = 1, bool repathWhileMoving = true)
 		{
-			Move = self.Trait<IMove>();
+			move = self.Trait<IMove>();
 			this.target = Target.FromActor(target);
 			this.maxTries = maxTries;
-			this.EnterBehaviour = enterBehaviour;
+			this.enterBehaviour = enterBehaviour;
 			this.repathWhileMoving = repathWhileMoving;
 		}
 
@@ -52,7 +51,7 @@ namespace OpenRA.Mods.Common.Activities
 		protected virtual bool CanReserve(Actor self) { return true; }
 		protected virtual ReserveStatus Reserve(Actor self)
 		{
-			return !CanReserve(self) ? ReserveStatus.None : Move.CanEnterTargetNow(self, target) ? ReserveStatus.Ready : ReserveStatus.TooFar;
+			return !CanReserve(self) ? ReserveStatus.None : move.CanEnterTargetNow(self, target) ? ReserveStatus.Ready : ReserveStatus.TooFar;
 		}
 
 		protected virtual void Unreserve(Actor self, bool abort) { }
@@ -124,7 +123,7 @@ namespace OpenRA.Mods.Common.Activities
 			return true;
 		}
 
-		protected ReserveStatus TryReserveElseTryAlternateReserve(Actor self)
+		ReserveStatus TryReserveElseTryAlternateReserve(Actor self)
 		{
 			for (var tries = 0;;)
 			{
@@ -162,7 +161,7 @@ namespace OpenRA.Mods.Common.Activities
 			}
 		}
 
-		protected virtual EnterState FindAndTransitionToNextState(Actor self)
+		EnterState FindAndTransitionToNextState(Actor self)
 		{
 			switch (nextState)
 			{
@@ -177,7 +176,7 @@ namespace OpenRA.Mods.Common.Activities
 						case ReserveStatus.TooFar:
 						{
 							var moveTarget = repathWhileMoving ? target : Target.FromPos(target.Positions.PositionClosestTo(self.CenterPosition));
-							inner = Move.MoveToTarget(self, moveTarget); // Approach
+							inner = move.MoveToTarget(self, moveTarget); // Approach
 							return EnterState.ApproachingOrEntering;
 						}
 
@@ -191,7 +190,7 @@ namespace OpenRA.Mods.Common.Activities
 					isEnteringOrInside = true;
 					savedPos = self.CenterPosition; // Save position of self, before entering, for returning on exit
 
-					inner = Move.MoveIntoTarget(self, target); // Enter
+					inner = move.MoveIntoTarget(self, target); // Enter
 
 					if (inner != null)
 					{
@@ -208,13 +207,15 @@ namespace OpenRA.Mods.Common.Activities
 						nextState = EnterState.Inside;
 
 					// Otherwise, try to recover from moving target
-					else if (target.Positions.PositionClosestTo(self.CenterPosition) != self.CenterPosition)
+					// OPMod: Too bad for moving spawner and spawned units.
+					// WAS: else if (target.Positions.PositionClosestTo(self.CenterPosition) != self.CenterPosition)
+					else if ((target.Positions.PositionClosestTo(self.CenterPosition) - self.CenterPosition).HorizontalLengthSquared <= 100)
 					{
 						nextState = EnterState.ApproachingOrEntering;
 						Unreserve(self, false);
 						if (Reserve(self) == ReserveStatus.Ready)
 						{
-							inner = Move.MoveIntoTarget(self, target); // Enter
+							inner = move.MoveIntoTarget(self, target); // Enter
 							if (inner != null)
 								return EnterState.ApproachingOrEntering;
 
@@ -224,16 +225,16 @@ namespace OpenRA.Mods.Common.Activities
 
 						nextState = EnterState.ApproachingOrEntering;
 						isEnteringOrInside = false;
-						inner = Move.MoveIntoWorld(self, self.World.Map.CellContaining(savedPos));
+						inner = move.MoveIntoWorld(self, self.World.Map.CellContaining(savedPos));
 
 						return EnterState.ApproachingOrEntering;
 					}
 
 					OnInside(self);
 
-					if (EnterBehaviour == EnterBehaviour.Suicide)
+					if (enterBehaviour == EnterBehaviour.Suicide)
 						self.Kill(self);
-					else if (EnterBehaviour == EnterBehaviour.Dispose)
+					else if (enterBehaviour == EnterBehaviour.Dispose)
 						self.Dispose();
 
 					// Return if Abort(Actor) or Done(self) was called from OnInside.
@@ -246,7 +247,7 @@ namespace OpenRA.Mods.Common.Activities
 
 				// TODO: Handle target moved while inside or always call done for movable targets and use a separate exit activity
 				case EnterState.Exiting:
-					inner = Move.MoveIntoWorld(self, self.World.Map.CellContaining(savedPos));
+					inner = move.MoveIntoWorld(self, self.World.Map.CellContaining(savedPos));
 
 					// If not successfully exiting, retry on next tick
 					if (inner == null)

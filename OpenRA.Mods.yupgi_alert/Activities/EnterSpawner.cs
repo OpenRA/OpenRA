@@ -59,7 +59,7 @@ namespace OpenRA.Mods.Yupgi_alert.Activities
 
 		protected override bool CanReserve(Actor self)
 		{
-			return true;
+			return true; // Slaves are always welcome.
 		}
 
 		protected override ReserveStatus Reserve(Actor self)
@@ -72,90 +72,13 @@ namespace OpenRA.Mods.Yupgi_alert.Activities
 			return ReserveStatus.Ready;
 		}
 
-		protected override EnterState FindAndTransitionToNextState(Actor self)
-		{
-			switch (nextState)
-			{
-				case EnterState.ApproachingOrEntering:
-
-					// Reserve to enter or approach
-					isEnteringOrInside = false;
-					switch (TryReserveElseTryAlternateReserve(self))
-					{
-						case ReserveStatus.None:
-							return EnterState.Done; // No available target -> abort to next activity
-						case ReserveStatus.TooFar:
-							inner = Move.MoveToTarget(self, TargetCenter ? Target.FromPos(Target.CenterPosition) : Target); // Approach
-							return EnterState.ApproachingOrEntering;
-						case ReserveStatus.Pending:
-							return EnterState.ApproachingOrEntering; // Retry next tick
-						case ReserveStatus.Ready:
-							break; // Reserved target -> start entering target
-					}
-
-					// Entering
-					isEnteringOrInside = true;
-					savedPos = self.CenterPosition; // Save position of self, before entering, for returning on exit
-
-					inner = Move.MoveIntoTarget(self, Target); // Enter
-
-					if (inner != null)
-					{
-						nextState = EnterState.Inside; // Should be inside once inner activity is null
-						return EnterState.ApproachingOrEntering;
-					}
-
-					// Can enter but there is no activity for it, so go inside without one
-					goto case EnterState.Inside;
-
-				case EnterState.Inside:
-					// Might as well teleport into target if there is no MoveIntoTarget activity
-					if (nextState == EnterState.ApproachingOrEntering)
-						nextState = EnterState.Inside;
-
-					//// Unlike enter.cs, target recovery is removed.
-					//// I'm assuming spawner.speed < spawned.speed
-
-					OnInside(self);
-
-					if (EnterBehaviour == EnterBehaviour.Suicide)
-						self.Kill(self);
-					else if (EnterBehaviour == EnterBehaviour.Dispose)
-						self.Dispose();
-
-					// Return if Abort(Actor) or Done(self) was called from OnInside.
-					if (nextState >= EnterState.Exiting)
-						return EnterState.Inside;
-
-					inner = this; // Start inside activity
-					nextState = EnterState.Exiting; // Exit once inner activity is null (unless Done(self) is called)
-					return EnterState.Inside;
-
-				// TODO: Handle target moved while inside or always call done for movable targets and use a separate exit activity
-				case EnterState.Exiting:
-					inner = Move.MoveIntoWorld(self, self.World.Map.CellContaining(savedPos));
-
-					// If not successfully exiting, retry on next tick
-					if (inner == null)
-						return EnterState.Exiting;
-					isEnteringOrInside = false;
-					nextState = EnterState.Done;
-					return EnterState.Exiting;
-
-				case EnterState.Done:
-					return EnterState.Done;
-			}
-
-			return EnterState.Done; // dummy to quiet dumb compiler
-		}
-
 		protected override void OnInside(Actor self)
 		{
-			// entered the nydus canal but the entrance is dead immediately. haha;;
+			// Master got killed :(
 			if (master.IsDead)
 				return;
 
-			Done(self); // no exit shit.
+			Done(self); // Stop slaves from exiting.
 
 			// Load this thingy.
 			// Issue attack move to the rally point.
