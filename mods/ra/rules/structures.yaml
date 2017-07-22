@@ -1162,7 +1162,7 @@ SILO:
 	Tooltip:
 		Name: Silo
 	Building:
-		Adjacent: 4
+		Adjacent: 2
 	-GivesBuildableArea:
 	Health:
 		HP: 300
@@ -1609,7 +1609,7 @@ KENN:
 	Tooltip:
 		Name: Kennel
 	Building:
-		Adjacent: 4
+		Adjacent: 2
 	-GivesBuildableArea:
 	Health:
 		HP: 300
