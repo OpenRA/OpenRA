@@ -359,7 +359,7 @@ namespace OpenRA.Mods.Common.Traits
 			dockClient.Acquire(host, dock, DockState.WaitAssigned);
 
 			// Move to the waiting dock and wait for service dock to be released.
-			client.QueueActivity(client.Trait<Mobile>().MoveTo(dock.Location, 2));
+			client.QueueActivity(client.Trait<IMove>().MoveTo(dock.Location, 2));
 			client.QueueActivity(new CallFunc(() => OnDock(client, dock)));
 			client.QueueActivity(new WaitFor(() => dockClient.DockState == DockState.ServiceAssigned));
 		}

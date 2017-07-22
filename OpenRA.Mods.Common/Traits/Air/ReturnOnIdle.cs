@@ -39,6 +39,7 @@ namespace OpenRA.Mods.Common.Traits
 			var airfield = ReturnToBase.GetAirfields(self);
 			if (airfield.Any())
 			{
+				self.CancelActivity(); // quit circling
 				self.QueueActivity(new ReturnToBase(self, aircraftInfo.AbortOnResupply, null));
 			}
 			else
