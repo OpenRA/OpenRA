@@ -69,7 +69,8 @@ namespace OpenRA.Mods.AS.Traits
 
 	public enum TimedDeployState { Charging, Ready, Active, Deploying, Undeploying }
 
-	public class GrantTimedConditionOnDeploy : IResolveOrder, IIssueOrder, INotifyCreated, ISelectionBar, IOrderVoice, ISync, ITick
+	public class GrantTimedConditionOnDeploy : IResolveOrder, IIssueOrder, INotifyCreated, ISelectionBar, IOrderVoice,
+		ISync, ITick, IIssueDeployOrder
 	{
 		readonly Actor self;
 		readonly GrantTimedConditionOnDeployInfo info;
@@ -118,6 +119,11 @@ namespace OpenRA.Mods.AS.Traits
 				return new Order(order.OrderID, self, queued);
 
 			return null;
+		}
+
+		Order IIssueDeployOrder.IssueDeployOrder(Actor self)
+		{
+			return new Order("GrantConditionOnDeploy", self, false);
 		}
 
 		void IResolveOrder.ResolveOrder(Actor self, Order order)
