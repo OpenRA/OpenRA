@@ -24,7 +24,7 @@ namespace OpenRA.Mods.Yupgi_alert.Activities
 	class EnterNydus : Enter
 	{
 		public EnterNydus(Actor self, Actor target, EnterBehaviour enterBehaviour)
-			: base(self, target, enterBehaviour)
+			: base(self, target, enterBehaviour, WDist.Zero)
 		{
 		}
 

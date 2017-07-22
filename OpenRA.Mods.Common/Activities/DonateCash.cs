@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Common.Activities
 		readonly int experience;
 
 		public DonateCash(Actor self, Actor target, int payload, int playerExperience)
-			: base(self, target, EnterBehaviour.Dispose)
+			: base(self, target, EnterBehaviour.Dispose, WDist.Zero)
 		{
 			this.target = target;
 			this.payload = payload;

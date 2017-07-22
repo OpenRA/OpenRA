@@ -23,7 +23,7 @@ namespace OpenRA.Mods.Common.Activities
 		Cargo cargo;
 
 		public EnterTransport(Actor self, Actor transport, int maxTries = 0, bool repathWhileMoving = true)
-			: base(self, transport, EnterBehaviour.Exit, maxTries, repathWhileMoving)
+			: base(self, transport, EnterBehaviour.Exit, WDist.Zero, maxTries, repathWhileMoving)
 		{
 			this.transport = transport;
 			this.maxTries = maxTries;

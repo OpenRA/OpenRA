@@ -27,6 +27,7 @@ namespace OpenRA.Mods.Common.Activities
 		readonly int maxTries = 0;
 		readonly EnterBehaviour enterBehaviour;
 		readonly bool repathWhileMoving;
+		readonly WDist closeEnoughDist;
 
 		public Target Target { get { return target; } }
 		Target target;
@@ -36,13 +37,15 @@ namespace OpenRA.Mods.Common.Activities
 		Activity inner;
 		bool firstApproach = true;
 
-		protected Enter(Actor self, Actor target, EnterBehaviour enterBehaviour, int maxTries = 1, bool repathWhileMoving = true)
+		protected Enter(Actor self, Actor target, EnterBehaviour enterBehaviour, WDist closeEnoughDist,
+			int maxTries = 1, bool repathWhileMoving = true)
 		{
 			move = self.Trait<IMove>();
 			this.target = Target.FromActor(target);
 			this.maxTries = maxTries;
 			this.enterBehaviour = enterBehaviour;
 			this.repathWhileMoving = repathWhileMoving;
+			this.closeEnoughDist = closeEnoughDist;
 		}
 
 		// CanEnter(target) should to be true; otherwise, Enter may abort.
@@ -207,9 +210,8 @@ namespace OpenRA.Mods.Common.Activities
 						nextState = EnterState.Inside;
 
 					// Otherwise, try to recover from moving target
-					// OPMod: Too bad for moving spawner and spawned units.
-					// WAS: else if (target.Positions.PositionClosestTo(self.CenterPosition) != self.CenterPosition)
-					else if ((target.Positions.PositionClosestTo(self.CenterPosition) - self.CenterPosition).HorizontalLengthSquared <= 100)
+					else if ((target.Positions.PositionClosestTo(self.CenterPosition) - self.CenterPosition).HorizontalLengthSquared
+							> closeEnoughDist.LengthSquared)
 					{
 						nextState = EnterState.ApproachingOrEntering;
 						Unreserve(self, false);

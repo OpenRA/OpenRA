@@ -45,8 +45,8 @@ namespace OpenRA.Mods.Yupgi_alert.Activities
 		readonly AmmoPool[] ammoPools;
 		//// readonly Dictionary<AmmoPool, int> ammoPoolsReloadTimes;
 
-		public EnterSpawner(Actor self, Actor target, EnterBehaviour enterBehaviour)
-			: base(self, target, enterBehaviour)
+		public EnterSpawner(Actor self, Actor target, EnterBehaviour enterBehaviour, WDist closeEnoughDist)
+			: base(self, target, enterBehaviour, closeEnoughDist)
 		{
 			this.master = target;
 			spawner = target.Trait<Spawner>();

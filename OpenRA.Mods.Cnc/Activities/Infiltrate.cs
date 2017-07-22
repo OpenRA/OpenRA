@@ -24,7 +24,7 @@ namespace OpenRA.Mods.Cnc.Activities
 		readonly Cloak cloak;
 
 		public Infiltrate(Actor self, Actor target, Infiltrates infiltrate)
-			: base(self, target, infiltrate.Info.EnterBehaviour)
+			: base(self, target, infiltrate.Info.EnterBehaviour, WDist.Zero)
 		{
 			this.target = target;
 			infiltrates  = infiltrate;

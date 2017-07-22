@@ -39,6 +39,10 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 		[Desc("Move this close to the spawner, before entering it.")]
 		public readonly WDist LandingDistance = new WDist(5 * 1024);
 
+		[Desc("We consider this is close enought to the spawner and enter it, instead of trying to reach 0 distance." +
+			"This allows the spawned unit to enter the spawner while the spawner is moving.")]
+		public readonly WDist CloseEnoughDistance = new WDist(128);
+
 		public object Create(ActorInitializer init) { return new Spawned(init, this); }
 	}
 
@@ -137,7 +141,7 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 				self.CancelActivity();
 				if (self.TraitOrDefault<AttackPlane>() != null) // Let attack planes approach me first, before landing.
 					self.QueueActivity(new Fly(self, tgt, WDist.Zero, Info.LandingDistance));
-				self.QueueActivity(new EnterSpawner(self, master, EnterBehaviour.Exit));
+				self.QueueActivity(new EnterSpawner(self, master, EnterBehaviour.Exit, info.CloseEnoughDistance));
 			}
 		}
 
