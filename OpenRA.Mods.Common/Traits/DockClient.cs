@@ -82,7 +82,7 @@ namespace OpenRA.Mods.Common.Traits
 			DockState = DockState.NotAssigned;
 			acquireTimeStamp = -1;
 			host = null;
-			// do NOT reset Requester! Deadlock resoluiton needs it.
+			//// Do NOT reset Requester! Deadlock resoluiton needs it.
 		}
 
 		public bool WaitedLong(int threshold)
