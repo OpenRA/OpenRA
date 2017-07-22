@@ -61,7 +61,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		}
 	}
 
-	class MadTank : IIssueOrder, IResolveOrder, IOrderVoice, ITick, IPreventsTeleport
+	class MadTank : IIssueOrder, IResolveOrder, IOrderVoice, ITick, IPreventsTeleport, IIssueDeployOrder
 	{
 		readonly Actor self;
 		readonly MadTankInfo info;
@@ -114,6 +114,11 @@ namespace OpenRA.Mods.Cnc.Traits
 				return new Order(order.OrderID, self, queued) { ExtraData = target.FrozenActor.ID };
 
 			return new Order(order.OrderID, self, queued) { TargetActor = target.Actor };
+		}
+
+		Order IIssueDeployOrder.IssueDeployOrder(Actor self)
+		{
+			return new Order("Detonate", self, false);
 		}
 
 		public string VoicePhraseForOrder(Actor self, Order order)
