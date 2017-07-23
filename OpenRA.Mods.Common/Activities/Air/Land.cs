@@ -44,7 +44,7 @@ namespace OpenRA.Mods.Common.Activities
 				return NextActivity;
 			}
 
-			Fly.FlyToward(self, plane, d.Yaw.Facing, self.Info.TraitInfo<AircraftInfo>().LandAltitude);
+			Fly.FlyToward(self, plane, d.Yaw.Facing, plane.Info.LandAltitude);
 
 			return this;
 		}
