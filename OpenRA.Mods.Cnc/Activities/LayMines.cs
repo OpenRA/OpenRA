@@ -54,7 +54,7 @@ namespace OpenRA.Mods.Cnc.Activities
 				if (rearmTarget == null)
 					return new Wait(20);
 
-				// Add a CloseEnough range of 512 to the Repair activity in order to ensure that we're at the host actor
+				rearmTarget.Trait<DockManager>().ReserveDock(rearmTarget, self, this);
 				return NextActivity;
 			}
 

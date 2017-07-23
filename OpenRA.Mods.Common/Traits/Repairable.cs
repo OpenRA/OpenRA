@@ -105,6 +105,11 @@ namespace OpenRA.Mods.Common.Traits
 
 		public Activity AfterReachActivities(Actor self, Actor host, Dock dock)
 		{
+			if (CanRearmAt(host) && CanRearm())
+				return ActivityUtils.SequenceActivities(
+					new Rearm(self),
+					new Repair(self, host, new WDist(512)));
+
 			// Add a CloseEnough range of 512 to ensure we're at the host actor
 			return new Repair(self, host, new WDist(512));
 		}
