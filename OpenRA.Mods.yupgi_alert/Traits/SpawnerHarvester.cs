@@ -84,9 +84,9 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 		Kick // Check if there's ore field is close enough.
 	}
 
-	public class SpawnerHarvester : INotifyCreated, INotifyKilled, INotifyIdle,
+	public class SpawnerHarvester : INotifyBuildComplete, INotifyKilled, INotifyIdle,
 		INotifyOwnerChanged, ITick, INotifySold, INotifyActorDisposing,
-		IIssueOrder, IResolveOrder, IOrderVoice, INotifyBuildComplete, INotifyDeploy
+		IIssueOrder, IResolveOrder, IOrderVoice, INotifyDeploy
 	{
 		readonly SpawnerHarvesterInfo info;
 		readonly Actor self;
@@ -131,12 +131,7 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 				self.QueueActivity(new SpawnerHarvesterHarvest(self));
 		}
 
-		public void Created(Actor self)
-		{
-			FindResourcesOnCreation(self);
-		}
-
-		public void BuildingComplete(Actor self)
+		void INotifyBuildComplete.BuildingComplete(Actor self)
 		{
 			FindResourcesOnCreation(self);
 		}

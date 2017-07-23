@@ -78,7 +78,7 @@ namespace OpenRA.Mods.Yupgi_alert.Activities
 			}
 
 			var searchFromLoc = harv.LastOrderLocation ?? self.Location;
-			var closestHarvestablePosition = ClosestHarvestablePos(self, searchFromLoc, harvInfo.LongScanRadius);
+			var closestHarvestablePosition = ClosestHarvestablePos(self, harvInfo.LongScanRadius);
 
 			// No suitable resource field found.
 			// We only have to wait for resource to regen.
@@ -258,23 +258,9 @@ namespace OpenRA.Mods.Yupgi_alert.Activities
 			return null;
 		}
 
-		// Find closest harvestable location from location given by loc.
-		CPos? ClosestHarvestablePos(Actor self, CPos loc, int searchRadius)
-		{
-			// fast common case
-			if (harv.CanHarvestCell(self, loc) && claimLayer.CanClaimCell(self, loc))
-				return loc;
-
-			// FindTilesInAnnulus gives sorted cells by distance :) Nice.
-			foreach (var tile in self.World.Map.FindTilesInAnnulus(loc, 0, searchRadius))
-				if (harv.CanHarvestCell(self, loc) && claimLayer.CanClaimCell(self, loc))
-					return tile;
-			return null;
-		}
-
 		/// <summary>
-		/// Finds the closest harvestable pos between the current position of the harvester
-		/// and the last order location
+		/// Using LastOrderLocation and self.Location as starting points,
+		/// perform A* search to find the nearest accessible and harvestable cell.
 		/// </summary>
 		CPos? ClosestHarvestablePos(Actor self, int searchRadius)
 		{
