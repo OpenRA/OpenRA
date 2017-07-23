@@ -47,7 +47,6 @@ namespace OpenRA.Mods.Common.Traits
 
 		void Activate(Actor self)
 		{
-			self.CancelActivity();
 			self.QueueActivity(new AttackMoveActivity(self, move.MoveTo(TargetLocation.Value, 1)));
 		}
 
@@ -64,6 +63,9 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (order.OrderString == "AttackMove")
 			{
+				if (!order.Queued)
+					self.CancelActivity();
+
 				TargetLocation = move.NearestMoveableCell(order.TargetLocation);
 				self.SetTargetLine(Target.FromCell(self.World, TargetLocation.Value), Color.Red);
 				Activate(self);

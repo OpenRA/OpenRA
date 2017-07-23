@@ -49,8 +49,10 @@ namespace OpenRA.Orders
 			if (mi.Button == ExpectedButton && world.Map.Contains(cell))
 			{
 				world.CancelInputMode();
+
+				var queued = mi.Modifiers.HasModifier(Modifiers.Shift);
 				foreach (var subject in Subjects)
-					yield return new Order(OrderName, subject, false) { TargetLocation = cell };
+					yield return new Order(OrderName, subject, queued) { TargetLocation = cell };
 			}
 		}
 
