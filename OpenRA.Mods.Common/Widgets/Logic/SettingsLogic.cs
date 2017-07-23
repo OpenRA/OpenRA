@@ -610,10 +610,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				var hotkeys = new Dictionary<string, string>()
 				{
-					{ "NextTrack", "Next" },
-					{ "PreviousTrack", "Previous" },
-					{ "StopMusic", "Stop" },
-					{ "PauseMusic", "Pause or Resume" }
+					{ "StopMusicKey", "Stop" },
+					{ "PauseMusicKey", "Pause or Resume" },
+					{ "PrevMusicKey", "Previous" },
+					{ "NextMusicKey", "Next" }
 				};
 
 				var header = ScrollItemWidget.Setup(hotkeyHeader, returnTrue, doNothing);
