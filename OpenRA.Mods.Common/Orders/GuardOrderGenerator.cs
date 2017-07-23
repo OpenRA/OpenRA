@@ -31,9 +31,11 @@ namespace OpenRA.Mods.Common.Orders
 				yield break;
 
 			world.CancelInputMode();
+
+			var queued = mi.Modifiers.HasModifier(Modifiers.Shift);
 			foreach (var subject in Subjects)
 				if (subject != target)
-					yield return new Order(OrderName, subject, false) { TargetActor = target };
+					yield return new Order(OrderName, subject, queued) { TargetActor = target };
 		}
 
 		public override void Tick(World world)

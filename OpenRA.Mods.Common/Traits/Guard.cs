@@ -41,19 +41,18 @@ namespace OpenRA.Mods.Common.Traits
 		public void ResolveOrder(Actor self, Order order)
 		{
 			if (order.OrderString == "Guard")
-			{
-				var target = Target.FromActor(order.TargetActor);
-
-				GuardTarget(self, target);
-			}
+				GuardTarget(self, Target.FromActor(order.TargetActor), order.Queued);
 		}
 
-		public void GuardTarget(Actor self, Target target)
+		public void GuardTarget(Actor self, Target target, bool queued = false)
 		{
+			if (!queued)
+				self.CancelActivity();
+
 			self.SetTargetLine(target, Color.Yellow);
 
 			var range = target.Actor.Info.TraitInfo<GuardableInfo>().Range;
-			self.QueueActivity(false, new AttackMoveActivity(self, move.MoveFollow(self, target, WDist.Zero, range)));
+			self.QueueActivity(new AttackMoveActivity(self, move.MoveFollow(self, target, WDist.Zero, range)));
 		}
 
 		public string VoicePhraseForOrder(Actor self, Order order)
