@@ -141,6 +141,9 @@ Container@OBSERVER_WIDGETS:
 					Y: 10
 					Width: 26
 					Height: 26
+					Key: Pause
+					TooltipText: Pause
+					TooltipContainer: TOOLTIP_CONTAINER
 					IgnoreChildMouseOver: true
 					Children:
 						Image@IMAGE_PAUSE:
@@ -155,6 +158,9 @@ Container@OBSERVER_WIDGETS:
 					Y: 10
 					Width: 26
 					Height: 26
+					Key: Pause
+					TooltipText: Play
+					TooltipContainer: TOOLTIP_CONTAINER
 					IgnoreChildMouseOver: true
 					Children:
 						Image@IMAGE_PLAY:
@@ -170,6 +176,7 @@ Container@OBSERVER_WIDGETS:
 					Width: 36
 					Height: 20
 					BaseLine: 1
+					Key: ReplaySpeedSlow
 					TooltipText: Slow speed
 					TooltipContainer: TOOLTIP_CONTAINER
 					VisualHeight: 0
@@ -181,6 +188,7 @@ Container@OBSERVER_WIDGETS:
 					Width: 38
 					Height: 20
 					BaseLine: 1
+					Key: ReplaySpeedRegular
 					TooltipText: Regular speed
 					TooltipContainer: TOOLTIP_CONTAINER
 					VisualHeight: 0
@@ -192,6 +200,7 @@ Container@OBSERVER_WIDGETS:
 					Width: 38
 					Height: 20
 					BaseLine: 1
+					Key: ReplaySpeedFast
 					TooltipText: Fast speed
 					TooltipContainer: TOOLTIP_CONTAINER
 					VisualHeight: 0
@@ -203,6 +212,7 @@ Container@OBSERVER_WIDGETS:
 					Width: 38
 					Height: 20
 					BaseLine: 1
+					Key: ReplaySpeedMax
 					TooltipText: Maximum speed
 					TooltipContainer: TOOLTIP_CONTAINER
 					VisualHeight: 0
@@ -270,6 +280,7 @@ Container@PLAYER_WIDGETS:
 					Width: 34
 					Height: 34
 					Background: command-button
+					Key: AttackMove
 					DisableKeySound: true
 					TooltipText: Attack Move
 					TooltipDesc: Selected units will move to the desired location\nand attack any enemies they encounter en route.\n\nLeft-click icon then right-click on target location.
@@ -320,6 +331,7 @@ Container@PLAYER_WIDGETS:
 					Width: 34
 					Height: 34
 					Background: command-button
+					Key: Guard
 					DisableKeySound: true
 					TooltipText: Guard
 					TooltipDesc: Selected units will follow the targeted unit.\n\nLeft-click icon then right-click on target unit.
@@ -336,6 +348,7 @@ Container@PLAYER_WIDGETS:
 					Width: 34
 					Height: 34
 					Background: command-button
+					Key: Deploy
 					DisableKeyRepeat: true
 					DisableKeySound: true
 					TooltipText: Deploy
@@ -353,6 +366,7 @@ Container@PLAYER_WIDGETS:
 					Width: 34
 					Height: 34
 					Background: command-button
+					Key: Scatter
 					DisableKeyRepeat: true
 					DisableKeySound: true
 					TooltipText: Scatter
@@ -370,6 +384,7 @@ Container@PLAYER_WIDGETS:
 					Width: 34
 					Height: 34
 					Background: command-button
+					Key: Stop
 					DisableKeyRepeat: true
 					DisableKeySound: true
 					TooltipText: Stop
@@ -412,6 +427,7 @@ Container@PLAYER_WIDGETS:
 					Width: 34
 					Height: 26
 					Background: stance-button
+					Key: StanceAttackAnything
 					DisableKeyRepeat: true
 					DisableKeySound: true
 					TooltipText: Attack Anything Stance
@@ -429,6 +445,7 @@ Container@PLAYER_WIDGETS:
 					Width: 34
 					Height: 26
 					Background: stance-button
+					Key: StanceDefend
 					DisableKeyRepeat: true
 					DisableKeySound: true
 					TooltipText: Defend Stance
@@ -446,6 +463,7 @@ Container@PLAYER_WIDGETS:
 					Width: 34
 					Height: 26
 					Background: stance-button
+					Key: StanceReturnFire
 					DisableKeyRepeat: true
 					DisableKeySound: true
 					TooltipText: Return Fire Stance
@@ -463,6 +481,7 @@ Container@PLAYER_WIDGETS:
 					Width: 34
 					Height: 26
 					Background: stance-button
+					Key: StanceHoldFire
 					DisableKeyRepeat: true
 					DisableKeySound: true
 					TooltipText: Hold Fire Stance
@@ -483,12 +502,12 @@ Container@PLAYER_WIDGETS:
 			Background: panel-black
 			Children:
 				MenuButton@OPTIONS_BUTTON:
-					Key: escape
 					X: 22
 					Y: 0 - 24
 					Width: 30
 					Height: 25
 					Font: Bold
+					Key: escape
 					TooltipText: Menu
 					TooltipContainer: TOOLTIP_CONTAINER
 					DisableWorldSounds: true
@@ -505,6 +524,7 @@ Container@PLAYER_WIDGETS:
 					Width: 30
 					Height: 25
 					Font: Bold
+					Key: PlaceBeacon
 					TooltipText: Place Beacon
 					TooltipContainer: TOOLTIP_CONTAINER
 					Children:
@@ -519,6 +539,7 @@ Container@PLAYER_WIDGETS:
 					Width: 30
 					Height: 25
 					Font: Bold
+					Key: Sell
 					TooltipText: Sell
 					TooltipContainer: TOOLTIP_CONTAINER
 					Children:
@@ -533,6 +554,7 @@ Container@PLAYER_WIDGETS:
 					Width: 30
 					Height: 25
 					Font: Bold
+					Key: Repair
 					TooltipText: Repair
 					TooltipContainer: TOOLTIP_CONTAINER
 					Children:
@@ -614,7 +636,7 @@ Container@PLAYER_WIDGETS:
 							TooltipText: Buildings
 							TooltipContainer: TOOLTIP_CONTAINER
 							ProductionGroup: Building
-							HotkeyName: ProductionTypeBuildingKey
+							Key: ProductionTypeBuilding
 							Children:
 								Image@ICON:
 									X: 7
@@ -627,7 +649,7 @@ Container@PLAYER_WIDGETS:
 							TooltipText: Support
 							TooltipContainer: TOOLTIP_CONTAINER
 							ProductionGroup: Defence
-							HotkeyName: ProductionTypeDefenseKey
+							Key: ProductionTypeDefense
 							Children:
 								Image@ICON:
 									X: 7
@@ -640,7 +662,7 @@ Container@PLAYER_WIDGETS:
 							TooltipText: Infantry
 							TooltipContainer: TOOLTIP_CONTAINER
 							ProductionGroup: Infantry
-							HotkeyName: ProductionTypeInfantryKey
+							Key: ProductionTypeInfantry
 							Children:
 								Image@ICON:
 									X: 7
@@ -653,7 +675,7 @@ Container@PLAYER_WIDGETS:
 							TooltipText: Vehicles
 							TooltipContainer: TOOLTIP_CONTAINER
 							ProductionGroup: Vehicle
-							HotkeyName: ProductionTypeVehicleKey
+							Key: ProductionTypeVehicle
 							Children:
 								Image@ICON:
 									X: 7
@@ -666,7 +688,7 @@ Container@PLAYER_WIDGETS:
 							TooltipText: Aircraft
 							TooltipContainer: TOOLTIP_CONTAINER
 							ProductionGroup: Aircraft
-							HotkeyName: ProductionTypeAircraftKey
+							Key: ProductionTypeAircraft
 							Children:
 								Image@ICON:
 									X: 7

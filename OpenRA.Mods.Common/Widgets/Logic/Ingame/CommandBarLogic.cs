@@ -43,14 +43,12 @@ namespace OpenRA.Mods.Common.Widgets
 		public CommandBarLogic(Widget widget, World world)
 		{
 			this.world = world;
-			var ks = Game.Settings.Keys;
 
 			var attackMoveButton = widget.GetOrNull<ButtonWidget>("ATTACK_MOVE");
 			if (attackMoveButton != null)
 			{
 				BindButtonIcon(attackMoveButton);
 
-				attackMoveButton.GetKey = _ => ks.AttackMoveKey;
 				attackMoveButton.IsDisabled = () => { UpdateStateIfNecessary(); return attackMoveDisabled; };
 				attackMoveButton.IsHighlighted = () => world.OrderGenerator is GenericSelectTarget
 					&& ((GenericSelectTarget)world.OrderGenerator).OrderName == "AttackMove";
@@ -108,7 +106,6 @@ namespace OpenRA.Mods.Common.Widgets
 			{
 				BindButtonIcon(guardButton);
 
-				guardButton.GetKey = _ => ks.GuardKey;
 				guardButton.IsDisabled = () => { UpdateStateIfNecessary(); return guardDisabled; };
 				guardButton.IsHighlighted = () => world.OrderGenerator is GenericSelectTarget
 					&& ((GenericSelectTarget)world.OrderGenerator).OrderName == "Guard";
@@ -134,7 +131,6 @@ namespace OpenRA.Mods.Common.Widgets
 			{
 				BindButtonIcon(scatterButton);
 
-				scatterButton.GetKey = _ => ks.ScatterKey;
 				scatterButton.IsDisabled = () => { UpdateStateIfNecessary(); return scatterDisabled; };
 				scatterButton.IsHighlighted = () => scatterHighlighted > 0;
 				scatterButton.OnClick = () => PerformKeyboardOrderOnSelection(a => new Order("Scatter", a, false));
@@ -146,7 +142,6 @@ namespace OpenRA.Mods.Common.Widgets
 			{
 				BindButtonIcon(deployButton);
 
-				deployButton.GetKey = _ => ks.DeployKey;
 				deployButton.IsDisabled = () => { UpdateStateIfNecessary(); return !selectedDeploys.Any(Exts.IsTraitEnabled); };
 				deployButton.IsHighlighted = () => deployHighlighted > 0;
 				deployButton.OnClick = PerformDeployOrderOnSelection;
@@ -158,7 +153,6 @@ namespace OpenRA.Mods.Common.Widgets
 			{
 				BindButtonIcon(stopButton);
 
-				stopButton.GetKey = _ => ks.StopKey;
 				stopButton.IsDisabled = () => { UpdateStateIfNecessary(); return stopDisabled; };
 				stopButton.IsHighlighted = () => stopHighlighted > 0;
 				stopButton.OnClick = () => PerformKeyboardOrderOnSelection(a => new Order("Stop", a, false));

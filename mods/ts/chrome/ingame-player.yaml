@@ -68,6 +68,7 @@ Container@PLAYER_WIDGETS:
 							Width: 30
 							Height: 31
 							Background: sidebar-button
+							Key: Repair
 							TooltipText: Repair
 							TooltipContainer: TOOLTIP_CONTAINER
 							VisualHeight: 0
@@ -83,6 +84,7 @@ Container@PLAYER_WIDGETS:
 							Width: 30
 							Height: 31
 							Background: sidebar-button
+							Key: Sell
 							TooltipText: Sell
 							TooltipContainer: TOOLTIP_CONTAINER
 							VisualHeight: 0
@@ -98,6 +100,7 @@ Container@PLAYER_WIDGETS:
 							Width: 30
 							Height: 31
 							Background: sidebar-button
+							Key: PlaceBeacon
 							TooltipText: Place Beacon
 							TooltipContainer: TOOLTIP_CONTAINER
 							VisualHeight: 0
@@ -113,6 +116,7 @@ Container@PLAYER_WIDGETS:
 							Width: 30
 							Height: 31
 							Background: sidebar-button
+							Key: PowerDown
 							TooltipText: Power Down
 							TooltipContainer: TOOLTIP_CONTAINER
 							VisualHeight: 0
@@ -276,7 +280,7 @@ Container@PLAYER_WIDGETS:
 							TooltipText: Buildings
 							TooltipContainer: TOOLTIP_CONTAINER
 							ProductionGroup: Building
-							HotkeyName: ProductionTypeBuildingKey
+							Key: ProductionTypeBuilding
 							Children:
 								Image@ICON:
 									Logic: AddFactionSuffixLogic
@@ -294,7 +298,7 @@ Container@PLAYER_WIDGETS:
 							TooltipText: Defense
 							TooltipContainer: TOOLTIP_CONTAINER
 							ProductionGroup: Defense
-							HotkeyName: ProductionTypeDefenseKey
+							Key: ProductionTypeDefense
 							Children:
 								Image@ICON:
 									Logic: AddFactionSuffixLogic
@@ -312,7 +316,7 @@ Container@PLAYER_WIDGETS:
 							TooltipText: Infantry
 							TooltipContainer: TOOLTIP_CONTAINER
 							ProductionGroup: Infantry
-							HotkeyName: ProductionTypeInfantryKey
+							Key: ProductionTypeInfantry
 							Children:
 								Image@ICON:
 									Logic: AddFactionSuffixLogic
@@ -330,7 +334,7 @@ Container@PLAYER_WIDGETS:
 							TooltipText: Vehicles
 							TooltipContainer: TOOLTIP_CONTAINER
 							ProductionGroup: Vehicle
-							HotkeyName: ProductionTypeVehicleKey
+							Key: ProductionTypeVehicle
 							Children:
 								Image@ICON:
 									Logic: AddFactionSuffixLogic
@@ -348,7 +352,7 @@ Container@PLAYER_WIDGETS:
 							TooltipText: Aircraft
 							TooltipContainer: TOOLTIP_CONTAINER
 							ProductionGroup: Air
-							HotkeyName: ProductionTypeAircraftKey
+							Key: ProductionTypeAircraft
 							Children:
 								Image@ICON:
 									Logic: AddFactionSuffixLogic

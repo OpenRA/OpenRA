@@ -62,7 +62,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var options = worldRenderer.Viewport.AvailableZoomSteps;
 				zoomDropdown.OnMouseDown = _ => zoomDropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 150, options, setupItem);
 				zoomDropdown.GetText = () => zoomDropdown.SelectedItem;
-				zoomDropdown.GetKey = _ => Game.Settings.Keys.TogglePixelDoubleKey;
 				zoomDropdown.OnKeyPress = e =>
 				{
 					var key = Hotkey.FromKeyInput(e);

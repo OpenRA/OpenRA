@@ -450,6 +450,7 @@ Container@EDITOR_WORLD_ROOT:
 			Width: 70
 			Height: 25
 			Font: Bold
+			Key: TogglePixelDouble
 		Button@COPYPASTE_BUTTON:
 			X: WINDOW_RIGHT - 390
 			Y: 5

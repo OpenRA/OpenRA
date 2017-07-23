@@ -431,6 +431,7 @@ Container@EDITOR_WORLD_ROOT:
 			Width: 70
 			Height: 25
 			Font: Bold
+			Key: TogglePixelDouble
 		Label@COORDINATE_LABEL:
 			X: 485
 			Width: 50
