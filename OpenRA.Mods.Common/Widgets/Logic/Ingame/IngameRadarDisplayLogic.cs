@@ -11,8 +11,8 @@
 
 using System.Drawing;
 using System.Linq;
+using OpenRA.Mods.Common.Traits;
 using OpenRA.Mods.Common.Traits.Radar;
-using OpenRA.Traits;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic

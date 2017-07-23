@@ -11,8 +11,9 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.Traits;
 
-namespace OpenRA.Traits
+namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Attach this to the player actor.")]
 	public class DeveloperModeInfo : ITraitInfo, ILobbyOptions

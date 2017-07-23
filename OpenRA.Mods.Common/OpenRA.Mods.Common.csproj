@@ -297,6 +297,7 @@
     <Compile Include="Traits\CommandBarBlacklist.cs" />
     <Compile Include="Traits\Health.cs" />
     <Compile Include="Traits\HitShape.cs" />
+    <Compile Include="Traits\Player\DeveloperMode.cs" />
     <Compile Include="Traits\PowerTooltip.cs" />
     <Compile Include="Traits\Render\VeteranProductionIconOverlay.cs" />
     <Compile Include="Traits\Capturable.cs" />
