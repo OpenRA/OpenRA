@@ -46,9 +46,13 @@ namespace OpenRA.Mods.Common.Traits.Render
 		}
 	}
 
-	public class WithSpriteBody : ConditionalTrait<WithSpriteBodyInfo>, INotifyDamageStateChanged, INotifyBuildComplete
+	public class WithSpriteBody : ConditionalTrait<WithSpriteBodyInfo>, INotifyDamageStateChanged, INotifyBuildComplete, IPlayCustomAnimation
 	{
 		public readonly Animation DefaultAnimation;
+
+		public string BodyName { get { return Info.Name; } }
+
+		public bool IsAnimDisabled { get { return IsTraitDisabled; } }
 
 		public WithSpriteBody(ActorInitializer init, WithSpriteBodyInfo info)
 			: this(init, info, () => 0) { }
@@ -129,6 +133,11 @@ namespace OpenRA.Mods.Common.Traits.Render
 		void INotifyDamageStateChanged.DamageStateChanged(Actor self, AttackInfo e)
 		{
 			DamageStateChanged(self);
+		}
+
+		public void PlayFetchIndex(Actor self, string name, Func<int> func)
+		{
+			DefaultAnimation.PlayFetchIndex(name, func);
 		}
 	}
 }

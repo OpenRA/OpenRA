@@ -228,6 +228,9 @@ thumper:
 		Facings: -8
 		Transpose: true
 		Tick: 120
+	make: DATA.R8
+		Start: 1458
+		Length: 5
 	thump: DATA.R8
 		Start: 1458
 		Length: 5
