@@ -42,7 +42,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		}
 	}
 
-	public class WithInfantryBody : ConditionalTrait<WithInfantryBodyInfo>, ITick, INotifyAttack, INotifyIdle, IPlayCustomAnimation
+	public class WithInfantryBody : ConditionalTrait<WithInfantryBodyInfo>, ITick, INotifyAttack, INotifyIdle
 	{
 		readonly IMove move;
 		protected readonly Animation DefaultAnimation;
@@ -104,10 +104,6 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		public void Attacking(Actor self, Target target, Armament a)
 		{
-			// PCA has higher priority so don't allow attacking anim override the playing anim.
-			if (state == AnimationState.PlayingCustomAnimation)
-				return;
-
 			string sequence;
 			if (!Info.AttackSequences.TryGetValue(a.Info.Name, out sequence))
 				sequence = Info.DefaultAttackSequence;
@@ -128,9 +124,6 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		public virtual void Tick(Actor self)
 		{
-			if (state == AnimationState.PlayingCustomAnimation)
-				return;
-
 			if (rsm != null)
 			{
 				if (wasModifying != rsm.IsModifyingSequence)
@@ -156,13 +149,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		public void TickIdle(Actor self)
 		{
-			if (state == AnimationState.PlayingCustomAnimation)
-				return;
-
-			if (state == AnimationState.Attacking)
-				return;
-
-			if (state != AnimationState.Idle && state != AnimationState.IdleAnimating)
+			if (state != AnimationState.Idle && state != AnimationState.IdleAnimating && state != AnimationState.Attacking)
 			{
 				PlayStandAnimation(self);
 				state = AnimationState.Idle;
@@ -195,58 +182,13 @@ namespace OpenRA.Mods.Common.Traits.Render
 			}
 		}
 
-		public void PlayCustomAnimation(Actor self, string name, Action after = null)
-		{
-			state = AnimationState.PlayingCustomAnimation;
-			DefaultAnimation.PlayThen(NormalizeInfantrySequence(self, name), () =>
-			{
-				DefaultAnimation.PlayThen(NormalizeInfantrySequence(self, name), () =>
-				{
-					state = AnimationState.Waiting;
-					PlayStandAnimation(self);
-				});
-                if (after != null)
-                    after.Invoke();
-			});
-		}
-
-		public void PlayCustomAnimationRepeating(Actor self, string name)
-		{
-			state = AnimationState.PlayingCustomAnimation;
-			var sequence = NormalizeInfantrySequence(self, name);
-			DefaultAnimation.PlayThen(sequence, () =>
-			{
-				state = AnimationState.Waiting;
-				PlayStandAnimation(self);
-			});
-		}
-
-		public void PlayCustomAnimationBackwards(Actor self, string name, Action after = null)
-		{
-			state = AnimationState.PlayingCustomAnimation;
-			DefaultAnimation.PlayBackwardsThen(NormalizeInfantrySequence(self, name), () =>
-			{
-				state = AnimationState.Waiting;
-				PlayStandAnimation(self);
-                if (after != null)
-                    after.Invoke();
-			});
-		}
-
-		public void CancelCustomAnimation(Actor self)
-		{
-			state = AnimationState.Waiting;
-			PlayStandAnimation(self);
-		}
-
 		enum AnimationState
 		{
 			Idle,
 			Attacking,
 			Moving,
 			Waiting,
-			IdleAnimating,
-			PlayingCustomAnimation
+			IdleAnimating
 		}
 	}
 }
