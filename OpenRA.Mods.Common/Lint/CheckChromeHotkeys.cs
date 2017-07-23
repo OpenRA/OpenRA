@@ -20,6 +20,16 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Lint
 {
+	[AttributeUsage(AttributeTargets.Class)]
+	public sealed class ChromeLogicArgsHotkeys : Attribute
+	{
+		public string[] LogicArgKeys;
+		public ChromeLogicArgsHotkeys(params string[] logicArgKeys)
+		{
+			LogicArgKeys = logicArgKeys;
+		}
+	}
+
 	class CheckChromeHotkeys : ILintPass
 	{
 		public void Run(Action<string> emitError, Action<string> emitWarning, ModData modData)
@@ -59,6 +69,27 @@ namespace OpenRA.Mods.Common.Lint
 						if (!namedKeys.Contains(node.Value.Value) && !Hotkey.TryParse(node.Value.Value, out unused))
 							emitError("{0} refers to a Key named `{1}` that does not exist".F(node.Location, node.Value.Value));
 					}
+				}
+
+				// Logic classes can declare the data key names that specify hotkeys
+				if (node.Key == "Logic" && node.Value.Nodes.Any())
+				{
+					var typeNames = FieldLoader.GetValue<string[]>(node.Key, node.Value.Value);
+					var checkArgKeys = new List<string>();
+					foreach (var typeName in typeNames)
+					{
+						var type = Game.ModData.ObjectCreator.FindType(typeName);
+						if (type == null)
+							continue;
+
+						checkArgKeys.AddRange(type.GetCustomAttributes<ChromeLogicArgsHotkeys>(true).SelectMany(x => x.LogicArgKeys));
+					}
+
+					Hotkey unused;
+					foreach (var n in node.Value.Nodes)
+						if (checkArgKeys.Contains(n.Key))
+							if (!namedKeys.Contains(n.Value.Value) && !Hotkey.TryParse(n.Value.Value, out unused))
+								emitError("{0} {1}:{2} refers to a Key named `{3}` that does not exist".F(filename, node.Value.Value, n.Key, n.Value.Value));
 				}
 
 				if (node.Value.Nodes != null)
