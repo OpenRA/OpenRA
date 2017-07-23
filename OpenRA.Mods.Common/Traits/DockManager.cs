@@ -215,7 +215,6 @@ namespace OpenRA.Mods.Common.Traits
 		void RemoveDeadLock(List<Actor> queue)
 		{
 			bool locked = false;
-			var occupiers = new List<Actor>();
 
 			foreach (var d in allDocks)
 			{

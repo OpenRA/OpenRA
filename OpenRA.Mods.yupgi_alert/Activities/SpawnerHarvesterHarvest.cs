@@ -34,7 +34,6 @@ namespace OpenRA.Mods.Yupgi_alert.Activities
 		readonly SpawnerHarvesterInfo harvInfo;
 		readonly Mobile mobile;
 		readonly MobileInfo mobileInfo;
-		readonly ResourceLayer resLayer;
 		readonly ResourceClaimLayer claimLayer;
 		readonly IPathFinder pathFinder;
 		readonly DomainIndex domainIndex;
@@ -49,7 +48,6 @@ namespace OpenRA.Mods.Yupgi_alert.Activities
 			mobile = self.Trait<Mobile>();
 			mobileInfo = self.Info.TraitInfo<MobileInfo>();
 			deploy = self.Trait<GrantConditionOnDeploy>();
-			resLayer = self.World.WorldActor.Trait<ResourceLayer>();
 			claimLayer = self.World.WorldActor.TraitOrDefault<ResourceClaimLayer>();
 			pathFinder = self.World.WorldActor.Trait<IPathFinder>();
 			domainIndex = self.World.WorldActor.Trait<DomainIndex>();
@@ -77,7 +75,6 @@ namespace OpenRA.Mods.Yupgi_alert.Activities
 				return this;
 			}
 
-			var searchFromLoc = harv.LastOrderLocation ?? self.Location;
 			var closestHarvestablePosition = ClosestHarvestablePos(self, harvInfo.LongScanRadius);
 
 			// No suitable resource field found.
