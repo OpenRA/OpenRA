@@ -232,8 +232,8 @@ namespace OpenRA
 		public Hotkey StanceAttackAnythingKey = new Hotkey(Keycode.A, Modifiers.Alt);
 		public Hotkey GuardKey = new Hotkey(Keycode.D, Modifiers.None);
 
-		public Hotkey ObserverCombinedView = new Hotkey(Keycode.MINUS, Modifiers.None);
-		public Hotkey ObserverWorldView = new Hotkey(Keycode.EQUALS, Modifiers.None);
+		public Hotkey ObserverCombinedViewKey = new Hotkey(Keycode.MINUS, Modifiers.None);
+		public Hotkey ObserverWorldViewKey = new Hotkey(Keycode.EQUALS, Modifiers.None);
 
 		public Hotkey CycleStatusBarsKey = new Hotkey(Keycode.COMMA, Modifiers.None);
 		public Hotkey TogglePixelDoubleKey = new Hotkey(Keycode.PERIOD, Modifiers.None);

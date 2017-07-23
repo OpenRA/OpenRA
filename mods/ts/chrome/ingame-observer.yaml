@@ -60,6 +60,8 @@ Container@OBSERVER_WIDGETS:
 			Children:
 				DropDownButton@SHROUD_SELECTOR:
 					Logic: ObserverShroudSelectorLogic
+						CombinedViewKey: ObserverCombinedView
+						WorldViewKey: ObserverWorldView
 					X: 15
 					Y: 15
 					Width: 220

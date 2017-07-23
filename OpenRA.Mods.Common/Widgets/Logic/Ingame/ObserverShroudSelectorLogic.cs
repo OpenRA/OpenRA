@@ -13,16 +13,21 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using OpenRA.Mods.Common.Lint;
 using OpenRA.Network;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
+	[ChromeLogicArgsHotkeys("CombinedViewKey", "WorldViewKey")]
 	public class ObserverShroudSelectorLogic : ChromeLogic
 	{
 		readonly CameraOption combined, disableShroud;
 		readonly IOrderedEnumerable<IGrouping<int, CameraOption>> teams;
 		readonly bool limitViews;
+
+		readonly NamedHotkey combinedViewKey = new NamedHotkey();
+		readonly NamedHotkey worldViewKey = new NamedHotkey();
 
 		CameraOption selected;
 
@@ -57,8 +62,16 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		}
 
 		[ObjectCreator.UseCtor]
-		public ObserverShroudSelectorLogic(Widget widget, World world)
+		public ObserverShroudSelectorLogic(Widget widget, World world, Dictionary<string, MiniYaml> logicArgs)
 		{
+			MiniYaml yaml;
+			var ks = Game.Settings.Keys;
+			if (logicArgs.TryGetValue("CombinedViewKey", out yaml))
+				combinedViewKey = new NamedHotkey(yaml.Value, ks);
+
+			if (logicArgs.TryGetValue("WorldViewKey", out yaml))
+				worldViewKey = new NamedHotkey(yaml.Value, ks);
+
 			limitViews = world.Map.Visibility.HasFlag(MapVisibility.MissionSelector);
 
 			var groups = new Dictionary<string, IEnumerable<CameraOption>>();
@@ -136,7 +149,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (e.Event == KeyInputEvent.Down && !e.IsRepeat)
 			{
 				var h = Hotkey.FromKeyInput(e);
-				if (h == Game.Settings.Keys.ObserverCombinedView && !limitViews)
+				if (h == combinedViewKey.GetValue() && !limitViews)
 				{
 					selected = combined;
 					selected.OnClick();
@@ -144,7 +157,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					return true;
 				}
 
-				if (h == Game.Settings.Keys.ObserverWorldView && !limitViews)
+				if (h == worldViewKey.GetValue() && !limitViews)
 				{
 					selected = disableShroud;
 					selected.OnClick();

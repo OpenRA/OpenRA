@@ -224,6 +224,8 @@ Container@OBSERVER_WIDGETS:
 					Font: TinyBold
 		DropDownButton@SHROUD_SELECTOR:
 			Logic: ObserverShroudSelectorLogic
+				CombinedViewKey: ObserverCombinedView
+				WorldViewKey: ObserverWorldView
 			X: WINDOW_RIGHT - WIDTH - 5
 			Y: 260
 			Width: 256

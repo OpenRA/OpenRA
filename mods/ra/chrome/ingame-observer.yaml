@@ -78,6 +78,8 @@ Container@OBSERVER_WIDGETS:
 							Height: 220
 				DropDownButton@SHROUD_SELECTOR:
 					Logic: ObserverShroudSelectorLogic
+						CombinedViewKey: ObserverCombinedView
+						WorldViewKey: ObserverWorldView
 					X: 6
 					Y: 262
 					Width: 226
