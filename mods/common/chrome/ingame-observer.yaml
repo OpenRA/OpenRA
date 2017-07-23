@@ -94,6 +94,9 @@ Container@OBSERVER_WIDGETS:
 							Y: 10
 							Width: 26
 							Height: 26
+							Key: Pause
+							TooltipText: Pause
+							TooltipContainer: TOOLTIP_CONTAINER
 							IgnoreChildMouseOver: true
 							Children:
 								Image@IMAGE_PAUSE:
@@ -107,7 +110,10 @@ Container@OBSERVER_WIDGETS:
 							Y: 10
 							Width: 26
 							Height: 26
+							Key: Pause
 							IgnoreChildMouseOver: true
+							TooltipText: Play
+							TooltipContainer: TOOLTIP_CONTAINER
 							Children:
 								Image@IMAGE_PLAY:
 									Width: 25
@@ -120,9 +126,9 @@ Container@OBSERVER_WIDGETS:
 							Width: 36
 							Height: 20
 							BaseLine: 1
+							Key: ReplaySpeedSlow
 							TooltipText: Slow speed
 							TooltipContainer: TOOLTIP_CONTAINER
-							VisualHeight: 0
 							Text: 50%
 							Font: TinyBold
 						Button@BUTTON_REGULAR:
@@ -131,9 +137,9 @@ Container@OBSERVER_WIDGETS:
 							Width: 38
 							Height: 20
 							BaseLine: 1
+							Key: ReplaySpeedRegular
 							TooltipText: Regular speed
 							TooltipContainer: TOOLTIP_CONTAINER
-							VisualHeight: 0
 							Text: 100%
 							Font: TinyBold
 						Button@BUTTON_FAST:
@@ -142,9 +148,9 @@ Container@OBSERVER_WIDGETS:
 							Width: 38
 							Height: 20
 							BaseLine: 1
+							Key: ReplaySpeedFast
 							TooltipText: Fast speed
 							TooltipContainer: TOOLTIP_CONTAINER
-							VisualHeight: 0
 							Text: 200%
 							Font: TinyBold
 						Button@BUTTON_MAXIMUM:
@@ -153,8 +159,8 @@ Container@OBSERVER_WIDGETS:
 							Width: 38
 							Height: 20
 							BaseLine: 1
+							Key: ReplaySpeedMax
 							TooltipText: Maximum speed
 							TooltipContainer: TOOLTIP_CONTAINER
-							VisualHeight: 0
 							Text: MAX
 							Font: TinyBold
