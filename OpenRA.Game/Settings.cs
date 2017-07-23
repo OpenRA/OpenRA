@@ -292,10 +292,10 @@ namespace OpenRA
 		public Hotkey ReplaySpeedFastKey = new Hotkey(Keycode.F7, Modifiers.None);
 		public Hotkey ReplaySpeedMaxKey = new Hotkey(Keycode.F8, Modifiers.None);
 
-		public Hotkey NextTrack = new Hotkey(Keycode.AUDIONEXT, Modifiers.None);
-		public Hotkey PreviousTrack = new Hotkey(Keycode.AUDIOPREV, Modifiers.None);
-		public Hotkey StopMusic = new Hotkey(Keycode.AUDIOSTOP, Modifiers.None);
-		public Hotkey PauseMusic = new Hotkey(Keycode.AUDIOPLAY, Modifiers.None);
+		public Hotkey StopMusicKey = new Hotkey(Keycode.AUDIOSTOP, Modifiers.None);
+		public Hotkey PauseMusicKey = new Hotkey(Keycode.AUDIOPLAY, Modifiers.None);
+		public Hotkey PrevMusicKey = new Hotkey(Keycode.AUDIOPREV, Modifiers.None);
+		public Hotkey NextMusicKey = new Hotkey(Keycode.AUDIONEXT, Modifiers.None);
 
 		static readonly Func<KeySettings, Hotkey>[] ProductionKeys = GetKeys(24, "Production");
 		static readonly Func<KeySettings, Hotkey>[] SupportPowerKeys = GetKeys(6, "SupportPower");
