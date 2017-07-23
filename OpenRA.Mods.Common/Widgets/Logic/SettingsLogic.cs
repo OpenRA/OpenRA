@@ -495,8 +495,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				var hotkeys = new Dictionary<string, string>()
 				{
-					{ "ObserverCombinedView", "All Players" },
-					{ "ObserverWorldView", "Disable Shroud" },
+					{ "ObserverCombinedViewKey", "All Players" },
+					{ "ObserverWorldViewKey", "Disable Shroud" },
 					{ "PauseKey", "Pause/Play" },
 					{ "ReplaySpeedSlowKey", "Slow speed" },
 					{ "ReplaySpeedRegularKey", "Regular speed" },
