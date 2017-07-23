@@ -196,6 +196,7 @@ Container@EDITOR_ROOT:
 
 Container@EDITOR_WORLD_ROOT:
 	Logic: LoadIngamePerfLogic, MapEditorLogic
+		ChangeZoomKey: TogglePixelDouble
 	Children:
 		Container@PERF_ROOT:
 		EditorViewportController@MAP_EDITOR:
