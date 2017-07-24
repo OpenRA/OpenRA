@@ -80,6 +80,10 @@ namespace OpenRA.Mods.Common.Traits.Render
 			if (a.Info.MuzzleSplitFacings > 0)
 				sequence += Util.QuantizeFacing(getFacing(), a.Info.MuzzleSplitFacings).ToString();
 
+			// Weapon might had been fired from some other attack base, such as AttackGarrisoned
+			if (!anims.ContainsKey(barrel))
+				return;
+
 			visible[barrel] = true;
 			anims[barrel].Animation.PlayThen(sequence, () => visible[barrel] = false);
 		}
