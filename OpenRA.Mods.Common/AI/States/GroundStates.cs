@@ -21,18 +21,6 @@ namespace OpenRA.Mods.Common.AI
 		{
 			return base.ShouldFlee(owner, enemies => !AttackOrFleeFuzzy.Default.CanAttack(owner.Units, enemies));
 		}
-
-		protected void LogBattle(Squad owner)
-		{
-			var stats = owner.Bot.Player.PlayerActor.Trait<PlayerStatistics>();
-			Log.Write("lua", "EOB_MY_DEATH_COST");
-			Log.Write("lua", stats.DeathsCost.ToString());
-
-			Log.Write("lua", "EOB_ENEMY_DEATH_COST");
-			var enemy = owner.World.Players.Where(p => p.InternalName.ToLower().StartsWith("multi") && p != owner.Bot.Player).First();
-			var stats2 = enemy.PlayerActor.Trait<PlayerStatistics>();
-			Log.Write("lua", stats2.DeathsCost.ToString());
-		}
 	}
 
 	class GroundUnitsIdleState : GroundStateBase, IState
@@ -63,26 +51,6 @@ namespace OpenRA.Mods.Common.AI
 
 					// We have gathered sufficient units. Attack the nearest enemy unit.
 					owner.FuzzyStateMachine.ChangeState(owner, new GroundUnitsAttackMoveState(), true);
-
-					// start log
-					Log.Write("lua", "START_ATTACK");
-					Log.Write("lua", "MINE");
-					foreach (var u in owner.Units)
-						Log.Write("lua", u.Info.Name);
-					Log.Write("lua", "ENEMY");
-
-					var enemy = owner.World.Players.Where(p => p.InternalName.ToLower().StartsWith("multi") && p != owner.Bot.Player).First();
-					foreach (var a in owner.Bot.World.Actors.Where(x => x.Owner == enemy))
-						Log.Write("lua", a.Info.Name);
-
-					Log.Write("lua", "VS_END");
-					var stats = owner.Bot.Player.PlayerActor.Trait<PlayerStatistics>();
-					Log.Write("lua", "MY_DEATH_COST");
-					Log.Write("lua", stats.DeathsCost.ToString());
-					Log.Write("lua", "ENEMY_DEATH_COST");
-					var stats2 = owner.TargetActor.Owner.PlayerActor.Trait<PlayerStatistics>();
-					Log.Write("lua", stats2.DeathsCost.ToString());
-					return;
 				}
 				else
 					owner.FuzzyStateMachine.ChangeState(owner, new GroundUnitsFleeState(), true);
@@ -143,7 +111,6 @@ namespace OpenRA.Mods.Common.AI
 
 			if (ShouldFlee(owner))
 			{
-				LogBattle(owner);
 				owner.FuzzyStateMachine.ChangeState(owner, new GroundUnitsFleeState(), true);
 				return;
 			}
@@ -179,7 +146,6 @@ namespace OpenRA.Mods.Common.AI
 
 			if (ShouldFlee(owner))
 			{
-				LogBattle(owner);
 				owner.FuzzyStateMachine.ChangeState(owner, new GroundUnitsFleeState(), true);
 				return;
 			}
