@@ -273,6 +273,9 @@ namespace OpenRA.Mods.Common.AI
 				if (BusyAttack(a))
 					continue;
 
+				if (a.IsDead || a.Disposed || !a.IsInWorld)
+					continue;
+
 				if (!ReloadsAutomatically(a))
 				{
 					if (!HasAmmo(a))
@@ -376,7 +379,7 @@ namespace OpenRA.Mods.Common.AI
 
 			foreach (var a in owner.Units)
 			{
-				if (!a.IsInWorld)
+				if (a.IsDead || a.Disposed || !a.IsInWorld)
 					continue;
 
 				if (!ReloadsAutomatically(a) && !FullAmmo(a))
