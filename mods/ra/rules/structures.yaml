@@ -137,6 +137,9 @@ SPEN:
 		Type: Wood
 	RevealsShroud:
 		Range: 5c0
+		RevealGeneratedShroud: False
+	RevealsShroud@GAPGEN:
+		Range: 4c0
 	Exit@1:
 		SpawnOffset: 0,-213,0
 		Facing: 96
@@ -236,6 +239,9 @@ SYRD:
 		Type: Wood
 	RevealsShroud:
 		Range: 5c0
+		RevealGeneratedShroud: False
+	RevealsShroud@GAPGEN:
+		Range: 4c0
 	Exit@1:
 		SpawnOffset: -1024,1024,0
 		Facing: 160
@@ -831,6 +837,9 @@ SAM:
 	Armor:
 		Type: Heavy
 	RevealsShroud:
+		Range: 6c0
+		RevealGeneratedShroud: False
+	RevealsShroud@GAPGEN:
 		Range: 5c0
 	WithBuildingBib:
 		HasMinibib: Yes
@@ -920,6 +929,9 @@ WEAP:
 		Type: Wood
 	RevealsShroud:
 		Range: 5c0
+		RevealGeneratedShroud: False
+	RevealsShroud@GAPGEN:
+		Range: 4c0
 	WithBuildingBib:
 	WithProductionDoorOverlay:
 		Sequence: build-top
@@ -1514,6 +1526,9 @@ STEK:
 		Type: Wood
 	RevealsShroud:
 		Range: 5c0
+		RevealGeneratedShroud: False
+	RevealsShroud@GAPGEN:
+		Range: 4c0
 	WithBuildingBib:
 	Power:
 		Amount: -100
