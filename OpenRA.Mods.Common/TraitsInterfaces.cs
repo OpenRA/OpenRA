@@ -370,4 +370,10 @@ namespace OpenRA.Mods.Common.Traits
 		void OnObjectiveCompleted(Player player, int objectiveID);
 		void OnObjectiveFailed(Player player, int objectiveID);
 	}
+
+	public interface INotifyCashTransfer
+	{
+		void OnAcceptingCash(Actor self, Actor donor);
+		void OnDeliveringCash(Actor self, Actor acceptor);
+	}
 }

@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using OpenRA.Mods.Common.Activities;
@@ -29,12 +30,15 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Identifier checked against AcceptsDeliveredCash.ValidTypes. Only needed if the latter is not empty.")]
 		public readonly string Type = null;
 
+		[Desc("Sound to play when delivering cash")]
+		public readonly string[] Sounds = { };
+
 		[VoiceReference] public readonly string Voice = "Action";
 
 		public object Create(ActorInitializer init) { return new DeliversCash(this); }
 	}
 
-	class DeliversCash : IIssueOrder, IResolveOrder, IOrderVoice
+	class DeliversCash : IIssueOrder, IResolveOrder, IOrderVoice, INotifyCashTransfer
 	{
 		readonly DeliversCashInfo info;
 
@@ -78,6 +82,14 @@ namespace OpenRA.Mods.Common.Traits
 
 			self.SetTargetLine(target, Color.Yellow);
 			self.QueueActivity(new DonateCash(self, target.Actor, info.Payload, info.PlayerExperience));
+		}
+
+		void INotifyCashTransfer.OnAcceptingCash(Actor self, Actor donor) { }
+
+		void INotifyCashTransfer.OnDeliveringCash(Actor self, Actor acceptor)
+		{
+			if (info.Sounds.Length > 0)
+				Game.Sound.Play(SoundType.World, info.Sounds.Random(self.World.SharedRandom), self.CenterPosition);
 		}
 
 		public class DeliversCashOrderTargeter : UnitOrderTargeter
