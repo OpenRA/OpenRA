@@ -37,6 +37,7 @@ namespace OpenRA
 
 	public interface ITraitEnumberable<T> : IEnumerable<T>
 	{
+		ITraitEnumberable<T> Where(Func<T, bool> predicate);
 	}
 
 	/// <summary>
@@ -199,32 +200,61 @@ namespace OpenRA
 
 			class MultipleEnumerable : ITraitEnumberable<T>
 			{
-				readonly TraitContainer<T> container;
-				readonly uint actor;
-				public MultipleEnumerable(TraitContainer<T> container, uint actor) { this.container = container; this.actor = actor; }
-				public IEnumerator<T> GetEnumerator() { return new MultipleEnumerator(container, actor); }
+				protected readonly TraitContainer<T> Container;
+				protected readonly uint Actor;
+				public MultipleEnumerable(TraitContainer<T> container, uint actor) { Container = container; Actor = actor; }
+				public virtual IEnumerator<T> GetEnumerator() { return new MultipleEnumerator(Container, Actor); }
 				System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() { return GetEnumerator(); }
+				public virtual ITraitEnumberable<T> Where(Func<T, bool> predicate) { return new MultipleEnumerableWhere(Container, Actor, predicate); }
 			}
 
 			class MultipleEnumerator : IEnumerator<T>
 			{
-				readonly List<Actor> actors;
-				readonly List<T> traits;
-				readonly uint actor;
-				int index;
+				protected readonly List<Actor> Actors;
+				protected readonly List<T> Traits;
+				protected readonly uint Actor;
+				protected int index;
 				public MultipleEnumerator(TraitContainer<T> container, uint actor)
 				{
-					actors = container.actors;
-					traits = container.traits;
-					this.actor = actor;
+					Actors = container.actors;
+					Traits = container.traits;
+					Actor = actor;
 					Reset();
 				}
 
-				public void Reset() { FindFirstTrait(actors, actor, out index); index--; }
-				public bool MoveNext() { return ActorHasTrait(actors, actor, ++index); }
-				public T Current { get { return traits[index]; } }
+				public void Reset() { FindFirstTrait(Actors, Actor, out index); index--; }
+				public virtual bool MoveNext() { return ActorHasTrait(Actors, Actor, ++index); }
+				public T Current { get { return Traits[index]; } }
 				object System.Collections.IEnumerator.Current { get { return Current; } }
 				public void Dispose() { }
+			}
+
+			class MultipleEnumerableWhere : MultipleEnumerable
+			{
+				protected readonly Func<T, bool> Predicate;
+				public MultipleEnumerableWhere(TraitContainer<T> container, uint actor, Func<T, bool> predicate)
+					: base(container, actor) { Predicate = predicate; }
+				public override IEnumerator<T> GetEnumerator() { return new MultipleEnumeratorWhere(Container, Actor, Predicate); }
+				public override ITraitEnumberable<T> Where(Func<T, bool> predicate)
+				{
+					return new MultipleEnumerableWhere(Container, Actor, t => Predicate(t) && predicate(t));
+				}
+			}
+
+			class MultipleEnumeratorWhere : MultipleEnumerator
+			{
+				readonly Func<T, bool> predicate;
+				public MultipleEnumeratorWhere(TraitContainer<T> container, uint actor, Func<T, bool> predicate)
+					: base(container, actor) { this.predicate = predicate; }
+
+				public override bool MoveNext()
+				{
+					while (ActorHasTrait(Actors, Actor, ++index))
+						if (predicate(Traits[index]))
+							return true;
+
+					return false;
+				}
 			}
 
 			public IEnumerable<TraitPair<T>> All()
