@@ -38,6 +38,10 @@ namespace OpenRA
 	public interface ITraitEnumberable<T> : IEnumerable<T>
 	{
 		ITraitEnumberable<T> Where(Func<T, bool> predicate);
+		T First();
+		T First(Func<T, bool> predicate);
+		T FirstOrDefault();
+		T FirstOrDefault(Func<T, bool> predicate);
 		List<T> ToList();
 		T[] ToArray();
 	}
@@ -190,7 +194,7 @@ namespace OpenRA
 				if (!FindFirstTrait(actors, actor, out index))
 					return default(T);
 				else if (ActorHasTrait(actors, actor, index + 1))
-					throw new InvalidOperationException("Actor {0} has multiple traits of type `{1}`".F(actors[index].Info.Name, typeof(T)));
+					throw new InvalidOperationException("Actor {0} has multiple traits of type `{1}`.".F(actors[index], typeof(T)));
 				else return traits[index];
 			}
 
@@ -208,6 +212,22 @@ namespace OpenRA
 				public MultipleEnumerable(TraitContainer<T> container, uint actor) { Container = container; Actor = actor; }
 				public virtual IEnumerator<T> GetEnumerator() { return new MultipleEnumerator(Container, Actor); }
 				System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() { return GetEnumerator(); }
+				protected Exception MissingAt(int index)
+				{
+					if (index < 0 || !ActorHasTrait(Container.actors, Actor, index))
+						return new InvalidOperationException("Actor #{0} does not have a trait of type `{1}` or does not exist.".F(Actor, typeof(T)));
+
+					return new InvalidOperationException("Actor {0} does not have a trait of type `{1}`.".F(Container.actors[index], typeof(T)));
+				}
+
+				protected Exception MissingAcceptableAt(int index)
+				{
+					if (index < 0 || !ActorHasTrait(Container.actors, Actor, index))
+						return new InvalidOperationException("Actor #{0} does not have an acceptable trait of type `{1}` or does not exist.".F(Actor, typeof(T)));
+
+					return new InvalidOperationException("Actor {0} does not have an acceptable trait of type `{1}`.".F(Container.actors[index], typeof(T)));
+				}
+
 				public virtual ITraitEnumberable<T> Where(Func<T, bool> predicate) { return new MultipleEnumerableWhere(Container, Actor, predicate); }
 				public virtual List<T> ToList()
 				{
@@ -234,6 +254,41 @@ namespace OpenRA
 						result[i++] = traits[startIndex++];
 
 					return result;
+				}
+
+				public T First() { return First(true); }
+				public T FirstOrDefault() { return First(false); }
+				protected virtual T First(bool required)
+				{
+					int index;
+					if (FindFirstTrait(Container.actors, Actor, out index))
+						return Container.traits[index];
+
+					if (required)
+						throw MissingAcceptableAt(index);
+
+					return default(T);
+				}
+
+				public T First(Func<T, bool> predicate) { return First(true, predicate); }
+				public T FirstOrDefault(Func<T, bool> predicate) { return First(false, predicate); }
+				protected virtual T First(bool required, Func<T, bool> predicate)
+				{
+					var actors = Container.actors;
+					var traits = Container.traits;
+					int index;
+					if (FindFirstTrait(actors, Actor, out index)) do
+					{
+						var trait = traits[index];
+						if (predicate(trait))
+							return trait;
+					}
+					while (ActorHasTrait(actors, Actor, ++index));
+
+					if (required)
+						throw MissingAcceptableAt(index - 1);
+
+					return default(T);
 				}
 			}
 
@@ -312,6 +367,26 @@ namespace OpenRA
 						result[i] = buffer[i];
 
 					return result;
+				}
+
+				protected override T First(bool required) { return base.First(required, Predicate); }
+				protected override T First(bool required, Func<T, bool> predicate)
+				{
+					var actors = Container.actors;
+					var traits = Container.traits;
+					int index;
+					if (FindFirstTrait(actors, Actor, out index)) do
+					{
+						var trait = traits[index];
+						if (Predicate(trait) && predicate(trait))
+							return trait;
+					}
+					while (ActorHasTrait(actors, Actor, ++index));
+
+					if (required)
+						throw MissingAcceptableAt(index - 1);
+
+					return default(T);
 				}
 			}
 
