@@ -35,6 +35,10 @@ namespace OpenRA
 		}
 	}
 
+	public interface ITraitEnumberable<T> : IEnumerable<T>
+	{
+	}
+
 	/// <summary>
 	/// Provides efficient ways to query a set of actors by their traits.
 	/// </summary>
@@ -95,7 +99,7 @@ namespace OpenRA
 			return InnerGet<T>().GetOrDefault(actor.ActorID);
 		}
 
-		public IEnumerable<T> WithInterface<T>(Actor actor)
+		public ITraitEnumberable<T> WithInterface<T>(Actor actor)
 		{
 			CheckDestroyed(actor);
 			return InnerGet<T>().GetMultiple(actor.ActorID);
@@ -186,14 +190,14 @@ namespace OpenRA
 				else return traits[index];
 			}
 
-			public IEnumerable<T> GetMultiple(uint actor)
+			public ITraitEnumberable<T> GetMultiple(uint actor)
 			{
 				// PERF: Custom enumerator for efficiency - using `yield` is slower.
 				++Queries;
 				return new MultipleEnumerable(this, actor);
 			}
 
-			class MultipleEnumerable : IEnumerable<T>
+			class MultipleEnumerable : ITraitEnumberable<T>
 			{
 				readonly TraitContainer<T> container;
 				readonly uint actor;
