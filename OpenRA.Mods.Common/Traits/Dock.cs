@@ -25,9 +25,6 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("When CenterPosition is requested, we add this offset in addition to DockOffset.")]
 		public readonly WVec WOffset = WVec.Zero;
 
-		[Desc("Override Offset value and use center of the host actor as the dock offset?")]
-		public readonly bool Center = false;
-
 		[Desc("Just a waiting slot, not a dock that allows reloading / unloading / fixing")]
 		public readonly bool WaitingPlace = false;
 
