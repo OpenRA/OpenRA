@@ -44,6 +44,9 @@ namespace OpenRA
 		T FirstOrDefault(Func<T, bool> predicate);
 		List<T> ToList();
 		T[] ToArray();
+		bool Any();
+		bool Any(Func<T, bool> predicate);
+		bool All(Func<T, bool> predicate);
 	}
 
 	/// <summary>
@@ -290,6 +293,31 @@ namespace OpenRA
 
 					return default(T);
 				}
+
+				public virtual bool Any()
+				{
+					int index;
+					return FindFirstTrait(Container.actors, Actor, out index);
+				}
+
+				public virtual bool Check(Func<T, bool> predicate, bool any)
+				{
+					var actors = Container.actors;
+					var traits = Container.traits;
+					int index;
+					if (FindFirstTrait(actors, Actor, out index)) do
+					{
+						var trait = traits[index];
+						if (predicate(trait) == any)
+							return any;
+					}
+					while (ActorHasTrait(actors, Actor, ++index));
+
+					return !any;
+				}
+
+				public bool Any(Func<T, bool> predicate) { return Check(predicate, true); }
+				public bool All(Func<T, bool> predicate) { return Check(predicate, false); }
 			}
 
 			class MultipleEnumerator : IEnumerator<T>
@@ -387,6 +415,23 @@ namespace OpenRA
 						throw MissingAcceptableAt(index - 1);
 
 					return default(T);
+				}
+
+				public override bool Any() { return base.Check(Predicate, true); }
+				public override bool Check(Func<T, bool> predicate, bool any)
+				{
+					var actors = Container.actors;
+					var traits = Container.traits;
+					int index;
+					if (FindFirstTrait(actors, Actor, out index)) do
+					{
+						var trait = traits[index];
+						if (Predicate(trait) && (predicate(trait) == any))
+							return any;
+					}
+					while (ActorHasTrait(actors, Actor, ++index));
+
+					return !any;
 				}
 			}
 
