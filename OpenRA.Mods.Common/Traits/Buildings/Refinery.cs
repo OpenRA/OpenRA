@@ -33,8 +33,7 @@ namespace OpenRA.Mods.Common.Traits
 		public virtual object Create(ActorInitializer init) { return new Refinery(init.Self, this); }
 	}
 
-	public class Refinery : ITick, INotifySold, INotifyCapture, INotifyOwnerChanged,
-		IExplodeModifier, ISync, INotifyActorDisposing, IResourceExchange
+	public class Refinery : ITick, IResourceExchange, INotifySold, INotifyCapture, INotifyOwnerChanged, IExplodeModifier, ISync, INotifyActorDisposing
 	{
 		readonly Actor self;
 		readonly RefineryInfo info;
@@ -93,7 +92,7 @@ namespace OpenRA.Mods.Common.Traits
 			// Refining animation cancelation.
 			// When everything docked all get killed in one shot then refining anim should be canceled.
 			// (Nukes...) Lets not care about chrono miners. Won't look too odd.
-			var dockedHarvs = docks.DockedHarvs;
+			var dockedHarvs = docks.DockedUnits;
 			if (dockedHarvs.Count() > 0 && dockedHarvs.Count() == dockedHarvs.Where(a => a.IsDead).Count())
 				wsb.CancelCustomAnimation(self);
 
@@ -126,7 +125,7 @@ namespace OpenRA.Mods.Common.Traits
 		void INotifyCapture.OnCapture(Actor self, Actor captor, Player oldOwner, Player newOwner)
 		{
 			// Steal any docked harv too
-			var harvs = docks.DockedHarvs;
+			var harvs = docks.DockedUnits;
 			if (harvs.Count() == 0)
 				return;
 

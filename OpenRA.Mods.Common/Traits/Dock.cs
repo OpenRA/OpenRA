@@ -22,8 +22,8 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Docking offset relative to top-left cell.")]
 		public readonly CVec DockOffset = CVec.Zero;
 
-		[Desc("When undocking, move this direction from the DOCK to avoid cluttering with other dock locations")]
-		public readonly CVec ExitOffset = CVec.Zero;
+		[Desc("When CenterPosition is requested, we add this offset in addition to DockOffset.")]
+		public readonly WVec WOffset = WVec.Zero;
 
 		[Desc("Override Offset value and use center of the host actor as the dock offset?")]
 		public readonly bool Center = false;
@@ -57,7 +57,7 @@ namespace OpenRA.Mods.Common.Traits
 		public Actor Reserver;
 
 		public CPos Location { get { return self.Location + Info.DockOffset; } }
-		public WPos CenterPosition { get { return self.World.Map.CenterOfCell(Location); } }
+		public WPos CenterPosition { get { return self.World.Map.CenterOfCell(Location) + Info.WOffset; } }
 
 		// blocked by some immoble obstacle?
 		public bool IsBlocked;

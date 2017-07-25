@@ -243,7 +243,7 @@ namespace OpenRA.Mods.Common.Traits
 			var lastproc = LastLinkedProc ?? LinkedProc;
 			if (lastproc != null && !lastproc.Disposed)
 			{
-				// Am I blocking one of the dock position?
+				// Am I blocking one of the dock positions?
 				var deliveryLocs = lastproc.Trait<DockManager>().DockLocations;
 				var deliveryLoc = deliveryLocs.Where(loc => loc == self.Location);
 				if (deliveryLoc.Any())
@@ -282,21 +282,6 @@ namespace OpenRA.Mods.Common.Traits
 				// Find more resources but not at this location:
 				self.QueueActivity(new FindResources(self, cell));
 			}
-			else if (act is Move && blocking.CurrentActivity is Move)
-			{
-				// Both the harvester could be moving in each other's direction, possibly trying to mine
-				// what's underneath each other and get stuck in Move activity. In this situation,
-				// if self is standing on a resource patch and the blocking one is on its own patch too,
-				// then they in a possible deadlock.
-				// Not checking if the resource is harvestable here, it doesn't matter.
-				var resLayer = self.World.WorldActor.Trait<ResourceLayer>();
-				if (resLayer.GetResource(self.Location) != null && resLayer.GetResource(blocking.Location) != null)
-				{
-					// Breaking one of the loop element is enough to remove the dead lock.
-					self.CancelActivity();
-					self.QueueActivity(new FindResources(self, blocking.Location));
-				}
-			}
 		}
 
 		void INotifyIdle.TickIdle(Actor self)
@@ -334,11 +319,11 @@ namespace OpenRA.Mods.Common.Traits
 			if (contents.Keys.Count > 0)
 			{
 				var type = contents.First().Key;
-				var iad = proc.Trait<IResourceExchange>();
-				if (!iad.CanGiveResource(type.ValuePerUnit))
+				var ire = proc.Trait<IResourceExchange>();
+				if (!ire.CanGiveResource(type.ValuePerUnit))
 					return false;
 
-				iad.GiveResource(type.ValuePerUnit);
+				ire.GiveResource(type.ValuePerUnit);
 				if (--contents[type] == 0)
 					contents.Remove(type);
 
@@ -434,7 +419,7 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				// NOTE: An explicit deliver order forces the harvester to always deliver to this refinery.
 				var refi = order.TargetActor.TraitOrDefault<Refinery>();
-				if (refi == null || !refi.AllowDocking)
+				if (refi == null || !refi.AllowDocking || !IsAcceptableProcType(order.TargetActor))
 					return;
 
 				if (order.TargetActor != OwnerLinkedProc)

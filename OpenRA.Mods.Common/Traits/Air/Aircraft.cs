@@ -177,7 +177,7 @@ namespace OpenRA.Mods.Common.Traits
 			conditionManager = self.TraitOrDefault<ConditionManager>();
 			speedModifiers = self.TraitsImplementing<ISpeedModifier>().ToArray().Select(sm => sm.GetSpeedModifier());
 			cachedPosition = self.CenterPosition;
-			dockClient = self.TraitOrDefault<DockClient>();
+			dockClient = self.TraitOrDefault<DockClient>(); // Not all are dockers.
 		}
 
 		public void AddedToWorld(Actor self)
@@ -615,8 +615,6 @@ namespace OpenRA.Mods.Common.Traits
 			}
 			else if (order.OrderString == "Enter")
 			{
-				System.Diagnostics.Debug.Assert(dockClient != null, "Only DockClient can dock now.");
-
 				// Let go first.
 				dockClient.Release();
 

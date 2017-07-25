@@ -20,7 +20,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("This actor can be sent to a structure for repairs.")]
-	class RepairableInfo : ITraitInfo, Requires<HealthInfo>, Requires<IMoveInfo>
+	class RepairableInfo : ITraitInfo, Requires<HealthInfo>, Requires<IMoveInfo>, Requires<DockClientInfo>
 	{
 		public readonly HashSet<string> RepairBuildings = new HashSet<string> { "fix" };
 
@@ -34,12 +34,14 @@ namespace OpenRA.Mods.Common.Traits
 		readonly RepairableInfo info;
 		readonly Health health;
 		readonly AmmoPool[] ammoPools;
+		readonly DockClient dockClient;
 
 		public Repairable(Actor self, RepairableInfo info)
 		{
 			this.info = info;
 			health = self.Trait<Health>();
 			ammoPools = self.TraitsImplementing<AmmoPool>().ToArray();
+			dockClient = self.Trait<DockClient>();
 		}
 
 		public IEnumerable<IOrderTargeter> Orders
@@ -85,8 +87,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void ResolveOrder(Actor self, Order order)
 		{
-			var dc = self.Trait<DockClient>();
-			dc.Release();
+			dockClient.Release();
 
 			if (order.OrderString == "Repair")
 			{

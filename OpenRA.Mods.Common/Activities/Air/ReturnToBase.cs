@@ -108,7 +108,7 @@ namespace OpenRA.Mods.Common.Activities
 
 		public override Activity Tick(Actor self)
 		{
-			if (IsCanceled)
+			if (IsCanceled || self.IsDead)
 				return NextActivity;
 
 			// Check status and make dest correct.
@@ -194,7 +194,7 @@ namespace OpenRA.Mods.Common.Activities
 
 		Activity IDockActivity.DockActivities(Actor host, Actor client, Dock dock)
 		{
-			client.SetTargetLine(Target.FromCell(client.World, dock.Location), Color.Green, false);
+			client.SetTargetLine(Target.FromPos(dock.CenterPosition), Color.Green, false);
 			return new ResupplyAircraft(client);
 		}
 

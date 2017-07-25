@@ -101,11 +101,11 @@ namespace OpenRA.Mods.Common.Traits
 		}
 
 		// For determining whether PROC to play animation or not. (+ some others)
-		public IEnumerable<Actor> DockedHarvs
+		public IEnumerable<Actor> DockedUnits
 		{
 			get
 			{
-				return serviceDocks.Where(d => d.Reserver != null).Select(d => d.Reserver);
+				return serviceDocks.Where(d => d.Reserver != null && d.Reserver.Location == d.Location).Select(d => d.Reserver);
 			}
 		}
 
@@ -239,7 +239,7 @@ namespace OpenRA.Mods.Common.Traits
 						locked = true;
 				}
 			}
-			
+
 			if (locked)
 				ResetDocks();
 		}

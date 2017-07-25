@@ -9,10 +9,6 @@
  */
 #endregion
 
-using System;
-using System.Drawing;
-using OpenRA.Activities;
-using OpenRA.Mods.Common.Activities;
 namespace OpenRA.Mods.Common.Traits
 {
 	public class RepairsUnitsInfo : PausableConditionalTraitInfo

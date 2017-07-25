@@ -18,7 +18,6 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Activities
 {
-	// I haven't renamed the class but this should be called "get into waiting queue"
 	public class DeliverResources : Activity, IDockActivity
 	{
 		const int NextChooseTime = 100;
@@ -66,9 +65,7 @@ namespace OpenRA.Mods.Common.Activities
 			self.SetTargetLine(Target.FromActor(proc), Color.Green, false);
 
 			if (!self.Info.TraitInfo<HarvesterInfo>().OreTeleporter)
-			{
 				proc.Trait<DockManager>().ReserveDock(proc, self, this);
-			}
 			else
 			{
 				var dock = proc.TraitsImplementing<Dock>().First();
@@ -92,9 +89,7 @@ namespace OpenRA.Mods.Common.Activities
 		Activity IDockActivity.ActivitiesAfterDockDone(Actor host, Actor client, Dock dock)
 		{
 			// Move to south of the ref to avoid cluttering up with other dock locations
-			return ActivityUtils.SequenceActivities(
-				client.Trait<IMove>().MoveTo(dock.Location + dock.Info.ExitOffset, 2),
-				new CallFunc(() => harv.ContinueHarvesting(client)));
+			return new CallFunc(() => harv.ContinueHarvesting(client));
 		}
 
 		Activity IDockActivity.ActivitiesOnDockFail(Actor client)
