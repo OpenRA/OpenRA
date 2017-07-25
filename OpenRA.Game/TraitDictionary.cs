@@ -38,6 +38,7 @@ namespace OpenRA
 	public interface ITraitEnumberable<T> : IEnumerable<T>
 	{
 		ITraitEnumberable<T> Where(Func<T, bool> predicate);
+		List<T> ToList();
 	}
 
 	/// <summary>
@@ -206,6 +207,16 @@ namespace OpenRA
 				public virtual IEnumerator<T> GetEnumerator() { return new MultipleEnumerator(Container, Actor); }
 				System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() { return GetEnumerator(); }
 				public virtual ITraitEnumberable<T> Where(Func<T, bool> predicate) { return new MultipleEnumerableWhere(Container, Actor, predicate); }
+				public virtual List<T> ToList()
+				{
+					int startIndex, endIndex;
+					var result = new List<T>(FindTraitRange(Container.actors, Actor, out startIndex, out endIndex));
+					var traits = Container.traits;
+					while (startIndex < endIndex)
+						result.Add(traits[startIndex++]);
+
+					return result;
+				}
 			}
 
 			class MultipleEnumerator : IEnumerator<T>
@@ -238,6 +249,21 @@ namespace OpenRA
 				public override ITraitEnumberable<T> Where(Func<T, bool> predicate)
 				{
 					return new MultipleEnumerableWhere(Container, Actor, t => Predicate(t) && predicate(t));
+				}
+
+				public override List<T> ToList()
+				{
+					int startIndex, endIndex;
+					var result = new List<T>(FindTraitRange(Container.actors, Actor, out startIndex, out endIndex));
+					var traits = Container.traits;
+					while (startIndex < endIndex)
+					{
+						var trait = traits[startIndex++];
+						if (Predicate(trait))
+							result.Add(trait);
+					}
+
+					return result;
 				}
 			}
 
