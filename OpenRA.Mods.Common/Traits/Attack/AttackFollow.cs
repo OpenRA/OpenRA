@@ -59,7 +59,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		class AttackActivity : Activity
 		{
-			readonly AttackFollow[] attacks;
+			readonly AttackFollow[] attackFollows;
 			readonly IMove move;
 			readonly Target target;
 			readonly bool forceAttack;
@@ -67,7 +67,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			public AttackActivity(Actor self, Target target, bool allowMove, bool forceAttack)
 			{
-				attacks = self.TraitsImplementing<AttackFollow>().ToArray();
+				attackFollows = self.TraitsImplementing<AttackFollow>().ToArray();
 				move = allowMove ? self.TraitOrDefault<IMove>() : null;
 
 				this.target = target;
@@ -78,7 +78,7 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				// We scan attackbases in order.
 				// That means, the order of attack base in YAML matters!
-				foreach (var atb in attacks)
+				foreach (var atb in attackFollows)
 				{
 					var weapon = atb.ChooseArmamentsForTarget(target, forceAttack).FirstOrDefault();
 					if (weapon != null)
@@ -109,11 +109,11 @@ namespace OpenRA.Mods.Common.Traits
 
 					// Check that AttackFollow hasn't cancelled the target by modifying attack.Target
 					// Having both this and AttackFollow modify that field is a horrible hack.
-					if (hasTicked && attacks.All(a => a.Target.Type == TargetType.Invalid))
+					if (hasTicked && attackFollows.All(a => a.Target.Type == TargetType.Invalid))
 						return NextActivity;
 
 					// Assign targets to all so if it can fire, it will fire.
-					foreach (var attack in attacks)
+					foreach (var attack in attackFollows)
 						attack.Target = target;
 					hasTicked = true;
 
@@ -124,8 +124,8 @@ namespace OpenRA.Mods.Common.Traits
 						return this;
 				}
 
-					foreach (var attack in attacks)
-				attack.Target = Target.Invalid;
+				foreach (var attack in attackFollows)
+					attack.Target = Target.Invalid;
 
 				return NextActivity;
 			}
