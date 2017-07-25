@@ -39,6 +39,7 @@ namespace OpenRA
 	{
 		ITraitEnumberable<T> Where(Func<T, bool> predicate);
 		List<T> ToList();
+		T[] ToArray();
 	}
 
 	/// <summary>
@@ -138,6 +139,7 @@ namespace OpenRA
 
 		class TraitContainer<T> : ITraitContainer
 		{
+			static readonly T[] EmptyArray = new T[0];
 			readonly List<Actor> actors = new List<Actor>();
 			readonly List<T> traits = new List<T>();
 
@@ -217,6 +219,22 @@ namespace OpenRA
 
 					return result;
 				}
+
+				public virtual T[] ToArray()
+				{
+					int startIndex, endIndex;
+					var count = FindTraitRange(Container.actors, Actor, out startIndex, out endIndex);
+					if (count == 0)
+						return EmptyArray;
+
+					// PERF: fastest for ~75 entries or less
+					var result = new T[count];
+					var traits = Container.traits;
+					for (var i = 0; startIndex < endIndex;)
+						result[i++] = traits[startIndex++];
+
+					return result;
+				}
 			}
 
 			class MultipleEnumerator : IEnumerator<T>
@@ -262,6 +280,36 @@ namespace OpenRA
 						if (Predicate(trait))
 							result.Add(trait);
 					}
+
+					return result;
+				}
+
+				public override T[] ToArray()
+				{
+					int startIndex, endIndex;
+					var allCount = FindTraitRange(Container.actors, Actor, out startIndex, out endIndex);
+					if (allCount == 0)
+						return EmptyArray;
+
+					// PERF: fastest for ~75 entries or less
+					var buffer = new T[allCount];
+					var count = 0;
+					var traits = Container.traits;
+					while (startIndex < endIndex)
+					{
+						var trait = traits[startIndex++];
+						if (Predicate(trait))
+							buffer[count++] = trait;
+					}
+
+					if (count == allCount)
+						return buffer;
+
+					var result = new T[count];
+
+					// PERF: fastest for ~75 entries or less
+					for (var i = 0; i < count; i++)
+						result[i] = buffer[i];
 
 					return result;
 				}
