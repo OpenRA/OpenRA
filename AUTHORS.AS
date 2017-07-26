@@ -12,6 +12,7 @@ The plugin is maintained by
    > ProvidesAIPrerequisite
    > initial AIDeployHelper
    > GrantStackableConditionOnFire aka Gattling
+   > ArcRenderable
 
  * Holloweye
    > SmokeParticle(Emitter) basic implementation
