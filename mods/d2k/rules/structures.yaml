@@ -848,7 +848,12 @@ repair_pad:
 		Bounds: 96,64
 	SelectionDecorations:
 		VisualBounds: 96,80
-	Reservable:
+	DockManager:
+		DeadlockDetectionEnabled: false
+		DockOnActor: true
+	Dock@0:
+		DockOffset: 1,1
+		Order: 0
 	RepairsUnits:
 		Interval: 10
 		HpPerStep: 80

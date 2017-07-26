@@ -213,6 +213,7 @@
 	Targetable:
 		TargetTypes: Ground, Repair, Vehicle
 		RequiresCondition: !parachute
+	DockClient: # repairable implies dock client.
 	Repairable:
 	Chronoshiftable:
 	Passenger:

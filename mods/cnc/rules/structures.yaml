@@ -603,7 +603,12 @@ FIX:
 		Range: 5c0
 	WithBuildingBib:
 		HasMinibib: Yes
-	Reservable:
+	DockManager:
+		DeadlockDetectionEnabled: false
+		DockOnActor: true
+	Dock@0:
+		DockOffset: 1,1
+		Order: 0
 	RepairsUnits:
 		Interval: 15
 		PlayerExperience: 25

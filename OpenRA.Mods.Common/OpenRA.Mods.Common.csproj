@@ -112,6 +112,7 @@
     <Compile Include="Activities\Repair.cs" />
     <Compile Include="Activities\RepairBridge.cs" />
     <Compile Include="Activities\RepairBuilding.cs" />
+    <Compile Include="Activities\RepairDocking.cs" />
     <Compile Include="Activities\Sell.cs" />
     <Compile Include="Activities\SimpleTeleport.cs" />
     <Compile Include="Activities\SpriteHarvesterDockSequence.cs" />

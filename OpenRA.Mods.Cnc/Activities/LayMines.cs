@@ -21,7 +21,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Cnc.Activities
 {
 	// Assumes you have Minelayer on that unit
-	public class LayMines : Activity
+	public class LayMines : Activity, IDockActivity
 	{
 		readonly Minelayer minelayer;
 		readonly MinelayerInfo info;
@@ -53,13 +53,8 @@ namespace OpenRA.Mods.Cnc.Activities
 				if (rearmTarget == null)
 					return new Wait(20);
 
-				// Add a CloseEnough range of 512 to the Repair activity in order to ensure that we're at the host actor
-				return ActivityUtils.SequenceActivities(
-					new MoveAdjacentTo(self, Target.FromActor(rearmTarget)),
-					movement.MoveTo(self.World.Map.CellContaining(rearmTarget.CenterPosition), rearmTarget),
-					new Rearm(self),
-					new Repair(self, rearmTarget, new WDist(512)),
-					this);
+				rearmTarget.Trait<DockManager>().ReserveDock(rearmTarget, self, this);
+				return NextActivity;
 			}
 
 			if (minelayer.Minefield.Contains(self.Location) && ShouldLayMine(self, self.Location))
@@ -105,6 +100,29 @@ namespace OpenRA.Mods.Cnc.Activities
 					new LocationInit(self.Location),
 					new OwnerInit(self.Owner),
 				}));
+		}
+
+		Activity IDockActivity.ApproachDockActivities(Actor host, Actor client, Dock dock)
+		{
+			return DockUtils.GenericApproachDockActivities(host, client, dock, this, true);
+		}
+
+		Activity IDockActivity.DockActivities(Actor host, Actor client, Dock dock)
+		{
+			return ActivityUtils.SequenceActivities(
+				new Rearm(client),
+				new Repair(client, host, new WDist(512)));
+		}
+
+		Activity IDockActivity.ActivitiesAfterDockDone(Actor host, Actor client, Dock dock)
+		{
+			return new LayMines(client);
+		}
+
+		Activity IDockActivity.ActivitiesOnDockFail(Actor client)
+		{
+			// Find another FIX or something.
+			return new LayMines(client);
 		}
 	}
 }

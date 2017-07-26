@@ -569,6 +569,7 @@
 	Targetable:
 		RequiresCondition: !inside-tunnel
 		TargetTypes: Ground, Vehicle, Repair
+	DockClient:
 	Repairable:
 		RepairBuildings: gadept
 		Voice: Move

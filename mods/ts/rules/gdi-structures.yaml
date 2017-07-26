@@ -268,7 +268,12 @@ GADEPT:
 	RevealsShroud:
 		Range: 5c0
 		MaxHeightDelta: 3
-	Reservable:
+	DockManager:
+		DeadlockDetectionEnabled: false
+		DockOnActor: true
+	Dock@0:
+		DockOffset: 1,1
+		Order: 0
 	RepairsUnits:
 		PauseOnCondition: empdisable
 		PlayerExperience: 15

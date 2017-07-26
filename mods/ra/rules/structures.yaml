@@ -1800,7 +1800,12 @@ FIX:
 		Range: 4c0
 	WithBuildingBib:
 		HasMinibib: Yes
-	Reservable:
+	DockManager:
+		DeadlockDetectionEnabled: false
+		DockOnActor: true
+	Dock@0:
+		DockOffset: 1,1
+		Order: 0
 	RallyPoint:
 	RepairsUnits:
 		Interval: 7
