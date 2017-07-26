@@ -212,7 +212,15 @@ GAHPAD:
 		Produces: Air
 	PrimaryBuilding:
 		PrimaryCondition: primary
-	Reservable:
+	DockManager:
+		DockOnActor: true
+		DeadlockDetectionEnabled: false
+	Dock@0:
+		DockOffset: 0,0
+		# Don't put 512 there. If you put 512 then it will get out of designated offset
+		# from (0, 0) to (1, 1) and docking will not work as expected.
+		WOffset: 0,511,0
+		DockAngle: 224
 	RepairsUnits:
 		PauseOnCondition: empdisable
 		PlayerExperience: 15

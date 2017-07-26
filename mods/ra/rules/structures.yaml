@@ -1244,7 +1244,15 @@ HPAD:
 	RallyPoint:
 	Production:
 		Produces: Aircraft, Helicopter
-	Reservable:
+	DockManager:
+		DockOnActor: true
+		DeadlockDetectionEnabled: false
+	Dock@0:
+		DockOffset: 0,0
+		# Don't put 512 there. If you put 512 then it will get out of designated offset
+		# from (0, 0) to (1, 0) and docking will not work as expected.
+		WOffset: 511,256,0
+		DockAngle: 224
 	ProductionBar:
 	PrimaryBuilding:
 		PrimaryCondition: primary
@@ -1328,7 +1336,14 @@ AFLD:
 	RallyPoint:
 	Production:
 		Produces: Aircraft, Plane
-	Reservable:
+	DockManager:
+		DockOnActor: true
+		DeadlockDetectionEnabled: false
+	Dock@0:
+		DockOffset: 1,0
+		# Don't put 512 there. If you put 512 then it will get out of designated offset
+		# from (1, 0) to (1, 1) and docking will not work as expected.
+		WOffset: 0,511,0
 	ProvidesPrerequisite@soviet:
 		Factions: soviet, russia, ukraine
 		Prerequisite: aircraft.soviet

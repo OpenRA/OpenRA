@@ -666,6 +666,7 @@
 	WithTextControlGroupDecoration:
 	SelectionDecorations:
 		Palette: pips
+	DockClient:
 	Aircraft:
 		AirborneCondition: airborne
 		RepairBuildings: gadept

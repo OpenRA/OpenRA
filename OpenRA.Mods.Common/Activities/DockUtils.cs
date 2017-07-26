@@ -21,7 +21,6 @@ namespace OpenRA.Mods.Common.Activities
 		public static Activity GenericApproachDockActivities(Actor host, Actor client, Dock dock,
 			Activity requester, bool goThroughHost = false)
 		{
-			/* Not yet, this is part 1 of the PR where harvester docking is addressed.
 			var air = client.TraitOrDefault<Aircraft>();
 			if (air != null)
 			{
@@ -42,7 +41,6 @@ namespace OpenRA.Mods.Common.Activities
 					new Turn(client, angle),
 					new HeliLand(client, false));
 			}
-			*/
 
 			if (goThroughHost)
 				return client.Trait<IMove>().MoveTo(dock.Location, host);

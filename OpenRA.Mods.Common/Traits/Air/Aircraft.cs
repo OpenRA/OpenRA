@@ -152,6 +152,7 @@ namespace OpenRA.Mods.Common.Traits
 		bool isMoving;
 		bool isMovingVertically;
 		WPos cachedPosition;
+		DockClient dockClient;
 
 		public Aircraft(ActorInitializer init, AircraftInfo info)
 		{
@@ -176,6 +177,7 @@ namespace OpenRA.Mods.Common.Traits
 			conditionManager = self.TraitOrDefault<ConditionManager>();
 			speedModifiers = self.TraitsImplementing<ISpeedModifier>().ToArray().Select(sm => sm.GetSpeedModifier());
 			cachedPosition = self.CenterPosition;
+			dockClient = self.TraitOrDefault<DockClient>(); // Not all are dockers.
 		}
 
 		public void AddedToWorld(Actor self)
@@ -201,7 +203,7 @@ namespace OpenRA.Mods.Common.Traits
 
 				ReserveSpawnBuilding();
 
-				var host = GetActorBelow();
+				var host = GetSupplierActorBelow();
 				if (host == null)
 					return;
 
@@ -231,9 +233,9 @@ namespace OpenRA.Mods.Common.Traits
 			if (!Info.Repulsable)
 				return WVec.Zero;
 
-			if (reservation != null)
+			if (dockClient != null && dockClient.CurrentDock != null)
 			{
-				var distanceFromReservationActor = (ReservedActor.CenterPosition - self.CenterPosition).HorizontalLength;
+				var distanceFromReservationActor = (dockClient.CurrentDock.CenterPosition - self.CenterPosition).HorizontalLength;
 				if (distanceFromReservationActor < Info.WaitDistanceFromResupplyBase.Length)
 					return WVec.Zero;
 			}
@@ -301,7 +303,7 @@ namespace OpenRA.Mods.Common.Traits
 			return (d * 1024 * 8) / (int)distSq;
 		}
 
-		public Actor GetActorBelow()
+		public Actor GetSupplierActorBelow()
 		{
 			// Map.DistanceAboveTerrain(WPos pos) is called directly because Aircraft is an IPositionable trait
 			// and all calls occur in Tick methods.
@@ -309,13 +311,13 @@ namespace OpenRA.Mods.Common.Traits
 				return null; // not on the ground.
 
 			return self.World.ActorMap.GetActorsAt(self.Location)
-				.FirstOrDefault(a => a.Info.HasTraitInfo<ReservableInfo>());
+				.FirstOrDefault(a => Info.RearmBuildings.Contains(a.Info.Name) || Info.RepairBuildings.Contains(a.Info.Name));
 		}
 
 		protected void ReserveSpawnBuilding()
 		{
 			// HACK: Not spawning in the air, so try to associate with our spawner.
-			var spawner = GetActorBelow();
+			var spawner = GetSupplierActorBelow();
 			if (spawner == null)
 				return;
 
@@ -613,50 +615,26 @@ namespace OpenRA.Mods.Common.Traits
 			}
 			else if (order.OrderString == "Enter")
 			{
+				// Let go first.
+				dockClient.Release();
+
+				if (!IsPlane)
+				{
+					if (!order.Queued)
+						self.CancelActivity();
+					self.QueueActivity(new HeliReturnToBase(self, Info.AbortOnResupply, order.TargetActor));
+					return;
+				}
+
+				// for planes, do...
 				if (!order.Queued)
-					UnReserve();
-
-				if (Reservable.IsReserved(order.TargetActor))
-				{
-					if (IsPlane)
-						self.QueueActivity(new ReturnToBase(self, Info.AbortOnResupply));
-					else
-						self.QueueActivity(new HeliReturnToBase(self, Info.AbortOnResupply));
-				}
-				else
-				{
-					self.SetTargetLine(Target.FromActor(order.TargetActor), Color.Green);
-
-					if (IsPlane)
-					{
-						self.QueueActivity(order.Queued, ActivityUtils.SequenceActivities(
-							new ReturnToBase(self, Info.AbortOnResupply, order.TargetActor),
-							new ResupplyAircraft(self)));
-					}
-					else
-					{
-						MakeReservation(order.TargetActor);
-
-						Action enter = () =>
-						{
-							var exit = order.TargetActor.Info.TraitInfos<ExitInfo>().FirstOrDefault();
-							var offset = (exit != null) ? exit.SpawnOffset : WVec.Zero;
-
-							self.QueueActivity(new HeliFly(self, Target.FromPos(order.TargetActor.CenterPosition + offset)));
-							self.QueueActivity(new Turn(self, Info.InitialFacing));
-							self.QueueActivity(new HeliLand(self, false));
-							self.QueueActivity(new ResupplyAircraft(self));
-							self.QueueActivity(new TakeOff(self));
-						};
-
-						self.QueueActivity(order.Queued, new CallFunc(enter));
-					}
-				}
+					self.CancelActivity();
+				self.QueueActivity(new ReturnToBase(self, Info.AbortOnResupply, order.TargetActor));
 			}
 			else if (order.OrderString == "Stop")
 			{
 				self.CancelActivity();
-				if (GetActorBelow() != null)
+				if (GetSupplierActorBelow() != null)
 				{
 					self.QueueActivity(new ResupplyAircraft(self));
 					return;
