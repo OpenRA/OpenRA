@@ -20,7 +20,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("This actor can be sent to a structure for repairs.")]
-	class RepairableInfo : ITraitInfo, Requires<HealthInfo>, Requires<IMoveInfo>
+	class RepairableInfo : ITraitInfo, Requires<HealthInfo>, Requires<IMoveInfo>, Requires<DockClientInfo>
 	{
 		public readonly HashSet<string> RepairBuildings = new HashSet<string> { "fix" };
 
@@ -33,15 +33,15 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		readonly RepairableInfo info;
 		readonly Health health;
-		readonly IMove movement;
 		readonly AmmoPool[] ammoPools;
+		readonly DockClient dockClient;
 
 		public Repairable(Actor self, RepairableInfo info)
 		{
 			this.info = info;
 			health = self.Trait<Health>();
-			movement = self.Trait<IMove>();
 			ammoPools = self.TraitsImplementing<AmmoPool>().ToArray();
+			dockClient = self.Trait<DockClient>();
 		}
 
 		public IEnumerable<IOrderTargeter> Orders
@@ -87,6 +87,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void ResolveOrder(Actor self, Order order)
 		{
+			dockClient.Release();
+
 			if (order.OrderString == "Repair")
 			{
 				if (!CanRepairAt(order.TargetActor) || (!CanRepair() && !CanRearm()))
@@ -95,37 +97,22 @@ namespace OpenRA.Mods.Common.Traits
 				var target = Target.FromOrder(self.World, order);
 				self.SetTargetLine(target, Color.Green);
 
+				var host = target.Actor;
+				var dm = host.Trait<DockManager>();
 				self.CancelActivity();
-				self.QueueActivity(new WaitForTransport(self, ActivityUtils.SequenceActivities(new MoveAdjacentTo(self, target),
-					new CallFunc(() => AfterReachActivities(self, order, movement)))));
-
-				TryCallTransport(self, target, new CallFunc(() => AfterReachActivities(self, order, movement)));
+				dm.ReserveDock(host, self, new RepairDocking(self, order.TargetActor));
 			}
 		}
 
-		void AfterReachActivities(Actor self, Order order, IMove movement)
+		public Activity AfterReachActivities(Actor self, Actor host, Dock dock)
 		{
-			if (!order.TargetActor.IsInWorld || order.TargetActor.IsDead || order.TargetActor.TraitsImplementing<RepairsUnits>().All(r => r.IsTraitDisabled))
-				return;
-
-			// TODO: This is hacky, but almost every single component affected
-			// will need to be rewritten anyway, so this is OK for now.
-			self.QueueActivity(movement.MoveTo(self.World.Map.CellContaining(order.TargetActor.CenterPosition), order.TargetActor));
-			if (CanRearmAt(order.TargetActor) && CanRearm())
-				self.QueueActivity(new Rearm(self));
+			if (CanRearmAt(host) && CanRearm())
+				return ActivityUtils.SequenceActivities(
+					new Rearm(self),
+					new Repair(self, host, new WDist(512)));
 
 			// Add a CloseEnough range of 512 to ensure we're at the host actor
-			self.QueueActivity(new Repair(self, order.TargetActor, new WDist(512)));
-
-			var rp = order.TargetActor.TraitOrDefault<RallyPoint>();
-			if (rp != null)
-			{
-				self.QueueActivity(new CallFunc(() =>
-				{
-					self.SetTargetLine(Target.FromCell(self.World, rp.Location), Color.Green);
-					self.QueueActivity(movement.MoveTo(rp.Location, order.TargetActor));
-				}));
-			}
+			return new Repair(self, host, new WDist(512));
 		}
 
 		public Actor FindRepairBuilding(Actor self)

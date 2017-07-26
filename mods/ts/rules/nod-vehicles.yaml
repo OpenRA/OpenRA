@@ -311,6 +311,7 @@ WEED:
 		BuildPaletteOrder: 170
 		Prerequisites: ~naweap, nawast, ~techlevel.superweapons
 		Description: Collects veins for processing.\n  Unarmed
+	DockClient:
 	Harvester:
 		DeliveryBuildings: nawast
 		Capacity: 7

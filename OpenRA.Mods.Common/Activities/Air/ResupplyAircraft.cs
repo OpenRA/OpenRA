@@ -18,37 +18,35 @@ namespace OpenRA.Mods.Common.Activities
 {
 	public class ResupplyAircraft : CompositeActivity
 	{
+		Activity[] resupplyActivities;
+
 		public ResupplyAircraft(Actor self) { }
 
 		protected override void OnFirstRun(Actor self)
 		{
 			var aircraft = self.Trait<Aircraft>();
-			var host = aircraft.GetActorBelow();
+			var host = aircraft.GetSupplierActorBelow();
 
 			if (host == null)
 				return;
 
-			if (aircraft.IsPlane)
-			{
-				ChildActivity = ActivityUtils.SequenceActivities(
-					aircraft.GetResupplyActivities(host)
-					.Append(new AllowYieldingReservation(self))
-					.Append(new WaitFor(() => NextInQueue != null || aircraft.ReservedActor == null))
-					.ToArray());
-			}
-			else
-			{
-				// Helicopters should take off from their helipad immediately after resupplying.
-				// HACK: Append NextInQueue to TakeOff to avoid moving to the Rallypoint (if NextInQueue is non-null).
-				ChildActivity = ActivityUtils.SequenceActivities(
-					aircraft.GetResupplyActivities(host)
-					.Append(new AllowYieldingReservation(self))
-					.Append(new TakeOff(self)).Append(NextInQueue).ToArray());
-			}
+			resupplyActivities = aircraft.GetResupplyActivities(host).ToArray();
 		}
 
 		public override Activity Tick(Actor self)
 		{
+			int cnt = 0;
+			for (int i = 0; i < resupplyActivities.Length; i++)
+			{
+				if (resupplyActivities[i] == null)
+					continue;
+				resupplyActivities[i] = ActivityUtils.RunActivity(self, resupplyActivities[i]);
+				cnt++;
+			}
+
+			if (cnt > 0)
+				return this;
+
 			return NextActivity;
 		}
 	}

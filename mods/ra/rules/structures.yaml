@@ -1112,8 +1112,32 @@ PROC:
 		Range: 4c0
 	WithBuildingBib:
 	Refinery:
+	DockManager:
+		ExternalDocks: true
+	Dock@0:
 		DockAngle: 64
 		DockOffset: 1,2
+		Order: 0
+	Dock@1:
+		DockAngle: 64
+		DockOffset: 2,2
+		Order: 1
+		WaitingPlace: true
+	Dock@2:
+		DockAngle: 64
+		DockOffset: 3,2
+		Order: 2
+		WaitingPlace: true
+	Dock@3:
+		DockAngle: 64
+		DockOffset: 3,1
+		Order: 3
+		WaitingPlace: true
+	Dock@4:
+		DockAngle: 64
+		DockOffset: 3,0
+		Order: 4
+		WaitingPlace: true
 	StoresResources:
 		PipCount: 17
 		Capacity: 2000
@@ -1220,7 +1244,15 @@ HPAD:
 	RallyPoint:
 	Production:
 		Produces: Aircraft, Helicopter
-	Reservable:
+	DockManager:
+		DockOnActor: true
+		DeadlockDetectionEnabled: false
+	Dock@0:
+		DockOffset: 0,0
+		# Don't put 512 there. If you put 512 then it will get out of designated offset
+		# from (0, 0) to (1, 1) and docking will not work as expected.
+		WOffset: 511,256,0
+		DockAngle: 224
 	ProductionBar:
 	PrimaryBuilding:
 		PrimaryCondition: primary
@@ -1304,7 +1336,14 @@ AFLD:
 	RallyPoint:
 	Production:
 		Produces: Aircraft, Plane
-	Reservable:
+	DockManager:
+		DockOnActor: true
+		DeadlockDetectionEnabled: false
+	Dock@0:
+		DockOffset: 1,0
+		# Don't put 512 there. If you put 512 then it will get out of designated offset
+		# from (1, 0) to (1, 1) and docking will not work as expected.
+		WOffset: 0,511,0
 	ProvidesPrerequisite@soviet:
 		Factions: soviet, russia, ukraine
 		Prerequisite: aircraft.soviet
@@ -1761,7 +1800,12 @@ FIX:
 		Range: 4c0
 	WithBuildingBib:
 		HasMinibib: Yes
-	Reservable:
+	DockManager:
+		DeadlockDetectionEnabled: false
+		DockOnActor: true
+	Dock@0:
+		DockOffset: 1,1
+		Order: 0
 	RallyPoint:
 	RepairsUnits:
 		Interval: 7
