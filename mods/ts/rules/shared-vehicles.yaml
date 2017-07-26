@@ -55,6 +55,7 @@ HARV:
 	Selectable:
 		Priority: 7
 		Bounds: 36,36
+	DockClient:
 	Harvester:
 		DeliveryBuildings: proc
 		Capacity: 28

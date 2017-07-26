@@ -53,6 +53,7 @@ HARV:
 		Description: Collects Tiberium for processing.\n  Unarmed
 	Selectable:
 		Priority: 7
+	DockClient:
 	Harvester:
 		Resources: Tiberium, BlueTiberium
 		PipCount: 7
