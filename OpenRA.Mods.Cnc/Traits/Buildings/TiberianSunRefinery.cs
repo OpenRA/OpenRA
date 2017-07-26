@@ -12,6 +12,7 @@
 using OpenRA.Activities;
 using OpenRA.Mods.Cnc.Activities;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Traits;
 
 namespace OpenRA.Mods.Cnc.Traits
 {
@@ -24,9 +25,10 @@ namespace OpenRA.Mods.Cnc.Traits
 	{
 		public TiberianSunRefinery(Actor self, RefineryInfo info) : base(self, info) { }
 
-		public override Activity DockSequence(Actor harv, Actor self)
+		public override Activity DockSequence(Actor harv, Actor self, Dock dock)
 		{
-			return new VoxelHarvesterDockSequence(harv, self, DeliveryAngle, IsDragRequired, DragOffset, DragLength);
+			return new VoxelHarvesterDockSequence(harv, self,
+				dock.DockAngle, dock.IsDragRequired, dock.DragOffset, dock.DragLength);
 		}
 	}
 }

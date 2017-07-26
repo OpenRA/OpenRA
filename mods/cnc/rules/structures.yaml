@@ -180,12 +180,16 @@ PROC:
 		Range: 6c0
 	WithBuildingBib:
 	Refinery:
+		TickRate: 15
+	DockManager:
+		ExternalDocks: false
+	Dock@0:
 		DockAngle: 112
 		DockOffset: 0,2
 		IsDragRequired: True
 		DragOffset: -554,512,0
 		DragLength: 12
-		TickRate: 15
+		Order: 0
 	StoresResources:
 		PipColor: Green
 		PipCount: 10

@@ -189,6 +189,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		public Activity MoveToTarget(Actor self, Target target) { return null; }
 		public Activity MoveIntoTarget(Actor self, Target target) { return null; }
 		public Activity VisualMove(Actor self, WPos fromPos, WPos toPos) { return null; }
+		public Activity MoveToDock(Actor host, Actor client, Dock dock, Activity requester, bool goThroughHost = false) { return null; }
 
 		public CPos NearestMoveableCell(CPos cell) { return cell; }
 

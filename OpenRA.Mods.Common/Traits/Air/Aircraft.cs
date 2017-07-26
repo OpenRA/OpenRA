@@ -623,6 +623,30 @@ namespace OpenRA.Mods.Common.Traits
 				new HeliFly(self, Target.FromPos(toPos)));
 		}
 
+		public Activity MoveToDock(Actor host, Actor client, Dock dock, Activity requester, bool goThroughHost = false)
+		{
+			// Not yet used in Harvester multi dock branch.
+			/*
+			if (IsPlane)
+			{
+				// Let's reload. The assumption here is that for aircrafts, there are no waiting docks.
+				System.Diagnostics.Debug.Assert(requester is ReturnToBase, "Wrong parameter for landing");
+				var rtb = requester as ReturnToBase;
+				return rtb.LandingProcedure(client, dock);
+			}
+
+			var angle = dock.Info.DockAngle;
+			if (angle < 0)
+				angle = client.Info.TraitInfo<AircraftInfo>().InitialFacing;
+
+			return ActivityUtils.SequenceActivities(
+				new HeliFly(client, Target.FromPos(dock.CenterPosition)),
+				new Turn(client, angle),
+				new HeliLand(client, false));
+			*/
+			return null;
+		}
+
 		public CPos NearestMoveableCell(CPos cell) { return cell; }
 
 		public bool IsMoving { get { return isMoving; } set { } }

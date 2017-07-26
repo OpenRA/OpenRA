@@ -398,8 +398,12 @@ NAWAST:
 		Range: 6c0
 		MaxHeightDelta: 3
 	TiberianSunRefinery:
+	DockManager:
+		ExternalDocks: false
+	Dock@0:
 		DockAngle: 160
 		DockOffset: 2,1
+		Order: 0
 	StoresResources:
 		PipColor: Red
 		PipCount: 15

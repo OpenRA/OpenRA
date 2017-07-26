@@ -963,6 +963,14 @@ namespace OpenRA.Mods.Common.Traits
 			return ActivityUtils.SequenceActivities(new Turn(self, facing), new Drag(self, fromPos, toPos, length));
 		}
 
+		public Activity MoveToDock(Actor host, Actor client, Dock dock, Activity requester, bool goThroughHost = false)
+		{
+			if (goThroughHost)
+				return MoveTo(dock.Location, host);
+			else
+				return MoveTo(dock.Location, 0);
+		}
+
 		public void ModifyDeathActorInit(Actor self, TypeDictionary init)
 		{
 			init.Add(new FacingInit(facing));

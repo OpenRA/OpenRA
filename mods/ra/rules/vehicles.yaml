@@ -275,6 +275,7 @@ HARV:
 		Priority: 7
 	SelectionDecorations:
 		VisualBounds: 42,42
+	DockClient:
 	Harvester:
 		Capacity: 20
 		Resources: Ore,Gems

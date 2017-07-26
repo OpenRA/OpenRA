@@ -1128,8 +1128,32 @@ PROC:
 		Range: 4c0
 	WithBuildingBib:
 	Refinery:
+	DockManager:
+		ExternalDocks: true
+	Dock@0:
 		DockAngle: 64
 		DockOffset: 1,2
+		Order: 0
+	Dock@1:
+		DockAngle: 64
+		DockOffset: 2,2
+		Order: 1
+		WaitingPlace: true
+	Dock@2:
+		DockAngle: 64
+		DockOffset: 3,2
+		Order: 2
+		WaitingPlace: true
+	Dock@3:
+		DockAngle: 64
+		DockOffset: 3,1
+		Order: 3
+		WaitingPlace: true
+	Dock@4:
+		DockAngle: 64
+		DockOffset: 3,0
+		Order: 4
+		WaitingPlace: true
 	StoresResources:
 		PipCount: 17
 		Capacity: 2000
