@@ -9,6 +9,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Linq;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
@@ -28,19 +29,30 @@ namespace OpenRA.Mods.AS.Warheads
 
 		public override void DoImpact(Target target, Actor firedBy, IEnumerable<int> damageModifiers)
 		{
-			if (!IsValidImpact(target.CenterPosition, firedBy))
+			var pos = target.CenterPosition;
+
+			if (!IsValidImpact(pos, firedBy))
 				return;
 
-			var availableActors = firedBy.World.FindActorsInCircle(target.CenterPosition, Range);
+			var availableActors = firedBy.World.FindActorsInCircle(pos, Range + VictimScanRadius);
 
 			foreach (var a in availableActors)
 			{
 				if (!IsValidAgainst(a, firedBy))
-					return;
+					continue;
+
+				var activeShapes = a.TraitsImplementing<HitShape>().Where(Exts.IsTraitEnabled);
+				if (!activeShapes.Any())
+					continue;
+
+				var distance = activeShapes.Min(t => t.Info.Type.DistanceFromEdge(pos, a));
+
+				if (distance > Range)
+					continue;
 
 				var xp = a.TraitOrDefault<GainsExperience>();
 				if (xp == null)
-					return;
+					continue;
 
 				xp.GiveLevels(Levels, SuppressEffects);
 			}

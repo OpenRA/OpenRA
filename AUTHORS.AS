@@ -11,6 +11,8 @@ The plugin is maintained by
    > RadBeam implementation
    > ProvidesAIPrerequisite
    > initial AIDeployHelper
+   > GrantStackableConditionOnFire aka Gattling
+   > ArcRenderable
 
  * Holloweye
    > SmokeParticle(Emitter) basic implementation

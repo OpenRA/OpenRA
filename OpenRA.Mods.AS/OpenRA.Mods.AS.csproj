@@ -82,8 +82,10 @@
     <Compile Include="Duplicates\Traits\Sound\AnnounceOnBuildAS.cs" />
     <Compile Include="Duplicates\Traits\Sound\AnnounceOnKillAS.cs" />
     <Compile Include="Effects\AirstrikePowerASEffect.cs" />
+    <Compile Include="Graphics\ArcRenderable.cs" />
     <Compile Include="Graphics\RadBeamRenderable.cs" />
     <Compile Include="Lint\CheckSpawnActorWarheads.cs" />
+    <Compile Include="Projectiles\ArcLaserZap.cs" />
     <Compile Include="Projectiles\AthenaProjectile.cs" />
     <Compile Include="Projectiles\InstantExplode.cs" />
     <Compile Include="Projectiles\RadBeam.cs" />
@@ -92,6 +94,7 @@
     <Compile Include="Traits\Conditions\GrantConditionAboveAltitude.cs" />
     <Compile Include="Traits\Conditions\GrantExternalConditionToKiller.cs" />
     <Compile Include="Traits\Conditions\GrantPeriodicConditionOnEvent.cs" />
+    <Compile Include="Traits\Conditions\GrantStackableConditionOnFire.cs" />
     <Compile Include="Traits\Crate\GiveRandomActorCrateAction.cs" />
     <Compile Include="Traits\Doctrine.cs" />
     <Compile Include="Traits\EligibleForRandomActorCrate.cs" />
@@ -107,6 +110,7 @@
     <Compile Include="Traits\Multipliers\HealthPercentageFirepowerMultiplier.cs" />
     <Compile Include="Traits\SupportPowers\DetonateWeaponPower.cs" />
     <Compile Include="Traits\SupportPowers\FireArmamentPower.cs" />
+    <Compile Include="Traits\Warheads\CaptureActorWarhead.cs" />
     <Compile Include="Traits\Warheads\FireClusterWarhead.cs" />
     <Compile Include="Traits\Warheads\FireFragmentWarhead.cs" />
     <Compile Include="Traits\Warheads\FireShrapnelWarhead.cs" />
