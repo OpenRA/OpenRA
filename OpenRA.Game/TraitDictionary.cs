@@ -42,6 +42,10 @@ namespace OpenRA
 		T First(Func<T, bool> predicate);
 		T FirstOrDefault();
 		T FirstOrDefault(Func<T, bool> predicate);
+		T Single();
+		T Single(Func<T, bool> predicate);
+		T SingleOrDefault();
+		T SingleOrDefault(Func<T, bool> predicate);
 		List<T> ToList();
 		T[] ToArray();
 		bool Any();
@@ -259,13 +263,21 @@ namespace OpenRA
 					return result;
 				}
 
-				public T First() { return First(true); }
-				public T FirstOrDefault() { return First(false); }
-				protected virtual T First(bool required)
+				public T First() { return First(true, false); }
+				public T FirstOrDefault() { return First(false, false); }
+				public T Single() { return First(true, true); }
+				public T SingleOrDefault() { return First(false, true); }
+				protected virtual T First(bool required, bool single)
 				{
+					var actors = Container.actors;
 					int index;
-					if (FindFirstTrait(Container.actors, Actor, out index))
+					if (FindFirstTrait(actors, Actor, out index))
+					{
+						if (single && ActorHasTrait(actors, Actor, index + 1))
+							throw new InvalidOperationException("Actor {0} has multiple traits of type `{1}`.".F(actors[index].Info.Name, typeof(T)));
+
 						return Container.traits[index];
+					}
 
 					if (required)
 						throw MissingAcceptableAt(index);
@@ -273,9 +285,11 @@ namespace OpenRA
 					return default(T);
 				}
 
-				public T First(Func<T, bool> predicate) { return First(true, predicate); }
-				public T FirstOrDefault(Func<T, bool> predicate) { return First(false, predicate); }
-				protected virtual T First(bool required, Func<T, bool> predicate)
+				public T First(Func<T, bool> predicate) { return First(true, false, predicate); }
+				public T FirstOrDefault(Func<T, bool> predicate) { return First(false, false, predicate); }
+				public T Single(Func<T, bool> predicate) { return First(true, true, predicate); }
+				public T SingleOrDefault(Func<T, bool> predicate) { return First(false, true, predicate); }
+				protected virtual T First(bool required, bool single, Func<T, bool> predicate)
 				{
 					var actors = Container.actors;
 					var traits = Container.traits;
@@ -284,7 +298,17 @@ namespace OpenRA
 					{
 						var trait = traits[index];
 						if (predicate(trait))
+						{
+							if (single)
+							{
+								var i = index;
+								while (ActorHasTrait(actors, Actor, ++i))
+									if (predicate(traits[i]))
+										throw new InvalidOperationException("Actor {0} has multiple acceptable traits of type `{1}`.".F(actors[index], typeof(T)));
+							}
+
 							return trait;
+						}
 					}
 					while (ActorHasTrait(actors, Actor, ++index));
 
@@ -397,8 +421,8 @@ namespace OpenRA
 					return result;
 				}
 
-				protected override T First(bool required) { return base.First(required, Predicate); }
-				protected override T First(bool required, Func<T, bool> predicate)
+				protected override T First(bool required, bool single) { return base.First(required, single, Predicate); }
+				protected override T First(bool required, bool single, Func<T, bool> predicate)
 				{
 					var actors = Container.actors;
 					var traits = Container.traits;
@@ -407,7 +431,20 @@ namespace OpenRA
 					{
 						var trait = traits[index];
 						if (Predicate(trait) && predicate(trait))
+						{
+							if (single)
+							{
+								var i = index;
+								while (ActorHasTrait(actors, Actor, ++i))
+								{
+									var other = traits[i];
+									if (Predicate(other) && predicate(other))
+										throw new InvalidOperationException("Actor {0} has more than one acceptable trait of type `{1}`.".F(actors[index], typeof(T)));
+								}
+							}
+
 							return trait;
+						}
 					}
 					while (ActorHasTrait(actors, Actor, ++index));
 
