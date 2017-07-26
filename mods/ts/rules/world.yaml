@@ -61,6 +61,7 @@
 		AllowUnderActors: true
 		TerrainType: Veins
 	TerrainGeometryOverlay:
+	DebugVisualizations:
 	ExitsDebugOverlayManager:
 	CliffBackImpassabilityLayer:
 	SubterraneanActorLayer:
@@ -70,6 +71,7 @@ World:
 	Inherits: ^BaseWorld
 	ChatCommands:
 	DevCommands:
+	DebugVisualizationCommands:
 	PlayerCommands:
 	HelpCommand:
 	BuildingInfluence:

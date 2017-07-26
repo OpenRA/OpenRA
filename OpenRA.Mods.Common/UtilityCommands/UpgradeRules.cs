@@ -845,6 +845,38 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				// Replace Mobile.OnRails hack with dedicated TDGunboat traits in Mods.Cnc
+				if (engineVersion < 20170715)
+				{
+					var mobile = node.Value.Nodes.FirstOrDefault(n => n.Key == "Mobile");
+					if (mobile != null)
+					{
+						var onRailsNode = mobile.Value.Nodes.FirstOrDefault(n => n.Key == "OnRails");
+						var onRails = onRailsNode != null ? FieldLoader.GetValue<bool>("OnRails", onRailsNode.Value.Value) : false;
+						if (onRails)
+						{
+							var speed = mobile.Value.Nodes.FirstOrDefault(n => n.Key == "Speed");
+							var initFacing = mobile.Value.Nodes.FirstOrDefault(n => n.Key == "InitialFacing");
+							var previewFacing = mobile.Value.Nodes.FirstOrDefault(n => n.Key == "PreviewFacing");
+							var tdGunboat = new MiniYamlNode("TDGunboat", "");
+							if (speed != null)
+								tdGunboat.Value.Nodes.Add(speed);
+							if (initFacing != null)
+								tdGunboat.Value.Nodes.Add(initFacing);
+							if (previewFacing != null)
+								tdGunboat.Value.Nodes.Add(previewFacing);
+
+							node.Value.Nodes.Add(tdGunboat);
+
+							var attackTurreted = node.Value.Nodes.FirstOrDefault(n => n.Key.StartsWith("AttackTurreted", StringComparison.Ordinal));
+							if (attackTurreted != null)
+								RenameNodeKey(attackTurreted, "AttackTDGunboatTurreted");
+
+							node.Value.Nodes.Remove(mobile);
+						}
+					}
+				}
+
 				UpgradeActorRules(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 

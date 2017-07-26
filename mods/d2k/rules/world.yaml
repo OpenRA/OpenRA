@@ -7,6 +7,7 @@
 		VictoryMusic: score
 		DefeatMusic: score
 	TerrainGeometryOverlay:
+	DebugVisualizations:
 	ShroudRenderer:
 		ShroudVariants: shrouda, shroudb, shroudc, shroudd
 		FogVariants: foga, fogb, fogc, fogd
@@ -64,6 +65,7 @@ World:
 	Inherits: ^BaseWorld
 	ChatCommands:
 	DevCommands:
+	DebugVisualizationCommands:
 	PlayerCommands:
 	HelpCommand:
 	ScreenShaker:

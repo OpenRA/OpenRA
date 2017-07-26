@@ -842,12 +842,6 @@ Actors:
 		Location: 60,58
 		Owner: GDI
 		Facing: 192
-	GunboatLeft: waypoint
-		Owner: Neutral
-		Location: 1,58
-	GunboatRight: waypoint
-		Owner: Neutral
-		Location: 61,58
 	HelicopterEntryEngineer: waypoint
 		Owner: Neutral
 		Location: 1,3

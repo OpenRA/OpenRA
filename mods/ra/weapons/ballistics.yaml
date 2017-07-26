@@ -86,13 +86,13 @@ TurretGun:
 		Speed: 204
 		Blockable: false
 		LaunchAngle: 62
-		Inaccuracy: 1c682
+		Inaccuracy: 2c256
 	Warhead@1Dam: SpreadDamage
 		Spread: 426
-		Damage: 220
+		Damage: 240
 		Versus:
 			None: 90
-			Wood: 75
+			Wood: 40
 			Light: 60
 			Heavy: 25
 			Concrete: 50
@@ -128,7 +128,7 @@ TurretGun:
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		Versus:
 			None: 60
-			Wood: 75
+			Wood: 35
 			Light: 60
 			Heavy: 25
 			Concrete: 100

@@ -161,7 +161,7 @@ E6:
 	Buildable:
 		BuildPaletteOrder: 30
 		Queue: Infantry.GDI, Infantry.Nod
-		Description: Damages and captures enemy structures.\n  Unarmed
+		Description: Damages and captures enemy structures.\n  Repairs destroyed vehicles\n  Unarmed
 	Mobile:
 		Speed: 56
 	Health:
