@@ -115,6 +115,9 @@ HQ:
 BOAT:
 	Health:
 		HP: 1500
+	RevealsShroud:
+		ValidStances: Ally, Neutral, Enemy
+		Range: 4c0
 
 TRAN.IN:
 	Inherits: TRAN
@@ -124,14 +127,6 @@ TRAN.IN:
 		Image: TRAN
 	Buildable:
 		Prerequisites: ~disabled
-
-Camera.Boat:
-	AlwaysVisible:
-	Mobile:
-		TerrainSpeeds:
-	RevealsShroud:
-		Range: 4c0
-	ScriptTriggers:
 
 HPAD.IN:
 	Inherits: HPAD

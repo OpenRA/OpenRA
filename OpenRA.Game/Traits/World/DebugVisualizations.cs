@@ -9,13 +9,16 @@
  */
 #endregion
 
-namespace OpenRA.Mods.Common.Traits
+namespace OpenRA.Traits
 {
-	public sealed class ResourceClaim
-	{
-		public readonly Actor Claimer;
-		public CPos Cell;
+	[Desc("Enables visualization commands. Attach this to the world actor.")]
+	public class DebugVisualizationsInfo : TraitInfo<DebugVisualizations> { }
 
-		public ResourceClaim(Actor claimer, CPos cell) { Claimer = claimer; Cell = cell; }
+	public class DebugVisualizations
+	{
+		public bool CombatGeometry;
+		public bool RenderGeometry;
+		public bool DepthBuffer;
+		public bool ActorTags;
 	}
 }

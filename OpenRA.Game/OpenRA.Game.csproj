@@ -161,6 +161,7 @@
     <Compile Include="Player.cs" />
     <Compile Include="Primitives\MergedStream.cs" />
     <Compile Include="Primitives\PlayerDictionary.cs" />
+    <Compile Include="Primitives\ReadOnlyAdapterStream.cs" />
     <Compile Include="Primitives\SegmentStream.cs" />
     <Compile Include="Primitives\SpatiallyPartitioned.cs" />
     <Compile Include="Primitives\ConcurrentCache.cs" />
@@ -180,7 +181,6 @@
     <Compile Include="Sync.cs" />
     <Compile Include="TraitDictionary.cs" />
     <Compile Include="Traits\LintAttributes.cs" />
-    <Compile Include="Traits\Player\DeveloperMode.cs" />
     <Compile Include="Traits\Player\PlayerResources.cs" />
     <Compile Include="Traits\Selectable.cs" />
     <Compile Include="Traits\Target.cs" />
@@ -189,6 +189,7 @@
     <Compile Include="Traits\World\ResourceType.cs" />
     <Compile Include="Traits\World\ScreenShaker.cs" />
     <Compile Include="Traits\World\Shroud.cs" />
+    <Compile Include="Traits\World\DebugVisualizations.cs" />
     <Compile Include="World.cs" />
     <Compile Include="WorldUtils.cs" />
     <Compile Include="VoiceExts.cs" />

@@ -164,12 +164,12 @@ YAK:
 		Range: 9c0
 		Type: GroundPosition
 	Armament@PRIMARY:
-		Weapon: ChainGun.Yak.Left
+		Weapon: ChainGun.Yak
 		LocalOffset: 256,-213,0
 		MuzzleSequence: muzzle
 	Armament@SECONDARY:
 		Name: secondary
-		Weapon: ChainGun.Yak.Right
+		Weapon: ChainGun.Yak
 		LocalOffset: 256,213,0
 		MuzzleSequence: muzzle
 	AttackPlane:
@@ -186,9 +186,9 @@ YAK:
 		TargetWhenDamaged: false
 		EnableStances: false
 	AmmoPool:
-		Ammo: 20
-		PipCount: 5
-		ReloadDelay: 10
+		Ammo: 18
+		PipCount: 6
+		ReloadDelay: 11
 	ReturnOnIdle:
 	SelectionDecorations:
 		VisualBounds: 30,28,0,2

@@ -424,6 +424,7 @@
 		Radius: 4c768
 	EditorTilesetFilter:
 		Categories: Building
+	CommandBarBlacklist:
 
 ^Defense:
 	Inherits: ^Building
@@ -450,6 +451,7 @@
 		TargetTypes: Ground, C4, Structure, Defense
 	EditorTilesetFilter:
 		Categories: Defense
+	-CommandBarBlacklist:
 
 ^DisabledOverlay:
 	WithColoredOverlay@IDISABLE:

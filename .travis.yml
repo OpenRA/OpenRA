@@ -23,6 +23,7 @@ addons:
     - libbz2-dev
     - cmake
     - genisoimage
+    - fakeroot
 
 # Environment variables
 env:
@@ -43,7 +44,7 @@ script:
 
 # Automatically update the trait documentation and Lua API
 after_success:
- - test $TRAVIS_PULL_REQUEST == "false" && make docs && cd packaging && ./update-wiki.sh $TRAVIS_BRANCH; cd ..
+ - test $TRAVIS_PULL_REQUEST == "false" && cd packaging && ./update-wiki.sh $TRAVIS_BRANCH; cd ..
 
 # Only watch the development branch and tagged release.
 branches:

@@ -93,14 +93,14 @@ HOSP:
 		Footprint: xx xx
 		Dimensions: 2,2
 	Health:
-		HP: 1000
+		HP: 800
 	ExternalCapturable:
 	ExternalCapturableBar:
 	EngineerRepairable:
 	Tooltip:
 		Name: Hospital
 	RevealsShroud:
-		Range: 3c0
+		Range: 4c0
 	WithBuildingBib:
 		HasMinibib: Yes
 	WithDeathAnimation:
@@ -400,9 +400,9 @@ OILB:
 		Footprint: xx xx
 		Dimensions: 2,2
 	Health:
-		HP: 1000
+		HP: 800
 	RevealsShroud:
-		Range: 3c0
+		Range: 4c0
 	ExternalCapturable:
 	ExternalCapturableBar:
 	EngineerRepairable:

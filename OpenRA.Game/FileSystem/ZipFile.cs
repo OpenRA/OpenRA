@@ -97,13 +97,14 @@ namespace OpenRA.FileSystem
 
 		sealed class ReadWriteZipFile : ReadOnlyZipFile, IReadWritePackage
 		{
-			readonly MemoryStream pkgStream;
+			readonly MemoryStream pkgStream = new MemoryStream();
 
 			public ReadWriteZipFile(string filename, bool create = false)
 			{
 				// SharpZipLib breaks when asked to update archives loaded from outside streams or files
 				// We can work around this by creating a clean in-memory-only file, cutting all outside references
-				pkgStream = create ? new MemoryStream() : new MemoryStream(File.ReadAllBytes(filename));
+				if (!create)
+					new MemoryStream(File.ReadAllBytes(filename)).CopyTo(pkgStream);
 
 				pkgStream.Position = 0;
 				pkg = ZipFileHelper.Create(pkgStream);

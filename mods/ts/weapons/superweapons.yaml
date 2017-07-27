@@ -15,6 +15,7 @@ MultiCluster:
 		Palette: ra
 		MinimumLaunchSpeed: 75
 		Speed: 384
+		TerrainHeightAware: true
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 65

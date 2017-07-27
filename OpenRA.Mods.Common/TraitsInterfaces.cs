@@ -28,11 +28,6 @@ namespace OpenRA.Mods.Common.Traits
 		int QuantizedBodyFacings(ActorInfo ai, SequenceProvider sequenceProvider, string race);
 	}
 
-	public interface INotifyResourceClaimLost
-	{
-		void OnNotifyResourceClaimLost(Actor self, ResourceClaim claim, Actor claimer);
-	}
-
 	public interface IPlaceBuildingDecorationInfo : ITraitInfo
 	{
 		IEnumerable<IRenderable> Render(WorldRenderer wr, World w, ActorInfo ai, WPos centerPosition);
