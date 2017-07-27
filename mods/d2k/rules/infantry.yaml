@@ -97,16 +97,19 @@ thumper:
 		Range: 2c768
 	Mobile:
 		Speed: 43
-		RequiresCondition: !deployed
+		RequiresCondition: undeployed
 	GrantConditionOnDeploy:
 		DeployedCondition: deployed
+		UndeployedCondition: undeployed
 		Facing: 128
 		AllowedTerrainTypes: Sand, Spice, Dune, SpiceSand
 	WithInfantryBody:
-		RequiresCondition: !deployed
+		RequiresCondition: undeployed
 	WithSpriteBody@DEPLOYED:
 		Sequence: thump
-		RequiresCondition: deployed
+		RequiresCondition: !undeployed
+	WithMakeAnimation@DEPLOYING:
+		Sequence: deploy
 	WithIdleOverlay@DEPLOYED:
 		Sequence: thump-sand
 		RequiresCondition: deployed
