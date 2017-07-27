@@ -552,10 +552,10 @@ HQ:
 		BeaconPoster: airstrike
 		BeaconPosterPalette: beaconposter
 		DisplayRadarPing: True
-		CameraActor: camera
 		ArrowSequence: arrow
 		ClockSequence: clock
 		CircleSequence: circles
+		CameraRange: 10c0
 	SupportPowerChargeBar:
 	Power:
 		Amount: -50
@@ -658,7 +658,7 @@ EYE:
 		InsufficientPowerSpeechNotification: InsufficientPower
 		OnFireSound: ion1.aud
 		DisplayRadarPing: True
-		CameraActor: camera.small
+		CameraRange: 6c0
 	SupportPowerChargeBar:
 	Power:
 		Amount: -200

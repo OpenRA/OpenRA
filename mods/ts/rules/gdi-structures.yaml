@@ -434,7 +434,7 @@ GAPLUG:
 		EndChargeSpeechNotification: IonCannonReady
 		SelectTargetSpeechNotification: SelectTarget
 		DisplayRadarPing: True
-		CameraActor: camera
+		CameraRange: 6c0
 	ProduceActorPower:
 		PauseOnCondition: disabled || empdisable
 		RequiresCondition: plug.hunterseekera || plug.hunterseekerb

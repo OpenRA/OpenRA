@@ -11,7 +11,7 @@
 
 using OpenRA.GameRules;
 using OpenRA.Mods.Cnc.Effects;
-using OpenRA.Mods.Common.Activities;
+using OpenRA.Mods.Common.Effects;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
 using OpenRA.Traits;
@@ -20,13 +20,6 @@ namespace OpenRA.Mods.Cnc.Traits
 {
 	class IonCannonPowerInfo : SupportPowerInfo, IRulesetLoaded
 	{
-		[ActorReference]
-		[Desc("Actor to spawn when the attack starts")]
-		public readonly string CameraActor = null;
-
-		[Desc("Number of ticks to keep the camera alive")]
-		public readonly int CameraRemoveDelay = 25;
-
 		[Desc("Effect sequence sprite image")]
 		public readonly string Effect = "ionsfx";
 
@@ -76,22 +69,14 @@ namespace OpenRA.Mods.Cnc.Traits
 
 			self.World.AddFrameEndTask(w =>
 			{
+				var targetPosition = self.World.Map.CenterOfCell(order.TargetLocation);
 				PlayLaunchSounds();
-				Game.Sound.Play(SoundType.World, info.OnFireSound, self.World.Map.CenterOfCell(order.TargetLocation));
+				Game.Sound.Play(SoundType.World, info.OnFireSound, targetPosition);
 				w.Add(new IonCannon(self.Owner, info.WeaponInfo, w, self.CenterPosition, order.TargetLocation,
 					info.Effect, info.EffectSequence, info.EffectPalette, info.WeaponDelay));
 
-				if (info.CameraActor == null)
-					return;
-
-				var camera = w.CreateActor(info.CameraActor, new TypeDictionary
-				{
-					new LocationInit(order.TargetLocation),
-					new OwnerInit(self.Owner),
-				});
-
-				camera.QueueActivity(new Wait(info.CameraRemoveDelay));
-				camera.QueueActivity(new RemoveSelf());
+				if (info.CameraRange > WDist.Zero)
+					w.Add(new RevealShroudEffect(targetPosition, info.CameraRange, CameraRevealType(), self.Owner, info.CameraStances, 0, info.CameraRemoveDelay));
 			});
 		}
 	}

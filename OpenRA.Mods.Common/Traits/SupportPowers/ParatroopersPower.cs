@@ -42,13 +42,6 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Risks stuck units when they don't have the Paratrooper trait.")]
 		public readonly bool AllowImpassableCells = false;
 
-		[ActorReference]
-		[Desc("Actor to spawn when the paradrop starts.")]
-		public readonly string CameraActor = null;
-
-		[Desc("Amount of time (in ticks) to keep the camera alive while the passengers drop.")]
-		public readonly int CameraRemoveDelay = 85;
-
 		[Desc("Weapon range offset to apply during the beacon clock calculation.")]
 		public readonly WDist BeaconDistanceOffset = WDist.FromCells(4);
 
@@ -80,6 +73,11 @@ namespace OpenRA.Mods.Common.Traits
 			if (!self.World.Map.Rules.Actors.TryGetValue(utLower, out unitType))
 				throw new YamlException("Actors ruleset does not include the entry '{0}'".F(utLower));
 
+			// Cache target position before aircraft altitude is added.
+			// Otherwise the shroud reveal would not be centered around the targeted position,
+			// but rather target position plus visual aircraft altitude (i.e. north of the target cell).
+			var cameraTarget = target;
+
 			var altitude = unitType.TraitInfo<AircraftInfo>().CruiseAltitude.Length;
 			var dropRotation = WRot.FromFacing(dropFacing);
 			var delta = new WVec(0, -1024, 0).Rotate(dropRotation);
@@ -87,24 +85,15 @@ namespace OpenRA.Mods.Common.Traits
 			var startEdge = target - (self.World.Map.DistanceToEdge(target, -delta) + info.Cordon).Length * delta / 1024;
 			var finishEdge = target + (self.World.Map.DistanceToEdge(target, delta) + info.Cordon).Length * delta / 1024;
 
-			Actor camera = null;
 			Beacon beacon = null;
 			var aircraftInRange = new Dictionary<Actor, bool>();
 
 			Action<Actor> onEnterRange = a =>
 			{
 				// Spawn a camera and remove the beacon when the first plane enters the target area
-				if (info.CameraActor != null && !aircraftInRange.Any(kv => kv.Value))
-				{
-					self.World.AddFrameEndTask(w =>
-					{
-						camera = w.CreateActor(info.CameraActor, new TypeDictionary
-						{
-							new LocationInit(self.World.Map.CellContaining(target)),
-							new OwnerInit(self.Owner),
-						});
-					});
-				}
+				if (info.CameraRange > WDist.Zero && !aircraftInRange.Any(kv => kv.Value))
+					self.World.AddFrameEndTask(w => w.Add(new RevealShroudEffect(cameraTarget, info.CameraRange, CameraRevealType(), self.Owner,
+						info.CameraStances, 0, info.CameraRemoveDelay)));
 
 				if (beacon != null)
 				{
@@ -126,17 +115,9 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				aircraftInRange[a] = false;
 
-				// Remove the camera when the final plane leaves the target area
+				// Remove the beacon when the final plane leaves the target area
 				if (!aircraftInRange.Any(kv => kv.Value))
 				{
-					if (camera != null)
-					{
-						camera.QueueActivity(new Wait(info.CameraRemoveDelay));
-						camera.QueueActivity(new RemoveSelf());
-					}
-
-					camera = null;
-
 					if (beacon != null)
 					{
 						self.World.AddFrameEndTask(w =>

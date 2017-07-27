@@ -310,11 +310,11 @@ powerproxy.parabombs:
 		QuantizedFacings: 8
 		DisplayBeacon: True
 		BeaconPoster: pbmbicon
-		CameraActor: camera
 		CameraRemoveDelay: 150
 		ArrowSequence: arrow
 		ClockSequence: clock
 		CircleSequence: circles
+		CameraRange: 10c0
 
 powerproxy.sonarpulse:
 	AlwaysVisible:
@@ -341,12 +341,12 @@ powerproxy.paratroopers:
 		SelectTargetSpeechNotification: SelectTarget
 		AllowImpassableCells: false
 		QuantizedFacings: 8
-		CameraActor: camera.paradrop
 		DisplayBeacon: true
 		BeaconPoster: pinficon
 		ArrowSequence: arrow
 		ClockSequence: clock
 		CircleSequence: circles
+		CameraRange: 6c0
 
 barracks.upgraded:
 	AlwaysVisible:
