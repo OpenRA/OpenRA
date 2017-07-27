@@ -140,6 +140,12 @@ namespace OpenRA
 				return index < actors.Count && actors[index].ActorID == actor;
 			}
 
+			static bool FindFirstTrait(List<Actor> actors, uint actor, out int index)
+			{
+				index = actors.BinarySearchMany(actor);
+				return ActorHasTrait(actors, actor, index);
+			}
+
 			public int Queries { get; private set; }
 
 			public void Add(Actor actor, object trait)
@@ -160,8 +166,8 @@ namespace OpenRA
 			public T GetOrDefault(uint actor)
 			{
 				++Queries;
-				var index = actors.BinarySearchMany(actor);
-				if (ActorHasTrait(actors, actor, index))
+				int index;
+				if (!FindFirstTrait(actors, actor, out index))
 					return default(T);
 				else if (ActorHasTrait(actors, actor, index + 1))
 					throw new InvalidOperationException("Actor {0} has multiple traits of type `{1}`".F(actors[index].Info.Name, typeof(T)));
@@ -198,7 +204,7 @@ namespace OpenRA
 					Reset();
 				}
 
-				public void Reset() { index = actors.BinarySearchMany(actor) - 1; }
+				public void Reset() { FindFirstTrait(actors, actor, out index); index--; }
 				public bool MoveNext() { return ActorHasTrait(actors, actor, ++index); }
 				public T Current { get { return traits[index]; } }
 				object System.Collections.IEnumerator.Current { get { return Current; } }
@@ -268,11 +274,11 @@ namespace OpenRA
 
 			public void RemoveActor(uint actor)
 			{
-				var startIndex = actors.BinarySearchMany(actor);
-				if (!ActorHasTrait(actors, actor, startIndex))
+				int startIndex;
+				if (!FindFirstTrait(actors, actor, out startIndex))
 					return;
 				var endIndex = startIndex + 1;
-				while (endIndex < actors.Count && actors[endIndex].ActorID == actor)
+				while (ActorHasTrait(actors, actor, endIndex))
 					endIndex++;
 				var count = endIndex - startIndex;
 				actors.RemoveRange(startIndex, count);
