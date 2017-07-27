@@ -146,6 +146,18 @@ namespace OpenRA
 				return ActorHasTrait(actors, actor, index);
 			}
 
+			static int FindTraitRange(List<Actor> actors, uint actor, out int firstIndex, out int endIndex)
+			{
+				var actorCount = actors.Count;
+				firstIndex = actors.BinarySearchMany(actor);
+				var end = firstIndex;
+				while (end < actorCount && actors[end].ActorID == actor)
+					end++;
+
+				endIndex = end;
+				return end - firstIndex;
+			}
+
 			public int Queries { get; private set; }
 
 			public void Add(Actor actor, object trait)
@@ -274,13 +286,11 @@ namespace OpenRA
 
 			public void RemoveActor(uint actor)
 			{
-				int startIndex;
-				if (!FindFirstTrait(actors, actor, out startIndex))
+				int startIndex, endIndex;
+				var count = FindTraitRange(actors, actor, out startIndex, out endIndex);
+				if (count == 0)
 					return;
-				var endIndex = startIndex + 1;
-				while (ActorHasTrait(actors, actor, endIndex))
-					endIndex++;
-				var count = endIndex - startIndex;
+
 				actors.RemoveRange(startIndex, count);
 				traits.RemoveRange(startIndex, count);
 			}
