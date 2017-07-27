@@ -135,6 +135,11 @@ namespace OpenRA
 			readonly List<Actor> actors = new List<Actor>();
 			readonly List<T> traits = new List<T>();
 
+			static bool ActorHasTrait(List<Actor> actors, uint actor, int index)
+			{
+				return index < actors.Count && actors[index].ActorID == actor;
+			}
+
 			public int Queries { get; private set; }
 
 			public void Add(Actor actor, object trait)
@@ -156,9 +161,9 @@ namespace OpenRA
 			{
 				++Queries;
 				var index = actors.BinarySearchMany(actor);
-				if (index >= actors.Count || actors[index].ActorID != actor)
+				if (ActorHasTrait(actors, actor, index))
 					return default(T);
-				else if (index + 1 < actors.Count && actors[index + 1].ActorID == actor)
+				else if (ActorHasTrait(actors, actor, index + 1))
 					throw new InvalidOperationException("Actor {0} has multiple traits of type `{1}`".F(actors[index].Info.Name, typeof(T)));
 				else return traits[index];
 			}
@@ -194,7 +199,7 @@ namespace OpenRA
 				}
 
 				public void Reset() { index = actors.BinarySearchMany(actor) - 1; }
-				public bool MoveNext() { return ++index < actors.Count && actors[index].ActorID == actor; }
+				public bool MoveNext() { return ActorHasTrait(actors, actor, ++index); }
 				public T Current { get { return traits[index]; } }
 				object System.Collections.IEnumerator.Current { get { return Current; } }
 				public void Dispose() { }
@@ -264,7 +269,7 @@ namespace OpenRA
 			public void RemoveActor(uint actor)
 			{
 				var startIndex = actors.BinarySearchMany(actor);
-				if (startIndex >= actors.Count || actors[startIndex].ActorID != actor)
+				if (!ActorHasTrait(actors, actor, startIndex))
 					return;
 				var endIndex = startIndex + 1;
 				while (endIndex < actors.Count && actors[endIndex].ActorID == actor)
