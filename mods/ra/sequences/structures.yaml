@@ -426,19 +426,19 @@ sam:
 	idle: sam2
 		Facings: 32
 		UseClassicFacingFudge: True
-		Offset: -2,-2
+		Offset: -1,-2
 	damaged-idle: sam2
 		Start: 34
 		Facings: 32
 		UseClassicFacingFudge: True
-		Offset: -2,-2
+		Offset: -1,-2
 	make: sammake
 		Length: *
-		Offset: -2,-2
+		Offset: -1,-2
 	muzzle: samfire
 		Length: 18
 		Facings: 8
-		Offset: -2,-2
+		Offset: -1,-2
 	bib: mbSAM
 		Length: *
 		Offset: 0,1

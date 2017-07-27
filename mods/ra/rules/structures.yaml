@@ -804,8 +804,12 @@ FTUR:
 SAM:
 	Inherits: ^Defense
 	Inherits@IDISABLE: ^DisabledOverlay
-	Inherits@shape: ^2x1Shape
 	Inherits@AUTOTARGET: ^AutoTargetAir
+	Inherits@shape: ^2x1Shape
+	HitShape:
+		Type: Rectangle
+			TopLeft: -768,-512
+			BottomRight: 768,512
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 100
