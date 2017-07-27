@@ -586,7 +586,7 @@ MHQ:
 	Buildable:
 		Description: Mobile base of operations
 
-TDTRUK:
+TRUCK:
 	Inherits: ^Vehicle
 	Buildable:
 		Queue: Vehicle.GDI, Vehicle.Nod

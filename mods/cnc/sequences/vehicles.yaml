@@ -337,8 +337,8 @@ apc.destroyed:
 		Facings: 32
 		ZOffset: -512
 
-tdtruk:
+truck:
 	idle:
 		Facings: 32
 		UseClassicFacingFudge: True
-	icon: tdtrukicon
+	icon: truckicon
