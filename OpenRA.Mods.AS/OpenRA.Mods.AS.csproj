@@ -103,6 +103,7 @@
     <Compile Include="Traits\PeriodicProducer.cs" />
     <Compile Include="Traits\Player\PlayerSilo.cs" />
     <Compile Include="Traits\Player\ProvidesAIPrerequisite.cs" />
+    <Compile Include="Traits\Render\WithIdleOverlayOnGround.cs" />
     <Compile Include="Traits\Render\WithVoxelAnimatedBody.cs" />
     <Compile Include="Traits\ResourcePurifier.cs" />
     <Compile Include="Traits\SpawnActorOnOwnerChange.cs" />
