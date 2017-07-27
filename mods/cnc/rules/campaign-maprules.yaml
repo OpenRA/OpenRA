@@ -50,6 +50,6 @@ airstrike.proxy:
 		ClockSequence: clock
 		CircleSequence: circles
 
-TDTRUK:
+TRUCK:
 	Buildable:
 		Prerequisites: ~disabled
