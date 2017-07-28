@@ -62,7 +62,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		void PlayAttackAnimation(Actor self)
 		{
 			if (!string.IsNullOrEmpty(info.AttackSequence))
-				wst.PlayCustomAnimation(self, info.AttackSequence, () => wst.CancelCustomAnimation(self));
+				wst.PlayCustomAnimation(self, info.AttackSequence);
 		}
 
 		void INotifyAttack.Attacking(Actor self, Target target, Armament a, Barrel barrel)
