@@ -143,7 +143,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		{
 			DefaultAnimation.PlayThen(NormalizeSequence(self, name), () =>
 			{
-				DefaultAnimation.Play(NormalizeSequence(self, Info.Sequence));
+				CancelCustomAnimation(self);
 				if (after != null)
 					after();
 			});
