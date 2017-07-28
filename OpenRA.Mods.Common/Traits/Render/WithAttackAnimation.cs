@@ -75,8 +75,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			if (!IsTraitDisabled && !wsb.IsTraitDisabled && !string.IsNullOrEmpty(Info.AttackSequence))
 			{
 				attackAnimPlaying = true;
-				wsb.PlayCustomAnimation(self, Info.AttackSequence,
-					() => { wsb.CancelCustomAnimation(self); attackAnimPlaying = false; });
+				wsb.PlayCustomAnimation(self, Info.AttackSequence, () => attackAnimPlaying = false);
 			}
 		}
 

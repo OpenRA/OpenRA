@@ -93,7 +93,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		{
 			DefaultAnimation.PlayThen(NormalizeSequence(self, name), () =>
 			{
-				DefaultAnimation.Play(NormalizeSequence(self, Info.Sequence));
+				CancelCustomAnimation(self);
 				if (after != null)
 					after();
 			});
@@ -109,7 +109,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		{
 			DefaultAnimation.PlayBackwardsThen(NormalizeSequence(self, name), () =>
 			{
-				DefaultAnimation.PlayRepeating(NormalizeSequence(self, Info.Sequence));
+				CancelCustomAnimation(self);
 				if (after != null)
 					after();
 			});
