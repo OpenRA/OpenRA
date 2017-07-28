@@ -113,7 +113,7 @@ namespace OpenRA.Mods.Common.Commands
 
 					foreach (var actor in world.Selection.Actors)
 					{
-						if (actor.IsDead || actor.Disposed)
+						if (actor.IsDead)
 							continue;
 
 						var leveluporder = new Order("DevLevelUp", actor, false);
