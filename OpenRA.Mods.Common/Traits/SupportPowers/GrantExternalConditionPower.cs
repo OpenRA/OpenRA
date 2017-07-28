@@ -63,7 +63,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			var wsb = self.TraitOrDefault<WithSpriteBody>();
 			if (wsb != null && wsb.DefaultAnimation.HasSequence(info.Sequence))
-				wsb.PlayCustomAnimation(self, info.Sequence, () => wsb.CancelCustomAnimation(self));
+				wsb.PlayCustomAnimation(self, info.Sequence);
 
 			Game.Sound.Play(SoundType.World, info.OnFireSound, self.World.Map.CenterOfCell(order.TargetLocation));
 

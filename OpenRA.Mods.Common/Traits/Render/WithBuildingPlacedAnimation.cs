@@ -57,7 +57,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		void INotifyBuildingPlaced.BuildingPlaced(Actor self)
 		{
 			if (buildComplete)
-				wsb.PlayCustomAnimation(self, info.Sequence, () => wsb.CancelCustomAnimation(self));
+				wsb.PlayCustomAnimation(self, info.Sequence);
 		}
 	}
 }
