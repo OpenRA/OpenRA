@@ -770,7 +770,6 @@
     <Compile Include="Traits\Buildings\FreeActorWithDelivery.cs" />
     <Compile Include="Traits\ExitsDebugOverlay.cs" />
     <Compile Include="Traits\World\ExitsDebugOverlayManager.cs" />
-    <Compile Include="Activities\Air\FlyCircleTimed.cs" />
     <Compile Include="UtilityCommands\ListInstallShieldCabContentsCommand.cs" />
     <Compile Include="FileFormats\InstallShieldCABCompression.cs" />
     <Compile Include="ModContent.cs" />

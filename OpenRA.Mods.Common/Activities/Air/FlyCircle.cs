@@ -18,11 +18,13 @@ namespace OpenRA.Mods.Common.Activities
 	{
 		readonly Aircraft plane;
 		readonly WDist cruiseAltitude;
+		int remainingTicks;
 
-		public FlyCircle(Actor self)
+		public FlyCircle(Actor self, int ticks = -1)
 		{
 			plane = self.Trait<Aircraft>();
 			cruiseAltitude = plane.Info.CruiseAltitude;
+			remainingTicks = ticks;
 		}
 
 		public override Activity Tick(Actor self)
@@ -35,6 +37,11 @@ namespace OpenRA.Mods.Common.Activities
 			}
 
 			if (IsCanceled)
+				return NextActivity;
+
+			if (remainingTicks > 0)
+				remainingTicks--;
+			else if (remainingTicks == 0)
 				return NextActivity;
 
 			// We can't possibly turn this fast
