@@ -57,6 +57,21 @@ namespace OpenRA.Mods.Common.Activities
 			aircraft.SetPosition(self, aircraft.CenterPosition + move);
 		}
 
+		public static bool AdjustAltitude(Actor self, Aircraft aircraft, WDist targetAltitude)
+		{
+			targetAltitude = new WDist(aircraft.CenterPosition.Z) + targetAltitude - self.World.Map.DistanceAboveTerrain(aircraft.CenterPosition);
+
+			var altitude = aircraft.CenterPosition.Z;
+			if (altitude == targetAltitude.Length)
+				return false;
+
+			var delta = aircraft.Info.AltitudeVelocity.Length;
+			var dz = (targetAltitude.Length - altitude).Clamp(-delta, delta);
+			aircraft.SetPosition(self, aircraft.CenterPosition + new WVec(0, 0, dz));
+
+			return true;
+		}
+
 		public override Activity Tick(Actor self)
 		{
 			// Refuse to take off if it would land immediately again.
@@ -76,31 +91,70 @@ namespace OpenRA.Mods.Common.Activities
 
 				if (aircraft.Info.TakeoffSound != null && isTakeOff)
 				{
+					if (!aircraft.Info.VTOL)
+						isTakeOff = false;
+
 					Game.Sound.Play(SoundType.World, aircraft.Info.TakeoffSound);
-					isTakeOff = false;
 				}
 			}
 
-			// Inside the target annulus, so we're done
+			// If it's either a hovering aicraft or a VTOL aircraft taking off, first climb to CruiseAltitude before doing anything else
+			if (aircraft.Info.CanHover || (isTakeOff && aircraft.Info.VTOL))
+			{
+				// If isTakeOff is still true at this point, it must be a VTOL, so set it to false if AdjustAltitude is false
+				if (AdjustAltitude(self, aircraft, aircraft.Info.CruiseAltitude))
+					return this;
+				else if (isTakeOff)
+					isTakeOff = false;
+			}
+
+			var pos = target.CenterPosition;
+			var dist = pos - self.CenterPosition;
+
 			var insideMaxRange = maxRange.Length > 0 && target.IsInRange(aircraft.CenterPosition, maxRange);
 			var insideMinRange = minRange.Length > 0 && target.IsInRange(aircraft.CenterPosition, minRange);
+
+			var desiredFacing = dist.HorizontalLengthSquared != 0 ? dist.Yaw.Facing : aircraft.Facing;
+			if (aircraft.Info.CanHover && desiredFacing != aircraft.Facing)
+				aircraft.Facing = Util.TickFacing(aircraft.Facing, desiredFacing, aircraft.TurnSpeed);
+
+			var move = aircraft.FlyStep(desiredFacing);
+
+			// Inside the target annulus, so we're done
 			if (insideMaxRange && !insideMinRange)
 				return NextActivity;
+			else if (aircraft.Info.CanHover && insideMinRange)
+			{
+				// Helicopter inside the minimum range, so reverse
+				aircraft.SetPosition(self, aircraft.CenterPosition - move);
+				return this;
+			}
 
-			var dist = target.CenterPosition - self.CenterPosition;
-
-			// The next move would overshoot, so consider it close enough
-			var move = aircraft.FlyStep(aircraft.Facing);
-			if (dist.HorizontalLengthSquared < move.HorizontalLengthSquared)
-				return NextActivity;
-
-			// Don't turn until we've reached the cruise altitude
-			var desiredFacing = dist.Yaw.Facing;
 			var targetAltitude = aircraft.CenterPosition.Z + aircraft.Info.CruiseAltitude.Length - self.World.Map.DistanceAboveTerrain(aircraft.CenterPosition).Length;
-			if (aircraft.CenterPosition.Z < targetAltitude)
-				desiredFacing = aircraft.Facing;
 
-			FlyToward(self, aircraft, desiredFacing, aircraft.Info.CruiseAltitude);
+			// The next move would overshoot...
+			if (dist.HorizontalLengthSquared < move.HorizontalLengthSquared)
+			{
+				// ...so consider it close enough if a plane
+				if (!aircraft.Info.CanHover)
+					return NextActivity;
+
+				// ...or just set the final position if a helicopter
+				aircraft.SetPosition(self, pos + new WVec(0, 0, targetAltitude - pos.Z));
+				return NextActivity;
+			}
+
+			if (!aircraft.Info.CanHover)
+			{
+				// Don't turn until we've reached the cruise altitude
+				desiredFacing = dist.Yaw.Facing;
+				if (aircraft.CenterPosition.Z < targetAltitude)
+					desiredFacing = aircraft.Facing;
+
+				FlyToward(self, aircraft, desiredFacing, aircraft.Info.CruiseAltitude);
+			}
+			else
+				aircraft.SetPosition(self, aircraft.CenterPosition + move);
 
 			return this;
 		}
@@ -126,6 +180,33 @@ namespace OpenRA.Mods.Common.Activities
 			if (activity == null && !IsCanceled)
 			{
 				self.QueueActivity(new FlyCircle(self));
+				activity = NextActivity;
+			}
+
+			return activity;
+		}
+	}
+
+	public class FlyAndLandWhenIdle : Fly
+	{
+		private readonly AircraftInfo info;
+
+		public FlyAndLandWhenIdle(Actor self, Target t, AircraftInfo info)
+			: base(self, t)
+		{
+			this.info = info;
+		}
+
+		public override Activity Tick(Actor self)
+		{
+			var activity = base.Tick(self);
+
+			if (activity == null && !IsCanceled && info.LandWhenIdle)
+			{
+				if (info.TurnToLand)
+					self.QueueActivity(new Turn(self, info.InitialFacing));
+
+				self.QueueActivity(new HeliLand(self, true));
 				activity = NextActivity;
 			}
 

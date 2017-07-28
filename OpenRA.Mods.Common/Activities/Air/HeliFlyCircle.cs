@@ -36,7 +36,7 @@ namespace OpenRA.Mods.Common.Activities
 			if (IsCanceled)
 				return NextActivity;
 
-			if (HeliFly.AdjustAltitude(self, helicopter, helicopter.Info.CruiseAltitude))
+			if (Fly.AdjustAltitude(self, helicopter, helicopter.Info.CruiseAltitude))
 				return this;
 
 			var move = helicopter.FlyStep(helicopter.Facing);

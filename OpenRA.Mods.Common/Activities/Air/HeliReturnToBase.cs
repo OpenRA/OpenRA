@@ -73,7 +73,7 @@ namespace OpenRA.Mods.Common.Activities
 
 						var target = Target.FromPos(nearestHpad.CenterPosition + randomPosition);
 
-						return ActivityUtils.SequenceActivities(new HeliFly(self, target, WDist.Zero, heli.Info.WaitDistanceFromResupplyBase), this);
+						return ActivityUtils.SequenceActivities(new Fly(self, target, WDist.Zero, heli.Info.WaitDistanceFromResupplyBase), this);
 					}
 
 					return this;
@@ -88,7 +88,7 @@ namespace OpenRA.Mods.Common.Activities
 				heli.MakeReservation(dest);
 
 				return ActivityUtils.SequenceActivities(
-					new HeliFly(self, Target.FromPos(dest.CenterPosition + offset)),
+					new Fly(self, Target.FromPos(dest.CenterPosition + offset)),
 					new Turn(self, initialFacing),
 					new HeliLand(self, false),
 					new ResupplyAircraft(self),
@@ -96,7 +96,7 @@ namespace OpenRA.Mods.Common.Activities
 			}
 
 			return ActivityUtils.SequenceActivities(
-				new HeliFly(self, Target.FromPos(dest.CenterPosition + offset)),
+				new Fly(self, Target.FromPos(dest.CenterPosition + offset)),
 				NextActivity);
 		}
 

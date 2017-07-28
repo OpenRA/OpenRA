@@ -100,7 +100,7 @@ namespace OpenRA.Mods.Common.Activities
 					if (!targetLocation.HasValue)
 					{
 						innerActivity = ActivityUtils.SequenceActivities(
-							new HeliFly(self, Target.FromCell(self.World, destination)),
+							new Fly(self, Target.FromCell(self.World, destination)),
 							new Wait(25));
 
 						return this;
@@ -119,13 +119,13 @@ namespace OpenRA.Mods.Common.Activities
 							var facing = (targetPosition - self.CenterPosition).Yaw.Facing;
 							localOffset = carryall.CarryableOffset.Rotate(body.QuantizeOrientation(self, WRot.FromFacing(facing)));
 							innerActivity = ActivityUtils.SequenceActivities(
-								new HeliFly(self, Target.FromPos(targetPosition - body.LocalToWorld(localOffset))),
+								new Fly(self, Target.FromPos(targetPosition - body.LocalToWorld(localOffset))),
 								new Turn(self, facing));
 
 							return this;
 						}
 
-						innerActivity = new HeliFly(self, Target.FromPos(targetPosition));
+						innerActivity = new Fly(self, Target.FromPos(targetPosition));
 						return this;
 					}
 
@@ -171,7 +171,7 @@ namespace OpenRA.Mods.Common.Activities
 					return this;
 
 				case DeliveryState.TakeOff:
-					return ActivityUtils.SequenceActivities(new HeliFly(self, Target.FromPos(self.CenterPosition)), NextActivity);
+					return ActivityUtils.SequenceActivities(new Fly(self, Target.FromPos(self.CenterPosition)), NextActivity);
 
 				case DeliveryState.Aborted:
 					carryall.UnreserveCarryable(self);
