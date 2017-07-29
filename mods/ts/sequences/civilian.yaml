@@ -128,7 +128,7 @@ aban18:
 
 ^bboard1x2:
 	Defaults:
-		Offset: 12, -18
+		Offset: -1, -10, 6
 	idle:
 		ShadowStart: 2
 	damaged-idle:
@@ -137,7 +137,7 @@ aban18:
 
 ^bboard2x1:
 	Defaults:
-		Offset: -12, -18
+		Offset: 2, -12, 6
 	idle:
 		ShadowStart: 2
 	damaged-idle:
