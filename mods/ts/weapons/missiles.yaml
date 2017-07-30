@@ -10,6 +10,8 @@
 		Inaccuracy: 128
 		Image: DRAGON
 		TrailImage: small_smoke_trail
+		TrailPalette: effect-ignore-lighting-alpha75
+		TrailInterval: 1
 		HorizontalRateOfTurn: 8
 		RangeLimit: 8c0
 		Palette: ra
