@@ -95,6 +95,7 @@ BikeMissile:
 	Inherits: ^DefaultMissile
 	Burst: 2 # to make bike alternate between left and right launcher, no change in dmg/s compared to original TS
 	BurstDelay: 60
+	ResetBurstAfterReloadDelay: false
 	Range: 5c0
 	Report: misl1.aud
 	ValidTargets: Ground

@@ -46,6 +46,7 @@ MechRailgun:
 	Range: 8c0
 	Burst: 2 # for alternating muzzle offsets, dmg/s identical to original
 	BurstDelay: 60
+	ResetBurstAfterReloadDelay: false
 	Report: railuse5.aud
 	Projectile: Railgun
 		BeamColor: 00FFFFC8
