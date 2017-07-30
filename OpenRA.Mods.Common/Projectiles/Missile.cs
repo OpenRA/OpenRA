@@ -432,12 +432,16 @@ namespace OpenRA.Mods.Common.Projectiles
 			return tp.Actor.World.SharedRandom.Next(100 / tp.Trait.Chance) == 0;
 		}
 
+		// Function added for OP Mod to implement point defense laser.
 		bool ShotBy(TraitPair<ShootsMissiles> tp)
 		{
 			if ((tp.Actor.CenterPosition - pos).HorizontalLengthSquared > tp.Trait.Range.LengthSquared)
 				return false;
 
 			if (!tp.Trait.DeflectionStances.HasStance(tp.Actor.Owner.Stances[args.SourceActor.Owner]))
+				return false;
+
+			if (tp.Trait.IsTraitDisabled)
 				return false;
 
 			if (tp.Trait.Armament.IsReloading)
@@ -873,6 +877,8 @@ namespace OpenRA.Mods.Common.Projectiles
 				pos = blockedPos;
 				shouldExplode = true;
 			}
+
+			// else if added for OP mod, for point defense laser.
 			else if (info.LaserShootable && world.ActorsWithTrait<ShootsMissiles>().Any(ShotBy))
 			{
 				shouldExplode = true;

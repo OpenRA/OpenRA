@@ -16,7 +16,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("This actor fires weapons that shoots missiles.")]
-	public class ShootsMissilesInfo : ITraitInfo, Requires<ArmamentInfo>
+	public class ShootsMissilesInfo : ConditionalTraitInfo, Requires<ArmamentInfo>
 	{
 		[Desc("Weapon used to shoot the missile. Caution: make sure that this is an insta-hit weapon, otherwise will look very odd!")]
 		public readonly string Armament = "pdlaser";
@@ -24,10 +24,10 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("What diplomatic stances are affected.")]
 		public readonly Stance ShootStances = Stance.Ally | Stance.Neutral | Stance.Enemy;
 
-		public object Create(ActorInitializer init) { return new ShootsMissiles(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new ShootsMissiles(init.Self, this); }
 	}
 
-	public class ShootsMissiles
+	public class ShootsMissiles : ConditionalTrait<ShootsMissilesInfo>
 	{
 		readonly ShootsMissilesInfo info;
 		readonly Armament armament;
@@ -37,7 +37,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public Stance DeflectionStances { get { return info.ShootStances; } }
 
-		public ShootsMissiles(Actor self, ShootsMissilesInfo info)
+		public ShootsMissiles(Actor self, ShootsMissilesInfo info) : base(info)
 		{
 			this.info = info;
 			armament = self.TraitsImplementing<Armament>().First(a => a.Info.Name == info.Armament);
