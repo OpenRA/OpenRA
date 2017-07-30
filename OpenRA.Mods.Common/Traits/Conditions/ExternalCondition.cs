@@ -123,6 +123,11 @@ namespace OpenRA.Mods.Common.Traits
 			return token;
 		}
 
+		public bool TryRevokeCondition(Actor self, object source, string conditionName)
+		{
+			return false;
+		}
+
 		/// <summary>Revokes the external condition with the given token if it was granted by this trait.</summary>
 		/// <returns><c>true</c> if the now-revoked condition was originally granted by this trait.</returns>
 		public bool TryRevokeCondition(Actor self, object source, int token)
@@ -137,6 +142,33 @@ namespace OpenRA.Mods.Common.Traits
 				conditionManager.RevokeCondition(self, token);
 
 			return true;
+		}
+
+		public bool TryRevokeCondition(Actor self)
+		{
+			// First priority is to remove one of the permanent ones.
+			if (permanentTokens.Any())
+			{
+				var pair = permanentTokens.First();
+				return TryRevokeCondition(self, pair.Key, pair.Value.First());
+			}
+
+			if (!timedTokens.Any())
+				return false;
+
+			object longestObject = null;
+			TimedToken longestToken = null;
+
+			foreach (var pair in timedTokens)
+				foreach (var tt in pair.Value)
+					if (longestObject == null || longestToken.Expires < tt.Expires)
+					{
+						longestObject = pair.Key;
+						longestToken = tt;
+					}
+
+			// Second, we remove timed token, with the longest life span.
+			return TryRevokeCondition(self, longestObject, longestToken.Token);
 		}
 	}
 }
