@@ -229,7 +229,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!CanFire(self, target))
 				return null;
 
-			if (ticksSinceLastShot >= Weapon.ReloadDelay)
+			if (Weapon.ResetBurstAfterReloadDelay && ticksSinceLastShot >= Weapon.ReloadDelay)
 				Burst = Weapon.Burst;
 
 			ticksSinceLastShot = 0;

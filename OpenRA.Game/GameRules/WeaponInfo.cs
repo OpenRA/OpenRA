@@ -63,6 +63,9 @@ namespace OpenRA.GameRules
 		[Desc("Number of shots in a single ammo magazine.")]
 		public readonly int Burst = 1;
 
+		[Desc("Should number of remaining bursts be reset to Burst if ReloadDelay has passed since last shot?")]
+		public readonly bool ResetBurstAfterReloadDelay = true;
+
 		[Desc("What types of targets are affected.")]
 		public readonly HashSet<string> ValidTargets = new HashSet<string> { "Ground", "Water" };
 
