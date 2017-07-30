@@ -93,6 +93,7 @@
     <Compile Include="Traits\Mindcontrollable.cs" />
     <Compile Include="Traits\Mindcontroller.cs" />
     <Compile Include="Traits\FireWeaponAtSelf.cs" />
+    <Compile Include="Traits\PaletteEffects\TermitePaletteEffect.cs" />
     <Compile Include="Traits\Render\WithMindcontrolArc.cs" />
     <Compile Include="Traits\SpawnedHarvester.cs" />
     <Compile Include="Traits\PaletteEffects\IronCurtainPaletteEffect.cs" />

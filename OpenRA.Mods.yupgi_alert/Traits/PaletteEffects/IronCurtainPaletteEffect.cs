@@ -19,6 +19,7 @@ namespace OpenRA.Mods.Common.Traits
 {
 	public class IronCurtainPaletteEffectInfo : ITraitInfo
 	{
+		[Desc("The palette to apply this effect to.")]
 		public readonly string PaletteName = "invuln";
 		public readonly int Amplitude = 32;
 		public readonly int Offset = 32;
