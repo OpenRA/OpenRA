@@ -132,8 +132,7 @@
   </Target>
   -->
   <PropertyGroup>
-    <PostBuildEvent>mkdir "$(SolutionDir)mods/yupgi_alert/"
-          copy "$(TargetPath)" "$(SolutionDir)mods/yupgi_alert/"
+    <PostBuildEvent>copy "$(TargetPath)" "$(SolutionDir)mods/common/"
 cd "$(SolutionDir)"</PostBuildEvent>
   </PropertyGroup>
 </Project>
