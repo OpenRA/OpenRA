@@ -11,6 +11,7 @@
 
 using System.Collections.Generic;
 using OpenRA.Activities;
+using OpenRA.Mods.Cnc.Traits;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
@@ -21,16 +22,23 @@ namespace OpenRA.Mods.Cnc.Activities
 		readonly Mobile mobile;
 		readonly WPos origin, destination;
 		readonly int length;
+		readonly AttackLeap attack;
+		readonly Target target;
 
 		int ticks = 0;
 
 		/// <summary> Visible move that changes the position in the world. </summary>
-		public Leap(Actor self, WPos origin, WPos destination, int length, Mobile mobile)
+		public Leap(Actor self, WPos origin, WPos destination, int length, Mobile mobile, AttackLeap attack, Target target)
 		{
 			this.mobile = mobile;
 			this.origin = origin;
 			this.destination = destination;
 			this.length = length;
+			this.attack = attack;
+			this.target = target;
+
+			// Must not be canceled mid-air!
+			IsInterruptible = false;
 		}
 
 		public override Activity Tick(Actor self)
@@ -38,10 +46,18 @@ namespace OpenRA.Mods.Cnc.Activities
 			var position = length > 1 ? WPos.Lerp(origin, destination, ticks, length - 1) : destination;
 
 			mobile.SetVisualPosition(self, position);
+
+			// We are at the destination.
 			if (++ticks >= length)
 			{
 				mobile.IsMoving = false;
 				mobile.SetPosition(self, position);
+
+				if (!self.IsDead && !self.Disposed)
+				{
+					attack.LeapBuffOff(self);
+					attack.DoAttack(self, target);
+				}
 
 				return NextActivity;
 			}

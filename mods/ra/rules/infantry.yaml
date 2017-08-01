@@ -33,6 +33,8 @@ DOG:
 		Voice: Attack
 		LeapCondition: leap
 		ApproachCondition: rush
+		# Disable another leap while leaping or ripping
+		RequiresCondition: !leap && !rip
 	AttackMove:
 		Voice: Move
 	GrantConditionOnAttack:

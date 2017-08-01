@@ -72,7 +72,7 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		public void ApproachBuffOn(Actor self)
 		{
-			if (conditionManager != null && string.IsNullOrEmpty(info.ApproachCondition))
+			if (conditionManager != null && !string.IsNullOrEmpty(info.ApproachCondition))
 				approachToken = conditionManager.GrantCondition(self, info.ApproachCondition);
 		}
 

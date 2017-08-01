@@ -99,8 +99,8 @@ DogJaw:
 	ReloadDelay: 10
 	Range: 3c0
 	Report: dogg5p.aud
+	TargetActorCenter: true
 	Projectile: InstantHit
-		TargetCenterPosition: true
 	Warhead@1Dam: TargetDamage
 		Damage: 100
 		ValidTargets: Infantry

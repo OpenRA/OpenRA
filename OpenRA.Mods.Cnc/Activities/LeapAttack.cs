@@ -26,6 +26,8 @@ namespace OpenRA.Mods.Common.Activities
 		readonly Mobile mobile;
 		readonly AttackLeap attack;
 
+		bool isApproachBuffOn = false;
+
 		public LeapAttack(Actor self, Target target, bool allowMovement, AttackLeapInfo info)
 		{
 			this.target = target;
@@ -42,19 +44,9 @@ namespace OpenRA.Mods.Common.Activities
 			var destination = self.World.Map.CenterOfSubCell(target.Actor.Location, targetSubcell);
 			var length = Math.Max((origin - destination).Length / info.Speed.Length, 1);
 
-			IsInterruptible = false; // Leaping can't be canceled mid air!
 			attack.LeapBuffOn(self);
-
-			QueueChild(new Leap(self, origin, destination, length, mobile));
-			QueueChild(new CallFunc(() =>
-			{
-				if (!self.IsDead && !self.Disposed)
-				{
-					attack.LeapBuffOff(self);
-					IsInterruptible = true;
-					attack.DoAttack(self, target);
-				}
-			}));
+			QueueChild(new Turn(self, (destination - origin).Yaw.Facing));
+			QueueChild(new Leap(self, origin, destination, length, mobile, attack, target));
 		}
 
 		Activity DebuffAndNextActivity(Actor self)
@@ -67,25 +59,17 @@ namespace OpenRA.Mods.Common.Activities
 			return NextActivity;
 		}
 
-		public override bool Cancel(Actor self, bool keepQueue = false)
-		{
-			if (ChildActivity is Leap)
-				return false;
-
-			return base.Cancel(self, keepQueue);
-		}
-
 		public override Activity Tick(Actor self)
 		{
-			if (IsCanceled || target.Actor.IsDead || target.Actor.Disposed)
+			if (IsCanceled)
+				return DebuffAndNextActivity(self);
+
+			if (target.Actor.IsDead || !target.IsValidFor(self) || !attack.HasAnyValidWeapons(target) || mobile == null)
 			{
-				// Let leap finish otherwise there will be visual glitch.
-				if (!(ChildActivity is Leap))
+				// let Leap finish otherwise we get visual glitch.
+				if (ChildActivity == null || !(ChildActivity is Leap))
 					return DebuffAndNextActivity(self);
 			}
-
-			if (!target.IsValidFor(self) || !attack.HasAnyValidWeapons(target) || mobile == null)
-				return DebuffAndNextActivity(self);
 
 			// Wait for reload before leaping as leaping makes self more vulnerable, although
 			// this effect isn't very observable for attack dogs in RA mod
@@ -94,7 +78,15 @@ namespace OpenRA.Mods.Common.Activities
 
 			if (ChildActivity != null)
 			{
-				ActivityUtils.RunActivity(self, ChildActivity);
+				ChildActivity = ActivityUtils.RunActivity(self, ChildActivity);
+
+				// Child activity finished. Time to debuff.
+				if (ChildActivity == null && isApproachBuffOn)
+				{
+					attack.ApproachBuffOff(self);
+					isApproachBuffOn = false;
+				}
+
 				return this;
 			}
 
@@ -103,8 +95,8 @@ namespace OpenRA.Mods.Common.Activities
 			if (!target.IsInRange(self.CenterPosition, range))
 			{
 				attack.ApproachBuffOn(self);
+				isApproachBuffOn = true;
 				QueueChild(new MoveWithinRange(self, target, WDist.Zero, range));
-				QueueChild(new CallFunc(() => attack.ApproachBuffOff(self)));
 				return this;
 			}
 
