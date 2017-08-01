@@ -71,11 +71,5 @@ namespace OpenRA.Mods.Cnc.Activities
 		{
 			yield return Target.FromPos(destination);
 		}
-
-		public override bool Cancel(Actor self, bool keepQueue = false)
-		{
-			// Can not be cancelled
-			return false;
-		}
 	}
 }
