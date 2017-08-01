@@ -761,8 +761,6 @@
 		TargetTypes: Ground, C4, DetonateAttack, Structure, NoAutoTarget
 	Armor:
 		Type: Light
-	Targetable:
-		TargetTypes: Ground, DetonateAttack
 	EditorTilesetFilter:
 		Categories: Decoration
 
