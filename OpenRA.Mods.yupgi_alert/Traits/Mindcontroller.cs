@@ -195,6 +195,7 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 			{
 				if (s.IsDead || s.Disposed)
 					continue;
+
 				s.Trait<Mindcontrollable>().UnMindcontrol(s, self.Owner);
 			}
 		}

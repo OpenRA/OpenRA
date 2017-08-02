@@ -877,10 +877,9 @@ namespace OpenRA.Mods.Common.Projectiles
 				pos = blockedPos;
 				shouldExplode = true;
 			}
-
-			// else if added for OP mod, for point defense laser.
 			else if (info.LaserShootable && world.ActorsWithTrait<ShootsMissiles>().Any(ShotBy))
 			{
+				// else if added for OP mod, for point defense laser.
 				shouldExplode = true;
 			}
 
