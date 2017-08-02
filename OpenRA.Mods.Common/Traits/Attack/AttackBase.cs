@@ -164,7 +164,8 @@ namespace OpenRA.Mods.Common.Traits
 				OnStopOrder(self);
 		}
 
-		protected virtual void OnStopOrder(Actor self)
+		// OP Mod: made public for Rage generator
+		public virtual void OnStopOrder(Actor self)
 		{
 			self.CancelActivity();
 		}

@@ -18,9 +18,15 @@ using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
 /*
- * Works without base engine modification
+ * Almost works without base engine modification
  * While AttackBase.cs:UnforcedAttackTargetStances() affects target selection,
  * I don't think it is a good idea to mess with the very core part of the engine.
+ * 
+ * Unfortunately, due to CancelActivity not canceling the attack base's attack,
+ * OnStopOrder of AttckBase and AttackFollow is made public for this.
+ * A neater fix would be to go into Cancel() of the attack activities then
+ * call OnStopOrder from there but that brings more changes to the base engine
+ * so I chose to make it public. From modder's side, less change == better.
  */
 
 namespace OpenRA.Mods.Yupgi_alert.Traits
@@ -41,16 +47,30 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 			this.info = info;
 		}
 
+		void StopOrder(Actor self)
+		{
+			self.CancelActivity();
+
+			// CancelActivity doesn't cancel attack orders as it is the
+			// attack base TRAIT that's doing the attack. Let it drop target.
+			var atbs = self.TraitsImplementing<AttackBase>().Where(a => !a.IsTraitDisabled).ToArray();
+			if (atbs.Length == 0)
+				return;
+
+			foreach (var atb in atbs)
+				atb.OnStopOrder(self);
+		}
+
 		protected override void TraitEnabled(Actor self)
 		{
 			// Getting enraged cancels current activity.
-			self.CancelActivity();
+			StopOrder(self);
 		}
 
 		protected override void TraitDisabled(Actor self)
 		{
 			// Getting unraged should drop the target, too.
-			self.CancelActivity();
+			StopOrder(self);
 		}
 
 		WDist GetScanRange(Actor self, AttackBase[] atbs)
