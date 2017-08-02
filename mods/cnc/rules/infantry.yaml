@@ -163,7 +163,7 @@ E6:
 		Queue: Infantry.GDI, Infantry.Nod
 		Description: Damages and captures enemy structures.\n  Repairs destroyed vehicles\n  Unarmed
 	Mobile:
-		Speed: 56
+		Speed: 48
 	Health:
 		HP: 30
 	Passenger:
