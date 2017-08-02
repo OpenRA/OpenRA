@@ -426,12 +426,12 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		public void Killed(Actor self, AttackInfo e)
+		void INotifyKilled.Killed(Actor self, AttackInfo e)
 		{
 			CancelDockAllClients();
 		}
 
-		public void Disposing(Actor self)
+		void INotifyActorDisposing.Disposing(Actor self)
 		{
 			CancelDockAllClients();
 		}
