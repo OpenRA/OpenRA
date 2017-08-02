@@ -49,10 +49,10 @@ namespace OpenRA.Mods.Common.Traits
 				switch ((j + paletteShift) % 8)
 				{
 					case 0:
-						p.SetColor(j, Color.FromArgb(255, Color.Black));
+						p.SetColor(j, Color.FromArgb(64, Color.Brown));
 						break;
 					case 1:
-						p.SetColor(j, Color.FromArgb(128, Color.White));
+						p.SetColor(j, Color.FromArgb(64, Color.Gold));
 						break;
 					default:
 						break;
