@@ -2,6 +2,7 @@
 Release
 bin
 obj
+*.obj
 *.ncb
 *.vcproj*
 *.suo
