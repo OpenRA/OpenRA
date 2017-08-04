@@ -37,7 +37,7 @@ GAGATE_B:
 
 GACTWR:
 	Inherits: ^Defense
-	Inherits@IDISABLE: ^DisabledOverlay
+	Inherits@IDISABLE: ^DisableOnPowerDown
 	Inherits@AUTOTARGET: ^AutoTargetAll
 	-WithSpriteBody:
 	WithWallSpriteBody:
@@ -69,10 +69,6 @@ GACTWR:
 		InitialFacing: 224
 	AttackTurreted:
 		RequiresCondition: tower.vulcan || tower.rocket || tower.sam
-	CanPowerDown:
-		IndicatorPalette: mouse
-		PowerupSpeech: EnablePower
-		PowerdownSpeech: DisablePower
 	WithSpriteTurret@VULC:
 		RequiresCondition: tower.vulcan
 		Recoils: false
@@ -117,11 +113,12 @@ GACTWR:
 		Types: turret
 	Power@base:
 		Amount: -10
+		RequiresCondition: !powerdown
 	Power@turrets:
-		RequiresCondition: tower.vulcan || tower.rocket || tower.sam
+		RequiresCondition: (tower.vulcan || tower.rocket || tower.sam) && !powerdown
 		Amount: -20
 	Power@samextra:
-		RequiresCondition: tower.sam
+		RequiresCondition: tower.sam && !powerdown
 		Amount: -10
 	Pluggable:
 		Conditions:

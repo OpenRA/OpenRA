@@ -1,7 +1,5 @@
 GAPOWR:
 	Inherits: ^Building
-	Inherits@IDISABLE: ^DisabledOverlay
-	Inherits@POWER_OUTAGE: ^DisabledByPowerOutage
 	Inherits@SHAPE: ^2x2Shape
 	Buildable:
 		Queue: Building
@@ -25,15 +23,16 @@ GAPOWR:
 		Range: 4c0
 		MaxHeightDelta: 3
 	WithIdleOverlay@LIGHTS:
-		RequiresCondition: !disabled
+		RequiresCondition: !empdisable
 		Sequence: idle-lights
 	WithIdleOverlay@PLUG:
-		PauseOnCondition: disabled
+		PauseOnCondition: empdisable
 		Sequence: idle-plug
 	Selectable:
 		Bounds: 90, 48, 0, -6
 	Power:
 		Amount: 100
+		RequiresCondition: !empdisable
 	PowerTooltip:
 	Targetable:
 		TargetTypes: Ground, Building, C4, SpyInfiltrate
@@ -43,11 +42,11 @@ GAPOWR:
 		Conditions:
 			powrup: powrup.a
 	Power@pluga:
-		RequiresCondition: powrup.a && !power-outage
+		RequiresCondition: !empdisable && powrup.a
 		Amount: 50
 	WithIdleOverlay@pluga:
 		RequiresCondition: powrup.a
-		PauseOnCondition: disabled
+		PauseOnCondition: empdisable
 		Sequence: idle-powrupa
 	Pluggable@plugb:
 		Offset: 1,1
@@ -55,10 +54,10 @@ GAPOWR:
 			powrup: powrup.b
 	WithIdleOverlay@plugb:
 		RequiresCondition: powrup.b
-		PauseOnCondition: disabled
+		PauseOnCondition: empdisable
 		Sequence: idle-powrupb
 	Power@plugb:
-		RequiresCondition: powrup.b && !power-outage
+		RequiresCondition: !empdisable && powrup.b
 		Amount: 50
 	ProvidesPrerequisite@buildingname:
 	SelectionDecorations:
@@ -302,7 +301,7 @@ GADEPT:
 
 GARADR:
 	Inherits: ^Building
-	Inherits@IDISABLED: ^DisabledOverlay
+	Inherits@IDISABLED: ^DisableOnLowPowerOrPowerDown
 	Inherits@SHAPE: ^2x2Shape
 	Buildable:
 		Queue: Building
@@ -324,13 +323,8 @@ GARADR:
 		HP: 1000
 	Armor:
 		Type: Wood
-	RequiresPower:
-	CanPowerDown:
-		IndicatorPalette: mouse
-		PowerupSpeech: EnablePower
-		PowerdownSpeech: DisablePower
 	ProvidesRadar:
-		RequiresCondition: !disabled
+		RequiresCondition: !disabled && !empdisable
 	InfiltrateForExploration:
 	DetectCloaked:
 		Range: 10c0
@@ -340,18 +334,19 @@ GARADR:
 		MaxHeightDelta: 3
 	WithIdleOverlay@DISH:
 		Sequence: idle-dish
-		PauseOnCondition: disabled
+		PauseOnCondition: disabled || empdisable
 	Targetable:
 		TargetTypes: Ground, Building, C4, SpyInfiltrate
 	Power:
 		Amount: -50
+		RequiresCondition: !powerdown
 	ProvidesPrerequisite@buildingname:
 	SelectionDecorations:
 		VisualBounds: 96, 118, 0, -38
 
 GATECH:
 	Inherits: ^Building
-	Inherits@IDISABLE: ^DisabledOverlay
+	Inherits@IDISABLED: ^DisableOnLowPower
 	Inherits@SHAPE: ^3x2Shape
 	Buildable:
 		Queue: Building
@@ -381,14 +376,13 @@ GATECH:
 		Sequence: idle-lights
 	Power:
 		Amount: -150
-	RequiresPower:
 	ProvidesPrerequisite@buildingname:
 	SelectionDecorations:
 		VisualBounds: 110, 60, 3, -4
 
 GAPLUG:
 	Inherits: ^Building
-	Inherits@IDISABLE: ^DisabledOverlay
+	Inherits@IDISABLE: ^DisableOnLowPowerOrPowerDown
 	Inherits@SHAPE: ^2x3Shape
 	Valued:
 		Cost: 1000
@@ -404,19 +398,14 @@ GAPLUG:
 	Building:
 		Footprint: xxx xxx
 		Dimensions: 2,3
-	RequiresPower:
-	CanPowerDown:
-		IndicatorPalette: mouse
-		PowerupSpeech: EnablePower
-		PowerdownSpeech: DisablePower
 	WithIdleOverlay@DISH:
-		PauseOnCondition: disabled
+		PauseOnCondition: disabled || empdisable
 		Sequence: idle-dish
 	WithIdleOverlay@LIGHTS:
-		RequiresCondition: !disabled
+		RequiresCondition: !disabled && !empdisable
 		Sequence: idle-lights
 	WithIdleOverlay@STRIP:
-		RequiresCondition: !disabled
+		RequiresCondition: !disabled && !empdisable
 		Sequence: idle-strip
 	Health:
 		HP: 1000
@@ -456,12 +445,13 @@ GAPLUG:
 	ExitsDebugOverlay:
 	SupportPowerChargeBar:
 	Power:
+		RequiresCondition: !powerdown
 		Amount: -150
 	Power@ioncannon:
-		RequiresCondition: plug.ioncannona || plug.ioncannonb
+		RequiresCondition: !powerdown && (plug.ioncannona || plug.ioncannonb)
 		Amount: -100
 	Power@hunterseeker:
-		RequiresCondition: plug.hunterseekera || plug.hunterseekerb
+		RequiresCondition: !powerdown && (plug.hunterseekera || plug.hunterseekerb)
 		Amount: -50
 	Pluggable@pluga:
 		Offset: 0,2

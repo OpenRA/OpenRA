@@ -1,6 +1,6 @@
 NAPULS:
 	Inherits: ^Defense
-	Inherits@IDISABLE: ^DisabledOverlay
+	Inherits@IDISABLE: ^DisableOnLowPowerOrPowerDown
 	Inherits@SHAPE: ^2x2Shape
 	Valued:
 		Cost: 1000
@@ -16,7 +16,6 @@ NAPULS:
 		Dimensions: 2,2
 	Selectable:
 		Bounds: 78, 54, 0, -12
-	RequiresPower:
 	Health:
 		HP: 500
 	Armor:
@@ -27,6 +26,7 @@ NAPULS:
 		TurnSpeed: 10
 		InitialFacing: 224
 	AttackTurreted:
+		RequiresCondition: !empdisable && !disabled
 	Armament:
 		Weapon: EMPulseCannon
 		LocalOffset: 212,0,1768
@@ -35,6 +35,7 @@ NAPULS:
 		Sequence: turret
 	Power:
 		Amount: -150
+		RequiresCondition: !powerdown
 	SelectionDecorations:
 		VisualBounds: 78, 54, 0, -12
 	RenderSprites:
