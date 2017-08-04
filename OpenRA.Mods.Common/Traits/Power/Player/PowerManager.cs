@@ -32,6 +32,7 @@ namespace OpenRA.Mods.Common.Traits
 		readonly DeveloperMode devMode;
 
 		readonly Dictionary<Actor, int> powerDrain = new Dictionary<Actor, int>();
+
 		[Sync] int totalProvided;
 		public int PowerProvided { get { return totalProvided; } }
 
@@ -42,6 +43,11 @@ namespace OpenRA.Mods.Common.Traits
 
 		public int PowerOutageRemainingTicks { get; private set; }
 		public int PowerOutageTotalTicks { get; private set; }
+
+		int nextPowerAdviceTime = 0;
+		bool lowPower = false;
+		bool wasLowPower = false;
+		bool wasHackEnabled;
 
 		public PowerManager(Actor self, PowerManagerInfo info)
 		{
@@ -86,10 +92,6 @@ namespace OpenRA.Mods.Common.Traits
 				totalDrained += amount;
 		}
 
-		int nextPowerAdviceTime = 0;
-		bool wasLowPower = false;
-		bool wasHackEnabled;
-
 		void ITick.Tick(Actor self)
 		{
 			if (wasHackEnabled != devMode.UnlimitedPower)
@@ -107,15 +109,21 @@ namespace OpenRA.Mods.Common.Traits
 				wasHackEnabled = devMode.UnlimitedPower;
 			}
 
-			var lowPower = totalProvided < totalDrained;
+			lowPower = ExcessPower < 0;
+
+			if (lowPower != wasLowPower)
+				UpdateRequiresPowerActors();
+
 			if (lowPower && !wasLowPower)
 				nextPowerAdviceTime = 0;
+
 			wasLowPower = lowPower;
 
 			if (--nextPowerAdviceTime <= 0)
 			{
 				if (lowPower)
 					Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", info.SpeechNotification, self.Owner.Faction.InternalName);
+
 				nextPowerAdviceTime = info.AdviceInterval;
 			}
 
@@ -146,6 +154,15 @@ namespace OpenRA.Mods.Common.Traits
 
 			foreach (var p in traitPairs)
 				p.Trait.UpdateStatus(p.Actor);
+		}
+
+		void UpdateRequiresPowerActors()
+		{
+			var traitPairs = self.World.ActorsWithTrait<INotifyPowerLevelChanged>()
+				.Where(p => !p.Actor.IsDead && p.Actor.IsInWorld && p.Actor.Owner == self.Owner);
+
+			foreach (var p in traitPairs)
+				p.Trait.PowerLevelChanged(p.Actor);
 		}
 
 		void IResolveOrder.ResolveOrder(Actor self, Order order)

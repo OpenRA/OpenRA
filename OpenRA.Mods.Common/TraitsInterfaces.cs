@@ -95,6 +95,9 @@ namespace OpenRA.Mods.Common.Traits
 		void AfterRepair(Actor self, Actor target);
 	}
 
+	[RequireExplicitImplementation]
+	public interface INotifyPowerLevelChanged { void PowerLevelChanged(Actor self); }
+
 	public interface INotifyBuildingPlaced { void BuildingPlaced(Actor self); }
 	public interface INotifyNuke { void Launching(Actor self); }
 	public interface INotifyBurstComplete { void FiredBurst(Actor self, Target target, Armament a); }

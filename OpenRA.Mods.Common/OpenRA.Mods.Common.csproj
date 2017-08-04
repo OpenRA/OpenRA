@@ -403,7 +403,7 @@
     <Compile Include="Traits\Power\CanPowerDown.cs" />
     <Compile Include="Traits\Power\Player\PowerManager.cs" />
     <Compile Include="Traits\Power\Power.cs" />
-    <Compile Include="Traits\Power\RequiresPower.cs" />
+    <Compile Include="Traits\Conditions\GrantConditionOnPowerState.cs" />
     <Compile Include="Traits\Power\ScalePowerWithHealth.cs" />
     <Compile Include="Traits\Production.cs" />
     <Compile Include="Traits\ProductionFromMapEdge.cs" />
