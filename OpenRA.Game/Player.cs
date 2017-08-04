@@ -24,7 +24,14 @@ using OpenRA.Widgets;
 
 namespace OpenRA
 {
-	public enum PowerState { Normal, Low, Critical }
+	[Flags]
+	public enum PowerState
+	{
+		Normal = 1,
+		Low = 2,
+		Critical = 4
+	}
+
 	public enum WinState { Undefined, Won, Lost }
 
 	public class Player : IScriptBindable, IScriptNotifyBind, ILuaTableBinding, ILuaEqualityBinding, ILuaToStringBinding
