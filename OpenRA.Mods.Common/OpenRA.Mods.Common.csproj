@@ -143,7 +143,6 @@
     <Compile Include="Effects\FlashTarget.cs" />
     <Compile Include="Effects\FloatingText.cs" />
     <Compile Include="Effects\MapNotificationEffect.cs" />
-    <Compile Include="Effects\PowerdownIndicator.cs" />
     <Compile Include="Effects\RallyPointIndicator.cs" />
     <Compile Include="Effects\RepairIndicator.cs" />
     <Compile Include="Effects\SpriteEffect.cs" />
