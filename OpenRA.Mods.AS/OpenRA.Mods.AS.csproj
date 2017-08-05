@@ -89,6 +89,7 @@
     <Compile Include="Projectiles\AthenaProjectile.cs" />
     <Compile Include="Projectiles\InstantExplode.cs" />
     <Compile Include="Projectiles\RadBeam.cs" />
+    <Compile Include="Projectiles\SpriteRailgun.cs" />
     <Compile Include="Traits\AIDeployHelper.cs" />
     <Compile Include="Traits\ChronoResourceDelivery.cs" />
     <Compile Include="Traits\Conditions\GrantConditionAboveAltitude.cs" />
@@ -103,6 +104,7 @@
     <Compile Include="Traits\PeriodicProducer.cs" />
     <Compile Include="Traits\Player\PlayerSilo.cs" />
     <Compile Include="Traits\Player\ProvidesAIPrerequisite.cs" />
+    <Compile Include="Traits\Render\WithIdleOverlayOnGround.cs" />
     <Compile Include="Traits\Render\WithVoxelAnimatedBody.cs" />
     <Compile Include="Traits\ResourcePurifier.cs" />
     <Compile Include="Traits\SpawnActorOnOwnerChange.cs" />
@@ -115,6 +117,9 @@
     <Compile Include="Traits\Warheads\FireFragmentWarhead.cs" />
     <Compile Include="Traits\Warheads\FireShrapnelWarhead.cs" />
     <Compile Include="Traits\Warheads\GlobalExplodeWeaponWarhead.cs" />
+    <Compile Include="Traits\Warheads\RevealShroudWarhead.cs" />
+    <Compile Include="Traits\Warheads\ScreenShakerWarhead.cs" />
+    <Compile Include="Traits\Warheads\SendAirstrikeWarhead.cs" />
     <Compile Include="Traits\Warheads\SpawnActorWarhead.cs" />
     <Compile Include="Traits\Warheads\WarheadAS.cs" />
     <Compile Include="Traits\Render\WithExitOverlay.cs" />

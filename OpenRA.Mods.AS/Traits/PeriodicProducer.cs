@@ -77,7 +77,7 @@ namespace OpenRA.Mods.AS.Traits
 
 				if (sp != null)
 					foreach (var name in info.Actors)
-						activated |= sp.Produce(self, self.World.Map.Rules.Actors[name], faction);
+						activated |= sp.Produce(self, self.World.Map.Rules.Actors[name.ToLowerInvariant()], faction);
 
 				if (activated)
 					Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", info.ReadyAudio, self.Owner.Faction.InternalName);

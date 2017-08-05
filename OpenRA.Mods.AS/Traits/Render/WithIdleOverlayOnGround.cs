@@ -1,4 +1,4 @@
-#region Copyright & License Information
+﻿#region Copyright & License Information
 /*
  * Copyright 2015- OpenRA.Mods.AS Developers (see AUTHORS)
  * This file is a part of a third-party plugin for OpenRA, which is
@@ -19,12 +19,10 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.AS.Traits.Render
 {
-	public class WithIdleOverlayASInfo : WithIdleOverlayInfo
+	[Desc("Plays an idle overlay on the ground position under the actor (regardless of it's actual height).")]
+	public class WithIdleOverlayOnGroundInfo : WithIdleOverlayASInfo
 	{
-		[Desc("Image name to use, if null, it falls back to default.")]
-		public readonly string Image = "";
-
-		public override object Create(ActorInitializer init) { return new WithIdleOverlayAS(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new WithIdleOverlayOnGround(init.Self, this); }
 
 		public new IEnumerable<IActorPreview> RenderPreviewSprites(ActorPreviewInitializer init, RenderSpritesInfo rs, string image, int facings, PaletteReference p)
 		{
@@ -60,12 +58,12 @@ namespace OpenRA.Mods.AS.Traits.Render
 		}
 	}
 
-	public class WithIdleOverlayAS : PausableConditionalTrait<WithIdleOverlayASInfo>, INotifyDamageStateChanged, INotifyBuildComplete, INotifySold, INotifyTransform
+	public class WithIdleOverlayOnGround : PausableConditionalTrait<WithIdleOverlayOnGroundInfo>, INotifyDamageStateChanged, INotifyBuildComplete, INotifySold, INotifyTransform
 	{
 		readonly Animation overlay;
 		bool buildComplete;
 
-		public WithIdleOverlayAS(Actor self, WithIdleOverlayASInfo info)
+		public WithIdleOverlayOnGround(Actor self, WithIdleOverlayOnGroundInfo info)
 			: base(info)
 		{
 			var rs = self.Trait<RenderSprites>();
@@ -82,7 +80,8 @@ namespace OpenRA.Mods.AS.Traits.Render
 				overlay.PlayRepeating(RenderSprites.NormalizeSequence(overlay, self.GetDamageState(), info.Sequence));
 
 			var anim = new AnimationWithOffset(overlay,
-				() => body.LocalToWorld(info.Offset.Rotate(body.QuantizeOrientation(self, self.Orientation))),
+				() => body.LocalToWorld(info.Offset.Rotate(body.QuantizeOrientation(self, self.Orientation)))
+					- new WVec(WDist.Zero, WDist.Zero, self.World.Map.DistanceAboveTerrain(self.CenterPosition)),
 				() => IsTraitDisabled || !buildComplete,
 				p => RenderUtils.ZOffsetFromCenter(self, p, 1));
 
