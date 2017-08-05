@@ -125,8 +125,12 @@ namespace OpenRA.Mods.Common.Traits
 				d.CheckObstacle();
 		}
 
-		// Parameters: sometimes the activity that requests ReserveDock knows well on how to do the docking.
-		// To help docking, pass this as param.
+		// requester: It the activity that knows what to do on dock and we provide it as the parameter.
+		// For example, if you make a mine layer repair at the service dock,
+		// it will repair and stay in the base. However, when the mine layer is ordered to
+		// lay mines in an area, it will eventually run out of mine and reload at a service depot,
+		// then continue with the mining process.
+		// In this example, it wasn't the client nor the host that knew what to do!
 		public void ReserveDock(Actor host, Actor client, IDockActivity requester)
 		{
 			if (info.DockNextToActor)
@@ -291,14 +295,14 @@ namespace OpenRA.Mods.Common.Traits
 			var dockClient = head.Trait<DockClient>();
 
 			/*
-			cd == null means the queue is not so busy that the head is a new comer.
+			dockClient == dc == null means the queue is not so busy that the head is a new comer.
             (for example, head == client case)
-			With thi in mind, 4 cases of null/not nullness of dock and cd:
+			With thi in mind, 4 cases of null/not nullness of dock and dc:
 
-			cd == null and dock == null    ERROR: What? Docks can't be busy when cd == null. Can't happen.
-			cd == null and dock != null    Safe to serve.
-			cd != null and dock == null    ERROR: First in line, has nowhere to go? Can't happen.
-			cd != null and dock != null    Was in the waiting queue and now ready to serve.
+			dc == null and dock == null    ERROR: What? Docks can't be busy when dc == null. Can't happen.
+			dc == null and dock != null    Safe to serve.
+			dc != null and dock == null    ERROR: First in line, has nowhere to go? Can't happen.
+			dc != null and dock != null    Was in the waiting queue and now ready to serve.
 
 			So, except for the errorneous state that can't happen, head is safe to serve.
 			We rule out dock == null case in outer loop, before calling this function though.
