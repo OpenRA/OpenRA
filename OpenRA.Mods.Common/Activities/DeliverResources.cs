@@ -78,7 +78,29 @@ namespace OpenRA.Mods.Common.Activities
 
 		Activity IDockActivity.ApproachDockActivities(Actor host, Actor client, Dock dock)
 		{
-			return DockUtils.GenericApproachDockActivities(host, client, dock, this);
+			var moveToDock = DockUtils.GenericApproachDockActivities(host, client, dock, this);
+			Activity extraActivities = null;
+
+			var notify = client.TraitsImplementing<INotifyHarvesterAction>();
+			foreach (var n in notify)
+			{
+				var extra = n.MovingToRefinery(client, dock.Location, moveToDock);
+
+				// We have multiple MovingToRefinery actions to do!
+				// Don't know which one to perform.
+				if (extra != null)
+				{
+					if (extraActivities != null)
+						throw new InvalidOperationException("Actor {0} has conflicting activities to perform for INotifyHarvesterAction.".F(client.ToString()));
+
+					extraActivities = extra;
+				}
+			}
+
+			if (extraActivities != null)
+				return extraActivities;
+
+			return moveToDock;
 		}
 
 		public Activity DockActivities(Actor host, Actor client, Dock dock)

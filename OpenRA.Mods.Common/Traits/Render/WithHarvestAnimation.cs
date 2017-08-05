@@ -82,8 +82,8 @@ namespace OpenRA.Mods.Common.Traits.Render
 			IsModifying = false;
 		}
 
-		public void MovingToResources(Actor self, CPos targetCell, Activity next) { }
-		public void MovingToRefinery(Actor self, CPos targetCell, Activity next) { }
+		public Activity MovingToResources(Actor self, CPos targetCell, Activity next) { return null; }
+		public Activity MovingToRefinery(Actor self, CPos targetCell, Activity next) { return null; }
 		public void MovementCancelled(Actor self) { }
 	}
 }

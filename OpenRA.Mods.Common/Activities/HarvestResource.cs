@@ -39,7 +39,14 @@ namespace OpenRA.Mods.Common.Activities
 			if (IsCanceled)
 			{
 				claimLayer.RemoveClaim(self);
+				Queue(new FindResources(self));
 				return NextActivity;
+			}
+
+			if (ChildActivity != null)
+			{
+				ChildActivity = ActivityUtils.RunActivity(self, ChildActivity);
+				return this;
 			}
 
 			harv.LastHarvestedCell = self.Location;
@@ -47,6 +54,7 @@ namespace OpenRA.Mods.Common.Activities
 			if (harv.IsFull)
 			{
 				claimLayer.RemoveClaim(self);
+				Queue(new FindResources(self));
 				return NextActivity;
 			}
 
@@ -56,13 +64,17 @@ namespace OpenRA.Mods.Common.Activities
 				var current = facing.Facing;
 				var desired = body.QuantizeFacing(current, harvInfo.HarvestFacings);
 				if (desired != current)
-					return ActivityUtils.SequenceActivities(new Turn(self, desired), this);
+				{
+					QueueChild(new Turn(self, desired));
+					return this;
+				}
 			}
 
 			var resource = resLayer.Harvest(self.Location);
 			if (resource == null)
 			{
 				claimLayer.RemoveClaim(self);
+				Queue(new FindResources(self));
 				return NextActivity;
 			}
 
@@ -71,7 +83,8 @@ namespace OpenRA.Mods.Common.Activities
 			foreach (var t in self.TraitsImplementing<INotifyHarvesterAction>())
 				t.Harvested(self, resource);
 
-			return ActivityUtils.SequenceActivities(new Wait(harvInfo.BaleLoadDelay), this);
+			QueueChild(new Wait(harvInfo.BaleLoadDelay));
+			return this;
 		}
 	}
 }

@@ -74,6 +74,7 @@
     <Compile Include="Activities\Air\ShootableBallisticMissileFly.cs" />
     <Compile Include="Activities\Air\SpawnedFlyAttack.cs" />
     <Compile Include="Activities\Air\SpawnedTakeOff.cs" />
+    <Compile Include="Activities\OpportunityTeleport.cs" />
     <Compile Include="Activities\EnterTransportWithWait.cs" />
     <Compile Include="Activities\EnterNydus.cs" />
     <Compile Include="Activities\EnterSpawner.cs" />
@@ -86,6 +87,7 @@
     <Compile Include="Traits\AIDeployHelper.cs" />
     <Compile Include="Traits\AegisAutoTarget.cs" />
     <Compile Include="Traits\AcceptCashRallyPointAcceptor.cs" />
+    <Compile Include="Traits\ChronoHarvester.cs" />
     <Compile Include="Traits\Buildings\PeriodicProducer.cs" />
     <Compile Include="Traits\Conditions\GrantStackableConditionOnFire.cs" />
     <Compile Include="Traits\Conditions\GrantConditionOnAttack.cs" />

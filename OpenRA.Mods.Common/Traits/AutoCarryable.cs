@@ -38,8 +38,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		public WDist MinimumDistance { get { return info.MinDistance; } }
 
-		void INotifyHarvesterAction.MovingToResources(Actor self, CPos targetCell, Activity next) { RequestTransport(self, targetCell, next); }
-		void INotifyHarvesterAction.MovingToRefinery(Actor self, CPos targetCell, Activity next) { RequestTransport(self, targetCell, next); }
+		Activity INotifyHarvesterAction.MovingToResources(Actor self, CPos targetCell, Activity next) { return RequestTransport(self, targetCell, next); }
+		Activity INotifyHarvesterAction.MovingToRefinery(Actor self, CPos targetCell, Activity next) { return RequestTransport(self, targetCell, next); }
 		void INotifyHarvesterAction.MovementCancelled(Actor self) { MovementCancelled(self); }
 
 		// We do not handle Harvested notification
@@ -62,20 +62,20 @@ namespace OpenRA.Mods.Common.Traits
 			// TODO: We could implement something like a carrier.Trait<Carryall>().CancelTransportNotify(self) and call it here
 		}
 
-		void RequestTransport(Actor self, CPos destination, Activity afterLandActivity)
+		Activity RequestTransport(Actor self, CPos destination, Activity afterLandActivity)
 		{
 			var delta = self.World.Map.CenterOfCell(destination) - self.CenterPosition;
 			if (delta.HorizontalLengthSquared < info.MinDistance.LengthSquared)
 			{
 				Destination = null;
-				return;
+				return null;
 			}
 
 			Destination = destination;
 			this.afterLandActivity = afterLandActivity;
 
 			if (state != State.Free)
-				return;
+				return null;
 
 			// Inform all idle carriers
 			var carriers = self.World.ActorsWithTrait<Carryall>()
@@ -85,7 +85,9 @@ namespace OpenRA.Mods.Common.Traits
 			// Enumerate idle carriers to find the first that is able to transport us
 			foreach (var carrier in carriers)
 				if (carrier.Trait.RequestTransportNotify(carrier.Actor, self, destination))
-					return;
+					return null;
+
+			return null;
 		}
 
 		// This gets called by carrier after we touched down

@@ -59,8 +59,8 @@ namespace OpenRA.Mods.Common.Traits.Render
 			anim.PlayThen(info.Sequence, () => visible = false);
 		}
 
-		public void MovingToResources(Actor self, CPos targetCell, Activity next) { }
-		public void MovingToRefinery(Actor self, CPos targetCell, Activity next) { }
+		public Activity MovingToResources(Actor self, CPos targetCell, Activity next) { return null; }
+		public Activity MovingToRefinery(Actor self, CPos targetCell, Activity next) { return null; }
 		public void MovementCancelled(Actor self) { }
 		public void Docked() { }
 		public void Undocked() { }

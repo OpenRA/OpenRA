@@ -191,9 +191,9 @@ namespace OpenRA.Mods.Common.Traits
 			return color;
 		}
 
-		void INotifyHarvesterAction.MovingToResources(Actor self, CPos targetCell, Activity next) { }
+		Activity INotifyHarvesterAction.MovingToResources(Actor self, CPos targetCell, Activity next) { return null; }
 
-		void INotifyHarvesterAction.MovingToRefinery(Actor self, CPos targetCell, Activity next) { }
+		Activity INotifyHarvesterAction.MovingToRefinery(Actor self, CPos targetCell, Activity next) { return null; }
 
 		void INotifyHarvesterAction.MovementCancelled(Actor self) { }
 

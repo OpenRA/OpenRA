@@ -170,7 +170,10 @@ namespace OpenRA.Mods.Common.Traits
 		public void ContinueHarvesting(Actor self)
 		{
 			// Move out of the refinery dock and continue harvesting
-			UnblockRefinery(self);
+			var moveAway = UnblockRefinery(self);
+			if (moveAway != null)
+				self.QueueActivity(moveAway);
+
 			self.QueueActivity(new FindResources(self));
 		}
 
@@ -237,7 +240,7 @@ namespace OpenRA.Mods.Common.Traits
 				contents[type.Info]++;
 		}
 
-		public void UnblockRefinery(Actor self)
+		public Activity UnblockRefinery(Actor self)
 		{
 			// Check that we're not in a critical location and being useless (refinery drop-off):
 			var lastproc = LastLinkedProc ?? LinkedProc;
@@ -245,23 +248,22 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				// Am I blocking one of the dock positions?
 				var deliveryLocs = lastproc.Trait<DockManager>().DockLocations;
-				var deliveryLoc = deliveryLocs.Where(loc => loc == self.Location);
-				if (deliveryLoc.Any())
+				if (deliveryLocs.Any(loc => loc == self.Location))
 				{
 					// Get out of the way:
-					var unblockCell = LastHarvestedCell ?? (deliveryLoc.First() + Info.UnblockCell);
-					var moveTo = mobile.NearestMoveableCell(unblockCell, 1, 5);
-
-					// TODO: The harvest-deliver-return sequence is a horrible mess of duplicated code and edge-cases
-					var notify = self.TraitsImplementing<INotifyHarvesterAction>();
-					var findResources = new FindResources(self);
-					foreach (var n in notify)
-						n.MovingToResources(self, moveTo, findResources);
-
-					self.QueueActivity(mobile.MoveTo(moveTo, 1));
-					self.SetTargetLine(Target.FromCell(self.World, moveTo), Color.Gray, false);
+					// Find an empty cell that's not a dock location and that can be entered.
+					foreach (var t in self.World.Map.FindTilesInCircle(self.Location, 10))
+					{
+						if (mobile.CanEnterCell(t) && deliveryLocs.All(d => d != t))
+						{
+							var moveTo = mobile.NearestMoveableCell(t, 1, 5);
+							return mobile.MoveTo(moveTo, 1);
+						}
+					}
 				}
 			}
+
+			return null;
 		}
 
 		void INotifyBlockingMove.OnNotifyBlockingMove(Actor self, Actor blocking)
@@ -296,7 +298,12 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 			}
 
-			UnblockRefinery(self);
+			var moveAway = UnblockRefinery(self);
+			if (moveAway != null)
+				self.QueueActivity(moveAway);
+
+			self.QueueActivity(new FindResources(self));
+
 			idleDuration += 1;
 
 			// Wait a bit before queueing Wait activity
