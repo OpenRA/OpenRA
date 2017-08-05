@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using OpenRA.Graphics;
@@ -39,13 +40,21 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 		public virtual object Create(ActorInitializer init) { return new WithMindcontrolArc(init.Self, this); }
 	}
 
-	public class WithMindcontrolArc : IRenderAboveShroudWhenSelected, INotifySelected
+	public class WithMindcontrolArc : IRenderAboveShroudWhenSelected, INotifySelected, INotifyCreated
 	{
 		readonly WithMindcontrolArcInfo info;
+		Mindcontroller mindController;
+		Mindcontrollable mindControllable;
 
 		public WithMindcontrolArc(Actor self, WithMindcontrolArcInfo info)
 		{
 			this.info = info;
+		}
+
+		public void Created(Actor self)
+		{
+			mindController = self.TraitOrDefault<Mindcontroller>();
+			mindControllable = self.TraitOrDefault<Mindcontrollable>();
 		}
 
 		void INotifySelected.Selected(Actor a) { }
@@ -53,10 +62,9 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 		IEnumerable<IRenderable> IRenderAboveShroudWhenSelected.RenderAboveShroud(Actor self, WorldRenderer wr)
 		{
 			// Mindcontroller has multiple arc to the slaves
-			var mcr = self.TraitOrDefault<Mindcontroller>();
-			if (mcr != null)
+			if (mindController != null)
 			{
-				foreach (var s in mcr.Slaves)
+				foreach (var s in mindController.Slaves)
 					yield return new ArcRenderable(
 						self.CenterPosition + info.Offset,
 						s.CenterPosition + info.Offset,
@@ -64,16 +72,12 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 				yield break;
 			}
 
-			var mc = self.TraitOrDefault<Mindcontrollable>();
-			if (mc == null)
-				yield break;
-
-			if (mc.Master == null)
+			if (mindControllable == null || mindControllable.Master == null)
 				yield break;
 
 			// Slaves only get one arc to the master.
 			yield return new ArcRenderable(
-				mc.Master.CenterPosition + info.Offset,
+				mindControllable.Master.CenterPosition + info.Offset,
 				self.CenterPosition + info.Offset,
 				info.Angle, info.Color, info.Segments);
 		}
