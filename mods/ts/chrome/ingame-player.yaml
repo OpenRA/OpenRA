@@ -18,17 +18,6 @@ Container@PLAYER_WIDGETS:
 					ReadyText: READY
 					HoldText: ON HOLD
 					ClockPalette: iconclock
-				Container@PALETTE_FOREGROUND:
-					Children:
-						Image@ICON_TEMPLATE:
-							Logic: AddFactionSuffixLogic
-							X: 0 - 2
-							Y: 0 - 2
-							Width: 64
-							Height: 48
-							IgnoreMouseOver: true
-							ImageCollection: sidebar
-							ImageName: background-supportoverlay
 		Image@SIDEBAR_BACKGROUND_TOP:
 			Logic: AddFactionSuffixLogic
 			X: WINDOW_RIGHT - 235
@@ -252,17 +241,6 @@ Container@PLAYER_WIDGETS:
 					IconSpriteOffset: 0, 0
 					MinimumRows: 4
 					MaximumRows: 6
-				Container@PALETTE_FOREGROUND:
-					X: 22
-					Y: 0
-					Children:
-						Image@ROW_TEMPLATE:
-							Logic: AddFactionSuffixLogic
-							Width: 235
-							Height: 52
-							IgnoreMouseOver: true
-							ImageCollection: sidebar-bits
-							ImageName: production-iconoverlay
 				Container@PRODUCTION_TYPES:
 					X: 0
 					Y: 0 - 32
