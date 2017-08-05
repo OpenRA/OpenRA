@@ -21,7 +21,7 @@ namespace OpenRA.Orders
 		static Target TargetForInput(World world, CPos cell, int2 worldPixel, MouseInput mi)
 		{
 			var actor = world.ScreenMap.ActorsAt(mi)
-				.Where(a => !world.FogObscures(a) && a.Info.HasTraitInfo<ITargetableInfo>())
+				.Where(a => a.Info.HasTraitInfo<ITargetableInfo>() && !world.FogObscures(a))
 				.WithHighestSelectionPriority(worldPixel);
 
 			if (actor != null)
