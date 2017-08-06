@@ -311,21 +311,20 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 
 		void SetSpawnedFacing(Actor spawned, Actor spawner, ExitInfo exit)
 		{
-			if (facing.Value == null)
-				return;
-
 			// Missiles have its own facing code
 			if (Info.SpawnIsMissile)
 				return;
 
-			var launch_angle = exit != null ? exit.Facing : 0;
+			int facingOffset = facing.Value == null ? 0 : facing.Value.Facing;
+
+			var launchFacing = exit != null ? exit.Facing : 0;
 
 			var spawnFacing = spawned.TraitOrDefault<IFacing>();
 			if (spawnFacing != null)
-				spawnFacing.Facing = (facing.Value.Facing + launch_angle) % 256;
+				spawnFacing.Facing = (facingOffset + launchFacing) % 256;
 
 			foreach (var t in spawned.TraitsImplementing<Turreted>())
-				t.TurretFacing = (facing.Value.Facing + launch_angle) % 256;
+				t.TurretFacing = (facingOffset + launchFacing) % 256;
 		}
 
 		public IEnumerable<PipType> GetPips(Actor self)

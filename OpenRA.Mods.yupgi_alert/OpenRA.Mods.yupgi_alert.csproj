@@ -98,6 +98,7 @@
     <Compile Include="Traits\FireWeaponAtSelf.cs" />
     <Compile Include="Traits\PaletteEffects\TermitePaletteEffect.cs" />
     <Compile Include="Traits\Render\WithMindcontrolArc.cs" />
+    <Compile Include="Traits\MobMemberSlave.cs" />
     <Compile Include="Traits\SpawnedHarvester.cs" />
     <Compile Include="Traits\PaletteEffects\IronCurtainPaletteEffect.cs" />
     <Compile Include="Traits\SpawnedExplodes.cs" />
@@ -112,6 +113,7 @@
     <Compile Include="Traits\ExplodeWeapon.cs" />
     <Compile Include="Traits\Nydus.cs" />
     <Compile Include="Traits\NydusPrimaryExit.cs" />
+    <Compile Include="Traits\MobSpawner.cs" />
     <Compile Include="Traits\SpawnerHarvester.cs" />
     <Compile Include="Traits\Spawner.cs" />
     <Compile Include="Traits\StructureChrono.cs" />
