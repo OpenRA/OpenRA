@@ -129,7 +129,7 @@ V2RL:
 	Tooltip:
 		Name: Heavy Tank
 	Health:
-		HP: 550
+		HP: 600
 	Armor:
 		Type: Heavy
 	Mobile:
@@ -213,6 +213,8 @@ V2RL:
 		VisualBounds: 44,38,0,-4
 	ProducibleWithLevel:
 		Prerequisites: vehicles.upgraded
+	DetectCloaked:
+		Range: 6c0
 
 ARTY:
 	Inherits: ^Tank
@@ -322,7 +324,7 @@ MCV:
 	Armor:
 		Type: Light
 	Mobile:
-		Speed: 85
+		Speed: 71
 		Crushes: wall, mine, crate, infantry
 	RevealsShroud:
 		Range: 4c0
@@ -502,7 +504,7 @@ MGG:
 	Armor:
 		Type: Heavy
 	Mobile:
-		Speed: 85
+		Speed: 99
 	WithIdleOverlay@SPINNER:
 		Offset: -299,0,171
 		Sequence: spinner
@@ -535,7 +537,7 @@ MRJ:
 	Armor:
 		Type: Heavy
 	Mobile:
-		Speed: 85
+		Speed: 99
 	RevealsShroud:
 		Range: 7c0
 	WithIdleOverlay@SPINNER:
@@ -554,7 +556,7 @@ MRJ:
 		DeflectionStances: Neutral, Enemy
 	RenderJammerCircle:
 	DetectCloaked:
-		Range: 7c0
+		Range: 6c0
 
 TTNK:
 	Inherits: ^Tank
@@ -563,13 +565,14 @@ TTNK:
 		Queue: Vehicle
 		BuildPaletteOrder: 170
 		Prerequisites: tsla, stek, ~vehicles.russia, ~techlevel.high
+		BuildDuration: 1166
 		Description: Tank with mounted tesla coil.\n  Strong vs Infantry, Vehicles, Buildings\n  Weak vs Aircraft
 	Valued:
 		Cost: 1350
 	Tooltip:
 		Name: Tesla Tank
 	Health:
-		HP: 400
+		HP: 450
 	Armor:
 		Type: Light
 	Mobile:
@@ -673,6 +676,7 @@ CTNK:
 		Queue: Vehicle
 		BuildPaletteOrder: 200
 		Prerequisites: atek, ~vehicles.germany, ~techlevel.high
+		BuildDuration: 1166
 		Description: Chrono Tank, teleports to areas within range.\n  Strong vs Vehicles, Buildings\n  Weak vs Infantry, Aircraft\n  Special ability: Can teleport
 	Valued:
 		Cost: 1350
@@ -681,7 +685,7 @@ CTNK:
 	SelectionDecorations:
 		VisualBounds: 30,30
 	Health:
-		HP: 400
+		HP: 450
 	Armor:
 		Type: Light
 	Mobile:
@@ -743,6 +747,7 @@ STNK:
 		Queue: Vehicle
 		BuildPaletteOrder: 130
 		Prerequisites: atek, ~vehicles.england, ~techlevel.high
+		BuildDuration: 1166
 		Description: Lightly armored infantry transport\nwhich can cloak. Can detect cloaked units.\n  Strong vs Light armor\n  Weak vs Infantry, Tanks, Aircraft
 	Valued:
 		Cost: 1350
