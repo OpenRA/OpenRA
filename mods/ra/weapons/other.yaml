@@ -29,6 +29,9 @@ FireballLauncher:
 		Speed: 250
 		TrailImage: fb2
 		Image: FB1
+	Warhead@1Dam: SpreadDamage
+		Versus:
+			Light: 50
 
 Flamer:
 	Inherits: ^FireWeapon
@@ -88,6 +91,9 @@ PortaTesla:
 	Range: 6c0
 	Warhead@1Dam: SpreadDamage
 		Damage: 45
+		Versus:
+			Wood: 75
+			Heavy: 60
 
 TTankZap:
 	Inherits: ^TeslaWeapon

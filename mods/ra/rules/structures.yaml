@@ -557,8 +557,6 @@ AGUN:
 		RangeCircleType: aa
 	Power:
 		Amount: -50
-	DetectCloaked:
-		Range: 6c0
 	BodyOrientation:
 		UseClassicFacingFudge: True
 
@@ -608,6 +606,7 @@ DOME:
 	InfiltrateForExploration:
 	DetectCloaked:
 		Range: 10c0
+		RequiresCondition: !disabled
 	RenderDetectionCircle:
 	Power:
 		Amount: -40
@@ -822,7 +821,7 @@ SAM:
 		Prerequisites: dome, ~structures.soviet, ~techlevel.medium
 		Description: Anti-Air base defense.\nRequires power to operate.\nCan detect cloaked units.\n  Strong vs Aircraft\n  Weak vs Ground units
 	Valued:
-		Cost: 750
+		Cost: 700
 	Tooltip:
 		Name: SAM Site
 	Building:
@@ -857,8 +856,6 @@ SAM:
 		RangeCircleType: aa
 	Power:
 		Amount: -40
-	DetectCloaked:
-		Range: 6c0
 	BodyOrientation:
 		UseClassicFacingFudge: True
 
@@ -1122,7 +1119,7 @@ PROC:
 	Armor:
 		Type: Wood
 	RevealsShroud:
-		Range: 6c0
+		Range: 5c0
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
 		Range: 4c0
@@ -1349,7 +1346,7 @@ AFLD:
 		OrderName: SovietSpyPlane
 		Prerequisites: aircraft.soviet
 		Icon: spyplane
-		ChargeTime: 180
+		ChargeTime: 150
 		Description: Spy Plane
 		LongDesc: Reveals an area of the map\nand cloaked enemy units.
 		SelectTargetSpeechNotification: SelectTarget
@@ -1367,7 +1364,7 @@ AFLD:
 		OrderName: SovietParatroopers
 		Prerequisites: aircraft.soviet
 		Icon: paratroopers
-		ChargeTime: 360
+		ChargeTime: 300
 		Description: Paratroopers
 		LongDesc: A Badger drops a squad of infantry\nanywhere on the map.
 		DropItems: E1R1,E1R1,E1R1,E3R1,E3R1
@@ -1384,7 +1381,7 @@ AFLD:
 		OrderName: UkraineParabombs
 		Prerequisites: aircraft.ukraine
 		Icon: parabombs
-		ChargeTime: 360
+		ChargeTime: 300
 		Description: Parabombs
 		LongDesc: A squad of Badgers drops parachuted\nbombs on your target.
 		SelectTargetSpeechNotification: SelectTarget
@@ -1521,7 +1518,7 @@ STEK:
 		Dimensions: 3,3
 		LocalCenterOffset: 0,-512,0
 	Health:
-		HP: 600
+		HP: 800
 	Armor:
 		Type: Wood
 	RevealsShroud:
@@ -1546,7 +1543,7 @@ BARR:
 		Prerequisites: anypower, ~structures.soviet, ~techlevel.infonly
 		Description: Trains infantry.
 	Valued:
-		Cost: 400
+		Cost: 500
 	Tooltip:
 		Name: Soviet Barracks
 	Building:
@@ -1815,7 +1812,7 @@ SBAG:
 	Tooltip:
 		Name: Sandbag Wall
 	Health:
-		HP: 300
+		HP: 150
 	Armor:
 		Type: Wood
 	LineBuild:
@@ -1840,7 +1837,7 @@ FENC:
 	Tooltip:
 		Name: Wire Fence
 	Health:
-		HP: 300
+		HP: 150
 	Armor:
 		Type: Wood
 	LineBuild:
@@ -1868,7 +1865,7 @@ BRIK:
 		DamagedSounds: crmble2.aud
 		DestroyedSounds: kaboom30.aud
 	Health:
-		HP: 500
+		HP: 400
 	Armor:
 		Type: Concrete
 	Crushable:

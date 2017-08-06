@@ -69,19 +69,27 @@ FCOM:
 		Footprint: xx xx ==
 		Dimensions: 2,3
 		LocalCenterOffset: 0,-512,0
-	Valued:
-		Cost: 2000
 	Health:
-		HP: 400
+		HP: 800
 	Armor:
 		Type: Wood
 	Tooltip:
 		Name: Forward Command
 	RevealsShroud:
-		Range: 10c0
+		Range: 5c0
+		RevealGeneratedShroud: False
+	RevealsShroud@GAPGEN:
+		Range: 4c0
 	WithBuildingBib:
+	ExternalCapturable: 
+		CaptureCompleteTime: 30
+	ExternalCapturableBar:
+	GivesBuildableArea:
+	BaseProvider:
+		Range: 8c0
+	EngineerRepairable:
 	Power:
-		Amount: -200
+		Amount: 0
 	ProvidesPrerequisite@buildingname:
 
 HOSP:
@@ -352,17 +360,21 @@ MISS:
 		Footprint: xxx xxx ===
 		Dimensions: 3,3
 		LocalCenterOffset: 0,-512,0
-	Valued:
-		Cost: 2000
 	Health:
-		HP: 400
+		HP: 600
 	RevealsShroud:
-		Range: 3c0
+		Range: 10c0
+		RevealGeneratedShroud: False
+	RevealsShroud@GAPGEN:
+		Range: 6c0
 	Armor:
 		Type: Wood
 	Tooltip:
-		Name: Technology Center
+		Name: Communications Center
 	WithBuildingBib:
+	ExternalCapturable: 
+	ExternalCapturableBar:
+	EngineerRepairable:
 	WithDeathAnimation:
 		DeathSequence: dead
 		UseDeathTypeSuffix: false
