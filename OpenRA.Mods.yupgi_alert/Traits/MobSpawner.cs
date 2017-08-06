@@ -144,6 +144,9 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 				case "Move":
 					MoveSlaves(order);
 					break;
+				case "AttackMove":
+					AttackMoveSlaves(order);
+					break;
 				default:
 					// Do nothing.
 					break;
@@ -277,10 +280,19 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 				var spawnOffset = exit == null ? WVec.Zero : exit.SpawnOffset;
 				slave.Trait<IPositionable>().SetVisualPosition(slave, centerPosition + spawnOffset);
 
+				var location = self.World.Map.CellContaining(centerPosition + spawnOffset);
+
 				var mv = slave.Trait<IMove>();
-				slave.QueueActivity(mv.MoveIntoWorld(slave, self.World.Map.CellContaining(centerPosition + spawnOffset)));
+				slave.QueueActivity(mv.MoveIntoWorld(slave, location));
+
+				// Move to rally point if any.
 				if (rallyPoint != null)
 					rallyPoint.QueueRallyOrder(self, slave);
+				else
+				{
+					slave.QueueActivity(mv.MoveTo(location, 2));
+					// Move to a valid position, if no rally point.
+				}
 
 				w.Add(slave);
 			});
@@ -357,6 +369,17 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 					continue;
 
 				mob.MobMemberSlave.Move(mob.Actor, order);
+			}
+		}
+
+		void AttackMoveSlaves(Order order)
+		{
+			foreach (var mob in mobs)
+			{
+				if (!mob.IsValid || !mob.Actor.IsInWorld)
+					continue;
+
+				mob.MobMemberSlave.AttackMove(mob.Actor, order);
 			}
 		}
 

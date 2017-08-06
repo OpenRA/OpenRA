@@ -15,6 +15,7 @@
 using System.Linq;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
+using OpenRA.Mods.Common.Activities;
 
 /*
  * Needs base engine modification.
@@ -123,6 +124,22 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 				if (mv.IsTraitEnabled())
 				{
 					self.QueueActivity(mv.MoveTo(order.TargetLocation, 2));
+					break;
+				}
+		}
+
+		public void AttackMove(Actor self, Order order)
+		{
+			self.CancelActivity();
+
+			// And tell attack bases to stop attacking.
+			if (moves.Length == 0)
+				return;
+
+			foreach (var mv in moves)
+				if (mv.IsTraitEnabled())
+				{
+					self.QueueActivity(new AttackMoveActivity(self, mv.MoveTo(order.TargetLocation, 1)));
 					break;
 				}
 		}
