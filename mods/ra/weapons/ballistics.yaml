@@ -52,12 +52,20 @@
 
 90mm:
 	Inherits: ^Cannon
+	Warhead@1Dam: SpreadDamage
+		Versus:
+			None: 30
+			Heavy: 115
 
 105mm:
 	Inherits: ^Cannon
 	ReloadDelay: 70
 	Burst: 2
 	BurstDelay: 4
+	Warhead@1Dam: SpreadDamage
+		Versus:
+			None: 30
+			Heavy: 115
 
 120mm:
 	Inherits: ^Cannon
@@ -66,6 +74,9 @@
 	InvalidTargets: Air, Infantry
 	Warhead@1Dam: SpreadDamage
 		Damage: 60
+		Versus:
+			None: 30
+			Heavy: 115
 		InvalidTargets: Air
 
 TurretGun:
@@ -86,13 +97,13 @@ TurretGun:
 		Speed: 204
 		Blockable: false
 		LaunchAngle: 62
-		Inaccuracy: 2c256
+		Inaccuracy: 1c938
 	Warhead@1Dam: SpreadDamage
 		Spread: 426
-		Damage: 240
+		Damage: 230
 		Versus:
-			None: 90
-			Wood: 40
+			None: 80
+			Wood: 35
 			Light: 60
 			Heavy: 25
 			Concrete: 50
@@ -161,7 +172,7 @@ Grenade:
 		Spread: 256
 		Damage: 60
 		Versus:
-			None: 50
+			None: 60
 			Wood: 100
 			Light: 25
 			Heavy: 25

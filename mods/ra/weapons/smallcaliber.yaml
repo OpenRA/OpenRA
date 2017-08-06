@@ -104,7 +104,7 @@ Vulcan:
 		Versus:
 			None: 200
 			Wood: 50
-			Light: 60
+			Light: 50
 			Heavy: 25
 			Concrete: 25
 		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
