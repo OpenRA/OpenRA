@@ -150,8 +150,38 @@ namespace OpenRA.Mods.Common.Activities
 			}
 		}
 
+		public override bool Cancel(Actor self, bool keepQueue = false)
+		{
+			// Let child activities do what they want so that units don't end up in strange state.
+			// Just clear the path so that child activity doesn't run for too long.
+			// Although we always return false here, Move with nowhere to move will eventually
+			// proceed to the NextActivity when the actor is in good position.
+			if (ChildActivity == null)
+				return base.Cancel(self, keepQueue);
+
+			if (path != null)
+				path.Clear();
+
+			if (!keepQueue && NextInQueue != null)
+				NextInQueue = null;
+
+			// Could be turn activity, which should be canceled.
+			// To prevent Move first/second half activities from being interrupted,
+			// we set IsInterruptible to false in their constructor.
+			return ChildActivity.Cancel(self, false);
+		}
+
 		public override Activity Tick(Actor self)
 		{
+			// ChildActivity is the top priority, unlike other activities.
+			// Even if this activity is canceled, we must let the child be run so that units
+			// will not end up in an odd place.
+			if (ChildActivity != null)
+			{
+				ChildActivity = ActivityUtils.RunActivity(self, ChildActivity);
+				return this;
+			}
+
 			// If the actor is inside a tunnel then we must let them move
 			// all the way through before moving to the next activity
 			if (IsCanceled && self.Location.Layer != CustomMovementLayerType.Tunnel)
@@ -191,30 +221,33 @@ namespace OpenRA.Mods.Common.Activities
 			if (firstFacing != mobile.Facing)
 			{
 				path.Add(nextCell.Value.First);
-				return ActivityUtils.SequenceActivities(new Turn(self, firstFacing), this);
+				QueueChild(new Turn(self, firstFacing));
+				return this;
 			}
-			else
-			{
-				mobile.SetLocation(mobile.FromCell, mobile.FromSubCell, nextCell.Value.First, nextCell.Value.Second);
 
-				var map = self.World.Map;
-				var from = (mobile.FromCell.Layer == 0 ? map.CenterOfCell(mobile.FromCell) :
-					self.World.GetCustomMovementLayers()[mobile.FromCell.Layer].CenterOfCell(mobile.FromCell)) +
-					map.Grid.OffsetOfSubCell(mobile.FromSubCell);
+			mobile.SetLocation(mobile.FromCell, mobile.FromSubCell, nextCell.Value.First, nextCell.Value.Second);
 
-				var to = Util.BetweenCells(self.World, mobile.FromCell, mobile.ToCell) +
-					(map.Grid.OffsetOfSubCell(mobile.FromSubCell) + map.Grid.OffsetOfSubCell(mobile.ToSubCell)) / 2;
+			var map = self.World.Map;
+			var from = (mobile.FromCell.Layer == 0 ? map.CenterOfCell(mobile.FromCell) :
+				self.World.GetCustomMovementLayers()[mobile.FromCell.Layer].CenterOfCell(mobile.FromCell)) +
+				map.Grid.OffsetOfSubCell(mobile.FromSubCell);
 
-				var move = new MoveFirstHalf(
-					this,
-					from,
-					to,
-					mobile.Facing,
-					mobile.Facing,
-					0);
+			var to = Util.BetweenCells(self.World, mobile.FromCell, mobile.ToCell) +
+				(map.Grid.OffsetOfSubCell(mobile.FromSubCell) + map.Grid.OffsetOfSubCell(mobile.ToSubCell)) / 2;
 
-				return move;
-			}
+			QueueChild(new MoveFirstHalf(
+				this,
+				from,
+				to,
+				mobile.Facing,
+				mobile.Facing,
+				0));
+
+			// While carrying out one Move order, MoveSecondHalf finishes its work from time to time and returns null.
+			// That causes the ChildActivity to be null and makes us return to this part of this function.
+			// If we only queue the activity and not run it, units will pause for one tick!
+			ChildActivity = ActivityUtils.RunActivity(self, ChildActivity);
+			return this;
 		}
 
 		[Conditional("SANITY_CHECKS")]
@@ -322,6 +355,7 @@ namespace OpenRA.Mods.Common.Activities
 				ToFacing = toFacing;
 				moveFraction = startingFraction;
 				MoveFractionTotal = (to - from).Length;
+				IsInterruptible = false; // See comments in Move.Cancel()
 
 				// Calculate an elliptical arc that joins from and to
 				var delta = Util.NormalizeFacing(fromFacing - toFacing);
@@ -344,17 +378,6 @@ namespace OpenRA.Mods.Common.Activities
 				}
 			}
 
-			public override bool Cancel(Actor self, bool keepQueue = false)
-			{
-				Move.Cancel(self, keepQueue);
-				return base.Cancel(self);
-			}
-
-			public override void Queue(Activity activity)
-			{
-				Move.Queue(activity);
-			}
-
 			public override Activity Tick(Actor self)
 			{
 				var ret = InnerTick(self, Move.mobile);
@@ -362,9 +385,14 @@ namespace OpenRA.Mods.Common.Activities
 
 				if (moveFraction > MoveFractionTotal)
 					moveFraction = MoveFractionTotal;
+
 				UpdateCenterLocation(self, Move.mobile);
 
-				return ret;
+				if (ret == this)
+					return ret;
+
+				Queue(ret);
+				return NextActivity;
 			}
 
 			Activity InnerTick(Actor self, Mobile mobile)
@@ -373,11 +401,7 @@ namespace OpenRA.Mods.Common.Activities
 				if (moveFraction <= MoveFractionTotal)
 					return this;
 
-				var next = OnComplete(self, mobile, Move);
-				if (next != null)
-					return next;
-
-				return Move;
+				return OnComplete(self, mobile, Move);
 			}
 
 			void UpdateCenterLocation(Actor self, Mobile mobile)
