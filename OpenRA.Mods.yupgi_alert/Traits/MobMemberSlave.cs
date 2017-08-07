@@ -19,7 +19,7 @@ using OpenRA.Mods.Common.Activities;
 using System;
 
 /*
- * Needs base engine modification.
+ * Needs base engine modification. (Becaus MobSpawner.cs mods it)
  */
 
 namespace OpenRA.Mods.Yupgi_alert.Traits

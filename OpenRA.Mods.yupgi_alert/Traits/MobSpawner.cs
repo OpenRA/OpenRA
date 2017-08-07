@@ -21,7 +21,7 @@ using OpenRA.Mods.Common.Activities;
 /*
  * Needs base engine modification.
  * In AttackOmni.cs, SetTarget() made public.
- * In Mobile.cs, NotOccupySpace added. Aircraft as a dummy unit wasn't the greatest idea as they fly over anything.
+ * In Mobile.cs, OccupySpace (true by default) added. Aircraft trait for a dummy unit wasn't the greatest idea as they fly over anything.
  * Move.cs, uses my PR which isn't in bleed yet. (PR to make Move use parent child activity)
  *
  * The difference between Spawner (carrier logic) and this is that
