@@ -39,12 +39,9 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 
 	class RageSusceptible : ConditionalTrait<RageSusceptibleInfo>, INotifyIdle
 	{
-		readonly RageSusceptibleInfo info;
-
 		public RageSusceptible(Actor self, RageSusceptibleInfo info)
 			: base(info)
 		{
-			this.info = info;
 		}
 
 		void StopOrder(Actor self)
