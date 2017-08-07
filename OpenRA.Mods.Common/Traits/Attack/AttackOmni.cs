@@ -53,6 +53,7 @@ namespace OpenRA.Mods.Common.Traits
 				return this;
 			}
 
+			// Added for OP Mod
 			public override IEnumerable<Target> GetTargets(Actor self)
 			{
 				yield return target;
