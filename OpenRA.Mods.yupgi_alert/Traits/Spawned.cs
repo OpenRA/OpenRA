@@ -204,6 +204,8 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 						atb.AttackTarget(target, false, true, true); // force fire on the ground.
 					else if (target.Actor.Owner.Stances[self.Owner] == Stance.Ally)
 						atb.AttackTarget(target, false, true, true); // force fire on ally.
+					else if (target.Actor.Owner.Stances[self.Owner] == Stance.Neutral)
+						atb.AttackTarget(target, false, true, true); // force fire on neutral.
 					else
 						/* Target deprives me of force fire information.
 						 * This is a glitch if force fire weapon and normal fire are different, as in

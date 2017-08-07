@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using OpenRA.Activities;
 using OpenRA.Traits;
 
@@ -29,7 +30,8 @@ namespace OpenRA.Mods.Common.Traits
 			return new SetTarget(this, newTarget, allowMove);
 		}
 
-		protected class SetTarget : Activity
+		// OP Mod: made public for MobSpawner
+		public class SetTarget : Activity
 		{
 			readonly Target target;
 			readonly AttackOmni attack;
@@ -49,6 +51,11 @@ namespace OpenRA.Mods.Common.Traits
 
 				attack.DoAttack(self, target);
 				return this;
+			}
+
+			public override IEnumerable<Target> GetTargets(Actor self)
+			{
+				yield return target;
 			}
 		}
 	}

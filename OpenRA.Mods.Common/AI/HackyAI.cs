@@ -291,6 +291,7 @@ namespace OpenRA.Mods.Common.AI
 		readonly IPathFinder pathfinder;
 
 		readonly Func<Actor, bool> isEnemyUnit;
+		readonly Func<Actor, bool> isAircraft;
 		Dictionary<SupportPowerInstance, int> waitingPowers = new Dictionary<SupportPowerInstance, int>();
 		Dictionary<string, SupportPowerDecision> powerDecisions = new Dictionary<string, SupportPowerDecision>();
 
@@ -345,6 +346,10 @@ namespace OpenRA.Mods.Common.AI
 				IsOwnedByEnemy(unit)
 					&& !unit.Info.HasTraitInfo<HuskInfo>()
 					&& unit.Info.HasTraitInfo<ITargetableInfo>();
+
+			// OP Mod: Mob nexuses are not aircraft!
+			isAircraft = unit => unit.Info.HasTraitInfo<AircraftInfo>()
+				&& unit.Info.Name.ToLowerInvariant() != "e1nexus";
 
 			foreach (var decision in info.PowerDecisions)
 				powerDecisions.Add(decision.OrderName, decision);
@@ -991,7 +996,7 @@ namespace OpenRA.Mods.Common.AI
 				else
 					unitsHangingAroundTheBase.Add(a);
 
-				if (a.Info.HasTraitInfo<AircraftInfo>() && a.Info.HasTraitInfo<AttackBaseInfo>())
+				if (isAircraft(a) && a.Info.HasTraitInfo<AttackBaseInfo>())
 				{
 					var air = GetSquadOfType(SquadType.Air);
 					if (air == null)
@@ -1016,7 +1021,7 @@ namespace OpenRA.Mods.Common.AI
 				var attackForce = RegisterNewSquad(SquadType.Assault);
 
 				foreach (var a in unitsHangingAroundTheBase)
-					if (!a.Info.HasTraitInfo<AircraftInfo>())
+					if (!isAircraft(a))
 					{
 						attackForce.Units.Add(a);
 						WhichSquad[a] = attackForce;
@@ -1036,7 +1041,7 @@ namespace OpenRA.Mods.Common.AI
 			var allEnemyBaseBuilder = FindEnemyConstructionYards();
 			var ownUnits = activeUnits
 				.Where(unit => unit.IsIdle && unit.Info.HasTraitInfo<AttackBaseInfo>()
-					&& !unit.Info.HasTraitInfo<AircraftInfo>() && !unit.Info.HasTraitInfo<HarvesterInfo>()).ToList();
+					&& !isAircraft(unit) && !unit.Info.HasTraitInfo<HarvesterInfo>()).ToList();
 
 			if (!allEnemyBaseBuilder.Any() || (ownUnits.Count < Info.SquadSize))
 				return;

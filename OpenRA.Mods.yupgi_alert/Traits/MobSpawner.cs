@@ -12,16 +12,16 @@
  */
 #endregion
 
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
 using OpenRA.Traits;
+using OpenRA.Mods.Common.Activities;
 
 /*
  * Needs base engine modification.
- * In Selection.cs, I added Remove().
+ * In Selection.cs, Remove() added.
+ * In AttackOmni.cs, SetTarget() made public.
  *
  * The difference between Spawner (carrier logic) and this is that
  * carriers have units going in and out of the master actor for reload activities,
@@ -70,10 +70,10 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 		public override object Create(ActorInitializer init) { return new MobSpawner(init, this); }
 	}
 
-	public class MobSpawner : INotifyCreated, INotifyKilled, IResolveOrder,
-		INotifyOwnerChanged, ITick, INotifyActorDisposing
+	public class MobSpawner : INotifyCreated, INotifyKilled, INotifyOwnerChanged, ITick,
+		INotifyActorDisposing, IResolveOrder, INotifyAttack
 	{
-		class MobEntry
+		public class MobEntry
 		{
 			public string ActorName = null;
 			public Actor Actor = null;
@@ -86,10 +86,11 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 
 		public readonly MobSpawnerInfo Info;
 		readonly Actor self;
-		readonly MobEntry[] mobs;
+		public MobEntry[] Mobs { get; private set; }
 
 		int spawnReplaceTicks = 0;
 		IPositionable pos;
+		Aircraft aircraft;
 		Health health;
 
 		// For non-nexus spawners.
@@ -103,12 +104,12 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 			Info = info;
 
 			// Initialize mob entry
-			mobs = new MobEntry[info.Actors.Length];
+			Mobs = new MobEntry[info.Actors.Length];
 			for (var i = 0; i < info.Actors.Length; i++)
 			{
-				mobs[i] = new MobEntry();
-				mobs[i].ActorName = info.Actors[i].ToLowerInvariant();
-				mobs[i].MaxHealth = self.World.Map.Rules.Actors[mobs[i].ActorName].TraitInfo<HealthInfo>().HP;
+				Mobs[i] = new MobEntry();
+				Mobs[i].ActorName = info.Actors[i].ToLowerInvariant();
+				Mobs[i].MaxHealth = self.World.Map.Rules.Actors[Mobs[i].ActorName].TraitInfo<HealthInfo>().HP;
 			}
 		}
 
@@ -119,13 +120,14 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 			facing = self.TraitOrDefault<IFacing>();
 			pos = self.Trait<IPositionable>();
 			health = self.Trait<Health>();
+			aircraft = self.Trait<Aircraft>();
 
 			// Spawn initial load.
 			int burst = Info.InitialActorCount > 0 ? Info.InitialActorCount : Info.Actors.Length;
 			for (int i = 0; i < burst; i++)
 				Replenish(self);
 			hasSpawnedInitialLoad = true;
-		}	
+		}
 
 		public void ResolveOrder(Actor self, Order order)
 		{
@@ -137,20 +139,19 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 				case "Stop":
 					StopSlaves();
 					break;
-				case "Attack":
-				case "ForceAttack":
-					AssignTargetsToSlaves(Target.FromOrder(self.World, order));
-					break;
-				case "Move":
-					MoveSlaves(order);
-					break;
-				case "AttackMove":
-					AttackMoveSlaves(order);
-					break;
 				default:
-					// Do nothing.
 					break;
 			}
+		}
+
+		void INotifyAttack.PreparingAttack(Actor self, Target target, Armament a, Barrel barrel)
+		{
+			AssignTargetsToSlaves(self, target);
+		}
+
+		void INotifyAttack.Attacking(Actor self, Target target, Armament a, Barrel barrel)
+		{
+			AssignTargetsToSlaves(self, target);
 		}
 
 		public void Tick(Actor self)
@@ -172,13 +173,16 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 				SetNexusPosition(self);
 				SetNexusHealth(self);
 			}
+
+			if (!Info.SlavesHaveFreeWill)
+				AssignSlaveActivity(self);
 		}
 
 		public void OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
 		{
 			self.World.AddFrameEndTask(w =>
 			{
-				foreach (var mob in mobs)
+				foreach (var mob in Mobs)
 					mob.Actor.ChangeOwner(newOwner); // Under influence of mind control.
 			});
 		}
@@ -189,7 +193,7 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 			if (Info.SlavesHaveFreeWill)
 				return;
 
-			foreach (var mob in mobs)
+			foreach (var mob in Mobs)
 				if (!mob.Actor.IsDead)
 					mob.Actor.Kill(e.Attacker);
 		}
@@ -200,7 +204,7 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 			if (Info.SlavesHaveFreeWill)
 				return;
 
-			foreach (var mob in mobs)
+			foreach (var mob in Mobs)
 				if (mob.IsValid)
 					mob.Actor.Dispose();
 		}
@@ -208,7 +212,7 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 		MobEntry SelectEntryToSpawn()
 		{
 			// If any thing is marked dead or null, that's a candidate.
-			var candidates = mobs.Where(m => !m.IsValid);
+			var candidates = Mobs.Where(m => !m.IsValid);
 			if (!candidates.Any())
 				return null;
 
@@ -260,7 +264,7 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 			else
 			{
 				// Spawning from a virtual nexus: exit by an existing member.
-				foreach (var mob in mobs)
+				foreach (var mob in Mobs)
 					if (mob.IsValid && mob.Actor.IsInWorld)
 					{
 						centerPosition = mob.Actor.CenterPosition;
@@ -305,7 +309,7 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 
 			// No need to update mobs entry because Actor.IsDead marking is done automatically by the engine.
 			// However, we need to check if all are dead when AggregateHealth.
-			if (Info.AggregateHealth && mobs.All(m => !m.IsValid))
+			if (Info.AggregateHealth && Mobs.All(m => !m.IsValid))
 				self.Dispose();
 
 			if (spawnReplaceTicks <= 0)
@@ -341,7 +345,7 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 
 		void StopSlaves()
 		{
-			foreach (var mob in mobs)
+			foreach (var mob in Mobs)
 			{
 				if (!mob.IsValid)
 					continue;
@@ -350,9 +354,9 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 			}
 		}
 
-		void AssignTargetsToSlaves(Target target)
+		void AssignTargetsToSlaves(Actor self, Target target)
 		{
-			foreach (var mob in mobs)
+			foreach (var mob in Mobs)
 			{
 				if (!mob.IsValid)
 					continue;
@@ -361,32 +365,48 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 			}
 		}
 
-		void MoveSlaves(Order order)
+		void MoveSlaves(Actor self)
 		{
-			foreach (var mob in mobs)
+			var target = self.CurrentActivity.GetTargets(self).First();
+			var location = self.World.Map.CellContaining(target.CenterPosition);
+
+			foreach (var mob in Mobs)
 			{
 				if (!mob.IsValid || !mob.Actor.IsInWorld)
 					continue;
 
-				mob.MobMemberSlave.Move(mob.Actor, order);
+				if (mob.Actor.Location == location)
+					continue;
+
+				if (!mob.MobMemberSlave.IsMoving)
+				{
+					mob.Actor.CancelActivity();
+					mob.MobMemberSlave.Move(mob.Actor, location);
+				}
 			}
 		}
 
-		void AttackMoveSlaves(Order order)
+		void AttackMoveSlaves(Actor self)
 		{
-			foreach (var mob in mobs)
+			var targets = self.CurrentActivity.GetTargets(self);
+			if (!targets.Any())
+				return;
+
+			var location = self.World.Map.CellContaining(targets.First().CenterPosition);
+
+			foreach (var mob in Mobs)
 			{
 				if (!mob.IsValid || !mob.Actor.IsInWorld)
 					continue;
 
-				mob.MobMemberSlave.AttackMove(mob.Actor, order);
+				mob.MobMemberSlave.AttackMove(mob.Actor, location);
 			}
 		}
 
 		void SetNexusPosition(Actor self)
 		{
 			int x = 0, y = 0, cnt = 0;
-			foreach (var mob in mobs)
+			foreach (var mob in Mobs)
 			{
 				if (!mob.IsValid || !mob.Actor.IsInWorld)
 					continue;
@@ -400,8 +420,8 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 			if (cnt == 0)
 				return;
 
-			var newPos = new WPos(x / cnt, y / cnt, 0);
-			pos.SetPosition(self, newPos);
+			var newPos = new WPos(x / cnt, y / cnt, aircraft.Info.CruiseAltitude.Length);
+			// pos.SetPosition(self, newPos);
 			pos.SetVisualPosition(self, newPos);
 		}
 
@@ -424,7 +444,7 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 			int maxHealth = 0;
 			int h = 0;
 
-			foreach (var mob in mobs)
+			foreach (var mob in Mobs)
 			{
 				maxHealth += mob.MaxHealth;
 
@@ -445,6 +465,16 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 				health.InflictDamage(self, self, new Damage(-health.MaxHP), true); // fully heal
 				health.InflictDamage(self, self, new Damage(health.MaxHP - h), true); // remove some health
 			}
+		}
+
+		void AssignSlaveActivity(Actor self)
+		{
+			if (self.CurrentActivity is HeliFlyAndLandWhenIdle || self.CurrentActivity is HeliFly)
+				MoveSlaves(self);
+			else if (self.CurrentActivity is AttackMoveActivity)
+				AttackMoveSlaves(self);
+			else if (self.CurrentActivity is AttackOmni.SetTarget)
+				AssignTargetsToSlaves(self, self.CurrentActivity.GetTargets(self).First());
 		}
 	}
 }
