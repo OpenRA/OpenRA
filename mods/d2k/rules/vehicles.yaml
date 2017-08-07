@@ -63,6 +63,7 @@ harvester:
 	Selectable:
 		Class: harvester
 		Priority: 7
+	DockClient:
 	Harvester:
 		PipCount: 7
 		Capacity: 28

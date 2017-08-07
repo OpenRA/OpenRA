@@ -20,7 +20,7 @@ namespace OpenRA.Mods.Common.Activities
 		readonly WithSpriteBody wsb;
 		readonly WithDockingAnimationInfo wda;
 
-		public SpriteHarvesterDockSequence(Actor self, Actor refinery, int dockAngle, bool isDragRequired, WVec dragOffset, int dragLength)
+		public SpriteHarvesterDockSequence(Actor self, Actor refinery, CPos dockLocation, int dockAngle, bool isDragRequired, WVec dragOffset, int dragLength)
 			: base(self, refinery, dockAngle, isDragRequired, dragOffset, dragLength)
 		{
 			wsb = self.Trait<WithSpriteBody>();

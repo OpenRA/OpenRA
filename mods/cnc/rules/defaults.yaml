@@ -266,6 +266,7 @@
 	WithSpriteControlGroupDecoration:
 	Selectable:
 		Bounds: 24,24
+	DockClient: # repairable so, dock client.
 	Aircraft:
 		RepairBuildings: hpad
 		LandWhenIdle: false

@@ -494,6 +494,7 @@
 	WithSpriteControlGroupDecoration:
 	Selectable:
 		Bounds: 24,24
+	DockClient: # Repair and Rearm implies dock client
 	Aircraft:
 		RepairBuildings: fix
 		RearmBuildings: afld

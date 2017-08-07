@@ -41,7 +41,11 @@ namespace OpenRA.Mods.Common.Activities
 
 			// TODO: This should check whether there is ammo left that is actually suitable for the target
 			if (ammoPools.All(x => !x.Info.SelfReloads && !x.HasAmmo()))
-				return ActivityUtils.SequenceActivities(new ReturnToBase(self, aircraft.Info.AbortOnResupply), this);
+			{
+				// return ActivityUtils.SequenceActivities(new ReturnToBase(self, aircraft.Info.AbortOnResupply), this);
+				Queue(new ReturnToBase(self, aircraft.Info.AbortOnResupply));
+				return NextActivity;
+			}
 
 			if (attackPlane != null)
 				attackPlane.DoAttack(self, target);
