@@ -145,8 +145,7 @@ sietch:
 	-GivesBuildableArea:
 	-Sellable:
 	-Capturable:
-	Power:
-		Amount: 0
+	-RepairableBuilding:
 	ProvidesPrerequisite@buildingname:
 	-WithMakeAnimation:
 	-WithCrumbleOverlay:
