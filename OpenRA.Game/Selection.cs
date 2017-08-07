@@ -42,19 +42,6 @@ namespace OpenRA
 				ns.SelectionChanged();
 		}
 
-		// ADD for OP mod, for nexus mob selection "forwarding".
-		public void Remove(World w, Actor a)
-		{
-			if (!Contains(a))
-				return;
-
-			actors.Remove(a);
-			UpdateHash();
-
-			foreach (var ns in w.WorldActor.TraitsImplementing<INotifySelection>())
-				ns.SelectionChanged();
-		}
-
 		public bool Contains(Actor a)
 		{
 			return actors.Contains(a);
