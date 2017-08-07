@@ -409,6 +409,9 @@ Actors:
 	AtreidesRally: waypoint
 		Owner: Neutral
 		Location: 5,23
+	FremenRally: waypoint
+		Owner: Neutral
+		Location: 56,54
 
 Rules: d2k|rules/campaign-rules.yaml, d2k|rules/campaign-palettes.yaml, rules.yaml
 

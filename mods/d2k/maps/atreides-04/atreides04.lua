@@ -203,4 +203,15 @@ WorldLoaded = function()
 			Utils.Do(units, IdleHunt)
 		end
 	end)
+
+	Trigger.OnExitedProximityTrigger(Sietch.CenterPosition, WDist.New(10.5 * 1024), function(a, id)
+		if a.Owner == fremen and not a.IsDead then
+			a.AttackMove(FremenRally.Location)
+			Trigger.OnIdle(a, function()
+				if a.Location.X < 54 or a.Location.Y < 54 then
+					a.AttackMove(FremenRally.Location)
+				end
+			end)
+		end
+	end)
 end
