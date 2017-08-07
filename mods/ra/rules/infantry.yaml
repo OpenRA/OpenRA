@@ -462,6 +462,10 @@ GNRL:
 	Voiced:
 		VoiceSet: StavrosVoice
 	-ScaredyCat:
+	TakeCover:
+		DamageModifiers:
+			Prone50Percent: 50
+		DamageTriggers: TriggerProne
 	WithInfantryBody:
 		IdleSequences: idle1
 
