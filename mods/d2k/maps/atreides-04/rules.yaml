@@ -88,3 +88,10 @@ tile475:
 	BodyOrientation:
 		QuantizedFacings: 1
 	AutoSelectionSize:
+
+# Placed after the sietch is destroyed so that the cliff is still unpassable
+invisibleBlocker:
+	AlwaysVisible:
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2

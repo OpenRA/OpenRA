@@ -158,6 +158,7 @@ WorldLoaded = function()
 	end)
 
 	Trigger.OnKilled(Sietch, function()
+		Actor.Create("invisibleBlocker", true, { Owner = fremen, Location = CPos.New(62, 59) })
 		UserInterface.SetMissionText("Sietch destroyed!", player.Color)
 		player.MarkFailedObjective(ProtectFremen)
 	end)
