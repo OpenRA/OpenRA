@@ -165,7 +165,7 @@ mod_yupgi_alert_SRCS := $(shell find OpenRA.Mods.yupgi_alert/ -iname '*.cs')
 mod_yupgi_alert_TARGET = mods/common/OpenRA.Mods.yupgi_alert.dll
 mod_yupgi_alert_KIND = library
 mod_yupgi_alert_DEPS = $(STD_MOD_DEPS) $(mod_common_TARGET)
-mod_yupgi_alert_LIBS = $(COMMON_LIBS) $(STD_MOD_LIBS) $(mod_common_TARGET)
+mod_yupgi_alert_LIBS = $(COMMON_LIBS) $(STD_MOD_LIBS) $(mod_cnc_TARGET) $(mod_common_TARGET)
 PROGRAMS += mod_yupgi_alert
 mods/yupgi_alert:
 	mkdir -p mods/yupgi_alert

@@ -1,7 +1,7 @@
 ﻿#region Copyright & License Information
 /*
- * Modded by Boolbada of OP Mod.
- * Modded from cargo.cs but a lot changed.
+ * Written by Boolbada of OP Mod.
+ * Follows GPLv3 License as the OpenRA engine:
  * 
  * Copyright 2007-2017 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
@@ -33,7 +33,7 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 	public class MobMemberSlave : INotifyCreated, INotifyKilled, INotifySelected
 	{
 		readonly Actor self;
-		readonly MobMemberSlaveInfo info;
+		// readonly MobMemberSlaveInfo info;
 
 		MobSpawnerInfo mobSpawnerInfo;
 		AttackBase[] attackBases;
@@ -48,7 +48,7 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 		public MobMemberSlave(ActorInitializer init, MobMemberSlaveInfo info)
 		{
 			this.self = init.Self;
-			this.info = info;
+			// this.info = info;
 		}
 
 		void INotifyCreated.Created(Actor self)
