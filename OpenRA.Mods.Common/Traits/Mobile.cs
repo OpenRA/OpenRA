@@ -73,6 +73,10 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Allow multiple (infantry) units in one cell.")]
 		public readonly bool SharesCell = false;
 
+		// OP Mod extension
+		[Desc("Occupy space? Units such as Mob spawners doesn't occupy space, letting others to enter.")]
+		public readonly bool OccupySpace = true;
+
 		[Desc("Can the actor be ordered to move in to shroud?")]
 		public readonly bool MoveIntoShroud = true;
 
@@ -379,9 +383,13 @@ namespace OpenRA.Mods.Common.Traits
 
 		public int GetInitialFacing() { return InitialFacing; }
 
+		// Modded for OP mod to support units that share the entire cell (like mob nexus)
 		public IReadOnlyDictionary<CPos, SubCell> OccupiedCells(ActorInfo info, CPos location, SubCell subCell = SubCell.Any)
 		{
-			return new ReadOnlyDictionary<CPos, SubCell>(new Dictionary<CPos, SubCell>() { { location, subCell } });
+			if (OccupySpace)
+				return new ReadOnlyDictionary<CPos, SubCell>(new Dictionary<CPos, SubCell>() { { location, subCell } });
+			else
+				return new ReadOnlyDictionary<CPos, SubCell>(); // like aircraft!
 		}
 
 		bool IOccupySpaceInfo.SharesCell { get { return SharesCell; } }
