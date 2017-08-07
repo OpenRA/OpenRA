@@ -591,7 +591,7 @@ TRUCK:
 	Buildable:
 		Queue: Vehicle.GDI, Vehicle.Nod
 		BuildPaletteOrder: 35
-		Prerequisites: ~techlevel.low
+		Prerequisites: vehicleproduction
 		Description: Transports cash to other players.\n  Unarmed
 	Valued:
 		Cost: 500
