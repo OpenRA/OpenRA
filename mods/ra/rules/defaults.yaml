@@ -213,6 +213,7 @@
 	Targetable:
 		TargetTypes: Ground, Repair, Vehicle
 		RequiresCondition: !parachute
+	DockClient: # repairable implies dock client.
 	Repairable:
 	Chronoshiftable:
 	Passenger:
@@ -494,6 +495,7 @@
 	WithSpriteControlGroupDecoration:
 	Selectable:
 		Bounds: 24,24
+	DockClient: # Repair and Rearm implies dock client
 	Aircraft:
 		RepairBuildings: fix
 		RearmBuildings: afld

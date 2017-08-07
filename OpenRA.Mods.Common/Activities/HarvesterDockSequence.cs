@@ -27,8 +27,8 @@ namespace OpenRA.Mods.Common.Activities
 		protected readonly bool IsDragRequired;
 		protected readonly WVec DragOffset;
 		protected readonly int DragLength;
-		protected readonly WPos StartDrag;
 		protected readonly WPos EndDrag;
+		protected WPos startDrag;
 
 		protected DockingState dockingState;
 
@@ -41,7 +41,13 @@ namespace OpenRA.Mods.Common.Activities
 			DragOffset = dragOffset;
 			DragLength = dragLength;
 			Harv = self.Trait<Harvester>();
-			StartDrag = self.CenterPosition;
+
+			/*
+			// It is wrong to cache StartDrag at this point.
+			// That's because dock sequence is queued while far from the refinery, moving towards it.
+			// StartDrag = self.CenterPosition;
+			*/
+
 			EndDrag = refinery.CenterPosition + DragOffset;
 		}
 
@@ -53,9 +59,17 @@ namespace OpenRA.Mods.Common.Activities
 					return this;
 				case DockingState.Turn:
 					dockingState = DockingState.Dock;
-					if (IsDragRequired)
-						return ActivityUtils.SequenceActivities(new Turn(self, DockAngle), new Drag(self, StartDrag, EndDrag, DragLength), this);
-					return ActivityUtils.SequenceActivities(new Turn(self, DockAngle), this);
+					if (!IsDragRequired)
+						if (DockAngle < 0)
+							return this;
+						else
+							return ActivityUtils.SequenceActivities(new Turn(self, DockAngle), this);
+
+					startDrag = self.CenterPosition;
+					if (DockAngle < 0)
+						return ActivityUtils.SequenceActivities(new Drag(self, startDrag, EndDrag, DragLength), this);
+					else
+						return ActivityUtils.SequenceActivities(new Turn(self, DockAngle), new Drag(self, startDrag, EndDrag, DragLength), this);
 				case DockingState.Dock:
 					if (Refinery.IsInWorld && !Refinery.IsDead)
 						foreach (var nd in Refinery.TraitsImplementing<INotifyDocking>())
@@ -74,7 +88,7 @@ namespace OpenRA.Mods.Common.Activities
 					Harv.LastLinkedProc = Harv.LinkedProc;
 					Harv.LinkProc(self, null);
 					if (IsDragRequired)
-						return ActivityUtils.SequenceActivities(new Drag(self, EndDrag, StartDrag, DragLength), NextActivity);
+						return ActivityUtils.SequenceActivities(new Drag(self, EndDrag, startDrag, DragLength), NextActivity);
 					return NextActivity;
 			}
 

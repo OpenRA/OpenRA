@@ -569,6 +569,7 @@
 	Targetable:
 		RequiresCondition: !inside-tunnel
 		TargetTypes: Ground, Vehicle, Repair
+	DockClient:
 	Repairable:
 		RepairBuildings: gadept
 		Voice: Move
@@ -666,6 +667,7 @@
 	WithTextControlGroupDecoration:
 	SelectionDecorations:
 		Palette: pips
+	DockClient:
 	Aircraft:
 		AirborneCondition: airborne
 		RepairBuildings: gadept
