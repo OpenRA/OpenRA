@@ -20,8 +20,6 @@ using System;
 
 /*
  * Needs base engine modification.
- * 
- * In Selection.cs, I added Remove().
  */
 
 namespace OpenRA.Mods.Yupgi_alert.Traits
@@ -176,7 +174,9 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 				return;
 
 			// I'm assuming these guys are selectable, both slave and the nexus.
-			self.World.Selection.Remove(self.World, self);
+			// self.World.Selection.Remove(self.World, self); No need to remove when you don't wee the selection decoration.
+			// -SelectionDecorations: is all you need.
+			// Also use RejectsOrder if necessary.
 			self.World.Selection.Add(self.World, Master);
 		}
 	}

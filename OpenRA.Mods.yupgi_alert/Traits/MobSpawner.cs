@@ -20,8 +20,9 @@ using OpenRA.Mods.Common.Activities;
 
 /*
  * Needs base engine modification.
- * In Selection.cs, Remove() added.
  * In AttackOmni.cs, SetTarget() made public.
+ * In Mobile.cs, NotOccupySpace added. Aircraft as a dummy unit wasn't the greatest idea as they fly over anything.
+ * Move.cs, uses my PR which isn't in bleed yet. (PR to make Move use parent child activity)
  *
  * The difference between Spawner (carrier logic) and this is that
  * carriers have units going in and out of the master actor for reload activities,
@@ -120,7 +121,7 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 			facing = self.TraitOrDefault<IFacing>();
 			pos = self.Trait<IPositionable>();
 			health = self.Trait<Health>();
-			aircraft = self.Trait<Aircraft>();
+			aircraft = self.TraitOrDefault<Aircraft>();
 
 			// Spawn initial load.
 			int burst = Info.InitialActorCount > 0 ? Info.InitialActorCount : Info.Actors.Length;
@@ -367,8 +368,11 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 
 		void MoveSlaves(Actor self)
 		{
-			var target = self.CurrentActivity.GetTargets(self).First();
-			var location = self.World.Map.CellContaining(target.CenterPosition);
+			var targets = self.CurrentActivity.GetTargets(self);
+			if (!targets.Any())
+				return;
+
+			var location = self.World.Map.CellContaining(targets.First().CenterPosition);
 
 			foreach (var mob in Mobs)
 			{
@@ -386,6 +390,7 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 			}
 		}
 
+		CPos lastAttackMoveLocation;
 		void AttackMoveSlaves(Actor self)
 		{
 			var targets = self.CurrentActivity.GetTargets(self);
@@ -393,6 +398,11 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 				return;
 
 			var location = self.World.Map.CellContaining(targets.First().CenterPosition);
+
+			if (lastAttackMoveLocation == location)
+				return;
+
+			lastAttackMoveLocation = location;
 
 			foreach (var mob in Mobs)
 			{
@@ -420,8 +430,9 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 			if (cnt == 0)
 				return;
 
-			var newPos = new WPos(x / cnt, y / cnt, aircraft.Info.CruiseAltitude.Length);
-			// pos.SetPosition(self, newPos);
+			var newPos = new WPos(x / cnt, y / cnt, aircraft != null ? aircraft.Info.CruiseAltitude.Length : 0);
+			if (aircraft == null)
+				pos.SetPosition(self, newPos); // breaks arrival detection of the aircraft if we set position.
 			pos.SetVisualPosition(self, newPos);
 		}
 
@@ -469,7 +480,7 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 
 		void AssignSlaveActivity(Actor self)
 		{
-			if (self.CurrentActivity is HeliFlyAndLandWhenIdle || self.CurrentActivity is HeliFly)
+			if (self.CurrentActivity is HeliFlyAndLandWhenIdle || self.CurrentActivity is HeliFly || self.CurrentActivity is Move)
 				MoveSlaves(self);
 			else if (self.CurrentActivity is AttackMoveActivity)
 				AttackMoveSlaves(self);
