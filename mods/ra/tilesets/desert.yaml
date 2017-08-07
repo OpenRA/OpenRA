@@ -2401,9 +2401,9 @@ Templates:
 		Size: 3,1
 		Categories: Beach
 		Tiles:
-			0: Beach
-			1: Beach
-			2: Beach
+			0: Water
+			1: Water
+			2: Water
 	Template@410:
 		Id: 410
 		Images: sh29.des
