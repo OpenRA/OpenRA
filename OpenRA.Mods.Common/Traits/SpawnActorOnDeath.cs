@@ -106,6 +106,9 @@ namespace OpenRA.Mods.Common.Traits
 				new FactionInit(faction)
 			};
 
+			if (self.EffectiveOwner != null && self.EffectiveOwner.Disguised)
+				td.Add(new EffectiveOwnerInit(self.EffectiveOwner.Owner));
+
 			if (Info.OwnerType == OwnerType.Victim)
 			{
 				// Fall back to InternalOwner if the Victim was defeated,
@@ -115,7 +118,8 @@ namespace OpenRA.Mods.Common.Traits
 				else
 				{
 					td.Add(new OwnerInit(self.World.Players.First(p => p.InternalName == Info.InternalOwner)));
-					td.Add(new EffectiveOwnerInit(self.Owner));
+					if (!td.Contains<EffectiveOwnerInit>())
+						td.Add(new EffectiveOwnerInit(self.Owner));
 				}
 			}
 			else if (Info.OwnerType == OwnerType.Killer)
