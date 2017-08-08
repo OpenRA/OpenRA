@@ -630,7 +630,7 @@ Templates:
 		Id: 384
 		Images: xtra0001.int
 		Size: 1,1
-		Categories: Floor
+		Categories: Wall
 		Tiles:
 			0: Wall
 	Template@385:
