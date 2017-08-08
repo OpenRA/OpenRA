@@ -44,4 +44,13 @@ namespace OpenRA.Mods.Common
 		public FactionInit(string faction) { Faction = faction; }
 		public string Value(World world) { return Faction; }
 	}
+
+	public class EffectiveOwnerInit : IActorInit<Player>
+	{
+		[FieldFromYamlKey] readonly Player value = null;
+
+		public EffectiveOwnerInit() { }
+		public EffectiveOwnerInit(Player owner) { value = owner; }
+		Player IActorInit<Player>.Value(World world) { return value; }
+	}
 }
