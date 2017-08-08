@@ -53,10 +53,12 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new SpawnActorOnDeath(init, this); }
 	}
 
-	public class SpawnActorOnDeath : ConditionalTrait<SpawnActorOnDeathInfo>, INotifyKilled
+	public class SpawnActorOnDeath : ConditionalTrait<SpawnActorOnDeathInfo>, INotifyKilled, INotifyRemovedFromWorld
 	{
 		readonly string faction;
 		readonly bool enabled;
+
+		Player attackingPlayer;
 
 		public SpawnActorOnDeath(ActorInitializer init, SpawnActorOnDeathInfo info)
 			: base(info)
@@ -65,7 +67,7 @@ namespace OpenRA.Mods.Common.Traits
 			faction = init.Contains<FactionInit>() ? init.Get<FactionInit, string>() : init.Self.Owner.Faction.InternalName;
 		}
 
-		public void Killed(Actor self, AttackInfo e)
+		void INotifyKilled.Killed(Actor self, AttackInfo e)
 		{
 			if (!enabled || IsTraitDisabled)
 				return;
@@ -79,39 +81,41 @@ namespace OpenRA.Mods.Common.Traits
 			if (Info.DeathType != null && !e.Damage.DamageTypes.Contains(Info.DeathType))
 				return;
 
-			self.World.AddFrameEndTask(w =>
+			attackingPlayer = e.Attacker.Owner;
+		}
+
+		// Don't add the new actor to the world before all RemovedFromWorld callbacks have run
+		void INotifyRemovedFromWorld.RemovedFromWorld(Actor self)
+		{
+			if (attackingPlayer == null)
+				return;
+
+			var td = new TypeDictionary
 			{
-				// Actor has been disposed by something else before its death (for example `Enter`).
-				if (self.Disposed)
-					return;
+				new ParentActorInit(self),
+				new LocationInit(self.Location + Info.Offset),
+				new CenterPositionInit(self.CenterPosition),
+				new FactionInit(faction)
+			};
 
-				var td = new TypeDictionary
-				{
-					new ParentActorInit(self),
-					new LocationInit(self.Location + Info.Offset),
-					new CenterPositionInit(self.CenterPosition),
-					new FactionInit(faction)
-				};
+			if (Info.OwnerType == OwnerType.Victim)
+				td.Add(new OwnerInit(self.Owner));
+			else if (Info.OwnerType == OwnerType.Killer)
+				td.Add(new OwnerInit(attackingPlayer));
+			else
+				td.Add(new OwnerInit(self.World.Players.First(p => p.InternalName == Info.InternalOwner)));
 
-				if (Info.OwnerType == OwnerType.Victim)
-					td.Add(new OwnerInit(self.Owner));
-				else if (Info.OwnerType == OwnerType.Killer)
-					td.Add(new OwnerInit(e.Attacker.Owner));
-				else
-					td.Add(new OwnerInit(self.World.Players.First(p => p.InternalName == Info.InternalOwner)));
+			if (Info.SkipMakeAnimations)
+				td.Add(new SkipMakeAnimsInit());
 
-				if (Info.SkipMakeAnimations)
-					td.Add(new SkipMakeAnimsInit());
+			foreach (var modifier in self.TraitsImplementing<IDeathActorInitModifier>())
+				modifier.ModifyDeathActorInit(self, td);
 
-				foreach (var modifier in self.TraitsImplementing<IDeathActorInitModifier>())
-					modifier.ModifyDeathActorInit(self, td);
+			var huskActor = self.TraitsImplementing<IHuskModifier>()
+				.Select(ihm => ihm.HuskActor(self))
+				.FirstOrDefault(a => a != null);
 
-				var huskActor = self.TraitsImplementing<IHuskModifier>()
-					.Select(ihm => ihm.HuskActor(self))
-					.FirstOrDefault(a => a != null);
-
-				w.CreateActor(huskActor ?? Info.Actor, td);
-			});
+			self.World.AddFrameEndTask(w => w.CreateActor(huskActor ?? Info.Actor, td));
 		}
 	}
 }
