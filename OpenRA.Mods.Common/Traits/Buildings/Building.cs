@@ -241,13 +241,16 @@ namespace OpenRA.Mods.Common.Traits
 		}
 	}
 
-	public class Building : IOccupySpace, ITargetableCells, INotifySold, INotifyTransform, ISync, INotifyCreated, INotifyAddedToWorld, INotifyRemovedFromWorld
+	public class Building : IOccupySpace, ITargetableCells, INotifySold, INotifyTransform, ISync, INotifyCreated,
+		INotifyAddedToWorld, INotifyRemovedFromWorld
 	{
+		public readonly bool SkipMakeAnimation;
 		public readonly BuildingInfo Info;
 		public bool BuildComplete { get; private set; }
+
 		[Sync] readonly CPos topLeft;
 		readonly Actor self;
-		public readonly bool SkipMakeAnimation;
+		readonly BuildingInfluence influence;
 
 		Pair<CPos, SubCell>[] occupiedCells;
 		Pair<CPos, SubCell>[] targetableCells;
@@ -274,6 +277,7 @@ namespace OpenRA.Mods.Common.Traits
 			self = init.Self;
 			topLeft = init.Get<LocationInit, CPos>();
 			Info = info;
+			influence = self.World.WorldActor.Trait<BuildingInfluence>();
 
 			occupiedCells = Info.UnpathableTiles(TopLeft)
 				.Select(c => Pair.New(c, SubCell.FullCell)).ToArray();
@@ -305,6 +309,8 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (!self.Bounds.Size.IsEmpty)
 				self.World.ScreenMap.Add(self);
+
+			influence.AddInfluence(self, Info.Tiles(self.Location));
 		}
 
 		void INotifyRemovedFromWorld.RemovedFromWorld(Actor self)
@@ -314,6 +320,8 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (!self.Bounds.Size.IsEmpty)
 				self.World.ScreenMap.Remove(self);
+
+			influence.RemoveInfluence(self, Info.Tiles(self.Location));
 		}
 
 		public void NotifyBuildingComplete(Actor self)
