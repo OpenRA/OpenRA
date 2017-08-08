@@ -22,6 +22,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		public override void RulesetLoaded(Ruleset rules, ActorInfo ai)
 		{
+			base.RulesetLoaded(rules, ai);
+
 			if (FacingTolerance < 0 || FacingTolerance > 128)
 				throw new YamlException("Facing tolerance must be in range of [0, 128], 128 covers 360 degrees.");
 		}
