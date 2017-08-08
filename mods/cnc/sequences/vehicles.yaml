@@ -342,3 +342,9 @@ truck:
 		Facings: 32
 		UseClassicFacingFudge: True
 	icon: truckicon
+
+truck.destroyed:
+	idle: truck
+		Facings: 32
+		UseClassicFacingFudge: True
+		ZOffset: -512
