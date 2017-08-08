@@ -43,10 +43,12 @@ namespace OpenRA.Mods.Common.Traits
 		bool IOccupySpaceInfo.SharesCell { get { return false; } }
 	}
 
-	public class Husk : IPositionable, IFacing, ISync, INotifyCreated, INotifyAddedToWorld, INotifyRemovedFromWorld, IDeathActorInitModifier
+	public class Husk : IPositionable, IFacing, ISync, INotifyCreated, INotifyAddedToWorld, INotifyRemovedFromWorld,
+		IDeathActorInitModifier, IEffectiveOwner
 	{
-		readonly HuskInfo info;
 		readonly Actor self;
+		readonly HuskInfo info;
+		readonly Player effectiveOwner;
 
 		readonly int dragSpeed;
 		readonly WPos finalPosition;
@@ -68,6 +70,8 @@ namespace OpenRA.Mods.Common.Traits
 
 			dragSpeed = init.Contains<HuskSpeedInit>() ? init.Get<HuskSpeedInit, int>() : 0;
 			finalPosition = init.World.Map.CenterOfCell(TopLeft);
+
+			effectiveOwner = init.Contains<EffectiveOwnerInit>() ? init.Get<EffectiveOwnerInit, Player>() : self.Owner;
 		}
 
 		void INotifyCreated.Created(Actor self)
@@ -128,10 +132,14 @@ namespace OpenRA.Mods.Common.Traits
 			self.World.RemoveFromMaps(self, this);
 		}
 
-		public void ModifyDeathActorInit(Actor self, TypeDictionary init)
+		void IDeathActorInitModifier.ModifyDeathActorInit(Actor self, TypeDictionary init)
 		{
 			init.Add(new FacingInit(Facing));
 		}
+
+		// We return self.Owner if there's no effective owner
+		bool IEffectiveOwner.Disguised { get { return true; } }
+		Player IEffectiveOwner.Owner { get { return effectiveOwner; } }
 	}
 
 	public class HuskSpeedInit : IActorInit<int>
