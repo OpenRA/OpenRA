@@ -115,6 +115,7 @@ namespace OpenRA.Mods.Common.Traits
 					// Assign targets to all so if it can fire, it will fire.
 					foreach (var attack in attackFollows)
 						attack.Target = target;
+
 					hasTicked = true;
 
 					if (move != null)
