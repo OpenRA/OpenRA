@@ -28,11 +28,13 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int Probability = 100;
 
 		[Desc("Owner of the spawned actor. Allowed keywords:" +
-			"'Victim', 'Killer' and 'InternalName'.")]
+			"'Victim', 'Killer' and 'InternalName'. " +
+			"Falls back to 'InternalName' if 'Victim' is used " +
+			"and the victim is defeated (see 'SpawnAfterDefeat').")]
 		public readonly OwnerType OwnerType = OwnerType.Victim;
 
 		[Desc("Map player to use when 'InternalName' is defined on 'OwnerType'.")]
-		public readonly string InternalOwner = null;
+		public readonly string InternalOwner = "Neutral";
 
 		[Desc("DeathType that triggers the actor spawn. " +
 			"Leave empty to spawn an actor ignoring the DeathTypes.")]
@@ -89,7 +91,11 @@ namespace OpenRA.Mods.Common.Traits
 		// Don't add the new actor to the world before all RemovedFromWorld callbacks have run
 		void INotifyRemovedFromWorld.RemovedFromWorld(Actor self)
 		{
-			if (attackingPlayer == null || (!info.SpawnAfterDefeat && self.Owner.WinState != WinState.Undefined))
+			if (attackingPlayer == null)
+				return;
+
+			var defeated = self.Owner.WinState == WinState.Lost;
+			if (defeated && !Info.SpawnAfterDefeat)
 				return;
 
 			var td = new TypeDictionary
@@ -101,7 +107,17 @@ namespace OpenRA.Mods.Common.Traits
 			};
 
 			if (Info.OwnerType == OwnerType.Victim)
-				td.Add(new OwnerInit(self.Owner));
+			{
+				// Fall back to InternalOwner if the Victim was defeated,
+				// but only if InternalOwner is defined
+				if (!defeated || string.IsNullOrEmpty(Info.InternalOwner))
+					td.Add(new OwnerInit(self.Owner));
+				else
+				{
+					td.Add(new OwnerInit(self.World.Players.First(p => p.InternalName == Info.InternalOwner)));
+					td.Add(new EffectiveOwnerInit(self.Owner));
+				}
+			}
 			else if (Info.OwnerType == OwnerType.Killer)
 				td.Add(new OwnerInit(attackingPlayer));
 			else
