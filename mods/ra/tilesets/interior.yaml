@@ -1181,3 +1181,214 @@ Templates:
 		Categories: Floor
 		Tiles:
 			0: Clear
+	Template@291:
+		Id: 291
+		Images: lwal0001.int
+		Size: 1,1
+		PickAny: True
+		Categories: Wall
+		Tiles:
+			0: Wall
+			1: Wall
+			2: Wall
+			3: Wall
+	Template@292:
+		Id: 292
+		Images: lwal0002.int
+		Size: 1,1
+		PickAny: True
+		Categories: Wall
+		Tiles:
+			0: Wall
+			1: Wall
+			2: Wall
+			3: Wall
+	Template@293:
+		Id: 293
+		Images: lwal0003.int
+		Size: 1,1
+		PickAny: True
+		Categories: Wall
+		Tiles:
+			0: Wall
+			1: Wall
+			2: Wall
+			3: Wall
+	Template@294:
+		Id: 294
+		Images: lwal0004.int
+		Size: 1,1
+		PickAny: True
+		Categories: Wall
+		Tiles:
+			0: Wall
+			1: Wall
+			2: Wall
+			3: Wall
+	Template@295:
+		Id: 295
+		Images: lwal0005.int
+		Size: 1,1
+		PickAny: True
+		Categories: Wall
+		Tiles:
+			0: Wall
+			1: Wall
+			2: Wall
+			3: Wall
+			4: Wall
+			5: Wall
+	Template@296:
+		Id: 296
+		Images: lwal0006.int
+		Size: 1,1
+		Categories: Wall
+		Tiles:
+			0: Wall
+	Template@297:
+		Id: 297
+		Images: lwal0007.int
+		Size: 1,1
+		Categories: Wall
+		Tiles:
+			0: Wall
+	Template@298:
+		Id: 298
+		Images: lwal0008.int
+		Size: 1,1
+		Categories: Wall
+		Tiles:
+			0: Wall
+	Template@299:
+		Id: 299
+		Images: lwal0009.int
+		Size: 1,1
+		Categories: Wall
+		Tiles:
+			0: Wall
+	Template@300:
+		Id: 300
+		Images: lwal0010.int
+		Size: 1,1
+		Categories: Wall
+		Tiles:
+			0: Wall
+	Template@301:
+		Id: 301
+		Images: lwal0011.int
+		Size: 1,1
+		Categories: Wall
+		Tiles:
+			0: Wall
+	Template@302:
+		Id: 302
+		Images: lwal0012.int
+		Size: 1,1
+		Categories: Wall
+		Tiles:
+			0: Wall
+	Template@303:
+		Id: 303
+		Images: lwal0013.int
+		Size: 1,1
+		Categories: Wall
+		Tiles:
+			0: Wall
+	Template@304:
+		Id: 304
+		Images: lwal0014.int
+		Size: 1,1
+		Categories: Wall
+		Tiles:
+			0: Wall
+	Template@305:
+		Id: 305
+		Images: lwal0015.int
+		Size: 1,1
+		Categories: Wall
+		Tiles:
+			0: Wall
+	Template@306:
+		Id: 306
+		Images: lwal0016.int
+		Size: 1,1
+		Categories: Wall
+		Tiles:
+			0: Wall
+	Template@307:
+		Id: 307
+		Images: lwal0017.int
+		Size: 1,1
+		Categories: Wall
+		Tiles:
+			0: Wall
+	Template@308:
+		Id: 308
+		Images: lwal0018.int
+		Size: 1,1
+		Categories: Wall
+		Tiles:
+			0: Wall
+	Template@309:
+		Id: 309
+		Images: lwal0019.int
+		Size: 1,1
+		Categories: Wall
+		Tiles:
+			0: Wall
+	Template@310:
+		Id: 310
+		Images: lwal0020.int
+		Size: 1,1
+		Categories: Wall
+		Tiles:
+			0: Wall
+	Template@311:
+		Id: 311
+		Images: lwal0021.int
+		Size: 1,1
+		Categories: Wall
+		Tiles:
+			0: Wall
+	Template@312:
+		Id: 312
+		Images: lwal0022.int
+		Size: 1,1
+		Categories: Wall
+		Tiles:
+			0: Wall
+	Template@313:
+		Id: 313
+		Images: lwal0023.int
+		Size: 1,1
+		Categories: Wall
+		Tiles:
+			0: Wall
+	Template@314:
+		Id: 314
+		Images: lwal0024.int
+		Size: 1,1
+		Categories: Wall
+		Tiles:
+			0: Wall
+	Template@315:
+		Id: 315
+		Images: lwal0025.int
+		Size: 1,1
+		Categories: Wall
+		Tiles:
+			0: Wall
+	Template@316:
+		Id: 316
+		Images: lwal0026.int
+		Size: 1,1
+		Categories: Wall
+		Tiles:
+			0: Wall
+	Template@317:
+		Id: 317
+		Images: lwal0027.int
+		Size: 1,1
+		Categories: Wall
+		Tiles:
+			0: Wall
