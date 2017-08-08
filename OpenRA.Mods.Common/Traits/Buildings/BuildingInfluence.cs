@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -29,28 +30,20 @@ namespace OpenRA.Mods.Common.Traits
 			map = world.Map;
 
 			influence = new CellLayer<Actor>(map);
+		}
 
-			world.ActorAdded += a =>
-			{
-				var b = a.Info.TraitInfoOrDefault<BuildingInfo>();
-				if (b == null)
-					return;
+		internal void AddInfluence(Actor a, IEnumerable<CPos> tiles)
+		{
+			foreach (var u in tiles)
+				if (influence.Contains(u) && influence[u] == null)
+					influence[u] = a;
+		}
 
-				foreach (var u in b.Tiles(a.Location))
-					if (influence.Contains(u) && influence[u] == null)
-						influence[u] = a;
-			};
-
-			world.ActorRemoved += a =>
-			{
-				var b = a.Info.TraitInfoOrDefault<BuildingInfo>();
-				if (b == null)
-					return;
-
-				foreach (var u in b.Tiles(a.Location))
-					if (influence.Contains(u) && influence[u] == a)
-						influence[u] = null;
-			};
+		internal void RemoveInfluence(Actor a, IEnumerable<CPos> tiles)
+		{
+			foreach (var u in tiles)
+				if (influence.Contains(u) && influence[u] == a)
+					influence[u] = null;
 		}
 
 		public Actor GetBuildingAt(CPos cell)
