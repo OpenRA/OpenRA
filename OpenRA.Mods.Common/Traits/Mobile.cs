@@ -664,6 +664,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		public IEnumerable<Pair<CPos, SubCell>> OccupiedCells()
 		{
+			if (!Info.OccupySpace)
+				return new Pair<CPos, SubCell>[] { };
+
 			if (FromCell == ToCell)
 				return new[] { Pair.New(FromCell, FromSubCell) };
 			if (CanEnterCell(ToCell))
