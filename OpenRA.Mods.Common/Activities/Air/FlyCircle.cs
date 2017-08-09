@@ -21,7 +21,6 @@ namespace OpenRA.Mods.Common.Activities
 
 		public FlyCircle(Actor self)
 		{
-			IsIdle = true;
 			plane = self.Trait<Aircraft>();
 			cruiseAltitude = plane.Info.CruiseAltitude;
 		}
