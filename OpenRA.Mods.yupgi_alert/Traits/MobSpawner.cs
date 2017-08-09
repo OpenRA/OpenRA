@@ -515,7 +515,7 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 			if (Info.SlavesHaveFreeWill)
 				return;
 
-			if (self.CurrentActivity is HeliFlyAndLandWhenIdle || self.CurrentActivity is HeliFly || self.CurrentActivity is Move)
+			if (self.CurrentActivity is Move || self.CurrentActivity is HeliFly)
 				MoveSlaves(self);
 			else if (self.CurrentActivity is AttackMoveActivity)
 				AttackMoveSlaves(self);

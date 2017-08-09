@@ -171,6 +171,9 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 			foreach (var mv in Moves)
 				if (mv.IsTraitEnabled())
 				{
+					// Must cancel before queueing as the master's attack move order is
+					// issued multiple times on multiple points along the attack move path.
+					self.CancelActivity();
 					self.QueueActivity(new AttackMoveActivity(self, mv.MoveTo(location, 1)));
 					break;
 				}
