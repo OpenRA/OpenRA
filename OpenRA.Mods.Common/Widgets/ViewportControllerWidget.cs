@@ -35,8 +35,6 @@ namespace OpenRA.Mods.Common.Widgets
 		public FrozenActor FrozenActorTooltip { get; private set; }
 		public ResourceType ResourceTooltip { get; private set; }
 
-		public int EdgeScrollThreshold = 5;
-
 		int2? joystickScrollStart, joystickScrollEnd;
 		int2? standardScrollStart;
 		bool isStandardScrolling;
@@ -474,14 +472,15 @@ namespace OpenRA.Mods.Common.Widgets
 
 		ScrollDirection CheckForDirections()
 		{
+			var margin = Game.Settings.Game.ViewportEdgeScrollMargin;
 			var directions = ScrollDirection.None;
-			if (Viewport.LastMousePos.X < EdgeScrollThreshold)
+			if (Viewport.LastMousePos.X < margin)
 				directions |= ScrollDirection.Left;
-			if (Viewport.LastMousePos.Y < EdgeScrollThreshold)
+			if (Viewport.LastMousePos.Y < margin)
 				directions |= ScrollDirection.Up;
-			if (Viewport.LastMousePos.X >= Game.Renderer.Resolution.Width - EdgeScrollThreshold)
+			if (Viewport.LastMousePos.X >= Game.Renderer.Resolution.Width - margin)
 				directions |= ScrollDirection.Right;
-			if (Viewport.LastMousePos.Y >= Game.Renderer.Resolution.Height - EdgeScrollThreshold)
+			if (Viewport.LastMousePos.Y >= Game.Renderer.Resolution.Height - margin)
 				directions |= ScrollDirection.Down;
 
 			return directions;
