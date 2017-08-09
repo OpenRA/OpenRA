@@ -28,6 +28,7 @@ namespace OpenRA.Mods.Common.Widgets
 		}
 
 		public bool DisableKeyRepeat = false;
+		public bool DisableKeySound = false;
 
 		[Translate] public string Text = "";
 		public string Background = "button";
@@ -141,9 +142,10 @@ namespace OpenRA.Mods.Common.Widgets
 			if (!IsDisabled())
 			{
 				OnKeyPress(e);
-				Game.Sound.PlayNotification(ModRules, null, "Sounds", "ClickSound", null);
+				if (!DisableKeySound)
+					Game.Sound.PlayNotification(ModRules, null, "Sounds", "ClickSound", null);
 			}
-			else
+			else if (!DisableKeySound)
 				Game.Sound.PlayNotification(ModRules, null, "Sounds", "ClickDisabledSound", null);
 
 			return true;
