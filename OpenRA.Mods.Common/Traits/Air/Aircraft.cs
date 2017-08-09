@@ -101,7 +101,8 @@ namespace OpenRA.Mods.Common.Traits
 			yield return new FacingInit(PreviewFacing);
 		}
 
-		[Desc("Condition when this aircraft should land as soon as possible and refuse to take off.")]
+		[Desc("Condition when this aircraft should land as soon as possible and refuse to take off. ",
+			"This only applies while the aircraft is above terrain which is listed in LandableTerrainTypes.")]
 		public readonly BooleanExpression LandOnCondition;
 
 		public IReadOnlyDictionary<CPos, SubCell> OccupiedCells(ActorInfo info, CPos location, SubCell subCell = SubCell.Any) { return new ReadOnlyDictionary<CPos, SubCell>(); }
