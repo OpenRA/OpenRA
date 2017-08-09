@@ -12,11 +12,11 @@
  */
 #endregion
 
+using System;
 using System.Linq;
+using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
-using OpenRA.Mods.Common.Activities;
-using System;
 
 /*
  * Needs base engine modification. (Becaus MobSpawner.cs mods it)
@@ -27,6 +27,10 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 	[Desc("Can be slaved to a Mob spawner.")]
 	public class MobMemberSlaveInfo : ITraitInfo
 	{
+		[GrantedConditionReference]
+		[Desc("The condition to grant to slaves when the master actor is killed.")]
+		public readonly string MasterDeadCondition = null;
+
 		public object Create(ActorInitializer init) { return new MobMemberSlave(init, this); }
 	}
 
@@ -35,8 +39,11 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 		readonly Actor self;
 		readonly MobMemberSlaveInfo info;
 
+		ConditionManager conditionManager;
 		MobSpawnerInfo mobSpawnerInfo;
 		AttackBase[] attackBases;
+		int masterDeadToken = ConditionManager.InvalidConditionToken;
+
 		public IMove[] Moves { get; private set; }
 		public IPositionable Positionable { get; private set; }
 
@@ -55,6 +62,7 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 		{
 			attackBases = self.TraitsImplementing<AttackBase>().ToArray();
 			Moves = self.TraitsImplementing<IMove>().ToArray();
+			conditionManager = self.Trait<ConditionManager>();
 
 			var positionables = self.TraitsImplementing<IPositionable>();
 			if (positionables.Count() != 1)
@@ -178,6 +186,13 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 			// -SelectionDecorations: is all you need.
 			// Also use RejectsOrder if necessary.
 			self.World.Selection.Add(self.World, Master);
+		}
+
+		public void OnMasterKilled(Actor self)
+		{
+			// Grant MasterDead condition.
+			if (conditionManager != null && !string.IsNullOrEmpty(info.MasterDeadCondition))
+				masterDeadToken = conditionManager.GrantCondition(self, info.MasterDeadCondition);
 		}
 	}
 }

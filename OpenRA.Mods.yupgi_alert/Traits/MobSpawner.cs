@@ -13,10 +13,10 @@
 #endregion
 
 using System.Linq;
+using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
 using OpenRA.Traits;
-using OpenRA.Mods.Common.Activities;
 
 /*
  * Needs base engine modification.
@@ -31,6 +31,14 @@ using OpenRA.Mods.Common.Activities;
 
 namespace OpenRA.Mods.Yupgi_alert.Traits
 {
+	// What to do when master is killed or mind controlled
+	public enum MobMemberDisposal
+	{
+		DoNothing,
+		KillSlaves,
+		GiveSlavesToAttacker
+	}
+
 	[Desc("This actor can spawn actors.")]
 	public class MobSpawnerInfo : ConditionalTraitInfo
 	{
@@ -51,6 +59,12 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 
 		[Desc("Can the slaves be controlled independently?")]
 		public readonly bool SlavesHaveFreeWill = false;
+
+		[Desc("What happens to the slaves when the master is killed?")]
+		public readonly MobMemberDisposal SlaveDisposalOnKill = MobMemberDisposal.DoNothing;
+
+		[Desc("What happens to the slaves when the master is mind controlled?")]
+		public readonly MobMemberDisposal SlaveDisposalOnOwnerChange = MobMemberDisposal.DoNothing;
 
 		[Desc("This is a dummy spawner like cin C&C Generals and use virtual position and health.")]
 		public readonly bool AggregateHealth = true;
@@ -119,7 +133,7 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 			rallyPoint = self.TraitOrDefault<RallyPoint>();
 			exits = self.Info.TraitInfos<ExitInfo>().ToArray();
 			facing = self.TraitOrDefault<IFacing>();
-			pos = self.Trait<IPositionable>();
+			pos = self.TraitOrDefault<IPositionable>();
 			health = self.Trait<Health>();
 			aircraft = self.TraitOrDefault<Aircraft>();
 
@@ -145,13 +159,13 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 			}
 		}
 
-		void INotifyAttack.PreparingAttack(Actor self, Target target, Armament a, Barrel barrel)
-		{
-			AssignTargetsToSlaves(self, target);
-		}
+		void INotifyAttack.PreparingAttack(Actor self, Target target, Armament a, Barrel barrel) { }
 
 		void INotifyAttack.Attacking(Actor self, Target target, Armament a, Barrel barrel)
 		{
+			if (Info.SlavesHaveFreeWill)
+				return;
+
 			AssignTargetsToSlaves(self, target);
 		}
 
@@ -179,32 +193,50 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 				AssignSlaveActivity(self);
 		}
 
+		void DoSlaveDisposal(Actor self, MobMemberDisposal disposal, Actor attacker, Player newOwner)
+		{
+			switch (disposal)
+			{
+				case MobMemberDisposal.DoNothing:
+					break;
+				case MobMemberDisposal.KillSlaves:
+					foreach (var mob in Mobs)
+						if (!mob.IsValid)
+							mob.Actor.Kill(attacker);
+					break;
+				case MobMemberDisposal.GiveSlavesToAttacker:
+					foreach (var mob in Mobs)
+						if (!mob.IsValid)
+							mob.Actor.ChangeOwner(newOwner);
+					break;
+				default:
+					break;
+			}
+		}
+
 		public void OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
 		{
+			// Owner thing is so difficult and confusing, I'm expecting bugs.
 			self.World.AddFrameEndTask(w =>
 			{
-				foreach (var mob in Mobs)
-					mob.Actor.ChangeOwner(newOwner); // Under influence of mind control.
+				DoSlaveDisposal(self, Info.SlaveDisposalOnOwnerChange, self, newOwner);
 			});
 		}
 
 		public void Killed(Actor self, AttackInfo e)
 		{
-			// Kill slaves too, unless they have free will.
-			if (Info.SlavesHaveFreeWill)
-				return;
+			DoSlaveDisposal(self, Info.SlaveDisposalOnKill, e.Attacker, e.Attacker.Owner);
 
+			// Notify slaves.
+			// Not needed on KillSlaveOnDeath case but I want to keep the code neat.
 			foreach (var mob in Mobs)
-				if (!mob.Actor.IsDead)
-					mob.Actor.Kill(e.Attacker);
+				if (!mob.IsValid)
+					mob.MobMemberSlave.OnMasterKilled(mob.Actor);
 		}
 
 		public void Disposing(Actor self)
 		{
-			// Dispose slaves too, unless they have free will.
-			if (Info.SlavesHaveFreeWill)
-				return;
-
+			// Just dispose them regardless of slave disposal options.
 			foreach (var mob in Mobs)
 				if (mob.IsValid)
 					mob.Actor.Dispose();
@@ -295,8 +327,8 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 					rallyPoint.QueueRallyOrder(self, slave);
 				else
 				{
-					slave.QueueActivity(mv.MoveTo(location, 2));
 					// Move to a valid position, if no rally point.
+					slave.QueueActivity(mv.MoveTo(location, 2));
 				}
 
 				w.Add(slave);
@@ -480,6 +512,9 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 
 		void AssignSlaveActivity(Actor self)
 		{
+			if (Info.SlavesHaveFreeWill)
+				return;
+
 			if (self.CurrentActivity is HeliFlyAndLandWhenIdle || self.CurrentActivity is HeliFly || self.CurrentActivity is Move)
 				MoveSlaves(self);
 			else if (self.CurrentActivity is AttackMoveActivity)
