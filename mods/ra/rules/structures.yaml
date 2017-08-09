@@ -849,6 +849,7 @@ SAM:
 	WithTurretedSpriteBody:
 	Armament:
 		Weapon: Nike
+		LocalOffset: 0,0,320
 		MuzzleSequence: muzzle
 	AttackTurreted:
 	WithMuzzleOverlay:
