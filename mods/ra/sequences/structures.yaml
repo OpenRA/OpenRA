@@ -438,7 +438,7 @@ sam:
 	muzzle: samfire
 		Length: 18
 		Facings: 8
-		Offset: -1,-2
+		Offset: -1,6
 	bib: mbSAM
 		Length: *
 		Offset: 0,1
