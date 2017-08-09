@@ -52,9 +52,6 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 		[WeaponReference]
 		public readonly string SpawnerArmamentName = "primary";
 
-		[Desc("Spawned will not take any orders from the spawner?")]
-		public readonly bool IndependentSpawned = false;
-
 		[Desc("Spawn is a missile that dies and not return.")]
 		public readonly bool SpawnIsMissile = false;
 
@@ -147,7 +144,7 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 			var unit = self.World.CreateActor(false, Info.SpawnUnit.ToLowerInvariant(),
 				new TypeDictionary { new OwnerInit(self.Owner) });
 
-			unit.Trait<Spawned>().LinkMaster(self, Info.IndependentSpawned);
+			unit.Trait<Spawned>().LinkMaster(self);
 
 			var se = new SpawnEntry();
 			se.Spawned = unit;
@@ -181,9 +178,8 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 				return;
 
 			// Issue retarget order for already launched ones
-			if (!Info.IndependentSpawned)
-				foreach (var spawned in launched)
-					spawned.Trait<Spawned>().AttackTarget(spawned, target);
+			foreach (var spawned in launched)
+				spawned.Trait<Spawned>().AttackTarget(spawned, target);
 
 			if (spawns.Count == 0)
 				return;
@@ -233,8 +229,7 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 						rallyPoint.QueueRallyOrder(self, s);
 				}
 
-				if (!Info.IndependentSpawned)
-					s.Trait<Spawned>().AttackTarget(s, target);
+				s.Trait<Spawned>().AttackTarget(s, target);
 				w.Add(s);
 			});
 		}
@@ -246,9 +241,6 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 
 		void Recall(Actor self)
 		{
-			if (Info.IndependentSpawned)
-				return;
-
 			// Tell launched slaves to come back and enter me.
 			foreach (var s in launched)
 				s.Trait<Spawned>().EnterSpawner(s);

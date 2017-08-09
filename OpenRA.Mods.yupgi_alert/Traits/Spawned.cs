@@ -52,7 +52,6 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 		readonly AmmoPool[] ammoPools;
 
 		Actor master = null;
-		bool independent = false; // can be ordered like an independent unit?
 
 		public Actor Master { get { return master; } }
 
@@ -62,10 +61,9 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 			ammoPools = init.Self.TraitsImplementing<AmmoPool>().ToArray();
 		}
 
-		public void LinkMaster(Actor master, bool independent)
+		public void LinkMaster(Actor master)
 		{
 			this.master = master;
-			this.independent = independent;
 		}
 
 		public IEnumerable<IOrderTargeter> Orders
@@ -218,9 +216,6 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 
 		public virtual void OnBecomingIdle(Actor self)
 		{
-			if (independent)
-				return;
-
 			// Return when nothing to attack.
 			// Don't let myself to circle around the player's construction yard.
 			if (self.TraitOrDefault<ShootableBallisticMissile>() != null)
