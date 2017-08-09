@@ -37,7 +37,7 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 	public class MobMemberSlave : INotifyCreated, INotifyKilled, INotifySelected
 	{
 		readonly Actor self;
-		// readonly MobMemberSlaveInfo info;
+		readonly MobMemberSlaveInfo info;
 
 		ConditionManager conditionManager;
 		MobSpawnerInfo mobSpawnerInfo;
@@ -55,7 +55,7 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 		public MobMemberSlave(ActorInitializer init, MobMemberSlaveInfo info)
 		{
 			this.self = init.Self;
-			// this.info = info;
+			this.info = info;
 		}
 
 		void INotifyCreated.Created(Actor self)
