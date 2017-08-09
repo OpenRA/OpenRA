@@ -130,7 +130,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			Game.BeforeGameStart += UnregisterEvents;
 
 			CloseChat();
-			chatText.IsDisabled = () => world.IsReplay;
+			chatText.IsDisabled = () => world.IsReplay && !Game.Settings.Debug.EnableDebugCommandsInReplays;
 
 			var keyListener = chatChrome.Get<LogicKeyListenerWidget>("KEY_LISTENER");
 			keyListener.OnKeyPress = e =>
