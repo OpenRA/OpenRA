@@ -43,7 +43,6 @@ Container@PLAYER_WIDGETS:
 					Height: 41
 					VisualHeight: 0
 					Background: command-button
-					DisableKeyRepeat: true
 					DisableKeySound: true
 					TooltipText: Attack Move
 					TooltipDesc: Selected units will move to the desired location\nand attack any enemies they encounter en route.\n\nLeft-click icon then right-click on target location.
@@ -94,7 +93,6 @@ Container@PLAYER_WIDGETS:
 					Height: 41
 					VisualHeight: 0
 					Background: command-button
-					DisableKeyRepeat: true
 					DisableKeySound: true
 					TooltipText: Guard
 					TooltipDesc: Selected units will follow the targeted unit.\n\nLeft-click icon then right-click on target unit.
