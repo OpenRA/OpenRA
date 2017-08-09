@@ -271,6 +271,7 @@ Container@PLAYER_WIDGETS:
 					Height: 34
 					Background: command-button
 					DisableKeyRepeat: true
+					DisableKeySound: true
 					TooltipText: Attack Move
 					TooltipDesc: Selected units will move to the desired location\nand attack any enemies they encounter en route.\n\nLeft-click icon then right-click on target location.
 					TooltipContainer: TOOLTIP_CONTAINER
@@ -286,6 +287,7 @@ Container@PLAYER_WIDGETS:
 					Width: 34
 					Height: 34
 					Background: command-button
+					DisableKeySound: true
 					TooltipText: Force Move
 					TooltipDesc: Selected units will move to the desired location\n - Default activity for the target is suppressed\n - Vehicles will attempt to crush enemies at the target location\n - Units entering transports will consider nearby alternatives\n\nLeft-click icon then right-click on target.\nHold {(Alt)} to activate temporarily while commanding units.
 					TooltipContainer: TOOLTIP_CONTAINER
@@ -302,6 +304,7 @@ Container@PLAYER_WIDGETS:
 					Width: 34
 					Height: 34
 					Background: command-button
+					DisableKeySound: true
 					TooltipText: Force Attack
 					TooltipDesc: Selected units will attack the targeted unit or location\nignoring their default activity for the target.\n\nLeft-click icon then right-click on target.\nHold {(Ctrl)} to activate temporarily while commanding units.
 					TooltipContainer: TOOLTIP_CONTAINER
@@ -319,6 +322,7 @@ Container@PLAYER_WIDGETS:
 					Height: 34
 					Background: command-button
 					DisableKeyRepeat: true
+					DisableKeySound: true
 					TooltipText: Guard
 					TooltipDesc: Selected units will follow the targeted unit.\n\nLeft-click icon then right-click on target unit.
 					TooltipContainer: TOOLTIP_CONTAINER
@@ -335,6 +339,7 @@ Container@PLAYER_WIDGETS:
 					Height: 34
 					Background: command-button
 					DisableKeyRepeat: true
+					DisableKeySound: true
 					TooltipText: Deploy
 					TooltipDesc: Selected units will perform their default deploy activity\n - MCVs will unpack into a Construction Yard\n - Construction Yards will re-pack into a MCV\n - Transports will unload their passengers\n - Helicopters will return to base\n\nActs immediately on selected units.
 					TooltipContainer: TOOLTIP_CONTAINER
@@ -351,6 +356,7 @@ Container@PLAYER_WIDGETS:
 					Height: 34
 					Background: command-button
 					DisableKeyRepeat: true
+					DisableKeySound: true
 					TooltipText: Scatter
 					TooltipDesc: Selected units will stop their current activity\nand move to a nearby location.\n\nActs immediately on selected units.
 					TooltipContainer: TOOLTIP_CONTAINER
@@ -367,6 +373,7 @@ Container@PLAYER_WIDGETS:
 					Height: 34
 					Background: command-button
 					DisableKeyRepeat: true
+					DisableKeySound: true
 					TooltipText: Stop
 					TooltipDesc: Selected units will stop their current activity.\n\nActs immediately on selected units.
 					TooltipContainer: TOOLTIP_CONTAINER
@@ -382,6 +389,7 @@ Container@PLAYER_WIDGETS:
 					Width: 34
 					Height: 34
 					Background: command-button
+					DisableKeySound: true
 					TooltipText: Waypoint Mode
 					TooltipDesc: Use Waypoint Mode to give multiple linking commands\nto the selected units. Units will execute the commands\nimmediately upon receiving them.\n\nLeft-click icon then give commands in the game world.\nHold {(Shift)} to activate temporarily while commanding units.
 					TooltipContainer: TOOLTIP_CONTAINER
@@ -407,6 +415,7 @@ Container@PLAYER_WIDGETS:
 					Height: 26
 					Background: stance-button
 					DisableKeyRepeat: true
+					DisableKeySound: true
 					TooltipText: Attack Anything Stance
 					TooltipDesc: Set the selected units to Attack Anything stance:\n - Units will attack enemy units and structures on sight\n - Units will pursue attackers across the battlefield
 					TooltipContainer: TOOLTIP_CONTAINER
@@ -423,6 +432,7 @@ Container@PLAYER_WIDGETS:
 					Height: 26
 					Background: stance-button
 					DisableKeyRepeat: true
+					DisableKeySound: true
 					TooltipText: Defend Stance
 					TooltipDesc: Set the selected units to Defend stance:\n - Units will attack enemy units on sight\n - Units will not move or pursue enemies
 					TooltipContainer: TOOLTIP_CONTAINER
@@ -439,6 +449,7 @@ Container@PLAYER_WIDGETS:
 					Height: 26
 					Background: stance-button
 					DisableKeyRepeat: true
+					DisableKeySound: true
 					TooltipText: Return Fire Stance
 					TooltipDesc: Set the selected units to Return Fire stance:\n - Units will retaliate against enemies that attack them\n - Units will not move or pursue enemies
 					TooltipContainer: TOOLTIP_CONTAINER
@@ -455,6 +466,7 @@ Container@PLAYER_WIDGETS:
 					Height: 26
 					Background: stance-button
 					DisableKeyRepeat: true
+					DisableKeySound: true
 					TooltipText: Hold Fire Stance
 					TooltipDesc: Set the selected units to Hold Fire stance:\n - Units will not fire upon enemies\n - Units will not move or pursue enemies
 					TooltipContainer: TOOLTIP_CONTAINER
