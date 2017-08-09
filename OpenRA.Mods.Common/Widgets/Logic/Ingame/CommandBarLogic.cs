@@ -10,13 +10,10 @@
 #endregion
 
 using System;
-using System.Drawing;
 using System.Linq;
-using OpenRA.Graphics;
 using OpenRA.Mods.Common.Orders;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Orders;
-using OpenRA.Primitives;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets
@@ -58,14 +55,20 @@ namespace OpenRA.Mods.Common.Widgets
 				attackMoveButton.IsHighlighted = () => world.OrderGenerator is GenericSelectTarget
 					&& ((GenericSelectTarget)world.OrderGenerator).OrderName == "AttackMove";
 
-				attackMoveButton.OnClick = () =>
+				Action<bool> toggle = allowCancel =>
 				{
 					if (attackMoveButton.IsHighlighted())
-						world.CancelInputMode();
+					{
+						if (allowCancel)
+							world.CancelInputMode();
+					}
 					else
 						world.OrderGenerator = new GenericSelectTarget(selectedActors,
 							"AttackMove", "attackmove", Game.Settings.Game.MouseButtonPreference.Action);
 				};
+
+				attackMoveButton.OnClick = () => toggle(true);
+				attackMoveButton.OnKeyPress = _ => toggle(false);
 			}
 
 			var forceMoveButton = widget.GetOrNull<ButtonWidget>("FORCE_MOVE");
@@ -110,14 +113,20 @@ namespace OpenRA.Mods.Common.Widgets
 				guardButton.IsHighlighted = () => world.OrderGenerator is GenericSelectTarget
 					&& ((GenericSelectTarget)world.OrderGenerator).OrderName == "Guard";
 
-				guardButton.OnClick = () =>
+				Action<bool> toggle = allowCancel =>
 				{
 					if (guardButton.IsHighlighted())
-						world.CancelInputMode();
+					{
+						if (allowCancel)
+							world.CancelInputMode();
+					}
 					else
 						world.OrderGenerator = new GuardOrderGenerator(selectedActors,
 							"Guard", "guard", Game.Settings.Game.MouseButtonPreference.Action);
 				};
+
+				guardButton.OnClick = () => toggle(true);
+				guardButton.OnKeyPress = _ => toggle(false);
 			}
 
 			var scatterButton = widget.GetOrNull<ButtonWidget>("SCATTER");
