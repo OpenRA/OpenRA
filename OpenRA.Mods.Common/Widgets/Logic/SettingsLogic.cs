@@ -674,6 +674,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			BindCheckboxPref(panel, "FETCH_NEWS_CHECKBOX", gs, "FetchNews");
 			BindCheckboxPref(panel, "LUADEBUG_CHECKBOX", ds, "LuaDebug");
 			BindCheckboxPref(panel, "SENDSYSINFO_CHECKBOX", ds, "SendSystemInformation");
+			BindCheckboxPref(panel, "REPLAY_COMMANDS_CHECKBOX", ds, "EnableDebugCommandsInReplays");
 
 			return () => { };
 		}

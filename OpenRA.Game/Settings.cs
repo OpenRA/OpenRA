@@ -94,6 +94,7 @@ namespace OpenRA
 		public bool SendSystemInformation = true;
 		public int SystemInformationVersionPrompt = 0;
 		public string UUID = System.Guid.NewGuid().ToString();
+		public bool EnableDebugCommandsInReplays = false;
 	}
 
 	public class GraphicSettings
