@@ -306,7 +306,12 @@ namespace OpenRA.Mods.Common.Widgets
 			if (scrollType == MouseScrollType.Standard || scrollType == MouseScrollType.Inverted)
 			{
 				if (mi.Event == MouseInputEvent.Down && !isStandardScrolling)
+				{
+					if (!TakeMouseFocus(mi))
+						return false;
+
 					standardScrollStart = mi.Location;
+				}
 				else if (mi.Event == MouseInputEvent.Move && (isStandardScrolling ||
 					(standardScrollStart.HasValue && ((standardScrollStart.Value - mi.Location).Length > Game.Settings.Game.MouseScrollDeadzone))))
 				{
@@ -320,6 +325,7 @@ namespace OpenRA.Mods.Common.Widgets
 					var wasStandardScrolling = isStandardScrolling;
 					isStandardScrolling = false;
 					standardScrollStart = null;
+					YieldMouseFocus(mi);
 
 					if (wasStandardScrolling)
 						return true;
@@ -333,6 +339,7 @@ namespace OpenRA.Mods.Common.Widgets
 				{
 					if (!TakeMouseFocus(mi))
 						return false;
+
 					joystickScrollStart = mi.Location;
 				}
 
