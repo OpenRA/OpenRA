@@ -118,7 +118,7 @@ fi
 
 if [ ! -f rix0rrr.BeaconLib.dll ]; then
 	echo "Fetching rix0rrr.BeaconLib from NuGet."
-	get rix0rrr.BeaconLib 1.0.0
+	get rix0rrr.BeaconLib 1.0.1
 	cp ./rix0rrr.BeaconLib/lib/net40/rix0rrr.BeaconLib.dll .
 	rm -rf rix0rrr.BeaconLib
 fi
