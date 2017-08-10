@@ -953,6 +953,23 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				// Introduced TakeOffOnCreation and TakeOffOnResupply booleans to aircraft
+				if (engineVersion < 20170819)
+				{
+					if (node.Key.StartsWith("Aircraft", StringComparison.Ordinal))
+					{
+						var canHover = node.Value.Nodes.FirstOrDefault(n => n.Key == "CanHover");
+						var isHeli = canHover != null ? FieldLoader.GetValue<bool>("CanHover", canHover.Value.Value) : false;
+						if (isHeli)
+						{
+							Console.WriteLine("Helicopters taking off automatically while planes don't is no longer hardcoded.");
+							Console.WriteLine("Instead, this is controlled via the TakeOffOnResupply field.");
+							Console.WriteLine("Please check if your aircraft behave as intended or need manual adjustments.");
+							node.Value.Nodes.Add(new MiniYamlNode("TakeOffOnResupply", "true"));
+						}
+					}
+				}
+
 				UpgradeActorRules(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 
