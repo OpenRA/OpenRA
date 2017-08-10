@@ -97,7 +97,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			using (new Support.PerfTimer("Load replays"))
 			{
 				var loadedReplays = new ConcurrentBag<ReplayMetadata>();
-				Parallel.ForEach(Directory.GetFiles(dir, "*.orarep"), (fileName, pls) =>
+				Parallel.ForEach(Directory.GetFiles(dir, "*.orarep", SearchOption.AllDirectories), (fileName, pls) =>
 				{
 					if (cancelLoadingReplays)
 					{
