@@ -161,7 +161,7 @@ if (!(Test-Path "SmarIrc4net.dll"))
 if (!(Test-Path "rix0rrr.BeaconLib.dll"))
 {
 	echo "Fetching rix0rrr.BeaconLib from NuGet."
-	./nuget.exe install rix0rrr.BeaconLib -Version 1.0.0 -ExcludeVersion -Verbosity quiet
+	./nuget.exe install rix0rrr.BeaconLib -Version 1.0.1 -ExcludeVersion -Verbosity quiet
 	cp rix0rrr.BeaconLib/lib/net40/rix0rrr.BeaconLib.dll .
 	rmdir rix0rrr.BeaconLib -Recurse
 }
