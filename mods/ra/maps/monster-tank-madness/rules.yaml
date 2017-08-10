@@ -186,7 +186,7 @@ DOME.NoInfiltrate:
 		Image: DOME
 	-InfiltrateForExploration:
 	Targetable:
-		TargetTypes: Ground, C4, DetonateAttack, MissionObjective
+		TargetTypes: Ground, Structure, C4, DetonateAttack, MissionObjective
 
 SPY:
 	Infiltrates:
