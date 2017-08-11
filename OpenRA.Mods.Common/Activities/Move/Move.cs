@@ -23,8 +23,6 @@ namespace OpenRA.Mods.Common.Activities
 {
 	public class Move : Activity
 	{
-		const int AverageTicksBeforePathing = 5;
-		const int SpreadTicksBeforePathing = 5;
 		static readonly List<CPos> NoPath = new List<CPos>();
 
 		readonly Mobile mobile;
@@ -41,7 +39,6 @@ namespace OpenRA.Mods.Common.Activities
 		int waitTicksRemaining;
 
 		// To work around queued activity issues while minimizing changes to legacy behaviour
-		int ticksBeforePathing;
 		bool evaluateNearestMovableCell;
 
 		// Scriptable move order
@@ -140,9 +137,6 @@ namespace OpenRA.Mods.Common.Activities
 
 		protected override void OnFirstRun(Actor self)
 		{
-			ticksBeforePathing = AverageTicksBeforePathing +
-				self.World.SharedRandom.Next(-SpreadTicksBeforePathing, SpreadTicksBeforePathing);
-
 			if (evaluateNearestMovableCell && destination.HasValue)
 			{
 				var movableDestination = mobile.NearestMoveableCell(destination.Value);
@@ -165,9 +159,9 @@ namespace OpenRA.Mods.Common.Activities
 
 			if (path == null)
 			{
-				if (ticksBeforePathing > 0)
+				if (mobile.TicksBeforePathing > 0)
 				{
-					--ticksBeforePathing;
+					--mobile.TicksBeforePathing;
 					return this;
 				}
 
@@ -264,9 +258,9 @@ namespace OpenRA.Mods.Common.Activities
 				if (--waitTicksRemaining >= 0)
 					return null;
 
-				if (ticksBeforePathing > 0)
+				if (mobile.TicksBeforePathing > 0)
 				{
-					--ticksBeforePathing;
+					--mobile.TicksBeforePathing;
 					return null;
 				}
 
