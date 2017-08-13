@@ -36,7 +36,8 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Where you are allowed to place the building (Water, Clear, ...)")]
 		public readonly HashSet<string> TerrainTypes = new HashSet<string>();
 
-		[Desc("The range to the next building it can be constructed. Set it higher for walls.")]
+		[Desc("The range to the next building it can be constructed. Set it higher for walls.",
+			"Set to '-1' to disable adjacency checks.")]
 		public readonly int Adjacent = 2;
 
 		[Desc("x means cell is blocked, capital X means blocked but not counting as targetable, ",
@@ -172,7 +173,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public virtual bool IsCloseEnoughToBase(World world, Player p, string buildingName, CPos topLeft)
 		{
-			if (p.PlayerActor.Trait<DeveloperMode>().BuildAnywhere)
+			if (Adjacent < 0 || p.PlayerActor.Trait<DeveloperMode>().BuildAnywhere)
 				return true;
 
 			if (RequiresBaseProvider && FindBaseProvider(world, p, topLeft) == null)
