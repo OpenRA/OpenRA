@@ -307,6 +307,15 @@ namespace OpenRA
 				Expression.Field(keySettings, "{0}{1:D2}Key".F(prefix, i + 1)), keySettings).Compile());
 		}
 
+		internal Func<Hotkey> GetHotkeyReference(string name)
+		{
+			var field = typeof(KeySettings).GetField(name + "Key");
+			if (field == null)
+				return null;
+
+			return () => (Hotkey)field.GetValue(this);
+		}
+
 		public Hotkey GetProductionHotkey(int index)
 		{
 			return GetKey(ProductionKeys, index);
