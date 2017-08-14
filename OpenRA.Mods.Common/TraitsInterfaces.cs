@@ -95,7 +95,6 @@ namespace OpenRA.Mods.Common.Traits
 	public interface INotifyDiscovered { void OnDiscovered(Actor self, Player discoverer, bool playNotification); }
 	public interface IRenderActorPreviewInfo : ITraitInfo { IEnumerable<IActorPreview> RenderPreview(ActorPreviewInitializer init); }
 	public interface ICruiseAltitudeInfo : ITraitInfo { WDist GetCruiseAltitude(); }
-	public interface INotifyCashTransfer { void OnCashTransfer(Actor self, Actor donor); }
 
 	public interface IAcceptsRallyPoint
 	{
@@ -295,5 +294,11 @@ namespace OpenRA.Mods.Common.Traits
 	public interface IActorPreviewInitInfo : ITraitInfo
 	{
 		IEnumerable<object> ActorPreviewInits(ActorInfo ai, ActorPreviewType type);
+	}
+
+	public interface INotifyCashTransfer
+	{
+		void OnAcceptCash(Actor self, Actor donor);
+		void OnDeliverCash(Actor self, Actor acceptor);
 	}
 }

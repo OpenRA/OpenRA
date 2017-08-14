@@ -44,19 +44,6 @@ namespace OpenRA.Mods.Yupgi_alert.Traits.Render
 			spriteBody = self.TraitOrDefault<WithSpriteBody>();
 		}
 
-		bool playing;
-		void INotifyCashTransfer.OnCashTransfer(Actor self, Actor donor)
-		{
-			if (buildComplete && !playing && spriteBody != null && !(info.PauseOnLowPower && self.IsDisabled()))
-			{
-				playing = true;
-				spriteBody.PlayCustomAnimation(self, info.Sequence, () => {
-					spriteBody.CancelCustomAnimation(self);
-					playing = false;
-				});
-			}
-		}
-
 		void INotifyBuildComplete.BuildingComplete(Actor self)
 		{
 			buildComplete = true;
@@ -68,5 +55,21 @@ namespace OpenRA.Mods.Yupgi_alert.Traits.Render
 		}
 
 		void INotifySold.Sold(Actor self) { }
+
+		bool playing;
+		void INotifyCashTransfer.OnAcceptCash(Actor self, Actor donor)
+		{
+			if (buildComplete && !playing && spriteBody != null && !(info.PauseOnLowPower && self.IsDisabled()))
+			{
+				playing = true;
+				spriteBody.PlayCustomAnimation(self, info.Sequence, () =>
+				{
+					spriteBody.CancelCustomAnimation(self);
+					playing = false;
+				});
+			}
+		}
+
+		void INotifyCashTransfer.OnDeliverCash(Actor self, Actor acceptor) { }
 	}
 }
