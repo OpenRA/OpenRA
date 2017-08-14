@@ -33,28 +33,29 @@ namespace OpenRA.Mods.Common.AI
 
 			if (!owner.IsTargetValid)
 			{
-				var t = owner.Bot.FindClosestEnemy(owner.Units.FirstOrDefault().CenterPosition);
-				if (t == null) return;
+				var t = owner.Bot.FindClosestEnemy(owner.Units.First().CenterPosition);
+				if (t == null)
+					return;
+
 				owner.TargetActor = t;
 			}
 
 			var enemyUnits = owner.World.FindActorsInCircle(owner.TargetActor.CenterPosition, WDist.FromCells(10))
 				.Where(unit => owner.Bot.Player.Stances[unit.Owner] == Stance.Enemy).ToList();
 
-			if (enemyUnits.Any())
-			{
-				if (AttackOrFleeFuzzy.Default.CanAttack(owner.Units, enemyUnits))
-				{
-					foreach (var u in owner.Units)
-						owner.Bot.QueueOrder(new Order("AttackMove", u, false) { TargetLocation = owner.TargetActor.Location });
+			if (!enemyUnits.Any())
+				return;
 
-					// We have gathered sufficient units. Attack the nearest enemy unit.
-					owner.FuzzyStateMachine.ChangeState(owner, new GroundUnitsAttackMoveState(), true);
-					return;
-				}
-				else
-					owner.FuzzyStateMachine.ChangeState(owner, new GroundUnitsFleeState(), true);
+			if (AttackOrFleeFuzzy.Default.CanAttack(owner.Units, enemyUnits))
+			{
+				foreach (var u in owner.Units)
+					owner.Bot.QueueOrder(new Order("AttackMove", u, false) { TargetLocation = owner.TargetActor.Location });
+
+				// We have gathered sufficient units. Attack the nearest enemy unit.
+				owner.FuzzyStateMachine.ChangeState(owner, new GroundUnitsAttackMoveState(), true);
 			}
+			else
+				owner.FuzzyStateMachine.ChangeState(owner, new GroundUnitsFleeState(), true);
 		}
 
 		public void Deactivate(Squad owner) { }
@@ -84,8 +85,9 @@ namespace OpenRA.Mods.Common.AI
 			var leader = owner.Units.ClosestTo(owner.TargetActor.CenterPosition);
 			if (leader == null)
 				return;
+
 			var ownUnits = owner.World.FindActorsInCircle(leader.CenterPosition, WDist.FromCells(owner.Units.Count) / 3)
-				.Where(a => a.Owner == owner.Units.FirstOrDefault().Owner && owner.Units.Contains(a)).ToHashSet();
+				.Where(a => a.Owner == owner.Units.First().Owner && owner.Units.Contains(a)).ToHashSet();
 			if (ownUnits.Count < owner.Units.Count)
 			{
 				owner.Bot.QueueOrder(new Order("Stop", leader, false));
@@ -95,14 +97,12 @@ namespace OpenRA.Mods.Common.AI
 			else
 			{
 				var enemies = owner.World.FindActorsInCircle(leader.CenterPosition, WDist.FromCells(12))
-					.Where(a1 => !a1.IsDead);
-				var enemynearby = enemies.Where(a1 => a1.Info.HasTraitInfo<ITargetableInfo>() && leader.Owner.Stances[a1.Owner] == Stance.Enemy);
-				var target = enemynearby.ClosestTo(leader.CenterPosition);
+					.Where(a => !a.IsDead && leader.Owner.Stances[a.Owner] == Stance.Enemy && a.Info.HasTraitInfo<ITargetableInfo>());
+				var target = enemies.ClosestTo(leader.CenterPosition);
 				if (target != null)
 				{
 					owner.TargetActor = target;
 					owner.FuzzyStateMachine.ChangeState(owner, new GroundUnitsAttackState(), true);
-					return;
 				}
 				else
 					foreach (var a in owner.Units)
@@ -110,10 +110,7 @@ namespace OpenRA.Mods.Common.AI
 			}
 
 			if (ShouldFlee(owner))
-			{
 				owner.FuzzyStateMachine.ChangeState(owner, new GroundUnitsFleeState(), true);
-				return;
-			}
 		}
 
 		public void Deactivate(Squad owner) { }
@@ -145,10 +142,7 @@ namespace OpenRA.Mods.Common.AI
 					owner.Bot.QueueOrder(new Order("Attack", a, false) { TargetActor = owner.Bot.FindClosestEnemy(a.CenterPosition) });
 
 			if (ShouldFlee(owner))
-			{
 				owner.FuzzyStateMachine.ChangeState(owner, new GroundUnitsFleeState(), true);
-				return;
-			}
 		}
 
 		public void Deactivate(Squad owner) { }

@@ -212,19 +212,17 @@ namespace OpenRA.Mods.Common.AI
 
 				if (!ReloadsAutomatically(a))
 				{
+					if (IsRearm(a))
+						continue;
+
 					if (!HasAmmo(a))
 					{
-						if (IsRearm(a))
-							continue;
 						owner.Bot.QueueOrder(new Order("ReturnToBase", a, false));
 						continue;
 					}
-
-					if (IsRearm(a))
-						continue;
 				}
 
-				if (owner.TargetActor.Info.HasTraitInfo<ITargetableInfo>() && CanAttackTarget(a, owner.TargetActor))
+				if (CanAttackTarget(a, owner.TargetActor))
 					owner.Bot.QueueOrder(new Order("Attack", a, false) { TargetActor = owner.TargetActor });
 			}
 		}
