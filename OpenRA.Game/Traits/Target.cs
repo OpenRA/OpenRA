@@ -163,6 +163,48 @@ namespace OpenRA.Traits
 			return Positions.Any(t => (t - origin).HorizontalLengthSquared <= range.LengthSquared);
 		}
 
+		public bool IsOwnerTargetable(Actor self)
+		{
+			if (this.FrozenActor != null)
+				return this.FrozenActor.Visible;
+			else if (this.Actor != null)
+				return self.Owner.CanTargetActor(this.Actor);
+
+			return true;
+		}
+
+		public Target TryUpdateFrozenActorTarget(Actor self)
+		{
+			// If target was a frozen actor got replaced with an actor, try switching
+			if (this.FrozenActor != null && this.FrozenActor.Actor != null)
+			{
+				var loc = self.World.Map.CellContaining(this.FrozenActor.CenterPosition);
+				foreach (var actor in self.World.ActorMap.GetActorsAt(loc))
+				{
+					if (actor.ActorID == this.FrozenActor.ID && self.Owner.CanTargetActor(actor))
+					{
+						return Target.FromActor(actor);
+					}
+				}
+			}
+
+			// If target was an actor that got replaced with a frozen actor, try switching
+			if (this.Actor != null)
+			{
+				if (this.Type == TargetType.Actor)
+				{
+					var frozenLayer = self.Owner.PlayerActor.TraitOrDefault<FrozenActorLayer>();
+					var frozenActor = frozenLayer.FromID(this.Actor.ActorID);
+					if (frozenActor != null && this.IsValidFor(self))
+					{
+						return Target.FromFrozenActor(frozenActor);
+					}
+				}
+			}
+
+			return Target.Invalid;
+		}
+
 		public override string ToString()
 		{
 			switch (Type)

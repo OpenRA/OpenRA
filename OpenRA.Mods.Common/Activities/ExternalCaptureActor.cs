@@ -19,6 +19,7 @@ namespace OpenRA.Mods.Common.Activities
 	class ExternalCaptureActor : Activity
 	{
 		readonly ExternalCapturable capturable;
+		readonly Actor underlyingActor;
 		readonly ExternalCapturesInfo capturesInfo;
 		readonly Mobile mobile;
 		readonly Target target;
@@ -26,14 +27,20 @@ namespace OpenRA.Mods.Common.Activities
 		public ExternalCaptureActor(Actor self, Target target)
 		{
 			this.target = target;
-			capturable = target.Actor.Trait<ExternalCapturable>();
+			if (target.Type == TargetType.Actor)
+				underlyingActor = target.Actor;
+			else if (target.Type == TargetType.FrozenActor)
+				underlyingActor = target.FrozenActor.Actor;
+			capturable = underlyingActor.Trait<ExternalCapturable>();
 			capturesInfo = self.Info.TraitInfo<ExternalCapturesInfo>();
 			mobile = self.Trait<Mobile>();
 		}
 
 		public override Activity Tick(Actor self)
 		{
-			if (target.Type != TargetType.Actor)
+			bool isFrozenActor = target.Type == TargetType.FrozenActor;
+
+			if (target.Type != TargetType.Actor && target.Type != TargetType.FrozenActor)
 				return NextActivity;
 
 			if (IsCanceled || !self.IsInWorld || self.IsDead || !target.IsValidFor(self))
@@ -44,7 +51,16 @@ namespace OpenRA.Mods.Common.Activities
 				return NextActivity;
 			}
 
-			var nearest = target.Actor.OccupiesSpace.NearestCellTo(mobile.ToCell);
+			if (!target.IsOwnerTargetable(self))
+			{
+				var target2 = target.TryUpdateFrozenActorTarget(self);
+				if (target2.Type == TargetType.Invalid)
+					return NextActivity;
+				return new ExternalCaptureActor(self, target2);	
+			}
+
+			var occ = isFrozenActor ? target.FrozenActor : target.Actor.OccupiesSpace;
+			var nearest = occ.NearestCellTo(mobile.ToCell);
 
 			if ((nearest - mobile.ToCell).LengthSquared > 2)
 				return ActivityUtils.SequenceActivities(new MoveAdjacentTo(self, target), this);
@@ -57,7 +73,7 @@ namespace OpenRA.Mods.Common.Activities
 
 				if (capturable.CaptureProgressTime % 25 == 0)
 				{
-					self.World.Add(new FlashTarget(target.Actor, self.Owner));
+					self.World.Add(new FlashTarget(underlyingActor, self.Owner));
 					self.World.Add(new FlashTarget(self));
 				}
 
@@ -65,15 +81,15 @@ namespace OpenRA.Mods.Common.Activities
 				{
 					self.World.AddFrameEndTask(w =>
 					{
-						if (target.Actor.IsDead)
+						if (underlyingActor.IsDead)
 							return;
 
-						var oldOwner = target.Actor.Owner;
+						var oldOwner = underlyingActor.Owner;
 
-						target.Actor.ChangeOwner(self.Owner);
+						underlyingActor.ChangeOwner(self.Owner);
 
-						foreach (var t in target.Actor.TraitsImplementing<INotifyCapture>())
-							t.OnCapture(target.Actor, self, oldOwner, self.Owner);
+						foreach (var t in underlyingActor.TraitsImplementing<INotifyCapture>())
+							t.OnCapture(underlyingActor, self, oldOwner, self.Owner);
 
 						capturable.EndCapture();
 

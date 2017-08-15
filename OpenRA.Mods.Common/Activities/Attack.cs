@@ -85,47 +85,12 @@ namespace OpenRA.Mods.Common.Activities
 			return NextActivity;
 		}
 
-		protected bool TryUpdateFrozenActorTarget(Actor self, AttackBase attack)
+		protected bool TryUpdateFrozenActorTarget(Actor self)
 		{
-			// If target was a frozen actor got replaced with an actor, try switching
-			if (Target.FrozenActor != null && Target.FrozenActor.Actor != null)
-			{
-				var loc = self.World.Map.CellContaining(Target.FrozenActor.CenterPosition);
-				foreach (var actor in self.World.ActorMap.GetActorsAt(loc))
-				{
-					if (actor.ActorID == Target.FrozenActor.ID && self.Owner.CanTargetActor(actor))
-					{
-						frozenSwitchActivity = new Attack(self, Target.FromActor(actor), move != null, forceAttack, facingTolerance);
-						return true;
-					}
-				}
-			}
-
-			// If target was an actor that got replaced with a frozen actor, try switching
-			if (Target.Actor != null)
-			{
-				if (Target.Type == TargetType.Actor)
-				{
-					var frozenLayer = self.Owner.PlayerActor.TraitOrDefault<FrozenActorLayer>();
-					var frozenActor = frozenLayer.FromID(Target.Actor.ActorID);
-					if (frozenActor != null && Target.IsValidFor(self))
-					{
-						frozenSwitchActivity = new Attack(self, Target.FromFrozenActor(frozenActor), move != null, forceAttack, facingTolerance);
-						return true;
-					}
-				}
-			}
-
-			return false;
-		}
-
-		protected bool IsOwnerTargetable(Actor self, Target target)
-		{
-			if (target.FrozenActor != null)
-				return target.FrozenActor.Visible;
-			else if (target.Actor != null)
-				return self.Owner.CanTargetActor(target.Actor);
-
+			Target target2 = Target.TryUpdateFrozenActorTarget(self);
+			if (target2.Type == TargetType.Invalid)
+				return false;
+			frozenSwitchActivity = new Attack(self, target2, move != null, forceAttack, facingTolerance);
 			return true;
 		}
 
@@ -137,9 +102,9 @@ namespace OpenRA.Mods.Common.Activities
 			if (!Target.IsValidFor(self))
 				return NextActivity;
 
-			if (!IsOwnerTargetable(self, Target))
+			if (!Target.IsOwnerTargetable(self))
 			{
-				if (TryUpdateFrozenActorTarget(self, attack))
+				if (TryUpdateFrozenActorTarget(self))
 					attackStatus |= AttackStatus.FrozenSwitch;
 
 				return NextActivity;

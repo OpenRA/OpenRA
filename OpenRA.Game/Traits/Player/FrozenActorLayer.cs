@@ -27,10 +27,12 @@ namespace OpenRA.Traits
 		public object Create(ActorInitializer init) { return new FrozenActorLayer(init.Self, this); }
 	}
 
-	public class FrozenActor
+	public class FrozenActor : IOccupySpace
 	{
 		public readonly PPos[] Footprint;
-		public readonly WPos CenterPosition;
+		public CPos TopLeft { get; }
+		readonly IEnumerable<Pair<CPos, SubCell>> occupiedCells;
+		public WPos CenterPosition { get; }
 		public readonly IEnumerable<WPos> TargetablePositions;
 		public readonly Rectangle Bounds;
 		public readonly HashSet<string> TargetTypes;
@@ -76,7 +78,8 @@ namespace OpenRA.Traits
 					actor.Location.ToString(),
 					footprint.Select(p => p.ToString()).JoinWith("|"),
 					footprint.Select(p => shroud.Contains(p).ToString()).JoinWith("|")));
-
+			TopLeft = self.OccupiesSpace.TopLeft;
+			occupiedCells = self.OccupiesSpace.OccupiedCells().ToList();
 			CenterPosition = self.CenterPosition;
 			TargetablePositions = Target.GetActorTargetablePositions(self);
 			Bounds = self.Bounds;
@@ -86,6 +89,10 @@ namespace OpenRA.Traits
 			health = self.TraitOrDefault<IHealth>();
 
 			UpdateVisibility();
+		}
+
+		public IEnumerable<Pair<CPos, SubCell>> OccupiedCells() {
+			return occupiedCells;
 		}
 
 		public uint ID { get { return actor.ActorID; } }
