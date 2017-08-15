@@ -8,7 +8,6 @@
  */
 #endregion
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Mods.Common.Traits;
@@ -43,10 +42,6 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 
 		[Desc("Can this unit MC beyond Capacity temporarily?")]
 		public readonly MindcontrolPolicy Policy = MindcontrolPolicy.DiscardOldest;
-
-		[Desc("Condition to grant to the controlled actor")]
-		[GrantedConditionReference]
-		public readonly string GiveCondition;
 
 		[Desc("Condition to grant to self when controlling actors. Can stack up by the number of enslaved actors. You can use this to forbid firing of the dummy MC weapon.")]
 		[GrantedConditionReference]
@@ -174,7 +169,7 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 			// At this point, the target should be mind controlled. How we manage them is another thing.
 			slaves.Add(target.Actor);
 			StackControllingCondition(self, info.ControllingCondition);
-			mcable.LinkMaster(target.Actor, self, info.GiveCondition);
+			mcable.LinkMaster(target.Actor, self);
 
 			// Play sound
 			if (info.Sound != null && info.Sound.Any())

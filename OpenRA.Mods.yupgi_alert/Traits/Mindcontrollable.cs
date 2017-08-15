@@ -20,6 +20,10 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 	[Desc("Can be mindcontrolled by mindcontrollers?")]
 	public class MindcontrollableInfo : ConditionalTraitInfo
 	{
+		[Desc("Condition to grant when under mind control")]
+		[GrantedConditionReference]
+		public readonly string Condition = null;
+
 		[Desc("The sound played when the unit is unmindcontrolled.")]
 		public readonly string[] UnmindcontrolSound = null;
 
@@ -82,7 +86,7 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 			conditions.Remove(master);
 		}
 
-		public void LinkMaster(Actor self, Actor master, string condition)
+		public void LinkMaster(Actor self, Actor master)
 		{
 			// Reset anything it was doing.
 			self.CancelActivity();
@@ -99,7 +103,7 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 			UnlinkMaster(self, this.master); // Unlink old master.
 			this.master = master; // Link new master.
 
-			ConditionOn(self, master, condition);
+			ConditionOn(self, master, Info.Condition);
 
 			// In Kane's Wrath, when the MC'ed unit gets MC'ed back to the creatorOwner,
 			// then all the MC stuff is cancelled.
