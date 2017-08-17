@@ -64,7 +64,7 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 			int dmg = Info.DamageCoeff * level / 1000;
 
 			// null attacker actor to suppress Neutral player getting the bounty.
-			self.InflictDamage(null, new Damage(dmg, Info.DamageTypes));
+			self.InflictDamage(self, new Damage(dmg, Info.DamageTypes));
 
 			damageTicks = Info.DamageInterval;
 		}
