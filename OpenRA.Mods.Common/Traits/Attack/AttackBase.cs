@@ -210,7 +210,7 @@ namespace OpenRA.Mods.Common.Traits
 			foreach (var armament in Armaments)
 			{
 				var checkIsValid = checkForCenterTargetingWeapons ? armament.Weapon.TargetActorCenter : !armament.OutOfAmmo;
-				if (checkIsValid && armament.Weapon.IsValidAgainst(t, self.World, self))
+				if (checkIsValid && !armament.IsTraitDisabled && armament.Weapon.IsValidAgainst(t, self.World, self))
 					return true;
 			}
 
