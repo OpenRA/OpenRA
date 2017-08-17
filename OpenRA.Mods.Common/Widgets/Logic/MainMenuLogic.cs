@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -50,7 +51,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{ "runtime", Pair.New(".NET Runtime", Platform.RuntimeVersion) },
 				{ "gl", Pair.New("OpenGL Version", Game.Renderer.GLVersion) },
 				{ "windowsize", Pair.New("Window Size", "{0}x{1}".F(Game.Renderer.Resolution.Width, Game.Renderer.Resolution.Height)) },
-				{ "windowscale", Pair.New("Window Scale", Game.Renderer.WindowScale.ToString("F2")) },
+				{ "windowscale", Pair.New("Window Scale", Game.Renderer.WindowScale.ToString("F2", CultureInfo.InvariantCulture)) },
 				{ "lang", Pair.New("System Language", lang) }
 			};
 		}
