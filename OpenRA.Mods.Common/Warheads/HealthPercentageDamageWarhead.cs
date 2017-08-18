@@ -43,12 +43,20 @@ namespace OpenRA.Mods.Common.Warheads
 			if (!IsValidAgainst(victim, firedBy))
 				return;
 
+			// Cannot be damaged without a Health trait
 			var healthInfo = victim.Info.TraitInfoOrDefault<HealthInfo>();
 			if (healthInfo == null)
 				return;
 
+			var closestActiveShape = victim.TraitsImplementing<HitShape>().Where(Exts.IsTraitEnabled)
+				.MinByOrDefault(t => t.Info.Type.DistanceFromEdge(victim.CenterPosition, victim));
+
+			// Cannot be damaged without an active HitShape
+			if (closestActiveShape == null)
+				return;
+
 			// Damage is measured as a percentage of the target health
-			var damage = Util.ApplyPercentageModifiers(healthInfo.HP, damageModifiers.Append(Damage, DamageVersus(victim)));
+			var damage = Util.ApplyPercentageModifiers(healthInfo.HP, damageModifiers.Append(Damage, DamageVersus(victim, closestActiveShape.Info)));
 			victim.InflictDamage(firedBy, new Damage(damage, DamageTypes));
 		}
 	}
