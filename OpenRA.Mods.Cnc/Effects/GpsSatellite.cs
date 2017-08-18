@@ -34,18 +34,21 @@ namespace OpenRA.Mods.Cnc.Effects
 
 			anim = new Animation(world, image);
 			anim.PlayRepeating(sequence);
+
+			world.ScreenMap.Add(this, pos, anim.Image.Bounds);
 		}
 
 		public void Tick(World world)
 		{
 			anim.Tick();
 			pos += new WVec(0, 0, 427);
+			world.ScreenMap.Update(this, pos, anim.Image.Bounds);
 
 			if (++tick > revealDelay)
 			{
 				var watcher = launcher.PlayerActor.Trait<GpsWatcher>();
 				watcher.ReachedOrbit(launcher);
-				world.AddFrameEndTask(w => w.Remove(this));
+				world.AddFrameEndTask(w => { w.Remove(this); w.ScreenMap.Remove(this); });
 			}
 		}
 

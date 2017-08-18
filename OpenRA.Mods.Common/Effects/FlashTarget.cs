@@ -10,6 +10,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using OpenRA.Effects;
 using OpenRA.Graphics;
@@ -27,6 +28,7 @@ namespace OpenRA.Mods.Common.Effects
 			this.target = target;
 			player = asPlayer;
 			remainingTicks = ticks;
+			target.World.ScreenMap.Add(this, target.CenterPosition, target.VisualBounds);
 			target.World.RemoveAll(effect =>
 			{
 				var flashTarget = effect as FlashTarget;
@@ -37,7 +39,7 @@ namespace OpenRA.Mods.Common.Effects
 		public void Tick(World world)
 		{
 			if (--remainingTicks == 0 || !target.IsInWorld)
-				world.AddFrameEndTask(w => w.Remove(this));
+				world.AddFrameEndTask(w => { w.Remove(this); w.ScreenMap.Remove(this); });
 		}
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)

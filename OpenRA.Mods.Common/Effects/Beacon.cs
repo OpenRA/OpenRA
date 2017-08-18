@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using OpenRA.Effects;
 using OpenRA.Graphics;
 using OpenRA.Scripting;
@@ -48,17 +49,28 @@ namespace OpenRA.Mods.Common.Effects
 			this.duration = duration;
 			this.delay = delay;
 
+			var world = owner.World;
+			var bounds = new Rectangle();
+
 			if (!string.IsNullOrEmpty(arrowSprite))
 			{
-				arrow = new Animation(owner.World, beaconCollection);
+				arrow = new Animation(world, beaconCollection);
 				arrow.Play(arrowSprite);
+				bounds = Rectangle.Union(bounds, arrow.Image.Bounds);
 			}
 
 			if (!string.IsNullOrEmpty(circleSprite))
 			{
-				circles = new Animation(owner.World, beaconCollection);
+				circles = new Animation(world, beaconCollection);
 				circles.Play(circleSprite);
+				bounds = Rectangle.Union(bounds, circles.Image.Bounds);
 			}
+
+			if (bounds != Rectangle.Empty)
+				world.ScreenMap.Add(this, position, bounds);
+
+			if (duration > 0)
+				owner.World.AddFrameEndTask(w => w.Add(new DelayedAction(duration, () => { world.Remove(this); world.ScreenMap.Remove(this); })));
 		}
 
 		// By default, support power beacons are expected to clean themselves up

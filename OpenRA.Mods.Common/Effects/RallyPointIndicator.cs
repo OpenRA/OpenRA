@@ -10,6 +10,8 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Drawing;
+using System.Linq;
 using OpenRA.Effects;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
@@ -26,6 +28,7 @@ namespace OpenRA.Mods.Common.Effects
 
 		readonly WPos[] targetLine = new WPos[2];
 		CPos cachedLocation;
+		Rectangle bounds;
 
 		public RallyPointIndicator(Actor building, RallyPoint rp, ExitInfo[] exits)
 		{
@@ -38,6 +41,10 @@ namespace OpenRA.Mods.Common.Effects
 
 			circles = new Animation(building.World, rp.Info.Image);
 			circles.Play(rp.Info.CirclesSequence);
+
+			bounds = Rectangle.Union(circles.Image.Bounds, flag.Image.Bounds);
+			var rallyPos = building.World.Map.CenterOfCell(cachedLocation);
+			building.World.ScreenMap.Add(this, rallyPos, bounds);
 		}
 
 		void IEffect.Tick(World world)
@@ -72,7 +79,7 @@ namespace OpenRA.Mods.Common.Effects
 			}
 
 			if (!building.IsInWorld || building.IsDead)
-				world.AddFrameEndTask(w => w.Remove(this));
+				world.AddFrameEndTask(w => { w.Remove(this); w.ScreenMap.Remove(this); });
 		}
 
 		IEnumerable<IRenderable> IEffect.Render(WorldRenderer wr) { return SpriteRenderable.None; }

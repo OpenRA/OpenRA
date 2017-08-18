@@ -103,6 +103,7 @@ namespace OpenRA.Mods.Common.Projectiles
 		bool animationComplete;
 		[Sync] WPos target;
 		[Sync] WPos source;
+		BeamRenderable beam;
 
 		public LaserZap(LaserZapInfo info, ProjectileArgs args, Color color)
 		{
@@ -119,6 +120,10 @@ namespace OpenRA.Mods.Common.Projectiles
 				var maxOffset = inaccuracy * (target - source).Length / args.Weapon.Range.Length;
 				target += WVec.FromPDF(args.SourceActor.World.SharedRandom, 2) * maxOffset / 1024;
 			}
+
+			var renderColor = Color.FromArgb((info.Duration - ticks) * 255 / info.Duration, color);
+			beam = new BeamRenderable(args.Source, info.ZOffset, target - args.Source, info.Shape, info.Width, renderColor);
+			args.SourceActor.World.ScreenMap.Add(this, target, beam.ScreenBounds(null));
 
 			if (!string.IsNullOrEmpty(info.HitAnim))
 				hitanim = new Animation(args.SourceActor.World, info.HitAnim);
@@ -153,7 +158,9 @@ namespace OpenRA.Mods.Common.Projectiles
 				hitanim.Tick();
 
 			if (++ticks >= info.Duration && animationComplete)
-				world.AddFrameEndTask(w => w.Remove(this));
+				world.AddFrameEndTask(w => { w.Remove(this); w.ScreenMap.Remove(this); });
+
+			world.ScreenMap.Update(this, target, beam.ScreenBounds(null));
 		}
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)
@@ -165,11 +172,14 @@ namespace OpenRA.Mods.Common.Projectiles
 			if (ticks < info.Duration)
 			{
 				var rc = Color.FromArgb((info.Duration - ticks) * color.A / info.Duration, color);
-				yield return new BeamRenderable(args.Source, info.ZOffset, target - args.Source, info.Shape, info.Width, rc);
+				beam = new BeamRenderable(args.Source, info.ZOffset, target - args.Source, info.Shape, info.Width, rc);
+				yield return beam;
 
 				if (info.SecondaryBeam)
 				{
 					var src = Color.FromArgb((info.Duration - ticks) * secondaryColor.A / info.Duration, secondaryColor);
+
+					// TODO: add this to screen bounds as well
 					yield return new BeamRenderable(args.Source, info.SecondaryBeamZOffset, target - args.Source,
 						info.SecondaryBeamShape, info.SecondaryBeamWidth, src);
 				}

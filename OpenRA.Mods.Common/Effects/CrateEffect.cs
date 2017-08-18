@@ -27,7 +27,8 @@ namespace OpenRA.Mods.Common.Effects
 			this.palette = palette;
 
 			anim = new Animation(a.World, "crate-effects");
-			anim.PlayThen(seq, () => a.World.AddFrameEndTask(w => w.Remove(this)));
+			anim.PlayThen(seq, () => a.World.AddFrameEndTask(w => { w.Remove(this); w.ScreenMap.Remove(this); }));
+			a.World.ScreenMap.Add(this, a.CenterPosition, anim.Image.Bounds);
 		}
 
 		public void Tick(World world)

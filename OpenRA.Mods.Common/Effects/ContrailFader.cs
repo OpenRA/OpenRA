@@ -10,6 +10,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Drawing;
 using OpenRA.Effects;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Graphics;
@@ -21,19 +22,26 @@ namespace OpenRA.Mods.Common.Effects
 		WPos pos;
 		ContrailRenderable trail;
 		int ticks;
+		Rectangle bounds;
 
 		public ContrailFader(WPos pos, ContrailRenderable trail)
 		{
 			this.pos = pos;
 			this.trail = trail;
+
+			bounds = new Rectangle(0, 0, trail.Length, trail.Length);
 		}
 
 		public void Tick(World world)
 		{
+			if (ticks == 0)
+				world.ScreenMap.Add(this, pos, bounds);
+
 			if (ticks++ == trail.Length)
-				world.AddFrameEndTask(w => w.Remove(this));
+				world.AddFrameEndTask(w => { w.Remove(this); w.ScreenMap.Remove(this); });
 
 			trail.Update(pos);
+			world.ScreenMap.Update(this, pos, bounds);
 		}
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)

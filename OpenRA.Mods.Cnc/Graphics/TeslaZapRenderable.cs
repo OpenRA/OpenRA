@@ -88,7 +88,10 @@ namespace OpenRA.Mods.Cnc.Graphics
 			cache.Do(c => c.Render(wr));
 		}
 
-		public Rectangle ScreenBounds(WorldRenderer wr) { return Rectangle.Empty; }
+		public Rectangle ScreenBounds(WorldRenderer wr)
+		{
+			return new Rectangle(0, 0, length.HorizontalLength, length.VerticalLength);
+		}
 
 		public IEnumerable<IFinalizedRenderable> GenerateRenderables(WorldRenderer wr)
 		{

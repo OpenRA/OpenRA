@@ -68,6 +68,10 @@ namespace OpenRA.Mods.Common.Graphics
 			Game.Renderer.WorldRgbaColorRenderer.DrawRect(offset, offset + size, 1 / wr.Viewport.Zoom, Color.Red);
 		}
 
-		public Rectangle ScreenBounds(WorldRenderer wr) { return Rectangle.Empty; }
+		public Rectangle ScreenBounds(WorldRenderer wr)
+		{
+			var size = font.Measure(text);
+			return new Rectangle(0, 0, size.X, size.Y);
+		}
 	}
 }

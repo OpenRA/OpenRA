@@ -108,6 +108,7 @@ namespace OpenRA.Mods.Common.Traits
 					self.World.AddFrameEndTask(w =>
 					{
 						w.Remove(beacon);
+						w.ScreenMap.Remove(beacon);
 						beacon = null;
 					});
 				}
@@ -135,6 +136,7 @@ namespace OpenRA.Mods.Common.Traits
 						self.World.AddFrameEndTask(w =>
 						{
 							w.Remove(beacon);
+							w.ScreenMap.Remove(beacon);
 							beacon = null;
 						});
 					}

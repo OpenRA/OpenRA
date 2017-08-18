@@ -39,11 +39,17 @@ namespace OpenRA.Mods.Cnc.Effects
 			this.duration = duration;
 			this.delay = delay;
 
+			var world = owner.World;
+
 			if (!string.IsNullOrEmpty(beaconSequence))
 			{
-				beacon = new Animation(owner.World, beaconImage);
+				beacon = new Animation(world, beaconImage);
 				beacon.PlayRepeating(beaconSequence);
+				world.ScreenMap.Add(this, position, beacon.Image.Bounds);
 			}
+
+			if (duration > 0)
+				world.Add(new DelayedAction(duration, () => { world.Remove(this); world.ScreenMap.Remove(this); }));
 		}
 
 		void IEffect.Tick(World world)

@@ -32,7 +32,8 @@ namespace OpenRA.Mods.Common.Effects
 			this.scaleSizeWithZoom = scaleSizeWithZoom;
 			this.visibleThroughFog = visibleThroughFog;
 			anim = new Animation(world, image, () => facing);
-			anim.PlayThen(sequence, () => world.AddFrameEndTask(w => w.Remove(this)));
+			anim.PlayThen(sequence, () => world.AddFrameEndTask(w => { w.Remove(this); w.ScreenMap.Remove(this); }));
+			world.ScreenMap.Add(this, pos, anim.Image.Bounds);
 		}
 
 		public void Tick(World world)

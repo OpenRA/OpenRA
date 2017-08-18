@@ -51,6 +51,11 @@ namespace OpenRA.Primitives
 			MutateBins(item, itemBounds[item] = bounds, addItem);
 		}
 
+		public bool Contains(T item)
+		{
+			return itemBounds.ContainsKey(item);
+		}
+
 		public void Remove(T item)
 		{
 			MutateBins(item, itemBounds[item], removeItem);
