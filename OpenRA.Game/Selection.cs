@@ -123,8 +123,8 @@ namespace OpenRA
 
 		public void DoControlGroup(World world, WorldRenderer worldRenderer, int group, Modifiers mods, int multiTapCount)
 		{
-			var addModifier = Platform.CurrentPlatform == PlatformType.OSX ? Modifiers.Meta : Modifiers.Ctrl;
-			if (mods.HasModifier(addModifier))
+			var addModifier = (Platform.CurrentPlatform == PlatformType.OSX ? Modifiers.Meta : Modifiers.Ctrl) | Modifiers.Shift;
+			if ((mods & addModifier) != 0)
 			{
 				if (actors.Count == 0)
 					return;
