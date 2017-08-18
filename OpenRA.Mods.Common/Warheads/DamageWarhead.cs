@@ -35,6 +35,9 @@ namespace OpenRA.Mods.Common.Warheads
 			return base.IsValidAgainst(victim, firedBy);
 		}
 
+		/// <summary>
+		/// Apply damage modifiers of all enabled Armor traits the actor has.
+		/// </summary>
 		public int DamageVersus(Actor victim)
 		{
 			var armor = victim.TraitsImplementing<Armor>()
@@ -44,6 +47,10 @@ namespace OpenRA.Mods.Common.Warheads
 			return Util.ApplyPercentageModifiers(100, armor);
 		}
 
+		/// <summary>
+		/// In this DamageVersus overload, we only want to apply Armor modifiers that are listed
+		/// in ArmorTypes of the HitShape the warhead landed in.
+		/// </summary>
 		public int DamageVersus(Actor victim, HitShapeInfo shape)
 		{
 			var armor = victim.TraitsImplementing<Armor>()
@@ -74,6 +81,9 @@ namespace OpenRA.Mods.Common.Warheads
 			victim.InflictDamage(firedBy, new Damage(damage, DamageTypes));
 		}
 
+		/// <summary>
+		/// Only apply modifiers valid for a specific HitShape trait.
+		/// </summary>
 		public virtual void DoImpact(Actor victim, Actor firedBy, HitShapeInfo shape, IEnumerable<int> damageModifiers)
 		{
 			if (!IsValidAgainst(victim, firedBy))
