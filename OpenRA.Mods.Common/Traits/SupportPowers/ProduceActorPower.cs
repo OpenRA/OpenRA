@@ -10,6 +10,7 @@
 #endregion
 
 using System.Linq;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -64,8 +65,19 @@ namespace OpenRA.Mods.Common.Traits
 			var activated = false;
 
 			if (sp != null)
+			{
 				foreach (var name in info.Actors)
-					activated |= sp.Produce(self, self.World.Map.Rules.Actors[name], faction);
+				{
+					var ai = self.World.Map.Rules.Actors[name];
+					var inits = new TypeDictionary
+					{
+						new OwnerInit(self.Owner),
+						new FactionInit(BuildableInfo.GetInitialFaction(ai, faction))
+					};
+
+					activated |= sp.Produce(self, ai, inits);
+				}
+			}
 
 			if (activated)
 				Game.Sound.PlayNotification(self.World.Map.Rules, manager.Self.Owner, "Speech", info.ReadyAudio, self.Owner.Faction.InternalName);
