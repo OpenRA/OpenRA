@@ -44,7 +44,7 @@ namespace OpenRA.Mods.Common.Traits
 			rp = Exts.Lazy(() => init.Self.IsDead ? null : init.Self.TraitOrDefault<RallyPoint>());
 		}
 
-		public override bool Produce(Actor self, ActorInfo producee, string factionVariant)
+		public override bool Produce(Actor self, ActorInfo producee, TypeDictionary inits)
 		{
 			var owner = self.Owner;
 
@@ -85,7 +85,7 @@ namespace OpenRA.Mods.Common.Traits
 					foreach (var cargo in self.TraitsImplementing<INotifyDelivery>())
 						cargo.Delivered(self);
 
-					self.World.AddFrameEndTask(ww => DoProduction(self, producee, exit, factionVariant));
+					self.World.AddFrameEndTask(ww => DoProduction(self, producee, exit, inits));
 					Game.Sound.Play(SoundType.World, info.ChuteSound, self.CenterPosition);
 					Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", info.ReadyAudio, self.Owner.Faction.InternalName);
 				}));
@@ -97,7 +97,7 @@ namespace OpenRA.Mods.Common.Traits
 			return true;
 		}
 
-		public override void DoProduction(Actor self, ActorInfo producee, ExitInfo exitinfo, string factionVariant)
+		public override void DoProduction(Actor self, ActorInfo producee, ExitInfo exitinfo, TypeDictionary inits)
 		{
 			var exit = CPos.Zero;
 			var exitLocation = CPos.Zero;
@@ -106,15 +106,12 @@ namespace OpenRA.Mods.Common.Traits
 			var info = (ProductionParadropInfo)Info;
 			var actorType = info.ActorType;
 
-			var bi = producee.TraitInfoOrDefault<BuildableInfo>();
-			if (bi != null && bi.ForceFaction != null)
-				factionVariant = bi.ForceFaction;
-
 			var altitude = self.World.Map.Rules.Actors[actorType].TraitInfo<AircraftInfo>().CruiseAltitude;
-			var td = new TypeDictionary
-			{
-				new OwnerInit(self.Owner),
-			};
+
+			// Clone the initializer dictionary for the new actor
+			var td = new TypeDictionary();
+			foreach (var init in inits)
+				td.Add(init);
 
 			if (self.OccupiesSpace != null)
 			{
@@ -134,9 +131,6 @@ namespace OpenRA.Mods.Common.Traits
 
 			self.World.AddFrameEndTask(w =>
 			{
-				if (factionVariant != null)
-					td.Add(new FactionInit(factionVariant));
-
 				var newUnit = self.World.CreateActor(producee.Name, td);
 
 				newUnit.QueueActivity(new Parachute(newUnit, newUnit.CenterPosition, self));
