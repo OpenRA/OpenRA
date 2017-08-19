@@ -967,6 +967,10 @@ namespace OpenRA.Mods.Common.UtilityCommands
 							Console.WriteLine("Please check if your aircraft behave as intended or need manual adjustments.");
 							node.Value.Nodes.Add(new MiniYamlNode("TakeOffOnResupply", "true"));
 						}
+
+						// Upgrade rule for setting VTOL to true for CanHover actors
+						if (isHeli)
+							node.Value.Nodes.Add(new MiniYamlNode("VTOL", "true"));
 					}
 				}
 

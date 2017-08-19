@@ -549,6 +549,7 @@
 		CruisingCondition: cruising
 		WaitDistanceFromResupplyBase: 4c0
 		TakeOffOnResupply: true
+		VTOL: true
 	GpsDot:
 		String: Helicopter
 	Hovers@CRUISING:
@@ -913,6 +914,7 @@
 		GenericName: Destroyed Helicopter
 	Aircraft:
 		CanHover: True
+		VTOL: true
 	FallsToEarth:
 	BodyOrientation:
 		UseClassicFacingFudge: True

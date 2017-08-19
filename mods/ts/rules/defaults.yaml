@@ -821,6 +821,7 @@
 		CanHover: True
 		CruisingCondition: cruising
 		TakeOffOnResupply: true
+		VTOL: true
 	Hovers@CRUISING:
 		RequiresCondition: cruising
 
