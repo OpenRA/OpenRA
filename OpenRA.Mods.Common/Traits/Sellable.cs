@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Linq;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Orders;
 using OpenRA.Mods.Common.Traits.Render;
@@ -66,17 +67,33 @@ namespace OpenRA.Mods.Common.Traits
 			foreach (var ns in self.TraitsImplementing<INotifySold>())
 				ns.Selling(self);
 
-			if (!info.SkipMakeAnimation)
+			if (info.SkipMakeAnimation)
+				self.QueueActivity(false, new Sell(self));
+
+			PlaySellAnimations(self);
+		}
+
+		void PlaySellAnimations(Actor self)
+		{
+			var makeAnimations = self.TraitsImplementing<WithMakeAnimation>();
+			if (!makeAnimations.Any())
 			{
-				var makeAnimation = self.TraitOrDefault<WithMakeAnimation>();
-				if (makeAnimation != null)
-				{
-					makeAnimation.Reverse(self, new Sell(self), false);
-					return;
-				}
+				// Let the sell happen even without WithMakeAnimation trait.
+				self.QueueActivity(false, new Sell(self));
+				return;
 			}
 
-			self.QueueActivity(false, new Sell(self));
+			bool first = true;
+			foreach (var ma in makeAnimations)
+			{
+				if (first)
+				{
+					ma.Reverse(self, new Sell(self), false);
+					first = false;
+				}
+				else
+					ma.Reverse(self, null);
+			}
 		}
 
 		public bool IsTooltipVisible(Player forPlayer)
