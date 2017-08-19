@@ -58,6 +58,8 @@ namespace OpenRA
 					continue;
 
 				var orderSubject = o.Subject;
+				if (orderSubject == null)
+					continue;
 				if (orderSubject.Disposed)
 					continue;
 
