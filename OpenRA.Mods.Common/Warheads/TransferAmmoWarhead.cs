@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.GameRules;
@@ -17,13 +18,16 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Warheads
 {
-	public class ProvideAmmoWarhead : Warhead
+	public class TransferAmmoWarhead : Warhead
 	{
 		[Desc("Name of the AmmoPool.")]
 		public readonly string AmmoPoolName = "primary";
 
 		[Desc("Give ammo to source actor if the target actor doesn't have enough space.")]
 		public readonly bool ReturnAmmo = true;
+
+		[Desc("Amount of ammo to transfer from the source to the target (0 = consume 0 and provide 1)")]
+		public readonly int Amount = 0;
 
 		public override bool IsValidAgainst(Actor victim, Actor firedBy)
 		{
@@ -43,17 +47,36 @@ namespace OpenRA.Mods.Common.Warheads
 
 		public void DoImpact(Actor victim, Actor firedBy, IEnumerable<int> damageModifiers)
 		{
-			bool wasSuccessful = false;
+			var amountOfThisShot = 0;
+
+			if (Amount == 0)
+			{
+				// Ammo was already consumed by the armament.
+				amountOfThisShot = 1;
+			}
+			else
+			{
+				foreach (var pool in GetAmmoPools(firedBy).Where(x => x.HasAmmo()))
+				{
+					var amountFromThisPool = Math.Min(Amount - amountOfThisShot, pool.GetAmmoCount());
+					amountOfThisShot += amountFromThisPool;
+					pool.AddAmmo(-amountFromThisPool);
+
+					if (amountOfThisShot == Amount)
+						break;
+				}
+			}
 
 			if (IsValidAgainst(victim, firedBy))
 			{
 				foreach (var pool in GetAmmoPools(victim).Where(x => !x.FullAmmo()))
 				{
-					if (pool.GiveAmmo())
-					{
-						wasSuccessful = true;
+					var amountToThisPool = Math.Min(amountOfThisShot, pool.Info.Ammo - pool.GetAmmoCount());
+					amountOfThisShot -= amountToThisPool;
+					pool.AddAmmo(amountToThisPool);
+
+					if (amountOfThisShot == 0)
 						break;
-					}
 				}
 
 				var world = firedBy.World;
@@ -66,11 +89,16 @@ namespace OpenRA.Mods.Common.Warheads
 				}
 			}
 
-			if (ReturnAmmo && !wasSuccessful)
+			if (ReturnAmmo && amountOfThisShot > 0)
 			{
 				foreach (var pool in GetAmmoPools(firedBy).Where(x => !x.FullAmmo()))
 				{
-					pool.GiveAmmo();
+					var amountToThisPool = Math.Min(amountOfThisShot, pool.Info.Ammo - pool.GetAmmoCount());
+					amountOfThisShot -= amountToThisPool;
+					pool.AddAmmo(amountToThisPool);
+
+					if (amountOfThisShot == 0)
+						break;
 				}
 			}
 		}

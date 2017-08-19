@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Traits;
@@ -82,19 +83,20 @@ namespace OpenRA.Mods.Common.Traits
 
 		public bool GiveAmmo()
 		{
-			if (CurrentAmmo >= Info.Ammo)
-				return false;
-
-			++CurrentAmmo;
-			return true;
+			return AddAmmo(1);
 		}
 
 		public bool TakeAmmo()
 		{
-			if (CurrentAmmo <= 0)
+			return AddAmmo(-1);
+		}
+
+		public bool AddAmmo(int amount)
+		{
+			if (CurrentAmmo + amount > Info.Ammo || CurrentAmmo + amount < 0)
 				return false;
 
-			--CurrentAmmo;
+			CurrentAmmo += amount;
 			return true;
 		}
 
