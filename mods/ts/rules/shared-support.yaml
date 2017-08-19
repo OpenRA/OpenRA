@@ -53,3 +53,5 @@ NAPULS:
 		LongDesc: Fires a pulse blast which disables\nall mechanical units in the area.
 		EndChargeSpeechNotification: EmPulseCannonReady
 		SelectTargetSpeechNotification: SelectTarget
+	RejectsOrders:
+		Reject: Attack, ForceAttack
