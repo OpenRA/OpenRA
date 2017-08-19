@@ -117,6 +117,9 @@ namespace OpenRA.Mods.Common.Traits
 
 			foreach (var a in attack.Armaments)
 			{
+				if (a.IsTraitDisabled)
+					continue;
+
 				foreach (var b in a.Barrels)
 				{
 					var muzzle = self.CenterPosition + a.MuzzleOffset(self, b);

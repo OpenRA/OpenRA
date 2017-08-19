@@ -151,6 +151,9 @@ namespace OpenRA.Mods.Common.Traits
 
 			foreach (var a in Armaments)
 			{
+				if (a.IsTraitDisabled)
+					continue;
+
 				var port = SelectFirePort(self, targetYaw);
 				if (port == null)
 					return;
