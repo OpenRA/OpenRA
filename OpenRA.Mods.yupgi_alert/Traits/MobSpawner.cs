@@ -104,7 +104,7 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 		public MobEntry[] Mobs { get; private set; }
 
 		int spawnReplaceTicks = 0;
-		IPositionable pos;
+		IPositionable position;
 		Aircraft aircraft;
 		Health health;
 
@@ -133,7 +133,7 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 			rallyPoint = self.TraitOrDefault<RallyPoint>();
 			exits = self.Info.TraitInfos<ExitInfo>().ToArray();
 			facing = self.TraitOrDefault<IFacing>();
-			pos = self.TraitOrDefault<IPositionable>();
+			position = self.TraitOrDefault<IPositionable>();
 			health = self.Trait<Health>();
 			aircraft = self.TraitOrDefault<Aircraft>();
 
@@ -464,8 +464,8 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 
 			var newPos = new WPos(x / cnt, y / cnt, aircraft != null ? aircraft.Info.CruiseAltitude.Length : 0);
 			if (aircraft == null)
-				pos.SetPosition(self, newPos); // breaks arrival detection of the aircraft if we set position.
-			pos.SetVisualPosition(self, newPos);
+				position.SetPosition(self, newPos); // breaks arrival detection of the aircraft if we set position.
+			position.SetVisualPosition(self, newPos);
 		}
 
 		int aggregateHealthUpdateTicks = 0;
