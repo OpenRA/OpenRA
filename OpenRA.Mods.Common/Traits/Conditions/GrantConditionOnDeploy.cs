@@ -58,6 +58,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Skip make/deploy animation?")]
 		public readonly bool SkipMakeAnimation = false;
 
+		[Desc("Valid bodies to play the make/deploy animation on")]
+		public readonly string[] MakeAnimationBodyNames = { "body" };
+
 		public object Create(ActorInitializer init) { return new GrantConditionOnDeploy(init, this); }
 	}
 
@@ -226,7 +229,7 @@ namespace OpenRA.Mods.Common.Traits
 				OnDeployCompleted();
 			else
 				foreach (var n in notify)
-					n.Deploy(self, Info.SkipMakeAnimation);
+					n.Deploy(self, Info.SkipMakeAnimation, Info.MakeAnimationBodyNames);
 		}
 
 		/// <summary>Play undeploy sound and animation and after that revoke the condition.</summary>
@@ -249,7 +252,7 @@ namespace OpenRA.Mods.Common.Traits
 				OnUndeployCompleted();
 			else
 				foreach (var n in notify)
-					n.Undeploy(self, Info.SkipMakeAnimation);
+					n.Undeploy(self, Info.SkipMakeAnimation, Info.MakeAnimationBodyNames);
 		}
 
 		void OnDeployStarted()

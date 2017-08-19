@@ -91,7 +91,8 @@ namespace OpenRA.Mods.Common.Traits.Render
 					token = conditionManager.RevokeCondition(self, token);
 
 				// TODO: Rewrite this to use a trait notification for save game support
-				onComplete();
+				if (onComplete != null)
+					onComplete();
 			});
 		}
 
@@ -116,7 +117,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		}
 
 		// TODO: Make this use Forward instead
-		void INotifyDeployTriggered.Deploy(Actor self, bool skipMakeAnim)
+		void INotifyDeployTriggered.Deploy(Actor self, bool skipMakeAnim, string[] bodyNames)
 		{
 			var notified = false;
 			var notify = self.TraitsImplementing<INotifyDeployComplete>();
@@ -134,6 +135,9 @@ namespace OpenRA.Mods.Common.Traits.Render
 				if (wsb.IsTraitDisabled)
 					continue;
 
+				if (!bodyNames.Contains(wsb.Info.Name))
+					return;
+
 				wsb.PlayCustomAnimation(self, info.Sequence, () =>
 				{
 					if (notified)
@@ -149,7 +153,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		}
 
 		// TODO: Make this use Reverse instead
-		void INotifyDeployTriggered.Undeploy(Actor self, bool skipMakeAnim)
+		void INotifyDeployTriggered.Undeploy(Actor self, bool skipMakeAnim, string[] bodyNames)
 		{
 			var notified = false;
 			var notify = self.TraitsImplementing<INotifyDeployComplete>();
@@ -166,6 +170,9 @@ namespace OpenRA.Mods.Common.Traits.Render
 			{
 				if (wsb.IsTraitDisabled)
 					continue;
+
+				if (!bodyNames.Contains(wsb.Info.Name))
+					return;
 
 				wsb.PlayCustomAnimationBackwards(self, info.Sequence, () =>
 				{

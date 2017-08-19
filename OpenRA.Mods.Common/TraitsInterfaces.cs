@@ -181,8 +181,8 @@ namespace OpenRA.Mods.Common.Traits
 
 	public interface INotifyDeployTriggered
 	{
-		void Deploy(Actor self, bool skipMakeAnim);
-		void Undeploy(Actor self, bool skipMakeAnim);
+		void Deploy(Actor self, bool skipMakeAnim, string[] bodyNames);
+		void Undeploy(Actor self, bool skipMakeAnim, string[] bodyNames);
 	}
 
 	public interface IResourceExchange
