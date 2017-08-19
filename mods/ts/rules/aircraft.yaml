@@ -345,6 +345,7 @@ HUNTER:
 		CruiseAltitude: 256
 		CanHover: True
 		CruisingCondition: cruising
+		VTOL: true
 	Targetable:
 		TargetTypes: Ground, Vehicle
 	HiddenUnderFog:

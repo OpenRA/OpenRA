@@ -166,6 +166,7 @@ JUMPJET.Husk:
 	Aircraft:
 		Speed: 186
 		CanHover: True
+		VTOL: true
 	RenderSprites:
 		Image: jumpjet
 	AutoSelectionSize:
