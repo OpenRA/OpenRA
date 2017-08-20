@@ -78,6 +78,12 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Does this actor cancel its previous activity after resupplying?")]
 		public readonly bool AbortOnResupply = true;
 
+		[Desc("Does this actor automatically take off after resupplying?")]
+		public readonly bool TakeOffOnResupply = false;
+
+		[Desc("Does this actor automatically take off after creation?")]
+		public readonly bool TakeOffOnCreation = true;
+
 		[Desc("Altitude at which the aircraft considers itself landed.")]
 		public readonly WDist LandAltitude = WDist.Zero;
 
@@ -264,7 +270,8 @@ namespace OpenRA.Mods.Common.Traits
 				if (host == null)
 					return;
 
-				self.QueueActivity(new TakeOff(self));
+				if (Info.TakeOffOnCreation)
+					self.QueueActivity(new TakeOff(self));
 			}
 
 			// Add land activity if LandOnCondidion resolves to true and the actor can land at the current location.

@@ -28,22 +28,38 @@ namespace OpenRA.Mods.Common.Activities
 			if (host == null)
 				return;
 
+			var autoTakeOff = aircraft.Info.TakeOffOnResupply;
+
 			if (aircraft.IsPlane)
 			{
-				ChildActivity = ActivityUtils.SequenceActivities(
-					aircraft.GetResupplyActivities(host)
-					.Append(new AllowYieldingReservation(self))
-					.Append(new WaitFor(() => NextInQueue != null || aircraft.ReservedActor == null))
-					.ToArray());
+				// Planes should take off from their airfield immediately after resupplying (if TakeOffOnResupply is true).
+				// HACK: Append NextInQueue to TakeOff to avoid moving to the Rallypoint (if NextInQueue is non-null).
+				if (autoTakeOff)
+					ChildActivity = ActivityUtils.SequenceActivities(
+						aircraft.GetResupplyActivities(host)
+						.Append(new AllowYieldingReservation(self))
+						.Append(new TakeOff(self)).Append(NextInQueue)
+						.ToArray());
+				else
+					ChildActivity = ActivityUtils.SequenceActivities(
+						aircraft.GetResupplyActivities(host)
+						.Append(new AllowYieldingReservation(self))
+						.Append(new WaitFor(() => NextInQueue != null || aircraft.ReservedActor == null))
+						.ToArray());
 			}
 			else
 			{
-				// Helicopters should take off from their helipad immediately after resupplying.
+				// Helicopters should take off from their helipad immediately after resupplying (if TakeOffOnResupply is true).
 				// HACK: Append NextInQueue to TakeOff to avoid moving to the Rallypoint (if NextInQueue is non-null).
-				ChildActivity = ActivityUtils.SequenceActivities(
-					aircraft.GetResupplyActivities(host)
-					.Append(new AllowYieldingReservation(self))
-					.Append(new TakeOff(self)).Append(NextInQueue).ToArray());
+				if (autoTakeOff)
+					ChildActivity = ActivityUtils.SequenceActivities(
+						aircraft.GetResupplyActivities(host)
+						.Append(new AllowYieldingReservation(self))
+						.Append(new TakeOff(self)).Append(NextInQueue).ToArray());
+				else
+					ChildActivity = ActivityUtils.SequenceActivities(
+						aircraft.GetResupplyActivities(host)
+						.Append(new AllowYieldingReservation(self)).ToArray());
 			}
 		}
 
