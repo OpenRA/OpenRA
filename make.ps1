@@ -195,6 +195,7 @@ function Docs-Command
 		./OpenRA.Utility.exe all --docs | Out-File -Encoding "UTF8" DOCUMENTATION.md
 		./OpenRA.Utility.exe all --weapon-docs | Out-File -Encoding "UTF8" WEAPONS.md
 		./OpenRA.Utility.exe all --lua-docs | Out-File -Encoding "UTF8" Lua-API.md
+		./OpenRA.Utility.exe all --settings-docs | Out-File -Encoding "UTF8" Settings.md
 	}
 	else
 	{
