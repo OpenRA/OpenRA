@@ -102,8 +102,8 @@ TurretGun:
 		Spread: 426
 		Damage: 230
 		Versus:
-			None: 80
-			Wood: 35
+			None: 90
+			Wood: 40
 			Light: 60
 			Heavy: 25
 			Concrete: 50
