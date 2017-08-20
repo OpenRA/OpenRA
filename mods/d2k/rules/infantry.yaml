@@ -152,8 +152,6 @@ fremen:
 		InitialDelay: 85
 		CloakDelay: 85
 		UncloakOn: Attack, Unload, Infiltrate, Demolish, Dock, Damage, Heal
-		CloakSound: STEALTH1.WAV
-		UncloakSound: STEALTH2.WAV
 		IsPlayerPalette: true
 		RequiresCondition: !cloak-force-disabled
 	GrantConditionOnDamageState@UNCLOAK:
@@ -252,7 +250,6 @@ saboteur:
 		InitialDelay: 85
 		CloakDelay: 85
 		CloakSound: STEALTH1.WAV
-		UncloakSound: STEALTH2.WAV
 		UncloakOn: Attack, Unload, Infiltrate, Demolish, Move, Damage, Heal
 		IsPlayerPalette: true
 		RequiresCondition: !cloak-force-disabled
