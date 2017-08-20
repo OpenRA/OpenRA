@@ -39,6 +39,8 @@ FlametankExplode:
 
 HeliCrash:
 	Inherits: ^DamagingExplosion
+	Warhead@1Dam: SpreadDamage
+		Damage: 100
 
 HeliExplode:
 	Warhead@1Dam: SpreadDamage

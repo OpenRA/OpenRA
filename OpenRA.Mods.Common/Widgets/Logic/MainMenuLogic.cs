@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -37,7 +38,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		static bool fetchedNews;
 
 		// Increment the version number when adding new stats
-		const int SystemInformationVersion = 2;
+		const int SystemInformationVersion = 3;
 		Dictionary<string, Pair<string, string>> GetSystemInformation()
 		{
 			var lang = System.Globalization.CultureInfo.InstalledUICulture.TwoLetterISOLanguageName;
@@ -47,10 +48,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{ "platform", Pair.New("OS Type", Platform.CurrentPlatform.ToString()) },
 				{ "os", Pair.New("OS Version", Environment.OSVersion.ToString()) },
 				{ "x64", Pair.New("OS is 64 bit", Environment.Is64BitOperatingSystem.ToString()) },
+				{ "x64process", Pair.New("Process is 64 bit", Environment.Is64BitProcess.ToString()) },
 				{ "runtime", Pair.New(".NET Runtime", Platform.RuntimeVersion) },
 				{ "gl", Pair.New("OpenGL Version", Game.Renderer.GLVersion) },
 				{ "windowsize", Pair.New("Window Size", "{0}x{1}".F(Game.Renderer.Resolution.Width, Game.Renderer.Resolution.Height)) },
-				{ "windowscale", Pair.New("Window Scale", Game.Renderer.WindowScale.ToString("F2")) },
+				{ "windowscale", Pair.New("Window Scale", Game.Renderer.WindowScale.ToString("F2", CultureInfo.InvariantCulture)) },
 				{ "lang", Pair.New("System Language", lang) }
 			};
 		}

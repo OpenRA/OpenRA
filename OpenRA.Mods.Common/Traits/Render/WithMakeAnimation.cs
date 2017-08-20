@@ -116,16 +116,24 @@ namespace OpenRA.Mods.Common.Traits.Render
 		}
 
 		// TODO: Make this use Forward instead
-		void INotifyDeployTriggered.Deploy(Actor self)
+		void INotifyDeployTriggered.Deploy(Actor self, bool skipMakeAnim)
 		{
 			var notified = false;
+			var notify = self.TraitsImplementing<INotifyDeployComplete>();
+
+			if (skipMakeAnim)
+			{
+				foreach (var n in notify)
+					n.FinishedDeploy(self);
+
+				return;
+			}
 
 			foreach (var wsb in wsbs)
 			{
 				if (wsb.IsTraitDisabled)
 					continue;
 
-				var notify = self.TraitsImplementing<INotifyDeployComplete>();
 				wsb.PlayCustomAnimation(self, info.Sequence, () =>
 				{
 					if (notified)
@@ -141,16 +149,24 @@ namespace OpenRA.Mods.Common.Traits.Render
 		}
 
 		// TODO: Make this use Reverse instead
-		void INotifyDeployTriggered.Undeploy(Actor self)
+		void INotifyDeployTriggered.Undeploy(Actor self, bool skipMakeAnim)
 		{
 			var notified = false;
+			var notify = self.TraitsImplementing<INotifyDeployComplete>();
+
+			if (skipMakeAnim)
+			{
+				foreach (var n in notify)
+					n.FinishedUndeploy(self);
+
+				return;
+			}
 
 			foreach (var wsb in wsbs)
 			{
 				if (wsb.IsTraitDisabled)
 					continue;
 
-				var notify = self.TraitsImplementing<INotifyDeployComplete>();
 				wsb.PlayCustomAnimationBackwards(self, info.Sequence, () =>
 				{
 					if (notified)

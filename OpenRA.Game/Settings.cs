@@ -94,6 +94,7 @@ namespace OpenRA
 		public bool SendSystemInformation = true;
 		public int SystemInformationVersionPrompt = 0;
 		public string UUID = System.Guid.NewGuid().ToString();
+		public bool EnableDebugCommandsInReplays = false;
 	}
 
 	public class GraphicSettings
@@ -157,6 +158,8 @@ namespace OpenRA
 		public string Platform = "Default";
 
 		public bool ViewportEdgeScroll = true;
+		public int ViewportEdgeScrollMargin = 5;
+
 		public bool LockMouseWindow = false;
 		public MouseScrollType MiddleMouseScroll = MouseScrollType.Standard;
 		public MouseScrollType RightMouseScroll = MouseScrollType.Disabled;

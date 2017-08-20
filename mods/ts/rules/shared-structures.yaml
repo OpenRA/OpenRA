@@ -1,5 +1,6 @@
 GACNST:
 	Inherits: ^Building
+	Inherits@SHAPE: ^3x3Shape
 	Building:
 		Footprint: xxx xxx xxx
 		BuildSounds: facbld1.aud
@@ -56,6 +57,7 @@ GACNST:
 
 PROC:
 	Inherits: ^Building
+	Inherits@SHAPE: ^4x3FactoryWithBibShape
 	Valued:
 		Cost: 2000
 	Tooltip:
@@ -66,7 +68,7 @@ PROC:
 		Prerequisites: anypower, ~techlevel.low
 		Description: Processes raw Tiberium\ninto useable resources.
 	Building:
-		Footprint: xxx= xx== xxx=
+		Footprint: xxX= xx== xxX=
 		Dimensions: 4,3
 	Selectable:
 		Bounds: 134, 96, 0, -12
@@ -112,6 +114,7 @@ PROC:
 
 GASILO:
 	Inherits: ^Building
+	Inherits@SHAPE: ^2x2Shape
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 100

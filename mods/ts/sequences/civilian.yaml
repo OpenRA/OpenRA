@@ -79,24 +79,34 @@ aban08:
 
 aban09:
 	Inherits: ^aban2x2
+	Defaults:
+		Offset: 2, -20, 24
 
 aban10:
 	Inherits: ^aban2x2
 
 aban11:
 	Inherits: ^aban2x2
+	Defaults:
+		Offset: 0, -20, 24
 
 aban12:
 	Inherits: ^aban2x2
+	Defaults:
+		Offset: 2, -22, 24
 
 aban13:
 	Inherits: ^aban1x1
+	Defaults:
+		Offset: 0, -10, 12
 
 aban14:
 	Inherits: ^aban1x1
 
 aban15:
 	Inherits: ^aban1x1
+	Defaults:
+		Offset: 0, -10, 12
 
 aban16:
 	Inherits: ^aban2x2
@@ -118,7 +128,7 @@ aban18:
 
 ^bboard1x2:
 	Defaults:
-		Offset: 12, -18
+		Offset: -1, -10, 6
 	idle:
 		ShadowStart: 2
 	damaged-idle:
@@ -127,7 +137,7 @@ aban18:
 
 ^bboard2x1:
 	Defaults:
-		Offset: -12, -18
+		Offset: 2, -12, 6
 	idle:
 		ShadowStart: 2
 	damaged-idle:
@@ -349,9 +359,9 @@ cacrsh05:
 cahosp:
 	Defaults:
 		DepthSprite: isodepth.shp
-		DepthSpriteOffset: 12, 0
+		DepthSpriteOffset: 15, 0
 		UseTilesetCode: true
-		Offset: 12, -42, 42
+		Offset: 15, -36, 36
 	idle:
 		ShadowStart: 3
 	damaged-idle:
@@ -667,7 +677,7 @@ namntk:
 ntpyra:
 	Defaults:
 		DepthSprite: isodepth.shp
-		Offset: 0, -48, 48
+		Offset: 0, -42, 42
 	idle:
 		ShadowStart: 3
 	damaged-idle:

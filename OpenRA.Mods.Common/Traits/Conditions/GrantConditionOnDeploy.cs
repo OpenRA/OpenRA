@@ -55,6 +55,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Can this actor undeploy?")]
 		public readonly bool CanUndeploy = true;
 
+		[Desc("Skip make/deploy animation?")]
+		public readonly bool SkipMakeAnimation = false;
+
 		public object Create(ActorInitializer init) { return new GrantConditionOnDeploy(init, this); }
 	}
 
@@ -223,7 +226,7 @@ namespace OpenRA.Mods.Common.Traits
 				OnDeployCompleted();
 			else
 				foreach (var n in notify)
-					n.Deploy(self);
+					n.Deploy(self, Info.SkipMakeAnimation);
 		}
 
 		/// <summary>Play undeploy sound and animation and after that revoke the condition.</summary>
@@ -246,7 +249,7 @@ namespace OpenRA.Mods.Common.Traits
 				OnUndeployCompleted();
 			else
 				foreach (var n in notify)
-					n.Undeploy(self);
+					n.Undeploy(self, Info.SkipMakeAnimation);
 		}
 
 		void OnDeployStarted()

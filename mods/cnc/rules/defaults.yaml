@@ -962,7 +962,9 @@
 		RequiresForceFire: yes
 		TargetTypes: Ground, Water
 	Health:
-		HP: 500
+		HP: 600
+	Armor:
+		Type: Heavy
 	SoundOnDamageTransition:
 		DamagedSounds: xplos.aud
 		DestroyedSounds: xplobig4.aud

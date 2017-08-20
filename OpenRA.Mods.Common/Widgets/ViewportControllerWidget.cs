@@ -35,8 +35,6 @@ namespace OpenRA.Mods.Common.Widgets
 		public FrozenActor FrozenActorTooltip { get; private set; }
 		public ResourceType ResourceTooltip { get; private set; }
 
-		public int EdgeScrollThreshold = 5;
-
 		int2? joystickScrollStart, joystickScrollEnd;
 		int2? standardScrollStart;
 		bool isStandardScrolling;
@@ -185,7 +183,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 			var worldPixel = worldRenderer.Viewport.ViewToWorldPx(Viewport.LastMousePos);
 			var underCursor = world.ScreenMap.ActorsAt(worldPixel)
-				.Where(a => !world.FogObscures(a) && a.Info.HasTraitInfo<ITooltipInfo>())
+				.Where(a => a.Info.HasTraitInfo<ITooltipInfo>() && !world.FogObscures(a))
 				.WithHighestSelectionPriority(worldPixel);
 
 			if (underCursor != null)
@@ -308,7 +306,12 @@ namespace OpenRA.Mods.Common.Widgets
 			if (scrollType == MouseScrollType.Standard || scrollType == MouseScrollType.Inverted)
 			{
 				if (mi.Event == MouseInputEvent.Down && !isStandardScrolling)
+				{
+					if (!TakeMouseFocus(mi))
+						return false;
+
 					standardScrollStart = mi.Location;
+				}
 				else if (mi.Event == MouseInputEvent.Move && (isStandardScrolling ||
 					(standardScrollStart.HasValue && ((standardScrollStart.Value - mi.Location).Length > Game.Settings.Game.MouseScrollDeadzone))))
 				{
@@ -322,6 +325,7 @@ namespace OpenRA.Mods.Common.Widgets
 					var wasStandardScrolling = isStandardScrolling;
 					isStandardScrolling = false;
 					standardScrollStart = null;
+					YieldMouseFocus(mi);
 
 					if (wasStandardScrolling)
 						return true;
@@ -335,6 +339,7 @@ namespace OpenRA.Mods.Common.Widgets
 				{
 					if (!TakeMouseFocus(mi))
 						return false;
+
 					joystickScrollStart = mi.Location;
 				}
 
@@ -474,14 +479,15 @@ namespace OpenRA.Mods.Common.Widgets
 
 		ScrollDirection CheckForDirections()
 		{
+			var margin = Game.Settings.Game.ViewportEdgeScrollMargin;
 			var directions = ScrollDirection.None;
-			if (Viewport.LastMousePos.X < EdgeScrollThreshold)
+			if (Viewport.LastMousePos.X < margin)
 				directions |= ScrollDirection.Left;
-			if (Viewport.LastMousePos.Y < EdgeScrollThreshold)
+			if (Viewport.LastMousePos.Y < margin)
 				directions |= ScrollDirection.Up;
-			if (Viewport.LastMousePos.X >= Game.Renderer.Resolution.Width - EdgeScrollThreshold)
+			if (Viewport.LastMousePos.X >= Game.Renderer.Resolution.Width - margin)
 				directions |= ScrollDirection.Right;
-			if (Viewport.LastMousePos.Y >= Game.Renderer.Resolution.Height - EdgeScrollThreshold)
+			if (Viewport.LastMousePos.Y >= Game.Renderer.Resolution.Height - margin)
 				directions |= ScrollDirection.Down;
 
 			return directions;

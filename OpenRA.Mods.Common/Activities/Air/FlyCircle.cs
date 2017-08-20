@@ -21,13 +21,19 @@ namespace OpenRA.Mods.Common.Activities
 
 		public FlyCircle(Actor self)
 		{
-			IsIdle = true;
 			plane = self.Trait<Aircraft>();
 			cruiseAltitude = plane.Info.CruiseAltitude;
 		}
 
 		public override Activity Tick(Actor self)
 		{
+			// Refuse to take off if it would land immediately again.
+			if (plane.ForceLanding)
+			{
+				Cancel(self);
+				return NextActivity;
+			}
+
 			if (IsCanceled)
 				return NextActivity;
 

@@ -877,6 +877,82 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				// TargetWhenIdle and TargetWhenDamaged were removed from AutoTarget
+				if (engineVersion < 20170722)
+				{
+					if (node.Key.StartsWith("AutoTarget", StringComparison.Ordinal))
+					{
+						var valueNodes = node.Value.Nodes;
+						var targetIdle = valueNodes.FirstOrDefault(n => n.Key == "TargetWhenIdle");
+						var targetDamaged = valueNodes.FirstOrDefault(n => n.Key == "TargetWhenDamaged");
+						var hasInitialStance = valueNodes.FirstOrDefault(n => n.Key == "InitialStance") != null;
+						var enableStances = valueNodes.FirstOrDefault(n => n.Key == "EnableStances");
+
+						if (targetDamaged == null)
+						{
+							if (targetIdle != null)
+							{
+								if (hasInitialStance)
+									Console.WriteLine("'TargetWhenIdle' was removed from 'AutoTarget'. 'InitialStance' might need to be adjusted.");
+								else
+								{
+									valueNodes.Add(new MiniYamlNode("InitialStance", targetIdle.Value.Value.ToLower() == "true" ? "Defend" : "ReturnFire"));
+
+									if (enableStances != null)
+										enableStances.Value.Value = "false";
+									else
+										valueNodes.Add(new MiniYamlNode("EnableStances", "false"));
+								}
+
+								valueNodes.Remove(targetIdle);
+							}
+						}
+						else
+						{
+							if (targetIdle == null)
+							{
+								if (hasInitialStance)
+									Console.WriteLine("'TargetWhenDamaged' was removed from 'AutoTarget'. 'InitialStance' might need to be adjusted.");
+								else
+								{
+									// In this case the default for "TargetWhenIdle" (true) takes effect, i.e. use the "Defend" stance
+									valueNodes.Add(new MiniYamlNode("InitialStance", "Defend"));
+
+									if (enableStances != null)
+										enableStances.Value.Value = "false";
+									else
+										valueNodes.Add(new MiniYamlNode("EnableStances", "false"));
+								}
+
+								valueNodes.Remove(targetDamaged);
+							}
+							else
+							{
+								if (hasInitialStance)
+									Console.WriteLine("'TargetWhenDamaged' and 'TargetWhenIdle' were removed from 'AutoTarget'. 'InitialStance' might need to be adjusted.");
+								else
+								{
+									var idle = targetIdle.Value.Value.ToLower() == "true";
+									var damaged = targetDamaged.Value.Value.ToLower() == "true";
+
+									if (idle)
+										valueNodes.Add(new MiniYamlNode("InitialStance", "Defend"));
+									else
+										valueNodes.Add(new MiniYamlNode("InitialStance", damaged ? "ReturnFire" : "HoldFire"));
+
+									if (enableStances != null)
+										enableStances.Value.Value = "false";
+									else
+										valueNodes.Add(new MiniYamlNode("EnableStances", "false"));
+								}
+
+								valueNodes.Remove(targetIdle);
+								valueNodes.Remove(targetDamaged);
+							}
+						}
+					}
+				}
+
 				UpgradeActorRules(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 

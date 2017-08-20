@@ -16,7 +16,7 @@
 	Warhead@2Eff: CreateEffect
 		Explosions: self_destruct
 		ImpactSounds: kaboom22.aud
-		ValidTargets: Ground, Air, Ship
+		ValidTargets: Ground, Air, Ship, Trees
 	Warhead@3EffWater: CreateEffect
 		Explosions: large_splash
 		ImpactSounds: splash9.aud
@@ -39,7 +39,7 @@ CrateNapalm:
 	Warhead@2Eff: CreateEffect
 		Explosions: napalm
 		ImpactSounds: firebl3.aud
-		ValidTargets: Ground, Water, Air
+		ValidTargets: Ground, Water, Air, Trees
 	-Warhead@3EffWater: CreateEffect
 	Warhead@Smu: LeaveSmudge
 		SmudgeType: Scorch

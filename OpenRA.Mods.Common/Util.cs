@@ -11,8 +11,10 @@
 
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using OpenRA.GameRules;
+using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Support;
 using OpenRA.Traits;
@@ -83,6 +85,15 @@ namespace OpenRA.Mods.Common
 
 			var negative = -f & 0xFF;
 			return negative == 0 ? 0 : 256 - negative;
+		}
+
+		public static bool FacingWithinTolerance(int facing, int desiredFacing, int facingTolerance)
+		{
+			if (facingTolerance == 0 && facing == desiredFacing)
+				return true;
+
+			var delta = Util.NormalizeFacing(desiredFacing - facing);
+			return delta <= facingTolerance || delta >= 256 - facingTolerance;
 		}
 
 		public static WPos BetweenCells(World w, CPos from, CPos to)
@@ -188,6 +199,65 @@ namespace OpenRA.Mods.Common
 		{
 			return rules.Actors.Where(a => a.Value.HasTraitInfo<IBlocksProjectilesInfo>())
 				.SelectMany(a => a.Value.TraitInfos<HitShapeInfo>()).Max(h => h.Type.OuterRadius);
+		}
+
+		public static string FriendlyTypeName(Type t)
+		{
+			if (t.IsGenericType && t.GetGenericTypeDefinition() == typeof(HashSet<>))
+				return "Set of {0}".F(t.GetGenericArguments().Select(FriendlyTypeName).ToArray());
+
+			if (t.IsGenericType && t.GetGenericTypeDefinition() == typeof(Dictionary<,>))
+				return "Mapping of {0} to {1}".F(t.GetGenericArguments().Select(FriendlyTypeName).ToArray());
+
+			if (t.IsSubclassOf(typeof(Array)))
+				return "Collection of {0}".F(FriendlyTypeName(t.GetElementType()));
+
+			if (t.IsGenericType && t.GetGenericTypeDefinition().GetInterfaces().Any(e => e.IsGenericType && e.GetGenericTypeDefinition() == typeof(IEnumerable<>)))
+				return "Collection of {0}".F(FriendlyTypeName(t.GetGenericArguments().First()));
+
+			if (t == typeof(int) || t == typeof(uint))
+				return "Integer";
+
+			if (t == typeof(int2))
+				return "2D Integer";
+
+			if (t == typeof(float) || t == typeof(decimal))
+				return "Real Number";
+
+			if (t == typeof(float2))
+				return "2D Real Number";
+
+			if (t == typeof(CPos))
+				return "2D Cell Position";
+
+			if (t == typeof(CVec))
+				return "2D Cell Vector";
+
+			if (t == typeof(WAngle))
+				return "1D World Angle";
+
+			if (t == typeof(WRot))
+				return "3D World Rotation";
+
+			if (t == typeof(WPos))
+				return "3D World Position";
+
+			if (t == typeof(WDist))
+				return "1D World Distance";
+
+			if (t == typeof(WVec))
+				return "3D World Vector";
+
+			if (t == typeof(HSLColor) || t == typeof(Color))
+				return "Color (RRGGBB[AA] notation)";
+
+			if (t == typeof(IProjectileInfo))
+				return "Projectile";
+
+			if (t == typeof(IWarhead))
+				return "Warhead";
+
+			return t.Name;
 		}
 	}
 }

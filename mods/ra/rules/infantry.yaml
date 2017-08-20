@@ -332,6 +332,8 @@ E7:
 		StandSequences: stand
 	AnnounceOnBuild:
 	AnnounceOnKill:
+	DetectCloaked:
+		CloakTypes: Cloak, Hijacker
 	Voiced:
 		VoiceSet: TanyaVoice
 	ProducibleWithLevel:
@@ -350,7 +352,7 @@ MEDI:
 	Tooltip:
 		Name: Medic
 	Health:
-		HP: 80
+		HP: 60
 	RevealsShroud:
 		Range: 3c0
 	Passenger:
@@ -460,6 +462,10 @@ GNRL:
 	Voiced:
 		VoiceSet: StavrosVoice
 	-ScaredyCat:
+	TakeCover:
+		DamageModifiers:
+			Prone50Percent: 50
+		DamageTriggers: TriggerProne
 	WithInfantryBody:
 		IdleSequences: idle1
 
@@ -536,11 +542,11 @@ SHOK:
 		Prerequisites: ~barr, stek, tsla, ~infantry.russia, ~techlevel.high
 		Description: Elite infantry with portable tesla coils.\n  Strong vs Infantry, Vehicles\n  Weak vs Aircraft
 	Valued:
-		Cost: 400
+		Cost: 300
 	Tooltip:
 		Name: Shock Trooper
 	Health:
-		HP: 60
+		HP: 50
 	Mobile:
 		Voice: Move
 	RevealsShroud:

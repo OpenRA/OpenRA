@@ -390,6 +390,10 @@ namespace OpenRA.Mods.Common.Traits
 	public class Mobile : ConditionalTrait<MobileInfo>, INotifyCreated, IIssueOrder, IResolveOrder, IOrderVoice, IPositionable, IMove,
 		IFacing, IDeathActorInitModifier, INotifyAddedToWorld, INotifyRemovedFromWorld, INotifyBlockingMove, IActorPreviewInitModifier, INotifyBecomingIdle
 	{
+		const int AverageTicksBeforePathing = 5;
+		const int SpreadTicksBeforePathing = 5;
+		internal int TicksBeforePathing = 0;
+
 		readonly Actor self;
 		readonly Lazy<IEnumerable<int>> speedModifiers;
 		public bool IsMoving { get; set; }
@@ -622,14 +626,18 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			if (order.OrderString == "Move")
 			{
-				if (!Info.MoveIntoShroud && !self.Owner.Shroud.IsExplored(order.TargetLocation))
+				var loc = self.World.Map.Clamp(order.TargetLocation);
+
+				if (!Info.MoveIntoShroud && !self.Owner.Shroud.IsExplored(loc))
 					return;
 
 				if (!order.Queued)
 					self.CancelActivity();
 
-				self.SetTargetLine(Target.FromCell(self.World, order.TargetLocation), Color.Green);
-				self.QueueActivity(order.Queued, new Move(self, order.TargetLocation, WDist.FromCells(8), null, true));
+				TicksBeforePathing = AverageTicksBeforePathing + self.World.SharedRandom.Next(-SpreadTicksBeforePathing, SpreadTicksBeforePathing);
+
+				self.SetTargetLine(Target.FromCell(self.World, loc), Color.Green);
+				self.QueueActivity(order.Queued, new Move(self, loc, WDist.FromCells(8), null, true));
 			}
 
 			if (order.OrderString == "Stop")

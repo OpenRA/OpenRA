@@ -17,6 +17,7 @@ using OpenRA.Activities;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Orders;
 using OpenRA.Primitives;
+using OpenRA.Support;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -25,30 +26,35 @@ namespace OpenRA.Mods.Common.Traits
 		UsesInit<LocationInit>, UsesInit<FacingInit>, IActorPreviewInitInfo
 	{
 		public readonly WDist CruiseAltitude = new WDist(1280);
-		public readonly WDist IdealSeparation = new WDist(1706);
+
 		[Desc("Whether the aircraft can be repulsed.")]
 		public readonly bool Repulsable = true;
+
+		[Desc("The distance it tries to maintain from other aircraft if repulsable.")]
+		public readonly WDist IdealSeparation = new WDist(1706);
+
 		[Desc("The speed at which the aircraft is repulsed from other aircraft. Specify -1 for normal movement speed.")]
 		public readonly int RepulsionSpeed = -1;
 
 		[ActorReference]
 		public readonly HashSet<string> RepairBuildings = new HashSet<string> { };
+
 		[ActorReference]
 		public readonly HashSet<string> RearmBuildings = new HashSet<string> { };
+
 		public readonly int InitialFacing = 0;
+
 		public readonly int TurnSpeed = 255;
+
 		public readonly int Speed = 1;
 
-		[Desc("Minimum altitude where this aircraft is considered airborne")]
+		[Desc("Minimum altitude where this aircraft is considered airborne.")]
 		public readonly int MinAirborneAltitude = 1;
+
 		public readonly HashSet<string> LandableTerrainTypes = new HashSet<string>();
 
 		[Desc("Can the actor be ordered to move in to shroud?")]
 		public readonly bool MoveIntoShroud = true;
-
-		public virtual object Create(ActorInitializer init) { return new Aircraft(init, this); }
-		public int GetInitialFacing() { return InitialFacing; }
-		public WDist GetCruiseAltitude() { return CruiseAltitude; }
 
 		[VoiceReference] public readonly string Voice = "Action";
 
@@ -72,6 +78,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Does this actor cancel its previous activity after resupplying?")]
 		public readonly bool AbortOnResupply = true;
 
+		[Desc("Altitude at which the aircraft considers itself landed.")]
 		public readonly WDist LandAltitude = WDist.Zero;
 
 		[Desc("How fast this actor ascends or descends when using horizontal take off/landing.")]
@@ -95,12 +102,22 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Facing to use for actor previews (map editor, color picker, etc)")]
 		public readonly int PreviewFacing = 92;
 
+		public int GetInitialFacing() { return InitialFacing; }
+		public WDist GetCruiseAltitude() { return CruiseAltitude; }
+
+		public virtual object Create(ActorInitializer init) { return new Aircraft(init, this); }
+
 		IEnumerable<object> IActorPreviewInitInfo.ActorPreviewInits(ActorInfo ai, ActorPreviewType type)
 		{
 			yield return new FacingInit(PreviewFacing);
 		}
 
+		[Desc("Condition when this aircraft should land as soon as possible and refuse to take off. ",
+			"This only applies while the aircraft is above terrain which is listed in LandableTerrainTypes.")]
+		public readonly BooleanExpression LandOnCondition;
+
 		public IReadOnlyDictionary<CPos, SubCell> OccupiedCells(ActorInfo info, CPos location, SubCell subCell = SubCell.Any) { return new ReadOnlyDictionary<CPos, SubCell>(); }
+
 		bool IOccupySpaceInfo.SharesCell { get { return false; } }
 
 		// Used to determine if an aircraft can spawn landed
@@ -124,7 +141,7 @@ namespace OpenRA.Mods.Common.Traits
 	}
 
 	public class Aircraft : ITick, ISync, IFacing, IPositionable, IMove, IIssueOrder, IResolveOrder, IOrderVoice, IDeathActorInitModifier,
-		INotifyCreated, INotifyAddedToWorld, INotifyRemovedFromWorld, INotifyActorDisposing, IActorPreviewInitModifier, IIssueDeployOrder
+		INotifyCreated, INotifyAddedToWorld, INotifyRemovedFromWorld, INotifyActorDisposing, IActorPreviewInitModifier, IIssueDeployOrder, IObservesVariables
 	{
 		static readonly Pair<CPos, SubCell>[] NoCells = { };
 
@@ -142,6 +159,7 @@ namespace OpenRA.Mods.Common.Traits
 		public int TurnSpeed { get { return Info.TurnSpeed; } }
 		public Actor ReservedActor { get; private set; }
 		public bool MayYieldReservation { get; private set; }
+		public bool ForceLanding { get; private set; }
 
 		bool airborne;
 		bool cruising;
@@ -152,6 +170,7 @@ namespace OpenRA.Mods.Common.Traits
 		bool isMoving;
 		bool isMovingVertically;
 		WPos cachedPosition;
+		bool? landNow;
 
 		public Aircraft(ActorInitializer init, AircraftInfo info)
 		{
@@ -171,14 +190,35 @@ namespace OpenRA.Mods.Common.Traits
 			IsPlane = !info.CanHover;
 		}
 
-		public void Created(Actor self)
+		public virtual IEnumerable<VariableObserver> GetVariableObservers()
+		{
+			if (Info.LandOnCondition != null)
+				yield return new VariableObserver(ForceLandConditionChanged, Info.LandOnCondition.Variables);
+		}
+
+		void ForceLandConditionChanged(Actor self, IReadOnlyDictionary<string, int> variables)
+		{
+			landNow = Info.LandOnCondition.Evaluate(variables);
+		}
+
+		void INotifyCreated.Created(Actor self)
+		{
+			Created(self);
+		}
+
+		protected virtual void Created(Actor self)
 		{
 			conditionManager = self.TraitOrDefault<ConditionManager>();
 			speedModifiers = self.TraitsImplementing<ISpeedModifier>().ToArray().Select(sm => sm.GetSpeedModifier());
 			cachedPosition = self.CenterPosition;
 		}
 
-		public void AddedToWorld(Actor self)
+		void INotifyAddedToWorld.AddedToWorld(Actor self)
+		{
+			AddedToWorld(self);
+		}
+
+		protected virtual void AddedToWorld(Actor self)
 		{
 			self.World.AddToMaps(self, this);
 
@@ -189,7 +229,26 @@ namespace OpenRA.Mods.Common.Traits
 				OnCruisingAltitudeReached();
 		}
 
-		public virtual void Tick(Actor self)
+		void INotifyRemovedFromWorld.RemovedFromWorld(Actor self)
+		{
+			RemovedFromWorld(self);
+		}
+
+		protected virtual void RemovedFromWorld(Actor self)
+		{
+			UnReserve();
+			self.World.RemoveFromMaps(self, this);
+
+			OnCruisingAltitudeLeft();
+			OnAirborneAltitudeLeft();
+		}
+
+		void ITick.Tick(Actor self)
+		{
+			Tick(self);
+		}
+
+		protected virtual void Tick(Actor self)
 		{
 			if (firstTick)
 			{
@@ -206,6 +265,33 @@ namespace OpenRA.Mods.Common.Traits
 					return;
 
 				self.QueueActivity(new TakeOff(self));
+			}
+
+			// Add land activity if LandOnCondidion resolves to true and the actor can land at the current location.
+			if (landNow.HasValue && landNow.Value && airborne && CanLand(self.Location)
+				&& !(self.CurrentActivity is HeliLand || self.CurrentActivity is Turn))
+			{
+				self.CancelActivity();
+
+				if (Info.TurnToLand)
+					self.QueueActivity(new Turn(self, Info.InitialFacing));
+
+				self.QueueActivity(new HeliLand(self, true));
+
+				ForceLanding = true;
+			}
+
+			// Add takeoff activity if LandOnCondidion resolves to false and the actor should not land when idle.
+			if (landNow.HasValue && !landNow.Value && !cruising && !(self.CurrentActivity is TakeOff))
+			{
+				ForceLanding = false;
+
+				if (!Info.LandWhenIdle)
+				{
+					self.CancelActivity();
+
+					self.QueueActivity(new TakeOff(self));
+				}
 			}
 
 			var oldCachedPosition = cachedPosition;
@@ -646,7 +732,6 @@ namespace OpenRA.Mods.Common.Traits
 							self.QueueActivity(new Turn(self, Info.InitialFacing));
 							self.QueueActivity(new HeliLand(self, false));
 							self.QueueActivity(new ResupplyAircraft(self));
-							self.QueueActivity(new TakeOff(self));
 						};
 
 						self.QueueActivity(order.Queued, new CallFunc(enter));
@@ -685,15 +770,6 @@ namespace OpenRA.Mods.Common.Traits
 		}
 
 		#endregion
-
-		public void RemovedFromWorld(Actor self)
-		{
-			UnReserve();
-			self.World.RemoveFromMaps(self, this);
-
-			OnCruisingAltitudeLeft();
-			OnAirborneAltitudeLeft();
-		}
 
 		#region Airborne conditions
 

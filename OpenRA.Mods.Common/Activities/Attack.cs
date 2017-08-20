@@ -29,6 +29,7 @@ namespace OpenRA.Mods.Common.Activities
 		readonly IFacing facing;
 		readonly IPositionable positionable;
 		readonly bool forceAttack;
+		readonly int facingTolerance;
 
 		WDist minRange;
 		WDist maxRange;
@@ -36,11 +37,12 @@ namespace OpenRA.Mods.Common.Activities
 		Activity moveActivity;
 		AttackStatus attackStatus = AttackStatus.UnableToAttack;
 
-		public Attack(Actor self, Target target, bool allowMovement, bool forceAttack)
+		public Attack(Actor self, Target target, bool allowMovement, bool forceAttack, int facingTolerance)
 		{
 			Target = target;
 
 			this.forceAttack = forceAttack;
+			this.facingTolerance = facingTolerance;
 
 			attackTraits = self.TraitsImplementing<AttackBase>().ToArray();
 			facing = self.Trait<IFacing>();
@@ -117,7 +119,7 @@ namespace OpenRA.Mods.Common.Activities
 
 			var targetedPosition = attack.GetTargetPosition(pos, Target);
 			var desiredFacing = (targetedPosition - pos).Yaw.Facing;
-			if (facing.Facing != desiredFacing)
+			if (!Util.FacingWithinTolerance(facing.Facing, desiredFacing, facingTolerance))
 			{
 				attackStatus |= AttackStatus.NeedsToTurn;
 				turnActivity = ActivityUtils.SequenceActivities(new Turn(self, desiredFacing), this);

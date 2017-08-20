@@ -586,12 +586,12 @@ MHQ:
 	Buildable:
 		Description: Mobile base of operations
 
-TDTRUK:
+TRUCK:
 	Inherits: ^Vehicle
 	Buildable:
 		Queue: Vehicle.GDI, Vehicle.Nod
 		BuildPaletteOrder: 35
-		Prerequisites: ~techlevel.low
+		Prerequisites: vehicleproduction
 		Description: Transports cash to other players.\n  Unarmed
 	Valued:
 		Cost: 500
@@ -610,3 +610,5 @@ TDTRUK:
 	DeliversCash:
 		Payload: 500
 		PlayerExperience: 50
+	SpawnActorOnDeath:
+		Actor: TRUCK.Husk

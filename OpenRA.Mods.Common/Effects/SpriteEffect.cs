@@ -42,7 +42,7 @@ namespace OpenRA.Mods.Common.Effects
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)
 		{
-			if (world.FogObscures(pos) && !visibleThroughFog)
+			if (!visibleThroughFog && world.FogObscures(pos))
 				return SpriteRenderable.None;
 
 			var zoom = scaleSizeWithZoom ? 1f / wr.Viewport.Zoom : 1f;

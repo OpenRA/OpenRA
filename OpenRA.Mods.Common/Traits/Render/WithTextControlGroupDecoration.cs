@@ -66,10 +66,10 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		IEnumerable<IRenderable> IRenderAboveShroudWhenSelected.RenderAboveShroud(Actor self, WorldRenderer wr)
 		{
-			if (self.World.FogObscures(self))
+			if (self.Owner != wr.World.LocalPlayer)
 				yield break;
 
-			if (self.Owner != wr.World.LocalPlayer)
+			if (self.World.FogObscures(self))
 				yield break;
 
 			foreach (var r in DrawControlGroup(self, wr))
