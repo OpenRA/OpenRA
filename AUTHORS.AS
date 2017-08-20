@@ -29,6 +29,9 @@ The plugin is maintained by
  * Sean Hunt (coppro)
    > Chrono Miner implementaion (ChronoResourceDelivery)
 
+ * jrb0001
+   > AmmoPool support for ExplodeWeapon
+
  Authors of documents used in this plugin:
   * Apollo
    > Jasc 32bit format idea
