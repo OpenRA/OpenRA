@@ -12,13 +12,8 @@
  */
 #endregion
 
-using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
-using OpenRA.Activities;
-using OpenRA.Mods.Common;
 using OpenRA.Mods.Common.Activities;
-using OpenRA.Mods.Common.Orders;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Mods.Yupgi_alert.Activities;
 using OpenRA.Traits;
@@ -34,8 +29,6 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 	[Desc("Can be slaved to a spawner.")]
 	public class CarrierSlaveInfo : BaseSpawnerSlaveInfo
 	{
-		public readonly string EnterCursor = "enter";
-
 		[Desc("Move this close to the spawner, before entering it.")]
 		public readonly WDist LandingDistance = new WDist(5 * 1024);
 
@@ -67,7 +60,7 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 				return;
 
 			// Proceed with enter, if already at it.
-			if (self.CurrentActivity is EnterSpawner)
+			if (self.CurrentActivity is EnterCarrierMaster)
 				return;
 
 			// Cancel whatever else self was doing and return.
@@ -78,7 +71,7 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 			if (self.TraitOrDefault<AttackPlane>() != null) // Let attack planes approach me first, before landing.
 				self.QueueActivity(new Fly(self, tgt, WDist.Zero, Info.LandingDistance));
 
-			self.QueueActivity(new EnterSpawner(self, Master, spawnerMaster, EnterBehaviour.Exit, Info.CloseEnoughDistance));
+			self.QueueActivity(new EnterCarrierMaster(self, Master, spawnerMaster, EnterBehaviour.Exit, Info.CloseEnoughDistance));
 		}
 
 		public override void LinkMaster(Actor master, BaseSpawnerMaster spawnerMaster)

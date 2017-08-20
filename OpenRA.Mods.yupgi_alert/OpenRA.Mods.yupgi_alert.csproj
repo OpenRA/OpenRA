@@ -77,7 +77,7 @@
     <Compile Include="Activities\OpportunityTeleport.cs" />
     <Compile Include="Activities\EnterTransportWithWait.cs" />
     <Compile Include="Activities\EnterNydus.cs" />
-    <Compile Include="Activities\EnterSpawner.cs" />
+    <Compile Include="Activities\EnterCarrierMaster.cs" />
     <Compile Include="Activities\SpawnerHarvesterHarvest.cs" />
     <Compile Include="Graphics\Radioactivity.cs" />
     <Compile Include="Graphics\RadBeamRenderable.cs" />
@@ -87,6 +87,8 @@
     <Compile Include="Traits\AIDeployHelper.cs" />
     <Compile Include="Traits\AegisAutoTarget.cs" />
     <Compile Include="Traits\AcceptCashRallyPointAcceptor.cs" />
+    <Compile Include="Traits\MissileSpawnerMaster.cs" />
+    <Compile Include="Traits\MissileSpawnerSlave.cs" />
     <Compile Include="Traits\ChronoHarvester.cs" />
     <Compile Include="Traits\Buildings\PeriodicProducer.cs" />
     <Compile Include="Traits\Conditions\GrantStackableConditionOnFire.cs" />

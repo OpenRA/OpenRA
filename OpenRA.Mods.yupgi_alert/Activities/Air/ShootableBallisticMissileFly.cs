@@ -22,27 +22,29 @@ namespace OpenRA.Mods.Yupgi_alert.Activities
 	public class ShootableBallisticMissileFly : Activity
 	{
 		readonly ShootableBallisticMissile sbm;
-		readonly ShootableBallisticMissileInfo sbmInfo;
 		readonly WPos initPos;
 		readonly WPos targetPos;
 		int length;
 		int ticks;
 		int facing;
 
-		public ShootableBallisticMissileFly(Actor self, Target t)
+		public ShootableBallisticMissileFly(Actor self, Target t, ShootableBallisticMissile sbm = null)
 		{
-			sbm = self.Trait<ShootableBallisticMissile>();
-			sbmInfo = self.Info.TraitInfo<ShootableBallisticMissileInfo>();
+			if (sbm == null)
+				this.sbm = self.Trait<ShootableBallisticMissile>();
+			else
+				this.sbm = sbm;
+
 			initPos = self.CenterPosition;
 			targetPos = t.CenterPosition; // fixed position == no homing
-			length = Math.Max((targetPos - initPos).Length / sbmInfo.Speed, 1);
+			length = Math.Max((targetPos - initPos).Length / this.sbm.Info.Speed, 1);
 			facing = (targetPos - initPos).Yaw.Facing;
 		}
 
 		int GetEffectiveFacing()
 		{
 			var at = (float)ticks / (length - 1);
-			var attitude = sbmInfo.LaunchAngle.Tan() * (1 - 2 * at) / (4 * 1024);
+			var attitude = sbm.Info.LaunchAngle.Tan() * (1 - 2 * at) / (4 * 1024);
 
 			var u = (facing % 128) / 128f;
 			var scale = 512 * u * (1 - u);
@@ -54,7 +56,7 @@ namespace OpenRA.Mods.Yupgi_alert.Activities
 
 		public void FlyToward(Actor self, ShootableBallisticMissile sbm)
 		{
-			var pos = WPos.LerpQuadratic(initPos, targetPos, sbmInfo.LaunchAngle, ticks, length);
+			var pos = WPos.LerpQuadratic(initPos, targetPos, sbm.Info.LaunchAngle, ticks, length);
 			sbm.SetPosition(self, pos);
 			sbm.Facing = GetEffectiveFacing();
 		}

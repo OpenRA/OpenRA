@@ -38,23 +38,16 @@ Since this inherits "Enter", you need to make several variables "protected".
 
 namespace OpenRA.Mods.Yupgi_alert.Activities
 {
-	class EnterSpawner : Enter
+	class EnterCarrierMaster : Enter
 	{
-		readonly Actor master; // remember spawner.
+		readonly Actor master; // remember the spawner.
 		readonly CarrierMaster spawnerMaster;
-		readonly AmmoPool[] ammoPools;
-		//// readonly Dictionary<AmmoPool, int> ammoPoolsReloadTimes;
 
-		public EnterSpawner(Actor self, Actor target, CarrierMaster spawnerMaster, EnterBehaviour enterBehaviour, WDist closeEnoughDist)
-			: base(self, target, enterBehaviour, closeEnoughDist)
+		public EnterCarrierMaster(Actor self, Actor master, CarrierMaster spawnerMaster, EnterBehaviour enterBehaviour, WDist closeEnoughDist)
+			: base(self, master, enterBehaviour, closeEnoughDist)
 		{
-			master = target;
+			this.master = master;
 			this.spawnerMaster = spawnerMaster;
-
-			ammoPools = self.TraitsImplementing<AmmoPool>().Where(p => !p.Info.SelfReloads).ToArray();
-
-			if (ammoPools == null)
-				return;
 		}
 
 		protected override bool CanReserve(Actor self)
@@ -67,8 +60,8 @@ namespace OpenRA.Mods.Yupgi_alert.Activities
 			// TryReserveElseTryAlternateReserve calls Reserve and
 			// the default inplementation of Reserve() returns TooFar when
 			// the aircraft carrier is hovering over a building.
-			// Since spawners don't need reservation (and have no reservation trait) just return Ready
-			// so that spawner can enter no matter where the spawner is.
+			// Since spawners don't need reservation (and have no reservation trait),
+			// just return Ready so that spawner can enter no matter where the spawner is.
 			return ReserveStatus.Ready;
 		}
 
@@ -84,7 +77,7 @@ namespace OpenRA.Mods.Yupgi_alert.Activities
 			// Issue attack move to the rally point.
 			self.World.AddFrameEndTask(w =>
 			{
-				if (self.IsDead || master.IsDead || !spawnerMaster.CanLoad(master, self))
+				if (self.IsDead || master.IsDead)
 					return;
 
 				spawnerMaster.PickupSlave(master, self);
@@ -98,10 +91,10 @@ namespace OpenRA.Mods.Yupgi_alert.Activities
 				}
 
 				// Insta re-arm. (Delayed launching is handled at spawner.)
-				foreach (var pool in ammoPools)
-				{
-					while (pool.GiveAmmo()); // fill 'er up.
-				}
+				var ammoPools = self.TraitsImplementing<AmmoPool>().Where(p => !p.Info.SelfReloads).ToArray();
+				if (ammoPools != null)
+					foreach (var pool in ammoPools)
+						while (pool.GiveAmmo()); // fill 'er up.
 			});
 		}
 	}

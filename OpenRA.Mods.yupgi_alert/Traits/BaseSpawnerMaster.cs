@@ -48,7 +48,7 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 		[Desc("Slave actors to contain upon creation. Set to -1 to start with full slaves.")]
 		public readonly int InitialActorCount = -1;
 
-		[Desc("The armament which will trigger the spawning. (== \"Name:\" tag of Armament, not @tag!)")]
+		[Desc("The armament which will trigger the slaves to attack the target. (== \"Name:\" tag of Armament, not @tag!)")]
 		[WeaponReference]
 		public readonly string SpawnerArmamentName = "primary";
 
@@ -62,7 +62,7 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 		public readonly bool NoRegeneration = false;
 
 		[Desc("Spawn all slaves at once when regenerating slaves, instead of one by one?")]
-		public readonly bool OneShotSpawn = false;
+		public readonly bool SpawnAllAtOnce = false;
 
 		[Desc("Spawn regen delay, in ticks")]
 		public readonly int RespawnTicks = 150;
@@ -91,7 +91,7 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 	public class BaseSpawnerMaster : ConditionalTrait<BaseSpawnerMasterInfo>, INotifyCreated, INotifyKilled
 	{
 		readonly Actor self;
-		readonly BaseSpawnerSlaveEntry[] slaveEntries;
+		protected readonly BaseSpawnerSlaveEntry[] SlaveEntries;
 
 		IFacing facing;
 		ExitInfo[] exits;
@@ -102,11 +102,11 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 			self = init.Self;
 
 			// Initialize slave entries (doesn't instantiate the slaves yet)
-			slaveEntries = CreateSlaveEntries(info);
+			SlaveEntries = CreateSlaveEntries(info);
 
 			for (var i = 0; i < info.Actors.Length; i++)
 			{
-				var entry = slaveEntries[i];
+				var entry = SlaveEntries[i];
 				entry.ActorName = info.Actors[i].ToLowerInvariant();
 				entry.MaxHealth = self.World.Map.Rules.Actors[entry.ActorName].TraitInfo<HealthInfo>().HP;
 			}
@@ -114,8 +114,12 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 
 		public virtual BaseSpawnerSlaveEntry[] CreateSlaveEntries(BaseSpawnerMasterInfo info)
 		{
-			// You are to override this virtual function.
-			return null;
+			var slaveEntries = new BaseSpawnerSlaveEntry[info.Actors.Length];
+
+			for (int i = 0; i < slaveEntries.Length; i++)
+				slaveEntries[i] = new BaseSpawnerSlaveEntry();
+
+			return slaveEntries;
 		}
 
 		protected override void Created(Actor self)
@@ -129,7 +133,7 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 			// Spawn initial load.
 			int burst = Info.InitialActorCount == -1 ? Info.Actors.Length : Info.InitialActorCount;
 			for (int i = 0; i < burst; i++)
-				Replenish(self, slaveEntries);
+				Replenish(self, SlaveEntries);
 		}
 
 		/// <summary>
@@ -139,7 +143,7 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 		/// <returns>true when a new slave actor is created.</returns>
 		public void Replenish(Actor self, BaseSpawnerSlaveEntry[] slaveEntries)
 		{
-			if (Info.OneShotSpawn)
+			if (Info.SpawnAllAtOnce)
 			{
 				foreach (var se in slaveEntries)
 					if (!se.IsValid)
@@ -203,7 +207,7 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 
 			// Notify slaves.
 			// Not needed on KillSlaveOnDeath case but I want to keep the code neat.
-			foreach (var se in slaveEntries)
+			foreach (var se in SlaveEntries)
 				if (se.IsValid)
 					se.SpawnerSlave.OnMasterKilled(se.Actor);
 		}
@@ -215,12 +219,12 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 				case MobMemberDisposal.DoNothing:
 					break;
 				case MobMemberDisposal.KillSlaves:
-					foreach (var se in slaveEntries)
+					foreach (var se in SlaveEntries)
 						if (!se.IsValid)
 							se.Actor.Kill(attacker);
 					break;
 				case MobMemberDisposal.GiveSlavesToAttacker:
-					foreach (var se in slaveEntries)
+					foreach (var se in SlaveEntries)
 						if (!se.IsValid)
 							se.Actor.ChangeOwner(newOwner);
 					break;
@@ -241,7 +245,7 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 		public virtual void Disposing(Actor self)
 		{
 			// Just dispose them regardless of slave disposal options.
-			foreach (var se in slaveEntries)
+			foreach (var se in SlaveEntries)
 				if (se.IsValid)
 					se.Actor.Dispose();
 		}
@@ -306,7 +310,7 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 
 		public void StopSlaves()
 		{
-			foreach (var se in slaveEntries)
+			foreach (var se in SlaveEntries)
 			{
 				if (!se.IsValid)
 					continue;

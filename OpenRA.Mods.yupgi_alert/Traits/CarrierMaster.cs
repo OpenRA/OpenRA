@@ -14,10 +14,7 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using OpenRA.Mods.Common;
 using OpenRA.Mods.Common.Traits;
-using OpenRA.Primitives;
 using OpenRA.Traits;
 
 /*
@@ -37,11 +34,6 @@ EnterSpawner needs modifications too, as it inherits Enter.cs
 and uses its internal variables.
 Fortunately, I made a PR so that you don't have to worry about this in the future.
 */
-
-/*
- * The code is very similar to MobSpawner.cs.
- * Sometimes it is neater to have a duplicate than to have wrong inheirtances.
- */
 
 namespace OpenRA.Mods.Yupgi_alert.Traits
 {
@@ -82,8 +74,7 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 		public override object Create(ActorInitializer init) { return new CarrierMaster(init, this); }
 	}
 
-	public class CarrierMaster : BaseSpawnerMaster, IPips, INotifyOwnerChanged, ITick,
-		INotifyActorDisposing, INotifyAttack, INotifyBecomingIdle
+	public class CarrierMaster : BaseSpawnerMaster, IPips, ITick, INotifyAttack, INotifyBecomingIdle
 	{
 		class SpawnerSlaveEntry : BaseSpawnerSlaveEntry
 		{
@@ -116,17 +107,12 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 
 		public override BaseSpawnerSlaveEntry[] CreateSlaveEntries(BaseSpawnerMasterInfo info)
 		{
-			slaveEntries = new SpawnerSlaveEntry[info.Actors.Length];
+			slaveEntries = new SpawnerSlaveEntry[info.Actors.Length]; // For this class to use
 
 			for (int i = 0; i < slaveEntries.Length; i++)
 				slaveEntries[i] = new SpawnerSlaveEntry();
 
-			return slaveEntries;
-		}
-
-		public bool CanLoad(Actor self, Actor a)
-		{
-			return true; // can always load slaves, unless the airbourne carrier has to land (not implemented)
+			return slaveEntries; // For the base class to use
 		}
 
 		public override void InitializeSlaveEntry(Actor slave, BaseSpawnerSlaveEntry entry)
@@ -145,6 +131,9 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 		// invokes Attacking()
 		void INotifyAttack.Attacking(Actor self, Target target, Armament a, Barrel barrel)
 		{
+			if (IsTraitDisabled)
+				return;
+
 			if (a.Info.Name != Info.SpawnerArmamentName)
 				return;
 
@@ -199,10 +188,8 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 		SpawnerSlaveEntry GetLaunchable()
 		{
 			foreach (var se in slaveEntries)
-			{
 				if (se.RearmTicks <= 0 && !se.IsLaunched && se.IsValid)
 					return se;
-			}
 
 			return null;
 		}

@@ -23,7 +23,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Yupgi_alert.Traits
 {
 	[Desc("This actor explodes when killed and the kill XP goes to the Spawner.")]
-	public class SpawnedExplodesInfo : ConditionalTraitInfo, IRulesetLoaded, Requires<HealthInfo>, Requires<CarrierSlaveInfo>
+	public class SpawnedExplodesInfo : ConditionalTraitInfo, IRulesetLoaded, Requires<HealthInfo>, Requires<MissileSpawnerSlaveInfo>
 	{
 		[WeaponReference, FieldLoader.Require, Desc("Default weapon to use for explosion if ammo/payload is loaded.")]
 		public readonly string Weapon = null;
@@ -104,7 +104,7 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 			}
 
 			// Use .FromPos since this actor is killed. Cannot use Target.FromActor
-			weapon.Impact(Target.FromPos(self.CenterPosition), self.Trait<CarrierSlave>().Master, Enumerable.Empty<int>());
+			weapon.Impact(Target.FromPos(self.CenterPosition), self.Trait<MissileSpawnerSlave>().Master, Enumerable.Empty<int>());
 		}
 
 		WeaponInfo ChooseWeaponForExplosion(Actor self)

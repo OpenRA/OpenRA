@@ -204,8 +204,8 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 
 		public Activity MoveIntoWorld(Actor self, CPos cell, SubCell subCell = SubCell.Any)
 		{
-			// You shouldn't run MoveIntoWorld !!
-			return new ShootableBallisticMissileFly(self, Target.FromCell(self.World, cell, subCell));
+			//return new ShootableBallisticMissileFly(self, Target.FromCell(self.World, cell, subCell));
+			return null;
 		}
 
 		public Activity MoveToTarget(Actor self, Target target)
