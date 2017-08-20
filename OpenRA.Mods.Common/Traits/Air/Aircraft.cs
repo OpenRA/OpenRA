@@ -69,6 +69,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Can the actor hover in place mid-air? If not, then the actor will have to remain in motion (circle around).")]
 		public readonly bool CanHover = false;
 
+		[Desc("Does the actor land and take off vertically?")]
+		public readonly bool VTOL = false;
+
 		[Desc("Will this actor try to land after it has no more commands?")]
 		public readonly bool LandWhenIdle = true;
 
@@ -620,7 +623,8 @@ namespace OpenRA.Mods.Common.Traits
 					new CallFunc(() => SetVisualPosition(self, fromPos)),
 					new Fly(self, Target.FromPos(toPos)));
 
-			return ActivityUtils.SequenceActivities(new CallFunc(() => SetVisualPosition(self, fromPos)),
+			return ActivityUtils.SequenceActivities(
+				new CallFunc(() => SetVisualPosition(self, fromPos)),
 				new HeliFly(self, Target.FromPos(toPos)));
 		}
 
@@ -757,7 +761,7 @@ namespace OpenRA.Mods.Common.Traits
 				UnReserve();
 
 				// TODO: Implement INotifyBecomingIdle instead
-				if (!IsPlane && Info.LandWhenIdle)
+				if (Info.VTOL && Info.LandWhenIdle)
 				{
 					if (Info.TurnToLand)
 						self.QueueActivity(new Turn(self, Info.InitialFacing));
