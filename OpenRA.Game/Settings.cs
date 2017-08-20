@@ -97,7 +97,10 @@ namespace OpenRA
 		public bool IgnoreVersionMismatch = false;
 
 		public bool StrictActivityChecking = false;
+
+		[Desc("Allow the collection of anonymous data such as Operating System, .NET runtime, OpenGL version and language settings.")]
 		public bool SendSystemInformation = true;
+
 		public int SystemInformationVersionPrompt = 0;
 		public string UUID = System.Guid.NewGuid().ToString();
 		public bool EnableDebugCommandsInReplays = false;
