@@ -167,6 +167,11 @@ namespace OpenRA
 			return new Order("CancelProduction", subject, false) { ExtraData = (uint)count, TargetString = item };
 		}
 
+		public static Order NewAdmin(int nextAdminIndex)
+		{
+			return new Order("NewAdmin", null, false) { ExtraData = (uint)nextAdminIndex };
+		}
+
 		// For scripting special powers
 		public Order()
 			: this(null, null, null, CPos.Zero, null, false, CPos.Zero, 0) { }
