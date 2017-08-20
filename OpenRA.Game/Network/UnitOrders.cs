@@ -67,6 +67,37 @@ namespace OpenRA.Network
 						var client = orderManager.LobbyInfo.ClientWithIndex(clientId);
 						if (client != null)
 							client.State = Session.ClientState.Disconnected;
+
+						break;
+					}
+
+				case "NewAdmin": // Find a new admin and hand bots over mid-game.
+					{
+						var client = orderManager.LobbyInfo.ClientWithIndex(clientId);
+						if (client == null || !client.IsAdmin)
+							break;
+
+						var nextAdmin = orderManager.LobbyInfo.Clients.FirstOrDefault(c => c.Index == order.ExtraData);
+						if (nextAdmin != null)
+						{
+							nextAdmin.IsAdmin = true;
+							Game.AddChatLine(Color.White, "Server", "{0} is now the admin.".F(nextAdmin.Name));
+
+							var bots = orderManager.LobbyInfo.Clients.Where(c => c.Bot != null && c.BotControllerClientIndex == client.Index);
+							foreach (var bot in bots)
+							{
+								bot.BotControllerClientIndex = nextAdmin.Index;
+								var botPlayer = orderManager.World.FindPlayerByClient(bot);
+								botPlayer.ActivateBot();
+								Log.Write("server", "Bot {0} is now controlled by {1}.".F(bot.Name, nextAdmin.Name));
+							}
+						}
+						else
+						{
+							Log.Write("server", "Suggested new game admin {0} not found.".F(order.TargetString));
+							orderManager.LobbyInfo.Clients.RemoveAll(c => c.Bot != null && c.BotControllerClientIndex == client.Index);
+						}
+
 						break;
 					}
 
