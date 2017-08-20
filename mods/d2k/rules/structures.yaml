@@ -1068,6 +1068,7 @@ palace:
 		EndChargeSpeechNotification: DeathHandMissileReady
 		MissileLaunchDetected: MissileLaunchDetected
 		MissileWeapon: atomic
+		MissileDelay: 19
 		SpawnOffset: -512,1c171,0
 		DisplayBeacon: True
 		DisplayRadarPing: True

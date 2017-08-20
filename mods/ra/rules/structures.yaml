@@ -42,6 +42,7 @@ MSLO:
 		InsufficientPowerSpeechNotification: InsufficientPower
 		IncomingSpeechNotification: AbombLaunchDetected
 		MissileWeapon: atomic
+		MissileDelay: 3
 		SpawnOffset: 0,427,0
 		DisplayTimerStances: Ally, Neutral, Enemy
 		DisplayBeacon: True

@@ -27,6 +27,9 @@ namespace OpenRA.Mods.Common.Traits
 			"Also image to use for the missile.")]
 		public readonly string MissileWeapon = "";
 
+		[Desc("Delay (in ticks) after launch until the missile is spawned.")]
+		public readonly int MissileDelay = 0;
+
 		[Desc("Sprite sequence for the ascending missile.")]
 		[SequenceReference("MissileWeapon")] public readonly string MissileUp = "up";
 
@@ -110,7 +113,7 @@ namespace OpenRA.Mods.Common.Traits
 				info.FlightVelocity, info.FlightDelay, info.SkipAscent,
 				info.FlashType);
 
-			self.World.AddFrameEndTask(w => w.Add(missile));
+			self.World.AddFrameEndTask(w => w.Add(new DelayedAction(info.MissileDelay, () => self.World.Add(missile))));
 
 			if (info.CameraRange != WDist.Zero)
 			{
