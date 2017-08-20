@@ -15,10 +15,13 @@ Sound:
 	Warhead@1Dam: SpreadDamage
 		Range: 0, 32
 		Falloff: 100, 100
-		Damage: 150
+		Damage: 86
 		AffectsParent: false
 		ValidStances: Neutral, Enemy
 		Versus:
+			none: 200
+			light: 110
+			wood: 110
 			wall: 50
 			building: 60
 			heavy: 60
@@ -28,11 +31,14 @@ Sound:
 		DamageTypes: Prone50Percent, TriggerProne, SoundDeath
 	Warhead@2Dam: SpreadDamage
 		Range: 0, 32
-		Falloff: 50, 50 # Only does half damage to friendly units
-		Damage: 150
+		Falloff: 100, 100
+		Damage: 43 # Only does half damage to friendly units
 		AffectsParent: false
 		ValidStances: Ally
 		Versus:
+			none: 200
+			light: 110
+			wood: 110
 			wall: 50
 			building: 60
 			heavy: 60
