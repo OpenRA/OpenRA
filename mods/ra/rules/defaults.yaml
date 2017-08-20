@@ -912,6 +912,9 @@
 		Velocity: 86
 	EditorTilesetFilter:
 		Categories: Husk
+	RevealOnDeath:
+		Duration: 60
+		Radius: 4c0
 
 ^HelicopterHusk:
 	Inherits: ^BasicHusk
@@ -926,6 +929,9 @@
 	FallsToEarth:
 	BodyOrientation:
 		UseClassicFacingFudge: True
+	RevealOnDeath:
+		Duration: 60
+		Radius: 4c0
 
 ^Bridge:
 	Inherits@shape: ^1x1Shape
