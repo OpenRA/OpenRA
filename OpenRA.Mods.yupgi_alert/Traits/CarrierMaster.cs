@@ -168,6 +168,10 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 			// Queue attack order, too.
 			self.World.AddFrameEndTask(w =>
 			{
+				// The actor might had been trying to do something before entering the carrier.
+				// Cancel whatever it was trying to do.
+				se.SpawnerSlave.Stop(se.Actor);
+
 				se.SpawnerSlave.Attack(se.Actor, target);
 			});
 		}

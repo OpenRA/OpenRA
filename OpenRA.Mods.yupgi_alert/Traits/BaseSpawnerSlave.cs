@@ -85,12 +85,12 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 		// Stop what self was doing.
 		public void Stop(Actor self)
 		{
+			// Drop the target so that Attack() feels the need to assign target for this slave.
+			lastTarget = Target.Invalid;
+
 			self.CancelActivity();
 
 			// And tell attack bases to stop attacking.
-			if (attackBases.Length == 0)
-				return;
-
 			foreach (var ab in attackBases)
 				if (!ab.IsTraitDisabled)
 					ab.OnStopOrder(self);
@@ -126,8 +126,7 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 				else
 					/* Target deprives me of force fire information.
 					 * This is a glitch if force fire weapon and normal fire are different, as in
-					 * RA mod spies but won't matter too much for carriers.
-					 */
+					 * RA mod spies but won't matter too much for carriers. */
 					ab.AttackTarget(target, false, true, target.RequiresForceFire);
 			}
 		}
