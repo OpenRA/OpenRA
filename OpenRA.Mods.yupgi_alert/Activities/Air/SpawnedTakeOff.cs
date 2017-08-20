@@ -39,7 +39,7 @@ namespace OpenRA.Mods.Yupgi_alert.Activities
 		{
 			aircraft.UnReserve();
 
-			var host = self.Trait<Spawned>().Master;
+			var host = self.Trait<CarrierSlave>().Master;
 
 			var destination = self.World.Map.CellContaining(host.CenterPosition);
 

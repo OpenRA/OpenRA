@@ -41,15 +41,15 @@ namespace OpenRA.Mods.Yupgi_alert.Activities
 	class EnterSpawner : Enter
 	{
 		readonly Actor master; // remember spawner.
-		readonly Spawner spawner;
+		readonly CarrierMaster spawnerMaster;
 		readonly AmmoPool[] ammoPools;
 		//// readonly Dictionary<AmmoPool, int> ammoPoolsReloadTimes;
 
-		public EnterSpawner(Actor self, Actor target, EnterBehaviour enterBehaviour, WDist closeEnoughDist)
+		public EnterSpawner(Actor self, Actor target, CarrierMaster spawnerMaster, EnterBehaviour enterBehaviour, WDist closeEnoughDist)
 			: base(self, target, enterBehaviour, closeEnoughDist)
 		{
-			this.master = target;
-			spawner = target.Trait<Spawner>();
+			master = target;
+			this.spawnerMaster = spawnerMaster;
 
 			ammoPools = self.TraitsImplementing<AmmoPool>().Where(p => !p.Info.SelfReloads).ToArray();
 
@@ -84,15 +84,14 @@ namespace OpenRA.Mods.Yupgi_alert.Activities
 			// Issue attack move to the rally point.
 			self.World.AddFrameEndTask(w =>
 			{
-				if (self.IsDead || master.IsDead || !spawner.CanLoad(master, self))
+				if (self.IsDead || master.IsDead || !spawnerMaster.CanLoad(master, self))
 					return;
 
-				spawner.Load(master, self);
+				spawnerMaster.PickupSlave(master, self);
 				w.Remove(self);
 
 				// Insta repair.
-				var info = master.Info.TraitInfo<SpawnerInfo>();
-				if (info.InstaRepair)
+				if (spawnerMaster.Info.InstaRepair)
 				{
 					var health = self.Trait<Health>();
 					self.InflictDamage(self, new Damage(-health.MaxHP));

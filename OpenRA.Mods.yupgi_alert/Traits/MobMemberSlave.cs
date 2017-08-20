@@ -25,127 +25,47 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Yupgi_alert.Traits
 {
 	[Desc("Can be slaved to a Mob spawner.")]
-	public class MobMemberSlaveInfo : ITraitInfo
+	public class MobMemberSlaveInfo : BaseSpawnerSlaveInfo
 	{
-		[GrantedConditionReference]
-		[Desc("The condition to grant to slaves when the master actor is killed.")]
-		public readonly string MasterDeadCondition = null;
-
-		public object Create(ActorInitializer init) { return new MobMemberSlave(init, this); }
+		public override object Create(ActorInitializer init) { return new MobMemberSlave(init, this); }
 	}
 
-	public class MobMemberSlave : INotifyCreated, INotifyKilled, INotifySelected
+	public class MobMemberSlave : BaseSpawnerSlave, INotifySelected
 	{
 		readonly Actor self;
 		readonly MobMemberSlaveInfo info;
 
-		ConditionManager conditionManager;
-		MobSpawnerInfo mobSpawnerInfo;
-		AttackBase[] attackBases;
-		int masterDeadToken = ConditionManager.InvalidConditionToken;
-
 		public IMove[] Moves { get; private set; }
 		public IPositionable Positionable { get; private set; }
 
-		public Actor Master { get; private set; }
+		MobSpawner spawnerMaster;
 
 		// TODO: add more activities for aircrafts
 		public bool IsMoving { get { return self.CurrentActivity is Move; } }
 
-		public MobMemberSlave(ActorInitializer init, MobMemberSlaveInfo info)
+		public MobMemberSlave(ActorInitializer init, MobMemberSlaveInfo info) : base(init, info)
 		{
 			this.self = init.Self;
 			this.info = info;
 		}
 
-		void INotifyCreated.Created(Actor self)
+		public override void Created(Actor self)
 		{
-			attackBases = self.TraitsImplementing<AttackBase>().ToArray();
+			base.Created(self);
+
 			Moves = self.TraitsImplementing<IMove>().ToArray();
-			conditionManager = self.Trait<ConditionManager>();
 
 			var positionables = self.TraitsImplementing<IPositionable>();
 			if (positionables.Count() != 1)
 				throw new InvalidOperationException("Actor {0} has multiple (or no) traits implementing IPositionable.".F(self));
+
 			Positionable = positionables.First();
 		}
 
-		void INotifyKilled.Killed(Actor self, AttackInfo e)
+		public override void LinkMaster(Actor master, BaseSpawnerMaster spawnerMaster)
 		{
-			// If killed, I tell my master that I'm gone.
-			// Can happen, when built from build palette (w00t)
-			if (Master == null || Master.IsDead)
-				return;
-
-			Master.Trait<MobSpawner>().SlaveKilled(Master, self);
-		}
-
-		public void LinkMaster(Actor master, MobSpawnerInfo mobSpawnerInfo)
-		{
-			Master = master;
-			this.mobSpawnerInfo = mobSpawnerInfo;
-		}
-
-		public void Stop(Actor self)
-		{
-			self.CancelActivity();
-
-			// And tell attack bases to stop attacking.
-			if (attackBases.Length == 0)
-				return;
-
-			foreach (var ab in attackBases)
-				if (!ab.IsTraitDisabled)
-					ab.OnStopOrder(self);
-		}
-
-		bool TargetSwitched(Target lastTarget, Target newTarget)
-		{
-			if (newTarget.Type != lastTarget.Type)
-				return true;
-
-			if (newTarget.Type == TargetType.Terrain)
-				return newTarget.CenterPosition != lastTarget.CenterPosition;
-
-			if (newTarget.Type == TargetType.Actor)
-				return lastTarget.Actor != newTarget.Actor;
-
-			return false;
-		}
-
-		Target lastTarget;
-		public void Attack(Actor self, Target target)
-		{
-			// Don't have to change target or alter current activity.
-			if (!TargetSwitched(lastTarget, target))
-				return;
-
-			if (!target.IsValidFor(self))
-			{
-				Stop(self);
-				return;
-			}
-
-			lastTarget = target;
-
-			foreach (var ab in attackBases)
-			{
-				if (ab.IsTraitDisabled)
-					continue;
-
-				if (target.Actor == null)
-					ab.AttackTarget(target, false, true, true); // force fire on the ground.
-				else if (target.Actor.Owner.Stances[self.Owner] == Stance.Ally)
-					ab.AttackTarget(target, false, true, true); // force fire on ally.
-				else if (target.Actor.Owner.Stances[self.Owner] == Stance.Neutral)
-					ab.AttackTarget(target, false, true, true); // force fire on neutral.
-				else
-					/* Target deprives me of force fire information.
-					 * This is a glitch if force fire weapon and normal fire are different, as in
-					 * RA mod spies but won't matter too much for carriers.
-					 */
-					ab.AttackTarget(target, false, true, target.RequiresForceFire);
-			}
+			base.LinkMaster(master, spawnerMaster);
+			this.spawnerMaster = spawnerMaster as MobSpawner;
 		}
 
 		public void Move(Actor self, CPos location)
@@ -181,7 +101,7 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 
 		void INotifySelected.Selected(Actor self)
 		{
-			if (mobSpawnerInfo.SlavesHaveFreeWill)
+			if (spawnerMaster.Info.SlavesHaveFreeWill)
 				return;
 
 			// I'm assuming these guys are selectable, both slave and the nexus.
@@ -190,18 +110,5 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 			// Also use RejectsOrder if necessary.
 			self.World.Selection.Add(self.World, Master);
 		}
-
-		public void OnMasterKilled(Actor self)
-		{
-			// Grant MasterDead condition.
-			if (conditionManager != null && !string.IsNullOrEmpty(info.MasterDeadCondition))
-				masterDeadToken = conditionManager.GrantCondition(self, info.MasterDeadCondition);
-		}
-
-        // DUMMY FUNCTION to suppress masterDeadToken assigned but unused warning (== error for Travis).
-        void OnNewMaster(Actor self, Actor master)
-        {
-            conditionManager.RevokeCondition(self, masterDeadToken);
-        }
 	}
 }

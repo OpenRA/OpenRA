@@ -29,6 +29,11 @@ using OpenRA.Traits;
  * while MobSpawner doesn't, thus MobSpawner has much simpler code.
  */
 
+/*
+ * The code is very similar to Spawner.cs.
+ * Sometimes it is neater to have a duplicate than to have wrong inheirtances.
+ */
+
 namespace OpenRA.Mods.Yupgi_alert.Traits
 {
 	// What to do when master is killed or mind controlled
@@ -40,31 +45,16 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 	}
 
 	[Desc("This actor can spawn actors.")]
-	public class MobSpawnerInfo : ConditionalTraitInfo
+	public class MobSpawnerInfo : BaseSpawnerMasterInfo
 	{
-		[Desc("Actors to spawn")]
-		public readonly string[] Actors = null;
-
-		[Desc("Actors to spawn at creation. Set to 0 to start fully spawned.")]
-		public readonly int InitialActorCount = 0;
-
 		[Desc("Spawn regen delay, in ticks")]
 		public readonly int SpawnReplaceDelay = 150;
 
 		[Desc("Spawn at a member, not the nexus?")]
 		public readonly bool ExitByBudding = true;
 
-		[Desc("No new members spawn, if true.")]
-		public readonly bool OneShot = false;
-
 		[Desc("Can the slaves be controlled independently?")]
 		public readonly bool SlavesHaveFreeWill = false;
-
-		[Desc("What happens to the slaves when the master is killed?")]
-		public readonly MobMemberDisposal SlaveDisposalOnKill = MobMemberDisposal.DoNothing;
-
-		[Desc("What happens to the slaves when the master is mind controlled?")]
-		public readonly MobMemberDisposal SlaveDisposalOnOwnerChange = MobMemberDisposal.DoNothing;
 
 		[Desc("This is a dummy spawner like cin C&C Generals and use virtual position and health.")]
 		public readonly bool AggregateHealth = true;
@@ -78,14 +68,17 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 			if (Actors == null || Actors.Length == 0)
 				throw new YamlException("Actors is null or empty for MobSpawner for actor type {0}!".F(ai.Name));
 
-			if (InitialActorCount > Actors.Length || InitialActorCount < 0)
+			if (InitialActorCount > Actors.Length || InitialActorCount < -1)
 				throw new YamlException("MobSpawner can't have more InitialActorCount than the actors defined!");
+
+			if (InitialActorCount == 0 && AggregateHealth == true)
+				throw new YamlException("You can't have InitialActorCount == 0 and AggregateHealth");
 		}
 
 		public override object Create(ActorInitializer init) { return new MobSpawner(init, this); }
 	}
 
-	public class MobSpawner : INotifyCreated, INotifyKilled, INotifyOwnerChanged, ITick,
+	public class MobSpawner : BaseSpawnerMaster, INotifyCreated, INotifyOwnerChanged, ITick,
 		INotifyActorDisposing, IResolveOrder, INotifyAttack
 	{
 		public class MobEntry
@@ -99,7 +92,8 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 			public bool IsValid { get { return Actor != null && !Actor.IsDead; } }
 		}
 
-		public readonly MobSpawnerInfo Info;
+		public new MobSpawnerInfo Info { get; private set; }
+
 		readonly Actor self;
 		public MobEntry[] Mobs { get; private set; }
 
@@ -108,12 +102,7 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 		Aircraft aircraft;
 		Health health;
 
-		// For non-nexus spawners.
-		IFacing facing;
-		ExitInfo[] exits;
-		RallyPoint rallyPoint;
-
-		public MobSpawner(ActorInitializer init, MobSpawnerInfo info)
+		public MobSpawner(ActorInitializer init, MobSpawnerInfo info) : base(init, info)
 		{
 			self = init.Self;
 			Info = info;
@@ -128,19 +117,13 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 			}
 		}
 
-		public void Created(Actor self)
+		protected override void Created(Actor self)
 		{
-			rallyPoint = self.TraitOrDefault<RallyPoint>();
-			exits = self.Info.TraitInfos<ExitInfo>().ToArray();
-			facing = self.TraitOrDefault<IFacing>();
 			position = self.TraitOrDefault<IPositionable>();
 			health = self.Trait<Health>();
 			aircraft = self.TraitOrDefault<Aircraft>();
 
-			// Spawn initial load.
-			int burst = Info.InitialActorCount > 0 ? Info.InitialActorCount : Info.Actors.Length;
-			for (int i = 0; i < burst; i++)
-				Replenish(self);
+			base.Created(self);
 			hasSpawnedInitialLoad = true;
 		}
 
@@ -192,56 +175,7 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 			if (!Info.SlavesHaveFreeWill)
 				AssignSlaveActivity(self);
 		}
-
-		void DoSlaveDisposal(Actor self, MobMemberDisposal disposal, Actor attacker, Player newOwner)
-		{
-			switch (disposal)
-			{
-				case MobMemberDisposal.DoNothing:
-					break;
-				case MobMemberDisposal.KillSlaves:
-					foreach (var mob in Mobs)
-						if (!mob.IsValid)
-							mob.Actor.Kill(attacker);
-					break;
-				case MobMemberDisposal.GiveSlavesToAttacker:
-					foreach (var mob in Mobs)
-						if (!mob.IsValid)
-							mob.Actor.ChangeOwner(newOwner);
-					break;
-				default:
-					break;
-			}
-		}
-
-		public void OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
-		{
-			// Owner thing is so difficult and confusing, I'm expecting bugs.
-			self.World.AddFrameEndTask(w =>
-			{
-				DoSlaveDisposal(self, Info.SlaveDisposalOnOwnerChange, self, newOwner);
-			});
-		}
-
-		public void Killed(Actor self, AttackInfo e)
-		{
-			DoSlaveDisposal(self, Info.SlaveDisposalOnKill, e.Attacker, e.Attacker.Owner);
-
-			// Notify slaves.
-			// Not needed on KillSlaveOnDeath case but I want to keep the code neat.
-			foreach (var mob in Mobs)
-				if (!mob.IsValid)
-					mob.MobMemberSlave.OnMasterKilled(mob.Actor);
-		}
-
-		public void Disposing(Actor self)
-		{
-			// Just dispose them regardless of slave disposal options.
-			foreach (var mob in Mobs)
-				if (mob.IsValid)
-					mob.Actor.Dispose();
-		}
-
+	
 		MobEntry SelectEntryToSpawn()
 		{
 			// If any thing is marked dead or null, that's a candidate.
@@ -256,7 +190,7 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 		// Return true if replenishing happened.
 		bool Replenish(Actor self)
 		{
-			if (Info.OneShot)
+			if (Info.NoRegeneration)
 				return false;
 
 			MobEntry entry = SelectEntryToSpawn();
@@ -270,11 +204,11 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 				new TypeDictionary { new OwnerInit(self.Owner) });
 
 			// Update mobs entry
-			unit.Trait<MobMemberSlave>().LinkMaster(self, Info);
-			entry.Actor = unit;
 			entry.MobMemberSlave = unit.Trait<MobMemberSlave>();
+			entry.Actor = unit;
 			entry.Health = unit.Trait<Health>();
 
+			entry.MobMemberSlave.LinkMaster(self, this);
 			SpawnIntoWorld(self, unit);
 
 			return true;
@@ -284,9 +218,6 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 
 		void SpawnIntoWorld(Actor self, Actor slave)
 		{
-			var exit = ChooseExit(self);
-			SetSpawnedFacing(slave, self, exit);
-
 			WPos centerPosition = WPos.Zero;
 
 			if (!hasSpawnedInitialLoad || !Info.ExitByBudding)
@@ -309,30 +240,7 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 			if (centerPosition == WPos.Zero)
 				return;
 
-			self.World.AddFrameEndTask(w =>
-			{
-				if (self.IsDead)
-					return;
-
-				var spawnOffset = exit == null ? WVec.Zero : exit.SpawnOffset;
-				slave.Trait<IPositionable>().SetVisualPosition(slave, centerPosition + spawnOffset);
-
-				var location = self.World.Map.CellContaining(centerPosition + spawnOffset);
-
-				var mv = slave.Trait<IMove>();
-				slave.QueueActivity(mv.MoveIntoWorld(slave, location));
-
-				// Move to rally point if any.
-				if (rallyPoint != null)
-					rallyPoint.QueueRallyOrder(self, slave);
-				else
-				{
-					// Move to a valid position, if no rally point.
-					slave.QueueActivity(mv.MoveTo(location, 2));
-				}
-
-				w.Add(slave);
-			});
+			SpawnIntoWorld(self, slave, centerPosition);
 		}
 
 		public void SlaveKilled(Actor self, Actor slave)
@@ -347,44 +255,6 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 
 			if (spawnReplaceTicks <= 0)
 				spawnReplaceTicks = Info.SpawnReplaceDelay;
-		}
-
-		// Production.cs use random to select an exit.
-		// Here, we choose one by round robin.
-		// Start from -1 so that +1 logic below will make it 0.
-		int exitRoundRobin = -1;
-		ExitInfo ChooseExit(Actor self)
-		{
-			if (exits.Length == 0)
-				return null;
-
-			exitRoundRobin = (exitRoundRobin + 1) % exits.Length;
-			return exits[exitRoundRobin];
-		}
-
-		void SetSpawnedFacing(Actor spawned, Actor spawner, ExitInfo exit)
-		{
-			int facingOffset = facing == null ? 0 : facing.Facing;
-
-			var exitFacing = exit != null ? exit.Facing : 0;
-
-			var spawnFacing = spawned.TraitOrDefault<IFacing>();
-			if (spawnFacing != null)
-				spawnFacing.Facing = (facingOffset + exitFacing) % 256;
-
-			foreach (var t in spawned.TraitsImplementing<Turreted>())
-				t.TurretFacing = (facingOffset + exitFacing) % 256;
-		}
-
-		void StopSlaves()
-		{
-			foreach (var mob in Mobs)
-			{
-				if (!mob.IsValid)
-					continue;
-
-				mob.MobMemberSlave.Stop(mob.Actor);
-			}
 		}
 
 		void AssignTargetsToSlaves(Actor self, Target target)

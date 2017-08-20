@@ -52,7 +52,7 @@ namespace OpenRA.Mods.Yupgi_alert.Activities
 			{
 				// We let the spawned to move closer then Enter.
 				// If we just let it enter, it "slides on the ground", targetable by ground units.
-				self.Trait<Spawned>().EnterSpawner(self);
+				self.Trait<CarrierSlave>().EnterSpawner(self);
 			}
 
 			if (attackPlane != null)
