@@ -50,11 +50,6 @@ namespace OpenRA.Orders
 			if (!actorsInvolved.Any())
 				yield break;
 
-			yield return new Order("CreateGroup", actorsInvolved.First().Owner.PlayerActor, false)
-			{
-				TargetString = actorsInvolved.Select(a => a.ActorID).JoinWith(",")
-			};
-
 			foreach (var o in orders)
 				yield return CheckSameOrder(o.Order, o.Trait.IssueOrder(o.Actor, o.Order, o.Target, mi.Modifiers.HasModifier(Modifiers.Shift)));
 		}
