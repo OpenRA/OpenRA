@@ -194,6 +194,7 @@ function Docs-Command
 		./make.ps1 version
 		./OpenRA.Utility.exe all --docs | Out-File -Encoding "UTF8" DOCUMENTATION.md
 		./OpenRA.Utility.exe all --lua-docs | Out-File -Encoding "UTF8" Lua-API.md
+		./OpenRA.Utility.exe all --settings-docs | Out-File -Encoding "UTF8" Settings.md
 	}
 	else
 	{
