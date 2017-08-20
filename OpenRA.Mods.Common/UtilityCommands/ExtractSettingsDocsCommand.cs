@@ -74,7 +74,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						Console.WriteLine("```yaml");
 						Console.WriteLine("{0}: ", section.Key);
 						Console.WriteLine("\t{0}: {1}", field.Name, value);
-						Console.WriteLine("```  ");
+						Console.WriteLine("```");
 					}
 					else
 						Console.WriteLine();
