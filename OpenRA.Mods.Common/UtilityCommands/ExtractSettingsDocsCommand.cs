@@ -28,7 +28,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 		{
 			Game.ModData = utility.ModData;
 			Console.WriteLine(
-				"This documentation is aimed at server administrators. It displays all settings with default values and description. " +
+				"This documentation displays annotated settings with default values and description. " +
 				"Please do not edit it directly, but add new `[Desc(\"String\")]` tags to the source code. This file has been " +
 				"automatically generated for version {0} of OpenRA.", utility.ModData.Manifest.Metadata.Version);
 			Console.WriteLine();
