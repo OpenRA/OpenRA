@@ -45,11 +45,8 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 	}
 
 	[Desc("This actor can spawn actors.")]
-	public class MobSpawnerInfo : BaseSpawnerMasterInfo
+	public class MobSpawnerMasterInfo : BaseSpawnerMasterInfo
 	{
-		[Desc("Spawn regen delay, in ticks")]
-		public readonly int SpawnReplaceDelay = 150;
-
 		[Desc("Spawn at a member, not the nexus?")]
 		public readonly bool ExitByBudding = true;
 
@@ -75,46 +72,35 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 				throw new YamlException("You can't have InitialActorCount == 0 and AggregateHealth");
 		}
 
-		public override object Create(ActorInitializer init) { return new MobSpawner(init, this); }
+		public override object Create(ActorInitializer init) { return new MobSpawnerMaster(init, this); }
 	}
 
-	public class MobSpawner : BaseSpawnerMaster, INotifyCreated, INotifyOwnerChanged, ITick,
+	public class MobSpawnerMaster : BaseSpawnerMaster, INotifyCreated, INotifyOwnerChanged, ITick,
 		INotifyActorDisposing, IResolveOrder, INotifyAttack
 	{
-		public class MobEntry
+		class MobSpawnerSlaveEntry : BaseSpawnerSlaveEntry
 		{
-			public string ActorName = null;
-			public Actor Actor = null;
-			public MobMemberSlave MobMemberSlave = null;
-			public Health Health = null;
-			public int MaxHealth = 0;
-
-			public bool IsValid { get { return Actor != null && !Actor.IsDead; } }
+			public new MobSpawnerSlave SpawnerSlave;
+			public Health Health;
 		}
 
-		public new MobSpawnerInfo Info { get; private set; }
+		public new MobSpawnerMasterInfo Info { get; private set; }
 
 		readonly Actor self;
-		public MobEntry[] Mobs { get; private set; }
 
+		MobSpawnerSlaveEntry[] slaveEntries;
+
+		bool hasSpawnedInitialLoad = false;
 		int spawnReplaceTicks = 0;
+
 		IPositionable position;
 		Aircraft aircraft;
 		Health health;
 
-		public MobSpawner(ActorInitializer init, MobSpawnerInfo info) : base(init, info)
+		public MobSpawnerMaster(ActorInitializer init, MobSpawnerMasterInfo info) : base(init, info)
 		{
 			self = init.Self;
 			Info = info;
-
-			// Initialize mob entry
-			Mobs = new MobEntry[info.Actors.Length];
-			for (var i = 0; i < info.Actors.Length; i++)
-			{
-				Mobs[i] = new MobEntry();
-				Mobs[i].ActorName = info.Actors[i].ToLowerInvariant();
-				Mobs[i].MaxHealth = self.World.Map.Rules.Actors[Mobs[i].ActorName].TraitInfo<HealthInfo>().HP;
-			}
 		}
 
 		protected override void Created(Actor self)
@@ -123,8 +109,32 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 			health = self.Trait<Health>();
 			aircraft = self.TraitOrDefault<Aircraft>();
 
-			base.Created(self);
+			base.Created(self); // Base class does the initial spawning
+
+			// The base class creates the slaves but doesn't move them into world.
+			// Let's do it here.
+			SpawnReplenishedSlaves(self);
+
 			hasSpawnedInitialLoad = true;
+		}
+
+		public override BaseSpawnerSlaveEntry[] CreateSlaveEntries(BaseSpawnerMasterInfo info)
+		{
+			slaveEntries = new MobSpawnerSlaveEntry[info.Actors.Length]; // For this class to use
+
+			for (int i = 0; i < slaveEntries.Length; i++)
+				slaveEntries[i] = new MobSpawnerSlaveEntry();
+
+			return slaveEntries; // For the base class to use
+		}
+
+		public override void InitializeSlaveEntry(Actor slave, BaseSpawnerSlaveEntry entry)
+		{
+			var se = entry as MobSpawnerSlaveEntry;
+			base.InitializeSlaveEntry(slave, se);
+
+			se.SpawnerSlave = slave.Trait<MobSpawnerSlave>();
+			se.Health = slave.Trait<Health>();
 		}
 
 		public void ResolveOrder(Actor self, Order order)
@@ -154,14 +164,20 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 
 		public void Tick(Actor self)
 		{
-			// Regeneration
 			if (spawnReplaceTicks > 0)
 			{
 				spawnReplaceTicks--;
-				if (spawnReplaceTicks == 0)
+
+				// Time to respawn someting.
+				if (spawnReplaceTicks <= 0)
 				{
-					if (Replenish(self))
-						spawnReplaceTicks = Info.SpawnReplaceDelay;
+					Replenish(self, slaveEntries);
+
+					SpawnReplenishedSlaves(self);
+
+					// If there's something left to spawn, restart the timer.
+					if (SelectEntryToSpawn(slaveEntries) != null)
+						spawnReplaceTicks = Info.RespawnTicks;
 				}
 			}
 
@@ -176,50 +192,9 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 				AssignSlaveActivity(self);
 		}
 	
-		MobEntry SelectEntryToSpawn()
-		{
-			// If any thing is marked dead or null, that's a candidate.
-			var candidates = Mobs.Where(m => !m.IsValid);
-			if (!candidates.Any())
-				return null;
-
-			return candidates.Random(self.World.SharedRandom);
-		}
-
-		// Replenish members.
-		// Return true if replenishing happened.
-		bool Replenish(Actor self)
-		{
-			if (Info.NoRegeneration)
-				return false;
-
-			MobEntry entry = SelectEntryToSpawn();
-
-			// All are alive and well.
-			if (entry == null)
-				return false;
-
-			// Some members are missing. Create a new one.
-			var unit = self.World.CreateActor(false, entry.ActorName,
-				new TypeDictionary { new OwnerInit(self.Owner) });
-
-			// Update mobs entry
-			entry.MobMemberSlave = unit.Trait<MobMemberSlave>();
-			entry.Actor = unit;
-			entry.Health = unit.Trait<Health>();
-
-			entry.MobMemberSlave.LinkMaster(self, this);
-			SpawnIntoWorld(self, unit);
-
-			return true;
-		}
-
-		bool hasSpawnedInitialLoad = false;
-
-		void SpawnIntoWorld(Actor self, Actor slave)
+		void SpawnReplenishedSlaves(Actor self)
 		{
 			WPos centerPosition = WPos.Zero;
-
 			if (!hasSpawnedInitialLoad || !Info.ExitByBudding)
 			{
 				// Spawning from a solid actor...
@@ -228,43 +203,42 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 			else
 			{
 				// Spawning from a virtual nexus: exit by an existing member.
-				foreach (var mob in Mobs)
-					if (mob.IsValid && mob.Actor.IsInWorld)
-					{
-						centerPosition = mob.Actor.CenterPosition;
-						break;
-					}
+				var se = slaveEntries.FirstOrDefault(s => s.IsValid && s.Actor.IsInWorld);
+				if (se != null)
+					centerPosition = se.Actor.CenterPosition;
 			}
 
-			// WPos.Zero implies this mob spawner is dead.
+			// WPos.Zero implies this mob spawner master is dead or something.
 			if (centerPosition == WPos.Zero)
 				return;
 
-			SpawnIntoWorld(self, slave, centerPosition);
+			foreach (var se in slaveEntries)
+				if (se.IsValid && !se.Actor.IsInWorld)
+					SpawnIntoWorld(self, se.Actor, centerPosition);
 		}
 
-		public void SlaveKilled(Actor self, Actor slave)
+		public override void OnSlaveKilled(Actor self, Actor slave)
 		{
 			if (self.IsDead)
 				return;
 
 			// No need to update mobs entry because Actor.IsDead marking is done automatically by the engine.
 			// However, we need to check if all are dead when AggregateHealth.
-			if (Info.AggregateHealth && Mobs.All(m => !m.IsValid))
+			if (Info.AggregateHealth && slaveEntries.All(m => !m.IsValid))
 				self.Dispose();
 
 			if (spawnReplaceTicks <= 0)
-				spawnReplaceTicks = Info.SpawnReplaceDelay;
+				spawnReplaceTicks = Info.RespawnTicks;
 		}
 
 		void AssignTargetsToSlaves(Actor self, Target target)
 		{
-			foreach (var mob in Mobs)
+			foreach (var se in slaveEntries)
 			{
-				if (!mob.IsValid)
+				if (!se.IsValid)
 					continue;
 
-				mob.MobMemberSlave.Attack(mob.Actor, target);
+				se.SpawnerSlave.Attack(se.Actor, target);
 			}
 		}
 
@@ -276,18 +250,18 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 
 			var location = self.World.Map.CellContaining(targets.First().CenterPosition);
 
-			foreach (var mob in Mobs)
+			foreach (var se in slaveEntries)
 			{
-				if (!mob.IsValid || !mob.Actor.IsInWorld)
+				if (!se.IsValid || !se.Actor.IsInWorld)
 					continue;
 
-				if (mob.Actor.Location == location)
+				if (se.Actor.Location == location)
 					continue;
 
-				if (!mob.MobMemberSlave.IsMoving)
+				if (!se.SpawnerSlave.IsMoving)
 				{
-					mob.Actor.CancelActivity();
-					mob.MobMemberSlave.Move(mob.Actor, location);
+					se.SpawnerSlave.Stop(se.Actor);
+					se.SpawnerSlave.Move(se.Actor, location);
 				}
 			}
 		}
@@ -306,24 +280,24 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 
 			lastAttackMoveLocation = location;
 
-			foreach (var mob in Mobs)
+			foreach (var se in slaveEntries)
 			{
-				if (!mob.IsValid || !mob.Actor.IsInWorld)
+				if (!se.IsValid || !se.Actor.IsInWorld)
 					continue;
 
-				mob.MobMemberSlave.AttackMove(mob.Actor, location);
+				se.SpawnerSlave.AttackMove(se.Actor, location);
 			}
 		}
 
 		void SetNexusPosition(Actor self)
 		{
 			int x = 0, y = 0, cnt = 0;
-			foreach (var mob in Mobs)
+			foreach (var se in slaveEntries)
 			{
-				if (!mob.IsValid || !mob.Actor.IsInWorld)
+				if (!se.IsValid || !se.Actor.IsInWorld)
 					continue;
 
-				var pos = mob.Actor.CenterPosition;
+				var pos = se.Actor.CenterPosition;
 				x += pos.X;
 				y += pos.Y;
 				cnt++;
@@ -335,6 +309,7 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 			var newPos = new WPos(x / cnt, y / cnt, aircraft != null ? aircraft.Info.CruiseAltitude.Length : 0);
 			if (aircraft == null)
 				position.SetPosition(self, newPos); // breaks arrival detection of the aircraft if we set position.
+
 			position.SetVisualPosition(self, newPos);
 		}
 
@@ -357,14 +332,14 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 			int maxHealth = 0;
 			int h = 0;
 
-			foreach (var mob in Mobs)
+			foreach (var se in slaveEntries)
 			{
-				maxHealth += mob.MaxHealth;
+				maxHealth += se.Health.MaxHP;
 
-				if (!mob.IsValid)
+				if (!se.IsValid)
 					continue;
 
-				h += mob.Health.HP;
+				h += se.Health.HP;
 			}
 
 			// Apply the aggregate health.
@@ -382,9 +357,6 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 
 		void AssignSlaveActivity(Actor self)
 		{
-			if (Info.SlavesHaveFreeWill)
-				return;
-
 			if (self.CurrentActivity is Move || self.CurrentActivity is HeliFly)
 				MoveSlaves(self);
 			else if (self.CurrentActivity is AttackMoveActivity)

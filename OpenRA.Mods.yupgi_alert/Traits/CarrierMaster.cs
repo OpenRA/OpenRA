@@ -76,7 +76,7 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 
 	public class CarrierMaster : BaseSpawnerMaster, IPips, ITick, INotifyAttack, INotifyBecomingIdle
 	{
-		class SpawnerSlaveEntry : BaseSpawnerSlaveEntry
+		class CarrierSlaveEntry : BaseSpawnerSlaveEntry
 		{
 			public int RearmTicks = 0;
 			public bool IsLaunched = false;
@@ -87,7 +87,7 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 
 		public new CarrierMasterInfo Info { get; private set; }
 
-		SpawnerSlaveEntry[] slaveEntries;
+		CarrierSlaveEntry[] slaveEntries;
 		ConditionManager conditionManager;
 
 		Stack<int> loadedTokens = new Stack<int>();
@@ -107,17 +107,17 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 
 		public override BaseSpawnerSlaveEntry[] CreateSlaveEntries(BaseSpawnerMasterInfo info)
 		{
-			slaveEntries = new SpawnerSlaveEntry[info.Actors.Length]; // For this class to use
+			slaveEntries = new CarrierSlaveEntry[info.Actors.Length]; // For this class to use
 
 			for (int i = 0; i < slaveEntries.Length; i++)
-				slaveEntries[i] = new SpawnerSlaveEntry();
+				slaveEntries[i] = new CarrierSlaveEntry();
 
 			return slaveEntries; // For the base class to use
 		}
 
 		public override void InitializeSlaveEntry(Actor slave, BaseSpawnerSlaveEntry entry)
 		{
-			var se = entry as SpawnerSlaveEntry;
+			var se = entry as CarrierSlaveEntry;
 			base.InitializeSlaveEntry(slave, se);
 
 			se.RearmTicks = 0;
@@ -185,7 +185,7 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 				respawnTicks = Info.RespawnTicks;
 		}
 
-		SpawnerSlaveEntry GetLaunchable()
+		CarrierSlaveEntry GetLaunchable()
 		{
 			foreach (var se in slaveEntries)
 				if (se.RearmTicks <= 0 && !se.IsLaunched && se.IsValid)
@@ -215,7 +215,7 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 
 		public void PickupSlave(Actor self, Actor a)
 		{
-			SpawnerSlaveEntry slaveEntry = null;
+			CarrierSlaveEntry slaveEntry = null;
 			foreach (var se in slaveEntries)
 				if (se.Actor == a)
 				{

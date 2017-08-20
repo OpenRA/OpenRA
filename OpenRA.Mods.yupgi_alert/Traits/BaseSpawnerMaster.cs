@@ -33,8 +33,6 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 		public string ActorName = null;
 		public Actor Actor = null;
 		public BaseSpawnerSlave SpawnerSlave = null;
-		public Health Health = null;
-		public int MaxHealth;
 
 		public bool IsValid { get { return Actor != null && !Actor.IsDead; } }
 	}
@@ -108,7 +106,6 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 			{
 				var entry = SlaveEntries[i];
 				entry.ActorName = info.Actors[i].ToLowerInvariant();
-				entry.MaxHealth = self.World.Map.Rules.Actors[entry.ActorName].TraitInfo<HealthInfo>().HP;
 			}
 		}
 
@@ -187,8 +184,6 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 		{
 			entry.Actor = slave;
 			entry.SpawnerSlave = slave.Trait<BaseSpawnerSlave>();
-			entry.Health = slave.Trait<Health>();
-			entry.MaxHealth = self.World.Map.Rules.Actors[entry.ActorName].TraitInfo<HealthInfo>().HP;
 		}
 
 		protected BaseSpawnerSlaveEntry SelectEntryToSpawn(BaseSpawnerSlaveEntry[] slaveEntries)

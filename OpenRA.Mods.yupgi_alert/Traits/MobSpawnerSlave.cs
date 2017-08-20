@@ -25,25 +25,25 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Yupgi_alert.Traits
 {
 	[Desc("Can be slaved to a Mob spawner.")]
-	public class MobMemberSlaveInfo : BaseSpawnerSlaveInfo
+	public class MobSpawnerSlaveInfo : BaseSpawnerSlaveInfo
 	{
-		public override object Create(ActorInitializer init) { return new MobMemberSlave(init, this); }
+		public override object Create(ActorInitializer init) { return new MobSpawnerSlave(init, this); }
 	}
 
-	public class MobMemberSlave : BaseSpawnerSlave, INotifySelected
+	public class MobSpawnerSlave : BaseSpawnerSlave, INotifySelected
 	{
 		readonly Actor self;
-		readonly MobMemberSlaveInfo info;
+		readonly MobSpawnerSlaveInfo info;
 
 		public IMove[] Moves { get; private set; }
 		public IPositionable Positionable { get; private set; }
 
-		MobSpawner spawnerMaster;
+		MobSpawnerMaster spawnerMaster;
 
 		// TODO: add more activities for aircrafts
 		public bool IsMoving { get { return self.CurrentActivity is Move; } }
 
-		public MobMemberSlave(ActorInitializer init, MobMemberSlaveInfo info) : base(init, info)
+		public MobSpawnerSlave(ActorInitializer init, MobSpawnerSlaveInfo info) : base(init, info)
 		{
 			this.self = init.Self;
 			this.info = info;
@@ -65,7 +65,7 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 		public override void LinkMaster(Actor master, BaseSpawnerMaster spawnerMaster)
 		{
 			base.LinkMaster(master, spawnerMaster);
-			this.spawnerMaster = spawnerMaster as MobSpawner;
+			this.spawnerMaster = spawnerMaster as MobSpawnerMaster;
 		}
 
 		public void Move(Actor self, CPos location)
