@@ -86,10 +86,16 @@ namespace OpenRA
 		public bool LuaDebug = false;
 		public bool PerfText = false;
 		public bool PerfGraph = false;
+
+		[Desc("Amount of time required for triggering perf.log output.")]
 		public float LongTickThresholdMs = 1;
+
 		public bool SanityCheckUnsyncedCode = false;
 		public int Samples = 25;
+
+		[Desc("Show incompatible games in server browser.")]
 		public bool IgnoreVersionMismatch = false;
+
 		public bool StrictActivityChecking = false;
 		public bool SendSystemInformation = true;
 		public int SystemInformationVersionPrompt = 0;
@@ -148,6 +154,7 @@ namespace OpenRA
 
 	public class PlayerSettings
 	{
+		[Desc("Sets the player nickname for in-game and IRC chat.")]
 		public string Name = "Newbie";
 		public HSLColor Color = new HSLColor(75, 255, 180);
 		public string LastServer = "localhost:1234";
