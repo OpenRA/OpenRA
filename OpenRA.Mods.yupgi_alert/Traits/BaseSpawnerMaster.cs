@@ -51,10 +51,10 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 		public readonly string SpawnerArmamentName = "primary";
 
 		[Desc("What happens to the slaves when the master is killed?")]
-		public readonly MobMemberDisposal SlaveDisposalOnKill = MobMemberDisposal.DoNothing;
+		public readonly SpawnerSlaveDisposal SlaveDisposalOnKill = SpawnerSlaveDisposal.KillSlaves;
 
 		[Desc("What happens to the slaves when the master is mind controlled?")]
-		public readonly MobMemberDisposal SlaveDisposalOnOwnerChange = MobMemberDisposal.DoNothing;
+		public readonly SpawnerSlaveDisposal SlaveDisposalOnOwnerChange = SpawnerSlaveDisposal.GiveSlavesToAttacker;
 
 		[Desc("Only spawn initial load of slaves?")]
 		public readonly bool NoRegeneration = false;
@@ -86,7 +86,7 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 		public override object Create(ActorInitializer init) { return new BaseSpawnerMaster(init, this); }
 	}
 
-	public class BaseSpawnerMaster : ConditionalTrait<BaseSpawnerMasterInfo>, INotifyCreated, INotifyKilled
+	public class BaseSpawnerMaster : ConditionalTrait<BaseSpawnerMasterInfo>, INotifyCreated, INotifyKilled, INotifyOwnerChanged
 	{
 		readonly Actor self;
 		protected readonly BaseSpawnerSlaveEntry[] SlaveEntries;
@@ -173,7 +173,7 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 
 			// Initialize slave entry
 			InitializeSlaveEntry(slave, entry);
-			entry.SpawnerSlave.LinkMaster(self, this);
+			entry.SpawnerSlave.LinkMaster(entry.Actor, self, this);
 		}
 
 		/// <summary>
@@ -198,34 +198,10 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 
 		public virtual void Killed(Actor self, AttackInfo e)
 		{
-			DoSlaveDisposal(self, Info.SlaveDisposalOnKill, e.Attacker, e.Attacker.Owner);
-
 			// Notify slaves.
-			// Not needed on KillSlaveOnDeath case but I want to keep the code neat.
 			foreach (var se in SlaveEntries)
 				if (se.IsValid)
-					se.SpawnerSlave.OnMasterKilled(se.Actor);
-		}
-
-		void DoSlaveDisposal(Actor self, MobMemberDisposal disposal, Actor attacker, Player newOwner)
-		{
-			switch (disposal)
-			{
-				case MobMemberDisposal.DoNothing:
-					break;
-				case MobMemberDisposal.KillSlaves:
-					foreach (var se in SlaveEntries)
-						if (!se.IsValid)
-							se.Actor.Kill(attacker);
-					break;
-				case MobMemberDisposal.GiveSlavesToAttacker:
-					foreach (var se in SlaveEntries)
-						if (!se.IsValid)
-							se.Actor.ChangeOwner(newOwner);
-					break;
-				default:
-					break;
-			}
+					se.SpawnerSlave.OnMasterKilled(se.Actor, e.Attacker, Info.SlaveDisposalOnKill);
 		}
 
 		public virtual void OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
@@ -233,7 +209,9 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 			// Owner thing is so difficult and confusing, I'm expecting bugs.
 			self.World.AddFrameEndTask(w =>
 			{
-				DoSlaveDisposal(self, Info.SlaveDisposalOnOwnerChange, self, newOwner);
+				foreach (var se in SlaveEntries)
+					if (se.IsValid)
+						se.SpawnerSlave.OnMasterOwnerChanged(self, oldOwner, newOwner, Info.SlaveDisposalOnOwnerChange);
 			});
 		}
 

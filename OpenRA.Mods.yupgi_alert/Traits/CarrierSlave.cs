@@ -74,9 +74,9 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 			self.QueueActivity(new EnterCarrierMaster(self, Master, spawnerMaster, EnterBehaviour.Exit, Info.CloseEnoughDistance));
 		}
 
-		public override void LinkMaster(Actor master, BaseSpawnerMaster spawnerMaster)
+		public override void LinkMaster(Actor self, Actor master, BaseSpawnerMaster spawnerMaster)
 		{
-			base.LinkMaster(master, spawnerMaster);
+			base.LinkMaster(self, master, spawnerMaster);
 			this.spawnerMaster = spawnerMaster as CarrierMaster;
 		}
 

@@ -12,7 +12,6 @@
  */
 #endregion
 
-using System;
 using System.Linq;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
@@ -31,15 +30,20 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 		[Desc("The condition to grant to slaves when the master actor is killed.")]
 		public readonly string MasterDeadCondition = null;
 
+		[Desc("Can these actors be mind controlled or captured?")]
+		public readonly bool AllowOwnerChange = false;
+
 		public virtual object Create(ActorInitializer init) { return new BaseSpawnerSlave(init, this); }
 	}
 
-	public class BaseSpawnerSlave : INotifyCreated, INotifyKilled
+	public class BaseSpawnerSlave : INotifyCreated, INotifyKilled, INotifyOwnerChanged
 	{
 		protected AttackBase[] attackBases;
 		protected ConditionManager conditionManager;
 
 		readonly BaseSpawnerSlaveInfo info;
+
+		public bool HasFreeWill = false;
 
 		int masterDeadToken = ConditionManager.InvalidConditionToken;
 		BaseSpawnerMaster spawnerMaster = null;
@@ -59,10 +63,13 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 
 		public void Killed(Actor self, AttackInfo e)
 		{
+			if (Master == null || Master.IsDead)
+				return;
+
 			spawnerMaster.OnSlaveKilled(Master, self);
 		}
 
-		public virtual void LinkMaster(Actor master, BaseSpawnerMaster spawnerMaster)
+		public virtual void LinkMaster(Actor self, Actor master, BaseSpawnerMaster spawnerMaster)
 		{
 			Master = master;
 			this.spawnerMaster = spawnerMaster;
@@ -131,17 +138,72 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 			}
 		}
 
-		public void OnMasterKilled(Actor self)
-		{
-			// Grant MasterDead condition.
-			if (conditionManager != null && !string.IsNullOrEmpty(info.MasterDeadCondition))
-				masterDeadToken = conditionManager.GrantCondition(self, info.MasterDeadCondition);
-		}
-
         // DUMMY FUNCTION to suppress masterDeadToken assigned but unused warning (== error for Travis).
         void OnNewMaster(Actor self, Actor master)
         {
             conditionManager.RevokeCondition(self, masterDeadToken);
         }
+
+		public virtual void OnMasterKilled(Actor self, Actor attacker, SpawnerSlaveDisposal disposal)
+		{
+			// Grant MasterDead condition.
+			if (conditionManager != null && !string.IsNullOrEmpty(info.MasterDeadCondition))
+				masterDeadToken = conditionManager.GrantCondition(self, info.MasterDeadCondition);
+
+			switch (disposal)
+			{
+				case SpawnerSlaveDisposal.KillSlaves:
+					self.Kill(attacker);
+					break;
+				case SpawnerSlaveDisposal.GiveSlavesToAttacker:
+					self.CancelActivity();
+					self.ChangeOwner(attacker.Owner);
+					break;
+				case SpawnerSlaveDisposal.DoNothing:
+					// fall through
+				default:
+					break;
+			}
+		}
+
+		// What if the master gets mind controlled?
+		public virtual void OnMasterOwnerChanged(Actor self, Player oldOwner, Player newOwner, SpawnerSlaveDisposal disposal)
+		{
+			switch (disposal)
+			{
+				case SpawnerSlaveDisposal.KillSlaves:
+					self.Kill(self);
+					break;
+				case SpawnerSlaveDisposal.GiveSlavesToAttacker:
+					self.CancelActivity();
+					self.ChangeOwner(newOwner);
+					break;
+				case SpawnerSlaveDisposal.DoNothing:
+					// fall through
+				default:
+					break;
+			}
+		}
+
+		// What if the slave gets mind controlled?
+		// Slaves aren't good without master so, kill it.
+		public virtual void OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
+		{
+			// In this case, the slave will be disposed, one way or other.
+			if (Master == null || !Master.IsDead)
+				return;
+
+			// This function got triggered because the master got mind controlled and
+			// thus triggered slave.ChangeOwner().
+			// In this case, do nothing.
+			if (Master.Owner == newOwner)
+				return;
+
+			// These are independent, so why not let it be controlled?
+			if (info.AllowOwnerChange)
+				return;
+
+			self.Kill(self);
+		}
 	}
 }

@@ -30,8 +30,8 @@ namespace OpenRA.Mods.Yupgi_alert.Activities
 {
 	public class SpawnerHarvesterHarvest : Activity
 	{	
-		readonly SpawnerHarvester harv;
-		readonly SpawnerHarvesterInfo harvInfo;
+		readonly SpawnerHarvesterMaster harv;
+		readonly SpawnerHarvesterMasterInfo harvInfo;
 		readonly Mobile mobile;
 		readonly MobileInfo mobileInfo;
 		readonly ResourceClaimLayer claimLayer;
@@ -43,8 +43,8 @@ namespace OpenRA.Mods.Yupgi_alert.Activities
 
 		public SpawnerHarvesterHarvest(Actor self)
 		{
-			harv = self.Trait<SpawnerHarvester>();
-			harvInfo = self.Info.TraitInfo<SpawnerHarvesterInfo>();
+			harv = self.Trait<SpawnerHarvesterMaster>();
+			harvInfo = self.Info.TraitInfo<SpawnerHarvesterMasterInfo>();
 			mobile = self.Trait<Mobile>();
 			mobileInfo = self.Info.TraitInfo<MobileInfo>();
 			deploy = self.Trait<GrantConditionOnDeploy>();
@@ -129,8 +129,15 @@ namespace OpenRA.Mods.Yupgi_alert.Activities
 				n.MovingToResources(self, deployPosition.Value, this);
 
 			state = MiningState.TryDeploy;
-			QueueChild(mobile.MoveTo(deployPosition.Value, 2));
-			return this;
+
+			// This gives glitch. If you repeatedly on an ore target then
+			// the child Move() will glitch out and the harvester will be positioned in illegal places.
+			// QueueChild(mobile.MoveTo(deployPosition.Value, 2));
+			// Instead of queing, we RETURN MOVE.
+			// This doesn't break the graph and will work fine (as "bad" codes did in older ORA engine).
+			var move = mobile.MoveTo(deployPosition.Value, 2);
+			move.Queue(this);
+			return move;
 		}
 
 		Activity TryDeployTick(Actor self, out MiningState state)

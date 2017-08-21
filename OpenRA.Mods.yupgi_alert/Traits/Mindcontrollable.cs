@@ -118,7 +118,7 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 			System.Diagnostics.Debug.Assert(this.master == null || this.master == master, "UnlinkMaster call from not-my-master!");
 
 			this.master = null;
-			if (master == null || master.Disposed || master.IsDead)
+			if (master == null || master.IsDead)
 				return;
 
 			master.Trait<Mindcontroller>().UnlinkSlave(master, self);

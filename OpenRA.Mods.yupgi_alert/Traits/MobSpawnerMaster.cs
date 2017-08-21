@@ -15,7 +15,6 @@
 using System.Linq;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Traits;
-using OpenRA.Primitives;
 using OpenRA.Traits;
 
 /*
@@ -219,9 +218,6 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 
 		public override void OnSlaveKilled(Actor self, Actor slave)
 		{
-			if (self.IsDead)
-				return;
-
 			// No need to update mobs entry because Actor.IsDead marking is done automatically by the engine.
 			// However, we need to check if all are dead when AggregateHealth.
 			if (Info.AggregateHealth && slaveEntries.All(m => !m.IsValid))

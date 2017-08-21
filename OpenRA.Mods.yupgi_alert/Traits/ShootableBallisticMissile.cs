@@ -9,9 +9,7 @@
  */
 #endregion
 
-using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using OpenRA.Activities;
 using OpenRA.Mods.Common;
@@ -204,7 +202,6 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 
 		public Activity MoveIntoWorld(Actor self, CPos cell, SubCell subCell = SubCell.Any)
 		{
-			//return new ShootableBallisticMissileFly(self, Target.FromCell(self.World, cell, subCell));
 			return null;
 		}
 
