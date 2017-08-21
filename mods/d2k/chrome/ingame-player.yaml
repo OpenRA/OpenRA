@@ -109,7 +109,7 @@ Container@PLAYER_WIDGETS:
 					DisableKeyRepeat: true
 					DisableKeySound: true
 					TooltipText: Deploy
-					TooltipDesc: Selected units will perform their default deploy activity\n - MCVs will unpack into a Construction Yard\n - Thumpers will start or stop attracting worms\n\nActs immediately on selected units.
+					TooltipDesc: Selected units will perform their default deploy activity\n - MCVs will unpack into a Construction Yard\n - Thumpers will start or stop attracting worms\n - Devastators will become immobilized and explode\n\nActs immediately on selected units.
 					TooltipContainer: TOOLTIP_CONTAINER
 					Children:
 						Image@ICON:

@@ -57,6 +57,10 @@ explosion:
 		Length: 8
 		Tick: 120
 		BlendMode: Alpha
+	devastator: DATA.R8
+		Start: 3947
+		Length: 17
+		Tick: 120
 
 large_trail:
 	idle: DATA.R8
