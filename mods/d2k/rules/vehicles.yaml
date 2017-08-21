@@ -316,6 +316,7 @@ devastator:
 		TurnSpeed: 3
 		Speed: 31
 		Crushes: crate, infantry, spicebloom, wall
+		RequiresCondition: !overload
 	RevealsShroud:
 		Range: 4c768
 	Armament:
@@ -328,8 +329,26 @@ devastator:
 	Explodes:
 		Weapon: UnitExplodeLarge
 		EmptyWeapon: UnitExplodeLarge
+		RequiresCondition: !overload
 	SpawnActorOnDeath:
 		Actor: devastator.husk
+	Explodes@OVERLOAD:
+		Weapon: PlasmaExplosion
+		EmptyWeapon: PlasmaExplosion
+		RequiresCondition: meltdown
+	GrantConditionOnDeploy@REACTOR:
+		DeployedCondition: overload
+		CanUndeploy: false
+	WithIdleOverlay@OVERLOAD:
+		Sequence: active
+		RequiresCondition: overload
+	WithIdleOverlay@OVERLOAD2:
+		Sequence: active-2
+		RequiresCondition: overload
+	KillsSelf@MELTDOWN:
+		Delay: 240
+		RequiresCondition: overload
+		GrantsCondition: meltdown
 	AttractsWorms:
 		Intensity: 700
 	SelectionDecorations:
