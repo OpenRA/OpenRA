@@ -154,7 +154,6 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		static readonly Pair<CPos, SubCell>[] NoCells = { };
 
-		public readonly bool IsPlane;
 		public readonly AircraftInfo Info;
 		readonly Actor self;
 
@@ -192,11 +191,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (init.Contains<CenterPositionInit>())
 				SetPosition(self, init.Get<CenterPositionInit, WPos>());
 
-			Facing = init.Contains<FacingInit>() ? init.Get<FacingInit, int>() : info.InitialFacing;
-
-			// TODO: HACK: This is a hack until we can properly distinguish between airplane and helicopter!
-			// Or until the activities get unified enough so that it doesn't matter.
-			IsPlane = !info.CanHover;
+			Facing = init.Contains<FacingInit>() ? init.Get<FacingInit, int>() : Info.InitialFacing;
 		}
 
 		public virtual IEnumerable<VariableObserver> GetVariableObservers()
@@ -553,7 +548,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public Activity MoveTo(CPos cell, int nearEnough)
 		{
-			if (IsPlane)
+			if (!Info.CanHover)
 				return new FlyAndContinueWithCirclesWhenIdle(self, Target.FromCell(self.World, cell));
 
 			return new HeliFly(self, Target.FromCell(self.World, cell));
@@ -561,7 +556,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public Activity MoveTo(CPos cell, Actor ignoreActor)
 		{
-			if (IsPlane)
+			if (!Info.CanHover)
 				return new FlyAndContinueWithCirclesWhenIdle(self, Target.FromCell(self.World, cell));
 
 			return new HeliFly(self, Target.FromCell(self.World, cell));
@@ -569,7 +564,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public Activity MoveWithinRange(Target target, WDist range)
 		{
-			if (IsPlane)
+			if (!Info.CanHover)
 				return new FlyAndContinueWithCirclesWhenIdle(self, target, WDist.Zero, range);
 
 			return new HeliFly(self, target, WDist.Zero, range);
@@ -577,7 +572,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public Activity MoveWithinRange(Target target, WDist minRange, WDist maxRange)
 		{
-			if (IsPlane)
+			if (!Info.CanHover)
 				return new FlyAndContinueWithCirclesWhenIdle(self, target, minRange, maxRange);
 
 			return new HeliFly(self, target, minRange, maxRange);
@@ -585,7 +580,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public Activity MoveFollow(Actor self, Target target, WDist minRange, WDist maxRange)
 		{
-			if (IsPlane)
+			if (!Info.CanHover)
 				return new FlyFollow(self, target, minRange, maxRange);
 
 			return new Follow(self, target, minRange, maxRange);
@@ -593,7 +588,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public Activity MoveIntoWorld(Actor self, CPos cell, SubCell subCell = SubCell.Any)
 		{
-			if (IsPlane)
+			if (!Info.CanHover)
 				return new Fly(self, Target.FromCell(self.World, cell));
 
 			return new HeliFly(self, Target.FromCell(self.World, cell, subCell));
@@ -601,7 +596,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public Activity MoveToTarget(Actor self, Target target)
 		{
-			if (IsPlane)
+			if (!Info.CanHover)
 				return new Fly(self, target, WDist.FromCells(3), WDist.FromCells(5));
 
 			return ActivityUtils.SequenceActivities(new HeliFly(self, target), new Turn(self, Info.InitialFacing));
@@ -609,7 +604,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public Activity MoveIntoTarget(Actor self, Target target)
 		{
-			if (IsPlane)
+			if (!Info.VTOL)
 				return new Land(self, target);
 
 			return new HeliLand(self, false);
@@ -618,7 +613,7 @@ namespace OpenRA.Mods.Common.Traits
 		public Activity VisualMove(Actor self, WPos fromPos, WPos toPos)
 		{
 			// TODO: Ignore repulsion when moving
-			if (IsPlane)
+			if (!Info.CanHover)
 				return ActivityUtils.SequenceActivities(
 					new CallFunc(() => SetVisualPosition(self, fromPos)),
 					new Fly(self, Target.FromPos(toPos)));
@@ -703,7 +698,7 @@ namespace OpenRA.Mods.Common.Traits
 
 				self.SetTargetLine(target, Color.Green);
 
-				if (IsPlane)
+				if (!Info.CanHover)
 					self.QueueActivity(order.Queued, new FlyAndContinueWithCirclesWhenIdle(self, target));
 				else
 					self.QueueActivity(order.Queued, new HeliFlyAndLandWhenIdle(self, target, Info));
@@ -715,7 +710,7 @@ namespace OpenRA.Mods.Common.Traits
 
 				if (Reservable.IsReserved(order.TargetActor))
 				{
-					if (IsPlane)
+					if (!Info.CanHover)
 						self.QueueActivity(new ReturnToBase(self, Info.AbortOnResupply));
 					else
 						self.QueueActivity(new HeliReturnToBase(self, Info.AbortOnResupply));
@@ -724,7 +719,7 @@ namespace OpenRA.Mods.Common.Traits
 				{
 					self.SetTargetLine(Target.FromActor(order.TargetActor), Color.Green);
 
-					if (IsPlane)
+					if (!Info.CanHover && !Info.VTOL)
 					{
 						self.QueueActivity(order.Queued, ActivityUtils.SequenceActivities(
 							new ReturnToBase(self, Info.AbortOnResupply, order.TargetActor),
@@ -773,7 +768,7 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				UnReserve();
 				self.CancelActivity();
-				if (IsPlane)
+				if (!Info.CanHover)
 					self.QueueActivity(new ReturnToBase(self, Info.AbortOnResupply, null, false));
 				else
 					self.QueueActivity(new HeliReturnToBase(self, Info.AbortOnResupply, null, false));
