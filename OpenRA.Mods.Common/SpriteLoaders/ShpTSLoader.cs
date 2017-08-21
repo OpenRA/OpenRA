@@ -104,7 +104,7 @@ namespace OpenRA.Mods.Common.SpriteLoaders
 				return false;
 			}
 
-			// Check the size and format flag
+			// Check the image size and compression type format flag
 			// Some files define bogus frames, so loop until we find a valid one
 			s.Position += 4;
 			ushort w, h, f = 0;
@@ -114,6 +114,7 @@ namespace OpenRA.Mods.Common.SpriteLoaders
 				w = s.ReadUInt16();
 				h = s.ReadUInt16();
 				type = s.ReadUInt8();
+				s.Position += 19;
 			}
 			while (w == 0 && h == 0 && f++ < imageCount);
 
