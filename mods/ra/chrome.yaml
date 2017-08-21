@@ -211,7 +211,7 @@ sidebar-bits: chrome.png
 	production-tooltip-power: 432, 80, 16, 16
 	production-tooltip-cost: 448, 80, 16, 16
 	production-iconoverlay: 128,75,238,48
-	commandbar-background: 0,123,434,44
+	commandbar-background: 0,123,468,44
 
 power-icons: chrome.png
 	power-normal: 350,0,12,18
@@ -280,6 +280,8 @@ command-icons: chrome.png
 	stop-disabled: 656,24,24,24
 	queue-orders: 680,0,24,24
 	queue-orders-disabled: 680,24,24,24
+	group-speed: 704,0,24,24
+	group-speed-disabled: 704,24,24,24
 
 stance-icons: chrome.png
 	attack-anything: 512,48,16,16

@@ -304,6 +304,8 @@ namespace OpenRA.Traits
 		bool IsMoving { get; set; }
 		bool IsMovingVertically { get; set; }
 		bool CanEnterTargetNow(Actor self, Target target);
+		int Speed { get; }
+		int SpeedLimit { get; set; }
 	}
 
 	[RequireExplicitImplementation]

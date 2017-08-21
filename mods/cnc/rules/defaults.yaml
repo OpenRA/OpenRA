@@ -206,6 +206,7 @@
 		TurnSpeed: 5
 	SelectionDecorations:
 	WithSpriteControlGroupDecoration:
+	WithTextGroupSpeedDecoration:
 	Selectable:
 		Bounds: 24,24
 	Targetable:
@@ -264,6 +265,7 @@
 		RequiresCondition: airborne
 	SelectionDecorations:
 	WithSpriteControlGroupDecoration:
+	WithTextGroupSpeedDecoration:
 	Selectable:
 		Bounds: 24,24
 	Aircraft:
@@ -322,6 +324,7 @@
 			Beach: 80
 	SelectionDecorations:
 	WithSpriteControlGroupDecoration:
+	WithTextGroupSpeedDecoration:
 	Selectable:
 		Bounds: 12,17,0,-6
 	Targetable:
@@ -484,6 +487,7 @@
 		Voice: Move
 	SelectionDecorations:
 	WithSpriteControlGroupDecoration:
+	WithTextGroupSpeedDecoration:
 	Selectable:
 		Bounds: 24,24
 	Targetable:
@@ -536,6 +540,7 @@
 			Beach: 60
 	SelectionDecorations:
 	WithSpriteControlGroupDecoration:
+	WithTextGroupSpeedDecoration:
 	Selectable:
 		Bounds: 24,24
 	Targetable:

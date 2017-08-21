@@ -25,7 +25,7 @@ sidebar-bits: chrome.png
 	production-tooltip-time: 480,112,16,16
 	production-tooltip-power: 496,112,16,16
 	production-tooltip-cost: 464,112,16,16
-	commandbar-background: 0,469,454,43
+	commandbar-background: 0,469,489,43
 
 minimap-overlay: chrome.png
 	top-left: 236,15,7,7
@@ -97,21 +97,21 @@ order-icons: chrome.png
 	diplomacy-active: 288,430,34,35
 
 command-button: chrome.png
-	background: 332,428,34,41
+	background: 367,428,34,41
 command-button-hover: chrome.png
-	background: 332,428,34,41
+	background: 367,428,34,41
 command-button-pressed: chrome.png
-	background: 400,428,34,41
+	background: 435,428,34,41
 command-button-highlighted: chrome.png
-	background: 400,428,34,41
+	background: 435,428,34,41
 command-button-highlighted-hover: chrome.png
-	background: 400,428,34,41
+	background: 435,428,34,41
 command-button-highlighted-pressed: chrome.png
-	background: 400,428,34,41
+	background: 435,428,34,41
 command-button-disabled: chrome.png
-	background: 366,428,34,41
+	background: 401,428,34,41
 command-button-highlighted-disabled: chrome.png
-	background: 366,428,34,41
+	background: 401,428,34,41
 
 command-icons: chrome.png
 	attack-move: 408,144,26,26
@@ -130,6 +130,8 @@ command-icons: chrome.png
 	stop-disabled: 460,222,26,26
 	queue-orders: 486,196,26,26
 	queue-orders-disabled: 486,222,26,26
+	group-speed: 382,144,26,26
+	group-speed-disabled: 382,170,26,26
 
 stance-icons: chrome.png
 	attack-anything: 416,248,16,16

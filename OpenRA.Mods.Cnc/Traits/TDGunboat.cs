@@ -72,6 +72,8 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		// Isn't used anyway
 		public int TurnSpeed { get { return 255; } }
+		public int SpeedLimit { get; set; }
+		public int Speed { get { return Info.Speed; } }
 
 		CPos cachedLocation;
 

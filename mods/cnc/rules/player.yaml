@@ -34,3 +34,4 @@ Player:
 	GrantConditionOnPrerequisiteManager:
 	ResourceStorageWarning:
 	PlayerExperience:
+	GroupSpeed:

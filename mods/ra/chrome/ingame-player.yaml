@@ -32,7 +32,7 @@ Container@PLAYER_WIDGETS:
 		Image@COMMAND_BAR_BACKGROUND:
 			X: 5
 			Y: WINDOW_BOTTOM - HEIGHT - 5
-			Width: 416
+			Width: 468
 			Height: 44
 			ImageCollection: sidebar-bits
 			ImageName: commandbar-background
@@ -40,7 +40,7 @@ Container@PLAYER_WIDGETS:
 			Logic: CommandBarLogic
 			X: 14
 			Y: WINDOW_BOTTOM - HEIGHT - 14
-			Width: 275
+			Width: 309
 			Height: 26
 			Children:
 				Button@ATTACK_MOVE:
@@ -184,9 +184,27 @@ Container@PLAYER_WIDGETS:
 							Y: 1
 							ImageCollection: command-icons
 							ImageName: queue-orders
+				Button@GROUP_SPEED:
+					Logic: AddFactionSuffixLogic
+					X: 272
+					Width: 34
+					Height: 26
+					VisualHeight: 0
+					Background: command-button
+					DisableKeyRepeat: true
+					DisableKeySound: true
+					TooltipText: Group Speed
+					TooltipDesc: Selected units will only move at a speed\nof the slowest one in the group.\n\nActs immediately on selected units.
+					TooltipContainer: TOOLTIP_CONTAINER
+					Children:
+						Image@ICON:
+							X: 5
+							Y: 1
+							ImageCollection: command-icons
+							ImageName: group-speed
 		Container@STANCE_BAR:
 			Logic: StanceSelectorLogic
-			X: 294
+			X: 328
 			Y: WINDOW_BOTTOM - HEIGHT - 14
 			Width: 138
 			Height: 26

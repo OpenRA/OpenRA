@@ -381,6 +381,7 @@
     <Compile Include="Traits\Player\ConquestVictoryConditions.cs" />
     <Compile Include="Traits\Player\EnemyWatcher.cs" />
     <Compile Include="Traits\Player\GrantConditionOnPrerequisiteManager.cs" />
+    <Compile Include="Traits\Player\GroupSpeed.cs" />
     <Compile Include="Traits\Player\HarvesterAttackNotifier.cs" />
     <Compile Include="Traits\Player\MissionObjectives.cs" />
     <Compile Include="Traits\Player\PlaceBeacon.cs" />
@@ -469,6 +470,7 @@
     <Compile Include="Traits\Render\SelectionDecorations.cs" />
     <Compile Include="Traits\Render\WithSpriteControlGroupDecoration.cs" />
     <Compile Include="Traits\Render\WithTextControlGroupDecoration.cs" />
+    <Compile Include="Traits\Render\WithTextGroupSpeedDecoration.cs" />
     <Compile Include="Traits\SelfHealing.cs" />
     <Compile Include="Traits\Sellable.cs" />
     <Compile Include="Traits\ShakeOnDeath.cs" />

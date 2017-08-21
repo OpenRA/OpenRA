@@ -261,7 +261,7 @@ Container@PLAYER_WIDGETS:
 			X: 5
 			Y: WINDOW_BOTTOM - HEIGHT - 5
 			Background: panel-black
-			Width: 276
+			Width: 310
 			Height: 36
 			Children:
 				Button@ATTACK_MOVE:
@@ -398,9 +398,26 @@ Container@PLAYER_WIDGETS:
 							Y: 5
 							ImageCollection: command-icons
 							ImageName: queue-orders
+				Button@GROUP_SPEED:
+					X: 275
+					Y: 1
+					Width: 34
+					Height: 34
+					Background: command-button
+					DisableKeyRepeat: true
+					DisableKeySound: true
+					TooltipText: Group Speed
+					TooltipDesc: Selected units will only move at a speed\nof the slowest one in the group.\n\nActs immediately on selected units.
+					TooltipContainer: TOOLTIP_CONTAINER
+					Children:
+						Image@ICON:
+							X: 5
+							Y: 5
+							ImageCollection: command-icons
+							ImageName: group-speed
 		Background@COMMAND_BAR:
 			Logic: StanceSelectorLogic
-			X: 280
+			X: 314
 			Y: WINDOW_BOTTOM - HEIGHT - 5
 			Background: panel-black
 			Width: 138
