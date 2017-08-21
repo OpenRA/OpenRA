@@ -85,8 +85,6 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 
 		public new MobSpawnerMasterInfo Info { get; private set; }
 
-		readonly Actor self;
-
 		MobSpawnerSlaveEntry[] slaveEntries;
 
 		bool hasSpawnedInitialLoad = false;
@@ -98,7 +96,6 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 
 		public MobSpawnerMaster(ActorInitializer init, MobSpawnerMasterInfo info) : base(init, info)
 		{
-			self = init.Self;
 			Info = info;
 		}
 
