@@ -722,6 +722,14 @@ CAARAY:
 		HP: 400
 	RenderSprites:
 		Palette: player
+	WithIdleOverlay@SATELLITE:
+		Sequence: idle-satellite
+	WithIdleOverlay@RADAR:
+		Sequence: idle-radar
+	WithIdleOverlay@SCANNER:
+		Sequence: idle-scanner
+	WithIdleOverlay@LIGHT:
+		Sequence: idle-light
 	ThrowsShrapnel@SMALL:
 		Pieces: 5, 7
 	ThrowsShrapnel@LARGE:

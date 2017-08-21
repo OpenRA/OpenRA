@@ -328,6 +328,18 @@ caaray:
 	critical-idle: ctaray
 		Start: 2
 		ShadowStart: 5
+	idle-satellite: ctaray_a
+		Length: 16
+		Tick: 100
+	idle-radar: ctaray_b
+		Length: 16
+		Tick: 100
+	idle-scanner: ctaray_c
+		Length: 16
+		Tick: 100
+	idle-light: ctaray_d
+		Length: 24
+		Tick: 100
 
 cabhut:
 	idle:
