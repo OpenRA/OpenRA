@@ -31,6 +31,7 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 	{
 		[Desc("Color of radio activity")]
 		public readonly Color Color = Color.FromArgb(0, 255, 0); // tint factor (was in RA2) sucks. Modify tint here statically.
+
 		[Desc("Second color of radio activity, used in conjunction with MixThreshold.")]
 		public readonly Color Color2 = Color.Yellow;
 
@@ -42,15 +43,21 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 
 		[Desc("The alpha value for displaying radioactivity level for cells with level == 1")]
 		public readonly int Darkest = 4;
+
 		[Desc("The alpha value for displaying radioactivity level for cells with level == MaxLevel")]
-		public readonly int Brightest = 64; // level == MaxLevel will get this as alpha
+		public readonly int Brightest = 64;
+
 		[Desc("Color mix threshold. If alpha level goes beyond this threshold, Color2 will be mixed in.")]
 		public readonly int MixThreshold = 36; 
 
 		[Desc("Delay of half life, in ticks")]
-		public readonly int Halflife = 150; // in ticks.
+		public readonly int Halflife = 150;
 
+		[Desc("Z offset of the visualization.")]
 		public readonly int ZOffset = -10;
+
+		[Desc("Damage type this layer does. Users can be creative and have different damage for Plutonium, Uranium, or even Anthrax.")]
+		public readonly string Name = "radioactivity";
 
 		// Damage dealing is handled by "DamagedByRadioactivity" trait attached at each actor.
 		public object Create(ActorInitializer init) { return new RadioactivityLayer(init.Self, this); }
@@ -69,7 +76,8 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 		// what's visible to the player.
 		readonly Dictionary<CPos, Radioactivity> renderedTiles = new Dictionary<CPos, Radioactivity>();
 
-		readonly HashSet<CPos> dirty = new HashSet<CPos>(); // dirty, as in cache dirty bits.
+		// dirty, as in cache dirty bits.
+		readonly HashSet<CPos> dirty = new HashSet<CPos>();
 
 		// There's LERP function but the problem is, it is better to reuse these constants than computing
 		// related constants (in LERP) every time.

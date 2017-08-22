@@ -12,7 +12,9 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
@@ -34,6 +36,9 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 		[Desc("Apply the damage using these damagetypes.")]
 		public readonly HashSet<string> DamageTypes = new HashSet<string>();
 
+		[Desc("Receive damage from the radioactivity layer with this name.")]
+		public readonly string RadioactivityLayerName = "radioactivity";
+
 		public override object Create(ActorInitializer init) { return new DamagedByRadioactivity(init.Self, this); }
 	}
 
@@ -45,7 +50,16 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 
 		public DamagedByRadioactivity(Actor self, DamagedByRadioactivityInfo info) : base(info)
 		{
-			raLayer = self.World.WorldActor.Trait<RadioactivityLayer>();
+			var layers = self.World.WorldActor.TraitsImplementing<RadioactivityLayer>()
+				.Where(l => l.Info.Name == info.RadioactivityLayerName);
+
+			if (!layers.Any())
+				throw new InvalidOperationException("There is no RadioactivityLayer named " + Info.RadioactivityLayerName);
+
+			if (layers.Count() > 1)
+				throw new InvalidOperationException("There are multiple RadioactivityLayer named " + Info.RadioactivityLayerName);
+
+			raLayer = layers.First();
 		}
 
 		public void Tick(Actor self)
