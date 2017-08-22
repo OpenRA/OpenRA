@@ -59,6 +59,9 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 
 		protected override void Tick(Actor self)
 		{
+			if (UninterruptibleAnimationPlaying)
+				return;
+
 			if (Info.AimSequence != null)
 				sequence = Attack.IsAttacking ? Info.AimSequence : Info.Sequence;
 

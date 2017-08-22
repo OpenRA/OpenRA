@@ -71,6 +71,10 @@ namespace OpenRA.Mods.Common.Traits.Render
 		readonly Turreted t;
 		readonly Armament[] arms;
 
+		public bool UninterruptibleAnimationPlaying;
+
+		bool hasAimAnim;
+
 		// TODO: This should go away once https://github.com/OpenRA/OpenRA/issues/7035 is implemented
 		bool buildComplete;
 
@@ -95,6 +99,8 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 			// Restrict turret facings to match the sprite
 			t.QuantizedFacings = DefaultAnimation.CurrentSequence.Facings;
+
+			hasAimAnim = !string.IsNullOrEmpty(info.AimSequence);
 		}
 
 		WVec TurretOffset(Actor self)
@@ -121,7 +127,10 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		protected virtual void Tick(Actor self)
 		{
-			if (Info.AimSequence == null)
+			if (IsTraitDisabled || UninterruptibleAnimationPlaying)
+				return;
+
+			if (!hasAimAnim)
 				return;
 
 			var sequence = Attack.IsAttacking ? Info.AimSequence : Info.Sequence;
@@ -139,11 +148,16 @@ namespace OpenRA.Mods.Common.Traits.Render
 			Tick(self);
 		}
 
-		public void PlayCustomAnimation(Actor self, string name, Action after = null)
+		public void PlayCustomAnimation(Actor self, string name, Action after = null, bool isUninterruptible = false)
 		{
+			if (UninterruptibleAnimationPlaying)
+				return;
+
+			UninterruptibleAnimationPlaying = isUninterruptible;
 			DefaultAnimation.PlayThen(NormalizeSequence(self, name), () =>
 			{
 				DefaultAnimation.Play(NormalizeSequence(self, Info.Sequence));
+				UninterruptibleAnimationPlaying = false;
 				if (after != null)
 					after();
 			});

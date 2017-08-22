@@ -14,7 +14,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits.Render
 {
-	public class WithTurretedAttackAnimationInfo : ITraitInfo, Requires<WithSpriteTurretInfo>, Requires<ArmamentInfo>, Requires<AttackBaseInfo>
+	public class WithTurretAttackAnimationInfo : ITraitInfo, Requires<WithSpriteTurretInfo>, Requires<ArmamentInfo>, Requires<AttackBaseInfo>
 	{
 		[Desc("Armament name")]
 		public readonly string Armament = "primary";
@@ -37,19 +37,22 @@ namespace OpenRA.Mods.Common.Traits.Render
 		[Desc("Should the animation be delayed relative to preparation or actual attack?")]
 		public readonly AttackDelayType DelayRelativeTo = AttackDelayType.Preparation;
 
-		public object Create(ActorInitializer init) { return new WithTurretedAttackAnimation(init, this); }
+		[Desc("Whether the animation can be interrupted/overridden by other animations.")]
+		public readonly bool IsInterruptible = false;
+
+		public object Create(ActorInitializer init) { return new WithTurretAttackAnimation(init, this); }
 	}
 
-	public class WithTurretedAttackAnimation : ITick, INotifyAttack
+	public class WithTurretAttackAnimation : ITick, INotifyAttack
 	{
-		readonly WithTurretedAttackAnimationInfo info;
+		readonly WithTurretAttackAnimationInfo info;
 		readonly AttackBase attack;
 		readonly Armament armament;
 		readonly WithSpriteTurret wst;
 
 		int tick;
 
-		public WithTurretedAttackAnimation(ActorInitializer init, WithTurretedAttackAnimationInfo info)
+		public WithTurretAttackAnimation(ActorInitializer init, WithTurretAttackAnimationInfo info)
 		{
 			this.info = info;
 			attack = init.Self.Trait<AttackBase>();
@@ -62,7 +65,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		void PlayAttackAnimation(Actor self)
 		{
 			if (!string.IsNullOrEmpty(info.AttackSequence))
-				wst.PlayCustomAnimation(self, info.AttackSequence, () => wst.CancelCustomAnimation(self));
+				wst.PlayCustomAnimation(self, info.AttackSequence, () => wst.CancelCustomAnimation(self), !info.IsInterruptible);
 		}
 
 		void INotifyAttack.Attacking(Actor self, Target target, Armament a, Barrel barrel)
