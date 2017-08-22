@@ -53,13 +53,13 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 
 	public class MissileSpawnerMaster : BaseSpawnerMaster, IPips, ITick, INotifyAttack
 	{
-		// readonly Dictionary<string, Stack<int>> spawnContainTokens = new Dictionary<string, Stack<int>>();
+		//// readonly Dictionary<string, Stack<int>> spawnContainTokens = new Dictionary<string, Stack<int>>();
 
 		public new MissileSpawnerMasterInfo Info { get; private set; }
 
 		ConditionManager conditionManager;
 
-		// Stack<int> loadedTokens = new Stack<int>();
+		//// Stack<int> loadedTokens = new Stack<int>();
 
 		int respawnTicks = 0;
 

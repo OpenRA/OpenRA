@@ -33,7 +33,7 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 	public class MobSpawnerSlave : BaseSpawnerSlave, INotifySelected
 	{
 		readonly Actor self;
-		// readonly MobSpawnerSlaveInfo info;
+		//// readonly MobSpawnerSlaveInfo info;
 
 		public IMove[] Moves { get; private set; }
 		public IPositionable Positionable { get; private set; }
@@ -46,7 +46,7 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 		public MobSpawnerSlave(ActorInitializer init, MobSpawnerSlaveInfo info) : base(init, info)
 		{
 			this.self = init.Self;
-			// this.info = info;
+			//// this.info = info;
 		}
 
 		public override void Created(Actor self)
