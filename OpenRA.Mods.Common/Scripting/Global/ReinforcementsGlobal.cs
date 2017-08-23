@@ -26,7 +26,13 @@ namespace OpenRA.Mods.Common.Scripting
 	[ScriptGlobal("Reinforcements")]
 	public class ReinforcementsGlobal : ScriptGlobal
 	{
-		public ReinforcementsGlobal(ScriptContext context) : base(context) { }
+		readonly DomainIndex domainIndex;
+
+		public ReinforcementsGlobal(ScriptContext context)
+			: base(context)
+		{
+			domainIndex = context.World.WorldActor.Trait<DomainIndex>();
+		}
 
 		Actor CreateActor(Player owner, string actorType, bool addToWorld, CPos? entryLocation = null, CPos? nextLocation = null)
 		{
@@ -153,9 +159,21 @@ namespace OpenRA.Mods.Common.Scripting
 					// Try to find an alternative landing spot if we can't land at the current destination
 					if (!aircraft.CanLand(destination) && dropRange > 0)
 					{
+						var mobiles = cargo != null ? cargo.Passengers.Select(a =>
+						{
+							var mobileInfo = a.Info.TraitInfoOrDefault<MobileInfo>();
+							if (mobileInfo == null)
+								return new Pair<MobileInfo, uint>(null, 0);
+
+							return new Pair<MobileInfo, uint>(mobileInfo, (uint)mobileInfo.GetMovementClass(a.World.Map.Rules.TileSet));
+						}) : new Pair<MobileInfo, uint>[0];
+
 						foreach (var c in transport.World.Map.FindTilesInCircle(destination, dropRange))
 						{
 							if (!aircraft.CanLand(c))
+								continue;
+
+							if (!mobiles.All(m => m.First == null || domainIndex.IsPassable(destination, c, m.First, m.Second)))
 								continue;
 
 							destination = c;
