@@ -21,9 +21,6 @@ namespace OpenRA.Mods.Common
 	{
 		public static bool IsAtGroundLevel(this Actor self)
 		{
-			if (self.IsDead)
-				return false;
-
 			if (self.OccupiesSpace == null)
 				return false;
 
