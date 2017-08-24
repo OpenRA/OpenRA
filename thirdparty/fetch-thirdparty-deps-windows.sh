@@ -19,7 +19,7 @@ function get()
 
 if [ ! -f SDL2.dll ]; then
 	echo "Fetching SDL2 from libsdl.org"
-	wget https://www.libsdl.org/release/SDL2-2.0.5-win32-x86.zip
+	curl -LOs https://www.libsdl.org/release/SDL2-2.0.5-win32-x86.zip
 	unzip SDL2-2.0.5-win32-x86.zip SDL2.dll
 	rm SDL2-2.0.5-win32-x86.zip
 fi
