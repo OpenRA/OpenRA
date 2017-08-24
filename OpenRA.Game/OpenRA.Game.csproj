@@ -182,13 +182,13 @@
     <Compile Include="TraitDictionary.cs" />
     <Compile Include="Traits\LintAttributes.cs" />
     <Compile Include="Traits\Player\PlayerResources.cs" />
+    <Compile Include="Traits\Player\Shroud.cs" />
     <Compile Include="Traits\Selectable.cs" />
     <Compile Include="Traits\Target.cs" />
     <Compile Include="Traits\TraitsInterfaces.cs" />
     <Compile Include="Traits\World\Faction.cs" />
     <Compile Include="Traits\World\ResourceType.cs" />
     <Compile Include="Traits\World\ScreenShaker.cs" />
-    <Compile Include="Traits\World\Shroud.cs" />
     <Compile Include="Traits\World\DebugVisualizations.cs" />
     <Compile Include="World.cs" />
     <Compile Include="WorldUtils.cs" />
