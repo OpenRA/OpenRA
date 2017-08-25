@@ -571,6 +571,7 @@
     <Compile Include="Traits\World\RadarPings.cs" />
     <Compile Include="Traits\World\ResourceClaimLayer.cs" />
     <Compile Include="Traits\World\ResourceLayer.cs" />
+    <Compile Include="Traits\World\ResourceRenderer.cs" />
     <Compile Include="Traits\World\ShroudPalette.cs" />
     <Compile Include="Traits\World\ShroudRenderer.cs" />
     <Compile Include="Traits\World\SmudgeLayer.cs" />

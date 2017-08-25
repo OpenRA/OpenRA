@@ -56,7 +56,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			var res = world.WorldActor.TraitOrDefault<ResourceLayer>();
 			return bi.Tiles(cell).All(
-				t => world.Map.Contains(t) && (res == null || res.GetResource(t) == null) &&
+				t => world.Map.Contains(t) && (res == null || res.GetResourceType(t) == null) &&
 					world.IsCellBuildable(t, ai, bi, toIgnore));
 		}
 

@@ -321,7 +321,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (cell.Layer != 0)
 				return false;
 
-			var resType = resLayer.GetResource(cell);
+			var resType = resLayer.GetResourceType(cell);
 			if (resType == null)
 				return false;
 
@@ -480,9 +480,9 @@ namespace OpenRA.Mods.Common.Traits
 				if (!self.Owner.Shroud.IsExplored(location))
 					return false;
 
-				var res = self.World.WorldActor.Trait<ResourceLayer>().GetRenderedResource(location);
+				var resRenderer = self.World.WorldActor.Trait<ResourceRenderer>();
+				var res = resRenderer.GetRenderedResourceType(location);
 				var info = self.Info.TraitInfo<HarvesterInfo>();
-
 				if (res == null || !info.Resources.Contains(res.Info.Type))
 					return false;
 
