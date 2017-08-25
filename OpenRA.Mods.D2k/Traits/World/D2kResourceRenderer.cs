@@ -17,14 +17,16 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.D2k.Traits
 {
-	[Desc("Used to render spice with round borders.")]
-	public class D2kResourceLayerInfo : ResourceLayerInfo
+	[Desc("Used to render spice with round borders.", "Attach this to the world actor")]
+	public class D2kResourceRendererInfo : ResourceRendererInfo
 	{
-		public override object Create(ActorInitializer init) { return new D2kResourceLayer(init.Self); }
+		public override object Create(ActorInitializer init) { return new D2kResourceRenderer(init.Self, this); }
 	}
 
-	public class D2kResourceLayer : ResourceLayer
+	public class D2kResourceRenderer : ResourceRenderer
 	{
+		readonly D2kResourceRendererInfo info;
+
 		[Flags] public enum ClearSides : byte
 		{
 			None = 0x0,
@@ -100,12 +102,16 @@ namespace OpenRA.Mods.D2k.Traits
 			{ ClearSides.Bottom | ClearSides.TopLeft | ClearSides.BottomLeft | ClearSides.BottomRight, 49 },
 		};
 
-		public D2kResourceLayer(Actor self)
-			: base(self) { }
+		public D2kResourceRenderer(Actor self, D2kResourceRendererInfo info)
+			: base(self, info)
+		{
+			this.info = info;
+		}
 
 		bool CellContains(CPos c, ResourceType t)
 		{
-			return RenderContent.Contains(c) && RenderContent[c].Type == t;
+			var type = ResourceLayer.GetResourceType(c);
+			return RenderContent.Contains(c) && type == t;
 		}
 
 		ClearSides FindClearSides(ResourceType t, CPos p)
@@ -143,20 +149,29 @@ namespace OpenRA.Mods.D2k.Traits
 			if (!RenderContent.Contains(p))
 				return;
 
+			var type = ResourceLayer.GetResourceType(p);
+			if (type != null && !info.RenderTypes.Contains(type.Info.Type))
+				return;
+
 			var t = RenderContent[p];
-			if (t.Density > 0)
+
+			var density = ResourceLayer.GetResourceDensity(p);
+			if (density > 0)
 			{
-				var clear = FindClearSides(t.Type, p);
+				var clear = FindClearSides(type, p);
 				int index;
 
 				if (clear == ClearSides.None)
 				{
+					if (t.Variant == null)
+						t.Variant = ChooseRandomVariant(type);
+
 					var sprites = Variants[t.Variant];
-					var frame = t.Density > t.Type.Info.MaxDensity / 2 ? 1 : 0;
-					t.Sprite = t.Type.Variants.First().Value[sprites[frame]];
+					var frame = density > ResourceLayer.GetMaxResourceDensity(p) / 2 ? 1 : 0;
+					t.Sprite = type.Variants.First().Value[sprites[frame]];
 				}
 				else if (SpriteMap.TryGetValue(clear, out index))
-					t.Sprite = t.Type.Variants.First().Value[index];
+					t.Sprite = type.Variants.First().Value[index];
 				else
 					t.Sprite = null;
 			}

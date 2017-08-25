@@ -18,8 +18,6 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	using CellContents = ResourceLayer.CellContents;
-
 	[Desc("Required for the map editor to work. Attach this to the world actor.")]
 	public class EditorResourceLayerInfo : ITraitInfo, Requires<ResourceTypeInfo>
 	{
@@ -210,6 +208,15 @@ namespace OpenRA.Mods.Common.Traits
 			Map.Resources.CellEntryChanged -= UpdateCell;
 
 			disposed = true;
+		}
+
+		public struct CellContents
+		{
+			public static readonly CellContents Empty = new CellContents();
+			public ResourceType Type;
+			public int Density;
+			public string Variant;
+			public Sprite Sprite;
 		}
 	}
 }

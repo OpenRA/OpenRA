@@ -217,7 +217,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 			if (resourceLayer != null)
 			{
-				var resource = resourceLayer.GetRenderedResource(cell);
+				var resource = resourceLayer.GetResourceType(cell);
 				if (resource != null)
 				{
 					TooltipType = WorldTooltipType.Resource;
