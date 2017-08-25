@@ -108,6 +108,8 @@ World:
 	ResourceLayer:
 	ResourceRenderer:
 		RenderTypes: Tiberium, BlueTiberium
+	VeinRenderer:
+		RenderTypes: Veins
 	BridgeLayer:
 	CustomTerrainDebugOverlay:
 	ResourceClaimLayer:

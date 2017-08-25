@@ -352,10 +352,8 @@ resources:
 	tib19: tib19 # TODO: SW ramp variant, currently unused
 	tib20: tib20 # TODO: SW ramp variant, currently unused
 	veins: veins
-		Length: 1
-		Start: 52
+		Length: 60
 		ShadowStart: -1
-		Tick: 180
 		Offset: 0, -12, 2.5
 
 veins:
