@@ -65,7 +65,7 @@ namespace OpenRA.Mods.Common.Traits
 			var cell = Util.RandomWalk(self.Location, self.World.SharedRandom)
 				.Take(info.MaxRange)
 				.SkipWhile(p => !self.World.Map.Contains(p) ||
-					(resLayer.GetResource(p) == resourceType && resLayer.IsFull(p)))
+					(resLayer.GetResourceType(p) == resourceType && resLayer.IsFull(p)))
 				.Cast<CPos?>().FirstOrDefault();
 
 			if (cell != null && resLayer.CanSpawnResourceAt(resourceType, cell.Value))

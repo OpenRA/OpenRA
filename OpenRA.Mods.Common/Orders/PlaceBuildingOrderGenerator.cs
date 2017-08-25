@@ -233,7 +233,7 @@ namespace OpenRA.Mods.Common.Orders
 				var res = world.WorldActor.TraitOrDefault<ResourceLayer>();
 				var isCloseEnough = buildingInfo.IsCloseEnoughToBase(world, world.LocalPlayer, building, topLeft);
 				foreach (var t in buildingInfo.Tiles(topLeft))
-					cells.Add(t, MakeCellType(isCloseEnough && world.IsCellBuildable(t, buildingInfo) && (res == null || res.GetResource(t) == null)));
+					cells.Add(t, MakeCellType(isCloseEnough && world.IsCellBuildable(t, buildingInfo) && (res == null || res.GetResourceType(t) == null)));
 			}
 
 			var cellPalette = wr.Palette(placeBuildingInfo.Palette);

@@ -106,6 +106,8 @@ World:
 		SmokeType: largesmoke
 		Sequence: largecraters
 	ResourceLayer:
+	ResourceRenderer:
+		RenderTypes: Tiberium, BlueTiberium
 	BridgeLayer:
 	CustomTerrainDebugOverlay:
 	ResourceClaimLayer:

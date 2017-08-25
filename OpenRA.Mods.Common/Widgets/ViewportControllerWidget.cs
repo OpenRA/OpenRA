@@ -24,7 +24,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 	public class ViewportControllerWidget : Widget
 	{
-		readonly ResourceLayer resourceLayer;
+		readonly ResourceRenderer resourceRenderer;
 
 		public readonly NamedHotkey ScrollUpKey = new NamedHotkey();
 		public readonly NamedHotkey ScrollDownKey = new NamedHotkey();
@@ -139,7 +139,7 @@ namespace OpenRA.Mods.Common.Widgets
 			tooltipContainer = Exts.Lazy(() =>
 				Ui.Root.Get<TooltipContainerWidget>(TooltipContainer));
 
-			resourceLayer = world.WorldActor.TraitOrDefault<ResourceLayer>();
+			resourceRenderer = world.WorldActor.TraitOrDefault<ResourceRenderer>();
 		}
 
 		public override void Initialize(WidgetArgs args)
@@ -260,9 +260,9 @@ namespace OpenRA.Mods.Common.Widgets
 				}
 			}
 
-			if (resourceLayer != null)
+			if (resourceRenderer != null)
 			{
-				var resource = resourceLayer.GetRenderedResource(cell);
+				var resource = resourceRenderer.GetRenderedResourceType(cell);
 				if (resource != null)
 				{
 					TooltipType = WorldTooltipType.Resource;
