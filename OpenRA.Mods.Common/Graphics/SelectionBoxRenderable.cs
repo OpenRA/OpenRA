@@ -21,7 +21,7 @@ namespace OpenRA.Mods.Common.Graphics
 		readonly Color color;
 
 		public SelectionBoxRenderable(Actor actor, Color color)
-			: this(actor.CenterPosition, actor.VisualBounds, color) { }
+			: this(actor.CenterPosition, actor.SelectionOverlayBounds, color) { }
 
 		public SelectionBoxRenderable(WPos pos, Rectangle visualBounds, Color color)
 		{

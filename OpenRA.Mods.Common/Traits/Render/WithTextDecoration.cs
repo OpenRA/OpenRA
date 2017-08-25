@@ -95,7 +95,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			if (!ShouldRender(self) || self.World.FogObscures(self))
 				return Enumerable.Empty<IRenderable>();
 
-			var bounds = self.VisualBounds;
+			var bounds = self.SelectionOverlayBounds;
 			var halfSize = font.Measure(Info.Text) / 2;
 
 			var boundsOffset = new int2(bounds.Left + bounds.Right, bounds.Top + bounds.Bottom) / 2;
