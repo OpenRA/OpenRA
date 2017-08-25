@@ -5,7 +5,7 @@ language: csharp
 mono: 4.6.1
 
 # http://docs.travis-ci.com/user/migrating-from-legacy
-sudo: false
+sudo: true
 
 cache:
   directories:
