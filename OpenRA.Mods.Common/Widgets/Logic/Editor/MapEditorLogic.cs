@@ -36,7 +36,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var zoomDropdown = widget.GetOrNull<DropDownButtonWidget>("ZOOM_BUTTON");
 			if (zoomDropdown != null)
 			{
-				var selectedZoom = (Game.Settings.Graphics.PixelDouble ? 2f : 1f).ToString();
+				var selectedZoom = Game.Settings.Graphics.PixelScale.ToString();
 
 				zoomDropdown.SelectedItem = selectedZoom;
 				Func<float, ScrollItemWidget, ScrollItemWidget> setupItem = (zoom, itemTemplate) =>
@@ -62,11 +62,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var options = worldRenderer.Viewport.AvailableZoomSteps;
 				zoomDropdown.OnMouseDown = _ => zoomDropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 150, options, setupItem);
 				zoomDropdown.GetText = () => zoomDropdown.SelectedItem;
-				zoomDropdown.GetKey = _ => Game.Settings.Keys.TogglePixelDoubleKey;
+				zoomDropdown.GetKey = _ => Game.Settings.Keys.TogglePixelScaleKey;
 				zoomDropdown.OnKeyPress = e =>
 				{
 					var key = Hotkey.FromKeyInput(e);
-					if (key != Game.Settings.Keys.TogglePixelDoubleKey)
+					if (key != Game.Settings.Keys.TogglePixelScaleKey)
 						return;
 
 					var selected = (options.IndexOf(float.Parse(selectedZoom)) + 1) % options.Length;

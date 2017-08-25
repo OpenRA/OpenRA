@@ -54,7 +54,7 @@ namespace OpenRA.Graphics
 
 		ProjectedCellRegion allCells;
 		bool allCellsDirty = true;
-		readonly float[] availableZoomSteps = new[] { 2f, 1f, 0.5f, 0.25f };
+		readonly float[] availableZoomSteps = new[] { 4f, 2f, 1f, 0.5f, 0.25f };
 
 		float zoom = 1f;
 
@@ -140,7 +140,7 @@ namespace OpenRA.Graphics
 				CenterLocation = (tl + br) / 2;
 			}
 
-			Zoom = Game.Settings.Graphics.PixelDouble ? 2 : 1;
+			Zoom = Game.Settings.Graphics.PixelScale;
 			tileSize = grid.TileSize;
 		}
 

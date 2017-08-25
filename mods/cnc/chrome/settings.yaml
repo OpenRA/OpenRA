@@ -113,20 +113,20 @@ Container@SETTINGS_PANEL:
 							Height: 20
 							Font: Regular
 							Text: Enable Frame Limiter
-						Checkbox@PIXELDOUBLE_CHECKBOX:
+						DropDownButton@PIXELSCALE_DROPDOWNBUTTON:
 							X: 310
 							Y: 125
 							Width: 200
 							Height: 20
 							Font: Regular
-							Text: Enable Pixel Doubling
-						Checkbox@CURSORDOUBLE_CHECKBOX:
+							Text: Pixel Scale
+						Checkbox@CURSORSCALE_CHECKBOX:
 							X: 340
 							Y: 155
 							Width: 200
 							Height: 20
 							Font: Regular
-							Text: Also Double Cursor
+							Text: Also Scale Cursor
 						Label@FRAME_LIMIT_DESC_A:
 							X: 45
 							Y: 152
