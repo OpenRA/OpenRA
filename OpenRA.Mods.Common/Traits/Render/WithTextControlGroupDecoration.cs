@@ -82,7 +82,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			if (group == null)
 				yield break;
 
-			var bounds = self.VisualBounds;
+			var bounds = self.SelectionOverlayBounds;
 			var number = group.Value.ToString();
 			var halfSize = font.Measure(number) / 2;
 

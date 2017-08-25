@@ -192,7 +192,7 @@ namespace OpenRA
 			ActorMap.AddInfluence(self, ios);
 			ActorMap.AddPosition(self, ios);
 
-			if (!self.Bounds.Size.IsEmpty)
+			if (!self.RenderBounds.Size.IsEmpty)
 				ScreenMap.Add(self);
 		}
 
@@ -201,7 +201,7 @@ namespace OpenRA
 			if (!self.IsInWorld)
 				return;
 
-			if (!self.Bounds.Size.IsEmpty)
+			if (!self.RenderBounds.Size.IsEmpty)
 				ScreenMap.Update(self);
 
 			ActorMap.UpdatePosition(self, ios);
@@ -212,7 +212,7 @@ namespace OpenRA
 			ActorMap.RemoveInfluence(self, ios);
 			ActorMap.RemovePosition(self, ios);
 
-			if (!self.Bounds.Size.IsEmpty)
+			if (!self.RenderBounds.Size.IsEmpty)
 				ScreenMap.Remove(self);
 		}
 

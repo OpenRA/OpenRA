@@ -314,7 +314,7 @@ namespace OpenRA.Mods.Common.Traits
 			self.World.ActorMap.AddInfluence(self, this);
 			self.World.ActorMap.AddPosition(self, this);
 
-			if (!self.Bounds.Size.IsEmpty)
+			if (!self.RenderBounds.Size.IsEmpty)
 				self.World.ScreenMap.Add(self);
 
 			influence.AddInfluence(self, Info.Tiles(self.Location));
@@ -325,7 +325,7 @@ namespace OpenRA.Mods.Common.Traits
 			self.World.ActorMap.RemoveInfluence(self, this);
 			self.World.ActorMap.RemovePosition(self, this);
 
-			if (!self.Bounds.Size.IsEmpty)
+			if (!self.RenderBounds.Size.IsEmpty)
 				self.World.ScreenMap.Remove(self);
 
 			influence.RemoveInfluence(self, Info.Tiles(self.Location));

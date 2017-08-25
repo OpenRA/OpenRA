@@ -149,7 +149,7 @@ namespace OpenRA.Graphics
 			var health = actor.TraitOrDefault<IHealth>();
 
 			var screenPos = wr.Screen3DPxPosition(pos);
-			var bounds = actor.VisualBounds;
+			var bounds = actor.SelectionOverlayBounds;
 			bounds.Offset((int)screenPos.X, (int)screenPos.Y);
 
 			var start = new float3(bounds.Left + 1, bounds.Top, screenPos.Z);
