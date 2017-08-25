@@ -19,6 +19,15 @@ Container@OBSERVER_WIDGETS:
 			Text: Statistics (F1)
 			Font: Bold
 			Key: f1
+		MenuButton@OBSERVER_BEACON_BUTTON:
+			Logic: BeaconOrderButtonLogic
+			X: 324
+			Y: 0
+			Width: 160
+			Height: 25
+			Text: Place Beacon (b)
+			Font: Bold
+			Key: b
 		Container@GAME_TIMER_BLOCK:
 			Logic: GameTimerLogic
 			X: (WINDOW_RIGHT - WIDTH) / 2

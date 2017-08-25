@@ -21,7 +21,12 @@ namespace OpenRA.Mods.Common.Orders
 			world.CancelInputMode();
 
 			if (mi.Button == MouseButton.Left)
-				yield return new Order("PlaceBeacon", world.LocalPlayer.PlayerActor, false) { TargetLocation = cell, SuppressVisualFeedback = true };
+			{
+				if (world.LocalPlayer != null)
+					yield return new Order("PlaceBeacon", world.LocalPlayer.PlayerActor, false) { TargetLocation = cell, SuppressVisualFeedback = true };
+				else
+					yield return new Order("PlaceBeacon", null, false) { TargetLocation = cell, SuppressVisualFeedback = true };
+			}
 		}
 
 		public virtual void Tick(World world) { }

@@ -64,8 +64,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var beacon = widget as ButtonWidget;
 			if (beacon != null)
 			{
-				beacon.GetKey = _ => Game.Settings.Keys.PlaceBeaconKey;
-				OrderButtonsChromeUtils.BindOrderButton<BeaconOrderGenerator>(world, beacon, "beacon");
+				if (world.IsReplay)
+				{
+					beacon.Visible = false;
+				}
+				else
+				{
+					beacon.GetKey = _ => Game.Settings.Keys.PlaceBeaconKey;
+					OrderButtonsChromeUtils.BindOrderButton<BeaconOrderGenerator>(world, beacon, "beacon");
+				}
 			}
 		}
 	}
@@ -78,8 +85,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			w.OnClick = () => world.ToggleInputMode<T>();
 			w.IsHighlighted = () => world.OrderGenerator is T;
 
-			w.Get<ImageWidget>("ICON").GetImageName =
-				() => world.OrderGenerator is T ? icon + "-active" : icon;
+			ImageWidget iconwidget = w.GetOrNull<ImageWidget>("ICON");
+			if (iconwidget != null)
+			{
+				iconwidget.GetImageName =
+					() => world.OrderGenerator is T ? icon + "-active" : icon;
+			}
 		}
 	}
 }

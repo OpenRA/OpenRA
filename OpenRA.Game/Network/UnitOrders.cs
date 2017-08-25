@@ -58,6 +58,29 @@ namespace OpenRA.Network
 						break;
 					}
 
+				case "PlaceBeacon":
+					{
+						var client = orderManager.LobbyInfo.ClientWithIndex(clientId);
+						if (client != null)
+						{
+							var player = world.FindPlayerByClient(client);
+							if (player == null)
+							{
+								if (orderManager.LocalClient.IsObserver)
+								{
+									Game.AddChatLine(Color.White, ServerChatName, "{0} placed a beacon".F(client.Name));
+									player = world.Players.Single((p) => p.PlayerName == "Everyone");
+								}
+							}
+
+							if (player != null && !player.PlayerActor.IsDead)
+								foreach (var t in player.PlayerActor.TraitsImplementing<IResolveOrder>())
+									t.ResolveOrder(player.PlayerActor, order);
+						}
+
+						break;
+					}
+
 				case "Message": // Server message
 					Game.AddChatLine(Color.White, ServerChatName, order.TargetString);
 					break;

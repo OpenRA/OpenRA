@@ -47,7 +47,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void ResolveOrder(Actor self, Order order)
 		{
-			if (order.OrderString != "PlaceBeacon")
+			if (order.OrderString != "PlaceBeacon" && order.OrderString != "PlaceObserverBeacon")
 				return;
 
 			var pos = self.World.Map.CenterOfCell(order.TargetLocation);

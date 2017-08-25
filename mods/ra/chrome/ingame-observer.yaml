@@ -17,7 +17,7 @@ Container@OBSERVER_WIDGETS:
 					Logic: GameTimerLogic
 					X: 26
 					Y: 10
-					Width: 120
+					Width: 88
 					Height: 22
 					Background: sidebar-button-observer
 					Children:
@@ -34,6 +34,20 @@ Container@OBSERVER_WIDGETS:
 					X: 9
 					Y: 7
 					Children:
+						Button@OBSERVER_BEACON_BUTTON:
+							Logic: BeaconOrderButtonLogic
+							Width: 28
+							Height: 28
+							X: 128
+							Background: sidebar-button-observer
+							TooltipText: Place Beacon
+							TooltipContainer: TOOLTIP_CONTAINER
+							VisualHeight: 0
+							Children:
+								Image@ICON:
+									X: 6
+									Y: 6
+									ImageCollection: order-icons
 						MenuButton@OBSERVER_STATS_BUTTON:
 							MenuContainer: INGAME_OBSERVERSTATS_BG
 							HideIngameUI: false
