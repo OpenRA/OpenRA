@@ -2,7 +2,9 @@
 # see travis-ci.org for details
 
 language: csharp
-mono: 4.6.1
+mono: 5.2.0
+
+sudo: false
 
 cache:
   directories:
