@@ -1072,9 +1072,13 @@ palace:
 		DisplayBeacon: True
 		DisplayRadarPing: True
 		CameraRange: 10c0
-		ActivationSequence:
 		ArrowSequence: arrow
 		CircleSequence: circles
+	WithNukeLaunchOverlay:
+		RequiresCondition: !launchpad-damaged
+	GrantConditionOnDamageState@LAUNCHPADDAMAGED:
+		Condition: launchpad-damaged
+		ValidDamageState: Medium, Heavy, Critical
 	ProduceActorPower@fremen:
 		Description: Recruit Fremen
 		LongDesc: Elite infantry unit armed with assault rifles and rockets\n  Strong vs Infantry, Vehicles\n  Weak vs Artillery\n  Special Ability: Invisibility

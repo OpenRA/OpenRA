@@ -443,6 +443,8 @@
     <Compile Include="Traits\Render\WithHarvestOverlay.cs" />
     <Compile Include="Traits\Render\WithIdleOverlay.cs" />
     <Compile Include="Traits\Render\WithMuzzleOverlay.cs" />
+    <Compile Include="Traits\Render\WithNukeLaunchAnimation.cs" />
+    <Compile Include="Traits\Render\WithNukeLaunchOverlay.cs" />
     <Compile Include="Traits\Render\WithParachute.cs" />
     <Compile Include="Traits\Render\WithRangeCircle.cs" />
     <Compile Include="Traits\Render\WithRearmAnimation.cs" />

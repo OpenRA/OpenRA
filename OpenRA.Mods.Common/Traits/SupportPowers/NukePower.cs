@@ -72,10 +72,6 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Corresponds to `Type` from `FlashPaletteEffect` on the world actor.")]
 		public readonly string FlashType = null;
 
-		[SequenceReference]
-		[Desc("Sequence the launching actor should play when activating this power.")]
-		public readonly string ActivationSequence = "active";
-
 		public WeaponInfo WeaponInfo { get; private set; }
 
 		public override object Create(ActorInitializer init) { return new NukePower(init.Self, this); }
@@ -103,11 +99,8 @@ namespace OpenRA.Mods.Common.Traits
 			base.Activate(self, order, manager);
 			PlayLaunchSounds();
 
-			if (!string.IsNullOrEmpty(info.ActivationSequence))
-			{
-				var wsb = self.Trait<WithSpriteBody>();
-				wsb.PlayCustomAnimation(self, info.ActivationSequence);
-			}
+			foreach (var launchpad in self.TraitsImplementing<INotifyNuke>())
+				launchpad.Launching(self);
 
 			var targetPosition = self.World.Map.CenterOfCell(order.TargetLocation);
 			var palette = info.IsPlayerPalette ? info.MissilePalette + self.Owner.InternalName : info.MissilePalette;

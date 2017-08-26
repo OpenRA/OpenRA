@@ -61,6 +61,7 @@ MSLO:
 		Amount: -150
 	MustBeDestroyed:
 		RequiredForShortGame: false
+	WithNukeLaunchAnimation:
 
 GAP:
 	Inherits: ^ScienceBuilding

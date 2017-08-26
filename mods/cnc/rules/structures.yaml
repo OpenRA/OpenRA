@@ -724,6 +724,7 @@ TMPL:
 		ArrowSequence: arrow
 		ClockSequence: clock
 		CircleSequence: circles
+	WithNukeLaunchAnimation:
 	SupportPowerChargeBar:
 	Power:
 		Amount: -150

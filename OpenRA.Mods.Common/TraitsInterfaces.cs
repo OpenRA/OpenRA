@@ -84,6 +84,7 @@ namespace OpenRA.Mods.Common.Traits
 
 	public interface INotifyBuildingPlaced { void BuildingPlaced(Actor self); }
 	public interface INotifyRepair { void Repairing(Actor self, Actor target); }
+	public interface INotifyNuke { void Launching(Actor self); }
 	public interface INotifyBurstComplete { void FiredBurst(Actor self, Target target, Armament a); }
 	public interface INotifyChat { bool OnChat(string from, string message); }
 	public interface INotifyProduction { void UnitProduced(Actor self, Actor other, CPos exit); }
