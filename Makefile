@@ -289,12 +289,12 @@ mods: mod_common mod_cnc mod_d2k
 
 all: dependencies core stylecheck
 
-clean:
+clean: cleanversion
 	@-$(RM_F) *.exe *.dll *.dylib *.dll.config ./OpenRA*/*.dll ./OpenRA*/*.mdb *.mdb mods/**/*.dll mods/**/*.mdb *.resources
 	@-$(RM_RF) ./*/bin ./*/obj
 	@-$(RM_RF) ./thirdparty/download
 
-distclean: clean cleanversion
+distclean: clean
 	@-$(RM_F) *.tar.bz2
 
 dist: version
