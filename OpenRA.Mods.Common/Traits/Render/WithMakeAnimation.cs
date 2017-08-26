@@ -26,6 +26,9 @@ namespace OpenRA.Mods.Common.Traits.Render
 		[Desc("The condition to grant to self while the make animation is playing.")]
 		public readonly string Condition = null;
 
+		[Desc("Play the sequence only when deploy type matches this typs")]
+		public readonly string DeployType = "make";
+
 		[Desc("Apply to sprite bodies with these names.")]
 		public readonly string[] BodyNames = { "body" };
 
@@ -117,12 +120,12 @@ namespace OpenRA.Mods.Common.Traits.Render
 		}
 
 		// TODO: Make this use Forward instead
-		void INotifyDeployTriggered.Deploy(Actor self, bool skipMakeAnim, string[] bodyNames)
+		void INotifyDeployTriggered.Deploy(Actor self, string[] deployTypes)
 		{
 			var notified = false;
 			var notify = self.TraitsImplementing<INotifyDeployComplete>();
 
-			if (skipMakeAnim)
+			if (!deployTypes.Contains(info.DeployType))
 			{
 				foreach (var n in notify)
 					n.FinishedDeploy(self);
@@ -134,9 +137,6 @@ namespace OpenRA.Mods.Common.Traits.Render
 			{
 				if (wsb.IsTraitDisabled)
 					continue;
-
-				if (!bodyNames.Contains(wsb.Info.Name))
-					return;
 
 				wsb.PlayCustomAnimation(self, info.Sequence, () =>
 				{
@@ -153,12 +153,12 @@ namespace OpenRA.Mods.Common.Traits.Render
 		}
 
 		// TODO: Make this use Reverse instead
-		void INotifyDeployTriggered.Undeploy(Actor self, bool skipMakeAnim, string[] bodyNames)
+		void INotifyDeployTriggered.Undeploy(Actor self, string[] deployTypes)
 		{
 			var notified = false;
 			var notify = self.TraitsImplementing<INotifyDeployComplete>();
 
-			if (skipMakeAnim)
+			if (!deployTypes.Contains(info.DeployType))
 			{
 				foreach (var n in notify)
 					n.FinishedUndeploy(self);
@@ -170,9 +170,6 @@ namespace OpenRA.Mods.Common.Traits.Render
 			{
 				if (wsb.IsTraitDisabled)
 					continue;
-
-				if (!bodyNames.Contains(wsb.Info.Name))
-					return;
 
 				wsb.PlayCustomAnimationBackwards(self, info.Sequence, () =>
 				{

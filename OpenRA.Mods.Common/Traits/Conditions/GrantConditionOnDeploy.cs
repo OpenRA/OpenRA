@@ -9,13 +9,10 @@
  */
 #endregion
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using OpenRA.Activities;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Orders;
-using OpenRA.Mods.Common.Traits.Render;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -55,11 +52,8 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Can this actor undeploy?")]
 		public readonly bool CanUndeploy = true;
 
-		[Desc("Skip make/deploy animation?")]
-		public readonly bool SkipMakeAnimation = false;
-
-		[Desc("Valid bodies to play the make/deploy animation on")]
-		public readonly string[] MakeAnimationBodyNames = { "body" };
+		[Desc("Play MakeAnimation only when its DeployType matches one of these types")]
+		public readonly string[] MakeAnimationDeployTypes = { "make" };
 
 		public object Create(ActorInitializer init) { return new GrantConditionOnDeploy(init, this); }
 	}
@@ -195,14 +189,22 @@ namespace OpenRA.Mods.Common.Traits
 			return ramp == 0;
 		}
 
+		int deployNotificationCount = 0;
 		void INotifyDeployComplete.FinishedDeploy(Actor self)
 		{
-			OnDeployCompleted();
+			deployNotificationCount--;
+
+			if (deployNotificationCount <= 0)
+				OnDeployCompleted();
 		}
 
+		int undeployNotificationCount = 0;
 		void INotifyDeployComplete.FinishedUndeploy(Actor self)
 		{
-			OnUndeployCompleted();
+			undeployNotificationCount--;
+
+			if (undeployNotificationCount <= 0)
+				OnUndeployCompleted();
 		}
 
 		/// <summary>Play deploy sound and animation.</summary>
@@ -228,8 +230,11 @@ namespace OpenRA.Mods.Common.Traits
 			if (!notify.Any())
 				OnDeployCompleted();
 			else
+			{
+				deployNotificationCount = notify.Count();
 				foreach (var n in notify)
-					n.Deploy(self, Info.SkipMakeAnimation, Info.MakeAnimationBodyNames);
+					n.Deploy(self, Info.MakeAnimationDeployTypes);
+			}
 		}
 
 		/// <summary>Play undeploy sound and animation and after that revoke the condition.</summary>
@@ -251,8 +256,11 @@ namespace OpenRA.Mods.Common.Traits
 			if (!notify.Any())
 				OnUndeployCompleted();
 			else
+			{
+				undeployNotificationCount = notify.Count();
 				foreach (var n in notify)
-					n.Undeploy(self, Info.SkipMakeAnimation, Info.MakeAnimationBodyNames);
+					n.Undeploy(self, Info.MakeAnimationDeployTypes);
+			}
 		}
 
 		void OnDeployStarted()
