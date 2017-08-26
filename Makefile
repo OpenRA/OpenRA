@@ -80,6 +80,7 @@ INSTALL = install
 INSTALL_DIR = $(INSTALL) -d
 INSTALL_PROGRAM = $(INSTALL) -m755
 INSTALL_DATA = $(INSTALL) -m644
+TAR = tar
 
 # program targets
 CORE = pdefault game utility server
@@ -293,7 +294,11 @@ clean:
 	@-$(RM_RF) ./*/bin ./*/obj
 	@-$(RM_RF) ./thirdparty/download
 
-distclean: clean
+distclean: clean cleanversion
+	@-$(RM_F) *.tar.bz2
+
+dist: version
+	@-$(TAR) -cjf OpenRA-$(VERSION).tar.bz2 *
 
 cli-dependencies:
 	@./thirdparty/fetch-thirdparty-deps.sh
@@ -326,6 +331,14 @@ version: VERSION mods/ra/mod.yaml mods/cnc/mod.yaml mods/d2k/mod.yaml mods/ts/mo
 	@for i in $? ; do \
 		awk '{sub("Version:.*$$","Version: $(VERSION)"); print $0}' $${i} > $${i}.tmp && \
 		awk '{sub("/[^/]*: User$$", "/$(VERSION): User"); print $0}' $${i}.tmp > $${i} && \
+		rm $${i}.tmp; \
+	done
+
+cleanversion: VERSION mods/ra/mod.yaml mods/cnc/mod.yaml mods/d2k/mod.yaml mods/ts/mod.yaml mods/modcontent/mod.yaml mods/all/mod.yaml
+	@echo "{DEV_VERSION}" > VERSION
+	@for i in $? ; do \
+		awk '{sub("Version:.*$$","Version: {DEV_VERSION}"); print $0}' $${i} > $${i}.tmp && \
+		awk '{sub("/[^/]*: User$$", "/{DEV_VERSION}: User"); print $0}' $${i}.tmp > $${i} && \
 		rm $${i}.tmp; \
 	done
 
