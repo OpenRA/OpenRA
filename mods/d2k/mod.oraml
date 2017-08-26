@@ -1,0 +1,232 @@
+Metadata:
+	Title: Dune 2000
+	Version: {DEV_VERSION}
+
+PackageFormats: D2kSoundResources
+
+Packages:
+	~^Content/d2k/v2/
+	~^Content/d2k/v2/GAMESFX
+	~^Content/d2k/v2/Movies
+	~^Content/d2k/v2/Music
+	.
+	$d2k: d2k
+	./mods/common: common
+
+	~SOUND.RS
+	d2k|bits
+	d2k|bits/scripts
+	d2k|bits/tex
+	d2k|uibits
+
+MapFolders:
+	d2k|maps: System
+	~^maps/d2k/{DEV_VERSION}: User
+
+Rules:
+	d2k|rules/misc.oraml
+	d2k|rules/ai.oraml
+	d2k|rules/player.oraml
+	d2k|rules/world.oraml
+	d2k|rules/palettes.oraml
+	d2k|rules/defaults.oraml
+	d2k|rules/infantry.oraml
+	d2k|rules/vehicles.oraml
+	d2k|rules/aircraft.oraml
+	d2k|rules/structures.oraml
+	d2k|rules/starport.oraml
+	d2k|rules/husks.oraml
+	d2k|rules/arrakis.oraml
+
+Sequences:
+	d2k|sequences/aircraft.oraml
+	d2k|sequences/vehicles.oraml
+	d2k|sequences/infantry.oraml
+	d2k|sequences/structures.oraml
+	d2k|sequences/misc.oraml
+
+TileSets:
+	d2k|tilesets/arrakis.oraml
+
+MapGrid:
+	TileSize: 32,32
+	Type: Rectangular
+
+Cursors:
+	d2k|cursors.oraml
+
+Chrome:
+	d2k|chrome.oraml
+
+Assemblies:
+	common|OpenRA.Mods.Common.dll
+	common|OpenRA.Mods.Cnc.dll
+	d2k|OpenRA.Mods.D2k.dll
+
+ChromeLayout:
+	common|chrome/ingame.oraml
+	common|chrome/ingame-chat.oraml
+	common|chrome/ingame-fmvplayer.oraml
+	d2k|chrome/ingame-menu.oraml
+	common|chrome/ingame-info.oraml
+	common|chrome/ingame-infoscripterror.oraml
+	common|chrome/ingame-infobriefing.oraml
+	common|chrome/ingame-infoobjectives.oraml
+	d2k|chrome/ingame-infostats.oraml
+	common|chrome/ingame-observer.oraml
+	common|chrome/ingame-observerstats.oraml
+	d2k|chrome/ingame-player.oraml
+	common|chrome/ingame-perf.oraml
+	common|chrome/ingame-debug.oraml
+	common|chrome/ingame-infochat.oraml
+	d2k|chrome/mainmenu.oraml
+	common|chrome/settings.oraml
+	common|chrome/credits.oraml
+	common|chrome/lobby.oraml
+	common|chrome/lobby-mappreview.oraml
+	d2k|chrome/lobby-players.oraml
+	d2k|chrome/lobby-options.oraml
+	common|chrome/lobby-music.oraml
+	common|chrome/lobby-kickdialogs.oraml
+	common|chrome/lobby-globalchat.oraml
+	common|chrome/color-picker.oraml
+	common|chrome/map-chooser.oraml
+	common|chrome/multiplayer.oraml
+	common|chrome/multiplayer-browser.oraml
+	common|chrome/multiplayer-createserver.oraml
+	common|chrome/multiplayer-directconnect.oraml
+	common|chrome/multiplayer-globalchat.oraml
+	common|chrome/connection.oraml
+	d2k|chrome/dropdowns.oraml
+	common|chrome/musicplayer.oraml
+	d2k|chrome/tooltips.oraml
+	common|chrome/assetbrowser.oraml
+	d2k|chrome/missionbrowser.oraml
+	common|chrome/confirmation-dialogs.oraml
+	common|chrome/editor.oraml
+	common|chrome/replaybrowser.oraml
+
+Weapons:
+	d2k|weapons/debris.oraml
+	d2k|weapons/smallguns.oraml
+	d2k|weapons/largeguns.oraml
+	d2k|weapons/missiles.oraml
+	d2k|weapons/other.oraml
+
+Voices:
+	d2k|audio/voices.oraml
+
+Notifications:
+	d2k|audio/notifications.oraml
+
+Music:
+	d2k|audio/music.oraml
+
+Translations:
+	d2k|languages/english.oraml
+
+LoadScreen: LogoStripeLoadScreen
+	Image: d2k|uibits/loadscreen.png
+	Text: Filling Crates..., Breeding Sandworms..., Fuelling carryalls..., Deploying harvesters..., Preparing thopters..., Summoning mentats...
+
+ServerTraits:
+	LobbyCommands
+	PlayerPinger
+	MasterServerPinger
+	LobbySettingsNotification
+
+ChromeMetrics:
+	common|metrics.oraml
+	d2k|metrics.oraml
+
+Fonts:
+	Regular:
+		Font: common|FreeSans.ttf
+		Size:14
+	Bold:
+		Font: common|FreeSansBold.ttf
+		Size:14
+	Title:
+		Font: d2k|Dune2k.ttf
+		Size:32
+	MediumBold:
+		Font: common|FreeSansBold.ttf
+		Size:18
+	BigBold:
+		Font: common|FreeSansBold.ttf
+		Size:24
+	Small:
+		Font: common|FreeSans.ttf
+		Size:12
+	Tiny:
+		Font: common|FreeSans.ttf
+		Size:10
+	TinyBold:
+		Font: common|FreeSansBold.ttf
+		Size:10
+
+Missions:
+	d2k|missions.oraml
+
+SupportsMapsFrom: d2k
+
+SoundFormats: Aud, Wav
+
+SpriteFormats: R8, ShpTD, TmpRA
+
+SpriteSequenceFormat: DefaultSpriteSequence
+
+ModelSequenceFormat: PlaceholderModelSequence
+
+GameSpeeds:
+	slower:
+		Name: Slower
+		Timestep: 50
+		OrderLatency: 3
+	default:
+		Name: Normal
+		Timestep: 40
+		OrderLatency: 3
+	fast:
+		Name: Fast
+		Timestep: 35
+		OrderLatency: 4
+	faster:
+		Name: Faster
+		Timestep: 30
+		OrderLatency: 4
+	fastest:
+		Name: Fastest
+		Timestep: 20
+		OrderLatency: 6
+
+ColorValidator:
+
+ModContent:
+	InstallPromptMessage: Dune 2000 requires artwork and audio from the original game.\n\nQuick Install will automatically download this content (without\nmusic or videos) from an online mirror of the game files.\n\nAdvanced Install includes options for copying the music, videos,\nand other content from an original game disc.
+	HeaderMessage: The original game content may be copied from an original game disc,\nor downloaded from an online mirror of the game files.
+	QuickDownload: quickinstall
+	Packages:
+		base: Base Game Files
+			TestFiles: ^Content/d2k/v2/BLOXBASE.R8, ^Content/d2k/v2/BLOXBAT.R8, ^Content/d2k/v2/BLOXBGBS.R8, ^Content/d2k/v2/BLOXICE.R8, ^Content/d2k/v2/BLOXTREE.R8, ^Content/d2k/v2/BLOXWAST.R8, ^Content/d2k/v2/SOUND.RS, ^Content/d2k/v2/PALETTE.BIN, ^Content/d2k/v2/FONT.BIN,  ^Content/d2k/v2/FONTCOL.FNT,  ^Content/d2k/v2/FONTCOL.FPL
+			Sources: d2k-a, d2k-a-linux, d2k-b, d2k-b-linux, gruntmods
+			Required: true
+			Download: basefiles
+		patch: 1.06 Patch Content
+			TestFiles: ^Content/d2k/v2/DATA.R8, ^Content/d2k/v2/BLOXXMAS.R8
+			Sources: gruntmods
+			Required: true
+			Download: patch106
+		music: Game Music
+			TestFiles: ^Content/d2k/v2/Music/AMBUSH.AUD
+			Sources: d2k-a, d2k-a-linux, d2k-b, d2k-b-linux, gruntmods
+		movies: Campaign Briefings
+			TestFiles: ^Content/d2k/v2/Movies/A_BR01_E.VQA
+			Sources: d2k-a, d2k-a-linux, d2k-b, d2k-b-linux
+	Downloads:
+		d2k|installer/downloads.oraml
+	Sources:
+		d2k|installer/d2ka.oraml
+		d2k|installer/d2kb.oraml
+		d2k|installer/downloads.oraml
+		d2k|installer/gruntmods.oraml

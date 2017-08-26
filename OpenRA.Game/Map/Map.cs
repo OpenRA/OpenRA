@@ -99,7 +99,7 @@ namespace OpenRA
 			if (node == null)
 			{
 				if (required)
-					throw new YamlException("Required field `{0}` not found in map.yaml".F(key));
+					throw new YamlException("Required field `{0}` not found in map.oraml".F(key));
 				return;
 			}
 
@@ -152,7 +152,7 @@ namespace OpenRA
 	{
 		public const int SupportedMapFormat = 11;
 
-		/// <summary>Defines the order of the fields in map.yaml</summary>
+		/// <summary>Defines the order of the fields in map.oraml</summary>
 		static readonly MapField[] YamlFields =
 		{
 			new MapField("MapFormat"),
@@ -197,7 +197,7 @@ namespace OpenRA
 		public List<MiniYamlNode> PlayerDefinitions = new List<MiniYamlNode>();
 		public List<MiniYamlNode> ActorDefinitions = new List<MiniYamlNode>();
 
-		// Custom map yaml. Public for access by the map importers and lint checks
+		// Custom map.oraml. Public for access by the map importers and lint checks
 		public readonly MiniYaml RuleDefinitions;
 		public readonly MiniYaml SequenceDefinitions;
 		public readonly MiniYaml ModelSequenceDefinitions;
@@ -247,7 +247,7 @@ namespace OpenRA
 		public static string ComputeUID(IReadOnlyPackage package)
 		{
 			// UID is calculated by taking an SHA1 of the yaml and binary data
-			var requiredFiles = new[] { "map.yaml", "map.bin" };
+			var requiredFiles = new[] { "map.oraml", "map.bin" };
 			var contents = package.Contents.ToList();
 			foreach (var required in requiredFiles)
 				if (!contents.Contains(required))
@@ -306,10 +306,10 @@ namespace OpenRA
 			this.modData = modData;
 			Package = package;
 
-			if (!Package.Contains("map.yaml") || !Package.Contains("map.bin"))
+			if (!Package.Contains("map.oraml") || !Package.Contains("map.bin"))
 				throw new InvalidDataException("Not a valid map\n File: {0}".F(package.Name));
 
-			var yaml = new MiniYaml(null, MiniYaml.FromStream(Package.GetStream("map.yaml"), package.Name));
+			var yaml = new MiniYaml(null, MiniYaml.FromStream(Package.GetStream("map.oraml"), package.Name));
 			foreach (var field in YamlFields)
 				field.Deserialize(this, yaml.Nodes);
 
@@ -564,7 +564,7 @@ namespace OpenRA
 
 			// Update the package with the new map data
 			var s = root.WriteToString();
-			toPackage.Update("map.yaml", Encoding.UTF8.GetBytes(s));
+			toPackage.Update("map.oraml", Encoding.UTF8.GetBytes(s));
 			toPackage.Update("map.bin", SaveBinaryData());
 			Package = toPackage;
 

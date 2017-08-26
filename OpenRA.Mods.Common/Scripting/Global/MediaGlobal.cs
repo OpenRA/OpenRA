@@ -56,7 +56,7 @@ namespace OpenRA.Mods.Common.Scripting
 			Game.Sound.Play(SoundType.World, file);
 		}
 
-		[Desc("Play track defined in music.yaml or map.yaml, or keep track empty for playing a random song.")]
+		[Desc("Play track defined in music.yaml or map.oraml, or keep track empty for playing a random song.")]
 		public void PlayMusic(string track = null, LuaFunction func = null)
 		{
 			if (!playlist.IsMusicAvailable)
@@ -87,7 +87,7 @@ namespace OpenRA.Mods.Common.Scripting
 				playlist.Play(musicInfo);
 		}
 
-		[Desc("Play track defined in music.yaml or map.yaml as background music." +
+		[Desc("Play track defined in music.yaml or map.oraml as background music." +
 			" If music is already playing use Media.StopMusic() to stop it" +
 			" and the background music will start automatically." +
 			" Keep the track empty to disable background music.")]

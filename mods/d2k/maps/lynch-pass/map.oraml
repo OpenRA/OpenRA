@@ -1,0 +1,86 @@
+MapFormat: 11
+
+RequiresMod: d2k
+
+Title: Lynch Pass
+
+Author: OmegaBolt
+
+Tileset: ARRAKIS
+
+MapSize: 130,130
+
+Bounds: 23,23,84,83
+
+Visibility: Lobby
+
+Categories: Conquest
+
+Players:
+	PlayerReference@Neutral:
+		Name: Neutral
+		OwnsWorld: True
+		NonCombatant: True
+		Faction: Random
+	PlayerReference@Creeps:
+		Name: Creeps
+		NonCombatant: True
+		Faction: Random
+		Enemies: Multi0, Multi1
+	PlayerReference@Multi0:
+		Name: Multi0
+		Playable: True
+		Faction: Random
+		Enemies: Creeps
+	PlayerReference@Multi1:
+		Name: Multi1
+		Playable: True
+		Faction: Random
+		Enemies: Creeps
+
+Actors:
+	Actor1: mpspawn
+		Owner: Neutral
+		Location: 32,97
+	Actor3: wormspawner
+		Owner: Creeps
+		Location: 73,67
+	Actor4: wormspawner
+		Owner: Creeps
+		Location: 56,61
+	Actor5: mpspawn
+		Owner: Neutral
+		Location: 95,31
+	Actor6: spicebloom.spawnpoint
+		Owner: Creeps
+		Location: 38,59
+	Actor7: spicebloom.spawnpoint
+		Owner: Creeps
+		Location: 35,37
+	Actor8: spicebloom.spawnpoint
+		Owner: Creeps
+		Location: 44,41
+	Actor9: spicebloom.spawnpoint
+		Owner: Creeps
+		Location: 87,88
+	Actor10: spicebloom.spawnpoint
+		Owner: Neutral
+		Location: 95,93
+	Actor11: spicebloom.spawnpoint
+		Owner: Creeps
+		Location: 81,42
+	Actor12: spicebloom.spawnpoint
+		Owner: Neutral
+		Location: 45,85
+	Actor15: spicebloom.spawnpoint
+		Owner: Creeps
+		Location: 92,69
+	Actor16: spicebloom.spawnpoint
+		Owner: Creeps
+		Location: 58,61
+	Actor17: spicebloom.spawnpoint
+		Owner: Creeps
+		Location: 66,65
+	Actor18: spicebloom.spawnpoint
+		Owner: Creeps
+		Location: 74,68

@@ -41,7 +41,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		void IRulesetLoaded<ActorInfo>.RulesetLoaded(Ruleset rules, ActorInfo info)
 		{
 			if (!Game.ModData.Manifest.Fonts.ContainsKey(Font))
-				throw new YamlException("Font '{0}' is not listed in the mod.yaml's Fonts section".F(Font));
+				throw new YamlException("Font '{0}' is not listed in the mod.oraml's Fonts section".F(Font));
 		}
 
 		public object Create(ActorInitializer init) { return new WithTextControlGroupDecoration(init.Self, this); }
@@ -59,7 +59,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			this.info = info;
 
 			if (!Game.Renderer.Fonts.TryGetValue(info.Font, out font))
-				throw new YamlException("Font '{0}' is not listed in the mod.yaml's Fonts section".F(info.Font));
+				throw new YamlException("Font '{0}' is not listed in the mod.oraml's Fonts section".F(info.Font));
 
 			color = info.UsePlayerColor ? self.Owner.Color.RGB : info.Color;
 		}

@@ -1,0 +1,185 @@
+MapFormat: 11
+
+RequiresMod: ra
+
+Title: Warwind
+
+Author: SoScared
+
+Tileset: DESERT
+
+MapSize: 98,66
+
+Bounds: 1,1,96,64
+
+Visibility: Lobby
+
+Categories: Conquest
+
+Players:
+	PlayerReference@Neutral:
+		Name: Neutral
+		OwnsWorld: True
+		NonCombatant: True
+		Faction: england
+	PlayerReference@Creeps:
+		Name: Creeps
+		NonCombatant: True
+		Faction: england
+		Enemies: Multi0, Multi1
+	PlayerReference@Multi0:
+		Name: Multi0
+		Playable: True
+		Faction: Random
+		Enemies: Creeps
+	PlayerReference@Multi1:
+		Name: Multi1
+		Playable: True
+		Faction: Random
+		Enemies: Creeps
+
+Actors:
+	Actor22: v28
+		Owner: Neutral
+		Location: 53,21
+	Actor21: mine
+		Owner: Neutral
+		Location: 65,62
+	Actor4: mine
+		Owner: Neutral
+		Location: 46,4
+	Actor7: mine
+		Owner: Neutral
+		Location: 16,14
+	Actor6: mine
+		Owner: Neutral
+		Location: 51,4
+	Actor8: mine
+		Owner: Neutral
+		Location: 15,17
+	Actor9: mine
+		Owner: Neutral
+		Location: 81,14
+	Actor10: mine
+		Owner: Neutral
+		Location: 82,17
+	Actor11: mine
+		Owner: Neutral
+		Location: 19,43
+	Actor12: mine
+		Owner: Neutral
+		Location: 78,43
+	Actor23: v29
+		Owner: Neutral
+		Location: 51,21
+	Actor24: v25
+		Owner: Neutral
+		Location: 54,20
+	Actor15: mpspawn
+		Owner: Neutral
+		Location: 18,23
+	Actor16: mpspawn
+		Owner: Neutral
+		Location: 79,23
+	Actor17: mine
+		Owner: Neutral
+		Location: 69,62
+	Actor18: mine
+		Owner: Neutral
+		Location: 32,62
+	Actor20: mine
+		Owner: Neutral
+		Location: 28,62
+	Actor25: v23
+		Owner: Neutral
+		Location: 50,21
+	Actor26: v20
+		Owner: Neutral
+		Location: 47,22
+	Actor27: v21
+		Owner: Neutral
+		Location: 48,22
+	Actor28: v20
+		Owner: Neutral
+		Location: 47,22
+	Actor29: v21
+		Owner: Neutral
+		Location: 41,18
+	Actor30: v30
+		Owner: Neutral
+		Location: 41,21
+	Actor31: v29
+		Owner: Neutral
+		Location: 41,20
+	Actor33: rock1
+		Owner: Neutral
+		Location: 22,1
+	Actor34: rock3
+		Owner: Neutral
+		Location: 72,1
+	Actor35: rock2
+		Owner: Neutral
+		Location: 1,2
+	Actor36: rock4
+		Owner: Neutral
+		Location: 95,1
+	Actor37: t08
+		Owner: Neutral
+		Location: 95,2
+	Actor38: tc01
+		Owner: Neutral
+		Location: 2,2
+	Actor39: tc01
+		Owner: Neutral
+		Location: 54,18
+	Actor40: t08
+		Owner: Neutral
+		Location: 56,24
+	Actor41: t04
+		Owner: Neutral
+		Location: 42,24
+	Actor43: v34
+		Owner: Neutral
+		Location: 46,62
+	Actor44: v34
+		Owner: Neutral
+		Location: 48,59
+	Actor45: v35
+		Owner: Neutral
+		Location: 47,60
+	Actor46: v36
+		Owner: Neutral
+		Location: 50,61
+	Actor47: rock7
+		Owner: Creeps
+		Location: 93,58
+	Actor48: rock6
+		Owner: Creeps
+		Location: 4,60
+	Actor49: rock4
+		Owner: Creeps
+		Location: 3,59
+	Actor50: rock5
+		Owner: Creeps
+		Location: 5,64
+	Actor42: oilb
+		Owner: Neutral
+		Location: 48,47
+	Actor51: oilb
+		Owner: Neutral
+		Location: 48,28
+	Actor52: t08
+		Owner: Neutral
+		Location: 58,50
+	Actor53: v31
+		Owner: Neutral
+		Location: 60,48
+	Actor54: v23
+		Owner: Neutral
+		Location: 60,49
+	Actor55: tc01
+		Owner: Neutral
+		Location: 56,42
+	Actor56: rock5
+		Owner: Neutral
+		Location: 39,43

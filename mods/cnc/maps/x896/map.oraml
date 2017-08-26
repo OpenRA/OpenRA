@@ -1,0 +1,198 @@
+MapFormat: 11
+
+RequiresMod: cnc
+
+Title: X896
+
+Author: pulse
+
+Tileset: DESERT
+
+MapSize: 72,82
+
+Bounds: 1,1,70,80
+
+Visibility: Lobby
+
+Categories: Conquest
+
+Players:
+	PlayerReference@Neutral:
+		Name: Neutral
+		OwnsWorld: True
+		NonCombatant: True
+		Faction: Random
+	PlayerReference@Creeps:
+		Name: Creeps
+		NonCombatant: True
+		Faction: Random
+		Enemies: Multi0, Multi1, Multi2, Multi3
+	PlayerReference@Multi0:
+		Name: Multi0
+		Playable: True
+		Faction: Random
+		Enemies: Creeps
+	PlayerReference@Multi1:
+		Name: Multi1
+		Playable: True
+		Faction: Random
+		Enemies: Creeps
+	PlayerReference@Multi2:
+		Name: Multi2
+		Playable: True
+		Faction: Random
+		Enemies: Creeps
+	PlayerReference@Multi3:
+		Name: Multi3
+		Playable: True
+		Faction: Random
+		Enemies: Creeps
+
+Actors:
+	Actor0: mpspawn
+		Owner: Neutral
+		Location: 26,69
+	Actor1: mpspawn
+		Owner: Neutral
+		Location: 45,69
+	Actor2: mpspawn
+		Owner: Neutral
+		Location: 26,12
+	Actor3: mpspawn
+		Owner: Neutral
+		Location: 45,12
+	Actor4: split2
+		Owner: Neutral
+		Location: 29,6
+	Actor5: split2
+		Owner: Neutral
+		Location: 42,6
+	Actor6: split2
+		Owner: Neutral
+		Location: 29,75
+	Actor7: split2
+		Owner: Neutral
+		Location: 42,75
+	Actor8: v19
+		Owner: Neutral
+		Location: 7,9
+	Actor9: v19
+		Owner: Neutral
+		Location: 9,10
+	Actor22: t18
+		Owner: Neutral
+		Location: 50,31
+	Actor25: rock1
+		Owner: Neutral
+		Location: 7,21
+	Actor24: rock6
+		Owner: Neutral
+		Location: 4,24
+	Actor17: split2
+		Owner: Neutral
+		Location: 24,40
+	Actor23: t18
+		Owner: Neutral
+		Location: 63,55
+	Actor12: split2
+		Owner: Neutral
+		Location: 65,6
+	Actor14: split2
+		Owner: Neutral
+		Location: 63,47
+	Actor19: v19
+		Owner: Neutral
+		Location: 66,77
+	Actor13: split2
+		Owner: Neutral
+		Location: 6,75
+	Actor21: t08
+		Owner: Neutral
+		Location: 36,26
+	Actor15: split2
+		Owner: Neutral
+		Location: 8,34
+	Actor16: split2
+		Owner: Neutral
+		Location: 47,41
+	Actor18: v19
+		Owner: Neutral
+		Location: 68,77
+	Actor30: t18
+		Owner: Neutral
+		Location: 34,55
+	Actor26: rock4
+		Owner: Neutral
+		Location: 3,28
+	Actor27: rock3
+		Owner: Neutral
+		Location: 48,22
+	Actor28: t09
+		Owner: Neutral
+		Location: 2,22
+	Actor29: t08
+		Owner: Neutral
+		Location: 20,49
+	Actor31: arco
+		Owner: Neutral
+		Location: 69,79
+	Actor32: t08
+		Owner: Neutral
+		Location: 59,67
+	Actor33: t09
+		Owner: Neutral
+		Location: 5,55
+	Actor34: t09
+		Owner: Neutral
+		Location: 68,32
+	Actor35: t09
+		Owner: Neutral
+		Location: 31,21
+	Actor36: t09
+		Owner: Neutral
+		Location: 44,55
+	Actor37: rock1
+		Owner: Neutral
+		Location: 52,65
+	Actor38: t04
+		Owner: Neutral
+		Location: 58,59
+	Actor39: t04
+		Owner: Neutral
+		Location: 23,53
+	Actor40: t04
+		Owner: Neutral
+		Location: 58,32
+	Actor41: t04
+		Owner: Neutral
+		Location: 18,29
+	Actor42: t04
+		Owner: Neutral
+		Location: 52,54
+	Actor43: t04
+		Owner: Neutral
+		Location: 12,47
+	Actor44: rock4
+		Owner: Neutral
+		Location: 56,15
+	Actor45: v27.husk
+		Owner: Neutral
+		Location: 61,58
+	Actor46: t08
+		Owner: Neutral
+		Location: 11,8
+	Actor47: t08
+		Owner: Neutral
+		Location: 6,20
+	Actor48: t08
+		Owner: Neutral
+		Location: 27,36
+	Actor49: t18
+		Owner: Neutral
+		Location: 63,75
+	Actor50: t18
+		Owner: Neutral
+		Location: 2,58
+	Actor51: t18
+		Owner: Neutral
+		Location: 16,17

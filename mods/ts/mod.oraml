@@ -1,0 +1,296 @@
+Metadata:
+	Title: Tiberian Sun
+	Version: {DEV_VERSION}
+
+PackageFormats: Mix
+
+Packages:
+	~^Content/ts
+	~^Content/ts/firestorm
+	.
+	$ts: ts
+	./mods/common: common
+
+# Tiberian Sun
+	~scores.mix
+	~sidenc01.mix
+	~sidenc02.mix
+	~e01scd01.mix
+	~e01scd02.mix
+	~movies01.mix
+	~movies02.mix
+	~sidecd01.mix
+	~sidecd02.mix
+	~cache.mix
+	~conquer.mix
+	~isosnow.mix
+	~isotemp.mix
+	~local.mix
+	~sidec01.mix: sidebar-gdi
+	~sidec02.mix: sidebar-nod
+	~sno.mix
+	~snow.mix
+	~sounds.mix
+	~speech01.mix: speech-gdi
+	~speech02.mix: speech-nod
+	~tem.mix
+	~temperat.mix
+# Firestorm
+	~scores01.mix
+	~expand01.mix
+	~sounds01.mix
+	~e01sc01.mix
+	~e01sc02.mix
+	~e01vox01.mix
+	~e01vox02.mix
+	~ecache01.mix
+	ts|bits
+	ts|uibits
+
+MapFolders:
+	ts|maps: System
+	~^maps/ts/{DEV_VERSION}: User
+
+Rules:
+	ts|rules/ai.oraml
+	ts|rules/misc.oraml
+	ts|rules/player.oraml
+	ts|rules/world.oraml
+	ts|rules/palettes.oraml
+	ts|rules/defaults.oraml
+	ts|rules/aircraft.oraml
+	ts|rules/husks.oraml
+	ts|rules/civilian-infantry.oraml
+	ts|rules/critters.oraml
+	ts|rules/civilian-structures.oraml
+	ts|rules/civilian-vehicles.oraml
+	ts|rules/gdi-infantry.oraml
+	ts|rules/gdi-structures.oraml
+	ts|rules/gdi-support.oraml
+	ts|rules/gdi-vehicles.oraml
+	ts|rules/nod-infantry.oraml
+	ts|rules/nod-structures.oraml
+	ts|rules/nod-support.oraml
+	ts|rules/nod-vehicles.oraml
+	ts|rules/shared-infantry.oraml
+	ts|rules/shared-structures.oraml
+	ts|rules/shared-support.oraml
+	ts|rules/shared-vehicles.oraml
+	ts|rules/trees.oraml
+	ts|rules/bridges.oraml
+
+Weapons:
+	ts|weapons/ballisticweapons.oraml
+	ts|weapons/energyweapons.oraml
+	ts|weapons/explosions.oraml
+	ts|weapons/healweapons.oraml
+	ts|weapons/missiles.oraml
+	ts|weapons/otherweapons.oraml
+	ts|weapons/smallguns.oraml
+	ts|weapons/superweapons.oraml
+
+Sequences:
+	ts|sequences/aircraft.oraml
+	ts|sequences/infantry.oraml
+	ts|sequences/misc.oraml
+	ts|sequences/civilian.oraml
+	ts|sequences/structures.oraml
+	ts|sequences/vehicles.oraml
+	ts|sequences/trees.oraml
+	ts|sequences/bridges.oraml
+	ts|sequences/critters.oraml
+
+ModelSequences:
+	ts|sequences/voxels.oraml
+
+TileSets:
+	ts|tilesets/temperate.oraml
+	ts|tilesets/snow.oraml
+
+MapGrid:
+	TileSize: 48,24
+	EnableDepthBuffer: True
+	Type: RectangularIsometric
+	MaximumTerrainHeight: 16
+	SubCellOffsets: 0,0,0, -362,181,0, 0,-128,0, 362,181,0
+	DefaultSubCell: 2
+
+Cursors:
+	ts|cursors.oraml
+
+Chrome:
+	ts|chrome.oraml
+
+Assemblies:
+	common|OpenRA.Mods.Common.dll
+	common|OpenRA.Mods.Cnc.dll
+
+ChromeLayout:
+	common|chrome/ingame.oraml
+	common|chrome/ingame-chat.oraml
+	common|chrome/ingame-fmvplayer.oraml
+	common|chrome/ingame-menu.oraml
+	ts|chrome/ingame-info.oraml
+	common|chrome/ingame-infoscripterror.oraml
+	common|chrome/ingame-infobriefing.oraml
+	common|chrome/ingame-infoobjectives.oraml
+	common|chrome/ingame-infostats.oraml
+	ts|chrome/ingame-observer.oraml
+	ts|chrome/ingame-observerstats.oraml
+	ts|chrome/ingame-player.oraml
+	common|chrome/ingame-perf.oraml
+	ts|chrome/ingame-debug.oraml
+	common|chrome/ingame-infochat.oraml
+	common|chrome/mainmenu.oraml
+	ts|chrome/mainmenu-prerelease-notification.oraml
+	common|chrome/settings.oraml
+	common|chrome/credits.oraml
+	common|chrome/lobby.oraml
+	common|chrome/lobby-mappreview.oraml
+	common|chrome/lobby-players.oraml
+	common|chrome/lobby-options.oraml
+	common|chrome/lobby-music.oraml
+	common|chrome/lobby-kickdialogs.oraml
+	common|chrome/lobby-globalchat.oraml
+	ts|chrome/color-picker.oraml
+	common|chrome/map-chooser.oraml
+	common|chrome/multiplayer.oraml
+	common|chrome/multiplayer-browser.oraml
+	common|chrome/multiplayer-createserver.oraml
+	common|chrome/multiplayer-directconnect.oraml
+	common|chrome/multiplayer-globalchat.oraml
+	common|chrome/connection.oraml
+	common|chrome/replaybrowser.oraml
+	ts|chrome/dropdowns.oraml
+	common|chrome/musicplayer.oraml
+	common|chrome/tooltips.oraml
+	common|chrome/assetbrowser.oraml
+	common|chrome/missionbrowser.oraml
+	common|chrome/confirmation-dialogs.oraml
+	common|chrome/editor.oraml
+
+Voices:
+	ts|audio/voices.oraml
+
+Notifications:
+	ts|audio/speech-generic.oraml
+	ts|audio/speech-singleplayer.oraml
+	ts|audio/sounds-generic.oraml
+
+Music:
+	ts|audio/music.oraml
+
+Translations:
+	ts|languages/english.oraml
+
+LoadScreen: LogoStripeLoadScreen
+	Image: ts|uibits/loadscreen.png
+	Text: Updating EVA installation..., Changing perspective...
+
+ServerTraits:
+	LobbyCommands
+	PlayerPinger
+	MasterServerPinger
+	LobbySettingsNotification
+
+ChromeMetrics:
+	common|metrics.oraml
+	ts|metrics.oraml
+
+Fonts:
+	Regular:
+		Font: common|FreeSans.ttf
+		Size:14
+	Bold:
+		Font: common|FreeSansBold.ttf
+		Size:14
+	Title:
+		Font: common|FreeSansBold.ttf
+		Size:32
+	MediumBold:
+		Font: common|FreeSansBold.ttf
+		Size:18
+	BigBold:
+		Font: common|FreeSansBold.ttf
+		Size:24
+	Small:
+		Font: common|FreeSans.ttf
+		Size:12
+	Tiny:
+		Font: common|FreeSans.ttf
+		Size:10
+	TinyBold:
+		Font: common|FreeSansBold.ttf
+		Size:10
+
+SupportsMapsFrom: ts
+
+SoundFormats: Aud, Wav
+
+SpriteFormats: ShpTS, TmpTS, ShpTD
+
+SpriteSequenceFormat: TilesetSpecificSpriteSequence
+	TilesetExtensions:
+		TEMPERATE: .tem
+		SNOW: .sno
+	TilesetCodes:
+		TEMPERATE: t
+		SNOW: a
+
+ModelSequenceFormat: VoxelModelSequence
+
+GameSpeeds:
+	slower:
+		Name: Slower
+		Timestep: 50
+		OrderLatency: 3
+	default:
+		Name: Normal
+		Timestep: 40
+		OrderLatency: 3
+	fast:
+		Name: Fast
+		Timestep: 35
+		OrderLatency: 4
+	faster:
+		Name: Faster
+		Timestep: 30
+		OrderLatency: 4
+	fastest:
+		Name: Fastest
+		Timestep: 20
+		OrderLatency: 6
+
+ColorValidator:
+
+ModContent:
+	InstallPromptMessage: Tiberian Sun requires artwork and audio from the original game.\n\nQuick Install will automatically download this content (without music\nor videos) from a mirror of the 2012 Tiberian Sun freeware release.\n\nAdvanced Install includes options for downloading the music and for\ncopying the videos and other content from an original game disc.
+	QuickDownload: quickinstall
+	HeaderMessage: Game content may be extracted from the original game discs or an\nexisting digital install. OpenRA can also download the base game\nfiles from an online mirror of the 2012 freeware release of TS.
+	Packages:
+		tibsun: Base Game Files
+			TestFiles: ^Content/ts/cache.mix, ^Content/ts/conquer.mix, ^Content/ts/isosnow.mix, ^Content/ts/isotemp.mix, ^Content/ts/local.mix, ^Content/ts/sidec01.mix, ^Content/ts/sidec02.mix, ^Content/ts/sno.mix, ^Content/ts/snow.mix, ^Content/ts/sounds.mix, ^Content/ts/speech01.mix, ^Content/ts/tem.mix, ^Content/ts/temperat.mix
+			Sources: tibsun, tibsun-linux, tfd, origin
+			Required: true
+			Download: basefiles
+		tibsun-music: Base Game Music
+			TestFiles: ^Content/ts/scores.mix
+			Sources: tibsun, tibsun-linux, tfd, origin
+			Download: tibsun-music
+		fstorm: Expansion Freeware Content
+			TestFiles: ^Content/ts/firestorm/e01sc01.mix, ^Content/ts/firestorm/e01sc02.mix, ^Content/ts/firestorm/e01vox01.mix, ^Content/ts/firestorm/e01vox02.mix
+			Sources: tfd, origin, fstorm
+			Required: true
+			Download: fstorm
+		fstorm-music: Expansion Freeware Music
+			Sources: tfd, origin, fstorm
+			TestFiles: ^Content/ts/firestorm/linkup.aud, ^Content/ts/firestorm/hacker.aud
+			Download: fstorm-music
+	Downloads:
+		ts|installer/downloads.oraml
+	Sources:
+		ts|installer/downloads.oraml
+		ts|installer/firestorm.oraml
+		ts|installer/firstdecade.oraml
+		ts|installer/origin.oraml
+		ts|installer/tibsun.oraml

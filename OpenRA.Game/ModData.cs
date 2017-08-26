@@ -210,7 +210,7 @@ namespace OpenRA
 
 	public interface ILoadScreen : IDisposable
 	{
-		/// <summary>Initializes the loadscreen with yaml data from the LoadScreen block in mod.yaml.</summary>
+		/// <summary>Initializes the loadscreen with yaml data from the LoadScreen block in mod.oraml.</summary>
 		void Init(ModData m, Dictionary<string, string> info);
 
 		/// <summary>Called at arbitrary times during mod load to rerender the loadscreen.</summary>

@@ -1,0 +1,102 @@
+MapFormat: 11
+
+RequiresMod: d2k
+
+Title: Sietch Tabr
+
+Author: Westwood Studios
+
+Tileset: ARRAKIS
+
+MapSize: 84,84
+
+Bounds: 2,2,80,80
+
+Visibility: Lobby
+
+Categories: Conquest
+
+Players:
+	PlayerReference@Neutral:
+		Name: Neutral
+		OwnsWorld: True
+		NonCombatant: True
+		Faction: Random
+	PlayerReference@Creeps:
+		Name: Creeps
+		NonCombatant: True
+		Faction: Random
+		Enemies: Multi0, Multi1, Multi2, Multi3
+	PlayerReference@Multi0:
+		Name: Multi0
+		Playable: True
+		Faction: Random
+		Enemies: Creeps
+	PlayerReference@Multi1:
+		Name: Multi1
+		Playable: True
+		Faction: Random
+		Enemies: Creeps
+	PlayerReference@Multi2:
+		Name: Multi2
+		Playable: True
+		Faction: Random
+		Enemies: Creeps
+	PlayerReference@Multi3:
+		Name: Multi3
+		Playable: True
+		Faction: Random
+		Enemies: Creeps
+
+Actors:
+	Actor1: mpspawn
+		Location: 68,8
+		Owner: Neutral
+	Actor3: mpspawn
+		Location: 16,13
+		Owner: Neutral
+	Actor4: spicebloom.spawnpoint
+		Location: 68,23
+		Owner: Neutral
+	Actor5: spicebloom.spawnpoint
+		Location: 16,26
+		Owner: Neutral
+	Actor6: spicebloom.spawnpoint
+		Location: 44,26
+		Owner: Neutral
+	Actor7: spicebloom.spawnpoint
+		Location: 65,33
+		Owner: Neutral
+	Actor8: wormspawner
+		Location: 37,36
+		Owner: Creeps
+	Actor9: spicebloom.spawnpoint
+		Location: 49,38
+		Owner: Neutral
+	Actor10: wormspawner
+		Location: 63,44
+		Owner: Creeps
+	Actor11: spicebloom.spawnpoint
+		Location: 22,45
+		Owner: Neutral
+	Actor12: spicebloom.spawnpoint
+		Location: 28,46
+		Owner: Neutral
+	Actor13: spicebloom.spawnpoint
+		Location: 67,48
+		Owner: Neutral
+	Actor14: spicebloom.spawnpoint
+		Location: 47,52
+		Owner: Neutral
+	Actor15: spicebloom.spawnpoint
+		Location: 19,54
+		Owner: Neutral
+	Actor16: wormspawner
+		Location: 38,57
+		Owner: Creeps
+	Actor17: mpspawn
+		Location: 70,64
+		Owner: Neutral
+	Actor19: mpspawn
+		Location: 15,67
+		Owner: Neutral

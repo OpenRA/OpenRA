@@ -49,7 +49,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			Console.WriteLine(output.ToLines(key).JoinWith("\n"));
 		}
 
-		[Desc("MAPFILE", "Merge custom map rules into a form suitable for including in map.yaml.")]
+		[Desc("MAPFILE", "Merge custom map rules into a form suitable for including in map.oraml.")]
 		void IUtilityCommand.Run(Utility utility, string[] args)
 		{
 			var modData = Game.ModData = utility.ModData;

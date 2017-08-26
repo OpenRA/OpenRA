@@ -1,0 +1,141 @@
+MapFormat: 11
+
+RequiresMod: ra
+
+Title: Bad Neighbors
+
+Author: Nuke'm Bro.
+
+Tileset: TEMPERAT
+
+MapSize: 64,64
+
+Bounds: 1,1,59,62
+
+Visibility: Lobby
+
+Categories: Conquest
+
+Players:
+	PlayerReference@Neutral:
+		Name: Neutral
+		OwnsWorld: True
+		NonCombatant: True
+		Faction: allies
+	PlayerReference@Multi0:
+		Name: Multi0
+		Playable: True
+		Faction: Random
+		Enemies: Creeps
+	PlayerReference@Creeps:
+		Name: Creeps
+		NonCombatant: True
+		Faction: allies
+		Enemies: Multi0, Multi1, Multi2, Multi3
+	PlayerReference@Multi1:
+		Name: Multi1
+		Playable: True
+		Faction: Random
+		Enemies: Creeps
+	PlayerReference@Multi2:
+		Name: Multi2
+		Playable: True
+		Faction: Random
+		Enemies: Creeps
+	PlayerReference@Multi3:
+		Name: Multi3
+		Playable: True
+		Faction: Random
+		Enemies: Creeps
+
+Actors:
+	Actor10: v01
+		Location: 25,47
+		Owner: Neutral
+	Actor11: v01
+		Location: 31,9
+		Owner: Neutral
+	Actor16: wood
+		Location: 33,15
+		Owner: Neutral
+	Actor17: wood
+		Location: 34,15
+		Owner: Neutral
+	Actor18: wood
+		Location: 32,15
+		Owner: Neutral
+	Actor19: wood
+		Location: 31,15
+		Owner: Neutral
+	Actor20: wood
+		Location: 28,17
+		Owner: Neutral
+	Actor21: wood
+		Location: 27,17
+		Owner: Neutral
+	Actor22: wood
+		Location: 26,17
+		Owner: Neutral
+	Actor23: wood
+		Location: 28,16
+		Owner: Neutral
+	Actor28: v08
+		Location: 33,14
+		Owner: Neutral
+	Actor29: v03
+		Location: 26,15
+		Owner: Neutral
+	Actor30: wood
+		Location: 29,46
+		Owner: Neutral
+	Actor31: v04
+		Location: 24,52
+		Owner: Neutral
+	Actor32: wood
+		Location: 30,46
+		Owner: Neutral
+	Actor33: wood
+		Location: 31,46
+		Owner: Neutral
+	Actor34: v12
+		Location: 31,47
+		Owner: Neutral
+	Actor35: v05
+		Location: 29,47
+		Owner: Neutral
+	Actor36: wood
+		Location: 24,54
+		Owner: Neutral
+	Actor37: wood
+		Location: 23,54
+		Owner: Neutral
+	Actor42: mpspawn
+		Owner: Neutral
+		Location: 14,11
+	Actor43: mpspawn
+		Owner: Neutral
+		Location: 14,51
+	Actor44: mpspawn
+		Owner: Neutral
+		Location: 45,11
+	Actor45: mpspawn
+		Owner: Neutral
+		Location: 45,50
+	Actor24: mine
+		Owner: Neutral
+		Location: 28,3
+	Actor25: mine
+		Owner: Neutral
+		Location: 9,32
+	Actor26: mine
+		Owner: Neutral
+		Location: 48,33
+	Actor27: mine
+		Owner: Neutral
+		Location: 32,28
+	Actor38: mine
+		Owner: Neutral
+		Location: 26,25
+	Actor39: mine
+		Owner: Neutral
+		Location: 29,58

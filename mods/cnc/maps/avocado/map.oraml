@@ -1,0 +1,176 @@
+MapFormat: 11
+
+RequiresMod: cnc
+
+Title: Avocado
+
+Author: sin
+
+Tileset: JUNGLE
+
+MapSize: 96,96
+
+Bounds: 16,28,64,48
+
+Visibility: Lobby
+
+Categories: Conquest
+
+Players:
+	PlayerReference@Neutral:
+		Name: Neutral
+		OwnsWorld: True
+		NonCombatant: True
+		Race: gdi
+	PlayerReference@Multi0:
+		Name: Multi0
+		Playable: True
+		Race: Random
+		Enemies: Creeps
+	PlayerReference@Multi1:
+		Name: Multi1
+		Playable: True
+		Race: Random
+		Enemies: Creeps
+	PlayerReference@Creeps:
+		Name: Creeps
+		NonCombatant: True
+		Race: gdi
+		Enemies: Multi0, Multi1
+
+Actors:
+	Actor0: split2
+		Location: 46,48
+		Owner: Neutral
+	Actor1: split2
+		Location: 50,55
+		Owner: Neutral
+	Actor2: split2
+		Location: 61,71
+		Owner: Neutral
+	Actor3: split2
+		Location: 33,31
+		Owner: Neutral
+	Actor4: split2
+		Location: 56,32
+		Owner: Neutral
+	Actor5: split2
+		Location: 20,50
+		Owner: Neutral
+	Actor6: split2
+		Location: 39,70
+		Owner: Neutral
+	Actor7: split2
+		Location: 75,51
+		Owner: Neutral
+	Actor8: split2
+		Location: 44,51
+		Owner: Neutral
+	Actor9: split2
+		Location: 50,53
+		Owner: Neutral
+	Actor10: mpspawn
+		Location: 25,39
+		Owner: Neutral
+	Actor11: mpspawn
+		Location: 69,63
+		Owner: Neutral
+	Actor12: v11
+		Location: 32,45
+		Owner: Neutral
+	Actor13: v09
+		Location: 30,45
+		Owner: Neutral
+	Actor14: v15
+		Location: 32,47
+		Owner: Neutral
+	Actor15: v16
+		Location: 35,45
+		Owner: Neutral
+	Actor16: arco
+		Location: 64,57
+		Owner: Neutral
+	Actor17: v02
+		Location: 62,54
+		Owner: Neutral
+	Actor18: v14
+		Location: 65,55
+		Owner: Neutral
+	Actor19: v14
+		Location: 64,55
+		Owner: Neutral
+	Actor20: c1
+		Location: 31,47
+		Owner: Neutral
+	Actor21: c3
+		Location: 33,46
+		Owner: Neutral
+	Actor22: c4
+		Location: 65,56
+		Owner: Neutral
+	Actor23: c6
+		Location: 63,56
+		Owner: Neutral
+	Actor24: c9
+		Location: 68,52
+		Owner: Neutral
+	Actor25: v17
+		Location: 34,47
+		Owner: Neutral
+	Actor26: t11
+		Location: 75,35
+		Owner: Neutral
+	Actor27: t10
+		Location: 74,36
+		Owner: Neutral
+	Actor28: tc03
+		Location: 75,37
+		Owner: Neutral
+	Actor29: tc02
+		Location: 71,33
+		Owner: Neutral
+	Actor30: tc02
+		Location: 23,70
+		Owner: Neutral
+	Actor31: t11
+		Location: 26,74
+		Owner: Neutral
+	Actor32: tc02
+		Location: 22,65
+		Owner: Neutral
+	Actor33: tc03
+		Location: 21,67
+		Owner: Neutral
+	Actor34: t10
+		Location: 24,67
+		Owner: Neutral
+	Actor35: t10
+		Location: 70,31
+		Owner: Neutral
+	Actor36: t10
+		Location: 65,50
+		Owner: Neutral
+	Actor37: tc03
+		Location: 25,28
+		Owner: Neutral
+	Actor38: t12
+		Location: 57,61
+		Owner: Neutral
+	Actor39: t12
+		Location: 63,44
+		Owner: Neutral
+	Actor40: t10
+		Location: 48,72
+		Owner: Neutral
+	Actor41: t02
+		Location: 48,69
+		Owner: Neutral
+	Actor42: t03
+		Location: 29,47
+		Owner: Neutral
+	Actor43: t03
+		Location: 76,70
+		Owner: Neutral
+	Actor44: t01
+		Location: 75,30
+		Owner: Neutral
