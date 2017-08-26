@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component type="desktop">
-  <id>openra.desktop</id>
+  <id>openra-{MOD}.desktop</id>
   <metadata_license>CC0-1.0</metadata_license>
   <project_license>GPL-3.0</project_license>
-  <name>OpenRA</name>
+  <name>OpenRA - {MOD_NAME}</name>
   <summary>Reimagining of early Westwood real-time strategy games</summary>
   <description>
     <p>
@@ -25,15 +25,15 @@
     </p>
   </description>
   <screenshots>
-    <screenshot type="default">
+    <screenshot{SCREENSHOT_RA}>
       <image>http://www.openra.net/images/appdata/ingame-ra.png</image>
       <caption>Red Alert mod</caption>
     </screenshot>
-    <screenshot>
+    <screenshot{SCREENSHOT_CNC}>
       <image>http://www.openra.net/images/appdata/ingame-cnc.png</image>
       <caption>Tiberian Dawn mod</caption>
     </screenshot>
-    <screenshot>
+    <screenshot{SCREENSHOT_D2K}>
       <image>http://www.openra.net/images/appdata/ingame-d2k.png</image>
       <caption>Dune 2000 Mod</caption>
     </screenshot>
