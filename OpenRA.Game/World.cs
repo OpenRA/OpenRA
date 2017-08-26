@@ -83,6 +83,7 @@ namespace OpenRA
 		public bool ShroudObscures(WPos pos) { return RenderPlayer != null && !RenderPlayer.Shroud.IsExplored(pos); }
 		public bool ShroudObscures(PPos uv) { return RenderPlayer != null && !RenderPlayer.Shroud.IsExplored(uv); }
 
+		////Checking with the replay connection and return the condition
 		public bool IsReplay
 		{
 			get { return OrderManager.Connection is ReplayConnection; }
