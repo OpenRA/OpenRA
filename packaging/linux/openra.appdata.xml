@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component type="desktop">
-  <id>openra.desktop</id>
+  <id>net.openra</id>
   <metadata_license>CC0-1.0</metadata_license>
   <project_license>GPL-3.0</project_license>
   <name>OpenRA</name>
@@ -43,6 +43,9 @@
     </screenshot>
   </screenshots>
   <url type="homepage">http://www.openra.net</url>
+  ​<launchable type="desktop-id">openra-ra.desktop</launchable>
+  ​<launchable type="desktop-id">openra-cnc.desktop</launchable>
+  ​<launchable type="desktop-id">openra-d2k.desktop</launchable>
   <update_contact>paul_at_chote.net</update_contact>
   <content_rating type="oars-1.0">
     <content_attribute id="violence-cartoon">none</content_attribute>
