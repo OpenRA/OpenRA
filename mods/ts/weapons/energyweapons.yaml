@@ -205,3 +205,13 @@ LaserFence:
 		DebugOverlayColor: FF0000
 		Damage: 10000000
 		DamageTypes: FireDeath
+
+Firestorm:
+	ReloadDelay: 16
+	ValidTargets: Ground, Air
+	Warhead@1Dam: TargetDamage
+		DebugOverlayColor: 0000FF
+		ValidTargets: Ground, Air
+		Spread: 0
+		Damage: 99999
+		DamageTypes: FireDeath

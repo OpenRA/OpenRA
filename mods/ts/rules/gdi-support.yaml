@@ -41,6 +41,131 @@ GAGATE_B:
 	Replacement:
 		ReplaceableTypes: GDIGate
 
+GAFSDF:
+	Inherits@WALL: ^Wall
+	Inherits@EMPDISABLE: ^EmpDisable
+	Inherits@IDISABLED: ^DisableOnLowPowerOrPowerDown
+	Buildable:
+		Queue: Defense
+		BuildPaletteOrder: 80
+		Prerequisites: gafire, ~structures.gdi
+		Description: Destroys units and blocks enemy fire when active.
+	Building:
+		Dimensions: 1,1
+		Footprint: x
+		BuildSounds: place2.aud
+		Adjacent: 7
+		TerrainTypes: Clear, Rough, Road, DirtRoad, Green, Sand, Pavement
+	EnergyWall:
+		ActiveCondition: firestorm-active && !disabled
+		Weapon: Firestorm
+	SoundOnDamageTransition:
+		DamagedSounds:
+		DestroyedSounds:
+	Valued:
+		Cost: 50
+	CustomSellValue:
+		Value: 0
+	Sellable:
+		RequiresCondition: !firestorm-active
+	Tooltip:
+		Name: Firestorm Wall Section
+	Health:
+		HP: 200
+	Armor:
+		Type: Concrete
+	BlocksProjectiles:
+		RequiresCondition: firestorm-active && !disabled
+		Height: 9999
+	Power:
+		Amount: -2
+	RevealsShroud:
+		Range: 2c0
+	-Crushable:
+	LineBuild:
+		NodeTypes: firestormbarrier
+	LineBuildNode:
+		Types: firestormbarrier
+	GrantConditionOnLineBuildNode:
+		Type: firestormbarrier
+		Condition: firestormnode
+	WithWallSpriteBody:
+		Type: firestormbarrier
+	WithWallSpriteBody@ACTIVE:
+		Type: firestormbarrier
+		Sequence: enabled
+		RequiresCondition: firestorm-active && !disabled
+	WithIdleOverlay@FLASH:
+		Sequence: flash
+		RequiresCondition: firestorm-active && !disabled && firestormnode
+	WithRandomIntervalOverlay@BURST:
+		Sequence: burst
+		Palette: effect
+		IsPlayerPalette: false
+		RequiresCondition: firestorm-active && !disabled && firestormnode
+		MinRandomWaitTicks: 60
+		MaxRandomWaitTicks: 120
+	DamageMultiplier@INVULNERABLE:
+		RequiresCondition: firestorm-active
+		Modifier: 0
+	ExternalCondition@ACTIVE:
+		Condition: firestorm-active
+
+GAFIRE:
+	Inherits@BUILDING: ^Building
+	Inherits@IDISABLED: ^DisableOnLowPowerOrPowerDown
+	Valued:
+		Cost: 2000
+	Tooltip:
+		Name: Firestorm Generator
+	Buildable:
+		BuildPaletteOrder: 80
+		Prerequisites: gatech, ~structures.gdi
+		Queue: Defense
+		Description: Powers the firestorm defense barrier.
+	Building:
+		Footprint: xxx xxx
+		Dimensions: 3,2
+	Sellable:
+		RequiresCondition: !firestorm-active
+	Health:
+		HP: 600
+	Armor:
+		Type: Heavy
+	WithIdleOverlay@LIGHTS:
+		Sequence: idle-lights
+		RequiresCondition: !disabled
+	ExternalCondition@ACTIVE:
+		Condition: firestorm-active
+	WithIdleOverlay@ACTIVE:
+		StartSequence: opening
+		Sequence: active
+		RequiresCondition: firestorm-active
+	WithIdleOverlay@CLOSED:
+		StartSequence: closing
+		Sequence: closed
+		RequiresCondition: !firestorm-active
+	RevealsShroud:
+		Range: 5c0
+	Power:
+		Amount: -200
+	Selectable:
+		Bounds: 106, 48, 8, -6
+	SelectionDecorations:
+		VisualBounds: 106, 60, 8, -15
+	ProvidesPrerequisite@buildingname:
+	GrantGlobalExternalConditionPower@FIRESTORM:
+		PauseOnCondition: disabled
+		Icon: firestorm
+		ChargeTime: 160
+		Duration: 250
+		EndChargeSpeechNotification: FireStormDefenseReady
+		InsufficientPowerSpeechNotification: FireStormDefenseOffline
+		Description: Firestorm Defense
+		LongDesc: Enables the Firestorm barriers
+		LifeTime: 500
+		Condition: firestorm-active
+
 GACTWR:
 	Inherits: ^Defense
 	Inherits@IDISABLE: ^DisableOnPowerDown

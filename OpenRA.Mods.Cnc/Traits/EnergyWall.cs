@@ -18,7 +18,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Cnc.Traits
 {
 	[Desc("Will open and be passable for actors that appear friendly when there are no enemies in range.")]
-	public class EnergyWallInfo : BuildingInfo, ITemporaryBlockerInfo, IObservesVariablesInfo, IRulesetLoaded
+	public class EnergyWallInfo : ITemporaryBlockerInfo, IObservesVariablesInfo, IRulesetLoaded, Requires<BuildingInfo>
 	{
 		[FieldLoader.Require]
 		[WeaponReference]
@@ -29,7 +29,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		[Desc("Boolean expression defining the condition to activate this trait.")]
 		public readonly BooleanExpression ActiveCondition = null;
 
-		public override object Create(ActorInitializer init) { return new EnergyWall(init, this); }
+		public object Create(ActorInitializer init) { return new EnergyWall(init.Self, this); }
 
 		public WeaponInfo WeaponInfo { get; private set; }
 
@@ -45,39 +45,45 @@ namespace OpenRA.Mods.Cnc.Traits
 		}
 	}
 
-	public class EnergyWall : Building, IObservesVariables, ITick, ITemporaryBlocker
+	public class EnergyWall : IObservesVariables, ITick, ITemporaryBlocker, INotifyAddedToWorld, INotifyRemovedFromWorld
 	{
-		readonly EnergyWallInfo info;
+		public readonly EnergyWallInfo Info;
+		public readonly IEnumerable<CPos> Footprint;
+
+		readonly Building building;
 		IEnumerable<CPos> blockedPositions;
 
 		// Initial state is active to match Building adding the influence to the ActorMap
 		// This will be updated by ConditionsChanged at actor creation.
 		bool active = true;
 
-		public EnergyWall(ActorInitializer init, EnergyWallInfo info)
-			: base(init, info)
+		public EnergyWall(Actor self, EnergyWallInfo info)
 		{
-			this.info = info;
+			Info = info;
+
+			building = self.Trait<Building>();
+			blockedPositions = building.Info.Tiles(self.Location);
+			Footprint = blockedPositions;
 		}
 
 		public virtual IEnumerable<VariableObserver> GetVariableObservers()
 		{
-			if (info.ActiveCondition != null)
-				yield return new VariableObserver(ActiveConditionChanged, info.ActiveCondition.Variables);
+			if (Info.ActiveCondition != null)
+				yield return new VariableObserver(ActiveConditionChanged, Info.ActiveCondition.Variables);
 		}
 
 		void ActiveConditionChanged(Actor self, IReadOnlyDictionary<string, int> conditions)
 		{
-			if (info.ActiveCondition == null)
+			if (Info.ActiveCondition == null)
 				return;
 
 			var wasActive = active;
-			active = info.ActiveCondition.Evaluate(conditions);
+			active = Info.ActiveCondition.Evaluate(conditions);
 
 			if (!wasActive && active)
-				self.World.ActorMap.AddInfluence(self, this);
+				self.World.ActorMap.AddInfluence(self, building);
 			else if (wasActive && !active)
-				self.World.ActorMap.RemoveInfluence(self, this);
+				self.World.ActorMap.RemoveInfluence(self, building);
 		}
 
 		void ITick.Tick(Actor self)
@@ -89,7 +95,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			{
 				var blockers = self.World.ActorMap.GetActorsAt(loc).Where(a => !a.IsDead && a != self);
 				foreach (var blocker in blockers)
-					info.WeaponInfo.Impact(Target.FromActor(blocker), self, Enumerable.Empty<int>());
+					Info.WeaponInfo.Impact(Target.FromActor(blocker), self, Enumerable.Empty<int>());
 			}
 		}
 
@@ -103,10 +109,14 @@ namespace OpenRA.Mods.Cnc.Traits
 			return !active;
 		}
 
-		protected override void AddedToWorld(Actor self)
+		void INotifyAddedToWorld.AddedToWorld(Actor self)
 		{
-			base.AddedToWorld(self);
-			blockedPositions = info.Tiles(self.Location);
+			blockedPositions = Footprint;
+		}
+
+		void INotifyRemovedFromWorld.RemovedFromWorld(Actor self)
+		{
+			blockedPositions = Enumerable.Empty<CPos>();
 		}
 	}
 }

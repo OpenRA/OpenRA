@@ -1990,3 +1990,70 @@ gaplug2:
 
 gaplug3:
 	icon: rad3icon
+
+gafire:
+	Defaults:
+		Offset: -16, -28, 28
+		UseTilesetCode: true
+	idle:
+		ShadowStart: 3
+	damaged-idle:
+		Start: 1
+		ShadowStart: 4
+	dead:
+		Start: 2
+		ShadowStart: 5
+		Tick: 400
+	idle-lights: gtfire_c
+		Length: 6
+		ShadowStart: 5
+		Tick: 120
+	active: gtfire_b
+		Length: 16
+		ShadowStart: 16
+	opening: gtfire_a
+		Length: 18
+	closed: gtfire_a
+		Start: 18
+	closing: gtfire_a
+		Start: 18
+		Length: -18
+	make: gtfiremk
+		Length: 16
+		ShadowStart: 16
+	emp-overlay: emp_fx01
+		Length: *
+		Offset: 0, 0
+		UseTilesetCode: false
+		ZOffset: 512
+		BlendMode: Additive
+	icon: fsdicon
+		Offset: 0, 0
+		UseTilesetCode: false
+
+gafsdf:
+	Defaults:
+		Offset: 0, -12, 12
+		UseTilesetCode: true
+	idle:
+		Length: 16
+	enabled:
+		Start: 32
+		Length: 16
+	flash: gtfsdf_a
+		Length: 4
+		Tick: 60
+	burst: fsidle
+		Length: *
+		Offset: 0, -72
+		UseTilesetCode: false
+		BlendMode: Additive
+	emp-overlay: emp_fx01
+		Length: *
+		Offset: 0, 0
+		UseTilesetCode: false
+		ZOffset: 512
+		BlendMode: Additive
+	icon: fspicon
+		Offset: 0, 0
+		UseTilesetCode: false

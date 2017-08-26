@@ -808,6 +808,10 @@
 	Guard:
 		Voice: Move
 	Guardable:
+	ExternalCondition@ACTIVE:
+		Condition: firestorm-active
+	KillsActorAboveEnergyWall:
+		RequiresCondition: firestorm-active
 	MustBeDestroyed:
 	RenderVoxels:
 	WithVoxelBody:

@@ -19,6 +19,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
+	[Desc("Used to grant a support power to a group of allied actors at a target location.")]
 	class GrantExternalConditionPowerInfo : SupportPowerInfo
 	{
 		[FieldLoader.Require]

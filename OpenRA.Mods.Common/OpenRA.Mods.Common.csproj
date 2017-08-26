@@ -469,6 +469,7 @@
     <Compile Include="Traits\Render\WithNukeLaunchAnimation.cs" />
     <Compile Include="Traits\Render\WithNukeLaunchOverlay.cs" />
     <Compile Include="Traits\Render\WithParachute.cs" />
+    <Compile Include="Traits\Render\WithRandomIntervalOverlay.cs" />
     <Compile Include="Traits\Render\WithRangeCircle.cs" />
     <Compile Include="Traits\Render\WithRearmAnimation.cs" />
     <Compile Include="Traits\Render\WithRepairAnimation.cs" />
@@ -510,6 +511,7 @@
     <Compile Include="Traits\Sound\SoundOnDamageTransition.cs" />
     <Compile Include="Traits\Sound\AttackSounds.cs" />
     <Compile Include="Traits\SupportPowers\AirstrikePower.cs" />
+    <Compile Include="Traits\SupportPowers\GrantGlobalExternalConditionPower.cs" />
     <Compile Include="Traits\SupportPowers\GrantExternalConditionPower.cs" />
     <Compile Include="Traits\SupportPowers\NukePower.cs" />
     <Compile Include="Traits\SupportPowers\ParatroopersPower.cs" />
@@ -830,6 +832,7 @@
     <Compile Include="Traits\Render\WithChargeOverlay.cs" />
     <Compile Include="WebServices.cs" />
     <Compile Include="Traits\Conditions\GrantConditionOnLineBuildDirection.cs" />
+    <Compile Include="Traits\Conditions\GrantConditionOnLineBuildNode.cs" />
     <Compile Include="Traits\Conditions\LineBuildSegmentExternalCondition.cs" />
     <Compile Include="Traits\EntersTunnels.cs" />
     <Compile Include="Traits\TunnelEntrance.cs" />

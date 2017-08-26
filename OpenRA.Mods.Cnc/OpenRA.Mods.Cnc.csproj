@@ -157,6 +157,7 @@
     <Compile Include="Traits\TDGunboat.cs" />
     <Compile Include="Traits\Attack\AttackTDGunboatTurreted.cs" />
     <Compile Include="Traits\GpsDot.cs" />
+    <Compile Include="Traits\KillsActorAboveEnergyWall.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.Game\OpenRA.Game.csproj">
