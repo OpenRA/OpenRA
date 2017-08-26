@@ -43,6 +43,10 @@
     </screenshot>
   </screenshots>
   <url type="homepage">http://www.openra.net</url>
+  <url type="bugtracker">http://bugs.openra.net</url>
+  <url type="faq">http://wiki.openra.net/FAQ</url>
+  <url type="help">http://wiki.openra.net</url>
+  <url type="donation">https://salt.bountysource.com/teams/openra</url>
   ​<launchable type="desktop-id">openra-ra.desktop</launchable>
   ​<launchable type="desktop-id">openra-cnc.desktop</launchable>
   ​<launchable type="desktop-id">openra-d2k.desktop</launchable>
