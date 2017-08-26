@@ -21,6 +21,7 @@ namespace OpenRA
 
 	public static class Platform
 	{
+		////Return the current platform object
 		public static PlatformType CurrentPlatform { get { return currentPlatform.Value; } }
 		public static readonly Guid SessionGUID = Guid.NewGuid();
 
@@ -48,6 +49,7 @@ namespace OpenRA
 			return PlatformType.Unknown;
 		}
 
+		////Obtaining the version of the runtime environment
 		public static string RuntimeVersion
 		{
 			get
