@@ -566,6 +566,9 @@ palace.atreides:
 	idle: DATA.R8
 		Start: 2924
 		Offset: -48,48
+	active: DATA.R8
+		Start: 2924
+		Offset: -48,48
 	make: DATA.R8
 		Start: 4677
 		Length: 11
@@ -980,10 +983,10 @@ palace.harkonnen:
 	damaged-idle: DATA.R8
 		Start: 3085
 		Offset: -48,48
-#	active: DATA.R8 # TODO: overlay
-#		Start:  5084
-#		Length: 20
-#		Offset: -48,64
+	active: DATA.R8
+		Start:  5084
+		Length: 20
+		Offset: -48,64
 	damaged-active: DATA.R8
 		Start: 5084
 		Length: 20
@@ -1371,6 +1374,9 @@ palace.ordos:
 	idle: DATA.R8
 		Start: 3244
 		Offset: -48,48
+	active: DATA.R8
+		Start: 3244
+		Offset: -48,48
 	make: DATA.R8
 		Start: 4677
 		Length: 11
@@ -1483,6 +1489,9 @@ heavy.ordos:
 
 palace.corrino:
 	idle: DATA.R8
+		Start: 3252
+		Offset: -48,48
+	active: DATA.R8
 		Start: 3252
 		Offset: -48,48
 	damaged-idle: DATA.R8

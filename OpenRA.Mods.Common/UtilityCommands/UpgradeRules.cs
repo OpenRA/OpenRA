@@ -974,6 +974,16 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				// nuke launch animation is now it's own trait
+				if (engineVersion < 20170820)
+				{
+					if (depth == 1 && node.Key.StartsWith("NukePower"))
+					{
+						node.Value.Nodes.RemoveAll(n => n.Key == "ActivationSequence");
+						addNodes.Add(new MiniYamlNode("WithNukeLaunchAnimation", new MiniYaml("")));
+					}
+				}
+
 				UpgradeActorRules(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 
