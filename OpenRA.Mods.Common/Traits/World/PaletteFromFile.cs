@@ -15,6 +15,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
+	[Desc("Load VGA palette (.pal) registers.")]
 	class PaletteFromFileInfo : ITraitInfo
 	{
 		[FieldLoader.Require, PaletteDefinition]

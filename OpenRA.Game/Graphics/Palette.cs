@@ -144,6 +144,13 @@ namespace OpenRA.Graphics
 			foreach (var sourceColor in sourceColors)
 				colors[i++] = sourceColor;
 		}
+
+		public ImmutablePalette(IEnumerable<uint> sourceColors, int[] remapShadow)
+			: this(sourceColors)
+		{
+			foreach (var s in remapShadow)
+				colors[s] = 140u << 24;
+		}
 	}
 
 	public class MutablePalette : IPalette
