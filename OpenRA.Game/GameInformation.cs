@@ -109,6 +109,7 @@ namespace OpenRA
 			if (client == null)
 				return;
 
+			// Create a new Player Object with all the details initialization
 			var player = new Player
 			{
 				ClientIndex = runtimePlayer.ClientIndex,
