@@ -1,0 +1,191 @@
+MapFormat: 11
+
+RequiresMod: d2k
+
+Title: Tuck's Sietch
+
+Author: Westwood Studios
+
+Tileset: ARRAKIS
+
+MapSize: 128,128
+
+Bounds: 16,16,80,80
+
+Visibility: Lobby
+
+Categories: Conquest
+
+Players:
+	PlayerReference@Neutral:
+		Name: Neutral
+		OwnsWorld: True
+		NonCombatant: True
+		Faction: atreides
+	PlayerReference@Multi0:
+		Name: Multi0
+		Playable: True
+		Faction: Random
+		Enemies: Creeps
+	PlayerReference@Multi1:
+		Name: Multi1
+		Playable: True
+		Faction: Random
+		Enemies: Creeps
+	PlayerReference@Multi2:
+		Name: Multi2
+		Playable: True
+		Faction: Random
+		Enemies: Creeps
+	PlayerReference@Multi3:
+		Name: Multi3
+		Playable: True
+		Faction: Random
+		Enemies: Creeps
+	PlayerReference@Multi4:
+		Name: Multi4
+		Playable: True
+		Faction: Random
+		Enemies: Creeps
+	PlayerReference@Multi5:
+		Name: Multi5
+		Playable: True
+		Faction: Random
+		Enemies: Creeps
+	PlayerReference@Multi6:
+		Name: Multi6
+		Playable: True
+		Faction: Random
+		Enemies: Creeps
+	PlayerReference@Multi7:
+		Name: Multi7
+		Playable: True
+		Faction: Random
+		Enemies: Creeps
+	PlayerReference@Creeps:
+		Name: Creeps
+		NonCombatant: True
+		Faction: atreides
+		Enemies: Multi0, Multi1, Multi2, Multi3, Multi4, Multi5, Multi6, Multi7
+
+Actors:
+	Actor0: spicebloom.spawnpoint
+		Location: 27,42
+		Owner: Neutral
+	Actor1: mpspawn
+		Location: 30,28
+		Owner: Neutral
+	Actor2: mpspawn
+		Location: 20,25
+		Owner: Neutral
+	Actor3: spicebloom.spawnpoint
+		Location: 43,22
+		Owner: Neutral
+	Actor4: spicebloom.spawnpoint
+		Location: 50,53
+		Owner: Neutral
+	Actor5: spicebloom.spawnpoint
+		Location: 50,65
+		Owner: Neutral
+	Actor6: spicebloom.spawnpoint
+		Location: 45,75
+		Owner: Neutral
+	Actor7: spicebloom.spawnpoint
+		Location: 64,52
+		Owner: Neutral
+	Actor8: spicebloom.spawnpoint
+		Location: 65,64
+		Owner: Neutral
+	Actor9: spicebloom.spawnpoint
+		Location: 65,20
+		Owner: Neutral
+	Actor10: mpspawn
+		Location: 83,20
+		Owner: Neutral
+	Actor11: mpspawn
+		Location: 85,28
+		Owner: Neutral
+	Actor12: spicebloom.spawnpoint
+		Location: 85,42
+		Owner: Neutral
+	Actor13: spicebloom.spawnpoint
+		Location: 40,45
+		Owner: Neutral
+	Actor14: spicebloom.spawnpoint
+		Location: 52,37
+		Owner: Neutral
+	Actor15: spicebloom.spawnpoint
+		Location: 67,34
+		Owner: Neutral
+	Actor16: spicebloom.spawnpoint
+		Location: 76,43
+		Owner: Neutral
+	Actor17: spicebloom.spawnpoint
+		Location: 26,75
+		Owner: Neutral
+	Actor18: spicebloom.spawnpoint
+		Location: 48,91
+		Owner: Neutral
+	Actor19: spicebloom.spawnpoint
+		Location: 29,61
+		Owner: Neutral
+	Actor20: mpspawn
+		Location: 25,88
+		Owner: Neutral
+	Actor21: mpspawn
+		Location: 36,88
+		Owner: Neutral
+	Actor22: spicebloom.spawnpoint
+		Location: 93,68
+		Owner: Neutral
+	Actor23: spicebloom.spawnpoint
+		Location: 71,74
+		Owner: Neutral
+	Actor24: spicebloom.spawnpoint
+		Location: 62,92
+		Owner: Neutral
+	Actor25: spicebloom.spawnpoint
+		Location: 82,65
+		Owner: Neutral
+	Actor26: mpspawn
+		Location: 77,89
+		Owner: Neutral
+	Actor27: mpspawn
+		Location: 89,80
+		Owner: Neutral
+	Actor28: wormspawner
+		Location: 16,53
+		Owner: Creeps
+	Actor29: wormspawner
+		Location: 46,16
+		Owner: Creeps
+	Actor30: wormspawner
+		Location: 50,16
+		Owner: Creeps
+	Actor31: wormspawner
+		Location: 95,54
+		Owner: Creeps
+	Actor32: wormspawner
+		Location: 95,61
+		Owner: Creeps
+	Actor33: wormspawner
+		Location: 55,95
+		Owner: Creeps
+	Actor34: wormspawner
+		Location: 51,95
+		Owner: Creeps
+	Actor35: wormspawner
+		Location: 16,60
+		Owner: Creeps
+	Actor36: wormspawner
+		Location: 52,55
+		Owner: Creeps
+	Actor37: wormspawner
+		Location: 60,55
+		Owner: Creeps
+	Actor38: wormspawner
+		Location: 61,62
+		Owner: Creeps
+	Actor39: wormspawner
+		Location: 51,64
+		Owner: Creeps

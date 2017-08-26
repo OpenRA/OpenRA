@@ -1,0 +1,95 @@
+MapFormat: 11
+
+RequiresMod: d2k
+
+Title: The Duell
+
+Author: CombineCnR
+
+Tileset: ARRAKIS
+
+MapSize: 136,136
+
+Bounds: 16,16,104,104
+
+Visibility: Lobby
+
+Categories: Conquest
+
+Players:
+	PlayerReference@Neutral:
+		Name: Neutral
+		OwnsWorld: True
+		NonCombatant: True
+		Faction: atreides
+	PlayerReference@Multi0:
+		Name: Multi0
+		Playable: True
+		Faction: Random
+		Enemies: Creeps
+	PlayerReference@Multi1:
+		Name: Multi1
+		Playable: True
+		Faction: Random
+		Enemies: Creeps
+	PlayerReference@Creeps:
+		Name: Creeps
+		NonCombatant: True
+		Faction: atreides
+		Enemies: Multi0, Multi1
+
+Actors:
+	Actor0: spicebloom.spawnpoint
+		Location: 106,116
+		Owner: Neutral
+	Actor1: spicebloom.spawnpoint
+		Location: 115,109
+		Owner: Neutral
+	Actor2: spicebloom.spawnpoint
+		Location: 20,29
+		Owner: Neutral
+	Actor3: spicebloom.spawnpoint
+		Location: 26,20
+		Owner: Neutral
+	Actor4: mpspawn
+		Location: 37,38
+		Owner: Neutral
+	Actor6: spicebloom.spawnpoint
+		Location: 66,69
+		Owner: Neutral
+	Actor7: spicebloom.spawnpoint
+		Location: 69,72
+		Owner: Neutral
+	Actor8: spicebloom.spawnpoint
+		Location: 74,71
+		Owner: Neutral
+	Actor9: spicebloom.spawnpoint
+		Location: 72,67
+		Owner: Neutral
+	Actor10: spicebloom.spawnpoint
+		Location: 23,107
+		Owner: Neutral
+	Actor11: spicebloom.spawnpoint
+		Location: 111,29
+		Owner: Neutral
+	Actor12: mpspawn
+		Location: 101,101
+		Owner: Neutral
+	Actor5: wormspawner
+		Location: 16,119
+		Owner: Creeps
+	Actor13: wormspawner
+		Location: 16,59
+		Owner: Creeps
+	Actor15: wormspawner
+		Location: 66,16
+		Owner: Creeps
+	Actor16: wormspawner
+		Location: 119,63
+		Owner: Creeps
+	Actor17: wormspawner
+		Location: 64,119
+		Owner: Creeps
+	Actor18: wormspawner
+		Location: 119,16
+		Owner: Creeps

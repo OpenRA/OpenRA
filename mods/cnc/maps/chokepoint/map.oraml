@@ -1,0 +1,164 @@
+MapFormat: 11
+
+RequiresMod: cnc
+
+Title: Chokepoint
+
+Author: Tiberian
+
+Tileset: DESERT
+
+MapSize: 128,128
+
+Bounds: 16,16,64,32
+
+Visibility: Lobby
+
+Categories: Conquest
+
+Players:
+	PlayerReference@Neutral:
+		Name: Neutral
+		OwnsWorld: True
+		NonCombatant: True
+		Faction: gdi
+	PlayerReference@Multi0:
+		Name: Multi0
+		Playable: True
+		Faction: Random
+		Enemies: Creeps
+	PlayerReference@Multi1:
+		Name: Multi1
+		Playable: True
+		Faction: Random
+		Enemies: Creeps
+	PlayerReference@Creeps:
+		Name: Creeps
+		NonCombatant: True
+		Faction: Random
+		Enemies: Multi0, Multi1
+
+Actors:
+	Actor0: v25
+		Location: 16,42
+		Owner: Neutral
+	Actor1: v21
+		Location: 18,42
+		Owner: Neutral
+	Actor2: v20
+		Location: 20,46
+		Owner: Neutral
+	Actor4: t18
+		Location: 15,46
+		Owner: Neutral
+	Actor5: v32
+		Location: 20,44
+		Owner: Neutral
+	Actor6: c7
+		Location: 16,44
+		Owner: Neutral
+	Actor7: c10
+		Location: 19,44
+		Owner: Neutral
+	Actor8: c1
+		Location: 18,45
+		Owner: Neutral
+	Actor9: v23
+		Location: 16,45
+		Owner: Neutral
+	Actor10: t18
+		Location: 17,38
+		Owner: Neutral
+	Actor11: t18
+		Location: 25,46
+		Owner: Neutral
+	Actor12: t08
+		Location: 24,42
+		Owner: Neutral
+	Actor38: t18
+		Owner: Neutral
+		Location: 73,19
+	Actor39: t18
+		Owner: Neutral
+		Location: 74,17
+	Actor15: t18
+		Location: 76,16
+		Owner: Neutral
+	Actor16: t18
+		Location: 78,16
+		Owner: Neutral
+	Actor17: t18
+		Location: 73,20
+		Owner: Neutral
+	Actor18: v23
+		Location: 76,18
+		Owner: Neutral
+	Actor19: v27
+		Location: 77,18
+		Owner: Neutral
+	Actor20: v27
+		Location: 78,18
+		Owner: Neutral
+	Actor21: wood
+		Location: 75,22
+		Owner: Neutral
+	Actor22: wood
+		Location: 76,22
+		Owner: Neutral
+	Actor30: c9
+		Location: 75,21
+		Owner: Neutral
+	Actor24: wood
+		Location: 78,22
+		Owner: Neutral
+	Actor25: wood
+		Location: 79,22
+		Owner: Neutral
+	Actor27: arco
+		Location: 78,20
+		Owner: Neutral
+	Actor28: c2
+		Location: 75,19
+		Owner: Neutral
+	Actor29: c7
+		Location: 77,21
+		Owner: Neutral
+	Actor31: t18
+		Location: 69,17
+		Owner: Neutral
+	Actor32: t18
+		Location: 77,26
+		Owner: Neutral
+	Actor33: t18
+		Location: 70,24
+		Owner: Neutral
+	Actor34: t09
+		Location: 70,21
+		Owner: Neutral
+	Actor36: v19
+		Location: 48,17
+		Owner: Neutral
+	Actor35: v19
+		Location: 44,40
+		Owner: Neutral
+	wp0: mpspawn
+		Location: 22,29
+		Owner: Neutral
+	wp1: mpspawn
+		Location: 72,32
+		Owner: Neutral
+	Actor40: t08
+		Owner: Neutral
+		Location: 74,17
+	Actor41: split2
+		Owner: Neutral
+		Location: 20,18
+	Actor42: split2
+		Owner: Neutral
+		Location: 30,18
+	Actor43: split2
+		Owner: Neutral
+		Location: 76,45
+	Actor44: split2
+		Owner: Neutral
+		Location: 66,45

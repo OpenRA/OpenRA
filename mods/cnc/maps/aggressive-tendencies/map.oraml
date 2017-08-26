@@ -1,0 +1,171 @@
+MapFormat: 11
+
+RequiresMod: cnc
+
+Title: Aggressive Tendencies
+
+Author: pulse
+
+Tileset: DESERT
+
+MapSize: 66,66
+
+Bounds: 1,1,64,64
+
+Visibility: Lobby
+
+Categories: Conquest
+
+Players:
+	PlayerReference@Neutral:
+		Name: Neutral
+		OwnsWorld: True
+		NonCombatant: True
+		Faction: Random
+	PlayerReference@Creeps:
+		Name: Creeps
+		NonCombatant: True
+		Faction: Random
+	PlayerReference@Multi0:
+		Name: Multi0
+		Playable: True
+		Faction: Random
+		Enemies: Creeps
+	PlayerReference@Multi1:
+		Name: Multi1
+		Playable: True
+		Faction: Random
+		Enemies: Creeps
+
+Actors:
+	Actor0: mpspawn
+		Owner: Neutral
+		Location: 16,49
+	Actor1: mpspawn
+		Owner: Neutral
+		Location: 49,16
+	Actor2: split2
+		Owner: Neutral
+		Location: 10,55
+	Actor3: split2
+		Owner: Neutral
+		Location: 55,10
+	Actor4: v19
+		Owner: Neutral
+		Location: 31,32
+	Actor5: split2
+		Owner: Neutral
+		Location: 28,10
+	Actor6: split2
+		Owner: Neutral
+		Location: 37,55
+	Actor10: split2
+		Owner: Neutral
+		Location: 59,41
+	Actor11: v28
+		Owner: Neutral
+		Location: 10,33
+	Actor9: split2
+		Owner: Neutral
+		Location: 6,24
+	Actor12: v26
+		Owner: Neutral
+		Location: 3,44
+	Actor13: v34
+		Owner: Neutral
+		Location: 8,43
+	Actor42: v30
+		Owner: Neutral
+		Location: 14,40
+	Actor15: v27
+		Owner: Neutral
+		Location: 21,38
+	Actor17: t08
+		Owner: Neutral
+		Location: 4,42
+	Actor16: t18
+		Owner: Neutral
+		Location: 12,36
+	Actor18: t09
+		Owner: Neutral
+		Location: 10,43
+	Actor19: t04
+		Owner: Neutral
+		Location: 9,38
+	Actor20: t04
+		Owner: Neutral
+		Location: 17,41
+	Actor21: rock5
+		Owner: Neutral
+		Location: 7,39
+	Actor22: t09
+		Owner: Neutral
+		Location: 12,17
+	Actor23: t09
+		Owner: Neutral
+		Location: 25,15
+	Actor24: t09
+		Owner: Neutral
+		Location: 45,48
+	Actor25: t09
+		Owner: Neutral
+		Location: 6,61
+	Actor26: t09
+		Owner: Neutral
+		Location: 44,56
+	Actor27: t18
+		Owner: Neutral
+		Location: 39,5
+	Actor28: t08
+		Owner: Neutral
+		Location: 49,51
+	Actor29: c2
+		Owner: Neutral
+		Location: 10,39
+		SubCell: 3
+		Facing: 92
+	Actor30: c6
+		Owner: Neutral
+		Location: 9,34
+		SubCell: 3
+		Facing: 92
+	Actor31: c9
+		Owner: Neutral
+		Location: 22,39
+		SubCell: 3
+		Facing: 92
+	Actor32: c1
+		Owner: Neutral
+		Location: 5,44
+		SubCell: 1
+		Facing: 92
+	Actor34: t09
+		Owner: Neutral
+		Location: 20,23
+	Actor33: rock6
+		Owner: Neutral
+		Location: 20,18
+	Actor36: t08
+		Owner: Neutral
+		Location: 34,12
+	Actor37: t18
+		Owner: Neutral
+		Location: 24,54
+	Actor38: t18
+		Owner: Neutral
+		Location: 46,54
+	Actor39: split2
+		Owner: Neutral
+		Location: 61,58
+	Actor40: split2
+		Owner: Neutral
+		Location: 4,7
+	Actor41: rock2
+		Owner: Neutral
+		Location: 9,9
+	Actor43: t18
+		Owner: Neutral
+		Location: 3,53
+	Actor44: t08
+		Owner: Neutral
+		Location: 2,58

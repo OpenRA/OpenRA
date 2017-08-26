@@ -1,0 +1,123 @@
+MapFormat: 11
+
+RequiresMod: d2k
+
+Title: Desert Twister
+
+Author: Psydev
+
+Tileset: ARRAKIS
+
+MapSize: 128,128
+
+Bounds: 16,16,96,96
+
+Visibility: Lobby
+
+Categories: Conquest
+
+Players:
+	PlayerReference@Neutral:
+		Name: Neutral
+		OwnsWorld: True
+		NonCombatant: True
+		Faction: atreides
+	PlayerReference@Multi0:
+		Name: Multi0
+		Playable: True
+		Faction: Random
+		Enemies: Creeps
+	PlayerReference@Multi1:
+		Name: Multi1
+		Playable: True
+		Faction: Random
+		Enemies: Creeps
+	PlayerReference@Multi2:
+		Name: Multi2
+		Playable: True
+		Faction: Random
+		Enemies: Creeps
+	PlayerReference@Multi3:
+		Name: Multi3
+		Playable: True
+		Faction: Random
+		Enemies: Creeps
+	PlayerReference@Creeps:
+		Name: Creeps
+		NonCombatant: True
+		Faction: atreides
+		Enemies: Multi0, Multi1, Multi2, Multi3
+
+Actors:
+	Actor0: mpspawn
+		Location: 73,98
+		Owner: Neutral
+	Actor1: mpspawn
+		Location: 52,26
+		Owner: Neutral
+	Actor2: spicebloom.spawnpoint
+		Location: 21,98
+		Owner: Neutral
+	Actor3: spicebloom.spawnpoint
+		Location: 46,39
+		Owner: Neutral
+	Actor4: spicebloom.spawnpoint
+		Location: 83,108
+		Owner: Neutral
+	Actor5: spicebloom.spawnpoint
+		Location: 74,87
+		Owner: Neutral
+	Actor6: spicebloom.spawnpoint
+		Location: 31,80
+		Owner: Neutral
+	Actor7: spicebloom.spawnpoint
+		Location: 39,18
+		Owner: Neutral
+	Actor8: spicebloom.spawnpoint
+		Location: 99,106
+		Owner: Neutral
+	Actor9: spicebloom.spawnpoint
+		Location: 83,49
+		Owner: Neutral
+	Actor10: spicebloom.spawnpoint
+		Location: 83,68
+		Owner: Neutral
+	Actor11: spicebloom.spawnpoint
+		Location: 40,60
+		Owner: Neutral
+	Actor13: spicebloom.spawnpoint
+		Location: 27,23
+		Owner: Neutral
+	Actor14: mpspawn
+		Location: 46,97
+		Owner: Neutral
+	Actor12: mpspawn
+		Location: 73,25
+		Owner: Neutral
+	Actor16: spicebloom.spawnpoint
+		Location: 31,105
+		Owner: Neutral
+	Actor17: spicebloom.spawnpoint
+		Location: 88,21
+		Owner: Neutral
+	Actor18: spicebloom.spawnpoint
+		Location: 102,27
+		Owner: Neutral
+	Actor19: spicebloom.spawnpoint
+		Location: 60,74
+		Owner: Neutral
+	Actor20: spicebloom.spawnpoint
+		Location: 60,60
+		Owner: Neutral
+	Actor22: wormspawner
+		Location: 16,111
+		Owner: Creeps
+	Actor15: wormspawner
+		Location: 16,16
+		Owner: Creeps
+	Actor21: wormspawner
+		Location: 111,16
+		Owner: Creeps
+	Actor24: wormspawner
+		Location: 111,111
+		Owner: Creeps

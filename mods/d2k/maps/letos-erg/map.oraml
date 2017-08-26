@@ -1,0 +1,122 @@
+MapFormat: 11
+
+RequiresMod: d2k
+
+Title: Leto's Erg
+
+Author: Westwood Studios
+
+Tileset: ARRAKIS
+
+MapSize: 94,94
+
+Bounds: 2,2,90,90
+
+Visibility: Lobby
+
+Categories: Conquest
+
+Players:
+	PlayerReference@Neutral:
+		Name: Neutral
+		OwnsWorld: True
+		NonCombatant: True
+		Faction: Random
+	PlayerReference@Creeps:
+		Name: Creeps
+		NonCombatant: True
+		Faction: Random
+		Enemies: Multi0, Multi1, Multi2, Multi3, Multi4, Multi5, Multi6, Multi7
+	PlayerReference@Multi0:
+		Name: Multi0
+		Playable: True
+		Faction: Random
+		Enemies: Creeps
+	PlayerReference@Multi1:
+		Name: Multi1
+		Playable: True
+		Faction: Random
+		Enemies: Creeps
+	PlayerReference@Multi2:
+		Name: Multi2
+		Playable: True
+		Faction: Random
+		Enemies: Creeps
+	PlayerReference@Multi3:
+		Name: Multi3
+		Playable: True
+		Faction: Random
+		Enemies: Creeps
+	PlayerReference@Multi4:
+		Name: Multi4
+		Playable: True
+		Faction: Random
+		Enemies: Creeps
+	PlayerReference@Multi5:
+		Name: Multi5
+		Playable: True
+		Faction: Random
+		Enemies: Creeps
+	PlayerReference@Multi6:
+		Name: Multi6
+		Playable: True
+		Faction: Random
+		Enemies: Creeps
+	PlayerReference@Multi7:
+		Name: Multi7
+		Playable: True
+		Faction: Random
+		Enemies: Creeps
+
+Actors:
+	Actor0: spicebloom.spawnpoint
+		Location: 87,7
+		Owner: Neutral
+	Actor1: spicebloom.spawnpoint
+		Location: 6,16
+		Owner: Neutral
+	Actor2: mpspawn
+		Location: 41,23
+		Owner: Neutral
+	Actor3: mpspawn
+		Location: 51,23
+		Owner: Neutral
+	Actor4: mpspawn
+		Location: 20,40
+		Owner: Neutral
+	Actor5: spicebloom.spawnpoint
+		Location: 47,46
+		Owner: Neutral
+	Actor6: mpspawn
+		Location: 70,46
+		Owner: Neutral
+	Actor7: spicebloom.spawnpoint
+		Location: 43,48
+		Owner: Neutral
+	Actor8: spicebloom.spawnpoint
+		Location: 47,50
+		Owner: Neutral
+	Actor9: spicebloom.spawnpoint
+		Location: 41,52
+		Owner: Neutral
+	Actor10: mpspawn
+		Location: 23,53
+		Owner: Neutral
+	Actor11: spicebloom.spawnpoint
+		Location: 51,54
+		Owner: Neutral
+	Actor12: mpspawn
+		Location: 74,57
+		Owner: Neutral
+	Actor13: mpspawn
+		Location: 40,76
+		Owner: Neutral
+	Actor14: mpspawn
+		Location: 54,78
+		Owner: Neutral
+	Actor15: spicebloom.spawnpoint
+		Location: 79,87
+		Owner: Neutral
+	Actor16: spicebloom.spawnpoint
+		Location: 6,88
+		Owner: Neutral

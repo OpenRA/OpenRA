@@ -1,0 +1,179 @@
+MapFormat: 11
+
+RequiresMod: cnc
+
+Title: Deterring Democracy
+
+Author: Psydev
+
+Tileset: WINTER
+
+MapSize: 96,56
+
+Bounds: 7,2,78,52
+
+Visibility: Lobby
+
+Categories: Conquest
+
+Players:
+	PlayerReference@Neutral:
+		Name: Neutral
+		OwnsWorld: True
+		NonCombatant: True
+		Faction: gdi
+	PlayerReference@Multi0:
+		Name: Multi0
+		Playable: True
+		Faction: Random
+		Enemies: Creeps
+	PlayerReference@Multi1:
+		Name: Multi1
+		Playable: True
+		Faction: Random
+		Enemies: Creeps
+	PlayerReference@Creeps:
+		Name: Creeps
+		NonCombatant: True
+		Faction: gdi
+		Enemies: Multi0, Multi1
+
+Actors:
+	Actor39: tc04
+		Location: 49,16
+		Owner: Neutral
+	Actor34: t16
+		Location: 48,35
+		Owner: Neutral
+	Actor24: tc02
+		Location: 42,36
+		Owner: Neutral
+	Actor25: tc04
+		Location: 41,37
+		Owner: Neutral
+	Actor26: t02
+		Location: 41,35
+		Owner: Neutral
+	Actor29: t11
+		Location: 49,35
+		Owner: Neutral
+	Actor27: t10
+		Location: 42,34
+		Owner: Neutral
+	Actor32: tc02
+		Location: 48,37
+		Owner: Neutral
+	Actor35: tc04
+		Location: 49,38
+		Owner: Neutral
+	Actor36: v17
+		Location: 43,22
+		Owner: Neutral
+	Actor45: v16
+		Location: 43,21
+		Owner: Neutral
+	Actor17: t11
+		Location: 41,15
+		Owner: Neutral
+	Actor50: tc02
+		Location: 41,16
+		Owner: Neutral
+	Actor19: tc02
+		Location: 50,15
+		Owner: Neutral
+	Actor54: tc04
+		Location: 47,16
+		Owner: Neutral
+	Actor38: tc02
+		Location: 49,19
+		Owner: Neutral
+	Actor56: tc01
+		Location: 41,18
+		Owner: Neutral
+	Actor60: v06
+		Location: 41,20
+		Owner: Neutral
+	Actor62: v17
+		Location: 42,22
+		Owner: Neutral
+	Actor66: v11
+		Location: 48,21
+		Owner: Neutral
+	Actor65: v17
+		Location: 41,22
+		Owner: Neutral
+	Actor63: v16
+		Location: 41,21
+		Owner: Neutral
+	Actor64: v03
+		Location: 49,21
+		Owner: Neutral
+	Actor61: v16
+		Location: 42,21
+		Owner: Neutral
+	Actor18: mpspawn
+		Location: 13,28
+		Owner: Neutral
+	Actor31: t02
+		Location: 40,36
+		Owner: Neutral
+	Actor13: mpspawn
+		Location: 78,27
+		Owner: Neutral
+	Actor44: splitblue
+		Owner: Neutral
+		Location: 45,3
+	Actor46: splitblue
+		Owner: Neutral
+		Location: 9,4
+	Actor47: split2
+		Owner: Neutral
+		Location: 12,12
+	Actor48: split2
+		Owner: Neutral
+		Location: 45,16
+	Actor49: split2
+		Owner: Neutral
+		Location: 69,7
+	Actor51: splitblue
+		Owner: Neutral
+		Location: 82,4
+	Actor52: split2
+		Owner: Neutral
+		Location: 82,22
+	Actor53: split2
+		Owner: Neutral
+		Location: 9,33
+	Actor55: split2
+		Owner: Neutral
+		Location: 46,39
+	Actor58: splitblue
+		Owner: Neutral
+		Location: 9,51
+	Actor59: split2
+		Owner: Neutral
+		Location: 21,48
+	Actor67: splitblue
+		Owner: Neutral
+		Location: 46,52
+	Actor57: splitblue
+		Owner: Neutral
+		Location: 82,51
+	Actor69: split2
+		Owner: Neutral
+		Location: 79,43
+	Actor43: v06
+		Owner: Neutral
+		Location: 50,31
+	Actor68: t14
+		Owner: Neutral
+		Location: 49,32
+	Actor70: v05
+		Owner: Neutral
+		Location: 40,31
+	Actor71: t11
+		Owner: Neutral
+		Location: 41,32
+	Actor72: t02
+		Owner: Neutral
+		Location: 41,34

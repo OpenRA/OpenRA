@@ -1,0 +1,132 @@
+MapFormat: 11
+
+RequiresMod: d2k
+
+Title: Vladimir's Folly
+
+Author: Blueblood
+
+Tileset: ARRAKIS
+
+MapSize: 192,96
+
+Bounds: 16,16,160,64
+
+Visibility: Lobby
+
+Categories: Conquest
+
+Players:
+	PlayerReference@Neutral:
+		Name: Neutral
+		OwnsWorld: True
+		NonCombatant: True
+		Faction: atreides
+	PlayerReference@Multi0:
+		Name: Multi0
+		Playable: True
+		Faction: Random
+		Enemies: Creeps
+	PlayerReference@Multi1:
+		Name: Multi1
+		Playable: True
+		Faction: Random
+		Enemies: Creeps
+	PlayerReference@Multi2:
+		Name: Multi2
+		Playable: True
+		Faction: Random
+		Enemies: Creeps
+	PlayerReference@Multi3:
+		Name: Multi3
+		Playable: True
+		Faction: Random
+		Enemies: Creeps
+	PlayerReference@Creeps:
+		Name: Creeps
+		NonCombatant: True
+		Faction: atreides
+		Enemies: Multi0, Multi1, Multi2, Multi3
+
+Actors:
+	Actor2: spicebloom.spawnpoint
+		Location: 19,44
+		Owner: Neutral
+	Actor0: spicebloom.spawnpoint
+		Location: 34,38
+		Owner: Neutral
+	Actor1: spicebloom.spawnpoint
+		Location: 26,39
+		Owner: Neutral
+	Actor3: spicebloom.spawnpoint
+		Location: 25,47
+		Owner: Neutral
+	Actor4: spicebloom.spawnpoint
+		Location: 34,46
+		Owner: Neutral
+	Actor5: spicebloom.spawnpoint
+		Location: 171,26
+		Owner: Neutral
+	Actor6: spicebloom.spawnpoint
+		Location: 166,22
+		Owner: Neutral
+	Actor7: spicebloom.spawnpoint
+		Location: 170,21
+		Owner: Neutral
+	Actor8: spicebloom.spawnpoint
+		Location: 148,62
+		Owner: Neutral
+	Actor9: spicebloom.spawnpoint
+		Location: 167,67
+		Owner: Neutral
+	Actor10: spicebloom.spawnpoint
+		Location: 155,66
+		Owner: Neutral
+	Actor11: spicebloom.spawnpoint
+		Location: 84,50
+		Owner: Neutral
+	Actor12: mpspawn
+		Location: 32,25
+		Owner: Neutral
+	Actor13: spicebloom.spawnpoint
+		Location: 81,57
+		Owner: Neutral
+	Actor14: spicebloom.spawnpoint
+		Location: 85,59
+		Owner: Neutral
+	Actor15: mpspawn
+		Location: 32,58
+		Owner: Neutral
+	Actor16: mpspawn
+		Location: 156,20
+		Owner: Neutral
+	Actor17: mpspawn
+		Location: 167,51
+		Owner: Neutral
+	Actor18: wormspawner
+		Location: 41,79
+		Owner: Creeps
+	Actor19: wormspawner
+		Location: 87,19
+		Owner: Creeps
+	Actor20: wormspawner
+		Location: 70,79
+		Owner: Creeps
+	Actor21: wormspawner
+		Location: 116,16
+		Owner: Creeps
+	Actor22: wormspawner
+		Location: 90,16
+		Owner: Creeps
+	Actor23: wormspawner
+		Location: 123,16
+		Owner: Creeps
+	Actor24: wormspawner
+		Location: 136,79
+		Owner: Creeps
+	Actor25: wormspawner
+		Location: 122,79
+		Owner: Creeps
+	Actor26: wormspawner
+		Location: 109,47
+		Owner: Creeps

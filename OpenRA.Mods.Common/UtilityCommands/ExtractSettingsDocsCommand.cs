@@ -35,9 +35,9 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			Console.WriteLine("All settings can be changed by starting the game via a command-line parameter like `Game.Mod=ra`.");
 			Console.WriteLine();
 			Console.WriteLine("## Location");
-			Console.WriteLine("* Windows: `My Documents\\OpenRA\\settings.yaml`");
-			Console.WriteLine("* Mac OS X: `~/Library/Application Support/OpenRA/settings.yaml`");
-			Console.WriteLine("* Linux `~/.openra/settings.yaml`");
+			Console.WriteLine("* Windows: `My Documents\\OpenRA\\settings.oraml`");
+			Console.WriteLine("* Mac OS X: `~/Library/Application Support/OpenRA/settings.oraml`");
+			Console.WriteLine("* Linux `~/.openra/settings.oraml`");
 			Console.WriteLine();
 			Console.WriteLine(
 				"If you create the folder `Support` relative to the OpenRA main directory, everything " +

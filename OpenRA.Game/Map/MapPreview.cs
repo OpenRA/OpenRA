@@ -212,12 +212,12 @@ namespace OpenRA
 		public void UpdateFromMap(IReadOnlyPackage p, IReadOnlyPackage parent, MapClassification classification, string[] mapCompatibility, MapGridType gridType)
 		{
 			Dictionary<string, MiniYaml> yaml;
-			using (var yamlStream = p.GetStream("map.yaml"))
+			using (var yamlStream = p.GetStream("map.oraml"))
 			{
 				if (yamlStream == null)
-					throw new FileNotFoundException("Required file map.yaml not present in this map");
+					throw new FileNotFoundException("Required file map.oraml not present in this map");
 
-				yaml = new MiniYaml(null, MiniYaml.FromStream(yamlStream, "map.yaml")).ToDictionary();
+				yaml = new MiniYaml(null, MiniYaml.FromStream(yamlStream, "map.oraml")).ToDictionary();
 			}
 
 			Package = p;

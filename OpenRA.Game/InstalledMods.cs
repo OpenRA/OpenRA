@@ -75,7 +75,7 @@ namespace OpenRA
 				}
 
 				package = new Folder(path);
-				if (package.Contains("mod.yaml"))
+				if (package.Contains("mod.oraml"))
 				{
 					var manifest = new Manifest(id, package);
 

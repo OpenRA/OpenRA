@@ -1186,7 +1186,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			if (package == null)
 				return;
 
-			var yamlStream = package.GetStream("map.yaml");
+			var yamlStream = package.GetStream("map.oraml");
 			if (yamlStream == null)
 				return;
 
@@ -1202,7 +1202,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				Console.WriteLine("Converted {0} to MapFormat {1}.", package.Name, Map.SupportedMapFormat);
 			}
 
-			package.Update("map.yaml", Encoding.UTF8.GetBytes(yaml.Nodes.WriteToString()));
+			package.Update("map.oraml", Encoding.UTF8.GetBytes(yaml.Nodes.WriteToString()));
 		}
 	}
 }

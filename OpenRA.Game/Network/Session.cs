@@ -110,7 +110,7 @@ namespace OpenRA.Network
 			}
 
 			public int Index;
-			public HSLColor PreferredColor; // Color that the client normally uses from settings.yaml.
+			public HSLColor PreferredColor; // Color that the client normally uses from settings.oraml.
 			public HSLColor Color; // Actual color that the client is using. Usually the same as PreferredColor but can be different on maps with locked colors.
 			public string Faction;
 			public int SpawnPoint;

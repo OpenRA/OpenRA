@@ -1,0 +1,158 @@
+MapFormat: 11
+
+RequiresMod: d2k
+
+Title: Death Depths
+
+Author: CombineCNR, -Jes-
+
+Tileset: ARRAKIS
+
+MapSize: 176,176
+
+Bounds: 16,16,140,76
+
+Visibility: Lobby
+
+Categories: Conquest
+
+Players:
+	PlayerReference@Neutral:
+		Name: Neutral
+		OwnsWorld: True
+		NonCombatant: True
+		Faction: atreides
+	PlayerReference@Multi0:
+		Name: Multi0
+		Playable: True
+		Faction: Random
+		Enemies: Creeps
+	PlayerReference@Multi1:
+		Name: Multi1
+		Playable: True
+		Faction: Random
+		Enemies: Creeps
+	PlayerReference@Creeps:
+		Name: Creeps
+		NonCombatant: True
+		Faction: atreides
+		Enemies: Multi0, Multi1
+
+Actors:
+	Actor0: mpspawn
+		Location: 44,52
+		Owner: Neutral
+	Actor1: mpspawn
+		Location: 122,53
+		Owner: Neutral
+	Actor6: spicebloom.spawnpoint
+		Location: 59,58
+		Owner: Neutral
+	Actor7: spicebloom.spawnpoint
+		Location: 61,50
+		Owner: Neutral
+	Actor8: spicebloom.spawnpoint
+		Location: 105,55
+		Owner: Neutral
+	Actor9: spicebloom.spawnpoint
+		Location: 107,47
+		Owner: Neutral
+	Actor10: spicebloom.spawnpoint
+		Location: 137,89
+		Owner: Neutral
+	Actor12: spicebloom.spawnpoint
+		Location: 33,89
+		Owner: Neutral
+	Actor13: spicebloom.spawnpoint
+		Location: 18,72
+		Owner: Neutral
+	Actor14: spicebloom.spawnpoint
+		Location: 18,32
+		Owner: Neutral
+	Actor15: spicebloom.spawnpoint
+		Location: 37,18
+		Owner: Neutral
+	Actor16: spicebloom.spawnpoint
+		Location: 137,18
+		Owner: Neutral
+	Actor17: spicebloom.spawnpoint
+		Location: 153,34
+		Owner: Neutral
+	Actor18: spicebloom.spawnpoint
+		Location: 75,46
+		Owner: Neutral
+	Actor19: spicebloom.spawnpoint
+		Location: 71,52
+		Owner: Neutral
+	Actor20: spicebloom.spawnpoint
+		Location: 74,61
+		Owner: Neutral
+	Actor21: spicebloom.spawnpoint
+		Location: 84,63
+		Owner: Neutral
+	Actor22: spicebloom.spawnpoint
+		Location: 91,59
+		Owner: Neutral
+	Actor23: spicebloom.spawnpoint
+		Location: 92,52
+		Owner: Neutral
+	Actor24: spicebloom.spawnpoint
+		Location: 86,44
+		Owner: Neutral
+	Actor26: spicebloom.spawnpoint
+		Location: 94,18
+		Owner: Neutral
+	Actor25: spicebloom.spawnpoint
+		Location: 69,19
+		Owner: Neutral
+	Actor27: spicebloom.spawnpoint
+		Location: 70,88
+		Owner: Neutral
+	Actor28: spicebloom.spawnpoint
+		Location: 96,89
+		Owner: Neutral
+	Actor29: spicebloom.spawnpoint
+		Location: 24,51
+		Owner: Neutral
+	Actor11: spicebloom.spawnpoint
+		Location: 20,53
+		Owner: Neutral
+	Actor30: spicebloom.spawnpoint
+		Location: 151,52
+		Owner: Neutral
+	Actor31: spicebloom.spawnpoint
+		Location: 147,55
+		Owner: Neutral
+	Actor32: spicebloom.spawnpoint
+		Location: 153,73
+		Owner: Neutral
+	Actor33: spicebloom.spawnpoint
+		Location: 35,71
+		Owner: Neutral
+	Actor34: spicebloom.spawnpoint
+		Location: 32,37
+		Owner: Neutral
+	Actor35: spicebloom.spawnpoint
+		Location: 133,70
+		Owner: Neutral
+	Actor36: spicebloom.spawnpoint
+		Location: 134,39
+		Owner: Neutral
+	Actor2: wormspawner
+		Location: 51,91
+		Owner: Neutral
+	Actor3: wormspawner
+		Location: 16,50
+		Owner: Neutral
+	Actor4: wormspawner
+		Location: 53,16
+		Owner: Neutral
+	Actor5: wormspawner
+		Location: 120,16
+		Owner: Neutral
+	Actor37: wormspawner
+		Location: 155,63
+		Owner: Neutral
+	Actor38: wormspawner
+		Location: 119,91
+		Owner: Neutral

@@ -1,0 +1,113 @@
+MapFormat: 11
+
+RequiresMod: cnc
+
+Title: Island Duel
+
+Author: Insert Name
+
+Tileset: DESERT
+
+MapSize: 96,96
+
+Bounds: 8,8,80,80
+
+Visibility: Lobby
+
+Categories: Conquest
+
+Players:
+	PlayerReference@Neutral:
+		Name: Neutral
+		OwnsWorld: True
+		NonCombatant: True
+		Faction: gdi
+	PlayerReference@Multi0:
+		Name: Multi0
+		Playable: True
+		Faction: Random
+		Enemies: Creeps
+	PlayerReference@Multi1:
+		Name: Multi1
+		Playable: True
+		Faction: Random
+		Enemies: Creeps
+	PlayerReference@Creeps:
+		Name: Creeps
+		NonCombatant: True
+		Faction: gdi
+		Enemies: Multi0, Multi1
+
+Actors:
+	Actor0: splitblue
+		Location: 32,50
+		Owner: Neutral
+	Actor1: splitblue
+		Location: 57,39
+		Owner: Neutral
+	Actor2: v19
+		Location: 9,9
+		Owner: Neutral
+	Actor9: v19
+		Location: 86,84
+		Owner: Neutral
+	Actor6: v19
+		Location: 8,85
+		Owner: Neutral
+	Actor5: v19
+		Location: 10,39
+		Owner: Neutral
+	Actor8: v19
+		Location: 85,86
+		Owner: Neutral
+	Actor7: v19
+		Location: 10,87
+		Owner: Neutral
+	Actor3: v19
+		Location: 12,8
+		Owner: Neutral
+	Actor4: v19
+		Location: 8,38
+		Owner: Neutral
+	Actor10: split2
+		Location: 19,69
+		Owner: Neutral
+	Actor11: split2
+		Location: 19,72
+		Owner: Neutral
+	Actor26: mpspawn
+		Owner: Neutral
+		Location: 28,70
+	Actor14: split2
+		Location: 76,69
+		Owner: Neutral
+	Actor15: split2
+		Location: 19,25
+		Owner: Neutral
+	Actor16: split2
+		Location: 76,21
+		Owner: Neutral
+	Actor17: split2
+		Location: 76,24
+		Owner: Neutral
+	Actor12: split2
+		Location: 46,27
+		Owner: Neutral
+	Actor19: split2
+		Location: 45,68
+		Owner: Neutral
+	Actor20: v19
+		Location: 85,50
+		Owner: Neutral
+	Actor21: v19
+		Location: 87,49
+		Owner: Neutral
+	Actor22: v19
+		Location: 84,8
+		Owner: Neutral
+	Actor23: v19
+		Location: 86,10
+		Owner: Neutral
+	Actor24: mpspawn
+		Owner: Neutral
+		Location: 63,25

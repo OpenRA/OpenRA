@@ -1,0 +1,83 @@
+MapFormat: 11
+
+RequiresMod: d2k
+
+Title: Habbanya Ridge
+
+Author: Westwood Studios
+
+Tileset: ARRAKIS
+
+MapSize: 68,68
+
+Bounds: 2,2,64,64
+
+Visibility: Lobby
+
+Categories: Conquest
+
+Players:
+	PlayerReference@Neutral:
+		Name: Neutral
+		OwnsWorld: True
+		NonCombatant: True
+		Faction: Random
+	PlayerReference@Creeps:
+		Name: Creeps
+		NonCombatant: True
+		Faction: Random
+		Enemies: Multi0, Multi1
+	PlayerReference@Multi0:
+		Name: Multi0
+		Playable: True
+		Faction: Random
+		Enemies: Creeps
+	PlayerReference@Multi1:
+		Name: Multi1
+		Playable: True
+		Faction: Random
+		Enemies: Creeps
+
+Actors:
+	Actor1: mpspawn
+		Location: 61,6
+		Owner: Neutral
+	Actor2: spicebloom.spawnpoint
+		Location: 7,7
+		Owner: Neutral
+	Actor4: wormspawner
+		Location: 26,13
+		Owner: Creeps
+	Actor5: spicebloom.spawnpoint
+		Location: 41,16
+		Owner: Neutral
+	Actor7: spicebloom.spawnpoint
+		Location: 33,19
+		Owner: Neutral
+	Actor8: spicebloom.spawnpoint
+		Location: 62,30
+		Owner: Neutral
+	Actor9: wormspawner
+		Location: 19,32
+		Owner: Creeps
+	Actor10: spicebloom.spawnpoint
+		Location: 36,33
+		Owner: Neutral
+	Actor11: wormspawner
+		Location: 37,35
+		Owner: Creeps
+	Actor12: wormspawner
+		Location: 63,41
+		Owner: Creeps
+	Actor13: spicebloom.spawnpoint
+		Location: 39,46
+		Owner: Neutral
+	Actor16: mpspawn
+		Location: 6,57
+		Owner: Neutral
+	Actor17: spicebloom.spawnpoint
+		Location: 27,59
+		Owner: Neutral
+	Actor18: spicebloom.spawnpoint
+		Location: 60,61
+		Owner: Neutral

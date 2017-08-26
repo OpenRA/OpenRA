@@ -429,7 +429,7 @@ namespace OpenRA
 					var serialized = FieldSaver.FormatValue(kv.Value, fli.Field);
 					var defaultSerialized = FieldSaver.FormatValue(defaultValues, fli.Field);
 
-					// Fields with their default value are not saved in the settings yaml
+					// Fields with their default value are not saved in the settings.oraml
 					// Make sure that we erase any previously defined custom values
 					if (serialized == defaultSerialized)
 						sectionYaml.Value.Nodes.RemoveAll(n => n.Key == fli.YamlName);

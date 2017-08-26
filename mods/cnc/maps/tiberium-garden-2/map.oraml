@@ -1,0 +1,164 @@
+MapFormat: 11
+
+RequiresMod: cnc
+
+Title: Tiberium Garden II
+
+Author: Chris Forbes
+
+Tileset: DESERT
+
+MapSize: 128,128
+
+Bounds: 16,16,96,96
+
+Visibility: Lobby
+
+Categories: Conquest
+
+Players:
+	PlayerReference@Neutral:
+		Name: Neutral
+		Palette: neutral
+		OwnsWorld: True
+		NonCombatant: True
+		Faction: gdi
+	PlayerReference@Multi0:
+		Name: Multi0
+		Playable: True
+		Faction: Random
+		Enemies: Creeps
+	PlayerReference@Multi1:
+		Name: Multi1
+		Playable: True
+		Faction: Random
+		Enemies: Creeps
+	PlayerReference@Multi2:
+		Name: Multi2
+		Playable: True
+		Faction: Random
+		Enemies: Creeps
+	PlayerReference@Multi3:
+		Name: Multi3
+		Playable: True
+		Faction: Random
+		Enemies: Creeps
+	PlayerReference@Multi4:
+		Name: Multi4
+		Playable: True
+		Faction: Random
+		Enemies: Creeps
+	PlayerReference@Multi5:
+		Name: Multi5
+		Playable: True
+		Faction: Random
+		Enemies: Creeps
+	PlayerReference@Creeps:
+		Name: Creeps
+		NonCombatant: True
+		Faction: Random
+		Enemies: Multi0, Multi1, Multi2, Multi3, Multi4, Multi5
+
+Actors:
+	Actor0: rock7
+		Location: 50,64
+		Owner: Neutral
+	Actor1: rock7
+		Location: 73,64
+		Owner: Neutral
+	Actor2: rock6
+		Location: 56,70
+		Owner: Neutral
+	Actor3: rock6
+		Location: 69,70
+		Owner: Neutral
+	Actor4: rock2
+		Location: 54,72
+		Owner: Neutral
+	Actor5: rock1
+		Location: 71,71
+		Owner: Neutral
+	Actor6: rock2
+		Location: 57,56
+		Owner: Neutral
+	Actor7: rock3
+		Location: 56,54
+		Owner: Neutral
+	Actor8: rock1
+		Location: 69,56
+		Owner: Neutral
+	Actor9: rock6
+		Location: 71,55
+		Owner: Neutral
+	wp0: mpspawn
+		Location: 100,64
+		Owner: Neutral
+	wp1: mpspawn
+		Location: 83,97
+		Owner: Neutral
+	wp2: mpspawn
+		Location: 42,97
+		Owner: Neutral
+	wp3: mpspawn
+		Location: 25,64
+		Owner: Neutral
+	wp4: mpspawn
+		Location: 82,32
+		Owner: Neutral
+	wp5: mpspawn
+		Location: 45,31
+		Owner: Neutral
+	Actor32: split2
+		Owner: Neutral
+		Location: 58,25
+	Actor33: split2
+		Owner: Neutral
+		Location: 68,25
+	Actor34: split2
+		Owner: Neutral
+		Location: 95,40
+	Actor35: split2
+		Owner: Neutral
+		Location: 99,50
+	Actor36: split2
+		Owner: Neutral
+		Location: 99,80
+	Actor37: split2
+		Owner: Neutral
+		Location: 97,90
+	Actor38: split2
+		Owner: Neutral
+		Location: 69,103
+	Actor39: split2
+		Owner: Neutral
+		Location: 58,103
+	Actor40: split2
+		Owner: Neutral
+		Location: 26,78
+	Actor41: split2
+		Owner: Neutral
+		Location: 29,88
+	Actor42: split2
+		Owner: Neutral
+		Location: 32,39
+	Actor43: split2
+		Owner: Neutral
+		Location: 28,48
+	Actor31: split2
+		Owner: Neutral
+		Location: 77,58
+	Actor44: split2
+		Owner: Neutral
+		Location: 62,51
+	Actor45: split2
+		Owner: Neutral
+		Location: 49,58
+	Actor46: split2
+		Owner: Neutral
+		Location: 63,76
+	Actor47: split2
+		Owner: Neutral
+		Location: 76,69
+	Actor48: split2
+		Owner: Neutral
+		Location: 48,69

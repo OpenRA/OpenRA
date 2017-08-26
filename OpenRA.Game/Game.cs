@@ -241,7 +241,7 @@ namespace OpenRA
 
 		public static void InitializeSettings(Arguments args)
 		{
-			Settings = new Settings(Platform.ResolvePath(Path.Combine("^", "settings.yaml")), args);
+			Settings = new Settings(Platform.ResolvePath(Path.Combine("^", "settings.oraml")), args);
 		}
 
 		internal static void Initialize(Arguments args)

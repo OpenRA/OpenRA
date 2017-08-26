@@ -1,0 +1,104 @@
+MapFormat: 11
+
+RequiresMod: d2k
+
+Title: Cliffmaze
+
+Author: S.D.
+
+Tileset: ARRAKIS
+
+MapSize: 66,66
+
+Bounds: 1,1,64,64
+
+Visibility: Lobby
+
+Categories: Conquest
+
+Players:
+	PlayerReference@Neutral:
+		Name: Neutral
+		OwnsWorld: True
+		NonCombatant: True
+		Faction: Random
+	PlayerReference@Creeps:
+		Name: Creeps
+		NonCombatant: True
+		Faction: Random
+		Enemies: Multi0, Multi1
+	PlayerReference@Multi0:
+		Name: Multi0
+		Playable: True
+		Faction: Random
+		Enemies: Creeps
+	PlayerReference@Multi1:
+		Name: Multi1
+		Playable: True
+		Faction: Random
+		Enemies: Creeps
+
+Actors:
+	Actor2: spicebloom.spawnpoint
+		Owner: Neutral
+		Location: 22,63
+	Actor3: spicebloom.spawnpoint
+		Owner: Neutral
+		Location: 3,61
+	Actor4: spicebloom.spawnpoint
+		Owner: Neutral
+		Location: 5,52
+	Actor5: spicebloom.spawnpoint
+		Owner: Neutral
+		Location: 2,42
+	Actor6: spicebloom.spawnpoint
+		Owner: Neutral
+		Location: 42,61
+	Actor7: spicebloom.spawnpoint
+		Owner: Neutral
+		Location: 58,21
+	Actor8: spicebloom.spawnpoint
+		Owner: Neutral
+		Location: 63,10
+	Actor9: spicebloom.spawnpoint
+		Owner: Neutral
+		Location: 57,6
+	Actor10: spicebloom.spawnpoint
+		Owner: Neutral
+		Location: 42,2
+	Actor12: wormspawner
+		Owner: Neutral
+		Location: 3,63
+	Actor13: wormspawner
+		Owner: Neutral
+		Location: 59,5
+	Actor14: wormspawner
+		Owner: Neutral
+		Location: 20,5
+	Actor16: wormspawner
+		Owner: Neutral
+		Location: 3,43
+	Actor17: wormspawner
+		Owner: Neutral
+		Location: 42,58
+	Actor19: wormspawner
+		Owner: Neutral
+		Location: 36,33
+	Actor20: wormspawner
+		Owner: Neutral
+		Location: 62,22
+	Actor21: sietch
+		Owner: Neutral
+		Location: 50,18
+	Actor23: spicebloom.spawnpoint
+		Owner: Creeps
+		Location: 22,8
+	Actor24: spicebloom.spawnpoint
+		Owner: Creeps
+		Location: 30,2
+	Actor22: mpspawn
+		Owner: Neutral
+		Location: 20,50
+	Actor25: mpspawn
+		Owner: Neutral
+		Location: 45,12
