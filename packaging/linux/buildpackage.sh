@@ -38,7 +38,7 @@ make install-man-page prefix="/usr" DESTDIR="${BUILTDIR}"
 popd > /dev/null
 
 # Documentation
-DOCSDIR="${BUILTDIR}/usr/share/doc/openra/"
+DOCSDIR="${BUILTDIR}/usr/share/doc/openra-${TAG}/"
 
 mkdir -p "${DOCSDIR}"
 
@@ -56,5 +56,4 @@ if [ $? -ne 0 ]; then
     echo "Debian package build failed."
 fi
 popd >/dev/null
-
 rm -rf "${BUILTDIR}"

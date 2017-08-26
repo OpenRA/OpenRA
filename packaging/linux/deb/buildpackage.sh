@@ -19,8 +19,8 @@ OUTPUTDIR="${3}"
 
 DEB_BUILD_ROOT="$(pwd)/build"
 
-LIBDIR=/usr/lib/openra
-DOCDIR=/usr/share/doc/openra
+LIBDIR=/usr/lib/openra-${TAG}
+DOCDIR=/usr/share/doc/openra-${TAG}
 SYSTEMSUPPORTDIR=/var/games/openra
 LINTIANORDIR=/usr/share/lintian/overrides
 E_BADARGS=85
@@ -28,10 +28,15 @@ E_BADARGS=85
 DATE=`echo ${TAG} | grep -o "[0-9]\\+-\\?[0-9]\\?"`
 TYPE=`echo $1 | grep -o "^[a-z]*"`
 VERSION="${DATE}.${TYPE}"
+CHANNEL_SUFFIX="-$(echo ${TAG} | cut -d- -f1)"
+if [[ "${CHANNEL_SUFFIX}" == "-release" ]]; then
+	CHANNEL_SUFFIX=""
+fi
+PRIORITY=${DATE}
 
 # Copy template files into a clean build directory (required)
 mkdir "${DEB_BUILD_ROOT}"
-cp -R DEBIAN "${DEB_BUILD_ROOT}"
+mkdir "${DEB_BUILD_ROOT}/DEBIAN"
 cp -R "${LINUX_BUILD_ROOT}/usr" "${DEB_BUILD_ROOT}"
 cp -R Eluant.dll.config "${DEB_BUILD_ROOT}/${LIBDIR}/"
 chmod 0644 "${DEB_BUILD_ROOT}/${LIBDIR}/"*.dll
@@ -39,17 +44,17 @@ chmod 0644 "${DEB_BUILD_ROOT}/${LIBDIR}/"*/**/*.dll
 
 # Binaries go in /usr/games
 mv "${DEB_BUILD_ROOT}/usr/bin/" "${DEB_BUILD_ROOT}/usr/games/"
-sed "s|/usr/bin|/usr/games|g" "${DEB_BUILD_ROOT}/usr/games/openra-ra" > temp
-mv -f temp "${DEB_BUILD_ROOT}/usr/games/openra-ra"
-sed "s|/usr/bin|/usr/games|g" "${DEB_BUILD_ROOT}/usr/games/openra-cnc" > temp
-mv -f temp "${DEB_BUILD_ROOT}/usr/games/openra-cnc"
-sed "s|/usr/bin|/usr/games|g" "${DEB_BUILD_ROOT}/usr/games/openra-d2k" > temp
-mv -f temp "${DEB_BUILD_ROOT}/usr/games/openra-d2k"
+sed "s|/usr/bin|/usr/games|g" "${DEB_BUILD_ROOT}/usr/games/openra-ra-${TAG}" > temp
+mv -f temp "${DEB_BUILD_ROOT}/usr/games/openra-ra-${TAG}"
+sed "s|/usr/bin|/usr/games|g" "${DEB_BUILD_ROOT}/usr/games/openra-cnc-${TAG}" > temp
+mv -f temp "${DEB_BUILD_ROOT}/usr/games/openra-cnc-${TAG}"
+sed "s|/usr/bin|/usr/games|g" "${DEB_BUILD_ROOT}/usr/games/openra-d2k-${TAG}" > temp
+mv -f temp "${DEB_BUILD_ROOT}/usr/games/openra-d2k-${TAG}"
 
 chmod 0755 "${DEB_BUILD_ROOT}/usr/games/openra"*
 
 # Compress the man page
-gzip -9n "${DEB_BUILD_ROOT}/usr/share/man/man6/openra.6"
+gzip -9n "${DEB_BUILD_ROOT}/usr/share/man/man6/openra-${TAG}.6"
 
 # Put the copyright and changelog in /usr/share/doc/openra/
 mkdir -p "${DEB_BUILD_ROOT}/${DOCDIR}"
@@ -60,9 +65,9 @@ DATE=`date -R`
 
 # Put the lintian overrides in /usr/share/lintian/overrides/
 mkdir -p "${DEB_BUILD_ROOT}/${LINTIANORDIR}"
-cp openra.lintian-overrides "${DEB_BUILD_ROOT}/${LINTIANORDIR}/openra"
+cp openra.lintian-overrides "${DEB_BUILD_ROOT}/${LINTIANORDIR}/openra-${TAG}"
 
-echo -e "openra (${VERSION}) unstable; urgency=low\n" > "${DEB_BUILD_ROOT}/${DOCDIR}/changelog"
+echo -e "openra-${TAG} (${VERSION}) unstable; urgency=low\n" > "${DEB_BUILD_ROOT}/${DOCDIR}/changelog"
 echo -e "  * New upstream release: $TAG" >> "${DEB_BUILD_ROOT}/${DOCDIR}/changelog"
 echo -e "\n -- Paul Chote <paul@chote.net>  ${DATE}" >> "${DEB_BUILD_ROOT}/${DOCDIR}/changelog"
 gzip -9 "${DEB_BUILD_ROOT}/${DOCDIR}/changelog"
@@ -75,14 +80,14 @@ chmod -R g-w "${DEB_BUILD_ROOT}"
 # Create the control file
 if [[ "$OSTYPE" == "darwin"* ]]; then
 	# BSD du doesn't have an --apparent-size flag, so we must accept a different result
-	PACKAGE_SIZE=`du -c "${DEB_BUILD_ROOT}/usr" | grep "total" | awk '{print $1}'`
+	PACKAGE_SIZE=`LC_ALL=C du -c "${DEB_BUILD_ROOT}/usr" | grep "total" | awk '{print $1}'`
 else
-	PACKAGE_SIZE=`du --apparent-size -c "${DEB_BUILD_ROOT}/usr" | grep "total" | awk '{print $1}'`
+	PACKAGE_SIZE=`LC_ALL=C du --apparent-size -c "${DEB_BUILD_ROOT}/usr" | grep "total" | awk '{print $1}'`
 fi
 
-sed "s/{VERSION}/${VERSION}/" DEBIAN/control | sed "s/{SIZE}/${PACKAGE_SIZE}/" > "${DEB_BUILD_ROOT}/DEBIAN/control"
-sed "s|{LIBDIR}|${LIBDIR}|g" DEBIAN/postinst | sed "s|{SYSTEMSUPPORTDIR}|${SYSTEMSUPPORTDIR}|g" > "${DEB_BUILD_ROOT}/DEBIAN/postinst"
-sed "s|{LIBDIR}|${LIBDIR}|g" DEBIAN/prerm | sed "s|{SYSTEMSUPPORTDIR}|${SYSTEMSUPPORTDIR}|g" > "${DEB_BUILD_ROOT}/DEBIAN/prerm"
+sed "s/{VERSION}/${VERSION}/" DEBIAN/control | sed "s/{SIZE}/${PACKAGE_SIZE}/" | sed "s/{TAG}/${TAG}/" > "${DEB_BUILD_ROOT}/DEBIAN/control"
+sed "s|{LIBDIR}|${LIBDIR}|g" DEBIAN/postinst | sed "s|{SYSTEMSUPPORTDIR}|${SYSTEMSUPPORTDIR}|g" | sed "s/{TAG}/${TAG}/" | sed "s/{SUFFIX}/${CHANNEL_SUFFIX}/g" | sed "s/{PRIORITY}/${PRIORITY}/g" > "${DEB_BUILD_ROOT}/DEBIAN/postinst"
+sed "s|{LIBDIR}|${LIBDIR}|g" DEBIAN/prerm | sed "s|{SYSTEMSUPPORTDIR}|${SYSTEMSUPPORTDIR}|g" | sed "s/{TAG}/${TAG}/" | sed "s/{SUFFIX}/${CHANNEL_SUFFIX}/g" | sed "s/{PRIORITY}/${PRIORITY}/g" > "${DEB_BUILD_ROOT}/DEBIAN/prerm"
 chmod 0755 "${DEB_BUILD_ROOT}/DEBIAN/postinst" "${DEB_BUILD_ROOT}/DEBIAN/prerm"
 
 # Build it in the temp directory, but place the finished deb in our starting directory
@@ -92,18 +97,25 @@ pushd "${DEB_BUILD_ROOT}" >/dev/null
 if [[ "$OSTYPE" == "darwin"* ]]; then
 	find . -type f -not -path "./DEBIAN/*" -print0 | xargs -0 -n1 openssl md5 | awk '{ print $2, substr($1, 7, length($1)-8) }' > DEBIAN/md5sums
 else
-	find . -type f -not -path "./DEBIAN/*" -print0 | xargs -0 -n1 md5sum | sed 's|\./usr/|usr/|' > DEBIAN/md5sums	
+	find . -type f -not -path "./DEBIAN/*" -print0 | xargs -0 -n1 md5sum | sed 's|\./usr/|usr/|' > DEBIAN/md5sums
 fi
- 
+
 chmod 0644 DEBIAN/md5sums
 
 # Replace any dashes in the version string with periods
 PKGVERSION=`echo ${TAG} | sed "s/-/\\./g"`
 
 # Start building, the file should appear in the output directory
-fakeroot dpkg-deb -b . "${OUTPUTDIR}/openra_${PKGVERSION}_all.deb"
+fakeroot dpkg-deb -b . "${OUTPUTDIR}/openra-${TAG}_${PKGVERSION}_all.deb"
 
 # Clean up
 popd >/dev/null
 rm -rf "${DEB_BUILD_ROOT}"
 
+# Build virtual package for update channel
+mkdir -p "${DEB_BUILD_ROOT}/DEBIAN"
+sed "s/{VERSION}/${VERSION}/g" DEBIAN/control.virtual | sed "s/{TAG}/${TAG}/g" | sed "s/{SUFFIX}/${CHANNEL_SUFFIX}/g" > "${DEB_BUILD_ROOT}/DEBIAN/control"
+pushd "${DEB_BUILD_ROOT}" >/dev/null
+fakeroot dpkg-deb -b . "${OUTPUTDIR}/openra${CHANNEL_SUFFIX}_${PKGVERSION}_all.deb"
+popd >/dev/null
+rm -rf "${DEB_BUILD_ROOT}"

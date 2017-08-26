@@ -1,7 +1,7 @@
 #!/bin/sh
 cd "{GAME_INSTALL_DIR}"
 
-mono {DEBUG} OpenRA.Game.exe Game.Mod={MOD} Engine.LaunchPath="{BIN_DIR}/openra-{MOD}" "$@"
+mono {DEBUG} OpenRA.Game.exe Game.Mod={MOD} Engine.LaunchPath="{BIN_DIR}/openra-{MOD}-{TAG}" "$@"
 
 # Show a crash dialog if required
 if [ $? != 0 ] && [ $? != 1 ]
