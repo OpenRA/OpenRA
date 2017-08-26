@@ -339,6 +339,10 @@ tmpl:
 		Start: 5
 	active:
 		Length: 5
+		Tick: 200
+	smoke: atomdoor
+		Length: *
+		Offset: -1,-47
 	damaged-active:
 		Start: 5
 		Length: 5

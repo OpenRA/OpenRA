@@ -716,6 +716,7 @@ TMPL:
 		LaunchSpeechNotification: NuclearWeaponLaunched
 		IncomingSpeechNotification: NuclearWarheadApproaching
 		MissileWeapon: atomic
+		MissileDelay: 20
 		DisplayBeacon: True
 		BeaconPoster: atomic
 		BeaconPosterPalette: beaconposter
@@ -725,6 +726,8 @@ TMPL:
 		ClockSequence: clock
 		CircleSequence: circles
 	WithNukeLaunchAnimation:
+	WithNukeLaunchOverlay:
+		Sequence: smoke
 	SupportPowerChargeBar:
 	Power:
 		Amount: -150
