@@ -25,8 +25,6 @@ sidebar-button-gdi-highlighted-disabled: chrome.png
 sidebar-button-gdi-disabled: chrome.png
 	background: 265,481,30,31
 
-	
-
 scrollup-buttons-gdi: chrome.png
 	background: 0,363,34,27
 scrollup-buttons-gdi-hover: chrome.png
@@ -807,4 +805,4 @@ mainmenu-border: dialog.png
 	corner-br: 728,467,40,40
 
 dropdown: dialog.png
-    separator: 512,1,1,19
+	separator: 512,1,1,19
