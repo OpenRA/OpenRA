@@ -557,7 +557,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		bool IMove.TurnWhileDisabled(Actor self)
 		{
-			return false;
+			return turnWhileDisabled;
 		}
 
 		#endregion

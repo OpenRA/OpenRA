@@ -145,6 +145,11 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 			return SubCell.Invalid;
 		}
 
+		bool IMove.TurnWhileDisabled(Actor self)
+		{
+			return false;
+		}
+
 		public void SetVisualPosition(Actor self, WPos pos) { SetPosition(self, pos); }
 
 		// Changes position, but not altitude
