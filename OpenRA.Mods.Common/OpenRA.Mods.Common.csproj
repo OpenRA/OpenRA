@@ -502,6 +502,7 @@
     <Compile Include="Traits\Tooltip.cs" />
     <Compile Include="Traits\TransformOnCapture.cs" />
     <Compile Include="Traits\Transforms.cs" />
+    <Compile Include="Traits\TurnsWhileImmobile.cs" />
     <Compile Include="Traits\Turreted.cs" />
     <Compile Include="Traits\ProducibleWithLevel.cs" />
     <Compile Include="Traits\Conditions\GrantConditionOnDeploy.cs" />
@@ -833,14 +834,8 @@
     -->
     <Copy SourceFiles="$(TargetDir)$(TargetName).pdb" DestinationFolder="$(SolutionDir)mods/common/" Condition="'$(OS)' == 'Windows_NT'" />
     <Copy SourceFiles="$(TargetPath).mdb" DestinationFolder="$(SolutionDir)mods/common/" Condition="'$(OS)' == 'Unix'" />
-    <Copy
-      SourceFiles="$(TargetDir)$(TargetName).pdb"
-      DestinationFolder="$(SolutionDir)mods/common/"
-      Condition="Exists('$(TargetDir)$(TargetName).pdb')"/>
-    <Copy
-      SourceFiles="$(TargetPath).mdb"
-      DestinationFolder="$(SolutionDir)mods/common/"
-      Condition="Exists('$(TargetPath).mdb')"/>
+    <Copy SourceFiles="$(TargetDir)$(TargetName).pdb" DestinationFolder="$(SolutionDir)mods/common/" Condition="Exists('$(TargetDir)$(TargetName).pdb')" />
+    <Copy SourceFiles="$(TargetPath).mdb" DestinationFolder="$(SolutionDir)mods/common/" Condition="Exists('$(TargetPath).mdb')" />
     <!-- Uncomment these lines when debugging or adding to this target
     <Message Text="DEBUG OS:                     $(OS)"/>
     <Message Text="DEBUG SolutionDir:            $(SolutionDir)"/>

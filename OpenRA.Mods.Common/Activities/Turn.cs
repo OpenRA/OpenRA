@@ -10,6 +10,7 @@
 #endregion
 
 using OpenRA.Activities;
+using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Activities
@@ -17,11 +18,13 @@ namespace OpenRA.Mods.Common.Activities
 	public class Turn : Activity
 	{
 		readonly IDisabledTrait disablable;
+		readonly TurnsWhileImmobile turns;
 		readonly int desiredFacing;
 
 		public Turn(Actor self, int desiredFacing)
 		{
 			disablable = self.TraitOrDefault<IMove>() as IDisabledTrait;
+			turns = self.TraitOrDefault<TurnsWhileImmobile>();
 			this.desiredFacing = desiredFacing;
 		}
 
@@ -29,8 +32,10 @@ namespace OpenRA.Mods.Common.Activities
 		{
 			if (IsCanceled)
 				return NextActivity;
+
 			if (disablable != null && disablable.IsTraitDisabled)
-				return this;
+				if (turns == null || turns.IsTraitDisabled)
+					return this;
 
 			var facing = self.Trait<IFacing>();
 
