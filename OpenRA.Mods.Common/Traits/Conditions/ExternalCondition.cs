@@ -32,18 +32,27 @@ namespace OpenRA.Mods.Common.Traits
 		public object Create(ActorInitializer init) { return new ExternalCondition(init.Self, this); }
 	}
 
-	public class ExternalCondition
+	public class ExternalCondition : ITick
 	{
 		class TimedToken
 		{
-			public int Token;
-			public int Expires;
+			public readonly int Token;
+			public readonly int Expires;
+			public readonly object Source;
+
+			public TimedToken(int token, Actor self, object source, int duration)
+			{
+				Token = token;
+				Expires = self.World.WorldTick + duration;
+				Source = source;
+			}
 		}
 
 		public readonly ExternalConditionInfo Info;
 		readonly ConditionManager conditionManager;
 		readonly Dictionary<object, HashSet<int>> permanentTokens = new Dictionary<object, HashSet<int>>();
-		readonly Dictionary<object, HashSet<TimedToken>> timedTokens = new Dictionary<object, HashSet<TimedToken>>();
+		readonly Dictionary<object, Dictionary<int, TimedToken>> timedTokensBySource = new Dictionary<object, Dictionary<int, TimedToken>>();
+		readonly List<KeyValuePair<int, TimedToken>> timedTokensByExpiration = new List<KeyValuePair<int, TimedToken>>();
 
 		public ExternalCondition(Actor self, ExternalConditionInfo info)
 		{
@@ -58,39 +67,57 @@ namespace OpenRA.Mods.Common.Traits
 
 			// Timed tokens do not count towards the source cap: the condition with the shortest
 			// remaining duration can always be revoked to make room.
-			if (Info.SourceCap > 0 && permanentTokens.GetOrAdd(source).Count >= Info.SourceCap)
-				return false;
+			if (Info.SourceCap > 0)
+			{
+				HashSet<int> permanentTokensForSource;
+				if (permanentTokens.TryGetValue(source, out permanentTokensForSource) && permanentTokensForSource.Count >= Info.SourceCap)
+					return false;
+			}
 
-			if (Info.TotalCap > 0 && permanentTokens.Values.SelectMany(t => t).Count() >= Info.TotalCap)
+			if (Info.TotalCap > 0 && permanentTokens.Values.Sum(t => t.Count) >= Info.TotalCap)
 				return false;
 
 			return true;
 		}
 
+		void RemoveFromExpiration(TimedToken timedToken)
+		{
+			timedTokensByExpiration.RemoveAt(timedTokensByExpiration.FindIndex(p => p.Value == timedToken));
+		}
+
+		void AddForExpiration(TimedToken timedToken)
+		{
+			var index = timedTokensByExpiration.FindIndex(p => p.Key >= timedToken.Expires);
+			if (index >= 0)
+				timedTokensByExpiration.Insert(index, new KeyValuePair<int, TimedToken>(timedToken.Expires, timedToken));
+			else
+				timedTokensByExpiration.Add(new KeyValuePair<int, TimedToken>(timedToken.Expires, timedToken));
+		}
+
 		public int GrantCondition(Actor self, object source, int duration = 0)
 		{
-			if (conditionManager == null || source == null || !CanGrantCondition(self, source))
+			if (!CanGrantCondition(self, source))
 				return ConditionManager.InvalidConditionToken;
 
 			var token = conditionManager.GrantCondition(self, Info.Condition, duration);
-			var permanent = permanentTokens.GetOrAdd(source);
+			HashSet<int> permanent;
+			permanentTokens.TryGetValue(source, out permanent);
 
 			if (duration > 0)
 			{
-				var timed = timedTokens.GetOrAdd(source);
-
-				// Remove expired tokens
-				timed.RemoveWhere(t => t.Expires < self.World.WorldTick);
+				var timed = timedTokensBySource.GetOrAdd(source);
 
 				// Check level caps
 				if (Info.SourceCap > 0)
 				{
-					if (permanent.Count + timed.Count >= Info.SourceCap)
+					if ((permanent != null ? permanent.Count + timed.Count : timed.Count) >= Info.SourceCap)
 					{
-						var expire = timed.MinByOrDefault(t => t.Expires);
+						var expire = timed.MinByOrDefault(t => t.Value.Expires).Value;
 						if (expire != null)
 						{
-							timed.Remove(expire);
+							timed.Remove(expire.Token);
+							RemoveFromExpiration(expire);
+
 							if (conditionManager.TokenValid(self, expire.Token))
 								conditionManager.RevokeCondition(self, expire.Token);
 						}
@@ -99,24 +126,28 @@ namespace OpenRA.Mods.Common.Traits
 
 				if (Info.TotalCap > 0)
 				{
-					var totalCount = permanentTokens.Values.SelectMany(t => t).Count() + timedTokens.Values.SelectMany(t => t).Count();
+					var totalCount = permanentTokens.Values.Sum(t => t.Count) + timedTokensByExpiration.Count;
 					if (totalCount >= Info.TotalCap)
 					{
 						// Prefer tokens from the same source
-						var expire = timedTokens.SelectMany(t => t.Value.Select(tt => new Tuple<object, TimedToken>(t.Key, tt)))
-							.MinByOrDefault(t => t.Item2.Expires);
+						var expire = timedTokensByExpiration.FirstOrDefault().Value;
 						if (expire != null)
 						{
-							if (conditionManager.TokenValid(self, expire.Item2.Token))
-								conditionManager.RevokeCondition(self, expire.Item2.Token);
+							if (conditionManager.TokenValid(self, expire.Token))
+								conditionManager.RevokeCondition(self, expire.Token);
 
-							timedTokens[expire.Item1].Remove(expire.Item2);
+							timedTokensBySource[expire.Source].Remove(expire.Token);
+							RemoveFromExpiration(expire);
 						}
 					}
 				}
 
-				timed.Add(new TimedToken { Expires = self.World.WorldTick + duration, Token = token });
+				var timedToken = new TimedToken(token, self, source, duration);
+				timed.Add(token, timedToken);
+				AddForExpiration(timedToken);
 			}
+			else if (permanent == null)
+				permanentTokens.Add(source, new HashSet<int> { token });
 			else
 				permanent.Add(token);
 
@@ -138,15 +169,46 @@ namespace OpenRA.Mods.Common.Traits
 			}
 			else
 			{
-				HashSet<TimedToken> timedTokensForSource = null;
-				if (timedTokens.TryGetValue(source, out timedTokensForSource) && timedTokensForSource.RemoveWhere(t => t.Token == token) == 0)
-					return false;
+				Dictionary<int, TimedToken> timedTokensForSource;
+				if (timedTokensBySource.TryGetValue(source, out timedTokensForSource))
+				{
+					TimedToken timedToken;
+					if (!timedTokensForSource.TryGetValue(token, out timedToken))
+						return false;
+
+					timedTokensForSource.Remove(token);
+					RemoveFromExpiration(timedToken);
+				}
 			}
 
 			if (conditionManager.TokenValid(self, token))
 				conditionManager.RevokeCondition(self, token);
 
 			return true;
+		}
+
+		void ITick.Tick(Actor self)
+		{
+			if (timedTokensByExpiration.Count == 0)
+				return;
+
+			// Remove expired tokens
+			var worldTick = self.World.WorldTick;
+			var pair = timedTokensByExpiration[0];
+			while (pair.Key < worldTick)
+			{
+				var timed = pair.Value;
+				var timedTokensForSource = timedTokensBySource[timed.Source];
+				timedTokensForSource.Remove(timed.Token);
+				if (timedTokensForSource.Count == 0)
+					timedTokensBySource.Remove(timed.Source);
+
+				timedTokensByExpiration.RemoveAt(0);
+				if (timedTokensByExpiration.Count == 0)
+					return;
+
+				pair = timedTokensByExpiration[0];
+			}
 		}
 	}
 }
