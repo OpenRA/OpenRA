@@ -17,6 +17,7 @@ using OpenRA.Activities;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Orders;
 using OpenRA.Primitives;
+using OpenRA.Support;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -95,6 +96,11 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Facing to use for actor previews (map editor, color picker, etc)")]
 		public readonly int PreviewFacing = 92;
 
+		[ConsumedConditionReference]
+		[Desc("Under this condition, this actor may turn even while this trait is disabled.",
+			"Useful for turretless units that deploy to become immobile, but still fires its weapon.")]
+		public readonly BooleanExpression TurnWhileDisabledCondition = null;
+
 		IEnumerable<object> IActorPreviewInitInfo.ActorPreviewInits(ActorInfo ai, ActorPreviewType type)
 		{
 			yield return new FacingInit(PreviewFacing);
@@ -135,6 +141,7 @@ namespace OpenRA.Mods.Common.Traits
 		ConditionManager conditionManager;
 		IDisposable reservation;
 		IEnumerable<int> speedModifiers;
+		bool turnWhileDisabled = false;
 
 		[Sync] public int Facing { get; set; }
 		[Sync] public WPos CenterPosition { get; private set; }
@@ -548,6 +555,11 @@ namespace OpenRA.Mods.Common.Traits
 			return true;
 		}
 
+		bool IMove.TurnWhileDisabled(Actor self)
+		{
+			return false;
+		}
+
 		#endregion
 
 		#region Implement order interfaces
@@ -729,6 +741,18 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			if (!inits.Contains<DynamicFacingInit>() && !inits.Contains<FacingInit>())
 				inits.Add(new DynamicFacingInit(() => Facing));
+		}
+
+		public virtual IEnumerable<VariableObserver> GetVariableObservers()
+		{
+			if (Info.TurnWhileDisabledCondition != null)
+				yield return new VariableObserver(TurnWhileDisabledConditionChanged, Info.TurnWhileDisabledCondition.Variables);
+		}
+
+		void TurnWhileDisabledConditionChanged(Actor self, IReadOnlyDictionary<string, int> conditions)
+		{
+			if (Info.TurnWhileDisabledCondition != null)
+				turnWhileDisabled = Info.TurnWhileDisabledCondition.Evaluate(conditions);
 		}
 	}
 }
