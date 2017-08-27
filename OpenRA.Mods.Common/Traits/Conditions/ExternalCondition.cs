@@ -16,6 +16,13 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
+	[RequireExplicitImplementation]
+	public interface IConditionTimerWatcher
+	{
+		string Condition { get; }
+		void Update(int duration, int remaining);
+	}
+
 	[Desc("Allows a condition to be granted from an external source (Lua, warheads, etc).")]
 	public class ExternalConditionInfo : ITraitInfo, Requires<ConditionManagerInfo>
 	{
@@ -32,7 +39,7 @@ namespace OpenRA.Mods.Common.Traits
 		public object Create(ActorInitializer init) { return new ExternalCondition(init.Self, this); }
 	}
 
-	public class ExternalCondition : ITick
+	public class ExternalCondition : ITick, INotifyCreated
 	{
 		struct TimedToken
 		{
@@ -54,6 +61,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		// Tokens are sorted on insert/remove by ascending expiry time
 		readonly List<TimedToken> timedTokens = new List<TimedToken>();
+		IConditionTimerWatcher[] watchers;
+		int duration;
+		int expires;
 
 		public ExternalCondition(Actor self, ExternalConditionInfo info)
 		{
@@ -86,7 +96,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!CanGrantCondition(self, source))
 				return ConditionManager.InvalidConditionToken;
 
-			var token = conditionManager.GrantCondition(self, Info.Condition, duration);
+			var token = conditionManager.GrantCondition(self, Info.Condition);
 			HashSet<int> permanent;
 			permanentTokens.TryGetValue(source, out permanent);
 
@@ -132,7 +142,13 @@ namespace OpenRA.Mods.Common.Traits
 				if (index >= 0)
 					timedTokens.Insert(index, timedToken);
 				else
+				{
 					timedTokens.Add(timedToken);
+
+					// Track the duration and expiration for the longest remaining timer.
+					expires = timedToken.Expires;
+					this.duration = duration;
+				}
 			}
 			else if (permanent == null)
 				permanentTokens.Add(source, new HashSet<int> { token });
@@ -172,14 +188,50 @@ namespace OpenRA.Mods.Common.Traits
 
 		void ITick.Tick(Actor self)
 		{
+			if (timedTokens.Count == 0)
+				return;
+
 			// Remove expired tokens
 			var worldTick = self.World.WorldTick;
 			var count = 0;
 			while (count < timedTokens.Count && timedTokens[count].Expires < worldTick)
+			{
+				var token = timedTokens[count].Token;
+				if (conditionManager.TokenValid(self, token))
+					conditionManager.RevokeCondition(self, token);
+
 				count++;
+			}
 
 			if (count > 0)
+			{
 				timedTokens.RemoveRange(0, count);
+				if (timedTokens.Count == 0)
+				{
+					// Notify watchers that all timers have expired.
+					foreach (var w in watchers)
+						w.Update(0, 0);
+
+					return;
+				}
+			}
+
+			// Watchers will be receiving notifications while the condition is enabled.
+			// They will also be provided with the number of ticks before the last timer ends,
+			// as well as the duration of the longest active instance.
+			if (timedTokens.Count > 0)
+			{
+				var remaining = expires - worldTick;
+				foreach (var w in watchers)
+					w.Update(duration, remaining);
+			}
+		}
+
+		bool Notifies(IConditionTimerWatcher watcher) { return watcher.Condition == Info.Condition; }
+
+		void INotifyCreated.Created(Actor self)
+		{
+			watchers = self.TraitsImplementing<IConditionTimerWatcher>().Where(Notifies).ToArray();
 		}
 	}
 }
