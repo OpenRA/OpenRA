@@ -49,7 +49,9 @@ namespace OpenRA.Mods.Yupgi_alert.Warheads
 
 		public void RulesetLoaded(Ruleset rules, WeaponInfo info)
 		{
-			if (Range != null)
+			if (Range == null)
+				Range = Exts.MakeArray(Falloff.Length, i => i * Spread);
+			else
 			{
 				if (Range.Length != 1 && Range.Length != Falloff.Length)
 					throw new YamlException("Number of range values must be 1 or equal to the number of Falloff values.");
@@ -58,8 +60,6 @@ namespace OpenRA.Mods.Yupgi_alert.Warheads
 					if (Range[i] > Range[i + 1])
 						throw new YamlException("Range values must be specified in an increasing order.");
 			}
-			else
-				Range = Exts.MakeArray(Falloff.Length, i => i * Spread);
 
 			// Compute FalloffDifference LUT.
 			falloffDifference = new int[Falloff.Length];
@@ -71,7 +71,7 @@ namespace OpenRA.Mods.Yupgi_alert.Warheads
 				falloffDifference[i] = Falloff[i] - Falloff[i + 1];
 			}
 
-			falloffDifference[falloffDifference.Length - 1] = 0;
+			falloffDifference[falloffDifference.Length - 1] = Falloff.Last();
 		}
 
 		public override void DoImpact(WPos pos, Actor firedBy, IEnumerable<int> damageModifiers)
@@ -101,20 +101,17 @@ namespace OpenRA.Mods.Yupgi_alert.Warheads
 					.First(l => l.Info.Name == RadioactivityLayerName);
 
 				foreach (var cell in affectedCells)
-				{
-					var foff = falloffDifference[i];
-					IncreaseRALevel(cell, foff, raLayer);
-				}
+					IncreaseRALevel(cell, falloffDifference[i], Falloff[i], raLayer);
 			}
 		}
 
 		// Increase radiation level of the cell at given pos, considering falloff
-		void IncreaseRALevel(CPos pos, int foff, RadioactivityLayer raLayer)
+		void IncreaseRALevel(CPos pos, int foffDiff, int foff, RadioactivityLayer raLayer)
 		{
 			// increase RA level of the cell by this amount.
 			// Apply fall off to MaxLevel, because if we keep desolator there for very long,
 			// all cells get saturated and doesn't look good.
-			raLayer.IncreaseLevel(pos, Level * foff / 100, MaxLevel * foff / 100);
+			raLayer.IncreaseLevel(pos, Level * foffDiff / 100, MaxLevel * foff / 100);
 		}
 	}
 }

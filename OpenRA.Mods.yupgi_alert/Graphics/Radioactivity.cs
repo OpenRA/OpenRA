@@ -88,6 +88,13 @@ namespace OpenRA.Mods.Yupgi_alert.Graphics
 			// It is different than tinting the info.color itself and provides nicer look.
 			if (alpha > layer.Info.MixThreshold)
 				Game.Renderer.WorldRgbaColorRenderer.FillRect(tl, br, Color.FromArgb(16, layer.Info.Color2));
+
+			/* Let's actually see the level numbers
+			var text = "{0}".F(Level);
+			var font = Game.Renderer.Fonts["Bold"]; // OPMod: Was TinyBold
+			var screenPos = wr.Viewport.Zoom * (wr.ScreenPosition(pos) - wr.Viewport.TopLeft.ToFloat2()) - 0.5f * font.Measure(text).ToFloat2();
+			font.DrawTextWithContrast(text, screenPos, color, Color.Black, Color.Black, 1);
+			*/
 		}
 
 		public void RenderDebugGeometry(WorldRenderer wr) { }
@@ -123,8 +130,9 @@ namespace OpenRA.Mods.Yupgi_alert.Graphics
 		{
 			Ticks = updateDelay;
 
-			var new_level = this.Level + level;
+			/// The code below may look odd but consider that each weapon may have a different max_level.
 
+			var new_level = Level + level;
 			if (new_level > max_level)
 				new_level = max_level;
 
