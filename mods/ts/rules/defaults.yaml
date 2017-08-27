@@ -316,6 +316,7 @@
 		Range: 2c0, 5c0
 	EditorTilesetFilter:
 		Categories: Building
+	CommandBarBlacklist:
 
 ^Building:
 	Inherits@1: ^BasicBuilding
@@ -989,6 +990,7 @@
 	RevealOnFire:
 	EditorTilesetFilter:
 		Categories: Defense
+	-CommandBarBlacklist:
 
 ^Train:
 	Inherits@1: ^EmpDisable

@@ -112,37 +112,37 @@ command-icons-gdi: chrome.png
 	attack-move-disabled: 304,357,26,26
 	attack-move-active: 304,383,26,26
 	attack-move-hover: 304,409,26,26
-	attack-move-active-hover: 304,435,26,26    
+	attack-move-active-hover: 304,435,26,26
 	force-move: 330,331,24,24
 	force-move-disabled: 330,357,26,26
 	force-move-active: 330,383,26,26
-	force-move-hover: 330,409,26,26    
-	force-move-active-hover: 330,435,26,26    
+	force-move-hover: 330,409,26,26
+	force-move-active-hover: 330,435,26,26
 	force-attack: 356,331,26,26
 	force-attack-disabled: 356,357,26,26
 	force-attack-active: 356,383,26,26
-	force-attack-hover: 356,409,26,26    
-	force-attack-active-hover: 356,435,26,26    
+	force-attack-hover: 356,409,26,26
+	force-attack-active-hover: 356,435,26,26
 	guard: 382,331,24,24
 	guard-disabled: 382,357,26,26
 	guard-active: 382,383,26,26
 	guard-hover: 382,409,26,26
-	guard-active-hover: 382,435,26,26    
+	guard-active-hover: 382,435,26,26
 	deploy: 408,331,24,24
 	deploy-disabled: 408,357,26,26
 	deploy-active: 408,383,26,26
 	deploy-hover: 408,409,26,26
-	deploy-active-hover: 408,435,26,26    
+	deploy-active-hover: 408,435,26,26
 	scatter: 434,331,26,26
 	scatter-disabled: 434,357,26,26
 	scatter-active: 434,383,26,26
 	scatter-hover: 434,409,26,26
-	scatter-active-hover: 434,435,26,26    
+	scatter-active-hover: 434,435,26,26
 	stop: 460,331,26,26
 	stop-disabled: 460,357,26,26
 	stop-active: 460,383,26,26
 	stop-hover: 460,409,26,26
-	stop-active-hover: 460,435,26,26    
+	stop-active-hover: 460,435,26,26
 	queue-orders: 486,331,26,26
 	queue-orders-disabled: 486,357,26,26
 	queue-orders-active: 486,383,26,26
@@ -288,37 +288,37 @@ command-icons-nod: chrome.png
 	attack-move-disabled: 816,357,26,26
 	attack-move-active: 816,383,26,26
 	attack-move-hover: 816,409,26,26
-	attack-move-active-hover: 816,435,26,26    
+	attack-move-active-hover: 816,435,26,26
 	force-move: 842,331,24,24
 	force-move-disabled: 842,357,26,26
 	force-move-active: 842,383,26,26
-	force-move-hover: 842,409,26,26    
-	force-move-active-hover: 842,435,26,26    
+	force-move-hover: 842,409,26,26
+	force-move-active-hover: 842,435,26,26
 	force-attack: 868,331,26,26
 	force-attack-disabled: 868,357,26,26
 	force-attack-active: 868,383,26,26
-	force-attack-hover: 868,409,26,26    
-	force-attack-active-hover: 868,435,26,26    
+	force-attack-hover: 868,409,26,26
+	force-attack-active-hover: 868,435,26,26
 	guard: 894,331,24,24
 	guard-disabled: 894,357,26,26
 	guard-active: 894,383,26,26
 	guard-hover: 894,409,26,26
-	guard-active-hover: 894,435,26,26    
+	guard-active-hover: 894,435,26,26
 	deploy: 920,331,24,24
 	deploy-disabled: 920,357,26,26
 	deploy-active: 920,383,26,26
 	deploy-hover: 920,409,26,26
-	deploy-active-hover: 920,435,26,26    
+	deploy-active-hover: 920,435,26,26
 	scatter: 946,331,26,26
 	scatter-disabled: 946,357,26,26
 	scatter-active: 946,383,26,26
 	scatter-hover: 946,409,26,26
-	scatter-active-hover: 946,435,26,26    
+	scatter-active-hover: 946,435,26,26
 	stop: 972,331,26,26
 	stop-disabled: 972,357,26,26
 	stop-active: 972,383,26,26
 	stop-hover: 972,409,26,26
-	stop-active-hover: 972,435,26,26    
+	stop-active-hover: 972,435,26,26
 	queue-orders: 998,331,26,26
 	queue-orders-disabled: 998,357,26,26
 	queue-orders-active: 998,383,26,26

@@ -192,6 +192,7 @@ Container@PLAYER_WIDGETS:
 					Background:
 					Key: StanceAttackAnything
 					DisableKeyRepeat: true
+					DisableKeySound: true
 					TooltipText: Attack Anything Stance
 					TooltipDesc: Set the selected units to Attack Anything stance:\n - Units will attack enemy units and structures on sight\n - Units will pursue attackers across the battlefield
 					TooltipContainer: TOOLTIP_CONTAINER
@@ -210,6 +211,7 @@ Container@PLAYER_WIDGETS:
 					Background:
 					Key: StanceDefend
 					DisableKeyRepeat: true
+					DisableKeySound: true
 					TooltipText: Defend Stance
 					TooltipDesc: Set the selected units to Defend stance:\n - Units will attack enemy units on sight\n - Units will not move or pursue enemies
 					TooltipContainer: TOOLTIP_CONTAINER
@@ -228,6 +230,7 @@ Container@PLAYER_WIDGETS:
 					Background:
 					Key: StanceReturnFire
 					DisableKeyRepeat: true
+					DisableKeySound: true
 					TooltipText: Return Fire Stance
 					TooltipDesc: Set the selected units to Return Fire stance:\n - Units will retaliate against enemies that attack them\n - Units will not move or pursue enemies
 					TooltipContainer: TOOLTIP_CONTAINER
@@ -246,6 +249,7 @@ Container@PLAYER_WIDGETS:
 					Background:
 					Key: StanceHoldFire
 					DisableKeyRepeat: true
+					DisableKeySound: true
 					TooltipText: Hold Fire Stance
 					TooltipDesc: Set the selected units to Hold Fire stance:\n - Units will not fire upon enemies\n - Units will not move or pursue enemies
 					TooltipContainer: TOOLTIP_CONTAINER
