@@ -183,7 +183,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public override bool HandleMouseInput(MouseInput mi)
 		{
-			if (mi.Event != MouseInputEvent.Down && mi.Event != MouseInputEvent.Up)
+			if (mi.Event == MouseInputEvent.Move)
 				return false;
 
 			if (mi.Event == MouseInputEvent.Down)
