@@ -11,6 +11,7 @@
 
 using System;
 using System.Linq;
+using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Widgets;
 
@@ -48,8 +49,15 @@ namespace OpenRA.Mods.Common.Widgets
 		void BindStanceButton(ButtonWidget button, UnitStance stance)
 		{
 			var icon = button.Get<ImageWidget>("ICON");
-			icon.GetImageName = () => button.IsDisabled() ? icon.ImageName + "-disabled" :
-				button.IsHighlighted() ? icon.ImageName + "-active" : icon.ImageName;
+			var hasDisabled = ChromeProvider.GetImage(icon.ImageCollection, icon.ImageName + "-disabled") != null;
+			var hasActive = ChromeProvider.GetImage(icon.ImageCollection, icon.ImageName + "-active") != null;
+			var hasActiveHover = ChromeProvider.GetImage(icon.ImageCollection, icon.ImageName + "-active-hover") != null;
+			var hasHover = ChromeProvider.GetImage(icon.ImageCollection, icon.ImageName + "-hover") != null;
+
+			icon.GetImageName = () => hasActive && button.IsHighlighted() ?
+						(hasActiveHover && Ui.MouseOverWidget == button ? icon.ImageName + "-active-hover" : icon.ImageName + "-active") :
+					hasDisabled && button.IsDisabled() ? icon.ImageName + "-disabled" :
+					hasHover && Ui.MouseOverWidget == button ? icon.ImageName + "-hover" : icon.ImageName;
 
 			button.IsDisabled = () => { UpdateStateIfNecessary(); return !actorStances.Any(); };
 			button.IsHighlighted = () => actorStances.Any(

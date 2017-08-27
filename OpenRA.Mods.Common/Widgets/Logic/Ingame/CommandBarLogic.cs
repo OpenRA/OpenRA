@@ -10,7 +10,9 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using OpenRA.Graphics;
 using OpenRA.Mods.Common.Orders;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Orders;
@@ -40,9 +42,13 @@ namespace OpenRA.Mods.Common.Widgets
 		TraitPair<IIssueDeployOrder>[] selectedDeploys = { };
 
 		[ObjectCreator.UseCtor]
-		public CommandBarLogic(Widget widget, World world)
+		public CommandBarLogic(Widget widget, World world, Dictionary<string, MiniYaml> logicArgs)
 		{
 			this.world = world;
+
+			var highlightOnButtonPress = false;
+			if (logicArgs.ContainsKey("HighlightOnButtonPress"))
+				highlightOnButtonPress = FieldLoader.GetValue<bool>("HighlightOnButtonPress", logicArgs["HighlightOnButtonPress"].Value);
 
 			var attackMoveButton = widget.GetOrNull<ButtonWidget>("ATTACK_MOVE");
 			if (attackMoveButton != null)
@@ -133,7 +139,14 @@ namespace OpenRA.Mods.Common.Widgets
 
 				scatterButton.IsDisabled = () => { UpdateStateIfNecessary(); return scatterDisabled; };
 				scatterButton.IsHighlighted = () => scatterHighlighted > 0;
-				scatterButton.OnClick = () => PerformKeyboardOrderOnSelection(a => new Order("Scatter", a, false));
+				scatterButton.OnClick = () =>
+				{
+					if (highlightOnButtonPress)
+						scatterHighlighted = 2;
+
+					PerformKeyboardOrderOnSelection(a => new Order("Scatter", a, false));
+				};
+
 				scatterButton.OnKeyPress = ki => { scatterHighlighted = 2; scatterButton.OnClick(); };
 			}
 
@@ -144,7 +157,14 @@ namespace OpenRA.Mods.Common.Widgets
 
 				deployButton.IsDisabled = () => { UpdateStateIfNecessary(); return !selectedDeploys.Any(Exts.IsTraitEnabled); };
 				deployButton.IsHighlighted = () => deployHighlighted > 0;
-				deployButton.OnClick = PerformDeployOrderOnSelection;
+				deployButton.OnClick = () =>
+				{
+					if (highlightOnButtonPress)
+						deployHighlighted = 2;
+
+					PerformDeployOrderOnSelection();
+				};
+
 				deployButton.OnKeyPress = ki => { deployHighlighted = 2; deployButton.OnClick(); };
 			}
 
@@ -155,7 +175,14 @@ namespace OpenRA.Mods.Common.Widgets
 
 				stopButton.IsDisabled = () => { UpdateStateIfNecessary(); return stopDisabled; };
 				stopButton.IsHighlighted = () => stopHighlighted > 0;
-				stopButton.OnClick = () => PerformKeyboardOrderOnSelection(a => new Order("Stop", a, false));
+				stopButton.OnClick = () =>
+				{
+					if (highlightOnButtonPress)
+						stopHighlighted = 2;
+
+					PerformKeyboardOrderOnSelection(a => new Order("Stop", a, false));
+				};
+
 				stopButton.OnKeyPress = ki => { stopHighlighted = 2; stopButton.OnClick(); };
 			}
 
@@ -193,7 +220,15 @@ namespace OpenRA.Mods.Common.Widgets
 		void BindButtonIcon(ButtonWidget button)
 		{
 			var icon = button.Get<ImageWidget>("ICON");
-			icon.GetImageName = () => button.IsDisabled() ? icon.ImageName + "-disabled" : icon.ImageName;
+			var hasDisabled = ChromeProvider.GetImage(icon.ImageCollection, icon.ImageName + "-disabled") != null;
+			var hasActive = ChromeProvider.GetImage(icon.ImageCollection, icon.ImageName + "-active") != null;
+			var hasActiveHover = ChromeProvider.GetImage(icon.ImageCollection, icon.ImageName + "-active-hover") != null;
+			var hasHover = ChromeProvider.GetImage(icon.ImageCollection, icon.ImageName + "-hover") != null;
+
+			icon.GetImageName = () => hasActive && button.IsHighlighted() ?
+						(hasActiveHover && Ui.MouseOverWidget == button ? icon.ImageName + "-active-hover" : icon.ImageName + "-active") :
+					hasDisabled && button.IsDisabled() ? icon.ImageName + "-disabled" :
+					hasHover && Ui.MouseOverWidget == button ? icon.ImageName + "-hover" : icon.ImageName;
 		}
 
 		bool IsForceModifiersActive(Modifiers modifiers)
