@@ -21,7 +21,6 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class TurnsWhileImmobile : ConditionalTrait<TurnsWhileImmobileInfo>
 	{
-		public TurnsWhileImmobile(TurnsWhileImmobileInfo info)
-			:base(info) { }
+		public TurnsWhileImmobile(TurnsWhileImmobileInfo info) : base(info) { }
 	}
 }
