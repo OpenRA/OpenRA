@@ -85,6 +85,7 @@
     <Compile Include="Traits\SupportPowers\AttackOrderPower.cs" />
     <Compile Include="UtilityCommands\LegacyTilesetImporter.cs" />
     <Compile Include="Traits\World\TSShroudPalette.cs" />
+    <Compile Include="Traits\World\VeinRenderer.cs" />
     <Compile Include="UtilityCommands\ImportTSMapCommand.cs" />
     <Compile Include="Player\PlaceSimpleBeacon.cs" />
     <Compile Include="Effects\AnimatedBeacon.cs" />
