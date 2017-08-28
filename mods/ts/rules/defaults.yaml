@@ -1088,6 +1088,23 @@
 	EditorTilesetFilter:
 		Categories: Tunnel
 
+^Waterfall:
+	EditorOnlyTooltip:
+		Name: Waterfall Animation
+	RenderSprites:
+		Palette: terrain
+	WithSpriteBody:
+	BodyOrientation:
+		UseClassicPerspectiveFudge: False
+		QuantizedFacings: 1
+	Building:
+		Dimensions: 1, 1
+		Footprint: _
+	AutoSelectionSize:
+	AlwaysVisible:
+	EditorTilesetFilter:
+		Categories: Waterfall
+
 ^Gate:
 	Inherits: ^Building
 	Huntable:

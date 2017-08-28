@@ -637,6 +637,42 @@ tuntop04:
 	idle:
 		Offset: -24, -49, 24
 
+wa01x:
+	idle:
+		ZRamp: 1
+		UseTilesetExtension: true
+		Length: 7
+		Start: 1
+		Tick: 200
+		Offset: -9, 30
+
+wa02x:
+	idle:
+		ZRamp: 1
+		UseTilesetExtension: true
+		Length: 7
+		Start: 1
+		Tick: 200
+		Offset: -39, 15
+
+wa03x:
+	idle:
+		ZRamp: 1
+		UseTilesetExtension: true
+		Length: 7
+		Start: 1
+		Tick: 200
+		Offset: -26, 23
+
+wa04x:
+	idle:
+		ZRamp: 1
+		UseTilesetExtension: true
+		Length: 7
+		Start: 1
+		Tick: 200
+		Offset: -38, 13
+
 dig:
 	idle:
 		Length: *

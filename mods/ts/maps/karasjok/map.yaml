@@ -1553,6 +1553,12 @@ Actors:
 	Actor472: srock03
 		Location: 134,73
 		Owner: Neutral
+	Actor473: wa03x
+		Owner: Neutral
+		Location: 68,22
+	Actor474: wa03x
+		Owner: Neutral
+		Location: 139,-88
 
 Rules:
 	World:
