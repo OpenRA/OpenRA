@@ -20,7 +20,6 @@ namespace OpenRA.Mods.Yupgi_alert.Activities
 	public class TractionFallToEarth : Activity
 	{
 		readonly Tractable tractable;
-		readonly IPositionable position;
 
 		int fallSpeed = 0;
 

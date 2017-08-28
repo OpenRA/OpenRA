@@ -68,7 +68,6 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 		int cruisingToken = ConditionManager.InvalidConditionToken;
 		Actor tractor;
 		IMove tractorMove;
-		IMove move;
 		IPositionable positionable;
 		IOccupySpace ios;
 		ConditionManager conditionManager;
@@ -85,12 +84,10 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 		void INotifyCreated.Created(Actor self)
 		{
 			conditionManager = self.TraitOrDefault<ConditionManager>();
-			move = self.TraitOrDefault<IMove>();
 			positionable = self.TraitOrDefault<IPositionable>();
 			ios = self.TraitOrDefault<IOccupySpace>();
 		}
 
-		CPos destCell = CPos.Zero;
 		void ITick.Tick(Actor self)
 		{
 			--timeoutTicks;
