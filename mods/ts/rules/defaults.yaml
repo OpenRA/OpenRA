@@ -942,22 +942,15 @@
 		Type: Wood
 	Targetable:
 		TargetTypes: Trees, NoAutoTarget
-	WithDamageOverlay@SmallBurn:
-		DamageType: Incendiary
-		Image: burn-s
-		MinimumDamageState: Light
-		MaximumDamageState: Dead
+	ConditionManager:
+	GrantConditionOnDamageState:
+		Condition: burning
+		GrantPermanently: True
+	Burns:
+		Anim: tree
 		Palette: effect
-	WithDamageOverlay@MediumBurn:
-		DamageType: Incendiary
-		Image: burn-m
-		MinimumDamageState: Medium
-		MaximumDamageState: Dead
-		Palette: effect
-	WithDamageOverlay@LargeBurn:
-		DamageType: Incendiary
-		Image: burn-l
-		Palette: effect
+		RequiresCondition: burning
+		DamageTypes: Incendiary
 
 ^Rock:
 	Inherits@1: ^SpriteActor
