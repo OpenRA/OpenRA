@@ -44,7 +44,7 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 		}
 	}
 
-	public class WithVoxelUnloadBody : IAutoSelectionSize
+	public class WithVoxelUnloadBody : IAutoSelectionSize, IScreenMapSize
 	{
 		public bool Docked;
 
@@ -74,5 +74,7 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 		}
 
 		public int2 SelectionSize(Actor self) { return size; }
+
+		public int2 ScreenMapSize(Actor self) { return size; }
 	}
 }

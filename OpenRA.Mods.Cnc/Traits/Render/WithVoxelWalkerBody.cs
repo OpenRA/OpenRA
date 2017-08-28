@@ -47,7 +47,7 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 		}
 	}
 
-	public class WithVoxelWalkerBody : IAutoSelectionSize, ITick, IActorPreviewInitModifier
+	public class WithVoxelWalkerBody : IAutoSelectionSize, IScreenMapSize, ITick, IActorPreviewInitModifier
 	{
 		WithVoxelWalkerBodyInfo info;
 		IMove movement;
@@ -78,6 +78,8 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 		}
 
 		public int2 SelectionSize(Actor self) { return size; }
+
+		public int2 ScreenMapSize(Actor self) { return size; }
 
 		public void Tick(Actor self)
 		{

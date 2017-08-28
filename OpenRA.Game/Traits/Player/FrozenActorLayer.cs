@@ -32,6 +32,7 @@ namespace OpenRA.Traits
 		public readonly PPos[] Footprint;
 		public readonly WPos CenterPosition;
 		public readonly Rectangle Bounds;
+		public readonly Rectangle ScreenMapBounds;
 		public readonly HashSet<string> TargetTypes;
 		readonly Actor actor;
 		readonly Shroud shroud;
@@ -78,6 +79,7 @@ namespace OpenRA.Traits
 
 			CenterPosition = self.CenterPosition;
 			Bounds = self.Bounds;
+			ScreenMapBounds = self.ScreenMapBounds;
 			TargetTypes = self.GetEnabledTargetTypes().ToHashSet();
 
 			tooltips = self.TraitsImplementing<ITooltip>().ToArray();
