@@ -2,6 +2,7 @@ DOGGIE:
 	Inherits@1: ^Infantry
 	Inherits@2: ^RegularInfantryDeath
 	Inherits@3: ^HealsOnTiberium
+	Inherits@AUTOTARGET: ^AutoTargetGround
 	Tooltip:
 		Name: Tiberian Fiend
 	Health:
