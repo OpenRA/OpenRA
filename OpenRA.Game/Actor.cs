@@ -132,10 +132,11 @@ namespace OpenRA
 		Rectangle DetermineBounds()
 		{
 			var si = Info.TraitInfoOrDefault<SelectableInfo>();
+			var autoSelectionSize = TraitsImplementing<IAutoSelectionSize>();
 			var size = (si != null && si.Bounds != null) ? new int2(si.Bounds[0], si.Bounds[1]) :
-				TraitsImplementing<IAutoSelectionSize>().Select(x => x.SelectionSize(this)).FirstOrDefault();
+				autoSelectionSize.Select(x => x.SelectionSize(this)).FirstOrDefault();
 
-			var offset = -size / 2;
+			var offset = autoSelectionSize.Select(x => x.SelectionOffset(this)).FirstOrDefault() - size / 2;
 			if (si != null && si.Bounds != null && si.Bounds.Length > 2)
 				offset += new int2(si.Bounds[2], si.Bounds[3]);
 

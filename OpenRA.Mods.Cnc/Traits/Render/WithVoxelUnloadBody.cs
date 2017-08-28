@@ -73,6 +73,8 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 				() => 0, info.ShowShadow));
 		}
 
-		public int2 SelectionSize(Actor self) { return size; }
+		int2 IAutoSelectionSize.SelectionSize(Actor self) { return size; }
+
+		int2 IAutoSelectionSize.SelectionOffset(Actor self) { return int2.Zero; }
 	}
 }
