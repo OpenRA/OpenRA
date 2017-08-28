@@ -20,7 +20,7 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 		[Desc("Altitude this victim gets tracted at.")]
 		public readonly WDist CruiseAltitude = new WDist(1280);
 
-		[Desc("How fast does this actor get dragged? You can have negative speed for push back.")]
+		[Desc("How fast does this actor get dragged? 0 to only lift the target in air. You can have negative speed for push back.")]
 		public readonly WDist CruiseSpeed = new WDist(20);
 
 		[Desc("How fast this actor ascends when being pulled to TractionAltitude?")]
@@ -34,6 +34,9 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 
 		[Desc("Minimum altitude where this victim is considered airborne")]
 		public readonly int MinAirborneAltitude = 1;
+
+		[Desc("When the unit land on these terrain and their movement speed is 0 on there, we destroy this unit.")]
+		public readonly string[] DeathTerrainTypes = {"Rock", "Debris", "Cliffs", "Water", "River"};
 
 		[Desc("We consider traction to be timed out after this period.")]
 		public readonly int Timeout = 20;

@@ -29,20 +29,54 @@ namespace OpenRA.Mods.Yupgi_alert.Activities
 			this.tractable = tractable;
 		}
 
+		void OnGroundLevel(Actor self)
+		{
+			if (tractable.Info.ExplosionWeapon != null)
+			{
+				// Use .FromPos since this actor is killed. Cannot use Target.FromActor
+				tractable.Info.ExplosionWeapon.Impact(Target.FromPos(self.CenterPosition), self, Enumerable.Empty<int>());
+			}
+
+			tractable.RevokeTractingCondition(self);
+
+			// Is where I fell a death trap?
+			var terrain = self.World.Map.GetTerrainInfo(self.Location);
+			var health = self.Trait<Health>();
+
+			if (tractable.Info.DeathTerrainTypes.Contains(terrain.Type))
+			{
+				// If this actor is immobile there, kill it.
+				var mobile = self.TraitOrDefault<Mobile>();
+				if (!mobile.Info.TerrainSpeeds.ContainsKey(terrain.Type) || mobile.Info.TerrainSpeeds[terrain.Type].Speed == 0)
+				{
+					// Don't even leave husk behind.
+					self.Dispose();
+
+					// Still do "unit lost" notification.
+					var ai = new AttackInfo
+					{
+						Attacker = self,
+						Damage = new Damage(health.MaxHP),
+						DamageState = DamageState.Dead,
+						PreviousDamageState = DamageState.Undamaged
+					};
+
+					foreach (var nd in self.TraitsImplementing<INotifyKilled>()
+							.Concat(self.Owner.PlayerActor.TraitsImplementing<INotifyKilled>()))
+						nd.Killed(self, ai);
+
+					return;
+				}
+			}
+
+			health.InflictDamage(self, self, new Damage(health.MaxHP * tractable.Info.DamageFactor / 100), false);
+		}
+
 		public override Activity Tick(Actor self)
 		{
 			if (self.World.Map.DistanceAboveTerrain(self.CenterPosition).Length <= 0)
 			{
-				if (tractable.Info.ExplosionWeapon != null)
-				{
-					// Use .FromPos since this actor is killed. Cannot use Target.FromActor
-					tractable.Info.ExplosionWeapon.Impact(Target.FromPos(self.CenterPosition), self, Enumerable.Empty<int>());
-				}
-
-				tractable.RevokeTractingCondition(self);
-
-				var health = self.Trait<Health>();
-				health.InflictDamage(self, self, new Damage(health.MaxHP * tractable.Info.DamageFactor / 100), false);
+				OnGroundLevel(self);
 				return null;
 			}
 
