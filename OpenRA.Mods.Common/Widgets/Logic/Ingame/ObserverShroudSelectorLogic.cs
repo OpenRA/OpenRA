@@ -140,7 +140,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var keyhandler = shroudSelector.Get<LogicKeyListenerWidget>("SHROUD_KEYHANDLER");
 			keyhandler.OnKeyPress = HandleKeyPress;
 
-			selected = limitViews ? groups.First().Value.First() : disableShroud;
+			selected = limitViews ? groups.First().Value.First() : world.WorldActor.Owner.Shroud.ExploreMapEnabled ? combined : disableShroud;
 			selected.OnClick();
 		}
 
