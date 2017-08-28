@@ -419,7 +419,7 @@ Container@PLAYER_WIDGETS:
 							Y: 5
 							ImageCollection: command-icons
 							ImageName: queue-orders
-		Background@COMMAND_BAR:
+		Background@STANCE_BAR:
 			Logic: StanceSelectorLogic
 			X: 280
 			Y: WINDOW_BOTTOM - HEIGHT - 5
