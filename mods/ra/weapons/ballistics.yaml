@@ -10,7 +10,7 @@
 		Spread: 128
 		Damage: 40
 		Versus:
-			None: 20
+			None: 30
 			Wood: 75
 			Light: 75
 			Concrete: 50
@@ -39,7 +39,6 @@
 	Warhead@1Dam: SpreadDamage
 		Damage: 27
 		Versus:
-			None: 30
 			Wood: 40
 			Light: 110
 			Heavy: 45
@@ -54,7 +53,6 @@
 	Inherits: ^Cannon
 	Warhead@1Dam: SpreadDamage
 		Versus:
-			None: 30
 			Heavy: 115
 
 105mm:
@@ -64,7 +62,6 @@
 	BurstDelays: 4
 	Warhead@1Dam: SpreadDamage
 		Versus:
-			None: 30
 			Heavy: 115
 
 120mm:
@@ -75,7 +72,6 @@
 	Warhead@1Dam: SpreadDamage
 		Damage: 60
 		Versus:
-			None: 30
 			Heavy: 115
 		InvalidTargets: Air
 
@@ -88,6 +84,7 @@ TurretGun:
 		Damage: 60
 		Versus:
 			Wood: 50
+			None: 20
 
 ^Artillery:
 	Inherits: ^Cannon
@@ -156,8 +153,6 @@ TurretGun:
 		Speed: 426
 	Warhead@1Dam: SpreadDamage
 		Damage: 25
-		Versus:
-			None: 30
 
 Grenade:
 	Inherits: ^Artillery
