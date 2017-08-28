@@ -71,6 +71,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Activities\Air\BlimpFallToEarth.cs" />
+    <Compile Include="Activities\Air\TractionFallToEarth.cs" />
     <Compile Include="Activities\Air\ShootableBallisticMissileFly.cs" />
     <Compile Include="Activities\Air\SpawnedFlyAttack.cs" />
     <Compile Include="Activities\Air\SpawnedTakeOff.cs" />
@@ -87,6 +88,8 @@
     <Compile Include="Traits\AIDeployHelper.cs" />
     <Compile Include="Traits\AegisAutoTarget.cs" />
     <Compile Include="Traits\AcceptCashRallyPointAcceptor.cs" />
+    <Compile Include="Traits\Tractor.cs" />
+    <Compile Include="Traits\Tractable.cs" />
     <Compile Include="Traits\MissileSpawnerMaster.cs" />
     <Compile Include="Traits\MissileSpawnerSlave.cs" />
     <Compile Include="Traits\ChronoHarvester.cs" />
