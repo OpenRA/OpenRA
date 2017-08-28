@@ -15,10 +15,18 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	[Desc("This actor will play a fire animation over its body and take damage over time.")]
+	[Desc("This actor will play a fire overlay animation over its body and take damage over time.")]
 	class BurnsInfo : ITraitInfo, Requires<RenderSpritesInfo>
 	{
-		public readonly string Anim = "1";
+		public readonly string Image = "fire";
+		[SequenceReference("Image")] public readonly string Anim = "1";
+
+		[Desc("Custom palette name")]
+		[PaletteReference("IsPlayerPalette")] public readonly string Palette = null;
+
+		[Desc("Custom palette is a player palette BaseName")]
+		public readonly bool IsPlayerPalette = false;
+
 		public readonly int Damage = 1;
 		public readonly int Interval = 8;
 
@@ -34,10 +42,10 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			this.info = info;
 
-			var anim = new Animation(self.World, "fire", () => 0);
+			var anim = new Animation(self.World, info.Image, () => 0);
 			anim.IsDecoration = true;
 			anim.PlayRepeating(info.Anim);
-			self.Trait<RenderSprites>().Add(anim);
+			self.Trait<RenderSprites>().Add(anim, info.Palette, info.IsPlayerPalette);
 		}
 
 		public void Tick(Actor self)
