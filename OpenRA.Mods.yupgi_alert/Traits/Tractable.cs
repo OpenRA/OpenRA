@@ -186,6 +186,10 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 			if (this.tractor != null && !this.tractor.IsDead && this.tractor != tractor)
 				return;
 
+			// I am falling and the activity must not be interrupted.
+			if (self.CurrentActivity is TractionFallToEarth)
+				return;
+
 			timeoutTicks = Info.Timeout;
 
 			// Stop self.
