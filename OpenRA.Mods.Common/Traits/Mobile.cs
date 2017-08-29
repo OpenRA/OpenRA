@@ -649,6 +649,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
+			if (!Info.MoveIntoShroud && !self.Owner.Shroud.IsExplored(order.TargetLocation))
+				return null;
+
 			switch (order.OrderString)
 			{
 				case "Move":
