@@ -68,6 +68,15 @@ VISC_SML:
 		MaxMoveDelay: 60
 	RenderSprites:
 		Image: vissml
+	Mobile:
+		Crushes: visceroid-fusing
+	Crushable:
+		CrushClasses: visceroid-fusing
+		WarnProbability: 0
+		CrushedByFriendlies: True
+	TransformCrusherOnCrush:
+		IntoActor: visc_lrg
+		CrushClasses: visceroid-fusing
 
 VISC_LRG:
 	Inherits: ^Visceroid
