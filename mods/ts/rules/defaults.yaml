@@ -824,6 +824,7 @@
 		Type: GroundPosition
 	AttackMove:
 		Voice: Move
+		MoveIntoShroud: false
 	ActorLostNotification:
 	BodyOrientation:
 		QuantizedFacings: 0

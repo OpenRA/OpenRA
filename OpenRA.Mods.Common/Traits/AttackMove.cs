@@ -31,6 +31,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("The condition to grant to self while scanning for targets during an assault-move.")]
 		public readonly string AssaultMoveScanCondition = null;
 
+		[Desc("Can the actor be ordered to move in to shroud?")]
+		public readonly bool MoveIntoShroud = true;
+
 		public object Create(ActorInitializer init) { return new AttackMove(init.Self, this); }
 	}
 
@@ -107,6 +110,9 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				if (!order.Queued)
 					self.CancelActivity();
+
+				if (!info.MoveIntoShroud && !self.Owner.Shroud.IsExplored(order.TargetLocation))
+					return;
 
 				TargetLocation = move.NearestMoveableCell(order.TargetLocation);
 				self.SetTargetLine(Target.FromCell(self.World, TargetLocation.Value), Color.Red);
