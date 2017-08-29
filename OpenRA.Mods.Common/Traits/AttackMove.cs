@@ -83,6 +83,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		string IOrderVoice.VoicePhraseForOrder(Actor self, Order order)
 		{
+			if (!info.MoveIntoShroud && !self.Owner.Shroud.IsExplored(order.TargetLocation))
+				return null;
+
 			if (order.OrderString == "AttackMove" || order.OrderString == "AssaultMove")
 				return info.Voice;
 
