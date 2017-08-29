@@ -951,6 +951,9 @@
 		Palette: effect
 		RequiresCondition: burning
 		DamageTypes: Incendiary
+	ExplosionOnDamageTransition:
+		Weapon: Bushfire
+		TriggerOnlyOnce: True
 
 ^Rock:
 	Inherits@1: ^SpriteActor
