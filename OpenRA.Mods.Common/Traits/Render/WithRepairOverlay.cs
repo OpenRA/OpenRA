@@ -18,8 +18,14 @@ namespace OpenRA.Mods.Common.Traits.Render
 	[Desc("Displays an overlay when the building is being repaired by the player.")]
 	public class WithRepairOverlayInfo : PausableConditionalTraitInfo, Requires<RenderSpritesInfo>, Requires<BodyOrientationInfo>
 	{
-		[Desc("Sequence name to use")]
+		[Desc("Sequence to use upon repair beginning.")]
+		[SequenceReference("Image")] public readonly string StartSequence = null;
+
+		[Desc("Sequence name to play once during repair intervals or repeatedly if a start sequence is set.")]
 		[SequenceReference] public readonly string Sequence = "active";
+
+		[Desc("Sequence to use after repairing has finished.")]
+		[SequenceReference("Image")] public readonly string EndSequence = null;
 
 		[Desc("Position relative to body")]
 		public readonly WVec Offset = WVec.Zero;
@@ -73,10 +79,32 @@ namespace OpenRA.Mods.Common.Traits.Render
 			overlay.ReplaceAnim(RenderSprites.NormalizeSequence(overlay, e.DamageState, overlay.CurrentSequence.Name));
 		}
 
-		void INotifyRepair.Repairing(Actor self, Actor host)
+		void INotifyRepair.BeforeRepair(Actor self, Actor host)
 		{
-			visible = true;
-			overlay.PlayThen(overlay.CurrentSequence.Name, () => visible = false);
+			if (Info.StartSequence != null)
+			{
+				visible = true;
+				overlay.PlayThen(RenderSprites.NormalizeSequence(overlay, self.GetDamageState(), Info.StartSequence),
+					() => overlay.PlayRepeating(RenderSprites.NormalizeSequence(overlay, self.GetDamageState(), Info.Sequence)));
+			}
+		}
+
+		void INotifyRepair.RepairTick(Actor self, Actor host)
+		{
+			if (Info.StartSequence == null)
+			{
+				visible = true;
+				overlay.PlayThen(overlay.CurrentSequence.Name, () => visible = false);
+			}
+		}
+
+		void INotifyRepair.AfterRepair(Actor self, Actor target)
+		{
+			if (Info.EndSequence != null)
+			{
+				visible = true;
+				overlay.PlayThen(Info.EndSequence, () => visible = false);
+			}
 		}
 	}
 }
