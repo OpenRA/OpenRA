@@ -114,11 +114,12 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 
 			if (altitude < Info.CruiseAltitude)
 			{
-				AdjustAltitude(self, altitude, Info.CruiseAltitude);
+				int dz = CalcAltitudeDelta(self, altitude, Info.CruiseAltitude);
+				SetPosition(self, self.CenterPosition + new WVec(0, 0, dz));
 				return;
 			}
 
-			// Lets pull it to me
+			// Lets get pulled
 			FlyToward(self, tractorMove.NearestMoveableCell(tractor.Location));
 		}
 
@@ -134,22 +135,25 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 
 			step = new WVec(step.X, step.Y, 0);
 			step = cruiseSpeedMultiplier * Info.CruiseSpeed.Length * step / step.Length;
-			positionable.SetVisualPosition(self, self.CenterPosition + step);
-			/// SetPosition(self, self.CenterPosition + step); No need for this!
+
+			var altitude = self.World.Map.DistanceAboveTerrain(self.CenterPosition);
+			var altitudeDelta = new WVec(0, 0, CalcAltitudeDelta(self, altitude, Info.CruiseAltitude));
+
+			// SetPosition(self, self.CenterPosition + step); No need for SetPosition!
+			positionable.SetVisualPosition(self, self.CenterPosition + step + altitudeDelta);
 
 			return false;
 		}
 
-		public bool AdjustAltitude(Actor self, WDist altitude, WDist targetAltitude)
+		int CalcAltitudeDelta(Actor self, WDist altitude, WDist targetAltitude)
 		{
 			if (altitude == targetAltitude)
-				return false;
+				return 0;
 
 			var delta = Info.AltitudeVelocity.Length;
 			var dz = (targetAltitude - altitude).Length.Clamp(-delta, delta);
-			SetPosition(self, self.CenterPosition + new WVec(0, 0, dz));
 
-			return true;
+			return dz;
 		}
 
 		// CnP from Aircraft.cs + modified a little
