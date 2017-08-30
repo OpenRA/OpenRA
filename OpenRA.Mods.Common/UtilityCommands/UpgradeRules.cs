@@ -977,7 +977,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				// nuke launch animation is now it's own trait
 				if (engineVersion < 20170820)
 				{
-					if (depth == 1 && node.Key.StartsWith("NukePower"))
+					if (depth == 1 && node.Key.StartsWith("NukePower", StringComparison.Ordinal))
 					{
 						node.Value.Nodes.RemoveAll(n => n.Key == "ActivationSequence");
 						addNodes.Add(new MiniYamlNode("WithNukeLaunchAnimation", new MiniYaml("")));
@@ -990,6 +990,17 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						RenameNodeKey(node, "WithTurretAttackAnimation");
 					if (node.Key.StartsWith("WithTurretedSpriteBody", StringComparison.Ordinal))
 						RenameNodeKey(node, "WithEmbeddedTurretSpriteBody");
+				}
+
+				if (engineVersion < 20170916)
+				{
+					if (node.Key.StartsWith("PlayerPaletteFromCurrentTileset", StringComparison.Ordinal))
+					{
+						node.Value.Nodes.Add(new MiniYamlNode("Filename", ""));
+						node.Value.Nodes.Add(new MiniYamlNode("Tileset", ""));
+						RenameNodeKey(node, "PaletteFromFile");
+						Console.WriteLine("The trait PlayerPaletteFromCurrentTileset has been removed. Use PaletteFromFile with a Tileset filter.");
+					}
 				}
 
 				UpgradeActorRules(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);
