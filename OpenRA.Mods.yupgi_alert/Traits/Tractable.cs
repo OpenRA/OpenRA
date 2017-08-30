@@ -2,13 +2,8 @@
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Mods.Yupgi_alert.Activities;
 using OpenRA.Traits;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace OpenRA.Mods.yupgi_alert.Traits
+namespace OpenRA.Mods.Yupgi_alert.Traits
 {
 	[Desc("Can this actor be tracted with a traction beam?")]
 	public class TractableInfo : ConditionalTraitInfo
@@ -20,7 +15,9 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 		[Desc("Altitude this victim gets tracted at.")]
 		public readonly WDist CruiseAltitude = new WDist(1280);
 
-		[Desc("How fast does this actor get dragged? 0 to only lift the target in air. You can have negative speed for push back.")]
+		[Desc("How fast does this actor get dragged?",
+			"0 to only lift the target in air (Yuriko in RA3!).",
+			"You can also have negative speed for push back.")]
 		public readonly WDist CruiseSpeed = new WDist(20);
 
 		[Desc("How fast this actor ascends when being pulled to TractionAltitude?")]
@@ -36,7 +33,7 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 		public readonly int MinAirborneAltitude = 1;
 
 		[Desc("When the unit land on these terrain and their movement speed is 0 on there, we destroy this unit.")]
-		public readonly string[] DeathTerrainTypes = {"Rock", "Debris", "Cliffs", "Water", "River"};
+		public readonly string[] DeathTerrainTypes = { "Rock", "Debris", "Cliffs", "Water", "River" };
 
 		[Desc("We consider traction to be timed out after this period.")]
 		public readonly int Timeout = 20;
@@ -69,6 +66,7 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 		int airborneToken = ConditionManager.InvalidConditionToken;
 		int tractingToken = ConditionManager.InvalidConditionToken;
 		int cruisingToken = ConditionManager.InvalidConditionToken;
+		int cruiseSpeedMultiplier = 1;
 		Actor tractor;
 		IMove tractorMove;
 		IPositionable positionable;
@@ -135,9 +133,9 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 				return true;
 
 			step = new WVec(step.X, step.Y, 0);
-			step = Info.CruiseSpeed.Length * step / step.Length;
+			step = cruiseSpeedMultiplier * Info.CruiseSpeed.Length * step / step.Length;
 			positionable.SetVisualPosition(self, self.CenterPosition + step);
-			//SetPosition(self, self.CenterPosition + step);
+			/// SetPosition(self, self.CenterPosition + step); No need for this!
 
 			return false;
 		}
@@ -148,7 +146,7 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 				return false;
 
 			var delta = Info.AltitudeVelocity.Length;
-			var dz = (targetAltitude- altitude).Length.Clamp(-delta, delta);
+			var dz = (targetAltitude - altitude).Length.Clamp(-delta, delta);
 			SetPosition(self, self.CenterPosition + new WVec(0, 0, dz));
 
 			return true;
@@ -180,7 +178,7 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 				OnCruisingAltitudeLeft(self);
 		}
 
-		public void Tract(Actor self, Actor tractor)
+		public void Tract(Actor self, Actor tractor, int cruiseSpeedMultiplier)
 		{
 			// I am already being pulled by someone else
 			if (this.tractor != null && !this.tractor.IsDead && this.tractor != tractor)
@@ -191,6 +189,7 @@ namespace OpenRA.Mods.yupgi_alert.Traits
 				return;
 
 			timeoutTicks = Info.Timeout;
+			this.cruiseSpeedMultiplier = cruiseSpeedMultiplier;
 
 			// Stop self.
 			// No need to drop their attack target though, turreted units should be able to fire.

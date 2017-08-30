@@ -88,7 +88,6 @@
     <Compile Include="Traits\AIDeployHelper.cs" />
     <Compile Include="Traits\AegisAutoTarget.cs" />
     <Compile Include="Traits\AcceptCashRallyPointAcceptor.cs" />
-    <Compile Include="Traits\Tractor.cs" />
     <Compile Include="Traits\Tractable.cs" />
     <Compile Include="Traits\MissileSpawnerMaster.cs" />
     <Compile Include="Traits\MissileSpawnerSlave.cs" />
@@ -126,6 +125,7 @@
     <Compile Include="Traits\BaseSpawnerMaster.cs" />
     <Compile Include="Traits\Warheads\CreateRadioactivityWarhead.cs" />
     <Compile Include="Traits\Render\WithAcceptDeliveredCashAnimation.cs" />
+    <Compile Include="Traits\Warheads\TractorWarhead.cs" />
     <Compile Include="Traits\World\RadioactivityLayer.cs" />
   </ItemGroup>
   <ItemGroup>

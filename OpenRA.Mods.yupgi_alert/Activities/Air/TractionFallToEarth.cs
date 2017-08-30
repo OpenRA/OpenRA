@@ -1,5 +1,8 @@
 #region Copyright & License Information
 /*
+ * Modded by Boolbada of OP Mod,
+ * CnP of FallToEarth.
+ * 
  * Copyright 2007-2017 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
@@ -12,8 +15,8 @@
 using System.Linq;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Mods.Yupgi_alert.Traits;
 using OpenRA.Traits;
-using OpenRA.Mods.yupgi_alert.Traits;
 
 namespace OpenRA.Mods.Yupgi_alert.Activities
 {
