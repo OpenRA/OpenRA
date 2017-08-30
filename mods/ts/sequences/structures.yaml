@@ -1737,9 +1737,22 @@ gadept.gdi:
 		ZOffset: -1c511
 		Tick: 120
 		ZRamp: 1
-	crane: gtdept_c
-		Length: 16
+	crane-start: gtdept_c
+		Length: 6
 		Offset: 0, -36, 12
+		Tick: 60
+		DepthSprite: isodepth.shp
+	crane-loop: gtdept_c
+		Start: 6
+		Length: 5
+		Offset: 0, -36, 12
+		Tick: 60
+		DepthSprite: isodepth.shp
+	crane-end: gtdept_c
+		Start: 10
+		Length: 6
+		Offset: 0, -36, 12
+		Tick: 60
 		DepthSprite: isodepth.shp
 	platform: gtdept_d
 		Length: 7
@@ -1821,10 +1834,23 @@ gadept.nod:
 		ZOffset: -1c511
 		Tick: 120
 		ZRamp: 1
-	crane: gtdept_c
-		Length: 16
+	crane-start: gtdept_c
+		Length: 6
 		Offset: 0, -36, 12
 		DepthSprite: isodepth.shp
+		Tick: 60
+	crane-loop: gtdept_c
+		Start: 6
+		Length: 5
+		Offset: 0, -36, 12
+		DepthSprite: isodepth.shp
+		Tick: 60
+	crane-end: gtdept_c
+		Start: 10
+		Length: 6
+		Offset: 0, -36, 12
+		DepthSprite: isodepth.shp
+		Tick: 60
 	platform: gtdept_d
 		Length: 7
 		ZOffset: -1c511

@@ -86,8 +86,16 @@ namespace OpenRA.Mods.Common.Traits
 	public interface INotifyDamage { void Damaged(Actor self, AttackInfo e); }
 	public interface INotifyKilled { void Killed(Actor self, AttackInfo e); }
 	public interface INotifyAppliedDamage { void AppliedDamage(Actor self, Actor damaged, AttackInfo e); }
+
+	[RequireExplicitImplementation]
+	public interface INotifyRepair
+	{
+		void BeforeRepair(Actor self, Actor target);
+		void RepairTick(Actor self, Actor target);
+		void AfterRepair(Actor self, Actor target);
+	}
+
 	public interface INotifyBuildingPlaced { void BuildingPlaced(Actor self); }
-	public interface INotifyRepair { void Repairing(Actor self, Actor target); }
 	public interface INotifyNuke { void Launching(Actor self); }
 	public interface INotifyBurstComplete { void FiredBurst(Actor self, Target target, Armament a); }
 	public interface INotifyChat { bool OnChat(string from, string message); }
