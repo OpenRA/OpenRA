@@ -149,6 +149,8 @@ JUMPJET:
 		RequiresCondition: !airborne
 	SpawnActorOnDeath@FLAMEGUY:
 		RequiresCondition: !airborne
+	WithShadow@airborne:
+		RequiresCondition: airborne
 
 JUMPJET.Husk:
 	RenderSprites:
