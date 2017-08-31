@@ -128,11 +128,16 @@ namespace OpenRA.Mods.Common.Scripting
 				}
 			}
 
-			for (var i = 1; i < entryPath.Length; i++)
+			// We can't move planes to the last waypoint yet,
+			// as that causes them to teleport to ground level
+			for (var i = 1; i < entryPath.Length - 1; i++)
 				Move(transport, entryPath[i]);
 
+			var dropoffPoint = entryPath.Last();
 			if (actionFunc != null)
 			{
+				Move(transport, dropoffPoint);
+
 				var af = (LuaFunction)actionFunc.CopyReference();
 				transport.QueueActivity(new CallFunc(() =>
 				{
@@ -143,21 +148,52 @@ namespace OpenRA.Mods.Common.Scripting
 			}
 			else
 			{
-				var aircraftInfo = transport.TraitOrDefault<Aircraft>();
-				if (aircraftInfo != null)
+				var aircraft = transport.TraitOrDefault<Aircraft>();
+				if (aircraft != null)
 				{
-					if (!aircraftInfo.IsPlane)
+					if (!aircraft.IsPlane)
 					{
-						transport.QueueActivity(new Turn(transport, aircraftInfo.Info.InitialFacing));
+						Move(transport, dropoffPoint);
+						transport.QueueActivity(new Turn(transport, aircraft.Info.InitialFacing));
 						transport.QueueActivity(new HeliLand(transport, true));
 					}
 					else
 					{
-						transport.QueueActivity(new Land(transport, Target.FromCell(transport.World, entryPath.Last())));
+						var map = transport.World.Map;
+						var altitude = aircraft.Info.CruiseAltitude.Length;
+						var dropoffCenter = map.CenterOfCell(dropoffPoint);
+						var speed = aircraft.Info.Speed;
+
+						// Distance from the altitude to the ground
+						var verticalDistance = altitude - map.DistanceAboveTerrain(dropoffCenter).Length;
+
+						// Difference in altitude for each step
+						var verticalDelta = speed * aircraft.Info.MaximumPitch.Tan() / 1024;
+
+						// Determine how many steps we need to descend the complete distance to the ground
+						// And add one extra step if the integer division cut any digits off
+						var steps = verticalDistance / verticalDelta + (verticalDistance % verticalDelta == 0 ? 0 : 1);
+						var landDistance = steps * speed;
+
+						// Get the angle from the vector between the last and the second last point before descending
+						var secondLast = map.CenterOfCell(entryPath[entryPath.Length - 2]);
+						var vector = dropoffCenter - secondLast;
+						var angle = vector.Yaw;
+						var sign = vector.LengthSquared >= landDistance * landDistance ? 1 : -1;
+
+						// Actual distance from the last position to the dropoff point
+						var horizontal = landDistance * angle.Sin() / 1024;
+						var vertical = landDistance * angle.Cos() / 1024;
+
+						var positionBeforeLanding = map.CellContaining(dropoffCenter + new WVec(sign * horizontal, sign * vertical, 0));
+						Move(transport, positionBeforeLanding);
+						transport.QueueActivity(new Land(transport, Target.FromCell(transport.World, dropoffPoint)));
 					}
 
 					transport.QueueActivity(new Wait(15));
 				}
+				else
+					Move(transport, dropoffPoint);
 
 				if (cargo != null)
 				{
@@ -165,7 +201,7 @@ namespace OpenRA.Mods.Common.Scripting
 					transport.QueueActivity(new WaitFor(() => cargo.IsEmpty(transport)));
 				}
 
-				transport.QueueActivity(new Wait(aircraftInfo != null ? 50 : 25));
+				transport.QueueActivity(new Wait(aircraft != null ? 50 : 25));
 			}
 
 			if (exitFunc != null)
