@@ -153,6 +153,11 @@ ORCAB:
 		RequiresCondition: cruising
 	SpawnActorOnDeath:
 		Actor: ORCAB.Husk
+	AppearsOnRadar:
+		ValidStances: Ally
+	AppearsOnRadar@ENEMY:
+		ValidStances: Neutral, Enemy
+		RequiresCondition: !rank-elite
 
 ORCATRAN:
 	Inherits: ^Helicopter
@@ -276,6 +281,11 @@ SCRIN:
 	DeathSounds:
 	SpawnActorOnDeath:
 		Actor: SCRIN.Husk
+	AppearsOnRadar:
+		ValidStances: Ally
+	AppearsOnRadar@ENEMY:
+		ValidStances: Neutral, Enemy
+		RequiresCondition: !rank-elite
 
 APACHE:
 	Inherits: ^Helicopter

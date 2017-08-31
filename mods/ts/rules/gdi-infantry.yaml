@@ -149,6 +149,11 @@ JUMPJET:
 		RequiresCondition: !airborne
 	SpawnActorOnDeath@FLAMEGUY:
 		RequiresCondition: !airborne
+	AppearsOnRadar:
+		ValidStances: Ally
+	AppearsOnRadar@ENEMY:
+		ValidStances: Neutral, Enemy
+		RequiresCondition: !rank-elite
 
 JUMPJET.Husk:
 	RenderSprites:
