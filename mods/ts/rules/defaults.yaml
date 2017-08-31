@@ -495,6 +495,7 @@
 			Veins: 50
 		TunnelCondition: inside-tunnel
 	WithTextControlGroupDecoration:
+	WithTextGroupSpeedDecoration:
 	SelectionDecorations:
 		Palette: pips
 	Selectable:
@@ -682,6 +683,7 @@
 	Selectable:
 		Bounds: 40,24
 	WithTextControlGroupDecoration:
+	WithTextGroupSpeedDecoration:
 	SelectionDecorations:
 		Palette: pips
 	Voiced:
@@ -784,6 +786,7 @@
 		RequiresCondition: airborne
 	Selectable:
 	WithTextControlGroupDecoration:
+	WithTextGroupSpeedDecoration:
 	SelectionDecorations:
 		Palette: pips
 	Aircraft:
@@ -875,6 +878,7 @@
 			Veins: 100
 		TunnelCondition: inside-tunnel
 	WithTextControlGroupDecoration:
+	WithTextGroupSpeedDecoration:
 	SelectionDecorations:
 		Palette: pips
 	Selectable:
@@ -1022,6 +1026,7 @@
 	Selectable:
 		Bounds: 40,24
 	WithTextControlGroupDecoration:
+	WithTextGroupSpeedDecoration:
 	SelectionDecorations:
 		Palette: pips
 	Voiced:

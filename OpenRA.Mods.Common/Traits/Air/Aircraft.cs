@@ -457,7 +457,11 @@ namespace OpenRA.Mods.Common.Traits
 
 		public int MovementSpeed
 		{
-			get { return Util.ApplyPercentageModifiers(Info.Speed, speedModifiers); }
+			get
+			{
+				var speed = SpeedLimit > 0 ? Math.Min(Info.Speed, SpeedLimit) : Info.Speed;
+				return Util.ApplyPercentageModifiers(speed, speedModifiers);
+			}
 		}
 
 		public IEnumerable<Pair<CPos, SubCell>> OccupiedCells() { return NoCells; }
@@ -637,6 +641,10 @@ namespace OpenRA.Mods.Common.Traits
 			MakeReservation(target.Actor);
 			return true;
 		}
+
+		[Sync] public int SpeedLimit { get; set; }
+
+		public int Speed { get { return Info.Speed; } }
 
 		#endregion
 

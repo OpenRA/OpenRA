@@ -208,6 +208,7 @@
 		TurnSpeed: 5
 	SelectionDecorations:
 	WithSpriteControlGroupDecoration:
+	WithTextGroupSpeedDecoration:
 	Selectable:
 		Bounds: 24, 24
 	Targetable:
@@ -316,6 +317,7 @@
 			Beach: 80
 	SelectionDecorations:
 	WithSpriteControlGroupDecoration:
+	WithTextGroupSpeedDecoration:
 	Selectable:
 		Bounds: 12,18,0,-8
 	Targetable:
@@ -449,6 +451,7 @@
 			Water: 100
 	SelectionDecorations:
 	WithSpriteControlGroupDecoration:
+	WithTextGroupSpeedDecoration:
 	Selectable:
 		Bounds: 24,24
 	Targetable:
@@ -492,6 +495,7 @@
 		UseLocation: true
 	SelectionDecorations:
 	WithSpriteControlGroupDecoration:
+	WithTextGroupSpeedDecoration:
 	Selectable:
 		Bounds: 24,24
 	Aircraft:

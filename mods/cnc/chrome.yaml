@@ -540,6 +540,8 @@ command-icons: chrome.png
 	stop-disabled: 464,152,24,24
 	queue-orders: 488,128,24,24
 	queue-orders-disabled: 488,152,24,24
+	group-speed: 320,192,24,24
+	group-speed-disabled: 320,216,24,24
 
 stance-icons: chrome.png
 	attack-anything: 320,176,16,16

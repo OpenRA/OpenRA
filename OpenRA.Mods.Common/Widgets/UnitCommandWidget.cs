@@ -66,6 +66,9 @@ namespace OpenRA.Mods.Common.Widgets
 				if (key == ks.ScatterKey)
 					return PerformScatter();
 
+				if (key == ks.GroupSpeedKey)
+					return PerformGroupSpeed();
+
 				if (key == ks.DeployKey)
 					return PerformDeploy();
 
@@ -154,6 +157,22 @@ namespace OpenRA.Mods.Common.Widgets
 			if (actors.Any(a => a.Info.HasTraitInfo<GuardInfo>() && a.Info.HasTraitInfo<AutoTargetInfo>()))
 				world.OrderGenerator = new GuardOrderGenerator(actors,
 					"Guard", "guard", Game.Settings.Game.MouseButtonPreference.Action);
+
+			return true;
+		}
+
+		bool PerformGroupSpeed()
+		{
+			var selectedActors = world.Selection.Actors
+				.Where(a => !a.Disposed && a.Owner == world.LocalPlayer);
+
+			var groupSpeedOrder = new Order("GroupSpeed", selectedActors.First().Owner.PlayerActor, false)
+			{
+				TargetString = selectedActors.Select(a => a.ActorID).JoinWith(",")
+			};
+
+			world.IssueOrder(groupSpeedOrder);
+			world.PlayVoiceForOrders(new Order[] { groupSpeedOrder });
 
 			return true;
 		}

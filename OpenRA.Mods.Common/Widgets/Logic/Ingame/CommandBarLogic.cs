@@ -14,6 +14,7 @@ using System.Linq;
 using OpenRA.Mods.Common.Orders;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Orders;
+using OpenRA.Traits;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets
@@ -32,12 +33,15 @@ namespace OpenRA.Mods.Common.Widgets
 		bool scatterDisabled = true;
 		bool stopDisabled = true;
 		bool waypointModeDisabled = true;
+		bool groupSpeedDisabled = true;
 
 		int deployHighlighted;
 		int scatterHighlighted;
 		int stopHighlighted;
+		int groupSpeedHighlighted;
 
 		TraitPair<IIssueDeployOrder>[] selectedDeploys = { };
+		TraitPair<IMove>[] moveableActors = { };
 
 		[ObjectCreator.UseCtor]
 		public CommandBarLogic(Widget widget, World world)
@@ -174,6 +178,18 @@ namespace OpenRA.Mods.Common.Widgets
 						world.OrderGenerator = new ForceModifiersOrderGenerator(Modifiers.Shift, false);
 				};
 			}
+
+			var groupSpeedButton = widget.GetOrNull<ButtonWidget>("GROUP_SPEED");
+			if (groupSpeedButton != null)
+			{
+				BindButtonIcon(groupSpeedButton);
+
+				groupSpeedButton.GetKey = _ => ks.GroupSpeedKey;
+				groupSpeedButton.IsDisabled = () => { UpdateStateIfNecessary(); return groupSpeedDisabled; };
+				groupSpeedButton.IsHighlighted = () => moveableActors.Any(m => m.Trait.SpeedLimit > 0);
+				groupSpeedButton.OnClick = () => PerformGroupSpeedOrderOnSelection();
+				groupSpeedButton.OnKeyPress = ki => groupSpeedButton.OnClick();
+			}
 		}
 
 		public override void Tick()
@@ -183,6 +199,9 @@ namespace OpenRA.Mods.Common.Widgets
 
 			if (scatterHighlighted > 0)
 				scatterHighlighted--;
+
+			if (groupSpeedHighlighted > 0)
+				groupSpeedHighlighted--;
 
 			if (stopHighlighted > 0)
 				stopHighlighted--;
@@ -218,11 +237,17 @@ namespace OpenRA.Mods.Common.Widgets
 				.Where(a => a.Owner == world.LocalPlayer && a.IsInWorld)
 				.ToArray();
 
+			moveableActors = selectedActors
+				.SelectMany(a => a.TraitsImplementing<IMove>()
+					.Select(move => new TraitPair<IMove>(a, move)))
+				.ToArray();
+
 			attackMoveDisabled = !selectedActors.Any(a => a.Info.HasTraitInfo<AttackMoveInfo>() && a.Info.HasTraitInfo<AutoTargetInfo>());
 			guardDisabled = !selectedActors.Any(a => a.Info.HasTraitInfo<GuardInfo>() && a.Info.HasTraitInfo<AutoTargetInfo>());
 			forceMoveDisabled = !selectedActors.Any(a => a.Info.HasTraitInfo<MobileInfo>() || a.Info.HasTraitInfo<AircraftInfo>());
 			forceAttackDisabled = !selectedActors.Any(a => a.Info.HasTraitInfo<AttackBaseInfo>());
 			scatterDisabled = !selectedActors.Any(a => a.Info.HasTraitInfo<MobileInfo>());
+			groupSpeedDisabled = !selectedActors.Any(a => a.Info.HasTraitInfo<MobileInfo>() || a.Info.HasTraitInfo<AircraftInfo>());
 
 			selectedDeploys = selectedActors
 				.SelectMany(a => a.TraitsImplementing<IIssueDeployOrder>()
@@ -263,6 +288,17 @@ namespace OpenRA.Mods.Common.Widgets
 				world.IssueOrder(o);
 
 			world.PlayVoiceForOrders(orders);
+		}
+
+		void PerformGroupSpeedOrderOnSelection()
+		{
+			var groupSpeedOrder = new Order("GroupSpeed", selectedActors.First().Owner.PlayerActor, false)
+			{
+				TargetString = selectedActors.Select(a => a.ActorID).JoinWith(",")
+			};
+
+			world.IssueOrder(groupSpeedOrder);
+			world.PlayVoiceForOrders(new Order[] { groupSpeedOrder });
 		}
 	}
 }

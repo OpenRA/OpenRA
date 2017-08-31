@@ -164,6 +164,7 @@
 		RequiresCondition: !notmobile
 	SelectionDecorations:
 	WithSpriteControlGroupDecoration:
+	WithTextGroupSpeedDecoration:
 	Selectable:
 		Bounds: 32,32
 	Targetable:
@@ -287,6 +288,7 @@
 			Rough: 80
 	SelectionDecorations:
 	WithSpriteControlGroupDecoration:
+	WithTextGroupSpeedDecoration:
 	Selectable:
 		Bounds: 12,20,0,-4
 	Targetable:

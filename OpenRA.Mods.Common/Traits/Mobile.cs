@@ -396,6 +396,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		readonly Actor self;
 		readonly Lazy<IEnumerable<int>> speedModifiers;
+		public int Speed { get { return Info.Speed; } }
+		[Sync] public int SpeedLimit { get; set; }
 		public bool IsMoving { get; set; }
 		public bool IsMovingVertically { get { return false; } set { } }
 
@@ -752,9 +754,10 @@ namespace OpenRA.Mods.Common.Traits
 			if (terrainSpeed == 0)
 				return 0;
 
+			var speed = SpeedLimit > 0 ? Math.Min(Info.Speed, SpeedLimit) : Info.Speed;
 			var modifiers = speedModifiers.Value.Append(terrainSpeed);
-
-			return Util.ApplyPercentageModifiers(Info.Speed, modifiers);
+			var modifiedSpeed = Util.ApplyPercentageModifiers(speed, modifiers);
+			return modifiedSpeed;
 		}
 
 		public void AddInfluence()

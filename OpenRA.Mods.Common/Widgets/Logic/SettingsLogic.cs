@@ -520,7 +520,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					{ "StopKey", "Stop" },
 					{ "ScatterKey", "Scatter" },
 					{ "DeployKey", "Deploy" },
-					{ "GuardKey", "Guard" }
+					{ "GuardKey", "Guard" },
+					{ "GroupSpeedKey", "Group Speed" }
 				};
 
 				var header = ScrollItemWidget.Setup(hotkeyHeader, returnTrue, doNothing);

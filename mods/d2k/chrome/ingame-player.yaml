@@ -27,7 +27,7 @@ Container@PLAYER_WIDGETS:
 		Image@COMMAND_BAR_BACKGROUND:
 			X: 0
 			Y: WINDOW_BOTTOM - HEIGHT
-			Width: 416
+			Width: 469
 			Height: 43
 			ImageCollection: sidebar-bits
 			ImageName: commandbar-background
@@ -176,9 +176,27 @@ Container@PLAYER_WIDGETS:
 							Y: 8
 							ImageCollection: command-icons
 							ImageName: queue-orders
+				Button@GROUP_SPEED:
+					X: 280
+					Width: 34
+					Height: 41
+					VisualHeight: 0
+					Background: command-button
+					DisableKeyRepeat: true
+					DisableKeySound: true
+					TooltipText: Group Speed
+					TooltipDesc: Selected units will only move at a speed\nof the slowest one in the group.\n\nActs immediately on selected units.
+					TooltipContainer: TOOLTIP_CONTAINER
+					TooltipTemplate: BUTTON_WITH_DESC_HIGHLIGHT_TOOLTIP
+					Children:
+						Image@ICON:
+							X: 4
+							Y: 8
+							ImageCollection: command-icons
+							ImageName: group-speed
 		Container@STANCE_BAR:
 			Logic: StanceSelectorLogic
-			X: 316
+			X: 351
 			Y: WINDOW_BOTTOM - HEIGHT - 11
 			Width: 138
 			Height: 26
