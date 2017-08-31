@@ -15,11 +15,11 @@ doggie:
 		Length: 4
 		Facings: 8
 		ShadowStart: 175
-	laydown: # TODO: Implement hiding when on a tiberium patch
+	laydown:
 		Start: 88
 		Length: 2
 		ShadowStart: 207
-	hide: # TODO: Implement hiding when on a tiberium patch
+	hide:
 		Start: 90
 		ShadowStart: 209
 	idle1:

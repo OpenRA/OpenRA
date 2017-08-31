@@ -37,6 +37,17 @@ DOGGIE:
 	HitShape:
 		Type: Circle
 			Radius: 213
+	GrantConditionOnTerrain:
+		Condition: hidingplace
+		TerrainTypes: Tiberium, BlueTiberium
+	GrantConditionOnMovement:
+		Condition: moving
+	WithSpriteBody:
+		RequiresCondition: hidingplace && !moving
+		StartSequence: laydown
+		Sequence: hide
+	WithInfantryBody:
+		RequiresCondition: !hidingplace || moving
 
 VISC_SML:
 	Inherits: ^Visceroid
