@@ -367,10 +367,11 @@ JEEP:
 		Range: 4c0
 	Turreted:
 		TurnSpeed: 10
-		Offset: 0,0,85
+		Offset: 0,0,128
 	Armament:
 		Weapon: M60mg
 		MuzzleSequence: muzzle
+		LocalOffset: 128,0,43
 	AttackTurreted:
 	WithMuzzleOverlay:
 	WithSpriteTurret:
@@ -409,7 +410,7 @@ APC:
 		Range: 4c0
 	Armament:
 		Weapon: M60mg
-		LocalOffset: 0,0,171
+		LocalOffset: 85,0,171
 		MuzzleSequence: muzzle
 	AttackFrontal:
 	WithMuzzleOverlay:
