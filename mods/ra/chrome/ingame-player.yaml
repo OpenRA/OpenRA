@@ -469,6 +469,8 @@ Container@PLAYER_WIDGETS:
 					IconSize: 62, 46
 					IconMargin: 1, 1
 					IconSpriteOffset: -1, -1
+					HotkeyPrefix: Production
+					HotkeyCount: 24
 				Container@PALETTE_FOREGROUND:
 					X: 40
 					Y: 0 - 1
