@@ -14,6 +14,8 @@ Container@PLAYER_WIDGETS:
 					TooltipContainer: TOOLTIP_CONTAINER
 					ReadyText: READY
 					HoldText: ON HOLD
+					HotkeyPrefix: SupportPower
+					HotkeyCount: 6
 		Image@COMMAND_BAR_BACKGROUND:
 			X: 0
 			Y: WINDOW_BOTTOM - HEIGHT

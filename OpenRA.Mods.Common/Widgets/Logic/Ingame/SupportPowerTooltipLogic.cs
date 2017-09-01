@@ -57,12 +57,18 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				name = sp.Info.Description;
 				desc = sp.Info.LongDesc.Replace("\\n", "\n");
 
-				var hotkey = icon.Hotkey;
-				var hotkeyText = "({0})".F(hotkey.DisplayString());
-				var hotkeyWidth = hotkey.IsValid() ? nameFont.Measure(hotkeyText).X + 2 * nameLabel.Bounds.X : 0;
-				hotkeyLabel.GetText = () => hotkeyText;
-				hotkeyLabel.Bounds.X = nameFont.Measure(name).X + 2 * nameLabel.Bounds.X;
+				var hotkeyWidth = 0;
+				var hotkey = icon.Hotkey != null ? icon.Hotkey.GetValue() : Hotkey.Invalid;
 				hotkeyLabel.Visible = hotkey.IsValid();
+
+				if (hotkeyLabel.Visible)
+				{
+					var hotkeyText = "({0})".F(hotkey.DisplayString());
+
+					hotkeyWidth = nameFont.Measure(hotkeyText).X + 2 * nameLabel.Bounds.X;
+					hotkeyLabel.Text = hotkeyText;
+					hotkeyLabel.Bounds.X = nameFont.Measure(name).X + 2 * nameLabel.Bounds.X;
+				}
 
 				var timeWidth = timeFont.Measure(time).X;
 				var topWidth = nameFont.Measure(name).X + hotkeyWidth + timeWidth + timeOffset;

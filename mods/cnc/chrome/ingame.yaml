@@ -272,6 +272,8 @@ Container@PLAYER_WIDGETS:
 					TooltipContainer: TOOLTIP_CONTAINER
 					ReadyText: Ready
 					HoldText: On Hold
+					HotkeyPrefix: SupportPower
+					HotkeyCount: 6
 		Background@COMMAND_BAR:
 			Logic: CommandBarLogic
 			X: 5
