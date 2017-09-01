@@ -12,8 +12,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
-using OpenRA.Mods.Common.Widgets;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 using OpenRA.Widgets;
@@ -29,6 +27,9 @@ namespace OpenRA.Mods.Common.Lint
 			LogicArgKeys = logicArgKeys;
 		}
 	}
+
+	[AttributeUsage(AttributeTargets.Method)]
+	public sealed class CustomLintableHotkeyNames : Attribute { }
 
 	class CheckChromeHotkeys : ILintPass
 	{
@@ -48,12 +49,28 @@ namespace OpenRA.Mods.Common.Lint
 					.Select(f => Pair.New(w.Name.Substring(0, w.Name.Length - 6), f.Name)))
 				.ToArray();
 
+			var customLintMethods = new Dictionary<string, List<string>>();
+
+			foreach (var w in modData.ObjectCreator.GetTypesImplementing<Widget>())
+			{
+				foreach (var m in w.GetMethods().Where(m => m.HasAttribute<CustomLintableHotkeyNames>()))
+				{
+					var p = m.GetParameters();
+					if (p.Length == 3 && p[0].ParameterType == typeof(MiniYamlNode) && p[1].ParameterType == typeof(Action<string>)
+							&& p[2].ParameterType == typeof(Action<string>))
+						customLintMethods.GetOrAdd(w.Name.Substring(0, w.Name.Length - 6)).Add(m.Name);
+				}
+			}
+
 			foreach (var filename in modData.Manifest.ChromeLayout)
-				CheckInner(modData, namedKeys, checkWidgetFields, MiniYaml.FromStream(modData.DefaultFileSystem.Open(filename), filename), filename, null, emitError);
+			{
+				var yaml = MiniYaml.FromStream(modData.DefaultFileSystem.Open(filename), filename);
+				CheckInner(modData, namedKeys, checkWidgetFields, customLintMethods, yaml, filename, null, emitError, emitWarning);
+			}
 		}
 
-		void CheckInner(ModData modData, string[] namedKeys, Pair<string, string>[] checkWidgetFields,
-			List<MiniYamlNode> nodes, string filename, MiniYamlNode parent, Action<string> emitError)
+		void CheckInner(ModData modData, string[] namedKeys, Pair<string, string>[] checkWidgetFields, Dictionary<string, List<string>> customLintMethods,
+			List<MiniYamlNode> nodes, string filename, MiniYamlNode parent, Action<string> emitError, Action<string> emitWarning)
 		{
 			foreach (var node in nodes)
 			{
@@ -69,6 +86,20 @@ namespace OpenRA.Mods.Common.Lint
 						if (!namedKeys.Contains(node.Value.Value) && !Hotkey.TryParse(node.Value.Value, out unused))
 							emitError("{0} refers to a Key named `{1}` that does not exist".F(node.Location, node.Value.Value));
 					}
+				}
+
+				// Check runtime-defined hotkey names
+				List<string> checkMethods;
+				var widgetType = node.Key.Split('@')[0];
+				if (customLintMethods.TryGetValue(widgetType, out checkMethods))
+				{
+					var type = modData.ObjectCreator.FindType(widgetType + "Widget");
+					var keyNames = checkMethods.SelectMany(m => (IEnumerable<string>)type.GetMethod(m).Invoke(null, new object[] { node, emitError, emitWarning }));
+
+					Hotkey unused;
+					foreach (var name in keyNames)
+						if (!namedKeys.Contains(name) && !Hotkey.TryParse(name, out unused))
+							emitError("{0} refers to a Key named `{1}` that does not exist".F(node.Location, name));
 				}
 
 				// Logic classes can declare the data key names that specify hotkeys
@@ -93,7 +124,7 @@ namespace OpenRA.Mods.Common.Lint
 				}
 
 				if (node.Value.Nodes != null)
-					CheckInner(modData, namedKeys, checkWidgetFields, node.Value.Nodes, filename, node, emitError);
+					CheckInner(modData, namedKeys, checkWidgetFields, customLintMethods, node.Value.Nodes, filename, node, emitError, emitWarning);
 			}
 		}
 	}
