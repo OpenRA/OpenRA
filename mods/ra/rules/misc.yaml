@@ -389,8 +389,9 @@ CTFLAG:
 		Name: Flag
 	WithBuildingBib:
 		HasMinibib: Yes
-	DamageMultiplier@INVULNERABLE:
-		Modifier: 0
+	-HitShape:
+	-Health:
+	-Explodes:
 	-Selectable:
 	-SelectionDecorations:
 	-Targetable:

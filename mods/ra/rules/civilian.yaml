@@ -290,6 +290,9 @@ V19.Husk:
 		RenderSelectionBars: False
 	-Targetable:
 	-Demolishable:
+	-HitShape:
+	-Health:
+	-Explodes:
 
 BARL:
 	Inherits: ^TechBuilding
