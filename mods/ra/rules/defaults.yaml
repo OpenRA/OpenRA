@@ -787,6 +787,9 @@
 
 ^CivField:
 	Inherits: ^CivBuilding
+	-HitShape:
+	-Health:
+	-Explodes:
 	-Selectable:
 	-SelectionDecorations:
 	Tooltip:
