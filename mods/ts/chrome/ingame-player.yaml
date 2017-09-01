@@ -15,6 +15,8 @@ Container@PLAYER_WIDGETS:
 					ReadyText: READY
 					HoldText: ON HOLD
 					ClockPalette: iconclock
+					HotkeyPrefix: SupportPower
+					HotkeyCount: 6
 		Image@COMMAND_BAR_BACKGROUND:
 			Logic: AddFactionSuffixLogic
 			X: 5

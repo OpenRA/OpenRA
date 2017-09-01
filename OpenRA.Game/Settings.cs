@@ -297,15 +297,6 @@ namespace OpenRA
 		public Hotkey PrevMusicKey = new Hotkey(Keycode.AUDIOPREV, Modifiers.None);
 		public Hotkey NextMusicKey = new Hotkey(Keycode.AUDIONEXT, Modifiers.None);
 
-		static readonly Func<KeySettings, Hotkey>[] SupportPowerKeys = GetKeys(6, "SupportPower");
-
-		static Func<KeySettings, Hotkey>[] GetKeys(int count, string prefix)
-		{
-			var keySettings = Expression.Parameter(typeof(KeySettings), "keySettings");
-			return Exts.MakeArray(count, i => Expression.Lambda<Func<KeySettings, Hotkey>>(
-				Expression.Field(keySettings, "{0}{1:D2}Key".F(prefix, i + 1)), keySettings).Compile());
-		}
-
 		internal Func<Hotkey> GetHotkeyReference(string name)
 		{
 			var field = typeof(KeySettings).GetField(name + "Key");
@@ -313,19 +304,6 @@ namespace OpenRA
 				return null;
 
 			return () => (Hotkey)field.GetValue(this);
-		}
-
-		public Hotkey GetSupportPowerHotkey(int index)
-		{
-			return GetKey(SupportPowerKeys, index);
-		}
-
-		Hotkey GetKey(Func<KeySettings, Hotkey>[] keys, int index)
-		{
-			if (index < 0 || index >= keys.Length)
-				return Hotkey.Invalid;
-
-			return keys[index](this);
 		}
 	}
 
