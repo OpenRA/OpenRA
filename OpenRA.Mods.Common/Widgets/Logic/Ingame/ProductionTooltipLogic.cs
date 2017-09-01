@@ -47,6 +47,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var descFont = Game.Renderer.Fonts[descLabel.Font];
 			var requiresFont = Game.Renderer.Fonts[requiresLabel.Font];
 			ActorInfo lastActor = null;
+			Hotkey lastHotkey = Hotkey.Invalid;
 
 			tooltipContainer.BeforeRender = () =>
 			{
@@ -55,7 +56,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					return;
 
 				var actor = tooltipIcon.Actor;
-				if (actor == null || actor == lastActor)
+				if (actor == null)
+					return;
+
+				var hotkey = tooltipIcon.Hotkey != null ? tooltipIcon.Hotkey.GetValue() : Hotkey.Invalid;
+				if (actor == lastActor && hotkey == lastHotkey)
 					return;
 
 				var tooltip = actor.TraitInfos<TooltipInfo>().FirstOrDefault(Exts.IsTraitEnabled);
@@ -65,13 +70,18 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				nameLabel.GetText = () => name;
 
-				var hotkey = tooltipIcon.Hotkey;
 				var nameWidth = font.Measure(name).X;
-				var hotkeyText = "({0})".F(hotkey.DisplayString());
-				var hotkeyWidth = hotkey.IsValid() ? font.Measure(hotkeyText).X + 2 * nameLabel.Bounds.X : 0;
-				hotkeyLabel.GetText = () => hotkeyText;
-				hotkeyLabel.Bounds.X = nameWidth + 2 * nameLabel.Bounds.X;
+				var hotkeyWidth = 0;
 				hotkeyLabel.Visible = hotkey.IsValid();
+
+				if (hotkeyLabel.Visible)
+				{
+					var hotkeyText = "({0})".F(hotkey.DisplayString());
+
+					hotkeyWidth = font.Measure(hotkeyText).X + 2 * nameLabel.Bounds.X;
+					hotkeyLabel.Text = hotkeyText;
+					hotkeyLabel.Bounds.X = nameWidth + 2 * nameLabel.Bounds.X;
+				}
 
 				var prereqs = buildable.Prerequisites.Select(a => ActorName(mapRules, a)).Where(s => !s.StartsWith("~"));
 				var requiresString = prereqs.Any() ? requiresLabel.Text.F(prereqs.JoinWith(", ")) : "";
@@ -112,6 +122,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				widget.Bounds.Height = Math.Max(leftHeight, rightHeight) * 3 / 2 + 3 * nameLabel.Bounds.Y;
 
 				lastActor = actor;
+				lastHotkey = hotkey;
 			};
 		}
 

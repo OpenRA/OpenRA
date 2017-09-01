@@ -297,7 +297,6 @@ namespace OpenRA
 		public Hotkey PrevMusicKey = new Hotkey(Keycode.AUDIOPREV, Modifiers.None);
 		public Hotkey NextMusicKey = new Hotkey(Keycode.AUDIONEXT, Modifiers.None);
 
-		static readonly Func<KeySettings, Hotkey>[] ProductionKeys = GetKeys(24, "Production");
 		static readonly Func<KeySettings, Hotkey>[] SupportPowerKeys = GetKeys(6, "SupportPower");
 
 		static Func<KeySettings, Hotkey>[] GetKeys(int count, string prefix)
@@ -314,11 +313,6 @@ namespace OpenRA
 				return null;
 
 			return () => (Hotkey)field.GetValue(this);
-		}
-
-		public Hotkey GetProductionHotkey(int index)
-		{
-			return GetKey(ProductionKeys, index);
 		}
 
 		public Hotkey GetSupportPowerHotkey(int index)

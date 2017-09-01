@@ -480,6 +480,8 @@ Container@PLAYER_WIDGETS:
 					IconSpriteOffset: 0, 0
 					MinimumRows: 5
 					MaximumRows: 6
+					HotkeyPrefix: Production
+					HotkeyCount: 24
 				Container@PRODUCTION_TYPES:
 					X: 6
 					Y: 2
