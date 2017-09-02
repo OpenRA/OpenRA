@@ -165,6 +165,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				InitializeActorPreviews();
 			};
 
+			searchTextField.OnEscKey = () =>
+			{
+				searchTextField.Text = "";
+				searchTextField.YieldKeyboardFocus();
+				return true;
+			};
+
 			var actorCategorySelector = widget.Get<DropDownButtonWidget>("CATEGORIES_DROPDOWN");
 			actorCategorySelector.GetText = () =>
 			{
