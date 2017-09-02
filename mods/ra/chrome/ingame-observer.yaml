@@ -31,14 +31,20 @@ Container@OBSERVER_WIDGETS:
 							TooltipTemplate: SIMPLE_TOOLTIP
 				Container@TOP_BUTTONS:
 					Logic: MenuButtonsChromeLogic
+						StatisticsBasicKey: StatisticsBasic
+						StatisticsEconomyKey: StatisticsEconomy
+						StatisticsProductionKey: StatisticsProduction
+						StatisticsCombatKey: StatisticsCombat
+						StatisticsGraphKey: StatisticsGraph
 					X: 9
 					Y: 7
 					Children:
+						LogicKeyListener@OBSERVER_KEY_LISTENER:
 						MenuButton@OBSERVER_STATS_BUTTON:
+							Key: StatisticsBasic
 							MenuContainer: INGAME_OBSERVERSTATS_BG
 							HideIngameUI: false
 							Pause: false
-							Key: F1
 							X: 160
 							Width: 28
 							Height: 28

@@ -106,7 +106,13 @@ Container@PERF_WIDGETS:
 
 Container@OBSERVER_WIDGETS:
 	Logic: MenuButtonsChromeLogic
+		StatisticsBasicKey: StatisticsBasic
+		StatisticsEconomyKey: StatisticsEconomy
+		StatisticsProductionKey: StatisticsProduction
+		StatisticsCombatKey: StatisticsCombat
+		StatisticsGraphKey: StatisticsGraph
 	Children:
+		LogicKeyListener@OBSERVER_KEY_LISTENER:
 		MenuButton@OPTIONS_BUTTON:
 			Key: escape
 			X: WINDOW_RIGHT - 260 - WIDTH
@@ -123,7 +129,7 @@ Container@OBSERVER_WIDGETS:
 					ImageCollection: order-icons
 					ImageName: options
 		MenuButton@OBSERVER_STATS_BUTTON:
-			Key: F1
+			Key: StatisticsBasic
 			X: WINDOW_RIGHT - 260 - WIDTH
 			Y: 35
 			Width: 30
