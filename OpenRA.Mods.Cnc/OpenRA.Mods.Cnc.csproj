@@ -129,6 +129,7 @@
     <Compile Include="Traits\Render\RenderShroudCircle.cs" />
     <Compile Include="Traits\SupportPowers\ChronoshiftPower.cs" />
     <Compile Include="Traits\SupportPowers\GpsPower.cs" />
+    <Compile Include="Traits\TransformsNearResources.cs" />
     <Compile Include="Traits\GpsWatcher.cs" />
     <Compile Include="Scripting\Properties\ChronosphereProperties.cs" />
     <Compile Include="Traits\Render\WithDisguisingInfantryBody.cs" />

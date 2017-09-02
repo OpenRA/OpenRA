@@ -6,6 +6,7 @@ split2:
 			DESERT: TEMPERAT
 	make:
 		Length: 30
+		Tick: 120
 	active:
 		Start: 30
 		Length: 24
@@ -18,6 +19,7 @@ split3:
 		UseTilesetExtension: true
 	make:
 		Length: 30
+		Tick: 120
 	active:
 		Start: 30
 		Length: 24
