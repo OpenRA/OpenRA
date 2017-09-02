@@ -40,3 +40,15 @@ E7.noautotarget:
 
 ^Vehicle:
 	Demolishable:
+
+^TreeHusk:
+	Health:
+		HP: 1000
+	Armor:
+		Type: Concrete
+	Targetable:
+		TargetTypes: Ground
+	HitShape:
+	WithDeathAnimation:
+		DeathSequence: dead
+		UseDeathTypeSuffix: false
