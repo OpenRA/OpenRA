@@ -73,6 +73,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				InitializeTilePreview();
 			};
 
+			searchTextField.OnEscKey = () =>
+			{
+				searchTextField.Text = "";
+				searchTextField.YieldKeyboardFocus();
+				return true;
+			};
+
 			Func<string, string> categoryTitle = s => s != null ? s : "Search Results";
 			Func<string, ScrollItemWidget, ScrollItemWidget> setupItem = (option, template) =>
 			{
