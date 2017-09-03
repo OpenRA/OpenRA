@@ -448,7 +448,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					{ "CycleStatusBarsKey", "Cycle status bars display" },
 					{ "TogglePixelDoubleKey", "Toggle pixel doubling" },
 					{ "ToggleMuteKey", "Toggle audio mute" },
-					{ "TogglePlayerStanceColorsKey", "Toggle player stance colors" }
+					{ "TogglePlayerStanceColorsKey", "Toggle player stance colors" },
+					{ "TakeScreenshotKey", "Take screenshot" }
 				};
 
 				var header = ScrollItemWidget.Setup(hotkeyHeader, returnTrue, doNothing);
@@ -587,23 +588,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				foreach (var kv in hotkeys)
 					BindHotkeyPref(kv, ks, productionTemplate, hotkeyList);
-			}
-
-			// Developer
-			{
-				var hotkeys = new Dictionary<string, string>()
-				{
-					{ "DevReloadChromeKey", "Reload Chrome" },
-					{ "HideUserInterfaceKey", "Hide UI" },
-					{ "TakeScreenshotKey", "Take screenshot" }
-				};
-
-				var header = ScrollItemWidget.Setup(hotkeyHeader, returnTrue, doNothing);
-				header.Get<LabelWidget>("LABEL").GetText = () => "Developer Commands";
-				hotkeyList.AddChild(header);
-
-				foreach (var kv in hotkeys)
-					BindHotkeyPref(kv, ks, developerTemplate, hotkeyList);
 			}
 
 			// Music

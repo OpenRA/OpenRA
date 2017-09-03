@@ -128,23 +128,6 @@ namespace OpenRA.Widgets
 		/// <param name="e">Key input data</param>
 		public static bool HandleKeyPress(KeyInput e)
 		{
-			if (e.Event == KeyInputEvent.Down)
-			{
-				var hk = Hotkey.FromKeyInput(e);
-
-				if (hk == Game.Settings.Keys.DevReloadChromeKey)
-				{
-					ChromeProvider.Initialize(Game.ModData);
-					return true;
-				}
-
-				if (hk == Game.Settings.Keys.HideUserInterfaceKey)
-				{
-					Root.Visible ^= true;
-					return true;
-				}
-			}
-
 			if (KeyboardFocusWidget != null)
 				return KeyboardFocusWidget.HandleKeyPressOuter(e);
 
