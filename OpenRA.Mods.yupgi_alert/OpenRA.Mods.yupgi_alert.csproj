@@ -85,14 +85,14 @@
     <Compile Include="Graphics\ArcRenderable.cs" />
     <Compile Include="Orders\ShootableBallisticMissileMoveOrderTargeter.cs" />
     <Compile Include="Projectiles\RadBeam.cs" />
-    <Compile Include="Traits\AIDeployHelper.cs" />
+    <Compile Include="AS\AIDeployHelper.cs" />
     <Compile Include="Traits\AegisAutoTarget.cs" />
     <Compile Include="Traits\AcceptCashRallyPointAcceptor.cs" />
     <Compile Include="Traits\Tractable.cs" />
     <Compile Include="Traits\MissileSpawnerMaster.cs" />
     <Compile Include="Traits\MissileSpawnerSlave.cs" />
     <Compile Include="Traits\ChronoHarvester.cs" />
-    <Compile Include="Traits\Buildings\PeriodicProducer.cs" />
+    <Compile Include="AS\PeriodicProducer.cs" />
     <Compile Include="Traits\Conditions\GrantStackableConditionOnFire.cs" />
     <Compile Include="Traits\Conditions\GrantConditionOnAttack.cs" />
     <Compile Include="Traits\AirstrikeOnFire.cs" />
@@ -110,12 +110,12 @@
     <Compile Include="Traits\Air\BlimpFallsToEarth.cs" />
     <Compile Include="Traits\CargoCashTrickler.cs" />
     <Compile Include="Traits\CargoTransformer.cs" />
-    <Compile Include="Traits\Conditions\GrantTimedConditionOnDeploy.cs" />
+    <Compile Include="AS\GrantTimedConditionOnDeploy.cs" />
     <Compile Include="Traits\Player\BotProvidesPrerequisite.cs" />
     <Compile Include="Traits\BaseSpawnerSlave.cs" />
     <Compile Include="Traits\CarrierSlave.cs" />
     <Compile Include="Traits\DamagedByRadioactivity.cs" />
-    <Compile Include="Traits\ExplodeWeapon.cs" />
+    <Compile Include="AS\ExplodeWeapon.cs" />
     <Compile Include="Traits\Nydus.cs" />
     <Compile Include="Traits\NydusPrimaryExit.cs" />
     <Compile Include="Traits\MobSpawnerMaster.cs" />
@@ -132,8 +132,6 @@
     <Folder Include="Effects\" />
     <Folder Include="Player\" />
     <Folder Include="SpriteLoaders\" />
-    <Folder Include="Traits\SupportPowers\" />
-    <Folder Include="Traits\Widgets\" />
     <Folder Include="UtilityCommands\" />
   </ItemGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
