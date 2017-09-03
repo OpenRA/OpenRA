@@ -657,7 +657,6 @@
     <Compile Include="Widgets\SupportPowersWidget.cs" />
     <Compile Include="Widgets\SupportPowerTimerWidget.cs" />
     <Compile Include="Widgets\TerrainTemplatePreviewWidget.cs" />
-    <Compile Include="Widgets\WorldCommandWidget.cs" />
     <Compile Include="Widgets\WorldInteractionControllerWidget.cs" />
     <Compile Include="SpriteLoaders\ShpTDLoader.cs" />
     <Compile Include="SpriteLoaders\ShpTSLoader.cs" />
@@ -824,6 +823,10 @@
     <Compile Include="Widgets\Logic\SingleHotkeyBaseLogic.cs" />
     <Compile Include="Widgets\Logic\ScreenshotHotkeyLogic.cs" />
     <Compile Include="Widgets\Logic\MuteHotkeyLogic.cs" />
+    <Compile Include="Widgets\Logic\Ingame\Hotkeys\CycleBasesHotkeyLogic.cs" />
+    <Compile Include="Widgets\Logic\Ingame\Hotkeys\CycleProductionActorsHotkeyLogic.cs" />
+    <Compile Include="Widgets\Logic\Ingame\Hotkeys\JumpToLastEventHotkeyLogic.cs" />
+    <Compile Include="Widgets\Logic\Ingame\Hotkeys\JumpToSelectedActorsHotkeyLogic.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="AfterBuild">
