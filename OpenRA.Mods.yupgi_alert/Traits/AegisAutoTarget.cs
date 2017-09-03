@@ -91,7 +91,7 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 			if (IsTraitDisabled)
 				return;
 
-			if (!self.IsIdle || !Info.TargetWhenDamaged)
+			if (!self.IsIdle)
 				return;
 
 			var attacker = e.Attacker;
@@ -131,7 +131,7 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 			if (IsTraitDisabled)
 				return;
 
-			if (Stance < UnitStance.Defend || !Info.TargetWhenIdle)
+			if (Stance < UnitStance.Defend)
 				return;
 
 			bool allowMove;
