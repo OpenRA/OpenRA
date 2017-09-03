@@ -46,7 +46,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				nextKey = new NamedHotkey(yaml.Value, ks);
 
 			var keyhandler = widget.Get<LogicKeyListenerWidget>("GLOBAL_KEYHANDLER");
-			keyhandler.OnKeyPress += e =>
+			keyhandler.AddHandler(e =>
 			{
 				if (e.Event == KeyInputEvent.Down)
 				{
@@ -63,7 +63,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				}
 
 				return false;
-			};
+			});
 		}
 
 		void PauseOrResumeMusic()
