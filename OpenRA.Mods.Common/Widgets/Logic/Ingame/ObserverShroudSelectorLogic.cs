@@ -138,7 +138,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			shroudLabelAlt.GetColor = () => selected.Color;
 
 			var keyhandler = shroudSelector.Get<LogicKeyListenerWidget>("SHROUD_KEYHANDLER");
-			keyhandler.OnKeyPress = HandleKeyPress;
+			keyhandler.AddHandler(HandleKeyPress);
 
 			selected = limitViews ? groups.First().Value.First() : world.WorldActor.Owner.Shroud.ExploreMapEnabled ? combined : disableShroud;
 			selected.OnClick();

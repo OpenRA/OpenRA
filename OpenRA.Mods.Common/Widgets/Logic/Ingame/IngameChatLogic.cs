@@ -153,7 +153,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				CloseChat();
 
 				var keyListener = chatChrome.Get<LogicKeyListenerWidget>("KEY_LISTENER");
-				keyListener.OnKeyPress = e =>
+				keyListener.AddHandler(e =>
 				{
 					if (e.Event == KeyInputEvent.Up || !chatText.IsDisabled())
 						return false;
@@ -165,7 +165,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					}
 
 					return false;
-				};
+				});
 			}
 		}
 
