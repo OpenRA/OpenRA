@@ -143,12 +143,6 @@ namespace OpenRA.Widgets
 					Root.Visible ^= true;
 					return true;
 				}
-
-				if (hk == Game.Settings.Keys.TakeScreenshotKey)
-				{
-					Game.TakeScreenshot = true;
-					return true;
-				}
 			}
 
 			if (KeyboardFocusWidget != null)

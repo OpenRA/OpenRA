@@ -4,11 +4,12 @@ Container@MENU_BACKGROUND:
 	Logic: MainMenuLogic
 	Children:
 		LogicKeyListener@GLOBAL_KEYHANDLER:
-			Logic: MusicHotkeyLogic
+			Logic: MusicHotkeyLogic, ScreenshotHotkeyLogic
 				StopMusicKey: StopMusic
 				PauseMusicKey: PauseMusic
 				PrevMusicKey: PrevMusic
 				NextMusicKey: NextMusic
+				TakeScreenshotKey: TakeScreenshot
 		Container@SHELLMAP_DECORATIONS:
 			Children:
 				Image@NOD:
