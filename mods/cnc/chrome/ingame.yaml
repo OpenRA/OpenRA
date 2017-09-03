@@ -39,6 +39,8 @@ Container@INGAME_ROOT:
 				WorldInteractionController@INTERACTION_CONTROLLER:
 					Width: WINDOW_RIGHT
 					Height: WINDOW_BOTTOM
+					SelectAllKey: SelectAllUnits
+					SelectSameTypeKey: SelectUnitsByType
 				ViewportController:
 					Width: WINDOW_RIGHT
 					Height: WINDOW_BOTTOM

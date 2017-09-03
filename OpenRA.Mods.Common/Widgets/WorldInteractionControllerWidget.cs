@@ -22,6 +22,9 @@ namespace OpenRA.Mods.Common.Widgets
 {
 	public class WorldInteractionControllerWidget : Widget
 	{
+		public readonly NamedHotkey SelectAllKey = new NamedHotkey();
+		public readonly NamedHotkey SelectSameTypeKey = new NamedHotkey();
+
 		protected readonly World World;
 		readonly WorldRenderer worldRenderer;
 		int2 dragStart, mousePos;
@@ -242,7 +245,7 @@ namespace OpenRA.Mods.Common.Widgets
 			{
 				var key = Hotkey.FromKeyInput(e);
 
-				if (key == Game.Settings.Keys.SelectAllUnitsKey && !World.IsGameOver)
+				if (key == SelectAllKey.GetValue() && !World.IsGameOver)
 				{
 					// Select actors on the screen which belong to the current player
 					var ownUnitsOnScreen = SelectActorsOnScreen(World, worldRenderer, null, player).SubsetWithHighestSelectionPriority().ToList();
@@ -259,7 +262,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 					World.Selection.Combine(World, ownUnitsOnScreen, false, false);
 				}
-				else if (key == Game.Settings.Keys.SelectUnitsByTypeKey && !World.IsGameOver)
+				else if (key == SelectSameTypeKey.GetValue() && !World.IsGameOver)
 				{
 					if (!World.Selection.Actors.Any())
 						return false;
