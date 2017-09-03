@@ -292,8 +292,6 @@ namespace OpenRA.Mods.Common.Widgets
 					return CycleStatusBars();
 				else if (key == Game.Settings.Keys.TogglePixelDoubleKey)
 					return TogglePixelDouble();
-				else if (key == Game.Settings.Keys.ToggleMuteKey)
-					return ToggleMute();
 				else if (key == Game.Settings.Keys.TogglePlayerStanceColorsKey)
 					return TogglePlayerStanceColors();
 			}
@@ -360,24 +358,6 @@ namespace OpenRA.Mods.Common.Widgets
 			}
 
 			Game.Settings.Graphics.PixelDouble = worldRenderer.Viewport.Zoom == 2f;
-
-			return true;
-		}
-
-		bool ToggleMute()
-		{
-			Game.Settings.Sound.Mute ^= true;
-
-			if (Game.Settings.Sound.Mute)
-			{
-				Game.Sound.MuteAudio();
-				Game.AddChatLine(Color.White, "Battlefield Control", "Audio muted");
-			}
-			else
-			{
-				Game.Sound.UnmuteAudio();
-				Game.AddChatLine(Color.White, "Battlefield Control", "Audio unmuted");
-			}
 
 			return true;
 		}
