@@ -823,6 +823,7 @@
     <Compile Include="UtilityCommands\LintInterfaces.cs" />
     <Compile Include="Widgets\Logic\SingleHotkeyBaseLogic.cs" />
     <Compile Include="Widgets\Logic\ScreenshotHotkeyLogic.cs" />
+    <Compile Include="Widgets\Logic\MuteHotkeyLogic.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="AfterBuild">
