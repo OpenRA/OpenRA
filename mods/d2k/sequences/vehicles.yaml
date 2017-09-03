@@ -36,7 +36,7 @@ harvester.husk:
 	idle: DATA.R8
 		Start: 1699
 		Facings: -32
-		ZOffset: -1023
+		ZOffset: -512
 
 trike:
 	idle: DATA.R8

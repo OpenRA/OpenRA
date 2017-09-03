@@ -534,6 +534,11 @@
 	HitShape:
 	EditorTilesetFilter:
 		Categories: Aircraft
+	SpawnActorOnDeath:
+		RequiresCondition: airborne
+	Explodes:
+		Weapon: UnitExplode
+		RequiresCondition: !airborne
 
 ^Plane:
 	Inherits: ^NeutralPlane
@@ -761,8 +766,6 @@
 		TargetTypes: Ground, C4, DetonateAttack, Structure, NoAutoTarget
 	Armor:
 		Type: Light
-	Targetable:
-		TargetTypes: Ground, DetonateAttack
 	EditorTilesetFilter:
 		Categories: Decoration
 
@@ -787,6 +790,9 @@
 
 ^CivField:
 	Inherits: ^CivBuilding
+	-HitShape:
+	-Health:
+	-Explodes:
 	-Selectable:
 	-SelectionDecorations:
 	Tooltip:
@@ -904,6 +910,9 @@
 		Velocity: 86
 	EditorTilesetFilter:
 		Categories: Husk
+	RevealOnDeath:
+		Duration: 60
+		Radius: 4c0
 
 ^HelicopterHusk:
 	Inherits: ^BasicHusk
@@ -917,6 +926,9 @@
 	FallsToEarth:
 	BodyOrientation:
 		UseClassicFacingFudge: True
+	RevealOnDeath:
+		Duration: 60
+		Radius: 4c0
 
 ^Bridge:
 	Inherits@shape: ^1x1Shape

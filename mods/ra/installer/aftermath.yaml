@@ -118,7 +118,7 @@ aftermath-linux: Aftermath Expansion Disc (English)
 		readme.txt: 9902fb74c019df1b76ff5634e68f0371d790b5e0
 		setup/install/patch.rtp: 5bce93f834f9322ddaa7233242e5b6c7fea0bf17
 	Install:
-		extract-raw: SETUP/INSTALL/PATCH.RTP
+		extract-raw: setup/install/patch.rtp
 			^Content/ra/v2/expand/expand2.mix:
 				Offset: 4712984
 				Length: 469922

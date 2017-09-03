@@ -66,7 +66,7 @@ namespace OpenRA.Mods.Common.Activities
 			foreach (var nt in self.TraitsImplementing<INotifyTransform>())
 				nt.BeforeTransform(self);
 
-			if (SkipMakeAnims)
+			if (!SkipMakeAnims && makeAnimation != null)
 				return NextActivity;
 
 			// Once the make animation starts the activity must not be stopped anymore.

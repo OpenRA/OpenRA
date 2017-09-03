@@ -81,7 +81,7 @@ namespace OpenRA.Platforms.Default
 				}
 
 				// A null indicates termination of that string, so add that to our list.
-				devices.Add(Encoding.Default.GetString(buffer.ToArray()));
+				devices.Add(Encoding.UTF8.GetString(buffer.ToArray()));
 				buffer.Clear();
 
 				// Two successive nulls indicates the end of the list.

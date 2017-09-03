@@ -14,9 +14,6 @@
 # to check the official mod dlls for StyleCop violations, run:
 #   make check
 #
-# to generate documentation aimed at modders, run:
-#   make docs
-#
 # to install, run:
 #   make [prefix=/foo] [bindir=/bar/bin] install
 #
@@ -416,7 +413,13 @@ install-linux-mime:
 
 install-linux-appdata:
 	@$(INSTALL_DIR) "$(DESTDIR)$(datadir)/appdata/"
-	@$(INSTALL_DATA) packaging/linux/openra.appdata.xml "$(DESTDIR)$(datadir)/appdata/"
+	@sed 's/{MOD}/ra/g' packaging/linux/openra.appdata.xml.in | sed 's/{MOD_NAME}/Red Alert/g' | sed 's/{SCREENSHOT_RA}/ type="default"/g' | sed 's/{SCREENSHOT_CNC}//g' | sed 's/{SCREENSHOT_D2K}//g'> packaging/linux/openra-ra.appdata.xml
+	@$(INSTALL_DATA) packaging/linux/openra-ra.appdata.xml "$(DESTDIR)$(datadir)/appdata/"
+	@sed 's/{MOD}/cnc/g' packaging/linux/openra.appdata.xml.in | sed 's/{MOD_NAME}/Tiberian Dawn/g' | sed 's/{SCREENSHOT_RA}//g' | sed 's/{SCREENSHOT_CNC}/ type="default"/g' | sed 's/{SCREENSHOT_D2K}//g'> packaging/linux/openra-cnc.appdata.xml
+	@$(INSTALL_DATA) packaging/linux/openra-cnc.appdata.xml "$(DESTDIR)$(datadir)/appdata/"
+	@sed 's/{MOD}/d2k/g' packaging/linux/openra.appdata.xml.in | sed 's/{MOD_NAME}/Dune 2000/g' | sed 's/{SCREENSHOT_RA}//g' | sed 's/{SCREENSHOT_CNC}//g' | sed 's/{SCREENSHOT_D2K}/ type="default"/g'> packaging/linux/openra-d2k.appdata.xml
+	@$(INSTALL_DATA) packaging/linux/openra-d2k.appdata.xml "$(DESTDIR)$(datadir)/appdata/"
+	@-$(RM) packaging/linux/openra-ra.appdata.xml packaging/linux/openra-cnc.appdata.xml packaging/linux/openra-d2k.appdata.xml
 
 install-man-page: man-page
 	@$(INSTALL_DIR) "$(DESTDIR)$(mandir)/man6/"
@@ -496,9 +499,6 @@ help:
 	@echo
 	@echo 'to check the official mods for erroneous yaml files, run:'
 	@echo '  make test'
-	@echo
-	@echo 'to generate documentation aimed at modders, run:'
-	@echo '  make docs'
 	@echo
 	@echo 'to install, run:'
 	@echo '  make [prefix=/foo] [bindir=/bar/bin] install'

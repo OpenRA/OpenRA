@@ -845,34 +845,78 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
-				// Replace Mobile.OnRails hack with dedicated TDGunboat traits in Mods.Cnc
-				if (engineVersion < 20170715)
+				// TargetWhenIdle and TargetWhenDamaged were removed from AutoTarget
+				if (engineVersion < 20170722)
 				{
-					var mobile = node.Value.Nodes.FirstOrDefault(n => n.Key == "Mobile");
-					if (mobile != null)
+					if (node.Key.StartsWith("AutoTarget", StringComparison.Ordinal))
 					{
-						var onRailsNode = mobile.Value.Nodes.FirstOrDefault(n => n.Key == "OnRails");
-						var onRails = onRailsNode != null ? FieldLoader.GetValue<bool>("OnRails", onRailsNode.Value.Value) : false;
-						if (onRails)
+						var valueNodes = node.Value.Nodes;
+						var targetIdle = valueNodes.FirstOrDefault(n => n.Key == "TargetWhenIdle");
+						var targetDamaged = valueNodes.FirstOrDefault(n => n.Key == "TargetWhenDamaged");
+						var hasInitialStance = valueNodes.FirstOrDefault(n => n.Key == "InitialStance") != null;
+						var enableStances = valueNodes.FirstOrDefault(n => n.Key == "EnableStances");
+
+						if (targetDamaged == null)
 						{
-							var speed = mobile.Value.Nodes.FirstOrDefault(n => n.Key == "Speed");
-							var initFacing = mobile.Value.Nodes.FirstOrDefault(n => n.Key == "InitialFacing");
-							var previewFacing = mobile.Value.Nodes.FirstOrDefault(n => n.Key == "PreviewFacing");
-							var tdGunboat = new MiniYamlNode("TDGunboat", "");
-							if (speed != null)
-								tdGunboat.Value.Nodes.Add(speed);
-							if (initFacing != null)
-								tdGunboat.Value.Nodes.Add(initFacing);
-							if (previewFacing != null)
-								tdGunboat.Value.Nodes.Add(previewFacing);
+							if (targetIdle != null)
+							{
+								if (hasInitialStance)
+									Console.WriteLine("'TargetWhenIdle' was removed from 'AutoTarget'. 'InitialStance' might need to be adjusted.");
+								else
+								{
+									valueNodes.Add(new MiniYamlNode("InitialStance", targetIdle.Value.Value.ToLower() == "true" ? "Defend" : "ReturnFire"));
 
-							node.Value.Nodes.Add(tdGunboat);
+									if (enableStances != null)
+										enableStances.Value.Value = "false";
+									else
+										valueNodes.Add(new MiniYamlNode("EnableStances", "false"));
+								}
 
-							var attackTurreted = node.Value.Nodes.FirstOrDefault(n => n.Key.StartsWith("AttackTurreted", StringComparison.Ordinal));
-							if (attackTurreted != null)
-								RenameNodeKey(attackTurreted, "AttackTDGunboatTurreted");
+								valueNodes.Remove(targetIdle);
+							}
+						}
+						else
+						{
+							if (targetIdle == null)
+							{
+								if (hasInitialStance)
+									Console.WriteLine("'TargetWhenDamaged' was removed from 'AutoTarget'. 'InitialStance' might need to be adjusted.");
+								else
+								{
+									// In this case the default for "TargetWhenIdle" (true) takes effect, i.e. use the "Defend" stance
+									valueNodes.Add(new MiniYamlNode("InitialStance", "Defend"));
 
-							node.Value.Nodes.Remove(mobile);
+									if (enableStances != null)
+										enableStances.Value.Value = "false";
+									else
+										valueNodes.Add(new MiniYamlNode("EnableStances", "false"));
+								}
+
+								valueNodes.Remove(targetDamaged);
+							}
+							else
+							{
+								if (hasInitialStance)
+									Console.WriteLine("'TargetWhenDamaged' and 'TargetWhenIdle' were removed from 'AutoTarget'. 'InitialStance' might need to be adjusted.");
+								else
+								{
+									var idle = targetIdle.Value.Value.ToLower() == "true";
+									var damaged = targetDamaged.Value.Value.ToLower() == "true";
+
+									if (idle)
+										valueNodes.Add(new MiniYamlNode("InitialStance", "Defend"));
+									else
+										valueNodes.Add(new MiniYamlNode("InitialStance", damaged ? "ReturnFire" : "HoldFire"));
+
+									if (enableStances != null)
+										enableStances.Value.Value = "false";
+									else
+										valueNodes.Add(new MiniYamlNode("EnableStances", "false"));
+								}
+
+								valueNodes.Remove(targetIdle);
+								valueNodes.Remove(targetDamaged);
+							}
 						}
 					}
 				}

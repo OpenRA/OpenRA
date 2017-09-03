@@ -100,7 +100,7 @@ namespace OpenRA
 				SHFILEINFO sfi = new SHFILEINFO();
 				for (var i = 0; i < 2; i++)
 				{
-					SHGetFileInfo(Assembly.GetExecutingAssembly().Location, 0, ref sfi, (uint)Marshal.SizeOf(sfi), (uint)(0x100 + i));
+					SHGetFileInfo(Assembly.GetExecutingAssembly().Location, 0, ref sfi, (uint)Marshal.SizeOf(typeof(SHFILEINFO)), (uint)(0x100 + i));
 					iconHandle[i] = sfi.hIcon;
 					SendMessage(gameProcess.MainWindowHandle, 0x80, (uint)(1 - i), sfi.hIcon);
 				}

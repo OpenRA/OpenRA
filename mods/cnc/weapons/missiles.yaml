@@ -20,7 +20,7 @@
 		Damage: 35
 		ValidTargets: Ground, Air
 		Versus:
-			None: 30
+			None: 20
 			Wood: 85
 			Light: 100
 			Heavy: 100
@@ -89,7 +89,7 @@ OrcaAGMissiles:
 		Damage: 28
 		ValidTargets: Ground
 		Versus:
-			None: 50
+			None: 30
 			Wood: 100
 			Light: 100
 			Heavy: 75
@@ -215,7 +215,7 @@ BoatMissile:
 		VictimScanRadius: 0
 		ValidTargets: Air
 
-TowerMissle:
+TowerMissile:
 	Inherits: ^MissileWeapon
 	ReloadDelay: 15
 	Range: 7c0
