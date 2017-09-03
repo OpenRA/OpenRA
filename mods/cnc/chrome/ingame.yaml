@@ -2,11 +2,12 @@ Container@INGAME_ROOT:
 	Logic: LoadIngamePlayerOrObserverUILogic
 	Children:
 		LogicKeyListener@GLOBAL_KEYHANDLER:
-			Logic: MusicHotkeyLogic
+			Logic: MusicHotkeyLogic, ScreenshotHotkeyLogic
 				StopMusicKey: StopMusic
 				PauseMusicKey: PauseMusic
 				PrevMusicKey: PrevMusic
 				NextMusicKey: NextMusic
+				TakeScreenshotKey: TakeScreenshot
 		Container@WORLD_ROOT:
 			Logic: LoadIngamePerfLogic
 			Children:
