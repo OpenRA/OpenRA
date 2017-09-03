@@ -18,14 +18,16 @@ namespace OpenRA.Mods.Common.Activities
 {
 	public class Fly : Activity
 	{
-		readonly Aircraft plane;
+		readonly Aircraft aircraft;
 		readonly Target target;
 		readonly WDist maxRange;
 		readonly WDist minRange;
+		bool firstTick = true;
+		bool isTakeOff;
 
 		public Fly(Actor self, Target t)
 		{
-			plane = self.Trait<Aircraft>();
+			aircraft = self.Trait<Aircraft>();
 			target = t;
 		}
 
@@ -36,29 +38,29 @@ namespace OpenRA.Mods.Common.Activities
 			this.minRange = minRange;
 		}
 
-		public static void FlyToward(Actor self, Aircraft plane, int desiredFacing, WDist desiredAltitude)
+		public static void FlyToward(Actor self, Aircraft aircraft, int desiredFacing, WDist desiredAltitude)
 		{
-			desiredAltitude = new WDist(plane.CenterPosition.Z) + desiredAltitude - self.World.Map.DistanceAboveTerrain(plane.CenterPosition);
+			desiredAltitude = new WDist(aircraft.CenterPosition.Z) + desiredAltitude - self.World.Map.DistanceAboveTerrain(aircraft.CenterPosition);
 
-			var move = plane.FlyStep(plane.Facing);
-			var altitude = plane.CenterPosition.Z;
+			var move = aircraft.FlyStep(aircraft.Facing);
+			var altitude = aircraft.CenterPosition.Z;
 
-			plane.Facing = Util.TickFacing(plane.Facing, desiredFacing, plane.TurnSpeed);
+			aircraft.Facing = Util.TickFacing(aircraft.Facing, desiredFacing, aircraft.TurnSpeed);
 
 			if (altitude != desiredAltitude.Length)
 			{
-				var delta = move.HorizontalLength * plane.Info.MaximumPitch.Tan() / 1024;
+				var delta = move.HorizontalLength * aircraft.Info.MaximumPitch.Tan() / 1024;
 				var dz = (desiredAltitude.Length - altitude).Clamp(-delta, delta);
 				move += new WVec(0, 0, dz);
 			}
 
-			plane.SetPosition(self, plane.CenterPosition + move);
+			aircraft.SetPosition(self, aircraft.CenterPosition + move);
 		}
 
 		public override Activity Tick(Actor self)
 		{
 			// Refuse to take off if it would land immediately again.
-			if (plane.ForceLanding)
+			if (aircraft.ForceLanding)
 			{
 				Cancel(self);
 				return NextActivity;
@@ -67,26 +69,38 @@ namespace OpenRA.Mods.Common.Activities
 			if (IsCanceled || !target.IsValidFor(self))
 				return NextActivity;
 
+			if (firstTick)
+			{
+				isTakeOff = self.IsAtGroundLevel();
+				firstTick = false;
+
+				if (aircraft.Info.TakeoffSound != null && isTakeOff)
+				{
+					Game.Sound.Play(SoundType.World, aircraft.Info.TakeoffSound);
+					isTakeOff = false;
+				}
+			}
+
 			// Inside the target annulus, so we're done
-			var insideMaxRange = maxRange.Length > 0 && target.IsInRange(plane.CenterPosition, maxRange);
-			var insideMinRange = minRange.Length > 0 && target.IsInRange(plane.CenterPosition, minRange);
+			var insideMaxRange = maxRange.Length > 0 && target.IsInRange(aircraft.CenterPosition, maxRange);
+			var insideMinRange = minRange.Length > 0 && target.IsInRange(aircraft.CenterPosition, minRange);
 			if (insideMaxRange && !insideMinRange)
 				return NextActivity;
 
-			var d = target.CenterPosition - self.CenterPosition;
+			var dist = target.CenterPosition - self.CenterPosition;
 
 			// The next move would overshoot, so consider it close enough
-			var move = plane.FlyStep(plane.Facing);
-			if (d.HorizontalLengthSquared < move.HorizontalLengthSquared)
+			var move = aircraft.FlyStep(aircraft.Facing);
+			if (dist.HorizontalLengthSquared < move.HorizontalLengthSquared)
 				return NextActivity;
 
 			// Don't turn until we've reached the cruise altitude
-			var desiredFacing = d.Yaw.Facing;
-			var targetAltitude = plane.CenterPosition.Z + plane.Info.CruiseAltitude.Length - self.World.Map.DistanceAboveTerrain(plane.CenterPosition).Length;
-			if (plane.CenterPosition.Z < targetAltitude)
-				desiredFacing = plane.Facing;
+			var desiredFacing = dist.Yaw.Facing;
+			var targetAltitude = aircraft.CenterPosition.Z + aircraft.Info.CruiseAltitude.Length - self.World.Map.DistanceAboveTerrain(aircraft.CenterPosition).Length;
+			if (aircraft.CenterPosition.Z < targetAltitude)
+				desiredFacing = aircraft.Facing;
 
-			FlyToward(self, plane, desiredFacing, plane.Info.CruiseAltitude);
+			FlyToward(self, aircraft, desiredFacing, aircraft.Info.CruiseAltitude);
 
 			return this;
 		}
