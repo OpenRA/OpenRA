@@ -9,6 +9,12 @@ Container@INGAME_ROOT:
 				NextMusicKey: NextMusic
 				TakeScreenshotKey: TakeScreenshot
 				MuteAudioKey: ToggleMute
+		LogicKeyListener@WORLD_KEYHANDLER:
+			Logic: CycleBasesHotkeyLogic, CycleProductionActorsHotkeyLogic, JumpToLastEventHotkeyLogic, JumpToSelectedActorsHotkeyLogic
+				CycleBasesKey: CycleBase
+				CycleProductionActorsKey: CycleProductionBuildings
+				JumpToLastEventKey: ToLastEvent
+				JumpToSelectedActorsKey: ToSelection
 		Container@WORLD_ROOT:
 			Logic: LoadIngamePerfLogic
 			Children:
@@ -40,9 +46,6 @@ Container@INGAME_ROOT:
 					BookmarkSaveKeyPrefix: MapBookmarkSave
 					BookmarkRestoreKeyPrefix: MapBookmarkRestore
 					BookmarkKeyCount: 4
-				WorldCommand:
-					Width: WINDOW_RIGHT
-					Height: WINDOW_BOTTOM
 				StrategicProgress@STRATEGIC_PROGRESS:
 					X: WINDOW_RIGHT / 2
 					Y: 40

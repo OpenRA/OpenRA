@@ -130,7 +130,7 @@ namespace OpenRA
 			}
 		}
 
-		public Selection Selection = new Selection();
+		public readonly Selection Selection = new Selection();
 
 		public void CancelInputMode() { OrderGenerator = new UnitOrderGenerator(); }
 
