@@ -463,24 +463,24 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				var hotkeys = new Dictionary<string, string>()
 				{
-					{ "MapScrollUp", "Scroll up" },
-					{ "MapScrollDown", "Scroll down" },
-					{ "MapScrollLeft", "Scroll left" },
-					{ "MapScrollRight", "Scroll right" },
+					{ "MapScrollUpKey", "Scroll up" },
+					{ "MapScrollDownKey", "Scroll down" },
+					{ "MapScrollLeftKey", "Scroll left" },
+					{ "MapScrollRightKey", "Scroll right" },
 
-					{ "MapPushTop", "Jump to top edge" },
-					{ "MapPushBottom", "Jump to bottom edge" },
-					{ "MapPushLeftEdge", "Jump to left edge" },
-					{ "MapPushRightEdge", "Jump to right edge" },
+					{ "MapJumpToTopEdgeKey", "Jump to top edge" },
+					{ "MapJumpToBottomEdgeKey", "Jump to bottom edge" },
+					{ "MapJumpToLeftEdgeKey", "Jump to left edge" },
+					{ "MapJumpToRightEdgeKey", "Jump to right edge" },
 
-					{ "ViewPortBookmarkSaveSlot1", "Record bookmark #1" },
-					{ "ViewPortBookmarkUseSlot1", "Jump to bookmark #1" },
-					{ "ViewPortBookmarkSaveSlot2", "Record bookmark #2" },
-					{ "ViewPortBookmarkUseSlot2", "Jump to bookmark #2" },
-					{ "ViewPortBookmarkSaveSlot3", "Record bookmark #3" },
-					{ "ViewPortBookmarkUseSlot3", "Jump to bookmark #3" },
-					{ "ViewPortBookmarkSaveSlot4", "Record bookmark #4" },
-					{ "ViewPortBookmarkUseSlot4", "Jump to bookmark #4" }
+					{ "MapBookmarkSave01Key", "Record bookmark #1" },
+					{ "MapBookmarkRestore01Key", "Jump to bookmark #1" },
+					{ "MapBookmarkSave02Key", "Record bookmark #2" },
+					{ "MapBookmarkRestore02Key", "Jump to bookmark #2" },
+					{ "MapBookmarkSave03Key", "Record bookmark #3" },
+					{ "MapBookmarkRestore03Key", "Jump to bookmark #3" },
+					{ "MapBookmarkSave04Key", "Record bookmark #4" },
+					{ "MapBookmarkRestore04Key", "Jump to bookmark #4" }
 				};
 
 				var header = ScrollItemWidget.Setup(hotkeyHeader, returnTrue, doNothing);

@@ -29,6 +29,17 @@ Container@INGAME_ROOT:
 					Width: WINDOW_RIGHT
 					Height: WINDOW_BOTTOM
 					TooltipContainer: TOOLTIP_CONTAINER
+					ScrollUpKey: MapScrollUp
+					ScrollDownKey: MapScrollDown
+					ScrollLeftKey: MapScrollLeft
+					ScrollRightKey: MapScrollRight
+					JumpToTopEdgeKey: MapJumpToTopEdge
+					JumpToBottomEdgeKey: MapJumpToBottomEdge
+					JumpToLeftEdgeKey: MapJumpToLeftEdge
+					JumpToRightEdgeKey: MapJumpToRightEdge
+					BookmarkSaveKeyPrefix: MapBookmarkSave
+					BookmarkRestoreKeyPrefix: MapBookmarkRestore
+					BookmarkKeyCount: 4
 				WorldCommand:
 					Width: WINDOW_RIGHT
 					Height: WINDOW_BOTTOM
