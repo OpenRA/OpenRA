@@ -134,7 +134,6 @@
     <Compile Include="AudioLoaders\VocLoader.cs" />
     <Compile Include="AudioLoaders\WavLoader.cs" />
     <Compile Include="Effects\Beacon.cs" />
-    <Compile Include="Effects\Contrail.cs" />
     <Compile Include="Effects\ContrailFader.cs" />
     <Compile Include="Effects\CrateEffect.cs" />
     <Compile Include="Effects\RevealShroudEffect.cs" />
@@ -295,6 +294,7 @@
     <Compile Include="Traits\Burns.cs" />
     <Compile Include="Traits\ChangesTerrain.cs" />
     <Compile Include="Traits\CommandBarBlacklist.cs" />
+    <Compile Include="Traits\Contrail.cs" />
     <Compile Include="Traits\Health.cs" />
     <Compile Include="Traits\HitShape.cs" />
     <Compile Include="Traits\Player\DeveloperMode.cs" />
