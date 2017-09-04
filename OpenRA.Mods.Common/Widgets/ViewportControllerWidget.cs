@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
+using OpenRA.Mods.Common.Lint;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 using OpenRA.Widgets;
@@ -25,19 +26,29 @@ namespace OpenRA.Mods.Common.Widgets
 	{
 		readonly ResourceLayer resourceLayer;
 
+		public readonly NamedHotkey ScrollUpKey = new NamedHotkey();
+		public readonly NamedHotkey ScrollDownKey = new NamedHotkey();
+		public readonly NamedHotkey ScrollLeftKey = new NamedHotkey();
+		public readonly NamedHotkey ScrollRightKey = new NamedHotkey();
+
+		public readonly NamedHotkey JumpToTopEdgeKey = new NamedHotkey();
+		public readonly NamedHotkey JumpToBottomEdgeKey = new NamedHotkey();
+		public readonly NamedHotkey JumpToLeftEdgeKey = new NamedHotkey();
+		public readonly NamedHotkey JumpToRightEdgeKey = new NamedHotkey();
+
+		// Note: LinterHotkeyNames assumes that these are disabled by default
+		public readonly string BookmarkSaveKeyPrefix = null;
+		public readonly string BookmarkRestoreKeyPrefix = null;
+		public readonly int BookmarkKeyCount = 0;
+
 		public readonly string TooltipTemplate = "WORLD_TOOLTIP";
 		public readonly string TooltipContainer;
-		Lazy<TooltipContainerWidget> tooltipContainer;
 
 		public WorldTooltipType TooltipType { get; private set; }
 		public ITooltip ActorTooltip { get; private set; }
 		public IProvideTooltipInfo[] ActorTooltipExtra { get; private set; }
 		public FrozenActor FrozenActorTooltip { get; private set; }
 		public ResourceType ResourceTooltip { get; private set; }
-
-		int2? joystickScrollStart, joystickScrollEnd;
-		int2? standardScrollStart;
-		bool isStandardScrolling;
 
 		static readonly Dictionary<ScrollDirection, string> ScrollCursors = new Dictionary<ScrollDirection, string>
 		{
@@ -71,32 +82,53 @@ namespace OpenRA.Mods.Common.Widgets
 			{ ScrollDirection.Right, new float2(1, 0) },
 		};
 
+		Lazy<TooltipContainerWidget> tooltipContainer;
+		int2? joystickScrollStart, joystickScrollEnd;
+		int2? standardScrollStart;
+		bool isStandardScrolling;
+
 		ScrollDirection keyboardDirections;
 		ScrollDirection edgeDirections;
 		World world;
 		WorldRenderer worldRenderer;
-		WPos?[] viewPortBookmarkSlots = new WPos?[4];
 
-		void SaveBookmark(int index, WPos position)
-		{
-			viewPortBookmarkSlots[index] = position;
-		}
+		NamedHotkey[] saveBookmarkHotkeys;
+		NamedHotkey[] restoreBookmarkHotkeys;
+		WPos?[] bookmarkPositions;
 
-		void SaveCurrentPositionToBookmark(int index)
+		[CustomLintableHotkeyNames]
+		public static IEnumerable<string> LinterHotkeyNames(MiniYamlNode widgetNode, Action<string> emitError, Action<string> emitWarning)
 		{
-			SaveBookmark(index, worldRenderer.Viewport.CenterPosition);
-		}
+			var savePrefix = "";
+			var savePrefixNode = widgetNode.Value.Nodes.FirstOrDefault(n => n.Key == "BookmarkSaveKeyPrefix");
+			if (savePrefixNode != null)
+				savePrefix = savePrefixNode.Value.Value;
 
-		WPos? JumpToBookmark(int index)
-		{
-			return viewPortBookmarkSlots[index];
-		}
+			var restorePrefix = "";
+			var restorePrefixNode = widgetNode.Value.Nodes.FirstOrDefault(n => n.Key == "BookmarkRestoreKeyPrefix");
+			if (restorePrefixNode != null)
+				restorePrefix = restorePrefixNode.Value.Value;
 
-		void JumpToSavedBookmark(int index)
-		{
-			var bookmark = JumpToBookmark(index);
-			if (bookmark != null)
-				worldRenderer.Viewport.Center((WPos)bookmark);
+			var count = 0;
+			var countNode = widgetNode.Value.Nodes.FirstOrDefault(n => n.Key == "BookmarkKeyCount");
+			if (countNode != null)
+				count = FieldLoader.GetValue<int>("BookmarkKeyCount", countNode.Value.Value);
+
+			if (count == 0)
+				yield break;
+
+			if (string.IsNullOrEmpty(savePrefix))
+				emitError("{0} must define BookmarkSaveKeyPrefix if BookmarkKeyCount > 0.".F(widgetNode.Location));
+
+			if (string.IsNullOrEmpty(restorePrefix))
+				emitError("{0} must define BookmarkRestoreKeyPrefix if BookmarkKeyCount > 0.".F(widgetNode.Location));
+
+			for (var i = 0; i < count; i++)
+			{
+				var suffix = (i + 1).ToString("D2");
+				yield return savePrefix + suffix;
+				yield return restorePrefix + suffix;
+			}
 		}
 
 		[ObjectCreator.UseCtor]
@@ -108,6 +140,19 @@ namespace OpenRA.Mods.Common.Widgets
 				Ui.Root.Get<TooltipContainerWidget>(TooltipContainer));
 
 			resourceLayer = world.WorldActor.TraitOrDefault<ResourceLayer>();
+		}
+
+		public override void Initialize(WidgetArgs args)
+		{
+			base.Initialize(args);
+
+			saveBookmarkHotkeys = Exts.MakeArray(BookmarkKeyCount,
+				i => new NamedHotkey(BookmarkSaveKeyPrefix + (i + 1).ToString("D2"), Game.Settings.Keys));
+
+			restoreBookmarkHotkeys = Exts.MakeArray(BookmarkKeyCount,
+				i => new NamedHotkey(BookmarkRestoreKeyPrefix + (i + 1).ToString("D2"), Game.Settings.Keys));
+
+			bookmarkPositions = new WPos?[BookmarkKeyCount];
 		}
 
 		public override void MouseEntered()
@@ -381,97 +426,71 @@ namespace OpenRA.Mods.Common.Widgets
 		public override bool HandleKeyPress(KeyInput e)
 		{
 			var key = Hotkey.FromKeyInput(e);
-			var ks = Game.Settings.Keys;
 
-			Func<Hotkey, ScrollDirection, bool> handleMapScrollKey = (hotkey, scrollDirection) =>
+			Func<NamedHotkey, ScrollDirection, bool> handleMapScrollKey = (hotkey, scrollDirection) =>
 			{
 				var isHotkey = false;
-				if (key.Key == hotkey.Key)
+				var keyValue = hotkey.GetValue();
+				if (key.Key == keyValue.Key)
 				{
-					isHotkey = key == hotkey;
-					keyboardDirections = keyboardDirections.Set(scrollDirection, e.Event == KeyInputEvent.Down && (isHotkey || hotkey.Modifiers == Modifiers.None));
+					isHotkey = key == keyValue;
+					keyboardDirections = keyboardDirections.Set(scrollDirection, e.Event == KeyInputEvent.Down && (isHotkey || keyValue.Modifiers == Modifiers.None));
 				}
 
 				return isHotkey;
 			};
 
-			if (handleMapScrollKey(ks.MapScrollUp, ScrollDirection.Up) || handleMapScrollKey(ks.MapScrollDown, ScrollDirection.Down)
-				|| handleMapScrollKey(ks.MapScrollLeft, ScrollDirection.Left) || handleMapScrollKey(ks.MapScrollRight, ScrollDirection.Right))
+			if (handleMapScrollKey(ScrollUpKey, ScrollDirection.Up) || handleMapScrollKey(ScrollDownKey, ScrollDirection.Down)
+				|| handleMapScrollKey(ScrollLeftKey, ScrollDirection.Left) || handleMapScrollKey(ScrollRightKey, ScrollDirection.Right))
 				return true;
 
 			if (e.Event != KeyInputEvent.Down)
 				return false;
 
-			if (key == ks.MapPushTop)
+			if (key == JumpToTopEdgeKey.GetValue())
 			{
 				worldRenderer.Viewport.Center(new WPos(worldRenderer.Viewport.CenterPosition.X, 0, 0));
 				return true;
 			}
 
-			if (key == ks.MapPushBottom)
+			if (key == JumpToBottomEdgeKey.GetValue())
 			{
 				worldRenderer.Viewport.Center(new WPos(worldRenderer.Viewport.CenterPosition.X, worldRenderer.World.Map.ProjectedBottomRight.Y, 0));
 				return true;
 			}
 
-			if (key == ks.MapPushLeftEdge)
+			if (key == JumpToLeftEdgeKey.GetValue())
 			{
 				worldRenderer.Viewport.Center(new WPos(0, worldRenderer.Viewport.CenterPosition.Y, 0));
 				return true;
 			}
 
-			if (key == ks.MapPushRightEdge)
+			if (key == JumpToRightEdgeKey.GetValue())
 			{
 				worldRenderer.Viewport.Center(new WPos(worldRenderer.World.Map.ProjectedBottomRight.X, worldRenderer.Viewport.CenterPosition.Y, 0));
 				return true;
 			}
 
-			if (key == ks.ViewPortBookmarkSaveSlot1)
+			for (var i = 0; i < saveBookmarkHotkeys.Length; i++)
 			{
-				SaveCurrentPositionToBookmark(0);
-				return true;
+				if (key == saveBookmarkHotkeys[i].GetValue())
+				{
+					bookmarkPositions[i] = worldRenderer.Viewport.CenterPosition;
+					return true;
+				}
 			}
 
-			if (key == ks.ViewPortBookmarkSaveSlot2)
+			for (var i = 0; i < restoreBookmarkHotkeys.Length; i++)
 			{
-				SaveCurrentPositionToBookmark(1);
-				return true;
-			}
-
-			if (key == ks.ViewPortBookmarkSaveSlot3)
-			{
-				SaveCurrentPositionToBookmark(2);
-				return true;
-			}
-
-			if (key == ks.ViewPortBookmarkSaveSlot4)
-			{
-				SaveCurrentPositionToBookmark(3);
-				return true;
-			}
-
-			if (key == ks.ViewPortBookmarkUseSlot1)
-			{
-				JumpToSavedBookmark(0);
-				return true;
-			}
-
-			if (key == ks.ViewPortBookmarkUseSlot2)
-			{
-				JumpToSavedBookmark(1);
-				return true;
-			}
-
-			if (key == ks.ViewPortBookmarkUseSlot3)
-			{
-				JumpToSavedBookmark(2);
-				return true;
-			}
-
-			if (key == ks.ViewPortBookmarkUseSlot4)
-			{
-				JumpToSavedBookmark(3);
-				return true;
+				if (key == restoreBookmarkHotkeys[i].GetValue())
+				{
+					var bookmark = bookmarkPositions[i];
+					if (bookmark.HasValue)
+					{
+						worldRenderer.Viewport.Center(bookmark.Value);
+						return true;
+					}
+				}
 			}
 
 			return false;

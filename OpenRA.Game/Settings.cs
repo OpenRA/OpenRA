@@ -192,25 +192,25 @@ namespace OpenRA
 		public Hotkey SelectAllUnitsKey = new Hotkey(Keycode.Q, Modifiers.None);
 		public Hotkey SelectUnitsByTypeKey = new Hotkey(Keycode.W, Modifiers.None);
 
-		public Hotkey MapScrollUp = new Hotkey(Keycode.UP, Modifiers.None);
-		public Hotkey MapScrollDown = new Hotkey(Keycode.DOWN, Modifiers.None);
-		public Hotkey MapScrollLeft = new Hotkey(Keycode.LEFT, Modifiers.None);
-		public Hotkey MapScrollRight = new Hotkey(Keycode.RIGHT, Modifiers.None);
+		public Hotkey MapScrollUpKey = new Hotkey(Keycode.UP, Modifiers.None);
+		public Hotkey MapScrollDownKey = new Hotkey(Keycode.DOWN, Modifiers.None);
+		public Hotkey MapScrollLeftKey = new Hotkey(Keycode.LEFT, Modifiers.None);
+		public Hotkey MapScrollRightKey = new Hotkey(Keycode.RIGHT, Modifiers.None);
 
-		public Hotkey MapPushTop = new Hotkey(Keycode.UP, Modifiers.Alt);
-		public Hotkey MapPushBottom = new Hotkey(Keycode.DOWN, Modifiers.Alt);
-		public Hotkey MapPushLeftEdge = new Hotkey(Keycode.LEFT, Modifiers.Alt);
-		public Hotkey MapPushRightEdge = new Hotkey(Keycode.RIGHT, Modifiers.Alt);
+		public Hotkey MapJumpToTopEdgeKey = new Hotkey(Keycode.UP, Modifiers.Alt);
+		public Hotkey MapJumpToBottomEdgeKey = new Hotkey(Keycode.DOWN, Modifiers.Alt);
+		public Hotkey MapJumpToLeftEdgeKey = new Hotkey(Keycode.LEFT, Modifiers.Alt);
+		public Hotkey MapJumpToRightEdgeKey = new Hotkey(Keycode.RIGHT, Modifiers.Alt);
 
-		public Hotkey ViewPortBookmarkSaveSlot1 = new Hotkey(Keycode.Q, Modifiers.Ctrl);
-		public Hotkey ViewPortBookmarkSaveSlot2 = new Hotkey(Keycode.W, Modifiers.Ctrl);
-		public Hotkey ViewPortBookmarkSaveSlot3 = new Hotkey(Keycode.E, Modifiers.Ctrl);
-		public Hotkey ViewPortBookmarkSaveSlot4 = new Hotkey(Keycode.R, Modifiers.Ctrl);
+		public Hotkey MapBookmarkSave01Key = new Hotkey(Keycode.Q, Modifiers.Ctrl);
+		public Hotkey MapBookmarkSave02Key = new Hotkey(Keycode.W, Modifiers.Ctrl);
+		public Hotkey MapBookmarkSave03Key = new Hotkey(Keycode.E, Modifiers.Ctrl);
+		public Hotkey MapBookmarkSave04Key = new Hotkey(Keycode.R, Modifiers.Ctrl);
 
-		public Hotkey ViewPortBookmarkUseSlot1 = new Hotkey(Keycode.Q, Modifiers.Alt);
-		public Hotkey ViewPortBookmarkUseSlot2 = new Hotkey(Keycode.W, Modifiers.Alt);
-		public Hotkey ViewPortBookmarkUseSlot3 = new Hotkey(Keycode.E, Modifiers.Alt);
-		public Hotkey ViewPortBookmarkUseSlot4 = new Hotkey(Keycode.R, Modifiers.Alt);
+		public Hotkey MapBookmarkRestore01Key = new Hotkey(Keycode.Q, Modifiers.Alt);
+		public Hotkey MapBookmarkRestore02Key = new Hotkey(Keycode.W, Modifiers.Alt);
+		public Hotkey MapBookmarkRestore03Key = new Hotkey(Keycode.E, Modifiers.Alt);
+		public Hotkey MapBookmarkRestore04Key = new Hotkey(Keycode.R, Modifiers.Alt);
 
 		public Hotkey PauseKey = new Hotkey(Keycode.PAUSE, Modifiers.None);
 		public Hotkey PlaceBeaconKey = new Hotkey(Keycode.B, Modifiers.None);

@@ -224,6 +224,17 @@ Container@EDITOR_WORLD_ROOT:
 			Width: WINDOW_RIGHT
 			Height: WINDOW_BOTTOM
 			IgnoreMouseOver: True
+			ScrollUpKey: MapScrollUp
+			ScrollDownKey: MapScrollDown
+			ScrollLeftKey: MapScrollLeft
+			ScrollRightKey: MapScrollRight
+			JumpToTopEdgeKey: MapJumpToTopEdge
+			JumpToBottomEdgeKey: MapJumpToBottomEdge
+			JumpToLeftEdgeKey: MapJumpToLeftEdge
+			JumpToRightEdgeKey: MapJumpToRightEdge
+			BookmarkSaveKeyPrefix: MapBookmarkSave
+			BookmarkRestoreKeyPrefix: MapBookmarkRestore
+			BookmarkKeyCount: 4
 		Background@RADAR_BG:
 			X: WINDOW_RIGHT - 255
 			Y: 5
