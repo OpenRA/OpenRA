@@ -173,6 +173,8 @@ namespace OpenRA.Mods.Common.Traits
 			firstTick = false;
 		}
 
+		protected override void TraitDisabled(Actor self) { Uncloak(); }
+
 		public bool IsVisible(Actor self, Player viewer)
 		{
 			if (!Cloaked || self.Owner.IsAlliedWith(viewer))
