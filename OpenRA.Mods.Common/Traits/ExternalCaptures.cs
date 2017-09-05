@@ -34,6 +34,10 @@ namespace OpenRA.Mods.Common.Traits
 
 		[VoiceReference] public readonly string Voice = "Action";
 
+		[GrantedConditionReference]
+		[Desc("Condition granted when capturing.")]
+		public readonly string CapturingCondition = null;
+
 		public readonly string CaptureCursor = "ability";
 		public readonly string CaptureBlockedCursor = "move-blocked";
 
