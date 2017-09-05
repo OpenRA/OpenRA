@@ -88,6 +88,7 @@
     <Compile Include="AS\AIDeployHelper.cs" />
     <Compile Include="Traits\AegisAutoTarget.cs" />
     <Compile Include="Traits\AcceptCashRallyPointAcceptor.cs" />
+    <Compile Include="Traits\Render\WithTractionShadow.cs" />
     <Compile Include="Traits\Tractable.cs" />
     <Compile Include="Traits\MissileSpawnerMaster.cs" />
     <Compile Include="Traits\MissileSpawnerSlave.cs" />
