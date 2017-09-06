@@ -12,6 +12,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using OpenRA.Mods.Common.Activities;
@@ -66,7 +67,7 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 	}
 
 	public class SpawnerHarvesterMaster : BaseSpawnerMaster, INotifyBuildComplete, INotifyIdle,
-		ITick, IIssueOrder, IResolveOrder, IOrderVoice, INotifyDeploy
+		ITick, IIssueOrder, IResolveOrder, IOrderVoice, INotifyDeployComplete
 	{
 		readonly SpawnerHarvesterMasterInfo info;
 		readonly Actor self;
@@ -248,7 +249,7 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 			}
 		}
 
-		public void OnDeployed(Actor self)
+		void INotifyDeployComplete.FinishedDeploy(Actor self)
 		{
 			allowKicks = true;
 
@@ -268,7 +269,7 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 			}
 		}
 
-		public void OnUndeployed(Actor self)
+		void INotifyDeployComplete.FinishedUndeploy(Actor self)
 		{
 			allowKicks = false;
 
