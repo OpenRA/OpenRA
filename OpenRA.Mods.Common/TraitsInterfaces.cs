@@ -181,8 +181,8 @@ namespace OpenRA.Mods.Common.Traits
 
 	public interface INotifyDeployTriggered
 	{
-		void Deploy(Actor self, string[] deployTypes);
-		void Undeploy(Actor self, string[] deployTypes);
+		void Deploy(Actor self, HashSet<string> deployTypes);
+		void Undeploy(Actor self, HashSet<string> deployTypes);
 	}
 
 	public interface IResourceExchange

@@ -53,7 +53,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly bool CanUndeploy = true;
 
 		[Desc("Play MakeAnimation only when its DeployType matches one of these types")]
-		public readonly string[] MakeAnimationDeployTypes = { "make" };
+		public readonly HashSet<string> MakeAnimationDeployTypes = new HashSet<string> { "make" };
 
 		public object Create(ActorInitializer init) { return new GrantConditionOnDeploy(init, this); }
 	}
