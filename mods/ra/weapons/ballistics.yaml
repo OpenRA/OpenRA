@@ -26,7 +26,7 @@
 		Explosions: small_splash
 		ImpactSounds: splash9.aud
 		ValidTargets: Water, Underwater
-		InvalidTargets: Ship, Structure
+		InvalidTargets: Ship, Structure, Bridge
 
 25mm:
 	Inherits: ^Cannon
