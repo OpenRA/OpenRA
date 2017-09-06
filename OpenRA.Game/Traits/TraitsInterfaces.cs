@@ -288,24 +288,6 @@ namespace OpenRA.Traits
 		void SetVisualPosition(Actor self, WPos pos);
 	}
 
-	public interface IMoveInfo : ITraitInfoInterface { }
-	public interface IMove
-	{
-		Activity MoveTo(CPos cell, int nearEnough);
-		Activity MoveTo(CPos cell, Actor ignoreActor);
-		Activity MoveWithinRange(Target target, WDist range);
-		Activity MoveWithinRange(Target target, WDist minRange, WDist maxRange);
-		Activity MoveFollow(Actor self, Target target, WDist minRange, WDist maxRange);
-		Activity MoveIntoWorld(Actor self, CPos cell, SubCell subCell = SubCell.Any);
-		Activity MoveToTarget(Actor self, Target target);
-		Activity MoveIntoTarget(Actor self, Target target);
-		Activity VisualMove(Actor self, WPos fromPos, WPos toPos);
-		CPos NearestMoveableCell(CPos target);
-		bool IsMoving { get; set; }
-		bool IsMovingVertically { get; set; }
-		bool CanEnterTargetNow(Actor self, Target target);
-	}
-
 	[RequireExplicitImplementation]
 	public interface ITemporaryBlocker
 	{
