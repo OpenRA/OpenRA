@@ -940,7 +940,7 @@
 		Name: Bridge
 		ShowOwnerRow: false
 	Targetable:
-		TargetTypes: Ground, Water
+		TargetTypes: Ground, Water, Bridge
 		RequiresForceFire: true
 	Building:
 		Footprint: ____ ____

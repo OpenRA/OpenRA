@@ -35,7 +35,7 @@
 		Explosions: med_splash
 		ImpactSounds: splash9.aud
 		ValidTargets: Water, Underwater
-		InvalidTargets: Ship, Structure
+		InvalidTargets: Ship, Structure, Bridge
 
 ^AntiAirMissile:
 	Inherits: ^AntiGroundMissile
@@ -258,7 +258,7 @@ TorpTube:
 		Explosions: large_splash
 		ImpactSounds: splash9.aud
 		ValidTargets: Water
-		InvalidTargets: Ship, Structure, Underwater
+		InvalidTargets: Ship, Structure, Underwater, Bridge
 
 ^SubMissileDefault:
 	Inherits: ^AntiGroundMissile

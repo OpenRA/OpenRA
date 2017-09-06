@@ -55,7 +55,7 @@ FLAK-23-AG:
 	Warhead@3EffWater: CreateEffect
 		Explosions: small_splash
 		ValidTargets: Water, Underwater
-		InvalidTargets: Ship, Structure
+		InvalidTargets: Ship, Structure, Bridge
 
 ^HeavyMG:
 	ReloadDelay: 30
@@ -79,7 +79,7 @@ FLAK-23-AG:
 	Warhead@3EffWater: CreateEffect
 		Explosions: water_piffs
 		ValidTargets: Water, Underwater
-		InvalidTargets: Ship, Structure
+		InvalidTargets: Ship, Structure, Bridge
 
 ^LightMG:
 	Inherits: ^HeavyMG
@@ -115,7 +115,7 @@ Vulcan:
 	Warhead@4Eff_2Water: CreateEffect
 		Explosions: water_piffs
 		ValidTargets: Water, Underwater
-		InvalidTargets: Ship, Structure
+		InvalidTargets: Ship, Structure, Bridge
 		Delay: 2
 	Warhead@5Dam_3: SpreadDamage
 		Spread: 128
@@ -135,7 +135,7 @@ Vulcan:
 	Warhead@6Eff_3Water: CreateEffect
 		Explosions: water_piffs
 		ValidTargets: Water, Underwater
-		InvalidTargets: Ship, Structure
+		InvalidTargets: Ship, Structure, Bridge
 		Delay: 4
 	Warhead@7Dam_4: SpreadDamage
 		Spread: 128
@@ -155,7 +155,7 @@ Vulcan:
 	Warhead@8Eff_4Water: CreateEffect
 		Explosions: water_piffs
 		ValidTargets: Water, Underwater
-		InvalidTargets: Ship, Structure
+		InvalidTargets: Ship, Structure, Bridge
 		Delay: 6
 	Warhead@9Dam_5: SpreadDamage
 		Spread: 128
@@ -175,7 +175,7 @@ Vulcan:
 	Warhead@10Eff_5Water: CreateEffect
 		Explosions: water_piffs
 		ValidTargets: Water, Underwater
-		InvalidTargets: Ship, Structure
+		InvalidTargets: Ship, Structure, Bridge
 		Delay: 8
 	Warhead@11Dam_6: SpreadDamage
 		Spread: 128
@@ -195,7 +195,7 @@ Vulcan:
 	Warhead@12Eff_6Water: CreateEffect
 		Explosions: water_piffs
 		ValidTargets: Water, Underwater
-		InvalidTargets: Ship, Structure
+		InvalidTargets: Ship, Structure, Bridge
 		Delay: 10
 
 ChainGun:
@@ -272,7 +272,7 @@ SilencedPPK:
 	Warhead@3EffWater: CreateEffect
 		Explosions: water_piffs
 		ValidTargets: Water, Underwater
-		InvalidTargets: Ship, Structure
+		InvalidTargets: Ship, Structure, Bridge
 
 Colt45:
 	Inherits: ^SnipeWeapon
@@ -286,7 +286,7 @@ Colt45:
 	Warhead@3EffWater: CreateEffect
 		Explosions: water_piff
 		ValidTargets: Water, Underwater
-		InvalidTargets: Ship, Structure
+		InvalidTargets: Ship, Structure, Bridge
 
 Sniper:
 	Inherits: ^SnipeWeapon
