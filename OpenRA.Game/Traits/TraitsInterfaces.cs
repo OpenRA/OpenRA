@@ -131,10 +131,7 @@ namespace OpenRA.Traits
 	public interface INotifyCreated { void Created(Actor self); }
 	public interface INotifyAddedToWorld { void AddedToWorld(Actor self); }
 	public interface INotifyRemovedFromWorld { void RemovedFromWorld(Actor self); }
-	public interface INotifyDamage { void Damaged(Actor self, AttackInfo e); }
-	public interface INotifyKilled { void Killed(Actor self, AttackInfo e); }
 	public interface INotifyActorDisposing { void Disposing(Actor self); }
-	public interface INotifyAppliedDamage { void AppliedDamage(Actor self, Actor damaged, AttackInfo e); }
 	public interface INotifyOwnerChanged { void OnOwnerChanged(Actor self, Player oldOwner, Player newOwner); }
 	public interface INotifyEffectiveOwnerChanged { void OnEffectiveOwnerChanged(Actor self, Player oldEffectiveOwner, Player newEffectiveOwner); }
 
@@ -181,8 +178,6 @@ namespace OpenRA.Traits
 
 	public interface IDisabledTrait { bool IsTraitDisabled { get; } }
 	public interface IDisable { bool Disabled { get; } }
-	public interface IExplodeModifier { bool ShouldExplode(Actor self); }
-	public interface IHuskModifier { string HuskActor(Actor self); }
 
 	public interface IRadarSignature
 	{
