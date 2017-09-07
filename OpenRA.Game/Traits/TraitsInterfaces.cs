@@ -318,7 +318,10 @@ namespace OpenRA.Traits
 	}
 
 	public interface IRenderOverlay { void Render(WorldRenderer wr); }
+
+	[RequireExplicitImplementation]
 	public interface INotifyBecomingIdle { void OnBecomingIdle(Actor self); }
+	[RequireExplicitImplementation]
 	public interface INotifyIdle { void TickIdle(Actor self); }
 
 	public interface IRenderAboveWorld { void RenderAboveWorld(Actor self, WorldRenderer wr); }

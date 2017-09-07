@@ -87,7 +87,7 @@ namespace OpenRA.Mods.Common.Scripting
 			return Triggerables(trigger).Count > 0;
 		}
 
-		public void TickIdle(Actor self)
+		void INotifyIdle.TickIdle(Actor self)
 		{
 			if (world.Disposing)
 				return;

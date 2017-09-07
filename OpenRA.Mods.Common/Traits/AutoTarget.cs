@@ -188,7 +188,7 @@ namespace OpenRA.Mods.Common.Traits
 				Attack(self, Aggressor, allowMove);
 		}
 
-		public void TickIdle(Actor self)
+		void INotifyIdle.TickIdle(Actor self)
 		{
 			if (IsTraitDisabled || Stance < UnitStance.Defend)
 				return;

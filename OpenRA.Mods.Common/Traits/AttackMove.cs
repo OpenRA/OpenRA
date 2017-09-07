@@ -92,7 +92,7 @@ namespace OpenRA.Mods.Common.Traits
 			self.QueueActivity(new AttackMoveActivity(self, move.MoveTo(TargetLocation.Value, 1)));
 		}
 
-		public void TickIdle(Actor self)
+		void INotifyIdle.TickIdle(Actor self)
 		{
 			// This might cause the actor to be stuck if the target location is unreachable
 			if (TargetLocation.HasValue && self.Location != TargetLocation.Value)
