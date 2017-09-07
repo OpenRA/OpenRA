@@ -38,7 +38,6 @@ namespace OpenRA.Mods.Common.Traits
 		readonly Actor self;
 		readonly RefineryInfo info;
 		readonly DockManager docks;
-		readonly WithSpriteBody wsb;
 		PlayerResources playerResources;
 
 		int currentDisplayTick = 0;
@@ -55,7 +54,6 @@ namespace OpenRA.Mods.Common.Traits
 			this.info = info;
 			playerResources = self.Owner.PlayerActor.Trait<PlayerResources>();
 			currentDisplayTick = info.TickRate;
-			wsb = self.Trait<WithSpriteBody>();
 			docks = self.Trait<DockManager>();
 		}
 
@@ -89,13 +87,6 @@ namespace OpenRA.Mods.Common.Traits
 
 		void ITick.Tick(Actor self)
 		{
-			// Refining animation cancelation.
-			// When everything docked all get killed in one shot then refining anim should be canceled.
-			// (Nukes...) Lets not care about chrono miners. Won't look too odd.
-			var dockedHarvs = docks.DockedUnits;
-			if (dockedHarvs.Count() > 0 && dockedHarvs.Count() == dockedHarvs.Where(a => a.IsDead).Count())
-				wsb.CancelCustomAnimation(self);
-
 			if (info.ShowTicks && currentDisplayValue > 0 && --currentDisplayTick <= 0)
 			{
 				var temp = currentDisplayValue;
