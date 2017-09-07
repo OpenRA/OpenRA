@@ -12,6 +12,7 @@
 using System;
 using System.IO;
 using OpenRA.Network;
+using OpenRA.Traits;
 
 namespace OpenRA
 {
@@ -61,6 +62,21 @@ namespace OpenRA
 			Queued = queued;
 			ExtraLocation = extraLocation;
 			ExtraData = extraData;
+		}
+
+		Order(string orderString, Actor subject, Target target, bool queued, CPos extraLocation, uint extraData)
+		{
+			var targetType = target.SerializableType;
+
+			OrderString = orderString;
+			Subject = subject;
+			TargetActor = targetType == TargetType.Actor ? target.SerializableActor : null;
+			TargetLocation = targetType == TargetType.Terrain ? target.SerializableCell.HasValue ?
+				target.SerializableCell.Value : subject.World.Map.CellContaining(target.CenterPosition) : CPos.Zero;
+			TargetString = null;
+			Queued = queued;
+			ExtraLocation = extraLocation;
+			ExtraData = targetType == TargetType.FrozenActor ? target.FrozenActor.ID : extraData;
 		}
 
 		public static Order Deserialize(World world, BinaryReader r)
@@ -173,6 +189,9 @@ namespace OpenRA
 
 		public Order(string orderString, Actor subject, bool queued)
 			: this(orderString, subject, null, CPos.Zero, null, queued, CPos.Zero, 0) { }
+
+		public Order(string orderString, Actor subject, Target target, bool queued)
+			: this(orderString, subject, target, queued, CPos.Zero, 0) { }
 
 		public Order(string orderstring, Order order)
 			: this(orderstring, order.Subject, order.TargetActor, order.TargetLocation,
