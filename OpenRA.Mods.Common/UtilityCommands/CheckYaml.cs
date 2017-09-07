@@ -13,7 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.FileSystem;
-using OpenRA.Traits;
+using OpenRA.Mods.Common.Lint;
 
 namespace OpenRA.Mods.Common.UtilityCommands
 {
