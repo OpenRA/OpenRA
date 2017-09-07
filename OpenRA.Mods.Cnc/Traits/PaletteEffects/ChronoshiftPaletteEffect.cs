@@ -45,7 +45,7 @@ namespace OpenRA.Mods.Cnc.Traits
 				remainingFrames--;
 		}
 
-		public void AdjustPalette(IReadOnlyDictionary<string, MutablePalette> palettes)
+		void IPaletteModifier.AdjustPalette(IReadOnlyDictionary<string, MutablePalette> palettes)
 		{
 			if (remainingFrames == 0)
 				return;
