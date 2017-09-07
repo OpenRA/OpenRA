@@ -66,7 +66,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			Info = info;
 		}
 
-		public void Tick(Actor self)
+		void ITick.Tick(Actor self)
 		{
 			if (chargeTick > 0)
 				chargeTick--;

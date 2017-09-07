@@ -46,7 +46,7 @@ namespace OpenRA.Mods.D2k.Traits
 			self.ChangeOwner(newOwner);
 		}
 
-		public void Tick(Actor self)
+		void ITick.Tick(Actor self)
 		{
 			if (!self.IsInWorld)
 				return;
