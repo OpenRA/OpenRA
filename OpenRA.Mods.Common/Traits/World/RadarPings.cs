@@ -38,7 +38,7 @@ namespace OpenRA.Mods.Common.Traits
 			this.info = info;
 		}
 
-		public void Tick(Actor self)
+		void ITick.Tick(Actor self)
 		{
 			foreach (var ping in Pings.ToArray())
 				if (!ping.Tick())

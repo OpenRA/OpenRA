@@ -181,7 +181,12 @@ namespace OpenRA.Mods.Common.Traits.Render
 			}
 		}
 
-		public virtual void Tick(Actor self)
+		void ITick.Tick(Actor self)
+		{
+			Tick(self);
+		}
+
+		protected virtual void Tick(Actor self)
 		{
 			foreach (var a in anims)
 				a.Animation.Animation.Tick();

@@ -583,7 +583,7 @@ namespace OpenRA.Mods.Common.AI
 			return null;
 		}
 
-		public void Tick(Actor self)
+		void ITick.Tick(Actor self)
 		{
 			if (!IsEnabled)
 				return;

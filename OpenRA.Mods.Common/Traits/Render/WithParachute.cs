@@ -148,7 +148,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 				anim.Animation.PlayBackwardsThen(info.OpeningSequence, () => renderProlonged = false);
 		}
 
-		public void Tick(Actor self)
+		void ITick.Tick(Actor self)
 		{
 			if (shadow != null)
 				shadow.Tick();

@@ -65,7 +65,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			FindQueue();
 		}
 
-		public void Tick(Actor self)
+		void ITick.Tick(Actor self)
 		{
 			var current = queue.CurrentItem();
 			value = current != null ? 1 - (float)current.RemainingCost / current.TotalCost : 0;

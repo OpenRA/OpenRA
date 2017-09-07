@@ -153,7 +153,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		public void Tick(Actor self)
+		void ITick.Tick(Actor self)
 		{
 			if (info.Lifetime != 0 && self.IsInWorld && ++ticks >= info.Lifetime * 25)
 				self.Dispose();

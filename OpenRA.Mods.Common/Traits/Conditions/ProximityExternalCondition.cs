@@ -87,7 +87,7 @@ namespace OpenRA.Mods.Common.Traits
 			desiredVRange = WDist.Zero;
 		}
 
-		public void Tick(Actor self)
+		void ITick.Tick(Actor self)
 		{
 			if (self.CenterPosition != cachedPosition || desiredRange != cachedRange || desiredVRange != cachedVRange)
 			{

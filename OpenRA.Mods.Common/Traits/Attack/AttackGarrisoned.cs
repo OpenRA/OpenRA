@@ -199,7 +199,7 @@ namespace OpenRA.Mods.Common.Traits
 					yield return r;
 		}
 
-		public override void Tick(Actor self)
+		protected override void Tick(Actor self)
 		{
 			base.Tick(self);
 

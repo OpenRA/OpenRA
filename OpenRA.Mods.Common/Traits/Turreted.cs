@@ -105,7 +105,12 @@ namespace OpenRA.Mods.Common.Traits
 			body = self.Trait<BodyOrientation>();
 		}
 
-		public virtual void Tick(Actor self)
+		void ITick.Tick(Actor self)
+		{
+			Tick(self);
+		}
+
+		protected virtual void Tick(Actor self)
 		{
 			// NOTE: FaceTarget is called in AttackTurreted.CanAttack if the turret has a target.
 			if (attack != null)

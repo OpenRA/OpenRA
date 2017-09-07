@@ -106,7 +106,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyAttack.PreparingAttack(Actor self, Target target, Armament a, Barrel barrel) { }
 
-		public void Tick(Actor self)
+		void ITick.Tick(Actor self)
 		{
 			if (!Info.SelfReloads)
 				return;

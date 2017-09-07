@@ -29,7 +29,12 @@ namespace OpenRA.Mods.Common.Traits
 		public AttackFollow(Actor self, AttackFollowInfo info)
 			: base(self, info) { }
 
-		public virtual void Tick(Actor self)
+		void ITick.Tick(Actor self)
+		{
+			Tick(self);
+		}
+
+		protected virtual void Tick(Actor self)
 		{
 			if (IsTraitDisabled)
 			{
