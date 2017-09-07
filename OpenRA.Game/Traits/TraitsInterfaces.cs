@@ -179,11 +179,6 @@ namespace OpenRA.Traits
 	public interface IDisabledTrait { bool IsTraitDisabled { get; } }
 	public interface IDisable { bool Disabled { get; } }
 
-	public interface IRadarSignature
-	{
-		IEnumerable<Pair<CPos, Color>> RadarSignatureCells(Actor self);
-	}
-
 	public interface IDefaultVisibilityInfo : ITraitInfoInterface { }
 	public interface IDefaultVisibility { bool IsVisible(Actor self, Player byPlayer); }
 	public interface IVisibilityModifier { bool IsVisible(Actor self, Player byPlayer); }
@@ -193,8 +188,6 @@ namespace OpenRA.Traits
 		bool IsVisible(Actor actor);
 		bool HasFogVisibility();
 	}
-
-	public interface IRadarColorModifier { Color RadarColorOverride(Actor self, Color color); }
 
 	public interface ITargetableCells
 	{
