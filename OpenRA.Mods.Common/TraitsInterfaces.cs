@@ -327,4 +327,19 @@ namespace OpenRA.Mods.Common.Traits
 	}
 
 	public interface IRadarColorModifier { Color RadarColorOverride(Actor self, Color color); }
+
+	public interface IObjectivesPanel
+	{
+		string PanelName { get; }
+		int ExitDelay { get; }
+	}
+
+	public interface INotifyObjectivesUpdated
+	{
+		void OnPlayerWon(Player winner);
+		void OnPlayerLost(Player loser);
+		void OnObjectiveAdded(Player player, int objectiveID);
+		void OnObjectiveCompleted(Player player, int objectiveID);
+		void OnObjectiveFailed(Player player, int objectiveID);
+	}
 }

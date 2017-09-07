@@ -346,21 +346,6 @@ namespace OpenRA.Traits
 		IEnumerable<WPos> TargetablePositions(Actor self);
 	}
 
-	public interface IObjectivesPanel
-	{
-		string PanelName { get; }
-		int ExitDelay { get; }
-	}
-
-	public interface INotifyObjectivesUpdated
-	{
-		void OnPlayerWon(Player winner);
-		void OnPlayerLost(Player loser);
-		void OnObjectiveAdded(Player player, int objectiveID);
-		void OnObjectiveCompleted(Player player, int objectiveID);
-		void OnObjectiveFailed(Player player, int objectiveID);
-	}
-
 	public interface IGameOver { void GameOver(World world); }
 
 	public interface IWarhead
