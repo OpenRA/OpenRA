@@ -1,14 +1,12 @@
 Container@MAINMENU:
 	Logic: MainMenuLogic
 	Children:
-		Container@MUSICBUTTONS:
-			Logic: MusicControllerLogic
+		LogicKeyListener@GLOBAL_KEYHANDLER:
+			Logic: MusicHotkeyLogic
 				StopMusicKey: StopMusic
 				PauseMusicKey: PauseMusic
 				PrevMusicKey: PrevMusic
 				NextMusicKey: NextMusic
-			Children:
-				LogicKeyListener@MUSICCONTROLLER_KEYHANDLER:
 		Label@VERSION_LABEL:
 			X: WINDOW_RIGHT - 10
 			Y: WINDOW_BOTTOM - 20

@@ -559,7 +559,7 @@
     <Compile Include="UtilityCommands\ExtractZeroBraneStudioLuaAPI.cs" />
     <Compile Include="UtilityCommands\ExtractTraitDocsCommand.cs" />
     <Compile Include="UtilityCommands\ExtractWeaponDocsCommand.cs" />
-    <Compile Include="Widgets\Logic\Ingame\MusicControllerLogic.cs" />
+    <Compile Include="Widgets\Logic\MusicHotkeyLogic.cs" />
     <Compile Include="WorldExtensions.cs" />
     <Compile Include="UtilityCommands\GetMapHashCommand.cs" />
     <Compile Include="UtilityCommands\Glob.cs" />
