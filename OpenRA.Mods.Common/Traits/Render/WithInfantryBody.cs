@@ -122,7 +122,12 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		void INotifyAttack.Attacking(Actor self, Target target, Armament a, Barrel barrel) { }
 
-		public virtual void Tick(Actor self)
+		void ITick.Tick(Actor self)
+		{
+			Tick(self);
+		}
+
+		protected virtual void Tick(Actor self)
 		{
 			if (rsm != null)
 			{
@@ -147,7 +152,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			dirty = false;
 		}
 
-		public void TickIdle(Actor self)
+		void INotifyIdle.TickIdle(Actor self)
 		{
 			if (state != AnimationState.Idle && state != AnimationState.IdleAnimating && state != AnimationState.Attacking)
 			{
