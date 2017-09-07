@@ -82,6 +82,9 @@ namespace OpenRA.Mods.Common.Traits
 	[RequireExplicitImplementation]
 	public interface INotifyDamageStateChanged { void DamageStateChanged(Actor self, AttackInfo e); }
 
+	public interface INotifyDamage { void Damaged(Actor self, AttackInfo e); }
+	public interface INotifyKilled { void Killed(Actor self, AttackInfo e); }
+	public interface INotifyAppliedDamage { void AppliedDamage(Actor self, Actor damaged, AttackInfo e); }
 	public interface INotifyBuildingPlaced { void BuildingPlaced(Actor self); }
 	public interface INotifyRepair { void Repairing(Actor self, Actor target); }
 	public interface INotifyNuke { void Launching(Actor self); }
@@ -96,6 +99,9 @@ namespace OpenRA.Mods.Common.Traits
 	public interface INotifyDiscovered { void OnDiscovered(Actor self, Player discoverer, bool playNotification); }
 	public interface IRenderActorPreviewInfo : ITraitInfo { IEnumerable<IActorPreview> RenderPreview(ActorPreviewInitializer init); }
 	public interface ICruiseAltitudeInfo : ITraitInfo { WDist GetCruiseAltitude(); }
+
+	public interface IExplodeModifier { bool ShouldExplode(Actor self); }
+	public interface IHuskModifier { string HuskActor(Actor self); }
 
 	[RequireExplicitImplementation]
 	public interface INotifyInfiltrated { void Infiltrated(Actor self, Actor infiltrator); }
