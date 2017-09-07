@@ -98,7 +98,7 @@ namespace OpenRA.Mods.Common.Traits
 			TurretFacing = TurretFacingFromInit(init, info.InitialFacing, info.Turret)();
 		}
 
-		public void Created(Actor self)
+		void INotifyCreated.Created(Actor self)
 		{
 			attack = self.TraitOrDefault<AttackTurreted>();
 			facing = self.TraitOrDefault<IFacing>();

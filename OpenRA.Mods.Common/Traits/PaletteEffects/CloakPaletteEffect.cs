@@ -29,7 +29,7 @@ namespace OpenRA.Mods.Common.Traits
 			Color.FromArgb(178, 205, 250, 220),
 		};
 
-		public void AdjustPalette(IReadOnlyDictionary<string, MutablePalette> b)
+		void IPaletteModifier.AdjustPalette(IReadOnlyDictionary<string, MutablePalette> b)
 		{
 			var i = (int)t;
 			var p = b[paletteName];
