@@ -10,11 +10,15 @@ Container@INGAME_ROOT:
 				TakeScreenshotKey: TakeScreenshot
 				MuteAudioKey: ToggleMute
 		LogicKeyListener@WORLD_KEYHANDLER:
-			Logic: CycleBasesHotkeyLogic, CycleProductionActorsHotkeyLogic, JumpToLastEventHotkeyLogic, JumpToSelectedActorsHotkeyLogic
+			Logic: CycleBasesHotkeyLogic, CycleProductionActorsHotkeyLogic, JumpToLastEventHotkeyLogic, JumpToSelectedActorsHotkeyLogic, TogglePixelDoubleHotkeyLogic, TogglePlayerStanceColorHotkeyLogic, CycleStatusBarsHotkeyLogic, PauseHotkeyLogic
 				CycleBasesKey: CycleBase
 				CycleProductionActorsKey: CycleProductionBuildings
 				JumpToLastEventKey: ToLastEvent
 				JumpToSelectedActorsKey: ToSelection
+				TogglePixelDoubleKey: TogglePixelDouble
+				TogglePlayerStanceColorKey: TogglePlayerStanceColor
+				CycleStatusBarsKey: CycleStatusBars
+				PauseKey: Pause
 		Container@WORLD_ROOT:
 			Logic: LoadIngamePerfLogic
 			Children:
