@@ -229,7 +229,12 @@ namespace OpenRA.Mods.Common.Traits
 			return ps.Buildable || developerMode.AllTech;
 		}
 
-		public virtual void Tick(Actor self)
+		void ITick.Tick(Actor self)
+		{
+			Tick(self);
+		}
+
+		protected virtual void Tick(Actor self)
 		{
 			while (queue.Count > 0 && BuildableItems().All(b => b.Name != queue[0].Item))
 			{

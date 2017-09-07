@@ -53,7 +53,7 @@ namespace OpenRA.Mods.Common.Traits
 				remainingFrames = ticks;
 		}
 
-		public void Tick(Actor self)
+		void ITick.Tick(Actor self)
 		{
 			if (remainingFrames > 0)
 				remainingFrames--;

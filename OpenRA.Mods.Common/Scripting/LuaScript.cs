@@ -43,7 +43,7 @@ namespace OpenRA.Mods.Common.Scripting
 			context.WorldLoaded();
 		}
 
-		public void Tick(Actor self)
+		void ITick.Tick(Actor self)
 		{
 			context.Tick(self);
 		}

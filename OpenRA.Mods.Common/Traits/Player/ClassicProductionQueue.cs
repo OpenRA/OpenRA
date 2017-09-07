@@ -47,7 +47,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		[Sync] bool isActive = false;
 
-		public override void Tick(Actor self)
+		protected override void Tick(Actor self)
 		{
 			// PERF: Avoid LINQ.
 			isActive = false;

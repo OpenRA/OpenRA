@@ -104,7 +104,7 @@ namespace OpenRA.Mods.Common.Traits
 			return info.AlwaysVisibleStances.HasStance(stance) || IsVisibleInner(self, byPlayer);
 		}
 
-		public void Tick(Actor self)
+		void ITick.Tick(Actor self)
 		{
 			if (self.Disposed)
 				return;

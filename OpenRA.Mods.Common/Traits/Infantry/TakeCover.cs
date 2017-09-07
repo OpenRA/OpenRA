@@ -65,7 +65,7 @@ namespace OpenRA.Mods.Common.Traits
 			remainingProneTime = info.ProneTime;
 		}
 
-		public override void Tick(Actor self)
+		protected override void Tick(Actor self)
 		{
 			base.Tick(self);
 

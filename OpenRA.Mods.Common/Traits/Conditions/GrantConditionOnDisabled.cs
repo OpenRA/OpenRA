@@ -45,7 +45,12 @@ namespace OpenRA.Mods.Common.Traits
 			Tick(self);
 		}
 
-		public void Tick(Actor self)
+		void ITick.Tick(Actor self)
+		{
+			Tick(self);
+		}
+
+		protected void Tick(Actor self)
 		{
 			if (conditionManager == null)
 				return;

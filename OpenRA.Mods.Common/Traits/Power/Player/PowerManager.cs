@@ -90,7 +90,7 @@ namespace OpenRA.Mods.Common.Traits
 		bool wasLowPower = false;
 		bool wasHackEnabled;
 
-		public void Tick(Actor self)
+		void ITick.Tick(Actor self)
 		{
 			if (wasHackEnabled != devMode.UnlimitedPower)
 			{

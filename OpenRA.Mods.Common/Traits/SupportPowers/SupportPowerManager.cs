@@ -96,7 +96,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		public void Tick(Actor self)
+		void ITick.Tick(Actor self)
 		{
 			foreach (var power in Powers.Values)
 				power.Tick();
