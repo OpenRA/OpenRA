@@ -237,7 +237,7 @@ namespace OpenRA
 
 		public Hotkey CycleStatusBarsKey = new Hotkey(Keycode.COMMA, Modifiers.None);
 		public Hotkey TogglePixelDoubleKey = new Hotkey(Keycode.PERIOD, Modifiers.None);
-		public Hotkey TogglePlayerStanceColorsKey = new Hotkey(Keycode.COMMA, Modifiers.Ctrl);
+		public Hotkey TogglePlayerStanceColorKey = new Hotkey(Keycode.COMMA, Modifiers.Ctrl);
 
 		public Hotkey TakeScreenshotKey = new Hotkey(Keycode.P, Modifiers.Ctrl);
 		public Hotkey ToggleMuteKey = new Hotkey(Keycode.M, Modifiers.None);

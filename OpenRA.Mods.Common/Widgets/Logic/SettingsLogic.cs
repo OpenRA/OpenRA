@@ -448,7 +448,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					{ "CycleStatusBarsKey", "Cycle status bars display" },
 					{ "TogglePixelDoubleKey", "Toggle pixel doubling" },
 					{ "ToggleMuteKey", "Toggle audio mute" },
-					{ "TogglePlayerStanceColorsKey", "Toggle player stance colors" },
+					{ "TogglePlayerStanceColorKey", "Toggle player stance colors" },
 					{ "TakeScreenshotKey", "Take screenshot" }
 				};
 
