@@ -85,14 +85,6 @@ namespace OpenRA.Mods.Cnc.Traits
 			cursorBlocked = cursor + "-blocked";
 		}
 
-		Actor GetFiringActor(World world, CPos cell)
-		{
-			var pos = world.Map.CenterOfCell(cell);
-			var range = attack.GetMaximumRange().LengthSquared;
-
-			return instance.Instances.Where(i => !i.IsTraitPaused).MinByOrDefault(a => (a.Self.CenterPosition - pos).HorizontalLengthSquared).Self;
-		}
-
 		bool IsValidTarget(World world, CPos cell)
 		{
 			var pos = world.Map.CenterOfCell(cell);
@@ -107,7 +99,6 @@ namespace OpenRA.Mods.Cnc.Traits
 			if (mi.Button == expectedButton && IsValidTarget(world, cell))
 				yield return new Order(order, manager.Self, false)
 				{
-					TargetActor = GetFiringActor(world, cell),
 					TargetLocation = cell,
 					SuppressVisualFeedback = true
 				};
