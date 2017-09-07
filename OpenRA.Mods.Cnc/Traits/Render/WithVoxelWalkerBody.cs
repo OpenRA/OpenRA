@@ -77,7 +77,7 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 			size = new int2(s, s);
 		}
 
-		public int2 SelectionSize(Actor self) { return size; }
+		int2 IAutoSelectionSize.SelectionSize(Actor self) { return size; }
 
 		void ITick.Tick(Actor self)
 		{

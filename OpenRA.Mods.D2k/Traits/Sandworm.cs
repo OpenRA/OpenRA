@@ -46,6 +46,7 @@ namespace OpenRA.Mods.D2k.Traits
 		public bool IsAttacking;
 
 		int targetCountdown;
+		bool disposed;
 
 		public Sandworm(Actor self, SandwormInfo info)
 			: base(self, info)
@@ -134,8 +135,7 @@ namespace OpenRA.Mods.D2k.Traits
 			IsMovingTowardTarget = true;
 		}
 
-		bool disposed;
-		public void Disposing(Actor self)
+		void INotifyActorDisposing.Disposing(Actor self)
 		{
 			if (disposed)
 				return;

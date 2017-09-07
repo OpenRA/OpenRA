@@ -105,7 +105,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			}
 		}
 
-		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
+		Order IIssueOrder.IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
 		{
 			if (order.OrderID != "DetonateAttack" && order.OrderID != "Detonate")
 				return null;
@@ -121,7 +121,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			return new Order("Detonate", self, false);
 		}
 
-		public string VoicePhraseForOrder(Actor self, Order order)
+		string IOrderVoice.VoicePhraseForOrder(Actor self, Order order)
 		{
 			return info.Voice;
 		}
@@ -170,7 +170,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			self.QueueActivity(new CallFunc(Detonate));
 		}
 
-		public void ResolveOrder(Actor self, Order order)
+		void IResolveOrder.ResolveOrder(Actor self, Order order)
 		{
 			if (order.OrderString == "DetonateAttack")
 			{

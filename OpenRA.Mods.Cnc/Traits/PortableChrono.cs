@@ -103,7 +103,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			}
 		}
 
-		public string VoicePhraseForOrder(Actor self, Order order)
+		string IOrderVoice.VoicePhraseForOrder(Actor self, Order order)
 		{
 			return order.OrderString == "PortableChronoTeleport" && CanTeleport ? Info.Voice : null;
 		}
