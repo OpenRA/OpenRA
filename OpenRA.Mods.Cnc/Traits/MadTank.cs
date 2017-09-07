@@ -78,7 +78,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			screenShaker = self.World.WorldActor.Trait<ScreenShaker>();
 		}
 
-		public void Tick(Actor self)
+		void ITick.Tick(Actor self)
 		{
 			if (!deployed)
 				return;

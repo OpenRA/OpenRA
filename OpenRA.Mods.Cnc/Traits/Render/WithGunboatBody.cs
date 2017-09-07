@@ -62,7 +62,7 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 			rs.Add(new AnimationWithOffset(wake, null, null, -87));
 		}
 
-		public void Tick(Actor self)
+		void ITick.Tick(Actor self)
 		{
 			if (facing.Facing <= 128)
 			{

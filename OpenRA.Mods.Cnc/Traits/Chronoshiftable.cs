@@ -61,7 +61,7 @@ namespace OpenRA.Mods.Cnc.Traits
 				chronosphere = init.Get<ChronoshiftChronosphereInit, Actor>();
 		}
 
-		public void Tick(Actor self)
+		void ITick.Tick(Actor self)
 		{
 			if (!info.ReturnToOrigin || ReturnTicks <= 0)
 				return;

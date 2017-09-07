@@ -79,7 +79,7 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 
 		public int2 SelectionSize(Actor self) { return size; }
 
-		public void Tick(Actor self)
+		void ITick.Tick(Actor self)
 		{
 			if (movement.IsMoving || facing.Facing != oldFacing)
 				tick++;
