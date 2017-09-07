@@ -104,6 +104,8 @@ namespace OpenRA.Mods.Common.Traits
 	public interface IExplodeModifier { bool ShouldExplode(Actor self); }
 	public interface IHuskModifier { string HuskActor(Actor self); }
 
+	public interface ISeedableResource { void Seed(Actor self); }
+
 	[RequireExplicitImplementation]
 	public interface INotifyInfiltrated { void Infiltrated(Actor self, Actor infiltrator); }
 
