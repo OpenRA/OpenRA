@@ -10,6 +10,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Drawing;
 using OpenRA.Activities;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Activities;
@@ -319,4 +320,11 @@ namespace OpenRA.Mods.Common.Traits
 		bool IsMovingVertically { get; set; }
 		bool CanEnterTargetNow(Actor self, Target target);
 	}
+
+	public interface IRadarSignature
+	{
+		IEnumerable<Pair<CPos, Color>> RadarSignatureCells(Actor self);
+	}
+
+	public interface IRadarColorModifier { Color RadarColorOverride(Actor self, Color color); }
 }
