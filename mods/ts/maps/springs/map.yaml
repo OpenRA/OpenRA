@@ -852,6 +852,27 @@ Actors:
 	Actor235: tuntop02
 		Owner: Neutral
 		Location: 88,13
+	Actor246: bigblue
+		Owner: Neutral
+		Location: 98,-14
+	Actor248: bigblue
+		Owner: Neutral
+		Location: 83,36
+	Actor243: bigblue
+		Owner: Neutral
+		Location: 95,22
+	Actor242: bigblue
+		Owner: Neutral
+		Location: 61,2
+	Actor241: bigblue
+		Owner: Neutral
+		Location: 41,-10
+	Actor244: bigblue
+		Owner: Neutral
+		Location: 69,-40
+	Actor245: bigblue
+		Owner: Neutral
+		Location: 117,1
 
 Rules:
 	World:
