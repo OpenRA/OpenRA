@@ -78,7 +78,7 @@ namespace OpenRA.Mods.Common.Traits
 				assaultMoveToken = conditionManager.RevokeCondition(self, assaultMoveToken);
 		}
 
-		public string VoicePhraseForOrder(Actor self, Order order)
+		string IOrderVoice.VoicePhraseForOrder(Actor self, Order order)
 		{
 			if (order.OrderString == "AttackMove" || order.OrderString == "AssaultMove")
 				return info.Voice;

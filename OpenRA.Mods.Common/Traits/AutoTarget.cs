@@ -145,13 +145,13 @@ namespace OpenRA.Mods.Common.Traits
 			ApplyStanceCondition(self);
 		}
 
-		public void ResolveOrder(Actor self, Order order)
+		void IResolveOrder.ResolveOrder(Actor self, Order order)
 		{
 			if (order.OrderString == "SetUnitStance" && Info.EnableStances)
 				SetStance(self, (UnitStance)order.ExtraData);
 		}
 
-		public void Damaged(Actor self, AttackInfo e)
+		void INotifyDamage.Damaged(Actor self, AttackInfo e)
 		{
 			if (IsTraitDisabled || !self.IsIdle || Stance < UnitStance.ReturnFire)
 				return;
@@ -210,7 +210,7 @@ namespace OpenRA.Mods.Common.Traits
 			return true;
 		}
 
-		public void Tick(Actor self)
+		void ITick.Tick(Actor self)
 		{
 			if (IsTraitDisabled)
 				return;
