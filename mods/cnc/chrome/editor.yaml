@@ -5,14 +5,6 @@ Container@NEW_MAP_BG:
 	Width: 300
 	Height: 125
 	Children:
-		Container@MUSICBUTTONS:
-			Logic: MusicControllerLogic
-				StopMusicKey: StopMusic
-				PauseMusicKey: PauseMusic
-				PrevMusicKey: PrevMusic
-				NextMusicKey: NextMusic
-			Children:
-				LogicKeyListener@MUSICCONTROLLER_KEYHANDLER:
 		Label@TITLE:
 			Text: New Map
 			Width: PARENT_RIGHT
@@ -199,6 +191,12 @@ ScrollPanel@MAP_SAVE_VISIBILITY_PANEL:
 Container@EDITOR_ROOT:
 	Logic: LoadMapEditorLogic
 	Children:
+		LogicKeyListener@GLOBAL_KEYHANDLER:
+			Logic: MusicHotkeyLogic
+				StopMusicKey: StopMusic
+				PauseMusicKey: PauseMusic
+				PrevMusicKey: PrevMusic
+				NextMusicKey: NextMusic
 		Container@WORLD_ROOT:
 		Container@MENU_ROOT:
 		TooltipContainer@TOOLTIP_CONTAINER:

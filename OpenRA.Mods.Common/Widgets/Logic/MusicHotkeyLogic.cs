@@ -10,22 +10,19 @@
 #endregion
 
 using System.Collections.Generic;
-using System.Linq;
-using OpenRA.GameRules;
-using OpenRA.Graphics;
 using OpenRA.Mods.Common.Lint;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Widgets;
 
-namespace OpenRA.Mods.Common.Widgets.Logic.Ingame
+namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	[ChromeLogicArgsHotkeys("StopMusicKey", "PauseMusicKey", "PrevMusicKey", "NextMusicKey")]
-	public class MusicControllerLogic : ChromeLogic
+	public class MusicHotkeyLogic : ChromeLogic
 	{
 		readonly MusicPlaylist musicPlaylist;
 
 		[ObjectCreator.UseCtor]
-		public MusicControllerLogic(Widget widget, World world, Dictionary<string, MiniYaml> logicArgs)
+		public MusicHotkeyLogic(Widget widget, World world, Dictionary<string, MiniYaml> logicArgs)
 		{
 			musicPlaylist = world.WorldActor.Trait<MusicPlaylist>();
 
@@ -48,8 +45,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic.Ingame
 			if (logicArgs.TryGetValue("NextMusicKey", out yaml))
 				nextKey = new NamedHotkey(yaml.Value, ks);
 
-			var keyhandler = widget.Get<LogicKeyListenerWidget>("MUSICCONTROLLER_KEYHANDLER");
-			keyhandler.OnKeyPress = e =>
+			var keyhandler = widget.Get<LogicKeyListenerWidget>("GLOBAL_KEYHANDLER");
+			keyhandler.OnKeyPress += e =>
 			{
 				if (e.Event == KeyInputEvent.Down)
 				{
