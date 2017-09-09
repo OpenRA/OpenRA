@@ -19,6 +19,9 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Actor will follow units until in range to attack them.")]
 	public class AttackFollowInfo : AttackBaseInfo
 	{
+		[Desc("Rescanning detects changes in the targets Targetable traits but has a performance hit.")]
+		public readonly bool RescanWhileNotMoving = false;
+
 		public override object Create(ActorInitializer init) { return new AttackFollow(init.Self, this); }
 	}
 
@@ -43,7 +46,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public override Activity GetAttackActivity(Actor self, Target newTarget, bool allowMove, bool forceAttack)
 		{
-			return new AttackActivity(self, newTarget, allowMove, forceAttack);
+			return new AttackActivity(self, newTarget, allowMove, forceAttack, ((AttackFollowInfo)Info).RescanWhileNotMoving);
 		}
 
 		protected override void OnStopOrder(Actor self)
@@ -63,15 +66,17 @@ namespace OpenRA.Mods.Common.Traits
 			readonly IMove move;
 			readonly Target target;
 			readonly bool forceAttack;
+			readonly bool rescanWhileNotMoving;
 			bool hasTicked;
 
-			public AttackActivity(Actor self, Target target, bool allowMove, bool forceAttack)
+			public AttackActivity(Actor self, Target target, bool allowMove, bool forceAttack, bool rescanWhileNotMoving)
 			{
 				attack = self.Trait<AttackFollow>();
 				move = allowMove ? self.TraitOrDefault<IMove>() : null;
 
 				this.target = target;
 				this.forceAttack = forceAttack;
+				this.rescanWhileNotMoving = rescanWhileNotMoving;
 			}
 
 			public override Activity Tick(Actor self)
@@ -102,7 +107,13 @@ namespace OpenRA.Mods.Common.Traits
 					hasTicked = true;
 
 					if (move != null)
-						return ActivityUtils.SequenceActivities(move.MoveFollow(self, target, weapon.Weapon.MinRange, maxRange), this);
+					{
+						var followActivity = rescanWhileNotMoving
+							? move.MoveWithinRange(target, weapon.Weapon.MinRange, maxRange)
+							: move.MoveFollow(self, target, weapon.Weapon.MinRange, maxRange);
+						return ActivityUtils.SequenceActivities(followActivity, this);
+					}
+
 					if (target.IsInRange(self.CenterPosition, weapon.MaxRange()) &&
 						!target.IsInRange(self.CenterPosition, weapon.Weapon.MinRange))
 						return this;
