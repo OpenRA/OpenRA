@@ -218,8 +218,8 @@ Cursors:
 			Start: 4
 			Length: 4
 		assaultmove:
-			Start: 0
+			Start: 8
 			Length: 4
 		assaultmove-minimap:
-			Start: 4
+			Start: 12
 			Length: 4
