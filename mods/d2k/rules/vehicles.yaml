@@ -100,7 +100,7 @@ harvester:
 
 trike:
 	Inherits: ^Vehicle
-	Inherits@AUTOTARGET: ^AutoTargetGround
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 10
@@ -140,7 +140,7 @@ trike:
 
 quad:
 	Inherits: ^Vehicle
-	Inherits@AUTOTARGET: ^AutoTargetGround
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Buildable:
 		Queue: Vehicle
 		Prerequisites: upgrade.light, ~techlevel.medium
@@ -175,7 +175,7 @@ quad:
 
 siege_tank:
 	Inherits: ^Tank
-	Inherits@AUTOTARGET: ^AutoTargetGround
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Buildable:
 		Queue: Armor
 		Prerequisites: upgrade.heavy, ~techlevel.medium
@@ -222,7 +222,7 @@ siege_tank:
 
 missile_tank:
 	Inherits: ^Tank
-	Inherits@AUTOTARGET: ^AutoTargetAll
+	Inherits@AUTOTARGET: ^AutoTargetAllAssaultMove
 	Tooltip:
 		Name: Missile Tank
 	Buildable:
@@ -261,7 +261,7 @@ missile_tank:
 
 sonic_tank:
 	Inherits: ^Vehicle
-	Inherits@AUTOTARGET: ^AutoTargetGround
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Buildable:
 		Queue: Armor
 		BuildPaletteOrder: 100
@@ -296,7 +296,7 @@ sonic_tank:
 
 devastator:
 	Inherits: ^Tank
-	Inherits@AUTOTARGET: ^AutoTargetGround
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Buildable:
 		Queue: Armor
 		BuildPaletteOrder: 100
@@ -341,7 +341,7 @@ devastator:
 
 raider:
 	Inherits: ^Vehicle
-	Inherits@AUTOTARGET: ^AutoTargetGround
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 10
@@ -405,7 +405,7 @@ stealth_raider:
 
 deviator:
 	Inherits: ^Tank
-	Inherits@AUTOTARGET: ^AutoTargetGround
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Valued:
 		Cost: 1000
 	Tooltip:
@@ -442,7 +442,7 @@ deviator:
 
 ^combat_tank:
 	Inherits: ^Tank
-	Inherits@AUTOTARGET: ^AutoTargetGround
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Buildable:
 		Queue: Armor
 		BuildPaletteOrder: 40

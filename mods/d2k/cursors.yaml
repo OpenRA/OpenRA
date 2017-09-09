@@ -128,26 +128,6 @@ Cursors:
 			Length: 8
 			X: 24
 			Y: 24
-		attackmove:
-			Start: 16
-			Length: 8
-			X: 24
-			Y: 24
-		attackmove-minimap:
-			Start: 16
-			Length: 8
-			X: 24
-			Y: 24
-		assaultmove:
-			Start: 16
-			Length: 8
-			X: 24
-			Y: 24
-		assaultmove-minimap:
-			Start: 16
-			Length: 8
-			X: 24
-			Y: 24
 		harvest:
 			Start: 16
 			Length: 8
@@ -315,3 +295,25 @@ Cursors:
 			Length: 3
 			X: 12
 			Y: 12
+	attackmove.shp: mouse
+		attackmove:
+			Start: 0
+			Length: 8
+			X: -2
+			Y: -2
+		attackmove-minimap:
+			Start: 0
+			Length: 8
+			X: -2
+			Y: -2
+	assaultmove.shp: mouse
+		assaultmove:
+			Start: 0
+			Length: 8
+			X: -2
+			Y: -2
+		assaultmove-minimap:
+			Start: 0
+			Length: 8
+			X: -2
+			Y: -2
