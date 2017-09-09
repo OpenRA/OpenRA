@@ -56,8 +56,8 @@ namespace OpenRA.Mods.AS.Traits
 	{
 		readonly AIDeployHelperInfo info;
 
+		GrantConditionOnDeploy gcod;
 		[Sync] int undeployTicks, deployTicks;
-		bool undeployable;
 
 		public AIDeployHelper(AIDeployHelperInfo info)
 		{
@@ -66,7 +66,7 @@ namespace OpenRA.Mods.AS.Traits
 
 		void INotifyCreated.Created(Actor self)
 		{
-			undeployable = self.Info.HasTraitInfo<GrantConditionOnDeployInfo>();
+			gcod = self.TraitOrDefault<GrantConditionOnDeploy>();
 		}
 
 		void TryDeploy(Actor self)
@@ -97,7 +97,7 @@ namespace OpenRA.Mods.AS.Traits
 			self.World.IssueOrder(new Order("Detonate", self, false));
 			self.World.IssueOrder(new Order("GrantConditionOnDeploy", self, false));
 
-			if (undeployable)
+			if (gcod != null) // can undeploy
 				undeployTicks = info.UndeployTicks;
 
 			deployTicks = info.DeployTicks;
@@ -105,6 +105,9 @@ namespace OpenRA.Mods.AS.Traits
 
 		void Undeploy(Actor self)
 		{
+			if (gcod == null)
+				throw new InvalidOperationException("Invalid actor undeploy: " + self.ToString());
+
 			self.World.IssueOrder(new Order("GrantConditionOnDeploy", self, false));
 		}
 
@@ -124,15 +127,10 @@ namespace OpenRA.Mods.AS.Traits
 			if (!self.Owner.IsBot)
 				return;
 
-			if (undeployable && undeployTicks > 0)
-			{
-				undeployTicks--;
-				if (undeployTicks <= 0)
-					Undeploy(self);
-			}
-
 			if (deployTicks > 0)
 				deployTicks--;
+			else if (gcod != null && gcod.DeployState == DeployState.Deployed)
+				Undeploy(self);
 		}
 
 		void INotifyDamage.Damaged(Actor self, AttackInfo e)
