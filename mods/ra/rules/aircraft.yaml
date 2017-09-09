@@ -81,7 +81,7 @@ BADR.Bomber:
 
 MIG:
 	Inherits: ^Plane
-	Inherits@AUTOTARGET: ^AutoTargetGround
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Buildable:
 		Queue: Aircraft
 		BuildAtProductionType: Plane
@@ -141,7 +141,7 @@ MIG:
 
 YAK:
 	Inherits: ^Plane
-	Inherits@AUTOTARGET: ^AutoTargetGround
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Buildable:
 		Queue: Aircraft
 		BuildAtProductionType: Plane
@@ -258,7 +258,7 @@ TRAN:
 
 HELI:
 	Inherits: ^Helicopter
-	Inherits@AUTOTARGET: ^AutoTargetAll
+	Inherits@AUTOTARGET: ^AutoTargetAllAssaultMove
 	Buildable:
 		Queue: Aircraft
 		BuildAtProductionType: Helicopter
@@ -318,7 +318,7 @@ HELI:
 
 HIND:
 	Inherits: ^Helicopter
-	Inherits@AUTOTARGET: ^AutoTargetGround
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Buildable:
 		Queue: Aircraft
 		BuildAtProductionType: Helicopter
