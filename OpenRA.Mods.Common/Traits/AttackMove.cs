@@ -9,8 +9,11 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using OpenRA.Mods.Common.Activities;
+using OpenRA.Orders;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -109,6 +112,56 @@ namespace OpenRA.Mods.Common.Traits
 				self.SetTargetLine(Target.FromCell(self.World, TargetLocation.Value), Color.Red);
 				Activate(self, order.OrderString == "AssaultMove");
 			}
+		}
+	}
+
+	public class AttackMoveOrderGenerator : UnitOrderGenerator
+	{
+		readonly TraitPair<AttackMove>[] subjects;
+		readonly MouseButton expectedButton;
+
+		public AttackMoveOrderGenerator(IEnumerable<Actor> subjects, MouseButton button)
+		{
+			expectedButton = button;
+
+			this.subjects = subjects.SelectMany(a => a.TraitsImplementing<AttackMove>()
+					.Select(am => new TraitPair<AttackMove>(a, am)))
+				.ToArray();
+		}
+
+		public override IEnumerable<Order> Order(World world, CPos cell, int2 worldPixel, MouseInput mi)
+		{
+			if (mi.Button != expectedButton)
+				world.CancelInputMode();
+
+			return OrderInner(world, cell, mi);
+		}
+
+		protected virtual IEnumerable<Order> OrderInner(World world, CPos cell, MouseInput mi)
+		{
+			if (mi.Button == expectedButton && world.Map.Contains(cell))
+			{
+				world.CancelInputMode();
+
+				var queued = mi.Modifiers.HasModifier(Modifiers.Shift);
+				var orderName = mi.Modifiers.HasModifier(Modifiers.Ctrl) ? "AssaultMove" : "AttackMove";
+				foreach (var s in subjects)
+					yield return new Order(orderName, s.Actor, queued) { TargetLocation = cell };
+			}
+		}
+
+		public override string GetCursor(World world, CPos cell, int2 worldPixel, MouseInput mi)
+		{
+			if (world.Map.Contains(cell))
+				return mi.Modifiers.HasModifier(Modifiers.Ctrl) ? "assaultmove" : "attackmove";
+
+			return "generic-blocked";
+		}
+
+		public override bool InputOverridesSelection(World world, int2 xy, MouseInput mi)
+		{
+			// Custom order generators always override selection
+			return true;
 		}
 	}
 }
