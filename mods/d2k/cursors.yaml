@@ -138,6 +138,16 @@ Cursors:
 			Length: 8
 			X: 24
 			Y: 24
+		assaultmove:
+			Start: 16
+			Length: 8
+			X: 24
+			Y: 24
+		assaultmove-minimap:
+			Start: 16
+			Length: 8
+			X: 24
+			Y: 24
 		harvest:
 			Start: 16
 			Length: 8

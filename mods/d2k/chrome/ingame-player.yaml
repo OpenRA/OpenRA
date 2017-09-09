@@ -30,6 +30,7 @@ Container@PLAYER_WIDGETS:
 			Width: 275
 			Height: 41
 			Children:
+				LogicKeyListener@MODIFIER_OVERRIDES:
 				Button@ATTACK_MOVE:
 					Width: 34
 					Height: 41
