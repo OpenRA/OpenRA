@@ -167,12 +167,6 @@ Cursors:
 		attackmove-minimap:
 			Start: 20
 			Length: 4
-		assaultmove:
-			Start: 12
-			Length: 8
-		assaultmove-minimap:
-			Start: 20
-			Length: 4
 		move-blocked:
 			Start: 24
 			Length: 1
@@ -223,3 +217,10 @@ Cursors:
 			Length: 8
 		attackoutsiderange-minimap:
 			Start: 8
+	mouse8.shp: cursor
+		assaultmove:
+			Start: 0
+			Length: 8
+		assaultmove-minimap:
+			Start: 8
+			Length: 4
