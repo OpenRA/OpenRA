@@ -35,6 +35,8 @@ E7.noautotarget:
 	-AutoTarget:
 	-AutoTargetPriority@DEFAULT:
 	-AutoTargetPriority@ATTACKANYTHING:
+	AttackMove:
+		-AssaultMoveScanCondition:
 	RenderSprites:
 		Image: E7
 
