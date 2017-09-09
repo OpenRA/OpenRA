@@ -37,6 +37,7 @@ UNITCRATE:
 		Units: e3
 
 APC:
+	Inherits@AUTOTARGET: ^AutoTargetAll
 	Health:
 		HP: 1000
 	MustBeDestroyed:
