@@ -127,8 +127,8 @@ namespace OpenRA.Mods.AS.Traits
 			if (!self.Owner.IsBot)
 				return;
 
-			if (deployTicks > 0)
-				deployTicks--;
+			if (undeployTicks > 0)
+				undeployTicks--;
 			else if (gcod != null && gcod.DeployState == DeployState.Deployed)
 				Undeploy(self);
 		}
