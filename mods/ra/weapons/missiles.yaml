@@ -235,6 +235,8 @@ TorpTube:
 		RangeLimit: 10c819
 		BoundToTerrainType: Water
 		Palette: shadow
+		MaximumLaunchAngle: 0
+		CruiseAltitude: 0
 	Warhead@1Dam: SpreadDamage
 		Spread: 426
 		Damage: 180
@@ -247,13 +249,9 @@ TorpTube:
 			Concrete: 500
 		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
 	Warhead@3Eff: CreateEffect
-		Explosions: large_explosion
-		ImpactSounds: kaboom15.aud
-		InvalidTargets: Water
-	Warhead@5EffWaterHit: CreateEffect
 		Explosions: artillery_explosion
 		ImpactSounds: kaboom15.aud
-		ValidTargets: Ship, Structure, Underwater
+		ValidTargets: Ship, Structure, Underwater, Ground, Bridge
 	Warhead@4EffWater: CreateEffect
 		Explosions: large_splash
 		ImpactSounds: splash9.aud
