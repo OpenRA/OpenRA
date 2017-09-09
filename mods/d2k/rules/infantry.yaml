@@ -1,6 +1,6 @@
 light_inf:
 	Inherits: ^Infantry
-	Inherits@AUTOTARGET: ^AutoTargetGround
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 10
@@ -50,7 +50,7 @@ engineer:
 
 trooper:
 	Inherits: ^Infantry
-	Inherits@AUTOTARGET: ^AutoTargetGround
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 20
@@ -124,7 +124,7 @@ thumper:
 
 fremen:
 	Inherits: ^Infantry
-	Inherits@AUTOTARGET: ^AutoTargetGround
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Tooltip:
 		Name: Fremen
 	Buildable:
@@ -166,7 +166,7 @@ fremen:
 
 grenadier:
 	Inherits: ^Infantry
-	Inherits@AUTOTARGET: ^AutoTargetGround
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 80
@@ -197,7 +197,7 @@ grenadier:
 
 sardaukar:
 	Inherits: ^Infantry
-	Inherits@AUTOTARGET: ^AutoTargetGround
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 80
