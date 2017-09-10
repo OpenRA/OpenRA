@@ -42,12 +42,15 @@ DOGGIE:
 		TerrainTypes: Tiberium, BlueTiberium
 	GrantConditionOnMovement:
 		Condition: moving
+	GrantConditionOnAttack:
+		ArmamentNames: primary
+		Condition: attacking
 	WithSpriteBody:
-		RequiresCondition: hidingplace && !moving
+		RequiresCondition: hidingplace && !moving && !attacking
 		StartSequence: laydown
 		Sequence: hide
 	WithInfantryBody:
-		RequiresCondition: !hidingplace || moving
+		RequiresCondition: !hidingplace || moving || attacking
 
 VISC_SML:
 	Inherits: ^Visceroid
