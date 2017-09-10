@@ -1,6 +1,6 @@
 DPOD:
 	Inherits: ^Helicopter
-	Inherits@AUTOTARGET: ^AutoTargetGround
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Valued:
 		Cost: 10
 	Tooltip:
@@ -65,7 +65,7 @@ DSHP:
 ORCA:
 	Inherits: ^Helicopter
 	Inherits@EXPERIENCE: ^GainsExperience
-	Inherits@AUTOTARGET: ^AutoTargetGround
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Valued:
 		Cost: 1000
 	Tooltip:
@@ -107,7 +107,7 @@ ORCA:
 ORCAB:
 	Inherits: ^Aircraft
 	Inherits@EXPERIENCE: ^GainsExperience
-	Inherits@AUTOTARGET: ^AutoTargetGround
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Valued:
 		Cost: 1600
 	Tooltip:
@@ -230,7 +230,7 @@ TRNSPORT:
 SCRIN:
 	Inherits: ^Aircraft
 	Inherits@EXPERIENCE: ^GainsExperience
-	Inherits@AUTOTARGET: ^AutoTargetGround
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Valued:
 		Cost: 1500
 	Tooltip:
@@ -280,7 +280,7 @@ SCRIN:
 APACHE:
 	Inherits: ^Helicopter
 	Inherits@EXPERIENCE: ^GainsExperience
-	Inherits@AUTOTARGET: ^AutoTargetGround
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Valued:
 		Cost: 1000
 	Tooltip:

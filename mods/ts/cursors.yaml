@@ -102,18 +102,6 @@ Cursors:
 		attackoutsiderange-minimap:
 			Start: 63
 			Length: 5
-		attackmove:
-			Start: 58
-			Length: 5
-		attackmove-minimap:
-			Start: 68
-			Length: 5
-		assaultmove:
-			Start: 58
-			Length: 5
-		assaultmove-minimap:
-			Start: 68
-			Length: 5
 		harvest:
 			Start: 53
 			Length: 5
@@ -230,3 +218,29 @@ Cursors:
 			Start: 385
 		joystick-tl-blocked:
 			Start: 386
+	attackmove.shp: cursor
+		attackmove:
+			Start: 0
+			Length: 10
+		attackmove-blocked:
+			Start: 10
+			Length: 1
+		attackmove-minimap:
+			Start: 11
+			Length: 10
+		attackmove-minimap-blocked:
+			Start: 21
+			Length: 1
+	assaultmove.shp: cursor
+		assaultmove:
+			Start: 0
+			Length: 10
+		assaultmove-blocked:
+			Start: 10
+			Length: 1
+		assaultmove-minimap:
+			Start: 11
+			Length: 10
+		assaultmove-minimap-blocked:
+			Start: 21
+			Length: 1
