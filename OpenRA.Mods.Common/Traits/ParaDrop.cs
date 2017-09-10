@@ -23,7 +23,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly WDist DropRange = WDist.FromCells(4);
 
 		[Desc("Sound to play when dropping.")]
-		public readonly string ChuteSound = "chute1.aud";
+		public readonly string ChuteSound = null;
 
 		public object Create(ActorInitializer init) { return new ParaDrop(init.Self, this); }
 	}

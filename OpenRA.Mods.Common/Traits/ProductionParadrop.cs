@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Common.Traits
 		[ActorReference(typeof(AircraftInfo))] public readonly string ActorType = "badr";
 
 		[Desc("Sound to play when dropping the unit.")]
-		public readonly string ChuteSound = "chute1.aud";
+		public readonly string ChuteSound = null;
 
 		[Desc("Notification to play when dropping the unit.")]
 		public readonly string ReadyAudio = null;

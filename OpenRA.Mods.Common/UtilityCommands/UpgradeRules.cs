@@ -1674,6 +1674,41 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				if (engineVersion < 20180309)
+				{
+					if (node.Key == "ParaDrop")
+					{
+						var soundNodePD = node.Value.Nodes.FirstOrDefault(n => n.Key == "ChuteSound");
+						if (soundNodePD == null)
+							node.Value.Nodes.Add(new MiniYamlNode("ChuteSound", "chute1.aud"));
+					}
+
+					if (depth == 1 && node.Key == "EjectOnDeath")
+					{
+						var soundNodeEOD = node.Value.Nodes.FirstOrDefault(n => n.Key == "ChuteSound");
+						if (soundNodeEOD == null)
+							node.Value.Nodes.Add(new MiniYamlNode("ChuteSound", "chute1.aud"));
+					}
+
+					if (node.Key.StartsWith("ProductionParadrop", StringComparison.Ordinal))
+					{
+						var soundNodePP = node.Value.Nodes.FirstOrDefault(n => n.Key == "ChuteSound");
+						if (soundNodePP == null)
+							node.Value.Nodes.Add(new MiniYamlNode("ChuteSound", "chute1.aud"));
+					}
+
+					if (node.Key == "Building")
+					{
+						var soundNodeB1 = node.Value.Nodes.FirstOrDefault(n => n.Key == "BuildSounds");
+						if (soundNodeB1 == null)
+							node.Value.Nodes.Add(new MiniYamlNode("BuildSounds", "placbldg.aud, build5.aud"));
+
+						var soundNodeB2 = node.Value.Nodes.FirstOrDefault(n => n.Key == "UndeploySounds");
+						if (soundNodeB2 == null)
+							node.Value.Nodes.Add(new MiniYamlNode("UndeploySounds", "cashturn.aud"));
+					}
+				}
+
 				UpgradeActorRules(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 
