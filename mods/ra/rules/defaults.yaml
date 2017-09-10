@@ -12,6 +12,7 @@
 	QuantizeFacingsFromSequence:
 	AutoSelectionSize:
 	RenderSprites:
+	AutoRenderSize:
 
 ^1x1Shape:
 	HitShape:
@@ -786,6 +787,8 @@
 		Type: Light
 	EditorTilesetFilter:
 		Categories: Decoration
+	CustomRenderSize:
+		CustomBounds: 24,24
 
 ^CivBuilding:
 	Inherits: ^TechBuilding
@@ -974,6 +977,8 @@
 	ScriptTriggers:
 	BodyOrientation:
 		QuantizedFacings: 1
+	CustomRenderSize:
+		CustomBounds: 96,48
 
 ^Rock:
 	Inherits@1: ^SpriteActor

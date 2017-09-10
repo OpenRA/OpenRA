@@ -118,6 +118,7 @@ VEINHOLE:
 	AutoSelectionSize:
 	EditorTilesetFilter:
 		Categories: Resource spawn
+	AutoRenderSize:
 
 ^TibFlora:
 	Inherits: ^Tree

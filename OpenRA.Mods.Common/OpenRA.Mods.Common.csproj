@@ -328,6 +328,7 @@
     <Compile Include="Traits\Crushable.cs" />
     <Compile Include="Traits\CustomSellValue.cs" />
     <Compile Include="Traits\CustomSelectionSize.cs" />
+    <Compile Include="Traits\Render\CustomRenderSize.cs" />
     <Compile Include="Traits\DamagedByTerrain.cs" />
     <Compile Include="Traits\DeliversCash.cs" />
     <Compile Include="Traits\DeliversExperience.cs" />
@@ -417,6 +418,7 @@
     <Compile Include="Traits\BodyOrientation.cs" />
     <Compile Include="Traits\QuantizeFacingsFromSequence.cs" />
     <Compile Include="Traits\Render\AutoSelectionSize.cs" />
+    <Compile Include="Traits\Render\AutoRenderSize.cs" />
     <Compile Include="Traits\Render\CashTricklerBar.cs" />
     <Compile Include="Traits\Render\CustomTerrainDebugOverlay.cs" />
     <Compile Include="Traits\Render\Hovers.cs" />

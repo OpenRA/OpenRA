@@ -22,6 +22,7 @@ TRAN.Extraction:
 	AutoSelectionSize:
 	RenderSprites:
 		Image: tran
+	AutoRenderSize:
 
 TRAN.Insertion:
 	Inherits: TRAN.Extraction
@@ -31,6 +32,7 @@ TRAN.Insertion:
 	AutoSelectionSize:
 	RenderSprites:
 		Image: tran
+	AutoRenderSize:
 
 EINSTEIN:
 	Passenger:

@@ -239,6 +239,12 @@ namespace OpenRA.Mods.Common.Traits.Render
 		// Required by WithSpriteBody and WithInfantryBody
 		public int2 AutoSelectionSize(Actor self)
 		{
+			return AutoRenderSize(self);
+		}
+
+		// Required by WithSpriteBody and WithInfantryBody
+		public int2 AutoRenderSize(Actor self)
+		{
 			return anims.Where(b => b.IsVisible
 				&& b.Animation.Animation.CurrentSequence != null)
 					.Select(a => (a.Animation.Animation.Image.Size.XY * info.Scale).ToInt2())
