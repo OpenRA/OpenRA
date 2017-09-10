@@ -33,14 +33,18 @@ namespace OpenRA.Mods.Common.Orders
 		readonly string faction;
 		readonly Sprite buildOk;
 		readonly Sprite buildBlocked;
+		readonly Viewport viewport;
+		readonly WVec centerOffset;
+		readonly int2 topLeftScreenOffset;
 		IActorPreview[] preview;
 
 		bool initialized;
 
-		public PlaceBuildingOrderGenerator(ProductionQueue queue, string name)
+		public PlaceBuildingOrderGenerator(ProductionQueue queue, string name, WorldRenderer worldRenderer)
 		{
 			var world = queue.Actor.World;
 			this.queue = queue;
+			viewport = worldRenderer.Viewport;
 			placeBuildingInfo = queue.Actor.Owner.PlayerActor.Info.TraitInfo<PlaceBuildingInfo>();
 			building = name;
 
@@ -53,6 +57,8 @@ namespace OpenRA.Mods.Common.Orders
 
 			var info = map.Rules.Actors[building];
 			buildingInfo = info.TraitInfo<BuildingInfo>();
+			centerOffset = buildingInfo.CenterOffset(world);
+			topLeftScreenOffset = -worldRenderer.ScreenPxOffset(centerOffset);
 
 			var buildableInfo = info.TraitInfo<BuildableInfo>();
 			var mostLikelyProducer = queue.MostLikelyProducer();
@@ -99,7 +105,7 @@ namespace OpenRA.Mods.Common.Orders
 			if (mi.Button == MouseButton.Left)
 			{
 				var orderType = "PlaceBuilding";
-				var topLeft = cell - buildingInfo.LocationOffset();
+				var topLeft = viewport.ViewToWorld(Viewport.LastMousePos + topLeftScreenOffset);
 
 				var plugInfo = world.Map.Rules.Actors[building].TraitInfoOrDefault<PlugInfo>();
 				if (plugInfo != null)
@@ -162,14 +168,13 @@ namespace OpenRA.Mods.Common.Orders
 		public IEnumerable<IRenderable> Render(WorldRenderer wr, World world) { yield break; }
 		public IEnumerable<IRenderable> RenderAboveShroud(WorldRenderer wr, World world)
 		{
-			var xy = wr.Viewport.ViewToWorld(Viewport.LastMousePos);
-			var topLeft = xy - buildingInfo.LocationOffset();
-			var offset = world.Map.CenterOfCell(topLeft) + buildingInfo.CenterOffset(world);
+			var topLeft = viewport.ViewToWorld(Viewport.LastMousePos + topLeftScreenOffset);
+			var centerPosition = world.Map.CenterOfCell(topLeft) + centerOffset;
 			var rules = world.Map.Rules;
 
 			var actorInfo = rules.Actors[building];
 			foreach (var dec in actorInfo.TraitInfos<IPlaceBuildingDecorationInfo>())
-				foreach (var r in dec.Render(wr, world, actorInfo, offset))
+				foreach (var r in dec.Render(wr, world, actorInfo, centerPosition))
 					yield return r;
 
 			var cells = new Dictionary<CPos, CellType>();
@@ -219,7 +224,7 @@ namespace OpenRA.Mods.Common.Orders
 				}
 
 				var previewRenderables = preview
-					.SelectMany(p => p.Render(wr, offset))
+					.SelectMany(p => p.Render(wr, centerPosition))
 					.OrderBy(WorldRenderer.RenderableScreenZPositionComparisonKey);
 
 				foreach (var r in previewRenderables)
