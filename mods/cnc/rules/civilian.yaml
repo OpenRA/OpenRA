@@ -417,6 +417,8 @@ BRIDGE1:
 	FreeActor@south:
 		Actor: bridgehut
 		SpawnOffset: 0,2
+	CustomRenderSize:
+		CustomBounds: 96,96
 
 BRIDGE2:
 	Inherits: ^Bridge
@@ -434,6 +436,8 @@ BRIDGE2:
 	FreeActor@south:
 		Actor: bridgehut
 		SpawnOffset: 2,2
+	CustomRenderSize:
+		CustomBounds: 120,120
 
 BRIDGE3:
 	Inherits: ^Bridge
@@ -451,6 +455,8 @@ BRIDGE3:
 	FreeActor@south:
 		Actor: bridgehut
 		SpawnOffset: 1,2
+	CustomRenderSize:
+		CustomBounds: 144,120
 
 BRIDGE4:
 	Inherits: ^Bridge
@@ -468,6 +474,8 @@ BRIDGE4:
 	FreeActor@south:
 		Actor: bridgehut
 		SpawnOffset: 3,2
+	CustomRenderSize:
+		CustomBounds: 144,96
 
 BRIDGEHUT:
 	AlwaysVisible:
@@ -479,6 +487,8 @@ BRIDGEHUT:
 	LegacyBridgeHut:
 	Targetable:
 		TargetTypes: BridgeHut, C4
+	CustomRenderSize:
+		CustomBounds: 48,48
 
 C1:
 	Inherits: ^CivInfantry

@@ -15,6 +15,7 @@
 	QuantizeFacingsFromSequence:
 	AutoSelectionSize:
 	RenderSprites:
+	AutoRenderSize:
 
 ^GainsExperience:
 	GainsExperience:
@@ -431,6 +432,8 @@
 		CustomBounds: 24,24
 	EditorTilesetFilter:
 		Categories: System
+	CustomRenderSize:
+		CustomBounds: 24,24
 
 ^Wall:
 	Inherits@1: ^SpriteActor
@@ -1099,6 +1102,7 @@
 		TerrainType: Rail
 	EditorTilesetFilter:
 		Categories: Railway
+	AutoRenderSize:
 
 ^Tunnel:
 	RenderSprites:
@@ -1118,6 +1122,8 @@
 		Dimensions: 3, 3
 	EditorTilesetFilter:
 		Categories: Tunnel
+	CustomRenderSize:
+		CustomBounds: 144, 144
 
 ^Gate:
 	Inherits: ^Building

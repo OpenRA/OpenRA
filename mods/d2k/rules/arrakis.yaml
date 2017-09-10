@@ -63,6 +63,7 @@ spicebloom:
 			Radius: 512
 	EditorTilesetFilter:
 		Categories: System
+	AutoRenderSize:
 
 sandworm:
 	Inherits@1: ^SpriteActor

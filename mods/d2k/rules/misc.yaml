@@ -138,6 +138,8 @@ crate:
 		CustomBounds: 20,20
 	EditorTilesetFilter:
 		Categories: System
+	CustomRenderSize:
+		CustomBounds: 20,20
 
 mpspawn:
 	EditorOnlyTooltip:

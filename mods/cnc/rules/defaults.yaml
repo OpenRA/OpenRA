@@ -13,6 +13,7 @@
 	QuantizeFacingsFromSequence:
 	AutoSelectionSize:
 	RenderSprites:
+	AutoRenderSize:
 
 ^1x1Shape:
 	HitShape:

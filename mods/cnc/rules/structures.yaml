@@ -243,6 +243,7 @@ SILO:
 	SelectionDecorations:
 		VisualBounds: 49,30
 	-AcceptsDeliveredCash:
+	AutoRenderSize:
 
 PYLE:
 	Inherits: ^BaseBuilding
@@ -814,6 +815,7 @@ SAM:
 		Amount: -20
 	BodyOrientation:
 		UseClassicFacingFudge: True
+	AutoRenderSize:
 
 OBLI:
 	Inherits: ^Defense

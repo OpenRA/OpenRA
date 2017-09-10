@@ -138,7 +138,7 @@ namespace OpenRA
 
 		Rectangle DetermineRenderBounds()
 		{
-			var size = TraitsImplementing<IAutoSelectionSize>().Select(x => x.SelectionSize(this)).FirstOrDefault();
+			var size = TraitsImplementing<IAutoRenderSize>().Select(x => x.RenderSize(this)).FirstOrDefault(Exts.IsTraitEnabled);
 			var offset = -size / 2;
 
 			return new Rectangle(offset.X, offset.Y, size.X, size.Y);

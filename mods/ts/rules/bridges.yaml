@@ -34,6 +34,7 @@ CABHUT:
 		Name: Bridge
 	EditorTilesetFilter:
 		Categories: Bridge
+	AutoRenderSize:
 
 ^LowBridge:
 	Inherits: ^LowBridgeRamp
@@ -81,6 +82,8 @@ LOBRDG_A_D:
 		BOffset: 1,1
 	CustomSelectionSize:
 		CustomBounds: 96, 48
+	CustomRenderSize:
+		CustomBounds: 96, 48
 
 LOBRDG_B:
 	Inherits: ^LowBridge
@@ -116,6 +119,8 @@ LOBRDG_B_D:
 		AOffset: 1,1
 		BOffset: -1,1
 	CustomSelectionSize:
+		CustomBounds: 96, 48
+	CustomRenderSize:
 		CustomBounds: 96, 48
 
 LOBRDG_R_SE:
@@ -177,6 +182,8 @@ LOBRDG_R_SW:
 		CustomBounds: 96, 144
 	EditorTilesetFilter:
 		Categories: Bridge
+	CustomRenderSize:
+		CustomBounds: 96, 144
 
 BRIDGE1:
 	Inherits: ^ElevatedBridgePlaceholder

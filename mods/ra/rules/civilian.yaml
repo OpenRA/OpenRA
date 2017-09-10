@@ -320,6 +320,8 @@ BARL:
 	-Demolishable:
 	EditorTilesetFilter:
 		Categories: Decoration
+	CustomRenderSize:
+		CustomBounds: 24,24
 
 BRL3:
 	Inherits: ^TechBuilding
@@ -344,6 +346,8 @@ BRL3:
 	-Demolishable:
 	EditorTilesetFilter:
 		Categories: Decoration
+	CustomRenderSize:
+		CustomBounds: 24,24
 
 AMMOBOX1:
 	Inherits: ^AmmoBox
@@ -491,6 +495,8 @@ BRIDGE1:
 	FreeActor@south:
 		Actor: bridgehut
 		SpawnOffset: 0,1
+	CustomRenderSize:
+		CustomBounds: 120,72
 
 BRIDGE2:
 	Inherits: ^Bridge
@@ -509,6 +515,8 @@ BRIDGE2:
 	FreeActor@south:
 		Actor: bridgehut
 		SpawnOffset: 2,1
+	CustomRenderSize:
+		CustomBounds: 120,48
 
 SBRIDGE1:
 	Inherits: ^Bridge
@@ -527,6 +535,8 @@ SBRIDGE1:
 	FreeActor@south:
 		Actor: bridgehut.small
 		SpawnOffset: 1,1
+	CustomRenderSize:
+		CustomBounds: 72,48
 
 SBRIDGE2:
 	Inherits: ^Bridge
@@ -545,6 +555,8 @@ SBRIDGE2:
 	FreeActor@east:
 		Actor: bridgehut.small
 		SpawnOffset: 1,1
+	CustomRenderSize:
+		CustomBounds: 48,72
 
 SBRIDGE3:
 	Inherits: ^Bridge

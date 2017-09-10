@@ -381,3 +381,4 @@ HUNTER:
 	HitShape:
 	EditorTilesetFilter:
 		Categories: System
+	AutoRenderSize:
