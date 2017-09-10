@@ -644,7 +644,7 @@ wa01x:
 		Length: 7
 		Start: 1
 		Tick: 200
-		Offset: -9, 30
+		Offset: 15, 18
 
 wa02x:
 	idle:
@@ -653,7 +653,7 @@ wa02x:
 		Length: 7
 		Start: 1
 		Tick: 200
-		Offset: -39, 15
+		Offset: -15, 3
 
 wa03x:
 	idle:
@@ -662,7 +662,7 @@ wa03x:
 		Length: 7
 		Start: 1
 		Tick: 200
-		Offset: -26, 23
+		Offset: -13, 5
 
 wa04x:
 	idle:
@@ -671,7 +671,7 @@ wa04x:
 		Length: 7
 		Start: 1
 		Tick: 200
-		Offset: -38, 13
+		Offset: -14, 1
 
 dig:
 	idle:

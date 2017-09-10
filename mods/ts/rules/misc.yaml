@@ -252,6 +252,9 @@ WA02X:
 
 WA03X:
 	Inherits: ^Waterfall
+	Building:
+		Dimensions: 2, 3
+		Footprint: xx xx xx
 
 WA04X:
 	Inherits: ^Waterfall
