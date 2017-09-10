@@ -36,7 +36,7 @@ GAPOWR:
 		Amount: 100
 	PowerTooltip:
 	Targetable:
-		TargetTypes: Ground, C4, DetonateAttack, SpyInfiltrate
+		TargetTypes: Ground, Building, C4, SpyInfiltrate
 	ScalePowerWithHealth:
 	Pluggable@pluga:
 		Offset: 0,1
@@ -340,7 +340,7 @@ GARADR:
 		Sequence: idle-dish
 		PauseOnCondition: disabled
 	Targetable:
-		TargetTypes: Ground, C4, SpyInfiltrate
+		TargetTypes: Ground, Building, C4, SpyInfiltrate
 	Power:
 		Amount: -50
 	ProvidesPrerequisite@buildingname:

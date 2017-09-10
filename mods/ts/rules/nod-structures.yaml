@@ -32,7 +32,7 @@ NAPOWR:
 	Power:
 		Amount: 100
 	Targetable:
-		TargetTypes: Ground, C4, DetonateAttack, SpyInfiltrate
+		TargetTypes: Ground, Building, C4, SpyInfiltrate
 	ScalePowerWithHealth:
 	PowerTooltip:
 	SelectionDecorations:
@@ -72,7 +72,7 @@ NAAPWR:
 	Power:
 		Amount: 200
 	Targetable:
-		TargetTypes: Ground, C4, DetonateAttack, SpyInfiltrate
+		TargetTypes: Ground, Building, C4, SpyInfiltrate
 	ScalePowerWithHealth:
 	PowerTooltip:
 	SelectionDecorations:
@@ -294,7 +294,7 @@ NARADR:
 		Sequence: idle-dish
 		PauseOnCondition: disabled
 	Targetable:
-		TargetTypes: Ground, C4, SpyInfiltrate
+		TargetTypes: Ground, Building, C4, SpyInfiltrate
 	Power:
 		Amount: -40
 	ProvidesPrerequisite@buildingname:

@@ -133,7 +133,7 @@
 		InvalidTargets: NoAutoTarget
 	AutoTargetPriority@ATTACKANYTHING:
 		RequiresCondition: stance-attackanything
-		ValidTargets: Infantry, Vehicle, Creep, Water, Structure, Defense
+		ValidTargets: Infantry, Vehicle, Creep, Water, Building, Defense
 		InvalidTargets: NoAutoTarget
 
 ^AutoTargetAir:
@@ -151,7 +151,7 @@
 		InvalidTargets: NoAutoTarget
 	AutoTargetPriority@ATTACKANYTHING:
 		RequiresCondition: stance-attackanything
-		ValidTargets: Infantry, Vehicle, Creep, Water, Air, Structure, Defense
+		ValidTargets: Infantry, Vehicle, Creep, Water, Air, Building, Defense
 		InvalidTargets: NoAutoTarget
 
 ^2x1Shape:
@@ -987,6 +987,8 @@
 		Range: 6c0
 	DetectCloaked:
 		Range: 5c0
+	Targetable:
+		TargetTypes: Ground, Building, C4, Defense
 	RevealOnFire:
 	EditorTilesetFilter:
 		Categories: Defense
