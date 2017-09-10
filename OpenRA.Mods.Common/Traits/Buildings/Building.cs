@@ -144,11 +144,6 @@ namespace OpenRA.Mods.Common.Traits
 				yield return t;
 		}
 
-		public CVec LocationOffset()
-		{
-			return new CVec(Dimensions.X / 2, Dimensions.Y > 1 ? (Dimensions.Y + 1) / 2 : 0);
-		}
-
 		public WVec CenterOffset(World w)
 		{
 			var off = (w.Map.CenterOfCell(new CPos(Dimensions.X, Dimensions.Y)) - w.Map.CenterOfCell(new CPos(1, 1))) / 2;

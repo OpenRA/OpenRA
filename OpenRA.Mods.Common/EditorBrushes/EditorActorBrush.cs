@@ -26,8 +26,7 @@ namespace OpenRA.Mods.Common.Widgets
 		readonly EditorActorLayer editorLayer;
 		readonly EditorViewportControllerWidget editorWidget;
 		readonly ActorPreviewWidget preview;
-		readonly CVec locationOffset;
-		readonly WVec previewOffset;
+		readonly WVec centerOffset;
 		readonly PlayerReference owner;
 		readonly CVec[] footprint;
 
@@ -49,10 +48,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 			var buildingInfo = actor.TraitInfoOrDefault<BuildingInfo>();
 			if (buildingInfo != null)
-			{
-				locationOffset = -buildingInfo.LocationOffset();
-				previewOffset = buildingInfo.CenterOffset(world);
-			}
+				centerOffset = buildingInfo.CenterOffset(world);
 
 			var td = new TypeDictionary();
 			td.Add(new FacingInit(facing));
@@ -91,17 +87,16 @@ namespace OpenRA.Mods.Common.Widgets
 				return false;
 			}
 
-			var cell = worldRenderer.Viewport.ViewToWorld(mi.Location);
+			var cell = worldRenderer.Viewport.ViewToWorld(mi.Location - worldRenderer.ScreenPxOffset(centerOffset));
 			if (mi.Button == MouseButton.Left && mi.Event == MouseInputEvent.Down)
 			{
 				// Check the actor is inside the map
-				if (!footprint.All(c => world.Map.Tiles.Contains(cell + locationOffset + c)))
+				if (!footprint.All(c => world.Map.Tiles.Contains(cell + c)))
 					return true;
 
 				var newActorReference = new ActorReference(Actor.Name);
 				newActorReference.Add(new OwnerInit(owner.Name));
 
-				cell += locationOffset;
 				newActorReference.Add(new LocationInit(cell));
 
 				var ios = Actor.TraitInfoOrDefault<IOccupySpaceInfo>();
@@ -128,8 +123,8 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public void Tick()
 		{
-			var cell = worldRenderer.Viewport.ViewToWorld(Viewport.LastMousePos);
-			var pos = world.Map.CenterOfCell(cell + locationOffset) + previewOffset;
+			var cell = worldRenderer.Viewport.ViewToWorld(Viewport.LastMousePos - worldRenderer.ScreenPxOffset(centerOffset));
+			var pos = world.Map.CenterOfCell(cell) + centerOffset;
 
 			var origin = worldRenderer.Viewport.WorldToViewPx(worldRenderer.ScreenPxPosition(pos));
 
