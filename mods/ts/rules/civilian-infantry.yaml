@@ -29,7 +29,7 @@ UMAGON:
 	Inherits: ^Soldier
 	Inherits@2: ^HealsOnTiberium
 	Inherits@EXPERIENCE: ^GainsExperience
-	Inherits@AUTOTARGET: ^AutoTargetGround
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Valued:
 		Cost: 400
 	Tooltip:
@@ -86,7 +86,7 @@ MUTANT:
 	Inherits: ^Soldier
 	Inherits@2: ^HealsOnTiberium
 	Inherits@EXPERIENCE: ^GainsExperience
-	Inherits@AUTOTARGET: ^AutoTargetGround
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Valued:
 		Cost: 100
 	Tooltip:
@@ -112,7 +112,7 @@ MWMN:
 	Inherits: ^Soldier
 	Inherits@2: ^HealsOnTiberium
 	Inherits@EXPERIENCE: ^GainsExperience
-	Inherits@AUTOTARGET: ^AutoTargetGround
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Valued:
 		Cost: 100
 	Tooltip:
@@ -138,7 +138,7 @@ MUTANT3:
 	Inherits: ^Soldier
 	Inherits@2: ^HealsOnTiberium
 	Inherits@EXPERIENCE: ^GainsExperience
-	Inherits@AUTOTARGET: ^AutoTargetGround
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Valued:
 		Cost: 100
 	Tooltip:
@@ -214,7 +214,7 @@ SLAV:
 
 CIV1:
 	Inherits: ^CivilianInfantry
-	Inherits@AUTOTARGET: ^AutoTargetGround
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	WithInfantryBody:
 		DefaultAttackSequence: attack
 	Armament:
@@ -227,7 +227,7 @@ CIV2:
 
 CIV3:
 	Inherits: ^CivilianInfantry
-	Inherits@AUTOTARGET: ^AutoTargetGround
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	WithInfantryBody:
 		DefaultAttackSequence: attack
 	Armament:
