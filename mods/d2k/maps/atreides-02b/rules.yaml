@@ -51,4 +51,6 @@ outpostnopower:
 	Inherits: outpost
 	Buildable:
 		Prerequisites: ~disabled
-	-RequiresPower:
+	GrantCondition@IDISABLE:
+		RequiresCondition: powerdown
+	-GrantConditionOnPowerState@LOWPOWER:
