@@ -1151,6 +1151,65 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				if (engineVersion < 20171112)
+				{
+					// CanPowerDown now provides a condition instead of triggering Actor.Disabled
+					var canPowerDown = node.Value.Nodes.FirstOrDefault(n => n.Key.StartsWith("CanPowerDown", StringComparison.Ordinal));
+					if (canPowerDown != null)
+					{
+						canPowerDown.Value.Nodes.Add(new MiniYamlNode("PowerdownCondition", "powerdown"));
+
+						var image = canPowerDown.Value.Nodes.FirstOrDefault(n => n.Key == "IndicatorImage");
+						var seq = canPowerDown.Value.Nodes.FirstOrDefault(n => n.Key == "IndicatorSequence");
+						var pal = canPowerDown.Value.Nodes.FirstOrDefault(n => n.Key == "IndicatorPalette");
+						var imageValue = image != null ? FieldLoader.GetValue<string>("IndicatorImage", image.Value.Value) : "poweroff";
+						var seqValue = seq != null ? FieldLoader.GetValue<string>("IndicatorSequence", seq.Value.Value) : "offline";
+						var palValue = pal != null ? FieldLoader.GetValue<string>("IndicatorPalette", pal.Value.Value) : "chrome";
+
+						var indicator = new MiniYamlNode("WithDecoration@POWERDOWN", "");
+						indicator.Value.Nodes.Add(new MiniYamlNode("Image", imageValue));
+						indicator.Value.Nodes.Add(new MiniYamlNode("Sequence", seqValue));
+						indicator.Value.Nodes.Add(new MiniYamlNode("Palette", palValue));
+						indicator.Value.Nodes.Add(new MiniYamlNode("RequiresCondition", "powerdown"));
+						indicator.Value.Nodes.Add(new MiniYamlNode("ReferencePoint", "Center"));
+
+						node.Value.Nodes.Add(indicator);
+						if (image != null)
+							canPowerDown.Value.Nodes.Remove(image);
+						if (seq != null)
+							canPowerDown.Value.Nodes.Remove(seq);
+						if (pal != null)
+							canPowerDown.Value.Nodes.Remove(pal);
+
+						Console.WriteLine("CanPowerDown now provides a condition instead of disabling the actor directly.");
+						Console.WriteLine("Review your condition setup to make sure all relevant traits are disabled by that condition.");
+						Console.WriteLine("Look at the official mods if you need examples.");
+					}
+
+					// RequiresPower has been replaced with GrantConditionOnPowerState.
+					var requiresPower = node.Value.Nodes.FirstOrDefault(n => n.Key == "RequiresPower");
+					if (requiresPower != null)
+					{
+						requiresPower.Key = "GrantConditionOnPowerState@LOWPOWER";
+						requiresPower.Value.Nodes.Add(new MiniYamlNode("Condition", "lowpower"));
+						requiresPower.Value.Nodes.Add(new MiniYamlNode("ValidPowerStates", "Low, Critical"));
+
+						Console.WriteLine("RequiresPower has been replaced with GrantConditionOnPowerState.");
+						Console.WriteLine("As the name implies, this new trait toggles a condition depending on the power state.");
+						Console.WriteLine("Review your condition setup to make sure all relevant traits are disabled/enabled by that condition.");
+						Console.WriteLine("Possible PowerStates are: Normal (0 or positive), Low (negative but higher than 50% of required power) and Critical (below Low).");
+						Console.WriteLine("Look at the official mods if you need examples.");
+					}
+
+					// Made WithSpriteBody a PausableConditionalTrait, allowing to drop the PauseAnimationWhenDisabled property
+					var wsbPause = node.Value.Nodes.FirstOrDefault(n => n.Key == "PauseAnimationWhenDisabled");
+					if (wsbPause != null)
+					{
+						wsbPause.Key = "PauseOnCondition";
+						wsbPause.Value.Value = "disabled";
+					}
+				}
+
 				UpgradeActorRules(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 
