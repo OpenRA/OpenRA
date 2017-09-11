@@ -534,11 +534,7 @@ heavy_factory:
 
 outpost:
 	Inherits: ^Building
-	Inherits@IDISABLE: ^DisabledOverlay
-	RequiresPower:
-	CanPowerDown:
-		PowerupSound: EnablePower
-		PowerdownSound: DisablePower
+	Inherits@IDISABLE: ^DisableOnLowPowerOrPowerDown
 	Buildable:
 		Prerequisites: barracks, ~techlevel.medium
 		Queue: Building
@@ -589,7 +585,6 @@ outpost:
 
 starport:
 	Inherits: ^Building
-	Inherits@IDISABLE: ^DisabledOverlay
 	Tooltip:
 		Name: Starport
 	Buildable:
@@ -764,8 +759,10 @@ medium_gun_turret:
 
 large_gun_turret:
 	Inherits: ^Defense
-	Inherits@IDISABLE: ^DisabledOverlay
+	Inherits@IDISABLE: ^DisableOnLowPowerOrPowerDown
 	Inherits@AUTOTARGET: ^AutoTargetGround
+	AttackTurreted:
+		RequiresCondition: !disabled
 	Buildable:
 		Queue: Building
 		Prerequisites: outpost, upgrade.conyard, ~techlevel.medium
@@ -799,10 +796,6 @@ large_gun_turret:
 	Turreted:
 		TurnSpeed: 8
 		InitialFacing: 128
-	RequiresPower:
-	CanPowerDown:
-		PowerupSound: EnablePower
-		PowerdownSound: DisablePower
 	Power:
 		Amount: -60
 	SelectionDecorations:
@@ -1000,7 +993,7 @@ research_centre:
 
 palace:
 	Inherits: ^Building
-	Inherits@IDISABLE: ^DisabledOverlay
+	Inherits@IDISABLE: ^DisableOnLowPowerOrPowerDown
 	Buildable:
 		Prerequisites: research_centre, ~techlevel.high
 		Queue: Building
@@ -1115,10 +1108,6 @@ palace:
 		ExitCell: 0,3
 	Production:
 		Produces: Palace
-	CanPowerDown:
-		PowerupSound: EnablePower
-		PowerdownSound: DisablePower
-	RequiresPower:
 	SupportPowerChargeBar:
 	ProvidesPrerequisite@buildingname:
 
