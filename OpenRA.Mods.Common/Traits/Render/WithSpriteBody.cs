@@ -18,16 +18,13 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits.Render
 {
 	[Desc("Default trait for rendering sprite-based actors.")]
-	public class WithSpriteBodyInfo : ConditionalTraitInfo, IRenderActorPreviewSpritesInfo, Requires<RenderSpritesInfo>
+	public class WithSpriteBodyInfo : PausableConditionalTraitInfo, IRenderActorPreviewSpritesInfo, Requires<RenderSpritesInfo>
 	{
 		[Desc("Animation to play when the actor is created."), SequenceReference]
 		public readonly string StartSequence = null;
 
 		[Desc("Animation to play when the actor is idle."), SequenceReference]
 		public readonly string Sequence = "idle";
-
-		[Desc("Pause animation when actor is disabled.")]
-		public readonly bool PauseAnimationWhenDisabled = false;
 
 		[Desc("Identifier used to assign modifying traits to this sprite body.")]
 		public readonly string Name = "body";
@@ -46,7 +43,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		}
 	}
 
-	public class WithSpriteBody : ConditionalTrait<WithSpriteBodyInfo>, INotifyDamageStateChanged, INotifyBuildComplete
+	public class WithSpriteBody : PausableConditionalTrait<WithSpriteBodyInfo>, INotifyDamageStateChanged, INotifyBuildComplete
 	{
 		public readonly Animation DefaultAnimation;
 
@@ -58,9 +55,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		{
 			var rs = init.Self.Trait<RenderSprites>();
 
-			Func<bool> paused = null;
-			if (info.PauseAnimationWhenDisabled)
-				paused = () => init.Self.IsDisabled() &&
+			Func<bool> paused = () => IsTraitPaused &&
 				DefaultAnimation.CurrentSequence.Name == NormalizeSequence(init.Self, Info.Sequence);
 
 			DefaultAnimation = new Animation(init.World, rs.GetImage(init.Self), baseFacing, paused);
