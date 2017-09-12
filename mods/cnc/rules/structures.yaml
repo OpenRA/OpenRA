@@ -516,24 +516,20 @@ HQ:
 		Bounds: 48,40,0,9
 	SelectionDecorations:
 		VisualBounds: 48,53,0,-4
-	RequiresPower:
-	CanPowerDown:
-		PowerupSound: EnablePower
-		PowerdownSound: DisablePower
 	WithSpriteBody:
-		PauseAnimationWhenDisabled: true
+		PauseOnCondition: lowpower
 	Health:
 		HP: 800
 	RevealsShroud:
 		Range: 10c0
 	WithBuildingBib:
 	ProvidesRadar:
-		RequiresCondition: !disabled
+		RequiresCondition: !lowpower
 	RenderDetectionCircle:
 	DetectCloaked:
 		Range: 5c0
 	AirstrikePower:
-		PauseOnCondition: disabled
+		PauseOnCondition: lowpower
 		Prerequisites: ~techlevel.superweapons
 		Icon: airstrike
 		ChargeTime: 240
@@ -628,24 +624,20 @@ EYE:
 		Bounds: 48,40,0,9
 	SelectionDecorations:
 		VisualBounds: 48,53,0,-4
-	RequiresPower:
-	CanPowerDown:
-		PowerupSound: EnablePower
-		PowerdownSound: DisablePower
 	WithSpriteBody:
-		PauseAnimationWhenDisabled: true
+		PauseOnCondition: lowpower
 	Health:
 		HP: 1300
 	RevealsShroud:
 		Range: 10c0
 	WithBuildingBib:
 	ProvidesRadar:
-		RequiresCondition: !disabled
+		RequiresCondition: !lowpower
 	RenderDetectionCircle:
 	DetectCloaked:
 		Range: 5c0
 	IonCannonPower:
-		PauseOnCondition: disabled
+		PauseOnCondition: lowpower
 		Prerequisites: ~techlevel.superweapons
 		Icon: ioncannon
 		Cursor: ioncannon
@@ -690,10 +682,6 @@ TMPL:
 		Bounds: 72,48
 	SelectionDecorations:
 		VisualBounds: 72,68,0,-12
-	RequiresPower:
-	CanPowerDown:
-		PowerupSound: EnablePower
-		PowerdownSound: DisablePower
 	Health:
 		HP: 2100
 	RevealsShroud:
@@ -703,7 +691,7 @@ TMPL:
 	DetectCloaked:
 		Range: 5c0
 	NukePower:
-		PauseOnCondition: disabled
+		PauseOnCondition: lowpower
 		Prerequisites: ~techlevel.superweapons
 		Icon: abomb
 		Cursor: nuke
@@ -799,7 +787,6 @@ SAM:
 	Building:
 		Footprint: xx
 		Dimensions: 2,1
-	RequiresPower:
 	Health:
 		HP: 400
 	Armor:
@@ -817,6 +804,7 @@ SAM:
 		Weapon: Dragon
 		MuzzleSequence: muzzle
 	AttackPopupTurreted:
+		RequiresCondition: !lowpower
 	WithMuzzleOverlay:
 	-RenderDetectionCircle:
 	Power:
@@ -843,7 +831,6 @@ OBLI:
 		Bounds: 24,24
 	SelectionDecorations:
 		VisualBounds: 22,44,0,-10
-	RequiresPower:
 	Health:
 		HP: 600
 	Armor:
@@ -857,6 +844,7 @@ OBLI:
 		Weapon: Laser
 		LocalOffset: 0,-85,1280
 	AttackCharges:
+		RequiresCondition: !lowpower
 		ChargeLevel: 50
 		ChargingCondition: charging
 	AmbientSound:
@@ -924,7 +912,6 @@ ATWR:
 		Bounds: 24,24
 	SelectionDecorations:
 		VisualBounds: 22,48,0,-12
-	RequiresPower:
 	Health:
 		HP: 550
 	Armor:
@@ -945,6 +932,7 @@ ATWR:
 		LocalOffset: 256,128,0, 256,-128,0
 		LocalYaw: -100,100
 	AttackTurreted:
+		RequiresCondition: !lowpower
 	BodyOrientation:
 		QuantizedFacings: 8
 	DetectCloaked:

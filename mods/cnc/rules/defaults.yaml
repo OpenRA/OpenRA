@@ -1025,8 +1025,9 @@
 	-AcceptsDeliveredCash:
 
 ^DisabledOverlay:
+	GrantConditionOnPowerState@LOWPOWER:
+		Condition: lowpower
+		ValidPowerStates: Low, Critical
 	WithColoredOverlay@IDISABLE:
-		RequiresCondition: disabled
+		RequiresCondition: lowpower
 		Palette: disabled
-	GrantConditionOnDisabled@IDISABLE:
-		Condition: disabled
