@@ -144,9 +144,6 @@ namespace OpenRA.Mods.Common.Traits
 				if (remainingTime > 0 && !isDocking)
 					remainingTime--;
 
-				if (self.IsDisabled())
-					Uncloak();
-
 				if (Info.UncloakOn.HasFlag(UncloakType.Move) && (lastPos == null || lastPos.Value != self.Location))
 				{
 					Uncloak();
