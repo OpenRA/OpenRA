@@ -184,6 +184,8 @@ PBOX:
 		HP: 200000
 	RenderSprites:
 		Image: 4TNK
+	-Capturable:
+	-TransformOnCapture:
 
 DOME.NoInfiltrate:
 	Inherits: DOME
