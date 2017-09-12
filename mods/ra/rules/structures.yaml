@@ -1,6 +1,6 @@
 MSLO:
 	Inherits: ^ScienceBuilding
-	Inherits@IDISABLE: ^DisabledOverlay
+	Inherits@IDISABLE: ^DisableOnLowPowerOrPowerDown
 	Inherits@shape: ^2x1Shape
 	Valued:
 		Cost: 2500
@@ -53,12 +53,9 @@ MSLO:
 		ArrowSequence: arrow
 		ClockSequence: clock
 		CircleSequence: circles
-	CanPowerDown:
-		PowerupSound: EnablePower
-		PowerdownSound: DisablePower
-	RequiresPower:
 	SupportPowerChargeBar:
 	Power:
+		RequiresCondition: !powerdown
 		Amount: -150
 	MustBeDestroyed:
 		RequiredForShortGame: false
@@ -66,7 +63,7 @@ MSLO:
 
 GAP:
 	Inherits: ^ScienceBuilding
-	Inherits@IDISABLE: ^DisabledOverlay
+	Inherits@IDISABLE: ^DisableOnLowPowerOrPowerDown
 	Valued:
 		Cost: 800
 	Tooltip:
@@ -80,12 +77,8 @@ GAP:
 		Bounds: 24,24
 	SelectionDecorations:
 		VisualBounds: 24,48,0,-12
-	RequiresPower:
-	CanPowerDown:
-		PowerupSound: EnablePower
-		PowerdownSound: DisablePower
 	WithSpriteBody:
-		PauseAnimationWhenDisabled: true
+		PauseOnCondition: disabled
 	Health:
 		HP: 500
 	Armor:
@@ -101,6 +94,7 @@ GAP:
 		Range: 6c0
 	RenderShroudCircle:
 	Power:
+		RequiresCondition: !powerdown
 		Amount: -60
 	MustBeDestroyed:
 		RequiredForShortGame: false
@@ -326,7 +320,7 @@ SYRD:
 
 IRON:
 	Inherits: ^ScienceBuilding
-	Inherits@IDISABLE: ^DisabledOverlay
+	Inherits@IDISABLE: ^DisableOnLowPowerOrPowerDown
 	Inherits@shape: ^2x1Shape
 	Buildable:
 		Queue: Defense
@@ -341,10 +335,6 @@ IRON:
 	Building:
 		Footprint: xx
 		Dimensions: 2,1
-	RequiresPower:
-	CanPowerDown:
-		PowerupSound: EnablePower
-		PowerdownSound: DisablePower
 	Selectable:
 		Bounds: 48,28,0,2
 	SelectionDecorations:
@@ -381,13 +371,14 @@ IRON:
 		OnFireSound: ironcur9.aud
 	SupportPowerChargeBar:
 	Power:
+		RequiresCondition: !powerdown
 		Amount: -200
 	MustBeDestroyed:
 		RequiredForShortGame: false
 
 PDOX:
 	Inherits: ^ScienceBuilding
-	Inherits@IDISABLE: ^DisabledOverlay
+	Inherits@IDISABLE: ^DisableOnLowPowerOrPowerDown
 	Inherits@shape: ^2x2Shape
 	Buildable:
 		Queue: Defense
@@ -402,10 +393,6 @@ PDOX:
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
-	RequiresPower:
-	CanPowerDown:
-		PowerupSound: EnablePower
-		PowerdownSound: DisablePower
 	Health:
 		HP: 1000
 	Armor:
@@ -461,6 +448,7 @@ PDOX:
 		Range: 2
 	SupportPowerChargeBar:
 	Power:
+		RequiresCondition: !powerdown
 		Amount: -200
 	MustBeDestroyed:
 		RequiredForShortGame: false
@@ -468,7 +456,7 @@ PDOX:
 
 TSLA:
 	Inherits: ^Defense
-	Inherits@IDISABLE: ^DisabledOverlay
+	Inherits@IDISABLE: ^DisableOnLowPowerOrPowerDown
 	Inherits@AUTOTARGET: ^AutoTargetGround
 	Buildable:
 		Queue: Defense
@@ -479,14 +467,10 @@ TSLA:
 		Cost: 1200
 	Tooltip:
 		Name: Tesla Coil
-	RequiresPower:
 	Selectable:
 		Bounds: 24,24
 	SelectionDecorations:
 		VisualBounds: 24,40,0,-8
-	CanPowerDown:
-		PowerupSound: EnablePower
-		PowerdownSound: DisablePower
 	Health:
 		HP: 400
 	Armor:
@@ -503,10 +487,12 @@ TSLA:
 		Weapon: TeslaZap
 		LocalOffset: 0,0,896
 	AttackTesla:
+		RequiresCondition: !disabled
 		ChargeAudio: tslachg2.aud
 		MaxCharges: 3
 		ReloadDelay: 120
 	Power:
+		RequiresCondition: !powerdown
 		Amount: -100
 	DetectCloaked:
 		Range: 6c0
@@ -514,7 +500,7 @@ TSLA:
 
 AGUN:
 	Inherits: ^Defense
-	Inherits@IDISABLE: ^DisabledOverlay
+	Inherits@IDISABLE: ^DisableOnLowPowerOrPowerDown
 	Inherits@AUTOTARGET: ^AutoTargetAir
 	Buildable:
 		Queue: Defense
@@ -529,10 +515,6 @@ AGUN:
 		Bounds: 24,24
 	SelectionDecorations:
 		VisualBounds: 24,32,0,-4
-	RequiresPower:
-	CanPowerDown:
-		PowerupSound: EnablePower
-		PowerdownSound: DisablePower
 	Health:
 		HP: 400
 	Armor:
@@ -554,17 +536,19 @@ AGUN:
 		LocalOffset: 520,100,450, 520,-150,450
 		MuzzleSequence: muzzle
 	AttackTurreted:
+		RequiresCondition: !disabled
 	WithMuzzleOverlay:
 	RenderRangeCircle:
 		RangeCircleType: aa
 	Power:
+		RequiresCondition: !powerdown
 		Amount: -50
 	BodyOrientation:
 		UseClassicFacingFudge: True
 
 DOME:
 	Inherits: ^Building
-	Inherits@IDISABLE: ^DisabledOverlay
+	Inherits@IDISABLE: ^DisableOnLowPowerOrPowerDown
 	Inherits@shape: ^2x2Shape
 	HitShape:
 		UseTargetableCellsOffsets: false
@@ -584,10 +568,6 @@ DOME:
 		LocalCenterOffset: 0,-512,0
 	Targetable:
 		TargetTypes: Ground, Structure, C4, DetonateAttack, SpyInfiltrate
-	RequiresPower:
-	CanPowerDown:
-		PowerupSound: EnablePower
-		PowerdownSound: DisablePower
 	Health:
 		HP: 1000
 	Armor:
@@ -611,10 +591,9 @@ DOME:
 		RequiresCondition: !disabled
 	RenderDetectionCircle:
 	Power:
+		RequiresCondition: !powerdown
 		Amount: -40
 	ProvidesPrerequisite@buildingname:
-	GrantConditionOnDisabled@IDISABLE:
-		Condition: disabled
 	ExternalCondition@JAMMED:
 		Condition: jammed
 
@@ -810,7 +789,7 @@ FTUR:
 
 SAM:
 	Inherits: ^Defense
-	Inherits@IDISABLE: ^DisabledOverlay
+	Inherits@IDISABLE: ^DisableOnLowPowerOrPowerDown
 	Inherits@AUTOTARGET: ^AutoTargetAir
 	Inherits@shape: ^2x1Shape
 	HitShape:
@@ -829,10 +808,6 @@ SAM:
 	Building:
 		Footprint: xx
 		Dimensions: 2,1
-	RequiresPower:
-	CanPowerDown:
-		PowerupSound: EnablePower
-		PowerdownSound: DisablePower
 	Health:
 		HP: 400
 	Armor:
@@ -854,17 +829,19 @@ SAM:
 		LocalOffset: 0,0,320
 		MuzzleSequence: muzzle
 	AttackTurreted:
+		RequiresCondition: !disabled
 	WithMuzzleOverlay:
 	RenderRangeCircle:
 		RangeCircleType: aa
 	Power:
+		RequiresCondition: !powerdown
 		Amount: -40
 	BodyOrientation:
 		UseClassicFacingFudge: True
 
 ATEK:
 	Inherits: ^ScienceBuilding
-	Inherits@IDISABLE: ^DisabledOverlay
+	Inherits@IDISABLE: ^DisableOnLowPower
 	Inherits@shape: ^2x2Shape
 	Buildable:
 		Queue: Building
@@ -902,7 +879,6 @@ ATEK:
 		LaunchSpeechNotification: SatelliteLaunched
 		DisplayTimerStances: Ally, Neutral, Enemy
 	SupportPowerChargeBar:
-	RequiresPower:
 	Power:
 		Amount: -200
 	ProvidesPrerequisite@buildingname:
@@ -1422,7 +1398,6 @@ AFLD:
 
 POWR:
 	Inherits: ^Building
-	Inherits@IDISABLE: ^DisabledOverlay
 	Inherits@POWER_OUTAGE: ^DisabledByPowerOutage
 	Inherits@shape: ^2x2Shape
 	HitShape:
@@ -1461,7 +1436,6 @@ POWR:
 
 APWR:
 	Inherits: ^Building
-	Inherits@IDISABLE: ^DisabledOverlay
 	Inherits@POWER_OUTAGE: ^DisabledByPowerOutage
 	Inherits@shape: ^3x2Shape
 	HitShape:

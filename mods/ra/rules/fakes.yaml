@@ -146,7 +146,7 @@ WEAF:
 
 DOMF:
 	Inherits: ^FakeBuilding
-	Inherits@IDISABLE: ^DisabledOverlay
+	Inherits@IDISABLE: ^DisableOnLowPower
 	Inherits@infiltrate: ^InfiltratableFake
 	Inherits@shape: ^2x2Shape
 	HitShape:
@@ -176,7 +176,6 @@ DOMF:
 		HP: 1000
 	Armor:
 		Type: Wood
-	RequiresPower:
 
 FIXF:
 	Inherits: ^FakeBuilding
@@ -251,7 +250,7 @@ FAPW:
 
 ATEF:
 	Inherits: ^FakeBuilding
-	Inherits@IDISABLE: ^DisabledOverlay
+	Inherits@IDISABLE: ^DisableOnLowPower
 	Inherits@shape: ^2x2Shape
 	Tooltip:
 		Name: Fake Allied Tech Center
@@ -277,11 +276,10 @@ ATEF:
 		HP: 400
 	Armor:
 		Type: Wood
-	RequiresPower:
 
 PDOF:
 	Inherits: ^FakeBuilding
-	Inherits@IDISABLE: ^DisabledOverlay
+	Inherits@IDISABLE: ^DisableOnLowPower
 	Inherits@shape: ^2x2Shape
 	Tooltip:
 		Name: Fake Chronosphere
@@ -310,11 +308,10 @@ PDOF:
 		Type: Wood
 	Explodes:
 		DamageThreshold: 50
-	RequiresPower:
 
 MSLF:
 	Inherits: ^FakeBuilding
-	Inherits@IDISABLE: ^DisabledOverlay
+	Inherits@IDISABLE: ^DisableOnLowPower
 	Inherits@shape: ^2x1Shape
 	Tooltip:
 		Name: Fake Missile Silo
@@ -341,7 +338,6 @@ MSLF:
 		Type: Wood
 	Explodes:
 		DamageThreshold: 50
-	RequiresPower:
 
 FACF:
 	Inherits: ^FakeBuilding
