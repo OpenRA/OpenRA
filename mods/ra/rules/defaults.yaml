@@ -1056,18 +1056,42 @@
 	EditorTilesetFilter:
 		Categories: System
 
-^DisabledOverlay:
+^DisableOnLowPower:
 	WithColoredOverlay@IDISABLE:
 		RequiresCondition: disabled
 		Palette: disabled
-	GrantConditionOnDisabled@IDISABLE:
+	GrantConditionOnPowerState@LOWPOWER:
+		Condition: lowpower
+		ValidPowerStates: Low, Critical
+	GrantCondition@IDISABLE:
+		RequiresCondition: lowpower
 		Condition: disabled
 
+^DisableOnLowPowerOrPowerDown:
+	Inherits: ^DisableOnLowPower
+	GrantCondition@IDISABLE:
+		RequiresCondition: lowpower || powerdown
+		Condition: disabled
+	CanPowerDown:
+		PowerupSound: EnablePower
+		PowerdownSound: DisablePower
+		PowerdownCondition: powerdown
+	WithDecoration@POWERDOWN:
+		Image: poweroff
+		Sequence: offline
+		Palette: chrome
+		RequiresCondition: powerdown
+		ReferencePoint: Center
+
 ^DisabledByPowerOutage:
+	WithColoredOverlay@IDISABLE:
+		RequiresCondition: disabled
+		Palette: disabled
+	GrantCondition@IDISABLE:
+		RequiresCondition: power-outage
+		Condition: disabled
 	AffectedByPowerOutage:
 		Condition: power-outage
 	InfiltrateForPowerOutage:
-	DisableOnCondition@POWER_OUTAGE:
-		RequiresCondition: power-outage
 	Power:
-		RequiresCondition: !power-outage
+		RequiresCondition: !disabled
