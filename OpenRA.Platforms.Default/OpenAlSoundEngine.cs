@@ -266,7 +266,7 @@ namespace OpenRA.Platforms.Default
 			slot.FrameStarted = currFrame;
 			slot.IsRelative = relative;
 			slot.SoundSource = null;
-			slot.Sound = new OpenAlStreamingSound(source, loop, relative, pos, volume, channels, sampleBits, sampleRate, stream);
+			slot.Sound = new OpenAlAsyncLoadSound(source, loop, relative, pos, volume, channels, sampleBits, sampleRate, stream);
 			return slot.Sound;
 		}
 
@@ -282,25 +282,33 @@ namespace OpenRA.Platforms.Default
 				return;
 
 			var source = ((OpenAlSound)sound).Source;
-			int state;
-			AL10.alGetSourcei(source, AL10.AL_SOURCE_STATE, out state);
-			if (state == AL10.AL_PLAYING && paused)
-				AL10.alSourcePause(source);
-			else if (state == AL10.AL_PAUSED && !paused)
-				AL10.alSourcePlay(source);
+			PauseSound(source, paused);
 		}
 
 		public void SetAllSoundsPaused(bool paused)
 		{
 			foreach (var source in sourcePool.Keys)
+				PauseSound(source, paused);
+		}
+
+		void PauseSound(uint source, bool paused)
+		{
+			int state;
+			AL10.alGetSourcei(source, AL10.AL_SOURCE_STATE, out state);
+			if (paused)
 			{
-				int state;
-				AL10.alGetSourcei(source, AL10.AL_SOURCE_STATE, out state);
-				if (state == AL10.AL_PLAYING && paused)
+				if (state == AL10.AL_PLAYING)
 					AL10.alSourcePause(source);
-				else if (state == AL10.AL_PAUSED && !paused)
+				else if (state == AL10.AL_INITIAL)
+				{
+					// If a sound hasn't started yet,
+					// we indicate it should not play be transitioning it to the stopped state.
 					AL10.alSourcePlay(source);
+					AL10.alSourceStop(source);
+				}
 			}
+			else if (!paused && state != AL10.AL_PLAYING)
+				AL10.alSourcePlay(source);
 		}
 
 		public void SetSoundVolume(float volume, ISound music, ISound video)
@@ -480,6 +488,124 @@ namespace OpenRA.Platforms.Default
 		{
 			StopSource();
 			AL10.alSourcei(Source, AL10.AL_BUFFER, 0);
+		}
+	}
+
+	class OpenAlAsyncLoadSound : OpenAlSound
+	{
+		static readonly byte[] SilentData = new byte[2];
+		readonly CancellationTokenSource cts = new CancellationTokenSource();
+		readonly Task playTask;
+
+		public OpenAlAsyncLoadSound(uint source, bool looping, bool relative, WPos pos, float volume, int channels, int sampleBits, int sampleRate, Stream stream)
+			: base(source, looping, relative, pos, volume, sampleRate)
+		{
+			// Load a silent buffer into the source. Without this,
+			// attempting to change the state (i.e. play/pause) the source fails on some systems.
+			var silentSource = new OpenAlSoundSource(SilentData, channels, sampleBits, sampleRate);
+			AL10.alSourcei(source, AL10.AL_BUFFER, (int)silentSource.Buffer);
+
+			playTask = Task.Run(async () =>
+			{
+				MemoryStream memoryStream;
+				using (stream)
+				{
+					memoryStream = new MemoryStream();
+					try
+					{
+						await stream.CopyToAsync(memoryStream, 81920, cts.Token);
+					}
+					catch (TaskCanceledException)
+					{
+						// Sound was stopped early, cleanup the unused buffer and exit.
+						AL10.alSourceStop(source);
+						AL10.alSourcei(source, AL10.AL_BUFFER, 0);
+						silentSource.Dispose();
+						return;
+					}
+				}
+
+				var data = memoryStream.ToArray();
+				var bytesPerSample = sampleBits / 8f;
+				var lengthInSecs = data.Length / (channels * bytesPerSample * sampleRate);
+				using (var soundSource = new OpenAlSoundSource(data, channels, sampleBits, sampleRate))
+				{
+					// Need to stop the source, before attaching the real input and deleting the silent one.
+					AL10.alSourceStop(source);
+					AL10.alSourcei(source, AL10.AL_BUFFER, (int)soundSource.Buffer);
+					silentSource.Dispose();
+
+					lock (cts)
+					{
+						if (!cts.IsCancellationRequested)
+						{
+							// TODO: A race condition can happen between the state check and playing/rewinding if a
+							// user pauses/resumes at the right moment. The window of opportunity is small and the
+							// consequences are minor, so for now we'll ignore it.
+							int state;
+							AL10.alGetSourcei(Source, AL10.AL_SOURCE_STATE, out state);
+							if (state != AL10.AL_STOPPED)
+								AL10.alSourcePlay(source);
+							else
+							{
+								// A stopped sound indicates it was paused before we finishing loaded.
+								// We don't want to start playing it right away.
+								// We rewind the source so when it is started, it plays from the beginning.
+								AL10.alSourceRewind(source);
+							}
+						}
+					}
+
+					while (!cts.IsCancellationRequested)
+					{
+						// Need to check seek before state. Otherwise, the music can stop after our state check at
+						// which point the seek will be zero, meaning we'll wait the full track length before seeing it
+						// has stopped.
+						var currentSeek = SeekPosition;
+
+						int state;
+						AL10.alGetSourcei(Source, AL10.AL_SOURCE_STATE, out state);
+						if (state == AL10.AL_STOPPED)
+							break;
+
+						try
+						{
+							// Wait until the track is due to complete, and at most 60 times a second to prevent a
+							// busy-wait.
+							var delaySecs = Math.Max(lengthInSecs - currentSeek, 1 / 60f);
+							await Task.Delay(TimeSpan.FromSeconds(delaySecs), cts.Token);
+						}
+						catch (TaskCanceledException)
+						{
+							// Sound was stopped early, allow normal cleanup to occur.
+						}
+					}
+
+					AL10.alSourcei(Source, AL10.AL_BUFFER, 0);
+				}
+			});
+		}
+
+		public override void Stop()
+		{
+			lock (cts)
+			{
+				StopSource();
+				cts.Cancel();
+			}
+
+			try
+			{
+				playTask.Wait();
+			}
+			catch (AggregateException)
+			{
+			}
+		}
+
+		public override bool Complete
+		{
+			get { return playTask.IsCompleted; }
 		}
 	}
 
