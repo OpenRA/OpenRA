@@ -142,19 +142,9 @@ namespace OpenRA.Traits
 				switch (Type)
 				{
 					case TargetType.Actor:
-						if (!actor.Targetables.Any(Exts.IsTraitEnabled))
-							return new[] { actor.CenterPosition };
-
-						var targetablePositions = actor.TraitsImplementing<ITargetablePositions>().Where(Exts.IsTraitEnabled);
-						if (targetablePositions.Any())
-						{
-							var target = this;
-							return targetablePositions.SelectMany(tp => tp.TargetablePositions(target.actor));
-						}
-
-						return new[] { actor.CenterPosition };
+						return GetActorTargetablePositions(actor);
 					case TargetType.FrozenActor:
-						return new[] { frozen.CenterPosition };
+						return frozen.TargetablePositions;
 					case TargetType.Terrain:
 						return new[] { pos };
 					default:
@@ -171,6 +161,48 @@ namespace OpenRA.Traits
 
 			// Target ranges are calculated in 2D, so ignore height differences
 			return Positions.Any(t => (t - origin).HorizontalLengthSquared <= range.LengthSquared);
+		}
+
+		public bool IsOwnerTargetable(Actor self)
+		{
+			if (this.FrozenActor != null)
+				return this.FrozenActor.Visible;
+			else if (this.Actor != null)
+				return self.Owner.CanTargetActor(this.Actor);
+
+			return true;
+		}
+
+		public Target TryUpdateFrozenActorTarget(Actor self)
+		{
+			// If target was a frozen actor got replaced with an actor, try switching
+			if (this.FrozenActor != null && this.FrozenActor.Actor != null)
+			{
+				var loc = self.World.Map.CellContaining(this.FrozenActor.CenterPosition);
+				foreach (var actor in self.World.ActorMap.GetActorsAt(loc))
+				{
+					if (actor.ActorID == this.FrozenActor.ID && self.Owner.CanTargetActor(actor))
+					{
+						return Target.FromActor(actor);
+					}
+				}
+			}
+
+			// If target was an actor that got replaced with a frozen actor, try switching
+			if (this.Actor != null)
+			{
+				if (this.Type == TargetType.Actor)
+				{
+					var frozenLayer = self.Owner.PlayerActor.TraitOrDefault<FrozenActorLayer>();
+					var frozenActor = frozenLayer.FromID(this.Actor.ActorID);
+					if (frozenActor != null && this.IsValidFor(self))
+					{
+						return Target.FromFrozenActor(frozenActor);
+					}
+				}
+			}
+
+			return Target.Invalid;
 		}
 
 		public override string ToString()
@@ -190,6 +222,18 @@ namespace OpenRA.Traits
 				case TargetType.Invalid:
 					return "Invalid";
 			}
+		}
+
+		public static IEnumerable<WPos> GetActorTargetablePositions(Actor actor)
+		{
+			if (!actor.Targetables.Any(Exts.IsTraitEnabled))
+				return new[] { actor.CenterPosition };
+
+			var targetablePositions = actor.TraitsImplementing<ITargetablePositions>().Where(Exts.IsTraitEnabled);
+			if (targetablePositions.Any())
+				return targetablePositions.SelectMany(tp => tp.TargetablePositions(actor)).ToList();
+
+			return new[] { actor.CenterPosition };
 		}
 	}
 }

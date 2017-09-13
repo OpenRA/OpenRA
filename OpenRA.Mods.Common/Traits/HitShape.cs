@@ -82,10 +82,13 @@ namespace OpenRA.Mods.Common.Traits
 				foreach (var c in targetableCells.TargetableCells())
 					yield return self.World.Map.CenterOfCell(c.First);
 
-			foreach (var o in Info.TargetableOffsets)
+			if (orientation != null)
 			{
-				var offset = orientation.LocalToWorld(o.Rotate(orientation.QuantizeOrientation(self, self.Orientation)));
-				yield return self.CenterPosition + offset;
+				foreach (var o in Info.TargetableOffsets)
+				{
+					var offset = orientation.LocalToWorld(o.Rotate(orientation.QuantizeOrientation(self, self.Orientation)));
+					yield return self.CenterPosition + offset;
+				}
 			}
 		}
 	}

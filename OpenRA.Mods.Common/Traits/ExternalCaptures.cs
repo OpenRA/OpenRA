@@ -105,7 +105,7 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			var target = self.ResolveFrozenActorOrder(order, Color.Red);
-			if (target.Type != TargetType.Actor)
+			if (target.Type != TargetType.Actor && target.Type != TargetType.FrozenActor)
 				return;
 
 			if (!order.Queued)

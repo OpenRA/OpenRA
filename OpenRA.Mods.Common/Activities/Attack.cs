@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Drawing;
 using System.Linq;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Traits;
@@ -21,7 +22,7 @@ namespace OpenRA.Mods.Common.Activities
 	public class Attack : Activity
 	{
 		[Flags]
-		enum AttackStatus { UnableToAttack, NeedsToTurn, NeedsToMove, Attacking }
+		enum AttackStatus { UnableToAttack, NeedsToTurn, NeedsToMove, Attacking, FrozenSwitch }
 
 		protected readonly Target Target;
 		readonly AttackBase[] attackTraits;
@@ -35,6 +36,7 @@ namespace OpenRA.Mods.Common.Activities
 		WDist maxRange;
 		Activity turnActivity;
 		Activity moveActivity;
+		Attack frozenSwitchActivity;
 		AttackStatus attackStatus = AttackStatus.UnableToAttack;
 
 		public Attack(Actor self, Target target, bool allowMovement, bool forceAttack, int facingTolerance)
@@ -71,7 +73,25 @@ namespace OpenRA.Mods.Common.Activities
 			if (attackStatus.HasFlag(AttackStatus.NeedsToMove))
 				return moveActivity;
 
+			if (attackStatus.HasFlag(AttackStatus.FrozenSwitch))
+			{
+				// When shooting a non-frozen target which became frozen,
+				// this makes sure that the target line will remain even after
+				// the underlying actor is destroyed
+				self.SetTargetLine(frozenSwitchActivity.Target, Color.Red);
+				return frozenSwitchActivity;
+			}
+
 			return NextActivity;
+		}
+
+		protected bool TryUpdateFrozenActorTarget(Actor self)
+		{
+			Target target2 = Target.TryUpdateFrozenActorTarget(self);
+			if (target2.Type == TargetType.Invalid)
+				return false;
+			frozenSwitchActivity = new Attack(self, target2, move != null, forceAttack, facingTolerance);
+			return true;
 		}
 
 		protected virtual Activity InnerTick(Actor self, AttackBase attack)
@@ -79,18 +99,19 @@ namespace OpenRA.Mods.Common.Activities
 			if (IsCanceled)
 				return NextActivity;
 
-			var type = Target.Type;
-			if (!Target.IsValidFor(self) || type == TargetType.FrozenActor)
+			if (!Target.IsValidFor(self))
 				return NextActivity;
 
-			if (attack.Info.AttackRequiresEnteringCell && !positionable.CanEnterCell(Target.Actor.Location, null, false))
-				return NextActivity;
+			if (!Target.IsOwnerTargetable(self))
+			{
+				if (TryUpdateFrozenActorTarget(self))
+					attackStatus |= AttackStatus.FrozenSwitch;
 
-			// Drop the target if it moves under the shroud / fog.
-			// HACK: This would otherwise break targeting frozen actors
-			// The problem is that Shroud.IsTargetable returns false (as it should) for
-			// frozen actors, but we do want to explicitly target the underlying actor here.
-			if (!attack.Info.IgnoresVisibility && type == TargetType.Actor && !Target.Actor.Info.HasTraitInfo<FrozenUnderFogInfo>() && !self.Owner.CanTargetActor(Target.Actor))
+				return NextActivity;
+			}
+
+			var positionableLoc = self.World.Map.CellContaining(Target.CenterPosition);
+			if (attack.Info.AttackRequiresEnteringCell && !positionable.CanEnterCell(positionableLoc, null, false))
 				return NextActivity;
 
 			// Drop the target once none of the weapons are effective against it
