@@ -100,7 +100,7 @@ namespace OpenRA.Mods.Common.Activities
 
 		void EndCapture(Actor self)
 		{
-			if (capturable.CaptureInProgress)
+			if (target.Type == TargetType.Actor && capturable.CaptureInProgress)
 				capturable.EndCapture();
 			if (capturingToken != ConditionManager.InvalidConditionToken)
 				capturingToken = conditionManager.RevokeCondition(self, capturingToken);
