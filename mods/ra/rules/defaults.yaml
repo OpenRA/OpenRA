@@ -248,12 +248,6 @@
 	Guardable:
 	Tooltip:
 		GenericName: Vehicle
-	EjectOnDeath:
-		PilotActor: e1
-		SuccessRate: 20
-		EjectOnGround: true
-		EjectInAir: false
-		AllowUnsuitableCell: false
 	Capturable:
 		Type: vehicle
 		CaptureThreshold: 100
