@@ -21,6 +21,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Number of ticks to wait between giving money.")]
 		public readonly int Interval = 50;
 
+		[Desc("Number of ticks to wait before giving first money.")]
+		public readonly int InitialDelay = 0;
+
 		[Desc("Amount of money to give each time.")]
 		public readonly int Amount = 15;
 
@@ -43,6 +46,7 @@ namespace OpenRA.Mods.Common.Traits
 			: base(info)
 		{
 			this.info = info;
+			ticks = info.InitialDelay;
 		}
 
 		protected override void Created(Actor self)
