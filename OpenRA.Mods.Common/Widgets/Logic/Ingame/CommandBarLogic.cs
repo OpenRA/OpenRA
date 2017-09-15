@@ -205,18 +205,18 @@ namespace OpenRA.Mods.Common.Widgets
 			var keyOverrides = widget.GetOrNull<LogicKeyListenerWidget>("MODIFIER_OVERRIDES");
 			if (keyOverrides != null)
 			{
-				keyOverrides.OnKeyPress = ki =>
+				keyOverrides.AddHandler(e =>
 				{
 					// HACK: enable attack move to be triggered if the ctrl key is pressed
-					var modified = new Hotkey(ki.Key, ki.Modifiers & ~Modifiers.Ctrl);
+					var modified = new Hotkey(e.Key, e.Modifiers & ~Modifiers.Ctrl);
 					if (attackMoveButton.Key.GetValue() == modified)
 					{
-						attackMoveButton.OnKeyPress(ki);
+						attackMoveButton.OnKeyPress(e);
 						return true;
 					}
 
 					return false;
-				};
+				});
 			}
 		}
 
