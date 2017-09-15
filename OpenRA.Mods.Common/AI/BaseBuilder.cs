@@ -183,7 +183,7 @@ namespace OpenRA.Mods.Common.AI
 				if (!ai.Info.BuildingLimits.ContainsKey(actor.Name))
 					return true;
 
-				return playerBuildings.Count(a => a.Info.Name == actor.Name) <= ai.Info.BuildingLimits[actor.Name];
+				return playerBuildings.Count(a => a.Info.Name == actor.Name) < ai.Info.BuildingLimits[actor.Name];
 			});
 
 			if (orderBy != null)
