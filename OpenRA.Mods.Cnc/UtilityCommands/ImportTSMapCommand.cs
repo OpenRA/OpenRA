@@ -115,7 +115,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 			{ 0xAF, "trock03" },
 			{ 0xB0, "trock04" },
 			{ 0xB1, "trock05" },
-			{ 0xBB, "veinholedummy" },
+			{ 0xB2, null }, // veinholedummy
 			{ 0xBC, "crate" }
 		};
 
@@ -389,6 +389,9 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 				string actorType;
 				if (OverlayToActor.TryGetValue(overlayType, out actorType))
 				{
+					if (string.IsNullOrEmpty(actorType))
+						continue;
+
 					var shape = new Size(1, 1);
 					if (OverlayShapes.TryGetValue(overlayType, out shape))
 					{
