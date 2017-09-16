@@ -937,7 +937,7 @@
 	EditorTilesetFilter:
 		Categories: Tree
 	Health:
-		HP: 500
+		HP: 2000
 	Armor:
 		Type: Wood
 	Targetable:
