@@ -948,7 +948,7 @@
 		GrantPermanently: True
 	Burns:
 		Anim: tree
-		Palette: effect
+		Palette: effectalpha50
 		RequiresCondition: burning
 		DamageTypes: Incendiary
 	ExplosionOnDamageTransition:
