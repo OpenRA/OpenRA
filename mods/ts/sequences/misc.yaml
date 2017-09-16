@@ -685,14 +685,6 @@ burn-s:
 fire:
 	Defaults:
 		ZOffset: 512
-	1: fire1
-		Length: 17
-	2: fire2
-		Length: 17
-	3: fire3
-		Length: 17
-	4: fire4
-		Length: 14
 	tree:
 		Combine:
 			fire2:
