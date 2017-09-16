@@ -12,6 +12,10 @@
 		Tileset: TEMPERATE
 		Filename: unittem.pal
 		ShadowIndex: 1
+	PaletteFromJascFile:
+		Name: units
+		Filename: tsprjasc.pal
+		ShadowIndex: 1
 	PaletteFromFile@depth:
 		Name: depth
 		Filename: depth.pal
