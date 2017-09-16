@@ -3,6 +3,10 @@
 		Name: player
 		Filename: temperat.pal
 		ShadowIndex: 4
+	PaletteFromGimpFile:
+		Name: units
+		Filename: Red_Alert.act
+		ShadowIndex: 4
 	PaletteFromCurrentTileset:
 		Name: terrain
 		ShadowIndex: 3,4
