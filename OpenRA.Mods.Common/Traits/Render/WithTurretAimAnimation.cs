@@ -14,7 +14,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits.Render
 {
-	public class WithTurretAimAnimationInfo : ITraitInfo, Requires<WithSpriteTurretInfo>, Requires<ArmamentInfo>, Requires<AttackBaseInfo>
+	public class WithTurretAimAnimationInfo : ConditionalTraitInfo, Requires<WithSpriteTurretInfo>, Requires<ArmamentInfo>, Requires<AttackBaseInfo>
 	{
 		[Desc("Armament name")]
 		public readonly string Armament = "primary";
@@ -28,19 +28,27 @@ namespace OpenRA.Mods.Common.Traits.Render
 		[Desc("Shown while reloading.")]
 		[SequenceReference(null, true)] public readonly string ReloadPrefix = null;
 
-		public object Create(ActorInitializer init) { return new WithTurretAimAnimation(init, this); }
+		public override object Create(ActorInitializer init) { return new WithTurretAimAnimation(init, this); }
+
+		public override void RulesetLoaded(Ruleset rules, ActorInfo ai)
+		{
+			var turretAttackAnim = ai.TraitInfos<WithTurretAttackAnimationInfo>().Any(t => t.Turret == Turret);
+			if (turretAttackAnim)
+				throw new YamlException("WithTurretAimAnimation is currently not compatible with WithTurretAttackAnimation.");
+
+			base.RulesetLoaded(rules, ai);
+		}
 	}
 
-	public class WithTurretAimAnimation : ITick
+	public class WithTurretAimAnimation : ConditionalTrait<WithTurretAimAnimationInfo>, ITick
 	{
-		readonly WithTurretAimAnimationInfo info;
 		readonly AttackBase attack;
 		readonly Armament armament;
 		readonly WithSpriteTurret wst;
 
 		public WithTurretAimAnimation(ActorInitializer init, WithTurretAimAnimationInfo info)
+			: base(info)
 		{
-			this.info = info;
 			attack = init.Self.Trait<AttackBase>();
 			armament = init.Self.TraitsImplementing<Armament>()
 				.Single(a => a.Info.Name == info.Armament);
@@ -50,14 +58,14 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		void ITick.Tick(Actor self)
 		{
-			if (string.IsNullOrEmpty(info.Sequence) && string.IsNullOrEmpty(info.ReloadPrefix))
+			if (IsTraitDisabled)
 				return;
 
 			var sequence = wst.Info.Sequence;
-			if (!string.IsNullOrEmpty(info.Sequence) && attack.IsAiming)
-				sequence = info.Sequence;
+			if (!string.IsNullOrEmpty(Info.Sequence) && attack.IsAiming)
+				sequence = Info.Sequence;
 
-			var prefix = (armament.IsReloading && !string.IsNullOrEmpty(info.ReloadPrefix)) ? info.ReloadPrefix : "";
+			var prefix = (armament.IsReloading && !string.IsNullOrEmpty(Info.ReloadPrefix)) ? Info.ReloadPrefix : "";
 
 			if (!string.IsNullOrEmpty(prefix) && sequence != (prefix + sequence))
 				sequence = prefix + sequence;
