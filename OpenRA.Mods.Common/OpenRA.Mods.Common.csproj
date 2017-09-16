@@ -423,6 +423,7 @@
     <Compile Include="Traits\Render\RenderSpritesEditorOnly.cs" />
     <Compile Include="Traits\Render\WithTurretAttackAnimation.cs" />
     <Compile Include="Traits\Render\WithAcceptDeliveredCashAnimation.cs" />
+    <Compile Include="Traits\Render\WithTurretAimAnimation.cs" />
     <Compile Include="Traits\Render\RenderUtils.cs" />
     <Compile Include="Traits\Render\RenderDebugState.cs" />
     <Compile Include="Traits\Render\RenderNameTag.cs" />
