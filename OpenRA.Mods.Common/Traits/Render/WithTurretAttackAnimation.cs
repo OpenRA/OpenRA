@@ -14,7 +14,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits.Render
 {
-	public class WithTurretAttackAnimationInfo : ITraitInfo, Requires<WithSpriteTurretInfo>, Requires<ArmamentInfo>, Requires<AttackBaseInfo>
+	public class WithTurretAttackAnimationInfo : ITraitInfo, Requires<WithSpriteTurretInfo>, Requires<ArmamentInfo>
 	{
 		[Desc("Armament name")]
 		public readonly string Armament = "primary";
@@ -24,12 +24,6 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		[Desc("Displayed while attacking.")]
 		[SequenceReference] public readonly string AttackSequence = null;
-
-		[Desc("Displayed while targeting.")]
-		[SequenceReference] public readonly string AimSequence = null;
-
-		[Desc("Shown while reloading.")]
-		[SequenceReference(null, true)] public readonly string ReloadPrefix = null;
 
 		[Desc("Delay in ticks before animation starts, either relative to attack preparation or attack.")]
 		public readonly int Delay = 0;
@@ -43,8 +37,6 @@ namespace OpenRA.Mods.Common.Traits.Render
 	public class WithTurretAttackAnimation : ITick, INotifyAttack
 	{
 		readonly WithTurretAttackAnimationInfo info;
-		readonly AttackBase attack;
-		readonly Armament armament;
 		readonly WithSpriteTurret wst;
 
 		int tick;
@@ -52,9 +44,6 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public WithTurretAttackAnimation(ActorInitializer init, WithTurretAttackAnimationInfo info)
 		{
 			this.info = info;
-			attack = init.Self.Trait<AttackBase>();
-			armament = init.Self.TraitsImplementing<Armament>()
-				.Single(a => a.Info.Name == info.Armament);
 			wst = init.Self.TraitsImplementing<WithSpriteTurret>()
 				.Single(st => st.Info.Turret == info.Turret);
 		}
@@ -67,6 +56,9 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		void INotifyAttack.Attacking(Actor self, Target target, Armament a, Barrel barrel)
 		{
+			if (a.Info.Name != info.Armament)
+				return;
+
 			if (info.DelayRelativeTo == AttackDelayType.Attack)
 			{
 				if (info.Delay > 0)
@@ -78,6 +70,9 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		void INotifyAttack.PreparingAttack(Actor self, Target target, Armament a, Barrel barrel)
 		{
+			if (a.Info.Name != info.Armament)
+				return;
+
 			if (info.DelayRelativeTo == AttackDelayType.Preparation)
 			{
 				if (info.Delay > 0)
@@ -91,20 +86,6 @@ namespace OpenRA.Mods.Common.Traits.Render
 		{
 			if (info.Delay > 0 && --tick == 0)
 				PlayAttackAnimation(self);
-
-			if (string.IsNullOrEmpty(info.AimSequence) && string.IsNullOrEmpty(info.ReloadPrefix))
-				return;
-
-			var sequence = wst.Info.Sequence;
-			if (!string.IsNullOrEmpty(info.AimSequence) && attack.IsAiming)
-				sequence = info.AimSequence;
-
-			var prefix = (armament.IsReloading && !string.IsNullOrEmpty(info.ReloadPrefix)) ? info.ReloadPrefix : "";
-
-			if (!string.IsNullOrEmpty(prefix) && sequence != (prefix + sequence))
-				sequence = prefix + sequence;
-
-			wst.DefaultAnimation.ReplaceAnim(sequence);
 		}
 	}
 }
