@@ -114,12 +114,17 @@ namespace OpenRA.Mods.Common.SpriteLoaders
 				w = s.ReadUInt16();
 				h = s.ReadUInt16();
 				type = s.ReadUInt8();
+
+				// Zero sized frames always define a non-zero type
+				if ((w == 0 || h == 0) && type == 0)
+					return false;
+
 				s.Position += 19;
 			}
-			while (w == 0 && h == 0 && f++ < imageCount);
+			while (w == 0 && h == 0 && ++f < imageCount);
 
 			s.Position = start;
-			return type < 4;
+			return f == imageCount || type < 4;
 		}
 
 		ShpTSFrame[] ParseFrames(Stream s)
