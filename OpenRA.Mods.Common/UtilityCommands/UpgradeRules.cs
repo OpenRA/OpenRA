@@ -1756,6 +1756,24 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				// Removed AimSequence from WithSpriteTurret, use WithTurretAimAnimation instead
+				if (engineVersion < 20180224)
+				{
+					var spriteTurret = node.Value.Nodes.FirstOrDefault(n => n.Key.StartsWith("WithSpriteTurret", StringComparison.Ordinal));
+					if (spriteTurret != null)
+					{
+						var aimSequence = spriteTurret.Value.Nodes.FirstOrDefault(n => n.Key == "AimSequence");
+						if (aimSequence != null)
+						{
+							var aimAnim = new MiniYamlNode("WithTurretAimAnimation", "");
+							RenameNodeKey(aimSequence, "Sequence");
+							aimAnim.Value.Nodes.Add(aimSequence);
+							spriteTurret.Value.Nodes.Remove(aimSequence);
+							node.Value.Nodes.Add(aimAnim);
+						}
+					}
+				}
+
 				UpgradeActorRules(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 
