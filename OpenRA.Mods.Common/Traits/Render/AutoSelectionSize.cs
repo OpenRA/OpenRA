@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public object Create(ActorInitializer init) { return new AutoSelectionSize(this); }
 	}
 
-	public class AutoSelectionSize : IAutoSelectionSize
+	public class AutoSelectionSize : IAutoSelectionSize, IScreenMapSize
 	{
 		public AutoSelectionSize(AutoSelectionSizeInfo info) { }
 
@@ -27,6 +27,12 @@ namespace OpenRA.Mods.Common.Traits.Render
 		{
 			var rs = self.Trait<RenderSprites>();
 			return rs.AutoSelectionSize(self);
+		}
+
+		public int2 ScreenMapSize(Actor self)
+		{
+			var rs = self.Trait<RenderSprites>();
+			return rs.AutoScreenMapSize(self);
 		}
 	}
 }

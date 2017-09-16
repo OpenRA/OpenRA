@@ -47,6 +47,7 @@ namespace OpenRA
 
 		public int Generation;
 
+		public Rectangle ScreenMapBounds { get; private set; }
 		public Rectangle Bounds { get; private set; }
 		public Rectangle VisualBounds { get; private set; }
 		public IEffectiveOwner EffectiveOwner { get; private set; }
@@ -111,6 +112,7 @@ namespace OpenRA
 			// actor that allows us to provide some fast implementations of commonly used methods that are relied on by
 			// performance-sensitive parts of the core game engine, such as pathfinding, visibility and rendering.
 			Bounds = DetermineBounds();
+			ScreenMapBounds = DetermineScreenMapBounds();
 			VisualBounds = DetermineVisualBounds();
 			EffectiveOwner = TraitOrDefault<IEffectiveOwner>();
 			facing = TraitOrDefault<IFacing>();
@@ -138,6 +140,14 @@ namespace OpenRA
 			var offset = -size / 2;
 			if (si != null && si.Bounds != null && si.Bounds.Length > 2)
 				offset += new int2(si.Bounds[2], si.Bounds[3]);
+
+			return new Rectangle(offset.X, offset.Y, size.X, size.Y);
+		}
+
+		Rectangle DetermineScreenMapBounds()
+		{
+			var size = TraitsImplementing<IScreenMapSize>().Select(x => x.ScreenMapSize(this)).FirstOrDefault();
+			var offset = -size / 2;
 
 			return new Rectangle(offset.X, offset.Y, size.X, size.Y);
 		}

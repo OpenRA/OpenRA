@@ -240,6 +240,23 @@ namespace OpenRA.Mods.Common.Traits.Render
 					.FirstOrDefault();
 		}
 
+		public int2 AutoScreenMapSize(Actor self)
+		{
+			var visibleAnims = anims.Where(b => b.Animation.Animation.CurrentSequence != null);
+			var bounds = visibleAnims.Select(a => (a.Animation.Animation.Image.Size.XY * info.Scale).ToInt2());
+			var size = bounds.FirstOrDefault();
+			foreach (var bound in bounds)
+			{
+				if (bound.X > size.X)
+					size = size.WithX(bound.X);
+
+				if (bound.Y > size.Y)
+					size = size.WithY(bound.Y);
+			}
+
+			return size;
+		}
+
 		void IActorPreviewInitModifier.ModifyActorPreviewInit(Actor self, TypeDictionary inits)
 		{
 			if (!inits.Contains<FactionInit>())

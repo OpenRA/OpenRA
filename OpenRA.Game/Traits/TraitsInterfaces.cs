@@ -98,6 +98,7 @@ namespace OpenRA.Traits
 
 	public interface IAutoSelectionSizeInfo : ITraitInfoInterface { }
 	public interface IAutoSelectionSize { int2 SelectionSize(Actor self); }
+	public interface IScreenMapSize { int2 ScreenMapSize(Actor self); }
 
 	public interface IIssueOrder
 	{

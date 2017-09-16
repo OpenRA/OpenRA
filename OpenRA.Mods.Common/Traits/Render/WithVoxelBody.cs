@@ -39,7 +39,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		}
 	}
 
-	public class WithVoxelBody : ConditionalTrait<WithVoxelBodyInfo>, IAutoSelectionSize
+	public class WithVoxelBody : ConditionalTrait<WithVoxelBodyInfo>, IAutoSelectionSize, IScreenMapSize
 	{
 		readonly int2 size;
 
@@ -61,5 +61,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		}
 
 		public int2 SelectionSize(Actor self) { return size; }
+
+		public int2 ScreenMapSize(Actor self) { return size; }
 	}
 }

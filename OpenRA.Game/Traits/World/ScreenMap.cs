@@ -50,7 +50,7 @@ namespace OpenRA.Traits
 		Rectangle FrozenActorBounds(FrozenActor fa)
 		{
 			var pos = worldRenderer.ScreenPxPosition(fa.CenterPosition);
-			var bounds = fa.Bounds;
+			var bounds = fa.ScreenMapBounds;
 			bounds.Offset(pos.X, pos.Y);
 			return bounds;
 		}
@@ -58,7 +58,7 @@ namespace OpenRA.Traits
 		Rectangle ActorBounds(Actor a)
 		{
 			var pos = worldRenderer.ScreenPxPosition(a.CenterPosition);
-			var bounds = a.Bounds;
+			var bounds = a.ScreenMapBounds;
 			bounds.Offset(pos.X, pos.Y);
 			return bounds;
 		}

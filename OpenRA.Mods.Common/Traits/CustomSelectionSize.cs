@@ -22,12 +22,17 @@ namespace OpenRA.Mods.Common.Traits
 		public object Create(ActorInitializer init) { return new CustomSelectionSize(this); }
 	}
 
-	public class CustomSelectionSize : IAutoSelectionSize
+	public class CustomSelectionSize : IAutoSelectionSize, IScreenMapSize
 	{
 		readonly CustomSelectionSizeInfo info;
 		public CustomSelectionSize(CustomSelectionSizeInfo info) { this.info = info; }
 
 		public int2 SelectionSize(Actor self)
+		{
+			return new int2(info.CustomBounds[0], info.CustomBounds[1]);
+		}
+
+		public int2 ScreenMapSize(Actor self)
 		{
 			return new int2(info.CustomBounds[0], info.CustomBounds[1]);
 		}
