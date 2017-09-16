@@ -66,6 +66,19 @@ Background@LOBBY_OPTIONS_BIN:
 					Width: 160
 					Height: 25
 					Font: Regular
+				Label@DROPOUTBOTREPLACEMENT_DESC:
+					X: PARENT_RIGHT - WIDTH - 185
+					Y: 70
+					Width: 180
+					Height: 25
+					Text: Dropout Bot Replacement:
+					Align: Right
+				DropDownButton@DROPOUTBOTREPLACEMENT_DROPDOWNBUTTON:
+					X: PARENT_RIGHT - WIDTH
+					Y: 70
+					Width: 160
+					Height: 25
+					Font: Regular
 				Label@STARTINGCASH_DESC:
 					Y: 110
 					Width: 80

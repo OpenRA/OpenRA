@@ -594,8 +594,11 @@ namespace OpenRA.Server
 				var replaceWithBot = Settings.BotsForDisconnectedClients && State == ServerState.GameStarted;
 				if (replaceWithBot)
 				{
-					var bot = Map.Rules.Actors["player"].TraitInfos<IBotInfo>().Random(Random);
-					DispatchOrdersToClients(toDrop, 0, Order.ReplacePlayerWithBot(bot.Type, botController.Index).Serialize());
+					Session.LobbyOptionState dropoutReplacement;
+					var dropoutBotAvailable = LobbyInfo.GlobalSettings.LobbyOptions.TryGetValue("dropoutbotreplacment", out dropoutReplacement);
+					var botTypes = Map.Rules.Actors["player"].TraitInfos<IBotInfo>().Select(b => b.Type);
+					if (dropoutBotAvailable && botTypes.Contains(dropoutReplacement.Value))
+						DispatchOrdersToClients(toDrop, 0, Order.ReplacePlayerWithBot(dropoutReplacement.Value, botController.Index).Serialize());
 				}
 
 				DispatchOrders(toDrop, toDrop.MostRecentFrame, new byte[] { 0xbf });

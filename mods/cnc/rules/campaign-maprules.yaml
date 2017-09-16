@@ -13,6 +13,7 @@ World:
 	MapOptions:
 		ShortGameLocked: True
 		ShortGameEnabled: False
+		DropoutBotReplacementEnabled: False
 
 Player:
 	-ConquestVictoryConditions:
