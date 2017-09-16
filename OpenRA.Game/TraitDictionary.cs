@@ -35,6 +35,24 @@ namespace OpenRA
 		}
 	}
 
+	public interface ITraitEnumberable<T> : IEnumerable<T>
+	{
+		ITraitEnumberable<T> Where(Func<T, bool> predicate);
+		T First();
+		T First(Func<T, bool> predicate);
+		T FirstOrDefault();
+		T FirstOrDefault(Func<T, bool> predicate);
+		T Single();
+		T Single(Func<T, bool> predicate);
+		T SingleOrDefault();
+		T SingleOrDefault(Func<T, bool> predicate);
+		List<T> ToList();
+		T[] ToArray();
+		bool Any();
+		bool Any(Func<T, bool> predicate);
+		bool All(Func<T, bool> predicate);
+	}
+
 	/// <summary>
 	/// Provides efficient ways to query a set of actors by their traits.
 	/// </summary>
@@ -95,7 +113,7 @@ namespace OpenRA
 			return InnerGet<T>().GetOrDefault(actor.ActorID);
 		}
 
-		public IEnumerable<T> WithInterface<T>(Actor actor)
+		public ITraitEnumberable<T> WithInterface<T>(Actor actor)
 		{
 			CheckDestroyed(actor);
 			return InnerGet<T>().GetMultiple(actor.ActorID);
@@ -132,8 +150,32 @@ namespace OpenRA
 
 		class TraitContainer<T> : ITraitContainer
 		{
+			static readonly T[] EmptyArray = new T[0];
 			readonly List<Actor> actors = new List<Actor>();
 			readonly List<T> traits = new List<T>();
+
+			static bool ActorHasTrait(List<Actor> actors, uint actor, int index)
+			{
+				return index < actors.Count && actors[index].ActorID == actor;
+			}
+
+			static bool FindFirstTrait(List<Actor> actors, uint actor, out int index)
+			{
+				index = actors.BinarySearchMany(actor);
+				return ActorHasTrait(actors, actor, index);
+			}
+
+			static int FindTraitRange(List<Actor> actors, uint actor, out int firstIndex, out int endIndex)
+			{
+				var actorCount = actors.Count;
+				firstIndex = actors.BinarySearchMany(actor);
+				var end = firstIndex;
+				while (end < actorCount && actors[end].ActorID == actor)
+					end++;
+
+				endIndex = end;
+				return end - firstIndex;
+			}
 
 			public int Queries { get; private set; }
 
@@ -155,49 +197,295 @@ namespace OpenRA
 			public T GetOrDefault(uint actor)
 			{
 				++Queries;
-				var index = actors.BinarySearchMany(actor);
-				if (index >= actors.Count || actors[index].ActorID != actor)
+				int index;
+				if (!FindFirstTrait(actors, actor, out index))
 					return default(T);
-				else if (index + 1 < actors.Count && actors[index + 1].ActorID == actor)
-					throw new InvalidOperationException("Actor {0} has multiple traits of type `{1}`".F(actors[index].Info.Name, typeof(T)));
+				else if (ActorHasTrait(actors, actor, index + 1))
+					throw new InvalidOperationException("Actor {0} has multiple traits of type `{1}`.".F(actors[index], typeof(T)));
 				else return traits[index];
 			}
 
-			public IEnumerable<T> GetMultiple(uint actor)
+			public ITraitEnumberable<T> GetMultiple(uint actor)
 			{
 				// PERF: Custom enumerator for efficiency - using `yield` is slower.
 				++Queries;
 				return new MultipleEnumerable(this, actor);
 			}
 
-			class MultipleEnumerable : IEnumerable<T>
+			class MultipleEnumerable : ITraitEnumberable<T>
 			{
-				readonly TraitContainer<T> container;
-				readonly uint actor;
-				public MultipleEnumerable(TraitContainer<T> container, uint actor) { this.container = container; this.actor = actor; }
-				public IEnumerator<T> GetEnumerator() { return new MultipleEnumerator(container, actor); }
+				protected readonly TraitContainer<T> Container;
+				protected readonly uint Actor;
+				public MultipleEnumerable(TraitContainer<T> container, uint actor) { Container = container; Actor = actor; }
+				public virtual IEnumerator<T> GetEnumerator() { return new MultipleEnumerator(Container, Actor); }
 				System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() { return GetEnumerator(); }
+				protected Exception MissingAt(int index)
+				{
+					if (index < 0 || !ActorHasTrait(Container.actors, Actor, index))
+						return new InvalidOperationException("Actor #{0} does not have a trait of type `{1}` or does not exist.".F(Actor, typeof(T)));
+
+					return new InvalidOperationException("Actor {0} does not have a trait of type `{1}`.".F(Container.actors[index], typeof(T)));
+				}
+
+				protected Exception MissingAcceptableAt(int index)
+				{
+					if (index < 0 || !ActorHasTrait(Container.actors, Actor, index))
+						return new InvalidOperationException("Actor #{0} does not have an acceptable trait of type `{1}` or does not exist.".F(Actor, typeof(T)));
+
+					return new InvalidOperationException("Actor {0} does not have an acceptable trait of type `{1}`.".F(Container.actors[index], typeof(T)));
+				}
+
+				public virtual ITraitEnumberable<T> Where(Func<T, bool> predicate) { return new MultipleEnumerableWhere(Container, Actor, predicate); }
+				public virtual List<T> ToList()
+				{
+					int startIndex, endIndex;
+					var result = new List<T>(FindTraitRange(Container.actors, Actor, out startIndex, out endIndex));
+					var traits = Container.traits;
+					while (startIndex < endIndex)
+						result.Add(traits[startIndex++]);
+
+					return result;
+				}
+
+				public virtual T[] ToArray()
+				{
+					int startIndex, endIndex;
+					var count = FindTraitRange(Container.actors, Actor, out startIndex, out endIndex);
+					if (count == 0)
+						return EmptyArray;
+
+					// PERF: fastest for ~75 entries or less
+					var result = new T[count];
+					var traits = Container.traits;
+					for (var i = 0; startIndex < endIndex;)
+						result[i++] = traits[startIndex++];
+
+					return result;
+				}
+
+				public T First() { return First(true, false); }
+				public T FirstOrDefault() { return First(false, false); }
+				public T Single() { return First(true, true); }
+				public T SingleOrDefault() { return First(false, true); }
+				protected virtual T First(bool required, bool single)
+				{
+					var actors = Container.actors;
+					int index;
+					if (FindFirstTrait(actors, Actor, out index))
+					{
+						if (single && ActorHasTrait(actors, Actor, index + 1))
+							throw new InvalidOperationException("Actor {0} has multiple traits of type `{1}`.".F(actors[index].Info.Name, typeof(T)));
+
+						return Container.traits[index];
+					}
+
+					if (required)
+						throw MissingAcceptableAt(index);
+
+					return default(T);
+				}
+
+				public T First(Func<T, bool> predicate) { return First(true, false, predicate); }
+				public T FirstOrDefault(Func<T, bool> predicate) { return First(false, false, predicate); }
+				public T Single(Func<T, bool> predicate) { return First(true, true, predicate); }
+				public T SingleOrDefault(Func<T, bool> predicate) { return First(false, true, predicate); }
+				protected virtual T First(bool required, bool single, Func<T, bool> predicate)
+				{
+					var actors = Container.actors;
+					var traits = Container.traits;
+					int index;
+					if (FindFirstTrait(actors, Actor, out index)) do
+					{
+						var trait = traits[index];
+						if (predicate(trait))
+						{
+							if (single)
+							{
+								var i = index;
+								while (ActorHasTrait(actors, Actor, ++i))
+									if (predicate(traits[i]))
+										throw new InvalidOperationException("Actor {0} has multiple acceptable traits of type `{1}`.".F(actors[index], typeof(T)));
+							}
+
+							return trait;
+						}
+					}
+					while (ActorHasTrait(actors, Actor, ++index));
+
+					if (required)
+						throw MissingAcceptableAt(index - 1);
+
+					return default(T);
+				}
+
+				public virtual bool Any()
+				{
+					int index;
+					return FindFirstTrait(Container.actors, Actor, out index);
+				}
+
+				public virtual bool Check(Func<T, bool> predicate, bool any)
+				{
+					var actors = Container.actors;
+					var traits = Container.traits;
+					int index;
+					if (FindFirstTrait(actors, Actor, out index)) do
+					{
+						var trait = traits[index];
+						if (predicate(trait) == any)
+							return any;
+					}
+					while (ActorHasTrait(actors, Actor, ++index));
+
+					return !any;
+				}
+
+				public bool Any(Func<T, bool> predicate) { return Check(predicate, true); }
+				public bool All(Func<T, bool> predicate) { return Check(predicate, false); }
 			}
 
 			class MultipleEnumerator : IEnumerator<T>
 			{
-				readonly List<Actor> actors;
-				readonly List<T> traits;
-				readonly uint actor;
-				int index;
+				protected readonly List<Actor> Actors;
+				protected readonly List<T> Traits;
+				protected readonly uint Actor;
+				protected int index;
 				public MultipleEnumerator(TraitContainer<T> container, uint actor)
 				{
-					actors = container.actors;
-					traits = container.traits;
-					this.actor = actor;
+					Actors = container.actors;
+					Traits = container.traits;
+					Actor = actor;
 					Reset();
 				}
 
-				public void Reset() { index = actors.BinarySearchMany(actor) - 1; }
-				public bool MoveNext() { return ++index < actors.Count && actors[index].ActorID == actor; }
-				public T Current { get { return traits[index]; } }
+				public void Reset() { FindFirstTrait(Actors, Actor, out index); index--; }
+				public virtual bool MoveNext() { return ActorHasTrait(Actors, Actor, ++index); }
+				public T Current { get { return Traits[index]; } }
 				object System.Collections.IEnumerator.Current { get { return Current; } }
 				public void Dispose() { }
+			}
+
+			class MultipleEnumerableWhere : MultipleEnumerable
+			{
+				protected readonly Func<T, bool> Predicate;
+				public MultipleEnumerableWhere(TraitContainer<T> container, uint actor, Func<T, bool> predicate)
+					: base(container, actor) { Predicate = predicate; }
+				public override IEnumerator<T> GetEnumerator() { return new MultipleEnumeratorWhere(Container, Actor, Predicate); }
+				public override ITraitEnumberable<T> Where(Func<T, bool> predicate)
+				{
+					return new MultipleEnumerableWhere(Container, Actor, t => Predicate(t) && predicate(t));
+				}
+
+				public override List<T> ToList()
+				{
+					int startIndex, endIndex;
+					var result = new List<T>(FindTraitRange(Container.actors, Actor, out startIndex, out endIndex));
+					var traits = Container.traits;
+					while (startIndex < endIndex)
+					{
+						var trait = traits[startIndex++];
+						if (Predicate(trait))
+							result.Add(trait);
+					}
+
+					return result;
+				}
+
+				public override T[] ToArray()
+				{
+					int startIndex, endIndex;
+					var allCount = FindTraitRange(Container.actors, Actor, out startIndex, out endIndex);
+					if (allCount == 0)
+						return EmptyArray;
+
+					// PERF: fastest for ~75 entries or less
+					var buffer = new T[allCount];
+					var count = 0;
+					var traits = Container.traits;
+					while (startIndex < endIndex)
+					{
+						var trait = traits[startIndex++];
+						if (Predicate(trait))
+							buffer[count++] = trait;
+					}
+
+					if (count == allCount)
+						return buffer;
+
+					var result = new T[count];
+
+					// PERF: fastest for ~75 entries or less
+					for (var i = 0; i < count; i++)
+						result[i] = buffer[i];
+
+					return result;
+				}
+
+				protected override T First(bool required, bool single) { return base.First(required, single, Predicate); }
+				protected override T First(bool required, bool single, Func<T, bool> predicate)
+				{
+					var actors = Container.actors;
+					var traits = Container.traits;
+					int index;
+					if (FindFirstTrait(actors, Actor, out index)) do
+					{
+						var trait = traits[index];
+						if (Predicate(trait) && predicate(trait))
+						{
+							if (single)
+							{
+								var i = index;
+								while (ActorHasTrait(actors, Actor, ++i))
+								{
+									var other = traits[i];
+									if (Predicate(other) && predicate(other))
+										throw new InvalidOperationException("Actor {0} has more than one acceptable trait of type `{1}`.".F(actors[index], typeof(T)));
+								}
+							}
+
+							return trait;
+						}
+					}
+					while (ActorHasTrait(actors, Actor, ++index));
+
+					if (required)
+						throw MissingAcceptableAt(index - 1);
+
+					return default(T);
+				}
+
+				public override bool Any() { return base.Check(Predicate, true); }
+				public override bool Check(Func<T, bool> predicate, bool any)
+				{
+					var actors = Container.actors;
+					var traits = Container.traits;
+					int index;
+					if (FindFirstTrait(actors, Actor, out index)) do
+					{
+						var trait = traits[index];
+						if (Predicate(trait) && (predicate(trait) == any))
+							return any;
+					}
+					while (ActorHasTrait(actors, Actor, ++index));
+
+					return !any;
+				}
+			}
+
+			class MultipleEnumeratorWhere : MultipleEnumerator
+			{
+				readonly Func<T, bool> predicate;
+				public MultipleEnumeratorWhere(TraitContainer<T> container, uint actor, Func<T, bool> predicate)
+					: base(container, actor) { this.predicate = predicate; }
+
+				public override bool MoveNext()
+				{
+					while (ActorHasTrait(Actors, Actor, ++index))
+						if (predicate(Traits[index]))
+							return true;
+
+					return false;
+				}
 			}
 
 			public IEnumerable<TraitPair<T>> All()
@@ -263,13 +551,11 @@ namespace OpenRA
 
 			public void RemoveActor(uint actor)
 			{
-				var startIndex = actors.BinarySearchMany(actor);
-				if (startIndex >= actors.Count || actors[startIndex].ActorID != actor)
+				int startIndex, endIndex;
+				var count = FindTraitRange(actors, actor, out startIndex, out endIndex);
+				if (count == 0)
 					return;
-				var endIndex = startIndex + 1;
-				while (endIndex < actors.Count && actors[endIndex].ActorID == actor)
-					endIndex++;
-				var count = endIndex - startIndex;
+
 				actors.RemoveRange(startIndex, count);
 				traits.RemoveRange(startIndex, count);
 			}

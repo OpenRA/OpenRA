@@ -248,7 +248,7 @@ namespace OpenRA
 			return World.TraitDict.GetOrDefault<T>(this);
 		}
 
-		public IEnumerable<T> TraitsImplementing<T>()
+		public ITraitEnumberable<T> TraitsImplementing<T>()
 		{
 			return World.TraitDict.WithInterface<T>(this);
 		}
