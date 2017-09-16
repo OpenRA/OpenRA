@@ -1709,6 +1709,53 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				// Split aim animation logic from WithTurretAttackAnimation to separate WithTurretAimAnimation
+				if (engineVersion < 20180223)
+				{
+					var turAttackAnim = node.Value.Nodes.FirstOrDefault(n => n.Key.StartsWith("WithTurretAttackAnimation", StringComparison.Ordinal));
+					if (turAttackAnim != null)
+					{
+						var atkSequence = turAttackAnim.Value.Nodes.FirstOrDefault(n => n.Key == "AttackSequence");
+						var aimSequence = turAttackAnim.Value.Nodes.FirstOrDefault(n => n.Key == "AimSequence");
+
+						// If only AimSequence is null, just rename AttackSequence to Sequence (ReloadPrefix is very unlikely to be defined in that case).
+						// If only AttackSequence is null, just rename the trait and property (the delay properties will likely be undefined).
+						// If both aren't null, split/copy everything relevant to the new WithTurretAimAnimation.
+						// If both are null (extremely unlikely), do nothing.
+						if (atkSequence == null && aimSequence != null)
+						{
+							RenameNodeKey(turAttackAnim, "WithTurretAimAnimation");
+							RenameNodeKey(aimSequence, "Sequence");
+						}
+						else if (atkSequence != null && aimSequence == null)
+							RenameNodeKey(atkSequence, "Sequence");
+						else if (atkSequence != null && aimSequence != null)
+						{
+							var aimAnim = new MiniYamlNode("WithTurretAimAnimation", "");
+							RenameNodeKey(aimSequence, "Sequence");
+							aimAnim.Value.Nodes.Add(aimSequence);
+							turAttackAnim.Value.Nodes.Remove(aimSequence);
+
+							var relPrefix = turAttackAnim.Value.Nodes.FirstOrDefault(n => n.Key == "ReloadPrefix");
+							var turr = turAttackAnim.Value.Nodes.FirstOrDefault(n => n.Key == "Turret");
+							var arm = turAttackAnim.Value.Nodes.FirstOrDefault(n => n.Key == "Armament");
+							if (relPrefix != null)
+							{
+								aimAnim.Value.Nodes.Add(relPrefix);
+								turAttackAnim.Value.Nodes.Remove(relPrefix);
+							}
+
+							if (turr != null)
+								aimAnim.Value.Nodes.Add(turr);
+							if (arm != null)
+								aimAnim.Value.Nodes.Add(arm);
+
+							RenameNodeKey(atkSequence, "Sequence");
+							node.Value.Nodes.Add(aimAnim);
+						}
+					}
+				}
+
 				UpgradeActorRules(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 
