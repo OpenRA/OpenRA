@@ -496,15 +496,17 @@ MSAM:
 		Weapon: 227mm
 		LocalOffset: 213,128,0, 213,-128,0
 	Armament@SECONDARY:
+		Name: secondary
 		Weapon: 227mm
 		LocalOffset: 213,-128,0, 213,128,0
 	AttackFrontal:
 	WithSpriteTurret:
-		AimSequence: aim
 	SpawnActorOnDeath:
 		Actor: MSAM.Husk
 		OwnerType: InternalName
 		EffectiveOwnerFromOwner: true
+	WithTurretAimAnimation:
+		Sequence: aim
 
 MLRS:
 	Inherits: ^Tank
