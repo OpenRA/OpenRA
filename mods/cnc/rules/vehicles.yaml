@@ -539,9 +539,16 @@ MLRS:
 	AmmoPool:
 		Ammo: 2
 		PipCount: 0
+		AmmoCondition: ammo
 	AttackTurreted:
-	WithReloadingSpriteTurret:
-		AmmoPoolName: primary
+	WithSpriteTurret:
+		RequiresCondition: ammo > 1
+	WithSpriteTurret@OneMissile:
+		RequiresCondition: ammo == 1
+		Sequence: turret1
+	WithSpriteTurret@NoMissiles:
+		RequiresCondition: !ammo
+		Sequence: turret0
 	AutoTarget:
 		InitialStanceAI: Defend
 	RenderRangeCircle:

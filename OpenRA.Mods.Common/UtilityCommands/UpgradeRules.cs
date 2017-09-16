@@ -1650,6 +1650,30 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				// Removed WithReloadingSpriteTurret
+				if (engineVersion < 20180223)
+				{
+					var reloadingTurret = node.Value.Nodes.FirstOrDefault(n => n.Key.StartsWith("WithReloadingSpriteTurret", StringComparison.Ordinal));
+					if (reloadingTurret != null)
+					{
+						var ammoPool = node.Value.Nodes.FirstOrDefault(n => n.Key.StartsWith("AmmoPool", StringComparison.Ordinal));
+						if (ammoPool != null)
+							ammoPool.Value.Nodes.Add(new MiniYamlNode("AmmoCondition", "ammo"));
+
+						RenameNodeKey(reloadingTurret, "WithSpriteTurret");
+						var noAmmoTurret = new MiniYamlNode("WithSpriteTurret@NoAmmo", "");
+						var reqAmmoCondition = new MiniYamlNode("RequiresCondition", "ammo");
+						var reqNoAmmoCondition = new MiniYamlNode("RequiresCondition", "!ammo");
+
+						reloadingTurret.Value.Nodes.Add(reqAmmoCondition);
+						noAmmoTurret.Value.Nodes.Add(reqNoAmmoCondition);
+						node.Value.Nodes.Add(noAmmoTurret);
+
+						Console.WriteLine("WithReloadingSpriteTurret has been removed in favor of using stacked AmmoPool.AmmoConditions.");
+						Console.WriteLine("Check if your affected actors need further changes.");
+					}
+				}
+
 				UpgradeActorRules(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 
