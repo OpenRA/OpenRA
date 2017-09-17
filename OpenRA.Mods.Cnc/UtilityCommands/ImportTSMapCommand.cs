@@ -116,7 +116,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 			{ 0xB0, "trock04" },
 			{ 0xB1, "trock05" },
 			{ 0xB2, null }, // veinholedummy
-			{ 0xBC, "crate" }
+			{ 0xB3, "crate" }
 		};
 
 		static readonly Dictionary<byte, Size> OverlayShapes = new Dictionary<byte, Size>()
