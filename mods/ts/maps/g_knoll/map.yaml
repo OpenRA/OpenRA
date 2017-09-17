@@ -184,36 +184,36 @@ Actors:
 		Owner: Neutral
 		Health: 100
 		Facing: 96
-	Actor27: cabhut
-		Location: 176,49
-		Owner: Neutral
-		Health: 100
-		Facing: 96
-	Actor28: cabhut
-		Location: 190,45
-		Owner: Neutral
-		Health: 100
-		Facing: 96
-	Actor29: cabhut
-		Location: 205,8
-		Owner: Neutral
-		Health: 100
-		Facing: 96
-	Actor30: cabhut
-		Location: 201,-7
-		Owner: Neutral
-		Health: 100
-		Facing: 96
-	Actor31: cabhut
-		Location: 156,-72
-		Owner: Neutral
-		Health: 100
-		Facing: 96
-	Actor32: cabhut
-		Location: 145,-76
-		Owner: Neutral
-		Health: 100
-		Facing: 96
+#	Actor27: cabhut
+#		Location: 176,49
+#		Owner: Neutral
+#		Health: 100
+#		Facing: 96
+#	Actor28: cabhut
+#		Location: 190,45
+#		Owner: Neutral
+#		Health: 100
+#		Facing: 96
+#	Actor29: cabhut
+#		Location: 205,8
+#		Owner: Neutral
+#		Health: 100
+#		Facing: 96
+#	Actor30: cabhut
+#		Location: 201,-7
+#		Owner: Neutral
+#		Health: 100
+#		Facing: 96
+#	Actor31: cabhut
+#		Location: 156,-72
+#		Owner: Neutral
+#		Health: 100
+#		Facing: 96
+#	Actor32: cabhut
+#		Location: 145,-76
+#		Owner: Neutral
+#		Health: 100
+#		Facing: 96
 	Actor33: city13
 		Location: 138,15
 		Owner: Neutral
@@ -2222,8 +2222,33 @@ Actors:
 	Actor670: trock01
 		Location: 153,83
 		Owner: Neutral
+	Actor671: bridge1
+		Owner: Neutral
+		Location: 182,47
+	Actor672: bridge1
+		Owner: Neutral
+		Location: 183,47
+	Actor673: bridge1
+		Owner: Neutral
+		Location: 184,47
 
 Rules:
 	World:
 		GlobalLightingPaletteEffect:
 			Ambient: 0.87
+		ElevatedBridgeLayer:
+		ElevatedBridgePlaceholder@1:
+			Location: 202, -5
+			Height: 4
+			Orientation: Y
+			Length: 11
+		ElevatedBridgePlaceholder@2:
+			Location: 146, -75
+			Height: 6
+			Orientation: X
+			Length: 8
+		ElevatedBridgePlaceholder@3:
+			Location: 178, 46
+			Height: 4
+			Orientation: X
+			Length: 10
