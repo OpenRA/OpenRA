@@ -39,6 +39,7 @@ namespace OpenRA.Mods.Common.Effects
 		public void Tick(World world)
 		{
 			anim.Tick();
+			world.ScreenMap.Update(this, pos, anim.Image);
 		}
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)
