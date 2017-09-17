@@ -266,7 +266,7 @@ namespace OpenRA.Platforms.Default
 			slot.FrameStarted = currFrame;
 			slot.IsRelative = relative;
 			slot.SoundSource = null;
-			slot.Sound = new OpenAlStreamingSound(source, loop, relative, pos, volume, channels, sampleBits, sampleRate, stream);
+			slot.Sound = new OpenAlAsyncLoadSound(source, loop, relative, pos, volume, channels, sampleBits, sampleRate, stream);
 			return slot.Sound;
 		}
 
@@ -282,25 +282,33 @@ namespace OpenRA.Platforms.Default
 				return;
 
 			var source = ((OpenAlSound)sound).Source;
-			int state;
-			AL10.alGetSourcei(source, AL10.AL_SOURCE_STATE, out state);
-			if (state == AL10.AL_PLAYING && paused)
-				AL10.alSourcePause(source);
-			else if (state == AL10.AL_PAUSED && !paused)
-				AL10.alSourcePlay(source);
+			PauseSound(source, paused);
 		}
 
 		public void SetAllSoundsPaused(bool paused)
 		{
 			foreach (var source in sourcePool.Keys)
+				PauseSound(source, paused);
+		}
+
+		void PauseSound(uint source, bool paused)
+		{
+			int state;
+			AL10.alGetSourcei(source, AL10.AL_SOURCE_STATE, out state);
+			if (paused)
 			{
-				int state;
-				AL10.alGetSourcei(source, AL10.AL_SOURCE_STATE, out state);
-				if (state == AL10.AL_PLAYING && paused)
+				if (state == AL10.AL_PLAYING)
 					AL10.alSourcePause(source);
-				else if (state == AL10.AL_PAUSED && !paused)
+				else if (state == AL10.AL_INITIAL)
+				{
+					// If a sound hasn't started yet,
+					// we indicate it should not play be transitioning it to the stopped state.
 					AL10.alSourcePlay(source);
+					AL10.alSourceStop(source);
+				}
 			}
+			else if (!paused && state != AL10.AL_PLAYING)
+				AL10.alSourcePlay(source);
 		}
 
 		public void SetSoundVolume(float volume, ISound music, ISound video)
@@ -483,149 +491,99 @@ namespace OpenRA.Platforms.Default
 		}
 	}
 
-	class OpenAlStreamingSound : OpenAlSound
+	class OpenAlAsyncLoadSound : OpenAlSound
 	{
-		const int BufferCount = 3;
-		const int BufferSizeInSecs = 1;
-		readonly object bufferDequeueLock = new object();
+		static readonly byte[] SilentData = new byte[2];
 		readonly CancellationTokenSource cts = new CancellationTokenSource();
-		readonly Task streamTask;
-		readonly Stack<uint> freeBuffers = new Stack<uint>(BufferCount);
-		int totalSamplesPlayed;
+		readonly Task playTask;
 
-		public OpenAlStreamingSound(uint source, bool looping, bool relative, WPos pos, float volume, int channels, int sampleBits, int sampleRate, Stream stream)
+		public OpenAlAsyncLoadSound(uint source, bool looping, bool relative, WPos pos, float volume, int channels, int sampleBits, int sampleRate, Stream stream)
 			: base(source, looping, relative, pos, volume, sampleRate)
 		{
-			streamTask = Task.Run(async () =>
+			// Load a silent buffer into the source. Without this,
+			// attempting to change the state (i.e. play/pause) the source fails on some systems.
+			var silentSource = new OpenAlSoundSource(SilentData, channels, sampleBits, sampleRate);
+			AL10.alSourcei(source, AL10.AL_BUFFER, (int)silentSource.Buffer);
+
+			playTask = Task.Run(async () =>
 			{
-				var format = OpenAlSoundEngine.MakeALFormat(channels, sampleBits);
-				var bytesPerSample = sampleBits / 8;
-
-				var buffers = new uint[BufferCount];
-				AL10.alGenBuffers(new IntPtr(buffers.Length), buffers);
-				try
+				MemoryStream memoryStream;
+				using (stream)
 				{
-					foreach (var buffer in buffers)
-						freeBuffers.Push(buffer);
-					var data = new byte[sampleRate * bytesPerSample * BufferSizeInSecs];
-					var streamEnd = false;
-
-					while (!streamEnd && !cts.IsCancellationRequested)
+					memoryStream = new MemoryStream();
+					try
 					{
-						// Fill the data array as fully as possible.
-						var count = await ReadFillingBuffer(stream, data);
-						streamEnd = count < data.Length;
+						await stream.CopyToAsync(memoryStream, 81920, cts.Token);
+					}
+					catch (TaskCanceledException)
+					{
+						// Sound was stopped early, cleanup the unused buffer and exit.
+						AL10.alSourceStop(source);
+						AL10.alSourcei(source, AL10.AL_BUFFER, 0);
+						silentSource.Dispose();
+						return;
+					}
+				}
 
-						// Fill a buffer and queue it for playback.
-						var nextBuffer = freeBuffers.Pop();
-						AL10.alBufferData(nextBuffer, format, data, new IntPtr(count), new IntPtr(sampleRate));
-						AL10.alSourceQueueBuffers(source, new IntPtr(1), ref nextBuffer);
+				var data = memoryStream.ToArray();
+				var bytesPerSample = sampleBits / 8f;
+				var lengthInSecs = data.Length / (channels * bytesPerSample * sampleRate);
+				using (var soundSource = new OpenAlSoundSource(data, channels, sampleBits, sampleRate))
+				{
+					// Need to stop the source, before attaching the real input and deleting the silent one.
+					AL10.alSourceStop(source);
+					AL10.alSourcei(source, AL10.AL_BUFFER, (int)soundSource.Buffer);
+					silentSource.Dispose();
 
-						lock (cts)
+					lock (cts)
+					{
+						if (!cts.IsCancellationRequested)
 						{
-							if (!cts.IsCancellationRequested)
+							// TODO: A race condition can happen between the state check and playing/rewinding if a
+							// user pauses/resumes at the right moment. The window of opportunity is small and the
+							// consequences are minor, so for now we'll ignore it.
+							int state;
+							AL10.alGetSourcei(Source, AL10.AL_SOURCE_STATE, out state);
+							if (state != AL10.AL_STOPPED)
+								AL10.alSourcePlay(source);
+							else
 							{
-								// Once we have at least one buffer filled, we can actually start.
-								// If streaming fell behind, the source will have stopped,
-								// we also need to play it in this case to resume audio.
-								int state;
-								AL10.alGetSourcei(source, AL10.AL_SOURCE_STATE, out state);
-								if (state == AL10.AL_INITIAL || state == AL10.AL_STOPPED)
-								{
-									// If we resume playback from the stopped state, it resets to the beginning!
-									// To avoid replaying the same audio, we need to dequeue the processed buffers first.
-									if (state == AL10.AL_STOPPED)
-										DequeueBuffers();
-
-									AL10.alSourcePlay(source);
-								}
+								// A stopped sound indicates it was paused before we finishing loaded.
+								// We don't want to start playing it right away.
+								// We rewind the source so when it is started, it plays from the beginning.
+								AL10.alSourceRewind(source);
 							}
 						}
-
-						// Try and dequeue buffers as they become available to be reused.
-						// When the stream ends, wait for all the buffers to be processed
-						while (freeBuffers.Count < (streamEnd ? buffers.Length : 1))
-						{
-							await Task.Delay(TimeSpan.FromSeconds(BufferSizeInSecs), cts.Token).ConfigureAwait(false);
-							DequeueBuffers();
-						}
 					}
-				}
-				catch (TaskCanceledException)
-				{
-					// Streaming has been cancelled, we'll need to perform some cleanup.
-				}
-				finally
-				{
-					// If we never actually started the source, we need to start it and then stop it.
-					// Otherwise it is left in the initial state and never returned to the source pool.
-					int state;
-					AL10.alGetSourcei(Source, AL10.AL_SOURCE_STATE, out state);
-					if (state == AL10.AL_INITIAL)
-						AL10.alSourcePlay(Source);
 
-					// Ensure the source is stopped, which will mark all buffers as processed.
-					// Dequeue these, so they can then be freed.
-					AL10.alSourceStop(Source);
-					lock (bufferDequeueLock)
+					while (!cts.IsCancellationRequested)
 					{
-						int buffersProcessed;
-						AL10.alGetSourcei(source, AL10.AL_BUFFERS_PROCESSED, out buffersProcessed);
-						for (var i = 0; i < buffersProcessed; i++)
+						// Need to check seek before state. Otherwise, the music can stop after our state check at
+						// which point the seek will be zero, meaning we'll wait the full track length before seeing it
+						// has stopped.
+						var currentSeek = SeekPosition;
+
+						int state;
+						AL10.alGetSourcei(Source, AL10.AL_SOURCE_STATE, out state);
+						if (state == AL10.AL_STOPPED)
+							break;
+
+						try
 						{
-							var dequeued = 0U;
-							AL10.alSourceUnqueueBuffers(source, new IntPtr(1), ref dequeued);
+							// Wait until the track is due to complete, and at most 60 times a second to prevent a
+							// busy-wait.
+							var delaySecs = Math.Max(lengthInSecs - currentSeek, 1 / 60f);
+							await Task.Delay(TimeSpan.FromSeconds(delaySecs), cts.Token);
+						}
+						catch (TaskCanceledException)
+						{
+							// Sound was stopped early, allow normal cleanup to occur.
 						}
 					}
 
-					AL10.alDeleteBuffers(new IntPtr(buffers.Length), buffers);
-					stream.Dispose();
+					AL10.alSourcei(Source, AL10.AL_BUFFER, 0);
 				}
-			}).ContinueWith(task =>
-			{
-				Game.RunAfterTick(() =>
-				{
-					throw new Exception("Failed to stream a sound.", task.Exception);
-				});
-			}, TaskContinuationOptions.OnlyOnFaulted);
-		}
-
-		async Task<int> ReadFillingBuffer(Stream stream, byte[] buffer)
-		{
-			var offset = 0;
-			int count;
-			while (offset < buffer.Length &&
-				(count = await stream.ReadAsync(buffer, offset, buffer.Length - offset, cts.Token).ConfigureAwait(false)) > 0)
-				offset += count;
-			return offset;
-		}
-
-		void DequeueBuffers()
-		{
-			lock (bufferDequeueLock)
-			{
-				// Check for any processed buffers, and dequeue them for reuse.
-				int buffersProcessed;
-				AL10.alGetSourcei(Source, AL10.AL_BUFFERS_PROCESSED, out buffersProcessed);
-				for (var i = 0; i < buffersProcessed; i++)
-				{
-					// Dequeue a processed buffer, so we can reuse it.
-					var dequeued = 0U;
-					AL10.alSourceUnqueueBuffers(Source, new IntPtr(1), ref dequeued);
-					freeBuffers.Push(dequeued);
-
-					// When we remove a buffer, we need to account for this to calculate the overall seek position.
-					// The final buffer in the track may be shorter then BufferSizeInSecs, so we'll need to check how
-					// many bytes are actually in each buffer to avoid adding too much at the end.
-					int byteSize;
-					AL10.alGetBufferi(dequeued, AL10.AL_SIZE, out byteSize);
-
-					int bitRate;
-					AL10.alGetBufferi(dequeued, AL10.AL_BITS, out bitRate);
-
-					totalSamplesPlayed += byteSize / (bitRate / 8);
-				}
-			}
+			});
 		}
 
 		public override void Stop()
@@ -638,41 +596,16 @@ namespace OpenRA.Platforms.Default
 
 			try
 			{
-				streamTask.Wait();
+				playTask.Wait();
 			}
 			catch (AggregateException)
 			{
 			}
 		}
 
-		public override float SeekPosition
-		{
-			get
-			{
-				// Stop buffers being dequeued whilst we calculate the seek position.
-				lock (bufferDequeueLock)
-				{
-					int sampleOffset;
-					AL10.alGetSourcei(Source, AL11.AL_SAMPLE_OFFSET, out sampleOffset);
-
-					int state;
-					AL10.alGetSourcei(Source, AL10.AL_SOURCE_STATE, out state);
-
-					// If the source is not stopped, add the current offset to the total offset and return that.
-					if (state != AL10.AL_STOPPED)
-						return (sampleOffset + totalSamplesPlayed) / SampleRate;
-
-					// If the source stopped, the current offset will have been reset to 0.
-					// We'll need to dequeue any buffers played first and then return the total.
-					DequeueBuffers();
-					return totalSamplesPlayed / SampleRate;
-				}
-			}
-		}
-
 		public override bool Complete
 		{
-			get { return streamTask.IsCompleted; }
+			get { return playTask.IsCompleted; }
 		}
 	}
 }
