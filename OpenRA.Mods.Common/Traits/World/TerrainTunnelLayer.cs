@@ -42,6 +42,7 @@ namespace OpenRA.Mods.Common.Traits
 		public void WorldLoaded(World world, WorldRenderer wr)
 		{
 			var domainIndex = world.WorldActor.Trait<DomainIndex>();
+			var cellHeight = world.Map.CellHeightStep.Length;
 			foreach (var tti in world.WorldActor.Info.TraitInfos<TerrainTunnelInfo>())
 			{
 				enabled = true;
@@ -53,7 +54,7 @@ namespace OpenRA.Mods.Common.Traits
 					terrainIndices[uv] = terrain;
 
 					var pos = map.CenterOfCell(c);
-					cellCenters[uv] = pos - new WVec(0, 0, pos.Z - 512 * tti.Height);
+					cellCenters[uv] = pos - new WVec(0, 0, pos.Z - cellHeight * tti.Height);
 				}
 
 				var portal = tti.PortalCells();
