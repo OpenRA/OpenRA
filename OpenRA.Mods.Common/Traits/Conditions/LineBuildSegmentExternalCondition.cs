@@ -56,7 +56,8 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			foreach (var external in segment.TraitsImplementing<ExternalCondition>())
-				external.TryRevokeCondition(segment, self, token);
+				if (external.TryRevokeCondition(segment, self, token))
+					break;
 		}
 
 		void INotifyLineBuildSegmentsChanged.SegmentAdded(Actor self, Actor segment)

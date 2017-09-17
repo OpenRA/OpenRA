@@ -1,10 +1,14 @@
 Container@MAINMENU:
 	Logic: MainMenuLogic
 	Children:
-		Container@MUSICBUTTONS:
-			Logic: MusicControllerLogic
-			Children:
-				LogicKeyListener@MUSICCONTROLLER_KEYHANDLER:
+		LogicKeyListener@GLOBAL_KEYHANDLER:
+			Logic: MusicHotkeyLogic, ScreenshotHotkeyLogic, MuteHotkeyLogic
+				StopMusicKey: StopMusic
+				PauseMusicKey: PauseMusic
+				PrevMusicKey: PrevMusic
+				NextMusicKey: NextMusic
+				TakeScreenshotKey: TakeScreenshot
+				MuteAudioKey: ToggleMute
 		Background@BORDER:
 			Background: mainmenu-border
 			X: 0 - 15

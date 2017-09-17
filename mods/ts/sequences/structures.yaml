@@ -1871,10 +1871,10 @@ namisl:
 	make: ntmislmk
 		Length: 18
 		ShadowStart: 18
-	active: ntmisl_a # TODO: This is an overlay, but currently used as animation
+	active: ntmisl_a
 		Length: 10
 		Tick: 80
-	damaged-active: ntmisl_a # TODO: This is an overlay, but currently used as animation
+	damaged-active: ntmisl_a
 		Start: 10
 		Length: 10
 		Tick: 80

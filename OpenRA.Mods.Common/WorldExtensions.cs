@@ -32,8 +32,11 @@ namespace OpenRA.Mods.Common
 			// Then we iterate over this list, and find all actors for which their health radius is at least within lineWidth of the line.
 			// For actors without a health radius, we simply check their center point.
 			// The square in which we select all actors must be large enough to encompass the entire line's width.
-			var xDir = Math.Sign(lineEnd.X - lineStart.X);
-			var yDir = Math.Sign(lineEnd.Y - lineStart.Y);
+			// xDir and yDir must never be 0, otherwise the overscan will be 0 in the respective direction.
+			var xDiff = lineEnd.X - lineStart.X;
+			var yDiff = lineEnd.Y - lineStart.Y;
+			var xDir = xDiff < 0 ? -1 : 1;
+			var yDir = yDiff < 0 ? -1 : 1;
 
 			var dir = new WVec(xDir, yDir, 0);
 			var overselect = dir * (1024 + lineWidth.Length + targetExtraSearchRadius.Length);

@@ -378,6 +378,7 @@ NAMISL:
 		DisplayRadarPing: True
 		BeaconPoster:
 		CameraRange: 10c0
+	WithNukeLaunchOverlay:
 	SelectionDecorations:
 		VisualBounds: 75,48
 

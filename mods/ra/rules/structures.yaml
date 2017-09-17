@@ -42,7 +42,8 @@ MSLO:
 		InsufficientPowerSpeechNotification: InsufficientPower
 		IncomingSpeechNotification: AbombLaunchDetected
 		MissileWeapon: atomic
-		SpawnOffset: 0,427,0
+		MissileDelay: 5
+		SpawnOffset: 1c0,427,0
 		DisplayTimerStances: Ally, Neutral, Enemy
 		DisplayBeacon: True
 		DisplayRadarPing: True
@@ -61,6 +62,7 @@ MSLO:
 		Amount: -150
 	MustBeDestroyed:
 		RequiredForShortGame: false
+	WithNukeLaunchAnimation:
 
 GAP:
 	Inherits: ^ScienceBuilding
@@ -546,7 +548,7 @@ AGUN:
 		TurnSpeed: 15
 		InitialFacing: 224
 	-WithSpriteBody:
-	WithTurretedSpriteBody:
+	WithEmbeddedTurretSpriteBody:
 	Armament:
 		Weapon: ZSU-23
 		LocalOffset: 520,100,450, 520,-150,450
@@ -749,7 +751,7 @@ GUN:
 		TurnSpeed: 12
 		InitialFacing: 56
 	-WithSpriteBody:
-	WithTurretedSpriteBody:
+	WithEmbeddedTurretSpriteBody:
 	Armament:
 		Weapon: TurretGun
 		LocalOffset: 512,0,112
@@ -846,7 +848,7 @@ SAM:
 		TurnSpeed: 30
 		InitialFacing: 0
 	-WithSpriteBody:
-	WithTurretedSpriteBody:
+	WithEmbeddedTurretSpriteBody:
 	Armament:
 		Weapon: Nike
 		LocalOffset: 0,0,320
@@ -1673,7 +1675,7 @@ TENT:
 		Prerequisites: anypower, ~structures.allies, ~techlevel.infonly
 		Description: Trains infantry.
 	Valued:
-		Cost: 400
+		Cost: 500
 	Tooltip:
 		Name: Allied Barracks
 	Building:

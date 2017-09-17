@@ -2,7 +2,6 @@ sidebar: chrome.png
 	background-top: 0,0,226,295
 	background-iconrow: 0,295,226,48
 	background-bottom: 0,343,226,13
-	background-supportoverlay: 236,212,60,48
 
 sidebar-button: chrome.png
 	background: 377,0,25,25

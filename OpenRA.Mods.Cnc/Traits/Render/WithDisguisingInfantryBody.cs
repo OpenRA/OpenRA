@@ -36,7 +36,7 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 			intendedSprite = disguise.AsSprite;
 		}
 
-		public override void Tick(Actor self)
+		protected override void Tick(Actor self)
 		{
 			if (disguise.AsSprite != intendedSprite)
 			{

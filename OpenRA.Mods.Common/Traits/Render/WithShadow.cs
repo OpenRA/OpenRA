@@ -43,10 +43,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public IEnumerable<IRenderable> ModifyRender(Actor self, WorldRenderer wr, IEnumerable<IRenderable> r)
 		{
 			if (IsTraitDisabled)
-				return Enumerable.Empty<IRenderable>();
-
-			if (self.IsDead || !self.IsInWorld)
-				return Enumerable.Empty<IRenderable>();
+				return r;
 
 			// Contrails shouldn't cast shadows
 			var height = self.World.Map.DistanceAboveTerrain(self.CenterPosition).Length;

@@ -98,7 +98,7 @@ namespace OpenRA.Mods.AS.Traits
 						new FacingInit(attackFacing),
 					});
 
-					var plane = a.Trait<Aircraft>().IsPlane;
+					var plane = !a.Trait<Aircraft>().Info.CanHover;
 					delta = new WVec(WDist.Zero, info.BeaconDistanceOffset, WDist.Zero).Rotate(attackRotation);
 
 					if (plane)
@@ -110,7 +110,7 @@ namespace OpenRA.Mods.AS.Traits
 						else
 						{
 							a.QueueActivity(new Fly(a, Target.FromPos(target + spawnOffset)));
-							a.QueueActivity(new AttackMoveActivity(a, new FlyCircleTimed(a, info.GuardDuration)));
+							a.QueueActivity(new AttackMoveActivity(a, new FlyCircle(a, info.GuardDuration)));
 						}
 
 						a.QueueActivity(new FlyOffMap(a));

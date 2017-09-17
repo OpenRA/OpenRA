@@ -71,7 +71,7 @@ namespace OpenRA.Mods.Common.Traits
 				EarnedSamples.Dequeue();
 		}
 
-		public void Tick(Actor self)
+		void ITick.Tick(Actor self)
 		{
 			if (self.World.WorldTick % 1500 == 1)
 				UpdateEarnedThisMinute();

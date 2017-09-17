@@ -48,7 +48,7 @@ TankNapalm:
 	Report: aacanon3.aud
 	ValidTargets: Ground
 	Burst: 6
-	BurstDelay: 1
+	BurstDelays: 1
 	Projectile: Bullet
 		Speed: 426
 		Image: 120MM

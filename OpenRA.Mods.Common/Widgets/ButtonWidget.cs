@@ -19,14 +19,8 @@ namespace OpenRA.Mods.Common.Widgets
 	{
 		public readonly string TooltipContainer;
 		public readonly string TooltipTemplate = "BUTTON_TOOLTIP";
-		public Func<ButtonWidget, Hotkey> GetKey = _ => Hotkey.Invalid;
 
-		public Hotkey Key
-		{
-			get { return GetKey(this); }
-			set { GetKey = _ => value; }
-		}
-
+		public NamedHotkey Key = new NamedHotkey();
 		public bool DisableKeyRepeat = false;
 		public bool DisableKeySound = false;
 
@@ -136,7 +130,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public override bool HandleKeyPress(KeyInput e)
 		{
-			if (Hotkey.FromKeyInput(e) != Key || e.Event != KeyInputEvent.Down || (DisableKeyRepeat && e.IsRepeat))
+			if (Hotkey.FromKeyInput(e) != Key.GetValue() || e.Event != KeyInputEvent.Down || (DisableKeyRepeat && e.IsRepeat))
 				return false;
 
 			if (!IsDisabled())

@@ -94,6 +94,7 @@
     <Compile Include="Activities\Demolish.cs" />
     <Compile Include="Activities\DeployForGrantedCondition.cs" />
     <Compile Include="Activities\DonateCash.cs" />
+    <Compile Include="Activities\DonateExperience.cs" />
     <Compile Include="Activities\Enter.cs" />
     <Compile Include="Activities\EnterTransport.cs" />
     <Compile Include="Activities\ExternalCaptureActor.cs" />
@@ -130,6 +131,7 @@
     <Compile Include="AI\StateMachine.cs" />
     <Compile Include="AI\States\AirStates.cs" />
     <Compile Include="AI\States\GroundStates.cs" />
+    <Compile Include="AI\States\NavyStates.cs" />
     <Compile Include="AI\States\ProtectionStates.cs" />
     <Compile Include="AI\States\StateBase.cs" />
     <Compile Include="AI\SupportPowerDecision.cs" />
@@ -137,7 +139,6 @@
     <Compile Include="AudioLoaders\VocLoader.cs" />
     <Compile Include="AudioLoaders\WavLoader.cs" />
     <Compile Include="Effects\Beacon.cs" />
-    <Compile Include="Effects\Contrail.cs" />
     <Compile Include="Effects\ContrailFader.cs" />
     <Compile Include="Effects\CrateEffect.cs" />
     <Compile Include="Effects\RevealShroudEffect.cs" />
@@ -257,6 +258,7 @@
     <Compile Include="TraitsInterfaces.cs" />
     <Compile Include="TraitsInterfacesExternal.cs" />
     <Compile Include="Traits\AcceptsDeliveredCash.cs" />
+    <Compile Include="Traits\AcceptsDeliveredExperience.cs" />
     <Compile Include="Traits\Air\Aircraft.cs" />
     <Compile Include="Traits\Air\AttackBomber.cs" />
     <Compile Include="Traits\Air\AttackHeli.cs" />
@@ -299,6 +301,7 @@
     <Compile Include="Traits\Burns.cs" />
     <Compile Include="Traits\ChangesTerrain.cs" />
     <Compile Include="Traits\CommandBarBlacklist.cs" />
+    <Compile Include="Traits\Contrail.cs" />
     <Compile Include="Traits\Health.cs" />
     <Compile Include="Traits\HitShape.cs" />
     <Compile Include="Traits\Player\DeveloperMode.cs" />
@@ -327,6 +330,8 @@
     <Compile Include="Traits\CustomSellValue.cs" />
     <Compile Include="Traits\CustomSelectionSize.cs" />
     <Compile Include="Traits\DamagedByTerrain.cs" />
+    <Compile Include="Traits\DeliversCash.cs" />
+    <Compile Include="Traits\DeliversExperience.cs" />
     <Compile Include="Traits\Demolishable.cs" />
     <Compile Include="Traits\Demolition.cs" />
     <Compile Include="Traits\DetectCloaked.cs" />
@@ -416,8 +421,7 @@
     <Compile Include="Traits\Render\Hovers.cs" />
     <Compile Include="Traits\Render\LeavesTrails.cs" />
     <Compile Include="Traits\Render\RenderSpritesEditorOnly.cs" />
-    <Compile Include="Traits\Render\WithTurretedAttackAnimation.cs" />
-    <Compile Include="Traits\Render\WithTurretedSpriteBody.cs" />
+    <Compile Include="Traits\Render\WithTurretAttackAnimation.cs" />
     <Compile Include="Traits\Render\RenderUtils.cs" />
     <Compile Include="Traits\Render\RenderDebugState.cs" />
     <Compile Include="Traits\Render\RenderNameTag.cs" />
@@ -447,6 +451,8 @@
     <Compile Include="Traits\Render\WithHarvestOverlay.cs" />
     <Compile Include="Traits\Render\WithIdleOverlay.cs" />
     <Compile Include="Traits\Render\WithMuzzleOverlay.cs" />
+    <Compile Include="Traits\Render\WithNukeLaunchAnimation.cs" />
+    <Compile Include="Traits\Render\WithNukeLaunchOverlay.cs" />
     <Compile Include="Traits\Render\WithParachute.cs" />
     <Compile Include="Traits\Render\WithRangeCircle.cs" />
     <Compile Include="Traits\Render\WithRearmAnimation.cs" />
@@ -486,7 +492,6 @@
     <Compile Include="Traits\Sound\DeathSounds.cs" />
     <Compile Include="Traits\Sound\SoundOnDamageTransition.cs" />
     <Compile Include="Traits\Sound\AttackSounds.cs" />
-    <Compile Include="Traits\DeliversCash.cs" />
     <Compile Include="Traits\SupportPowers\AirstrikePower.cs" />
     <Compile Include="Traits\SupportPowers\GrantExternalConditionPower.cs" />
     <Compile Include="Traits\SupportPowers\NukePower.cs" />
@@ -559,8 +564,7 @@
     <Compile Include="UtilityCommands\ExtractZeroBraneStudioLuaAPI.cs" />
     <Compile Include="UtilityCommands\ExtractTraitDocsCommand.cs" />
     <Compile Include="UtilityCommands\ExtractWeaponDocsCommand.cs" />
-    <Compile Include="Widgets\Logic\Ingame\MusicControllerLogic.cs" />
-    <Compile Include="Widgets\UnitCommandWidget.cs" />
+    <Compile Include="Widgets\Logic\MusicHotkeyLogic.cs" />
     <Compile Include="WorldExtensions.cs" />
     <Compile Include="UtilityCommands\GetMapHashCommand.cs" />
     <Compile Include="UtilityCommands\Glob.cs" />
@@ -658,7 +662,6 @@
     <Compile Include="Widgets\SupportPowersWidget.cs" />
     <Compile Include="Widgets\SupportPowerTimerWidget.cs" />
     <Compile Include="Widgets\TerrainTemplatePreviewWidget.cs" />
-    <Compile Include="Widgets\WorldCommandWidget.cs" />
     <Compile Include="Widgets\WorldInteractionControllerWidget.cs" />
     <Compile Include="SpriteLoaders\ShpTDLoader.cs" />
     <Compile Include="SpriteLoaders\ShpTSLoader.cs" />
@@ -775,7 +778,6 @@
     <Compile Include="Traits\Buildings\FreeActorWithDelivery.cs" />
     <Compile Include="Traits\ExitsDebugOverlay.cs" />
     <Compile Include="Traits\World\ExitsDebugOverlayManager.cs" />
-    <Compile Include="Activities\Air\FlyCircleTimed.cs" />
     <Compile Include="UtilityCommands\ListInstallShieldCabContentsCommand.cs" />
     <Compile Include="FileFormats\InstallShieldCABCompression.cs" />
     <Compile Include="ModContent.cs" />
@@ -821,6 +823,19 @@
     <Compile Include="Traits\AutoTargetPriority.cs" />
     <Compile Include="Traits\Conditions\GrantConditionOnBotOwner.cs" />
     <Compile Include="Traits\Render\ReloadArmamentsBar.cs" />
+    <Compile Include="Lint\CheckChromeHotkeys.cs" />
+    <Compile Include="UtilityCommands\LintInterfaces.cs" />
+    <Compile Include="Widgets\Logic\SingleHotkeyBaseLogic.cs" />
+    <Compile Include="Widgets\Logic\ScreenshotHotkeyLogic.cs" />
+    <Compile Include="Widgets\Logic\MuteHotkeyLogic.cs" />
+    <Compile Include="Widgets\Logic\Ingame\Hotkeys\CycleBasesHotkeyLogic.cs" />
+    <Compile Include="Widgets\Logic\Ingame\Hotkeys\CycleProductionActorsHotkeyLogic.cs" />
+    <Compile Include="Widgets\Logic\Ingame\Hotkeys\JumpToLastEventHotkeyLogic.cs" />
+    <Compile Include="Widgets\Logic\Ingame\Hotkeys\JumpToSelectedActorsHotkeyLogic.cs" />
+    <Compile Include="Widgets\Logic\Ingame\Hotkeys\TogglePixelDoubleHotkeyLogic.cs" />
+    <Compile Include="Widgets\Logic\Ingame\Hotkeys\TogglePlayerStanceColorHotkeyLogic.cs" />
+    <Compile Include="Widgets\Logic\Ingame\Hotkeys\PauseHotkeyLogic.cs" />
+    <Compile Include="Widgets\Logic\Ingame\Hotkeys\CycleStatusBarsHotkeyLogic.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="AfterBuild">

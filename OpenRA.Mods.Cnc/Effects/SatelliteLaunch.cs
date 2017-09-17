@@ -16,7 +16,7 @@ using OpenRA.Mods.Cnc.Traits;
 
 namespace OpenRA.Mods.Cnc.Effects
 {
-	class SatelliteLaunch : IEffect
+	class SatelliteLaunch : IEffect, ISpatiallyPartitionable
 	{
 		readonly GpsPowerInfo info;
 		readonly Actor launcher;
@@ -31,14 +31,16 @@ namespace OpenRA.Mods.Cnc.Effects
 
 			doors = new Animation(launcher.World, info.DoorImage);
 			doors.PlayThen(info.DoorSequence,
-				() => launcher.World.AddFrameEndTask(w => w.Remove(this)));
+				() => launcher.World.AddFrameEndTask(w => { w.Remove(this); w.ScreenMap.Remove(this); }));
 
 			pos = launcher.CenterPosition;
+			launcher.World.ScreenMap.Add(this, pos, doors.Image);
 		}
 
 		public void Tick(World world)
 		{
 			doors.Tick();
+			world.ScreenMap.Update(this, pos, doors.Image);
 
 			if (++frame == 19)
 			{

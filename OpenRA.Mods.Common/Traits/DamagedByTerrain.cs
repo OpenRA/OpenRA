@@ -77,7 +77,7 @@ namespace OpenRA.Mods.Common.Traits
 				self.InflictDamage(self.World.WorldActor, new Damage(delta, Info.DamageTypes));
 		}
 
-		public void Tick(Actor self)
+		void ITick.Tick(Actor self)
 		{
 			if (IsTraitDisabled || health.HP <= damageThreshold || --damageTicks > 0)
 				return;

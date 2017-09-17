@@ -95,11 +95,11 @@ TRAN.Husk:
 		Offset: 597,0,213
 		Sequence: rotor2
 	RevealsShroud:
-		Range: 10c0
+		Range: 8c0
 		Type: GroundPosition
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
-		Range: 8c0
+		Range: 6c0
 		Type: GroundPosition
 	RenderSprites:
 		Image: tran
@@ -135,6 +135,7 @@ BADR.Husk:
 		MinDamage: Undamaged
 	RenderSprites:
 		Image: badr
+	-RevealOnDeath:
 
 MIG.Husk:
 	Inherits: ^PlaneHusk

@@ -953,6 +953,45 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				// Introduced TakeOffOnCreation and TakeOffOnResupply booleans to aircraft
+				if (engineVersion < 20170819)
+				{
+					if (node.Key.StartsWith("Aircraft", StringComparison.Ordinal))
+					{
+						var canHover = node.Value.Nodes.FirstOrDefault(n => n.Key == "CanHover");
+						var isHeli = canHover != null ? FieldLoader.GetValue<bool>("CanHover", canHover.Value.Value) : false;
+						if (isHeli)
+						{
+							Console.WriteLine("Helicopters taking off automatically while planes don't is no longer hardcoded.");
+							Console.WriteLine("Instead, this is controlled via the TakeOffOnResupply field.");
+							Console.WriteLine("Please check if your aircraft behave as intended or need manual adjustments.");
+							node.Value.Nodes.Add(new MiniYamlNode("TakeOffOnResupply", "true"));
+						}
+
+						// Upgrade rule for setting VTOL to true for CanHover actors
+						if (isHeli)
+							node.Value.Nodes.Add(new MiniYamlNode("VTOL", "true"));
+					}
+				}
+
+				// nuke launch animation is now it's own trait
+				if (engineVersion < 20170820)
+				{
+					if (depth == 1 && node.Key.StartsWith("NukePower"))
+					{
+						node.Value.Nodes.RemoveAll(n => n.Key == "ActivationSequence");
+						addNodes.Add(new MiniYamlNode("WithNukeLaunchAnimation", new MiniYaml("")));
+					}
+				}
+
+				if (engineVersion < 20170915)
+				{
+					if (node.Key.StartsWith("WithTurretedAttackAnimation", StringComparison.Ordinal))
+						RenameNodeKey(node, "WithTurretAttackAnimation");
+					if (node.Key.StartsWith("WithTurretedSpriteBody", StringComparison.Ordinal))
+						RenameNodeKey(node, "WithEmbeddedTurretSpriteBody");
+				}
+
 				UpgradeActorRules(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 
@@ -1091,6 +1130,11 @@ namespace OpenRA.Mods.Common.UtilityCommands
 							projectile.Value.Nodes.Add(new MiniYamlNode("TerrainHeightAware", "true"));
 					}
 				}
+
+				// Rename BurstDelay to BurstDelays
+				if (engineVersion < 20170818)
+					if (node.Key == "BurstDelay")
+						node.Key = "BurstDelays";
 
 				UpgradeWeaponRules(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}

@@ -133,8 +133,17 @@
 		InvalidTargets: NoAutoTarget
 	AutoTargetPriority@ATTACKANYTHING:
 		RequiresCondition: stance-attackanything
-		ValidTargets: Infantry, Vehicle, Creep, Water, Structure, Defense
+		ValidTargets: Infantry, Vehicle, Creep, Water, Building, Defense
 		InvalidTargets: NoAutoTarget
+
+^AutoTargetGroundAssaultMove:
+	Inherits: ^AutoTargetGround
+	AutoTargetPriority@DEFAULT:
+		RequiresCondition: !stance-attackanything && !assault-move
+	AutoTargetPriority@ATTACKANYTHING:
+		RequiresCondition: stance-attackanything || assault-move
+	AttackMove:
+		AssaultMoveScanCondition: assault-move
 
 ^AutoTargetAir:
 	AutoTarget:
@@ -151,8 +160,17 @@
 		InvalidTargets: NoAutoTarget
 	AutoTargetPriority@ATTACKANYTHING:
 		RequiresCondition: stance-attackanything
-		ValidTargets: Infantry, Vehicle, Creep, Water, Air, Structure, Defense
+		ValidTargets: Infantry, Vehicle, Creep, Water, Air, Building, Defense
 		InvalidTargets: NoAutoTarget
+
+^AutoTargetAllAssaultMove:
+	Inherits: ^AutoTargetAll
+	AutoTargetPriority@DEFAULT:
+		RequiresCondition: !stance-attackanything && !assault-move
+	AutoTargetPriority@ATTACKANYTHING:
+		RequiresCondition: stance-attackanything || assault-move
+	AttackMove:
+		AssaultMoveScanCondition: assault-move
 
 ^2x1Shape:
 	HitShape:
@@ -316,6 +334,7 @@
 		Range: 2c0, 5c0
 	EditorTilesetFilter:
 		Categories: Building
+	CommandBarBlacklist:
 
 ^Building:
 	Inherits@1: ^BasicBuilding
@@ -820,6 +839,8 @@
 		CruiseAltitude: 2048
 		CanHover: True
 		CruisingCondition: cruising
+		TakeOffOnResupply: true
+		VTOL: true
 	Hovers@CRUISING:
 		RequiresCondition: cruising
 
@@ -984,9 +1005,12 @@
 		Range: 6c0
 	DetectCloaked:
 		Range: 5c0
+	Targetable:
+		TargetTypes: Ground, Building, C4, Defense
 	RevealOnFire:
 	EditorTilesetFilter:
 		Categories: Defense
+	-CommandBarBlacklist:
 
 ^Train:
 	Inherits@1: ^EmpDisable

@@ -10,6 +10,7 @@
 #endregion
 
 using System.Linq;
+using OpenRA.Mods.Cnc.Traits.Render;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Mods.Common.Traits.Render;
 using OpenRA.Traits;
@@ -17,7 +18,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Cnc.Traits
 {
 	[Desc("Actor's turret rises from the ground before attacking.")]
-	class AttackPopupTurretedInfo : AttackTurretedInfo, Requires<BuildingInfo>, Requires<WithTurretedSpriteBodyInfo>
+	class AttackPopupTurretedInfo : AttackTurretedInfo, Requires<BuildingInfo>, Requires<WithEmbeddedTurretSpriteBodyInfo>
 	{
 		[Desc("How many game ticks should pass before closing the actor's turret.")]
 		public int CloseDelay = 125;

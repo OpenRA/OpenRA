@@ -35,7 +35,7 @@ BigFlamer:
 	Projectile: Bullet
 		Speed: 341
 	Burst: 2
-	BurstDelay: 25
+	BurstDelays: 25
 	Warhead@1Dam: SpreadDamage
 		Spread: 400
 		Damage: 75
@@ -68,7 +68,7 @@ Napalm:
 	ReloadDelay: 4
 	Range: 2c0
 	Burst: 2
-	BurstDelay: 2
+	BurstDelays: 2
 	-Projectile:
 	Projectile: GravityBomb
 		Image: BOMBLET

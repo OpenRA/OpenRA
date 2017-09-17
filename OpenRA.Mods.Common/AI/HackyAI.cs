@@ -43,6 +43,7 @@ namespace OpenRA.Mods.Common.AI
 		public class UnitCategories
 		{
 			public readonly HashSet<string> Mcv = new HashSet<string>();
+			public readonly HashSet<string> NavalUnits = new HashSet<string>();
 			public readonly HashSet<string> ExcludeFromSquads = new HashSet<string>();
 		}
 
@@ -582,7 +583,7 @@ namespace OpenRA.Mods.Common.AI
 			return null;
 		}
 
-		public void Tick(Actor self)
+		void ITick.Tick(Actor self)
 		{
 			if (!IsEnabled)
 				return;
@@ -837,6 +838,14 @@ namespace OpenRA.Mods.Common.AI
 
 					air.Units.Add(a);
 				}
+				else if (Info.UnitsCommonNames.NavalUnits.Contains(a.Info.Name))
+				{
+					var ships = GetSquadOfType(SquadType.Naval);
+					if (ships == null)
+						ships = RegisterNewSquad(SquadType.Naval);
+
+					ships.Units.Add(a);
+				}
 
 				activeUnits.Add(a);
 			}
@@ -970,12 +979,16 @@ namespace OpenRA.Mods.Common.AI
 				if (!mcv.IsIdle)
 					continue;
 
+				// Don't try to move and deploy an undeployable actor
+				var transformsInfo = mcv.Info.TraitInfoOrDefault<TransformsInfo>();
+				if (transformsInfo == null)
+					continue;
+
 				// If we lack a base, we need to make sure we don't restrict deployment of the MCV to the base!
-				var restrictToBase =
-					Info.RestrictMCVDeploymentFallbackToBase &&
+				var restrictToBase = Info.RestrictMCVDeploymentFallbackToBase &&
 					CountBuildingByCommonName(Info.BuildingCommonNames.ConstructionYard, Player) > 0;
-				var factType = mcv.Info.TraitInfo<TransformsInfo>().IntoActor;
-				var desiredLocation = ChooseBuildLocation(factType, restrictToBase, BuildingType.Building);
+
+				var desiredLocation = ChooseBuildLocation(transformsInfo.IntoActor, restrictToBase, BuildingType.Building);
 				if (desiredLocation == null)
 					continue;
 

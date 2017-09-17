@@ -103,7 +103,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			}
 		}
 
-		public void Tick(Actor self)
+		void ITick.Tick(Actor self)
 		{
 			foreach (var a in anims.Values)
 				a.Animation.Tick();

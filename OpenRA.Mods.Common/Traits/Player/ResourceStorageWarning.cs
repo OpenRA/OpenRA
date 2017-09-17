@@ -41,7 +41,7 @@ namespace OpenRA.Mods.Common.Traits
 			resources = self.Trait<PlayerResources>();
 		}
 
-		public void Tick(Actor self)
+		void ITick.Tick(Actor self)
 		{
 			if (--nextSiloAdviceTime <= 0)
 			{

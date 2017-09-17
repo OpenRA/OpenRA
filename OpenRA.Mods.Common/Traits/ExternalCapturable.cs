@@ -84,7 +84,7 @@ namespace OpenRA.Mods.Common.Traits
 			Captor = null;
 		}
 
-		public void Tick(Actor self)
+		void ITick.Tick(Actor self)
 		{
 			if (Captor != null && (!Captor.IsInWorld || Captor.IsDead))
 				EndCapture();

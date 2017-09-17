@@ -11,6 +11,7 @@
 using System;
 using System.Linq;
 using OpenRA.Mods.AS.Warheads;
+using OpenRA.Mods.Common.Lint;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 

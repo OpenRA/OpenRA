@@ -37,7 +37,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("In how many steps to perform the dragging?")]
 		public readonly int DragLength = 0;
 
-		[Desc("Store resources in silos.")]
+		[Desc("Store resources in silos. Adds cash directly without storing if set to false.")]
 		public readonly bool UseStorage = true;
 
 		[Desc("Discard resources once silo capacity has been reached.")]
@@ -55,7 +55,6 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		readonly Actor self;
 		readonly RefineryInfo info;
-		readonly WithSpriteBody wsb;
 		PlayerResources playerResources;
 
 		int currentDisplayTick = 0;
@@ -78,7 +77,6 @@ namespace OpenRA.Mods.Common.Traits
 			this.info = info;
 			playerResources = self.Owner.PlayerActor.Trait<PlayerResources>();
 			currentDisplayTick = info.TickRate;
-			wsb = self.Trait<WithSpriteBody>();
 		}
 
 		public virtual Activity DockSequence(Actor harv, Actor self)
@@ -100,6 +98,7 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				if (info.DiscardExcessResources)
 					amount = Math.Min(amount, playerResources.ResourceCapacity - playerResources.Resources);
+
 				playerResources.GiveResources(amount);
 			}
 			else
@@ -128,10 +127,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			// Harvester was killed while unloading
 			if (dockedHarv != null && dockedHarv.IsDead)
-			{
-				wsb.CancelCustomAnimation(self);
 				dockedHarv = null;
-			}
 
 			if (info.ShowTicks && currentDisplayValue > 0 && --currentDisplayTick <= 0)
 			{

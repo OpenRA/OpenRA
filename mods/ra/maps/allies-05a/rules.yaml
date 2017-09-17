@@ -72,7 +72,6 @@ TRUK.mission:
 		Prerequisites: ~disabled
 	WithFacingSpriteBody:
 	-SpawnActorOnDeath:
-	-EjectOnDeath:
 	RevealsShroud:
 		Range: 4c0
 		ValidStances: Ally, Enemy

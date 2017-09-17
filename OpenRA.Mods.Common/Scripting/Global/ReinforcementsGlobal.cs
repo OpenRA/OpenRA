@@ -143,12 +143,12 @@ namespace OpenRA.Mods.Common.Scripting
 			}
 			else
 			{
-				var aircraftInfo = transport.TraitOrDefault<Aircraft>();
+				var aircraftInfo = transport.Info.TraitInfoOrDefault<AircraftInfo>();
 				if (aircraftInfo != null)
 				{
-					if (!aircraftInfo.IsPlane)
+					if (aircraftInfo.VTOL)
 					{
-						transport.QueueActivity(new Turn(transport, aircraftInfo.Info.InitialFacing));
+						transport.QueueActivity(new Turn(transport, aircraftInfo.InitialFacing));
 						transport.QueueActivity(new HeliLand(transport, true));
 					}
 					else

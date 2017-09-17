@@ -20,43 +20,43 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	public class SupportPowerTooltipLogic : ChromeLogic
 	{
 		[ObjectCreator.UseCtor]
-		public SupportPowerTooltipLogic(Widget widget, TooltipContainerWidget tooltipContainer, SupportPowersWidget palette, World world, PlayerResources playerResources)
+		public SupportPowerTooltipLogic(Widget widget, TooltipContainerWidget tooltipContainer, Player player, SupportPowersWidget palette, World world,
+			PlayerResources playerResources)
 		{
-			widget.IsVisible = () => palette.TooltipIcon != null;
+			widget.IsVisible = () => palette.TooltipIcon != null && palette.TooltipIcon.Power.Info != null;
 			var nameLabel = widget.Get<LabelWidget>("NAME");
 			var hotkeyLabel = widget.Get<LabelWidget>("HOTKEY");
 			var timeLabel = widget.Get<LabelWidget>("TIME");
 			var descLabel = widget.Get<LabelWidget>("DESC");
 			var costLabel = widget.Get<LabelWidget>("COST");
 			var nameFont = Game.Renderer.Fonts[nameLabel.Font];
+			var hotkeyFont = Game.Renderer.Fonts[hotkeyLabel.Font];
 			var timeFont = Game.Renderer.Fonts[timeLabel.Font];
 			var descFont = Game.Renderer.Fonts[descLabel.Font];
 			var costFont = Game.Renderer.Fonts[costLabel.Font];
-			var name = "";
-			var time = "";
-			var desc = "";
 			var baseHeight = widget.Bounds.Height;
 			var timeOffset = timeLabel.Bounds.X;
 			var costOffset = costLabel.Bounds.X;
+			var pm = player.PlayerActor.Trait<PowerManager>();
 
 			SupportPowerInstance lastPower = null;
+			Hotkey lastHotkey = Hotkey.Invalid;
+			var lastRemainingSeconds = 0;
+
 			tooltipContainer.BeforeRender = () =>
 			{
 				var icon = palette.TooltipIcon;
-
 				if (icon == null)
 					return;
 
 				var sp = icon.Power;
 
-				if (sp.Info == null)
-					return;		// no instances actually exist (race with destroy)
+				// HACK: This abuses knowledge of the internals of WidgetUtils.FormatTime
+				// to efficiently work when the label is going to change, requiring a panel relayout
+				var remainingSeconds = (int)Math.Ceiling(sp.RemainingTime * world.Timestep / 1000f);
 
-				var remaining = WidgetUtils.FormatTime(sp.RemainingTime, world.Timestep);
-				var total = WidgetUtils.FormatTime(sp.Info.ChargeTime * 25, world.Timestep);
-				time = "{0} / {1}".F(remaining, total);
-
-				if (sp == lastPower)
+				var hotkey = icon.Hotkey != null ? icon.Hotkey.GetValue() : Hotkey.Invalid;
+				if (sp == lastPower && hotkey == lastHotkey && lastRemainingSeconds == remainingSeconds)
 					return;
 
 				var cost = sp.Info.Cost;
@@ -66,26 +66,37 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					? Color.White : Color.Red;
 				costLabel.IsVisible = () => cost != 0;
 
-				name = sp.Info.Description;
-				desc = sp.Info.LongDesc.Replace("\\n", "\n");
+				nameLabel.Text = sp.Info.Description;
+				var nameSize = nameFont.Measure(nameLabel.Text);
 
-				var hotkey = icon.Hotkey;
-				var hotkeyText = "({0})".F(hotkey.DisplayString());
-				var hotkeyWidth = hotkey.IsValid() ? nameFont.Measure(hotkeyText).X + 2 * nameLabel.Bounds.X : 0;
-				hotkeyLabel.GetText = () => hotkeyText;
-				hotkeyLabel.Bounds.X = nameFont.Measure(name).X + 2 * nameLabel.Bounds.X;
+				descLabel.Text = sp.Info.LongDesc.Replace("\\n", "\n");
+				var descSize = descFont.Measure(descLabel.Text);
+
+				var remaining = WidgetUtils.FormatTime(sp.RemainingTime, world.Timestep);
+				var total = WidgetUtils.FormatTime(sp.Info.ChargeTime * 25, world.Timestep);
+				timeLabel.Text = "{0} / {1}".F(remaining, total);
+				var timeSize = timeFont.Measure(timeLabel.Text);
+
+				var hotkeyWidth = 0;
 				hotkeyLabel.Visible = hotkey.IsValid();
+				if (hotkeyLabel.Visible)
+				{
+					var hotkeyText = "({0})".F(hotkey.DisplayString());
 
-				var timeWidth = timeFont.Measure(time).X;
+					hotkeyWidth = hotkeyFont.Measure(hotkeyText).X + 2 * nameLabel.Bounds.X;
+					hotkeyLabel.Text = hotkeyText;
+					hotkeyLabel.Bounds.X = nameSize.X + 2 * nameLabel.Bounds.X;
+				}
+
+				var timeWidth = timeSize.X;
 				var costWidth = costFont.Measure(costString).X;
-				var topWidth = nameFont.Measure(name).X + hotkeyWidth + timeWidth + timeOffset;
+				var topWidth = nameSize.X + hotkeyWidth + timeWidth + timeOffset;
 
 				if (cost != 0)
 				{
 					topWidth += costWidth + costOffset;
 				}
 
-				var descSize = descFont.Measure(desc);
 				widget.Bounds.Width = 2 * nameLabel.Bounds.X + Math.Max(topWidth, descSize.X);
 				widget.Bounds.Height = baseHeight + descSize.Y;
 				timeLabel.Bounds.X = widget.Bounds.Width - nameLabel.Bounds.X - timeWidth;
@@ -97,11 +108,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				}
 
 				lastPower = sp;
+				lastHotkey = hotkey;
+				lastRemainingSeconds = remainingSeconds;
 			};
 
-			nameLabel.GetText = () => name;
-			timeLabel.GetText = () => time;
-			descLabel.GetText = () => desc;
+			timeLabel.GetColor = () => pm.PowerState != PowerState.Normal ? Color.Red : Color.White;
 		}
 	}
 }

@@ -128,7 +128,7 @@ namespace OpenRA.Mods.Common.Activities
 				if (nearestAfld != null)
 					return ActivityUtils.SequenceActivities(
 						new Fly(self, Target.FromActor(nearestAfld), WDist.Zero, plane.Info.WaitDistanceFromResupplyBase),
-						new FlyCircleTimed(self, plane.Info.NumberOfTicksToVerifyAvailableAirport),
+						new FlyCircle(self, plane.Info.NumberOfTicksToVerifyAvailableAirport),
 						this);
 				else
 				{

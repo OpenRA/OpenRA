@@ -87,7 +87,7 @@ namespace OpenRA.Mods.Common.Traits
 			desiredVRange = WDist.Zero;
 		}
 
-		public void Tick(Actor self)
+		void ITick.Tick(Actor self)
 		{
 			if (self.CenterPosition != cachedPosition || desiredRange != cachedRange || desiredVRange != cachedVRange)
 			{
@@ -156,7 +156,8 @@ namespace OpenRA.Mods.Common.Traits
 
 			tokens.Remove(a);
 			foreach (var external in a.TraitsImplementing<ExternalCondition>())
-				external.TryRevokeCondition(a, self, token);
+				if (external.TryRevokeCondition(a, self, token))
+					break;
 		}
 	}
 }

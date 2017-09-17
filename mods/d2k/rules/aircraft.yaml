@@ -18,6 +18,7 @@ carryall.reinforce:
 		LandWhenIdle: False
 		AirborneCondition: airborne
 		CanHover: True
+		VTOL: true
 	Targetable@GROUND:
 		TargetTypes: Ground, Vehicle
 		RequiresCondition: !airborne
@@ -86,6 +87,7 @@ ornithopter:
 		Repulsable: False
 		CanHover: True
 		CruiseAltitude: 1920
+		VTOL: true
 	AmmoPool:
 		Ammo: 5
 	Tooltip:
@@ -113,5 +115,6 @@ carryall.husk:
 		TurnSpeed: 4
 		Speed: 144
 		CanHover: True
+		VTOL: true
 	RenderSprites:
 		Image: carryall

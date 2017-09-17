@@ -64,7 +64,10 @@ namespace OpenRA.Mods.Cnc.Traits
 	{
 		None = 0,
 		Attack = 1,
-		Damaged = 2
+		Damaged = 2,
+		Unload = 4,
+		Infiltrate = 8,
+		Demolish = 16
 	}
 
 	[Desc("Provides access to the disguise command, which makes the actor appear to be another player's actor.")]
@@ -76,13 +79,15 @@ namespace OpenRA.Mods.Cnc.Traits
 		[Desc("The condition to grant to self while disguised.")]
 		public readonly string DisguisedCondition = null;
 
-		[Desc("Triggers which cause the actor to drop it's disguise. Possible values: None, Attack, Damaged.")]
+		[Desc("Triggers which cause the actor to drop it's disguise. Possible values: None, Attack, Damaged,",
+			"Unload, Infiltrate, Demolish.")]
 		public readonly RevealDisguiseType RevealDisguiseOn = RevealDisguiseType.Attack;
 
 		public object Create(ActorInitializer init) { return new Disguise(init.Self, this); }
 	}
 
-	class Disguise : INotifyCreated, IEffectiveOwner, IIssueOrder, IResolveOrder, IOrderVoice, IRadarColorModifier, INotifyAttack, INotifyDamage
+	class Disguise : INotifyCreated, IEffectiveOwner, IIssueOrder, IResolveOrder, IOrderVoice, IRadarColorModifier, INotifyAttack,
+		INotifyDamage, INotifyUnload, INotifyDemolition, INotifyInfiltration
 	{
 		public Player AsPlayer { get; private set; }
 		public string AsSprite { get; private set; }
@@ -218,6 +223,24 @@ namespace OpenRA.Mods.Cnc.Traits
 		void INotifyDamage.Damaged(Actor self, AttackInfo e)
 		{
 			if (info.RevealDisguiseOn.HasFlag(RevealDisguiseType.Damaged) && e.Damage.Value > 0)
+				DisguiseAs(null);
+		}
+
+		void INotifyUnload.Unloading(Actor self)
+		{
+			if (info.RevealDisguiseOn.HasFlag(RevealDisguiseType.Unload))
+				DisguiseAs(null);
+		}
+
+		void INotifyDemolition.Demolishing(Actor self)
+		{
+			if (info.RevealDisguiseOn.HasFlag(RevealDisguiseType.Demolish))
+				DisguiseAs(null);
+		}
+
+		void INotifyInfiltration.Infiltrating(Actor self)
+		{
+			if (info.RevealDisguiseOn.HasFlag(RevealDisguiseType.Infiltrate))
 				DisguiseAs(null);
 		}
 	}

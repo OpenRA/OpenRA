@@ -46,7 +46,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var font = Game.Renderer.Fonts[nameLabel.Font];
 			var descFont = Game.Renderer.Fonts[descLabel.Font];
 			var requiresFont = Game.Renderer.Fonts[requiresLabel.Font];
+			var formatBuildTime = new CachedTransform<int, string>(time => WidgetUtils.FormatTime(time, world.Timestep));
+			var requiresFormat = requiresLabel.Text;
+
 			ActorInfo lastActor = null;
+			Hotkey lastHotkey = Hotkey.Invalid;
+			var lastPowerState = pm.PowerState;
 
 			tooltipContainer.BeforeRender = () =>
 			{
@@ -55,7 +60,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					return;
 
 				var actor = tooltipIcon.Actor;
-				if (actor == null || actor == lastActor)
+				if (actor == null)
+					return;
+
+				var hotkey = tooltipIcon.Hotkey != null ? tooltipIcon.Hotkey.GetValue() : Hotkey.Invalid;
+				if (actor == lastActor && hotkey == lastHotkey && pm.PowerState == lastPowerState)
 					return;
 
 				var tooltip = actor.TraitInfos<TooltipInfo>().FirstOrDefault(Exts.IsTraitEnabled);
@@ -63,57 +72,63 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var buildable = actor.TraitInfo<BuildableInfo>();
 				var cost = actor.TraitInfo<ValuedInfo>().Cost;
 
-				nameLabel.GetText = () => name;
+				nameLabel.Text = name;
 
-				var hotkey = tooltipIcon.Hotkey;
-				var nameWidth = font.Measure(name).X;
-				var hotkeyText = "({0})".F(hotkey.DisplayString());
-				var hotkeyWidth = hotkey.IsValid() ? font.Measure(hotkeyText).X + 2 * nameLabel.Bounds.X : 0;
-				hotkeyLabel.GetText = () => hotkeyText;
-				hotkeyLabel.Bounds.X = nameWidth + 2 * nameLabel.Bounds.X;
+				var nameSize = font.Measure(name);
+				var hotkeyWidth = 0;
 				hotkeyLabel.Visible = hotkey.IsValid();
 
-				var prereqs = buildable.Prerequisites.Select(a => ActorName(mapRules, a)).Where(s => !s.StartsWith("~"));
-				var requiresString = prereqs.Any() ? requiresLabel.Text.F(prereqs.JoinWith(", ")) : "";
-				requiresLabel.GetText = () => requiresString;
+				if (hotkeyLabel.Visible)
+				{
+					var hotkeyText = "({0})".F(hotkey.DisplayString());
+
+					hotkeyWidth = font.Measure(hotkeyText).X + 2 * nameLabel.Bounds.X;
+					hotkeyLabel.Text = hotkeyText;
+					hotkeyLabel.Bounds.X = nameSize.X + 2 * nameLabel.Bounds.X;
+				}
+
+				var prereqs = buildable.Prerequisites.Select(a => ActorName(mapRules, a)).Where(s => !s.StartsWith("~", StringComparison.Ordinal));
+				requiresLabel.Text = prereqs.Any() ? requiresFormat.F(prereqs.JoinWith(", ")) : "";
+				var requiresSize = requiresFont.Measure(requiresLabel.Text);
 
 				var power = actor.TraitInfos<PowerInfo>().Where(i => i.EnabledByDefault).Sum(i => i.Amount);
-				var powerString = power.ToString();
-				powerLabel.GetText = () => powerString;
+				powerLabel.Text = power.ToString();
 				powerLabel.GetColor = () => ((pm.PowerProvided - pm.PowerDrained) >= -power || power > 0)
 					? Color.White : Color.Red;
-				powerLabel.IsVisible = () => power != 0;
-				powerIcon.IsVisible = () => power != 0;
+				powerLabel.Visible = power != 0;
+				powerIcon.Visible = power != 0;
+				var powerSize = font.Measure(powerLabel.Text);
 
-				var lowpower = pm.PowerState != PowerState.Normal;
-				var time = tooltipIcon.ProductionQueue == null ? 0 : tooltipIcon.ProductionQueue.GetBuildTime(actor, buildable)
-					* (lowpower ? tooltipIcon.ProductionQueue.Info.LowPowerSlowdown : 1);
-				var timeString = WidgetUtils.FormatTime(time, world.Timestep);
-				timeLabel.GetText = () => timeString;
-				timeLabel.GetColor = () => lowpower ? Color.Red : Color.White;
+				var buildTime = tooltipIcon.ProductionQueue == null ? 0 : tooltipIcon.ProductionQueue.GetBuildTime(actor, buildable);
+				var timeMultiplier = pm.PowerState != PowerState.Normal ? tooltipIcon.ProductionQueue.Info.LowPowerSlowdown : 1;
 
-				var costString = cost.ToString();
-				costLabel.GetText = () => costString;
-				costLabel.GetColor = () => pr.Cash + pr.Resources >= cost
-					? Color.White : Color.Red;
+				timeLabel.Text = formatBuildTime.Update(buildTime * timeMultiplier);
+				timeLabel.TextColor = pm.PowerState != PowerState.Normal ? Color.Red : Color.White;
+				var timeSize = font.Measure(timeLabel.Text);
 				costLabel.IsVisible = () => cost != 0;
 				costIcon.IsVisible = () => cost != 0;
 
-				var descString = buildable.Description.Replace("\\n", "\n");
-				descLabel.GetText = () => descString;
+				costLabel.Text = cost.ToString();
+				costLabel.GetColor = () => pr.Cash + pr.Resources >= cost ? Color.White : Color.Red;
+				var costSize = font.Measure(costLabel.Text);
 
-				var leftWidth = new[] { nameWidth + hotkeyWidth, requiresFont.Measure(requiresString).X, descFont.Measure(descString).X }.Aggregate(Math.Max);
-				var rightWidth = new[] { font.Measure(powerString).X, font.Measure(timeString).X, font.Measure(costString).X }.Aggregate(Math.Max);
+				descLabel.Text = buildable.Description.Replace("\\n", "\n");
+				var descSize = descFont.Measure(descLabel.Text);
+
+				var leftWidth = new[] { nameSize.X + hotkeyWidth, requiresSize.X, descSize.X }.Aggregate(Math.Max);
+				var rightWidth = new[] { powerSize.X, timeSize.X, costSize.X }.Aggregate(Math.Max);
 
 				timeIcon.Bounds.X = powerIcon.Bounds.X = costIcon.Bounds.X = leftWidth + 2 * nameLabel.Bounds.X;
 				timeLabel.Bounds.X = powerLabel.Bounds.X = costLabel.Bounds.X = timeIcon.Bounds.Right + iconMargin;
 				widget.Bounds.Width = leftWidth + rightWidth + 3 * nameLabel.Bounds.X + timeIcon.Bounds.Width + iconMargin;
 
-				var leftHeight = font.Measure(name).Y + requiresFont.Measure(requiresString).Y + descFont.Measure(descString).Y;
-				var rightHeight = font.Measure(powerString).Y + font.Measure(timeString).Y + font.Measure(costString).Y;
+				var leftHeight = nameSize.Y + requiresSize.Y + descSize.Y;
+				var rightHeight = powerSize.Y + timeSize.Y + costSize.Y;
 				widget.Bounds.Height = Math.Max(leftHeight, rightHeight) * 3 / 2 + 3 * nameLabel.Bounds.Y;
 
 				lastActor = actor;
+				lastHotkey = hotkey;
+				lastPowerState = pm.PowerState;
 			};
 		}
 

@@ -86,7 +86,7 @@ namespace OpenRA.Mods.Common.Traits
 			rs.Add(new AnimationWithOffset(anim, () => pos, null));
 		}
 
-		public void Tick(Actor self)
+		void ITick.Tick(Actor self)
 		{
 			if (tick >= length)
 				return;

@@ -92,6 +92,9 @@ namespace OpenRA.Mods.Common.Traits
 				WeaponInfo.Range.Length,
 				ai.TraitInfos<IRangeModifierInfo>().Select(m => m.GetRangeModifierDefault())));
 
+			if (WeaponInfo.Burst > 1 && WeaponInfo.BurstDelays.Length > 1 && (WeaponInfo.BurstDelays.Length != WeaponInfo.Burst - 1))
+				throw new YamlException("Weapon '{0}' has an invalid number of BurstDelays, must be single entry or Burst - 1.".F(weaponToLower));
+
 			base.RulesetLoaded(rules, ai);
 		}
 	}
@@ -311,7 +314,12 @@ namespace OpenRA.Mods.Common.Traits
 		protected virtual void UpdateBurst(Actor self, Target target)
 		{
 			if (--Burst > 0)
-				FireDelay = Weapon.BurstDelay;
+			{
+				if (Weapon.BurstDelays.Length == 1)
+					FireDelay = Weapon.BurstDelays[0];
+				else
+					FireDelay = Weapon.BurstDelays[Weapon.Burst - (Burst + 1)];
+			}
 			else
 			{
 				var modifiers = reloadModifiers.ToArray();

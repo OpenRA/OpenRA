@@ -73,7 +73,7 @@ namespace OpenRA.Mods.AS.Warheads
 						new FacingInit(attackFacing),
 					});
 
-					var plane = a.Trait<Aircraft>().IsPlane;
+					var plane = !a.Trait<Aircraft>().Info.CanHover;
 
 					if (plane)
 					{

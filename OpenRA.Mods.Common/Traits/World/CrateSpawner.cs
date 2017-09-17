@@ -95,7 +95,7 @@ namespace OpenRA.Mods.Common.Traits
 				.OptionOrDefault("crates", info.Enabled);
 		}
 
-		public void Tick(Actor self)
+		void ITick.Tick(Actor self)
 		{
 			if (!enabled)
 				return;

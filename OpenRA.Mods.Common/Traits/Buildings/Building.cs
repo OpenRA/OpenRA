@@ -36,7 +36,8 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Where you are allowed to place the building (Water, Clear, ...)")]
 		public readonly HashSet<string> TerrainTypes = new HashSet<string>();
 
-		[Desc("The range to the next building it can be constructed. Set it higher for walls.")]
+		[Desc("The range to the next building it can be constructed. Set it higher for walls.",
+			"Set to '-1' to disable adjacency checks.")]
 		public readonly int Adjacent = 2;
 
 		[Desc("x means cell is blocked, capital X means blocked but not counting as targetable, ",
@@ -144,11 +145,6 @@ namespace OpenRA.Mods.Common.Traits
 				yield return t;
 		}
 
-		public CVec LocationOffset()
-		{
-			return new CVec(Dimensions.X / 2, Dimensions.Y > 1 ? (Dimensions.Y + 1) / 2 : 0);
-		}
-
 		public WVec CenterOffset(World w)
 		{
 			var off = (w.Map.CenterOfCell(new CPos(Dimensions.X, Dimensions.Y)) - w.Map.CenterOfCell(new CPos(1, 1))) / 2;
@@ -177,7 +173,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public virtual bool IsCloseEnoughToBase(World world, Player p, string buildingName, CPos topLeft)
 		{
-			if (p.PlayerActor.Trait<DeveloperMode>().BuildAnywhere)
+			if (Adjacent < 0 || p.PlayerActor.Trait<DeveloperMode>().BuildAnywhere)
 				return true;
 
 			if (RequiresBaseProvider && FindBaseProvider(world, p, topLeft) == null)
@@ -241,13 +237,16 @@ namespace OpenRA.Mods.Common.Traits
 		}
 	}
 
-	public class Building : IOccupySpace, ITargetableCells, INotifySold, INotifyTransform, ISync, INotifyCreated, INotifyAddedToWorld, INotifyRemovedFromWorld
+	public class Building : IOccupySpace, ITargetableCells, INotifySold, INotifyTransform, ISync, INotifyCreated,
+		INotifyAddedToWorld, INotifyRemovedFromWorld, INotifyDemolition
 	{
+		public readonly bool SkipMakeAnimation;
 		public readonly BuildingInfo Info;
 		public bool BuildComplete { get; private set; }
+
 		[Sync] readonly CPos topLeft;
 		readonly Actor self;
-		public readonly bool SkipMakeAnimation;
+		readonly BuildingInfluence influence;
 
 		Pair<CPos, SubCell>[] occupiedCells;
 		Pair<CPos, SubCell>[] targetableCells;
@@ -274,6 +273,7 @@ namespace OpenRA.Mods.Common.Traits
 			self = init.Self;
 			topLeft = init.Get<LocationInit, CPos>();
 			Info = info;
+			influence = self.World.WorldActor.Trait<BuildingInfluence>();
 
 			occupiedCells = Info.UnpathableTiles(TopLeft)
 				.Select(c => Pair.New(c, SubCell.FullCell)).ToArray();
@@ -305,6 +305,8 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (!self.Bounds.Size.IsEmpty)
 				self.World.ScreenMap.Add(self);
+
+			influence.AddInfluence(self, Info.Tiles(self.Location));
 		}
 
 		void INotifyRemovedFromWorld.RemovedFromWorld(Actor self)
@@ -314,6 +316,8 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (!self.Bounds.Size.IsEmpty)
 				self.World.ScreenMap.Remove(self);
+
+			influence.RemoveInfluence(self, Info.Tiles(self.Location));
 		}
 
 		public void NotifyBuildingComplete(Actor self)
@@ -326,6 +330,11 @@ namespace OpenRA.Mods.Common.Traits
 
 			foreach (var notify in self.TraitsImplementing<INotifyBuildComplete>())
 				notify.BuildingComplete(self);
+		}
+
+		void INotifyDemolition.Demolishing(Actor self)
+		{
+			Lock();
 		}
 
 		void INotifySold.Selling(Actor self)

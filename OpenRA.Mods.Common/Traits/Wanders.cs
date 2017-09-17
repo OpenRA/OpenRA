@@ -57,12 +57,17 @@ namespace OpenRA.Mods.Common.Traits
 			base.Created(self);
 		}
 
-		public virtual void OnBecomingIdle(Actor self)
+		protected virtual void OnBecomingIdle(Actor self)
 		{
 			countdown = self.World.SharedRandom.Next(info.MinMoveDelay, info.MaxMoveDelay);
 		}
 
-		public virtual void TickIdle(Actor self)
+		void INotifyBecomingIdle.OnBecomingIdle(Actor self)
+		{
+			OnBecomingIdle(self);
+		}
+
+		protected virtual void TickIdle(Actor self)
 		{
 			if (IsTraitDisabled)
 				return;
@@ -81,6 +86,11 @@ namespace OpenRA.Mods.Common.Traits
 			var targetCell = PickTargetLocation();
 			if (targetCell != CPos.Zero)
 				DoAction(self, targetCell);
+		}
+
+		void INotifyIdle.TickIdle(Actor self)
+		{
+			TickIdle(self);
 		}
 
 		CPos PickTargetLocation()

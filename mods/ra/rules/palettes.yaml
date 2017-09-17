@@ -50,6 +50,12 @@
 		G: 0
 		B: 0
 		A: 128
+	PaletteFromRGBA@invuln2:
+		Name: invuln2
+		R: 0
+		G: 0
+		B: 128
+		A: 128
 	PaletteFromRGBA@disabled:
 		Name: disabled
 		R: 0

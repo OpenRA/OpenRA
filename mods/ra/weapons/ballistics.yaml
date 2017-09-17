@@ -10,7 +10,7 @@
 		Spread: 128
 		Damage: 40
 		Versus:
-			None: 20
+			None: 30
 			Wood: 75
 			Light: 75
 			Concrete: 50
@@ -26,7 +26,7 @@
 		Explosions: small_splash
 		ImpactSounds: splash9.aud
 		ValidTargets: Water, Underwater
-		InvalidTargets: Ship, Structure
+		InvalidTargets: Ship, Structure, Bridge
 
 25mm:
 	Inherits: ^Cannon
@@ -39,7 +39,6 @@
 	Warhead@1Dam: SpreadDamage
 		Damage: 27
 		Versus:
-			None: 30
 			Wood: 40
 			Light: 110
 			Heavy: 45
@@ -54,17 +53,15 @@
 	Inherits: ^Cannon
 	Warhead@1Dam: SpreadDamage
 		Versus:
-			None: 30
 			Heavy: 115
 
 105mm:
 	Inherits: ^Cannon
 	ReloadDelay: 70
 	Burst: 2
-	BurstDelay: 4
+	BurstDelays: 4
 	Warhead@1Dam: SpreadDamage
 		Versus:
-			None: 30
 			Heavy: 115
 
 120mm:
@@ -75,7 +72,6 @@
 	Warhead@1Dam: SpreadDamage
 		Damage: 60
 		Versus:
-			None: 30
 			Heavy: 115
 		InvalidTargets: Air
 
@@ -88,6 +84,7 @@ TurretGun:
 		Damage: 60
 		Versus:
 			Wood: 50
+			None: 20
 
 ^Artillery:
 	Inherits: ^Cannon
@@ -102,8 +99,8 @@ TurretGun:
 		Spread: 426
 		Damage: 230
 		Versus:
-			None: 80
-			Wood: 35
+			None: 90
+			Wood: 40
 			Light: 60
 			Heavy: 25
 			Concrete: 50
@@ -156,8 +153,6 @@ TurretGun:
 		Speed: 426
 	Warhead@1Dam: SpreadDamage
 		Damage: 25
-		Versus:
-			None: 30
 
 Grenade:
 	Inherits: ^Artillery

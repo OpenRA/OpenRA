@@ -151,6 +151,9 @@ namespace OpenRA.Mods.Common.Traits
 
 			foreach (var a in Armaments)
 			{
+				if (a.IsTraitDisabled)
+					continue;
+
 				var port = SelectFirePort(self, targetYaw);
 				if (port == null)
 					return;
@@ -196,7 +199,7 @@ namespace OpenRA.Mods.Common.Traits
 					yield return r;
 		}
 
-		public override void Tick(Actor self)
+		protected override void Tick(Actor self)
 		{
 			base.Tick(self);
 

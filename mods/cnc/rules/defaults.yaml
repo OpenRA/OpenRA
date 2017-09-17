@@ -159,6 +159,15 @@
 		ValidTargets: Infantry, Vehicle, Creep, Water, Structure, Defense
 		InvalidTargets: NoAutoTarget
 
+^AutoTargetGroundAssaultMove:
+	Inherits: ^AutoTargetGround
+	AutoTargetPriority@DEFAULT:
+		RequiresCondition: !stance-attackanything && !assault-move
+	AutoTargetPriority@ATTACKANYTHING:
+		RequiresCondition: stance-attackanything || assault-move
+	AttackMove:
+		AssaultMoveScanCondition: assault-move
+
 ^AutoTargetAir:
 	AutoTarget:
 	AutoTargetPriority@DEFAULT:
@@ -176,6 +185,15 @@
 		RequiresCondition: stance-attackanything
 		ValidTargets: Infantry, Vehicle, Creep, Water, Air, Structure, Defense
 		InvalidTargets: NoAutoTarget
+
+^AutoTargetAllAssaultMove:
+	Inherits: ^AutoTargetAll
+	AutoTargetPriority@DEFAULT:
+		RequiresCondition: !stance-attackanything && !assault-move
+	AutoTargetPriority@ATTACKANYTHING:
+		RequiresCondition: stance-attackanything || assault-move
+	AttackMove:
+		AssaultMoveScanCondition: assault-move
 
 ^AcceptsCloakCrate:
 	Cloak:
@@ -272,6 +290,8 @@
 		AirborneCondition: airborne
 		CruisingCondition: cruising
 		CanHover: True
+		TakeOffOnResupply: true
+		VTOL: true
 	HiddenUnderFog:
 		Type: GroundPosition
 	ActorLostNotification:
@@ -455,7 +475,7 @@
 ^DINO:
 	Inherits@1: ^ExistsInWorld
 	Inherits@2: ^SpriteActor
-	Inherits@AUTOTARGET: ^AutoTargetGround
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Huntable:
 	Health:
 		HP: 1000
@@ -516,7 +536,7 @@
 ^Viceroid:
 	Inherits@1: ^ExistsInWorld
 	Inherits@2: ^SpriteActor
-	Inherits@AUTOTARGET: ^AutoTargetGround
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Huntable:
 	Health:
 		HP: 300
@@ -943,6 +963,7 @@
 		ZOffset: -129
 	Aircraft:
 		CanHover: True
+		VTOL: true
 	FallsToEarth:
 		Spins: True
 		Moves: False

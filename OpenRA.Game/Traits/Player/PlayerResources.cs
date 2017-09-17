@@ -155,7 +155,7 @@ namespace OpenRA.Traits
 			return true;
 		}
 
-		public void Tick(Actor self)
+		void ITick.Tick(Actor self)
 		{
 			ResourceCapacity = self.World.ActorsWithTrait<IStoreResources>()
 				.Where(a => a.Actor.Owner == owner)
