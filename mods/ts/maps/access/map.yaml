@@ -49,16 +49,16 @@ Players:
 		Enemies: Creeps
 
 Actors:
-	Actor0: cabhut
-		Location: 120,16
-		Owner: Neutral
-		Health: 100
-		Facing: 96
-	Actor1: cabhut
-		Location: 116,27
-		Owner: Neutral
-		Health: 100
-		Facing: 96
+#	Actor0: cabhut
+#		Location: 120,16
+#		Owner: Neutral
+#		Health: 100
+#		Facing: 96
+#	Actor1: cabhut
+#		Location: 116,27
+#		Owner: Neutral
+#		Health: 100
+#		Facing: 96
 	Actor2: city18
 		Location: 91,57
 		Owner: Neutral
