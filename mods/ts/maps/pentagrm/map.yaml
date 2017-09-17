@@ -104,16 +104,16 @@ Actors:
 		Owner: Neutral
 		Health: 50
 		Facing: 96
-	Actor11: cabhut
-		Location: 71,35
-		Owner: Neutral
-		Health: 100
-		Facing: 96
-	Actor12: cabhut
-		Location: 75,52
-		Owner: Neutral
-		Health: 100
-		Facing: 96
+#	Actor11: cabhut
+#		Location: 71,35
+#		Owner: Neutral
+#		Health: 100
+#		Facing: 96
+#	Actor12: cabhut
+#		Location: 75,52
+#		Owner: Neutral
+#		Health: 100
+#		Facing: 96
 	Actor13: cabhut
 		Location: 138,37
 		Owner: Neutral
@@ -601,10 +601,10 @@ Actors:
 		Location: 141,38
 		Owner: Neutral
 		Health: 25
-	Actor172: lobrdg_b_d
+	Actor172: lobrdg_b
 		Location: 142,38
 		Owner: Neutral
-	Actor173: lobrdg_b_d
+	Actor173: lobrdg_b
 		Location: 143,38
 		Owner: Neutral
 	Actor174: lobrdg_b
@@ -620,6 +620,24 @@ Actors:
 	Actor177: lobrdg_r_se
 		Location: 147,38
 		Owner: Neutral
+	Actor178: bridge2
+		Owner: Neutral
+		Location: 73,42
+	Actor179: bridge2
+		Owner: Neutral
+		Location: 73,43
+	Actor180: bridge2
+		Owner: Neutral
+		Location: 73,44
+	Actor181: bridge2
+		Owner: Neutral
+		Location: 73,45
+	Actor182: bridge2
+		Owner: Neutral
+		Location: 73,46
+	Actor183: bridge2
+		Owner: Neutral
+		Location: 73,47
 
 Rules:
 	World:
@@ -627,3 +645,9 @@ Rules:
 			Ambient: 0.62
 			Red: 0.87
 			Green: 0.87
+		ElevatedBridgeLayer:
+		ElevatedBridgePlaceholder:
+			Location: 72, 37
+			Height: 6
+			Orientation: Y
+			Length: 13
