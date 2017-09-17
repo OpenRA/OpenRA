@@ -784,6 +784,19 @@ namespace OpenRA
 			return new WDist(delta.Z);
 		}
 
+		/// <summary>
+		/// The size of the map Height step in world units
+		/// </summary>
+		public WDist CellHeightStep
+		{
+			get
+			{
+				// RectangularIsometric defines 1024 units along the diagonal axis,
+				// giving a half-tile height step of sqrt(2) * 512
+				return new WDist(Grid.Type == MapGridType.RectangularIsometric ? 724 : 512);
+			}
+		}
+
 		public CPos CellContaining(WPos pos)
 		{
 			if (Grid.Type == MapGridType.Rectangular)
