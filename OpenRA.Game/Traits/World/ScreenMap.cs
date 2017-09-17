@@ -95,7 +95,8 @@ namespace OpenRA.Traits
 		{
 			var screenPos = worldRenderer.ScreenPxPosition(position);
 			var screenBounds = new Rectangle(screenPos.X - size.Width / 2, screenPos.Y - size.Height / 2, size.Width, size.Height);
-			partitionedEffects.Add(effect, screenBounds);
+			if (ValidBounds(screenBounds))
+				partitionedEffects.Add(effect, screenBounds);
 		}
 
 		public void Add(IEffect effect, WPos position, Sprite sprite)
@@ -108,7 +109,9 @@ namespace OpenRA.Traits
 		{
 			var screenPos = worldRenderer.ScreenPxPosition(position);
 			var screenBounds = new Rectangle(screenPos.X - size.Width / 2, screenPos.Y - size.Height / 2, size.Width, size.Height);
-			partitionedEffects.Update(effect, screenBounds);
+			partitionedEffects.Remove(effect);
+			if (ValidBounds(screenBounds))
+				partitionedEffects.Add(effect, screenBounds);
 		}
 
 		public void Update(IEffect effect, WPos position, Sprite sprite)
@@ -117,9 +120,14 @@ namespace OpenRA.Traits
 			Update(effect, position, size);
 		}
 
-		public void Remove(IEffect e)
+		public void Remove(IEffect effect)
 		{
-			partitionedEffects.Remove(e);
+			partitionedEffects.Remove(effect);
+		}
+
+		bool ValidBounds(Rectangle bounds)
+		{
+			return bounds.Width > 0 && bounds.Height > 0;
 		}
 
 		public IEnumerable<FrozenActor> FrozenActorsAt(Player viewer, int2 worldPx)
