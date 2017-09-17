@@ -2573,6 +2573,18 @@ Actors:
 	Actor743: lobrdg_b_d
 		Owner: Neutral
 		Location: 170,-17
+	Actor744: wa01x
+		Owner: Neutral
+		Location: 109,-95
+	Actor745: wa01x
+		Owner: Neutral
+		Location: 159,-25
+	Actor746: wa04x
+		Owner: Neutral
+		Location: 161,-25
+	Actor747: wa04x
+		Owner: Neutral
+		Location: 111,-95
 
 Rules: rules.yaml
 
