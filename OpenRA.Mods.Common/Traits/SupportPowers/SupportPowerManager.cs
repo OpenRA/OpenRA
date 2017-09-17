@@ -160,13 +160,14 @@ namespace OpenRA.Mods.Common.Traits
 		public int RemainingTime;
 		public int TotalTime;
 		public bool Active { get; private set; }
-		public bool Disabled { get { return (!prereqsAvailable && !manager.DevMode.AllTech) || !instancesEnabled; } }
+		public bool Disabled { get { return (!prereqsAvailable && !manager.DevMode.AllTech) || !instancesEnabled || oneShotFired; } }
 
 		public SupportPowerInfo Info { get { return Instances.Select(i => i.Info).FirstOrDefault(); } }
 		public bool Ready { get { return Active && RemainingTime == 0; } }
 
 		bool instancesEnabled;
 		bool prereqsAvailable = true;
+		bool oneShotFired;
 
 		public SupportPowerInstance(string key, SupportPowerManager manager)
 		{
@@ -249,7 +250,10 @@ namespace OpenRA.Mods.Common.Traits
 			notifiedCharging = notifiedReady = false;
 
 			if (Info.OneShot)
+			{
 				PrerequisitesAvailable(false);
+				oneShotFired = true;
+			}
 		}
 	}
 
