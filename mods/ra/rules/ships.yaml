@@ -25,7 +25,7 @@ SS:
 	Targetable:
 		RequiresCondition: !underwater
 	Targetable@UNDERWATER:
-		TargetTypes: Water, Underwater, Repair
+		TargetTypes: Underwater, Repair
 		RequiresCondition: underwater
 	Cloak:
 		CloakTypes: Underwater
@@ -89,7 +89,7 @@ MSUB:
 	Targetable:
 		RequiresCondition: !underwater
 	Targetable@UNDERWATER:
-		TargetTypes: Water, Underwater, Repair
+		TargetTypes: Underwater, Repair
 		RequiresCondition: underwater
 	Cloak:
 		CloakTypes: Underwater
