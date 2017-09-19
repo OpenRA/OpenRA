@@ -207,4 +207,4 @@ DepthCharge:
 	Warhead@3Eff: CreateEffect
 		Explosions: small_explosion
 		ImpactSounds: kaboom15.aud
-		ValidTargets: Underwater
+		ValidTargets: Ship, Underwater
