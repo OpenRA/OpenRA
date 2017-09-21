@@ -40,13 +40,13 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		readonly CashTricklerInfo info;
 		PlayerResources resources;
-		[Sync] int ticks;
+		[Sync] public int Ticks { get; private set; }
 
 		public CashTrickler(CashTricklerInfo info)
 			: base(info)
 		{
 			this.info = info;
-			ticks = info.InitialDelay;
+			Ticks = info.InitialDelay;
 		}
 
 		protected override void Created(Actor self)
@@ -64,14 +64,14 @@ namespace OpenRA.Mods.Common.Traits
 		void ITick.Tick(Actor self)
 		{
 			if (IsTraitDisabled)
-				ticks = info.Interval;
+				Ticks = info.Interval;
 
 			if (IsTraitPaused || IsTraitDisabled)
 				return;
 
-			if (--ticks < 0)
+			if (--Ticks < 0)
 			{
-				ticks = info.Interval;
+				Ticks = info.Interval;
 				ModifyCash(self, self.Owner, info.Amount);
 			}
 		}
