@@ -23,9 +23,10 @@ SS:
 	RevealsShroud@GAPGEN:
 		Range: 5c0
 	Targetable:
+		TargetTypes: Ground, Water, Ship, Submarine, Repair
 		RequiresCondition: !underwater
 	Targetable@UNDERWATER:
-		TargetTypes: Underwater, Repair
+		TargetTypes: Underwater, Submarine, Repair
 		RequiresCondition: underwater
 	Cloak:
 		CloakTypes: Underwater
@@ -87,9 +88,10 @@ MSUB:
 	RevealsShroud@GAPGEN:
 		Range: 5c0
 	Targetable:
+		TargetTypes: Ground, Water, Ship, Submarine, Repair
 		RequiresCondition: !underwater
 	Targetable@UNDERWATER:
-		TargetTypes: Underwater, Repair
+		TargetTypes: Underwater, Submarine, Repair
 		RequiresCondition: underwater
 	Cloak:
 		CloakTypes: Underwater
