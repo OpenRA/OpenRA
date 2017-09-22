@@ -15,6 +15,7 @@ using System.IO;
 using System.Linq;
 using OpenRA.FileFormats;
 using OpenRA.Mods.Common.Widgets.Logic;
+using OpenRA.Network;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.LoadScreens
@@ -69,7 +70,7 @@ namespace OpenRA.Mods.Common.LoadScreens
 					var host = parts[0];
 					var port = Exts.ParseIntegerInvariant(parts[1]);
 					Game.LoadShellMap();
-					Game.RemoteDirectConnect(host, port);
+					Game.RemoteDirectConnect(new ConnectionAddress(host, port));
 					return;
 				}
 			}

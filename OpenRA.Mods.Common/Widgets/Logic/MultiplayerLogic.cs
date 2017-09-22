@@ -67,7 +67,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		}
 
 		[ObjectCreator.UseCtor]
-		public MultiplayerLogic(Widget widget, ModData modData, Action onStart, Action onExit, string directConnectHost, int directConnectPort)
+		public MultiplayerLogic(Widget widget, ModData modData, Action onStart, Action onExit, ConnectionAddress directConnectAddress)
 		{
 			this.modData = modData;
 			this.onStart = onStart;
@@ -125,14 +125,16 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			RefreshServerList();
 
-			if (directConnectHost != null)
+			if (directConnectAddress != null)
 			{
 				// The connection window must be opened at the end of the tick for the widget hierarchy to
 				// work out, but we also want to prevent the server browser from flashing visible for one tick.
 				widget.Visible = false;
 				Game.RunAfterTick(() =>
 				{
-					ConnectionLogic.Connect(directConnectHost, directConnectPort, "", OpenLobby, DoNothing);
+					if (directConnectAddress.IsValid)
+						ConnectionLogic.Connect(directConnectAddress, "", OpenLobby, DoNothing);
+
 					widget.Visible = true;
 				});
 			}
@@ -271,18 +273,20 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var ipField = directConnectPanel.Get<TextFieldWidget>("IP");
 			var portField = directConnectPanel.Get<TextFieldWidget>("PORT");
 
-			var last = Game.Settings.Player.LastServer.Split(':');
-			ipField.Text = last.Length > 1 ? last[0] : "localhost";
-			portField.Text = last.Length == 2 ? last[1] : "1234";
+			var last = new ConnectionAddress(Game.Settings.Player.LastServer);
+			ipField.Text = last.IsValid ? last.Host : "localhost";
+			portField.Text = last.IsValid ? last.Port.ToString() : "1234";
 
 			directConnectPanel.Get<ButtonWidget>("JOIN_BUTTON").OnClick = () =>
 			{
 				var port = Exts.WithDefault(1234, () => Exts.ParseIntegerInvariant(portField.Text));
+				var address = new ConnectionAddress(ipField.Text, port);
 
-				Game.Settings.Player.LastServer = "{0}:{1}".F(ipField.Text, port);
+				Game.Settings.Player.LastServer = address.ToString();
 				Game.Settings.Save();
 
-				ConnectionLogic.Connect(ipField.Text, port, "", OpenLobby, DoNothing);
+				if (address.IsValid)
+					ConnectionLogic.Connect(address, "", OpenLobby, DoNothing);
 			};
 		}
 
@@ -349,8 +353,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 						// Rewrite the server address with the correct IP
 						var addressNode = game.Nodes.FirstOrDefault(n => n.Key == "Address");
+
 						if (addressNode != null)
-							addressNode.Value.Value = bl.Address.ToString().Split(':')[0] + ":" + addressNode.Value.Value.Split(':')[1];
+							addressNode.Value.Value = new ConnectionAddress(
+								new ConnectionAddress(bl.Address.ToString()).Host,
+								new ConnectionAddress(addressNode.Value.Value).Port).ToString();
 
 						lanGames.Add(new GameServer(game));
 					}
@@ -520,7 +527,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						if (location != null)
 						{
 							var font = Game.Renderer.Fonts[location.Font];
-							var cachedServerLocation = game.Id != -1 ? GeoIP.LookupCountry(game.Address.Split(':')[0]) : "Local Network";
+							var cachedServerLocation = game.Id != -1 ? GeoIP.LookupCountry(new ConnectionAddress(game.Address).Host) : "Local Network";
 							var label = WidgetUtils.TruncateText(cachedServerLocation, location.Bounds.Width, font);
 							location.GetText = () => label;
 							location.GetColor = () => canJoin ? location.TextColor : incompatibleGameColor;
@@ -549,8 +556,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{
 					{ "onStart", onStart },
 					{ "onExit", onExit },
-					{ "directConnectHost", null },
-					{ "directConnectPort", 0 },
+					{ "directConnectAddress", null },
 				});
 
 				Game.Disconnect();
@@ -578,10 +584,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (server == null || !server.IsJoinable)
 				return;
 
-			var host = server.Address.Split(':')[0];
-			var port = Exts.ParseIntegerInvariant(server.Address.Split(':')[1]);
+			var address = new ConnectionAddress(server.Address);
 
-			ConnectionLogic.Connect(host, port, "", OpenLobby, DoNothing);
+			if (address.IsValid)
+				ConnectionLogic.Connect(address, "", OpenLobby, DoNothing);
 		}
 
 		static string GetStateLabel(GameServer game)

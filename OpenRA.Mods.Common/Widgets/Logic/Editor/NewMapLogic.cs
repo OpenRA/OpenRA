@@ -11,6 +11,7 @@
 
 using System;
 using System.Linq;
+using OpenRA.Network;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
@@ -71,8 +72,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					// It's not clear why this is needed here, but not in the other places that load maps.
 					Game.RunAfterTick(() =>
 					{
-						ConnectionLogic.Connect(System.Net.IPAddress.Loopback.ToString(),
-							Game.CreateLocalServer(uid), "",
+						ConnectionLogic.Connect(Game.CreateLocalServer(uid),
+							"",
 							() => Game.LoadEditor(uid),
 							() => { Game.CloseServer(); onExit(); });
 					});

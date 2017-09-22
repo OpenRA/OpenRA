@@ -18,6 +18,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Sockets;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
@@ -62,13 +63,13 @@ namespace OpenRA
 		static Task discoverNat;
 		static bool takeScreenshot = false;
 
-		public static OrderManager JoinServer(string host, int port, string password, bool recordReplay = true)
+		public static OrderManager JoinServer(ConnectionAddress address, string password, bool recordReplay = true)
 		{
-			var connection = new NetworkConnection(host, port);
+			var connection = new NetworkConnection(address);
 			if (recordReplay)
 				connection.StartRecording(() => { return TimestampedFilename(); });
 
-			var om = new OrderManager(host, port, password, connection);
+			var om = new OrderManager(address, password, connection);
 			JoinInner(om);
 			return om;
 		}
@@ -89,12 +90,12 @@ namespace OpenRA
 
 		public static void JoinReplay(string replayFile)
 		{
-			JoinInner(new OrderManager("<no server>", -1, "", new ReplayConnection(replayFile)));
+			JoinInner(new OrderManager(new ConnectionAddress("<no server>", -1), "", new ReplayConnection(replayFile)));
 		}
 
 		static void JoinLocal()
 		{
-			JoinInner(new OrderManager("<no server>", -1, "", new EchoConnection()));
+			JoinInner(new OrderManager(new ConnectionAddress("<no server>", -1), "", new EchoConnection()));
 		}
 
 		// More accurate replacement for Environment.TickCount
@@ -105,14 +106,14 @@ namespace OpenRA
 		public static int NetFrameNumber { get { return OrderManager.NetFrameNumber; } }
 		public static int LocalTick { get { return OrderManager.LocalFrameNumber; } }
 
-		public static event Action<string, int> OnRemoteDirectConnect = (a, b) => { };
+		public static event Action<ConnectionAddress> OnRemoteDirectConnect = a => { };
 		public static event Action<OrderManager> ConnectionStateChanged = _ => { };
 		static ConnectionState lastConnectionState = ConnectionState.PreConnecting;
 		public static int LocalClientId { get { return OrderManager.Connection.LocalClientId; } }
 
-		public static void RemoteDirectConnect(string host, int port)
+		public static void RemoteDirectConnect(ConnectionAddress address)
 		{
-			OnRemoteDirectConnect(host, port);
+			OnRemoteDirectConnect(address);
 		}
 
 		// Hacky workaround for orderManager visibility
@@ -223,7 +224,7 @@ namespace OpenRA
 
 			LobbyInfoChanged += lobbyReady;
 
-			om = JoinServer(IPAddress.Loopback.ToString(), CreateLocalServer(mapUID), "");
+			om = JoinServer(CreateLocalServer(mapUID), "");
 		}
 
 		public static bool IsHost
@@ -371,7 +372,7 @@ namespace OpenRA
 			LobbyInfoChanged = () => { };
 			ConnectionStateChanged = om => { };
 			BeforeGameStart = () => { };
-			OnRemoteDirectConnect = (a, b) => { };
+			OnRemoteDirectConnect = a => { };
 			delayedActions = new ActionQueue();
 
 			Ui.ResetAll();
@@ -857,10 +858,10 @@ namespace OpenRA
 
 		public static void CreateServer(ServerSettings settings)
 		{
-			server = new Server.Server(new IPEndPoint(IPAddress.Any, settings.ListenPort), settings, ModData, false);
+			server = new Server.Server(new IPEndPoint(IPAddress.IPv6Any, settings.ListenPort), settings, ModData, false);
 		}
 
-		public static int CreateLocalServer(string map)
+		public static ConnectionAddress CreateLocalServer(string map)
 		{
 			var settings = new ServerSettings()
 			{
@@ -870,9 +871,9 @@ namespace OpenRA
 				AllowPortForward = false
 			};
 
-			server = new Server.Server(new IPEndPoint(IPAddress.Loopback, 0), settings, ModData, false);
+			server = new Server.Server(new IPEndPoint(Socket.OSSupportsIPv6 ? IPAddress.IPv6Loopback : IPAddress.Loopback, 0), settings, ModData, false);
 
-			return server.Port;
+			return new ConnectionAddress("localhost", server.Address.Port);
 		}
 
 		public static bool IsCurrentWorld(World world)
