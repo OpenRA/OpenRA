@@ -191,8 +191,7 @@ DepthCharge:
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 80
-		ValidTargets: Underwater, Water
-		InvalidTargets: Ship
+		ValidTargets: Submarine
 		Versus:
 			None: 30
 			Wood: 75
@@ -207,4 +206,4 @@ DepthCharge:
 	Warhead@3Eff: CreateEffect
 		Explosions: small_explosion
 		ImpactSounds: kaboom15.aud
-		ValidTargets: Ship, Underwater
+		ValidTargets: Submarine
