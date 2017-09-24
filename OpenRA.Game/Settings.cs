@@ -86,12 +86,21 @@ namespace OpenRA
 		public bool LuaDebug = false;
 		public bool PerfText = false;
 		public bool PerfGraph = false;
+
+		[Desc("Amount of time required for triggering perf.log output.")]
 		public float LongTickThresholdMs = 1;
+
 		public bool SanityCheckUnsyncedCode = false;
 		public int Samples = 25;
+
+		[Desc("Show incompatible games in server browser.")]
 		public bool IgnoreVersionMismatch = false;
+
 		public bool StrictActivityChecking = false;
+
+		[Desc("Allow the collection of anonymous data such as Operating System, .NET runtime, OpenGL version and language settings.")]
 		public bool SendSystemInformation = true;
+
 		public int SystemInformationVersionPrompt = 0;
 		public string UUID = System.Guid.NewGuid().ToString();
 		public bool EnableDebugCommandsInReplays = false;
@@ -148,6 +157,7 @@ namespace OpenRA
 
 	public class PlayerSettings
 	{
+		[Desc("Sets the player nickname for in-game and IRC chat.")]
 		public string Name = "Newbie";
 		public HSLColor Color = new HSLColor(75, 255, 180);
 		public string LastServer = "localhost:1234";
@@ -234,6 +244,11 @@ namespace OpenRA
 
 		public Hotkey ObserverCombinedViewKey = new Hotkey(Keycode.MINUS, Modifiers.None);
 		public Hotkey ObserverWorldViewKey = new Hotkey(Keycode.EQUALS, Modifiers.None);
+		public Hotkey StatisticsBasicKey = new Hotkey(Keycode.F1, Modifiers.None);
+		public Hotkey StatisticsEconomyKey = new Hotkey(Keycode.F2, Modifiers.None);
+		public Hotkey StatisticsProductionKey = new Hotkey(Keycode.F3, Modifiers.None);
+		public Hotkey StatisticsCombatKey = new Hotkey(Keycode.F4, Modifiers.None);
+		public Hotkey StatisticsGraphKey = new Hotkey(Keycode.UNKNOWN, Modifiers.None);
 
 		public Hotkey CycleStatusBarsKey = new Hotkey(Keycode.COMMA, Modifiers.None);
 		public Hotkey TogglePixelDoubleKey = new Hotkey(Keycode.PERIOD, Modifiers.None);

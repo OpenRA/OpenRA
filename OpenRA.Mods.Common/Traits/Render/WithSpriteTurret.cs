@@ -97,7 +97,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			t.QuantizedFacings = DefaultAnimation.CurrentSequence.Facings;
 		}
 
-		WVec TurretOffset(Actor self)
+		protected virtual WVec TurretOffset(Actor self)
 		{
 			if (!Info.Recoils)
 				return t.Position(self);

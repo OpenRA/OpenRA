@@ -1,6 +1,12 @@
 Container@OBSERVER_WIDGETS:
 	Logic: MenuButtonsChromeLogic
+		StatisticsBasicKey: StatisticsBasic
+		StatisticsEconomyKey: StatisticsEconomy
+		StatisticsProductionKey: StatisticsProduction
+		StatisticsCombatKey: StatisticsCombat
+		StatisticsGraphKey: StatisticsGraph
 	Children:
+		LogicKeyListener@OBSERVER_KEY_LISTENER:
 		MenuButton@OPTIONS_BUTTON:
 			Width: 160
 			Height: 25
@@ -9,6 +15,7 @@ Container@OBSERVER_WIDGETS:
 			Key: escape
 			DisableWorldSounds: true
 		MenuButton@OBSERVER_STATS_BUTTON:
+			Key: StatisticsBasic
 			MenuContainer: INGAME_OBSERVERSTATS_BG
 			HideIngameUI: False
 			Pause: False
@@ -16,9 +23,8 @@ Container@OBSERVER_WIDGETS:
 			Y: 0
 			Width: 160
 			Height: 25
-			Text: Statistics (F1)
+			Text: Statistics
 			Font: Bold
-			Key: f1
 		Container@GAME_TIMER_BLOCK:
 			Logic: GameTimerLogic
 			X: (WINDOW_RIGHT - WIDTH) / 2

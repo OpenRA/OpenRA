@@ -502,7 +502,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					{ "ReplaySpeedSlowKey", "Slow speed" },
 					{ "ReplaySpeedRegularKey", "Regular speed" },
 					{ "ReplaySpeedFastKey", "Fast speed" },
-					{ "ReplaySpeedMaxKey", "Maximum speed" }
+					{ "ReplaySpeedMaxKey", "Maximum speed" },
+					{ "StatisticsBasicKey", "Basic statistics" },
+					{ "StatisticsEconomyKey", "Economy statistics" },
+					{ "StatisticsProductionKey", "Production statistics" },
+					{ "StatisticsCombatKey", "Combat statistics" },
+					{ "StatisticsGraphKey", "Statistics graph" }
 				};
 
 				var header = ScrollItemWidget.Setup(hotkeyHeader, returnTrue, doNothing);
