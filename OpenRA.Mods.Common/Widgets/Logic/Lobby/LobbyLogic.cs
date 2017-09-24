@@ -567,7 +567,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			lobbyChatUnreadMessages += 1;
 
 			var template = (ContainerWidget)chatTemplate.Clone();
-			LobbyUtils.SetupChatLine(template, c, from, text);
+			LobbyUtils.SetupChatLine(template, c, DateTime.Now, from, text);
 
 			var scrolledToBottom = lobbyChatPanel.ScrolledToBottom;
 			lobbyChatPanel.AddChild(template);
