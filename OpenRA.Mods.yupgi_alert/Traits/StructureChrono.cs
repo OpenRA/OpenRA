@@ -198,6 +198,7 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 		readonly Sprite buildBlocked;
 		readonly Actor self;
 		readonly StructureChronoInfo info;
+		readonly PlaceBuildingInfo placeBuildingInfo;
 
 		IActorPreview[] preview;
 		bool initialized;
@@ -214,7 +215,8 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 			buildOk = map.Rules.Sequences.GetSequence("overlay", "build-valid-{0}".F(tileset)).GetSprite(0);
 			buildBlocked = map.Rules.Sequences.GetSequence("overlay", "build-invalid").GetSprite(0);
 
-			this.building = self.Info.Name; // name in the rules definition
+			placeBuildingInfo = self.Owner.PlayerActor.Info.TraitInfo<PlaceBuildingInfo>();
+			building = self.Info.Name; // name in the rules definition
 		}
 
 		public IEnumerable<Order> Order(World world, CPos cell, int2 worldPixel, MouseInput mi)
@@ -250,17 +252,17 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 			var owner = self.Owner;
 			if (mi.Button == MouseButton.Left)
 			{
-				var topLeft = cell - buildingInfo.LocationOffset();
-				var selfPos = self.Trait<IOccupySpace>().TopLeft;
-				var isCloseEnough = (topLeft - selfPos).Length <= info.MaxDistance;
+				var selfPos = self.Trait<IOccupySpace>().TopLeft; // My position
 
-				if (!world.CanPlaceBuilding(building, buildingInfo, topLeft, null) || !isCloseEnough)
+				var isCloseEnough = (cell - selfPos).Length <= info.MaxDistance;
+
+				if (!world.CanPlaceBuilding(building, buildingInfo, cell, null) || !isCloseEnough)
 				{
 					Game.Sound.PlayNotification(world.Map.Rules, owner, "Speech", "BuildingCannotPlaceAudio", owner.Faction.InternalName);
 					yield break;
 				}
 
-				yield return new CPos(topLeft.X, topLeft.Y);
+				yield return new CPos(cell.X, cell.Y);
 			}
 		}
 
@@ -287,19 +289,20 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 				Color.FromArgb(128, Color.LawnGreen),
 				Color.FromArgb(96, Color.Black));
 
-			var xy = wr.Viewport.ViewToWorld(Viewport.LastMousePos);
-			var topLeft = xy - buildingInfo.LocationOffset();
-			var offset = world.Map.CenterOfCell(topLeft) + buildingInfo.CenterOffset(world);
-			var rules = world.Map.Rules;
+			var centerOffset = buildingInfo.CenterOffset(world);
+			var topLeftScreenOffset = -wr.ScreenPxOffset(centerOffset);
+			var topLeft = wr.Viewport.ViewToWorld(Viewport.LastMousePos + topLeftScreenOffset);
+			var centerPosition = world.Map.CenterOfCell(topLeft) + centerOffset;
 
 			var actorInfo = self.Info; // rules.Actors[building];
 			foreach (var dec in actorInfo.TraitInfos<IPlaceBuildingDecorationInfo>())
-				foreach (var r in dec.Render(wr, world, actorInfo, offset))
+				foreach (var r in dec.Render(wr, world, actorInfo, centerPosition))
 					yield return r;
 
 			// Cells, we are about to construct and occupy.
 			var cells = new Dictionary<CPos, PlaceBuildingOrderGenerator.CellType>();
 
+			// Copied from else case.
 			if (!initialized)
 			{
 				var td = new TypeDictionary()
@@ -321,7 +324,7 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 			}
 
 			var previewRenderables = preview
-				.SelectMany(p => p.Render(wr, offset))
+				.SelectMany(p => p.Render(wr, centerPosition))
 				.OrderBy(WorldRenderer.RenderableScreenZPositionComparisonKey);
 
 			foreach (var r in previewRenderables)
@@ -334,7 +337,6 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 				cells.Add(t, PlaceBuildingOrderGenerator.MakeCellType(isCloseEnough && world.IsCellBuildable(t, buildingInfo) && res.GetResource(t) == null));
 
 			// draw red or white buildable cell indicator.
-			var placeBuildingInfo = self.Owner.PlayerActor.Info.TraitInfo<PlaceBuildingInfo>();
 			var cellPalette = wr.Palette(placeBuildingInfo.Palette);
 			var linePalette = wr.Palette(placeBuildingInfo.LineBuildSegmentPalette);
 			var topLeftPos = world.Map.CenterOfCell(topLeft);
