@@ -124,7 +124,8 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			expectedButton = button;
 
-			this.subjects = subjects.SelectMany(a => a.TraitsImplementing<AttackMove>()
+			this.subjects = subjects.Where(a => !a.IsDead)
+				.SelectMany(a => a.TraitsImplementing<AttackMove>()
 					.Select(am => new TraitPair<AttackMove>(a, am)))
 				.ToArray();
 		}
