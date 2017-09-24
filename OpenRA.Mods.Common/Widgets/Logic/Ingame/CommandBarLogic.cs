@@ -209,7 +209,7 @@ namespace OpenRA.Mods.Common.Widgets
 				{
 					// HACK: enable attack move to be triggered if the ctrl key is pressed
 					var modified = new Hotkey(e.Key, e.Modifiers & ~Modifiers.Ctrl);
-					if (attackMoveButton.Key.GetValue() == modified)
+					if (!attackMoveDisabled && attackMoveButton.Key.GetValue() == modified)
 					{
 						attackMoveButton.OnKeyPress(e);
 						return true;
