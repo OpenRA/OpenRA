@@ -156,10 +156,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		public override string GetCursor(World world, CPos cell, int2 worldPixel, MouseInput mi)
 		{
-			if (world.Map.Contains(cell))
-				return mi.Modifiers.HasModifier(Modifiers.Ctrl) ? "assaultmove" : "attackmove";
-
-			return "generic-blocked";
+			var prefix = mi.Modifiers.HasModifier(Modifiers.Ctrl) ? "assaultmove" : "attackmove";
+			return world.Map.Contains(cell) ? prefix : prefix + "-blocked";
 		}
 
 		public override bool InputOverridesSelection(World world, int2 xy, MouseInput mi)
