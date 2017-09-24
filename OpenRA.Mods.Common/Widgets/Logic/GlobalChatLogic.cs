@@ -80,7 +80,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var color = message.Type == ChatMessageType.Notification ? ChromeMetrics.Get<Color>("GlobalChatNotificationColor")
 				: ChromeMetrics.Get<Color>("GlobalChatPlayerNameColor");
 			var template = (ContainerWidget)chatTemplate.Clone();
-			LobbyUtils.SetupChatLine(template, color, from, message.Message);
+			LobbyUtils.SetupChatLine(template, color, message.Time, from, message.Message);
 
 			template.Id = message.UID;
 			return template;
