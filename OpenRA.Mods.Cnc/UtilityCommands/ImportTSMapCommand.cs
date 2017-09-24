@@ -233,6 +233,12 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 			{ "gatick", "ttnk" }
 		};
 
+		enum TemplateType
+		{
+			DestroyableCliffX = 717,
+			DestroyableCliffY = 718
+		}
+
 		[Desc("FILENAME", "Convert a Tiberian Sun map to the OpenRA format.")]
 		void IUtilityCommand.Run(Utility utility, string[] args)
 		{
@@ -265,6 +271,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 			ReadWaypoints(map, file, fullSize);
 			ReadOverlay(map, file, fullSize);
 			ReadLighting(map, file);
+			SetupDestroyableCliffs(map);
 
 			var spawnCount = map.ActorDefinitions.Count(n => n.Value.Value == "mpspawn");
 			var mapPlayers = new MapPlayers(map.Rules, spawnCount);
@@ -566,6 +573,49 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 				{
 					new MiniYamlNode("GlobalLightingPaletteEffect", new MiniYaml("", lightingNodes))
 				})));
+			}
+		}
+
+		/// <summary>
+		/// Replaces destroyable cliff templates with ramp tiles
+		/// </summary>
+		static void SetupDestroyableCliffs(Map map)
+		{
+			var heightOffsets = new int[] {
+				0, -1, -1, -1, -1, 0,
+				0, -1, -2, -2, -1, 0,
+				0, 0, 1, 1, 0, 0,
+				0, 0, 0, 0, 0, 0
+			};
+
+			foreach (var cell in map.AllCells)
+			{
+				var tile = map.Tiles[cell];
+				if (tile.Type == (ushort)TemplateType.DestroyableCliffX)
+				{
+					// Indices 0..2, 6..8, 12..14, 18..20 map to template 403 indices 0..12
+					// Indices 3..5, 9..1, 15..17, 21..23 map to template 404 indices 0..12
+					var dx = tile.Index % 6;
+					var dy = tile.Index / 6;
+					var newIndex = 3 * dy + dx % 3;
+
+					map.Tiles[cell] = new TerrainTile((ushort)(dx < 3 ? 403 : 404), (byte)newIndex);
+					map.Height[cell] = (byte)(map.Height[cell] + heightOffsets[tile.Index]);
+				}
+				else if (tile.Type == (ushort)TemplateType.DestroyableCliffY)
+				{
+					// Indices 0..11 map to template 406 indices 0..12
+					// Indices 12..23 map to template 405 indices 0..12
+					var dx = tile.Index % 4;
+					var dy = tile.Index / 4;
+					var newIndex = tile.Index < 12 ? tile.Index : tile.Index - 12;
+
+					// Transpose tile.Index so that we can reuse the height offsets from the x-axis cliffs
+					var transposedIndex = 6 * dx + dy;
+
+					map.Tiles[cell] = new TerrainTile((ushort)(dy < 3 ? 406 : 405), (byte)newIndex);
+					map.Height[cell] = (byte)(map.Height[cell] + heightOffsets[transposedIndex]);
+				}
 			}
 		}
 	}
