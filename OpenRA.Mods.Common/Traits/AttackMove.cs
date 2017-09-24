@@ -140,12 +140,15 @@ namespace OpenRA.Mods.Common.Traits
 
 		protected virtual IEnumerable<Order> OrderInner(World world, CPos cell, MouseInput mi)
 		{
-			if (mi.Button == expectedButton && world.Map.Contains(cell))
+			if (mi.Button == expectedButton)
 			{
 				world.CancelInputMode();
 
 				var queued = mi.Modifiers.HasModifier(Modifiers.Shift);
 				var orderName = mi.Modifiers.HasModifier(Modifiers.Ctrl) ? "AssaultMove" : "AttackMove";
+
+				// Cells outside the playable area should be clamped to the edge for consistency with move orders
+				cell = world.Map.Clamp(cell);
 				foreach (var s in subjects)
 					yield return new Order(orderName, s.Actor, queued) { TargetLocation = cell };
 			}
