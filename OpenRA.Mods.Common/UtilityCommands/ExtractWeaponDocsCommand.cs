@@ -42,17 +42,20 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 			var toc = new StringBuilder();
 			var doc = new StringBuilder();
+
 			var currentNamespace = "";
 
 			var objectCreator = utility.ModData.ObjectCreator;
 			var weaponInfo = objectCreator.GetTypesImplementing<WeaponInfo>();
 			var warheads = objectCreator.GetTypesImplementing<IWarhead>().OrderBy(t => t.Namespace);
 			var projectiles = objectCreator.GetTypesImplementing<IProjectileInfo>().OrderBy(t => t.Namespace);
+
 			var weaponTypes = Enumerable.Concat(weaponInfo, Enumerable.Concat(projectiles, warheads));
 			foreach (var t in weaponTypes)
 			{
+				// skip helpers like TraitInfo<T>
 				if (t.ContainsGenericParameters || t.IsAbstract)
-					continue; // skip helpers like TraitInfo<T>
+					continue;
 
 				if (currentNamespace != t.Namespace)
 				{
@@ -63,10 +66,11 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				}
 
 				var traitName = t.Name.EndsWith("Info") ? t.Name.Substring(0, t.Name.Length - 4) : t.Name;
-				toc.AppendLine(" * [{0}](#{1})".F(traitName, traitName.ToLowerInvariant()));
-				var traitDescLines = t.GetCustomAttributes<DescAttribute>(false).SelectMany(d => d.Lines);
+				toc.AppendLine("  * [{0}](#{1})".F(traitName, traitName.ToLowerInvariant()));
 				doc.AppendLine();
 				doc.AppendLine("### {0}".F(traitName));
+
+				var traitDescLines = t.GetCustomAttributes<DescAttribute>(false).SelectMany(d => d.Lines);
 				foreach (var line in traitDescLines)
 					doc.AppendLine(line);
 
@@ -76,6 +80,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 				doc.AppendLine("<table>");
 				doc.AppendLine("<tr><th>Property</th><th>Default Value</th><th>Type</th><th>Description</th></tr>");
+
 				var liveTraitInfo = t == typeof(WeaponInfo) ? null : objectCreator.CreateBasic(t);
 				foreach (var info in infos)
 				{
@@ -84,8 +89,10 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					var defaultValue = liveTraitInfo == null ? "" : FieldSaver.SaveField(liveTraitInfo, info.Field.Name).Value.Value;
 					doc.Append("<tr><td>{0}</td><td>{1}</td><td>{2}</td>".F(info.YamlName, defaultValue, fieldType));
 					doc.Append("<td>");
+
 					foreach (var line in fieldDescLines)
 						doc.Append(line + " ");
+
 					doc.AppendLine("</td></tr>");
 				}
 

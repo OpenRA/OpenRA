@@ -23,9 +23,10 @@ SS:
 	RevealsShroud@GAPGEN:
 		Range: 5c0
 	Targetable:
+		TargetTypes: Ground, Water, Ship, Submarine, Repair
 		RequiresCondition: !underwater
 	Targetable@UNDERWATER:
-		TargetTypes: Water, Underwater, Repair
+		TargetTypes: Underwater, Submarine, Repair
 		RequiresCondition: underwater
 	Cloak:
 		CloakTypes: Underwater
@@ -62,7 +63,7 @@ SS:
 
 MSUB:
 	Inherits: ^Ship
-	Inherits@AUTOTARGET: ^AutoTargetAll
+	Inherits@AUTOTARGET: ^AutoTargetAllAssaultMove
 	Buildable:
 		Queue: Ship
 		BuildAtProductionType: Submarine
@@ -87,9 +88,10 @@ MSUB:
 	RevealsShroud@GAPGEN:
 		Range: 5c0
 	Targetable:
+		TargetTypes: Ground, Water, Ship, Submarine, Repair
 		RequiresCondition: !underwater
 	Targetable@UNDERWATER:
-		TargetTypes: Water, Underwater, Repair
+		TargetTypes: Underwater, Submarine, Repair
 		RequiresCondition: underwater
 	Cloak:
 		CloakTypes: Underwater
@@ -128,7 +130,7 @@ MSUB:
 
 DD:
 	Inherits: ^Ship
-	Inherits@AUTOTARGET: ^AutoTargetAll
+	Inherits@AUTOTARGET: ^AutoTargetAllAssaultMove
 	Buildable:
 		Queue: Ship
 		BuildAtProductionType: Boat
@@ -177,7 +179,7 @@ DD:
 
 CA:
 	Inherits: ^Ship
-	Inherits@AUTOTARGET: ^AutoTargetGround
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Buildable:
 		Queue: Ship
 		BuildAtProductionType: Boat
@@ -273,7 +275,7 @@ LST:
 
 PT:
 	Inherits: ^Ship
-	Inherits@AUTOTARGET: ^AutoTargetGround
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Buildable:
 		Queue: Ship
 		BuildAtProductionType: Boat

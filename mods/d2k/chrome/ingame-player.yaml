@@ -14,16 +14,6 @@ Container@PLAYER_WIDGETS:
 					TooltipContainer: TOOLTIP_CONTAINER
 					ReadyText: READY
 					HoldText: ON HOLD
-				Container@PALETTE_FOREGROUND:
-					Children:
-						Image@ICON_TEMPLATE:
-							X: 0 - 2
-							Y: 0 - 2
-							Width: 60
-							Height: 48
-							IgnoreMouseOver: true
-							ImageCollection: sidebar
-							ImageName: background-supportoverlay
 		Image@COMMAND_BAR_BACKGROUND:
 			X: 0
 			Y: WINDOW_BOTTOM - HEIGHT
@@ -38,6 +28,7 @@ Container@PLAYER_WIDGETS:
 			Width: 275
 			Height: 41
 			Children:
+				LogicKeyListener@MODIFIER_OVERRIDES:
 				Button@ATTACK_MOVE:
 					Width: 34
 					Height: 41
@@ -45,8 +36,9 @@ Container@PLAYER_WIDGETS:
 					Background: command-button
 					DisableKeySound: true
 					TooltipText: Attack Move
-					TooltipDesc: Selected units will move to the desired location\nand attack any enemies they encounter en route.\n\nLeft-click icon then right-click on target location.
+					TooltipDesc: Selected units will move to the desired location\nand attack any enemies they encounter en route.\n\nHold {(Ctrl)} while targeting to order an Assault Move\nthat attacks any units or structures encountered en route.\n\nLeft-click icon then right-click on target location.
 					TooltipContainer: TOOLTIP_CONTAINER
+					TooltipTemplate: BUTTON_WITH_DESC_HIGHLIGHT_TOOLTIP
 					Children:
 						Image@ICON:
 							X: 4

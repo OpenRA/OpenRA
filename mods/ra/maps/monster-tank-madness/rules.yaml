@@ -163,7 +163,6 @@ PBOX:
 		DamageCooldown: 150
 	Selectable:
 		Bounds: 44,38,0,-4
-	-EjectOnDeath:
 	RenderSprites:
 		Image: 4TNK
 
@@ -196,7 +195,6 @@ BAD3TNK:
 	Inherits: 3TNK
 	Buildable:
 		Prerequisites: ~disabled
-	-EjectOnDeath:
 	RenderSprites:
 		Image: 3TNK
 
@@ -204,7 +202,6 @@ BADTRUK:
 	Inherits: TRUK
 	Buildable:
 		Prerequisites: ~disabled
-	-EjectOnDeath:
 	RenderSprites:
 		Image: TRUK
 

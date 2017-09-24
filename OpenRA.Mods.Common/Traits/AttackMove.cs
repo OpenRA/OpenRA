@@ -9,8 +9,11 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using OpenRA.Mods.Common.Activities;
+using OpenRA.Orders;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -20,10 +23,18 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		[VoiceReference] public readonly string Voice = "Action";
 
+		[GrantedConditionReference]
+		[Desc("The condition to grant to self while scanning for targets during an attack-move.")]
+		public readonly string AttackMoveScanCondition = null;
+
+		[GrantedConditionReference]
+		[Desc("The condition to grant to self while scanning for targets during an assault-move.")]
+		public readonly string AssaultMoveScanCondition = null;
+
 		public object Create(ActorInitializer init) { return new AttackMove(init.Self, this); }
 	}
 
-	class AttackMove : IResolveOrder, IOrderVoice, INotifyIdle, ISync
+	class AttackMove : INotifyCreated, ITick, IResolveOrder, IOrderVoice, INotifyIdle, ISync
 	{
 		[Sync] public CPos _targetLocation { get { return TargetLocation.HasValue ? TargetLocation.Value : CPos.Zero; } }
 		public CPos? TargetLocation = null;
@@ -31,23 +42,54 @@ namespace OpenRA.Mods.Common.Traits
 		readonly IMove move;
 		readonly AttackMoveInfo info;
 
+		ConditionManager conditionManager;
+		int attackMoveToken = ConditionManager.InvalidConditionToken;
+		int assaultMoveToken = ConditionManager.InvalidConditionToken;
+		bool assaultMoving = false;
+
 		public AttackMove(Actor self, AttackMoveInfo info)
 		{
 			move = self.Trait<IMove>();
 			this.info = info;
 		}
 
+		void INotifyCreated.Created(Actor self)
+		{
+			conditionManager = self.TraitOrDefault<ConditionManager>();
+		}
+
+		void ITick.Tick(Actor self)
+		{
+			if (conditionManager == null)
+				return;
+
+			var activity = self.CurrentActivity as AttackMoveActivity;
+			var attackActive = activity != null && !assaultMoving;
+			var assaultActive = activity != null && assaultMoving;
+
+			if (attackActive && attackMoveToken == ConditionManager.InvalidConditionToken && !string.IsNullOrEmpty(info.AttackMoveScanCondition))
+				attackMoveToken = conditionManager.GrantCondition(self, info.AttackMoveScanCondition);
+			else if (!attackActive && attackMoveToken != ConditionManager.InvalidConditionToken)
+				attackMoveToken = conditionManager.RevokeCondition(self, attackMoveToken);
+
+			if (assaultActive && assaultMoveToken == ConditionManager.InvalidConditionToken && !string.IsNullOrEmpty(info.AssaultMoveScanCondition))
+				assaultMoveToken = conditionManager.GrantCondition(self, info.AssaultMoveScanCondition);
+			else if (!assaultActive && assaultMoveToken != ConditionManager.InvalidConditionToken)
+				assaultMoveToken = conditionManager.RevokeCondition(self, assaultMoveToken);
+		}
+
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
-			if (order.OrderString == "AttackMove")
+			if (order.OrderString == "AttackMove" || order.OrderString == "AssaultMove")
 				return info.Voice;
 
 			return null;
 		}
 
-		void Activate(Actor self)
+		void Activate(Actor self, bool assaultMove)
 		{
 			self.CancelActivity();
+			assaultMoving = assaultMove;
 			self.QueueActivity(new AttackMoveActivity(self, move.MoveTo(TargetLocation.Value, 1)));
 		}
 
@@ -55,19 +97,69 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			// This might cause the actor to be stuck if the target location is unreachable
 			if (TargetLocation.HasValue && self.Location != TargetLocation.Value)
-				Activate(self);
+				Activate(self, assaultMoving);
 		}
 
 		public void ResolveOrder(Actor self, Order order)
 		{
 			TargetLocation = null;
 
-			if (order.OrderString == "AttackMove")
+			if (order.OrderString == "AttackMove" || order.OrderString == "AssaultMove")
 			{
 				TargetLocation = move.NearestMoveableCell(order.TargetLocation);
 				self.SetTargetLine(Target.FromCell(self.World, TargetLocation.Value), Color.Red);
-				Activate(self);
+				Activate(self, order.OrderString == "AssaultMove");
 			}
+		}
+	}
+
+	public class AttackMoveOrderGenerator : UnitOrderGenerator
+	{
+		readonly TraitPair<AttackMove>[] subjects;
+		readonly MouseButton expectedButton;
+
+		public AttackMoveOrderGenerator(IEnumerable<Actor> subjects, MouseButton button)
+		{
+			expectedButton = button;
+
+			this.subjects = subjects.SelectMany(a => a.TraitsImplementing<AttackMove>()
+					.Select(am => new TraitPair<AttackMove>(a, am)))
+				.ToArray();
+		}
+
+		public override IEnumerable<Order> Order(World world, CPos cell, int2 worldPixel, MouseInput mi)
+		{
+			if (mi.Button != expectedButton)
+				world.CancelInputMode();
+
+			return OrderInner(world, cell, mi);
+		}
+
+		protected virtual IEnumerable<Order> OrderInner(World world, CPos cell, MouseInput mi)
+		{
+			if (mi.Button == expectedButton && world.Map.Contains(cell))
+			{
+				world.CancelInputMode();
+
+				var queued = mi.Modifiers.HasModifier(Modifiers.Shift);
+				var orderName = mi.Modifiers.HasModifier(Modifiers.Ctrl) ? "AssaultMove" : "AttackMove";
+				foreach (var s in subjects)
+					yield return new Order(orderName, s.Actor, queued) { TargetLocation = cell };
+			}
+		}
+
+		public override string GetCursor(World world, CPos cell, int2 worldPixel, MouseInput mi)
+		{
+			if (world.Map.Contains(cell))
+				return mi.Modifiers.HasModifier(Modifiers.Ctrl) ? "assaultmove" : "attackmove";
+
+			return "generic-blocked";
+		}
+
+		public override bool InputOverridesSelection(World world, int2 xy, MouseInput mi)
+		{
+			// Custom order generators always override selection
+			return true;
 		}
 	}
 }
