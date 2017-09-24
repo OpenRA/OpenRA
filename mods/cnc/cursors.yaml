@@ -155,23 +155,41 @@ Cursors:
 		move:
 			Start: 0
 			Length: 8
-		move-minimap:
-			Start: 8
-			Length: 4
 		move-rough:
 			Start: 0
 			Length: 8
+		move-minimap:
+			Start: 8
+			Length: 4
 		attackmove:
 			Start: 12
 			Length: 8
 		attackmove-minimap:
 			Start: 20
 			Length: 4
-		move-blocked:
+		assaultmove:
 			Start: 24
+			Length: 8
+		assaultmove-minimap:
+			Start: 32
+			Length: 4
+		move-blocked:
+			Start: 36
+			Length: 1
+		attackmove-blocked:
+			Start: 37
+			Length: 1
+		assaultmove-blocked:
+			Start: 38
 			Length: 1
 		move-blocked-minimap:
-			Start: 25
+			Start: 39
+			Length: 1
+		attackmove-blocked-minimap:
+			Start: 39
+			Length: 1
+		assaultmove-blocked-minimap:
+			Start: 40
 			Length: 1
 	mouse5.shp: cursor
 		guard:
@@ -217,10 +235,3 @@ Cursors:
 			Length: 8
 		attackoutsiderange-minimap:
 			Start: 8
-	mouse8.shp: cursor
-		assaultmove:
-			Start: 0
-			Length: 8
-		assaultmove-minimap:
-			Start: 8
-			Length: 4
