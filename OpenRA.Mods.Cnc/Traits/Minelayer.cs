@@ -29,18 +29,25 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		public readonly WDist MinefieldDepth = new WDist(1536);
 
-		public object Create(ActorInitializer init) { return new Minelayer(init.Self); }
+		[Desc("Voice to use when ordered to lay a minefield.")]
+		[VoiceReference] public readonly string Voice = "Action";
+
+		public object Create(ActorInitializer init) { return new Minelayer(init.Self, this); }
 	}
 
-	public class Minelayer : IIssueOrder, IResolveOrder, IRenderAboveShroudWhenSelected, ISync, IIssueDeployOrder
+	public class Minelayer : IIssueOrder, IResolveOrder, IRenderAboveShroudWhenSelected, ISync, IIssueDeployOrder, IOrderVoice
 	{
+		readonly MinelayerInfo info;
+
 		/* TODO: [Sync] when sync can cope with arrays! */
 		public CPos[] Minefield = null;
 		readonly Sprite tile;
 		[Sync] CPos minefieldStart;
 
-		public Minelayer(Actor self)
+		public Minelayer(Actor self, MinelayerInfo info)
 		{
+			this.info = info;
+
 			var tileset = self.World.Map.Tileset.ToLowerInvariant();
 			tile = self.World.Map.Rules.Sequences.GetSequence("overlay", "build-valid-{0}".F(tileset)).GetSprite(0);
 		}
@@ -102,6 +109,14 @@ namespace OpenRA.Mods.Cnc.Traits
 				self.CancelActivity();
 				self.QueueActivity(new LayMines(self));
 			}
+		}
+
+		string IOrderVoice.VoicePhraseForOrder(Actor self, Order order)
+		{
+			if (order.OrderString == "PlaceMine" || order.OrderString == "PlaceMinefield")
+				return info.Voice;
+
+			return null;
 		}
 
 		static IEnumerable<CPos> GetMinefieldCells(CPos start, CPos end, WDist depth)
