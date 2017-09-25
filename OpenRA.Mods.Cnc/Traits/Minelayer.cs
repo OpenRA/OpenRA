@@ -199,7 +199,6 @@ namespace OpenRA.Mods.Cnc.Traits
 					world.CancelInputMode();
 			}
 
-			CPos lastMousePos;
 			public IEnumerable<IRenderable> Render(WorldRenderer wr, World world) { yield break; }
 			public IEnumerable<IRenderable> RenderAboveShroud(WorldRenderer wr, World world)
 			{
@@ -208,6 +207,7 @@ namespace OpenRA.Mods.Cnc.Traits
 					yield break;
 
 				// We get the biggest depth so we cover all cells that mines could be placed on.
+				var lastMousePos = wr.Viewport.ViewToWorld(Viewport.LastMousePos);
 				var minefield = GetMinefieldCells(minefieldStart, lastMousePos,
 					minelayers.Max(m => m.Info.TraitInfo<MinelayerInfo>().MinefieldDepth));
 
@@ -223,7 +223,7 @@ namespace OpenRA.Mods.Cnc.Traits
 
 			public string GetCursor(World world, CPos cell, int2 worldPixel, MouseInput mi)
 			{
-				lastMousePos = cell; return "ability";	/* TODO */
+				return "ability";
 			}
 		}
 
