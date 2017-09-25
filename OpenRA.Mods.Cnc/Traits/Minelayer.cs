@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Cnc.Activities;
@@ -102,9 +103,11 @@ namespace OpenRA.Mods.Cnc.Traits
 			{
 				var movement = self.Trait<IPositionable>();
 
-				Minefield = GetMinefieldCells(minefieldStart, order.TargetLocation,
-					self.Info.TraitInfo<MinelayerInfo>().MinefieldDepth)
+				Minefield = GetMinefieldCells(minefieldStart, order.TargetLocation, info.MinefieldDepth)
 					.Where(p => movement.CanEnterCell(p, null, false)).ToArray();
+
+				if (Minefield.Length == 1 && Minefield[0] != self.Location)
+					self.SetTargetLine(Target.FromCell(self.World, Minefield[0]), Color.Red);
 
 				self.CancelActivity();
 				self.QueueActivity(new LayMines(self));
@@ -141,6 +144,10 @@ namespace OpenRA.Mods.Cnc.Traits
 		IEnumerable<IRenderable> IRenderAboveShroudWhenSelected.RenderAboveShroud(Actor self, WorldRenderer wr)
 		{
 			if (self.Owner != self.World.LocalPlayer || Minefield == null)
+				yield break;
+
+			// Single-cell mine fields use a target line instead
+			if (Minefield.Length == 1)
 				yield break;
 
 			var pal = wr.Palette(TileSet.TerrainPaletteInternalName);
