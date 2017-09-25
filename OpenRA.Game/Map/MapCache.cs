@@ -28,6 +28,7 @@ namespace OpenRA
 	{
 		public static readonly MapPreview UnknownMap = new MapPreview(null, null, MapGridType.Rectangular, null);
 		public readonly IReadOnlyDictionary<IReadOnlyPackage, MapClassification> MapLocations;
+		readonly Dictionary<IReadOnlyPackage, MapClassification> mapLocations = new Dictionary<IReadOnlyPackage, MapClassification>();
 
 		readonly Cache<string, MapPreview> previews;
 		readonly ModData modData;
@@ -45,8 +46,16 @@ namespace OpenRA
 			previews = new Cache<string, MapPreview>(uid => new MapPreview(modData, uid, gridType.Value, this));
 			sheetBuilder = new SheetBuilder(SheetType.BGRA);
 
+			MapLocations = new ReadOnlyDictionary<IReadOnlyPackage, MapClassification>(mapLocations);
+		}
+
+		public void LoadMaps()
+		{
+			// Utility mod that does not support maps
+			if (!modData.Manifest.Contains<MapGrid>())
+				return;
+
 			// Enumerate map directories
-			var mapLocations = new Dictionary<IReadOnlyPackage, MapClassification>();
 			foreach (var kv in modData.Manifest.MapFolders)
 			{
 				var name = kv.Key;
@@ -81,15 +90,6 @@ namespace OpenRA
 
 				mapLocations.Add(package, classification);
 			}
-
-			MapLocations = new ReadOnlyDictionary<IReadOnlyPackage, MapClassification>(mapLocations);
-		}
-
-		public void LoadMaps()
-		{
-			// Utility mod that does not support maps
-			if (!modData.Manifest.Contains<MapGrid>())
-				return;
 
 			var mapGrid = modData.Manifest.Get<MapGrid>();
 			foreach (var kv in MapLocations)
