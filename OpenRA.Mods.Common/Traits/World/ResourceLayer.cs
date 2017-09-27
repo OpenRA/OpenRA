@@ -60,7 +60,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		public void Render(WorldRenderer wr)
+		void IRenderOverlay.Render(WorldRenderer wr)
 		{
 			foreach (var kv in spriteLayers.Values)
 				kv.Draw(wr.Viewport);

@@ -70,7 +70,7 @@ namespace OpenRA.Mods.D2k.Traits
 				dirty.Remove(r);
 		}
 
-		public void Render(WorldRenderer wr)
+		void IRenderOverlay.Render(WorldRenderer wr)
 		{
 			render.Draw(wr.Viewport);
 		}

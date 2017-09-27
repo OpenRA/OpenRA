@@ -169,7 +169,7 @@ namespace OpenRA.Mods.Common.Traits
 			return t;
 		}
 
-		public void Render(WorldRenderer wr)
+		void IRenderOverlay.Render(WorldRenderer wr)
 		{
 			if (wr.World.Type != WorldType.Editor)
 				return;
