@@ -88,7 +88,7 @@ namespace OpenRA.Mods.Common.Traits
 				deployState = init.Get<DeployStateInit, DeployState>();
 		}
 
-		public void Created(Actor self)
+		void INotifyCreated.Created(Actor self)
 		{
 			conditionManager = self.TraitOrDefault<ConditionManager>();
 			notify = self.TraitsImplementing<INotifyDeployTriggered>().ToArray();
