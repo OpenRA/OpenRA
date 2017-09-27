@@ -38,6 +38,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		public int NetWorth { get; protected set; }
 
+		bool disposed;
+
 		public EditorResourceLayer(Actor self)
 		{
 			if (self.World.Type != WorldType.Editor)
@@ -198,8 +200,7 @@ namespace OpenRA.Mods.Common.Traits
 				l.Draw(wr.Viewport);
 		}
 
-		bool disposed;
-		public void Disposing(Actor self)
+		void INotifyActorDisposing.Disposing(Actor self)
 		{
 			if (disposed)
 				return;

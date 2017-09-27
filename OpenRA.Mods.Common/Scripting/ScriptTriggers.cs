@@ -523,7 +523,7 @@ namespace OpenRA.Mods.Common.Scripting
 				Clear(t);
 		}
 
-		public void Disposing(Actor self)
+		void INotifyActorDisposing.Disposing(Actor self)
 		{
 			ClearAll();
 		}
