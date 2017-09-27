@@ -123,7 +123,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		public void TickRender(WorldRenderer wr, Actor self)
+		void ITickRender.TickRender(WorldRenderer wr, Actor self)
 		{
 			IRenderable[] renderables = null;
 			for (var playerIndex = 0; playerIndex < frozenStates.Count; playerIndex++)
