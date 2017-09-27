@@ -120,7 +120,8 @@ namespace OpenRA.Mods.Common.Traits
 			return true;
 		}
 
-		public void RemovedFromWorld(Actor self) { Unreserve(self); }
+		void INotifyRemovedFromWorld.RemovedFromWorld(Actor self) { Unreserve(self); }
+
 		public void Unreserve(Actor self)
 		{
 			if (ReservedCargo == null)

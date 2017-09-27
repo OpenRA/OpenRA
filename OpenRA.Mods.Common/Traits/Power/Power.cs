@@ -43,9 +43,11 @@ namespace OpenRA.Mods.Common.Traits
 
 		protected override void TraitEnabled(Actor self) { PlayerPower.UpdateActor(self); }
 		protected override void TraitDisabled(Actor self) { PlayerPower.UpdateActor(self); }
-		public void AddedToWorld(Actor self) { PlayerPower.UpdateActor(self); }
-		public void RemovedFromWorld(Actor self) { PlayerPower.RemoveActor(self); }
-		public void OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
+
+		void INotifyAddedToWorld.AddedToWorld(Actor self) { PlayerPower.UpdateActor(self); }
+		void INotifyRemovedFromWorld.RemovedFromWorld(Actor self) { PlayerPower.RemoveActor(self); }
+
+		void INotifyOwnerChanged.OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
 		{
 			PlayerPower.RemoveActor(self);
 			PlayerPower = newOwner.PlayerActor.Trait<PowerManager>();

@@ -88,7 +88,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			bi = self.Info.TraitInfo<BuildingInfo>();
 		}
 
-		public void AddedToWorld(Actor self)
+		void INotifyAddedToWorld.AddedToWorld(Actor self)
 		{
 			var rows = info.HasMinibib ? 1 : 2;
 			var width = bi.Dimensions.X;
@@ -119,7 +119,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			}
 		}
 
-		public void RemovedFromWorld(Actor self)
+		void INotifyRemovedFromWorld.RemovedFromWorld(Actor self)
 		{
 			foreach (var a in anims)
 				rs.Remove(a);

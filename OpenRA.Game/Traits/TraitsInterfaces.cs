@@ -134,7 +134,9 @@ namespace OpenRA.Traits
 	[RequireExplicitImplementation]
 	public interface INotifyCreated { void Created(Actor self); }
 
+	[RequireExplicitImplementation]
 	public interface INotifyAddedToWorld { void AddedToWorld(Actor self); }
+	[RequireExplicitImplementation]
 	public interface INotifyRemovedFromWorld { void RemovedFromWorld(Actor self); }
 
 	[RequireExplicitImplementation]

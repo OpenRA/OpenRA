@@ -96,7 +96,7 @@ namespace OpenRA.Mods.Common.Traits
 			return actorToDrop.Trait<IPositionable>().CanEnterCell(p);
 		}
 
-		public void RemovedFromWorld(Actor self)
+		void INotifyRemovedFromWorld.RemovedFromWorld(Actor self)
 		{
 			OnRemovedFromWorld(self);
 		}
