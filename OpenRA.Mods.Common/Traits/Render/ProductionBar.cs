@@ -60,7 +60,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 				throw new InvalidOperationException("No queues available for production type '{0}'".F(type));
 		}
 
-		public void Created(Actor self)
+		void INotifyCreated.Created(Actor self)
 		{
 			FindQueue();
 		}

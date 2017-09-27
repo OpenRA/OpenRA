@@ -129,7 +129,10 @@ namespace OpenRA.Traits
 	public interface IResolveOrder { void ResolveOrder(Actor self, Order order); }
 	public interface IValidateOrder { bool OrderValidation(OrderManager orderManager, World world, int clientId, Order order); }
 	public interface IOrderVoice { string VoicePhraseForOrder(Actor self, Order order); }
+
+	[RequireExplicitImplementation]
 	public interface INotifyCreated { void Created(Actor self); }
+
 	public interface INotifyAddedToWorld { void AddedToWorld(Actor self); }
 	public interface INotifyRemovedFromWorld { void RemovedFromWorld(Actor self); }
 	public interface INotifyActorDisposing { void Disposing(Actor self); }
