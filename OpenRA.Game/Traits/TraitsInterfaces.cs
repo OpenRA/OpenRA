@@ -307,6 +307,8 @@ namespace OpenRA.Traits
 	public interface INotifySelection { void SelectionChanged(); }
 
 	public interface IWorldLoaded { void WorldLoaded(World w, WorldRenderer wr); }
+
+	[RequireExplicitImplementation]
 	public interface ICreatePlayers { void CreatePlayers(World w); }
 
 	public interface IBotInfo : ITraitInfoInterface
