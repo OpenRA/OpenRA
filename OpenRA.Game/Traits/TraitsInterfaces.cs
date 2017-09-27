@@ -318,6 +318,7 @@ namespace OpenRA.Traits
 		IBotInfo Info { get; }
 	}
 
+	[RequireExplicitImplementation]
 	public interface IRenderOverlay { void Render(WorldRenderer wr); }
 
 	[RequireExplicitImplementation]
