@@ -354,6 +354,7 @@ namespace OpenRA.Traits
 		IEnumerable<WPos> TargetablePositions(Actor self);
 	}
 
+	[RequireExplicitImplementation]
 	public interface IGameOver { void GameOver(World world); }
 
 	public interface IWarhead
