@@ -295,7 +295,12 @@ namespace OpenRA.Mods.Common.Traits
 				NotifyBuildingComplete(self);
 		}
 
-		public virtual void AddedToWorld(Actor self)
+		void INotifyAddedToWorld.AddedToWorld(Actor self)
+		{
+			AddedToWorld(self);
+		}
+
+		protected virtual void AddedToWorld(Actor self)
 		{
 			if (Info.RemoveSmudgesOnBuild)
 				RemoveSmudges();
