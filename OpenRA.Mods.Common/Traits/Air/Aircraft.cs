@@ -824,7 +824,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		#endregion
 
-		public void Disposing(Actor self)
+		void INotifyActorDisposing.Disposing(Actor self)
 		{
 			UnReserve();
 		}

@@ -36,6 +36,8 @@ namespace OpenRA.Mods.Common.Traits
 		protected readonly CellLayer<CellContents> Content;
 		protected readonly CellLayer<CellContents> RenderContent;
 
+		bool disposed;
+
 		public ResourceLayer(Actor self)
 		{
 			world = self.World;
@@ -286,8 +288,7 @@ namespace OpenRA.Mods.Common.Traits
 			return Content[cell].Type.Info.MaxDensity;
 		}
 
-		bool disposed;
-		public void Disposing(Actor self)
+		void INotifyActorDisposing.Disposing(Actor self)
 		{
 			if (disposed)
 				return;

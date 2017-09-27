@@ -88,6 +88,7 @@ namespace OpenRA.Mods.Common.Traits
 		readonly World world;
 
 		TerrainSpriteLayer render;
+		bool disposed;
 
 		public SmudgeLayer(Actor self, SmudgeLayerInfo info)
 		{
@@ -207,8 +208,7 @@ namespace OpenRA.Mods.Common.Traits
 			render.Draw(wr.Viewport);
 		}
 
-		bool disposed;
-		public void Disposing(Actor self)
+		void INotifyActorDisposing.Disposing(Actor self)
 		{
 			if (disposed)
 				return;
