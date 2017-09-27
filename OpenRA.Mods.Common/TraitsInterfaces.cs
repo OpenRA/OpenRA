@@ -376,4 +376,10 @@ namespace OpenRA.Mods.Common.Traits
 		void OnAcceptingCash(Actor self, Actor donor);
 		void OnDeliveringCash(Actor self, Actor acceptor);
 	}
+
+	[RequireExplicitImplementation]
+	public interface ITargetableCells
+	{
+		IEnumerable<Pair<CPos, SubCell>> TargetableCells();
+	}
 }

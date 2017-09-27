@@ -193,11 +193,6 @@ namespace OpenRA.Traits
 		bool HasFogVisibility();
 	}
 
-	public interface ITargetableCells
-	{
-		IEnumerable<Pair<CPos, SubCell>> TargetableCells();
-	}
-
 	public interface IOccupySpaceInfo : ITraitInfoInterface
 	{
 		IReadOnlyDictionary<CPos, SubCell> OccupiedCells(ActorInfo info, CPos location, SubCell subCell = SubCell.Any);
