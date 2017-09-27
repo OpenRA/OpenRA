@@ -55,7 +55,7 @@ namespace OpenRA.Mods.D2k.Traits
 			dirty[cell] = new Sprite(s.Sheet, s.Bounds, s.ZRamp, float2.Zero, s.Channel, s.BlendMode);
 		}
 
-		public void TickRender(WorldRenderer wr, Actor self)
+		void ITickRender.TickRender(WorldRenderer wr, Actor self)
 		{
 			var remove = new List<CPos>();
 			foreach (var kv in dirty)

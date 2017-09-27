@@ -94,6 +94,7 @@ namespace OpenRA.Traits
 
 	[RequireExplicitImplementation]
 	public interface ITick { void Tick(Actor self); }
+	[RequireExplicitImplementation]
 	public interface ITickRender { void TickRender(WorldRenderer wr, Actor self); }
 	public interface IRender { IEnumerable<IRenderable> Render(Actor self, WorldRenderer wr); }
 

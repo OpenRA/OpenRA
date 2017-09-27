@@ -79,7 +79,7 @@ namespace OpenRA.Mods.Common.Traits
 				UpdateNeighbours(p.Footprint);
 		}
 
-		public void TickRender(WorldRenderer wr, Actor self)
+		void ITickRender.TickRender(WorldRenderer wr, Actor self)
 		{
 			if (wr.World.Type != WorldType.Editor)
 				return;
