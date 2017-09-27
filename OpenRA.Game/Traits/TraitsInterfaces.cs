@@ -354,6 +354,7 @@ namespace OpenRA.Traits
 		bool RequiresForceFire { get; }
 	}
 
+	[RequireExplicitImplementation]
 	public interface ITargetablePositions
 	{
 		IEnumerable<WPos> TargetablePositions(Actor self);

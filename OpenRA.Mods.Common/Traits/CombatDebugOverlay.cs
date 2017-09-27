@@ -75,7 +75,7 @@ namespace OpenRA.Mods.Common.Traits
 				s.Info.Type.DrawCombatOverlay(wr, wcr, self);
 
 			var tc = Color.Lime;
-			var positions = activeShapes.SelectMany(tp => tp.TargetablePositions(self));
+			var positions = Target.FromActor(self).Positions;
 			foreach (var p in positions)
 			{
 				var center = wr.Screen3DPosition(p);
