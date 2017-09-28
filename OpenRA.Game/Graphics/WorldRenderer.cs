@@ -100,9 +100,9 @@ namespace OpenRA.Graphics
 				palettes[name].Palette = pal;
 		}
 
-		List<IFinalizedRenderable> GenerateRenderables()
+		List<IFinalizedRenderable> GenerateRenderables(IEnumerable<Actor> actorsInBox)
 		{
-			var actors = World.ScreenMap.RenderableActorsInBox(Viewport.TopLeft, Viewport.BottomRight).Append(World.WorldActor);
+			var actors = actorsInBox.Append(World.WorldActor);
 			if (World.RenderPlayer != null)
 				actors = actors.Append(World.RenderPlayer.PlayerActor);
 
@@ -126,13 +126,15 @@ namespace OpenRA.Graphics
 			return renderables;
 		}
 
-		List<IFinalizedRenderable> GenerateOverlayRenderables()
+		List<IFinalizedRenderable> GenerateOverlayRenderables(IEnumerable<Actor> actorsInBox)
 		{
-			var aboveShroud = World.ActorsWithTrait<IRenderAboveShroud>().Where(a => a.Actor.IsInWorld && !a.Actor.Disposed)
-				.SelectMany(a => a.Trait.RenderAboveShroud(a.Actor, this));
+			var aboveShroud = World.ActorsWithTrait<IRenderAboveShroud>()
+				.Where(a => a.Actor.IsInWorld && !a.Actor.Disposed && (!a.Trait.SpatiallyPartitionable || actorsInBox.Contains(a.Actor)))
+					.SelectMany(a => a.Trait.RenderAboveShroud(a.Actor, this));
 
-			var aboveShroudSelected = World.Selection.Actors.Where(a => !a.Disposed)
+			var aboveShroudSelected = World.Selection.Actors.Where(a => a.IsInWorld && !a.Disposed)
 				.SelectMany(a => a.TraitsImplementing<IRenderAboveShroudWhenSelected>()
+					.Where(t => !t.SpatiallyPartitionable || actorsInBox.Contains(a))
 					.SelectMany(t => t.RenderAboveShroud(a, this)));
 
 			var aboveShroudEffects = World.Effects.Select(e => e as IEffectAboveShroud)
@@ -169,7 +171,8 @@ namespace OpenRA.Graphics
 
 			RefreshPalette();
 
-			var renderables = GenerateRenderables();
+			var onScreenActors = World.ScreenMap.RenderableActorsInBox(Viewport.TopLeft, Viewport.BottomRight);
+			var renderables = GenerateRenderables(onScreenActors);
 			var bounds = Viewport.GetScissorBounds(World.Type != WorldType.Editor);
 			Game.Renderer.EnableScissor(bounds);
 
@@ -202,7 +205,7 @@ namespace OpenRA.Graphics
 
 			Game.Renderer.DisableScissor();
 
-			var finalOverlayRenderables = GenerateOverlayRenderables();
+			var finalOverlayRenderables = GenerateOverlayRenderables(onScreenActors);
 
 			// HACK: Keep old grouping behaviour
 			var groupedOverlayRenderables = finalOverlayRenderables.GroupBy(prs => prs.GetType());
