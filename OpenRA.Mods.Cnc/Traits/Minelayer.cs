@@ -156,6 +156,8 @@ namespace OpenRA.Mods.Cnc.Traits
 					WVec.Zero, -511, pal, 1f, true);
 		}
 
+		bool IRenderAboveShroudWhenSelected.SpatiallyPartitionable { get { return false; } }
+
 		class MinefieldOrderGenerator : IOrderGenerator
 		{
 			readonly List<Actor> minelayers;

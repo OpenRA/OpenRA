@@ -60,5 +60,7 @@ namespace OpenRA.Mods.Cnc.Traits
 					Color.FromArgb(96, Color.Black));
 			}
 		}
+
+		bool IRenderAboveShroudWhenSelected.SpatiallyPartitionable { get { return false; } }
 	}
 }

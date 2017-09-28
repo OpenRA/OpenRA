@@ -92,6 +92,9 @@ namespace OpenRA.Mods.Common.Traits.Render
 			return Info.RequiresSelection ? RenderInner(self, wr) : SpriteRenderable.None;
 		}
 
+		bool IRenderAboveShroud.SpatiallyPartitionable { get { return true; } }
+		bool IRenderAboveShroudWhenSelected.SpatiallyPartitionable { get { return true; } }
+
 		IEnumerable<IRenderable> RenderInner(Actor self, WorldRenderer wr)
 		{
 			if (IsTraitDisabled || self.IsDead || !self.IsInWorld || Anim == null)

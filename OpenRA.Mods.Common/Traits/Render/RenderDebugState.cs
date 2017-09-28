@@ -97,5 +97,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			var aiSquadInfo = "{0}, {1}".F(squad.Type, squad.TargetActor);
 			yield return new TextRenderable(font, self.CenterPosition + offset, 0, color, aiSquadInfo);
 		}
+
+		bool IRenderAboveShroudWhenSelected.SpatiallyPartitionable { get { return true; } }
 	}
 }
