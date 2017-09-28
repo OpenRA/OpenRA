@@ -126,6 +126,35 @@ namespace OpenRA.Graphics
 			return renderables;
 		}
 
+		List<IFinalizedRenderable> GenerateOverlayRenderables()
+		{
+			var aboveShroud = World.ActorsWithTrait<IRenderAboveShroud>().Where(a => a.Actor.IsInWorld && !a.Actor.Disposed)
+				.SelectMany(a => a.Trait.RenderAboveShroud(a.Actor, this));
+
+			var aboveShroudSelected = World.Selection.Actors.Where(a => !a.Disposed)
+				.SelectMany(a => a.TraitsImplementing<IRenderAboveShroudWhenSelected>()
+					.SelectMany(t => t.RenderAboveShroud(a, this)));
+
+			var aboveShroudEffects = World.Effects.Select(e => e as IEffectAboveShroud)
+				.Where(e => e != null)
+				.SelectMany(e => e.RenderAboveShroud(this));
+
+			var aboveShroudOrderGenerator = SpriteRenderable.None;
+			if (World.OrderGenerator != null)
+				aboveShroudOrderGenerator = World.OrderGenerator.RenderAboveShroud(this, World);
+
+			var overlayRenderables = aboveShroud
+				.Concat(aboveShroudSelected)
+				.Concat(aboveShroudEffects)
+				.Concat(aboveShroudOrderGenerator);
+
+			Game.Renderer.WorldModelRenderer.BeginFrame();
+			var finalOverlayRenderables = overlayRenderables.Select(r => r.PrepareRender(this)).ToList();
+			Game.Renderer.WorldModelRenderer.EndFrame();
+
+			return finalOverlayRenderables;
+		}
+
 		public void Draw()
 		{
 			if (World.WorldActor.Disposed)
@@ -173,32 +202,11 @@ namespace OpenRA.Graphics
 
 			Game.Renderer.DisableScissor();
 
-			var aboveShroud = World.ActorsWithTrait<IRenderAboveShroud>().Where(a => a.Actor.IsInWorld && !a.Actor.Disposed)
-				.SelectMany(a => a.Trait.RenderAboveShroud(a.Actor, this));
-
-			var aboveShroudSelected = World.Selection.Actors.Where(a => !a.Disposed)
-				.SelectMany(a => a.TraitsImplementing<IRenderAboveShroudWhenSelected>()
-					.SelectMany(t => t.RenderAboveShroud(a, this)));
-
-			var aboveShroudEffects = World.Effects.Select(e => e as IEffectAboveShroud)
-				.Where(e => e != null)
-				.SelectMany(e => e.RenderAboveShroud(this));
-
-			var aboveShroudOrderGenerator = SpriteRenderable.None;
-			if (World.OrderGenerator != null)
-				aboveShroudOrderGenerator = World.OrderGenerator.RenderAboveShroud(this, World);
-
-			Game.Renderer.WorldModelRenderer.BeginFrame();
-			var finalOverlayRenderables = aboveShroud
-				.Concat(aboveShroudSelected)
-				.Concat(aboveShroudEffects)
-				.Concat(aboveShroudOrderGenerator)
-				.Select(r => r.PrepareRender(this))
-				.ToList();
-			Game.Renderer.WorldModelRenderer.EndFrame();
+			var finalOverlayRenderables = GenerateOverlayRenderables();
 
 			// HACK: Keep old grouping behaviour
-			foreach (var g in finalOverlayRenderables.GroupBy(prs => prs.GetType()))
+			var groupedOverlayRenderables = finalOverlayRenderables.GroupBy(prs => prs.GetType());
+			foreach (var g in groupedOverlayRenderables)
 				foreach (var r in g)
 					r.Render(this);
 
@@ -207,7 +215,7 @@ namespace OpenRA.Graphics
 				for (var i = 0; i < renderables.Count; i++)
 					renderables[i].RenderDebugGeometry(this);
 
-				foreach (var g in finalOverlayRenderables.GroupBy(prs => prs.GetType()))
+				foreach (var g in groupedOverlayRenderables)
 					foreach (var r in g)
 						r.RenderDebugGeometry(this);
 			}
