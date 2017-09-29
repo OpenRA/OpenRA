@@ -230,10 +230,10 @@ namespace OpenRA.Mods.Common.Orders
 				foreach (var r in previewRenderables)
 					yield return r;
 
-				var res = world.WorldActor.Trait<ResourceLayer>();
+				var res = world.WorldActor.TraitOrDefault<ResourceLayer>();
 				var isCloseEnough = buildingInfo.IsCloseEnoughToBase(world, world.LocalPlayer, building, topLeft);
 				foreach (var t in buildingInfo.Tiles(topLeft))
-					cells.Add(t, MakeCellType(isCloseEnough && world.IsCellBuildable(t, buildingInfo) && res.GetResource(t) == null));
+					cells.Add(t, MakeCellType(isCloseEnough && world.IsCellBuildable(t, buildingInfo) && (res == null || res.GetResource(t) == null)));
 			}
 
 			var cellPalette = wr.Palette(placeBuildingInfo.Palette);
