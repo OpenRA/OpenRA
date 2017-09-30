@@ -257,7 +257,9 @@ namespace OpenRA
 			if (!sources.Any())
 				return new List<MiniYamlNode>();
 
-			var tree = sources.Where(s => s != null).Aggregate(MergePartial)
+			var tree = sources.Where(s => s != null)
+				.Select(MergeSelfPartial)
+				.Aggregate(MergePartial)
 				.ToDictionary(n => n.Key, n => n.Value);
 
 			var resolved = new Dictionary<string, MiniYaml>();
@@ -323,6 +325,42 @@ namespace OpenRA
 			}
 
 			return resolved;
+		}
+
+		/// <summary>
+		/// Merges any duplicate keys that are defined within the same set of nodes.
+		/// Does not resolve inheritance or node removals.
+		/// </summary>
+		static MiniYaml MergeSelfPartial(MiniYaml existingNodes)
+		{
+			// Nothing to do
+			if (existingNodes.Nodes == null || existingNodes.Nodes.Count == 0)
+				return existingNodes;
+
+			return new MiniYaml(existingNodes.Value, MergeSelfPartial(existingNodes.Nodes));
+		}
+
+		/// <summary>
+		/// Merges any duplicate keys that are defined within the same set of nodes.
+		/// Does not resolve inheritance or node removals.
+		/// </summary>
+		static List<MiniYamlNode> MergeSelfPartial(List<MiniYamlNode> existingNodes)
+		{
+			var keys = new HashSet<string>();
+			var ret = new List<MiniYamlNode>();
+			foreach (var n in existingNodes)
+			{
+				if (keys.Add(n.Key))
+					ret.Add(n);
+				else
+				{
+					// Node with the same key has already been added: merge new node over the existing one
+					var original = ret.First(r => r.Key == n.Key);
+					original.Value = MergePartial(original.Value, n.Value);
+				}
+			}
+
+			return ret;
 		}
 
 		static MiniYaml MergePartial(MiniYaml existingNodes, MiniYaml overrideNodes)
