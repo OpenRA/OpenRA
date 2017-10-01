@@ -107,7 +107,7 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				if (p.Trait.Produce(p.Actor, unit, p.Trait.Faction))
 				{
-					FinishProduction();
+					FinishProduction(unit.Name);
 					return true;
 				}
 			}

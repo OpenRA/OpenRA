@@ -141,8 +141,8 @@ namespace OpenRA.Mods.Common.Widgets
 
 				var clock = clocks[queue.Trait];
 				clock.PlayFetchIndex(ClockSequence,
-					() => current.TotalTime == 0 ? 0 : ((current.TotalTime - current.RemainingTime)
-					* (clock.CurrentSequence.Length - 1) / current.TotalTime));
+					() => current.TotalTimeActual == 0 ? 0 : ((current.TotalTimeActual - current.RemainingTimeActual)
+					* (clock.CurrentSequence.Length - 1) / current.TotalTimeActual));
 				clock.Tick();
 				WidgetUtils.DrawSHPCentered(clock.Image, location + 0.5f * iconSize, worldRenderer.Palette(ClockPalette), 0.5f);
 
