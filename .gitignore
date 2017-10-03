@@ -82,3 +82,6 @@ StyleCopViolations.xml
 
 # Support directory
 /Support
+
+# IntelliJ files
+.idea
