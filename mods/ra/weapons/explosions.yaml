@@ -68,6 +68,13 @@ UnitExplodeHeli:
 	Warhead@2Eff: CreateEffect
 		Explosions: napalm
 
+VisualExplode:
+	Inherits: ^Explosion
+	-Warhead@1Dam: SpreadDamage
+	Warhead@2Eff: CreateEffect
+		Explosions: offseted_napalm
+		ImpactSounds: firebl3.aud
+
 UnitExplodeShip:
 	Inherits: ^Explosion
 	-Warhead@Smu: LeaveSmudge
