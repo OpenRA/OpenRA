@@ -921,6 +921,7 @@
 		Spins: False
 		Moves: True
 		Velocity: 86
+		Explosion: UnitExplodePlane
 	EditorTilesetFilter:
 		Categories: Husk
 	RevealOnDeath:
@@ -938,6 +939,7 @@
 		CanHover: True
 		VTOL: true
 	FallsToEarth:
+		Explosion: UnitExplodeHeli
 	BodyOrientation:
 		UseClassicFacingFudge: True
 	RevealOnDeath:

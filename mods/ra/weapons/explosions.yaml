@@ -58,6 +58,16 @@ UnitExplode:
 	Warhead@1Dam: SpreadDamage
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
 
+UnitExplodePlane:
+	Inherits: UnitExplode
+	Warhead@2Eff: CreateEffect
+		Explosions: large_napalm
+
+UnitExplodeHeli:
+	Inherits: UnitExplode
+	Warhead@2Eff: CreateEffect
+		Explosions: napalm
+
 UnitExplodeShip:
 	Inherits: ^Explosion
 	-Warhead@Smu: LeaveSmudge
