@@ -30,7 +30,15 @@ namespace OpenRA.Mods.Common.Traits
 		public object Create(ActorInitializer init) { return new FallsToEarth(init.Self, this); }
 		public void RulesetLoaded(Ruleset rules, ActorInfo ai)
 		{
-			ExplosionWeapon = string.IsNullOrEmpty(Explosion) ? null : rules.Weapons[Explosion.ToLowerInvariant()];
+			if (string.IsNullOrEmpty(Explosion))
+				return;
+
+			WeaponInfo weapon;
+			var weaponToLower = Explosion.ToLowerInvariant();
+			if (!rules.Weapons.TryGetValue(weaponToLower, out weapon))
+				throw new YamlException("Weapons Ruleset does not contain an entry '{0}'".F(weaponToLower));
+
+			ExplosionWeapon = weapon;
 		}
 	}
 
