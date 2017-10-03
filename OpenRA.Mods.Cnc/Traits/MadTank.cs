@@ -56,8 +56,19 @@ namespace OpenRA.Mods.Cnc.Traits
 		public object Create(ActorInitializer init) { return new MadTank(init.Self, this); }
 		public void RulesetLoaded(Ruleset rules, ActorInfo ai)
 		{
-			ThumpDamageWeaponInfo = rules.Weapons[ThumpDamageWeapon.ToLowerInvariant()];
-			DetonationWeaponInfo = rules.Weapons[DetonationWeapon.ToLowerInvariant()];
+			WeaponInfo thumpDamageWeapon;
+			WeaponInfo detonationWeapon;
+			var thumpDamageWeaponToLower = (ThumpDamageWeapon ?? string.Empty).ToLowerInvariant();
+			var detonationWeaponToLower = (DetonationWeapon ?? string.Empty).ToLowerInvariant();
+
+			if (!rules.Weapons.TryGetValue(thumpDamageWeaponToLower, out thumpDamageWeapon))
+				throw new YamlException("Weapons Ruleset does not contain an entry '{0}'".F(thumpDamageWeaponToLower));
+
+			if (!rules.Weapons.TryGetValue(detonationWeaponToLower, out detonationWeapon))
+				throw new YamlException("Weapons Ruleset does not contain an entry '{0}'".F(detonationWeaponToLower));
+
+			ThumpDamageWeaponInfo = thumpDamageWeapon;
+			DetonationWeaponInfo = detonationWeapon;
 		}
 	}
 
