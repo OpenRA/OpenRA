@@ -9,6 +9,8 @@
  */
 #endregion
 
+using System.Linq;
+
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Hides the entire map in shroud.")]
@@ -33,7 +35,9 @@ namespace OpenRA.Mods.Common.Traits
 		public override int GetSelectionShares(Actor collector)
 		{
 			// Don't hide the map if the shroud is force-revealed
-			if (collector.Owner.HasFogVisibility || collector.Owner.Shroud.ExploreMapEnabled)
+			var preventReset = collector.Owner.PlayerActor.TraitsImplementing<IPreventsShroudReset>()
+				.Any(p => p.PreventShroudReset(collector.Owner.PlayerActor));
+			if (preventReset || collector.Owner.Shroud.ExploreMapEnabled)
 				return 0;
 
 			return base.GetSelectionShares(collector);

@@ -11,8 +11,6 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using OpenRA.Effects;
-using OpenRA.Mods.Cnc.Effects;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
@@ -26,7 +24,7 @@ namespace OpenRA.Mods.Cnc.Traits
 
 	interface IOnGpsRefreshed { void OnGpsRefresh(Actor self, Player player); }
 
-	class GpsWatcher : ISync, IFogVisibilityModifier
+	class GpsWatcher : ISync, IPreventsShroudReset
 	{
 		[Sync] public bool Launched { get; private set; }
 		[Sync] public bool GrantedAllies { get; private set; }
@@ -92,18 +90,9 @@ namespace OpenRA.Mods.Cnc.Traits
 					tp.Trait.OnGpsRefresh(tp.Actor, owner);
 		}
 
-		public bool HasFogVisibility()
+		bool IPreventsShroudReset.PreventShroudReset(Actor self)
 		{
 			return Granted || GrantedAllies;
-		}
-
-		public bool IsVisible(Actor actor)
-		{
-			var gpsDot = actor.TraitOrDefault<GpsDot>();
-			if (gpsDot == null)
-				return false;
-
-			return gpsDot.IsDotVisible(owner);
 		}
 
 		public void RegisterForOnGpsRefreshed(Actor actor, IOnGpsRefreshed toBeNotified)
