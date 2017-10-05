@@ -190,12 +190,6 @@ namespace OpenRA.Traits
 	public interface IDefaultVisibility { bool IsVisible(Actor self, Player byPlayer); }
 	public interface IVisibilityModifier { bool IsVisible(Actor self, Player byPlayer); }
 
-	public interface IFogVisibilityModifier
-	{
-		bool IsVisible(Actor actor);
-		bool HasFogVisibility();
-	}
-
 	public interface IOccupySpaceInfo : ITraitInfoInterface
 	{
 		IReadOnlyDictionary<CPos, SubCell> OccupiedCells(ActorInfo info, CPos location, SubCell subCell = SubCell.Any);

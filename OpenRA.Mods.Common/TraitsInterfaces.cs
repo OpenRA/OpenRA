@@ -382,4 +382,7 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		IEnumerable<Pair<CPos, SubCell>> TargetableCells();
 	}
+
+	[RequireExplicitImplementation]
+	public interface IPreventsShroudReset { bool PreventShroudReset(Actor self); }
 }
