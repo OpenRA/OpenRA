@@ -162,16 +162,6 @@ namespace OpenRA
 			return p == null || Stances[p] == Stance.Ally || (p.Spectating && !NonCombatant);
 		}
 
-		public bool CanViewActor(Actor a)
-		{
-			return a.CanBeViewedByPlayer(this);
-		}
-
-		public bool CanTargetActor(Actor a)
-		{
-			return CanViewActor(a);
-		}
-
 		public Color PlayerStanceColor(Actor a)
 		{
 			var player = a.World.RenderPlayer ?? a.World.LocalPlayer;

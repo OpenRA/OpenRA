@@ -300,7 +300,7 @@ namespace OpenRA.Mods.Common.Traits
 					return true;
 				}).ToList();
 
-				if (!validPriorities.Any() || PreventsAutoTarget(self, actor) || !self.Owner.CanTargetActor(actor))
+				if (!validPriorities.Any() || PreventsAutoTarget(self, actor) || !actor.CanBeViewedByPlayer(self.Owner))
 					continue;
 
 				// Make sure that we can actually fire on the actor

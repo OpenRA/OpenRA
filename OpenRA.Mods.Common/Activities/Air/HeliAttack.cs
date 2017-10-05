@@ -65,7 +65,7 @@ namespace OpenRA.Mods.Common.Activities
 			var pos = self.CenterPosition;
 			var targetPos = attackHeli.GetTargetPosition(pos, target);
 			if (attackOnlyVisibleTargets && target.Type == TargetType.Actor && canHideUnderFog
-				&& !self.Owner.CanTargetActor(target.Actor))
+				&& !target.Actor.CanBeViewedByPlayer(self.Owner))
 			{
 				var newTarget = Target.FromCell(self.World, self.World.Map.CellContaining(targetPos));
 
