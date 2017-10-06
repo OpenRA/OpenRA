@@ -106,7 +106,9 @@ namespace OpenRA.Mods.Common.Traits
 
 			var preview = new EditorActorPreview(worldRenderer, id, reference, owner);
 			previews.Add(preview);
-			screenMap.Add(preview, preview.Bounds);
+
+			if (!preview.Bounds.IsEmpty)
+				screenMap.Add(preview, preview.Bounds);
 
 			foreach (var kv in preview.Footprint)
 			{
