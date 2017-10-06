@@ -82,7 +82,10 @@ RunInitialActivities = function()
 	Harvester.FindResources()
 	Trigger.OnKilled(Harvester, function() HarvesterKilled = true end)
 
-	Trigger.OnAllKilled(PathGuards, SendTrucks)
+	Trigger.OnAllKilled(PathGuards, function()
+		player.MarkCompletedObjective(SecureObjective)
+		SendTrucks()
+	end)
 
 	if InfantryTypes then
 		Trigger.AfterDelay(InfantryDelay, InfantryProduction)
@@ -202,7 +205,6 @@ SendTrucks = function()
 
 		ticked = 0
 		ConvoyObjective = player.AddPrimaryObjective("Escort the convoy.")
-		player.MarkCompletedObjective(SecureObjective)
 
 		Media.PlaySpeechNotification(player, "ConvoyApproaching")
 		Trigger.AfterDelay(DateTime.Seconds(3), function()
