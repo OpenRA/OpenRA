@@ -100,6 +100,7 @@ harvester:
 
 trike:
 	Inherits: ^Vehicle
+	Inherits@GAINSEXPERIENCE: ^GainsExperience
 	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Buildable:
 		Queue: Vehicle
@@ -140,6 +141,7 @@ trike:
 
 quad:
 	Inherits: ^Vehicle
+	Inherits@GAINSEXPERIENCE: ^GainsExperience
 	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Buildable:
 		Queue: Vehicle
@@ -175,6 +177,7 @@ quad:
 
 siege_tank:
 	Inherits: ^Tank
+	Inherits@GAINSEXPERIENCE: ^GainsExperience
 	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Buildable:
 		Queue: Armor
@@ -222,6 +225,7 @@ siege_tank:
 
 missile_tank:
 	Inherits: ^Tank
+	Inherits@GAINSEXPERIENCE: ^GainsExperience
 	Inherits@AUTOTARGET: ^AutoTargetAllAssaultMove
 	Tooltip:
 		Name: Missile Tank
@@ -261,6 +265,7 @@ missile_tank:
 
 sonic_tank:
 	Inherits: ^Vehicle
+	Inherits@GAINSEXPERIENCE: ^GainsExperience
 	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Buildable:
 		Queue: Armor
@@ -296,6 +301,7 @@ sonic_tank:
 
 devastator:
 	Inherits: ^Tank
+	Inherits@GAINSEXPERIENCE: ^GainsExperience
 	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Buildable:
 		Queue: Armor
@@ -360,6 +366,7 @@ devastator:
 
 raider:
 	Inherits: ^Vehicle
+	Inherits@GAINSEXPERIENCE: ^GainsExperience
 	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Buildable:
 		Queue: Vehicle
@@ -424,6 +431,7 @@ stealth_raider:
 
 deviator:
 	Inherits: ^Tank
+	Inherits@GAINSEXPERIENCE: ^GainsExperience
 	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Valued:
 		Cost: 1000
@@ -461,6 +469,7 @@ deviator:
 
 ^combat_tank:
 	Inherits: ^Tank
+	Inherits@GAINSEXPERIENCE: ^GainsExperience
 	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Buildable:
 		Queue: Armor
