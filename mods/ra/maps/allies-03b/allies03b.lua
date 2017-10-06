@@ -355,6 +355,14 @@ InitTriggers = function()
 		end
 	end)
 
+	-- The engineers need to leave the enemy base to count as 'freed'
+	Trigger.OnExitedProximityTrigger(BaseCameraWaypoint.CenterPosition, WDist.New(7 * 1024), function(a, id)
+		if a.Type == "hacke6" and not EngisFreed then
+			EngisFreed = true
+			Trigger.RemoveProximityTrigger(id)
+		end
+	end)
+
 	Trigger.AfterDelay(0, function()
 		local bridges = Utils.Where(Map.ActorsInWorld, function(actor) return actor.Type == "bridge1" or actor.Type == "bridge2" end)
 		ExplodingBridge = bridges[1]
@@ -362,7 +370,11 @@ InitTriggers = function()
 		Trigger.OnAllKilled(bridges, function()
 			player.MarkCompletedObjective(KillBridges)
 			player.MarkCompletedObjective(TanyaSurvive)
-			player.MarkCompletedObjective(FreePrisoners)
+
+			-- The medic is freed once his guard is dead
+			if MediFreed and MediGuard.IsDead and EngisFreed then
+				player.MarkCompletedObjective(FreePrisoners)
+			end
 		end)
 	end)
 end
