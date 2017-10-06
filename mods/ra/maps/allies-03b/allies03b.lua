@@ -248,8 +248,10 @@ InitTriggers = function()
 			AlertFirstBase()
 		end)
 	end)
-	Trigger.OnAllRemovedFromWorld(FirstUSSRBase, function() -- The camera can remain when one building is captured
-		if baseCamera then baseCamera.Destroy() end
+	Trigger.OnAllRemovedFromWorld(FirstUSSRBase, function()
+		if baseCamera then
+			baseCamera.Destroy()
+		end
 	end)
 
 	Trigger.OnDamaged(USSRBarracks3, function()
