@@ -1151,7 +1151,7 @@ Actors:
 		Location: 54,81
 		Owner: Greece
 	InsertionHeliExit: waypoint
-		Location: 45,76
+		Location: 46,76
 		Owner: Neutral
 	IslandParadropReinforcementsDropzone: waypoint
 		Location: 117,37
