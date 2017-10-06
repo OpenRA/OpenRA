@@ -253,7 +253,11 @@ InitTriggers = function()
 		Trigger.OnAllKilled(bridges, function()
 			player.MarkCompletedObjective(KillBridges)
 			player.MarkCompletedObjective(TanyaSurvive)
-			player.MarkCompletedObjective(FreePrisoners)
+
+			-- The prisoners are free once their guards are dead
+			if PGuard1.IsDead and PGuard2.IsDead then
+				player.MarkCompletedObjective(FreePrisoners)
+			end
 		end)
 
 		local oilPumps = ussr.GetActorsByType("v19")
