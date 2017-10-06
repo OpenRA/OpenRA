@@ -469,6 +469,12 @@
 			VerticalTopOffset: 768
 	EditorTilesetFilter:
 		Categories: Wall
+	Valued:
+		Cost: 50
+	CustomSellValue:
+		Value: 0
+	BlocksProjectiles:
+		Height: 768
 
 ^BuildingPlug:
 	AlwaysVisible:

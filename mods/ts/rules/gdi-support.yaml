@@ -6,18 +6,12 @@ GAWALL:
 		Prerequisites: ~structures.gdi, ~techlevel.low
 		Description: Stops infantry and blocks enemy fire.\nCan NOT be crushed by tanks.
 	-SoundOnDamageTransition:
-	Valued:
-		Cost: 50
-	CustomSellValue:
-		Value: 0
 	Tooltip:
 		Name: Concrete Wall
 	Health:
 		HP: 225
 	Armor:
 		Type: Concrete
-	BlocksProjectiles:
-		Height: 768
 	Crushable:
 		CrushClasses: heavywall
 	LineBuild:
