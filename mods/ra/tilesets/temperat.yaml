@@ -3236,10 +3236,10 @@ Templates:
 		Categories: Bridge
 		Tiles:
 			0: River
-			1: Road
+			1: Bridge
 			2: River
 			3: River
-			4: Road
+			4: Bridge
 			5: River
 	Template@521:
 		Id: 521
@@ -3248,10 +3248,10 @@ Templates:
 		Categories: Bridge
 		Tiles:
 			0: River
-			1: Road
+			1: Bridge
 			2: River
 			3: River
-			4: Road
+			4: Bridge
 			5: River
 	Template@522:
 		Id: 522
@@ -3272,10 +3272,10 @@ Templates:
 		Categories: Bridge
 		Tiles:
 			1: Rock
-			2: Road
+			2: Bridge
 			3: Rock
 			4: River
-			5: Road
+			5: Bridge
 			6: Rock
 			7: River
 	Template@524:
@@ -3285,10 +3285,10 @@ Templates:
 		Categories: Bridge
 		Tiles:
 			1: Rock
-			2: Road
+			2: Bridge
 			3: Rock
 			4: River
-			5: Road
+			5: Bridge
 			6: Rock
 			7: River
 	Template@525:
@@ -3325,11 +3325,11 @@ Templates:
 		Categories: Bridge
 		Tiles:
 			0: Rock
-			1: Road
+			1: Bridge
 			2: Rock
 			4: River
 			5: Rock
-			6: Road
+			6: Bridge
 			7: Rock
 	Template@528:
 		Id: 528
@@ -3338,11 +3338,11 @@ Templates:
 		Categories: Bridge
 		Tiles:
 			0: Rock
-			1: Road
+			1: Bridge
 			2: Rock
 			4: River
 			5: Rock
-			6: Road
+			6: Bridge
 			7: Rock
 	Template@529:
 		Id: 529
@@ -3385,8 +3385,8 @@ Templates:
 		Tiles:
 			0: River
 			1: River
-			2: Road
-			3: Road
+			2: Bridge
+			3: Bridge
 			4: Rock
 			5: Rock
 	Template@532:
@@ -3397,8 +3397,8 @@ Templates:
 		Tiles:
 			0: River
 			1: River
-			2: Road
-			3: Road
+			2: Bridge
+			3: Bridge
 			4: Rock
 			5: Rock
 	Template@533:
