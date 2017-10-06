@@ -27,6 +27,18 @@ Player:
 		DefaultCashLocked: True
 		DefaultCash: 5000
 
+^TreeHusk:
+	Health:
+		HP: 1000
+	Armor:
+		Type: Heavy
+	Targetable:
+		TargetTypes: Ground
+	HitShape:
+	WithDeathAnimation:
+		DeathSequence: dead
+		UseDeathTypeSuffix: false
+
 airstrike.proxy:
 	AlwaysVisible:
 	AirstrikePower:
