@@ -160,12 +160,20 @@ InitTriggers = function()
 		end
 	end)
 
+	local baseTrigger = Trigger.OnEnteredFootprint(CameraTriggerArea, function(a, id)
+		if a.Owner == player and not baseCamera then
+			Trigger.RemoveFootprintTrigger(id)
+			baseCamera = Actor.Create("camera", true, { Owner = player, Location = BaseCameraWaypoint.Location })
+		end
+	end)
+
 	Utils.Do(FirstUSSRBase, function(unit)
 		Trigger.OnDamaged(unit, function()
 			if not FirstBaseAlert then
 				FirstBaseAlert = true
-				if not baseCamera then -- TODO: remove the Trigger
+				if not baseCamera then
 					baseCamera = Actor.Create("camera", true, { Owner = player, Location = BaseCameraWaypoint.Location })
+					Trigger.RemoveFootprintTrigger(baseTrigger)
 				end
 				Utils.Do(FirstUSSRBase, function(unit)
 					if unit.HasProperty("Move") then
@@ -215,12 +223,6 @@ InitTriggers = function()
 		end)
 	end)
 
-	Trigger.OnEnteredFootprint(CameraTriggerArea, function(a, id)
-		if a.Owner == player and not baseCamera then
-			Trigger.RemoveFootprintTrigger(id)
-			baseCamera = Actor.Create("camera", true, { Owner = player, Location = BaseCameraWaypoint.Location })
-		end
-	end)
 	Trigger.OnEnteredFootprint(WaterTransportTriggerArea, function(a, id)
 		if a.Owner == player and not waterTransportTriggered then
 			waterTransportTriggered = true
