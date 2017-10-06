@@ -123,9 +123,6 @@ namespace OpenRA
 
 			foreach (var source in sources.Distinct())
 			{
-				if (!Directory.Exists(source))
-					continue;
-
 				var metadataPath = Path.Combine(source, "ModMetadata");
 
 				try
