@@ -90,6 +90,9 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						if (optional)
 							name = name.Substring(1);
 
+						if (!modData.ModFiles.Exists(name))
+							continue;
+
 						using (var package = (IReadWritePackage)modData.ModFiles.OpenPackage(name))
 						{
 							foreach (var map in package.Contents)
