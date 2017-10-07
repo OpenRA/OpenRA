@@ -74,7 +74,7 @@ namespace OpenRA.Mods.Common.Graphics
 	public class DefaultSpriteSequence : ISpriteSequence
 	{
 		static readonly WDist DefaultShadowSpriteZOffset = new WDist(-5);
-		readonly Sprite[] sprites;
+		protected Sprite[] sprites;
 		readonly bool reverseFacings, transpose, useClassicFacingFudge;
 
 		protected readonly ISpriteSequenceLoader Loader;
