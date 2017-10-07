@@ -77,29 +77,8 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						}
 					}
 
-					foreach (var kv in modData.Manifest.MapFolders)
-					{
-						var name = kv.Key;
-						var classification = string.IsNullOrEmpty(kv.Value)
-							? MapClassification.Unknown : Enum<MapClassification>.Parse(kv.Value);
-
-						if (classification == MapClassification.Unknown)
-							continue;
-
-						var optional = name.StartsWith("~", StringComparison.Ordinal);
-						if (optional)
-							name = name.Substring(1);
-
-						using (var package = (IReadWritePackage)modData.ModFiles.OpenPackage(name))
-						{
-							foreach (var map in package.Contents)
-							{
-								var mapPackage = package.OpenPackage(map, modData.ModFiles);
-								if (mapPackage != null)
-									maps.Add(new Map(modData, mapPackage));
-							}
-						}
-					}
+					// Use all maps for lint checking
+					maps = modData.MapCache.EnumerateMapsWithoutCaching(MapClassification.System | MapClassification.User).ToList();
 				}
 				else
 					maps.Add(new Map(modData, new Folder(".").OpenPackage(args[1], modData.ModFiles)));
