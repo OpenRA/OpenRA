@@ -1338,8 +1338,6 @@ GASAND:
 		DestroyedSounds: sandbag1.aud
 	Valued:
 		Cost: 25
-	CustomSellValue:
-		Value: 0
 	Tooltip:
 		Name: Sandbags
 	Health:
@@ -1352,6 +1350,7 @@ GASAND:
 		Types: sandbags
 	WithWallSpriteBody:
 		Type: sandbags
+	-BlocksProjectiles:
 
 GASPOT:
 	Inherits: ^Building

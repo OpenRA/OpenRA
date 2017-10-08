@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class CreateMPPlayers : ICreatePlayers
 	{
-		public void CreatePlayers(World w)
+		void ICreatePlayers.CreatePlayers(World w)
 		{
 			var players = new MapPlayers(w.Map.PlayerDefinitions).Players;
 			var worldPlayers = new List<Player>();

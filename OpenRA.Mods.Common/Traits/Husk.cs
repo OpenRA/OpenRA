@@ -70,7 +70,7 @@ namespace OpenRA.Mods.Common.Traits
 			finalPosition = init.World.Map.CenterOfCell(TopLeft);
 		}
 
-		public void Created(Actor self)
+		void INotifyCreated.Created(Actor self)
 		{
 			var distance = (finalPosition - CenterPosition).Length;
 			if (dragSpeed > 0 && distance > 0)

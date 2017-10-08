@@ -83,5 +83,8 @@ StyleCopViolations.xml
 # Support directory
 /Support
 
+# IntelliJ files
+.idea
+
 #Attacque Supérior
 /mods/as/

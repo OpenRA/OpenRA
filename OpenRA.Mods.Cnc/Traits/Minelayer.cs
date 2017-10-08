@@ -11,10 +11,12 @@
 
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Cnc.Activities;
 using OpenRA.Mods.Common.Orders;
+using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Cnc.Traits
@@ -28,18 +30,25 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		public readonly WDist MinefieldDepth = new WDist(1536);
 
-		public object Create(ActorInitializer init) { return new Minelayer(init.Self); }
+		[Desc("Voice to use when ordered to lay a minefield.")]
+		[VoiceReference] public readonly string Voice = "Action";
+
+		public object Create(ActorInitializer init) { return new Minelayer(init.Self, this); }
 	}
 
-	public class Minelayer : IIssueOrder, IResolveOrder, IRenderAboveShroudWhenSelected, ISync
+	public class Minelayer : IIssueOrder, IResolveOrder, IRenderAboveShroudWhenSelected, ISync, IIssueDeployOrder, IOrderVoice
 	{
+		readonly MinelayerInfo info;
+
 		/* TODO: [Sync] when sync can cope with arrays! */
 		public CPos[] Minefield = null;
 		readonly Sprite tile;
 		[Sync] CPos minefieldStart;
 
-		public Minelayer(Actor self)
+		public Minelayer(Actor self, MinelayerInfo info)
 		{
+			this.info = info;
+
 			var tileset = self.World.Map.Tileset.ToLowerInvariant();
 			tile = self.World.Map.Rules.Sequences.GetSequence("overlay", "build-valid-{0}".F(tileset)).GetSprite(0);
 		}
@@ -72,6 +81,11 @@ namespace OpenRA.Mods.Cnc.Traits
 			}
 		}
 
+		Order IIssueDeployOrder.IssueDeployOrder(Actor self)
+		{
+			return new Order("PlaceMine", self, false) { TargetLocation = self.Location };
+		}
+
 		void IResolveOrder.ResolveOrder(Actor self, Order order)
 		{
 			if (order.OrderString == "BeginMinefield")
@@ -89,13 +103,23 @@ namespace OpenRA.Mods.Cnc.Traits
 			{
 				var movement = self.Trait<IPositionable>();
 
-				Minefield = GetMinefieldCells(minefieldStart, order.TargetLocation,
-					self.Info.TraitInfo<MinelayerInfo>().MinefieldDepth)
+				Minefield = GetMinefieldCells(minefieldStart, order.TargetLocation, info.MinefieldDepth)
 					.Where(p => movement.CanEnterCell(p, null, false)).ToArray();
+
+				if (Minefield.Length == 1 && Minefield[0] != self.Location)
+					self.SetTargetLine(Target.FromCell(self.World, Minefield[0]), Color.Red);
 
 				self.CancelActivity();
 				self.QueueActivity(new LayMines(self));
 			}
+		}
+
+		string IOrderVoice.VoicePhraseForOrder(Actor self, Order order)
+		{
+			if (order.OrderString == "PlaceMine" || order.OrderString == "PlaceMinefield")
+				return info.Voice;
+
+			return null;
 		}
 
 		static IEnumerable<CPos> GetMinefieldCells(CPos start, CPos end, WDist depth)
@@ -120,6 +144,10 @@ namespace OpenRA.Mods.Cnc.Traits
 		IEnumerable<IRenderable> IRenderAboveShroudWhenSelected.RenderAboveShroud(Actor self, WorldRenderer wr)
 		{
 			if (self.Owner != self.World.LocalPlayer || Minefield == null)
+				yield break;
+
+			// Single-cell mine fields use a target line instead
+			if (Minefield.Length == 1)
 				yield break;
 
 			var pal = wr.Palette(TileSet.TerrainPaletteInternalName);
@@ -178,7 +206,6 @@ namespace OpenRA.Mods.Cnc.Traits
 					world.CancelInputMode();
 			}
 
-			CPos lastMousePos;
 			public IEnumerable<IRenderable> Render(WorldRenderer wr, World world) { yield break; }
 			public IEnumerable<IRenderable> RenderAboveShroud(WorldRenderer wr, World world)
 			{
@@ -187,6 +214,7 @@ namespace OpenRA.Mods.Cnc.Traits
 					yield break;
 
 				// We get the biggest depth so we cover all cells that mines could be placed on.
+				var lastMousePos = wr.Viewport.ViewToWorld(Viewport.LastMousePos);
 				var minefield = GetMinefieldCells(minefieldStart, lastMousePos,
 					minelayers.Max(m => m.Info.TraitInfo<MinelayerInfo>().MinefieldDepth));
 
@@ -202,7 +230,7 @@ namespace OpenRA.Mods.Cnc.Traits
 
 			public string GetCursor(World world, CPos cell, int2 worldPixel, MouseInput mi)
 			{
-				lastMousePos = cell; return "ability";	/* TODO */
+				return "ability";
 			}
 		}
 

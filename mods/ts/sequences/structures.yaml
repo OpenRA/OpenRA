@@ -352,11 +352,11 @@ nahand:
 		Tick: 100
 		ZOffset: 1023
 	idle-lights: nthand_b
-		Length: 8
+		Length: 12
 		Tick: 200
 	damaged-idle-lights: nthand_b
-		Start: 8
-		Length: 8
+		Start: 12
+		Length: 12
 		Tick: 200
 	make: nthandmk
 		Length: 15

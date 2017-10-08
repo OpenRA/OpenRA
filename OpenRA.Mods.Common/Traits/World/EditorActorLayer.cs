@@ -45,7 +45,7 @@ namespace OpenRA.Mods.Common.Traits
 			this.info = info;
 		}
 
-		public void CreatePlayers(World w)
+		void ICreatePlayers.CreatePlayers(World w)
 		{
 			if (w.Type != WorldType.Editor)
 				return;

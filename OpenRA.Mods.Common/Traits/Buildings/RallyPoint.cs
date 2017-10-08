@@ -56,7 +56,7 @@ namespace OpenRA.Mods.Common.Traits
 			PaletteName = info.IsPlayerPalette ? info.Palette + self.Owner.InternalName : info.Palette;
 		}
 
-		public void Created(Actor self)
+		void INotifyCreated.Created(Actor self)
 		{
 			self.World.Add(new RallyPointIndicator(self, this, self.Info.TraitInfos<ExitInfo>().ToArray()));
 		}

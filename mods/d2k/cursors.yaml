@@ -306,6 +306,14 @@ Cursors:
 			Length: 8
 			X: -2
 			Y: -2
+		attackmove-blocked:
+			Start: 8
+			X: -2
+			Y: -2
+		attackmove-blocked-minimap:
+			Start: 8
+			X: -2
+			Y: -2
 	assaultmove.shp: mouse
 		assaultmove:
 			Start: 0
@@ -315,5 +323,13 @@ Cursors:
 		assaultmove-minimap:
 			Start: 0
 			Length: 8
+			X: -2
+			Y: -2
+		assaultmove-blocked:
+			Start: 8
+			X: -2
+			Y: -2
+		assaultmove-blocked-minimap:
+			Start: 8
 			X: -2
 			Y: -2

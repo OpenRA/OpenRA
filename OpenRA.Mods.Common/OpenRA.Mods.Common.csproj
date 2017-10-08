@@ -417,11 +417,13 @@
     <Compile Include="Traits\BodyOrientation.cs" />
     <Compile Include="Traits\QuantizeFacingsFromSequence.cs" />
     <Compile Include="Traits\Render\AutoSelectionSize.cs" />
+    <Compile Include="Traits\Render\CashTricklerBar.cs" />
     <Compile Include="Traits\Render\CustomTerrainDebugOverlay.cs" />
     <Compile Include="Traits\Render\Hovers.cs" />
     <Compile Include="Traits\Render\LeavesTrails.cs" />
     <Compile Include="Traits\Render\RenderSpritesEditorOnly.cs" />
     <Compile Include="Traits\Render\WithTurretAttackAnimation.cs" />
+    <Compile Include="Traits\Render\WithAcceptDeliveredCashAnimation.cs" />
     <Compile Include="Traits\Render\RenderUtils.cs" />
     <Compile Include="Traits\Render\RenderDebugState.cs" />
     <Compile Include="Traits\Render\RenderNameTag.cs" />

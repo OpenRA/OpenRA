@@ -129,9 +129,14 @@ namespace OpenRA.Traits
 	public interface IResolveOrder { void ResolveOrder(Actor self, Order order); }
 	public interface IValidateOrder { bool OrderValidation(OrderManager orderManager, World world, int clientId, Order order); }
 	public interface IOrderVoice { string VoicePhraseForOrder(Actor self, Order order); }
+
+	[RequireExplicitImplementation]
 	public interface INotifyCreated { void Created(Actor self); }
+
 	public interface INotifyAddedToWorld { void AddedToWorld(Actor self); }
 	public interface INotifyRemovedFromWorld { void RemovedFromWorld(Actor self); }
+
+	[RequireExplicitImplementation]
 	public interface INotifyActorDisposing { void Disposing(Actor self); }
 	public interface INotifyOwnerChanged { void OnOwnerChanged(Actor self, Player oldOwner, Player newOwner); }
 	public interface INotifyEffectiveOwnerChanged { void OnEffectiveOwnerChanged(Actor self, Player oldEffectiveOwner, Player newEffectiveOwner); }
@@ -301,9 +306,14 @@ namespace OpenRA.Traits
 	[SuppressMessage("StyleCop.CSharp.NamingRules", "SA1302:InterfaceNamesMustBeginWithI", Justification = "Not a real interface, but more like a tag.")]
 	public interface UsesInit<T> : ITraitInfo where T : IActorInit { }
 
+	[RequireExplicitImplementation]
 	public interface INotifySelected { void Selected(Actor self); }
+	[RequireExplicitImplementation]
 	public interface INotifySelection { void SelectionChanged(); }
+
 	public interface IWorldLoaded { void WorldLoaded(World w, WorldRenderer wr); }
+
+	[RequireExplicitImplementation]
 	public interface ICreatePlayers { void CreatePlayers(World w); }
 
 	public interface IBotInfo : ITraitInfoInterface
@@ -318,6 +328,7 @@ namespace OpenRA.Traits
 		IBotInfo Info { get; }
 	}
 
+	[RequireExplicitImplementation]
 	public interface IRenderOverlay { void Render(WorldRenderer wr); }
 
 	[RequireExplicitImplementation]
@@ -348,6 +359,7 @@ namespace OpenRA.Traits
 		IEnumerable<WPos> TargetablePositions(Actor self);
 	}
 
+	[RequireExplicitImplementation]
 	public interface IGameOver { void GameOver(World world); }
 
 	public interface IWarhead

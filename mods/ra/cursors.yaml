@@ -217,9 +217,17 @@ Cursors:
 		attackmove-minimap:
 			Start: 4
 			Length: 4
+		attackmove-blocked:
+			Start: 16
+		attackmove-blocked-minimap:
+			Start: 18
 		assaultmove:
 			Start: 8
 			Length: 4
 		assaultmove-minimap:
 			Start: 12
 			Length: 4
+		assaultmove-blocked:
+			Start: 17
+		assaultmove-blocked-minimap:
+			Start: 19
