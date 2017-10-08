@@ -163,7 +163,6 @@ LOBRDG_R_SW:
 	RenderSprites:
 		Palette: terraindecoration
 	WithSpriteBody:
-	AutoSelectionSize:
 	AppearsOnRadar:
 	RadarColorFromTerrain:
 		Terrain: Bridge
