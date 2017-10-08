@@ -323,6 +323,8 @@ devastator:
 		Speed: 31
 		Crushes: crate, infantry, spicebloom, wall
 		RequiresCondition: !overload && !notmobile
+	AutoCarryable:
+		RequiresCondition: !overload
 	RevealsShroud:
 		Range: 4c768
 	Armament:
