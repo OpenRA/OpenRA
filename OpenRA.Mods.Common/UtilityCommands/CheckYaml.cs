@@ -77,8 +77,8 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						}
 					}
 
-					// Use all maps for lint checking
-					maps = modData.MapCache.EnumerateMapsWithoutCaching(MapClassification.System | MapClassification.User).ToList();
+					// Use all system maps for lint checking
+					maps = modData.MapCache.EnumerateMapsWithoutCaching().ToList();
 				}
 				else
 					maps.Add(new Map(modData, new Folder(".").OpenPackage(args[1], modData.ModFiles)));
