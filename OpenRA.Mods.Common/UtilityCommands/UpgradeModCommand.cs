@@ -81,6 +81,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			{
 				try
 				{
+					Console.WriteLine(map.Package.Name);
 					UpgradeMapCommand.UpgradeMap(modData, (IReadWritePackage)map.Package, engineDate);
 				}
 				catch (Exception e)
