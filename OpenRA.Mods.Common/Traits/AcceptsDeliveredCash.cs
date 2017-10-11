@@ -39,12 +39,12 @@ namespace OpenRA.Mods.Common.Traits
 			this.info = info;
 		}
 
-		void INotifyCashTransfer.OnAcceptCash(Actor self, Actor donor)
+		void INotifyCashTransfer.OnAcceptingCash(Actor self, Actor donor)
 		{
 			if (info.Sounds.Length > 0)
 				Game.Sound.Play(SoundType.World, info.Sounds.Random(self.World.SharedRandom), self.CenterPosition);
 		}
 
-		void INotifyCashTransfer.OnDeliverCash(Actor self, Actor acceptor) { }
+		void INotifyCashTransfer.OnDeliveringCash(Actor self, Actor acceptor) { }
 	}
 }

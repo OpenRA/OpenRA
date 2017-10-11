@@ -88,9 +88,9 @@ namespace OpenRA.Mods.Common.Traits
 			self.QueueActivity(new DonateCash(self, target.Actor, info.Payload, info.PlayerExperience));
 		}
 
-		void INotifyCashTransfer.OnAcceptCash(Actor self, Actor donor) { }
+		void INotifyCashTransfer.OnAcceptingCash(Actor self, Actor donor) { }
 
-		void INotifyCashTransfer.OnDeliverCash(Actor self, Actor acceptor)
+		void INotifyCashTransfer.OnDeliveringCash(Actor self, Actor acceptor)
 		{
 			if (info.Sounds.Length > 0)
 				Game.Sound.Play(SoundType.World, info.Sounds.Random(self.World.SharedRandom), self.CenterPosition);

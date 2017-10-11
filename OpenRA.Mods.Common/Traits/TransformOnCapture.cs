@@ -9,7 +9,6 @@
  */
 #endregion
 
-using System;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Traits;
 
@@ -21,8 +20,8 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int ForceHealthPercentage = 0;
 		public readonly bool SkipMakeAnims = true;
 
-		[Desc("OnCapture triggers only if capturer's CaptureTypes contains this.")]
-		public readonly string Type = "husk";
+		[Desc("Transform only if the capturer's CaptureTypes contains this type.")]
+		public readonly string Type = null;
 
 		public virtual object Create(ActorInitializer init) { return new TransformOnCapture(init, this); }
 	}
@@ -53,12 +52,15 @@ namespace OpenRA.Mods.Common.Traits
 
 		bool IsValidCaptor(Actor captor)
 		{
-			var capInfo = captor.Info.TraitInfoOrDefault<CapturesInfo>();
-			if (capInfo != null && capInfo.CaptureTypes.Contains(info.Type))
+			if (string.IsNullOrEmpty(info.Type))
 				return true;
 
-			var extCapInfo = captor.Info.TraitInfoOrDefault<ExternalCapturesInfo>();
-			if (extCapInfo != null && extCapInfo.CaptureTypes.Contains(info.Type))
+			var capturesInfo = captor.Info.TraitInfoOrDefault<CapturesInfo>();
+			if (capturesInfo != null && capturesInfo.CaptureTypes.Contains(info.Type))
+				return true;
+
+			var externalCapturesInfo = captor.Info.TraitInfoOrDefault<ExternalCapturesInfo>();
+			if (externalCapturesInfo != null && externalCapturesInfo.CaptureTypes.Contains(info.Type))
 				return true;
 
 			return false;

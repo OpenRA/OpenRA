@@ -44,10 +44,10 @@ namespace OpenRA.Mods.Common.Activities
 				self.World.AddFrameEndTask(w => w.Add(new FloatingText(target.CenterPosition, target.Owner.Color.RGB, FloatingText.FormatCashTick(payload), 30)));
 
 			foreach (var host in target.TraitsImplementing<INotifyCashTransfer>())
-				host.OnAcceptCash(target, self);
+				host.OnAcceptingCash(target, self);
 
 			foreach (var me in self.TraitsImplementing<INotifyCashTransfer>())
-				me.OnDeliverCash(self, target);
+				me.OnDeliveringCash(self, target);
 		}
 	}
 }

@@ -122,7 +122,8 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			expectedButton = button;
 
-			this.subjects = subjects.SelectMany(a => a.TraitsImplementing<AttackMove>()
+			this.subjects = subjects.Where(a => !a.IsDead)
+				.SelectMany(a => a.TraitsImplementing<AttackMove>()
 					.Select(am => new TraitPair<AttackMove>(a, am)))
 				.ToArray();
 		}
@@ -137,12 +138,15 @@ namespace OpenRA.Mods.Common.Traits
 
 		protected virtual IEnumerable<Order> OrderInner(World world, CPos cell, MouseInput mi)
 		{
-			if (mi.Button == expectedButton && world.Map.Contains(cell))
+			if (mi.Button == expectedButton)
 			{
 				world.CancelInputMode();
 
 				var queued = mi.Modifiers.HasModifier(Modifiers.Shift);
 				var orderName = mi.Modifiers.HasModifier(Modifiers.Ctrl) ? "AssaultMove" : "AttackMove";
+
+				// Cells outside the playable area should be clamped to the edge for consistency with move orders
+				cell = world.Map.Clamp(cell);
 				foreach (var s in subjects)
 					yield return new Order(orderName, s.Actor, queued) { TargetLocation = cell };
 			}
@@ -150,10 +154,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		public override string GetCursor(World world, CPos cell, int2 worldPixel, MouseInput mi)
 		{
-			if (world.Map.Contains(cell))
-				return mi.Modifiers.HasModifier(Modifiers.Ctrl) ? "assaultmove" : "attackmove";
-
-			return "generic-blocked";
+			var prefix = mi.Modifiers.HasModifier(Modifiers.Ctrl) ? "assaultmove" : "attackmove";
+			return world.Map.Contains(cell) ? prefix : prefix + "-blocked";
 		}
 
 		public override bool InputOverridesSelection(World world, int2 xy, MouseInput mi)
