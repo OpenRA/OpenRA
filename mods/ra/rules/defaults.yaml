@@ -213,6 +213,7 @@
 	Huntable:
 	DrawLineToTarget:
 	UpdatesPlayerStatistics:
+	DockClient:
 	Mobile:
 		Crushes: mine, crate
 		TerrainSpeeds:

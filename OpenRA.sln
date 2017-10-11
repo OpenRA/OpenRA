@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenRA.Game", "OpenRA.Game\OpenRA.Game.csproj", "{0DFB103F-2962-400F-8C6D-E2C28CCBA633}"
 EndProject
@@ -128,16 +128,16 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Dune 2000 Lua scripts", "Du
 		mods\d2k\maps\harkonnen-04\harkonnen04.lua = mods\d2k\maps\harkonnen-04\harkonnen04.lua
 		mods\d2k\maps\ordos-01a\ordos01a.lua = mods\d2k\maps\ordos-01a\ordos01a.lua
 		mods\d2k\maps\ordos-01b\ordos01b.lua = mods\d2k\maps\ordos-01b\ordos01b.lua
-		mods\d2k\maps\ordos-02a\ordos02a.lua = mods\d2k\maps\ordos-02a\ordos02a.lua
 		mods\d2k\maps\ordos-02a\ordos02a-AI.lua = mods\d2k\maps\ordos-02a\ordos02a-AI.lua
-		mods\d2k\maps\ordos-02b\ordos02b.lua = mods\d2k\maps\ordos-02b\ordos02b.lua
+		mods\d2k\maps\ordos-02a\ordos02a.lua = mods\d2k\maps\ordos-02a\ordos02a.lua
 		mods\d2k\maps\ordos-02b\ordos02b-AI.lua = mods\d2k\maps\ordos-02b\ordos02b-AI.lua
-		mods\d2k\maps\ordos-03a\ordos03a.lua = mods\d2k\maps\ordos-03a\ordos03a.lua
+		mods\d2k\maps\ordos-02b\ordos02b.lua = mods\d2k\maps\ordos-02b\ordos02b.lua
 		mods\d2k\maps\ordos-03a\ordos03a-AI.lua = mods\d2k\maps\ordos-03a\ordos03a-AI.lua
-		mods\d2k\maps\ordos-03b\ordos03b.lua = mods\d2k\maps\ordos-03b\ordos03b.lua
+		mods\d2k\maps\ordos-03a\ordos03a.lua = mods\d2k\maps\ordos-03a\ordos03a.lua
 		mods\d2k\maps\ordos-03b\ordos03b-AI.lua = mods\d2k\maps\ordos-03b\ordos03b-AI.lua
-		mods\d2k\maps\ordos-04\ordos04.lua = mods\d2k\maps\ordos-04\ordos04.lua
+		mods\d2k\maps\ordos-03b\ordos03b.lua = mods\d2k\maps\ordos-03b\ordos03b.lua
 		mods\d2k\maps\ordos-04\ordos04-AI.lua = mods\d2k\maps\ordos-04\ordos04-AI.lua
+		mods\d2k\maps\ordos-04\ordos04.lua = mods\d2k\maps\ordos-04\ordos04.lua
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "System Lua scripts", "System Lua scripts", "{A4D6AEA4-8009-4256-903B-8D227E50452B}"
@@ -155,7 +155,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tiberian Sun Lua scripts", 
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenRA.Mods.yupgi_alert", "OpenRA.Mods.yupgi_alert\OpenRA.Mods.yupgi_alert.csproj", "{5B9AB03E-2B8D-4F03-A127-0E9B62E02689}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenRA.StyleCheck", "OpenRA.StyleCheck\OpenRA.StyleCheck.csproj", "{5FEAB6DC-4E81-4B63-958B-22FC3534C606}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenRA.Mods.AS", "OpenRA.Mods.AS\OpenRA.Mods.AS.csproj", "{6DEEE499-98E5-4977-AAAE-CEAE165F17CF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -203,6 +206,10 @@ Global
 		{5FEAB6DC-4E81-4B63-958B-22FC3534C606}.Debug|x86.Build.0 = Debug|x86
 		{5FEAB6DC-4E81-4B63-958B-22FC3534C606}.Release|x86.ActiveCfg = Release|x86
 		{5FEAB6DC-4E81-4B63-958B-22FC3534C606}.Release|x86.Build.0 = Release|x86
+		{6DEEE499-98E5-4977-AAAE-CEAE165F17CF}.Debug|x86.ActiveCfg = Debug|x86
+		{6DEEE499-98E5-4977-AAAE-CEAE165F17CF}.Debug|x86.Build.0 = Debug|x86
+		{6DEEE499-98E5-4977-AAAE-CEAE165F17CF}.Release|x86.ActiveCfg = Release|x86
+		{6DEEE499-98E5-4977-AAAE-CEAE165F17CF}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
