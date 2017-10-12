@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using System.Drawing;
 using System.Linq;
 using OpenRA.Mods.Common.Commands;
@@ -73,7 +74,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var team = teamChat && !disableTeamChat;
 				if (chatText.Text != "")
 				{
-					if (!chatText.Text.StartsWith("/"))
+					if (!chatText.Text.StartsWith("/", StringComparison.Ordinal))
 						orderManager.IssueOrder(Order.Chat(team, chatText.Text.Trim()));
 					else if (chatTraits != null)
 					{
