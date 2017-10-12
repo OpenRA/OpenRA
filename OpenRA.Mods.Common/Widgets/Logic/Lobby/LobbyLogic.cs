@@ -469,6 +469,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			chatLabel = lobby.Get<LabelWidget>("LABEL_CHATTYPE");
 			var chatTextField = lobby.Get<TextFieldWidget>("CHAT_TEXTFIELD");
+			chatTextField.MaxLength = UnitOrders.ChatMessageMaxLength;
+
 			chatTextField.TakeKeyboardFocus();
 			chatTextField.OnEnterKey = () =>
 			{
