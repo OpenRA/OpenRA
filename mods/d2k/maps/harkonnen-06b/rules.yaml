@@ -1,10 +1,10 @@
 Player:
 	PlayerResources:
-		DefaultCash: 6000
+		DefaultCash: 5000
 
 World:
 	LuaScript:
-		Scripts: campaign-global.lua, harkonnen06a.lua, harkonnen06a-AI.lua
+		Scripts: campaign-global.lua, harkonnen06b.lua, harkonnen06b-AI.lua
 	MissionData:
 		Briefing: The weak Ordos are no match for Harkonnen troops. However, smuggled Ixian technologies may upset this balance of power.\n\nThis cannot be allowed to happen. Establish a base on the plain, locate the Ordos Starport and destroy or capture it before the expensive shipments of Ixian weaponry begin to arrive. Time is short - the transports have already entered the system.
 		BriefingVideo: H_BR06_E.VQA
