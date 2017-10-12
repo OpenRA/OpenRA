@@ -26,7 +26,7 @@ Players:
 	PlayerReference@Creeps:
 		Name: Creeps
 		NonCombatant: True
-		Enemies: Harkonnen, Ordos Main Base, Ordos Small Base, Smugglers
+		Enemies: Harkonnen, Ordos Main Base, Ordos Small Base, Smugglers - Neutral, Smugglers - Enemy to Harkonnen, Smugglers - Enemy to Ordos, Smugglers - Enemy to Both
 	PlayerReference@Harkonnen:
 		Name: Harkonnen
 		Playable: True
@@ -34,7 +34,7 @@ Players:
 		Faction: harkonnen
 		LockColor: True
 		Color: FE0000
-		Enemies: Ordos Main Base, Ordos Small Base, Creeps
+		Enemies: Ordos Main Base, Ordos Small Base, Smugglers - Enemy to Harkonnen, Smugglers - Enemy to Both, Creeps
 	PlayerReference@Ordos Main Base:
 		Name: Ordos Main Base
 		LockFaction: True
@@ -42,7 +42,7 @@ Players:
 		LockColor: True
 		Color: B3EAA5
 		Allies: Ordos Small Base
-		Enemies: Harkonnen
+		Enemies: Harkonnen, Smugglers - Enemy to Ordos, Smugglers - Enemy to Both
 	PlayerReference@Ordos Small Base:
 		Name: Ordos Small Base
 		LockFaction: True
@@ -50,13 +50,38 @@ Players:
 		LockColor: True
 		Color: B3EAA5
 		Allies: Ordos Main Base
-		Enemies: Harkonnen
-	PlayerReference@Smugglers:
-		Name: Smugglers
+		Enemies: Harkonnen, Smugglers - Enemy to Ordos, Smugglers - Enemy to Both
+	PlayerReference@Smugglers - Neutral:
+		Name: Smugglers - Neutral
+		NonCombatant: True
 		LockFaction: True
 		Faction: smuggler
 		LockColor: True
 		Color: 542209
+	PlayerReference@Smugglers - Enemy to Harkonnen:
+		Name: Smugglers - Enemy to Harkonnen
+		NonCombatant: True
+		LockFaction: True
+		Faction: smuggler
+		LockColor: True
+		Color: 542209
+		Enemies: Harkonnen
+	PlayerReference@Smugglers - Enemy to Ordos:
+		Name: Smugglers - Enemy to Ordos
+		NonCombatant: True
+		LockFaction: True
+		Faction: smuggler
+		LockColor: True
+		Color: 542209
+		Enemies: Ordos Main Base, Ordos Small Base
+	PlayerReference@Smugglers - Enemy to Both:
+		Name: Smugglers - Enemy to Both
+		NonCombatant: True
+		LockFaction: True
+		Faction: smuggler
+		LockColor: True
+		Color: 542209
+		Enemies: Harkonnen, Ordos Main Base, Ordos Small Base
 
 Actors:
 	Actor0: wormspawner
@@ -517,16 +542,16 @@ Actors:
 		Owner: Neutral
 	SSilo1: silo
 		Location: 81,68
-		Owner: Smugglers
+		Owner: Smugglers - Neutral
 	SPower1: wind_trap
 		Location: 75,69
-		Owner: Smugglers
+		Owner: Smugglers - Neutral
 	SPower2: wind_trap
 		Location: 78,69
-		Owner: Smugglers
+		Owner: Smugglers - Neutral
 	SSilo2: silo
 		Location: 81,70
-		Owner: Smugglers
+		Owner: Smugglers - Neutral
 	Actor156: combat_tank_h
 		Location: 6,71
 		Owner: Harkonnen
@@ -538,16 +563,16 @@ Actors:
 		Owner: Harkonnen
 	Actor159: light_inf
 		Location: 77,72
-		Owner: Smugglers
+		Owner: Smugglers - Neutral
 	SSilo3: silo
 		Location: 81,72
-		Owner: Smugglers
+		Owner: Smugglers - Neutral
 	Actor161: trike
 		Location: 11,73
 		Owner: Harkonnen
 	Actor162: trooper
 		Location: 80,73
-		Owner: Smugglers
+		Owner: Smugglers - Neutral
 	Actor163: trooper
 		Location: 7,74
 		Owner: Harkonnen
@@ -559,25 +584,25 @@ Actors:
 		Owner: Harkonnen
 	SRefinery: refinery
 		Location: 78,74
-		Owner: Smugglers
+		Owner: Smugglers - Neutral
 	Actor167: light_inf
 		Location: 82,74
-		Owner: Smugglers
+		Owner: Smugglers - Neutral
 	Actor168: combat_tank_h
 		Location: 10,75
 		Owner: Harkonnen
 	Actor169: trooper
 		Location: 82,75
-		Owner: Smugglers
+		Owner: Smugglers - Neutral
 	Actor170: light_inf
 		Location: 15,76
 		Owner: Harkonnen
 	Actor171: carryall
 		Location: 77,76
-		Owner: Smugglers
+		Owner: Smugglers - Neutral
 	Actor172: harvester
 		Location: 81,76
-		Owner: Smugglers
+		Owner: Smugglers - Neutral
 	HMCV: mcv
 		Location: 8,77
 		Owner: Harkonnen
@@ -595,10 +620,10 @@ Actors:
 		Owner: Neutral
 	Actor178: light_inf
 		Location: 82,77
-		Owner: Smugglers
+		Owner: Smugglers - Neutral
 	Actor179: light_inf
 		Location: 83,77
-		Owner: Smugglers
+		Owner: Smugglers - Neutral
 	Actor180: light_inf
 		Location: 11,78
 		Owner: Harkonnen
