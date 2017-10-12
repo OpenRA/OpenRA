@@ -1,0 +1,67 @@
+Player:
+	PlayerResources:
+		DefaultCash: 6000
+
+World:
+	LuaScript:
+		Scripts: campaign-global.lua, harkonnen06a.lua, harkonnen06a-AI.lua
+	MissionData:
+		Briefing: The weak Ordos are no match for Harkonnen troops. However, smuggled Ixian technologies may upset this balance of power.\n\nThis cannot be allowed to happen. Establish a base on the plain, locate the Ordos Starport and destroy or capture it before the expensive shipments of Ixian weaponry begin to arrive. Time is short - the transports have already entered the system.
+		BriefingVideo: H_BR06_E.VQA
+	MapOptions:
+		TechLevel: medium
+	ScriptLobbyDropdown@difficulty:
+		ID: difficulty
+		Label: Difficulty
+		Values:
+			easy: Easy
+			normal: Normal
+			hard: Hard
+		Default: easy
+
+^Palettes:
+	IndexedPlayerPalette:
+		PlayerIndex:
+			Ordos Main Base: 175, 174, 173, 172, 171, 170, 169, 168, 167, 166, 165, 164, 163, 162, 161, 160
+			Ordos Small Base: 175, 174, 173, 172, 171, 170, 169, 168, 167, 166, 165, 164, 163, 162, 161, 160
+
+carryall.reinforce:
+	Cargo:
+		MaxWeight: 10
+
+frigate:
+	Aircraft:
+		LandableTerrainTypes: Sand, Rock, Transition, Spice, SpiceSand, Dune, Concrete
+		VTOL: true # The frigate would teleport to land otherwise
+
+concreteb:
+	Buildable:
+		Prerequisites: ~disabled
+
+large_gun_turret:
+	Buildable:
+		Prerequisites: ~disabled
+
+research_centre:
+	Buildable:
+		Prerequisites: outpost, heavy_factory, upgrade.heavy
+
+starport:
+	Buildable:
+		Prerequisites: heavy_factory, outpost
+
+missile_tank:
+	Buildable:
+		Prerequisites: ~heavy.missiletank, upgrade.heavy, research_centre
+
+sardaukar:
+	Buildable:
+		Prerequisites: ~disabled
+
+stealth_raider:
+	Buildable:
+		Prerequisites: ~disabled
+
+upgrade.conyard:
+	Buildable:
+		Prerequisites: ~disabled
