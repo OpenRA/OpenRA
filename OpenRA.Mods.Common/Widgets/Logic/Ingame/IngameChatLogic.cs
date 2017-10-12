@@ -71,6 +71,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			chatMode.IsDisabled = () => disableTeamChat;
 
 			chatText = chatChrome.Get<TextFieldWidget>("CHAT_TEXTFIELD");
+			chatText.MaxLength = UnitOrders.ChatMessageMaxLength;
 			chatText.OnEnterKey = () =>
 			{
 				var team = teamChat && !disableTeamChat;
