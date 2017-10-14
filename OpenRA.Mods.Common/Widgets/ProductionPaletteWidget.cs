@@ -437,8 +437,8 @@ namespace OpenRA.Mods.Common.Widgets
 				{
 					var first = icon.Queued[0];
 					clock.PlayFetchIndex(ClockSequence,
-						() => (first.TotalTime - first.RemainingTime)
-							* (clock.CurrentSequence.Length - 1) / first.TotalTime);
+						() => (first.TotalTimeActual - first.RemainingTimeActual)
+							* (clock.CurrentSequence.Length - 1) / first.TotalTimeActual);
 					clock.Tick();
 
 					WidgetUtils.DrawSHPCentered(clock.Image, icon.Pos + iconOffset, icon.IconClockPalette);
@@ -455,6 +455,21 @@ namespace OpenRA.Mods.Common.Widgets
 				{
 					var first = icon.Queued[0];
 					var waiting = first != CurrentQueue.CurrentItem() && !first.Done;
+					var multiplier = ProductionItem.TimeFactor;
+
+					if (CurrentQueue.Info.ParallelBuild)
+					{
+						waiting = false;
+						var progressingQueue = new List<ProductionItem>();
+
+						foreach (var q in CurrentQueue.AllQueued())
+							if (progressingQueue.Find(i => i.Item == q.Item) == null && !q.Paused && !q.Done)
+								progressingQueue.Add(q);
+
+						if (progressingQueue.Count > 0)
+							multiplier *= progressingQueue.Count;
+					}
+
 					if (first.Done)
 					{
 						if (ReadyTextStyle == ReadyTextStyleOptions.Solid || orderManager.LocalFrameNumber * worldRenderer.World.Timestep / 360 % 2 == 0)
@@ -467,7 +482,7 @@ namespace OpenRA.Mods.Common.Widgets
 							icon.Pos + holdOffset,
 							Color.White, Color.Black, 1);
 					else if (!waiting)
-						overlayFont.DrawTextWithContrast(WidgetUtils.FormatTime(first.RemainingTimeActual, World.Timestep),
+						overlayFont.DrawTextWithContrast(WidgetUtils.FormatTime(first.RemainingTimeActual * multiplier / ProductionItem.TimeFactor, World.Timestep),
 							icon.Pos + timeOffset,
 							Color.White, Color.Black, 1);
 

@@ -62,7 +62,7 @@ namespace OpenRA.Mods.Common.Traits
 
 				var unit = self.World.Map.Rules.Actors[order.TargetString];
 				var queue = order.TargetActor.TraitsImplementing<ProductionQueue>()
-					.FirstOrDefault(q => q.CanBuild(unit) && q.CurrentItem() != null && q.CurrentItem().Item == order.TargetString && q.CurrentItem().RemainingTime == 0);
+					.FirstOrDefault(q => q.CanBuild(unit) && q.CurrentItem() != null && q.CurrentItem().Item == order.TargetString && q.CurrentItem().RemainingTimeActual == 0);
 
 				if (queue == null)
 					return;
@@ -150,7 +150,7 @@ namespace OpenRA.Mods.Common.Traits
 					foreach (var nbp in producer.Actor.TraitsImplementing<INotifyBuildingPlaced>())
 						nbp.BuildingPlaced(producer.Actor);
 
-				queue.FinishProduction();
+				queue.FinishProduction(order.TargetString);
 
 				if (buildingInfo.RequiresBaseProvider)
 				{
