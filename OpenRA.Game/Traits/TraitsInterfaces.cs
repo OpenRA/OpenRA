@@ -94,6 +94,7 @@ namespace OpenRA.Traits
 
 	[RequireExplicitImplementation]
 	public interface ITick { void Tick(Actor self); }
+	[RequireExplicitImplementation]
 	public interface ITickRender { void TickRender(WorldRenderer wr, Actor self); }
 	public interface IRender { IEnumerable<IRenderable> Render(Actor self, WorldRenderer wr); }
 
@@ -133,7 +134,9 @@ namespace OpenRA.Traits
 	[RequireExplicitImplementation]
 	public interface INotifyCreated { void Created(Actor self); }
 
+	[RequireExplicitImplementation]
 	public interface INotifyAddedToWorld { void AddedToWorld(Actor self); }
+	[RequireExplicitImplementation]
 	public interface INotifyRemovedFromWorld { void RemovedFromWorld(Actor self); }
 
 	[RequireExplicitImplementation]
@@ -191,11 +194,6 @@ namespace OpenRA.Traits
 	{
 		bool IsVisible(Actor actor);
 		bool HasFogVisibility();
-	}
-
-	public interface ITargetableCells
-	{
-		IEnumerable<Pair<CPos, SubCell>> TargetableCells();
 	}
 
 	public interface IOccupySpaceInfo : ITraitInfoInterface
@@ -354,6 +352,7 @@ namespace OpenRA.Traits
 		bool RequiresForceFire { get; }
 	}
 
+	[RequireExplicitImplementation]
 	public interface ITargetablePositions
 	{
 		IEnumerable<WPos> TargetablePositions(Actor self);

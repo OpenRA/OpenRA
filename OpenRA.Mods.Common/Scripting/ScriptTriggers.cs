@@ -322,7 +322,7 @@ namespace OpenRA.Mods.Common.Scripting
 			}
 		}
 
-		public void AddedToWorld(Actor self)
+		void INotifyAddedToWorld.AddedToWorld(Actor self)
 		{
 			if (world.Disposing)
 				return;
@@ -341,7 +341,7 @@ namespace OpenRA.Mods.Common.Scripting
 			}
 		}
 
-		public void RemovedFromWorld(Actor self)
+		void INotifyRemovedFromWorld.RemovedFromWorld(Actor self)
 		{
 			if (world.Disposing)
 				return;

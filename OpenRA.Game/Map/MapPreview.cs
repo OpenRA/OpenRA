@@ -28,7 +28,14 @@ namespace OpenRA
 	public enum MapStatus { Available, Unavailable, Searching, DownloadAvailable, Downloading, DownloadError }
 
 	// Used for grouping maps in the UI
-	public enum MapClassification { Unknown, System, User, Remote }
+	[Flags]
+	public enum MapClassification
+	{
+		Unknown = 0,
+		System = 1,
+		User = 2,
+		Remote = 4
+	}
 
 	// Used for verifying map availability in the lobby
 	public enum MapRuleStatus { Unknown, Cached, Invalid }

@@ -1,5 +1,6 @@
 SS:
 	Inherits: ^Ship
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Buildable:
 		Queue: Ship
 		BuildAtProductionType: Submarine
@@ -51,7 +52,9 @@ SS:
 		InitialStance: HoldFire
 		InitialStanceAI: ReturnFire
 	AutoTargetPriority@DEFAULT:
-		Types: Water
+		ValidTargets: Water
+	AutoTargetPriority@ATTACKANYTHING:
+		ValidTargets: Water
 	DetectCloaked:
 		CloakTypes: Underwater
 		Range: 4c0

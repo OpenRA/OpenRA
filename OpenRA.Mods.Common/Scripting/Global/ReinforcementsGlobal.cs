@@ -26,7 +26,13 @@ namespace OpenRA.Mods.Common.Scripting
 	[ScriptGlobal("Reinforcements")]
 	public class ReinforcementsGlobal : ScriptGlobal
 	{
-		public ReinforcementsGlobal(ScriptContext context) : base(context) { }
+		readonly DomainIndex domainIndex;
+
+		public ReinforcementsGlobal(ScriptContext context)
+			: base(context)
+		{
+			domainIndex = context.World.WorldActor.Trait<DomainIndex>();
+		}
 
 		Actor CreateActor(Player owner, string actorType, bool addToWorld, CPos? entryLocation = null, CPos? nextLocation = null)
 		{
@@ -109,10 +115,12 @@ namespace OpenRA.Mods.Common.Scripting
 			"been supplied. Afterwards, the transport will follow the exitPath and leave the map, " +
 			"unless a custom exitFunc has been supplied. actionFunc will be called as " +
 			"actionFunc(Actor transport, Actor[] cargo). exitFunc will be called as exitFunc(Actor transport). " +
+			"dropRange determines how many cells away the transport will try to land " +
+			"if the actual destination is blocked (if the transport is an aircraft). " +
 			"Returns a table in which the first value is the transport, " +
 			"and the second a table containing the deployed units.")]
 		public LuaTable ReinforceWithTransport(Player owner, string actorType, string[] cargoTypes, CPos[] entryPath, CPos[] exitPath = null,
-			LuaFunction actionFunc = null, LuaFunction exitFunc = null)
+			LuaFunction actionFunc = null, LuaFunction exitFunc = null, int dropRange = 3)
 		{
 			var transport = CreateActor(owner, actorType, true, entryPath[0], entryPath.Length > 1 ? entryPath[1] : (CPos?)null);
 			var cargo = transport.TraitOrDefault<Cargo>();
@@ -143,17 +151,47 @@ namespace OpenRA.Mods.Common.Scripting
 			}
 			else
 			{
-				var aircraftInfo = transport.Info.TraitInfoOrDefault<AircraftInfo>();
-				if (aircraftInfo != null)
+				var aircraft = transport.TraitOrDefault<Aircraft>();
+				if (aircraft != null)
 				{
-					if (aircraftInfo.VTOL)
+					var destination = entryPath.Last();
+
+					// Try to find an alternative landing spot if we can't land at the current destination
+					if (!aircraft.CanLand(destination) && dropRange > 0)
 					{
-						transport.QueueActivity(new Turn(transport, aircraftInfo.InitialFacing));
+						var mobiles = cargo != null ? cargo.Passengers.Select(a =>
+						{
+							var mobileInfo = a.Info.TraitInfoOrDefault<MobileInfo>();
+							if (mobileInfo == null)
+								return new Pair<MobileInfo, uint>(null, 0);
+
+							return new Pair<MobileInfo, uint>(mobileInfo, (uint)mobileInfo.GetMovementClass(a.World.Map.Rules.TileSet));
+						}) : new Pair<MobileInfo, uint>[0];
+
+						foreach (var c in transport.World.Map.FindTilesInCircle(destination, dropRange))
+						{
+							if (!aircraft.CanLand(c))
+								continue;
+
+							if (!mobiles.All(m => m.First == null || domainIndex.IsPassable(destination, c, m.First, m.Second)))
+								continue;
+
+							destination = c;
+							break;
+						}
+					}
+
+					if (aircraft.Info.VTOL)
+					{
+						if (destination != entryPath.Last())
+							Move(transport, destination);
+
+						transport.QueueActivity(new Turn(transport, aircraft.Info.InitialFacing));
 						transport.QueueActivity(new HeliLand(transport, true));
 					}
 					else
 					{
-						transport.QueueActivity(new Land(transport, Target.FromCell(transport.World, entryPath.Last())));
+						transport.QueueActivity(new Land(transport, Target.FromCell(transport.World, destination)));
 					}
 
 					transport.QueueActivity(new Wait(15));
@@ -165,7 +203,7 @@ namespace OpenRA.Mods.Common.Scripting
 					transport.QueueActivity(new WaitFor(() => cargo.IsEmpty(transport)));
 				}
 
-				transport.QueueActivity(new Wait(aircraftInfo != null ? 50 : 25));
+				transport.QueueActivity(new Wait(aircraft != null ? 50 : 25));
 			}
 
 			if (exitFunc != null)

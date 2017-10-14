@@ -77,10 +77,8 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						}
 					}
 
-					modData.MapCache.LoadMaps();
-					maps.AddRange(modData.MapCache
-						.Where(m => m.Status == MapStatus.Available)
-						.Select(m => new Map(modData, m.Package)));
+					// Use all system maps for lint checking
+					maps = modData.MapCache.EnumerateMapsWithoutCaching().ToList();
 				}
 				else
 					maps.Add(new Map(modData, new Folder(".").OpenPackage(args[1], modData.ModFiles)));

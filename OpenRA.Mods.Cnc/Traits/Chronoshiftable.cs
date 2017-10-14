@@ -101,8 +101,14 @@ namespace OpenRA.Mods.Cnc.Traits
 			}
 
 			// Set up return-to-origin info
-			Origin = self.Location;
-			ReturnTicks = duration;
+			// If this actor is already counting down to return to
+			// an existing location then we shouldn't override it
+			if (ReturnTicks <= 0)
+			{
+				Origin = self.Location;
+				ReturnTicks = duration;
+			}
+
 			this.duration = duration;
 			this.chronosphere = chronosphere;
 			this.killCargo = killCargo;

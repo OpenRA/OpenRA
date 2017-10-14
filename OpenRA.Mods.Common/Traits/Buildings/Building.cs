@@ -287,7 +287,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public IEnumerable<Pair<CPos, SubCell>> OccupiedCells() { return occupiedCells; }
 
-		public IEnumerable<Pair<CPos, SubCell>> TargetableCells() { return targetableCells; }
+		IEnumerable<Pair<CPos, SubCell>> ITargetableCells.TargetableCells() { return targetableCells; }
 
 		void INotifyCreated.Created(Actor self)
 		{
@@ -295,7 +295,12 @@ namespace OpenRA.Mods.Common.Traits
 				NotifyBuildingComplete(self);
 		}
 
-		public virtual void AddedToWorld(Actor self)
+		void INotifyAddedToWorld.AddedToWorld(Actor self)
+		{
+			AddedToWorld(self);
+		}
+
+		protected virtual void AddedToWorld(Actor self)
 		{
 			if (Info.RemoveSmudgesOnBuild)
 				RemoveSmudges();

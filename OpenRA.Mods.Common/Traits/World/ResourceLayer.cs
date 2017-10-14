@@ -162,7 +162,7 @@ namespace OpenRA.Mods.Common.Traits
 			return t.Variants.Keys.Random(Game.CosmeticRandom);
 		}
 
-		public void TickRender(WorldRenderer wr, Actor self)
+		void ITickRender.TickRender(WorldRenderer wr, Actor self)
 		{
 			var remove = new List<CPos>();
 			foreach (var c in dirty)
