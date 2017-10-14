@@ -14,7 +14,7 @@ Windows
 * [OpenAL](http://kcat.strangesoft.net/openal.html) (included)
 * [liblua 5.1](http://luabinaries.sourceforge.net/download.html) (included)
 
-You need to fetch the thirdparty dependencies using [NuGet](http://www.nuget.org) and place them at the appropriate places by typing `make dependencies` in a command terminal.
+You need to fetch the thirdparty dependencies and place them at the appropriate places by typing `make dependencies` in a command terminal.
 
 To compile OpenRA, open the `OpenRA.sln` solution in the main folder, build it from the command-line with MSBuild or use the Makefile analogue command `make all` scripted in PowerShell syntax.
 
@@ -23,7 +23,7 @@ Run the game with `OpenRA.Game.exe Game.Mod=ra` for Red Alert or `OpenRA.Game.ex
 Linux
 =====
 
-Use `make dependencies` to map the native libraries to your system, fetch the remaining CLI dependencies using [NuGet](http://www.nuget.org) and place them at the appropriate places.
+Use `make dependencies` to map the native libraries to your system and fetch the remaining CLI dependencies to place them at the appropriate places.
 
 To compile OpenRA, run `make all` from the command line.
 
@@ -34,7 +34,6 @@ Type `sudo make install` for system wide installation. Run `make install-linux-s
 Debian/Ubuntu
 -------------
 
-* nuget
 * mono-devel
 * libfreetype6
 * libopenal1
@@ -48,7 +47,6 @@ openSUSE
 --------
 
 * mono-devel
-* nuget
 * openal
 * freetype2
 * SDL2
@@ -62,7 +60,6 @@ Gentoo
 
 * dev-lang/mono
 * dev-dotnet/libgdiplus
-* dev-dotnet/nuget
 * media-libs/freetype:2
 * media-libs/libsdl2
 * media-libs/openal
