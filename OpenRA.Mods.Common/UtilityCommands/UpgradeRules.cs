@@ -845,38 +845,6 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
-				// Replace Mobile.OnRails hack with dedicated TDGunboat traits in Mods.Cnc
-				if (engineVersion < 20170715)
-				{
-					var mobile = node.Value.Nodes.FirstOrDefault(n => n.Key == "Mobile");
-					if (mobile != null)
-					{
-						var onRailsNode = mobile.Value.Nodes.FirstOrDefault(n => n.Key == "OnRails");
-						var onRails = onRailsNode != null ? FieldLoader.GetValue<bool>("OnRails", onRailsNode.Value.Value) : false;
-						if (onRails)
-						{
-							var speed = mobile.Value.Nodes.FirstOrDefault(n => n.Key == "Speed");
-							var initFacing = mobile.Value.Nodes.FirstOrDefault(n => n.Key == "InitialFacing");
-							var previewFacing = mobile.Value.Nodes.FirstOrDefault(n => n.Key == "PreviewFacing");
-							var tdGunboat = new MiniYamlNode("TDGunboat", "");
-							if (speed != null)
-								tdGunboat.Value.Nodes.Add(speed);
-							if (initFacing != null)
-								tdGunboat.Value.Nodes.Add(initFacing);
-							if (previewFacing != null)
-								tdGunboat.Value.Nodes.Add(previewFacing);
-
-							node.Value.Nodes.Add(tdGunboat);
-
-							var attackTurreted = node.Value.Nodes.FirstOrDefault(n => n.Key.StartsWith("AttackTurreted", StringComparison.Ordinal));
-							if (attackTurreted != null)
-								RenameNodeKey(attackTurreted, "AttackTDGunboatTurreted");
-
-							node.Value.Nodes.Remove(mobile);
-						}
-					}
-				}
-
 				// TargetWhenIdle and TargetWhenDamaged were removed from AutoTarget
 				if (engineVersion < 20170722)
 				{
@@ -953,8 +921,40 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				// Replace Mobile.OnRails hack with dedicated TDGunboat traits in Mods.Cnc
+				if (engineVersion < 20171015)
+				{
+					var mobile = node.Value.Nodes.FirstOrDefault(n => n.Key == "Mobile");
+					if (mobile != null)
+					{
+						var onRailsNode = mobile.Value.Nodes.FirstOrDefault(n => n.Key == "OnRails");
+						var onRails = onRailsNode != null ? FieldLoader.GetValue<bool>("OnRails", onRailsNode.Value.Value) : false;
+						if (onRails)
+						{
+							var speed = mobile.Value.Nodes.FirstOrDefault(n => n.Key == "Speed");
+							var initFacing = mobile.Value.Nodes.FirstOrDefault(n => n.Key == "InitialFacing");
+							var previewFacing = mobile.Value.Nodes.FirstOrDefault(n => n.Key == "PreviewFacing");
+							var tdGunboat = new MiniYamlNode("TDGunboat", "");
+							if (speed != null)
+								tdGunboat.Value.Nodes.Add(speed);
+							if (initFacing != null)
+								tdGunboat.Value.Nodes.Add(initFacing);
+							if (previewFacing != null)
+								tdGunboat.Value.Nodes.Add(previewFacing);
+
+							node.Value.Nodes.Add(tdGunboat);
+
+							var attackTurreted = node.Value.Nodes.FirstOrDefault(n => n.Key.StartsWith("AttackTurreted", StringComparison.Ordinal));
+							if (attackTurreted != null)
+								RenameNodeKey(attackTurreted, "AttackTDGunboatTurreted");
+
+							node.Value.Nodes.Remove(mobile);
+						}
+					}
+				}
+
 				// Introduced TakeOffOnCreation and TakeOffOnResupply booleans to aircraft
-				if (engineVersion < 20170819)
+				if (engineVersion < 20171015)
 				{
 					if (node.Key.StartsWith("Aircraft", StringComparison.Ordinal))
 					{
@@ -975,7 +975,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				}
 
 				// nuke launch animation is now it's own trait
-				if (engineVersion < 20170820)
+				if (engineVersion < 20171015)
 				{
 					if (depth == 1 && node.Key.StartsWith("NukePower", StringComparison.Ordinal))
 					{
@@ -984,7 +984,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
-				if (engineVersion < 20170915)
+				if (engineVersion < 20171015)
 				{
 					if (node.Key.StartsWith("WithTurretedAttackAnimation", StringComparison.Ordinal))
 						RenameNodeKey(node, "WithTurretAttackAnimation");
@@ -992,7 +992,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						RenameNodeKey(node, "WithEmbeddedTurretSpriteBody");
 				}
 
-				if (engineVersion < 20170916)
+				if (engineVersion < 20171015)
 				{
 					if (node.Key.StartsWith("PlayerPaletteFromCurrentTileset", StringComparison.Ordinal))
 					{
