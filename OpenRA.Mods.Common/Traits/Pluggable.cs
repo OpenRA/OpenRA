@@ -23,24 +23,17 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly CVec Offset = CVec.Zero;
 
 		[FieldLoader.Require]
+		[GrantedConditionReference]
 		[Desc("Conditions to grant for each accepted plug type.",
 			"Key is the plug type.",
 			"Value is the condition that is granted when the plug is enabled.")]
 		public readonly Dictionary<string, string> Conditions = null;
 
+		[ConsumedConditionReference]
 		[Desc("Requirements for accepting a plug type.",
 			"Key is the plug type that the requirements applies to.",
 			"Value is the condition expression defining the requirements to place the plug.")]
 		public readonly Dictionary<string, BooleanExpression> Requirements = new Dictionary<string, BooleanExpression>();
-
-		[GrantedConditionReference]
-		public IEnumerable<string> LinterConditions { get { return Conditions.Values; } }
-
-		[ConsumedConditionReference]
-		public IEnumerable<string> ConsumedConditions
-		{
-			get { return Requirements.Values.SelectMany(r => r.Variables).Distinct(); }
-		}
 
 		public object Create(ActorInitializer init) { return new Pluggable(init, this); }
 	}

@@ -22,13 +22,11 @@ namespace OpenRA.Mods.Common.Traits
 	public class GainsExperienceInfo : ITraitInfo, Requires<ValuedInfo>
 	{
 		[FieldLoader.Require]
+		[GrantedConditionReference]
 		[Desc("Condition to grant at each level.",
 			"Key is the XP requirements for each level as a percentage of our own value.",
 			"Value is the condition to grant.")]
 		public readonly Dictionary<int, string> Conditions = null;
-
-		[GrantedConditionReference]
-		public IEnumerable<string> LinterConditions { get { return Conditions.Values; } }
 
 		[Desc("Palette for the level up sprite.")]
 		[PaletteReference] public readonly string LevelUpPalette = "effect";

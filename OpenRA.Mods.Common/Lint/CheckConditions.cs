@@ -33,11 +33,11 @@ namespace OpenRA.Mods.Common.Lint
 				{
 					var fieldConsumed = trait.GetType().GetFields()
 						.Where(x => x.HasAttribute<ConsumedConditionReferenceAttribute>())
-						.SelectMany(f => LintExts.GetFieldValues(trait, f, emitError));
+						.SelectMany(f => LintExts.GetFieldValues(trait, f, emitError, true));
 
 					var propertyConsumed = trait.GetType().GetProperties()
 						.Where(x => x.HasAttribute<ConsumedConditionReferenceAttribute>())
-						.SelectMany(p => LintExts.GetPropertyValues(trait, p, emitError));
+						.SelectMany(p => LintExts.GetPropertyValues(trait, p, emitError, true));
 
 					var fieldGranted = trait.GetType().GetFields()
                         .Where(x => x.HasAttribute<GrantedConditionReferenceAttribute>())
