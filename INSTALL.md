@@ -46,14 +46,9 @@ Debian/Ubuntu
 openSUSE
 --------
 
-* mono-devel
-* openal
-* freetype2
-* SDL2
-* lua51
-* xdg-utils
-* zenity
-* curl
+```
+sudo zypper in mono-devel openal-soft freetype2 SDL2 lua51 xdg-utils zenity curl
+```
 
 Gentoo
 ------
