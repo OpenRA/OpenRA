@@ -177,7 +177,7 @@ namespace OpenRA.Mods.Common.Traits
 			// PERF: Avoid LINQ.
 			foreach (var armament in Armaments)
 			{
-				var checkIsValid = checkForCenterTargetingWeapons ? armament.Weapon.TargetActorCenter : !armament.OutOfAmmo;
+				var checkIsValid = checkForCenterTargetingWeapons ? armament.Weapon.TargetActorCenter : !armament.IsTraitPaused;
 				if (checkIsValid && !armament.IsTraitDisabled && armament.Weapon.IsValidAgainst(t, self.World, self))
 					return true;
 			}
@@ -202,7 +202,7 @@ namespace OpenRA.Mods.Common.Traits
 				if (armament.IsTraitDisabled)
 					continue;
 
-				if (armament.OutOfAmmo)
+				if (armament.IsTraitPaused)
 					continue;
 
 				var range = armament.Weapon.MinRange;
@@ -225,7 +225,7 @@ namespace OpenRA.Mods.Common.Traits
 				if (armament.IsTraitDisabled)
 					continue;
 
-				if (armament.OutOfAmmo)
+				if (armament.IsTraitPaused)
 					continue;
 
 				var range = armament.MaxRange();
@@ -248,7 +248,7 @@ namespace OpenRA.Mods.Common.Traits
 				if (armament.IsTraitDisabled)
 					continue;
 
-				if (armament.OutOfAmmo)
+				if (armament.IsTraitPaused)
 					continue;
 
 				if (!armament.Weapon.IsValidAgainst(target, self.World, self))
@@ -267,25 +267,33 @@ namespace OpenRA.Mods.Common.Traits
 			if (IsTraitDisabled)
 				return WDist.Zero;
 
-			// PERF: Avoid LINQ.
 			var max = WDist.Zero;
+
+			// We want actors to use only weapons with ammo for this, except when ALL weapons are out of ammo,
+			// then we use the paused, valid weapon with highest range.
+			var maxFallback = WDist.Zero;
+
+			// PERF: Avoid LINQ.
 			foreach (var armament in Armaments)
 			{
 				if (armament.IsTraitDisabled)
-					continue;
-
-				if (armament.OutOfAmmo)
 					continue;
 
 				if (!armament.Weapon.IsValidAgainst(target, self.World, self))
 					continue;
 
 				var range = armament.MaxRange();
+				if (maxFallback < range)
+					maxFallback = range;
+
+				if (armament.IsTraitPaused)
+					continue;
+
 				if (max < range)
 					max = range;
 			}
 
-			return max;
+			return max != WDist.Zero ? max : maxFallback;
 		}
 
 		// Enumerates all armaments, that this actor possesses, that can be used against Target t
@@ -392,7 +400,7 @@ namespace OpenRA.Mods.Common.Traits
 				// Use valid armament with highest range out of those that have ammo
 				// If all are out of ammo, just use valid armament with highest range
 				armaments = armaments.OrderByDescending(x => x.MaxRange());
-				var a = armaments.FirstOrDefault(x => !x.OutOfAmmo);
+				var a = armaments.FirstOrDefault(x => !x.IsTraitPaused);
 				if (a == null)
 					a = armaments.First();
 
@@ -426,7 +434,7 @@ namespace OpenRA.Mods.Common.Traits
 				// Use valid armament with highest range out of those that have ammo
 				// If all are out of ammo, just use valid armament with highest range
 				armaments = armaments.OrderByDescending(x => x.MaxRange());
-				var a = armaments.FirstOrDefault(x => !x.OutOfAmmo);
+				var a = armaments.FirstOrDefault(x => !x.IsTraitPaused);
 				if (a == null)
 					a = armaments.First();
 

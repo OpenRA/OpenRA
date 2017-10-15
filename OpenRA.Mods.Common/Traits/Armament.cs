@@ -25,16 +25,13 @@ namespace OpenRA.Mods.Common.Traits
 	}
 
 	[Desc("Allows you to attach weapons to the unit (use @IdentifierSuffix for > 1)")]
-	public class ArmamentInfo : ConditionalTraitInfo, Requires<AttackBaseInfo>
+	public class ArmamentInfo : PausableConditionalTraitInfo, Requires<AttackBaseInfo>
 	{
 		public readonly string Name = "primary";
 
 		[WeaponReference, FieldLoader.Require]
 		[Desc("Has to be defined in weapons.yaml as well.")]
 		public readonly string Weapon = null;
-
-		[Desc("Which limited ammo pool (if present) should this armament be assigned to.")]
-		public readonly string AmmoPoolName = "primary";
 
 		[Desc("Which turret (if present) should this armament be assigned to.")]
 		public readonly string Turret = "primary";
@@ -99,15 +96,13 @@ namespace OpenRA.Mods.Common.Traits
 		}
 	}
 
-	public class Armament : ConditionalTrait<ArmamentInfo>, ITick, IExplodeModifier
+	public class Armament : PausableConditionalTrait<ArmamentInfo>, ITick, IExplodeModifier
 	{
 		public readonly WeaponInfo Weapon;
 		public readonly Barrel[] Barrels;
 
 		readonly Actor self;
 		Turreted turret;
-		AmmoPool ammoPool;
-		ReloadAmmoPool reloadAmmoPool;
 		BodyOrientation coords;
 		INotifyBurstComplete[] notifyBurstComplete;
 		INotifyAttack[] notifyAttacks;
@@ -157,8 +152,6 @@ namespace OpenRA.Mods.Common.Traits
 		protected override void Created(Actor self)
 		{
 			turret = self.TraitsImplementing<Turreted>().FirstOrDefault(t => t.Name == Info.Turret);
-			ammoPool = self.TraitsImplementing<AmmoPool>().FirstOrDefault(la => la.Info.Name == Info.AmmoPoolName);
-			reloadAmmoPool = self.TraitsImplementing<ReloadAmmoPool>().FirstOrDefault(ra => ra.Info.AmmoPool == Info.AmmoPoolName);
 			coords = self.Trait<BodyOrientation>();
 			notifyBurstComplete = self.TraitsImplementing<INotifyBurstComplete>().ToArray();
 			notifyAttacks = self.TraitsImplementing<INotifyAttack>().ToArray();
@@ -211,7 +204,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		protected virtual bool CanFire(Actor self, Target target)
 		{
-			if (IsReloading || (ammoPool != null && !ammoPool.HasAmmo()))
+			if (IsReloading || IsTraitPaused)
 				return false;
 
 			if (turret != null && !turret.HasAchievedDesiredFacing)
@@ -341,7 +334,6 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		public virtual bool OutOfAmmo { get { return ammoPool != null && !ammoPool.HasAmmo() && (reloadAmmoPool == null || reloadAmmoPool.IsTraitDisabled); } }
 		public virtual bool IsReloading { get { return FireDelay > 0 || IsTraitDisabled; } }
 		public virtual bool AllowExplode { get { return !IsReloading; } }
 		bool IExplodeModifier.ShouldExplode(Actor self) { return AllowExplode; }
