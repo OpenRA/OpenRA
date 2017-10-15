@@ -133,11 +133,13 @@ namespace OpenRA.Mods.Common.Orders
 						orderType = "LineBuild";
 				}
 
-				yield return new Order(orderType, owner.PlayerActor, false)
+				yield return new Order(orderType, owner.PlayerActor, Target.FromCell(world, topLeft), false)
 				{
-					TargetLocation = topLeft,
-					TargetActor = queue.Actor,
+					// Building to place
 					TargetString = building,
+
+					// Actor to associate the placement with
+					ExtraData = queue.Actor.ActorID,
 					SuppressVisualFeedback = true
 				};
 			}
@@ -267,9 +269,8 @@ namespace OpenRA.Mods.Common.Orders
 				if (availableCells.Count == 0)
 					continue;
 
-				yield return new Order("Move", blocker.Actor, false)
+				yield return new Order("Move", blocker.Actor, Target.FromCell(world, blocker.Actor.ClosestCell(availableCells)), false)
 				{
-					TargetLocation = blocker.Actor.ClosestCell(availableCells),
 					SuppressVisualFeedback = true
 				};
 			}

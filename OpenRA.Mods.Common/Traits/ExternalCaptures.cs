@@ -66,10 +66,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (order.OrderID != "ExternalCaptureActor")
 				return null;
 
-			if (target.Type == TargetType.FrozenActor)
-				return new Order(order.OrderID, self, queued) { ExtraData = target.FrozenActor.ID };
-
-			return new Order(order.OrderID, self, queued) { TargetActor = target.Actor };
+			return new Order(order.OrderID, self, target, queued);
 		}
 
 		static bool IsValidOrder(Actor self, Order order)

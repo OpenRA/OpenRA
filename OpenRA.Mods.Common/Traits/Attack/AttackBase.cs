@@ -132,17 +132,7 @@ namespace OpenRA.Mods.Common.Traits
 		Order IIssueOrder.IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
 		{
 			if (order is AttackOrderTargeter)
-			{
-				switch (target.Type)
-				{
-					case TargetType.Actor:
-						return new Order(order.OrderID, self, queued) { TargetActor = target.Actor };
-					case TargetType.FrozenActor:
-						return new Order(order.OrderID, self, queued) { ExtraData = target.FrozenActor.ID };
-					case TargetType.Terrain:
-						return new Order(order.OrderID, self, queued) { TargetLocation = self.World.Map.CellContaining(target.CenterPosition) };
-				}
-			}
+				return new Order(order.OrderID, self, target, queued);
 
 			return null;
 		}

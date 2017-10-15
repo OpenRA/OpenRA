@@ -32,7 +32,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public override void DoAction(Actor self, CPos targetCell)
 		{
-			attackMove.ResolveOrder(self, new Order("AttackMove", self, false) { TargetLocation = targetCell });
+			attackMove.ResolveOrder(self, new Order("AttackMove", self, Target.FromCell(self.World, targetCell), false));
 		}
 	}
 }

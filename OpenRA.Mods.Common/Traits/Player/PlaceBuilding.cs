@@ -56,12 +56,13 @@ namespace OpenRA.Mods.Common.Traits
 			self.World.AddFrameEndTask(w =>
 			{
 				var prevItems = GetNumBuildables(self.Owner);
+				var targetActor = w.GetActorById(order.ExtraData);
 
-				if (order.TargetActor.IsDead)
+				if (targetActor.IsDead)
 					return;
 
 				var unit = self.World.Map.Rules.Actors[order.TargetString];
-				var queue = order.TargetActor.TraitsImplementing<ProductionQueue>()
+				var queue = targetActor.TraitsImplementing<ProductionQueue>()
 					.FirstOrDefault(q => q.CanBuild(unit) && q.CurrentItem() != null && q.CurrentItem().Item == order.TargetString && q.CurrentItem().RemainingTime == 0);
 
 				if (queue == null)

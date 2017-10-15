@@ -585,7 +585,7 @@ namespace OpenRA.Mods.Common.Traits
 		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
 		{
 			if (order is MoveOrderTargeter)
-				return new Order("Move", self, queued) { TargetLocation = self.World.Map.CellContaining(target.CenterPosition) };
+				return new Order("Move", self, target, queued);
 
 			return null;
 		}

@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Orders;
+using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Orders
 {
@@ -35,7 +36,7 @@ namespace OpenRA.Mods.Common.Orders
 			var queued = mi.Modifiers.HasModifier(Modifiers.Shift);
 			foreach (var subject in Subjects)
 				if (subject != target)
-					yield return new Order(OrderName, subject, queued) { TargetActor = target };
+					yield return new Order(OrderName, subject, Target.FromActor(target), queued);
 		}
 
 		public override void Tick(World world)

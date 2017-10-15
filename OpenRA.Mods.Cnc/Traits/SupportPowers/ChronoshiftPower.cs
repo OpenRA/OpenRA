@@ -221,9 +221,8 @@ namespace OpenRA.Mods.Cnc.Traits
 			{
 				// Cannot chronoshift into unexplored location
 				if (IsValidTarget(xy))
-					yield return new Order(order, manager.Self, false)
+					yield return new Order(order, manager.Self, Target.FromCell(manager.Self.World, xy), false)
 					{
-						TargetLocation = xy,
 						ExtraLocation = sourceLocation,
 						SuppressVisualFeedback = true
 					};

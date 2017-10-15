@@ -757,7 +757,7 @@ namespace OpenRA.Mods.Common.AI
 			if (target.Actor == null)
 				return;
 
-			QueueOrder(new Order(target.OrderString, capturer, true) { TargetActor = target.Actor });
+			QueueOrder(new Order(target.OrderString, capturer, Target.FromActor(target.Actor), true));
 			BotDebug("AI ({0}): Ordered {1} to capture {2}", Player.ClientIndex, capturer, target.Actor);
 			activeUnits.Remove(capturer);
 		}
@@ -813,7 +813,7 @@ namespace OpenRA.Mods.Common.AI
 				// Tell the idle harvester to quit slacking:
 				var newSafeResourcePatch = FindNextResource(harvester, harv);
 				BotDebug("AI: Harvester {0} is idle. Ordering to {1} in search for new resources.".F(harvester, newSafeResourcePatch));
-				QueueOrder(new Order("Harvest", harvester, false) { TargetLocation = newSafeResourcePatch });
+				QueueOrder(new Order("Harvest", harvester, Target.FromCell(World, newSafeResourcePatch), false));
 			}
 		}
 
@@ -927,13 +927,16 @@ namespace OpenRA.Mods.Common.AI
 		void SetRallyPointsForNewProductionBuildings(Actor self)
 		{
 			foreach (var rp in self.World.ActorsWithTrait<RallyPoint>())
+			{
 				if (rp.Actor.Owner == Player &&
 					!IsRallyPointValid(rp.Trait.Location, rp.Actor.Info.TraitInfoOrDefault<BuildingInfo>()))
-					QueueOrder(new Order("SetRallyPoint", rp.Actor, false)
+				{
+					QueueOrder(new Order("SetRallyPoint", rp.Actor, Target.FromCell(World, ChooseRallyLocationNear(rp.Actor)), false)
 					{
-						TargetLocation = ChooseRallyLocationNear(rp.Actor),
 						SuppressVisualFeedback = true
 					});
+				}
+			}
 		}
 
 		// Won't work for shipyards...
@@ -992,7 +995,7 @@ namespace OpenRA.Mods.Common.AI
 				if (desiredLocation == null)
 					continue;
 
-				QueueOrder(new Order("Move", mcv, true) { TargetLocation = desiredLocation.Value });
+				QueueOrder(new Order("Move", mcv, Target.FromCell(World, desiredLocation.Value), true));
 				QueueOrder(new Order("DeployTransform", mcv, true));
 			}
 		}
@@ -1047,7 +1050,7 @@ namespace OpenRA.Mods.Common.AI
 					// Valid target found, delay by a few ticks to avoid rescanning before power fires via order
 					BotDebug("AI: {2} found new target location {0} for support power {1}.", attackLocation, sp.Info.OrderName, Player.PlayerName);
 					waitingPowers[sp] += 10;
-					QueueOrder(new Order(sp.Key, supportPowerMngr.Self, false) { TargetLocation = attackLocation.Value, SuppressVisualFeedback = true });
+					QueueOrder(new Order(sp.Key, supportPowerMngr.Self, Target.FromCell(World, attackLocation.Value), false) { SuppressVisualFeedback = true });
 				}
 			}
 		}
@@ -1199,7 +1202,7 @@ namespace OpenRA.Mods.Common.AI
 				{
 					BotDebug("Bot noticed damage {0} {1}->{2}, repairing.",
 						self, e.PreviousDamageState, e.DamageState);
-					QueueOrder(new Order("RepairBuilding", self.Owner.PlayerActor, false) { TargetActor = self });
+					QueueOrder(new Order("RepairBuilding", self.Owner.PlayerActor, Target.FromActor(self), false));
 				}
 			}
 

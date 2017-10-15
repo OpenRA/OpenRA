@@ -655,11 +655,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
 		{
-			if (order.OrderID == "Enter")
-				return new Order(order.OrderID, self, queued) { TargetActor = target.Actor };
-
-			if (order.OrderID == "Move")
-				return new Order(order.OrderID, self, queued) { TargetLocation = self.World.Map.CellContaining(target.CenterPosition) };
+			if (order.OrderID == "Enter" || order.OrderID == "Move")
+				return new Order(order.OrderID, self, target, queued);
 
 			return null;
 		}

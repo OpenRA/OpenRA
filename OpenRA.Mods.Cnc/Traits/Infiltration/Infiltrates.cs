@@ -64,10 +64,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			if (order.OrderID != "Infiltrate")
 				return null;
 
-			if (target.Type == TargetType.FrozenActor)
-				return new Order(order.OrderID, self, queued) { ExtraData = target.FrozenActor.ID };
-
-			return new Order(order.OrderID, self, queued) { TargetActor = target.Actor };
+			return new Order(order.OrderID, self, target, queued);
 		}
 
 		bool IsValidOrder(Actor self, Order order)
