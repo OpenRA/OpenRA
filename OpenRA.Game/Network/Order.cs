@@ -74,9 +74,7 @@ namespace OpenRA
 			TargetString = targetString;
 			Queued = queued;
 			ExtraLocation = extraLocation;
-
-			// TODO: remove FrozenActor ID after the various ResolveOrders that rely on it are updated 
-			ExtraData = target.Type == TargetType.FrozenActor ? target.FrozenActor.ID : extraData;
+			ExtraData = extraData;
 		}
 
 		public static Order Deserialize(World world, BinaryReader r)

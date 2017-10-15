@@ -59,20 +59,16 @@ namespace OpenRA.Mods.Common
 			return stance == Stance.Enemy;
 		}
 
+		/// <summary>
+		/// DEPRECATED: Write code that can handle FrozenActors correctly instead.
+		/// </summary>
 		public static Target ResolveFrozenActorOrder(this Actor self, Order order, Color targetLine)
 		{
 			// Not targeting a frozen actor
-			if (order.ExtraData == 0)
-				return Target.FromOrder(self.World, order);
+			if (order.Target.Type != TargetType.FrozenActor)
+				return order.Target;
 
-			// Targeted an actor under the fog
-			var frozenLayer = self.Owner.PlayerActor.TraitOrDefault<FrozenActorLayer>();
-			if (frozenLayer == null)
-				return Target.Invalid;
-
-			var frozen = frozenLayer.FromID(order.ExtraData);
-			if (frozen == null)
-				return Target.Invalid;
+			var frozen = order.Target.FrozenActor;
 
 			// Flashes the frozen proxy
 			self.SetTargetLine(frozen, targetLine, true);
