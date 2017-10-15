@@ -18,8 +18,11 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Actor has a limited amount of ammo, after using it all the actor must reload in some way.")]
 	public class AmmoPoolInfo : ITraitInfo
 	{
-		[Desc("Name of this ammo pool, used to link armaments and reload traits to this pool.")]
+		[Desc("Name of this ammo pool, used to link reload traits to this pool.")]
 		public readonly string Name = "primary";
+
+		[Desc("Name(s) of armament(s) that use this pool.")]
+		public readonly string[] Armaments = { "primary", "secondary" };
 
 		[Desc("How much ammo does this pool contain when fully loaded.")]
 		public readonly int Ammo = 1;
@@ -46,6 +49,10 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Time to reload per ReloadCount on airfield etc.")]
 		public readonly int ReloadDelay = 50;
 
+		[GrantedConditionReference]
+		[Desc("The condition to grant to self if the pool has any ammo.")]
+		public readonly string AmmoCondition = null;
+
 		public object Create(ActorInitializer init) { return new AmmoPool(init.Self, this); }
 	}
 
@@ -53,7 +60,7 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		public readonly AmmoPoolInfo Info;
 		ConditionManager conditionManager;
-		int emptyToken = ConditionManager.InvalidConditionToken;
+		int token = ConditionManager.InvalidConditionToken;
 
 		bool selfReloads;
 
@@ -64,31 +71,30 @@ namespace OpenRA.Mods.Common.Traits
 		public AmmoPool(Actor self, AmmoPoolInfo info)
 		{
 			Info = info;
-			if (Info.InitialAmmo < Info.Ammo && Info.InitialAmmo >= 0)
-				currentAmmo = Info.InitialAmmo;
-			else
-				currentAmmo = Info.Ammo;
+			currentAmmo = Info.InitialAmmo < Info.Ammo && Info.InitialAmmo >= 0 ? Info.InitialAmmo : Info.Ammo;
 		}
 
 		public int GetAmmoCount() { return currentAmmo; }
 		public bool FullAmmo() { return currentAmmo == Info.Ammo; }
 		public bool HasAmmo() { return currentAmmo > 0; }
 
-		public bool GiveAmmo()
+		public bool GiveAmmo(Actor self, int count)
 		{
-			if (currentAmmo >= Info.Ammo)
+			if (currentAmmo >= Info.Ammo || count < 0)
 				return false;
 
-			++currentAmmo;
+			currentAmmo = (currentAmmo + count).Clamp(0, Info.Ammo);
+			UpdateCondition(self);
 			return true;
 		}
 
-		public bool TakeAmmo()
+		public bool TakeAmmo(Actor self, int count)
 		{
-			if (currentAmmo <= 0)
+			if (currentAmmo <= 0 || count < 0)
 				return false;
 
-			--currentAmmo;
+			currentAmmo = (currentAmmo - count).Clamp(0, Info.Ammo);
+			UpdateCondition(self);
 			return true;
 		}
 
@@ -100,6 +106,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			conditionManager = self.TraitOrDefault<ConditionManager>();
 			selfReloads = self.TraitsImplementing<ReloadAmmoPool>().Any(r => r.Info.AmmoPool == Info.Name && r.Info.RequiresCondition == null);
+			UpdateCondition(self);
 
 			// HACK: Temporarily needed until Rearm activity is gone for good
 			RemainingTicks = Info.ReloadDelay;
@@ -107,11 +114,23 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyAttack.Attacking(Actor self, Target target, Armament a, Barrel barrel)
 		{
-			if (a != null && a.Info.AmmoPoolName == Info.Name)
-				TakeAmmo();
+			if (a != null && Info.Armaments.Contains(a.Info.Name))
+				TakeAmmo(self, 1);
 		}
 
 		void INotifyAttack.PreparingAttack(Actor self, Target target, Armament a, Barrel barrel) { }
+
+		void UpdateCondition(Actor self)
+		{
+			if (conditionManager == null || string.IsNullOrEmpty(Info.AmmoCondition))
+				return;
+
+			if (HasAmmo() && token == ConditionManager.InvalidConditionToken)
+				token = conditionManager.GrantCondition(self, Info.AmmoCondition);
+
+			if (!HasAmmo() && token != ConditionManager.InvalidConditionToken)
+				token = conditionManager.RevokeCondition(self, token);
+		}
 
 		public IEnumerable<PipType> GetPips(Actor self)
 		{
