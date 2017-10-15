@@ -1113,6 +1113,44 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				// Armament.OutOfAmmo has been replaced by pausing on condition (usually provided by AmmoPool)
+				if (engineVersion < 20171104)
+				{
+					var reloadAmmoPool = node.Value.Nodes.FirstOrDefault(n => n.Key.StartsWith("ReloadAmmoPool", StringComparison.Ordinal));
+					var armaments = node.Value.Nodes.Where(n => n.Key.StartsWith("Armament", StringComparison.Ordinal));
+					var ammoPools = node.Value.Nodes.Where(n => n.Key.StartsWith("AmmoPool", StringComparison.Ordinal));
+
+					if (reloadAmmoPool == null && armaments.Any() && ammoPools.Any())
+					{
+						foreach (var pool in ammoPools)
+						{
+							var nameNode = pool.Value.Nodes.FirstOrDefault(n => n.Key == "Armaments");
+							var name = nameNode != null ? FieldLoader.GetValue<string>("Armaments", nameNode.Value.Value) : "primary, secondary";
+							var anyMatchingArmament = false;
+							var ammoNoAmmo = new MiniYamlNode("AmmoCondition", "ammo");
+							var armNoAmmo = new MiniYamlNode("PauseOnCondition", "!ammo");
+
+							foreach (var arma in armaments)
+							{
+								var armaNameNode = arma.Value.Nodes.FirstOrDefault(n => n.Key == "Name");
+								var armaName = armaNameNode != null ? FieldLoader.GetValue<string>("Name", armaNameNode.Value.Value) : "primary";
+								if (name.Contains(armaName))
+								{
+									anyMatchingArmament = true;
+									arma.Value.Nodes.Add(armNoAmmo);
+								}
+							}
+
+							if (anyMatchingArmament)
+							{
+								pool.Value.Nodes.Add(ammoNoAmmo);
+								Console.WriteLine("Aircraft returning to base is now triggered when all armaments are paused via condition.");
+								Console.WriteLine("Check if any of your actors with AmmoPools may need further changes.");
+							}
+						}
+					}
+				}
+
 				UpgradeActorRules(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 

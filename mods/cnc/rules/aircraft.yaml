@@ -79,16 +79,19 @@ HELI:
 		Weapon: HeliAGGun
 		LocalOffset: 128,-213,-85, 128,213,-85
 		MuzzleSequence: muzzle
+		PauseOnCondition: !ammo
 	Armament@SECONDARY:
 		Name: secondary
 		Weapon: HeliAAGun
 		LocalOffset: 128,-213,-85, 128,213,-85
 		MuzzleSequence: muzzle
+		PauseOnCondition: !ammo
 	AttackHeli:
 		FacingTolerance: 20
 	AmmoPool:
 		Ammo: 10
 		PipCount: 5
+		AmmoCondition: ammo
 	WithIdleOverlay@ROTORAIR:
 		Offset: 0,0,85
 		Sequence: rotor
@@ -136,14 +139,17 @@ ORCA:
 	Armament@PRIMARY:
 		Weapon: OrcaAGMissiles
 		LocalOffset: 427,-171,-213, 427,171,-213
+		PauseOnCondition: !ammo
 	Armament@SECONDARY:
 		Weapon: OrcaAAMissiles
 		LocalOffset: 427,-171,-213, 427,171,-213
+		PauseOnCondition: !ammo
 	AttackHeli:
 		FacingTolerance: 20
 	AmmoPool:
 		Ammo: 6
 		PipCount: 6
+		AmmoCondition: ammo
 	SpawnActorOnDeath:
 		Actor: ORCA.Husk
 	Explodes:

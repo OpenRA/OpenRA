@@ -93,6 +93,7 @@ ORCA:
 		Type: CenterPosition
 	Armament:
 		Weapon: Hellfire
+		PauseOnCondition: !ammo
 	AttackHeli:
 		FacingTolerance: 20
 		Voice: Attack
@@ -101,6 +102,7 @@ ORCA:
 		PipCount: 5
 		PipType: Ammo
 		PipTypeEmpty: AmmoEmpty
+		AmmoCondition: ammo
 	RenderSprites:
 	SpawnActorOnDeath:
 		Actor: ORCA.Husk
@@ -140,6 +142,7 @@ ORCAB:
 		Type: CenterPosition
 	Armament:
 		Weapon: Bomb
+		PauseOnCondition: !ammo
 	AttackPlane:
 		Voice: Attack
 		FacingTolerance: 20
@@ -150,6 +153,7 @@ ORCAB:
 		ReloadDelay: 200
 		PipType: Ammo
 		PipTypeEmpty: AmmoEmpty
+		AmmoCondition: ammo
 	RenderSprites:
 	Hovers@CRUISING:
 		RequiresCondition: cruising
@@ -266,6 +270,7 @@ SCRIN:
 		Type: CenterPosition
 	Armament:
 		Weapon: Proton
+		PauseOnCondition: !ammo
 	AttackPlane:
 		Voice: Attack
 		FacingTolerance: 20
@@ -275,6 +280,7 @@ SCRIN:
 		ReloadCount: 5
 		PipType: Ammo
 		PipTypeEmpty: AmmoEmpty
+		AmmoCondition: ammo
 	RenderSprites:
 	DeathSounds:
 	SpawnActorOnDeath:
@@ -309,6 +315,7 @@ APACHE:
 		Type: CenterPosition
 	Armament:
 		Weapon: HarpyClaw
+		PauseOnCondition: !ammo
 	AttackHeli:
 		FacingTolerance: 20
 		Voice: Attack
@@ -317,6 +324,7 @@ APACHE:
 		PipCount: 4
 		PipType: Ammo
 		PipTypeEmpty: AmmoEmpty
+		AmmoCondition: ammo
 	WithIdleOverlay@ROTORAIR:
 		Offset: 85,0,384
 		Sequence: rotor

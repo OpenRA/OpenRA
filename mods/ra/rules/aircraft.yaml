@@ -108,6 +108,7 @@ MIG:
 		Weapon: Maverick
 		LocalOffset: 0,-640,0, 0,640,0
 		LocalYaw: -40, 24
+		PauseOnCondition: !ammo
 	AttackPlane:
 		FacingTolerance: 20
 	Aircraft:
@@ -123,6 +124,7 @@ MIG:
 		InitialStanceAI: HoldFire
 	AmmoPool:
 		Ammo: 8
+		AmmoCondition: ammo
 	ReturnOnIdle:
 	Selectable:
 		Bounds: 36,28,0,2
@@ -168,11 +170,13 @@ YAK:
 		Weapon: ChainGun.Yak
 		LocalOffset: 256,-213,0
 		MuzzleSequence: muzzle
+		PauseOnCondition: !ammo
 	Armament@SECONDARY:
 		Name: secondary
 		Weapon: ChainGun.Yak
 		LocalOffset: 256,213,0
 		MuzzleSequence: muzzle
+		PauseOnCondition: !ammo
 	AttackPlane:
 		FacingTolerance: 20
 	Aircraft:
@@ -190,6 +194,7 @@ YAK:
 		Ammo: 18
 		PipCount: 6
 		ReloadDelay: 11
+		AmmoCondition: ammo
 	ReturnOnIdle:
 	SelectionDecorations:
 		VisualBounds: 30,28,0,2
@@ -286,9 +291,11 @@ HELI:
 	Armament@PRIMARY:
 		Weapon: HellfireAA
 		LocalOffset: 0,-213,-85
+		PauseOnCondition: !ammo
 	Armament@SECONDARY:
 		Weapon: HellfireAG
 		LocalOffset: 0,213,-85
+		PauseOnCondition: !ammo
 	AttackHeli:
 		FacingTolerance: 20
 	Aircraft:
@@ -310,6 +317,7 @@ HELI:
 		RequiresCondition: !airborne
 	AmmoPool:
 		Ammo: 8
+		AmmoCondition: ammo
 	SelectionDecorations:
 		VisualBounds: 36,28
 	SpawnActorOnDeath:
@@ -347,11 +355,13 @@ HIND:
 		Weapon: ChainGun
 		LocalOffset: 85,-213,-85
 		MuzzleSequence: muzzle
+		PauseOnCondition: !ammo
 	Armament@SECONDARY:
 		Name: secondary
 		Weapon: ChainGun
 		LocalOffset: 85,213,-85
 		MuzzleSequence: muzzle
+		PauseOnCondition: !ammo
 	AttackHeli:
 		FacingTolerance: 20
 	Aircraft:
@@ -373,6 +383,7 @@ HIND:
 		Ammo: 24
 		PipCount: 6
 		ReloadDelay: 8
+		AmmoCondition: ammo
 	SelectionDecorations:
 		VisualBounds: 38,32
 	WithMuzzleOverlay:
