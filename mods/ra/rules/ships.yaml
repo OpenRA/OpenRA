@@ -5,7 +5,7 @@ SS:
 		Queue: Ship
 		BuildAtProductionType: Submarine
 		BuildPaletteOrder: 30
-		Prerequisites: ~spen, ~techlevel.medium
+		Prerequisites: ~spen, ~techlevel.low
 		Description: Submerged anti-ship unit\narmed with torpedoes.\nCan detect other submarines.\n  Strong vs Naval units\n  Weak vs Ground units, Aircraft\n  Special Ability: Submerge
 	Valued:
 		Cost: 950
@@ -283,7 +283,7 @@ PT:
 		Queue: Ship
 		BuildAtProductionType: Boat
 		BuildPaletteOrder: 20
-		Prerequisites: ~syrd, ~techlevel.medium
+		Prerequisites: ~syrd, ~techlevel.low
 		Description: Light scout & support ship.\nCan detect submarines.\n  Strong vs Naval units\n  Weak vs Ground units, Aircraft
 	Valued:
 		Cost: 500
