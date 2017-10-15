@@ -70,14 +70,15 @@ namespace OpenRA.Graphics
 
 		public void DrawText(string text, float2 location, Color c)
 		{
-			location.Y += size;	// baseline vs top
+			// Offset from the baseline position to the top-left of the glyph for rendering
+			location += new float2(0, size);
 
 			var p = location;
 			foreach (var s in text)
 			{
 				if (s == '\n')
 				{
-					location.Y += size;
+					location += new float2(0, size);
 					p = location;
 					continue;
 				}
@@ -88,7 +89,8 @@ namespace OpenRA.Graphics
 						(int)Math.Round(p.X * deviceScale + g.Offset.X, 0) / deviceScale,
 						p.Y + g.Offset.Y / deviceScale),
 						g.Sprite.Size / deviceScale);
-				p.X += g.Advance / deviceScale;
+
+				p += new float2(g.Advance / deviceScale, 0);
 			}
 		}
 
