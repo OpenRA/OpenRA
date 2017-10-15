@@ -43,7 +43,7 @@ namespace OpenRA.Mods.Common.Orders
 
 			// Repair a building.
 			if (underCursor.Info.HasTraitInfo<RepairableBuildingInfo>())
-				yield return new Order("RepairBuilding", world.LocalPlayer.PlayerActor, false) { TargetActor = underCursor };
+				yield return new Order("RepairBuilding", world.LocalPlayer.PlayerActor, Target.FromActor(underCursor), false);
 
 			// Don't command allied units
 			if (underCursor.Owner != world.LocalPlayer)
@@ -69,7 +69,7 @@ namespace OpenRA.Mods.Common.Orders
 			if (repairBuilding == null)
 				yield break;
 
-			yield return new Order(orderId, underCursor, false) { TargetActor = repairBuilding, VisualFeedbackTarget = underCursor };
+			yield return new Order(orderId, underCursor, Target.FromActor(repairBuilding), false) { VisualFeedbackTarget = underCursor };
 		}
 
 		public void Tick(World world)

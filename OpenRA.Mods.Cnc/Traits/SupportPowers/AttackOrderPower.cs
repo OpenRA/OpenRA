@@ -97,9 +97,8 @@ namespace OpenRA.Mods.Cnc.Traits
 		{
 			world.CancelInputMode();
 			if (mi.Button == expectedButton && IsValidTarget(world, cell))
-				yield return new Order(order, manager.Self, false)
+				yield return new Order(order, manager.Self, Target.FromCell(world, cell), false)
 				{
-					TargetLocation = cell,
 					SuppressVisualFeedback = true
 				};
 		}

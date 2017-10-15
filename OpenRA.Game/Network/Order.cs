@@ -40,8 +40,8 @@ namespace OpenRA
 		public readonly string OrderString;
 		public readonly Actor Subject;
 		public readonly bool Queued;
-		public Actor TargetActor;
-		public CPos TargetLocation;
+		public Actor TargetActor { get; private set; }
+		public CPos TargetLocation { get; private set; }
 		public string TargetString;
 		public CPos ExtraLocation;
 		public uint ExtraData;

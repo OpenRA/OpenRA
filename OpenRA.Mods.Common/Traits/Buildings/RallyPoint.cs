@@ -77,7 +77,7 @@ namespace OpenRA.Mods.Common.Traits
 		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
 		{
 			if (order.OrderID == OrderID)
-				return new Order(order.OrderID, self, false) { TargetLocation = self.World.Map.CellContaining(target.CenterPosition), SuppressVisualFeedback = true,
+				return new Order(order.OrderID, self, target, false) { SuppressVisualFeedback = true,
 					ExtraData = ((RallyPointOrderTargeter)order).ForceSet ? ForceSet : 0 };
 
 			return null;

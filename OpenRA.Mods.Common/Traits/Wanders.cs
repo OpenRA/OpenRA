@@ -115,7 +115,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public virtual void DoAction(Actor self, CPos targetCell)
 		{
-			move.ResolveOrder(self, new Order("Move", self, false) { TargetLocation = targetCell });
+			move.ResolveOrder(self, new Order("Move", self, Target.FromCell(self.World, targetCell), false));
 		}
 	}
 }

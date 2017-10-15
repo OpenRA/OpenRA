@@ -223,7 +223,7 @@ namespace OpenRA.Mods.Common.AI
 				}
 
 				if (CanAttackTarget(a, owner.TargetActor))
-					owner.Bot.QueueOrder(new Order("Attack", a, false) { TargetActor = owner.TargetActor });
+					owner.Bot.QueueOrder(new Order("Attack", a, Target.FromActor(owner.TargetActor), false));
 			}
 		}
 
@@ -250,7 +250,7 @@ namespace OpenRA.Mods.Common.AI
 					continue;
 				}
 
-				owner.Bot.QueueOrder(new Order("Move", a, false) { TargetLocation = RandomBuildingLocation(owner) });
+				owner.Bot.QueueOrder(new Order("Move", a, Target.FromCell(owner.World, RandomBuildingLocation(owner)), false));
 			}
 
 			owner.FuzzyStateMachine.ChangeState(owner, new AirIdleState(), true);
