@@ -112,6 +112,7 @@ NAHAND:
 		Offset: 3,3
 		Palette: mouse
 		IsPlayerPalette: false
+	AutoTargetProducer:
 	Production:
 		Produces: Infantry
 		PauseOnCondition: empdisable
@@ -170,6 +171,7 @@ NAWEAP:
 		ExitCell: 3,1
 		ExitDelay: 5
 	ExitsDebugOverlay:
+	AutoTargetProducer:
 	Production:
 		Produces: Vehicle
 		PauseOnCondition: empdisable
@@ -221,6 +223,7 @@ NAHPAD:
 	RallyPoint:
 		Palette: mouse
 		IsPlayerPalette: false
+	AutoTargetProducer:
 	Production:
 		Produces: Air
 		PauseOnCondition: empdisable

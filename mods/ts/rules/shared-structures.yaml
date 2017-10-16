@@ -17,6 +17,7 @@ GACNST:
 	RevealsShroud:
 		Range: 5c0
 		MaxHeightDelta: 3
+	AutoTargetProducer:
 	Production:
 		Produces: Building,Defense
 		PauseOnCondition: empdisable

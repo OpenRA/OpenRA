@@ -98,6 +98,7 @@ GAPILE:
 		SpawnOffset: -256,1024,0
 		ExitCell: 2,2
 	ExitsDebugOverlay:
+	AutoTargetProducer:
 	Production:
 		Produces: Infantry
 		PauseOnCondition: empdisable
@@ -158,6 +159,7 @@ GAWEAP:
 		ExitCell: 3,1
 		ExitDelay: 5
 	ExitsDebugOverlay:
+	AutoTargetProducer:
 	Production:
 		Produces: Vehicle
 		PauseOnCondition: empdisable
@@ -213,6 +215,7 @@ GAHPAD:
 	RallyPoint:
 		Palette: mouse
 		IsPlayerPalette: false
+	AutoTargetProducer:
 	Production:
 		Produces: Air
 		PauseOnCondition: empdisable

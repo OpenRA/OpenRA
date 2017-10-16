@@ -75,6 +75,7 @@ construction_yard:
 		Type: cy
 	RevealsShroud:
 		Range: 5c768
+	AutoTargetProducer:
 	Production:
 		Produces: Building, Upgrade
 	Exit:
@@ -204,6 +205,7 @@ barracks:
 	Exit@2:
 		SpawnOffset: 512,480,0
 		ExitCell: 1,2
+	AutoTargetProducer:
 	Production:
 		Produces: Infantry, Upgrade
 	PrimaryBuilding:
@@ -403,6 +405,7 @@ light_factory:
 	Exit@1:
 		SpawnOffset: 544,-224,0
 		ExitCell: 2,1
+	AutoTargetProducer:
 	Production:
 		Produces: Vehicle, Upgrade
 	PrimaryBuilding:
@@ -487,6 +490,7 @@ heavy_factory:
 	Exit@1:
 		SpawnOffset: 256,192,0
 		ExitCell: 0,2
+	AutoTargetProducer:
 	Production:
 		Produces: Armor, Upgrade
 	PrimaryBuilding:
@@ -1125,6 +1129,7 @@ palace:
 	Exit@3:
 		SpawnOffset: -704,768,0
 		ExitCell: 0,3
+	AutoTargetProducer:
 	Production:
 		Produces: Palace
 	SupportPowerChargeBar:

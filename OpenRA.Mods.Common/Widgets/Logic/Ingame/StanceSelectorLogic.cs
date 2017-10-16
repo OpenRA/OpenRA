@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Common.Widgets
 		readonly World world;
 
 		int selectionHash;
-		TraitPair<AutoTarget>[] actorStances = { };
+		TraitPair<IActorStanceSelector>[] actorStances = { };
 
 		[ObjectCreator.UseCtor]
 		public StanceSelectorLogic(Widget widget, World world)
@@ -58,10 +58,8 @@ namespace OpenRA.Mods.Common.Widgets
 						(hasActiveHover && Ui.MouseOverWidget == button ? icon.ImageName + "-active-hover" : icon.ImageName + "-active") :
 					hasDisabled && button.IsDisabled() ? icon.ImageName + "-disabled" :
 					hasHover && Ui.MouseOverWidget == button ? icon.ImageName + "-hover" : icon.ImageName;
-
-			button.IsDisabled = () => { UpdateStateIfNecessary(); return !actorStances.Any(); };
-			button.IsHighlighted = () => actorStances.Any(
-				at => !at.Trait.IsTraitDisabled && at.Trait.PredictedStance == stance);
+			button.IsDisabled = () => { UpdateStateIfNecessary(); return !actorStances.Any(x => x.Trait.Enabled); };
+			button.IsHighlighted = () => actorStances.Any(at => at.Trait.Stance == stance);
 			button.OnClick = () => SetSelectionStance(stance);
 		}
 
@@ -72,9 +70,9 @@ namespace OpenRA.Mods.Common.Widgets
 
 			actorStances = world.Selection.Actors
 				.Where(a => a.Owner == world.LocalPlayer && a.IsInWorld)
-				.SelectMany(a => a.TraitsImplementing<AutoTarget>()
-					.Where(at => at.Info.EnableStances)
-					.Select(at => new TraitPair<AutoTarget>(a, at)))
+				.SelectMany(a => a.TraitsImplementing<IActorStanceSelector>()
+					.Where(at => at.Enabled)
+					.Select(at => new TraitPair<IActorStanceSelector>(a, at)))
 				.ToArray();
 
 			selectionHash = world.Selection.Hash;
@@ -82,13 +80,12 @@ namespace OpenRA.Mods.Common.Widgets
 
 		void SetSelectionStance(UnitStance stance)
 		{
-			foreach (var at in actorStances)
-			{
-				if (!at.Trait.IsTraitDisabled)
-					at.Trait.PredictedStance = stance;
+			var stanceNeedsClearing = actorStances.All(actorStance =>
+			   actorStance.Trait.CanBeDisabled && actorStance.Trait.Stance == stance);
+			var newStance = stanceNeedsClearing ? UnitStance.NoStance : stance;
 
-				world.IssueOrder(new Order("SetUnitStance", at.Actor, false) { ExtraData = (uint)stance });
-			}
+			foreach (var us in actorStances)
+				us.Trait.SetStance(us.Actor, newStance);
 		}
 	}
 }
