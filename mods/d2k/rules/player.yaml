@@ -71,6 +71,27 @@ Player:
 	HarvesterAttackNotifier:
 	PlayerStatistics:
 	PlaceBeacon:
+	ProvidesPrerequisite@atreides:
+		Prerequisite: player.atreides
+		Factions: atreides
+	ProvidesPrerequisite@harkonnen:
+		Prerequisite: player.harkonnen
+		Factions: harkonnen
+	ProvidesPrerequisite@ordos:
+		Prerequisite: player.ordos
+		Factions: ordos
+	ProvidesPrerequisite@corrino:
+		Prerequisite: player.corrino
+		Factions: corrino
+	ProvidesPrerequisite@fremen:
+		Prerequisite: player.fremen
+		Factions: fremen
+	ProvidesPrerequisite@mercenary:
+		Prerequisite: player.mercenary
+		Factions: mercenary
+	ProvidesPrerequisite@smuggler:
+		Prerequisite: player.smuggler
+		Factions: smuggler
 	ProvidesTechPrerequisite@low:
 		Name: Low
 		Prerequisites: techlevel.low
