@@ -19,7 +19,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public abstract class AttackBaseInfo : ConditionalTraitInfo
+	public abstract class AttackBaseInfo : PausableConditionalTraitInfo
 	{
 		[Desc("Armament names")]
 		public readonly string[] Armaments = { "primary", "secondary" };
@@ -39,7 +39,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override abstract object Create(ActorInitializer init);
 	}
 
-	public abstract class AttackBase : ConditionalTrait<AttackBaseInfo>, INotifyCreated, IIssueOrder, IResolveOrder, IOrderVoice, ISync
+	public abstract class AttackBase : PausableConditionalTrait<AttackBaseInfo>, INotifyCreated, IIssueOrder, IResolveOrder, IOrderVoice, ISync
 	{
 		readonly string attackOrderName = "Attack";
 		readonly string forceAttackOrderName = "ForceAttack";
@@ -81,7 +81,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		protected virtual bool CanAttack(Actor self, Target target)
 		{
-			if (!self.IsInWorld || IsTraitDisabled || self.IsDisabled())
+			if (!self.IsInWorld || IsTraitDisabled || IsTraitPaused)
 				return false;
 
 			if (!target.IsValidFor(self))
@@ -333,7 +333,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void AttackTarget(Target target, bool queued, bool allowMove, bool forceAttack = false)
 		{
-			if (self.IsDisabled() || IsTraitDisabled)
+			if (IsTraitDisabled || IsTraitPaused)
 				return;
 
 			if (!target.IsValidFor(self))
