@@ -147,7 +147,9 @@ namespace OpenRA.Mods.Common.Orders
 
 		public void Tick(World world)
 		{
-			if (queue.CurrentItem() == null || queue.CurrentItem().Item != building)
+			var itemForBuilding = queue.AllQueued().FirstOrDefault(i => i.Item == building);
+
+			if (itemForBuilding == null || !queue.IsProducing(itemForBuilding))
 				world.CancelInputMode();
 
 			if (preview == null)

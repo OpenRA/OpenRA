@@ -114,43 +114,45 @@ namespace OpenRA.Mods.Common.Widgets
 				if (!clocks.ContainsKey(queue.Trait))
 					clocks.Add(queue.Trait, new Animation(world, ClockAnimation));
 
-				var current = queue.Trait.CurrentItem();
-				if (current == null || queue.i >= icons.Length)
-					continue;
+				foreach (var current in queue.Trait.AllQueued())
+				{
+					if (queue.i >= icons.Length || !queue.Trait.IsProducing(current))
+						continue;
 
-				var faction = queue.Trait.Actor.Owner.Faction.InternalName;
-				var actor = queue.Trait.AllItems().FirstOrDefault(a => a.Name == current.Item);
-				if (actor == null)
-					continue;
+					var actor = queue.Trait.AllItems().FirstOrDefault(a => a.Name == current.Item);
+					if (actor == null)
+						continue;
 
-				var rsi = actor.TraitInfo<RenderSpritesInfo>();
-				var icon = new Animation(world, rsi.GetImage(actor, world.Map.Rules.Sequences, faction));
-				var bi = actor.TraitInfo<BuildableInfo>();
-				icon.Play(bi.Icon);
-				var location = new float2(iconRects[queue.i].Location);
-				WidgetUtils.DrawSHPCentered(icon.Image, location + 0.5f * iconSize, worldRenderer.Palette(bi.IconPalette), 0.5f);
+					var faction = queue.Trait.Actor.Owner.Faction.InternalName;
+					var rsi = actor.TraitInfo<RenderSpritesInfo>();
+					var icon = new Animation(world, rsi.GetImage(actor, world.Map.Rules.Sequences, faction));
+					var bi = actor.TraitInfo<BuildableInfo>();
+					icon.Play(bi.Icon);
+					var location = new float2(iconRects[queue.i].Location);
+					WidgetUtils.DrawSHPCentered(icon.Image, location + 0.5f * iconSize, worldRenderer.Palette(bi.IconPalette), 0.5f);
 
-				icons[queue.i].Actor = actor;
-				icons[queue.i].ProductionQueue = queue.Trait;
+					icons[queue.i].Actor = actor;
+					icons[queue.i].ProductionQueue = queue.Trait;
 
-				var pio = queue.Trait.Actor.Owner.PlayerActor.TraitsImplementing<IProductionIconOverlay>()
-					.FirstOrDefault(p => p.IsOverlayActive(actor));
-				if (pio != null)
-					WidgetUtils.DrawSHPCentered(pio.Sprite, location + 0.5f * iconSize + pio.Offset(0.5f * iconSize),
-						worldRenderer.Palette(pio.Palette), 0.5f);
+					var pio = queue.Trait.Actor.Owner.PlayerActor.TraitsImplementing<IProductionIconOverlay>()
+						.FirstOrDefault(p => p.IsOverlayActive(actor));
+					if (pio != null)
+						WidgetUtils.DrawSHPCentered(pio.Sprite, location + 0.5f * iconSize + pio.Offset(0.5f * iconSize),
+							worldRenderer.Palette(pio.Palette), 0.5f);
 
-				var clock = clocks[queue.Trait];
-				clock.PlayFetchIndex(ClockSequence,
-					() => current.TotalTime == 0 ? 0 : ((current.TotalTime - current.RemainingTime)
-					* (clock.CurrentSequence.Length - 1) / current.TotalTime));
-				clock.Tick();
-				WidgetUtils.DrawSHPCentered(clock.Image, location + 0.5f * iconSize, worldRenderer.Palette(ClockPalette), 0.5f);
+					var clock = clocks[queue.Trait];
+					clock.PlayFetchIndex(ClockSequence,
+						() => current.TotalTime == 0 ? 0 : ((current.TotalTime - current.RemainingTime)
+						* (clock.CurrentSequence.Length - 1) / current.TotalTime));
+					clock.Tick();
+					WidgetUtils.DrawSHPCentered(clock.Image, location + 0.5f * iconSize, worldRenderer.Palette(ClockPalette), 0.5f);
 
-				var tiny = Game.Renderer.Fonts["Tiny"];
-				var text = GetOverlayForItem(current, timestep);
-				tiny.DrawTextWithContrast(text,
-					location + new float2(16, 16) - new float2(tiny.Measure(text).X / 2, 0),
-					Color.White, Color.Black, 1);
+					var tiny = Game.Renderer.Fonts["Tiny"];
+					var text = GetOverlayForItem(current, timestep);
+					tiny.DrawTextWithContrast(text,
+						location + new float2(16, 16) - new float2(tiny.Measure(text).X / 2, 0),
+						Color.White, Color.Black, 1);
+				}
 			}
 		}
 
@@ -162,7 +164,7 @@ namespace OpenRA.Mods.Common.Widgets
 			if (item.Done)
 				return "READY";
 
-			return WidgetUtils.FormatTime(item.RemainingTimeActual, timestep);
+			return WidgetUtils.FormatTime(item.Queue.RemainingTimeActual(item), timestep);
 		}
 
 		public override Widget Clone()
