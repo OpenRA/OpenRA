@@ -31,6 +31,7 @@ BGGY:
 		MuzzleSplitFacings: 8
 	AttackFrontal:
 		Voice: Attack
+		PauseOnCondition: empdisable
 	WithMuzzleOverlay:
 	-DamagedByTerrain@VEINS:
 	-LeavesTrails@VEINS:
@@ -70,6 +71,7 @@ BIKE:
 		LocalOffset: -153,-204,509, -153,204,509
 	AttackFrontal:
 		Voice: Attack
+		PauseOnCondition: empdisable
 	DamagedByTerrain@VEINS:
 		RequiresCondition: !inside-tunnel && !rank-elite
 	LeavesTrails@VEINS:
@@ -139,6 +141,7 @@ TTNK:
 	AttackFrontal:
 		Voice: Attack
 		RequiresCondition: undeployed
+		PauseOnCondition: empdisable
 	Turreted:
 		TurnSpeed: 6
 		Turret: deployed
@@ -155,7 +158,9 @@ TTNK:
 	AttackTurreted@deployed:
 		Voice: Attack
 		Armaments: deployed
+		Turrets: deployed
 		RequiresCondition: deployed
+		PauseOnCondition: empdisable
 	Armament@deployed:
 		Name: deployed
 		Turret: deployed
@@ -251,7 +256,9 @@ ART2:
 	AttackTurreted@deployed:
 		Voice: Attack
 		Armaments: deployed
+		Turrets: deployed
 		RequiresCondition: deployed
+		PauseOnCondition: empdisable
 	Armament@deployed:
 		Name: deployed
 		Turret: deployed
@@ -295,6 +302,7 @@ REPAIR:
 		ForceTargetStances: None
 	AttackFrontal:
 		Voice: Attack
+		PauseOnCondition: empdisable
 	AutoTarget:
 	AutoTargetPriority@DEFAULT:
 		ValidTargets: Vehicles
@@ -425,6 +433,7 @@ SUBTANK:
 		Weapon: FireballLauncher
 	AttackFrontal:
 		Voice: Attack
+		PauseOnCondition: empdisable
 	WithVoxelBody:
 		RequiresCondition: !submerged
 	Targetable:
@@ -472,6 +481,7 @@ STNK:
 		LocalOffset: 301,61,421, 301,-61,421
 	AttackFrontal:
 		Voice: Attack
+		PauseOnCondition: empdisable
 	AutoTarget:
 		InitialStance: HoldFire
 		InitialStanceAI: ReturnFire

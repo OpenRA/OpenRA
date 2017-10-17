@@ -63,12 +63,13 @@ GACTWR:
 	BodyOrientation:
 		QuantizedFacings: 32
 	DetectCloaked:
-		RequiresCondition: tower.vulcan || tower.rocket || tower.sam
+		RequiresCondition: !empdisable && (tower.vulcan || tower.rocket || tower.sam)
 	Turreted:
 		TurnSpeed: 10
 		InitialFacing: 224
 	AttackTurreted:
 		RequiresCondition: tower.vulcan || tower.rocket || tower.sam
+		PauseOnCondition: empdisable
 	WithSpriteTurret@VULC:
 		RequiresCondition: tower.vulcan
 		Recoils: false

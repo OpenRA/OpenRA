@@ -66,6 +66,7 @@ ORCA:
 	Inherits: ^Helicopter
 	Inherits@EXPERIENCE: ^GainsExperience
 	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
+	Inherits@EMPDISABLE: ^EmpDisable
 	Valued:
 		Cost: 1000
 	Tooltip:
@@ -97,6 +98,7 @@ ORCA:
 	AttackHeli:
 		FacingTolerance: 20
 		Voice: Attack
+		PauseOnCondition: empdisable
 	AmmoPool:
 		Ammo: 5
 		PipCount: 5
@@ -111,6 +113,7 @@ ORCAB:
 	Inherits: ^Aircraft
 	Inherits@EXPERIENCE: ^GainsExperience
 	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
+	Inherits@EMPDISABLE: ^EmpDisable
 	Valued:
 		Cost: 1600
 	Tooltip:
@@ -146,6 +149,7 @@ ORCAB:
 	AttackPlane:
 		Voice: Attack
 		FacingTolerance: 20
+		PauseOnCondition: empdisable
 	AmmoPool:
 		Ammo: 10
 		PipCount: 2
@@ -237,6 +241,7 @@ SCRIN:
 	Inherits: ^Aircraft
 	Inherits@EXPERIENCE: ^GainsExperience
 	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
+	Inherits@EMPDISABLE: ^EmpDisable
 	Valued:
 		Cost: 1500
 	Tooltip:
@@ -274,6 +279,7 @@ SCRIN:
 	AttackPlane:
 		Voice: Attack
 		FacingTolerance: 20
+		PauseOnCondition: empdisable
 	AmmoPool:
 		Ammo: 15
 		PipCount: 3
@@ -290,6 +296,7 @@ APACHE:
 	Inherits: ^Helicopter
 	Inherits@EXPERIENCE: ^GainsExperience
 	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
+	Inherits@EMPDISABLE: ^EmpDisable
 	Valued:
 		Cost: 1000
 	Tooltip:
@@ -319,6 +326,7 @@ APACHE:
 	AttackHeli:
 		FacingTolerance: 20
 		Voice: Attack
+		PauseOnCondition: empdisable
 	AmmoPool:
 		Ammo: 12
 		PipCount: 4
