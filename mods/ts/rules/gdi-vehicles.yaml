@@ -90,6 +90,7 @@ HVR:
 		Offset: -128,0,85
 	AttackTurreted:
 		Voice: Attack
+		PauseOnCondition: empdisable
 	WithVoxelTurret:
 	Hovers:
 	LeavesTrails:
@@ -129,6 +130,7 @@ SMECH:
 		MaxHeightDelta: 3
 	AttackFrontal:
 		Voice: Attack
+		PauseOnCondition: empdisable
 	Armament:
 		Weapon: AssaultCannon
 	Voiced:
@@ -182,6 +184,7 @@ MMCH:
 		TurnSpeed: 5
 	AttackTurreted:
 		Voice: Attack
+		PauseOnCondition: empdisable
 	WithSpriteTurret:
 		Recoils: false
 	Armament:
@@ -234,6 +237,7 @@ HMEC:
 		MaxHeightDelta: 3
 	AttackFrontal:
 		Voice: Attack
+		PauseOnCondition: empdisable
 	Armament@MISSILES:
 		Weapon: MammothTusk
 		LocalOffset: -243,-368,1208, -243,368,1208
@@ -281,6 +285,7 @@ SONIC:
 		LocalOffset: -71,0,580
 	AttackTurreted:
 		Voice: Attack
+		PauseOnCondition: empdisable
 	Turreted:
 		TurnSpeed: 5
 		Offset: -170,0,0
@@ -364,7 +369,9 @@ JUGG:
 	AttackTurreted@deployed:
 		Voice: Attack
 		Armaments: deployed
+		Turrets: deployed
 		RequiresCondition: deployed
+		PauseOnCondition: empdisable
 	Armament@deployed:
 		Name: deployed
 		Turret: deployed

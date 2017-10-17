@@ -161,6 +161,7 @@ NALASR:
 		InitialFacing: 224
 		Offset: 298,-171,288
 	AttackTurreted:
+		PauseOnCondition: empdisable
 	Armament:
 		Weapon: TurretLaserFire
 		LocalOffset: 498,0,317
@@ -203,7 +204,7 @@ NAOBEL:
 		Weapon: ObeliskLaserFire
 		LocalOffset: 1980,297,1131
 	AttackCharges:
-		RequiresCondition: !disabled
+		PauseOnCondition: empdisable || disabled
 		ChargeLevel: 65
 		ChargingCondition: charging
 	AmbientSound:
@@ -249,7 +250,7 @@ NASAM:
 		TurnSpeed: 10
 		InitialFacing: 224
 	AttackTurreted:
-		RequiresCondition: !disabled
+		PauseOnCondition: empdisable || disabled
 	WithSpriteTurret:
 		Recoils: false
 	Armament:
