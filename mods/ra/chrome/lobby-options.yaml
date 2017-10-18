@@ -1,10 +1,11 @@
 Background@LOBBY_OPTIONS_BIN:
 	Width: PARENT_RIGHT
 	Height: PARENT_BOTTOM
-	Background: scrollpanel-bg
+	Background: dialog3
 	Children:
 		Label@TITLE:
-			Y: 0 - 25
+			X: 0
+			Y: 0 - 27
 			Width: PARENT_RIGHT
 			Height: 25
 			Font: Bold
@@ -19,45 +20,38 @@ Background@LOBBY_OPTIONS_BIN:
 				Checkbox@EXPLORED_MAP_CHECKBOX:
 					Width: 150
 					Height: 20
-					Font: Regular
 					Text: Explored Map
 				Checkbox@FOG_CHECKBOX:
 					Y: 35
 					Width: 150
 					Height: 20
-					Font: Regular
 					Text: Fog of War
 				Checkbox@CRATES_CHECKBOX:
 					X: 170
 					Width: 225
 					Height: 20
-					Font: Regular
 					Text: Crates
 				Checkbox@ALLYBUILDRADIUS_CHECKBOX:
 					X: 170
 					Y: 35
 					Width: 225
 					Height: 20
-					Font: Regular
 					Text: Build off Allies' ConYards
 				Checkbox@SHORTGAME_CHECKBOX:
 					X: 400
 					Width: 150
 					Height: 20
-					Font: Regular
 					Text: Short Game
 				Checkbox@ALLOWCHEATS_CHECKBOX:
 					X: 400
 					Y: 35
 					Width: 150
 					Height: 20
-					Font: Regular
 					Text: Debug Menu
 				Checkbox@BUILDRADIUS_CHECKBOX:
 					Y: 70
-					Width: 150
+					Width: 225
 					Height: 20
-					Font: Regular
 					Text: Limit ConYard Area
 				Label@DIFFICULTY_DESC:
 					X: PARENT_RIGHT - WIDTH - 165
