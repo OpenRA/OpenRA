@@ -184,6 +184,7 @@ namespace OpenRA.Mods.Common.Server
 						{
 							client.Slot = null;
 							client.SpawnPoint = 0;
+							client.Team = 0;
 							client.Color = HSLColor.FromRGB(255, 255, 255);
 							server.SyncLobbyClients();
 							CheckAutoStart(server);
