@@ -84,11 +84,12 @@ namespace OpenRA.Graphics
 				}
 
 				var g = glyphs[Pair.New(s, c)];
-				Game.Renderer.RgbaSpriteRenderer.DrawSprite(g.Sprite,
-					new float2(
-						(int)Math.Round(p.X * deviceScale + g.Offset.X, 0) / deviceScale,
-						p.Y + g.Offset.Y / deviceScale),
-						g.Sprite.Size / deviceScale);
+				if (g.Sprite != null)
+					Game.Renderer.RgbaSpriteRenderer.DrawSprite(g.Sprite,
+						new float2(
+							(int)Math.Round(p.X * deviceScale + g.Offset.X, 0) / deviceScale,
+							p.Y + g.Offset.Y / deviceScale),
+							g.Sprite.Size / deviceScale);
 
 				p += new float2(g.Advance / deviceScale, 0);
 			}
@@ -136,7 +137,20 @@ namespace OpenRA.Graphics
 
 		GlyphInfo CreateGlyph(Pair<char, Color> c)
 		{
-			face.LoadChar(c.First, LoadFlags.Default, LoadTarget.Normal);
+			try
+			{
+				face.LoadChar(c.First, LoadFlags.Default, LoadTarget.Normal);
+			}
+			catch (FreeTypeException)
+			{
+				return new GlyphInfo
+				{
+					Sprite = null,
+					Advance = 0,
+					Offset = int2.Zero
+				};
+			}
+
 			face.Glyph.RenderGlyph(RenderMode.Normal);
 
 			var size = new Size((int)face.Glyph.Metrics.Width, (int)face.Glyph.Metrics.Height);
