@@ -379,7 +379,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!self.IsInWorld || self.IsDead)
 			{
 				CancelProduction(unit.Name, 1);
-				return true;
+				return false;
 			}
 
 			var inits = new TypeDictionary
