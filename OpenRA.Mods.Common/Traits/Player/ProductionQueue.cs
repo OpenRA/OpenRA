@@ -378,7 +378,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!self.IsInWorld || self.IsDead)
 			{
 				CancelProduction(unit.Name, 1);
-				return true;
+				return false;
 			}
 
 			var sp = self.TraitsImplementing<Production>().FirstOrDefault(p => p.Info.Produces.Contains(Info.Type));

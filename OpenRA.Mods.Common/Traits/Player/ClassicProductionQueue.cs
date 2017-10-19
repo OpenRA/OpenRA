@@ -100,7 +100,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!producers.Any())
 			{
 				CancelProduction(unit.Name, 1);
-				return true;
+				return false;
 			}
 
 			foreach (var p in producers.Where(p => !p.Actor.IsDisabled()))
