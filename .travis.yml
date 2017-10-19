@@ -71,6 +71,8 @@ before_deploy:
  - cd packaging
  - mkdir build
  - ./package-all.sh ${TRAVIS_TAG} ${PWD}/build/
+ - cd ..
+ - make dist
 deploy:
   provider: releases
   api_key:
@@ -79,6 +81,7 @@ deploy:
     - build/OpenRA-${TRAVIS_TAG}.exe
     - build/OpenRA-${TRAVIS_TAG}.dmg
     - build/openra_${DOTVERSION}_all.deb
+    - OpenRA-${TRAVIS_TAG}.tar.bz2
   skip_cleanup: true
   on:
     all_branches: true
