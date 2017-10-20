@@ -1,10 +1,10 @@
 Player:
 	PlayerResources:
-		DefaultCash: 7000
+		DefaultCash: 5000
 
 World:
 	LuaScript:
-		Scripts: campaign-global.lua, harkonnen09a.lua, harkonnen09a-AI.lua
+		Scripts: campaign-global.lua, harkonnen09b.lua, harkonnen09b-AI.lua
 	MissionData:
 		Briefing: Only the Atreides and Imperial forces now remain. The Sardaukar, still scattered from their long march from the North, cannot mass their forces to attack. Only the destruction of the Emperor's base encampment will stop the flow of Imperial forces.\n\nOnce this has been accomplished, turn on the Atreides and annihilate them. Claim Arrakis for House Harkonnen!
 		BriefingVideo: H_BR09_E.VQA
@@ -23,10 +23,13 @@ World:
 	IndexedPlayerPalette:
 		PlayerIndex:
 			Atreides Main Base: 143, 142, 141, 140, 139, 138, 137, 136, 135, 134, 133, 132, 131, 130, 129, 128
-			Atreides Small Base 1: 143, 142, 141, 140, 139, 138, 137, 136, 135, 134, 133, 132, 131, 130, 129, 128
-			Atreides Small Base 2: 143, 142, 141, 140, 139, 138, 137, 136, 135, 134, 133, 132, 131, 130, 129, 128
+			Atreides Small Base: 143, 142, 141, 140, 139, 138, 137, 136, 135, 134, 133, 132, 131, 130, 129, 128
 			Corrino Main Base: 191, 190, 189, 188, 187, 186, 185, 184, 183, 182, 181, 180, 179, 178, 177, 176
 			Corrino Small Base: 191, 190, 189, 188, 187, 186, 185, 184, 183, 182, 181, 180, 179, 178, 177, 176
+			Smugglers - Neutral: 223, 222, 221, 220, 219, 218, 217, 216, 215, 214, 213, 212, 211, 210, 209, 208
+			Smugglers - Enemy to Harkonnen: 223, 222, 221, 220, 219, 218, 217, 216, 215, 214, 213, 212, 211, 210, 209, 208
+			Smugglers - Enemy to AI: 223, 222, 221, 220, 219, 218, 217, 216, 215, 214, 213, 212, 211, 210, 209, 208
+			Smugglers - Enemy to Both: 223, 222, 221, 220, 219, 218, 217, 216, 215, 214, 213, 212, 211, 210, 209, 208
 
 carryall.reinforce:
 	Cargo:
