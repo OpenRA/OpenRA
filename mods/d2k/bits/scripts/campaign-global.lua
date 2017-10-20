@@ -10,7 +10,7 @@
 Difficulty = Map.LobbyOption("difficulty")
 
 IdleHunt = function(actor)
-	if not actor.IsDead then
+	if actor.HasProperty("Hunt") and not actor.IsDead then
 		Trigger.OnIdle(actor, actor.Hunt)
 	end
 end
@@ -179,6 +179,10 @@ end
 
 DefendAndRepairBase = function(owner, baseBuildings, modifier, defenderCount)
 	Utils.Do(baseBuildings, function(actor)
+		if actor.IsDead then
+			return
+		end
+
 		DefendActor(actor, owner, defenderCount)
 		RepairBuilding(owner, actor, modifier)
 	end)

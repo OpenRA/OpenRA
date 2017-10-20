@@ -686,6 +686,7 @@ wall:
 	Interactable:
 	CombatDebugOverlay:
 	HiddenUnderShroud:
+	ScriptTriggers:
 	Buildable:
 		Queue: Building
 		Prerequisites: barracks
