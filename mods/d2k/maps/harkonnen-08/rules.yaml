@@ -1,0 +1,53 @@
+Player:
+	PlayerResources:
+		DefaultCash: 7000
+
+World:
+	LuaScript:
+		Scripts: campaign-global.lua, harkonnen08.lua, harkonnen08-AI.lua
+	MissionData:
+		Briefing: The Ordos continue to grow in strength, thanks to their acquisition of new weaponry. The Ordos know that the wrath of the Harkonnen will soon fall upon them, and have allied with the Atreides.\n\nThis will not protect them from our Atomics. Eliminate any Atreides you encounter, but focus upon the Ordos as the main target. Smash their army, burn their structures and bring back the spoils to decorate the walls of the Palace! Capturing or destroying the Ordos Palace will show the Atreides the true might of House of Harkonnen and will throw the Ordos allegiance into disarray.\n\nOur scouts report a Mercenary leader inspecting a nearby Heavy Factory. If the Heavy Factory can be captured, the Mercenaries could be persuaded to fight for the Harkonnen. The mercenaries receive reinforcements via the Starport, so this must remain in their possession for them to be of any use.
+		BriefingVideo: H_BR08_E.VQA
+	MapOptions:
+		TechLevel: unrestricted
+	ScriptLobbyDropdown@difficulty:
+		ID: difficulty
+		Label: Difficulty
+		Values:
+			easy: Easy
+			normal: Normal
+			hard: Hard
+		Default: easy
+
+^Palettes:
+	IndexedPlayerPalette:
+		PlayerIndex:
+			Ordos Aligned Atreides: 143, 142, 141, 140, 139, 138, 137, 136, 135, 134, 133, 132, 131, 130, 129, 128
+			Neutral Atreides: 143, 142, 141, 140, 139, 138, 137, 136, 135, 134, 133, 132, 131, 130, 129, 128
+			Ordos Aligned Mercenaries: 239, 238, 237, 236, 235, 234, 233, 232, 231, 230, 229, 228, 227, 226, 225, 224
+			Harkonnen Aligned Mercenaries: 239, 238, 237, 236, 235, 234, 233, 232, 231, 230, 229, 228, 227, 226, 225, 224
+
+carryall.reinforce:
+	Cargo:
+		MaxWeight: 10
+
+frigate:
+	Aircraft:
+		LandableTerrainTypes: Sand, Rock, Transition, Spice, SpiceSand, Dune, Concrete
+		VTOL: true # The frigate would teleport to land otherwise
+
+sardaukar:
+	Buildable:
+		Prerequisites: ~disabled
+
+stealth_raider:
+	Buildable:
+		Prerequisites: ~disabled
+
+grenadier:
+	Buildable:
+		Prerequisites: ~disabled
+
+thumper:
+	Buildable:
+		Prerequisites: ~disabled
