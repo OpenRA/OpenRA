@@ -20,9 +20,8 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("CaptureTypes (from the ExternalCaptures trait) that are able to capture this.")]
 		public readonly HashSet<string> Types = new HashSet<string>() { "building" };
 
-		public readonly bool AllowAllies = false;
-		public readonly bool AllowNeutral = true;
-		public readonly bool AllowEnemies = true;
+		[Desc("What diplomatic stances can be captured by this actor.")]
+		public readonly Stance ValidStances = Stance.Neutral | Stance.Enemy;
 
 		[Desc("Seconds it takes to change the owner.", "You might want to add a ExternalCapturableBar: trait, too.")]
 		public readonly int CaptureCompleteTime = 15;
@@ -36,14 +35,8 @@ namespace OpenRA.Mods.Common.Traits
 			if (c == null)
 				return false;
 
-			var playerRelationship = owner.Stances[captor.Owner];
-			if (playerRelationship == Stance.Ally && !AllowAllies)
-				return false;
-
-			if (playerRelationship == Stance.Enemy && !AllowEnemies)
-				return false;
-
-			if (playerRelationship == Stance.Neutral && !AllowNeutral)
+			var stance = owner.Stances[captor.Owner];
+			if (!ValidStances.HasStance(stance))
 				return false;
 
 			if (!c.CaptureTypes.Overlaps(Types))
