@@ -15,6 +15,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using OpenRA.FileSystem;
+using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.UtilityCommands
 {
@@ -1000,6 +1001,55 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						node.Value.Nodes.Add(new MiniYamlNode("Tileset", ""));
 						RenameNodeKey(node, "PaletteFromFile");
 						Console.WriteLine("The trait PlayerPaletteFromCurrentTileset has been removed. Use PaletteFromFile with a Tileset filter.");
+					}
+				}
+
+				if (engineVersion < 20171021)
+				{
+					if (node.Key.StartsWith("Capturable", StringComparison.Ordinal) || node.Key.StartsWith("ExternalCapturable", StringComparison.Ordinal))
+					{
+						// Type renamed to Types
+						var type = node.Value.Nodes.FirstOrDefault(n => n.Key == "Type");
+						if (type != null)
+							RenameNodeKey(type, "Types");
+
+						// Allow(Allies|Neutral|Enemies) replaced with a ValidStances enum
+						var stance = Stance.Neutral | Stance.Enemy;
+						var allowAllies = node.Value.Nodes.FirstOrDefault(n => n.Key == "AllowAllies");
+						if (allowAllies != null)
+						{
+							if (FieldLoader.GetValue<bool>("AllowAllies", allowAllies.Value.Value))
+								stance |= Stance.Ally;
+							else
+								stance &= ~Stance.Ally;
+
+							node.Value.Nodes.Remove(allowAllies);
+						}
+
+						var allowNeutral = node.Value.Nodes.FirstOrDefault(n => n.Key == "AllowNeutral");
+						if (allowNeutral != null)
+						{
+							if (FieldLoader.GetValue<bool>("AllowNeutral", allowNeutral.Value.Value))
+								stance |= Stance.Neutral;
+							else
+								stance &= ~Stance.Neutral;
+
+							node.Value.Nodes.Remove(allowNeutral);
+						}
+
+						var allowEnemies = node.Value.Nodes.FirstOrDefault(n => n.Key == "AllowEnemies");
+						if (allowEnemies != null)
+						{
+							if (FieldLoader.GetValue<bool>("AllowEnemies", allowEnemies.Value.Value))
+								stance |= Stance.Enemy;
+							else
+								stance &= ~Stance.Enemy;
+
+							node.Value.Nodes.Remove(allowEnemies);
+						}
+
+						if (stance != (Stance.Neutral | Stance.Enemy))
+							node.Value.Nodes.Add(new MiniYamlNode("ValidStances", stance.ToString()));
 					}
 				}
 

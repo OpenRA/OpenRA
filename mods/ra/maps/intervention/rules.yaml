@@ -23,11 +23,9 @@ MISS:
 	Tooltip:
 		Name: Soviet Air Force HQ
 	Capturable:
-		Type: building
-		AllowAllies: False
-		AllowNeutral: False
-		AllowEnemies: True
+		Types: building
 		CaptureThreshold: 100
+		ValidStances: Enemy
 
 E6.MOD:
 	Inherits: E6
