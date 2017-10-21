@@ -113,7 +113,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			conditionManager = self.TraitOrDefault<ConditionManager>();
 		}
 
-		public IEnumerable<IOrderTargeter> Orders
+		IEnumerable<IOrderTargeter> IIssueOrder.Orders
 		{
 			get
 			{
@@ -121,7 +121,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			}
 		}
 
-		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
+		Order IIssueOrder.IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
 		{
 			if (order.OrderID == "Disguise")
 				return new Order(order.OrderID, self, target, queued);
@@ -129,7 +129,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			return null;
 		}
 
-		public void ResolveOrder(Actor self, Order order)
+		void IResolveOrder.ResolveOrder(Actor self, Order order)
 		{
 			if (order.OrderString == "Disguise")
 			{
@@ -138,12 +138,12 @@ namespace OpenRA.Mods.Cnc.Traits
 			}
 		}
 
-		public string VoicePhraseForOrder(Actor self, Order order)
+		string IOrderVoice.VoicePhraseForOrder(Actor self, Order order)
 		{
 			return order.OrderString == "Disguise" ? info.Voice : null;
 		}
 
-		public Color RadarColorOverride(Actor self, Color color)
+		Color IRadarColorModifier.RadarColorOverride(Actor self, Color color)
 		{
 			if (!Disguised || self.Owner.IsAlliedWith(self.World.RenderPlayer))
 				return color;
