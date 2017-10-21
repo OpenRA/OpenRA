@@ -717,13 +717,33 @@ namespace OpenRA.Mods.Common.AI
 
 			var capturableTargetOptions = targetOptions
 				.Select(a => new CaptureTarget<CapturableInfo>(a, "CaptureActor"))
-				.Where(target => target.Info != null && capturers.Any(capturer => target.Info.CanBeTargetedBy(capturer, target.Actor.Owner)))
+				.Where(target =>
+				{
+					if (target.Info == null)
+						return false;
+
+					var capturable = target.Actor.TraitOrDefault<Capturable>();
+					if (capturable == null)
+						return false;
+
+					return capturers.Any(capturer => capturable.CanBeTargetedBy(capturer, target.Actor.Owner));
+				})
 				.OrderByDescending(target => target.Actor.GetSellValue())
 				.Take(maximumCaptureTargetOptions);
 
 			var externalCapturableTargetOptions = targetOptions
 				.Select(a => new CaptureTarget<ExternalCapturableInfo>(a, "ExternalCaptureActor"))
-				.Where(target => target.Info != null && capturers.Any(capturer => target.Info.CanBeTargetedBy(capturer, target.Actor.Owner)))
+				.Where(target =>
+				{
+					if (target.Info == null)
+						return false;
+
+					var externalCapturable = target.Actor.TraitOrDefault<ExternalCapturable>();
+					if (externalCapturable == null)
+						return false;
+
+					return capturers.Any(capturer => externalCapturable.CanBeTargetedBy(capturer, target.Actor.Owner));
+				})
 				.OrderByDescending(target => target.Actor.GetSellValue())
 				.Take(maximumCaptureTargetOptions);
 
