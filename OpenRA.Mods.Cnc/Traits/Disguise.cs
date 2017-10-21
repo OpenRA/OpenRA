@@ -67,7 +67,8 @@ namespace OpenRA.Mods.Cnc.Traits
 		Damaged = 2,
 		Unload = 4,
 		Infiltrate = 8,
-		Demolish = 16
+		Demolish = 16,
+		Move = 32
 	}
 
 	[Desc("Provides access to the disguise command, which makes the actor appear to be another player's actor.")]
@@ -86,14 +87,14 @@ namespace OpenRA.Mods.Cnc.Traits
 		public readonly HashSet<string> TargetTypes = new HashSet<string> { "Disguise" };
 
 		[Desc("Triggers which cause the actor to drop it's disguise. Possible values: None, Attack, Damaged,",
-			"Unload, Infiltrate, Demolish.")]
+			"Unload, Infiltrate, Demolish, Move.")]
 		public readonly RevealDisguiseType RevealDisguiseOn = RevealDisguiseType.Attack;
 
 		public object Create(ActorInitializer init) { return new Disguise(init.Self, this); }
 	}
 
 	class Disguise : INotifyCreated, IEffectiveOwner, IIssueOrder, IResolveOrder, IOrderVoice, IRadarColorModifier, INotifyAttack,
-		INotifyDamage, INotifyUnload, INotifyDemolition, INotifyInfiltration
+		INotifyDamage, INotifyUnload, INotifyDemolition, INotifyInfiltration, ITick
 	{
 		public Player AsPlayer { get; private set; }
 		public string AsSprite { get; private set; }
@@ -107,6 +108,7 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		ConditionManager conditionManager;
 		int disguisedToken = ConditionManager.InvalidConditionToken;
+		CPos? lastPos;
 
 		public Disguise(Actor self, DisguiseInfo info)
 		{
@@ -248,6 +250,14 @@ namespace OpenRA.Mods.Cnc.Traits
 		{
 			if (info.RevealDisguiseOn.HasFlag(RevealDisguiseType.Infiltrate))
 				DisguiseAs(null);
+		}
+
+		void ITick.Tick(Actor self)
+		{
+			if (info.RevealDisguiseOn.HasFlag(RevealDisguiseType.Move) && lastPos != null && lastPos.Value != self.Location)
+				DisguiseAs(null);
+
+			lastPos = self.Location;
 		}
 	}
 
