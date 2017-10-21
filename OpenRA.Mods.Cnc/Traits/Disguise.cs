@@ -79,6 +79,12 @@ namespace OpenRA.Mods.Cnc.Traits
 		[Desc("The condition to grant to self while disguised.")]
 		public readonly string DisguisedCondition = null;
 
+		[Desc("What diplomatic stances can this actor disguise as.")]
+		public readonly Stance ValidStances = Stance.Ally | Stance.Neutral | Stance.Enemy;
+
+		[Desc("Target types of actors that this actor disguise as.")]
+		public readonly HashSet<string> TargetTypes = new HashSet<string> { "Disguise" };
+
 		[Desc("Triggers which cause the actor to drop it's disguise. Possible values: None, Attack, Damaged,",
 			"Unload, Infiltrate, Demolish.")]
 		public readonly RevealDisguiseType RevealDisguiseOn = RevealDisguiseType.Attack;
@@ -117,7 +123,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		{
 			get
 			{
-				yield return new TargetTypeOrderTargeter(new HashSet<string> { "Disguise" }, "Disguise", 7, "ability", true, true) { ForceAttack = false };
+				yield return new DisguiseOrderTargeter(info);
 			}
 		}
 
@@ -242,6 +248,38 @@ namespace OpenRA.Mods.Cnc.Traits
 		{
 			if (info.RevealDisguiseOn.HasFlag(RevealDisguiseType.Infiltrate))
 				DisguiseAs(null);
+		}
+	}
+
+	class DisguiseOrderTargeter : UnitOrderTargeter
+	{
+		readonly DisguiseInfo info;
+
+		public DisguiseOrderTargeter(DisguiseInfo info)
+			: base("Disguise", 7, "ability", true, true)
+		{
+			this.info = info;
+			ForceAttack = false;
+		}
+
+		public override bool CanTargetActor(Actor self, Actor target, TargetModifiers modifiers, ref string cursor)
+		{
+			var stance = self.Owner.Stances[target.Owner];
+
+			if (!info.ValidStances.HasStance(stance))
+				return false;
+
+			return info.TargetTypes.Overlaps(target.GetAllTargetTypes());
+		}
+
+		public override bool CanTargetFrozenActor(Actor self, FrozenActor target, TargetModifiers modifiers, ref string cursor)
+		{
+			var stance = self.Owner.Stances[target.Owner];
+
+			if (!info.ValidStances.HasStance(stance))
+				return false;
+
+			return info.TargetTypes.Overlaps(target.Info.TraitInfos<ITargetableInfo>().SelectMany(ti => ti.GetTargetTypes()));
 		}
 	}
 }
