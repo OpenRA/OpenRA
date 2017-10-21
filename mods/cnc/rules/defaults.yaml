@@ -940,9 +940,9 @@
 		RequiresForceFire: yes
 		TargetTypes: Ground, Husk
 	Capturable:
-		Type: husk
-		AllowAllies: yes
+		Types: husk
 		CaptureThreshold: 100
+		ValidStances: Enemy, Neutral, Ally
 	TransformOnCapture:
 		ForceHealthPercentage: 25
 	Tooltip:

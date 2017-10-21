@@ -81,7 +81,7 @@ TRUK.Hijackable:
 		TargetTypes: Ground, Repair, Vehicle, NoAutoTarget
 	-Huntable:
 	ExternalCapturable:
-		Type: MissionObjective
+		Types: MissionObjective
 		CaptureCompleteTime: 1
 	-DeliversCash:
 	RenderSprites:
