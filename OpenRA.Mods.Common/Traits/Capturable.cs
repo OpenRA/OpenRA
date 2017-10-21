@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -16,11 +17,13 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("This actor can be captured by a unit with Captures: trait.")]
 	public class CapturableInfo : ITraitInfo
 	{
-		[Desc("Type listed under Types in Captures: trait of actors that can capture this).")]
-		public readonly string Type = "building";
+		[Desc("CaptureTypes (from the Captures trait) that are able to capture this.")]
+		public readonly HashSet<string> Types = new HashSet<string>() { "building" };
+
 		public readonly bool AllowAllies = false;
 		public readonly bool AllowNeutral = true;
 		public readonly bool AllowEnemies = true;
+
 		[Desc("Health percentage the target must be at (or below) before it can be captured.")]
 		public readonly int CaptureThreshold = 50;
 		public readonly bool CancelActivity = false;
@@ -43,7 +46,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (playerRelationship == Stance.Neutral && !AllowNeutral)
 				return false;
 
-			if (!c.CaptureTypes.Contains(Type))
+			if (!c.CaptureTypes.Overlaps(Types))
 				return false;
 
 			return true;

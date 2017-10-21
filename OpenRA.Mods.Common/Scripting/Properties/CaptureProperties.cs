@@ -39,7 +39,7 @@ namespace OpenRA.Mods.Common.Scripting
 
 			if (capturable != null)
 			{
-				if (captures.Any(x => !x.IsTraitDisabled && x.Info.CaptureTypes.Contains(capturable.Type)))
+				if (captures.Any(x => !x.IsTraitDisabled && x.Info.CaptureTypes.Overlaps(capturable.Types)))
 				{
 					Self.QueueActivity(new CaptureActor(Self, target));
 					return;
@@ -48,7 +48,7 @@ namespace OpenRA.Mods.Common.Scripting
 
 			var externalCapturable = target.Info.TraitInfoOrDefault<ExternalCapturableInfo>();
 
-			if (externalInfo != null && externalCapturable != null && externalInfo.CaptureTypes.Contains(externalCapturable.Type))
+			if (externalInfo != null && externalCapturable != null && externalInfo.CaptureTypes.Overlaps(externalCapturable.Types))
 				Self.QueueActivity(new ExternalCaptureActor(Self, Target.FromActor(target)));
 			else
 				throw new LuaException("Actor '{0}' cannot capture actor '{1}'!".F(Self, target));
