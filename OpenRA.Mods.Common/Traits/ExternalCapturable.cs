@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -16,11 +17,13 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("This actor can be captured by a unit with ExternalCaptures: trait.")]
 	public class ExternalCapturableInfo : ITraitInfo
 	{
-		[Desc("Type of actor (the ExternalCaptures: trait defines what Types it can capture).")]
-		public readonly string Type = "building";
+		[Desc("CaptureTypes (from the ExternalCaptures trait) that are able to capture this.")]
+		public readonly HashSet<string> Types = new HashSet<string>() { "building" };
+
 		public readonly bool AllowAllies = false;
 		public readonly bool AllowNeutral = true;
 		public readonly bool AllowEnemies = true;
+
 		[Desc("Seconds it takes to change the owner.", "You might want to add a ExternalCapturableBar: trait, too.")]
 		public readonly int CaptureCompleteTime = 15;
 
@@ -43,7 +46,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (playerRelationship == Stance.Neutral && !AllowNeutral)
 				return false;
 
-			if (!c.CaptureTypes.Contains(Type))
+			if (!c.CaptureTypes.Overlaps(Types))
 				return false;
 
 			return true;
