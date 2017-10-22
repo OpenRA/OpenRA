@@ -100,7 +100,7 @@
     <Compile Include="Activities\LayMines.cs" />
     <Compile Include="Activities\Leap.cs" />
     <Compile Include="Activities\Teleport.cs" />
-    <Compile Include="Effects\GpsDot.cs" />
+    <Compile Include="Effects\GpsDotEffect.cs" />
     <Compile Include="Effects\GpsSatellite.cs" />
     <Compile Include="Effects\SatelliteLaunch.cs" />
     <Compile Include="Projectiles\TeslaZap.cs" />
@@ -158,6 +158,7 @@
     <Compile Include="Traits\World\VoxelNormalsPalette.cs" />
     <Compile Include="Traits\TDGunboat.cs" />
     <Compile Include="Traits\Attack\AttackTDGunboatTurreted.cs" />
+    <Compile Include="Traits\GpsDot.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.Game\OpenRA.Game.csproj">
