@@ -97,6 +97,7 @@ Vulcan:
 		Damage: 10
 		Versus:
 			None: 200
+			Light: 50
 	Warhead@4Dam_2: SpreadDamage
 		Spread: 128
 		Damage: 10
@@ -124,7 +125,7 @@ Vulcan:
 		Versus:
 			None: 200
 			Wood: 50
-			Light: 60
+			Light: 50
 			Heavy: 25
 			Concrete: 25
 		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
@@ -144,7 +145,7 @@ Vulcan:
 		Versus:
 			None: 200
 			Wood: 50
-			Light: 60
+			Light: 50
 			Heavy: 25
 			Concrete: 25
 		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
@@ -164,7 +165,7 @@ Vulcan:
 		Versus:
 			None: 200
 			Wood: 50
-			Light: 60
+			Light: 50
 			Heavy: 25
 			Concrete: 25
 		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
@@ -184,7 +185,7 @@ Vulcan:
 		Versus:
 			None: 200
 			Wood: 50
-			Light: 60
+			Light: 50
 			Heavy: 25
 			Concrete: 25
 		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
