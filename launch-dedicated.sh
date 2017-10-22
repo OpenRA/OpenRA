@@ -18,5 +18,5 @@ while true; do
      mono --debug OpenRA.Server.exe Game.Mod=$Mod \
      Server.Name="$Name" Server.ListenPort=$ListenPort Server.ExternalPort=$ExternalPort \
      Server.AdvertiseOnline=$AdvertiseOnline \
-     Server.EnableSingleplayer=$EnableSingleplayer Server.Password=$Password
+     Server.EnableSingleplayer=$EnableSingleplayer Server.Password=$Password | tee /var/log/openra/server.log
 done
