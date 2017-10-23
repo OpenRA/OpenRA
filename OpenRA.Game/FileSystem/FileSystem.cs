@@ -315,5 +315,10 @@ namespace OpenRA.FileSystem
 			var resolvedPath = Platform.ResolvePath(path);
 			return File.Exists(resolvedPath) ? resolvedPath : null;
 		}
+
+		public string GetPrefix(IReadOnlyPackage package)
+		{
+			return explicitMounts.ContainsValue(package) ? explicitMounts.First(f => f.Value == package).Key : null;
+		}
 	}
 }
