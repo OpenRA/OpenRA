@@ -64,6 +64,8 @@ namespace OpenRA.Mods.Common.Widgets
 		public readonly string NotBuildableSequence = "idle";
 		public readonly string NotBuildablePalette = "chrome";
 
+		public readonly bool DrawTime = true;
+
 		[Translate] public readonly string ReadyText = "";
 		[Translate] public readonly string HoldText = "";
 
@@ -466,7 +468,7 @@ namespace OpenRA.Mods.Common.Widgets
 						overlayFont.DrawTextWithContrast(HoldText,
 							icon.Pos + holdOffset,
 							Color.White, Color.Black, 1);
-					else if (!waiting)
+					else if (!waiting && DrawTime)
 						overlayFont.DrawTextWithContrast(WidgetUtils.FormatTime(first.RemainingTimeActual, World.Timestep),
 							icon.Pos + timeOffset,
 							Color.White, Color.Black, 1);
