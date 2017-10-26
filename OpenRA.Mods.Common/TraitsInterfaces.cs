@@ -211,8 +211,8 @@ namespace OpenRA.Mods.Common.Traits
 
 	public interface INotifyDeployTriggered
 	{
-		void Deploy(Actor self, bool skipMakeAnim);
-		void Undeploy(Actor self, bool skipMakeAnim);
+		void Deploy(Actor self, HashSet<string> deployTypes);
+		void Undeploy(Actor self, HashSet<string> deployTypes);
 	}
 
 	public interface IAcceptResourcesInfo : ITraitInfo { }

@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Activities;
 using OpenRA.Traits;
@@ -25,6 +26,9 @@ namespace OpenRA.Mods.Common.Traits.Render
 		[GrantedConditionReference]
 		[Desc("The condition to grant to self while the make animation is playing.")]
 		public readonly string Condition = null;
+
+		[Desc("Play the sequence only when deploy type matches this typs")]
+		public readonly string[] DeployTypes = { "make" };
 
 		[Desc("Apply to sprite bodies with these names.")]
 		public readonly string[] BodyNames = { "body" };
@@ -91,7 +95,8 @@ namespace OpenRA.Mods.Common.Traits.Render
 					token = conditionManager.RevokeCondition(self, token);
 
 				// TODO: Rewrite this to use a trait notification for save game support
-				onComplete();
+				if (onComplete != null)
+					onComplete();
 			});
 		}
 
@@ -116,12 +121,13 @@ namespace OpenRA.Mods.Common.Traits.Render
 		}
 
 		// TODO: Make this use Forward instead
-		void INotifyDeployTriggered.Deploy(Actor self, bool skipMakeAnim)
+		void INotifyDeployTriggered.Deploy(Actor self, HashSet<string> deployTypes)
 		{
 			var notified = false;
 			var notify = self.TraitsImplementing<INotifyDeployComplete>();
 
-			if (skipMakeAnim)
+			// No match: skip to FinishedDeploy()
+			if (info.DeployTypes.All(ty => !deployTypes.Contains(ty)))
 			{
 				foreach (var n in notify)
 					n.FinishedDeploy(self);
@@ -129,6 +135,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 				return;
 			}
 
+			// Match. Play the animation for all bodies.
 			foreach (var wsb in wsbs)
 			{
 				if (wsb.IsTraitDisabled)
@@ -149,12 +156,13 @@ namespace OpenRA.Mods.Common.Traits.Render
 		}
 
 		// TODO: Make this use Reverse instead
-		void INotifyDeployTriggered.Undeploy(Actor self, bool skipMakeAnim)
+		void INotifyDeployTriggered.Undeploy(Actor self, HashSet<string> deployTypes)
 		{
 			var notified = false;
 			var notify = self.TraitsImplementing<INotifyDeployComplete>();
 
-			if (skipMakeAnim)
+			// No match: skip to FinishedUndeploy()
+			if (info.DeployTypes.All(ty => !deployTypes.Contains(ty)))
 			{
 				foreach (var n in notify)
 					n.FinishedUndeploy(self);
@@ -162,6 +170,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 				return;
 			}
 
+			// Match. Play the animation in reverse for all bodies.
 			foreach (var wsb in wsbs)
 			{
 				if (wsb.IsTraitDisabled)
