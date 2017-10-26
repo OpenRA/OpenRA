@@ -104,6 +104,7 @@ GAP:
 		Amount: -60
 	MustBeDestroyed:
 		RequiredForShortGame: false
+	-AcceptsDeliveredCash:
 	Explodes:
 		Weapon: SmallBuildingExplode
 		EmptyWeapon: SmallBuildingExplode
@@ -459,7 +460,6 @@ PDOX:
 		DisplayRadarPing: True
 		Range: 2
 	SupportPowerChargeBar:
-	-AcceptsDeliveredCash:
 	Power:
 		Amount: -200
 	MustBeDestroyed:
