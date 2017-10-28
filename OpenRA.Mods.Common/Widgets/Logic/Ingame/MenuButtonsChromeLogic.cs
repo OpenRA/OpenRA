@@ -28,7 +28,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		Widget currentWidget;
 
 		[ObjectCreator.UseCtor]
-		public MenuButtonsChromeLogic(Widget widget, World world, Dictionary<string, MiniYaml> logicArgs)
+		public MenuButtonsChromeLogic(Widget widget, ModData modData, World world, Dictionary<string, MiniYaml> logicArgs)
 		{
 			this.world = world;
 
@@ -36,11 +36,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			menuRoot = Ui.Root.Get("MENU_ROOT");
 
 			MiniYaml yaml;
-			var ks = Game.Settings.Keys;
 			string[] keyNames = Enum.GetNames(typeof(ObserverStatsPanel));
 			var statsHotkeys = new HotkeyReference[keyNames.Length];
 			for (var i = 0; i < keyNames.Length; i++)
-				statsHotkeys[i] = logicArgs.TryGetValue("Statistics" + keyNames[i] + "Key", out yaml) ? new HotkeyReference(yaml.Value, ks) : new HotkeyReference();
+				statsHotkeys[i] = logicArgs.TryGetValue("Statistics" + keyNames[i] + "Key", out yaml) ? modData.Hotkeys[yaml.Value] : new HotkeyReference();
 
 			// System buttons
 			var options = widget.GetOrNull<MenuButtonWidget>("OPTIONS_BUTTON");

@@ -62,15 +62,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		}
 
 		[ObjectCreator.UseCtor]
-		public ObserverShroudSelectorLogic(Widget widget, World world, Dictionary<string, MiniYaml> logicArgs)
+		public ObserverShroudSelectorLogic(Widget widget, ModData modData, World world, Dictionary<string, MiniYaml> logicArgs)
 		{
 			MiniYaml yaml;
-			var ks = Game.Settings.Keys;
 			if (logicArgs.TryGetValue("CombinedViewKey", out yaml))
-				combinedViewKey = new HotkeyReference(yaml.Value, ks);
+				combinedViewKey = modData.Hotkeys[yaml.Value];
 
 			if (logicArgs.TryGetValue("WorldViewKey", out yaml))
-				worldViewKey = new HotkeyReference(yaml.Value, ks);
+				worldViewKey = modData.Hotkeys[yaml.Value];
 
 			limitViews = world.Map.Visibility.HasFlag(MapVisibility.MissionSelector);
 

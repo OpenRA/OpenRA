@@ -44,17 +44,17 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly WorldRenderer worldRenderer;
 
 		[ObjectCreator.UseCtor]
-		public ObserverStatsLogic(World world, WorldRenderer worldRenderer, Widget widget, Action onExit, ObserverStatsPanel activePanel, Dictionary<string, MiniYaml> logicArgs)
+		public ObserverStatsLogic(World world, ModData modData, WorldRenderer worldRenderer, Widget widget,
+			Action onExit, ObserverStatsPanel activePanel, Dictionary<string, MiniYaml> logicArgs)
 		{
 			this.world = world;
 			this.worldRenderer = worldRenderer;
 
 			MiniYaml yaml;
-			var ks = Game.Settings.Keys;
 			string[] keyNames = Enum.GetNames(typeof(ObserverStatsPanel));
 			var statsHotkeys = new HotkeyReference[keyNames.Length];
 			for (var i = 0; i < keyNames.Length; i++)
-				statsHotkeys[i] = logicArgs.TryGetValue("Statistics" + keyNames[i] + "Key", out yaml) ? new HotkeyReference(yaml.Value, ks) : new HotkeyReference();
+				statsHotkeys[i] = logicArgs.TryGetValue("Statistics" + keyNames[i] + "Key", out yaml) ? modData.Hotkeys[yaml.Value] : new HotkeyReference();
 
 			players = world.Players.Where(p => !p.NonCombatant);
 

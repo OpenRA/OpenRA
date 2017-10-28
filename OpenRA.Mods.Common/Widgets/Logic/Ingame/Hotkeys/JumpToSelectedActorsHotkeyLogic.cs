@@ -23,8 +23,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic.Ingame
 		readonly Selection selection;
 
 		[ObjectCreator.UseCtor]
-		public JumpToSelectedActorsHotkeyLogic(Widget widget, WorldRenderer worldRenderer, World world, Dictionary<string, MiniYaml> logicArgs)
-			: base(widget, "JumpToSelectedActorsKey", "WORLD_KEYHANDLER", logicArgs)
+		public JumpToSelectedActorsHotkeyLogic(Widget widget, ModData modData, WorldRenderer worldRenderer, World world, Dictionary<string, MiniYaml> logicArgs)
+			: base(widget, modData, "JumpToSelectedActorsKey", "WORLD_KEYHANDLER", logicArgs)
 		{
 			viewport = worldRenderer.Viewport;
 			selection = world.Selection;

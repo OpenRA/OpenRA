@@ -19,8 +19,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	public class ScreenshotHotkeyLogic : SingleHotkeyBaseLogic
 	{
 		[ObjectCreator.UseCtor]
-		public ScreenshotHotkeyLogic(Widget widget, Dictionary<string, MiniYaml> logicArgs)
-			: base(widget, "TakeScreenshotKey", "GLOBAL_KEYHANDLER", logicArgs) { }
+		public ScreenshotHotkeyLogic(Widget widget, ModData modData, Dictionary<string, MiniYaml> logicArgs)
+			: base(widget, modData, "TakeScreenshotKey", "GLOBAL_KEYHANDLER", logicArgs) { }
 
 		protected override bool OnHotkeyActivated(KeyInput e)
 		{

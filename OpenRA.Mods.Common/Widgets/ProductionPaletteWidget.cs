@@ -76,6 +76,7 @@ namespace OpenRA.Mods.Common.Widgets
 		public ProductionIcon TooltipIcon { get; private set; }
 		public Func<ProductionIcon> GetTooltipIcon;
 		public readonly World World;
+		readonly ModData modData;
 		readonly OrderManager orderManager;
 
 		public int MinimumRows = 4;
@@ -127,8 +128,9 @@ namespace OpenRA.Mods.Common.Widgets
 		}
 
 		[ObjectCreator.UseCtor]
-		public ProductionPaletteWidget(OrderManager orderManager, World world, WorldRenderer worldRenderer)
+		public ProductionPaletteWidget(ModData modData, OrderManager orderManager, World world, WorldRenderer worldRenderer)
 		{
+			this.modData = modData;
 			this.orderManager = orderManager;
 			World = world;
 			this.worldRenderer = worldRenderer;
@@ -146,7 +148,7 @@ namespace OpenRA.Mods.Common.Widgets
 			base.Initialize(args);
 
 			hotkeys = Exts.MakeArray(HotkeyCount,
-				i => new HotkeyReference(HotkeyPrefix + (i + 1).ToString("D2"), Game.Settings.Keys));
+				i => modData.Hotkeys[HotkeyPrefix + (i + 1).ToString("D2")]);
 		}
 
 		public void ScrollDown()

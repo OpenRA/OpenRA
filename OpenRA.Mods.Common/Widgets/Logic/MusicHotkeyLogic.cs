@@ -22,28 +22,26 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly MusicPlaylist musicPlaylist;
 
 		[ObjectCreator.UseCtor]
-		public MusicHotkeyLogic(Widget widget, World world, Dictionary<string, MiniYaml> logicArgs)
+		public MusicHotkeyLogic(Widget widget, ModData modData, World world, Dictionary<string, MiniYaml> logicArgs)
 		{
 			musicPlaylist = world.WorldActor.Trait<MusicPlaylist>();
 
-			var ks = Game.Settings.Keys;
 			MiniYaml yaml;
-
 			var stopKey = new HotkeyReference();
 			if (logicArgs.TryGetValue("StopMusicKey", out yaml))
-				stopKey = new HotkeyReference(yaml.Value, ks);
+				stopKey = modData.Hotkeys[yaml.Value];
 
 			var pauseKey = new HotkeyReference();
 			if (logicArgs.TryGetValue("PauseMusicKey", out yaml))
-				pauseKey = new HotkeyReference(yaml.Value, ks);
+				pauseKey = modData.Hotkeys[yaml.Value];
 
 			var prevKey = new HotkeyReference();
 			if (logicArgs.TryGetValue("PrevMusicKey", out yaml))
-				prevKey = new HotkeyReference(yaml.Value, ks);
+				prevKey = modData.Hotkeys[yaml.Value];
 
 			var nextKey = new HotkeyReference();
 			if (logicArgs.TryGetValue("NextMusicKey", out yaml))
-				nextKey = new HotkeyReference(yaml.Value, ks);
+				nextKey = modData.Hotkeys[yaml.Value];
 
 			var keyhandler = widget.Get<LogicKeyListenerWidget>("GLOBAL_KEYHANDLER");
 			keyhandler.AddHandler(e =>

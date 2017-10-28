@@ -24,8 +24,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic.Ingame
 		readonly RadarPings radarPings;
 
 		[ObjectCreator.UseCtor]
-		public JumpToLastEventHotkeyLogic(Widget widget, WorldRenderer worldRenderer, World world, Dictionary<string, MiniYaml> logicArgs)
-			: base(widget, "JumpToLastEventKey", "WORLD_KEYHANDLER", logicArgs)
+		public JumpToLastEventHotkeyLogic(Widget widget, ModData modData, WorldRenderer worldRenderer, World world, Dictionary<string, MiniYaml> logicArgs)
+			: base(widget, modData, "JumpToLastEventKey", "WORLD_KEYHANDLER", logicArgs)
 		{
 			viewport = worldRenderer.Viewport;
 			radarPings = world.WorldActor.TraitOrDefault<RadarPings>();

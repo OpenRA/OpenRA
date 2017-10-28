@@ -17,14 +17,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public abstract class SingleHotkeyBaseLogic : ChromeLogic
 	{
-		protected SingleHotkeyBaseLogic(Widget widget, string argName, string parentName, Dictionary<string, MiniYaml> logicArgs)
+		protected SingleHotkeyBaseLogic(Widget widget, ModData modData, string argName, string parentName, Dictionary<string, MiniYaml> logicArgs)
 		{
-			var ks = Game.Settings.Keys;
 			MiniYaml yaml;
 
 			var namedKey = new HotkeyReference();
 			if (logicArgs.TryGetValue(argName, out yaml))
-				namedKey = new HotkeyReference(yaml.Value, ks);
+				namedKey = modData.Hotkeys[yaml.Value];
 
 			var keyhandler = widget.Get<LogicKeyListenerWidget>(parentName);
 			keyhandler.AddHandler(e =>
