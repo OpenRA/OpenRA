@@ -125,6 +125,13 @@ Music:
 Translations:
 	d2k|languages/english.yaml
 
+Hotkeys:
+	common|hotkeys/game.yaml
+	common|hotkeys/observer.yaml
+	common|hotkeys/production.yaml
+	common|hotkeys/supportpowers.yaml
+	common|hotkeys/viewport.yaml
+
 LoadScreen: LogoStripeLoadScreen
 	Image: d2k|uibits/loadscreen.png
 	Text: Filling Crates..., Breeding Sandworms..., Fuelling carryalls..., Deploying harvesters..., Preparing thopters..., Summoning mentats...

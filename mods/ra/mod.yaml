@@ -141,6 +141,13 @@ Music:
 Translations:
 	ra|languages/english.yaml
 
+Hotkeys:
+	common|hotkeys/game.yaml
+	common|hotkeys/observer.yaml
+	common|hotkeys/production.yaml
+	common|hotkeys/supportpowers.yaml
+	common|hotkeys/viewport.yaml
+
 LoadScreen: LogoStripeLoadScreen
 	Image: ra|uibits/loadscreen.png
 	Text: Filling Crates..., Charging Capacitors..., Reticulating Splines..., Planting Trees..., Building Bridges..., Aging Empires..., Compiling EVA..., Constructing Pylons..., Activating Skynet..., Splitting Atoms...

@@ -183,6 +183,13 @@ Music:
 Translations:
 	ts|languages/english.yaml
 
+Hotkeys:
+	common|hotkeys/game.yaml
+	common|hotkeys/observer.yaml
+	common|hotkeys/production.yaml
+	common|hotkeys/supportpowers.yaml
+	common|hotkeys/viewport.yaml
+
 LoadScreen: LogoStripeLoadScreen
 	Image: ts|uibits/loadscreen.png
 	Text: Updating EVA installation..., Changing perspective...
