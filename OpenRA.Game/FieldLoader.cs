@@ -275,7 +275,7 @@ namespace OpenRA
 			}
 			else if (fieldType == typeof(HotkeyReference))
 			{
-				return new HotkeyReference(value, Game.Settings.Keys);
+				return Game.ModData.Hotkeys[value];
 			}
 			else if (fieldType == typeof(WDist))
 			{

@@ -32,20 +32,6 @@ namespace OpenRA
 			this.getValue = getValue;
 		}
 
-		public HotkeyReference(string name, KeySettings settings)
-		{
-			// Try parsing the value as a reference to a named hotkey
-			getValue = settings.GetHotkeyReference(name);
-
-			if (getValue == null)
-			{
-				// Try parsing the value as a normal (static) hotkey
-				var staticKey = Hotkey.Invalid;
-				Hotkey.TryParse(name, out staticKey);
-				getValue = () => staticKey;
-			}
-		}
-
 		public Hotkey GetValue()
 		{
 			return getValue();

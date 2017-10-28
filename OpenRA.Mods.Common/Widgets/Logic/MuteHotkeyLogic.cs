@@ -20,8 +20,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	public class MuteHotkeyLogic : SingleHotkeyBaseLogic
 	{
 		[ObjectCreator.UseCtor]
-		public MuteHotkeyLogic(Widget widget, Dictionary<string, MiniYaml> logicArgs)
-			: base(widget, "MuteAudioKey", "GLOBAL_KEYHANDLER", logicArgs) { }
+		public MuteHotkeyLogic(Widget widget, ModData modData, Dictionary<string, MiniYaml> logicArgs)
+			: base(widget, modData, "MuteAudioKey", "GLOBAL_KEYHANDLER", logicArgs) { }
 
 		protected override bool OnHotkeyActivated(KeyInput e)
 		{

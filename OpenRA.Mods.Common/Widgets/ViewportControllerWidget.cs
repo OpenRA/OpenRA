@@ -24,6 +24,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 	public class ViewportControllerWidget : Widget
 	{
+		readonly ModData modData;
 		readonly ResourceLayer resourceLayer;
 
 		public readonly HotkeyReference ScrollUpKey = new HotkeyReference();
@@ -132,8 +133,9 @@ namespace OpenRA.Mods.Common.Widgets
 		}
 
 		[ObjectCreator.UseCtor]
-		public ViewportControllerWidget(World world, WorldRenderer worldRenderer)
+		public ViewportControllerWidget(ModData modData, World world, WorldRenderer worldRenderer)
 		{
+			this.modData = modData;
 			this.world = world;
 			this.worldRenderer = worldRenderer;
 			tooltipContainer = Exts.Lazy(() =>
@@ -147,10 +149,10 @@ namespace OpenRA.Mods.Common.Widgets
 			base.Initialize(args);
 
 			saveBookmarkHotkeys = Exts.MakeArray(BookmarkKeyCount,
-				i => new HotkeyReference(BookmarkSaveKeyPrefix + (i + 1).ToString("D2"), Game.Settings.Keys));
+				i => modData.Hotkeys[BookmarkSaveKeyPrefix + (i + 1).ToString("D2")]);
 
 			restoreBookmarkHotkeys = Exts.MakeArray(BookmarkKeyCount,
-				i => new HotkeyReference(BookmarkRestoreKeyPrefix + (i + 1).ToString("D2"), Game.Settings.Keys));
+				i => modData.Hotkeys[BookmarkRestoreKeyPrefix + (i + 1).ToString("D2")]);
 
 			bookmarkPositions = new WPos?[BookmarkKeyCount];
 		}

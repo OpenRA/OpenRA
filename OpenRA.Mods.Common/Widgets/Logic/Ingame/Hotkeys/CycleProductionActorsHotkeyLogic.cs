@@ -26,8 +26,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic.Ingame
 		readonly World world;
 
 		[ObjectCreator.UseCtor]
-		public CycleProductionActorsHotkeyLogic(Widget widget, WorldRenderer worldRenderer, World world, Dictionary<string, MiniYaml> logicArgs)
-			: base(widget, "CycleProductionActorsKey", "WORLD_KEYHANDLER", logicArgs)
+		public CycleProductionActorsHotkeyLogic(Widget widget, ModData modData, WorldRenderer worldRenderer, World world, Dictionary<string, MiniYaml> logicArgs)
+			: base(widget, modData, "CycleProductionActorsKey", "WORLD_KEYHANDLER", logicArgs)
 		{
 			viewport = worldRenderer.Viewport;
 			selection = world.Selection;

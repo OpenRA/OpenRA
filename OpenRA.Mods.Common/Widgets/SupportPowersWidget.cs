@@ -43,6 +43,7 @@ namespace OpenRA.Mods.Common.Widgets
 		public int IconCount { get; private set; }
 		public event Action<int, int> OnIconCountChanged = (a, b) => { };
 
+		readonly ModData modData;
 		readonly WorldRenderer worldRenderer;
 		readonly SupportPowerManager spm;
 
@@ -82,8 +83,9 @@ namespace OpenRA.Mods.Common.Widgets
 		}
 
 		[ObjectCreator.UseCtor]
-		public SupportPowersWidget(World world, WorldRenderer worldRenderer)
+		public SupportPowersWidget(ModData modData, World world, WorldRenderer worldRenderer)
 		{
+			this.modData = modData;
 			this.worldRenderer = worldRenderer;
 			spm = world.LocalPlayer.PlayerActor.Trait<SupportPowerManager>();
 			tooltipContainer = Exts.Lazy(() =>
@@ -98,7 +100,7 @@ namespace OpenRA.Mods.Common.Widgets
 			base.Initialize(args);
 
 			hotkeys = Exts.MakeArray(HotkeyCount,
-				i => new HotkeyReference(HotkeyPrefix + (i + 1).ToString("D2"), Game.Settings.Keys));
+				i => modData.Hotkeys[HotkeyPrefix + (i + 1).ToString("D2")]);
 		}
 
 		public class SupportPowerIcon

@@ -22,8 +22,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic.Ingame
 		readonly Viewport viewport;
 
 		[ObjectCreator.UseCtor]
-		public TogglePixelDoubleHotkeyLogic(Widget widget, WorldRenderer worldRenderer, Dictionary<string, MiniYaml> logicArgs)
-			: base(widget, "TogglePixelDoubleKey", "WORLD_KEYHANDLER", logicArgs)
+		public TogglePixelDoubleHotkeyLogic(Widget widget, ModData modData, WorldRenderer worldRenderer, Dictionary<string, MiniYaml> logicArgs)
+			: base(widget, modData, "TogglePixelDoubleKey", "WORLD_KEYHANDLER", logicArgs)
 		{
 			viewport = worldRenderer.Viewport;
 		}
