@@ -137,6 +137,13 @@ Music:
 Translations:
 	cnc|languages/english.yaml
 
+Hotkeys:
+	common|hotkeys/game.yaml
+	common|hotkeys/observer.yaml
+	common|hotkeys/production.yaml
+	common|hotkeys/supportpowers.yaml
+	common|hotkeys/viewport.yaml
+
 LoadScreen: CncLoadScreen
 	Image: cnc|uibits/chrome.png
 	Text: Loading
