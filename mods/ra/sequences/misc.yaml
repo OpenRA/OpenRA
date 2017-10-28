@@ -484,6 +484,10 @@ gpsdot:
 		Start: 8
 	Biohazard:
 		Start: 9
+	Communications:
+		Start: 10
+	Forward:
+		Start: 11
 
 icon:
 	abomb: atomicon

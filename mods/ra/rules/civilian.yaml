@@ -91,6 +91,8 @@ FCOM:
 	Power:
 		Amount: 0
 	ProvidesPrerequisite@buildingname:
+	GpsDot:
+		String: Forward
 
 HOSP:
 	Inherits: ^TechBuilding
@@ -382,6 +384,8 @@ MISS:
 		DeathSequence: dead
 		UseDeathTypeSuffix: false
 	ProvidesPrerequisite@buildingname:
+	GpsDot:
+		String: Communications
 
 BIO:
 	Inherits: ^TechBuilding
