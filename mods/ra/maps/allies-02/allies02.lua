@@ -209,13 +209,13 @@ SendTrucks = function()
 		Media.PlaySpeechNotification(player, "ConvoyApproaching")
 		Trigger.AfterDelay(DateTime.Seconds(3), function()
 			ConvoyUnharmed = true
-			local trucks = Reinforcements.Reinforce(france, TruckReinforcements, TruckPath, DateTime.Seconds(1),
+			local trucks = Reinforcements.Reinforce(england, TruckReinforcements, TruckPath, DateTime.Seconds(1),
 				function(truck)
 					Trigger.OnIdle(truck, function() truck.Move(TruckExitPoint.Location) end)
 				end)
 			count = 0
 			Trigger.OnEnteredFootprint( { TruckExitPoint.Location }, function(a, id)
-				if a.Owner == france then
+				if a.Owner == england then
 					count = count + 1
 					a.Destroy()
 					if count == 3 then
@@ -249,7 +249,7 @@ end
 
 WorldLoaded = function()
 	player = Player.GetPlayer("Greece")
-	france = Player.GetPlayer("France")
+	england = Player.GetPlayer("England")
 	ussr = Player.GetPlayer("USSR")
 
 	Trigger.OnObjectiveAdded(player, function(p, id)

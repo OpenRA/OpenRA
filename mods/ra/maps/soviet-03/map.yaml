@@ -27,23 +27,23 @@ Players:
 	PlayerReference@Creeps:
 		Name: Creeps
 		NonCombatant: True
-		Enemies: Germany, USSR
+		Enemies: Greece, USSR
 	PlayerReference@England:
 		Name: England
 		Faction: allies
 		Color: E2E6F5
-		Allies: Germany, Soviet
+		Allies: Greece, BadGuy
 		Enemies: USSR
-	PlayerReference@Soviet:
-		Name: Soviet
+	PlayerReference@BadGuy:
+		Name: BadGuy
 		Faction: soviet
 		Color: FE1100
-		Allies: England, Germany, USSR
-	PlayerReference@Germany:
-		Name: Germany
+		Allies: England, Greece, USSR
+	PlayerReference@Greece:
+		Name: Greece
 		Faction: allies
 		Color: E2E6F5
-		Allies: England, Soviet
+		Allies: England, BadGuy
 		Enemies: USSR, Creeps
 	PlayerReference@USSR:
 		Name: USSR
@@ -56,7 +56,7 @@ Players:
 		Color: FE1100
 		LockSpawn: True
 		LockTeam: True
-		Enemies: Germany, England, Creeps
+		Enemies: Greece, England, Creeps
 
 Actors:
 	Actor0: wood
@@ -403,14 +403,14 @@ Actors:
 		Owner: Neutral
 	Actor117: v03
 		Location: 42,66
-		Owner: Germany
+		Owner: Greece
 	Actor118: v04
 		Location: 45,62
-		Owner: Germany
+		Owner: Greece
 		Health: 47
 	Actor120: v07
 		Location: 42,37
-		Owner: Germany
+		Owner: Greece
 	Actor122: brl3
 		Location: 43,38
 		Owner: Creeps
@@ -434,7 +434,7 @@ Actors:
 		Owner: Creeps
 	Actor136: v06
 		Location: 90,39
-		Owner: Germany
+		Owner: Greece
 	Actor138: barl
 		Location: 81,49
 		Owner: Creeps
@@ -449,18 +449,18 @@ Actors:
 		Owner: Creeps
 	Actor143: v04
 		Location: 81,53
-		Owner: Germany
+		Owner: Greece
 		Health: 39
 	Actor145: v02
 		Location: 62,38
-		Owner: Germany
+		Owner: Greece
 	Actor146: v04
 		Location: 56,39
-		Owner: Germany
+		Owner: Greece
 		Health: 41
 	Actor148: v08
 		Location: 62,41
-		Owner: Germany
+		Owner: Greece
 	Actor150: brl3
 		Location: 58,43
 		Owner: Creeps
@@ -517,177 +517,177 @@ Actors:
 		Owner: Creeps
 	Actor169: v13
 		Location: 63,36
-		Owner: Germany
+		Owner: Greece
 	Actor171: brl3
 		Location: 81,31
 		Owner: Creeps
 	Actor172: e1
 		Location: 16,31
-		Owner: Germany
+		Owner: Greece
 		Facing: 128
 		SubCell: 4
 	Actor173: e1
 		Location: 16,31
-		Owner: Germany
+		Owner: Greece
 		Facing: 192
 		SubCell: 0
 	Actor174: e1
 		Location: 17,33
-		Owner: Germany
+		Owner: Greece
 		Facing: 160
 		SubCell: 1
 	Actor175: e1
 		Location: 17,33
-		Owner: Germany
+		Owner: Greece
 		Facing: 128
 		SubCell: 4
 	Actor176: e3
 		Location: 17,33
-		Owner: Germany
+		Owner: Greece
 		Facing: 128
 		SubCell: 2
 	Actor177: e3
 		Location: 17,31
-		Owner: Germany
+		Owner: Greece
 		SubCell: 1
 	Actor183: e1
 		Location: 77,61
-		Owner: Germany
+		Owner: Greece
 		SubCell: 2
 	Actor184: e1
 		Location: 64,41
-		Owner: Germany
+		Owner: Greece
 		Facing: 64
 		SubCell: 3
 	Actor185: e1
 		Location: 64,42
-		Owner: Germany
+		Owner: Greece
 		Facing: 96
 		SubCell: 0
 	Actor186: e1
 		Location: 63,42
-		Owner: Germany
+		Owner: Greece
 		Facing: 128
 		SubCell: 0
 	Actor187: e1
 		Location: 59,45
-		Owner: Germany
+		Owner: Greece
 		Facing: 32
 		SubCell: 2
 	Actor188: e1
 		Location: 56,44
-		Owner: Germany
+		Owner: Greece
 		Facing: 32
 		SubCell: 4
 	Actor191: e1
 		Location: 56,45
-		Owner: Germany
+		Owner: Greece
 		Facing: 64
 		SubCell: 4
 	Actor192: e1
 		Location: 57,44
-		Owner: Germany
+		Owner: Greece
 		Facing: 64
 		SubCell: 2
 	Actor193: e1
 		Location: 60,44
-		Owner: Germany
+		Owner: Greece
 		Facing: 32
 		SubCell: 1
 	Actor194: e1
 		Location: 56,46
-		Owner: Germany
+		Owner: Greece
 		Facing: 64
 		SubCell: 4
 	Actor195: e1
 		Location: 53,37
-		Owner: Germany
+		Owner: Greece
 		Facing: 96
 		SubCell: 2
 	Actor196: e1
 		Location: 52,38
-		Owner: Germany
+		Owner: Greece
 		Facing: 96
 		SubCell: 3
 	Actor197: e1
 		Location: 52,37
-		Owner: Germany
+		Owner: Greece
 		Facing: 96
 		SubCell: 4
 	Actor264: fenc
-		Owner: Soviet
+		Owner: BadGuy
 		Location: 89,32
 	Actor265: fenc
-		Owner: Soviet
+		Owner: BadGuy
 		Location: 88,32
 	Actor266: fenc
-		Owner: Soviet
+		Owner: BadGuy
 		Location: 87,32
 	Actor267: fenc
-		Owner: Soviet
+		Owner: BadGuy
 		Location: 86,32
 	Actor268: fenc
-		Owner: Soviet
+		Owner: BadGuy
 		Location: 85,32
 	Actor269: fenc
-		Owner: Soviet
+		Owner: BadGuy
 		Location: 84,32
 	Actor270: fenc
-		Owner: Soviet
+		Owner: BadGuy
 		Location: 83,32
 	Actor271: fenc
-		Owner: Soviet
+		Owner: BadGuy
 		Location: 82,32
 	Actor272: fenc
-		Owner: Soviet
+		Owner: BadGuy
 		Location: 81,32
 	Actor273: fenc
-		Owner: Soviet
+		Owner: BadGuy
 		Location: 80,32
 	Actor274: fenc
-		Owner: Soviet
+		Owner: BadGuy
 		Location: 70,22
 	Actor275: fenc
-		Owner: Soviet
+		Owner: BadGuy
 		Location: 70,23
 	Actor276: fenc
-		Owner: Soviet
+		Owner: BadGuy
 		Location: 70,24
 	Actor277: fenc
-		Owner: Soviet
+		Owner: BadGuy
 		Location: 70,25
 	Actor278: fenc
-		Owner: Soviet
+		Owner: BadGuy
 		Location: 70,26
 	Actor279: fenc
-		Owner: Soviet
+		Owner: BadGuy
 		Location: 70,27
 	Actor280: fenc
-		Owner: Soviet
+		Owner: BadGuy
 		Location: 70,28
 	Actor281: fenc
-		Owner: Soviet
+		Owner: BadGuy
 		Location: 70,29
 	Actor282: fenc
-		Owner: Soviet
+		Owner: BadGuy
 		Location: 70,30
 	Actor283: fenc
-		Owner: Soviet
+		Owner: BadGuy
 		Location: 70,31
 	Actor284: fenc
-		Owner: Soviet
+		Owner: BadGuy
 		Location: 70,32
 	Actor285: fenc
-		Owner: Soviet
+		Owner: BadGuy
 		Location: 71,32
 	Actor286: fenc
-		Owner: Soviet
+		Owner: BadGuy
 		Location: 72,32
 	Actor287: fenc
-		Owner: Soviet
+		Owner: BadGuy
 		Location: 73,32
 	Actor288: fenc
-		Owner: Soviet
+		Owner: BadGuy
 		Location: 74,32
 	Actor289: fenc
 		Owner: Neutral
@@ -925,32 +925,32 @@ Actors:
 		Owner: Neutral
 	BarrierSoldier1: e1
 		Location: 63,49
-		Owner: Germany
+		Owner: Greece
 		Facing: 160
 		SubCell: 4
 	BarrierSoldier2: e1
 		Location: 64,50
-		Owner: Germany
+		Owner: Greece
 		Facing: 128
 		SubCell: 0
 	BarrierSoldier3: e1
 		Location: 64,49
-		Owner: Germany
+		Owner: Greece
 		Facing: 96
 		SubCell: 4
 	BarrierSoldier4: e1
 		Location: 66,50
-		Owner: Germany
+		Owner: Greece
 		Facing: 96
 		SubCell: 4
 	BarrierSoldier5: e1
 		Location: 65,49
-		Owner: Germany
+		Owner: Greece
 		Facing: 160
 		SubCell: 3
 	BarrierSoldier6: e1
 		Location: 66,49
-		Owner: Germany
+		Owner: Greece
 		Facing: 128
 		SubCell: 3
 	BaseBarrel1: barl
@@ -961,22 +961,22 @@ Actors:
 		Owner: Creeps
 	BaseBuilding1: ftur
 		Location: 75,32
-		Owner: Soviet
+		Owner: BadGuy
 	BaseBuilding2: ftur
 		Location: 79,32
-		Owner: Soviet
+		Owner: BadGuy
 	BaseBuilding3: apwr
 		Location: 71,23
-		Owner: Soviet
+		Owner: BadGuy
 	BaseBuilding4: apwr
 		Location: 86,27
-		Owner: Soviet
+		Owner: BadGuy
 	BaseBuilding5: barl
 		Location: 74,24
 		Owner: Creeps
 	BaseBuilding6: miss
 		Location: 78,27
-		Owner: Soviet
+		Owner: BadGuy
 	CameraBarrier: waypoint
 		Location: 64,51
 		Owner: Neutral
@@ -1033,15 +1033,15 @@ Actors:
 		Owner: Neutral
 	Farmer1: c7
 		Location: 88,39
-		Owner: Germany
+		Owner: Greece
 		SubCell: 4
 	Farmer2: c6
 		Location: 90,38
-		Owner: Germany
+		Owner: Greece
 		SubCell: 3
 	Farmer3: e3
 		Location: 89,37
-		Owner: Germany
+		Owner: Greece
 		Facing: 160
 		SubCell: 2
 	FarmSpawn: waypoint
@@ -1061,7 +1061,7 @@ Actors:
 		Owner: Creeps
 	Hideout1PBox: pbox
 		Location: 76,47
-		Owner: Germany
+		Owner: Greece
 	Hideout3Barrel: brl3
 		Location: 60,42
 		Owner: Creeps
@@ -1073,15 +1073,15 @@ Actors:
 		Owner: Neutral
 	RedBuilding1: v05
 		Location: 37,67
-		Owner: Germany
+		Owner: Greece
 		Health: 39
 	RedBuilding2: v05
 		Location: 56,37
-		Owner: Germany
+		Owner: Greece
 		Health: 39
 	RedBuilding3: v05
 		Location: 72,53
-		Owner: Germany
+		Owner: Greece
 		Health: 43
 	ReinforcementDropOff: waypoint
 		Location: 63,61
@@ -1094,20 +1094,20 @@ Actors:
 		Owner: Neutral
 	RSoldier1: e3
 		Location: 73,35
-		Owner: Germany
+		Owner: Greece
 		SubCell: 1
 	RSoldier2: e3
 		Location: 80,35
-		Owner: Germany
+		Owner: Greece
 		SubCell: 2
 	RSoldier3: e3
 		Location: 36,37
-		Owner: Germany
+		Owner: Greece
 		Facing: 64
 		SubCell: 1
 	RSoldier4: e3
 		Location: 36,37
-		Owner: Germany
+		Owner: Greece
 		Facing: 64
 		SubCell: 4
 	RSoldierTrap: barl
@@ -1121,16 +1121,16 @@ Actors:
 		Owner: Neutral
 	SpyHideout1: v01
 		Location: 77,52
-		Owner: Germany
+		Owner: Greece
 	SpyHideout2: v01
 		Location: 37,63
-		Owner: Germany
+		Owner: Greece
 	SpyHideout3: v01
 		Location: 61,36
-		Owner: Germany
+		Owner: Greece
 	SpyHideout4: v01
 		Location: 36,32
-		Owner: Germany
+		Owner: Greece
 	SpyWaypoint1: waypoint
 		Location: 76,42
 		Owner: Neutral
@@ -1149,7 +1149,7 @@ Actors:
 		SubCell: 1
 	Transport: lst
 		Location: 28,65
-		Owner: Germany
+		Owner: Greece
 	TransportPath1: waypoint
 		Location: 31,65
 		Owner: Neutral
@@ -1163,6 +1163,6 @@ Actors:
 		Location: 47,50
 		Owner: Neutral
 
-Rules: ra|rules/campaign-rules.yaml, ra|rules/campaign-tooltips.yaml, rules.yaml
+Rules: ra|rules/campaign-rules.yaml, ra|rules/campaign-tooltips.yaml, ra|rules/campaign-palettes.yaml, rules.yaml
 
 Notifications: notifications.yaml

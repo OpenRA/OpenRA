@@ -28,7 +28,7 @@ Players:
 		Name: Greece
 		Faction: allies
 		Color: E2E6F5
-		Allies: GoodGuy
+		Allies: GoodGuy, France
 		Enemies: USSR
 	PlayerReference@USSR:
 		Name: USSR
@@ -41,12 +41,18 @@ Players:
 		Color: FE1100
 		LockSpawn: True
 		LockTeam: True
-		Enemies: Greece, GoodGuy
+		Enemies: Greece, GoodGuy, France
 	PlayerReference@GoodGuy:
 		Name: GoodGuy
 		Faction: allies
 		Color: E2E6F5
-		Allies: Greece
+		Allies: Greece, France
+		Enemies: USSR
+	PlayerReference@France:
+		Name: France
+		Faction: allies
+		Color: 0CF7B2
+		Allies: Greece, GoodGuy
 		Enemies: USSR
 
 Actors:
@@ -221,7 +227,7 @@ Actors:
 		Facing: 32
 	Radar: dome
 		Location: 70,45
-		Owner: Greece
+		Owner: France
 	Actor57: fact
 		Location: 67,42
 		Owner: Greece
@@ -596,4 +602,4 @@ Actors:
 		Location: 21,80
 		Owner: Neutral
 
-Rules: ra|rules/campaign-rules.yaml, ra|rules/campaign-tooltips.yaml, rules.yaml
+Rules: ra|rules/campaign-rules.yaml, ra|rules/campaign-tooltips.yaml, ra|rules/campaign-palettes.yaml, rules.yaml

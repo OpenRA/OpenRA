@@ -15,7 +15,7 @@ HuntingUnits = { Hunter1, Hunter2, Hunter3, Hunter4 }
 
 WorldLoaded = function()
 	player = Player.GetPlayer("USSR")
-	germany = Player.GetPlayer("Germany")
+	greece = Player.GetPlayer("Greece")
 
 	Trigger.OnObjectiveAdded(player, function(p, id)
 		Media.DisplayMessage(p.GetObjectiveDescription(id), "New " .. string.lower(p.GetObjectiveType(id)) .. " objective")
@@ -44,14 +44,14 @@ WorldLoaded = function()
 	end)
 
 	Trigger.AfterDelay(0, function()
-		local buildings = Utils.Where(Map.ActorsInWorld, function(self) return self.Owner == germany and self.HasProperty("StartBuildingRepairs") end)
+		local buildings = Utils.Where(Map.ActorsInWorld, function(self) return self.Owner == greece and self.HasProperty("StartBuildingRepairs") end)
 		Utils.Do(buildings, function(actor)
 			Trigger.OnDamaged(actor, function(building, attacker)
-				if building.Owner == germany and building.Health < building.MaxHealth * 0.8 then
+				if building.Owner == greece and building.Health < building.MaxHealth * 0.8 then
 					building.StartBuildingRepairs()
 					if attacker.Type ~= "yak" and not AlreadyHunting then
 						AlreadyHunting = true
-						Utils.Do(germany.GetGroundAttackers(), function(unit)
+						Utils.Do(greece.GetGroundAttackers(), function(unit)
 							Trigger.OnIdle(unit, unit.Hunt)
 						end)
 					end
@@ -130,7 +130,7 @@ WorldLoaded = function()
 end
 
 Tick = function()
-	if germany.HasNoRequiredUnits() then
+	if greece.HasNoRequiredUnits() then
 		player.MarkCompletedObjective(CommandCenterIntact)
 		player.MarkCompletedObjective(DestroyAllAllied)
 	end
@@ -139,7 +139,7 @@ Tick = function()
 		player.MarkFailedObjective(DestroyAllAllied)
 	end
 
-	if germany.Resources > germany.ResourceCapacity / 2 then
-		germany.Resources = germany.ResourceCapacity / 2
+	if greece.Resources > greece.ResourceCapacity / 2 then
+		greece.Resources = greece.ResourceCapacity / 2
 	end
 end

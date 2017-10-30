@@ -30,9 +30,9 @@ Players:
 		Color: FE1100
 		LockSpawn: True
 		LockTeam: True
-		Enemies: Germany
-	PlayerReference@Germany:
-		Name: Germany
+		Enemies: Greece
+	PlayerReference@Greece:
+		Name: Greece
 		Faction: allies
 		Color: E2E6F5
 		Enemies: USSR
@@ -150,106 +150,106 @@ Actors:
 		Owner: USSR
 	Actor35: weap
 		Location: 41,50
-		Owner: Germany
+		Owner: Greece
 	Actor37: fact
 		Location: 39,54
-		Owner: Germany
+		Owner: Greece
 	Actor39: powr
 		Location: 36,55
-		Owner: Germany
+		Owner: Greece
 	Actor40: powr
 		Location: 36,52
-		Owner: Germany
+		Owner: Greece
 	Actor41: tent
 		Location: 41,58
-		Owner: Germany
+		Owner: Greece
 	Actor42: gun
 		Location: 39,61
-		Owner: Germany
+		Owner: Greece
 		Facing: 96
 	Actor44: powr
 		Location: 36,49
-		Owner: Germany
+		Owner: Greece
 	Actor45: gun
 		Location: 50,55
-		Owner: Germany
+		Owner: Greece
 		Facing: 96
 	Actor46: gun
 		Location: 50,59
-		Owner: Germany
+		Owner: Greece
 		Facing: 32
 	Actor47: brl3
 		Location: 38,48
-		Owner: Germany
+		Owner: Greece
 	Actor48: v19
 		Location: 39,48
-		Owner: Germany
+		Owner: Greece
 	Actor49: v19
 		Location: 40,46
-		Owner: Germany
+		Owner: Greece
 	Actor50: brl3
 		Location: 40,47
-		Owner: Germany
+		Owner: Greece
 	Actor51: barl
 		Location: 39,49
-		Owner: Germany
+		Owner: Greece
 	Actor52: brl3
 		Location: 40,48
-		Owner: Germany
+		Owner: Greece
 	Actor53: barl
 		Location: 38,49
-		Owner: Germany
+		Owner: Greece
 	Actor54: brl3
 		Location: 39,50
-		Owner: Germany
+		Owner: Greece
 	Actor55: barl
 		Location: 38,51
-		Owner: Germany
+		Owner: Greece
 	Actor56: barl
 		Location: 38,52
-		Owner: Germany
+		Owner: Greece
 	Actor57: brl3
 		Location: 39,53
-		Owner: Germany
+		Owner: Greece
 	Actor58: barl
 		Location: 38,54
-		Owner: Germany
+		Owner: Greece
 	Actor59: brl3
 		Location: 38,53
-		Owner: Germany
+		Owner: Greece
 	Actor60: brl3
 		Location: 41,45
-		Owner: Germany
+		Owner: Greece
 	Actor61: barl
 		Location: 41,46
-		Owner: Germany
+		Owner: Greece
 	Actor62: brl3
 		Location: 58,54
-		Owner: Germany
+		Owner: Greece
 	Actor63: v19
 		Location: 59,53
-		Owner: Germany
+		Owner: Greece
 	Actor64: barl
 		Location: 58,52
-		Owner: Germany
+		Owner: Greece
 	Actor66: barl
 		Location: 60,53
-		Owner: Germany
+		Owner: Greece
 	Actor67: brl3
 		Location: 58,53
-		Owner: Germany
+		Owner: Greece
 	Actor68: barl
 		Location: 59,51
-		Owner: Germany
+		Owner: Greece
 	Actor70: barl
 		Location: 60,59
-		Owner: Germany
+		Owner: Greece
 	Actor71: v19
 		Location: 61,59
-		Owner: Germany
+		Owner: Greece
 	Actor73: barl
 		Location: 60,61
-		Owner: Germany
+		Owner: Greece
 	Actor74: powr
 		Location: 79,52
 		Owner: USSR
@@ -267,15 +267,15 @@ Actors:
 		Owner: USSR
 	Actor80: jeep
 		Location: 57,43
-		Owner: Germany
+		Owner: Greece
 		Facing: 96
 	Actor81: jeep
 		Location: 46,70
-		Owner: Germany
+		Owner: Greece
 		Facing: 96
 	Actor82: jeep
 		Location: 42,48
-		Owner: Germany
+		Owner: Greece
 		Facing: 32
 	Actor83: e1
 		Location: 70,52
@@ -289,7 +289,7 @@ Actors:
 		SubCell: 3
 	Actor86: e1
 		Location: 44,67
-		Owner: Germany
+		Owner: Greece
 		Facing: 64
 		SubCell: 0
 	Actor87: e1
@@ -339,37 +339,37 @@ Actors:
 		SubCell: 1
 	Actor98: e3
 		Location: 47,44
-		Owner: Germany
+		Owner: Greece
 		Facing: 96
 		SubCell: 0
 	Actor99: e3
 		Location: 49,57
-		Owner: Germany
+		Owner: Greece
 		Facing: 64
 		SubCell: 1
 	Actor100: e3
 		Location: 44,49
-		Owner: Germany
+		Owner: Greece
 		Facing: 96
 		SubCell: 0
 	Actor101: e3
 		Location: 39,51
-		Owner: Germany
+		Owner: Greece
 		Facing: 96
 		SubCell: 4
 	Actor102: e3
 		Location: 43,60
-		Owner: Germany
+		Owner: Greece
 		Facing: 64
 		SubCell: 0
 	Actor103: e3
 		Location: 42,56
-		Owner: Germany
+		Owner: Greece
 		Facing: 64
 		SubCell: 3
 	Actor104: e1
 		Location: 48,43
-		Owner: Germany
+		Owner: Greece
 		Facing: 96
 		SubCell: 1
 	Actor113: e1
@@ -493,19 +493,19 @@ Actors:
 		Owner: USSR
 	AlliedDome: dome
 		Location: 45,50
-		Owner: Germany
+		Owner: Greece
 	AlliedProc: proc
 		Location: 43,53
-		Owner: Germany
+		Owner: Greece
 	Barrel: brl3
 		Location: 60,60
-		Owner: Germany
+		Owner: Greece
 	BridgeBarrel1: brl3
 		Location: 61,58
-		Owner: Germany
+		Owner: Greece
 	BridgeBarrel2: brl3
 		Location: 59,54
-		Owner: Germany
+		Owner: Greece
 	Follower: e1
 		Location: 69,53
 		Owner: USSR
@@ -513,49 +513,49 @@ Actors:
 		SubCell: 2
 	Fleeing1: e1
 		Location: 62,52
-		Owner: Germany
+		Owner: Greece
 		Facing: 64
 		SubCell: 4
 	Fleeing2: e1
 		Location: 63,53
-		Owner: Germany
+		Owner: Greece
 		Facing: 64
 		SubCell: 4
 	Attacker1: e1
 		Location: 59,44
-		Owner: Germany
+		Owner: Greece
 		Facing: 96
 		SubCell: 4
 	Attacker2: e1
 		Location: 60,44
-		Owner: Germany
+		Owner: Greece
 		Facing: 64
 		SubCell: 1
 	Attacker3: e1
 		Location: 59,43
-		Owner: Germany
+		Owner: Greece
 		Facing: 64
 		SubCell: 4
 	Attacker4: e1
 		Location: 59,44
-		Owner: Germany
+		Owner: Greece
 		Facing: 64
 		SubCell: 1
 	Hunter1: e3
 		Location: 74,67
-		Owner: Germany
+		Owner: Greece
 		SubCell: 3
 	Hunter2: e1
 		Location: 73,68
-		Owner: Germany
+		Owner: Greece
 		SubCell: 3
 	Hunter3: e1
 		Location: 72,67
-		Owner: Germany
+		Owner: Greece
 		SubCell: 4
 	Hunter4: e1
 		Location: 54,74
-		Owner: Germany
+		Owner: Greece
 		SubCell: 2
 
-Rules: ra|rules/campaign-rules.yaml, ra|rules/campaign-tooltips.yaml, rules.yaml
+Rules: ra|rules/campaign-rules.yaml, ra|rules/campaign-tooltips.yaml, ra|rules/campaign-palettes.yaml, rules.yaml

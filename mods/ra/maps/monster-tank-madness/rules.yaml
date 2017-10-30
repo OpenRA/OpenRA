@@ -11,6 +11,13 @@ World:
 		WinVideo: sovbatl.vqa
 		LossVideo: sovtstar.vqa
 
+^Palettes:
+	IndexedPlayerPalette:
+		PlayerIndex:
+			BadGuy: 229, 230, 231, 232, 233, 234, 235, 8, 236, 237, 238, 239, 221, 222, 223, 223
+			FriendlyMadTanks: 200, 200, 201, 202, 203, 203, 204, 205, 206, 206, 207, 221, 222, 222, 223, 223
+			Outpost: 128, 129, 130, 131, 132, 133, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143
+
 ^Building:
 	AnnounceOnSeen:
 

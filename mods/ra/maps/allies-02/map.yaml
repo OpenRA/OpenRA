@@ -23,12 +23,12 @@ Players:
 		Name: USSR
 		Faction: soviet
 		Color: FE1100
-		Enemies: Greece, France
-	PlayerReference@France:
-		Name: France
+		Enemies: Greece, England
+	PlayerReference@England:
+		Name: England
 		NonCombatant: True
 		Faction: allies
-		Color: 5CC1A3
+		Color: A1EF8C
 		Allies: Greece
 		Enemies: USSR
 	PlayerReference@Neutral:
@@ -47,7 +47,7 @@ Players:
 		Color: ABB7E4
 		LockSpawn: True
 		LockTeam: True
-		Allies: France
+		Allies: England
 		Enemies: USSR
 
 Actors:
@@ -669,4 +669,4 @@ Actors:
 		Location: 89,51
 		Owner: Neutral
 
-Rules: ra|rules/campaign-rules.yaml, ra|rules/campaign-tooltips.yaml, rules.yaml
+Rules: ra|rules/campaign-rules.yaml, ra|rules/campaign-tooltips.yaml, ra|rules/campaign-palettes.yaml, rules.yaml

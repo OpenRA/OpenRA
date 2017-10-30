@@ -8,6 +8,12 @@ World:
 	MissionData:
 		Briefing: INCOMING REPORT:\n\nCommander! The Soviets have rendered us useless...\nReports indicate Soviet reinforcements are coming to finish us off... The situation looks bleak...\n
 
+^Palettes:
+	IndexedPlayerPalette:
+		PlayerIndex:
+			Soviets: 229, 230, 231, 232, 233, 234, 235, 8, 236, 237, 238, 239, 221, 222, 223, 223
+			Allies: 224, 224, 225, 225, 226, 184, 185, 186, 187, 188, 188, 189, 190, 190, 191, 191
+
 SovietSquad:
 	Inherits: powerproxy.paratroopers
 	ParatroopersPower:

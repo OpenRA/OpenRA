@@ -84,7 +84,9 @@ APC:
 
 DOME:
 	ExternalCondition@lua:
-		Condition: captured
+		Condition: french
+	WithColoredOverlay@IDISABLE:
+		RequiresCondition: !french && disabled
 
 powerproxy.paratroopers:
 	ParatroopersPower:
