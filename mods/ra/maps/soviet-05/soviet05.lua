@@ -223,6 +223,7 @@ WorldLoaded = function()
 		end
 	end)
 
+	Radar.GrantCondition("french")
 	Trigger.OnCapture(Radar, function()
 		HoldObjective = player.AddPrimaryObjective("Defend the Radar Dome.")
 		player.MarkCompletedObjective(CaptureObjective)
@@ -234,7 +235,7 @@ WorldLoaded = function()
 
 		Reinforcements.Reinforce(Greece, ArmorReinfGreece, AlliedCrossroadsToRadarPath , 0, IdleHunt)
 
-		Radar.GrantCondition("captured")
+		Radar.RevokeCondition(1)
 		Trigger.ClearAll(Radar)
 		Trigger.AfterDelay(0, function()
 			Trigger.OnRemovedFromWorld(Radar, function()

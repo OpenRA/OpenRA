@@ -38,6 +38,10 @@ Players:
 		LockColor: True
 		Color: E2E6F5
 		Enemies: USSR
+	PlayerReference@England:
+		Name: England
+		Color: A1EF8C
+		Faction: allies
 
 Actors:
 	Actor0: cycl
@@ -1032,7 +1036,7 @@ Actors:
 		Owner: USSR
 	Jeep: jeep.mission
 		Location: 101,97
-		Owner: Neutral
+		Owner: England
 		Facing: 32
 	Heavy1: 3tnk
 		Location: 96,66
@@ -1202,6 +1206,6 @@ Actors:
 		Location: 83,94
 		Owner: Neutral
 
-Rules: ra|rules/campaign-rules.yaml, ra|rules/campaign-tooltips.yaml, rules.yaml
+Rules: ra|rules/campaign-rules.yaml, ra|rules/campaign-tooltips.yaml, ra|rules/campaign-palettes.yaml, rules.yaml
 
 Weapons: weapons.yaml
