@@ -40,6 +40,10 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("When this actor dies should all of its passengers be unloaded?")]
 		public readonly bool EjectOnDeath = false;
 
+		[Desc("If the actor is on air, drop passengers with parachute instead of landing.",
+			"This requires `ParaDrop` and `Aircraft` traits on actor to work.")]
+		public readonly bool UnloadWithParachute = false;
+
 		[Desc("Terrain types that this actor is allowed to eject actors onto. Leave empty for all terrain types.")]
 		public readonly HashSet<string> UnloadTerrainTypes = new HashSet<string>();
 
@@ -88,6 +92,7 @@ namespace OpenRA.Mods.Common.Traits
 		int totalWeight = 0;
 		int reservedWeight = 0;
 		Aircraft aircraft;
+		ParaDrop paradrop;
 		ConditionManager conditionManager;
 		int loadingToken = ConditionManager.InvalidConditionToken;
 		Stack<int> loadedTokens = new Stack<int>();
@@ -141,6 +146,7 @@ namespace OpenRA.Mods.Common.Traits
 		void INotifyCreated.Created(Actor self)
 		{
 			aircraft = self.TraitOrDefault<Aircraft>();
+			paradrop = self.TraitOrDefault<ParaDrop>();
 			conditionManager = self.TraitOrDefault<ConditionManager>();
 		}
 
@@ -172,11 +178,23 @@ namespace OpenRA.Mods.Common.Traits
 				if (!CanUnload())
 					return;
 
+				var inAir = !self.IsAtGroundLevel();
+
 				Unloading = true;
 				self.CancelActivity();
-				if (aircraft != null)
+				if (paradrop != null && aircraft != null && Info.UnloadWithParachute && inAir)
+				{
+					self.QueueActivity(new ParadropCargo(false));
+					if (!aircraft.Info.CanHover)
+						self.QueueActivity(new FlyCircle(self));
+				}
+				else if (aircraft != null)
+				{
 					self.QueueActivity(new HeliLand(self, true));
-				self.QueueActivity(new UnloadCargo(self, true));
+					self.QueueActivity(new UnloadCargo(self, true));
+				}
+				else
+					self.QueueActivity(new UnloadCargo(self, true));
 			}
 		}
 

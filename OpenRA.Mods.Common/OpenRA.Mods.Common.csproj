@@ -107,6 +107,7 @@
     <Compile Include="Activities\Move\MoveAdjacentTo.cs" />
     <Compile Include="Activities\Move\MoveWithinRange.cs" />
     <Compile Include="Activities\Parachute.cs" />
+    <Compile Include="Activities\ParadropCargo.cs" />
     <Compile Include="Activities\Rearm.cs" />
     <Compile Include="Activities\RemoveSelf.cs" />
     <Compile Include="Activities\Repair.cs" />
