@@ -79,6 +79,63 @@ BADR.Bomber:
 	GivesExperience:
 		Experience: 1000
 
+BADR.Transport:
+	Inherits: ^Plane
+	Buildable:
+		Queue: Aircraft
+		BuildAtProductionType: Plane
+		BuildPaletteOrder: 15
+		Prerequisites: ~afld, ~techlevel.medium
+		Description: Fast Infantry Transport plane.\n  Unarmed
+	Valued:
+		Cost: 900
+	ParaDrop:
+		DropRange: 4c0
+	Tooltip:
+		Name: Badger Cargo Plane
+	Health:
+		HP: 300
+	Armor:
+		Type: Light
+	Aircraft:
+		RearmBuildings: afld
+		CruiseAltitude: 2560
+		TurnSpeed: 5
+		Speed: 149
+		Repulsable: False
+		MaximumPitch: 56
+		LandableTerrainTypes: Clear,Rough,Road,Ore,Beach,Gems
+		AltitudeVelocity: 0c58
+		TakeOffOnCreation: false
+	RevealsShroud:
+		Range: 8c0
+		Type: GroundPosition
+		RevealGeneratedShroud: False
+	RevealsShroud@GAPGEN:
+		Range: 6c0
+		Type: GroundPosition
+	Selectable:
+		Bounds: 44,32,0,-8
+	Cargo:
+		Types: Infantry
+		MaxWeight: 8
+		PipCount: 8
+		UnloadWithParachute: true
+	Contrail@1:
+		Offset: -432,560,0
+	Contrail@2:
+		Offset: -432,-560,0
+	SpawnActorOnDeath:
+		Actor: BADR.Husk
+	SmokeTrailWhenDamaged@0:
+		Offset: -432,560,0
+		Interval: 2
+	SmokeTrailWhenDamaged@1:
+		Offset: -432,-560,0
+		Interval: 2
+	RenderSprites:
+		Image: BADR
+
 MIG:
 	Inherits: ^Plane
 	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
@@ -211,6 +268,7 @@ YAK:
 
 TRAN:
 	Inherits: ^Helicopter
+	ParaDrop:
 	Buildable:
 		Queue: Aircraft
 		BuildAtProductionType: Helicopter
@@ -258,6 +316,7 @@ TRAN:
 		Types: Infantry
 		MaxWeight: 8
 		PipCount: 8
+		UnloadWithParachute: true
 	SpawnActorOnDeath:
 		Actor: TRAN.Husk
 	SelectionDecorations:
@@ -300,7 +359,7 @@ HELI:
 		FacingTolerance: 20
 	Aircraft:
 		RearmBuildings: hpad
-		LandWhenIdle: false
+		LandWhenIdle: true
 		InitialFacing: 224
 		TurnSpeed: 4
 		Speed: 149
@@ -330,6 +389,7 @@ HELI:
 HIND:
 	Inherits: ^Helicopter
 	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
+	ParaDrop:
 	Buildable:
 		Queue: Aircraft
 		BuildAtProductionType: Helicopter
@@ -370,6 +430,7 @@ HIND:
 		InitialFacing: 224
 		TurnSpeed: 4
 		Speed: 112
+		LandableTerrainTypes: Clear,Rough,Road,Ore,Beach,Gems
 	AutoTarget:
 		InitialStance: HoldFire
 		InitialStanceAI: HoldFire
@@ -384,6 +445,10 @@ HIND:
 		PipCount: 6
 		ReloadDelay: 8
 		AmmoCondition: ammo
+	Cargo:
+		Types: Infantry
+		MaxWeight: 8
+		PipCount: 8
 	SelectionDecorations:
 		VisualBounds: 38,32
 	WithMuzzleOverlay:
