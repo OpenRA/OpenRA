@@ -28,7 +28,7 @@ namespace OpenRA.Mods.D2k.Traits
 		public D2kEditorResourceLayer(Actor self)
 			: base(self) { }
 
-		public override CellContents UpdateDirtyTile(CPos c)
+		protected override EditorCellContents UpdateDirtyTile(CPos c)
 		{
 			var t = Tiles[c];
 
