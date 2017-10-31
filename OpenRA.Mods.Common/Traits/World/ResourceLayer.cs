@@ -33,7 +33,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		protected readonly CellLayer<CellContents> Content;
 
-		public event Action<CPos> CellChanged;
+		public event Action<CPos, ResourceType> CellChanged;
 
 		public ResourceLayer(Actor self)
 		{
@@ -150,7 +150,7 @@ namespace OpenRA.Mods.Common.Traits
 			Content[p] = cell;
 
 			if (CellChanged != null)
-				CellChanged(p);
+				CellChanged(p, cell.Type);
 		}
 
 		public bool IsFull(CPos cell)
@@ -173,7 +173,7 @@ namespace OpenRA.Mods.Common.Traits
 				Content[cell] = c;
 
 			if (CellChanged != null)
-				CellChanged(cell);
+				CellChanged(cell, Content[cell].Type);
 
 			return c.Type;
 		}
@@ -189,7 +189,7 @@ namespace OpenRA.Mods.Common.Traits
 			world.Map.CustomTerrain[cell] = byte.MaxValue;
 
 			if (CellChanged != null)
-				CellChanged(cell);
+				CellChanged(cell, Content[cell].Type);
 		}
 
 		public CellContents GetResourceContent(CPos cell) { return Content[cell]; }

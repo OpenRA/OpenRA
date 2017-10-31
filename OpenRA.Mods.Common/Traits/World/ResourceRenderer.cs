@@ -46,12 +46,7 @@ namespace OpenRA.Mods.Common.Traits
 			Info = info;
 
 			ResourceLayer = self.Trait<ResourceLayer>();
-			ResourceLayer.CellChanged += cell =>
-			{
-				var type = ResourceLayer.GetResourceType(cell);
-				if (type == null || info.RenderTypes.Contains(type.Info.Type))
-					dirty.Add(cell);
-			};
+			ResourceLayer.CellChanged += AddDirtyCell;
 
 			RenderContent = new CellLayer<CellContents>(self.World.Map);
 			RenderContent.CellEntryChanged += UpdateSpriteLayers;
@@ -112,6 +107,12 @@ namespace OpenRA.Mods.Common.Traits
 				else
 					kv.Value.Update(cell, null);
 			}
+		}
+
+		void AddDirtyCell(CPos cell, ResourceType resType)
+		{
+			if (resType == null || Info.RenderTypes.Contains(resType.Info.Type))
+				dirty.Add(cell);
 		}
 
 		void IRenderOverlay.Render(WorldRenderer wr)
@@ -175,6 +176,7 @@ namespace OpenRA.Mods.Common.Traits
 				kv.Dispose();
 
 			RenderContent.CellEntryChanged -= UpdateSpriteLayers;
+			ResourceLayer.CellChanged -= AddDirtyCell;
 
 			disposed = true;
 		}
