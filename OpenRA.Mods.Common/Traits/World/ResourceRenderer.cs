@@ -86,7 +86,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		void UpdateSpriteLayers(CPos cell)
+		protected void UpdateSpriteLayers(CPos cell)
 		{
 			var type = ResourceLayer.GetResourceType(cell);
 			if (type != null && !Info.RenderTypes.Contains(type.Info.Type))

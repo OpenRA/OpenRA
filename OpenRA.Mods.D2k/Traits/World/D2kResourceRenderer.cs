@@ -139,41 +139,49 @@ namespace OpenRA.Mods.D2k.Traits
 			return ret;
 		}
 
-		void UpdateRenderedTileInner(CPos p)
+		void UpdateRenderedTileInner(CPos cell)
 		{
-			if (!RenderContent.Contains(p))
-				return;
+			var content = ResourceLayer.GetResourceContent(cell);
+			var density = content.Density;
+			var type = content.Type;
+			var renderContent = RenderContent[cell];
 
-			var type = ResourceLayer.GetResourceType(p);
-			if (type != null && !Info.RenderTypes.Contains(type.Info.Type))
-				return;
-
-			var t = RenderContent[p];
-
-			var density = ResourceLayer.GetResourceDensity(p);
-			if (density > 0)
+			if (type != null)
 			{
-				var clear = FindClearSides(type, p);
+				// The call chain for this method (that starts with AddDirtyCell()) guarantees
+				// that the new content type would still be suitable for this renderer,
+				// but that is a bit too fragile to rely on in case the code starts changing.
+				if (!Info.RenderTypes.Contains(type.Info.Type))
+					return;
+
+				// Since renderContent is not nullable it will always have a value, but empty.
+				// Also it is possible to have a frozen cell with resource X that upon revelaing turns out has changed to resource Y.
+				if (renderContent.Variant == null || renderContent.Type != type)
+					renderContent.Variant = ChooseRandomVariant(type);
+
+				var clear = FindClearSides(type, cell);
 				int index;
 
 				if (clear == ClearSides.None)
 				{
-					if (t.Variant == null)
-						t.Variant = ChooseRandomVariant(type);
+					var sprites = Variants[renderContent.Variant];
+					var frame = density > ResourceLayer.GetMaxResourceDensity(cell) / 2 ? 1 : 0;
 
-					var sprites = Variants[t.Variant];
-					var frame = density > ResourceLayer.GetMaxResourceDensity(p) / 2 ? 1 : 0;
-					t.Sprite = type.Variants.First().Value[sprites[frame]];
+					renderContent.Sprite = type.Variants.First().Value[sprites[frame]];
+					renderContent.Type = type;
 				}
 				else if (SpriteMap.TryGetValue(clear, out index))
-					t.Sprite = type.Variants.First().Value[index];
+				{
+					renderContent.Sprite = type.Variants.First().Value[index];
+					renderContent.Type = type;
+				}
 				else
-					t.Sprite = null;
+					throw new InvalidOperationException("Couldn't find a suitable sprite??");	// TODO: Handle this better?
 			}
 			else
-				t.Sprite = null;
+				renderContent = RendererCellContents.Empty;
 
-			RenderContent[p] = t;
+			RenderContent[cell] = renderContent;
 		}
 
 		protected override void UpdateRenderedSprite(CPos p)
