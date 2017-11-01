@@ -15,7 +15,7 @@ using System.Linq;
 
 namespace OpenRA.Traits
 {
-	public enum TargetType { Invalid, Actor, Terrain, FrozenActor }
+	public enum TargetType : byte { Invalid, Actor, Terrain, FrozenActor }
 	public struct Target
 	{
 		public static readonly Target[] None = { };
@@ -34,6 +34,10 @@ namespace OpenRA.Traits
 			return new Target { pos = w.Map.CenterOfSubCell(c, subCell), cell = c, type = TargetType.Terrain };
 		}
 
+		/// <summary>
+		/// DEPRECATED: Use Order.Target instead.
+		/// This method is kept to maintain compatibility with legacy code that may not understand TargetType.FrozenActor.
+		/// </summary>
 		public static Target FromOrder(World w, Order o)
 		{
 			return o.TargetActor != null

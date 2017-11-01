@@ -53,6 +53,12 @@ Background@LOBBY_OPTIONS_BIN:
 					Height: 20
 					Font: Regular
 					Text: Debug Menu
+				Checkbox@BUILDRADIUS_CHECKBOX:
+					Y: 70
+					Width: 150
+					Height: 20
+					Font: Regular
+					Text: Limit ConYard Area
 				Label@DIFFICULTY_DESC:
 					X: PARENT_RIGHT - WIDTH - 165
 					Y: 70
