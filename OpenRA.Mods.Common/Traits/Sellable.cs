@@ -82,7 +82,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public bool IsTooltipVisible(Player forPlayer)
 		{
-			if (self.World.OrderGenerator is SellOrderGenerator)
+			if (!IsTraitDisabled && self.World.OrderGenerator is SellOrderGenerator)
 				return forPlayer == self.Owner;
 			return false;
 		}
