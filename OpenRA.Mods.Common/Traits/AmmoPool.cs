@@ -50,7 +50,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int ReloadDelay = 50;
 
 		[GrantedConditionReference]
-		[Desc("The condition to grant to self if the pool has any ammo.")]
+		[Desc("The condition to grant to self for each ammo point in this pool.")]
 		public readonly string AmmoCondition = null;
 
 		public object Create(ActorInitializer init) { return new AmmoPool(init.Self, this); }
@@ -59,8 +59,8 @@ namespace OpenRA.Mods.Common.Traits
 	public class AmmoPool : INotifyCreated, INotifyAttack, IPips, ISync
 	{
 		public readonly AmmoPoolInfo Info;
+		readonly Stack<int> tokens = new Stack<int>();
 		ConditionManager conditionManager;
-		int token = ConditionManager.InvalidConditionToken;
 
 		bool selfReloads;
 
@@ -106,6 +106,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			conditionManager = self.TraitOrDefault<ConditionManager>();
 			selfReloads = self.TraitsImplementing<ReloadAmmoPool>().Any(r => r.Info.AmmoPool == Info.Name && r.Info.RequiresCondition == null);
+
 			UpdateCondition(self);
 
 			// HACK: Temporarily needed until Rearm activity is gone for good
@@ -125,11 +126,11 @@ namespace OpenRA.Mods.Common.Traits
 			if (conditionManager == null || string.IsNullOrEmpty(Info.AmmoCondition))
 				return;
 
-			if (HasAmmo() && token == ConditionManager.InvalidConditionToken)
-				token = conditionManager.GrantCondition(self, Info.AmmoCondition);
+			while (currentAmmo > tokens.Count && tokens.Count < Info.Ammo)
+				tokens.Push(conditionManager.GrantCondition(self, Info.AmmoCondition));
 
-			if (!HasAmmo() && token != ConditionManager.InvalidConditionToken)
-				token = conditionManager.RevokeCondition(self, token);
+			while (currentAmmo < tokens.Count && tokens.Count > 0)
+				conditionManager.RevokeCondition(self, tokens.Pop());
 		}
 
 		public IEnumerable<PipType> GetPips(Actor self)
