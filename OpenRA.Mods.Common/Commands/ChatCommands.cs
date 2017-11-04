@@ -36,7 +36,7 @@ namespace OpenRA.Mods.Common.Commands
 				var command = Commands.FirstOrDefault(x => x.Key == name);
 
 				if (command.Value != null)
-					command.Value.InvokeCommand(name.ToLowerInvariant(), message.Substring(1 + name.Length));
+					command.Value.InvokeCommand(name.ToLowerInvariant(), message.Substring(1 + name.Length).Trim());
 				else
 					Game.Debug("{0} is not a valid command.", name);
 
