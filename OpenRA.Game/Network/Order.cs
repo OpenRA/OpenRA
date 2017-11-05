@@ -140,7 +140,7 @@ namespace OpenRA
 						if (world == null)
 							return new Order(order, null, target, targetString, queued, extraLocation, extraData);
 
-						if (subject == null)
+						if (subject == null && subjectId != uint.MaxValue)
 							return null;
 
 						return new Order(order, subject, target, targetString, queued, extraLocation, extraData);
