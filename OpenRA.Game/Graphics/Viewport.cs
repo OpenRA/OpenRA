@@ -48,10 +48,13 @@ namespace OpenRA.Graphics
 
 		public WPos CenterPosition { get { return worldRenderer.ProjectedPosition(CenterLocation); } }
 
-		public Rectangle Rectangle { get { return new Rectangle(TopLeft, new Size(viewportSize.X, viewportSize.Y)); } }
-		public int2 TopLeft { get { return CenterLocation - viewportSize / 2; } }
-		public int2 BottomRight { get { return CenterLocation + viewportSize / 2; } }
-		int2 viewportSize;
+		public int2 ViewportSize { get; private set; }
+
+		public int2 TopLeft { get { return CenterLocation - ViewportSize / 2; } }
+
+		public int2 BottomRight { get { return CenterLocation + ViewportSize / 2; } }
+
+		public Rectangle Rectangle { get { return new Rectangle(TopLeft, new Size(ViewportSize.X, ViewportSize.Y)); } }
 
 		public bool IsMovementLocked { get; set; }
 		public bool IsZoomingLocked { get; set; }
@@ -82,7 +85,7 @@ namespace OpenRA.Graphics
 			private set
 			{
 				zoom = value;
-				viewportSize = (1f / zoom * new float2(Game.Renderer.NativeResolution)).ToInt2();
+				ViewportSize = (1f / zoom * new float2(Game.Renderer.NativeResolution)).ToInt2();
 				cellsDirty = true;
 				allCellsDirty = true;
 			}

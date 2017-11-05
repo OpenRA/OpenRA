@@ -67,6 +67,8 @@ namespace OpenRA
 		public int SpawnPoint;
 		public bool HasObjectives = false;
 		public bool Spectating;
+		public int2 ViewportTopLeft;
+		public int2 ViewportBottomRight;
 
 		public World World { get; private set; }
 

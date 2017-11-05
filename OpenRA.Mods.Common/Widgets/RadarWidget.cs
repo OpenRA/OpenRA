@@ -345,17 +345,16 @@ namespace OpenRA.Mods.Common.Widgets
 			if (shroud != null)
 				rsr.DrawSprite(shroudSprite, o, s);
 
-			// Draw viewport rect
-			if (hasRadar)
-			{
-				var tl = CellToMinimapPixel(world.Map.CellContaining(worldRenderer.ProjectedPosition(worldRenderer.Viewport.TopLeft)));
-				var br = CellToMinimapPixel(world.Map.CellContaining(worldRenderer.ProjectedPosition(worldRenderer.Viewport.BottomRight)));
+			if (!hasRadar)
+				return;
 
-				Game.Renderer.EnableScissor(mapRect);
-				DrawRadarPings();
-				Game.Renderer.RgbaColorRenderer.DrawRect(tl, br, 1, Color.White);
-				Game.Renderer.DisableScissor();
-			}
+			Game.Renderer.EnableScissor(mapRect);
+
+			DrawRadarPings();
+			DrawPlayerViewport();
+			DrawOtherPlayersViewports();
+
+			Game.Renderer.DisableScissor();
 		}
 
 		void DrawRadarPings()
@@ -369,6 +368,32 @@ namespace OpenRA.Mods.Common.Widgets
 				var pingCell = world.Map.CellContaining(radarPing.Position);
 				var points = radarPing.Points(CellToMinimapPixel(pingCell)).ToArray();
 				Game.Renderer.RgbaColorRenderer.DrawPolygon(points, 2, c);
+			}
+		}
+
+		void DrawPlayerViewport()
+		{
+			var tl = CellToMinimapPixel(world.Map.CellContaining(worldRenderer.ProjectedPosition(worldRenderer.Viewport.TopLeft)));
+			var br = CellToMinimapPixel(world.Map.CellContaining(worldRenderer.ProjectedPosition(worldRenderer.Viewport.BottomRight)));
+			Game.Renderer.RgbaColorRenderer.DrawRect(tl, br, 1, Color.White);
+		}
+
+		void DrawOtherPlayersViewports()
+		{
+			// Only draw for spectators.
+			if (world.LocalPlayer != null)
+				return;
+
+			// Draw the viewports of all real players unless a specific player's vision is selected.
+			var players = world.RenderPlayer != null && world.RenderPlayer.Playable
+				? new[] { world.RenderPlayer }
+				: world.Players.Where(p => !p.IsBot && p.Playable);
+
+			foreach (var player in players)
+			{
+				var tl2 = CellToMinimapPixel(world.Map.CellContaining(worldRenderer.ProjectedPosition(player.ViewportTopLeft)));
+				var br2 = CellToMinimapPixel(world.Map.CellContaining(worldRenderer.ProjectedPosition(player.ViewportBottomRight)));
+				Game.Renderer.RgbaColorRenderer.DrawRect(tl2, br2, 1, player.Color);
 			}
 		}
 
