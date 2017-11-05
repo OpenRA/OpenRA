@@ -26,9 +26,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		public MapEditorLogic(Widget widget, World world, WorldRenderer worldRenderer, Dictionary<string, MiniYaml> logicArgs)
 		{
 			MiniYaml yaml;
-			var changeZoomKey = new NamedHotkey();
+			var changeZoomKey = new HotkeyReference();
 			if (logicArgs.TryGetValue("ChangeZoomKey", out yaml))
-				changeZoomKey = new NamedHotkey(yaml.Value, Game.Settings.Keys);
+				changeZoomKey = new HotkeyReference(yaml.Value, Game.Settings.Keys);
 
 			var editorViewport = widget.Get<EditorViewportControllerWidget>("MAP_EDITOR");
 

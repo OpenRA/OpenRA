@@ -27,7 +27,7 @@ namespace OpenRA.Mods.Common.Widgets
 	{
 		public ActorInfo Actor;
 		public string Name;
-		public NamedHotkey Hotkey;
+		public HotkeyReference Hotkey;
 		public Sprite Sprite;
 		public PaletteReference Palette;
 		public PaletteReference IconClockPalette;
@@ -86,7 +86,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 		Lazy<TooltipContainerWidget> tooltipContainer;
 		ProductionQueue currentQueue;
-		NamedHotkey[] hotkeys;
+		HotkeyReference[] hotkeys;
 
 		public ProductionQueue CurrentQueue
 		{
@@ -146,7 +146,7 @@ namespace OpenRA.Mods.Common.Widgets
 			base.Initialize(args);
 
 			hotkeys = Exts.MakeArray(HotkeyCount,
-				i => new NamedHotkey(HotkeyPrefix + (i + 1).ToString("D2"), Game.Settings.Keys));
+				i => new HotkeyReference(HotkeyPrefix + (i + 1).ToString("D2"), Game.Settings.Keys));
 		}
 
 		public void ScrollDown()

@@ -45,7 +45,7 @@ namespace OpenRA.Mods.Common.Lint
 			// Build the list of widget keys to validate
 			var checkWidgetFields = modData.ObjectCreator.GetTypesImplementing<Widget>()
 				.SelectMany(w => w.GetFields()
-					.Where(f => f.FieldType == typeof(NamedHotkey))
+					.Where(f => f.FieldType == typeof(HotkeyReference))
 					.Select(f => Pair.New(w.Name.Substring(0, w.Name.Length - 6), f.Name)))
 				.ToArray();
 

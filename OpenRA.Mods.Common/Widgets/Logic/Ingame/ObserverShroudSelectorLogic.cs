@@ -26,8 +26,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly IOrderedEnumerable<IGrouping<int, CameraOption>> teams;
 		readonly bool limitViews;
 
-		readonly NamedHotkey combinedViewKey = new NamedHotkey();
-		readonly NamedHotkey worldViewKey = new NamedHotkey();
+		readonly HotkeyReference combinedViewKey = new HotkeyReference();
+		readonly HotkeyReference worldViewKey = new HotkeyReference();
 
 		CameraOption selected;
 
@@ -67,10 +67,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			MiniYaml yaml;
 			var ks = Game.Settings.Keys;
 			if (logicArgs.TryGetValue("CombinedViewKey", out yaml))
-				combinedViewKey = new NamedHotkey(yaml.Value, ks);
+				combinedViewKey = new HotkeyReference(yaml.Value, ks);
 
 			if (logicArgs.TryGetValue("WorldViewKey", out yaml))
-				worldViewKey = new NamedHotkey(yaml.Value, ks);
+				worldViewKey = new HotkeyReference(yaml.Value, ks);
 
 			limitViews = world.Map.Visibility.HasFlag(MapVisibility.MissionSelector);
 

@@ -52,9 +52,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			MiniYaml yaml;
 			var ks = Game.Settings.Keys;
 			string[] keyNames = Enum.GetNames(typeof(ObserverStatsPanel));
-			var statsHotkeys = new NamedHotkey[keyNames.Length];
+			var statsHotkeys = new HotkeyReference[keyNames.Length];
 			for (var i = 0; i < keyNames.Length; i++)
-				statsHotkeys[i] = logicArgs.TryGetValue("Statistics" + keyNames[i] + "Key", out yaml) ? new NamedHotkey(yaml.Value, ks) : new NamedHotkey();
+				statsHotkeys[i] = logicArgs.TryGetValue("Statistics" + keyNames[i] + "Key", out yaml) ? new HotkeyReference(yaml.Value, ks) : new HotkeyReference();
 
 			players = world.Players.Where(p => !p.NonCombatant);
 
