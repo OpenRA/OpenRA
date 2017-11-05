@@ -23,8 +23,8 @@ namespace OpenRA.Mods.Common.Widgets
 {
 	public class WorldInteractionControllerWidget : Widget
 	{
-		public readonly NamedHotkey SelectAllKey = new NamedHotkey();
-		public readonly NamedHotkey SelectSameTypeKey = new NamedHotkey();
+		public readonly HotkeyReference SelectAllKey = new HotkeyReference();
+		public readonly HotkeyReference SelectSameTypeKey = new HotkeyReference();
 
 		protected readonly World World;
 		readonly WorldRenderer worldRenderer;

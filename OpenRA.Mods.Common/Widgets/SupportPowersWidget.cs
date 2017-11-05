@@ -52,7 +52,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public SupportPowerIcon TooltipIcon { get; private set; }
 		Lazy<TooltipContainerWidget> tooltipContainer;
-		NamedHotkey[] hotkeys;
+		HotkeyReference[] hotkeys;
 
 		Rectangle eventBounds;
 		public override Rectangle EventBounds { get { return eventBounds; } }
@@ -98,7 +98,7 @@ namespace OpenRA.Mods.Common.Widgets
 			base.Initialize(args);
 
 			hotkeys = Exts.MakeArray(HotkeyCount,
-				i => new NamedHotkey(HotkeyPrefix + (i + 1).ToString("D2"), Game.Settings.Keys));
+				i => new HotkeyReference(HotkeyPrefix + (i + 1).ToString("D2"), Game.Settings.Keys));
 		}
 
 		public class SupportPowerIcon
@@ -108,7 +108,7 @@ namespace OpenRA.Mods.Common.Widgets
 			public Sprite Sprite;
 			public PaletteReference Palette;
 			public PaletteReference IconClockPalette;
-			public NamedHotkey Hotkey;
+			public HotkeyReference Hotkey;
 		}
 
 		public void RefreshIcons()

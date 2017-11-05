@@ -22,9 +22,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var ks = Game.Settings.Keys;
 			MiniYaml yaml;
 
-			var namedKey = new NamedHotkey();
+			var namedKey = new HotkeyReference();
 			if (logicArgs.TryGetValue(argName, out yaml))
-				namedKey = new NamedHotkey(yaml.Value, ks);
+				namedKey = new HotkeyReference(yaml.Value, ks);
 
 			var keyhandler = widget.Get<LogicKeyListenerWidget>(parentName);
 			keyhandler.AddHandler(e =>

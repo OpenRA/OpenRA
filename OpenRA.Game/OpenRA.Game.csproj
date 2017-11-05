@@ -225,7 +225,7 @@
     <Compile Include="Input\InputHandler.cs" />
     <Compile Include="Input\Keycode.cs" />
     <Compile Include="Input\Hotkey.cs" />
-    <Compile Include="Input\NamedHotkey.cs" />
+    <Compile Include="Input\HotkeyReference.cs" />
     <Compile Include="Graphics\PlatformInterfaces.cs" />
     <Compile Include="Sound\Sound.cs" />
     <Compile Include="Sound\SoundDevice.cs" />

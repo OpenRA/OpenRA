@@ -29,21 +29,21 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var ks = Game.Settings.Keys;
 			MiniYaml yaml;
 
-			var stopKey = new NamedHotkey();
+			var stopKey = new HotkeyReference();
 			if (logicArgs.TryGetValue("StopMusicKey", out yaml))
-				stopKey = new NamedHotkey(yaml.Value, ks);
+				stopKey = new HotkeyReference(yaml.Value, ks);
 
-			var pauseKey = new NamedHotkey();
+			var pauseKey = new HotkeyReference();
 			if (logicArgs.TryGetValue("PauseMusicKey", out yaml))
-				pauseKey = new NamedHotkey(yaml.Value, ks);
+				pauseKey = new HotkeyReference(yaml.Value, ks);
 
-			var prevKey = new NamedHotkey();
+			var prevKey = new HotkeyReference();
 			if (logicArgs.TryGetValue("PrevMusicKey", out yaml))
-				prevKey = new NamedHotkey(yaml.Value, ks);
+				prevKey = new HotkeyReference(yaml.Value, ks);
 
-			var nextKey = new NamedHotkey();
+			var nextKey = new HotkeyReference();
 			if (logicArgs.TryGetValue("NextMusicKey", out yaml))
-				nextKey = new NamedHotkey(yaml.Value, ks);
+				nextKey = new HotkeyReference(yaml.Value, ks);
 
 			var keyhandler = widget.Get<LogicKeyListenerWidget>("GLOBAL_KEYHANDLER");
 			keyhandler.AddHandler(e =>

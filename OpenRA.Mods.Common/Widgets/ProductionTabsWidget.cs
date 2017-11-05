@@ -69,8 +69,8 @@ namespace OpenRA.Mods.Common.Widgets
 		public readonly int TabWidth = 30;
 		public readonly int ArrowWidth = 20;
 
-		public readonly NamedHotkey PreviousProductionTabKey = new NamedHotkey();
-		public readonly NamedHotkey NextProductionTabKey = new NamedHotkey();
+		public readonly HotkeyReference PreviousProductionTabKey = new HotkeyReference();
+		public readonly HotkeyReference NextProductionTabKey = new HotkeyReference();
 
 		public readonly Dictionary<string, ProductionTabGroup> Groups;
 

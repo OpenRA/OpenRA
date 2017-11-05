@@ -26,15 +26,15 @@ namespace OpenRA.Mods.Common.Widgets
 	{
 		readonly ResourceLayer resourceLayer;
 
-		public readonly NamedHotkey ScrollUpKey = new NamedHotkey();
-		public readonly NamedHotkey ScrollDownKey = new NamedHotkey();
-		public readonly NamedHotkey ScrollLeftKey = new NamedHotkey();
-		public readonly NamedHotkey ScrollRightKey = new NamedHotkey();
+		public readonly HotkeyReference ScrollUpKey = new HotkeyReference();
+		public readonly HotkeyReference ScrollDownKey = new HotkeyReference();
+		public readonly HotkeyReference ScrollLeftKey = new HotkeyReference();
+		public readonly HotkeyReference ScrollRightKey = new HotkeyReference();
 
-		public readonly NamedHotkey JumpToTopEdgeKey = new NamedHotkey();
-		public readonly NamedHotkey JumpToBottomEdgeKey = new NamedHotkey();
-		public readonly NamedHotkey JumpToLeftEdgeKey = new NamedHotkey();
-		public readonly NamedHotkey JumpToRightEdgeKey = new NamedHotkey();
+		public readonly HotkeyReference JumpToTopEdgeKey = new HotkeyReference();
+		public readonly HotkeyReference JumpToBottomEdgeKey = new HotkeyReference();
+		public readonly HotkeyReference JumpToLeftEdgeKey = new HotkeyReference();
+		public readonly HotkeyReference JumpToRightEdgeKey = new HotkeyReference();
 
 		// Note: LinterHotkeyNames assumes that these are disabled by default
 		public readonly string BookmarkSaveKeyPrefix = null;
@@ -92,8 +92,8 @@ namespace OpenRA.Mods.Common.Widgets
 		World world;
 		WorldRenderer worldRenderer;
 
-		NamedHotkey[] saveBookmarkHotkeys;
-		NamedHotkey[] restoreBookmarkHotkeys;
+		HotkeyReference[] saveBookmarkHotkeys;
+		HotkeyReference[] restoreBookmarkHotkeys;
 		WPos?[] bookmarkPositions;
 
 		[CustomLintableHotkeyNames]
@@ -147,10 +147,10 @@ namespace OpenRA.Mods.Common.Widgets
 			base.Initialize(args);
 
 			saveBookmarkHotkeys = Exts.MakeArray(BookmarkKeyCount,
-				i => new NamedHotkey(BookmarkSaveKeyPrefix + (i + 1).ToString("D2"), Game.Settings.Keys));
+				i => new HotkeyReference(BookmarkSaveKeyPrefix + (i + 1).ToString("D2"), Game.Settings.Keys));
 
 			restoreBookmarkHotkeys = Exts.MakeArray(BookmarkKeyCount,
-				i => new NamedHotkey(BookmarkRestoreKeyPrefix + (i + 1).ToString("D2"), Game.Settings.Keys));
+				i => new HotkeyReference(BookmarkRestoreKeyPrefix + (i + 1).ToString("D2"), Game.Settings.Keys));
 
 			bookmarkPositions = new WPos?[BookmarkKeyCount];
 		}
@@ -427,7 +427,7 @@ namespace OpenRA.Mods.Common.Widgets
 		{
 			var key = Hotkey.FromKeyInput(e);
 
-			Func<NamedHotkey, ScrollDirection, bool> handleMapScrollKey = (hotkey, scrollDirection) =>
+			Func<HotkeyReference, ScrollDirection, bool> handleMapScrollKey = (hotkey, scrollDirection) =>
 			{
 				var isHotkey = false;
 				var keyValue = hotkey.GetValue();
