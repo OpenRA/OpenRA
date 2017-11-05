@@ -130,7 +130,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public override bool HandleKeyPress(KeyInput e)
 		{
-			if (Hotkey.FromKeyInput(e) != Key.GetValue() || e.Event != KeyInputEvent.Down || (DisableKeyRepeat && e.IsRepeat))
+			if (!Key.IsActivatedBy(e) || e.Event != KeyInputEvent.Down || (DisableKeyRepeat && e.IsRepeat))
 				return false;
 
 			if (!IsDisabled())

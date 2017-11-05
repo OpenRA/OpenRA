@@ -244,9 +244,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 			if (e.Event == KeyInputEvent.Down)
 			{
-				var key = Hotkey.FromKeyInput(e);
-
-				if (key == SelectAllKey.GetValue() && !World.IsGameOver)
+				if (SelectAllKey.IsActivatedBy(e) && !World.IsGameOver)
 				{
 					// Select actors on the screen which belong to the current player
 					var ownUnitsOnScreen = SelectActorsOnScreen(World, worldRenderer, null, player).SubsetWithHighestSelectionPriority().ToList();
@@ -263,7 +261,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 					World.Selection.Combine(World, ownUnitsOnScreen, false, false);
 				}
-				else if (key == SelectSameTypeKey.GetValue() && !World.IsGameOver)
+				else if (SelectSameTypeKey.IsActivatedBy(e) && !World.IsGameOver)
 				{
 					if (!World.Selection.Actors.Any())
 						return false;

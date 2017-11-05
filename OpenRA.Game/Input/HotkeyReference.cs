@@ -45,5 +45,11 @@ namespace OpenRA
 		{
 			return getValue();
 		}
+
+		public bool IsActivatedBy(KeyInput e)
+		{
+			var currentValue = getValue();
+			return currentValue.Key == e.Key && currentValue.Modifiers == e.Modifiers;
+		}
 	}
 }

@@ -30,11 +30,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			keyhandler.AddHandler(e =>
 			{
 				if (e.Event == KeyInputEvent.Down)
-				{
-					var key = Hotkey.FromKeyInput(e);
-					if (key == namedKey.GetValue())
+					if (namedKey.IsActivatedBy(e))
 						return OnHotkeyActivated(e);
-				}
 
 				return false;
 			});

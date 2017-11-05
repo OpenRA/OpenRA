@@ -72,8 +72,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				zoomDropdown.GetText = () => zoomDropdown.SelectedItem;
 				zoomDropdown.OnKeyPress = e =>
 				{
-					var key = Hotkey.FromKeyInput(e);
-					if (key != changeZoomKey.GetValue())
+					if (!changeZoomKey.IsActivatedBy(e))
 						return;
 
 					var selected = (options.IndexOf(float.Parse(selectedZoom)) + 1) % options.Length;

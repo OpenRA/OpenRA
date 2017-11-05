@@ -447,25 +447,25 @@ namespace OpenRA.Mods.Common.Widgets
 			if (e.Event != KeyInputEvent.Down)
 				return false;
 
-			if (key == JumpToTopEdgeKey.GetValue())
+			if (JumpToTopEdgeKey.IsActivatedBy(e))
 			{
 				worldRenderer.Viewport.Center(new WPos(worldRenderer.Viewport.CenterPosition.X, 0, 0));
 				return true;
 			}
 
-			if (key == JumpToBottomEdgeKey.GetValue())
+			if (JumpToBottomEdgeKey.IsActivatedBy(e))
 			{
 				worldRenderer.Viewport.Center(new WPos(worldRenderer.Viewport.CenterPosition.X, worldRenderer.World.Map.ProjectedBottomRight.Y, 0));
 				return true;
 			}
 
-			if (key == JumpToLeftEdgeKey.GetValue())
+			if (JumpToLeftEdgeKey.IsActivatedBy(e))
 			{
 				worldRenderer.Viewport.Center(new WPos(0, worldRenderer.Viewport.CenterPosition.Y, 0));
 				return true;
 			}
 
-			if (key == JumpToRightEdgeKey.GetValue())
+			if (JumpToRightEdgeKey.IsActivatedBy(e))
 			{
 				worldRenderer.Viewport.Center(new WPos(worldRenderer.World.Map.ProjectedBottomRight.X, worldRenderer.Viewport.CenterPosition.Y, 0));
 				return true;
@@ -473,7 +473,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 			for (var i = 0; i < saveBookmarkHotkeys.Length; i++)
 			{
-				if (key == saveBookmarkHotkeys[i].GetValue())
+				if (saveBookmarkHotkeys[i].IsActivatedBy(e))
 				{
 					bookmarkPositions[i] = worldRenderer.Viewport.CenterPosition;
 					return true;
@@ -482,7 +482,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 			for (var i = 0; i < restoreBookmarkHotkeys.Length; i++)
 			{
-				if (key == restoreBookmarkHotkeys[i].GetValue())
+				if (restoreBookmarkHotkeys[i].IsActivatedBy(e))
 				{
 					var bookmark = bookmarkPositions[i];
 					if (bookmark.HasValue)
