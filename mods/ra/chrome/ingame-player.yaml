@@ -306,6 +306,7 @@ Container@PLAYER_WIDGETS:
 									ImageCollection: order-icons
 						Button@SELL_BUTTON:
 							Logic: SellOrderButtonLogic, AddFactionSuffixLogic
+								BlockedCursor: ability
 							X: 32
 							Width: 28
 							Height: 28

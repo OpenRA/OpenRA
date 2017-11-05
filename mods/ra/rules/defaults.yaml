@@ -281,6 +281,9 @@
 	HitShape:
 	EditorTilesetFilter:
 		Categories: Vehicle
+	Sellable:
+		Cursor: sell2
+		SellSounds: cashturn.aud
 
 ^Tank:
 	Inherits: ^Vehicle
