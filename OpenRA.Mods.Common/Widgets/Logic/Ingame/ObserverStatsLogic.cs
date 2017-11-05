@@ -124,10 +124,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				if (e.Event == KeyInputEvent.Down && !e.IsRepeat)
 				{
-					var key = Hotkey.FromKeyInput(e);
 					for (var i = 0; i < statsHotkeys.Length; i++)
 					{
-						if (key == statsHotkeys[i].GetValue())
+						if (statsHotkeys[i].IsActivatedBy(e))
 						{
 							statsDropDownOptions[i].OnClick();
 							return true;

@@ -342,12 +342,11 @@ namespace OpenRA.Mods.Common.Widgets
 			if (e.Event == KeyInputEvent.Up || CurrentQueue == null)
 				return false;
 
-			var hotkey = Hotkey.FromKeyInput(e);
 			var batchModifiers = e.Modifiers.HasModifier(Modifiers.Shift) ? Modifiers.Shift : Modifiers.None;
-			if (batchModifiers != Modifiers.None)
-				hotkey = new Hotkey(hotkey.Key, hotkey.Modifiers ^ Modifiers.Shift);
 
-			var toBuild = icons.Values.FirstOrDefault(i => i.Hotkey != null && i.Hotkey.GetValue() == hotkey);
+			// HACK: enable production if the shift key is pressed
+			e.Modifiers &= ~Modifiers.Shift;
+			var toBuild = icons.Values.FirstOrDefault(i => i.Hotkey != null && i.Hotkey.IsActivatedBy(e));
 			return toBuild != null ? HandleEvent(toBuild, MouseButton.Left, batchModifiers) : false;
 		}
 

@@ -161,8 +161,7 @@ namespace OpenRA.Mods.Common.Widgets
 		{
 			if (e.Event == KeyInputEvent.Down)
 			{
-				var hotkey = Hotkey.FromKeyInput(e);
-				var a = icons.Values.FirstOrDefault(i => i.Hotkey != null && i.Hotkey.GetValue() == hotkey);
+				var a = icons.Values.FirstOrDefault(i => i.Hotkey != null && i.Hotkey.IsActivatedBy(e));
 
 				if (a != null)
 				{

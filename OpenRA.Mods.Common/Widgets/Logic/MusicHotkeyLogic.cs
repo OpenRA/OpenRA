@@ -50,15 +50,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				if (e.Event == KeyInputEvent.Down)
 				{
-					var key = Hotkey.FromKeyInput(e);
-
-					if (key == nextKey.GetValue())
+					if (nextKey.IsActivatedBy(e))
 						musicPlaylist.Play(musicPlaylist.GetNextSong());
-					else if (key == prevKey.GetValue())
+					else if (prevKey.IsActivatedBy(e))
 						musicPlaylist.Play(musicPlaylist.GetPrevSong());
-					else if (key == stopKey.GetValue())
+					else if (stopKey.IsActivatedBy(e))
 						StopMusic();
-					else if (key == pauseKey.GetValue())
+					else if (pauseKey.IsActivatedBy(e))
 						PauseOrResumeMusic();
 				}
 

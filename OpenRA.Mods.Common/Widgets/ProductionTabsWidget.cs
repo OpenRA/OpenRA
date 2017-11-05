@@ -287,14 +287,13 @@ namespace OpenRA.Mods.Common.Widgets
 			if (e.Event != KeyInputEvent.Down)
 				return false;
 
-			var hotkey = Hotkey.FromKeyInput(e);
-			if (hotkey == PreviousProductionTabKey.GetValue())
+			if (PreviousProductionTabKey.IsActivatedBy(e))
 			{
 				Game.Sound.PlayNotification(world.Map.Rules, null, "Sounds", "ClickSound", null);
 				return SelectNextTab(true);
 			}
 
-			if (hotkey == NextProductionTabKey.GetValue())
+			if (NextProductionTabKey.IsActivatedBy(e))
 			{
 				Game.Sound.PlayNotification(world.Map.Rules, null, "Sounds", "ClickSound", null);
 				return SelectNextTab(false);

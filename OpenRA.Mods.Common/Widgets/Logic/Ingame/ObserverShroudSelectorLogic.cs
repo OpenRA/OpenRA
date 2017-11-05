@@ -148,8 +148,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			if (e.Event == KeyInputEvent.Down && !e.IsRepeat)
 			{
-				var h = Hotkey.FromKeyInput(e);
-				if (h == combinedViewKey.GetValue() && !limitViews)
+				if (combinedViewKey.IsActivatedBy(e) && !limitViews)
 				{
 					selected = combined;
 					selected.OnClick();
@@ -157,7 +156,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					return true;
 				}
 
-				if (h == worldViewKey.GetValue() && !limitViews)
+				if (worldViewKey.IsActivatedBy(e) && !limitViews)
 				{
 					selected = disableShroud;
 					selected.OnClick();
