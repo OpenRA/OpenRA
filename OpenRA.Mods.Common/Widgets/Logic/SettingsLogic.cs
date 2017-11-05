@@ -34,6 +34,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		readonly ModData modData;
 		readonly WorldRenderer worldRenderer;
+		readonly Dictionary<string, MiniYaml> logicArgs;
 
 		SoundDevice soundDevice;
 		PanelType settingsPanel = PanelType.Display;
@@ -49,10 +50,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		}
 
 		[ObjectCreator.UseCtor]
-		public SettingsLogic(Widget widget, Action onExit, ModData modData, WorldRenderer worldRenderer)
+		public SettingsLogic(Widget widget, Action onExit, ModData modData, WorldRenderer worldRenderer, Dictionary<string, MiniYaml> logicArgs)
 		{
 			this.worldRenderer = worldRenderer;
 			this.modData = modData;
+			this.logicArgs = logicArgs;
 
 			panelContainer = widget.Get("SETTINGS_PANEL");
 			tabContainer = widget.Get("TAB_CONTAINER");
@@ -122,21 +124,17 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			ss.OnChange += x => field.SetValue(group, x);
 		}
 
-		static void BindHotkeyPref(KeyValuePair<string, string> kv, KeySettings ks, Widget template, Widget parent)
+		static void BindHotkeyPref(HotkeyDefinition hd, HotkeyManager manager, Widget template, Widget parent)
 		{
 			var key = template.Clone() as Widget;
-			key.Id = kv.Key;
+			key.Id = hd.Name;
 			key.IsVisible = () => true;
 
-			var field = ks.GetType().GetField(kv.Key);
-			if (field == null)
-				throw new InvalidOperationException("Game.Settings.Keys does not contain {1}".F(kv.Key));
-
-			key.Get<LabelWidget>("FUNCTION").GetText = () => kv.Value + ":";
+			key.Get<LabelWidget>("FUNCTION").GetText = () => hd.Description + ":";
 
 			var textBox = key.Get<HotkeyEntryWidget>("HOTKEY");
-			textBox.Key = (Hotkey)field.GetValue(ks);
-			textBox.OnLoseFocus = () => field.SetValue(ks, textBox.Key);
+			textBox.Key = manager[hd.Name].GetValue();
+			textBox.OnLoseFocus = () => manager.Set(hd.Name, textBox.Key);
 			parent.AddChild(key);
 		}
 
@@ -379,7 +377,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		Action InitInputPanel(Widget panel)
 		{
 			var gs = Game.Settings.Game;
-			var ks = Game.Settings.Keys;
 
 			BindCheckboxPref(panel, "CLASSICORDERS_CHECKBOX", gs, "UseClassicMouseStyle");
 			BindCheckboxPref(panel, "EDGESCROLL_CHECKBOX", gs, "ViewportEdgeScroll");
@@ -415,202 +412,34 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var hotkeyList = panel.Get<ScrollPanelWidget>("HOTKEY_LIST");
 			hotkeyList.Layout = new GridLayout(hotkeyList);
 			var hotkeyHeader = hotkeyList.Get<ScrollItemWidget>("HEADER");
-			var globalTemplate = hotkeyList.Get("GLOBAL_TEMPLATE");
-			var unitTemplate = hotkeyList.Get("UNIT_TEMPLATE");
-			var productionTemplate = hotkeyList.Get("PRODUCTION_TEMPLATE");
-			var developerTemplate = hotkeyList.Get("DEVELOPER_TEMPLATE");
+			var templates = hotkeyList.Get("TEMPLATES");
 			hotkeyList.RemoveChildren();
 
 			Func<bool> returnTrue = () => true;
 			Action doNothing = () => { };
 
-			// Game
+			MiniYaml hotkeyGroups;
+			if (logicArgs.TryGetValue("HotkeyGroups", out hotkeyGroups))
 			{
-				var hotkeys = new Dictionary<string, string>()
+				foreach (var hg in hotkeyGroups.Nodes)
 				{
-					{ "CycleBaseKey", "Jump to base" },
-					{ "ToLastEventKey", "Jump to last radar event" },
-					{ "ToSelectionKey", "Jump to selection" },
-					{ "SelectAllUnitsKey", "Select all combat units" },
-					{ "SelectUnitsByTypeKey", "Select units by type" },
+					var templateNode = hg.Value.Nodes.FirstOrDefault(n => n.Key == "Template");
+					var typesNode = hg.Value.Nodes.FirstOrDefault(n => n.Key == "Types");
+					if (templateNode == null || typesNode == null)
+						continue;
 
-					{ "PlaceBeaconKey", "Place beacon" },
+					var header = ScrollItemWidget.Setup(hotkeyHeader, returnTrue, doNothing);
+					header.Get<LabelWidget>("LABEL").GetText = () => hg.Key;
+					hotkeyList.AddChild(header);
 
-					{ "PauseKey", "Pause / Unpause" },
-					{ "SellKey", "Sell mode" },
-					{ "PowerDownKey", "Power-down mode" },
-					{ "RepairKey", "Repair mode" },
-
-					{ "NextProductionTabKey", "Next production tab" },
-					{ "PreviousProductionTabKey", "Previous production tab" },
-					{ "CycleProductionBuildingsKey", "Cycle production facilities" },
-
-					{ "CycleStatusBarsKey", "Cycle status bars display" },
-					{ "TogglePixelDoubleKey", "Toggle pixel doubling" },
-					{ "ToggleMuteKey", "Toggle audio mute" },
-					{ "TogglePlayerStanceColorKey", "Toggle player stance colors" },
-					{ "TakeScreenshotKey", "Take screenshot" }
-				};
-
-				var header = ScrollItemWidget.Setup(hotkeyHeader, returnTrue, doNothing);
-				header.Get<LabelWidget>("LABEL").GetText = () => "Game Commands";
-				hotkeyList.AddChild(header);
-
-				foreach (var kv in hotkeys)
-					BindHotkeyPref(kv, ks, globalTemplate, hotkeyList);
-			}
-
-			// Viewport
-			{
-				var hotkeys = new Dictionary<string, string>()
-				{
-					{ "MapScrollUpKey", "Scroll up" },
-					{ "MapScrollDownKey", "Scroll down" },
-					{ "MapScrollLeftKey", "Scroll left" },
-					{ "MapScrollRightKey", "Scroll right" },
-
-					{ "MapJumpToTopEdgeKey", "Jump to top edge" },
-					{ "MapJumpToBottomEdgeKey", "Jump to bottom edge" },
-					{ "MapJumpToLeftEdgeKey", "Jump to left edge" },
-					{ "MapJumpToRightEdgeKey", "Jump to right edge" },
-
-					{ "MapBookmarkSave01Key", "Record bookmark #1" },
-					{ "MapBookmarkRestore01Key", "Jump to bookmark #1" },
-					{ "MapBookmarkSave02Key", "Record bookmark #2" },
-					{ "MapBookmarkRestore02Key", "Jump to bookmark #2" },
-					{ "MapBookmarkSave03Key", "Record bookmark #3" },
-					{ "MapBookmarkRestore03Key", "Jump to bookmark #3" },
-					{ "MapBookmarkSave04Key", "Record bookmark #4" },
-					{ "MapBookmarkRestore04Key", "Jump to bookmark #4" }
-				};
-
-				var header = ScrollItemWidget.Setup(hotkeyHeader, returnTrue, doNothing);
-				header.Get<LabelWidget>("LABEL").GetText = () => "Viewport Commands";
-				hotkeyList.AddChild(header);
-
-				foreach (var kv in hotkeys)
-					BindHotkeyPref(kv, ks, globalTemplate, hotkeyList);
-			}
-
-			// Observer
-			{
-				var hotkeys = new Dictionary<string, string>()
-				{
-					{ "ObserverCombinedViewKey", "All Players" },
-					{ "ObserverWorldViewKey", "Disable Shroud" },
-					{ "PauseKey", "Pause/Play" },
-					{ "ReplaySpeedSlowKey", "Slow speed" },
-					{ "ReplaySpeedRegularKey", "Regular speed" },
-					{ "ReplaySpeedFastKey", "Fast speed" },
-					{ "ReplaySpeedMaxKey", "Maximum speed" },
-					{ "StatisticsBasicKey", "Basic statistics" },
-					{ "StatisticsEconomyKey", "Economy statistics" },
-					{ "StatisticsProductionKey", "Production statistics" },
-					{ "StatisticsCombatKey", "Combat statistics" },
-					{ "StatisticsGraphKey", "Statistics graph" }
-				};
-
-				var header = ScrollItemWidget.Setup(hotkeyHeader, returnTrue, doNothing);
-				header.Get<LabelWidget>("LABEL").GetText = () => "Observer Commands";
-				hotkeyList.AddChild(header);
-
-				foreach (var kv in hotkeys)
-					BindHotkeyPref(kv, ks, globalTemplate, hotkeyList);
-			}
-
-			// Unit
-			{
-				var hotkeys = new Dictionary<string, string>()
-				{
-					{ "AttackMoveKey", "Attack Move" },
-					{ "StopKey", "Stop" },
-					{ "ScatterKey", "Scatter" },
-					{ "DeployKey", "Deploy" },
-					{ "GuardKey", "Guard" }
-				};
-
-				var header = ScrollItemWidget.Setup(hotkeyHeader, returnTrue, doNothing);
-				header.Get<LabelWidget>("LABEL").GetText = () => "Unit Commands";
-				hotkeyList.AddChild(header);
-
-				foreach (var kv in hotkeys)
-					BindHotkeyPref(kv, ks, unitTemplate, hotkeyList);
-			}
-
-			// Unit stance
-			{
-				var hotkeys = new Dictionary<string, string>()
-				{
-					{ "StanceHoldFireKey", "Hold fire" },
-					{ "StanceReturnFireKey", "Return fire" },
-					{ "StanceDefendKey", "Defend" },
-					{ "StanceAttackAnythingKey", "Attack anything" }
-				};
-
-				var header = ScrollItemWidget.Setup(hotkeyHeader, returnTrue, doNothing);
-				header.Get<LabelWidget>("LABEL").GetText = () => "Unit Stance Commands";
-				hotkeyList.AddChild(header);
-
-				foreach (var kv in hotkeys)
-					BindHotkeyPref(kv, ks, globalTemplate, hotkeyList);
-			}
-
-			// Production
-			{
-				var hotkeys = new Dictionary<string, string>()
-				{
-					{ "ProductionTypeBuildingKey", "Building Tab" },
-					{ "ProductionTypeDefenseKey", "Defense Tab" },
-					{ "ProductionTypeInfantryKey", "Infantry Tab" },
-					{ "ProductionTypeVehicleKey", "Vehicle Tab" },
-					{ "ProductionTypeAircraftKey", "Aircraft Tab" },
-					{ "ProductionTypeNavalKey", "Naval Tab" },
-					{ "ProductionTypeTankKey", "Tank Tab" },
-					{ "ProductionTypeMerchantKey", "Starport Tab" },
-					{ "ProductionTypeUpgradeKey", "Upgrade Tab" }
-				};
-
-				for (var i = 1; i <= 24; i++)
-					hotkeys.Add("Production{0:D2}Key".F(i), "Slot {0}".F(i));
-
-				var header = ScrollItemWidget.Setup(hotkeyHeader, returnTrue, doNothing);
-				header.Get<LabelWidget>("LABEL").GetText = () => "Production Commands";
-				hotkeyList.AddChild(header);
-
-				foreach (var kv in hotkeys)
-					BindHotkeyPref(kv, ks, productionTemplate, hotkeyList);
-			}
-
-			// Support powers
-			{
-				var hotkeys = new Dictionary<string, string>();
-				for (var i = 1; i <= 6; i++)
-					hotkeys.Add("SupportPower{0:D2}Key".F(i), "Slot {0}".F(i));
-
-				var header = ScrollItemWidget.Setup(hotkeyHeader, returnTrue, doNothing);
-				header.Get<LabelWidget>("LABEL").GetText = () => "Support Power Commands";
-				hotkeyList.AddChild(header);
-
-				foreach (var kv in hotkeys)
-					BindHotkeyPref(kv, ks, productionTemplate, hotkeyList);
-			}
-
-			// Music
-			{
-				var hotkeys = new Dictionary<string, string>()
-				{
-					{ "StopMusicKey", "Stop" },
-					{ "PauseMusicKey", "Pause or Resume" },
-					{ "PrevMusicKey", "Previous" },
-					{ "NextMusicKey", "Next" }
-				};
-
-				var header = ScrollItemWidget.Setup(hotkeyHeader, returnTrue, doNothing);
-				header.Get<LabelWidget>("LABEL").GetText = () => "Music Commands";
-				hotkeyList.AddChild(header);
-
-				foreach (var kv in hotkeys)
-					BindHotkeyPref(kv, ks, developerTemplate, hotkeyList);
+					var types = FieldLoader.GetValue<string[]>("Types", typesNode.Value.Value);
+					var added = new HashSet<HotkeyDefinition>();
+					var template = templates.Get(templateNode.Value.Value);
+					foreach (var t in types)
+						foreach (var hd in modData.Hotkeys.Definitions.Where(k => k.Types.Contains(t)))
+							if (added.Add(hd))
+								BindHotkeyPref(hd, modData.Hotkeys, template, hotkeyList);
+				}
 			}
 
 			return () => { };
@@ -619,9 +448,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		Action ResetInputPanel(Widget panel)
 		{
 			var gs = Game.Settings.Game;
-			var ks = Game.Settings.Keys;
 			var dgs = new GameSettings();
-			var dks = new KeySettings();
 
 			return () =>
 			{
@@ -635,11 +462,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				gs.AllowZoom = dgs.AllowZoom;
 				gs.ZoomModifier = dgs.ZoomModifier;
 
-				foreach (var f in ks.GetType().GetFields())
+				foreach (var hd in modData.Hotkeys.Definitions)
 				{
-					var value = (Hotkey)f.GetValue(dks);
-					f.SetValue(ks, value);
-					panel.Get(f.Name).Get<HotkeyEntryWidget>("HOTKEY").Key = value;
+					modData.Hotkeys.Set(hd.Name, hd.Default);
+					panel.Get(hd.Name).Get<HotkeyEntryWidget>("HOTKEY").Key = hd.Default;
 				}
 
 				panel.Get<SliderWidget>("SCROLLSPEED_SLIDER").Value = gs.ViewportEdgeScrollStep;

@@ -1,5 +1,30 @@
 Container@SETTINGS_PANEL:
 	Logic: SettingsLogic
+		HotkeyGroups:
+			Game Commands:
+				Template: TWO_COLUMN
+				Types: World, Menu
+			Viewport Commands:
+				Template: TWO_COLUMN
+				Types: Viewport
+			Observer / Replay Commands:
+				Template: TWO_COLUMN
+				Types: Observer, Replay
+			Unit Commands:
+				Template: THREE_COLUMN
+				Types: Unit
+			Unit Stance Commands:
+				Template: TWO_COLUMN
+				Types: Stance
+			Production Commands:
+				Template: THREE_COLUMN
+				Types: Production
+			Support Power Commands:
+				Template: THREE_COLUMN
+				Types: SupportPower
+			Music Commands:
+				Template: TWO_COLUMN
+				Types: Music
 	X: (WINDOW_RIGHT - WIDTH) / 2
 	Y: (WINDOW_BOTTOM - HEIGHT) / 2
 	Width: 590
@@ -449,62 +474,36 @@ Container@SETTINGS_PANEL:
 											Width: PARENT_RIGHT
 											Height: 10
 											Align: Center
-								Container@GLOBAL_TEMPLATE:
-									Width: 262
-									Height: 25
-									Visible: false
+								Container@TEMPLATES:
 									Children:
-										Label@FUNCTION:
-											Y: 0 - 1
-											Width: PARENT_RIGHT - 85
+										Container@TWO_COLUMN:
+											Width: 262
 											Height: 25
-											Align: Right
-										HotkeyEntry@HOTKEY:
-											X: PARENT_RIGHT - WIDTH
-											Width: 80
+											Visible: false
+											Children:
+												Label@FUNCTION:
+													Y: 0 - 1
+													Width: PARENT_RIGHT - 85
+													Height: 25
+													Align: Right
+												HotkeyEntry@HOTKEY:
+													X: PARENT_RIGHT - WIDTH
+													Width: 80
+													Height: 25
+										Container@THREE_COLUMN:
+											Width: 173
 											Height: 25
-								Container@UNIT_TEMPLATE:
-									Width: 173
-									Height: 25
-									Visible: false
-									Children:
-										Label@FUNCTION:
-											Y: 0 - 1
-											Width: PARENT_RIGHT - 84
-											Height: 25
-											Align: Right
-										HotkeyEntry@HOTKEY:
-											X: PARENT_RIGHT - WIDTH + 1
-											Width: 80
-											Height: 25
-								Container@PRODUCTION_TEMPLATE:
-									Width: 173
-									Height: 25
-									Visible: false
-									Children:
-										Label@FUNCTION:
-											Y: 0 - 1
-											Width: PARENT_RIGHT - 84
-											Height: 25
-											Align: Right
-										HotkeyEntry@HOTKEY:
-											X: PARENT_RIGHT - WIDTH + 1
-											Width: 80
-											Height: 25
-								Container@DEVELOPER_TEMPLATE:
-									Width: 262
-									Height: 25
-									Visible: false
-									Children:
-										Label@FUNCTION:
-											Y: 0 - 1
-											Width: PARENT_RIGHT - 115
-											Height: 25
-											Align: Right
-										HotkeyEntry@HOTKEY:
-											X: PARENT_RIGHT - WIDTH
-											Width: 110
-											Height: 25
+											Visible: false
+											Children:
+												Label@FUNCTION:
+													Y: 0 - 1
+													Width: PARENT_RIGHT - 84
+													Height: 25
+													Align: Right
+												HotkeyEntry@HOTKEY:
+													X: PARENT_RIGHT - WIDTH + 1
+													Width: 80
+													Height: 25
 				Container@ADVANCED_PANEL:
 					Width: PARENT_RIGHT
 					Height: PARENT_BOTTOM
