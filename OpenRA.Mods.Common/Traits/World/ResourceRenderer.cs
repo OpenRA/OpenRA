@@ -31,7 +31,7 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		protected readonly ResourceLayer ResourceLayer;
 
-		protected readonly CellLayer<CellContents> RenderContent;
+		protected readonly CellLayer<RendererCellContents> RenderContent;
 
 		protected readonly ResourceRendererInfo Info;
 
@@ -46,7 +46,7 @@ namespace OpenRA.Mods.Common.Traits
 			ResourceLayer = self.Trait<ResourceLayer>();
 			ResourceLayer.CellChanged += AddDirtyCell;
 
-			RenderContent = new CellLayer<CellContents>(self.World.Map);
+			RenderContent = new CellLayer<RendererCellContents>(self.World.Map);
 			RenderContent.CellEntryChanged += UpdateSpriteLayers;
 		}
 
@@ -179,9 +179,9 @@ namespace OpenRA.Mods.Common.Traits
 			disposed = true;
 		}
 
-		CellContents CreateResourceCell(ResourceType t, CPos cell)
+		RendererCellContents CreateResourceCell(ResourceType t, CPos cell)
 		{
-			return new CellContents
+			return new RendererCellContents
 			{
 				Type = t,
 				Variant = ChooseRandomVariant(t)
@@ -195,11 +195,13 @@ namespace OpenRA.Mods.Common.Traits
 
 		public ResourceType GetRenderedResourceType(CPos cell) { return RenderContent[cell].Type; }
 
-		public struct CellContents
+		// TODO: Temporary struct while the Layer/Renderer refactoring is ongoing. Rename after. (Perhaps "CellRenderContents" sounds better?)
+		protected struct RendererCellContents
 		{
+			public static readonly RendererCellContents Empty = new RendererCellContents();
 			public string Variant;
 			public Sprite Sprite;
-			public ResourceType Type;
+			public ResourceType Type;   // TODO: This should not be here but is only temporary while the refactoring is ongoing.
 		}
 	}
 }

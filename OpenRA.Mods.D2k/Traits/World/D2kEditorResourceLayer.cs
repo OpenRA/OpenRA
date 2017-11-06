@@ -15,7 +15,6 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.D2k.Traits
 {
-	using CellContents = D2kResourceRenderer.CellContents;
 	using ClearSides = D2kResourceRenderer.ClearSides;
 
 	[Desc("Used to render spice with round borders.")]
