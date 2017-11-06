@@ -47,7 +47,7 @@ namespace OpenRA.Mods.Common.Traits
 			ResourceLayer.CellChanged += AddDirtyCell;
 
 			RenderContent = new CellLayer<RendererCellContents>(self.World.Map);
-			RenderContent.CellEntryChanged += UpdateSpriteLayers;
+			RenderContent.CellEntryChanged += UpdateSpriteLayers;   // This is only OK because we only change the entry from ONE specific point.
 		}
 
 		void IWorldLoaded.WorldLoaded(World w, WorldRenderer wr)
@@ -76,17 +76,13 @@ namespace OpenRA.Mods.Common.Traits
 						+ "Try using different palettes for resource types that use different blend modes.");
 			}
 
+			// Initialize the RenderContent with the initial map state
+			// because the shroud may not be enabled.
 			foreach (var cell in w.Map.AllCells)
 			{
 				var type = ResourceLayer.GetResourceType(cell);
 				if (type != null && Info.RenderTypes.Contains(type.Info.Type))
-				{
-					// Initialize the RenderContent with the initial map state
-					// because the shroud may not be enabled.
-					var cellContent = CreateResourceCell(type, cell);
-					RenderContent[cell] = cellContent;
 					UpdateRenderedSprite(cell);
-				}
 			}
 		}
 
@@ -124,18 +120,11 @@ namespace OpenRA.Mods.Common.Traits
 			var remove = new List<CPos>();
 			foreach (var c in dirty)
 			{
-				if (!self.World.FogObscures(c))
-				{
-					var t = ResourceLayer.GetResourceType(c);
-					if (t != null)
-					{
-						var cellContent = CreateResourceCell(t, c);
-						RenderContent[c] = cellContent;
-					}
+				if (self.World.FogObscures(c))
+					continue;
 
-					UpdateRenderedSprite(c);
-					remove.Add(c);
-				}
+				UpdateRenderedSprite(c);
+				remove.Add(c);
 			}
 
 			foreach (var r in remove)
@@ -146,20 +135,31 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			var content = ResourceLayer.GetResourceContent(cell);
 			var density = content.Density;
+			var type = content.Type;
 			var renderContent = RenderContent[cell];
-			if (density > 0)
+
+			if (type != null)
 			{
-				var type = content.Type;
-				if (type != null && !Info.RenderTypes.Contains(type.Info.Type))
+				// The call chain for this method (that starts with AddDirtyCell()) guarantees
+				// that the new content type would still be suitable for this renderer,
+				// but that is a bit too fragile to rely on in case the code starts changing.
+				if (!Info.RenderTypes.Contains(type.Info.Type))
 					return;
+
+				// Since renderContent is not nullable it will always have a value, but empty.
+				// Also it is possible to have a frozen cell with resource X that upon revelaing turns out has changed to resource Y.
+				if (renderContent.Variant == null || renderContent.Type != type)
+					renderContent.Variant = ChooseRandomVariant(type);
+
 				var sprites = type.Variants[renderContent.Variant];
 				var maxDensity = ResourceLayer.GetMaxResourceDensity(cell);
 				var frame = int2.Lerp(0, sprites.Length - 1, density, maxDensity);
+
 				renderContent.Sprite = sprites[frame];
 				renderContent.Type = type;
 			}
 			else
-				renderContent.Sprite = null;
+				renderContent = RendererCellContents.Empty;
 
 			RenderContent[cell] = renderContent;
 		}
