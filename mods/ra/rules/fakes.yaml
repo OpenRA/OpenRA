@@ -37,11 +37,11 @@ SYRF:
 		BuildPaletteOrder: 890
 		Queue: Defense
 		Prerequisites: ~structures.france, ~techlevel.medium
-		Description: Looks like a Shipyard.
+		Description: Looks like a Naval Yard.
 		Icon: fake-icon
 	Tooltip:
-		Name: Fake Shipyard
-		GenericName: Shipyard
+		Name: Fake Naval Yard
+		GenericName: Naval Yard
 		GenericVisibility: Enemy
 		GenericStancePrefix: False
 	Targetable:
