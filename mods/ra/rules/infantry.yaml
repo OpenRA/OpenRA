@@ -35,7 +35,7 @@ DOG:
 	AutoTarget:
 		InitialStance: AttackAnything
 	AutoTargetPriority@DEFAULT:
-		Types: Infantry
+		ValidTargets: Infantry
 	Targetable:
 		TargetTypes: Ground, Infantry
 	WithInfantryBody:
@@ -371,7 +371,7 @@ MEDI:
 		VoiceSet: MedicVoice
 	AutoTarget:
 	AutoTargetPriority@DEFAULT:
-		Types: Infantry
+		ValidTargets: Infantry
 
 MECH:
 	Inherits: ^Soldier
@@ -412,7 +412,7 @@ MECH:
 		VoiceSet: MechanicVoice
 	AutoTarget:
 	AutoTargetPriority@DEFAULT:
-		Types: Vehicle
+		ValidTargets: Vehicle
 
 EINSTEIN:
 	Inherits: ^CivInfantry
@@ -596,7 +596,7 @@ SNIPER:
 		InitialStance: HoldFire
 		InitialStanceAI: ReturnFire
 	AutoTargetPriority@DEFAULT:
-		Types: Infantry
+		ValidTargets: Infantry
 	Armament@PRIMARY:
 		Weapon: Sniper
 	Armament@GARRISONED:
