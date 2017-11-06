@@ -9,12 +9,10 @@
  */
 #endregion
 
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using OpenRA.Graphics;
-using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -148,22 +146,22 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			var content = ResourceLayer.GetResourceContent(cell);
 			var density = content.Density;
-			var c = RenderContent[cell];
+			var renderContent = RenderContent[cell];
 			if (density > 0)
 			{
 				var type = content.Type;
 				if (type != null && !Info.RenderTypes.Contains(type.Info.Type))
 					return;
-				var sprites = type.Variants[c.Variant];
+				var sprites = type.Variants[renderContent.Variant];
 				var maxDensity = ResourceLayer.GetMaxResourceDensity(cell);
 				var frame = int2.Lerp(0, sprites.Length - 1, density, maxDensity);
-				c.Sprite = sprites[frame];
-				c.Type = type;
+				renderContent.Sprite = sprites[frame];
+				renderContent.Type = type;
 			}
 			else
-				c.Sprite = null;
+				renderContent.Sprite = null;
 
-			RenderContent[cell] = c;
+			RenderContent[cell] = renderContent;
 		}
 
 		bool disposed;
