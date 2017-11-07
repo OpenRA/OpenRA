@@ -179,15 +179,6 @@ namespace OpenRA.Mods.Common.Traits
 			disposed = true;
 		}
 
-		RendererCellContents CreateResourceCell(ResourceType t, CPos cell)
-		{
-			return new RendererCellContents
-			{
-				Type = t,
-				Variant = ChooseRandomVariant(t)
-			};
-		}
-
 		protected virtual string ChooseRandomVariant(ResourceType t)
 		{
 			return t.Variants.Keys.Random(Game.CosmeticRandom);
