@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
@@ -16,12 +17,27 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Cnc.Traits
 {
 	[Desc("Steal and reset the owner's exploration.")]
-	class InfiltrateForExplorationInfo : TraitInfo<InfiltrateForExploration> { }
+	class InfiltrateForExplorationInfo : ITraitInfo
+	{
+		public readonly HashSet<string> Types = new HashSet<string>();
+
+		public object Create(ActorInitializer init) { return new InfiltrateForExploration(init.Self, this); }
+	}
 
 	class InfiltrateForExploration : INotifyInfiltrated
 	{
-		void INotifyInfiltrated.Infiltrated(Actor self, Actor infiltrator)
+		readonly InfiltrateForExplorationInfo info;
+
+		public InfiltrateForExploration(Actor self, InfiltrateForExplorationInfo info)
 		{
+			this.info = info;
+		}
+
+		void INotifyInfiltrated.Infiltrated(Actor self, Actor infiltrator, HashSet<string> types)
+		{
+			if (!info.Types.Overlaps(types))
+				return;
+
 			infiltrator.Owner.Shroud.Explore(self.Owner.Shroud);
 			var preventReset = self.Owner.PlayerActor.TraitsImplementing<IPreventsShroudReset>()
 				.Any(p => p.PreventShroudReset(self));
