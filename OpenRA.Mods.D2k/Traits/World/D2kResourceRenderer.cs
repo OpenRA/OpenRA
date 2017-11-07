@@ -139,7 +139,21 @@ namespace OpenRA.Mods.D2k.Traits
 			return ret;
 		}
 
-		void UpdateRenderedTileInner(CPos cell)
+		protected override void UpdateRenderedSprite(CPos p)
+		{
+			// Need to update neighbouring tiles too
+			UpdateRenderedSpriteInner(p);
+			UpdateRenderedSpriteInner(p + new CVec(-1, -1));
+			UpdateRenderedSpriteInner(p + new CVec(0, -1));
+			UpdateRenderedSpriteInner(p + new CVec(1, -1));
+			UpdateRenderedSpriteInner(p + new CVec(-1, 0));
+			UpdateRenderedSpriteInner(p + new CVec(1, 0));
+			UpdateRenderedSpriteInner(p + new CVec(-1, 1));
+			UpdateRenderedSpriteInner(p + new CVec(0, 1));
+			UpdateRenderedSpriteInner(p + new CVec(1, 1));
+		}
+
+		void UpdateRenderedSpriteInner(CPos cell)
 		{
 			var content = ResourceLayer.GetResourceContent(cell);
 			var density = content.Density;
@@ -182,20 +196,6 @@ namespace OpenRA.Mods.D2k.Traits
 				renderContent = RendererCellContents.Empty;
 
 			RenderContent[cell] = renderContent;
-		}
-
-		protected override void UpdateRenderedSprite(CPos p)
-		{
-			// Need to update neighbouring tiles too
-			UpdateRenderedTileInner(p);
-			UpdateRenderedTileInner(p + new CVec(-1, -1));
-			UpdateRenderedTileInner(p + new CVec(0, -1));
-			UpdateRenderedTileInner(p + new CVec(1, -1));
-			UpdateRenderedTileInner(p + new CVec(-1, 0));
-			UpdateRenderedTileInner(p + new CVec(1, 0));
-			UpdateRenderedTileInner(p + new CVec(-1, 1));
-			UpdateRenderedTileInner(p + new CVec(0, 1));
-			UpdateRenderedTileInner(p + new CVec(1, 1));
 		}
 
 		protected override string ChooseRandomVariant(ResourceType t)
