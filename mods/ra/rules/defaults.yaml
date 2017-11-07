@@ -770,6 +770,7 @@
 	Targetable:
 		TargetTypes: Ground, Structure, C4, DetonateAttack, SpyInfiltrate
 	InfiltrateForDecoration:
+		Types: SpyInfiltrate
 		RequiresSelection: true
 		Image: pips
 		Sequence: tag-fake
@@ -1120,5 +1121,6 @@
 	AffectedByPowerOutage:
 		Condition: power-outage
 	InfiltrateForPowerOutage:
+		Types: SpyInfiltrate
 	Power:
 		RequiresCondition: !disabled

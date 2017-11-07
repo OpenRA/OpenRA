@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using OpenRA.Mods.Common.Effects;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
@@ -19,6 +20,8 @@ namespace OpenRA.Mods.Cnc.Traits
 	[Desc("This structure can be infiltrated causing funds to be stolen.")]
 	class InfiltrateForCashInfo : ITraitInfo
 	{
+		public readonly HashSet<string> Types = new HashSet<string>();
+
 		[Desc("Percentage of the victim's resources that will be stolen.")]
 		public readonly int Percentage = 100;
 
@@ -44,8 +47,11 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		public InfiltrateForCash(InfiltrateForCashInfo info) { this.info = info; }
 
-		void INotifyInfiltrated.Infiltrated(Actor self, Actor infiltrator)
+		void INotifyInfiltrated.Infiltrated(Actor self, Actor infiltrator, HashSet<string> types)
 		{
+			if (!info.Types.Overlaps(types))
+				return;
+
 			var targetResources = self.Owner.PlayerActor.Trait<PlayerResources>();
 			var spyResources = infiltrator.Owner.PlayerActor.Trait<PlayerResources>();
 			var spyValue = infiltrator.Info.TraitInfoOrDefault<ValuedInfo>();

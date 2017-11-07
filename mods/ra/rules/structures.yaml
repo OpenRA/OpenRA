@@ -112,6 +112,7 @@ SPEN:
 	Inherits: ^Building
 	InfiltrateForSupportPower:
 		Proxy: powerproxy.sonarpulse
+		Types: SpyInfiltrate
 	Valued:
 		Cost: 800
 	Tooltip:
@@ -241,6 +242,7 @@ SYRD:
 	Inherits: ^Building
 	InfiltrateForSupportPower:
 		Proxy: powerproxy.sonarpulse
+		Types: SpyInfiltrate
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 40
@@ -621,6 +623,7 @@ DOME:
 	ProvidesRadar:
 		RequiresCondition: !jammed && !disabled
 	InfiltrateForExploration:
+		Types: SpyInfiltrate
 	DetectCloaked:
 		Range: 10c0
 		RequiresCondition: !disabled
@@ -1016,6 +1019,7 @@ WEAP:
 		TargetTypes: Ground, C4, DetonateAttack, Structure, SpyInfiltrate
 	InfiltrateForSupportPower:
 		Proxy: vehicles.upgraded
+		Types: SpyInfiltrate
 	WithDecoration@primary:
 		RequiresSelection: true
 		Image: pips
@@ -1153,6 +1157,7 @@ PROC:
 		Facing: 64
 	InfiltrateForCash:
 		Percentage: 50
+		Types: SpyInfiltrate
 		Notification: CreditsStolen
 	WithIdleOverlay@TOP:
 		Sequence: idle-top
@@ -1286,6 +1291,7 @@ HPAD:
 		TargetTypes: Ground, C4, DetonateAttack, Structure, SpyInfiltrate
 	InfiltrateForSupportPower:
 		Proxy: aircraft.upgraded
+		Types: SpyInfiltrate
 	WithDecoration@primary:
 		RequiresSelection: true
 		Image: pips
@@ -1422,6 +1428,7 @@ AFLD:
 		TargetTypes: Ground, C4, DetonateAttack, Structure, SpyInfiltrate
 	InfiltrateForSupportPower:
 		Proxy: aircraft.upgraded
+		Types: SpyInfiltrate
 	WithDecoration@primary:
 		RequiresSelection: true
 		Image: pips
@@ -1626,6 +1633,7 @@ BARR:
 	ProvidesPrerequisite@buildingname:
 	InfiltrateForSupportPower:
 		Proxy: barracks.upgraded
+		Types: SpyInfiltrate
 	Targetable:
 		TargetTypes: Ground, C4, DetonateAttack, Structure, SpyInfiltrate
 	WithDecoration@primary:
@@ -1763,6 +1771,7 @@ TENT:
 	ProvidesPrerequisite@buildingname:
 	InfiltrateForSupportPower:
 		Proxy: barracks.upgraded
+		Types: SpyInfiltrate
 	Targetable:
 		TargetTypes: Ground, C4, DetonateAttack, Structure, SpyInfiltrate
 	WithDecoration@primary:

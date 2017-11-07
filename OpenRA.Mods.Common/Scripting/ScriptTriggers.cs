@@ -302,7 +302,7 @@ namespace OpenRA.Mods.Common.Scripting
 			OnCapturedInternal(self);
 		}
 
-		void INotifyInfiltrated.Infiltrated(Actor self, Actor infiltrator)
+		void INotifyInfiltrated.Infiltrated(Actor self, Actor infiltrator, HashSet<string> types)
 		{
 			if (world.Disposing)
 				return;
