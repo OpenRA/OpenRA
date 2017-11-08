@@ -1,5 +1,5 @@
 ParaBomb:
-	ROF: 5
+	ReloadDelay: 5
 	Range: 7c0
 	Report: chute1.aud
 	Projectile: GravityBomb
