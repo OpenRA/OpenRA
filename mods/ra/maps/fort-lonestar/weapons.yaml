@@ -27,7 +27,7 @@ MammothTusk:
 		TrailImage: smokey
 		ContrailLength: 150
 		Inaccuracy: 0c853
-		ROT: 10
+		HorizontalRateOfTurn: 10
 		RangeLimit: 12c0
 	Warhead@1Dam: SpreadDamage
 		Spread: 640
@@ -94,7 +94,7 @@ ParaBomb:
 
 155mm:
 	ReloadDelay: 10
-	Range: 7c5
+	Range: 7c0
 	Burst: 20
 	-Report:
 	Projectile: Bullet
@@ -102,7 +102,7 @@ ParaBomb:
 		TrailImage: fb4
 		Image: fb3
 		Blockable: false
-		Angle: 30
+		LaunchAngle: 30
 		Inaccuracy: 1c682
 		ContrailLength: 2
 	Warhead@1Dam: SpreadDamage
@@ -149,7 +149,7 @@ SCUD:
 		TrailImage: smokey
 		Blockable: false
 		Inaccuracy: 0c426
-		Angle: 216
+		LaunchAngle: 216
 	Warhead@1Dam: SpreadDamage
 		Spread: 853
 		Falloff: 100, 37, 14, 5, 0
