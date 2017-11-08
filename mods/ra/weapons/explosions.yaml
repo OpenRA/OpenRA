@@ -138,7 +138,7 @@ BarrelExplode:
 		ValidTargets: Ground, Trees
 		Versus:
 			None: 120
-			Wood: 200
+			Wood: 100
 			Light: 50
 			Concrete: 10
 		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath, Incendiary
