@@ -241,13 +241,14 @@ SPY:
 		Name: Spy
 		GenericName: Soldier
 	-Guard:
+	Mobile:
+		Voice: Move
 	RevealsShroud:
 		Range: 5c0
 	Passenger:
 		PipType: Yellow
 		Voice: Move
 	Disguise:
-		Voice: Move
 		DisguisedCondition: disguise
 	Infiltrates:
 		Types: SpyInfiltrate
