@@ -606,7 +606,7 @@ starport:
 		BuildPaletteOrder: 70
 		BuildDuration: 540
 		BuildDurationModifier: 40
-		Description: Dropzone for quick reinforcements, at a price.
+		Description: Dropzone for reinforcements with changing prices.
 	Valued:
 		Cost: 1500
 	Building:

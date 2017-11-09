@@ -81,6 +81,7 @@ namespace OpenRA.Mods.Common.Traits
 		// Will change if the owner changes
 		PowerManager playerPower;
 		PlayerResources playerResources;
+		VariedCostManager variedCostManager;
 		protected DeveloperMode developerMode;
 
 		public Actor Actor { get { return self; } }
@@ -103,6 +104,7 @@ namespace OpenRA.Mods.Common.Traits
 			playerResources = playerActor.Trait<PlayerResources>();
 			playerPower = playerActor.Trait<PowerManager>();
 			developerMode = playerActor.Trait<DeveloperMode>();
+			variedCostManager = self.World.WorldActor.TraitOrDefault<VariedCostManager>();
 
 			Faction = init.Contains<FactionInit>() ? init.Get<FactionInit, string>() : self.Owner.Faction.InternalName;
 			IsValidFaction = !info.Factions.Any() || info.Factions.Contains(Faction);
@@ -309,7 +311,12 @@ namespace OpenRA.Mods.Common.Traits
 					}
 
 					var valued = unit.TraitInfoOrDefault<ValuedInfo>();
-					var cost = valued != null ? valued.Cost : 0;
+					var cost = 0;
+					if (variedCostManager != null && valued != null && valued.Varies)
+						cost = variedCostManager.VariedCost.First(vc => vc.Key == unit.Name).Value;
+					else if (valued != null && (variedCostManager == null || (variedCostManager != null && !valued.Varies)))
+						cost = valued.Cost;
+
 					var time = GetBuildTime(unit, bi);
 					var amountToBuild = Math.Min(fromLimit, order.ExtraData);
 					for (var n = 0; n < amountToBuild; n++)

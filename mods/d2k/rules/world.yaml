@@ -164,6 +164,8 @@ World:
 		OuterSupportRadius: 5
 	SpawnMPUnits:
 		DropdownDisplayOrder: 1
+	VariedCostManager:
+		VariationRecalculationInterval: 1500
 	PathFinder:
 	ValidateOrder:
 	DebugPauseState:
