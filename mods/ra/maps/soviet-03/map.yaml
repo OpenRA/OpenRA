@@ -411,7 +411,6 @@ Actors:
 	Actor120: v07
 		Location: 42,37
 		Owner: Germany
-		Health: 99
 	Actor122: brl3
 		Location: 43,38
 		Owner: Creeps
@@ -978,7 +977,6 @@ Actors:
 	BaseBuilding6: miss
 		Location: 78,27
 		Owner: Soviet
-		Health: 56
 	CameraBarrier: waypoint
 		Location: 64,51
 		Owner: Neutral
@@ -1124,18 +1122,15 @@ Actors:
 	SpyHideout1: v01
 		Location: 77,52
 		Owner: Germany
-		Health: 99
 	SpyHideout2: v01
 		Location: 37,63
 		Owner: Germany
-		Health: 99
 	SpyHideout3: v01
 		Location: 61,36
 		Owner: Germany
 	SpyHideout4: v01
 		Location: 36,32
 		Owner: Germany
-		Health: 99
 	SpyWaypoint1: waypoint
 		Location: 76,42
 		Owner: Neutral
@@ -1169,7 +1164,5 @@ Actors:
 		Owner: Neutral
 
 Rules: ra|rules/campaign-rules.yaml, ra|rules/campaign-tooltips.yaml, rules.yaml
-
-Weapons: weapons.yaml
 
 Notifications: notifications.yaml

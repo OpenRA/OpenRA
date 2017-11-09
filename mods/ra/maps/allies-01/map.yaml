@@ -149,11 +149,9 @@ Actors:
 	Actor33: proc
 		Location: 73,58
 		Owner: USSR
-		FreeActor: False
 	Actor34: kenn
 		Location: 64,65
 		Owner: USSR
-		Health: 99
 	Actor35: powr
 		Location: 65,57
 		Owner: USSR
@@ -364,10 +362,6 @@ Actors:
 	OilPump: v19
 		Location: 59,57
 		Owner: USSR
-	Harvester: harv
-		Location: 72,60
-		Owner: USSR
-		Facing: 224
 	LabGuard1: e1
 		Location: 64,61
 		Owner: USSR

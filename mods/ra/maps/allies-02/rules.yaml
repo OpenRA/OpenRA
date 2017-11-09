@@ -24,10 +24,6 @@ World:
 			tough: Real tough guy
 		Default: easy
 
-HARV:
-	Buildable:
-		Prerequisites: weap
-
 APWR:
 	Buildable:
 		Prerequisites: ~disabled

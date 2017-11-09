@@ -460,7 +460,6 @@ Actors:
 	Actor137: e2
 		Location: 73,51
 		Owner: USSR
-		Health: 56
 		Facing: 224
 		SubCell: 4
 	Actor138: medi
@@ -567,7 +566,6 @@ Actors:
 	SovietKennel: kenn
 		Location: 58,68
 		Owner: USSR
-		Health: 99
 	SovietBarracks: barr
 		Location: 56,66
 		Owner: USSR
@@ -577,7 +575,6 @@ Actors:
 	Harvester: harv
 		Location: 55,65
 		Owner: USSR
-		Health: 50
 		Facing: 160
 	PathGuard1: e1
 		Location: 50,72
@@ -673,5 +670,3 @@ Actors:
 		Owner: Neutral
 
 Rules: ra|rules/campaign-rules.yaml, ra|rules/campaign-tooltips.yaml, rules.yaml
-
-Weapons: weapons.yaml
