@@ -19,30 +19,11 @@ World:
 ^Infantry:
 	-GivesBounty:
 
-BARL:
-	Health:
-		HP: 1
-	Explodes:
-		Weapon: MissionBarrelExplodeInterior
-
-BRL3:
-	Health:
-		HP: 1
-	Explodes:
-		Weapon: MissionBarrelExplodeInterior
-
 CAMERA:
 	RevealsShroud:
 		Range: 6c0
 
-E1:
-	Armament@PRIMARY:
-		Weapon: M1CarbineInterior
-
 FTUR:
-	Armament:
-		Weapon: FireballLauncherInterior
-		LocalOffset: 512,0,0
 	Valued:
 		Cost: 0
 	Power:

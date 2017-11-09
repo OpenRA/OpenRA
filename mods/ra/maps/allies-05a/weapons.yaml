@@ -1,12 +1,6 @@
-MissionColt:
-	ReloadDelay: 6
-	Range: 7c0
+PrisonColt:
+	ReloadDelay: 5
 	Report: gun5.aud
 	Projectile: InstantHit
 	Warhead@1Dam: SpreadDamage
-		Spread: 42
-		Damage: 50
-		Versus:
-			Wood: 10
-		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
 		AffectsParent: true

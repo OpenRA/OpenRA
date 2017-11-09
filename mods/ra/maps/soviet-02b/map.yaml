@@ -197,7 +197,6 @@ Actors:
 	Actor51: proc
 		Location: 80,59
 		Owner: Germany
-		FreeActor: False
 	Actor52: powr
 		Location: 83,55
 		Owner: Germany
@@ -288,12 +287,10 @@ Actors:
 	Actor86: jeep
 		Location: 85,66
 		Owner: Germany
-		Health: 55
 		Facing: 128
 	Actor89: jeep
 		Location: 55,56
 		Owner: Germany
-		Health: 59
 		Facing: 224
 	Actor90: jeep
 		Location: 79,54
@@ -443,12 +440,10 @@ Actors:
 	BridgeGun1: gun
 		Location: 68,64
 		Owner: Germany
-		Health: 56
 		Facing: 160
 	BridgeGun2: gun
 		Location: 74,64
 		Owner: Germany
-		Health: 53
 		Facing: 160
 	IntroSoldier1: e1
 		Location: 71,65
@@ -489,5 +484,3 @@ Actors:
 		Owner: Neutral
 
 Rules: ra|rules/campaign-rules.yaml, ra|rules/campaign-tooltips.yaml, rules.yaml
-
-Weapons: weapons.yaml

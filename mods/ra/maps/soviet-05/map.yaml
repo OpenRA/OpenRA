@@ -270,7 +270,7 @@ Actors:
 	Barr: tent
 		Location: 63,47
 		Owner: Greece
-	Shipyard: syrd
+	Navalyard: syrd
 		Location: 78,48
 		Owner: Greece
 	Actor73: powr

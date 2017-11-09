@@ -325,12 +325,10 @@ Actors:
 	Actor110: 3tnk
 		Location: 43,63
 		Owner: USSR
-		Health: 99
 		Facing: 32
 	Actor111: 3tnk
 		Location: 44,62
 		Owner: USSR
-		Health: 99
 		Facing: 32
 	Actor112: v2rl
 		Location: 41,64

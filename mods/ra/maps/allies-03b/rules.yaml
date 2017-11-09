@@ -63,14 +63,6 @@ CAMERA:
 	RevealsShroud:
 		Range: 8c5
 
-FTUR:
-	DetectCloaked:
-		Range: 0
-
-DOME:
-	DetectCloaked:
-		Range: 0
-
 CAMERA.VeryLarge:
 	Inherits: CAMERA
 	RevealsShroud:

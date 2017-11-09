@@ -148,11 +148,9 @@ Actors:
 	Actor34: fact
 		Location: 72,52
 		Owner: USSR
-		Health: 99
 	Actor35: weap
 		Location: 41,50
 		Owner: Germany
-		Health: 98
 	Actor37: fact
 		Location: 39,54
 		Owner: Germany
@@ -162,7 +160,6 @@ Actors:
 	Actor40: powr
 		Location: 36,52
 		Owner: Germany
-		Health: 99
 	Actor41: tent
 		Location: 41,58
 		Owner: Germany
@@ -494,15 +491,12 @@ Actors:
 	CommandCenter: fcom
 		Location: 76,52
 		Owner: USSR
-		Health: 99
 	AlliedDome: dome
 		Location: 45,50
 		Owner: Germany
-		Health: 98
 	AlliedProc: proc
 		Location: 43,53
 		Owner: Germany
-		Health: 99
 	Barrel: brl3
 		Location: 60,60
 		Owner: Germany

@@ -24,19 +24,11 @@ Camera.Small:
 	RevealsShroud:
 		Range: 4c0
 
-FTUR:
-	DetectCloaked:
-		Range: 0
-
 TSLA:
-	DetectCloaked:
-		Range: 0
 	Buildable:
 		Prerequisites: ~disabled
 
 SAM:
-	DetectCloaked:
-		Range: 0
 	Buildable:
 		Prerequisites: ~disabled
 
@@ -97,7 +89,7 @@ MISS:
 		TargetTypes: Ground, C4, DetonateAttack, Structure, Mission Objectives
 	AttackOmni:
 	Armament:
-		Weapon: MissionColt
+		Weapon: PrisonColt
 
 E1.Autotarget:
 	Inherits: E1
