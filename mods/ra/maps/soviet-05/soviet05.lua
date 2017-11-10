@@ -85,6 +85,7 @@ Expand = function()
 
 	mcvGG.Move(mcvGGLoadPoint.Location)
 	mcvtransport.Move(lstBeachPoint.Location)
+	Media.DisplayMessage("Allied MCV detected moving to the island.")
 
 	Reinforcements.Reinforce(GoodGuy, { "dd", "dd" }, ShipArrivePath, 0, function(ddsquad)
 		ddsquad.AttackMove(NearExpPoint.Location) end)
@@ -193,8 +194,6 @@ WorldLoaded = function()
 	GoodGuy = Player.GetPlayer("GoodGuy")
 	Greece = Player.GetPlayer("Greece")
 
-	RunInitialActivities()
-
 	Trigger.OnObjectiveAdded(player, function(p, id)
 		Media.DisplayMessage(p.GetObjectiveDescription(id), "New " .. string.lower(p.GetObjectiveType(id)) .. " objective")
 	end)
@@ -209,6 +208,8 @@ WorldLoaded = function()
 	CaptureObjective = player.AddPrimaryObjective("Capture the Radar Dome.")
 	KillAll = player.AddPrimaryObjective("Defeat the Allied forces.")
 	BeatUSSR = GoodGuy.AddPrimaryObjective("Defeat the Soviet forces.")
+
+	RunInitialActivities()
 
 	Trigger.OnDamaged(mcvGG, Expand)
 	Trigger.OnDamaged(mcvtransport, Expand)
@@ -227,6 +228,14 @@ WorldLoaded = function()
 	Trigger.OnCapture(Radar, function()
 		HoldObjective = player.AddPrimaryObjective("Defend the Radar Dome.")
 		player.MarkCompletedObjective(CaptureObjective)
+		Beacon.New(player, MCVDeploy.CenterPosition)
+		if Map.LobbyOption("difficulty") == "easy" then
+			Actor.Create("camera", true, { Owner = player, Location = MCVDeploy.Location })
+			Media.DisplayMessage("Movement of an Allied expansion base discovered.")
+		else
+			Actor.Create("MCV.CAM", true, { Owner = player, Location = MCVDeploy.Location })
+			Media.DisplayMessage("Coordinates of an Allied expansion base discovered.")
+		end
 
 		if not ExpansionCheck then
 			Expand()
