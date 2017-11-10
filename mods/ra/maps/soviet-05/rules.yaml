@@ -22,6 +22,12 @@ World:
 			hard: Hard
 		Default: easy
 
+MCV.CAM:
+	Inherits: CAMERA
+	RevealsShroud:
+		Range: 4c0
+		Type: CenterPosition
+
 AFLD:
 	ParatroopersPower@paratroopers:
 		DropItems: E1,E1,E1,E2,E2
