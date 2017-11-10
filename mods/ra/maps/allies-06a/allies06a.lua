@@ -115,6 +115,19 @@ CaptureRadarDome = function()
 
 	Trigger.OnCapture(Radar, function()
 		player.MarkCompletedObjective(CaptureRadarDomeObj)
+		Beacon.New(player, TechLab1.CenterPosition)
+		Beacon.New(player, TechLab2.CenterPosition)
+		Beacon.New(player, TechLab3.CenterPosition)
+		Media.DisplayMessage("Coordinates of the Soviet tech centers discovered.")
+		if Map.LobbyOption("difficulty") ~= "hard" then
+			Utils.Do(TechLabCams, function(a)
+				Actor.Create("TECH.CAM", true, { Owner = player, Location = a.Location })
+			end)
+
+			if Map.LobbyOption("difficulty") == "easy" then
+				Actor.Create("Camera", true, { Owner = player, Location = Weapcam.Location })
+			end
+		end
 	end)
 end
 
@@ -201,16 +214,6 @@ WorldLoaded = function()
 	InfiltrateRefObj = player.AddSecondaryObjective("Infiltrate the Refinery for money.")
 
 	Camera.Position = DefaultCameraPosition.CenterPosition
-
-	if Map.LobbyOption("difficulty") ~= "hard" then
-		Utils.Do(TechLabCams, function(a)
-			Actor.Create("TECH.CAM", true, { Owner = player, Location = a.Location })
-		end)
-
-		if Map.LobbyOption("difficulty") == "easy" then
-			Actor.Create("Camera", true, { Owner = player, Location = Weapcam.Location })
-		end
-	end
 
 	Utils.Do(BadGuys, function(a)
 		a.AttackMove(MCVStopLocation.Location)
