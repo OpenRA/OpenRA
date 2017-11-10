@@ -65,7 +65,14 @@ namespace OpenRA.Mods.Cnc.Activities
 
 			self.Trait<IPositionable>().SetPosition(self, destination);
 			self.Generation++;
+            var positionable = self.Trait<IPositionable>();
+            positionable.SetPosition(self, destination);
+            if (positionable is Mobile)
+            {
+                (positionable as Mobile).EnteringCell(self);
+            }
 
+            self.Generation++;
 			if (killCargo)
 			{
 				var cargo = self.TraitOrDefault<Cargo>();
