@@ -63,16 +63,14 @@ namespace OpenRA.Mods.Cnc.Activities
 			Game.Sound.Play(SoundType.World, sound, self.CenterPosition);
 			Game.Sound.Play(SoundType.World, sound, self.World.Map.CenterOfCell(destination));
 
-			self.Trait<IPositionable>().SetPosition(self, destination);
-			self.Generation++;
-            var positionable = self.Trait<IPositionable>();
-            positionable.SetPosition(self, destination);
-            if (positionable is Mobile)
-            {
-                (positionable as Mobile).EnteringCell(self);
-            }
+			var positionable = self.Trait<IPositionable>();
+positionable.SetPosition(self, destination);
 
-            self.Generation++;
+var mobile = positionable as Mobile;
+if (mobile != null)
+    mobile.EnteringCell(self);
+
+self.Generation++;
 			if (killCargo)
 			{
 				var cargo = self.TraitOrDefault<Cargo>();
