@@ -332,6 +332,11 @@ V2RL:
 		Delay: 1
 		HealIfBelow: 40
 
+powerproxy.parabombs:
+	AirstrikePower:
+		LongDesc: A MiG bomber drops a load of parachuted bombs on your target.
+		CameraRemoveDelay: 50
+
 BADR.Bomber:
 	Health:
 		HP: 6000
