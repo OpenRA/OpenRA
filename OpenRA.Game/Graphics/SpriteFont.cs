@@ -49,8 +49,8 @@ namespace OpenRA.Graphics
 			Func<char, float> characterWidth = character => glyphs[Pair.New(character, Color.White)].Advance;
 			lineWidth = line => line.Sum(characterWidth) / deviceScale;
 
-			PrecacheColor(Color.White, name);
-			PrecacheColor(Color.Red, name);
+			if (size <= 24)
+				PrecacheColor(Color.White, name);
 		}
 
 		public void SetScale(float scale)
