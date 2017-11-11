@@ -35,12 +35,8 @@ namespace OpenRA.Mods.Common.Lint
 	{
 		public void Run(Action<string> emitError, Action<string> emitWarning, ModData modData)
 		{
-			// Build the list of valid key names
-			// For now they are hardcoded, but this will change.
-			var namedKeys = typeof(KeySettings).GetFields()
-				.Where(x => x.Name.EndsWith("Key", StringComparison.Ordinal))
-				.Select(x => x.Name.Substring(0, x.Name.Length - 3))
-				.ToArray();
+			// Build the list of valid hotkey names
+			var namedKeys = modData.Hotkeys.Definitions.Select(d => d.Name).ToArray();
 
 			// Build the list of widget keys to validate
 			var checkWidgetFields = modData.ObjectCreator.GetTypesImplementing<Widget>()
