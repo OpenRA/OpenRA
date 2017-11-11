@@ -140,9 +140,11 @@ Translations:
 Hotkeys:
 	common|hotkeys/game.yaml
 	common|hotkeys/observer.yaml
-	common|hotkeys/production.yaml
+	common|hotkeys/production-common.yaml
+	common|hotkeys/production-peractor.yaml
 	common|hotkeys/supportpowers.yaml
 	common|hotkeys/viewport.yaml
+	cnc|hotkeys.yaml
 
 LoadScreen: CncLoadScreen
 	Image: cnc|uibits/chrome.png

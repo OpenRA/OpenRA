@@ -18,25 +18,21 @@ SelectUnitsByType: W
 	Description: Select units by type
 	Types: World
 
-PlaceBeacon: B
-	Description: Place beacon
-	Types: World
-
 Pause: PAUSE
 	Description: Pause / Unpause
 	Types: World
 
 Sell: Z
 	Description: Sell mode
-	Types: World
-
-PowerDown: X
-	Description: Power-down mode
-	Types: World
+	Types: OrderGenerator
 
 Repair: C
 	Description: Repair mode
-	Types: World
+	Types: OrderGenerator
+
+PlaceBeacon: B
+	Description: Place beacon
+	Types: OrderGenerator
 
 CycleStatusBars: COMMA
 	Description: Cycle status bars display

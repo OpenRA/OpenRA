@@ -128,9 +128,10 @@ Translations:
 Hotkeys:
 	common|hotkeys/game.yaml
 	common|hotkeys/observer.yaml
-	common|hotkeys/production.yaml
+	common|hotkeys/production-common.yaml
 	common|hotkeys/supportpowers.yaml
 	common|hotkeys/viewport.yaml
+	d2k|hotkeys.yaml
 
 LoadScreen: LogoStripeLoadScreen
 	Image: d2k|uibits/loadscreen.png
