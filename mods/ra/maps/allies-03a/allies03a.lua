@@ -214,17 +214,6 @@ InitTriggers = function()
 		end)
 	end)
 
-	Trigger.OnCapture(USSRRadarDome, function(self)
-		largeCamera = Actor.Create("camera.verylarge", true, { Owner = player, Location = LargeCameraWaypoint.Location })
-		Trigger.ClearAll(self)
-		Trigger.AfterDelay(DateTime.Seconds(1), function()
-			Trigger.OnRemovedFromWorld(self, function()
-				Trigger.ClearAll(self)
-				if largeCamera.IsInWorld then largeCamera.Destroy() end
-			end)
-		end)
-	end)
-
 	Trigger.OnEnteredFootprint(WaterTransportTriggerArea, function(a, id)
 		if a.Owner == player and not waterTransportTriggered then
 			waterTransportTriggered = true

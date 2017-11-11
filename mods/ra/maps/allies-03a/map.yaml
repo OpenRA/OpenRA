@@ -1250,7 +1250,7 @@ Actors:
 		Owner: Greece
 		Facing: 128
 		SubCell: 0
-	PrisonedEngi: hacke6
+	PrisonedEngi: mech
 		Location: 57,67
 		Owner: Greece
 		Facing: 96
@@ -1284,9 +1284,6 @@ Actors:
 		Owner: Neutral
 	BaseCameraWaypoint: waypoint
 		Location: 55,70
-		Owner: Neutral
-	LargeCameraWaypoint: waypoint
-		Location: 71,65
 		Owner: Neutral
 	ParadropLZ: waypoint
 		Location: 73,57
