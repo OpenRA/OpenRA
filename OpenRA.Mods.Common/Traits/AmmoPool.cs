@@ -62,10 +62,9 @@ namespace OpenRA.Mods.Common.Traits
 		readonly Stack<int> tokens = new Stack<int>();
 		ConditionManager conditionManager;
 
-		bool selfReloads;
-
 		// HACK: Temporarily needed until Rearm activity is gone for good
 		[Sync] public int RemainingTicks;
+
 		[Sync] int currentAmmo;
 
 		public AmmoPool(Actor self, AmmoPoolInfo info)
@@ -100,12 +99,12 @@ namespace OpenRA.Mods.Common.Traits
 
 		// This mostly serves to avoid complicated ReloadAmmoPool look-ups in various other places.
 		// TODO: Investigate removing this when the Rearm activity is replaced with a condition-based solution.
-		public bool SelfReloads { get { return selfReloads; } }
+		public bool AutoReloads { get; private set; }
 
 		void INotifyCreated.Created(Actor self)
 		{
 			conditionManager = self.TraitOrDefault<ConditionManager>();
-			selfReloads = self.TraitsImplementing<ReloadAmmoPool>().Any(r => r.Info.AmmoPool == Info.Name && r.Info.RequiresCondition == null);
+			AutoReloads = self.TraitsImplementing<ReloadAmmoPool>().Any(r => r.Info.AmmoPool == Info.Name && r.Info.RequiresCondition == null);
 
 			UpdateCondition(self);
 

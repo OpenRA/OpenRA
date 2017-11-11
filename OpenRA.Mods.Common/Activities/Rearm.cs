@@ -23,7 +23,7 @@ namespace OpenRA.Mods.Common.Activities
 
 		public Rearm(Actor self)
 		{
-			ammoPools = self.TraitsImplementing<AmmoPool>().Where(p => !p.SelfReloads).ToArray();
+			ammoPools = self.TraitsImplementing<AmmoPool>().Where(p => !p.AutoReloads).ToArray();
 		}
 
 		public override Activity Tick(Actor self)
