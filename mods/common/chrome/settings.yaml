@@ -3,7 +3,7 @@ Background@SETTINGS_PANEL:
 		HotkeyGroups:
 			Game Commands:
 				Template: TWO_COLUMN
-				Types: World, Menu
+				Types: OrderGenerator, World, Menu
 			Viewport Commands:
 				Template: TWO_COLUMN
 				Types: Viewport
@@ -18,7 +18,7 @@ Background@SETTINGS_PANEL:
 				Types: Stance
 			Production Commands:
 				Template: THREE_COLUMN
-				Types: Production
+				Types: Production, ProductionSlot
 			Support Power Commands:
 				Template: THREE_COLUMN
 				Types: SupportPower
