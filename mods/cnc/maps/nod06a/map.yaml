@@ -26,14 +26,13 @@ Players:
 		Faction: gdi
 	PlayerReference@GDI:
 		Name: GDI
-		Playable: False
 		Faction: gdi
 		Color: F5D378
 		Enemies: Nod
 	PlayerReference@Nod:
 		Name: Nod
-		Playable: True
 		AllowBots: False
+		Playable: True
 		Required: True
 		LockFaction: True
 		Faction: nod
@@ -637,10 +636,39 @@ Actors:
 		Location: 36,23
 		Owner: GDI
 	Detonator: CRATE.plain
-		Location: 59, 43
+		Location: 59,43
 		Owner: GDI
 	Radar: hq
 		Location: 57,32
 		Owner: GDI
+	Actor187: jeep
+		Owner: GDI
+		Location: 40,21
+		Facing: 92
+		TurretFacing: 92
+	Actor188: e1
+		Owner: GDI
+		Location: 41,22
+		SubCell: 3
+		Facing: 92
+		TurretFacing: 92
+	Actor189: e1
+		Owner: GDI
+		Location: 39,20
+		SubCell: 3
+		Facing: 92
+		TurretFacing: 92
+	Actor190: e3
+		Owner: GDI
+		Location: 40,20
+		SubCell: 3
+		Facing: 92
+		TurretFacing: 92
+	Actor191: e3
+		Owner: GDI
+		Location: 40,20
+		SubCell: 1
+		Facing: 92
+		TurretFacing: 92
 
 Rules: cnc|rules/campaign-maprules.yaml, cnc|rules/campaign-tooltips.yaml, cnc|rules/campaign-palettes.yaml, rules.yaml

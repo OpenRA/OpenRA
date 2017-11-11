@@ -166,8 +166,10 @@ WorldLoaded = function()
 	OnAnyDamaged(Atk1ActorTriggerActivator, Atk1TriggerFunction)
 
 	OnAnyDamaged(Atk2ActorTriggerActivator, Atk2TriggerFunction)
-
-	Trigger.OnDamaged(Atk3Activator, Atk3TriggerFunction)
+	
+	if Map.LobbyOption("difficulty") == "hard" then
+		Trigger.OnDamaged(Atk3Activator, Atk3TriggerFunction)
+	end
 
 	Trigger.OnAllKilled(Chn1ActorTriggerActivator, Chn1TriggerFunction)
 

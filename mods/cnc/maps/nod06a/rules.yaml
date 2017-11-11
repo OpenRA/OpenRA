@@ -9,6 +9,13 @@ World:
 		BriefingVideo: nod6.vqa
 		StartVideo: sundial.vqa
 		LossVideo: banner.vqa
+	ScriptLobbyDropdown@difficulty:
+		ID: difficulty
+		Label: Difficulty
+		Values:
+			normal: Normal
+			hard: Hard
+		Default: normal
 
 Player:
 	EnemyWatcher:
