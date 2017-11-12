@@ -30,5 +30,6 @@ set -e
 build_package windows
 build_package osx
 build_package linux
+build_package source
 
 echo "Package build done."
