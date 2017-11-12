@@ -111,6 +111,7 @@ MIG:
 	AttackPlane:
 		FacingTolerance: 20
 	Aircraft:
+		RearmBuildings: afld
 		CruiseAltitude: 2560
 		InitialFacing: 192
 		TurnSpeed: 4
@@ -175,6 +176,7 @@ YAK:
 	AttackPlane:
 		FacingTolerance: 20
 	Aircraft:
+		RearmBuildings: afld
 		CruiseAltitude: 2560
 		InitialFacing: 192
 		TurnSpeed: 4
@@ -290,6 +292,7 @@ HELI:
 	AttackHeli:
 		FacingTolerance: 20
 	Aircraft:
+		RearmBuildings: hpad
 		LandWhenIdle: false
 		InitialFacing: 224
 		TurnSpeed: 4
@@ -352,6 +355,7 @@ HIND:
 	AttackHeli:
 		FacingTolerance: 20
 	Aircraft:
+		RearmBuildings: hpad
 		LandWhenIdle: false
 		InitialFacing: 224
 		TurnSpeed: 4
