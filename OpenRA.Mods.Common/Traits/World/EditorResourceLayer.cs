@@ -71,7 +71,7 @@ namespace OpenRA.Mods.Common.Traits
 				var layer = spriteLayers.GetOrAdd(r.Value.Palette, pal =>
 				{
 					var first = res.Value.Variants.First().Value.First();
-					return new TerrainSpriteLayer(w, wr, first.Sheet, first.BlendMode, pal, false);
+					return new TerrainSpriteLayer(w, wr, first.Sheet, first.BlendMode, pal, false, false);
 				});
 
 				// Validate that sprites are compatible with this layer

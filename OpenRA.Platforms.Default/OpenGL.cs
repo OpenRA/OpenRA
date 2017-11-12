@@ -247,6 +247,9 @@ namespace OpenRA.Platforms.Default
 		public delegate void BufferSubData(int target, IntPtr offset, IntPtr size, IntPtr data);
 		public static BufferSubData glBufferSubData { get; private set; }
 
+		public delegate void GetBufferSubData(int target, IntPtr offset, IntPtr size, IntPtr data);
+		public static GetBufferSubData glGetBufferSubData { get; private set; }
+
 		public delegate void DeleteBuffers(int n, ref uint buffers);
 		public static DeleteBuffers glDeleteBuffers { get; private set; }
 
@@ -413,6 +416,7 @@ namespace OpenRA.Platforms.Default
 				glBindBuffer = Bind<BindBuffer>("glBindBuffer");
 				glBufferData = Bind<BufferData>("glBufferData");
 				glBufferSubData = Bind<BufferSubData>("glBufferSubData");
+				glGetBufferSubData = Bind<GetBufferSubData>("glGetBufferSubData");
 				glDeleteBuffers = Bind<DeleteBuffers>("glDeleteBuffers");
 				glBindAttribLocation = Bind<BindAttribLocation>("glBindAttribLocation");
 				glVertexAttribPointer = Bind<VertexAttribPointer>("glVertexAttribPointer");

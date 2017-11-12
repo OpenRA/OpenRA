@@ -55,6 +55,26 @@ namespace OpenRA.Platforms.Default
 			}
 		}
 
+		public void GetData(T[] buffer, int start, int length)
+		{
+			Bind();
+
+			var ptr = GCHandle.Alloc(buffer, GCHandleType.Pinned);
+			try
+			{
+				OpenGL.glGetBufferSubData(OpenGL.GL_ARRAY_BUFFER,
+					new IntPtr(VertexSize * start),
+					new IntPtr(VertexSize * length),
+					ptr.AddrOfPinnedObject());
+			}
+			finally
+			{
+				ptr.Free();
+			}
+
+			OpenGL.CheckGLError();
+		}
+
 		public void SetData(T[] data, int length)
 		{
 			SetData(data, 0, length);

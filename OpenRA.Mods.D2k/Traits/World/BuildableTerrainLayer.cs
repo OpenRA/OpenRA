@@ -43,7 +43,7 @@ namespace OpenRA.Mods.D2k.Traits
 		public void WorldLoaded(World w, WorldRenderer wr)
 		{
 			theater = wr.Theater;
-			render = new TerrainSpriteLayer(w, wr, theater.Sheet, BlendMode.Alpha, wr.Palette(info.Palette), wr.World.Type != WorldType.Editor);
+			render = new TerrainSpriteLayer(w, wr, theater.Sheet, BlendMode.Alpha, wr.Palette(info.Palette), wr.World.Type != WorldType.Editor, false);
 		}
 
 		public void AddTile(CPos cell, TerrainTile tile)

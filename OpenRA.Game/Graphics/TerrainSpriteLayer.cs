@@ -16,6 +16,9 @@ using System.IO;
 
 namespace OpenRA.Graphics
 {
+	/// <summary>
+	/// Maintains a layer of sprites that can cover any cell on the terrain.
+	/// </summary>
 	public sealed class TerrainSpriteLayer : IDisposable
 	{
 		public readonly Sheet Sheet;
@@ -25,7 +28,7 @@ namespace OpenRA.Graphics
 
 		readonly IVertexBuffer<Vertex> vertexBuffer;
 		readonly Vertex[] vertices;
-		readonly HashSet<int> dirtyRows = new HashSet<int>();
+		readonly HashSet<int> dirtyRows;
 		readonly int rowStride;
 		readonly bool restrictToBounds;
 
@@ -33,8 +36,25 @@ namespace OpenRA.Graphics
 		readonly Map map;
 
 		readonly PaletteReference palette;
+		readonly bool buffered;
 
-		public TerrainSpriteLayer(World world, WorldRenderer wr, Sheet sheet, BlendMode blendMode, PaletteReference palette, bool restrictToBounds)
+		/// <summary>
+		/// Initializes a new <see cref="TerrainSpriteLayer"/>.
+		/// </summary>
+		/// <param name="world">The world containing the map over which the layer resides.</param>
+		/// <param name="wr">The renderer used to draw the world.</param>
+		/// <param name="sheet">The sheet which contains all the sprites this layer will render. All the sprites must
+		/// reside on this single sheet.</param>
+		/// <param name="blendMode">The blend mode to use when drawing the sprites. The blend mode of all sprites must
+		/// use this same mode.</param>
+		/// <param name="palette">The palette that should be used to render the sprites.</param>
+		/// <param name="restrictToBounds">Indicates if only cells within the map bounds should be drawn; otherwise,
+		/// all cells including those outside the map bounds will be drawn.</param>
+		/// <param name="buffered">Indicates if updates should occur in a buffer, set this when frequent updates are
+		/// expected. Using a buffer saves CPU, whereas not using a buffer saves memory.</param>
+		public TerrainSpriteLayer(
+			World world, WorldRenderer wr, Sheet sheet, BlendMode blendMode, PaletteReference palette,
+			bool restrictToBounds, bool buffered)
 		{
 			worldRenderer = wr;
 			this.restrictToBounds = restrictToBounds;
@@ -45,8 +65,16 @@ namespace OpenRA.Graphics
 			map = world.Map;
 			rowStride = 6 * map.MapSize.X;
 
-			vertices = new Vertex[rowStride * map.MapSize.Y];
-			vertexBuffer = Game.Renderer.Device.CreateVertexBuffer(vertices.Length);
+			// We can use a buffer to track updates. We can then only send updates in the visible region to the GPU.
+			// This saves CPU by only sending updated rows when they become visible. This requires keeping a full copy
+			// of the vertices, so it doubles the memory required.
+			this.buffered = buffered;
+
+			if (buffered)
+				dirtyRows = new HashSet<int>();
+
+			vertices = new Vertex[buffered ? rowStride * map.MapSize.Y : 6];
+			vertexBuffer = Game.Renderer.Device.CreateVertexBuffer(rowStride * map.MapSize.Y);
 			emptySprite = new Sprite(sheet, Rectangle.Empty, TextureChannel.Alpha);
 
 			wr.PaletteInvalidated += UpdatePaletteIndices;
@@ -54,16 +82,41 @@ namespace OpenRA.Graphics
 
 		void UpdatePaletteIndices()
 		{
-			// Everything in the layer uses the same palette,
-			// so we can fix the indices in one pass
-			for (var i = 0; i < vertices.Length; i++)
+			if (buffered)
 			{
-				var v = vertices[i];
-				vertices[i] = new Vertex(v.X, v.Y, v.Z, v.S, v.T, v.U, v.V, palette.TextureIndex, v.C);
-			}
+				// Everything in the layer uses the same palette,
+				// so we can fix the indices in one pass
+				for (var i = 0; i < vertices.Length; i++)
+				{
+					var v = vertices[i];
+					vertices[i] = new Vertex(v.X, v.Y, v.Z, v.S, v.T, v.U, v.V, palette.TextureIndex, v.C);
+				}
 
-			for (var row = 0; row < map.MapSize.Y; row++)
-				dirtyRows.Add(row);
+				for (var row = 0; row < map.MapSize.Y; row++)
+					dirtyRows.Add(row);
+			}
+			else
+			{
+				var vertexBufferLength = rowStride * map.MapSize.Y;
+				var buffer = new Vertex[Math.Min(2048, vertexBufferLength)];
+
+				var start = 0;
+				while (start < vertexBufferLength)
+				{
+					var length = Math.Min(buffer.Length, vertexBufferLength - start);
+					vertexBuffer.GetData(buffer, start, length);
+
+					for (var i = 0; i < length; i++)
+					{
+						var v = buffer[i];
+						buffer[i] = new Vertex(v.X, v.Y, v.Z, v.S, v.T, v.U, v.V, palette.TextureIndex, v.C);
+					}
+
+					vertexBuffer.SetData(buffer, start, length);
+
+					start += length;
+				}
+			}
 		}
 
 		public void Update(CPos cell, Sprite sprite)
@@ -92,9 +145,16 @@ namespace OpenRA.Graphics
 				return;
 
 			var offset = rowStride * uv.V + 6 * uv.U;
-			Util.FastCreateQuad(vertices, pos, sprite, palette.TextureIndex, offset, sprite.Size);
-
-			dirtyRows.Add(uv.V);
+			if (buffered)
+			{
+				Util.FastCreateQuad(vertices, pos, sprite, palette.TextureIndex, offset, sprite.Size);
+				dirtyRows.Add(uv.V);
+			}
+			else
+			{
+				Util.FastCreateQuad(vertices, pos, sprite, palette.TextureIndex, 0, sprite.Size);
+				vertexBuffer.SetData(vertices, offset, vertices.Length);
+			}
 		}
 
 		public void Draw(Viewport viewport)
@@ -108,20 +168,23 @@ namespace OpenRA.Graphics
 			Game.Renderer.Flush();
 
 			// Flush any visible changes to the GPU
-			for (var row = firstRow; row <= lastRow; row++)
+			if (buffered)
 			{
-				if (!dirtyRows.Remove(row))
-					continue;
-
-				var rowOffset = rowStride * row;
-
-				unsafe
+				for (var row = firstRow; row <= lastRow; row++)
 				{
-					// The compiler / language spec won't let us calculate a pointer to
-					// an offset inside a generic array T[], and so we are forced to
-					// calculate the start-of-row pointer here to pass in to SetData.
-					fixed (Vertex* vPtr = &vertices[0])
-						vertexBuffer.SetData((IntPtr)(vPtr + rowOffset), rowOffset, rowStride);
+					if (!dirtyRows.Remove(row))
+						continue;
+
+					var rowOffset = rowStride * row;
+
+					unsafe
+					{
+						// The compiler / language spec won't let us calculate a pointer to
+						// an offset inside a generic array T[], and so we are forced to
+						// calculate the start-of-row pointer here to pass in to SetData.
+						fixed (Vertex* vPtr = &vertices[0])
+							vertexBuffer.SetData((IntPtr)(vPtr + rowOffset), rowOffset, rowStride);
+					}
 				}
 			}
 

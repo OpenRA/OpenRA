@@ -75,6 +75,7 @@ namespace OpenRA
 	public interface IVertexBuffer<T> : IDisposable
 	{
 		void Bind();
+		void GetData(T[] buffer, int start, int length);
 		void SetData(T[] vertices, int length);
 		void SetData(T[] vertices, int start, int length);
 		void SetData(IntPtr data, int start, int length);
