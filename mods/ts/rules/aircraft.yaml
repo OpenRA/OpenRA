@@ -78,6 +78,7 @@ ORCA:
 	Selectable:
 		Bounds: 30,24
 	Aircraft:
+		RearmBuildings: gahpad, nahpad
 		TurnSpeed: 5
 		Speed: 186
 		MoveIntoShroud: false
@@ -120,6 +121,7 @@ ORCAB:
 	Selectable:
 		Bounds: 30,24
 	Aircraft:
+		RearmBuildings: gahpad, nahpad
 		CruiseAltitude: 3072
 		MaximumPitch: 120
 		TurnSpeed: 3
@@ -245,6 +247,7 @@ SCRIN:
 	Voiced:
 		VoiceSet: Scrin
 	Aircraft:
+		RearmBuildings: gahpad, nahpad
 		CruiseAltitude: 2560
 		MaximumPitch: 90
 		TurnSpeed: 3
@@ -293,6 +296,7 @@ APACHE:
 	Selectable:
 		Bounds: 30,24
 	Aircraft:
+		RearmBuildings: gahpad, nahpad
 		TurnSpeed: 5
 		Speed: 130
 		MoveIntoShroud: false

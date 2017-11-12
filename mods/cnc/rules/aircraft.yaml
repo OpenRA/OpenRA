@@ -65,7 +65,6 @@ HELI:
 		Queue: Aircraft.Nod
 		Description: Helicopter Gunship with Chainguns.\n  Strong vs Infantry, Light Vehicles and\n  Aircraft\n  Weak vs Tanks
 	Aircraft:
-		RearmBuildings: hpad
 		InitialFacing: 224
 		TurnSpeed: 7
 		Speed: 180
@@ -124,7 +123,6 @@ ORCA:
 		Queue: Aircraft.GDI
 		Description: Helicopter Gunship with AG Missiles.\n  Strong vs Buildings, Tanks\n  Weak vs Infantry
 	Aircraft:
-		RearmBuildings: hpad
 		InitialFacing: 224
 		TurnSpeed: 7
 		Speed: 186

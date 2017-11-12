@@ -814,7 +814,6 @@
 	Aircraft:
 		AirborneCondition: airborne
 		RepairBuildings: gadept
-		RearmBuildings: gahpad, nahpad
 		LandWhenIdle: false
 		Voice: Move
 		IdealSeparation: 853
