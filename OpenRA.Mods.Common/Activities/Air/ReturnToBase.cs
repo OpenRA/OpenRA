@@ -20,8 +20,8 @@ namespace OpenRA.Mods.Common.Activities
 {
 	public class ReturnToBase : Activity
 	{
-		readonly Aircraft plane;
-		readonly AircraftInfo planeInfo;
+		readonly Aircraft aircraft;
+		readonly AircraftInfo aircraftInfo;
 		readonly bool alwaysLand;
 		readonly bool abortOnResupply;
 		bool isCalculated;
@@ -33,8 +33,8 @@ namespace OpenRA.Mods.Common.Activities
 			this.dest = dest;
 			this.alwaysLand = alwaysLand;
 			this.abortOnResupply = abortOnResupply;
-			plane = self.Trait<Aircraft>();
-			planeInfo = self.Info.TraitInfo<AircraftInfo>();
+			aircraft = self.Trait<Aircraft>();
+			aircraftInfo = self.Info.TraitInfo<AircraftInfo>();
 		}
 
 		public static Actor ChooseAirfield(Actor self, bool unreservedOnly)
@@ -56,20 +56,20 @@ namespace OpenRA.Mods.Common.Activities
 				return;
 
 			var landPos = dest.CenterPosition;
-			var altitude = planeInfo.CruiseAltitude.Length;
+			var altitude = aircraftInfo.CruiseAltitude.Length;
 
 			// Distance required for descent.
-			var landDistance = altitude * 1024 / planeInfo.MaximumPitch.Tan();
+			var landDistance = altitude * 1024 / aircraftInfo.MaximumPitch.Tan();
 
 			// Land towards the east
 			var approachStart = landPos + new WVec(-landDistance, 0, altitude);
 
 			// Add 10% to the turning radius to ensure we have enough room
-			var speed = plane.MovementSpeed * 32 / 35;
+			var speed = aircraft.MovementSpeed * 32 / 35;
 			var turnRadius = CalculateTurnRadius(speed);
 
 			// Find the center of the turning circles for clockwise and counterclockwise turns
-			var angle = WAngle.FromFacing(plane.Facing);
+			var angle = WAngle.FromFacing(aircraft.Facing);
 			var fwd = -new WVec(angle.Sin(), angle.Cos(), 0);
 
 			// Work out whether we should turn clockwise or counter-clockwise for approach
@@ -101,10 +101,10 @@ namespace OpenRA.Mods.Common.Activities
 			if (alwaysLand)
 				return true;
 
-			if (planeInfo.RepairBuildings.Contains(dest.Info.Name) && self.GetDamageState() != DamageState.Undamaged)
+			if (aircraftInfo.RepairBuildings.Contains(dest.Info.Name) && self.GetDamageState() != DamageState.Undamaged)
 				return true;
 
-			return planeInfo.RearmBuildings.Contains(dest.Info.Name) && self.TraitsImplementing<AmmoPool>()
+			return aircraftInfo.RearmBuildings.Contains(dest.Info.Name) && self.TraitsImplementing<AmmoPool>()
 					.Any(p => !p.AutoReloads && !p.FullAmmo());
 		}
 
@@ -112,7 +112,7 @@ namespace OpenRA.Mods.Common.Activities
 		{
 			// Refuse to take off if it would land immediately again.
 			// Special case: Don't kill other deploy hotkey activities.
-			if (plane.ForceLanding)
+			if (aircraft.ForceLanding)
 				return NextActivity;
 
 			if (IsCanceled || self.IsDead)
@@ -127,8 +127,8 @@ namespace OpenRA.Mods.Common.Activities
 
 				if (nearestAfld != null)
 					return ActivityUtils.SequenceActivities(
-						new Fly(self, Target.FromActor(nearestAfld), WDist.Zero, plane.Info.WaitDistanceFromResupplyBase),
-						new FlyCircle(self, plane.Info.NumberOfTicksToVerifyAvailableAirport),
+						new Fly(self, Target.FromActor(nearestAfld), WDist.Zero, aircraft.Info.WaitDistanceFromResupplyBase),
+						new FlyCircle(self, aircraft.Info.NumberOfTicksToVerifyAvailableAirport),
 						this);
 				else
 				{
@@ -140,7 +140,7 @@ namespace OpenRA.Mods.Common.Activities
 
 			List<Activity> landingProcedures = new List<Activity>();
 
-			var turnRadius = CalculateTurnRadius(planeInfo.Speed);
+			var turnRadius = CalculateTurnRadius(aircraftInfo.Speed);
 
 			landingProcedures.Add(new Fly(self, Target.FromPos(w1), WDist.Zero, new WDist(turnRadius * 3)));
 			landingProcedures.Add(new Fly(self, Target.FromPos(w2)));
@@ -150,7 +150,7 @@ namespace OpenRA.Mods.Common.Activities
 
 			if (ShouldLandAtBuilding(self, dest))
 			{
-				plane.MakeReservation(dest);
+				aircraft.MakeReservation(dest);
 
 				landingProcedures.Add(new Land(self, Target.FromActor(dest)));
 				landingProcedures.Add(new ResupplyAircraft(self));
@@ -164,7 +164,7 @@ namespace OpenRA.Mods.Common.Activities
 
 		int CalculateTurnRadius(int speed)
 		{
-			return 45 * speed / planeInfo.TurnSpeed;
+			return 45 * speed / aircraftInfo.TurnSpeed;
 		}
 	}
 }
