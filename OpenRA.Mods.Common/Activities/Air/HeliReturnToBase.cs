@@ -19,6 +19,7 @@ namespace OpenRA.Mods.Common.Activities
 	public class HeliReturnToBase : Activity
 	{
 		readonly Aircraft aircraft;
+		readonly RepairableInfo repairableInfo;
 		readonly bool alwaysLand;
 		readonly bool abortOnResupply;
 		Actor dest;
@@ -26,6 +27,7 @@ namespace OpenRA.Mods.Common.Activities
 		public HeliReturnToBase(Actor self, bool abortOnResupply, Actor dest = null, bool alwaysLand = true)
 		{
 			aircraft = self.Trait<Aircraft>();
+			repairableInfo = self.Info.TraitInfoOrDefault<RepairableInfo>();
 			this.alwaysLand = alwaysLand;
 			this.abortOnResupply = abortOnResupply;
 			this.dest = dest;
@@ -114,7 +116,7 @@ namespace OpenRA.Mods.Common.Activities
 			if (alwaysLand)
 				return true;
 
-			if (aircraft.Info.RepairBuildings.Contains(dest.Info.Name) && self.GetDamageState() != DamageState.Undamaged)
+			if (repairableInfo != null && repairableInfo.RepairBuildings.Contains(dest.Info.Name) && self.GetDamageState() != DamageState.Undamaged)
 				return true;
 
 			return aircraft.Info.RearmBuildings.Contains(dest.Info.Name) && self.TraitsImplementing<AmmoPool>()

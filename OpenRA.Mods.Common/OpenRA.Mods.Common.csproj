@@ -929,6 +929,7 @@
     <Compile Include="UpdateRules\Rules\20180923\MergeRearmAndRepairAnimation.cs" />
     <Compile Include="UpdateRules\Rules\20180923\LowPowerSlowdownToModifier.cs" />
     <Compile Include="UpdateRules\Rules\20180923\RemoveHealthPercentageRing.cs" />
+    <Compile Include="UpdateRules\Rules\20180923\RemoveRepairBuildingsFromAircraft.cs" />
     <Compile Include="Traits\Player\PlayerResources.cs" />
     <Compile Include="UtilityCommands\DumpSequenceSheetsCommand.cs" />
     <Compile Include="Traits\Render\WithBuildingRepairDecoration.cs" />

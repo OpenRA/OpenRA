@@ -22,6 +22,7 @@ namespace OpenRA.Mods.Common.Activities
 	{
 		readonly Aircraft aircraft;
 		readonly AircraftInfo aircraftInfo;
+		readonly RepairableInfo repairableInfo;
 		readonly bool alwaysLand;
 		readonly bool abortOnResupply;
 		bool isCalculated;
@@ -35,6 +36,7 @@ namespace OpenRA.Mods.Common.Activities
 			this.abortOnResupply = abortOnResupply;
 			aircraft = self.Trait<Aircraft>();
 			aircraftInfo = self.Info.TraitInfo<AircraftInfo>();
+			repairableInfo = self.Info.TraitInfoOrDefault<RepairableInfo>();
 		}
 
 		public static Actor ChooseResupplier(Actor self, bool unreservedOnly)
@@ -104,7 +106,7 @@ namespace OpenRA.Mods.Common.Activities
 			if (alwaysLand)
 				return true;
 
-			if (aircraftInfo.RepairBuildings.Contains(dest.Info.Name) && self.GetDamageState() != DamageState.Undamaged)
+			if (repairableInfo != null && repairableInfo.RepairBuildings.Contains(dest.Info.Name) && self.GetDamageState() != DamageState.Undamaged)
 				return true;
 
 			return aircraftInfo.RearmBuildings.Contains(dest.Info.Name) && self.TraitsImplementing<AmmoPool>()

@@ -821,9 +821,11 @@
 	WithTextControlGroupDecoration:
 	SelectionDecorations:
 		Palette: pips
+	Repairable:
+		RepairBuildings: gadept
+		Voice: Move
 	Aircraft:
 		AirborneCondition: airborne
-		RepairBuildings: gadept
 		LandWhenIdle: false
 		Voice: Move
 		IdealSeparation: 853

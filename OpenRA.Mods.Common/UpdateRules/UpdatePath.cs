@@ -99,6 +99,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 				new ChangeTakeOffSoundAndLandingSound(),
 				new RemoveHealthPercentageRing(),
 				new RenameCrateActionNotification(),
+				new RemoveRepairBuildingsFromAircraft(),
 			})
 		};
 
