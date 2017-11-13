@@ -18,14 +18,14 @@ namespace OpenRA.Mods.Common.Activities
 {
 	public class HeliReturnToBase : Activity
 	{
-		readonly Aircraft heli;
+		readonly Aircraft aircraft;
 		readonly bool alwaysLand;
 		readonly bool abortOnResupply;
 		Actor dest;
 
 		public HeliReturnToBase(Actor self, bool abortOnResupply, Actor dest = null, bool alwaysLand = true)
 		{
-			heli = self.Trait<Aircraft>();
+			aircraft = self.Trait<Aircraft>();
 			this.alwaysLand = alwaysLand;
 			this.abortOnResupply = abortOnResupply;
 			this.dest = dest;
@@ -33,7 +33,7 @@ namespace OpenRA.Mods.Common.Activities
 
 		public Actor ChooseHelipad(Actor self, bool unreservedOnly)
 		{
-			var rearmBuildings = heli.Info.RearmBuildings;
+			var rearmBuildings = aircraft.Info.RearmBuildings;
 			return self.World.Actors.Where(a => a.Owner == self.Owner
 				&& rearmBuildings.Contains(a.Info.Name)
 				&& (!unreservedOnly || !Reservable.IsReserved(a)))
@@ -44,7 +44,7 @@ namespace OpenRA.Mods.Common.Activities
 		{
 			// Refuse to take off if it would land immediately again.
 			// Special case: Don't kill other deploy hotkey activities.
-			if (heli.ForceLanding)
+			if (aircraft.ForceLanding)
 				return NextActivity;
 
 			if (IsCanceled)
@@ -53,7 +53,7 @@ namespace OpenRA.Mods.Common.Activities
 			if (dest == null || dest.IsDead || Reservable.IsReserved(dest))
 				dest = ChooseHelipad(self, true);
 
-			var initialFacing = heli.Info.InitialFacing;
+			var initialFacing = aircraft.Info.InitialFacing;
 
 			if (dest == null || dest.IsDead)
 			{
@@ -61,19 +61,19 @@ namespace OpenRA.Mods.Common.Activities
 
 				// If a heli was told to return and there's no (available) RearmBuilding, going to the probable next queued activity (HeliAttack)
 				// would be pointless (due to lack of ammo), and possibly even lead to an infinite loop due to HeliAttack.cs:L79.
-				if (nearestHpad == null && heli.Info.LandWhenIdle)
+				if (nearestHpad == null && aircraft.Info.LandWhenIdle)
 				{
-					if (heli.Info.TurnToLand)
+					if (aircraft.Info.TurnToLand)
 						return ActivityUtils.SequenceActivities(new Turn(self, initialFacing), new HeliLand(self, true));
 
 					return new HeliLand(self, true);
 				}
-				else if (nearestHpad == null && !heli.Info.LandWhenIdle)
+				else if (nearestHpad == null && !aircraft.Info.LandWhenIdle)
 					return null;
 				else
 				{
 					var distanceFromHelipad = (nearestHpad.CenterPosition - self.CenterPosition).HorizontalLength;
-					var distanceLength = heli.Info.WaitDistanceFromResupplyBase.Length;
+					var distanceLength = aircraft.Info.WaitDistanceFromResupplyBase.Length;
 
 					// If no pad is available, move near one and wait
 					if (distanceFromHelipad > distanceLength)
@@ -82,7 +82,7 @@ namespace OpenRA.Mods.Common.Activities
 
 						var target = Target.FromPos(nearestHpad.CenterPosition + randomPosition);
 
-						return ActivityUtils.SequenceActivities(new HeliFly(self, target, WDist.Zero, heli.Info.WaitDistanceFromResupplyBase), this);
+						return ActivityUtils.SequenceActivities(new HeliFly(self, target, WDist.Zero, aircraft.Info.WaitDistanceFromResupplyBase), this);
 					}
 
 					return this;
@@ -94,7 +94,7 @@ namespace OpenRA.Mods.Common.Activities
 
 			if (ShouldLandAtBuilding(self, dest))
 			{
-				heli.MakeReservation(dest);
+				aircraft.MakeReservation(dest);
 
 				return ActivityUtils.SequenceActivities(
 					new HeliFly(self, Target.FromPos(dest.CenterPosition + offset)),
@@ -114,10 +114,10 @@ namespace OpenRA.Mods.Common.Activities
 			if (alwaysLand)
 				return true;
 
-			if (heli.Info.RepairBuildings.Contains(dest.Info.Name) && self.GetDamageState() != DamageState.Undamaged)
+			if (aircraft.Info.RepairBuildings.Contains(dest.Info.Name) && self.GetDamageState() != DamageState.Undamaged)
 				return true;
 
-			return heli.Info.RearmBuildings.Contains(dest.Info.Name) && self.TraitsImplementing<AmmoPool>()
+			return aircraft.Info.RearmBuildings.Contains(dest.Info.Name) && self.TraitsImplementing<AmmoPool>()
 					.Any(p => !p.AutoReloads && !p.FullAmmo());
 		}
 	}
