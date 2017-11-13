@@ -37,9 +37,6 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int RepulsionSpeed = -1;
 
 		[ActorReference]
-		public readonly HashSet<string> RepairBuildings = new HashSet<string> { };
-
-		[ActorReference]
 		public readonly HashSet<string> RearmBuildings = new HashSet<string> { };
 
 		public readonly int InitialFacing = 0;
@@ -157,6 +154,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly AircraftInfo Info;
 		readonly Actor self;
 
+		RepairableInfo repairableInfo;
 		ConditionManager conditionManager;
 		IDisposable reservation;
 		IEnumerable<int> speedModifiers;
@@ -212,6 +210,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		protected virtual void Created(Actor self)
 		{
+			repairableInfo = self.Info.TraitInfoOrDefault<RepairableInfo>();
 			conditionManager = self.TraitOrDefault<ConditionManager>();
 			speedModifiers = self.TraitsImplementing<ISpeedModifier>().ToArray().Select(sm => sm.GetSpeedModifier());
 			cachedPosition = self.CenterPosition;
@@ -452,7 +451,7 @@ namespace OpenRA.Mods.Common.Traits
 				return false;
 
 			return Info.RearmBuildings.Contains(a.Info.Name)
-				|| Info.RepairBuildings.Contains(a.Info.Name);
+				|| (repairableInfo != null && repairableInfo.RepairBuildings.Contains(a.Info.Name));
 		}
 
 		public int MovementSpeed
@@ -492,7 +491,7 @@ namespace OpenRA.Mods.Common.Traits
 				yield return new Rearm(self, a, WDist.Zero);
 
 			// The ResupplyAircraft activity guarantees that we're on the helipad
-			if (Info.RepairBuildings.Contains(name))
+			if (repairableInfo != null && repairableInfo.RepairBuildings.Contains(name))
 				yield return new Repair(self, a, WDist.Zero);
 		}
 

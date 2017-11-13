@@ -306,8 +306,9 @@
 	WithSpriteControlGroupDecoration:
 	Selectable:
 		Bounds: 24,24
-	Aircraft:
+	Repairable:
 		RepairBuildings: hpad
+	Aircraft:
 		LandWhenIdle: false
 		AirborneCondition: airborne
 		CruisingCondition: cruising
