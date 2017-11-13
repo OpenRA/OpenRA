@@ -45,7 +45,7 @@ namespace OpenRA.Mods.Common.Traits
 		public int PowerOutageTotalTicks { get; private set; }
 
 		int nextPowerAdviceTime = 0;
-		bool lowPower = false;
+		bool isLowPower = false;
 		bool wasLowPower = false;
 		bool wasHackEnabled;
 
@@ -109,19 +109,19 @@ namespace OpenRA.Mods.Common.Traits
 				wasHackEnabled = devMode.UnlimitedPower;
 			}
 
-			lowPower = ExcessPower < 0;
+			isLowPower = ExcessPower < 0;
 
-			if (lowPower != wasLowPower)
-				UpdateRequiresPowerActors();
+			if (isLowPower != wasLowPower)
+				UpdatePowerRequiringActors();
 
-			if (lowPower && !wasLowPower)
+			if (isLowPower && !wasLowPower)
 				nextPowerAdviceTime = 0;
 
-			wasLowPower = lowPower;
+			wasLowPower = isLowPower;
 
 			if (--nextPowerAdviceTime <= 0)
 			{
-				if (lowPower)
+				if (isLowPower)
 					Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", info.SpeechNotification, self.Owner.Faction.InternalName);
 
 				nextPowerAdviceTime = info.AdviceInterval;
@@ -156,7 +156,7 @@ namespace OpenRA.Mods.Common.Traits
 				p.Trait.UpdateStatus(p.Actor);
 		}
 
-		void UpdateRequiresPowerActors()
+		void UpdatePowerRequiringActors()
 		{
 			var traitPairs = self.World.ActorsWithTrait<INotifyPowerLevelChanged>()
 				.Where(p => !p.Actor.IsDead && p.Actor.IsInWorld && p.Actor.Owner == self.Owner);

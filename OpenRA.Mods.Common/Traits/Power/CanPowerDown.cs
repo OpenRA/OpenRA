@@ -36,7 +36,7 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class CanPowerDown : ConditionalTrait<CanPowerDownInfo>, IPowerModifier, IResolveOrder, INotifyOwnerChanged
 	{
-		[Sync] bool poweredDown = false;
+		[Sync] bool isPoweredDown = false;
 		PowerManager power;
 
 		ConditionManager conditionManager;
@@ -66,9 +66,9 @@ namespace OpenRA.Mods.Common.Traits
 			if (conditionManager == null)
 				return;
 
-			if (poweredDown && conditionToken == ConditionManager.InvalidConditionToken)
+			if (isPoweredDown && conditionToken == ConditionManager.InvalidConditionToken)
 				conditionToken = conditionManager.GrantCondition(self, Info.PowerdownCondition);
-			else if (!poweredDown && conditionToken != ConditionManager.InvalidConditionToken)
+			else if (!isPoweredDown && conditionToken != ConditionManager.InvalidConditionToken)
 				conditionToken = conditionManager.RevokeCondition(self, conditionToken);
 		}
 
@@ -76,18 +76,18 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			if (!IsTraitDisabled && order.OrderString == "PowerDown")
 			{
-				poweredDown = !poweredDown;
+				isPoweredDown = !isPoweredDown;
 
-				if (Info.PowerupSound != null && poweredDown)
+				if (Info.PowerupSound != null && isPoweredDown)
 					Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Sounds", Info.PowerupSound, self.Owner.Faction.InternalName);
 
-				if (Info.PowerdownSound != null && !poweredDown)
+				if (Info.PowerdownSound != null && !isPoweredDown)
 					Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Sounds", Info.PowerdownSound, self.Owner.Faction.InternalName);
 
-				if (Info.PowerupSpeech != null && poweredDown)
+				if (Info.PowerupSpeech != null && isPoweredDown)
 					Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", Info.PowerupSpeech, self.Owner.Faction.InternalName);
 
-				if (Info.PowerdownSpeech != null && !poweredDown)
+				if (Info.PowerdownSpeech != null && !isPoweredDown)
 					Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", Info.PowerdownSpeech, self.Owner.Faction.InternalName);
 
 				Update(self);
@@ -97,7 +97,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		int IPowerModifier.GetPowerModifier()
 		{
-			return !IsTraitDisabled && poweredDown ? 0 : 100;
+			return !IsTraitDisabled && isPoweredDown ? 0 : 100;
 		}
 
 		void INotifyOwnerChanged.OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
@@ -107,10 +107,10 @@ namespace OpenRA.Mods.Common.Traits
 
 		protected override void TraitDisabled(Actor self)
 		{
-			if (!poweredDown || !Info.CancelWhenDisabled)
+			if (!isPoweredDown || !Info.CancelWhenDisabled)
 				return;
 
-			poweredDown = false;
+			isPoweredDown = false;
 
 			if (Info.PowerupSound != null)
 				Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Sound", Info.PowerupSound, self.Owner.Faction.InternalName);
