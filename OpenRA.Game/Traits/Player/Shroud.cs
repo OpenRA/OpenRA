@@ -18,28 +18,28 @@ namespace OpenRA.Traits
 	public class ShroudInfo : ITraitInfo, ILobbyOptions
 	{
 		[Desc("Default value of the fog checkbox in the lobby.")]
-		public bool FogEnabled = true;
+		public readonly bool FogEnabled = true;
 
 		[Desc("Prevent the fog enabled state from being changed in the lobby.")]
-		public bool FogLocked = false;
+		public readonly bool FogLocked = false;
 
 		[Desc("Whether to display the fog checkbox in the lobby.")]
-		public bool FogVisible = true;
+		public readonly bool FogVisible = true;
 
 		[Desc("Display order for the fog checkbox in the lobby.")]
-		public int FogDisplayOrder = 0;
+		public readonly int FogDisplayOrder = 0;
 
 		[Desc("Default value of the explore map checkbox in the lobby.")]
-		public bool ExploredMapEnabled = false;
+		public readonly bool ExploredMapEnabled = false;
 
 		[Desc("Prevent the explore map enabled state from being changed in the lobby.")]
-		public bool ExploredMapLocked = false;
+		public readonly bool ExploredMapLocked = false;
 
 		[Desc("Whether to display the explore map checkbox in the lobby.")]
-		public bool ExploredMapVisible = true;
+		public readonly bool ExploredMapVisible = true;
 
 		[Desc("Display order for the explore map checkbox in the lobby.")]
-		public int ExploredMapDisplayOrder = 0;
+		public readonly int ExploredMapDisplayOrder = 0;
 
 		IEnumerable<LobbyOption> ILobbyOptions.LobbyOptions(Ruleset rules)
 		{
