@@ -106,6 +106,7 @@ end
 
 Obj2TriggerFunction = function()
 	player.MarkCompletedObjective(NodObjective2)
+	Media.PlaySpeechNotification(player, "Reinforce")
 	Reinforcements.Reinforce(player, Obj2Units, { Obj2UnitsEntry.Location, waypoint13.Location }, 15)
 end
 
@@ -129,7 +130,7 @@ end
 WorldLoaded = function()
 	player = Player.GetPlayer("Nod")
 	enemy = Player.GetPlayer("GDI")
-	
+
 	Trigger.OnObjectiveAdded(player, function(p, id)
 		Media.DisplayMessage(p.GetObjectiveDescription(id), "New " .. string.lower(p.GetObjectiveType(id)) .. " objective")
 	end)
