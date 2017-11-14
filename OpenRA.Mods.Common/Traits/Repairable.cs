@@ -124,7 +124,7 @@ namespace OpenRA.Mods.Common.Traits
 			// will need to be rewritten anyway, so this is OK for now.
 			self.QueueActivity(movement.MoveTo(self.World.Map.CellContaining(targetActor.CenterPosition), targetActor));
 			if (CanRearmAt(targetActor) && CanRearm())
-				self.QueueActivity(new Rearm(self));
+				self.QueueActivity(new Rearm(self, targetActor, new WDist(512)));
 
 			// Add a CloseEnough range of 512 to ensure we're at the host actor
 			self.QueueActivity(new Repair(self, targetActor, new WDist(512)));

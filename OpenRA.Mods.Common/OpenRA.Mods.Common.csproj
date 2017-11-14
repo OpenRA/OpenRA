@@ -475,8 +475,7 @@
     <Compile Include="Traits\Render\WithNukeLaunchOverlay.cs" />
     <Compile Include="Traits\Render\WithParachute.cs" />
     <Compile Include="Traits\Render\WithRangeCircle.cs" />
-    <Compile Include="Traits\Render\WithRearmAnimation.cs" />
-    <Compile Include="Traits\Render\WithRepairAnimation.cs" />
+    <Compile Include="Traits\Render\WithResupplyAnimation.cs" />
     <Compile Include="Traits\Render\WithRepairOverlay.cs" />
     <Compile Include="Traits\Render\WithResources.cs" />
     <Compile Include="Traits\Render\WithShadow.cs" />
@@ -912,6 +911,7 @@
     <Compile Include="UpdateRules\Rules\20180307\RemoveCanUndeployFromGrantConditionOnDeploy.cs" />
     <Compile Include="UpdateRules\Rules\20180923\DefineNotificationDefaults.cs" />
     <Compile Include="UpdateRules\Rules\20180923\RenameEditorTilesetFilter.cs" />
+    <Compile Include="UpdateRules\Rules\20180923\MergeRearmAndRepairAnimation.cs" />
     <Compile Include="Traits\Player\PlayerResources.cs" />
     <Compile Include="UtilityCommands\DumpSequenceSheetsCommand.cs" />
     <Compile Include="Traits\Render\WithBuildingRepairDecoration.cs" />
