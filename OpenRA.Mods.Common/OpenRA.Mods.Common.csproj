@@ -315,6 +315,7 @@
     <Compile Include="Traits\CaptureProgressBar.cs" />
     <Compile Include="Traits\CaptureProgressBlink.cs" />
     <Compile Include="Traits\RepairsUnits.cs" />
+    <Compile Include="Traits\Rearmable.cs" />
     <Compile Include="Traits\Burns.cs" />
     <Compile Include="Traits\CarryableHarvester.cs" />
     <Compile Include="Traits\ChangesTerrain.cs" />
