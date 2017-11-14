@@ -297,6 +297,7 @@
     <Compile Include="Traits\Buildings\RequiresBuildableArea.cs" />
     <Compile Include="Traits\Buildings\Reservable.cs" />
     <Compile Include="Traits\RepairsUnits.cs" />
+    <Compile Include="Traits\Rearmable.cs" />
     <Compile Include="Traits\Burns.cs" />
     <Compile Include="Traits\ChangesTerrain.cs" />
     <Compile Include="Traits\CommandBarBlacklist.cs" />
