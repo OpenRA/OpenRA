@@ -1635,6 +1635,23 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				// WithRepairAnimation and WithRearmAnimation have been merged into WithResupplyAnimation
+				if (engineVersion < 20171215)
+				{
+					var repAnim = node.Value.Nodes.FirstOrDefault(n => n.Key.StartsWith("WithRepairAnimation", StringComparison.Ordinal));
+					var rearmAnim = node.Value.Nodes.FirstOrDefault(n => n.Key.StartsWith("WithRearmAnimation", StringComparison.Ordinal));
+					if (repAnim != null && rearmAnim == null)
+						RenameNodeKey(repAnim, "WithResupplyAnimation");
+					else if (repAnim == null && rearmAnim != null)
+						RenameNodeKey(rearmAnim, "WithResupplyAnimation");
+					else if (repAnim != null && rearmAnim != null)
+					{
+						RenameNodeKey(repAnim, "WithResupplyAnimation");
+						node.Value.Nodes.Remove(rearmAnim);
+						Console.WriteLine("WithRepairAnimation and WithRearmAnimation have been merged into WithResupplyAnimation.");
+					}
+				}
+
 				UpgradeActorRules(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 
