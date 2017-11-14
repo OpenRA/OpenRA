@@ -1338,7 +1338,7 @@ HPAD:
 		ReferencePoint: Top
 		ZOffset: 256
 		RequiresCondition: primary
-	WithRearmAnimation:
+	WithResupplyAnimation:
 
 AFLD:
 	Inherits: ^Building
@@ -1478,7 +1478,7 @@ AFLD:
 		ReferencePoint: Top
 		ZOffset: 256
 		RequiresCondition: primary
-	WithRearmAnimation:
+	WithResupplyAnimation:
 
 AFLD.Ukraine:
 	Inherits: AFLD
@@ -1874,8 +1874,7 @@ FIX:
 		StartRepairingNotification: Repairing
 		FinishRepairingNotification: UnitRepaired
 		PlayerExperience: 15
-	WithRepairAnimation:
-	WithRearmAnimation:
+	WithResupplyAnimation:
 	Power:
 		Amount: -30
 	ProvidesPrerequisite@buildingname:

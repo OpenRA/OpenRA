@@ -53,11 +53,11 @@ namespace OpenRA.Mods.Cnc.Activities
 				if (rearmTarget == null)
 					return new Wait(20);
 
-				// Add a CloseEnough range of 512 to the Repair activity in order to ensure that we're at the host actor
+				// Add a CloseEnough range of 512 to the Rearm/Repair activities in order to ensure that we're at the host actor
 				return ActivityUtils.SequenceActivities(
 					new MoveAdjacentTo(self, Target.FromActor(rearmTarget)),
 					movement.MoveTo(self.World.Map.CellContaining(rearmTarget.CenterPosition), rearmTarget),
-					new Rearm(self),
+					new Rearm(self, rearmTarget, new WDist(512)),
 					new Repair(self, rearmTarget, new WDist(512)),
 					this);
 			}

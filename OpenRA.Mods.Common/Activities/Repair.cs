@@ -137,5 +137,12 @@ namespace OpenRA.Mods.Common.Activities
 			foreach (var depot in host.Actor.TraitsImplementing<INotifyRepair>())
 				depot.AfterRepair(host.Actor, self);
 		}
+
+		protected override void OnActorDispose(Actor self)
+		{
+			// If the actor died (or will be disposed directly) this tick, Activity.TickOuter won't be ticked again,
+			// so we need to run OnLastRun directly (otherwise it would be skipped completely).
+			OnLastRun(self);
+		}
 	}
 }

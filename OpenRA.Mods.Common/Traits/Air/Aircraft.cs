@@ -489,7 +489,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			var name = a.Info.Name;
 			if (Info.RearmBuildings.Contains(name))
-				yield return new Rearm(self);
+				yield return new Rearm(self, a, WDist.Zero);
 
 			// The ResupplyAircraft activity guarantees that we're on the helipad
 			if (Info.RepairBuildings.Contains(name))
