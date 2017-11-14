@@ -24,13 +24,13 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string StartingUnitsClass = "none";
 
 		[Desc("Prevent the starting units option from being changed in the lobby.")]
-		public bool Locked = false;
+		public readonly bool Locked = false;
 
 		[Desc("Whether to display the starting units option in the lobby.")]
-		public bool Visible = true;
+		public readonly bool Visible = true;
 
 		[Desc("Display order for the starting units option in the lobby.")]
-		public int DisplayOrder = 0;
+		public readonly int DisplayOrder = 0;
 
 		IEnumerable<LobbyOption> ILobbyOptions.LobbyOptions(Ruleset rules)
 		{
