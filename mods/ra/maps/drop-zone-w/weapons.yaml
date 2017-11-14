@@ -5,8 +5,8 @@
 	Report: turret1.aud
 	Projectile: Bullet
 		Speed: 546
-		High: true
-		Angle: 62
+		Blockable: false
+		LaunchAngle: 62
 		Inaccuracy: 3c341
 		Image: 120MM
 		ContrailLength: 30
@@ -27,8 +27,8 @@ SubMissile:
 	Report: missile6.aud
 	Projectile: Bullet
 		Speed: 409
-		High: true
-		Angle: 62
+		Blockable: false
+		LaunchAngle: 62
 		Inaccuracy: 2c938
 		Image: MISSILE
 		TrailImage: smokey
