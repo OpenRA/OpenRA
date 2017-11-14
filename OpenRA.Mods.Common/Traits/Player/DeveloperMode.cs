@@ -19,40 +19,40 @@ namespace OpenRA.Mods.Common.Traits
 	public class DeveloperModeInfo : ITraitInfo, ILobbyOptions
 	{
 		[Desc("Default value of the developer mode checkbox in the lobby.")]
-		public bool Enabled = false;
+		public readonly bool Enabled = false;
 
 		[Desc("Prevent the developer mode state from being changed in the lobby.")]
-		public bool Locked = false;
+		public readonly bool Locked = false;
 
 		[Desc("Whether to display the developer mode checkbox in the lobby.")]
-		public bool Visible = true;
+		public readonly bool Visible = true;
 
 		[Desc("Display order for the developer mode checkbox in the lobby.")]
-		public int DisplayOrder = 0;
+		public readonly int DisplayOrder = 0;
 
 		[Desc("Default cash bonus granted by the give cash cheat.")]
-		public int Cash = 20000;
+		public readonly int Cash = 20000;
 
 		[Desc("Growth steps triggered by the grow resources button.")]
-		public int ResourceGrowth = 100;
+		public readonly int ResourceGrowth = 100;
 
 		[Desc("Enable the fast build cheat by default.")]
-		public bool FastBuild;
+		public readonly bool FastBuild;
 
 		[Desc("Enable the fast support powers cheat by default.")]
-		public bool FastCharge;
+		public readonly bool FastCharge;
 
 		[Desc("Enable the disable visibility cheat by default.")]
-		public bool DisableShroud;
+		public readonly bool DisableShroud;
 
 		[Desc("Enable the unlimited power cheat by default.")]
-		public bool UnlimitedPower;
+		public readonly bool UnlimitedPower;
 
 		[Desc("Enable the build anywhere cheat by default.")]
-		public bool BuildAnywhere;
+		public readonly bool BuildAnywhere;
 
 		[Desc("Enable the path debug overlay by default.")]
-		public bool PathDebug;
+		public readonly bool PathDebug;
 
 		IEnumerable<LobbyOption> ILobbyOptions.LobbyOptions(Ruleset rules)
 		{
