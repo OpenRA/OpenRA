@@ -20,6 +20,7 @@ namespace OpenRA.Mods.Common.Activities
 	{
 		readonly Aircraft aircraft;
 		readonly RepairableInfo repairableInfo;
+		readonly RearmableInfo rearmableInfo;
 		readonly bool alwaysLand;
 		readonly bool abortOnResupply;
 		Actor dest;
@@ -28,16 +29,20 @@ namespace OpenRA.Mods.Common.Activities
 		{
 			aircraft = self.Trait<Aircraft>();
 			repairableInfo = self.Info.TraitInfoOrDefault<RepairableInfo>();
+			rearmableInfo = self.Info.TraitInfoOrDefault<RearmableInfo>();
 			this.alwaysLand = alwaysLand;
 			this.abortOnResupply = abortOnResupply;
 			this.dest = dest;
 		}
 
-		public Actor ChooseHelipad(Actor self, bool unreservedOnly)
+		public Actor ChooseResupplier(Actor self, bool unreservedOnly)
 		{
-			var rearmBuildings = aircraft.Info.RearmBuildings;
+			if (rearmableInfo == null)
+				return null;
+
+			var rearmActors = rearmableInfo.RearmActors;
 			return self.World.Actors.Where(a => a.Owner == self.Owner
-				&& rearmBuildings.Contains(a.Info.Name)
+				&& rearmActors.Contains(a.Info.Name)
 				&& (!unreservedOnly || !Reservable.IsReserved(a)))
 				.ClosestTo(self);
 		}
@@ -53,27 +58,27 @@ namespace OpenRA.Mods.Common.Activities
 				return NextActivity;
 
 			if (dest == null || dest.IsDead || Reservable.IsReserved(dest))
-				dest = ChooseHelipad(self, true);
+				dest = ChooseResupplier(self, true);
 
 			var initialFacing = aircraft.Info.InitialFacing;
 
 			if (dest == null || dest.IsDead)
 			{
-				var nearestHpad = ChooseHelipad(self, false);
+				var nearestResupplier = ChooseResupplier(self, false);
 
-				if (nearestHpad == null)
+				if (nearestResupplier == null)
 					return ActivityUtils.SequenceActivities(new Turn(self, initialFacing), new HeliLand(self, true), NextActivity);
 				else
 				{
-					var distanceFromHelipad = (nearestHpad.CenterPosition - self.CenterPosition).HorizontalLength;
+					var distanceFromResupplier = (nearestResupplier.CenterPosition - self.CenterPosition).HorizontalLength;
 					var distanceLength = aircraft.Info.WaitDistanceFromResupplyBase.Length;
 
 					// If no pad is available, move near one and wait
-					if (distanceFromHelipad > distanceLength)
+					if (distanceFromResupplier > distanceLength)
 					{
 						var randomPosition = WVec.FromPDF(self.World.SharedRandom, 2) * distanceLength / 1024;
 
-						var target = Target.FromPos(nearestHpad.CenterPosition + randomPosition);
+						var target = Target.FromPos(nearestResupplier.CenterPosition + randomPosition);
 
 						return ActivityUtils.SequenceActivities(new HeliFly(self, target, WDist.Zero, aircraft.Info.WaitDistanceFromResupplyBase), this);
 					}
@@ -110,7 +115,7 @@ namespace OpenRA.Mods.Common.Activities
 			if (repairableInfo != null && repairableInfo.RepairBuildings.Contains(dest.Info.Name) && self.GetDamageState() != DamageState.Undamaged)
 				return true;
 
-			return aircraft.Info.RearmBuildings.Contains(dest.Info.Name) && self.TraitsImplementing<AmmoPool>()
+			return rearmableInfo != null && rearmableInfo.RearmActors.Contains(dest.Info.Name) && self.TraitsImplementing<AmmoPool>()
 					.Any(p => !p.AutoReloads && !p.FullAmmo());
 		}
 	}

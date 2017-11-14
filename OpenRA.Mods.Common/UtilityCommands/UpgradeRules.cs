@@ -1652,6 +1652,61 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				// Remove RepairBuildings from Aircraft in favor of using Repairable
+				// Remove RearmBuildings from Aircraft in favor of using new Rearmable
+				if (engineVersion < 20171117)
+				{
+					var aircraft = node.Value.Nodes.FirstOrDefault(n => n.Key == "Aircraft");
+					if (aircraft != null)
+					{
+						var repBuildingsNode = aircraft.Value.Nodes.FirstOrDefault(n => n.Key == "RepairBuildings");
+						var repBuildings = repBuildingsNode != null ? FieldLoader.GetValue<string>("RepairBuildings", repBuildingsNode.Value.Value) : "";
+						if (repBuildings != "")
+						{
+							var repairable = new MiniYamlNode("Repairable", "");
+							repairable.Value.Nodes.Add(repBuildingsNode);
+							node.Value.Nodes.Add(repairable);
+
+							aircraft.Value.Nodes.Remove(repBuildingsNode);
+						}
+
+						var rearmBuildingsNode = aircraft.Value.Nodes.FirstOrDefault(n => n.Key == "RearmBuildings");
+						var rearmBuildings = rearmBuildingsNode != null ? FieldLoader.GetValue<string>("RearmBuildings", rearmBuildingsNode.Value.Value) : "";
+						if (rearmBuildingsNode != null && rearmBuildings != "")
+						{
+							RenameNodeKey(rearmBuildingsNode, "RearmActors");
+							var rearmable = new MiniYamlNode("Rearmable", "");
+							rearmable.Value.Nodes.Add(rearmBuildingsNode);
+							node.Value.Nodes.Add(rearmable);
+
+							aircraft.Value.Nodes.Remove(rearmBuildingsNode);
+						}
+					}
+
+					var minelayer = node.Value.Nodes.FirstOrDefault(n => n.Key == "Minelayer");
+					if (minelayer != null)
+					{
+						var rearmBuildingsNode = minelayer.Value.Nodes.FirstOrDefault(n => n.Key == "RearmBuildings");
+						var rearmBuildings = rearmBuildingsNode != null ? FieldLoader.GetValue<string>("RearmBuildings", rearmBuildingsNode.Value.Value) : "fix";
+						if (rearmBuildingsNode != null && rearmBuildings != "")
+						{
+							RenameNodeKey(rearmBuildingsNode, "RearmActors");
+							var rearmable = new MiniYamlNode("Rearmable", "");
+							rearmable.Value.Nodes.Add(rearmBuildingsNode);
+							node.Value.Nodes.Add(rearmable);
+
+							minelayer.Value.Nodes.Remove(rearmBuildingsNode);
+						}
+						else if (rearmBuildingsNode == null)
+						{
+							var rearmable = new MiniYamlNode("Rearmable", "");
+							var rearmableActors = new MiniYamlNode("RearmActors", "fix");
+							rearmable.Value.Nodes.Add(rearmableActors);
+							node.Value.Nodes.Add(rearmable);
+						}
+					}
+				}
+
 				UpgradeActorRules(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 

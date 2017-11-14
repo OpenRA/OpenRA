@@ -36,9 +36,6 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("The speed at which the aircraft is repulsed from other aircraft. Specify -1 for normal movement speed.")]
 		public readonly int RepulsionSpeed = -1;
 
-		[ActorReference]
-		public readonly HashSet<string> RearmBuildings = new HashSet<string> { };
-
 		public readonly int InitialFacing = 0;
 
 		public readonly int TurnSpeed = 255;
@@ -152,9 +149,10 @@ namespace OpenRA.Mods.Common.Traits
 		static readonly Pair<CPos, SubCell>[] NoCells = { };
 
 		public readonly AircraftInfo Info;
-		readonly RepairableInfo repairableInfo;
 		readonly Actor self;
 
+		RepairableInfo repairableInfo;
+		RearmableInfo rearmableInfo;
 		ConditionManager conditionManager;
 		IDisposable reservation;
 		IEnumerable<int> speedModifiers;
@@ -182,7 +180,6 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			Info = info;
 			self = init.Self;
-			repairableInfo = self.Info.TraitInfoOrDefault<RepairableInfo>();
 
 			if (init.Contains<LocationInit>())
 				SetPosition(self, init.Get<LocationInit, CPos>());
@@ -211,6 +208,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		protected virtual void Created(Actor self)
 		{
+			repairableInfo = self.Info.TraitInfoOrDefault<RepairableInfo>();
+			rearmableInfo = self.Info.TraitInfoOrDefault<RearmableInfo>();
 			conditionManager = self.TraitOrDefault<ConditionManager>();
 			speedModifiers = self.TraitsImplementing<ISpeedModifier>().ToArray().Select(sm => sm.GetSpeedModifier());
 			cachedPosition = self.CenterPosition;
@@ -450,7 +449,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (self.AppearsHostileTo(a))
 				return false;
 
-			return Info.RearmBuildings.Contains(a.Info.Name)
+			return (rearmableInfo != null && rearmableInfo.RearmActors.Contains(a.Info.Name))
 				|| (repairableInfo != null && repairableInfo.RepairBuildings.Contains(a.Info.Name));
 		}
 
@@ -487,7 +486,7 @@ namespace OpenRA.Mods.Common.Traits
 		public virtual IEnumerable<Activity> GetResupplyActivities(Actor a)
 		{
 			var name = a.Info.Name;
-			if (Info.RearmBuildings.Contains(name))
+			if (rearmableInfo != null && rearmableInfo.RearmActors.Contains(name))
 				yield return new Rearm(self);
 
 			// The ResupplyAircraft activity guarantees that we're on the helipad

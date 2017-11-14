@@ -21,17 +21,17 @@ namespace OpenRA.Mods.Common.Activities
 		readonly Target target;
 		readonly Aircraft aircraft;
 		readonly AttackPlane attackPlane;
+		readonly Rearmable rearmable;
 
-		readonly bool autoReloads;
 		int ticksUntilTurn;
 
 		public FlyAttack(Actor self, Target target)
 		{
 			this.target = target;
 			aircraft = self.Trait<Aircraft>();
-			attackPlane = self.TraitOrDefault<AttackPlane>();
+			attackPlane = self.Trait<AttackPlane>();
+			rearmable = self.TraitOrDefault<Rearmable>();
 			ticksUntilTurn = attackPlane.AttackPlaneInfo.AttackTurnDelay;
-			autoReloads = self.TraitsImplementing<AmmoPool>().All(p => p.AutoReloads);
 		}
 
 		public override Activity Tick(Actor self)
@@ -46,12 +46,11 @@ namespace OpenRA.Mods.Common.Activities
 			if (!target.IsValidFor(self))
 				return NextActivity;
 
-			// If all valid weapons have depleted their ammo and RearmBuilding is defined, return to RearmBuilding to reload and then resume the activity
-			if (!autoReloads && aircraft.Info.RearmBuildings.Any() && attackPlane.Armaments.All(x => x.IsTraitPaused || !x.Weapon.IsValidAgainst(target, self.World, self)))
+			// If all valid weapons have depleted their ammo and Rearmable trait exists, return to RearmActor to reload and then resume the activity
+			if (rearmable != null && attackPlane.Armaments.All(x => x.IsTraitPaused || !x.Weapon.IsValidAgainst(target, self.World, self)))
 				return ActivityUtils.SequenceActivities(new ReturnToBase(self, aircraft.Info.AbortOnResupply), this);
 
-			if (attackPlane != null)
-				attackPlane.DoAttack(self, target);
+			attackPlane.DoAttack(self, target);
 
 			if (ChildActivity == null)
 			{

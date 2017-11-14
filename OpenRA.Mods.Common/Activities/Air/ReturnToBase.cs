@@ -23,6 +23,7 @@ namespace OpenRA.Mods.Common.Activities
 		readonly Aircraft aircraft;
 		readonly AircraftInfo aircraftInfo;
 		readonly RepairableInfo repairableInfo;
+		readonly RearmableInfo rearmableInfo;
 		readonly bool alwaysLand;
 		readonly bool abortOnResupply;
 		bool isCalculated;
@@ -37,14 +38,19 @@ namespace OpenRA.Mods.Common.Activities
 			aircraft = self.Trait<Aircraft>();
 			aircraftInfo = self.Info.TraitInfo<AircraftInfo>();
 			repairableInfo = self.Info.TraitInfoOrDefault<RepairableInfo>();
+			rearmableInfo = self.Info.TraitInfoOrDefault<RearmableInfo>();
 		}
 
-		public static Actor ChooseAirfield(Actor self, bool unreservedOnly)
+		public static Actor ChooseResupplier(Actor self, bool unreservedOnly)
 		{
-			var rearmBuildings = self.Info.TraitInfo<AircraftInfo>().RearmBuildings;
+			var rearmInfo = self.Info.TraitInfoOrDefault<RearmableInfo>();
+			if (rearmInfo == null)
+				return null;
+
+			var rearmActors = rearmInfo.RearmActors;
 			return self.World.ActorsHavingTrait<Reservable>()
 				.Where(a => a.Owner == self.Owner
-					&& rearmBuildings.Contains(a.Info.Name)
+					&& rearmActors.Contains(a.Info.Name)
 					&& (!unreservedOnly || !Reservable.IsReserved(a)))
 				.ClosestTo(self);
 		}
@@ -52,7 +58,7 @@ namespace OpenRA.Mods.Common.Activities
 		void Calculate(Actor self)
 		{
 			if (dest == null || dest.IsDead || Reservable.IsReserved(dest))
-				dest = ChooseAirfield(self, true);
+				dest = ChooseResupplier(self, true);
 
 			if (dest == null)
 				return;
@@ -106,7 +112,7 @@ namespace OpenRA.Mods.Common.Activities
 			if (repairableInfo != null && repairableInfo.RepairBuildings.Contains(dest.Info.Name) && self.GetDamageState() != DamageState.Undamaged)
 				return true;
 
-			return aircraftInfo.RearmBuildings.Contains(dest.Info.Name) && self.TraitsImplementing<AmmoPool>()
+			return rearmableInfo != null && rearmableInfo.RearmActors.Contains(dest.Info.Name) && self.TraitsImplementing<AmmoPool>()
 					.Any(p => !p.AutoReloads && !p.FullAmmo());
 		}
 
@@ -125,11 +131,11 @@ namespace OpenRA.Mods.Common.Activities
 
 			if (dest == null || dest.IsDead)
 			{
-				var nearestAfld = ChooseAirfield(self, false);
+				var nearestResupplier = ChooseResupplier(self, false);
 
-				if (nearestAfld != null)
+				if (nearestResupplier != null)
 					return ActivityUtils.SequenceActivities(
-						new Fly(self, Target.FromActor(nearestAfld), WDist.Zero, aircraft.Info.WaitDistanceFromResupplyBase),
+						new Fly(self, Target.FromActor(nearestResupplier), WDist.Zero, aircraft.Info.WaitDistanceFromResupplyBase),
 						new FlyCircle(self, aircraft.Info.NumberOfTicksToVerifyAvailableAirport),
 						this);
 				else
