@@ -28,6 +28,7 @@ namespace OpenRA.Mods.Common.Activities
 		readonly int maxTries = 0;
 		readonly EnterBehaviour enterBehaviour;
 		readonly bool repathWhileMoving;
+		readonly WDist enterRange;
 
 		public Target Target { get { return target; } }
 		Target target;
@@ -37,14 +38,27 @@ namespace OpenRA.Mods.Common.Activities
 		Activity inner;
 		bool firstApproach = true;
 
-		protected Enter(Actor self, Actor target, EnterBehaviour enterBehaviour, int maxTries = 1, bool repathWhileMoving = true)
+		/// <summary>
+		/// Make an actor enter the target actor.
+		/// </summary>
+		/// <param name="enterRange">
+		///		When the distance between the target actor and self is closer than or equal to this range,
+		///		self will enter the target. Non-zero range allows self to enter a moving target.
+		/// </param>
+		protected Enter(Actor self, Actor target, EnterBehaviour enterBehaviour, WDist enterRange,
+			int maxTries = 1, bool repathWhileMoving = true)
 		{
 			move = self.Trait<IMove>();
 			this.target = Target.FromActor(target);
 			this.maxTries = maxTries;
 			this.enterBehaviour = enterBehaviour;
 			this.repathWhileMoving = repathWhileMoving;
+			this.enterRange = enterRange;
 		}
+
+		protected Enter(Actor self, Actor target, EnterBehaviour enterBehaviour,
+			int maxTries = 1, bool repathWhileMoving = true) :
+			this(self, target, enterBehaviour, WDist.Zero, maxTries, repathWhileMoving) { }
 
 		// CanEnter(target) should to be true; otherwise, Enter may abort.
 		// Tries counter starts at 1 (reset every tick)
@@ -208,7 +222,8 @@ namespace OpenRA.Mods.Common.Activities
 						nextState = EnterState.Inside;
 
 					// Otherwise, try to recover from moving target
-					else if (target.Positions.PositionClosestTo(self.CenterPosition) != self.CenterPosition)
+					else if ((target.Positions.PositionClosestTo(self.CenterPosition) - self.CenterPosition).HorizontalLengthSquared
+							> enterRange.LengthSquared)
 					{
 						nextState = EnterState.ApproachingOrEntering;
 						Unreserve(self, false);
