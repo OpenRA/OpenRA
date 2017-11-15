@@ -2,7 +2,7 @@ MultiCluster:
 	ReloadDelay: 80
 	Range: 6c0
 	Report: misl1.aud
-	ValidTargets: Ground
+	ValidTargets: Ground, Trees
 	Projectile: Missile
 		MaximumLaunchSpeed: 170
 		Arm: 2
@@ -19,14 +19,14 @@ MultiCluster:
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 65
-		ValidTargets: Ground
+		ValidTargets: Ground, Trees
 		Versus:
 			None: 25
 			Wood: 65
 			Light: 75
 			Heavy: 100
 			Concrete: 60
-		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
+		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath, Incendiary
 	Warhead@2Eff: CreateEffect
 		Explosions: large_explosion
 		ImpactSounds: expnew09.aud
@@ -41,10 +41,12 @@ MultiCluster:
 		InvalidTargets: Vehicle, Building, Wall
 
 SuicideBomb:
+	ValidTargets: Ground, Trees
 	ReloadDelay: 1
 	Range: 0c512
 	Report: hunter2.aud
 	Warhead@1Dam: SpreadDamage
+		ValidTargets: Ground, Trees
 		Spread: 256
 		Damage: 110
 		Falloff: 10000, 3680, 1350, 500, 180, 70, 0
@@ -53,24 +55,24 @@ SuicideBomb:
 			Light: 60
 			Heavy: 25
 			Concrete: 50
-		DamageTypes: Prone50Percent, TriggerProne, FireDeath
+		DamageTypes: Prone50Percent, TriggerProne, FireDeath, Incendiary
 	Warhead@2Res: DestroyResource
 
 IonCannon:
-	ValidTargets: Ground, Water, Air
+	ValidTargets: Ground, Water, Air, Trees
 	Warhead@1Dam_impact: SpreadDamage
 		Spread: 1c0
 		Damage: 100
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
-		ValidTargets: Ground, Water, Air
-		DamageTypes: Prone100Percent, TriggerProne, EnergyDeath
+		ValidTargets: Ground, Water, Air, Trees
+		DamageTypes: Prone100Percent, TriggerProne, EnergyDeath, Incendiary
 	Warhead@2Dam_area: SpreadDamage
 		Spread: 1c0
 		Damage: 250
 		Falloff: 100, 50, 25, 0
 		Delay: 3
-		ValidTargets: Ground, Water, Air
-		DamageTypes: Prone50Percent, TriggerProne, EnergyDeath
+		ValidTargets: Ground, Water, Air, Trees
+		DamageTypes: Prone50Percent, TriggerProne, EnergyDeath, Incendiary
 	Warhead@3Smu_area: LeaveSmudge
 		SmudgeType: SmallScorch
 		InvalidTargets: Vehicle, Building, Wall
@@ -122,15 +124,15 @@ EMPulseCannon:
 		Condition: empdisable
 
 ClusterMissile:
-	ValidTargets: Ground, Water, Air
+	ValidTargets: Ground, Water, Air, Trees
 	Warhead@ImpactDamage0: SpreadDamage
 		Spread: 1c0
 		Damage: 150
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
-		ValidTargets: Ground, Water, Air
+		ValidTargets: Ground, Water, Air, Trees
 		Versus:
 			Concrete: 25
-		DamageTypes: Prone50Percent, TriggerProne, FireDeath
+		DamageTypes: Prone50Percent, TriggerProne, FireDeath, Incendiary
 	Warhead@SoundEffect0: CreateEffect
 		Explosions: large_explosion
 		ExplosionPalette: effect-ignore-lighting-alpha75
@@ -147,10 +149,10 @@ ClusterMissile:
 		Damage: 60
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		Delay: 5
-		ValidTargets: Ground, Water, Air
+		ValidTargets: Ground, Water, Air, Trees
 		Versus:
 			Concrete: 25
-		DamageTypes: Prone50Percent, TriggerProne, FireDeath
+		DamageTypes: Prone50Percent, TriggerProne, FireDeath, Incendiary
 	Warhead@ResourceDestruction1: DestroyResource
 		Size: 2
 		Delay: 5
@@ -164,10 +166,10 @@ ClusterMissile:
 		Damage: 60
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		Delay: 10
-		ValidTargets: Ground, Water, Air
+		ValidTargets: Ground, Water, Air, Trees
 		Versus:
 			Concrete: 25
-		DamageTypes: Prone50Percent, TriggerProne, FireDeath
+		DamageTypes: Prone50Percent, TriggerProne, FireDeath, Incendiary
 	Warhead@ResourceDestruction2: DestroyResource
 		Size: 3
 		Delay: 10
@@ -181,10 +183,10 @@ ClusterMissile:
 		Damage: 60
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		Delay: 15
-		ValidTargets: Ground, Water, Air
+		ValidTargets: Ground, Water, Air, Trees
 		Versus:
 			Concrete: 25
-		DamageTypes: Prone50Percent, TriggerProne, FireDeath
+		DamageTypes: Prone50Percent, TriggerProne, FireDeath, Incendiary
 	Warhead@ResourceDestruction3: DestroyResource
 		Size: 4
 		Delay: 15
@@ -198,10 +200,10 @@ ClusterMissile:
 		Damage: 60
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		Delay: 20
-		ValidTargets: Ground, Water, Air
+		ValidTargets: Ground, Water, Air, Trees
 		Versus:
 			Concrete: 25
-		DamageTypes: Prone50Percent, TriggerProne, FireDeath
+		DamageTypes: Prone50Percent, TriggerProne, FireDeath, Incendiary
 	Warhead@ResourceDestruction4: DestroyResource
 		Size: 5
 		Delay: 20

@@ -950,6 +950,12 @@
 	Building:
 		Footprint: x
 		Dimensions: 1, 1
+	HitShape:
+		UseTargetableCellsOffsets: true
+		Type: Rectangle
+			LocalYaw: -128
+			TopLeft: -512, -512
+			BottomRight: 512, 512
 	AppearsOnRadar:
 	RadarColorFromTerrain:
 		Terrain: Tree
@@ -957,6 +963,24 @@
 		Name: Tree
 	EditorTilesetFilter:
 		Categories: Tree
+	Health:
+		HP: 2000
+	Armor:
+		Type: Wood
+	Targetable:
+		TargetTypes: Trees, NoAutoTarget
+	ConditionManager:
+	GrantConditionOnDamageState:
+		Condition: burning
+		GrantPermanently: True
+	Burns:
+		Anim: tree
+		Palette: effectalpha50
+		RequiresCondition: burning
+		DamageTypes: Incendiary
+	ExplosionOnDamageTransition:
+		Weapon: Bushfire
+		TriggerOnlyOnce: True
 
 ^Rock:
 	Inherits@1: ^SpriteActor

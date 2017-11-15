@@ -25,6 +25,12 @@ namespace OpenRA.Mods.Common.Traits.Render
 		[SequenceReference("Image")] public readonly string LoopSequence = "loop";
 		[SequenceReference("Image")] public readonly string EndSequence = "end";
 
+		[Desc("Custom palette name")]
+		[PaletteReference("IsPlayerPalette")] public readonly string Palette = null;
+
+		[Desc("Custom palette is a player palette BaseName")]
+		public readonly bool IsPlayerPalette = false;
+
 		[Desc("Damage types that this should be used for (defined on the warheads).",
 			"Leave empty to disable all filtering.")]
 		public readonly HashSet<string> DamageTypes = new HashSet<string>();
@@ -50,7 +56,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			var rs = self.Trait<RenderSprites>();
 
 			anim = new Animation(self.World, info.Image);
-			rs.Add(new AnimationWithOffset(anim, null, () => !isSmoking));
+			rs.Add(new AnimationWithOffset(anim, null, () => !isSmoking), info.Palette, info.IsPlayerPalette);
 		}
 
 		public void Damaged(Actor self, AttackInfo e)

@@ -642,3 +642,53 @@ dig:
 		Length: *
 		ZOffset: 511
 		Offset: 0, 0, 24
+
+burn-l:
+	Default:
+		ZOffset: 512
+		BlendMode: Additive
+	idle:
+		Length: *
+	loop:
+		Start: 16
+		Length: 44
+	end:
+		Start: 60
+		Length: 6
+
+burn-m:
+	Default:
+		ZOffset: 512
+		BlendMode: Additive
+	idle:
+		Length: *
+	loop:
+		Start: 16
+		Length: 44
+	end:
+		Start: 60
+		Length: 6
+
+burn-s:
+	Default:
+		ZOffset: 512
+		BlendMode: Additive
+	idle:
+		Length: *
+	loop:
+		Start: 12
+		Length: 46
+	end:
+		Start: 59
+		Length: 5
+
+fire:
+	Defaults:
+		ZOffset: 512
+	tree:
+		Combine:
+			fire2:
+				Length: 17
+			fire1:
+				Length: 17
+		Length: 34

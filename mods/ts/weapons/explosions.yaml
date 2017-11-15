@@ -66,3 +66,11 @@ Demolish:
 		Explosions: large_twlt
 		ExplosionPalette: effect-ignore-lighting-alpha75
 		ImpactSounds: expnew09.aud
+
+Bushfire:
+	Warhead@1Dam: SpreadDamage
+		Spread: 8c0
+		Damage: 20
+		Falloff: 10, 5, 3, 2, 1
+		ValidTargets: Trees
+		DamageTypes: Incendiary
