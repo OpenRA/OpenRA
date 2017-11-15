@@ -377,7 +377,7 @@ NATMPL:
 		Icon: hunterseeker
 		Actors: hunter
 		Type: HunterSeeker
-		ChargeTime: 720
+		ChargeInterval: 18000
 	Production:
 		Produces: HunterSeeker
 		PauseOnCondition: empdisable

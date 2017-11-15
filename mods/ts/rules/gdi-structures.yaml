@@ -428,7 +428,7 @@ GAPLUG:
 		EffectSequence: ionring
 		EffectPalette: effectalpha75
 		WeaponDelay: 0
-		ChargeTime: 510
+		ChargeInterval: 12750
 		Description: Ion Cannon
 		LongDesc: Initiate an Ion Cannon strike.\nApplies instant damage to a small area.
 		EndChargeSpeechNotification: IonCannonReady
@@ -443,7 +443,7 @@ GAPLUG:
 		Icon: hunterseeker
 		Actors: hunter
 		Type: HunterSeeker
-		ChargeTime: 720
+		ChargeInterval: 18000
 	Production:
 		Produces: HunterSeeker
 		PauseOnCondition: empdisable

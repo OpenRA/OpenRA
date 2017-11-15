@@ -340,7 +340,7 @@ NAMISL:
 		PauseOnCondition: empdisable || disabled
 		Cursor: nuke
 		Icon: clustermissile
-		ChargeTime: 540
+		ChargeInterval: 13500
 		Description: Cluster Missile
 		LongDesc: Launches a conventional warhead\nat a target location.
 		EndChargeSpeechNotification: ClusterMissileReady
