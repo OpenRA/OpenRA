@@ -36,6 +36,12 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		public readonly string Image = "pips";
 
+		[Desc("Font for the text pips")]
+		public readonly string Font = "TinyBold";
+
+		[Desc("Font for the text pips")]
+		public readonly Color FontColor = Color.White;
+
 		public object Create(ActorInitializer init) { return new SelectionDecorations(init.Self, this); }
 
 		public int[] SelectionBoxBounds { get { return VisualBounds; } }
@@ -50,17 +56,21 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		readonly Animation pipImages;
 		IPips[] pipSources;
+		ITextPip[] textPipSources;
+		SpriteFont font;
 
 		public SelectionDecorations(Actor self, SelectionDecorationsInfo info)
 		{
 			Info = info;
 
+			font = Game.Renderer.Fonts[info.Font];
 			pipImages = new Animation(self.World, Info.Image);
 		}
 
 		void INotifyCreated.Created(Actor self)
 		{
 			pipSources = self.TraitsImplementing<IPips>().ToArray();
+			textPipSources = self.TraitsImplementing<ITextPip>().ToArray();
 		}
 
 		IEnumerable<WPos> ActivityTargetPath(Actor self)
@@ -133,10 +143,10 @@ namespace OpenRA.Mods.Common.Traits.Render
 			var bl = wr.Viewport.WorldToViewPx(pos + new int2(b.Left, b.Bottom));
 			var pal = wr.Palette(Info.Palette);
 
-			return DrawPips(self, bl, pal);
+			return DrawPips(self, bl, pal, wr);
 		}
 
-		IEnumerable<IRenderable> DrawPips(Actor self, int2 basePosition, PaletteReference palette)
+		IEnumerable<IRenderable> DrawPips(Actor self, int2 basePosition, PaletteReference palette, WorldRenderer wr)
 		{
 			pipImages.PlayRepeating(PipStrings[0]);
 
@@ -145,6 +155,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			var pipxyOffset = new int2(0, 0);
 			var width = self.VisualBounds.Width;
 
+			// Classic pips.
 			foreach (var pips in pipSources)
 			{
 				var thisRow = pips.GetPips(self);
@@ -161,6 +172,29 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 					yield return new UISpriteRenderable(pipImages.Image, self.CenterPosition, pipxyBase + pipxyOffset, 0, palette, 1f);
 				}
+
+				// Increment row
+				pipxyOffset = new int2(0, pipxyOffset.Y - (pipSize.Y + 1));
+			}
+
+			// Text pips.
+			foreach (var pips in textPipSources)
+			{
+				var pipType = pips.GetTextPipType(self);
+				var pipText = pips.GetTextPipText(self);
+				if (pipText == null)
+					continue;
+
+				if (pipxyOffset.X + pipSize.X >= width)
+					pipxyOffset = new int2(0, pipxyOffset.Y - pipSize.Y);
+
+				pipImages.PlayRepeating(PipStrings[(int)pipType]);
+				pipxyOffset += new int2(pipSize.X, 0);
+
+				yield return new UISpriteRenderable(pipImages.Image, self.CenterPosition, pipxyBase + pipxyOffset, 0, palette, 1f);
+
+				var textPos = pipxyBase + pipxyOffset + new int2(pipSize.X, 0);
+				yield return new UITextRenderable(font, self.CenterPosition, textPos, 0, Info.FontColor, " " + pipText);
 
 				// Increment row
 				pipxyOffset = new int2(0, pipxyOffset.Y - (pipSize.Y + 1));
