@@ -83,7 +83,14 @@ namespace OpenRA.Mods.Common.Orders
 		public override string GetCursor(World world, CPos cell, int2 worldPixel, MouseInput mi)
 		{
 			mi.Button = MouseButton.Left;
-			return OrderInner(world, mi).Any() ? "sell" : "sell-blocked";
+
+			var cursor = OrderInner(world, mi)
+				.SelectMany(o => o.Subject.TraitsImplementing<Sellable>())
+				.Where(Exts.IsTraitEnabled)
+				.Select(si => si.Info.Cursor)
+				.FirstOrDefault();
+
+			return cursor ?? "sell-blocked";
 		}
 	}
 }
