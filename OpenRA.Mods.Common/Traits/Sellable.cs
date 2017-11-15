@@ -23,6 +23,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int RefundPercent = 50;
 		public readonly string[] SellSounds = { };
 		public readonly bool ShowTicks = true;
+		public readonly string Cursor = "sell";
 
 		[Desc("Skip playing (reversed) make animation.")]
 		public readonly bool SkipMakeAnimation = false;

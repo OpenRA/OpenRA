@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using OpenRA.Mods.Common.Orders;
 using OpenRA.Widgets;
 
@@ -17,11 +18,31 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	public class SellOrderButtonLogic : ChromeLogic
 	{
 		[ObjectCreator.UseCtor]
-		public SellOrderButtonLogic(Widget widget, World world)
+		public SellOrderButtonLogic(Widget widget, World world, Dictionary<string, MiniYaml> logicArgs)
 		{
+			var blockedCursor = "sell-blocked";
+			if (logicArgs.ContainsKey("BlockedCursor"))
+				blockedCursor = FieldLoader.GetValue<string>("BlockedCursor", logicArgs["BlockedCursor"].Value);
+
 			var sell = widget as ButtonWidget;
 			if (sell != null)
-				OrderButtonsChromeUtils.BindOrderButton<SellOrderGenerator>(world, sell, "sell");
+			{
+				sell.OnClick = () => {
+					if (world.OrderGenerator is SellOrderGenerator)
+					{
+						world.CancelInputMode();
+					}
+					else
+					{
+						world.OrderGenerator = new SellOrderGenerator(blockedCursor);
+					}
+				};
+
+				sell.IsHighlighted = () => world.OrderGenerator is SellOrderGenerator;
+
+				sell.Get<ImageWidget>("ICON").GetImageName =
+					() => world.OrderGenerator is SellOrderGenerator ? "sell-active" : "sell";
+			}
 		}
 	}
 

@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
@@ -35,7 +36,7 @@ namespace OpenRA.Mods.Common.Orders
 			return OrderInner(world, mi);
 		}
 
-		IEnumerable<Order> OrderInner(World world, MouseInput mi)
+		public IEnumerable<Order> OrderInner(World world, MouseInput mi)
 		{
 			if (mi.Button == MouseButton.Left)
 			{
@@ -64,7 +65,7 @@ namespace OpenRA.Mods.Common.Orders
 		public IEnumerable<IRenderable> Render(WorldRenderer wr, World world) { yield break; }
 		public IEnumerable<IRenderable> RenderAboveShroud(WorldRenderer wr, World world) { yield break; }
 
-		public string GetCursor(World world, CPos cell, int2 worldPixel, MouseInput mi)
+		public virtual string GetCursor(World world, CPos cell, int2 worldPixel, MouseInput mi)
 		{
 			mi.Button = MouseButton.Left;
 			return cursor + (OrderInner(world, mi).Any() ? "" : "-blocked");
@@ -78,6 +79,28 @@ namespace OpenRA.Mods.Common.Orders
 
 	public class SellOrderGenerator : GlobalButtonOrderGenerator<Sellable>
 	{
-		public SellOrderGenerator() : base("sell", "Sell") { }
+		string blockedCursor;
+
+		public SellOrderGenerator(string blockedCursor)
+			: base("sell", "Sell")
+		{
+			this.blockedCursor = blockedCursor;
+		}
+
+		public override string GetCursor(World world, CPos cell, int2 worldPixel, MouseInput mi)
+		{
+			mi.Button = MouseButton.Left;
+
+			var underCursor = world.ScreenMap.ActorsAt(mi)
+				.FirstOrDefault(a => a.Owner == world.LocalPlayer && a.TraitsImplementing<Sellable>()
+					.Any(Exts.IsTraitEnabled));
+
+			if (!Game.ModData.CursorProvider.HasCursorSequence(blockedCursor))
+				throw new InvalidOperationException("Cursor does not have a sequence `{0}`".F(blockedCursor));
+
+			var cursor = underCursor != null ? underCursor.TraitsImplementing<Sellable>().First(s => !s.IsTraitDisabled).Info.Cursor : blockedCursor;
+
+			return cursor;
+		}
 	}
 }
