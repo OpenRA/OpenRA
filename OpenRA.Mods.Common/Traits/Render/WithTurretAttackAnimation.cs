@@ -55,32 +55,24 @@ namespace OpenRA.Mods.Common.Traits.Render
 				wst.PlayCustomAnimation(self, Info.Sequence);
 		}
 
+		void NotifyAttack(Actor self)
+		{
+			if (Info.Delay > 0)
+				tick = Info.Delay;
+			else
+				PlayAttackAnimation(self);
+		}
+
 		void INotifyAttack.Attacking(Actor self, Target target, Armament a, Barrel barrel)
 		{
-			if (IsTraitDisabled || a != armament)
-				return;
-
-			if (Info.DelayRelativeTo == AttackDelayType.Attack)
-			{
-				if (Info.Delay > 0)
-					tick = Info.Delay;
-				else
-					PlayAttackAnimation(self);
-			}
+			if (!IsTraitDisabled && a == armament && Info.DelayRelativeTo == AttackDelayType.Attack)
+				NotifyAttack(self);
 		}
 
 		void INotifyAttack.PreparingAttack(Actor self, Target target, Armament a, Barrel barrel)
 		{
-			if (IsTraitDisabled || a != armament)
-				return;
-
-			if (Info.DelayRelativeTo == AttackDelayType.Preparation)
-			{
-				if (Info.Delay > 0)
-					tick = Info.Delay;
-				else
-					PlayAttackAnimation(self);
-			}
+			if (!IsTraitDisabled && a == armament && Info.DelayRelativeTo == AttackDelayType.Preparation)
+				NotifyAttack(self);
 		}
 
 		void ITick.Tick(Actor self)
