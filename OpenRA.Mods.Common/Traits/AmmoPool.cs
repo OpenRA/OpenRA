@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Traits;
@@ -39,6 +40,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("PipType to use for empty ammo.")]
 		public readonly PipType PipTypeEmpty = PipType.Transparent;
 
+		[Desc("Show the pips as text.")]
+		public readonly bool ShowAsTextPip = false;
+
 		[Desc("How much ammo is reloaded after a certain period.")]
 		public readonly int ReloadCount = 1;
 
@@ -56,7 +60,7 @@ namespace OpenRA.Mods.Common.Traits
 		public object Create(ActorInitializer init) { return new AmmoPool(init.Self, this); }
 	}
 
-	public class AmmoPool : INotifyCreated, INotifyAttack, IPips, ISync
+	public class AmmoPool : INotifyCreated, INotifyAttack, IPips, ITextPip, ISync
 	{
 		public readonly AmmoPoolInfo Info;
 		readonly Stack<int> tokens = new Stack<int>();
@@ -64,6 +68,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		// HACK: Temporarily needed until Rearm activity is gone for good
 		[Sync] public int RemainingTicks;
+		string pipText;
 
 		[Sync] int currentAmmo;
 
@@ -71,6 +76,9 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			Info = info;
 			currentAmmo = Info.InitialAmmo < Info.Ammo && Info.InitialAmmo >= 0 ? Info.InitialAmmo : Info.Ammo;
+
+			if (Info.ShowAsTextPip)
+				pipText = GetAmmoCount() + "/" + Info.Ammo;
 		}
 
 		public int GetAmmoCount() { return currentAmmo; }
@@ -84,6 +92,10 @@ namespace OpenRA.Mods.Common.Traits
 
 			currentAmmo = (currentAmmo + count).Clamp(0, Info.Ammo);
 			UpdateCondition(self);
+
+			if (Info.ShowAsTextPip)
+				pipText = GetAmmoCount() + "/" + Info.Ammo;
+
 			return true;
 		}
 
@@ -94,6 +106,10 @@ namespace OpenRA.Mods.Common.Traits
 
 			currentAmmo = (currentAmmo - count).Clamp(0, Info.Ammo);
 			UpdateCondition(self);
+
+			if (Info.ShowAsTextPip)
+				pipText = GetAmmoCount() + "/" + Info.Ammo;
+
 			return true;
 		}
 
@@ -134,11 +150,27 @@ namespace OpenRA.Mods.Common.Traits
 
 		public IEnumerable<PipType> GetPips(Actor self)
 		{
+			if (Info.ShowAsTextPip)
+				return null;
+
 			var pips = Info.PipCount >= 0 ? Info.PipCount : Info.Ammo;
 
 			return Enumerable.Range(0, pips).Select(i =>
 				(currentAmmo * pips) / Info.Ammo > i ?
 				Info.PipType : Info.PipTypeEmpty);
+		}
+
+		public PipType GetTextPipType(Actor self)
+		{
+			return Info.PipType;
+		}
+
+		public string GetTextPipText(Actor self)
+		{
+			if (!Info.ShowAsTextPip)
+				return null;
+
+			return pipText;
 		}
 	}
 }
