@@ -67,18 +67,18 @@ Player:
 		DefaultCash: 60
 	ChronoshiftPower:
 		Icon: chrono
-		ChargeTime: 60
+		ChargeInterval: 1500
 		Description: Chronoshift
 		LongDesc: Teleport a group of vehicles across\nthe map.
 		SelectTargetSound: slcttgt1.aud
 		BeginChargeSound: chrochr1.aud
 		EndChargeSound: chrordy1.aud
-		Duration: 999999
+		Duration: 24999975
 		KillCargo: yes
 		Range: 3
 	GrantExternalConditionPower@IRONCURTAIN:
 		Icon: invuln
-		ChargeTime: 30
+		ChargeInterval: 750
 		Description: Invulnerability
 		LongDesc: Makes a unit invulnerable\nfor 3 seconds.
 		Duration: 75

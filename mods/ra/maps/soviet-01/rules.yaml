@@ -35,7 +35,7 @@ AFLD:
 	AirstrikePower@spyplane:
 		Prerequisites: ~disabled
 	ParatroopersPower@paratroopers:
-		ChargeTime: 60
+		ChargeInterval: 1500
 		DropItems: E1,E1,E1,E2,E2
 	-RallyPoint:
 	-Sellable:
