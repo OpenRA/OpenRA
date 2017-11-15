@@ -350,6 +350,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{ "ALLYBUILDRADIUS_CHECKBOX", "allybuild" },
 				{ "ALLOWCHEATS_CHECKBOX", "cheats" },
 				{ "CREEPS_CHECKBOX", "creeps" },
+				{ "BOUNTY_CHECKBOX", "bounty" },
 				{ "BUILDRADIUS_CHECKBOX", "buildradius" },
 			};
 

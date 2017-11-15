@@ -89,7 +89,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyKilled.Killed(Actor self, AttackInfo e)
 		{
-			if (e.Attacker == null || e.Attacker.Disposed)
+			if (e.Attacker == null || e.Attacker.Disposed || !self.World.WorldActor.Trait<GlobalBounty>().Bounty)
 				return;
 
 			if (!info.ValidStances.HasStance(e.Attacker.Owner.Stances[self.Owner]))

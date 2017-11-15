@@ -834,6 +834,7 @@
     <Compile Include="Widgets\Logic\Ingame\Hotkeys\TogglePlayerStanceColorHotkeyLogic.cs" />
     <Compile Include="Widgets\Logic\Ingame\Hotkeys\PauseHotkeyLogic.cs" />
     <Compile Include="Widgets\Logic\Ingame\Hotkeys\CycleStatusBarsHotkeyLogic.cs" />
+    <Compile Include="Traits\World\GlobalBounty.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="AfterBuild">

@@ -126,6 +126,7 @@ World:
 	SpawnMapActors:
 	MapBuildRadius:
 	MapOptions:
+	GlobalBounty:
 	CreateMPPlayers:
 	MPStartUnits@mcvonly:
 		Class: none

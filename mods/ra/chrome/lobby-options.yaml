@@ -37,6 +37,12 @@ Background@LOBBY_OPTIONS_BIN:
 					Width: 225
 					Height: 20
 					Text: Build off Allies' ConYards
+				Checkbox@BOUNTY_CHECKBOX:
+					X: 170
+					Y: 70
+					Width: 225
+					Height: 20
+					Text: Bounty
 				Checkbox@SHORTGAME_CHECKBOX:
 					X: 400
 					Width: 150
