@@ -528,6 +528,7 @@ HQ:
 	RenderDetectionCircle:
 	DetectCloaked:
 		Range: 5c0
+		RequiresCondition: !lowpower
 	AirstrikePower:
 		PauseOnCondition: lowpower
 		Prerequisites: ~techlevel.superweapons
@@ -636,6 +637,7 @@ EYE:
 	RenderDetectionCircle:
 	DetectCloaked:
 		Range: 5c0
+		RequiresCondition: !lowpower
 	IonCannonPower:
 		PauseOnCondition: lowpower
 		Prerequisites: ~techlevel.superweapons
@@ -690,6 +692,7 @@ TMPL:
 	RenderDetectionCircle:
 	DetectCloaked:
 		Range: 5c0
+		RequiresCondition: !lowpower
 	NukePower:
 		PauseOnCondition: lowpower
 		Prerequisites: ~techlevel.superweapons
@@ -854,6 +857,7 @@ OBLI:
 	-EmitInfantryOnSell:
 	DetectCloaked:
 		Range: 5c0
+		RequiresCondition: !lowpower
 	Power:
 		Amount: -90
 
@@ -937,6 +941,7 @@ ATWR:
 		QuantizedFacings: 8
 	DetectCloaked:
 		Range: 5c0
+		RequiresCondition: !lowpower
 	Power:
 		Amount: -50
 
